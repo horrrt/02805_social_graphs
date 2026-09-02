@@ -1,0 +1,199 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Who gets linked, who does the linking, and who gets left out · Log-Log Legends</title>
+<meta name="description" content="Week 1 of DTU 02805. Degree distributions on 303 Marvel Wikipedia articles, the gap between in- and out-degree, and the one island of nine characters that talks only to itself.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../assets/css/site.css">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><circle cx='8' cy='23' r='3' fill='%232a78d6'/><circle cx='17' cy='14' r='3' fill='%232a78d6'/><circle cx='26' cy='8' r='3' fill='%23eb6834'/></svg>">
+</head>
+<body>
+
+<header class="site-head">
+  <div class="bar">
+    <a class="brand" href="../../">Log-Log Legends<span class="dot">.</span></a>
+    <nav>
+      <a href="../../#posts">Posts</a>
+      <a href="../../#about">About</a>
+      <a href="https://github.com/horrrt/02805_social_graphs">Code</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+<article>
+  <header class="wrap post-head">
+    <p class="kicker">Week 01</p>
+    <h1>Who gets linked, who does the linking, and who gets left out</h1>
+    <p class="standfirst">Spider-Man is named by a third of the category. Nobody has ever heard of the nine characters in the corner who only talk to each other.</p>
+    <p class="meta">2 September 2026 · 303 nodes, 1,784 arcs · Log-Log Legends</p>
+  </header>
+
+  <div class="wrap">
+    <h2>The question</h2>
+    <p>The course gives every group the same frozen snapshot: the 303 articles in Wikipedia's <a href="https://en.wikipedia.org/wiki/Category:Marvel_Comics_superheroes">Category:Marvel Comics superheroes</a>, with an arc from A to B whenever A's article links to B's. Nobody chose this structure. It fell out of twenty years of separate editing decisions, one link at a time.</p>
+    <p>So we asked the three questions that structure alone can answer. Who does everyone point at? Who does the pointing? And who does the network fail to reach at all?</p>
+    <p>The third question turned out to be the interesting one.</p>
+
+    <h2>Loading it without losing anyone</h2>
+    <p>The course flags a trap on the data page and it is worth taking seriously. Seventeen of the 303 characters have no link in either direction. Build the graph from the edge list alone and those seventeen never get created, because an edge list can only mention nodes that have edges. You get 286 nodes, no error, and a quietly wrong answer to every question about coverage.</p>
+    <p>Adding the roster first is the whole fix:</p>
+<pre><code>nodes = pd.read_csv("week1_nodes.tsv", sep="\t", comment="#")
+edges = pd.read_csv("week1_edges.tsv", sep="\t", comment="#",
+                    names=["source", "target"])
+
+D = nx.DiGraph()
+D.add_nodes_from(nodes.node_id)      # this line is the whole fix
+D.add_edges_from(edges.itertuples(index=False, name=None))</code></pre>
+    <p>That gives 303 nodes and 1,784 arcs. Collapsing to undirected leaves 1,434 edges, because 350 pairs of characters link to each other in both directions and each of those pairs becomes one edge. Mean degree is 9.5, density is 0.02, average clustering is 0.31. Inside the giant component the average shortest path is 2.7 hops and the diameter is 6.</p>
+
+    <h2>The map</h2>
+  </div>
+
+  <figure class="bleed">
+    <img src="figures/map.png" alt="The Marvel link network: a dense blue giant component of 277 characters on the left, a separate nine-node orange cluster labelled Strikeforce: Morituri at top right, and a grid of seventeen green dots labelled the 17 isolates at bottom right.">
+    <figcaption>All 303 characters. Node size is total degree, blue shading is in-degree. The giant component holds 277 of them. Everything to the right is disconnected from everything to the left.</figcaption>
+  </figure>
+
+  <div class="wrap">
+    <p>The picture splits three ways: one giant component with 277 characters in it, one island of nine, and seventeen singletons. There is no middle ground. No component of size 2, 3 or 40. The network is either everything or nothing.</p>
+
+    <h2>Explore it yourself</h2>
+    <p>Same data, live. Hover any character to see who links to them, drag to rearrange, and click to open the Wikipedia article. Hold <kbd>⌘</kbd> or <kbd>Ctrl</kbd> while scrolling to zoom, and double-click the canvas to reset the view.</p>
+  </div>
+
+  <div class="wide">
+    <div class="graph-panel">
+      <div class="graph-controls">
+        <input type="search" id="graph-search" placeholder="Find a character…" autocomplete="off" spellcheck="false">
+        <button class="chip" data-size="kin" aria-pressed="true">Size by in-degree</button>
+        <button class="chip" data-size="kout" aria-pressed="false">Size by out-degree</button>
+        <button class="chip" id="toggle-isolates" aria-pressed="true">Isolates</button>
+        <span class="legend">
+          <span><i style="background:#2a78d6"></i>giant</span>
+          <span><i style="background:#eb6834"></i>island</span>
+          <span><i style="background:#1baf7a"></i>isolate</span>
+        </span>
+      </div>
+      <svg id="graph" data-src="../../assets/data/marvel_week1.json"></svg>
+      <div class="graph-readout"></div>
+    </div>
+    <p style="font-size:.85rem;color:var(--muted);margin:.6rem 0 0">Switch between the two size buttons and watch the picture reorganise. That swap is the next section.</p>
+  </div>
+
+  <div class="wrap">
+    <h2>Two different populations</h2>
+    <p>In-degree and out-degree sound like two views of the same thing. They are not measuring the same act.</p>
+    <p>Your in-degree is a count of other people's decisions. Every one of Spider-Man's 106 incoming links is some editor, working on some other article, deciding he was worth a mention. Nothing about his own article causes it, and nothing caps it. Out-degree is one person's decision: someone sat down and wrote a certain number of links into one article, and an article is a finite thing that a finite number of people bothered to write.</p>
+    <p>The ceilings show the difference. In-degree reaches 106. Out-degree tops out at 28.</p>
+  </div>
+
+  <figure class="bleed">
+    <img src="figures/in_vs_out.png" alt="Scatter plot of in-degree against out-degree. Most characters sit near the origin. Spider-Man is far above at in-degree 106, out-degree 9. Betsy Braddock sits far right at out-degree 28, in-degree 7.">
+    <figcaption>Every character, in-degree against out-degree. The vertical axis runs to 106 and the horizontal one stops at 28. Orange marks the characters who write far more links than they receive.</figcaption>
+  </figure>
+
+  <div class="wrap">
+    <div class="table-scroll">
+      <table>
+        <thead>
+          <tr>
+            <th>Linked to most</th><th class="num">in</th><th class="num">out</th>
+            <th>Links out most</th><th class="num">out</th><th class="num">in</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>Spider-Man</td><td class="num">106</td><td class="num">9</td><td>Betsy Braddock</td><td class="num">28</td><td class="num">7</td></tr>
+          <tr><td>Hulk</td><td class="num">64</td><td class="num">10</td><td>Cloak and Dagger</td><td class="num">24</td><td class="num">11</td></tr>
+          <tr><td>Wolverine</td><td class="num">60</td><td class="num">17</td><td>Adam Warlock</td><td class="num">22</td><td class="num">8</td></tr>
+          <tr><td>Doctor Strange</td><td class="num">50</td><td class="num">17</td><td>Venom</td><td class="num">21</td><td class="num">17</td></tr>
+          <tr><td>Deadpool</td><td class="num">33</td><td class="num">19</td><td>She-Hulk</td><td class="num">20</td><td class="num">29</td></tr>
+          <tr><td>She-Hulk</td><td class="num">29</td><td class="num">20</td><td>U.S. Agent</td><td class="num">20</td><td class="num">6</td></tr>
+          <tr><td>Scarlet Witch</td><td class="num">28</td><td class="num">14</td><td>Deadpool</td><td class="num">19</td><td class="num">33</td></tr>
+          <tr><td>Black Panther</td><td class="num">27</td><td class="num">11</td><td>Rachel Summers</td><td class="num">19</td><td class="num">16</td></tr>
+          <tr><td>Cyclops</td><td class="num">26</td><td class="num">11</td><td>Noh-Varr</td><td class="num">18</td><td class="num">4</td></tr>
+          <tr><td>Luke Cage</td><td class="num">25</td><td class="num">9</td><td>Doctor Strange</td><td class="num">17</td><td class="num">50</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>Three names appear in both columns: Deadpool, Doctor Strange and She-Hulk. The other seven pairs are strangers to each other's list. Across all 303 characters the two degrees correlate at 0.50 by Pearson and 0.70 by Spearman, so they are related, and they are nowhere near the same measurement.</p>
+    <p class="pull">Betsy Braddock writes 28 links and receives 7. Spider-Man writes 9 and receives 106. One of them worked for it.</p>
+    <p>The lopsided cases make the mechanism obvious. Noh-Varr sends 18 links out and gets 4 back. Quasar receives 24 and sends 3. A long, carefully written article about a minor character generates a lot of out-degree and earns almost no in-degree, because out-degree is authored and in-degree is conferred.</p>
+
+    <h2>The distributions</h2>
+    <p>Both are plotted against <em>k</em> + 1, because a log axis has nowhere to put zero and 20 characters have out-degree 0.</p>
+  </div>
+
+  <figure class="bleed">
+    <img src="figures/degree_distributions.png" alt="Four panels. In-degree and out-degree, each on linear and log-log axes. The in-degree log-log panel is close to a straight line with a long tail; the out-degree panels fall off much faster.">
+    <figcaption>In-degree, top. Out-degree, bottom. Linear on the left, log-log on the right. The in-degree tail runs to 106; the out-degree distribution stops dead after 28.</figcaption>
+  </figure>
+
+  <div class="wrap">
+    <p>On log-log axes the in-degree is close to straight over most of its range, with a long thin tail. Out-degree is not: it has a bump around 5 to 10 links and then it stops. That is the shape you get from a quantity with a natural ceiling, and it matches the story above. We ran the R² check in the <a href="https://github.com/horrrt/02805_social_graphs/blob/main/notebooks/02_marvel_degrees.ipynb">week-1 notebook</a> against a known exponential and a known power law, which is the only honest way to read straightness. In-degree leans power-law. We are not quoting an exponent off these plots.</p>
+
+    <h2>The islands</h2>
+    <p>This is what we came away thinking about.</p>
+    <p>Fifty-eight characters have in-degree 0, so nobody in the category links to them. Seventeen of those also have out-degree 0, which makes them isolates in the strict sense. Baymax is one. So is Miracleman, so is Yo-Yo Rodriguez from the Agents of S.H.I.E.L.D. series, so is Super Rabbit. They have articles, they are in the category, and inside this network they do not exist.</p>
+    <p>Then there is the one real island. Nine characters, 22 arcs among themselves, zero arcs to the other 294.</p>
+  </div>
+
+  <figure class="bleed">
+    <img src="figures/island.png" alt="Nine orange circles connected by curved arrows: Backhand, Blackthorn, Radian, Scaredycat, Scatterbrain, Shear, Snapdragon, Toxyn and Vyking. No arrows leave the group.">
+    <figcaption>Radian, Scaredycat, Scatterbrain, Snapdragon, Toxyn, Vyking, Shear, Blackthorn and Backhand. Every arc starts and ends inside the group.</figcaption>
+  </figure>
+
+  <div class="wrap">
+    <p>We expected the leftovers to be a random assortment of obscure characters. They are the opposite of random. All nine are the cast of <em>Strikeforce: Morituri</em>, a Marvel series that ran from 1986 to 1989 with a premise that gave its heroes superpowers and about a year to live before the powers killed them. The cast turned over constantly. Whoever wrote these nine articles wrote them as a set, cross-referencing teammates, and no other Marvel article had reason to mention any of them.</p>
+    <p>So the network's structure has preserved something about how the comics were published. A short-lived, self-contained series with a cast that never crossed over becomes, thirty years later, a connected component of nine that touches nothing. You could find that fact by reading 303 Wikipedia articles. Or you could run <code>nx.weakly_connected_components</code> and have it in a second.</p>
+
+    <h3>What surprised us</h3>
+    <ul>
+      <li><strong>The gap has no middle.</strong> Component sizes are 277, 9, then seventeen 1s. Nothing in between. We expected a scatter of small clusters.</li>
+      <li><strong>Direction matters more than we assumed.</strong> Ignore direction and 277 characters are connected. Insist on following the arrows and the largest strongly connected component drops to 229, with 63 characters sitting in components of one. Those 63 can be reached but cannot get back.</li>
+      <li><strong>Forty-one characters link out and receive nothing.</strong> They can see the universe. The universe cannot see them.</li>
+      <li><strong>Spider-Man's 106 is 35% of everyone else.</strong> A third of the category names him. The runner-up, Hulk, has 64.</li>
+    </ul>
+
+    <h2>Checking the snapshot against live Wikipedia</h2>
+    <p>The snapshot arrives ready-made, which is convenient and worth distrusting. Wikipedia's API serves the raw wiki-source of any article, internal links sit in it as <code>[[Page name]]</code>, and that is exactly how the course harvested these edges. So we re-derived three articles ourselves and diffed them against the frozen file.</p>
+<pre><code>LINK = re.compile(r"\[\[([^\[\]|#]+)(?:\|[^\[\]]*)?\]\]")
+
+def outlinks(text):
+    return {m.group(1).strip().replace(" ", "_")
+            for m in LINK.finditer(text)}
+
+live = outlinks(wikitext("Betsy_Braddock")) &amp; roster</code></pre>
+    <p>Betsy Braddock: 28 links live, 28 in the snapshot, all 28 the same. Radian: 6 and 6. Baymax: 0 and 0, which confirms the isolate is genuinely isolated rather than a harvesting failure. No disagreements in either direction. The snapshot holds.</p>
+    <p>One practical note for anyone repeating this. Wikipedia answers <code>403</code> unless your request carries a <code>User-Agent</code> header naming your client. Set it and the API is friendly.</p>
+
+    <h2>Reproduce it</h2>
+    <p>Everything on this page comes out of three scripts in the <a href="https://github.com/horrrt/02805_social_graphs">repository</a>:</p>
+<pre><code>python analysis/week01_facts.py      # every number quoted above
+python analysis/week01_figures.py    # the four figures and the graph JSON
+python analysis/week01_api_check.py  # the live Wikipedia diff</code></pre>
+    <p>The working, with the assertions and the distribution-shape diagnostics, is in <code>notebooks/02_marvel_degrees.ipynb</code>.</p>
+
+    <div class="next-prev">
+      <span><a href="../../">← All posts</a></span>
+      <span class="mono" style="color:var(--faint)">Week 02 next</span>
+    </div>
+  </div>
+</article>
+</main>
+
+<footer class="site-foot">
+  <div class="wide row">
+    <span>Log-Log Legends · DTU 02805 · autumn 2026</span>
+    <span><a href="https://github.com/horrrt/02805_social_graphs">Source and notebooks</a></span>
+  </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/d3@7.9.0/dist/d3.min.js"></script>
+<script src="../../assets/js/graph.js"></script>
+</body>
+</html>

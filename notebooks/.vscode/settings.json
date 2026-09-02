@@ -1,0 +1,12 @@
+{
+  "python.defaultInterpreterPath": "/Users/gyula/.venvs/socialgraphs/bin/python",
+  "python.venvPath": "/Users/gyula/.venvs",
+  "python.terminal.activateEnvironment": true,
+  "jupyter.notebookFileRoot": "${fileDirname}",
+  "notebook.output.textLineLimit": 60,
+  "notebook.lineNumbers": "on",
+  "files.exclude": {
+    "**/.ipynb_checkpoints": true,
+    "**/__pycache__": true
+  }
+}

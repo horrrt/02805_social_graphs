@@ -1,0 +1,26 @@
+[
+ {
+  "article": "Betsy_Braddock",
+  "live": 28,
+  "snapshot": 28,
+  "agree": 28,
+  "only_live": [],
+  "only_snapshot": []
+ },
+ {
+  "article": "Radian_(Morituri)",
+  "live": 6,
+  "snapshot": 6,
+  "agree": 6,
+  "only_live": [],
+  "only_snapshot": []
+ },
+ {
+  "article": "Baymax",
+  "live": 0,
+  "snapshot": 0,
+  "agree": 0,
+  "only_live": [],
+  "only_snapshot": []
+ }
+]

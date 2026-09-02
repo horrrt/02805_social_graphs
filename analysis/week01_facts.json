@@ -1,0 +1,299 @@
+{
+ "n_nodes": 303,
+ "n_arcs": 1784,
+ "n_undirected": 1434,
+ "mean_degree": 9.465,
+ "isolates": [
+  "Baymax",
+  "Bird-Brain_(Marvel_Comics)",
+  "Black_Fox_(Robert_Paine)",
+  "Brain_Drain_(character)",
+  "Breeze_Barton",
+  "Captain_Midlands",
+  "Charcoal_(comics)",
+  "Father_Time_(Marvel_Comics)",
+  "Happy_Sam_Sawyer",
+  "Hellfire_(J._T._Slade)",
+  "Illuminator_(Marvel_Comics)",
+  "Miracleman_(character)",
+  "Ogre_(Marvel_Comics)",
+  "Sean_and_Chris",
+  "Solarman",
+  "Super_Rabbit",
+  "Yo-Yo_Rodriguez"
+ ],
+ "n_isolates": 17,
+ "mutual_pairs": 350,
+ "reciprocity": 0.3924,
+ "density": 0.0195,
+ "n_wcc": 19,
+ "wcc_sizes": [
+  277,
+  9,
+  1,
+  1,
+  1,
+  1,
+  1,
+  1,
+  1,
+  1,
+  1,
+  1,
+  1,
+  1,
+  1,
+  1,
+  1,
+  1,
+  1
+ ],
+ "giant_size": 277,
+ "giant_share": 91.4,
+ "islands": [
+  [
+   "Backhand_(character)",
+   "Blackthorn_(character)",
+   "Radian_(Morituri)",
+   "Scaredycat",
+   "Scatterbrain_(Morituri)",
+   "Shear_(character)",
+   "Snapdragon_(Morituri)",
+   "Toxyn",
+   "Vyking"
+  ]
+ ],
+ "n_island_members": 9,
+ "n_scc": 66,
+ "largest_scc": 229,
+ "scc_size_hist": {
+  "1": 63,
+  "2": 1,
+  "9": 1,
+  "229": 1
+ },
+ "giant_diameter": 6,
+ "giant_avg_path": 2.674,
+ "avg_clustering": 0.3075,
+ "top_in": [
+  {
+   "id": "Spider-Man",
+   "name": "Spider-Man",
+   "k": 106,
+   "kin": 106,
+   "kout": 9
+  },
+  {
+   "id": "Hulk",
+   "name": "Hulk",
+   "k": 64,
+   "kin": 64,
+   "kout": 10
+  },
+  {
+   "id": "Wolverine_(character)",
+   "name": "Wolverine (character)",
+   "k": 60,
+   "kin": 60,
+   "kout": 17
+  },
+  {
+   "id": "Doctor_Strange",
+   "name": "Doctor Strange",
+   "k": 50,
+   "kin": 50,
+   "kout": 17
+  },
+  {
+   "id": "Deadpool",
+   "name": "Deadpool",
+   "k": 33,
+   "kin": 33,
+   "kout": 19
+  },
+  {
+   "id": "She-Hulk",
+   "name": "She-Hulk",
+   "k": 29,
+   "kin": 29,
+   "kout": 20
+  },
+  {
+   "id": "Scarlet_Witch",
+   "name": "Scarlet Witch",
+   "k": 28,
+   "kin": 28,
+   "kout": 14
+  },
+  {
+   "id": "Black_Panther_(character)",
+   "name": "Black Panther (character)",
+   "k": 27,
+   "kin": 27,
+   "kout": 11
+  },
+  {
+   "id": "Cyclops_(Marvel_Comics)",
+   "name": "Cyclops (Marvel Comics)",
+   "k": 26,
+   "kin": 26,
+   "kout": 11
+  },
+  {
+   "id": "Luke_Cage",
+   "name": "Luke Cage",
+   "k": 25,
+   "kin": 25,
+   "kout": 9
+  }
+ ],
+ "top_out": [
+  {
+   "id": "Betsy_Braddock",
+   "name": "Betsy Braddock",
+   "k": 28,
+   "kin": 7,
+   "kout": 28
+  },
+  {
+   "id": "Cloak_and_Dagger_(characters)",
+   "name": "Cloak and Dagger (characters)",
+   "k": 24,
+   "kin": 11,
+   "kout": 24
+  },
+  {
+   "id": "Adam_Warlock",
+   "name": "Adam Warlock",
+   "k": 22,
+   "kin": 8,
+   "kout": 22
+  },
+  {
+   "id": "Venom_(character)",
+   "name": "Venom (character)",
+   "k": 21,
+   "kin": 17,
+   "kout": 21
+  },
+  {
+   "id": "She-Hulk",
+   "name": "She-Hulk",
+   "k": 20,
+   "kin": 29,
+   "kout": 20
+  },
+  {
+   "id": "U.S._Agent",
+   "name": "U.S. Agent",
+   "k": 20,
+   "kin": 6,
+   "kout": 20
+  },
+  {
+   "id": "Deadpool",
+   "name": "Deadpool",
+   "k": 19,
+   "kin": 33,
+   "kout": 19
+  },
+  {
+   "id": "Rachel_Summers",
+   "name": "Rachel Summers",
+   "k": 19,
+   "kin": 16,
+   "kout": 19
+  },
+  {
+   "id": "Noh-Varr",
+   "name": "Noh-Varr",
+   "k": 18,
+   "kin": 4,
+   "kout": 18
+  },
+  {
+   "id": "Doctor_Strange",
+   "name": "Doctor Strange",
+   "k": 17,
+   "kin": 50,
+   "kout": 17
+  }
+ ],
+ "spiderman_share": 35.1,
+ "top10_overlap": [
+  "Deadpool",
+  "Doctor_Strange",
+  "She-Hulk"
+ ],
+ "pearson_in_out": 0.496,
+ "pearson_in_out_nonisolate": 0.48,
+ "spearman_in_out": 0.702,
+ "max_in": 106,
+ "max_out": 28,
+ "zero_in": 58,
+ "zero_out": 20,
+ "most_outward": [
+  {
+   "name": "Betsy Braddock",
+   "kin": 7,
+   "kout": 28
+  },
+  {
+   "name": "Adam Warlock",
+   "kin": 8,
+   "kout": 22
+  },
+  {
+   "name": "Noh-Varr",
+   "kin": 4,
+   "kout": 18
+  },
+  {
+   "name": "U.S. Agent",
+   "kin": 6,
+   "kout": 20
+  },
+  {
+   "name": "Cloak and Dagger (characters)",
+   "kin": 11,
+   "kout": 24
+  },
+  {
+   "name": "Spider-Bitch (Ashley Barton)",
+   "kin": 2,
+   "kout": 15
+  }
+ ],
+ "most_inward": [
+  {
+   "name": "Spider-Man",
+   "kin": 106,
+   "kout": 9
+  },
+  {
+   "name": "Hulk",
+   "kin": 64,
+   "kout": 10
+  },
+  {
+   "name": "Wolverine (character)",
+   "kin": 60,
+   "kout": 17
+  },
+  {
+   "name": "Doctor Strange",
+   "kin": 50,
+   "kout": 17
+  },
+  {
+   "name": "Quasar (character)",
+   "kin": 24,
+   "kout": 3
+  },
+  {
+   "name": "Luke Cage",
+   "kin": 25,
+   "kout": 9
+  }
+ ]
+}
