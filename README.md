@@ -80,11 +80,14 @@ on at least one other group's post. Publishing the site does not send those mess
 ## Reviewing the design mockups
 
 The [mockup gallery](https://horrrt.github.io/02805_social_graphs/mockups/) contains
-all 27 complete design concepts. Filter the seven reference-inspired additions,
+all 30 complete design concepts. Filter the seven reference-inspired additions or
+the three new [UX-principle concepts (28–30)](https://horrrt.github.io/02805_social_graphs/mockups/?collection=ux),
 open a full-page viewer, and save favourites in the current browser. Copy the
 shortlist and paste it into chat to communicate choices; saving a favourite does
 not send it anywhere. Each design also has a direct link, such as
-`mockups/#mockup-24`.
+`mockups/#mockup-24`. The UX concepts include concise rationale, primary-source
+links and specific review notes; they are design proposals, not tested usability
+or accessibility claims.
 
 The gallery uses small, lazy-loaded previews and loads a full-resolution,
 lossless image when opened. These are static visual concepts, with illustrative

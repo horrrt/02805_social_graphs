@@ -2,6 +2,7 @@
   'use strict';
   const mockups = JSON.parse(document.getElementById('mockup-data').textContent);
   const byId = new Map(mockups.map(mockup => [mockup.number, mockup]));
+  const ids = mockups.map(mockup => mockup.number);
   const storageKey = 'log-log-legends-mockup-shortlist-v1';
   const cards = [...document.querySelectorAll('.mockup-card')];
   const filters = [...document.querySelectorAll('[data-filter]')];
@@ -41,14 +42,25 @@
     let visibleCount = 0;
     cards.forEach(card => {
       const id = Number(card.dataset.mockup);
-      const visible = activeFilter === 'all' || (activeFilter === 'new' && id >= 21)
-        || (activeFilter === 'original' && id <= 20) || (activeFilter === 'saved' && favourites.has(id));
+      const visible = activeFilter === 'all' || byId.get(id).collection === activeFilter
+        || (activeFilter === 'saved' && favourites.has(id));
       card.hidden = !visible;
       if (visible) visibleCount += 1;
     });
     filters.forEach(button => button.setAttribute('aria-pressed', String(button.dataset.filter === activeFilter)));
-    document.getElementById('visible-count').textContent = `Showing ${visibleCount} of 27 full-page mockups`;
+    document.getElementById('visible-count').textContent = `Showing ${visibleCount} of ${mockups.length} full-page mockups`;
     document.getElementById('empty-shortlist').hidden = visibleCount !== 0;
+  }
+
+  function setFilter(filter, updateUrl = true) {
+    activeFilter = filters.some(button => button.dataset.filter === filter) ? filter : 'all';
+    applyFilter();
+    if (updateUrl) {
+      const url = new URL(location.href);
+      if (activeFilter === 'all') url.searchParams.delete('collection');
+      else url.searchParams.set('collection', activeFilter);
+      history.replaceState(null, '', url);
+    }
   }
 
   function toggleFavourite(id) {
@@ -76,16 +88,34 @@
     viewerImage.src = mockup.image;
     viewerImage.width = mockup.width;
     viewerImage.height = mockup.height;
-    viewerImage.alt = `Complete page for mockup ${id}: ${mockup.name}. ${mockup.inspiration || 'Original direction'}.`;
+    viewerImage.alt = `Complete page for mockup ${id}: ${mockup.name}. ${mockup.collection === 'ux' ? 'UX principles' : mockup.inspiration || 'Original direction'}.`;
     document.getElementById('viewer-title').textContent = `${String(id).padStart(2, '0')} · ${mockup.name}`;
-    document.getElementById('viewer-origin').textContent = mockup.inspiration ? `${mockup.inspiration} inspired` : 'Original direction';
-    document.getElementById('viewer-position').textContent = `${id} / 27`;
-    document.getElementById('previous-mockup').disabled = id === 1;
-    document.getElementById('next-mockup').disabled = id === 27;
+    document.getElementById('viewer-origin').textContent = mockup.collection === 'ux'
+      ? 'UX principles' : mockup.inspiration ? `${mockup.inspiration} inspired` : 'Original direction';
+    const position = ids.indexOf(id);
+    document.getElementById('viewer-position').textContent = `${position + 1} / ${mockups.length}`;
+    document.getElementById('previous-mockup').disabled = position === 0;
+    document.getElementById('next-mockup').disabled = position === ids.length - 1;
     document.getElementById('open-image').href = mockup.image;
     const reference = document.getElementById('viewer-reference');
     reference.hidden = !mockup.referenceUrl;
     if (mockup.referenceUrl) reference.href = mockup.referenceUrl;
+    const rationale = document.getElementById('viewer-rationale');
+    rationale.hidden = !mockup.uxSummary;
+    rationale.open = false;
+    document.getElementById('viewer-ux-summary').textContent = mockup.uxSummary || '';
+    document.getElementById('viewer-review-note').textContent = mockup.reviewNote ? `Before implementation: ${mockup.reviewNote}` : '';
+    const sources = document.getElementById('viewer-ux-sources');
+    sources.replaceChildren();
+    (mockup.uxSources || []).forEach((source, index) => {
+      if (index) sources.append(' · ');
+      const link = document.createElement('a');
+      link.href = source.url;
+      link.target = '_blank';
+      link.rel = 'noopener';
+      link.textContent = source.title;
+      sources.append(link);
+    });
     viewerStatus.textContent = '';
     document.getElementById('viewer-copy-fallback').hidden = true;
     syncFavourites();
@@ -105,7 +135,7 @@
   }
 
   function readHash() {
-    const match = location.hash.match(/^#mockup-(\d{1,2})$/);
+    const match = location.hash.match(/^#mockup-(\d+)$/);
     if (match && byId.has(Number(match[1]))) openMockup(Number(match[1]), false);
     else if (dialog.open) closeMockup();
   }
@@ -138,13 +168,11 @@
     button.addEventListener('click', () => toggleFavourite(button.id === 'viewer-favourite' ? currentId : Number(button.dataset.favourite)));
   });
   filters.forEach(button => button.addEventListener('click', () => {
-    activeFilter = button.dataset.filter;
-    applyFilter();
+    setFilter(button.dataset.filter);
     status.textContent = document.getElementById('visible-count').textContent;
   }));
   document.getElementById('show-all').addEventListener('click', () => {
-    activeFilter = 'all';
-    applyFilter();
+    setFilter('all');
     filters[0].focus();
   });
   copyButton.addEventListener('click', () => {
@@ -156,8 +184,8 @@
   });
   document.getElementById('copy-mockup-link').addEventListener('click', () => copyText(location.href, true));
   document.getElementById('close-viewer').addEventListener('click', closeMockup);
-  document.getElementById('previous-mockup').addEventListener('click', () => openMockup(currentId - 1));
-  document.getElementById('next-mockup').addEventListener('click', () => openMockup(currentId + 1));
+  document.getElementById('previous-mockup').addEventListener('click', () => openMockup(ids[ids.indexOf(currentId) - 1]));
+  document.getElementById('next-mockup').addEventListener('click', () => openMockup(ids[ids.indexOf(currentId) + 1]));
   document.getElementById('fit-page').addEventListener('click', event => {
     fitPage = !fitPage;
     canvas.classList.toggle('fit-page', fitPage);
@@ -167,8 +195,8 @@
   });
   dialog.addEventListener('keydown', event => {
     if (event.target.matches('textarea, input') || event.ctrlKey || event.metaKey || event.altKey || event.shiftKey) return;
-    if (event.key === 'ArrowRight' && currentId < 27) { event.preventDefault(); openMockup(currentId + 1); }
-    if (event.key === 'ArrowLeft' && currentId > 1) { event.preventDefault(); openMockup(currentId - 1); }
+    if (event.key === 'ArrowRight') { event.preventDefault(); openMockup(ids[ids.indexOf(currentId) + 1]); }
+    if (event.key === 'ArrowLeft') { event.preventDefault(); openMockup(ids[ids.indexOf(currentId) - 1]); }
   });
   dialog.addEventListener('close', () => {
     document.body.classList.remove('viewer-open');
@@ -178,8 +206,14 @@
   });
   viewerImage.addEventListener('error', () => { viewerStatus.textContent = 'This image could not load. Try “Open image” or reload the page.'; });
   window.addEventListener('hashchange', readHash);
+  window.addEventListener('popstate', () => setFilter(new URLSearchParams(location.search).get('collection'), false));
   document.querySelectorAll('[data-js-only]').forEach(element => { element.hidden = false; });
   syncFavourites();
-  applyFilter();
+  filters.forEach(button => {
+    if (button.dataset.filter === 'saved') return;
+    button.querySelector('.filter-count').textContent = button.dataset.filter === 'all'
+      ? mockups.length : mockups.filter(mockup => mockup.collection === button.dataset.filter).length;
+  });
+  setFilter(new URLSearchParams(location.search).get('collection'), false);
   readHash();
 })();

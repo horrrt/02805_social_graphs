@@ -34,6 +34,15 @@ body.mockups { background: #f5f6f3; color: #20231e; color-scheme: light; }
 .mockup-card h2 { font: 600 20px/1.15 Barlow, Arial, sans-serif; letter-spacing: -.015em; margin-top: 16px; min-height: 46px; }
 .mockup-card h2 a { text-decoration: none; }
 .mockup-card h2 a:hover { text-decoration: underline; }
+.ux-focus { margin-top: 8px; color: #4f5847; font-size: 15px; line-height: 1.4; }
+.ux-rationale { margin-top: 12px; font-size: 14px; line-height: 1.45; }
+.ux-rationale summary { display: list-item; cursor: pointer; padding-block: 12px; font-weight: 600; }
+.ux-rationale p { margin-block: 8px; }
+.ux-sources { font-size: 12px; }
+.ux-review-note { color: #60675c; font-size: 12px; }
+.viewer-foot .ux-rationale { margin-top: 0; }
+.viewer-foot .ux-rationale[open] { max-height: 28dvh; overflow: auto; }
+.viewer-foot .ux-rationale summary { padding-block: 8px; }
 .card-actions { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 12px; }
 .card-actions .review-button { flex: 1; padding-inline: 9px; }
 .empty-shortlist { padding: 60px 0 100px; max-width: 600px; }
