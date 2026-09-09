@@ -1,85 +1,50 @@
 <!doctype html>
 <html lang="en">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Log-Log Legends</title>
-<meta name="description" content="Eight weeks inside a network of 303 Marvel characters. Course notebook for 02805 Social Graphs and Interactions at DTU.">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="assets/css/site.css">
-<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><circle cx='8' cy='23' r='3' fill='%232a78d6'/><circle cx='17' cy='14' r='3' fill='%232a78d6'/><circle cx='26' cy='8' r='3' fill='%23eb6834'/></svg>">
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="theme-color" content="#141614">
+<title>Log-Log Legends — Pull one hero.</title>
+<meta name="description" content="Pull Spider-Man out: five other articles get stranded. Pull Hulk out: none do. Explore our newest Marvel network experiment and compare 1,000 shuffled worlds.">
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="assets/css/site.css?v=20260909-2"><script src="assets/js/graph.js?v=20260909-2" defer></script>
 </head>
-<body>
-
-<header class="site-head">
-  <div class="bar">
-    <a class="brand" href="./">Log-Log Legends<span class="dot">.</span></a>
-    <nav>
-      <a href="#posts">Posts</a>
-      <a href="#about">About</a>
-      <a href="https://github.com/horrrt/02805_social_graphs">Code</a>
-    </nav>
-  </div>
-</header>
-
-<main>
-  <section class="wrap hero">
-    <p class="kicker">02805 · Social Graphs and Interactions · DTU</p>
-    <h1>Eight weeks inside a network of <em>303 Marvel characters</em>.</h1>
-    <p class="lede">Every week we take the course's tools to the same frozen slice of Wikipedia and write down what we find. One post per week, from structure in the first half to text in the second.</p>
-  </section>
-
-  <section class="wrap">
-    <div class="stats">
-      <div><b>303</b><span>characters</span></div>
-      <div><b>1,784</b><span>directed links</span></div>
-      <div><b>91.4%</b><span>in the giant component</span></div>
-      <div><b>17</b><span>linked by nobody</span></div>
-    </div>
-  </section>
-
-  <section class="wrap" id="posts">
-    <p class="section-label">Posts</p>
-    <ul class="posts">
-      <li>
-        <a href="weeks/week01/">
-          <span class="wk">Week 01</span>
-          <span>
-            <h3>Who gets linked, who does the linking, and who gets left out</h3>
-            <p>Degree distributions, the in-versus-out split, and the one island of nine characters that talks only to itself.</p>
-          </span>
-        </a>
-      </li>
-      <li class="pending">
-        <a class="soon">
-          <span class="wk">Week 02</span>
-          <span><h3>Coming next week</h3><p>&nbsp;</p></span>
-        </a>
-      </li>
-    </ul>
-  </section>
-
-  <section class="wrap" id="about">
-    <p class="section-label">About</p>
-    <p>We are a three-person group in <strong>02805 Social Graphs and Interactions</strong> at DTU. The course hands every group the same frozen snapshot of Wikipedia's <a href="https://en.wikipedia.org/wiki/Category:Marvel_Comics_superheroes">Category:Marvel Comics superheroes</a>: 303 character articles, with an arc from A to B whenever A's article links to B's. Same data for everyone, so the only thing that varies is the question you ask of it.</p>
-    <p>Every post here shows its own working. The analysis lives in notebooks in the <a href="https://github.com/horrrt/02805_social_graphs">repository</a>, and every number quoted on the site comes out of a script you can run yourself.</p>
-
-    <ul class="members">
-      <li>Àngela Buxó</li>
-      <li>Gyula Kürthy</li>
-      <li>Niklas Johansen</li>
-    </ul>
-  </section>
-</main>
-
-<footer class="site-foot">
-  <div class="wide row">
-    <span>Log-Log Legends · DTU 02805 · autumn 2026</span>
-    <span><a href="https://github.com/horrrt/02805_social_graphs">Source and notebooks</a></span>
-  </div>
-</footer>
-
-</body>
-</html>
+<body class="home" data-graph-src="assets/data/marvel_story.json">
+<a class="skip-link" href="#main">Skip to content</a>
+<header class="site-head"><div class="wide head-row">
+<a class="brand" href="./" aria-label="Log-Log Legends home"><span class="brand-mark" aria-hidden="true">↗</span><span>LOG–LOG<br>LEGENDS</span></a>
+<nav aria-label="Main navigation"><a href="#stories">The stories</a><a href="#about">The project</a><a class="source-link" href="https://github.com/horrrt/02805_social_graphs">Source ↗</a></nav>
+<a class="button button-small" href="weeks/week02/">Play Week 2 <span aria-hidden="true">↗</span></a>
+</div></header>
+<main id="main">
+<section class="cover wide" aria-labelledby="cover-title">
+<div class="cover-meta"><span>FIELD NOTES FROM THE MARVEL NETWORK</span><span>DTU 02805 · AUTUMN 2026</span></div>
+<div class="cover-grid">
+<div class="cover-copy"><p class="eyebrow"><span class="live-dot" aria-hidden="true"></span> ONE DATASET. A UNIVERSE OF STORIES.</p>
+<h1 id="cover-title">ONE HERO.<br>FIVE LEFT<br><span>STRANDED.</span></h1>
+<p>Remove Spider-Man. Five other articles lose<br class="desktop-only"> their route to the main group.<br>Remove Hulk. Nobody else gets stranded.</p>
+<a class="button" href="weeks/week02/">Your turn. Pull a hero. <span aria-hidden="true">↗</span></a><span class="reading-note">NEW · Week 2 · ~90 seconds · compare 1,000 shuffled worlds</span>
+</div>
+<figure class="cover-network"><span class="map-stamp" aria-hidden="true">EXHIBIT<br><b>002</b></span>
+<svg class="network-svg" id="cover-graph" viewBox="0 0 940 650" role="img" aria-label="The actual Marvel article network: 277 characters in the main cluster, a separate island of 9, and 17 isolated characters."></svg>
+<img class="graph-fallback" loading="lazy" src="weeks/week01/figures/map.png" alt="Network map: 277 connected characters, a separate group of 9, and 17 isolated characters.">
+<div class="cover-map-note"><span class="crosshair" aria-hidden="true">×</span><span>277 START CONNECTED.<br><strong>WHO HAS A BACKUP ROUTE?</strong></span></div>
+<figcaption><span>REAL CHARACTERS. REAL WIKIPEDIA LINKS.</span><a href="weeks/week01/#explore">Explore the map ↗</a></figcaption>
+</figure></div>
+<div class="cover-bottom"><span>SCROLL TO OPEN THE CASE <span aria-hidden="true">↓</span></span><span>SNAPSHOT: 26 AUG 2026</span></div>
+</section>
+<section class="paper" id="stories" aria-labelledby="stories-title"><div class="wide issue-feature">
+<div class="section-topline"><span>THE STORIES</span><span>02 / OUR LATEST INVESTIGATION</span></div>
+<div class="issue-grid"><div><p class="eyebrow">ISSUE 02 · PULL ONE HERO</p><h2 id="stories-title">SAME CAST.<br>SAME COUNTS.<br>DIFFERENT<br>DAMAGE.</h2><p class="section-lede">The busiest article isn’t always the hardest to replace. Change the wiring. See why.</p><a class="text-link" href="weeks/week02/">Open the new experiment <span aria-hidden="true">↗</span></a><br><a class="text-link" href="weeks/week02/#results">Go straight to the findings <span aria-hidden="true">↗</span></a></div>
+<div class="finding-links"><a href="weeks/week02/#results"><span class="finding-number">5</span><span><b>REMOVE SPIDER-MAN</b>Five other articles lose their route.<br>271 stay together.</span><span class="finding-arrow" aria-hidden="true">↗</span></a><a href="weeks/week02/#comparison-title"><span class="finding-number">0</span><span><b>REMOVE HULK</b>No other articles get stranded.<br>They have backup routes.</span><span class="finding-arrow" aria-hidden="true">↗</span></a><a href="weeks/week02/#null-title"><span class="finding-number">1.4</span><span><b>KEEP THE DEGREES. SHUFFLE THE LINKS.</b>Stranded on average when removing<br>Spider-Man in 1,000 shuffled worlds.</span><span class="finding-arrow" aria-hidden="true">↗</span></a></div></div>
+<div class="section-topline"><span>PREVIOUSLY</span><span>01 / THE BAYMAX EXPERIMENT</span></div>
+<div class="issue-grid"><div><p class="eyebrow">ISSUE 01 · GIVE BAYMAX A VOICE</p><h2>ONE LINK.<br>274 ARTICLES.<br>A WAY IN.</h2><p class="section-lede">What would one link change?<br>Try the edit. Flip the arrow. See who gets included.</p><a class="text-link" href="play/#results">Go straight to the three findings. <span aria-hidden="true">↗</span></a><br><a class="text-link" href="weeks/week01/">Explore the original network investigation. <span aria-hidden="true">↗</span></a></div>
+<div class="finding-links">
+<a href="play/#results"><span class="finding-number">274</span><span><b>ONE IMAGINED LINK IN</b>Articles that could reach Baymax<br>through Spider-Man.</span><span class="finding-arrow" aria-hidden="true">↗</span></a>
+<a href="play/#results"><span class="finding-number">231</span><span><b>REVERSE THAT LINK</b>Articles Baymax could reach.<br>Nobody could reach him.</span><span class="finding-arrow" aria-hidden="true">↗</span></a>
+<a href="play/#results"><span class="finding-number">229</span><span><b>KEEP BOTH DIRECTIONS</b>Articles with a path<br>there and back.</span><span class="finding-arrow" aria-hidden="true">↗</span></a>
+</div></div>
+</div></section>
+<section class="wide about-section" id="about" aria-labelledby="about-title"><p class="eyebrow">THE PROJECT</p>
+<div class="about-grid"><h2 id="about-title">SAME DATA.<br>OUR QUESTIONS.</h2><div><p>We’re Log-Log Legends, a three-person group in <strong>Social Graphs and Interactions at DTU</strong>. Each week, we explore the same frozen slice of Marvel’s Wikipedia network and turn what we find into a story.</p><p><strong>Àngela Buxó · Gyula Kürthy · Niklas Johansen</strong></p><p>A dot is a character article. An arrow is a link from one article to another. This is a map of how Wikipedia connects these 303 articles—not a map of every Marvel character or their friendships.</p><a class="text-link" href="https://github.com/horrrt/02805_social_graphs">The data, notebooks, and working ↗</a></div></div>
+</section></main>
+<footer class="site-foot"><div class="wide"><span>LOG–LOG LEGENDS</span><span>303 CHARACTERS. STILL MORE TO DISCOVER.</span><a href="https://github.com/horrrt/02805_social_graphs">DTU 02805 · 2026 ↗</a></div></footer>
+</body></html>

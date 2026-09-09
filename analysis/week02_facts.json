@@ -1,0 +1,384 @@
+{
+  "snapshot": "2026-08-26",
+  "analysisDate": "2026-09-09",
+  "population": {
+    "roster": 303,
+    "nodes": 277,
+    "edges": 1421,
+    "excluded": 26
+  },
+  "protocol": {
+    "draws": 1000,
+    "swapFactor": 20,
+    "successfulSwaps": 28420,
+    "firstSeed": 2026090900,
+    "rejectedDisconnected": 33,
+    "sensitivityDraws": 200,
+    "sensitivitySwapFactor": 50,
+    "sensitivityRejectedDisconnected": 7,
+    "python": "3.14.6",
+    "networkx": "3.6.1",
+    "null": "Simple undirected degree-preserving edge swaps, conditioned on connected output.",
+    "metric": "Remaining articles outside the largest component after removing one named article and all its incident edges.",
+    "selection": "Exploratory: Spider-Man is the highest-degree article. Hulk contrasts a large hub; Black Widow was chosen after inspecting all single-node removals; Doctor Strange is a second large hub with stranded neighbors.",
+    "limitations": "Finite edge-swap chains approximate a null ensemble; longer-run sensitivity is a diagnostic, not proof of uniform sampling. Tail estimates are descriptive, unadjusted across the four displayed cases. Links are article links, not friendships, readership or resilience of a fictional universe.",
+    "hashes": {
+      "week1_nodes.tsv": "a10ec309ac60ea8b72bcc1a18aba801414896676dac172619def0435e585391e",
+      "week1_edges.tsv": "87be017a35e8f27a1f1bc0912ebb5723c0084e460cb2dbd0d2abd0e83fc644b2"
+    }
+  },
+  "cases": [
+    {
+      "id": "Spider-Man",
+      "label": "Spider-Man",
+      "degree": 106,
+      "real": {
+        "stranded": [
+          "Enigma_(Marvel_Comics)",
+          "Ethan_Edwards",
+          "Helix_(Marvel_Comics)",
+          "NFL_SuperPro",
+          "Thunderclap_(comics)"
+        ],
+        "count": 5,
+        "largest": 271,
+        "groups": [
+          [
+            "Enigma_(Marvel_Comics)"
+          ],
+          [
+            "Ethan_Edwards"
+          ],
+          [
+            "Helix_(Marvel_Comics)"
+          ],
+          [
+            "NFL_SuperPro"
+          ],
+          [
+            "Thunderclap_(comics)"
+          ]
+        ]
+      },
+      "null": {
+        "mean": 1.409,
+        "median": 1.0,
+        "sd": 1.1459,
+        "interval95": [
+          0,
+          4
+        ],
+        "min": 0,
+        "max": 5,
+        "atLeastReal": 9,
+        "upperTailEstimate": 0.00999000999000999,
+        "histogram": [
+          {
+            "value": 0,
+            "count": 235
+          },
+          {
+            "value": 1,
+            "count": 350
+          },
+          {
+            "value": 2,
+            "count": 248
+          },
+          {
+            "value": 3,
+            "count": 114
+          },
+          {
+            "value": 4,
+            "count": 44
+          },
+          {
+            "value": 5,
+            "count": 9
+          }
+        ]
+      },
+      "sensitivity": {
+        "mean": 1.37,
+        "median": 1.0,
+        "sd": 1.0996,
+        "interval95": [
+          0,
+          4
+        ],
+        "min": 0,
+        "max": 6,
+        "atLeastReal": 1,
+        "upperTailEstimate": 0.009950248756218905,
+        "histogram": [
+          {
+            "value": 0,
+            "count": 46
+          },
+          {
+            "value": 1,
+            "count": 72
+          },
+          {
+            "value": 2,
+            "count": 54
+          },
+          {
+            "value": 3,
+            "count": 20
+          },
+          {
+            "value": 4,
+            "count": 7
+          },
+          {
+            "value": 6,
+            "count": 1
+          }
+        ]
+      }
+    },
+    {
+      "id": "Hulk",
+      "label": "Hulk",
+      "degree": 65,
+      "real": {
+        "stranded": [],
+        "count": 0,
+        "largest": 276,
+        "groups": []
+      },
+      "null": {
+        "mean": 0.583,
+        "median": 0.0,
+        "sd": 0.7548,
+        "interval95": [
+          0,
+          2
+        ],
+        "min": 0,
+        "max": 4,
+        "atLeastReal": 1000,
+        "upperTailEstimate": 1.0,
+        "histogram": [
+          {
+            "value": 0,
+            "count": 558
+          },
+          {
+            "value": 1,
+            "count": 321
+          },
+          {
+            "value": 2,
+            "count": 103
+          },
+          {
+            "value": 3,
+            "count": 16
+          },
+          {
+            "value": 4,
+            "count": 2
+          }
+        ]
+      },
+      "sensitivity": {
+        "mean": 0.55,
+        "median": 0.0,
+        "sd": 0.7071,
+        "interval95": [
+          0,
+          2
+        ],
+        "min": 0,
+        "max": 3,
+        "atLeastReal": 200,
+        "upperTailEstimate": 1.0,
+        "histogram": [
+          {
+            "value": 0,
+            "count": 113
+          },
+          {
+            "value": 1,
+            "count": 66
+          },
+          {
+            "value": 2,
+            "count": 19
+          },
+          {
+            "value": 3,
+            "count": 2
+          }
+        ]
+      }
+    },
+    {
+      "id": "Black_Widow_(Natasha_Romanova)",
+      "label": "Black Widow",
+      "degree": 25,
+      "real": {
+        "stranded": [
+          "Blue_Eagle_(character)",
+          "Rockman_(character)",
+          "The_Witness_(character)"
+        ],
+        "count": 3,
+        "largest": 273,
+        "groups": [
+          [
+            "Rockman_(character)",
+            "The_Witness_(character)"
+          ],
+          [
+            "Blue_Eagle_(character)"
+          ]
+        ]
+      },
+      "null": {
+        "mean": 0.194,
+        "median": 0.0,
+        "sd": 0.4296,
+        "interval95": [
+          0,
+          1
+        ],
+        "min": 0,
+        "max": 2,
+        "atLeastReal": 0,
+        "upperTailEstimate": 0.000999000999000999,
+        "histogram": [
+          {
+            "value": 0,
+            "count": 820
+          },
+          {
+            "value": 1,
+            "count": 166
+          },
+          {
+            "value": 2,
+            "count": 14
+          }
+        ]
+      },
+      "sensitivity": {
+        "mean": 0.16,
+        "median": 0.0,
+        "sd": 0.3675,
+        "interval95": [
+          0,
+          1
+        ],
+        "min": 0,
+        "max": 1,
+        "atLeastReal": 0,
+        "upperTailEstimate": 0.004975124378109453,
+        "histogram": [
+          {
+            "value": 0,
+            "count": 168
+          },
+          {
+            "value": 1,
+            "count": 32
+          }
+        ]
+      }
+    },
+    {
+      "id": "Doctor_Strange",
+      "label": "Doctor Strange",
+      "degree": 57,
+      "real": {
+        "stranded": [
+          "Captain_Ultra",
+          "Moonglow_(comics)"
+        ],
+        "count": 2,
+        "largest": 274,
+        "groups": [
+          [
+            "Captain_Ultra"
+          ],
+          [
+            "Moonglow_(comics)"
+          ]
+        ]
+      },
+      "null": {
+        "mean": 0.508,
+        "median": 0.0,
+        "sd": 0.6946,
+        "interval95": [
+          0,
+          2
+        ],
+        "min": 0,
+        "max": 4,
+        "atLeastReal": 85,
+        "upperTailEstimate": 0.08591408591408592,
+        "histogram": [
+          {
+            "value": 0,
+            "count": 591
+          },
+          {
+            "value": 1,
+            "count": 324
+          },
+          {
+            "value": 2,
+            "count": 74
+          },
+          {
+            "value": 3,
+            "count": 8
+          },
+          {
+            "value": 4,
+            "count": 3
+          }
+        ]
+      },
+      "sensitivity": {
+        "mean": 0.53,
+        "median": 0.0,
+        "sd": 0.7429,
+        "interval95": [
+          0,
+          2
+        ],
+        "min": 0,
+        "max": 4,
+        "atLeastReal": 21,
+        "upperTailEstimate": 0.10945273631840796,
+        "histogram": [
+          {
+            "value": 0,
+            "count": 119
+          },
+          {
+            "value": 1,
+            "count": 60
+          },
+          {
+            "value": 2,
+            "count": 18
+          },
+          {
+            "value": 3,
+            "count": 2
+          },
+          {
+            "value": 4,
+            "count": 1
+          }
+        ]
+      }
+    }
+  ]
+}

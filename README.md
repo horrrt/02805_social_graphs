@@ -23,11 +23,17 @@ pip install -r requirements.txt
 
 python analysis/week01_facts.py      # every number quoted in the post
 python analysis/week01_figures.py    # the four figures and the graph JSON
+python analysis/week01_presentation.py # verified data and layout for the story
 python analysis/week01_api_check.py  # diffs the snapshot against live Wikipedia
 ```
 
 `week01_facts.py` writes `analysis/week01_facts.json`. `week01_figures.py` writes
 into `docs/weeks/week01/figures/` and `docs/assets/data/`.
+
+`week01_presentation.py` checks the frozen data against the saved facts and writes
+`docs/assets/data/marvel_story.json`, including a deterministic drawing layout.
+The presentation uses local fonts and data, with no remote JavaScript dependency.
+Its design criteria and narrative direction are in [PRESENTATION.md](PRESENTATION.md).
 
 ## The one trap worth repeating
 
@@ -39,6 +45,37 @@ D = nx.DiGraph()
 D.add_nodes_from(nodes.node_id)   # add the roster first, or you get 286 nodes
 D.add_edges_from(edges.itertuples(index=False, name=None))
 ```
+
+## Reproducing week 2
+
+Week 2's post is **Pull one hero**, at `docs/weeks/week02/`. Remove one article,
+then compare the fragmentation with 1,000 connected, degree-preserving shuffled
+networks. The home page leads to this issue; the Baymax experiment remains at `play/`.
+
+Using the environment and requirements above:
+
+```bash
+python analysis/week01_presentation.py
+python analysis/week02_resilience.py
+python analysis/week02_figures.py
+```
+
+The analysis uses the undirected 277-node giant component (1,421 edges), 20 edge
+swaps per edge per draw, and a separate 200-draw check at 50 swaps per edge.
+Disconnected outputs are rejected so every comparison starts connected. The
+script checks every node's degree and saves seeds, source hashes, exact outcomes,
+all draws and the first four accepted example graphs under `docs/assets/data/`.
+NetworkX 3.6.1 generated the checked-in results; its version and Python version
+are recorded in the JSON. Allow a few minutes for reproduction.
+
+The browser independently checks the real graph and all four example worlds,
+including the exact stranded names. Main results remain readable without
+JavaScript. Methods explain the exploratory case selection, unadjusted tail
+estimates and finite-shuffle limitations.
+
+The [weekly brief](https://sunelehmann.com/socialgraphs2026-web/weeks/week2.html)
+also asks for the site link in the Week 2 Teams channel and constructive feedback
+on at least one other group's post. Publishing the site does not send those messages.
 
 ## Previewing the site locally
 

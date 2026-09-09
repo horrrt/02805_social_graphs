@@ -1,0 +1,278 @@
+node_id,name,degree,stranded,largest_remaining_group
+Spider-Man,Spider-Man,106,5,271
+Black_Widow_(Natasha_Romanova),Black Widow (Natasha Romanova),25,3,273
+Doctor_Strange,Doctor Strange,57,2,274
+Deadpool,Deadpool,41,1,275
+Moon_Knight,Moon Knight,27,1,275
+Deathlok,Deathlok,20,1,275
+Shang-Chi,Shang-Chi,18,1,275
+War_Machine,War Machine,16,1,275
+Genis-Vell,Genis-Vell,8,1,275
+Guardsman_(character),Guardsman (character),8,1,275
+Nightmask,Nightmask,5,1,275
+Turbo_(comics),Turbo (comics),5,1,275
+Rockman_(character),Rockman (character),2,1,275
+Hulk,Hulk,65,0,276
+Wolverine_(character),Wolverine (character),63,0,276
+She-Hulk,She-Hulk,37,0,276
+Phoenix_Force,Phoenix (Guardians of the Galaxy),32,0,276
+Scarlet_Witch,Scarlet Witch,32,0,276
+Black_Panther_(character),Black Panther (character),31,0,276
+Venom_(character),Venom (character),29,0,276
+Betsy_Braddock,Betsy Braddock,28,0,276
+Black_Cat_(Marvel_Comics),Black Cat (Marvel Comics),28,0,276
+Cloak_and_Dagger_(characters),Cloak and Dagger (characters),28,0,276
+Luke_Cage,Luke Cage,28,0,276
+Emma_Frost,Emma Frost,27,0,276
+Hank_Pym,Hank Pym,27,0,276
+Storm_(Marvel_Comics),Storm (Marvel Comics),27,0,276
+Cyclops_(Marvel_Comics),Cyclops (Marvel Comics),26,0,276
+Hercules_(Marvel_Comics),Hercules (Marvel Comics),26,0,276
+Iron_Fist_(character),Iron Fist (character),26,0,276
+Adam_Warlock,Adam Warlock,25,0,276
+Cable_(character),Cable (character),24,0,276
+Jean_Grey,Jean Grey,24,0,276
+Quasar_(character),Quasar (character),24,0,276
+Rachel_Summers,Rachel Summers,24,0,276
+Blade_(character),Blade (character),22,0,276
+Eddie_Brock,Eddie Brock,22,0,276
+Ghost_Rider,Ghost Rider,22,0,276
+Spider-Woman_(Jessica_Drew),Spider-Woman (Jessica Drew),22,0,276
+Misty_Knight,Misty Knight,21,0,276
+Mockingbird_(Marvel_Comics),Mockingbird (Marvel Comics),21,0,276
+Nova_(Richard_Rider),Nova (Richard Rider),21,0,276
+U.S._Agent,U.S. Agent,21,0,276
+Man-Thing,Man-Thing,20,0,276
+Morbius,Morbius,19,0,276
+Black_Bolt,Black Bolt,18,0,276
+Human_Torch,Human Torch,18,0,276
+Jessica_Jones,Jessica Jones,18,0,276
+Mayday_Parker,Mayday Parker,18,0,276
+Noh-Varr,Noh-Varr,18,0,276
+Spider-Woman_(Gwen_Stacy),Spider-Woman (Gwen Stacy),18,0,276
+Bill_Foster_(character),Bill Foster (character),17,0,276
+Captain_Marvel_(Marvel_Comics),Captain Marvel (Marvel Comics),17,0,276
+Captain_Universe,Captain Universe,17,0,276
+Human_Torch_(android),Human Torch (android),17,0,276
+Northstar_(character),Northstar (character),17,0,276
+Spider-Woman,Spider-Woman,17,0,276
+Star-Lord,Star-Lord,17,0,276
+Anya_Corazon,Anya Corazon,16,0,276
+Rocket_Raccoon,Rocket Raccoon,16,0,276
+Spider-Bitch_(Ashley_Barton),Spider-Bitch (Ashley Barton),16,0,276
+Star_Brand,Star Brand,16,0,276
+Darkhawk,Darkhawk,15,0,276
+Doctor_Nemesis,Doctor Nemesis,15,0,276
+Elsa_Bloodstone,Elsa Bloodstone,15,0,276
+Ghost_Rider_(Johnny_Blaze),Ghost Rider (Johnny Blaze),15,0,276
+Gwenpool,Gwenpool,15,0,276
+Jericho_Drumm,Jericho Drumm,15,0,276
+Jubilee_(character),Jubilee (character),15,0,276
+Moondragon,Moondragon,15,0,276
+Quicksilver_(Marvel_Comics),Quicksilver (Marvel Comics),15,0,276
+Robbie_Baldwin,Robbie Baldwin,15,0,276
+Rom_the_Space_Knight,Rom the Space Knight,15,0,276
+Werewolf_by_Night,Werewolf by Night,15,0,276
+Franklin_Richards_(character),Franklin Richards (character),14,0,276
+John_Jameson_(character),John Jameson (character),14,0,276
+Machine_Man,Machine Man,14,0,276
+Spider-Girl,Spider-Girl,14,0,276
+Firebird_(Marvel_Comics),Firebird (Marvel Comics),13,0,276
+Paladin_(comics),Paladin (comics),13,0,276
+Patsy_Walker,Patsy Walker,13,0,276
+Solo_(Marvel_Comics),Solo (Marvel Comics),13,0,276
+Tarantula_(Marvel_Comics),Tarantula (Marvel Comics),13,0,276
+Bucky_(Marvel_Comics),Bucky (Marvel Comics),12,0,276
+Devil_Dinosaur,Devil Dinosaur,12,0,276
+Hellion_(character),Hellion (character),12,0,276
+Sentry_(Robert_Reynolds),Sentry (Robert Reynolds),12,0,276
+Silk_(character),Silk (character),12,0,276
+Brian_Braddock,Brian Braddock,11,0,276
+Frankenstein's_Monster_(Marvel_Comics),Frankenstein's Monster (Marvel Comics),11,0,276
+Hulkling,Hulkling,11,0,276
+Ms._Marvel,Ms. Marvel,11,0,276
+Radioactive_Man_(comics),Radioactive Man (comics),11,0,276
+Vance_Astrovik,Vance Astrovik,11,0,276
+Vulcan_(Marvel_Comics),Vulcan (Marvel Comics),11,0,276
+Wolverine_(Ultimate_Marvel_character),Wolverine (Ultimate Marvel character),11,0,276
+Arabian_Knight_(character),Arabian Knight (character),10,0,276
+Ghost_Rider_(Danny_Ketch),Ghost Rider (Danny Ketch),10,0,276
+Gladiator_(Kallark),Gladiator (Kallark),10,0,276
+Hyperion_(character),Hyperion (character),10,0,276
+Karnak_(character),Karnak (character),10,0,276
+Sabra_(character),Sabra (character),10,0,276
+Satana_(Marvel_Comics),Satana (Marvel Comics),10,0,276
+Shuri_(character),Shuri (character),10,0,276
+Abomination_(character),Abomination (character),9,0,276
+Ares_(Marvel_Comics),Ares (Marvel Comics),9,0,276
+Blue_Diamond_(character),Blue Diamond (character),9,0,276
+Doctor_Druid,Doctor Druid,9,0,276
+Doom_2099,Doom 2099,9,0,276
+Kismet_(Marvel_Comics),Kismet (Marvel Comics),9,0,276
+Outlaw_(Marvel_Comics),Outlaw (Marvel Comics),9,0,276
+Phyla-Vell,Phyla-Vell,9,0,276
+Puck_(Marvel_Comics),Puck (Marvel Comics),9,0,276
+Red_Wolf_(comics),Red Wolf (comics),9,0,276
+Spider-Man_Noir,Spider-Man Noir,9,0,276
+Xorn,Xorn,9,0,276
+Anole_(character),Anole (character),8,0,276
+Blazing_Skull,Blazing Skull,8,0,276
+Gargoyle_(comics),Gargoyle (comics),8,0,276
+Jeffrey_Mace,Jeffrey Mace,8,0,276
+Kristoff_Vernard,Kristoff Vernard,8,0,276
+Red_Guardian,Red Guardian,8,0,276
+Scarlet_Spider,Scarlet Spider,8,0,276
+Shamrock_(comics),Shamrock (comics),8,0,276
+Spider-UK,Spider-UK,8,0,276
+Stingray_(Marvel_Comics),Stingray (Marvel Comics),8,0,276
+Union_Jack_(Marvel_Comics),Union Jack (Marvel Comics),8,0,276
+Whizzer_(Robert_Frank),Whizzer (Robert Frank),8,0,276
+Beta_Ray_Bill,Beta Ray Bill,7,0,276
+Black_Knight_(Marvel_Comics),Black Knight (Marvel Comics),7,0,276
+"Bob,_Agent_of_Hydra","Bob, Agent of Hydra",7,0,276
+Delroy_Garrett,Delroy Garrett,7,0,276
+Doctor_Spectrum,Alice Nugent,7,0,276
+Fin_Fang_Foom,Fin Fang Foom,7,0,276
+Garrison_Kane,Garrison Kane,7,0,276
+Guardian_(Marvel_Comics),Guardian (Marvel Comics),7,0,276
+Isaiah_Bradley,Isaiah Bradley,7,0,276
+Jack_Frost_(Marvel_Comics),Jack Frost (Marvel Comics),7,0,276
+Killraven,Killraven,7,0,276
+Mania_(character),Mania (character),7,0,276
+Rockslide_(character),Rockslide (character),7,0,276
+Ronin_(Marvel_Comics),Ronin (Marvel Comics),7,0,276
+Speed_(character),Speed (character),7,0,276
+Toro_(character),Toro (character),7,0,276
+Union_Jack_(Joseph_Chapman),Union Jack (Joseph Chapman),7,0,276
+Yelena_Belova,Yelena Belova,7,0,276
+Black_Marvel,Black Marvel,6,0,276
+Ch'od,Ch'od,6,0,276
+Chase_Stein,Chase Stein,6,0,276
+Dusk_(comics),Dusk (comics),6,0,276
+Frog-Man,Frog-Man,6,0,276
+Gauntlet_(Joseph_Green),Gauntlet (Joseph Green),6,0,276
+Hornet_(comics),Hornet (comics),6,0,276
+Iron_Lad,Iron Lad,6,0,276
+Iron_Man_2020,Iron Man 2020,6,0,276
+Justice_(New_Universe),Justice (New Universe),6,0,276
+Leech_(character),Leech (character),6,0,276
+Living_Lightning,Living Lightning,6,0,276
+Makkari_(character),Makkari (character),6,0,276
+Nomad_(Marvel_Comics),Nomad (Marvel Comics),6,0,276
+Ricochet_(comics),Ricochet (comics),6,0,276
+Rikki_Barnes,Rikki Barnes,6,0,276
+She-Hulk_(Lyra),She-Hulk (Lyra),6,0,276
+Spitfire_(character),Spitfire (character),6,0,276
+Starhawk_(character),Starhawk (character),6,0,276
+Two-Gun_Kid,Two-Gun Kid,6,0,276
+Vindicator_(comics),Vindicator (comics),6,0,276
+Agent_X_(Marvel_Comics),Agent X (Marvel Comics),5,0,276
+Anne_Weying,She-Venom (Patricia Robertson),5,0,276
+Blue_Marvel,Blue Marvel,5,0,276
+Debrii,Debrii,5,0,276
+Empath_(character),Empath (character),5,0,276
+Gorgon_(Inhuman),Gorgon (Inhuman),5,0,276
+Human_Fly_(character),Human Fly (character),5,0,276
+Hybrid_(Scott_Washington),Hybrid (Scott Washington),5,0,276
+Ikaris,Ikaris,5,0,276
+Iron_Man_(Ultimate_Marvel_character),Iron Man (Ultimate Marvel character),5,0,276
+Janice_Lincoln,Janice Lincoln,5,0,276
+Jean_Grey_(X-Men_film_series),Jean Grey (X-Men film series),5,0,276
+Phil_Urich,Phil Urich,5,0,276
+Raza_Longknife,Raza Longknife,5,0,276
+Red_Raven_(Marvel_Comics),Red Raven (Dania),5,0,276
+Shatterstar,Shatterstar,5,0,276
+Surge_(Marvel_Comics),Surge (Marvel Comics),5,0,276
+White_Tiger_(comics),White Tiger (comics),5,0,276
+William_Burnside_(character),William Burnside (character),5,0,276
+Ajak,Ajak,4,0,276
+Black_Rider_(character),Black Rider (character),4,0,276
+Bug_(Marvel_Comics),Bug (Marvel Comics),4,0,276
+Cammi_(character),Cammi (character),4,0,276
+Crippler_(character),Crippler (character),4,0,276
+Darkdevil,Darkdevil,4,0,276
+Gremlin_(comics),Gremlin (comics),4,0,276
+Hit-Monkey,Hit-Monkey,4,0,276
+Hulk_2099,Hulk 2099,4,0,276
+Jack_Monroe_(character),Jack Monroe (character),4,0,276
+Kid_Colt,Kid Colt,4,0,276
+Korvus,Korvus,4,0,276
+Lei_Kung_(character),Lei Kung (character),4,0,276
+Motormouth_(comics),Motormouth (comics),4,0,276
+Nightwatch_(character),Nightwatch (character),4,0,276
+Power_Man_(Victor_Alvarez),Power Man (Victor Alvarez),4,0,276
+Powerhouse_(Marvel_Comics),Powerhouse (Marvel Comics),4,0,276
+Ravage_2099,Ravage 2099,4,0,276
+Rusty_Collins,Rusty Collins,4,0,276
+Steel_Spider,Steel Spider,4,0,276
+Thin_Man_(character),Thin Man (character),4,0,276
+Thor_Girl,Thor Girl,4,0,276
+Typeface_(character),Typeface (character),4,0,276
+Ursa_Major_(character),Ursa Major (character),4,0,276
+Zombie_(comics),Zombie (comics),4,0,276
+Balder_the_Brave,Balder the Brave,3,0,276
+Battlestar_(character),Battlestar (character),3,0,276
+Blue_Bullet,Blue Bullet,3,0,276
+Box_(comics),Box (comics),3,0,276
+Captain_Marvel_(Khn'nr),Captain Marvel (Khn'nr),3,0,276
+Caretaker_(comics),Caretaker (comics),3,0,276
+Citizen_V,Citizen V,3,0,276
+Crane_Mother,Crane Mother,3,0,276
+Fabio_Medina,Fabio Medina,3,0,276
+Flatman_(character),Flatman (character),3,0,276
+G._W._Bridge,G. W. Bridge,3,0,276
+Golem_(Marvel_Comics),Golem (Marvel Comics),3,0,276
+Hawkeye_(comics),Hawkeye (comics),3,0,276
+Inferno_(Dante_Pertuz),Inferno (Dante Pertuz),3,0,276
+Killpower,Killpower,3,0,276
+Magician_(Marvel_Comics),Magician (Marvel Comics),3,0,276
+Marvel_Boy_(Robert_Grayson),Marvel Boy (Robert Grayson),3,0,276
+Oya_(comics),Oya (comics),3,0,276
+Peggy_Carter,Peggy Carter,3,0,276
+Skull_the_Slayer,Skull the Slayer,3,0,276
+Spider-Man_(Marvel_Mangaverse),Spider-Man (Marvel Mangaverse),3,0,276
+Starr_the_Slayer,Starr the Slayer,3,0,276
+Thena,Thena,3,0,276
+Ulysses_Bloodstone,Ulysses Bloodstone,3,0,276
+White_Tiger_(Heroes_for_Hire),White Tiger (Heroes for Hire),3,0,276
+Wild_Child_(character),Wild Child (character),3,0,276
+Will_o'_the_Wisp_(comics),Will o' the Wisp (comics),3,0,276
+Alex_Wilder,Alex Wilder,2,0,276
+Blackwulf,Blackwulf,2,0,276
+Coldblood,Coldblood,2,0,276
+Dargo_Ktor,Dargo Ktor,2,0,276
+Devil_Hulk,Devil Hulk,2,0,276
+Dragon_Lord_(character),Dragon Lord (character),2,0,276
+Emrys_Killebrew,Emrys Killebrew,2,0,276
+Fandral,Fandral,2,0,276
+Firelord_(character),Firelord (character),2,0,276
+Hrimhari,Hrimhari,2,0,276
+Junior_Juniper,Junior Juniper,2,0,276
+Ruby_Summers,Ruby Summers,2,0,276
+Scarlet_Scarab,Scarlet Scarab,2,0,276
+Scorpio_(Marvel_Comics),Scorpio (Marvel Comics),2,0,276
+Silencer_(comics),Silencer (comics),2,0,276
+Silhouette_(comics),Silhouette (comics),2,0,276
+Straw_Man_(comics),Straw Man (comics),2,0,276
+Synapse_(character),Synapse (character),2,0,276
+The_Union_(Marvel),The Union (Marvel),2,0,276
+Thunderbolt_(Marvel_Comics),Thunderbolt (Marvel Comics),2,0,276
+Timeslip_(comics),Timeslip (comics),2,0,276
+Black_Jack_Tarr,Black Jack Tarr,1,0,276
+Blue_Eagle_(character),Blue Eagle (character),1,0,276
+Captain_Ultra,Captain Ultra,1,0,276
+Detroit_Steel,Detroit Steel,1,0,276
+Digitek_(character),Digitek (character),1,0,276
+Dogpool,Dogpool,1,0,276
+Enigma_(Marvel_Comics),Enigma (Marvel Comics),1,0,276
+Ethan_Edwards,Ethan Edwards,1,0,276
+Force_(comics),Force (comics),1,0,276
+Helix_(Marvel_Comics),Helix (Marvel Comics),1,0,276
+Mahr_Vehl,Mahr Vehl,1,0,276
+Mark_Hazzard:_Merc,Mark Hazzard: Merc,1,0,276
+Moonglow_(comics),Moonglow (comics),1,0,276
+NFL_SuperPro,Phil Grayfield,1,0,276
+Redneck_(comics),Redneck (comics),1,0,276
+Solomon_Kane_(comics),Solomon Kane (comics),1,0,276
+The_Witness_(character),The Witness (character),1,0,276
+Thunderclap_(comics),Thunderclap (comics),1,0,276
