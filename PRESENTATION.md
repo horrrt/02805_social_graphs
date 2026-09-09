@@ -58,6 +58,7 @@ Lead with the result, not the method. Choose one real question and at most three
 
 ## Local preview
 
-Use the preview instructions in README.md. The home page leads to `weeks/week02/`;
-`weeks/week02/#results` goes straight to its findings. `play/#results` contains the
-Baymax results, and `weeks/week01/` preserves the original investigation.
+Serve `docs/` locally (any static server). The homepage is a quiet first screen
+plus a week index. Week 2 lives at `weeks/week02/`; `#results` goes straight to
+its findings. `play/#results` has the Baymax results; `weeks/week01/` keeps the
+original investigation.

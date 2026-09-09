@@ -50,7 +50,7 @@ D.add_edges_from(edges.itertuples(index=False, name=None))
 
 Week 2's post is **Pull one hero**, at `docs/weeks/week02/`. Remove one article,
 then compare the fragmentation with 1,000 connected, degree-preserving shuffled
-networks. The home page leads to this issue; the Baymax experiment remains at `play/`.
+networks. The home page indexes every week; Week 2 is the latest issue. The Baymax experiment remains at `play/`.
 
 Using the environment and requirements above:
 
