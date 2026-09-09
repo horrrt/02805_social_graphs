@@ -103,9 +103,11 @@
     const rationale = document.getElementById('viewer-rationale');
     rationale.hidden = !mockup.uxSummary;
     rationale.open = false;
+    document.getElementById('viewer-rationale-label').textContent = mockup.rationaleLabel || 'UX rationale & review notes';
     document.getElementById('viewer-ux-summary').textContent = mockup.uxSummary || '';
     document.getElementById('viewer-review-note').textContent = mockup.reviewNote ? `Before implementation: ${mockup.reviewNote}` : '';
     const sources = document.getElementById('viewer-ux-sources');
+    sources.hidden = !(mockup.uxSources || []).length;
     sources.replaceChildren();
     (mockup.uxSources || []).forEach((source, index) => {
       if (index) sources.append(' · ');
