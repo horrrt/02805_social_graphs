@@ -79,8 +79,12 @@ on at least one other group's post. Publishing the site does not send those mess
 
 ## Reviewing the design mockups
 
+<!-- screen-story-collections:start -->
+New collections: [Modern Disney](https://horrrt.github.io/02805_social_graphs/mockups/?collection=disney), [Netflix](https://horrrt.github.io/02805_social_graphs/mockups/?collection=netflix), [Marvel](https://horrrt.github.io/02805_social_graphs/mockups/?collection=marvel).
+<!-- screen-story-collections:end -->
+
 The [mockup gallery](https://horrrt.github.io/02805_social_graphs/mockups/) contains
-all 38 complete design concepts. Explore the new
+all 46 complete design concepts. Explore the new
 [comic and comedy concepts (31–38)](https://horrrt.github.io/02805_social_graphs/mockups/?collection=comedy),
 the seven reference-inspired additions or the three [UX-principle concepts (28–30)](https://horrrt.github.io/02805_social_graphs/mockups/?collection=ux),
 open a full-page viewer, and save favourites in the current browser. Copy the
