@@ -17,7 +17,7 @@
     <a class="skip" href="#main">Skip to content</a>
     <header class="chrome" id="arcade-chrome">
       <a class="arcade-wordmark" href="../../">LOG–LOG ARCADE</a
-      ><a href="#results">Main results</a>
+      ><a href="#post">The post</a>
     </header>
     <main id="main" class="wrap">
       <p id="app-status" class="status" role="status">
@@ -31,12 +31,15 @@
       >
 
       <section class="hero">
-        <p class="eyebrow">CABINET 02 / CONNECTIONS & COUNTERFACTUALS</p>
+        <p class="eyebrow">WEEK 02 · MODELS &amp; NULL MODELS / CABINET 02 · CONNECTIONS &amp; COUNTERFACTUALS</p>
         <h1>PLEASE MIND<br /><span class="accent">THE MISSING LINK.</span></h1>
         <p class="intro">
           A busy station is not always a fragile station. Close one and discover
           who can no longer get home.
         </p>
+        <div class="actions">
+          <a class="button quiet" href="#post">Just the post ↓</a>
+        </div>
         <div class="departure-board">
           <h2>MARVEL TRANSIT AUTHORITY / SERVICE BOARD</h2>
           <div class="departure-line">
@@ -152,6 +155,67 @@
           </button>
         </div>
       </section>
+      <section id="post" class="section post" aria-labelledby="post-title">
+        <p class="eyebrow">THE POST · WEEK 2 · MODELS &amp; NULL MODELS</p>
+        <h2 id="post-title">Pull one hero. Who else gets stranded?</h2>
+        <div class="two-col">
+          <div>
+            <h3>What we asked</h3>
+            <p>
+              Does an article’s link count tell us how much the network falls
+              apart when that article disappears?
+            </p>
+            <h3>What we did</h3>
+            <p>
+              We took the 277-article connected core (1,421 undirected pairs),
+              removed each article in turn and counted the others left outside
+              the largest remaining group. Then we rewired the core 1,000 times,
+              keeping every article’s degree and starting connected, and removed
+              the same four articles in each rewired world.
+            </p>
+          </div>
+          <div>
+            <h3>What surprised us</h3>
+            <p>
+              The core mostly holds. Hulk, with 65 neighbours, strands nobody.
+              Black Widow, with 25, strands three. Spider-Man strands five, and
+              only 9 of the 1,000 degree-preserving rewires do that badly. The
+              damage sits in the specific wiring, not in the degree.
+            </p>
+          </div>
+        </div>
+        <figure>
+          <img
+            src="figures/removal_results.svg"
+            width="720"
+            height="346"
+            alt="Horizontal bar chart of other articles stranded after one removal: Spider-Man 5, Hulk 0, Black Widow 3, Doctor Strange 2."
+          />
+          <figcaption>
+            One article removed each time; the other 276 remain. The count is
+            how many of them lose their route to the largest remaining group.
+          </figcaption>
+        </figure>
+        <details>
+          <summary>Compared with 1,000 rewired worlds</summary>
+          <figure>
+            <img
+              src="figures/null_comparison.svg"
+              loading="lazy"
+              width="792"
+              height="576"
+              alt="Four histograms of stranded counts across 1,000 degree-preserving rewires, one per removed article, each with a dashed line at the real count. Spider-Man’s real 5 sits at the far right tail; Black Widow’s real 3 lies beyond every rewired value; Hulk’s 0 is the most common rewired outcome; Doctor Strange’s 2 appears in 85 of 1,000."
+            />
+            <figcaption>
+              Bars count rewired networks by how many articles the removal
+              strands; the dashed line marks the real result.
+              <a href="../../assets/data/week02_null_draws.csv" download
+                >All 1,000 draws (CSV)</a
+              >
+            </figcaption>
+          </figure>
+        </details>
+      </section>
       <section id="results" class="section" data-gated>
         <p class="eyebrow">THE TAKEAWAY</p>
         <h2>Degree tells you how busy. Wiring tells you how fragile.</h2>
@@ -206,7 +270,7 @@
             </p>
           </div>
         </div>
-        <details>
+        <details id="methods">
           <summary>Methods and reproducibility</summary>
           <p>
             Closures operate on the simple undirected 277-node, 1,421-edge main
@@ -233,14 +297,14 @@
             explanation drafts and test construction. Metrics come from the
             provided snapshot and reproducible analysis; the games and metaphors
             are authored presentation choices. Numerical checks compare
-            independent Python and browser implementations. The preview tools do
-            not represent completed future course assignments.
+            independent Python and browser implementations. The free-play tools are not course hand-ins.
           </p>
         </details>
       </section>
     </main>
     <footer class="wrap footer">
-      <span>02805 · Social graphs and interactions · Fall 2026</span
+      <span
+        >Log–Log Legends · 02805 Social graphs and interactions · Fall 2026</span
       ><span
         ><a href="../../">Arcade</a> /
         <a href="../../mockups/">Design archive</a> /

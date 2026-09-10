@@ -503,7 +503,7 @@ dialog::backdrop {
   padding: 0;
   list-style: none;
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
   gap: 10px;
 }
 .score-list li {
@@ -555,7 +555,7 @@ dialog::backdrop {
   padding: 20px 8px 20px 0;
   transition: transform 0.2s;
 }
-.cabinet-link:hover {
+a.cabinet-link:hover {
   transform: translateY(-4px);
 }
 .cabinet-link h2 {
@@ -571,10 +571,50 @@ dialog::backdrop {
 .cabinet-link .tag {
   font-size: 10px;
 }
-.cabinet-link.preview {
-  border-color: var(--line);
+.cabinet-link .course {
+  margin: 6px 0 0;
+  font-size: 0.95rem;
+  color: var(--paper);
 }
-.cabinet-link.preview h2 {
+.cabinet-link.current {
+  border-top-color: var(--hot);
+}
+.cabinet-link.coming {
+  border-top-color: var(--line);
+  cursor: default;
+}
+.cabinet-link.coming h2,
+.cabinet-link.coming .course {
+  color: var(--muted);
+}
+.members {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding: 0;
+  margin: 18px 0;
+  list-style: none;
+}
+.members li {
+  border: 1px solid var(--accent);
+  border-radius: 999px;
+  padding: 4px 14px;
+  font-size: 0.9rem;
+}
+.post figure {
+  margin: 24px 0 0;
+}
+.post img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border: 1px solid var(--line);
+  border-radius: 4px;
+  background: #fff;
+}
+.post figcaption {
+  margin-top: 8px;
+  font-size: 0.9rem;
   color: var(--muted);
 }
 .experience-links {

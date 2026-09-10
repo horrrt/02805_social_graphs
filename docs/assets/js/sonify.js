@@ -108,7 +108,7 @@ try {
   }
   prediction($("#prediction"), {
     id: "w5-walk",
-    week: 5,
+    week: null,
     prompt:
       "Starting at Spider-Man, how many distinct articles will 32 notes visit (seed 7, undirected)?",
     min: 1,

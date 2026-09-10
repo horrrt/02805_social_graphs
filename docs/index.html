@@ -5,9 +5,9 @@
     <meta name="viewport" content="width=device-width,initial-scale=1" />
     <meta
       name="description"
-      content="The Log–Log Arcade — an interactive data story from 303 Marvel Wikipedia articles."
+      content="The Log–Log Arcade: weekly posts by Log–Log Legends (DTU 02805) on a frozen network of 303 Marvel Wikipedia articles."
     />
-    <title>The Log–Log Arcade · Log–Log Arcade</title>
+    <title>The Log–Log Arcade · Log–Log Legends</title>
     <link rel="stylesheet" href="assets/css/arcade.css" />
     <script>
       document.documentElement.classList.add("js");
@@ -17,7 +17,7 @@
     <a class="skip" href="#main">Skip to content</a>
     <header class="chrome" id="arcade-chrome">
       <a class="arcade-wordmark" href="./">LOG–LOG ARCADE</a
-      ><a href="#results">Main results</a>
+      ><a href="#weeks">This week’s post</a>
     </header>
     <main id="main" class="wrap">
       <p id="app-status" class="status" role="status">
@@ -31,7 +31,7 @@
       >
 
       <section class="hero lobby-hero">
-        <p class="eyebrow">ONE FROZEN WORLD. EIGHT WAYS TO QUESTION IT.</p>
+        <p class="eyebrow">ONE FROZEN WORLD. ONE POST A WEEK.</p>
         <h1>THE LOG–LOG<br /><span class="accent">ARCADE.</span></h1>
         <p class="intro">
           303 articles. Some get all the attention. Others can disappear without
@@ -39,8 +39,10 @@
           world together.
         </p>
         <div class="actions">
-          <a class="button" href="weeks/week01/">Start with Hero Packs ↗</a
-          ><a class="button quiet" href="os/">Boot MARVEL-OS</a>
+          <a class="button" href="weeks/week02/"
+            >This week · Transit Authority ↗</a
+          ><a class="button quiet" href="weeks/week01/">Week 1 · Hero Packs</a
+          ><a class="button quiet" href="#free-play">Free play ↓</a>
         </div>
       </section>
       <div class="room-sign">
@@ -49,117 +51,123 @@
       <canvas
         class="lobby-stage stage"
         id="lobby-canvas"
-        aria-label="An arcade room with eight cabinets. The same eight destinations are linked immediately below."
+        aria-label="An arcade room with eight cabinets, one per course week. Weeks 1 and 2 are switched on; weeks 3 to 8 wait under dust sheets until their course date. The same list follows as text."
       ></canvas>
-      <ol class="cabinet-list">
-        <li>
-          <a class="cabinet-link" href="weeks/week01/"
-            ><span class="tag">W01 · HAND-IN</span>
-            <h2>Hero Packs</h2>
-            <p>Open five. Chase the rare ones. Learn why the tail wins.</p></a
-          >
-        </li>
-        <li>
-          <a class="cabinet-link" href="weeks/week02/"
-            ><span class="tag">W02 · HAND-IN</span>
-            <h2>Transit Authority</h2>
-            <p>Close a station. See who loses their way home.</p></a
-          >
-        </li>
-        <li>
-          <a class="cabinet-link preview" href="trumps/"
-            ><span class="tag">W03 · PLAYABLE PREVIEW</span>
-            <h2>Hero Trumps</h2>
-            <p>The winner depends on what you decide to measure.</p></a
-          >
-        </li>
-        <li>
-          <a class="cabinet-link preview" href="os/?app=communities"
-            ><span class="tag">W04 · PLAYABLE PREVIEW</span>
-            <h2>Hidden Districts</h2>
-            <p>Explore one possible partition of the network.</p></a
-          >
-        </li>
-        <li>
-          <a class="cabinet-link preview" href="sound/"
-            ><span class="tag">W05 · PLAYABLE PREVIEW</span>
-            <h2>Walk / Listen</h2>
-            <p>Let the links write a melody. Hear the dead ends.</p></a
-          >
-        </li>
-        <li>
-          <a class="cabinet-link preview" href="creature/"
-            ><span class="tag">W06 · PLAYABLE PREVIEW</span>
-            <h2>Keep It Together</h2>
-            <p>A small graph creature. A repair job with consequences.</p></a
-          >
-        </li>
-        <li>
-          <a class="cabinet-link preview" href="os/?app=notepad"
-            ><span class="tag">W07 · PLAYABLE PREVIEW</span>
-            <h2>Inside the Articles</h2>
-            <p>Read the real roster descriptions behind the nodes.</p></a
-          >
-        </li>
-        <li>
-          <a class="cabinet-link preview" href="os/?app=search"
-            ><span class="tag">W08 · PLAYABLE PREVIEW</span>
-            <h2>Word Finder</h2>
-            <p>Ask the text a question with TF-IDF search.</p></a
-          >
-        </li>
-      </ol>
-      <section class="section">
+      <section id="weeks" aria-label="One cabinet per course week">
+        <ol class="cabinet-list">
+          <li>
+            <a data-week="1" class="cabinet-link" href="weeks/week01/">
+              <span class="tag">Week 1 · 2 Sep · live</span>
+              <p class="course">Networks</p>
+              <h2>Hero Packs</h2>
+              <p>Open five. Chase the rare ones. Learn why the tail wins.</p>
+            </a>
+          </li>
+          <li>
+            <a data-week="2" class="cabinet-link current" href="weeks/week02/">
+              <span class="tag">Week 2 · 9 Sep · live · this week</span>
+              <p class="course">Models &amp; null models</p>
+              <h2>Transit Authority</h2>
+              <p>Close a station. See who loses their way home.</p>
+            </a>
+          </li>
+          <li>
+            <div data-week="3" class="cabinet-link coming" aria-disabled="true">
+              <span class="tag">Week 3 · 16 Sep · coming</span>
+              <h2>Who matters, and why</h2>
+              <p>Opens after the course session.</p>
+            </div>
+          </li>
+          <li>
+            <div data-week="4" class="cabinet-link coming" aria-disabled="true">
+              <span class="tag">Week 4 · 23 Sep · coming</span>
+              <h2>Communities &amp; backbones</h2>
+              <p>Opens after the course session.</p>
+            </div>
+          </li>
+          <li>
+            <div data-week="5" class="cabinet-link coming" aria-disabled="true">
+              <span class="tag">Week 5 · 30 Sep · coming</span>
+              <h2>The language half · NLP I</h2>
+              <p>Opens after the course session.</p>
+            </div>
+          </li>
+          <li>
+            <div data-week="6" class="cabinet-link coming" aria-disabled="true">
+              <span class="tag">Week 6 · 7 Oct · coming</span>
+              <h2>NLP II</h2>
+              <p>Opens after the course session.</p>
+            </div>
+          </li>
+          <li>
+            <div data-week="7" class="cabinet-link coming" aria-disabled="true">
+              <span class="tag">Week 7 · 21 Oct · coming</span>
+              <h2>NLP III</h2>
+              <p>Opens after the course session.</p>
+            </div>
+          </li>
+          <li>
+            <div data-week="8" class="cabinet-link coming" aria-disabled="true">
+              <span class="tag">Week 8 · 28 Oct · coming</span>
+              <h2>Networks × language</h2>
+              <p>Opens after the course session.</p>
+            </div>
+          </li>
+        </ol>
+      </section>
+      <section class="section" id="free-play">
         <div class="section-head">
-          <h2>Six doors into the same world.</h2>
-          <span class="fine">Play one. Or connect the dots.</span>
+          <h2>Free play. Experiments, not posts.</h2>
+          <span class="fine"
+            >Same snapshot, no week attached. Nothing here is a hand-in.</span
+          >
         </div>
         <div class="experience-links">
           <a href="os/"
-            ><span class="eyebrow">01 / OPERATE IT</span><b>MARVEL-OS 303 ↗</b>
+            ><span class="eyebrow">OPERATE IT</span><b>MARVEL-OS 303 ↗</b>
             <p>
               A desktop that runs on a graph. Real commands, draggable apps, and
               a snapshot you can interrogate.
             </p></a
           >
-          <a href="weeks/week02/"
-            ><span class="eyebrow">02 / NAVIGATE IT</span
-            ><b>Marvel Transit Authority ↗</b>
-            <p>
-              Routes, interchanges and service disruptions. A network you
-              already know how to read.
-            </p></a
-          >
-          <a href="weeks/week01/#prediction"
-            ><span class="eyebrow">03 / PREDICT IT</span
-            ><b>Your calibration log ↗</b>
-            <p>
-              Commit before the reveal. First guesses travel with you across all
-              eight cabinets.
-            </p></a
-          >
           <a href="trumps/"
-            ><span class="eyebrow">04 / CHALLENGE IT</span><b>Hero Trumps ↗</b>
+            ><span class="eyebrow">CHALLENGE IT</span><b>Hero Trumps ↗</b>
             <p>
               Stat battles and a five-card coverage puzzle. Fame and structural
               importance part ways.
             </p></a
           >
+          <a href="os/?app=communities"
+            ><span class="eyebrow">PARTITION IT</span><b>Hidden Districts ↗</b>
+            <p>
+              One Louvain partition of the network, seed 7. Its labels are not
+              canonical Marvel teams.
+            </p></a
+          >
           <a href="sound/"
-            ><span class="eyebrow">05 / LISTEN TO IT</span
-            ><b>A graph that makes music ↗</b>
+            ><span class="eyebrow">LISTEN TO IT</span><b>Walk / Listen ↗</b>
             <p>
               One step, one note. A repeatable random walk turns local choices
               into a melody.
             </p></a
           >
           <a href="creature/"
-            ><span class="eyebrow">06 / CARE FOR IT</span
-            ><b>The living graph ↗</b>
+            ><span class="eyebrow">CARE FOR IT</span><b>Keep It Together ↗</b>
             <p>
               Break a connection, watch the consequences, then help the stranded
               pieces find their way back.
             </p></a
+          >
+          <a href="os/?app=notepad"
+            ><span class="eyebrow">READ IT</span><b>Inside the Articles ↗</b>
+            <p>
+              The 303 short roster descriptions behind the nodes, not full
+              article bodies.
+            </p></a
+          >
+          <a href="os/?app=search"
+            ><span class="eyebrow">ASK IT</span><b>Word Finder ↗</b>
+            <p>TF-IDF search over the same 303 descriptions.</p></a
           >
         </div>
       </section>
@@ -176,10 +184,10 @@
               matters more than the score.
             </p>
             <p class="fine">
-              Weeks 1–2 contain completed analyses. Weeks 3–8 are working
-              experiments over the same snapshot, with provisional themes. They
-              are not submitted future assignments. Audio starts only when you
-              press Play.
+              Weeks 1 and 2 are posted. Weeks 3–8 open on the course schedule;
+              the lobby mirrors the course index. The free-play shelf holds
+              experiments over the same snapshot; they are not posts and carry
+              no week number. Audio starts only when you press Play.
             </p>
           </div>
         </div>
@@ -193,6 +201,31 @@
           isolates. Follow the cabinets to discover how direction, choice of
           metric and comparison model change the answer.
         </p>
+      </section>
+      <section class="section" id="about" aria-labelledby="about-title">
+        <div class="two-col">
+          <div>
+            <p class="eyebrow">WHO WE ARE</p>
+            <h2 id="about-title">Log–Log Legends.</h2>
+          </div>
+          <div>
+            <p>
+              We’re Log–Log Legends, a three-person group in
+              <strong>Social Graphs and Interactions at DTU</strong>. Each week
+              we explore the same frozen slice of Marvel’s Wikipedia network and
+              turn what we find into a post: what we asked, what we did, one
+              figure, what surprised us.
+            </p>
+            <ul class="members">
+              <li>Àngela Buxó</li>
+              <li>Gyula Kürthy</li>
+              <li>Niklas Johansen</li>
+            </ul>
+            <a href="https://github.com/horrrt/02805_social_graphs"
+              >The data, notebooks, and working ↗</a
+            >
+          </div>
+        </div>
       </section>
       <section class="closing" aria-labelledby="closing-title">
         <h2 id="closing-title">Behind the cabinet</h2>
@@ -213,8 +246,8 @@
             <h3>Limits of the experiment</h3>
             <p>
               The arcade is an educational interpretation of a bounded article
-              network. Future-week labels describe exploratory tools, not a
-              claim about the final syllabus or completed hand-ins.
+              network. Free-play experiments are exploratory tools, not posts or
+              hand-ins.
             </p>
           </div>
         </div>
@@ -242,16 +275,18 @@
             explanation drafts and test construction. Metrics come from the
             provided snapshot and reproducible analysis; the games and metaphors
             are authored presentation choices. Numerical checks compare
-            independent Python and browser implementations. The preview tools do
-            not represent completed future course assignments.
+            independent Python and browser implementations. The free-play tools
+            are not course hand-ins.
           </p>
         </details>
       </section>
     </main>
     <footer class="wrap footer">
-      <span>02805 · Social graphs and interactions · Fall 2026</span
+      <span
+        >Log–Log Legends · 02805 Social graphs and interactions · Fall 2026</span
       ><span
-        ><a href="./">Arcade</a> / <a href="mockups/">Design archive</a> /
+        ><a href="./">Arcade</a> / <a href="#free-play">Free play</a> /
+        <a href="mockups/">Design archive</a> /
         <a href="weeks/week01/">Week 1</a> /
         <a href="weeks/week02/">Week 2</a></span
       >

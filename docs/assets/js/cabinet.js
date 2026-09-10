@@ -1,4 +1,5 @@
 import { predictionScore } from "./arcade-core.mjs";
+import { liveWeeks, weekLabel, FREE_PLAY_PREDICTIONS } from "./weeks.js";
 
 export const ROOT = new URL("../../", import.meta.url);
 export const url = (path) => new URL(path, ROOT).href;
@@ -48,7 +49,16 @@ function read() {
     const p = JSON.parse(localStorage.getItem(KEY));
     if (p && p.attempts && typeof p.attempts === "object") memory = p;
   } catch {}
+  migrate(memory.attempts);
   return memory;
+}
+// Guesses recorded before the schedule manifest existed were filed under
+// invented weeks 3–8. They keep their ids (the first-guess key) and move to
+// free play, so they never count towards a course week that later goes live.
+export function migrate(attempts) {
+  for (const a of Object.values(attempts))
+    if (a && FREE_PLAY_PREDICTIONS.has(a.id)) a.week = null;
+  return attempts;
 }
 function write(state) {
   memory = state;
@@ -62,29 +72,48 @@ function write(state) {
   }
   updateProgress();
 }
-export function progress() {
-  const attempts = Object.values(read().attempts).filter(
-    (a) => a && Number.isFinite(a.score) && a.week >= 1 && a.week <= 8,
-  );
+export function summarise(attempts, liveWeekNumbers) {
+  const live = new Set(liveWeekNumbers);
+  const valid = attempts.filter((a) => a && Number.isFinite(a.score));
+  const rows = [...live].map((week) => ({
+    week,
+    attempts: valid.filter((a) => a.week === week),
+  }));
   return {
-    attempts,
-    weeks: new Set(attempts.map((a) => a.week)).size,
-    score: attempts.length
-      ? Math.round(attempts.reduce((s, a) => s + a.score, 0) / attempts.length)
+    attempts: valid,
+    rows,
+    free: valid.filter((a) => !live.has(a.week)),
+    weeks: rows.filter((r) => r.attempts.length).length,
+    total: live.size,
+    score: valid.length
+      ? Math.round(valid.reduce((s, a) => s + a.score, 0) / valid.length)
       : 0,
   };
+}
+export function progress() {
+  return summarise(
+    Object.values(read().attempts),
+    liveWeeks().map((w) => w.n),
+  );
 }
 export function updateProgress() {
   const p = progress();
   $$("[data-progress]").forEach(
-    (n) => (n.textContent = `LOGBOOK ${p.weeks}/8`),
+    (n) => (n.textContent = `LOGBOOK ${p.weeks}/${p.total}`),
   );
   const list = $("#score-list");
+  const row = (label, rows) =>
+    `<li><span>${label}</span><strong>${rows.length ? Math.round(rows.reduce((s, a) => s + a.score, 0) / rows.length) + "/100" : "Not played"}</strong><small>${rows.length} first ${rows.length === 1 ? "guess" : "guesses"}</small></li>`;
   if (list)
-    list.innerHTML = Array.from({ length: 8 }, (_, i) => {
-      const rows = p.attempts.filter((a) => a.week === i + 1);
-      return `<li><span>W${String(i + 1).padStart(2, "0")}</span><strong>${rows.length ? Math.round(rows.reduce((s, a) => s + a.score, 0) / rows.length) + "/100" : "Not played"}</strong><small>${rows.length} first ${rows.length === 1 ? "guess" : "guesses"}</small></li>`;
-    }).join("");
+    list.innerHTML = [
+      ...liveWeeks().map((w) =>
+        row(
+          `${weekLabel(w.n)} · ${w.cabinet.name}`,
+          p.rows.find((r) => r.week === w.n).attempts,
+        ),
+      ),
+      row("FREE PLAY", p.free),
+    ].join("");
   const mean = $("#score-mean");
   if (mean)
     mean.textContent = p.attempts.length
@@ -95,7 +124,7 @@ export function updateProgress() {
 export function setupChrome() {
   const host = $("#arcade-chrome");
   if (host)
-    host.innerHTML = `<a class="arcade-wordmark" href="${url("")}">LOG–LOG <b>ARCADE</b></a><nav aria-label="Arcade navigation"><a href="${url("os/")}">MARVEL-OS</a><button class="quiet" data-progress id="open-logbook">LOGBOOK 0/8</button><a class="back-link" href="${url("")}">Back to arcade</a></nav>`;
+    host.innerHTML = `<a class="arcade-wordmark" href="${url("")}">LOG–LOG <b>ARCADE</b></a><nav aria-label="Arcade navigation"><a href="${url("os/")}">MARVEL-OS</a><button class="quiet" data-progress id="open-logbook">LOGBOOK 0/${liveWeeks().length}</button><a class="back-link" href="${url("")}">Back to arcade</a></nav>`;
   if (!$("#logbook"))
     document.body.insertAdjacentHTML(
       "beforeend",
@@ -138,7 +167,7 @@ export function prediction(host, config) {
   } = config;
   const previous = read().attempts[id];
   let revealed = false;
-  host.innerHTML = `<div class="prediction-label">PREDICT → REVEAL → LEARN <span>W${String(week).padStart(2, "0")}</span></div><h2>${esc(prompt)}</h2><form class="guess-form"><label for="guess-${esc(id)}">Your estimate ${esc(unit)} <span>${min}–${max}</span></label><div class="guess-row"><input id="guess-${esc(id)}" name="guess" type="number" min="${min}" max="${max}" step="${step}" value="${previous?.guess ?? Math.round((max + min) / 2 / step) * step}" required><input class="guess-range" type="range" aria-label="Adjust your estimate" min="${min}" max="${max}" step="${step}" value="${previous?.guess ?? Math.round((max + min) / 2 / step) * step}"><button type="submit">${previous ? "Replay reveal" : "Lock my guess"}</button></div></form><p class="guess-feedback" role="status" aria-live="polite"></p>`;
+  host.innerHTML = `<div class="prediction-label">PREDICT → REVEAL → LEARN <span>${weekLabel(week)}</span></div><h2>${esc(prompt)}</h2><form class="guess-form"><label for="guess-${esc(id)}">Your estimate ${esc(unit)} <span>${min}–${max}</span></label><div class="guess-row"><input id="guess-${esc(id)}" name="guess" type="number" min="${min}" max="${max}" step="${step}" value="${previous?.guess ?? Math.round((max + min) / 2 / step) * step}" required><input class="guess-range" type="range" aria-label="Adjust your estimate" min="${min}" max="${max}" step="${step}" value="${previous?.guess ?? Math.round((max + min) / 2 / step) * step}"><button type="submit">${previous ? "Replay reveal" : "Lock my guess"}</button></div></form><p class="guess-feedback" role="status" aria-live="polite"></p>`;
   const form = $("form", host),
     number = $("input[type=number]", host),
     range = $("input[type=range]", host),
@@ -167,7 +196,7 @@ export function prediction(host, config) {
       const state = read();
       const attempt = state.attempts[id] || {
         id,
-        week,
+        week: week ?? null,
         prompt,
         guess,
         answer,

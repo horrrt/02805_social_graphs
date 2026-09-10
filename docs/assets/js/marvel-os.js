@@ -49,67 +49,67 @@ try {
       id: "terminal",
       name: "Terminal",
       glyph: ">_",
-      week: "LIVE GRAPH COMMANDS",
+      label: "LIVE GRAPH COMMANDS",
     },
     {
       id: "degrees",
       name: "degrees.exe",
       glyph: "k↗",
-      week: "W01 · INSTALLED",
+      label: "W01 · INSTALLED",
     },
     {
       id: "nullmodel",
       name: "nullmodel.sim",
       glyph: "⇄",
-      week: "W02 · INSTALLED",
+      label: "W02 · INSTALLED",
     },
     {
       id: "importance",
       name: "whomatters.app",
       glyph: "#1",
-      week: "W03 · PREVIEW",
+      label: "FREE PLAY",
     },
     {
       id: "communities",
       name: "communities.app",
       glyph: "◉",
-      week: "W04 · PREVIEW",
+      label: "FREE PLAY",
     },
     {
       id: "sound",
       name: "walkplayer.audio",
       glyph: "♫",
-      week: "W05 · PREVIEW",
+      label: "FREE PLAY",
       href: "sound/",
     },
     {
       id: "creature",
       name: "creature.pet",
       glyph: ":)",
-      week: "W06 · PREVIEW",
+      label: "FREE PLAY",
       href: "creature/",
     },
-    { id: "notepad", name: "Notepad", glyph: "Aa", week: "W07 · PREVIEW" },
-    { id: "search", name: "TF-IDF Search", glyph: "⌕", week: "W08 · PREVIEW" },
+    { id: "notepad", name: "Notepad", glyph: "Aa", label: "FREE PLAY" },
+    { id: "search", name: "TF-IDF Search", glyph: "⌕", label: "FREE PLAY" },
     {
       id: "transit",
       name: "Transit Authority",
       glyph: "M",
-      week: "OPEN THE CABINET",
+      label: "W02 · OPEN THE CABINET",
       href: "weeks/week02/",
     },
     {
       id: "packs",
       name: "Hero Packs",
       glyph: "05",
-      week: "OPEN THE CABINET",
+      label: "W01 · OPEN THE CABINET",
       href: "weeks/week01/",
     },
     {
       id: "trumps",
       name: "Hero Trumps",
       glyph: "VS",
-      week: "OPEN THE CABINET",
+      label: "FREE PLAY · OPEN THE CABINET",
       href: "trumps/",
     },
   ];
@@ -118,8 +118,8 @@ try {
   $("#desktop-icons").innerHTML = apps
     .map((a) =>
       a.href
-        ? `<a class="desktop-icon" href="${url(a.href)}"><span class="app-glyph" aria-hidden="true">${a.glyph}</span>${a.name}<small>${a.week}</small></a>`
-        : `<button class="desktop-icon" data-app="${a.id}"><span class="app-glyph" aria-hidden="true">${a.glyph}</span>${a.name}<small>${a.week}</small></button>`,
+        ? `<a class="desktop-icon" href="${url(a.href)}"><span class="app-glyph" aria-hidden="true">${a.glyph}</span>${a.name}<small>${a.label}</small></a>`
+        : `<button class="desktop-icon" data-app="${a.id}"><span class="app-glyph" aria-hidden="true">${a.glyph}</span>${a.name}<small>${a.label}</small></button>`,
     )
     .join("");
   $$("#desktop-icons [data-app]").forEach((button) =>
@@ -158,7 +158,7 @@ try {
     const el = document.createElement("section");
     el.className = "os-window";
     el.setAttribute("aria-label", app.name + " window");
-    el.innerHTML = `<div class="window-title" tabindex="0" aria-label="Move ${esc(app.name)} window with Alt and arrow keys"><h2>${esc(app.name)} <span class="fine">/ ${app.week}</span></h2><button aria-label="Minimize ${esc(app.name)}" data-action="min">−</button><button aria-label="Maximize ${esc(app.name)}" data-action="max">□</button><button aria-label="Close ${esc(app.name)}" data-action="close">×</button></div><div class="window-body"></div>`;
+    el.innerHTML = `<div class="window-title" tabindex="0" aria-label="Move ${esc(app.name)} window with Alt and arrow keys"><h2>${esc(app.name)} <span class="fine">/ ${app.label}</span></h2><button aria-label="Minimize ${esc(app.name)}" data-action="min">−</button><button aria-label="Maximize ${esc(app.name)}" data-action="max">□</button><button aria-label="Close ${esc(app.name)}" data-action="close">×</button></div><div class="window-body"></div>`;
     $("#window-layer").append(el);
     const task = document.createElement("button");
     task.textContent = app.name;
@@ -315,7 +315,7 @@ try {
     }
     if (win.id === "degrees" || win.id === "importance") {
       const degrees = win.id === "degrees";
-      body.innerHTML = `<h3>${degrees ? "Attention has a direction." : "Which kind of important?"}</h3><p class="fine">${degrees ? "Original directed snapshot; all 303 roster entries." : "Exploratory preview. Exact undirected metrics over all 303 nodes, including isolates."}</p><div class="control-row"><label>Find an article<input class="rank-search" type="search" placeholder="Search names"></label><label>Rank by<select class="rank-metric">${(degrees ? ["kin", "kout", "degree"] : Object.keys(metricLabels)).map((k) => `<option value="${k}">${metricLabels[k]}</option>`).join("")}</select></label></div><p class="rank-summary status" role="status"></p><div class="table-scroll rank-table"></div><p class="fine">${data.metricMethod}</p><a href="${url(degrees ? "weeks/week01/" : "trumps/")}">Open ${degrees ? "Hero Packs" : "Hero Trumps"} ↗</a>`;
+      body.innerHTML = `<h3>${degrees ? "Attention has a direction." : "Which kind of important?"}</h3><p class="fine">${degrees ? "Original directed snapshot; all 303 roster entries." : "Free-play experiment. Exact undirected metrics over all 303 nodes, including isolates."}</p><div class="control-row"><label>Find an article<input class="rank-search" type="search" placeholder="Search names"></label><label>Rank by<select class="rank-metric">${(degrees ? ["kin", "kout", "degree"] : Object.keys(metricLabels)).map((k) => `<option value="${k}">${metricLabels[k]}</option>`).join("")}</select></label></div><p class="rank-summary status" role="status"></p><div class="table-scroll rank-table"></div><p class="fine">${data.metricMethod}</p><a href="${url(degrees ? "weeks/week01/" : "trumps/")}">Open ${degrees ? "Hero Packs" : "Hero Trumps"} ↗</a>`;
       const update = () => {
         const key = q("select").value,
           term = q("input").value.toLowerCase(),
@@ -402,7 +402,7 @@ try {
       q("select").addEventListener("change", update);
       prediction(q(".app-prediction"), {
         id: "w4-communities",
-        week: 4,
+        week: null,
         prompt:
           "How many groups will this Louvain run find, including the isolates?",
         min: 1,
@@ -432,7 +432,7 @@ try {
       q("select").addEventListener("change", update);
       prediction(q(".app-prediction"), {
         id: "w7-mutant",
-        week: 7,
+        week: null,
         prompt:
           "How many of the 303 short descriptions contain the exact token “mutant”?",
         min: 0,
@@ -471,7 +471,7 @@ try {
       });
       prediction(q(".app-prediction"), {
         id: "w8-search",
-        week: 8,
+        week: null,
         prompt: "How many roster descriptions will the search “spider” match?",
         min: 0,
         max: 100,

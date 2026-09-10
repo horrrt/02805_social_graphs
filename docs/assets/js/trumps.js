@@ -21,7 +21,7 @@ try {
   let team = [];
   prediction($("#prediction"), {
     id: "w3-coverage",
-    week: 3,
+    week: null,
     prompt: "Our greedy five-card team covers how many of the 303 articles?",
     min: 0,
     max: 303,

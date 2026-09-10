@@ -17,7 +17,7 @@
     <a class="skip" href="#main">Skip to content</a>
     <header class="chrome" id="arcade-chrome">
       <a class="arcade-wordmark" href="../../">LOG–LOG ARCADE</a
-      ><a href="#results">Main results</a>
+      ><a href="#post">The post</a>
     </header>
     <main id="main" class="wrap">
       <p id="app-status" class="status" role="status">
@@ -32,13 +32,16 @@
 
       <section class="hero hero-split">
         <div>
-          <p class="eyebrow">CABINET 01 / DEGREES & DISTRIBUTIONS</p>
+          <p class="eyebrow">WEEK 01 · NETWORKS / CABINET 01 · DEGREES &amp; DISTRIBUTIONS</p>
           <h1>EVERY HERO.<br /><span class="accent">EVENTUALLY.</span></h1>
           <p class="intro">
             Five cards in a pack. 303 to collect. Surely the famous ones are the
             hardest to find?
           </p>
           <p>Open a few packs. The network has a different idea.</p>
+          <div class="actions">
+            <a class="button quiet" href="#post">Just the post ↓</a>
+          </div>
         </div>
         <aside class="hero-aside">
           <div class="big">303</div>
@@ -174,6 +177,67 @@
           the roster.
         </p>
       </section>
+      <section id="post" class="section post" aria-labelledby="post-title">
+        <p class="eyebrow">THE POST · WEEK 1 · NETWORKS</p>
+        <h2 id="post-title">Who gets linked, and who does the linking?</h2>
+        <div class="two-col">
+          <div>
+            <h3>What we asked</h3>
+            <p>
+              Which articles get linked to, which ones do the linking, and who
+              is left out entirely? And does being famous make a card easy or
+              hard to draw?
+            </p>
+            <h3>What we did</h3>
+            <p>
+              We loaded all 303 roster entries before adding a single edge, so
+              the 17 isolates survive. Then we plotted in-degree and out-degree
+              on linear and log–log axes, and built a five-card pack rule where
+              each draw picks an article with weight (incoming links + 1) /
+              2,087.
+            </p>
+          </div>
+          <div>
+            <h3>What surprised us</h3>
+            <p>
+              The hubs are the easy cards. Spider-Man alone is linked by 106
+              articles, while 58 articles share the lowest drop rate, including
+              all 17 isolates. Finishing the set takes about 1,945 packs on
+              average. And the articles that link out most (Betsy Braddock, 28
+              outgoing links) are not the ones that get linked to most.
+            </p>
+          </div>
+        </div>
+        <figure>
+          <img
+            src="figures/degree_distributions.png"
+            width="2290"
+            height="1574"
+            alt="Four scatter plots of degree frequency P(k) against k + 1: in-degree on linear and log–log axes, out-degree on linear and log–log axes. In-degree has a long tail reaching 106; out-degree stops at 28."
+          />
+          <figcaption>
+            All 303 articles. The horizontal quantity is degree + 1 so
+            zero-degree articles stay visible on log axes. Visual straightness
+            alone does not establish a power law.
+          </figcaption>
+        </figure>
+        <details>
+          <summary>In-degree against out-degree</summary>
+          <figure>
+            <img
+              src="figures/in_vs_out.png"
+              loading="lazy"
+              width="1954"
+              height="1322"
+              alt="Scatter plot of in-degree against out-degree for all 303 articles with an in = out reference line. Spider-Man, Hulk, Wolverine and Doctor Strange sit high above the line; Betsy Braddock, Cloak and Dagger, Adam Warlock, U.S. Agent and Noh-Varr sit far to the right, below it."
+            />
+            <figcaption>
+              Two different populations: the most linked-to articles and the
+              most outward-linking ones barely overlap.
+            </figcaption>
+          </figure>
+        </details>
+      </section>
       <section id="results" class="section" data-gated>
         <p class="eyebrow">THE TAKEAWAY</p>
         <h2>The last few cards cost more than the first hundred.</h2>
@@ -230,7 +294,7 @@
             </p>
           </div>
         </div>
-        <details>
+        <details id="methods">
           <summary>Methods and reproducibility</summary>
           <p>
             The directed roster gives in-degree and out-degree. Five independent
@@ -257,14 +321,14 @@
             explanation drafts and test construction. Metrics come from the
             provided snapshot and reproducible analysis; the games and metaphors
             are authored presentation choices. Numerical checks compare
-            independent Python and browser implementations. The preview tools do
-            not represent completed future course assignments.
+            independent Python and browser implementations. The free-play tools are not course hand-ins.
           </p>
         </details>
       </section>
     </main>
     <footer class="wrap footer">
-      <span>02805 · Social graphs and interactions · Fall 2026</span
+      <span
+        >Log–Log Legends · 02805 Social graphs and interactions · Fall 2026</span
       ><span
         ><a href="../../">Arcade</a> /
         <a href="../../mockups/">Design archive</a> /

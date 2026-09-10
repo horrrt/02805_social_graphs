@@ -160,7 +160,7 @@ try {
   }
   prediction($("#prediction"), {
     id: "w6-repairs",
-    week: 6,
+    week: null,
     prompt:
       "After removing Spider-Man, what is the fewest new links needed to reconnect the remaining core?",
     min: 0,
