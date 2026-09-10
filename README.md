@@ -6,21 +6,32 @@ No API keys, bundler, external JavaScript, accounts or live Wikipedia calls are 
 
 ## Play
 
-| Experience | Route | What the visitor learns |
+| Post | Course week | Route | What the visitor learns |
+| --- | --- | --- | --- |
+| Hero Packs | Week 1 · Networks | `/weeks/week01/` | Unequal sampling, degrees, duplicates and the long tail |
+| Marvel Transit Authority | Week 2 · Models & null models | `/weeks/week02/` | Directed routes, articulation effects and a degree-controlled comparison |
+
+The lobby at `/` shows one cabinet per course week. Weeks 3–8 carry only the
+course title and date until their session; nothing is posted there yet.
+
+| Free play (not posts) | Route | What the visitor learns |
 | --- | --- | --- |
-| Arcade lobby | `/` | Eight cabinets, one shared snapshot |
 | MARVEL-OS 303 | `/os/` | Operate the graph through real commands and movable app windows |
-| Hero Packs | `/weeks/week01/` | Unequal sampling, degrees, duplicates and the long tail |
-| Marvel Transit Authority | `/weeks/week02/` | Directed routes, articulation effects and a degree-controlled comparison |
 | Prediction log | Across all cabinets | Commit a first guess, reveal the result, record the learning |
 | Hero Trumps | `/trumps/` | Different centrality metrics answer different questions; five-card coverage |
 | Walk / Listen | `/sound/` | Hear a seeded random walk and download it as WAV |
 | Keep It Together | `/creature/` | Remove a node, observe components, add hypothetical repair links |
+| Hidden Districts · Inside the Articles · Word Finder | `/os/?app=…` | One Louvain partition; the 303 roster descriptions; TF-IDF search |
 
-Weeks 1–2 contain completed analyses. Weeks 3–8 are **playable exploratory previews**,
-not completed future hand-ins. Their themes remain provisional. The Notepad and
-TF-IDF apps use the **303 real short descriptions in the course roster**, not
-full Wikipedia article bodies. Links to the live source pages are provided.
+Weeks 1–2 are posted. The free-play pages are experiments over the same
+snapshot, not hand-ins, and carry no week number. The Notepad and TF-IDF apps
+use the **303 real short descriptions in the course roster**, not full
+Wikipedia article bodies. Links to the live source pages are provided.
+
+The schedule lives in `docs/assets/js/weeks.js`, and `tests/site.test.mjs`
+fails if the lobby, the free-play pages or the prediction logbook drift from
+it. To open a week: set its status to `live`, add its cabinet, and update the
+"exactly weeks … are live" assertion in the test.
 
 The previous Baymax mission remains at `/play/`. The 49-concept design archive
 remains at `/mockups/`; those image mockups are separate from the working arcade.
@@ -76,17 +87,19 @@ The arcade exporters add:
 ## Run and check
 
 ```bash
-python -m http.server 8768 --directory docs
-node --test tests/arcade.test.mjs
+python -m http.server 8765 --directory docs
+node --test 'tests/*.test.mjs'
 ```
 
-Open `http://127.0.0.1:8768/`. Serve through HTTP rather than opening HTML files
+Open `http://127.0.0.1:8765/`. Serve through HTTP rather than opening HTML files
 from disk, because browser modules and data loading require a web origin.
 
 Tests cross-check all 277 browser removals against independently generated CSV
 results, Python path fixtures, exact stranded groups, triangle and coverage
 counts, connected degree-preserving rewires, random walks, text search, terminal
-commands, prediction bounds and PCM audio export. Browser review covers desktop
+commands, prediction bounds and PCM audio export. The site tests pin the lobby,
+the free-play pages and the logbook to the course schedule and check every
+fragment link. Browser review covers desktop
 and phone layouts, actual playback/export, window controls and saved progress.
 
 ## Terminal examples
@@ -114,7 +127,7 @@ current scenario. The nine-node island and original isolates are preserved.
 
 ## UX and scope
 
-See [PRESENTATION.md](PRESENTATION.md). All six concepts are usable without a key.
+See [PRESENTATION.md](PRESENTATION.md). All free-play concepts are usable without a key.
 Audio is opt-in, with stop and volume controls. Canvases have text equivalents.
 Controls work by keyboard; OS title bars support Alt + arrow movement. Small
 screens stack windows. Reduced-motion preferences suppress optional movement.

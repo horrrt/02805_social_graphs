@@ -23,10 +23,6 @@ import {
 import { createTerminal } from "./terminal.mjs";
 import { metricLabels, metricValue } from "./cards.js";
 setupChrome();
-const style = document.createElement("link");
-style.rel = "stylesheet";
-style.href = url("assets/css/os.css");
-document.head.append(style);
 let skipped = false;
 $("#skip-boot").addEventListener("click", () => {
   skipped = true;

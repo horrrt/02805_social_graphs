@@ -3,7 +3,7 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 import { existsSync, readFileSync, readdirSync } from "node:fs";
-import { join } from "node:path";
+import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 import {
   GROUP,
@@ -203,4 +203,57 @@ test("guesses saved under invented weeks move to free play without losing ids", 
   assert(FREE_PLAY_PREDICTIONS.has("w3-coverage"));
   migrate(attempts);
   assert.equal(attempts["w3-coverage"].week, null, "idempotent");
+});
+
+test("every fragment link points at an id that exists", () => {
+  const broken = [];
+  for (const path of walk(DOCS).filter((p) => p.endsWith(".html"))) {
+    const html = readFileSync(path, "utf8");
+    for (const [, target, frag] of html.matchAll(/href="([^"#]*)#([^"]+)"/g)) {
+      const clean = target.split("?")[0];
+      if (/^https?:/.test(clean)) continue;
+      const file = clean
+        ? join(dirname(path), clean.endsWith("/") ? clean + "index.html" : clean)
+        : path;
+      const label = `${path.slice(DOCS.length)} → ${target}#${frag}`;
+      if (!existsSync(file)) broken.push(`${label} (no such page)`);
+      else if (!readFileSync(file, "utf8").includes(`id="${frag}"`))
+        broken.push(label);
+    }
+  }
+  assert.deepEqual(broken, []);
+});
+
+const ARCADE_PAGES = [
+  "index.html",
+  "os/index.html",
+  "trumps/index.html",
+  "sound/index.html",
+  "creature/index.html",
+  "weeks/week01/index.html",
+  "weeks/week02/index.html",
+];
+
+test("every arcade page declares the favicon and loads its stylesheets statically", () => {
+  assert.deepEqual(
+    ARCADE_PAGES.filter((p) => !read(p).includes('rel="icon"')),
+    [],
+    "pages without a favicon",
+  );
+  assert(
+    read("os/index.html").includes('href="../assets/css/os.css"'),
+    "the OS palette is linked in the head, not injected after load",
+  );
+  assert(!read("assets/js/marvel-os.js").includes("os.css"));
+});
+
+test("the README serves the site on the same port as the launch config", () => {
+  const launch = JSON.parse(
+    readFileSync(new URL("../.claude/launch.json", import.meta.url), "utf8"),
+  );
+  const port = launch.configurations.find((c) => c.name === "site").port;
+  const readme = readFileSync(new URL("../README.md", import.meta.url), "utf8");
+  assert(readme.includes(`http.server ${port} `), `README uses port ${port}`);
+  assert(readme.includes(`127.0.0.1:${port}/`), `README opens port ${port}`);
+  assert(readme.includes("node --test 'tests/*.test.mjs'"));
 });

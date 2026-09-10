@@ -5,7 +5,7 @@ with a visible consequence, and a takeaway that can be repeated without the
 calculation. This is an authored presentation scorecard, not an official judging
 rubric or a claim that the site will win the competition.
 
-## The story across the six concepts
+## The story across the free-play concepts
 
 1. **MARVEL-OS 303** makes the snapshot a machine. A real boot loads the local
    data, draggable windows expose named applications, and the terminal computes
@@ -17,7 +17,8 @@ rubric or a claim that the site will win the competition.
    crossing is not a connection. Drawing lines are not detected communities.
 3. **Predict before reveal** gives each visit a reason to pay attention. A first
    guess is recorded before the explanation. Progress follows the visitor across
-   eight week slots; no account or public leaderboard is required.
+   the live course weeks, with free-play guesses logged separately; no account
+   or public leaderboard is required.
 4. **Hero Trumps** makes the definition of importance the contest. Changing from
    incoming to outgoing links reverses the Spider-Man / Betsy Braddock matchup.
    Five-card drafting teaches overlap and coverage; the greedy 184/303 reference
@@ -65,8 +66,10 @@ packs on average, not 303/5.
   connected edge swapping is a separate demonstration, not a formal ensemble test.
 - Five cards cannot cover 303 articles because each of 17 isolates requires a slot.
 - Communities are one Louvain partition (seed 7, resolution 1), not canonical teams.
-- The NLP previews contain real short roster descriptions, not full article bodies.
-- Weeks 3–8 are exploratory previews, not completed or submitted future hand-ins.
+- The Notepad and TF-IDF free-play apps contain real short roster descriptions,
+  not full article bodies.
+- Free-play pages are experiments, not posts. Weeks 3–8 carry only the course
+  title and date until their session.
 - Prediction scores are a game based on normalized numerical error, not a formal
   estimate of reader calibration.
 
