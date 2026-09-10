@@ -1,64 +1,93 @@
-# Presentation direction
+# Presentation direction: The Log–Log Arcade
 
-Turn each week into a short, explorable story with a clear question, a surprising result, and a takeaway the reader can repeat.
+Make the visitor operate the evidence. Each cabinet has one question, an action
+with a visible consequence, and a takeaway that can be repeated without the
+calculation. This is an authored presentation scorecard, not an official judging
+rubric or a claim that the site will win the competition.
 
-This is a proposed design scorecard, not an official weighted judging rubric. The [course homepage](https://sunelehmann.com/socialgraphs2026-web/) values the outcome, rigor, and ability to explain and defend choices. The [Week 1 brief](https://sunelehmann.com/socialgraphs2026-web/weeks/week1.html) asks for creativity, a group identity, a question, evidence, and what surprised us.
+## The story across the six concepts
 
-The user identified **Web-Crawler by Capes & Edges** as the teacher-liked reference they remember. It was absent from the supplied ten-submission paste and is an additional reference, not a renamed entry in that list. The [game](https://oddvar112.github.io/Social-Graphs-and-Interactions/weeks/week1/game/) uses a clear mission, discovery through actions, directed routes and feedback. We adopt the mission-to-insight structure while developing a different experiment: adding links to an isolated node.
+1. **MARVEL-OS 303** makes the snapshot a machine. A real boot loads the local
+   data, draggable windows expose named applications, and the terminal computes
+   graph answers instead of displaying scripted responses. Weekly additions
+   appear as installed apps and patch notes.
+2. **Transit Authority** uses station closures and routes to explain connectivity.
+   The map deliberately shows only 16 interchanges; every drawn segment is a real
+   link. The full 303-node route planner is the analytical tool. A schematic
+   crossing is not a connection. Drawing lines are not detected communities.
+3. **Predict before reveal** gives each visit a reason to pay attention. A first
+   guess is recorded before the explanation. Progress follows the visitor across
+   eight week slots; no account or public leaderboard is required.
+4. **Hero Trumps** makes the definition of importance the contest. Changing from
+   incoming to outgoing links reverses the Spider-Man / Betsy Braddock matchup.
+   Five-card drafting teaches overlap and coverage; the greedy 184/303 reference
+   is explicitly not a proven optimum.
+5. **Walk / Listen** maps real random-walk visits to notes. Degree controls pitch;
+   community controls a labelled synthetic voice. A silent dead end has an exact
+   explanation in the step table. Seeds make a melody repeatable; WAV export
+   makes it shareable.
+6. **Keep It Together** makes component repair tangible. One dot represents one
+   present article. Health always uses an honest percentage, so Spider-Man’s
+   removal shows 98.2%, not theatrical devastation. Repairing the Rockman–Witness
+   component returns two articles with one hypothetical link.
 
-## Current entry point: Pull one hero
+Hero Packs is the week-1 entry: five weighted draws per pack, persistent
+collection, searchable cards, a linear/log–log distribution and a sketchable
+histogram. Its central surprise is that familiar hubs are easy to draw. There
+are 58 equally rare cards, including all 17 isolates. Finishing takes about 1,945
+packs on average, not 303/5.
 
-Week 2 leads with a consequence: removing Spider-Man strands five other articles,
-whereas removing Hulk strands none. The visitor removes one of four characters,
-sees who loses their route, then can switch to a shuffled graph with exactly the
-same starting degrees. The page uses four recorded examples to explain the
-operation and 1,000 simulations for its findings. Individual examples are labeled
-and are never substituted for the ensemble result.
+## Presentation and interaction criteria
 
-The question is narrower than a survey of the week's models: which articles are
-single routes into small branches, and does their degree explain the damage?
-Black Widow's 25 connections versus Hulk's 65 supplies a second surprise.
-The headline comparison is Spider-Man's 5 stranded versus 1.409 on average after
-shuffling; 9 of 1,000 draws are at least as large. The null conditions on connected
-starting graphs, and longer-run checks and exploratory selection are disclosed.
-
-`weeks/week02/#results` provides three conclusions without requiring the
-interaction. Source scope, calculations, full distributions, the complete scan
-of all 277 removals, AI use and limitations sit in optional evidence sections.
-The homepage leads to this issue. The prior Baymax and Week 1 stories remain linked.
-
-## Previous entry: Give Baymax a voice
-
-The Week 1 extension lives at `play/`. Two short missions ask the visitor to make Baymax discoverable, then add a return path. Choosing an outward link first gives useful feedback instead of a penalty. Every action updates the real graph's reachable sets, with imagined links clearly separated from the snapshot. A replay lets readers compare no edit, outgoing only, incoming only and both directions.
-
-The main results are explicit and readable without playing or running JavaScript: an imagined Spider-Man → Baymax link makes Baymax reachable from 274 other articles; reversing that link lets him reach 231 while leaving him unreachable; adding both directions yields 229 other articles with routes both ways. These are counterfactual reachability results, not direct degree counts or readership estimates. The exporter checks them independently with NetworkX, and the browser verifies its traversal against those results. Methods and attribution are optional disclosures.
-
-| Criterion | What the presentation should do |
+| Criterion | Implementation |
 | --- | --- |
-| First impression | Make the subject and reason to care clear within a few seconds. Baymax is isolated; the visitor can change it. |
-| Originality | Derive the identity from the subject: comic issue typography, an ink/yellow/lilac palette, and actual network drawings. |
-| Narrative | Make the visitor act: be found, discover the missing return path, then make the connection work both ways. |
-| Main results | Provide a direct 30-second route to three conclusions. Keep calculations and distribution diagnostics in optional evidence sections. |
-| Useful interaction | Give each link choice an immediate, visible consequence. Follow with optional rankings, character search and the full graph. |
-| Credibility | State the snapshot date and graph boundary. Separate measured structure from interpretations about publishing or popularity. Link the data and notebooks. |
-| Accessibility | Use labeled controls, keyboard search, textual counts, graph descriptions, high contrast, reduced motion, and static fallbacks. |
-| Reliability | Use local fonts, data, and plain browser features. No third-party JavaScript runtime or live Wikipedia dependency is needed for the presentation. |
-| Memorability | One link, 274 articles able to find Baymax. Reverse it, 231 destinations but no way in. Two directions, 229 round-trip destinations. |
-| Shareability | Link directly to the results and preserve selected characters in the address. |
+| Recognizable identity | A green arcade lobby, gold card cabinet, transit signage, teal desktop, purple instrument and living graph |
+| Narrative | Question → committed guess → action → result → explanation |
+| Results first | Short takeaways and named consequences; calculations behind native disclosures |
+| Meaningful agency | A command, closure, draft, walk or repair changes a computed answer |
+| Honest uncertainty | Null draws, illustrative rewires and real structure are labelled separately |
+| Clear scope | Snapshot date, graph direction, denominator and source-text boundary accompany the relevant result |
+| Accessible alternatives | Names, counts, tables and paths accompany every canvas; no hover-only information |
+| Keyboard and touch | Native labels and controls; window keyboard movement; stacked phone layout |
+| Motion and audio control | No autoplay audio; stop/volume controls; reduced-motion support |
+| Error recovery | Restore graph, undo repairs, empty search states, invalid-command guidance and load-error fallback |
+| Persistence | Local first-guess log and card collection; explicit reset/download; no uploaded visitor data |
+| Reliability | Native modules, local fonts and data; no keys, live API or external runtime dependency |
 
-## Evidence behind the design choices
+## Boundaries that must remain visible
 
-- [Nielsen Norman Group: Progressive Disclosure](https://www.nngroup.com/articles/progressive-disclosure/) supports revealing secondary detail when needed. Applied here by keeping calculations and methodology behind disclosure controls.
-- [W3C WAI: Complex Images](https://www.w3.org/WAI/tutorials/images/complex/) recommends text alternatives that communicate a complex visual's information. Applied here through graph descriptions, explicit findings, and searchable character counts and neighbor lists.
-- [Strikeforce: Morituri](https://en.wikipedia.org/wiki/Strikeforce:_Morituri) supplies context for the isolated cast. Network separation is computed from the frozen course files; publishing history is an interpretation to investigate, not a demonstrated cause.
+- A Wikipedia hyperlink is not a social relationship or a strength score.
+- The roster includes 17 isolates. Never build the node set only from edges.
+- Degree distributions alone do not establish a power law.
+- Week-2 removal findings use the 277-node undirected core, then 276 remaining
+  nodes. Stranded nodes can form groups; they are not necessarily individual isolates.
+- The recorded null networks start connected and retain degrees. Interactive
+  connected edge swapping is a separate demonstration, not a formal ensemble test.
+- Five cards cannot cover 303 articles because each of 17 isolates requires a slot.
+- Communities are one Louvain partition (seed 7, resolution 1), not canonical teams.
+- The NLP previews contain real short roster descriptions, not full article bodies.
+- Weeks 3–8 are exploratory previews, not completed or submitted future hand-ins.
+- Prediction scores are a game based on normalized numerical error, not a formal
+  estimate of reader calibration.
 
-## For the next issue
+## Evidence and review
 
-Lead with the result, not the method. Choose one real question and at most three findings. Give each interaction an explanatory job. Preserve the frozen data boundary. Add a new story when the analysis exists; avoid invented future results.
+The user’s remembered teacher-liked reference was **Web-Crawler by Capes & Edges**.
+The inspiration is its mission-to-insight structure, not its visual treatment.
+The design archive at `/mockups/` preserves the earlier alternatives.
 
-## Local preview
+Relevant principles are progressive disclosure, recognition over recall,
+immediate feedback, consistent controls, visible state and recoverable actions.
+The technical choices follow the Web Audio user-activation model and provide a
+text equivalent for visual and sonic encodings:
 
-Serve `docs/` locally (any static server). The homepage is a quiet first screen
-plus a week index. Week 2 lives at `weeks/week02/`; `#results` goes straight to
-its findings. `play/#results` has the Baymax results; `weeks/week01/` keeps the
-original investigation.
+- [W3C WAI: Complex Images](https://www.w3.org/WAI/tutorials/images/complex/)
+- [Nielsen Norman Group: Progressive Disclosure](https://www.nngroup.com/articles/progressive-disclosure/)
+- [MDN: Using the Web Audio API](https://developer.mozilla.org/en-US/docs/Web/API/Web_Audio_API/Using_Web_Audio_API)
+- [NetworkX: Louvain communities](https://networkx.org/documentation/stable/reference/algorithms/generated/networkx.algorithms.community.louvain.louvain_communities.html)
+
+Automated tests compare graph answers against independent analysis. Browser
+checks cover the primary journeys at desktop and phone widths, including
+prediction persistence, card collection, window controls, closures, repair undo,
+search, audio playback and WAV download. This is a practical review, not a formal
+accessibility audit or teacher usability study.

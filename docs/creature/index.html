@@ -1,0 +1,201 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <meta
+      name="description"
+      content="Keep It Together — an interactive data story from 303 Marvel Wikipedia articles."
+    />
+    <title>Keep It Together · Log–Log Arcade</title>
+    <link rel="stylesheet" href="../assets/css/arcade.css" />
+    <script>
+      document.documentElement.classList.add("js");
+    </script>
+  </head>
+  <body class="theme-creature">
+    <a class="skip" href="#main">Skip to content</a>
+    <header class="chrome" id="arcade-chrome">
+      <a class="arcade-wordmark" href="../">LOG–LOG ARCADE</a
+      ><a href="#results">Main results</a>
+    </header>
+    <main id="main" class="wrap">
+      <p id="app-status" class="status" role="status">
+        Loading the frozen snapshot…
+      </p>
+      <noscript
+        ><p class="note">
+          The interactive cabinets need JavaScript. The main findings and
+          methods are available below.
+        </p></noscript
+      >
+
+      <section class="hero">
+        <p class="eyebrow">
+          CABINET 06 / FRAGMENTATION & REPAIR · EXPLORATORY PREVIEW
+        </p>
+        <h1>IT’S A GRAPH.<br /><span class="accent">BE GENTLE.</span></h1>
+        <p class="intro">
+          A small creature made of connections. Remove one article, meet the
+          pieces left behind, and help them find a way back.
+        </p>
+      </section>
+      <div id="prediction" class="prediction"></div>
+      <section class="section">
+        <div class="section-head">
+          <h2>Meet the main component.</h2>
+          <span class="tag">277 NODES · UNDIRECTED</span>
+        </div>
+        <div class="control-row">
+          <label>Remove an article<select id="creature-remove"></select></label
+          ><button id="creature-cut" disabled>Remove article</button
+          ><button id="creature-restore" class="quiet">
+            Restore original graph
+          </button>
+        </div>
+        <p id="creature-status" class="status" role="status"></p>
+        <div class="split">
+          <canvas
+            id="creature-canvas"
+            class="stage creature-stage"
+            aria-label="A graph creature whose body contains the largest remaining component. Separate groups float beside it. Exact counts follow."
+          ></canvas>
+          <div class="panel">
+            <p class="eyebrow">CONNECTED HEALTH</p>
+            <div class="metric">
+              <strong id="health-number">100%</strong
+              ><span id="health-denominator"
+                >277 of 277 present articles in the largest component</span
+              >
+            </div>
+            <div
+              class="health-track"
+              role="img"
+              aria-label="Connectivity health"
+            >
+              <div id="health-fill" class="health-fill"></div>
+            </div>
+            <p id="creature-mood">
+              All together. All connections are original.
+            </p>
+            <p class="fine">
+              Health = largest component / articles still present. Removed
+              articles leave the denominator. A small change stays small: we
+              never exaggerate the scale.
+            </p>
+          </div>
+        </div>
+      </section>
+      <section class="section" id="repair-section">
+        <div class="section-head">
+          <h2>Build a way back.</h2>
+          <span class="tag">HYPOTHETICAL REPAIR LINKS</span>
+        </div>
+        <p>
+          Connect a stranded article to the main body. One link repairs one
+          separate component—even if that component contains several articles.
+        </p>
+        <div class="control-row">
+          <label
+            >Stranded article<select id="repair-from" disabled></select></label
+          ><label>Connect to<select id="repair-to" disabled></select></label
+          ><button id="repair-add" disabled>Add repair link</button
+          ><button id="repair-undo" class="quiet" disabled>
+            Undo last repair
+          </button>
+        </div>
+        <p id="repair-feedback" class="status" role="status"></p>
+        <ul id="repair-list" class="repair-list"></ul>
+        <details>
+          <summary>See the separated components</summary>
+          <div id="creature-groups"></div>
+        </details>
+        <p class="fine">
+          These links exist only in your experiment. They are never described as
+          observed article links.
+        </p>
+      </section>
+      <section id="results" class="section" data-gated>
+        <p class="eyebrow">THE TAKEAWAY</p>
+        <h2>Repair components, not just headcounts.</h2>
+        <p>
+          Removing Spider-Man strands five separate single articles. Connecting
+          all five back takes at least five new undirected links. Removing Black
+          Widow strands three articles in two components, so two links suffice.
+        </p>
+        <p>
+          A node can have many neighbours and still be replaceable for
+          connectivity. Removing Hulk leaves all 276 remaining core articles
+          together. The creature stays healthy even though a famous article has
+          gone.
+        </p>
+      </section>
+      <section class="closing" aria-labelledby="closing-title">
+        <h2 id="closing-title">Behind the cabinet</h2>
+        <div class="closing-grid">
+          <div>
+            <h3>What the data means</h3>
+            <p>
+              303 article entries and 1,784 directed links from the course’s
+              frozen 26 August 2026 snapshot. A link means one article links to
+              another within this roster. It does not measure friendship, hero
+              strength, popularity or the whole Marvel universe.
+            </p>
+            <a href="../assets/data/arcade_graph.json" download
+              >Download the snapshot and metrics (JSON)</a
+            >
+          </div>
+          <div>
+            <h3>Limits of the experiment</h3>
+            <p>
+              This creature measures only connectivity, not all aspects of
+              network robustness. All node removals and added links are
+              counterfactual. A repair need not correspond to an editorially
+              meaningful Wikipedia link. The 17 original isolates and
+              nine-article island are outside this core-only scenario.
+            </p>
+          </div>
+        </div>
+        <details>
+          <summary>Methods and reproducibility</summary>
+          <p>
+            The browser deletes a selected article from the original 277-node
+            undirected main component, computes every connected component, and
+            treats the largest as the body. Repair edges are added to a separate
+            in-memory scenario. The minimum number of added edges needed to
+            reconnect k nonempty components is k − 1. The visual uses one dot
+            per remaining article, with component membership determining
+            placement.
+          </p>
+          <p>
+            <a
+              href="https://github.com/horrrt/02805_social_graphs/tree/main/analysis"
+              >Analysis and source code on GitHub</a
+            >. All experiments run locally in your browser; the frozen data is
+            never edited.
+          </p>
+        </details>
+        <details>
+          <summary>AI use and authorship</summary>
+          <p>
+            Built with AI assistance for interface design, programming,
+            explanation drafts and test construction. Metrics come from the
+            provided snapshot and reproducible analysis; the games and metaphors
+            are authored presentation choices. Numerical checks compare
+            independent Python and browser implementations. The preview tools do
+            not represent completed future course assignments.
+          </p>
+        </details>
+      </section>
+    </main>
+    <footer class="wrap footer">
+      <span>02805 · Social graphs and interactions · Fall 2026</span
+      ><span
+        ><a href="../">Arcade</a> / <a href="../mockups/">Design archive</a> /
+        <a href="../weeks/week01/">Week 1</a> /
+        <a href="../weeks/week02/">Week 2</a></span
+      >
+    </footer>
+    <script type="module" src="../assets/js/creature.js"></script>
+  </body>
+</html>

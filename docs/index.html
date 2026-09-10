@@ -1,80 +1,261 @@
 <!doctype html>
 <html lang="en">
-<head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="theme-color" content="#141614">
-<title>Log-Log Legends — Field notes from the Marvel network</title>
-<meta name="description" content="Log-Log Legends: weekly stories from a frozen Marvel Wikipedia network. Browse Week 1, Week 2, and the Baymax experiment.">
-<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
-<link rel="stylesheet" href="assets/css/site.css?v=20260909-3"><script src="assets/js/graph.js?v=20260909-3" defer></script>
-</head>
-<body class="home" data-graph-src="assets/data/marvel_story.json">
-<a class="skip-link" href="#weeks">Skip to weeks</a>
-<header class="site-head"><div class="wide head-row">
-<a class="brand" href="./" aria-label="Log-Log Legends home"><span class="brand-mark" aria-hidden="true">↗</span><span>LOG–LOG<br>LEGENDS</span></a>
-<nav aria-label="Main navigation"><a href="#weeks">Weeks</a><a href="#about">The project</a><a href="mockups/">Mockups</a><a class="source-link" href="https://github.com/horrrt/02805_social_graphs">Source ↗</a></nav>
-<a class="button button-small" href="weeks/week02/">Latest week <span aria-hidden="true">↗</span></a>
-</div></header>
-<main id="main">
-<section class="home-hero" aria-labelledby="hero-brand">
-<div class="hero-stage" aria-hidden="true">
-<svg class="network-svg hero-graph" id="cover-graph" viewBox="0 0 940 650" role="presentation" focusable="false"></svg>
-<img class="graph-fallback hero-fallback" loading="eager" src="weeks/week01/figures/map.png" alt="">
-</div>
-<div class="wide hero-copy">
-<p class="hero-kicker"><span class="live-dot" aria-hidden="true"></span> DTU 02805 · AUTUMN 2026</p>
-<h1 id="hero-brand">LOG–LOG<br>LEGENDS</h1>
-<p class="hero-lede">Field notes from one Marvel Wikipedia network — a new story every week.</p>
-<a class="button" href="#weeks">Browse the weeks <span aria-hidden="true">↓</span></a>
-</div>
-<a class="hero-scroll" href="#weeks" aria-label="Scroll to week index"><span>INDEX</span><span aria-hidden="true">↓</span></a>
-</section>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <meta
+      name="description"
+      content="The Log–Log Arcade — an interactive data story from 303 Marvel Wikipedia articles."
+    />
+    <title>The Log–Log Arcade · Log–Log Arcade</title>
+    <link rel="stylesheet" href="assets/css/arcade.css" />
+    <script>
+      document.documentElement.classList.add("js");
+    </script>
+  </head>
+  <body class="">
+    <a class="skip" href="#main">Skip to content</a>
+    <header class="chrome" id="arcade-chrome">
+      <a class="arcade-wordmark" href="./">LOG–LOG ARCADE</a
+      ><a href="#results">Main results</a>
+    </header>
+    <main id="main" class="wrap">
+      <p id="app-status" class="status" role="status">
+        Loading the frozen snapshot…
+      </p>
+      <noscript
+        ><p class="note">
+          The interactive cabinets need JavaScript. The main findings and
+          methods are available below.
+        </p></noscript
+      >
 
-<section class="week-index paper" id="weeks" aria-labelledby="weeks-title">
-<div class="wide">
-<div class="section-topline"><span>WEEK INDEX</span><span>02 LIVE · MORE TO COME</span></div>
-<h2 id="weeks-title" class="week-index-title">PICK A WEEK.</h2>
-<p class="week-index-lede">Same frozen dataset. A different question each time.</p>
-<ol class="week-list">
-<li>
-<a class="week-row" href="weeks/week02/">
-<span class="week-num">02</span>
-<span class="week-body">
-<span class="week-meta"><span>MODELS &amp; NULL MODELS</span><span class="week-status is-new">NEW</span></span>
-<strong>Pull one hero.</strong>
-<span class="week-blurb">Remove Spider-Man: five articles lose their route. Remove Hulk: none do.</span>
-</span>
-<span class="week-go" aria-hidden="true">↗</span>
-</a>
-<a class="week-sublink" href="weeks/week02/#results">30-second findings ↗</a>
-</li>
-<li>
-<a class="week-row" href="weeks/week01/">
-<span class="week-num">01</span>
-<span class="week-body">
-<span class="week-meta"><span>NETWORKS</span><span class="week-status">LIVE</span></span>
-<strong>The popular. The prolific. The left out.</strong>
-<span class="week-blurb">Who gets seen in 303 Marvel articles — and who sits outside the main crowd.</span>
-</span>
-<span class="week-go" aria-hidden="true">↗</span>
-</a>
-<a class="week-sublink" href="play/">Play: Give Baymax a voice ↗</a>
-</li>
-</ol>
-</div>
-</section>
-
-<section class="wide about-section" id="about" aria-labelledby="about-title">
-<p class="eyebrow">THE PROJECT</p>
-<div class="about-grid">
-<h2 id="about-title">SAME DATA.<br>OUR QUESTIONS.</h2>
-<div>
-<p>We’re Log-Log Legends, a three-person group in <strong>Social Graphs and Interactions at DTU</strong>. Each week we explore the same frozen slice of Marvel’s Wikipedia network and turn what we find into a story.</p>
-<p><strong>Àngela Buxó · Gyula Kürthy · Niklas Johansen</strong></p>
-<a class="text-link" href="https://github.com/horrrt/02805_social_graphs">The data, notebooks, and working ↗</a>
-</div>
-</div>
-</section>
-</main>
-<footer class="site-foot"><div class="wide"><span>LOG–LOG LEGENDS</span><span>303 CHARACTERS. STILL MORE TO DISCOVER.</span><a href="mockups/">Review the 49 visual concepts ↗</a><a href="https://github.com/horrrt/02805_social_graphs">DTU 02805 · 2026 ↗</a></div></footer>
-</body>
+      <section class="hero lobby-hero">
+        <p class="eyebrow">ONE FROZEN WORLD. EIGHT WAYS TO QUESTION IT.</p>
+        <h1>THE LOG–LOG<br /><span class="accent">ARCADE.</span></h1>
+        <p class="intro">
+          303 articles. Some get all the attention. Others can disappear without
+          a trace. Step inside, make a prediction, and find out what holds this
+          world together.
+        </p>
+        <div class="actions">
+          <a class="button" href="weeks/week01/">Start with Hero Packs ↗</a
+          ><a class="button quiet" href="os/">Boot MARVEL-OS</a>
+        </div>
+      </section>
+      <div class="room-sign">
+        <span>FREE PLAY · NO ACCOUNT</span><span>SNAPSHOT 26.08.2026</span>
+      </div>
+      <canvas
+        class="lobby-stage stage"
+        id="lobby-canvas"
+        aria-label="An arcade room with eight cabinets. The same eight destinations are linked immediately below."
+      ></canvas>
+      <ol class="cabinet-list">
+        <li>
+          <a class="cabinet-link" href="weeks/week01/"
+            ><span class="tag">W01 · HAND-IN</span>
+            <h2>Hero Packs</h2>
+            <p>Open five. Chase the rare ones. Learn why the tail wins.</p></a
+          >
+        </li>
+        <li>
+          <a class="cabinet-link" href="weeks/week02/"
+            ><span class="tag">W02 · HAND-IN</span>
+            <h2>Transit Authority</h2>
+            <p>Close a station. See who loses their way home.</p></a
+          >
+        </li>
+        <li>
+          <a class="cabinet-link preview" href="trumps/"
+            ><span class="tag">W03 · PLAYABLE PREVIEW</span>
+            <h2>Hero Trumps</h2>
+            <p>The winner depends on what you decide to measure.</p></a
+          >
+        </li>
+        <li>
+          <a class="cabinet-link preview" href="os/?app=communities"
+            ><span class="tag">W04 · PLAYABLE PREVIEW</span>
+            <h2>Hidden Districts</h2>
+            <p>Explore one possible partition of the network.</p></a
+          >
+        </li>
+        <li>
+          <a class="cabinet-link preview" href="sound/"
+            ><span class="tag">W05 · PLAYABLE PREVIEW</span>
+            <h2>Walk / Listen</h2>
+            <p>Let the links write a melody. Hear the dead ends.</p></a
+          >
+        </li>
+        <li>
+          <a class="cabinet-link preview" href="creature/"
+            ><span class="tag">W06 · PLAYABLE PREVIEW</span>
+            <h2>Keep It Together</h2>
+            <p>A small graph creature. A repair job with consequences.</p></a
+          >
+        </li>
+        <li>
+          <a class="cabinet-link preview" href="os/?app=notepad"
+            ><span class="tag">W07 · PLAYABLE PREVIEW</span>
+            <h2>Inside the Articles</h2>
+            <p>Read the real roster descriptions behind the nodes.</p></a
+          >
+        </li>
+        <li>
+          <a class="cabinet-link preview" href="os/?app=search"
+            ><span class="tag">W08 · PLAYABLE PREVIEW</span>
+            <h2>Word Finder</h2>
+            <p>Ask the text a question with TF-IDF search.</p></a
+          >
+        </li>
+      </ol>
+      <section class="section">
+        <div class="section-head">
+          <h2>Six doors into the same world.</h2>
+          <span class="fine">Play one. Or connect the dots.</span>
+        </div>
+        <div class="experience-links">
+          <a href="os/"
+            ><span class="eyebrow">01 / OPERATE IT</span><b>MARVEL-OS 303 ↗</b>
+            <p>
+              A desktop that runs on a graph. Real commands, draggable apps, and
+              a snapshot you can interrogate.
+            </p></a
+          >
+          <a href="weeks/week02/"
+            ><span class="eyebrow">02 / NAVIGATE IT</span
+            ><b>Marvel Transit Authority ↗</b>
+            <p>
+              Routes, interchanges and service disruptions. A network you
+              already know how to read.
+            </p></a
+          >
+          <a href="weeks/week01/#prediction"
+            ><span class="eyebrow">03 / PREDICT IT</span
+            ><b>Your calibration log ↗</b>
+            <p>
+              Commit before the reveal. First guesses travel with you across all
+              eight cabinets.
+            </p></a
+          >
+          <a href="trumps/"
+            ><span class="eyebrow">04 / CHALLENGE IT</span><b>Hero Trumps ↗</b>
+            <p>
+              Stat battles and a five-card coverage puzzle. Fame and structural
+              importance part ways.
+            </p></a
+          >
+          <a href="sound/"
+            ><span class="eyebrow">05 / LISTEN TO IT</span
+            ><b>A graph that makes music ↗</b>
+            <p>
+              One step, one note. A repeatable random walk turns local choices
+              into a melody.
+            </p></a
+          >
+          <a href="creature/"
+            ><span class="eyebrow">06 / CARE FOR IT</span
+            ><b>The living graph ↗</b>
+            <p>
+              Break a connection, watch the consequences, then help the stranded
+              pieces find their way back.
+            </p></a
+          >
+        </div>
+      </section>
+      <section class="section">
+        <div class="two-col">
+          <div>
+            <p class="eyebrow">THE RULES ARE SIMPLE</p>
+            <h2>Guess. Play.<br />Leave with a better question.</h2>
+          </div>
+          <div>
+            <p>
+              Each cabinet begins with a prediction. Then the result becomes
+              yours to explore. Your first guess earns a score; the explanation
+              matters more than the score.
+            </p>
+            <p class="fine">
+              Weeks 1–2 contain completed analyses. Weeks 3–8 are working
+              experiments over the same snapshot, with provisional themes. They
+              are not submitted future assignments. Audio starts only when you
+              press Play.
+            </p>
+          </div>
+        </div>
+      </section>
+      <section id="results" class="section" data-gated>
+        <p class="eyebrow">THE TAKEAWAY</p>
+        <h2>A link is a clue, not the whole story.</h2>
+        <p>
+          The frozen graph contains 303 articles in 19 weakly connected
+          components: a 277-article core, a nine-article island, and 17
+          isolates. Follow the cabinets to discover how direction, choice of
+          metric and comparison model change the answer.
+        </p>
+      </section>
+      <section class="closing" aria-labelledby="closing-title">
+        <h2 id="closing-title">Behind the cabinet</h2>
+        <div class="closing-grid">
+          <div>
+            <h3>What the data means</h3>
+            <p>
+              303 article entries and 1,784 directed links from the course’s
+              frozen 26 August 2026 snapshot. A link means one article links to
+              another within this roster. It does not measure friendship, hero
+              strength, popularity or the whole Marvel universe.
+            </p>
+            <a href="assets/data/arcade_graph.json" download
+              >Download the snapshot and metrics (JSON)</a
+            >
+          </div>
+          <div>
+            <h3>Limits of the experiment</h3>
+            <p>
+              The arcade is an educational interpretation of a bounded article
+              network. Future-week labels describe exploratory tools, not a
+              claim about the final syllabus or completed hand-ins.
+            </p>
+          </div>
+        </div>
+        <details>
+          <summary>Methods and reproducibility</summary>
+          <p>
+            Native browser modules compute paths, removals, connected rewiring,
+            random walks and text search. NetworkX 3.6.1 supplies independent
+            metrics and checks. Five-card pack probabilities are a deliberately
+            designed game rule. Prediction scores are 100 × (1 − absolute error
+            / displayed guess range), clamped to 0–100.
+          </p>
+          <p>
+            <a
+              href="https://github.com/horrrt/02805_social_graphs/tree/main/analysis"
+              >Analysis and source code on GitHub</a
+            >. All experiments run locally in your browser; the frozen data is
+            never edited.
+          </p>
+        </details>
+        <details>
+          <summary>AI use and authorship</summary>
+          <p>
+            Built with AI assistance for interface design, programming,
+            explanation drafts and test construction. Metrics come from the
+            provided snapshot and reproducible analysis; the games and metaphors
+            are authored presentation choices. Numerical checks compare
+            independent Python and browser implementations. The preview tools do
+            not represent completed future course assignments.
+          </p>
+        </details>
+      </section>
+    </main>
+    <footer class="wrap footer">
+      <span>02805 · Social graphs and interactions · Fall 2026</span
+      ><span
+        ><a href="./">Arcade</a> / <a href="mockups/">Design archive</a> /
+        <a href="weeks/week01/">Week 1</a> /
+        <a href="weeks/week02/">Week 2</a></span
+      >
+    </footer>
+    <script type="module" src="assets/js/lobby.js"></script>
+  </body>
 </html>
