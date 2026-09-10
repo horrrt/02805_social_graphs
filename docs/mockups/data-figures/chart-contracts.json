@@ -1,0 +1,56 @@
+{
+  "surface": "Standalone, reproducible PNG figures accompanying static full-page design concepts in the existing review gallery. These are not an HTML report or dashboard.",
+  "source": "docs/assets/data/week02_resilience.json; week02_all_removals.csv; week02_null_draws.csv",
+  "snapshot": "2026-08-26",
+  "validation": "All 277 removal outcomes independently checked by traversing the supplied graph; named stranded groups and 1000-row shuffle histogram checked against source files.",
+  "charts": [
+    {
+      "id": "census",
+      "question": "How often does removing one article fragment the remaining connected core?",
+      "takeaway": "264 of 277 removals leave the other 276 articles connected; 13 cause fragmentation.",
+      "family": "Composition and ranking",
+      "variant": "277-unit matrix plus directly labeled ranked horizontal bars for the 13 nonzero outcomes",
+      "renderer": "Matplotlib PNG, 1800 by 1350 pixels",
+      "grain": "One single-article removal from the same 277-article connected core",
+      "rows": 277,
+      "palette": "Single cobalt root plus neutrals; circle versus square and explicit group labels",
+      "scales": "Count bars start at zero and end at five; one matrix mark per experiment, sorted by outcome",
+      "target": "docs/mockups/data-figures/removal-census.png"
+    },
+    {
+      "id": "islands",
+      "question": "Which articles are stranded by removing Black Widow, and do they remain connected to each other?",
+      "takeaway": "Three stranded articles form two groups: Blue Eagle alone and Rockman connected to The Witness.",
+      "family": "Network topology comparison",
+      "variant": "Fixed-position before/after component schematic with a collapsed 273-article core",
+      "renderer": "Matplotlib PNG, 1800 by 1200 pixels",
+      "grain": "Actual local links around one removal; no geometric distance or area encoding",
+      "rows": "277 nodes and 1421 undirected edges, reduced to explicitly labeled groups",
+      "palette": "Hard two-root cap, cobalt for the main group and orange for stranded nodes; labels, separate enclosures and removal cross",
+      "scales": "Schematic topology; grouped shapes are not proportional to article count. All three affected links verified.",
+      "target": "docs/mockups/data-figures/black-widow-islands.png"
+    },
+    {
+      "id": "worlds",
+      "question": "How unusual is Spider-Man's five-article stranding result among the recorded degree-preserving shuffles?",
+      "takeaway": "9 of 1000 shuffled trials strand at least five articles; the observed result is unusual under this descriptive comparison.",
+      "family": "Distribution and benchmark",
+      "variant": "Discrete histogram with an observed-value marker and patterned highlighted tail",
+      "renderer": "Matplotlib PNG, 1800 by 1200 pixels",
+      "grain": "One connected degree-preserving shuffled network, then Spider-Man removed",
+      "rows": 1000,
+      "bins": {
+        "0": 235,
+        "1": 350,
+        "2": 248,
+        "3": 114,
+        "4": 44,
+        "5": 9
+      },
+      "palette": "Hard two-root cap, cobalt and orange; hatching, direct labels and observed-value annotation",
+      "scales": "Linear count y-axis from zero; discrete integer x-axis 0 to 5",
+      "caveat": "Shuffles are connected before removal. Exploratory finite-chain comparison; 9/1000 is an empirical count, not proof of a cause or a calibrated significance claim.",
+      "target": "docs/mockups/data-figures/shuffled-worlds.png"
+    }
+  ]
+}

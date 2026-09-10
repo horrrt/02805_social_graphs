@@ -48,7 +48,7 @@
       if (visible) visibleCount += 1;
     });
     filters.forEach(button => button.setAttribute('aria-pressed', String(button.dataset.filter === activeFilter)));
-    document.getElementById('visible-count').textContent = `Showing ${visibleCount} of ${mockups.length} full-page mockups`;
+    document.getElementById('visible-count').textContent = `Showing ${visibleCount} of ${mockups.length} visual concepts`;
     document.getElementById('empty-shortlist').hidden = visibleCount !== 0;
   }
 
@@ -88,10 +88,15 @@
     viewerImage.src = mockup.image;
     viewerImage.width = mockup.width;
     viewerImage.height = mockup.height;
-    viewerImage.alt = `Complete page for mockup ${id}: ${mockup.name}. ${mockup.collection === 'ux' ? 'UX principles' : mockup.inspiration || 'Original direction'}.`;
+    const isDataStory = mockup.kind === 'data-visualization';
+    viewerImage.alt = mockup.alt || `Complete page for mockup ${id}: ${mockup.name}. ${mockup.collection === 'ux' ? 'UX principles' : mockup.inspiration || 'Original direction'}.`;
     document.getElementById('viewer-title').textContent = `${String(id).padStart(2, '0')} · ${mockup.name}`;
-    document.getElementById('viewer-origin').textContent = mockup.collection === 'ux'
+    document.getElementById('viewer-origin').textContent = isDataStory ? 'Data visualization · verified source data' : mockup.collection === 'ux'
       ? 'UX principles' : mockup.inspiration ? `${mockup.inspiration} inspired` : 'Original direction';
+    canvas.setAttribute('aria-label', isDataStory ? 'Data visualization; scroll to inspect the figure' : 'Full-page design; scroll to read the complete page');
+    document.getElementById('viewer-note').textContent = isDataStory
+      ? 'Exact data figure · proposed interactions are described in the review notes. Use arrow keys to move between concepts; Escape to close.'
+      : 'Design concept · illustrative network and generated labels. Use arrow keys to move between mockups; Escape to close.';
     const position = ids.indexOf(id);
     document.getElementById('viewer-position').textContent = `${position + 1} / ${mockups.length}`;
     document.getElementById('previous-mockup').disabled = position === 0;

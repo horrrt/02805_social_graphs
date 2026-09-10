@@ -79,12 +79,14 @@ on at least one other group's post. Publishing the site does not send those mess
 
 ## Reviewing the design mockups
 
+[Data stories (47–49)](https://horrrt.github.io/02805_social_graphs/mockups/?collection=data-stories) explore the 277 removal tests, Black Widow’s stranded groups and Spider-Man’s shuffled comparison. Each includes a text data alternative and proposed interaction/UX notes. The figures are reproducible with `uv run --with matplotlib python scripts/render_data_story_figures.py`.
+
 <!-- screen-story-collections:start -->
 New collections: [Modern Disney](https://horrrt.github.io/02805_social_graphs/mockups/?collection=disney), [Netflix](https://horrrt.github.io/02805_social_graphs/mockups/?collection=netflix), [Marvel](https://horrrt.github.io/02805_social_graphs/mockups/?collection=marvel).
 <!-- screen-story-collections:end -->
 
 The [mockup gallery](https://horrrt.github.io/02805_social_graphs/mockups/) contains
-all 46 complete design concepts. Explore the new
+46 full-page design concepts and three exact data visualizations (49 concepts total). Explore the new
 [comic and comedy concepts (31–38)](https://horrrt.github.io/02805_social_graphs/mockups/?collection=comedy),
 the seven reference-inspired additions or the three [UX-principle concepts (28–30)](https://horrrt.github.io/02805_social_graphs/mockups/?collection=ux),
 open a full-page viewer, and save favourites in the current browser. Copy the
@@ -95,8 +97,9 @@ links and specific review notes; they are design proposals, not tested usability
 or accessibility claims.
 
 The gallery uses small, lazy-loaded previews and loads a full-resolution,
-lossless image when opened. These are static visual concepts, with illustrative
+lossless image when opened. The 46 page mockups are static visual concepts with illustrative
 network diagrams and generated labels that need correction before implementation.
+The three Data stories are exact, reproducible figures; their interactions are proposed, not implemented.
 
 ## Previewing the site locally
 
