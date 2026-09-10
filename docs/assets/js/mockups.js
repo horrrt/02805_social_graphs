@@ -106,6 +106,11 @@
     document.getElementById('viewer-rationale-label').textContent = mockup.rationaleLabel || 'UX rationale & review notes';
     document.getElementById('viewer-ux-summary').textContent = mockup.uxSummary || '';
     document.getElementById('viewer-review-note').textContent = mockup.reviewNote ? `Before implementation: ${mockup.reviewNote}` : '';
+    const correction = document.getElementById('viewer-correction');
+    if (correction) {
+      correction.textContent = mockup.correctionNotice || '';
+      correction.hidden = !mockup.correctionNotice;
+    }
     const sources = document.getElementById('viewer-ux-sources');
     sources.hidden = !(mockup.uxSources || []).length;
     sources.replaceChildren();
