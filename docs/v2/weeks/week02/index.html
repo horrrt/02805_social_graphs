@@ -1,0 +1,319 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <meta
+      name="description"
+      content="Marvel Transit Authority — an interactive data story from 303 Marvel Wikipedia articles."
+    />
+    <meta name="site-root" content="../../" />
+    <title>Marvel Transit Authority · Log–Log Arcade</title>
+    <link rel="stylesheet" href="../../../assets/css/apple.css" />
+    <link rel="icon" href="../../../assets/favicon.svg" type="image/svg+xml" />
+    <script>
+      document.documentElement.classList.add("js");
+    </script>
+  </head>
+  <body class="theme-apple page-transit">
+    <a class="skip" href="#main">Skip to content</a>
+    <header class="chrome" id="arcade-chrome">
+      <a class="arcade-wordmark" href="../../">LOG–LOG ARCADE</a
+      ><a href="#post">The post</a>
+    </header>
+    <main id="main" class="wrap">
+      <p id="app-status" class="status" role="status">
+        Loading the frozen snapshot…
+      </p>
+      <noscript
+        ><p class="note">
+          The interactive cabinets need JavaScript. The main findings and
+          methods are available below.
+        </p></noscript
+      >
+
+      <section class="hero">
+        <p class="eyebrow">Week 2 · Models &amp; null models · Connections and counterfactuals</p>
+        <h1>One article.<br /><span class="accent">Five lost connections.</span></h1>
+        <p class="intro">
+          A busy station is not always a fragile station. Close one and discover
+          who can no longer get home.
+        </p>
+        <div class="actions">
+          <a class="button quiet" href="#post">Just the post ›</a>
+        </div>
+        <div class="departure-board">
+          <h2>MARVEL TRANSIT AUTHORITY / SERVICE BOARD</h2>
+          <div class="departure-line">
+            <span>MAIN NETWORK</span><strong>277 STATIONS</strong
+            ><span id="service-state">NORMAL SERVICE</span>
+          </div>
+          <div class="departure-line">
+            <span>MORITURI ISLAND</span><strong>9 STATIONS</strong
+            ><span>SEPARATE LINE</span>
+          </div>
+          <div class="departure-line">
+            <span>ISOLATED ARTICLES</span><strong>17 STATIONS</strong
+            ><span>NO TRACKS</span>
+          </div>
+        </div>
+      </section>
+      <section class="section">
+        <div class="section-head">
+          <h2>First, predict the disruption.</h2>
+          <label
+            >Close a station<select id="closure-select">
+              <option value="Spider-Man">Spider-Man</option>
+              <option value="Hulk">Hulk</option>
+              <option value="Black_Widow_(Natasha_Romanova)">
+                Black Widow
+              </option>
+              <option value="Doctor_Strange">Doctor Strange</option>
+            </select></label
+          >
+        </div>
+        <div class="prediction" id="prediction"></div>
+        <div id="disruption-results" hidden>
+          <div class="board-results">
+            <h2 id="disruption-headline"></h2>
+            <p id="disruption-detail"></p>
+            <div id="stranded-list"></div>
+            <button id="restore-service" class="quiet">Restore service</button>
+          </div>
+          <div class="two-col" style="margin-top: 24px">
+            <div>
+              <h3>The comparison that matters</h3>
+              <p id="null-explanation"></p>
+              <div id="null-hist" class="histogram"></div>
+            </div>
+            <div class="note">
+              <h3>Same degrees. Different wiring.</h3>
+              <p>
+                The benchmark rewires the 277-station core while preserving each
+                station’s degree. Each starting network must be connected. Then
+                the same station is removed.
+              </p>
+              <p class="fine">
+                The 1,000 recorded draws are a degree-controlled benchmark, not
+                a probability of real-world failure. “Stranded” means outside
+                the largest remaining component.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+      <section class="section band">
+        <div class="section-head">
+          <h2>The interchange map</h2>
+          <span class="tag">16 hubs · schematic · undirected</span>
+        </div>
+        <p>
+          This is a readable overview of the 16 biggest interchanges. Select a
+          line to follow its actual links. The full journey planner below
+          includes every article.
+        </p>
+        <div id="line-chips" class="line-chips"></div>
+        <canvas
+          id="transit-map"
+          class="stage transit-map"
+          aria-label="Schematic map of real links among 16 high-degree articles. The selected line’s station list appears below."
+        ></canvas>
+        <p id="line-description" class="fine" role="status"></p>
+        <p class="fine">
+          Positions are not geography. Line colours are drawing aids, not
+          detected communities. The map intentionally omits smaller stations; no
+          full-network conclusion is inferred from this overview.
+        </p>
+      </section>
+      <section class="section" id="journey">
+        <div class="section-head">
+          <h2>Where would you like to go?</h2>
+          <span class="tag">Full 303-article planner</span>
+        </div>
+        <form id="route-form">
+          <div class="control-row">
+            <label>From<select id="route-from"></select></label
+            ><label>To<select id="route-to"></select></label
+            ><label
+              >Travel rules<select id="route-direction">
+                <option value="directed">Follow one-way article links</option>
+                <option value="undirected">Use either direction</option>
+              </select></label
+            ><button>Find a route</button>
+          </div>
+        </form>
+        <p class="fine">
+          The planner respects the active closure after its result is revealed.
+          Restore service to compare. It uses breadth-first search; every hop is
+          a real link in the selected graph.
+        </p>
+        <p id="route-status" class="status" role="status"></p>
+        <ol id="route-strip" class="route-strip"></ol>
+        <div class="actions">
+          <button class="quiet" id="route-isolate">
+            Try Baymax → Spider-Man</button
+          ><button class="quiet" id="route-island">
+            Try the nine-station island
+          </button>
+        </div>
+      </section>
+      <section id="post" class="section band post" aria-labelledby="post-title">
+        <p class="eyebrow">The post · Week 2 · Models &amp; null models</p>
+        <h2 id="post-title">Pull one hero. Who else gets stranded?</h2>
+        <div class="two-col">
+          <div>
+            <h3>What we asked</h3>
+            <p>
+              Does an article’s link count tell us how much the network falls
+              apart when that article disappears?
+            </p>
+            <h3>What we did</h3>
+            <p>
+              We took the 277-article connected core (1,421 undirected pairs),
+              removed each article in turn and counted the others left outside
+              the largest remaining group. Then we rewired the core 1,000 times,
+              keeping every article’s degree and starting connected, and removed
+              the same four articles in each rewired world.
+            </p>
+          </div>
+          <div>
+            <h3>What surprised us</h3>
+            <p>
+              The core mostly holds. Hulk, with 65 neighbours, strands nobody.
+              Black Widow, with 25, strands three. Spider-Man strands five, and
+              only 9 of the 1,000 degree-preserving rewires do that badly. The
+              damage sits in the specific wiring, not in the degree.
+            </p>
+          </div>
+        </div>
+        <figure>
+          <img
+            src="../../../weeks/week02/figures/removal_results_light.svg"
+            width="720"
+            height="346"
+            alt="Horizontal bar chart of other articles stranded after one removal: Spider-Man 5, Hulk 0, Black Widow 3, Doctor Strange 2."
+          />
+          <figcaption>
+            One article removed each time; the other 276 remain. The count is
+            how many of them lose their route to the largest remaining group.
+          </figcaption>
+        </figure>
+        <details>
+          <summary>Compared with 1,000 rewired worlds</summary>
+          <figure>
+            <img
+              src="../../../weeks/week02/figures/null_comparison_light.svg"
+              loading="lazy"
+              width="792"
+              height="576"
+              alt="Four histograms of stranded counts across 1,000 degree-preserving rewires, one per removed article, each with a dashed line at the real count. Spider-Man’s real 5 sits at the far right tail; Black Widow’s real 3 lies beyond every rewired value; Hulk’s 0 is the most common rewired outcome; Doctor Strange’s 2 appears in 85 of 1,000."
+            />
+            <figcaption>
+              Bars count rewired networks by how many articles the removal
+              strands; the dashed line marks the real result.
+              <a href="../../../assets/data/week02_null_draws.csv" download
+                >All 1,000 draws (CSV)</a
+              >
+            </figcaption>
+          </figure>
+        </details>
+      </section>
+      <section id="results" class="section" data-gated>
+        <p class="eyebrow">The takeaway</p>
+        <h2>Degree tells you how busy. Wiring tells you how fragile.</h2>
+        <div class="metrics">
+          <div class="metric">
+            <strong>5</strong
+            ><span>articles stranded after Spider-Man closes</span>
+          </div>
+          <div class="metric">
+            <strong>0</strong
+            ><span>after Hulk closes, despite 65 neighbours</span>
+          </div>
+          <div class="metric">
+            <strong>9 / 1,000</strong
+            ><span
+              >rewired draws strand at least five after Spider-Man closes</span
+            >
+          </div>
+        </div>
+        <p style="margin-top: 24px">
+          Black Widow strands three articles with only 25 neighbours. Doctor
+          Strange strands two with 57. The ordering changes when the question
+          shifts from “how many neighbours?” to “who depends on this
+          connection?”
+        </p>
+        <a href="../../../assets/data/week02_all_removals.csv" download
+          >Download all 277 removal results (CSV)</a
+        >
+      </section>
+      <section class="closing" aria-labelledby="closing-title">
+        <h2 id="closing-title">Evidence and details.</h2>
+        <div class="closing-grid">
+          <div>
+            <h3>What the data means</h3>
+            <p>
+              303 article entries and 1,784 directed links from the course’s
+              frozen 26 August 2026 snapshot. A link means one article links to
+              another within this roster. It does not measure friendship, hero
+              strength, popularity or the whole Marvel universe.
+            </p>
+            <a href="../../../assets/data/arcade_graph.json" download
+              >Download the snapshot and metrics (JSON)</a
+            >
+          </div>
+          <div>
+            <h3>Limits of the experiment</h3>
+            <p>
+              Only within-roster links are observed. Closing a station means
+              deleting an article node, not predicting a real outage. The route
+              drawn is one shortest path, not necessarily the only one. The
+              benchmark holds degrees fixed but changes other structure.
+            </p>
+          </div>
+        </div>
+        <details id="methods">
+          <summary>Methods and reproducibility</summary>
+          <p>
+            Closures operate on the simple undirected 277-node, 1,421-edge main
+            component. After one closure, 276 nodes remain. All four displayed
+            results are recomputed in-browser. The recorded benchmark has 1,000
+            connected degree-preserving rewires per tested article; each accepts
+            20 swaps per edge, with a separate 50-swaps-per-edge sensitivity
+            run. The 16-hub drawing uses an edge-disjoint greedy path
+            decomposition. Route finding includes all 303 nodes and explicitly
+            selects directed or undirected travel.
+          </p>
+          <p>
+            <a
+              href="https://github.com/horrrt/02805_social_graphs/tree/main/analysis"
+              >Analysis and source code on GitHub</a
+            >. All experiments run locally in your browser; the frozen data is
+            never edited.
+          </p>
+        </details>
+        <details>
+          <summary>AI use and authorship</summary>
+          <p>
+            Built with AI assistance for interface design, programming,
+            explanation drafts and test construction. Metrics come from the
+            provided snapshot and reproducible analysis; the games and metaphors
+            are authored presentation choices. Numerical checks compare
+            independent Python and browser implementations. The free-play tools are not course hand-ins.
+          </p>
+        </details>
+      </section>
+    </main>
+    <footer class="wrap footer">
+      <span
+        >Log–Log Legends · 02805 Social graphs and interactions · Fall 2026</span
+      ><span
+        ><a href="../../../">Version 1</a> / <a href="../../">Version 2</a> /
+        <a href="../../../mockups/">Design archive</a> /
+        <a href="../../weeks/week01/">Week 1</a> /
+        <a href="../../weeks/week02/">Week 2</a></span
+      >
+    </footer>
+    <script type="module" src="../../../assets/js/transit.js"></script>
+  </body>
+</html>

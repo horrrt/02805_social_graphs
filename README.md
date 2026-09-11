@@ -33,6 +33,27 @@ fails if the lobby, the free-play pages or the prediction logbook drift from
 it. To open a week: set its status to `live`, add its cabinet, and update the
 "exactly weeks … are live" assertion in the test.
 
+## Version 2 · the Apple edition
+
+Every arcade page exists a second time under `/v2/` (`/v2/`, `/v2/weeks/week01/`,
+`/v2/weeks/week02/`, `/v2/os/`, `/v2/trumps/`, `/v2/sound/`, `/v2/creature/`),
+restyled after design-archive concept 21 ("Connections, Reconsidered", modelled
+on apple.com) and Apple's Human Interface Guidelines. The two editions share
+every script, data file and number:
+
+- `docs/assets/css/apple.css` is the only new stylesheet; `docs/v2/` holds HTML only.
+- A `<meta name="site-root">` tag on each v2 page tells the shared chrome where
+  the v2 root is, so the logbook and navigation stay inside the edition while
+  data still loads from `docs/assets/data/`.
+- Canvas colours come from `--cv-*` custom properties read through `tone()` in
+  `docs/assets/js/cabinet.js`; `arcade.css` defines them with the original
+  values, `apple.css` with Apple's palette, and the tests check both.
+- The week-2 post uses light-background figure variants
+  (`removal_results_light.svg`, `null_comparison_light.svg`) written by the same
+  `analysis/week02_figures.py` run.
+
+See [PRESENTATION.md](PRESENTATION.md) for the design decisions behind the edition.
+
 The previous Baymax mission remains at `/play/`. The 49-concept design archive
 remains at `/mockups/`; those image mockups are separate from the working arcade.
 
@@ -61,7 +82,7 @@ python analysis/week01_facts.py
 python analysis/week01_figures.py
 python analysis/week01_presentation.py
 python analysis/week02_resilience.py
-python analysis/week02_figures.py
+python analysis/week02_figures.py   # dark and light variants
 python analysis/arcade_data.py
 python analysis/week01_packs.py
 python analysis/week02_transit.py
@@ -98,8 +119,9 @@ Tests cross-check all 277 browser removals against independently generated CSV
 results, Python path fixtures, exact stranded groups, triangle and coverage
 counts, connected degree-preserving rewires, random walks, text search, terminal
 commands, prediction bounds and PCM audio export. The site tests pin the lobby,
-the free-play pages and the logbook to the course schedule and check every
-fragment link. Browser review covers desktop
+the free-play pages and the logbook to the course schedule, check every
+fragment link, and hold the v2 edition to the same manifest. The theme tests
+check that every canvas colour the scripts read is defined by both stylesheets. Browser review covers desktop
 and phone layouts, actual playback/export, window controls and saved progress.
 
 ## Terminal examples

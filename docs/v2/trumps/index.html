@@ -1,0 +1,206 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <meta
+      name="description"
+      content="Hero Trumps — an interactive data story from 303 Marvel Wikipedia articles."
+    />
+    <meta name="site-root" content="../" />
+    <title>Hero Trumps · Log–Log Arcade</title>
+    <link rel="stylesheet" href="../../assets/css/apple.css" />
+    <link rel="icon" href="../../assets/favicon.svg" type="image/svg+xml" />
+    <script>
+      document.documentElement.classList.add("js");
+    </script>
+  </head>
+  <body class="theme-apple page-trumps">
+    <a class="skip" href="#main">Skip to content</a>
+    <header class="chrome" id="arcade-chrome">
+      <a class="arcade-wordmark" href="../">LOG–LOG ARCADE</a
+      ><a href="#results">Main results</a>
+    </header>
+    <main id="main" class="wrap">
+      <p id="app-status" class="status" role="status">
+        Loading the frozen snapshot…
+      </p>
+      <noscript
+        ><p class="note">
+          The interactive cabinets need JavaScript. The main findings and
+          methods are available below.
+        </p></noscript
+      >
+
+      <section class="hero">
+        <p class="eyebrow">Free play · Centrality · Not a post</p>
+        <h1>Pick your<br /><span class="accent">kind of power.</span></h1>
+        <p class="intro">
+          The loudest name. The busiest connector. The best bridge. These are
+          different kinds of importance. Let the cards argue.
+        </p>
+      </section>
+      <div id="prediction" class="prediction"></div>
+      <section class="section">
+        <div class="section-head">
+          <h2>Call the stat. Change the winner.</h2>
+          <span class="tag">All 303 real article cards</span>
+        </div>
+        <div class="control-row">
+          <label>Left card<select id="battle-left"></select></label
+          ><label>Right card<select id="battle-right"></select></label
+          ><label
+            >Winning stat<select id="battle-metric">
+              <option value="kin">Incoming links</option>
+              <option value="kout">Outgoing links</option>
+              <option value="degree">Undirected neighbours</option>
+              <option value="betweenness">Betweenness</option>
+              <option value="clustering">Local clustering</option>
+            </select></label
+          >
+        </div>
+        <div class="card-battle">
+          <div id="left-card"></div>
+          <span class="versus">VS</span>
+          <div id="right-card"></div>
+        </div>
+        <p id="battle-result" class="note" role="status"></p>
+        <p id="metric-explanation" class="fine"></p>
+      </section>
+      <section class="section band">
+        <div class="section-head">
+          <h2>Five cards. How far can you reach?</h2>
+          <span class="tag">Maximum-coverage challenge</span>
+        </div>
+        <p>
+          A card covers its own article plus all its undirected neighbours.
+          Draft up to five. Overlapping coverage counts only once.
+        </p>
+        <div class="control-row">
+          <label>Add to your team<select id="draft-select"></select></label
+          ><button id="draft-add">Draft this card</button
+          ><button class="quiet" id="draft-reset">Clear team</button
+          ><button class="quiet" id="draft-benchmark" data-gated>
+            Try the greedy benchmark
+          </button>
+        </div>
+        <div class="draft-slots" id="draft-slots"></div>
+        <p id="draft-status" class="status" role="status"></p>
+        <div class="split">
+          <canvas
+            id="coverage-map"
+            class="stage"
+            aria-label="Covered articles are highlighted. Exact coverage and uncovered article names appear beside the map."
+          ></canvas>
+          <div>
+            <div class="metric">
+              <strong id="coverage-count">0 / 303</strong
+              ><span>articles covered by your team</span>
+            </div>
+            <p id="draft-learning" class="note"></p>
+            <details>
+              <summary>Which articles remain uncovered?</summary>
+              <p id="uncovered-list" class="fine"></p>
+            </details>
+          </div>
+        </div>
+      </section>
+      <section class="section">
+        <div class="section-head">
+          <h2>The complete card index</h2>
+          <label
+            >Search cards<input
+              id="trumps-search"
+              type="search"
+              placeholder="Name or community number"
+          /></label>
+        </div>
+        <div id="trumps-table" class="table-scroll"></div>
+        <p class="fine">
+          Community labels are categorical, so they are never treated as winning
+          numbers. Louvain, seed 7, resolution 1, undirected snapshot.
+        </p>
+      </section>
+      <section id="results" class="section band" data-gated>
+        <p class="eyebrow">The takeaway</p>
+        <h2>“Important” needs a second word.</h2>
+        <p>
+          Spider-Man leads incoming links; Betsy Braddock leads outgoing links.
+          Betweenness asks about shortest-path brokerage. Clustering asks how
+          connected an article’s neighbours are to each other. A single
+          leaderboard hides these different questions.
+        </p>
+        <p>
+          The greedy five-card reference covers 184 / 303 articles. It is a
+          reproducible baseline, not a proven optimum. Covering all 303 with
+          five cards is impossible: each of the 17 isolates would require its
+          own card.
+        </p>
+      </section>
+      <section class="closing" aria-labelledby="closing-title">
+        <h2 id="closing-title">Evidence and details.</h2>
+        <div class="closing-grid">
+          <div>
+            <h3>What the data means</h3>
+            <p>
+              303 article entries and 1,784 directed links from the course’s
+              frozen 26 August 2026 snapshot. A link means one article links to
+              another within this roster. It does not measure friendship, hero
+              strength, popularity or the whole Marvel universe.
+            </p>
+            <a href="../../assets/data/arcade_graph.json" download
+              >Download the snapshot and metrics (JSON)</a
+            >
+          </div>
+          <div>
+            <h3>Limits of the experiment</h3>
+            <p>
+              All rankings are properties of this article graph. They do not
+              rank character strength or causal influence. Shortest paths are a
+              modelling choice. This is a free-play experiment, not a course post.
+            </p>
+          </div>
+        </div>
+        <details>
+          <summary>Methods and reproducibility</summary>
+          <p>
+            Degrees use the original directed graph or its simple undirected
+            collapse, as labelled. Betweenness is exact and normalized over all
+            303 nodes, computed with NetworkX 3.6.1. Local clustering is zero
+            for degree below two. Coverage is the union of closed one-hop
+            undirected neighbourhoods. The reference draft repeatedly chooses
+            the card adding most uncovered nodes, with deterministic ID
+            tie-breaking.
+          </p>
+          <p>
+            <a
+              href="https://github.com/horrrt/02805_social_graphs/tree/main/analysis"
+              >Analysis and source code on GitHub</a
+            >. All experiments run locally in your browser; the frozen data is
+            never edited.
+          </p>
+        </details>
+        <details>
+          <summary>AI use and authorship</summary>
+          <p>
+            Built with AI assistance for interface design, programming,
+            explanation drafts and test construction. Metrics come from the
+            provided snapshot and reproducible analysis; the games and metaphors
+            are authored presentation choices. Numerical checks compare
+            independent Python and browser implementations. The free-play tools are not course hand-ins.
+          </p>
+        </details>
+      </section>
+    </main>
+    <footer class="wrap footer">
+      <span
+        >Log–Log Legends · 02805 Social graphs and interactions · Fall 2026</span
+      ><span
+        ><a href="../../">Version 1</a> / <a href="../">Version 2</a> / <a href="../../mockups/">Design archive</a> /
+        <a href="../weeks/week01/">Week 1</a> /
+        <a href="../weeks/week02/">Week 2</a></span
+      >
+    </footer>
+    <script type="module" src="../../assets/js/trumps.js"></script>
+  </body>
+</html>

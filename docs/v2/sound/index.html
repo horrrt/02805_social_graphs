@@ -1,0 +1,234 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <meta
+      name="description"
+      content="Walk / Listen — an interactive data story from 303 Marvel Wikipedia articles."
+    />
+    <meta name="site-root" content="../" />
+    <title>Walk / Listen · Log–Log Arcade</title>
+    <link rel="stylesheet" href="../../assets/css/apple.css" />
+    <link rel="icon" href="../../assets/favicon.svg" type="image/svg+xml" />
+    <script>
+      document.documentElement.classList.add("js");
+    </script>
+  </head>
+  <body class="theme-apple page-sound">
+    <a class="skip" href="#main">Skip to content</a>
+    <header class="chrome" id="arcade-chrome">
+      <a class="arcade-wordmark" href="../">LOG–LOG ARCADE</a
+      ><a href="#results">Main results</a>
+    </header>
+    <main id="main" class="wrap">
+      <p id="app-status" class="status" role="status">
+        Loading the frozen snapshot…
+      </p>
+      <noscript
+        ><p class="note">
+          The interactive cabinets need JavaScript. The main findings and
+          methods are available below.
+        </p></noscript
+      >
+
+      <section class="hero">
+        <p class="eyebrow">Free play · Random walks · Not a post</p>
+        <h1>The links<br /><span class="accent">write the music.</span></h1>
+        <p class="intro">
+          One article. One note. At every step, a real link decides where the
+          melody goes next.
+        </p>
+      </section>
+      <div id="prediction" class="prediction"></div>
+      <section class="section">
+        <div class="section-head">
+          <h2>Set the walk in motion.</h2>
+          <span class="tag">Sound is off until you press Play</span>
+        </div>
+        <div class="control-row">
+          <label>Start at<select id="sound-start"></select></label
+          ><label
+            >Seed<input
+              id="sound-seed"
+              type="number"
+              min="0"
+              max="4294967295"
+              value="7"
+              step="1" /></label
+          ><label
+            >Notes<select id="sound-length">
+              <option>16</option>
+              <option selected>32</option>
+              <option>64</option>
+            </select></label
+          ><label
+            >Walk direction<select id="sound-direction">
+              <option value="undirected">Either direction</option>
+              <option value="directed">Follow article links</option>
+            </select></label
+          >
+        </div>
+        <div class="transport">
+          <button id="sound-play" disabled>Play this walk</button
+          ><button class="quiet" id="sound-stop" disabled>Stop</button
+          ><button class="quiet" id="sound-download" disabled>
+            Download WAV</button
+          ><label
+            >Volume<input
+              type="range"
+              id="sound-volume"
+              min="0"
+              max="0.6"
+              step="0.01"
+              value="0.18" /></label
+          ><label
+            >Tempo<select id="sound-tempo">
+              <option value="90">90 BPM</option>
+              <option value="120" selected>120 BPM</option>
+              <option value="150">150 BPM</option>
+            </select></label
+          >
+        </div>
+        <p id="sound-status" class="status" role="status"></p>
+        <p id="sound-now" class="sound-now" aria-live="off">
+          Waiting for a walk.
+        </p>
+        <canvas
+          id="sound-map"
+          class="stage"
+          aria-label="The current article and visited articles highlighted on the real graph. A numbered step list follows."
+        ></canvas>
+        <ol
+          id="walk-sequence"
+          class="walk-sequence"
+          aria-label="Walk step numbers"
+        ></ol>
+        <div id="walk-results" data-gated>
+          <div class="metrics">
+            <div class="metric">
+              <strong id="walk-visits">—</strong
+              ><span>distinct articles visited</span>
+            </div>
+            <div class="metric">
+              <strong id="walk-repeats">—</strong><span>return visits</span>
+            </div>
+            <div class="metric">
+              <strong id="walk-communities">—</strong
+              ><span>exploratory communities heard</span>
+            </div>
+          </div>
+          <details>
+            <summary>Read the melody without audio</summary>
+            <div id="walk-table" class="table-scroll"></div>
+          </details>
+        </div>
+      </section>
+      <section class="section band">
+        <div class="two-col">
+          <div>
+            <h2>What you are hearing</h2>
+            <p>
+              Higher-degree articles play higher notes on a logarithmic scale.
+              Each detected community receives one of four labelled synthetic
+              voices, reused across groups. Silence at an isolate is the data
+              speaking.
+            </p>
+          </div>
+          <div class="note">
+            <p>
+              <b>Try this:</b> start at Baymax. The walk plays its single
+              starting note and stops: there is no link to follow.
+            </p>
+            <p class="fine">
+              Sound is an encoding, not evidence by itself. The step table
+              carries every article, degree, community and pitch. The same seed
+              and settings produce the same walk.
+            </p>
+          </div>
+        </div>
+      </section>
+      <section id="results" class="section" data-gated>
+        <p class="eyebrow">The takeaway</p>
+        <h2>Local choices do not explore a network evenly.</h2>
+        <p>
+          A walk can return to the same hubs repeatedly while other articles
+          never get heard. In a connected undirected graph, the long-run
+          random-walk visitation distribution is proportional to degree. A short
+          melody is a demonstration, not proof that its observed frequencies
+          have converged.
+        </p>
+        <p>
+          The 17 isolates cannot be reached from elsewhere, and their walks stop
+          after the starting note. Directed walks may stop at other articles
+          with no outgoing links.
+        </p>
+      </section>
+      <section class="closing" aria-labelledby="closing-title">
+        <h2 id="closing-title">Evidence and details.</h2>
+        <div class="closing-grid">
+          <div>
+            <h3>What the data means</h3>
+            <p>
+              303 article entries and 1,784 directed links from the course’s
+              frozen 26 August 2026 snapshot. A link means one article links to
+              another within this roster. It does not measure friendship, hero
+              strength, popularity or the whole Marvel universe.
+            </p>
+            <a href="../../assets/data/arcade_graph.json" download
+              >Download the snapshot and metrics (JSON)</a
+            >
+          </div>
+          <div>
+            <h3>Limits of the experiment</h3>
+            <p>
+              The seed makes an example reproducible, not representative. Voice
+              assignment and pitch mapping are design choices. Communities are
+              one seeded Louvain partition. No autoplay, recording or external
+              music is used. This is a free-play experiment, not a course post.
+            </p>
+          </div>
+        </div>
+        <details>
+          <summary>Methods and reproducibility</summary>
+          <p>
+            Each next step is sampled uniformly from the current article’s
+            sorted neighbours using the seeded generator shared with the
+            terminal. Pitch is MIDI 48 + round(36 × log(1 + undirected degree) /
+            log(107)). Community modulo four selects sine, triangle, soft
+            sawtooth or soft square voices. Audio is synthesized locally with
+            Web Audio; WAV export uses the same schedule through
+            OfflineAudioContext.
+          </p>
+          <p>
+            <a
+              href="https://github.com/horrrt/02805_social_graphs/tree/main/analysis"
+              >Analysis and source code on GitHub</a
+            >. All experiments run locally in your browser; the frozen data is
+            never edited.
+          </p>
+        </details>
+        <details>
+          <summary>AI use and authorship</summary>
+          <p>
+            Built with AI assistance for interface design, programming,
+            explanation drafts and test construction. Metrics come from the
+            provided snapshot and reproducible analysis; the games and metaphors
+            are authored presentation choices. Numerical checks compare
+            independent Python and browser implementations. The free-play tools are not course hand-ins.
+          </p>
+        </details>
+      </section>
+    </main>
+    <footer class="wrap footer">
+      <span
+        >Log–Log Legends · 02805 Social graphs and interactions · Fall 2026</span
+      ><span
+        ><a href="../../">Version 1</a> / <a href="../">Version 2</a> / <a href="../../mockups/">Design archive</a> /
+        <a href="../weeks/week01/">Week 1</a> /
+        <a href="../weeks/week02/">Week 2</a></span
+      >
+    </footer>
+    <script type="module" src="../../assets/js/sonify.js"></script>
+  </body>
+</html>

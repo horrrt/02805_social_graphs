@@ -1,0 +1,217 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <meta
+      name="description"
+      content="MARVEL-OS 303 — an interactive data story from 303 Marvel Wikipedia articles."
+    />
+    <meta name="site-root" content="../" />
+    <title>MARVEL-OS 303 · Log–Log Arcade</title>
+    <link rel="stylesheet" href="../../assets/css/apple.css" />
+    <link rel="icon" href="../../assets/favicon.svg" type="image/svg+xml" />
+    <script>
+      document.documentElement.classList.add("js");
+    </script>
+  </head>
+  <body class="theme-apple page-os">
+    <a class="skip" href="#main">Skip to content</a>
+    <header class="chrome" id="arcade-chrome">
+      <a class="arcade-wordmark" href="../">LOG–LOG ARCADE</a
+      ><a href="#results">Main results</a>
+    </header>
+    <main id="main" class="wrap">
+      <p id="app-status" class="status" role="status">
+        Loading the frozen snapshot…
+      </p>
+      <noscript
+        ><p class="note">
+          The interactive cabinets need JavaScript. The main findings and
+          methods are available below.
+        </p></noscript
+      >
+
+      <section class="hero os-hero">
+        <p class="eyebrow">A machine for questioning a snapshot</p>
+        <h1>MARVEL-OS <span class="accent">303.</span></h1>
+        <p class="intro">
+          Open an app. Follow a link. Break a network. Every answer comes from
+          the same frozen world.
+        </p>
+      </section>
+      <div id="os-boot" class="boot-screen" role="status">
+        <span class="mono">MARVEL-OS / SNAPSHOT LOADER</span>
+        <p id="boot-line">Mounting the article roster…</p>
+        <button id="skip-boot" class="quiet">Skip boot animation</button>
+      </div>
+      <section
+        id="desktop"
+        class="desktop"
+        aria-label="MARVEL-OS desktop"
+        hidden
+      >
+        <div class="desktop-wallpaper" aria-hidden="true">
+          303<br /><span>ARTICLES. ONE OPERATING SYSTEM.</span>
+        </div>
+        <div id="desktop-icons" class="desktop-icons"></div>
+        <div id="window-layer" class="window-layer"></div>
+        <div class="taskbar">
+          <button class="quiet" id="os-launcher">All apps</button>
+          <div id="os-tasks" class="os-tasks"></div>
+          <span class="os-clock">26 AUG 2026 · FROZEN</span>
+        </div>
+      </section>
+      <p class="fine">
+        Drag a window’s title bar, or focus it and use Alt + arrow keys.
+        Minimize to the taskbar; maximize for more room. On small screens, apps
+        stack vertically. Escape closes the logbook, not your work.
+      </p>
+      <section class="section">
+        <div class="section-head">
+          <h2>The terminal speaks graph.</h2>
+          <span class="tag">Computed in your browser</span>
+        </div>
+        <div class="command-examples">
+          <button class="quiet" data-command="bfs baymax spider-man">
+            bfs baymax spider-man</button
+          ><button class="quiet" data-command="top --in 10">top --in 10</button
+          ><button class="quiet" data-command="rewire --swaps 20 --seed 7">
+            rewire --swaps 20 --seed 7</button
+          ><button class="quiet" data-command="strand hulk">strand hulk</button>
+        </div>
+        <p class="fine">
+          Commands only operate on this bundled snapshot. Type
+          <code>help</code> for the complete list. Quote names with spaces. Each
+          response names the graph it used.
+        </p>
+      </section>
+      <section class="section band">
+        <h2>Installed, not posted.</h2>
+        <div id="patch-notes" class="patch-notes">
+          <details open>
+            <summary>W01 / degrees.exe</summary>
+            <p>
+              All 303 roster entries, including isolates. Incoming and outgoing
+              links are separate measurements.
+            </p>
+          </details>
+          <details>
+            <summary>W02 / nullmodel.sim</summary>
+            <p>
+              Remove an article. Generate a seeded degree-preserving connected
+              rewire. Inspect a single alternate world alongside the recorded
+              ensemble in Transit.
+            </p>
+          </details>
+          <details>
+            <summary>Free play / whomatters.app and communities.app</summary>
+            <p>
+              Exact betweenness, local clustering and degree rankings. One
+              reproducible Louvain partition; algorithm labels are not canonical
+              Marvel teams.
+            </p>
+          </details>
+          <details>
+            <summary>Free play / walk player and creature</summary>
+            <p>
+              Open the sound and repair cabinets directly from the desktop.
+              Walks follow real links. Repairs are explicitly hypothetical.
+            </p>
+          </details>
+          <details>
+            <summary>Free play / Notepad and TF-IDF</summary>
+            <p>
+              Read and search the real short descriptions supplied with the
+              course roster. Full article bodies are not in this snapshot; the
+              app states that scope at every entry point.
+            </p>
+          </details>
+        </div>
+      </section>
+      <section id="results" class="section">
+        <p class="eyebrow">The takeaway</p>
+        <h2>The same snapshot can answer different questions.</h2>
+        <p>
+          Baymax cannot reach Spider-Man because Baymax has no links in this
+          roster. Spider-Man leads incoming links. Removing Hulk leaves the 276
+          other core nodes connected. Rewiring preserves degree while changing
+          the answers to path, triangle and removal questions.
+        </p>
+        <p>
+          The desktop contains working tools, not simulated terminal output.
+          Free-play apps are marked as experiments, not posts. Their inputs,
+          definitions and limitations travel with their results.
+        </p>
+      </section>
+      <section class="closing" aria-labelledby="closing-title">
+        <h2 id="closing-title">Evidence and details.</h2>
+        <div class="closing-grid">
+          <div>
+            <h3>What the data means</h3>
+            <p>
+              303 article entries and 1,784 directed links from the course’s
+              frozen 26 August 2026 snapshot. A link means one article links to
+              another within this roster. It does not measure friendship, hero
+              strength, popularity or the whole Marvel universe.
+            </p>
+            <a href="../../assets/data/arcade_graph.json" download
+              >Download the snapshot and metrics (JSON)</a
+            >
+          </div>
+          <div>
+            <h3>Limits of the experiment</h3>
+            <p>
+              The terminal is a graph command interpreter, not a shell. Its
+              local rewiring state lasts until reset or reload. Directed paths
+              always use original article links; undirected core experiments can
+              use the current rewired scenario. Short descriptions are
+              sufficient for a search demonstration but not a full-article NLP
+              hand-in.
+            </p>
+          </div>
+        </div>
+        <details>
+          <summary>Methods and reproducibility</summary>
+          <p>
+            Browser commands share the same tested breadth-first search,
+            connected-component, edge-swap and random-walk implementations as
+            the cabinets. Interactive rewiring starts from the original 277-node
+            core, rejects loops, duplicate edges and disconnected proposals, and
+            accepts up to 2,000 swaps. It is a seeded demonstration, not the
+            recorded 1,000-draw null ensemble or a claim of uniform sampling.
+            TF-IDF uses log term frequency, smoothed inverse document frequency
+            and cosine similarity over the 303 supplied descriptions.
+          </p>
+          <p>
+            <a
+              href="https://github.com/horrrt/02805_social_graphs/tree/main/analysis"
+              >Analysis and source code on GitHub</a
+            >. All experiments run locally in your browser; the frozen data is
+            never edited.
+          </p>
+        </details>
+        <details>
+          <summary>AI use and authorship</summary>
+          <p>
+            Built with AI assistance for interface design, programming,
+            explanation drafts and test construction. Metrics come from the
+            provided snapshot and reproducible analysis; the games and metaphors
+            are authored presentation choices. Numerical checks compare
+            independent Python and browser implementations. The free-play tools are not course hand-ins.
+          </p>
+        </details>
+      </section>
+    </main>
+    <footer class="wrap footer">
+      <span
+        >Log–Log Legends · 02805 Social graphs and interactions · Fall 2026</span
+      ><span
+        ><a href="../../">Version 1</a> / <a href="../">Version 2</a> / <a href="../../mockups/">Design archive</a> /
+        <a href="../weeks/week01/">Week 1</a> /
+        <a href="../weeks/week02/">Week 2</a></span
+      >
+    </footer>
+    <script type="module" src="../../assets/js/marvel-os.js"></script>
+  </body>
+</html>

@@ -73,6 +73,31 @@ packs on average, not 303/5.
 - Prediction scores are a game based on normalized numerical error, not a formal
   estimate of reader calibration.
 
+## Version 2 · the Apple edition
+
+The design archive's concept 21, "Connections, Reconsidered", took apple.com's
+iPhone page as its model. Version 2 applies that concept to every arcade page
+under `/v2/`, following the three principles Apple's Human Interface Guidelines
+name: clarity, deference and depth.
+
+- **Clarity.** One type stack (SF Pro through `-apple-system`), a strict scale
+  (hero 80/1.05, section 48/1.08, lead 21/1.38, body 17/1.47, caption 12), text
+  `#1d1d1f`, secondary `#6e6e73`, one accent `#0071e3`, system red `#ff3b30` for
+  stranded or closed. Headlines are sentence case and end with a period.
+- **Deference.** White pages with `#f5f5f7` bands, hairlines instead of boxes,
+  no ornament. The lobby hero shows the network itself, as the mockup does; the
+  drawn arcade room stays in version 1.
+- **Depth.** A translucent sticky navigation bar, rounded tiles that lift on
+  hover, and a macOS-style desktop for MARVEL-OS with traffic-light window
+  buttons and a translucent dock.
+- **Controls.** Pill buttons, 44 px minimum targets, chevron links, accordion
+  rows for evidence, native inputs tinted with `accent-color`, visible focus
+  rings, reduced motion respected, and a dark appearance through
+  `prefers-color-scheme`.
+- **Boundaries.** Numbers, methods, limitations and AI disclosures are the same
+  text as version 1. Only the presentation changes, and the tests hold both
+  editions to the same schedule manifest.
+
 ## Evidence and review
 
 The user’s remembered teacher-liked reference was **Web-Crawler by Capes & Edges**.

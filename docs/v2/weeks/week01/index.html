@@ -1,0 +1,343 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <meta
+      name="description"
+      content="Hero Packs — an interactive data story from 303 Marvel Wikipedia articles."
+    />
+    <meta name="site-root" content="../../" />
+    <title>Hero Packs · Log–Log Arcade</title>
+    <link rel="stylesheet" href="../../../assets/css/apple.css" />
+    <link rel="icon" href="../../../assets/favicon.svg" type="image/svg+xml" />
+    <script>
+      document.documentElement.classList.add("js");
+    </script>
+  </head>
+  <body class="theme-apple page-packs">
+    <a class="skip" href="#main">Skip to content</a>
+    <header class="chrome" id="arcade-chrome">
+      <a class="arcade-wordmark" href="../../">LOG–LOG ARCADE</a
+      ><a href="#post">The post</a>
+    </header>
+    <main id="main" class="wrap">
+      <p id="app-status" class="status" role="status">
+        Loading the frozen snapshot…
+      </p>
+      <noscript
+        ><p class="note">
+          The interactive cabinets need JavaScript. The main findings and
+          methods are available below.
+        </p></noscript
+      >
+
+      <section class="hero hero-split">
+        <div>
+          <p class="eyebrow">Week 1 · Networks · Degrees and distributions</p>
+          <h1>Every hero.<br /><span class="accent">Eventually.</span></h1>
+          <p class="intro">
+            Five cards in a pack. 303 to collect. Surely the famous ones are the
+            hardest to find?
+          </p>
+          <p>Open a few packs. The network has a different idea.</p>
+          <div class="actions">
+            <a class="button quiet" href="#post">Just the post ›</a>
+          </div>
+        </div>
+        <aside class="hero-aside">
+          <div class="big">303</div>
+          <p>
+            real article cards<br /><span class="fine"
+              >One frozen snapshot. Unequal odds.</span
+            >
+          </p>
+        </aside>
+      </section>
+      <div class="prediction" id="prediction"></div>
+      <section class="section" id="pack-machine">
+        <div class="section-head">
+          <h2>The pack machine</h2>
+          <span class="tag">Free · five draws · duplicates possible</span>
+        </div>
+        <div class="control-row">
+          <label
+            >Random seed<input
+              id="pack-seed"
+              type="number"
+              min="0"
+              max="4294967295"
+              value="7"
+              step="1" /></label
+          ><button id="open-pack" disabled>Open five cards</button
+          ><button id="reset-packs" class="quiet">Reset collection</button>
+        </div>
+        <p class="fine">
+          Chance per draw = (incoming links + 1) / 2,087. This rule makes
+          well-linked articles easier to draw; it is not a measure of fame.
+          Change the seed to start a new random sequence; your collection stays.
+        </p>
+        <p id="pack-status" class="status" role="status"></p>
+        <div id="pack-tray" class="pack-tray">
+          <p class="empty">Your first five cards are waiting.</p>
+        </div>
+        <div class="metrics">
+          <div class="metric">
+            <strong id="unique-count">0 / 303</strong
+            ><span>different cards collected</span>
+          </div>
+          <div class="metric">
+            <strong id="pull-count">0</strong
+            ><span>cards drawn, including duplicates</span>
+          </div>
+          <div class="metric">
+            <strong id="rare-count">0 / 58</strong
+            ><span>minimum-rate cards collected</span>
+          </div>
+        </div>
+      </section>
+      <section class="section band" data-gated>
+        <div class="section-head">
+          <h2>The long tail has a long memory.</h2>
+          <label
+            >Axis view<select id="degree-scale">
+              <option value="linear">Linear</option>
+              <option value="log">Log–log: incoming links + 1</option>
+            </select></label
+          >
+        </div>
+        <p>
+          Most articles receive very few links. One gets 106. The rare cards are
+          the ones tucked away in the tail of our collection, not the
+          celebrities.
+        </p>
+        <canvas
+          id="degree-chart"
+          class="stage"
+          aria-label="The distribution of incoming links across all 303 articles. A table follows."
+        ></canvas>
+        <div class="chart-key">
+          <span><i class="swatch"></i>Share of all 303 articles</span
+          ><span
+            ><i class="swatch alt"></i>Your weighted draws (after 20
+            cards)</span
+          >
+        </div>
+        <p class="fine">
+          Both series use percentages, but they answer different questions: how
+          common is a degree among articles, versus how often did your weighted
+          draws find it? Log view uses degree + 1 so the 58 zero-incoming
+          articles remain visible. Empty bins are omitted.
+        </p>
+        <details>
+          <summary>Read the distribution as a table</summary>
+          <div id="degree-table" class="table-scroll"></div>
+        </details>
+        <details>
+          <summary>Sketch your own distribution</summary>
+          <p class="fine">
+            Drag across the sketch to set a rough shape, or enter counts for
+            seven degree bins. Your sketch is an unscored thought experiment.
+          </p>
+          <canvas
+            id="sketch-chart"
+            class="stage"
+            tabindex="0"
+            aria-label="Sketch histogram. Equivalent editable counts for seven degree bins follow."
+          ></canvas>
+          <div id="sketch-inputs" class="sketch-grid"></div>
+          <button id="compare-sketch" class="quiet">
+            Compare with the snapshot
+          </button>
+          <p id="sketch-feedback" role="status"></p>
+        </details>
+      </section>
+      <section class="section">
+        <div class="section-head">
+          <h2>Your card index</h2>
+          <label
+            >Find an article<input
+              id="collection-search"
+              type="search"
+              placeholder="Try Baymax…"
+          /></label>
+        </div>
+        <div class="control-row">
+          <label
+            >Show<select id="collection-filter">
+              <option value="all">All 303 cards</option>
+              <option value="owned">Collected</option>
+              <option value="missing">Missing</option>
+              <option value="rare">58 minimum-rate cards</option>
+            </select></label
+          ><button id="more-cards" class="quiet">Show more cards</button>
+        </div>
+        <p id="collection-count" class="fine" role="status"></p>
+        <div id="collection-grid" class="collection-grid"></div>
+        <p class="fine">
+          Card art is typographic. Every name, degree and source link comes from
+          the roster.
+        </p>
+      </section>
+      <section id="post" class="section band post" aria-labelledby="post-title">
+        <p class="eyebrow">The post · Week 1 · Networks</p>
+        <h2 id="post-title">Who gets linked, and who does the linking?</h2>
+        <div class="two-col">
+          <div>
+            <h3>What we asked</h3>
+            <p>
+              Which articles get linked to, which ones do the linking, and who
+              is left out entirely? And does being famous make a card easy or
+              hard to draw?
+            </p>
+            <h3>What we did</h3>
+            <p>
+              We loaded all 303 roster entries before adding a single edge, so
+              the 17 isolates survive. Then we plotted in-degree and out-degree
+              on linear and log–log axes, and built a five-card pack rule where
+              each draw picks an article with weight (incoming links + 1) /
+              2,087.
+            </p>
+          </div>
+          <div>
+            <h3>What surprised us</h3>
+            <p>
+              The hubs are the easy cards. Spider-Man alone is linked by 106
+              articles, while 58 articles share the lowest drop rate, including
+              all 17 isolates. Finishing the set takes about 1,945 packs on
+              average. And the articles that link out most (Betsy Braddock, 28
+              outgoing links) are not the ones that get linked to most.
+            </p>
+          </div>
+        </div>
+        <figure>
+          <img
+            src="../../../weeks/week01/figures/degree_distributions.png"
+            width="2290"
+            height="1574"
+            alt="Four scatter plots of degree frequency P(k) against k + 1: in-degree on linear and log–log axes, out-degree on linear and log–log axes. In-degree has a long tail reaching 106; out-degree stops at 28."
+          />
+          <figcaption>
+            All 303 articles. The horizontal quantity is degree + 1 so
+            zero-degree articles stay visible on log axes. Visual straightness
+            alone does not establish a power law.
+          </figcaption>
+        </figure>
+        <details>
+          <summary>In-degree against out-degree</summary>
+          <figure>
+            <img
+              src="../../../weeks/week01/figures/in_vs_out.png"
+              loading="lazy"
+              width="1954"
+              height="1322"
+              alt="Scatter plot of in-degree against out-degree for all 303 articles with an in = out reference line. Spider-Man, Hulk, Wolverine and Doctor Strange sit high above the line; Betsy Braddock, Cloak and Dagger, Adam Warlock, U.S. Agent and Noh-Varr sit far to the right, below it."
+            />
+            <figcaption>
+              Two different populations: the most linked-to articles and the
+              most outward-linking ones barely overlap.
+            </figcaption>
+          </figure>
+        </details>
+      </section>
+      <section id="results" class="section" data-gated>
+        <p class="eyebrow">The takeaway</p>
+        <h2>The last few cards cost more than the first hundred.</h2>
+        <div class="metrics">
+          <div class="metric">
+            <strong>≈1,945</strong
+            ><span>five-card packs to finish, on average</span>
+          </div>
+          <div class="metric">
+            <strong>58</strong
+            ><span>equally rare cards, including all 17 isolates</span>
+          </div>
+          <div class="metric">
+            <strong>107×</strong
+            ><span>Spider-Man’s drop rate versus Baymax’s</span>
+          </div>
+        </div>
+        <p style="margin-top: 24px">
+          The expected wait is about 9,721 individual draws. Each minimum-rate
+          card has a 1 / 2,087 chance per draw. Isolates matter, but they are
+          not the whole bottleneck: 41 other articles share their drop rate.
+        </p>
+        <p>
+          Requiring the 17 isolates adds about 694 draws to the expected wait
+          compared with collecting only non-isolates under the same
+          probabilities. That is about 7.1% of the full expected wait.
+        </p>
+        <a class="button quiet" href="../../../play/"
+          >Bonus: can Baymax get home? ›</a
+        >
+      </section>
+      <section class="closing" aria-labelledby="closing-title">
+        <h2 id="closing-title">Evidence and details.</h2>
+        <div class="closing-grid">
+          <div>
+            <h3>What the data means</h3>
+            <p>
+              303 article entries and 1,784 directed links from the course’s
+              frozen 26 August 2026 snapshot. A link means one article links to
+              another within this roster. It does not measure friendship, hero
+              strength, popularity or the whole Marvel universe.
+            </p>
+            <a href="../../../assets/data/arcade_graph.json" download
+              >Download the snapshot and metrics (JSON)</a
+            >
+          </div>
+          <div>
+            <h3>Limits of the experiment</h3>
+            <p>
+              The drop rule is designed for learning. It does not model
+              purchases or a real trading-card product. A long-tailed plot alone
+              does not establish a power law. Collection progress is saved in
+              this browser and may be lost when storage is cleared.
+            </p>
+          </div>
+        </div>
+        <details id="methods">
+          <summary>Methods and reproducibility</summary>
+          <p>
+            The directed roster gives in-degree and out-degree. Five independent
+            draws per pack allow duplicates. The unequal coupon-collector
+            expectation is calculated by integrating the probability that at
+            least one card is still missing, checked against 20,000 independent
+            exponential-race simulations. Expected whole packs lie between
+            1,944.19 and 1,944.99; approximately 1,945 is a rounded
+            presentation, not an exact value. See analysis/week01_packs.py and
+            the downloadable week01_packs.json.
+          </p>
+          <p>
+            <a
+              href="https://github.com/horrrt/02805_social_graphs/tree/main/analysis"
+              >Analysis and source code on GitHub</a
+            >. All experiments run locally in your browser; the frozen data is
+            never edited.
+          </p>
+        </details>
+        <details>
+          <summary>AI use and authorship</summary>
+          <p>
+            Built with AI assistance for interface design, programming,
+            explanation drafts and test construction. Metrics come from the
+            provided snapshot and reproducible analysis; the games and metaphors
+            are authored presentation choices. Numerical checks compare
+            independent Python and browser implementations. The free-play tools are not course hand-ins.
+          </p>
+        </details>
+      </section>
+    </main>
+    <footer class="wrap footer">
+      <span
+        >Log–Log Legends · 02805 Social graphs and interactions · Fall 2026</span
+      ><span
+        ><a href="../../../">Version 1</a> / <a href="../../">Version 2</a> /
+        <a href="../../../mockups/">Design archive</a> /
+        <a href="../../weeks/week01/">Week 1</a> /
+        <a href="../../weeks/week02/">Week 2</a></span
+      >
+    </footer>
+    <script type="module" src="../../../assets/js/packs.js"></script>
+  </body>
+</html>

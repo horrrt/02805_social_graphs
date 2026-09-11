@@ -5,16 +5,17 @@
     <meta name="viewport" content="width=device-width,initial-scale=1" />
     <meta
       name="description"
-      content="The Log–Log Arcade: weekly posts by Log–Log Legends (DTU 02805) on a frozen network of 303 Marvel Wikipedia articles."
+      content="Connections, reconsidered: the Log–Log Arcade in its second edition. Weekly posts by Log–Log Legends (DTU 02805) on a frozen network of 303 Marvel Wikipedia articles."
     />
-    <title>The Log–Log Arcade · Log–Log Legends</title>
-    <link rel="stylesheet" href="assets/css/arcade.css" />
-    <link rel="icon" href="assets/favicon.svg" type="image/svg+xml" />
+    <meta name="site-root" content="./" />
+    <title>Connections, Reconsidered · Log–Log Legends</title>
+    <link rel="stylesheet" href="../assets/css/apple.css" />
+    <link rel="icon" href="../assets/favicon.svg" type="image/svg+xml" />
     <script>
       document.documentElement.classList.add("js");
     </script>
   </head>
-  <body class="">
+  <body class="theme-apple page-lobby">
     <a class="skip" href="#main">Skip to content</a>
     <header class="chrome" id="arcade-chrome">
       <a class="arcade-wordmark" href="./">LOG–LOG ARCADE</a
@@ -32,29 +33,37 @@
       >
 
       <section class="hero lobby-hero">
-        <p class="eyebrow">ONE FROZEN WORLD. ONE POST A WEEK.</p>
-        <h1>THE LOG–LOG<br /><span class="accent">ARCADE.</span></h1>
+        <p class="eyebrow">Version 2 · The Apple edition</p>
+        <h1>Connections, reconsidered.</h1>
         <p class="intro">
-          303 articles. Some get all the attention. Others can disappear without
-          a trace. Step inside, make a prediction, and find out what holds this
-          world together.
+          303 Marvel articles. 1,784 links between them. One frozen snapshot.
+          Every week we ask it a new question, and every answer is one you can
+          check.
         </p>
         <div class="actions">
-          <a class="button" href="weeks/week02/"
-            >This week · Transit Authority ↗</a
-          ><a class="button quiet" href="weeks/week01/">Week 1 · Hero Packs</a
-          ><a class="button quiet" href="#free-play">Free play ↓</a>
+          <a class="button" href="weeks/week02/">This week · Transit Authority</a
+          ><a class="chevron" href="weeks/week01/">Week 1 · Hero Packs ›</a
+          ><a class="chevron" href="#free-play">Free play ›</a>
         </div>
       </section>
-      <div class="room-sign">
-        <span>FREE PLAY · NO ACCOUNT</span><span>SNAPSHOT 26.08.2026</span>
-      </div>
       <canvas
         class="lobby-stage stage"
         id="lobby-canvas"
-        aria-label="An arcade room with eight cabinets, one per course week. Weeks 1 and 2 are switched on; weeks 3 to 8 wait under dust sheets until their course date. The same list follows as text."
+        data-scene="network"
+        aria-label="The whole 303-article network drawn as light dots and links. The five most linked-to articles are highlighted in blue and the 17 articles with no links at all appear as hollow red rings. The same facts follow as text."
       ></canvas>
-      <section id="weeks" aria-label="One cabinet per course week">
+      <p class="stage-caption fine">
+        277 articles in one connected core. Nine on an island of their own. 17
+        with no links at all, drawn as hollow rings.
+      </p>
+      <div class="room-sign">
+        <span>Free play · No account</span><span>Snapshot 26.08.2026</span>
+      </div>
+      <section id="weeks" class="section band" aria-label="One cabinet per course week">
+        <div class="section-head">
+          <h2>One post a week.</h2>
+          <span class="fine">The lobby mirrors the course schedule.</span>
+        </div>
         <ol class="cabinet-list">
           <li>
             <a data-week="1" class="cabinet-link" href="weeks/week01/">
@@ -125,58 +134,58 @@
         </div>
         <div class="experience-links">
           <a href="os/"
-            ><span class="eyebrow">OPERATE IT</span><b>MARVEL-OS 303 ↗</b>
+            ><span class="eyebrow">Operate it</span><b>MARVEL-OS 303 ›</b>
             <p>
               A desktop that runs on a graph. Real commands, draggable apps, and
               a snapshot you can interrogate.
             </p></a
           >
           <a href="trumps/"
-            ><span class="eyebrow">CHALLENGE IT</span><b>Hero Trumps ↗</b>
+            ><span class="eyebrow">Challenge it</span><b>Hero Trumps ›</b>
             <p>
               Stat battles and a five-card coverage puzzle. Fame and structural
               importance part ways.
             </p></a
           >
           <a href="os/?app=communities"
-            ><span class="eyebrow">PARTITION IT</span><b>Hidden Districts ↗</b>
+            ><span class="eyebrow">Partition it</span><b>Hidden Districts ›</b>
             <p>
               One Louvain partition of the network, seed 7. Its labels are not
               canonical Marvel teams.
             </p></a
           >
           <a href="sound/"
-            ><span class="eyebrow">LISTEN TO IT</span><b>Walk / Listen ↗</b>
+            ><span class="eyebrow">Listen to it</span><b>Walk / Listen ›</b>
             <p>
               One step, one note. A repeatable random walk turns local choices
               into a melody.
             </p></a
           >
           <a href="creature/"
-            ><span class="eyebrow">CARE FOR IT</span><b>Keep It Together ↗</b>
+            ><span class="eyebrow">Care for it</span><b>Keep It Together ›</b>
             <p>
               Break a connection, watch the consequences, then help the stranded
               pieces find their way back.
             </p></a
           >
           <a href="os/?app=notepad"
-            ><span class="eyebrow">READ IT</span><b>Inside the Articles ↗</b>
+            ><span class="eyebrow">Read it</span><b>Inside the Articles ›</b>
             <p>
               The 303 short roster descriptions behind the nodes, not full
               article bodies.
             </p></a
           >
           <a href="os/?app=search"
-            ><span class="eyebrow">ASK IT</span><b>Word Finder ↗</b>
+            ><span class="eyebrow">Ask it</span><b>Word Finder ›</b>
             <p>TF-IDF search over the same 303 descriptions.</p></a
           >
         </div>
       </section>
-      <section class="section">
+      <section class="section band">
         <div class="two-col">
           <div>
-            <p class="eyebrow">THE RULES ARE SIMPLE</p>
-            <h2>Guess. Play.<br />Leave with a better question.</h2>
+            <p class="eyebrow">The rules are simple</p>
+            <h2>Guess. Then look.</h2>
           </div>
           <div>
             <p>
@@ -194,7 +203,7 @@
         </div>
       </section>
       <section id="results" class="section" data-gated>
-        <p class="eyebrow">THE TAKEAWAY</p>
+        <p class="eyebrow">The takeaway</p>
         <h2>A link is a clue, not the whole story.</h2>
         <p>
           The frozen graph contains 303 articles in 19 weakly connected
@@ -203,10 +212,10 @@
           metric and comparison model change the answer.
         </p>
       </section>
-      <section class="section" id="about" aria-labelledby="about-title">
+      <section class="section band" id="about" aria-labelledby="about-title">
         <div class="two-col">
           <div>
-            <p class="eyebrow">WHO WE ARE</p>
+            <p class="eyebrow">Who we are</p>
             <h2 id="about-title">Log–Log Legends.</h2>
           </div>
           <div>
@@ -223,13 +232,13 @@
               <li>Niklas Johansen</li>
             </ul>
             <a href="https://github.com/horrrt/02805_social_graphs"
-              >The data, notebooks, and working ↗</a
+              >The data, notebooks, and working ›</a
             >
           </div>
         </div>
       </section>
       <section class="closing" aria-labelledby="closing-title">
-        <h2 id="closing-title">Behind the cabinet</h2>
+        <h2 id="closing-title">Evidence and details.</h2>
         <div class="closing-grid">
           <div>
             <h3>What the data means</h3>
@@ -239,7 +248,7 @@
               another within this roster. It does not measure friendship, hero
               strength, popularity or the whole Marvel universe.
             </p>
-            <a href="assets/data/arcade_graph.json" download
+            <a href="../assets/data/arcade_graph.json" download
               >Download the snapshot and metrics (JSON)</a
             >
           </div>
@@ -248,7 +257,8 @@
             <p>
               The arcade is an educational interpretation of a bounded article
               network. Free-play experiments are exploratory tools, not posts or
-              hand-ins.
+              hand-ins. This edition restyles the same pages after design
+              concept 21 in our archive; every number is unchanged.
             </p>
           </div>
         </div>
@@ -286,13 +296,13 @@
       <span
         >Log–Log Legends · 02805 Social graphs and interactions · Fall 2026</span
       ><span
-        ><a href="./">Arcade</a> / <a href="v2/">Version 2</a> /
+        ><a href="./">Version 2</a> / <a href="../">Version 1</a> /
         <a href="#free-play">Free play</a> /
-        <a href="mockups/">Design archive</a> /
+        <a href="../mockups/">Design archive</a> /
         <a href="weeks/week01/">Week 1</a> /
         <a href="weeks/week02/">Week 2</a></span
       >
     </footer>
-    <script type="module" src="assets/js/lobby.js"></script>
+    <script type="module" src="../assets/js/lobby.js"></script>
   </body>
 </html>

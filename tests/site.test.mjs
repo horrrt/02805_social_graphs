@@ -90,57 +90,61 @@ test("exactly weeks 1 and 2 are live, each with a cabinet on disk", () => {
   assert.equal(weekLabel(undefined), "FREE PLAY");
 });
 
+// Both editions of the lobby are pinned to the same manifest.
+const ROOTS = ["", "v2/"];
 test("every lobby card agrees with the manifest and only live weeks are links", () => {
-  const html = read("index.html");
-  // Cards must put data-week first; coming cards must not nest a <div>.
-  const cards = [
-    ...html.matchAll(/<(a|div) data-week="(\d)"([^>]*)>([\s\S]*?)<\/\1>/g),
-  ];
-  assert.equal(cards.length, WEEKS.length, "one card per course week");
-  cards.forEach((m, i) => {
-    const [, tag, n, attrs, body] = m,
-      w = WEEKS[i];
-    assert.equal(Number(n), w.n, "cards run in course order");
+  for (const root of ROOTS) {
+    const html = read(root + "index.html");
+    // Cards must put data-week first; coming cards must not nest a <div>.
+    const cards = [
+      ...html.matchAll(/<(a|div) data-week="(\d)"([^>]*)>([\s\S]*?)<\/\1>/g),
+    ];
+    assert.equal(cards.length, WEEKS.length, `${root}index.html: one card per course week`);
+    cards.forEach((m, i) => {
+      const [, tag, n, attrs, body] = m,
+        w = WEEKS[i];
+      assert.equal(Number(n), w.n, "cards run in course order");
+      assert(
+        decode(body).includes(w.courseTitle),
+        `${root}card ${w.n} names "${w.courseTitle}"`,
+      );
+      assert(
+        body.toLowerCase().includes(shortDate(w.date).toLowerCase()),
+        `${root}card ${w.n} shows its date`,
+      );
+      if (w.status === "live") {
+        assert.equal(tag, "a", `week ${w.n} is a link`);
+        assert(attrs.includes(`href="${w.cabinet.href}"`), attrs);
+        assert(body.includes(w.cabinet.name), `card ${w.n} names its cabinet`);
+      } else {
+        assert.equal(tag, "div", `week ${w.n} is not a link`);
+        assert(attrs.includes('aria-disabled="true"'), attrs);
+        assert(!attrs.includes("href="), `week ${w.n} has no href`);
+        assert.match(body, /coming/i);
+      }
+    });
     assert(
-      decode(body).includes(w.courseTitle),
-      `card ${w.n} names "${w.courseTitle}"`,
+      html.includes(`href="${currentWeek().cabinet.href}"`),
+      `${root}index.html links the current week`,
     );
-    assert(
-      body.toLowerCase().includes(shortDate(w.date).toLowerCase()),
-      `card ${w.n} shows its date`,
-    );
-    if (w.status === "live") {
-      assert.equal(tag, "a", `week ${w.n} is a link`);
-      assert(attrs.includes(`href="${w.cabinet.href}"`), attrs);
-      assert(body.includes(w.cabinet.name), `card ${w.n} names its cabinet`);
-    } else {
-      assert.equal(tag, "div", `week ${w.n} is not a link`);
-      assert(attrs.includes('aria-disabled="true"'), attrs);
-      assert(!attrs.includes("href="), `week ${w.n} has no href`);
-      assert.match(body, /coming/i);
+    assert(!html.includes("Six doors"), "no stale door count");
+    const shelf = html.match(/<section[^>]*id="free-play"[\s\S]*?<\/section>/)?.[0];
+    assert(shelf, `${root}index.html has a free-play shelf`);
+    for (const f of FREE_PLAY) {
+      assert(shelf.includes(`href="${f.href}"`), `${root}${f.name} is on the shelf`);
+      assert(
+        existsSync(join(DOCS, root, f.href.split("?")[0], "index.html")),
+        root + f.href,
+      );
     }
-  });
-  assert(
-    html.includes(`href="${currentWeek().cabinet.href}"`),
-    "the current week is linked from the lobby",
-  );
-  assert(!html.includes("Six doors"), "no stale door count");
-  const shelf = html.match(/<section[^>]*id="free-play"[\s\S]*?<\/section>/)?.[0];
-  assert(shelf, "a free-play shelf exists");
-  for (const f of FREE_PLAY) {
-    assert(shelf.includes(`href="${f.href}"`), `${f.name} is on the shelf`);
-    assert(
-      existsSync(join(DOCS, f.href.split("?")[0], "index.html")),
-      f.href,
-    );
+    for (const w of liveWeeks())
+      assert(
+        decode(read(join(root, w.cabinet.href, "index.html")))
+          .toLowerCase()
+          .includes(w.courseTitle.toLowerCase()),
+        `${root}week ${w.n} page names its course title`,
+      );
   }
-  for (const w of liveWeeks())
-    assert(
-      decode(read(join(w.cabinet.href, "index.html")))
-        .toLowerCase()
-        .includes(w.courseTitle.toLowerCase()),
-      `week ${w.n} page names its course title`,
-    );
 });
 
 test("no page or script claims a future week or a preview", () => {
@@ -236,7 +240,9 @@ const ARCADE_PAGES = [
 
 test("every arcade page declares the favicon and loads its stylesheets statically", () => {
   assert.deepEqual(
-    ARCADE_PAGES.filter((p) => !read(p).includes('rel="icon"')),
+    [...ARCADE_PAGES, ...ARCADE_PAGES.map((p) => "v2/" + p)].filter(
+      (p) => !existsSync(join(DOCS, p)) || !read(p).includes('rel="icon"'),
+    ),
     [],
     "pages without a favicon",
   );
@@ -256,4 +262,67 @@ test("the README serves the site on the same port as the launch config", () => {
   assert(readme.includes(`http.server ${port} `), `README uses port ${port}`);
   assert(readme.includes(`127.0.0.1:${port}/`), `README opens port ${port}`);
   assert(readme.includes("node --test 'tests/*.test.mjs'"));
+});
+
+test("every arcade page has a v2 twin that shares the scripts and loads the Apple stylesheet", () => {
+  const problems = [];
+  for (const page of ARCADE_PAGES) {
+    const path = "v2/" + page;
+    if (!existsSync(join(DOCS, path))) {
+      problems.push(`${path} missing`);
+      continue;
+    }
+    const html = read(path);
+    for (const needle of [
+      "assets/css/apple.css",
+      '<meta name="site-root"',
+      'class="theme-apple',
+    ])
+      if (!html.includes(needle)) problems.push(`${path}: no ${needle}`);
+    if (html.includes("arcade.css") || html.includes("os.css"))
+      problems.push(`${path}: still loads a version-1 stylesheet`);
+    for (const [, target] of html.matchAll(
+      /(?:src|href)="([^"#?]+\.(?:js|css|svg|png|json|csv))(?:[?#][^"]*)?"/g,
+    )) {
+      if (/^https?:/.test(target)) continue;
+      if (!existsSync(join(dirname(join(DOCS, path)), target)))
+        problems.push(`${path} → ${target}`);
+    }
+  }
+  assert.deepEqual(problems, []);
+  const v2 = join(DOCS, "v2");
+  assert.deepEqual(
+    (existsSync(v2) ? walk(v2) : []).filter((p) => /\.(js|mjs|css)$/.test(p)),
+    [],
+    "docs/v2 holds HTML only; scripts and styles stay shared",
+  );
+});
+
+test("the Apple stylesheet defines every canvas token the scripts read", () => {
+  const names = new Set();
+  for (const path of walk(join(DOCS, "assets/js")).filter(
+    (p) => p.endsWith(".js") && !/mockups|signal/.test(p),
+  ))
+    for (const [, name] of readFileSync(path, "utf8").matchAll(
+      /tone\("(--cv-[a-z0-9-]+)"/g,
+    ))
+      names.add(name);
+  assert(names.size > 0, "the scripts read their canvas colours through tone()");
+  const apple = existsSync(join(DOCS, "assets/css/apple.css"))
+    ? read("assets/css/apple.css")
+    : "";
+  assert.deepEqual(
+    [...names].filter((n) => !apple.includes(n + ":")),
+    [],
+    "tokens missing from apple.css",
+  );
+});
+
+test("the two editions link to each other", () => {
+  assert(read("index.html").includes('href="v2/"'), "v1 lobby links to v2");
+  assert(
+    existsSync(join(DOCS, "v2/index.html")) &&
+      read("v2/index.html").includes('href="../"'),
+    "v2 lobby links to v1",
+  );
 });
