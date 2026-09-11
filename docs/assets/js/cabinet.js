@@ -1,8 +1,32 @@
 import { predictionScore } from "./arcade-core.mjs";
 import { liveWeeks, weekLabel, FREE_PLAY_PREDICTIONS } from "./weeks.js";
 
-export const ROOT = new URL("../../", import.meta.url);
+// Scripts, data and fonts always live under docs/assets/, so ASSETS is docs/.
+// A page served from another root (the v2 theme under docs/v2/) declares
+// <meta name="site-root" content="../"> so navigation links resolve there.
+export const ASSETS = new URL("../../", import.meta.url);
+const rootMeta =
+  typeof document !== "undefined"
+    ? document.querySelector('meta[name="site-root"]')
+    : null;
+export const ROOT = rootMeta
+  ? new URL(rootMeta.content, document.baseURI)
+  : ASSETS;
 export const url = (path) => new URL(path, ROOT).href;
+export const asset = (path) => new URL(path, ASSETS).href;
+// Canvas colours are CSS custom properties named --cv-<area>-<role>. They are
+// read from body so the per-page theme-* palettes apply. The fallback is the
+// classic value, used when the token is missing or there is no document.
+export function tone(name, fallback) {
+  try {
+    const value = getComputedStyle(document.body)
+      .getPropertyValue(name)
+      .trim();
+    return value || fallback;
+  } catch {
+    return fallback;
+  }
+}
 export const $ = (selector, root = document) => root.querySelector(selector);
 export const $$ = (selector, root = document) => [
   ...root.querySelectorAll(selector),
@@ -23,7 +47,7 @@ export function load(name = "arcade_graph.json") {
   if (!cache.has(name))
     cache.set(
       name,
-      fetch(url("assets/data/" + name)).then((r) => {
+      fetch(asset("assets/data/" + name)).then((r) => {
         if (!r.ok)
           throw new Error(
             "The snapshot could not load. Reload the page to try again.",
@@ -269,8 +293,9 @@ export function drawNetwork(
   {
     active = new Set(),
     removed = new Set(),
+    hollow = new Set(),
     links = data.links,
-    color = "#baff5b",
+    color = tone("--cv-net-active", "#baff5b"),
     label = "",
   } = {},
 ) {
@@ -282,7 +307,7 @@ export function drawNetwork(
   );
   c.clearRect(0, 0, w, h);
   c.lineWidth = 0.6;
-  c.strokeStyle = "#53625850";
+  c.strokeStyle = tone("--cv-net-edge", "#53625850");
   for (const [a, b] of links) {
     if (
       removed.has(a) ||
@@ -298,13 +323,26 @@ export function drawNetwork(
     c.lineTo(...q);
     c.stroke();
   }
+  const node = tone("--cv-net-node", "#637167");
   for (const n of data.nodes) {
-    if (removed.has(n.id)) continue;
+    if (removed.has(n.id) || hollow.has(n.id)) continue;
     const [x, y] = positions.get(n.id);
-    c.fillStyle = active.has(n.id) ? color : "#637167";
+    c.fillStyle = active.has(n.id) ? color : node;
     c.beginPath();
     c.arc(x, y, active.has(n.id) ? 4 : 2, 0, Math.PI * 2);
     c.fill();
+  }
+  if (hollow.size) {
+    // Hollow nodes (the isolates) are rings drawn over the filled dots.
+    c.lineWidth = 1.5;
+    c.strokeStyle = tone("--cv-net-hollow", "#ff937c");
+    for (const n of data.nodes) {
+      if (!hollow.has(n.id) || removed.has(n.id)) continue;
+      const [x, y] = positions.get(n.id);
+      c.beginPath();
+      c.arc(x, y, 4, 0, Math.PI * 2);
+      c.stroke();
+    }
   }
   if (label) {
     c.fillStyle = color;

@@ -7,6 +7,7 @@ import {
   prediction,
   articleOptions,
   canvasStage,
+  tone,
   errorMessage,
 } from "./cabinet.js";
 import { outcome } from "./arcade-core.mjs";
@@ -32,7 +33,7 @@ try {
       cy = h * 0.53,
       r = Math.min(w * 0.29, h * 0.35),
       golden = 2.399963;
-    c.strokeStyle = "#416b58";
+    c.strokeStyle = tone("--cv-creature-outline", "#416b58");
     c.lineWidth = 2;
     c.beginPath();
     c.ellipse(cx, cy, r * 1.06, r, 0, 0, Math.PI * 2);
@@ -43,30 +44,30 @@ try {
       const x = cx + Math.cos(angle) * rad,
         y = cy + Math.sin(angle) * rad;
       c.fillStyle = repairs.some((edge) => edge.includes(id))
-        ? "#fff8a9"
-        : "#a7efa9";
+        ? tone("--cv-creature-repaired", "#fff8a9")
+        : tone("--cv-creature-dot", "#a7efa9");
       c.beginPath();
       c.arc(x, y, Math.max(1.4, Math.min(3, r / 42)), 0, Math.PI * 2);
       c.fill();
     });
     for (const x of [cx - r * 0.28, cx + r * 0.28]) {
-      c.fillStyle = "#102622";
+      c.fillStyle = tone("--cv-creature-eye", "#102622");
       c.beginPath();
       c.ellipse(x, cy - r * 0.15, r * 0.13, r * 0.16, 0, 0, Math.PI * 2);
       c.fill();
-      c.fillStyle = "#e8f7db";
+      c.fillStyle = tone("--cv-creature-glint", "#e8f7db");
       c.beginPath();
       c.arc(x + r * 0.025, cy - r * 0.19, r * 0.035, 0, Math.PI * 2);
       c.fill();
     }
-    c.strokeStyle = "#102622";
+    c.strokeStyle = tone("--cv-creature-mouth", "#102622");
     c.lineWidth = 4;
     c.beginPath();
     if (state.stranded.length)
       c.arc(cx, cy + r * 0.45, r * 0.2, Math.PI * 1.1, Math.PI * 1.9);
     else c.arc(cx, cy + r * 0.22, r * 0.25, 0.1, Math.PI - 0.1);
     c.stroke();
-    c.strokeStyle = "#a7efa9";
+    c.strokeStyle = tone("--cv-creature-leg", "#a7efa9");
     c.lineWidth = 3;
     for (const side of [-1, 1]) {
       c.beginPath();
@@ -81,12 +82,12 @@ try {
           75 +
           i * Math.min(57, (h - 120) / Math.max(1, state.groups.length - 2));
       group.forEach((id, j) => {
-        c.fillStyle = "#ffbd9a";
+        c.fillStyle = tone("--cv-creature-stranded", "#ffbd9a");
         c.beginPath();
         c.arc(x + j * 9, y, 4, 0, Math.PI * 2);
         c.fill();
       });
-      c.fillStyle = "#ffbd9a";
+      c.fillStyle = tone("--cv-creature-stranded-text", "#ffbd9a");
       c.font = "11px Barlow";
       c.textAlign = "center";
       c.fillText(
@@ -97,7 +98,7 @@ try {
       );
     });
     c.textAlign = "left";
-    c.fillStyle = "#b2d1be";
+    c.fillStyle = tone("--cv-creature-caption", "#b2d1be");
     c.font = "12px Barlow";
     c.fillText(
       `One dot = one present article. ${state.stranded.length} outside the body.`,

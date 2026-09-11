@@ -381,7 +381,6 @@ try {
         );
         drawNetwork(c, w, h, data, {
           active: new Set(group?.members || []),
-          color: "#76e4d3",
           label: "Exploratory community " + q("select").value,
         });
       });

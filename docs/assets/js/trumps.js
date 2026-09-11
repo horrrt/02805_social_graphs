@@ -67,7 +67,6 @@ try {
   const draw = canvasStage($("#coverage-map"), (c, w, h) =>
     drawNetwork(c, w, h, data, {
       active: coverage(adj, team),
-      color: "#d5adff",
       label: `${coverage(adj, team).size} covered · ${team.length}/5 cards`,
     }),
   );

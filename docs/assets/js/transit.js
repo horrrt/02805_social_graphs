@@ -8,6 +8,7 @@ import {
   prediction,
   articleOptions,
   canvasStage,
+  tone,
   errorMessage,
 } from "./cabinet.js";
 import { graph, bfs, outcome } from "./arcade-core.mjs";
@@ -26,15 +27,10 @@ try {
     drawMap = () => {};
   articleOptions($("#route-from"), data, "Spider-Man");
   articleOptions($("#route-to"), data, "Hulk");
-  const colors = [
-    "#005c68",
-    "#b23e29",
-    "#765096",
-    "#27784a",
-    "#956900",
-    "#254caa",
-    "#972d68",
-  ];
+  // One token holds all seven line colours as a comma-separated list.
+  const colors = tone("--cv-transit-lines", "#005c68,#b23e29,#765096,#27784a,#956900,#254caa,#972d68")
+    .split(",")
+    .map((s) => s.trim());
   $("#line-chips").innerHTML =
     transit.lines
       .map(
@@ -60,7 +56,7 @@ try {
     const renderLine = (line, active) => {
       c.strokeStyle = active
         ? colors[(line.id - 1) % colors.length]
-        : "#cbd2cb";
+        : tone("--cv-transit-line-inactive", "#cbd2cb");
       c.lineWidth = active ? 4 : 1;
       c.lineJoin = "round";
       for (let i = 1; i < line.stations.length; i++) {
@@ -97,9 +93,13 @@ try {
     for (const station of transit.stations) {
       const [x, y] = pt(station.id),
         active = !current || current.stations.includes(station.id);
-      c.fillStyle = "#f7f5ec";
+      c.fillStyle = tone("--cv-transit-station-fill", "#f7f5ec");
       c.strokeStyle =
-        station.id === closed ? "#a33d23" : active ? "#152b35" : "#849393";
+        station.id === closed
+          ? tone("--cv-transit-station-closed", "#a33d23")
+          : active
+            ? tone("--cv-transit-station-active", "#152b35")
+            : tone("--cv-transit-station-inactive", "#849393");
       c.lineWidth = active ? 2 : 1;
       c.beginPath();
       c.arc(x, y, station.id === closed ? 7 : 5, 0, Math.PI * 2);
@@ -127,14 +127,16 @@ try {
       lines.forEach((text, i) => {
         const yy = y + 20 + i * 14;
         const width = c.measureText(text).width;
-        c.fillStyle = "#f7f5ecee";
+        c.fillStyle = tone("--cv-transit-label-bg", "#f7f5ecee");
         c.fillRect(x - width / 2 - 3, yy - 11, width + 6, 14);
-        c.fillStyle = active ? "#152b35" : "#617271";
+        c.fillStyle = active
+          ? tone("--cv-transit-label-active", "#152b35")
+          : tone("--cv-transit-label-inactive", "#617271");
         c.fillText(text, x, yy);
       });
     }
     c.textAlign = "left";
-    c.fillStyle = "#465b61";
+    c.fillStyle = tone("--cv-transit-caption", "#465b61");
     c.font = "11px Barlow";
     c.fillText(
       "Circles = stations. Unmarked crossings are not connections.",

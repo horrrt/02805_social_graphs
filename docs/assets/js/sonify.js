@@ -11,6 +11,7 @@ import {
   drawNetwork,
   download,
   reduced,
+  tone,
   errorMessage,
 } from "./cabinet.js";
 import { graph, randomWalk } from "./arcade-core.mjs";
@@ -34,7 +35,6 @@ try {
     const seen = new Set(current >= 0 ? path.slice(0, current + 1) : []);
     drawNetwork(c, w, h, data, {
       active: seen,
-      color: "#efb3ff",
       label:
         current >= 0
           ? `Step ${current + 1} · ${shortName(byId.get(path[current]))}`
@@ -44,7 +44,7 @@ try {
       const n = byId.get(path[current]),
         x = (n.x / 930) * (w - 28) + 14,
         y = (n.y / 630) * (h - 50) + 20;
-      c.strokeStyle = "#fff";
+      c.strokeStyle = tone("--cv-sound-ring", "#fff");
       c.lineWidth = 2;
       c.beginPath();
       c.arc(x, y, 8, 0, Math.PI * 2);

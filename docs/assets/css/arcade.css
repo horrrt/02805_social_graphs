@@ -22,6 +22,32 @@
   --line: #465144;
   --ink: #112018;
   --hot: #ff937c;
+  /* Canvas tokens, --cv-<area>-<role>. Scripts read them through tone() in
+     cabinet.js and fall back to these same values when a token is missing. */
+  --cv-lobby-line: #465144;
+  --cv-lobby-fill-live: #233728;
+  --cv-lobby-fill: #1b221d;
+  --cv-lobby-stroke-live: #c2ff63;
+  --cv-lobby-stroke: #566154;
+  --cv-lobby-marquee-live: #c2ff63;
+  --cv-lobby-marquee: #72846e;
+  --cv-lobby-marquee-text-live: #112018;
+  --cv-lobby-marquee-text: #112018;
+  --cv-lobby-screen: #0c120e;
+  --cv-lobby-number-stroke-live: #c2ff63;
+  --cv-lobby-number-stroke: #778571;
+  --cv-lobby-number-live: #c2ff63;
+  --cv-lobby-number: #687460;
+  --cv-lobby-dot: #b7c2a8;
+  --cv-lobby-button-live: #ff937c;
+  --cv-lobby-button: #6b7263;
+  --cv-lobby-status-live: #c2ff63;
+  --cv-lobby-status: #8b9784;
+  --cv-lobby-sheet: #acb99b16;
+  --cv-net-active: #baff5b;
+  --cv-net-edge: #53625850;
+  --cv-net-node: #637167;
+  --cv-net-hollow: #ff937c;
 }
 * {
   box-sizing: border-box;
@@ -656,6 +682,12 @@ a.cabinet-link:hover {
   --line: #625139;
   --ink: #281a07;
   --hot: #ff9f86;
+  --cv-packs-text: #cebea1;
+  --cv-packs-grid: #625139;
+  --cv-packs-dot: #ffd15c;
+  --cv-packs-ring: #ff9f86;
+  --cv-packs-bar: #ffd15c;
+  --cv-packs-bar-actual: #ff9f86;
 }
 .theme-trumps {
   --bg: #161520;
@@ -665,6 +697,7 @@ a.cabinet-link:hover {
   --accent: #d5adff;
   --line: #514760;
   --ink: #221038;
+  --cv-net-active: #d5adff;
 }
 .pack-tray {
   display: grid;
@@ -812,6 +845,16 @@ a.cabinet-link:hover {
   --line: #bbc8c5;
   --ink: #fff;
   --hot: #a33d23;
+  --cv-transit-lines: #005c68,#b23e29,#765096,#27784a,#956900,#254caa,#972d68;
+  --cv-transit-line-inactive: #cbd2cb;
+  --cv-transit-station-fill: #f7f5ec;
+  --cv-transit-station-closed: #a33d23;
+  --cv-transit-station-active: #152b35;
+  --cv-transit-station-inactive: #849393;
+  --cv-transit-label-bg: #f7f5ecee;
+  --cv-transit-label-active: #152b35;
+  --cv-transit-label-inactive: #617271;
+  --cv-transit-caption: #465b61;
 }
 .departure-board {
   background: #142b35;
@@ -921,6 +964,16 @@ a.cabinet-link:hover {
   --accent: #a7efa9;
   --line: #416b58;
   --ink: #143020;
+  --cv-creature-outline: #416b58;
+  --cv-creature-repaired: #fff8a9;
+  --cv-creature-dot: #a7efa9;
+  --cv-creature-eye: #102622;
+  --cv-creature-glint: #e8f7db;
+  --cv-creature-mouth: #102622;
+  --cv-creature-leg: #a7efa9;
+  --cv-creature-stranded: #ffbd9a;
+  --cv-creature-stranded-text: #ffbd9a;
+  --cv-creature-caption: #b2d1be;
 }
 .theme-sound {
   --bg: #1d1832;
@@ -930,6 +983,8 @@ a.cabinet-link:hover {
   --accent: #efb3ff;
   --line: #625477;
   --ink: #301138;
+  --cv-net-active: #efb3ff;
+  --cv-sound-ring: #fff;
 }
 .creature-stage {
   height: 430px;

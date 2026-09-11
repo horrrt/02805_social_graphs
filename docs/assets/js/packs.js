@@ -6,6 +6,7 @@ import {
   load,
   prediction,
   canvasStage,
+  tone,
   errorMessage,
 } from "./cabinet.js";
 import { rng } from "./arcade-core.mjs";
@@ -166,8 +167,8 @@ try {
       H = h - top - bottom;
     c.clearRect(0, 0, w, h);
     c.font = "12px Barlow";
-    c.fillStyle = "#cebea1";
-    c.strokeStyle = "#625139";
+    c.fillStyle = tone("--cv-packs-text", "#cebea1");
+    c.strokeStyle = tone("--cv-packs-grid", "#625139");
     const maxY = 100;
     const X = (k) =>
       left + (log ? Math.log10(k + 1) / Math.log10(107) : k / 106) * W;
@@ -196,19 +197,19 @@ try {
     for (const row of packs.histogram) {
       const x = X(row.degree),
         y = Y((row.count / 303) * 100);
-      c.fillStyle = "#ffd15c";
+      c.fillStyle = tone("--cv-packs-dot", "#ffd15c");
       c.beginPath();
       c.arc(x, y, 4, 0, Math.PI * 2);
       c.fill();
       if (pulls >= 20 && drawn.get(row.degree)) {
-        c.strokeStyle = "#ff9f86";
+        c.strokeStyle = tone("--cv-packs-ring", "#ff9f86");
         c.lineWidth = 2;
         c.beginPath();
         c.arc(x, Y((drawn.get(row.degree) / pulls) * 100), 5, 0, Math.PI * 2);
         c.stroke();
       }
     }
-    c.fillStyle = "#cebea1";
+    c.fillStyle = tone("--cv-packs-text", "#cebea1");
     c.fillText(
       log ? "Incoming links + 1 (log scale)" : "Incoming links per article",
       left,
@@ -251,18 +252,18 @@ try {
     for (let i = 0; i < 7; i++) {
       const x = 35 + i * bw,
         height = ((h - 55) * guess[i]) / 160;
-      c.fillStyle = "#ffd15c";
+      c.fillStyle = tone("--cv-packs-bar", "#ffd15c");
       c.fillRect(x, h - 35 - height, bw * 0.38, height);
       if (compare) {
-        c.fillStyle = "#ff9f86";
+        c.fillStyle = tone("--cv-packs-bar-actual", "#ff9f86");
         const ah = ((h - 55) * actual[i]) / 160;
         c.fillRect(x + bw * 0.4, h - 35 - ah, bw * 0.38, ah);
       }
-      c.fillStyle = "#cebea1";
+      c.fillStyle = tone("--cv-packs-text", "#cebea1");
       c.font = "12px Barlow";
       c.fillText(String(guess[i]), x, h - 40 - height);
     }
-    c.fillStyle = "#cebea1";
+    c.fillStyle = tone("--cv-packs-text", "#cebea1");
     c.fillText(
       "Height = articles, 0–160. Horizontal bins are labelled below.",
       20,
