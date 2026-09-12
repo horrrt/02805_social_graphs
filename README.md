@@ -49,8 +49,9 @@ every script, data file and number:
   `docs/assets/js/cabinet.js`; `arcade.css` defines them with the original
   values, `apple.css` with Apple's palette, and the tests check both.
 - The week-2 post uses light-background figure variants
-  (`removal_results_light.svg`, `null_comparison_light.svg`) written by the same
-  `analysis/week02_figures.py` run.
+  (`removal_results_light.svg`, `null_comparison_light.svg`,
+  `null_survivors_light.svg`) written by the same `analysis/week02_figures.py`
+  run.
 
 See [PRESENTATION.md](PRESENTATION.md) for the design decisions behind the edition.
 
@@ -82,6 +83,7 @@ python analysis/week01_facts.py
 python analysis/week01_figures.py
 python analysis/week01_presentation.py
 python analysis/week02_resilience.py
+python analysis/week02_nullmodels.py
 python analysis/week02_figures.py   # dark and light variants
 python analysis/arcade_data.py
 python analysis/week01_packs.py

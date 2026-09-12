@@ -178,6 +178,72 @@
           the roster.
         </p>
       </section>
+      <section class="section" id="map">
+        <div class="section-head">
+          <h2>The whole roster, drawn</h2>
+          <span class="tag">303 ARTICLES · 19 PIECES · UNDIRECTED</span>
+        </div>
+        <p>
+          Ignore link direction and the roster is not one network but nineteen.
+          A giant component of 277 articles holds 91.4% of the roster. Then
+          there is one nine-article island, and 17 articles with no link in
+          either direction.
+        </p>
+        <figure>
+          <img
+            src="figures/map.png"
+            width="1024"
+            height="597"
+            alt="Force-directed drawing of the 303 articles. A single dense blue hairball fills the left two-thirds, with Spider-Man, Hulk, Wolverine, Doctor Strange, Deadpool and She-Hulk labelled as its darkest, largest nodes. To the right, separated, sit an orange nine-node island labelled Strikeforce: Morituri and a grid of 17 green dots labelled the 17 isolates."
+          />
+          <figcaption>
+            Node size and shade follow total degree; position comes from a
+            force-directed layout, so distance on the page is a drawing artefact
+            and not a measured quantity. The two groups on the right are drawn
+            apart because they genuinely are apart: no link joins them to the
+            giant component.
+          </figcaption>
+        </figure>
+        <h3>The islands outside the giant component</h3>
+        <p>
+          The nine-article island is a single 1986 limited series,
+          <em>Strikeforce: Morituri</em>. Its characters cite each other 22
+          times and never once cite anyone else in the roster — and nobody else
+          cites them. That is the shape a self-contained corner of a canon makes
+          in a link network: not a weak connection to the centre, but no
+          connection at all.
+        </p>
+        <p>
+          The 17 isolates are a different phenomenon. Baymax, Super Rabbit,
+          Miracleman, Yo-Yo Rodriguez and thirteen more sit on the roster
+          because a category page says they are Marvel superheroes, yet no
+          article in the category links to them and they link to nobody. They
+          are the reason we added every node before any edge; load the edge list
+          alone and 17 of the 303 characters silently disappear.
+        </p>
+        <details>
+          <summary>The island, drawn on its own</summary>
+          <figure>
+            <img
+              src="figures/island.png"
+              loading="lazy"
+              width="1024"
+              height="681"
+              alt="Directed drawing of the nine Strikeforce: Morituri characters. Radian sits at the centre with arrows to and from Blackthorn, Snapdragon, Vyking, Shear, Toxyn, Scaredycat and Scatterbrain; Backhand hangs off Vyking and Shear. Twenty-two arrows in total, none leaving the group."
+            />
+            <figcaption>
+              Nine characters, 22 arcs among themselves, zero to the other 294.
+              Radian is the island's own hub.
+            </figcaption>
+          </figure>
+        </details>
+        <p class="fine">
+          Components are computed on the undirected graph, so “island” means
+          unreachable in either direction. Following arrows only, the roster
+          splits further: 66 strongly connected components, the largest holding
+          229 articles.
+        </p>
+      </section>
       <section id="post" class="section post" aria-labelledby="post-title">
         <p class="eyebrow">THE POST · WEEK 1 · NETWORKS</p>
         <h2 id="post-title">Who gets linked, and who does the linking?</h2>
@@ -193,9 +259,11 @@
             <p>
               We loaded all 303 roster entries before adding a single edge, so
               the 17 isolates survive. Then we plotted in-degree and out-degree
-              on linear and log–log axes, and built a five-card pack rule where
+              on linear and log–log axes, drew the whole roster to find what sits
+              outside the giant component, and built a five-card pack rule where
               each draw picks an article with weight (incoming links + 1) /
-              2,087.
+              2,087. Finally we asked Wikipedia's API to re-derive three
+              articles' out-links and checked them against the snapshot.
             </p>
           </div>
           <div>
@@ -206,6 +274,11 @@
               all 17 isolates. Finishing the set takes about 1,945 packs on
               average. And the articles that link out most (Betsy Braddock, 28
               outgoing links) are not the ones that get linked to most.
+            </p>
+            <p>
+              The other surprise was structural: a nine-character island from a
+              single 1986 series that cites itself 22 times and the rest of the
+              roster never.
             </p>
           </div>
         </div>
@@ -237,6 +310,78 @@
               most outward-linking ones barely overlap.
             </figcaption>
           </figure>
+        </details>
+        <h3>Why those are different people</h3>
+        <p>
+          Because the two kinds of link are written by different people. An
+          article's in-degree is the sum of independent decisions made by every
+          other editor on the roster, and editors link to the characters they
+          already know about — so attention accumulates on the already-known and
+          the tail runs all the way to 106. Out-degree is authored once, by
+          whoever wrote that one page, and a page has a natural length. That
+          ceiling is why the out-degree tail stops at 28.
+        </p>
+        <p>
+          The two quantities come apart at the top for exactly that reason.
+          Spider-Man is linked by 106 articles and links out to 9. Betsy
+          Braddock links out to 28 and is linked by 7. Only three articles
+          (Deadpool, Doctor Strange, She-Hulk) make both top-ten lists. Across
+          all 303 the two degrees do correlate — Spearman 0.70, Pearson 0.50 —
+          but the correlation is carried by the middle of the roster, not by the
+          hubs.
+        </p>
+        <details>
+          <summary>Does the snapshot still match Wikipedia? (we checked)</summary>
+          <p>
+            The snapshot was frozen on 26 August 2026, and the edges were
+            harvested from the raw wiki-source, where an internal link appears as
+            <code>[[Page name]]</code>. So we re-derived a corner of it
+            ourselves: fetch the wiki-source through the API, extract the
+            <code>[[…]]</code> targets, keep the ones that resolve to a roster
+            article, and compare with the frozen edge list.
+          </p>
+          <div class="table-scroll">
+            <table>
+              <caption class="fine">
+                Out-links re-derived live from Wikipedia versus the frozen
+                snapshot.
+              </caption>
+              <thead>
+                <tr>
+                  <th scope="col">Article</th>
+                  <th scope="col">Live</th>
+                  <th scope="col">Snapshot</th>
+                  <th scope="col">Agree</th>
+                  <th scope="col">Only live</th>
+                  <th scope="col">Only snapshot</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <th scope="row">Betsy Braddock</th>
+                  <td>28</td><td>28</td><td>28</td><td>0</td><td>0</td>
+                </tr>
+                <tr>
+                  <th scope="row">Radian (Morituri)</th>
+                  <td>6</td><td>6</td><td>6</td><td>0</td><td>0</td>
+                </tr>
+                <tr>
+                  <th scope="row">Baymax</th>
+                  <td>0</td><td>0</td><td>0</td><td>0</td><td>0</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <p>
+            Exact agreement on all three, including the two interesting edge
+            cases: the roster's biggest out-linker, and an isolate whose zero is
+            a real zero rather than a loading mistake. Three articles out of 303
+            is a spot check, not a validation of the whole snapshot — but it does
+            confirm we understand how the edges were built. One practical note
+            for anyone repeating this: Wikipedia answers <code>403</code> unless
+            the request carries a <code>User-Agent</code> header naming your
+            client.
+          </p>
         </details>
       </section>
       <section id="results" class="section" data-gated>

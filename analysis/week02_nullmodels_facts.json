@@ -1,0 +1,427 @@
+{
+  "snapshot": "2026-08-26",
+  "analysisDate": "2026-09-12",
+  "population": {
+    "nodes": 303,
+    "arcs": 1784,
+    "edges": 1434,
+    "isolates": 17
+  },
+  "protocol": {
+    "draws": 1000,
+    "swapFactor": 20,
+    "firstSeed": 2026091200,
+    "python": "3.14.3",
+    "networkx": "3.6.1",
+    "graph": "The whole 303-article snapshot, collapsed to simple undirected links.",
+    "nulls": {
+      "swap": "Degree-preserving double edge swaps, 20 successful swaps per link. Keeps every article's degree exactly; scrambles who links to whom. Not conditioned on connectedness, so the island count is free to move.",
+      "er": "Erdos-Renyi G(n, m) with n = 303 and m = 1,434. Keeps only the node and link counts; every degree is redrawn by chance."
+    },
+    "statistics": "z = (real - null mean) / null sd. Empirical tails use (1 + draws at least as extreme) / (1 + draws), so 1,000 draws can never report p = 0. Tails are one-sided and unadjusted across the ten quantities; read the histograms before quoting a z.",
+    "limitations": "A finite swap chain approximates the null ensemble rather than sampling it uniformly. Quantities fixed by a null's construction have no z-score, which is the point, not a failure.",
+    "hashes": {
+      "week1_nodes.tsv": "a10ec309ac60ea8b72bcc1a18aba801414896676dac172619def0435e585391e",
+      "week1_edges.tsv": "87be017a35e8f27a1f1bc0912ebb5723c0084e460cb2dbd0d2abd0e83fc644b2"
+    }
+  },
+  "paradox": {
+    "meanDegreeAll": 9.465,
+    "meanDegreeLinked": 10.028,
+    "linked": 286,
+    "unbeaten": [
+      {
+        "id": "Spider-Man",
+        "name": "Spider-Man",
+        "degree": 106,
+        "friends": [
+          "Hulk",
+          "Wolverine_(character)",
+          "Doctor_Strange"
+        ]
+      },
+      {
+        "id": "Radian_(Morituri)",
+        "name": "Radian (Morituri)",
+        "degree": 6,
+        "friends": [
+          "Scaredycat",
+          "Snapdragon_(Morituri)",
+          "Toxyn"
+        ]
+      }
+    ],
+    "popularFriends": [
+      {
+        "id": "Spider-Man",
+        "name": "Spider-Man",
+        "degree": 106,
+        "namedAsFriend": 106,
+        "shareOfPairs": 0.037
+      },
+      {
+        "id": "Hulk",
+        "name": "Hulk",
+        "degree": 65,
+        "namedAsFriend": 65,
+        "shareOfPairs": 0.0227
+      },
+      {
+        "id": "Wolverine_(character)",
+        "name": "Wolverine (character)",
+        "degree": 63,
+        "namedAsFriend": 63,
+        "shareOfPairs": 0.022
+      },
+      {
+        "id": "Doctor_Strange",
+        "name": "Doctor Strange",
+        "degree": 57,
+        "namedAsFriend": 57,
+        "shareOfPairs": 0.0199
+      },
+      {
+        "id": "Deadpool",
+        "name": "Deadpool",
+        "degree": 41,
+        "namedAsFriend": 41,
+        "shareOfPairs": 0.0143
+      },
+      {
+        "id": "She-Hulk",
+        "name": "She-Hulk",
+        "degree": 37,
+        "namedAsFriend": 37,
+        "shareOfPairs": 0.0129
+      },
+      {
+        "id": "Phoenix_Force",
+        "name": "Phoenix (Guardians of the Galaxy)",
+        "degree": 32,
+        "namedAsFriend": 32,
+        "shareOfPairs": 0.0112
+      },
+      {
+        "id": "Scarlet_Witch",
+        "name": "Scarlet Witch",
+        "degree": 32,
+        "namedAsFriend": 32,
+        "shareOfPairs": 0.0112
+      }
+    ]
+  },
+  "quantities": [
+    {
+      "key": "avg_clustering",
+      "label": "Average clustering C",
+      "digits": 3,
+      "real": 0.307454,
+      "swap": {
+        "mean": 0.142929,
+        "sd": 0.008327,
+        "z": 19.8,
+        "pHigh": 0.001,
+        "pLow": 1.0,
+        "min": 0.119284,
+        "max": 0.171237,
+        "fixed": false
+      },
+      "er": {
+        "mean": 0.031534,
+        "sd": 0.002938,
+        "z": 93.9,
+        "pHigh": 0.001,
+        "pLow": 1.0,
+        "min": 0.021889,
+        "max": 0.04238,
+        "fixed": false
+      }
+    },
+    {
+      "key": "transitivity",
+      "label": "Transitivity",
+      "digits": 3,
+      "real": 0.182495,
+      "swap": {
+        "mean": 0.114959,
+        "sd": 0.004343,
+        "z": 15.6,
+        "pHigh": 0.001,
+        "pLow": 1.0,
+        "min": 0.100526,
+        "max": 0.131388,
+        "fixed": false
+      },
+      "er": {
+        "mean": 0.031474,
+        "sd": 0.002586,
+        "z": 58.4,
+        "pHigh": 0.001,
+        "pLow": 1.0,
+        "min": 0.023159,
+        "max": 0.038757,
+        "fixed": false
+      }
+    },
+    {
+      "key": "triangles",
+      "label": "Triangles",
+      "digits": 0,
+      "real": 1839,
+      "swap": {
+        "mean": 1158.446,
+        "sd": 43.761,
+        "z": 15.6,
+        "pHigh": 0.001,
+        "pLow": 1.0,
+        "min": 1013,
+        "max": 1324,
+        "fixed": false
+      },
+      "er": {
+        "mean": 141.892,
+        "sd": 11.882,
+        "z": 142.8,
+        "pHigh": 0.001,
+        "pLow": 1.0,
+        "min": 104,
+        "max": 176,
+        "fixed": false
+      }
+    },
+    {
+      "key": "assortativity",
+      "label": "Degree assortativity",
+      "digits": 3,
+      "real": -0.097693,
+      "swap": {
+        "mean": -0.119827,
+        "sd": 0.010828,
+        "z": 2.0,
+        "pHigh": 0.02398,
+        "pLow": 0.97702,
+        "min": -0.162732,
+        "max": -0.084059,
+        "fixed": false
+      },
+      "er": {
+        "mean": -0.008228,
+        "sd": 0.025333,
+        "z": -3.5,
+        "pHigh": 1.0,
+        "pLow": 0.001,
+        "min": -0.076225,
+        "max": 0.084215,
+        "fixed": false
+      }
+    },
+    {
+      "key": "neighbour_degree_edge",
+      "label": "Mean degree at the end of a random link",
+      "digits": 2,
+      "real": 22.08159,
+      "swap": {
+        "mean": 22.08159,
+        "sd": 0.0,
+        "z": null,
+        "pHigh": 1.0,
+        "pLow": 1.0,
+        "min": 22.08159,
+        "max": 22.08159,
+        "fixed": true
+      },
+      "er": {
+        "mean": 10.43062,
+        "sd": 0.07649,
+        "z": 152.3,
+        "pHigh": 0.001,
+        "pLow": 1.0,
+        "min": 10.23013,
+        "max": 10.69247,
+        "fixed": false
+      }
+    },
+    {
+      "key": "neighbour_degree_node",
+      "label": "Mean degree of a random character's random friend",
+      "digits": 2,
+      "real": 24.22329,
+      "swap": {
+        "mean": 24.19064,
+        "sd": 0.50487,
+        "z": 0.1,
+        "pHigh": 0.46853,
+        "pLow": 0.53247,
+        "min": 22.56946,
+        "max": 26.20619,
+        "fixed": false
+      },
+      "er": {
+        "mean": 10.43804,
+        "sd": 0.08184,
+        "z": 168.5,
+        "pHigh": 0.001,
+        "pLow": 1.0,
+        "min": 10.21368,
+        "max": 10.70232,
+        "fixed": false
+      }
+    },
+    {
+      "key": "friend_at_least",
+      "label": "Chance your random friend is at least as linked as you",
+      "digits": 3,
+      "real": 0.752887,
+      "swap": {
+        "mean": 0.763431,
+        "sd": 0.003055,
+        "z": -3.5,
+        "pHigh": 1.0,
+        "pLow": 0.001,
+        "min": 0.753249,
+        "max": 0.773037,
+        "fixed": false
+      },
+      "er": {
+        "mean": 0.635167,
+        "sd": 0.003837,
+        "z": 30.7,
+        "pHigh": 0.001,
+        "pLow": 1.0,
+        "min": 0.623324,
+        "max": 0.646317,
+        "fixed": false
+      }
+    },
+    {
+      "key": "unbeaten",
+      "label": "Characters no friend out-links",
+      "digits": 0,
+      "real": 2,
+      "swap": {
+        "mean": 1.261,
+        "sd": 0.567,
+        "z": 1.3,
+        "pHigh": 0.2048,
+        "pLow": 0.95005,
+        "min": 1,
+        "max": 4,
+        "fixed": false
+      },
+      "er": {
+        "mean": 16.678,
+        "sd": 2.886,
+        "z": -5.1,
+        "pHigh": 1.0,
+        "pLow": 0.001,
+        "min": 9,
+        "max": 27,
+        "fixed": false
+      }
+    },
+    {
+      "key": "components",
+      "label": "Connected components (islands)",
+      "digits": 0,
+      "real": 19,
+      "swap": {
+        "mean": 18.038,
+        "sd": 0.191,
+        "z": 5.0,
+        "pHigh": 0.03896,
+        "pLow": 1.0,
+        "min": 18,
+        "max": 19,
+        "fixed": false
+      },
+      "er": {
+        "mean": 1.019,
+        "sd": 0.137,
+        "z": 131.6,
+        "pHigh": 0.001,
+        "pLow": 1.0,
+        "min": 1,
+        "max": 2,
+        "fixed": false
+      }
+    },
+    {
+      "key": "giant_size",
+      "label": "Largest component",
+      "digits": 0,
+      "real": 277,
+      "swap": {
+        "mean": 285.924,
+        "sd": 0.383,
+        "z": -23.3,
+        "pHigh": 1.0,
+        "pLow": 0.001,
+        "min": 284,
+        "max": 286,
+        "fixed": false
+      },
+      "er": {
+        "mean": 302.981,
+        "sd": 0.137,
+        "z": -190.2,
+        "pHigh": 1.0,
+        "pLow": 0.001,
+        "min": 302,
+        "max": 303,
+        "fixed": false
+      }
+    },
+    {
+      "key": "hub_share",
+      "label": "Biggest hub's share of all link ends",
+      "digits": 4,
+      "real": 0.0369596,
+      "swap": {
+        "mean": 0.0369596,
+        "sd": 0.0,
+        "z": null,
+        "pHigh": 1.0,
+        "pLow": 1.0,
+        "min": 0.0369596,
+        "max": 0.0369596,
+        "fixed": true
+      },
+      "er": {
+        "mean": 0.0067141,
+        "sd": 0.0005238,
+        "z": 57.7,
+        "pHigh": 0.001,
+        "pLow": 1.0,
+        "min": 0.0055788,
+        "max": 0.0090656,
+        "fixed": false
+      }
+    },
+    {
+      "key": "avg_path_giant",
+      "label": "Average distance inside the largest component",
+      "digits": 3,
+      "real": 2.674332,
+      "swap": {
+        "mean": 2.630994,
+        "sd": 0.01481,
+        "z": 2.9,
+        "pHigh": 0.005,
+        "pLow": 0.996,
+        "min": 2.585646,
+        "max": 2.681364,
+        "fixed": false
+      },
+      "er": {
+        "mean": 2.777751,
+        "sd": 0.004316,
+        "z": -24.0,
+        "pHigh": 1.0,
+        "pLow": 0.001,
+        "min": 2.762901,
+        "max": 2.793391,
+        "fixed": false
+      }
+    }
+  ]
+}
