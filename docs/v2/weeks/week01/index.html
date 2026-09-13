@@ -16,8 +16,9 @@
       document.documentElement.classList.add("js");
     </script>
     <link href="../../../assets/css/story.css" rel="stylesheet" />
+    <link rel="stylesheet" href="../../../assets/css/design.css" />
   </head>
-  <body class="theme-apple page-packs guided-post">
+  <body class="theme-apple page-packs guided-post visual-design">
     <a class="skip" href="#main">Skip to content</a>
     <header class="chrome" id="arcade-chrome">
       <a class="arcade-wordmark" href="../../">LOG–LOG ARCADE</a
@@ -34,33 +35,43 @@
         </p></noscript
       >
       <section class="hero story-hero">
-        <div>
-          <p class="eyebrow">Week 1 · Networks</p>
-          <h1>Why do the same heroes keep turning up?</h1>
-          <p class="intro">
-            Imagine collecting one card for every Marvel character here. Each
-            pack gives you five cards, but some are much easier to draw than
-            others. Try a few packs and watch for repeats.
+        <div class="hero-copy">
+          <div>
+            <p class="eyebrow">Week 1 · Networks</p>
+            <h1>Why the same heroes keep turning up.</h1>
+            <p class="intro">
+              Imagine collecting one card for every Marvel character here. Each
+              pack gives you five cards, but some are much easier to draw than
+              others. Try a few packs and watch for repeats.
+            </p>
+            <nav aria-label="This post" class="story-nav">
+              <a class="active-step" href="#try-it">Try it</a
+              ><a href="#post">What happens</a><a href="#evidence">Go deeper</a>
+            </nav>
+          </div>
+          <p class="story-scope">
+            Each card is a Wikipedia article. A link is a clickable reference to
+            another article—not a friendship between characters. We use the same
+            303 articles throughout.
           </p>
-          <nav aria-label="This post" class="story-nav">
-            <a href="#try-it">Try it</a><a href="#post">What happens</a
-            ><a href="#evidence">Go deeper</a>
-          </nav>
         </div>
-        <p class="story-scope">
-          Each card is a Wikipedia article. A link is a clickable reference to
-          another article—not a friendship between characters. We use the same
-          303 articles throughout.
-        </p>
+        <figure class="post-hero-art">
+          <img
+            alt="Three collectible cards showing the actual article reference counts for Spider-Man, Hulk and Baymax."
+            height="440"
+            src="../../../assets/images/hero-packs.svg"
+            width="640"
+          />
+        </figure>
       </section>
       <span class="anchor" id="try-it"></span>
-      <section class="section" id="pack-machine">
+      <section class="section interaction-panel" id="pack-machine">
         <div class="section-head">
           <h2>Open a pack</h2>
           <span class="tag">Five cards per pack · you can get repeats</span>
         </div>
         <div class="control-row">
-          <button disabled="" id="open-pack">Open five cards</button>
+          <button disabled="" id="open-pack">Open a pack ↗</button>
           <details class="pack-options">
             <summary>Change or restart the draw</summary>
             <div class="control-row">
@@ -88,7 +99,7 @@
         </p>
         <p class="status" id="pack-status" role="status"></p>
         <div class="pack-tray" id="pack-tray">
-          <p class="empty">Your first five cards are waiting.</p>
+          <p class="empty">Open a pack to see your next five cards.</p>
         </div>
         <div class="metrics">
           <div class="metric">
@@ -164,7 +175,6 @@
         <p class="fine">
           Charts, data and methods for anyone who wants to check the details.
         </p>
-
         <details class="evidence-menu">
           <summary>Explore the explanations &amp; evidence</summary>
           <details class="evidence-item">

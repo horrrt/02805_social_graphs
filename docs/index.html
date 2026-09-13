@@ -15,8 +15,9 @@
       document.documentElement.classList.add("js");
     </script>
     <link href="assets/css/story.css" rel="stylesheet" />
+    <link rel="stylesheet" href="assets/css/design.css" />
   </head>
-  <body class="guided-lobby">
+  <body class="guided-lobby visual-design">
     <a class="skip" href="#main">Skip to content</a>
     <header class="chrome" id="arcade-chrome">
       <a class="arcade-wordmark" href="./">LOG–LOG ARCADE</a
@@ -33,36 +34,77 @@
         </p></noscript
       >
       <section class="hero lobby-hero">
-        <p class="eyebrow">Log–Log Legends · DTU 02805</p>
-        <h1>THE LOG–LOG<br /><span class="accent">ARCADE.</span></h1>
-        <p class="intro">
-          Explore how 303 Marvel Wikipedia articles connect. Start with a card
-          pack or a station closure. No network-science background needed.
-        </p>
+        <div class="hero-copy">
+          <p class="eyebrow">Log–Log Legends / DTU 02805</p>
+          <h1>Marvel,<br /><em>connected.</em></h1>
+          <p class="intro">
+            Open a pack. Close a station. See what the links between 303
+            Wikipedia articles reveal.
+          </p>
+          <div class="hero-actions">
+            <a class="button" href="weeks/week01/"
+              >Start with Hero Packs <span aria-hidden="true">↗</span></a
+            ><a class="text-link" href="#weeks">Browse the posts</a>
+          </div>
+          <p class="hero-note">
+            Interactive stories. No network-science background needed.
+          </p>
+        </div>
+        <figure class="hero-art">
+          <img
+            alt="The actual Marvel article network, with Spider-Man, Hulk and the isolated Baymax labelled. Lines represent article references, not friendships."
+            height="660"
+            src="assets/images/marvel-network.svg"
+            width="960"
+          />
+        </figure>
       </section>
       <section aria-label="One cabinet per course week" id="weeks">
         <h2>Weekly posts</h2>
         <ol class="cabinet-list">
           <li>
-            <a data-week="1" class="cabinet-link" href="weeks/week01/">
-              <span class="tag">Week 1 · 2 Sep · live</span>
-              <p class="course">Networks</p>
-              <h2>Hero Packs</h2>
-              <p>
-                Why you keep drawing the same heroes—and wait for the rare ones.
-              </p>
-            </a>
+            <a data-week="1" class="cabinet-link" href="weeks/week01/"
+              ><div class="post-cover cover-packs">
+                <img
+                  alt=""
+                  height="440"
+                  loading="lazy"
+                  src="assets/images/hero-packs.svg"
+                  width="640"
+                />
+              </div>
+              <div class="post-copy">
+                <span class="tag">Week 1 · 2 September</span>
+                <p class="course">Networks</p>
+                <h2>Hero Packs</h2>
+                <p>Why do you keep drawing the same heroes?</p>
+                <span class="post-action"
+                  >Open the story <span aria-hidden="true">↗</span></span
+                >
+              </div></a
+            >
           </li>
           <li>
-            <a data-week="2" class="cabinet-link current" href="weeks/week02/">
-              <span class="tag">Week 2 · 9 Sep · live · this week</span>
-              <p class="course">Models &amp; null models</p>
-              <h2>Transit Authority</h2>
-              <p>
-                Remove one article, then test the damage against shuffled
-                networks.
-              </p>
-            </a>
+            <a data-week="2" class="cabinet-link current" href="weeks/week02/"
+              ><div class="post-cover cover-transit">
+                <img
+                  alt=""
+                  height="440"
+                  loading="lazy"
+                  src="assets/images/transit-map.svg"
+                  width="640"
+                />
+              </div>
+              <div class="post-copy">
+                <span class="tag">Week 2 · 9 September · latest</span>
+                <p class="course">Models &amp; null models</p>
+                <h2>Transit Authority</h2>
+                <p>Which connections can the network live without?</p>
+                <span class="post-action"
+                  >Open the story <span aria-hidden="true">↗</span></span
+                >
+              </div></a
+            >
           </li>
         </ol>
         <details class="upcoming-weeks">
@@ -137,70 +179,111 @@
           </ol>
         </details>
       </section>
-      <details class="evidence-item" id="lobby-scene">
-        <summary>See the arcade</summary>
-        <canvas
-          aria-label="An arcade room with eight cabinets, one per course week. Weeks 1 and 2 are switched on; weeks 3 to 8 wait under dust sheets until their course date. The same list follows as text."
-          class="lobby-stage stage"
-          id="lobby-canvas"
-        ></canvas>
-        <div class="room-sign">
-          <span>FREE PLAY · NO ACCOUNT</span><span>SNAPSHOT 26.08.2026</span>
-        </div>
-        <section class="section" data-gated="" id="results">
-          <p class="eyebrow">THE TAKEAWAY</p>
-          <h2>The network in numbers</h2>
-          <p>
-            The frozen graph contains 303 articles in 19 weakly connected
-            components: a 277-article core, a nine-article island, and 17
-            isolates. Follow the cabinets to discover how direction, choice of
-            metric and comparison model change the answer.
-          </p>
-        </section>
-      </details>
+
       <section class="section" id="free-play">
         <div class="section-head">
-          <h2>Explore</h2>
-          <span class="fine">Extra experiments with the same data.</span>
+          <h2>A little more to play with.</h2>
+          <span class="fine">Side experiments from the same 303 articles.</span>
         </div>
         <div class="experience-links">
-          <a href="os/"
-            ><b>MARVEL-OS 303 ↗</b>
-            <p>Run graph commands and open the analysis tools.</p></a
+          <a class="play-card play-trumps" href="trumps/"
+            ><span aria-hidden="true" class="play-icon"
+              ><svg
+                fill="none"
+                stroke="currentColor"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="4"
+                viewbox="0 0 100 100"
+              >
+                <rect height="60" rx="7" width="42" x="18" y="12"></rect>
+                <rect height="60" rx="7" width="42" x="43" y="28"></rect>
+                <path d="M54 51h20M54 63h12"></path></svg></span
+            ><b>Hero Trumps</b>
+            <p>Pick your team. See which connections count.</p></a
           >
-          <a href="trumps/"
-            ><b>Hero Trumps ↗</b>
-            <p>
-              Compare centrality measures and try a five-card coverage puzzle.
-            </p></a
+
+          <a class="play-card play-sound" href="sound/"
+            ><span aria-hidden="true" class="play-icon"
+              ><svg
+                fill="none"
+                stroke="currentColor"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="4"
+                viewbox="0 0 100 100"
+              >
+                <path
+                  d="M12 50h8l8-25 12 52 12-63 12 73 10-43 8 6h10"
+                ></path></svg></span
+            ><b>Walk / Listen</b>
+            <p>Hear a walk through the network.</p></a
           >
-          <a href="os/?app=communities"
-            ><b>Hidden Districts ↗</b>
-            <p>Inspect one Louvain partition, with seed 7.</p></a
-          >
-          <a href="sound/"
-            ><b>Walk / Listen ↗</b>
-            <p>Turn a seeded random walk into a melody.</p></a
-          >
-          <a href="creature/"
-            ><b>Keep It Together ↗</b>
-            <p>Remove a node and try hypothetical repair links.</p></a
-          >
-          <a href="os/?app=notepad"
-            ><b>Inside the Articles ↗</b>
-            <p>Read the 303 short descriptions from the roster.</p></a
-          >
-          <a href="os/?app=search"
-            ><b>Word Finder ↗</b>
-            <p>Search the roster descriptions with TF-IDF.</p></a
+          <a class="play-card play-creature" href="creature/"
+            ><span aria-hidden="true" class="play-icon"
+              ><svg
+                fill="none"
+                stroke="currentColor"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="4"
+                viewbox="0 0 100 100"
+              >
+                <circle cx="50" cy="50" r="28"></circle>
+                <circle cx="40" cy="43" r="2"></circle>
+                <circle cx="60" cy="43" r="2"></circle>
+                <path
+                  d="M37 60q13 12 26 0M22 72l-9 12M78 72l9 12"
+                ></path></svg></span
+            ><b>Keep It Together</b>
+            <p>Remove an article. Help the pieces reconnect.</p></a
           >
         </div>
+        <details class="more-tools">
+          <summary>More tools &amp; the full network</summary>
+          <div class="tools-list">
+            <a href="os/"
+              ><b>MARVEL-OS 303 ↗</b>
+              <p>Run graph commands and open the analysis tools.</p></a
+            ><a href="os/?app=communities"
+              ><b>Hidden Districts ↗</b>
+              <p>Inspect one Louvain partition, with seed 7.</p></a
+            ><a href="os/?app=notepad"
+              ><b>Inside the Articles ↗</b>
+              <p>Read the 303 short descriptions from the roster.</p></a
+            ><a href="os/?app=search"
+              ><b>Word Finder ↗</b>
+              <p>Search the roster descriptions with TF-IDF.</p></a
+            >
+            <details class="evidence-item" id="lobby-scene">
+              <summary>See the arcade</summary>
+              <canvas
+                aria-label="An arcade room with eight cabinets, one per course week. Weeks 1 and 2 are switched on; weeks 3 to 8 wait under dust sheets until their course date. The same list follows as text."
+                class="lobby-stage stage"
+                id="lobby-canvas"
+              ></canvas>
+              <div class="room-sign">
+                <span>FREE PLAY · NO ACCOUNT</span
+                ><span>SNAPSHOT 26.08.2026</span>
+              </div>
+              <section class="section" data-gated="" id="results">
+                <p class="eyebrow">THE TAKEAWAY</p>
+                <h2>The network in numbers</h2>
+                <p>
+                  The frozen graph contains 303 articles in 19 weakly connected
+                  components: a 277-article core, a nine-article island, and 17
+                  isolates. Follow the cabinets to discover how direction,
+                  choice of metric and comparison model change the answer.
+                </p>
+              </section>
+            </details>
+          </div>
+        </details>
       </section>
-
-      <section aria-labelledby="about-title" class="section" id="about">
+      <section aria-labelledby="about-title" class="team-strip" id="about">
         <div class="two-col">
           <div>
-            <h2 id="about-title">Log–Log Legends.</h2>
+            <h2 id="about-title">Made by Log–Log Legends</h2>
           </div>
           <div>
             <p>Social Graphs and Interactions · DTU · Fall 2026</p>
@@ -215,8 +298,8 @@
           </div>
         </div>
       </section>
-      <section aria-labelledby="closing-title" class="closing">
-        <h2 id="closing-title">About the data</h2>
+      <section aria-labelledby="closing-title" class="closing site-reference">
+        <h2 id="closing-title">Sources &amp; methods</h2>
         <details>
           <summary>Snapshot &amp; limitations</summary>
           <div class="closing-grid">
@@ -242,7 +325,6 @@
             </div>
           </div>
         </details>
-
         <details>
           <summary>Methods and reproducibility</summary>
           <p>

@@ -16,8 +16,9 @@
       document.documentElement.classList.add("js");
     </script>
     <link href="../../../assets/css/story.css" rel="stylesheet" />
+    <link rel="stylesheet" href="../../../assets/css/design.css" />
   </head>
-  <body class="theme-apple page-transit guided-post">
+  <body class="theme-apple page-transit guided-post visual-design">
     <a class="skip" href="#main">Skip to content</a>
     <header class="chrome" id="arcade-chrome">
       <a class="arcade-wordmark" href="../../">LOG–LOG ARCADE</a
@@ -34,24 +35,34 @@
         </p></noscript
       >
       <section class="hero story-hero">
-        <p class="eyebrow">Week 2 · Models &amp; null models</p>
-        <h1>What happens when a hero disappears?</h1>
-        <p class="intro">
-          Imagine Wikipedia as a transport map: articles are stations, and links
-          are routes between them. If one station closes, can the others still
-          reach each other? Try Spider-Man, then Hulk.
-        </p>
-        <nav aria-label="This post" class="story-nav">
-          <a href="#try-it">Try it</a><a href="#post">What happens</a
-          ><a href="#evidence">Go deeper</a>
-        </nav>
-        <p class="story-scope">
-          Each station represents a Wikipedia article. A route represents a link
-          between articles, not a friendship between characters. The full
-          dataset has 303 articles.
-        </p>
+        <div class="hero-copy">
+          <p class="eyebrow">Week 2 · Models &amp; null models</p>
+          <h1>One hero gone. Who loses their way?</h1>
+          <p class="intro">
+            Imagine Wikipedia as a transport map: articles are stations, and
+            links are routes between them. If one station closes, can the others
+            still reach each other? Try Spider-Man, then Hulk.
+          </p>
+          <nav aria-label="This post" class="story-nav">
+            <a class="active-step" href="#try-it">Try it</a
+            ><a href="#post">What happens</a><a href="#evidence">Go deeper</a>
+          </nav>
+          <p class="story-scope">
+            Each station represents a Wikipedia article. A route represents a
+            link between articles, not a friendship between characters. The full
+            dataset has 303 articles.
+          </p>
+        </div>
+        <figure class="post-hero-art">
+          <img
+            alt="An illustrative station closure on a schematic of real links among six selected articles."
+            height="440"
+            src="../../../assets/images/transit-map.svg"
+            width="640"
+          />
+        </figure>
       </section>
-      <section class="section" id="try-it">
+      <section class="section interaction-panel" id="try-it">
         <div class="section-head">
           <h2>Choose a station to remove</h2>
           <label
@@ -158,7 +169,6 @@
         <p class="fine">
           Charts, data and methods for anyone who wants to check the details.
         </p>
-
         <details class="evidence-menu">
           <summary>Explore the explanations &amp; evidence</summary>
           <details class="evidence-item">
