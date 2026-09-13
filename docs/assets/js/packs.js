@@ -116,7 +116,7 @@ try {
       draws.push({ n, fresh });
     }
     $("#pack-tray").innerHTML = draws
-      .map(({ n, fresh }) => card(n, { index: data.nodes.indexOf(n), fresh }))
+      .map(({ n, fresh }) => card(n, { index: data.nodes.indexOf(n), fresh, simple: true }))
       .join("");
     $("#pack-status").textContent =
       `Pack ${Math.floor(pulls / 5)}: ${draws.filter((d) => d.fresh).length} new cards. ${draws.map((d) => d.n.name).join(", ")}.`;

@@ -388,3 +388,25 @@
   min-height: 48px;
   padding: 12px 0;
 }
+.beginner-comparison {
+  margin: 24px 0;
+}
+.beginner-comparison > div {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 24px;
+  justify-content: space-between;
+  padding: 16px 0;
+  border-bottom: 1px solid var(--line);
+}
+.beginner-comparison figcaption {
+  font-weight: 600;
+  color: var(--paper);
+}
+.try-help {
+  color: var(--muted);
+  font-size: 16px;
+}
+.skip-prediction {
+  margin-top: 16px;
+}

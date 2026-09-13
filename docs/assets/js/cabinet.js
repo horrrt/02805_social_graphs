@@ -240,6 +240,8 @@ export function prediction(host, config) {
     unit = "",
     explain = "",
     onReveal = () => {},
+    allowSkip = false,
+    plainLanguage = false,
   } = config;
   const previous = read().attempts[id];
   let revealed = false;
@@ -258,7 +260,9 @@ export function prediction(host, config) {
     revealed = true;
     host.classList.add("revealed");
     document.body.classList.add("unlocked");
-    feedback.textContent = `You guessed ${attempt.guess}${unit ? " " + unit : ""}. Result: ${answer}${unit ? " " + unit : ""}. ${attempt.score}/100. ${explain}`;
+    feedback.textContent = attempt
+      ? `You guessed ${attempt.guess}${unit ? " " + unit : ""}. Result: ${answer}${unit ? " " + unit : ""}. ${plainLanguage ? "" : `${attempt.score}/100. `}${explain}`
+      : `Result: ${answer}${unit ? " " + unit : ""}. ${explain}`;
     form.hidden = true;
     onReveal(attempt);
     updateProgress();
@@ -288,6 +292,14 @@ export function prediction(host, config) {
       feedback.textContent = error.message;
     }
   });
+  if (allowSkip) {
+    const skip = document.createElement("button");
+    skip.type = "button";
+    skip.className = "quiet skip-prediction";
+    skip.textContent = "Just show me";
+    form.append(skip);
+    skip.addEventListener("click", () => reveal(null));
+  }
   if (previous && previous.answer === answer) reveal(previous);
   return {
     get revealed() {

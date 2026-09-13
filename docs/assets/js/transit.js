@@ -206,24 +206,26 @@ try {
     prediction($("#prediction"), {
       id: "w2-close-" + entry.id.replace(/[^a-z0-9]/gi, "-"),
       week: 2,
-      prompt: `If ${entry.label} closes, how many of the other 276 core articles become stranded?`,
+      allowSkip: true,
+      plainLanguage: true,
+      prompt: `If ${entry.label} closes, how many other articles lose their route to the largest group?`,
       min: 0,
       max: 20,
       answer: actual.stranded.length,
       unit: "articles",
       explain:
-        "Stranded means outside the largest remaining component. The guess range is a game choice, not a theoretical maximum.",
+        "The cut-off articles can no longer reach the largest remaining group. Some may still connect to each other.",
       onReveal: () => {
         closed = entry.id;
         $("#service-state").textContent = "ONE CLOSURE";
         $("#disruption-results").hidden = false;
         $("#disruption-headline").textContent =
-          `${entry.label} closed. ${actual.stranded.length} ${actual.stranded.length === 1 ? "article" : "articles"} stranded.`;
+          `${entry.label} closed. ${actual.stranded.length} ${actual.stranded.length === 1 ? "article" : "articles"} cut off.`;
         $("#disruption-detail").textContent =
-          `${actual.largest.length} / ${actual.remaining} remaining articles stay in the main component. ${entry.degree} original neighbours. ${actual.groups.length - 1} separated ${actual.groups.length === 2 ? "group" : "groups"}.`;
+          `${actual.largest.length} / ${actual.remaining} remaining articles can still reach each other. ${entry.degree} links to neighbouring articles before removal. ${actual.groups.length - 1} separated ${actual.groups.length === 2 ? "group" : "groups"}.`;
         $("#stranded-list").innerHTML = actual.stranded.length
-          ? `<p><b>Outside the main component:</b> ${actual.stranded.map((id) => esc(name(id))).join(", ")}.</p>`
-          : "<p>Every remaining article still has a route to every other. High degree does not automatically mean fragile connectivity.</p>";
+          ? `<p><b>Cut off from the largest group:</b> ${actual.stranded.map((id) => esc(name(id))).join(", ")}.</p>`
+          : "<p>Every remaining article still has a route to every other. The other links provide alternative routes.</p>";
         const n = entry.null,
           total = n.histogram.reduce((s, r) => s + r.count, 0),
           atLeast = n.histogram
@@ -254,7 +256,7 @@ try {
     closed = null;
     $("#service-state").textContent = "NORMAL SERVICE";
     $("#disruption-headline").textContent =
-      "Service restored. All 277 core articles are connected.";
+      "Service restored. All 277 articles can reach each other again.";
     $("#disruption-detail").textContent =
       "The recorded closure comparison remains below. The map and route planner now use the original graph.";
     $("#stranded-list").innerHTML = "";
