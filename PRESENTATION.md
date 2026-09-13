@@ -1,6 +1,6 @@
 # Presentation direction: The Log–Log Arcade
 
-Make the visitor operate the evidence. Each cabinet has one question, an action
+Make the visitor operate the evidence. Each weekly post has one question, an action
 with a visible consequence, and a takeaway that can be repeated without the
 calculation. This is an authored presentation scorecard, not an official judging
 rubric or a claim that the site will win the competition.
@@ -119,3 +119,13 @@ checks cover the primary journeys at desktop and phone widths, including
 prediction persistence, card collection, window controls, closures, repair undo,
 search, audio playback and WAV download. This is a practical review, not a formal
 accessibility audit or teacher usability study.
+
+## Guided weekly posts
+
+Both editions lead with the question, one interaction, findings and a takeaway.
+Reading the post does not require a prediction. Full analyses, secondary tools,
+methods and disclosures remain in labelled expandable sections. Fragment links
+open the containing sections, preserving access from existing URLs.
+
+The homepage leads with published posts. Upcoming weeks are collapsed; extra
+experiments sit under Explore. The arcade and Apple palettes stay distinct.

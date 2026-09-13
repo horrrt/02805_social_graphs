@@ -19,9 +19,7 @@ export const asset = (path) => new URL(path, ASSETS).href;
 // classic value, used when the token is missing or there is no document.
 export function tone(name, fallback) {
   try {
-    const value = getComputedStyle(document.body)
-      .getPropertyValue(name)
-      .trim();
+    const value = getComputedStyle(document.body).getPropertyValue(name).trim();
     return value || fallback;
   } catch {
     return fallback;
@@ -145,14 +143,68 @@ export function updateProgress() {
       : "Your first guess starts the story.";
 }
 
+// Preserve deep links when their target is now inside a disclosure.
+export function revealHashTarget(hash = location.hash, forceScroll = false) {
+  if (!hash || hash === "#") return;
+  let id;
+  try {
+    id = decodeURIComponent(hash.slice(1));
+  } catch {
+    return;
+  }
+  const target = document.getElementById(id);
+  if (!target) return;
+  let opened = false;
+  for (let node = target; node; node = node.parentElement) {
+    if (node.tagName === "DETAILS" && !node.open) {
+      node.open = true;
+      opened = true;
+    }
+  }
+  if (opened || forceScroll)
+    requestAnimationFrame(() => target.scrollIntoView({ behavior: "instant" }));
+}
+
 export function setupChrome() {
+  revealHashTarget();
+  const status = $("#app-status");
+  if (status) {
+    const ready = new MutationObserver(() => {
+      if (!status.hidden) return;
+      ready.disconnect();
+      // Data loading can insert controls above a deep-linked section.
+      document.fonts.ready.then(() => revealHashTarget(location.hash, true));
+    });
+    ready.observe(status, { attributes: true, attributeFilter: ["hidden"] });
+  }
+  window.addEventListener("hashchange", () => revealHashTarget());
+  document.addEventListener("click", (event) => {
+    const link = event.target.closest?.("a[href]");
+    if (
+      !link ||
+      event.defaultPrevented ||
+      event.button !== 0 ||
+      event.metaKey ||
+      event.ctrlKey ||
+      event.shiftKey ||
+      event.altKey
+    )
+      return;
+    const target = new URL(link.href);
+    if (
+      target.origin === location.origin &&
+      target.pathname === location.pathname &&
+      target.search === location.search
+    )
+      revealHashTarget(target.hash);
+  });
   const host = $("#arcade-chrome");
   if (host)
-    host.innerHTML = `<a class="arcade-wordmark" href="${url("")}">LOG–LOG <b>ARCADE</b></a><nav aria-label="Arcade navigation"><a href="${url("os/")}">MARVEL-OS</a><button class="quiet" data-progress id="open-logbook">LOGBOOK 0/${liveWeeks().length}</button><a class="back-link" href="${url("")}">Back to arcade</a></nav>`;
+    host.innerHTML = `<a class="arcade-wordmark" href="${url("")}">LOG–LOG <b>ARCADE</b></a><nav aria-label="Arcade navigation"><a href="${url("#weeks")}">Posts</a><a href="${url("#free-play")}">Explore</a><button class="quiet" data-progress id="open-logbook">LOGBOOK 0/${liveWeeks().length}</button></nav>`;
   if (!$("#logbook"))
     document.body.insertAdjacentHTML(
       "beforeend",
-      `<dialog id="logbook" aria-labelledby="logbook-title"><div class="dialog-top"><h2 id="logbook-title">Your calibration log</h2><button id="close-logbook">Close</button></div><p id="score-mean"></p><ol class="score-list" id="score-list"></ol><p class="fine">Scores reward numerical prediction accuracy. This is a game score, not a formal measure of calibration. Only your first guess per challenge counts; practice replays cannot overwrite it.</p><p class="fine" id="storage-note">Saved only in this browser. No account, public leaderboard or data upload.</p><button class="quiet" id="export-logbook">Download my log</button><button class="quiet" id="reset-logbook">Reset my log</button></dialog>`,
+      `<dialog id="logbook" aria-labelledby="logbook-title"><div class="dialog-top"><h2 id="logbook-title">Your predictions</h2><button id="close-logbook">Close</button></div><p id="score-mean"></p><ol class="score-list" id="score-list"></ol><p class="fine">Scores reward numerical prediction accuracy. This is a game score, not a formal measure of calibration. Only your first guess per challenge counts; practice replays cannot overwrite it.</p><p class="fine" id="storage-note">Saved only in this browser. No account, public leaderboard or data upload.</p><button class="quiet" id="export-logbook">Download my log</button><button class="quiet" id="reset-logbook">Reset my log</button></dialog>`,
     );
   $("#open-logbook")?.addEventListener("click", () => {
     updateProgress();
@@ -191,7 +243,7 @@ export function prediction(host, config) {
   } = config;
   const previous = read().attempts[id];
   let revealed = false;
-  host.innerHTML = `<div class="prediction-label">PREDICT → REVEAL → LEARN <span>${weekLabel(week)}</span></div><h2>${esc(prompt)}</h2><form class="guess-form"><label for="guess-${esc(id)}">Your estimate ${esc(unit)} <span>${min}–${max}</span></label><div class="guess-row"><input id="guess-${esc(id)}" name="guess" type="number" min="${min}" max="${max}" step="${step}" value="${previous?.guess ?? Math.round((max + min) / 2 / step) * step}" required><input class="guess-range" type="range" aria-label="Adjust your estimate" min="${min}" max="${max}" step="${step}" value="${previous?.guess ?? Math.round((max + min) / 2 / step) * step}"><button type="submit">${previous ? "Replay reveal" : "Lock my guess"}</button></div></form><p class="guess-feedback" role="status" aria-live="polite"></p>`;
+  host.innerHTML = `<div class="prediction-label">Make a prediction <span>${weekLabel(week)}</span></div><h2>${esc(prompt)}</h2><form class="guess-form"><label for="guess-${esc(id)}">Your estimate ${esc(unit)} <span>${min}–${max}</span></label><div class="guess-row"><input id="guess-${esc(id)}" name="guess" type="number" min="${min}" max="${max}" step="${step}" value="${previous?.guess ?? Math.round((max + min) / 2 / step) * step}" required><input class="guess-range" type="range" aria-label="Adjust your estimate" min="${min}" max="${max}" step="${step}" value="${previous?.guess ?? Math.round((max + min) / 2 / step) * step}"><button type="submit">${previous ? "Replay reveal" : "Reveal result"}</button></div></form><p class="guess-feedback" role="status" aria-live="polite"></p>`;
   const form = $("form", host),
     number = $("input[type=number]", host),
     range = $("input[type=range]", host),

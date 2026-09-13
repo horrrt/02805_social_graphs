@@ -1,28 +1,30 @@
 <!doctype html>
+
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <meta content="width=device-width,initial-scale=1" name="viewport" />
     <meta
-      name="description"
       content="Marvel Transit Authority — an interactive data story from 303 Marvel Wikipedia articles."
+      name="description"
     />
     <meta name="site-root" content="../../" />
     <title>Marvel Transit Authority · Log–Log Arcade</title>
-    <link rel="stylesheet" href="../../../assets/css/apple.css" />
-    <link rel="icon" href="../../../assets/favicon.svg" type="image/svg+xml" />
+    <link href="../../../assets/css/apple.css" rel="stylesheet" />
+    <link href="../../../assets/favicon.svg" rel="icon" type="image/svg+xml" />
     <script>
       document.documentElement.classList.add("js");
     </script>
+    <link href="../../../assets/css/story.css" rel="stylesheet" />
   </head>
-  <body class="theme-apple page-transit">
+  <body class="theme-apple page-transit guided-post">
     <a class="skip" href="#main">Skip to content</a>
     <header class="chrome" id="arcade-chrome">
       <a class="arcade-wordmark" href="../../">LOG–LOG ARCADE</a
       ><a href="#post">The post</a>
     </header>
-    <main id="main" class="wrap">
-      <p id="app-status" class="status" role="status">
+    <main class="wrap" id="main">
+      <p class="status" id="app-status" role="status">
         Loading the frozen snapshot…
       </p>
       <noscript
@@ -31,36 +33,25 @@
           methods are available below.
         </p></noscript
       >
-
-      <section class="hero">
-        <p class="eyebrow">Week 2 · Models &amp; null models · Connections and counterfactuals</p>
-        <h1>One article.<br /><span class="accent">Five lost connections.</span></h1>
+      <section class="hero story-hero">
+        <p class="eyebrow">Week 2 · Models &amp; null models</p>
+        <h1>What happens when a hero disappears?</h1>
         <p class="intro">
-          A busy station is not always a fragile station. Close one and discover
-          who can no longer get home.
+          Treat each article as a station and each link as a route. Remove one
+          station, then compare the damage with a rewired network.
         </p>
-        <div class="actions">
-          <a class="button quiet" href="#post">Just the post ›</a>
-        </div>
-        <div class="departure-board">
-          <h2>MARVEL TRANSIT AUTHORITY / SERVICE BOARD</h2>
-          <div class="departure-line">
-            <span>MAIN NETWORK</span><strong>277 STATIONS</strong
-            ><span id="service-state">NORMAL SERVICE</span>
-          </div>
-          <div class="departure-line">
-            <span>MORITURI ISLAND</span><strong>9 STATIONS</strong
-            ><span>SEPARATE LINE</span>
-          </div>
-          <div class="departure-line">
-            <span>ISOLATED ARTICLES</span><strong>17 STATIONS</strong
-            ><span>NO TRACKS</span>
-          </div>
-        </div>
+        <nav aria-label="This post" class="story-nav">
+          <a href="#try-it">Try it</a><a href="#post">Findings</a
+          ><a href="#evidence">Evidence</a>
+        </nav>
+        <p class="story-scope">
+          303 Wikipedia articles · snapshot 26 Aug 2026. Links are article
+          references, not friendships.
+        </p>
       </section>
-      <section class="section">
+      <section class="section" id="try-it">
         <div class="section-head">
-          <h2>First, predict the disruption.</h2>
+          <h2>Choose a station to remove</h2>
           <label
             >Close a station<select id="closure-select">
               <option value="Spider-Man">Spider-Man</option>
@@ -73,523 +64,594 @@
           >
         </div>
         <div class="prediction" id="prediction"></div>
-        <div id="disruption-results" hidden>
+        <div hidden="" id="disruption-results">
           <div class="board-results">
             <h2 id="disruption-headline"></h2>
             <p id="disruption-detail"></p>
             <div id="stranded-list"></div>
-            <button id="restore-service" class="quiet">Restore service</button>
+            <button class="quiet" id="restore-service">Restore service</button>
           </div>
-          <div class="two-col" style="margin-top: 24px">
-            <div>
-              <h3>The comparison that matters</h3>
-              <p id="null-explanation"></p>
-              <div id="null-hist" class="histogram"></div>
+          <details class="interaction-evidence">
+            <summary>Compare this removal with 1,000 rewires</summary>
+            <div class="two-col" style="margin-top: 24px">
+              <div>
+                <h3>The comparison that matters</h3>
+                <p id="null-explanation"></p>
+                <div class="histogram" id="null-hist"></div>
+              </div>
+              <div class="note">
+                <h3>Same degrees. Different wiring.</h3>
+                <p>
+                  The benchmark rewires the 277-station core while preserving
+                  each station’s degree. Each starting network must be
+                  connected. Then the same station is removed.
+                </p>
+                <p class="fine">
+                  The 1,000 recorded draws are a degree-controlled benchmark,
+                  not a probability of real-world failure. “Stranded” means
+                  outside the largest remaining component.
+                </p>
+              </div>
             </div>
-            <div class="note">
-              <h3>Same degrees. Different wiring.</h3>
-              <p>
-                The benchmark rewires the 277-station core while preserving each
-                station’s degree. Each starting network must be connected. Then
-                the same station is removed.
-              </p>
-              <p class="fine">
-                The 1,000 recorded draws are a degree-controlled benchmark, not
-                a probability of real-world failure. “Stranded” means outside
-                the largest remaining component.
-              </p>
-            </div>
-          </div>
+          </details>
         </div>
       </section>
-      <section class="section band">
-        <div class="section-head">
-          <h2>The interchange map</h2>
-          <span class="tag">16 hubs · schematic · undirected</span>
-        </div>
-        <p>
-          This is a readable overview of the 16 biggest interchanges. Select a
-          line to follow its actual links. The full journey planner below
-          includes every article.
-        </p>
-        <div id="line-chips" class="line-chips"></div>
-        <canvas
-          id="transit-map"
-          class="stage transit-map"
-          aria-label="Schematic map of real links among 16 high-degree articles. The selected line’s station list appears below."
-        ></canvas>
-        <p id="line-description" class="fine" role="status"></p>
-        <p class="fine">
-          Positions are not geography. Line colours are drawing aids, not
-          detected communities. The map intentionally omits smaller stations; no
-          full-network conclusion is inferred from this overview.
-        </p>
-      </section>
-      <section class="section" id="journey">
-        <div class="section-head">
-          <h2>Where would you like to go?</h2>
-          <span class="tag">Full 303-article planner</span>
-        </div>
-        <form id="route-form">
-          <div class="control-row">
-            <label>From<select id="route-from"></select></label
-            ><label>To<select id="route-to"></select></label
-            ><label
-              >Travel rules<select id="route-direction">
-                <option value="directed">Follow one-way article links</option>
-                <option value="undirected">Use either direction</option>
-              </select></label
-            ><button>Find a route</button>
-          </div>
-        </form>
-        <p class="fine">
-          The planner respects the active closure after its result is revealed.
-          Restore service to compare. It uses breadth-first search; every hop is
-          a real link in the selected graph.
-        </p>
-        <p id="route-status" class="status" role="status"></p>
-        <ol id="route-strip" class="route-strip"></ol>
-        <div class="actions">
-          <button class="quiet" id="route-isolate">
-            Try Baymax → Spider-Man</button
-          ><button class="quiet" id="route-island">
-            Try the nine-station island
-          </button>
-        </div>
-      </section>
-      <section id="post" class="section band post" aria-labelledby="post-title">
-        <p class="eyebrow">The post · Week 2 · Models &amp; null models</p>
-        <h2 id="post-title">Pull one hero. Who else gets stranded?</h2>
-        <div class="two-col">
-          <div>
-            <h3>What we asked</h3>
-            <p>
-              Does an article’s link count tell us how much the network falls
-              apart when that article disappears? And more generally: of all the
-              things we can measure about this network, which ones survive having
-              its wiring shuffled — and what do the survivors mean?
-            </p>
-            <h3>What we did</h3>
-            <p>
-              We took the 277-article connected core (1,421 undirected pairs),
-              removed each article in turn and counted the others left outside
-              the largest remaining group. Then we rewired the core 1,000 times,
-              keeping every article’s degree and starting connected, and removed
-              the same four articles in each rewired world. Then we widened it:
-              twelve quantities on the whole 303-article snapshot, each tested
-              against 1,000 degree-preserving shuffles <em>and</em> 1,000 random
-              G(n, m) networks, reported as a z-score and an empirical p-value.
-            </p>
-          </div>
-          <div>
-            <h3>What surprised us</h3>
-            <p>
-              The core mostly holds. Hulk, with 65 neighbours, strands nobody.
-              Black Widow, with 25, strands three. Spider-Man strands five, and
-              only 9 of the 1,000 degree-preserving rewires do that badly. The
-              damage sits in the specific wiring, not in the degree.
-            </p>
-            <p>
-              Then the shuffle test took several of our favourite facts away.
-              Marvel’s short paths and its hub-avoiding hubs are both exactly
-              what the degree sequence already implies. Its triangles are not.
-              And exactly two of 303 characters are never out-linked by a friend:
-              Spider-Man, with 106 links, and Radian, with 6.
-            </p>
-          </div>
+      <section aria-labelledby="post-title" class="section band post" id="post">
+        <p class="eyebrow">What we found</p>
+        <h2 id="post-title">More neighbours does not mean more disruption.</h2>
+        <div class="story-copy">
+          <p>
+            We removed each article from the 277-node connected core and counted
+            the remaining articles outside the largest component. Spider-Man’s
+            removal strands five; Hulk’s strands none, despite its 65
+            neighbours.
+          </p>
+          <p>
+            Does degree explain that difference? We repeated the removal in
+            1,000 connected, degree-preserving rewires per tested article. Only
+            nine rewires stranded at least five after removing Spider-Man
+            (empirical p = 0.010).
+          </p>
         </div>
         <figure>
           <img
+            alt="Horizontal bar chart of other articles stranded after one removal: Spider-Man 5, Hulk 0, Black Widow 3, Doctor Strange 2."
+            height="346"
             src="../../../weeks/week02/figures/removal_results_light.svg"
             width="720"
-            height="346"
-            alt="Horizontal bar chart of other articles stranded after one removal: Spider-Man 5, Hulk 0, Black Widow 3, Doctor Strange 2."
           />
           <figcaption>
             One article removed each time; the other 276 remain. The count is
             how many of them lose their route to the largest remaining group.
           </figcaption>
         </figure>
-        <details>
-          <summary>Compared with 1,000 rewired worlds</summary>
+      </section>
+      <section class="section" id="results">
+        <p class="eyebrow">The takeaway</p>
+        <h2>The baseline changes the finding.</h2>
+        <p>
+          Clustering stays high after we hold degrees fixed. Its size alone is
+          not the finding; its excess over a suitable baseline is.
+        </p>
+        <figure class="baseline">
+          <figcaption>Average clustering · all 303 articles</figcaption>
+          <div>
+            <span>Observed</span
+            ><meter aria-label="Observed" max="0.35" min="0" value="0.307">
+              0.307</meter
+            ><strong>0.307</strong>
+          </div>
+          <div>
+            <span>Same degrees</span
+            ><meter aria-label="Same degrees" max="0.35" min="0" value="0.143">
+              0.143</meter
+            ><strong>0.143</strong>
+          </div>
+          <div>
+            <span>Random G(n, m)</span
+            ><meter
+              aria-label="Random G(n, m)"
+              max="0.35"
+              min="0"
+              value="0.032"
+            >
+              0.032</meter
+            ><strong>0.032</strong>
+          </div>
+        </figure>
+        <p class="fine">
+          Means from 1,000 draws per null. This full-network comparison is
+          separate from the connected-core removal test above.
+        </p>
+        <a href="#nulls">Inspect the full comparison →</a>
+        <p class="story-end">
+          <a href="../../#weeks">Back to weekly posts →</a>
+        </p>
+      </section>
+      <section class="section evidence" id="evidence">
+        <p class="eyebrow">Keep looking</p>
+        <h2 id="closing-title">Evidence &amp; details</h2>
+        <p class="fine">
+          Open a section to inspect the analysis or try another tool.
+        </p>
+        <details class="evidence-item">
+          <summary>
+            Removal benchmark: histograms &amp; empirical p-values
+          </summary>
+
           <figure>
             <img
-              src="../../../weeks/week02/figures/null_comparison_light.svg"
-              loading="lazy"
-              width="792"
-              height="576"
               alt="Four histograms of stranded counts across 1,000 degree-preserving rewires, one per removed article, each with a dashed line at the real count. Spider-Man’s real 5 sits at the far right tail; Black Widow’s real 3 lies beyond every rewired value; Hulk’s 0 is the most common rewired outcome; Doctor Strange’s 2 appears in 85 of 1,000."
+              height="576"
+              loading="lazy"
+              src="../../../weeks/week02/figures/null_comparison_light.svg"
+              width="792"
             />
             <figcaption>
               Bars count rewired networks by how many articles the removal
               strands; the dashed line marks the real result.
-              <a href="../../../assets/data/week02_null_draws.csv" download
+              <a download="" href="../../../assets/data/week02_null_draws.csv"
                 >All 1,000 draws (CSV)</a
               >
             </figcaption>
           </figure>
           <p>
             As a shuffle test: Spider-Man strands 5 against a shuffle mean of
-            1.41, empirical p = 0.010; Black Widow strands 3 against 0.19,
-            p = 0.001 — no rewired world managed more than 2. Doctor Strange’s 2
+            1.41, empirical p = 0.010; Black Widow strands 3 against 0.19, p =
+            0.001 — no rewired world managed more than 2. Doctor Strange’s 2
             against 0.51 gives p = 0.086, and Hulk’s 0 against 0.58 is the most
             ordinary outcome there is (p = 1.0).
           </p>
           <p class="fine">
-            We are deliberately quoting p and not z here. These are small integer
-            counts with a hard floor at zero, so their null distributions are
-            visibly skewed rather than normal, and a z-score assumes a bell.
-            Spider-Man’s nominal z is +3.1 and Black Widow’s is +6.5, which would
-            overstate both; the histograms above are the honest reading. The
-            z-scores in the table further down are for global averages, where the
-            central limit theorem earns them.
+            A z-score describes distance from the null mean in standard
+            deviations; it does not require a normal distribution. These small,
+            skewed counts are easier to interpret through their histograms and
+            empirical tail probabilities. Normal-tail significance should not be
+            inferred from their z-scores.
           </p>
         </details>
-      </section>
-<section class="section" id="nulls">
-        <div class="section-head">
-          <h2>Shuffle-test everything</h2>
-          <span class="tag">12 quantities · 2 nulls · 1,000 draws each</span>
-        </div>
-        <p>
-          The rewiring above is a null model, so we may as well use it properly.
-          A null model is not a theory of how the network came to be. It is a
-          picture of what “nothing interesting going on” would look like: keep
-          the parts of the network you are willing to call boring, scramble
-          everything else, and see whether reality still stands out.
-        </p>
-        <p>
-          The catch is that “boring” is a choice, and the choice decides the
-          answer. So we ran the whole 303-article snapshot against two nulls,
-          1,000 draws each, and shuffle-tested twelve quantities.
-        </p>
-        <div class="two-col">
-          <div class="note">
-            <h3>Null A · the degree-preserving shuffle</h3>
+        <details class="evidence-item">
+          <summary>
+            Full shuffle test: two null models, twelve measurements
+          </summary>
+          <section class="section" id="nulls">
+            <div class="section-head">
+              <h2>Twelve measurements against two null models</h2>
+              <span class="tag"
+                >12 quantities · 2 nulls · 1,000 draws each</span
+              >
+            </div>
             <p>
-              Take the real network and rewire A–B and C–D into A–D and C–B,
-              28,680 times over. Every article keeps its exact degree; who links
-              to whom is scrambled. Spider-Man still has 106 links and the 17
-              isolates still have none — degree zero cannot gain a link this way.
+              A null model supplies a baseline. We compare the observed network
+              with networks that preserve selected properties and randomize the
+              rest.
             </p>
-            <p class="fine">
-              Keeps: n, m, every degree. Destroys: everything else.
-            </p>
-          </div>
-          <div class="note">
-            <h3>Null B · random G(n, m)</h3>
             <p>
-              Throw the wiring away entirely: 303 nodes, 1,434 links, every link
-              between a uniformly random pair. Degrees are redrawn by chance, so
-              the hubs vanish and so do the isolates — with an average degree of
-              9.5, chance almost never leaves an article unlinked.
+              We measured twelve quantities on the full 303-article snapshot and
+              on 1,000 draws from each of two null models.
             </p>
-            <p class="fine">
-              Keeps: n and m. Destroys: the degree sequence too.
+            <div class="two-col">
+              <div class="note">
+                <h3>Null A · the degree-preserving shuffle</h3>
+                <p>
+                  Take the real network and rewire A–B and C–D into A–D and C–B,
+                  28,680 times over. Every article keeps its exact degree; who
+                  links to whom is scrambled. Spider-Man still has 106 links and
+                  the 17 isolates still have none — degree zero cannot gain a
+                  link this way.
+                </p>
+                <p class="fine">
+                  Keeps the node count, edge count and every degree; randomizes
+                  the wiring subject to those constraints.
+                </p>
+              </div>
+              <div class="note">
+                <h3>Null B · random G(n, m)</h3>
+                <p>
+                  Throw the wiring away entirely: 303 nodes, 1,434 links, every
+                  link between a uniformly random pair. Degrees are redrawn by
+                  chance, so the hubs vanish and so do the isolates — with an
+                  average degree of 9.5, chance almost never leaves an article
+                  unlinked.
+                </p>
+                <p class="fine">
+                  Keeps: n and m. Destroys: the degree sequence too.
+                </p>
+              </div>
+            </div>
+            <figure>
+              <img
+                alt="Six panels, each with two histograms of 1,000 null draws and a dashed line at the real value. Clustering: the real 0.307 sits far right of both nulls. The friendship paradox: the real 24.22 sits inside the shuffle distribution and far right of the random one. Chance the friend is at least as linked: the real 0.753 sits just left of the shuffle. Islands: the real 19 sits at the top edge of a shuffle distribution concentrated on 18, while the random null gives 1. Distances: the real 2.674 sits just right of the shuffle and left of the random null. Degree assortativity: the real minus 0.098 sits at the right edge of the shuffle distribution, while the random null centres on zero."
+                height="774"
+                loading="lazy"
+                src="../../../weeks/week02/figures/null_survivors_light.svg"
+                width="1260"
+              />
+              <figcaption>
+                Blue is the degree-preserving shuffle, purple is random G(n, m),
+                the dashed line is the real network. Read each panel by asking
+                one question: is the dashed line inside the blue bars or outside
+                them?
+                <a
+                  download=""
+                  href="../../../assets/data/week02_nullmodels_draws.csv"
+                  >All 2,000 draws (CSV)</a
+                >
+              </figcaption>
+            </figure>
+            <details>
+              <summary>The whole table</summary>
+              <div class="table-scroll">
+                <table>
+                  <caption class="fine">
+                    Twelve quantities, each measured on the real network and on
+                    1,000 draws from each null. z is the number of null standard
+                    deviations between the real value and the null mean; p is
+                    the nearer empirical tail, computed as (1 + draws at least
+                    as extreme) / (1 + 1,000), so 0.001 is the floor and means
+                    not one draw reached the real value.
+                  </caption>
+                  <thead>
+                    <tr>
+                      <th scope="col">Quantity</th>
+                      <th scope="col">Real</th>
+                      <th scope="col">Shuffle</th>
+                      <th scope="col">z</th>
+                      <th scope="col">p</th>
+                      <th scope="col">G(n, m)</th>
+                      <th scope="col">z</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <th scope="row">Average clustering C</th>
+                      <td>0.307</td>
+                      <td>0.143</td>
+                      <td>+19.8</td>
+                      <td>0.001</td>
+                      <td>0.032</td>
+                      <td>+93.9</td>
+                    </tr>
+                    <tr>
+                      <th scope="row">Transitivity</th>
+                      <td>0.182</td>
+                      <td>0.115</td>
+                      <td>+15.6</td>
+                      <td>0.001</td>
+                      <td>0.031</td>
+                      <td>+58.4</td>
+                    </tr>
+                    <tr>
+                      <th scope="row">Triangles</th>
+                      <td>1,839</td>
+                      <td>1,158</td>
+                      <td>+15.6</td>
+                      <td>0.001</td>
+                      <td>142</td>
+                      <td>+142.8</td>
+                    </tr>
+                    <tr>
+                      <th scope="row">Islands (connected components)</th>
+                      <td>19</td>
+                      <td>18.04</td>
+                      <td>+5.0</td>
+                      <td>0.039</td>
+                      <td>1.02</td>
+                      <td>+131.6</td>
+                    </tr>
+                    <tr>
+                      <th scope="row">Largest component</th>
+                      <td>277</td>
+                      <td>285.9</td>
+                      <td>−23.3</td>
+                      <td>0.001</td>
+                      <td>303.0</td>
+                      <td>−190.2</td>
+                    </tr>
+                    <tr>
+                      <th scope="row">
+                        Average distance in the largest component
+                      </th>
+                      <td>2.674</td>
+                      <td>2.631</td>
+                      <td>+2.9</td>
+                      <td>0.005</td>
+                      <td>2.778</td>
+                      <td>−24.0</td>
+                    </tr>
+                    <tr>
+                      <th scope="row">Degree assortativity</th>
+                      <td>−0.098</td>
+                      <td>−0.120</td>
+                      <td>+2.0</td>
+                      <td>0.024</td>
+                      <td>−0.008</td>
+                      <td>−3.5</td>
+                    </tr>
+                    <tr>
+                      <th scope="row">
+                        Mean degree at the end of a random link
+                      </th>
+                      <td>22.08</td>
+                      <td>22.08</td>
+                      <td>—</td>
+                      <td>—</td>
+                      <td>10.43</td>
+                      <td>+152.3</td>
+                    </tr>
+                    <tr>
+                      <th scope="row">
+                        Mean degree of a random character’s random friend
+                      </th>
+                      <td>24.22</td>
+                      <td>24.19</td>
+                      <td>+0.1</td>
+                      <td>0.469</td>
+                      <td>10.44</td>
+                      <td>+168.5</td>
+                    </tr>
+                    <tr>
+                      <th scope="row">
+                        Chance your random friend is at least as linked
+                      </th>
+                      <td>0.753</td>
+                      <td>0.763</td>
+                      <td>−3.5</td>
+                      <td>0.001</td>
+                      <td>0.635</td>
+                      <td>+30.7</td>
+                    </tr>
+                    <tr>
+                      <th scope="row">Characters no friend out-links</th>
+                      <td>2</td>
+                      <td>1.26</td>
+                      <td>+1.3</td>
+                      <td>0.205</td>
+                      <td>16.68</td>
+                      <td>−5.1</td>
+                    </tr>
+                    <tr>
+                      <th scope="row">Biggest hub’s share of all link ends</th>
+                      <td>3.70%</td>
+                      <td>3.70%</td>
+                      <td>—</td>
+                      <td>—</td>
+                      <td>0.67%</td>
+                      <td>+57.7</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <p class="fine">
+                Two rows have no z and no p. The mean degree at the end of a
+                random link is ⟨k²⟩/⟨k⟩, and the hub’s share is 106 / 2,868:
+                both are functions of the degree sequence alone, so the
+                degree-preserving shuffle reproduces them to every decimal place
+                across all 1,000 draws. The standard deviation is exactly zero
+                and a z-score would be a division by it. That is not a broken
+                measurement — it is the null telling you the quantity carries no
+                information beyond the degrees.
+              </p>
+            </details>
+            <h3>What changes under the shuffle</h3>
+            <p>
+              Some quantities change little under degree-preserving rewiring.
+              Degree assortativity is −0.098 in the data versus a null mean of
+              −0.120 (z = +2.0, empirical p = 0.024). The observed network is
+              slightly less disassortative than this baseline. The result is
+              exploratory: these one-sided p-values are unadjusted across twelve
+              quantities.
             </p>
-          </div>
-        </div>
-        <figure>
-          <img
-            src="../../../weeks/week02/figures/null_survivors_light.svg"
-            loading="lazy"
-            width="1260"
-            height="774"
-            alt="Six panels, each with two histograms of 1,000 null draws and a dashed line at the real value. Clustering: the real 0.307 sits far right of both nulls. The friendship paradox: the real 24.22 sits inside the shuffle distribution and far right of the random one. Chance the friend is at least as linked: the real 0.753 sits just left of the shuffle. Islands: the real 19 sits at the top edge of a shuffle distribution concentrated on 18, while the random null gives 1. Distances: the real 2.674 sits just right of the shuffle and left of the random null. Degree assortativity: the real minus 0.098 sits at the right edge of the shuffle distribution, while the random null centres on zero."
-          />
-          <figcaption>
-            Blue is the degree-preserving shuffle, purple is random G(n, m), the
-            dashed line is the real network. Read each panel by asking one
-            question: is the dashed line inside the blue bars or outside them?
-            <a href="../../../assets/data/week02_nullmodels_draws.csv" download
-              >All 2,000 draws (CSV)</a
-            >
-          </figcaption>
-        </figure>
-        <details open>
-          <summary>The whole table</summary>
-          <div class="table-scroll">
-            <table>
-              <caption class="fine">
-                Twelve quantities, each measured on the real network and on 1,000
-                draws from each null. z is the number of null standard
-                deviations between the real value and the null mean; p is the
-                nearer empirical tail, computed as (1 + draws at least as
-                extreme) / (1 + 1,000), so 0.001 is the floor and means not one
-                draw reached the real value.
-              </caption>
-              <thead>
-                <tr>
-                  <th scope="col">Quantity</th>
-                  <th scope="col">Real</th>
-                  <th scope="col">Shuffle</th>
-                  <th scope="col">z</th>
-                  <th scope="col">p</th>
-                  <th scope="col">G(n, m)</th>
-                  <th scope="col">z</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <th scope="row">Average clustering C</th>
-                  <td>0.307</td><td>0.143</td><td>+19.8</td><td>0.001</td><td>0.032</td><td>+93.9</td>
-                </tr>
-                <tr>
-                  <th scope="row">Transitivity</th>
-                  <td>0.182</td><td>0.115</td><td>+15.6</td><td>0.001</td><td>0.031</td><td>+58.4</td>
-                </tr>
-                <tr>
-                  <th scope="row">Triangles</th>
-                  <td>1,839</td><td>1,158</td><td>+15.6</td><td>0.001</td><td>142</td><td>+142.8</td>
-                </tr>
-                <tr>
-                  <th scope="row">Islands (connected components)</th>
-                  <td>19</td><td>18.04</td><td>+5.0</td><td>0.039</td><td>1.02</td><td>+131.6</td>
-                </tr>
-                <tr>
-                  <th scope="row">Largest component</th>
-                  <td>277</td><td>285.9</td><td>−23.3</td><td>0.001</td><td>303.0</td><td>−190.2</td>
-                </tr>
-                <tr>
-                  <th scope="row">Average distance in the largest component</th>
-                  <td>2.674</td><td>2.631</td><td>+2.9</td><td>0.005</td><td>2.778</td><td>−24.0</td>
-                </tr>
-                <tr>
-                  <th scope="row">Degree assortativity</th>
-                  <td>−0.098</td><td>−0.120</td><td>+2.0</td><td>0.024</td><td>−0.008</td><td>−3.5</td>
-                </tr>
-                <tr>
-                  <th scope="row">Mean degree at the end of a random link</th>
-                  <td>22.08</td><td>22.08</td><td>—</td><td>—</td><td>10.43</td><td>+152.3</td>
-                </tr>
-                <tr>
-                  <th scope="row">Mean degree of a random character’s random friend</th>
-                  <td>24.22</td><td>24.19</td><td>+0.1</td><td>0.469</td><td>10.44</td><td>+168.5</td>
-                </tr>
-                <tr>
-                  <th scope="row">Chance your random friend is at least as linked</th>
-                  <td>0.753</td><td>0.763</td><td>−3.5</td><td>0.001</td><td>0.635</td><td>+30.7</td>
-                </tr>
-                <tr>
-                  <th scope="row">Characters no friend out-links</th>
-                  <td>2</td><td>1.26</td><td>+1.3</td><td>0.205</td><td>16.68</td><td>−5.1</td>
-                </tr>
-                <tr>
-                  <th scope="row">Biggest hub’s share of all link ends</th>
-                  <td>3.70%</td><td>3.70%</td><td>—</td><td>—</td><td>0.67%</td><td>+57.7</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-          <p class="fine">
-            Two rows have no z and no p. The mean degree at the end of a random
-            link is ⟨k²⟩/⟨k⟩, and the hub’s share is 106 / 2,868: both are
-            functions of the degree sequence alone, so the degree-preserving
-            shuffle reproduces them to every decimal place across all 1,000
-            draws. The standard deviation is exactly zero and a z-score would be
-            a division by it. That is not a broken measurement — it is the null
-            telling you the quantity carries no information beyond the degrees.
-          </p>
+            <p>
+              Mean distance is 2.674 in the largest observed component versus
+              2.631 under the shuffle (z = +2.9, empirical p = 0.005). The
+              difference is small but not zero. Short paths alone do not
+              establish unusual wiring; the choice of baseline matters.
+            </p>
+            <p>
+              Clustering is 0.307 versus a shuffle mean of 0.143 (sd 0.008); no
+              draw reached the observed value. The network has 1,839 triangles
+              versus 1,158 on average under the shuffle. Links among characters
+              from the same teams or eras are one possible explanation, not a
+              mechanism established by this test.
+            </p>
+            <h3>The same number, two nulls, two conclusions</h3>
+            <p>
+              Clustering is about ten times the G(n, m) mean (0.032), but about
+              2.1 times the degree-preserving mean (0.143). Holding degrees
+              fixed reduces the apparent excess without eliminating it. The two
+              nulls answer different questions; G(n, m) does not control for
+              hubs.
+            </p>
+            <p>
+              The observed 19 components compare with 18.04 under
+              degree-preserving rewiring (p = 0.039) and about 1.02 under G(n,
+              m) (z = +131.6). The shuffle retains the 17 isolates. The
+              nine-character Morituri island is usually absorbed into the giant
+              component: the largest component averages 285.9 nodes versus the
+              observed 277 (z = −23.3). Treat the component-count p-value as
+              exploratory.
+            </p>
+            <div class="note">
+              <h3>Clustering, with its baseline</h3>
+              <p>
+                Average clustering is 0.307, compared with 0.143 (sd 0.008) in
+                1,000 degree-preserving shuffles. The observed value exceeds
+                every draw (empirical p = 0.001 with the add-one correction).
+                The degree sequence explains part of the difference from G(n,
+                m), but an excess remains after controlling for degrees.
+              </p>
+            </div>
+          </section>
         </details>
-        <h3>What died, and what survived</h3>
-        <p>
-          Four of the twelve are unmoved by the shuffle, which means the real
-          value is what the degree sequence alone already implies. The
-          disassortativity is the clearest casualty: a naive reading of
-          −0.098 says “Marvel hubs avoid each other,” but the shuffle produces
-          −0.120 on average, so the real network is if anything
-          <em>less</em> hub-averse than chance-with-these-degrees (z = +2.0).
-          Simple graphs with a 106-link hub cannot help being disassortative;
-          there are not enough other hubs to go around.
-        </p>
-        <p>
-          The distances go the same way. 2.674 hops across the largest component
-          looks impressively small, and it is — but the shuffle averages 2.631,
-          so the real network is a hair <em>longer</em> than chance, not shorter.
-          Short paths are not the finding here. They never are: reach multiplies
-          by ⟨k⟩ per step, so anything this dense is a few hops wide whether or
-          not anyone designed it.
-        </p>
-        <p>
-          What does survive is triangles. Clustering is 0.307 against a shuffle
-          mean of 0.143 with a standard deviation of 0.008 — nearly twenty
-          standard deviations out, and not one of the 1,000 shuffles came within
-          reach of it (the highest was 0.171). The real network has 1,839
-          triangles where the shuffle expects 1,158. Something is closing
-          triangles that the degree sequence does not explain, and the obvious
-          candidate is that Wikipedia editors write in teams and eras: the
-          Avengers cite each other, the X-Men cite each other, and a link tends
-          to arrive alongside the links around it.
-        </p>
-        <h3>The same number, two nulls, two conclusions</h3>
-        <p>
-          Clustering is where the choice of null does visible damage. Against
-          random G(n, m) the surplus is 0.307 versus 0.032 — a factor of ten,
-          which invites the sentence “so the clustering comes from the hubs.”
-          Against the degree-preserving shuffle the surplus is 0.307 versus
-          0.143 — a factor of 2.1. The hubs really do account for most of the
-          gap the first null found. But a large gap remains after they are
-          controlled for, so the hubs are not the explanation. The first null
-          does not just give a bigger number; it gives the wrong answer.
-        </p>
-        <p>
-          The island count is the same trap in the other direction. Against
-          random G(n, m), 19 components looks like one of the most extreme
-          things about this network (z = +131.6), because chance with an average
-          degree of 9.5 essentially always produces a single connected blob. But
-          that “finding” is fake: 18 of the 19 pieces are 17 zero-degree articles
-          plus the rest, and any null that keeps the degree sequence gets them
-          for free. Only the nineteenth piece — the nine-character
-          <em>Strikeforce: Morituri</em> island — is a real surprise, and against
-          the honest null it is a modest one (19 versus 18.04, p = 0.039).
-          Meanwhile the largest component gives it away loudly: 277 real against
-          285.9 shuffled, z = −23.3, because in the shuffled worlds those nine
-          characters almost always get pulled into the giant.
-        </p>
-        <div class="note">
-          <h3>The paragraph an AI should write about our clustering</h3>
-          <p>
-            The Marvel network's average clustering is 0.307. Against 1,000
-            degree-preserving shuffles of the same network, which hold every
-            article's degree fixed and scramble only who links to whom, the
-            expected value is 0.143 (sd 0.008); the real value is 19.8 standard
-            deviations above it and exceeds all 1,000 shuffles (p ≤ 0.001). The
-            heavy-tailed degree sequence therefore accounts for roughly half of
-            the surplus over an Erdős–Rényi baseline and cannot account for the
-            rest, so the triangle surplus is a property of the wiring and not of
-            the hubs.
-          </p>
-        </div>
-      </section>
-      <section class="section" id="paradox">
-        <div class="section-head">
-          <h2>Everyone here has more famous friends than you</h2>
-          <span class="tag">The friendship paradox · 286 linked articles</span>
-        </div>
-        <p>
-          Pick a Marvel character with at least one link. On average they have
-          10.0 links. Now pick one of their friends at random: that friend has
-          24.2. Three times out of four (75.3%) the friend is at least as linked
-          as the character you started from. Nobody is lying; picking a friend is
-          degree-biased sampling, because a hub is a friend to many and
-          therefore keeps getting picked.
-        </p>
-        <p>
-          This is the one quantity the shuffle cannot touch. The
-          degree-preserving null lands on 24.19 against the real 24.22 — z = +0.1,
-          p = 0.47. Push it to the pure edge-sampled form, ⟨k²⟩/⟨k⟩, and the
-          null reproduces the real 22.08 to seven digits across every draw,
-          because that expression reads only the degree sequence. So the paradox
-          is not a fact about Marvel's wiring at all. It is a fact about the
-          spread of its degrees, and it would survive any rewiring you can
-          imagine that leaves the degrees alone.
-        </p>
-        <p>
-          It does not need hubs to exist, only variance. Under random G(n, m),
-          where the biggest article has around 19 links, the paradox weakens but
-          refuses to die: 10.44 for a random friend against 9.47 for a random
-          character. A Poisson distribution still has a variance, and a variance
-          is all the paradox asks for.
-        </p>
-        <h3>The two characters nobody out-links</h3>
-        <p>
-          The paradox has an edge case worth chasing: is there anyone whose
-          friends are never better connected than they are? Across all 286
-          linked articles, exactly two.
-        </p>
-        <div class="metrics">
-          <div class="metric">
-            <strong>Spider-Man</strong
-            ><span>106 links · no friend has more</span>
-          </div>
-          <div class="metric">
-            <strong>Radian</strong
-            ><span>6 links · no friend has more</span>
-          </div>
-        </div>
-        <p style="margin-top: 24px">
-          Spider-Man is the obvious one: he is the biggest hub in the network, so
-          by definition nobody out-links him. Radian is the joke. Radian has six
-          links and sits on the nine-character <em>Strikeforce: Morituri</em>
-          island, where the ceiling is six. He is unbeatable because his world is
-          nine articles wide. Two characters, seventeen times apart in degree,
-          both unbeaten for exactly the same reason: each is the top of the only
-          pond he can see.
-        </p>
-        <p>
-          And that pair is not a finding either — the shuffle produces 1.26
-          unbeaten characters on average (z = +1.3, p = 0.205), because
-          Spider-Man is unbeatable in every shuffled world too. What the shuffle
-          <em>does</em> tell us is where the second one comes from: Radian is
-          only unbeaten because his island stays an island. Under random
-          G(n, m), which dissolves every island, the count jumps to 16.7 — for
-          the opposite reason, that a network with no hubs has many small local
-          maxima.
-        </p>
-      </section>
-            <section id="results" class="section" data-gated>
-        <p class="eyebrow">The takeaway</p>
-        <h2>Degree tells you how busy. Wiring tells you how fragile.</h2>
-        <div class="metrics">
-          <div class="metric">
-            <strong>5</strong
-            ><span>articles stranded after Spider-Man closes</span>
-          </div>
-          <div class="metric">
-            <strong>0</strong
-            ><span>after Hulk closes, despite 65 neighbours</span>
-          </div>
-          <div class="metric">
-            <strong>9 / 1,000</strong
-            ><span
-              >rewired draws strand at least five after Spider-Man closes</span
-            >
-          </div>
-        </div>
-        <p style="margin-top: 24px">
-          Black Widow strands three articles with only 25 neighbours. Doctor
-          Strange strands two with 57. The ordering changes when the question
-          shifts from “how many neighbours?” to “who depends on this
-          connection?”
-        </p>
-        <p>
-          The wider test says the same thing about the whole network at once.
-          Clustering, transitivity and triangles all sit far outside anything a
-          degree-preserving shuffle produces. The short paths, the hub-avoiding
-          hubs and the friendship paradox all sit comfortably inside it.
-        </p>
-        <a href="../../../assets/data/week02_all_removals.csv" download
-          >Download all 277 removal results (CSV)</a
-        >
-        <a href="../../../assets/data/week02_nullmodels.json" download
-          >Download the shuffle-test table (JSON)</a
-        >
-      </section>
-      <section class="closing" aria-labelledby="closing-title">
-        <h2 id="closing-title">Evidence and details.</h2>
-        <div class="closing-grid">
-          <div>
-            <h3>What the data means</h3>
+        <details class="evidence-item">
+          <summary>Friendship paradox &amp; the two local leaders</summary>
+          <section class="section" id="paradox">
+            <div class="section-head">
+              <h2>Why a random neighbour tends to have more links</h2>
+              <span class="tag"
+                >The friendship paradox · 286 linked articles</span
+              >
+            </div>
             <p>
-              303 article entries and 1,784 directed links from the course’s
-              frozen 26 August 2026 snapshot. A link means one article links to
-              another within this roster. It does not measure friendship, hero
-              strength, popularity or the whole Marvel universe.
+              Pick a Marvel character with at least one link. On average they
+              have 10.0 links. Now pick one of their friends at random: that
+              friend has 24.2. Three times out of four (75.3%) the friend is at
+              least as linked as the character you started from. Nobody is
+              lying; picking a friend is degree-biased sampling, because a hub
+              is a friend to many and therefore keeps getting picked.
             </p>
-            <a href="../../../assets/data/arcade_graph.json" download
-              >Download the snapshot and metrics (JSON)</a
-            >
-          </div>
-          <div>
-            <h3>Limits of the experiment</h3>
             <p>
-              Only within-roster links are observed. Closing a station means
-              deleting an article node, not predicting a real outage. The route
-              drawn is one shortest path, not necessarily the only one. The
-              benchmark holds degrees fixed but changes other structure.
+              For a uniformly selected linked article followed by one random
+              neighbour, the observed mean is 24.22 versus a shuffle mean of
+              24.19 (z = +0.1, p = 0.47). This quantity can change with
+              rewiring. The edge-sampled mean, ⟨k²⟩/⟨k⟩ = 22.08, is different:
+              it depends only on degrees and is exactly preserved.
             </p>
+            <p>
+              It does not need hubs to exist, only variance. Under random G(n,
+              m), where the biggest article has around 19 links, the paradox
+              weakens but refuses to die: 10.44 for a random friend against 9.47
+              for a random character. A Poisson distribution still has a
+              variance, and a variance is all the paradox asks for.
+            </p>
+            <h3>The two characters nobody out-links</h3>
+            <p>
+              The paradox has an edge case worth chasing: is there anyone whose
+              friends are never better connected than they are? Across all 286
+              linked articles, exactly two.
+            </p>
+            <div class="metrics">
+              <div class="metric">
+                <strong>Spider-Man</strong
+                ><span>106 links · no friend has more</span>
+              </div>
+              <div class="metric">
+                <strong>Radian</strong><span>6 links · no friend has more</span>
+              </div>
+            </div>
+            <p style="margin-top: 24px">
+              Spider-Man is the largest hub, with 106 links. Radian has six
+              links on the nine-character Morituri island, where no neighbour
+              has more. Both are local degree maxima, despite their very
+              different degrees.
+            </p>
+            <p>
+              The shuffle produces 1.26 local maxima on average versus the
+              observed two (z = +1.3, p = 0.205). G(n, m) gives 16.7 on average.
+              These comparisons do not establish that the observed pair is
+              exceptional.
+            </p>
+          </section>
+        </details>
+        <details class="evidence-item">
+          <summary>Network components: service board</summary>
+          <div class="departure-board">
+            <h2>MARVEL TRANSIT AUTHORITY / SERVICE BOARD</h2>
+            <div class="departure-line">
+              <span>MAIN NETWORK</span><strong>277 STATIONS</strong
+              ><span id="service-state">NORMAL SERVICE</span>
+            </div>
+            <div class="departure-line">
+              <span>MORITURI ISLAND</span><strong>9 STATIONS</strong
+              ><span>SEPARATE LINE</span>
+            </div>
+            <div class="departure-line">
+              <span>ISOLATED ARTICLES</span><strong>17 STATIONS</strong
+              ><span>NO TRACKS</span>
+            </div>
           </div>
-        </div>
+        </details>
+        <details class="evidence-item">
+          <summary>Explore the 16-station interchange map</summary>
+          <section class="section band">
+            <div class="section-head">
+              <h2>The interchange map</h2>
+              <span class="tag">16 hubs · schematic · undirected</span>
+            </div>
+            <p>
+              This is a readable overview of the 16 biggest interchanges. Select
+              a line to follow its actual links. The full journey planner below
+              includes every article.
+            </p>
+            <div class="line-chips" id="line-chips"></div>
+            <canvas
+              aria-label="Schematic map of real links among 16 high-degree articles. The selected line’s station list appears below."
+              class="stage transit-map"
+              id="transit-map"
+            ></canvas>
+            <p class="fine" id="line-description" role="status"></p>
+            <p class="fine">
+              Positions are not geography. Line colours are drawing aids, not
+              detected communities. The map intentionally omits smaller
+              stations; no full-network conclusion is inferred from this
+              overview.
+            </p>
+          </section>
+        </details>
+        <details class="evidence-item">
+          <summary>Plan a route through all 303 articles</summary>
+          <section class="section" id="journey">
+            <div class="section-head">
+              <h2>Where would you like to go?</h2>
+              <span class="tag">Full 303-article planner</span>
+            </div>
+            <form id="route-form">
+              <div class="control-row">
+                <label>From<select id="route-from"></select></label
+                ><label>To<select id="route-to"></select></label
+                ><label
+                  >Travel rules<select id="route-direction">
+                    <option value="directed">
+                      Follow one-way article links
+                    </option>
+                    <option value="undirected">Use either direction</option>
+                  </select></label
+                ><button>Find a route</button>
+              </div>
+            </form>
+            <p class="fine">
+              The planner respects the active closure after its result is
+              revealed. Restore service to compare. It uses breadth-first
+              search; every hop is a real link in the selected graph.
+            </p>
+            <p class="status" id="route-status" role="status"></p>
+            <ol class="route-strip" id="route-strip"></ol>
+            <div class="actions">
+              <button class="quiet" id="route-isolate">
+                Try Baymax → Spider-Man</button
+              ><button class="quiet" id="route-island">
+                Try the nine-station island
+              </button>
+            </div>
+          </section>
+        </details>
+        <details class="evidence-item">
+          <summary>Data scope &amp; limitations</summary>
+          <div class="closing-grid">
+            <div>
+              <h3>What the data means</h3>
+              <p>
+                303 article entries and 1,784 directed links from the course’s
+                frozen 26 August 2026 snapshot. A link means one article links
+                to another within this roster. It does not measure friendship,
+                hero strength, popularity or the whole Marvel universe.
+              </p>
+              <a download="" href="../../../assets/data/arcade_graph.json"
+                >Download the snapshot and metrics (JSON)</a
+              >
+            </div>
+            <div>
+              <h3>Limits of the experiment</h3>
+              <p>
+                Only within-roster links are observed. Closing a station means
+                deleting an article node, not predicting a real outage. The
+                route drawn is one shortest path, not necessarily the only one.
+                The benchmark holds degrees fixed but changes other structure.
+              </p>
+            </div>
+          </div>
+        </details>
         <details id="methods">
           <summary>Methods and reproducibility</summary>
           <p>
@@ -605,16 +667,16 @@
           <p>
             The twelve-quantity shuffle test is a separate run on a wider graph:
             the whole 303-article snapshot as simple undirected links, and
-            deliberately <em>not</em> conditioned on connectedness, which is what
-            lets the number of islands vary under the null. 1,000 draws per null,
-            20 successful swaps per link for the degree-preserving one and
+            deliberately <em>not</em> conditioned on connectedness, which is
+            what lets the number of islands vary under the null. 1,000 draws per
+            null, 20 successful swaps per link for the degree-preserving one and
             <code>gnm_random_graph(303, 1434)</code> for the random one. Every
             draw asserts that the degree sequence is unchanged before it is
-            measured. Empirical tails are (1 + draws at least as extreme) /
-            (1 + draws), one-sided and unadjusted across the twelve quantities,
-            so treat any single p near 0.05 as a hint rather than a result. A
-            finite swap chain approximates the null ensemble rather than sampling
-            it uniformly.
+            measured. Empirical tails are (1 + draws at least as extreme) / (1 +
+            draws), one-sided and unadjusted across the twelve quantities, so
+            treat any single p near 0.05 as a hint rather than a result. A
+            finite swap chain approximates the null ensemble rather than
+            sampling it uniformly.
           </p>
           <p>
             <a
@@ -631,14 +693,25 @@
             explanation drafts and test construction. Metrics come from the
             provided snapshot and reproducible analysis; the games and metaphors
             are authored presentation choices. Numerical checks compare
-            independent Python and browser implementations. The free-play tools are not course hand-ins.
+            independent Python and browser implementations. The free-play tools
+            are not course hand-ins.
           </p>
         </details>
+        <p class="downloads">
+          <a download="" href="../../../assets/data/week02_all_removals.csv"
+            >All 277 removals (CSV)</a
+          >
+          ·
+          <a download="" href="../../../assets/data/week02_nullmodels.json"
+            >Shuffle-test table (JSON)</a
+          >
+        </p>
       </section>
     </main>
     <footer class="wrap footer">
       <span
-        >Log–Log Legends · 02805 Social graphs and interactions · Fall 2026</span
+        >Log–Log Legends · 02805 Social graphs and interactions · Fall
+        2026</span
       ><span
         ><a href="../../../">Version 1</a> / <a href="../../">Version 2</a> /
         <a href="../../../mockups/">Design archive</a> /
@@ -646,6 +719,6 @@
         <a href="../../weeks/week02/">Week 2</a></span
       >
     </footer>
-    <script type="module" src="../../../assets/js/transit.js"></script>
+    <script src="../../../assets/js/transit.js" type="module"></script>
   </body>
 </html>

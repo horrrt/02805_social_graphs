@@ -8,3 +8,5 @@ __pycache__/
 # Local presentation verification artifacts
 .playwright-cli/
 output/playwright/
+
+.venv-course/

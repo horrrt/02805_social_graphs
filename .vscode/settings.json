@@ -1,6 +1,5 @@
 {
-  "python.defaultInterpreterPath": "/Users/gyula/.venvs/socialgraphs/bin/python",
-  "python.venvPath": "/Users/gyula/.venvs",
+  "python.defaultInterpreterPath": "${workspaceFolder}/.venv-course/bin/python",
   "python.terminal.activateEnvironment": true,
   "jupyter.notebookFileRoot": "${fileDirname}",
   "notebook.output.textLineLimit": 60,
