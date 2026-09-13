@@ -601,3 +601,94 @@ body.visual-design.theme-apple {
 .visual-design .pack-tray .empty {
   max-width: none;
 }
+
+/* A short comparison connects each interaction to its teaching point. */
+.visual-design .collection-insight {
+  max-width: none;
+  font-size: 16px;
+  padding: 16px 0 0;
+  border-top: 1px solid var(--line);
+}
+.visual-design .learning-comparison,
+.visual-design .null-insight {
+  padding: 24px;
+  margin: 24px 0;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  background: var(--surface);
+}
+.visual-design .learning-comparison h3,
+.visual-design .null-insight h3 {
+  font:
+    600 24px/1.2 Barlow,
+    sans-serif;
+  letter-spacing: -0.025em;
+  margin: 0 0 12px;
+}
+.visual-design .learning-comparison label {
+  display: inline;
+  margin-right: 12px;
+  font-size: 14px;
+}
+.visual-design .learning-comparison select {
+  width: auto;
+}
+.visual-design .learning-comparison figure {
+  margin: 24px 0;
+}
+.visual-design .learning-comparison figcaption {
+  margin-bottom: 16px;
+}
+.visual-design .odds-row {
+  display: grid;
+  grid-template-columns: 180px 1fr 50px;
+  gap: 16px;
+  align-items: center;
+  margin: 14px 0;
+  font-size: 15px;
+}
+.visual-design .odds-row strong {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+.visual-design .odds-track {
+  height: 16px;
+  background: var(--band);
+  border-radius: 4px;
+  overflow: hidden;
+}
+.visual-design .odds-track span {
+  display: block;
+  height: 100%;
+  background: var(--accent);
+}
+.visual-design #uniform-bar {
+  opacity: 0.65;
+}
+.visual-design .null-verdict {
+  font-weight: 600;
+}
+.visual-design .exact-odds {
+  margin: 24px 0;
+}
+.visual-design .closure-comparison-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  margin-top: 24px;
+  align-items: start;
+}
+.visual-design .closure-comparison-grid .board-results,
+.visual-design .closure-comparison-grid .null-insight {
+  margin: 0;
+  padding: 24px;
+}
+.visual-design .closure-comparison-grid p {
+  font-size: 16px;
+}
+.visual-design .closure-comparison-grid .fine {
+  font-size: 12px;
+}
+.visual-design .closure-comparison-grid .eyebrow {
+  font-size: 11px;
+}

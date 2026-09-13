@@ -41,7 +41,8 @@
             <p class="intro">
               Imagine collecting one card for every Marvel character here. Each
               pack gives you five cards, but some are much easier to draw than
-              others. Try a few packs and watch for repeats.
+              others. Open a few packs, then compare what happens when every
+              card gets the same chance.
             </p>
             <nav aria-label="This post" class="story-nav">
               <a class="active-step" href="#try-it">Try it</a
@@ -100,6 +101,11 @@
         <div class="pack-tray" id="pack-tray">
           <p class="empty">Open a pack to see your next five cards.</p>
         </div>
+        <p
+          class="collection-insight"
+          id="collection-insight"
+          aria-live="polite"
+        ></p>
         <div class="metrics">
           <div class="metric">
             <strong id="unique-count">0 / 303</strong
@@ -117,14 +123,12 @@
       </section>
       <section aria-labelledby="post-title" class="section post" id="post">
         <p class="eyebrow">What we found</p>
-        <h2 id="post-title">
-          Being mentioned more makes a card easier to find.
-        </h2>
+        <h2 id="post-title">58 articles receive no links at all.</h2>
         <p>
-          Spider-Man is mentioned by 106 other articles. Baymax is mentioned by
-          none. Under our draw rule, Spider-Man’s card is 107 times as likely to
-          appear as Baymax’s. That is why collecting the last few cards takes so
-          long.
+          The unevenness is in the data: Spider-Man is mentioned by 106 other
+          articles, while 58—including Baymax—are mentioned by none. Under our
+          draw rule, Spider-Man’s card is 107 times as likely to appear as
+          Baymax’s. That is why collecting the last few cards takes so long.
         </p>
         <p>
           Being mentioned and mentioning others are different things.
@@ -132,20 +136,75 @@
           points to 28, but only seven point back to her. The direction of a
           link matters.
         </p>
-        <figure class="beginner-comparison">
-          <figcaption>How often can each card appear?</figcaption>
-          <div>
-            <strong>Spider-Man</strong
-            ><span>107 chances out of 2,087 on each draw</span>
-          </div>
-          <div>
-            <strong>Baymax</strong
-            ><span>1 chance out of 2,087 on each draw</span>
-          </div>
-          <p class="fine">
-            These are probabilities per draw, not a promise about the next pack.
+        <section class="learning-comparison" aria-labelledby="odds-title">
+          <h3 id="odds-title">What if every card had the same chance?</h3>
+          <p>
+            Keep the same 303 cards and five draws per pack. Change only the
+            odds.
           </p>
-        </figure>
+          <label for="compare-packs">Packs opened</label>
+          <select id="compare-packs" disabled>
+            <option value="1">1 pack · 5 cards</option>
+            <option value="20" selected>20 packs · 100 cards</option>
+            <option value="100">100 packs · 500 cards</option>
+            <option value="400">400 packs · 2,000 cards</option>
+          </select>
+          <figure aria-labelledby="odds-caption">
+            <figcaption id="odds-caption">
+              Different cards collected, on average · out of 303
+            </figcaption>
+            <div class="odds-row">
+              <span>Our link-weighted rule</span>
+              <div class="odds-track">
+                <span id="weighted-bar" style="width: 23.26%"></span>
+              </div>
+              <strong id="weighted-unique">70.5</strong>
+            </div>
+            <div class="odds-row">
+              <span>Every card equally likely</span>
+              <div class="odds-track">
+                <span id="uniform-bar" style="width: 28.15%"></span>
+              </div>
+              <strong id="uniform-unique">85.3</strong>
+            </div>
+          </figure>
+          <p id="odds-explanation" aria-live="polite">
+            At 20 packs, equal odds give about 15 more different cards on
+            average. Repeats still happen under both rules.
+          </p>
+          <p class="fine">
+            Calculated averages across repeated collections, not a prediction
+            for your next pack. This comparison starts from an empty collection
+            and does not change your saved cards.
+          </p>
+          <details>
+            <summary>How are these averages calculated?</summary>
+            <p>
+              For a card with draw probability p, the chance of seeing it at
+              least once in d independent draws is 1 − (1 − p)<sup>d</sup>. Add
+              that chance over all 303 cards. Equal odds use p = 1/303; our rule
+              uses p = (incoming links + 1)/2,087.
+            </p>
+          </details>
+        </section>
+        <details class="exact-odds">
+          <summary>Spider-Man and Baymax: the exact odds</summary>
+          <figure class="beginner-comparison">
+            <figcaption>How often can each card appear?</figcaption>
+            <div>
+              <strong>Spider-Man</strong
+              ><span>107 chances out of 2,087 on each draw</span>
+            </div>
+            <div>
+              <strong>Baymax</strong
+              ><span>1 chance out of 2,087 on each draw</span>
+            </div>
+            <p class="fine">
+              These are probabilities per draw, not a promise about the next
+              pack.
+            </p>
+          </figure>
+        </details>
       </section>
       <section class="section" id="results">
         <p class="eyebrow">THE TAKEAWAY</p>
@@ -153,7 +212,7 @@
         <div class="metrics">
           <div class="metric">
             <strong>≈1,945</strong
-            ><span>five-card packs to finish, on average</span>
+            ><span>five-card packs to finish, on average under our rule</span>
           </div>
           <div class="metric">
             <strong>58</strong
@@ -164,6 +223,11 @@
             ><span>Spider-Man’s drop rate versus Baymax’s</span>
           </div>
         </div>
+        <p class="fine">
+          The collection time is a consequence of our chosen odds—not evidence
+          that Wikipedia links measure fame.
+          <a href="#methods">Check the estimate and its limits.</a>
+        </p>
         <p class="story-end">
           Next:
           <a href="../week02/">see what happens when an article disappears →</a>

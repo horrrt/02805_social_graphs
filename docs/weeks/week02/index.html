@@ -83,14 +83,37 @@
         </p>
         <div class="prediction" id="prediction"></div>
         <div hidden="" id="disruption-results">
-          <div class="board-results">
-            <h2 id="disruption-headline"></h2>
-            <p id="disruption-detail"></p>
-            <div id="stranded-list"></div>
-            <button class="quiet" id="restore-service">Restore service</button>
+          <div class="closure-comparison-grid">
+            <div class="board-results">
+              <h2 id="disruption-headline"></h2>
+              <p id="disruption-detail"></p>
+              <div id="stranded-list"></div>
+              <button class="quiet" id="restore-service">
+                Restore service
+              </button>
+            </div>
+            <section class="null-insight" aria-labelledby="null-insight-title">
+              <p class="eyebrow">Compared with chance</p>
+              <h3 id="null-insight-title">
+                Is this more disruption than the link counts explain?
+              </h3>
+              <p>
+                We rearranged the core’s links 1,000 times, keeping every
+                article’s number of neighbours and each starting network
+                connected. Then we removed the same article.
+              </p>
+              <p class="null-verdict" id="null-verdict" aria-live="polite"></p>
+              <p class="fine">
+                This tests a specific rewiring model. It is not the chance of a
+                real-world failure or proof of why these links exist.
+              </p>
+              <button class="quiet" id="compare-station" type="button">
+                Try Hulk next
+              </button>
+            </section>
           </div>
           <details class="interaction-evidence">
-            <summary>Why compare with rearranged maps?</summary>
+            <summary>Inspect the shuffle distribution and methods</summary>
             <div class="two-col" style="margin-top: 24px">
               <div>
                 <h3>The comparison that matters</h3>
@@ -142,7 +165,7 @@
           />
           <figcaption>
             After removing one article, 276 remain. Each bar counts those that
-            can no longer reach the largest remaining group. Taller bars mean
+            can no longer reach the largest remaining group. Longer bars mean
             more articles cut off.
           </figcaption>
         </figure>
@@ -155,10 +178,7 @@
           busy one can be the only way through. Comparing with rearranged maps
           helps us ask whether the pattern depends on the specific connections.
         </p>
-        <p>
-          You have the main idea. Try another station above, or open an
-          explanation below to inspect how we tested it.
-        </p>
+
         <p class="story-end">
           <a href="../../#weeks">Back to weekly posts →</a>
         </p>

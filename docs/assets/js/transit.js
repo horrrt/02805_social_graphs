@@ -232,6 +232,15 @@ try {
             .filter((r) => r.value >= actual.stranded.length)
             .reduce((s, r) => s + r.count, 0),
           peak = Math.max(...n.histogram.map((r) => r.count));
+        const verdict = $("#null-verdict");
+        if (verdict) {
+          const observed = actual.stranded.length;
+          const same = n.histogram.find(r => r.value === observed)?.count || 0;
+          verdict.textContent = observed === 0
+            ? `${entry.label}: no other articles cut off in the real network. ${same} of ${total.toLocaleString()} rearranged maps also lost none. This outcome is common under the benchmark.`
+            : `${entry.label}: ${observed} cut off in the real network. ${atLeast} of ${total.toLocaleString()} rearranged maps lost at least that many. ${atLeast === 0 ? "None did in this finite sample; that does not mean it is impossible under the model." : "The same neighbour counts can produce less disruption when the links are arranged differently."}`;
+          $("#compare-station").textContent = entry.id === "Hulk" ? "Try Spider-Man next" : "Try Hulk next";
+        }
         $("#null-explanation").textContent =
           `In ${total.toLocaleString()} rewired starting networks, removing ${entry.label} stranded ${n.mean.toFixed(3)} articles on average. ${atLeast} / ${total} trials stranded at least the observed ${actual.stranded.length}. The actual graph is marked in the histogram.`;
         $("#null-hist").innerHTML = n.histogram
@@ -252,6 +261,13 @@ try {
     });
   }
   $("#closure-select").addEventListener("change", challenge);
+  $("#compare-station")?.addEventListener("click", () => {
+    const select = $("#closure-select");
+    select.value = select.value === "Hulk" ? "Spider-Man" : "Hulk";
+    challenge();
+    select.focus();
+    select.scrollIntoView({ block: "center", behavior: "instant" });
+  });
   $("#restore-service").addEventListener("click", () => {
     closed = null;
     $("#service-state").textContent = "NORMAL SERVICE";
