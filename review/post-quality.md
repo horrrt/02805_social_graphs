@@ -31,6 +31,10 @@ Week 2 previously hid the null comparison inside a disclosure after the reveal. 
 
 The user requested desktop work only. No mobile rules were added. Reader testing remains the next step: ask someone unfamiliar with networks to explain the question, result and a limitation without prompting. Do not claim engagement or comprehension gains until that is checked.
 
+## Standalone reading
+
+Each post now introduces the dataset and experiment without assuming an earlier visit. A compact disclosure defines the terms used locally. Week 1 explains incoming versus outgoing references and distinguishes no incoming links from isolation. Week 2 explains why the removal experiment uses 277 of the 303 articles, what a closure removes, and what a null model means. Findings paragraphs also include context for direct fragment links. Both editions were checked on desktop, and all 36 tests still pass.
+
 ## Reuse
 
 [POST_GUIDE.md](../POST_GUIDE.md) records the workflow and user preferences. The repository's [AGENTS.md](../AGENTS.md) directs future post work to read it first.

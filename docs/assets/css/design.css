@@ -692,3 +692,20 @@ body.visual-design.theme-apple {
 .visual-design .closure-comparison-grid .eyebrow {
   font-size: 11px;
 }
+.visual-design .post-primer {
+  margin-top: 12px;
+  max-width: 52ch;
+  font-size: 14px;
+  line-height: 1.55;
+}
+.visual-design .post-primer summary {
+  font-size: 13px;
+}
+.visual-design .post-primer dt {
+  font-weight: 600;
+  margin-top: 12px;
+}
+.visual-design .post-primer dd {
+  margin: 4px 0 12px;
+  color: var(--muted);
+}

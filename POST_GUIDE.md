@@ -4,6 +4,7 @@ Use this guide before creating or revising a post. It records the user's prefere
 
 ## User preferences
 
+- Make every post self-contained. Readers may arrive directly without reading the homepage or any earlier post. Explain the dataset, what links mean, the local experiment rules and essential terms in that post. Links to other posts are optional next steps, never prerequisites.
 - Build for readers with no network-science background. Introduce terms through an example before using technical vocabulary.
 - Keep the approved visual direction: illustrated introductions, clear primary actions, readable spacing, and distinct arcade and second editions. Use `docs/assets/css/design.css` and the existing post markup.
 - Focus on desktop. The user explicitly removed mobile layout work from scope.

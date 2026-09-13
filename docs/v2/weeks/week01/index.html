@@ -40,8 +40,8 @@
             <p class="eyebrow">Week 1 · Networks</p>
             <h1>Why the same heroes keep turning up.</h1>
             <p class="intro">
-              Imagine collecting one card for every Marvel character here. Each
-              pack gives you five cards, but some are much easier to draw than
+              Can you collect a complete set of Marvel article cards? Each pack
+              gives you five cards, but some are much easier to draw than
               others. Open a few packs, then compare what happens when every
               card gets the same chance.
             </p>
@@ -51,10 +51,47 @@
             </nav>
           </div>
           <p class="story-scope">
-            Each card is a Wikipedia article. A link is a clickable reference to
-            another article—not a friendship between characters. We use the same
-            303 articles throughout.
+            We turned 303 Wikipedia articles about Marvel superheroes into
+            cards. A link is a reference from one of these pages to another. The
+            cards use those reference counts; they do not rank the characters’
+            strength.
           </p>
+          <details class="post-primer">
+            <summary>The dataset and a few useful terms</summary>
+            <p>
+              We use the course’s frozen snapshot from 26 August 2026: 303
+              articles in Wikipedia’s Marvel Comics superheroes category, with
+              1,784 links between them. It is a selected set of pages, not every
+              Marvel character or every link on Wikipedia.
+            </p>
+            <dl>
+              <dt>Incoming and outgoing links</dt>
+              <dd>
+                If Spider-Man’s page links to Hulk’s, that is one outgoing link
+                for Spider-Man and one incoming link for Hulk. Hulk need not
+                link back.
+              </dd>
+              <dt>Degree</dt>
+              <dd>
+                A link count. In-degree counts incoming links; out-degree counts
+                outgoing links.
+              </dd>
+              <dt>Isolate</dt>
+              <dd>
+                An article with no links in either direction within this set.
+                There are 17. The 58 cards with no incoming links also include
+                articles that link out.
+              </dd>
+              <dt>Component</dt>
+              <dd>
+                A group whose articles can reach each other through links. Here,
+                the groupings ignore the direction of the links.
+              </dd>
+            </dl>
+            <a href="https://sunelehmann.com/socialgraphs2026-web/data/"
+              >Course dataset and loading instructions ↗</a
+            >
+          </details>
         </div>
         <figure class="post-hero-art">
           <img
@@ -126,10 +163,11 @@
         <p class="eyebrow">What we found</p>
         <h2 id="post-title">58 articles receive no links at all.</h2>
         <p>
-          The unevenness is in the data: Spider-Man is mentioned by 106 other
-          articles, while 58—including Baymax—are mentioned by none. Under our
-          draw rule, Spider-Man’s card is 107 times as likely to appear as
-          Baymax’s. That is why collecting the last few cards takes so long.
+          Within our set of 303 Wikipedia articles, Spider-Man receives
+          references from 106 pages, while 58—including Baymax—receive none. We
+          give each card one chance per incoming link, plus one extra so every
+          card can appear. Spider-Man therefore gets 107 chances for every one
+          Baymax gets. That is why collecting the last few cards takes so long.
         </p>
         <p>
           Being mentioned and mentioning others are different things.
