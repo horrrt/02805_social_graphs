@@ -242,6 +242,7 @@ export function prediction(host, config) {
     onReveal = () => {},
     allowSkip = false,
     plainLanguage = false,
+    autoReveal = true,
   } = config;
   const previous = read().attempts[id];
   let revealed = false;
@@ -300,7 +301,7 @@ export function prediction(host, config) {
     form.append(skip);
     skip.addEventListener("click", () => reveal(null));
   }
-  if (previous && previous.answer === answer) reveal(previous);
+  if (autoReveal && previous && previous.answer === answer) reveal(previous);
   return {
     get revealed() {
       return revealed;

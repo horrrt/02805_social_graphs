@@ -709,3 +709,142 @@ body.visual-design.theme-apple {
   margin: 4px 0 12px;
   color: var(--muted);
 }
+
+/* A journey ticket makes the closure experiment visible at the scale of one path. */
+.visual-design .ride {
+  margin: 24px 0;
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  overflow: hidden;
+  background: var(--bg);
+  padding: 0 26px 22px;
+}
+.visual-design .ride-ticket {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: center;
+  gap: 24px;
+  padding: 22px 0;
+  border-bottom: 2px dashed var(--line);
+}
+.visual-design .ride-ticket h3 {
+  font:
+    600 28px/1.2 Barlow,
+    sans-serif;
+  letter-spacing: -0.03em;
+  margin: 8px 0;
+}
+.visual-design .ride-ticket p {
+  margin: 6px 0;
+  font-size: 14px;
+}
+.visual-design .ride-ticket .eyebrow {
+  font-size: 11px;
+}
+.visual-design .ride-ticket select {
+  max-width: 310px;
+  font-size: 14px;
+}
+.visual-design .ride-route {
+  padding: 18px 0;
+}
+.visual-design .ride-route h4 {
+  font:
+    600 13px Barlow,
+    sans-serif;
+  color: var(--muted);
+  margin: 0 0 8px;
+}
+.visual-design .ride-track {
+  display: flex;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.visual-design .ride-track li {
+  flex: 1;
+  min-width: 0;
+  position: relative;
+  text-align: center;
+}
+.visual-design .ride-track li:not(:last-child)::after {
+  content: "";
+  position: absolute;
+  top: 22px;
+  left: 50%;
+  width: 100%;
+  height: 4px;
+  background: var(--accent);
+}
+.visual-design .ride-stop {
+  position: relative;
+  width: 100%;
+  white-space: normal;
+  border: 0;
+  background: transparent;
+  box-shadow: none;
+  color: var(--paper);
+  font:
+    600 15px/1.25 Barlow,
+    sans-serif;
+  border-radius: 8px;
+  padding: 44px 8px 10px;
+  min-height: 76px;
+}
+.visual-design .ride-stop::before {
+  content: "";
+  position: absolute;
+  top: 13px;
+  left: calc(50% - 10px);
+  z-index: 1;
+  width: 20px;
+  height: 20px;
+  background: var(--bg);
+  border: 4px solid var(--accent);
+  border-radius: 50%;
+  box-sizing: border-box;
+}
+.visual-design .ride-stop:hover {
+  background: var(--band);
+  transform: none;
+}
+.visual-design .ride-stop:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+.visual-design .closed-stop .ride-stop {
+  color: #be533c;
+  text-decoration: line-through;
+}
+.visual-design .closed-stop .ride-stop::before {
+  content: "×";
+  font-size: 22px;
+  line-height: 18px;
+  border: 0;
+  background: #be533c;
+  color: white;
+  text-decoration: none;
+}
+.visual-design .ride-track li.closed-stop::after,
+.visual-design .ride-track li:has(+ .closed-stop)::after {
+  background: transparent;
+  border-top: 3px dashed #be533c;
+  height: 0;
+}
+.visual-design .ride-result {
+  font-size: 19px;
+  font-weight: 600;
+  max-width: none;
+  padding-top: 16px;
+  border-top: 1px solid var(--line);
+}
+.visual-design .ride[data-outcome="cut-off"] .ride-result {
+  color: #be533c;
+}
+.visual-design #ride-inspector {
+  margin-top: 20px;
+  min-height: 38px;
+}
+.visual-design #numeric-guess > summary {
+  font-size: 14px;
+}

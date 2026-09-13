@@ -40,7 +40,7 @@
           <p class="intro">
             Imagine Wikipedia as a transport map: articles are stations, and
             links are routes between them. If one station closes, can the others
-            still reach each other? Try Spider-Man, then Hulk.
+            still reach each other? Follow a journey and find out.
           </p>
           <nav aria-label="This post" class="story-nav">
             <a class="active-step" href="#try-it">Try it</a
@@ -102,7 +102,7 @@
       </section>
       <section class="section interaction-panel" id="try-it">
         <div class="section-head">
-          <h2>Choose a station to remove</h2>
+          <h2>Will your journey survive?</h2>
           <label
             >Close a station<select id="closure-select">
               <option value="Spider-Man">Spider-Man</option>
@@ -118,10 +118,62 @@
           Of the 303 articles, 277 form one connected group: each can reach
           every other through links. We test removals inside this group,
           following links in either direction. “Cut off” means losing the route
-          to the largest group left after a removal. A rough guess is enough—or
-          just reveal the answer.
+          to the largest group left after a removal. Pick a journey below, then
+          close a station to see what changes.
         </p>
-        <div class="prediction" id="prediction"></div>
+        <section class="ride" id="ride" aria-labelledby="ride-title">
+          <div class="ride-ticket">
+            <div>
+              <p class="eyebrow">Marvel Transit · journey ticket</p>
+              <h3 id="ride-title">Choose your journey</h3>
+              <p id="ride-station"></p>
+            </div>
+            <label
+              >Journey<select id="ride-journey" aria-label="Journey"></select
+            ></label>
+          </div>
+          <div class="ride-route">
+            <h4 id="ride-before-label">Normal service</h4>
+            <ol
+              id="ride-before"
+              class="ride-track"
+              aria-label="Route before closure"
+            ></ol>
+          </div>
+          <div class="ride-route" id="ride-after-panel" hidden>
+            <h4 id="ride-after-label">After closure</h4>
+            <ol
+              id="ride-after"
+              class="ride-track"
+              aria-label="Route after closure"
+            ></ol>
+            <p class="fine" id="ride-after-note"></p>
+          </div>
+          <p id="ride-result" class="ride-result" aria-live="polite">
+            Loading the route…
+          </p>
+          <div class="control-row" id="ride-choices">
+            <button type="button" data-arrive="yes">I can still arrive</button
+            ><button type="button" class="quiet" data-arrive="no">
+              I’ll be cut off</button
+            ><button type="button" class="quiet" data-arrive="skip">
+              Just close the station
+            </button>
+          </div>
+          <button type="button" class="quiet" id="ride-reset" hidden>
+            Reopen the station
+          </button>
+          <p class="fine" id="ride-inspector" aria-live="polite"></p>
+          <p class="fine">
+            A route view, not the full network. Each stop is a Wikipedia
+            article; positions only show the order of the journey. Journey
+            predictions are not scored or saved.
+          </p>
+        </section>
+        <details id="numeric-guess">
+          <summary>Predict the total disruption instead</summary>
+          <div class="prediction" id="prediction"></div>
+        </details>
         <div hidden="" id="disruption-results">
           <div class="closure-comparison-grid">
             <div class="board-results">
