@@ -4,9 +4,9 @@ __pycache__/
 .DS_Store
 .claude/settings.local.json
 .venv/
-
-# Local presentation verification artifacts
-.playwright-cli/
-output/playwright/
-
 .venv-course/
+
+# Local scratch: course materials and generated verification artifacts
+.playwright-cli/
+materials/
+output/
