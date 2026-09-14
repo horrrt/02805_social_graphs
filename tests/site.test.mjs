@@ -97,7 +97,7 @@ test("every lobby card agrees with the manifest and only live weeks are links", 
     const html = read(root + "index.html");
     // Cards must put data-week first; coming cards must not nest a <div>.
     const cards = [
-      ...html.matchAll(/<(a|div) data-week="(\d)"([^>]*)>([\s\S]*?)<\/\1>/g),
+      ...html.matchAll(/<(a|div)\s+data-week="(\d)"([^>]*)>([\s\S]*?)<\/\1\s*>/g),
     ];
     assert.equal(cards.length, WEEKS.length, `${root}index.html: one card per course week`);
     cards.forEach((m, i) => {

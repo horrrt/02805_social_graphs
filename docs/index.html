@@ -1,27 +1,30 @@
 <!doctype html>
+
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <meta content="width=device-width,initial-scale=1" name="viewport" />
     <meta
-      name="description"
       content="The Log–Log Arcade: weekly posts by Log–Log Legends (DTU 02805) on a frozen network of 303 Marvel Wikipedia articles."
+      name="description"
     />
     <title>The Log–Log Arcade · Log–Log Legends</title>
-    <link rel="stylesheet" href="assets/css/arcade.css" />
-    <link rel="icon" href="assets/favicon.svg" type="image/svg+xml" />
+    <link href="assets/css/arcade.css" rel="stylesheet" />
+    <link href="assets/favicon.svg" rel="icon" type="image/svg+xml" />
     <script>
       document.documentElement.classList.add("js");
     </script>
+    <link href="assets/css/story.css" rel="stylesheet" />
+    <link rel="stylesheet" href="assets/css/design.css" />
   </head>
-  <body class="">
+  <body class="guided-lobby visual-design">
     <a class="skip" href="#main">Skip to content</a>
     <header class="chrome" id="arcade-chrome">
       <a class="arcade-wordmark" href="./">LOG–LOG ARCADE</a
       ><a href="#weeks">This week’s post</a>
     </header>
-    <main id="main" class="wrap">
-      <p id="app-status" class="status" role="status">
+    <main class="wrap" id="main">
+      <p class="status" id="app-status" role="status">
         Loading the frozen snapshot…
       </p>
       <noscript
@@ -30,228 +33,298 @@
           methods are available below.
         </p></noscript
       >
-
       <section class="hero lobby-hero">
-        <p class="eyebrow">ONE FROZEN WORLD. ONE POST A WEEK.</p>
-        <h1>THE LOG–LOG<br /><span class="accent">ARCADE.</span></h1>
-        <p class="intro">
-          303 articles. Some get all the attention. Others can disappear without
-          a trace. Step inside, make a prediction, and find out what holds this
-          world together.
-        </p>
-        <div class="actions">
-          <a class="button" href="weeks/week02/"
-            >This week · Transit Authority ↗</a
-          ><a class="button quiet" href="weeks/week01/">Week 1 · Hero Packs</a
-          ><a class="button quiet" href="#free-play">Free play ↓</a>
+        <div class="hero-copy">
+          <p class="eyebrow">Log–Log Legends / DTU 02805</p>
+          <h1>Marvel,<br /><em>connected.</em></h1>
+          <p class="intro">
+            Open a pack. Close a station. See what the links between 303
+            Wikipedia articles reveal.
+          </p>
+          <div class="hero-actions">
+            <a class="button" href="weeks/week01/"
+              >Start with Hero Packs <span aria-hidden="true">↗</span></a
+            ><a class="text-link" href="#weeks">Browse the posts</a>
+          </div>
+          <p class="hero-note">
+            Interactive stories. No network-science background needed.
+          </p>
         </div>
+        <figure class="hero-art">
+          <img
+            alt="The actual Marvel article network, with Spider-Man, Hulk and the isolated Baymax labelled. Lines represent article references, not friendships."
+            height="660"
+            src="assets/images/marvel-network.svg"
+            width="960"
+          />
+        </figure>
       </section>
-      <div class="room-sign">
-        <span>FREE PLAY · NO ACCOUNT</span><span>SNAPSHOT 26.08.2026</span>
-      </div>
-      <canvas
-        class="lobby-stage stage"
-        id="lobby-canvas"
-        aria-label="An arcade room with eight cabinets, one per course week. Weeks 1 and 2 are switched on; weeks 3 to 8 wait under dust sheets until their course date. The same list follows as text."
-      ></canvas>
-      <section id="weeks" aria-label="One cabinet per course week">
+      <section aria-label="One cabinet per course week" id="weeks">
+        <h2>Weekly posts</h2>
         <ol class="cabinet-list">
           <li>
-            <a data-week="1" class="cabinet-link" href="weeks/week01/">
-              <span class="tag">Week 1 · 2 Sep · live</span>
-              <p class="course">Networks</p>
-              <h2>Hero Packs</h2>
-              <p>Open five. Chase the rare ones. Learn why the tail wins.</p>
-            </a>
+            <a data-week="1" class="cabinet-link" href="weeks/week01/"
+              ><div class="post-cover cover-packs">
+                <img
+                  alt=""
+                  height="440"
+                  loading="lazy"
+                  src="assets/images/hero-packs.svg"
+                  width="640"
+                />
+              </div>
+              <div class="post-copy">
+                <span class="tag">Week 1 · 2 September</span>
+                <p class="course">Networks</p>
+                <h2>Hero Packs</h2>
+                <p>Why do you keep drawing the same heroes?</p>
+                <span class="post-action"
+                  >Open the story <span aria-hidden="true">↗</span></span
+                >
+              </div></a
+            >
           </li>
           <li>
-            <a data-week="2" class="cabinet-link current" href="weeks/week02/">
-              <span class="tag">Week 2 · 9 Sep · live · this week</span>
-              <p class="course">Models &amp; null models</p>
-              <h2>Transit Authority</h2>
-              <p>Close a station. See who loses their way home.</p>
-            </a>
-          </li>
-          <li>
-            <div data-week="3" class="cabinet-link coming" aria-disabled="true">
-              <span class="tag">Week 3 · 16 Sep · coming</span>
-              <h2>Who matters, and why</h2>
-              <p>Opens after the course session.</p>
-            </div>
-          </li>
-          <li>
-            <div data-week="4" class="cabinet-link coming" aria-disabled="true">
-              <span class="tag">Week 4 · 23 Sep · coming</span>
-              <h2>Communities &amp; backbones</h2>
-              <p>Opens after the course session.</p>
-            </div>
-          </li>
-          <li>
-            <div data-week="5" class="cabinet-link coming" aria-disabled="true">
-              <span class="tag">Week 5 · 30 Sep · coming</span>
-              <h2>The language half · NLP I</h2>
-              <p>Opens after the course session.</p>
-            </div>
-          </li>
-          <li>
-            <div data-week="6" class="cabinet-link coming" aria-disabled="true">
-              <span class="tag">Week 6 · 7 Oct · coming</span>
-              <h2>NLP II</h2>
-              <p>Opens after the course session.</p>
-            </div>
-          </li>
-          <li>
-            <div data-week="7" class="cabinet-link coming" aria-disabled="true">
-              <span class="tag">Week 7 · 21 Oct · coming</span>
-              <h2>NLP III</h2>
-              <p>Opens after the course session.</p>
-            </div>
-          </li>
-          <li>
-            <div data-week="8" class="cabinet-link coming" aria-disabled="true">
-              <span class="tag">Week 8 · 28 Oct · coming</span>
-              <h2>Networks × language</h2>
-              <p>Opens after the course session.</p>
-            </div>
+            <a data-week="2" class="cabinet-link current" href="weeks/week02/"
+              ><div class="post-cover cover-transit">
+                <img
+                  alt=""
+                  height="440"
+                  loading="lazy"
+                  src="assets/images/transit-map.svg"
+                  width="640"
+                />
+              </div>
+              <div class="post-copy">
+                <span class="tag">Week 2 · 9 September · latest</span>
+                <p class="course">Models &amp; null models</p>
+                <h2>Transit Authority</h2>
+                <p>Which connections can the network live without?</p>
+                <span class="post-action"
+                  >Open the story <span aria-hidden="true">↗</span></span
+                >
+              </div></a
+            >
           </li>
         </ol>
+        <details class="upcoming-weeks">
+          <summary>Upcoming weeks</summary>
+          <ol class="cabinet-list">
+            <li>
+              <div
+                data-week="3"
+                aria-disabled="true"
+                class="cabinet-link coming"
+              >
+                <span class="tag">Week 3 · 16 Sep · coming</span>
+                <h2>Who matters, and why</h2>
+                <p>Opens after the course session.</p>
+              </div>
+            </li>
+            <li>
+              <div
+                data-week="4"
+                aria-disabled="true"
+                class="cabinet-link coming"
+              >
+                <span class="tag">Week 4 · 23 Sep · coming</span>
+                <h2>Communities &amp; backbones</h2>
+                <p>Opens after the course session.</p>
+              </div>
+            </li>
+            <li>
+              <div
+                data-week="5"
+                aria-disabled="true"
+                class="cabinet-link coming"
+              >
+                <span class="tag">Week 5 · 30 Sep · coming</span>
+                <h2>The language half · NLP I</h2>
+                <p>Opens after the course session.</p>
+              </div>
+            </li>
+            <li>
+              <div
+                data-week="6"
+                aria-disabled="true"
+                class="cabinet-link coming"
+              >
+                <span class="tag">Week 6 · 7 Oct · coming</span>
+                <h2>NLP II</h2>
+                <p>Opens after the course session.</p>
+              </div>
+            </li>
+            <li>
+              <div
+                data-week="7"
+                aria-disabled="true"
+                class="cabinet-link coming"
+              >
+                <span class="tag">Week 7 · 21 Oct · coming</span>
+                <h2>NLP III</h2>
+                <p>Opens after the course session.</p>
+              </div>
+            </li>
+            <li>
+              <div
+                data-week="8"
+                aria-disabled="true"
+                class="cabinet-link coming"
+              >
+                <span class="tag">Week 8 · 28 Oct · coming</span>
+                <h2>Networks × language</h2>
+                <p>Opens after the course session.</p>
+              </div>
+            </li>
+          </ol>
+        </details>
       </section>
+
       <section class="section" id="free-play">
         <div class="section-head">
-          <h2>Free play. Experiments, not posts.</h2>
-          <span class="fine"
-            >Same snapshot, no week attached. Nothing here is a hand-in.</span
-          >
+          <h2>A little more to play with.</h2>
+          <span class="fine">Side experiments from the same 303 articles.</span>
         </div>
         <div class="experience-links">
-          <a href="os/"
-            ><span class="eyebrow">OPERATE IT</span><b>MARVEL-OS 303 ↗</b>
-            <p>
-              A desktop that runs on a graph. Real commands, draggable apps, and
-              a snapshot you can interrogate.
-            </p></a
+          <a class="play-card play-trumps" href="trumps/"
+            ><span aria-hidden="true" class="play-icon"
+              ><svg
+                fill="none"
+                stroke="currentColor"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="4"
+                viewbox="0 0 100 100"
+              >
+                <rect height="60" rx="7" width="42" x="18" y="12"></rect>
+                <rect height="60" rx="7" width="42" x="43" y="28"></rect>
+                <path d="M54 51h20M54 63h12"></path></svg></span
+            ><b>Hero Trumps</b>
+            <p>Pick your team. See which connections count.</p></a
           >
-          <a href="trumps/"
-            ><span class="eyebrow">CHALLENGE IT</span><b>Hero Trumps ↗</b>
-            <p>
-              Stat battles and a five-card coverage puzzle. Fame and structural
-              importance part ways.
-            </p></a
+
+          <a class="play-card play-sound" href="sound/"
+            ><span aria-hidden="true" class="play-icon"
+              ><svg
+                fill="none"
+                stroke="currentColor"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="4"
+                viewbox="0 0 100 100"
+              >
+                <path
+                  d="M12 50h8l8-25 12 52 12-63 12 73 10-43 8 6h10"
+                ></path></svg></span
+            ><b>Walk / Listen</b>
+            <p>Hear a walk through the network.</p></a
           >
-          <a href="os/?app=communities"
-            ><span class="eyebrow">PARTITION IT</span><b>Hidden Districts ↗</b>
-            <p>
-              One Louvain partition of the network, seed 7. Its labels are not
-              canonical Marvel teams.
-            </p></a
-          >
-          <a href="sound/"
-            ><span class="eyebrow">LISTEN TO IT</span><b>Walk / Listen ↗</b>
-            <p>
-              One step, one note. A repeatable random walk turns local choices
-              into a melody.
-            </p></a
-          >
-          <a href="creature/"
-            ><span class="eyebrow">CARE FOR IT</span><b>Keep It Together ↗</b>
-            <p>
-              Break a connection, watch the consequences, then help the stranded
-              pieces find their way back.
-            </p></a
-          >
-          <a href="os/?app=notepad"
-            ><span class="eyebrow">READ IT</span><b>Inside the Articles ↗</b>
-            <p>
-              The 303 short roster descriptions behind the nodes, not full
-              article bodies.
-            </p></a
-          >
-          <a href="os/?app=search"
-            ><span class="eyebrow">ASK IT</span><b>Word Finder ↗</b>
-            <p>TF-IDF search over the same 303 descriptions.</p></a
+          <a class="play-card play-creature" href="creature/"
+            ><span aria-hidden="true" class="play-icon"
+              ><svg
+                fill="none"
+                stroke="currentColor"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="4"
+                viewbox="0 0 100 100"
+              >
+                <circle cx="50" cy="50" r="28"></circle>
+                <circle cx="40" cy="43" r="2"></circle>
+                <circle cx="60" cy="43" r="2"></circle>
+                <path
+                  d="M37 60q13 12 26 0M22 72l-9 12M78 72l9 12"
+                ></path></svg></span
+            ><b>Keep It Together</b>
+            <p>Remove an article. Help the pieces reconnect.</p></a
           >
         </div>
+        <details class="more-tools">
+          <summary>More tools &amp; the full network</summary>
+          <div class="tools-list">
+            <a href="os/"
+              ><b>MARVEL-OS 303 ↗</b>
+              <p>Run graph commands and open the analysis tools.</p></a
+            ><a href="os/?app=communities"
+              ><b>Hidden Districts ↗</b>
+              <p>Inspect one Louvain partition, with seed 7.</p></a
+            ><a href="os/?app=notepad"
+              ><b>Inside the Articles ↗</b>
+              <p>Read the 303 short descriptions from the roster.</p></a
+            ><a href="os/?app=search"
+              ><b>Word Finder ↗</b>
+              <p>Search the roster descriptions with TF-IDF.</p></a
+            >
+            <details class="evidence-item" id="lobby-scene">
+              <summary>See the arcade</summary>
+              <canvas
+                aria-label="An arcade room with eight cabinets, one per course week. Weeks 1 and 2 are switched on; weeks 3 to 8 wait under dust sheets until their course date. The same list follows as text."
+                class="lobby-stage stage"
+                id="lobby-canvas"
+              ></canvas>
+              <div class="room-sign">
+                <span>FREE PLAY · NO ACCOUNT</span
+                ><span>SNAPSHOT 26.08.2026</span>
+              </div>
+              <section class="section" data-gated="" id="results">
+                <p class="eyebrow">THE TAKEAWAY</p>
+                <h2>The network in numbers</h2>
+                <p>
+                  The frozen graph contains 303 articles in 19 weakly connected
+                  components: a 277-article core, a nine-article island, and 17
+                  isolates. Follow the cabinets to discover how direction,
+                  choice of metric and comparison model change the answer.
+                </p>
+              </section>
+            </details>
+          </div>
+        </details>
       </section>
-      <section class="section">
+      <section aria-labelledby="about-title" class="team-strip" id="about">
         <div class="two-col">
           <div>
-            <p class="eyebrow">THE RULES ARE SIMPLE</p>
-            <h2>Guess. Play.<br />Leave with a better question.</h2>
+            <h2 id="about-title">Made by Log–Log Legends</h2>
           </div>
           <div>
-            <p>
-              Each cabinet begins with a prediction. Then the result becomes
-              yours to explore. Your first guess earns a score; the explanation
-              matters more than the score.
-            </p>
-            <p class="fine">
-              Weeks 1 and 2 are posted. Weeks 3–8 open on the course schedule;
-              the lobby mirrors the course index. The free-play shelf holds
-              experiments over the same snapshot; they are not posts and carry
-              no week number. Audio starts only when you press Play.
-            </p>
-          </div>
-        </div>
-      </section>
-      <section id="results" class="section" data-gated>
-        <p class="eyebrow">THE TAKEAWAY</p>
-        <h2>A link is a clue, not the whole story.</h2>
-        <p>
-          The frozen graph contains 303 articles in 19 weakly connected
-          components: a 277-article core, a nine-article island, and 17
-          isolates. Follow the cabinets to discover how direction, choice of
-          metric and comparison model change the answer.
-        </p>
-      </section>
-      <section class="section" id="about" aria-labelledby="about-title">
-        <div class="two-col">
-          <div>
-            <p class="eyebrow">WHO WE ARE</p>
-            <h2 id="about-title">Log–Log Legends.</h2>
-          </div>
-          <div>
-            <p>
-              We’re Log–Log Legends, a three-person group in
-              <strong>Social Graphs and Interactions at DTU</strong>. Each week
-              we explore the same frozen slice of Marvel’s Wikipedia network and
-              turn what we find into a post: what we asked, what we did, one
-              figure, what surprised us.
-            </p>
+            <p>Social Graphs and Interactions · DTU · Fall 2026</p>
             <ul class="members">
               <li>Àngela Buxó</li>
               <li>Gyula Kürthy</li>
               <li>Niklas Johansen</li>
             </ul>
             <a href="https://github.com/horrrt/02805_social_graphs"
-              >The data, notebooks, and working ↗</a
+              >Source code &amp; notebooks ↗</a
             >
           </div>
         </div>
       </section>
-      <section class="closing" aria-labelledby="closing-title">
-        <h2 id="closing-title">Behind the cabinet</h2>
-        <div class="closing-grid">
-          <div>
-            <h3>What the data means</h3>
-            <p>
-              303 article entries and 1,784 directed links from the course’s
-              frozen 26 August 2026 snapshot. A link means one article links to
-              another within this roster. It does not measure friendship, hero
-              strength, popularity or the whole Marvel universe.
-            </p>
-            <a href="assets/data/arcade_graph.json" download
-              >Download the snapshot and metrics (JSON)</a
-            >
+      <section aria-labelledby="closing-title" class="closing site-reference">
+        <h2 id="closing-title">Sources &amp; methods</h2>
+        <details>
+          <summary>Snapshot &amp; limitations</summary>
+          <div class="closing-grid">
+            <div>
+              <h3>What the data means</h3>
+              <p>
+                303 article entries and 1,784 directed links from the course’s
+                frozen 26 August 2026 snapshot. A link means one article links
+                to another within this roster. It does not measure friendship,
+                hero strength, popularity or the whole Marvel universe.
+              </p>
+              <a download="" href="assets/data/arcade_graph.json"
+                >Download the snapshot and metrics (JSON)</a
+              >
+            </div>
+            <div>
+              <h3>Limits of the experiment</h3>
+              <p>
+                The arcade is an educational interpretation of a bounded article
+                network. Free-play experiments are exploratory tools, not posts
+                or hand-ins.
+              </p>
+            </div>
           </div>
-          <div>
-            <h3>Limits of the experiment</h3>
-            <p>
-              The arcade is an educational interpretation of a bounded article
-              network. Free-play experiments are exploratory tools, not posts or
-              hand-ins.
-            </p>
-          </div>
-        </div>
+        </details>
         <details>
           <summary>Methods and reproducibility</summary>
           <p>
@@ -284,7 +357,8 @@
     </main>
     <footer class="wrap footer">
       <span
-        >Log–Log Legends · 02805 Social graphs and interactions · Fall 2026</span
+        >Log–Log Legends · 02805 Social graphs and interactions · Fall
+        2026</span
       ><span
         ><a href="./">Arcade</a> / <a href="v2/">Version 2</a> /
         <a href="#free-play">Free play</a> /
@@ -293,6 +367,6 @@
         <a href="weeks/week02/">Week 2</a></span
       >
     </footer>
-    <script type="module" src="assets/js/lobby.js"></script>
+    <script src="assets/js/lobby.js" type="module"></script>
   </body>
 </html>

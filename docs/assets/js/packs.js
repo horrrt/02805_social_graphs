@@ -9,6 +9,7 @@ import {
   tone,
   errorMessage,
 } from "./cabinet.js";
+import { expectedDistinct } from "./collection-model.mjs";
 import { rng } from "./arcade-core.mjs";
 import { card } from "./cards.js";
 setupChrome();
@@ -26,6 +27,34 @@ try {
     explain:
       "An approximate expectation, not a guaranteed finish. The slow part is finding the last rare cards.",
   });
+  const comparison = $("#compare-packs");
+  if (comparison) {
+    comparison.disabled = false;
+    const updateComparison = () => {
+      const packCount = Number(comparison.value),
+        draws = packCount * 5;
+      const weighted = expectedDistinct(
+        packs.cards.map((c) => c.probability),
+        draws,
+      );
+      const uniform = expectedDistinct(
+        data.nodes.map(() => 1 / data.nodes.length),
+        draws,
+      );
+      $("#weighted-unique").textContent = weighted.toFixed(1);
+      $("#uniform-unique").textContent = uniform.toFixed(1);
+      $("#weighted-bar").style.width =
+        `${(weighted / data.nodes.length) * 100}%`;
+      $("#uniform-bar").style.width = `${(uniform / data.nodes.length) * 100}%`;
+      const difference = uniform - weighted;
+      $("#odds-explanation").textContent =
+        difference < 1
+          ? `After one pack, the averages are close. Try 20 or 100 packs to see how the gap grows. Repeats can happen under either rule.`
+          : `At ${packCount} packs, equal odds give about ${Math.round(difference)} more different cards on average. Repeats still happen under both rules.`;
+    };
+    comparison.addEventListener("change", updateComparison);
+    updateComparison();
+  }
   const KEY = "loglog-packs-20260826",
     known = new Set(data.nodes.map((n) => n.id));
   let counts = {},
@@ -90,6 +119,14 @@ try {
     $("#more-cards").disabled = limit >= all.length;
   }
   function metrics() {
+    const insight = $("#collection-insight");
+    if (insight) {
+      const distinct = Object.keys(counts).length,
+        repeats = pulls - distinct;
+      insight.textContent = pulls
+        ? `Your ${pulls} draws found ${distinct} different ${distinct === 1 ? "card" : "cards"} and ${repeats} ${repeats === 1 ? "repeat" : "repeats"}. ${pulls < 20 ? "A few packs can vary a lot. Try more, then compare the two draw rules below." : "This is one collection, not an average. Compare the two draw rules below to see the longer-term effect."}`
+        : "Watch how many cards are new and how many repeat. You do not need to finish the collection to see the idea.";
+    }
     $("#unique-count").textContent = `${Object.keys(counts).length} / 303`;
     $("#pull-count").textContent = pulls.toLocaleString();
     $("#rare-count").textContent =
@@ -116,7 +153,9 @@ try {
       draws.push({ n, fresh });
     }
     $("#pack-tray").innerHTML = draws
-      .map(({ n, fresh }) => card(n, { index: data.nodes.indexOf(n), fresh }))
+      .map(({ n, fresh }) =>
+        card(n, { index: data.nodes.indexOf(n), fresh, simple: true }),
+      )
       .join("");
     $("#pack-status").textContent =
       `Pack ${Math.floor(pulls / 5)}: ${draws.filter((d) => d.fresh).length} new cards. ${draws.map((d) => d.n.name).join(", ")}.`;

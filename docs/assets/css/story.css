@@ -1,0 +1,412 @@
+/* Shared reading layout; colours and typefaces come from each edition. */
+.guided-post .wrap {
+  max-width: 960px;
+}
+.guided-post .story-hero {
+  display: block;
+  padding: 56px 0 32px;
+  text-align: left;
+}
+.guided-post .story-hero > * {
+  margin-left: 0;
+}
+.guided-post .story-hero h1 {
+  font-size: clamp(36px, 5.4vw, 68px);
+  line-height: 1.04;
+  letter-spacing: -0.035em;
+  max-width: 18ch;
+}
+.guided-post .story-hero .intro {
+  font-size: clamp(18px, 2vw, 22px);
+  max-width: 58ch;
+  line-height: 1.5;
+}
+.guided-post .story-scope {
+  font-size: 13px;
+  line-height: 1.5;
+  color: var(--muted);
+  max-width: 66ch;
+  margin-top: 22px;
+}
+.story-nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 24px;
+  margin-top: 24px;
+}
+.story-nav a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  font-size: 15px;
+  text-decoration-thickness: 1px;
+}
+.guided-post .section {
+  padding: 36px 0;
+  margin: 0;
+  border-top: 1px solid var(--line);
+}
+.guided-post .section h2 {
+  font-size: clamp(27px, 3.5vw, 38px);
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+  max-width: 30ch;
+}
+.guided-post p {
+  max-width: 68ch;
+}
+.guided-post .post .two-col,
+.guided-post .closing-grid {
+  display: block;
+}
+.guided-post .section-head {
+  align-items: start;
+  gap: 16px;
+}
+.guided-post .section-head .tag {
+  white-space: normal;
+}
+.guided-post .prediction {
+  margin: 18px 0;
+  padding: 24px;
+}
+.guided-post .prediction h2 {
+  font-size: 24px;
+  max-width: 30ch;
+}
+.guided-post .prediction-label {
+  font-size: 12px;
+  letter-spacing: 0.04em;
+}
+.guided-post .metrics {
+  gap: 16px;
+}
+.guided-post .metric {
+  padding: 16px 0;
+  background: transparent;
+  border: 0;
+}
+.guided-post .metric strong {
+  font-size: clamp(28px, 4vw, 42px);
+}
+.guided-post .post figure {
+  max-width: 740px;
+  margin: 28px auto 0;
+}
+.guided-post figure img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+.guided-post figcaption {
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--muted);
+  margin-top: 12px;
+}
+.guided-post .evidence {
+  margin-top: 16px;
+}
+.evidence > details,
+.evidence-item,
+.upcoming-weeks {
+  border: 0;
+  border-top: 1px solid var(--line);
+  border-radius: 0;
+  padding: 0;
+  background: transparent;
+}
+.evidence > details > summary,
+.evidence-item > summary,
+.upcoming-weeks > summary {
+  min-height: 56px;
+  padding: 17px 0;
+  font-size: 17px;
+  line-height: 1.4;
+  font-weight: 600;
+  cursor: pointer;
+}
+.evidence > details[open] {
+  padding-bottom: 24px;
+}
+.evidence-item > .section {
+  border-top: 0;
+  padding: 16px 0;
+}
+.evidence-item .two-col {
+  grid-template-columns: 1fr;
+}
+.evidence-item .section h2 {
+  font-size: 27px;
+}
+.evidence-item .section h3 {
+  font-size: 21px;
+}
+.guided-post .pack-options {
+  margin: 0;
+  border: 0;
+  padding: 0;
+}
+.pack-options > summary {
+  padding: 12px;
+  font-size: 14px;
+  cursor: pointer;
+}
+.pack-options .control-row {
+  margin: 12px 0;
+}
+.baseline {
+  max-width: 600px;
+  margin: 24px 0;
+}
+.baseline > div {
+  display: grid;
+  grid-template-columns: 145px 1fr 52px;
+  align-items: center;
+  gap: 16px;
+  margin-top: 14px;
+  font-size: 15px;
+}
+.baseline meter {
+  width: 100%;
+  height: 20px;
+  accent-color: var(--accent);
+}
+.baseline meter::-webkit-meter-bar {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 2px;
+}
+.baseline meter::-webkit-meter-optimum-value {
+  background: var(--accent);
+}
+.baseline meter::-moz-meter-bar {
+  background: var(--accent);
+}
+.baseline strong {
+  font-variant-numeric: tabular-nums;
+}
+.story-end {
+  margin-top: 28px;
+}
+.guided-lobby .hero {
+  padding: 48px 0 24px;
+}
+.guided-lobby .hero h1 {
+  font-size: clamp(42px, 6vw, 76px);
+}
+.guided-lobby .hero .intro {
+  font-size: 20px;
+  max-width: 55ch;
+}
+.guided-lobby #weeks {
+  padding: 28px 0;
+  margin: 0;
+  background: transparent;
+}
+.guided-lobby #weeks > h2,
+.guided-lobby #weeks .section-head h2 {
+  font-size: 28px;
+}
+.guided-lobby #weeks > .cabinet-list {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 20px;
+}
+.guided-lobby .cabinet-link {
+  min-height: 0;
+  padding: 24px;
+  box-shadow: none;
+}
+.guided-lobby .cabinet-link h2 {
+  font-size: 32px;
+}
+.guided-lobby .cabinet-link .tag {
+  font-size: 12px;
+}
+.guided-lobby .upcoming-weeks {
+  margin-top: 24px;
+}
+.guided-lobby .upcoming-weeks .cabinet-list {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+.guided-lobby .upcoming-weeks .cabinet-link {
+  padding: 16px;
+}
+.guided-lobby .upcoming-weeks h2 {
+  font-size: 22px;
+}
+.guided-lobby #free-play {
+  margin: 0;
+  padding: 36px 0;
+}
+.guided-lobby #free-play h2 {
+  font-size: 30px;
+}
+.guided-lobby .experience-links {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0 28px;
+}
+.guided-lobby .experience-links > a {
+  border: 0;
+  border-top: 1px solid var(--line);
+  border-radius: 0;
+  padding: 20px 0;
+  background: transparent;
+  box-shadow: none;
+}
+.guided-lobby .experience-links b {
+  font-size: 20px;
+}
+.guided-lobby .experience-links p {
+  font-size: 16px;
+  margin: 6px 0 0;
+}
+.guided-post :focus-visible,
+.guided-lobby :focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 5px;
+}
+.guided-post .chrome,
+.guided-lobby .chrome {
+  position: relative;
+}
+.guided-post .chrome nav,
+.guided-lobby .chrome nav {
+  gap: 16px;
+}
+.guided-post .chrome nav > a,
+.guided-lobby .chrome nav > a {
+  display: inline-flex;
+  min-height: 44px;
+  align-items: center;
+}
+@media (max-width: 640px) {
+  .guided-post .wrap,
+  .guided-lobby .wrap {
+    width: calc(100% - 36px);
+  }
+  .guided-post .story-hero,
+  .guided-lobby .hero {
+    padding-top: 32px;
+  }
+  .guided-post .chrome,
+  .guided-lobby .chrome {
+    padding: 12px 18px;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .guided-post .chrome nav,
+  .guided-lobby .chrome nav {
+    width: 100%;
+    justify-content: space-between;
+  }
+  .guided-post .section-head {
+    flex-direction: column;
+  }
+  .guided-post .prediction {
+    padding: 18px;
+  }
+  .guided-post .guess-row {
+    flex-wrap: wrap;
+  }
+  .guided-post .guess-row > * {
+    min-width: 0;
+  }
+  .guided-post .guess-range {
+    flex-basis: 100%;
+  }
+  .guided-post .pack-tray {
+    gap: 10px;
+  }
+  .guided-post .metrics {
+    grid-template-columns: 1fr;
+    gap: 0;
+  }
+  .guided-post .metric {
+    display: flex;
+    align-items: baseline;
+    gap: 16px;
+    border-bottom: 1px solid var(--line);
+  }
+  .guided-post .metric strong {
+    flex-shrink: 0;
+  }
+  .baseline > div {
+    grid-template-columns: 115px 1fr 44px;
+    gap: 8px;
+    font-size: 13px;
+  }
+  .guided-lobby #weeks > .cabinet-list,
+  .guided-lobby .upcoming-weeks .cabinet-list,
+  .guided-lobby .experience-links {
+    grid-template-columns: 1fr;
+  }
+  .guided-post .two-col {
+    grid-template-columns: 1fr;
+  }
+  .guided-post .table-scroll {
+    max-width: 100%;
+    overflow-x: auto;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}
+@media print {
+  .guided-post details > :not(summary) {
+    display: block !important;
+  }
+  .story-nav,
+  .pack-options {
+    display: none;
+  }
+}
+.interaction-evidence {
+  margin-top: 20px;
+}
+.interaction-evidence > summary {
+  min-height: 44px;
+  padding: 12px 0;
+  cursor: pointer;
+}
+.guided-lobby #about {
+  padding: 32px 0;
+}
+.guided-lobby #about h2 {
+  font-size: 28px;
+}
+.guided-lobby .closing {
+  padding: 28px 0;
+}
+.guided-lobby .closing h2 {
+  font-size: 24px;
+}
+.guided-lobby .closing > details > summary {
+  min-height: 48px;
+  padding: 12px 0;
+}
+.beginner-comparison {
+  margin: 24px 0;
+}
+.beginner-comparison > div {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 24px;
+  justify-content: space-between;
+  padding: 16px 0;
+  border-bottom: 1px solid var(--line);
+}
+.beginner-comparison figcaption {
+  font-weight: 600;
+  color: var(--paper);
+}
+.try-help {
+  color: var(--muted);
+  font-size: 16px;
+}
+.skip-prediction {
+  margin-top: 16px;
+}

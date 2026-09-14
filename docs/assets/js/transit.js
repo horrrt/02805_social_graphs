@@ -11,6 +11,7 @@ import {
   tone,
   errorMessage,
 } from "./cabinet.js";
+import { mountRide } from "./ride.mjs";
 import { graph, bfs, outcome } from "./arcade-core.mjs";
 setupChrome();
 try {
@@ -192,10 +193,16 @@ try {
     $("#route-to").value = "Vyking";
     plan();
   });
+  let revealSelectedClosure = () => {};
+  const ride = mountRide($("#ride"), data, {
+    onClose: () => revealSelectedClosure(),
+    onRestore: () => challenge(),
+  });
   function challenge() {
     closed = null;
     $("#service-state").textContent = "NORMAL SERVICE";
     $("#disruption-results").hidden = true;
+    if ($("#numeric-guess")) $("#numeric-guess").hidden = false;
     drawMap();
     plan();
     describe();
@@ -203,61 +210,88 @@ try {
         (c) => c.id === $("#closure-select").value,
       ),
       actual = outcome(data, entry.id);
+    ride.reset(entry.id);
+    revealSelectedClosure = () => {
+      closed = entry.id;
+      $("#service-state").textContent = "ONE CLOSURE";
+      $("#disruption-results").hidden = false;
+      $("#disruption-headline").textContent =
+        `${entry.label} closed. ${actual.stranded.length} ${actual.stranded.length === 1 ? "article" : "articles"} cut off.`;
+      $("#disruption-detail").textContent =
+        `${actual.largest.length} / ${actual.remaining} remaining articles can still reach each other. ${entry.degree} links to neighbouring articles before removal. ${actual.groups.length - 1} separated ${actual.groups.length === 2 ? "group" : "groups"}.`;
+      $("#stranded-list").innerHTML = actual.stranded.length
+        ? `<p><b>Cut off from the largest group:</b> ${actual.stranded.map((id) => esc(name(id))).join(", ")}.</p>`
+        : "<p>Every remaining article still has a route to every other. The other links provide alternative routes.</p>";
+      const n = entry.null,
+        total = n.histogram.reduce((s, r) => s + r.count, 0),
+        atLeast = n.histogram
+          .filter((r) => r.value >= actual.stranded.length)
+          .reduce((s, r) => s + r.count, 0),
+        peak = Math.max(...n.histogram.map((r) => r.count));
+      const verdict = $("#null-verdict");
+      if (verdict) {
+        const observed = actual.stranded.length;
+        const same = n.histogram.find((r) => r.value === observed)?.count || 0;
+        verdict.textContent =
+          observed === 0
+            ? `${entry.label}: no other articles cut off in the real network. ${same} of ${total.toLocaleString()} rearranged maps also lost none. This outcome is common under the benchmark.`
+            : `${entry.label}: ${observed} cut off in the real network. ${atLeast} of ${total.toLocaleString()} rearranged maps lost at least that many. ${atLeast === 0 ? "None did in this finite sample; that does not mean it is impossible under the model." : "The same neighbour counts can produce less disruption when the links are arranged differently."}`;
+        $("#compare-station").textContent =
+          entry.id === "Hulk" ? "Try Spider-Man next" : "Try Hulk next";
+      }
+      $("#null-explanation").textContent =
+        `In ${total.toLocaleString()} rewired starting networks, removing ${entry.label} stranded ${n.mean.toFixed(3)} articles on average. ${atLeast} / ${total} trials stranded at least the observed ${actual.stranded.length}. The actual graph is marked in the histogram.`;
+      $("#null-hist").innerHTML = n.histogram
+        .map(
+          (r) =>
+            `<div class="hist-row${r.value === actual.stranded.length ? " observed" : ""}"><span>${r.value} stranded${r.value === actual.stranded.length ? " ← real" : ""}</span><div class="hist-bar" style="width:${(r.count / peak) * 100}%"></div><span>${r.count}</span></div>`,
+        )
+        .join("");
+      if (!n.histogram.some((r) => r.value === actual.stranded.length))
+        $("#null-hist").insertAdjacentHTML(
+          "beforeend",
+          `<p class="fine">Observed ${actual.stranded.length}: zero benchmark draws at this value.</p>`,
+        );
+      drawMap();
+      describe();
+      plan();
+      ride.update(closed);
+      if ($("#numeric-guess")) $("#numeric-guess").hidden = true;
+    };
     prediction($("#prediction"), {
       id: "w2-close-" + entry.id.replace(/[^a-z0-9]/gi, "-"),
       week: 2,
-      prompt: `If ${entry.label} closes, how many of the other 276 core articles become stranded?`,
+      allowSkip: true,
+      autoReveal: !$("#ride"),
+      plainLanguage: true,
+      prompt: `If ${entry.label} closes, how many other articles lose their route to the largest group?`,
       min: 0,
       max: 20,
       answer: actual.stranded.length,
       unit: "articles",
       explain:
-        "Stranded means outside the largest remaining component. The guess range is a game choice, not a theoretical maximum.",
-      onReveal: () => {
-        closed = entry.id;
-        $("#service-state").textContent = "ONE CLOSURE";
-        $("#disruption-results").hidden = false;
-        $("#disruption-headline").textContent =
-          `${entry.label} closed. ${actual.stranded.length} ${actual.stranded.length === 1 ? "article" : "articles"} stranded.`;
-        $("#disruption-detail").textContent =
-          `${actual.largest.length} / ${actual.remaining} remaining articles stay in the main component. ${entry.degree} original neighbours. ${actual.groups.length - 1} separated ${actual.groups.length === 2 ? "group" : "groups"}.`;
-        $("#stranded-list").innerHTML = actual.stranded.length
-          ? `<p><b>Outside the main component:</b> ${actual.stranded.map((id) => esc(name(id))).join(", ")}.</p>`
-          : "<p>Every remaining article still has a route to every other. High degree does not automatically mean fragile connectivity.</p>";
-        const n = entry.null,
-          total = n.histogram.reduce((s, r) => s + r.count, 0),
-          atLeast = n.histogram
-            .filter((r) => r.value >= actual.stranded.length)
-            .reduce((s, r) => s + r.count, 0),
-          peak = Math.max(...n.histogram.map((r) => r.count));
-        $("#null-explanation").textContent =
-          `In ${total.toLocaleString()} rewired starting networks, removing ${entry.label} stranded ${n.mean.toFixed(3)} articles on average. ${atLeast} / ${total} trials stranded at least the observed ${actual.stranded.length}. The actual graph is marked in the histogram.`;
-        $("#null-hist").innerHTML = n.histogram
-          .map(
-            (r) =>
-              `<div class="hist-row${r.value === actual.stranded.length ? " observed" : ""}"><span>${r.value} stranded${r.value === actual.stranded.length ? " ← real" : ""}</span><div class="hist-bar" style="width:${(r.count / peak) * 100}%"></div><span>${r.count}</span></div>`,
-          )
-          .join("");
-        if (!n.histogram.some((r) => r.value === actual.stranded.length))
-          $("#null-hist").insertAdjacentHTML(
-            "beforeend",
-            `<p class="fine">Observed ${actual.stranded.length}: zero benchmark draws at this value.</p>`,
-          );
-        drawMap();
-        describe();
-        plan();
-      },
+        "The cut-off articles can no longer reach the largest remaining group. Some may still connect to each other.",
+      onReveal: () => revealSelectedClosure(),
     });
   }
   $("#closure-select").addEventListener("change", challenge);
+  $("#compare-station")?.addEventListener("click", () => {
+    const select = $("#closure-select");
+    select.value = select.value === "Hulk" ? "Spider-Man" : "Hulk";
+    challenge();
+    select.focus();
+    select.scrollIntoView({ block: "center", behavior: "instant" });
+  });
   $("#restore-service").addEventListener("click", () => {
     closed = null;
     $("#service-state").textContent = "NORMAL SERVICE";
     $("#disruption-headline").textContent =
-      "Service restored. All 277 core articles are connected.";
+      "Service restored. All 277 articles can reach each other again.";
     $("#disruption-detail").textContent =
       "The recorded closure comparison remains below. The map and route planner now use the original graph.";
     $("#stranded-list").innerHTML = "";
+    ride.update(null);
+    if ($("#numeric-guess")) $("#numeric-guess").hidden = false;
     drawMap();
     describe();
     plan();

@@ -11,8 +11,10 @@ No API keys, bundler, external JavaScript, accounts or live Wikipedia calls are 
 | Hero Packs | Week 1 · Networks | `/weeks/week01/` | Unequal sampling, degrees, duplicates and the long tail |
 | Marvel Transit Authority | Week 2 · Models & null models | `/weeks/week02/` | Directed routes, articulation effects and a degree-controlled comparison |
 
-The lobby at `/` shows one cabinet per course week. Weeks 3–8 carry only the
-course title and date until their session; nothing is posted there yet.
+The lobby at `/` leads with the two published weekly posts. The remaining
+course dates sit under Upcoming weeks. Each post follows a short question,
+interaction, finding and takeaway; Evidence & details retains the full analysis.
+Extra tools sit under Explore. Both visual editions use this reading flow.
 
 | Free play (not posts) | Route | What the visitor learns |
 | --- | --- | --- |
@@ -41,7 +43,8 @@ restyled after design-archive concept 21 ("Connections, Reconsidered", modelled
 on apple.com) and Apple's Human Interface Guidelines. The two editions share
 every script, data file and number:
 
-- `docs/assets/css/apple.css` is the only new stylesheet; `docs/v2/` holds HTML only.
+- `docs/assets/css/apple.css` defines the second edition; `story.css` supplies
+  the shared reading layout. `docs/v2/` holds HTML only.
 - A `<meta name="site-root">` tag on each v2 page tells the shared chrome where
   the v2 root is, so the logbook and navigation stay inside the edition while
   data still loads from `docs/assets/data/`.
@@ -72,13 +75,27 @@ friendship, hero strength, popularity or the whole Marvel universe.
 
 ## Reproduce
 
-Use Python with the packages in `requirements.txt` (NetworkX is pinned to the
-version used for the published metrics and community partition).
+Use Python 3.13 and the tested dependency snapshot. The project environment is
+separate from any existing `.venv`; VS Code uses `.venv-course`.
 
 ```bash
-python -m venv .venv
-source .venv/bin/activate
-pip install -r requirements.txt
+python3.13 -m venv .venv-course
+source .venv-course/bin/activate
+python -m pip install -r requirements-lock.txt
+python -m pip check
+python -m ipykernel install --sys-prefix --name socialgraphs --display-name "Social Graphs (Python 3.13)"
+python -m jupyterlab
+```
+
+The two notebooks are in `notebooks/`. Open either in JupyterLab, select
+**Social Graphs (Python 3.13)**, and choose
+**Restart Kernel and Run All Cells**. Run analysis scripts from the repository
+root. The lock records the Python 3.13 environment tested on macOS; other
+platforms may need a compatible resolution from `requirements.txt`.
+
+To regenerate the analysis and figures:
+
+```bash
 python analysis/week01_facts.py
 python analysis/week01_figures.py
 python analysis/week01_presentation.py
@@ -110,7 +127,7 @@ The arcade exporters add:
 ## Run and check
 
 ```bash
-python -m http.server 8765 --directory docs
+python -m http.server 8765 --bind 127.0.0.1 --directory docs
 node --test 'tests/*.test.mjs'
 ```
 
@@ -165,3 +182,10 @@ calibration. Only the first attempt for each challenge counts.
 
 Publishing the site does not submit a Teams message or peer feedback. Those are
 separate course hand-in actions.
+
+## Hand-in review
+
+See [the review](review/social-graphs-simplify.md) for brief coverage, environment
+checks and screenshots. Publishing does not complete the course workflow: post
+the weekly URL in Teams by Monday evening and give feedback to another group.
+The repository does not establish whether either action has been completed.
