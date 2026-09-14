@@ -1,0 +1,634 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" href="../../assets/favicon.svg" type="image/svg+xml">
+<title>Screen Test</title>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@600;800&family=IBM+Plex+Mono:wght@400;500;600&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap">
+<style>
+:root{
+  color-scheme: light;
+  --paper:#fbfaf7; --panel:#ffffff; --ink:#16181c; --muted:#6b6f76;
+  --rule:#ddd9d0; --rule-firm:#b9b4a8;
+  --marvel:#1b4dd8; --pass:#0f7a4a; --fail:#c1272d; --amber:#b4740c;
+  --disp:Archivo,"Helvetica Neue",Arial,sans-serif;
+  --serif:"Source Serif 4",Georgia,"Times New Roman",serif;
+  --mono:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--serif);
+     font-size:17px;line-height:1.6;-webkit-font-smoothing:antialiased}
+.sheet{max-width:1120px;margin:0 auto;padding-inline:24px;padding-block:28px 64px}
+.lbl{font-family:var(--mono);font-size:11px;font-weight:600;letter-spacing:.16em;
+     text-transform:uppercase;color:var(--muted)}
+h1{font-family:var(--disp);font-weight:800;font-size:clamp(46px,8.5vw,92px);line-height:.88;
+   letter-spacing:-.02em;text-transform:uppercase;margin:12px 0 0}
+h2{font-family:var(--disp);font-weight:800;font-size:clamp(23px,3vw,31px);line-height:1.05;
+   letter-spacing:-.01em;text-transform:uppercase;margin:0}
+h3{font-family:var(--disp);font-weight:600;font-size:17px;letter-spacing:.02em;margin:0 0 6px}
+p{margin:0 0 14px;max-width:68ch}
+em.key{font-style:normal;color:var(--marvel);font-weight:600}
+.masthead{border-bottom:3px solid var(--ink);padding-bottom:22px}
+.masthead .deck{font-size:20px;max-width:56ch;margin-top:16px}
+.billing{display:flex;flex-wrap:wrap;gap:6px 26px;margin-top:18px}
+
+section.act{display:grid;grid-template-columns:92px 1fr;gap:26px;
+            border-bottom:1px solid var(--rule);padding-block:38px}
+section.act > .rail{position:relative}
+section.act > .rail .no{font-family:var(--disp);font-weight:800;font-size:40px;line-height:1;
+                        color:var(--rule-firm)}
+section.act > .rail .tag{margin-top:8px}
+@media(max-width:720px){section.act{grid-template-columns:1fr;gap:14px}
+  section.act > .rail{display:flex;align-items:baseline;gap:12px}}
+.act-body > * + *{margin-top:18px}
+
+.card{background:var(--panel);border:1px solid var(--rule);border-radius:2px;padding:18px 20px}
+.vitals{display:grid;grid-template-columns:repeat(auto-fit,minmax(118px,1fr));gap:0;
+        border:1px solid var(--rule);background:var(--panel)}
+.vitals div{padding:13px 15px;border-right:1px solid var(--rule)}
+.vitals div:last-child{border-right:0}
+.vitals dt{font-family:var(--mono);font-size:10.5px;letter-spacing:.13em;text-transform:uppercase;color:var(--muted)}
+.vitals dd{margin:4px 0 0;font-family:var(--mono);font-weight:600;font-size:23px;
+           font-variant-numeric:tabular-nums}
+
+.cast{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+@media(max-width:700px){.cast{grid-template-columns:1fr}}
+.cand{appearance:none;font:inherit;text-align:left;cursor:pointer;background:var(--panel);
+      border:1px solid var(--rule-firm);border-radius:2px;padding:13px 15px;
+      display:flex;flex-direction:column;gap:3px;transition:background .14s,border-color .14s}
+.cand:hover{border-color:var(--ink)}
+.cand:focus-visible{outline:2px solid var(--marvel);outline-offset:2px}
+.cand[aria-pressed="true"]{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+.cand .nm{font-family:var(--disp);font-weight:800;font-size:19px;text-transform:uppercase;line-height:1.1}
+.cand .mech{font-family:var(--mono);font-size:11px;letter-spacing:.06em;color:var(--muted)}
+.cand[aria-pressed="true"] .mech{color:#b9c4dd}
+
+.reel{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media(max-width:680px){.reel{grid-template-columns:1fr}}
+figure{margin:0;border:1px solid var(--rule);background:var(--panel)}
+figure canvas{display:block;width:100%;aspect-ratio:1/0.86}
+figcaption{font-family:var(--mono);font-size:11px;letter-spacing:.06em;color:var(--muted);
+           padding:8px 12px;border-top:1px solid var(--rule);text-transform:uppercase}
+
+table{width:100%;border-collapse:collapse;font-family:var(--mono);font-size:13.5px;
+      font-variant-numeric:tabular-nums;background:var(--panel)}
+caption{text-align:left;font-family:var(--mono);font-size:11px;letter-spacing:.14em;
+        text-transform:uppercase;color:var(--muted);padding-bottom:7px}
+th,td{border:1px solid var(--rule);padding:9px 11px;text-align:right}
+th:first-child,td:first-child{text-align:left}
+thead th{background:#f3f1ec;font-weight:600;font-size:11px;letter-spacing:.09em;text-transform:uppercase}
+tbody tr[data-real="yes"] td{background:#eef2fd}
+.tw{overflow-x:auto}
+.stamp{font-family:var(--disp);font-weight:800;font-size:12px;letter-spacing:.09em;
+       border:2px solid currentColor;border-radius:2px;padding:1px 7px;display:inline-block;
+       transform:rotate(-2.5deg)}
+.stamp.p{color:var(--pass)} .stamp.f{color:var(--fail)}
+.z{font-weight:600} .z.hi{color:var(--pass)} .z.no{color:var(--fail)}
+
+.controls{display:flex;flex-wrap:wrap;gap:9px;align-items:center}
+button.go{appearance:none;font-family:var(--disp);font-weight:800;font-size:13px;letter-spacing:.07em;
+          text-transform:uppercase;padding:10px 17px;border-radius:2px;cursor:pointer;
+          background:var(--ink);color:var(--paper);border:1px solid var(--ink)}
+button.go.ghost{background:transparent;color:var(--ink)}
+button.go.ghost:hover{background:#efece5}
+button.go:focus-visible{outline:2px solid var(--marvel);outline-offset:2px}
+button.go[disabled]{opacity:.4;cursor:not-allowed}
+
+.toggle{display:inline-flex;border:1px solid var(--rule-firm);border-radius:2px;overflow:hidden}
+.toggle button{appearance:none;font-family:var(--mono);font-size:11.5px;letter-spacing:.09em;
+               text-transform:uppercase;padding:8px 13px;background:var(--panel);color:var(--muted);
+               border:0;border-right:1px solid var(--rule-firm);cursor:pointer}
+.toggle button:last-child{border-right:0}
+.toggle button[aria-pressed="true"]{background:var(--ink);color:var(--paper)}
+
+.rig{display:grid;grid-template-columns:minmax(0,1fr) 250px;gap:14px;align-items:start}
+@media(max-width:760px){.rig{grid-template-columns:1fr}}
+.gauge{border:1px solid var(--rule);background:var(--panel);padding:14px 16px}
+.gauge .big{font-family:var(--mono);font-weight:600;font-size:38px;line-height:1;
+            font-variant-numeric:tabular-nums}
+.gauge .small{font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+.finding{border-left:4px solid var(--marvel);padding:2px 0 2px 16px}
+.finding.warn{border-left-color:var(--amber)}
+.finding p:last-child{margin-bottom:0}
+.draw{display:grid;grid-template-columns:1fr 46px 1fr;gap:12px;align-items:center}
+@media(max-width:620px){.draw{grid-template-columns:1fr}}
+.who{border:1px solid var(--rule);background:var(--panel);padding:13px 15px;min-height:128px}
+.who .nm{font-family:var(--disp);font-weight:800;font-size:19px;text-transform:uppercase;line-height:1.1}
+.who .k{font-family:var(--mono);font-size:12px;color:var(--muted);margin-top:3px}
+.who .bio{font-size:13.5px;color:var(--muted);margin-top:8px;line-height:1.45}
+.arrow{font-family:var(--mono);font-size:22px;color:var(--rule-firm);text-align:center}
+footer{margin-top:30px;font-size:14px;color:var(--muted)}
+footer p{max-width:78ch}
+code{font-family:var(--mono);font-size:12.5px;background:#f0ede6;padding:1px 5px}
+@media(prefers-reduced-motion:reduce){*{transition-duration:.001ms!important}}
+</style>
+</head>
+<body>
+
+
+<div class="sheet">
+  <header class="masthead">
+    <p class="lbl">02805 Social graphs &amp; interactions &middot; Week 2 &middot; Models &amp; null models</p>
+    <h1>Screen<br>Test</h1>
+    <p class="deck">Three famous models audition for the part of the Marvel network. Each one nails a scene and fluffs the rest. Then we stop asking which model looks right and start asking what chance could have produced.</p>
+    <div class="billing">
+      <span class="lbl">Log&ndash;Log Legends</span>
+      <span class="lbl">&Agrave;ngela &middot; Gyula &middot; Niklas</span>
+      <span class="lbl" id="snap">Snapshot</span>
+    </div>
+  </header>
+
+  <section class="act">
+    <div class="rail"><div class="no">00</div><p class="lbl tag">The part</p></div>
+    <div class="act-body">
+      <h2>One network, cast decades ago</h2>
+      <p>The role is the connected core of the Marvel Wikipedia snapshot: every article that can reach every other by following links in either direction. These are the numbers a candidate has to reproduce.</p>
+      <dl class="vitals" id="vitals"></dl>
+      <p>Network science began by asking whether a simple mechanism could manufacture a structure like this. Three attempts follow, in the order the field made them, each fixing what the last one missed.</p>
+    </div>
+  </section>
+
+  <section class="act">
+    <div class="rail"><div class="no">01</div><p class="lbl tag">The auditions</p></div>
+    <div class="act-body">
+      <h2>Three candidates, three scenes</h2>
+      <p>Every candidate is built to the same size as Marvel and handed the same three scenes to play: <em class="key">short paths</em>, <em class="key">clustering</em>, and <em class="key">hubs</em>. Pick one and watch it try.</p>
+      <div class="cast" id="cast"></div>
+      <div class="reel">
+        <figure><canvas id="cv-marvel"></canvas><figcaption id="cap-marvel">Marvel</figcaption></figure>
+        <figure><canvas id="cv-cand"></canvas><figcaption id="cap-cand">Candidate</figcaption></figure>
+      </div>
+      <div class="tw">
+        <table id="score">
+          <caption>Screen test scorecard &middot; a scene passes inside the tolerance named in its column</caption>
+          <thead><tr><th>Network</th><th>Mechanism</th><th>Short paths &plusmn;20%</th><th>Clustering &plusmn;25%</th><th>Hubs &plusmn;40%</th></tr></thead>
+          <tbody id="score-body"></tbody>
+        </table>
+      </div>
+      <div class="finding" id="verdict-01"></div>
+    </div>
+  </section>
+
+  <section class="act">
+    <div class="rail"><div class="no">02</div><p class="lbl tag">The tail</p></div>
+    <div class="act-body">
+      <h2>Where the candidates give themselves away</h2>
+      <p>The share of articles with at least <em class="key">k</em> links, on log axes, with no binning. A heavy tail runs straight and far. A coin-flip tail falls off a cliff.</p>
+      <figure><canvas id="cv-ccdf" style="aspect-ratio:1/0.5"></canvas>
+        <figcaption>P(K &ge; k) against k &middot; both axes logarithmic &middot; click a name to hide it</figcaption></figure>
+      <div class="controls" id="ccdf-keys"></div>
+    </div>
+  </section>
+
+  <section class="act">
+    <div class="rail"><div class="no">03</div><p class="lbl tag">The turn</p></div>
+    <div class="act-body">
+      <h2>Stop casting. Start testing.</h2>
+      <p>No model wins, so the question changes. Instead of building a network that looks like Marvel, keep Marvel's own degrees exactly and scramble only <em class="key">who is wired to whom</em>. Swap the ends of two links at a time, over and over. Everyone keeps their link count. The neighbourhoods dissolve.</p>
+      <div class="rig">
+        <figure><canvas id="cv-rig" style="aspect-ratio:1/0.62"></canvas>
+          <figcaption id="cap-rig">Live rig &middot; clustering recomputed as the links swap</figcaption></figure>
+        <div>
+          <div class="gauge"><p class="small">Clustering now</p><p class="big" id="rig-c">&mdash;</p>
+            <p class="small" id="rig-swaps">0 swaps</p></div>
+          <div class="controls" style="margin-top:10px">
+            <button class="go" id="rig-run" type="button">Run the shuffle</button>
+            <button class="go ghost" id="rig-reset" type="button">Restore Marvel</button>
+          </div>
+          <p class="lbl" style="margin-top:12px" id="rig-note">Every article keeps its exact number of links.</p>
+        </div>
+      </div>
+      <p>One shuffle proves nothing, so we ran many and kept the score. Marvel's real value sits against the whole distribution of what scrambling produces.</p>
+      <figure><canvas id="cv-hist" style="aspect-ratio:1/0.42"></canvas>
+        <figcaption id="cap-hist">Distribution of average clustering across shuffles</figcaption></figure>
+      <div class="controls">
+        <span class="lbl">Report</span>
+        <div class="toggle" id="stats-toggle">
+          <button type="button" data-mode="full" aria-pressed="true">Full table</button>
+          <button type="button" data-mode="plain" aria-pressed="false">Headline only</button>
+        </div>
+      </div>
+      <div id="stats-full">
+        <div class="tw">
+          <table>
+            <caption>Marvel against the degree-preserving null</caption>
+            <thead><tr><th>Measurement</th><th>Marvel</th><th>Null mean</th><th>Null SD</th><th>z</th><th>p</th></tr></thead>
+            <tbody id="null-body"></tbody>
+          </table>
+        </div>
+        <p class="lbl" style="margin-top:8px" id="null-note"></p>
+      </div>
+      <div id="stats-plain" hidden></div>
+      <div class="finding" id="verdict-03"></div>
+    </div>
+  </section>
+
+  <section class="act">
+    <div class="rail"><div class="no">04</div><p class="lbl tag">The negative</p></div>
+    <div class="act-body">
+      <h2>The result that went against us</h2>
+      <p>Draw a character at random, then one of their neighbours at random. The neighbour usually has more links, because popular articles sit in many neighbour lists. That is the friendship paradox, and it is real here. Pull the handle a few times and watch it appear.</p>
+      <div class="draw">
+        <div class="who" id="who-a"><p class="nm">&mdash;</p><p class="k">Press draw</p></div>
+        <div class="arrow">&rarr;</div>
+        <div class="who" id="who-b"><p class="nm">&mdash;</p><p class="k">their random neighbour</p></div>
+      </div>
+      <div class="controls">
+        <button class="go" id="draw-one" type="button">Draw a pair</button>
+        <button class="go ghost" id="draw-many" type="button">Draw 200</button>
+        <button class="go ghost" id="draw-reset" type="button">Clear</button>
+        <span class="lbl" id="draw-tally">0 draws</span>
+      </div>
+      <p class="lbl" style="max-width:68ch;line-height:1.7">The handle measures single draws: one character, one of their neighbours. The 87.4% quoted below is the other common form, comparing each article with the <em>average</em> of all its neighbours. Both are the friendship paradox; they are not the same number, and neither survives the null.</p>
+      <div class="finding warn" id="verdict-04"></div>
+    </div>
+  </section>
+
+  <section class="act">
+    <div class="rail"><div class="no">05</div><p class="lbl tag">Receipts</p></div>
+    <div class="act-body">
+      <h2>How every number here was made</h2>
+      <div class="card">
+        <h3>Population</h3>
+        <p id="rec-pop"></p>
+        <h3>Candidates</h3>
+        <p id="rec-models"></p>
+        <h3>Null model</h3>
+        <p id="rec-null"></p>
+        <h3>Control</h3>
+        <p id="rec-control"></p>
+        <h3>What this page does not claim</h3>
+        <p>Tolerances on the scorecard are our choice and are printed in the column headings; the raw values sit beside every verdict so you can apply your own. The live rig is a feel for the mechanism and is not the source of any statistic. Nothing here says why the links exist, only what chance alone would and would not produce.</p>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <p id="foot"></p>
+  </footer>
+</div>
+
+<script type="module">
+"use strict";
+var D = await fetch("../../assets/data/week02_screentest.json").then(function(r){
+  if(!r.ok) throw new Error("week02_screentest.json did not load");
+  return r.json();
+});
+(function(){
+var M=D.meta, $=function(i){return document.getElementById(i);};
+var EN=String.fromCharCode(8211), MID=String.fromCharCode(183), PM=String.fromCharCode(177);
+var NAMES={marvel:"Marvel", er:"Erd"+String.fromCharCode(337)+"s"+EN+"R"+String.fromCharCode(233)+"nyi",
+           ws:"Watts"+EN+"Strogatz", ba:"Barab"+String.fromCharCode(225)+"si"+EN+"Albert"};
+var MECH={marvel:"the observed network", er:"links thrown at random",
+          ws:"a ring, then rewire a fifth", ba:"newcomers prefer the popular"};
+var TOL={path:.20, clus:.25, kmax:.40};
+function f(x,n){ return Number(x).toFixed(n); }
+function commas(x){ return String(x).replace(/\B(?=(\d{3})+(?!\d))/g, ","); }
+
+$("snap").textContent = "Snapshot "+M.snapshot;
+(function(){
+  var v=D.models.marvel, rows=[["Articles",commas(v.n)],["Links",commas(v.m)],
+    ["Mean degree",f(M.kbar,2)],["Mean path",f(v.path,2)],["Clustering",f(v.clus,3)],
+    ["Largest hub",v.kmax]];
+  var dl=$("vitals");
+  rows.forEach(function(r){
+    var d=document.createElement("div"), dt=document.createElement("dt"), dd=document.createElement("dd");
+    dt.textContent=r[0]; dd.textContent=r[1]; d.append(dt,dd); dl.append(d);
+  });
+})();
+
+/* ---- drawing ---- */
+function stage(cv, paint){
+  function draw(){
+    var r=cv.getBoundingClientRect(); if(!r.width) return;
+    var dpr=Math.min(window.devicePixelRatio||1,2);
+    cv.width=Math.round(r.width*dpr); cv.height=Math.round(r.height*dpr);
+    var c=cv.getContext("2d"); c.setTransform(dpr,0,0,dpr,0,0);
+    paint(c,r.width,r.height);
+  }
+  new ResizeObserver(draw).observe(cv); cv.__draw=draw; draw(); return draw;
+}
+function netPainter(get){
+  return function(c,w,h){
+    var net=get(); c.clearRect(0,0,w,h);
+    if(!net) return;
+    var pad=13, sx=w-2*pad, sy=h-2*pad, P=net.pos, i;
+    var px=function(i){ return [pad+P[i][0]*sx, pad+P[i][1]*sy]; };
+    c.lineWidth=.7; c.strokeStyle="rgba(22,24,28,.16)"; c.beginPath();
+    for(i=0;i<net.edges.length;i++){
+      var a=px(net.edges[i][0]), b=px(net.edges[i][1]);
+      c.moveTo(a[0],a[1]); c.lineTo(b[0],b[1]);
+    }
+    c.stroke();
+    for(i=0;i<P.length;i++){
+      var p=px(i), rad=1.3+Math.sqrt(net.deg[i])*0.52;
+      c.beginPath(); c.arc(p[0],p[1],rad,0,6.2832);
+      c.fillStyle = net.__real ? "#1b4dd8" : "#16181c"; c.globalAlpha=.78; c.fill(); c.globalAlpha=1;
+    }
+  };
+}
+D.nets.marvel.__real=true;
+stage($("cv-marvel"), netPainter(function(){ return D.nets.marvel; }));
+$("cap-marvel").textContent = "Marvel "+MID+" 277 articles "+MID+" largest hub 106";
+
+/* ---- 01 auditions ---- */
+var pick="er";
+function verdictCell(model,key){
+  var real=D.models.marvel[key], val=D.models[model][key];
+  var off=(val-real)/real, ok=Math.abs(off)<=TOL[key];
+  return {ok:ok, val:val, off:off};
+}
+function fmt(key,v){ return key==="kmax" ? String(v) : f(v, key==="clus"?3:2); }
+function buildScore(){
+  var body=$("score-body"); body.replaceChildren();
+  ["marvel","er","ws","ba"].forEach(function(k){
+    var tr=document.createElement("tr");
+    if(k==="marvel") tr.dataset.real="yes";
+    var c1=document.createElement("td"); c1.textContent=NAMES[k];
+    var c2=document.createElement("td"); c2.textContent=MECH[k]; c2.style.textAlign="left";
+    c2.style.color="#6b6f76"; c2.style.fontSize="12px";
+    tr.append(c1,c2);
+    ["path","clus","kmax"].forEach(function(key){
+      var td=document.createElement("td");
+      if(k==="marvel"){ td.textContent=fmt(key,D.models.marvel[key]); td.style.fontWeight="600"; }
+      else {
+        var r=verdictCell(k,key);
+        var s=document.createElement("span"); s.className="stamp "+(r.ok?"p":"f");
+        s.textContent=r.ok?"PASS":"FAIL";
+        var n=document.createElement("span"); n.style.marginRight="8px"; n.style.color="#6b6f76";
+        n.textContent=fmt(key,r.val);
+        td.append(n,s);
+      }
+      tr.append(td);
+    });
+    body.append(tr);
+  });
+}
+function paintCandidate(){
+  $("cv-cand").__draw && $("cv-cand").__draw();
+  var v=D.models[pick];
+  $("cap-cand").textContent = NAMES[pick]+" "+MID+" "+v.n+" articles "+MID+" largest hub "+v.kmax;
+}
+stage($("cv-cand"), netPainter(function(){ return D.nets[pick]; }));
+(function(){
+  var box=$("cast");
+  ["er","ws","ba"].forEach(function(k){
+    var b=document.createElement("button");
+    b.type="button"; b.className="cand"; b.setAttribute("aria-pressed", k===pick?"true":"false");
+    var n=document.createElement("span"); n.className="nm"; n.textContent=NAMES[k];
+    var mm=document.createElement("span"); mm.className="mech"; mm.textContent=MECH[k];
+    b.append(n,mm);
+    b.addEventListener("click", function(){
+      pick=k;
+      [].forEach.call(box.children,function(x,i){
+        x.setAttribute("aria-pressed", ["er","ws","ba"][i]===k ? "true":"false"); });
+      paintCandidate();
+    });
+    box.append(b);
+  });
+})();
+buildScore(); paintCandidate();
+(function(){
+  var n=0;
+  ["er","ws","ba"].forEach(function(k){
+    if(["path","clus","kmax"].every(function(key){ return verdictCell(k,key).ok; })) n++;
+  });
+  $("verdict-01").innerHTML = "<p><strong>No candidate passes all three scenes.</strong> Random links get the short paths and nothing else. Watts"+EN+"Strogatz buys the clustering with a ring lattice and its biggest hub reaches "+D.models.ws.kmax+", against Marvel's "+D.models.marvel.kmax+". Preferential attachment finally grows hubs, and its clustering falls to "+f(D.models.ba.clus,3)+" against Marvel's "+f(D.models.marvel.clus,3)+". Each mechanism explains one scene, and "+(n===0?"none explains the network":"the combination still escapes them")+".</p>";
+})();
+
+/* ---- 02 CCDF ---- */
+var hidden={};
+stage($("cv-ccdf"), function(c,w,h){
+  c.clearRect(0,0,w,h);
+  var L=54,R=14,T=14,B=34, pw=w-L-R, ph=h-T-B;
+  var kmax=1, i, key;
+  for(key in D.nets) kmax=Math.max(kmax, Math.max.apply(null, D.nets[key].deg));
+  var lx=function(k){ return L + Math.log10(Math.max(k,1))/Math.log10(kmax)*pw; };
+  var pmin=1/277, ly=function(p){ return T + (Math.log10(Math.max(p,pmin))/Math.log10(pmin))*ph; };
+  c.strokeStyle="#e4e0d8"; c.lineWidth=1; c.fillStyle="#6b6f76";
+  c.font="500 10px 'IBM Plex Mono', monospace";
+  [1,2,5,10,20,50,100].forEach(function(k){
+    if(k>kmax) return;
+    var x=lx(k); c.beginPath(); c.moveTo(x,T); c.lineTo(x,T+ph); c.stroke();
+    c.textAlign="center"; c.fillText(String(k), x, T+ph+15);
+  });
+  [1,.1,.01].forEach(function(p){
+    var y=ly(p); c.beginPath(); c.moveTo(L,y); c.lineTo(L+pw,y); c.stroke();
+    c.textAlign="right"; c.fillText(p===1?"1":String(p), L-8, y+3);
+  });
+  c.textAlign="center"; c.fillText("degree k", L+pw/2, h-6);
+  c.save(); c.translate(13,T+ph/2); c.rotate(-Math.PI/2);
+  c.fillText("P(K >= k)",0,0); c.restore();
+  var col={marvel:"#1b4dd8", er:"#c1272d", ws:"#b4740c", ba:"#0f7a4a"};
+  ["er","ws","ba","marvel"].forEach(function(k){
+    if(hidden[k]) return;
+    var pts=D.nets[k].ccdf;
+    c.strokeStyle=col[k]; c.lineWidth=k==="marvel"?2.4:1.5; c.beginPath();
+    for(i=0;i<pts.length;i++){
+      var x=lx(pts[i][0]), y=ly(pts[i][1]);
+      if(i===0) c.moveTo(x,y); else c.lineTo(x,y);
+    }
+    c.stroke();
+  });
+});
+(function(){
+  var box=$("ccdf-keys"), col={marvel:"#1b4dd8", er:"#c1272d", ws:"#b4740c", ba:"#0f7a4a"};
+  ["marvel","er","ws","ba"].forEach(function(k){
+    var b=document.createElement("button");
+    b.type="button"; b.className="go ghost"; b.style.borderColor=col[k]; b.style.color=col[k];
+    b.textContent=NAMES[k];
+    b.addEventListener("click", function(){
+      hidden[k]=!hidden[k]; b.style.opacity=hidden[k]?".35":"1"; $("cv-ccdf").__draw();
+    });
+    box.append(b);
+  });
+})();
+
+/* ---- 03 shuffle rig ---- */
+function clustering(adj){
+  var sum=0, v, nb, k, set, links, i, r, j;
+  for(v=0; v<adj.length; v++){
+    nb=adj[v]; k=nb.length;
+    if(k<2) continue;
+    set=new Set(nb); links=0;
+    for(i=0;i<k;i++){ r=adj[nb[i]]; for(j=0;j<r.length;j++) if(set.has(r[j])) links++; }
+    sum += links/(k*(k-1));
+  }
+  return sum/adj.length;
+}
+var rig=(function(){
+  var base=D.nets.marvel.edges, n=D.nets.marvel.pos.length;
+  var E, has, swaps;
+  function reset(){
+    E=base.map(function(e){ return e.slice(); });
+    has=[]; for(var i=0;i<n;i++) has.push(new Set());
+    E.forEach(function(e){ has[e[0]].add(e[1]); has[e[1]].add(e[0]); });
+    swaps=0;
+  }
+  function step(times){
+    var done=0, tries=0, t;
+    while(done<times && tries<times*60){
+      tries++;
+      var i=(Math.random()*E.length)|0, j=(Math.random()*E.length)|0;
+      if(i===j) continue;
+      var a=E[i][0],b=E[i][1],cc=E[j][0],dd=E[j][1];
+      if(Math.random()<.5){ t=a;a=b;b=t; }
+      if(Math.random()<.5){ t=cc;cc=dd;dd=t; }
+      if(a===cc||a===dd||b===cc||b===dd) continue;
+      if(has[a].has(dd)||has[cc].has(b)) continue;
+      has[a].delete(b); has[b].delete(a); has[cc].delete(dd); has[dd].delete(cc);
+      has[a].add(dd); has[dd].add(a); has[cc].add(b); has[b].add(cc);
+      E[i]=[a,dd]; E[j]=[cc,b]; done++; swaps++;
+    }
+    return done;
+  }
+  reset();
+  return { reset:reset, step:step, edges:function(){return E;},
+           adj:function(){ return has.map(function(s){ return Array.from(s); }); },
+           count:function(){ return swaps; } };
+})();
+function rigNet(){ return { pos:D.nets.marvel.pos, edges:rig.edges(), deg:D.nets.marvel.deg, __real:rig.count()===0 }; }
+var drawRig=stage($("cv-rig"), netPainter(rigNet));
+function rigReadout(){
+  $("rig-c").textContent = f(clustering(rig.adj()),3);
+  $("rig-swaps").textContent = commas(rig.count())+" swaps";
+}
+rigReadout();
+var running=false;
+$("rig-run").addEventListener("click", function(){
+  if(running) return;
+  running=true; $("rig-run").disabled=true;
+  var target=M.swaps, per=Math.ceil(target/34);
+  (function tick(){
+    rig.step(per); drawRig(); rigReadout();
+    if(rig.count()<target) requestAnimationFrame(tick);
+    else { running=false; $("rig-run").disabled=false;
+      $("rig-note").textContent="Degrees unchanged. Clustering has fallen to roughly the null mean.";
+    }
+  })();
+});
+$("rig-reset").addEventListener("click", function(){
+  if(running) return;
+  rig.reset(); drawRig(); rigReadout();
+  $("rig-note").textContent="Every article keeps its exact number of links.";
+});
+
+var CL=D.null.clus, realC=D.models.marvel.clus;
+stage($("cv-hist"), function(c,w,h){
+  c.clearRect(0,0,w,h);
+  var L=42,R=16,T=16,B=32, pw=w-L-R, ph=h-T-B;
+  var nlo=Math.min.apply(null,CL), nhi=Math.max.apply(null,CL);
+  var lo=nlo-(nhi-nlo)*0.6, hi=realC+(nhi-nlo)*0.6;
+  var BINS=46, bins=new Array(BINS).fill(0), i;
+  for(i=0;i<CL.length;i++){
+    var b=Math.min(BINS-1, Math.floor((CL[i]-lo)/(hi-lo)*BINS)); bins[b]++;
+  }
+  var top=Math.max.apply(null,bins)||1;
+  var x=function(v){ return L+(v-lo)/(hi-lo)*pw; };
+  c.fillStyle="#9aa3b2";
+  for(i=0;i<BINS;i++){
+    var bw=pw/BINS, bh=bins[i]/top*ph;
+    if(bh>0) c.fillRect(L+i*bw+0.6, T+ph-bh, bw-1.2, bh);
+  }
+  c.strokeStyle="#1b4dd8"; c.lineWidth=2.4; c.beginPath();
+  c.moveTo(x(realC),T-4); c.lineTo(x(realC),T+ph); c.stroke();
+  c.fillStyle="#1b4dd8"; c.font="600 11px 'IBM Plex Mono', monospace"; c.textAlign="right";
+  c.fillText("Marvel "+f(realC,3), x(realC)-7, T+11);
+  c.strokeStyle="#c9c4b8"; c.lineWidth=1; c.beginPath();
+  c.moveTo(L,T+ph); c.lineTo(L+pw,T+ph); c.stroke();
+  c.fillStyle="#6b6f76"; c.font="500 10px 'IBM Plex Mono', monospace";
+  c.textAlign="center";
+  [lo+0.01, (lo+hi)/2, hi-0.01].forEach(function(v){ c.fillText(f(v,2), x(v), T+ph+15); });
+  c.textAlign="left"; c.fillText(M.samples+" shuffles", L+2, T+10);
+});
+$("cap-hist").textContent="Average clustering across "+M.samples+" degree-preserving shuffles "+MID+
+  " Marvel's real value marked in blue";
+
+(function(){
+  var body=$("null-body");
+  D.rows.forEach(function(r){
+    var tr=document.createElement("tr");
+    function td(t,cls){ var e=document.createElement("td"); e.textContent=t; if(cls) e.className=cls; return e; }
+    var dec = r.key==="paradox" ? 3 : (r.key==="path" ? 3 : 4);
+    tr.append(td(r.label), td(f(r.real,dec)), td(f(r.mu,dec)), td(f(r.sd,4)));
+    var z=td((r.z>=0?"+":"")+f(r.z,2), "z "+(Math.abs(r.z)>=2?"hi":"no"));
+    tr.append(z, td(f(r.p,4)));
+    body.append(tr);
+  });
+  $("null-note").textContent="p is empirical, (runs at least as extreme + 1) / (runs + 1), so "+
+    M.samples+" shuffles can never report zero. Its floor here is "+f(1/(M.samples+1),4)+".";
+  var cl=D.rows[0], pa=D.rows.filter(function(r){return r.key==="paradox";})[0];
+  $("stats-plain").innerHTML="<p>Marvel's clustering of "+f(cl.real,3)+
+    " sits "+f(cl.z,1)+" standard deviations above what the shuffle produces ("+f(cl.mu,3)+
+    " "+PM+" "+f(cl.sd,3)+"), and not one of "+M.samples+" shuffles came close. The friendship paradox is the exception: "+
+    f(pa.real*100,1)+"% against the shuffle's "+f(pa.mu*100,1)+"%, a z of "+f(pa.z,2)+", which is no difference at all.</p>";
+  $("verdict-03").innerHTML="<p><strong>Half the clustering is the hubs. Half is not.</strong> Scrambling the wiring while holding every degree fixed drops clustering from "+
+    f(cl.real,3)+" to "+f(cl.mu,3)+", so the degree sequence alone accounts for roughly "+
+    Math.round(cl.mu/cl.real*100)+"% of it. What is left stands "+f(cl.z,1)+
+    " standard deviations clear of chance. Had we compared against plain random links instead, we would have credited the entire amount to the hubs.</p>";
+})();
+$("stats-toggle").addEventListener("click", function(ev){
+  var b=ev.target.closest("button"); if(!b) return;
+  var full=b.dataset.mode==="full";
+  [].forEach.call(this.children,function(x){ x.setAttribute("aria-pressed", x===b?"true":"false"); });
+  $("stats-full").hidden=!full; $("stats-plain").hidden=full;
+});
+
+/* ---- 04 paradox draw ---- */
+var CH=D.chars, ADJ=D.adj, drawn=0, para=0;
+function card(el,i,sub){
+  el.innerHTML="";
+  var nm=document.createElement("p"); nm.className="nm"; nm.textContent=CH[i][0];
+  var k=document.createElement("p"); k.className="k";
+  k.textContent=CH[i][1]+" links "+MID+" neighbours average "+CH[i][2]+(sub?" "+MID+" "+sub:"");
+  var b=document.createElement("p"); b.className="bio"; b.textContent=CH[i][4];
+  el.append(nm,k,b);
+}
+function one(){
+  var a=(Math.random()*CH.length)|0, nb=ADJ[a];
+  if(!nb.length) return;
+  var b=nb[(Math.random()*nb.length)|0];
+  drawn++; if(CH[b][1]>=CH[a][1]) para++;
+  card($("who-a"),a,"you drew"); card($("who-b"),b, CH[b][1]>=CH[a][1] ? "more popular" : "less popular");
+}
+function tally(){
+  $("draw-tally").textContent = drawn ? commas(drawn)+" draws "+MID+" the drawn neighbour was at least as popular in "+
+    f(para/drawn*100,1)+"% of them" : "0 draws";
+}
+$("draw-one").addEventListener("click", function(){ one(); tally(); });
+$("draw-many").addEventListener("click", function(){ for(var i=0;i<200;i++) one(); tally(); });
+$("draw-reset").addEventListener("click", function(){
+  drawn=0; para=0; tally();
+  $("who-a").innerHTML='<p class="nm">&mdash;</p><p class="k">Press draw</p>';
+  $("who-b").innerHTML='<p class="nm">&mdash;</p><p class="k">their random neighbour</p>';
+});
+(function(){
+  var pa=D.rows.filter(function(r){return r.key==="paradox";})[0];
+  $("verdict-04").innerHTML="<p><strong>The paradox is real, and it tells us nothing about Marvel.</strong> "+
+    f(pa.real*100,1)+"% of articles have neighbours more connected than themselves on average. "+
+    "Then we ran the same measurement on "+M.samples+" shuffled networks, where the wiring is destroyed and only the degrees survive: "+
+    f(pa.mu*100,1)+"%"+", if anything slightly higher. That is a z of "+f(pa.z,2)+" and an empirical p of "+f(pa.p,2)+
+    ". The paradox here is a consequence of the degree sequence alone. We expected it to be a fact about Marvel, and it is not; it would appear in any network with these link counts.</p>";
+})();
+
+/* ---- 05 receipts ---- */
+$("rec-pop").textContent="The connected core of the Marvel Wikipedia snapshot of "+M.snapshot+": "+
+  M.n+" articles and "+commas(M.m)+" undirected links, mean degree "+f(M.kbar,2)+
+  ". A link exists when either article links to the other. Every measurement on this page runs on that same core.";
+$("rec-models").textContent="Random graph G(n, m) at the same node and link count. Watts"+EN+"Strogatz on a ring of degree "+
+  M.ws_k+" with rewiring probability 0.2. Barab"+String.fromCharCode(225)+"si"+EN+"Albert attaching "+M.ba_m+
+  " links per arriving node. One fixed seed ("+M.seed+") per model, so each is one reproducible draw and not an average over many.";
+$("rec-null").textContent=M.samples+" shuffles, each applying "+commas(M.swaps)+
+  " degree-preserving double-edge swaps, which is ten per link. Connectivity is not enforced during swapping, so a shuffled network may break into pieces; path length is measured on the largest piece in that case. z is (real "+String.fromCharCode(8722)+
+  " null mean) / null SD, and p is empirical.";
+$("rec-control").textContent="The largest hub stays at "+D.control.real+" across all "+M.samples+
+  " shuffles, standard deviation "+f(D.control.nullSd,1)+". That is not a finding; it is the check that the method did what it claims, since preserving degrees must leave the maximum untouched.";
+$("foot").textContent="Prototype for the Week 2 post "+MID+" Log"+EN+"Log Legends "+MID+
+  " every figure computed from the frozen snapshot, models and null model in Python with NetworkX, the live rig in the page itself.";
+})();
+</script>
+
+</body>
+</html>
