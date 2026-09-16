@@ -31,6 +31,7 @@ export function installRenderer(overrides) {
 const state = {
   data: null,
   edges: null,
+  world: null,
   year: 2020,
   selected: null,
   layer: "both",
@@ -333,6 +334,63 @@ function project(lat, lon, radius, cx, cy, rotation) {
   return { x: cx + x * radius, y: cy - y * radius, visible: z > 0, z };
 }
 
+// Country outlines, so a corridor lands somewhere recognisable instead of on a
+// blank sphere. `project` returns visibility, so the globe hides the far side
+// by breaking each ring into runs of visible points.
+function eachRing(feature, visit) {
+  const geometry = feature.geometry;
+  const polygons =
+    geometry.type === "Polygon" ? [geometry.coordinates] : geometry.coordinates;
+  for (const polygon of polygons) for (const ring of polygon) visit(ring);
+}
+
+function drawLandGlobe(ctx, radius, cx, cy) {
+  if (!state.world) return;
+  ctx.fillStyle = "#245f92";
+  ctx.strokeStyle = "rgba(178,215,248,0.55)";
+  ctx.lineWidth = 0.6;
+  for (const feature of state.world.features) {
+    eachRing(feature, (ring) => {
+      let open = false;
+      ctx.beginPath();
+      for (const [lon, lat] of ring) {
+        const p = project(lat, lon, radius, cx, cy, state.rotation);
+        if (!p.visible) {
+          open = false;
+          continue;
+        }
+        if (open) ctx.lineTo(p.x, p.y);
+        else {
+          ctx.moveTo(p.x, p.y);
+          open = true;
+        }
+      }
+      ctx.fill();
+      ctx.stroke();
+    });
+  }
+}
+
+function drawLandMap(ctx, width, height) {
+  if (!state.world) return;
+  ctx.fillStyle = "#16416c";
+  ctx.strokeStyle = "rgba(150,196,240,0.45)";
+  ctx.lineWidth = 0.6;
+  for (const feature of state.world.features) {
+    eachRing(feature, (ring) => {
+      ctx.beginPath();
+      ring.forEach(([lon, lat], i) => {
+        const p = mapPoint([lat, lon], width, height);
+        if (i) ctx.lineTo(p.x, p.y);
+        else ctx.moveTo(p.x, p.y);
+      });
+      ctx.closePath();
+      ctx.fill();
+      ctx.stroke();
+    });
+  }
+}
+
 function arc(ctx, a, b, lift) {
   const mx = (a.x + b.x) / 2;
   const my = (a.y + b.y) / 2;
@@ -382,13 +440,15 @@ function drawGlobe() {
     cy,
     radius,
   );
-  sphere.addColorStop(0, "#1d5288");
-  sphere.addColorStop(0.7, "#123a63");
-  sphere.addColorStop(1, "#0a2444");
+  sphere.addColorStop(0, "#14406e");
+  sphere.addColorStop(0.7, "#0d2b4c");
+  sphere.addColorStop(1, "#071d36");
   ctx.fillStyle = sphere;
   ctx.beginPath();
   ctx.arc(cx, cy, radius, 0, Math.PI * 2);
   ctx.fill();
+  drawLandGlobe(ctx, radius, cx, cy);
+
   ctx.strokeStyle = "rgba(160,200,240,0.18)";
   ctx.lineWidth = 1;
   for (let lat = -60; lat <= 60; lat += 30) {
@@ -498,8 +558,9 @@ function drawMap() {
   const canvas = $("map-canvas");
   if (!canvas || !state.data) return;
   const { ctx, width, height } = surface(canvas);
-  ctx.fillStyle = "#0b1f3a";
+  ctx.fillStyle = "#081a31";
   ctx.fillRect(0, 0, width, height);
+  drawLandMap(ctx, width, height);
   ctx.strokeStyle = "rgba(160,200,240,0.09)";
   for (let lon = -180; lon <= 180; lon += 30) {
     const x = ((lon + 180) / 360) * width;
@@ -1354,12 +1415,18 @@ async function main() {
     // Resolved against this module, not the page, so the arcade edition and
     // the Apple edition load the same two files from different depths.
     const data = (name) => new URL(`../data/${name}`, import.meta.url);
-    const [corridors, edges] = await Promise.all([
+    const [corridors, edges, world] = await Promise.all([
       fetch(data("week03_corridors.json")).then((r) => r.json()),
       fetch(data("week03_edges.json")).then((r) => r.json()),
+      // Land is decoration for the argument but essential for reading a map,
+      // so a failure to load it must not stop the post.
+      fetch(data("world_outline.geo.json"))
+        .then((r) => r.json())
+        .catch(() => null),
     ]);
     state.data = corridors;
     state.edges = edges;
+    state.world = world;
     state.year = corridors.null_year;
     $("year-slider").max = String(corridors.years.length - 1);
     $("year-slider").value = String(corridors.years.indexOf(corridors.null_year));

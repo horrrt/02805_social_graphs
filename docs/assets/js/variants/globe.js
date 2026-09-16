@@ -35,6 +35,11 @@ export function install(api, Globe) {
         .atmosphereColor("#7fb2e5")
         .atmosphereAltitude(0.16)
         .showGraticules(true)
+        .polygonCapColor(() => "rgba(36,95,146,0.98)")
+        .polygonSideColor(() => "rgba(45,116,173,0.4)")
+        .polygonStrokeColor(() => "rgba(178,215,248,0.65)")
+        .polygonAltitude(0.006)
+        .polygonLabel((d) => d.properties.name)
         .arcStartLat((d) => d.startLat)
         .arcStartLng((d) => d.startLng)
         .arcEndLat((d) => d.endLat)
@@ -54,7 +59,7 @@ export function install(api, Globe) {
         .onPointClick((d) => select(d.iso3));
 
       try {
-        world.globeMaterial().color.set("#123a63");
+        world.globeMaterial().color.set("#0d2b4c");
       } catch {
         // An older build without a material accessor still renders; the sphere
         // is just the library default colour.
@@ -102,12 +107,15 @@ export function install(api, Globe) {
         iso3,
         lat: coord[0],
         lng: coord[1],
-        radius: chosen ? 0.62 : 0.12 + Math.sqrt(m.in_degree) * 0.035,
+        radius: chosen ? 0.75 : 0.2 + Math.sqrt(m.in_degree) * 0.055,
         colour: chosen ? "#ffffff" : "rgba(200,226,250,0.72)",
         label: `${node(iso3).name} · in-degree ${m.in_degree}`,
       });
     }
 
+    if (state.world && globe.polygonsData().length === 0) {
+      globe.polygonsData(state.world.features);
+    }
     globe.arcsData(arcs).pointsData(points);
     if (state.selected) {
       const coord = node(state.selected)?.coord;

@@ -37,7 +37,7 @@ export function install(api, deck) {
       views: [view],
       initialViewState,
       controller: true,
-      parameters: { clearColor: [0.043, 0.122, 0.227, 1] },
+      parameters: { clearColor: [0.031, 0.102, 0.192, 1] },
       getTooltip: ({ object }) =>
         object?.iso3 ? { text: `${node(object.iso3).name}` } : null,
       onClick: ({ object }) => {
@@ -95,8 +95,8 @@ export function install(api, deck) {
       out.push({
         iso3,
         position: [coord[1], coord[0]],
-        radius: iso3 === state.selected ? 260000 : 30000 + Math.sqrt(m.in_degree) * 14000,
-        colour: iso3 === state.selected ? [255, 255, 255, 255] : [200, 226, 250, 170],
+        radius: iso3 === state.selected ? 300000 : 30000 + Math.sqrt(m.in_degree) * 11000,
+        colour: iso3 === state.selected ? [255, 255, 255, 255] : [214, 234, 252, 140],
       });
     }
     return out;
@@ -116,6 +116,26 @@ export function install(api, deck) {
       pickable: false,
     });
 
+  // On a GlobeView a polygon has to be tessellated across the curve, which is
+  // what _full3d turns on. Without it the land is drawn flat and disappears
+  // behind the sphere, which is why the deck globe came up empty at first.
+  const landLayer = (id, globeMode) =>
+    state.world
+      ? [
+          new deck.GeoJsonLayer({
+            id,
+            data: state.world,
+            stroked: true,
+            filled: true,
+            getFillColor: [26, 74, 120, 245],
+            getLineColor: [178, 215, 248, 160],
+            lineWidthMinPixels: 0.6,
+            pickable: false,
+            ...(globeMode ? { _full3d: true, extruded: false } : {}),
+          }),
+        ]
+      : [];
+
   const dotLayer = (id) =>
     new deck.ScatterplotLayer({
       id,
@@ -123,8 +143,8 @@ export function install(api, deck) {
       getPosition: (d) => d.position,
       getRadius: (d) => d.radius,
       getFillColor: (d) => d.colour,
-      radiusMinPixels: 0.8,
-      radiusMaxPixels: 5,
+      radiusMinPixels: 0.9,
+      radiusMaxPixels: 4,
       pickable: true,
     });
 
@@ -141,12 +161,16 @@ export function install(api, deck) {
       layers: [
         new deck.SolidPolygonLayer({
           id: "sphere",
-          data: [[[-180, 90], [0, 90], [180, 90], [180, -90], [0, -90], [-180, -90]]],
+          data: [[[-180, 90], [-90, 90], [0, 90], [90, 90], [180, 90],
+                  [180, 0], [180, -90], [90, -90], [0, -90], [-90, -90],
+                  [-180, -90], [-180, 0]]],
           getPolygon: (d) => d,
           stroked: false,
           filled: true,
-          getFillColor: [18, 58, 99],
+          getFillColor: [13, 43, 76],
+          _full3d: true,
         }),
+        ...landLayer("globe-land", true),
         arcLayer("globe-arcs", arcData(320), PEOPLE_RGB),
         dotLayer("globe-dots"),
       ],
@@ -160,7 +184,7 @@ export function install(api, deck) {
       zoom: -0.55,
     });
     if (!instance) return;
-    const layers = [];
+    const layers = [...landLayer("map-land", false)];
     if (state.layer !== "flights") layers.push(arcLayer("map-arcs", arcData(420), PEOPLE_RGB));
     if (state.layer !== "migration")
       layers.push(arcLayer("map-flights", flightArcData(420), ACCESS_RGB));

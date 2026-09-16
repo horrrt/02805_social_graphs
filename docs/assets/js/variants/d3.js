@@ -383,7 +383,21 @@ export function install(api, d3) {
       .attr("cx", width / 2)
       .attr("cy", height / 2)
       .attr("r", projection.scale())
-      .attr("fill", "#123a63");
+      .attr("fill", "#0d2b4c");
+    if (state.world) {
+      svg
+        .append("g")
+        .selectAll("path")
+        .data(state.world.features)
+        .join("path")
+        .attr("d", path)
+        .attr("fill", "#245f92")
+        .attr("stroke", "rgba(178,215,248,0.6)")
+        .attr("stroke-width", 0.6)
+        .append("title")
+        .text((f) => f.properties.name);
+    }
+
     svg
       .append("path")
       .datum(d3.geoGraticule10())
