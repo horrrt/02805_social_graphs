@@ -1,0 +1,1248 @@
+// Corridor Control — week 3.
+//
+// Draws two country networks over the same world: migration from the UN
+// migrant stock, flights from OpenFlights. Everything here is a view of
+// docs/assets/data/week03_corridors.json and week03_edges.json, both written
+// by analysis/week03_corridor_control.py. No number is computed in this file
+// that is not a ratio or a rank of something already in that data.
+
+const PEOPLE = "#f2820c";
+const ACCESS = "#1f8fd6";
+const INK = "#0f2340";
+const MUTE = "#7a8fac";
+const GRID = "#e4ebf4";
+
+const $ = (id) => document.getElementById(id);
+const fmt = new Intl.NumberFormat("en-GB");
+const compact = new Intl.NumberFormat("en-GB", {
+  notation: "compact",
+  maximumFractionDigits: 1,
+});
+
+const state = {
+  data: null,
+  edges: null,
+  year: 2020,
+  selected: null,
+  layer: "both",
+  rotation: -10,
+  dragging: false,
+};
+
+/* ------------------------------------------------------------------ canvas */
+
+// Canvases are sized in CSS and backed at device resolution, so text stays
+// crisp without every call site knowing about devicePixelRatio.
+function surface(canvas) {
+  const ratio = Math.min(window.devicePixelRatio || 1, 2);
+  const width = canvas.clientWidth || canvas.width;
+  const height = Math.round(width * (canvas.height / canvas.width));
+  canvas.style.height = `${height}px`;
+  canvas.width = Math.round(width * ratio);
+  canvas.height = Math.round(height * ratio);
+  const ctx = canvas.getContext("2d");
+  ctx.setTransform(ratio, 0, 0, ratio, 0, 0);
+  ctx.clearRect(0, 0, width, height);
+  return { ctx, width, height };
+}
+
+function axes(ctx, box, { xTicks, yTicks, xLabel, yLabel }) {
+  ctx.strokeStyle = GRID;
+  ctx.fillStyle = MUTE;
+  ctx.font = "10px -apple-system, system-ui, sans-serif";
+  ctx.lineWidth = 1;
+  for (const tick of yTicks) {
+    const y = Math.round(box.y(tick.value)) + 0.5;
+    ctx.beginPath();
+    ctx.moveTo(box.left, y);
+    ctx.lineTo(box.right, y);
+    ctx.stroke();
+    ctx.textAlign = "right";
+    ctx.textBaseline = "middle";
+    ctx.fillText(tick.label, box.left - 6, y);
+  }
+  for (const tick of xTicks) {
+    const x = Math.round(box.x(tick.value)) + 0.5;
+    ctx.beginPath();
+    ctx.moveTo(x, box.top);
+    ctx.lineTo(x, box.bottom);
+    ctx.stroke();
+    ctx.textAlign = "center";
+    ctx.textBaseline = "top";
+    ctx.fillText(tick.label, x, box.bottom + 6);
+  }
+  ctx.fillStyle = MUTE;
+  ctx.font = "10px -apple-system, system-ui, sans-serif";
+  if (xLabel) {
+    ctx.textAlign = "center";
+    ctx.fillText(xLabel, (box.left + box.right) / 2, box.bottom + 22);
+  }
+  if (yLabel) {
+    ctx.save();
+    ctx.translate(12, (box.top + box.bottom) / 2);
+    ctx.rotate(-Math.PI / 2);
+    ctx.textAlign = "center";
+    ctx.textBaseline = "top";
+    ctx.fillText(yLabel, 0, 0);
+    ctx.restore();
+  }
+}
+
+function logTicks(min, max) {
+  const out = [];
+  for (let e = Math.floor(Math.log10(Math.max(min, 1e-9))); e <= Math.ceil(Math.log10(max)); e += 1) {
+    const value = 10 ** e;
+    if (value < min * 0.9 || value > max * 1.1) continue;
+    out.push({ value, label: e >= 0 && e <= 4 ? fmt.format(value) : `10${sup(e)}` });
+  }
+  return out.length > 1 ? out : [{ value: min, label: fmt.format(min) }, { value: max, label: fmt.format(max) }];
+}
+
+function sup(exponent) {
+  const glyphs = { "-": "⁻", 0: "⁰", 1: "¹", 2: "²", 3: "³", 4: "⁴", 5: "⁵", 6: "⁶", 7: "⁷", 8: "⁸", 9: "⁹" };
+  return String(exponent)
+    .split("")
+    .map((c) => glyphs[c] ?? c)
+    .join("");
+}
+
+function frame(width, height, pad = { l: 46, r: 14, t: 12, b: 34 }) {
+  return { left: pad.l, right: width - pad.r, top: pad.t, bottom: height - pad.b };
+}
+
+function logScale(box, domain, axis) {
+  const [lo, hi] = domain.map((v) => Math.log10(Math.max(v, 1e-9)));
+  const [a, b] = axis === "x" ? [box.left, box.right] : [box.bottom, box.top];
+  return (value) => a + ((Math.log10(Math.max(value, 1e-9)) - lo) / (hi - lo || 1)) * (b - a);
+}
+
+function linearScale(box, domain, axis) {
+  const [lo, hi] = domain;
+  const [a, b] = axis === "x" ? [box.left, box.right] : [box.bottom, box.top];
+  return (value) => a + ((value - lo) / (hi - lo || 1)) * (b - a);
+}
+
+/* -------------------------------------------------------------------- data */
+
+function year() {
+  return String(state.year);
+}
+
+function metrics(iso3, y = year()) {
+  return state.data.nodes[iso3]?.years?.[y] ?? null;
+}
+
+function node(iso3) {
+  return state.data.nodes[iso3];
+}
+
+function withMetrics(y = year()) {
+  return state.data.countries
+    .map((iso3) => ({ iso3, n: node(iso3), m: metrics(iso3, y) }))
+    .filter((row) => row.m);
+}
+
+function flag(iso2) {
+  if (!iso2 || iso2.length !== 2) return "🌍";
+  return String.fromCodePoint(
+    ...[...iso2.toUpperCase()].map((c) => 0x1f1e6 + c.charCodeAt(0) - 65),
+  );
+}
+
+/* --------------------------------------------------------------- inspector */
+
+function row(term, value) {
+  return `<div><dt>${term}</dt><dd>${value}</dd></div>`;
+}
+
+function renderInspector() {
+  const iso3 = state.selected;
+  if (!iso3) return;
+  const n = node(iso3);
+  const m = metrics(iso3);
+  $("sel-flag").textContent = flag(n.iso2);
+  $("sel-name").textContent = n.name;
+  $("sel-codes").textContent = `${iso3} · ${state.year}`;
+
+  const z = m?.z;
+  $("sel-stats").innerHTML = m
+    ? [
+        row("In-strength (stock)", fmt.format(m.in_strength)),
+        row("Out-strength (stock)", fmt.format(m.out_strength)),
+        row("In-degree", `${m.in_degree} <span style="color:#7a8fac">(#${m.in_degree_rank})</span>`),
+        row("Out-degree", `${m.out_degree} <span style="color:#7a8fac">(#${m.out_degree_rank})</span>`),
+        row("Betweenness", `${m.betweenness.toFixed(5)} <span style="color:#7a8fac">(#${m.betweenness_rank})</span>`),
+        row("Betweenness z-score", z === undefined ? "— (2020 only)" : z.toFixed(2)),
+        row("Flight degree", fmt.format(n.flight_degree)),
+        row("Flight strength", fmt.format(n.flight_strength)),
+        row("Typology", `<span class="chip">${label(m.typology)}</span>`),
+      ].join("")
+    : `<div><dt>No migration data for ${state.year}</dt><dd>—</dd></div>`;
+
+  const list = (items, dir) =>
+    items.length
+      ? items
+          .map(
+            (c, i) =>
+              `<li><span>${i + 1}. ${dir === "in" ? `${node(c.other)?.name ?? c.other} → ${n.name}` : `${n.name} → ${node(c.other)?.name ?? c.other}`}</span><b>${compact.format(c.weight)}</b></li>`,
+          )
+          .join("")
+      : "<li><span>None recorded</span><b>—</b></li>";
+  $("sel-in").innerHTML = list(n.top_in ?? [], "in");
+  $("sel-out").innerHTML = list(n.top_out ?? [], "out");
+
+  // Section 4's small panel tracks the same selection.
+  $("sc-flag").textContent = flag(n.iso2);
+  $("sc-name").textContent = n.name;
+  $("sc-codes").textContent = `${iso3} · ${state.data.null_year}`;
+  const nm = metrics(iso3, String(state.data.null_year));
+  $("sc-stats").innerHTML = nm
+    ? [
+        row("k (in)", nm.in_degree),
+        row("Betweenness", nm.betweenness.toFixed(5)),
+        row("Rank", `#${nm.betweenness_rank}`),
+        row("z-score", nm.z === undefined ? "—" : nm.z.toFixed(2)),
+      ].join("")
+    : "";
+  drawScatters();
+  drawDenmark();
+}
+
+function select(iso3) {
+  if (!iso3 || !node(iso3)) return;
+  state.selected = iso3;
+  renderInspector();
+  drawGlobe();
+  drawMap();
+}
+
+const TYPES = {
+  "destination-hub": {
+    title: "Destination hub",
+    icon: "✦",
+    tint: "#fde8cf",
+    fg: "#9a5205",
+    what: "High in-strength and in-degree. Attracts people from many origins.",
+  },
+  "human-bridge": {
+    title: "Human bridge",
+    icon: "⇄",
+    tint: "#e7dcfb",
+    fg: "#5b3a9e",
+    what: "High betweenness with a z-score the degree sequence cannot explain. A broker.",
+  },
+  "system-airport": {
+    title: "System airport",
+    icon: "✈",
+    tint: "#d9ecf9",
+    fg: "#14618f",
+    what: "High flight degree with low to medium migration. A travel hub, a weak human corridor.",
+  },
+  both: {
+    title: "Both",
+    icon: "◎",
+    tint: "#e7f6ee",
+    fg: "#0d6b3a",
+    what: "High migration and high flight access at once. People and access.",
+  },
+  leaf: {
+    title: "Leaf",
+    icon: "❦",
+    tint: "#eef3f9",
+    fg: "#46618a",
+    what: "Low degree and low betweenness. Periphery of both networks.",
+  },
+  mixed: {
+    title: "Mixed",
+    icon: "◌",
+    tint: "#eef3f9",
+    fg: "#46618a",
+    what: "No role dominates.",
+  },
+};
+
+function label(key) {
+  return TYPES[key]?.title ?? key ?? "—";
+}
+
+/* ------------------------------------------------------------------- globe */
+
+function project(lat, lon, radius, cx, cy, rotation) {
+  const phi = (lat * Math.PI) / 180;
+  const lambda = ((lon + rotation) * Math.PI) / 180;
+  const cosPhi = Math.cos(phi);
+  const x = cosPhi * Math.sin(lambda);
+  const y = Math.sin(phi);
+  const z = cosPhi * Math.cos(lambda);
+  return { x: cx + x * radius, y: cy - y * radius, visible: z > 0, z };
+}
+
+function arc(ctx, a, b, lift) {
+  const mx = (a.x + b.x) / 2;
+  const my = (a.y + b.y) / 2;
+  const dx = b.x - a.x;
+  const dy = b.y - a.y;
+  const len = Math.hypot(dx, dy) || 1;
+  ctx.beginPath();
+  ctx.moveTo(a.x, a.y);
+  ctx.quadraticCurveTo(mx - (dy / len) * len * lift, my + (dx / len) * len * lift, b.x, b.y);
+  ctx.stroke();
+}
+
+// The globe and the flat map share one edge budget: the heaviest corridors
+// only. Drawing all 9,095 would be a solid orange disc.
+function topEdges(limit) {
+  const y = state.data.years.indexOf(state.year);
+  const list = [];
+  for (const [oi, di, series, routes] of state.edges.edges) {
+    const weight = series[y] ?? 0;
+    if (weight > 0) list.push({ oi, di, weight, routes });
+  }
+  list.sort((a, b) => b.weight - a.weight);
+  return list.slice(0, limit);
+}
+
+function flightEdges(limit) {
+  const list = state.edges.edges
+    .filter((e) => e[3] > 0)
+    .map(([oi, di, , routes]) => ({ oi, di, routes }));
+  list.sort((a, b) => b.routes - a.routes);
+  return list.slice(0, limit);
+}
+
+function drawGlobe() {
+  const canvas = $("globe-canvas");
+  if (!canvas || !state.data) return;
+  const { ctx, width, height } = surface(canvas);
+  const radius = Math.min(width, height) * 0.42;
+  const cx = width / 2;
+  const cy = height / 2;
+
+  const sphere = ctx.createRadialGradient(
+    cx - radius * 0.3,
+    cy - radius * 0.35,
+    radius * 0.1,
+    cx,
+    cy,
+    radius,
+  );
+  sphere.addColorStop(0, "#1d5288");
+  sphere.addColorStop(0.7, "#123a63");
+  sphere.addColorStop(1, "#0a2444");
+  ctx.fillStyle = sphere;
+  ctx.beginPath();
+  ctx.arc(cx, cy, radius, 0, Math.PI * 2);
+  ctx.fill();
+  ctx.strokeStyle = "rgba(160,200,240,0.18)";
+  ctx.lineWidth = 1;
+  for (let lat = -60; lat <= 60; lat += 30) {
+    ctx.beginPath();
+    for (let lon = -180; lon <= 180; lon += 3) {
+      const p = project(lat, lon, radius, cx, cy, state.rotation);
+      if (!p.visible) continue;
+      ctx.lineTo(p.x, p.y);
+    }
+    ctx.stroke();
+  }
+  for (let lon = -180; lon < 180; lon += 30) {
+    ctx.beginPath();
+    for (let lat = -90; lat <= 90; lat += 3) {
+      const p = project(lat, lon, radius, cx, cy, state.rotation);
+      if (!p.visible) continue;
+      ctx.lineTo(p.x, p.y);
+    }
+    ctx.stroke();
+  }
+
+  const points = new Map();
+  state.edges.countries.forEach((iso3, i) => {
+    const coord = node(iso3)?.coord;
+    if (coord) points.set(i, project(coord[0], coord[1], radius, cx, cy, state.rotation));
+  });
+
+  const edges = topEdges(500);
+  const heaviest = edges[0]?.weight ?? 1;
+  ctx.lineCap = "round";
+  for (const edge of edges) {
+    const a = points.get(edge.oi);
+    const b = points.get(edge.di);
+    if (!a || !b || !a.visible || !b.visible) continue;
+    const share = Math.sqrt(edge.weight / heaviest);
+    ctx.strokeStyle = `rgba(247,148,38,${0.24 + share * 0.66})`;
+    ctx.lineWidth = 0.6 + share * 3.4;
+    arc(ctx, a, b, 0.16);
+  }
+
+  // Nodes sit under the arcs in weight: small and dim, so the corridors read
+  // as the subject and the countries as the anchors.
+  ctx.fillStyle = "rgba(196,222,248,0.62)";
+  for (const [i, p] of points) {
+    if (!p.visible) continue;
+    const iso3 = state.edges.countries[i];
+    const m = metrics(iso3);
+    if (!m) continue;
+    const size = 0.6 + Math.sqrt(m.in_degree) * 0.14;
+    ctx.beginPath();
+    ctx.arc(p.x, p.y, size, 0, Math.PI * 2);
+    ctx.fill();
+  }
+
+  if (state.selected) {
+    const i = state.edges.countries.indexOf(state.selected);
+    const p = points.get(i);
+    if (p && p.visible) {
+      ctx.strokeStyle = "#fff";
+      ctx.lineWidth = 1.5;
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, 6, 0, Math.PI * 2);
+      ctx.stroke();
+      const name = node(state.selected).name;
+      ctx.font = "600 12px -apple-system, system-ui, sans-serif";
+      const w = ctx.measureText(name).width;
+      ctx.fillStyle = "rgba(255,255,255,0.94)";
+      ctx.fillRect(p.x - w / 2 - 8, p.y - 30, w + 16, 20);
+      ctx.fillStyle = INK;
+      ctx.textAlign = "center";
+      ctx.textBaseline = "middle";
+      ctx.fillText(name, p.x, p.y - 20);
+    }
+  }
+}
+
+function globeHit(event) {
+  const canvas = $("globe-canvas");
+  const rect = canvas.getBoundingClientRect();
+  const x = event.clientX - rect.left;
+  const y = event.clientY - rect.top;
+  const radius = Math.min(rect.width, rect.height) * 0.42;
+  const cx = rect.width / 2;
+  const cy = rect.height / 2;
+  let best = null;
+  for (const iso3 of state.data.countries) {
+    const coord = node(iso3)?.coord;
+    if (!coord || !metrics(iso3)) continue;
+    const p = project(coord[0], coord[1], radius, cx, cy, state.rotation);
+    if (!p.visible) continue;
+    const d = Math.hypot(p.x - x, p.y - y);
+    if (d < 12 && (!best || d < best.d)) best = { iso3, d };
+  }
+  return best?.iso3 ?? null;
+}
+
+/* --------------------------------------------------------------- flat map */
+
+function mapPoint(coord, width, height) {
+  return {
+    x: ((coord[1] + 180) / 360) * width,
+    y: ((90 - coord[0]) / 180) * height,
+  };
+}
+
+function drawMap() {
+  const canvas = $("map-canvas");
+  if (!canvas || !state.data) return;
+  const { ctx, width, height } = surface(canvas);
+  ctx.fillStyle = "#0b1f3a";
+  ctx.fillRect(0, 0, width, height);
+  ctx.strokeStyle = "rgba(160,200,240,0.09)";
+  for (let lon = -180; lon <= 180; lon += 30) {
+    const x = ((lon + 180) / 360) * width;
+    ctx.beginPath();
+    ctx.moveTo(x, 0);
+    ctx.lineTo(x, height);
+    ctx.stroke();
+  }
+  for (let lat = -60; lat <= 60; lat += 30) {
+    const y = ((90 - lat) / 180) * height;
+    ctx.beginPath();
+    ctx.moveTo(0, y);
+    ctx.lineTo(width, y);
+    ctx.stroke();
+  }
+
+  const points = new Map();
+  state.edges.countries.forEach((iso3, i) => {
+    const coord = node(iso3)?.coord;
+    if (coord) points.set(i, mapPoint(coord, width, height));
+  });
+
+  ctx.lineCap = "round";
+  if (state.layer !== "flights") {
+    const edges = topEdges(420);
+    const heaviest = edges[0]?.weight ?? 1;
+    for (const edge of edges) {
+      const a = points.get(edge.oi);
+      const b = points.get(edge.di);
+      if (!a || !b || Math.abs(a.x - b.x) > width * 0.6) continue;
+      const share = Math.sqrt(edge.weight / heaviest);
+      ctx.strokeStyle = `rgba(242,130,12,${0.1 + share * 0.5})`;
+      ctx.lineWidth = 0.3 + share * 2.4;
+      arc(ctx, a, b, 0.13);
+    }
+  }
+  if (state.layer !== "migration") {
+    const edges = flightEdges(420);
+    const heaviest = edges[0]?.routes ?? 1;
+    for (const edge of edges) {
+      const a = points.get(edge.oi);
+      const b = points.get(edge.di);
+      if (!a || !b || Math.abs(a.x - b.x) > width * 0.6) continue;
+      const share = Math.sqrt(edge.routes / heaviest);
+      ctx.strokeStyle = `rgba(31,143,214,${0.08 + share * 0.45})`;
+      ctx.lineWidth = 0.3 + share * 2;
+      arc(ctx, a, b, -0.13);
+    }
+  }
+
+  ctx.fillStyle = "rgba(214,234,252,0.8)";
+  for (const [i, p] of points) {
+    const iso3 = state.edges.countries[i];
+    if (!metrics(iso3)) continue;
+    ctx.beginPath();
+    ctx.arc(p.x, p.y, 1.5, 0, Math.PI * 2);
+    ctx.fill();
+  }
+  if (state.selected) {
+    const coord = node(state.selected)?.coord;
+    if (coord) {
+      const p = mapPoint(coord, width, height);
+      ctx.strokeStyle = "#fff";
+      ctx.lineWidth = 1.5;
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, 6, 0, Math.PI * 2);
+      ctx.stroke();
+    }
+  }
+}
+
+/* ---------------------------------------------------------------- section 3 */
+
+function degreeCounts(pick) {
+  const counts = new Map();
+  for (const { n, m } of withMetrics()) {
+    const value = pick(n, m);
+    if (value > 0) counts.set(value, (counts.get(value) ?? 0) + 1);
+  }
+  return [...counts.entries()].map(([k, c]) => ({ k, c })).sort((a, b) => a.k - b.k);
+}
+
+function ccdf(values) {
+  const sorted = values.filter((v) => v > 0).sort((a, b) => a - b);
+  const n = sorted.length;
+  const out = [];
+  for (let i = 0; i < n; i += 1) {
+    if (i && sorted[i] === sorted[i - 1]) continue;
+    out.push({ k: sorted[i], p: (n - i) / n });
+  }
+  return out;
+}
+
+const SERIES = [
+  { key: "in", colour: PEOPLE, pick: (n, m) => m.in_degree },
+  { key: "out", colour: INK, pick: (n, m) => m.out_degree },
+  { key: "flight", colour: ACCESS, pick: (n) => n.flight_degree },
+];
+
+function drawHistogram() {
+  const canvas = $("hist");
+  if (!canvas) return;
+  const { ctx, width, height } = surface(canvas);
+  const box = frame(width, height);
+  const all = SERIES.map((s) => degreeCounts(s.pick));
+  const maxK = Math.max(...all.flat().map((d) => d.k), 10);
+  const maxC = Math.max(...all.flat().map((d) => d.c), 10);
+  box.x = logScale(box, [1, maxK], "x");
+  box.y = logScale(box, [1, maxC], "y");
+  axes(ctx, box, {
+    xTicks: logTicks(1, maxK),
+    yTicks: logTicks(1, maxC),
+    xLabel: "Degree",
+    yLabel: "Count of countries",
+  });
+  all.forEach((points, i) => {
+    ctx.fillStyle = SERIES[i].colour + "cc";
+    for (const d of points) {
+      const x = box.x(d.k);
+      const y = box.y(d.c);
+      ctx.fillRect(x - 1.5 + i * 1.6, y, 2, box.bottom - y);
+    }
+  });
+  markSelected(ctx, box, (n, m) => [m.in_degree, degreeCounts(SERIES[0].pick).find((d) => d.k === m.in_degree)?.c ?? 1]);
+}
+
+function drawCcdf() {
+  const canvas = $("ccdf");
+  if (!canvas) return;
+  const { ctx, width, height } = surface(canvas);
+  const box = frame(width, height);
+  const rows = withMetrics();
+  const series = SERIES.map((s) => ccdf(rows.map(({ n, m }) => s.pick(n, m))));
+  const maxK = Math.max(...series.flat().map((d) => d.k), 10);
+  const minP = Math.min(...series.flat().map((d) => d.p), 0.001);
+  box.x = logScale(box, [1, maxK], "x");
+  box.y = logScale(box, [minP, 1], "y");
+  axes(ctx, box, {
+    xTicks: logTicks(1, maxK),
+    yTicks: [1, 0.1, 0.01, 0.001].filter((v) => v >= minP * 0.9).map((v) => ({ value: v, label: `10${sup(Math.log10(v))}` })),
+    xLabel: "Degree",
+    yLabel: "P(K ≥ k)",
+  });
+  series.forEach((points, i) => {
+    ctx.fillStyle = SERIES[i].colour;
+    for (const d of points) {
+      ctx.beginPath();
+      ctx.arc(box.x(d.k), box.y(d.p), 2, 0, Math.PI * 2);
+      ctx.fill();
+    }
+  });
+  markSelected(ctx, box, (n, m) => {
+    const point = series[0].find((d) => d.k === m.in_degree);
+    return [m.in_degree, point?.p ?? 1];
+  });
+}
+
+function markSelected(ctx, box, pick) {
+  if (!state.selected) return;
+  const n = node(state.selected);
+  const m = metrics(state.selected);
+  if (!m) return;
+  const [vx, vy] = pick(n, m);
+  const x = box.x(vx);
+  const y = box.y(vy);
+  ctx.strokeStyle = INK;
+  ctx.setLineDash([3, 3]);
+  ctx.lineWidth = 1;
+  ctx.beginPath();
+  ctx.moveTo(x, box.top);
+  ctx.lineTo(x, box.bottom);
+  ctx.stroke();
+  ctx.setLineDash([]);
+  ctx.fillStyle = INK;
+  ctx.font = "600 10px -apple-system, system-ui, sans-serif";
+  ctx.textAlign = "left";
+  ctx.textBaseline = "bottom";
+  ctx.fillText(`${n.name} (k: ${m.in_degree})`, Math.min(x + 5, box.right - 90), Math.max(y - 5, box.top + 12));
+}
+
+/* ---------------------------------------------------------- sections 4 & 5 */
+
+function drawScatters() {
+  drawBetweenness();
+  drawZ();
+}
+
+function drawBetweenness() {
+  const canvas = $("scatter-between");
+  if (!canvas) return;
+  const { ctx, width, height } = surface(canvas);
+  const box = frame(width, height, { l: 56, r: 16, t: 14, b: 38 });
+  const y = String(state.data.null_year);
+  const rows = withMetrics(y).filter((r) => r.m.in_degree > 0 && r.m.betweenness > 0);
+  // Both series carry the same two quantities, computed the same way on their
+  // own network: in-degree, and betweenness with distance = 1 / weight.
+  const flights = state.data.countries
+    .map((iso3) => ({ iso3, n: node(iso3) }))
+    .filter((r) => r.n.flight_in_degree > 0 && r.n.flight_betweenness > 0);
+  const maxK = Math.max(
+    ...rows.map((r) => r.m.in_degree),
+    ...flights.map((r) => r.n.flight_in_degree),
+  );
+  const minB = Math.min(
+    ...rows.map((r) => r.m.betweenness),
+    ...flights.map((r) => r.n.flight_betweenness),
+  );
+  const maxB = Math.max(
+    ...rows.map((r) => r.m.betweenness),
+    ...flights.map((r) => r.n.flight_betweenness),
+  );
+  box.x = logScale(box, [1, maxK], "x");
+  box.y = logScale(box, [minB, maxB], "y");
+  axes(ctx, box, {
+    xTicks: logTicks(1, maxK),
+    yTicks: logTicks(minB, maxB),
+    xLabel: "In-degree",
+    yLabel: "Betweenness",
+  });
+  ctx.fillStyle = ACCESS + "88";
+  for (const r of flights) {
+    ctx.beginPath();
+    ctx.arc(box.x(r.n.flight_in_degree), box.y(r.n.flight_betweenness), 2, 0, Math.PI * 2);
+    ctx.fill();
+  }
+  ctx.fillStyle = PEOPLE + "cc";
+  for (const r of rows) {
+    ctx.beginPath();
+    ctx.arc(box.x(r.m.in_degree), box.y(r.m.betweenness), 2.4, 0, Math.PI * 2);
+    ctx.fill();
+  }
+  // Label only the brokers a reader should look up, and only where the label
+  // will not sit on top of one already placed.
+  const notable = rows
+    .filter((r) => (r.m.z ?? 0) >= 2 && r.m.in_degree >= 10)
+    .sort((a, b) => (b.m.z ?? 0) - (a.m.z ?? 0))
+    .slice(0, 6);
+  ctx.font = "600 10px -apple-system, system-ui, sans-serif";
+  ctx.fillStyle = INK;
+  ctx.textAlign = "left";
+  const placed = [];
+  for (const r of notable) {
+    const x = Math.min(box.x(r.m.in_degree) + 6, box.right - 120);
+    const py = box.y(r.m.betweenness) - 5;
+    if (placed.some((p) => Math.abs(p.x - x) < 110 && Math.abs(p.y - py) < 12)) continue;
+    placed.push({ x, y: py });
+    ctx.fillText(`${r.n.name} (z = ${r.m.z.toFixed(1)})`, x, py);
+  }
+  markSelectedPoint(ctx, box, (m) => [m.in_degree, m.betweenness], y);
+}
+
+function drawZ() {
+  const canvas = $("scatter-z");
+  if (!canvas) return;
+  const { ctx, width, height } = surface(canvas);
+  const box = frame(width, height, { l: 56, r: 16, t: 14, b: 38 });
+  const y = String(state.data.null_year);
+  const rows = withMetrics(y).filter((r) => r.m.z !== undefined && r.m.in_degree > 0);
+  if (!rows.length) return;
+  const maxK = Math.max(...rows.map((r) => r.m.in_degree));
+  const zs = rows.map((r) => r.m.z);
+  const lo = Math.min(-2, Math.floor(Math.min(...zs)));
+  const hi = Math.max(2, Math.ceil(Math.max(...zs)));
+  box.x = logScale(box, [1, maxK], "x");
+  box.y = linearScale(box, [lo, hi], "y");
+  const step = Math.max(1, Math.round((hi - lo) / 6));
+  const yTicks = [];
+  for (let v = lo; v <= hi; v += step) yTicks.push({ value: v, label: String(v) });
+  axes(ctx, box, { xTicks: logTicks(1, maxK), yTicks, xLabel: "In-degree", yLabel: "z-score" });
+  ctx.strokeStyle = "#c2d0e2";
+  ctx.setLineDash([4, 4]);
+  ctx.beginPath();
+  ctx.moveTo(box.left, box.y(0));
+  ctx.lineTo(box.right, box.y(0));
+  ctx.stroke();
+  ctx.setLineDash([]);
+  for (const r of rows) {
+    ctx.fillStyle = r.m.z >= 2 ? PEOPLE : ACCESS + "99";
+    ctx.beginPath();
+    ctx.arc(box.x(r.m.in_degree), box.y(r.m.z), 2.4, 0, Math.PI * 2);
+    ctx.fill();
+  }
+  markSelectedPoint(ctx, box, (m) => [m.in_degree, m.z ?? 0], y);
+}
+
+function markSelectedPoint(ctx, box, pick, y) {
+  if (!state.selected) return;
+  const m = metrics(state.selected, y);
+  if (!m) return;
+  const [vx, vy] = pick(m);
+  if (vy === undefined) return;
+  const x = box.x(vx);
+  const py = box.y(vy);
+  ctx.strokeStyle = INK;
+  ctx.lineWidth = 1.5;
+  ctx.beginPath();
+  ctx.arc(x, py, 5, 0, Math.PI * 2);
+  ctx.stroke();
+  ctx.fillStyle = INK;
+  ctx.font = "600 10px -apple-system, system-ui, sans-serif";
+  ctx.textAlign = "left";
+  ctx.fillText(node(state.selected).name, Math.min(x + 8, box.right - 70), py + 3);
+}
+
+/* ---------------------------------------------------------------- section 7 */
+
+function renderTypology() {
+  const y = String(state.data.null_year);
+  const buckets = new Map(Object.keys(TYPES).map((k) => [k, []]));
+  for (const { iso3, m } of withMetrics(y)) {
+    if (m.typology && buckets.has(m.typology)) buckets.get(m.typology).push({ iso3, m });
+  }
+  const order = ["destination-hub", "human-bridge", "system-airport", "both", "leaf"];
+  $("typology-cards").innerHTML = order
+    .map((key) => {
+      const meta = TYPES[key];
+      const members = buckets.get(key) ?? [];
+      // Each bucket shows the countries that define it, so the examples are
+      // ranked by whatever put them in the bucket. A leaf's examples are the
+      // smallest, not the largest.
+      const sorter =
+        key === "human-bridge"
+          ? (a, b) => (b.m.z ?? 0) - (a.m.z ?? 0)
+          : key === "system-airport"
+            ? (a, b) => node(b.iso3).flight_degree - node(a.iso3).flight_degree
+            : key === "leaf"
+              ? (a, b) => a.m.in_strength - b.m.in_strength
+              : (a, b) => b.m.in_strength - a.m.in_strength;
+      const examples = members
+        .slice()
+        .sort(sorter)
+        .slice(0, 3)
+        .map((r) => r.iso3);
+      return `<article class="type">
+        <div class="badge" style="background:${meta.tint};color:${meta.fg}">${meta.icon}</div>
+        <h3 style="color:${meta.fg}">${meta.title}</h3>
+        <p>${meta.what}</p>
+        <p class="eg">${members.length} countries<br />Examples: <b>${examples.join(", ") || "none"}</b></p>
+      </article>`;
+    })
+    .join("");
+}
+
+/* ---------------------------------------------------------------- section 8 */
+
+function edgeLookup(origin, dest) {
+  const oi = state.edges.countries.indexOf(origin);
+  const di = state.edges.countries.indexOf(dest);
+  return state.edges.edges.find((e) => e[0] === oi && e[1] === di) ?? null;
+}
+
+function renderEdge() {
+  const origin = $("edge-origin").value;
+  const dest = $("edge-dest").value;
+  if (!origin || !dest || origin === dest) {
+    $("edge-facts").innerHTML = "";
+    $("edge-kind").textContent = "—";
+    $("edge-note").querySelector("span:last-child").textContent =
+      "Pick two different countries.";
+    return;
+  }
+  const yi = state.data.years.indexOf(state.year);
+  const edge = edgeLookup(origin, dest);
+  const reverse = edgeLookup(dest, origin);
+  const weight = edge ? edge[2][yi] : 0;
+  const routes = edge ? edge[3] : 0;
+  const om = metrics(origin);
+  const dm = metrics(dest);
+
+  const ranked = state.edges.edges
+    .map((e) => e[2][yi] ?? 0)
+    .filter((w) => w > 0)
+    .sort((a, b) => b - a);
+  const rank = weight > 0 ? ranked.findIndex((w) => w <= weight) + 1 : null;
+
+  $("edge-kind").textContent =
+    weight > 0 && routes > 0 ? "People + flights" : weight > 0 ? "People only" : routes > 0 ? "Flights only" : "No corridor";
+
+  const facts = [
+    ["Weight (migrant stock)", weight ? fmt.format(weight) : "—"],
+    ["% of origin out-strength", om?.out_strength ? `${((weight / om.out_strength) * 100).toFixed(1)}%` : "—"],
+    ["% of destination in-strength", dm?.in_strength ? `${((weight / dm.in_strength) * 100).toFixed(1)}%` : "—"],
+    ["Global rank", rank ? `${fmt.format(rank)} / ${fmt.format(ranked.length)}` : "—"],
+    [`Reciprocal (${node(dest).name} → ${node(origin).name})`, reverse?.[2][yi] ? fmt.format(reverse[2][yi]) : "—"],
+    ["Flight routes", routes ? fmt.format(routes) : "0"],
+  ];
+  $("edge-facts").innerHTML = facts
+    .map(([term, value]) => `<div class="fact"><dt>${term}</dt><dd>${value}</dd></div>`)
+    .join("");
+  $("edge-note").querySelector("span:last-child").innerHTML =
+    weight > 0 && routes > 0
+      ? "<b>People and access agree here.</b> A human corridor with a direct air link."
+      : weight > 0
+        ? "<b>People without a direct link.</b> The corridor exists in the population but not in the route map, so the journey connects somewhere else."
+        : routes > 0
+          ? "<b>Access without people.</b> You can fly it, but almost nobody has settled at the other end."
+          : "<b>Neither network connects these two.</b>";
+}
+
+/* ---------------------------------------------------------------- section 9 */
+
+function drawDenmark() {
+  const focus = state.data.focus;
+  const iso3 = focus.iso3;
+  const y = String(state.data.null_year);
+  const m = metrics(iso3, y);
+  const n = node(iso3);
+  if (!m) return;
+
+  $("dk-head").innerHTML =
+    `<div class="who"><span class="flag">${flag(n.iso2)}</span><span><strong>${n.name}</strong><br /><span class="codes">${iso3} · ${y}</span></span></div>` +
+    [
+      ["In-strength", fmt.format(m.in_strength)],
+      ["Out-strength", fmt.format(m.out_strength)],
+      ["In-degree", `${m.in_degree} (#${m.in_degree_rank})`],
+      ["Out-degree", `${m.out_degree} (#${m.out_degree_rank})`],
+      ["Betweenness", `#${m.betweenness_rank}`],
+      ["z-score", m.z === undefined ? "—" : m.z.toFixed(2)],
+      ["Flight degree", fmt.format(n.flight_degree)],
+      ["Typology", label(m.typology)],
+    ]
+      .map(([k, v]) => `<div class="metric"><span>${k}</span><b>${v}</b></div>`)
+      .join("");
+
+  const rows = withMetrics(y).filter((r) => r.m.in_degree > 0 && r.m.betweenness > 0);
+  small($("dk-scatter"), (ctx, box) => {
+    const maxK = Math.max(...rows.map((r) => r.m.in_degree));
+    const minB = Math.min(...rows.map((r) => r.m.betweenness));
+    const maxB = Math.max(...rows.map((r) => r.m.betweenness));
+    box.x = logScale(box, [1, maxK], "x");
+    box.y = logScale(box, [minB, maxB], "y");
+    axes(ctx, box, { xTicks: logTicks(1, maxK), yTicks: logTicks(minB, maxB), xLabel: "Degree" });
+    ctx.fillStyle = "#c9d7e8";
+    for (const r of rows) {
+      ctx.beginPath();
+      ctx.arc(box.x(r.m.in_degree), box.y(r.m.betweenness), 1.8, 0, Math.PI * 2);
+      ctx.fill();
+    }
+    dot(ctx, box.x(m.in_degree), box.y(m.betweenness), "#d0021b", n.name);
+    for (const other of focus.nordics) {
+      if (other.iso3 === iso3) continue;
+      const om = metrics(other.iso3, y);
+      if (om) dot(ctx, box.x(om.in_degree), box.y(om.betweenness), PEOPLE, other.iso3, 2.6);
+    }
+  });
+
+  const zRows = rows.filter((r) => r.m.z !== undefined);
+  small($("dk-z"), (ctx, box) => {
+    if (!zRows.length) return;
+    const maxK = Math.max(...zRows.map((r) => r.m.in_degree));
+    const lo = Math.min(-2, ...zRows.map((r) => r.m.z));
+    const hi = Math.max(2, ...zRows.map((r) => r.m.z));
+    box.x = logScale(box, [1, maxK], "x");
+    box.y = linearScale(box, [lo, hi], "y");
+    axes(ctx, box, {
+      xTicks: logTicks(1, maxK),
+      yTicks: [lo, 0, hi].map((v) => ({ value: v, label: v.toFixed(0) })),
+      xLabel: "Degree",
+    });
+    ctx.fillStyle = "#c9d7e8";
+    for (const r of zRows) {
+      ctx.beginPath();
+      ctx.arc(box.x(r.m.in_degree), box.y(r.m.z), 1.8, 0, Math.PI * 2);
+      ctx.fill();
+    }
+    if (m.z !== undefined) dot(ctx, box.x(m.in_degree), box.y(m.z), "#d0021b", n.name);
+  });
+
+  const egoRow = (c, dir) =>
+    `<tr><td>${node(c.other)?.name ?? c.other}</td><td>${fmt.format(c.weight)}</td></tr>`;
+  $("dk-in").innerHTML =
+    `<caption>Top origins → Denmark</caption><tr><th>Origin</th><th style="text-align:right">People</th></tr>` +
+    (n.top_in ?? []).map((c) => egoRow(c, "in")).join("");
+  $("dk-out").innerHTML =
+    `<caption>Denmark → top destinations</caption><tr><th>Destination</th><th style="text-align:right">People</th></tr>` +
+    (n.top_out ?? []).map((c) => egoRow(c, "out")).join("");
+
+  small($("dk-time"), (ctx, box) => {
+    const years = focus.series.map((s) => s.year);
+    const maxV = Math.max(...focus.series.map((s) => Math.max(s.in_strength, s.out_strength)));
+    box.x = linearScale(box, [years[0], years.at(-1)], "x");
+    box.y = linearScale(box, [0, maxV], "y");
+    axes(ctx, box, {
+      xTicks: [years[0], years[Math.floor(years.length / 2)], years.at(-1)].map((v) => ({ value: v, label: String(v) })),
+      yTicks: [0, maxV / 2, maxV].map((v) => ({ value: v, label: compact.format(v) })),
+    });
+    line(ctx, box, focus.series, (s) => s.year, (s) => s.in_strength, PEOPLE);
+    line(ctx, box, focus.series, (s) => s.year, (s) => s.out_strength, ACCESS);
+  });
+
+  small($("dk-rank"), (ctx, box) => {
+    const years = focus.series.map((s) => s.year);
+    const maxR = Math.max(...focus.series.map((s) => s.betweenness_rank));
+    box.x = linearScale(box, [years[0], years.at(-1)], "x");
+    box.y = linearScale(box, [maxR, 1], "y");
+    axes(ctx, box, {
+      xTicks: [years[0], years.at(-1)].map((v) => ({ value: v, label: String(v) })),
+      yTicks: [1, Math.round(maxR / 2), maxR].map((v) => ({ value: v, label: `#${v}` })),
+    });
+    line(ctx, box, focus.series, (s) => s.year, (s) => s.betweenness_rank, INK);
+  });
+
+  small($("dk-nordic"), (ctx, box) => {
+    const items = focus.nordics;
+    const maxDeg = Math.max(...items.map((i) => i.in_degree), 1);
+    const maxFlight = Math.max(...items.map((i) => i.flight_degree), 1);
+    const maxZ = Math.max(...items.map((i) => Math.abs(i.z ?? 0)), 1);
+    box.x = linearScale(box, [0, items.length], "x");
+    box.y = linearScale(box, [0, 1], "y");
+    axes(ctx, box, {
+      xTicks: items.map((i, idx) => ({ value: idx + 0.5, label: i.iso3.slice(0, 2) })),
+      yTicks: [0, 0.5, 1].map((v) => ({ value: v, label: v === 1 ? "max" : "" })),
+    });
+    const bars = [
+      { get: (i) => i.in_degree / maxDeg, colour: PEOPLE },
+      { get: (i) => Math.abs(i.z ?? 0) / maxZ, colour: INK },
+      { get: (i) => i.flight_degree / maxFlight, colour: ACCESS },
+    ];
+    items.forEach((item, idx) => {
+      bars.forEach((bar, bi) => {
+        const w = (box.x(1) - box.x(0)) / 4;
+        const x = box.x(idx) + w * (bi + 0.5);
+        const yv = box.y(bar.get(item));
+        ctx.fillStyle = bar.colour;
+        ctx.fillRect(x, yv, w * 0.8, box.bottom - yv);
+      });
+    });
+  });
+
+  const rank = m.betweenness_rank;
+  const strengthRank = m.in_strength_rank;
+  $("dk-verdict").querySelector("span:last-child").innerHTML =
+    `<b>Denmark, in one line.</b> It ranks #${strengthRank} by the number of foreign-born residents and #${rank} as a bridge, ` +
+    `with a z-score of ${m.z === undefined ? "—" : m.z.toFixed(2)} against the degree-preserving null. ` +
+    `Its ${m.in_degree} recorded origins are unusually many for its size, and that is a register artefact ` +
+    `as much as a fact about Denmark: a population register names every origin, while a survey-based ` +
+    `country files most of them under "other".`;
+}
+
+function small(canvas, draw) {
+  if (!canvas) return;
+  const { ctx, width, height } = surface(canvas);
+  const box = frame(width, height, { l: 40, r: 10, t: 10, b: 26 });
+  draw(ctx, box);
+}
+
+function dot(ctx, x, y, colour, name, r = 4) {
+  ctx.fillStyle = colour;
+  ctx.beginPath();
+  ctx.arc(x, y, r, 0, Math.PI * 2);
+  ctx.fill();
+  if (name) {
+    ctx.fillStyle = INK;
+    ctx.font = "600 9px -apple-system, system-ui, sans-serif";
+    ctx.textAlign = "left";
+    ctx.fillText(name, x + 6, y - 4);
+  }
+}
+
+function line(ctx, box, rows, getX, getY, colour) {
+  ctx.strokeStyle = colour;
+  ctx.lineWidth = 2;
+  ctx.beginPath();
+  rows.forEach((r, i) => {
+    const x = box.x(getX(r));
+    const y = box.y(getY(r));
+    if (i) ctx.lineTo(x, y);
+    else ctx.moveTo(x, y);
+  });
+  ctx.stroke();
+  ctx.fillStyle = colour;
+  for (const r of rows) {
+    ctx.beginPath();
+    ctx.arc(box.x(getX(r)), box.y(getY(r)), 2.5, 0, Math.PI * 2);
+    ctx.fill();
+  }
+}
+
+/* --------------------------------------------------------------- section 2 */
+
+function topThree(key, y) {
+  return withMetrics(y)
+    .slice()
+    .sort((a, b) => b.m[key] - a.m[key])
+    .slice(0, 3);
+}
+
+function setupPredict() {
+  const y = String(state.data.null_year);
+  $("country-list").innerHTML = state.data.countries
+    .filter((iso3) => metrics(iso3, y))
+    .map((iso3) => `<option value="${node(iso3).name}"></option>`)
+    .join("");
+
+  $("guess-form").addEventListener("submit", (event) => {
+    event.preventDefault();
+    const typed = $("guess-input").value.trim().toLowerCase();
+    const match = state.data.countries.find(
+      (iso3) => node(iso3).name.toLowerCase() === typed || iso3.toLowerCase() === typed,
+    );
+    const lists = [
+      ["top-in-degree", "in_degree"],
+      ["top-out-degree", "out_degree"],
+      ["top-betweenness", "betweenness"],
+    ];
+    for (const [id, key] of lists) {
+      $(id).innerHTML = topThree(key, y)
+        .map((r) => `<li><b>${r.n.name}</b> ${key === "betweenness" ? r.m[key].toFixed(4) : r.m[key]}</li>`)
+        .join("");
+    }
+    $("guess-reveal").hidden = false;
+    $("guess-hint").hidden = true;
+
+    const winner = topThree("betweenness", y)[0];
+    const verdict = $("guess-verdict");
+    verdict.hidden = false;
+    if (!match) {
+      verdict.className = "verdict miss";
+      verdict.textContent = `We could not find "${$("guess-input").value}". The top bridge in ${y} is ${winner.n.name}.`;
+      return;
+    }
+    const m = metrics(match, y);
+    if (match === winner.iso3) {
+      verdict.className = "verdict hit";
+      verdict.textContent = `Correct. ${node(match).name} has the highest betweenness in ${y}.`;
+    } else {
+      verdict.className = "verdict miss";
+      verdict.textContent = `${node(match).name} ranks #${m.betweenness_rank} as a bridge and #${m.in_degree_rank} by in-degree. The top bridge in ${y} is ${winner.n.name}.`;
+    }
+    select(match);
+  });
+}
+
+/* -------------------------------------------------------------------- wire */
+
+function setYear(value) {
+  state.year = state.data.years[value];
+  $("year-now").textContent = String(state.year);
+  drawGlobe();
+  drawMap();
+  drawHistogram();
+  drawCcdf();
+  renderInspector();
+  renderEdge();
+}
+
+function setupEdgeInspector() {
+  const options = state.data.countries
+    .filter((iso3) => metrics(iso3, String(state.data.null_year)))
+    .map((iso3) => ({ iso3, name: node(iso3).name }))
+    .sort((a, b) => a.name.localeCompare(b.name));
+  const html = options.map((o) => `<option value="${o.iso3}">${o.name}</option>`).join("");
+  $("edge-origin").innerHTML = html;
+  $("edge-dest").innerHTML = html;
+  $("edge-origin").value = options.some((o) => o.iso3 === "ESP") ? "ESP" : options[0].iso3;
+  $("edge-dest").value = options.some((o) => o.iso3 === "COL") ? "COL" : options[1].iso3;
+  $("edge-origin").addEventListener("change", renderEdge);
+  $("edge-dest").addEventListener("change", renderEdge);
+  renderEdge();
+}
+
+function setupGlobe() {
+  const canvas = $("globe-canvas");
+  let moved = false;
+  let lastX = 0;
+  canvas.addEventListener("pointerdown", (event) => {
+    state.dragging = true;
+    moved = false;
+    lastX = event.clientX;
+    canvas.setPointerCapture(event.pointerId);
+  });
+  canvas.addEventListener("pointermove", (event) => {
+    if (!state.dragging) return;
+    const dx = event.clientX - lastX;
+    if (Math.abs(dx) > 2) moved = true;
+    state.rotation += dx * 0.4;
+    lastX = event.clientX;
+    drawGlobe();
+  });
+  canvas.addEventListener("pointerup", (event) => {
+    state.dragging = false;
+    canvas.releasePointerCapture(event.pointerId);
+    if (!moved) {
+      const hit = globeHit(event);
+      if (hit) select(hit);
+    }
+  });
+}
+
+function setupMap() {
+  const toggle = $("map-toggle");
+  toggle.addEventListener("click", (event) => {
+    const button = event.target.closest("button[data-layer]");
+    if (!button) return;
+    state.layer = button.dataset.layer;
+    for (const b of toggle.querySelectorAll("button")) {
+      b.setAttribute("aria-pressed", String(b === button));
+    }
+    drawMap();
+  });
+  $("map-canvas").addEventListener("click", (event) => {
+    const rect = event.currentTarget.getBoundingClientRect();
+    const x = event.clientX - rect.left;
+    const y = event.clientY - rect.top;
+    let best = null;
+    for (const iso3 of state.data.countries) {
+      const coord = node(iso3)?.coord;
+      if (!coord || !metrics(iso3)) continue;
+      const p = mapPoint(coord, rect.width, rect.height);
+      const d = Math.hypot(p.x - x, p.y - y);
+      if (d < 14 && (!best || d < best.d)) best = { iso3, d };
+    }
+    if (best) {
+      select(best.iso3);
+      $("globe").scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+  });
+}
+
+function renderTwinStats() {
+  const y = String(state.data.null_year);
+  const totals = state.data.totals[y] ?? state.data.totals[state.data.null_year];
+  const snap = state.data.flight_snapshot;
+  $("twin-stats").innerHTML = [
+    row("Migration corridors", fmt.format(totals.corridors)),
+    row("People counted", compact.format(totals.people)),
+    row("Flight country pairs", fmt.format(snap.country_pairs)),
+    row("Countries with flights", fmt.format(snap.countries)),
+  ].join("");
+  $("flight-caveat").textContent = snap.note;
+  $("null-method").textContent =
+    `Null: ${state.data.shuffles} degree-preserving shuffles of the ${state.data.null_year} network. ` +
+    "Each shuffle keeps every country's in- and out-degree and deals the observed corridor weights back out at random.";
+  $("null-tag").textContent = `(null model · ${state.data.null_year} · ${state.data.shuffles} shuffles)`;
+  $("twin-tag").textContent = `(migration ${state.data.null_year} · flights undated)`;
+
+  // A country with four corridors gets a tiny null spread and so a huge z for
+  // very little reason. The list keeps countries with at least ten partners and
+  // the caption says what was excluded, rather than quietly dropping them.
+  const scored = withMetrics(y).filter((r) => r.m.z !== undefined);
+  const solid = scored.filter((r) => r.m.in_degree >= 10);
+  const excluded = scored.filter(
+    (r) => r.m.in_degree < 10 && r.m.z >= Math.min(...solid.slice(0, 6).map((s) => s.m.z)),
+  ).length;
+  $("z-top").innerHTML = solid
+    .sort((a, b) => b.m.z - a.m.z)
+    .slice(0, 6)
+    .map(
+      (r) =>
+        `<li><span>${r.n.name} <span style="color:#7a8fac">k=${r.m.in_degree}</span></span><b>z = ${r.m.z.toFixed(1)}</b></li>`,
+    )
+    .join("");
+  $("z-floor").textContent = excluded
+    ? `Countries with fewer than ten origins are held out of this list: ${excluded} of them score higher, on a null spread too small to trust.`
+    : "";
+}
+
+async function main() {
+  try {
+    // Resolved against this module, not the page, so the arcade edition and
+    // the Apple edition load the same two files from different depths.
+    const data = (name) => new URL(`../data/${name}`, import.meta.url);
+    const [corridors, edges] = await Promise.all([
+      fetch(data("week03_corridors.json")).then((r) => r.json()),
+      fetch(data("week03_edges.json")).then((r) => r.json()),
+    ]);
+    state.data = corridors;
+    state.edges = edges;
+    state.year = corridors.null_year;
+    $("year-slider").max = String(corridors.years.length - 1);
+    $("year-slider").value = String(corridors.years.indexOf(corridors.null_year));
+    $("year-now").textContent = String(state.year);
+    $("status").textContent =
+      `${fmt.format(corridors.countries.length)} countries · ` +
+      `${fmt.format(corridors.corridor_count)} migration corridors · ` +
+      `${fmt.format(corridors.flight_snapshot.country_pairs)} flight country pairs · ` +
+      `null model: ${corridors.shuffles} shuffles of ${corridors.null_year}`;
+
+    setupGlobe();
+    setupMap();
+    setupPredict();
+    setupEdgeInspector();
+    renderTwinStats();
+    renderTypology();
+    select("ESP");
+    setYear(Number($("year-slider").value));
+    $("year-slider").addEventListener("input", (event) => setYear(Number(event.target.value)));
+    window.addEventListener("resize", () => {
+      drawGlobe();
+      drawMap();
+      drawHistogram();
+      drawCcdf();
+      drawScatters();
+      drawDenmark();
+    });
+  } catch (error) {
+    $("status").textContent = `Could not load the corridor data: ${error.message}`;
+    throw error;
+  }
+}
+
+main();

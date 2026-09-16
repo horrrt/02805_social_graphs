@@ -1,0 +1,532 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width,initial-scale=1" name="viewport" />
+    <meta
+      content="Corridor Control — two country networks over the same world: where people live, from the UN migrant stock, and where you can fly, from OpenFlights."
+      name="description"
+    />
+    <title>Corridor Control · Log–Log Arcade · Apple edition</title>
+    <meta content="../../" name="site-root" />
+    <link href="../../../assets/favicon.svg" rel="icon" type="image/svg+xml" />
+    <link href="../../../assets/css/corridor.css" rel="stylesheet" />
+  </head>
+  <body class="corridor theme-apple">
+    <a class="skip" href="#main">Skip to content</a>
+
+    <div class="topbar">
+      <div class="shell">
+        <a class="brand" href="../../">
+          <span class="mark">DTU</span>
+          <small>02805 · Network Science</small>
+        </a>
+        <nav class="topnav" aria-label="Sections of this post">
+          <a class="here" href="#globe">Migration</a>
+          <a href="#twin">Flights</a>
+          <a href="#typology">People</a>
+          <a href="#denmark">Connectivity</a>
+        </nav>
+      </div>
+    </div>
+
+    <main id="main">
+      <!-- 1 ------------------------------------------------------------- -->
+      <section class="hero" id="globe">
+        <div class="shell">
+          <div>
+            <p class="eyebrow">Week 3 · Who matters, and why · Go nuts</p>
+            <h1>Corridor<br />Control</h1>
+            <p class="lede">Global migration and flight networks</p>
+            <p class="body">
+              Two networks. One world. Migration is the UN count of where
+              people born in one country now live, and the twin is a network
+              of international flight routes, aggregated from airports to
+              countries.
+            </p>
+            <p class="caution">
+              Thick corridors are not friendship — they are people.
+            </p>
+            <div class="keys">
+              <span class="key people"><i></i> Migration (people)</span>
+              <span class="key access"><i></i> Flights (access)</span>
+            </div>
+            <div class="yearline">
+              <input
+                aria-label="Year of the migration snapshot"
+                id="year-slider"
+                max="7"
+                min="0"
+                step="1"
+                type="range"
+                value="6"
+              />
+              <div class="ends"><span>1990</span><span>2024</span></div>
+              <label for="year-slider">
+                Year (map animation) · showing <b id="year-now">2020</b>
+              </label>
+            </div>
+          </div>
+
+          <div class="stage-wrap">
+            <canvas class="stage" height="620" id="globe-canvas" width="720">
+            </canvas>
+            <p class="stage-hint">
+              Drag to spin. Click a country to inspect it.
+            </p>
+          </div>
+
+          <aside class="panel" id="inspector">
+            <h2>Selected country</h2>
+            <div class="who">
+              <span class="flag" id="sel-flag">🌍</span>
+              <span>
+                <strong id="sel-name">Pick a country</strong><br />
+                <span class="codes" id="sel-codes">—</span>
+              </span>
+            </div>
+            <dl class="stats" id="sel-stats"></dl>
+            <div class="corridor-list">
+              <h3>→ Top inbound corridors</h3>
+              <ol id="sel-in"></ol>
+            </div>
+            <div class="corridor-list">
+              <h3>→ Top outbound corridors</h3>
+              <ol id="sel-out"></ol>
+            </div>
+            <p class="fineprint">
+              In-strength = people living here who were born elsewhere (stock).
+              Betweenness = how often this country sits on the shortest paths
+              between others, with a heavy corridor counted as a short step.
+            </p>
+          </aside>
+        </div>
+      </section>
+
+      <div class="shell">
+        <p aria-live="polite" class="status-line" id="status">
+          Loading the corridor data…
+        </p>
+
+        <!-- 2 ----------------------------------------------------------- -->
+        <section class="step" id="predict">
+          <div class="card">
+            <div class="step-head">
+              <span class="num">2</span>
+              <h2>Predict</h2>
+            </div>
+            <p class="sub">
+              Which country is the bridge — the highest betweenness — in 2020?
+              Think about connectors, not just size. Which country sits on the
+              most shortest paths between others?
+            </p>
+            <div class="grid-side">
+              <div>
+                <form class="guess" id="guess-form">
+                  <input
+                    autocomplete="off"
+                    id="guess-input"
+                    list="country-list"
+                    placeholder="Type a country…"
+                    type="text"
+                  />
+                  <datalist id="country-list"></datalist>
+                  <button type="submit">→</button>
+                </form>
+                <div class="notice" id="guess-hint">
+                  <span class="ico">💡</span>
+                  <span>
+                    <b>After your guess</b>
+                    We show the top three by in-degree, by out-degree and by
+                    betweenness, and tell you whether your country took first
+                    place on the bridge ranking.
+                  </span>
+                </div>
+                <div class="verdict" hidden id="guess-verdict"></div>
+              </div>
+              <div></div>
+            </div>
+            <div class="reveal" hidden id="guess-reveal">
+              <div class="box">
+                <h4>Top 3 in-degree</h4>
+                <p class="what">Most origins represented (destinations)</p>
+                <ol id="top-in-degree"></ol>
+              </div>
+              <div class="box">
+                <h4>Top 3 out-degree</h4>
+                <p class="what">Sends people to the most places (origins)</p>
+                <ol id="top-out-degree"></ol>
+              </div>
+              <div class="box">
+                <h4>Top 3 betweenness</h4>
+                <p class="what">Sits on the most shortest paths (bridges)</p>
+                <ol id="top-betweenness"></ol>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- 3 ----------------------------------------------------------- -->
+        <section class="step" id="tails">
+          <div class="card">
+            <div class="step-head">
+              <span class="num">3</span>
+              <h2>Heavy tails in migration</h2>
+              <span class="year-tag">(analysis year: 2020)</span>
+            </div>
+            <div class="grid2">
+              <div class="plot">
+                <h3>A. Degree distribution (log–log)</h3>
+                <p class="axis-note">
+                  Count of countries by degree. Degree counts partners, not
+                  people.
+                </p>
+                <div class="legend">
+                  <span><i style="background: #f2820c"></i> In-degree</span>
+                  <span><i style="background: #0b1f3a"></i> Out-degree</span>
+                  <span><i style="background: #1f8fd6"></i> Flight degree</span>
+                </div>
+                <canvas class="chart" height="440" id="hist" width="760"></canvas>
+                <div class="notice">
+                  <span class="ico">💡</span>
+                  <span>
+                    <b>What to notice</b>
+                    Migration corridors are heavy-tailed: a few countries have
+                    many partners, most have few.
+                  </span>
+                </div>
+              </div>
+              <div class="plot">
+                <h3>B. CCDF of degree (log–log)</h3>
+                <p class="axis-note">
+                  P(K ≥ k) — the share of countries with degree at least k.
+                </p>
+                <div class="legend">
+                  <span><i style="background: #f2820c"></i> In-degree</span>
+                  <span><i style="background: #0b1f3a"></i> Out-degree</span>
+                  <span><i style="background: #1f8fd6"></i> Flight degree</span>
+                </div>
+                <canvas class="chart" height="440" id="ccdf" width="760"></canvas>
+                <div class="notice">
+                  <span class="ico">💡</span>
+                  <span>
+                    <b>What to notice</b>
+                    The CCDF shows the long tail more clearly than the raw
+                    histogram, and the flight network's tail is the longest.
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- 4 ----------------------------------------------------------- -->
+        <section class="step" id="bridge">
+          <div class="card">
+            <div class="step-head">
+              <span class="num">4</span>
+              <h2>Popular ≠ bridge</h2>
+              <span class="year-tag">(analysis year: 2020)</span>
+            </div>
+            <div class="grid-side">
+              <div class="plot">
+                <h3>Betweenness vs in-degree (log–log)</h3>
+                <p class="axis-note">
+                  One point per country. Migration graph is directed and
+                  weighted; distance along a corridor is 1 / people, so a heavy
+                  corridor is a short step.
+                </p>
+                <div class="legend">
+                  <span><i style="background: #f2820c"></i> Migration</span>
+                  <span><i style="background: #1f8fd6"></i> Flights</span>
+                </div>
+                <canvas
+                  class="chart"
+                  height="470"
+                  id="scatter-between"
+                  width="900"
+                ></canvas>
+              </div>
+              <aside class="panel">
+                <h2>Selected country</h2>
+                <div class="who">
+                  <span class="flag" id="sc-flag">🌍</span>
+                  <span>
+                    <strong id="sc-name">Pick a country</strong><br />
+                    <span class="codes" id="sc-codes">—</span>
+                  </span>
+                </div>
+                <dl class="stats" id="sc-stats"></dl>
+                <div class="notice">
+                  <span class="ico">💡</span>
+                  <span>
+                    <b>What to notice</b>
+                    A high degree does not have to mean high betweenness.
+                    Popular ≠ bridge.
+                  </span>
+                </div>
+              </aside>
+            </div>
+          </div>
+        </section>
+
+        <!-- 5 ----------------------------------------------------------- -->
+        <section class="step" id="null">
+          <div class="card">
+            <div class="step-head">
+              <span class="num">5</span>
+              <h2>Compared to what?</h2>
+              <span class="year-tag" id="null-tag">(null model)</span>
+            </div>
+            <div class="grid-side">
+              <div class="plot">
+                <h3>Betweenness z-score vs in-degree (log–log x)</h3>
+                <p class="axis-note" id="null-note">
+                  The null keeps every country's in- and out-degree and deals
+                  the observed corridor weights back out at random.
+                </p>
+                <canvas
+                  class="chart"
+                  height="440"
+                  id="scatter-z"
+                  width="900"
+                ></canvas>
+              </div>
+              <aside class="panel">
+                <h2>Reading it</h2>
+                <div class="notice">
+                  <span class="ico">💡</span>
+                  <span>
+                    <b>What to notice</b>
+                    The z-score says how surprising a country's betweenness is
+                    once its number of partners is held fixed. z = 0 means
+                    "just degree". Above +2 is a broker the degree sequence
+                    cannot explain.
+                  </span>
+                </div>
+                <div class="corridor-list">
+                  <h3>Most surprising bridges</h3>
+                  <ol id="z-top"></ol>
+                  <p class="fineprint" id="z-floor"></p>
+                </div>
+                <p class="fineprint" id="null-method"></p>
+              </aside>
+            </div>
+          </div>
+        </section>
+
+        <!-- 6 ----------------------------------------------------------- -->
+        <section class="step" id="twin">
+          <div class="card">
+            <div class="step-head">
+              <span class="num">6</span>
+              <h2>Global twin network</h2>
+              <span class="year-tag" id="twin-tag">(analysis year: 2020)</span>
+            </div>
+            <div class="grid-side">
+              <div class="map-wrap">
+                <div class="map-tools">
+                  <div class="toggle" id="map-toggle" role="group">
+                    <button aria-pressed="false" data-layer="migration" type="button">
+                      Migration
+                    </button>
+                    <button aria-pressed="false" data-layer="flights" type="button">
+                      Flights
+                    </button>
+                    <button aria-pressed="true" data-layer="both" type="button">
+                      Both
+                    </button>
+                  </div>
+                </div>
+                <canvas height="620" id="map-canvas" width="1240"></canvas>
+              </div>
+              <aside class="panel">
+                <h2>Same world. Different networks.</h2>
+                <p class="fineprint" style="border: 0; padding: 0">
+                  Migration shows where people live. Flights show where you can
+                  go. Use the toggle to compare them, and click a country to
+                  send it to the inspector at the top.
+                </p>
+                <dl class="stats" id="twin-stats"></dl>
+                <p class="fineprint" id="flight-caveat"></p>
+              </aside>
+            </div>
+          </div>
+        </section>
+
+        <!-- 7 ----------------------------------------------------------- -->
+        <section class="step" id="typology">
+          <div class="card">
+            <div class="step-head">
+              <span class="num">7</span>
+              <h2>Typology</h2>
+              <span class="year-tag">(analysis year: 2020)</span>
+            </div>
+            <p class="sub">
+              Five roles, defined on ranks rather than raw values so a label
+              means the same thing in any year. Examples are read from the data,
+              not chosen by hand.
+            </p>
+            <div class="grid5" id="typology-cards"></div>
+          </div>
+        </section>
+
+        <!-- 8 ----------------------------------------------------------- -->
+        <section class="step" id="edge">
+          <div class="card">
+            <div class="step-head">
+              <span class="num">8</span>
+              <h2>Edge inspector</h2>
+              <span class="year-tag">(one corridor at a time)</span>
+            </div>
+            <div class="edgebar">
+              <select aria-label="Origin country" id="edge-origin"></select>
+              <span aria-hidden="true">→</span>
+              <select aria-label="Destination country" id="edge-dest"></select>
+              <span class="chip" id="edge-kind">—</span>
+            </div>
+            <div class="facts" id="edge-facts"></div>
+            <div class="notice" id="edge-note">
+              <span class="ico">💡</span>
+              <span></span>
+            </div>
+          </div>
+        </section>
+
+        <!-- 9 ----------------------------------------------------------- -->
+        <section class="step" id="denmark">
+          <div class="card">
+            <div class="step-head">
+              <span class="num">9</span>
+              <h2>Why Denmark?</h2>
+              <span class="year-tag">(analysis year: 2020)</span>
+            </div>
+            <div class="dk-head" id="dk-head"></div>
+
+            <div class="grid3">
+              <div class="plot">
+                <h3>A. Denmark on the global scatters</h3>
+                <p class="axis-note">Betweenness vs degree</p>
+                <canvas class="chart" height="330" id="dk-scatter" width="440"></canvas>
+              </div>
+              <div class="plot">
+                <h3>&nbsp;</h3>
+                <p class="axis-note">z-score vs degree</p>
+                <canvas class="chart" height="330" id="dk-z" width="440"></canvas>
+              </div>
+              <div class="plot">
+                <h3>B. Denmark's ego corridors</h3>
+                <p class="axis-note">Migrant stock, 2020</p>
+                <div class="grid2" style="gap: 10px">
+                  <table class="ego" id="dk-in">
+                    <caption>
+                      Into Denmark
+                    </caption>
+                  </table>
+                  <table class="ego" id="dk-out">
+                    <caption>
+                      Out of Denmark
+                    </caption>
+                  </table>
+                </div>
+              </div>
+            </div>
+
+            <div class="grid3" style="margin-top: 18px">
+              <div class="plot">
+                <h3>C. Denmark through time</h3>
+                <p class="axis-note">In- and out-strength, 1990–2024</p>
+                <canvas class="chart" height="330" id="dk-time" width="440"></canvas>
+              </div>
+              <div class="plot">
+                <h3>&nbsp;</h3>
+                <p class="axis-note">Betweenness rank (1 = top bridge)</p>
+                <canvas class="chart" height="330" id="dk-rank" width="440"></canvas>
+              </div>
+              <div class="plot">
+                <h3>D. Nordic comparison</h3>
+                <p class="axis-note">2020 · in-degree, z-score, flight degree</p>
+                <canvas class="chart" height="330" id="dk-nordic" width="440"></canvas>
+              </div>
+            </div>
+
+            <div class="notice" id="dk-verdict">
+              <span class="ico">💡</span><span></span>
+            </div>
+          </div>
+        </section>
+
+        <!-- methods ------------------------------------------------------ -->
+        <section class="step" id="methods">
+          <div class="card">
+            <div class="step-head">
+              <span class="num">✓</span>
+              <h2>Methods, and what this cannot tell you</h2>
+            </div>
+            <div class="grid2">
+              <div>
+                <p class="sub">
+                  <b>Migration.</b> UN DESA International Migrant Stock,
+                  revision 2024. A node is a country, an arc origin → destination
+                  carries the number of people born in the origin who live in the
+                  destination. It is a stock, so it counts who is there now, not
+                  who moved this year, and a difference between two years is not
+                  a flow.
+                </p>
+                <p class="sub">
+                  <b>Betweenness.</b> Computed on the weighted directed graph
+                  with distance = 1 / people, so a heavy corridor is a short
+                  step. On the unweighted matrix the top brokers come out as
+                  Australia, Norway and Denmark, which ranks statistical
+                  reporting systems rather than countries: register countries
+                  name hundreds of tiny origins while survey countries bucket
+                  them into "other".
+                </p>
+              </div>
+              <div>
+                <p class="sub">
+                  <b>Flights.</b> OpenFlights route data, aggregated from
+                  airport pairs to country pairs, counting distinct routes.
+                  It is a single undated snapshot, last substantially refreshed
+                  around 2014. It does not vary by year and is drawn identically
+                  at every point on the year slider. It measures whether a route
+                  exists, not seats, frequency or passengers. Its degree and
+                  betweenness are computed exactly as the migration side's are,
+                  with distance = 1 / routes, so the two series on the scatter
+                  are the same two quantities measured on two networks.
+                </p>
+                <p class="sub">
+                  <b>Reporting coverage.</b> DESA's table is ragged. The United
+                  States names 58 origin countries and Denmark names 202,
+                  because one source is a survey with an "other" bucket and the
+                  other is a population register. Every degree count on this
+                  page inherits that.
+                </p>
+                <p class="sub">
+                  <b>AI use.</b> The harvest, the analysis scripts and this page
+                  were built with Claude. Every number comes from
+                  <code>analysis/week03_corridor_control.py</code>; nothing on
+                  this page is typed in by hand.
+                </p>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+
+      <footer class="foot">
+        <div class="shell">
+          <span>
+            Sources: UN DESA International Migrant Stock (Rev. 2024) ·
+            OpenFlights routes (air access proxy, undated snapshot)
+          </span>
+          <span>
+            Corridor Control · <a href="../../">Log–Log Legends</a> · DTU 02805
+          </span>
+        </div>
+      </footer>
+    </main>
+
+    <script src="../../../assets/js/corridor.js" type="module"></script>
+  </body>
+</html>

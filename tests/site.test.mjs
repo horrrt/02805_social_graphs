@@ -69,13 +69,13 @@ test("the manifest mirrors the course index week for week", () => {
   assert.equal(shortDate("2026-10-07"), "7 OCT");
 });
 
-test("exactly weeks 1 and 2 are live, each with a cabinet on disk", () => {
+test("exactly weeks 1 to 3 are live, each with a cabinet on disk", () => {
   // Update this line deliberately each time a weekly post ships.
   assert.deepEqual(
     liveWeeks().map((w) => w.n),
-    [1, 2],
+    [1, 2, 3],
   );
-  assert.equal(currentWeek().n, 2);
+  assert.equal(currentWeek().n, 3);
   for (const w of WEEKS) {
     if (w.status === "live") {
       assert(w.cabinet?.name && w.cabinet?.href, `week ${w.n} cabinet`);
@@ -85,7 +85,7 @@ test("exactly weeks 1 and 2 are live, each with a cabinet on disk", () => {
       );
     } else assert.equal(w.cabinet, undefined, `week ${w.n} has no cabinet`);
   }
-  assert.equal(weekLabel(2), "W02");
+  assert.equal(weekLabel(3), "W03");
   assert.equal(weekLabel(null), "FREE PLAY");
   assert.equal(weekLabel(undefined), "FREE PLAY");
 });
@@ -149,9 +149,9 @@ test("every lobby card agrees with the manifest and only live weeks are links", 
 
 test("no page or script claims a future week or a preview", () => {
   const forbidden = [
-    /\bW0[3-8]\b/,
-    /CABINET 0[3-8]\b/,
-    /\bweek-[3-8]\b/i,
+    /\bW0[4-8]\b/,
+    /CABINET 0[4-8]\b/,
+    /\bweek-[4-8]\b/i,
     /\bpreviews?\b/i,
     /future[- ]week/i,
   ];
@@ -228,6 +228,11 @@ test("every fragment link points at an id that exists", () => {
   assert.deepEqual(broken, []);
 });
 
+// Pages painted by the shared arcade chrome, which is what the two-edition
+// checks below apply to. Week 3 (Corridor Control) is deliberately absent: it
+// ships its own stylesheet and palette in corridor.css rather than repainting
+// arcade.css, so its Apple edition is pinned by the sync test in
+// tests/migration-docs.test.mjs instead.
 const ARCADE_PAGES = [
   "index.html",
   "os/index.html",

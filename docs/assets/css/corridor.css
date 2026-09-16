@@ -1,0 +1,874 @@
+/* Corridor Control — week 3. A light instrument panel: white cards on a cool
+   ground, one colour per network, and nothing decorative that is not carrying
+   a number. Orange is always migration, blue is always flights. */
+
+.corridor {
+  --ink: #0f2340;
+  --ink-soft: #46618a;
+  --ink-mute: #7a8fac;
+  --ground: #eef3f9;
+  --card: #ffffff;
+  --line: #dce5f0;
+  --line-soft: #eaf0f7;
+  --people: #f2820c;
+  --people-soft: #fde8cf;
+  --access: #1f8fd6;
+  --access-soft: #d9ecf9;
+  --deep: #0b1f3a;
+  --dtu: #990000;
+  --radius: 14px;
+  --shadow: 0 1px 2px rgba(15, 35, 64, 0.06), 0 8px 24px rgba(15, 35, 64, 0.05);
+
+  background: var(--ground);
+  color: var(--ink);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Inter, system-ui,
+    sans-serif;
+  margin: 0;
+  -webkit-font-smoothing: antialiased;
+}
+
+.corridor *,
+.corridor *::before,
+.corridor *::after {
+  box-sizing: border-box;
+}
+
+.corridor .shell {
+  margin: 0 auto;
+  max-width: 1180px;
+  padding: 0 24px;
+}
+
+/* ----------------------------------------------------------------- top bar */
+
+.corridor .topbar {
+  background: rgba(255, 255, 255, 0.92);
+  backdrop-filter: saturate(160%) blur(12px);
+  border-bottom: 1px solid var(--line);
+  height: 52px;
+  position: sticky;
+  top: 0;
+  z-index: 40;
+}
+
+.corridor .topbar .shell {
+  align-items: center;
+  display: flex;
+  gap: 22px;
+  height: 100%;
+}
+
+.corridor .brand {
+  align-items: center;
+  color: var(--ink);
+  display: flex;
+  font-weight: 700;
+  gap: 10px;
+  text-decoration: none;
+}
+
+.corridor .brand .mark {
+  background: var(--dtu);
+  border-radius: 5px;
+  color: #fff;
+  display: grid;
+  font-size: 11px;
+  font-weight: 800;
+  height: 26px;
+  letter-spacing: 0.04em;
+  place-items: center;
+  width: 34px;
+}
+
+.corridor .brand small {
+  color: var(--ink-mute);
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.corridor .topnav {
+  display: flex;
+  gap: 4px;
+  margin-left: auto;
+}
+
+.corridor .topnav a {
+  border-radius: 999px;
+  color: var(--ink-soft);
+  font-size: 13.5px;
+  font-weight: 600;
+  padding: 7px 13px;
+  text-decoration: none;
+}
+
+.corridor .topnav a:hover {
+  background: var(--line-soft);
+  color: var(--ink);
+}
+
+.corridor .topnav a.here {
+  background: var(--access-soft);
+  color: #14618f;
+}
+
+/* -------------------------------------------------------------------- hero */
+
+.corridor .hero {
+  background: radial-gradient(
+    120% 130% at 78% 18%,
+    #173f6d 0%,
+    #0b1f3a 55%,
+    #071427 100%
+  );
+  border-radius: 0 0 var(--radius) var(--radius);
+  color: #eaf2fb;
+  overflow: hidden;
+}
+
+.corridor .hero .shell {
+  align-items: start;
+  display: grid;
+  gap: 28px;
+  grid-template-columns: minmax(260px, 340px) minmax(360px, 1fr) minmax(250px, 300px);
+  padding-block: 30px 34px;
+}
+
+.corridor .eyebrow {
+  color: #ffb768;
+  font-size: 11.5px;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  margin: 0 0 10px;
+  text-transform: uppercase;
+}
+
+.corridor .hero h1 {
+  font-size: clamp(38px, 4.4vw, 56px);
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  line-height: 0.98;
+  margin: 0 0 14px;
+}
+
+.corridor .hero .lede {
+  color: #b9cde4;
+  font-size: 15px;
+  font-weight: 600;
+  margin: 0 0 16px;
+}
+
+.corridor .hero p.body {
+  color: #93aecd;
+  font-size: 13.5px;
+  line-height: 1.55;
+  margin: 0 0 14px;
+}
+
+.corridor .caution {
+  border-left: 2px solid #ffb768;
+  color: #ffd6a8;
+  font-size: 13px;
+  font-style: italic;
+  font-weight: 600;
+  margin: 0 0 18px;
+  padding-left: 12px;
+}
+
+.corridor .keys {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  margin-bottom: 18px;
+}
+
+.corridor .key {
+  align-items: center;
+  color: #b9cde4;
+  display: flex;
+  font-size: 12.5px;
+  gap: 9px;
+}
+
+.corridor .key i {
+  border-radius: 2px;
+  display: block;
+  height: 3px;
+  width: 26px;
+}
+
+.corridor .key.people i {
+  background: var(--people);
+}
+
+.corridor .key.access i {
+  background: var(--access);
+}
+
+.corridor .yearline label {
+  color: #7f9bbd;
+  display: block;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  margin-top: 8px;
+  text-transform: uppercase;
+}
+
+.corridor .yearline .ends {
+  color: #b9cde4;
+  display: flex;
+  font-size: 12px;
+  font-weight: 700;
+  justify-content: space-between;
+}
+
+.corridor input[type="range"] {
+  accent-color: var(--people);
+  width: 100%;
+}
+
+.corridor .stage {
+  aspect-ratio: 1 / 0.86;
+  display: block;
+  width: 100%;
+}
+
+.corridor .stage-wrap {
+  position: relative;
+}
+
+.corridor .stage-hint {
+  background: rgba(8, 22, 42, 0.72);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 999px;
+  bottom: 6px;
+  color: #cfe0f2;
+  font-size: 11.5px;
+  left: 50%;
+  padding: 5px 12px;
+  position: absolute;
+  transform: translateX(-50%);
+}
+
+/* -------------------------------------------------------------- side panel */
+
+.corridor .panel {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  color: var(--ink);
+  padding: 14px;
+}
+
+.corridor .panel h2 {
+  color: var(--ink-mute);
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  margin: 0 0 10px;
+  text-transform: uppercase;
+}
+
+.corridor .who {
+  align-items: center;
+  display: flex;
+  gap: 9px;
+  margin-bottom: 12px;
+}
+
+.corridor .who .flag {
+  font-size: 21px;
+  line-height: 1;
+}
+
+.corridor .who strong {
+  font-size: 17px;
+  letter-spacing: -0.01em;
+}
+
+.corridor .who .codes {
+  color: var(--ink-mute);
+  font-size: 11.5px;
+  font-weight: 600;
+}
+
+.corridor dl.stats {
+  display: grid;
+  margin: 0;
+}
+
+.corridor dl.stats > div {
+  border-bottom: 1px solid var(--line-soft);
+  display: flex;
+  font-size: 12.5px;
+  justify-content: space-between;
+  padding: 6px 0;
+}
+
+.corridor dl.stats dt {
+  color: var(--ink-soft);
+}
+
+.corridor dl.stats dd {
+  font-variant-numeric: tabular-nums;
+  font-weight: 700;
+  margin: 0;
+}
+
+.corridor .chip {
+  background: var(--people-soft);
+  border-radius: 999px;
+  color: #9a5205;
+  display: inline-block;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  padding: 3px 10px;
+  text-transform: uppercase;
+}
+
+.corridor .corridor-list {
+  margin: 14px 0 0;
+}
+
+.corridor .corridor-list h3 {
+  align-items: center;
+  color: var(--ink-soft);
+  display: flex;
+  font-size: 11.5px;
+  gap: 6px;
+  margin: 0 0 6px;
+}
+
+.corridor .corridor-list ol {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.corridor .corridor-list li {
+  display: flex;
+  font-size: 12px;
+  gap: 8px;
+  justify-content: space-between;
+  padding: 3px 0;
+}
+
+.corridor .corridor-list li span:first-child {
+  color: var(--ink-soft);
+}
+
+.corridor .corridor-list li b {
+  font-variant-numeric: tabular-nums;
+}
+
+.corridor .panel .fineprint {
+  border-top: 1px solid var(--line-soft);
+  color: var(--ink-mute);
+  font-size: 11px;
+  line-height: 1.45;
+  margin: 12px 0 0;
+  padding-top: 10px;
+}
+
+/* ---------------------------------------------------------------- sections */
+
+.corridor section.step {
+  margin-top: 26px;
+}
+
+.corridor .card {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 20px 22px;
+}
+
+.corridor .step-head {
+  align-items: baseline;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 4px;
+}
+
+.corridor .step-head .num {
+  align-items: center;
+  background: var(--access-soft);
+  border-radius: 8px;
+  color: #14618f;
+  display: flex;
+  font-size: 13px;
+  font-weight: 800;
+  height: 26px;
+  justify-content: center;
+  width: 26px;
+}
+
+.corridor .step-head h2 {
+  font-size: 17px;
+  letter-spacing: -0.01em;
+  margin: 0;
+}
+
+.corridor .step-head .year-tag {
+  color: var(--ink-mute);
+  font-size: 12.5px;
+  font-weight: 600;
+}
+
+.corridor .card > p.sub {
+  color: var(--ink-soft);
+  font-size: 13.5px;
+  margin: 6px 0 16px;
+}
+
+.corridor .grid2 {
+  display: grid;
+  gap: 18px;
+  grid-template-columns: 1fr 1fr;
+}
+
+.corridor .grid-side {
+  display: grid;
+  gap: 18px;
+  grid-template-columns: minmax(0, 1fr) 280px;
+}
+
+.corridor .grid3 {
+  display: grid;
+  gap: 14px;
+  grid-template-columns: repeat(3, 1fr);
+}
+
+.corridor .grid4 {
+  display: grid;
+  gap: 14px;
+  grid-template-columns: repeat(4, 1fr);
+}
+
+.corridor .grid5 {
+  display: grid;
+  gap: 14px;
+  grid-template-columns: repeat(5, 1fr);
+}
+
+.corridor .plot h3 {
+  font-size: 13px;
+  margin: 0 0 2px;
+}
+
+.corridor .plot p.axis-note {
+  color: var(--ink-mute);
+  font-size: 11.5px;
+  margin: 0 0 8px;
+}
+
+.corridor canvas.chart {
+  display: block;
+  width: 100%;
+}
+
+.corridor .legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+  margin: 0 0 8px;
+}
+
+.corridor .legend span {
+  align-items: center;
+  color: var(--ink-soft);
+  display: flex;
+  font-size: 11.5px;
+  font-weight: 600;
+  gap: 6px;
+}
+
+.corridor .legend i {
+  border-radius: 50%;
+  height: 8px;
+  width: 8px;
+}
+
+.corridor .notice {
+  background: #f7fafd;
+  border: 1px solid var(--line-soft);
+  border-radius: 10px;
+  color: var(--ink-soft);
+  display: flex;
+  font-size: 12.5px;
+  gap: 9px;
+  line-height: 1.5;
+  margin-top: 12px;
+  padding: 11px 13px;
+}
+
+.corridor .notice b {
+  color: var(--ink);
+  display: block;
+  font-size: 12px;
+}
+
+.corridor .notice .ico {
+  flex: none;
+  font-size: 14px;
+  line-height: 1.3;
+}
+
+/* ----------------------------------------------------------------- predict */
+
+.corridor .guess {
+  display: flex;
+  gap: 8px;
+}
+
+.corridor .guess input {
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  color: var(--ink);
+  flex: 1;
+  font-size: 14px;
+  padding: 11px 13px;
+}
+
+.corridor .guess input:focus-visible {
+  border-color: var(--access);
+  outline: 2px solid var(--access-soft);
+}
+
+.corridor .guess button {
+  background: var(--deep);
+  border: 0;
+  border-radius: 10px;
+  color: #fff;
+  cursor: pointer;
+  font-size: 15px;
+  font-weight: 700;
+  padding: 0 16px;
+}
+
+.corridor .reveal {
+  display: grid;
+  gap: 12px;
+  grid-template-columns: repeat(3, 1fr);
+}
+
+.corridor .reveal .box {
+  background: #f7fafd;
+  border: 1px solid var(--line-soft);
+  border-radius: 10px;
+  padding: 11px 13px;
+}
+
+.corridor .reveal h4 {
+  font-size: 12px;
+  margin: 0 0 2px;
+}
+
+.corridor .reveal p.what {
+  color: var(--ink-mute);
+  font-size: 11px;
+  margin: 0 0 8px;
+}
+
+.corridor .reveal ol {
+  color: var(--ink-soft);
+  font-size: 12.5px;
+  margin: 0;
+  padding-left: 18px;
+}
+
+.corridor .reveal li {
+  padding: 1.5px 0;
+}
+
+.corridor .reveal li b {
+  color: var(--ink);
+}
+
+.corridor .verdict {
+  border-radius: 10px;
+  font-size: 13px;
+  font-weight: 600;
+  margin-top: 12px;
+  padding: 11px 13px;
+}
+
+.corridor .verdict.hit {
+  background: #e7f6ee;
+  border: 1px solid #b9e3ca;
+  color: #0d6b3a;
+}
+
+.corridor .verdict.miss {
+  background: #fff5e8;
+  border: 1px solid #ffd9ab;
+  color: #8a4d05;
+}
+
+.corridor [hidden] {
+  display: none !important;
+}
+
+/* ---------------------------------------------------------------- typology */
+
+.corridor .type {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 15px;
+}
+
+.corridor .type .badge {
+  align-items: center;
+  border-radius: 9px;
+  display: flex;
+  font-size: 15px;
+  height: 30px;
+  justify-content: center;
+  margin-bottom: 9px;
+  width: 30px;
+}
+
+.corridor .type h3 {
+  font-size: 13.5px;
+  margin: 0 0 7px;
+}
+
+.corridor .type p {
+  color: var(--ink-soft);
+  font-size: 11.5px;
+  line-height: 1.5;
+  margin: 0 0 9px;
+}
+
+.corridor .type .eg {
+  border-top: 1px solid var(--line-soft);
+  color: var(--ink-mute);
+  font-size: 11.5px;
+  padding-top: 8px;
+}
+
+.corridor .type .eg b {
+  color: var(--ink);
+}
+
+/* ------------------------------------------------------------ edge inspector */
+
+.corridor .edgebar {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 14px;
+}
+
+.corridor select {
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: 9px;
+  color: var(--ink);
+  font-size: 13.5px;
+  padding: 8px 11px;
+}
+
+.corridor .facts {
+  display: grid;
+  gap: 10px;
+  grid-template-columns: repeat(3, 1fr);
+}
+
+.corridor .fact {
+  background: #f7fafd;
+  border: 1px solid var(--line-soft);
+  border-radius: 10px;
+  padding: 10px 12px;
+}
+
+.corridor .fact dt {
+  color: var(--ink-mute);
+  font-size: 11.5px;
+}
+
+.corridor .fact dd {
+  font-size: 16px;
+  font-variant-numeric: tabular-nums;
+  font-weight: 700;
+  margin: 2px 0 0;
+}
+
+/* ------------------------------------------------------------------ toggle */
+
+.corridor .toggle {
+  background: var(--line-soft);
+  border-radius: 999px;
+  display: inline-flex;
+  padding: 3px;
+}
+
+.corridor .toggle button {
+  background: none;
+  border: 0;
+  border-radius: 999px;
+  color: var(--ink-soft);
+  cursor: pointer;
+  font-size: 12.5px;
+  font-weight: 700;
+  padding: 6px 14px;
+}
+
+.corridor .toggle button[aria-pressed="true"] {
+  background: var(--card);
+  box-shadow: var(--shadow);
+  color: var(--ink);
+}
+
+.corridor .map-wrap {
+  background: var(--deep);
+  border-radius: var(--radius);
+  overflow: hidden;
+  position: relative;
+}
+
+.corridor .map-wrap canvas {
+  display: block;
+  width: 100%;
+}
+
+.corridor .map-tools {
+  left: 14px;
+  position: absolute;
+  top: 14px;
+  z-index: 2;
+}
+
+.corridor .map-wrap .toggle {
+  background: rgba(8, 22, 42, 0.68);
+}
+
+.corridor .map-wrap .toggle button {
+  color: #a9c3e0;
+}
+
+.corridor .map-wrap .toggle button[aria-pressed="true"] {
+  background: var(--access);
+  color: #fff;
+}
+
+/* ----------------------------------------------------------------- denmark */
+
+.corridor .dk-head {
+  align-items: center;
+  background: #f7fafd;
+  border: 1px solid var(--line-soft);
+  border-radius: 10px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 18px;
+  margin-bottom: 16px;
+  padding: 12px 14px;
+}
+
+.corridor .dk-head .who {
+  margin: 0;
+}
+
+.corridor .dk-head .metric {
+  display: flex;
+  flex-direction: column;
+}
+
+.corridor .dk-head .metric span {
+  color: var(--ink-mute);
+  font-size: 10.5px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.corridor .dk-head .metric b {
+  font-size: 14px;
+  font-variant-numeric: tabular-nums;
+}
+
+.corridor table.ego {
+  border-collapse: collapse;
+  font-size: 12px;
+  width: 100%;
+}
+
+.corridor table.ego caption {
+  color: var(--ink-soft);
+  font-size: 12px;
+  font-weight: 700;
+  padding-bottom: 6px;
+  text-align: left;
+}
+
+.corridor table.ego th {
+  color: var(--ink-mute);
+  font-size: 11px;
+  font-weight: 600;
+  padding: 4px 6px 6px;
+  text-align: left;
+}
+
+.corridor table.ego td {
+  border-top: 1px solid var(--line-soft);
+  padding: 4.5px 6px;
+}
+
+.corridor table.ego td:last-child {
+  font-variant-numeric: tabular-nums;
+  text-align: right;
+}
+
+/* ------------------------------------------------------------------ footer */
+
+.corridor footer.foot {
+  border-top: 1px solid var(--line);
+  color: var(--ink-mute);
+  font-size: 12px;
+  margin-top: 34px;
+  padding: 18px 0 40px;
+}
+
+.corridor footer.foot .shell {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  justify-content: space-between;
+}
+
+.corridor footer.foot a {
+  color: var(--ink-soft);
+}
+
+.corridor .status-line {
+  color: var(--ink-mute);
+  font-size: 12.5px;
+  padding: 10px 0;
+}
+
+.corridor .skip {
+  left: -999px;
+  position: absolute;
+}
+
+.corridor .skip:focus {
+  background: #fff;
+  left: 12px;
+  padding: 8px 12px;
+  top: 12px;
+  z-index: 99;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .corridor * {
+    animation: none !important;
+    transition: none !important;
+  }
+}
