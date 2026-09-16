@@ -202,6 +202,7 @@ numbers and the copy are identical in each; only the drawing library changes.
 | `?variant=d3` | all charts to SVG, and the globe to d3-geo | d3 7.9.0, 273 KB |
 | `?variant=echarts` | every chart | echarts 5.5.1, 1007 KB |
 | `?variant=globe` | the hero globe, WebGL with animated arcs | globe.gl 2.32.0, 1008 KB |
+| `?variant=atlas` | the design mockup: a photographic Earth | globe.gl + 482 KB of Blue Marble imagery, 1491 KB |
 | `?variant=deck` | the hero globe and the twin map | deck.gl 9.0.30, 1217 KB |
 
 A variant overrides only the visuals it replaces and inherits the canvas
