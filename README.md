@@ -213,8 +213,30 @@ down. The palette lives in CSS custom properties and the canvas reads it back
 through `getComputedStyle`, so one definition drives the stylesheet, the SVG
 variants and the 2D canvas at once.
 
-`docs/assets/js/week03-boot.js` holds the four registries; each renderer is one
+`docs/assets/js/week03-boot.js` holds the registries; each renderer is one
 module under `docs/assets/js/variants/`.
+
+### Rebuilding, and what is committed
+
+Nothing large is kept here that cannot be recreated. Raw inputs (a 6 MB
+spreadsheet, an 820 KB boundary file) live in gitignored `build/raw/`; what is
+committed is the derived output the browser loads, 5 MB in total.
+
+    python scripts/rebuild_week03.py --check   # what is committed, and what made it
+    python scripts/rebuild_week03.py           # download everything and rebuild
+    python scripts/rebuild_week03.py --fast    # reuse the cached null model
+
+Libraries and imagery are committed on purpose: GitHub Pages serves the
+repository as it stands, so a file that is not in it is a file the published
+site cannot load.
+
+### Checking the renderers
+
+`scripts/audit_week03.js` exercises every control in whichever renderer is
+loaded and reports the ones that render but do nothing. Load the post, paste
+the file into the console, and run `await auditWeek03()`; repeat per
+`?variant=`. It is how the ECharts and D3 axis switches were caught doing
+nothing.
 
 ## UX and scope
 

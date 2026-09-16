@@ -11,6 +11,14 @@ const FONT = "-apple-system, system-ui, sans-serif";
 export function install(api, d3) {
   const { state, node, metrics, withMetrics, degreeCounts, ccdf, select, colours, $ } =
     api;
+  const { showTip, hideTip, modeFlags } = api;
+
+  // The axis switch reaches SVG too: log where the mode says log, linear where
+  // it does not.
+  const scaleFor = (logged, domain, range) =>
+    logged
+      ? d3.scaleLog().domain(domain).range(range)
+      : d3.scaleLinear().domain([0, domain[1]]).nice().range(range);
 
   // One SVG per canvas, sized from the canvas it replaces so the layout does
   // not move when you switch variants.
@@ -71,20 +79,30 @@ export function install(api, d3) {
     return g;
   }
 
+  // A 2px circle is not a target, so each mark carries an invisible disc big
+  // enough to hit and the visible one grows under the cursor.
   function plotPoints(svg, rows, x, y, colour, radius, onPick) {
-    svg
-      .append("g")
-      .selectAll("circle")
+    const g = svg.append("g");
+    g.selectAll("circle.mark")
       .data(rows)
       .join("circle")
+      .attr("class", "mark")
       .attr("cx", (d) => x(d.x))
       .attr("cy", (d) => y(d.y))
       .attr("r", radius)
-      .attr("fill", colour)
+      .attr("fill", colour);
+    g.selectAll("circle.hit")
+      .data(rows)
+      .join("circle")
+      .attr("class", "hit")
+      .attr("cx", (d) => x(d.x))
+      .attr("cy", (d) => y(d.y))
+      .attr("r", Math.max(radius * 4, 8))
+      .attr("fill", "transparent")
       .attr("cursor", "pointer")
       .on("click", (_event, d) => onPick(d.iso3))
-      .append("title")
-      .text((d) => d.title);
+      .on("pointermove", (event, d) => showTip(event, d.title))
+      .on("pointerleave", hideTip);
   }
 
   function highlight(svg, x, y, point, name) {
@@ -120,15 +138,10 @@ export function install(api, d3) {
     const SERIES = series();
     const all = SERIES.map(([, pick]) => degreeCounts(pick));
     const flat = all.flat();
-    const x = d3
-      .scaleLog()
-      .domain([1, d3.max(flat, (d) => d.k)])
-      .range([box.inner.left, box.inner.right]);
-    const y = d3
-      .scaleLog()
-      .domain([1, d3.max(flat, (d) => d.c)])
-      .range([box.inner.bottom, box.inner.top]);
-    axes(box.svg, box.inner, x, y, { xLabel: "Degree", yLabel: "Countries" });
+    const mode = modeFlags("hist");
+    const x = scaleFor(mode.x, [1, d3.max(flat, (d) => d.k)], [box.inner.left, box.inner.right]);
+    const y = scaleFor(mode.y, [1, d3.max(flat, (d) => d.c)], [box.inner.bottom, box.inner.top]);
+    axes(box.svg, box.inner, x, y, { xLabel: "Partners", yLabel: "Countries" });
     all.forEach((rows, i) => {
       box.svg
         .append("g")
@@ -140,11 +153,24 @@ export function install(api, d3) {
         .attr("width", 2)
         .attr("height", (d) => box.inner.bottom - y(d.c))
         .attr("fill", SERIES[i][2])
-        .attr("opacity", 0.85)
+        .attr("opacity", 0.85);
+      box.svg
+        .append("g")
+        .selectAll("rect")
+        .data(rows)
+        .join("rect")
+        .attr("x", (d) => x(d.k) - 5)
+        .attr("y", box.inner.top)
+        .attr("width", 10)
+        .attr("height", box.inner.bottom - box.inner.top)
+        .attr("fill", "transparent")
         .attr("cursor", "pointer")
         .on("click", (_e, d) => select(d.iso3))
-        .append("title")
-        .text((d) => `degree ${d.k} · ${d.c} countries · largest ${node(d.iso3).name}`);
+        .on("pointermove", (event, d) =>
+          showTip(event,
+            `<b>${d.k} partners</b><span>${d.c} ${d.c === 1 ? "country" : "countries"}</span>` +
+            `<span>largest: ${node(d.iso3).name}</span>`))
+        .on("pointerleave", hideTip);
     });
   }
 
@@ -157,9 +183,14 @@ export function install(api, d3) {
       ccdf(rows.map(({ iso3, n, m }) => ({ k: pick(n, m), iso3 }))),
     );
     const flat = curves.flat();
-    const x = d3.scaleLog().domain([1, d3.max(flat, (d) => d.k)]).range([box.inner.left, box.inner.right]);
-    const y = d3.scaleLog().domain([d3.min(flat, (d) => d.p), 1]).range([box.inner.bottom, box.inner.top]);
-    axes(box.svg, box.inner, x, y, { xLabel: "Degree", yLabel: "P(K ≥ k)", yFormat: ".0e" });
+    const mode = modeFlags("ccdf");
+    const x = scaleFor(mode.x, [1, d3.max(flat, (d) => d.k)], [box.inner.left, box.inner.right]);
+    const y = mode.y
+      ? d3.scaleLog().domain([d3.min(flat, (d) => d.p), 1]).range([box.inner.bottom, box.inner.top])
+      : d3.scaleLinear().domain([0, 1]).range([box.inner.bottom, box.inner.top]);
+    axes(box.svg, box.inner, x, y, {
+      xLabel: "Partners", yLabel: "P(K ≥ k)", yFormat: mode.y ? ".0e" : ".0%",
+    });
     curves.forEach((points, i) =>
       plotPoints(
         box.svg,
@@ -167,7 +198,7 @@ export function install(api, d3) {
           x: d.k,
           y: d.p,
           iso3: d.iso3,
-          title: `${SERIES[i][0]} ≥ ${d.k} · ${(d.p * 100).toFixed(1)}%`,
+          title: `<b>at least ${d.k} partners</b><span>${(d.p * 100).toFixed(1)}% of countries</span><span>e.g. ${node(d.iso3).name}</span>`,
         })),
         x,
         y,
@@ -188,7 +219,7 @@ export function install(api, d3) {
         x: r.m.in_degree,
         y: r.m.betweenness,
         iso3: r.iso3,
-        title: `${r.n.name} · degree ${r.m.in_degree}`,
+        title: `<b>${r.n.name}</b><span>Migration network</span><span>${r.m.in_degree} origins · #${r.m.in_degree_rank}</span><span>betweenness #${r.m.betweenness_rank}</span>`,
       }));
     const flights = state.data.countries
       .map((iso3) => ({ iso3, n: node(iso3) }))
@@ -197,7 +228,7 @@ export function install(api, d3) {
         x: r.n.flight_in_degree,
         y: r.n.flight_betweenness,
         iso3: r.iso3,
-        title: `${r.n.name} · flights`,
+        title: `<b>${r.n.name}</b><span>Flight network</span><span>${r.n.flight_in_degree} flight partners</span>`,
       }));
     const all = migration.concat(flights);
     const x = d3.scaleLog().domain([1, d3.max(all, (d) => d.x)]).range([box.inner.left, box.inner.right]);
@@ -220,7 +251,7 @@ export function install(api, d3) {
     const y3 = String(state.data.null_year);
     const rows = withMetrics(y3)
       .filter((r) => r.m.z !== undefined && r.m.in_degree > 0)
-      .map((r) => ({ x: r.m.in_degree, y: r.m.z, iso3: r.iso3, title: `${r.n.name} · z ${r.m.z.toFixed(2)}` }));
+      .map((r) => ({ x: r.m.in_degree, y: r.m.z, iso3: r.iso3, title: `<b>${r.n.name}</b><span>z = ${r.m.z.toFixed(2)}</span><span>${r.m.in_degree} origins</span>` }));
     const x = d3.scaleLog().domain([1, d3.max(rows, (d) => d.x)]).range([box.inner.left, box.inner.right]);
     const y = d3
       .scaleLinear()
@@ -262,7 +293,7 @@ export function install(api, d3) {
       axes(box.svg, box.inner, x, y, { xLabel: "Degree", xTicks: 3, yTicks: 3, yFormat: ".0e" });
       plotPoints(
         box.svg,
-        rows.map((r) => ({ x: r.m.in_degree, y: r.m.betweenness, iso3: r.iso3, title: r.n.name })),
+        rows.map((r) => ({ x: r.m.in_degree, y: r.m.betweenness, iso3: r.iso3, title: `<b>${r.n.name}</b><span>${r.m.in_degree} origins</span>` })),
         x, y, "#c9d7e8", 1.9, select,
       );
       highlight(box.svg, x, y, { x: dk.in_degree, y: dk.betweenness }, "Denmark");
@@ -280,7 +311,7 @@ export function install(api, d3) {
       axes(box.svg, box.inner, x, y, { xLabel: "Degree", xTicks: 3, yTicks: 3, yFormat: "d" });
       plotPoints(
         box.svg,
-        zRows.map((r) => ({ x: r.m.in_degree, y: r.m.z, iso3: r.iso3, title: r.n.name })),
+        zRows.map((r) => ({ x: r.m.in_degree, y: r.m.z, iso3: r.iso3, title: `<b>${r.n.name}</b><span>z = ${r.m.z.toFixed(2)}</span>` })),
         x, y, "#c9d7e8", 1.9, select,
       );
       if (dk.z !== undefined) highlight(box.svg, x, y, { x: dk.in_degree, y: dk.z }, "Denmark");

@@ -266,6 +266,10 @@ function wireAxisModes() {
   }
 }
 
+// Exposed for scripts/audit_week03.js, which checks that every control on the
+// page actually moves something in every renderer.
+window.api = api;
+
 async function boot() {
   const chosen = readStyle();
   apply(chosen);

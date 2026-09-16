@@ -1829,6 +1829,7 @@ export const api = {
   state, R, node, metrics, withMetrics, select, topEdges, flightEdges,
   degreeCounts, ccdf, collect, enablePicking, label,
   refreshPalette, arcSpec, syncFlow, rgb, countryAt, unprojectMap,
+  showTip, hideTip, axisMode, modeFlags, ticksFor,
   linkSpec, rampColour, linkAlpha, THICKNESS,
   colours: { PEOPLE, ACCESS, INK, MUTE, GRID },
   format: { fmt, compact },
