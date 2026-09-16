@@ -575,85 +575,86 @@
               <span class="num">✓</span>
               <h2>Methods, and what this cannot tell you</h2>
             </div>
-            <div class="grid2">
-              <div>
-                <p class="sub">
-                  <b>Migration.</b> UN DESA International Migrant Stock,
-                  revision 2024. A node is a country, an arc origin → destination
-                  carries the number of people born in the origin who live in the
-                  destination. It is a stock, so it counts who is there now, not
-                  who moved this year, and a difference between two years is not
-                  a flow.
-                </p>
-                <p class="sub">
-                  <b>Betweenness.</b> Computed on the weighted directed graph
-                  with distance = 1 / people, so a heavy corridor is a short
-                  step. On the unweighted matrix the top brokers come out as
-                  Australia, Norway and Denmark, which ranks statistical
-                  reporting systems rather than countries: register countries
-                  name hundreds of tiny origins while survey countries bucket
-                  them into "other".
-                </p>
+            <details class="qa" id="methods-drawer">
+              <summary>
+                <span class="qa-cue">Sources, methods and limits</span>
+              </summary>
+              <div class="qa-body">
+                <div class="grid2">
+                  <div>
+                    <p class="sub">
+                      <b>Migration.</b> UN DESA International Migrant Stock,
+                      revision 2024. An arc origin → destination carries the
+                      people born in the origin who live in the destination.
+                      Subtract two years and you get a change in where people
+                      live, not a count of who moved.
+                    </p>
+                    <p class="sub">
+                      <b>Betweenness.</b> Weighted and directed, distance = 1 /
+                      people, so a heavy corridor is a short step. Run it
+                      unweighted and the top brokers come out as Australia,
+                      Norway and Denmark, which ranks statistics offices: a
+                      register names hundreds of tiny origins, a survey buckets
+                      them into "other".
+                    </p>
+                    <p class="sub">
+                      <b>Flights.</b> OpenFlights routes, aggregated from airport
+                      pairs to country pairs and counted as distinct routes. One
+                      undated snapshot, last refreshed around 2014, so it sits
+                      still while the year slider moves. A route existing says
+                      nothing about seats or passengers. Degree and betweenness
+                      use the same formulas, distance = 1 / routes, so the
+                      scatter compares one quantity across two networks.
+                    </p>
+                    <p class="sub">
+                      <b>Reporting coverage.</b> DESA's table is ragged. The
+                      United States names 58 origins, Denmark 202, because one
+                      runs a survey with an "other" bucket and the other keeps a
+                      population register. Every partner count on this page
+                      inherits that gap.
+                    </p>
+                  </div>
+                  <div>
+                    <p class="sub">
+                      <b>The map.</b> Natural Earth 1:110m admin-0 boundaries,
+                      public domain.
+                      <code>scripts/migration/build_world_outline.py</code> keeps
+                      the ISO code and the name, rounds coordinates to two
+                      decimals and gets the file to 169 KB. Borders are here so
+                      you can see where a corridor lands, and claim nothing about
+                      any dispute.
+                    </p>
+                    <p class="sub">
+                      <b>Render variants.</b> Six renderers and eleven style
+                      dimensions over one dataset. Only the drawing changes: a
+                      variant overrides the visuals it improves and inherits the
+                      rest. The libraries sit in the repository, so the page
+                      fetches no third-party JavaScript.
+                    </p>
+                    <p class="sub">
+                      <b>The basemap.</b> NASA Blue Marble, public domain,
+                      offered in every renderer. On the 2D canvas we resample it
+                      through the orthographic projection at two thirds of the
+                      drawn size and scale it up, which keeps a drag smooth at no
+                      visible cost.
+                    </p>
+                    <p class="sub">
+                      <b>Rebuilding this.</b>
+                      <code>scripts/rebuild_week03.py</code> downloads the
+                      sources and recreates every file the page loads;
+                      <code>--check</code> lists what is committed and what made
+                      it. The raw inputs stay out of the repository.
+                    </p>
+                    <p class="sub">
+                      <b>AI use.</b> We built the harvest, the analysis and this
+                      page with Claude. Every number comes out of
+                      <code>analysis/week03_corridor_control.py</code>; none is
+                      typed by hand.
+                    </p>
+                  </div>
+                </div>
               </div>
-              <div>
-                <p class="sub">
-                  <b>Flights.</b> OpenFlights route data, aggregated from
-                  airport pairs to country pairs, counting distinct routes.
-                  It is a single undated snapshot, last substantially refreshed
-                  around 2014. It does not vary by year and is drawn identically
-                  at every point on the year slider. It measures whether a route
-                  exists, not seats, frequency or passengers. Its degree and
-                  betweenness are computed exactly as the migration side's are,
-                  with distance = 1 / routes, so the two series on the scatter
-                  are the same two quantities measured on two networks.
-                </p>
-                <p class="sub">
-                  <b>Reporting coverage.</b> DESA's table is ragged. The United
-                  States names 58 origin countries and Denmark names 202,
-                  because one source is a survey with an "other" bucket and the
-                  other is a population register. Every degree count on this
-                  page inherits that.
-                </p>
-                <p class="sub">
-                  <b>The map itself.</b> Country outlines are Natural Earth
-                  1:110m admin-0 boundaries, public domain, slimmed to 169 KB by
-                  <code>scripts/migration/build_world_outline.py</code>: it keeps
-                  only the ISO code and the name and rounds coordinates to two
-                  decimals, about a kilometre, which is far finer than a
-                  500-pixel globe can show. Boundaries are a cartographic
-                  convenience here and carry no claim about any disputed border.
-                </p>
-                <p class="sub">
-                  <b>Render variants.</b> The same page is drawn five ways, one
-                  per <code>?variant=</code>. The data, the numbers and the copy
-                  are identical in all of them; only the drawing library
-                  changes, and each variant overrides the visuals it improves on
-                  and inherits the rest. Libraries are vendored in the repo, so
-                  the site still loads no third-party JavaScript at runtime.
-                </p>
-                <p class="sub">
-                  <b>The basemap.</b> The photographic option is NASA Blue
-                  Marble, public domain, and it is available in every renderer
-                  rather than only the one built around it. On the 2D canvas the
-                  image is resampled through the orthographic projection at
-                  about two thirds of the drawn size and scaled up, which is
-                  invisible at this scale and is what keeps a drag smooth.
-                </p>
-                <p class="sub">
-                  <b>Rebuilding this.</b> Every file this page loads is
-                  derived, and <code>scripts/rebuild_week03.py</code> downloads
-                  the sources and recreates all of it; <code>--check</code>
-                  lists what is committed and what made it. The raw inputs are
-                  not in the repository, only the output.
-                </p>
-                <p class="sub">
-                  <b>AI use.</b> The harvest, the analysis scripts and this page
-                  were built with Claude. Every number comes from
-                  <code>analysis/week03_corridor_control.py</code>; nothing on
-                  this page is typed in by hand.
-                </p>
-              </div>
-            </div>
+            </details>
           </div>
         </section>
       </div>
