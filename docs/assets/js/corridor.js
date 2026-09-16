@@ -375,35 +375,35 @@ const TYPES = {
     icon: "✦",
     tint: "#fde8cf",
     fg: "#9a5205",
-    what: "High in-strength and in-degree. Attracts people from many origins.",
+    what: "Many incoming migrants, from many origins. A place people arrive.",
   },
   "human-bridge": {
     title: "Human bridge",
     icon: "⇄",
     tint: "#e7dcfb",
     fg: "#5b3a9e",
-    what: "High betweenness with a z-score the degree sequence cannot explain. A broker.",
+    what: "Sits on many shortest paths, more than its partner count explains. A broker.",
   },
   "system-airport": {
     title: "System airport",
     icon: "✈",
     tint: "#d9ecf9",
     fg: "#14618f",
-    what: "High flight degree with low to medium migration. A travel hub, a weak human corridor.",
+    what: "Many flight partners, few incoming migrants. A travel hub, a weak human link.",
   },
   both: {
     title: "Both",
     icon: "◎",
     tint: "#e7f6ee",
     fg: "#0d6b3a",
-    what: "High migration and high flight access at once. People and access.",
+    what: "Many incoming migrants and many flight partners at once. People and access.",
   },
   leaf: {
     title: "Leaf",
     icon: "❦",
     tint: "#eef3f9",
     fg: "#46618a",
-    what: "Low degree and low betweenness. Periphery of both networks.",
+    what: "Few partners, few people, rarely on a path. The edge of both networks.",
   },
   mixed: {
     title: "Mixed",
@@ -1213,10 +1213,10 @@ function renderEdge() {
     weight > 0 && routes > 0 ? "People + flights" : weight > 0 ? "People only" : routes > 0 ? "Flights only" : "No corridor";
 
   const facts = [
-    ["Weight (migrant stock)", weight ? fmt.format(weight) : "—"],
-    ["% of origin out-strength", om?.out_strength ? `${((weight / om.out_strength) * 100).toFixed(1)}%` : "—"],
-    ["% of destination in-strength", dm?.in_strength ? `${((weight / dm.in_strength) * 100).toFixed(1)}%` : "—"],
-    ["Global rank", rank ? `${fmt.format(rank)} / ${fmt.format(ranked.length)}` : "—"],
+    ["People on this link (stock)", weight ? fmt.format(weight) : "—"],
+    ["Share of the origin's emigrants", om?.out_strength ? `${((weight / om.out_strength) * 100).toFixed(1)}%` : "—"],
+    ["Share of the destination's immigrants", dm?.in_strength ? `${((weight / dm.in_strength) * 100).toFixed(1)}%` : "—"],
+    ["Rank among all links", rank ? `${fmt.format(rank)} / ${fmt.format(ranked.length)}` : "—"],
     [`Reciprocal (${node(dest).name} → ${node(origin).name})`, reverse?.[2][yi] ? fmt.format(reverse[2][yi]) : "—"],
     ["Flight routes", routes ? fmt.format(routes) : "0"],
   ];
