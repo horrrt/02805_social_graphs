@@ -178,7 +178,7 @@
                 <h3>A. Degree distribution (log–log)</h3>
                 <p class="axis-note">
                   Count of countries by degree. Degree counts partners, not
-                  people.
+                  people. Click a bar to select a country at that degree.
                 </p>
                 <div class="legend">
                   <span><i style="background: #f2820c"></i> In-degree</span>
@@ -199,6 +199,7 @@
                 <h3>B. CCDF of degree (log–log)</h3>
                 <p class="axis-note">
                   P(K ≥ k) — the share of countries with degree at least k.
+                  Click a point to select it.
                 </p>
                 <div class="legend">
                   <span><i style="background: #f2820c"></i> In-degree</span>
@@ -233,7 +234,9 @@
                 <p class="axis-note">
                   One point per country. Migration graph is directed and
                   weighted; distance along a corridor is 1 / people, so a heavy
-                  corridor is a short step.
+                  corridor is a short step. Click any point to select that
+                  country; every chart and panel on the page follows, and the
+                  page does not scroll.
                 </p>
                 <div class="legend">
                   <span><i style="background: #f2820c"></i> Migration</span>
@@ -282,7 +285,8 @@
                 <h3>Betweenness z-score vs in-degree (log–log x)</h3>
                 <p class="axis-note" id="null-note">
                   The null keeps every country's in- and out-degree and deals
-                  the observed corridor weights back out at random.
+                  the observed corridor weights back out at random. Click any
+                  point to select that country.
                 </p>
                 <canvas
                   class="chart"
@@ -344,7 +348,7 @@
                 <p class="fineprint" style="border: 0; padding: 0">
                   Migration shows where people live. Flights show where you can
                   go. Use the toggle to compare them, and click a country to
-                  send it to the inspector at the top.
+                  select it. Selecting never scrolls the page.
                 </p>
                 <dl class="stats" id="twin-stats"></dl>
                 <p class="fineprint" id="flight-caveat"></p>
@@ -405,7 +409,9 @@
             <div class="grid3">
               <div class="plot">
                 <h3>A. Denmark on the global scatters</h3>
-                <p class="axis-note">Betweenness vs degree</p>
+                <p class="axis-note">
+                  Betweenness vs degree · click any point
+                </p>
                 <canvas class="chart" height="330" id="dk-scatter" width="440"></canvas>
               </div>
               <div class="plot">
@@ -444,7 +450,9 @@
               </div>
               <div class="plot">
                 <h3>D. Nordic comparison</h3>
-                <p class="axis-note">2020 · in-degree, z-score, flight degree</p>
+                <p class="axis-note">
+                  2020 · in-degree, z-score, flight degree · click a bar
+                </p>
                 <canvas class="chart" height="330" id="dk-nordic" width="440"></canvas>
               </div>
             </div>

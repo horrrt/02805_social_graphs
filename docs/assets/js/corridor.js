@@ -204,6 +204,10 @@ function renderInspector() {
         row("z-score", nm.z === undefined ? "—" : nm.z.toFixed(2)),
       ].join("")
     : "";
+  // Every chart carries a marker for the selected country, so all of them
+  // redraw together and the selection reads the same everywhere on the page.
+  drawHistogram();
+  drawCcdf();
   drawScatters();
   drawDenmark();
 }
@@ -214,6 +218,48 @@ function select(iso3) {
   renderInspector();
   drawGlobe();
   drawMap();
+}
+
+/* ------------------------------------------------------------- picking
+
+   Every chart records the country behind each mark it draws, in CSS pixels
+   relative to its own canvas. One shared handler then turns a click anywhere
+   on any chart into a selection, and the whole page follows. Selecting never
+   scrolls: the reader stays where they were looking. */
+
+const pickable = new Map();
+
+function collect(id) {
+  const marks = [];
+  pickable.set(id, marks);
+  return marks;
+}
+
+function nearestMark(canvas, event, radius = 16) {
+  const marks = pickable.get(canvas.id) ?? [];
+  const rect = canvas.getBoundingClientRect();
+  const x = event.clientX - rect.left;
+  const y = event.clientY - rect.top;
+  let best = null;
+  for (const mark of marks) {
+    const d = Math.hypot(mark.x - x, mark.y - y);
+    if (d <= radius && (!best || d < best.d)) best = { iso3: mark.iso3, d };
+  }
+  return best?.iso3 ?? null;
+}
+
+function enablePicking(id) {
+  const canvas = $(id);
+  if (!canvas || canvas.dataset.picking) return;
+  canvas.dataset.picking = "on";
+  canvas.title = "Click a point to select that country";
+  canvas.addEventListener("pointermove", (event) => {
+    canvas.style.cursor = nearestMark(canvas, event) ? "pointer" : "default";
+  });
+  canvas.addEventListener("click", (event) => {
+    const iso3 = nearestMark(canvas, event);
+    if (iso3) select(iso3);
+  });
 }
 
 const TYPES = {
@@ -517,22 +563,34 @@ function drawMap() {
 
 /* ---------------------------------------------------------------- section 3 */
 
+// Each bucket carries the countries in it, so a click on a bar can land on a
+// real country rather than on an anonymous count. The representative is the
+// largest by in-strength, which is the one a reader is most likely to mean.
 function degreeCounts(pick) {
-  const counts = new Map();
-  for (const { n, m } of withMetrics()) {
-    const value = pick(n, m);
-    if (value > 0) counts.set(value, (counts.get(value) ?? 0) + 1);
+  const buckets = new Map();
+  for (const row of withMetrics()) {
+    const value = pick(row.n, row.m);
+    if (value > 0) {
+      if (!buckets.has(value)) buckets.set(value, []);
+      buckets.get(value).push(row);
+    }
   }
-  return [...counts.entries()].map(([k, c]) => ({ k, c })).sort((a, b) => a.k - b.k);
+  return [...buckets.entries()]
+    .map(([k, rows]) => ({
+      k,
+      c: rows.length,
+      iso3: rows.slice().sort((a, b) => b.m.in_strength - a.m.in_strength)[0].iso3,
+    }))
+    .sort((a, b) => a.k - b.k);
 }
 
-function ccdf(values) {
-  const sorted = values.filter((v) => v > 0).sort((a, b) => a - b);
+function ccdf(entries) {
+  const sorted = entries.filter((e) => e.k > 0).sort((a, b) => a.k - b.k);
   const n = sorted.length;
   const out = [];
   for (let i = 0; i < n; i += 1) {
-    if (i && sorted[i] === sorted[i - 1]) continue;
-    out.push({ k: sorted[i], p: (n - i) / n });
+    if (i && sorted[i].k === sorted[i - 1].k) continue;
+    out.push({ k: sorted[i].k, p: (n - i) / n, iso3: sorted[i].iso3 });
   }
   return out;
 }
@@ -559,12 +617,14 @@ function drawHistogram() {
     xLabel: "Degree",
     yLabel: "Count of countries",
   });
+  const marks = collect("hist");
   all.forEach((points, i) => {
     ctx.fillStyle = SERIES[i].colour + "cc";
     for (const d of points) {
       const x = box.x(d.k);
       const y = box.y(d.c);
       ctx.fillRect(x - 1.5 + i * 1.6, y, 2, box.bottom - y);
+      marks.push({ x, y, iso3: d.iso3 });
     }
   });
   markSelected(ctx, box, (n, m) => [m.in_degree, degreeCounts(SERIES[0].pick).find((d) => d.k === m.in_degree)?.c ?? 1]);
@@ -576,7 +636,9 @@ function drawCcdf() {
   const { ctx, width, height } = surface(canvas);
   const box = frame(width, height);
   const rows = withMetrics();
-  const series = SERIES.map((s) => ccdf(rows.map(({ n, m }) => s.pick(n, m))));
+  const series = SERIES.map((s) =>
+    ccdf(rows.map(({ iso3, n, m }) => ({ k: s.pick(n, m), iso3 }))),
+  );
   const maxK = Math.max(...series.flat().map((d) => d.k), 10);
   const minP = Math.min(...series.flat().map((d) => d.p), 0.001);
   box.x = logScale(box, [1, maxK], "x");
@@ -587,12 +649,16 @@ function drawCcdf() {
     xLabel: "Degree",
     yLabel: "P(K ≥ k)",
   });
+  const marks = collect("ccdf");
   series.forEach((points, i) => {
     ctx.fillStyle = SERIES[i].colour;
     for (const d of points) {
+      const x = box.x(d.k);
+      const y = box.y(d.p);
       ctx.beginPath();
-      ctx.arc(box.x(d.k), box.y(d.p), 2, 0, Math.PI * 2);
+      ctx.arc(x, y, 2, 0, Math.PI * 2);
       ctx.fill();
+      marks.push({ x, y, iso3: d.iso3 });
     }
   });
   markSelected(ctx, box, (n, m) => {
@@ -663,17 +729,24 @@ function drawBetweenness() {
     xLabel: "In-degree",
     yLabel: "Betweenness",
   });
+  const marks = collect("scatter-between");
   ctx.fillStyle = ACCESS + "88";
   for (const r of flights) {
+    const x = box.x(r.n.flight_in_degree);
+    const y = box.y(r.n.flight_betweenness);
     ctx.beginPath();
-    ctx.arc(box.x(r.n.flight_in_degree), box.y(r.n.flight_betweenness), 2, 0, Math.PI * 2);
+    ctx.arc(x, y, 2, 0, Math.PI * 2);
     ctx.fill();
+    marks.push({ x, y, iso3: r.iso3 });
   }
   ctx.fillStyle = PEOPLE + "cc";
   for (const r of rows) {
+    const x = box.x(r.m.in_degree);
+    const y = box.y(r.m.betweenness);
     ctx.beginPath();
-    ctx.arc(box.x(r.m.in_degree), box.y(r.m.betweenness), 2.4, 0, Math.PI * 2);
+    ctx.arc(x, y, 2.4, 0, Math.PI * 2);
     ctx.fill();
+    marks.push({ x, y, iso3: r.iso3 });
   }
   // Label only the brokers a reader should look up, and only where the label
   // will not sit on top of one already placed.
@@ -686,6 +759,8 @@ function drawBetweenness() {
   ctx.textAlign = "left";
   const placed = [];
   for (const r of notable) {
+    // The selected country gets its own marker label; two would collide.
+    if (r.iso3 === state.selected) continue;
     const x = Math.min(box.x(r.m.in_degree) + 6, box.right - 120);
     const py = box.y(r.m.betweenness) - 5;
     if (placed.some((p) => Math.abs(p.x - x) < 110 && Math.abs(p.y - py) < 12)) continue;
@@ -720,11 +795,15 @@ function drawZ() {
   ctx.lineTo(box.right, box.y(0));
   ctx.stroke();
   ctx.setLineDash([]);
+  const marks = collect("scatter-z");
   for (const r of rows) {
+    const x = box.x(r.m.in_degree);
+    const py = box.y(r.m.z);
     ctx.fillStyle = r.m.z >= 2 ? PEOPLE : ACCESS + "99";
     ctx.beginPath();
-    ctx.arc(box.x(r.m.in_degree), box.y(r.m.z), 2.4, 0, Math.PI * 2);
+    ctx.arc(x, py, 2.4, 0, Math.PI * 2);
     ctx.fill();
+    marks.push({ x, y: py, iso3: r.iso3 });
   }
   markSelectedPoint(ctx, box, (m) => [m.in_degree, m.z ?? 0], y);
 }
@@ -876,11 +955,15 @@ function drawDenmark() {
     box.x = logScale(box, [1, maxK], "x");
     box.y = logScale(box, [minB, maxB], "y");
     axes(ctx, box, { xTicks: logTicks(1, maxK), yTicks: logTicks(minB, maxB), xLabel: "Degree" });
+    const marks = collect("dk-scatter");
     ctx.fillStyle = "#c9d7e8";
     for (const r of rows) {
+      const x = box.x(r.m.in_degree);
+      const py = box.y(r.m.betweenness);
       ctx.beginPath();
-      ctx.arc(box.x(r.m.in_degree), box.y(r.m.betweenness), 1.8, 0, Math.PI * 2);
+      ctx.arc(x, py, 1.8, 0, Math.PI * 2);
       ctx.fill();
+      marks.push({ x, y: py, iso3: r.iso3 });
     }
     dot(ctx, box.x(m.in_degree), box.y(m.betweenness), "#d0021b", n.name);
     for (const other of focus.nordics) {
@@ -903,11 +986,15 @@ function drawDenmark() {
       yTicks: [lo, 0, hi].map((v) => ({ value: v, label: v.toFixed(0) })),
       xLabel: "Degree",
     });
+    const marks = collect("dk-z");
     ctx.fillStyle = "#c9d7e8";
     for (const r of zRows) {
+      const x = box.x(r.m.in_degree);
+      const py = box.y(r.m.z);
       ctx.beginPath();
-      ctx.arc(box.x(r.m.in_degree), box.y(r.m.z), 1.8, 0, Math.PI * 2);
+      ctx.arc(x, py, 1.8, 0, Math.PI * 2);
       ctx.fill();
+      marks.push({ x, y: py, iso3: r.iso3 });
     }
     if (m.z !== undefined) dot(ctx, box.x(m.in_degree), box.y(m.z), "#d0021b", n.name);
   });
@@ -962,6 +1049,7 @@ function drawDenmark() {
       { get: (i) => Math.abs(i.z ?? 0) / maxZ, colour: INK },
       { get: (i) => i.flight_degree / maxFlight, colour: ACCESS },
     ];
+    const marks = collect("dk-nordic");
     items.forEach((item, idx) => {
       bars.forEach((bar, bi) => {
         const w = (box.x(1) - box.x(0)) / 4;
@@ -969,6 +1057,7 @@ function drawDenmark() {
         const yv = box.y(bar.get(item));
         ctx.fillStyle = bar.colour;
         ctx.fillRect(x, yv, w * 0.8, box.bottom - yv);
+        marks.push({ x: x + w * 0.4, y: (yv + box.bottom) / 2, iso3: item.iso3 });
       });
     });
   });
@@ -1156,10 +1245,20 @@ function setupMap() {
       const d = Math.hypot(p.x - x, p.y - y);
       if (d < 14 && (!best || d < best.d)) best = { iso3, d };
     }
-    if (best) {
-      select(best.iso3);
-      $("globe").scrollIntoView({ behavior: "smooth", block: "start" });
-    }
+    // Selecting never scrolls. The reader chose where to look.
+    if (best) select(best.iso3);
+  });
+  $("map-canvas").addEventListener("pointermove", (event) => {
+    const rect = event.currentTarget.getBoundingClientRect();
+    const x = event.clientX - rect.left;
+    const y = event.clientY - rect.top;
+    const near = state.data.countries.some((iso3) => {
+      const coord = node(iso3)?.coord;
+      if (!coord || !metrics(iso3)) return false;
+      const p = mapPoint(coord, rect.width, rect.height);
+      return Math.hypot(p.x - x, p.y - y) < 14;
+    });
+    event.currentTarget.style.cursor = near ? "pointer" : "default";
   });
 }
 
@@ -1224,6 +1323,16 @@ async function main() {
 
     setupGlobe();
     setupMap();
+    for (const id of [
+      "hist",
+      "ccdf",
+      "scatter-between",
+      "scatter-z",
+      "dk-scatter",
+      "dk-z",
+      "dk-nordic",
+    ])
+      enablePicking(id);
     setupPredict();
     setupEdgeInspector();
     renderTwinStats();
