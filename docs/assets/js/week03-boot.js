@@ -9,6 +9,7 @@
 //   ?variant=echarts  Apache ECharts for every chart
 //   ?variant=globe    globe.gl (three.js) for the hero globe
 //   ?variant=deck     deck.gl GlobeView and ArcLayer
+//   ?variant=atlas    the design mockup: a photographic Earth
 //
 // A variant overrides only the visuals it improves on and inherits the canvas
 // renderer for the rest, so "the ECharts variant" means the charts changed and
@@ -50,6 +51,17 @@ export const VARIANTS = {
     script: "globe.gl-2.32.0.min.js",
     global: "Globe",
     module: "./variants/globe.js",
+  },
+  atlas: {
+    label: "Atlas",
+    swaps:
+      "The hero globe and the twin map for a photographic Earth, which is what " +
+      "the original design mockup showed. Charts stay on canvas.",
+    library: "globe.gl 2.32.0 plus 482 KB of NASA Blue Marble imagery",
+    bytes: 1526503,
+    script: "globe.gl-2.32.0.min.js",
+    global: "Globe",
+    module: "./variants/atlas.js",
   },
   deck: {
     label: "deck.gl",
