@@ -313,6 +313,30 @@ window.auditWeek03 = async function auditWeek03({ verbose = false } = {}) {
     await expectChange("map layers", "toggle switches", () => api?.state?.layer, async () => toggle.click());
   } else record("map layers", "toggle switches", false, "no toggle");
 
+  // The questions drawer is canvas in every renderer, so it has to paint and
+  // answer itself whichever library is loaded.
+  const questions = $("questions");
+  if (questions) {
+    questions.open = true;
+    questions.dispatchEvent(new Event("toggle"));
+    await wait(700);
+    for (const id of ["q-ring", "q-hosts", "q-distance", "q-wealth", "q-income", "q-sex"]) {
+      const canvas = $(id);
+      if (!canvas) {
+        record("questions", `${id} paints`, false, "no canvas");
+        continue;
+      }
+      const ctx = canvas.getContext("2d");
+      const pixels = ctx.getImageData(0, 0, canvas.width, canvas.height).data;
+      let painted = 0;
+      for (let i = 3; i < pixels.length; i += 4000) if (pixels[i] > 0) painted += 1;
+      record("questions", `${id} paints`, painted > 8, `${painted} sampled pixels inked`);
+      const answer = $(`${id}-answer`);
+      record("questions", `${id} answers`, (answer?.textContent?.length ?? 0) > 200,
+        `${answer?.textContent?.length ?? 0} characters`);
+    }
+  } else record("questions", "drawer exists", false, "no #questions");
+
   const failures = results.filter((r) => !r.ok);
   return {
     variant,

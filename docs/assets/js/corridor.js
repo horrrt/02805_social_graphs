@@ -293,8 +293,57 @@ function flag(iso2) {
 
 /* --------------------------------------------------------------- inspector */
 
+// What each measure means, in a sentence, on hover. A panel full of numbers
+// is only readable if the labels explain themselves.
+export const GLOSSARY = {
+  "Incoming migrants (stock)":
+    "People living here who were born somewhere else, counted as a stock. It is who is here now, not who arrived this year.",
+  "Outgoing migrants (stock)":
+    "People born here who live somewhere else. The mirror of incoming, counted the same way.",
+  "Origins represented":
+    "How many different countries send people here, counted as partners rather than people. In-degree. Beware: a country whose statistics office reports a coarse 'other' category will look like it has fewer origins than it really does.",
+  "Destinations sent to":
+    "How many different countries people from here have moved to. Out-degree.",
+  Betweenness:
+    "How often this country sits on the shortest path between two others. A heavy corridor counts as a short step, so it measures brokerage in a weighted sense. High betweenness means traffic between other countries passes through here.",
+  "Betweenness z-score":
+    "How surprising that betweenness is once the country's number of partners is held fixed, measured against 100 degree-preserving shuffles. Zero means 'exactly what its partner count predicts'. Above +2 is a broker the degree sequence cannot explain.",
+  "Flight partners":
+    "How many countries have at least one direct air route to here. Access, not people.",
+  "Flight routes":
+    "How many distinct airport-to-airport routes connect here to somewhere abroad. A route existing says nothing about seats or frequency.",
+  Typology:
+    "Which of five roles this country plays, assigned on ranks rather than raw values so the label means the same thing in any year.",
+  "k (in)": "In-degree: the number of countries that send people here.",
+  Rank: "Position among all countries on this measure, 1 being the highest.",
+  "z-score":
+    "Distance from the degree-preserving null, in standard deviations. Above +2 is more of a bridge than its partner count explains.",
+  "Migration links": "Country pairs with at least one person on them, in this year.",
+  "People counted": "Everyone on every link, added up. People with two migrations appear once, at their current residence.",
+  "Flight links": "Country pairs with at least one direct air route.",
+  "Countries with flights": "How many countries appear anywhere in the route data.",
+  "People on this link (stock)": "People born in the origin who live in the destination.",
+  "Share of the origin's emigrants": "What fraction of everyone who left the origin is on this one link.",
+  "Share of the destination's immigrants": "What fraction of everyone who arrived in the destination came along this link.",
+  "Rank among all links": "Where this corridor sits among every corridor in the world, by size.",
+  "Flight routes ": "Direct airport-to-airport routes between these two countries.",
+};
+
 function row(term, value) {
-  return `<div><dt>${term}</dt><dd>${value}</dd></div>`;
+  const note = GLOSSARY[term];
+  const attr = note ? ` class="explains" data-explain="${note.replace(/"/g, "&quot;")}"` : "";
+  return `<div><dt${attr}>${term}</dt><dd>${value}</dd></div>`;
+}
+
+let glossaryWired = false;
+function wireGlossary() {
+  if (glossaryWired) return;
+  glossaryWired = true;
+  document.addEventListener("pointermove", (event) => {
+    const target = event.target.closest?.("[data-explain]");
+    if (target) showTip(event, `<b>${target.textContent.trim()}</b><span>${target.dataset.explain}</span>`);
+    else if (!event.target.closest?.("canvas")) hideTip();
+  });
 }
 
 function renderInspector() {
@@ -1606,7 +1655,11 @@ function renderEdge() {
     ["Flight routes", routes ? fmt.format(routes) : "0"],
   ];
   $("edge-facts").innerHTML = facts
-    .map(([term, value]) => `<div class="fact"><dt>${term}</dt><dd>${value}</dd></div>`)
+    .map(([term, value]) => {
+      const note = GLOSSARY[term];
+      const attr = note ? ` class="explains" data-explain="${note.replace(/"/g, "&quot;")}"` : "";
+      return `<div class="fact"${attr}><dt>${term}</dt><dd>${value}</dd></div>`;
+    })
     .join("");
   $("edge-note").querySelector("span:last-child").innerHTML =
     weight > 0 && routes > 0
@@ -1640,7 +1693,16 @@ function renderDenmarkPanels() {
       ["Flight partners", fmt.format(n.flight_degree)],
       ["Typology", label(m.typology)],
     ]
-      .map(([k, v]) => `<div class="metric"><span>${k}</span><b>${v}</b></div>`)
+      .map(([k, v]) => {
+        const note = GLOSSARY[{
+          Incoming: "Incoming migrants (stock)",
+          Outgoing: "Outgoing migrants (stock)",
+          Origins: "Origins represented",
+          Destinations: "Destinations sent to",
+        }[k] ?? k];
+        const attr = note ? ` class="explains" data-explain="${note.replace(/"/g, "&quot;")}"` : "";
+        return `<div class="metric"${attr}><span>${k}</span><b>${v}</b></div>`;
+      })
       .join("");
 
 
@@ -2024,6 +2086,9 @@ export const api = {
   showTip, hideTip, axisMode, modeFlags, ticksFor,
   linkSpec, rampColour, linkAlpha, THICKNESS, earthTexture, textureURL,
   paintPhotoGlobe,
+  // Chart furniture, so the questions section draws on the same axes as the
+  // rest of the post instead of inventing its own.
+  surface, frame, axes, logTicks, logScale, linearScale, flag,
   colours: { PEOPLE, ACCESS, INK, MUTE, GRID },
   format: { fmt, compact },
   $,
@@ -2040,6 +2105,9 @@ export function restyle() {
   R.ccdf();
   R.scatters();
   R.denmark();
+  // The questions drawer draws on canvas in every renderer, so it repaints on
+  // the same signal rather than being reached into from here.
+  window.dispatchEvent(new CustomEvent("week03:restyle"));
 }
 
 export async function start() {
@@ -2094,6 +2162,7 @@ async function main() {
       enablePicking(id);
     refreshPalette();
     syncFlow();
+    wireGlossary();
     setupEdgeInspector();
     renderTwinStats();
     renderTypology();

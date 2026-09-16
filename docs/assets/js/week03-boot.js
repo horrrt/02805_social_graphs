@@ -7,6 +7,7 @@
 //   ?palette=  which two colours        signal · ember · iris · okabe · slate
 //   ?arcs=     how a corridor is drawn  curve · straight · flow · taper
 //   ?basemap=  what the world looks like outline · photo · none
+//   ?skin=     type and surface         clean · editorial · terminal · poster
 //   ?tables=   how the panels read      rules · zebra · cards · compact
 //
 // The data, the numbers and the copy never change. Only the renderer needs a
@@ -20,6 +21,7 @@ const BUILD = new URL(import.meta.url).searchParams.get("v") ?? "";
 const stamped = (path) => (BUILD ? `${path}?v=${BUILD}` : path);
 
 const { api, installRenderer, restyle, start } = await import(stamped("./corridor.js"));
+const { installQuestions } = await import(stamped("./questions.js"));
 
 export const RENDERERS = {
   canvas: {
@@ -120,6 +122,13 @@ export const BASEMAP = {
   none: { label: "No basemap", note: "Corridors alone, with nothing under them." },
 };
 
+export const SKINS = {
+  clean: { label: "Clean", note: "System type, soft cards. The default." },
+  editorial: { label: "Editorial", note: "A serif face, a narrower column, section numbers on a rail." },
+  terminal: { label: "Terminal", note: "Monospace on a dark ground, nothing rounded." },
+  poster: { label: "Poster", note: "Oversized type, hard borders, a printed feel." },
+};
+
 export const TABLES = {
   rules: { label: "Rules", note: "A hairline between rows." },
   zebra: { label: "Zebra", note: "Alternating row tint." },
@@ -136,6 +145,7 @@ const DIMENSIONS = [
   { key: "focus", label: "On selection", options: FOCUS, fallback: "all" },
   { key: "basemap", label: "The world", options: BASEMAP, fallback: "outline" },
   { key: "dots", label: "Country dots", options: DOTS, fallback: "on" },
+  { key: "skin", label: "Skin", options: SKINS, fallback: "clean" },
   { key: "tables", label: "Tables", options: TABLES, fallback: "rules" },
 ];
 
@@ -186,6 +196,7 @@ function apply(chosen) {
   body.dataset.variant = chosen.variant;
   body.dataset.palette = chosen.palette;
   body.dataset.tables = chosen.tables;
+  body.dataset.skin = chosen.skin;
   api.state.arcs = chosen.arcs;
   api.state.links = chosen.links;
   api.state.thickness = chosen.thickness;
@@ -201,6 +212,7 @@ function describe(chosen) {
     `${PALETTES[chosen.palette].note} ${ARCS[chosen.arcs].note} ` +
     `${LINKS[chosen.links].note} ${FOCUS[chosen.focus].note} ` +
     `${BASEMAP[chosen.basemap].note} ${DOTS[chosen.dots].note} ` +
+    `${SKINS[chosen.skin].note} ` +
     `${TABLES[chosen.tables].note} ` +
     (renderer.bytes
       ? `Library: ${renderer.library}, ${kb(renderer.bytes)}, vendored in the repo.`
@@ -319,7 +331,14 @@ async function boot() {
     const dimension = DIMENSIONS.find((d) => d.key === key);
     if (dimension.reloads) {
       // Swapping the drawing library mid-flight would leave half the page in
-      // the old renderer's DOM, so this one dimension reloads.
+      // the old renderer's DOM, so this one dimension reloads. Carry the scroll
+      // position across, or the reader is thrown back to the top for a change
+      // they made halfway down.
+      try {
+        sessionStorage.setItem("week03-scroll", String(window.scrollY));
+      } catch {
+        // Private mode: the reader lands at the top, which is the old behaviour.
+      }
       window.location.assign(url.pathname + url.search);
       return;
     }
@@ -331,6 +350,24 @@ async function boot() {
   });
 
   await start();
+  installQuestions(api);
+  restoreScroll();
+}
+
+function restoreScroll() {
+  let saved = null;
+  try {
+    saved = sessionStorage.getItem("week03-scroll");
+    sessionStorage.removeItem("week03-scroll");
+  } catch {
+    return;
+  }
+  if (saved === null) return;
+  // The charts size themselves after the data lands, so the page is only as
+  // tall as it will be once a frame has passed.
+  requestAnimationFrame(() =>
+    requestAnimationFrame(() => window.scrollTo(0, Number(saved))),
+  );
 }
 
 boot();

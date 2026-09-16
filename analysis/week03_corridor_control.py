@@ -23,6 +23,7 @@ import argparse
 import collections
 import csv
 import json
+import math
 import pathlib
 import random
 import statistics
@@ -392,20 +393,70 @@ def main():
         "corridor_count": len(all_weights),
         "null_summary": null_summary,
     }
+
+    # Country context for the questions section: wealth and size, so a corridor
+    # can be set against how rich and how large its two ends are.
+    indicators = {}
+    try:
+        for row in read_tsv("data/migration_country_indicators.tsv"):
+            iso3 = row["iso3"]
+            def number(key):
+                value = row.get(key, "")
+                try:
+                    return float(value)
+                except (TypeError, ValueError):
+                    return None
+            indicators[iso3] = {
+                "gdp": number("gdp_per_capita_usd_2024"),
+                "growth": number("gdp_growth_pct_2024"),
+                "pop": number("population_2024"),
+                "net": number("net_migration_2024"),
+                "remit_in": number("remittances_received_usd_2024"),
+            }
+        print(f"  country indicators: {len(indicators)}")
+    except FileNotFoundError:
+        print("  no country indicators; run scripts/migration/fetch_country_layer.py")
+
+    payload["indicators"] = {
+        iso3: values for iso3, values in indicators.items()
+        if iso3 in nodes and any(v is not None for v in values.values())
+    }
     (OUT / "week03_corridors.json").write_text(json.dumps(payload, separators=(",", ":")))
 
     # Edge file: one row per corridor, weights for every year, flight routes.
     flight_weight = {(a, b): w for a, b, w in flights.edges(data="weight")}
+
+    def great_circle(a, b):
+        """Kilometres between two country points, for the distance question."""
+        p, q = coords.get(a), coords.get(b)
+        if not p or not q:
+            return 0
+        lat1, lon1, lat2, lon2 = map(math.radians, (p[0], p[1], q[0], q[1]))
+        h = (math.sin((lat2 - lat1) / 2) ** 2
+             + math.cos(lat1) * math.cos(lat2) * math.sin((lon2 - lon1) / 2) ** 2)
+        return round(2 * 6371 * math.asin(min(1, math.sqrt(h))))
+
     edges = []
     for row in edge_rows:
         a, b = row["origin"], row["destination"]
         series = [int(row[f"stock_{y}"] or 0) for y in YEARS]
         if not any(series):
             continue
-        edges.append([index[a], index[b], series,
-                      flight_weight.get((a, b), 0)])
+        female = row.get("female_2024", "")
+        edges.append([
+            index[a], index[b], series,
+            flight_weight.get((a, b), 0),
+            great_circle(a, b),
+            int(female) if str(female).isdigit() else -1,
+        ])
     (OUT / "week03_edges.json").write_text(json.dumps(
-        {"countries": countries, "years": YEARS, "edges": edges},
+        {
+            "countries": countries,
+            "years": YEARS,
+            # [origin, destination, stock per year, flight routes, km, women in 2024]
+            "fields": ["origin", "destination", "stocks", "routes", "km", "female"],
+            "edges": edges,
+        },
         separators=(",", ":")))
 
     print(f"\nwrote {(OUT / 'week03_corridors.json').relative_to(ROOT)}")

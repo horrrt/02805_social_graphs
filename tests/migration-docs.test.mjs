@@ -241,6 +241,7 @@ test("the build stamp on the week 3 assets matches their contents", () => {
   const watched = [
     "docs/assets/js/week03-boot.js",
     "docs/assets/js/corridor.js",
+    "docs/assets/js/questions.js",
     "docs/assets/js/variants/d3.js",
     "docs/assets/js/variants/echarts.js",
     "docs/assets/js/variants/globe.js",

@@ -10,7 +10,7 @@
     <title>Corridor Control · Log–Log Arcade · Apple edition</title>
     <meta content="../../" name="site-root" />
     <link href="../../../assets/favicon.svg" rel="icon" type="image/svg+xml" />
-    <link href="../../../assets/css/corridor.css?v=c34e128f3d" rel="stylesheet" />
+    <link href="../../../assets/css/corridor.css?v=415f1a48da" rel="stylesheet" />
   </head>
   <body class="corridor theme-apple">
     <a class="skip" href="#main">Skip to content</a>
@@ -444,6 +444,126 @@
           </div>
         </section>
 
+        <!-- 10 ----------------------------------------------------------- -->
+        <section class="step" id="asks">
+          <div class="card">
+            <div class="step-head">
+              <span class="num">10</span>
+              <h2>Six questions, answered from the same two files</h2>
+            </div>
+            <p class="sub">
+              Everything above is about the shape of the network. These are
+              about the people in it. Closed by default, because they are a
+              detour and six more charts is work nobody asked for. Every number
+              below is computed in the browser from
+              <code>week03_corridors.json</code> and
+              <code>week03_edges.json</code>, fixed at 2024, so the year slider
+              upstairs does not quietly change the answers down here.
+            </p>
+            <details class="qa" id="questions">
+              <summary>
+                <span class="qa-cue">Open the questions</span>
+                <span class="qa-teaser">
+                  a ring of the busiest corridors · where migrants live against
+                  where they were born · how far they move · wealth, growth and
+                  distance · what stands in for skill · who moves
+                </span>
+              </summary>
+              <div class="qa-body">
+                <article class="qa-item">
+                  <h3>1 · Which corridors actually carry the world?</h3>
+                  <canvas
+                    class="chart"
+                    height="660"
+                    id="q-ring"
+                    width="760"
+                  ></canvas>
+                  <p class="qa-answer" id="q-ring-answer"></p>
+                </article>
+
+                <article class="qa-item">
+                  <h3>
+                    2 · Where do migrants live, and where were they born?
+                  </h3>
+                  <canvas
+                    class="chart"
+                    height="470"
+                    id="q-hosts"
+                    width="760"
+                  ></canvas>
+                  <p class="qa-answer" id="q-hosts-answer"></p>
+                </article>
+
+                <article class="qa-item">
+                  <h3>3 · Do migrants move far?</h3>
+                  <canvas
+                    class="chart"
+                    height="420"
+                    id="q-distance"
+                    width="760"
+                  ></canvas>
+                  <p class="qa-answer" id="q-distance-answer"></p>
+                </article>
+
+                <article class="qa-item">
+                  <h3>
+                    4 · Does wealth pull people, or does growth?
+                  </h3>
+                  <canvas
+                    class="chart"
+                    height="440"
+                    id="q-wealth"
+                    width="760"
+                  ></canvas>
+                  <p class="qa-answer" id="q-wealth-answer"></p>
+                </article>
+
+                <article class="qa-item">
+                  <h3>5 · Is this the highly skilled, or everybody?</h3>
+                  <canvas
+                    class="chart"
+                    height="240"
+                    id="q-income"
+                    width="760"
+                  ></canvas>
+                  <p class="qa-answer" id="q-income-answer"></p>
+                </article>
+
+                <article class="qa-item">
+                  <h3>6 · Who moves?</h3>
+                  <canvas
+                    class="chart"
+                    height="470"
+                    id="q-sex"
+                    width="760"
+                  ></canvas>
+                  <p class="qa-answer" id="q-sex-answer"></p>
+                </article>
+
+                <div class="notice">
+                  <span class="ico">📄</span>
+                  <span>
+                    Three of these questions run out of data before they run out
+                    of interest: education, age and family status. All three
+                    have sources, and none of them are in this build. They are
+                    written up, with their licences and their traps, in the
+                    <a
+                      href="https://github.com/horrrt/02805_social_graphs/blob/main/MIGRATION_DATA_CATALOGUE.md"
+                      >data catalogue</a
+                    >
+                    (90 sources) and the
+                    <a
+                      href="https://github.com/horrrt/02805_social_graphs/blob/main/MIGRATION_QUESTIONS.md"
+                      >twenty questions</a
+                    >
+                    that came out of it.
+                  </span>
+                </div>
+              </div>
+            </details>
+          </div>
+        </section>
+
         <!-- methods ------------------------------------------------------ -->
         <section class="step" id="methods">
           <div class="card">
@@ -548,6 +668,6 @@
       </footer>
     </main>
 
-    <script src="../../../assets/js/week03-boot.js?v=c34e128f3d" type="module"></script>
+    <script src="../../../assets/js/week03-boot.js?v=415f1a48da" type="module"></script>
   </body>
 </html>

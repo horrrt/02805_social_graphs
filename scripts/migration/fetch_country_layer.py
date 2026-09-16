@@ -47,6 +47,7 @@ WORLD_BANK_INDICATORS = {
     "BM.TRF.PWKR.CD.DT": "remittances_sent_usd",
     "BX.TRF.PWKR.DT.GD.ZS": "remittances_received_pct_gdp",
     "NY.GDP.PCAP.CD": "gdp_per_capita_usd",
+    "NY.GDP.MKTP.KD.ZG": "gdp_growth_pct",
     "SP.URB.TOTL.IN.ZS": "urban_population_pct",
     "SL.UEM.TOTL.ZS": "unemployment_pct",
 }  # the World Bank refugee series (SM.POP.REFG) is archived; UNHCR covers it
@@ -157,6 +158,9 @@ def main():
     parser.add_argument("--year", type=int, default=2024)
     parser.add_argument("--data", default="data")
     parser.add_argument("--cache", default="build/raw")
+    parser.add_argument("--only", choices=("all", "worldbank"), default="all",
+                        help="worldbank re-fetches only the indicator table, "
+                             "which is the cheap half of this script")
     args = parser.parse_args()
     data = pathlib.Path(args.data)
     data.mkdir(parents=True, exist_ok=True)
@@ -166,46 +170,47 @@ def main():
     iso_by_m49, name_by_iso = m49_to_iso3()
     print(f"  {len(iso_by_m49)} countries")
 
-    print("UN DESA international migrant stock")
-    path = download(DESA_URL, cache / "undesa_stock_2024.xlsx")
-    flows = desa_flows(path, iso_by_m49)
-    with (data / "migration_flows.tsv").open("w", encoding="utf-8") as fh:
-        fh.write("# UN DESA International Migrant Stock 2024, Table 1 "
-                 "(POP/DB/MIG/Stock/Rev.2024).\n")
-        fh.write("# One row per origin -> destination pair: people living in the "
-                 "destination who were born in the origin.\n")
-        fh.write("# Aggregates (World, regions, income groups) are dropped; "
-                 "same-country rows are dropped.\n")
-        fh.write("origin\tdestination\torigin_name\tdestination_name\t"
-                 + "\t".join(f"stock_{y}" for y in DESA_YEARS)
-                 + "\tfemale_2024\n")
-        for row in sorted(flows, key=lambda r: (r["origin"], r["destination"])):
-            fh.write("\t".join(str(x) for x in [
-                row["origin"], row["destination"],
-                row["origin_name"], row["destination_name"],
-                *row["stocks"], row["female_2024"],
-            ]) + "\n")
+    if args.only == "all":
+        print("UN DESA international migrant stock")
+        path = download(DESA_URL, cache / "undesa_stock_2024.xlsx")
+        flows = desa_flows(path, iso_by_m49)
+        with (data / "migration_flows.tsv").open("w", encoding="utf-8") as fh:
+            fh.write("# UN DESA International Migrant Stock 2024, Table 1 "
+                     "(POP/DB/MIG/Stock/Rev.2024).\n")
+            fh.write("# One row per origin -> destination pair: people living in the "
+                     "destination who were born in the origin.\n")
+            fh.write("# Aggregates (World, regions, income groups) are dropped; "
+                     "same-country rows are dropped.\n")
+            fh.write("origin\tdestination\torigin_name\tdestination_name\t"
+                     + "\t".join(f"stock_{y}" for y in DESA_YEARS)
+                     + "\tfemale_2024\n")
+            for row in sorted(flows, key=lambda r: (r["origin"], r["destination"])):
+                fh.write("\t".join(str(x) for x in [
+                    row["origin"], row["destination"],
+                    row["origin_name"], row["destination_name"],
+                    *row["stocks"], row["female_2024"],
+                ]) + "\n")
 
-    print(f"UNHCR displacement, {args.year}")
-    items = unhcr_year(args.year)
-    with (data / "migration_displacement.tsv").open("w", encoding="utf-8") as fh:
-        fh.write(f"# UNHCR Refugee Data Finder, {args.year} "
-                 f"(api.unhcr.org/population/v1/population).\n")
-        fh.write("# origin = country of origin, asylum = country of asylum. "
-                 "IDPs and returns sit on the origin==asylum rows.\n")
-        fh.write("origin\tasylum\torigin_name\tasylum_name\trefugees\tasylum_seekers"
-                 "\treturned_refugees\tidps\treturned_idps\tstateless\tother_of_concern"
-                 "\thost_community\n")
-        for item in sorted(items, key=lambda i: (i["coo_iso"] or "", i["coa_iso"] or "")):
-            values = [number(item.get(k)) for k in
-                      ("refugees", "asylum_seekers", "returned_refugees", "idps",
-                       "returned_idps", "stateless", "ooc", "hst")]
-            if not any(isinstance(v, int) and v > 0 for v in values):
-                continue
-            fh.write("\t".join(str(x) for x in [
-                item.get("coo_iso") or "", item.get("coa_iso") or "",
-                item.get("coo_name") or "", item.get("coa_name") or "", *values,
-            ]) + "\n")
+        print(f"UNHCR displacement, {args.year}")
+        items = unhcr_year(args.year)
+        with (data / "migration_displacement.tsv").open("w", encoding="utf-8") as fh:
+            fh.write(f"# UNHCR Refugee Data Finder, {args.year} "
+                     f"(api.unhcr.org/population/v1/population).\n")
+            fh.write("# origin = country of origin, asylum = country of asylum. "
+                     "IDPs and returns sit on the origin==asylum rows.\n")
+            fh.write("origin\tasylum\torigin_name\tasylum_name\trefugees\tasylum_seekers"
+                     "\treturned_refugees\tidps\treturned_idps\tstateless\tother_of_concern"
+                     "\thost_community\n")
+            for item in sorted(items, key=lambda i: (i["coo_iso"] or "", i["coa_iso"] or "")):
+                values = [number(item.get(k)) for k in
+                          ("refugees", "asylum_seekers", "returned_refugees", "idps",
+                           "returned_idps", "stateless", "ooc", "hst")]
+                if not any(isinstance(v, int) and v > 0 for v in values):
+                    continue
+                fh.write("\t".join(str(x) for x in [
+                    item.get("coo_iso") or "", item.get("coa_iso") or "",
+                    item.get("coo_name") or "", item.get("coa_name") or "", *values,
+                ]) + "\n")
 
     print("World Bank indicators")
     indicators = {}
