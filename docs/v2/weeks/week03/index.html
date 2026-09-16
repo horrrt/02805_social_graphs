@@ -10,7 +10,7 @@
     <title>Corridor Control · Log–Log Arcade · Apple edition</title>
     <meta content="../../" name="site-root" />
     <link href="../../../assets/favicon.svg" rel="icon" type="image/svg+xml" />
-    <link href="../../../assets/css/corridor.css?v=fb7394cfc6" rel="stylesheet" />
+    <link href="../../../assets/css/corridor.css?v=c34e128f3d" rel="stylesheet" />
   </head>
   <body class="corridor theme-apple">
     <a class="skip" href="#main">Skip to content</a>
@@ -392,14 +392,12 @@
             <div class="grid3">
               <div class="plot">
                 <h3>A. Denmark on the global scatters</h3>
-                <p class="axis-note">
-                  Betweenness vs degree · click any point
-                </p>
+                <p class="axis-note">Betweenness vs origins · click any point</p>
                 <canvas class="chart" height="330" id="dk-scatter" width="440"></canvas>
               </div>
               <div class="plot">
                 <h3>&nbsp;</h3>
-                <p class="axis-note">z-score vs degree</p>
+                <p class="axis-note">Betweenness z-score vs origins</p>
                 <canvas class="chart" height="330" id="dk-z" width="440"></canvas>
               </div>
               <div class="plot">
@@ -423,12 +421,12 @@
             <div class="grid3" style="margin-top: 18px">
               <div class="plot">
                 <h3>C. Denmark through time</h3>
-                <p class="axis-note">In- and out-strength, 1990–2024</p>
+                <p class="axis-note">Incoming and outgoing people, 1990–2024</p>
                 <canvas class="chart" height="330" id="dk-time" width="440"></canvas>
               </div>
               <div class="plot">
                 <h3>&nbsp;</h3>
-                <p class="axis-note">Betweenness rank (1 = top bridge)</p>
+                <p class="axis-note">Bridge rank over time (1 = top bridge)</p>
                 <canvas class="chart" height="330" id="dk-rank" width="440"></canvas>
               </div>
               <div class="plot">
@@ -510,6 +508,14 @@
                   the site still loads no third-party JavaScript at runtime.
                 </p>
                 <p class="sub">
+                  <b>The basemap.</b> The photographic option is NASA Blue
+                  Marble, public domain, and it is available in every renderer
+                  rather than only the one built around it. On the 2D canvas the
+                  image is resampled through the orthographic projection at
+                  about two thirds of the drawn size and scaled up, which is
+                  invisible at this scale and is what keeps a drag smooth.
+                </p>
+                <p class="sub">
                   <b>Rebuilding this.</b> Every file this page loads is
                   derived, and <code>scripts/rebuild_week03.py</code> downloads
                   the sources and recreates all of it; <code>--check</code>
@@ -542,6 +548,6 @@
       </footer>
     </main>
 
-    <script src="../../../assets/js/week03-boot.js?v=fb7394cfc6" type="module"></script>
+    <script src="../../../assets/js/week03-boot.js?v=c34e128f3d" type="module"></script>
   </body>
 </html>

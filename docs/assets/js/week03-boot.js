@@ -6,6 +6,7 @@
 //   ?variant=  which library draws it   canvas · d3 · echarts · globe · atlas · deck
 //   ?palette=  which two colours        signal · ember · iris · okabe · slate
 //   ?arcs=     how a corridor is drawn  curve · straight · flow · taper
+//   ?basemap=  what the world looks like outline · photo · none
 //   ?tables=   how the panels read      rules · zebra · cards · compact
 //
 // The data, the numbers and the copy never change. Only the renderer needs a
@@ -113,6 +114,12 @@ export const DOTS = {
   off: { label: "Hide dots", note: "Territories carry the selection instead." },
 };
 
+export const BASEMAP = {
+  outline: { label: "Country outlines", note: "Borders, so a corridor lands somewhere you recognise." },
+  photo: { label: "Photographic Earth", note: "NASA Blue Marble, in whichever renderer is loaded." },
+  none: { label: "No basemap", note: "Corridors alone, with nothing under them." },
+};
+
 export const TABLES = {
   rules: { label: "Rules", note: "A hairline between rows." },
   zebra: { label: "Zebra", note: "Alternating row tint." },
@@ -127,6 +134,7 @@ const DIMENSIONS = [
   { key: "links", label: "Link encoding", options: LINKS, fallback: "width" },
   { key: "thickness", label: "Link thickness", options: THICKNESS, fallback: "normal" },
   { key: "focus", label: "On selection", options: FOCUS, fallback: "all" },
+  { key: "basemap", label: "The world", options: BASEMAP, fallback: "outline" },
   { key: "dots", label: "Country dots", options: DOTS, fallback: "on" },
   { key: "tables", label: "Tables", options: TABLES, fallback: "rules" },
 ];
@@ -183,6 +191,7 @@ function apply(chosen) {
   api.state.thickness = chosen.thickness;
   api.state.focus = chosen.focus;
   api.state.dots = chosen.dots;
+  api.state.basemap = chosen.basemap;
 }
 
 function describe(chosen) {
@@ -191,7 +200,8 @@ function describe(chosen) {
     `<b>${renderer.label}.</b> ${renderer.swaps} ` +
     `${PALETTES[chosen.palette].note} ${ARCS[chosen.arcs].note} ` +
     `${LINKS[chosen.links].note} ${FOCUS[chosen.focus].note} ` +
-    `${DOTS[chosen.dots].note} ${TABLES[chosen.tables].note} ` +
+    `${BASEMAP[chosen.basemap].note} ${DOTS[chosen.dots].note} ` +
+    `${TABLES[chosen.tables].note} ` +
     (renderer.bytes
       ? `Library: ${renderer.library}, ${kb(renderer.bytes)}, vendored in the repo.`
       : "No charting library is loaded; every mark is drawn by hand.") +

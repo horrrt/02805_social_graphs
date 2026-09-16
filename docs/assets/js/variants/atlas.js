@@ -148,6 +148,18 @@ export function install(api, Globe) {
       });
     }
 
+    // Atlas defaults to the photograph; the basemap dropdown can still strip it
+    // back to outlines or to nothing.
+    instance.globeImageUrl(state.basemap === "none" ? null : textureURL(DAY));
+    if (state.basemap === "outline" && state.world) {
+      instance
+        .polygonsData(state.world.features)
+        .polygonCapColor(() => "rgba(36,95,146,0.98)")
+        .polygonStrokeColor(() => "rgba(178,215,248,0.6)")
+        .polygonAltitude(0.006);
+    } else if (instance.polygonsData().length) {
+      instance.polygonsData([]);
+    }
     instance
       .arcAltitudeAutoScale(spec.altitude)
       .arcDashLength(spec.dashed ? 0.4 : 1)
@@ -210,7 +222,7 @@ export function install(api, Globe) {
 
     ctx.fillStyle = "#07172b";
     ctx.fillRect(0, 0, width, height);
-    if (basemap) {
+    if (basemap && state.basemap !== "none") {
       ctx.globalAlpha = 0.85;
       ctx.drawImage(basemap, 0, 0, width, height);
       ctx.globalAlpha = 1;

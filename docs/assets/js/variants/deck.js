@@ -9,7 +9,7 @@
 // picture in two projections rather than two pieces of drawing code.
 
 export function install(api, deck) {
-  const { state, node, metrics, topEdges, flightEdges, select, $, colours, rgb, arcSpec } = api;
+  const { state, node, metrics, topEdges, flightEdges, select, $, colours, rgb, arcSpec, textureURL } = api;
   const channels = (hex) => rgb(hex).split(",").map(Number);
   const GlobeView = deck._GlobeView ?? deck.GlobeView;
   if (!GlobeView) throw new Error("this deck.gl build has no GlobeView");
@@ -121,8 +121,23 @@ export function install(api, deck) {
   // On a GlobeView a polygon has to be tessellated across the curve, which is
   // what _full3d turns on. Without it the land is drawn flat and disappears
   // behind the sphere, which is why the deck globe came up empty at first.
+  // The photograph is a BitmapLayer stretched over the whole world, which lands
+  // correctly because the texture is equirectangular.
+  const photoLayer = (id) =>
+    state.basemap === "photo"
+      ? [
+          new deck.BitmapLayer({
+            id,
+            image: textureURL(),
+            bounds: [-180, -90, 180, 90],
+            opacity: 0.92,
+            pickable: false,
+          }),
+        ]
+      : [];
+
   const landLayer = (id, globeMode) =>
-    state.world
+    state.basemap === "outline" && state.world
       ? [
           new deck.GeoJsonLayer({
             id,
@@ -172,6 +187,7 @@ export function install(api, deck) {
           getFillColor: [13, 43, 76],
           _full3d: true,
         }),
+        ...photoLayer("globe-photo"),
         ...landLayer("globe-land", true),
         arcLayer("globe-arcs", arcData(320), colours.PEOPLE),
         dotLayer("globe-dots"),
@@ -186,7 +202,7 @@ export function install(api, deck) {
       zoom: -0.55,
     });
     if (!instance) return;
-    const layers = [...landLayer("map-land", false)];
+    const layers = [...photoLayer("map-photo"), ...landLayer("map-land", false)];
     if (state.layer !== "flights") layers.push(arcLayer("map-arcs", arcData(420), colours.PEOPLE));
     if (state.layer !== "migration")
       layers.push(arcLayer("map-flights", flightArcData(420), colours.ACCESS));

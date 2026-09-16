@@ -137,6 +137,7 @@ const state = {
   thickness: "normal",
   focus: "all",
   dots: "on",
+  basemap: "outline",
   hover: null,
   axisMode: { hist: "loglog", ccdf: "loglog" },
   dash: 0,
@@ -577,6 +578,111 @@ function eachRing(feature, visit) {
 
 // The selected country is filled in the migration colour and outlined in
 // white; whatever the cursor is over gets a lighter fill.
+/* ------------------------------------------------------------- the basemap
+
+   How the world itself is drawn, independently of which library draws the
+   corridors. Outlines are the default because a boundary is what makes a
+   corridor placeable; the photograph is what the planet actually looks like.
+   Any canvas renderer calls these, and the WebGL ones map the same choice onto
+   their own texture settings. */
+
+const TEXTURE_URL = new URL("../textures/earth-day-2048.jpg", import.meta.url).href;
+let texture = null;
+let texturePending = false;
+
+export function earthTexture(onReady) {
+  if (texture || texturePending) return texture;
+  texturePending = true;
+  const image = new Image();
+  image.onload = () => {
+    texture = image;
+    texturePending = false;
+    onReady?.();
+  };
+  image.onerror = () => {
+    texturePending = false;
+  };
+  image.src = TEXTURE_URL;
+  return null;
+}
+
+export function textureURL() {
+  return TEXTURE_URL;
+}
+
+// An equirectangular photograph sampled through the orthographic projection.
+// Done at half resolution into an offscreen canvas and scaled up, because the
+// globe redraws on every drag frame and nobody can see the difference.
+const sphereCache = { key: "", canvas: null };
+
+// The texture is decoded once. Re-reading a 2048x1024 image on every rotation
+// cost 74ms a frame, which is thirteen frames a second while dragging.
+const decoded = { image: null, pixels: null, width: 0, height: 0 };
+
+function texturePixels(image) {
+  if (decoded.image === image) return decoded;
+  const source = document.createElement("canvas");
+  source.width = image.width;
+  source.height = image.height;
+  const sctx = source.getContext("2d", { willReadFrequently: true });
+  sctx.drawImage(image, 0, 0);
+  decoded.image = image;
+  decoded.pixels = sctx.getImageData(0, 0, image.width, image.height).data;
+  decoded.width = image.width;
+  decoded.height = image.height;
+  return decoded;
+}
+
+export function paintPhotoGlobe(ctx, radius, cx, cy) {
+  const image = earthTexture(() => {
+    R.globe();
+  });
+  if (!image) return false;
+
+  // Sampled at roughly two thirds of the drawn size and scaled up. The globe
+  // is a few hundred pixels across and the softening is invisible next to the
+  // frame rate it buys.
+  const size = Math.max(48, Math.round(radius * 0.62));
+  // Two degrees of rotation is under a pixel of movement at this size, so the
+  // key is snapped: a drag reuses one sphere for several frames.
+  const key = `${size}:${Math.round(state.rotation / 2)}`;
+  if (sphereCache.key !== key) {
+    const off = document.createElement("canvas");
+    off.width = size * 2;
+    off.height = size * 2;
+    off.getContext("2d").imageSmoothingQuality = "high";
+    const octx = off.getContext("2d");
+
+    const { pixels, width: tw, height: th } = texturePixels(image);
+    const out = octx.createImageData(off.width, off.height);
+    for (let y = 0; y < off.height; y += 1) {
+      for (let x = 0; x < off.width; x += 1) {
+        const dx = (x - size) / size;
+        const dy = (size - y) / size;
+        const rho = Math.hypot(dx, dy);
+        const target = (y * off.width + x) * 4;
+        if (rho > 1) continue;
+        const c = Math.asin(rho);
+        const lat = rho === 0 ? 0 : Math.asin((dy * Math.sin(c)) / rho);
+        const lon = Math.atan2(dx * Math.sin(c), rho * Math.cos(c));
+        const lonDeg = ((lon * 180) / Math.PI) - state.rotation;
+        const sx = Math.floor((((lonDeg + 180) % 360 + 360) % 360) / 360 * tw);
+        const sy = Math.floor(((90 - (lat * 180) / Math.PI) / 180) * th);
+        const from = (sy * tw + sx) * 4;
+        out.data[target] = pixels[from];
+        out.data[target + 1] = pixels[from + 1];
+        out.data[target + 2] = pixels[from + 2];
+        out.data[target + 3] = 255;
+      }
+    }
+    octx.putImageData(out, 0, 0);
+    sphereCache.key = key;
+    sphereCache.canvas = off;
+  }
+  ctx.drawImage(sphereCache.canvas, cx - radius, cy - radius, radius * 2, radius * 2);
+  return true;
+}
+
 function landFill(iso3, base) {
   if (iso3 && iso3 === state.selected) return PEOPLE;
   if (iso3 && iso3 === state.hover) return "#3f86c4";
@@ -649,6 +755,56 @@ function bezier(a, c, b, t) {
     x: u * u * a.x + 2 * u * t * c.x + t * t * b.x,
     y: u * u * a.y + 2 * u * t * c.y + t * t * b.y,
   };
+}
+
+// The photograph has no borders, so the selection still needs an outline.
+function outlineSelected(ctx, radius, cx, cy) {
+  const feature = state.world?.features.find(
+    (f) => f.properties.iso3 === state.selected,
+  );
+  if (!feature) return;
+  ctx.strokeStyle = "#ffffff";
+  ctx.fillStyle = `${PEOPLE}66`;
+  ctx.lineWidth = 1.4;
+  eachRing(feature, (ring) => {
+    let open = false;
+    ctx.beginPath();
+    for (const [lon, lat] of ring) {
+      const p = project(lat, lon, radius, cx, cy, state.rotation);
+      if (!p.visible) {
+        open = false;
+        continue;
+      }
+      if (open) ctx.lineTo(p.x, p.y);
+      else {
+        ctx.moveTo(p.x, p.y);
+        open = true;
+      }
+    }
+    ctx.fill();
+    ctx.stroke();
+  });
+}
+
+function outlineSelectedMap(ctx, width, height) {
+  const feature = state.world?.features.find(
+    (f) => f.properties.iso3 === state.selected,
+  );
+  if (!feature) return;
+  ctx.strokeStyle = "#ffffff";
+  ctx.fillStyle = `${PEOPLE}66`;
+  ctx.lineWidth = 1.4;
+  eachRing(feature, (ring) => {
+    ctx.beginPath();
+    ring.forEach(([lon, lat], i) => {
+      const p = mapPoint([lat, lon], width, height);
+      if (i) ctx.lineTo(p.x, p.y);
+      else ctx.moveTo(p.x, p.y);
+    });
+    ctx.closePath();
+    ctx.fill();
+    ctx.stroke();
+  });
 }
 
 function arc(ctx, a, b, lift) {
@@ -752,7 +908,12 @@ function drawGlobe() {
   ctx.beginPath();
   ctx.arc(cx, cy, radius, 0, Math.PI * 2);
   ctx.fill();
-  drawLandGlobe(ctx, radius, cx, cy);
+  if (state.basemap === "photo") {
+    if (!paintPhotoGlobe(ctx, radius, cx, cy)) drawLandGlobe(ctx, radius, cx, cy);
+    if (state.selected) outlineSelected(ctx, radius, cx, cy);
+  } else if (state.basemap !== "none") {
+    drawLandGlobe(ctx, radius, cx, cy);
+  }
 
   ctx.strokeStyle = "rgba(160,200,240,0.18)";
   ctx.lineWidth = 1;
@@ -877,7 +1038,21 @@ function drawMap() {
   const { ctx, width, height } = surface(canvas);
   ctx.fillStyle = "#081a31";
   ctx.fillRect(0, 0, width, height);
-  drawLandMap(ctx, width, height);
+  if (state.basemap === "photo") {
+    const image = earthTexture(() => R.map());
+    if (image) {
+      ctx.globalAlpha = 0.88;
+      ctx.drawImage(image, 0, 0, width, height);
+      ctx.globalAlpha = 1;
+      ctx.fillStyle = "rgba(6,20,38,0.4)";
+      ctx.fillRect(0, 0, width, height);
+      if (state.selected) outlineSelectedMap(ctx, width, height);
+    } else {
+      drawLandMap(ctx, width, height);
+    }
+  } else if (state.basemap !== "none") {
+    drawLandMap(ctx, width, height);
+  }
   ctx.strokeStyle = "rgba(160,200,240,0.09)";
   for (let lon = -180; lon <= 180; lon += 30) {
     const x = ((lon + 180) / 360) * width;
@@ -1505,18 +1680,23 @@ function drawDenmark() {
     const maxB = Math.max(...rows.map((r) => r.m.betweenness));
     box.x = logScale(box, [1, maxK], "x");
     box.y = logScale(box, [minB, maxB], "y");
-    axes(ctx, box, { xTicks: logTicks(1, maxK), yTicks: logTicks(minB, maxB), xLabel: "Degree" });
+    axes(ctx, box, {
+      xTicks: logTicks(1, maxK),
+      yTicks: logTicks(minB, maxB),
+      xLabel: "Origins (in-degree)",
+      yLabel: "Betweenness",
+    });
     const marks = collect("dk-scatter");
     plotDots(ctx, marks, rows.map((r) => ({
       x: box.x(r.m.in_degree), y: box.y(r.m.betweenness), iso3: r.iso3,
       label: `<b>${r.n.name}</b><span>${r.m.in_degree} origins · #${r.m.in_degree_rank}</span>` +
         `<span>betweenness #${r.m.betweenness_rank}</span>`,
     })), "#c9d7e8", 1.8);
-    dot(ctx, box.x(m.in_degree), box.y(m.betweenness), "#d0021b", n.name);
+    dot(ctx, box.x(m.in_degree), box.y(m.betweenness), "#d0021b", n.name, 4, box.right);
     for (const other of focus.nordics) {
       if (other.iso3 === iso3) continue;
       const om = metrics(other.iso3, y);
-      if (om) dot(ctx, box.x(om.in_degree), box.y(om.betweenness), PEOPLE, other.iso3, 2.6);
+      if (om) dot(ctx, box.x(om.in_degree), box.y(om.betweenness), PEOPLE, other.iso3, 2.6, box.right);
     }
   });
 
@@ -1531,7 +1711,8 @@ function drawDenmark() {
     axes(ctx, box, {
       xTicks: logTicks(1, maxK),
       yTicks: [lo, 0, hi].map((v) => ({ value: v, label: v.toFixed(0) })),
-      xLabel: "Degree",
+      xLabel: "Origins (in-degree)",
+      yLabel: "Betweenness z-score",
     });
     const marks = collect("dk-z");
     plotDots(ctx, marks, zRows.map((r) => ({
@@ -1539,7 +1720,7 @@ function drawDenmark() {
       label: `<b>${r.n.name}</b><span>z = ${r.m.z.toFixed(2)}</span>` +
         `<span>${r.m.in_degree} origins</span>`,
     })), "#c9d7e8", 1.8);
-    if (m.z !== undefined) dot(ctx, box.x(m.in_degree), box.y(m.z), "#d0021b", n.name);
+    if (m.z !== undefined) dot(ctx, box.x(m.in_degree), box.y(m.z), "#d0021b", n.name, 4, box.right);
   });
 
   small($("dk-time"), (ctx, box) => {
@@ -1550,6 +1731,8 @@ function drawDenmark() {
     axes(ctx, box, {
       xTicks: [years[0], years[Math.floor(years.length / 2)], years.at(-1)].map((v) => ({ value: v, label: String(v) })),
       yTicks: [0, maxV / 2, maxV].map((v) => ({ value: v, label: compact.format(v) })),
+      xLabel: "Year",
+      yLabel: "People (stock)",
     });
     line(ctx, box, focus.series, (s) => s.year, (s) => s.in_strength, PEOPLE);
     line(ctx, box, focus.series, (s) => s.year, (s) => s.out_strength, ACCESS);
@@ -1572,6 +1755,8 @@ function drawDenmark() {
     axes(ctx, box, {
       xTicks: [years[0], years.at(-1)].map((v) => ({ value: v, label: String(v) })),
       yTicks: [1, Math.round(maxR / 2), maxR].map((v) => ({ value: v, label: `#${v}` })),
+      xLabel: "Year",
+      yLabel: "Bridge rank",
     });
     line(ctx, box, focus.series, (s) => s.year, (s) => s.betweenness_rank, INK);
     const rankMarks = collect("dk-rank");
@@ -1593,8 +1778,10 @@ function drawDenmark() {
     box.x = linearScale(box, [0, items.length], "x");
     box.y = linearScale(box, [0, 1], "y");
     axes(ctx, box, {
-      xTicks: items.map((i, idx) => ({ value: idx + 0.5, label: i.iso3.slice(0, 2) })),
-      yTicks: [0, 0.5, 1].map((v) => ({ value: v, label: v === 1 ? "max" : "" })),
+      xTicks: items.map((i, idx) => ({ value: idx + 0.5, label: i.iso3 })),
+      yTicks: [0, 0.5, 1].map((v) => ({ value: v, label: v === 1 ? "max" : v === 0 ? "0" : "" })),
+      xLabel: "Nordic country",
+      yLabel: "Share of the largest",
     });
     const bars = [
       { name: "Origins", read: (i) => i.in_degree, get: (i) => i.in_degree / maxDeg, colour: PEOPLE },
@@ -1622,21 +1809,26 @@ function drawDenmark() {
 function small(canvas, draw) {
   if (!canvas) return;
   const { ctx, width, height } = surface(canvas);
-  const box = frame(width, height, { l: 40, r: 10, t: 10, b: 26 });
+  // Room on the left for a rotated axis title and at the bottom for its pair.
+  const box = frame(width, height, { l: 52, r: 16, t: 10, b: 38 });
   draw(ctx, box);
 }
 
-function dot(ctx, x, y, colour, name, r = 4) {
+function dot(ctx, x, y, colour, name, r = 4, right = Infinity) {
   ctx.fillStyle = colour;
   ctx.beginPath();
   ctx.arc(x, y, r, 0, Math.PI * 2);
   ctx.fill();
-  if (name) {
-    ctx.fillStyle = INK;
-    ctx.font = "600 9px -apple-system, system-ui, sans-serif";
-    ctx.textAlign = "left";
-    ctx.fillText(name, x + 6, y - 4);
-  }
+  if (!name) return;
+  ctx.fillStyle = INK;
+  ctx.font = "600 9px -apple-system, system-ui, sans-serif";
+  // Denmark and its neighbours sit at the far right of these charts, where a
+  // label to the right of the point runs off the plot. Flip it when it would.
+  const width = ctx.measureText(name).width;
+  const flip = x + 6 + width > right;
+  ctx.textAlign = flip ? "right" : "left";
+  ctx.fillText(name, flip ? x - 6 : x + 6, y - 4);
+  ctx.textAlign = "left";
 }
 
 function line(ctx, box, rows, getX, getY, colour) {
@@ -1830,7 +2022,8 @@ export const api = {
   degreeCounts, ccdf, collect, enablePicking, label,
   refreshPalette, arcSpec, syncFlow, rgb, countryAt, unprojectMap,
   showTip, hideTip, axisMode, modeFlags, ticksFor,
-  linkSpec, rampColour, linkAlpha, THICKNESS,
+  linkSpec, rampColour, linkAlpha, THICKNESS, earthTexture, textureURL,
+  paintPhotoGlobe,
   colours: { PEOPLE, ACCESS, INK, MUTE, GRID },
   format: { fmt, compact },
   $,
