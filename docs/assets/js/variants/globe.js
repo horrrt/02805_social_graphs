@@ -10,8 +10,14 @@ const NO_TEXTURE = null;
 
 export function install(api, Globe) {
   const { state, node, metrics, topEdges, select, $, colours, rgb, arcSpec, textureURL } = api;
+  const { earthScale } = api;
   let world = null;
   let host = null;
+  let lastEarth = null;
+
+  // The earth-size dropdown is a camera move here, not a radius: a bigger
+  // globe is the same sphere seen from closer in.
+  const altitude = () => 2.3 / earthScale();
 
   function mount() {
     const canvas = $("globe-canvas");
@@ -69,7 +75,7 @@ export function install(api, Globe) {
         .matches;
       controls.autoRotateSpeed = 0.28;
       controls.enableZoom = true;
-      world.pointOfView({ lat: 22, lng: 12, altitude: 2.3 }, 0);
+      world.pointOfView({ lat: 22, lng: 12, altitude: altitude() }, 0);
     }
     return world;
   }
@@ -130,10 +136,11 @@ export function install(api, Globe) {
       .arcDashAnimateTime((d) => (spec.dashed ? d.speed : 0))
       .arcStroke((d) => (spec.taper ? d.stroke * 0.7 : d.stroke));
     globe.arcsData(arcs).pointsData(points);
-    if (state.selected) {
-      const coord = node(state.selected)?.coord;
-      if (coord) globe.pointOfView({ lat: coord[0], lng: coord[1], altitude: 2.3 }, 700);
-    }
+    const resized = lastEarth !== state.earth;
+    lastEarth = state.earth;
+    const coord = state.selected ? node(state.selected)?.coord : null;
+    if (coord) globe.pointOfView({ lat: coord[0], lng: coord[1], altitude: altitude() }, 700);
+    else if (resized) globe.pointOfView({ lat: 22, lng: 12, altitude: altitude() }, 500);
   }
 
   // globe.gl owns its own pointer handling, so the canvas drag and hit-test are

@@ -225,6 +225,44 @@ test("every style dimension offers choices the page can actually apply", () => {
     assert.ok(specs.includes(`${arc}: {`), `no arc spec for ${arc}`);
   }
   assert.deepEqual(keys("ARCS"), ["curve", "straight", "flow", "taper"]);
+
+  // Every earth size needs a number the renderers can read.
+  const sizes = corridor.slice(
+    corridor.indexOf("export const EARTH_SIZES"),
+    corridor.indexOf("export function earthScale"),
+  );
+  for (const size of keys("EARTH")) {
+    assert.match(sizes, new RegExp(`${size}: [0-9.]+`), `no scale for earth size ${size}`);
+  }
+  assert.deepEqual(keys("EARTH"), ["small", "medium", "large", "huge"]);
+});
+
+test("section 8 is built for any country, not just the one the build ships", () => {
+  const corridor = read("docs/assets/js/corridor.js");
+  const payload = JSON.parse(read("docs/assets/data/week03_corridors.json"));
+
+  // The old payload carried Denmark's series and a hand-written Nordic peer
+  // group. Both are derived in the browser now, so neither may come back:
+  // a shipped series would silently pin the section to one country again.
+  assert.deepEqual(Object.keys(payload.focus).sort(), ["iso3", "name"]);
+  for (const page of ["docs/assets/js/corridor.js", "docs/assets/js/variants/d3.js",
+                      "docs/assets/js/variants/echarts.js"]) {
+    assert.doesNotMatch(read(page), /focus\.nordics/, `${page} still reads a shipped peer list`);
+  }
+  assert.match(corridor, /function spotlight\(\)/);
+  assert.match(corridor, /function peersOf\(/);
+
+  // Every country in the payload has what the section needs.
+  const years = payload.years.map(String);
+  const wanted = ["in_strength", "out_strength", "in_degree", "betweenness_rank"];
+  let complete = 0;
+  for (const iso3 of payload.countries) {
+    const node = payload.nodes[iso3];
+    if (!node.coord) continue;
+    const points = years.filter((y) => node.years[y]);
+    if (points.length && wanted.every((k) => node.years[points.at(-1)][k] !== undefined)) complete += 1;
+  }
+  assert.ok(complete > 200, `only ${complete} countries can be analysed`);
 });
 
 test("the palette is read from CSS rather than hard-coded twice", () => {

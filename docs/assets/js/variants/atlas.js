@@ -28,8 +28,13 @@ function loadImage(src) {
 
 export function install(api, Globe) {
   const { state, node, metrics, topEdges, flightEdges, select, $, colours, rgb, arcSpec } = api;
+  const { earthScale } = api;
   let world = null;
   let host = null;
+  let lastEarth = null;
+
+  // A bigger Earth is the same sphere from closer in, not a bigger sphere.
+  const altitude = () => 1.85 / earthScale();
   let basemap = null;
   let basemapPending = null;
 
@@ -100,7 +105,7 @@ export function install(api, Globe) {
       controls.autoRotate = !window.matchMedia("(prefers-reduced-motion: reduce)").matches;
       controls.autoRotateSpeed = 0.22;
       controls.enableZoom = true;
-      world.pointOfView({ lat: 20, lng: 10, altitude: 1.85 }, 0);
+      world.pointOfView({ lat: 20, lng: 10, altitude: altitude() }, 0);
     }
     return world;
   }
@@ -174,8 +179,12 @@ export function install(api, Globe) {
         ? [{ lat: chosen.coord[0], lng: chosen.coord[1], text: chosen.name }]
         : [],
     );
+    const resized = lastEarth !== state.earth;
+    lastEarth = state.earth;
     if (chosen?.coord) {
-      instance.pointOfView({ lat: chosen.coord[0], lng: chosen.coord[1], altitude: 1.85 }, 800);
+      instance.pointOfView({ lat: chosen.coord[0], lng: chosen.coord[1], altitude: altitude() }, 800);
+    } else if (resized) {
+      instance.pointOfView({ lat: 20, lng: 10, altitude: altitude() }, 500);
     }
   }
 

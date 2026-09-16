@@ -11,6 +11,7 @@ const FONT = "-apple-system, system-ui, sans-serif";
 export function install(api, d3) {
   const { state, node, metrics, withMetrics, degreeCounts, ccdf, select, colours, $ } =
     api;
+  const { spotlight, earthScale } = api;
   const { showTip, hideTip, modeFlags } = api;
 
   // The axis switch reaches SVG too: log where the mode says log, linear where
@@ -276,7 +277,7 @@ export function install(api, d3) {
   }
 
   function denmark() {
-    const focus = state.data.focus;
+    const focus = spotlight();
     const y3 = String(state.data.null_year);
     const dk = metrics(focus.iso3, y3);
     if (!dk) return;
@@ -296,7 +297,7 @@ export function install(api, d3) {
         rows.map((r) => ({ x: r.m.in_degree, y: r.m.betweenness, iso3: r.iso3, title: `<b>${r.n.name}</b><span>${r.m.in_degree} origins</span>` })),
         x, y, "#c9d7e8", 1.9, select,
       );
-      highlight(box.svg, x, y, { x: dk.in_degree, y: dk.betweenness }, "Denmark");
+      highlight(box.svg, x, y, { x: dk.in_degree, y: dk.betweenness }, focus.name);
     }
 
     box = svgFor("dk-z", pad);
@@ -314,7 +315,7 @@ export function install(api, d3) {
         zRows.map((r) => ({ x: r.m.in_degree, y: r.m.z, iso3: r.iso3, title: `<b>${r.n.name}</b><span>z = ${r.m.z.toFixed(2)}</span>` })),
         x, y, "#c9d7e8", 1.9, select,
       );
-      if (dk.z !== undefined) highlight(box.svg, x, y, { x: dk.in_degree, y: dk.z }, "Denmark");
+      if (dk.z !== undefined) highlight(box.svg, x, y, { x: dk.in_degree, y: dk.z }, focus.name);
     }
 
     const line = (id, pick, colour, invert, format) => {
@@ -348,18 +349,18 @@ export function install(api, d3) {
       ];
       const x0 = d3
         .scaleBand()
-        .domain(focus.nordics.map((i) => i.iso3))
+        .domain(focus.peers.map((i) => i.iso3))
         .range([b.inner.left, b.inner.right])
         .padding(0.18);
       const x1 = d3.scaleBand().domain(bars.map(([n]) => n)).range([0, x0.bandwidth()]).padding(0.1);
       const y = d3.scaleLinear().domain([0, 1]).range([b.inner.bottom, b.inner.top]);
       axes(b.svg, b.inner, x0, y, { xTicks: 5, yTicks: 3, yFormat: ".0%" });
       for (const [name, pick, colour] of bars) {
-        const max = d3.max(focus.nordics, pick) || 1;
+        const max = d3.max(focus.peers, pick) || 1;
         b.svg
           .append("g")
           .selectAll("rect")
-          .data(focus.nordics)
+          .data(focus.peers)
           .join("rect")
           .attr("x", (i) => x0(i.iso3) + x1(name))
           .attr("y", (i) => y(pick(i) / max))
@@ -428,7 +429,7 @@ export function install(api, d3) {
         .geoOrthographic()
         .rotate([-12, -18])
         .translate([width / 2, height / 2])
-        .scale(Math.min(width, height) * 0.44);
+        .scale(Math.min(width, height) * 0.44 * earthScale());
       svg.call(
         d3.drag().on("drag", (event) => {
           const [lon, lat] = projection.rotate();
@@ -437,7 +438,7 @@ export function install(api, d3) {
         }),
       );
     }
-    projection.translate([width / 2, height / 2]).scale(Math.min(width, height) * 0.44);
+    projection.translate([width / 2, height / 2]).scale(Math.min(width, height) * 0.44 * earthScale());
     const path = d3.geoPath(projection);
 
     svg

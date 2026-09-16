@@ -22,7 +22,7 @@ const BASE = {
 export function install(api, echarts) {
   const {
     state, node, metrics, withMetrics, degreeCounts, ccdf, select, $, colours,
-    showTip, hideTip, modeFlags,
+    showTip, hideTip, modeFlags, spotlight,
   } = api;
   const charts = new Map();
 
@@ -261,7 +261,7 @@ export function install(api, echarts) {
   }
 
   function denmark() {
-    const focus = state.data.focus;
+    const focus = spotlight();
     const y = String(state.data.null_year);
     const rows = withMetrics(y).filter((r) => r.m.in_degree > 0 && r.m.betweenness > 0);
     const dk = metrics(focus.iso3, y);
@@ -287,8 +287,8 @@ export function install(api, echarts) {
           6,
         ),
         scatterSeries(
-          "Denmark",
-          [point(dk.in_degree, dk.betweenness, focus.iso3, "Denmark")],
+          focus.name,
+          [point(dk.in_degree, dk.betweenness, focus.iso3, focus.name)],
           "#d0021b",
           10,
         ),
@@ -311,7 +311,7 @@ export function install(api, echarts) {
         ),
         ...(dk.z === undefined
           ? []
-          : [scatterSeries("Denmark", [point(dk.in_degree, dk.z, focus.iso3, "Denmark")], "#d0021b", 10)]),
+          : [scatterSeries(focus.name, [point(dk.in_degree, dk.z, focus.iso3, focus.name)], "#d0021b", 10)]),
       ],
     });
 
@@ -357,7 +357,7 @@ export function install(api, echarts) {
     small("dk-nordic", {
       legend: { top: 0, textStyle: { color: "#46618a", fontSize: 10 } },
       grid: { left: 40, right: 12, top: 26, bottom: 30 },
-      xAxis: { ...AXIS, type: "category", data: focus.nordics.map((i) => i.iso3) },
+      xAxis: { ...AXIS, type: "category", data: focus.peers.map((i) => i.iso3) },
       yAxis: { ...AXIS, type: "value", max: 1, axisLabel: { show: false } },
       tooltip: { trigger: "axis", confine: true },
       series: [
@@ -365,12 +365,12 @@ export function install(api, echarts) {
         ["z-score", (i) => Math.abs(i.z ?? 0), colours.INK],
         ["Flight degree", (i) => i.flight_degree, colours.ACCESS],
       ].map(([name, pick, colour]) => {
-        const max = Math.max(...focus.nordics.map(pick), 1);
+        const max = Math.max(...focus.peers.map(pick), 1);
         return {
           name,
           type: "bar",
           itemStyle: { color: colour },
-          data: focus.nordics.map((i) => ({ value: pick(i) / max, iso3: i.iso3, name: i.name })),
+          data: focus.peers.map((i) => ({ value: pick(i) / max, iso3: i.iso3, name: i.name })),
         };
       }),
     });
