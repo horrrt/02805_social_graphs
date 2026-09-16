@@ -20,7 +20,10 @@ const BASE = {
 };
 
 export function install(api, echarts) {
-  const { state, node, metrics, withMetrics, degreeCounts, ccdf, select, $, colours } = api;
+  const {
+    state, node, metrics, withMetrics, degreeCounts, ccdf, select, $, colours,
+    showTip, hideTip, modeFlags,
+  } = api;
   const charts = new Map();
 
   function chart(id) {
@@ -41,13 +44,26 @@ export function install(api, echarts) {
         const iso3 = event.data?.iso3 ?? event.data?.[2];
         if (iso3) select(iso3);
       });
+      // The page has one tooltip design; ECharts feeds it rather than running
+      // a second one of its own, so hovering reads the same in every renderer.
+      instance.on("mouseover", (event) => {
+        if (!event.data?.tip) return;
+        const rect = host.getBoundingClientRect();
+        showTip(
+          { clientX: rect.left + (event.event?.offsetX ?? rect.width / 2),
+            clientY: rect.top + (event.event?.offsetY ?? rect.height / 2) },
+          event.data.tip,
+        );
+      });
+      instance.on("mouseout", hideTip);
+      host.addEventListener("pointerleave", hideTip);
       charts.set(id, instance);
       window.addEventListener("resize", () => instance.resize());
     }
     return charts.get(id);
   }
 
-  const point = (x, y, iso3, name) => ({ value: [x, y], iso3, name });
+  const point = (x, y, iso3, name, tip) => ({ value: [x, y], iso3, name, tip });
 
   function scatterSeries(name, rows, colour, size = 6) {
     return {
@@ -96,15 +112,18 @@ export function install(api, echarts) {
       barGap: "-20%",
       barCategoryGap: "40%",
       itemStyle: { color: colour, opacity: 0.85 },
-      data: degreeCounts(pick).map((d) => point(d.k, d.c, d.iso3, name)),
+      data: degreeCounts(pick).map((d) =>
+        point(d.k, d.c, d.iso3, name,
+          `<b>${d.k} partners</b><span>${d.c} ${d.c === 1 ? "country" : "countries"}</span>` +
+          `<span>largest: ${node(d.iso3).name}</span>`)),
     }));
     instance.setOption(
       {
         ...BASE,
         legend: { top: 0, textStyle: { color: "#46618a", fontSize: 11 } },
         grid: { left: 54, right: 16, top: 30, bottom: 44 },
-        xAxis: { ...AXIS, type: "log", name: "Degree", nameLocation: "middle", nameGap: 26 },
-        yAxis: { ...AXIS, type: "log", name: "Countries", nameLocation: "middle", nameGap: 36 },
+        xAxis: { ...AXIS, type: modeFlags("hist").x ? "log" : "value", name: "Partners", nameLocation: "middle", nameGap: 26 },
+        yAxis: { ...AXIS, type: modeFlags("hist").y ? "log" : "value", name: "Countries", nameLocation: "middle", nameGap: 36 },
         tooltip: {
           ...BASE.tooltip,
           formatter: (p) =>
@@ -128,7 +147,9 @@ export function install(api, echarts) {
       scatterSeries(
         name,
         ccdf(rows.map(({ iso3, n, m }) => ({ k: pick(n, m), iso3 }))).map((d) =>
-          point(d.k, d.p, d.iso3, name),
+          point(d.k, d.p, d.iso3, name,
+            `<b>at least ${d.k} partners</b><span>${(d.p * 100).toFixed(1)}% of countries</span>` +
+            `<span>e.g. ${node(d.iso3).name}</span>`),
         ),
         colour,
         5,
@@ -139,8 +160,8 @@ export function install(api, echarts) {
         ...BASE,
         legend: { top: 0, textStyle: { color: "#46618a", fontSize: 11 } },
         grid: { left: 54, right: 16, top: 30, bottom: 44 },
-        xAxis: { ...AXIS, type: "log", name: "Degree", nameLocation: "middle", nameGap: 26 },
-        yAxis: { ...AXIS, type: "log", name: "P(K ≥ k)", nameLocation: "middle", nameGap: 40 },
+        xAxis: { ...AXIS, type: modeFlags("ccdf").x ? "log" : "value", name: "Partners", nameLocation: "middle", nameGap: 26 },
+        yAxis: { ...AXIS, type: modeFlags("ccdf").y ? "log" : "value", name: "P(K ≥ k)", nameLocation: "middle", nameGap: 40 },
         tooltip: {
           ...BASE.tooltip,
           formatter: (p) =>
@@ -158,11 +179,16 @@ export function install(api, echarts) {
     const y = String(state.data.null_year);
     const migration = withMetrics(y)
       .filter((r) => r.m.in_degree > 0 && r.m.betweenness > 0)
-      .map((r) => point(r.m.in_degree, r.m.betweenness, r.iso3, r.n.name));
+      .map((r) => point(r.m.in_degree, r.m.betweenness, r.iso3, r.n.name,
+        `<b>${r.n.name}</b><span>Migration network</span>` +
+        `<span>${r.m.in_degree} origins · #${r.m.in_degree_rank}</span>` +
+        `<span>betweenness ${r.m.betweenness.toExponential(2)} · #${r.m.betweenness_rank}</span>`));
     const flights = state.data.countries
       .map((iso3) => ({ iso3, n: node(iso3) }))
       .filter((r) => r.n.flight_in_degree > 0 && r.n.flight_betweenness > 0)
-      .map((r) => point(r.n.flight_in_degree, r.n.flight_betweenness, r.iso3, r.n.name));
+      .map((r) => point(r.n.flight_in_degree, r.n.flight_betweenness, r.iso3, r.n.name,
+        `<b>${r.n.name}</b><span>Flight network</span>` +
+        `<span>${r.n.flight_in_degree} flight partners</span>`));
     const chosen = state.selected ? metrics(state.selected, y) : null;
     instance.setOption(
       {
@@ -177,8 +203,8 @@ export function install(api, echarts) {
             `<b>${p.data.name}</b><br/>${p.seriesName}<br/>degree ${p.value[0]}<br/>betweenness ${Number(p.value[1]).toExponential(2)}`,
         },
         series: [
-          scatterSeries("Migration", migration, colours.PEOPLE, 6),
-          scatterSeries("Flights", flights, colours.ACCESS, 5),
+          scatterSeries("Migration", migration, colours.PEOPLE, 9),
+          scatterSeries("Flights", flights, colours.ACCESS, 8),
           ...(chosen && chosen.betweenness > 0
             ? highlightSeries(state.selected, chosen.in_degree, chosen.betweenness)
             : []),
@@ -193,8 +219,11 @@ export function install(api, echarts) {
     if (!instance) return;
     const y = String(state.data.null_year);
     const rows = withMetrics(y).filter((r) => r.m.z !== undefined && r.m.in_degree > 0);
-    const above = rows.filter((r) => r.m.z >= 2).map((r) => point(r.m.in_degree, r.m.z, r.iso3, r.n.name));
-    const rest = rows.filter((r) => r.m.z < 2).map((r) => point(r.m.in_degree, r.m.z, r.iso3, r.n.name));
+    const zTip = (r) =>
+      `<b>${r.n.name}</b><span>z = ${r.m.z.toFixed(2)}</span>` +
+      `<span>${r.m.in_degree} origins · betweenness #${r.m.betweenness_rank}</span>`;
+    const above = rows.filter((r) => r.m.z >= 2).map((r) => point(r.m.in_degree, r.m.z, r.iso3, r.n.name, zTip(r)));
+    const rest = rows.filter((r) => r.m.z < 2).map((r) => point(r.m.in_degree, r.m.z, r.iso3, r.n.name, zTip(r)));
     const chosen = state.selected ? metrics(state.selected, y) : null;
     instance.setOption(
       {
@@ -209,8 +238,8 @@ export function install(api, echarts) {
             `<b>${p.data.name}</b><br/>degree ${p.value[0]}<br/>z = ${Number(p.value[1]).toFixed(2)}`,
         },
         series: [
-          scatterSeries("Surprising (z ≥ 2)", above, colours.PEOPLE, 7),
-          scatterSeries("Explained by degree", rest, colours.ACCESS, 5),
+          scatterSeries("Surprising (z ≥ 2)", above, colours.PEOPLE, 10),
+          scatterSeries("Explained by degree", rest, colours.ACCESS, 8),
           {
             type: "line",
             markLine: {
@@ -251,9 +280,11 @@ export function install(api, echarts) {
       series: [
         scatterSeries(
           "Countries",
-          rows.map((r) => point(r.m.in_degree, r.m.betweenness, r.iso3, r.n.name)),
+          rows.map((r) => point(r.m.in_degree, r.m.betweenness, r.iso3, r.n.name,
+            `<b>${r.n.name}</b><span>${r.m.in_degree} origins</span>` +
+            `<span>betweenness #${r.m.betweenness_rank}</span>`)),
           "#c9d7e8",
-          4,
+          6,
         ),
         scatterSeries(
           "Denmark",
@@ -273,9 +304,10 @@ export function install(api, echarts) {
       series: [
         scatterSeries(
           "Countries",
-          zRows.map((r) => point(r.m.in_degree, r.m.z, r.iso3, r.n.name)),
+          zRows.map((r) => point(r.m.in_degree, r.m.z, r.iso3, r.n.name,
+            `<b>${r.n.name}</b><span>z = ${r.m.z.toFixed(2)}</span>`)),
           "#c9d7e8",
-          4,
+          6,
         ),
         ...(dk.z === undefined
           ? []
