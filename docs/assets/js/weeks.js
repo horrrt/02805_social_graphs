@@ -40,7 +40,13 @@ export const WEEKS = [
     courseTitle: "Who matters, and why",
     short: "WHO MATTERS",
     date: "2026-09-16",
-    status: "coming",
+    status: "live",
+    cabinet: {
+      name: "Corridor Control",
+      marquee: "CORRIDOR",
+      href: "weeks/week03/",
+      blurb: "Two networks, one world. Find the bridge, then check it against chance.",
+    },
   },
   {
     n: 4,

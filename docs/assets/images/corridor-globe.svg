@@ -1,0 +1,78 @@
+<svg
+  viewBox="0 0 640 440"
+  xmlns="http://www.w3.org/2000/svg"
+  role="img"
+  aria-label="A globe crossed by orange migration corridors and blue flight routes"
+>
+  <defs>
+    <radialGradient id="cc-sky" cx="30%" cy="22%" r="95%">
+      <stop offset="0" stop-color="#1d4e80" />
+      <stop offset="0.6" stop-color="#0b1f3a" />
+      <stop offset="1" stop-color="#071427" />
+    </radialGradient>
+    <radialGradient id="cc-ball" cx="34%" cy="28%" r="78%">
+      <stop offset="0" stop-color="#215a92" />
+      <stop offset="0.72" stop-color="#123a63" />
+      <stop offset="1" stop-color="#0a2444" />
+    </radialGradient>
+    <clipPath id="cc-clip"><circle cx="320" cy="220" r="150" /></clipPath>
+  </defs>
+
+  <rect width="640" height="440" fill="url(#cc-sky)" />
+  <circle cx="320" cy="220" r="150" fill="url(#cc-ball)" />
+
+  <g clip-path="url(#cc-clip)" fill="none" stroke="#a5c6e6" stroke-opacity="0.2">
+    <ellipse cx="320" cy="220" rx="150" ry="52" />
+    <ellipse cx="320" cy="220" rx="150" ry="104" />
+    <ellipse cx="320" cy="220" rx="150" ry="146" />
+    <ellipse cx="320" cy="220" rx="48" ry="150" />
+    <ellipse cx="320" cy="220" rx="100" ry="150" />
+    <line x1="170" y1="220" x2="470" y2="220" />
+    <line x1="320" y1="70" x2="320" y2="370" />
+  </g>
+
+  <g fill="none" stroke-linecap="round" stroke="#f2820c">
+    <path d="M214 178 Q300 96 400 150" stroke-width="4" stroke-opacity="0.9" />
+    <path d="M250 268 Q330 190 428 214" stroke-width="3.2" stroke-opacity="0.8" />
+    <path d="M198 236 Q292 300 396 276" stroke-width="2.4" stroke-opacity="0.7" />
+    <path d="M286 306 Q372 268 442 182" stroke-width="2" stroke-opacity="0.6" />
+    <path d="M232 140 Q318 142 368 92" stroke-width="1.6" stroke-opacity="0.5" />
+  </g>
+
+  <g fill="none" stroke-linecap="round" stroke="#1f8fd6">
+    <path d="M186 206 Q306 122 452 194" stroke-width="2.6" stroke-opacity="0.75" />
+    <path d="M226 296 Q334 340 438 258" stroke-width="2" stroke-opacity="0.65" />
+    <path d="M262 122 Q352 206 414 300" stroke-width="1.6" stroke-opacity="0.55" />
+  </g>
+
+  <g fill="#dceafa">
+    <circle cx="214" cy="178" r="4" />
+    <circle cx="400" cy="150" r="4.5" />
+    <circle cx="250" cy="268" r="3.4" />
+    <circle cx="428" cy="214" r="3.8" />
+    <circle cx="198" cy="236" r="3" />
+    <circle cx="396" cy="276" r="3.2" />
+    <circle cx="286" cy="306" r="2.8" />
+    <circle cx="442" cy="182" r="2.6" />
+    <circle cx="368" cy="92" r="2.6" />
+  </g>
+
+  <g
+    font-family="-apple-system, system-ui, sans-serif"
+    font-size="15"
+    font-weight="700"
+  >
+    <text x="44" y="64" fill="#ffb768" font-size="12" letter-spacing="2.4">
+      WEEK 3
+    </text>
+    <text x="44" y="92" fill="#eaf2fb" font-size="26" letter-spacing="-0.6">
+      Corridor Control
+    </text>
+    <g font-size="12" font-weight="600">
+      <rect x="44" y="360" width="22" height="3" rx="1.5" fill="#f2820c" />
+      <text x="74" y="366" fill="#b9cde4">Migration (people)</text>
+      <rect x="44" y="384" width="22" height="3" rx="1.5" fill="#1f8fd6" />
+      <text x="74" y="390" fill="#b9cde4">Flights (access)</text>
+    </g>
+  </g>
+</svg>

@@ -17,8 +17,11 @@ import {
 
 const DOCS = fileURLToPath(new URL("../docs/", import.meta.url));
 const JS = join(DOCS, "assets/js");
-// mockups.js and signal.js drive legacy pages that keep their own palettes.
-const LEGACY = ["mockups.js", "signal.js"];
+// These scripts drive pages that ship their own stylesheet and palette rather
+// than repainting one set of markup in two editions, so the shared --cv-*
+// token contract does not apply to them: mockups.js and signal.js are legacy,
+// corridor.js is the week 3 post, which has a single palette in corridor.css.
+const LEGACY = ["mockups.js", "signal.js", "corridor.js"];
 const scripts = () =>
   readdirSync(JS)
     .filter((f) => f.endsWith(".js") && !LEGACY.includes(f))

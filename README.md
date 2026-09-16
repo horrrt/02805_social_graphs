@@ -166,6 +166,27 @@ recorded 1,000-draw benchmark or a claim of uniform null sampling. Directed path
 always use the original snapshot; undirected paths, walks and removals use the
 current scenario. The nine-node island and original isolates are preserved.
 
+## The migration project
+
+From week 3 the project also works on a second domain: global migration. Two
+documents cover the data behind it, and both are generated from
+`scripts/migration/sources.py`.
+
+- **[Four questions about global migration](MIGRATION_QUESTIONS.md)** — the four
+  questions we want to answer with closeness, betweenness, cliques and event
+  studies, the trap in each, and the datasets each one actually needs. Then
+  twenty candidate questions for the weekly posts, each with what is at stake,
+  its null and a verdict on which week it fits. Start here.
+- **[Migration data catalogue](MIGRATION_DATA_CATALOGUE.md)** — 82 sources in 17
+  families. Per source: what one row is, coverage, metrics, network shape and
+  limitations.
+
+`scripts/migration/` harvests the data. `run_all.py` runs the whole thing:
+a Wikipedia category crawl, Wikidata classification into organisations, the
+article-link graph, then the country layer from UN DESA, UNHCR and the World
+Bank. Files land in `data/migration_*.tsv`; rebuild them rather than editing
+them.
+
 ## UX and scope
 
 See [PRESENTATION.md](PRESENTATION.md). All free-play concepts are usable without a key.
