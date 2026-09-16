@@ -956,3 +956,187 @@
   border-radius: 10px;
   overflow: hidden;
 }
+
+/* ===================================================================
+   Style dimensions
+   Four independent choices, each one a URL parameter and a dropdown:
+   the renderer, the palette, the corridor line style and the table
+   style. Everything below is the palette and the tables; the renderer
+   and the lines are the drawing code's business.
+   =================================================================== */
+
+/* --- palettes ----------------------------------------------------- */
+/* Canvas reads these through getComputedStyle, so one definition here
+   drives the CSS, the SVG variants and the 2D canvas alike. */
+
+.corridor[data-palette="ember"] {
+  --people: #ff5a26;
+  --people-soft: #ffe0d3;
+  --access: #14a89a;
+  --access-soft: #d2f1ee;
+}
+
+.corridor[data-palette="iris"] {
+  --people: #9b5de5;
+  --people-soft: #ece0fb;
+  --access: #2f9ee0;
+  --access-soft: #d9edfa;
+}
+
+/* Okabe and Ito's palette: the standard choice when the reader may be
+   colourblind. Both hues stay distinct under every common form. */
+.corridor[data-palette="okabe"] {
+  --people: #e69f00;
+  --people-soft: #fbeccf;
+  --access: #0072b2;
+  --access-soft: #cfe3f1;
+}
+
+/* For printing, and for anyone who would rather the colour carried no
+   meaning at all: the two networks separate by value, not by hue. */
+.corridor[data-palette="slate"] {
+  --people: #14304f;
+  --people-soft: #e2e8f0;
+  --access: #8ea6c0;
+  --access-soft: #eef2f7;
+}
+
+.corridor[data-palette="slate"] .chip {
+  background: var(--people-soft);
+  color: var(--people);
+}
+
+.corridor[data-palette="ember"] .chip {
+  color: #a8320d;
+}
+
+.corridor[data-palette="iris"] .chip {
+  color: #5b21b6;
+}
+
+.corridor[data-palette="okabe"] .chip {
+  color: #8a6000;
+}
+
+/* --- table styles -------------------------------------------------- */
+
+.corridor[data-tables="zebra"] dl.stats > div:nth-child(odd),
+.corridor[data-tables="zebra"] .corridor-list li:nth-child(odd),
+.corridor[data-tables="zebra"] table.ego tr:nth-child(even) td {
+  background: #f4f8fc;
+}
+
+.corridor[data-tables="zebra"] dl.stats > div,
+.corridor[data-tables="zebra"] .corridor-list li {
+  border-bottom: 0;
+  padding-inline: 6px;
+}
+
+.corridor[data-tables="zebra"] table.ego td {
+  border-top: 0;
+}
+
+.corridor[data-tables="cards"] dl.stats > div,
+.corridor[data-tables="cards"] .corridor-list li {
+  background: #f7fafd;
+  border: 1px solid var(--line-soft);
+  border-radius: 8px;
+  margin-bottom: 4px;
+  padding: 7px 10px;
+}
+
+.corridor[data-tables="cards"] table.ego td {
+  background: #f7fafd;
+  border-top: 3px solid #fff;
+}
+
+.corridor[data-tables="cards"] table.ego td:first-child {
+  border-radius: 8px 0 0 8px;
+}
+
+.corridor[data-tables="cards"] table.ego td:last-child {
+  border-radius: 0 8px 8px 0;
+}
+
+.corridor[data-tables="compact"] dl.stats > div,
+.corridor[data-tables="compact"] .corridor-list li {
+  font-size: 11.5px;
+  padding-block: 3px;
+}
+
+.corridor[data-tables="compact"] table.ego {
+  font-size: 11px;
+}
+
+.corridor[data-tables="compact"] table.ego td {
+  padding-block: 2.5px;
+}
+
+.corridor[data-tables="compact"] .panel {
+  padding: 11px;
+}
+
+/* --- the style bar -------------------------------------------------- */
+
+.corridor .style-bar {
+  align-items: end;
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+  margin: 14px 0 0;
+  padding: 12px 16px;
+}
+
+.corridor .style-field {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 130px;
+}
+
+.corridor .style-field label {
+  color: var(--ink-mute);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+}
+
+.corridor .style-field select {
+  font-weight: 600;
+  width: 100%;
+}
+
+.corridor .style-field .cost {
+  color: var(--ink-mute);
+  font-size: 10.5px;
+  font-variant-numeric: tabular-nums;
+}
+
+.corridor .style-bar .style-note {
+  border-left: 1px solid var(--line);
+  color: var(--ink-soft);
+  flex: 1 1 260px;
+  font-size: 12px;
+  line-height: 1.5;
+  padding-left: 14px;
+}
+
+.corridor .style-bar .style-note b {
+  color: var(--ink);
+}
+
+.corridor .style-reset {
+  background: none;
+  border: 0;
+  color: var(--access);
+  cursor: pointer;
+  font-size: 11.5px;
+  font-weight: 600;
+  padding: 0;
+  text-decoration: underline;
+}

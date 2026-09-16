@@ -107,7 +107,8 @@ export function install(api, d3) {
       .text(name);
   }
 
-  const SERIES = [
+  // Rebuilt per draw, so the palette dropdown reaches the SVG charts too.
+  const series = () => [
     ["In-degree", (n, m) => m.in_degree, colours.PEOPLE],
     ["Out-degree", (n, m) => m.out_degree, colours.INK],
     ["Flight degree", (n) => n.flight_degree, colours.ACCESS],
@@ -116,6 +117,7 @@ export function install(api, d3) {
   function hist() {
     const box = svgFor("hist");
     if (!box) return;
+    const SERIES = series();
     const all = SERIES.map(([, pick]) => degreeCounts(pick));
     const flat = all.flat();
     const x = d3
@@ -150,14 +152,15 @@ export function install(api, d3) {
     const box = svgFor("ccdf");
     if (!box) return;
     const rows = withMetrics();
-    const series = SERIES.map(([, pick]) =>
+    const SERIES = series();
+    const curves = SERIES.map(([, pick]) =>
       ccdf(rows.map(({ iso3, n, m }) => ({ k: pick(n, m), iso3 }))),
     );
-    const flat = series.flat();
+    const flat = curves.flat();
     const x = d3.scaleLog().domain([1, d3.max(flat, (d) => d.k)]).range([box.inner.left, box.inner.right]);
     const y = d3.scaleLog().domain([d3.min(flat, (d) => d.p), 1]).range([box.inner.bottom, box.inner.top]);
     axes(box.svg, box.inner, x, y, { xLabel: "Degree", yLabel: "P(K ≥ k)", yFormat: ".0e" });
-    series.forEach((points, i) =>
+    curves.forEach((points, i) =>
       plotPoints(
         box.svg,
         points.map((d) => ({
@@ -404,6 +407,7 @@ export function install(api, d3) {
       .attr("d", path)
       .attr("fill", "none")
       .attr("stroke", "rgba(165,198,230,0.24)");
+    const arcColour = colours.PEOPLE;
 
     const edges = api.topEdges(260);
     const heaviest = edges[0]?.weight ?? 1;
@@ -416,7 +420,7 @@ export function install(api, d3) {
       arcs
         .append("path")
         .attr("d", path({ type: "LineString", coordinates: [[from[1], from[0]], [to[1], to[0]]] }))
-        .attr("stroke", "#f79426")
+        .attr("stroke", arcColour)
         .attr("stroke-opacity", 0.2 + share * 0.6)
         .attr("stroke-width", 0.5 + share * 3)
         .attr("stroke-linecap", "round");

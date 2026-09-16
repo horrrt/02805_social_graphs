@@ -156,9 +156,13 @@ test("every element the week 3 script writes into exists in both editions", () =
 
 test("every render variant names a vendored library that exists", () => {
   const boot = read("docs/assets/js/week03-boot.js");
-  const names = [...boot.matchAll(/^\s{2}(\w+): \{$/gm)].map((m) => m[1]);
+  const renderers = boot.slice(
+    boot.indexOf("export const RENDERERS"),
+    boot.indexOf("export const PALETTES"),
+  );
+  const names = [...renderers.matchAll(/^\s{2}(\w+): \{$/gm)].map((m) => m[1]);
   assert.deepEqual(names, ["canvas", "d3", "echarts", "globe", "atlas", "deck"]);
-  for (const [, file] of boot.matchAll(/script: "([^"]+)"/g)) {
+  for (const [, file] of renderers.matchAll(/script: "([^"]+)"/g)) {
     const path = join(ROOT, "docs/assets/vendor", file);
     assert.ok(existsSync(path), `missing vendored library: ${file}`);
     // The switcher advertises a download size; it has to be the real one.
@@ -168,7 +172,7 @@ test("every render variant names a vendored library that exists", () => {
       `${file} is ${bytes} bytes and the registry says otherwise`,
     );
   }
-  for (const [, module] of boot.matchAll(/module: "\.\/([^"]+)"/g)) {
+  for (const [, module] of renderers.matchAll(/module: "\.\/([^"]+)"/g)) {
     assert.ok(
       existsSync(join(ROOT, "docs/assets/js", module)),
       `missing variant module: ${module}`,
@@ -188,5 +192,44 @@ test("each variant module exports install and touches no data", () => {
       [],
       `${name} must not reference a CDN`,
     );
+  }
+});
+
+test("every style dimension offers choices the page can actually apply", () => {
+  const boot = read("docs/assets/js/week03-boot.js");
+  const css = read("docs/assets/css/corridor.css");
+  const corridor = read("docs/assets/js/corridor.js");
+
+  const group = (name) =>
+    boot.slice(boot.indexOf(`export const ${name}`), boot.indexOf("};", boot.indexOf(`export const ${name}`)));
+  const keys = (name) => [...group(name).matchAll(/^\s{2}(\w+): \{/gm)].map((m) => m[1]);
+
+  // Every palette but the default needs its own block of custom properties.
+  for (const palette of keys("PALETTES").filter((p) => p !== "signal")) {
+    assert.ok(
+      css.includes(`[data-palette="${palette}"]`),
+      `no CSS for palette ${palette}`,
+    );
+  }
+  // Every table style but the default needs rules to key off.
+  for (const table of keys("TABLES").filter((t) => t !== "rules")) {
+    assert.ok(css.includes(`[data-tables="${table}"]`), `no CSS for tables ${table}`);
+  }
+  // Every corridor line style needs a spec the renderers can read.
+  const specs = corridor.slice(
+    corridor.indexOf("export const ARC_STYLES"),
+    corridor.indexOf("export function arcSpec"),
+  );
+  for (const arc of keys("ARCS")) {
+    assert.ok(specs.includes(`${arc}: {`), `no arc spec for ${arc}`);
+  }
+  assert.deepEqual(keys("ARCS"), ["curve", "straight", "flow", "taper"]);
+});
+
+test("the palette is read from CSS rather than hard-coded twice", () => {
+  const corridor = read("docs/assets/js/corridor.js");
+  assert.match(corridor, /getPropertyValue/, "canvas must read the palette from CSS");
+  for (const token of ["--people", "--access", "--ink"]) {
+    assert.ok(corridor.includes(`"${token}"`), `corridor.js never reads ${token}`);
   }
 });

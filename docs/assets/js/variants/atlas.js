@@ -13,12 +13,6 @@
 const DAY = "earth-day-2048.jpg";
 const BUMP = "earth-bump-1024.jpg";
 
-// Against a photograph the flat palette disappears, so both networks get a
-// hotter, more saturated version of the same two hues.
-const PEOPLE_CORE = "255,176,68";
-const PEOPLE_EDGE = "255,120,20";
-const ACCESS_CORE = "126,216,255";
-
 function textureURL(file) {
   return new URL(`../../textures/${file}`, import.meta.url).href;
 }
@@ -33,7 +27,7 @@ function loadImage(src) {
 }
 
 export function install(api, Globe) {
-  const { state, node, metrics, topEdges, flightEdges, select, $ } = api;
+  const { state, node, metrics, topEdges, flightEdges, select, $, colours, rgb, arcSpec } = api;
   let world = null;
   let host = null;
   let basemap = null;
@@ -115,6 +109,8 @@ export function install(api, Globe) {
     const instance = mount();
     if (!instance) return;
 
+    const people = rgb(colours.PEOPLE);
+    const spec = arcSpec();
     const edges = topEdges(300);
     const heaviest = edges[0]?.weight ?? 1;
     const arcs = [];
@@ -131,8 +127,8 @@ export function install(api, Globe) {
         stroke: 0.22 + share * 1.1,
         speed: 5000 - share * 2500,
         colour: [
-          `rgba(${PEOPLE_EDGE},${0.16 + share * 0.34})`,
-          `rgba(${PEOPLE_CORE},${0.66 + share * 0.34})`,
+          `rgba(${people},${0.16 + share * 0.34})`,
+          `rgba(${people},${0.66 + share * 0.34})`,
         ],
       });
     }
@@ -152,6 +148,11 @@ export function install(api, Globe) {
       });
     }
 
+    instance
+      .arcAltitudeAutoScale(spec.altitude)
+      .arcDashLength(spec.dashed ? 0.4 : 1)
+      .arcDashGap(spec.dashed ? 0.18 : 0)
+      .arcDashAnimateTime((d) => (spec.dashed ? d.speed : 0));
     instance.arcsData(arcs).pointsData(points);
 
     // The selected country gets the mockup's floating pin rather than a dot.
@@ -233,7 +234,7 @@ export function install(api, Globe) {
         const b = points.get(edge.di);
         if (!a || !b || Math.abs(a.x - b.x) > width * 0.6) continue;
         const share = Math.sqrt(edge.weight / heaviest);
-        ctx.strokeStyle = `rgba(${PEOPLE_CORE},${0.16 + share * 0.62})`;
+        ctx.strokeStyle = `rgba(${rgb(colours.PEOPLE)},${0.16 + share * 0.62})`;
         ctx.lineWidth = 0.4 + share * 2.8;
         curve(ctx, a, b, 0.13);
       }
@@ -246,7 +247,7 @@ export function install(api, Globe) {
         const b = points.get(edge.di);
         if (!a || !b || Math.abs(a.x - b.x) > width * 0.6) continue;
         const share = Math.sqrt(edge.routes / heaviest);
-        ctx.strokeStyle = `rgba(${ACCESS_CORE},${0.12 + share * 0.5})`;
+        ctx.strokeStyle = `rgba(${rgb(colours.ACCESS)},${0.12 + share * 0.5})`;
         ctx.lineWidth = 0.3 + share * 2.2;
         curve(ctx, a, b, -0.13);
       }

@@ -1,27 +1,22 @@
-// Corridor Control, render variants.
+// Corridor Control, style dimensions.
 //
-// The page, the data and every number are identical across variants. What
-// changes is which library draws them, so the four can be compared on the same
-// content rather than on four different posts.
+// Four independent choices, each a dropdown and each a URL parameter, so any
+// combination is a link somebody can send:
 //
-//   ?variant=canvas   hand-rolled 2D canvas, no library at all   (default)
-//   ?variant=d3       D3 v7: SVG charts and a d3-geo globe
-//   ?variant=echarts  Apache ECharts for every chart
-//   ?variant=globe    globe.gl (three.js) for the hero globe
-//   ?variant=deck     deck.gl GlobeView and ArcLayer
-//   ?variant=atlas    the design mockup: a photographic Earth
+//   ?variant=  which library draws it   canvas · d3 · echarts · globe · atlas · deck
+//   ?palette=  which two colours        signal · ember · iris · okabe · slate
+//   ?arcs=     how a corridor is drawn  curve · straight · flow · taper
+//   ?tables=   how the panels read      rules · zebra · cards · compact
 //
-// A variant overrides only the visuals it improves on and inherits the canvas
-// renderer for the rest, so "the ECharts variant" means the charts changed and
-// the globe did not. Each card in the switcher says what it swaps and what it
-// costs to download.
+// The data, the numbers and the copy never change. Only the renderer needs a
+// reload when it changes; the other three repaint in place.
 
-import { api, installRenderer, start } from "./corridor.js";
+import { api, installRenderer, restyle, start } from "./corridor.js";
 
-export const VARIANTS = {
+export const RENDERERS = {
   canvas: {
     label: "Canvas",
-    swaps: "Everything. Hand-rolled 2D canvas.",
+    swaps: "Everything, hand-rolled on a 2D canvas.",
     library: "none",
     bytes: 0,
   },
@@ -45,7 +40,7 @@ export const VARIANTS = {
   },
   globe: {
     label: "globe.gl",
-    swaps: "The hero globe, in WebGL with animated arcs. The twin map and the charts stay on canvas.",
+    swaps: "The hero globe, in WebGL. The twin map and the charts stay on canvas.",
     library: "globe.gl 2.32.0, bundling three.js",
     bytes: 1032643,
     script: "globe.gl-2.32.0.min.js",
@@ -54,10 +49,8 @@ export const VARIANTS = {
   },
   atlas: {
     label: "Atlas",
-    swaps:
-      "The hero globe and the twin map for a photographic Earth, which is what " +
-      "the original design mockup showed. Charts stay on canvas.",
-    library: "globe.gl 2.32.0 plus 482 KB of NASA Blue Marble imagery",
+    swaps: "The hero globe and the twin map, as a photographic Earth.",
+    library: "globe.gl plus 482 KB of NASA Blue Marble imagery",
     bytes: 1526503,
     script: "globe.gl-2.32.0.min.js",
     global: "Globe",
@@ -74,11 +67,55 @@ export const VARIANTS = {
   },
 };
 
-const DEFAULT = "canvas";
+export const PALETTES = {
+  signal: { label: "Signal", note: "Orange for people, blue for access." },
+  ember: { label: "Ember", note: "Hotter orange against teal." },
+  iris: { label: "Iris", note: "Violet against sky blue." },
+  okabe: { label: "Okabe-Ito", note: "The standard colourblind-safe pair." },
+  slate: { label: "Slate", note: "One hue, separated by value. Prints well." },
+};
 
-export function chosenVariant(search = window.location.search) {
-  const asked = new URLSearchParams(search).get("variant");
-  return asked && Object.hasOwn(VARIANTS, asked) ? asked : DEFAULT;
+export const ARCS = {
+  curve: { label: "Curved", note: "A corridor bows away from the straight line." },
+  straight: { label: "Straight", note: "Shortest path on the page, flat on the globe." },
+  flow: { label: "Flowing", note: "Dashes travel from origin to destination." },
+  taper: { label: "Tapered", note: "Heavy where people leave, thin where they land." },
+};
+
+export const TABLES = {
+  rules: { label: "Rules", note: "A hairline between rows." },
+  zebra: { label: "Zebra", note: "Alternating row tint." },
+  cards: { label: "Cards", note: "Every row in its own box." },
+  compact: { label: "Compact", note: "Denser, for comparing more at once." },
+};
+
+const DIMENSIONS = [
+  { key: "variant", label: "Renderer", options: RENDERERS, fallback: "canvas", reloads: true },
+  { key: "palette", label: "Colours", options: PALETTES, fallback: "signal" },
+  { key: "arcs", label: "Corridor lines", options: ARCS, fallback: "curve" },
+  { key: "tables", label: "Tables", options: TABLES, fallback: "rules" },
+];
+
+export function readStyle(search = window.location.search) {
+  const params = new URLSearchParams(search);
+  const chosen = {};
+  for (const dimension of DIMENSIONS) {
+    const asked = params.get(dimension.key);
+    chosen[dimension.key] = Object.hasOwn(dimension.options, asked ?? "")
+      ? asked
+      : dimension.fallback;
+  }
+  return chosen;
+}
+
+function styleURL(chosen) {
+  const next = new URL(window.location.href);
+  for (const dimension of DIMENSIONS) {
+    const value = chosen[dimension.key];
+    if (value === dimension.fallback) next.searchParams.delete(dimension.key);
+    else next.searchParams.set(dimension.key, value);
+  }
+  return next;
 }
 
 // Vendored, not fetched from a CDN: the site works offline and pulls no
@@ -101,62 +138,95 @@ function kb(bytes) {
   return bytes ? `${Math.round(bytes / 1024)} KB` : "no library";
 }
 
-function renderSwitcher(active) {
-  const host = document.getElementById("variant-switcher");
-  if (!host) return;
-  const url = (name) => {
-    const next = new URL(window.location.href);
-    if (name === DEFAULT) next.searchParams.delete("variant");
-    else next.searchParams.set("variant", name);
-    next.hash = "";
-    return next.pathname + next.search;
-  };
-  host.innerHTML = Object.entries(VARIANTS)
-    .map(
-      ([name, v]) =>
-        `<a class="variant${name === active ? " on" : ""}" href="${url(name)}"` +
-        ` aria-current="${name === active}"` +
-        ` title="${v.swaps} Download: ${kb(v.bytes)}.">` +
-        `<b>${v.label}</b><span>${kb(v.bytes)}</span></a>`,
-    )
-    .join("");
+function apply(chosen) {
+  const body = document.body;
+  body.dataset.variant = chosen.variant;
+  body.dataset.palette = chosen.palette;
+  body.dataset.tables = chosen.tables;
+  api.state.arcs = chosen.arcs;
+}
 
-  const note = document.getElementById("variant-note");
-  if (note) {
-    const v = VARIANTS[active];
-    note.innerHTML =
-      `<b>${v.label} variant.</b> ${v.swaps} ` +
-      (v.bytes
-        ? `Library: ${v.library}, ${kb(v.bytes)}, vendored in the repo rather than loaded from a CDN.`
-        : "No charting library is loaded at all; every mark is drawn by hand.") +
-      " The data, the numbers and the copy are the same in every variant.";
-  }
+function describe(chosen) {
+  const renderer = RENDERERS[chosen.variant];
+  return (
+    `<b>${renderer.label}.</b> ${renderer.swaps} ` +
+    `${PALETTES[chosen.palette].note} ${ARCS[chosen.arcs].note} ` +
+    `${TABLES[chosen.tables].note} ` +
+    (renderer.bytes
+      ? `Library: ${renderer.library}, ${kb(renderer.bytes)}, vendored in the repo.`
+      : "No charting library is loaded; every mark is drawn by hand.") +
+    " The data and the numbers are the same in every combination."
+  );
+}
+
+function renderBar(chosen, onChange) {
+  const host = document.getElementById("style-bar");
+  if (!host) return;
+  host.innerHTML =
+    DIMENSIONS.map((dimension) => {
+      const options = Object.entries(dimension.options)
+        .map(
+          ([value, meta]) =>
+            `<option value="${value}"${value === chosen[dimension.key] ? " selected" : ""}>` +
+            `${meta.label}${meta.bytes ? ` · ${kb(meta.bytes)}` : ""}</option>`,
+        )
+        .join("");
+      return (
+        `<div class="style-field">` +
+        `<label for="style-${dimension.key}">${dimension.label}</label>` +
+        `<select id="style-${dimension.key}" data-dimension="${dimension.key}">${options}</select>` +
+        `</div>`
+      );
+    }).join("") +
+    `<p class="style-note" id="style-note">${describe(chosen)}</p>`;
+
+  host.querySelectorAll("select").forEach((select) => {
+    select.addEventListener("change", () =>
+      onChange(select.dataset.dimension, select.value),
+    );
+  });
 }
 
 async function boot() {
-  const name = chosenVariant();
-  renderSwitcher(name);
-  document.body.dataset.variant = name;
+  const chosen = readStyle();
+  apply(chosen);
 
-  const variant = VARIANTS[name];
-  if (variant.script) {
+  const renderer = RENDERERS[chosen.variant];
+  if (renderer.script) {
     try {
-      await loadVendor(variant.script);
-      const { install } = await import(variant.module);
-      installRenderer({ name, ...install(api, window[variant.global]) });
+      await loadVendor(renderer.script);
+      const { install } = await import(renderer.module);
+      installRenderer({ name: chosen.variant, ...install(api, window[renderer.global]) });
     } catch (error) {
-      // A broken variant must not take the post down with it.
+      // A broken renderer must not take the post down with it.
       const status = document.getElementById("status");
       if (status) {
         status.textContent =
-          `The ${variant.label} variant failed to load (${error.message}); ` +
+          `The ${renderer.label} renderer failed to load (${error.message}); ` +
           "showing the canvas version instead.";
       }
-      document.body.dataset.variant = "canvas";
-      renderSwitcher("canvas");
+      chosen.variant = "canvas";
+      apply(chosen);
       console.error(error);
     }
   }
+
+  renderBar(chosen, (key, value) => {
+    chosen[key] = value;
+    const url = styleURL(chosen);
+    const dimension = DIMENSIONS.find((d) => d.key === key);
+    if (dimension.reloads) {
+      // Swapping the drawing library mid-flight would leave half the page in
+      // the old renderer's DOM, so this one dimension reloads.
+      window.location.assign(url.pathname + url.search);
+      return;
+    }
+    window.history.replaceState(null, "", url.pathname + url.search);
+    apply(chosen);
+    document.getElementById("style-note").innerHTML = describe(chosen);
+    restyle();
+  });
+
   await start();
 }
 

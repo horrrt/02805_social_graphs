@@ -9,7 +9,7 @@
 const NO_TEXTURE = null;
 
 export function install(api, Globe) {
-  const { state, node, metrics, topEdges, select, $ } = api;
+  const { state, node, metrics, topEdges, select, $, colours, rgb, arcSpec } = api;
   let world = null;
   let host = null;
 
@@ -78,6 +78,8 @@ export function install(api, Globe) {
     const globe = mount();
     if (!globe) return;
 
+    const tint = rgb(colours.PEOPLE);
+    const spec = arcSpec();
     const edges = topEdges(320);
     const heaviest = edges[0]?.weight ?? 1;
     const arcs = [];
@@ -93,7 +95,7 @@ export function install(api, Globe) {
         endLng: to[1],
         stroke: 0.18 + share * 0.9,
         speed: 5200 - share * 2600,
-        colour: [`rgba(247,148,38,${0.12 + share * 0.3})`, `rgba(255,196,110,${0.5 + share * 0.5})`],
+        colour: [`rgba(${tint},${0.12 + share * 0.3})`, `rgba(${tint},${0.5 + share * 0.5})`],
       });
     }
 
@@ -116,6 +118,14 @@ export function install(api, Globe) {
     if (state.world && globe.polygonsData().length === 0) {
       globe.polygonsData(state.world.features);
     }
+    // The corridor-line dropdown reaches WebGL too: flat arcs for straight,
+    // dashes only for flowing, and a thinner tail for tapered.
+    globe
+      .arcAltitudeAutoScale(spec.altitude)
+      .arcDashLength(spec.dashed ? 0.4 : 1)
+      .arcDashGap(spec.dashed ? 0.2 : 0)
+      .arcDashAnimateTime((d) => (spec.dashed ? d.speed : 0))
+      .arcStroke((d) => (spec.taper ? d.stroke * 0.7 : d.stroke));
     globe.arcsData(arcs).pointsData(points);
     if (state.selected) {
       const coord = node(state.selected)?.coord;

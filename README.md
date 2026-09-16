@@ -191,24 +191,30 @@ article-link graph, then the country layer from UN DESA, UNHCR and the World
 Bank. Files land in `data/migration_*.tsv`; rebuild them rather than editing
 them.
 
-## Render variants
+## Style dimensions
 
-The week 3 post is drawn five ways behind one query parameter. The data, the
-numbers and the copy are identical in each; only the drawing library changes.
+The week 3 post is drawn from four independent choices, each a dropdown on the
+page and each a URL parameter, so any combination is a link you can send. The
+data, the numbers and the copy never change.
 
-| URL | What it swaps | Library |
-| --- | --- | --- |
-| `/weeks/week03/` | nothing, hand-rolled 2D canvas | none |
-| `?variant=d3` | all charts to SVG, and the globe to d3-geo | d3 7.9.0, 273 KB |
-| `?variant=echarts` | every chart | echarts 5.5.1, 1007 KB |
-| `?variant=globe` | the hero globe, WebGL with animated arcs | globe.gl 2.32.0, 1008 KB |
-| `?variant=atlas` | the design mockup: a photographic Earth | globe.gl + 482 KB of Blue Marble imagery, 1491 KB |
-| `?variant=deck` | the hero globe and the twin map | deck.gl 9.0.30, 1217 KB |
+| Parameter | Choices |
+| --- | --- |
+| `?variant=` | `canvas` (default, no library) · `d3` 273 KB · `echarts` 1007 KB · `globe` 1008 KB · `atlas` 1491 KB · `deck` 1217 KB |
+| `?palette=` | `signal` (default) · `ember` · `iris` · `okabe` (colourblind-safe) · `slate` (mono, prints well) |
+| `?arcs=` | `curve` (default) · `straight` · `flow` (animated dashes) · `taper` (width carries direction) |
+| `?tables=` | `rules` (default) · `zebra` · `cards` · `compact` |
 
-A variant overrides only the visuals it replaces and inherits the canvas
-renderer for the rest, so a broken or missing library falls back to the default
-rather than taking the post down. `docs/assets/js/week03-boot.js` holds the
-registry; each variant is one module under `docs/assets/js/variants/`.
+Example: [`?variant=atlas&palette=okabe&arcs=taper&tables=compact`](https://horrrt.github.io/02805_social_graphs/weeks/week03/?variant=atlas&palette=okabe&arcs=taper&tables=compact)
+
+Only the renderer reloads when it changes; the other three repaint in place. A
+renderer overrides the visuals it replaces and inherits the canvas one for the
+rest, so a library that fails to load falls back rather than taking the post
+down. The palette lives in CSS custom properties and the canvas reads it back
+through `getComputedStyle`, so one definition drives the stylesheet, the SVG
+variants and the 2D canvas at once.
+
+`docs/assets/js/week03-boot.js` holds the four registries; each renderer is one
+module under `docs/assets/js/variants/`.
 
 ## UX and scope
 
