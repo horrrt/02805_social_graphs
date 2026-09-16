@@ -313,6 +313,44 @@ window.auditWeek03 = async function auditWeek03({ verbose = false } = {}) {
     await expectChange("map layers", "toggle switches", () => api?.state?.layer, async () => toggle.click());
   } else record("map layers", "toggle switches", false, "no toggle");
 
+  // Section 8 takes any country, and picking one there moves the whole page.
+  const picker = $("dk-country");
+  if (picker) {
+    record("spotlight", "picker lists every country",
+      picker.options.length > 200, `${picker.options.length} options`);
+    await expectChange("spotlight", "picking a country redraws section 8",
+      () => $("dk-verdict")?.textContent?.slice(0, 60),
+      async () => {
+        const other = [...picker.options].find((o) => o.value !== picker.value);
+        picker.value = other.value;
+        picker.dispatchEvent(new Event("change", { bubbles: true }));
+      });
+    record("spotlight", "picking a country moves the page selection",
+      api?.state?.selected === picker.value, `selected ${api?.state?.selected}`);
+  } else record("spotlight", "picker exists", false, "no #dk-country");
+
+  // Earth size is the one style dimension with no CSS behind it: it has to
+  // reach whatever the renderer draws the globe with.
+  const earth = $("style-earth");
+  if (earth) {
+    await expectChange("earth size", "changes the globe", () => {
+      const canvas = $("globe-canvas");
+      const live = document.getElementById("globe-canvas-d3")
+        ?? document.getElementById("globe-gl")
+        ?? document.getElementById("globe-canvas-deck");
+      if (live) return `${api.state.earth}|${live.innerHTML.length}`;
+      const ctx = canvas.getContext("2d");
+      const pixels = ctx.getImageData(0, 0, canvas.width, canvas.height).data;
+      let inked = 0;
+      for (let i = 3; i < pixels.length; i += 2000) if (pixels[i] > 0) inked += 1;
+      return inked;
+    }, async () => {
+      earth.value = earth.value === "small" ? "huge" : "small";
+      earth.dispatchEvent(new Event("change", { bubbles: true }));
+      await wait(900);
+    });
+  } else record("earth size", "changes the globe", false, "no control");
+
   // The questions drawer is canvas in every renderer, so it has to paint and
   // answer itself whichever library is loaded.
   const questions = $("questions");

@@ -72,6 +72,21 @@ export const LINK_ENCODINGS = {
 
 export const THICKNESS = { thin: 0.55, normal: 1, thick: 1.9 };
 
+// How much of its panel the globe fills. A number, not a pixel count, so a
+// 2D canvas, an SVG orthographic and two WebGL cameras can each express the
+// same choice in their own units.
+export const EARTH_SIZES = { small: 0.76, medium: 1, large: 1.24, huge: 1.5 };
+
+export function earthScale() {
+  return EARTH_SIZES[state.earth] ?? 1;
+}
+
+// The canvas globe's radius, shared by the drawing and the hit test so a
+// click always lands where the sphere was painted.
+export function globeRadius(width, height) {
+  return Math.min(width, height) * 0.42 * earthScale();
+}
+
 export function linkSpec() {
   return LINK_ENCODINGS[state.links] ?? LINK_ENCODINGS.width;
 }
@@ -138,6 +153,7 @@ const state = {
   focus: "all",
   dots: "on",
   basemap: "outline",
+  earth: "medium",
   hover: null,
   axisMode: { hist: "loglog", ccdf: "loglog" },
   dash: 0,
@@ -284,6 +300,52 @@ function withMetrics(y = year()) {
     .filter((row) => row.m);
 }
 
+// Section 8 analyses one country, and that country is whatever is selected on
+// the page. Everything it needs is already per-country in the payload, so the
+// section works for any of the 236 without shipping a block for each.
+function spotlight() {
+  const iso3 = state.selected && node(state.selected)
+    ? state.selected
+    : state.data.focus.iso3;
+  const n = node(iso3);
+  const series = state.data.years
+    .map((year) => ({ year, ...(n.years[String(year)] ?? {}) }))
+    .filter((point) => point.in_strength !== undefined);
+  return { iso3, name: n.name, series, peers: peersOf(iso3) };
+}
+
+function haversine(a, b) {
+  const rad = Math.PI / 180;
+  const [lat1, lon1, lat2, lon2] = [a[0] * rad, a[1] * rad, b[0] * rad, b[1] * rad];
+  const h = Math.sin((lat2 - lat1) / 2) ** 2
+    + Math.cos(lat1) * Math.cos(lat2) * Math.sin((lon2 - lon1) / 2) ** 2;
+  return 2 * 6371 * Math.asin(Math.min(1, Math.sqrt(h)));
+}
+
+// The four countries closest to it on the ground, itself first. For Denmark
+// that is the Nordics and their neighbours; every other country gets the same
+// comparison without a hand-written list of peers.
+function peersOf(iso3) {
+  const y = String(state.data.null_year);
+  const home = node(iso3)?.coord;
+  const self = metrics(iso3, y);
+  if (!home || !self) return [];
+  const rows = withMetrics(y)
+    .filter((r) => r.iso3 !== iso3 && r.n.coord)
+    .map((r) => ({ ...r, km: haversine(home, r.n.coord) }))
+    .sort((a, b) => a.km - b.km)
+    .slice(0, 4);
+  return [{ iso3, n: node(iso3), m: self, km: 0 }, ...rows].map((r) => ({
+    iso3: r.iso3,
+    name: r.n.name,
+    km: Math.round(r.km),
+    in_degree: r.m.in_degree,
+    z: r.m.z,
+    flight_degree: r.n.flight_degree,
+    betweenness_rank: r.m.betweenness_rank,
+  }));
+}
+
 function flag(iso2) {
   if (!iso2 || iso2.length !== 2) return "🌍";
   return String.fromCodePoint(
@@ -313,7 +375,7 @@ export const GLOSSARY = {
   "Flight routes":
     "How many distinct airport-to-airport routes connect here to somewhere abroad. A route existing says nothing about seats or frequency.",
   Typology:
-    "Which of five roles this country plays, assigned on ranks rather than raw values so the label means the same thing in any year.",
+    "One of six labels, assigned by a cascade of rank tests rather than raw values, so a label means the same thing in any year: both, destination hub, human bridge, system airport, leaf, and mixed when none of the five fired. Section 6 has the full rule.",
   "k (in)": "In-degree: the number of countries that send people here.",
   Rank: "Position among all countries on this measure, 1 being the highest.",
   "z-score":
@@ -329,8 +391,8 @@ export const GLOSSARY = {
   "Flight routes ": "Direct airport-to-airport routes between these two countries.",
 };
 
-function row(term, value) {
-  const note = GLOSSARY[term];
+function row(term, value, override) {
+  const note = override ?? GLOSSARY[term];
   const attr = note ? ` class="explains" data-explain="${note.replace(/"/g, "&quot;")}"` : "";
   return `<div><dt${attr}>${term}</dt><dd>${value}</dd></div>`;
 }
@@ -366,7 +428,7 @@ function renderInspector() {
         row("Betweenness z-score", z === undefined ? "— (2020 only)" : z.toFixed(2)),
         row("Flight partners", fmt.format(n.flight_degree)),
         row("Flight routes", fmt.format(n.flight_strength)),
-        row("Typology", `<span class="chip">${label(m.typology)}</span>`),
+        row("Typology", `<span class="chip">${label(m.typology)}</span>`, typologyNote(m.typology)),
       ].join("")
     : `<div><dt>No migration data for ${state.year}</dt><dd>—</dd></div>`;
 
@@ -407,6 +469,8 @@ function renderInspector() {
 function select(iso3) {
   if (!iso3 || !node(iso3)) return;
   state.selected = iso3;
+  // renderInspector redraws every chart that carries a marker, section 8
+  // included, so the whole page follows one selection.
   renderInspector();
   R.globe();
   R.map();
@@ -505,53 +569,65 @@ function enablePicking(id) {
   });
 }
 
+// Six labels from one cascade of rank tests, first match wins. "Top" means the
+// top tenth of all countries on that measure; "bottom half" means outside the
+// median. The rule itself lives in analysis/week03_corridor_control.py; these
+// strings say what it did, in the order it did it.
 const TYPES = {
+  both: {
+    title: "Both",
+    icon: "◎",
+    tint: "#e7f6ee",
+    fg: "#0d6b3a",
+    what: "Top tenth for incoming migrants and top tenth for flight partners. People and access at once. Tested first, so nothing else can claim these.",
+  },
   "destination-hub": {
     title: "Destination hub",
     icon: "✦",
     tint: "#fde8cf",
     fg: "#9a5205",
-    what: "Many incoming migrants, from many origins. A place people arrive.",
+    what: "Top tenth for incoming migrants, but not for flight partners. People arrive here without the air network to match.",
   },
   "human-bridge": {
     title: "Human bridge",
     icon: "⇄",
     tint: "#e7dcfb",
     fg: "#5b3a9e",
-    what: "Sits on many shortest paths, more than its partner count explains. A broker.",
+    what: "Top tenth for betweenness and a z-score of +2 or more, so it brokers more than its partner count can explain. Tested after the arrival roles, so a big destination is never relabelled a bridge.",
   },
   "system-airport": {
     title: "System airport",
     icon: "✈",
     tint: "#d9ecf9",
     fg: "#14618f",
-    what: "Many flight partners, few incoming migrants. A travel hub, a weak human link.",
-  },
-  both: {
-    title: "Both",
-    icon: "◎",
-    tint: "#e7f6ee",
-    fg: "#0d6b3a",
-    what: "Many incoming migrants and many flight partners at once. People and access.",
+    what: "Top tenth for flight partners without being top tenth for incoming migrants. A travel hub that is a weak human link.",
   },
   leaf: {
     title: "Leaf",
     icon: "❦",
     tint: "#eef3f9",
     fg: "#46618a",
-    what: "Few partners, few people, rarely on a path. The edge of both networks.",
+    what: "Outside the top half on origins, on incoming migrants and on betweenness, all three at once. The edge of both networks.",
   },
   mixed: {
     title: "Mixed",
     icon: "◌",
     tint: "#eef3f9",
     fg: "#46618a",
-    what: "No role dominates.",
+    what: "Nothing fired: not in the top tenth of anything, not in the bottom half of everything. Ordinary, and most of the world is here.",
   },
 };
 
 function label(key) {
   return TYPES[key]?.title ?? key ?? "—";
+}
+
+// The Typology row explains the role it is showing, not the idea of roles.
+function typologyNote(key) {
+  const type = TYPES[key];
+  return type
+    ? `${type.title} — ${type.what} ${GLOSSARY.Typology}`
+    : GLOSSARY.Typology;
 }
 
 /* ------------------------------------------------------------------- globe */
@@ -938,7 +1014,7 @@ function drawGlobe() {
   const canvas = $("globe-canvas");
   if (!canvas || !state.data) return;
   const { ctx, width, height } = surface(canvas);
-  const radius = Math.min(width, height) * 0.42;
+  const radius = globeRadius(width, height);
   const cx = width / 2;
   const cy = height / 2;
 
@@ -1051,7 +1127,7 @@ function globeHit(event) {
   const rect = canvas.getBoundingClientRect();
   const x = event.clientX - rect.left;
   const y = event.clientY - rect.top;
-  const radius = Math.min(rect.width, rect.height) * 0.42;
+  const radius = globeRadius(rect.width, rect.height);
   const cx = rect.width / 2;
   const cy = rect.height / 2;
   const geo = unprojectGlobe(x, y, radius, cx, cy, state.rotation);
@@ -1496,7 +1572,7 @@ function renderTypology() {
   for (const { iso3, m } of withMetrics(y)) {
     if (m.typology && buckets.has(m.typology)) buckets.get(m.typology).push({ iso3, m });
   }
-  const order = ["destination-hub", "human-bridge", "system-airport", "both", "leaf"];
+  const order = ["both", "destination-hub", "human-bridge", "system-airport", "leaf", "mixed"];
   $("typology-cards").innerHTML = order
     .map((key) => {
       const meta = TYPES[key];
@@ -1674,7 +1750,7 @@ function renderEdge() {
 /* ---------------------------------------------------------------- section 9 */
 
 function renderDenmarkPanels() {
-  const focus = state.data.focus;
+  const focus = spotlight();
   const iso3 = focus.iso3;
   const y = String(state.data.null_year);
   const m = metrics(iso3, y);
@@ -1694,12 +1770,14 @@ function renderDenmarkPanels() {
       ["Typology", label(m.typology)],
     ]
       .map(([k, v]) => {
-        const note = GLOSSARY[{
-          Incoming: "Incoming migrants (stock)",
-          Outgoing: "Outgoing migrants (stock)",
-          Origins: "Origins represented",
-          Destinations: "Destinations sent to",
-        }[k] ?? k];
+        const note = k === "Typology"
+          ? typologyNote(m.typology)
+          : GLOSSARY[{
+            Incoming: "Incoming migrants (stock)",
+            Outgoing: "Outgoing migrants (stock)",
+            Origins: "Origins represented",
+            Destinations: "Destinations sent to",
+          }[k] ?? k];
         const attr = note ? ` class="explains" data-explain="${note.replace(/"/g, "&quot;")}"` : "";
         return `<div class="metric"${attr}><span>${k}</span><b>${v}</b></div>`;
       })
@@ -1709,26 +1787,46 @@ function renderDenmarkPanels() {
   const egoRow = (c) =>
     `<tr><td>${node(c.other)?.name ?? c.other}</td><td>${fmt.format(c.weight)}</td></tr>`;
   $("dk-in").innerHTML =
-    `<caption>Top links into Denmark</caption><tr><th>Origin</th><th style="text-align:right">People</th></tr>` +
+    `<caption>Top links into ${n.name}</caption><tr><th>Origin</th><th style="text-align:right">People</th></tr>` +
     (n.top_in ?? []).map(egoRow).join("");
   $("dk-out").innerHTML =
-    `<caption>Top links out of Denmark</caption><tr><th>Destination</th><th style="text-align:right">People</th></tr>` +
+    `<caption>Top links out of ${n.name}</caption><tr><th>Destination</th><th style="text-align:right">People</th></tr>` +
     (n.top_out ?? []).map(egoRow).join("");
 
+  for (const slot of document.querySelectorAll(".dk-name")) slot.textContent = n.name;
+  const picker = $("dk-country");
+  if (picker && picker.value !== iso3) picker.value = iso3;
 
   const rank = m.betweenness_rank;
   const strengthRank = m.in_strength_rank;
+  const total = state.data.countries.length;
   $("dk-verdict").querySelector("span:last-child").innerHTML =
-    `<b>Denmark, in one line.</b> It ranks #${strengthRank} by the number of foreign-born residents and #${rank} as a bridge, ` +
-    `with a z-score of ${m.z === undefined ? "—" : m.z.toFixed(2)} against the degree-preserving null. ` +
-    `Its ${m.in_degree} recorded origins are unusually many for its size, and that is a register artefact ` +
-    `as much as a fact about Denmark: a population register names every origin, while a survey-based ` +
-    `country files most of them under "other".`;
+    `<b>${n.name}, in one line.</b> It ranks #${strengthRank} of ${total} by the number of ` +
+    `foreign-born residents and #${rank} as a bridge, with a z-score of ` +
+    `${m.z === undefined ? "—" : m.z.toFixed(2)} against the degree-preserving null. ` +
+    `Its ${m.in_degree} recorded origins are as much a fact about the statistics office as ` +
+    `about the country: a population register names every origin, while a survey-based country ` +
+    `files most of them under "other", so origin counts are only comparable between countries ` +
+    `that count the same way.`;
+}
+
+// The country picker is the section's control and the page's selection at the
+// same time, so choosing here moves the maps and choosing on a map moves here.
+function setupSpotlightPicker() {
+  const picker = $("dk-country");
+  if (!picker) return;
+  picker.innerHTML = state.data.countries
+    .slice()
+    .sort((a, b) => node(a).name.localeCompare(node(b).name))
+    .map((iso3) => `<option value="${iso3}">${node(iso3).name}</option>`)
+    .join("");
+  picker.value = spotlight().iso3;
+  picker.addEventListener("change", () => select(picker.value));
 }
 
 function drawDenmark() {
   refreshPalette();
-  const focus = state.data.focus;
+  const focus = spotlight();
   const iso3 = focus.iso3;
   const y = String(state.data.null_year);
   const m = metrics(iso3, y);
@@ -1755,7 +1853,7 @@ function drawDenmark() {
         `<span>betweenness #${r.m.betweenness_rank}</span>`,
     })), "#c9d7e8", 1.8);
     dot(ctx, box.x(m.in_degree), box.y(m.betweenness), "#d0021b", n.name, 4, box.right);
-    for (const other of focus.nordics) {
+    for (const other of focus.peers) {
       if (other.iso3 === iso3) continue;
       const om = metrics(other.iso3, y);
       if (om) dot(ctx, box.x(om.in_degree), box.y(om.betweenness), PEOPLE, other.iso3, 2.6, box.right);
@@ -1802,7 +1900,7 @@ function drawDenmark() {
     for (const point of focus.series) {
       timeMarks.push({
         x: box.x(point.year), y: box.y(point.in_strength), iso3: focus.iso3,
-        label: `<b>Denmark, ${point.year}</b>` +
+        label: `<b>${focus.name}, ${point.year}</b>` +
           `<span>${fmt.format(point.in_strength)} incoming</span>` +
           `<span>${fmt.format(point.out_strength)} outgoing</span>`,
       });
@@ -1825,7 +1923,7 @@ function drawDenmark() {
     for (const point of focus.series) {
       rankMarks.push({
         x: box.x(point.year), y: box.y(point.betweenness_rank), iso3: focus.iso3,
-        label: `<b>Denmark, ${point.year}</b>` +
+        label: `<b>${focus.name}, ${point.year}</b>` +
           `<span>bridge rank #${point.betweenness_rank}</span>` +
           `<span>${point.in_degree} origins</span>`,
       });
@@ -1833,7 +1931,7 @@ function drawDenmark() {
   });
 
   small($("dk-nordic"), (ctx, box) => {
-    const items = focus.nordics;
+    const items = focus.peers;
     const maxDeg = Math.max(...items.map((i) => i.in_degree), 1);
     const maxFlight = Math.max(...items.map((i) => i.flight_degree), 1);
     const maxZ = Math.max(...items.map((i) => Math.abs(i.z ?? 0)), 1);
@@ -1842,7 +1940,7 @@ function drawDenmark() {
     axes(ctx, box, {
       xTicks: items.map((i, idx) => ({ value: idx + 0.5, label: i.iso3 })),
       yTicks: [0, 0.5, 1].map((v) => ({ value: v, label: v === 1 ? "max" : v === 0 ? "0" : "" })),
-      xLabel: "Nordic country",
+      xLabel: `${focus.name} and its four nearest neighbours`,
       yLabel: "Share of the largest",
     });
     const bars = [
@@ -1861,7 +1959,8 @@ function drawDenmark() {
         marks.push({
           x: x + w * 0.4, y: (yv + box.bottom) / 2, iso3: item.iso3,
           label: `<b>${item.name}</b><span>${bar.name}: ${bar.read(item)}</span>` +
-            `<span>betweenness rank #${item.betweenness_rank}</span>`,
+            `<span>betweenness rank #${item.betweenness_rank}</span>` +
+            `<span>${item.km ? `${fmt.format(item.km)} km away` : "the country in question"}</span>`,
         });
       });
     });
@@ -2089,6 +2188,7 @@ export const api = {
   // Chart furniture, so the questions section draws on the same axes as the
   // rest of the post instead of inventing its own.
   surface, frame, axes, logTicks, logScale, linearScale, flag,
+  spotlight, earthScale, globeRadius, EARTH_SIZES, typologyNote,
   colours: { PEOPLE, ACCESS, INK, MUTE, GRID },
   format: { fmt, compact },
   $,
@@ -2164,9 +2264,12 @@ async function main() {
     syncFlow();
     wireGlossary();
     setupEdgeInspector();
+    setupSpotlightPicker();
     renderTwinStats();
     renderTypology();
-    select("ESP");
+    // The page opens on the country section 8 is built around, so the default
+    // selection and the default analysis are the same country.
+    select(corridors.focus.iso3);
     setYear(Number($("year-slider").value));
     $("year-slider").addEventListener("input", (event) => setYear(Number(event.target.value)));
     window.addEventListener("resize", () => {

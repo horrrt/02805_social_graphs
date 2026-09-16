@@ -10,7 +10,7 @@
     <title>Corridor Control · Log–Log Arcade · Apple edition</title>
     <meta content="../../" name="site-root" />
     <link href="../../../assets/favicon.svg" rel="icon" type="image/svg+xml" />
-    <link href="../../../assets/css/corridor.css?v=415f1a48da" rel="stylesheet" />
+    <link href="../../../assets/css/corridor.css?v=69c1e70913" rel="stylesheet" />
   </head>
   <body class="corridor theme-apple">
     <a class="skip" href="#main">Skip to content</a>
@@ -342,10 +342,13 @@
               <span class="year-tag">(analysis year: 2020)</span>
             </div>
             <p class="sub">
-              Five roles, defined on ranks rather than raw values so a label
-              means the same thing in any year. Examples are read from the data,
-              not chosen by hand. Hover a country code to see why it is there,
-              or open the full list for a role.
+              Six labels from one cascade of rank tests, read left to right:
+              the first test a country passes is the label it gets, and
+              <b>mixed</b> is what is left when none of the five fired. Ranks
+              rather than raw values, so a label means the same thing in any
+              year. Each card says exactly which test produced it. Examples are
+              read from the data, not chosen by hand — hover a country code to
+              see why it is there, or open the full list for a role.
             </p>
             <div class="grid5" id="typology-cards"></div>
             <aside
@@ -384,14 +387,20 @@
           <div class="card">
             <div class="step-head">
               <span class="num">8</span>
-              <h2>Let's analyse Denmark</h2>
+              <h2>Let's analyse <span class="dk-name">Denmark</span></h2>
               <span class="year-tag">(analysis year: 2020)</span>
+              <select aria-label="Country to analyse" id="dk-country"></select>
             </div>
+            <p class="sub">
+              Denmark is where this starts because it is where we are, but the
+              dropdown takes any of the 236 countries, and it follows whatever
+              you have selected elsewhere on the page.
+            </p>
             <div class="dk-head" id="dk-head"></div>
 
             <div class="grid3">
               <div class="plot">
-                <h3>A. Denmark on the global scatters</h3>
+                <h3>A. <span class="dk-name">Denmark</span> on the global scatters</h3>
                 <p class="axis-note">Betweenness vs origins · click any point</p>
                 <canvas class="chart" height="330" id="dk-scatter" width="440"></canvas>
               </div>
@@ -401,17 +410,17 @@
                 <canvas class="chart" height="330" id="dk-z" width="440"></canvas>
               </div>
               <div class="plot">
-                <h3>B. Denmark's links, in and out</h3>
+                <h3>B. <span class="dk-name">Denmark</span>, in and out</h3>
                 <p class="axis-note">Migrant stock, 2020</p>
                 <div class="grid2" style="gap: 10px">
                   <table class="ego" id="dk-in">
                     <caption>
-                      Into Denmark
+                      Into <span class="dk-name">Denmark</span>
                     </caption>
                   </table>
                   <table class="ego" id="dk-out">
                     <caption>
-                      Out of Denmark
+                      Out of <span class="dk-name">Denmark</span>
                     </caption>
                   </table>
                 </div>
@@ -420,7 +429,7 @@
 
             <div class="grid3" style="margin-top: 18px">
               <div class="plot">
-                <h3>C. Denmark through time</h3>
+                <h3>C. <span class="dk-name">Denmark</span> through time</h3>
                 <p class="axis-note">Incoming and outgoing people, 1990–2024</p>
                 <canvas class="chart" height="330" id="dk-time" width="440"></canvas>
               </div>
@@ -430,9 +439,10 @@
                 <canvas class="chart" height="330" id="dk-rank" width="440"></canvas>
               </div>
               <div class="plot">
-                <h3>D. Nordic comparison</h3>
+                <h3>D. Nearest neighbours</h3>
                 <p class="axis-note">
-                  2020 · in-degree, z-score, flight degree · click a bar
+                  2020 · the four closest countries on the ground · origins,
+                  z-score, flight partners · click a bar
                 </p>
                 <canvas class="chart" height="330" id="dk-nordic" width="440"></canvas>
               </div>
@@ -444,11 +454,11 @@
           </div>
         </section>
 
-        <!-- 10 ----------------------------------------------------------- -->
+        <!-- 9 ------------------------------------------------------------ -->
         <section class="step" id="asks">
           <div class="card">
             <div class="step-head">
-              <span class="num">10</span>
+              <span class="num">9</span>
               <h2>Six questions, answered from the same two files</h2>
             </div>
             <p class="sub">
@@ -462,12 +472,7 @@
             </p>
             <details class="qa" id="questions">
               <summary>
-                <span class="qa-cue">Open the questions</span>
-                <span class="qa-teaser">
-                  a ring of the busiest corridors · where migrants live against
-                  where they were born · how far they move · wealth, growth and
-                  distance · what stands in for skill · who moves
-                </span>
+                <span class="qa-cue">Here you can learn more</span>
               </summary>
               <div class="qa-body">
                 <article class="qa-item">
@@ -668,6 +673,6 @@
       </footer>
     </main>
 
-    <script src="../../../assets/js/week03-boot.js?v=415f1a48da" type="module"></script>
+    <script src="../../../assets/js/week03-boot.js?v=69c1e70913" type="module"></script>
   </body>
 </html>

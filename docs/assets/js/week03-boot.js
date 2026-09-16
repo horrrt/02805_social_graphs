@@ -1,17 +1,18 @@
 // Corridor Control, style dimensions.
 //
-// Four independent choices, each a dropdown and each a URL parameter, so any
+// Independent choices, each a dropdown and each a URL parameter, so any
 // combination is a link somebody can send:
 //
 //   ?variant=  which library draws it   canvas · d3 · echarts · globe · atlas · deck
 //   ?palette=  which two colours        signal · ember · iris · okabe · slate
 //   ?arcs=     how a corridor is drawn  curve · straight · flow · taper
 //   ?basemap=  what the world looks like outline · photo · none
+//   ?earth=    how much panel it fills  small · medium · large · huge
 //   ?skin=     type and surface         clean · editorial · terminal · poster
 //   ?tables=   how the panels read      rules · zebra · cards · compact
 //
 // The data, the numbers and the copy never change. Only the renderer needs a
-// reload when it changes; the other three repaint in place.
+// reload when it changes; the rest repaint in place.
 
 // GitHub Pages caches assets for about ten minutes, which is long enough that
 // a reader on a just-updated post can run last version's code against this
@@ -122,6 +123,15 @@ export const BASEMAP = {
   none: { label: "No basemap", note: "Corridors alone, with nothing under them." },
 };
 
+// How much of its panel the globe fills. corridor.js turns each of these into
+// a number; every renderer reads that same number in its own units.
+export const EARTH = {
+  small: { label: "Small", note: "" },
+  medium: { label: "Medium", note: "" },
+  large: { label: "Large", note: "" },
+  huge: { label: "Fills the panel", note: "The globe runs to the edges." },
+};
+
 export const SKINS = {
   clean: { label: "Clean", note: "System type, soft cards. The default." },
   editorial: { label: "Editorial", note: "A serif face, a narrower column, section numbers on a rail." },
@@ -144,6 +154,7 @@ const DIMENSIONS = [
   { key: "thickness", label: "Link thickness", options: THICKNESS, fallback: "normal" },
   { key: "focus", label: "On selection", options: FOCUS, fallback: "all" },
   { key: "basemap", label: "The world", options: BASEMAP, fallback: "outline" },
+  { key: "earth", label: "Earth size", options: EARTH, fallback: "medium" },
   { key: "dots", label: "Country dots", options: DOTS, fallback: "on" },
   { key: "skin", label: "Skin", options: SKINS, fallback: "clean" },
   { key: "tables", label: "Tables", options: TABLES, fallback: "rules" },
@@ -203,6 +214,7 @@ function apply(chosen) {
   api.state.focus = chosen.focus;
   api.state.dots = chosen.dots;
   api.state.basemap = chosen.basemap;
+  api.state.earth = chosen.earth;
 }
 
 function describe(chosen) {
@@ -211,7 +223,7 @@ function describe(chosen) {
     `<b>${renderer.label}.</b> ${renderer.swaps} ` +
     `${PALETTES[chosen.palette].note} ${ARCS[chosen.arcs].note} ` +
     `${LINKS[chosen.links].note} ${FOCUS[chosen.focus].note} ` +
-    `${BASEMAP[chosen.basemap].note} ${DOTS[chosen.dots].note} ` +
+    `${BASEMAP[chosen.basemap].note} ${EARTH[chosen.earth].note} ${DOTS[chosen.dots].note} ` +
     `${SKINS[chosen.skin].note} ` +
     `${TABLES[chosen.tables].note} ` +
     (renderer.bytes

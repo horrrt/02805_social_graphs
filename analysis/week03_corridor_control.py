@@ -28,6 +28,7 @@ import pathlib
 import random
 import statistics
 import sys
+import time
 
 import networkx as nx
 
@@ -37,8 +38,24 @@ sys.path.insert(0, str(ROOT / "scripts" / "migration"))
 RAW = ROOT / "build" / "raw"
 OUT = ROOT / "docs" / "assets" / "data"
 YEARS = [1990, 1995, 2000, 2005, 2010, 2015, 2020, 2024]
-NORDICS = ["DNK", "SWE", "NOR", "FIN", "ISL"]
 FOCUS = "DNK"
+
+
+def read_json(path, attempts=5):
+    """Read a JSON file, retrying a short read.
+
+    This repository lives on a Google Drive mount, which occasionally hands
+    back a truncated stream at a 64 KiB boundary and raises JSONDecodeError on
+    a file that is perfectly fine on disk. Reading again has always worked.
+    """
+    for attempt in range(attempts):
+        try:
+            return json.loads(path.read_bytes().decode("utf-8"))
+        except (json.JSONDecodeError, UnicodeDecodeError):
+            if attempt == attempts - 1:
+                raise
+            time.sleep(0.4)
+    raise AssertionError("unreachable")
 
 
 def read_tsv(path):
@@ -280,7 +297,7 @@ def main():
 
     cached = OUT / "week03_corridors.json"
     if args.reuse_null and cached.exists():
-        previous = json.loads(cached.read_text())
+        previous = read_json(cached)
         null_summary = previous["null_summary"]
         args.shuffles = previous["shuffles"]
         print(f"reusing the null from {cached.name} ({args.shuffles} shuffles)")
@@ -338,30 +355,10 @@ def main():
         record["top_out"] = corridors(migration[args.null_year], iso3, "out")
         nodes[iso3] = record
 
-    # Denmark section: the full time series plus the Nordic comparison.
-    focus = {
-        "iso3": FOCUS,
-        "series": [
-            {
-                "year": year,
-                **{k: per_year[year][FOCUS][k] for k in
-                   ("in_strength", "out_strength", "in_degree", "out_degree",
-                    "betweenness", "betweenness_rank", "in_strength_rank")},
-            }
-            for year in YEARS if FOCUS in per_year[year]
-        ],
-        "nordics": [
-            {
-                "iso3": iso3,
-                "name": names.get(iso3, iso3),
-                "in_degree": per_year[args.null_year][iso3]["in_degree"],
-                "z": per_year[args.null_year][iso3].get("z"),
-                "flight_degree": flight_in.get(iso3, 0) + flight_out.get(iso3, 0),
-                "betweenness_rank": per_year[args.null_year][iso3]["betweenness_rank"],
-            }
-            for iso3 in NORDICS if iso3 in per_year[args.null_year]
-        ],
-    }
+    # Section 8 analyses one country, and the reader picks which. The page
+    # builds its series and its peer group from the per-country records above,
+    # so all this has to carry is where it starts.
+    focus = {"iso3": FOCUS, "name": names.get(FOCUS, FOCUS)}
 
     graph = migration[args.null_year]
     all_weights = sorted((w for _, _, w in graph.edges(data="weight")), reverse=True)

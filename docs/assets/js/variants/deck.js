@@ -10,7 +10,12 @@
 
 export function install(api, deck) {
   const { state, node, metrics, topEdges, flightEdges, select, $, colours, rgb, arcSpec, textureURL } = api;
+  const { earthScale } = api;
   const channels = (hex) => rgb(hex).split(",").map(Number);
+  // deck's zoom is logarithmic, so a doubling of the earth-size scale is one
+  // whole zoom level.
+  const zoomShift = () => Math.log2(earthScale());
+  let lastEarth = null;
   const GlobeView = deck._GlobeView ?? deck.GlobeView;
   if (!GlobeView) throw new Error("this deck.gl build has no GlobeView");
 
@@ -171,9 +176,17 @@ export function install(api, deck) {
     const instance = mount("globe-canvas", new GlobeView({ id: "globe" }), {
       longitude: 12,
       latitude: 18,
-      zoom: -1.15,
+      zoom: -1.15 + zoomShift(),
     });
     if (!instance) return;
+    // mount only reads the initial view state, so a later change of earth size
+    // has to be pushed onto the live deck.
+    if (lastEarth !== state.earth) {
+      lastEarth = state.earth;
+      instance.setProps({
+        initialViewState: { longitude: 12, latitude: 18, zoom: -1.15 + zoomShift() },
+      });
+    }
     instance.setProps({
       layers: [
         new deck.SolidPolygonLayer({
