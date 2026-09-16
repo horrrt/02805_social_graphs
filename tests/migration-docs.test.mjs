@@ -5,6 +5,7 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 import { existsSync, readFileSync, statSync } from "node:fs";
+import { createHash } from "node:crypto";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 
@@ -231,5 +232,33 @@ test("the palette is read from CSS rather than hard-coded twice", () => {
   assert.match(corridor, /getPropertyValue/, "canvas must read the palette from CSS");
   for (const token of ["--people", "--access", "--ink"]) {
     assert.ok(corridor.includes(`"${token}"`), `corridor.js never reads ${token}`);
+  }
+});
+
+test("the build stamp on the week 3 assets matches their contents", () => {
+  // GitHub Pages caches for minutes; a stale stamp means a reader can run the
+  // previous deploy's code against this one's markup.
+  const watched = [
+    "docs/assets/js/week03-boot.js",
+    "docs/assets/js/corridor.js",
+    "docs/assets/js/variants/d3.js",
+    "docs/assets/js/variants/echarts.js",
+    "docs/assets/js/variants/globe.js",
+    "docs/assets/js/variants/atlas.js",
+    "docs/assets/js/variants/deck.js",
+    "docs/assets/css/corridor.css",
+  ];
+  const hash = createHash("sha256");
+  for (const name of watched) hash.update(readFileSync(join(ROOT, name)));
+  const stamp = hash.digest("hex").slice(0, 10);
+
+  for (const page of ["docs/weeks/week03/index.html", "docs/v2/weeks/week03/index.html"]) {
+    const html = read(page);
+    for (const asset of ["week03-boot.js", "corridor.css"]) {
+      assert.ok(
+        html.includes(`${asset}?v=${stamp}`),
+        `${page} has a stale stamp on ${asset}; run: python scripts/stamp_week03.py`,
+      );
+    }
   }
 });

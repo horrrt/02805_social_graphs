@@ -230,6 +230,11 @@ Libraries and imagery are committed on purpose: GitHub Pages serves the
 repository as it stands, so a file that is not in it is a file the published
 site cannot load.
 
+Editing any of the post's scripts or its stylesheet changes their content hash,
+so re-run `python scripts/stamp_week03.py` before committing; a test fails if
+the stamp is stale. The stamp lands in the asset URLs, which is what stops
+GitHub Pages serving one deploy's code alongside the next deploy's markup.
+
 ### Checking the renderers
 
 `scripts/audit_week03.js` exercises every control in whichever renderer is
