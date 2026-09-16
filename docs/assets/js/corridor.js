@@ -19,6 +19,15 @@ const compact = new Intl.NumberFormat("en-GB", {
   maximumFractionDigits: 1,
 });
 
+// The active renderer. Every drawing call on this page goes through it, so a
+// variant module can replace one visual (say the globe) and leave the rest of
+// the page exactly as it is. `installRenderer` merges, it does not swap.
+export const R = {};
+
+export function installRenderer(overrides) {
+  Object.assign(R, overrides);
+}
+
 const state = {
   data: null,
   edges: null,
@@ -206,18 +215,19 @@ function renderInspector() {
     : "";
   // Every chart carries a marker for the selected country, so all of them
   // redraw together and the selection reads the same everywhere on the page.
-  drawHistogram();
-  drawCcdf();
-  drawScatters();
-  drawDenmark();
+  R.hist();
+  R.ccdf();
+  R.scatters();
+  renderDenmarkPanels();
+  R.denmark();
 }
 
 function select(iso3) {
   if (!iso3 || !node(iso3)) return;
   state.selected = iso3;
   renderInspector();
-  drawGlobe();
-  drawMap();
+  R.globe();
+  R.map();
 }
 
 /* ------------------------------------------------------------- picking
@@ -693,8 +703,8 @@ function markSelected(ctx, box, pick) {
 /* ---------------------------------------------------------- sections 4 & 5 */
 
 function drawScatters() {
-  drawBetweenness();
-  drawZ();
+  R.scatterBetween();
+  R.scatterZ();
 }
 
 function drawBetweenness() {
@@ -924,7 +934,7 @@ function renderEdge() {
 
 /* ---------------------------------------------------------------- section 9 */
 
-function drawDenmark() {
+function renderDenmarkPanels() {
   const focus = state.data.focus;
   const iso3 = focus.iso3;
   const y = String(state.data.null_year);
@@ -946,6 +956,35 @@ function drawDenmark() {
     ]
       .map(([k, v]) => `<div class="metric"><span>${k}</span><b>${v}</b></div>`)
       .join("");
+
+
+  const egoRow = (c) =>
+    `<tr><td>${node(c.other)?.name ?? c.other}</td><td>${fmt.format(c.weight)}</td></tr>`;
+  $("dk-in").innerHTML =
+    `<caption>Top origins → Denmark</caption><tr><th>Origin</th><th style="text-align:right">People</th></tr>` +
+    (n.top_in ?? []).map(egoRow).join("");
+  $("dk-out").innerHTML =
+    `<caption>Denmark → top destinations</caption><tr><th>Destination</th><th style="text-align:right">People</th></tr>` +
+    (n.top_out ?? []).map(egoRow).join("");
+
+
+  const rank = m.betweenness_rank;
+  const strengthRank = m.in_strength_rank;
+  $("dk-verdict").querySelector("span:last-child").innerHTML =
+    `<b>Denmark, in one line.</b> It ranks #${strengthRank} by the number of foreign-born residents and #${rank} as a bridge, ` +
+    `with a z-score of ${m.z === undefined ? "—" : m.z.toFixed(2)} against the degree-preserving null. ` +
+    `Its ${m.in_degree} recorded origins are unusually many for its size, and that is a register artefact ` +
+    `as much as a fact about Denmark: a population register names every origin, while a survey-based ` +
+    `country files most of them under "other".`;
+}
+
+function drawDenmark() {
+  const focus = state.data.focus;
+  const iso3 = focus.iso3;
+  const y = String(state.data.null_year);
+  const m = metrics(iso3, y);
+  const n = node(iso3);
+  if (!m) return;
 
   const rows = withMetrics(y).filter((r) => r.m.in_degree > 0 && r.m.betweenness > 0);
   small($("dk-scatter"), (ctx, box) => {
@@ -998,15 +1037,6 @@ function drawDenmark() {
     }
     if (m.z !== undefined) dot(ctx, box.x(m.in_degree), box.y(m.z), "#d0021b", n.name);
   });
-
-  const egoRow = (c, dir) =>
-    `<tr><td>${node(c.other)?.name ?? c.other}</td><td>${fmt.format(c.weight)}</td></tr>`;
-  $("dk-in").innerHTML =
-    `<caption>Top origins → Denmark</caption><tr><th>Origin</th><th style="text-align:right">People</th></tr>` +
-    (n.top_in ?? []).map((c) => egoRow(c, "in")).join("");
-  $("dk-out").innerHTML =
-    `<caption>Denmark → top destinations</caption><tr><th>Destination</th><th style="text-align:right">People</th></tr>` +
-    (n.top_out ?? []).map((c) => egoRow(c, "out")).join("");
 
   small($("dk-time"), (ctx, box) => {
     const years = focus.series.map((s) => s.year);
@@ -1061,15 +1091,6 @@ function drawDenmark() {
       });
     });
   });
-
-  const rank = m.betweenness_rank;
-  const strengthRank = m.in_strength_rank;
-  $("dk-verdict").querySelector("span:last-child").innerHTML =
-    `<b>Denmark, in one line.</b> It ranks #${strengthRank} by the number of foreign-born residents and #${rank} as a bridge, ` +
-    `with a z-score of ${m.z === undefined ? "—" : m.z.toFixed(2)} against the degree-preserving null. ` +
-    `Its ${m.in_degree} recorded origins are unusually many for its size, and that is a register artefact ` +
-    `as much as a fact about Denmark: a population register names every origin, while a survey-based ` +
-    `country files most of them under "other".`;
 }
 
 function small(canvas, draw) {
@@ -1171,10 +1192,10 @@ function setupPredict() {
 function setYear(value) {
   state.year = state.data.years[value];
   $("year-now").textContent = String(state.year);
-  drawGlobe();
-  drawMap();
-  drawHistogram();
-  drawCcdf();
+  R.globe();
+  R.map();
+  R.hist();
+  R.ccdf();
   renderInspector();
   renderEdge();
 }
@@ -1210,7 +1231,7 @@ function setupGlobe() {
     if (Math.abs(dx) > 2) moved = true;
     state.rotation += dx * 0.4;
     lastX = event.clientX;
-    drawGlobe();
+    R.globe();
   });
   canvas.addEventListener("pointerup", (event) => {
     state.dragging = false;
@@ -1231,7 +1252,7 @@ function setupMap() {
     for (const b of toggle.querySelectorAll("button")) {
       b.setAttribute("aria-pressed", String(b === button));
     }
-    drawMap();
+    R.map();
   });
   $("map-canvas").addEventListener("click", (event) => {
     const rect = event.currentTarget.getBoundingClientRect();
@@ -1300,6 +1321,34 @@ function renderTwinStats() {
     : "";
 }
 
+// The canvas renderer, and the default for every visual. A variant module
+// replaces the entries it wants and inherits the rest.
+const CANVAS_RENDERER = {
+  name: "canvas",
+  globe: drawGlobe, map: drawMap, hist: drawHistogram, ccdf: drawCcdf,
+  scatters: drawScatters, scatterBetween: drawBetweenness, scatterZ: drawZ,
+  denmark: drawDenmark, setupGlobe, setupMap,
+};
+
+// What a variant module is handed: everything a renderer needs to read the
+// data and report a click, and nothing that would let it change a number.
+export const api = {
+  state, R, node, metrics, withMetrics, select, topEdges, flightEdges,
+  degreeCounts, ccdf, collect, enablePicking, label,
+  colours: { PEOPLE, ACCESS, INK, MUTE, GRID },
+  format: { fmt, compact },
+  $,
+};
+
+export async function start() {
+  // Canvas fills the gaps rather than overwriting, so a variant installed
+  // before start() keeps whichever visuals it replaced.
+  for (const [key, value] of Object.entries(CANVAS_RENDERER)) {
+    if (!(key in R)) R[key] = value;
+  }
+  return main();
+}
+
 async function main() {
   try {
     // Resolved against this module, not the page, so the arcade edition and
@@ -1321,8 +1370,8 @@ async function main() {
       `${fmt.format(corridors.flight_snapshot.country_pairs)} flight country pairs · ` +
       `null model: ${corridors.shuffles} shuffles of ${corridors.null_year}`;
 
-    setupGlobe();
-    setupMap();
+    R.setupGlobe();
+    R.setupMap();
     for (const id of [
       "hist",
       "ccdf",
@@ -1341,12 +1390,12 @@ async function main() {
     setYear(Number($("year-slider").value));
     $("year-slider").addEventListener("input", (event) => setYear(Number(event.target.value)));
     window.addEventListener("resize", () => {
-      drawGlobe();
-      drawMap();
-      drawHistogram();
-      drawCcdf();
-      drawScatters();
-      drawDenmark();
+      R.globe();
+      R.map();
+      R.hist();
+      R.ccdf();
+      R.scatters();
+      R.denmark();
     });
   } catch (error) {
     $("status").textContent = `Could not load the corridor data: ${error.message}`;
@@ -1354,4 +1403,3 @@ async function main() {
   }
 }
 
-main();

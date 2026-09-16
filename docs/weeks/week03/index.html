@@ -26,6 +26,11 @@
           <a href="#typology">People</a>
           <a href="#denmark">Connectivity</a>
         </nav>
+        <nav
+          aria-label="Rendering variant"
+          class="variants"
+          id="variant-switcher"
+        ></nav>
       </div>
     </div>
 
@@ -106,6 +111,7 @@
         <p aria-live="polite" class="status-line" id="status">
           Loading the corridor data…
         </p>
+        <p class="variant-note" id="variant-note"></p>
 
         <!-- 2 ----------------------------------------------------------- -->
         <section class="step" id="predict">
@@ -510,6 +516,14 @@
                   page inherits that.
                 </p>
                 <p class="sub">
+                  <b>Render variants.</b> The same page is drawn five ways, one
+                  per <code>?variant=</code>. The data, the numbers and the copy
+                  are identical in all of them; only the drawing library
+                  changes, and each variant overrides the visuals it improves on
+                  and inherits the rest. Libraries are vendored in the repo, so
+                  the site still loads no third-party JavaScript at runtime.
+                </p>
+                <p class="sub">
                   <b>AI use.</b> The harvest, the analysis scripts and this page
                   were built with Claude. Every number comes from
                   <code>analysis/week03_corridor_control.py</code>; nothing on
@@ -534,6 +548,6 @@
       </footer>
     </main>
 
-    <script src="../../assets/js/corridor.js" type="module"></script>
+    <script src="../../assets/js/week03-boot.js" type="module"></script>
   </body>
 </html>

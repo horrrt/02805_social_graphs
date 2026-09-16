@@ -872,3 +872,87 @@
     transition: none !important;
   }
 }
+
+/* ------------------------------------------------------- render variants */
+
+.corridor .variants {
+  display: flex;
+  gap: 3px;
+  margin-left: 18px;
+  padding-left: 18px;
+  position: relative;
+}
+
+.corridor .variants::before {
+  background: var(--line);
+  content: "";
+  height: 22px;
+  left: 0;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 1px;
+}
+
+.corridor .variants .variant {
+  align-items: center;
+  border: 1px solid transparent;
+  border-radius: 8px;
+  color: var(--ink-soft);
+  display: flex;
+  flex-direction: column;
+  line-height: 1.15;
+  padding: 4px 9px;
+  text-decoration: none;
+}
+
+.corridor .variants .variant b {
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.corridor .variants .variant span {
+  color: var(--ink-mute);
+  font-size: 9.5px;
+  font-variant-numeric: tabular-nums;
+}
+
+.corridor .variants .variant:hover {
+  background: var(--line-soft);
+  color: var(--ink);
+}
+
+.corridor .variants .variant.on {
+  background: var(--card);
+  border-color: var(--line);
+  box-shadow: var(--shadow);
+  color: var(--ink);
+}
+
+.corridor .variant-note {
+  background: #f7fafd;
+  border: 1px solid var(--line-soft);
+  border-left: 3px solid var(--access);
+  border-radius: 10px;
+  color: var(--ink-soft);
+  font-size: 12.5px;
+  line-height: 1.55;
+  margin: 0 0 6px;
+  padding: 10px 13px;
+}
+
+.corridor .variant-note b {
+  color: var(--ink);
+}
+
+/* A variant that draws its own legend does not also need the static one. */
+.corridor[data-variant="echarts"] .legend,
+.corridor[data-variant="d3"] .legend {
+  display: none;
+}
+
+.corridor #globe-gl,
+.corridor [id$="-deck"] {
+  border-radius: 10px;
+  overflow: hidden;
+}
