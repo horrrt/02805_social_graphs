@@ -193,9 +193,9 @@ them.
 
 ## Style dimensions
 
-The week 3 post is drawn from four independent choices, each a dropdown on the
-page and each a URL parameter, so any combination is a link you can send. The
-data, the numbers and the copy never change.
+The week 3 post is drawn from four independent choices, each a dropdown in the
+Style menu in the top bar and each a URL parameter, so any combination is a link
+you can send. The data, the numbers and the copy never change.
 
 | Parameter | Choices |
 | --- | --- |
