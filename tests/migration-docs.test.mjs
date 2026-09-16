@@ -4,7 +4,7 @@
 // changing scripts/migration/sources.py.
 import test from "node:test";
 import assert from "node:assert/strict";
-import { readFileSync } from "node:fs";
+import { existsSync, readFileSync, statSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 
@@ -151,5 +151,42 @@ test("every element the week 3 script writes into exists in both editions", () =
     const html = read(page);
     const missing = [...new Set(wanted)].filter((id) => !html.includes(`id="${id}"`));
     assert.deepEqual(missing, [], `${page} is missing ids the script writes into`);
+  }
+});
+
+test("every render variant names a vendored library that exists", () => {
+  const boot = read("docs/assets/js/week03-boot.js");
+  const names = [...boot.matchAll(/^\s{2}(\w+): \{$/gm)].map((m) => m[1]);
+  assert.deepEqual(names, ["canvas", "d3", "echarts", "globe", "deck"]);
+  for (const [, file] of boot.matchAll(/script: "([^"]+)"/g)) {
+    const path = join(ROOT, "docs/assets/vendor", file);
+    assert.ok(existsSync(path), `missing vendored library: ${file}`);
+    // The switcher advertises a download size; it has to be the real one.
+    const bytes = statSync(path).size;
+    assert.ok(
+      boot.includes(`bytes: ${bytes},`),
+      `${file} is ${bytes} bytes and the registry says otherwise`,
+    );
+  }
+  for (const [, module] of boot.matchAll(/module: "\.\/([^"]+)"/g)) {
+    assert.ok(
+      existsSync(join(ROOT, "docs/assets/js", module)),
+      `missing variant module: ${module}`,
+    );
+  }
+});
+
+test("each variant module exports install and touches no data", () => {
+  for (const name of ["d3", "echarts", "globe", "deck"]) {
+    const src = read(`docs/assets/js/variants/${name}.js`);
+    assert.match(src, /export function install\(/, `${name} exports install`);
+    assert.doesNotMatch(src, /\bfetch\(/, `${name} must not load its own data`);
+    // The SVG namespace is a URI, not a fetch; anything else is a CDN.
+    const urls = [...src.matchAll(/https?:\/\/[^"'\s)]+/g)].map((m) => m[0]);
+    assert.deepEqual(
+      urls.filter((u) => !u.startsWith("http://www.w3.org/")),
+      [],
+      `${name} must not reference a CDN`,
+    );
   }
 });

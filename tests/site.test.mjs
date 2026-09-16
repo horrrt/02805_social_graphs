@@ -28,12 +28,14 @@ const walk = (dir, out = []) => {
   }
   return out;
 };
-// The 49-concept design archive is a frozen record of earlier alternatives.
+// The 49-concept design archive is a frozen record of earlier alternatives,
+// and assets/vendor holds third-party minified bundles we do not author.
 const sitePages = () =>
   walk(DOCS).filter(
     (p) =>
       /\.(html|js|mjs)$/.test(p) &&
       !p.includes("/mockups/") &&
+      !p.includes("/vendor/") &&
       !p.endsWith("mockups.js"),
   );
 

@@ -19,9 +19,19 @@ const compact = new Intl.NumberFormat("en-GB", {
   maximumFractionDigits: 1,
 });
 
+// The active renderer. Every drawing call on this page goes through it, so a
+// variant module can replace one visual (say the globe) and leave the rest of
+// the page exactly as it is. `installRenderer` merges, it does not swap.
+export const R = {};
+
+export function installRenderer(overrides) {
+  Object.assign(R, overrides);
+}
+
 const state = {
   data: null,
   edges: null,
+  world: null,
   year: 2020,
   selected: null,
   layer: "both",
@@ -206,18 +216,19 @@ function renderInspector() {
     : "";
   // Every chart carries a marker for the selected country, so all of them
   // redraw together and the selection reads the same everywhere on the page.
-  drawHistogram();
-  drawCcdf();
-  drawScatters();
-  drawDenmark();
+  R.hist();
+  R.ccdf();
+  R.scatters();
+  renderDenmarkPanels();
+  R.denmark();
 }
 
 function select(iso3) {
   if (!iso3 || !node(iso3)) return;
   state.selected = iso3;
   renderInspector();
-  drawGlobe();
-  drawMap();
+  R.globe();
+  R.map();
 }
 
 /* ------------------------------------------------------------- picking
@@ -323,6 +334,63 @@ function project(lat, lon, radius, cx, cy, rotation) {
   return { x: cx + x * radius, y: cy - y * radius, visible: z > 0, z };
 }
 
+// Country outlines, so a corridor lands somewhere recognisable instead of on a
+// blank sphere. `project` returns visibility, so the globe hides the far side
+// by breaking each ring into runs of visible points.
+function eachRing(feature, visit) {
+  const geometry = feature.geometry;
+  const polygons =
+    geometry.type === "Polygon" ? [geometry.coordinates] : geometry.coordinates;
+  for (const polygon of polygons) for (const ring of polygon) visit(ring);
+}
+
+function drawLandGlobe(ctx, radius, cx, cy) {
+  if (!state.world) return;
+  ctx.fillStyle = "#245f92";
+  ctx.strokeStyle = "rgba(178,215,248,0.55)";
+  ctx.lineWidth = 0.6;
+  for (const feature of state.world.features) {
+    eachRing(feature, (ring) => {
+      let open = false;
+      ctx.beginPath();
+      for (const [lon, lat] of ring) {
+        const p = project(lat, lon, radius, cx, cy, state.rotation);
+        if (!p.visible) {
+          open = false;
+          continue;
+        }
+        if (open) ctx.lineTo(p.x, p.y);
+        else {
+          ctx.moveTo(p.x, p.y);
+          open = true;
+        }
+      }
+      ctx.fill();
+      ctx.stroke();
+    });
+  }
+}
+
+function drawLandMap(ctx, width, height) {
+  if (!state.world) return;
+  ctx.fillStyle = "#16416c";
+  ctx.strokeStyle = "rgba(150,196,240,0.45)";
+  ctx.lineWidth = 0.6;
+  for (const feature of state.world.features) {
+    eachRing(feature, (ring) => {
+      ctx.beginPath();
+      ring.forEach(([lon, lat], i) => {
+        const p = mapPoint([lat, lon], width, height);
+        if (i) ctx.lineTo(p.x, p.y);
+        else ctx.moveTo(p.x, p.y);
+      });
+      ctx.closePath();
+      ctx.fill();
+      ctx.stroke();
+    });
+  }
+}
+
 function arc(ctx, a, b, lift) {
   const mx = (a.x + b.x) / 2;
   const my = (a.y + b.y) / 2;
@@ -372,13 +440,15 @@ function drawGlobe() {
     cy,
     radius,
   );
-  sphere.addColorStop(0, "#1d5288");
-  sphere.addColorStop(0.7, "#123a63");
-  sphere.addColorStop(1, "#0a2444");
+  sphere.addColorStop(0, "#14406e");
+  sphere.addColorStop(0.7, "#0d2b4c");
+  sphere.addColorStop(1, "#071d36");
   ctx.fillStyle = sphere;
   ctx.beginPath();
   ctx.arc(cx, cy, radius, 0, Math.PI * 2);
   ctx.fill();
+  drawLandGlobe(ctx, radius, cx, cy);
+
   ctx.strokeStyle = "rgba(160,200,240,0.18)";
   ctx.lineWidth = 1;
   for (let lat = -60; lat <= 60; lat += 30) {
@@ -488,8 +558,9 @@ function drawMap() {
   const canvas = $("map-canvas");
   if (!canvas || !state.data) return;
   const { ctx, width, height } = surface(canvas);
-  ctx.fillStyle = "#0b1f3a";
+  ctx.fillStyle = "#081a31";
   ctx.fillRect(0, 0, width, height);
+  drawLandMap(ctx, width, height);
   ctx.strokeStyle = "rgba(160,200,240,0.09)";
   for (let lon = -180; lon <= 180; lon += 30) {
     const x = ((lon + 180) / 360) * width;
@@ -693,8 +764,8 @@ function markSelected(ctx, box, pick) {
 /* ---------------------------------------------------------- sections 4 & 5 */
 
 function drawScatters() {
-  drawBetweenness();
-  drawZ();
+  R.scatterBetween();
+  R.scatterZ();
 }
 
 function drawBetweenness() {
@@ -924,7 +995,7 @@ function renderEdge() {
 
 /* ---------------------------------------------------------------- section 9 */
 
-function drawDenmark() {
+function renderDenmarkPanels() {
   const focus = state.data.focus;
   const iso3 = focus.iso3;
   const y = String(state.data.null_year);
@@ -946,6 +1017,35 @@ function drawDenmark() {
     ]
       .map(([k, v]) => `<div class="metric"><span>${k}</span><b>${v}</b></div>`)
       .join("");
+
+
+  const egoRow = (c) =>
+    `<tr><td>${node(c.other)?.name ?? c.other}</td><td>${fmt.format(c.weight)}</td></tr>`;
+  $("dk-in").innerHTML =
+    `<caption>Top origins → Denmark</caption><tr><th>Origin</th><th style="text-align:right">People</th></tr>` +
+    (n.top_in ?? []).map(egoRow).join("");
+  $("dk-out").innerHTML =
+    `<caption>Denmark → top destinations</caption><tr><th>Destination</th><th style="text-align:right">People</th></tr>` +
+    (n.top_out ?? []).map(egoRow).join("");
+
+
+  const rank = m.betweenness_rank;
+  const strengthRank = m.in_strength_rank;
+  $("dk-verdict").querySelector("span:last-child").innerHTML =
+    `<b>Denmark, in one line.</b> It ranks #${strengthRank} by the number of foreign-born residents and #${rank} as a bridge, ` +
+    `with a z-score of ${m.z === undefined ? "—" : m.z.toFixed(2)} against the degree-preserving null. ` +
+    `Its ${m.in_degree} recorded origins are unusually many for its size, and that is a register artefact ` +
+    `as much as a fact about Denmark: a population register names every origin, while a survey-based ` +
+    `country files most of them under "other".`;
+}
+
+function drawDenmark() {
+  const focus = state.data.focus;
+  const iso3 = focus.iso3;
+  const y = String(state.data.null_year);
+  const m = metrics(iso3, y);
+  const n = node(iso3);
+  if (!m) return;
 
   const rows = withMetrics(y).filter((r) => r.m.in_degree > 0 && r.m.betweenness > 0);
   small($("dk-scatter"), (ctx, box) => {
@@ -998,15 +1098,6 @@ function drawDenmark() {
     }
     if (m.z !== undefined) dot(ctx, box.x(m.in_degree), box.y(m.z), "#d0021b", n.name);
   });
-
-  const egoRow = (c, dir) =>
-    `<tr><td>${node(c.other)?.name ?? c.other}</td><td>${fmt.format(c.weight)}</td></tr>`;
-  $("dk-in").innerHTML =
-    `<caption>Top origins → Denmark</caption><tr><th>Origin</th><th style="text-align:right">People</th></tr>` +
-    (n.top_in ?? []).map((c) => egoRow(c, "in")).join("");
-  $("dk-out").innerHTML =
-    `<caption>Denmark → top destinations</caption><tr><th>Destination</th><th style="text-align:right">People</th></tr>` +
-    (n.top_out ?? []).map((c) => egoRow(c, "out")).join("");
 
   small($("dk-time"), (ctx, box) => {
     const years = focus.series.map((s) => s.year);
@@ -1061,15 +1152,6 @@ function drawDenmark() {
       });
     });
   });
-
-  const rank = m.betweenness_rank;
-  const strengthRank = m.in_strength_rank;
-  $("dk-verdict").querySelector("span:last-child").innerHTML =
-    `<b>Denmark, in one line.</b> It ranks #${strengthRank} by the number of foreign-born residents and #${rank} as a bridge, ` +
-    `with a z-score of ${m.z === undefined ? "—" : m.z.toFixed(2)} against the degree-preserving null. ` +
-    `Its ${m.in_degree} recorded origins are unusually many for its size, and that is a register artefact ` +
-    `as much as a fact about Denmark: a population register names every origin, while a survey-based ` +
-    `country files most of them under "other".`;
 }
 
 function small(canvas, draw) {
@@ -1171,10 +1253,10 @@ function setupPredict() {
 function setYear(value) {
   state.year = state.data.years[value];
   $("year-now").textContent = String(state.year);
-  drawGlobe();
-  drawMap();
-  drawHistogram();
-  drawCcdf();
+  R.globe();
+  R.map();
+  R.hist();
+  R.ccdf();
   renderInspector();
   renderEdge();
 }
@@ -1210,7 +1292,7 @@ function setupGlobe() {
     if (Math.abs(dx) > 2) moved = true;
     state.rotation += dx * 0.4;
     lastX = event.clientX;
-    drawGlobe();
+    R.globe();
   });
   canvas.addEventListener("pointerup", (event) => {
     state.dragging = false;
@@ -1231,7 +1313,7 @@ function setupMap() {
     for (const b of toggle.querySelectorAll("button")) {
       b.setAttribute("aria-pressed", String(b === button));
     }
-    drawMap();
+    R.map();
   });
   $("map-canvas").addEventListener("click", (event) => {
     const rect = event.currentTarget.getBoundingClientRect();
@@ -1300,17 +1382,51 @@ function renderTwinStats() {
     : "";
 }
 
+// The canvas renderer, and the default for every visual. A variant module
+// replaces the entries it wants and inherits the rest.
+const CANVAS_RENDERER = {
+  name: "canvas",
+  globe: drawGlobe, map: drawMap, hist: drawHistogram, ccdf: drawCcdf,
+  scatters: drawScatters, scatterBetween: drawBetweenness, scatterZ: drawZ,
+  denmark: drawDenmark, setupGlobe, setupMap,
+};
+
+// What a variant module is handed: everything a renderer needs to read the
+// data and report a click, and nothing that would let it change a number.
+export const api = {
+  state, R, node, metrics, withMetrics, select, topEdges, flightEdges,
+  degreeCounts, ccdf, collect, enablePicking, label,
+  colours: { PEOPLE, ACCESS, INK, MUTE, GRID },
+  format: { fmt, compact },
+  $,
+};
+
+export async function start() {
+  // Canvas fills the gaps rather than overwriting, so a variant installed
+  // before start() keeps whichever visuals it replaced.
+  for (const [key, value] of Object.entries(CANVAS_RENDERER)) {
+    if (!(key in R)) R[key] = value;
+  }
+  return main();
+}
+
 async function main() {
   try {
     // Resolved against this module, not the page, so the arcade edition and
     // the Apple edition load the same two files from different depths.
     const data = (name) => new URL(`../data/${name}`, import.meta.url);
-    const [corridors, edges] = await Promise.all([
+    const [corridors, edges, world] = await Promise.all([
       fetch(data("week03_corridors.json")).then((r) => r.json()),
       fetch(data("week03_edges.json")).then((r) => r.json()),
+      // Land is decoration for the argument but essential for reading a map,
+      // so a failure to load it must not stop the post.
+      fetch(data("world_outline.geo.json"))
+        .then((r) => r.json())
+        .catch(() => null),
     ]);
     state.data = corridors;
     state.edges = edges;
+    state.world = world;
     state.year = corridors.null_year;
     $("year-slider").max = String(corridors.years.length - 1);
     $("year-slider").value = String(corridors.years.indexOf(corridors.null_year));
@@ -1321,8 +1437,8 @@ async function main() {
       `${fmt.format(corridors.flight_snapshot.country_pairs)} flight country pairs · ` +
       `null model: ${corridors.shuffles} shuffles of ${corridors.null_year}`;
 
-    setupGlobe();
-    setupMap();
+    R.setupGlobe();
+    R.setupMap();
     for (const id of [
       "hist",
       "ccdf",
@@ -1341,12 +1457,12 @@ async function main() {
     setYear(Number($("year-slider").value));
     $("year-slider").addEventListener("input", (event) => setYear(Number(event.target.value)));
     window.addEventListener("resize", () => {
-      drawGlobe();
-      drawMap();
-      drawHistogram();
-      drawCcdf();
-      drawScatters();
-      drawDenmark();
+      R.globe();
+      R.map();
+      R.hist();
+      R.ccdf();
+      R.scatters();
+      R.denmark();
     });
   } catch (error) {
     $("status").textContent = `Could not load the corridor data: ${error.message}`;
@@ -1354,4 +1470,3 @@ async function main() {
   }
 }
 
-main();

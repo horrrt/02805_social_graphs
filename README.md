@@ -2,7 +2,10 @@
 
 A playable anthology built from the course’s frozen Marvel article graph.
 Published at **https://horrrt.github.io/02805_social_graphs/** from `main /docs`.
-No API keys, bundler, external JavaScript, accounts or live Wikipedia calls are needed.
+No API keys, bundler, accounts or live Wikipedia calls are needed, and nothing is
+fetched from a third-party domain at runtime: the week 3 render variants load
+their charting libraries from `docs/assets/vendor/`, which are vendored in the
+repository and pinned by version.
 
 ## Play
 
@@ -10,6 +13,7 @@ No API keys, bundler, external JavaScript, accounts or live Wikipedia calls are 
 | --- | --- | --- | --- |
 | Hero Packs | Week 1 · Networks | `/weeks/week01/` | Unequal sampling, degrees, duplicates and the long tail |
 | Marvel Transit Authority | Week 2 · Models & null models | `/weeks/week02/` | Directed routes, articulation effects and a degree-controlled comparison |
+| Corridor Control | Week 3 · Who matters, and why | `/weeks/week03/` | Two country networks, weighted betweenness and a degree-preserving null |
 
 The lobby at `/` leads with the two published weekly posts. The remaining
 course dates sit under Upcoming weeks. Each post follows a short question,
@@ -186,6 +190,24 @@ a Wikipedia category crawl, Wikidata classification into organisations, the
 article-link graph, then the country layer from UN DESA, UNHCR and the World
 Bank. Files land in `data/migration_*.tsv`; rebuild them rather than editing
 them.
+
+## Render variants
+
+The week 3 post is drawn five ways behind one query parameter. The data, the
+numbers and the copy are identical in each; only the drawing library changes.
+
+| URL | What it swaps | Library |
+| --- | --- | --- |
+| `/weeks/week03/` | nothing, hand-rolled 2D canvas | none |
+| `?variant=d3` | all charts to SVG, and the globe to d3-geo | d3 7.9.0, 273 KB |
+| `?variant=echarts` | every chart | echarts 5.5.1, 1007 KB |
+| `?variant=globe` | the hero globe, WebGL with animated arcs | globe.gl 2.32.0, 1008 KB |
+| `?variant=deck` | the hero globe and the twin map | deck.gl 9.0.30, 1217 KB |
+
+A variant overrides only the visuals it replaces and inherits the canvas
+renderer for the rest, so a broken or missing library falls back to the default
+rather than taking the post down. `docs/assets/js/week03-boot.js` holds the
+registry; each variant is one module under `docs/assets/js/variants/`.
 
 ## UX and scope
 
