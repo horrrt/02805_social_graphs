@@ -267,6 +267,40 @@ test("the two long sections open on demand rather than on load", () => {
   }
 });
 
+test("the style guide draws every class the post uses, under every skin, palette and table style", () => {
+  const guide = read("docs/styleguide/index.html");
+  assert.ok(guide.includes('href="../assets/css/corridor.css'), "the guide loads the post's stylesheet");
+  assert.ok(guide.includes('<body class="corridor">'), "the guide is scoped like the post");
+
+  // Every class the post's markup carries, and every class its scripts write
+  // into the page, has to be on the guide as a real element.
+  const classesIn = (text) =>
+    [...text.matchAll(/class="([^"]+)"/g)]
+      .flatMap((m) => m[1].split(/\s+/))
+      .filter((c) => c && !c.includes("$"));
+  const wanted = new Set(classesIn(read("docs/weeks/week03/index.html")));
+  for (const file of ["corridor.js", "questions.js", "week03-boot.js"]) {
+    const src = read(`docs/assets/js/${file}`);
+    for (const c of classesIn(src)) wanted.add(c);
+    for (const [, c] of src.matchAll(/className = "([^"]+)"/g)) wanted.add(c);
+  }
+  const have = new Set(classesIn(guide));
+  assert.deepEqual([...wanted].filter((c) => !have.has(c)).sort(), [], "classes missing from the guide");
+
+  // Every choice in the three dropdown registries gets its own scoped block.
+  const boot = read("docs/assets/js/week03-boot.js");
+  const keys = (name) => {
+    const block = boot.slice(boot.indexOf(`export const ${name}`), boot.indexOf("};", boot.indexOf(`export const ${name}`)));
+    return [...block.matchAll(/^\s{2}(\w+): \{/gm)].map((m) => m[1]);
+  };
+  for (const [name, attr] of [["SKINS", "skin"], ["PALETTES", "palette"], ["TABLES", "tables"]]) {
+    for (const key of keys(name)) {
+      assert.ok(guide.includes(`data-${attr}="${key}"`), `no ${attr} specimen for ${key}`);
+      assert.ok(guide.includes(`<option value="${key}">`), `no ${attr} dropdown option for ${key}`);
+    }
+  }
+});
+
 test("section 8 is built for any country, not just the one the build ships", () => {
   const corridor = read("docs/assets/js/corridor.js");
   const payload = JSON.parse(read("docs/assets/data/week03_corridors.json"));
@@ -321,9 +355,11 @@ test("the build stamp on the week 3 assets matches their contents", () => {
   for (const name of watched) hash.update(readFileSync(join(ROOT, name)));
   const stamp = hash.digest("hex").slice(0, 10);
 
-  for (const page of ["docs/weeks/week03/index.html", "docs/v2/weeks/week03/index.html"]) {
+  for (const page of ["docs/weeks/week03/index.html", "docs/v2/weeks/week03/index.html", "docs/styleguide/index.html"]) {
     const html = read(page);
-    for (const asset of ["week03-boot.js", "corridor.css"]) {
+    // The guide loads only the stylesheet; the two editions load both.
+    const assets = page.includes("styleguide") ? ["corridor.css"] : ["week03-boot.js", "corridor.css"];
+    for (const asset of assets) {
       assert.ok(
         html.includes(`${asset}?v=${stamp}`),
         `${page} has a stale stamp on ${asset}; run: python scripts/stamp_week03.py`,

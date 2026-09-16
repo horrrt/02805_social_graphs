@@ -88,6 +88,7 @@ COMMITTED = [
     ("docs/assets/vendor/deck.gl-9.0.30.min.js", "scripts/rebuild_week03.py", "jsDelivr, pinned"),
     ("docs/weeks/week03/index.html", "hand-written", "the post itself"),
     ("docs/v2/weeks/week03/index.html", "scripts/sync_week03_v2.py", "generated from the above"),
+    ("docs/styleguide/index.html", "hand-written", "every class, under every skin"),
 ]
 
 
