@@ -60,6 +60,55 @@ export function arcSpec() {
   return ARC_STYLES[state.arcs] ?? ARC_STYLES.curve;
 }
 
+// How a link's weight becomes something you can see. Width is the honest
+// default: a doubling of people is a doubling of ink. Colour frees the width
+// for something else, at the cost of being read less accurately.
+export const LINK_ENCODINGS = {
+  width: { width: true, ramp: false },
+  colour: { width: false, ramp: true },
+  both: { width: true, ramp: true },
+  uniform: { width: false, ramp: false },
+};
+
+export const THICKNESS = { thin: 0.55, normal: 1, thick: 1.9 };
+
+export function linkSpec() {
+  return LINK_ENCODINGS[state.links] ?? LINK_ENCODINGS.width;
+}
+
+// A red-to-green ramp over the weight share. Kept perceptually ordered rather
+// than pretty: light green is the heaviest link, deep red the lightest.
+export function rampColour(share) {
+  const stops = [
+    [0.0, [190, 60, 48]],
+    [0.35, [214, 132, 52]],
+    [0.65, [196, 188, 66]],
+    [1.0, [70, 168, 92]],
+  ];
+  let lo = stops[0];
+  let hi = stops.at(-1);
+  for (let i = 0; i < stops.length - 1; i += 1) {
+    if (share >= stops[i][0] && share <= stops[i + 1][0]) {
+      lo = stops[i];
+      hi = stops[i + 1];
+      break;
+    }
+  }
+  const t = hi[0] === lo[0] ? 0 : (share - lo[0]) / (hi[0] - lo[0]);
+  return lo[1].map((c, i) => Math.round(c + (hi[1][i] - c) * t)).join(",");
+}
+
+// With a country selected, the other links can stay, fade, or go. Fading keeps
+// the shape of the whole network as context; hiding makes one country's
+// position unmistakable.
+export function linkAlpha(edge) {
+  if (state.focus === "all" || !state.selected) return 1;
+  const a = state.edges.countries[edge.oi];
+  const b = state.edges.countries[edge.di];
+  if (a === state.selected || b === state.selected) return 1;
+  return state.focus === "only" ? 0 : 0.12;
+}
+
 const $ = (id) => document.getElementById(id);
 const fmt = new Intl.NumberFormat("en-GB");
 const compact = new Intl.NumberFormat("en-GB", {
@@ -84,6 +133,10 @@ const state = {
   selected: null,
   layer: "both",
   arcs: "curve",
+  links: "width",
+  thickness: "normal",
+  focus: "all",
+  dots: "on",
   hover: null,
   axisMode: { hist: "loglog", ccdf: "loglog" },
   dash: 0,
@@ -318,6 +371,35 @@ function select(iso3) {
 
 const pickable = new Map();
 
+// Every chart carries the same tooltip: what the mark is and what it is worth
+// on that chart's own axes.
+let tipEl = null;
+function tip() {
+  if (!tipEl) {
+    tipEl = document.createElement("div");
+    tipEl.className = "chart-tip";
+    tipEl.hidden = true;
+    document.body.appendChild(tipEl);
+  }
+  return tipEl;
+}
+
+function showTip(event, html) {
+  const el = tip();
+  el.innerHTML = html;
+  el.hidden = false;
+  const pad = 14;
+  const width = el.offsetWidth;
+  const left = Math.min(event.clientX + pad, window.innerWidth - width - 8);
+  const top = Math.max(event.clientY - el.offsetHeight - pad, 8);
+  el.style.left = `${left}px`;
+  el.style.top = `${top}px`;
+}
+
+function hideTip() {
+  if (tipEl) tipEl.hidden = true;
+}
+
 function collect(id) {
   const marks = [];
   pickable.set(id, marks);
@@ -332,9 +414,9 @@ function nearestMark(canvas, event, radius = 16) {
   let best = null;
   for (const mark of marks) {
     const d = Math.hypot(mark.x - x, mark.y - y);
-    if (d <= radius && (!best || d < best.d)) best = { iso3: mark.iso3, d };
+    if (d <= radius && (!best || d < best.d)) best = { mark, d };
   }
-  return best?.iso3 ?? null;
+  return best?.mark ?? null;
 }
 
 function enablePicking(id) {
@@ -343,9 +425,12 @@ function enablePicking(id) {
   canvas.dataset.picking = "on";
   canvas.title = "Click a point to select that country";
   canvas.addEventListener("pointermove", (event) => {
-    const iso3 = nearestMark(canvas, event);
-    canvas.style.cursor = iso3 ? "pointer" : "default";
+    const mark = nearestMark(canvas, event);
+    canvas.style.cursor = mark ? "pointer" : "default";
+    if (mark?.label) showTip(event, mark.label);
+    else hideTip();
     // The mark under the cursor grows, which makes a 2px dot a real target.
+    const iso3 = mark?.iso3 ?? null;
     if (state.hover !== iso3) {
       state.hover = iso3;
       R.scatters();
@@ -355,6 +440,7 @@ function enablePicking(id) {
     }
   });
   canvas.addEventListener("pointerleave", () => {
+    hideTip();
     if (state.hover) {
       state.hover = null;
       R.scatters();
@@ -364,8 +450,8 @@ function enablePicking(id) {
     }
   });
   canvas.addEventListener("click", (event) => {
-    const iso3 = nearestMark(canvas, event);
-    if (iso3) select(iso3);
+    const mark = nearestMark(canvas, event);
+    if (mark?.iso3) select(mark.iso3);
   });
 }
 
@@ -697,21 +783,27 @@ function drawGlobe() {
 
   const edges = topEdges(500);
   const heaviest = edges[0]?.weight ?? 1;
+  const link = linkSpec();
+  const scale = THICKNESS[state.thickness] ?? 1;
+  const base = rgb(PEOPLE);
   ctx.lineCap = "round";
   for (const edge of edges) {
     const a = points.get(edge.oi);
     const b = points.get(edge.di);
     if (!a || !b || !a.visible || !b.visible) continue;
+    const alpha = linkAlpha(edge);
+    if (alpha === 0) continue;
     const share = Math.sqrt(edge.weight / heaviest);
-    ctx.strokeStyle = `rgba(247,148,38,${0.24 + share * 0.66})`;
-    ctx.lineWidth = 0.6 + share * 3.4;
+    const tint = link.ramp ? rampColour(share) : base;
+    ctx.strokeStyle = `rgba(${tint},${(0.24 + share * 0.66) * alpha})`;
+    ctx.lineWidth = (link.width ? 0.6 + share * 3.4 : 1.5) * scale;
     arc(ctx, a, b, 0.16);
   }
 
-  // Nodes sit under the arcs in weight: small and dim, so the corridors read
-  // as the subject and the countries as the anchors.
+  // With the territories filled and highlighted, the dots are often redundant,
+  // so they can be turned off entirely.
   ctx.fillStyle = "rgba(196,222,248,0.62)";
-  for (const [i, p] of points) {
+  for (const [i, p] of state.dots === "off" ? [] : points) {
     if (!p.visible) continue;
     const iso3 = state.edges.countries[i];
     const m = metrics(iso3);
@@ -809,35 +901,45 @@ function drawMap() {
   });
 
   ctx.lineCap = "round";
+  const link = linkSpec();
+  const scale = THICKNESS[state.thickness] ?? 1;
   if (state.layer !== "flights") {
     const edges = topEdges(420);
     const heaviest = edges[0]?.weight ?? 1;
+    const base = rgb(PEOPLE);
     for (const edge of edges) {
       const a = points.get(edge.oi);
       const b = points.get(edge.di);
       if (!a || !b || Math.abs(a.x - b.x) > width * 0.6) continue;
+      const alpha = linkAlpha(edge);
+      if (alpha === 0) continue;
       const share = Math.sqrt(edge.weight / heaviest);
-      ctx.strokeStyle = `rgba(242,130,12,${0.1 + share * 0.5})`;
-      ctx.lineWidth = 0.3 + share * 2.4;
+      const tint = link.ramp ? rampColour(share) : base;
+      ctx.strokeStyle = `rgba(${tint},${(0.1 + share * 0.5) * alpha})`;
+      ctx.lineWidth = (link.width ? 0.3 + share * 2.4 : 1.2) * scale;
       arc(ctx, a, b, 0.13);
     }
   }
   if (state.layer !== "migration") {
     const edges = flightEdges(420);
     const heaviest = edges[0]?.routes ?? 1;
+    const base = rgb(ACCESS);
     for (const edge of edges) {
       const a = points.get(edge.oi);
       const b = points.get(edge.di);
       if (!a || !b || Math.abs(a.x - b.x) > width * 0.6) continue;
+      const alpha = linkAlpha(edge);
+      if (alpha === 0) continue;
       const share = Math.sqrt(edge.routes / heaviest);
-      ctx.strokeStyle = `rgba(31,143,214,${0.08 + share * 0.45})`;
-      ctx.lineWidth = 0.3 + share * 2;
+      const tint = link.ramp ? rampColour(share) : base;
+      ctx.strokeStyle = `rgba(${tint},${(0.08 + share * 0.45) * alpha})`;
+      ctx.lineWidth = (link.width ? 0.3 + share * 2 : 1) * scale;
       arc(ctx, a, b, -0.13);
     }
   }
 
   ctx.fillStyle = "rgba(214,234,252,0.8)";
-  for (const [i, p] of points) {
+  for (const [i, p] of state.dots === "off" ? [] : points) {
     const iso3 = state.edges.countries[i];
     if (!metrics(iso3)) continue;
     ctx.beginPath();
@@ -922,7 +1024,12 @@ function drawHistogram() {
       const x = box.x(d.k);
       const y = box.y(d.c);
       ctx.fillRect(x - 1.5 + i * 1.6, y, 2, box.bottom - y);
-      marks.push({ x, y, iso3: d.iso3 });
+      marks.push({
+        x, y, iso3: d.iso3,
+        label: `<b>${d.k} ${SERIES[i].key === "flight" ? "flight partners" : "partners"}</b>` +
+          `<span>${d.c} ${d.c === 1 ? "country" : "countries"}</span>` +
+          `<span>largest: ${node(d.iso3).name}</span>`,
+      });
     }
   });
   markSelected(ctx, box, (n, m) => [m.in_degree, degreeCounts(SERIES[0].pick).find((d) => d.k === m.in_degree)?.c ?? 1]);
@@ -962,7 +1069,12 @@ function drawCcdf() {
       ctx.beginPath();
       ctx.arc(x, y, 2, 0, Math.PI * 2);
       ctx.fill();
-      marks.push({ x, y, iso3: d.iso3 });
+      marks.push({
+        x, y, iso3: d.iso3,
+        label: `<b>at least ${d.k} partners</b>` +
+          `<span>${(d.p * 100).toFixed(1)}% of countries</span>` +
+          `<span>e.g. ${node(d.iso3).name}</span>`,
+      });
     }
   });
   markSelected(ctx, box, (n, m) => {
@@ -1031,15 +1143,24 @@ function drawBetweenness() {
   axes(ctx, box, {
     xTicks: logTicks(1, maxK),
     yTicks: logTicks(minB, maxB),
-    xLabel: "In-degree",
+    xLabel: "Origins (in-degree)",
     yLabel: "Betweenness",
   });
   const marks = collect("scatter-between");
   plotDots(ctx, marks, flights.map((r) => ({
-    x: box.x(r.n.flight_in_degree), y: box.y(r.n.flight_betweenness), iso3: r.iso3,
+    x: box.x(r.n.flight_in_degree),
+    y: box.y(r.n.flight_betweenness),
+    iso3: r.iso3,
+    label: `<b>${r.n.name}</b><span>Flight network</span>` +
+      `<span>${r.n.flight_in_degree} flight partners</span>` +
+      `<span>betweenness ${r.n.flight_betweenness.toExponential(2)} · #${r.n.flight_betweenness_rank}</span>`,
   })), ACCESS + "88", 2);
   plotDots(ctx, marks, rows.map((r) => ({
     x: box.x(r.m.in_degree), y: box.y(r.m.betweenness), iso3: r.iso3,
+    label: `<b>${r.n.name}</b><span>Migration network</span>` +
+      `<span>${r.m.in_degree} origins · #${r.m.in_degree_rank}</span>` +
+      `<span>betweenness ${r.m.betweenness.toExponential(2)} · #${r.m.betweenness_rank}</span>` +
+      (r.m.z === undefined ? "" : `<span>z = ${r.m.z.toFixed(2)} against the null</span>`),
   })), PEOPLE + "cc", 2.4);
   // Label only the brokers a reader should look up, and only where the label
   // will not sit on top of one already placed.
@@ -1081,7 +1202,7 @@ function drawZ() {
   const step = Math.max(1, Math.round((hi - lo) / 6));
   const yTicks = [];
   for (let v = lo; v <= hi; v += step) yTicks.push({ value: v, label: String(v) });
-  axes(ctx, box, { xTicks: logTicks(1, maxK), yTicks, xLabel: "In-degree", yLabel: "z-score" });
+  axes(ctx, box, { xTicks: logTicks(1, maxK), yTicks, xLabel: "Origins (in-degree)", yLabel: "z-score" });
   ctx.strokeStyle = "#c2d0e2";
   ctx.setLineDash([4, 4]);
   ctx.beginPath();
@@ -1090,11 +1211,15 @@ function drawZ() {
   ctx.stroke();
   ctx.setLineDash([]);
   const marks = collect("scatter-z");
+  const zLabel = (r) =>
+    `<b>${r.n.name}</b>` +
+    `<span>z = ${r.m.z.toFixed(2)}${r.m.z >= 2 ? " · more of a bridge than its partners explain" : " · explained by its partner count"}</span>` +
+    `<span>${r.m.in_degree} origins · betweenness #${r.m.betweenness_rank}</span>`;
   plotDots(ctx, marks, rows.filter((r) => r.m.z < 2).map((r) => ({
-    x: box.x(r.m.in_degree), y: box.y(r.m.z), iso3: r.iso3,
+    x: box.x(r.m.in_degree), y: box.y(r.m.z), iso3: r.iso3, label: zLabel(r),
   })), ACCESS + "99", 2.4);
   plotDots(ctx, marks, rows.filter((r) => r.m.z >= 2).map((r) => ({
-    x: box.x(r.m.in_degree), y: box.y(r.m.z), iso3: r.iso3,
+    x: box.x(r.m.in_degree), y: box.y(r.m.z), iso3: r.iso3, label: zLabel(r),
   })), PEOPLE, 2.4);
   markSelectedPoint(ctx, box, (m) => [m.in_degree, m.z ?? 0], y);
 }
@@ -1103,6 +1228,7 @@ function drawZ() {
 // country swells to three times its radius with a halo; the selected one keeps
 // its ring.
 function plotDots(ctx, marks, points, colour, radius) {
+  // Points arrive with a label; the tooltip is the only place it is read.
   for (const point of points) {
     const hovered = point.iso3 === state.hover;
     if (hovered) {
@@ -1115,7 +1241,7 @@ function plotDots(ctx, marks, points, colour, radius) {
     ctx.beginPath();
     ctx.arc(point.x, point.y, hovered ? radius * 3 : radius, 0, Math.PI * 2);
     ctx.fill();
-    marks.push({ x: point.x, y: point.y, iso3: point.iso3 });
+    marks.push({ x: point.x, y: point.y, iso3: point.iso3, label: point.label });
   }
 }
 
@@ -1141,8 +1267,8 @@ function markSelectedPoint(ctx, box, pick, y) {
 /* ---------------------------------------------------------------- section 7 */
 
 function renderTypology() {
-  const y = String(state.data.null_year);
   const buckets = new Map(Object.keys(TYPES).map((k) => [k, []]));
+  const y = String(state.data.null_year);
   for (const { iso3, m } of withMetrics(y)) {
     if (m.typology && buckets.has(m.typology)) buckets.get(m.typology).push({ iso3, m });
   }
@@ -1167,14 +1293,98 @@ function renderTypology() {
         .sort(sorter)
         .slice(0, 3)
         .map((r) => r.iso3);
-      return `<article class="type">
+      const chips = examples
+        .map(
+          (iso3) =>
+            `<button class="eg-chip" data-iso3="${iso3}" type="button">${iso3}</button>`,
+        )
+        .join("");
+      return `<article class="type" data-type="${key}">
         <div class="badge" style="background:${meta.tint};color:${meta.fg}">${meta.icon}</div>
         <h3 style="color:${meta.fg}">${meta.title}</h3>
         <p>${meta.what}</p>
-        <p class="eg">${members.length} countries<br />Examples: <b>${examples.join(", ") || "none"}</b></p>
+        <p class="eg">${members.length} ${members.length === 1 ? "country" : "countries"}<br />Examples: ${chips || "none"}</p>
+        <button class="eg-all" data-type="${key}" type="button">See all ${members.length} →</button>
       </article>`;
     })
     .join("");
+
+  const host = $("typology-cards");
+  // Hovering an example says who it is; clicking selects it. The card's own
+  // button opens the full membership in a drawer.
+  host.addEventListener("pointermove", (event) => {
+    const chip = event.target.closest(".eg-chip");
+    if (!chip) {
+      hideTip();
+      return;
+    }
+    const iso3 = chip.dataset.iso3;
+    const m = metrics(iso3, y);
+    const n = node(iso3);
+    if (!m) return;
+    showTip(
+      event,
+      `<b>${n.name}</b><span>${label(m.typology)}</span>` +
+        `<span>${fmt.format(m.in_strength)} incoming · ${m.in_degree} origins</span>` +
+        `<span>${fmt.format(n.flight_degree)} flight partners</span>`,
+    );
+  });
+  host.addEventListener("pointerleave", hideTip);
+  host.addEventListener("click", (event) => {
+    const chip = event.target.closest(".eg-chip");
+    if (chip) {
+      select(chip.dataset.iso3);
+      return;
+    }
+    const all = event.target.closest(".eg-all");
+    if (all) openTypologyDrawer(all.dataset.type, buckets.get(all.dataset.type) ?? []);
+  });
+}
+
+// The full membership of one role, with the numbers that put each country in
+// it, in a drawer rather than five expanding cards.
+function openTypologyDrawer(key, members) {
+  const meta = TYPES[key];
+  const drawer = $("type-drawer");
+  if (!drawer) return;
+  const y = String(state.data.null_year);
+  const rows = members
+    .slice()
+    .sort((a, b) => b.m.in_strength - a.m.in_strength)
+    .map(({ iso3, m }) => {
+      const n = node(iso3);
+      return `<tr data-iso3="${iso3}">
+        <td>${n.name}</td>
+        <td>${fmt.format(m.in_strength)}</td>
+        <td>${m.in_degree}</td>
+        <td>${m.z === undefined ? "—" : m.z.toFixed(2)}</td>
+        <td>${fmt.format(n.flight_degree)}</td>
+      </tr>`;
+    })
+    .join("");
+  drawer.innerHTML = `
+    <div class="drawer-head">
+      <div>
+        <span class="badge" style="background:${meta.tint};color:${meta.fg}">${meta.icon}</span>
+        <h3 style="color:${meta.fg}">${meta.title}</h3>
+        <p>${meta.what}</p>
+      </div>
+      <button class="drawer-close" type="button" aria-label="Close">×</button>
+    </div>
+    <p class="drawer-note">${members.length} countries in ${y}. Click a row to select it.</p>
+    <table class="drawer-table">
+      <thead><tr>
+        <th>Country</th><th>Incoming</th><th>Origins</th><th>z</th><th>Flights</th>
+      </tr></thead>
+      <tbody>${rows}</tbody>
+    </table>`;
+  drawer.hidden = false;
+  drawer.querySelector(".drawer-close").addEventListener("click", () => {
+    drawer.hidden = true;
+  });
+  drawer.querySelectorAll("tbody tr").forEach((tr) => {
+    tr.addEventListener("click", () => select(tr.dataset.iso3));
+  });
 }
 
 /* ---------------------------------------------------------------- section 8 */
@@ -1297,15 +1507,11 @@ function drawDenmark() {
     box.y = logScale(box, [minB, maxB], "y");
     axes(ctx, box, { xTicks: logTicks(1, maxK), yTicks: logTicks(minB, maxB), xLabel: "Degree" });
     const marks = collect("dk-scatter");
-    ctx.fillStyle = "#c9d7e8";
-    for (const r of rows) {
-      const x = box.x(r.m.in_degree);
-      const py = box.y(r.m.betweenness);
-      ctx.beginPath();
-      ctx.arc(x, py, 1.8, 0, Math.PI * 2);
-      ctx.fill();
-      marks.push({ x, y: py, iso3: r.iso3 });
-    }
+    plotDots(ctx, marks, rows.map((r) => ({
+      x: box.x(r.m.in_degree), y: box.y(r.m.betweenness), iso3: r.iso3,
+      label: `<b>${r.n.name}</b><span>${r.m.in_degree} origins · #${r.m.in_degree_rank}</span>` +
+        `<span>betweenness #${r.m.betweenness_rank}</span>`,
+    })), "#c9d7e8", 1.8);
     dot(ctx, box.x(m.in_degree), box.y(m.betweenness), "#d0021b", n.name);
     for (const other of focus.nordics) {
       if (other.iso3 === iso3) continue;
@@ -1328,15 +1534,11 @@ function drawDenmark() {
       xLabel: "Degree",
     });
     const marks = collect("dk-z");
-    ctx.fillStyle = "#c9d7e8";
-    for (const r of zRows) {
-      const x = box.x(r.m.in_degree);
-      const py = box.y(r.m.z);
-      ctx.beginPath();
-      ctx.arc(x, py, 1.8, 0, Math.PI * 2);
-      ctx.fill();
-      marks.push({ x, y: py, iso3: r.iso3 });
-    }
+    plotDots(ctx, marks, zRows.map((r) => ({
+      x: box.x(r.m.in_degree), y: box.y(r.m.z), iso3: r.iso3,
+      label: `<b>${r.n.name}</b><span>z = ${r.m.z.toFixed(2)}</span>` +
+        `<span>${r.m.in_degree} origins</span>`,
+    })), "#c9d7e8", 1.8);
     if (m.z !== undefined) dot(ctx, box.x(m.in_degree), box.y(m.z), "#d0021b", n.name);
   });
 
@@ -1351,6 +1553,15 @@ function drawDenmark() {
     });
     line(ctx, box, focus.series, (s) => s.year, (s) => s.in_strength, PEOPLE);
     line(ctx, box, focus.series, (s) => s.year, (s) => s.out_strength, ACCESS);
+    const timeMarks = collect("dk-time");
+    for (const point of focus.series) {
+      timeMarks.push({
+        x: box.x(point.year), y: box.y(point.in_strength), iso3: focus.iso3,
+        label: `<b>Denmark, ${point.year}</b>` +
+          `<span>${fmt.format(point.in_strength)} incoming</span>` +
+          `<span>${fmt.format(point.out_strength)} outgoing</span>`,
+      });
+    }
   });
 
   small($("dk-rank"), (ctx, box) => {
@@ -1363,6 +1574,15 @@ function drawDenmark() {
       yTicks: [1, Math.round(maxR / 2), maxR].map((v) => ({ value: v, label: `#${v}` })),
     });
     line(ctx, box, focus.series, (s) => s.year, (s) => s.betweenness_rank, INK);
+    const rankMarks = collect("dk-rank");
+    for (const point of focus.series) {
+      rankMarks.push({
+        x: box.x(point.year), y: box.y(point.betweenness_rank), iso3: focus.iso3,
+        label: `<b>Denmark, ${point.year}</b>` +
+          `<span>bridge rank #${point.betweenness_rank}</span>` +
+          `<span>${point.in_degree} origins</span>`,
+      });
+    }
   });
 
   small($("dk-nordic"), (ctx, box) => {
@@ -1377,9 +1597,9 @@ function drawDenmark() {
       yTicks: [0, 0.5, 1].map((v) => ({ value: v, label: v === 1 ? "max" : "" })),
     });
     const bars = [
-      { get: (i) => i.in_degree / maxDeg, colour: PEOPLE },
-      { get: (i) => Math.abs(i.z ?? 0) / maxZ, colour: INK },
-      { get: (i) => i.flight_degree / maxFlight, colour: ACCESS },
+      { name: "Origins", read: (i) => i.in_degree, get: (i) => i.in_degree / maxDeg, colour: PEOPLE },
+      { name: "z-score", read: (i) => (i.z ?? 0).toFixed(2), get: (i) => Math.abs(i.z ?? 0) / maxZ, colour: INK },
+      { name: "Flight partners", read: (i) => i.flight_degree, get: (i) => i.flight_degree / maxFlight, colour: ACCESS },
     ];
     const marks = collect("dk-nordic");
     items.forEach((item, idx) => {
@@ -1389,7 +1609,11 @@ function drawDenmark() {
         const yv = box.y(bar.get(item));
         ctx.fillStyle = bar.colour;
         ctx.fillRect(x, yv, w * 0.8, box.bottom - yv);
-        marks.push({ x: x + w * 0.4, y: (yv + box.bottom) / 2, iso3: item.iso3 });
+        marks.push({
+          x: x + w * 0.4, y: (yv + box.bottom) / 2, iso3: item.iso3,
+          label: `<b>${item.name}</b><span>${bar.name}: ${bar.read(item)}</span>` +
+            `<span>betweenness rank #${item.betweenness_rank}</span>`,
+        });
       });
     });
   });
@@ -1605,6 +1829,7 @@ export const api = {
   state, R, node, metrics, withMetrics, select, topEdges, flightEdges,
   degreeCounts, ccdf, collect, enablePicking, label,
   refreshPalette, arcSpec, syncFlow, rgb, countryAt, unprojectMap,
+  linkSpec, rampColour, linkAlpha, THICKNESS,
   colours: { PEOPLE, ACCESS, INK, MUTE, GRID },
   format: { fmt, compact },
   $,
@@ -1668,6 +1893,8 @@ async function main() {
       "scatter-z",
       "dk-scatter",
       "dk-z",
+      "dk-time",
+      "dk-rank",
       "dk-nordic",
     ])
       enablePicking(id);
