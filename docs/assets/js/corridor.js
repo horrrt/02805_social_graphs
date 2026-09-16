@@ -6,11 +6,59 @@
 // by analysis/week03_corridor_control.py. No number is computed in this file
 // that is not a ratio or a rank of something already in that data.
 
-const PEOPLE = "#f2820c";
-const ACCESS = "#1f8fd6";
-const INK = "#0f2340";
-const MUTE = "#7a8fac";
-const GRID = "#e4ebf4";
+// Not constants: the palette dropdown rewrites these from CSS custom
+// properties, so one definition in corridor.css drives the stylesheet, the SVG
+// variants and the 2D canvas at once.
+let PEOPLE = "#f2820c";
+let ACCESS = "#1f8fd6";
+let INK = "#0f2340";
+let MUTE = "#7a8fac";
+let GRID = "#e4ebf4";
+
+export function rgb(hex) {
+  const value = (hex || "").trim().replace("#", "");
+  const full = value.length === 3 ? [...value].map((c) => c + c).join("") : value;
+  const n = Number.parseInt(full, 16);
+  return Number.isNaN(n) ? "128,128,128" : `${(n >> 16) & 255},${(n >> 8) & 255},${n & 255}`;
+}
+
+export function refreshPalette() {
+  const styles = getComputedStyle(document.body);
+  const read = (name, fallback) =>
+    (styles.getPropertyValue(name) || "").trim() || fallback;
+  PEOPLE = read("--people", "#f2820c");
+  ACCESS = read("--access", "#1f8fd6");
+  INK = read("--ink", "#0f2340");
+  MUTE = read("--ink-mute", "#7a8fac");
+  GRID = read("--line-soft", "#e4ebf4");
+  if (typeof SERIES !== "undefined") {
+    SERIES[0].colour = PEOPLE;
+    SERIES[1].colour = INK;
+    SERIES[2].colour = ACCESS;
+  }
+  if (api) {
+    api.colours.PEOPLE = PEOPLE;
+    api.colours.ACCESS = ACCESS;
+    api.colours.INK = INK;
+    api.colours.MUTE = MUTE;
+    api.colours.GRID = GRID;
+  }
+  return { PEOPLE, ACCESS, INK, MUTE, GRID };
+}
+
+// How a corridor is drawn between two countries. Each renderer reads the same
+// spec and expresses it in its own terms, so "tapered" means the same idea on
+// a 2D canvas, an SVG path and a WebGL arc.
+export const ARC_STYLES = {
+  curve: { curvature: 0.16, altitude: 0.42, dashed: false, taper: false },
+  straight: { curvature: 0, altitude: 0, dashed: false, taper: false },
+  flow: { curvature: 0.16, altitude: 0.42, dashed: true, taper: false },
+  taper: { curvature: 0.16, altitude: 0.42, dashed: false, taper: true },
+};
+
+export function arcSpec() {
+  return ARC_STYLES[state.arcs] ?? ARC_STYLES.curve;
+}
 
 const $ = (id) => document.getElementById(id);
 const fmt = new Intl.NumberFormat("en-GB");
@@ -35,6 +83,8 @@ const state = {
   year: 2020,
   selected: null,
   layer: "both",
+  arcs: "curve",
+  dash: 0,
   rotation: -10,
   dragging: false,
 };
@@ -391,16 +441,77 @@ function drawLandMap(ctx, width, height) {
   }
 }
 
-function arc(ctx, a, b, lift) {
+function controlPoint(a, b, lift) {
   const mx = (a.x + b.x) / 2;
   const my = (a.y + b.y) / 2;
   const dx = b.x - a.x;
   const dy = b.y - a.y;
   const len = Math.hypot(dx, dy) || 1;
+  return { x: mx - (dy / len) * len * lift, y: my + (dx / len) * len * lift };
+}
+
+function bezier(a, c, b, t) {
+  const u = 1 - t;
+  return {
+    x: u * u * a.x + 2 * u * t * c.x + t * t * b.x,
+    y: u * u * a.y + 2 * u * t * c.y + t * t * b.y,
+  };
+}
+
+function arc(ctx, a, b, lift) {
+  const spec = arcSpec();
+  const bend = spec.curvature === 0 ? 0 : lift;
+  const c = controlPoint(a, b, bend);
+
+  if (spec.taper) {
+    // Width carries direction: heavy where people leave, thin where they land.
+    const width = ctx.lineWidth;
+    const steps = 14;
+    let previous = a;
+    for (let i = 1; i <= steps; i += 1) {
+      const point = bezier(a, c, b, i / steps);
+      ctx.lineWidth = width * (1.25 - (i / steps) * 1.05);
+      ctx.beginPath();
+      ctx.moveTo(previous.x, previous.y);
+      ctx.lineTo(point.x, point.y);
+      ctx.stroke();
+      previous = point;
+    }
+    ctx.lineWidth = width;
+    return;
+  }
+
+  if (spec.dashed) {
+    ctx.save();
+    ctx.setLineDash([6, 7]);
+    ctx.lineDashOffset = -state.dash;
+  }
   ctx.beginPath();
   ctx.moveTo(a.x, a.y);
-  ctx.quadraticCurveTo(mx - (dy / len) * len * lift, my + (dx / len) * len * lift, b.x, b.y);
+  if (bend === 0) ctx.lineTo(b.x, b.y);
+  else ctx.quadraticCurveTo(c.x, c.y, b.x, b.y);
   ctx.stroke();
+  if (spec.dashed) ctx.restore();
+}
+
+// Only the flowing style animates, and only when the reader has not asked for
+// less motion. Twenty frames a second is plenty for a dash offset.
+let flowTimer = null;
+function syncFlow() {
+  const wants =
+    arcSpec().dashed &&
+    !window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  if (wants && !flowTimer) {
+    flowTimer = setInterval(() => {
+      state.dash = (state.dash + 1.6) % 13;
+      R.globe();
+      R.map();
+    }, 50);
+  } else if (!wants && flowTimer) {
+    clearInterval(flowTimer);
+    flowTimer = null;
+    state.dash = 0;
+  }
 }
 
 // The globe and the flat map share one edge budget: the heaviest corridors
@@ -425,6 +536,7 @@ function flightEdges(limit) {
 }
 
 function drawGlobe() {
+  refreshPalette();
   const canvas = $("globe-canvas");
   if (!canvas || !state.data) return;
   const { ctx, width, height } = surface(canvas);
@@ -555,6 +667,7 @@ function mapPoint(coord, width, height) {
 }
 
 function drawMap() {
+  refreshPalette();
   const canvas = $("map-canvas");
   if (!canvas || !state.data) return;
   const { ctx, width, height } = surface(canvas);
@@ -673,6 +786,7 @@ const SERIES = [
 ];
 
 function drawHistogram() {
+  refreshPalette();
   const canvas = $("hist");
   if (!canvas) return;
   const { ctx, width, height } = surface(canvas);
@@ -702,6 +816,7 @@ function drawHistogram() {
 }
 
 function drawCcdf() {
+  refreshPalette();
   const canvas = $("ccdf");
   if (!canvas) return;
   const { ctx, width, height } = surface(canvas);
@@ -769,6 +884,7 @@ function drawScatters() {
 }
 
 function drawBetweenness() {
+  refreshPalette();
   const canvas = $("scatter-between");
   if (!canvas) return;
   const { ctx, width, height } = surface(canvas);
@@ -842,6 +958,7 @@ function drawBetweenness() {
 }
 
 function drawZ() {
+  refreshPalette();
   const canvas = $("scatter-z");
   if (!canvas) return;
   const { ctx, width, height } = surface(canvas);
@@ -1040,6 +1157,7 @@ function renderDenmarkPanels() {
 }
 
 function drawDenmark() {
+  refreshPalette();
   const focus = state.data.focus;
   const iso3 = focus.iso3;
   const y = String(state.data.null_year);
@@ -1396,10 +1514,24 @@ const CANVAS_RENDERER = {
 export const api = {
   state, R, node, metrics, withMetrics, select, topEdges, flightEdges,
   degreeCounts, ccdf, collect, enablePicking, label,
+  refreshPalette, arcSpec, syncFlow, rgb,
   colours: { PEOPLE, ACCESS, INK, MUTE, GRID },
   format: { fmt, compact },
   $,
 };
+
+// Called by the style bar when a dropdown changes: re-read the palette, restart
+// or stop the flow animation, and repaint everything.
+export function restyle() {
+  refreshPalette();
+  syncFlow();
+  R.globe();
+  R.map();
+  R.hist();
+  R.ccdf();
+  R.scatters();
+  R.denmark();
+}
 
 export async function start() {
   // Canvas fills the gaps rather than overwriting, so a variant installed
@@ -1449,6 +1581,8 @@ async function main() {
       "dk-nordic",
     ])
       enablePicking(id);
+    refreshPalette();
+    syncFlow();
     setupPredict();
     setupEdgeInspector();
     renderTwinStats();

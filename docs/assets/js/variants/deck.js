@@ -8,11 +8,9 @@
 // layer definitions, so the flat map and the globe are genuinely the same
 // picture in two projections rather than two pieces of drawing code.
 
-const PEOPLE_RGB = [247, 148, 38];
-const ACCESS_RGB = [31, 143, 214];
-
 export function install(api, deck) {
-  const { state, node, metrics, topEdges, flightEdges, select, $ } = api;
+  const { state, node, metrics, topEdges, flightEdges, select, $, colours, rgb, arcSpec } = api;
+  const channels = (hex) => rgb(hex).split(",").map(Number);
   const GlobeView = deck._GlobeView ?? deck.GlobeView;
   if (!GlobeView) throw new Error("this deck.gl build has no GlobeView");
 
@@ -102,19 +100,23 @@ export function install(api, deck) {
     return out;
   }
 
-  const arcLayer = (id, data, rgb) =>
-    new deck.ArcLayer({
+  const arcLayer = (id, data, hex) => {
+    const colour = channels(hex);
+    const spec = arcSpec();
+    return new deck.ArcLayer({
       id,
       data,
-      greatCircle: true,
+      greatCircle: spec.curvature > 0,
+      getHeight: spec.altitude > 0 ? 1 : 0,
       getSourcePosition: (d) => d.source,
       getTargetPosition: (d) => d.target,
-      getSourceColor: [...rgb, 40],
-      getTargetColor: (d) => [...rgb, d.alpha],
+      getSourceColor: [...colour, spec.taper ? 220 : 40],
+      getTargetColor: (d) => [...colour, spec.taper ? 40 : d.alpha],
       getWidth: (d) => d.width,
       widthUnits: "pixels",
       pickable: false,
     });
+  };
 
   // On a GlobeView a polygon has to be tessellated across the curve, which is
   // what _full3d turns on. Without it the land is drawn flat and disappears
@@ -171,7 +173,7 @@ export function install(api, deck) {
           _full3d: true,
         }),
         ...landLayer("globe-land", true),
-        arcLayer("globe-arcs", arcData(320), PEOPLE_RGB),
+        arcLayer("globe-arcs", arcData(320), colours.PEOPLE),
         dotLayer("globe-dots"),
       ],
     });
@@ -185,9 +187,9 @@ export function install(api, deck) {
     });
     if (!instance) return;
     const layers = [...landLayer("map-land", false)];
-    if (state.layer !== "flights") layers.push(arcLayer("map-arcs", arcData(420), PEOPLE_RGB));
+    if (state.layer !== "flights") layers.push(arcLayer("map-arcs", arcData(420), colours.PEOPLE));
     if (state.layer !== "migration")
-      layers.push(arcLayer("map-flights", flightArcData(420), ACCESS_RGB));
+      layers.push(arcLayer("map-flights", flightArcData(420), colours.ACCESS));
     layers.push(dotLayer("map-dots"));
     instance.setProps({ layers });
   }
