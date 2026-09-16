@@ -180,8 +180,9 @@ def main() -> None:
         corridor.append("--reuse-null")
     run(*corridor)
 
-    print("\n5. the second edition")
+    print("\n5. the second edition, and the cache stamp")
     run(python, str(ROOT / "scripts/sync_week03_v2.py"))
+    run(python, str(ROOT / "scripts/stamp_week03.py"))
 
     report()
     print("\nNow run: node --test 'tests/*.test.mjs'")

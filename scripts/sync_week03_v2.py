@@ -22,6 +22,8 @@ TARGET = ROOT / "docs" / "v2" / "weeks" / "week03" / "index.html"
 
 
 def transform(html: str) -> str:
+    # The build stamp travels with the file names, so nothing special is needed
+    # here beyond leaving the query strings alone.
     # The twin sits one directory deeper, so shared assets move up one level.
     out = html.replace('href="../../assets/', 'href="../../../assets/')
     out = out.replace('src="../../assets/', 'src="../../../assets/')

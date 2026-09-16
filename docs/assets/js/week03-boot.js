@@ -11,7 +11,14 @@
 // The data, the numbers and the copy never change. Only the renderer needs a
 // reload when it changes; the other three repaint in place.
 
-import { api, installRenderer, restyle, start } from "./corridor.js";
+// GitHub Pages caches assets for about ten minutes, which is long enough that
+// a reader on a just-updated post can run last version's code against this
+// version's markup. The page carries a build stamp on this module's URL;
+// passing it on to every module it loads means one deploy invalidates the lot.
+const BUILD = new URL(import.meta.url).searchParams.get("v") ?? "";
+const stamped = (path) => (BUILD ? `${path}?v=${BUILD}` : path);
+
+const { api, installRenderer, restyle, start } = await import(stamped("./corridor.js"));
 
 export const RENDERERS = {
   canvas: {
@@ -278,7 +285,7 @@ async function boot() {
   if (renderer.script) {
     try {
       await loadVendor(renderer.script);
-      const { install } = await import(renderer.module);
+      const { install } = await import(stamped(renderer.module));
       installRenderer({ name: chosen.variant, ...install(api, window[renderer.global]) });
     } catch (error) {
       // A broken renderer must not take the post down with it.
