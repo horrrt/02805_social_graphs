@@ -153,8 +153,8 @@ const DIMENSIONS = [
   { key: "links", label: "Link encoding", options: LINKS, fallback: "width" },
   { key: "thickness", label: "Link thickness", options: THICKNESS, fallback: "normal" },
   { key: "focus", label: "On selection", options: FOCUS, fallback: "all" },
-  { key: "basemap", label: "The world", options: BASEMAP, fallback: "outline" },
-  { key: "earth", label: "Earth size", options: EARTH, fallback: "medium" },
+  { key: "basemap", label: "The world", options: BASEMAP, fallback: "photo" },
+  { key: "earth", label: "Earth size", options: EARTH, fallback: "large" },
   { key: "dots", label: "Country dots", options: DOTS, fallback: "on" },
   { key: "skin", label: "Skin", options: SKINS, fallback: "clean" },
   { key: "tables", label: "Tables", options: TABLES, fallback: "rules" },
@@ -234,13 +234,26 @@ function describe(chosen) {
 }
 
 // The menu opens from the top bar, so the controls stay out of the reading
-// flow until somebody wants them.
+// flow until somebody wants them. Renderer and basemap are chips; the rest
+// sit under "More options" so the common choices are one tap away.
+const CHIP_KEYS = new Set(["variant", "basemap"]);
+
+function optionsHTML(dimension, chosen) {
+  return Object.entries(dimension.options)
+    .map(
+      ([value, meta]) =>
+        `<option value="${value}"${value === chosen[dimension.key] ? " selected" : ""}>` +
+        `${meta.label}${meta.bytes ? ` · ${kb(meta.bytes)}` : ""}</option>`,
+    )
+    .join("");
+}
+
 function wireMenu(chosen) {
   const trigger = document.getElementById("style-trigger");
   const bar = document.getElementById("style-bar");
   if (!trigger || !bar) return;
   const label = document.getElementById("style-trigger-label");
-  if (label) label.textContent = RENDERERS[chosen.variant].label;
+  if (label) label.textContent = `View · ${RENDERERS[chosen.variant].label}`;
 
   const close = () => {
     bar.hidden = true;
@@ -262,31 +275,70 @@ function wireMenu(chosen) {
 function renderBar(chosen, onChange) {
   const host = document.getElementById("style-bar");
   if (!host) return;
-  host.innerHTML =
-    DIMENSIONS.map((dimension) => {
-      const options = Object.entries(dimension.options)
+
+  const chipBlocks = DIMENSIONS.filter((d) => CHIP_KEYS.has(d.key))
+    .map((dimension) => {
+      const chips = Object.entries(dimension.options)
         .map(
           ([value, meta]) =>
-            `<option value="${value}"${value === chosen[dimension.key] ? " selected" : ""}>` +
-            `${meta.label}${meta.bytes ? ` · ${kb(meta.bytes)}` : ""}</option>`,
+            `<button type="button" class="style-chip" data-value="${value}"` +
+            ` aria-pressed="${value === chosen[dimension.key]}">${meta.label}</button>`,
         )
         .join("");
       return (
-        `<div class="style-field">` +
-        `<label for="style-${dimension.key}">${dimension.label}</label>` +
-        `<select id="style-${dimension.key}" data-dimension="${dimension.key}">${options}</select>` +
+        `<div class="style-group">` +
+        `<span class="style-group-label">${dimension.label}</span>` +
+        `<div class="style-chips" role="group" data-dimension="${dimension.key}"` +
+        ` aria-label="${dimension.label}">${chips}</div>` +
+        `<select id="style-${dimension.key}" data-dimension="${dimension.key}"` +
+        ` class="style-select-proxy" tabindex="-1" aria-hidden="true">` +
+        `${optionsHTML(dimension, chosen)}</select>` +
         `</div>`
       );
-    }).join("") +
+    })
+    .join("");
+
+  const moreFields = DIMENSIONS.filter((d) => !CHIP_KEYS.has(d.key))
+    .map(
+      (dimension) =>
+        `<div class="style-field">` +
+        `<label for="style-${dimension.key}">${dimension.label}</label>` +
+        `<select id="style-${dimension.key}" data-dimension="${dimension.key}">` +
+        `${optionsHTML(dimension, chosen)}</select>` +
+        `</div>`,
+    )
+    .join("");
+
+  host.innerHTML =
+    chipBlocks +
+    `<details class="style-more">` +
+    `<summary>More options</summary>` +
+    `<div class="style-more-grid">${moreFields}</div>` +
+    `</details>` +
     `<p class="style-note" id="style-note">${describe(chosen)}</p>`;
+
+  host.querySelectorAll(".style-chips").forEach((group) => {
+    group.addEventListener("click", (event) => {
+      const button = event.target.closest("button[data-value]");
+      if (!button) return;
+      const key = group.dataset.dimension;
+      const select = document.getElementById(`style-${key}`);
+      if (select) select.value = button.dataset.value;
+      group.querySelectorAll("button").forEach((other) => {
+        other.setAttribute("aria-pressed", String(other === button));
+      });
+      onChange(key, button.dataset.value);
+    });
+  });
 
   host.querySelectorAll("select").forEach((select) => {
     select.addEventListener("change", () =>
       onChange(select.dataset.dimension, select.value),
     );
   });
+
   const label = document.getElementById("style-trigger-label");
-  if (label) label.textContent = RENDERERS[chosen.variant].label;
+  if (label) label.textContent = `View · ${RENDERERS[chosen.variant].label}`;
 }
 
 // The two heavy-tail charts can be read on three scales; the buttons live in

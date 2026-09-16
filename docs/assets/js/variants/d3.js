@@ -149,9 +149,9 @@ export function install(api, d3) {
         .selectAll("rect")
         .data(rows)
         .join("rect")
-        .attr("x", (d) => x(d.k) - 1.5 + i * 1.6)
+        .attr("x", (d) => x(d.k) - 2 + i * 4.5)
         .attr("y", (d) => y(d.c))
-        .attr("width", 2)
+        .attr("width", 4)
         .attr("height", (d) => box.inner.bottom - y(d.c))
         .attr("fill", SERIES[i][2])
         .attr("opacity", 0.85);
@@ -160,9 +160,9 @@ export function install(api, d3) {
         .selectAll("rect")
         .data(rows)
         .join("rect")
-        .attr("x", (d) => x(d.k) - 5)
+        .attr("x", (d) => x(d.k) - 8)
         .attr("y", box.inner.top)
-        .attr("width", 10)
+        .attr("width", 16)
         .attr("height", box.inner.bottom - box.inner.top)
         .attr("fill", "transparent")
         .attr("cursor", "pointer")
@@ -204,7 +204,7 @@ export function install(api, d3) {
         x,
         y,
         SERIES[i][2],
-        2.4,
+        3.5,
         select,
       ),
     );
@@ -411,8 +411,8 @@ export function install(api, d3) {
     const canvas = $("globe-canvas");
     if (!canvas) return;
     let host = document.getElementById("globe-canvas-d3");
-    const width = canvas.clientWidth || 520;
-    const height = Math.round(width * 0.86);
+    const width = canvas.clientWidth || 720;
+    const height = canvas.clientHeight || width;
     if (!host) {
       host = document.createElementNS("http://www.w3.org/2000/svg", "svg");
       host.id = "globe-canvas-d3";
@@ -429,7 +429,7 @@ export function install(api, d3) {
         .geoOrthographic()
         .rotate([-12, -18])
         .translate([width / 2, height / 2])
-        .scale(Math.min(width, height) * 0.44 * earthScale());
+        .scale(Math.min(Math.min(width, height) * 0.48, Math.min(width, height) * 0.42 * earthScale()));
       svg.call(
         d3.drag().on("drag", (event) => {
           const [lon, lat] = projection.rotate();
@@ -438,7 +438,9 @@ export function install(api, d3) {
         }),
       );
     }
-    projection.translate([width / 2, height / 2]).scale(Math.min(width, height) * 0.44 * earthScale());
+    projection
+      .translate([width / 2, height / 2])
+      .scale(Math.min(Math.min(width, height) * 0.48, Math.min(width, height) * 0.42 * earthScale()));
     const path = d3.geoPath(projection);
 
     svg

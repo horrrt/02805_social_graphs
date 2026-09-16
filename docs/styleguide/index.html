@@ -9,7 +9,7 @@
     />
     <title>Style guide · Corridor Control · Log–Log Arcade</title>
     <link href="../assets/favicon.svg" rel="icon" type="image/svg+xml" />
-    <link href="../assets/css/corridor.css?v=69c1e70913" rel="stylesheet" />
+    <link href="../assets/css/corridor.css?v=ce6a406532" rel="stylesheet" />
     <style>
       /* Only what the guide itself needs: scoped specimens and swatches.
          Everything a reader sees inside a specimen comes from corridor.css. */
@@ -49,38 +49,61 @@
             id="style-trigger"
             type="button"
           >
-            <span id="style-trigger-label">Style</span>
+            <span id="style-trigger-label">View</span>
             <span aria-hidden="true">▾</span>
           </button>
           <div aria-label="Page style" class="style-bar" hidden id="style-bar" role="group">
-            <div class="style-field">
-              <label for="style-skin">Skin</label>
-              <select data-dimension="skin" id="style-skin">
-                <option value="clean">Clean</option>
-                <option value="editorial">Editorial</option>
-                <option value="terminal">Terminal</option>
-                <option value="poster">Poster</option>
+            <div class="style-group">
+              <span class="style-group-label">Renderer</span>
+              <div class="style-chips" role="group">
+                <button aria-pressed="true" class="style-chip" type="button">Canvas</button>
+                <button aria-pressed="false" class="style-chip" type="button">D3</button>
+                <button aria-pressed="false" class="style-chip" type="button">ECharts</button>
+              </div>
+              <select class="style-select-proxy" tabindex="-1" aria-hidden="true">
+                <option>Canvas</option>
               </select>
             </div>
-            <div class="style-field">
-              <label for="style-palette">Colours</label>
-              <select data-dimension="palette" id="style-palette">
-                <option value="signal">Signal</option>
-                <option value="ember">Ember</option>
-                <option value="iris">Iris</option>
-                <option value="okabe">Okabe-Ito</option>
-                <option value="slate">Slate</option>
-              </select>
+            <div class="style-group">
+              <span class="style-group-label">The world</span>
+              <div class="style-chips" role="group">
+                <button aria-pressed="true" class="style-chip" type="button">Photographic Earth</button>
+                <button aria-pressed="false" class="style-chip" type="button">Country outlines</button>
+              </div>
             </div>
-            <div class="style-field">
-              <label for="style-tables">Tables</label>
-              <select data-dimension="tables" id="style-tables">
-                <option value="rules">Rules</option>
-                <option value="zebra">Zebra</option>
-                <option value="cards">Cards</option>
-                <option value="compact">Compact</option>
-              </select>
-            </div>
+            <details class="style-more">
+              <summary>More options</summary>
+              <div class="style-more-grid">
+                <div class="style-field">
+                  <label for="style-skin">Skin</label>
+                  <select data-dimension="skin" id="style-skin">
+                    <option value="clean">Clean</option>
+                    <option value="editorial">Editorial</option>
+                    <option value="terminal">Terminal</option>
+                    <option value="poster">Poster</option>
+                  </select>
+                </div>
+                <div class="style-field">
+                  <label for="style-palette">Colours</label>
+                  <select data-dimension="palette" id="style-palette">
+                    <option value="signal">Signal</option>
+                    <option value="ember">Ember</option>
+                    <option value="iris">Iris</option>
+                    <option value="okabe">Okabe-Ito</option>
+                    <option value="slate">Slate</option>
+                  </select>
+                </div>
+                <div class="style-field">
+                  <label for="style-tables">Tables</label>
+                  <select data-dimension="tables" id="style-tables">
+                    <option value="rules">Rules</option>
+                    <option value="zebra">Zebra</option>
+                    <option value="cards">Cards</option>
+                    <option value="compact">Compact</option>
+                  </select>
+                </div>
+              </div>
+            </details>
             <p class="style-note" id="style-note">
               The same three dimensions the post offers. They set
               <code>data-skin</code>, <code>data-palette</code> and
@@ -366,13 +389,36 @@
             <div class="grid-side" style="margin-top: 18px">
               <div class="plot">
                 <h3><code>.grid-side</code> · a wide plot beside a narrow panel</h3>
-                <p class="axis-note">The layout sections 3 and 4 use</p>
+                <p class="axis-note">The layout section 3 uses</p>
                 <canvas class="chart" height="160" width="760"></canvas>
               </div>
               <aside class="panel">
                 <h2>Beside it</h2>
                 <dl class="stats"><div><dt>k (in)</dt><dd>190</dd></div><div><dt>Rank</dt><dd>#32</dd></div></dl>
               </aside>
+            </div>
+
+            <div class="grid-pair" style="margin-top: 18px">
+              <div>
+                <div class="plot">
+                  <h3><code>.grid-pair</code> · two linked visuals side by side</h3>
+                  <p class="axis-note">Sections 4 and 5 share a row</p>
+                  <canvas class="chart" height="160" width="440"></canvas>
+                </div>
+                <aside class="panel pair-aside">
+                  <h2><code>.pair-aside</code></h2>
+                  <p class="fineprint" style="border: 0; padding: 0">Notes under each visual.</p>
+                </aside>
+              </div>
+              <div>
+                <div class="map-wrap">
+                  <canvas height="160" width="440"></canvas>
+                </div>
+                <aside class="panel pair-aside">
+                  <h2>Twin notes</h2>
+                  <dl class="stats"><div><dt>Layer</dt><dd>Both</dd></div></dl>
+                </aside>
+              </div>
             </div>
 
             <div class="grid3" style="margin-top: 18px">

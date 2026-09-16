@@ -34,7 +34,7 @@ export function install(api, Globe) {
   let lastEarth = null;
 
   // A bigger Earth is the same sphere from closer in, not a bigger sphere.
-  const altitude = () => 1.85 / earthScale();
+  const altitude = () => Math.max(1.45, 1.9 / earthScale());
   let basemap = null;
   let basemapPending = null;
 
@@ -47,15 +47,17 @@ export function install(api, Globe) {
       host = document.createElement("div");
       host.id = "globe-atlas";
       host.style.width = "100%";
-      host.style.aspectRatio = "1 / 0.86";
+      host.style.aspectRatio = "1";
+      host.style.height = "100%";
       canvas.after(host);
       canvas.style.display = "none";
     }
     if (!world) {
-      const width = host.clientWidth || 520;
+      const width = host.clientWidth || 720;
+      const height = host.clientHeight || width;
       world = Globe()(host)
         .width(width)
-        .height(Math.round(width * 0.86))
+        .height(height)
         .backgroundColor("rgba(0,0,0,0)")
         .globeImageUrl(textureURL(DAY))
         .bumpImageUrl(textureURL(BUMP))
@@ -302,8 +304,9 @@ export function install(api, Globe) {
       if (hint) hint.textContent = "Drag to spin, scroll to zoom. Click a country.";
       window.addEventListener("resize", () => {
         if (!world || !host) return;
-        const width = host.clientWidth || 520;
-        world.width(width).height(Math.round(width * 0.86));
+        const width = host.clientWidth || 720;
+        const height = host.clientHeight || width;
+        world.width(width).height(height);
       });
     },
     setupMap() {

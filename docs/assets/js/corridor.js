@@ -75,16 +75,18 @@ export const THICKNESS = { thin: 0.55, normal: 1, thick: 1.9 };
 // How much of its panel the globe fills. A number, not a pixel count, so a
 // 2D canvas, an SVG orthographic and two WebGL cameras can each express the
 // same choice in their own units.
-export const EARTH_SIZES = { small: 0.76, medium: 1, large: 1.24, huge: 1.5 };
+export const EARTH_SIZES = { small: 0.78, medium: 1, large: 1.12, huge: 1.22 };
 
 export function earthScale() {
   return EARTH_SIZES[state.earth] ?? 1;
 }
 
 // The canvas globe's radius, shared by the drawing and the hit test so a
-// click always lands where the sphere was painted.
+// click always lands where the sphere was painted. Cap so the full sphere
+// always fits inside the panel (with a small margin for atmosphere/arcs).
 export function globeRadius(width, height) {
-  return Math.min(width, height) * 0.42 * earthScale();
+  const room = Math.min(width, height) * 0.48;
+  return Math.min(room, Math.min(width, height) * 0.42 * earthScale());
 }
 
 export function linkSpec() {
@@ -152,8 +154,8 @@ const state = {
   thickness: "normal",
   focus: "all",
   dots: "on",
-  basemap: "outline",
-  earth: "medium",
+  basemap: "photo",
+  earth: "large",
   hover: null,
   axisMode: { hist: "loglog", ccdf: "loglog" },
   dash: 0,
@@ -520,15 +522,26 @@ function collect(id) {
   return marks;
 }
 
-function nearestMark(canvas, event, radius = 16) {
+function nearestMark(canvas, event, radius = 22) {
   const marks = pickable.get(canvas.id) ?? [];
   const rect = canvas.getBoundingClientRect();
   const x = event.clientX - rect.left;
   const y = event.clientY - rect.top;
   let best = null;
   for (const mark of marks) {
-    const d = Math.hypot(mark.x - x, mark.y - y);
-    if (d <= radius && (!best || d < best.d)) best = { mark, d };
+    // Bars (hist) expose a vertical hit strip; points use a circular target.
+    let d;
+    if (mark.kind === "bar") {
+      const half = mark.half ?? 6;
+      const inX = Math.abs(mark.x - x) <= half;
+      const inY = y >= mark.y - 4 && y <= mark.bottom + 4;
+      if (!inX || !inY) continue;
+      d = Math.abs(mark.x - x);
+    } else {
+      d = Math.hypot(mark.x - x, mark.y - y);
+      if (d > radius) continue;
+    }
+    if (!best || d < best.d) best = { mark, d };
   }
   return best?.mark ?? null;
 }
@@ -1319,13 +1332,26 @@ function drawHistogram() {
   });
   const marks = collect("hist");
   all.forEach((points, i) => {
-    ctx.fillStyle = SERIES[i].colour + "cc";
     for (const d of points) {
       const x = box.x(d.k);
       const y = box.y(d.c);
-      ctx.fillRect(x - 1.5 + i * 1.6, y, 2, box.bottom - y);
+      const hovered = d.iso3 === state.hover;
+      const barW = hovered ? 7 : 4;
+      const offset = (i - 1) * (barW + 1.5);
+      ctx.fillStyle = SERIES[i].colour + (hovered ? "ff" : "cc");
+      if (hovered) {
+        ctx.fillStyle = SERIES[i].colour + "33";
+        ctx.fillRect(x + offset - barW / 2 - 3, y - 2, barW + 6, box.bottom - y + 2);
+        ctx.fillStyle = SERIES[i].colour;
+      }
+      ctx.fillRect(x + offset - barW / 2, y, barW, box.bottom - y);
       marks.push({
-        x, y, iso3: d.iso3,
+        kind: "bar",
+        x: x + offset,
+        y,
+        bottom: box.bottom,
+        half: Math.max(8, barW / 2 + 4),
+        iso3: d.iso3,
         label: `<b>${d.k} ${SERIES[i].key === "flight" ? "flight partners" : "partners"}</b>` +
           `<span>${d.c} ${d.c === 1 ? "country" : "countries"}</span>` +
           `<span>largest: ${node(d.iso3).name}</span>`,
@@ -1362,12 +1388,33 @@ function drawCcdf() {
   });
   const marks = collect("ccdf");
   series.forEach((points, i) => {
-    ctx.fillStyle = SERIES[i].colour;
+    // Draw the polyline first so points sit on top of it.
+    ctx.strokeStyle = SERIES[i].colour + "aa";
+    ctx.lineWidth = 2.2;
+    ctx.lineJoin = "round";
+    ctx.beginPath();
+    points.forEach((d, j) => {
+      const x = box.x(d.k);
+      const y = box.y(d.p);
+      if (j === 0) ctx.moveTo(x, y);
+      else ctx.lineTo(x, y);
+    });
+    ctx.stroke();
+
     for (const d of points) {
       const x = box.x(d.k);
       const y = box.y(d.p);
+      const hovered = d.iso3 === state.hover;
+      const r = hovered ? 7 : 3.5;
+      if (hovered) {
+        ctx.fillStyle = "rgba(15,35,64,0.14)";
+        ctx.beginPath();
+        ctx.arc(x, y, r * 2.2, 0, Math.PI * 2);
+        ctx.fill();
+      }
+      ctx.fillStyle = SERIES[i].colour;
       ctx.beginPath();
-      ctx.arc(x, y, 2, 0, Math.PI * 2);
+      ctx.arc(x, y, r, 0, Math.PI * 2);
       ctx.fill();
       marks.push({
         x, y, iso3: d.iso3,

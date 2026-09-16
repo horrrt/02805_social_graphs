@@ -10,7 +10,7 @@
     <title>Corridor Control · Log–Log Arcade · Apple edition</title>
     <meta content="../../" name="site-root" />
     <link href="../../../assets/favicon.svg" rel="icon" type="image/svg+xml" />
-    <link href="../../../assets/css/corridor.css?v=69c1e70913" rel="stylesheet" />
+    <link href="../../../assets/css/corridor.css?v=ce6a406532" rel="stylesheet" />
   </head>
   <body class="corridor theme-apple">
     <a class="skip" href="#main">Skip to content</a>
@@ -29,7 +29,7 @@
             id="style-trigger"
             type="button"
           >
-            <span id="style-trigger-label">Style</span>
+            <span id="style-trigger-label">View</span>
             <span aria-hidden="true">▾</span>
           </button>
           <div
@@ -88,7 +88,7 @@
           </div>
 
           <div class="stage-wrap">
-            <canvas class="stage" height="620" id="globe-canvas" width="720">
+            <canvas class="stage" height="900" id="globe-canvas" width="900">
             </canvas>
             <p class="stage-hint">
               Drag to spin. Click a country to inspect it.
@@ -155,7 +155,7 @@
                   <button aria-pressed="false" data-mode="semilog" type="button">log–linear</button>
                   <button aria-pressed="false" data-mode="linear" type="button">linear</button>
                 </div>
-                <canvas class="chart" height="440" id="hist" width="760"></canvas>
+                <canvas class="chart" height="560" id="hist" width="1100"></canvas>
                 <div class="notice">
                   <span class="ico">💡</span>
                   <span>
@@ -182,7 +182,7 @@
                   <button aria-pressed="false" data-mode="semilog" type="button">log–linear</button>
                   <button aria-pressed="false" data-mode="linear" type="button">linear</button>
                 </div>
-                <canvas class="chart" height="440" id="ccdf" width="760"></canvas>
+                <canvas class="chart" height="560" id="ccdf" width="1100"></canvas>
                 <div class="notice">
                   <span class="ico">💡</span>
                   <span>
@@ -248,87 +248,85 @@
           </div>
         </section>
 
-        <!-- 4 ----------------------------------------------------------- -->
-        <section class="step" id="null">
-          <div class="card">
-            <div class="step-head">
-              <span class="num">4</span>
-              <h2>Compared to what?</h2>
-              <span class="year-tag" id="null-tag">(null model)</span>
-            </div>
-            <div class="grid-side">
-              <div class="plot">
-                <h3>Betweenness z-score vs origins (in-degree), log x</h3>
-                <p class="axis-note" id="null-note">
-                  The null keeps every country's in- and out-degree and deals
-                  the observed corridor weights back out at random. Click any
-                  point to select that country.
-                </p>
-                <canvas
-                  class="chart"
-                  height="440"
-                  id="scatter-z"
-                  width="900"
-                ></canvas>
-              </div>
-              <aside class="panel">
-                <h2>Reading it</h2>
-                <div class="notice">
-                  <span class="ico">💡</span>
-                  <span>
-                    <b>What to notice</b>
-                    The z-score says how surprising a country's betweenness is
-                    once its number of partners is held fixed. z = 0 means
-                    "just degree". Above +2 is a broker the degree sequence
-                    cannot explain.
-                  </span>
-                </div>
-                <div class="corridor-list">
-                  <h3>Most surprising bridges</h3>
-                  <ol id="z-top"></ol>
-                  <p class="fineprint" id="z-floor"></p>
-                </div>
-                <p class="fineprint" id="null-method"></p>
-              </aside>
-            </div>
-          </div>
-        </section>
-
-        <!-- 5 ----------------------------------------------------------- -->
+        <!-- 4–5 --------------------------------------------------------- -->
         <section class="step" id="twin">
           <div class="card">
             <div class="step-head">
-              <span class="num">5</span>
+              <span class="num">4</span>
+              <h2 id="null">Compared to what?</h2>
+              <span class="year-tag" id="null-tag">(null model)</span>
+              <span class="num" style="margin-left: 8px">5</span>
               <h2>Global twin network</h2>
               <span class="year-tag" id="twin-tag">(analysis year: 2020)</span>
             </div>
-            <div class="grid-side">
-              <div class="map-wrap">
-                <div class="map-tools">
-                  <div class="toggle" id="map-toggle" role="group">
-                    <button aria-pressed="false" data-layer="migration" type="button">
-                      Migration
-                    </button>
-                    <button aria-pressed="false" data-layer="flights" type="button">
-                      Flights
-                    </button>
-                    <button aria-pressed="true" data-layer="both" type="button">
-                      Both
-                    </button>
-                  </div>
+            <p class="sub">
+              The null-model scatter and the twin map share the same country
+              selection: click either one and the other follows.
+            </p>
+            <div class="grid-pair">
+              <div>
+                <div class="plot">
+                  <h3>Betweenness z-score vs origins (in-degree), log x</h3>
+                  <p class="axis-note" id="null-note">
+                    The null keeps every country's in- and out-degree and deals
+                    the observed corridor weights back out at random. Click any
+                    point to select that country.
+                  </p>
+                  <canvas
+                    class="chart"
+                    height="560"
+                    id="scatter-z"
+                    width="900"
+                  ></canvas>
                 </div>
-                <canvas height="620" id="map-canvas" width="1240"></canvas>
+                <aside class="panel pair-aside">
+                  <h2>Reading it</h2>
+                  <div class="notice">
+                    <span class="ico">💡</span>
+                    <span>
+                      <b>What to notice</b>
+                      The z-score says how surprising a country's betweenness is
+                      once its number of partners is held fixed. z = 0 means
+                      "just degree". Above +2 is a broker the degree sequence
+                      cannot explain.
+                    </span>
+                  </div>
+                  <div class="corridor-list">
+                    <h3>Most surprising bridges</h3>
+                    <ol id="z-top"></ol>
+                    <p class="fineprint" id="z-floor"></p>
+                  </div>
+                  <p class="fineprint" id="null-method"></p>
+                </aside>
               </div>
-              <aside class="panel">
-                <h2>Same world. Different networks.</h2>
-                <p class="fineprint" style="border: 0; padding: 0">
-                  Migration shows where people live. Flights show where you can
-                  go. Use the toggle to compare them, and click a country to
-                  select it. Selecting never scrolls the page.
-                </p>
-                <dl class="stats" id="twin-stats"></dl>
-                <p class="fineprint" id="flight-caveat"></p>
-              </aside>
+              <div>
+                <div class="map-wrap">
+                  <div class="map-tools">
+                    <div class="toggle" id="map-toggle" role="group">
+                      <button aria-pressed="false" data-layer="migration" type="button">
+                        Migration
+                      </button>
+                      <button aria-pressed="false" data-layer="flights" type="button">
+                        Flights
+                      </button>
+                      <button aria-pressed="true" data-layer="both" type="button">
+                        Both
+                      </button>
+                    </div>
+                  </div>
+                  <canvas height="560" id="map-canvas" width="900"></canvas>
+                </div>
+                <aside class="panel pair-aside">
+                  <h2>Same world. Different networks.</h2>
+                  <p class="fineprint" style="border: 0; padding: 0">
+                    Migration shows where people live. Flights show where you can
+                    go. Use the toggle to compare them, and click a country to
+                    select it — the scatter on the left highlights the same one.
+                  </p>
+                  <dl class="stats" id="twin-stats"></dl>
+                  <p class="fineprint" id="flight-caveat"></p>
+                </aside>
+              </div>
             </div>
           </div>
         </section>
@@ -667,6 +665,6 @@
       </footer>
     </main>
 
-    <script src="../../../assets/js/week03-boot.js?v=69c1e70913" type="module"></script>
+    <script src="../../../assets/js/week03-boot.js?v=ce6a406532" type="module"></script>
   </body>
 </html>

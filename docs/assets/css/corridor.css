@@ -35,8 +35,8 @@
 
 .corridor .shell {
   margin: 0 auto;
-  max-width: 1180px;
-  padding: 0 24px;
+  max-width: 1480px;
+  padding: 0 22px;
 }
 
 /* ----------------------------------------------------------------- top bar */
@@ -111,6 +111,13 @@
   color: #14618f;
 }
 
+/* Sticky topbar is 52px; leave room so section titles are not hidden under it. */
+.corridor .hero,
+.corridor section.step,
+.corridor #null {
+  scroll-margin-top: 72px;
+}
+
 /* -------------------------------------------------------------------- hero */
 
 .corridor .hero {
@@ -126,11 +133,14 @@
 }
 
 .corridor .hero .shell {
-  align-items: start;
+  align-items: center;
   display: grid;
-  gap: 28px;
-  grid-template-columns: minmax(260px, 340px) minmax(360px, 1fr) minmax(250px, 300px);
-  padding-block: 30px 34px;
+  gap: 20px;
+  /* Globe owns the first screen: narrow copy + inspector, wide stage. */
+  grid-template-columns: minmax(200px, 250px) minmax(0, 1.85fr) minmax(220px, 270px);
+  max-width: 1560px;
+  min-height: calc(100dvh - 52px);
+  padding-block: 18px 22px;
 }
 
 .corridor .eyebrow {
@@ -228,13 +238,26 @@
 }
 
 .corridor .stage {
-  aspect-ratio: 1 / 0.86;
+  aspect-ratio: 1;
   display: block;
+  height: auto;
   width: 100%;
 }
 
 .corridor .stage-wrap {
+  aspect-ratio: 1;
+  margin-inline: auto;
   position: relative;
+  /* Large but always fully visible in the first viewport. */
+  width: min(100%, calc(100dvh - 120px), 720px);
+}
+
+.corridor #globe-gl,
+.corridor [id$="-deck"] {
+  border-radius: 10px;
+  height: 100% !important;
+  overflow: hidden;
+  width: 100% !important;
 }
 
 .corridor .stage-hint {
@@ -430,10 +453,30 @@
   grid-template-columns: 1fr 1fr;
 }
 
+/* Section 2: stack the two heavy-tail charts so each is wide enough to click. */
+.corridor #tails .grid2 {
+  grid-template-columns: 1fr;
+  gap: 28px;
+}
+
 .corridor .grid-side {
   display: grid;
   gap: 18px;
   grid-template-columns: minmax(0, 1fr) 280px;
+}
+
+/* Sections 4+5: null-model scatter and twin map share one row.
+   Do not force min-height on canvases — surface() sizes them from their
+   intrinsic aspect ratio; a taller CSS box stretches the drawing. */
+.corridor .grid-pair {
+  display: grid;
+  gap: 20px;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr);
+  align-items: start;
+}
+
+.corridor .grid-pair .pair-aside {
+  margin-top: 12px;
 }
 
 .corridor .grid3 {
@@ -874,6 +917,22 @@
   }
 }
 
+@media (max-width: 1100px) {
+  .corridor .hero .shell {
+    align-items: stretch;
+    grid-template-columns: 1fr;
+    min-height: auto;
+  }
+
+  .corridor .stage-wrap {
+    width: min(100%, 640px);
+  }
+
+  .corridor .grid-pair {
+    grid-template-columns: 1fr;
+  }
+}
+
 /* ------------------------------------------------------- render variants */
 
 .corridor .variants {
@@ -950,12 +1009,6 @@
 .corridor[data-variant="echarts"] .legend,
 .corridor[data-variant="d3"] .legend {
   display: none;
-}
-
-.corridor #globe-gl,
-.corridor [id$="-deck"] {
-  border-radius: 10px;
-  overflow: hidden;
 }
 
 /* ===================================================================
@@ -1110,21 +1163,106 @@
   border: 1px solid var(--line);
   border-radius: var(--radius);
   box-shadow: 0 2px 6px rgba(15, 35, 64, 0.08), 0 18px 44px rgba(15, 35, 64, 0.16);
-  display: grid;
-  gap: 12px 18px;
-  grid-template-columns: repeat(2, minmax(150px, 1fr));
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
   left: 0;
-  max-height: min(70vh, 560px);
-  min-width: 360px;
+  max-height: min(78vh, 640px);
   overflow: auto;
   padding: 16px;
   position: absolute;
   top: calc(100% + 9px);
+  width: min(420px, calc(100vw - 32px));
   z-index: 60;
 }
 
-.corridor .style-bar .style-field:first-child {
-  grid-column: 1 / -1;
+.corridor .style-group {
+  display: grid;
+  gap: 8px;
+}
+
+.corridor .style-group-label {
+  color: var(--ink-mute);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+}
+
+.corridor .style-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.corridor .style-chip {
+  background: var(--line-soft);
+  border: 1px solid transparent;
+  border-radius: 999px;
+  color: var(--ink-soft);
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 700;
+  padding: 6px 11px;
+}
+
+.corridor .style-chip:hover {
+  background: var(--card);
+  border-color: var(--line);
+  color: var(--ink);
+}
+
+.corridor .style-chip[aria-pressed="true"] {
+  background: var(--access-soft);
+  border-color: transparent;
+  color: #14618f;
+}
+
+.corridor .style-select-proxy {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  border: 0;
+}
+
+.corridor .style-more {
+  border-top: 1px solid var(--line-soft);
+  margin: 0;
+  padding-top: 10px;
+}
+
+.corridor .style-more > summary {
+  color: var(--ink-soft);
+  cursor: pointer;
+  font-size: 12.5px;
+  font-weight: 700;
+  list-style: none;
+  padding: 4px 0;
+}
+
+.corridor .style-more > summary::-webkit-details-marker {
+  display: none;
+}
+
+.corridor .style-more > summary::after {
+  color: var(--ink-mute);
+  content: " ▾";
+  font-size: 11px;
+}
+
+.corridor .style-more[open] > summary::after {
+  content: " ▴";
+}
+
+.corridor .style-more-grid {
+  display: grid;
+  gap: 12px 14px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  margin-top: 12px;
 }
 
 .corridor .style-field {
@@ -1147,7 +1285,6 @@
 
 .corridor .style-bar .style-note {
   border-top: 1px solid var(--line-soft);
-  grid-column: 1 / -1;
   color: var(--ink-soft);
   font-size: 11.5px;
   line-height: 1.5;

@@ -65,13 +65,16 @@ export function install(api, echarts) {
 
   const point = (x, y, iso3, name, tip) => ({ value: [x, y], iso3, name, tip });
 
-  function scatterSeries(name, rows, colour, size = 6) {
+  function scatterSeries(name, rows, colour, size = 8) {
     return {
       name,
       type: "scatter",
       symbolSize: size,
       itemStyle: { color: colour, opacity: 0.8 },
-      emphasis: { itemStyle: { color: colour, opacity: 1, borderColor: "#0f2340", borderWidth: 1.5 } },
+      emphasis: {
+        scale: 1.6,
+        itemStyle: { color: colour, opacity: 1, borderColor: "#0f2340", borderWidth: 1.5 },
+      },
       data: rows,
     };
   }
@@ -109,9 +112,11 @@ export function install(api, echarts) {
     ].map(([name, pick, colour]) => ({
       name,
       type: "bar",
-      barGap: "-20%",
-      barCategoryGap: "40%",
+      barGap: "8%",
+      barCategoryGap: "28%",
       itemStyle: { color: colour, opacity: 0.85 },
+      emphasis: { itemStyle: { opacity: 1, shadowBlur: 6, shadowColor: "rgba(15,35,64,0.25)" } },
+      barMaxWidth: 10,
       data: degreeCounts(pick).map((d) =>
         point(d.k, d.c, d.iso3, name,
           `<b>${d.k} partners</b><span>${d.c} ${d.c === 1 ? "country" : "countries"}</span>` +
@@ -152,7 +157,7 @@ export function install(api, echarts) {
             `<span>e.g. ${node(d.iso3).name}</span>`),
         ),
         colour,
-        5,
+        8,
       ),
     );
     instance.setOption(

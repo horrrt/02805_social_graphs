@@ -17,7 +17,7 @@ export function install(api, Globe) {
 
   // The earth-size dropdown is a camera move here, not a radius: a bigger
   // globe is the same sphere seen from closer in.
-  const altitude = () => 2.3 / earthScale();
+  const altitude = () => Math.max(1.55, 2.35 / earthScale());
 
   function mount() {
     const canvas = $("globe-canvas");
@@ -26,15 +26,17 @@ export function install(api, Globe) {
       host = document.createElement("div");
       host.id = "globe-gl";
       host.style.width = "100%";
-      host.style.aspectRatio = "1 / 0.86";
+      host.style.aspectRatio = "1";
+      host.style.height = "100%";
       canvas.after(host);
       canvas.style.display = "none";
     }
     if (!world) {
-      const width = host.clientWidth || 520;
+      const width = host.clientWidth || 720;
+      const height = host.clientHeight || width;
       world = Globe()(host)
         .width(width)
-        .height(Math.round(width * 0.86))
+        .height(height)
         .backgroundColor("rgba(0,0,0,0)")
         .globeImageUrl(NO_TEXTURE)
         .showAtmosphere(true)
@@ -150,8 +152,9 @@ export function install(api, Globe) {
     if (hint) hint.textContent = "Drag to spin, scroll to zoom. Click a country.";
     window.addEventListener("resize", () => {
       if (!world || !host) return;
-      const width = host.clientWidth || 520;
-      world.width(width).height(Math.round(width * 0.86));
+      const width = host.clientWidth || 720;
+      const height = host.clientHeight || width;
+      world.width(width).height(height);
     });
   }
 
