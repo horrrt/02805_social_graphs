@@ -271,7 +271,8 @@ async function boot() {
     }
     window.history.replaceState(null, "", url.pathname + url.search);
     apply(chosen);
-    document.getElementById("style-note").innerHTML = describe(chosen);
+    const note = document.getElementById("style-note");
+    if (note) note.innerHTML = describe(chosen);
     restyle();
   });
 
