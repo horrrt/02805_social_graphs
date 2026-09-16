@@ -1,6 +1,6 @@
 # Global migration data: what exists, what is in it, what it will not tell you
 
-82 sources across 17 families, written for the 02805 project. Each entry says what one row is, because that decides whether the source is a network or a table of country attributes. The limitations are the point: most of these datasets are fine and most published uses of them are not.
+90 sources across 18 families, written for the 02805 project. Each entry says what one row is, because that decides whether the source is a network or a table of country attributes. The limitations are the point: most of these datasets are fine and most published uses of them are not.
 
 `checked` marks the few sources this repo actually pulled and counted. Everything else is written from prior knowledge and should be confirmed against the publisher before a number from it goes in a post.
 
@@ -23,6 +23,7 @@ Machine-readable version: [`data/migration_sources.tsv`](data/migration_sources.
 - [City and subnational](#city-and-subnational) (4) — Below the country. Thin, fragmented, and unavoidable if the question says 'cities'.
 - [Drivers and denominators](#drivers-and-denominators) (3) — Population, regime, climate, internal migration. What makes people leave and what you divide by.
 - [Actors, organisations and events](#actors-organisations-and-events) (9) — Who does migration policy and aid, and what happens. The layer this repo harvests.
+- [Denmark](#denmark) (8) — A register country with an open API. Everything the global sources do badly, Denmark does weekly, by municipality, in both directions.
 - [Historical](#historical) (1) — Long series, for anything that needs more than thirty years.
 - [Portals and aggregators](#portals-and-aggregators) (4) — Where to look when nothing above fits.
 
@@ -2496,6 +2497,272 @@ US Internal Revenue Service, mirrored on AWS Open Data. <https://registry.openda
 - Recipient names are free text with no identifier, so building edges means entity resolution on messy strings.
 - Filing lags by up to two years.
 - Small organisations file the 990-N postcard with almost no content, which removes exactly the grassroots groups you would want.
+
+## Denmark
+
+A register country with an open API. Everything the global sources do badly, Denmark does weekly, by municipality, in both directions.
+
+### Statistics Denmark StatBank
+
+Danmarks Statistik. <https://www.statbank.dk/>
+
+| | |
+| --- | --- |
+| One row is | varies by table; the migration tables are municipality x country x period x sex x age |
+| Coverage | Denmark, 98 municipalities and 5 regions, against 242 countries |
+| Years | 1980 onward for the annual series; weekly since 2021 |
+| Updated | Weekly, monthly, quarterly and annual depending on the table |
+| Access | Free REST API, no key, no registration |
+| Format | CSV, JSON, JSON-stat, XLSX |
+| API | Yes: api.statbank.dk/v1/ |
+| Licence | Free reuse with attribution |
+| Network shape | Weighted directed, both directions, at municipality resolution. Denmark is one endpoint and 242 countries are the other, plus a complete 98-node internal migration network between municipalities. |
+
+**Metrics**
+
+- VAN1AAR / VAN1KVT / VAN1UGE: immigrations by municipality, country of last residence, citizenship, sex and age. Annual from 2007, quarterly from 2007Q2, WEEKLY from 2021W52
+- VAN2AAR / VAN2KVT: emigrations by country of destination, same breakdowns. A register measures this; almost no other country does
+- INDVAN / UDVAN: the same flows back to 1980, without the geography
+- FLY66: internal migration between all 98 municipalities, 2006-2025, by age and sex. A complete city-to-city network
+- FOLK1C / FOLK2: population by municipality, ancestry and country of origin, quarterly from 2008 and annual from 1980
+- VAN5M / VAN5RKAM: asylum applications by citizenship, MONTHLY from 2014M01
+- VAN66 / VAN77M: residence permits by citizenship and permit type, annual from 1997 and monthly from 2014. The permit type is the legal pathway, which the global sources never give you
+- DKSTAT: acquisitions of Danish citizenship by former citizenship, 1979 onward
+- KRYDS1: a person's origin, own country of birth, and both parents' country of birth and citizenship
+
+**Limitations**
+
+- One country. Every finding is about Denmark until you show otherwise.
+- The official 'Western / non-Western' ancestry split is a Danish administrative category with a political history, not a neutral geographic one. Use country of origin and say why.
+- 'Ancestry' (herkomst) classifies a Danish-born child of two immigrants as a descendant for life, and the category changes if one parent naturalises. It is a legal construct, not a measure of who someone is.
+- Immigration is counted at register entry, which requires an intended stay of at least three months and a CPR number. Short stays, EU posted workers and undocumented people are outside it entirely.
+- Small cells are rounded or suppressed for disclosure control, and municipality-by-country cells are mostly small.
+- Variable codes are Danish even in the English interface (OMRÅDE, KØN, ALDER, INDVLAND, STATSB, Tid), and sex has no total category: request both values or omit the variable.
+
+*Checked: fetched 2026-09-16: the API answers without a key; VAN1AAR has 105 regions, 242 countries of last residence, 241 citizenships and 19 years, last updated 2026-02-12. The 2024 pull gives Ukraine 8,756, Germany 6,888, USA 6,513, Romania 4,916 and Sweden 4,347 as the top origins.*
+
+### Statistics Denmark Research Services register microdata
+
+Danmarks Statistik Forskningsservice. <https://www.dst.dk/en/TilSalg/Forskningsservice>
+
+| | |
+| --- | --- |
+| One row is | individual, linkable across every register by an anonymised personal key |
+| Coverage | The entire resident population of Denmark |
+| Years | 1980 onward for most registers; some back to 1968 |
+| Updated | Annual register updates |
+| Access | Authorised research institution, an approved project and a paid remote-desktop environment. DTU is an authorised institution, so access runs through a supervisor's project rather than a course. |
+| Format | SAS, Stata and R inside a locked remote environment; no data leaves it |
+| API | No |
+| Licence | Project-bound agreement |
+| Network shape | Individual migration histories with exact dates in and out, linkable to family, address, employer, education and income. The richest migration data that exists anywhere, and the hardest to reach. |
+
+**Metrics**
+
+- VNDS: every in-migration and out-migration event with dates and countries
+- BEF: population register with country of birth, citizenship, family links and address
+- IDA and RAS: employer-employee links and labour market status
+- UDDA: completed education, including qualifications gained abroad
+- IND: income and transfers
+- Everything joins on the same key, so a migrant's whole trajectory in Denmark is observable
+
+**Limitations**
+
+- Not usable for a weekly course post. Approval takes months, costs money and needs an institutional project.
+- Nothing can be exported except aggregated output cleared by the disclosure rules, so no figure with small cells leaves the environment.
+- It observes people after they arrive. Why they came and what happened to those who did not are both invisible.
+- People who leave without deregistering keep a live record, so emigration dates carry error even here.
+
+### Danish Immigration Service and SIRI statistics
+
+Udlændingestyrelsen and Styrelsen for International Rekruttering og Integration. <https://www.nyidanmark.dk/en-GB/Statistics>
+
+| | |
+| --- | --- |
+| One row is | case: permit or asylum decision by nationality, type and month |
+| Coverage | Denmark |
+| Years | Mostly 2010 onward, some series longer |
+| Updated | Monthly for asylum, annual for the full account |
+| Access | Open download from nyidanmark.dk; the Udlændingedatabasen sits inside StatBank |
+| Format | XLSX, PDF; the StatBank tables are the machine-readable route |
+| API | Through StatBank |
+| Licence | Free reuse with attribution |
+| Network shape | Origin nationality to Denmark, split by the legal route taken: asylum, family reunification, work, study, EU rules. |
+
+**Metrics**
+
+- asylum applications, decisions and recognition rates by nationality
+- residence permits by type: work, study, family, EU/EEA, au pair
+- family reunification decisions and refusals
+- revocations and returns
+- unaccompanied minors
+- quota (resettlement) refugee arrivals
+
+**Limitations**
+
+- Case counts, not people. One person can generate an application, an appeal and a permit.
+- Recognition rate computed as decisions over applications in the same month is wrong; decisions lag applications by months.
+- Published as workbooks whose layout changes between years, so building a panel means parsing.
+- Denmark's opt-out from EU asylum and migration rules makes several series not comparable with other member states, which is a feature for a comparison and a trap for a pooled analysis.
+
+### Integrationsbarometer
+
+Udlændinge- og Integrationsministeriet. <https://integrationsbarometer.dk/>
+
+| | |
+| --- | --- |
+| One row is | municipality x year x indicator |
+| Coverage | All 98 Danish municipalities |
+| Years | 2012 onward |
+| Updated | Annual |
+| Access | Open web with downloads |
+| Format | XLSX, web |
+| API | No |
+| Licence | Free reuse with attribution |
+| Network shape | Node attributes on municipalities, which pairs directly with the FLY66 internal migration network. |
+
+**Metrics**
+
+- employment rate of immigrants and descendants by municipality
+- education participation and completion
+- Danish language test results
+- crime rate among immigrants and descendants
+- share living in deprived residential areas
+- naturalisation rate
+
+**Limitations**
+
+- Indicators chosen by a ministry with a policy position. What is measured is itself an argument.
+- 'Deprived residential area' is a statutory Danish category with legal consequences, not a neutral descriptor.
+- Municipality-level, so composition effects drive most cross-municipality differences.
+
+### Folketinget Open Data (oda.ft.dk)
+
+Folketinget, the Danish parliament. <https://oda.ft.dk/>
+
+| | |
+| --- | --- |
+| One row is | case, document, actor, meeting, vote and speech |
+| Coverage | The Danish parliament |
+| Years | 1990s onward, with full text from around 2009 |
+| Updated | Continuous, updated daily |
+| Access | Open OData API, no key, no registration |
+| Format | JSON, XML |
+| API | Yes: oda.ft.dk/api/ |
+| Licence | Free reuse |
+| Network shape | Actor-to-case and actor-to-actor networks: who proposed what with whom, who voted together. And the text layer for weeks 5 to 8: every speech about migration, by party and by year. |
+
+**Metrics**
+
+- bills and their full document text
+- individual voting records per member
+- committee membership
+- speeches and meeting transcripts
+- case status, type and subject classification
+- actors: members, ministers, parties, committees
+
+**Limitations**
+
+- Danish. Any NLP on it needs Danish models, and the English tooling in the course will underperform.
+- The data model is large and awkwardly documented; joining cases to speeches to actors takes real work.
+- Full text coverage thins out before about 2009.
+- Parliamentary speech is performance. It measures how migration is talked about, not what was done.
+
+*Checked: fetched 2026-09-16: the OData endpoint answers without a key.*
+
+### Danish Central Business Register (CVR)
+
+Erhvervsstyrelsen. <https://datacvr.virk.dk/>
+
+| | |
+| --- | --- |
+| One row is | registered legal entity, including associations and foundations |
+| Coverage | Every registered organisation in Denmark |
+| Years | Current, with history of changes |
+| Updated | Continuous |
+| Access | Free bulk access through Virk's Elasticsearch endpoint after registration; cvrapi.dk for light lookups without one |
+| Format | JSON |
+| API | Yes |
+| Licence | Free reuse |
+| Network shape | Not a network by itself, but it fixes the worst limitation of the organisation layer in this repo: Wikipedia only has organisations notable enough for an article, while CVR has all of them. For the Danish slice you can have the whole population of migration organisations, not the famous ones. |
+
+**Metrics**
+
+- name, CVR number, founding date, legal form
+- industry code, including the codes for social work and membership organisations
+- registered address and municipality
+- board members and management, which gives an interlock network
+- annual accounts for entities that file them
+- status: active, dissolved, bankrupt
+
+**Limitations**
+
+- Industry codes are self-selected and coarse. There is no 'migration' code, so finding the relevant organisations means filtering on name and purpose text, which is error-prone in both directions.
+- Small voluntary associations without a CVR number are absent, and many grassroots migrant groups are exactly that.
+- Bulk access needs a Virk account; the light API is rate-limited.
+- Board member names without identifiers, so interlocks need entity resolution.
+
+*Checked: fetched 2026-09-16: cvrapi.dk answers a name lookup without a key.*
+
+### Nordic Statistics Database
+
+Nordic Council of Ministers. <https://www.nordicstatistics.org/>
+
+| | |
+| --- | --- |
+| One row is | Nordic country pair x year, migration and population |
+| Coverage | Denmark, Sweden, Norway, Finland, Iceland, Faroe Islands, Greenland, Åland |
+| Years | 1990 onward for most series |
+| Updated | Annual |
+| Access | Open PxWeb API, no key |
+| Format | JSON, CSV, PX |
+| API | Yes: pxweb.nordicstatistics.org/api/v1/ |
+| Licence | Free reuse with attribution |
+| Network shape | A small, complete, harmonised migration network between the Nordic countries, both directions. The Nordic Passport Union has run since 1954, so this is what a migration clique looks like when free movement has had seventy years to work. |
+
+**Metrics**
+
+- migration between Nordic countries by sex and age
+- immigration from and emigration to the rest of the world
+- foreign-born population by background
+- harmonised labour market and education indicators
+
+**Limitations**
+
+- Eight units. Every network measure on it is descriptive.
+- Harmonisation across five statistical systems still leaves definitional differences, particularly for who counts as resident.
+- Mirror statistics between Nordic countries disagree even inside a shared register system.
+
+*Checked: fetched 2026-09-16: the PxWeb API answers without a key.*
+
+### Danish refugee dispersal policy, 1986-1998
+
+Research datasets built on Statistics Denmark registers (Damm, and others since). <https://www.dst.dk/en/TilSalg/Forskningsservice>
+
+| | |
+| --- | --- |
+| One row is | individual refugee, assigned municipality and subsequent location |
+| Coverage | Refugees granted asylum in Denmark, 1986-1998 |
+| Years | 1986-1998 assignment, with outcomes followed for decades after |
+| Updated | Static; the policy ended |
+| Access | Through Statistics Denmark Research Services; the published papers document the design |
+| Format | Register extracts |
+| API | No |
+| Licence | Project-bound |
+| Network shape | Assignment to a municipality was made without regard to a refugee's preferences, which makes it close to random with respect to outcomes. It is one of the cleanest natural experiments in the migration literature, and it is Danish. |
+
+**Metrics**
+
+- assigned municipality and date
+- co-ethnic network size in the assigned area
+- subsequent internal moves
+- employment, earnings, education and crime outcomes over decades
+
+**Limitations**
+
+- Needs register access, so the same gate as Forskerservice.
+- The policy ended in 1998 and the cohort is specific: mostly refugees from Iran, Iraq, Lebanon, Sri Lanka, Somalia and Vietnam.
+- Assignment was conditional on family size and nationality, so it is quasi-random rather than random, and the papers spend their length on exactly that.
 
 ## Historical
 
