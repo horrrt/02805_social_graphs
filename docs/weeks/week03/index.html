@@ -20,6 +20,25 @@
           <span class="mark">DTU</span>
           <small>02805 · Network Science</small>
         </a>
+        <div class="style-menu">
+          <button
+            aria-controls="style-bar"
+            aria-expanded="false"
+            class="style-trigger"
+            id="style-trigger"
+            type="button"
+          >
+            <span id="style-trigger-label">Style</span>
+            <span aria-hidden="true">▾</span>
+          </button>
+          <div
+            aria-label="Page style"
+            class="style-bar"
+            hidden
+            id="style-bar"
+            role="group"
+          ></div>
+        </div>
         <nav class="topnav" aria-label="Sections of this post">
           <a class="here" href="#globe">Migration</a>
           <a href="#twin">Flights</a>
@@ -86,17 +105,18 @@
             </div>
             <dl class="stats" id="sel-stats"></dl>
             <div class="corridor-list">
-              <h3>→ Top inbound corridors</h3>
+              <h3>→ Top inbound links (corridors)</h3>
               <ol id="sel-in"></ol>
             </div>
             <div class="corridor-list">
-              <h3>→ Top outbound corridors</h3>
+              <h3>→ Top outbound links (corridors)</h3>
               <ol id="sel-out"></ol>
             </div>
             <p class="fineprint">
-              In-strength = people living here who were born elsewhere (stock).
-              Betweenness = how often this country sits on the shortest paths
-              between others, with a heavy corridor counted as a short step.
+              Incoming migrants = people living here who were born elsewhere,
+              counted as a stock, not as arrivals this year. Betweenness = how
+              often this country sits on the shortest paths between others,
+              with a heavy link counted as a short step.
             </p>
           </aside>
         </div>
@@ -106,85 +126,33 @@
         <p aria-live="polite" class="status-line" id="status">
           Loading the corridor data…
         </p>
-        <div aria-label="Page style" class="style-bar" id="style-bar" role="group"></div>
 
         <!-- 2 ----------------------------------------------------------- -->
-        <section class="step" id="predict">
-          <div class="card">
-            <div class="step-head">
-              <span class="num">2</span>
-              <h2>Predict</h2>
-            </div>
-            <p class="sub">
-              Which country is the bridge — the highest betweenness — in 2020?
-              Think about connectors, not just size. Which country sits on the
-              most shortest paths between others?
-            </p>
-            <div class="grid-side">
-              <div>
-                <form class="guess" id="guess-form">
-                  <input
-                    autocomplete="off"
-                    id="guess-input"
-                    list="country-list"
-                    placeholder="Type a country…"
-                    type="text"
-                  />
-                  <datalist id="country-list"></datalist>
-                  <button type="submit">→</button>
-                </form>
-                <div class="notice" id="guess-hint">
-                  <span class="ico">💡</span>
-                  <span>
-                    <b>After your guess</b>
-                    We show the top three by in-degree, by out-degree and by
-                    betweenness, and tell you whether your country took first
-                    place on the bridge ranking.
-                  </span>
-                </div>
-                <div class="verdict" hidden id="guess-verdict"></div>
-              </div>
-              <div></div>
-            </div>
-            <div class="reveal" hidden id="guess-reveal">
-              <div class="box">
-                <h4>Top 3 in-degree</h4>
-                <p class="what">Most origins represented (destinations)</p>
-                <ol id="top-in-degree"></ol>
-              </div>
-              <div class="box">
-                <h4>Top 3 out-degree</h4>
-                <p class="what">Sends people to the most places (origins)</p>
-                <ol id="top-out-degree"></ol>
-              </div>
-              <div class="box">
-                <h4>Top 3 betweenness</h4>
-                <p class="what">Sits on the most shortest paths (bridges)</p>
-                <ol id="top-betweenness"></ol>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        <!-- 3 ----------------------------------------------------------- -->
         <section class="step" id="tails">
           <div class="card">
             <div class="step-head">
-              <span class="num">3</span>
+              <span class="num">2</span>
               <h2>Heavy tails in migration</h2>
               <span class="year-tag">(analysis year: 2020)</span>
             </div>
             <div class="grid2">
               <div class="plot">
-                <h3>A. Degree distribution (log–log)</h3>
+                <h3>A. Distribution of partners</h3>
                 <p class="axis-note">
-                  Count of countries by degree. Degree counts partners, not
-                  people. Click a bar to select a country at that degree.
+                  How many countries have how many partners. A partner is
+                  another country on the other end of a link, not a person.
+                  Click a bar to select a country with that many.
                 </p>
                 <div class="legend">
                   <span><i style="background: #f2820c"></i> In-degree</span>
                   <span><i style="background: #0b1f3a"></i> Out-degree</span>
                   <span><i style="background: #1f8fd6"></i> Flight degree</span>
+                </div>
+                <div class="axis-modes" data-chart="hist" role="group"
+                  aria-label="Axis scale for the degree distribution">
+                  <button aria-pressed="true" data-mode="loglog" type="button">log–log</button>
+                  <button aria-pressed="false" data-mode="semilog" type="button">log–linear</button>
+                  <button aria-pressed="false" data-mode="linear" type="button">linear</button>
                 </div>
                 <canvas class="chart" height="440" id="hist" width="760"></canvas>
                 <div class="notice">
@@ -197,15 +165,21 @@
                 </div>
               </div>
               <div class="plot">
-                <h3>B. CCDF of degree (log–log)</h3>
+                <h3>B. CCDF of partners</h3>
                 <p class="axis-note">
-                  P(K ≥ k) — the share of countries with degree at least k.
+                  P(K ≥ k) — the share of countries with at least k partners.
                   Click a point to select it.
                 </p>
                 <div class="legend">
                   <span><i style="background: #f2820c"></i> In-degree</span>
                   <span><i style="background: #0b1f3a"></i> Out-degree</span>
                   <span><i style="background: #1f8fd6"></i> Flight degree</span>
+                </div>
+                <div class="axis-modes" data-chart="ccdf" role="group"
+                  aria-label="Axis scale for the CCDF">
+                  <button aria-pressed="true" data-mode="loglog" type="button">log–log</button>
+                  <button aria-pressed="false" data-mode="semilog" type="button">log–linear</button>
+                  <button aria-pressed="false" data-mode="linear" type="button">linear</button>
                 </div>
                 <canvas class="chart" height="440" id="ccdf" width="760"></canvas>
                 <div class="notice">
@@ -221,11 +195,11 @@
           </div>
         </section>
 
-        <!-- 4 ----------------------------------------------------------- -->
+        <!-- 3 ----------------------------------------------------------- -->
         <section class="step" id="bridge">
           <div class="card">
             <div class="step-head">
-              <span class="num">4</span>
+              <span class="num">3</span>
               <h2>Popular ≠ bridge</h2>
               <span class="year-tag">(analysis year: 2020)</span>
             </div>
@@ -273,11 +247,11 @@
           </div>
         </section>
 
-        <!-- 5 ----------------------------------------------------------- -->
+        <!-- 4 ----------------------------------------------------------- -->
         <section class="step" id="null">
           <div class="card">
             <div class="step-head">
-              <span class="num">5</span>
+              <span class="num">4</span>
               <h2>Compared to what?</h2>
               <span class="year-tag" id="null-tag">(null model)</span>
             </div>
@@ -319,11 +293,11 @@
           </div>
         </section>
 
-        <!-- 6 ----------------------------------------------------------- -->
+        <!-- 5 ----------------------------------------------------------- -->
         <section class="step" id="twin">
           <div class="card">
             <div class="step-head">
-              <span class="num">6</span>
+              <span class="num">5</span>
               <h2>Global twin network</h2>
               <span class="year-tag" id="twin-tag">(analysis year: 2020)</span>
             </div>
@@ -358,11 +332,11 @@
           </div>
         </section>
 
-        <!-- 7 ----------------------------------------------------------- -->
+        <!-- 6 ----------------------------------------------------------- -->
         <section class="step" id="typology">
           <div class="card">
             <div class="step-head">
-              <span class="num">7</span>
+              <span class="num">6</span>
               <h2>Typology</h2>
               <span class="year-tag">(analysis year: 2020)</span>
             </div>
@@ -375,11 +349,11 @@
           </div>
         </section>
 
-        <!-- 8 ----------------------------------------------------------- -->
+        <!-- 7 ----------------------------------------------------------- -->
         <section class="step" id="edge">
           <div class="card">
             <div class="step-head">
-              <span class="num">8</span>
+              <span class="num">7</span>
               <h2>Edge inspector</h2>
               <span class="year-tag">(one corridor at a time)</span>
             </div>
@@ -397,12 +371,12 @@
           </div>
         </section>
 
-        <!-- 9 ----------------------------------------------------------- -->
+        <!-- 8 ----------------------------------------------------------- -->
         <section class="step" id="denmark">
           <div class="card">
             <div class="step-head">
-              <span class="num">9</span>
-              <h2>Why Denmark?</h2>
+              <span class="num">8</span>
+              <h2>Let's analyse Denmark</h2>
               <span class="year-tag">(analysis year: 2020)</span>
             </div>
             <div class="dk-head" id="dk-head"></div>
@@ -421,7 +395,7 @@
                 <canvas class="chart" height="330" id="dk-z" width="440"></canvas>
               </div>
               <div class="plot">
-                <h3>B. Denmark's ego corridors</h3>
+                <h3>B. Denmark's links, in and out</h3>
                 <p class="axis-note">Migrant stock, 2020</p>
                 <div class="grid2" style="gap: 10px">
                   <table class="ego" id="dk-in">

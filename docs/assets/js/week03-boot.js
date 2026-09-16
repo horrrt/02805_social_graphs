@@ -159,6 +159,32 @@ function describe(chosen) {
   );
 }
 
+// The menu opens from the top bar, so the controls stay out of the reading
+// flow until somebody wants them.
+function wireMenu(chosen) {
+  const trigger = document.getElementById("style-trigger");
+  const bar = document.getElementById("style-bar");
+  if (!trigger || !bar) return;
+  const label = document.getElementById("style-trigger-label");
+  if (label) label.textContent = RENDERERS[chosen.variant].label;
+
+  const close = () => {
+    bar.hidden = true;
+    trigger.setAttribute("aria-expanded", "false");
+  };
+  trigger.addEventListener("click", (event) => {
+    event.stopPropagation();
+    const open = bar.hidden;
+    bar.hidden = !open;
+    trigger.setAttribute("aria-expanded", String(open));
+  });
+  bar.addEventListener("click", (event) => event.stopPropagation());
+  document.addEventListener("click", close);
+  document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape") close();
+  });
+}
+
 function renderBar(chosen, onChange) {
   const host = document.getElementById("style-bar");
   if (!host) return;
@@ -185,6 +211,26 @@ function renderBar(chosen, onChange) {
       onChange(select.dataset.dimension, select.value),
     );
   });
+  const label = document.getElementById("style-trigger-label");
+  if (label) label.textContent = RENDERERS[chosen.variant].label;
+}
+
+// The two heavy-tail charts can be read on three scales; the buttons live in
+// the markup so they work before the data lands.
+function wireAxisModes() {
+  for (const group of document.querySelectorAll(".axis-modes")) {
+    group.addEventListener("click", (event) => {
+      const button = event.target.closest("button[data-mode]");
+      if (!button) return;
+      const chart = group.dataset.chart;
+      api.state.axisMode[chart] = button.dataset.mode;
+      for (const other of group.querySelectorAll("button")) {
+        other.setAttribute("aria-pressed", String(other === button));
+      }
+      if (chart === "hist") api.R.hist();
+      else api.R.ccdf();
+    });
+  }
 }
 
 async function boot() {
@@ -211,6 +257,8 @@ async function boot() {
     }
   }
 
+  wireMenu(chosen);
+  wireAxisModes();
   renderBar(chosen, (key, value) => {
     chosen[key] = value;
     const url = styleURL(chosen);

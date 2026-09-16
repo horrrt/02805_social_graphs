@@ -84,6 +84,8 @@ const state = {
   selected: null,
   layer: "both",
   arcs: "curve",
+  hover: null,
+  axisMode: { hist: "loglog", ccdf: "loglog" },
   dash: 0,
   rotation: -10,
   dragging: false,
@@ -170,6 +172,32 @@ function frame(width, height, pad = { l: 46, r: 14, t: 12, b: 34 }) {
   return { left: pad.l, right: width - pad.r, top: pad.t, bottom: height - pad.b };
 }
 
+// The two heavy-tail charts can be read on three scales. Log-log is the one
+// that makes a power law straight; linear is the one that shows how lopsided
+// the distribution really is; log-linear sits between them.
+function scaleFor(box, domain, axis, logged) {
+  return logged ? logScale(box, domain, axis) : linearScale(box, [0, domain[1]], axis);
+}
+
+function axisMode(chart) {
+  return state.axisMode[chart] ?? "loglog";
+}
+
+function modeFlags(chart) {
+  const mode = axisMode(chart);
+  return { x: mode === "loglog", y: mode !== "linear" };
+}
+
+function ticksFor(domain, logged, count = 5) {
+  if (logged) return logTicks(domain[0], domain[1]);
+  const out = [];
+  for (let i = 0; i <= count; i += 1) {
+    const value = (domain[1] / count) * i;
+    out.push({ value, label: value >= 1000 ? compact.format(value) : String(Math.round(value * 100) / 100) });
+  }
+  return out;
+}
+
 function logScale(box, domain, axis) {
   const [lo, hi] = domain.map((v) => Math.log10(Math.max(v, 1e-9)));
   const [a, b] = axis === "x" ? [box.left, box.right] : [box.bottom, box.top];
@@ -227,14 +255,14 @@ function renderInspector() {
   const z = m?.z;
   $("sel-stats").innerHTML = m
     ? [
-        row("In-strength (stock)", fmt.format(m.in_strength)),
-        row("Out-strength (stock)", fmt.format(m.out_strength)),
-        row("In-degree", `${m.in_degree} <span style="color:#7a8fac">(#${m.in_degree_rank})</span>`),
-        row("Out-degree", `${m.out_degree} <span style="color:#7a8fac">(#${m.out_degree_rank})</span>`),
+        row("Incoming migrants (stock)", fmt.format(m.in_strength)),
+        row("Outgoing migrants (stock)", fmt.format(m.out_strength)),
+        row("Origins represented", `${m.in_degree} <span style="color:#7a8fac">(#${m.in_degree_rank})</span>`),
+        row("Destinations sent to", `${m.out_degree} <span style="color:#7a8fac">(#${m.out_degree_rank})</span>`),
         row("Betweenness", `${m.betweenness.toFixed(5)} <span style="color:#7a8fac">(#${m.betweenness_rank})</span>`),
         row("Betweenness z-score", z === undefined ? "— (2020 only)" : z.toFixed(2)),
-        row("Flight degree", fmt.format(n.flight_degree)),
-        row("Flight strength", fmt.format(n.flight_strength)),
+        row("Flight partners", fmt.format(n.flight_degree)),
+        row("Flight routes", fmt.format(n.flight_strength)),
         row("Typology", `<span class="chip">${label(m.typology)}</span>`),
       ].join("")
     : `<div><dt>No migration data for ${state.year}</dt><dd>—</dd></div>`;
@@ -315,7 +343,25 @@ function enablePicking(id) {
   canvas.dataset.picking = "on";
   canvas.title = "Click a point to select that country";
   canvas.addEventListener("pointermove", (event) => {
-    canvas.style.cursor = nearestMark(canvas, event) ? "pointer" : "default";
+    const iso3 = nearestMark(canvas, event);
+    canvas.style.cursor = iso3 ? "pointer" : "default";
+    // The mark under the cursor grows, which makes a 2px dot a real target.
+    if (state.hover !== iso3) {
+      state.hover = iso3;
+      R.scatters();
+      R.denmark();
+      R.hist();
+      R.ccdf();
+    }
+  });
+  canvas.addEventListener("pointerleave", () => {
+    if (state.hover) {
+      state.hover = null;
+      R.scatters();
+      R.denmark();
+      R.hist();
+      R.ccdf();
+    }
   });
   canvas.addEventListener("click", (event) => {
     const iso3 = nearestMark(canvas, event);
@@ -387,6 +433,55 @@ function project(lat, lon, radius, cx, cy, rotation) {
 // Country outlines, so a corridor lands somewhere recognisable instead of on a
 // blank sphere. `project` returns visibility, so the globe hides the far side
 // by breaking each ring into runs of visible points.
+// Clicking a country means clicking its territory, not the dot at its
+// centroid. Both maps turn a click into a longitude and latitude and then ask
+// which polygon contains it, so Russia is as easy to hit as Luxembourg.
+function pointInRing(lon, lat, ring) {
+  let inside = false;
+  for (let i = 0, j = ring.length - 1; i < ring.length; j = i, i += 1) {
+    const [xi, yi] = ring[i];
+    const [xj, yj] = ring[j];
+    if (yi > lat !== yj > lat && lon < ((xj - xi) * (lat - yi)) / (yj - yi) + xi) {
+      inside = !inside;
+    }
+  }
+  return inside;
+}
+
+function countryAt(lon, lat) {
+  if (!state.world) return null;
+  for (const feature of state.world.features) {
+    const iso3 = feature.properties.iso3;
+    if (!iso3 || !metrics(iso3)) continue;
+    const geometry = feature.geometry;
+    const polygons =
+      geometry.type === "Polygon" ? [geometry.coordinates] : geometry.coordinates;
+    for (const polygon of polygons) {
+      // First ring is the outline, the rest are holes.
+      if (!pointInRing(lon, lat, polygon[0])) continue;
+      const inHole = polygon.slice(1).some((ring) => pointInRing(lon, lat, ring));
+      if (!inHole) return iso3;
+    }
+  }
+  return null;
+}
+
+// Screen point back to a longitude and latitude, one per projection.
+function unprojectMap(x, y, width, height) {
+  return [(x / width) * 360 - 180, 90 - (y / height) * 180];
+}
+
+function unprojectGlobe(x, y, radius, cx, cy, rotation) {
+  const dx = (x - cx) / radius;
+  const dy = (cy - y) / radius;
+  const rho = Math.hypot(dx, dy);
+  if (rho > 1) return null;
+  const c = Math.asin(rho);
+  const lat = rho === 0 ? 0 : Math.asin((dy * Math.sin(c)) / rho);
+  const lon = Math.atan2(dx * Math.sin(c), rho * Math.cos(c));
+  return [((lon * 180) / Math.PI) - rotation, (lat * 180) / Math.PI];
+}
+
 function eachRing(feature, visit) {
   const geometry = feature.geometry;
   const polygons =
@@ -394,12 +489,22 @@ function eachRing(feature, visit) {
   for (const polygon of polygons) for (const ring of polygon) visit(ring);
 }
 
+// The selected country is filled in the migration colour and outlined in
+// white; whatever the cursor is over gets a lighter fill.
+function landFill(iso3, base) {
+  if (iso3 && iso3 === state.selected) return PEOPLE;
+  if (iso3 && iso3 === state.hover) return "#3f86c4";
+  return base;
+}
+
 function drawLandGlobe(ctx, radius, cx, cy) {
   if (!state.world) return;
-  ctx.fillStyle = "#245f92";
-  ctx.strokeStyle = "rgba(178,215,248,0.55)";
   ctx.lineWidth = 0.6;
   for (const feature of state.world.features) {
+    const iso3 = feature.properties.iso3;
+    ctx.fillStyle = landFill(iso3, "#245f92");
+    ctx.strokeStyle =
+      iso3 === state.selected ? "#ffffff" : "rgba(178,215,248,0.55)";
     eachRing(feature, (ring) => {
       let open = false;
       ctx.beginPath();
@@ -423,10 +528,12 @@ function drawLandGlobe(ctx, radius, cx, cy) {
 
 function drawLandMap(ctx, width, height) {
   if (!state.world) return;
-  ctx.fillStyle = "#16416c";
-  ctx.strokeStyle = "rgba(150,196,240,0.45)";
   ctx.lineWidth = 0.6;
   for (const feature of state.world.features) {
+    const iso3 = feature.properties.iso3;
+    ctx.fillStyle = landFill(iso3, "#16416c");
+    ctx.strokeStyle =
+      iso3 === state.selected ? "#ffffff" : "rgba(150,196,240,0.45)";
     eachRing(feature, (ring) => {
       ctx.beginPath();
       ring.forEach(([lon, lat], i) => {
@@ -645,6 +752,11 @@ function globeHit(event) {
   const radius = Math.min(rect.width, rect.height) * 0.42;
   const cx = rect.width / 2;
   const cy = rect.height / 2;
+  const geo = unprojectGlobe(x, y, radius, cx, cy, state.rotation);
+  if (geo) {
+    const territory = countryAt(geo[0], geo[1]);
+    if (territory) return territory;
+  }
   let best = null;
   for (const iso3 of state.data.countries) {
     const coord = node(iso3)?.coord;
@@ -794,12 +906,13 @@ function drawHistogram() {
   const all = SERIES.map((s) => degreeCounts(s.pick));
   const maxK = Math.max(...all.flat().map((d) => d.k), 10);
   const maxC = Math.max(...all.flat().map((d) => d.c), 10);
-  box.x = logScale(box, [1, maxK], "x");
-  box.y = logScale(box, [1, maxC], "y");
+  const mode = modeFlags("hist");
+  box.x = scaleFor(box, [1, maxK], "x", mode.x);
+  box.y = scaleFor(box, [1, maxC], "y", mode.y);
   axes(ctx, box, {
-    xTicks: logTicks(1, maxK),
-    yTicks: logTicks(1, maxC),
-    xLabel: "Degree",
+    xTicks: ticksFor([1, maxK], mode.x),
+    yTicks: ticksFor([1, maxC], mode.y),
+    xLabel: "Partners",
     yLabel: "Count of countries",
   });
   const marks = collect("hist");
@@ -827,12 +940,17 @@ function drawCcdf() {
   );
   const maxK = Math.max(...series.flat().map((d) => d.k), 10);
   const minP = Math.min(...series.flat().map((d) => d.p), 0.001);
-  box.x = logScale(box, [1, maxK], "x");
-  box.y = logScale(box, [minP, 1], "y");
+  const mode = modeFlags("ccdf");
+  box.x = scaleFor(box, [1, maxK], "x", mode.x);
+  box.y = mode.y ? logScale(box, [minP, 1], "y") : linearScale(box, [0, 1], "y");
   axes(ctx, box, {
-    xTicks: logTicks(1, maxK),
-    yTicks: [1, 0.1, 0.01, 0.001].filter((v) => v >= minP * 0.9).map((v) => ({ value: v, label: `10${sup(Math.log10(v))}` })),
-    xLabel: "Degree",
+    xTicks: ticksFor([1, maxK], mode.x),
+    yTicks: mode.y
+      ? [1, 0.1, 0.01, 0.001]
+          .filter((v) => v >= minP * 0.9)
+          .map((v) => ({ value: v, label: `10${sup(Math.log10(v))}` }))
+      : [0, 0.25, 0.5, 0.75, 1].map((v) => ({ value: v, label: `${v * 100}%` })),
+    xLabel: "Partners",
     yLabel: "P(K ≥ k)",
   });
   const marks = collect("ccdf");
@@ -917,24 +1035,12 @@ function drawBetweenness() {
     yLabel: "Betweenness",
   });
   const marks = collect("scatter-between");
-  ctx.fillStyle = ACCESS + "88";
-  for (const r of flights) {
-    const x = box.x(r.n.flight_in_degree);
-    const y = box.y(r.n.flight_betweenness);
-    ctx.beginPath();
-    ctx.arc(x, y, 2, 0, Math.PI * 2);
-    ctx.fill();
-    marks.push({ x, y, iso3: r.iso3 });
-  }
-  ctx.fillStyle = PEOPLE + "cc";
-  for (const r of rows) {
-    const x = box.x(r.m.in_degree);
-    const y = box.y(r.m.betweenness);
-    ctx.beginPath();
-    ctx.arc(x, y, 2.4, 0, Math.PI * 2);
-    ctx.fill();
-    marks.push({ x, y, iso3: r.iso3 });
-  }
+  plotDots(ctx, marks, flights.map((r) => ({
+    x: box.x(r.n.flight_in_degree), y: box.y(r.n.flight_betweenness), iso3: r.iso3,
+  })), ACCESS + "88", 2);
+  plotDots(ctx, marks, rows.map((r) => ({
+    x: box.x(r.m.in_degree), y: box.y(r.m.betweenness), iso3: r.iso3,
+  })), PEOPLE + "cc", 2.4);
   // Label only the brokers a reader should look up, and only where the label
   // will not sit on top of one already placed.
   const notable = rows
@@ -984,16 +1090,33 @@ function drawZ() {
   ctx.stroke();
   ctx.setLineDash([]);
   const marks = collect("scatter-z");
-  for (const r of rows) {
-    const x = box.x(r.m.in_degree);
-    const py = box.y(r.m.z);
-    ctx.fillStyle = r.m.z >= 2 ? PEOPLE : ACCESS + "99";
-    ctx.beginPath();
-    ctx.arc(x, py, 2.4, 0, Math.PI * 2);
-    ctx.fill();
-    marks.push({ x, y: py, iso3: r.iso3 });
-  }
+  plotDots(ctx, marks, rows.filter((r) => r.m.z < 2).map((r) => ({
+    x: box.x(r.m.in_degree), y: box.y(r.m.z), iso3: r.iso3,
+  })), ACCESS + "99", 2.4);
+  plotDots(ctx, marks, rows.filter((r) => r.m.z >= 2).map((r) => ({
+    x: box.x(r.m.in_degree), y: box.y(r.m.z), iso3: r.iso3,
+  })), PEOPLE, 2.4);
   markSelectedPoint(ctx, box, (m) => [m.in_degree, m.z ?? 0], y);
+}
+
+// Points are drawn here so hover and selection are handled once. The hovered
+// country swells to three times its radius with a halo; the selected one keeps
+// its ring.
+function plotDots(ctx, marks, points, colour, radius) {
+  for (const point of points) {
+    const hovered = point.iso3 === state.hover;
+    if (hovered) {
+      ctx.fillStyle = "rgba(15,35,64,0.16)";
+      ctx.beginPath();
+      ctx.arc(point.x, point.y, radius * 4.5, 0, Math.PI * 2);
+      ctx.fill();
+    }
+    ctx.fillStyle = colour;
+    ctx.beginPath();
+    ctx.arc(point.x, point.y, hovered ? radius * 3 : radius, 0, Math.PI * 2);
+    ctx.fill();
+    marks.push({ x: point.x, y: point.y, iso3: point.iso3 });
+  }
 }
 
 function markSelectedPoint(ctx, box, pick, y) {
@@ -1123,13 +1246,13 @@ function renderDenmarkPanels() {
   $("dk-head").innerHTML =
     `<div class="who"><span class="flag">${flag(n.iso2)}</span><span><strong>${n.name}</strong><br /><span class="codes">${iso3} · ${y}</span></span></div>` +
     [
-      ["In-strength", fmt.format(m.in_strength)],
-      ["Out-strength", fmt.format(m.out_strength)],
-      ["In-degree", `${m.in_degree} (#${m.in_degree_rank})`],
-      ["Out-degree", `${m.out_degree} (#${m.out_degree_rank})`],
+      ["Incoming", fmt.format(m.in_strength)],
+      ["Outgoing", fmt.format(m.out_strength)],
+      ["Origins", `${m.in_degree} (#${m.in_degree_rank})`],
+      ["Destinations", `${m.out_degree} (#${m.out_degree_rank})`],
       ["Betweenness", `#${m.betweenness_rank}`],
       ["z-score", m.z === undefined ? "—" : m.z.toFixed(2)],
-      ["Flight degree", fmt.format(n.flight_degree)],
+      ["Flight partners", fmt.format(n.flight_degree)],
       ["Typology", label(m.typology)],
     ]
       .map(([k, v]) => `<div class="metric"><span>${k}</span><b>${v}</b></div>`)
@@ -1139,10 +1262,10 @@ function renderDenmarkPanels() {
   const egoRow = (c) =>
     `<tr><td>${node(c.other)?.name ?? c.other}</td><td>${fmt.format(c.weight)}</td></tr>`;
   $("dk-in").innerHTML =
-    `<caption>Top origins → Denmark</caption><tr><th>Origin</th><th style="text-align:right">People</th></tr>` +
+    `<caption>Top links into Denmark</caption><tr><th>Origin</th><th style="text-align:right">People</th></tr>` +
     (n.top_in ?? []).map(egoRow).join("");
   $("dk-out").innerHTML =
-    `<caption>Denmark → top destinations</caption><tr><th>Destination</th><th style="text-align:right">People</th></tr>` +
+    `<caption>Top links out of Denmark</caption><tr><th>Destination</th><th style="text-align:right">People</th></tr>` +
     (n.top_out ?? []).map(egoRow).join("");
 
 
@@ -1311,61 +1434,6 @@ function line(ctx, box, rows, getX, getY, colour) {
   }
 }
 
-/* --------------------------------------------------------------- section 2 */
-
-function topThree(key, y) {
-  return withMetrics(y)
-    .slice()
-    .sort((a, b) => b.m[key] - a.m[key])
-    .slice(0, 3);
-}
-
-function setupPredict() {
-  const y = String(state.data.null_year);
-  $("country-list").innerHTML = state.data.countries
-    .filter((iso3) => metrics(iso3, y))
-    .map((iso3) => `<option value="${node(iso3).name}"></option>`)
-    .join("");
-
-  $("guess-form").addEventListener("submit", (event) => {
-    event.preventDefault();
-    const typed = $("guess-input").value.trim().toLowerCase();
-    const match = state.data.countries.find(
-      (iso3) => node(iso3).name.toLowerCase() === typed || iso3.toLowerCase() === typed,
-    );
-    const lists = [
-      ["top-in-degree", "in_degree"],
-      ["top-out-degree", "out_degree"],
-      ["top-betweenness", "betweenness"],
-    ];
-    for (const [id, key] of lists) {
-      $(id).innerHTML = topThree(key, y)
-        .map((r) => `<li><b>${r.n.name}</b> ${key === "betweenness" ? r.m[key].toFixed(4) : r.m[key]}</li>`)
-        .join("");
-    }
-    $("guess-reveal").hidden = false;
-    $("guess-hint").hidden = true;
-
-    const winner = topThree("betweenness", y)[0];
-    const verdict = $("guess-verdict");
-    verdict.hidden = false;
-    if (!match) {
-      verdict.className = "verdict miss";
-      verdict.textContent = `We could not find "${$("guess-input").value}". The top bridge in ${y} is ${winner.n.name}.`;
-      return;
-    }
-    const m = metrics(match, y);
-    if (match === winner.iso3) {
-      verdict.className = "verdict hit";
-      verdict.textContent = `Correct. ${node(match).name} has the highest betweenness in ${y}.`;
-    } else {
-      verdict.className = "verdict miss";
-      verdict.textContent = `${node(match).name} ranks #${m.betweenness_rank} as a bridge and #${m.in_degree_rank} by in-degree. The top bridge in ${y} is ${winner.n.name}.`;
-    }
-    select(match);
-  });
-}
-
 /* -------------------------------------------------------------------- wire */
 
 function setYear(value) {
@@ -1402,7 +1470,11 @@ function setupGlobe() {
     state.dragging = true;
     moved = false;
     lastX = event.clientX;
-    canvas.setPointerCapture(event.pointerId);
+    try {
+      canvas.setPointerCapture(event.pointerId);
+    } catch {
+      // No active pointer: the drag still tracks through pointermove.
+    }
   });
   canvas.addEventListener("pointermove", (event) => {
     if (!state.dragging) return;
@@ -1414,7 +1486,11 @@ function setupGlobe() {
   });
   canvas.addEventListener("pointerup", (event) => {
     state.dragging = false;
-    canvas.releasePointerCapture(event.pointerId);
+    try {
+      canvas.releasePointerCapture(event.pointerId);
+    } catch {
+      // Already released.
+    }
     if (!moved) {
       const hit = globeHit(event);
       if (hit) select(hit);
@@ -1437,6 +1513,12 @@ function setupMap() {
     const rect = event.currentTarget.getBoundingClientRect();
     const x = event.clientX - rect.left;
     const y = event.clientY - rect.top;
+    const [lon, lat] = unprojectMap(x, y, rect.width, rect.height);
+    const territory = countryAt(lon, lat);
+    if (territory) {
+      select(territory);
+      return;
+    }
     let best = null;
     for (const iso3 of state.data.countries) {
       const coord = node(iso3)?.coord;
@@ -1452,13 +1534,21 @@ function setupMap() {
     const rect = event.currentTarget.getBoundingClientRect();
     const x = event.clientX - rect.left;
     const y = event.clientY - rect.top;
-    const near = state.data.countries.some((iso3) => {
-      const coord = node(iso3)?.coord;
-      if (!coord || !metrics(iso3)) return false;
-      const p = mapPoint(coord, rect.width, rect.height);
-      return Math.hypot(p.x - x, p.y - y) < 14;
-    });
-    event.currentTarget.style.cursor = near ? "pointer" : "default";
+    const [lon, lat] = unprojectMap(x, y, rect.width, rect.height);
+    const over =
+      countryAt(lon, lat) ??
+      state.data.countries.find((iso3) => {
+        const coord = node(iso3)?.coord;
+        if (!coord || !metrics(iso3)) return false;
+        const p = mapPoint(coord, rect.width, rect.height);
+        return Math.hypot(p.x - x, p.y - y) < 14;
+      }) ??
+      null;
+    event.currentTarget.style.cursor = over ? "pointer" : "default";
+    if (state.hover !== over) {
+      state.hover = over;
+      R.map();
+    }
   });
 }
 
@@ -1467,9 +1557,9 @@ function renderTwinStats() {
   const totals = state.data.totals[y] ?? state.data.totals[state.data.null_year];
   const snap = state.data.flight_snapshot;
   $("twin-stats").innerHTML = [
-    row("Migration corridors", fmt.format(totals.corridors)),
+    row("Migration links", fmt.format(totals.corridors)),
     row("People counted", compact.format(totals.people)),
-    row("Flight country pairs", fmt.format(snap.country_pairs)),
+    row("Flight links", fmt.format(snap.country_pairs)),
     row("Countries with flights", fmt.format(snap.countries)),
   ].join("");
   $("flight-caveat").textContent = snap.note;
@@ -1514,7 +1604,7 @@ const CANVAS_RENDERER = {
 export const api = {
   state, R, node, metrics, withMetrics, select, topEdges, flightEdges,
   degreeCounts, ccdf, collect, enablePicking, label,
-  refreshPalette, arcSpec, syncFlow, rgb,
+  refreshPalette, arcSpec, syncFlow, rgb, countryAt, unprojectMap,
   colours: { PEOPLE, ACCESS, INK, MUTE, GRID },
   format: { fmt, compact },
   $,
@@ -1565,8 +1655,8 @@ async function main() {
     $("year-now").textContent = String(state.year);
     $("status").textContent =
       `${fmt.format(corridors.countries.length)} countries · ` +
-      `${fmt.format(corridors.corridor_count)} migration corridors · ` +
-      `${fmt.format(corridors.flight_snapshot.country_pairs)} flight country pairs · ` +
+      `${fmt.format(corridors.corridor_count)} migration links · ` +
+      `${fmt.format(corridors.flight_snapshot.country_pairs)} flight links · ` +
       `null model: ${corridors.shuffles} shuffles of ${corridors.null_year}`;
 
     R.setupGlobe();
@@ -1583,7 +1673,6 @@ async function main() {
       enablePicking(id);
     refreshPalette();
     syncFlow();
-    setupPredict();
     setupEdgeInspector();
     renderTwinStats();
     renderTypology();
