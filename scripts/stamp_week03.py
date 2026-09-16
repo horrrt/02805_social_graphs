@@ -27,6 +27,7 @@ PAGES = [ROOT / "docs/weeks/week03/index.html", ROOT / "docs/v2/weeks/week03/ind
 WATCHED = [
     "docs/assets/js/week03-boot.js",
     "docs/assets/js/corridor.js",
+    "docs/assets/js/questions.js",
     "docs/assets/js/variants/d3.js",
     "docs/assets/js/variants/echarts.js",
     "docs/assets/js/variants/globe.js",

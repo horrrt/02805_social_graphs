@@ -1338,3 +1338,320 @@ body > .chart-tip[hidden] {
 .corridor .drawer-table tbody tr:hover td {
   background: var(--access-soft);
 }
+
+/* ------------------------------------------------- the questions drawer */
+
+.corridor .qa {
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+
+.corridor .qa > summary {
+  align-items: baseline;
+  background: #f7fafd;
+  cursor: pointer;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 12px;
+  list-style: none;
+  padding: 13px 16px;
+}
+
+.corridor .qa > summary::-webkit-details-marker {
+  display: none;
+}
+
+.corridor .qa > summary:hover {
+  background: var(--access-soft);
+}
+
+.corridor .qa-cue {
+  color: var(--ink);
+  font-size: 13.5px;
+  font-weight: 700;
+}
+
+.corridor .qa-cue::before {
+  color: var(--access);
+  content: "▸";
+  display: inline-block;
+  margin-right: 8px;
+  transition: transform 0.15s ease;
+}
+
+.corridor .qa[open] .qa-cue::before {
+  transform: rotate(90deg);
+}
+
+.corridor .qa-teaser {
+  color: var(--ink-mute);
+  flex: 1 1 320px;
+  font-size: 12px;
+  line-height: 1.45;
+}
+
+.corridor .qa-body {
+  border-top: 1px solid var(--line-soft);
+  padding: 4px 16px 16px;
+}
+
+.corridor .qa-item {
+  border-bottom: 1px solid var(--line-soft);
+  padding: 20px 0 4px;
+}
+
+.corridor .qa-item:last-of-type {
+  border-bottom: 0;
+}
+
+.corridor .qa-item h3 {
+  font-size: 15px;
+  letter-spacing: -0.01em;
+  margin: 0 0 12px;
+}
+
+.corridor .qa-answer {
+  color: var(--ink-soft);
+  font-size: 13.5px;
+  line-height: 1.62;
+  margin: 12px auto 4px;
+  max-width: 68ch;
+}
+
+.corridor .qa-answer b {
+  color: var(--ink);
+  font-variant-numeric: tabular-nums;
+}
+
+.corridor .qa-body .notice a {
+  color: inherit;
+}
+
+/* ===================================================================
+   Skins
+   The same page in four typographic and spatial registers. Only type,
+   spacing and surface change; no skin moves a number or a control.
+   =================================================================== */
+
+/* --- editorial: a display face, a narrower column, numbers on a rail -- */
+
+.corridor[data-skin="editorial"] {
+  --ground: #f6f3ec;
+  --card: #fffdf8;
+  --line: #e2dbcb;
+  --line-soft: #efe9dc;
+  --ink: #1c1a16;
+  --ink-soft: #55504a;
+  --ink-mute: #8b837a;
+  --radius: 4px;
+  --shadow: none;
+  font-family: Iowan Old Style, Palatino, "Palatino Linotype", Georgia, serif;
+}
+
+.corridor[data-skin="editorial"] .card,
+.corridor[data-skin="editorial"] .panel,
+.corridor[data-skin="editorial"] .type {
+  border-width: 1px 0 0;
+  border-radius: 0;
+  box-shadow: none;
+}
+
+.corridor[data-skin="editorial"] .step-head h2 {
+  font-size: 26px;
+  font-weight: 400;
+  letter-spacing: -0.01em;
+}
+
+/* The number becomes a rail in the margin rather than a chip in the flow. */
+.corridor[data-skin="editorial"] .step-head {
+  align-items: baseline;
+  border-bottom: 2px solid var(--ink);
+  padding-bottom: 8px;
+}
+
+.corridor[data-skin="editorial"] .step-head .num {
+  background: none;
+  color: var(--ink-mute);
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 20px;
+  height: auto;
+  width: auto;
+}
+
+.corridor[data-skin="editorial"] .card > p.sub,
+.corridor[data-skin="editorial"] .notice span:last-child {
+  font-size: 15px;
+  line-height: 1.62;
+  max-width: 68ch;
+}
+
+.corridor[data-skin="editorial"] .hero h1 {
+  font-weight: 400;
+  letter-spacing: -0.02em;
+}
+
+.corridor[data-skin="editorial"] dl.stats dd,
+.corridor[data-skin="editorial"] .fact dd,
+.corridor[data-skin="editorial"] table.ego td:last-child {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-weight: 500;
+}
+
+.corridor[data-skin="editorial"] .eyebrow,
+.corridor[data-skin="editorial"] .panel h2 {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-weight: 500;
+}
+
+/* --- terminal: monospace, high contrast, no rounding ----------------- */
+
+.corridor[data-skin="terminal"] {
+  --ground: #0b0f14;
+  --card: #111820;
+  --line: #24303d;
+  --line-soft: #1a232d;
+  --ink: #d7e3ef;
+  --ink-soft: #8fa6bd;
+  --ink-mute: #5f7488;
+  --people-soft: #3a2410;
+  --access-soft: #10293a;
+  --radius: 3px;
+  --shadow: none;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+}
+
+.corridor[data-skin="terminal"] .topbar {
+  background: rgba(11, 15, 20, 0.94);
+}
+
+.corridor[data-skin="terminal"] .card,
+.corridor[data-skin="terminal"] .panel,
+.corridor[data-skin="terminal"] .type,
+.corridor[data-skin="terminal"] .style-bar {
+  box-shadow: none;
+}
+
+.corridor[data-skin="terminal"] .step-head h2 {
+  font-size: 15px;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+}
+
+.corridor[data-skin="terminal"] .step-head .num::before {
+  content: "[";
+}
+
+.corridor[data-skin="terminal"] .step-head .num::after {
+  content: "]";
+}
+
+.corridor[data-skin="terminal"] .step-head .num {
+  background: none;
+  color: var(--people);
+}
+
+.corridor[data-skin="terminal"] .notice,
+.corridor[data-skin="terminal"] .qa > summary,
+.corridor[data-skin="terminal"] .fact,
+.corridor[data-skin="terminal"] .reveal .box,
+.corridor[data-skin="terminal"] .dk-head,
+.corridor[data-skin="terminal"] .variant-note {
+  background: #0e151d;
+  border-color: var(--line);
+}
+
+.corridor[data-skin="terminal"] select,
+.corridor[data-skin="terminal"] .guess input {
+  background: #0e151d;
+  border-color: var(--line);
+  color: var(--ink);
+}
+
+.corridor[data-skin="terminal"] .style-trigger {
+  background: #16202b;
+  color: var(--ink-soft);
+}
+
+.corridor[data-skin="terminal"] .axis-modes,
+.corridor[data-skin="terminal"] .toggle {
+  background: #0e151d;
+}
+
+.corridor[data-skin="terminal"] .eg-chip {
+  background: #16202b;
+  color: var(--ink);
+}
+
+/* --- poster: oversized type, colour blocks, high drama --------------- */
+
+.corridor[data-skin="poster"] {
+  --ground: #fdf6e8;
+  --card: #fffdf8;
+  --line: #1c1a16;
+  --line-soft: #e6dcc6;
+  --ink: #16140f;
+  --ink-soft: #3d382d;
+  --ink-mute: #7c7263;
+  --radius: 0px;
+  --shadow: 5px 5px 0 rgba(28, 26, 22, 1);
+  font-family: "Helvetica Neue", Helvetica, Inter, system-ui, sans-serif;
+}
+
+.corridor[data-skin="poster"] .card,
+.corridor[data-skin="poster"] .panel,
+.corridor[data-skin="poster"] .type {
+  border: 2px solid var(--ink);
+}
+
+.corridor[data-skin="poster"] .step-head h2 {
+  font-size: 30px;
+  font-weight: 800;
+  letter-spacing: -0.035em;
+  text-transform: uppercase;
+}
+
+.corridor[data-skin="poster"] .step-head .num {
+  background: var(--people);
+  border-radius: 0;
+  color: #fff;
+  font-size: 16px;
+  height: 34px;
+  width: 34px;
+}
+
+.corridor[data-skin="poster"] .hero h1 {
+  font-size: clamp(44px, 5.6vw, 76px);
+  font-weight: 800;
+  letter-spacing: -0.045em;
+  line-height: 0.88;
+  text-transform: uppercase;
+}
+
+.corridor[data-skin="poster"] .chip,
+.corridor[data-skin="poster"] .toggle button[aria-pressed="true"],
+.corridor[data-skin="poster"] .axis-modes button[aria-pressed="true"] {
+  border-radius: 0;
+}
+
+.corridor[data-skin="poster"] dl.stats dd,
+.corridor[data-skin="poster"] .fact dd {
+  font-weight: 800;
+}
+
+.corridor[data-skin="poster"] .panel h2,
+.corridor[data-skin="poster"] .eyebrow {
+  font-weight: 800;
+  letter-spacing: 0.1em;
+}
+
+/* Anything with a definition behind it says so quietly. */
+.corridor .explains {
+  cursor: help;
+  text-decoration: underline dotted var(--line);
+  text-underline-offset: 3px;
+}
+
+.corridor .metric.explains span {
+  text-decoration: inherit;
+}

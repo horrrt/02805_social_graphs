@@ -173,6 +173,11 @@ def main() -> None:
             print(f"  resize  {out.name} ({size(out)})")
 
     print("\n4. derived data")
+    # data/migration_country_indicators.tsv is committed and is not rebuilt
+    # here: it comes from the World Bank, one row per country, via
+    #   python scripts/migration/fetch_country_layer.py --only worldbank
+    # which takes a minute and needs the network. The corridor script reads it
+    # if it is there and says so if it is not.
     python = sys.executable
     run(python, str(ROOT / "scripts/migration/build_world_outline.py"))
     corridor = [python, str(ROOT / "analysis/week03_corridor_control.py")]
