@@ -145,7 +145,7 @@ Row counts are from the files on disk, not from the publisher's documentation. R
 | [`data/migration_country_indicators.tsv`](data/migration_country_indicators.tsv) | 249 | `iso3`, `name`, `population_2024`, `net_migration_2024`, `migrant_stock_2024`, `migrant_stock_pct_2024`, `remittances_received_usd_2024`, `remittances_sent_usd_2024`, `remittances_received_pct_gdp_2024`, `gdp_per_capita_usd_2024`, `urban_population_pct_2024`, `unemployment_pct_2024` | World Bank country indicators. See `wb-wdi` below. |
 | [`data/migration_displacement.tsv`](data/migration_displacement.tsv) | 6,198 | `origin`, `asylum`, `origin_name`, `asylum_name`, `refugees`, `asylum_seekers`, `returned_refugees`, `idps`, `returned_idps`, `stateless`, `other_of_concern`, `host_community` | UNHCR origin/asylum populations for one year. See `unhcr-rdf` below. |
 | [`data/migration_flows.tsv`](data/migration_flows.tsv) | 9,095 | `origin`, `destination`, `origin_name`, `destination_name`, `stock_1990`, `stock_1995`, `stock_2000`, `stock_2005`, `stock_2010`, `stock_2015`, `stock_2020`, `stock_2024`, `female_2024` | UN DESA bilateral migrant stock, 1990 to 2024. See `undesa-ims` below. |
-| [`data/migration_sources.tsv`](data/migration_sources.tsv) | 82 | `id`, `name`, `family`, `publisher`, `unit`, `coverage`, `years`, `cadence`, `access`, `fmt`, `api`, `licence`, `network`, `metrics`, `limits`, `url`, `checked` | This catalogue, as a table. |
+| [`data/migration_sources.tsv`](data/migration_sources.tsv) | 90 | `id`, `name`, `family`, `publisher`, `unit`, `coverage`, `years`, `cadence`, `access`, `fmt`, `api`, `licence`, `network`, `metrics`, `limits`, `url`, `checked` | This catalogue, as a table. |
 
 ## Bilateral stocks and flows
 

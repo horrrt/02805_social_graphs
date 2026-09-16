@@ -276,6 +276,67 @@ def render_questions_page():
             out.append(f"Also relevant: {names}.\n")
         out.append(f"**What is missing.** {q['gap']}\n")
 
+    out.append("## Twenty more we could ask\n")
+    out.append(
+        "Candidates for the weekly posts and for the final project. Each one has a "
+        "*stake*: the thing that could come out the other way. A question with no "
+        "possible surprise is a description, and the posts on this course that work "
+        "all have one.\n"
+    )
+    labels = {
+        "week3": "**Week 3.** Fits paths, centrality, mixing and cliques.",
+        "companion": "**Companion.** A section inside another post, not a post.",
+        "later": "**Later week.** The measure it needs has not been taught yet.",
+        "project": "**Final project.** Too heavy for one week.",
+    }
+    order = ["week3", "companion", "later", "project"]
+    counts = {v: sum(1 for i in sources.QUESTION_IDEAS if i["verdict"] == v)
+              for v in order}
+    out.append(
+        "Four fit week 3. Of those, **Are refugees a different network from "
+        "migrants?** is the one to build: it runs on the files already in `data/`, "
+        "and the finding is checked in "
+        "[`analysis/week03_country_facts.json`](analysis/week03_country_facts.json), "
+        "written by "
+        "[`analysis/week03_country_networks.py`](analysis/week03_country_networks.py). "
+        "The 2024 migrant stock network and the 2024 refugee network share only 4 of "
+        "their top 15 destinations.\n"
+    )
+    out.append(
+        "One warning that applies to every betweenness question below. On the raw "
+        "DESA matrix the top brokers come out as Australia, Norway, the USA, Denmark, "
+        "Greece and China, and mean path length is 1.74. That ranking is measuring "
+        "statistical reporting systems: register countries name hundreds of tiny "
+        "origins and survey countries bucket them into 'other'. Threshold the edges "
+        "at 100,000 people and the ranking becomes the USA, France, Germany, the UK, "
+        "Russia and DR Congo, with mean path 2.93. Threshold first, and show the "
+        "sweep.\n"
+    )
+    out.append("| Verdict | Count |")
+    out.append("| --- | ---: |")
+    for verdict in order:
+        out.append(f"| {labels[verdict].split('.')[0].strip('*')} | {counts[verdict]} |")
+    out.append("")
+
+    group = None
+    for idea in sources.QUESTION_IDEAS:
+        if idea["group"] != group:
+            group = idea["group"]
+            out.append(f"### {group}\n")
+        star = " \u2605" if idea["verdict"] == "week3" else ""
+        out.append(f"**{idea['title']}**{star}\n")
+        out.append(f"{idea['question']}\n")
+        out.append(f"- *What is at stake:* {idea['stake']}")
+        out.append(f"- *Null:* {idea['null']}")
+        names = ", ".join(
+            f"[{by_id[d]['name']}](MIGRATION_DATA_CATALOGUE.md#{slug(by_id[d]['name'])})"
+            for d in idea["data"])
+        out.append(f"- *Data:* {names}")
+        out.append(f"- *Verdict:* {labels[idea['verdict']]} {idea['note']}")
+        if idea.get("denmark"):
+            out.append(f"- *Denmark:* {idea['denmark']}")
+        out.append("")
+
     out.append("## How to read the catalogue\n")
     out.append(
         "Every entry says what one row is, because that decides whether a source is a "

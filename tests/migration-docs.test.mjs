@@ -84,3 +84,40 @@ test("the questions page covers all four project questions", () => {
   const traps = questions.match(/\*\*The trap\.\*\*/g) ?? [];
   assert.equal(traps.length, 4, "each question needs its trap written down");
 });
+
+test("every question idea states a stake, a null and a source that exists", () => {
+  const names = new Set(rows.map((r) => r.name));
+  const blocks = questions.split(/^\*\*/m).filter((b) => b.includes("*What is at stake:*"));
+  assert.ok(blocks.length >= 20, `expected 20 question ideas, found ${blocks.length}`);
+  for (const block of blocks) {
+    assert.ok(block.includes("*Null:*"), "an idea has no null");
+    assert.ok(block.includes("*Data:*"), "an idea names no data");
+    assert.ok(block.includes("*Verdict:*"), "an idea has no verdict");
+    const cited = [...block.matchAll(/\[([^\]]+)\]\(MIGRATION_DATA_CATALOGUE\.md#/g)];
+    assert.ok(cited.length > 0, "an idea cites no catalogued source");
+    for (const [, name] of cited) {
+      assert.ok(names.has(name), `idea cites an uncatalogued source: ${name}`);
+    }
+  }
+});
+
+test("the numbers quoted on the questions page come from the committed facts file", () => {
+  const facts = JSON.parse(read("analysis/week03_country_facts.json"));
+  assert.equal(facts.destination_overlap.overlap_count, 4);
+  assert.ok(
+    questions.includes("4 of\ntheir top 15 destinations") ||
+      questions.includes("4 of their top 15 destinations"),
+    "the overlap claim on the page does not match the facts file",
+  );
+  // The page rounds to two decimals; the facts file keeps three.
+  assert.ok(
+    questions.includes(facts.stock.mean_path.toFixed(2)),
+    "the raw mean path length on the page does not match the facts file",
+  );
+  const swept = facts.stock_threshold_sweep.at(-1);
+  assert.equal(swept.threshold, 100000);
+  assert.ok(
+    questions.includes(swept.mean_path.toFixed(2)),
+    "the thresholded mean path length on the page does not match the facts file",
+  );
+});

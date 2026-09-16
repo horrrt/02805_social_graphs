@@ -174,7 +174,9 @@ documents cover the data behind it, and both are generated from
 
 - **[Four questions about global migration](MIGRATION_QUESTIONS.md)** — the four
   questions we want to answer with closeness, betweenness, cliques and event
-  studies, the trap in each, and the datasets each one actually needs. Start here.
+  studies, the trap in each, and the datasets each one actually needs. Then
+  twenty candidate questions for the weekly posts, each with what is at stake,
+  its null and a verdict on which week it fits. Start here.
 - **[Migration data catalogue](MIGRATION_DATA_CATALOGUE.md)** — 82 sources in 17
   families. Per source: what one row is, coverage, metrics, network shape and
   limitations.

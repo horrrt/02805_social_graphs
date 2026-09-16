@@ -3074,3 +3074,324 @@ SOURCES += [
         checked="not fetched",
     ),
 ]
+
+
+# ---------------------------------------------------------------------------
+# Twenty questions we could ask, and the verdict on each for the weekly posts.
+#
+# `stake` is what could come out the other way. A question with no possible
+# surprise is a description, not a question, and the classmate posts that work
+# all have one.
+#
+# `verdict` places it in the course:
+#   week3        fits "who matters, and why": paths, centrality, mixing, cliques
+#   companion    a section inside another post rather than a post of its own
+#   later        belongs to a week that has not happened yet
+#   project      too heavy for one week, strong for the final project
+# ---------------------------------------------------------------------------
+
+QUESTION_IDEAS = [
+    dict(
+        id="gravity-residual",
+        group="Shape of the country network",
+        title="What is left after gravity?",
+        question="Fit distance, population, shared language, shared coloniser and "
+                 "contiguity to the migrant stock matrix, then look at the residual "
+                 "network. Which corridors carry far more people than geography and "
+                 "history predict?",
+        stake="The residual could be structureless, in which case migration is "
+              "geography and nothing else. If it is not, the residual graph is a map "
+              "of everything gravity leaves out.",
+        null="The gravity fit itself is the null. Every claim is about the residual.",
+        data=["undesa-ims", "cepii-gravity", "cepii-language"],
+        verdict="project",
+        note="The strongest spine we have for a final project.",
+        denmark="Denmark's registered emigration lets you fit the model in both "
+                "directions for one country and see whether the residual is symmetric.",
+    ),
+    dict(
+        id="concentrating",
+        group="Shape of the country network",
+        title="Is migration concentrating or spreading?",
+        question="Eight time points from 1990 to 2024. Track the Gini of edge weights, "
+                 "the top-10 corridor share and the network entropy.",
+        stake="Globalisation predicts spreading. If the corridors are concentrating "
+              "instead, the standard story is wrong in a measurable way.",
+        null="A degree-preserving shuffle at each time point, so the trend is not just "
+             "the degree sequence changing.",
+        data=["undesa-ims"],
+        verdict="companion",
+        note="Not a centrality question, so it cannot carry week 3 alone. Good opening "
+             "section for any of the country-network posts.",
+    ),
+    dict(
+        id="core-periphery",
+        group="Shape of the country network",
+        title="Core-periphery, or communities?",
+        question="Does the network have one rich core that exchanges with everyone, or "
+                 "distinct regional blocs? Fit both models and report which wins.",
+        stake="Most people assume blocs because Louvain always returns some. Testing "
+              "the alternative is the whole point.",
+        null="Compare the two model fits against each other and against a "
+             "degree-preserving shuffle.",
+        data=["undesa-ims", "cepii-gravity"],
+        verdict="later",
+        note="Community detection is week 4. Do not spend it early.",
+    ),
+    dict(
+        id="reciprocity",
+        group="Shape of the country network",
+        title="Who exchanges, and who only sends?",
+        question="Per country, the share of corridors carrying real flow in both "
+                 "directions. Then predict it from income and rank the countries that "
+                 "defy the prediction.",
+        stake="If reciprocity is simply income, there is no finding. The countries off "
+              "the line are the story.",
+        null="A degree-preserving shuffle gives the reciprocity a country's degree "
+             "sequence forces on it.",
+        data=["undesa-ims", "wb-wdi"],
+        verdict="companion",
+        note="DESA reciprocity is measured at 0.60 across 8,795 arcs in the 2024 "
+             "network; see analysis/week03_country_facts.json.",
+        denmark="Denmark measures emigration rather than estimating it, so its "
+                "reciprocity is real where most countries' is an artefact.",
+    ),
+    dict(
+        id="flight-hubs",
+        group="Brokers and transit",
+        title="Do flight hubs and migration hubs coincide?",
+        question="Betweenness on the airport network against betweenness on the "
+                 "migration network. Istanbul, Addis Ababa and Dubai should be high on "
+                 "both.",
+        stake="Where the two rankings diverge is a place that moves people without "
+              "keeping them, or keeps them without moving them.",
+        null="Degree-preserving shuffles of both networks, so neither ranking is just "
+             "its degree sequence.",
+        data=["opensky", "openflights", "undesa-ims"],
+        verdict="companion",
+        note="Inherits the thresholding problem below, and needs a second network "
+             "downloaded. Do it after the thresholding is shown to work.",
+    ),
+    dict(
+        id="removal",
+        group="Brokers and transit",
+        title="Which country's removal breaks the network?",
+        question="Remove countries in order of degree, of betweenness and of refugee "
+                 "hosting, and watch the giant component shrink under each order.",
+        stake="Whether the three orders agree.",
+        null="Random removal, as the baseline for every robustness curve.",
+        data=["undesa-ims", "unhcr-rdf"],
+        verdict="companion",
+        note="The group already ran node removal in week 2 and was criticised for it "
+             "not being in that brief. Repeating it now reads as recycling.",
+    ),
+    dict(
+        id="transit-lie",
+        group="Brokers and transit",
+        title="Where does a stock matrix lie about transit?",
+        question="Betweenness from DESA against transit prominence in 4Mi route data. "
+                 "Name the countries the stock matrix cannot see.",
+        stake="The size of the gap between where people are counted and where they "
+              "pass through.",
+        null="None needed; this is a comparison of two measurements of the same thing.",
+        data=["undesa-ims", "mmc-4mi", "iom-dtm"],
+        verdict="project",
+        note="Needs 4Mi, which is a purposive sample on selected routes. Handle the "
+             "sampling honestly or not at all.",
+    ),
+    dict(
+        id="mobility-birth",
+        group="Mobility as inequality",
+        title="How much of your mobility is decided at birth?",
+        question="Closeness centrality on the visa network, one score per passport, "
+                 "against the GDP per capita of the issuing country.",
+        stake="The strength of the relationship. A single scatter plot makes the point "
+              "better than any paragraph.",
+        null="Shuffle the visa requirements while preserving each country's count of "
+             "requirements, and see how much of the inequality survives.",
+        data=["demig-visa", "passport-indices", "wb-wdi"],
+        verdict="week3",
+        note="Pure closeness, section 3 of the brief. One figure, one download. Works "
+             "as the closing section of a bigger post.",
+    ),
+    dict(
+        id="visa-openness-trend",
+        group="Mobility as inequality",
+        title="Did the world get more open between 1973 and 2013?",
+        question="Density of the visa-free network over forty years of DEMIG VISA, "
+                 "split into who gained access and who lost it.",
+        stake="The aggregate probably rose while specific nationalities fell. If so, "
+              "'the world is opening' is true and misleading at once.",
+        null="Compare each nationality's trajectory against the global trend.",
+        data=["demig-visa"],
+        verdict="companion",
+        note="A time series rather than a centrality, so it supports a post rather "
+             "than being one.",
+    ),
+    dict(
+        id="mobility-hierarchy",
+        group="Mobility as inequality",
+        title="Map the mobility hierarchy.",
+        question="Keep only asymmetric pairs, where A's citizens need a visa for B and "
+                 "B's do not need one for A. How close is that directed graph to a "
+                 "perfect hierarchy, and who are the anomalies?",
+        stake="A perfect hierarchy would be a total order. Every violation is a pair of "
+              "countries with a history.",
+        null="A random tournament with the same number of arcs.",
+        data=["demig-visa", "passport-indices"],
+        verdict="companion",
+        note="Elegant, and narrower than it first looks.",
+    ),
+    dict(
+        id="openness-causes",
+        group="Mobility as inequality",
+        title="Does openness cause migration, or follow it?",
+        question="Lagged relationships in both directions between visa liberalisation "
+                 "and corridor growth.",
+        stake="Very likely neither direction is identified. Saying that well is worth "
+              "more than a fabricated answer.",
+        null="Placebo lags: if a future liberalisation predicts past migration, the "
+             "design is broken.",
+        data=["demig-visa", "undesa-ims"],
+        verdict="project",
+        note="A causal question with observational data. Treat with suspicion.",
+    ),
+    dict(
+        id="refugees-different",
+        group="Forced versus chosen",
+        title="Are refugees a different network from migrants?",
+        question="UNHCR against DESA over the same countries. Degree distribution, "
+                 "clustering, distance decay, assortativity, and the overlap between "
+                 "the two rankings of destinations.",
+        stake="The hypothesis is that refugees go next door and migrants go far. The "
+              "overlap between the two top-15 destination lists is 4 out of 15: "
+              "Germany, France, Iran and Turkey. Eleven countries are top-15 for "
+              "migrants and not refugees, eleven the other way.",
+        null="A degree-preserving shuffle of each network, plus the distance "
+             "distribution each one would have under gravity.",
+        data=["unhcr-rdf", "undesa-ims", "cepii-gravity"],
+        verdict="week3",
+        note="The recommended week 3 post. Covers brief sections 3 to 7, runs entirely "
+             "on files already in data/, and the finding is verified in "
+             "analysis/week03_country_facts.json.",
+    ),
+    dict(
+        id="hosting-residual",
+        group="Forced versus chosen",
+        title="Who hosts more refugees than their wealth predicts?",
+        question="Regress hosting on GDP and population, then rank the residuals.",
+        stake="The answer contradicts most political rhetoric about who carries the "
+              "burden, which is exactly why it is worth publishing.",
+        null="The regression is the null; the residual is the result.",
+        data=["unhcr-rdf", "wb-wdi"],
+        verdict="companion",
+        note="Node attributes rather than network structure, so it belongs inside a "
+             "post rather than being one.",
+    ),
+    dict(
+        id="conflict-edge",
+        group="Forced versus chosen",
+        title="Does a new conflict create a new edge, and how fast?",
+        question="Conflict onset in ACLED against the appearance of a refugee corridor "
+                 "in UNHCR. Measure the lag.",
+        stake="Whether the lag is weeks or years, and whether it depends on distance.",
+        null="Country pairs with no conflict onset, over the same window.",
+        data=["acled-ucdp", "unhcr-rdf", "unhcr-operational"],
+        verdict="project",
+        note="UNHCR's annual series is too coarse for the lag; the operational portal "
+             "is the daily version and only covers active emergencies.",
+    ),
+    dict(
+        id="corridors-close",
+        group="Forced versus chosen",
+        title="Do displacement corridors close again?",
+        question="After a conflict ends, which refugee edges reverse and which become "
+                 "permanent migration?",
+        stake="Whether displacement is a shock the network absorbs or a shock that "
+              "rewires it.",
+        null="Corridors of the same size that never carried refugees.",
+        data=["unhcr-rdf", "undesa-ims"],
+        verdict="project",
+        note="Needs the UNHCR time series, not the single year now in data/.",
+    ),
+    dict(
+        id="ngo-global",
+        group="The organisation network",
+        title="Is the migration NGO world global, or a pile of national ones?",
+        question="Attribute assortativity by country on the organisation link network, "
+                 "tested against a shuffle of the country labels.",
+        stake="If organisations link overwhelmingly within their own country, 'global "
+              "migration governance' is a claim the network does not support. The "
+              "handful of bodies that do bridge become the finding.",
+        null="Shuffle the country labels across nodes rather than shuffling the links. "
+             "This is the right null for homophily and it is exercise 3.9 in the brief.",
+        data=["wikidata-orgs"],
+        verdict="week3",
+        note="Best coverage of the brief: assortativity in section 7, cliques in "
+             "section 8, centrality in sections 3 to 5, and it uses our own harvested "
+             "dataset. Blocked until the Wikidata classification stage runs over the "
+             "20,849 crawled candidates.",
+        denmark="CVR holds every registered Danish organisation, not only the ones "
+                "Wikipedia found notable, so the Danish slice can be checked against a "
+                "complete population.",
+    ),
+    dict(
+        id="aid-enforcement-broker",
+        group="The organisation network",
+        title="Who brokers between aid and enforcement?",
+        question="Label organisations humanitarian, advocacy, border enforcement or "
+                 "research, then find the nodes with high betweenness between the "
+                 "enforcement cluster and the aid cluster.",
+        stake="Whether the two worlds touch at all, and through whom.",
+        null="A degree-preserving shuffle, so a broker is not just a hub.",
+        data=["wikidata-orgs"],
+        verdict="week3",
+        note="Shares a pipeline with the question above and makes a natural second "
+             "section of the same post.",
+    ),
+    dict(
+        id="field-built",
+        group="The organisation network",
+        title="When was this field built?",
+        question="Founding dates of migration organisations against the crises that "
+                 "preceded them. Do organisations appear after shocks, and how long "
+                 "after?",
+        stake="A visible lag would mean the organisational field is reactive. No lag "
+              "would mean something else entirely.",
+        null="Founding dates of organisations in an unrelated domain over the same "
+             "period.",
+        data=["wikidata-orgs"],
+        verdict="companion",
+        note="Wikidata P571 is already harvested for every organisation.",
+    ),
+    dict(
+        id="attention-money",
+        group="The organisation network",
+        title="Attention against money.",
+        question="Wikipedia language editions and pageviews per organisation, against "
+                 "the funding it actually receives in OCHA FTS.",
+        stake="The organisations with money and no attention, and with attention and "
+              "no money, are both stories.",
+        null="The relationship you would expect if attention simply tracked size.",
+        data=["wikidata-orgs", "ocha-fts", "wikimedia-clickstream"],
+        verdict="project",
+        note="Needs FTS organisation names reconciled against Wikidata items, which is "
+             "the entity-resolution job that makes it a project rather than a week.",
+    ),
+    dict(
+        id="shared-vocabulary",
+        group="Language, for weeks 5 to 8",
+        title="Do border agencies and refugee charities describe the same thing?",
+        question="TF-IDF over the Wikipedia article of every organisation, grouped by "
+                 "organisation type. Then the week 8 move: do the communities in the "
+                 "link network also share vocabulary?",
+        stake="If the vocabularies barely overlap, the migration field does not share a "
+              "language, and that becomes measurable instead of asserted.",
+        null="Shuffle the type labels across articles and recompute the vocabulary "
+             "separation.",
+        data=["wikidata-orgs", "folketinget-oda"],
+        verdict="later",
+        note="Weeks 5 to 8. Folketinget gives a Danish-language parliamentary corpus "
+             "for the same question in a single country.",
+    ),
+]

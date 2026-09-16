@@ -124,6 +124,216 @@ Also relevant: [UNHCR Operational Data Portal](MIGRATION_DATA_CATALOGUE.md#unhcr
 
 **What is missing.** No maintained global migration policy event database exists after 2013, when DEMIG POLICY stopped. Dating a policy change worldwide means hand-coding from MPI, national gazettes and news. For the Strait of Hormuz the migration effect is indirect: PortWatch shows the trade shock daily, ACLED shows the conflict, and the migration response appears months later in Gulf labour-permit statistics that mostly are not published.
 
+## Twenty more we could ask
+
+Candidates for the weekly posts and for the final project. Each one has a *stake*: the thing that could come out the other way. A question with no possible surprise is a description, and the posts on this course that work all have one.
+
+Four fit week 3. Of those, **Are refugees a different network from migrants?** is the one to build: it runs on the files already in `data/`, and the finding is checked in [`analysis/week03_country_facts.json`](analysis/week03_country_facts.json), written by [`analysis/week03_country_networks.py`](analysis/week03_country_networks.py). The 2024 migrant stock network and the 2024 refugee network share only 4 of their top 15 destinations.
+
+One warning that applies to every betweenness question below. On the raw DESA matrix the top brokers come out as Australia, Norway, the USA, Denmark, Greece and China, and mean path length is 1.74. That ranking is measuring statistical reporting systems: register countries name hundreds of tiny origins and survey countries bucket them into 'other'. Threshold the edges at 100,000 people and the ranking becomes the USA, France, Germany, the UK, Russia and DR Congo, with mean path 2.93. Threshold first, and show the sweep.
+
+| Verdict | Count |
+| --- | ---: |
+| Week 3 | 4 |
+| Companion | 8 |
+| Later week | 2 |
+| Final project | 6 |
+
+### Shape of the country network
+
+**What is left after gravity?**
+
+Fit distance, population, shared language, shared coloniser and contiguity to the migrant stock matrix, then look at the residual network. Which corridors carry far more people than geography and history predict?
+
+- *What is at stake:* The residual could be structureless, in which case migration is geography and nothing else. If it is not, the residual graph is a map of everything gravity leaves out.
+- *Null:* The gravity fit itself is the null. Every claim is about the residual.
+- *Data:* [UN DESA International Migrant Stock](MIGRATION_DATA_CATALOGUE.md#un-desa-international-migrant-stock), [CEPII Gravity and GeoDist databases](MIGRATION_DATA_CATALOGUE.md#cepii-gravity-and-geodist-databases), [CEPII linguistic proximity (Melitz and Toubal)](MIGRATION_DATA_CATALOGUE.md#cepii-linguistic-proximity-melitz-and-toubal)
+- *Verdict:* **Final project.** Too heavy for one week. The strongest spine we have for a final project.
+- *Denmark:* Denmark's registered emigration lets you fit the model in both directions for one country and see whether the residual is symmetric.
+
+**Is migration concentrating or spreading?**
+
+Eight time points from 1990 to 2024. Track the Gini of edge weights, the top-10 corridor share and the network entropy.
+
+- *What is at stake:* Globalisation predicts spreading. If the corridors are concentrating instead, the standard story is wrong in a measurable way.
+- *Null:* A degree-preserving shuffle at each time point, so the trend is not just the degree sequence changing.
+- *Data:* [UN DESA International Migrant Stock](MIGRATION_DATA_CATALOGUE.md#un-desa-international-migrant-stock)
+- *Verdict:* **Companion.** A section inside another post, not a post. Not a centrality question, so it cannot carry week 3 alone. Good opening section for any of the country-network posts.
+
+**Core-periphery, or communities?**
+
+Does the network have one rich core that exchanges with everyone, or distinct regional blocs? Fit both models and report which wins.
+
+- *What is at stake:* Most people assume blocs because Louvain always returns some. Testing the alternative is the whole point.
+- *Null:* Compare the two model fits against each other and against a degree-preserving shuffle.
+- *Data:* [UN DESA International Migrant Stock](MIGRATION_DATA_CATALOGUE.md#un-desa-international-migrant-stock), [CEPII Gravity and GeoDist databases](MIGRATION_DATA_CATALOGUE.md#cepii-gravity-and-geodist-databases)
+- *Verdict:* **Later week.** The measure it needs has not been taught yet. Community detection is week 4. Do not spend it early.
+
+**Who exchanges, and who only sends?**
+
+Per country, the share of corridors carrying real flow in both directions. Then predict it from income and rank the countries that defy the prediction.
+
+- *What is at stake:* If reciprocity is simply income, there is no finding. The countries off the line are the story.
+- *Null:* A degree-preserving shuffle gives the reciprocity a country's degree sequence forces on it.
+- *Data:* [UN DESA International Migrant Stock](MIGRATION_DATA_CATALOGUE.md#un-desa-international-migrant-stock), [World Bank World Development Indicators](MIGRATION_DATA_CATALOGUE.md#world-bank-world-development-indicators)
+- *Verdict:* **Companion.** A section inside another post, not a post. DESA reciprocity is measured at 0.60 across 8,795 arcs in the 2024 network; see analysis/week03_country_facts.json.
+- *Denmark:* Denmark measures emigration rather than estimating it, so its reciprocity is real where most countries' is an artefact.
+
+### Brokers and transit
+
+**Do flight hubs and migration hubs coincide?**
+
+Betweenness on the airport network against betweenness on the migration network. Istanbul, Addis Ababa and Dubai should be high on both.
+
+- *What is at stake:* Where the two rankings diverge is a place that moves people without keeping them, or keeps them without moving them.
+- *Null:* Degree-preserving shuffles of both networks, so neither ranking is just its degree sequence.
+- *Data:* [OpenSky Network flight data](MIGRATION_DATA_CATALOGUE.md#opensky-network-flight-data), [OpenFlights and OurAirports route data](MIGRATION_DATA_CATALOGUE.md#openflights-and-ourairports-route-data), [UN DESA International Migrant Stock](MIGRATION_DATA_CATALOGUE.md#un-desa-international-migrant-stock)
+- *Verdict:* **Companion.** A section inside another post, not a post. Inherits the thresholding problem below, and needs a second network downloaded. Do it after the thresholding is shown to work.
+
+**Which country's removal breaks the network?**
+
+Remove countries in order of degree, of betweenness and of refugee hosting, and watch the giant component shrink under each order.
+
+- *What is at stake:* Whether the three orders agree.
+- *Null:* Random removal, as the baseline for every robustness curve.
+- *Data:* [UN DESA International Migrant Stock](MIGRATION_DATA_CATALOGUE.md#un-desa-international-migrant-stock), [UNHCR Refugee Data Finder](MIGRATION_DATA_CATALOGUE.md#unhcr-refugee-data-finder)
+- *Verdict:* **Companion.** A section inside another post, not a post. The group already ran node removal in week 2 and was criticised for it not being in that brief. Repeating it now reads as recycling.
+
+**Where does a stock matrix lie about transit?**
+
+Betweenness from DESA against transit prominence in 4Mi route data. Name the countries the stock matrix cannot see.
+
+- *What is at stake:* The size of the gap between where people are counted and where they pass through.
+- *Null:* None needed; this is a comparison of two measurements of the same thing.
+- *Data:* [UN DESA International Migrant Stock](MIGRATION_DATA_CATALOGUE.md#un-desa-international-migrant-stock), [Mixed Migration Centre 4Mi](MIGRATION_DATA_CATALOGUE.md#mixed-migration-centre-4mi), [IOM Displacement Tracking Matrix](MIGRATION_DATA_CATALOGUE.md#iom-displacement-tracking-matrix)
+- *Verdict:* **Final project.** Too heavy for one week. Needs 4Mi, which is a purposive sample on selected routes. Handle the sampling honestly or not at all.
+
+### Mobility as inequality
+
+**How much of your mobility is decided at birth?** ★
+
+Closeness centrality on the visa network, one score per passport, against the GDP per capita of the issuing country.
+
+- *What is at stake:* The strength of the relationship. A single scatter plot makes the point better than any paragraph.
+- *Null:* Shuffle the visa requirements while preserving each country's count of requirements, and see how much of the inequality survives.
+- *Data:* [DEMIG VISA](MIGRATION_DATA_CATALOGUE.md#demig-visa), [Henley Passport Index and Global Passport Power Index](MIGRATION_DATA_CATALOGUE.md#henley-passport-index-and-global-passport-power-index), [World Bank World Development Indicators](MIGRATION_DATA_CATALOGUE.md#world-bank-world-development-indicators)
+- *Verdict:* **Week 3.** Fits paths, centrality, mixing and cliques. Pure closeness, section 3 of the brief. One figure, one download. Works as the closing section of a bigger post.
+
+**Did the world get more open between 1973 and 2013?**
+
+Density of the visa-free network over forty years of DEMIG VISA, split into who gained access and who lost it.
+
+- *What is at stake:* The aggregate probably rose while specific nationalities fell. If so, 'the world is opening' is true and misleading at once.
+- *Null:* Compare each nationality's trajectory against the global trend.
+- *Data:* [DEMIG VISA](MIGRATION_DATA_CATALOGUE.md#demig-visa)
+- *Verdict:* **Companion.** A section inside another post, not a post. A time series rather than a centrality, so it supports a post rather than being one.
+
+**Map the mobility hierarchy.**
+
+Keep only asymmetric pairs, where A's citizens need a visa for B and B's do not need one for A. How close is that directed graph to a perfect hierarchy, and who are the anomalies?
+
+- *What is at stake:* A perfect hierarchy would be a total order. Every violation is a pair of countries with a history.
+- *Null:* A random tournament with the same number of arcs.
+- *Data:* [DEMIG VISA](MIGRATION_DATA_CATALOGUE.md#demig-visa), [Henley Passport Index and Global Passport Power Index](MIGRATION_DATA_CATALOGUE.md#henley-passport-index-and-global-passport-power-index)
+- *Verdict:* **Companion.** A section inside another post, not a post. Elegant, and narrower than it first looks.
+
+**Does openness cause migration, or follow it?**
+
+Lagged relationships in both directions between visa liberalisation and corridor growth.
+
+- *What is at stake:* Very likely neither direction is identified. Saying that well is worth more than a fabricated answer.
+- *Null:* Placebo lags: if a future liberalisation predicts past migration, the design is broken.
+- *Data:* [DEMIG VISA](MIGRATION_DATA_CATALOGUE.md#demig-visa), [UN DESA International Migrant Stock](MIGRATION_DATA_CATALOGUE.md#un-desa-international-migrant-stock)
+- *Verdict:* **Final project.** Too heavy for one week. A causal question with observational data. Treat with suspicion.
+
+### Forced versus chosen
+
+**Are refugees a different network from migrants?** ★
+
+UNHCR against DESA over the same countries. Degree distribution, clustering, distance decay, assortativity, and the overlap between the two rankings of destinations.
+
+- *What is at stake:* The hypothesis is that refugees go next door and migrants go far. The overlap between the two top-15 destination lists is 4 out of 15: Germany, France, Iran and Turkey. Eleven countries are top-15 for migrants and not refugees, eleven the other way.
+- *Null:* A degree-preserving shuffle of each network, plus the distance distribution each one would have under gravity.
+- *Data:* [UNHCR Refugee Data Finder](MIGRATION_DATA_CATALOGUE.md#unhcr-refugee-data-finder), [UN DESA International Migrant Stock](MIGRATION_DATA_CATALOGUE.md#un-desa-international-migrant-stock), [CEPII Gravity and GeoDist databases](MIGRATION_DATA_CATALOGUE.md#cepii-gravity-and-geodist-databases)
+- *Verdict:* **Week 3.** Fits paths, centrality, mixing and cliques. The recommended week 3 post. Covers brief sections 3 to 7, runs entirely on files already in data/, and the finding is verified in analysis/week03_country_facts.json.
+
+**Who hosts more refugees than their wealth predicts?**
+
+Regress hosting on GDP and population, then rank the residuals.
+
+- *What is at stake:* The answer contradicts most political rhetoric about who carries the burden, which is exactly why it is worth publishing.
+- *Null:* The regression is the null; the residual is the result.
+- *Data:* [UNHCR Refugee Data Finder](MIGRATION_DATA_CATALOGUE.md#unhcr-refugee-data-finder), [World Bank World Development Indicators](MIGRATION_DATA_CATALOGUE.md#world-bank-world-development-indicators)
+- *Verdict:* **Companion.** A section inside another post, not a post. Node attributes rather than network structure, so it belongs inside a post rather than being one.
+
+**Does a new conflict create a new edge, and how fast?**
+
+Conflict onset in ACLED against the appearance of a refugee corridor in UNHCR. Measure the lag.
+
+- *What is at stake:* Whether the lag is weeks or years, and whether it depends on distance.
+- *Null:* Country pairs with no conflict onset, over the same window.
+- *Data:* [ACLED and UCDP conflict event data](MIGRATION_DATA_CATALOGUE.md#acled-and-ucdp-conflict-event-data), [UNHCR Refugee Data Finder](MIGRATION_DATA_CATALOGUE.md#unhcr-refugee-data-finder), [UNHCR Operational Data Portal](MIGRATION_DATA_CATALOGUE.md#unhcr-operational-data-portal)
+- *Verdict:* **Final project.** Too heavy for one week. UNHCR's annual series is too coarse for the lag; the operational portal is the daily version and only covers active emergencies.
+
+**Do displacement corridors close again?**
+
+After a conflict ends, which refugee edges reverse and which become permanent migration?
+
+- *What is at stake:* Whether displacement is a shock the network absorbs or a shock that rewires it.
+- *Null:* Corridors of the same size that never carried refugees.
+- *Data:* [UNHCR Refugee Data Finder](MIGRATION_DATA_CATALOGUE.md#unhcr-refugee-data-finder), [UN DESA International Migrant Stock](MIGRATION_DATA_CATALOGUE.md#un-desa-international-migrant-stock)
+- *Verdict:* **Final project.** Too heavy for one week. Needs the UNHCR time series, not the single year now in data/.
+
+### The organisation network
+
+**Is the migration NGO world global, or a pile of national ones?** ★
+
+Attribute assortativity by country on the organisation link network, tested against a shuffle of the country labels.
+
+- *What is at stake:* If organisations link overwhelmingly within their own country, 'global migration governance' is a claim the network does not support. The handful of bodies that do bridge become the finding.
+- *Null:* Shuffle the country labels across nodes rather than shuffling the links. This is the right null for homophily and it is exercise 3.9 in the brief.
+- *Data:* [Wikipedia and Wikidata migration organisations (this repo)](MIGRATION_DATA_CATALOGUE.md#wikipedia-and-wikidata-migration-organisations-this-repo)
+- *Verdict:* **Week 3.** Fits paths, centrality, mixing and cliques. Best coverage of the brief: assortativity in section 7, cliques in section 8, centrality in sections 3 to 5, and it uses our own harvested dataset. Blocked until the Wikidata classification stage runs over the 20,849 crawled candidates.
+- *Denmark:* CVR holds every registered Danish organisation, not only the ones Wikipedia found notable, so the Danish slice can be checked against a complete population.
+
+**Who brokers between aid and enforcement?** ★
+
+Label organisations humanitarian, advocacy, border enforcement or research, then find the nodes with high betweenness between the enforcement cluster and the aid cluster.
+
+- *What is at stake:* Whether the two worlds touch at all, and through whom.
+- *Null:* A degree-preserving shuffle, so a broker is not just a hub.
+- *Data:* [Wikipedia and Wikidata migration organisations (this repo)](MIGRATION_DATA_CATALOGUE.md#wikipedia-and-wikidata-migration-organisations-this-repo)
+- *Verdict:* **Week 3.** Fits paths, centrality, mixing and cliques. Shares a pipeline with the question above and makes a natural second section of the same post.
+
+**When was this field built?**
+
+Founding dates of migration organisations against the crises that preceded them. Do organisations appear after shocks, and how long after?
+
+- *What is at stake:* A visible lag would mean the organisational field is reactive. No lag would mean something else entirely.
+- *Null:* Founding dates of organisations in an unrelated domain over the same period.
+- *Data:* [Wikipedia and Wikidata migration organisations (this repo)](MIGRATION_DATA_CATALOGUE.md#wikipedia-and-wikidata-migration-organisations-this-repo)
+- *Verdict:* **Companion.** A section inside another post, not a post. Wikidata P571 is already harvested for every organisation.
+
+**Attention against money.**
+
+Wikipedia language editions and pageviews per organisation, against the funding it actually receives in OCHA FTS.
+
+- *What is at stake:* The organisations with money and no attention, and with attention and no money, are both stories.
+- *Null:* The relationship you would expect if attention simply tracked size.
+- *Data:* [Wikipedia and Wikidata migration organisations (this repo)](MIGRATION_DATA_CATALOGUE.md#wikipedia-and-wikidata-migration-organisations-this-repo), [UN OCHA Financial Tracking Service](MIGRATION_DATA_CATALOGUE.md#un-ocha-financial-tracking-service), [Wikimedia Clickstream and Pageviews](MIGRATION_DATA_CATALOGUE.md#wikimedia-clickstream-and-pageviews)
+- *Verdict:* **Final project.** Too heavy for one week. Needs FTS organisation names reconciled against Wikidata items, which is the entity-resolution job that makes it a project rather than a week.
+
+### Language, for weeks 5 to 8
+
+**Do border agencies and refugee charities describe the same thing?**
+
+TF-IDF over the Wikipedia article of every organisation, grouped by organisation type. Then the week 8 move: do the communities in the link network also share vocabulary?
+
+- *What is at stake:* If the vocabularies barely overlap, the migration field does not share a language, and that becomes measurable instead of asserted.
+- *Null:* Shuffle the type labels across articles and recompute the vocabulary separation.
+- *Data:* [Wikipedia and Wikidata migration organisations (this repo)](MIGRATION_DATA_CATALOGUE.md#wikipedia-and-wikidata-migration-organisations-this-repo), [Folketinget Open Data (oda.ft.dk)](MIGRATION_DATA_CATALOGUE.md#folketinget-open-data-odaftdk)
+- *Verdict:* **Later week.** The measure it needs has not been taught yet. Weeks 5 to 8. Folketinget gives a Danish-language parliamentary corpus for the same question in a single country.
+
 ## How to read the catalogue
 
 Every entry says what one row is, because that decides whether a source is a network or a table of country attributes. Sources marked *checked* were pulled and counted here; the rest are written from prior knowledge and should be confirmed against the publisher before a number from them goes anywhere.
