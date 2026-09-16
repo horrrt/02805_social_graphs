@@ -82,6 +82,30 @@ export const ARCS = {
   taper: { label: "Tapered", note: "Heavy where people leave, thin where they land." },
 };
 
+export const LINKS = {
+  width: { label: "Width by size", note: "A doubling of people is a doubling of ink." },
+  colour: { label: "Colour by size", note: "Red for the lightest links, green for the heaviest." },
+  both: { label: "Width and colour", note: "Both channels carry the same number, which is redundant on purpose." },
+  uniform: { label: "Uniform", note: "Every link the same, so only the shape of the network shows." },
+};
+
+export const THICKNESS = {
+  thin: { label: "Thin", note: "" },
+  normal: { label: "Normal", note: "" },
+  thick: { label: "Thick", note: "" },
+};
+
+export const FOCUS = {
+  all: { label: "Keep all", note: "Every link stays drawn when a country is selected." },
+  dim: { label: "Fade the rest", note: "The rest of the network fades to context." },
+  only: { label: "Only the selection", note: "Only the selected country's links are drawn." },
+};
+
+export const DOTS = {
+  on: { label: "Show dots", note: "" },
+  off: { label: "Hide dots", note: "Territories carry the selection instead." },
+};
+
 export const TABLES = {
   rules: { label: "Rules", note: "A hairline between rows." },
   zebra: { label: "Zebra", note: "Alternating row tint." },
@@ -92,7 +116,11 @@ export const TABLES = {
 const DIMENSIONS = [
   { key: "variant", label: "Renderer", options: RENDERERS, fallback: "canvas", reloads: true },
   { key: "palette", label: "Colours", options: PALETTES, fallback: "signal" },
-  { key: "arcs", label: "Corridor lines", options: ARCS, fallback: "curve" },
+  { key: "arcs", label: "Link shape", options: ARCS, fallback: "curve" },
+  { key: "links", label: "Link encoding", options: LINKS, fallback: "width" },
+  { key: "thickness", label: "Link thickness", options: THICKNESS, fallback: "normal" },
+  { key: "focus", label: "On selection", options: FOCUS, fallback: "all" },
+  { key: "dots", label: "Country dots", options: DOTS, fallback: "on" },
   { key: "tables", label: "Tables", options: TABLES, fallback: "rules" },
 ];
 
@@ -144,6 +172,10 @@ function apply(chosen) {
   body.dataset.palette = chosen.palette;
   body.dataset.tables = chosen.tables;
   api.state.arcs = chosen.arcs;
+  api.state.links = chosen.links;
+  api.state.thickness = chosen.thickness;
+  api.state.focus = chosen.focus;
+  api.state.dots = chosen.dots;
 }
 
 function describe(chosen) {
@@ -151,7 +183,8 @@ function describe(chosen) {
   return (
     `<b>${renderer.label}.</b> ${renderer.swaps} ` +
     `${PALETTES[chosen.palette].note} ${ARCS[chosen.arcs].note} ` +
-    `${TABLES[chosen.tables].note} ` +
+    `${LINKS[chosen.links].note} ${FOCUS[chosen.focus].note} ` +
+    `${DOTS[chosen.dots].note} ${TABLES[chosen.tables].note} ` +
     (renderer.bytes
       ? `Library: ${renderer.library}, ${kb(renderer.bytes)}, vendored in the repo.`
       : "No charting library is loaded; every mark is drawn by hand.") +

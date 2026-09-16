@@ -205,7 +205,7 @@
             </div>
             <div class="grid-side">
               <div class="plot">
-                <h3>Betweenness vs in-degree (log–log)</h3>
+                <h3>Betweenness vs origins (in-degree), log–log</h3>
                 <p class="axis-note">
                   One point per country. Migration graph is directed and
                   weighted; distance along a corridor is 1 / people, so a heavy
@@ -257,7 +257,7 @@
             </div>
             <div class="grid-side">
               <div class="plot">
-                <h3>Betweenness z-score vs in-degree (log–log x)</h3>
+                <h3>Betweenness z-score vs origins (in-degree), log x</h3>
                 <p class="axis-note" id="null-note">
                   The null keeps every country's in- and out-degree and deals
                   the observed corridor weights back out at random. Click any
@@ -343,9 +343,16 @@
             <p class="sub">
               Five roles, defined on ranks rather than raw values so a label
               means the same thing in any year. Examples are read from the data,
-              not chosen by hand.
+              not chosen by hand. Hover a country code to see why it is there,
+              or open the full list for a role.
             </p>
             <div class="grid5" id="typology-cards"></div>
+            <aside
+              aria-label="Countries in this role"
+              class="type-drawer"
+              hidden
+              id="type-drawer"
+            ></aside>
           </div>
         </section>
 

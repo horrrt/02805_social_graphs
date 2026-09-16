@@ -1110,13 +1110,20 @@
   border-radius: var(--radius);
   box-shadow: 0 2px 6px rgba(15, 35, 64, 0.08), 0 18px 44px rgba(15, 35, 64, 0.16);
   display: grid;
-  gap: 12px;
+  gap: 12px 18px;
+  grid-template-columns: repeat(2, minmax(150px, 1fr));
   left: 0;
-  min-width: 320px;
+  max-height: min(70vh, 560px);
+  min-width: 360px;
+  overflow: auto;
   padding: 16px;
   position: absolute;
   top: calc(100% + 9px);
   z-index: 60;
+}
+
+.corridor .style-bar .style-field:first-child {
+  grid-column: 1 / -1;
 }
 
 .corridor .style-field {
@@ -1139,6 +1146,7 @@
 
 .corridor .style-bar .style-note {
   border-top: 1px solid var(--line-soft);
+  grid-column: 1 / -1;
   color: var(--ink-soft);
   font-size: 11.5px;
   line-height: 1.5;
@@ -1175,4 +1183,158 @@
   background: var(--card);
   box-shadow: var(--shadow);
   color: var(--ink);
+}
+
+
+/* ------------------------------------------------- chart tooltip and drawer */
+
+.corridor .chart-tip,
+body > .chart-tip {
+  background: rgba(11, 31, 58, 0.96);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 9px;
+  color: #eaf2fb;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Inter, system-ui,
+    sans-serif;
+  font-size: 11.5px;
+  line-height: 1.45;
+  max-width: 260px;
+  padding: 8px 11px;
+  pointer-events: none;
+  position: fixed;
+  z-index: 90;
+}
+
+body > .chart-tip b {
+  display: block;
+  font-size: 12.5px;
+  margin-bottom: 2px;
+}
+
+body > .chart-tip span {
+  color: #a9c3e0;
+  display: block;
+}
+
+body > .chart-tip[hidden] {
+  display: none;
+}
+
+.corridor .eg-chip {
+  background: var(--line-soft);
+  border: 0;
+  border-radius: 6px;
+  color: var(--ink);
+  cursor: pointer;
+  font-family: inherit;
+  font-size: 11px;
+  font-weight: 700;
+  margin-right: 3px;
+  padding: 2px 6px;
+}
+
+.corridor .eg-chip:hover {
+  background: var(--access-soft);
+  color: #14618f;
+}
+
+.corridor .eg-all {
+  background: none;
+  border: 0;
+  color: var(--access);
+  cursor: pointer;
+  font-family: inherit;
+  font-size: 11px;
+  font-weight: 700;
+  margin-top: 8px;
+  padding: 0;
+}
+
+.corridor .type-drawer {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  margin-top: 16px;
+  max-height: 420px;
+  overflow: auto;
+  padding: 16px 18px;
+}
+
+.corridor .type-drawer[hidden] {
+  display: none;
+}
+
+.corridor .drawer-head {
+  align-items: start;
+  display: flex;
+  gap: 12px;
+  justify-content: space-between;
+}
+
+.corridor .drawer-head h3 {
+  font-size: 15px;
+  margin: 8px 0 4px;
+}
+
+.corridor .drawer-head p {
+  color: var(--ink-soft);
+  font-size: 12px;
+  margin: 0;
+  max-width: 62ch;
+}
+
+.corridor .drawer-close {
+  background: var(--line-soft);
+  border: 0;
+  border-radius: 8px;
+  color: var(--ink-soft);
+  cursor: pointer;
+  font-size: 17px;
+  height: 28px;
+  line-height: 1;
+  width: 28px;
+}
+
+.corridor .drawer-note {
+  color: var(--ink-mute);
+  font-size: 11.5px;
+  margin: 12px 0 8px;
+}
+
+.corridor .drawer-table {
+  border-collapse: collapse;
+  font-size: 12px;
+  width: 100%;
+}
+
+.corridor .drawer-table th {
+  border-bottom: 1px solid var(--line);
+  color: var(--ink-mute);
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  padding: 6px 8px;
+  text-align: right;
+  text-transform: uppercase;
+}
+
+.corridor .drawer-table th:first-child,
+.corridor .drawer-table td:first-child {
+  text-align: left;
+}
+
+.corridor .drawer-table td {
+  border-top: 1px solid var(--line-soft);
+  font-variant-numeric: tabular-nums;
+  padding: 5px 8px;
+  text-align: right;
+}
+
+.corridor .drawer-table tbody tr {
+  cursor: pointer;
+}
+
+.corridor .drawer-table tbody tr:hover td {
+  background: var(--access-soft);
 }
