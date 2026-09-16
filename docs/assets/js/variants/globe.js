@@ -9,7 +9,7 @@
 const NO_TEXTURE = null;
 
 export function install(api, Globe) {
-  const { state, node, metrics, topEdges, select, $, colours, rgb, arcSpec } = api;
+  const { state, node, metrics, topEdges, select, $, colours, rgb, arcSpec, textureURL } = api;
   let world = null;
   let host = null;
 
@@ -115,9 +115,12 @@ export function install(api, Globe) {
       });
     }
 
-    if (state.world && globe.polygonsData().length === 0) {
-      globe.polygonsData(state.world.features);
-    }
+    // The basemap dropdown reaches WebGL: a photograph as the globe texture,
+    // outlines as polygons, or neither.
+    const photo = state.basemap === "photo";
+    globe.globeImageUrl(photo ? textureURL() : null);
+    const wanted = state.basemap === "outline" && state.world ? state.world.features : [];
+    if (globe.polygonsData().length !== wanted.length) globe.polygonsData(wanted);
     // The corridor-line dropdown reaches WebGL too: flat arcs for straight,
     // dashes only for flowing, and a thinner tail for tapered.
     globe

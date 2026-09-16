@@ -377,6 +377,34 @@ export function install(api, d3) {
   // A d3-geo orthographic globe, dragged with d3.drag and rendered as SVG
   // paths. Great-circle arcs come from d3.geoInterpolate, so a corridor bends
   // the way a flight path does rather than the way a quadratic curve does.
+  // One canvas behind the globe SVG, used only when the photograph is chosen.
+  let underlay = null;
+  function photoUnderlay(width, height, radius) {
+    const svg = document.getElementById("globe-canvas-d3");
+    if (!svg) return;
+    if (!underlay) {
+      underlay = document.createElement("canvas");
+      underlay.id = "globe-canvas-d3-photo";
+      underlay.style.position = "absolute";
+      underlay.style.inset = "0";
+      underlay.style.pointerEvents = "none";
+      svg.parentElement.style.position = "relative";
+      svg.parentElement.insertBefore(underlay, svg);
+      svg.style.position = "relative";
+    }
+    underlay.hidden = state.basemap !== "photo";
+    if (underlay.hidden) return;
+    const ratio = Math.min(window.devicePixelRatio || 1, 2);
+    underlay.style.width = `${width}px`;
+    underlay.style.height = `${height}px`;
+    underlay.width = Math.round(width * ratio);
+    underlay.height = Math.round(height * ratio);
+    const ctx = underlay.getContext("2d");
+    ctx.setTransform(ratio, 0, 0, ratio, 0, 0);
+    ctx.clearRect(0, 0, width, height);
+    api.paintPhotoGlobe(ctx, radius, width / 2, height / 2);
+  }
+
   let projection = null;
   function globe() {
     const canvas = $("globe-canvas");
@@ -418,7 +446,12 @@ export function install(api, d3) {
       .attr("cy", height / 2)
       .attr("r", projection.scale())
       .attr("fill", "#0d2b4c");
-    if (state.world) {
+
+    // SVG cannot resample a photograph through an orthographic projection, so
+    // a canvas underlay paints it and the vectors sit on top. Same picture as
+    // every other renderer, same code doing the sampling.
+    photoUnderlay(width, height, projection.scale());
+    if (state.basemap === "outline" && state.world) {
       svg
         .append("g")
         .selectAll("path")

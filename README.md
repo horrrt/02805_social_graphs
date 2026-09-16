@@ -202,6 +202,7 @@ you can send. The data, the numbers and the copy never change.
 | `?variant=` | `canvas` (default, no library) · `d3` 273 KB · `echarts` 1007 KB · `globe` 1008 KB · `atlas` 1491 KB · `deck` 1217 KB |
 | `?palette=` | `signal` (default) · `ember` · `iris` · `okabe` (colourblind-safe) · `slate` (mono, prints well) |
 | `?arcs=` | `curve` (default) · `straight` · `flow` (animated dashes) · `taper` (width carries direction) |
+| `?basemap=` | `outline` (default) · `photo` (NASA Blue Marble, in every renderer) · `none` |
 | `?tables=` | `rules` (default) · `zebra` · `cards` · `compact` |
 
 Example: [`?variant=atlas&palette=okabe&arcs=taper&tables=compact`](https://horrrt.github.io/02805_social_graphs/weeks/week03/?variant=atlas&palette=okabe&arcs=taper&tables=compact)
