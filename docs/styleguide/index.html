@@ -1,0 +1,569 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width,initial-scale=1" name="viewport" />
+    <meta
+      content="Every component of the Corridor Control post, drawn once under every skin, palette and table style, from the same stylesheet the post loads."
+      name="description"
+    />
+    <title>Style guide · Corridor Control · Log–Log Arcade</title>
+    <link href="../assets/favicon.svg" rel="icon" type="image/svg+xml" />
+    <link href="../assets/css/corridor.css?v=69c1e70913" rel="stylesheet" />
+    <style>
+      /* Only what the guide itself needs: scoped specimens and swatches.
+         Everything a reader sees inside a specimen comes from corridor.css. */
+      .sg-specimens { display: grid; gap: 14px; grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .sg-specimens.five { grid-template-columns: repeat(5, minmax(0, 1fr)); }
+      .sg-specimens.four { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+      .sg-scope { border-radius: 10px; padding: 14px; }
+      .sg-scope .card { padding: 14px; }
+      .sg-name { font-size: 11px; font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase; margin: 0 0 10px; opacity: 0.7; }
+      .sg-swatches { display: grid; gap: 12px; grid-template-columns: repeat(6, minmax(0, 1fr)); }
+      .sg-swatch i { display: block; height: 44px; border-radius: 10px; border: 1px solid var(--line); }
+      .sg-swatch code { display: block; font-size: 11px; margin-top: 6px; }
+      .sg-row { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; }
+      .sg-stack { display: flex; flex-direction: column; gap: 12px; }
+      .sg-label { font-size: 11px; color: var(--ink-mute); margin: 0 0 6px; }
+      .sg-label code { font-size: 11px; }
+      .sg-ramp { display: flex; align-items: baseline; gap: 14px; border-bottom: 1px solid var(--line-soft); padding: 6px 0; }
+      .sg-ramp small { font-size: 11px; color: var(--ink-mute); }
+      .sg-tip { position: static; display: inline-flex; }
+      .sg-hero .shell { grid-template-columns: minmax(0, 1fr) 320px; }
+    </style>
+  </head>
+  <body class="corridor">
+    <a class="skip" href="#main">Skip to content</a>
+
+    <div class="topbar">
+      <div class="shell">
+        <a class="brand" href="../">
+          <span class="mark">DTU</span>
+          <small>02805 · Network Science</small>
+        </a>
+        <div class="style-menu">
+          <button
+            aria-controls="style-bar"
+            aria-expanded="false"
+            class="style-trigger"
+            id="style-trigger"
+            type="button"
+          >
+            <span id="style-trigger-label">Style</span>
+            <span aria-hidden="true">▾</span>
+          </button>
+          <div aria-label="Page style" class="style-bar" hidden id="style-bar" role="group">
+            <div class="style-field">
+              <label for="style-skin">Skin</label>
+              <select data-dimension="skin" id="style-skin">
+                <option value="clean">Clean</option>
+                <option value="editorial">Editorial</option>
+                <option value="terminal">Terminal</option>
+                <option value="poster">Poster</option>
+              </select>
+            </div>
+            <div class="style-field">
+              <label for="style-palette">Colours</label>
+              <select data-dimension="palette" id="style-palette">
+                <option value="signal">Signal</option>
+                <option value="ember">Ember</option>
+                <option value="iris">Iris</option>
+                <option value="okabe">Okabe-Ito</option>
+                <option value="slate">Slate</option>
+              </select>
+            </div>
+            <div class="style-field">
+              <label for="style-tables">Tables</label>
+              <select data-dimension="tables" id="style-tables">
+                <option value="rules">Rules</option>
+                <option value="zebra">Zebra</option>
+                <option value="cards">Cards</option>
+                <option value="compact">Compact</option>
+              </select>
+            </div>
+            <p class="style-note" id="style-note">
+              The same three dimensions the post offers. They set
+              <code>data-skin</code>, <code>data-palette</code> and
+              <code>data-tables</code> on the body, exactly as the post does,
+              so the whole guide repaints.
+            </p>
+          </div>
+        </div>
+        <nav aria-label="Sections of this guide" class="topnav">
+          <a class="here" href="#tokens">Tokens</a>
+          <a href="#components">Components</a>
+          <a href="#skins">Skins</a>
+          <a href="#palettes">Palettes</a>
+        </nav>
+      </div>
+    </div>
+
+    <main id="main">
+      <section class="hero sg-hero" id="hero">
+        <div class="shell">
+          <div>
+            <p class="eyebrow">Corridor Control · Style guide</p>
+            <h1>Every part,<br />drawn once</h1>
+            <p class="lede">What the post is made of</p>
+            <p class="body">
+              This page loads <code>corridor.css</code>, the same file the
+              post loads, and shows each component under each skin, palette
+              and table style. Nothing here is a copy of a style: if the guide
+              and the post ever disagree, the stylesheet changed and one of
+              them did not.
+            </p>
+            <p class="caution">Orange is always people. Blue is always access.</p>
+            <div class="keys">
+              <span class="key people"><i></i> Migration (people)</span>
+              <span class="key access"><i></i> Flights (access)</span>
+            </div>
+            <div class="yearline">
+              <input aria-label="A range control, as the year slider" max="7" min="0" step="1" type="range" value="6" />
+              <div class="ends"><span>1990</span><span>2024</span></div>
+              <label>Year (map animation) · showing <b>2020</b></label>
+            </div>
+          </div>
+
+          <aside class="panel">
+            <h2>Selected country</h2>
+            <div class="who">
+              <span class="flag">🇩🇰</span>
+              <span>
+                <strong>Denmark</strong><br />
+                <span class="codes">DNK · 2020</span>
+              </span>
+            </div>
+            <dl class="stats">
+              <div><dt class="explains" data-explain="People living here who were born somewhere else.">Incoming migrants (stock)</dt><dd>695,816</dd></div>
+              <div><dt>Origins represented</dt><dd>190 <span class="codes">(#3)</span></dd></div>
+              <div><dt>Betweenness</dt><dd>0.01963 <span class="codes">(#32)</span></dd></div>
+              <div><dt>Typology</dt><dd><span class="chip">Mixed</span></dd></div>
+            </dl>
+            <div class="corridor-list">
+              <h3>→ Top inbound links (corridors)</h3>
+              <ol>
+                <li><span>1. Poland → Denmark</span><b>42k</b></li>
+                <li><span>2. Germany → Denmark</span><b>37.2k</b></li>
+              </ol>
+            </div>
+            <p class="fineprint">
+              The inspector panel: <code>.panel</code>, <code>.who</code>,
+              <code>dl.stats</code>, <code>.corridor-list</code>,
+              <code>.fineprint</code>.
+            </p>
+          </aside>
+        </div>
+      </section>
+
+      <div class="shell">
+        <p aria-live="polite" class="status-line">
+          <code>.status-line</code> · 236 countries · 8,792 migration links · 4,331 flight links
+        </p>
+
+        <section class="step" id="tokens">
+          <div class="card">
+            <div class="step-head">
+              <span class="num">1</span>
+              <h2>Tokens</h2>
+              <span class="year-tag">(custom properties on <code>.corridor</code>)</span>
+            </div>
+            <p class="sub">
+              Twelve values. The two network colours carry meaning and only the
+              palette dropdown moves them; a skin may touch the rest and nothing
+              else.
+            </p>
+            <div class="sg-swatches">
+              <div class="sg-swatch"><i style="background: var(--people)"></i><code>--people</code></div>
+              <div class="sg-swatch"><i style="background: var(--people-soft)"></i><code>--people-soft</code></div>
+              <div class="sg-swatch"><i style="background: var(--access)"></i><code>--access</code></div>
+              <div class="sg-swatch"><i style="background: var(--access-soft)"></i><code>--access-soft</code></div>
+              <div class="sg-swatch"><i style="background: var(--dtu)"></i><code>--dtu</code></div>
+              <div class="sg-swatch"><i style="background: var(--deep)"></i><code>--deep</code></div>
+              <div class="sg-swatch"><i style="background: var(--ink)"></i><code>--ink</code></div>
+              <div class="sg-swatch"><i style="background: var(--ink-soft)"></i><code>--ink-soft</code></div>
+              <div class="sg-swatch"><i style="background: var(--ink-mute)"></i><code>--ink-mute</code></div>
+              <div class="sg-swatch"><i style="background: var(--ground)"></i><code>--ground</code></div>
+              <div class="sg-swatch"><i style="background: var(--card)"></i><code>--card</code></div>
+              <div class="sg-swatch"><i style="background: var(--line)"></i><code>--line</code></div>
+            </div>
+            <div class="grid2" style="margin-top: 18px">
+              <div>
+                <p class="sg-label">Type ramp · system sans on the clean skin, tabular numerals everywhere</p>
+                <div class="sg-ramp"><span style="font-size: 30px; font-weight: 800; letter-spacing: -0.03em">30/800</span><small>hero headline and figure</small></div>
+                <div class="sg-ramp"><span style="font-size: 21px; font-weight: 800; letter-spacing: -0.02em">21/800</span><small>panel title</small></div>
+                <div class="sg-ramp"><span style="font-size: 17px; font-weight: 700">17/700</span><small>section heading</small></div>
+                <div class="sg-ramp"><span style="font-size: 13.5px; color: var(--ink-soft)">13.5/400</span><small>body</small></div>
+                <div class="sg-ramp"><span style="font-size: 12.5px; color: var(--ink-soft)">12.5/400</span><small>notices, status, fineprint</small></div>
+                <div class="sg-ramp"><span style="font-size: 11px; font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase">11/800 caps</span><small>labels, chips, eyebrows</small></div>
+                <div class="sg-ramp"><span style="font-size: 10px; color: var(--ink-mute)">10/400</span><small>axis ticks, drawn on canvas</small></div>
+              </div>
+              <div>
+                <p class="sg-label">Surface · <code>--radius</code> on cards, 10px inside them, 999px on pills, one two-layer shadow</p>
+                <div class="sg-row">
+                  <div class="card" style="width: 84px; height: 56px; padding: 0"></div>
+                  <div class="fact" style="width: 84px; height: 56px"></div>
+                  <span class="chip">pill</span>
+                </div>
+                <p class="sg-label" style="margin-top: 14px">Rhythm · section gap 26px, card padding 20px 22px, grid gap 18px, shell 1180px with a 24px gutter</p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="step" id="components">
+          <div class="card">
+            <div class="step-head">
+              <span class="num">2</span>
+              <h2>Components</h2>
+              <span class="year-tag">(every class the post uses)</span>
+            </div>
+            <p class="sub">
+              Each is the real markup with the real class. The labels above
+              them name the class so you can find it in the stylesheet.
+            </p>
+
+            <div class="grid2">
+              <div class="sg-stack">
+                <div>
+                  <p class="sg-label"><code>.step-head</code> · <code>.num</code> · <code>.year-tag</code></p>
+                  <div class="step-head">
+                    <span class="num">3</span>
+                    <h2>Popular ≠ bridge</h2>
+                    <span class="year-tag">(analysis year: 2020)</span>
+                  </div>
+                </div>
+                <div>
+                  <p class="sg-label"><code>.chip</code> · <code>.eg-chip</code> · <code>.eg-all</code></p>
+                  <div class="sg-row">
+                    <span class="chip">Destination hub</span>
+                    <button class="eg-chip" type="button">USA</button>
+                    <button class="eg-chip" type="button">SAU</button>
+                    <button class="eg-all" type="button">See all 13 →</button>
+                  </div>
+                </div>
+                <div>
+                  <p class="sg-label"><code>.toggle</code> · <code>.axis-modes</code> · <code>select</code></p>
+                  <div class="sg-row">
+                    <div class="toggle" role="group">
+                      <button aria-pressed="true" type="button">Both</button>
+                      <button aria-pressed="false" type="button">Migration</button>
+                      <button aria-pressed="false" type="button">Flights</button>
+                    </div>
+                    <div class="axis-modes" role="group">
+                      <button aria-pressed="true" data-mode="loglog" type="button">log–log</button>
+                      <button aria-pressed="false" data-mode="loglin" type="button">log–lin</button>
+                      <button aria-pressed="false" data-mode="linear" type="button">linear</button>
+                    </div>
+                    <select aria-label="A country picker">
+                      <option>Denmark</option>
+                      <option>Germany</option>
+                    </select>
+                  </div>
+                </div>
+                <div>
+                  <p class="sg-label"><code>.notice</code> · <code>.ico</code></p>
+                  <div class="notice">
+                    <span class="ico">💡</span>
+                    <span><b>Denmark, in one line.</b> It ranks #63 of 236 by foreign-born residents and #32 as a bridge.</span>
+                  </div>
+                </div>
+                <div>
+                  <p class="sg-label"><code>.facts</code> · <code>.fact</code></p>
+                  <div class="facts">
+                    <div class="fact"><dt>People</dt><dd>11,279,561</dd></div>
+                    <div class="fact"><dt>Distance</dt><dd>1,899 km</dd></div>
+                    <div class="fact"><dt>Routes</dt><dd>164</dd></div>
+                  </div>
+                </div>
+                <div>
+                  <p class="sg-label"><code>.dk-head</code> · <code>.metric</code> · <code>.explains</code> · <code>.dk-name</code></p>
+                  <div class="step-head"><span class="num">8</span><h2>Let's analyse <span class="dk-name">Denmark</span></h2></div>
+                  <div class="dk-head">
+                    <div class="who"><span class="flag">🇩🇰</span><span><strong>Denmark</strong><br /><span class="codes">DNK · 2020</span></span></div>
+                    <div class="metric explains" data-explain="People living here who were born somewhere else."><span>Incoming</span><b>695,816</b></div>
+                    <div class="metric"><span>Betweenness</span><b>#32</b></div>
+                    <div class="metric"><span>z-score</span><b>−1.23</b></div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="sg-stack">
+                <div>
+                  <p class="sg-label"><code>.type</code> · <code>.badge</code> · <code>.eg</code></p>
+                  <article class="type" data-type="human-bridge" style="max-width: 300px">
+                    <div class="badge" style="background: #e7dcfb; color: #5b3a9e">⇄</div>
+                    <h3 style="color: #5b3a9e">Human bridge</h3>
+                    <p>Top tenth for betweenness and a z-score of +2 or more.</p>
+                    <p class="eg">4 countries<br />Examples: <button class="eg-chip" type="button">SSD</button> <button class="eg-chip" type="button">SDN</button></p>
+                    <button class="eg-all" type="button">See all 4 →</button>
+                  </article>
+                </div>
+                <div>
+                  <p class="sg-label"><code>.type-drawer</code> · <code>.drawer-head</code> · <code>.drawer-table</code> · <code>.drawer-note</code> · <code>.drawer-close</code></p>
+                  <aside class="type-drawer" style="position: static">
+                    <div class="drawer-head">
+                      <div><b>Human bridge</b> · 4 countries</div>
+                      <button class="drawer-close" type="button">Close</button>
+                    </div>
+                    <table class="drawer-table">
+                      <thead><tr><th>Country</th><th>Incoming</th><th>Origins</th></tr></thead>
+                      <tbody>
+                        <tr><td>South Sudan</td><td>882,000</td><td>13</td></tr>
+                        <tr><td>Sudan</td><td>1,376,000</td><td>21</td></tr>
+                      </tbody>
+                    </table>
+                    <p class="drawer-note">Ranked by incoming migrants. Click a row to select it.</p>
+                  </aside>
+                </div>
+                <div>
+                  <p class="sg-label"><code>.qa</code> · <code>.qa-cue</code> · <code>.qa-body</code> · <code>.qa-item</code> · <code>.qa-answer</code></p>
+                  <details class="qa" open>
+                    <summary><span class="qa-cue">Here you can learn more</span></summary>
+                    <div class="qa-body">
+                      <article class="qa-item">
+                        <h3>1 · A question</h3>
+                        <p class="qa-answer">And its answer, at <b>13.5px</b> in a 68ch column.</p>
+                      </article>
+                    </div>
+                  </details>
+                </div>
+                <div>
+                  <p class="sg-label"><code>.chart-tip</code> · <code>.legend</code> · <code>.axis-note</code></p>
+                  <div class="sg-row">
+                    <div class="chart-tip sg-tip"><b>South Sudan</b><span>13 origins · #160</span><span>betweenness #17</span></div>
+                    <div class="legend"><span><i style="background: var(--people)"></i>In-degree</span><span><i style="background: var(--ink)"></i>Out-degree</span><span><i style="background: var(--access)"></i>Flight degree</span></div>
+                  </div>
+                  <p class="axis-note">Betweenness vs origins · click any point</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="grid2" style="margin-top: 18px">
+              <div>
+                <p class="sg-label"><code>.edgebar</code> · two selects, an arrow, a chip</p>
+                <div class="edgebar">
+                  <select aria-label="Origin country"><option>Mexico</option></select>
+                  <span aria-hidden="true">→</span>
+                  <select aria-label="Destination country"><option>United States</option></select>
+                  <span class="chip">Both</span>
+                </div>
+              </div>
+              <div>
+                <p class="sg-label"><code>.map-wrap</code> · <code>.map-tools</code> · the twin map's frame</p>
+                <div class="map-wrap">
+                  <div class="map-tools">
+                    <div class="toggle" role="group">
+                      <button aria-pressed="false" type="button">Migration</button>
+                      <button aria-pressed="false" type="button">Flights</button>
+                      <button aria-pressed="true" type="button">Both</button>
+                    </div>
+                  </div>
+                  <canvas height="160" width="320"></canvas>
+                </div>
+              </div>
+            </div>
+
+            <div class="grid-side" style="margin-top: 18px">
+              <div class="plot">
+                <h3><code>.grid-side</code> · a wide plot beside a narrow panel</h3>
+                <p class="axis-note">The layout sections 3 and 4 use</p>
+                <canvas class="chart" height="160" width="760"></canvas>
+              </div>
+              <aside class="panel">
+                <h2>Beside it</h2>
+                <dl class="stats"><div><dt>k (in)</dt><dd>190</dd></div><div><dt>Rank</dt><dd>#32</dd></div></dl>
+              </aside>
+            </div>
+
+            <div class="grid3" style="margin-top: 18px">
+              <div class="plot">
+                <h3>A. <code>.plot</code> with <code>.chart</code></h3>
+                <p class="axis-note">A canvas the scripts draw into</p>
+                <canvas class="chart" height="200" width="440"></canvas>
+              </div>
+              <div class="plot">
+                <h3>B. <code>table.ego</code></h3>
+                <p class="axis-note">Migrant stock, 2020</p>
+                <table class="ego">
+                  <caption>Top links into Denmark</caption>
+                  <tr><th>Origin</th><th style="text-align: right">People</th></tr>
+                  <tr><td>Poland</td><td>41,988</td></tr>
+                  <tr><td>Germany</td><td>37,231</td></tr>
+                  <tr><td>Syria</td><td>35,386</td></tr>
+                </table>
+              </div>
+              <div class="plot">
+                <h3>C. <code>.stage-wrap</code> · <code>.stage-hint</code></h3>
+                <p class="axis-note">The globe's frame, empty</p>
+                <div class="stage-wrap">
+                  <canvas class="stage" height="200" width="300"></canvas>
+                  <p class="stage-hint">Drag to spin. Click a country.</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="grid5" style="margin-top: 18px">
+              <div class="sg-swatch"><p class="sg-label"><code>.grid5</code></p><i style="background: var(--line-soft)"></i></div>
+              <div class="sg-swatch"><p class="sg-label">three across</p><i style="background: var(--line-soft)"></i></div>
+              <div class="sg-swatch"><p class="sg-label">for the</p><i style="background: var(--line-soft)"></i></div>
+              <div class="sg-swatch"><p class="sg-label">typology</p><i style="background: var(--line-soft)"></i></div>
+              <div class="sg-swatch"><p class="sg-label">cards</p><i style="background: var(--line-soft)"></i></div>
+            </div>
+          </div>
+        </section>
+
+        <section class="step" id="skins">
+          <div class="card">
+            <div class="step-head">
+              <span class="num">3</span>
+              <h2>Skins</h2>
+              <span class="year-tag">(<code>?skin=</code>)</span>
+            </div>
+            <p class="sub">
+              The same specimen under each skin. Each block is its own
+              <code>.corridor[data-skin]</code> scope, so the stylesheet does the
+              work and the guide copies nothing.
+            </p>
+            <div class="sg-specimens four">
+              <div class="corridor sg-scope" data-skin="clean">
+                <p class="sg-name">Clean</p>
+                <div class="card">
+                  <div class="step-head"><span class="num">3</span><h2>Popular ≠ bridge</h2></div>
+                  <p class="sub">South Sudan is 55th on arrivals and 17th on brokerage.</p>
+                  <div class="sg-row"><span class="chip">Mixed</span><b>6.10</b></div>
+                </div>
+              </div>
+              <div class="corridor sg-scope" data-skin="editorial">
+                <p class="sg-name">Editorial</p>
+                <div class="card">
+                  <div class="step-head"><span class="num">3</span><h2>Popular ≠ bridge</h2></div>
+                  <p class="sub">South Sudan is 55th on arrivals and 17th on brokerage.</p>
+                  <div class="sg-row"><span class="chip">Mixed</span><b>6.10</b></div>
+                </div>
+              </div>
+              <div class="corridor sg-scope" data-skin="terminal">
+                <p class="sg-name">Terminal</p>
+                <div class="card">
+                  <div class="step-head"><span class="num">3</span><h2>Popular ≠ bridge</h2></div>
+                  <p class="sub">South Sudan is 55th on arrivals and 17th on brokerage.</p>
+                  <div class="sg-row"><span class="chip">Mixed</span><b>6.10</b></div>
+                </div>
+              </div>
+              <div class="corridor sg-scope" data-skin="poster">
+                <p class="sg-name">Poster</p>
+                <div class="card">
+                  <div class="step-head"><span class="num">3</span><h2>Popular ≠ bridge</h2></div>
+                  <p class="sub">South Sudan is 55th on arrivals and 17th on brokerage.</p>
+                  <div class="sg-row"><span class="chip">Mixed</span><b>6.10</b></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="step" id="palettes">
+          <div class="card">
+            <div class="step-head">
+              <span class="num">4</span>
+              <h2>Palettes</h2>
+              <span class="year-tag">(<code>?palette=</code>)</span>
+            </div>
+            <p class="sub">
+              Only <code>--people</code>, <code>--access</code> and their soft
+              tints move. A chip, a key and the two swatches show it.
+            </p>
+            <div class="sg-specimens five">
+              <div class="corridor sg-scope" data-palette="signal">
+                <p class="sg-name">Signal</p>
+                <div class="sg-row"><i class="sg-swatch" style="display: block; width: 28px; height: 28px; border-radius: 8px; background: var(--people)"></i><i style="display: block; width: 28px; height: 28px; border-radius: 8px; background: var(--access)"></i><span class="chip">chip</span></div>
+              </div>
+              <div class="corridor sg-scope" data-palette="ember">
+                <p class="sg-name">Ember</p>
+                <div class="sg-row"><i style="display: block; width: 28px; height: 28px; border-radius: 8px; background: var(--people)"></i><i style="display: block; width: 28px; height: 28px; border-radius: 8px; background: var(--access)"></i><span class="chip">chip</span></div>
+              </div>
+              <div class="corridor sg-scope" data-palette="iris">
+                <p class="sg-name">Iris</p>
+                <div class="sg-row"><i style="display: block; width: 28px; height: 28px; border-radius: 8px; background: var(--people)"></i><i style="display: block; width: 28px; height: 28px; border-radius: 8px; background: var(--access)"></i><span class="chip">chip</span></div>
+              </div>
+              <div class="corridor sg-scope" data-palette="okabe">
+                <p class="sg-name">Okabe-Ito</p>
+                <div class="sg-row"><i style="display: block; width: 28px; height: 28px; border-radius: 8px; background: var(--people)"></i><i style="display: block; width: 28px; height: 28px; border-radius: 8px; background: var(--access)"></i><span class="chip">chip</span></div>
+              </div>
+              <div class="corridor sg-scope" data-palette="slate">
+                <p class="sg-name">Slate</p>
+                <div class="sg-row"><i style="display: block; width: 28px; height: 28px; border-radius: 8px; background: var(--people)"></i><i style="display: block; width: 28px; height: 28px; border-radius: 8px; background: var(--access)"></i><span class="chip">chip</span></div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="step" id="tables">
+          <div class="card">
+            <div class="step-head">
+              <span class="num">5</span>
+              <h2>Tables</h2>
+              <span class="year-tag">(<code>?tables=</code>)</span>
+            </div>
+            <p class="sub">The same three rows under each table style. The markup never changes.</p>
+            <div class="sg-specimens four">
+              <div class="corridor sg-scope" data-tables="rules">
+                <p class="sg-name">Rules</p>
+                <table class="ego"><tr><td>Poland</td><td>41,988</td></tr><tr><td>Germany</td><td>37,231</td></tr><tr><td>Syria</td><td>35,386</td></tr></table>
+              </div>
+              <div class="corridor sg-scope" data-tables="zebra">
+                <p class="sg-name">Zebra</p>
+                <table class="ego"><tr><td>Poland</td><td>41,988</td></tr><tr><td>Germany</td><td>37,231</td></tr><tr><td>Syria</td><td>35,386</td></tr></table>
+              </div>
+              <div class="corridor sg-scope" data-tables="cards">
+                <p class="sg-name">Cards</p>
+                <table class="ego"><tr><td>Poland</td><td>41,988</td></tr><tr><td>Germany</td><td>37,231</td></tr><tr><td>Syria</td><td>35,386</td></tr></table>
+              </div>
+              <div class="corridor sg-scope" data-tables="compact">
+                <p class="sg-name">Compact</p>
+                <table class="ego"><tr><td>Poland</td><td>41,988</td></tr><tr><td>Germany</td><td>37,231</td></tr><tr><td>Syria</td><td>35,386</td></tr></table>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+
+      <footer class="foot">
+        <div class="shell">
+          <span>Style guide for <a href="../weeks/week03/">Corridor Control</a>. One stylesheet, <code>docs/assets/css/corridor.css</code>; a test asserts every class the post uses appears on this page.</span>
+          <span>Log–Log Legends · DTU 02805</span>
+        </div>
+      </footer>
+    </main>
+
+    <script type="module">
+      // The three dropdowns do to this page what the post's style bar does to
+      // the post: set a data attribute on the body. No script draws anything.
+      const params = new URLSearchParams(window.location.search);
+      const body = document.body;
+      for (const select of document.querySelectorAll("#style-bar select")) {
+        const key = select.dataset.dimension;
+        const asked = params.get(key);
+        if (asked && [...select.options].some((o) => o.value === asked)) select.value = asked;
+        body.dataset[key] = select.value;
+        select.addEventListener("change", () => {
+          body.dataset[key] = select.value;
+          const url = new URL(window.location.href);
+          url.searchParams.set(key, select.value);
+          window.history.replaceState(null, "", url.pathname + url.search);
+        });
+      }
+      const trigger = document.getElementById("style-trigger");
+      const bar = document.getElementById("style-bar");
+      trigger.addEventListener("click", (event) => {
+        event.stopPropagation();
+        bar.hidden = !bar.hidden;
+        trigger.setAttribute("aria-expanded", String(!bar.hidden));
+      });
+      bar.addEventListener("click", (event) => event.stopPropagation());
+      document.addEventListener("click", () => {
+        bar.hidden = true;
+        trigger.setAttribute("aria-expanded", "false");
+      });
+    </script>
+  </body>
+</html>
