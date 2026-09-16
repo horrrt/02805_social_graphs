@@ -237,6 +237,36 @@ test("every style dimension offers choices the page can actually apply", () => {
   assert.deepEqual(keys("EARTH"), ["small", "medium", "large", "huge"]);
 });
 
+test("the methods section counts the renderers and dimensions it actually has", () => {
+  // The copy names both numbers, and both are easy to change and forget.
+  const boot = read("docs/assets/js/week03-boot.js");
+  const html = read("docs/weeks/week03/index.html");
+  const renderers = boot.slice(
+    boot.indexOf("export const RENDERERS"),
+    boot.indexOf("export const PALETTES"),
+  );
+  const count = [...renderers.matchAll(/^\s{2}(\w+): \{$/gm)].length;
+  const dimensions = [...boot.matchAll(/^\s{2}\{ key: "/gm)].length;
+  const words = ["zero", "one", "two", "three", "four", "five", "six", "seven",
+    "eight", "nine", "ten", "eleven", "twelve"];
+  // The copy is wrapped and capitalised; compare on flattened lower case.
+  const prose = html.replace(/\s+/g, " ").toLowerCase();
+  for (const claim of [`${words[count]} renderers`, `${words[dimensions]} style dimensions`]) {
+    assert.ok(prose.includes(claim), `the methods section does not say "${claim}"`);
+  }
+});
+
+test("the two long sections open on demand rather than on load", () => {
+  for (const page of ["docs/weeks/week03/index.html", "docs/v2/weeks/week03/index.html"]) {
+    const html = read(page);
+    for (const id of ["questions", "methods-drawer"]) {
+      const tag = html.slice(html.indexOf(`id="${id}"`) - 120, html.indexOf(`id="${id}"`) + 20);
+      assert.match(tag, /<details/, `${id} in ${page} is not a details element`);
+      assert.doesNotMatch(tag, /\bopen\b/, `${id} in ${page} ships open`);
+    }
+  }
+});
+
 test("section 8 is built for any country, not just the one the build ships", () => {
   const corridor = read("docs/assets/js/corridor.js");
   const payload = JSON.parse(read("docs/assets/data/week03_corridors.json"));
