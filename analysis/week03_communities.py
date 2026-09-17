@@ -125,19 +125,39 @@ def main():
     # How much of the world's migration stays inside one of these groups.
     # Modularity is a number about the graph; this is a number about people,
     # and it is the one that says whether the partition matters.
-    inside = 0
-    total = 0
     home = {}
     for i, members in enumerate(communities):
         for iso3 in members:
             home[iso3] = i
+
+    # Over the kept graph first, and then over every corridor in the year —
+    # including the small ones the threshold dropped, which are the corridors
+    # most likely to cross a group boundary. The second is the number a
+    # reader will think they are being told, so it is the one to quote.
+    inside = total = 0
     for a, b, w in graph.edges(data="weight"):
         total += w
         if home.get(a) == home.get(b):
             inside += w
-    share_inside = 100 * inside / total if total else 0
-    print(f"\n{share_inside:.1f}% of the people on these corridors moved inside "
+    share_kept = 100 * inside / total if total else 0
+
+    everything = json.loads((DATA / "week03_edges.json").read_text())
+    yi = everything["years"].index(args.year)
+    countries = everything["countries"]
+    all_inside = all_total = 0
+    for oi, di, stocks, *_rest in everything["edges"]:
+        people = stocks[yi]
+        if not people:
+            continue
+        all_total += people
+        a, b = countries[oi], countries[di]
+        if a in home and home.get(a) == home.get(b):
+            all_inside += people
+    share_inside = 100 * all_inside / all_total if all_total else 0
+    print(f"\n{share_kept:.1f}% of the people on the kept corridors moved inside "
           f"one of the {len(communities)} groups")
+    print(f"{share_inside:.1f}% of all {all_total:,} migrants in {args.year} did, "
+          f"counting the corridors the threshold dropped")
 
     strength = dict(graph.degree(weight="weight"))
     out = []
@@ -165,7 +185,9 @@ def main():
         "edges": graph.number_of_edges(),
         "modularity": round(q, 4),
         "share_inside": round(share_inside, 1),
-        "people": int(total),
+        "share_inside_kept": round(share_kept, 1),
+        "people": int(all_total),
+        "people_kept": int(total),
         "null": {
             "shuffles": args.shuffles,
             "mean": round(mean, 4),

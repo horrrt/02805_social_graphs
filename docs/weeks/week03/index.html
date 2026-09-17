@@ -204,7 +204,9 @@
                       against the two distributions that also look straight
                       here. The method is Clauset, Shalizi and Newman (2009);
                       the code is
-                      <code>analysis/week03_tails.py</code>.
+                      <code>analysis/week03_tails.py</code>. The fits are for
+                      2020, the null-model year, and stay there while the
+                      charts above follow the slider.
                     </p>
                     <table class="ego">
                       <tr>
@@ -728,7 +730,10 @@
               Fitted here by Poisson pseudo-maximum-likelihood on all
               8,301 corridors with population and
               income at both ends —
-              <code>analysis/week03_gravity.py</code>. Counts rather than
+              <code>analysis/week03_gravity.py</code>. That is a few hundred
+              more than the 8,053 in question 5, which needs income at both
+              ends and nothing else; this needs population too, and a handful
+              of places report one without the other. Counts rather than
               log counts, because logging drops every corridor carrying
               nobody and biases the rest. Each coefficient is an elasticity:
               a one per cent rise in the term moves the corridor by that many
@@ -947,8 +952,10 @@
             <div class="notice">
               <span class="ico">💡</span>
               <span>
-                <b>71.6% of the people on these corridors moved inside one
-                of the eight groups, not between them.</b> The
+                <b>70.6% of the world's 272 million migrants live inside
+                one of the eight groups rather than between them</b> —
+                counting every corridor in 2024, including the small ones
+                the 10,000-person threshold left out of the graph. The
                 groups are free movement zones, old empires and shared
                 languages: ECOWAS is one, the Anglosphere settler network is
                 one, the Gulf labour system and the South Asia that staffs it
@@ -1119,7 +1126,10 @@
                     from Eurostat. One row is a year, one cell a month.
                     Temporary protection is a different legal route and is not
                     counted here, so most Ukrainians after February 2022 are
-                    missing.
+                    missing. Two entries in the picker are not countries:
+                    Eurostat counts stateless applicants and applicants of
+                    unknown citizenship in their own rows, and they are kept
+                    because leaving them out would drop real people.
                   </p>
                   <div class="echart grid" id="v-asylum"></div>
                   <p class="qa-answer" id="v-asylum-answer"></p>
