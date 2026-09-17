@@ -34,6 +34,7 @@ import sys
 import time
 
 import networkx as nx
+from scipy import stats
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT / "scripts" / "migration"))
@@ -206,8 +207,26 @@ def degree_preserving_null(graph, shuffles, seed):
 
 
 def ranked(values, reverse=True):
-    order = sorted(values, key=lambda k: -values[k] if reverse else values[k])
-    return {node: i + 1 for i, node in enumerate(order)}
+    """Competition ranking: equal values share the better rank.
+
+    This used to hand out 1, 2, 3 down a plain sort, which breaks ties by
+    whatever order the dictionary happened to be in. That is not a small set
+    here. At the null-model year 200 of 228 countries sit on a tied out-degree
+    and 13 of the top 30 do, so Pakistan and Spain both send to 85 countries
+    and one of them was shown as #12 and the other as #13 for no reason a
+    reader could ever see. Betweenness ties are worse in number and harmless
+    in effect: 111 countries are tied at zero, which the page already says
+    out loud.
+
+    scipy.stats.rankdata does this properly. method="min" is the convention a
+    reader expects behind a "#12": both tied countries are #12 and nobody is
+    #13.
+    """
+    keys = list(values)
+    scores = [values[k] for k in keys]
+    if reverse:
+        scores = [-v for v in scores]
+    return {k: int(r) for k, r in zip(keys, stats.rankdata(scores, method="min"))}
 
 
 def main():
