@@ -538,8 +538,6 @@ function drawDistance() {
   });
 
   const slot = (box.right - box.left) / data.length;
-  let cumulative = 0;
-  const line = [];
   data.forEach((d, i) => {
     const x = box.left + slot * i;
     const pad = slot * 0.16;
@@ -557,8 +555,6 @@ function drawDistance() {
         label: `<b>${d.label} km</b><br>${one(value)}% ${what}`,
       });
     }
-    cumulative += d.people;
-    line.push([x + slot / 2, cumulative]);
     ctx.fillStyle = MUTE;
     ctx.font = "10px -apple-system, system-ui, sans-serif";
     ctx.textAlign = "center";
@@ -566,23 +562,41 @@ function drawDistance() {
     ctx.fillText(d.label, x + slot / 2, box.bottom + 6);
   });
 
-  // The cumulative share of people, on its own 0–100 scale.
-  ctx.beginPath();
-  line.forEach(([x, value], i) => {
-    const y = box.bottom - (value / 100) * (box.bottom - box.top);
-    if (i === 0) ctx.moveTo(x, y);
-    else ctx.lineTo(x, y);
-  });
-  ctx.strokeStyle = INK;
-  ctx.lineWidth = 1.5;
-  ctx.setLineDash([4, 3]);
-  ctx.stroke();
-  ctx.setLineDash([]);
-  ctx.fillStyle = INK;
-  ctx.font = "10px -apple-system, system-ui, sans-serif";
-  ctx.textAlign = "left";
-  ctx.textBaseline = "bottom";
-  ctx.fillText("cumulative share of people (0–100%)", box.left + 4, box.top + 12);
+  // The median migrant's distance, as a rule across the bars. This used to be
+  // a cumulative curve on its own 0–100 axis, which put two y-scales on one
+  // plot: where the curve crossed a bar was an artifact of how the two scales
+  // had been lined up, not a fact about anybody. One rule carries the same
+  // sentence — half of everyone is inside this line — on the axis that is
+  // already here.
+  const median = weightedMedian(model.rows.map((r) => [r.km, r.people]));
+  const band = BUCKETS.findIndex(([lo, hi]) => median >= lo && median < hi);
+  if (band >= 0) {
+    const [lo, hi] = BUCKETS[band];
+    // Inside its band, placed by how far through the band the median sits.
+    const across = hi === Infinity ? 0.5 : (median - lo) / (hi - lo);
+    const x = box.left + slot * (band + across);
+    ctx.strokeStyle = `rgba(${api.rgb(INK)},0.55)`;
+    ctx.lineWidth = 1.5;
+    ctx.beginPath();
+    ctx.moveTo(x, box.top);
+    ctx.lineTo(x, box.bottom);
+    ctx.stroke();
+    ctx.fillStyle = INK;
+    ctx.font = "600 10px -apple-system, system-ui, sans-serif";
+    ctx.textAlign = x > box.right - 150 ? "right" : "left";
+    ctx.textBaseline = "top";
+    ctx.fillText(
+      `half of all migrants are inside ${api.format.fmt.format(median)} km`,
+      x + (x > box.right - 150 ? -6 : 6),
+      box.top + 2,
+    );
+    list.push({
+      box: [x - 8, box.top, x + 8, box.bottom],
+      label:
+        `<b>The median migrant</b><br>` +
+        `${api.format.fmt.format(median)} km from their country of birth`,
+    });
+  }
 
   let legendX = box.right;
   ctx.textAlign = "right";
