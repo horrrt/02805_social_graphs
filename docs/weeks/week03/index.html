@@ -7,9 +7,9 @@
       content="Corridor Control — two country networks over the same world: where people live, from the UN migrant stock, and where you can fly, from OpenFlights."
       name="description"
     />
-    <title>Corridor Control · Log–Log Arcade</title>
+    <title>Corridor Control · Log–Log Legends</title>
     <link href="../../assets/favicon.svg" rel="icon" type="image/svg+xml" />
-    <link href="../../assets/css/corridor.css?v=af0c67b432" rel="stylesheet" />
+    <link href="../../assets/css/corridor.css?v=0ee438f605" rel="stylesheet" />
   </head>
   <body class="corridor">
     <a class="skip" href="#main">Skip to content</a>
@@ -616,6 +616,89 @@
           </div>
         </section>
 
+        <!-- three more views ---------------------------------------------- -->
+        <section class="step" id="more">
+          <div class="card">
+            <div class="step-head">
+              <span class="num">10</span>
+              <h2>Three more ways to look at the same two files</h2>
+            </div>
+            <details class="qa" id="views">
+              <summary>
+                <span class="qa-cue">Here you can learn more</span>
+              </summary>
+              <div class="qa-body">
+                <p aria-live="polite" class="status-line" id="v-status"></p>
+
+                <article class="qa-item">
+                  <h3>1 &middot; The network with the geography taken away</h3>
+                  <div class="qa-controls">
+                    <label for="v-graph-year">Year</label>
+                    <div class="qa-slider">
+                      <input
+                        aria-label="Year of the force layout"
+                        id="v-graph-year"
+                        max="7"
+                        min="0"
+                        step="1"
+                        type="range"
+                        value="7"
+                      />
+                      <div class="ends"><span>1990</span><span>2024</span></div>
+                    </div>
+                    <b class="qa-slider-now" id="v-graph-year-now">2024</b>
+                    <label for="v-graph-floor">Smallest corridor drawn</label>
+                    <div class="qa-slider">
+                      <input
+                        aria-label="Smallest corridor drawn"
+                        id="v-graph-floor"
+                        max="40"
+                        min="0"
+                        step="1"
+                        type="range"
+                        value="18"
+                      />
+                      <div class="ends"><span>50k</span><span>5m</span></div>
+                    </div>
+                    <b class="qa-slider-now" id="v-graph-floor-now">400k</b>
+                  </div>
+                  <p class="axis-note">
+                    Drag to pan, scroll to zoom, drag a country to pull it out
+                    of the pile. Click one to select it everywhere on the page.
+                  </p>
+                  <div class="echart tall" id="v-graph"></div>
+                  <p class="qa-answer" id="v-graph-answer"></p>
+                </article>
+
+                <article class="qa-item">
+                  <h3>2 &middot; Who grew, 1990 to 2024</h3>
+                  <div class="qa-controls">
+                    <div
+                      aria-label="Which direction the bands count"
+                      class="axis-modes"
+                      id="v-area-mode"
+                      role="group"
+                    >
+                      <button aria-pressed="true" data-mode="in" type="button">
+                        Arrived
+                      </button>
+                      <button aria-pressed="false" data-mode="out" type="button">
+                        Left
+                      </button>
+                      <button aria-pressed="false" data-mode="both" type="button">
+                        Both
+                      </button>
+                    </div>
+                  </div>
+                  <p class="axis-note" id="v-area-note"></p>
+                  <div class="echart wide" id="v-area"></div>
+                  <p class="qa-answer" id="v-area-answer"></p>
+                </article>
+              </div>
+            </details>
+          </div>
+        </section>
+
         <!-- methods ------------------------------------------------------ -->
         <section class="step" id="methods">
           <div class="card">
@@ -739,6 +822,6 @@
       </footer>
     </main>
 
-    <script src="../../assets/js/week03-boot.js?v=af0c67b432" type="module"></script>
+    <script src="../../assets/js/week03-boot.js?v=0ee438f605" type="module"></script>
   </body>
 </html>

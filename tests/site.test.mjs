@@ -162,7 +162,7 @@ test("no page or script claims a future week or a preview", () => {
 
 test("the lobby names the group and its members", () => {
   const html = read("index.html");
-  assert.match(html, /<title>The Log–Log Arcade · Log–Log Legends<\/title>/);
+  assert.match(html, /<title>Log–Log Legends · DTU 02805 Social Graphs<\/title>/);
   assert(html.includes(GROUP.name), GROUP.name);
   for (const member of GROUP.members) assert(html.includes(member), member);
 });

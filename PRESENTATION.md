@@ -1,4 +1,4 @@
-# Presentation direction: The Log–Log Arcade
+# Presentation direction: Log–Log Legends
 
 Make the visitor operate the evidence. Each weekly post has one question, an action
 with a visible consequence, and a takeaway that can be repeated without the

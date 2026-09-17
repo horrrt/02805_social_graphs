@@ -1,4 +1,4 @@
-# The Log–Log Arcade · 02805 Social Graphs and Interactions
+# Log–Log Legends · 02805 Social Graphs and Interactions
 
 A playable anthology built from the course’s frozen Marvel article graph.
 Published at **https://horrrt.github.io/02805_social_graphs/** from `main /docs`.
