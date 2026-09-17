@@ -1291,6 +1291,22 @@
                       visible cost.
                     </p>
                     <p class="sub">
+                      <b>Statistics.</b> Every interval on this page is
+                      computed rather than assumed. Correlations carry a
+                      Fisher interval; the weighted median of distance
+                      carries a percentile interval over 400 resamples of the
+                      corridors, resampled by corridor because a corridor is
+                      the thing that was observed. The null model runs 100
+                      shuffles, so the finest p it can express is one in a
+                      hundred and a z above about 2.5 is a floor rather than
+                      a measurement. Seven invariants across the five data
+                      files run in <code>tests/week03-data.test.mjs</code>:
+                      totals agreeing between the two migration files, no
+                      aggregate codes leaking into a country list, and the
+                      forced-displacement cap still covering the number of
+                      corridors this page says it does.
+                    </p>
+                    <p class="sub">
                       <b>Rebuilding this.</b>
                       <code>scripts/rebuild_week03.py</code> downloads the
                       sources and recreates every file the page loads;

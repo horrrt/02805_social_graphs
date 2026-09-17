@@ -93,6 +93,12 @@ COMMITTED = [
     ("docs/assets/vendor/globe.gl-2.32.0.min.js", "scripts/rebuild_week03.py", "jsDelivr, pinned"),
     ("docs/assets/vendor/deck.gl-9.0.30.min.js", "scripts/rebuild_week03.py", "jsDelivr, pinned"),
     ("docs/weeks/week03/index.html", "hand-written", "the post itself"),
+    ("analysis/week03_tails.json",
+     "analysis/week03_tails.py", "power-law fits, not loaded by the page"),
+    ("analysis/week03_gravity.json",
+     "analysis/week03_gravity.py", "gravity model and residuals"),
+    ("analysis/week03_communities.json",
+     "analysis/week03_communities.py", "Louvain communities against a null"),
     ("docs/styleguide/index.html", "hand-written", "every class, under every skin"),
 ]
 
