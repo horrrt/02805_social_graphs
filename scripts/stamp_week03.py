@@ -25,7 +25,6 @@ import sys
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 PAGES = [
     ROOT / "docs/weeks/week03/index.html",
-    ROOT / "docs/v2/weeks/week03/index.html",
     ROOT / "docs/styleguide/index.html",
 ]
 WATCHED = [

@@ -92,10 +92,9 @@ test("exactly weeks 1 to 3 are live, each with a cabinet on disk", () => {
   assert.equal(weekLabel(undefined), "FREE PLAY");
 });
 
-// Both editions of the lobby are pinned to the same manifest.
-const ROOTS = ["", "v2/"];
+// The lobby is pinned to the manifest.
 test("every lobby card agrees with the manifest and only live weeks are links", () => {
-  for (const root of ROOTS) {
+  for (const root of [""]) {
     const html = read(root + "index.html");
     // Cards must put data-week first; coming cards must not nest a <div>.
     const cards = [
@@ -230,11 +229,9 @@ test("every fragment link points at an id that exists", () => {
   assert.deepEqual(broken, []);
 });
 
-// Pages painted by the shared arcade chrome, which is what the two-edition
-// checks below apply to. Week 3 (Corridor Control) is deliberately absent: it
-// ships its own stylesheet and palette in corridor.css rather than repainting
-// arcade.css, so its Apple edition is pinned by the sync test in
-// tests/migration-docs.test.mjs instead.
+// Pages painted by the shared arcade chrome, which is what the checks below
+// apply to. Week 3 (Corridor Control) is deliberately absent: it ships its own
+// stylesheet and palette in corridor.css rather than repainting arcade.css.
 const ARCADE_PAGES = [
   "index.html",
   "os/index.html",
@@ -247,7 +244,7 @@ const ARCADE_PAGES = [
 
 test("every arcade page declares the favicon and loads its stylesheets statically", () => {
   assert.deepEqual(
-    [...ARCADE_PAGES, ...ARCADE_PAGES.map((p) => "v2/" + p)].filter(
+    ARCADE_PAGES.filter(
       (p) => !existsSync(join(DOCS, p)) || !read(p).includes('rel="icon"'),
     ),
     [],
@@ -271,65 +268,21 @@ test("the README serves the site on the same port as the launch config", () => {
   assert(readme.includes("node --test 'tests/*.test.mjs'"));
 });
 
-test("every arcade page has a v2 twin that shares the scripts and loads the Apple stylesheet", () => {
+test("every local asset an arcade page references exists", () => {
   const problems = [];
   for (const page of ARCADE_PAGES) {
-    const path = "v2/" + page;
-    if (!existsSync(join(DOCS, path))) {
-      problems.push(`${path} missing`);
+    if (!existsSync(join(DOCS, page))) {
+      problems.push(`${page} missing`);
       continue;
     }
-    const html = read(path);
-    for (const needle of [
-      "assets/css/apple.css",
-      '<meta name="site-root"',
-      'class="theme-apple',
-    ])
-      if (!html.includes(needle)) problems.push(`${path}: no ${needle}`);
-    if (html.includes("arcade.css") || html.includes("os.css"))
-      problems.push(`${path}: still loads a version-1 stylesheet`);
-    for (const [, target] of html.matchAll(
+    for (const [, target] of read(page).matchAll(
       /(?:src|href)="([^"#?]+\.(?:js|css|svg|png|json|csv))(?:[?#][^"]*)?"/g,
     )) {
       if (/^https?:/.test(target)) continue;
-      if (!existsSync(join(dirname(join(DOCS, path)), target)))
-        problems.push(`${path} → ${target}`);
+      if (!existsSync(join(dirname(join(DOCS, page)), target)))
+        problems.push(`${page} → ${target}`);
     }
   }
   assert.deepEqual(problems, []);
-  const v2 = join(DOCS, "v2");
-  assert.deepEqual(
-    (existsSync(v2) ? walk(v2) : []).filter((p) => /\.(js|mjs|css)$/.test(p)),
-    [],
-    "docs/v2 holds HTML only; scripts and styles stay shared",
-  );
 });
 
-test("the Apple stylesheet defines every canvas token the scripts read", () => {
-  const names = new Set();
-  for (const path of walk(join(DOCS, "assets/js")).filter(
-    (p) => p.endsWith(".js") && !/mockups|signal/.test(p),
-  ))
-    for (const [, name] of readFileSync(path, "utf8").matchAll(
-      /tone\("(--cv-[a-z0-9-]+)"/g,
-    ))
-      names.add(name);
-  assert(names.size > 0, "the scripts read their canvas colours through tone()");
-  const apple = existsSync(join(DOCS, "assets/css/apple.css"))
-    ? read("assets/css/apple.css")
-    : "";
-  assert.deepEqual(
-    [...names].filter((n) => !apple.includes(n + ":")),
-    [],
-    "tokens missing from apple.css",
-  );
-});
-
-test("the two editions link to each other", () => {
-  assert(read("index.html").includes('href="v2/"'), "v1 lobby links to v2");
-  assert(
-    existsSync(join(DOCS, "v2/index.html")) &&
-      read("v2/index.html").includes('href="../"'),
-    "v2 lobby links to v1",
-  );
-});

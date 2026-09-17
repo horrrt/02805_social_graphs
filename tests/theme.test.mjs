@@ -1,26 +1,19 @@
-// Pins the groundwork that lets one set of scripts paint two visual themes:
-// the site-root / asset-root split, canvas colours read from CSS tokens, and
-// hollow nodes in drawNetwork. Runs in node with no DOM.
+// Pins the groundwork the shared scripts rely on: links and fetches resolving
+// against one site root, canvas colours read from CSS tokens, and hollow nodes
+// in drawNetwork. Runs in node with no DOM.
 import test from "node:test";
 import assert from "node:assert/strict";
 import { existsSync, readFileSync, readdirSync } from "node:fs";
 import { join } from "node:path";
 import { fileURLToPath } from "node:url";
-import {
-  ROOT,
-  ASSETS,
-  url,
-  asset,
-  tone,
-  drawNetwork,
-} from "../docs/assets/js/cabinet.js";
+import { SITE, url, tone, drawNetwork } from "../docs/assets/js/cabinet.js";
 
 const DOCS = fileURLToPath(new URL("../docs/", import.meta.url));
 const JS = join(DOCS, "assets/js");
-// These scripts drive pages that ship their own stylesheet and palette rather
-// than repainting one set of markup in two editions, so the shared --cv-*
-// token contract does not apply to them: mockups.js and signal.js are legacy,
-// corridor.js is the week 3 post, which has a single palette in corridor.css.
+// These scripts drive pages that ship their own stylesheet and palette, so the
+// shared --cv-* token contract does not apply to them: mockups.js and signal.js
+// are legacy, corridor.js is the week 3 post with its own palette in
+// corridor.css.
 const LEGACY = ["mockups.js", "signal.js", "corridor.js"];
 const scripts = () =>
   readdirSync(JS)
@@ -30,11 +23,10 @@ const css = ["arcade.css", "os.css"]
   .map((f) => readFileSync(join(DOCS, "assets/css", f), "utf8"))
   .join("\n");
 
-test("without a site-root meta tag the site root is the asset root", () => {
-  assert.equal(ROOT.href, ASSETS.href);
-  assert.equal(url("os/"), asset("os/"));
-  assert(ASSETS.href.endsWith("/docs/"), ASSETS.href);
-  assert(existsSync(fileURLToPath(asset("assets/data/arcade_graph.json"))));
+test("links and data both resolve against docs/", () => {
+  assert(SITE.href.endsWith("/docs/"), SITE.href);
+  assert.equal(url("os/"), new URL("os/", SITE).href);
+  assert(existsSync(fileURLToPath(url("assets/data/arcade_graph.json"))));
 });
 
 test("tone returns the fallback when there is no document", () => {

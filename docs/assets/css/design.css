@@ -11,20 +11,6 @@
   font-weight: 600;
   font-display: swap;
 }
-body.visual-design.theme-apple {
-  --bg: #fafbf8;
-  --surface: #ffffff;
-  --band: #eef1ed;
-  --paper: #243454;
-  --muted: #59667a;
-  --accent: #344eaa;
-  --link: #344eaa;
-  --ink: #ffffff;
-  --line: #dce1e5;
-  --radius: 20px;
-  color-scheme: light;
-  font-family: Barlow, system-ui, sans-serif;
-}
 .visual-design {
   --visual-radius: 20px;
 }

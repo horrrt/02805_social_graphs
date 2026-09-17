@@ -1,10 +1,8 @@
 """Render the static, accessible fallbacks and the null-distribution figures.
 
-Every figure is drawn once per palette. The arcade's dark palette writes
-removal_results.svg, null_comparison.svg and null_survivors.svg; the light
-palette for the Apple-styled version 2 writes the same figures with a _light
-suffix. Run analysis/week02_resilience.py and analysis/week02_nullmodels.py
-first; this script only draws what they measured.
+The arcade's dark palette writes removal_results.svg, null_comparison.svg and
+null_survivors.svg. Run analysis/week02_resilience.py and
+analysis/week02_nullmodels.py first; this script only draws what they measured.
 """
 import csv
 import json
@@ -21,10 +19,7 @@ INK, PAPER, YELLOW, PURPLE = "#141614", "#f4f5ef", "#e7fa52", "#c0b0f2"
 DARK = {"background": INK, "text": PAPER, "secondary": PAPER, "edge": "#626b56",
         "bars": PURPLE, "real": YELLOW, "bars_er": "#ff9f86",
         "legend_face": INK, "legend_edge": "#626b56", "legend_text": PAPER}
-LIGHT = {"background": "#ffffff", "text": "#1d1d1f", "secondary": "#6e6e73", "edge": "#d2d2d7",
-         "bars": "#0071e3", "real": "#ff3b30", "bars_er": "#af52de",
-         "legend_face": "#ffffff", "legend_edge": "#d2d2d7", "legend_text": "#1d1d1f"}
-PALETTES = [("", DARK), ("_light", LIGHT)]
+PALETTES = [("", DARK)]
 
 # The six quantities the survivors figure shows: key, panel heading, axis label.
 SURVIVORS = [

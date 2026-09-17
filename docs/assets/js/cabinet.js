@@ -1,19 +1,10 @@
 import { predictionScore } from "./arcade-core.mjs";
 import { liveWeeks, weekLabel, FREE_PLAY_PREDICTIONS } from "./weeks.js";
 
-// Scripts, data and fonts always live under docs/assets/, so ASSETS is docs/.
-// A page served from another root (the v2 theme under docs/v2/) declares
-// <meta name="site-root" content="../"> so navigation links resolve there.
-export const ASSETS = new URL("../../", import.meta.url);
-const rootMeta =
-  typeof document !== "undefined"
-    ? document.querySelector('meta[name="site-root"]')
-    : null;
-export const ROOT = rootMeta
-  ? new URL(rootMeta.content, document.baseURI)
-  : ASSETS;
-export const url = (path) => new URL(path, ROOT).href;
-export const asset = (path) => new URL(path, ASSETS).href;
+// Scripts, data and fonts all live under docs/assets/, so SITE is docs/, and
+// every link and every fetch resolves against it.
+export const SITE = new URL("../../", import.meta.url);
+export const url = (path) => new URL(path, SITE).href;
 // Canvas colours are CSS custom properties named --cv-<area>-<role>. They are
 // read from body so the per-page theme-* palettes apply. The fallback is the
 // classic value, used when the token is missing or there is no document.
@@ -45,7 +36,7 @@ export function load(name = "arcade_graph.json") {
   if (!cache.has(name))
     cache.set(
       name,
-      fetch(asset("assets/data/" + name)).then((r) => {
+      fetch(url("assets/data/" + name)).then((r) => {
         if (!r.ok)
           throw new Error(
             "The snapshot could not load. Reload the page to try again.",

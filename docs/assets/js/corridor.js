@@ -2268,8 +2268,8 @@ export async function start() {
 
 async function main() {
   try {
-    // Resolved against this module, not the page, so the arcade edition and
-    // the Apple edition load the same two files from different depths.
+    // Resolved against this module, not the page, so the post loads the same
+    // two files whatever depth it is served from.
     const data = (name) => new URL(`../data/${name}`, import.meta.url);
     const [corridors, edges, world] = await Promise.all([
       fetch(data("week03_corridors.json")).then((r) => r.json()),
