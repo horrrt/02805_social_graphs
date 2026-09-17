@@ -107,7 +107,7 @@ export function install(api, echarts) {
     if (!instance) return;
     const series = [
       ["In-degree", (n, m) => m.in_degree, colours.PEOPLE],
-      ["Out-degree", (n, m) => m.out_degree, colours.INK],
+      ["Out-degree", (n, m) => m.out_degree, colours.OUTBOUND],
       ["Flight degree", (n) => n.flight_degree, colours.ACCESS],
     ].map(([name, pick, colour]) => ({
       name,
@@ -144,7 +144,7 @@ export function install(api, echarts) {
     const rows = withMetrics();
     const series = [
       ["In-degree", (n, m) => m.in_degree, colours.PEOPLE],
-      ["Out-degree", (n, m) => m.out_degree, colours.INK],
+      ["Out-degree", (n, m) => m.out_degree, colours.OUTBOUND],
       ["Flight degree", (n) => n.flight_degree, colours.ACCESS],
     ].map(([name, pick, colour]) =>
       scatterSeries(

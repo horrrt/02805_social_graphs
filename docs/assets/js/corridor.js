@@ -19,6 +19,12 @@ let GRID = "#e4ebf4";
 // collapses, so the two steps are chosen rather than picked: under simulated
 // deuteranopia these sit 9.1 apart in OKLab ΔE, where the obvious
 // #2f9e63/#d1495b sits at 2.0 and reads as one colour.
+// The third series on the two heavy-tail charts. It used to be the page's
+// text ink, which fails a categorical palette on both lightness and chroma:
+// a near-black bar reads as axis furniture rather than as data. This violet
+// sits 11.6 apart from the blue under simulated deuteranopia, where the ink
+// and the blue sat close enough to merge in the dense middle of the chart.
+let OUTBOUND = "#6b4fbb";
 let GAIN = "#00875a";
 let LOSS = "#cc3311";
 
@@ -38,11 +44,12 @@ export function refreshPalette() {
   INK = read("--ink", "#0f2340");
   MUTE = read("--ink-mute", "#7a8fac");
   GRID = read("--line-soft", "#e4ebf4");
+  OUTBOUND = read("--outbound", "#6b4fbb");
   GAIN = read("--gain", "#00875a");
   LOSS = read("--loss", "#cc3311");
   if (typeof SERIES !== "undefined") {
     SERIES[0].colour = PEOPLE;
-    SERIES[1].colour = INK;
+    SERIES[1].colour = OUTBOUND;
     SERIES[2].colour = ACCESS;
   }
   if (api) {
@@ -51,10 +58,11 @@ export function refreshPalette() {
     api.colours.INK = INK;
     api.colours.MUTE = MUTE;
     api.colours.GRID = GRID;
+    api.colours.OUTBOUND = OUTBOUND;
     api.colours.GAIN = GAIN;
     api.colours.LOSS = LOSS;
   }
-  return { PEOPLE, ACCESS, INK, MUTE, GRID, GAIN, LOSS };
+  return { PEOPLE, ACCESS, INK, MUTE, GRID, OUTBOUND, GAIN, LOSS };
 }
 
 // How a corridor is drawn between two countries. Each renderer reads the same
@@ -1571,7 +1579,7 @@ function ccdf(entries) {
 
 const SERIES = [
   { key: "in", label: "In-degree", colour: PEOPLE, pick: (n, m) => m.in_degree },
-  { key: "out", label: "Out-degree", colour: INK, pick: (n, m) => m.out_degree },
+  { key: "out", label: "Out-degree", colour: OUTBOUND, pick: (n, m) => m.out_degree },
   { key: "flight", label: "Flight degree", colour: ACCESS, pick: (n) => n.flight_degree },
 ];
 
@@ -2249,6 +2257,31 @@ function renderTypology() {
     if (m.typology && buckets.has(m.typology)) buckets.get(m.typology).push({ iso3, m });
   }
   const order = ["both", "destination-hub", "human-bridge", "system-airport", "leaf", "mixed"];
+
+  // Six cards of equal size say six labels of equal weight, and they are not:
+  // mixed holds 141 of the 228 countries and leaf another 53, so the four
+  // labels the section is actually about cover a seventh of the world. One
+  // proportional strip says that before the cards say anything else.
+  const total = order.reduce((sum, key) => sum + (buckets.get(key)?.length ?? 0), 0);
+  const strip = $("typology-strip");
+  if (strip && total) {
+    strip.innerHTML = order
+      .map((key) => {
+        const meta = TYPES[key];
+        const count = buckets.get(key)?.length ?? 0;
+        if (!count) return "";
+        const share = (count / total) * 100;
+        return (
+          `<span class="type-slice" data-type="${key}" title="${meta.title}: ${count} of ${total}"` +
+          ` style="width:${share}%;background:${meta.tint};color:${meta.fg}">` +
+          // Under a few per cent there is no room for a number without
+          // clipping it; the slice keeps its colour and its hover title.
+          `${share > 7 ? `${meta.title} ${count}` : share > 3 ? count : ""}</span>`
+        );
+      })
+      .join("");
+  }
+
   $("typology-cards").innerHTML = order
     .map((key) => {
       const meta = TYPES[key];
@@ -2940,7 +2973,7 @@ export const api = {
   // The net layer, so a renderer that draws its own map can draw this one too.
   netBalance, netColour, netNote, drawNet: drawNetMap,
   spotlight, earthScale, globeRadius, EARTH_SIZES, typologyNote,
-  colours: { PEOPLE, ACCESS, INK, MUTE, GRID, GAIN, LOSS },
+  colours: { PEOPLE, ACCESS, INK, MUTE, GRID, OUTBOUND, GAIN, LOSS },
   format: { fmt, compact },
   $,
 };

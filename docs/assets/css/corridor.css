@@ -1866,10 +1866,13 @@ body > .chart-tip[hidden] {
 /* --- the net layer's diverging pair ---------------------------------- */
 
 /* Green and red, stepped so that deuteranopia does not collapse them: ΔE 9.1
-   under simulation, against 2.0 for the obvious pair. */
+   under simulation, against 2.0 for the obvious pair. --outbound is the third
+   categorical slot on the heavy-tail charts, which used to borrow the text
+   ink and so read as furniture. */
 .corridor {
   --gain: #00875a;
   --loss: #cc3311;
+  --outbound: #6b4fbb;
 }
 
 /* Okabe-Ito's bluish green and vermillion, further apart again at ΔE 11.0. */
@@ -1942,4 +1945,23 @@ body > .chart-tip[hidden] {
 .corridor .chart-table .num {
   font-variant-numeric: tabular-nums;
   text-align: right;
+}
+
+/* --- how many countries each typology label holds -------------------- */
+
+.corridor .type-strip {
+  border-radius: 8px;
+  display: flex;
+  margin-bottom: 14px;
+  overflow: hidden;
+}
+
+.corridor .type-slice {
+  font-size: 11px;
+  font-weight: 700;
+  overflow: hidden;
+  padding: 7px 6px;
+  text-align: center;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
