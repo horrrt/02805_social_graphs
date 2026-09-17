@@ -188,6 +188,91 @@
                     histogram, and the flight network's tail is the longest.
                   </span>
                 </div>
+                <details class="qa">
+                  <summary>
+                    <span class="qa-cue">Is it a power law? We fitted it</span>
+                  </summary>
+                  <div class="qa-body">
+                    <p class="sub">
+                      A straight-ish line on log–log axes is not evidence of a
+                      power law, and with 228 countries the axis only spans
+                      about two decades. So the tails were fitted properly:
+                      maximum likelihood for the exponent, the lower bound
+                      chosen by minimising the Kolmogorov–Smirnov distance, a
+                      goodness-of-fit test against 500 synthetic datasets
+                      drawn from the fitted model, and a likelihood-ratio test
+                      against the two distributions that also look straight
+                      here. The method is Clauset, Shalizi and Newman (2009);
+                      the code is
+                      <code>analysis/week03_tails.py</code>.
+                    </p>
+                    <table class="ego">
+                      <tr>
+                        <th>Tail</th>
+                        <th style="text-align: right">x<sub>min</sub></th>
+                        <th style="text-align: right">α</th>
+                        <th style="text-align: right">In tail</th>
+                        <th style="text-align: right">Fit p</th>
+                        <th>Against the rivals</th>
+                      </tr>
+                      <tr>
+                        <td>Origins per destination</td>
+                        <td style="text-align: right">19</td>
+                        <td style="text-align: right">2.05</td>
+                        <td style="text-align: right">126</td>
+                        <td style="text-align: right">0.00</td>
+                        <td>lognormal fits better (p = 0.016)</td>
+                      </tr>
+                      <tr>
+                        <td>People on a corridor</td>
+                        <td style="text-align: right">126,665</td>
+                        <td style="text-align: right">2.04</td>
+                        <td style="text-align: right">377</td>
+                        <td style="text-align: right">0.04</td>
+                        <td>lognormal fits better (p = 0.023)</td>
+                      </tr>
+                      <tr>
+                        <td>Destinations per origin</td>
+                        <td style="text-align: right">55</td>
+                        <td style="text-align: right">4.41</td>
+                        <td style="text-align: right">56</td>
+                        <td style="text-align: right">0.88</td>
+                        <td>cannot be separated from either</td>
+                      </tr>
+                      <tr>
+                        <td>Flight partners</td>
+                        <td style="text-align: right">68</td>
+                        <td style="text-align: right">3.39</td>
+                        <td style="text-align: right">41</td>
+                        <td style="text-align: right">0.15</td>
+                        <td>cannot be separated from either</td>
+                      </tr>
+                    </table>
+                    <p class="sub">
+                      Fit p is the share of synthetic datasets from the fitted
+                      power law that fit it <em>worse</em> than the real data
+                      does. Below 0.1 the power law is ruled out; above it the
+                      power law survives, which is not the same as winning.
+                      On the two tails where the data can tell the difference
+                      the lognormal describes it better, and on the other two
+                      there are 41 and 56 points, which is not enough to
+                      separate anything from anything.
+                    </p>
+                    <div class="notice">
+                      <span class="ico">💡</span>
+                      <span>
+                        <b>So the word on this page is "heavy-tailed", not
+                        "scale-free".</b>
+                        Origins per destination fits α = 2.05, which is the
+                        exponent every scale-free network in a lecture slide
+                        has, and it is still ruled out at p = 0.00. That is
+                        the trap the log–log toggle above sets: a line can
+                        look right and be wrong, and the only way to find out
+                        is to fit it.
+                      </span>
+                    </div>
+                  </div>
+                </details>
               </div>
             </div>
           </div>
@@ -814,6 +899,20 @@
                       attach to and are not on this page at all. Internal
                       displacement is in the source and left out too: these are
                       border crossings.
+                    </p>
+                    <p class="sub">
+                      <b>Heavy tails.</b> Fitted with the Clauset, Shalizi and
+                      Newman procedure in
+                      <code>analysis/week03_tails.py</code>: maximum
+                      likelihood for the exponent, the lower bound by
+                      minimising the KS distance, 500 synthetic datasets for
+                      the goodness-of-fit p, and Vuong likelihood-ratio tests
+                      against lognormal and exponential on the same tail. Both
+                      rivals are fitted with the continuous approximation, and
+                      so is the power law inside the comparison, because a
+                      ratio between a probability and a probability density
+                      means nothing. Full output in
+                      <code>analysis/week03_tails.json</code>.
                     </p>
                     <p class="sub">
                       <b>Reporting coverage.</b> DESA's table is ragged. The

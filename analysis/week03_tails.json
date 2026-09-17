@@ -1,0 +1,102 @@
+{
+  "generated": "analysis/week03_tails.py",
+  "year": 2020,
+  "method": "Clauset, Shalizi and Newman (2009), SIAM Review 51(4), 661-703",
+  "bootstrap": 500,
+  "seed": 20260917,
+  "note": "p is the share of synthetic datasets from the fitted model that fit it worse than the data does. p below 0.1 rules the power law out; a large p does not rule it in. R is Vuong's normalised log-likelihood ratio: positive favours the power law, negative the rival, and its p above 0.1 means the two cannot be separated at this sample size.",
+  "fits": {
+    "in_degree": {
+      "label": "Origins per destination (in-degree)",
+      "n": 227,
+      "xmin": 19.0,
+      "alpha": 2.051,
+      "n_tail": 126,
+      "ks": 0.1145,
+      "p": 0.0,
+      "vs": {
+        "lognormal": {
+          "R": -2.418,
+          "p": 0.0156
+        },
+        "exponential": {
+          "R": -0.794,
+          "p": 0.4274
+        },
+        "lognormal_mu": 3.047,
+        "lognormal_sigma": 1.111,
+        "alpha_continuous": 2.081
+      },
+      "verdict": "Ruled out on its own terms: a power law above 19 produces a fit this poor in 0% of its own draws. The lognormal describes the same tail better. The exponential cannot be separated from it either way."
+    },
+    "out_degree": {
+      "label": "Destinations per origin (out-degree)",
+      "n": 228,
+      "xmin": 55.0,
+      "alpha": 4.412,
+      "n_tail": 56,
+      "ks": 0.0665,
+      "p": 0.882,
+      "vs": {
+        "lognormal": {
+          "R": -0.21,
+          "p": 0.8333
+        },
+        "exponential": {
+          "R": 0.755,
+          "p": 0.4501
+        },
+        "lognormal_mu": -2.097,
+        "lognormal_sigma": 1.375,
+        "alpha_continuous": 4.52
+      },
+      "verdict": "Not ruled out on its own terms (p = 0.88 over 56 points in the tail), which is a weak thing to be able to say at this size. The lognormal and exponential cannot be separated from it either way."
+    },
+    "flight_degree": {
+      "label": "Flight partners per country",
+      "n": 208,
+      "xmin": 68.0,
+      "alpha": 3.386,
+      "n_tail": 41,
+      "ks": 0.1068,
+      "p": 0.148,
+      "vs": {
+        "lognormal": {
+          "R": -0.875,
+          "p": 0.3818
+        },
+        "exponential": {
+          "R": -0.662,
+          "p": 0.5077
+        },
+        "lognormal_mu": 3.679,
+        "lognormal_sigma": 0.714,
+        "alpha_continuous": 3.428
+      },
+      "verdict": "Not ruled out on its own terms (p = 0.15 over 41 points in the tail), which is a weak thing to be able to say at this size. The lognormal and exponential cannot be separated from it either way."
+    },
+    "corridor_people": {
+      "label": "People on a corridor",
+      "n": 8792,
+      "xmin": 126665.0,
+      "alpha": 2.043,
+      "n_tail": 377,
+      "ks": 0.0442,
+      "p": 0.036,
+      "vs": {
+        "lognormal": {
+          "R": -2.273,
+          "p": 0.023
+        },
+        "exponential": {
+          "R": 2.682,
+          "p": 0.0073
+        },
+        "lognormal_mu": 10.168,
+        "lognormal_sigma": 1.757,
+        "alpha_continuous": 2.043
+      },
+      "verdict": "Ruled out on its own terms: a power law above 126665 produces a fit this poor in 4% of its own draws. The lognormal describes the same tail better."
+    }
+  }
+}
