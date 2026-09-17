@@ -340,6 +340,15 @@ function drawRing() {
     cx,
     height - 16,
   );
+  api.chartTable(
+    "q-ring",
+    "corridors inside the ring",
+    ["Corridor", "People"],
+    [...ribbons]
+      .sort((a, b) => b.value - a.value)
+      .slice(0, 20)
+      .map((r) => [`${model.name(keep[r.i])} → ${model.name(keep[r.j])}`, api.format.fmt.format(r.value)]),
+  );
 }
 
 function answerRing() {
@@ -470,6 +479,16 @@ function drawHosts() {
         `${api.format.fmt.format(model.abroad.get(iso3) ?? 0)} people born here live elsewhere`,
     });
   });
+  api.chartTable(
+    "q-hosts",
+    "hosted against born elsewhere",
+    ["Country", "Living here born abroad", "Born here living abroad"],
+    rows.map((iso3) => [
+      model.name(iso3),
+      api.format.fmt.format(model.hosts.get(iso3) ?? 0),
+      api.format.fmt.format(model.abroad.get(iso3) ?? 0),
+    ]),
+  );
 }
 
 function answerHosts() {
@@ -609,6 +628,12 @@ function drawDistance() {
     ctx.fillRect(legendX - 8, box.top - 17, 8, 9);
     legendX -= 20;
   }
+  api.chartTable(
+    "q-distance",
+    "distance bands",
+    ["Kilometres", "Share of migrants", "Share of corridors"],
+    data.map((d) => [d.label, `${one(d.people)}%`, `${one(d.corridors)}%`]),
+  );
 }
 
 function answerDistance() {
@@ -886,6 +911,18 @@ function drawWealth() {
     0,
     height - 2,
   );
+  const bands = reachData();
+  api.chartTable(
+    "q-wealth",
+    "destinations by income band",
+    ["Income band", "People", "Median km", "Middle half"],
+    bands.map((b) => [
+      b.label,
+      api.format.fmt.format(b.people),
+      api.format.fmt.format(Math.round(b.median)),
+      `${api.format.fmt.format(Math.round(b.p25))}–${api.format.fmt.format(Math.round(b.p75))} km`,
+    ]),
+  );
 }
 
 function answerWealth() {
@@ -1081,6 +1118,17 @@ function drawIncome() {
     left,
     324,
   );
+  api.chartTable(
+    "q-income",
+    "income tiers and how many fled",
+    ["Band", "Share of migrants", "Refugees and asylum seekers", "Share of the band that fled"],
+    tiers.map((t, i) => [
+      t.label,
+      `${one(t.share)}%`,
+      api.format.fmt.format(fled[i].forced),
+      `${one(fled[i].forcedShare)}%`,
+    ]),
+  );
 }
 
 function answerIncome() {
@@ -1202,6 +1250,12 @@ function drawSex() {
   ctx.textAlign = "center";
   ctx.textBaseline = "middle";
   ctx.fillText(`${rows.length - 16} destinations between these two ends`, width / 2, gy);
+  api.chartTable(
+    "q-sex",
+    "the most and least female destinations",
+    ["Country", "Share female"],
+    show.filter(Boolean).map((row) => [model.name(row.iso3), `${one(row.share)}%`]),
+  );
 }
 
 function answerSex() {

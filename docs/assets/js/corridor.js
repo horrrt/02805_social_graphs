@@ -1727,6 +1727,27 @@ function drawCcdf() {
       });
     }
   });
+  // One row per distinct k across all three series, capped to the largest
+  // values so the table does not run to hundreds of rows.
+  const allK = [...new Set(series.flatMap((points) => points.map((d) => d.k)))].sort(
+    (a, b) => a - b,
+  );
+  const CAP = 40;
+  const shownK = allK.length > CAP ? allK.slice(-CAP) : allK;
+  chartTable(
+    "ccdf",
+    allK.length > CAP
+      ? `share of countries with at least k partners, capped to the ${CAP} largest k`
+      : "share of countries with at least k partners",
+    ["Partners", ...SERIES.map((s) => s.label)],
+    shownK.map((k) => [
+      k,
+      ...series.map((points) => {
+        const hit = points.find((d) => d.k === k);
+        return hit ? `${(hit.p * 100).toFixed(1)}%` : "—";
+      }),
+    ]),
+  );
   markSelected(ctx, box, (n, m) => {
     const point = series[0].find((d) => d.k === m.in_degree);
     return [m.in_degree, point?.p ?? 1];
@@ -1894,6 +1915,20 @@ function drawBetweenness() {
     placed.push({ x, y: py });
     ctx.fillText(`${r.n.name} (+${r.excess.toFixed(2)})`, x, py);
   }
+  chartTable(
+    "scatter-between",
+    "the twenty biggest brokers",
+    ["Country", "Origins (in-degree)", "Betweenness", "Rank"],
+    [...rows]
+      .sort((a, b) => b.m.betweenness - a.m.betweenness)
+      .slice(0, 20)
+      .map((r) => [
+        r.n.name,
+        fmt.format(r.m.in_degree),
+        r.m.betweenness > 0 ? r.m.betweenness.toExponential(2) : "0",
+        `#${r.m.betweenness_rank}`,
+      ]),
+  );
   markSelectedPoint(ctx, box, (m) => [m.in_degree, m.betweenness], y, place);
 }
 
@@ -1988,6 +2023,18 @@ function drawPrestige() {
     marks.push({ x: rightX, y: y2, iso3: r.iso3, label });
   }
   writePrestigeNote(rows, shown);
+  chartTable(
+    "prestige",
+    "rank by people against rank by PageRank",
+    ["Country", "By people", "By PageRank", "Move"],
+    leftOrder.map((r) => {
+      const move = r.m.in_strength_rank - r.m.pagerank_rank;
+      // A country that holds the same rank on both sides has not moved, and
+      // "+0" reads like a rise of nothing rather than no rise.
+      const shift = move === 0 ? "—" : `${move > 0 ? "+" : "−"}${Math.abs(move)}`;
+      return [r.n.name, `#${r.m.in_strength_rank}`, `#${r.m.pagerank_rank}`, shift];
+    }),
+  );
 }
 
 // Spearman's rank correlation, which is the honest way to say how much two
@@ -2139,6 +2186,15 @@ function drawZ() {
   plotDots(ctx, marks, rows.filter((r) => r.m.z >= 2).map((r) => ({
     x: box.x(r.m.in_degree), y: box.y(r.m.z), iso3: r.iso3, label: zLabel(r),
   })), PEOPLE, 2.4);
+  chartTable(
+    "scatter-z",
+    "the twenty highest z-scores",
+    ["Country", "Origins (in-degree)", "z-score", "Betweenness rank"],
+    [...rows]
+      .sort((a, b) => b.m.z - a.m.z)
+      .slice(0, 20)
+      .map((r) => [r.n.name, fmt.format(r.m.in_degree), r.m.z.toFixed(2), `#${r.m.betweenness_rank}`]),
+  );
   markSelectedPoint(ctx, box, (m) => [m.in_degree, m.z ?? 0], y);
 }
 
@@ -2475,6 +2531,12 @@ function drawDenmark() {
           `<span>${fmt.format(point.out_strength)} outgoing</span>`,
       });
     }
+    chartTable(
+      "dk-time",
+      "people in and out, by year",
+      ["Year", "Incoming", "Outgoing"],
+      focus.series.map((s) => [s.year, fmt.format(s.in_strength), fmt.format(s.out_strength)]),
+    );
   });
 
   small($("dk-rank"), (ctx, box) => {
@@ -2504,6 +2566,12 @@ function drawDenmark() {
           `<span>${point.in_degree} origins</span>`,
       });
     }
+    chartTable(
+      "dk-rank",
+      "bridge rank by year",
+      ["Year", "Bridge rank"],
+      focus.series.map((s) => [s.year, `#${s.betweenness_rank}`]),
+    );
   });
 
   small($("dk-nordic"), (ctx, box) => {
@@ -2605,6 +2673,12 @@ function drawDenmark() {
         );
       }
     });
+    chartTable(
+      "dk-nordic",
+      "the country and its four nearest neighbours",
+      ["Country", "Origins", "Bridge z-score", "Flight partners"],
+      items.map((i) => [i.name, fmt.format(i.in_degree), (i.z ?? 0).toFixed(2), fmt.format(i.flight_degree)]),
+    );
   });
 }
 
