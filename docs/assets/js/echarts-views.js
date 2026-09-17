@@ -442,7 +442,7 @@ function asylumRows() {
 
 function drawAsylum() {
   const instance = chart("v-asylum");
-  if (!instance || !asylum) return;
+  if (!instance || !asylum?.origins?.[asylumState.origin]) return;
   const { PEOPLE, INK, MUTE, GRID } = api.colours;
   const { origin, years, cells } = asylumRows();
   const reported = cells.filter((c) => c[2] !== null);
@@ -481,7 +481,7 @@ function drawAsylum() {
       xAxis: {
         type: "category",
         data: MONTHS,
-        splitArea: { show: true },
+        splitArea: { show: false },
         axisLine: { show: false },
         axisTick: { show: false },
         axisLabel: { color: MUTE, fontSize: 10 },
@@ -490,7 +490,7 @@ function drawAsylum() {
         type: "category",
         data: years,
         inverse: true,
-        splitArea: { show: true },
+        splitArea: { show: false },
         axisLine: { show: false },
         axisTick: { show: false },
         axisLabel: { color: INK, fontSize: 11, fontWeight: 600 },
@@ -514,7 +514,7 @@ function drawAsylum() {
 
 function answerAsylum() {
   const host = $("v-asylum-answer");
-  if (!host || !asylum) return;
+  if (!host || !asylum?.origins?.[asylumState.origin]) return;
   const { origin, cells } = asylumRows();
   const reported = cells.filter((c) => c[2] !== null && c[2] > 0);
   const blank = cells.length - cells.filter((c) => c[2] !== null).length;
@@ -531,14 +531,20 @@ function answerAsylum() {
     `<b>${fmt(origin.total)}</b> first-time asylum applications from ` +
     `<b>${origin.name}</b> across ${asylum.reporting} European countries, ` +
     `${asylum.months[0]} to ${asylum.months.at(-1)}. The heaviest month is ` +
-    `<b>${peak[3]}</b> at <b>${fmt(peak[2])}</b>. Twelve months out of ` +
-    `${asylum.months.length} carry <b>${share.toFixed(0)}%</b> of the series; the ` +
-    `rest of the grid is the quiet between them. Most of it went to ${where}. ` +
+    `<b>${peak[3]}</b> at <b>${fmt(peak[2])}</b>, and twelve months out of ` +
+    `${asylum.months.length} carry <b>${share.toFixed(0)}%</b> of the series` +
+    (share > 40
+      ? ` — a spike with quiet on either side of it`
+      : share > 20
+        ? ` — heavier in some years than others, without one dominant month`
+        : `, which is close to what an even flow would give and reads as a steady one`) +
+    `. Most of it went to ${where}. ` +
     (blank ? `<b>${blank}</b> months have no published figure and are drawn as holes — ` +
       `Eurostat suppresses small cells, so a blank is a silence, not a zero. ` : "") +
-    `Across every origin the busiest month in Europe is ` +
-    `<b>${asylum.months[worldPeak]}</b>, at <b>${fmt(asylum.totals[worldPeak])}</b> ` +
-    `applications. These are applications and not arrivals: somebody who applies ` +
+    `Across the ${Object.keys(asylum.origins).length} origins big enough to ship ` +
+    `here, the busiest month in Europe is <b>${asylum.months[worldPeak]}</b>, at ` +
+    `<b>${fmt(asylum.totals[worldPeak])}</b> applications — under Eurostat's own ` +
+    `published total for that month, which includes the small origins this file drops. These are applications and not arrivals: somebody who applies ` +
     `in Hungary and again in Germany is counted twice, and the page's own corridor ` +
     `data would see them once, in whichever country they ended up. People granted ` +
     `temporary protection are not here either, which is why Ukraine after 2022 ` +
@@ -548,7 +554,7 @@ function answerAsylum() {
 
 function wireAsylum() {
   const picker = $("v-asylum-origin");
-  if (!picker || picker.dataset.ready || !asylum) return;
+  if (!picker || picker.dataset.ready || !asylum?.origins) return;
   picker.dataset.ready = "on";
   const sorted = Object.entries(asylum.origins).sort((a, b) => b[1].total - a[1].total);
   picker.innerHTML = sorted
@@ -558,10 +564,10 @@ function wireAsylum() {
         `${origin.name} · ${compact(origin.total)}</option>`,
     )
     .join("");
+  // This changes the grid and nothing else, the same promise the ring and the
+  // force layout make about their own controls.
   picker.addEventListener("change", (event) => {
     asylumState.origin = event.target.value;
-    const iso3 = asylum.origins[asylumState.origin]?.iso3;
-    if (iso3) api.select(iso3);
     drawAsylum();
   });
 }
@@ -584,7 +590,7 @@ async function loadClosures() {
 
 function drawClosures() {
   const instance = chart("v-closures");
-  if (!instance || !closures) return;
+  if (!instance || !closures?.days) return;
   const { ACCESS, INK, MUTE, GRID } = api.colours;
   const entries = Object.entries(closures.days);
   const years = [...new Set(entries.map(([d]) => d.slice(0, 4)))].sort();
