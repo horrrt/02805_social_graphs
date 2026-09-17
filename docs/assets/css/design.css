@@ -606,6 +606,27 @@
 .visual-design .closure-comparison-grid .eyebrow {
   font-size: 11px;
 }
+.visual-design .companion-callout {
+  padding: 24px;
+  margin: 20px 0 28px;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  background: var(--surface);
+}
+.visual-design .companion-callout h3 {
+  font:
+    600 22px/1.2 Barlow,
+    sans-serif;
+  letter-spacing: -0.025em;
+  margin: 0 0 10px;
+}
+.visual-design .companion-callout p {
+  margin: 0 0 14px;
+  max-width: 62ch;
+}
+.visual-design .companion-callout a {
+  font-weight: 600;
+}
 .visual-design .post-primer {
   margin-top: 12px;
   max-width: 52ch;
