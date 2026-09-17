@@ -9,7 +9,7 @@
     />
     <title>Corridor Control · Log–Log Legends</title>
     <link href="../../assets/favicon.svg" rel="icon" type="image/svg+xml" />
-    <link href="../../assets/css/corridor.css?v=54f71459a0" rel="stylesheet" />
+    <link href="../../assets/css/corridor.css?v=1a40b4664c" rel="stylesheet" />
   </head>
   <body class="corridor">
     <a class="skip" href="#main">Skip to content</a>
@@ -359,6 +359,9 @@
                       <button aria-pressed="true" data-layer="both" type="button">
                         Both
                       </button>
+                      <button aria-pressed="false" data-layer="net" type="button">
+                        Net
+                      </button>
                     </div>
                   </div>
                   <canvas height="560" id="map-canvas" width="900"></canvas>
@@ -369,8 +372,14 @@
                     Migration shows where people live. Flights show where you can
                     go. Use the toggle to compare them, and click a country to
                     select it — the scatter on the left highlights the same one.
+                    <b>Net</b> drops the corridors and colours each country
+                    instead: green where more people live there than have left
+                    it, red where more have left than arrived. It is a balance
+                    of two stocks, not a count of anybody moving this year, and
+                    it follows the year slider.
                   </p>
                   <dl class="stats" id="twin-stats"></dl>
+                  <p class="fineprint" id="net-note"></p>
                   <p class="fineprint" id="flight-caveat"></p>
                 </aside>
               </div>
@@ -933,6 +942,6 @@
       </footer>
     </main>
 
-    <script src="../../assets/js/week03-boot.js?v=54f71459a0" type="module"></script>
+    <script src="../../assets/js/week03-boot.js?v=1a40b4664c" type="module"></script>
   </body>
 </html>

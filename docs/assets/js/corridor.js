@@ -14,6 +14,11 @@ let ACCESS = "#1f8fd6";
 let INK = "#0f2340";
 let MUTE = "#7a8fac";
 let GRID = "#e4ebf4";
+// The net layer's diverging pair. Green and red are what a reader expects for
+// gained and lost, and they are the one pairing eight per cent of men cannot
+// tell apart, so the colourblind-safe palette overrides them in CSS.
+let GAIN = "#2f9e63";
+let LOSS = "#d1495b";
 
 export function rgb(hex) {
   const value = (hex || "").trim().replace("#", "");
@@ -31,6 +36,8 @@ export function refreshPalette() {
   INK = read("--ink", "#0f2340");
   MUTE = read("--ink-mute", "#7a8fac");
   GRID = read("--line-soft", "#e4ebf4");
+  GAIN = read("--gain", "#2f9e63");
+  LOSS = read("--loss", "#d1495b");
   if (typeof SERIES !== "undefined") {
     SERIES[0].colour = PEOPLE;
     SERIES[1].colour = INK;
@@ -42,8 +49,10 @@ export function refreshPalette() {
     api.colours.INK = INK;
     api.colours.MUTE = MUTE;
     api.colours.GRID = GRID;
+    api.colours.GAIN = GAIN;
+    api.colours.LOSS = LOSS;
   }
-  return { PEOPLE, ACCESS, INK, MUTE, GRID };
+  return { PEOPLE, ACCESS, INK, MUTE, GRID, GAIN, LOSS };
 }
 
 // How a corridor is drawn between two countries. Each renderer reads the same
@@ -914,6 +923,155 @@ function drawLandMap(ctx, width, height) {
   }
 }
 
+/* ------------------------------------------------------------ the net layer
+
+   Arcs answer "who goes where". This answers a question they hide: after all
+   of it, is a country up or down? Green is a country with more foreign-born
+   residents than it has people living abroad, red the other way. Both sides
+   are stocks out of the same DESA table the rest of the page runs on, so the
+   number is a standing balance and not a flow in the slider's year. */
+
+function netBalance(iso3, y = year()) {
+  const m = metrics(iso3, y);
+  if (!m) return null;
+  return (m.in_strength ?? 0) - (m.out_strength ?? 0);
+}
+
+// Bands rather than a ramp. The balances run from Russia at minus ten million
+// to the United States at plus fifty, and any continuous scale over that range
+// either flattens the middle or saturates it: on a signed log, a hundred
+// thousand people is already two thirds of the way to the top. Five classes a
+// side, each roughly ten times the last, and the legend can then say what a
+// colour means instead of gesturing at more and less.
+const NET_BANDS = [10000, 100000, 1000000, 10000000];
+
+function netBand(net) {
+  if (net === null) return null;
+  const size = Math.abs(net);
+  let step = 0;
+  while (step < NET_BANDS.length && size >= NET_BANDS[step]) step += 1;
+  return { step, sign: Math.sign(net) };
+}
+
+function netFill(net) {
+  const band = netBand(net);
+  if (!band) return "rgba(120,140,165,0.30)";
+  const [r, g, b] = rgb(band.sign >= 0 ? GAIN : LOSS).split(",").map(Number);
+  // The flattest band keeps a wash of its own colour, so "roughly even" reads
+  // as a class rather than as missing data.
+  const alpha = 0.22 + (band.step / NET_BANDS.length) * 0.74;
+  return `rgba(${r},${g},${b},${alpha.toFixed(3)})`;
+}
+
+// The same band, in the units each renderer wants: a CSS colour for the two
+// canvas maps and a byte array for deck.gl. One definition, so the layer means
+// the same thing whichever library is drawing it.
+function netColour(iso3, y = year()) {
+  const net = netBalance(iso3, y);
+  const band = netBand(net);
+  if (!band) return { css: "rgba(120,140,165,0.30)", rgba: [120, 140, 165, 76], net };
+  const [r, g, b] = rgb(band.sign >= 0 ? GAIN : LOSS).split(",").map(Number);
+  const alpha = 0.22 + (band.step / NET_BANDS.length) * 0.74;
+  return {
+    css: `rgba(${r},${g},${b},${alpha.toFixed(3)})`,
+    rgba: [r, g, b, Math.round(alpha * 255)],
+    net,
+  };
+}
+
+function drawNetMap(ctx, width, height) {
+  if (!state.world) return;
+  ctx.lineWidth = 0.6;
+  for (const feature of state.world.features) {
+    const iso3 = feature.properties.iso3;
+    const net = netBalance(iso3);
+    ctx.fillStyle = iso3 === state.selected ? PEOPLE : netFill(net);
+    ctx.strokeStyle =
+      iso3 === state.selected || iso3 === state.hover
+        ? "#ffffff"
+        : "rgba(150,196,240,0.35)";
+    ctx.lineWidth = iso3 === state.hover ? 1.4 : 0.6;
+    eachRing(feature, (ring) => {
+      ctx.beginPath();
+      ring.forEach(([lon, lat], i) => {
+        const p = mapPoint([lat, lon], width, height);
+        if (i) ctx.lineTo(p.x, p.y);
+        else ctx.moveTo(p.x, p.y);
+      });
+      ctx.closePath();
+      ctx.fill();
+      ctx.stroke();
+    });
+  }
+  netLegend(ctx, width, height);
+  netNote();
+}
+
+// The panel beside the map counts links and people, neither of which changes
+// when the layer does. This line does, and it moves with the year slider.
+function netNote() {
+  const host = $("net-note");
+  if (!host) return;
+  let up = 0;
+  let down = 0;
+  let best = null;
+  let worst = null;
+  for (const iso3 of state.data.countries) {
+    const net = netBalance(iso3);
+    if (net === null) continue;
+    if (net >= 0) up += 1;
+    else down += 1;
+    if (!best || net > best.net) best = { iso3, net };
+    if (!worst || net < worst.net) worst = { iso3, net };
+  }
+  if (!best) return;
+  host.innerHTML =
+    `In ${year()}, <b>${up}</b> countries hold more foreign-born residents ` +
+    `than they have people living abroad and <b>${down}</b> hold fewer. ` +
+    `The largest surplus is ${node(best.iso3).name}, up ` +
+    `${compact.format(best.net)}; the largest deficit is ` +
+    `${node(worst.iso3).name}, down ${compact.format(-worst.net)}. ` +
+    `Both sides are stocks from the same table, so this is a standing balance ` +
+    `and not a count of anybody who moved this year.`;
+}
+
+function netLegend(ctx, width, height) {
+  const labels = ["under 10k", "10k", "100k", "1m", "10m+"];
+  const box = 17;
+  const left = 14;
+  const top = height - 46;
+  const cells = NET_BANDS.length + 1;
+  const wide = cells * 2 * box + 96;
+
+  ctx.fillStyle = "rgba(8,26,49,0.78)";
+  ctx.fillRect(left - 8, top - 22, wide, 48);
+  ctx.font = "600 10px -apple-system, system-ui, sans-serif";
+  ctx.textBaseline = "top";
+  ctx.textAlign = "left";
+  ctx.fillStyle = "#cfe0f2";
+  ctx.fillText("Net balance of people", left, top - 18);
+
+  // Losses run outward to the left of centre, gains outward to the right, so
+  // the two ramps meet where a country is level.
+  const mid = left + cells * box;
+  for (let step = NET_BANDS.length; step >= 0; step -= 1) {
+    const i = NET_BANDS.length - step;
+    ctx.fillStyle = netFill(-(NET_BANDS[step - 1] ?? 1));
+    ctx.fillRect(left + i * box, top, box - 1, 11);
+    ctx.fillStyle = netFill(NET_BANDS[step - 1] ?? 1);
+    ctx.fillRect(mid + (cells - 1 - i) * box, top, box - 1, 11);
+  }
+  ctx.fillStyle = "#9fbcdb";
+  ctx.font = "9px -apple-system, system-ui, sans-serif";
+  ctx.fillText(`lost ${labels.at(-1)}`, left, top + 14);
+  ctx.textAlign = "center";
+  ctx.fillText(labels[0], mid, top + 14);
+  ctx.textAlign = "right";
+  ctx.fillText(`gained ${labels.at(-1)}`, mid + cells * box - 1, top + 14);
+  ctx.textAlign = "left";
+  ctx.fillText("grey: no figure", mid + cells * box + 10, top + 1);
+}
+
 function controlPoint(a, b, lift) {
   const mx = (a.x + b.x) / 2;
   const my = (a.y + b.y) / 2;
@@ -1234,6 +1392,23 @@ function drawMap() {
   const { ctx, width, height } = surface(canvas);
   ctx.fillStyle = "#081a31";
   ctx.fillRect(0, 0, width, height);
+  if (state.layer === "net") {
+    // The choropleth is the basemap here: a photograph under it would fight
+    // the fill it is meant to carry.
+    drawNetMap(ctx, width, height);
+    if (state.selected) {
+      const coord = node(state.selected)?.coord;
+      if (coord) {
+        const p = mapPoint(coord, width, height);
+        ctx.strokeStyle = "#fff";
+        ctx.lineWidth = 1.5;
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, 6, 0, Math.PI * 2);
+        ctx.stroke();
+      }
+    }
+    return;
+  }
   if (state.basemap === "photo") {
     const image = earthTexture(() => R.map());
     if (image) {
@@ -2370,6 +2545,10 @@ function setupMap() {
     for (const b of toggle.querySelectorAll("button")) {
       b.setAttribute("aria-pressed", String(b === button));
     }
+    if (state.layer !== "net") {
+      const note = $("net-note");
+      if (note) note.textContent = "";
+    }
     R.map();
   });
   $("map-canvas").addEventListener("click", (event) => {
@@ -2393,6 +2572,7 @@ function setupMap() {
     // Selecting never scrolls. The reader chose where to look.
     if (best) select(best.iso3);
   });
+  $("map-canvas").addEventListener("pointerleave", () => hideTip());
   $("map-canvas").addEventListener("pointermove", (event) => {
     const rect = event.currentTarget.getBoundingClientRect();
     const x = event.clientX - rect.left;
@@ -2408,6 +2588,23 @@ function setupMap() {
       }) ??
       null;
     event.currentTarget.style.cursor = over ? "pointer" : "default";
+    // The choropleth carries a number no arc has to: how far up or down a
+    // country is. Reading it off a colour band is guesswork, so hovering says
+    // it outright.
+    if (state.layer === "net" && over) {
+      const net = netBalance(over);
+      showTip(
+        event,
+        `<b>${node(over)?.name ?? over}</b><br>` +
+          (net === null
+            ? "no figure for this year"
+            : `${net >= 0 ? "Up" : "Down"} ${fmt.format(Math.abs(net))} people in ${year()}<br>` +
+              `<span style="opacity:.75">${fmt.format(metrics(over).in_strength)} living here, ` +
+              `${fmt.format(metrics(over).out_strength)} living abroad</span>`),
+      );
+    } else {
+      hideTip();
+    }
     if (state.hover !== over) {
       state.hover = over;
       R.map();
@@ -2483,8 +2680,10 @@ export const api = {
   // Chart furniture, so the questions section draws on the same axes as the
   // rest of the post instead of inventing its own.
   surface, frame, axes, logTicks, logScale, linearScale, flag,
+  // The net layer, so a renderer that draws its own map can draw this one too.
+  netBalance, netColour, netNote, drawNet: drawNetMap,
   spotlight, earthScale, globeRadius, EARTH_SIZES, typologyNote,
-  colours: { PEOPLE, ACCESS, INK, MUTE, GRID },
+  colours: { PEOPLE, ACCESS, INK, MUTE, GRID, GAIN, LOSS },
   format: { fmt, compact },
   $,
 };
