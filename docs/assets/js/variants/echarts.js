@@ -22,7 +22,7 @@ const BASE = {
 export function install(api, echarts) {
   const {
     state, node, metrics, withMetrics, degreeCounts, ccdf, select, $, colours,
-    showTip, hideTip, modeFlags, spotlight,
+    showTip, hideTip, modeFlags, spotlight, format,
   } = api;
   const charts = new Map();
 
@@ -129,11 +129,9 @@ export function install(api, echarts) {
         grid: { left: 54, right: 16, top: 30, bottom: 44 },
         xAxis: { ...AXIS, type: modeFlags("hist").x ? "log" : "value", name: "Partners", nameLocation: "middle", nameGap: 26 },
         yAxis: { ...AXIS, type: modeFlags("hist").y ? "log" : "value", name: "Countries", nameLocation: "middle", nameGap: 36 },
-        tooltip: {
-          ...BASE.tooltip,
-          formatter: (p) =>
-            `degree ${p.value[0]}<br/>${p.value[1]} countries<br/>largest: ${node(p.data.iso3).name}`,
-        },
+        // The page has one tooltip design; disabling ECharts' own keeps the
+        // mouseover handler below as the only one that fires.
+        tooltip: { show: false },
         series,
       },
       true,
@@ -167,11 +165,7 @@ export function install(api, echarts) {
         grid: { left: 54, right: 16, top: 30, bottom: 44 },
         xAxis: { ...AXIS, type: modeFlags("ccdf").x ? "log" : "value", name: "Partners", nameLocation: "middle", nameGap: 26 },
         yAxis: { ...AXIS, type: modeFlags("ccdf").y ? "log" : "value", name: "P(K ≥ k)", nameLocation: "middle", nameGap: 40 },
-        tooltip: {
-          ...BASE.tooltip,
-          formatter: (p) =>
-            `${p.seriesName} ≥ ${p.value[0]}<br/>${(p.value[1] * 100).toFixed(1)}% of countries`,
-        },
+        tooltip: { show: false },
         series,
       },
       true,
@@ -202,11 +196,7 @@ export function install(api, echarts) {
         grid: { left: 62, right: 18, top: 30, bottom: 46 },
         xAxis: { ...AXIS, type: "log", name: "In-degree", nameLocation: "middle", nameGap: 26 },
         yAxis: { ...AXIS, type: "log", name: "Betweenness", nameLocation: "middle", nameGap: 44 },
-        tooltip: {
-          ...BASE.tooltip,
-          formatter: (p) =>
-            `<b>${p.data.name}</b><br/>${p.seriesName}<br/>degree ${p.value[0]}<br/>betweenness ${Number(p.value[1]).toExponential(2)}`,
-        },
+        tooltip: { show: false },
         series: [
           scatterSeries("Migration", migration, colours.PEOPLE, 9),
           scatterSeries("Flights", flights, colours.ACCESS, 8),
@@ -237,11 +227,7 @@ export function install(api, echarts) {
         grid: { left: 58, right: 18, top: 30, bottom: 46 },
         xAxis: { ...AXIS, type: "log", name: "In-degree", nameLocation: "middle", nameGap: 26 },
         yAxis: { ...AXIS, type: "value", name: "z-score", nameLocation: "middle", nameGap: 38 },
-        tooltip: {
-          ...BASE.tooltip,
-          formatter: (p) =>
-            `<b>${p.data.name}</b><br/>degree ${p.value[0]}<br/>z = ${Number(p.value[1]).toFixed(2)}`,
-        },
+        tooltip: { show: false },
         series: [
           scatterSeries("Surprising (z ≥ 2)", above, colours.PEOPLE, 10),
           scatterSeries("Explained by degree", rest, colours.ACCESS, 8),
@@ -281,7 +267,7 @@ export function install(api, echarts) {
       grid: { left: 48, right: 12, top: 14, bottom: 34 },
       xAxis: { ...AXIS, type: "log", name: "Degree", nameLocation: "middle", nameGap: 22 },
       yAxis: { ...AXIS, type: "log" },
-      tooltip: { ...BASE.tooltip, formatter: (p) => p.data.name ?? "" },
+      tooltip: { show: false },
       series: [
         scatterSeries(
           "Countries",
@@ -305,7 +291,7 @@ export function install(api, echarts) {
       grid: { left: 42, right: 12, top: 14, bottom: 34 },
       xAxis: { ...AXIS, type: "log", name: "Degree", nameLocation: "middle", nameGap: 22 },
       yAxis: { ...AXIS, type: "value" },
-      tooltip: { ...BASE.tooltip, formatter: (p) => p.data.name ?? "" },
+      tooltip: { show: false },
       series: [
         scatterSeries(
           "Countries",
@@ -320,26 +306,34 @@ export function install(api, echarts) {
       ],
     });
 
+    const timeTip = (s) =>
+      `<b>${focus.name}, ${s.year}</b>` +
+      `<span>${format.fmt.format(s.in_strength)} incoming</span>` +
+      `<span>${format.fmt.format(s.out_strength)} outgoing</span>`;
     small("dk-time", {
       grid: { left: 54, right: 12, top: 14, bottom: 30 },
       xAxis: { ...AXIS, type: "category", data: focus.series.map((s) => s.year) },
       yAxis: { ...AXIS, type: "value" },
-      tooltip: { trigger: "axis", confine: true },
+      tooltip: { show: false },
       series: [
         {
           name: "In-strength",
           type: "line",
           smooth: true,
+          showSymbol: true,
+          symbolSize: 7,
           itemStyle: { color: colours.PEOPLE },
           areaStyle: { color: "rgba(242,130,12,0.12)" },
-          data: focus.series.map((s) => s.in_strength),
+          data: focus.series.map((s) => ({ value: s.in_strength, iso3: focus.iso3, name: focus.name, tip: timeTip(s) })),
         },
         {
           name: "Out-strength",
           type: "line",
           smooth: true,
+          showSymbol: true,
+          symbolSize: 7,
           itemStyle: { color: colours.ACCESS },
-          data: focus.series.map((s) => s.out_strength),
+          data: focus.series.map((s) => ({ value: s.out_strength, iso3: focus.iso3, name: focus.name, tip: timeTip(s) })),
         },
       ],
     });
@@ -348,34 +342,50 @@ export function install(api, echarts) {
       grid: { left: 44, right: 12, top: 14, bottom: 30 },
       xAxis: { ...AXIS, type: "category", data: focus.series.map((s) => s.year) },
       yAxis: { ...AXIS, type: "value", inverse: true, axisLabel: { ...AXIS.axisLabel, formatter: "#{value}" } },
-      tooltip: { trigger: "axis", confine: true, formatter: (p) => `${p[0].name}: rank #${p[0].value}` },
+      tooltip: { show: false },
       series: [
         {
           type: "line",
           smooth: true,
+          showSymbol: true,
+          symbolSize: 7,
           itemStyle: { color: colours.INK },
-          data: focus.series.map((s) => s.betweenness_rank),
+          data: focus.series.map((s) => ({
+            value: s.betweenness_rank,
+            iso3: focus.iso3,
+            name: focus.name,
+            tip: `<b>${focus.name}, ${s.year}</b>` +
+              `<span>bridge rank #${s.betweenness_rank}</span>` +
+              `<span>${s.in_degree} origins</span>`,
+          })),
         },
       ],
     });
 
+    const nordicTip = (name, raw, i) =>
+      `<b>${i.name}</b><span>${name}: ${raw}</span>` +
+      `<span>betweenness rank #${i.betweenness_rank}</span>` +
+      `<span>${i.km ? `${format.fmt.format(i.km)} km away` : "the country in question"}</span>`;
     small("dk-nordic", {
       legend: { top: 0, textStyle: { color: "#46618a", fontSize: 10 } },
       grid: { left: 40, right: 12, top: 26, bottom: 30 },
       xAxis: { ...AXIS, type: "category", data: focus.peers.map((i) => i.iso3) },
       yAxis: { ...AXIS, type: "value", max: 1, axisLabel: { show: false } },
-      tooltip: { trigger: "axis", confine: true },
+      tooltip: { show: false },
       series: [
-        ["In-degree", (i) => i.in_degree, colours.PEOPLE],
-        ["z-score", (i) => Math.abs(i.z ?? 0), colours.INK],
-        ["Flight degree", (i) => i.flight_degree, colours.ACCESS],
-      ].map(([name, pick, colour]) => {
+        ["In-degree", (i) => i.in_degree, (i) => i.in_degree, colours.PEOPLE],
+        ["z-score", (i) => Math.abs(i.z ?? 0), (i) => (i.z ?? 0).toFixed(2), colours.INK],
+        ["Flight degree", (i) => i.flight_degree, (i) => i.flight_degree, colours.ACCESS],
+      ].map(([name, pick, raw, colour]) => {
         const max = Math.max(...focus.peers.map(pick), 1);
         return {
           name,
           type: "bar",
           itemStyle: { color: colour },
-          data: focus.peers.map((i) => ({ value: pick(i) / max, iso3: i.iso3, name: i.name })),
+          data: focus.peers.map((i) => ({
+            value: pick(i) / max, iso3: i.iso3, name: i.name,
+            tip: nordicTip(name, raw(i), i),
+          })),
         };
       }),
     });
