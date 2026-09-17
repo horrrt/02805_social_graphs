@@ -10,7 +10,7 @@
 
 export function install(api, deck) {
   const { state, node, metrics, topEdges, flightEdges, select, $, colours, rgb, arcSpec, textureURL } = api;
-  const { earthScale } = api;
+  const { earthScale, netColour, netNote } = api;
   const channels = (hex) => rgb(hex).split(",").map(Number);
   // deck's zoom is logarithmic, so a doubling of the earth-size scale is one
   // whole zoom level.
@@ -208,6 +208,25 @@ export function install(api, deck) {
     });
   }
 
+  // The net layer as a filled GeoJsonLayer. The core owns the bands and the
+  // wording; this only turns a colour into the byte array deck wants.
+  const netLayer = () =>
+    state.world
+      ? [
+          new deck.GeoJsonLayer({
+            id: "map-net",
+            data: state.world,
+            stroked: true,
+            filled: true,
+            getFillColor: (f) => netColour(f.properties.iso3).rgba,
+            getLineColor: [150, 196, 240, 90],
+            lineWidthMinPixels: 0.6,
+            pickable: false,
+            updateTriggers: { getFillColor: [state.year, colours.GAIN, colours.LOSS] },
+          }),
+        ]
+      : [];
+
   function map() {
     const instance = mount("map-canvas", new deck.MapView({ id: "map", repeat: true }), {
       longitude: 10,
@@ -215,6 +234,11 @@ export function install(api, deck) {
       zoom: -0.55,
     });
     if (!instance) return;
+    if (state.layer === "net") {
+      instance.setProps({ layers: netLayer() });
+      netNote();
+      return;
+    }
     const layers = [...photoLayer("map-photo"), ...landLayer("map-land", false)];
     if (state.layer !== "flights") layers.push(arcLayer("map-arcs", arcData(420), colours.PEOPLE));
     if (state.layer !== "migration")

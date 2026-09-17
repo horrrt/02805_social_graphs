@@ -28,6 +28,7 @@ function loadImage(src) {
 
 export function install(api, Globe) {
   const { state, node, metrics, topEdges, flightEdges, select, $, colours, rgb, arcSpec } = api;
+  const { drawNet } = api;
   const { earthScale } = api;
   let world = null;
   let host = null;
@@ -240,6 +241,15 @@ export function install(api, Globe) {
       // A dark wash keeps the corridors legible over the photograph.
       ctx.fillStyle = "rgba(6,20,38,0.42)";
       ctx.fillRect(0, 0, width, height);
+    }
+
+    if (state.layer === "net") {
+      // The core defines the bands and the legend; this variant only owns the
+      // photograph underneath, and a choropleth does not want one.
+      ctx.fillStyle = "#07172b";
+      ctx.fillRect(0, 0, width, height);
+      drawNet(ctx, width, height);
+      return;
     }
 
     const points = new Map();
