@@ -5,3 +5,4 @@ numpy>=2.0
 jupyterlab
 scipy>=1.14
 statsmodels>=0.15
+powerlaw>=2.0

@@ -222,35 +222,35 @@
                       </tr>
                       <tr>
                         <td>Origins per destination</td>
-                        <td style="text-align: right">19</td>
-                        <td style="text-align: right">2.05</td>
-                        <td style="text-align: right">126</td>
+                        <td style="text-align: right">15</td>
+                        <td style="text-align: right">1.97</td>
+                        <td style="text-align: right">149</td>
                         <td style="text-align: right">0.00</td>
-                        <td>lognormal fits better (p = 0.016)</td>
+                        <td>lognormal fits better (p = 0.003)</td>
                       </tr>
                       <tr>
                         <td>People on a corridor</td>
                         <td style="text-align: right">126,665</td>
                         <td style="text-align: right">2.04</td>
                         <td style="text-align: right">377</td>
-                        <td style="text-align: right">0.04</td>
+                        <td style="text-align: right">0.01</td>
                         <td>lognormal fits better (p = 0.023)</td>
                       </tr>
                       <tr>
                         <td>Destinations per origin</td>
-                        <td style="text-align: right">55</td>
-                        <td style="text-align: right">4.41</td>
-                        <td style="text-align: right">56</td>
-                        <td style="text-align: right">0.88</td>
-                        <td>cannot be separated from either</td>
+                        <td style="text-align: right">33</td>
+                        <td style="text-align: right">2.99</td>
+                        <td style="text-align: right">122</td>
+                        <td style="text-align: right">0.06</td>
+                        <td>both fit better (p = 0.005, 0.001)</td>
                       </tr>
                       <tr>
                         <td>Flight partners</td>
-                        <td style="text-align: right">68</td>
-                        <td style="text-align: right">3.39</td>
-                        <td style="text-align: right">41</td>
-                        <td style="text-align: right">0.15</td>
-                        <td>cannot be separated from either</td>
+                        <td style="text-align: right">44</td>
+                        <td style="text-align: right">2.81</td>
+                        <td style="text-align: right">75</td>
+                        <td style="text-align: right">0.09</td>
+                        <td>neither can be separated from it</td>
                       </tr>
                     </table>
                     <p class="sub">
@@ -258,22 +258,24 @@
                       power law that fit it <em>worse</em> than the real data
                       does. Below 0.1 the power law is ruled out; above it the
                       power law survives, which is not the same as winning.
-                      On the two tails where the data can tell the difference
-                      the lognormal describes it better, and on the other two
-                      there are 41 and 56 points, which is not enough to
-                      separate anything from anything.
+                      All four are below it. The top two are not close; the
+                      bottom two sit at 0.06 and 0.09, near enough to a
+                      convention that they are the weakest kind of rejection
+                      rather than a verdict. Where a rival can be told apart at
+                      all it is the lognormal, and it wins every time it is
+                      asked.
                     </p>
                     <div class="notice">
                       <span class="ico">💡</span>
                       <span>
                         <b>So the word on this page is "heavy-tailed", not
                         "scale-free".</b>
-                        Origins per destination fits α = 2.05, which is the
-                        exponent every scale-free network in a lecture slide
-                        has, and it is still ruled out at p = 0.00. That is
-                        the trap the log–log toggle above sets: a line can
-                        look right and be wrong, and the only way to find out
-                        is to fit it.
+                        Origins per destination fits α = 1.97, which is
+                        about the exponent every scale-free network in a
+                        lecture slide has, and it is still ruled out at
+                        p = 0.00. That is the trap the log–log toggle above
+                        sets: a line can look right and be wrong, and the only
+                        way to find out is to fit it.
                       </span>
                     </div>
                   </div>
@@ -1453,10 +1455,9 @@
                       all.
                     </p>
                     <p class="sub">
-                      <b>Heavy tails.</b> Fitted with the Clauset, Shalizi and
-                      Newman procedure in
-                      <code>analysis/week03_tails.py</code>: maximum
-                      likelihood for the exponent, the lower bound by
+                      <b>Heavy tails.</b> The Clauset, Shalizi and Newman
+                      procedure in <code>analysis/week03_tails.py</code>:
+                      maximum likelihood for the exponent, the lower bound by
                       minimising the KS distance, 500 synthetic datasets for
                       the goodness-of-fit p, and Vuong likelihood-ratio tests
                       against lognormal and exponential on the same tail. Both
@@ -1465,6 +1466,25 @@
                       ratio between a probability and a probability density
                       means nothing. Full output in
                       <code>analysis/week03_tails.json</code>.
+                    </p>
+                    <p class="sub">
+                      <b>Why these four numbers changed.</b> The fitting used
+                      to be our own code and is now the <code>powerlaw</code>
+                      package, which is the reference implementation of that
+                      procedure, and the swap found a bug we had been
+                      publishing. Our KS distance walked the sorted tail one
+                      observation at a time, so a degree value appearing ten
+                      times produced ten steps in the empirical curve against
+                      one flat stretch of the model, and that gap counted as
+                      distance. Degree sequences are nothing but ties: 227
+                      countries share 88 distinct in-degrees. The exponent was
+                      never wrong, and corridor weights, which barely tie, were
+                      right to the digit. But the inflated distance moved the
+                      x<sub>min</sub> that minimises it, so all three degree
+                      tails had been fitted above the wrong cut. Destinations
+                      per origin is the one that changes its mind: it used to
+                      read p = 0.88, a power law surviving comfortably, and it
+                      reads 0.06.
                     </p>
                     <p class="sub">
                       <b>Which countries, and how many.</b> Six different
