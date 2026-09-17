@@ -9,7 +9,15 @@
   },
   "countries": 87,
   "log_correlation": 0.769,
+  "log_correlation_ci": [
+    0.666,
+    0.843
+  ],
   "spearman": 0.874,
+  "spearman_ci": [
+    0.808,
+    0.918
+  ],
   "per_route": {
     "highest": [
       {
