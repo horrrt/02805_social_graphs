@@ -94,58 +94,56 @@ test("exactly weeks 1 to 3 are live, each with a cabinet on disk", () => {
 
 // The lobby is pinned to the manifest.
 test("every lobby card agrees with the manifest and only live weeks are links", () => {
-  for (const root of [""]) {
-    const html = read(root + "index.html");
-    // Cards must put data-week first; coming cards must not nest a <div>.
-    const cards = [
-      ...html.matchAll(/<(a|div)\s+data-week="(\d)"([^>]*)>([\s\S]*?)<\/\1\s*>/g),
-    ];
-    assert.equal(cards.length, WEEKS.length, `${root}index.html: one card per course week`);
-    cards.forEach((m, i) => {
-      const [, tag, n, attrs, body] = m,
-        w = WEEKS[i];
-      assert.equal(Number(n), w.n, "cards run in course order");
-      assert(
-        decode(body).includes(w.courseTitle),
-        `${root}card ${w.n} names "${w.courseTitle}"`,
-      );
-      assert(
-        body.toLowerCase().includes(shortDate(w.date).toLowerCase()),
-        `${root}card ${w.n} shows its date`,
-      );
-      if (w.status === "live") {
-        assert.equal(tag, "a", `week ${w.n} is a link`);
-        assert(attrs.includes(`href="${w.cabinet.href}"`), attrs);
-        assert(body.includes(w.cabinet.name), `card ${w.n} names its cabinet`);
-      } else {
-        assert.equal(tag, "div", `week ${w.n} is not a link`);
-        assert(attrs.includes('aria-disabled="true"'), attrs);
-        assert(!attrs.includes("href="), `week ${w.n} has no href`);
-        assert.match(body, /coming/i);
-      }
-    });
+  const html = read("index.html");
+  // Cards must put data-week first; coming cards must not nest a <div>.
+  const cards = [
+    ...html.matchAll(/<(a|div)\s+data-week="(\d)"([^>]*)>([\s\S]*?)<\/\1\s*>/g),
+  ];
+  assert.equal(cards.length, WEEKS.length, `index.html: one card per course week`);
+  cards.forEach((m, i) => {
+    const [, tag, n, attrs, body] = m,
+      w = WEEKS[i];
+    assert.equal(Number(n), w.n, "cards run in course order");
     assert(
-      html.includes(`href="${currentWeek().cabinet.href}"`),
-      `${root}index.html links the current week`,
+      decode(body).includes(w.courseTitle),
+      `card ${w.n} names "${w.courseTitle}"`,
     );
-    assert(!html.includes("Six doors"), "no stale door count");
-    const shelf = html.match(/<section[^>]*id="free-play"[\s\S]*?<\/section>/)?.[0];
-    assert(shelf, `${root}index.html has a free-play shelf`);
-    for (const f of FREE_PLAY) {
-      assert(shelf.includes(`href="${f.href}"`), `${root}${f.name} is on the shelf`);
-      assert(
-        existsSync(join(DOCS, root, f.href.split("?")[0], "index.html")),
-        root + f.href,
-      );
+    assert(
+      body.toLowerCase().includes(shortDate(w.date).toLowerCase()),
+      `card ${w.n} shows its date`,
+    );
+    if (w.status === "live") {
+      assert.equal(tag, "a", `week ${w.n} is a link`);
+      assert(attrs.includes(`href="${w.cabinet.href}"`), attrs);
+      assert(body.includes(w.cabinet.name), `card ${w.n} names its cabinet`);
+    } else {
+      assert.equal(tag, "div", `week ${w.n} is not a link`);
+      assert(attrs.includes('aria-disabled="true"'), attrs);
+      assert(!attrs.includes("href="), `week ${w.n} has no href`);
+      assert.match(body, /coming/i);
     }
-    for (const w of liveWeeks())
-      assert(
-        decode(read(join(root, w.cabinet.href, "index.html")))
-          .toLowerCase()
-          .includes(w.courseTitle.toLowerCase()),
-        `${root}week ${w.n} page names its course title`,
-      );
+  });
+  assert(
+    html.includes(`href="${currentWeek().cabinet.href}"`),
+    `index.html links the current week`,
+  );
+  assert(!html.includes("Six doors"), "no stale door count");
+  const shelf = html.match(/<section[^>]*id="free-play"[\s\S]*?<\/section>/)?.[0];
+  assert(shelf, `index.html has a free-play shelf`);
+  for (const f of FREE_PLAY) {
+    assert(shelf.includes(`href="${f.href}"`), `${f.name} is on the shelf`);
+    assert(
+      existsSync(join(DOCS, f.href.split("?")[0], "index.html")),
+      f.href,
+    );
   }
+  for (const w of liveWeeks())
+    assert(
+      decode(read(join(w.cabinet.href, "index.html")))
+        .toLowerCase()
+        .includes(w.courseTitle.toLowerCase()),
+      `week ${w.n} page names its course title`,
+    );
 });
 
 test("no page or script claims a future week or a preview", () => {
