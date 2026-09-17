@@ -496,20 +496,31 @@
           <div class="card">
             <div class="step-head">
               <span class="num">6</span>
-              <h2>Typology</h2>
-              <span class="year-tag">(2020 only · the null-model year)</span>
+              <h2>Roles inside the communities</h2>
+              <span class="year-tag" id="typology-tag"></span>
             </div>
             <p class="sub">
-              Six labels from one cascade of rank tests, read left to right:
-              the first test a country passes is the label it gets, and
-              <b>mixed</b> is what is left when none of the five fired. Ranks
-              rather than raw values, so a label means the same thing in any
-              year. Each card says exactly which test produced it. Examples are
-              read from the data, not chosen by hand. Hover a country code to
-              see why it is there, or open the full list for a role.
+              Section 11 splits the world into communities. This asks what part
+              each country plays in the one it lands in, on two coordinates
+              from Guimerà and Amaral (<i>Nature</i> 433, 2005): <b>z</b>, how
+              large a country is among the other members of its own community,
+              and <b>P</b>, how evenly its corridors are spread across all of
+              them. A country with P near zero keeps everyone inside one
+              community; near one, it is split evenly between them. The seven
+              names and the cut-offs between them are theirs, drawn on the
+              chart rather than applied out of sight.
             </p>
+            <p class="sub">
+              This replaces six labels of our own that compared a 2020
+              migration ranking against a flight snapshot last refreshed around
+              2014. Thirty of 228 countries carried a label that mixed the two
+              vintages, and because the flight side cannot move, the section
+              could only ever show one year. Nothing here touches the flight
+              network, so the slider moves it.
+            </p>
+            <canvas class="chart" height="620" id="cartography" width="1100"></canvas>
             <div
-              aria-label="How many countries carry each label"
+              aria-label="How many countries carry each role"
               class="type-strip"
               id="typology-strip"
             ></div>
@@ -520,6 +531,26 @@
               hidden
               id="type-drawer"
             ></aside>
+            <div class="notice">
+              <span class="ico">💡</span>
+              <span id="typology-note"></span>
+            </div>
+            <div class="notice">
+              <span class="ico">🧪</span>
+              <span>
+                <b>Louvain is random, and one run would have animated its own
+                seed.</b>
+                Two seeds at 2020 disagree about 26 of 228 roles, which is the
+                same size as the change from one five-year snapshot to the
+                next. So every year is partitioned 100 times, each run votes,
+                and a country carries the role most runs gave it together with
+                the share that agreed. The coordinates are far steadier than
+                the names: the United States sits at z 5.92 with a standard
+                deviation of 0.03 across the 100 runs, and the wobble is
+                concentrated where a country sits on a threshold. Those are
+                drawn as hollow rings, and they are the ones not to quote.
+              </span>
+            </div>
           </div>
         </section>
 
@@ -1384,6 +1415,43 @@
                       border crossings.
                     </p>
                     <p class="sub">
+                      <b>Roles.</b> Guimerà and Amaral's cartography
+                      (<i>Nature</i> 433, 2005) in
+                      <code>analysis/week03_cartography.py</code>, on the same
+                      graph section 11 partitions: undirected, weighted by
+                      people both ways, corridors under 10,000 people dropped.
+                      Two coordinates per country, both computed on strength
+                      rather than on a count of partners, because a corridor
+                      here runs from a dozen people to four million. Louvain is
+                      stochastic, so each year is partitioned 100 times, every
+                      run votes for a role, and a country carries the role most
+                      runs gave it. The coordinates printed beside a role are
+                      averaged over the runs that produced that role and not
+                      over all of them: pooled, four countries came out with a
+                      participation coefficient on the wrong side of their own
+                      name. The thresholds are Guimerà and Amaral's own and are
+                      not tuned to this network, which is much denser than the
+                      ones they were set on, so peripheral stays the largest
+                      group. Tuning them to balance our own chart would be
+                      seven arbitrary numbers, which is what this replaced.
+                    </p>
+                    <p class="sub">
+                      <b>What the roles replaced.</b> Six labels of our own,
+                      from a cascade of rank tests, three of which compared a
+                      2020 migration ranking against the undated flight
+                      snapshot. Thirty of 228 countries carried one, the
+                      section could only ever show a single year, and 141 of
+                      228 came out "mixed". Better flight data would have fixed
+                      it and there is none: ICAO sells a dated global
+                      country-pair table, Sabre licenses one, Eurostat
+                      publishes a free dated one that only Europe reports into,
+                      and OpenSky is free, dated and CC BY but its coverage
+                      follows the ADS-B receivers, which sit in Europe and
+                      North America. Each trades a vintage problem for a
+                      coverage problem, so the roles now use no flight data at
+                      all.
+                    </p>
+                    <p class="sub">
                       <b>Heavy tails.</b> Fitted with the Clauset, Shalizi and
                       Newman procedure in
                       <code>analysis/week03_tails.py</code>: maximum
@@ -1409,7 +1477,8 @@
                       head, which is why the wealth charts say 173 once
                       population and a positive foreign-born share are also
                       required. <b>205</b> survive the 10,000-person floor in
-                      the community graph, <b>185</b> report to the Oxford
+                      the community graph and so carry a role in section 6,
+                      where <b>193</b> did in 1990. <b>185</b> report to the Oxford
                       tracker, and <b>87</b> have both a flight route to the
                       United States and passengers on it.
                     </p>
@@ -1563,6 +1632,6 @@
       </footer>
     </main>
 
-    <script src="../../assets/js/week03-boot.js?v=5e17fc9daa" type="module"></script>
+    <script src="../../assets/js/week03-boot.js?v=aa8ae236db" type="module"></script>
   </body>
 </html>

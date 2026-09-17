@@ -78,6 +78,8 @@ COMMITTED = [
      "analysis/week03_corridor_control.py", "UN DESA stock + OpenFlights + Wikidata"),
     ("docs/assets/data/week03_edges.json",
      "analysis/week03_corridor_control.py", "UN DESA stock + OpenFlights + UNHCR"),
+    ("docs/assets/data/week03_cartography.json",
+     "analysis/week03_cartography.py", "roles inside the communities, per year"),
     ("docs/assets/data/week03_calendar.json",
      "analysis/week03_calendar.py", "IOM Missing Migrants Project via HDX"),
     ("docs/assets/data/week03_asylum.json",
@@ -198,6 +200,9 @@ def main() -> None:
     if args.fast:
         corridor.append("--reuse-null")
     run(*corridor)
+    # Reads the two files the line above just wrote and nothing else, so it
+    # always follows them and never needs the network.
+    run(python, str(ROOT / "analysis/week03_cartography.py"))
 
     print("\n5. the cache stamp")
     run(python, str(ROOT / "scripts/stamp_week03.py"))

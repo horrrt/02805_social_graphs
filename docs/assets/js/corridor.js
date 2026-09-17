@@ -169,6 +169,7 @@ export function installRenderer(overrides) {
 const state = {
   data: null,
   edges: null,
+  cart: null,
   world: null,
   year: 2020,
   selected: null,
@@ -424,8 +425,8 @@ export const GLOSSARY = {
     "How many distinct airport-to-airport routes connect here to somewhere abroad. A route existing says nothing about seats or frequency.",
   PageRank:
     "A weighted random walk over the corridors, asking not how many people you draw but whether you draw them from countries that are themselves well-connected.",
-  Typology:
-    "One of six labels, assigned by a cascade of rank tests rather than raw values, so a label means the same thing in any year: both, destination hub, human bridge, system airport, leaf, and mixed when none of the five fired. Section 6 has the full rule.",
+  Role:
+    "Where a country sits inside the communities of section 11, on two coordinates: z, how large it is among the other members of its own community, and P, how evenly its corridors are spread across all the communities. The seven names and the cut-offs between them are Guimer\u00e0 and Amaral's (Nature 433, 2005). Section 6 draws both coordinates.",
   "k (in)": "In-degree: the number of countries that send people here.",
   Rank: "Position among all countries on this measure, 1 being the highest.",
   "z-score":
@@ -483,7 +484,7 @@ function renderInspector() {
         row("PageRank", `${m.pagerank.toFixed(5)} <span style="color:#7a8fac">(#${m.pagerank_rank})</span>`),
         row("Flight partners", fmt.format(n.flight_degree)),
         row("Flight routes", fmt.format(n.flight_strength)),
-        row("Typology", `<span class="chip">${label(m.typology)}</span>`, typologyNote(m.typology)),
+        roleRow(),
       ].join("")
     : `<div><dt>No migration data for ${state.year}</dt><dd>—</dd></div>`;
 
@@ -648,61 +649,123 @@ function enablePicking(id) {
 // top tenth of all countries on that measure; "bottom half" means outside the
 // median. The rule itself lives in analysis/week03_corridor_control.py; these
 // strings say what it did, in the order it did it.
+// Guimer\u00e0 and Amaral's seven roles (Nature 433, 2005), in order from the
+// edge of a community to its centre. The old six labels were ours, and three
+// of them compared a 2020 migration rank against a flight snapshot from about
+// 2014; these come from one dated network and one published table.
+//
+// Colour runs cool for the non-hubs and warm for the hubs, deepening with the
+// participation coefficient inside each family, because the roles are cuts of
+// a continuum rather than seven separate kinds of country. The scatter is
+// where a reader should read the position; the tint only says which side of
+// the hub line a card is on.
 const TYPES = {
-  both: {
-    title: "Both",
-    icon: "◎",
-    tint: "#e7f6ee",
-    fg: "#0d6b3a",
-    what: "Top tenth for incoming migrants and top tenth for flight partners. People and access at once. Tested first, so nothing else can claim these.",
+  "ultra-peripheral": {
+    title: "Ultra-peripheral",
+    icon: "\u00b7",
+    tint: "#eef3f9",
+    fg: "#6b7f99",
+    what: "Below the hub line, with a participation coefficient of 0.05 or less: effectively everyone it exchanges moves inside a single community.",
   },
-  "destination-hub": {
-    title: "Destination hub",
-    icon: "✦",
-    tint: "#fde8cf",
-    fg: "#9a5205",
-    what: "Top tenth for incoming migrants, but not for flight partners. People arrive here without the air network to match.",
+  peripheral: {
+    title: "Peripheral",
+    icon: "\u25cb",
+    tint: "#e4edf7",
+    fg: "#46618a",
+    what: "Below the hub line, participation up to 0.62. Mostly one community, with a few corridors reaching outside it. The largest group, and the one the thresholds were least made for.",
   },
-  "human-bridge": {
-    title: "Human bridge",
-    icon: "⇄",
-    tint: "#e7dcfb",
-    fg: "#5b3a9e",
-    what: "Top tenth for betweenness and a z-score of +2 or more, so it brokers more than its partner count can explain. Tested after the arrival roles, so a big destination is never relabelled a bridge.",
-  },
-  "system-airport": {
-    title: "System airport",
-    icon: "✈",
-    tint: "#d9ecf9",
+  connector: {
+    title: "Connector",
+    icon: "\u21c4",
+    tint: "#dbe9f6",
     fg: "#14618f",
-    what: "Top tenth for flight partners without being top tenth for incoming migrants. A travel hub that is a weak human link.",
+    what: "Below the hub line, participation above 0.62. Ordinary in size and spread across several communities at once.",
   },
-  leaf: {
-    title: "Leaf",
-    icon: "❦",
-    tint: "#eef3f9",
-    fg: "#46618a",
-    what: "Outside the top half on origins, on incoming migrants and on betweenness, all three at once. The edge of both networks.",
+  kinless: {
+    title: "Kinless",
+    icon: "\u2733",
+    tint: "#d3e6f7",
+    fg: "#0b4470",
+    what: "Below the hub line, participation above 0.80. Its corridors are split so evenly that no community is its home.",
   },
-  mixed: {
-    title: "Mixed",
-    icon: "◌",
-    tint: "#eef3f9",
-    fg: "#46618a",
-    what: "Nothing fired: not in the top tenth of anything, not in the bottom half of everything. Ordinary, and most of the world is here.",
+  "provincial hub": {
+    title: "Provincial hub",
+    icon: "\u25b2",
+    tint: "#fdeeda",
+    fg: "#9a5205",
+    what: "Above the hub line at z \u2265 2.5, participation 0.30 or less. Large where it lives and barely present anywhere else.",
+  },
+  "connector hub": {
+    title: "Connector hub",
+    icon: "\u2726",
+    tint: "#fbddc9",
+    fg: "#b4430b",
+    what: "Above the hub line, participation between 0.30 and 0.75. Large inside its own community and well spread across the rest.",
+  },
+  "kinless hub": {
+    title: "Kinless hub",
+    icon: "\u273a",
+    tint: "#f6dcf0",
+    fg: "#8d2b76",
+    what: "Above the hub line, participation above 0.75. Large, and anchored in no community at all.",
   },
 };
+
+const ROLE_ORDER = [
+  "ultra-peripheral",
+  "peripheral",
+  "connector",
+  "kinless",
+  "provincial hub",
+  "connector hub",
+  "kinless hub",
+];
+
+// A country's row in the cartography, for the year on the slider. Missing
+// means it has no corridor above the 10,000-person floor that year, which is
+// a fact about the country and not a gap in the file.
+function cartRow(iso3, y = year()) {
+  return state.cart?.by_year?.[String(y)]?.[iso3] ?? null;
+}
+
+// Below this share of Louvain runs agreeing, the role is the algorithm's
+// randomness rather than the country's position, and the page draws it hollow.
+const CONFIDENT = () => state.cart?.confident ?? 0.9;
 
 function label(key) {
   return TYPES[key]?.title ?? key ?? "—";
 }
 
-// The Typology row explains the role it is showing, not the idea of roles.
+// The Role row explains the role it is showing, not the idea of roles.
 function typologyNote(key) {
   const type = TYPES[key];
-  return type
-    ? `${type.title}: ${type.what} ${GLOSSARY.Typology}`
-    : GLOSSARY.Typology;
+  return type ? `${type.title}: ${type.what} ${GLOSSARY.Role}` : GLOSSARY.Role;
+}
+
+// The inspector's Role row. A country below the floor has no role rather than
+// a default one, and an unstable role says so where it is read, not only in
+// the methods.
+function roleRow() {
+  const r = cartRow(state.selected);
+  if (!r) {
+    return row(
+      "Role",
+      `<span class="chip">none</span>`,
+      `No corridor above ${fmt.format(state.cart?.threshold ?? 10000)} people in ${state.year}, ` +
+        `so this country is not in the graph the roles are measured on. ${GLOSSARY.Role}`,
+    );
+  }
+  const shaky = r.stability < CONFIDENT();
+  return row(
+    "Role",
+    `<span class="chip">${label(r.role)}</span>` +
+      `<span style="color:#7a8fac"> z ${r.z.toFixed(2)} \u00b7 P ${r.p.toFixed(2)}</span>` +
+      (shaky ? `<span style="color:#7a8fac"> \u00b7 ${Math.round(r.stability * 100)}% agreed</span>` : ""),
+    (shaky
+      ? `Only ${Math.round(r.stability * 100)}% of the Louvain runs gave this role, so it sits on a ` +
+        `threshold and the name is not reliable. `
+      : "") + typologyNote(r.role),
+  );
 }
 
 /* ------------------------------------------------------------------- globe */
@@ -2250,85 +2313,300 @@ function markSelectedPoint(ctx, box, pick, y, place) {
 
 /* ---------------------------------------------------------------- section 7 */
 
-function renderTypology() {
-  const buckets = new Map(Object.keys(TYPES).map((k) => [k, []]));
-  const y = String(state.data.null_year);
-  for (const { iso3, m } of withMetrics(y)) {
-    if (m.typology && buckets.has(m.typology)) buckets.get(m.typology).push({ iso3, m });
-  }
-  const order = ["both", "destination-hub", "human-bridge", "system-airport", "leaf", "mixed"];
+// The cartographic map itself: participation across, within-community
+// strength up. Guimer\u00e0 and Amaral's cut-offs are drawn as lines rather than
+// applied silently, so a reader can see how far a country is from the name it
+// was given. Every country has a position here; only the boxes are discrete.
+function drawCartography() {
+  refreshPalette();
+  const canvas = $("cartography");
+  if (!canvas || !state.cart) return;
+  const { ctx, width, height } = surface(canvas);
+  const box = frame(width, height, { l: 52, r: 16, t: 14, b: 40 });
+  const rows = Object.entries(state.cart.by_year[String(state.year)] ?? {});
+  if (!rows.length) return;
+  const hi = Math.max(3, Math.ceil(Math.max(...rows.map(([, r]) => r.z))));
+  const lo = Math.min(-1, Math.floor(Math.min(...rows.map(([, r]) => r.z))));
+  box.x = linearScale(box, [0, 1], "x");
+  box.y = linearScale(box, [lo, hi], "y");
+  const yTicks = [];
+  for (let v = lo; v <= hi; v += 1) yTicks.push({ value: v, label: String(v) });
+  axes(ctx, box, {
+    xTicks: [0, 0.25, 0.5, 0.75, 1].map((v) => ({ value: v, label: v.toFixed(2) })),
+    yTicks,
+    xLabel: "Participation coefficient P \u2192 spread across communities",
+    yLabel: "z, size inside its own community",
+  });
 
-  // Six cards of equal size say six labels of equal weight, and they are not:
-  // mixed holds 141 of the 228 countries and leaf another 53, so the four
-  // labels the section is actually about cover a seventh of the world. One
-  // proportional strip says that before the cards say anything else.
-  const total = order.reduce((sum, key) => sum + (buckets.get(key)?.length ?? 0), 0);
+  // The boundaries. The hub line runs the width of the plot; each family's
+  // participation cuts only run on its own side of it, because that is how
+  // the rule works and a full-height line would say otherwise.
+  const hub = box.y(state.cart.hub_z);
+  ctx.save();
+  ctx.setLineDash([4, 4]);
+  ctx.strokeStyle = MUTE;
+  ctx.beginPath();
+  ctx.moveTo(box.left, hub);
+  ctx.lineTo(box.right, hub);
+  ctx.stroke();
+  ctx.strokeStyle = GRID;
+  for (const [p, above] of [[0.05, false], [0.62, false], [0.8, false], [0.3, true], [0.75, true]]) {
+    ctx.beginPath();
+    ctx.moveTo(box.x(p), above ? box.top : hub);
+    ctx.lineTo(box.x(p), above ? hub : box.bottom);
+    ctx.stroke();
+  }
+  ctx.restore();
+  ctx.fillStyle = MUTE;
+  ctx.font = "10px -apple-system, system-ui, sans-serif";
+  // At the right end of the line, where the plot is empty. On the left it sat
+  // on top of the y-axis ticks and the countries just under the hub line.
+  ctx.textAlign = "right";
+  ctx.fillText(`hubs \u00b7 z \u2265 ${state.cart.hub_z}`, box.right - 4, hub - 5);
+
+  const marks = collect("cartography");
+  const floor = CONFIDENT();
+  // Unconfident countries first, so the reliable ones are never hidden under
+  // a point the page is telling you not to trust.
+  const order = rows.slice().sort((a, b) => a[1].stability - b[1].stability);
+  for (const [iso3, r] of order) {
+    const meta = TYPES[r.role];
+    const x = box.x(r.p);
+    const py = box.y(r.z);
+    const hovered = iso3 === state.hover;
+    const sure = r.stability >= floor;
+    if (hovered) {
+      ctx.fillStyle = "rgba(15,35,64,0.16)";
+      ctx.beginPath();
+      ctx.arc(x, py, 12, 0, Math.PI * 2);
+      ctx.fill();
+    }
+    ctx.beginPath();
+    ctx.arc(x, py, hovered ? 6.5 : r.z >= state.cart.hub_z ? 3.6 : 2.6, 0, Math.PI * 2);
+    if (sure) {
+      ctx.fillStyle = meta.fg;
+      ctx.fill();
+    } else {
+      // A hollow ring is the only mark on the page that means "the method
+      // could not decide", and it is used here and nowhere else.
+      ctx.strokeStyle = meta.fg;
+      ctx.lineWidth = 1.2;
+      ctx.stroke();
+    }
+    marks.push({
+      x,
+      y: py,
+      iso3,
+      label:
+        `<b>${node(iso3).name}</b><span>${meta.title}</span>` +
+        `<span>z ${r.z.toFixed(2)} \u00b7 P ${r.p.toFixed(2)}</span>` +
+        `<span>${Math.round(r.stability * 100)}% of ${state.cart.seeds} runs agreed</span>`,
+    });
+  }
+
+  // The hubs are the countries the section is about and there are never more
+  // than a dozen, so they are named on the plot instead of in a legend. They
+  // also cluster: France, Germany and the United Kingdom sit within a z of
+  // each other most years, and three labels at the same height are one
+  // smear. Each label is pushed down until it clears the ones already
+  // placed, which is enough at this count and cheaper than a solver.
+  ctx.font = "600 10px -apple-system, system-ui, sans-serif";
+  ctx.fillStyle = INK;
+  const hubs = rows
+    .filter(([, r]) => r.z >= state.cart.hub_z)
+    .sort((a, b) => b[1].z - a[1].z);
+  // Every hub's own dot is an obstacle before any label is placed. Without
+  // this, France's label ran straight through Germany's point: the two
+  // labels never overlapped each other, so a label-only test saw nothing.
+  const placed = hubs.map(([, r]) => ({
+    x0: box.x(r.p) - 5,
+    x1: box.x(r.p) + 5,
+    ty: box.y(r.z) + 3,
+  }));
+  for (const [iso3, r] of hubs) {
+    const name = node(iso3).name;
+    const right = box.x(r.p) > box.right - 80;
+    const x = box.x(r.p) + (right ? -7 : 7);
+    const width = ctx.measureText(name).width;
+    const [x0, x1] = right ? [x - width, x] : [x, x + width];
+    let ty = box.y(r.z) + 3;
+    while (
+      placed.some((q) => Math.abs(q.ty - ty) < 11 && x0 < q.x1 + 4 && x1 > q.x0 - 4)
+    ) {
+      ty += 11;
+    }
+    placed.push({ x0, x1, ty });
+    ctx.textAlign = right ? "right" : "left";
+    ctx.fillText(name, x, ty);
+    // Once a label has been pushed off its own point, a leader line is the
+    // only thing that still says which point it belongs to.
+    if (ty > box.y(r.z) + 4) {
+      ctx.strokeStyle = MUTE;
+      ctx.lineWidth = 0.75;
+      ctx.beginPath();
+      ctx.moveTo(box.x(r.p) + (right ? -3 : 3), box.y(r.z) + 2);
+      ctx.lineTo(x + (right ? 1 : -1), ty - 3);
+      ctx.stroke();
+    }
+  }
+  // The selected country keeps a ring wherever it is, including in the crowd
+  // at the bottom left where a name would be unreadable.
+  const picked = state.selected ? cartRow(state.selected) : null;
+  if (picked) {
+    ctx.strokeStyle = INK;
+    ctx.lineWidth = 1.5;
+    ctx.beginPath();
+    ctx.arc(box.x(picked.p), box.y(picked.z), 7, 0, Math.PI * 2);
+    ctx.stroke();
+    if (picked.z < state.cart.hub_z) {
+      ctx.font = "600 10px -apple-system, system-ui, sans-serif";
+      ctx.fillStyle = INK;
+      ctx.textAlign = box.x(picked.p) > box.right - 70 ? "right" : "left";
+      ctx.fillText(
+        node(state.selected).name,
+        box.x(picked.p) + (ctx.textAlign === "right" ? -10 : 10),
+        box.y(picked.z) + 3,
+      );
+    }
+  }
+
+  chartTable(
+    "cartography",
+    `every country above the ${fmt.format(state.cart.threshold)}-person floor in ${state.year}`,
+    ["Country", "Role", "z", "P", "Runs agreeing"],
+    rows
+      .slice()
+      .sort((a, b) => b[1].z - a[1].z)
+      .map(([iso3, r]) => [
+        node(iso3).name,
+        TYPES[r.role].title,
+        r.z.toFixed(2),
+        r.p.toFixed(2),
+        `${Math.round(r.stability * 100)}%`,
+      ]),
+  );
+}
+
+function renderTypology() {
+  if (!state.cart) return;
+  const y = String(state.year);
+  const rows = state.cart.by_year[y] ?? {};
+  const buckets = new Map(ROLE_ORDER.map((k) => [k, []]));
+  for (const [iso3, r] of Object.entries(rows)) {
+    if (buckets.has(r.role)) buckets.get(r.role).push({ iso3, r });
+  }
+  const total = ROLE_ORDER.reduce((sum, key) => sum + buckets.get(key).length, 0);
+  // Against the countries that are in the migration network this year, not
+  // against the whole payload: the eight territories with no migration figures
+  // at all were never candidates for a role and counting them as missing one
+  // would overstate what the floor costs.
+  const inNetwork = withMetrics(y).length;
+  const below = inNetwork - total;
+  // Computed rather than described. "A few thousand" was true and would have
+  // stopped being true the first time DESA revised, and calling them islands
+  // was wrong about Gibraltar, San Marino and the Vatican.
+  const missing = new Set(withMetrics(y).map((r) => r.iso3).filter((iso3) => !rows[iso3]));
+  const yi = state.edges.years.indexOf(Number(y));
+  let widestBelow = 0;
+  for (const edge of state.edges.edges) {
+    const people = edge[2][yi];
+    if (!people || people <= widestBelow) continue;
+    if (missing.has(state.edges.countries[edge[0]]) || missing.has(state.edges.countries[edge[1]]))
+      widestBelow = people;
+  }
+
+  const tag = $("typology-tag");
+  if (tag) {
+    const sure = Object.values(rows).filter((r) => r.stability >= CONFIDENT()).length;
+    tag.textContent =
+      `(${y} \u00b7 follows the slider \u00b7 ${sure} of ${total} roles agreed by ` +
+      `${Math.round(CONFIDENT() * 100)}% of ${state.cart.seeds} runs)`;
+  }
+
+  drawCartography();
+
+  // Seven cards of equal size say seven labels of equal weight, and they are
+  // not: peripheral alone holds more than half the world. One proportional
+  // strip says that before the cards say anything else.
   const strip = $("typology-strip");
   if (strip && total) {
-    strip.innerHTML = order
-      .map((key) => {
-        const meta = TYPES[key];
-        const count = buckets.get(key)?.length ?? 0;
-        if (!count) return "";
-        const share = (count / total) * 100;
-        // The cards' tints are near-white badge backgrounds, and leaf and
-        // mixed are the same value in both tint and text colour: side by
-        // side on one bar they merge into a single block across 85% of it,
-        // exactly where the eye lands. The slices take each label's text
-        // colour at low alpha instead, and the 2px gaps between them carry
-        // the boundary that colour cannot.
-        return (
-          `<span class="type-slice" data-type="${key}"` +
-          ` aria-label="${meta.title}: ${count} of ${total} countries"` +
-          ` title="${meta.title}: ${count} of ${total}"` +
-          ` style="width:${share}%;background:${meta.fg}29;color:${meta.fg}">` +
-          // Under a few per cent there is no room for a number without
-          // clipping it; the slice keeps its colour and its label.
-          `${share > 7 ? `${meta.title} ${count}` : share > 3 ? count : ""}</span>`
-        );
-      })
-      .join("");
+    strip.innerHTML = ROLE_ORDER.map((key) => {
+      const meta = TYPES[key];
+      const count = buckets.get(key).length;
+      if (!count) return "";
+      const share = (count / total) * 100;
+      return (
+        `<span class="type-slice" data-type="${key}"` +
+        ` aria-label="${meta.title}: ${count} of ${total} countries"` +
+        ` title="${meta.title}: ${count} of ${total}"` +
+        ` style="width:${share}%;background:${meta.fg}29;color:${meta.fg}">` +
+        `${share > 9 ? `${meta.title} ${count}` : share > 3 ? count : ""}</span>`
+      );
+    }).join("");
   }
 
-  $("typology-cards").innerHTML = order
-    .map((key) => {
-      const meta = TYPES[key];
-      const members = buckets.get(key) ?? [];
-      // Each bucket shows the countries that define it, so the examples are
-      // ranked by whatever put them in the bucket. A leaf's examples are the
-      // smallest, not the largest.
-      const sorter =
-        key === "human-bridge"
-          ? (a, b) => (b.m.z ?? 0) - (a.m.z ?? 0)
-          : key === "system-airport"
-            ? (a, b) => node(b.iso3).flight_degree - node(a.iso3).flight_degree
-            : key === "leaf"
-              ? (a, b) => a.m.in_strength - b.m.in_strength
-              : (a, b) => b.m.in_strength - a.m.in_strength;
-      const examples = members
-        .slice()
-        .sort(sorter)
-        .slice(0, 3)
-        .map((r) => r.iso3);
-      const chips = examples
-        .map(
-          (iso3) =>
-            `<button class="eg-chip" data-iso3="${iso3}" type="button">${iso3}</button>`,
-        )
-        .join("");
-      return `<article class="type" data-type="${key}">
+  $("typology-cards").innerHTML = ROLE_ORDER.map((key) => {
+    const meta = TYPES[key];
+    const members = buckets.get(key);
+    // Examples are the countries that define the bucket, so each is ranked by
+    // whatever put it there: hubs by how large they are inside their own
+    // community, the rest by how far they reach outside it.
+    const sorter =
+      key.endsWith("hub")
+        ? (a, b) => b.r.z - a.r.z
+        : key === "ultra-peripheral"
+          ? (a, b) => a.r.p - b.r.p
+          : (a, b) => b.r.p - a.r.p;
+    const chips = members
+      .slice()
+      .sort(sorter)
+      .slice(0, 3)
+      .map((m) => `<button class="eg-chip" data-iso3="${m.iso3}" type="button">${m.iso3}</button>`)
+      .join("");
+    return `<article class="type" data-type="${key}">
         <div class="badge" style="background:${meta.tint};color:${meta.fg}">${meta.icon}</div>
         <h3 style="color:${meta.fg}">${meta.title}</h3>
         <p>${meta.what}</p>
-        <p class="eg">${members.length} ${members.length === 1 ? "country" : "countries"}<br />Examples: ${chips || "none"}</p>
-        <button class="eg-all" data-type="${key}" type="button">See all ${members.length} →</button>
+        <p class="eg">${members.length} ${members.length === 1 ? "country" : "countries"}${
+          members.length ? `<br />Examples: ${chips}` : " in this year"
+        }</p>${
+          // An empty role keeps its card, because a reader still needs the
+          // word to read the chart, but a button that opens nothing goes.
+          members.length
+            ? `<button class="eg-all" data-type="${key}" type="button">See all ${members.length} \u2192</button>`
+            : ""
+        }
       </article>`;
-    })
-    .join("");
+  }).join("");
+
+  const note = $("typology-note");
+  if (note) {
+    const moved = state.cart.moved;
+    const first = state.cart.years[0];
+    const last = state.cart.years.at(-1);
+    // Semicolons between the three, because each item has a comma inside it.
+    // No bold on the names: .notice b is the block headline of a notice, so an
+    // inline one puts every country on a line of its own.
+    const named = moved
+      .slice(0, 3)
+      .map((m) => `${m.name}, ${m.from} to ${m.to}`)
+      .join("; ");
+    note.innerHTML =
+      `<b>${moved.length} countries changed role between ${first} and ${last}</b>` +
+      `Counting only the ones whose role was agreed by ${Math.round(CONFIDENT() * 100)}% of runs at ` +
+      `both ends, because an unstable label moving is Louvain moving and not the world. ` +
+      `The three that climbed furthest are ${named}. Venezuela's outward stock went from ` +
+      `216,183 to 8,328,514 over that span and almost all of it went to Colombia, Peru and ` +
+      `Chile, which is what a provincial hub is: enormous inside one community, absent from ` +
+      `the others. Of the ${inNetwork} countries with migration figures in ${y}, ${below} have ` +
+      `no corridor above the ${fmt.format(state.cart.threshold)}-person floor and so carry no ` +
+      `role. They are the microstates and small territories, and the biggest corridor any of ` +
+      `them has is ${fmt.format(widestBelow)} people.`;
+  }
 
   const host = $("typology-cards");
-  // Hovering an example says who it is; clicking selects it. The card's own
-  // button opens the full membership in a drawer.
+  if (host.dataset.wired) return;
+  host.dataset.wired = "on";
   host.addEventListener("pointermove", (event) => {
     const chip = event.target.closest(".eg-chip");
     if (!chip) {
@@ -2336,14 +2614,13 @@ function renderTypology() {
       return;
     }
     const iso3 = chip.dataset.iso3;
-    const m = metrics(iso3, y);
-    const n = node(iso3);
-    if (!m) return;
+    const r = cartRow(iso3);
+    if (!r) return;
     showTip(
       event,
-      `<b>${n.name}</b><span>${label(m.typology)}</span>` +
-        `<span>${fmt.format(m.in_strength)} incoming · ${m.in_degree} origins</span>` +
-        `<span>${fmt.format(n.flight_degree)} flight partners</span>`,
+      `<b>${node(iso3).name}</b><span>${TYPES[r.role].title}</span>` +
+        `<span>z ${r.z.toFixed(2)} \u00b7 P ${r.p.toFixed(2)}</span>` +
+        `<span>${Math.round(r.stability * 100)}% of ${state.cart.seeds} runs agreed</span>`,
     );
   });
   host.addEventListener("pointerleave", hideTip);
@@ -2354,31 +2631,34 @@ function renderTypology() {
       return;
     }
     const all = event.target.closest(".eg-all");
-    if (all) openTypologyDrawer(all.dataset.type, buckets.get(all.dataset.type) ?? []);
+    if (all) openTypologyDrawer(all.dataset.type);
   });
 }
 
 // The full membership of one role, with the numbers that put each country in
 // it, in a drawer rather than five expanding cards.
-function openTypologyDrawer(key, members) {
+function openTypologyDrawer(key) {
   const meta = TYPES[key];
   const drawer = $("type-drawer");
-  if (!drawer) return;
-  const y = String(state.data.null_year);
+  if (!drawer || !state.cart) return;
+  const y = String(state.year);
+  const members = Object.entries(state.cart.by_year[y] ?? {}).filter(([, r]) => r.role === key);
+  const floor = CONFIDENT();
   const rows = members
     .slice()
-    .sort((a, b) => b.m.in_strength - a.m.in_strength)
-    .map(({ iso3, m }) => {
-      const n = node(iso3);
+    .sort((a, b) => b[1].z - a[1].z)
+    .map(([iso3, r]) => {
+      const m = metrics(iso3, y);
       return `<tr data-iso3="${iso3}">
-        <td>${n.name}</td>
-        <td>${fmt.format(m.in_strength)}</td>
-        <td>${m.in_degree}</td>
-        <td>${m.z === undefined ? "—" : m.z.toFixed(2)}</td>
-        <td>${fmt.format(n.flight_degree)}</td>
+        <td>${node(iso3).name}</td>
+        <td>${r.z.toFixed(2)}</td>
+        <td>${r.p.toFixed(2)}</td>
+        <td>${Math.round(r.stability * 100)}%${r.stability < floor ? " \u26a0" : ""}</td>
+        <td>${m ? fmt.format(m.in_strength) : "\u2014"}</td>
       </tr>`;
     })
     .join("");
+  const shaky = members.filter(([, r]) => r.stability < floor).length;
   drawer.innerHTML = `
     <div class="drawer-head">
       <div>
@@ -2386,12 +2666,18 @@ function openTypologyDrawer(key, members) {
         <h3 style="color:${meta.fg}">${meta.title}</h3>
         <p>${meta.what}</p>
       </div>
-      <button class="drawer-close" type="button" aria-label="Close">×</button>
+      <button class="drawer-close" type="button" aria-label="Close">\u00d7</button>
     </div>
-    <p class="drawer-note">${members.length} countries in ${y}. Click a row to select it.</p>
+    <p class="drawer-note">${members.length} countries in ${y}${
+      shaky
+        ? `, of which ${shaky} ${shaky === 1 ? "sits" : "sit"} close enough to a threshold ` +
+          `that fewer than ${Math.round(floor * 100)}% of the runs agreed; ` +
+          `${shaky === 1 ? "it is" : "they are"} marked \u26a0`
+        : ", all of them agreed by every run that matters"
+    }. Click a row to select it.</p>
     <table class="drawer-table">
       <thead><tr>
-        <th>Country</th><th>Incoming</th><th>Origins</th><th>z</th><th>Flights</th>
+        <th>Country</th><th>z</th><th>P</th><th>Runs agreeing</th><th>Incoming</th>
       </tr></thead>
       <tbody>${rows}</tbody>
     </table>`;
@@ -2484,11 +2770,11 @@ function renderDenmarkPanels() {
       ["Betweenness", `#${m.betweenness_rank}`],
       ["z-score", m.z === undefined ? "—" : m.z.toFixed(2)],
       ["Flight partners", fmt.format(n.flight_degree)],
-      ["Typology", label(m.typology)],
+      ["Role", cartRow(iso3, y) ? label(cartRow(iso3, y).role) : "none"],
     ]
       .map(([k, v]) => {
-        const note = k === "Typology"
-          ? typologyNote(m.typology)
+        const note = k === "Role"
+          ? typologyNote(cartRow(iso3, y)?.role)
           : GLOSSARY[{
             Incoming: "Incoming migrants (stock)",
             Outgoing: "Outgoing migrants (stock)",
@@ -2779,6 +3065,9 @@ function setYear(value) {
   R.map();
   R.hist();
   R.ccdf();
+  // The roles move with the year now that nothing in them is a 2014 snapshot,
+  // which is the whole reason the flight axis came out of them.
+  renderTypology();
   renderInspector();
   renderEdge();
 }
@@ -3022,9 +3311,14 @@ async function main() {
     // Resolved against this module, not the page, so the post loads the same
     // two files whatever depth it is served from.
     const data = (name) => new URL(`../data/${name}`, import.meta.url);
-    const [corridors, edges, world] = await Promise.all([
+    const [corridors, edges, cart, world] = await Promise.all([
       fetch(data("week03_corridors.json")).then((r) => r.json()),
       fetch(data("week03_edges.json")).then((r) => r.json()),
+      // Section 6 is the only reader, and a page that still works without its
+      // role cartography is better than one that fails to open without it.
+      fetch(data("week03_cartography.json"))
+        .then((r) => r.json())
+        .catch(() => null),
       // Land is decoration for the argument but essential for reading a map,
       // so a failure to load it must not stop the post.
       fetch(data("world_outline.geo.json"))
@@ -3033,6 +3327,7 @@ async function main() {
     ]);
     state.data = corridors;
     state.edges = edges;
+    state.cart = cart;
     state.world = world;
     state.year = corridors.null_year;
     $("year-slider").max = String(corridors.years.length - 1);
@@ -3051,6 +3346,7 @@ async function main() {
       "ccdf",
       "scatter-between",
       "scatter-z",
+      "cartography",
       "prestige",
       "dk-time",
       "dk-rank",

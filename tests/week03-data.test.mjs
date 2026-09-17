@@ -21,6 +21,7 @@ const edges = load("week03_edges.json");
 const calendar = load("week03_calendar.json");
 const closures = load("week03_closures.json");
 const asylum = load("week03_asylum.json");
+const cart = load("week03_cartography.json");
 
 test("the two migration files agree on countries, years and people", () => {
   assert.deepEqual(edges.years, corridors.years, "the two files disagree on which years exist");
@@ -177,5 +178,72 @@ test("a country's own corridors agree with the strengths on its node", () => {
       outbound.get(iso3) ?? 0,
       `${iso3} out-strength disagrees with its corridors`,
     );
+  }
+});
+
+test("the role cartography covers the same years and countries as the network", () => {
+  assert.deepEqual(
+    cart.years,
+    edges.years.map(String),
+    "the cartography and the edge list disagree about which years exist",
+  );
+  for (const year of cart.years) {
+    const rows = cart.by_year[year];
+    assert.ok(rows && Object.keys(rows).length > 150, `${year} has almost nobody in it`);
+    for (const [iso3, row] of Object.entries(rows)) {
+      assert.ok(corridors.nodes[iso3], `${iso3} has a role and no node`);
+      assert.ok(row.p >= 0 && row.p <= 1, `${iso3} in ${year}: P ${row.p} is not a share`);
+      // A modal role agreed by fewer runs than there are roles to choose from
+      // would mean the vote never converged on anything.
+      assert.ok(
+        row.stability > 1 / 7 && row.stability <= 1,
+        `${iso3} in ${year}: ${row.stability} of the runs agreed`,
+      );
+      assert.ok(cart.roles[row.role], `${iso3} in ${year} carries an unknown role ${row.role}`);
+    }
+  }
+});
+
+test("every role on the page matches the coordinates it was derived from", () => {
+  // The seven names are Guimera and Amaral's and so are the cut-offs. The page
+  // states them in prose, the script applies them, and nothing checked that the
+  // two agree. They can only agree because the coordinates are averaged over
+  // the runs that produced the role a country is shown under; pooling every run
+  // put four countries on the wrong side of their own printed P. This is the
+  // test that would catch that coming back.
+  const role = (z, p) => {
+    if (z >= cart.hub_z) return p <= 0.3 ? "provincial hub" : p <= 0.75 ? "connector hub" : "kinless hub";
+    if (p <= 0.05) return "ultra-peripheral";
+    if (p <= 0.62) return "peripheral";
+    return p <= 0.8 ? "connector" : "kinless";
+  };
+  for (const year of cart.years) {
+    for (const [iso3, row] of Object.entries(cart.by_year[year])) {
+      assert.equal(
+        row.role,
+        role(row.z, row.p),
+        `${iso3} in ${year} is called ${row.role} at z ${row.z}, P ${row.p}, ` +
+          `which the published thresholds do not give`,
+      );
+    }
+  }
+});
+
+test("a role only counts as having moved when both ends were agreed", () => {
+  const first = cart.years[0];
+  const last = cart.years.at(-1);
+  for (const row of cart.moved) {
+    const was = cart.by_year[first][row.iso3];
+    const now = cart.by_year[last][row.iso3];
+    assert.ok(was && now, `${row.iso3} is on the moved list and missing from an end year`);
+    assert.notEqual(was.role, now.role, `${row.iso3} is on the moved list and did not move`);
+    assert.equal(was.role, row.from);
+    assert.equal(now.role, row.to);
+    for (const [label, end] of [[first, was], [last, now]]) {
+      assert.ok(
+        end.stability >= cart.confident,
+        `${row.iso3} is on the moved list with only ${end.stability} agreement in ${label}`,
+      );
+    }
   }
 });
