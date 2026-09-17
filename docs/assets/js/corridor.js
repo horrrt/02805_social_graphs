@@ -412,6 +412,8 @@ export const GLOSSARY = {
     "How many countries have at least one direct air route to here. Access, not people.",
   "Flight routes":
     "How many distinct airport-to-airport routes connect here to somewhere abroad. A route existing says nothing about seats or frequency.",
+  PageRank:
+    "A weighted random walk over the corridors, asking not how many people you draw but whether you draw them from countries that are themselves well-connected.",
   Typology:
     "One of six labels, assigned by a cascade of rank tests rather than raw values, so a label means the same thing in any year: both, destination hub, human bridge, system airport, leaf, and mixed when none of the five fired. Section 6 has the full rule.",
   "k (in)": "In-degree: the number of countries that send people here.",

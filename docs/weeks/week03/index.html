@@ -9,7 +9,7 @@
     />
     <title>Corridor Control · Log–Log Legends</title>
     <link href="../../assets/favicon.svg" rel="icon" type="image/svg+xml" />
-    <link href="../../assets/css/corridor.css?v=b94a4548aa" rel="stylesheet" />
+    <link href="../../assets/css/corridor.css?v=a158a0adbc" rel="stylesheet" />
   </head>
   <body class="corridor">
     <a class="skip" href="#main">Skip to content</a>
@@ -113,15 +113,6 @@
               <h3>→ Where they went</h3>
               <ol id="sel-out"></ol>
             </div>
-            <p class="fineprint">
-              Incoming migrants = people living here who were born elsewhere,
-              counted as a stock, not as arrivals this year. Betweenness = how
-              often this country sits on the shortest paths between others,
-              with a heavy link counted as a short step. PageRank asks a
-              different question: not how many people you draw, but whether
-              you draw from countries that are themselves well-connected —
-              important friends, not just a lot of them.
-            </p>
           </aside>
         </div>
       </section>
@@ -214,8 +205,7 @@
                   One point per country. Migration graph is directed and
                   weighted; distance along a corridor is 1 / people, so a heavy
                   corridor is a short step. Click any point to select that
-                  country; every chart and panel on the page follows, and the
-                  page does not scroll.
+                  country; every chart and panel on the page follows.
                 </p>
                 <p class="axis-note" id="between-note"></p>
                 <div class="legend">
@@ -672,10 +662,9 @@
                     <b class="qa-slider-now" id="v-graph-floor-now">400k</b>
                   </div>
                   <p class="axis-note">
-                    These two sliders change this chart only; the year at the
-                    top of the page stays where you left it. Drag to pan,
-                    scroll to zoom, drag a country to pull it out of the pile.
-                    Click one to select it everywhere on the page.
+                    Both sliders change this chart only. Drag to pan, scroll to
+                    zoom, drag a country out of the pile, click one to select
+                    it.
                   </p>
                   <div class="echart tall" id="v-graph"></div>
                   <p class="qa-answer" id="v-graph-answer"></p>
@@ -709,19 +698,12 @@
                 <div class="notice">
                   <span class="ico">🕰️</span>
                   <span>
-                    <b>The next three have a date on them.</b> Everything else
-                    on this page runs on UN DESA's stock table, which is eight
-                    five-year snapshots: it cannot see a month, a war or a
-                    border closing. These three come from the only dated
-                    sources in the catalogue that reach further. Eurostat
-                    counts asylum applications by the month, the Oxford
-                    tracker codes travel restrictions by the day, and IOM
-                    records deaths by the incident. Different sources, so the
-                    three grids are three different things counted three
-                    different ways, and none of them is the corridor data
-                    above. They do not cover the same world either: the
-                    applications are 34 European countries, the closures and
-                    the deaths are global.
+                    <b>The next three have a date on them.</b> The rest of the
+                    page is eight five-year snapshots and cannot see a month, a
+                    war or a border closing. These three can, and they are
+                    three different sources counting three different things:
+                    asylum applications in Europe, border closures worldwide,
+                    deaths worldwide.
                   </span>
                 </div>
 
@@ -735,12 +717,11 @@
                     ></select>
                   </div>
                   <p class="axis-note">
-                    First-time asylum applications lodged in 34 European
-                    countries, by month, from Eurostat. One row is a year, one
-                    cell a month. The picker changes this grid and
-                    nothing else on the page. Temporary protection is a
-                    different legal route and is not in this table, so most
-                    Ukrainians after February 2022 are missing from it.
+                    First-time asylum applications in 34 European countries,
+                    from Eurostat. One row is a year, one cell a month.
+                    Temporary protection is a different legal route and is not
+                    counted here, so most Ukrainians after February 2022 are
+                    missing.
                   </p>
                   <div class="echart grid" id="v-asylum"></div>
                   <p class="qa-answer" id="v-asylum-answer"></p>
@@ -749,11 +730,9 @@
                 <article class="qa-item">
                   <h3>4 &middot; The day the borders shut</h3>
                   <p class="axis-note">
-                    One cell is one day. The darker it is, the more countries
-                    were closed to arrivals from everywhere that day, on the
-                    Oxford tracker's top level of travel restriction. The
-                    denominator moves as countries enter and leave the panel,
-                    so every count comes with the number reporting.
+                    One cell is one day, and the darker it is, the more
+                    countries were closed to arrivals from everywhere. Oxford
+                    tracker, top level of travel restriction.
                   </p>
                   <div class="echart closures" id="v-closures"></div>
                   <p class="qa-answer" id="v-closures-answer"></p>
@@ -762,12 +741,10 @@
                 <article class="qa-item">
                   <h3>5 &middot; Deaths on the routes, day by day</h3>
                   <p class="axis-note">
-                    The two charts above count people who applied and borders
-                    that closed. This one counts the people who did not
-                    arrive: IOM's Missing Migrants Project, one row per
-                    recorded incident. One cell is one day, and the darker it
-                    is, the more people were recorded dead or missing on a
-                    migration route.
+                    The people who did not arrive. IOM's Missing Migrants
+                    Project, one row per recorded incident; one cell is one
+                    day, and the darker it is, the more were recorded dead or
+                    missing on a migration route.
                   </p>
                   <div class="echart calendar" id="v-calendar"></div>
                   <p class="qa-answer" id="v-calendar-answer"></p>
@@ -942,6 +919,6 @@
       </footer>
     </main>
 
-    <script src="../../assets/js/week03-boot.js?v=b94a4548aa" type="module"></script>
+    <script src="../../assets/js/week03-boot.js?v=a158a0adbc" type="module"></script>
   </body>
 </html>

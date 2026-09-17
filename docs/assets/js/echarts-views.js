@@ -539,17 +539,14 @@ function answerAsylum() {
         ? ` — heavier in some years than others, without one dominant month`
         : `, which is close to what an even flow would give and reads as a steady one`) +
     `. Most of it went to ${where}. ` +
-    (blank ? `<b>${blank}</b> months have no published figure and are drawn as holes — ` +
-      `Eurostat suppresses small cells, so a blank is a silence, not a zero. ` : "") +
-    `Across the ${Object.keys(asylum.origins).length} origins big enough to ship ` +
-    `here, the busiest month in Europe is <b>${asylum.months[worldPeak]}</b>, at ` +
-    `<b>${fmt(asylum.totals[worldPeak])}</b> applications — under Eurostat's own ` +
-    `published total for that month, which includes the small origins this file drops. These are applications and not arrivals: somebody who applies ` +
-    `in Hungary and again in Germany is counted twice, and the page's own corridor ` +
-    `data would see them once, in whichever country they ended up. People granted ` +
-    `temporary protection are not here either, which is why Ukraine after 2022 ` +
-    `looks quiet on a grid of asylum applications: four million of them never ` +
-    `filed one.`;
+    (blank
+      ? `<b>${blank}</b> months have no published figure and are drawn as holes: ` +
+        `Eurostat suppresses small cells, so a blank is a silence, not a zero. `
+      : "") +
+    `The busiest month in Europe across every origin here is ` +
+    `<b>${asylum.months[worldPeak]}</b>, at <b>${fmt(asylum.totals[worldPeak])}</b>. ` +
+    `These are applications, not arrivals: one person who applies in Hungary and again ` +
+    `in Germany is counted twice, where the corridor data upstairs would see them once.`;
 }
 
 function wireAsylum() {
