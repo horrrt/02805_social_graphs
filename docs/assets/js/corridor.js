@@ -151,6 +151,19 @@ export function linkAlpha(edge) {
 }
 
 const $ = (id) => document.getElementById(id);
+
+// The build stamp that week03-boot.js put on this module's own URL. new URL()
+// drops the query when it resolves a relative path, so a data file would
+// otherwise sit at a fixed address and a reader would keep the previous
+// deploy's numbers for as long as the cache holds them. The seven data files
+// are inputs to this stamp's hash, so changing one moves it.
+const BUILD = new URL(import.meta.url).searchParams.get("v") ?? "";
+function dataUrl(name) {
+  const url = new URL(`../data/${name}`, import.meta.url);
+  if (BUILD) url.searchParams.set("v", BUILD);
+  return url;
+}
+
 const fmt = new Intl.NumberFormat("en-GB");
 const compact = new Intl.NumberFormat("en-GB", {
   notation: "compact",
@@ -3309,8 +3322,9 @@ export async function start() {
 async function main() {
   try {
     // Resolved against this module, not the page, so the post loads the same
-    // two files whatever depth it is served from.
-    const data = (name) => new URL(`../data/${name}`, import.meta.url);
+    // files whatever depth it is served from, and stamped so a deploy cannot
+    // serve one reader this week's code against last week's numbers.
+    const data = dataUrl;
     const [corridors, edges, cart, world] = await Promise.all([
       fetch(data("week03_corridors.json")).then((r) => r.json()),
       fetch(data("week03_edges.json")).then((r) => r.json()),

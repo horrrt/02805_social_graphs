@@ -9,6 +9,19 @@
 
 const $ = (id) => document.getElementById(id);
 
+// The build stamp that week03-boot.js put on this module's own URL. new URL()
+// drops the query when it resolves a relative path, so a data file would
+// otherwise sit at a fixed address and a reader would keep the previous
+// deploy's numbers for as long as the cache holds them. The seven data files
+// are inputs to this stamp's hash, so changing one moves it.
+const BUILD = new URL(import.meta.url).searchParams.get("v") ?? "";
+function dataUrl(name) {
+  const url = new URL(`../data/${name}`, import.meta.url);
+  if (BUILD) url.searchParams.set("v", BUILD);
+  return url;
+}
+
+
 let api = null;
 let echarts = null;
 let loading = null;
@@ -436,7 +449,7 @@ const asylumState = { origin: "SY" };
 
 async function loadAsylum() {
   if (asylum) return asylum;
-  const url = new URL("../data/week03_asylum.json", import.meta.url);
+  const url = dataUrl("week03_asylum.json");
   asylum = await fetch(url).then((r) => r.json());
   return asylum;
 }
@@ -605,7 +618,7 @@ let closures = null;
 
 async function loadClosures() {
   if (closures) return closures;
-  const url = new URL("../data/week03_closures.json", import.meta.url);
+  const url = dataUrl("week03_closures.json");
   closures = await fetch(url).then((r) => r.json());
   return closures;
 }
@@ -738,7 +751,7 @@ let calendar = null;
 
 async function loadCalendar() {
   if (calendar) return calendar;
-  const url = new URL("../data/week03_calendar.json", import.meta.url);
+  const url = dataUrl("week03_calendar.json");
   calendar = await fetch(url).then((r) => r.json());
   return calendar;
 }

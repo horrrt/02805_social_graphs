@@ -247,3 +247,55 @@ test("a role only counts as having moved when both ends were agreed", () => {
     }
   }
 });
+
+test("ranks are competition ranks, so equal values never split", () => {
+  // The generator used to rank by a plain sort, which breaks ties by whatever
+  // order the dictionary happened to be in. At 2020 that is 200 of 228
+  // countries on a tied out-degree: Pakistan and Spain both send to 85 and one
+  // was shown as #12 and the other as #13, for a reason no reader could see.
+  // scipy's rankdata(method="min") fixes it and this pins the three properties
+  // that make a "#12" mean something.
+  const FIELDS = [
+    ["in_strength", "in_strength_rank"],
+    ["out_strength", "out_strength_rank"],
+    ["in_degree", "in_degree_rank"],
+    ["out_degree", "out_degree_rank"],
+    ["betweenness", "betweenness_rank"],
+    ["pagerank", "pagerank_rank"],
+  ];
+  for (const year of corridors.years) {
+    const y = String(year);
+    const members = Object.keys(corridors.nodes).filter((iso3) => corridors.nodes[iso3].years?.[y]);
+    if (!members.length) continue;
+    for (const [valueKey, rankKey] of FIELDS) {
+      const rows = members.map((iso3) => corridors.nodes[iso3].years[y]);
+      const byValue = new Map();
+      for (const row of rows) {
+        const seen = byValue.get(row[valueKey]) ?? new Set();
+        seen.add(row[rankKey]);
+        byValue.set(row[valueKey], seen);
+      }
+      for (const [value, ranks] of byValue) {
+        assert.equal(
+          ranks.size,
+          1,
+          `${y} ${valueKey}: ${value} carries ranks ${[...ranks].join(", ")}`,
+        );
+      }
+      // A bigger value takes a better rank, and a rank of r means exactly
+      // r - 1 countries scored above it. Together those rule out both a
+      // reversed sort and the off-by-one that dense ranking would give.
+      const descending = [...byValue.keys()].sort((a, b) => b - a);
+      let expected = 1;
+      for (const value of descending) {
+        const rank = [...byValue.get(value)][0];
+        assert.equal(
+          rank,
+          expected,
+          `${y} ${valueKey}: ${value} is ranked ${rank}, but ${expected - 1} countries score above it`,
+        );
+        expected += rows.filter((row) => row[valueKey] === value).length;
+      }
+    }
+  }
+});
