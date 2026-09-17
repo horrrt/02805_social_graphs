@@ -17,14 +17,6 @@ import {
   predictionScore,
   tokenizeCommand,
 } from "../docs/assets/js/arcade-core.mjs";
-import { createTerminal } from "../docs/assets/js/terminal.mjs";
-import {
-  pitch,
-  frequency,
-  voiceNames,
-  wav,
-  scheduleNotes,
-} from "../docs/assets/js/audio.mjs";
 const read = (name) =>
   JSON.parse(
     readFileSync(new URL("../docs/assets/data/" + name, import.meta.url)),
@@ -171,7 +163,7 @@ test("TF-IDF search handles an independent tiny corpus, empty queries and unknow
   assert.equal(actual.search("spider").length, 12);
   assert(actual.search("mutant")[0].node.text.toLowerCase().includes("mutant"));
 });
-test("command parsing never evaluates input and resolves actual article names", () => {
+test("article lookup resolves real names and refuses ambiguous or absent ones", () => {
   assert.deepEqual(tokenizeCommand('bfs "Doctor Strange" hulk'), [
     "bfs",
     "Doctor Strange",
@@ -180,32 +172,6 @@ test("command parsing never evaluates input and resolves actual article names", 
   assert.equal(resolveNode(data, "spider-man").id, "Spider-Man");
   assert.throws(() => resolveNode(data, "Spider"));
   assert.throws(() => resolveNode(data, "not-in-roster"));
-  const term = createTerminal(data);
-  assert.match(term.execute("bfs baymax spider-man").text, /No route/);
-  assert.match(term.execute("top --in 10").text, /106\s+Spider-Man/);
-  assert.match(term.execute("strand hulk").text, /0 stranded/);
-  assert.match(term.execute('bfs "Doctor Strange" hulk').text, /hops/);
-  assert.match(
-    term.execute("rewire --swaps 20 --seed 7").text,
-    /20\/20 successful swaps/,
-  );
-  assert.equal(term.scenario.completed, 20);
-  assert.match(term.execute("strand hulk").text, /rewired core, seed 7/);
-  assert.match(
-    term.execute("bfs hulk spider-man").text,
-    /Original directed snapshot/,
-  );
-  term.execute("restore");
-  assert.equal(term.scenario, null);
-  assert.throws(() => term.execute("rewire --swaps"));
-  assert.throws(() => term.execute("rewire --unknown 1"));
-  assert.throws(() => term.execute("eval alert(1)"));
-  assert.throws(() => term.execute("strand baymax"));
-  assert.equal(term.execute("open search").open, "search");
-  assert.match(
-    term.execute("search radiation").text,
-    /303 short roster descriptions/,
-  );
 });
 test("prediction scores enforce finite bounds and exact guesses score 100", () => {
   assert.equal(predictionScore(5, 5, 0, 20), 100);
@@ -213,65 +179,6 @@ test("prediction scores enforce finite bounds and exact guesses score 100", () =
   assert.equal(predictionScore(10, 5, 0, 20), 75);
   for (const v of [NaN, Infinity, -1, 21])
     assert.throws(() => predictionScore(v, 5, 0, 20));
-});
-test("every article maps to a valid bounded pitch and voice, including community zero", () => {
-  for (const node of data.nodes) {
-    assert(pitch(node) >= 48 && pitch(node) <= 84);
-    assert(voiceNames[node.community % 4]);
-    assert(Number.isFinite(frequency(pitch(node))));
-  }
-  const scheduled = [];
-  const mock = {
-    createOscillator() {
-      return {
-        set type(value) {
-          assert(["sine", "triangle", "sawtooth", "square"].includes(value));
-        },
-        frequency: { value: 0 },
-        connect(target) {
-          return target;
-        },
-        start(time) {
-          scheduled.push(time);
-        },
-        stop() {},
-      };
-    },
-    createGain() {
-      return {
-        gain: {
-          setValueAtTime() {},
-          linearRampToValueAtTime() {},
-          exponentialRampToValueAtTime() {},
-        },
-        connect(target) {
-          return target;
-        },
-      };
-    },
-    createBiquadFilter() {
-      return {
-        frequency: { value: 0 },
-        connect(target) {
-          return target;
-        },
-      };
-    },
-  };
-  scheduleNotes(mock, {}, data.nodes.slice(0, 5), 120, 0);
-  assert.deepEqual(scheduled, [0, 0.5, 1, 1.5, 2]);
-});
-test("WAV export has correct PCM headers, duration and clipped sample encoding", () => {
-  const bytes = wav({
-      sampleRate: 44100,
-      getChannelData: () => new Float32Array([-2, 0, 0.5, 2]),
-    }),
-    v = new DataView(bytes);
-  assert.equal(bytes.byteLength, 52);
-  assert.equal(v.getUint32(24, true), 44100);
-  assert.equal(v.getUint32(40, true), 8);
-  assert.equal(v.getInt16(44, true), -32768);
-  assert.equal(v.getInt16(50, true), 32767);
 });
 test("the transit schematic uses each real hub link once and never invents a track", () => {
   const transit = read("week02_transit.json"),

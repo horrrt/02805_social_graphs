@@ -15,29 +15,21 @@ repository and pinned by version.
 | Marvel Transit Authority | Week 2 · Models & null models | `/weeks/week02/` | Directed routes, articulation effects and a degree-controlled comparison |
 | Corridor Control | Week 3 · Who matters, and why | `/weeks/week03/` | Two country networks, weighted betweenness and a degree-preserving null |
 
-The lobby at `/` leads with the two published weekly posts. The remaining
+The lobby at `/` leads with the three published weekly posts. The remaining
 course dates sit under Upcoming weeks. Each post follows a short question,
 interaction, finding and takeaway; Evidence & details retains the full analysis.
-Extra tools sit under Explore. Both visual editions use this reading flow.
 
-| Free play (not posts) | Route | What the visitor learns |
-| --- | --- | --- |
-| MARVEL-OS 303 | `/os/` | Operate the graph through real commands and movable app windows |
-| Prediction log | Across all cabinets | Commit a first guess, reveal the result, record the learning |
-| Hero Trumps | `/trumps/` | Different centrality metrics answer different questions; five-card coverage |
-| Walk / Listen | `/sound/` | Hear a seeded random walk and download it as WAV |
-| Keep It Together | `/creature/` | Remove a node, observe components, add hypothetical repair links |
-| Hidden Districts · Inside the Articles · Word Finder | `/os/?app=…` | One Louvain partition; the 303 roster descriptions; TF-IDF search |
-
-Weeks 1–2 are posted. The free-play pages are experiments over the same
-snapshot, not hand-ins, and carry no week number. The Notepad and TF-IDF apps
-use the **303 real short descriptions in the course roster**, not full
-Wikipedia article bodies. Links to the live source pages are provided.
+The free-play tools that once sat beside the posts (MARVEL-OS 303, Hero Trumps,
+Walk / Listen, Keep It Together and the OS apps) have been removed. Their routes
+`/os/`, `/trumps/`, `/sound/` and `/creature/` no longer exist. The prediction
+log stays: every post still asks for a first guess before it reveals a number,
+and the logbook still files old free-play guesses under FREE PLAY rather than
+inventing a week for them.
 
 The schedule lives in `docs/assets/js/weeks.js`, and `tests/site.test.mjs`
-fails if the lobby, the free-play pages or the prediction logbook drift from
-it. To open a week: set its status to `live`, add its cabinet, and update the
-"exactly weeks … are live" assertion in the test.
+fails if the lobby or the prediction logbook drifts from it. To open a week: set
+its status to `live`, add its cabinet, and update the "exactly weeks … are live"
+assertion in the test.
 
 The previous Baymax mission remains at `/play/`. The 48-concept design archive
 remains at `/mockups/`; those image mockups are separate from the working arcade.
@@ -117,12 +109,11 @@ from disk, because browser modules and data loading require a web origin.
 
 Tests cross-check all 277 browser removals against independently generated CSV
 results, Python path fixtures, exact stranded groups, triangle and coverage
-counts, connected degree-preserving rewires, random walks, text search, terminal
-commands, prediction bounds and PCM audio export. The site tests pin the lobby,
-the free-play pages and the logbook to the course schedule, check every
-fragment link, and hold the v2 edition to the same manifest. The theme tests
-check that every canvas colour the scripts read is defined by both stylesheets. Browser review covers desktop
-and phone layouts, actual playback/export, window controls and saved progress.
+counts, connected degree-preserving rewires and prediction bounds. The site
+tests pin the lobby and the logbook to the course schedule and check every
+fragment link. The theme tests check that every canvas colour the scripts read
+is defined in the stylesheet. Browser review covers the published posts and
+saved progress.
 
 ## Terminal examples
 
@@ -223,10 +214,8 @@ nothing.
 
 ## UX and scope
 
-See [PRESENTATION.md](PRESENTATION.md). All free-play concepts are usable without a key.
-Audio is opt-in, with stop and volume controls. Canvases have text equivalents.
-Controls work by keyboard; OS title bars support Alt + arrow movement. Small
-screens stack windows. Reduced-motion preferences suppress optional movement.
+See [PRESENTATION.md](PRESENTATION.md). Canvases have text equivalents and
+controls work by keyboard. Reduced-motion preferences suppress optional movement.
 Static takeaways remain readable without JavaScript. Each page discloses graph
 scope, methods, limitations and AI assistance.
 

@@ -643,26 +643,6 @@ a.cabinet-link:hover {
   font-size: 0.9rem;
   color: var(--muted);
 }
-.experience-links {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 24px;
-}
-.experience-links a {
-  display: block;
-  text-decoration: none;
-  padding: 26px 0;
-  border-top: 1px solid var(--line);
-}
-.experience-links b {
-  display: block;
-  font-size: 1.4rem;
-  margin: 8px 0;
-}
-.experience-links p {
-  color: var(--muted);
-  font-size: 0.95rem;
-}
 .room-sign {
   display: flex;
   align-items: center;
@@ -672,7 +652,7 @@ a.cabinet-link:hover {
   color: var(--muted);
   font-size: 13px;
 }
-/* Hero Packs and Trumps share cards, not a dashboard shell. */
+/* Hero Packs uses cards, not a dashboard shell. */
 .theme-packs {
   --bg: #221b13;
   --surface: #30261b;
@@ -688,16 +668,6 @@ a.cabinet-link:hover {
   --cv-packs-ring: #ff9f86;
   --cv-packs-bar: #ffd15c;
   --cv-packs-bar-actual: #ff9f86;
-}
-.theme-trumps {
-  --bg: #161520;
-  --surface: #242136;
-  --paper: #f0eaff;
-  --muted: #c2b7d8;
-  --accent: #d5adff;
-  --line: #514760;
-  --ink: #221038;
-  --cv-net-active: #d5adff;
 }
 .pack-tray {
   display: grid;
@@ -955,75 +925,6 @@ a.cabinet-link:hover {
   outline: 2px solid var(--hot);
   outline-offset: 2px;
 }
-/* A small graph animal and a deliberately quiet music instrument. */
-.theme-creature {
-  --bg: #102622;
-  --surface: #19362e;
-  --paper: #e8f7db;
-  --muted: #b2d1be;
-  --accent: #a7efa9;
-  --line: #416b58;
-  --ink: #143020;
-  --cv-creature-outline: #416b58;
-  --cv-creature-repaired: #fff8a9;
-  --cv-creature-dot: #a7efa9;
-  --cv-creature-eye: #102622;
-  --cv-creature-glint: #e8f7db;
-  --cv-creature-mouth: #102622;
-  --cv-creature-leg: #a7efa9;
-  --cv-creature-stranded: #ffbd9a;
-  --cv-creature-stranded-text: #ffbd9a;
-  --cv-creature-caption: #b2d1be;
-}
-.theme-sound {
-  --bg: #1d1832;
-  --surface: #2b2444;
-  --paper: #f3e8ff;
-  --muted: #c9b9dd;
-  --accent: #efb3ff;
-  --line: #625477;
-  --ink: #301138;
-  --cv-net-active: #efb3ff;
-  --cv-sound-ring: #fff;
-}
-.creature-stage {
-  height: 430px;
-}
-.health-track {
-  height: 16px;
-  border: 1px solid var(--line);
-  border-radius: 10px;
-  overflow: hidden;
-  margin: 18px 0;
-  background: var(--bg);
-}
-.health-fill {
-  height: 100%;
-  background: var(--accent);
-  width: 100%;
-  transition: width 0.3s;
-}
-.walk-sequence {
-  display: flex;
-  gap: 6px;
-  flex-wrap: wrap;
-  list-style: none;
-  padding: 0;
-}
-.walk-sequence li {
-  font-size: 12px;
-  min-width: 35px;
-  padding: 6px;
-  border: 1px solid var(--line);
-  border-radius: 3px;
-  text-align: center;
-}
-.walk-sequence li.playing {
-  background: var(--accent);
-  color: var(--ink);
-  outline: 2px solid var(--accent);
-  outline-offset: 2px;
-}
 .transport {
   display: flex;
   gap: 14px;
@@ -1038,21 +939,7 @@ a.cabinet-link:hover {
 }
 .transport input {
   width: 150px;
-}
-.sound-now {
-  min-height: 2em;
-  font-family: Condensed;
-  font-size: 2.6rem;
-  color: var(--accent);
-}
-.repair-list {
-  padding-left: 20px;
-  font-size: 0.95rem;
-}
-.repair-list li {
-  padding: 7px 0;
-}
-@media (max-width: 1000px) {
+}@media (max-width: 1000px) {
   .hero-split {
     grid-template-columns: 1fr 1fr;
     gap: 20px;
@@ -1065,11 +952,7 @@ a.cabinet-link:hover {
   }
   .cabinet-list {
     grid-template-columns: repeat(4, 1fr);
-  }
-  .experience-links {
-    grid-template-columns: repeat(2, 1fr);
-  }
-  .split {
+  }  .split {
     grid-template-columns: 1fr;
   }
   .hero {
@@ -1177,11 +1060,7 @@ a.cabinet-link:hover {
   }
   .lobby-stage {
     height: 260px;
-  }
-  .experience-links {
-    grid-template-columns: 1fr;
-  }
-  .departure-board {
+  }  .departure-board {
     padding: 18px;
   }
   .departure-line {
