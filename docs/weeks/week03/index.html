@@ -157,8 +157,11 @@
                   <span class="ico">💡</span>
                   <span>
                     <b>What to notice</b>
-                    Migration corridors are heavy-tailed: a few countries have
-                    many partners, most have few.
+                    The distribution is skewed rather than lopsided at the
+                    bottom: the median country has 21 origins and the busiest
+                    has 201, so seven countries in ten sit below the mean of
+                    39 without many of them being isolated. Only 22% have
+                    fewer than ten partners.
                   </span>
                 </div>
               </div>
@@ -532,8 +535,10 @@
             </div>
             <p class="sub">
               Denmark is where this starts because it is where we are, but the
-              dropdown takes any of the 236 countries, and it follows whatever
-              you have selected elsewhere on the page.
+              dropdown takes any of the 236 countries and territories in the
+              table, and it follows whatever you have selected elsewhere on
+              the page. Eight of them have no migration figures in the
+              selected year and say so instead of drawing.
             </p>
             <div class="dk-head" id="dk-head"></div>
 
@@ -1007,11 +1012,16 @@
               <span>
                 <b>Of the fifteen biggest destinations in each network,
                 only four appear in both: Germany, France, Iran, Turkey.</b>
-                Migration is reciprocal — 0.41 of
-                its corridors run both ways — and flight is not, at
-                0.11. People who move for work
-                come and go; people who flee do not go back down the same
-                edge. The eleven destinations that are refugee-only are
+                Comparing 0.41 against 0.11 the way the table does is unfair
+                to the smaller network, because reciprocity rises with
+                density on its own: in a directed graph wired at random, the
+                share of arcs whose reverse also exists is just the density.
+                Against that baseline migration is reciprocal
+                <b>2.4×</b> more than chance, and displacement is
+                <b>0.9×</b> — which is to say not at all. People who move for
+                work come and go; people who flee do not go back down the
+                same edge, and the refugee network is no more two-way than a
+                random graph of its size would be. The eleven destinations that are refugee-only are
                 Chad, Uganda, Bangladesh, Kenya, Lebanon and their
                 neighbours, and not one of them appears in the migration
                 top fifteen.
@@ -1076,10 +1086,11 @@
               </tr>
             </table>
             <p class="fineprint">
-              Ranked by people. Of the top ten in each, only
-              Germany appears in both. The migrant list is
-              the rich world; the refugee list is the countries next door to
-              a war, and seven of its ten are poorer than the world average.
+              Ranked by people. Of the top ten in each, only Germany
+              appears in both. The migrant list is the rich world; the
+              refugee list is the countries next door to a war, and eight of
+              its ten sit below the average national income per head across
+              all countries, which is $22,300.
             </p>
 
             <h3>Why this page weights its betweenness</h3>
@@ -1351,9 +1362,10 @@
                     </p>
                     <p class="sub">
                       <b>Reporting coverage.</b> DESA's table is ragged. The
-                      United States names 58 origins, Denmark 202, because one
-                      runs a survey with an "other" bucket and the other keeps a
-                      population register. Every partner count on this page
+                      United States names 58 origins in every year of the
+                      table and Denmark names 190, because one runs a survey
+                      with an "other" bucket and the other keeps a population
+                      register. Every partner count on this page
                       inherits that gap.
                     </p>
                   </div>
@@ -1447,9 +1459,13 @@
                     </p>
                     <p class="sub">
                       <b>AI use.</b> We built the harvest, the analysis and this
-                      page with Claude. Every number comes out of
-                      <code>analysis/week03_corridor_control.py</code>; none is
-                      typed by hand.
+                      page with Claude. Every number on the page comes out of a
+                      script in <code>analysis/</code> —
+                      <code>week03_corridor_control.py</code> for the networks,
+                      then <code>_tails</code>, <code>_gravity</code>,
+                      <code>_communities</code>, <code>_country_networks</code>,
+                      <code>_asylum</code>, <code>_closures</code> and
+                      <code>_calendar</code> — and none is typed by hand.
                     </p>
                   </div>
                 </div>
