@@ -475,17 +475,22 @@ function renderInspector() {
       ].join("")
     : `<div><dt>No migration data for ${state.year}</dt><dd>—</dd></div>`;
 
-  const list = (items, dir) =>
+  // Only the other end. The selected country was on both sides of every row,
+  // which pushed the long names onto a second line to say nothing: the
+  // heading already carries the direction, and section 8's tables read the
+  // same way.
+  const list = (items) =>
     items.length
       ? items
           .map(
             (c, i) =>
-              `<li><span>${i + 1}. ${dir === "in" ? `${node(c.other)?.name ?? c.other} → ${n.name}` : `${n.name} → ${node(c.other)?.name ?? c.other}`}</span><b>${compact.format(c.weight)}</b></li>`,
+              `<li><span>${i + 1}. ${node(c.other)?.name ?? c.other}</span>` +
+              `<b>${compact.format(c.weight)}</b></li>`,
           )
           .join("")
       : "<li><span>None recorded</span><b>—</b></li>";
-  $("sel-in").innerHTML = list(n.top_in ?? [], "in");
-  $("sel-out").innerHTML = list(n.top_out ?? [], "out");
+  $("sel-in").innerHTML = list(n.top_in ?? []);
+  $("sel-out").innerHTML = list(n.top_out ?? []);
 
   // Section 4's small panel tracks the same selection.
   $("sc-flag").textContent = flag(n.iso2);
