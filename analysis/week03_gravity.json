@@ -1,0 +1,379 @@
+{
+  "generated": "analysis/week03_gravity.py",
+  "year": 2024,
+  "method": "Poisson pseudo-maximum-likelihood, Santos Silva and Tenreyro (2006)",
+  "corridors": 8301,
+  "zero_corridors": 248,
+  "bootstrap": 200,
+  "seed": 20260917,
+  "r2_counts": 0.1853,
+  "r2_logs": 0.4489,
+  "coefficients": {
+    "log origin population": {
+      "beta": 0.5113,
+      "ci": [
+        0.4276,
+        0.5848
+      ],
+      "crosses_zero": false
+    },
+    "log destination population": {
+      "beta": 0.6859,
+      "ci": [
+        0.609,
+        0.7633
+      ],
+      "crosses_zero": false
+    },
+    "log origin GDP per head": {
+      "beta": -0.2519,
+      "ci": [
+        -0.3273,
+        -0.1729
+      ],
+      "crosses_zero": false
+    },
+    "log destination GDP per head": {
+      "beta": 0.8502,
+      "ci": [
+        0.7095,
+        1.0071
+      ],
+      "crosses_zero": false
+    },
+    "log distance": {
+      "beta": -1.1885,
+      "ci": [
+        -1.4145,
+        -0.995
+      ],
+      "crosses_zero": false
+    },
+    "under 1,000 km": {
+      "beta": -0.2812,
+      "ci": [
+        -0.7523,
+        0.1503
+      ],
+      "crosses_zero": true
+    }
+  },
+  "without_contiguity": {
+    "note": "The contiguity dummy is a distance proxy, not a border table, and it comes out negative where the literature has it positive. This refit says how much the other terms lean on it.",
+    "r2_counts": 0.1839,
+    "r2_logs": 0.4486,
+    "coefficients": {
+      "log origin population": 0.5118,
+      "log destination population": 0.6871,
+      "log origin GDP per head": -0.2579,
+      "log destination GDP per head": 0.8473,
+      "log distance": -1.1082
+    }
+  },
+  "note": "Correlates in one year, so nothing here identifies a cause. A large ratio marks a corridor worth explaining, not an explanation. Contiguity is a distance under 1,000 km between country centres, which is a proxy for sharing a border and not a border table.",
+  "over": [
+    {
+      "origin": "RUS",
+      "destination": "UKR",
+      "origin_name": "Russia",
+      "destination_name": "Ukraine",
+      "people": 3375095,
+      "predicted": 21069,
+      "ratio": 160.2,
+      "km": 3950
+    },
+    {
+      "origin": "GBR",
+      "destination": "NZL",
+      "origin_name": "United Kingdom",
+      "destination_name": "New Zealand",
+      "people": 254524,
+      "predicted": 2868,
+      "ratio": 88.7,
+      "km": 18496
+    },
+    {
+      "origin": "SDN",
+      "destination": "TCD",
+      "origin_name": "Sudan",
+      "destination_name": "Chad",
+      "people": 1071034,
+      "predicted": 13398,
+      "ratio": 79.9,
+      "km": 1353
+    },
+    {
+      "origin": "GBR",
+      "destination": "AUS",
+      "origin_name": "United Kingdom",
+      "destination_name": "Australia",
+      "people": 1107102,
+      "predicted": 14101,
+      "ratio": 78.5,
+      "km": 15089
+    },
+    {
+      "origin": "RUS",
+      "destination": "TJK",
+      "origin_name": "Russia",
+      "destination_name": "Tajikistan",
+      "people": 235636,
+      "predicted": 3244,
+      "ratio": 72.6,
+      "km": 3416
+    },
+    {
+      "origin": "RUS",
+      "destination": "BLR",
+      "origin_name": "Russia",
+      "destination_name": "Belarus",
+      "people": 664610,
+      "predicted": 12631,
+      "ratio": 52.6,
+      "km": 3736
+    },
+    {
+      "origin": "RUS",
+      "destination": "UZB",
+      "origin_name": "Russia",
+      "destination_name": "Uzbekistan",
+      "people": 865767,
+      "predicted": 16758,
+      "ratio": 51.7,
+      "km": 3320
+    },
+    {
+      "origin": "VEN",
+      "destination": "PER",
+      "origin_name": "Venezuela",
+      "destination_name": "Peru",
+      "people": 1596667,
+      "predicted": 35353,
+      "ratio": 45.2,
+      "km": 2176
+    },
+    {
+      "origin": "UKR",
+      "destination": "RUS",
+      "origin_name": "Ukraine",
+      "destination_name": "Russia",
+      "people": 2872612,
+      "predicted": 81908,
+      "ratio": 35.1,
+      "km": 3950
+    },
+    {
+      "origin": "CIV",
+      "destination": "BFA",
+      "origin_name": "Ivory Coast",
+      "destination_name": "Burkina Faso",
+      "people": 574409,
+      "predicted": 16687,
+      "ratio": 34.4,
+      "km": 641
+    },
+    {
+      "origin": "BFA",
+      "destination": "CIV",
+      "origin_name": "Burkina Faso",
+      "destination_name": "Ivory Coast",
+      "people": 1820882,
+      "predicted": 54234,
+      "ratio": 33.6,
+      "km": 641
+    },
+    {
+      "origin": "NZL",
+      "destination": "AUS",
+      "origin_name": "New Zealand",
+      "destination_name": "Australia",
+      "people": 588088,
+      "predicted": 17777,
+      "ratio": 33.1,
+      "km": 4173
+    },
+    {
+      "origin": "WSM",
+      "destination": "NZL",
+      "origin_name": "Samoa",
+      "destination_name": "New Zealand",
+      "people": 63075,
+      "predicted": 2060,
+      "ratio": 30.6,
+      "km": 3332
+    },
+    {
+      "origin": "IRL",
+      "destination": "AUS",
+      "origin_name": "Ireland",
+      "destination_name": "Australia",
+      "people": 90203,
+      "predicted": 3061,
+      "ratio": 29.5,
+      "km": 15521
+    },
+    {
+      "origin": "COD",
+      "destination": "BDI",
+      "origin_name": "Democratic Republic of the Congo",
+      "destination_name": "Burundi",
+      "people": 224091,
+      "predicted": 7846,
+      "ratio": 28.6,
+      "km": 690
+    },
+    {
+      "origin": "VEN",
+      "destination": "COL",
+      "origin_name": "Venezuela",
+      "destination_name": "Colombia",
+      "people": 2904873,
+      "predicted": 107817,
+      "ratio": 26.9,
+      "km": 822
+    },
+    {
+      "origin": "CAF",
+      "destination": "CMR",
+      "origin_name": "Central African Republic",
+      "destination_name": "Cameroon",
+      "people": 336349,
+      "predicted": 12837,
+      "ratio": 26.2,
+      "km": 929
+    },
+    {
+      "origin": "HKG",
+      "destination": "CAN",
+      "origin_name": "Hong Kong",
+      "destination_name": "Canada",
+      "people": 204515,
+      "predicted": 8144,
+      "ratio": 25.1,
+      "km": 10410
+    },
+    {
+      "origin": "CAF",
+      "destination": "COD",
+      "origin_name": "Central African Republic",
+      "destination_name": "Democratic Republic of the Congo",
+      "people": 368125,
+      "predicted": 14961,
+      "ratio": 24.6,
+      "km": 1108
+    },
+    {
+      "origin": "VEN",
+      "destination": "CHL",
+      "origin_name": "Venezuela",
+      "destination_name": "Chile",
+      "people": 427821,
+      "predicted": 17710,
+      "ratio": 24.2,
+      "km": 4579
+    }
+  ],
+  "under_note": "Read these as reporting, not as absence. DESA's table is ragged: a country whose statistics office files small origins under 'other' reports a zero where people plainly live, so the bottom of this list is a map of who counts carefully rather than of who stayed home.",
+  "under": [
+    {
+      "origin": "KHM",
+      "destination": "IDN",
+      "origin_name": "Cambodia",
+      "destination_name": "Indonesia",
+      "people": 0,
+      "predicted": 84407,
+      "ratio": 0.0,
+      "km": 2159
+    },
+    {
+      "origin": "VNM",
+      "destination": "MYS",
+      "origin_name": "Vietnam",
+      "destination_name": "Malaysia",
+      "people": 5,
+      "predicted": 140073,
+      "ratio": 0.0,
+      "km": 1494
+    },
+    {
+      "origin": "VNM",
+      "destination": "IDN",
+      "origin_name": "Vietnam",
+      "destination_name": "Indonesia",
+      "people": 15,
+      "predicted": 166335,
+      "ratio": 0.0,
+      "km": 2283
+    },
+    {
+      "origin": "UGA",
+      "destination": "ETH",
+      "origin_name": "Uganda",
+      "destination_name": "Ethiopia",
+      "people": 18,
+      "predicted": 61277,
+      "ratio": 0.0,
+      "km": 1203
+    },
+    {
+      "origin": "TUR",
+      "destination": "IND",
+      "origin_name": "Turkey",
+      "destination_name": "India",
+      "people": 58,
+      "predicted": 83187,
+      "ratio": 0.001,
+      "km": 4771
+    },
+    {
+      "origin": "BTN",
+      "destination": "CHN",
+      "origin_name": "Bhutan",
+      "destination_name": "People's Republic of China",
+      "people": 113,
+      "predicted": 159998,
+      "ratio": 0.001,
+      "km": 1539
+    },
+    {
+      "origin": "KAZ",
+      "destination": "IND",
+      "origin_name": "Kazakhstan",
+      "destination_name": "India",
+      "people": 78,
+      "predicted": 68993,
+      "ratio": 0.001,
+      "km": 3102
+    },
+    {
+      "origin": "POL",
+      "destination": "ROU",
+      "origin_name": "Poland",
+      "destination_name": "Romania",
+      "people": 102,
+      "predicted": 88739,
+      "ratio": 0.001,
+      "km": 797
+    },
+    {
+      "origin": "LKA",
+      "destination": "CHN",
+      "origin_name": "Sri Lanka",
+      "destination_name": "People's Republic of China",
+      "people": 378,
+      "predicted": 280947,
+      "ratio": 0.001,
+      "km": 3938
+    },
+    {
+      "origin": "NPL",
+      "destination": "CHN",
+      "origin_name": "Nepal",
+      "destination_name": "People's Republic of China",
+      "people": 1388,
+      "predicted": 961098,
+      "ratio": 0.001,
+      "km": 2027
+    }
+  ]
+}

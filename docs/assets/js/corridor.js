@@ -2923,7 +2923,12 @@ function renderTwinStats() {
   $("flight-caveat").textContent = snap.note;
   $("null-method").textContent =
     `Null: ${state.data.shuffles} degree-preserving shuffles of the ${state.data.null_year} network. ` +
-    "Each shuffle keeps every country's in- and out-degree and deals the observed corridor weights back out at random.";
+    "Each shuffle keeps every country's in- and out-degree and deals the observed corridor weights back out at random. " +
+    // The z-scores on this page are read as though they were significance,
+    // and a hundred draws cannot support that: the smallest empirical p this
+    // resolution can express is one in a hundred, whatever the z says.
+    `With ${state.data.shuffles} draws the finest p this null can express is ` +
+    `1 in ${state.data.shuffles}, so a z above about 2.5 is a floor rather than a measurement.`;
   $("null-tag").textContent = `(null model · ${state.data.null_year} · ${state.data.shuffles} shuffles)`;
   $("twin-tag").textContent = `(migration ${state.data.null_year} · flights undated)`;
 

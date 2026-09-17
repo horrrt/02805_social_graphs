@@ -1,0 +1,147 @@
+{
+  "generated": "analysis/week03_passengers.py",
+  "year": 2019,
+  "source": {
+    "name": "US BTS T-100 International Segment",
+    "url": "https://datahub.transportation.gov/resource/xgub-n9bw",
+    "licence": "US federal government work, public domain",
+    "scope": "every international segment with a United States airport at one end, so this is one country's spokes and not the world."
+  },
+  "countries": 87,
+  "log_correlation": 0.769,
+  "spearman": 0.874,
+  "per_route": {
+    "highest": [
+      {
+        "country": "Hong Kong",
+        "routes": 10,
+        "people": 3628690,
+        "per_route": 362869
+      },
+      {
+        "country": "Taiwan",
+        "routes": 10,
+        "people": 3033120,
+        "per_route": 303312
+      },
+      {
+        "country": "United Kingdom",
+        "routes": 80,
+        "people": 21714676,
+        "per_route": 271433
+      },
+      {
+        "country": "South Korea",
+        "routes": 24,
+        "people": 6067435,
+        "per_route": 252809
+      },
+      {
+        "country": "New Zealand",
+        "routes": 5,
+        "people": 1135804,
+        "per_route": 227160
+      },
+      {
+        "country": "China",
+        "routes": 38,
+        "people": 8544984,
+        "per_route": 224868
+      },
+      {
+        "country": "Israel",
+        "routes": 8,
+        "people": 1751897,
+        "per_route": 218987
+      },
+      {
+        "country": "Turkey",
+        "routes": 10,
+        "people": 2112525,
+        "per_route": 211252
+      },
+      {
+        "country": "Australia",
+        "routes": 16,
+        "people": 3322409,
+        "per_route": 207650
+      },
+      {
+        "country": "Qatar",
+        "routes": 10,
+        "people": 2073334,
+        "per_route": 207333
+      }
+    ],
+    "lowest": [
+      {
+        "country": "Belize",
+        "routes": 14,
+        "people": 741224,
+        "per_route": 52944
+      },
+      {
+        "country": "Cayman Islands",
+        "routes": 23,
+        "people": 1095518,
+        "per_route": 47631
+      },
+      {
+        "country": "Saint Lucia",
+        "routes": 10,
+        "people": 421605,
+        "per_route": 42160
+      },
+      {
+        "country": "Bahamas",
+        "routes": 80,
+        "people": 3283390,
+        "per_route": 41042
+      },
+      {
+        "country": "Honduras",
+        "routes": 26,
+        "people": 1030126,
+        "per_route": 39620
+      },
+      {
+        "country": "Antigua and Barbuda",
+        "routes": 8,
+        "people": 311452,
+        "per_route": 38931
+      },
+      {
+        "country": "Saudi Arabia",
+        "routes": 10,
+        "people": 340481,
+        "per_route": 34048
+      },
+      {
+        "country": "Netherlands Antilles",
+        "routes": 30,
+        "people": 1002563,
+        "per_route": 33418
+      },
+      {
+        "country": "Nigeria",
+        "routes": 6,
+        "people": 150084,
+        "per_route": 25014
+      },
+      {
+        "country": "Venezuela",
+        "routes": 14,
+        "people": 122773,
+        "per_route": 8769
+      }
+    ],
+    "spread": 41.4,
+    "middle_half": [
+      56680,
+      186353
+    ],
+    "min_routes": 5,
+    "countries": 59
+  },
+  "note": "Route counts come from the same OpenFlights table the page's flight network is built from, so both sides of the comparison are keyed the same way. The OpenFlights snapshot is undated and last substantially refreshed around 2014, which is the main reason to compare against 2019 rather than a later year."
+}

@@ -92,6 +92,46 @@ function correlation(xs, ys) {
   return dx && dy ? num / Math.sqrt(dx * dy) : 0;
 }
 
+// A correlation with no interval is a number a reader cannot argue with, and
+// at n = 173 the interval is wide enough to matter. Fisher's z transform is
+// the closed form: transform, add the normal interval, transform back.
+function correlationInterval(r, n, confidence = 1.96) {
+  if (n < 4 || Math.abs(r) >= 1) return [r, r];
+  const z = 0.5 * Math.log((1 + r) / (1 - r));
+  const se = 1 / Math.sqrt(n - 3);
+  return [z - confidence * se, z + confidence * se].map((v) => Math.tanh(v));
+}
+
+// The same for a weighted median, where there is no closed form. Resampling
+// corridors rather than people, because a corridor is the thing that was
+// observed and its people all came from one reported cell.
+function medianInterval(pairs, draws = 400) {
+  if (pairs.length < 10) return null;
+  const out = [];
+  // A fixed generator, so the interval under a number does not change while
+  // a reader is looking at it. mulberry32 rather than the textbook linear
+  // congruential one: that multiply overflows the range JavaScript keeps
+  // integers exact in, the low bits turn to floating-point noise, and the
+  // draws stop being uniform — which shows up as an interval that does not
+  // contain its own point estimate.
+  let seed = 20260917;
+  const random = () => {
+    seed = (seed + 0x6d2b79f5) | 0;
+    let t = Math.imul(seed ^ (seed >>> 15), 1 | seed);
+    t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+  };
+  for (let d = 0; d < draws; d += 1) {
+    const sample = new Array(pairs.length);
+    for (let i = 0; i < pairs.length; i += 1) {
+      sample[i] = pairs[(random() * pairs.length) | 0];
+    }
+    out.push(weightedQuantile(sample, 0.5));
+  }
+  out.sort((a, b) => a - b);
+  return [out[Math.floor(draws * 0.025)], out[Math.floor(draws * 0.975)]];
+}
+
 const pct = (part, whole) => (whole ? (part / whole) * 100 : 0);
 
 // The card colour, for text that has to sit on top of a filled bar. Read from
@@ -646,9 +686,15 @@ function answerDistance() {
   const far = distanceData().slice(-3);
   const farPeople = far.reduce((sum, d) => sum + d.people, 0);
   const farCorridors = far.reduce((sum, d) => sum + d.corridors, 0);
+  const spread = medianInterval(model.rows.map((r) => [r.km, r.people]));
   return (
     `They do not. Half of everyone living outside their country of birth is within ` +
-    `<b>${api.format.fmt.format(median)} km</b> of it, and ` +
+    `<b>${api.format.fmt.format(median)} km</b> of it` +
+    (spread
+      ? ` (95% ${api.format.fmt.format(spread[0])}–${api.format.fmt.format(spread[1])} km, ` +
+        `400 resamples of the corridors)`
+      : "") +
+    `, and ` +
     `<b>${one(share)}%</b> are within 2,000 km — roughly Copenhagen to Rome. ` +
     `The typical corridor that exists, counted without regard to how many people are on it, ` +
     `spans <b>${api.format.fmt.format(unweighted)} km</b>. ` +
@@ -939,14 +985,17 @@ function answerWealth() {
   const bands = reachData();
   const poorest = bands[0];
   const richest = bands.at(-1);
+  const range = ([lo, hi]) => `${lo.toFixed(2)} to ${hi.toFixed(2)}`;
   return (
     `Wealth explains a lot; growth explains nothing. Across <b>${data.length}</b> countries the ` +
     `correlation between GDP per head and the foreign-born share of the population is ` +
-    `<b>${level.toFixed(2)}</b> on log axes — ten times the income, roughly ` +
+    `<b>${level.toFixed(2)}</b> (95% ${range(correlationInterval(level, data.length))}) on log ` +
+    `axes — ten times the income, roughly ` +
     `<b>${(10 ** fitLine(data.map((d) => Math.log10(d.gdp)), data.map((d) => Math.log10(Math.max(d.share, 0.02)))).slope).toFixed(1)}×</b> ` +
     `the foreign-born share. Put the same countries against their 2024 growth rate and it falls ` +
-    `to <b>${speed.toFixed(2)}</b>: a fast year does not fill a country with migrants, a rich ` +
-    `decade does. ` +
+    `to <b>${speed.toFixed(2)}</b> (95% ${range(correlationInterval(speed, growing.length))}, ` +
+    `an interval that contains zero): a fast year does not fill a country with migrants, a ` +
+    `rich decade does. ` +
     `Wealth also buys distance, which is the right-hand panel and the real reason the two ` +
     `findings are one finding. The median person living in a country under $5,000 a head came ` +
     `<b>${api.format.fmt.format(poorest.median)} km</b> — a border crossing. In countries over ` +

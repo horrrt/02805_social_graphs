@@ -6,12 +6,20 @@ against the new version's markup, which looks exactly like a bug and wasted
 real time diagnosing one. The fix is a content hash in the URL: change the
 code, change the URL, and no cache can hand back the old file.
 
-The stamp is the first ten hex characters of a SHA-256 over every script and
-stylesheet the post loads, so it moves when any of them moves and stays put
-when none do.
+Each asset carries a hash of what it actually depends on, rather than one
+hash over everything. The stylesheet's stamp moves when the stylesheet moves;
+the boot module's moves when any module in its import graph moves. That
+matters for the diff more than for the reader: a stylesheet-only stamp means
+the style guide, which loads no JavaScript, stops being rewritten every time
+a chart changes. Under one shared hash it was rewritten on every commit.
 
-    python scripts/stamp_week03.py           # rewrite both editions
+    python scripts/stamp_week03.py           # rewrite what is stale
     python scripts/stamp_week03.py --check   # exit non-zero if stale
+    python scripts/stamp_week03.py --hook    # run it for me, before each commit
+
+The boot module hashes the whole graph rather than only itself because it
+passes its own ?v= down to every module it imports — see week03-boot.js — so
+one stamp busts the lot.
 """
 
 from __future__ import annotations
@@ -20,6 +28,7 @@ import argparse
 import hashlib
 import pathlib
 import re
+import stat
 import sys
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
@@ -27,56 +36,91 @@ PAGES = [
     ROOT / "docs/weeks/week03/index.html",
     ROOT / "docs/styleguide/index.html",
 ]
-WATCHED = [
-    "docs/assets/js/week03-boot.js",
-    "docs/assets/js/corridor.js",
-    "docs/assets/js/questions.js",
-    "docs/assets/js/variants/d3.js",
-    "docs/assets/js/variants/echarts.js",
-    "docs/assets/js/variants/globe.js",
-    "docs/assets/js/variants/atlas.js",
-    "docs/assets/js/variants/deck.js",
-    "docs/assets/css/corridor.css",
-]
+
+# filename in the HTML -> the files whose contents its stamp should follow.
+ASSETS = {
+    "corridor.css": ["docs/assets/css/corridor.css"],
+    "week03-boot.js": [
+        "docs/assets/js/week03-boot.js",
+        "docs/assets/js/corridor.js",
+        "docs/assets/js/questions.js",
+        "docs/assets/js/echarts-views.js",
+        "docs/assets/js/variants/d3.js",
+        "docs/assets/js/variants/echarts.js",
+        "docs/assets/js/variants/globe.js",
+        "docs/assets/js/variants/atlas.js",
+        "docs/assets/js/variants/deck.js",
+    ],
+}
+
+HOOK = """#!/bin/sh
+# Installed by scripts/stamp_week03.py --hook
+python3 scripts/stamp_week03.py >/dev/null || exit 1
+git add docs/weeks/week03/index.html docs/styleguide/index.html 2>/dev/null
+exit 0
+"""
 
 
-def stamp() -> str:
+def stamp(paths) -> str:
     digest = hashlib.sha256()
-    for name in WATCHED:
+    for name in paths:
         digest.update((ROOT / name).read_bytes())
     return digest.hexdigest()[:10]
 
 
-def rewrite(html: str, value: str) -> str:
-    html = re.sub(r'(week03-boot\.js)(\?v=[0-9a-f]+)?"', rf'\1?v={value}"', html)
-    html = re.sub(r'(corridor\.css)(\?v=[0-9a-f]+)?"', rf'\1?v={value}"', html)
+def rewrite(html: str, stamps: dict[str, str]) -> str:
+    for asset, value in stamps.items():
+        # A lambda for the replacement rather than a backreference string:
+        # the version has to be followed by the closing quote, and writing
+        # that quote into an r-string replacement leaves a literal backslash
+        # in the HTML, which then stops the pattern matching on the next run.
+        html = re.sub(
+            rf"({re.escape(asset)})(\?v=[0-9a-f]+)?\"",
+            lambda _m, a=asset, v=value: f'{a}?v={v}"',
+            html,
+        )
     return html
+
+
+def install_hook() -> None:
+    target = ROOT / ".git" / "hooks" / "pre-commit"
+    if not target.parent.exists():
+        sys.exit("no .git/hooks here; run this inside the repository")
+    target.write_text(HOOK, encoding="utf-8")
+    target.chmod(target.stat().st_mode | stat.S_IXUSR | stat.S_IXGRP)
+    print(f"installed {target.relative_to(ROOT)} — the stamp now runs before every commit")
 
 
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--check", action="store_true")
+    parser.add_argument("--hook", action="store_true", help="install the pre-commit hook")
     args = parser.parse_args()
 
-    value = stamp()
+    if args.hook:
+        install_hook()
+        return
+
+    stamps = {asset: stamp(paths) for asset, paths in ASSETS.items()}
     stale = []
     for page in PAGES:
         current = page.read_text(encoding="utf-8")
-        wanted = rewrite(current, value)
+        wanted = rewrite(current, stamps)
         if current != wanted:
             stale.append(page.relative_to(ROOT))
             if not args.check:
                 page.write_text(wanted, encoding="utf-8")
 
+    listing = " ".join(f"{asset} {value}" for asset, value in stamps.items())
     if args.check:
         if stale:
             sys.exit(
                 f"stale build stamp in {', '.join(str(p) for p in stale)}. "
                 "Run: python scripts/stamp_week03.py"
             )
-        print(f"build stamp {value} is current")
+        print(f"build stamps current: {listing}")
         return
-    print(f"build stamp {value}" + (f", rewrote {len(stale)} page(s)" if stale else ", unchanged"))
+    print(f"{listing}" + (f" · rewrote {len(stale)} page(s)" if stale else " · unchanged"))
 
 
 if __name__ == "__main__":
