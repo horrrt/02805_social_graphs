@@ -882,11 +882,142 @@
           </div>
         </section>
 
+        <!-- communities ------------------------------------------------------ -->
+        <section class="step" id="communities">
+          <div class="card">
+            <div class="step-head">
+              <span class="num">11</span>
+              <h2>Does the world split into groups?</h2>
+            </div>
+            <p class="sub">
+              A course on social graphs asks this in week three and this post
+              had not. Louvain on the undirected network, weighted by people
+              moving in both directions and cut at corridors of 10,000 or
+              more — <code>analysis/week03_communities.py</code>. It returns
+              eight groups over 205 countries, and they name
+              themselves.
+            </p>
+            <table class="ego">
+              <tr>
+                <th>Group</th>
+                <th style="text-align: right">Countries</th>
+                <th>Largest members</th>
+              </tr>
+              <tr>
+                <td>Latin America, Iberia and the western Mediterranean</td>
+                <td style="text-align: right">47</td>
+                <td>France, Spain, Venezuela, Italy, Colombia</td>
+              </tr>
+              <tr>
+                <td>Germany, Russia and the post-Soviet belt</td>
+                <td style="text-align: right">41</td>
+                <td>Germany, Russia, Ukraine, Turkey, Syria</td>
+              </tr>
+              <tr>
+                <td>North America and the Pacific rim</td>
+                <td style="text-align: right">35</td>
+                <td>United States, Mexico, People's Republic of China, Canada, Philippines</td>
+              </tr>
+              <tr>
+                <td>The former British settler network</td>
+                <td style="text-align: right">24</td>
+                <td>United Kingdom, Australia, South Africa, New Zealand, Zimbabwe</td>
+              </tr>
+              <tr>
+                <td>South Asia and the Gulf</td>
+                <td style="text-align: right">24</td>
+                <td>India, Saudi Arabia, Bangladesh, Pakistan, United Arab Emirates</td>
+              </tr>
+              <tr>
+                <td>The Horn and central Africa</td>
+                <td style="text-align: right">18</td>
+                <td>Sudan, South Sudan, Democratic Republic of the Congo, Uganda, Ethiopia</td>
+              </tr>
+              <tr>
+                <td>West Africa, and ECOWAS free movement</td>
+                <td style="text-align: right">14</td>
+                <td>Ivory Coast, Nigeria, Burkina Faso, Mali, Ghana</td>
+              </tr>
+              <tr>
+                <td>Afghanistan and Iran</td>
+                <td style="text-align: right">2</td>
+                <td>Afghanistan, Iran</td>
+              </tr>
+            </table>
+            <div class="notice">
+              <span class="ico">💡</span>
+              <span>
+                <b>71.6% of the people on these corridors moved inside one
+                of the eight groups, not between them.</b> The
+                groups are free movement zones, old empires and shared
+                languages: ECOWAS is one, the Anglosphere settler network is
+                one, the Gulf labour system and the South Asia that staffs it
+                are one, and Afghanistan with Iran is a two-country group
+                held together by forty years of displacement.
+              </span>
+            </div>
+            <div class="notice">
+              <span class="ico">🧪</span>
+              <span>
+                <b>And the amount of grouping is not a finding.</b>
+                Modularity is 0.533. Rewire the network
+                100 times keeping every country's number
+                of partners, deal the corridor weights back out at random,
+                and Louvain still returns 0.528 on average
+                — 32 of the
+                100 shuffles score at or above the real
+                network, which is z = +0.39 and no evidence
+                of anything. Louvain finds communities in noise, so the
+                number on its own was never going to say much. What the
+                shuffles cannot reproduce is <em>which</em> countries land
+                together, and that is where the eight names above come from.
+              </span>
+            </div>
+
+            <h3>Migrants and refugees are not the same network</h3>
+            <p class="sub">
+              The same countries, two different graphs — UN DESA's stock
+              against UNHCR's refugee counts, both 2024, from
+              <code>analysis/week03_country_networks.py</code>. This was
+              computed for the project weeks ago and had never reached the
+              page.
+            </p>
+            <table class="ego">
+              <tr>
+                <th>Measure</th>
+                <th style="text-align: right">Migrants</th>
+                <th style="text-align: right">Refugees</th>
+              </tr>
+              <tr><td>Countries</td><td style="text-align: right">228</td><td style="text-align: right">204</td></tr>
+              <tr><td>Corridors</td><td style="text-align: right">8,795</td><td style="text-align: right">4,792</td></tr>
+              <tr><td>People</td><td style="text-align: right">272m</td><td style="text-align: right">31m</td></tr>
+              <tr><td>Reciprocity</td><td style="text-align: right">0.41</td><td style="text-align: right">0.11</td></tr>
+              <tr><td>Clustering</td><td style="text-align: right">0.71</td><td style="text-align: right">0.60</td></tr>
+              <tr><td>Degree assortativity</td><td style="text-align: right">-0.27</td><td style="text-align: right">-0.34</td></tr>
+            </table>
+            <div class="notice">
+              <span class="ico">💡</span>
+              <span>
+                <b>Of the fifteen biggest destinations in each network,
+                only four appear in both: Germany, France, Iran, Turkey.</b>
+                Migration is reciprocal — 0.41 of
+                its corridors run both ways — and flight is not, at
+                0.11. People who move for work
+                come and go; people who flee do not go back down the same
+                edge. The eleven destinations that are refugee-only are
+                Chad, Uganda, Bangladesh, Kenya, Lebanon and their
+                neighbours, and not one of them appears in the migration
+                top fifteen.
+              </span>
+            </div>
+          </div>
+        </section>
+
         <!-- three more views ---------------------------------------------- -->
         <section class="step" id="more">
           <div class="card">
             <div class="step-head">
-              <span class="num">11</span>
+              <span class="num">12</span>
               <h2>More ways to look at this</h2>
             </div>
             <details class="qa" id="views">
