@@ -12,7 +12,7 @@ export function install(api, d3) {
   const { state, node, metrics, withMetrics, degreeCounts, ccdf, select, colours, $ } =
     api;
   const { spotlight, earthScale } = api;
-  const { showTip, hideTip, modeFlags } = api;
+  const { showTip, hideTip, modeFlags, format } = api;
 
   // The axis switch reaches SVG too: log where the mode says log, linear where
   // it does not.
@@ -318,27 +318,53 @@ export function install(api, d3) {
       if (dk.z !== undefined) highlight(box.svg, x, y, { x: dk.in_degree, y: dk.z }, focus.name);
     }
 
-    const line = (id, pick, colour, invert, format) => {
+    // Each series carries its own tip, so dk-time's two lines (in and out
+    // strength) read the same hover card the canvas and echarts renderers show,
+    // and a point is a real click target rather than a bare path.
+    const line = (id, seriesSpecs, invert, yFormat) => {
       const b = svgFor(id, pad);
       if (!b) return;
       const years = focus.series.map((s) => s.year);
       const x = d3.scaleLinear().domain([years[0], years.at(-1)]).range([b.inner.left, b.inner.right]);
-      const extent = d3.extent(focus.series, pick);
+      const maxV = Math.max(...seriesSpecs.flatMap(({ pick }) => focus.series.map(pick)));
       const y = d3
         .scaleLinear()
-        .domain(invert ? [d3.max(focus.series, pick), 1] : [0, extent[1]])
+        .domain(invert ? [maxV, 1] : [0, maxV])
         .range([b.inner.bottom, b.inner.top]);
-      axes(b.svg, b.inner, x, y, { xTicks: 3, yTicks: 3, yFormat: format });
-      b.svg
-        .append("path")
-        .datum(focus.series)
-        .attr("fill", "none")
-        .attr("stroke", colour)
-        .attr("stroke-width", 2)
-        .attr("d", d3.line().x((s) => x(s.year)).y((s) => y(pick(s))).curve(d3.curveMonotoneX));
+      axes(b.svg, b.inner, x, y, { xTicks: 3, yTicks: 3, yFormat });
+      for (const { pick, colour, tip } of seriesSpecs) {
+        b.svg
+          .append("path")
+          .datum(focus.series)
+          .attr("fill", "none")
+          .attr("stroke", colour)
+          .attr("stroke-width", 2)
+          .attr("d", d3.line().x((s) => x(s.year)).y((s) => y(pick(s))).curve(d3.curveMonotoneX));
+        plotPoints(
+          b.svg,
+          focus.series.map((s) => ({ x: s.year, y: pick(s), iso3: focus.iso3, title: tip(s) })),
+          x, y, colour, 2.4, select,
+        );
+      }
     };
-    line("dk-time", (s) => s.in_strength, colours.PEOPLE, false, "~s");
-    line("dk-rank", (s) => s.betweenness_rank, colours.INK, true, "d");
+    const timeTip = (s) =>
+      `<b>${focus.name}, ${s.year}</b>` +
+      `<span>${format.fmt.format(s.in_strength)} incoming</span>` +
+      `<span>${format.fmt.format(s.out_strength)} outgoing</span>`;
+    line("dk-time", [
+      { pick: (s) => s.in_strength, colour: colours.PEOPLE, tip: timeTip },
+      { pick: (s) => s.out_strength, colour: colours.ACCESS, tip: timeTip },
+    ], false, "~s");
+    line("dk-rank", [
+      {
+        pick: (s) => s.betweenness_rank,
+        colour: colours.INK,
+        tip: (s) =>
+          `<b>${focus.name}, ${s.year}</b>` +
+          `<span>bridge rank #${s.betweenness_rank}</span>` +
+          `<span>${s.in_degree} origins</span>`,
+      },
+    ], true, "d");
 
     const b = svgFor("dk-nordic", pad);
     if (b) {

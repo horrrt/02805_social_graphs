@@ -406,7 +406,11 @@ function wireGlossary() {
   document.addEventListener("pointermove", (event) => {
     const target = event.target.closest?.("[data-explain]");
     if (target) showTip(event, `<b>${target.textContent.trim()}</b><span>${target.dataset.explain}</span>`);
-    else if (!event.target.closest?.("canvas")) hideTip();
+    // Canvas renderers own their tooltip through a pointermove on the canvas
+    // itself; the d3 variant's charts are real SVG marks doing the same job,
+    // so both are exempt from this fallback or it undoes their showTip on
+    // every move.
+    else if (!event.target.closest?.("canvas, svg")) hideTip();
   });
 }
 
