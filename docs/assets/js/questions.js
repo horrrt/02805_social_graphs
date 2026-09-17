@@ -167,26 +167,58 @@ function wire(id) {
 
 const RING_N = 14;
 
-function ringData() {
-  const involved = new Map();
-  for (const r of model.rows) {
-    involved.set(r.o, (involved.get(r.o) ?? 0) + r.people);
-    involved.set(r.d, (involved.get(r.d) ?? 0) + r.people);
+// The ring is the one question with its own year and its own choice of
+// countries, because "which corridors carry the world" has three honest
+// answers: the countries people move between, the countries people move to,
+// and the countries people move from. They are different lists, and reading
+// one of them as the other is how a destination story gets told about origins.
+// The other five questions stay on YEAR; changing the year under them would
+// pair old stocks with a single snapshot of GDP and population.
+const ringState = { year: YEAR, mode: "both" };
+
+const RING_MODES = {
+  both: { label: "most involved", rank: (inn, out) => inn + out },
+  in: { label: "biggest destinations", rank: (inn) => inn },
+  out: { label: "biggest origins", rank: (_, out) => out },
+};
+
+function ringRows() {
+  const edges = api.state.edges;
+  const yi = edges.years.indexOf(ringState.year);
+  const rows = [];
+  for (const [oi, di, stocks] of edges.edges) {
+    const people = stocks[yi];
+    if (!people) continue;
+    rows.push({ o: edges.countries[oi], d: edges.countries[di], people });
   }
-  const keep = [...involved.entries()]
+  return rows;
+}
+
+function ringData() {
+  const rows = ringRows();
+  const inn = new Map();
+  const out = new Map();
+  for (const r of rows) {
+    out.set(r.o, (out.get(r.o) ?? 0) + r.people);
+    inn.set(r.d, (inn.get(r.d) ?? 0) + r.people);
+  }
+  const score = RING_MODES[ringState.mode].rank;
+  const keep = [...new Set([...inn.keys(), ...out.keys()])]
+    .map((iso3) => [iso3, score(inn.get(iso3) ?? 0, out.get(iso3) ?? 0)])
     .sort((a, b) => b[1] - a[1])
     .slice(0, RING_N)
     .map(([iso3]) => iso3);
   const index = new Map(keep.map((iso3, i) => [iso3, i]));
   const matrix = keep.map(() => keep.map(() => 0));
-  for (const r of model.rows) {
+  for (const r of rows) {
     const i = index.get(r.o);
     const j = index.get(r.d);
     if (i !== undefined && j !== undefined) matrix[i][j] += r.people;
   }
-  const out = keep.map((_, i) => matrix[i].reduce((a, b) => a + b, 0));
+  const outArc = keep.map((_, i) => matrix[i].reduce((a, b) => a + b, 0));
   const into = keep.map((_, j) => matrix.reduce((sum, row) => sum + row[j], 0));
-  return { keep, matrix, out, into, index };
+  const total = rows.reduce((sum, r) => sum + r.people, 0);
+  return { keep, matrix, out: outArc, into, index, total };
 }
 
 function drawRing() {
@@ -321,18 +353,26 @@ function answerRing() {
   biggest.sort((a, b) => b[2] - a[2]);
   const [o, d, v] = biggest[0];
   const second = biggest[1];
+  const opening = {
+    both: `These ${RING_N} countries are the ones most people move between`,
+    in: `These ${RING_N} countries receive more foreign-born residents than anyone else`,
+    out: `These ${RING_N} countries are where more people have left from than anywhere else`,
+  }[ringState.mode];
   return (
-    `These ${RING_N} countries are the ones most people move between. ` +
+    `${opening}, in ${ringState.year}. ` +
     `Among themselves they account for ` +
     `<b>${api.format.fmt.format(among)}</b> people, ` +
-    `<b>${one(pct(among, model.total))}%</b> of everyone living outside their country of birth. ` +
+    `<b>${one(pct(among, data.total))}%</b> of everyone living outside their country of birth ` +
+    `that year. ` +
     `The single heaviest ribbon is <b>${model.name(o)} → ${model.name(d)}</b> at ` +
     `${api.format.fmt.format(v)} people, ` +
     `<b>${(v / second[2]).toFixed(1)}×</b> the next one ` +
     `(${model.name(second[0])} → ${model.name(second[1])}). ` +
     `The ring is lopsided on purpose: a few countries are almost all deep rim ` +
     `(people left) and a few almost all pale (people arrived), and those are ` +
-    `different kinds of country.`
+    `different kinds of country. Switch the ring to biggest destinations and ` +
+    `then to biggest origins: the two lists barely overlap, and the ribbons ` +
+    `stay directed either way.`
   );
 }
 
@@ -953,6 +993,51 @@ function render() {
   drawn = true;
 }
 
+// The ring's own controls. Its answer is rewritten on every change, since the
+// numbers in it belong to the year and the list on screen.
+function redrawRing() {
+  drawRing();
+  wire("q-ring");
+  const host = $("q-ring-answer");
+  if (host) {
+    host.innerHTML = answerRing();
+    host.dataset.written = "on";
+  }
+}
+
+function setupRingControls() {
+  const scope = $("q-ring-scope");
+  // The other five answers pair stocks with one snapshot of GDP, population and
+  // sex, so they stay where that pairing holds. Saying which questions the year
+  // moves is cheaper than a reader assuming it moves all six.
+  if (scope)
+    scope.textContent =
+      `These controls change this ring only. The five answers below are all ${YEAR}.`;
+  const picker = $("q-ring-year");
+  if (picker && !picker.dataset.ready) {
+    picker.dataset.ready = "on";
+    picker.innerHTML = api.state.edges.years
+      .map((year) => `<option value="${year}"${year === ringState.year ? " selected" : ""}>${year}</option>`)
+      .join("");
+    picker.addEventListener("change", (event) => {
+      ringState.year = Number(event.target.value);
+      redrawRing();
+    });
+  }
+  const modes = $("q-ring-mode");
+  if (modes && !modes.dataset.ready) {
+    modes.dataset.ready = "on";
+    modes.addEventListener("click", (event) => {
+      const button = event.target.closest("button[data-mode]");
+      if (!button) return;
+      ringState.mode = button.dataset.mode;
+      for (const other of modes.querySelectorAll("button[data-mode]"))
+        other.setAttribute("aria-pressed", String(other === button));
+      redrawRing();
+    });
+  }
+}
+
 // Six canvases and a pass over 9,095 corridors is not free, and most readers
 // never open the drawer. Nothing is computed until they do.
 export function installQuestions(shared) {
@@ -960,9 +1045,15 @@ export function installQuestions(shared) {
   const drawer = $("questions");
   if (!drawer) return;
   drawer.addEventListener("toggle", () => {
-    if (drawer.open) render();
+    if (drawer.open) {
+      setupRingControls();
+      render();
+    }
   });
-  if (drawer.open) render();
+  if (drawer.open) {
+    setupRingControls();
+    render();
+  }
   window.addEventListener("week03:restyle", () => {
     if (drawn && drawer.open) render();
   });

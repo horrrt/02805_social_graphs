@@ -9,7 +9,7 @@
     />
     <title>Corridor Control · Log–Log Arcade</title>
     <link href="../../assets/favicon.svg" rel="icon" type="image/svg+xml" />
-    <link href="../../assets/css/corridor.css?v=085704f03d" rel="stylesheet" />
+    <link href="../../assets/css/corridor.css?v=b37257a9db" rel="stylesheet" />
   </head>
   <body class="corridor">
     <a class="skip" href="#main">Skip to content</a>
@@ -506,6 +506,27 @@
               <div class="qa-body">
                 <article class="qa-item">
                   <h3>1 · Which corridors actually carry the world?</h3>
+                  <div class="qa-controls">
+                    <label for="q-ring-year">Year</label>
+                    <select aria-label="Year for the ring" id="q-ring-year"></select>
+                    <div
+                      aria-label="Which fourteen countries the ring draws"
+                      class="axis-modes"
+                      id="q-ring-mode"
+                      role="group"
+                    >
+                      <button aria-pressed="true" data-mode="both" type="button">
+                        Most involved
+                      </button>
+                      <button aria-pressed="false" data-mode="in" type="button">
+                        Biggest destinations
+                      </button>
+                      <button aria-pressed="false" data-mode="out" type="button">
+                        Biggest origins
+                      </button>
+                    </div>
+                  </div>
+                  <p class="axis-note" id="q-ring-scope"></p>
                   <canvas
                     class="chart"
                     height="660"
@@ -705,6 +726,6 @@
       </footer>
     </main>
 
-    <script src="../../assets/js/week03-boot.js?v=085704f03d" type="module"></script>
+    <script src="../../assets/js/week03-boot.js?v=b37257a9db" type="module"></script>
   </body>
 </html>
