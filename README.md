@@ -176,10 +176,23 @@ Libraries and imagery are committed on purpose: GitHub Pages serves the
 repository as it stands, so a file that is not in it is a file the published
 site cannot load.
 
-Editing any of the post's scripts or its stylesheet changes their content hash,
-so re-run `python scripts/stamp_week03.py` before committing; a test fails if
-the stamp is stale. The stamp lands in the asset URLs, which is what stops
-GitHub Pages serving one deploy's code alongside the next deploy's markup.
+Editing any of the post's scripts, its stylesheet or the data files it fetches
+changes their content hash, so re-run `python scripts/stamp_week03.py` before
+committing; a test fails if the stamp is stale. The stamp lands in the asset
+URLs, which is what stops GitHub Pages serving one deploy's code alongside the
+next deploy's markup, or this deploy's code against last deploy's numbers. The
+data files are covered because a module fetches them at a relative URL and
+hands its own stamp down; there is nowhere else a version could go.
+
+`rebuild_week03.py` rebuilds the two network files and the roles. The analyses
+that read them and write to `analysis/` are separate runs, because each is slow
+and none is needed to serve the page:
+
+    python analysis/week03_tails.py         # heavy-tail fits, a few minutes
+    python analysis/week03_gravity.py       # PPML gravity and its residuals
+    python analysis/week03_communities.py   # Louvain against a degree-preserving null
+    python analysis/week03_passengers.py    # the route proxy against US BTS passengers
+    python analysis/week03_country_networks.py
 
 ### Checking the renderers
 
