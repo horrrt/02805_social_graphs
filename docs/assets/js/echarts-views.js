@@ -90,6 +90,13 @@ function graphData() {
     got.set(d, (got.get(d) ?? 0) + people);
   }
   const biggest = Math.max(1, ...total.values());
+  // Only the dozen largest carry a standing label. A force layout has no
+  // label avoidance, so labelling everything above a threshold writes
+  // "United StatesBangladesh" across the middle of the pile. Hovering any
+  // node still names it.
+  const named = new Set(
+    [...total.entries()].sort((a, b) => b[1] - a[1]).slice(0, 12).map(([iso3]) => iso3),
+  );
   const nodes = [...total.keys()].map((iso3) => {
     const out = sent.get(iso3) ?? 0;
     const inn = got.get(iso3) ?? 0;
@@ -103,7 +110,7 @@ function graphData() {
       // twice the ink rather than four times it.
       symbolSize: 8 + Math.sqrt(total.get(iso3) / biggest) * 42,
       itemStyle: { color: inn >= out ? api.colours.ACCESS : api.colours.PEOPLE },
-      label: { show: total.get(iso3) > biggest * 0.12 },
+      label: { show: named.has(iso3) },
     };
   });
   const heaviest = Math.max(1, ...rows.map((r) => r[2]));
@@ -173,6 +180,24 @@ function answerGraph() {
   const people = rows.reduce((sum, r) => sum + r[2], 0);
   const all = yearRows(graphState.year).reduce((sum, r) => sum + r[2], 0);
   const receivers = nodes.filter((n) => n.inn >= n.out).length;
+
+  // How many pieces the floor has cut the world into. Union-find over the
+  // surviving corridors, treated as undirected: a corridor connects its two
+  // ends whichever way the people went.
+  const parent = new Map(nodes.map((n) => [n.id, n.id]));
+  const find = (x) => {
+    while (parent.get(x) !== x) {
+      parent.set(x, parent.get(parent.get(x)));
+      x = parent.get(x);
+    }
+    return x;
+  };
+  for (const [o, d] of rows) {
+    const a = find(o);
+    const b = find(d);
+    if (a !== b) parent.set(a, b);
+  }
+  const components = new Set([...parent.keys()].map(find)).size;
   // Every country that has a migration corridor this year, which is not the
   // same set as state.data.countries: that one is the union of migration and
   // flights, and a country that only has flights was never on this chart.
@@ -188,9 +213,13 @@ function answerGraph() {
     `have none that big. ` +
     `Blue nodes take more people than they send, orange ones send more; ` +
     `<b>${receivers}</b> of the survivors are blue. ` +
-    `Drag the floor up and the map's geography stops mattering: what is left is ` +
-    `the Gulf hiring from South Asia, the ex-Soviet republics exchanging among ` +
-    `themselves, and the English-speaking destinations pulling from everywhere.`;
+    `They fall into <b>${components}</b> ` +
+    `${components === 1 ? "group" : "separate groups"} that share no corridor ` +
+    `this big with each other` +
+    (components > 1
+      ? `, and the groups are not continents: a bloc here is a hiring ` +
+        `relationship or an old border, not a neighbourhood.`
+      : `, which is what the corridors look like before the floor breaks them apart.`);
 }
 
 /* ------------------------------------------------------------- stacked area
