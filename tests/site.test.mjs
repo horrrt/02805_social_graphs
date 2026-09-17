@@ -8,7 +8,6 @@ import { fileURLToPath } from "node:url";
 import {
   GROUP,
   WEEKS,
-  FREE_PLAY,
   FREE_PLAY_PREDICTIONS,
   liveWeeks,
   currentWeek,
@@ -128,14 +127,10 @@ test("every lobby card agrees with the manifest and only live weeks are links", 
     `index.html links the current week`,
   );
   assert(!html.includes("Six doors"), "no stale door count");
-  const shelf = html.match(/<section[^>]*id="free-play"[\s\S]*?<\/section>/)?.[0];
-  assert(shelf, `index.html has a free-play shelf`);
-  for (const f of FREE_PLAY) {
-    assert(shelf.includes(`href="${f.href}"`), `${f.name} is on the shelf`);
-    assert(
-      existsSync(join(DOCS, f.href.split("?")[0], "index.html")),
-      f.href,
-    );
+  assert(html.includes('id="network"'), "the lobby keeps the network section");
+  for (const gone of ["os/", "trumps/", "sound/", "creature/"]) {
+    assert(!html.includes(`href="${gone}`), `the retired ${gone} tool is unlinked`);
+    assert(!existsSync(join(DOCS, gone, "index.html")), `${gone} is deleted`);
   }
   for (const w of liveWeeks())
     assert(
@@ -232,10 +227,6 @@ test("every fragment link points at an id that exists", () => {
 // stylesheet and palette in corridor.css rather than repainting arcade.css.
 const ARCADE_PAGES = [
   "index.html",
-  "os/index.html",
-  "trumps/index.html",
-  "sound/index.html",
-  "creature/index.html",
   "weeks/week01/index.html",
   "weeks/week02/index.html",
 ];
@@ -248,11 +239,6 @@ test("every arcade page declares the favicon and loads its stylesheets staticall
     [],
     "pages without a favicon",
   );
-  assert(
-    read("os/index.html").includes('href="../assets/css/os.css"'),
-    "the OS palette is linked in the head, not injected after load",
-  );
-  assert(!read("assets/js/marvel-os.js").includes("os.css"));
 });
 
 test("the README serves the site on the same port as the launch config", () => {

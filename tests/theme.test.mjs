@@ -19,13 +19,13 @@ const scripts = () =>
   readdirSync(JS)
     .filter((f) => f.endsWith(".js") && !LEGACY.includes(f))
     .map((f) => [f, readFileSync(join(JS, f), "utf8")]);
-const css = ["arcade.css", "os.css"]
+const css = ["arcade.css"]
   .map((f) => readFileSync(join(DOCS, "assets/css", f), "utf8"))
   .join("\n");
 
 test("links and data both resolve against docs/", () => {
   assert(SITE.href.endsWith("/docs/"), SITE.href);
-  assert.equal(url("os/"), new URL("os/", SITE).href);
+  assert.equal(url("weeks/week01/"), new URL("weeks/week01/", SITE).href);
   assert(existsSync(fileURLToPath(url("assets/data/arcade_graph.json"))));
 });
 
@@ -54,7 +54,7 @@ test("every canvas token in JS is defined in CSS with the same value, and no bar
   for (const name of uses.keys())
     assert.match(
       name,
-      /^--cv-(lobby|net|creature|packs|transit|sound)-[a-z0-9-]+$/,
+      /^--cv-(lobby|net|packs|transit)-[a-z0-9-]+$/,
       `${name} follows --cv-<area>-<role>`,
     );
   const missing = [],

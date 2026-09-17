@@ -236,31 +236,12 @@
 .guided-lobby .upcoming-weeks h2 {
   font-size: 22px;
 }
-.guided-lobby #free-play {
+.guided-lobby #network {
   margin: 0;
   padding: 36px 0;
 }
-.guided-lobby #free-play h2 {
+.guided-lobby #network h2 {
   font-size: 30px;
-}
-.guided-lobby .experience-links {
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 0 28px;
-}
-.guided-lobby .experience-links > a {
-  border: 0;
-  border-top: 1px solid var(--line);
-  border-radius: 0;
-  padding: 20px 0;
-  background: transparent;
-  box-shadow: none;
-}
-.guided-lobby .experience-links b {
-  font-size: 20px;
-}
-.guided-lobby .experience-links p {
-  font-size: 16px;
-  margin: 6px 0 0;
 }
 .guided-post :focus-visible,
 .guided-lobby :focus-visible {
@@ -338,8 +319,7 @@
     font-size: 13px;
   }
   .guided-lobby #weeks > .cabinet-list,
-  .guided-lobby .upcoming-weeks .cabinet-list,
-  .guided-lobby .experience-links {
+  .guided-lobby .upcoming-weeks .cabinet-list {
     grid-template-columns: 1fr;
   }
   .guided-post .two-col {

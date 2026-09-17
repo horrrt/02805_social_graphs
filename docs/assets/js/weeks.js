@@ -73,18 +73,10 @@ export const WEEKS = [
   },
 ];
 
-// Experiments over the same snapshot. They carry no week number and are not posts.
-export const FREE_PLAY = [
-  { name: "MARVEL-OS 303", href: "os/" },
-  { name: "Hero Trumps", href: "trumps/" },
-  { name: "Hidden Districts", href: "os/?app=communities" },
-  { name: "Walk / Listen", href: "sound/" },
-  { name: "Keep It Together", href: "creature/" },
-  { name: "Inside the Articles", href: "os/?app=notepad" },
-  { name: "Word Finder", href: "os/?app=search" },
-];
-
-// Prediction ids that were filed under invented weeks 3–8 before this manifest existed.
+// Prediction ids that were filed under invented weeks 3–8 before this manifest
+// existed. The free-play pages that wrote them are gone, but the ids survive in
+// returning visitors' saved logs, so this stays as a compatibility shim: without
+// it, migrate() would relabel those old guesses as real course weeks.
 export const FREE_PLAY_PREDICTIONS = new Set([
   "w3-coverage",
   "w4-communities",

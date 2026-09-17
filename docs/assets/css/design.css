@@ -158,7 +158,7 @@
   align-items: baseline;
 }
 .visual-design.guided-lobby #weeks h2,
-.visual-design.guided-lobby #free-play h2 {
+.visual-design.guided-lobby #network h2 {
   font-size: 32px;
   letter-spacing: -0.03em;
   line-height: 1.15;
@@ -257,80 +257,9 @@
 .visual-design.guided-lobby .upcoming-weeks .cabinet-link h2 {
   font-size: 22px;
 }
-.visual-design.guided-lobby #free-play {
+.visual-design.guided-lobby #network {
   padding: 60px 0 40px;
   border: 0;
-}
-.visual-design.guided-lobby .experience-links {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 20px;
-}
-.visual-design.guided-lobby .experience-links > .play-card {
-  padding: 24px;
-  background: var(--surface);
-  border: 1px solid var(--line);
-  border-radius: 16px;
-  color: var(--paper);
-  transition: transform 0.18s ease;
-}
-.visual-design .play-card:hover {
-  transform: translateY(-3px);
-}
-.visual-design .play-icon {
-  display: grid;
-  place-items: center;
-  width: 66px;
-  height: 66px;
-  border-radius: 18px;
-  margin-bottom: 20px;
-  color: #243454;
-  background: #f4df98;
-}
-.visual-design .play-sound .play-icon {
-  background: #e4def2;
-}
-.visual-design .play-creature .play-icon {
-  background: #d8e7d4;
-}
-.visual-design .play-icon svg {
-  width: 46px;
-  height: 46px;
-}
-.visual-design .experience-links b {
-  font-size: 21px;
-}
-.visual-design .experience-links p {
-  font-size: 16px;
-  line-height: 1.45;
-  color: var(--muted);
-}
-.visual-design .more-tools {
-  margin-top: 24px;
-  border: 0;
-  padding: 0;
-}
-.visual-design .more-tools > summary {
-  min-height: 48px;
-  padding: 14px 0;
-  font-size: 15px;
-  font-weight: 400;
-  color: var(--muted);
-}
-.visual-design .tools-list {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 24px;
-  padding: 24px 0;
-}
-.visual-design .tools-list > a {
-  padding: 16px 0;
-  border-top: 1px solid var(--line);
-  text-decoration: none;
-}
-.visual-design .tools-list p {
-  font-size: 16px;
-  color: var(--muted);
 }
 .visual-design #lobby-scene {
   grid-column: 1 / -1;
@@ -569,8 +498,7 @@
     transition: none !important;
   }
   .visual-design .cabinet-link:hover,
-  .visual-design .cabinet-link:hover img,
-  .visual-design .play-card:hover {
+  .visual-design .cabinet-link:hover img {
     transform: none !important;
   }
 }
