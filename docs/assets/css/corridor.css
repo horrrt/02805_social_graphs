@@ -1854,3 +1854,11 @@ body > .chart-tip[hidden] {
 .corridor .echart.calendar {
   height: 820px;
 }
+
+.corridor .echart.grid {
+  height: 420px;
+}
+
+.corridor .echart.closures {
+  height: 380px;
+}

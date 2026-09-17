@@ -405,6 +405,291 @@ function answerArea() {
     ` “${mode.label}” counts ${mode.blurb}.`;
 }
 
+/* ------------------------------------------------------- 3. the month grid
+
+   Eurostat's monthly asylum applications, the finest-grained bilateral
+   migration series there is. A grid of years against months, one origin at a
+   time, because a war shows up in a column of a single row and DESA's
+   five-year spine cannot see it at all. */
+
+let asylum = null;
+const asylumState = { origin: "SY" };
+
+async function loadAsylum() {
+  if (asylum) return asylum;
+  const url = new URL("../data/week03_asylum.json", import.meta.url);
+  asylum = await fetch(url).then((r) => r.json());
+  return asylum;
+}
+
+const MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+
+function asylumRows() {
+  const origin = asylum.origins[asylumState.origin];
+  const years = [...new Set(asylum.months.map((m) => m.slice(0, 4)))].sort();
+  const cells = [];
+  asylum.months.forEach((month, i) => {
+    const value = origin.months[i];
+    cells.push([
+      Number(month.slice(5, 7)) - 1,
+      years.indexOf(month.slice(0, 4)),
+      value,
+      month,
+    ]);
+  });
+  return { origin, years, cells };
+}
+
+function drawAsylum() {
+  const instance = chart("v-asylum");
+  if (!instance || !asylum?.origins?.[asylumState.origin]) return;
+  const { PEOPLE, INK, MUTE, GRID } = api.colours;
+  const { origin, years, cells } = asylumRows();
+  const reported = cells.filter((c) => c[2] !== null);
+  const biggest = Math.max(1, ...reported.map((c) => c[2]));
+
+  instance.setOption(
+    {
+      ...BASE,
+      tooltip: tip((p) => {
+        const [, , value, month] = p.data;
+        return (
+          `<b>${origin.name} · ${month}</b><br>` +
+          (value === null
+            ? "no figure published"
+            : `${fmt(value)} first-time applications`)
+        );
+      }),
+      visualMap: {
+        type: "piecewise",
+        orient: "horizontal",
+        left: 66,
+        top: 0,
+        itemWidth: 12,
+        itemHeight: 12,
+        itemGap: 6,
+        textStyle: { color: MUTE, fontSize: 10 },
+        // Fixed to this origin's own maximum, so the grid is a story about
+        // one country's months rather than a comparison with Syria.
+        splitNumber: 5,
+        min: 0,
+        max: biggest,
+        inRange: { color: [`rgba(${api.rgb(PEOPLE)},0.14)`, `rgba(${api.rgb(PEOPLE)},1)`] },
+        formatter: (lo, hi) => `${compact(Math.round(lo))}–${compact(Math.round(hi))}`,
+      },
+      grid: { left: 66, right: 24, top: 44, bottom: 30 },
+      xAxis: {
+        type: "category",
+        data: MONTHS,
+        splitArea: { show: false },
+        axisLine: { show: false },
+        axisTick: { show: false },
+        axisLabel: { color: MUTE, fontSize: 10 },
+      },
+      yAxis: {
+        type: "category",
+        data: years,
+        inverse: true,
+        splitArea: { show: false },
+        axisLine: { show: false },
+        axisTick: { show: false },
+        axisLabel: { color: INK, fontSize: 11, fontWeight: 600 },
+      },
+      series: [
+        {
+          type: "heatmap",
+          data: cells.map((c) => ({ value: [c[0], c[1], c[2]], data: c })),
+          // A month nobody published is not a quiet month, so it is drawn as
+          // a hole rather than as a zero.
+          itemStyle: { borderColor: GRID, borderWidth: 1 },
+          emphasis: { itemStyle: { borderColor: INK, borderWidth: 2 } },
+          label: { show: false },
+        },
+      ],
+    },
+    true,
+  );
+  answerAsylum();
+}
+
+function answerAsylum() {
+  const host = $("v-asylum-answer");
+  if (!host || !asylum?.origins?.[asylumState.origin]) return;
+  const { origin, cells } = asylumRows();
+  const reported = cells.filter((c) => c[2] !== null && c[2] > 0);
+  const blank = cells.length - cells.filter((c) => c[2] !== null).length;
+  const ranked = [...reported].sort((a, b) => b[2] - a[2]);
+  const peak = ranked[0];
+  const twelve = ranked.slice(0, 12).reduce((sum, c) => sum + c[2], 0);
+  const worldPeak = asylum.totals.indexOf(Math.max(...asylum.totals));
+  const share = (twelve / origin.total) * 100;
+  const where = origin.top
+    .slice(0, 3)
+    .map((d) => `${d.name} (${compact(d.people)})`)
+    .join(", ");
+  host.innerHTML =
+    `<b>${fmt(origin.total)}</b> first-time asylum applications from ` +
+    `<b>${origin.name}</b> across ${asylum.reporting} European countries, ` +
+    `${asylum.months[0]} to ${asylum.months.at(-1)}. The heaviest month is ` +
+    `<b>${peak[3]}</b> at <b>${fmt(peak[2])}</b>, and twelve months out of ` +
+    `${asylum.months.length} carry <b>${share.toFixed(0)}%</b> of the series` +
+    (share > 40
+      ? ` — a spike with quiet on either side of it`
+      : share > 20
+        ? ` — heavier in some years than others, without one dominant month`
+        : `, which is close to what an even flow would give and reads as a steady one`) +
+    `. Most of it went to ${where}. ` +
+    (blank ? `<b>${blank}</b> months have no published figure and are drawn as holes — ` +
+      `Eurostat suppresses small cells, so a blank is a silence, not a zero. ` : "") +
+    `Across the ${Object.keys(asylum.origins).length} origins big enough to ship ` +
+    `here, the busiest month in Europe is <b>${asylum.months[worldPeak]}</b>, at ` +
+    `<b>${fmt(asylum.totals[worldPeak])}</b> applications — under Eurostat's own ` +
+    `published total for that month, which includes the small origins this file drops. These are applications and not arrivals: somebody who applies ` +
+    `in Hungary and again in Germany is counted twice, and the page's own corridor ` +
+    `data would see them once, in whichever country they ended up. People granted ` +
+    `temporary protection are not here either, which is why Ukraine after 2022 ` +
+    `looks quiet on a grid of asylum applications: four million of them never ` +
+    `filed one.`;
+}
+
+function wireAsylum() {
+  const picker = $("v-asylum-origin");
+  if (!picker || picker.dataset.ready || !asylum?.origins) return;
+  picker.dataset.ready = "on";
+  const sorted = Object.entries(asylum.origins).sort((a, b) => b[1].total - a[1].total);
+  picker.innerHTML = sorted
+    .map(
+      ([code, origin]) =>
+        `<option value="${code}"${code === asylumState.origin ? " selected" : ""}>` +
+        `${origin.name} · ${compact(origin.total)}</option>`,
+    )
+    .join("");
+  // This changes the grid and nothing else, the same promise the ring and the
+  // force layout make about their own controls.
+  picker.addEventListener("change", (event) => {
+    asylumState.origin = event.target.value;
+    drawAsylum();
+  });
+}
+
+/* --------------------------------------------------------- 4. the closures
+
+   The Oxford tracker's international travel controls, one number per country
+   per day. This is the only chart on the page that can see 2020: the flight
+   network is undated and the migrant stock jumps from 2020 straight to 2024,
+   so the pandemic happens entirely between two of its observations. */
+
+let closures = null;
+
+async function loadClosures() {
+  if (closures) return closures;
+  const url = new URL("../data/week03_closures.json", import.meta.url);
+  closures = await fetch(url).then((r) => r.json());
+  return closures;
+}
+
+function drawClosures() {
+  const instance = chart("v-closures");
+  if (!instance || !closures?.days) return;
+  const { ACCESS, INK, MUTE, GRID } = api.colours;
+  const entries = Object.entries(closures.days);
+  const years = [...new Set(entries.map(([d]) => d.slice(0, 4)))].sort();
+
+  const gap = 96;
+  const calendars = years.map((year, i) => ({
+    top: 40 + i * gap,
+    left: 58,
+    right: 24,
+    cellSize: [13, 13],
+    range: year,
+    splitLine: { show: false },
+    itemStyle: { color: "transparent", borderColor: GRID, borderWidth: 1 },
+    yearLabel: { show: true, color: INK, fontSize: 13, fontWeight: 700, margin: 34 },
+    monthLabel: { show: i === 0, color: MUTE, fontSize: 10 },
+    dayLabel: { show: true, firstDay: 1, nameMap: ["S", "M", "T", "W", "T", "F", "S"], color: MUTE, fontSize: 9 },
+  }));
+
+  instance.setOption(
+    {
+      ...BASE,
+      tooltip: tip((p) => {
+        const [, shut] = p.value;
+        const counts = p.data.counts;
+        const reporting = counts.reduce((a, b) => a + b, 0);
+        return (
+          `<b>${p.value[0]}</b><br>` +
+          `${shut} of ${reporting} countries closed to all arrivals ` +
+          `(${((shut / reporting) * 100).toFixed(0)}%)<br>` +
+          `<span style="opacity:.75">${counts[3]} banned some regions · ` +
+          `${counts[2]} quarantined arrivals · ${counts[0]} had no restriction</span>`
+        );
+      }),
+      visualMap: {
+        type: "piecewise",
+        orient: "horizontal",
+        left: 58,
+        top: 0,
+        itemWidth: 12,
+        itemHeight: 12,
+        itemGap: 6,
+        textStyle: { color: MUTE, fontSize: 10 },
+        pieces: [
+          { min: 0, max: 0, label: "none closed", color: `rgba(${api.rgb(MUTE)},0.12)` },
+          { min: 1, max: 9, label: "1–9", color: `rgba(${api.rgb(ACCESS)},0.25)` },
+          { min: 10, max: 29, label: "10–29", color: `rgba(${api.rgb(ACCESS)},0.45)` },
+          { min: 30, max: 59, label: "30–59", color: `rgba(${api.rgb(ACCESS)},0.65)` },
+          { min: 60, max: 99, label: "60–99", color: `rgba(${api.rgb(ACCESS)},0.82)` },
+          { min: 100, label: "100+", color: `rgba(${api.rgb(ACCESS)},1)` },
+        ],
+      },
+      calendar: calendars,
+      series: years.map((year, i) => ({
+        type: "heatmap",
+        coordinateSystem: "calendar",
+        calendarIndex: i,
+        data: entries
+          .filter(([date]) => date.startsWith(year))
+          .map(([date, counts]) => ({ value: [date, counts[4]], counts })),
+      })),
+    },
+    true,
+  );
+  answerClosures();
+}
+
+function answerClosures() {
+  const host = $("v-closures-answer");
+  if (!host || !closures) return;
+  const entries = Object.entries(closures.days);
+  const reporting = (counts) => counts.reduce((a, b) => a + b, 0);
+  const peak = entries.reduce((best, e) => (e[1][4] > best[1][4] ? e : best));
+  const open = (counts) => counts[0];
+  // The first day a hundred countries were shut, and the last one, which is
+  // the span the page's undated flight network draws straight through.
+  const hundred = entries.filter(([, c]) => c[4] >= 100);
+  const last = entries.at(-1);
+  const everOpen = entries.reduce(
+    (best, e) => (open(e[1]) > open(best[1]) ? e : best),
+  );
+  host.innerHTML =
+    `On <b>${peak[0]}</b>, <b>${peak[1][4]}</b> of the ` +
+    `<b>${reporting(peak[1])}</b> countries reporting that day were closed to ` +
+    `arrivals from everywhere. ` +
+    (hundred.length
+      ? `A hundred or more stayed shut from <b>${hundred[0][0]}</b> to ` +
+        `<b>${hundred.at(-1)[0]}</b>, <b>${hundred.length}</b> days in all. `
+      : "") +
+    `By <b>${last[0]}</b>, where the tracker stops, it was <b>${last[1][4]}</b>. ` +
+    `The freest day in the record is <b>${everOpen[0]}</b>, with ` +
+    `<b>${open(everOpen[1])}</b> countries reporting no restriction at all. ` +
+    `This is the hole in the rest of the page: the flight network above is one ` +
+    `undated snapshot and the migrant stock jumps from 2020 to 2024, so the ` +
+    `largest shock to human movement in living memory happens between two ` +
+    `observations and leaves no mark on either. ` +
+    `Read the levels as policy, not as traffic. A country at level 4 had closed ` +
+    `its border on paper; who actually crossed it is a different dataset.`;
+}
+
 /* ---------------------------------------------------------------- calendar
 
    The one chart on this page with a date on it. Everything else is UN DESA's
@@ -621,8 +906,11 @@ function wireArea() {
 function renderAll() {
   wireGraph();
   wireArea();
+  wireAsylum();
   drawGraph();
   drawArea();
+  drawAsylum();
+  drawClosures();
   drawCalendar();
 }
 
@@ -647,7 +935,7 @@ export function installViews(shared, loadVendor) {
           .catch((error) => {
             if (status)
               status.textContent =
-                `These three views need Apache ECharts, and it did not load (${error.message}). ` +
+                `These views need Apache ECharts, and it did not load (${error.message}). ` +
                 "Everything else on the page is drawn by hand and is unaffected.";
             throw error;
           });
@@ -658,16 +946,23 @@ export function installViews(shared, loadVendor) {
         return;
       }
     }
-    if (!calendar) {
-      const status = $("v-status");
-      try {
-        await loadCalendar();
-      } catch (error) {
-        if (status)
-          status.textContent =
-            `The calendar's data file did not load (${error.message}); the other two views are fine.`;
-      }
-    }
+    // Three data files the rest of the page does not load. A failure on one
+    // of them must not take the other four views down.
+    const status = $("v-status");
+    const missing = [];
+    await Promise.all(
+      [
+        ["monthly asylum applications", loadAsylum],
+        ["the border-closure tracker", loadClosures],
+        ["the deaths calendar", loadCalendar],
+      ].map(([label, load]) =>
+        load().catch(() => {
+          missing.push(label);
+        }),
+      ),
+    );
+    if (missing.length && status)
+      status.textContent = `Could not load ${missing.join(" or ")}; the other views are fine.`;
     renderAll();
   };
 
