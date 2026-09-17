@@ -20,11 +20,13 @@ defusedxml==0.7.1
 executing==2.2.1
 fastjsonschema==2.22.2
 fonttools==4.65.0
+formulaic==1.2.2
 fqdn==1.5.1
 h11==0.16.0
 httpcore==1.0.9
 httpx==0.28.1
 idna==3.19
+interface_meta==2.0.1
 ipykernel==7.3.0
 ipython==9.17.1
 ipython_pygments_lexers==1.1.1
@@ -51,6 +53,8 @@ MarkupSafe==3.0.3
 matplotlib==3.11.2
 matplotlib-inline==0.2.2
 mistune==3.3.4
+mpmath==1.4.1
+narwhals==2.26.0
 nbclient==0.11.0
 nbconvert==7.17.1
 nbformat==5.11.1
@@ -62,9 +66,11 @@ packaging==26.3
 pandas==3.0.5
 pandocfilters==1.5.1
 parso==0.8.7
+patsy==1.0.3
 pexpect==4.9.0
 pillow==12.3.0
 platformdirs==4.11.8
+powerlaw==2.0.0
 prometheus_client==0.26.0
 prompt_toolkit==3.0.53
 psutil==7.2.2
@@ -88,9 +94,11 @@ Send2Trash==2.1.0
 six==1.17.0
 soupsieve==2.9.2
 stack-data==0.6.3
+statsmodels==0.15.0
 terminado==0.18.1
 tinycss2==1.5.1
 tornado==6.5.8
+tqdm==4.70.1
 traitlets==5.16.1
 typing_extensions==4.16.0
 tzdata==2026.4
@@ -100,3 +108,4 @@ wcwidth==0.8.3
 webcolors==25.10.0
 webencodings==0.6.1
 websocket-client==1.9.2
+wrapt==2.4.1
