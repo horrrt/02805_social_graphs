@@ -9,7 +9,7 @@
     />
     <title>Corridor Control · Log–Log Legends</title>
     <link href="../../assets/favicon.svg" rel="icon" type="image/svg+xml" />
-    <link href="../../assets/css/corridor.css?v=9b2810ae82" rel="stylesheet" />
+    <link href="../../assets/css/corridor.css?v=47e80bd2b7" rel="stylesheet" />
   </head>
   <body class="corridor">
     <a class="skip" href="#main">Skip to content</a>
@@ -621,7 +621,7 @@
           <div class="card">
             <div class="step-head">
               <span class="num">10</span>
-              <h2>Three more ways to look at the same two files</h2>
+              <h2>More ways to look at this</h2>
             </div>
             <details class="qa" id="views">
               <summary>
@@ -663,8 +663,10 @@
                     <b class="qa-slider-now" id="v-graph-floor-now">400k</b>
                   </div>
                   <p class="axis-note">
-                    Drag to pan, scroll to zoom, drag a country to pull it out
-                    of the pile. Click one to select it everywhere on the page.
+                    These two sliders change this chart only; the year at the
+                    top of the page stays where you left it. Drag to pan,
+                    scroll to zoom, drag a country to pull it out of the pile.
+                    Click one to select it everywhere on the page.
                   </p>
                   <div class="echart tall" id="v-graph"></div>
                   <p class="qa-answer" id="v-graph-answer"></p>
@@ -693,6 +695,22 @@
                   <p class="axis-note" id="v-area-note"></p>
                   <div class="echart wide" id="v-area"></div>
                   <p class="qa-answer" id="v-area-answer"></p>
+                </article>
+
+                <article class="qa-item">
+                  <h3>3 &middot; The days the corridors killed somebody</h3>
+                  <p class="axis-note">
+                    Every other chart here counts people who arrived. UN DESA's
+                    table has no date in it — it is eight five-year snapshots —
+                    so nothing else on this page can show a day, a week or a
+                    season. This one can, because it comes from a different
+                    source that records incidents: IOM's Missing Migrants
+                    Project. One cell is one day. The darker it is, the more
+                    people were recorded dead or missing on a migration route
+                    that day.
+                  </p>
+                  <div class="echart calendar" id="v-calendar"></div>
+                  <p class="qa-answer" id="v-calendar-answer"></p>
                 </article>
               </div>
             </details>
@@ -762,6 +780,18 @@
                   </div>
                   <div>
                     <p class="sub">
+                      <b>The calendar.</b> IOM Missing Migrants Project via
+                      HDX, CC BY-IGO, binned by the date an incident was
+                      reported. It is the only dated source on the page, which
+                      is why section 10 can show a day at all. It counts
+                      recorded incidents: IOM says the record is an undercount
+                      by an unknown amount that differs by route, so a brighter
+                      year can be a better-watched one rather than a worse one.
+                      A single cell is frequently a single boat, and the number
+                      missing after a shipwreck is estimated from what
+                      survivors say.
+                    </p>
+                    <p class="sub">
                       <b>The map.</b> Natural Earth 1:110m admin-0 boundaries,
                       public domain.
                       <code>scripts/migration/build_world_outline.py</code> keeps
@@ -775,7 +805,11 @@
                       dimensions over one dataset. Only the drawing changes: a
                       variant overrides the visuals it improves and inherits the
                       rest. The libraries sit in the repository, so the page
-                      fetches no third-party JavaScript.
+                      fetches no third-party JavaScript. Section 10 is the one
+                      exception to the renderer choice: its three views are
+                      ECharts whichever renderer you picked, and the megabyte
+                      that costs is fetched when you open the section and not
+                      before.
                     </p>
                     <p class="sub">
                       <b>The basemap.</b> NASA Blue Marble, public domain,
@@ -812,6 +846,7 @@
           <span>
             Sources: UN DESA International Migrant Stock (Rev. 2024) ·
             UNHCR Refugee Data Finder (end-2024) ·
+            IOM Missing Migrants Project (CC BY-IGO) ·
             OpenFlights routes (air access proxy, undated snapshot) ·
             Natural Earth 1:110m country outlines (public domain)
           </span>
@@ -822,6 +857,6 @@
       </footer>
     </main>
 
-    <script src="../../assets/js/week03-boot.js?v=9b2810ae82" type="module"></script>
+    <script src="../../assets/js/week03-boot.js?v=47e80bd2b7" type="module"></script>
   </body>
 </html>

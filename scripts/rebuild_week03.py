@@ -78,6 +78,8 @@ COMMITTED = [
      "analysis/week03_corridor_control.py", "UN DESA stock + OpenFlights + Wikidata"),
     ("docs/assets/data/week03_edges.json",
      "analysis/week03_corridor_control.py", "UN DESA stock + OpenFlights + UNHCR"),
+    ("docs/assets/data/week03_calendar.json",
+     "analysis/week03_calendar.py", "IOM Missing Migrants Project via HDX"),
     ("docs/assets/data/world_outline.geo.json",
      "scripts/migration/build_world_outline.py", "Natural Earth 1:110m"),
     ("docs/assets/textures/earth-day-2048.jpg", "scripts/rebuild_week03.py", "NASA Blue Marble"),

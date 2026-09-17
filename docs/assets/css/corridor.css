@@ -1850,3 +1850,7 @@ body > .chart-tip[hidden] {
 .corridor .echart.wide {
   height: 460px;
 }
+
+.corridor .echart.calendar {
+  height: 820px;
+}
