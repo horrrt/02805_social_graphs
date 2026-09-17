@@ -9,7 +9,7 @@
     />
     <title>Style guide · Corridor Control · Log–Log Arcade</title>
     <link href="../assets/favicon.svg" rel="icon" type="image/svg+xml" />
-    <link href="../assets/css/corridor.css?v=b37257a9db" rel="stylesheet" />
+    <link href="../assets/css/corridor.css?v=af0c67b432" rel="stylesheet" />
     <style>
       /* Only what the guide itself needs: scoped specimens and swatches.
          Everything a reader sees inside a specimen comes from corridor.css. */
@@ -284,18 +284,14 @@
                   </div>
                 </div>
                 <div>
-                  <p class="sg-label"><code>.qa-controls</code></p>
+                  <p class="sg-label"><code>.qa-controls</code> · <code>.qa-slider</code> · <code>.qa-slider-now</code></p>
                   <div class="qa-controls">
                     <label for="sg-qa-year">Year</label>
-                    <select aria-label="A year picker" id="sg-qa-year">
-                      <option>2024</option>
-                      <option>2020</option>
-                    </select>
-                    <div class="axis-modes" role="group">
-                      <button aria-pressed="true" type="button">Most involved</button>
-                      <button aria-pressed="false" type="button">Biggest destinations</button>
-                      <button aria-pressed="false" type="button">Biggest origins</button>
+                    <div class="qa-slider">
+                      <input aria-label="A year slider" id="sg-qa-year" max="7" min="0" step="1" type="range" value="7" />
+                      <div class="ends"><span>1990</span><span>2024</span></div>
                     </div>
+                    <b class="qa-slider-now">2024</b>
                   </div>
                 </div>
                 <div>

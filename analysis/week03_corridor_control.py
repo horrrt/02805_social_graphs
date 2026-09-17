@@ -6,6 +6,9 @@ aggregated from airport pairs to country pairs. The flight network is a single
 undated snapshot, so it is the same graph in every year of the page and is
 labelled that way everywhere it appears.
 
+Each corridor also carries its UNHCR 2024 refugee and asylum-seeker count, so
+the questions section can ask how much of a corridor was a choice.
+
 Betweenness is computed on the weighted graph with distance = 1 / stock, so a
 heavy corridor is a short step. That matters: on the unweighted matrix the top
 brokers come out as Australia, Norway and Denmark, which ranks statistical
@@ -62,6 +65,27 @@ def read_tsv(path):
     with (ROOT / path).open(encoding="utf-8") as fh:
         body = [line for line in fh if not line.startswith("#")]
     return list(csv.DictReader(body, delimiter="\t"))
+
+
+def forced_counts():
+    """UNHCR 2024 refugees + asylum seekers, per origin -> country of asylum.
+
+    Same-country rows are internal displacement and are dropped: this file
+    only carries corridors that cross a border, which is what the DESA stock
+    counts. The two sources do not nest perfectly — DESA is a mid-2024
+    estimate, UNHCR an end-2024 count, so a corridor that filled up during
+    2024 can carry more refugees than the stock says people — and whatever
+    reads this has to cap the count at the stock and say so.
+    """
+    forced = {}
+    for row in read_tsv("data/migration_displacement.tsv"):
+        origin, asylum = row["origin"], row["asylum"]
+        if not origin or not asylum or origin == asylum:
+            continue
+        value = int(row["refugees"] or 0) + int(row["asylum_seekers"] or 0)
+        if value:
+            forced[(origin, asylum)] = value
+    return forced
 
 
 # --------------------------------------------------------------------- flights
@@ -467,6 +491,7 @@ def main():
              + math.cos(lat1) * math.cos(lat2) * math.sin((lon2 - lon1) / 2) ** 2)
         return round(2 * 6371 * math.asin(min(1, math.sqrt(h))))
 
+    forced = forced_counts()
     edges = []
     for row in edge_rows:
         a, b = row["origin"], row["destination"]
@@ -479,13 +504,16 @@ def main():
             flight_weight.get((a, b), 0),
             great_circle(a, b),
             int(female) if str(female).isdigit() else -1,
+            forced.get((a, b), 0),
         ])
     (OUT / "week03_edges.json").write_text(json.dumps(
         {
             "countries": countries,
             "years": YEARS,
-            # [origin, destination, stock per year, flight routes, km, women in 2024]
-            "fields": ["origin", "destination", "stocks", "routes", "km", "female"],
+            # [origin, destination, stock per year, flight routes, km,
+            #  women in 2024, refugees and asylum seekers in 2024]
+            "fields": ["origin", "destination", "stocks", "routes", "km",
+                       "female", "forced"],
             "edges": edges,
         },
         separators=(",", ":")))
