@@ -2271,11 +2271,19 @@ function renderTypology() {
         const count = buckets.get(key)?.length ?? 0;
         if (!count) return "";
         const share = (count / total) * 100;
+        // The cards' tints are near-white badge backgrounds, and leaf and
+        // mixed are the same value in both tint and text colour — side by
+        // side on one bar they merge into a single block across 85% of it,
+        // exactly where the eye lands. The slices take each label's text
+        // colour at low alpha instead, and the 2px gaps between them carry
+        // the boundary that colour cannot.
         return (
-          `<span class="type-slice" data-type="${key}" title="${meta.title}: ${count} of ${total}"` +
-          ` style="width:${share}%;background:${meta.tint};color:${meta.fg}">` +
+          `<span class="type-slice" data-type="${key}"` +
+          ` aria-label="${meta.title}: ${count} of ${total} countries"` +
+          ` title="${meta.title}: ${count} of ${total}"` +
+          ` style="width:${share}%;background:${meta.fg}29;color:${meta.fg}">` +
           // Under a few per cent there is no room for a number without
-          // clipping it; the slice keeps its colour and its hover title.
+          // clipping it; the slice keeps its colour and its label.
           `${share > 7 ? `${meta.title} ${count}` : share > 3 ? count : ""}</span>`
         );
       })

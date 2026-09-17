@@ -1950,13 +1950,15 @@ body > .chart-tip[hidden] {
 /* --- how many countries each typology label holds -------------------- */
 
 .corridor .type-strip {
-  border-radius: 8px;
   display: flex;
+  /* The gap is the boundary. Two of the six labels share a colour, and on a
+     continuous bar that put a third of the world in one indivisible block. */
+  gap: 2px;
   margin-bottom: 14px;
-  overflow: hidden;
 }
 
 .corridor .type-slice {
+  border-radius: 4px;
   font-size: 11px;
   font-weight: 700;
   overflow: hidden;
