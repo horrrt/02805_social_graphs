@@ -1075,27 +1075,20 @@ function answerIncome() {
   const top = fled.at(-1);
   const bottom = fled[0];
   return (
-    `The shipped data cannot tell you who has a degree. UN DESA's stock table is split by sex and ` +
-    `age, not by education, and the table that does split by education — OECD DIOC — is not in ` +
-    `this build. What the data can show is the thing skill-selective visa systems actually do: ` +
-    `sort people by destination income. ` +
+    `No table here knows who has a degree. What the data can show is the thing skill-selective ` +
+    `visa systems actually do: sort people by destination income. ` +
     `<b>${one(steps[0].share + steps[1].share)}%</b> of migrants live somewhere richer than where ` +
-    `they were born — <b>${one(steps[0].share)}%</b> of them at least four times richer. ` +
-    `Only <b>${one(steps[2].share)}%</b> moved down the income ladder. That is sorting, and it ` +
-    `looks like selection. ` +
-    `The bars hanging under the first one are the question underneath this one: how much of it ` +
-    `was a choice. UNHCR counts <b>${api.format.fmt.format(forcedTotal)}</b> refugees and asylum ` +
-    `seekers on the corridors this page carries, <b>${one(pct(forcedTotal, model.total))}%</b> of ` +
-    `everybody on them — and they are nowhere near evenly spread. Of the foreign-born living in ` +
-    `destinations under $5,000 a head, <b>${one(bottom.forcedShare)}%</b> fled; above $50,000, ` +
-    `<b>${one(top.forcedShare)}%</b>. A third of the poorest tier is not a labour market at all, ` +
-    `and reading the whole chart as skill selection misses it. ` +
-    `The two income bars cover the <b>${one(coverage)}%</b> of people on corridors where the World ` +
-    `Bank publishes GDP per head at both ends (${api.format.fmt.format(known.length)} corridors); ` +
-    `the fled bars ask only about the destination, because insisting on both ends drops Syria, ` +
-    `Afghanistan and South Sudan from their own story. ` +
-    `Read the income bars as evidence about sorting, not about skill: a nurse and a nanny both ` +
-    `show up in the top tier, and nothing here separates them.`
+    `they were born, <b>${one(steps[0].share)}%</b> of them at least four times richer, and only ` +
+    `<b>${one(steps[2].share)}%</b> moved down the ladder. ` +
+    `The bars hanging under the first one ask how much of that was a choice. UNHCR counts ` +
+    `<b>${api.format.fmt.format(forcedTotal)}</b> refugees and asylum seekers on these corridors, ` +
+    `and they are nowhere near evenly spread: <b>${one(bottom.forcedShare)}%</b> of the ` +
+    `foreign-born in destinations under $5,000 a head fled, against ` +
+    `<b>${one(top.forcedShare)}%</b> above $50,000. A third of the poorest tier is not a labour ` +
+    `market at all. ` +
+    `Read the income bars as evidence about sorting rather than skill — a nurse and a nanny are ` +
+    `both in the top tier — and over the <b>${one(coverage)}%</b> of people whose corridor has a ` +
+    `GDP figure at both ends.`
   );
 }
 
