@@ -99,6 +99,8 @@ COMMITTED = [
      "analysis/week03_gravity.py", "gravity model and residuals"),
     ("analysis/week03_communities.json",
      "analysis/week03_communities.py", "Louvain communities against a null"),
+    ("analysis/week03_passengers.json",
+     "analysis/week03_passengers.py", "US BTS T-100 passengers vs route counts"),
     ("docs/styleguide/index.html", "hand-written", "every class, under every skin"),
 ]
 

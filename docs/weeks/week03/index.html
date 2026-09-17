@@ -462,6 +462,27 @@
                     it follows the year slider.
                   </p>
                   <dl class="stats" id="twin-stats"></dl>
+                  <p class="fineprint">
+                    <b>How good is a route as a proxy for people?</b>
+                    Measured, for the one country where it can be. US BTS
+                    publishes passengers on every international segment
+                    with an American airport at one end, and joining it to
+                    this same route table for 2019 gives 87
+                    countries to compare. Route count ranks them well —
+                    Spearman 0.87 — and is poor at size:
+                    among the 59 countries with five routes
+                    or more, one route carries anywhere from
+                    8,769 people a year to
+                    362,869, a factor of
+                    41; the middle half sit between
+                    56,680 and 186,353.
+                    Read this network as a ranking of access and never as
+                    a volume, and treat the bottom of it carefully:
+                    Venezuela shows 14 routes at 8,769 passengers each,
+                    because the snapshot still lists services that had
+                    stopped flying.
+                    <code>analysis/week03_passengers.py</code>.
+                  </p>
                   <p class="fineprint" id="net-note"></p>
                   <p class="fineprint" id="flight-caveat"></p>
                 </aside>
@@ -1327,7 +1348,11 @@
                       pairs to country pairs and counted as distinct routes. One
                       undated snapshot, last refreshed around 2014, so it sits
                       still while the year slider moves. A route existing says
-                      nothing about seats or passengers. Degree and betweenness
+                      nothing about seats or passengers, and
+                      <code>week03_passengers.py</code> measures what that
+                      costs: against US BTS passenger counts for 2019, route
+                      count ranks countries at Spearman 0.87 and misses volume
+                      by up to a factor of 41. Degree and betweenness
                       use the same formulas, distance = 1 / routes, so the
                       scatter compares one quantity across two networks.
                     </p>
@@ -1481,6 +1506,7 @@
             Sources: UN DESA International Migrant Stock (Rev. 2024) ·
             UNHCR Refugee Data Finder (end-2024) ·
             IOM Missing Migrants Project (CC BY-IGO) ·
+            US BTS T-100 International Segment (public domain) ·
             Eurostat monthly asylum applications ·
             Oxford Covid-19 Government Response Tracker (CC BY 4.0) ·
             OpenFlights routes (air access proxy, undated snapshot) ·
