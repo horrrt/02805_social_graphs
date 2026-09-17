@@ -123,9 +123,12 @@ export function linkAlpha(edge) {
   const a = state.edges.countries[edge.oi];
   const b = state.edges.countries[edge.di];
   if (a === state.selected || b === state.selected) return 1;
-  // Enough to read as context on a photographic globe, not enough to compete
-  // with the selection.
-  return state.focus === "only" ? 0 : 0.18;
+  // Every arc already carries its own alpha for weight, and on the twin map
+  // the lightest of those is 0.1. Multiplying that by a tenth leaves nothing
+  // on screen, so the faded state has to stay high enough to survive it: at
+  // 0.32 the rest of the world is still there and the selection is four times
+  // brighter than its neighbours.
+  return state.focus === "only" ? 0 : 0.32;
 }
 
 const $ = (id) => document.getElementById(id);

@@ -441,6 +441,7 @@ function drawCalendar() {
     [51, Infinity],
   ];
 
+  const partial = years.filter((y) => !calendar.complete_years.includes(y));
   const cellSize = 13;
   const top = 34;
   const gap = 92;
@@ -452,7 +453,14 @@ function drawCalendar() {
     range: year,
     splitLine: { show: false },
     itemStyle: { color: "transparent", borderColor: GRID, borderWidth: 1 },
-    yearLabel: { show: true, formatter: `{start}`, color: INK, fontSize: 13, fontWeight: 700, margin: 34 },
+    yearLabel: {
+      show: true,
+      formatter: calendar.complete_years.includes(year) ? `${year}` : `${year} ·`,
+      color: INK,
+      fontSize: 13,
+      fontWeight: 700,
+      margin: 34,
+    },
     monthLabel: { show: i === 0, color: MUTE, fontSize: 10 },
     dayLabel: { show: true, firstDay: 1, nameMap: ["S", "M", "T", "W", "T", "F", "S"], color: MUTE, fontSize: 9 },
   }));
@@ -502,6 +510,20 @@ function drawCalendar() {
         })),
       },
       calendar: calendars,
+      graphic: partial.length
+        ? [
+            {
+              type: "text",
+              right: 24,
+              top: 4,
+              style: {
+                text: `${partial.join(", ")} runs to ${entries.at(-1)[0]}, not to December`,
+                fill: MUTE,
+                font: "10px -apple-system, system-ui, sans-serif",
+              },
+            },
+          ]
+        : [],
       series,
     },
     true,
