@@ -273,6 +273,10 @@ def main():
         graph = migration[year]
         print(f"  betweenness {year}", flush=True)
         between = weighted_betweenness(graph)
+        # PageRank on the raw flow weight (not the betweenness distance, which
+        # is inverted): a country ranks high here when it draws from other
+        # well-connected countries, not just from high-volume ones.
+        pagerank = nx.pagerank(graph, weight="weight")
         metrics = {}
         in_strength = dict(graph.in_degree(weight="weight"))
         out_strength = dict(graph.out_degree(weight="weight"))
@@ -283,6 +287,7 @@ def main():
             "in_degree_rank": ranked(in_degree),
             "out_degree_rank": ranked(out_degree),
             "betweenness_rank": ranked(between),
+            "pagerank_rank": ranked(pagerank),
         }
         for node in graph:
             metrics[node] = {
@@ -291,6 +296,7 @@ def main():
                 "in_degree": in_degree[node],
                 "out_degree": out_degree[node],
                 "betweenness": round(between[node], 8),
+                "pagerank": round(pagerank[node], 8),
                 **{k: v[node] for k, v in ranks.items()},
             }
         per_year[year] = metrics

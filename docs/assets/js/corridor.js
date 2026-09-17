@@ -432,6 +432,7 @@ function renderInspector() {
         row("Destinations sent to", `${m.out_degree} <span style="color:#7a8fac">(#${m.out_degree_rank})</span>`),
         row("Betweenness", `${m.betweenness.toFixed(5)} <span style="color:#7a8fac">(#${m.betweenness_rank})</span>`),
         row("Betweenness z-score", z === undefined ? "— (2020 only)" : z.toFixed(2)),
+        row("PageRank", `${m.pagerank.toFixed(5)} <span style="color:#7a8fac">(#${m.pagerank_rank})</span>`),
         row("Flight partners", fmt.format(n.flight_degree)),
         row("Flight routes", fmt.format(n.flight_strength)),
         row("Typology", `<span class="chip">${label(m.typology)}</span>`, typologyNote(m.typology)),
