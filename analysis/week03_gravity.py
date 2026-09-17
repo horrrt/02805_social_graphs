@@ -20,6 +20,15 @@ count, it spans six orders of magnitude, and log-linear least squares on
 log(people) both drops every zero corridor and biases the coefficients
 whenever the error variance depends on the mean, which it does.
 
+Fitted with statsmodels, whose GLM carries the heteroskedasticity-robust
+covariance the method actually calls for. This used to be scikit-learn's
+PoissonRegressor with a hand-rolled pair bootstrap bolted on, because that
+estimator reports no standard errors at all. The coefficients were never in
+doubt: sklearn, statsmodels and the committed bootstrap agree to three
+decimals on every term. What changed is where the intervals come from, and
+the HC1 sandwich runs a little wider than 200 resamples did, which is the
+direction to be wrong in.
+
     E[people] = exp(b0 + b1 log(pop_o) + b2 log(pop_d)
                        + b3 log(gdp_o) + b4 log(gdp_d)
                        + b5 log(km) + b6 contiguous)
@@ -43,7 +52,7 @@ import math
 import pathlib
 
 import numpy as np
-from sklearn.linear_model import PoissonRegressor
+import statsmodels.api as sm
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 DATA = ROOT / "docs" / "assets" / "data"
@@ -107,40 +116,23 @@ def fit_quality(y, fitted):
     return round(raw, 4), round(logged, 4)
 
 
-def bootstrap_coefficients(X, y, reps, rng):
-    """Pair bootstrap for the coefficient intervals.
-
-    PPML standard errors from the information matrix assume the Poisson
-    variance is right, and on migration counts it is nowhere near: the
-    variance grows much faster than the mean. Resampling corridors makes no
-    such assumption.
-    """
-    n = len(y)
-    draws = []
-    for _ in range(reps):
-        take = rng.integers(0, n, n)
-        model = PoissonRegressor(alpha=0.0, max_iter=800, tol=1e-8)
-        model.fit(X[take], y[take])
-        draws.append(model.coef_)
-    return np.asarray(draws)
-
-
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--year", type=int, default=2024)
-    parser.add_argument("--boot", type=int, default=200)
-    parser.add_argument("--seed", type=int, default=20260917)
     args = parser.parse_args()
-    rng = np.random.default_rng(args.seed)
 
     X, y, pairs, names = build(args.year)
     print(f"{len(y)} corridors with population and GDP at both ends, {args.year}")
     print(f"{int((y == 0).sum())} of them carry nobody, and PPML keeps them")
 
-    model = PoissonRegressor(alpha=0.0, max_iter=2000, tol=1e-10)
-    model.fit(X, y)
-    fitted = model.predict(X)
+    # add_constant, because statsmodels fits no intercept unless it is given
+    # one, and a gravity model without an intercept is a different model.
+    model = sm.GLM(y, sm.add_constant(X), family=sm.families.Poisson()).fit(cov_type="HC1")
+    fitted = model.fittedvalues
     r2, r2_log = fit_quality(y, fitted)
+    beta = model.params[1:]
+    bounds = model.conf_int()
+    lo, hi = bounds[1:, 0], bounds[1:, 1]
 
     # The contiguity dummy is a proxy — under 1,000 km between country
     # centres, because this repo has coordinates and no border table — and it
@@ -149,17 +141,16 @@ def main():
     # short end plus a crowd of microstates, not the effect of a border.
     # Refitting without it says how much the rest of the model leans on it,
     # which is the question a bad proxy raises.
-    plain = PoissonRegressor(alpha=0.0, max_iter=2000, tol=1e-10)
-    plain.fit(X[:, :-1], y)
-    plain_fitted = plain.predict(X[:, :-1])
-    plain_r2, plain_r2_log = fit_quality(y, plain_fitted)
+    plain = sm.GLM(
+        y, sm.add_constant(X[:, :-1]), family=sm.families.Poisson()
+    ).fit(cov_type="HC1")
+    plain_r2, plain_r2_log = fit_quality(y, plain.fittedvalues)
+    plain_beta = plain.params[1:]
 
     print(f"\nPPML gravity, R² {r2:.3f} on counts, {r2_log:.3f} on logs")
-    draws = bootstrap_coefficients(X, y, args.boot, rng)
-    lo, hi = np.percentile(draws, [2.5, 97.5], axis=0)
     coefficients = {}
     for i, term in enumerate(TERMS):
-        b = model.coef_[i]
+        b = beta[i]
         print(f"  {term:30s} {b:+7.3f}   95% CI [{lo[i]:+.3f}, {hi[i]:+.3f}]")
         coefficients[term] = {
             "beta": round(float(b), 4),
@@ -216,7 +207,7 @@ def main():
 
     print("\nWithout the contiguity proxy:")
     for i, term in enumerate(TERMS[:-1]):
-        print(f"  {term:30s} {plain.coef_[i]:+7.3f}   (with it: {model.coef_[i]:+.3f})")
+        print(f"  {term:30s} {plain_beta[i]:+7.3f}   (with it: {beta[i]:+.3f})")
     print(f"  R² {plain_r2:.3f} on counts, {plain_r2_log:.3f} on logs")
 
     print("\nCarrying least, where gravity expects a crowd")
@@ -231,8 +222,7 @@ def main():
         "method": "Poisson pseudo-maximum-likelihood, Santos Silva and Tenreyro (2006)",
         "corridors": int(len(y)),
         "zero_corridors": int((y == 0).sum()),
-        "bootstrap": args.boot,
-        "seed": args.seed,
+        "standard_errors": "HC1 heteroskedasticity-robust sandwich, statsmodels GLM",
         "r2_counts": r2,
         "r2_logs": r2_log,
         "coefficients": coefficients,
@@ -243,7 +233,7 @@ def main():
             "r2_counts": plain_r2,
             "r2_logs": plain_r2_log,
             "coefficients": {
-                term: round(float(plain.coef_[i]), 4) for i, term in enumerate(TERMS[:-1])
+                term: round(float(plain_beta[i]), 4) for i, term in enumerate(TERMS[:-1])
             },
         },
         "note": "Correlates in one year, so nothing here identifies a cause. A large "

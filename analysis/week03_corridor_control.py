@@ -205,38 +205,6 @@ def degree_preserving_null(graph, shuffles, seed):
     return samples
 
 
-def typology(node, year_metrics, flight_rank, country_count):
-    """Five buckets, defined on ranks so the labels survive a change of year.
-
-    A leaf has to be small on every axis. Testing degree alone put Singapore and
-    Jordan in the periphery, which is nonsense: both receive enormous numbers of
-    people through a modest number of corridors.
-    """
-    m = year_metrics[node]
-    top = country_count * 0.1
-    half = country_count * 0.5
-    strong_in = m["in_strength_rank"] <= top
-    high_between = m["betweenness_rank"] <= top
-    surprising = (m.get("z") or 0) >= 2
-    many_flights = flight_rank.get(node, country_count) <= top
-
-    if strong_in and many_flights:
-        return "both"
-    if strong_in:
-        return "destination-hub"
-    if high_between and surprising:
-        return "human-bridge"
-    if many_flights:
-        return "system-airport"
-    if (
-        m["in_degree_rank"] > half
-        and m["in_strength_rank"] > half
-        and m["betweenness_rank"] > half
-    ):
-        return "leaf"
-    return "mixed"
-
-
 def ranked(values, reverse=True):
     order = sorted(values, key=lambda k: -values[k] if reverse else values[k])
     return {node: i + 1 for i, node in enumerate(order)}
@@ -349,10 +317,13 @@ def main():
                 "null_mean": round(mean, 8), "null_sd": round(spread, 8), "z": round(z, 3),
             }
 
-    count = len(per_year[args.null_year])
-    for node in per_year[args.null_year]:
-        per_year[args.null_year][node]["typology"] = typology(
-            node, per_year[args.null_year], flight_rank, count)
+    # The six-label typology that used to be written here is gone. Three of
+    # its tests compared this year's migration ranking against the undated
+    # flight snapshot, so 30 countries carried a label mixing two vintages and
+    # the section could only ever show one year. analysis/week03_cartography.py
+    # replaces it with Guimera and Amaral's role cartography on the migration
+    # network alone, for every year. Rebuilding this file drops the dead
+    # "typology" key the committed copy still carries.
 
     # Where a country's PageRank comes from. In the weighted random walk a
     # sender hands node i the share alpha * PR_j * w_ji / out_strength_j, so a

@@ -39,6 +39,8 @@ import pathlib
 import urllib.parse
 import urllib.request
 
+from scipy import stats
+
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 RAW = ROOT / "build" / "raw"
 DATA = ROOT / "docs" / "assets" / "data"
@@ -125,32 +127,6 @@ def passengers(year: int, force: bool) -> collections.Counter:
     return counted
 
 
-def correlation(xs, ys):
-    n = len(xs)
-    mx, my = sum(xs) / n, sum(ys) / n
-    num = sum((x - mx) * (y - my) for x, y in zip(xs, ys))
-    dx = math.sqrt(sum((x - mx) ** 2 for x in xs))
-    dy = math.sqrt(sum((y - my) ** 2 for y in ys))
-    return num / (dx * dy) if dx and dy else 0.0
-
-
-def spearman(xs, ys):
-    def ranked(values):
-        order = sorted(range(len(values)), key=lambda i: values[i])
-        out = [0.0] * len(values)
-        i = 0
-        while i < len(order):
-            j = i
-            while j + 1 < len(order) and values[order[j + 1]] == values[order[i]]:
-                j += 1
-            share = (i + j) / 2 + 1
-            for k in range(i, j + 1):
-                out[order[k]] = share
-            i = j + 1
-        return out
-    return correlation(ranked(xs), ranked(ys))
-
-
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--year", type=int, default=2019)
@@ -165,9 +141,21 @@ def main():
 
     xs = [routes[c] for c in shared]
     ys = [people[c] for c in shared]
-    r = correlation([math.log(x) for x in xs], [math.log(max(y, 1)) for y in ys])
-    rho = spearman(xs, ys)
-    print(f"  log-log correlation {r:.2f}, Spearman rank correlation {rho:.2f}")
+    # scipy rather than our own Pearson and our own tie-aware ranker. The two
+    # agreed to six decimals on this data, and scipy brings the intervals with
+    # it, which the page wants under every number anyway.
+    pearson = stats.pearsonr([math.log(x) for x in xs], [math.log(max(y, 1)) for y in ys])
+    spear = stats.spearmanr(xs, ys)
+    r, rho = float(pearson.statistic), float(spear.statistic)
+    r_ci = pearson.confidence_interval(0.95)
+    # Spearman has no closed-form interval in scipy, so it gets the same
+    # Fisher transform the rest of the page uses on a rank correlation.
+    zr = math.atanh(rho)
+    se = 1.06 / math.sqrt(len(shared) - 3)
+    rho_ci = (math.tanh(zr - 1.96 * se), math.tanh(zr + 1.96 * se))
+    print(f"  log-log correlation {r:.2f} "
+          f"(95% {r_ci.low:.2f} to {r_ci.high:.2f}), "
+          f"Spearman {rho:.2f} (95% {rho_ci[0]:.2f} to {rho_ci[1]:.2f})")
 
     # Passengers per route, which is the thing the proxy assumes is constant.
     # A country with one route gives a ratio built on one number, so the
@@ -205,7 +193,9 @@ def main():
         },
         "countries": len(shared),
         "log_correlation": round(r, 3),
+        "log_correlation_ci": [round(float(r_ci.low), 3), round(float(r_ci.high), 3)],
         "spearman": round(rho, 3),
+        "spearman_ci": [round(rho_ci[0], 3), round(rho_ci[1], 3)],
         "per_route": {
             "highest": [{"country": c, "routes": routes[c], "people": int(people[c]),
                          "per_route": int(v)} for v, c in solid[:10]],

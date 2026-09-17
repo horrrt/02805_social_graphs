@@ -222,35 +222,35 @@
                       </tr>
                       <tr>
                         <td>Origins per destination</td>
-                        <td style="text-align: right">19</td>
-                        <td style="text-align: right">2.05</td>
-                        <td style="text-align: right">126</td>
+                        <td style="text-align: right">15</td>
+                        <td style="text-align: right">1.97</td>
+                        <td style="text-align: right">149</td>
                         <td style="text-align: right">0.00</td>
-                        <td>lognormal fits better (p = 0.016)</td>
+                        <td>lognormal fits better (p = 0.003)</td>
                       </tr>
                       <tr>
                         <td>People on a corridor</td>
                         <td style="text-align: right">126,665</td>
                         <td style="text-align: right">2.04</td>
                         <td style="text-align: right">377</td>
-                        <td style="text-align: right">0.04</td>
+                        <td style="text-align: right">0.01</td>
                         <td>lognormal fits better (p = 0.023)</td>
                       </tr>
                       <tr>
                         <td>Destinations per origin</td>
-                        <td style="text-align: right">55</td>
-                        <td style="text-align: right">4.41</td>
-                        <td style="text-align: right">56</td>
-                        <td style="text-align: right">0.88</td>
-                        <td>cannot be separated from either</td>
+                        <td style="text-align: right">33</td>
+                        <td style="text-align: right">2.99</td>
+                        <td style="text-align: right">122</td>
+                        <td style="text-align: right">0.06</td>
+                        <td>both fit better (p = 0.005, 0.001)</td>
                       </tr>
                       <tr>
                         <td>Flight partners</td>
-                        <td style="text-align: right">68</td>
-                        <td style="text-align: right">3.39</td>
-                        <td style="text-align: right">41</td>
-                        <td style="text-align: right">0.15</td>
-                        <td>cannot be separated from either</td>
+                        <td style="text-align: right">44</td>
+                        <td style="text-align: right">2.81</td>
+                        <td style="text-align: right">75</td>
+                        <td style="text-align: right">0.09</td>
+                        <td>neither can be separated from it</td>
                       </tr>
                     </table>
                     <p class="sub">
@@ -258,22 +258,24 @@
                       power law that fit it <em>worse</em> than the real data
                       does. Below 0.1 the power law is ruled out; above it the
                       power law survives, which is not the same as winning.
-                      On the two tails where the data can tell the difference
-                      the lognormal describes it better, and on the other two
-                      there are 41 and 56 points, which is not enough to
-                      separate anything from anything.
+                      All four are below it. The top two are not close; the
+                      bottom two sit at 0.06 and 0.09, near enough to a
+                      convention that they are the weakest kind of rejection
+                      rather than a verdict. Where a rival can be told apart at
+                      all it is the lognormal, and it wins every time it is
+                      asked.
                     </p>
                     <div class="notice">
                       <span class="ico">💡</span>
                       <span>
                         <b>So the word on this page is "heavy-tailed", not
                         "scale-free".</b>
-                        Origins per destination fits α = 2.05, which is the
-                        exponent every scale-free network in a lecture slide
-                        has, and it is still ruled out at p = 0.00. That is
-                        the trap the log–log toggle above sets: a line can
-                        look right and be wrong, and the only way to find out
-                        is to fit it.
+                        Origins per destination fits α = 1.97, which is
+                        about the exponent every scale-free network in a
+                        lecture slide has, and it is still ruled out at
+                        p = 0.00. That is the trap the log–log toggle above
+                        sets: a line can look right and be wrong, and the only
+                        way to find out is to fit it.
                       </span>
                     </div>
                   </div>
@@ -469,7 +471,7 @@
                     with an American airport at one end, and joining it to
                     this same route table for 2019 gives 87
                     countries to compare. Route count ranks them well
-                    (Spearman 0.87) and is poor at size:
+                    (Spearman 0.87, 95% 0.81 to 0.92) and is poor at size:
                     among the 59 countries with five routes
                     or more, one route carries anywhere from
                     8,769 people a year to
@@ -496,20 +498,31 @@
           <div class="card">
             <div class="step-head">
               <span class="num">6</span>
-              <h2>Typology</h2>
-              <span class="year-tag">(2020 only · the null-model year)</span>
+              <h2>Roles inside the communities</h2>
+              <span class="year-tag" id="typology-tag"></span>
             </div>
             <p class="sub">
-              Six labels from one cascade of rank tests, read left to right:
-              the first test a country passes is the label it gets, and
-              <b>mixed</b> is what is left when none of the five fired. Ranks
-              rather than raw values, so a label means the same thing in any
-              year. Each card says exactly which test produced it. Examples are
-              read from the data, not chosen by hand. Hover a country code to
-              see why it is there, or open the full list for a role.
+              Section 11 splits the world into communities. This asks what part
+              each country plays in the one it lands in, on two coordinates
+              from Guimerà and Amaral (<i>Nature</i> 433, 2005): <b>z</b>, how
+              large a country is among the other members of its own community,
+              and <b>P</b>, how evenly its corridors are spread across all of
+              them. A country with P near zero keeps everyone inside one
+              community; near one, it is split evenly between them. The seven
+              names and the cut-offs between them are theirs, drawn on the
+              chart rather than applied out of sight.
             </p>
+            <p class="sub">
+              This replaces six labels of our own that compared a 2020
+              migration ranking against a flight snapshot last refreshed around
+              2014. Thirty of 228 countries carried a label that mixed the two
+              vintages, and because the flight side cannot move, the section
+              could only ever show one year. Nothing here touches the flight
+              network, so the slider moves it.
+            </p>
+            <canvas class="chart" height="620" id="cartography" width="1100"></canvas>
             <div
-              aria-label="How many countries carry each label"
+              aria-label="How many countries carry each role"
               class="type-strip"
               id="typology-strip"
             ></div>
@@ -520,6 +533,26 @@
               hidden
               id="type-drawer"
             ></aside>
+            <div class="notice">
+              <span class="ico">💡</span>
+              <span id="typology-note"></span>
+            </div>
+            <div class="notice">
+              <span class="ico">🧪</span>
+              <span>
+                <b>Louvain is random, and one run would have animated its own
+                seed.</b>
+                Two seeds at 2020 disagree about 26 of 228 roles, which is the
+                same size as the change from one five-year snapshot to the
+                next. So every year is partitioned 100 times, each run votes,
+                and a country carries the role most runs gave it together with
+                the share that agreed. The coordinates are far steadier than
+                the names: the United States sits at z 5.92 with a standard
+                deviation of 0.03 across the 100 runs, and the wobble is
+                concentrated where a country sits on a threshold. Those are
+                drawn as hollow rings, and they are the ones not to quote.
+              </span>
+            </div>
           </div>
         </section>
 
@@ -763,8 +796,9 @@
               log counts, because logging drops every corridor carrying
               nobody and biases the rest. Each coefficient is an elasticity:
               a one per cent rise in the term moves the corridor by that many
-              per cent. Intervals are 200 bootstrap resamples of the
-              corridors.
+              per cent. Intervals are the heteroskedasticity-robust
+              sandwich the method calls for, which statsmodels fits directly
+              and scikit-learn could not report at all.
             </p>
             <table class="ego">
               <tr>
@@ -772,12 +806,12 @@
                 <th style="text-align: right">Elasticity</th>
                 <th style="text-align: right">95% interval</th>
               </tr>
-              <tr><td>Distance between the two</td><td style="text-align: right"><b>−1.19</b></td><td style="text-align: right">−1.42 to −1.00</td></tr>
-              <tr><td>Destination income per head</td><td style="text-align: right"><b>+0.85</b></td><td style="text-align: right">+0.71 to +1.01</td></tr>
-              <tr><td>Destination population</td><td style="text-align: right">+0.69</td><td style="text-align: right">+0.61 to +0.76</td></tr>
+              <tr><td>Distance between the two</td><td style="text-align: right"><b>−1.19</b></td><td style="text-align: right">−1.43 to −0.94</td></tr>
+              <tr><td>Destination income per head</td><td style="text-align: right"><b>+0.85</b></td><td style="text-align: right">+0.69 to +1.01</td></tr>
+              <tr><td>Destination population</td><td style="text-align: right">+0.69</td><td style="text-align: right">+0.60 to +0.77</td></tr>
               <tr><td>Origin population</td><td style="text-align: right">+0.51</td><td style="text-align: right">+0.43 to +0.59</td></tr>
-              <tr><td>Origin income per head</td><td style="text-align: right">−0.25</td><td style="text-align: right">−0.33 to −0.17</td></tr>
-              <tr><td>Under 1,000 km apart</td><td style="text-align: right">−0.28</td><td style="text-align: right">−0.75 to +0.15</td></tr>
+              <tr><td>Origin income per head</td><td style="text-align: right">−0.25</td><td style="text-align: right">−0.34 to −0.17</td></tr>
+              <tr><td>Under 1,000 km apart</td><td style="text-align: right">−0.28</td><td style="text-align: right">−0.78 to +0.22</td></tr>
             </table>
             <div class="notice">
               <span class="ico">💡</span>
@@ -1384,10 +1418,46 @@
                       border crossings.
                     </p>
                     <p class="sub">
-                      <b>Heavy tails.</b> Fitted with the Clauset, Shalizi and
-                      Newman procedure in
-                      <code>analysis/week03_tails.py</code>: maximum
-                      likelihood for the exponent, the lower bound by
+                      <b>Roles.</b> Guimerà and Amaral's cartography
+                      (<i>Nature</i> 433, 2005) in
+                      <code>analysis/week03_cartography.py</code>, on the same
+                      graph section 11 partitions: undirected, weighted by
+                      people both ways, corridors under 10,000 people dropped.
+                      Two coordinates per country, both computed on strength
+                      rather than on a count of partners, because a corridor
+                      here runs from a dozen people to four million. Louvain is
+                      stochastic, so each year is partitioned 100 times, every
+                      run votes for a role, and a country carries the role most
+                      runs gave it. The coordinates printed beside a role are
+                      averaged over the runs that produced that role and not
+                      over all of them: pooled, four countries came out with a
+                      participation coefficient on the wrong side of their own
+                      name. The thresholds are Guimerà and Amaral's own and are
+                      not tuned to this network, which is much denser than the
+                      ones they were set on, so peripheral stays the largest
+                      group. Tuning them to balance our own chart would be
+                      seven arbitrary numbers, which is what this replaced.
+                    </p>
+                    <p class="sub">
+                      <b>What the roles replaced.</b> Six labels of our own,
+                      from a cascade of rank tests, three of which compared a
+                      2020 migration ranking against the undated flight
+                      snapshot. Thirty of 228 countries carried one, the
+                      section could only ever show a single year, and 141 of
+                      228 came out "mixed". Better flight data would have fixed
+                      it and there is none: ICAO sells a dated global
+                      country-pair table, Sabre licenses one, Eurostat
+                      publishes a free dated one that only Europe reports into,
+                      and OpenSky is free, dated and CC BY but its coverage
+                      follows the ADS-B receivers, which sit in Europe and
+                      North America. Each trades a vintage problem for a
+                      coverage problem, so the roles now use no flight data at
+                      all.
+                    </p>
+                    <p class="sub">
+                      <b>Heavy tails.</b> The Clauset, Shalizi and Newman
+                      procedure in <code>analysis/week03_tails.py</code>:
+                      maximum likelihood for the exponent, the lower bound by
                       minimising the KS distance, 500 synthetic datasets for
                       the goodness-of-fit p, and Vuong likelihood-ratio tests
                       against lognormal and exponential on the same tail. Both
@@ -1396,6 +1466,25 @@
                       ratio between a probability and a probability density
                       means nothing. Full output in
                       <code>analysis/week03_tails.json</code>.
+                    </p>
+                    <p class="sub">
+                      <b>Why these four numbers changed.</b> The fitting used
+                      to be our own code and is now the <code>powerlaw</code>
+                      package, which is the reference implementation of that
+                      procedure, and the swap found a bug we had been
+                      publishing. Our KS distance walked the sorted tail one
+                      observation at a time, so a degree value appearing ten
+                      times produced ten steps in the empirical curve against
+                      one flat stretch of the model, and that gap counted as
+                      distance. Degree sequences are nothing but ties: 227
+                      countries share 88 distinct in-degrees. The exponent was
+                      never wrong, and corridor weights, which barely tie, were
+                      right to the digit. But the inflated distance moved the
+                      x<sub>min</sub> that minimises it, so all three degree
+                      tails had been fitted above the wrong cut. Destinations
+                      per origin is the one that changes its mind: it used to
+                      read p = 0.88, a power law surviving comfortably, and it
+                      reads 0.06.
                     </p>
                     <p class="sub">
                       <b>Which countries, and how many.</b> Six different
@@ -1409,7 +1498,8 @@
                       head, which is why the wealth charts say 173 once
                       population and a positive foreign-born share are also
                       required. <b>205</b> survive the 10,000-person floor in
-                      the community graph, <b>185</b> report to the Oxford
+                      the community graph and so carry a role in section 6,
+                      where <b>193</b> did in 1990. <b>185</b> report to the Oxford
                       tracker, and <b>87</b> have both a flight route to the
                       United States and passengers on it.
                     </p>
@@ -1563,6 +1653,6 @@
       </footer>
     </main>
 
-    <script src="../../assets/js/week03-boot.js?v=5e17fc9daa" type="module"></script>
+    <script src="../../assets/js/week03-boot.js?v=aa8ae236db" type="module"></script>
   </body>
 </html>
