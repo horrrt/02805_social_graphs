@@ -1516,6 +1516,27 @@ function drawMap() {
 
 /* ---------------------------------------------------------------- section 3 */
 
+// Partner counts, binned by doubling. One bar per distinct value put a
+// hundred and fifty spikes on the panel, most of them one country tall, in
+// three colours: a picket fence in which the heavy tail the section is about
+// was invisible. Bins that double keep the shape of a power law straight on
+// a log axis and leave something to look at.
+const DEGREE_BINS = (() => {
+  const edges = [1, 2, 3, 5, 9, 17, 33, 65, 129, Infinity];
+  return edges.slice(0, -1).map((lo, i) => ({
+    lo,
+    hi: edges[i + 1],
+    // The geometric centre, so a bin sits in the middle of its own span on a
+    // log axis rather than at its left edge.
+    at: Number.isFinite(edges[i + 1]) ? Math.sqrt(lo * (edges[i + 1] - 1)) : lo * 1.6,
+    label: Number.isFinite(edges[i + 1])
+      ? lo === edges[i + 1] - 1
+        ? String(lo)
+        : `${lo}–${edges[i + 1] - 1}`
+      : `${lo}+`,
+  }));
+})();
+
 // Each bucket carries the countries in it, so a click on a bar can land on a
 // real country rather than on an anonymous count. The representative is the
 // largest by in-strength, which is the one a reader is most likely to mean.
@@ -1554,53 +1575,77 @@ const SERIES = [
   { key: "flight", colour: ACCESS, pick: (n) => n.flight_degree },
 ];
 
+function binnedDegrees(pick) {
+  const exact = degreeCounts(pick);
+  const maxK = Math.max(...exact.map((d) => d.k), 1);
+  return DEGREE_BINS.map((bin) => {
+    const inside = exact.filter((d) => d.k >= bin.lo && d.k < bin.hi);
+    const countries = inside.reduce((sum, d) => sum + d.c, 0);
+    // The representative for a click is the biggest country in the bin, which
+    // is the one a reader pointing at the tail is most likely to mean.
+    const pick3 = inside.sort((a, b) => b.k - a.k)[0];
+    // Height is countries per partner value, not the raw count. A bin twice
+    // as wide catches roughly twice as many countries for no reason but its
+    // width, and on raw counts that alone makes the wide bins in the middle
+    // the tallest — which would show a hump where the data has a tail.
+    const width = Number.isFinite(bin.hi) ? bin.hi - bin.lo : Math.max(1, maxK - bin.lo + 1);
+    return { ...bin, c: countries, density: countries / width, iso3: pick3?.iso3, span: inside.length };
+  }).filter((bin) => bin.c > 0);
+}
+
 function drawHistogram() {
   refreshPalette();
   const canvas = $("hist");
   if (!canvas) return;
   const { ctx, width, height } = surface(canvas);
   const box = frame(width, height);
-  const all = SERIES.map((s) => degreeCounts(s.pick));
-  const maxK = Math.max(...all.flat().map((d) => d.k), 10);
-  const maxC = Math.max(...all.flat().map((d) => d.c), 10);
+  const all = SERIES.map((s) => binnedDegrees(s.pick));
+  const maxC = Math.max(...all.flat().map((d) => d.density), 1);
+  const minC = Math.min(...all.flat().map((d) => d.density));
   const mode = modeFlags("hist");
-  box.x = scaleFor(box, [1, maxK], "x", mode.x);
-  box.y = scaleFor(box, [1, maxC], "y", mode.y);
+  box.x = linearScale(box, [0, DEGREE_BINS.length], "x");
+  box.y = mode.y
+    ? logScale(box, [minC * 0.7, maxC], "y")
+    : linearScale(box, [0, maxC], "y");
   axes(ctx, box, {
-    xTicks: ticksFor([1, maxK], mode.x),
-    yTicks: ticksFor([1, maxC], mode.y),
+    xTicks: DEGREE_BINS.map((bin, i) => ({ value: i + 0.5, label: bin.label })),
+    yTicks: mode.y
+      ? logTicks(minC * 0.7, maxC)
+      : ticksFor([0, maxC], false),
     xLabel: "Partners",
-    yLabel: "Count of countries",
+    yLabel: "Countries per partner value",
   });
   const marks = collect("hist");
+  const slot = (box.right - box.left) / DEGREE_BINS.length;
+  const barW = Math.max(3, (slot * 0.66) / SERIES.length);
   all.forEach((points, i) => {
     for (const d of points) {
-      const x = box.x(d.k);
-      const y = box.y(d.c);
+      const index = DEGREE_BINS.findIndex((bin) => bin.lo === d.lo);
+      const x = box.left + slot * (index + 0.5) + (i - 1) * (barW + 1.5);
+      const y = box.y(d.density);
       const hovered = d.iso3 === state.hover;
-      const barW = hovered ? 7 : 4;
-      const offset = (i - 1) * (barW + 1.5);
       ctx.fillStyle = SERIES[i].colour + (hovered ? "ff" : "cc");
-      if (hovered) {
-        ctx.fillStyle = SERIES[i].colour + "33";
-        ctx.fillRect(x + offset - barW / 2 - 3, y - 2, barW + 6, box.bottom - y + 2);
-        ctx.fillStyle = SERIES[i].colour;
-      }
-      ctx.fillRect(x + offset - barW / 2, y, barW, box.bottom - y);
+      ctx.fillRect(x - barW / 2, y, barW, box.bottom - y);
       marks.push({
         kind: "bar",
-        x: x + offset,
+        x,
         y,
         bottom: box.bottom,
-        half: Math.max(8, barW / 2 + 4),
+        half: Math.max(9, barW / 2 + 4),
         iso3: d.iso3,
-        label: `<b>${d.k} ${SERIES[i].key === "flight" ? "flight partners" : "partners"}</b>` +
-          `<span>${d.c} ${d.c === 1 ? "country" : "countries"}</span>` +
+        label: `<b>${d.label} ${SERIES[i].key === "flight" ? "flight partners" : "partners"}</b>` +
+          `<span>${d.c} ${d.c === 1 ? "country" : "countries"} in this bin</span>` +
           `<span>largest: ${node(d.iso3).name}</span>`,
       });
     }
   });
-  markSelected(ctx, box, (n, m) => [m.in_degree, degreeCounts(SERIES[0].pick).find((d) => d.k === m.in_degree)?.c ?? 1]);
+  // The x-axis is bins now, so the marker is placed by which bin the country
+  // falls in rather than by its raw degree.
+  markSelected(ctx, box, (n, m) => {
+    const index = DEGREE_BINS.findIndex((bin) => m.in_degree >= bin.lo && m.in_degree < bin.hi);
+    const bin = all[0].find((d) => d.lo === DEGREE_BINS[index]?.lo);
+    return [box.left + slot * (Math.max(index, 0) + 0.5), bin?.density ?? 1];
+  }, { raw: true, note: `k = ${metrics(state.selected)?.in_degree ?? "—"}` });
 }
 
 function drawCcdf() {
@@ -1614,7 +1659,10 @@ function drawCcdf() {
     ccdf(rows.map(({ iso3, n, m }) => ({ k: s.pick(n, m), iso3 }))),
   );
   const maxK = Math.max(...series.flat().map((d) => d.k), 10);
-  const minP = Math.min(...series.flat().map((d) => d.p), 0.001);
+  // The smallest share any series reaches, which is one country out of the
+  // sample. Flooring this at 0.001 spent the bottom third of the panel on a
+  // decade the data never enters.
+  const minP = Math.min(...series.flat().map((d) => d.p)) * 0.85;
   const mode = modeFlags("ccdf");
   box.x = scaleFor(box, [1, maxK], "x", mode.x);
   box.y = mode.y ? logScale(box, [minP, 1], "y") : linearScale(box, [0, 1], "y");
@@ -1672,14 +1720,13 @@ function drawCcdf() {
   });
 }
 
-function markSelected(ctx, box, pick) {
+function markSelected(ctx, box, pick, opts = {}) {
   if (!state.selected) return;
   const n = node(state.selected);
   const m = metrics(state.selected);
   if (!m) return;
   const [vx, vy] = pick(n, m);
-  const x = box.x(vx);
-  const y = box.y(vy);
+  const x = opts.raw ? vx : box.x(vx);
   ctx.strokeStyle = INK;
   ctx.setLineDash([3, 3]);
   ctx.lineWidth = 1;
@@ -1688,11 +1735,17 @@ function markSelected(ctx, box, pick) {
   ctx.lineTo(x, box.bottom);
   ctx.stroke();
   ctx.setLineDash([]);
-  ctx.fillStyle = INK;
+  // Above the plot rather than beside the point. At the data point it landed
+  // on whatever the country happened to sit next to, which for a tail country
+  // is the axis and the densest part of the chart.
+  const text = `${n.name}${opts.note ? ` · ${opts.note}` : ` · k = ${m.in_degree}`}`;
   ctx.font = "600 10px -apple-system, system-ui, sans-serif";
-  ctx.textAlign = "left";
+  const wide = ctx.measureText(text).width;
+  const right = x + wide + 8 > box.right;
+  ctx.fillStyle = INK;
+  ctx.textAlign = right ? "right" : "left";
   ctx.textBaseline = "bottom";
-  ctx.fillText(`${n.name} (k: ${m.in_degree})`, Math.min(x + 5, box.right - 90), Math.max(y - 5, box.top + 12));
+  ctx.fillText(text, x + (right ? -5 : 5), box.top - 3);
 }
 
 /* ---------------------------------------------------------- sections 4 & 5 */
