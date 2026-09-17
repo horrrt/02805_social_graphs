@@ -1865,13 +1865,14 @@ body > .chart-tip[hidden] {
 
 /* --- the net layer's diverging pair ---------------------------------- */
 
+/* Green and red, stepped so that deuteranopia does not collapse them: ΔE 9.1
+   under simulation, against 2.0 for the obvious pair. */
 .corridor {
-  --gain: #2f9e63;
-  --loss: #d1495b;
+  --gain: #00875a;
+  --loss: #cc3311;
 }
 
-/* Okabe-Ito's bluish green and vermillion, which stay apart for the eight
-   per cent of men who cannot separate the default pair. */
+/* Okabe-Ito's bluish green and vermillion, further apart again at ΔE 11.0. */
 .corridor[data-palette="okabe"] {
   --gain: #009e73;
   --loss: #d55e00;

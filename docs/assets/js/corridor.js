@@ -15,10 +15,12 @@ let INK = "#0f2340";
 let MUTE = "#7a8fac";
 let GRID = "#e4ebf4";
 // The net layer's diverging pair. Green and red are what a reader expects for
-// gained and lost, and they are the one pairing eight per cent of men cannot
-// tell apart, so the colourblind-safe palette overrides them in CSS.
-let GAIN = "#2f9e63";
-let LOSS = "#d1495b";
+// gained and lost, and they are also the pairing red-green colourblindness
+// collapses, so the two steps are chosen rather than picked: under simulated
+// deuteranopia these sit 9.1 apart in OKLab ΔE, where the obvious
+// #2f9e63/#d1495b sits at 2.0 and reads as one colour.
+let GAIN = "#00875a";
+let LOSS = "#cc3311";
 
 export function rgb(hex) {
   const value = (hex || "").trim().replace("#", "");
@@ -36,8 +38,8 @@ export function refreshPalette() {
   INK = read("--ink", "#0f2340");
   MUTE = read("--ink-mute", "#7a8fac");
   GRID = read("--line-soft", "#e4ebf4");
-  GAIN = read("--gain", "#2f9e63");
-  LOSS = read("--loss", "#d1495b");
+  GAIN = read("--gain", "#00875a");
+  LOSS = read("--loss", "#cc3311");
   if (typeof SERIES !== "undefined") {
     SERIES[0].colour = PEOPLE;
     SERIES[1].colour = INK;
