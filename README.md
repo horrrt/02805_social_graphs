@@ -39,30 +39,7 @@ fails if the lobby, the free-play pages or the prediction logbook drift from
 it. To open a week: set its status to `live`, add its cabinet, and update the
 "exactly weeks … are live" assertion in the test.
 
-## Version 2 · the Apple edition
-
-Every arcade page exists a second time under `/v2/` (`/v2/`, `/v2/weeks/week01/`,
-`/v2/weeks/week02/`, `/v2/os/`, `/v2/trumps/`, `/v2/sound/`, `/v2/creature/`),
-restyled after design-archive concept 21 ("Connections, Reconsidered", modelled
-on apple.com) and Apple's Human Interface Guidelines. The two editions share
-every script, data file and number:
-
-- `docs/assets/css/apple.css` defines the second edition; `story.css` supplies
-  the shared reading layout. `docs/v2/` holds HTML only.
-- A `<meta name="site-root">` tag on each v2 page tells the shared chrome where
-  the v2 root is, so the logbook and navigation stay inside the edition while
-  data still loads from `docs/assets/data/`.
-- Canvas colours come from `--cv-*` custom properties read through `tone()` in
-  `docs/assets/js/cabinet.js`; `arcade.css` defines them with the original
-  values, `apple.css` with Apple's palette, and the tests check both.
-- The week-2 post uses light-background figure variants
-  (`removal_results_light.svg`, `null_comparison_light.svg`,
-  `null_survivors_light.svg`) written by the same `analysis/week02_figures.py`
-  run.
-
-See [PRESENTATION.md](PRESENTATION.md) for the design decisions behind the edition.
-
-The previous Baymax mission remains at `/play/`. The 49-concept design archive
+The previous Baymax mission remains at `/play/`. The 48-concept design archive
 remains at `/mockups/`; those image mockups are separate from the working arcade.
 
 ## The frozen data
