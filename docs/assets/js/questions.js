@@ -1,4 +1,4 @@
-// Corridor Control — the questions drawer.
+// Corridor Control: the questions drawer.
 //
 // Six questions the shipped data can actually answer, drawn on canvas so they
 // look the same in every renderer. Nothing here fetches anything: it reads the
@@ -112,7 +112,7 @@ function medianInterval(pairs, draws = 400) {
   // a reader is looking at it. mulberry32 rather than the textbook linear
   // congruential one: that multiply overflows the range JavaScript keeps
   // integers exact in, the low bits turn to floating-point noise, and the
-  // draws stop being uniform — which shows up as an interval that does not
+  // draws stop being uniform, which shows up as an interval that does not
   // contain its own point estimate.
   let seed = 20260917;
   const random = () => {
@@ -420,8 +420,10 @@ function answerRing() {
         `${names(joined) || "nobody"} moved in, ` +
         `${names(left) || "nobody"} dropped out. ` +
         `Its share of the world fell from <b>${one(earlyShare)}%</b> to ` +
-        `<b>${one(share)}%</b> — not because the big corridors shrank, but ` +
-        `because everything else grew around them.`;
+        `<b>${one(share)}%</b>, and not by shrinking: between ${first} and ` +
+        `${ringState.year} the club's own traffic grew ` +
+        `<b>${one(pct(among - earlyAmong, earlyAmong))}%</b> while the world's grew ` +
+        `<b>${one(pct(data.total - early.total, early.total))}%</b>.`;
 
   return (
     `These ${RING_N} countries are the ones most people move between, in ` +
@@ -548,7 +550,7 @@ function answerHosts() {
     `<b>${api.format.fmt.format(usa)}</b> foreign-born residents, ` +
     `<b>${one(pct(usa, model.total))}%</b> of everyone in the data. India sends the most: ` +
     `<b>${api.format.fmt.format(ind)}</b> people born in India live somewhere else. ` +
-    `Saudi Arabia is the sharpest asymmetry in the top fifteen — ` +
+    `Saudi Arabia is the sharpest asymmetry in the top fifteen: ` +
     `${api.format.compact.format(sau)} hosted against ${api.format.compact.format(sauOut)} abroad, ` +
     `a ratio of <b>${Math.round(sau / Math.max(sauOut, 1))}:1</b>.`
   );
@@ -625,7 +627,7 @@ function drawDistance() {
   // a cumulative curve on its own 0–100 axis, which put two y-scales on one
   // plot: where the curve crossed a bar was an artifact of how the two scales
   // had been lined up, not a fact about anybody. One rule carries the same
-  // sentence — half of everyone is inside this line — on the axis that is
+  // sentence (half of everyone is inside this line) on the axis that is
   // already here.
   const median = weightedMedian(model.rows.map((r) => [r.km, r.people]));
   const band = BUCKETS.findIndex(([lo, hi]) => median >= lo && median < hi);
@@ -695,7 +697,7 @@ function answerDistance() {
         `400 resamples of the corridors)`
       : "") +
     `, and ` +
-    `<b>${one(share)}%</b> are within 2,000 km — roughly Copenhagen to Rome. ` +
+    `<b>${one(share)}%</b> are within 2,000 km, roughly Copenhagen to Rome. ` +
     `The typical corridor that exists, counted without regard to how many people are on it, ` +
     `spans <b>${api.format.fmt.format(unweighted)} km</b>. ` +
     `That gap is the whole finding: long corridors are the <i>common</i> kind of corridor and the ` +
@@ -953,7 +955,7 @@ function drawWealth() {
   ctx.fillText(
     `Dashed line: least squares through the cloud. Dot area is population. ` +
       `Against 2024 GDP growth instead of income, the same ${growing.length} countries give ` +
-      `r = ${speed.toFixed(2)} — no relationship, so that panel is a sentence rather than a chart.`,
+      `r = ${speed.toFixed(2)}: no relationship, so that panel is a sentence rather than a chart.`,
     0,
     height - 2,
   );
@@ -987,22 +989,26 @@ function answerWealth() {
   const richest = bands.at(-1);
   const range = ([lo, hi]) => `${lo.toFixed(2)} to ${hi.toFixed(2)}`;
   return (
-    `Wealth explains a lot; growth explains nothing. Across <b>${data.length}</b> countries the ` +
-    `correlation between GDP per head and the foreign-born share of the population is ` +
+    `Income tracks the foreign-born share; this year's growth does not. Across ` +
+    `<b>${data.length}</b> countries the correlation between GDP per head and the ` +
+    `foreign-born share of the population is ` +
     `<b>${level.toFixed(2)}</b> (95% ${range(correlationInterval(level, data.length))}) on log ` +
-    `axes — ten times the income, roughly ` +
+    `axes: ten times the income, roughly ` +
     `<b>${(10 ** fitLine(data.map((d) => Math.log10(d.gdp)), data.map((d) => Math.log10(Math.max(d.share, 0.02)))).slope).toFixed(1)}×</b> ` +
     `the foreign-born share. Put the same countries against their 2024 growth rate and it falls ` +
     `to <b>${speed.toFixed(2)}</b> (95% ${range(correlationInterval(speed, growing.length))}, ` +
-    `an interval that contains zero): a fast year does not fill a country with migrants, a ` +
-    `rich decade does. ` +
+    `an interval that contains zero). Being rich and having a large foreign-born ` +
+    `population go together; growing fast this year and having one do not. Section 10 ` +
+    `puts the same question to a model that holds size and distance fixed, which is as ` +
+    `close to "wealth pulls people" as this data gets. ` +
     `Wealth also buys distance, which is the right-hand panel and the real reason the two ` +
     `findings are one finding. The median person living in a country under $5,000 a head came ` +
-    `<b>${api.format.fmt.format(poorest.median)} km</b> — a border crossing. In countries over ` +
+    `<b>${api.format.fmt.format(poorest.median)} km</b>, a border crossing. In countries over ` +
     `$50,000 the median came <b>${api.format.fmt.format(richest.median)} km</b>, and ` +
     `<b>${one(richest.far)}%</b> of them came further than 5,000 km, against ` +
-    `<b>${one(poorest.far)}%</b> at the bottom. Poor countries take their neighbours because ` +
-    `neighbours are who arrives. Rich ones draw from the whole map.`
+    `<b>${one(poorest.far)}%</b> at the bottom. Whatever is behind it (cost, visas, ` +
+    `who already lives there), the reach of a destination rises with its income, and ` +
+    `this chart measures the reach rather than the reason.`
   );
 }
 
@@ -1016,7 +1022,7 @@ function answerWealth() {
 
 function incomeData() {
   // Both bars compare a corridor's two ends, so they need income at both. The
-  // strip underneath compares destinations only — and insisting on the origin
+  // strip underneath compares destinations only, and insisting on the origin
   // there would quietly delete the origins that produce refugees, since Syria,
   // Afghanistan, Eritrea, Somalia and South Sudan are among the countries the
   // World Bank does not publish GDP per head for. It costs the bottom tier a
@@ -1095,7 +1101,7 @@ function drawIncome() {
         label:
           `<b>${part.label}</b><br>` +
           `${one(part.share)}% of migrants with income data at both ends<br>` +
-          `${api.format.fmt.format(part.forced)} of them — ${one(part.forcedShare)}% — are ` +
+          `${api.format.fmt.format(part.forced)} of them, ${one(part.forcedShare)}%, are ` +
           `refugees or asylum seekers`,
       });
       boxes.push({ part, x, w });
@@ -1163,7 +1169,7 @@ function drawIncome() {
   ctx.textBaseline = "top";
   ctx.fillText(
     "Fled: refugees and asylum seekers, UNHCR end-2024, capped at the corridor's stock. " +
-      "Income tier is the destination's GDP per head — a proxy for selection, not a measure of anybody's skill.",
+      "Income tier is the destination's GDP per head, a proxy for selection, not a measure of anybody's skill.",
     left,
     324,
   );
@@ -1195,10 +1201,9 @@ function answerIncome() {
     `<b>${api.format.fmt.format(forcedTotal)}</b> refugees and asylum seekers on these corridors, ` +
     `and they are nowhere near evenly spread: <b>${one(bottom.forcedShare)}%</b> of the ` +
     `foreign-born in destinations under $5,000 a head fled, against ` +
-    `<b>${one(top.forcedShare)}%</b> above $50,000. A third of the poorest tier is not a labour ` +
-    `market at all. ` +
-    `Read the income bars as evidence about sorting rather than skill — a nurse and a nanny are ` +
-    `both in the top tier — and over the <b>${one(coverage)}%</b> of people whose corridor has a ` +
+    `<b>${one(top.forcedShare)}%</b> above $50,000. ` +
+    `Read the income bars as evidence about sorting rather than skill (a nurse and a nanny are ` +
+    `both in the top tier), and over the <b>${one(coverage)}%</b> of people whose corridor has a ` +
     `GDP figure at both ends.`
   );
 }
@@ -1316,10 +1321,10 @@ function answerSex() {
   const highest = rows.at(-1);
   return (
     `Globally it is almost even: <b>${one(pct(female, people))}%</b> of the world's migrants are ` +
-    `women. That average hides the most extreme sorting in the whole dataset. In ` +
+    `women. That average hides the two ends of the chart. In ` +
     `<b>${model.name(lowest.iso3)}</b> only <b>${one(lowest.share)}%</b> of the foreign-born are ` +
     `women; in <b>${model.name(highest.iso3)}</b> it is <b>${one(highest.share)}%</b>. ` +
-    `The bottom of this chart is a labour-recruitment system — construction and services in the ` +
+    `The bottom of this chart is a labour-recruitment system: construction and services in the ` +
     `Gulf and in Malaysia, hiring men on fixed contracts. The top is a mix of care work, marriage ` +
     `migration and the older, post-Soviet stocks where the men have died first. ` +
     `Age and family status are the obvious next cuts and they are <b>not</b> in this build: DESA ` +

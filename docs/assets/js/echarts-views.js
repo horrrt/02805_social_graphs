@@ -1,4 +1,4 @@
-// Corridor Control — three views the rest of the post cannot draw.
+// Corridor Control: three views the rest of the post cannot draw.
 //
 // A force layout answers what the globe hides: which countries sit together
 // once geography is taken away. A stacked area answers what a single snapshot
@@ -217,7 +217,7 @@ function answerGraph() {
     `At a floor of <b>${compact(graphState.floor)}</b> people, ` +
     `${graphState.year} leaves <b>${nodes.length}</b> countries and ` +
     `<b>${fmt(rows.length)}</b> corridors on the canvas, carrying ` +
-    `<b>${fmt(people)}</b> people — <b>${((people / all) * 100).toFixed(1)}%</b> of everyone ` +
+    `<b>${fmt(people)}</b> people, <b>${((people / all) * 100).toFixed(1)}%</b> of everyone ` +
     `living outside their country of birth that year. ` +
     `<b>${isolated}</b> of the <b>${present.size}</b> countries with any corridor that year ` +
     `have none that big. ` +
@@ -402,7 +402,7 @@ function answerArea() {
         `took their existing share of it.`
       : move < 0
         ? shares +
-          `The named twelve are pulling away — though they were picked on their ${last} ` +
+          `The named twelve are pulling away, though they were picked on their ${last} ` +
           `size, so some of that is the chart choosing its own winners.`
         : shares +
           `The growth went to the countries too small to name here, not to the twelve ` +
@@ -559,9 +559,9 @@ function answerAsylum() {
     `<b>${peak[3]}</b> at <b>${fmt(peak[2])}</b>, and twelve months out of ` +
     `${asylum.months.length} carry <b>${share.toFixed(0)}%</b> of the series` +
     (share > 40
-      ? ` — a spike with quiet on either side of it`
+      ? `, a spike with quiet on either side of it`
       : share > 20
-        ? ` — heavier in some years than others, without one dominant month`
+        ? `, heavier in some years than others, without one dominant month`
         : `, which is close to what an even flow would give and reads as a steady one`) +
     `. Most of it went to ${where}. ` +
     (blank
@@ -890,7 +890,7 @@ function answerCalendar() {
     `dark: in ${entries[0][0].slice(0, 4)} to ${entries.at(-1)[0].slice(0, 4)} only ` +
     `<b>${unrecorded}</b> days carry no recorded incident at all. ` +
     `The worst single day is <b>${worst[0]}</b>, <b>${fmt(worst[1][0])}</b> people` +
-    (worst[1][4] ? ` — ${worst[1][4]}` : "") +
+    (worst[1][4] ? `, ${worst[1][4]}` : "") +
     `${worst[1][4]?.endsWith("…") ? "" : "."} Of the full years, <b>${busiest[0]}</b> is the heaviest at ` +
     `<b>${fmt(busiest[1])}</b>, against <b>${fmt(byYear.get(first))}</b> in ${first} ` +
     `and <b>${fmt(byYear.get(last))}</b> in ${last}. ` +

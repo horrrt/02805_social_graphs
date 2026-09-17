@@ -4,7 +4,7 @@
     <meta charset="utf-8" />
     <meta content="width=device-width,initial-scale=1" name="viewport" />
     <meta
-      content="Corridor Control — two country networks over the same world: where people live, from the UN migrant stock, and where you can fly, from OpenFlights."
+      content="Corridor Control: two country networks over the same world, where people live, from the UN migrant stock, and where you can fly, from OpenFlights."
       name="description"
     />
     <title>Corridor Control · Log–Log Legends</title>
@@ -63,7 +63,7 @@
               countries.
             </p>
             <p class="caution">
-              Thick corridors are not friendship — they are people.
+              Thick corridors are not friendship. They are people.
             </p>
             <div class="keys">
               <span class="key people"><i></i> Migration (people)</span>
@@ -168,7 +168,7 @@
               <div class="plot">
                 <h3>B. CCDF of partners</h3>
                 <p class="axis-note">
-                  P(K ≥ k) — the share of countries with at least k partners.
+                  P(K ≥ k), the share of countries with at least k partners.
                   Click a point to select it.
                 </p>
                 <div class="legend">
@@ -199,7 +199,7 @@
                     <p class="sub">
                       A straight-ish line on log–log axes is not evidence of a
                       power law, and with 228 countries the axis only spans
-                      about two decades. So the tails were fitted properly:
+                      about two decades. So we fitted the tails:
                       maximum likelihood for the exponent, the lower bound
                       chosen by minimising the Kolmogorov–Smirnov distance, a
                       goodness-of-fit test against 500 synthetic datasets
@@ -454,7 +454,7 @@
                   <p class="fineprint" style="border: 0; padding: 0">
                     Migration shows where people live. Flights show where you can
                     go. Use the toggle to compare them, and click a country to
-                    select it — the scatter on the left highlights the same one.
+                    select it. The scatter on the left highlights the same one.
                     <b>Net</b> drops the corridors and colours each country
                     instead: green where more people live there than have left
                     it, red where more have left than arrived. It is a balance
@@ -468,8 +468,8 @@
                     publishes passengers on every international segment
                     with an American airport at one end, and joining it to
                     this same route table for 2019 gives 87
-                    countries to compare. Route count ranks them well —
-                    Spearman 0.87 — and is poor at size:
+                    countries to compare. Route count ranks them well
+                    (Spearman 0.87) and is poor at size:
                     among the 59 countries with five routes
                     or more, one route carries anywhere from
                     8,769 people a year to
@@ -505,7 +505,7 @@
               <b>mixed</b> is what is left when none of the five fired. Ranks
               rather than raw values, so a label means the same thing in any
               year. Each card says exactly which test produced it. Examples are
-              read from the data, not chosen by hand — hover a country code to
+              read from the data, not chosen by hand. Hover a country code to
               see why it is there, or open the full list for a role.
             </p>
             <div
@@ -621,7 +621,7 @@
             </div>
             <details class="qa" id="questions">
               <summary>
-                <span class="qa-cue">Here you can learn more</span>
+                <span class="qa-cue">The six questions</span>
               </summary>
               <div class="qa-body">
                 <article class="qa-item">
@@ -689,7 +689,7 @@
 
                 <article class="qa-item">
                   <h3>
-                    5 · Is this the highly skilled, or everybody — and was it
+                    5 · Is this the highly skilled, or everybody, and was it
                     a choice?
                   </h3>
                   <canvas
@@ -755,7 +755,7 @@
             <p class="sub">
               Fitted here by Poisson pseudo-maximum-likelihood on all
               8,301 corridors with population and
-              income at both ends —
+              income at both ends, in
               <code>analysis/week03_gravity.py</code>. That is a few hundred
               more than the 8,053 in question 5, which needs income at both
               ends and nothing else; this needs population too, and a handful
@@ -787,7 +787,7 @@
                 Destination income comes next: with size and distance held
                 fixed, a country twice as rich holds about 1.8 times as many
                 people from any given origin. Origin income runs the other
-                way — poorer origins send more — which is the selection the
+                way (poorer origins send more), which is the selection the
                 income bars in section 5 could only show as a marginal. The
                 last row is a failed proxy, kept rather than deleted: this
                 repo has coordinates and no border table, so "share a border"
@@ -900,15 +900,27 @@
               </span>
             </div>
             <p class="fineprint">
+              The fit drops every corridor touching a country the World
+              Bank does not price: Syria, South Sudan, Yemen, Eritrea, North
+              Korea and Cuba among others. Those are war zones and sanctioned
+              states, which is to say several of the origins whose corridors
+              would have had the largest residuals. The model is fitted on the
+              part of the world calm enough to be measured, and the missing
+              part is 7.3% of the world's migrants.
+            </p>
+            <p class="fineprint">
               Every term is measured in the same year as the outcome, so
               nothing here identifies a cause: a corridor thirty times over
               its prediction is a corridor worth explaining, not an
               explanation. The fit reaches R² 0.45 across the range of the
               data and 0.19 on the raw counts, where a handful of enormous
-              corridors dominate. And the bottom of the residual list — where
-              gravity expects a crowd and DESA reports five people — is a map
-              of which statistics offices file small origins under "other",
-              not of where nobody went.
+              corridors dominate.
+            </p>
+            <p class="fineprint">
+              The bottom of the residual list, where gravity expects a crowd
+              and DESA reports five people, is a map of which statistics
+              offices file small origins under "other", not of where nobody
+              went.
             </p>
           </div>
         </section>
@@ -924,7 +936,7 @@
               A course on social graphs asks this in week three and this post
               had not. Louvain on the undirected network, weighted by people
               moving in both directions and cut at corridors of 10,000 or
-              more — <code>analysis/week03_communities.py</code>. It returns
+              more, in <code>analysis/week03_communities.py</code>. It returns
               eight groups over 205 countries, and they name
               themselves.
             </p>
@@ -979,7 +991,7 @@
               <span class="ico">💡</span>
               <span>
                 <b>70.6% of the world's 272 million migrants live inside
-                one of the eight groups rather than between them</b> —
+                one of the eight groups rather than between them</b>,
                 counting every corridor in 2024, including the small ones
                 the 10,000-person threshold left out of the graph. The
                 groups are free movement zones, old empires and shared
@@ -996,8 +1008,8 @@
                 Modularity is 0.533. Rewire the network
                 100 times keeping every country's number
                 of partners, deal the corridor weights back out at random,
-                and Louvain still returns 0.528 on average
-                — 32 of the
+                and Louvain still returns 0.528 on average.
+                32 of the
                 100 shuffles score at or above the real
                 network, which is z = +0.39 and no evidence
                 of anything. Louvain finds communities in noise, so the
@@ -1009,7 +1021,7 @@
 
             <h3>Migrants and refugees are not the same network</h3>
             <p class="sub">
-              The same countries, two different graphs — UN DESA's stock
+              The same countries, two different graphs: UN DESA's stock
               against UNHCR's refugee counts, both 2024, from
               <code>analysis/week03_country_networks.py</code>. This was
               computed for the project weeks ago and had never reached the
@@ -1039,7 +1051,7 @@
                 share of arcs whose reverse also exists is just the density.
                 Against that baseline migration is reciprocal
                 <b>2.4×</b> more than chance, and displacement is
-                <b>0.9×</b> — which is to say not at all. People who move for
+                <b>0.9×</b>, which is to say not at all. People who move for
                 work come and go; people who flee do not go back down the
                 same edge, and the refugee network is no more two-way than a
                 random graph of its size would be. The eleven destinations that are refugee-only are
@@ -1181,7 +1193,7 @@
             </div>
             <details class="qa" id="views">
               <summary>
-                <span class="qa-cue">Here you can learn more</span>
+                <span class="qa-cue">The five extra views</span>
               </summary>
               <div class="qa-body">
                 <p aria-live="polite" class="status-line" id="v-status"></p>
@@ -1360,13 +1372,13 @@
                       <b>Forced displacement.</b> UNHCR Refugee Data Finder,
                       end-2024: refugees plus asylum seekers on the same
                       origin → destination pairs. It answers question 5's
-                      second half. The two counts do not nest perfectly — DESA
+                      second half. The two counts do not nest perfectly (DESA
                       estimates in the middle of 2024, UNHCR counts at the end
-                      of it — so on 273 fast-moving corridors, Sudan's most of
+                      of it), so on 273 fast-moving corridors, Sudan's most of
                       all, the refugee count exceeds the stock and we cap it
                       there. That makes a crisis corridor read low, never high.
-                      A further 2,884 UNHCR pairs — 2.0 million people, Ukraine
-                      to the Netherlands among them — have no DESA stock row to
+                      A further 2,884 UNHCR pairs, 2.0 million people with Ukraine
+                      to the Netherlands among them, have no DESA stock row to
                       attach to and are not on this page at all. Internal
                       displacement is in the source and left out too: these are
                       border crossings.
@@ -1386,6 +1398,36 @@
                       <code>analysis/week03_tails.json</code>.
                     </p>
                     <p class="sub">
+                      <b>Which countries, and how many.</b> Six different
+                      counts appear on this page and all of them are right,
+                      so here they are in one place. <b>236</b> countries and
+                      territories are in the payload, the union of the
+                      migration and flight networks. <b>228</b> have
+                      migration figures and sit on at least one corridor.
+                      <b>208</b> have a flight route. <b>212</b> have any
+                      World Bank indicator and <b>197</b> have income per
+                      head, which is why the wealth charts say 173 once
+                      population and a positive foreign-born share are also
+                      required. <b>205</b> survive the 10,000-person floor in
+                      the community graph, <b>185</b> report to the Oxford
+                      tracker, and <b>87</b> have both a flight route to the
+                      United States and passengers on it.
+                    </p>
+                    <p class="sub">
+                      <b>The countries without a price.</b> Of the 39 with no
+                      income per head, the list is not random: Syria, South
+                      Sudan, Yemen, Eritrea, North Korea and Cuba, alongside
+                      two dozen small territories. Those are war zones,
+                      sanctioned states and dependencies, and the war zones
+                      are among the largest refugee origins on the page.
+                      Every income-based result here therefore excludes them:
+                      the gravity model, the wealth scatter and the income
+                      tiers all drop corridors touching a country the World
+                      Bank does not price, which is 7.3% of the world's
+                      migrants. It biases those results toward the parts of
+                      the world that are calm enough to be measured.
+                    </p>
+                    <p class="sub">
                       <b>Reporting coverage.</b> DESA's table is ragged. The
                       United States names 58 origins in every year of the
                       table and Denmark names 190, because one runs a survey
@@ -1400,8 +1442,8 @@
                       first-time asylum applicants of all ages and both sexes,
                       by citizenship and reporting country, monthly since
                       2013. Reuse with attribution. Eurostat ships aggregate
-                      rows inside both dimensions — EU27 sits beside its own
-                      members, TOTAL beside every citizenship — and summing
+                      rows inside both dimensions (EU27 sits beside its own
+                      members, TOTAL beside every citizenship), and summing
                       over them counts most of Europe twice, so both are
                       dropped. Applications are not arrivals, temporary
                       protection is a different route and is not counted, and
@@ -1421,8 +1463,10 @@
                     <p class="sub">
                       <b>The deaths calendar.</b> IOM Missing Migrants Project via
                       HDX, CC BY-IGO, binned by the date an incident was
-                      reported. It is the only dated source on the page, which
-                      is why section 10 can show a day at all. It counts
+                      reported. It is one of the three dated sources here, with
+                      Eurostat by the month and the Oxford tracker by the
+                      day, and the only one that is global and dated at
+                      once. It counts
                       recorded incidents: IOM says the record is an undercount
                       by an unknown amount that differs by route, so a brighter
                       year can be a better-watched one rather than a worse one.
@@ -1485,12 +1529,12 @@
                     <p class="sub">
                       <b>AI use.</b> We built the harvest, the analysis and this
                       page with Claude. Every number on the page comes out of a
-                      script in <code>analysis/</code> —
+                      script in <code>analysis/</code>:
                       <code>week03_corridor_control.py</code> for the networks,
                       then <code>_tails</code>, <code>_gravity</code>,
                       <code>_communities</code>, <code>_country_networks</code>,
                       <code>_asylum</code>, <code>_closures</code> and
-                      <code>_calendar</code> — and none is typed by hand.
+                      <code>_calendar</code>. None is typed by hand.
                     </p>
                   </div>
                 </div>
@@ -1519,6 +1563,6 @@
       </footer>
     </main>
 
-    <script src="../../assets/js/week03-boot.js?v=2dab10c483" type="module"></script>
+    <script src="../../assets/js/week03-boot.js?v=5e17fc9daa" type="module"></script>
   </body>
 </html>

@@ -1,4 +1,4 @@
-// Corridor Control — week 3.
+// Corridor Control, week 3.
 //
 // Draws two country networks over the same world: migration from the UN
 // migrant stock, flights from OpenFlights. Everything here is a view of
@@ -701,7 +701,7 @@ function label(key) {
 function typologyNote(key) {
   const type = TYPES[key];
   return type
-    ? `${type.title} — ${type.what} ${GLOSSARY.Typology}`
+    ? `${type.title}: ${type.what} ${GLOSSARY.Typology}`
     : GLOSSARY.Typology;
 }
 
@@ -1595,7 +1595,7 @@ function binnedDegrees(pick) {
     // Height is countries per partner value, not the raw count. A bin twice
     // as wide catches roughly twice as many countries for no reason but its
     // width, and on raw counts that alone makes the wide bins in the middle
-    // the tallest — which would show a hump where the data has a tail.
+    // the tallest, which would show a hump where the data has a tail.
     const width = Number.isFinite(bin.hi) ? bin.hi - bin.lo : Math.max(1, maxK - bin.lo + 1);
     return { ...bin, c: countries, density: countries / width, iso3: pick3?.iso3, span: inside.length };
   }).filter((bin) => bin.c > 0);
@@ -2272,7 +2272,7 @@ function renderTypology() {
         if (!count) return "";
         const share = (count / total) * 100;
         // The cards' tints are near-white badge backgrounds, and leaf and
-        // mixed are the same value in both tint and text colour — side by
+        // mixed are the same value in both tint and text colour: side by
         // side on one bar they merge into a single block across 85% of it,
         // exactly where the eye lands. The slices take each label's text
         // colour at low alpha instead, and the 2px gaps between them carry
@@ -2620,7 +2620,7 @@ function drawDenmark() {
     // Three measures in three panels rather than three bars on one axis. The
     // old chart divided each measure by its own maximum and called the result
     // "share of the largest", which put a count of origins, a count of flight
-    // partners and a z-score on one scale where none of them belong — and it
+    // partners and a z-score on one scale where none of them belong, and it
     // took the absolute value of the z, so Denmark's −1.23 drew as a bar
     // pointing the same way as a broker's +5.
     const panels = [
