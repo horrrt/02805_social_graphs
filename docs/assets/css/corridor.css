@@ -1338,6 +1338,29 @@
   color: var(--ink);
 }
 
+/* --- the ring's year slider, on a light card rather than the dark hero --- */
+
+.corridor .qa-slider {
+  display: grid;
+  gap: 1px;
+  min-width: 220px;
+}
+
+.corridor .qa-slider .ends {
+  color: var(--ink-mute);
+  display: flex;
+  font-size: 10px;
+  font-weight: 700;
+  justify-content: space-between;
+}
+
+.corridor .qa-slider-now {
+  color: var(--ink);
+  font-size: 13px;
+  font-variant-numeric: tabular-nums;
+  font-weight: 800;
+}
+
 
 /* ------------------------------------------------- chart tooltip and drawer */
 

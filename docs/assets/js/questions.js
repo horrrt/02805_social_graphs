@@ -27,7 +27,7 @@ function build() {
   const indicators = state.data.indicators ?? {};
 
   const rows = [];
-  for (const [oi, di, stocks, , km, female] of edges.edges) {
+  for (const [oi, di, stocks, , km, female, forced = 0] of edges.edges) {
     const people = stocks[yi];
     if (!people) continue;
     rows.push({
@@ -36,6 +36,11 @@ function build() {
       people,
       km,
       female: female >= 0 ? female : null,
+      // UNHCR counts at the end of 2024, DESA estimates in the middle of it,
+      // so a corridor that filled during the year can carry more refugees than
+      // it carries people. Capping keeps every share on this page inside 100%
+      // and makes the fast-moving corridors read low rather than impossible.
+      forced: Math.min(forced, people),
     });
   }
   const total = rows.reduce((sum, r) => sum + r.people, 0);
@@ -56,17 +61,20 @@ function build() {
   };
 }
 
-// The median of a distance distribution weighted by how many people are on it.
-function weightedMedian(pairs) {
+// A quantile of a distance distribution weighted by how many people are on it.
+// The median migrant, not the median corridor: a corridor of four people and a
+// corridor of four million should not count the same.
+function weightedQuantile(pairs, q = 0.5) {
   const sorted = [...pairs].sort((a, b) => a[0] - b[0]);
-  const half = sorted.reduce((sum, p) => sum + p[1], 0) / 2;
+  const mark = sorted.reduce((sum, p) => sum + p[1], 0) * q;
   let seen = 0;
   for (const [value, weight] of sorted) {
     seen += weight;
-    if (seen >= half) return value;
+    if (seen >= mark) return value;
   }
   return sorted.at(-1)?.[0] ?? 0;
 }
+const weightedMedian = (pairs) => weightedQuantile(pairs, 0.5);
 
 function correlation(xs, ys) {
   const n = xs.length;
@@ -167,24 +175,16 @@ function wire(id) {
 
 const RING_N = 14;
 
-// The ring is the one question with its own year and its own choice of
-// countries, because "which corridors carry the world" has three honest
-// answers: the countries people move between, the countries people move to,
-// and the countries people move from. They are different lists, and reading
-// one of them as the other is how a destination story gets told about origins.
-// The other five questions stay on YEAR; changing the year under them would
-// pair old stocks with a single snapshot of GDP and population.
-const ringState = { year: YEAR, mode: "both" };
+// The ring is the one question with its own year, because the club of countries
+// people move between is not a fixed list: it was a Soviet-successor story in
+// 1990 and it is an American, Indian and Gulf one now. The other five questions
+// stay on YEAR; changing the year under them would pair old stocks with a
+// single snapshot of GDP, population and sex.
+const ringState = { year: YEAR };
 
-const RING_MODES = {
-  both: { label: "most involved", rank: (inn, out) => inn + out },
-  in: { label: "biggest destinations", rank: (inn) => inn },
-  out: { label: "biggest origins", rank: (_, out) => out },
-};
-
-function ringRows() {
+function ringRows(year) {
   const edges = api.state.edges;
-  const yi = edges.years.indexOf(ringState.year);
+  const yi = edges.years.indexOf(year);
   const rows = [];
   for (const [oi, di, stocks] of edges.edges) {
     const people = stocks[yi];
@@ -194,17 +194,16 @@ function ringRows() {
   return rows;
 }
 
-function ringData() {
-  const rows = ringRows();
+function ringData(year = ringState.year) {
+  const rows = ringRows(year);
   const inn = new Map();
   const out = new Map();
   for (const r of rows) {
     out.set(r.o, (out.get(r.o) ?? 0) + r.people);
     inn.set(r.d, (inn.get(r.d) ?? 0) + r.people);
   }
-  const score = RING_MODES[ringState.mode].rank;
   const keep = [...new Set([...inn.keys(), ...out.keys()])]
-    .map((iso3) => [iso3, score(inn.get(iso3) ?? 0, out.get(iso3) ?? 0)])
+    .map((iso3) => [iso3, (inn.get(iso3) ?? 0) + (out.get(iso3) ?? 0)])
     .sort((a, b) => b[1] - a[1])
     .slice(0, RING_N)
     .map(([iso3]) => iso3);
@@ -353,16 +352,33 @@ function answerRing() {
   biggest.sort((a, b) => b[2] - a[2]);
   const [o, d, v] = biggest[0];
   const second = biggest[1];
-  const opening = {
-    both: `These ${RING_N} countries are the ones most people move between`,
-    in: `These ${RING_N} countries receive more foreign-born residents than anyone else`,
-    out: `These ${RING_N} countries are where more people have left from than anywhere else`,
-  }[ringState.mode];
+
+  // The same club, computed at both ends of the slider, so the reader gets the
+  // trend without having to remember what the ring looked like eight steps ago.
+  const first = api.state.edges.years[0];
+  const early = ringData(first);
+  const earlyAmong = early.matrix.flat().reduce((a, b) => a + b, 0);
+  const earlyShare = pct(earlyAmong, early.total);
+  const share = pct(among, data.total);
+  const joined = data.keep.filter((iso3) => !early.keep.includes(iso3));
+  const left = early.keep.filter((iso3) => !data.keep.includes(iso3));
+  const names = (list) => list.slice(0, 3).map((iso3) => model.name(iso3)).join(", ");
+
+  const churn =
+    ringState.year === first
+      ? `Drag the slider forward and watch the rim change hands.`
+      : `Between ${first} and ${ringState.year} the club itself changed hands: ` +
+        `${names(joined) || "nobody"} moved in, ` +
+        `${names(left) || "nobody"} dropped out. ` +
+        `Its share of the world fell from <b>${one(earlyShare)}%</b> to ` +
+        `<b>${one(share)}%</b> — not because the big corridors shrank, but ` +
+        `because everything else grew around them.`;
+
   return (
-    `${opening}, in ${ringState.year}. ` +
-    `Among themselves they account for ` +
+    `These ${RING_N} countries are the ones most people move between, in ` +
+    `${ringState.year}. Among themselves they account for ` +
     `<b>${api.format.fmt.format(among)}</b> people, ` +
-    `<b>${one(pct(among, data.total))}%</b> of everyone living outside their country of birth ` +
+    `<b>${one(share)}%</b> of everyone living outside their country of birth ` +
     `that year. ` +
     `The single heaviest ribbon is <b>${model.name(o)} → ${model.name(d)}</b> at ` +
     `${api.format.fmt.format(v)} people, ` +
@@ -370,9 +386,8 @@ function answerRing() {
     `(${model.name(second[0])} → ${model.name(second[1])}). ` +
     `The ring is lopsided on purpose: a few countries are almost all deep rim ` +
     `(people left) and a few almost all pale (people arrived), and those are ` +
-    `different kinds of country. Switch the ring to biggest destinations and ` +
-    `then to biggest origins: the two lists barely overlap, and the ribbons ` +
-    `stay directed either way.`
+    `different kinds of country. ` +
+    churn
   );
 }
 
@@ -606,7 +621,22 @@ function answerDistance() {
   );
 }
 
-/* ------------------------------------------- 4. wealth, growth and migration */
+/* ------------------------------------------- 4. wealth, growth and migration
+
+   Two things wealth does. It decides what share of a country was born
+   somewhere else, and it decides how far those people came. The second panel
+   used to hold GDP growth against the same share; it was a vertical cloud with
+   r = -0.10, so the growth null now lives in one labelled line under the
+   charts and the space went to the finding that was only in the prose. */
+
+// Destination income bands, shared with question 5 so the two charts cut the
+// world the same way.
+const TIERS = [
+  [0, 5000, "under $5k"],
+  [5000, 20000, "$5k–20k"],
+  [20000, 50000, "$20k–50k"],
+  [50000, Infinity, "over $50k"],
+];
 
 function wealthData() {
   const out = [];
@@ -619,89 +649,229 @@ function wealthData() {
   return out;
 }
 
-function drawWealth() {
-  const canvas = $("q-wealth");
-  if (!canvas) return;
-  const { ctx, width, height } = api.surface(canvas);
-  const { PEOPLE, ACCESS, INK } = api.colours;
-  const list = register("q-wealth");
-  const data = wealthData();
-
-  const panels = [
-    {
-      key: "gdp",
-      value: (d) => d.gdp,
-      logged: true,
-      label: "GDP per capita, US$ (log)",
-      colour: PEOPLE,
-      title: "Against how rich the destination is",
-    },
-    {
-      key: "growth",
-      value: (d) => d.growth,
-      logged: false,
-      label: "GDP growth 2024, %",
-      colour: ACCESS,
-      title: "Against how fast it is growing",
-    },
-  ];
-
-  const gapX = 34;
-  const panelWidth = (width - gapX) / 2;
-  for (const [p, panel] of panels.entries()) {
-    const rows = data.filter((d) => panel.value(d) !== null && panel.value(d) > (panel.logged ? 0 : -Infinity));
-    const left = p * (panelWidth + gapX);
-    const box = api.frame(panelWidth, height, { l: 46, r: 12, t: 34, b: 44 });
-    box.left += left;
-    box.right += left;
-
-    const values = rows.map(panel.value);
-    const domain = [Math.min(...values), Math.max(...values)];
-    box.x = panel.logged
-      ? api.logScale(box, domain, "x")
-      : api.linearScale(box, domain, "x");
-    box.y = api.logScale(box, [0.02, 100], "y");
-    api.axes(ctx, box, {
-      xTicks: panel.logged
-        ? api.logTicks(domain[0], domain[1])
-        : [-5, 0, 5, 10].map((v) => ({ value: v, label: `${v}%` })),
-      yTicks: [0.1, 1, 10, 100].map((v) => ({ value: v, label: `${v}%` })),
-      xLabel: panel.label,
-      yLabel: p === 0 ? "Foreign-born share of population" : "",
+// How far the people arriving in each income band had to travel. Weighted by
+// people, so this is the journey of the median migrant into that band.
+function reachData() {
+  return TIERS.map(([lo, hi, label]) => {
+    const rows = model.rows.filter((r) => {
+      const g = model.gdp(r.d);
+      return g !== null && g >= lo && g < hi && r.km > 0;
     });
+    const pairs = rows.map((r) => [r.km, r.people]);
+    const people = rows.reduce((sum, r) => sum + r.people, 0);
+    return {
+      label,
+      people,
+      p25: weightedQuantile(pairs, 0.25),
+      median: weightedQuantile(pairs, 0.5),
+      p75: weightedQuantile(pairs, 0.75),
+      far: pct(rows.filter((r) => r.km > 5000).reduce((s, r) => s + r.people, 0), people),
+    };
+  });
+}
+
+// Least squares through the log-log cloud, so the correlation in the corner is
+// a line a reader can see rather than a number they have to trust.
+function fitLine(xs, ys) {
+  const n = xs.length;
+  const mx = xs.reduce((a, b) => a + b, 0) / n;
+  const my = ys.reduce((a, b) => a + b, 0) / n;
+  let num = 0;
+  let den = 0;
+  for (let i = 0; i < n; i += 1) {
+    num += (xs[i] - mx) * (ys[i] - my);
+    den += (xs[i] - mx) ** 2;
+  }
+  const slope = den ? num / den : 0;
+  return { slope, at: (x) => my + slope * (x - mx) };
+}
+
+function drawWealthScatter(ctx, box, rows, list) {
+  const { PEOPLE, INK, MUTE } = api.colours;
+  const values = rows.map((d) => d.gdp);
+  const domain = [Math.min(...values), Math.max(...values)];
+  box.x = api.logScale(box, domain, "x");
+  box.y = api.logScale(box, [0.02, 100], "y");
+  api.axes(ctx, box, {
+    xTicks: api.logTicks(domain[0], domain[1]),
+    yTicks: [0.1, 1, 10, 100].map((v) => ({ value: v, label: `${v}%` })),
+    xLabel: "GDP per capita, US$ (log)",
+    yLabel: "Foreign-born share of population",
+  });
+
+  const xs = rows.map((d) => Math.log10(d.gdp));
+  const ys = rows.map((d) => Math.log10(Math.max(d.share, 0.02)));
+  const fit = fitLine(xs, ys);
+  ctx.save();
+  ctx.beginPath();
+  ctx.rect(box.left, box.top, box.right - box.left, box.bottom - box.top);
+  ctx.clip();
+  ctx.beginPath();
+  ctx.moveTo(box.x(domain[0]), box.y(10 ** fit.at(Math.log10(domain[0]))));
+  ctx.lineTo(box.x(domain[1]), box.y(10 ** fit.at(Math.log10(domain[1]))));
+  ctx.strokeStyle = `rgba(${api.rgb(INK)},0.35)`;
+  ctx.lineWidth = 1.4;
+  ctx.setLineDash([5, 4]);
+  ctx.stroke();
+  ctx.setLineDash([]);
+  ctx.restore();
+
+  const r = api.rgb(PEOPLE);
+  const placed = [];
+  for (const d of rows) {
+    d.px = box.x(d.gdp);
+    d.py = box.y(Math.max(d.share, 0.02));
+    const size = Math.max(2.2, Math.min(9, Math.log10(d.pop) - 4.4));
+    ctx.beginPath();
+    ctx.arc(d.px, d.py, size, 0, Math.PI * 2);
+    ctx.fillStyle = `rgba(${r},0.45)`;
+    ctx.fill();
+    list.push({
+      x: d.px, y: d.py, r: Math.max(size, 7), iso3: d.iso3,
+      label:
+        `<b>${model.name(d.iso3)}</b><br>` +
+        `${one(d.share)}% of the population was born abroad<br>` +
+        `$${api.format.fmt.format(Math.round(d.gdp))} per head · ` +
+        `${d.growth === null ? "growth not published" : `${one(d.growth)}% growth`}`,
+    });
+  }
+
+  // Name the countries a reader would otherwise have to hover for: the top of
+  // the cloud, the two furthest from the line in either direction, and the
+  // largest country on the chart. Chosen from the data, not typed in, so the
+  // labels follow a data refresh instead of going stale against it.
+  const residual = (d) => Math.log10(Math.max(d.share, 0.02)) - fit.at(Math.log10(d.gdp));
+  const byShare = [...rows].sort((a, b) => b.share - a.share);
+  const byResidual = [...rows].sort((a, b) => residual(a) - residual(b));
+  const notable = new Set([
+    ...byShare.slice(0, 3),
+    ...byResidual.slice(0, 2),
+    ...byResidual.slice(-1),
+    [...rows].sort((a, b) => b.pop - a.pop)[0],
+  ]);
+  ctx.font = "600 10px -apple-system, system-ui, sans-serif";
+  ctx.textBaseline = "middle";
+  for (const d of notable) {
+    if (!d) continue;
+    const right = d.px < (box.left + box.right) / 2;
+    let y = d.py;
+    // Two labels on one pixel row read as one long wrong label.
+    while (placed.some((other) => Math.abs(other - y) < 11)) y -= 11;
+    placed.push(y);
+    ctx.textAlign = right ? "left" : "right";
+    ctx.fillStyle = MUTE;
+    ctx.fillText(fitText(ctx, model.name(d.iso3), 92), d.px + (right ? 8 : -8), y);
+  }
+}
+
+function drawReach(ctx, box, list) {
+  const { ACCESS, INK, MUTE } = api.colours;
+  const bands = reachData();
+  const domain = [400, 12000];
+  box.x = api.logScale(box, domain, "x");
+  api.axes(ctx, box, {
+    xTicks: [500, 1000, 2000, 5000, 10000].map((v) => ({
+      value: v,
+      label: `${api.format.compact.format(v)} km`,
+    })),
+    yTicks: [],
+    xLabel: "Distance from country of birth (log)",
+  });
+
+  const step = (box.bottom - box.top) / bands.length;
+  const r = api.rgb(ACCESS);
+  bands.forEach((band, i) => {
+    const y = box.top + step * (i + 0.5);
+    const x25 = box.x(band.p25);
+    const x75 = box.x(band.p75);
+
+    ctx.fillStyle = `rgba(${r},0.22)`;
+    ctx.fillRect(x25, y - 11, x75 - x25, 22);
+    ctx.beginPath();
+    ctx.arc(box.x(band.median), y, 6, 0, Math.PI * 2);
+    ctx.fillStyle = `rgba(${r},0.95)`;
+    ctx.fill();
+
+    ctx.fillStyle = MUTE;
+    ctx.font = "600 10px -apple-system, system-ui, sans-serif";
+    ctx.textAlign = "right";
+    ctx.textBaseline = "middle";
+    ctx.fillText(band.label, box.left - 8, y - 6);
+    ctx.font = "10px -apple-system, system-ui, sans-serif";
+    ctx.fillText(`${api.format.compact.format(band.people)} people`, box.left - 8, y + 7);
 
     ctx.fillStyle = INK;
     ctx.font = "600 11px -apple-system, system-ui, sans-serif";
     ctx.textAlign = "left";
-    ctx.textBaseline = "alphabetic";
-    ctx.fillText(panel.title, box.left, box.top - 12);
+    ctx.fillText(`${api.format.fmt.format(band.median)} km`, x75 + 9, y);
 
-    const r = api.rgb(panel.colour);
-    for (const d of rows) {
-      const x = box.x(panel.value(d));
-      const y = box.y(Math.max(d.share, 0.02));
-      const size = Math.max(2.2, Math.min(9, Math.log10(d.pop) - 4.4));
-      ctx.beginPath();
-      ctx.arc(x, y, size, 0, Math.PI * 2);
-      ctx.fillStyle = `rgba(${r},0.5)`;
-      ctx.fill();
-      list.push({
-        x, y, r: Math.max(size, 7), iso3: d.iso3,
-        label:
-          `<b>${model.name(d.iso3)}</b><br>` +
-          `${one(d.share)}% of the population was born abroad<br>` +
-          `$${api.format.fmt.format(Math.round(d.gdp))} per head · ` +
-          `${d.growth === null ? "growth not published" : `${one(d.growth)}% growth`}`,
-      });
-    }
+    list.push({
+      box: [x25, y - 11, x75, y + 11],
+      label:
+        `<b>Destinations ${band.label} a head</b><br>` +
+        `Median arrival came ${api.format.fmt.format(band.median)} km<br>` +
+        `Middle half: ${api.format.fmt.format(band.p25)}–${api.format.fmt.format(band.p75)} km · ` +
+        `${one(band.far)}% came over 5,000 km`,
+    });
+  });
+}
 
-    const xs = rows.map((d) => (panel.logged ? Math.log10(panel.value(d)) : panel.value(d)));
-    const ys = rows.map((d) => Math.log10(Math.max(d.share, 0.02)));
+function drawWealth() {
+  const canvas = $("q-wealth");
+  if (!canvas) return;
+  const { ctx, width, height } = api.surface(canvas);
+  const { INK, MUTE } = api.colours;
+  const list = register("q-wealth");
+  const data = wealthData();
+
+  const gapX = 52;
+  const panelWidth = (width - gapX) / 2;
+  const foot = 18;
+
+  const scatter = api.frame(panelWidth, height - foot, { l: 46, r: 12, t: 34, b: 44 });
+  drawWealthScatter(ctx, scatter, data, list);
+
+  const reach = api.frame(panelWidth, height - foot, { l: 86, r: 76, t: 34, b: 44 });
+  reach.left += panelWidth + gapX;
+  reach.right += panelWidth + gapX;
+  drawReach(ctx, reach, list);
+
+  const xs = data.map((d) => Math.log10(d.gdp));
+  const ys = data.map((d) => Math.log10(Math.max(d.share, 0.02)));
+  const titles = [
+    [scatter, "How rich the destination is", `r = ${correlation(xs, ys).toFixed(2)} · n = ${data.length}`],
+    [reach, "How far its foreign-born came", "bar: middle half · dot: median"],
+  ];
+  for (const [box, title, stat] of titles) {
     ctx.fillStyle = INK;
+    ctx.font = "600 11px -apple-system, system-ui, sans-serif";
+    ctx.textAlign = "left";
+    ctx.textBaseline = "alphabetic";
+    ctx.fillText(title, box.left - (box === reach ? 70 : 0), box.top - 12);
+    ctx.fillStyle = MUTE;
     ctx.font = "10px -apple-system, system-ui, sans-serif";
     ctx.textAlign = "right";
-    ctx.fillText(`r = ${correlation(xs, ys).toFixed(2)} · n = ${rows.length}`, box.right, box.top - 12);
+    ctx.fillText(stat, box.right + (box === reach ? 70 : 0), box.top - 12);
   }
+
+  // The panel that is not here. Growth was the obvious second axis and it
+  // explains nothing, which is worth one line and not half a chart.
+  const growing = data.filter((d) => d.growth !== null);
+  const speed = correlation(
+    growing.map((d) => d.growth),
+    growing.map((d) => Math.log10(Math.max(d.share, 0.02))),
+  );
+  ctx.fillStyle = MUTE;
+  ctx.font = "10px -apple-system, system-ui, sans-serif";
+  ctx.textAlign = "left";
+  ctx.textBaseline = "bottom";
+  ctx.fillText(
+    `Dashed line: least squares through the cloud. Dot area is population. ` +
+      `Against 2024 GDP growth instead of income, the same ${growing.length} countries give ` +
+      `r = ${speed.toFixed(2)} — no relationship, so that panel is a sentence rather than a chart.`,
+    0,
+    height - 2,
+  );
 }
 
 function answerWealth() {
@@ -715,55 +885,54 @@ function answerWealth() {
     growing.map((d) => d.growth),
     growing.map((d) => Math.log10(Math.max(d.share, 0.02))),
   );
-  const rich = model.rows.filter((r) => (model.gdp(r.d) ?? 0) >= 30000);
-  const poor = model.rows.filter((r) => {
-    const g = model.gdp(r.d);
-    return g !== null && g > 0 && g < 10000;
-  });
-  const richMedian = weightedMedian(rich.map((r) => [r.km, r.people]));
-  const poorMedian = weightedMedian(poor.map((r) => [r.km, r.people]));
+  const bands = reachData();
+  const poorest = bands[0];
+  const richest = bands.at(-1);
   return (
     `Wealth explains a lot; growth explains nothing. Across <b>${data.length}</b> countries the ` +
     `correlation between GDP per head and the foreign-born share of the population is ` +
-    `<b>${level.toFixed(2)}</b> on log axes. Put the same countries against their 2024 growth rate ` +
-    `and it falls to <b>${speed.toFixed(2)}</b>: a fast year does not fill a country with migrants, ` +
-    `a rich decade does. ` +
-    `Wealth also buys distance. Into destinations above $30,000 a head the median migrant has ` +
-    `travelled <b>${api.format.fmt.format(richMedian)} km</b>; into destinations below $10,000, ` +
-    `<b>${api.format.fmt.format(poorMedian)} km</b>. Poor countries take their neighbours. ` +
-    `Rich ones draw from the whole map, which is the distance finding above and the wealth finding ` +
-    `here turning out to be the same sentence.`
+    `<b>${level.toFixed(2)}</b> on log axes — ten times the income, roughly ` +
+    `<b>${(10 ** fitLine(data.map((d) => Math.log10(d.gdp)), data.map((d) => Math.log10(Math.max(d.share, 0.02)))).slope).toFixed(1)}×</b> ` +
+    `the foreign-born share. Put the same countries against their 2024 growth rate and it falls ` +
+    `to <b>${speed.toFixed(2)}</b>: a fast year does not fill a country with migrants, a rich ` +
+    `decade does. ` +
+    `Wealth also buys distance, which is the right-hand panel and the real reason the two ` +
+    `findings are one finding. The median person living in a country under $5,000 a head came ` +
+    `<b>${api.format.fmt.format(poorest.median)} km</b> — a border crossing. In countries over ` +
+    `$50,000 the median came <b>${api.format.fmt.format(richest.median)} km</b>, and ` +
+    `<b>${one(richest.far)}%</b> of them came further than 5,000 km, against ` +
+    `<b>${one(poorest.far)}%</b> at the bottom. Poor countries take their neighbours because ` +
+    `neighbours are who arrives. Rich ones draw from the whole map.`
   );
 }
 
-/* ------------------------------------------ 5. skill, and what stands in for it */
+/* ------------------------------------------ 5. skill, and what stands in for it
 
-const TIERS = [
-  [0, 5000, "under $5k"],
-  [5000, 20000, "$5k–20k"],
-  [20000, 50000, "$20k–50k"],
-  [50000, Infinity, "over $50k"],
-];
+   The stock table cannot see a degree, so this question used to stop at the
+   thing it can see: destination income. UNHCR's 2024 counts add the other
+   half of it. Sorted by income is one story; sorted by whether anybody chose
+   to go is a different one, and the poorest destinations turn out to be
+   hosting the second. */
 
 function incomeData() {
   const known = model.rows.filter((r) => model.gdp(r.o) && model.gdp(r.d));
   const total = known.reduce((sum, r) => sum + r.people, 0);
-  const tiers = TIERS.map(([lo, hi, label]) => ({
-    label,
-    share: pct(
-      known.filter((r) => model.gdp(r.d) >= lo && model.gdp(r.d) < hi).reduce((s, r) => s + r.people, 0),
-      total,
-    ),
-  }));
+  const slice = (label, test) => {
+    const rows = known.filter(test);
+    const people = rows.reduce((s, r) => s + r.people, 0);
+    const forced = rows.reduce((s, r) => s + r.forced, 0);
+    return { label, people, forced, share: pct(people, total), forcedShare: pct(forced, people) };
+  };
+  const tiers = TIERS.map(([lo, hi, label]) =>
+    slice(label, (r) => model.gdp(r.d) >= lo && model.gdp(r.d) < hi),
+  );
   const steps = [
     ["at least 4× richer", (r) => model.gdp(r.d) >= 4 * model.gdp(r.o)],
     ["richer, under 4×", (r) => model.gdp(r.d) > model.gdp(r.o) && model.gdp(r.d) < 4 * model.gdp(r.o)],
     ["poorer", (r) => model.gdp(r.d) <= model.gdp(r.o)],
-  ].map(([label, test]) => ({
-    label,
-    share: pct(known.filter(test).reduce((s, r) => s + r.people, 0), total),
-  }));
-  return { known, total, tiers, steps };
+  ].map(([label, test]) => slice(label, test));
+  const forcedTotal = known.reduce((s, r) => s + r.forced, 0);
+  return { known, total, tiers, steps, forcedTotal };
 }
 
 function drawIncome() {
@@ -777,59 +946,112 @@ function drawIncome() {
   const left = 16;
   const right = width - 16;
   const span = right - left;
-  const bars = [
-    { title: "Where they live, by the destination's income", parts: tiers, colour: PEOPLE, y: 44 },
-    { title: "The destination against their own country of birth", parts: steps, colour: ACCESS, y: 150 },
-  ];
+  const tall = 44;
 
-  for (const bar of bars) {
+  // One bar draws a set of slices that add to 100%, in the order given.
+  function stack(parts, colour, y, title) {
     ctx.fillStyle = INK;
     ctx.font = "600 12px -apple-system, system-ui, sans-serif";
     ctx.textAlign = "left";
     ctx.textBaseline = "alphabetic";
-    ctx.fillText(bar.title, left, bar.y - 12);
+    ctx.fillText(title, left, y - 12);
 
+    const boxes = [];
     let x = left;
-    bar.parts.forEach((part, i) => {
+    parts.forEach((part, i) => {
       const w = (part.share / 100) * span;
-      const shade = 0.28 + (i / Math.max(bar.parts.length - 1, 1)) * 0.62;
-      ctx.fillStyle = `rgba(${api.rgb(bar.colour)},${shade})`;
-      ctx.fillRect(x, bar.y, Math.max(w - 1.5, 0), 40);
+      const shade = 0.28 + (i / Math.max(parts.length - 1, 1)) * 0.62;
+      ctx.fillStyle = `rgba(${api.rgb(colour)},${shade})`;
+      ctx.fillRect(x, y, Math.max(w - 1.5, 0), tall);
       if (w > 52) {
         ctx.fillStyle = shade > 0.62 ? paper() : INK;
         ctx.font = "600 12px -apple-system, system-ui, sans-serif";
         ctx.textAlign = "center";
         ctx.textBaseline = "middle";
-        ctx.fillText(`${one(part.share)}%`, x + w / 2, bar.y + 20);
+        ctx.fillText(`${one(part.share)}%`, x + w / 2, y + tall / 2);
       }
       ctx.fillStyle = MUTE;
       ctx.font = "10px -apple-system, system-ui, sans-serif";
       ctx.textAlign = w > 52 ? "center" : "left";
       ctx.textBaseline = "top";
-      ctx.fillText(part.label, w > 52 ? x + w / 2 : x, bar.y + 46);
+      ctx.fillText(part.label, w > 52 ? x + w / 2 : x, y + tall + 6);
       list.push({
-        box: [x, bar.y, x + w, bar.y + 40],
-        label: `<b>${part.label}</b><br>${one(part.share)}% of migrants with income data at both ends`,
+        box: [x, y, x + w, y + tall],
+        label:
+          `<b>${part.label}</b><br>` +
+          `${one(part.share)}% of migrants with income data at both ends<br>` +
+          `${api.format.fmt.format(part.forced)} of them — ${one(part.forcedShare)}% — are ` +
+          `refugees or asylum seekers`,
       });
+      boxes.push({ part, x, w });
       x += w;
     });
+    return boxes;
   }
+
+  const tierBoxes = stack(tiers, PEOPLE, 40, "Where they live, by the destination's income");
+
+  // Hanging under each slice: how much of that slice fled. Same columns, same
+  // widths, so the eye compares down the page instead of across a legend. The
+  // scale is fixed rather than fitted, because the point is the size of the
+  // gap between the bottom tier and the rest.
+  const CEIL = 40;
+  const top = 142;
+  const deep = 58;
+  ctx.fillStyle = INK;
+  ctx.font = "600 12px -apple-system, system-ui, sans-serif";
+  ctx.textAlign = "left";
+  ctx.textBaseline = "alphabetic";
+  ctx.fillText("How many of them fled", left, top - 14);
+  ctx.strokeStyle = `rgba(${api.rgb(MUTE)},0.45)`;
+  ctx.lineWidth = 1;
+  ctx.beginPath();
+  ctx.moveTo(left, top + 0.5);
+  ctx.lineTo(right, top + 0.5);
+  ctx.stroke();
+
+  for (const { part, x, w } of tierBoxes) {
+    const drop = Math.min(part.forcedShare / CEIL, 1) * deep;
+    ctx.fillStyle = `rgba(${api.rgb(INK)},0.68)`;
+    ctx.fillRect(x, top, Math.max(w - 1.5, 0), drop);
+    ctx.fillStyle = INK;
+    ctx.font = "600 11px -apple-system, system-ui, sans-serif";
+    ctx.textAlign = w > 52 ? "center" : "left";
+    ctx.textBaseline = "top";
+    ctx.fillText(`${one(part.forcedShare)}%`, w > 52 ? x + w / 2 : x, top + drop + 5);
+    list.push({
+      box: [x, top, x + w, top + Math.max(drop, 10)],
+      label:
+        `<b>Destinations ${part.label} a head</b><br>` +
+        `${api.format.fmt.format(part.forced)} refugees and asylum seekers, ` +
+        `${one(part.forcedShare)}% of the foreign-born living there`,
+    });
+  }
+  ctx.fillStyle = MUTE;
+  ctx.font = "10px -apple-system, system-ui, sans-serif";
+  ctx.textAlign = "right";
+  ctx.textBaseline = "alphabetic";
+  ctx.fillText(`depth scaled to ${CEIL}%`, right, top - 14);
+
+  stack(steps, ACCESS, 260, "The destination against their own country of birth");
 
   ctx.fillStyle = MUTE;
   ctx.font = "10px -apple-system, system-ui, sans-serif";
   ctx.textAlign = "left";
   ctx.textBaseline = "top";
   ctx.fillText(
-    "Income tier is the destination's GDP per head, which is a proxy for selection, not a measure of anybody's skill.",
+    "Fled: refugees and asylum seekers, UNHCR end-2024, capped at the corridor's stock. " +
+      "Income tier is the destination's GDP per head — a proxy for selection, not a measure of anybody's skill.",
     left,
-    bars.at(-1).y + 62,
+    324,
   );
 }
 
 function answerIncome() {
-  const { known, total, tiers, steps } = incomeData();
+  const { known, total, tiers, steps, forcedTotal } = incomeData();
   const coverage = pct(total, model.total);
   const top = tiers.at(-1);
+  const bottom = tiers[0];
   return (
     `The shipped data cannot tell you who has a degree. UN DESA's stock table is split by sex and ` +
     `age, not by education, and the table that does split by education — OECD DIOC — is not in ` +
@@ -838,12 +1060,18 @@ function answerIncome() {
     `<b>${one(top.share)}%</b> of migrants live in a country above $50,000 a head, and ` +
     `<b>${one(steps[0].share + steps[1].share)}%</b> live somewhere richer than where they were born ` +
     `— <b>${one(steps[0].share)}%</b> of them at least four times richer. ` +
-    `Only <b>${one(steps[2].share)}%</b> moved down the income ladder, and most of those are ` +
-    `neighbours or returnees rather than anybody's idea of a career move. ` +
+    `Only <b>${one(steps[2].share)}%</b> moved down the income ladder. ` +
+    `The bars hanging under the first one answer the question underneath this one: how ` +
+    `much of this was a choice. UNHCR counts <b>${api.format.fmt.format(forcedTotal)}</b> refugees and ` +
+    `asylum seekers on these corridors, <b>${one(pct(forcedTotal, total))}%</b> of everybody on ` +
+    `them — and they are not spread evenly. In destinations under $5,000 a head, ` +
+    `<b>${one(bottom.forcedShare)}%</b> of the foreign-born population fled; above $50,000 it is ` +
+    `<b>${one(top.forcedShare)}%</b>. The poorest countries in this chart are not competing for ` +
+    `talent. They are next door to a war. ` +
     `This covers the <b>${one(coverage)}%</b> of people on corridors where the World Bank publishes ` +
     `GDP per head at both ends (${api.format.fmt.format(known.length)} corridors). ` +
-    `Read it as evidence about sorting, not about skill: a nurse and a nanny both show up in the ` +
-    `top tier, and nothing here separates them.`
+    `Read the income bars as evidence about sorting, not about skill: a nurse and a nanny both ` +
+    `show up in the top tier, and nothing here separates them.`
   );
 }
 
@@ -1012,30 +1240,23 @@ function setupRingControls() {
   // moves is cheaper than a reader assuming it moves all six.
   if (scope)
     scope.textContent =
-      `These controls change this ring only. The five answers below are all ${YEAR}.`;
-  const picker = $("q-ring-year");
-  if (picker && !picker.dataset.ready) {
-    picker.dataset.ready = "on";
-    picker.innerHTML = api.state.edges.years
-      .map((year) => `<option value="${year}"${year === ringState.year ? " selected" : ""}>${year}</option>`)
-      .join("");
-    picker.addEventListener("change", (event) => {
-      ringState.year = Number(event.target.value);
-      redrawRing();
-    });
-  }
-  const modes = $("q-ring-mode");
-  if (modes && !modes.dataset.ready) {
-    modes.dataset.ready = "on";
-    modes.addEventListener("click", (event) => {
-      const button = event.target.closest("button[data-mode]");
-      if (!button) return;
-      ringState.mode = button.dataset.mode;
-      for (const other of modes.querySelectorAll("button[data-mode]"))
-        other.setAttribute("aria-pressed", String(other === button));
-      redrawRing();
-    });
-  }
+      `The slider changes this ring only. The five answers below are all ${YEAR}.`;
+  const slider = $("q-ring-year");
+  if (!slider || slider.dataset.ready) return;
+  slider.dataset.ready = "on";
+
+  const years = api.state.edges.years;
+  const ends = slider.parentElement?.querySelector(".ends");
+  if (ends) ends.innerHTML = `<span>${years[0]}</span><span>${years.at(-1)}</span>`;
+  slider.max = String(years.length - 1);
+  slider.value = String(Math.max(years.indexOf(ringState.year), 0));
+
+  slider.addEventListener("input", (event) => {
+    ringState.year = years[Number(event.target.value)] ?? YEAR;
+    const now = $("q-ring-now");
+    if (now) now.textContent = String(ringState.year);
+    redrawRing();
+  });
 }
 
 // Six canvases and a pass over 9,095 corridors is not free, and most readers
