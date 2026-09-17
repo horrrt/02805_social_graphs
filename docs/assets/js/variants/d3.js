@@ -129,7 +129,7 @@ export function install(api, d3) {
   // Rebuilt per draw, so the palette dropdown reaches the SVG charts too.
   const series = () => [
     ["In-degree", (n, m) => m.in_degree, colours.PEOPLE],
-    ["Out-degree", (n, m) => m.out_degree, colours.INK],
+    ["Out-degree", (n, m) => m.out_degree, colours.OUTBOUND],
     ["Flight degree", (n) => n.flight_degree, colours.ACCESS],
   ];
 

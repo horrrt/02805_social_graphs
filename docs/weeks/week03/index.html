@@ -9,7 +9,7 @@
     />
     <title>Corridor Control · Log–Log Legends</title>
     <link href="../../assets/favicon.svg" rel="icon" type="image/svg+xml" />
-    <link href="../../assets/css/corridor.css?v=a158a0adbc" rel="stylesheet" />
+    <link href="../../assets/css/corridor.css?v=7c0d60a532" rel="stylesheet" />
   </head>
   <body class="corridor">
     <a class="skip" href="#main">Skip to content</a>
@@ -136,11 +136,14 @@
                 <p class="axis-note">
                   How many countries have how many partners. A partner is
                   another country on the other end of a link, not a person.
-                  Click a bar to select a country with that many.
+                  Partner counts are binned by doubling and each bar is
+                  countries per partner value, so a wide bin is not tall
+                  merely for being wide. Click a bar to select the largest
+                  country in it.
                 </p>
                 <div class="legend">
                   <span><i style="background: #f2820c"></i> In-degree</span>
-                  <span><i style="background: #0b1f3a"></i> Out-degree</span>
+                  <span><i style="background: #6b4fbb"></i> Out-degree</span>
                   <span><i style="background: #1f8fd6"></i> Flight degree</span>
                 </div>
                 <div class="axis-modes" data-chart="hist" role="group"
@@ -167,7 +170,7 @@
                 </p>
                 <div class="legend">
                   <span><i style="background: #f2820c"></i> In-degree</span>
-                  <span><i style="background: #0b1f3a"></i> Out-degree</span>
+                  <span><i style="background: #6b4fbb"></i> Out-degree</span>
                   <span><i style="background: #1f8fd6"></i> Flight degree</span>
                 </div>
                 <div class="axis-modes" data-chart="ccdf" role="group"
@@ -394,6 +397,11 @@
               read from the data, not chosen by hand — hover a country code to
               see why it is there, or open the full list for a role.
             </p>
+            <div
+              aria-label="How many countries carry each label"
+              class="type-strip"
+              id="typology-strip"
+            ></div>
             <div class="grid5" id="typology-cards"></div>
             <aside
               aria-label="Countries in this role"
@@ -481,7 +489,7 @@
                   2020 · the four closest countries on the ground · origins,
                   z-score, flight partners · click a bar
                 </p>
-                <canvas class="chart" height="330" id="dk-nordic" width="440"></canvas>
+                <canvas class="chart" height="420" id="dk-nordic" width="440"></canvas>
               </div>
             </div>
 
@@ -919,6 +927,6 @@
       </footer>
     </main>
 
-    <script src="../../assets/js/week03-boot.js?v=a158a0adbc" type="module"></script>
+    <script src="../../assets/js/week03-boot.js?v=7c0d60a532" type="module"></script>
   </body>
 </html>

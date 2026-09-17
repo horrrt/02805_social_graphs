@@ -170,6 +170,16 @@ function drawGraph() {
   instance.on("click", (event) => {
     if (event.dataType === "node" && event.data?.iso3) api.select(event.data.iso3);
   });
+  const CAP = 25;
+  const ranked = [...nodes].sort((a, b) => b.inn + b.out - (a.inn + a.out));
+  api.chartTable(
+    "v-graph",
+    ranked.length > CAP
+      ? `countries on the canvas at this floor, capped to the ${CAP} largest`
+      : "countries on the canvas at this floor",
+    ["Country", "Arrived", "Left"],
+    ranked.slice(0, CAP).map((n) => [n.name, fmt(n.inn), fmt(n.out)]),
+  );
   answerGraph();
 }
 
@@ -352,6 +362,15 @@ function drawArea() {
     note.textContent =
       `Each band is one country, stacked. Height is ${AREA_MODES[areaState.mode].blurb}; ` +
       `the twelve are the largest in 2024 and keep their place across every year.`;
+  api.chartTable(
+    "v-area",
+    "people by country and year",
+    ["Country", ...years.map(String)],
+    [
+      ...keep.map(([iso3, row]) => [name(iso3), ...row.map((v) => compact(v))]),
+      ["Everyone else", ...rest.map((v) => compact(v))],
+    ],
+  );
   answerArea();
 }
 
@@ -509,6 +528,12 @@ function drawAsylum() {
     },
     true,
   );
+  api.chartTable(
+    "v-asylum",
+    `${origin.name}: applications by month, months with no published figure omitted`,
+    ["Month", "Applications"],
+    reported.map((c) => [c[3], fmt(c[2])]),
+  );
   answerAsylum();
 }
 
@@ -650,6 +675,21 @@ function drawClosures() {
       })),
     },
     true,
+  );
+  const CAP = 60;
+  const topClosed = [...entries]
+    .sort((a, b) => b[1][4] - a[1][4])
+    .slice(0, CAP)
+    .sort((a, b) => a[0].localeCompare(b[0]));
+  api.chartTable(
+    "v-closures",
+    `countries closed to all arrivals, by day, capped to the ${CAP} highest days`,
+    ["Date", "Closed", "Reporting"],
+    topClosed.map(([date, counts]) => [
+      date,
+      String(counts[4]),
+      String(counts.reduce((a, b) => a + b, 0)),
+    ]),
   );
   answerClosures();
 }
@@ -809,6 +849,15 @@ function drawCalendar() {
       series,
     },
     true,
+  );
+  api.chartTable(
+    "v-calendar",
+    "the fifty worst days",
+    ["Date", "Dead or missing", "Incidents", "Region"],
+    [...entries]
+      .sort((a, b) => b[1][0] - a[1][0])
+      .slice(0, 50)
+      .map(([date, v]) => [date, fmt(v[0]), String(v[1]), v[2] || "—"]),
   );
   answerCalendar();
 }

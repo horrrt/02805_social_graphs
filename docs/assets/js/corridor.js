@@ -15,10 +15,18 @@ let INK = "#0f2340";
 let MUTE = "#7a8fac";
 let GRID = "#e4ebf4";
 // The net layer's diverging pair. Green and red are what a reader expects for
-// gained and lost, and they are the one pairing eight per cent of men cannot
-// tell apart, so the colourblind-safe palette overrides them in CSS.
-let GAIN = "#2f9e63";
-let LOSS = "#d1495b";
+// gained and lost, and they are also the pairing red-green colourblindness
+// collapses, so the two steps are chosen rather than picked: under simulated
+// deuteranopia these sit 9.1 apart in OKLab ΔE, where the obvious
+// #2f9e63/#d1495b sits at 2.0 and reads as one colour.
+// The third series on the two heavy-tail charts. It used to be the page's
+// text ink, which fails a categorical palette on both lightness and chroma:
+// a near-black bar reads as axis furniture rather than as data. This violet
+// sits 11.6 apart from the blue under simulated deuteranopia, where the ink
+// and the blue sat close enough to merge in the dense middle of the chart.
+let OUTBOUND = "#6b4fbb";
+let GAIN = "#00875a";
+let LOSS = "#cc3311";
 
 export function rgb(hex) {
   const value = (hex || "").trim().replace("#", "");
@@ -36,11 +44,12 @@ export function refreshPalette() {
   INK = read("--ink", "#0f2340");
   MUTE = read("--ink-mute", "#7a8fac");
   GRID = read("--line-soft", "#e4ebf4");
-  GAIN = read("--gain", "#2f9e63");
-  LOSS = read("--loss", "#d1495b");
+  OUTBOUND = read("--outbound", "#6b4fbb");
+  GAIN = read("--gain", "#00875a");
+  LOSS = read("--loss", "#cc3311");
   if (typeof SERIES !== "undefined") {
     SERIES[0].colour = PEOPLE;
-    SERIES[1].colour = INK;
+    SERIES[1].colour = OUTBOUND;
     SERIES[2].colour = ACCESS;
   }
   if (api) {
@@ -49,10 +58,11 @@ export function refreshPalette() {
     api.colours.INK = INK;
     api.colours.MUTE = MUTE;
     api.colours.GRID = GRID;
+    api.colours.OUTBOUND = OUTBOUND;
     api.colours.GAIN = GAIN;
     api.colours.LOSS = LOSS;
   }
-  return { PEOPLE, ACCESS, INK, MUTE, GRID, GAIN, LOSS };
+  return { PEOPLE, ACCESS, INK, MUTE, GRID, OUTBOUND, GAIN, LOSS };
 }
 
 // How a corridor is drawn between two countries. Each renderer reads the same
@@ -1514,6 +1524,27 @@ function drawMap() {
 
 /* ---------------------------------------------------------------- section 3 */
 
+// Partner counts, binned by doubling. One bar per distinct value put a
+// hundred and fifty spikes on the panel, most of them one country tall, in
+// three colours: a picket fence in which the heavy tail the section is about
+// was invisible. Bins that double keep the shape of a power law straight on
+// a log axis and leave something to look at.
+const DEGREE_BINS = (() => {
+  const edges = [1, 2, 3, 5, 9, 17, 33, 65, 129, Infinity];
+  return edges.slice(0, -1).map((lo, i) => ({
+    lo,
+    hi: edges[i + 1],
+    // The geometric centre, so a bin sits in the middle of its own span on a
+    // log axis rather than at its left edge.
+    at: Number.isFinite(edges[i + 1]) ? Math.sqrt(lo * (edges[i + 1] - 1)) : lo * 1.6,
+    label: Number.isFinite(edges[i + 1])
+      ? lo === edges[i + 1] - 1
+        ? String(lo)
+        : `${lo}–${edges[i + 1] - 1}`
+      : `${lo}+`,
+  }));
+})();
+
 // Each bucket carries the countries in it, so a click on a bar can land on a
 // real country rather than on an anonymous count. The representative is the
 // largest by in-strength, which is the one a reader is most likely to mean.
@@ -1547,10 +1578,28 @@ function ccdf(entries) {
 }
 
 const SERIES = [
-  { key: "in", colour: PEOPLE, pick: (n, m) => m.in_degree },
-  { key: "out", colour: INK, pick: (n, m) => m.out_degree },
-  { key: "flight", colour: ACCESS, pick: (n) => n.flight_degree },
+  { key: "in", label: "In-degree", colour: PEOPLE, pick: (n, m) => m.in_degree },
+  { key: "out", label: "Out-degree", colour: OUTBOUND, pick: (n, m) => m.out_degree },
+  { key: "flight", label: "Flight degree", colour: ACCESS, pick: (n) => n.flight_degree },
 ];
+
+function binnedDegrees(pick) {
+  const exact = degreeCounts(pick);
+  const maxK = Math.max(...exact.map((d) => d.k), 1);
+  return DEGREE_BINS.map((bin) => {
+    const inside = exact.filter((d) => d.k >= bin.lo && d.k < bin.hi);
+    const countries = inside.reduce((sum, d) => sum + d.c, 0);
+    // The representative for a click is the biggest country in the bin, which
+    // is the one a reader pointing at the tail is most likely to mean.
+    const pick3 = inside.sort((a, b) => b.k - a.k)[0];
+    // Height is countries per partner value, not the raw count. A bin twice
+    // as wide catches roughly twice as many countries for no reason but its
+    // width, and on raw counts that alone makes the wide bins in the middle
+    // the tallest — which would show a hump where the data has a tail.
+    const width = Number.isFinite(bin.hi) ? bin.hi - bin.lo : Math.max(1, maxK - bin.lo + 1);
+    return { ...bin, c: countries, density: countries / width, iso3: pick3?.iso3, span: inside.length };
+  }).filter((bin) => bin.c > 0);
+}
 
 function drawHistogram() {
   refreshPalette();
@@ -1558,47 +1607,66 @@ function drawHistogram() {
   if (!canvas) return;
   const { ctx, width, height } = surface(canvas);
   const box = frame(width, height);
-  const all = SERIES.map((s) => degreeCounts(s.pick));
-  const maxK = Math.max(...all.flat().map((d) => d.k), 10);
-  const maxC = Math.max(...all.flat().map((d) => d.c), 10);
+  const all = SERIES.map((s) => binnedDegrees(s.pick));
+  const maxC = Math.max(...all.flat().map((d) => d.density), 1);
+  const minC = Math.min(...all.flat().map((d) => d.density));
   const mode = modeFlags("hist");
-  box.x = scaleFor(box, [1, maxK], "x", mode.x);
-  box.y = scaleFor(box, [1, maxC], "y", mode.y);
+  box.x = linearScale(box, [0, DEGREE_BINS.length], "x");
+  box.y = mode.y
+    ? logScale(box, [minC * 0.7, maxC], "y")
+    : linearScale(box, [0, maxC], "y");
   axes(ctx, box, {
-    xTicks: ticksFor([1, maxK], mode.x),
-    yTicks: ticksFor([1, maxC], mode.y),
+    xTicks: DEGREE_BINS.map((bin, i) => ({ value: i + 0.5, label: bin.label })),
+    yTicks: mode.y
+      ? logTicks(minC * 0.7, maxC)
+      : ticksFor([0, maxC], false),
     xLabel: "Partners",
-    yLabel: "Count of countries",
+    yLabel: "Countries per partner value",
   });
   const marks = collect("hist");
+  const slot = (box.right - box.left) / DEGREE_BINS.length;
+  const barW = Math.max(3, (slot * 0.66) / SERIES.length);
   all.forEach((points, i) => {
     for (const d of points) {
-      const x = box.x(d.k);
-      const y = box.y(d.c);
+      const index = DEGREE_BINS.findIndex((bin) => bin.lo === d.lo);
+      const x = box.left + slot * (index + 0.5) + (i - 1) * (barW + 1.5);
+      const y = box.y(d.density);
       const hovered = d.iso3 === state.hover;
-      const barW = hovered ? 7 : 4;
-      const offset = (i - 1) * (barW + 1.5);
       ctx.fillStyle = SERIES[i].colour + (hovered ? "ff" : "cc");
-      if (hovered) {
-        ctx.fillStyle = SERIES[i].colour + "33";
-        ctx.fillRect(x + offset - barW / 2 - 3, y - 2, barW + 6, box.bottom - y + 2);
-        ctx.fillStyle = SERIES[i].colour;
-      }
-      ctx.fillRect(x + offset - barW / 2, y, barW, box.bottom - y);
+      ctx.fillRect(x - barW / 2, y, barW, box.bottom - y);
       marks.push({
         kind: "bar",
-        x: x + offset,
+        x,
         y,
         bottom: box.bottom,
-        half: Math.max(8, barW / 2 + 4),
+        half: Math.max(9, barW / 2 + 4),
         iso3: d.iso3,
-        label: `<b>${d.k} ${SERIES[i].key === "flight" ? "flight partners" : "partners"}</b>` +
-          `<span>${d.c} ${d.c === 1 ? "country" : "countries"}</span>` +
+        label: `<b>${d.label} ${SERIES[i].key === "flight" ? "flight partners" : "partners"}</b>` +
+          `<span>${d.c} ${d.c === 1 ? "country" : "countries"} in this bin</span>` +
           `<span>largest: ${node(d.iso3).name}</span>`,
       });
     }
   });
-  markSelected(ctx, box, (n, m) => [m.in_degree, degreeCounts(SERIES[0].pick).find((d) => d.k === m.in_degree)?.c ?? 1]);
+  // The x-axis is bins now, so the marker is placed by which bin the country
+  // falls in rather than by its raw degree.
+  chartTable(
+    "hist",
+    "countries by partner count",
+    ["Partners", ...SERIES.map((s) => s.label)],
+    DEGREE_BINS.map((bin) => [
+      bin.label,
+      ...all.map((points) => {
+        const hit = points.find((d) => d.lo === bin.lo);
+        return hit ? fmt.format(hit.c) : "0";
+      }),
+    ]),
+  );
+
+  markSelected(ctx, box, (n, m) => {
+    const index = DEGREE_BINS.findIndex((bin) => m.in_degree >= bin.lo && m.in_degree < bin.hi);
+    const bin = all[0].find((d) => d.lo === DEGREE_BINS[index]?.lo);
+    return [box.left + slot * (Math.max(index, 0) + 0.5), bin?.density ?? 1];
+  }, { raw: true, note: `k = ${metrics(state.selected)?.in_degree ?? "—"}` });
 }
 
 function drawCcdf() {
@@ -1612,7 +1680,10 @@ function drawCcdf() {
     ccdf(rows.map(({ iso3, n, m }) => ({ k: s.pick(n, m), iso3 }))),
   );
   const maxK = Math.max(...series.flat().map((d) => d.k), 10);
-  const minP = Math.min(...series.flat().map((d) => d.p), 0.001);
+  // The smallest share any series reaches, which is one country out of the
+  // sample. Flooring this at 0.001 spent the bottom third of the panel on a
+  // decade the data never enters.
+  const minP = Math.min(...series.flat().map((d) => d.p)) * 0.85;
   const mode = modeFlags("ccdf");
   box.x = scaleFor(box, [1, maxK], "x", mode.x);
   box.y = mode.y ? logScale(box, [minP, 1], "y") : linearScale(box, [0, 1], "y");
@@ -1664,20 +1735,77 @@ function drawCcdf() {
       });
     }
   });
+  // One row per distinct k across all three series, capped to the largest
+  // values so the table does not run to hundreds of rows.
+  const allK = [...new Set(series.flatMap((points) => points.map((d) => d.k)))].sort(
+    (a, b) => a - b,
+  );
+  const CAP = 40;
+  const shownK = allK.length > CAP ? allK.slice(-CAP) : allK;
+  chartTable(
+    "ccdf",
+    allK.length > CAP
+      ? `share of countries with at least k partners, capped to the ${CAP} largest k`
+      : "share of countries with at least k partners",
+    ["Partners", ...SERIES.map((s) => s.label)],
+    shownK.map((k) => [
+      k,
+      ...series.map((points) => {
+        const hit = points.find((d) => d.k === k);
+        return hit ? `${(hit.p * 100).toFixed(1)}%` : "—";
+      }),
+    ]),
+  );
   markSelected(ctx, box, (n, m) => {
     const point = series[0].find((d) => d.k === m.in_degree);
     return [m.in_degree, point?.p ?? 1];
   });
 }
 
-function markSelected(ctx, box, pick) {
+// Every chart on this page is a canvas, which means a screen reader and a
+// keyboard reach exactly nothing in it and a tooltip is the only way to read
+// a number. This puts the same numbers under each chart as a real table,
+// closed by default so it costs a reader nothing until they want it.
+//
+// The table is built from the arrays the draw function already has, so it
+// cannot drift from the picture above it.
+function chartTable(hostId, caption, headers, rows) {
+  const host = $(hostId);
+  if (!host || !rows.length) return;
+  const id = `${hostId}-table`;
+  let box = document.getElementById(id);
+  if (!box) {
+    box = document.createElement("details");
+    box.className = "chart-table";
+    box.id = id;
+    host.after(box);
+  }
+  const open = box.open;
+  box.innerHTML =
+    `<summary>Table${caption ? `: ${caption}` : ""}</summary>` +
+    "<div class=\"chart-table-scroll\"><table>" +
+    `<thead><tr>${headers
+      .map((h, i) => `<th${i ? ' scope="col" class="num"' : ' scope="col"'}>${h}</th>`)
+      .join("")}</tr></thead><tbody>` +
+    rows
+      .map(
+        (row) =>
+          `<tr>${row
+            .map((cell, i) => (i ? `<td class="num">${cell}</td>` : `<th scope="row">${cell}</th>`))
+            .join("")}</tr>`,
+      )
+      .join("") +
+    "</tbody></table></div>";
+  box.open = open;
+}
+
+function markSelected(ctx, box, pick, opts = {}) {
   if (!state.selected) return;
   const n = node(state.selected);
   const m = metrics(state.selected);
   if (!m) return;
   const [vx, vy] = pick(n, m);
-  const x = box.x(vx);
-  const y = box.y(vy);
+  const x = opts.raw ? vx : box.x(vx);
   ctx.strokeStyle = INK;
   ctx.setLineDash([3, 3]);
   ctx.lineWidth = 1;
@@ -1686,11 +1814,17 @@ function markSelected(ctx, box, pick) {
   ctx.lineTo(x, box.bottom);
   ctx.stroke();
   ctx.setLineDash([]);
-  ctx.fillStyle = INK;
+  // Above the plot rather than beside the point. At the data point it landed
+  // on whatever the country happened to sit next to, which for a tail country
+  // is the axis and the densest part of the chart.
+  const text = `${n.name}${opts.note ? ` · ${opts.note}` : ` · k = ${m.in_degree}`}`;
   ctx.font = "600 10px -apple-system, system-ui, sans-serif";
-  ctx.textAlign = "left";
+  const wide = ctx.measureText(text).width;
+  const right = x + wide + 8 > box.right;
+  ctx.fillStyle = INK;
+  ctx.textAlign = right ? "right" : "left";
   ctx.textBaseline = "bottom";
-  ctx.fillText(`${n.name} (k: ${m.in_degree})`, Math.min(x + 5, box.right - 90), Math.max(y - 5, box.top + 12));
+  ctx.fillText(text, x + (right ? -5 : 5), box.top - 3);
 }
 
 /* ---------------------------------------------------------- sections 4 & 5 */
@@ -1789,6 +1923,20 @@ function drawBetweenness() {
     placed.push({ x, y: py });
     ctx.fillText(`${r.n.name} (+${r.excess.toFixed(2)})`, x, py);
   }
+  chartTable(
+    "scatter-between",
+    "the twenty biggest brokers",
+    ["Country", "Origins (in-degree)", "Betweenness", "Rank"],
+    [...rows]
+      .sort((a, b) => b.m.betweenness - a.m.betweenness)
+      .slice(0, 20)
+      .map((r) => [
+        r.n.name,
+        fmt.format(r.m.in_degree),
+        r.m.betweenness > 0 ? r.m.betweenness.toExponential(2) : "0",
+        `#${r.m.betweenness_rank}`,
+      ]),
+  );
   markSelectedPoint(ctx, box, (m) => [m.in_degree, m.betweenness], y, place);
 }
 
@@ -1883,6 +2031,18 @@ function drawPrestige() {
     marks.push({ x: rightX, y: y2, iso3: r.iso3, label });
   }
   writePrestigeNote(rows, shown);
+  chartTable(
+    "prestige",
+    "rank by people against rank by PageRank",
+    ["Country", "By people", "By PageRank", "Move"],
+    leftOrder.map((r) => {
+      const move = r.m.in_strength_rank - r.m.pagerank_rank;
+      // A country that holds the same rank on both sides has not moved, and
+      // "+0" reads like a rise of nothing rather than no rise.
+      const shift = move === 0 ? "—" : `${move > 0 ? "+" : "−"}${Math.abs(move)}`;
+      return [r.n.name, `#${r.m.in_strength_rank}`, `#${r.m.pagerank_rank}`, shift];
+    }),
+  );
 }
 
 // Spearman's rank correlation, which is the honest way to say how much two
@@ -2034,6 +2194,15 @@ function drawZ() {
   plotDots(ctx, marks, rows.filter((r) => r.m.z >= 2).map((r) => ({
     x: box.x(r.m.in_degree), y: box.y(r.m.z), iso3: r.iso3, label: zLabel(r),
   })), PEOPLE, 2.4);
+  chartTable(
+    "scatter-z",
+    "the twenty highest z-scores",
+    ["Country", "Origins (in-degree)", "z-score", "Betweenness rank"],
+    [...rows]
+      .sort((a, b) => b.m.z - a.m.z)
+      .slice(0, 20)
+      .map((r) => [r.n.name, fmt.format(r.m.in_degree), r.m.z.toFixed(2), `#${r.m.betweenness_rank}`]),
+  );
   markSelectedPoint(ctx, box, (m) => [m.in_degree, m.z ?? 0], y);
 }
 
@@ -2088,6 +2257,39 @@ function renderTypology() {
     if (m.typology && buckets.has(m.typology)) buckets.get(m.typology).push({ iso3, m });
   }
   const order = ["both", "destination-hub", "human-bridge", "system-airport", "leaf", "mixed"];
+
+  // Six cards of equal size say six labels of equal weight, and they are not:
+  // mixed holds 141 of the 228 countries and leaf another 53, so the four
+  // labels the section is actually about cover a seventh of the world. One
+  // proportional strip says that before the cards say anything else.
+  const total = order.reduce((sum, key) => sum + (buckets.get(key)?.length ?? 0), 0);
+  const strip = $("typology-strip");
+  if (strip && total) {
+    strip.innerHTML = order
+      .map((key) => {
+        const meta = TYPES[key];
+        const count = buckets.get(key)?.length ?? 0;
+        if (!count) return "";
+        const share = (count / total) * 100;
+        // The cards' tints are near-white badge backgrounds, and leaf and
+        // mixed are the same value in both tint and text colour — side by
+        // side on one bar they merge into a single block across 85% of it,
+        // exactly where the eye lands. The slices take each label's text
+        // colour at low alpha instead, and the 2px gaps between them carry
+        // the boundary that colour cannot.
+        return (
+          `<span class="type-slice" data-type="${key}"` +
+          ` aria-label="${meta.title}: ${count} of ${total} countries"` +
+          ` title="${meta.title}: ${count} of ${total}"` +
+          ` style="width:${share}%;background:${meta.fg}29;color:${meta.fg}">` +
+          // Under a few per cent there is no room for a number without
+          // clipping it; the slice keeps its colour and its label.
+          `${share > 7 ? `${meta.title} ${count}` : share > 3 ? count : ""}</span>`
+        );
+      })
+      .join("");
+  }
+
   $("typology-cards").innerHTML = order
     .map((key) => {
       const meta = TYPES[key];
@@ -2370,16 +2572,28 @@ function drawDenmark() {
           `<span>${fmt.format(point.out_strength)} outgoing</span>`,
       });
     }
+    chartTable(
+      "dk-time",
+      "people in and out, by year",
+      ["Year", "Incoming", "Outgoing"],
+      focus.series.map((s) => [s.year, fmt.format(s.in_strength), fmt.format(s.out_strength)]),
+    );
   });
 
   small($("dk-rank"), (ctx, box) => {
     const years = focus.series.map((s) => s.year);
-    const maxR = Math.max(...focus.series.map((s) => s.betweenness_rank));
+    const ranks = focus.series.map((s) => s.betweenness_rank);
+    // Fitted to the ranks this country actually held, not anchored at #1.
+    // Denmark ran between #18 and #36, and an axis that started at the top
+    // spent two thirds of the panel on positions it never occupied.
+    const pad = Math.max(1, Math.round((Math.max(...ranks) - Math.min(...ranks)) * 0.12));
+    const hi = Math.max(1, Math.min(...ranks) - pad);
+    const lo = Math.max(...ranks) + pad;
     box.x = linearScale(box, [years[0], years.at(-1)], "x");
-    box.y = linearScale(box, [maxR, 1], "y");
+    box.y = linearScale(box, [lo, hi], "y");
     axes(ctx, box, {
       xTicks: [years[0], years.at(-1)].map((v) => ({ value: v, label: String(v) })),
-      yTicks: [1, Math.round(maxR / 2), maxR].map((v) => ({ value: v, label: `#${v}` })),
+      yTicks: [hi, Math.round((hi + lo) / 2), lo].map((v) => ({ value: v, label: `#${v}` })),
       xLabel: "Year",
       yLabel: "Bridge rank",
     });
@@ -2393,42 +2607,119 @@ function drawDenmark() {
           `<span>${point.in_degree} origins</span>`,
       });
     }
+    chartTable(
+      "dk-rank",
+      "bridge rank by year",
+      ["Year", "Bridge rank"],
+      focus.series.map((s) => [s.year, `#${s.betweenness_rank}`]),
+    );
   });
 
   small($("dk-nordic"), (ctx, box) => {
     const items = focus.peers;
-    const maxDeg = Math.max(...items.map((i) => i.in_degree), 1);
-    const maxFlight = Math.max(...items.map((i) => i.flight_degree), 1);
-    const maxZ = Math.max(...items.map((i) => Math.abs(i.z ?? 0)), 1);
-    box.x = linearScale(box, [0, items.length], "x");
-    box.y = linearScale(box, [0, 1], "y");
-    axes(ctx, box, {
-      xTicks: items.map((i, idx) => ({ value: idx + 0.5, label: i.iso3 })),
-      yTicks: [0, 0.5, 1].map((v) => ({ value: v, label: v === 1 ? "max" : v === 0 ? "0" : "" })),
-      xLabel: `${focus.name} and its four nearest neighbours`,
-      yLabel: "Share of the largest",
-    });
-    const bars = [
-      { name: "Origins", read: (i) => i.in_degree, get: (i) => i.in_degree / maxDeg, colour: PEOPLE },
-      { name: "z-score", read: (i) => (i.z ?? 0).toFixed(2), get: (i) => Math.abs(i.z ?? 0) / maxZ, colour: INK },
-      { name: "Flight partners", read: (i) => i.flight_degree, get: (i) => i.flight_degree / maxFlight, colour: ACCESS },
+    // Three measures in three panels rather than three bars on one axis. The
+    // old chart divided each measure by its own maximum and called the result
+    // "share of the largest", which put a count of origins, a count of flight
+    // partners and a z-score on one scale where none of them belong — and it
+    // took the absolute value of the z, so Denmark's −1.23 drew as a bar
+    // pointing the same way as a broker's +5.
+    const panels = [
+      {
+        name: "Origins",
+        value: (i) => i.in_degree,
+        format: (v) => fmt.format(v),
+        colour: PEOPLE,
+      },
+      {
+        name: "Bridge z-score",
+        value: (i) => i.z ?? 0,
+        format: (v) => v.toFixed(2),
+        colour: INK,
+        signed: true,
+      },
+      {
+        name: "Flight partners",
+        value: (i) => i.flight_degree,
+        format: (v) => fmt.format(v),
+        colour: ACCESS,
+      },
     ];
     const marks = collect("dk-nordic");
-    items.forEach((item, idx) => {
-      bars.forEach((bar, bi) => {
-        const w = (box.x(1) - box.x(0)) / 4;
-        const x = box.x(idx) + w * (bi + 0.5);
-        const yv = box.y(bar.get(item));
-        ctx.fillStyle = bar.colour;
-        ctx.fillRect(x, yv, w * 0.8, box.bottom - yv);
+    // Enough room between panels that a negative bar and the next panel's
+    // name are never in the same pixels.
+    const gap = 30;
+    // The first panel's name is drawn above its own top edge, so the stack
+    // starts one line down from the frame.
+    const head = 12;
+    const tall =
+      (box.bottom - box.top - head - gap * (panels.length - 1)) / panels.length;
+    const slot = (box.right - box.left) / items.length;
+
+    panels.forEach((panel, pi) => {
+      const top = box.top + head + pi * (tall + gap);
+      const bottom = top + tall;
+      const values = items.map(panel.value);
+      const high = Math.max(...values, panel.signed ? 0.5 : 1);
+      const low = panel.signed ? Math.min(...values, -0.5) : 0;
+      const y = (v) => bottom - ((v - low) / (high - low || 1)) * tall;
+      const base = y(panel.signed ? 0 : 0);
+
+      ctx.strokeStyle = GRID;
+      ctx.lineWidth = 1;
+      ctx.beginPath();
+      ctx.moveTo(box.left, Math.round(base) + 0.5);
+      ctx.lineTo(box.right, Math.round(base) + 0.5);
+      ctx.stroke();
+
+      ctx.fillStyle = MUTE;
+      ctx.font = "600 10px -apple-system, system-ui, sans-serif";
+      ctx.textAlign = "left";
+      ctx.textBaseline = "bottom";
+      ctx.fillText(panel.name, box.left, top - 4);
+
+      items.forEach((item, idx) => {
+        const value = panel.value(item);
+        const x = box.left + slot * idx + slot * 0.22;
+        const w = slot * 0.56;
+        const yv = y(value);
+        ctx.fillStyle = panel.colour;
+        ctx.fillRect(x, Math.min(yv, base), w, Math.max(1.5, Math.abs(base - yv)));
+        ctx.fillStyle = INK;
+        ctx.font = "9px -apple-system, system-ui, sans-serif";
+        ctx.textAlign = "center";
+        ctx.textBaseline = yv <= base ? "bottom" : "top";
+        ctx.fillText(panel.format(value), x + w / 2, yv + (yv <= base ? -2 : 2));
         marks.push({
-          x: x + w * 0.4, y: (yv + box.bottom) / 2, iso3: item.iso3,
-          label: `<b>${item.name}</b><span>${bar.name}: ${bar.read(item)}</span>` +
+          box: [x - 2, Math.min(yv, base) - 10, x + w + 2, Math.max(yv, base) + 10],
+          iso3: item.iso3,
+          label: `<b>${item.name}</b><span>${panel.name}: ${panel.format(value)}</span>` +
             `<span>betweenness rank #${item.betweenness_rank}</span>` +
             `<span>${item.km ? `${fmt.format(item.km)} km away` : "the country in question"}</span>`,
         });
       });
+
+      // Country codes under the last panel only; the columns line up.
+      if (pi === panels.length - 1) {
+        ctx.fillStyle = MUTE;
+        ctx.font = "10px -apple-system, system-ui, sans-serif";
+        ctx.textAlign = "center";
+        ctx.textBaseline = "top";
+        items.forEach((item, idx) => {
+          ctx.fillText(item.iso3, box.left + slot * (idx + 0.5), bottom + 6);
+        });
+        ctx.fillText(
+          `${focus.name} and its four nearest neighbours`,
+          (box.left + box.right) / 2,
+          bottom + 20,
+        );
+      }
     });
+    chartTable(
+      "dk-nordic",
+      "the country and its four nearest neighbours",
+      ["Country", "Origins", "Bridge z-score", "Flight partners"],
+      items.map((i) => [i.name, fmt.format(i.in_degree), (i.z ?? 0).toFixed(2), fmt.format(i.flight_degree)]),
+    );
   });
 }
 
@@ -2686,11 +2977,11 @@ export const api = {
   paintPhotoGlobe,
   // Chart furniture, so the questions section draws on the same axes as the
   // rest of the post instead of inventing its own.
-  surface, frame, axes, logTicks, logScale, linearScale, flag,
+  surface, frame, axes, logTicks, logScale, linearScale, flag, chartTable,
   // The net layer, so a renderer that draws its own map can draw this one too.
   netBalance, netColour, netNote, drawNet: drawNetMap,
   spotlight, earthScale, globeRadius, EARTH_SIZES, typologyNote,
-  colours: { PEOPLE, ACCESS, INK, MUTE, GRID, GAIN, LOSS },
+  colours: { PEOPLE, ACCESS, INK, MUTE, GRID, OUTBOUND, GAIN, LOSS },
   format: { fmt, compact },
   $,
 };
