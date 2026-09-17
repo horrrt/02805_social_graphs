@@ -55,8 +55,7 @@ window.auditWeek03 = async function auditWeek03({ verbose = false } = {}) {
     ["ccdf", "ccdf"],
     ["betweenness scatter", "scatter-between"],
     ["z-score scatter", "scatter-z"],
-    ["denmark scatter", "dk-scatter"],
-    ["denmark z", "dk-z"],
+    ["prestige slope", "prestige"],
     ["denmark time", "dk-time"],
     ["denmark rank", "dk-rank"],
     ["nordic bars", "dk-nordic"],
@@ -150,8 +149,7 @@ window.auditWeek03 = async function auditWeek03({ verbose = false } = {}) {
     ["ccdf", "ccdf"],
     ["betweenness scatter", "scatter-between"],
     ["z-score scatter", "scatter-z"],
-    ["denmark scatter", "dk-scatter"],
-    ["denmark z", "dk-z"],
+    ["prestige slope", "prestige"],
     ["nordic bars", "dk-nordic"],
   ]) {
     window.__auditBefore = selected();
@@ -165,7 +163,7 @@ window.auditWeek03 = async function auditWeek03({ verbose = false } = {}) {
 
   for (const [name, id] of [
     ["betweenness scatter", "scatter-between"],
-    ["denmark scatter", "dk-scatter"],
+    ["prestige slope", "prestige"],
   ]) {
     const host = document.getElementById(`${id}-ec`) ?? document.getElementById(`${id}-d3`) ?? $(id);
     let shown = false;

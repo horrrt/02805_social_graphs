@@ -102,3 +102,36 @@ All three renderers were changed together, since they share the captions.
 Checked on desktop in all three skins with a zero-betweenness country selected
 (Hungary, 182 origins, betweenness 0); no console errors; 51 repository tests
 pass.
+
+## The second list, cleared the same day
+
+**Section 8's duplicate scatters are gone.** `dk-scatter` and `dk-z` were
+440×330 reprints of sections 3 and 4 answering no new question, and one of them
+had no heading. Section 8 is now a 2×2 of the four panels that say something
+about one country: in and out, through time, bridge rank (with a real heading
+at last), nearest neighbours. Removed from all three renderers and from
+`scripts/audit_week03.js`.
+
+**PageRank has a view.** A slope chart in section 3 puts the world's top twelve
+by people beside the top twelve by PageRank, with each country's global rank on
+both sides and the lines coloured by which way it moves. The caption states
+that PageRank here runs on the weighted graph, so the agreement with the people
+ranking (ρ = 0.73, against ρ = 0.53 for the partner count) is close to a
+tautology and the crossings are the story.
+
+The comparison deliberately uses in-strength, not in-degree. The in-degree top
+ten is Norway, Denmark, Hungary, Greece, Luxembourg, Bulgaria, Finland,
+Slovakia, Iceland: countries whose population registers name every origin.
+Section 8's own verdict already says so. A chart headlined "PageRank disagrees
+with in-degree" would have reported a reporting artifact as a finding, which is
+the bug this audit started with.
+
+The aside answers the mechanism for any country the reader picks. A new
+`pagerank_sources` field, written by `analysis/week03_corridor_control.py`,
+carries the three senders that hand a country the most of its score, each with
+the sender's own rank and the share of its people that came here. Saudi Arabia
+holds the world's second largest foreign-born population and ranks 38th: its
+biggest contributor, Bangladesh, ranks 41st and gives it 21%. Mexico is 42nd by
+people and 7th here, because the United States alone hands it 90%. Regenerated
+with `--reuse-null`, so every existing number, including the whole null
+summary, is byte-identical.

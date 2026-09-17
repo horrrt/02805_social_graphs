@@ -298,75 +298,13 @@ export function install(api, echarts) {
   function denmark() {
     const focus = spotlight();
     const y = String(state.data.null_year);
-    const rows = withMetrics(y).filter((r) => r.m.in_degree > 0);
     const dk = metrics(focus.iso3, y);
     if (!dk) return;
-    // The same baseline row as section 3: a country that brokers nothing stays
-    // on its own chart instead of disappearing from it.
-    const positive = rows.map((r) => r.m.betweenness).filter((value) => value > 0);
-    const minB = Math.min(...positive);
-    const zeroRow = minB / 4;
-    const onRow = (value) => (value > 0 ? value : zeroRow);
 
     const small = (id, option) => {
       const instance = chart(id);
       if (instance) instance.setOption({ ...BASE, ...option }, true);
     };
-
-    small("dk-scatter", {
-      grid: { left: 48, right: 12, top: 14, bottom: 34 },
-      xAxis: { ...AXIS, type: "log", name: "Degree", nameLocation: "middle", nameGap: 22 },
-      yAxis: {
-        ...AXIS,
-        type: "log",
-        min: zeroRow,
-        // The axis floor is the baseline row itself, so its label reads 0.
-        axisLabel: {
-          ...AXIS.axisLabel,
-          showMinLabel: true,
-          formatter: (value) => (value <= zeroRow * 1.001 ? "0" : String(value)),
-        },
-      },
-      tooltip: { show: false },
-      series: [
-        scatterSeries(
-          "Countries",
-          rows.map((r) => point(r.m.in_degree, onRow(r.m.betweenness), r.iso3, r.n.name,
-            `<b>${r.n.name}</b><span>${r.m.in_degree} origins</span>` +
-            (r.m.betweenness > 0
-              ? `<span>betweenness #${r.m.betweenness_rank}</span>`
-              : "<span>betweenness 0</span>"))),
-          "#c9d7e8",
-          6,
-        ),
-        scatterSeries(
-          focus.name,
-          [point(dk.in_degree, onRow(dk.betweenness), focus.iso3, focus.name)],
-          "#d0021b",
-          10,
-        ),
-      ],
-    });
-
-    const zRows = rows.filter((r) => r.m.z !== undefined);
-    small("dk-z", {
-      grid: { left: 42, right: 12, top: 14, bottom: 34 },
-      xAxis: { ...AXIS, type: "log", name: "Degree", nameLocation: "middle", nameGap: 22 },
-      yAxis: { ...AXIS, type: "value" },
-      tooltip: { show: false },
-      series: [
-        scatterSeries(
-          "Countries",
-          zRows.map((r) => point(r.m.in_degree, r.m.z, r.iso3, r.n.name,
-            `<b>${r.n.name}</b><span>z = ${r.m.z.toFixed(2)}</span>`)),
-          "#c9d7e8",
-          6,
-        ),
-        ...(dk.z === undefined
-          ? []
-          : [scatterSeries(focus.name, [point(dk.in_degree, dk.z, focus.iso3, focus.name)], "#d0021b", 10)]),
-      ],
-    });
 
     const timeTip = (s) =>
       `<b>${focus.name}, ${s.year}</b>` +

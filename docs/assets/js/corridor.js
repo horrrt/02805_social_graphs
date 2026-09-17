@@ -486,11 +486,13 @@ function renderInspector() {
         row("z-score", nm.z === undefined ? "—" : nm.z.toFixed(2)),
       ].join("")
     : "";
+  renderPrestigePanel(iso3);
   // Every chart carries a marker for the selected country, so all of them
   // redraw together and the selection reads the same everywhere on the page.
   R.hist();
   R.ccdf();
   R.scatters();
+  R.prestige();
   renderDenmarkPanels();
   R.denmark();
 }
@@ -588,6 +590,7 @@ function enablePicking(id) {
     if (state.hover !== iso3) {
       state.hover = iso3;
       R.scatters();
+      R.prestige();
       R.denmark();
       R.hist();
       R.ccdf();
@@ -598,6 +601,7 @@ function enablePicking(id) {
     if (state.hover) {
       state.hover = null;
       R.scatters();
+      R.prestige();
       R.denmark();
       R.hist();
       R.ccdf();
@@ -1600,6 +1604,190 @@ function writeBetweennessNote() {
     "place a zero anywhere else.";
 }
 
+// PageRank runs on the same weighted graph as everything else on this page, so
+// a country's score follows people rather than partner counts. That makes the
+// agreement with the people ranking unsurprising and the disagreement the
+// story: the walk hands a country a share of each sender's outflow weighted by
+// how important the sender is, so drawing twelve million people from countries
+// that are themselves not drawn to earns less than drawing seven million from
+// Australia and the United States.
+function drawPrestige() {
+  refreshPalette();
+  const canvas = $("prestige");
+  if (!canvas) return;
+  const { ctx, width, height } = surface(canvas);
+  const y = String(state.data.null_year);
+  const rows = withMetrics(y).filter((r) => r.m.in_strength > 0);
+  if (!rows.length) return;
+  const TOP = 12;
+  const byPeople = [...rows].sort((a, b) => b.m.in_strength - a.m.in_strength).slice(0, TOP);
+  const byRank = [...rows].sort((a, b) => b.m.pagerank - a.m.pagerank).slice(0, TOP);
+  const shown = [...new Set([...byPeople, ...byRank].map((r) => r.iso3))].map((iso3) =>
+    rows.find((r) => r.iso3 === iso3),
+  );
+  // Rows are placed by their order inside this set and labelled with the rank
+  // they hold in the whole world, which is the number a reader wants to read.
+  const leftOrder = [...shown].sort((a, b) => a.m.in_strength_rank - b.m.in_strength_rank);
+  const rightOrder = [...shown].sort((a, b) => a.m.pagerank_rank - b.m.pagerank_rank);
+  const top = 34;
+  const step = (height - top - 18) / Math.max(shown.length - 1, 1);
+  const leftX = Math.round(width * 0.36);
+  const rightX = Math.round(width * 0.64);
+  const at = (order, iso3) => top + order.findIndex((r) => r.iso3 === iso3) * step;
+
+  ctx.font = "600 11px -apple-system, system-ui, sans-serif";
+  ctx.fillStyle = MUTE;
+  ctx.textAlign = "right";
+  ctx.fillText("By people", leftX, 18);
+  ctx.textAlign = "left";
+  ctx.fillText("By PageRank", rightX, 18);
+
+  const marks = collect("prestige");
+  for (const r of shown) {
+    const y1 = at(leftOrder, r.iso3);
+    const y2 = at(rightOrder, r.iso3);
+    const rises = r.m.pagerank_rank < r.m.in_strength_rank;
+    const chosen = r.iso3 === state.selected;
+    ctx.strokeStyle = chosen ? INK : (rises ? PEOPLE : ACCESS) + "aa";
+    ctx.lineWidth = chosen ? 2.4 : 1.4;
+    ctx.beginPath();
+    ctx.moveTo(leftX, y1);
+    ctx.lineTo(rightX, y2);
+    ctx.stroke();
+    for (const [x, py] of [[leftX, y1], [rightX, y2]]) {
+      ctx.fillStyle = chosen ? INK : rises ? PEOPLE : ACCESS;
+      ctx.beginPath();
+      ctx.arc(x, py, chosen ? 4 : 3, 0, Math.PI * 2);
+      ctx.fill();
+    }
+    ctx.font = `${chosen ? 700 : 500} 11px -apple-system, system-ui, sans-serif`;
+    ctx.fillStyle = chosen ? INK : "#46618a";
+    ctx.textAlign = "right";
+    ctx.fillText(`${r.n.name}  #${r.m.in_strength_rank}`, leftX - 8, y1 + 4);
+    ctx.textAlign = "left";
+    ctx.fillText(`#${r.m.pagerank_rank}  ${r.n.name}`, rightX + 8, y2 + 4);
+    const label =
+      `<b>${r.n.name}</b>` +
+      `<span>${compact.format(r.m.in_strength)} foreign-born residents · #${r.m.in_strength_rank}</span>` +
+      `<span>PageRank ${r.m.pagerank.toFixed(4)} · #${r.m.pagerank_rank}</span>`;
+    marks.push({ x: leftX, y: y1, iso3: r.iso3, label });
+    marks.push({ x: rightX, y: y2, iso3: r.iso3, label });
+  }
+  writePrestigeNote(rows, shown);
+}
+
+// Spearman's rank correlation, which is the honest way to say how much two
+// rankings of the same countries agree.
+function rankCorrelation(values) {
+  const n = values.length;
+  if (n < 3) return 0;
+  const ranksOf = (pick) => {
+    const order = [...values].sort((a, b) => pick(a) - pick(b));
+    const out = new Map();
+    order.forEach((row, i) => out.set(row, i));
+    return out;
+  };
+  const ra = ranksOf((v) => v.a);
+  const rb = ranksOf((v) => v.b);
+  const mean = (n - 1) / 2;
+  let num = 0;
+  let da = 0;
+  let db = 0;
+  for (const v of values) {
+    const x = ra.get(v) - mean;
+    const z = rb.get(v) - mean;
+    num += x * z;
+    da += x * x;
+    db += z * z;
+  }
+  return num / Math.sqrt(da * db);
+}
+
+function writePrestigeNote(rows, shown) {
+  writeMovers(shown);
+  const target = $("prestige-note");
+  if (!target) return;
+  const people = rankCorrelation(rows.map((r) => ({ a: r.m.pagerank, b: r.m.in_strength })));
+  const partners = rankCorrelation(rows.map((r) => ({ a: r.m.pagerank, b: r.m.in_degree })));
+  target.textContent =
+    "Every country in either top twelve, with the rank it holds in the world on " +
+    "each side. PageRank runs on the same weighted graph as the rest of the page, " +
+    "so a link is people: it tracks the people ranking closely " +
+    `(ρ = ${people.toFixed(2)}) and the partner count loosely (ρ = ${partners.toFixed(2)}). ` +
+    "The lines that cross are the point. Click a country to see which senders " +
+    "give it its score.";
+}
+
+// Country names that take a definite article inside a sentence. The payload
+// stores the plain form, and "because United States" reads like a typo.
+const ARTICLE = /^(United |Netherlands|Philippines|Maldives|Bahamas|Gambia|Comoros|.* Islands$|.* Republic$|Republic of |Democratic Republic|People's Republic|Isle of )/;
+
+function withArticle(name, startsSentence = false) {
+  if (!ARTICLE.test(name)) return name;
+  return `${startsSentence ? "The" : "the"} ${name}`;
+}
+
+// The two ends of the chart, named and explained, for a reader who does not
+// click. Both are read from the data rather than written down, so regenerating
+// the payload cannot leave the sentence claiming something it no longer shows.
+function writeMovers(shown) {
+  const target = $("prestige-movers");
+  if (!target) return;
+  const move = (r) => r.m.pagerank_rank - r.m.in_strength_rank;
+  const ordered = [...shown].sort((a, b) => move(b) - move(a));
+  const faller = ordered[0];
+  const riser = ordered[ordered.length - 1];
+  const source = (r) => (r.n.pagerank_sources ?? [])[0];
+  if (!faller || !riser || !source(faller) || !source(riser)) {
+    target.textContent = "";
+    return;
+  }
+  const senderName = (r) => node(source(r).other)?.name ?? source(r).other;
+  const givesPct = (r) => Math.round((source(r).gives / r.m.pagerank) * 100);
+  target.textContent =
+    `${withArticle(faller.n.name, true)} is #${faller.m.in_strength_rank} in the world by foreign-born ` +
+    `residents and #${faller.m.pagerank_rank} here: the sender that gives it most of ` +
+    `its score, ${withArticle(senderName(faller))}, ranks #${source(faller).sender_rank} itself. ` +
+    `${withArticle(riser.n.name, true)} is #${riser.m.in_strength_rank} by residents and ` +
+    `#${riser.m.pagerank_rank} here, because ${withArticle(senderName(riser))}, ranked ` +
+    `#${source(riser).sender_rank}, hands it ${givesPct(riser)}% of its score.`;
+}
+
+// The aside beside the slope chart: not how many people a country draws, but
+// which senders the walk arrives from.
+function renderPrestigePanel(iso3) {
+  const n = node(iso3);
+  const m = metrics(iso3, String(state.data.null_year));
+  if (!n || !$("pr-name")) return;
+  $("pr-flag").textContent = flag(n.iso2);
+  $("pr-name").textContent = n.name;
+  $("pr-codes").textContent = `${iso3} · ${state.data.null_year}`;
+  $("pr-stats").innerHTML = m
+    ? [
+        row("PageRank", `${m.pagerank.toFixed(5)} <span style="color:#7a8fac">(#${m.pagerank_rank})</span>`),
+        row("Incoming migrants (stock)", `${compact.format(m.in_strength)} <span style="color:#7a8fac">(#${m.in_strength_rank})</span>`),
+        row("Origins represented", `${m.in_degree} <span style="color:#7a8fac">(#${m.in_degree_rank})</span>`),
+      ].join("")
+    : "";
+  const sources = n.pagerank_sources ?? [];
+  $("pr-sources").innerHTML = sources.length && m
+    ? sources
+        .map(
+          (source) =>
+            `<li><span>${node(source.other)?.name ?? source.other} ` +
+            `<span style="color:#7a8fac">#${source.sender_rank}, sends ` +
+            `${Math.round(source.share * 100)}% of its people here</span></span>` +
+            `<b>${Math.round((source.gives / m.pagerank) * 100)}%</b></li>`,
+        )
+        .join("")
+    : "<li><span>No incoming corridors recorded</span><b>—</b></li>";
+  $("pr-note").textContent = sources.length
+    ? "Each share is how much of this country's PageRank that sender hands over: " +
+      "the sender's own score, times the fraction of its people who came here. " +
+      "A big sender that ranks low gives little."
+    : "";
+}
+
 function drawZ() {
   refreshPalette();
   const canvas = $("scatter-z");
@@ -1951,71 +2139,6 @@ function drawDenmark() {
   const n = node(iso3);
   if (!m) return;
 
-  const rows = withMetrics(y).filter((r) => r.m.in_degree > 0);
-  small($("dk-scatter"), (ctx, box) => {
-    const maxK = Math.max(...rows.map((r) => r.m.in_degree));
-    const positive = rows.map((r) => r.m.betweenness).filter((value) => value > 0);
-    const minB = Math.min(...positive);
-    const maxB = Math.max(...positive);
-    // Same baseline row as section 3, so a country that brokers nothing keeps
-    // its place here too rather than dropping off its own chart.
-    const zeroRow = minB / 4;
-    box.x = logScale(box, [1, maxK], "x");
-    box.y = logScale(box, [minB / 8, maxB], "y");
-    axes(ctx, box, {
-      xTicks: logTicks(1, maxK),
-      yTicks: [{ value: zeroRow, label: "0" }, ...logTicks(minB, maxB)],
-      xLabel: "Origins (in-degree)",
-      yLabel: "Betweenness",
-    });
-    const at = (value) => (value > 0 ? box.y(value) : box.y(zeroRow));
-    ctx.strokeStyle = "#c2d0e2";
-    ctx.setLineDash([3, 4]);
-    ctx.beginPath();
-    const cut = Math.round(box.y(minB / 2)) + 0.5;
-    ctx.moveTo(box.left, cut);
-    ctx.lineTo(box.right, cut);
-    ctx.stroke();
-    ctx.setLineDash([]);
-    const marks = collect("dk-scatter");
-    plotDots(ctx, marks, rows.map((r) => ({
-      x: box.x(r.m.in_degree), y: at(r.m.betweenness), iso3: r.iso3,
-      label: `<b>${r.n.name}</b><span>${r.m.in_degree} origins · #${r.m.in_degree_rank}</span>` +
-        (r.m.betweenness > 0
-          ? `<span>betweenness #${r.m.betweenness_rank}</span>`
-          : "<span>betweenness 0 · on no shortest path between two other countries</span>"),
-    })), "#c9d7e8", 1.8);
-    dot(ctx, box.x(m.in_degree), at(m.betweenness), "#d0021b", n.name, 4, box.right);
-    for (const other of focus.peers) {
-      if (other.iso3 === iso3) continue;
-      const om = metrics(other.iso3, y);
-      if (om) dot(ctx, box.x(om.in_degree), at(om.betweenness), PEOPLE, other.iso3, 2.6, box.right);
-    }
-  });
-
-  const zRows = rows.filter((r) => r.m.z !== undefined);
-  small($("dk-z"), (ctx, box) => {
-    if (!zRows.length) return;
-    const maxK = Math.max(...zRows.map((r) => r.m.in_degree));
-    const lo = Math.min(-2, ...zRows.map((r) => r.m.z));
-    const hi = Math.max(2, ...zRows.map((r) => r.m.z));
-    box.x = logScale(box, [1, maxK], "x");
-    box.y = linearScale(box, [lo, hi], "y");
-    axes(ctx, box, {
-      xTicks: logTicks(1, maxK),
-      yTicks: [lo, 0, hi].map((v) => ({ value: v, label: v.toFixed(0) })),
-      xLabel: "Origins (in-degree)",
-      yLabel: "Betweenness z-score",
-    });
-    const marks = collect("dk-z");
-    plotDots(ctx, marks, zRows.map((r) => ({
-      x: box.x(r.m.in_degree), y: box.y(r.m.z), iso3: r.iso3,
-      label: `<b>${r.n.name}</b><span>z = ${r.m.z.toFixed(2)}</span>` +
-        `<span>${r.m.in_degree} origins</span>`,
-    })), "#c9d7e8", 1.8);
-    if (m.z !== undefined) dot(ctx, box.x(m.in_degree), box.y(m.z), "#d0021b", n.name, 4, box.right);
-  });
-
   small($("dk-time"), (ctx, box) => {
     const years = focus.series.map((s) => s.year);
     const maxV = Math.max(...focus.series.map((s) => Math.max(s.in_strength, s.out_strength)));
@@ -2317,6 +2440,7 @@ const CANVAS_RENDERER = {
   name: "canvas",
   globe: drawGlobe, map: drawMap, hist: drawHistogram, ccdf: drawCcdf,
   scatters: drawScatters, scatterBetween: drawBetweenness, scatterZ: drawZ,
+  prestige: drawPrestige,
   denmark: drawDenmark, setupGlobe, setupMap,
 };
 
@@ -2348,6 +2472,7 @@ export function restyle() {
   R.hist();
   R.ccdf();
   R.scatters();
+  R.prestige();
   R.denmark();
   // The questions drawer draws on canvas in every renderer, so it repaints on
   // the same signal rather than being reached into from here.
@@ -2397,8 +2522,7 @@ async function main() {
       "ccdf",
       "scatter-between",
       "scatter-z",
-      "dk-scatter",
-      "dk-z",
+      "prestige",
       "dk-time",
       "dk-rank",
       "dk-nordic",
@@ -2423,6 +2547,7 @@ async function main() {
       R.hist();
       R.ccdf();
       R.scatters();
+      R.prestige();
       R.denmark();
     });
   } catch (error) {

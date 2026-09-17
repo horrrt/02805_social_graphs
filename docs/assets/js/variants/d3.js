@@ -320,58 +320,7 @@ export function install(api, d3) {
     const y3 = String(state.data.null_year);
     const dk = metrics(focus.iso3, y3);
     if (!dk) return;
-    const rows = withMetrics(y3).filter((r) => r.m.in_degree > 0);
     const pad = { l: 44, r: 12, t: 12, b: 30 };
-    // The same baseline row as section 3: a country that brokers nothing stays
-    // on its own chart instead of disappearing from it.
-    const positive = rows.map((r) => r.m.betweenness).filter((value) => value > 0);
-    const minB = d3.min(positive);
-    const zeroRow = minB / 4;
-    const onRow = (value) => (value > 0 ? value : zeroRow);
-
-    let box = svgFor("dk-scatter", pad);
-    if (box) {
-      const x = d3.scaleLog().domain([1, d3.max(rows, (r) => r.m.in_degree)]).range([box.inner.left, box.inner.right]);
-      const y = d3
-        .scaleLog()
-        .domain([minB / 8, d3.max(positive)])
-        .range([box.inner.bottom, box.inner.top]);
-      const g = axes(box.svg, box.inner, x, y, { xLabel: "Degree", xTicks: 3, yTicks: 3, yFormat: ".0e" });
-      g.selectAll(".tick").filter((value) => value < minB).selectAll("text").remove();
-      box.svg
-        .append("text")
-        .attr("x", box.inner.left - 6)
-        .attr("y", y(zeroRow))
-        .attr("text-anchor", "end")
-        .attr("dominant-baseline", "middle")
-        .attr("fill", "#7a8fac")
-        .attr("font-size", 10)
-        .text("0");
-      plotPoints(
-        box.svg,
-        rows.map((r) => ({ x: r.m.in_degree, y: onRow(r.m.betweenness), iso3: r.iso3, title: `<b>${r.n.name}</b><span>${r.m.in_degree} origins</span>` })),
-        x, y, "#c9d7e8", 1.9, select,
-      );
-      highlight(box.svg, x, y, { x: dk.in_degree, y: onRow(dk.betweenness) }, focus.name);
-    }
-
-    box = svgFor("dk-z", pad);
-    if (box) {
-      const zRows = rows.filter((r) => r.m.z !== undefined);
-      const x = d3.scaleLog().domain([1, d3.max(zRows, (r) => r.m.in_degree)]).range([box.inner.left, box.inner.right]);
-      const y = d3
-        .scaleLinear()
-        .domain([d3.min(zRows, (r) => r.m.z), d3.max(zRows, (r) => r.m.z)])
-        .nice()
-        .range([box.inner.bottom, box.inner.top]);
-      axes(box.svg, box.inner, x, y, { xLabel: "Degree", xTicks: 3, yTicks: 3, yFormat: "d" });
-      plotPoints(
-        box.svg,
-        zRows.map((r) => ({ x: r.m.in_degree, y: r.m.z, iso3: r.iso3, title: `<b>${r.n.name}</b><span>z = ${r.m.z.toFixed(2)}</span>` })),
-        x, y, "#c9d7e8", 1.9, select,
-      );
-      if (dk.z !== undefined) highlight(box.svg, x, y, { x: dk.in_degree, y: dk.z }, focus.name);
-    }
 
     // Each series carries its own tip, so dk-time's two lines (in and out
     // strength) read the same hover card the canvas and echarts renderers show,
