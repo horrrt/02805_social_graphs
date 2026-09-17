@@ -915,24 +915,39 @@ function answerWealth() {
    hosting the second. */
 
 function incomeData() {
+  // Both bars compare a corridor's two ends, so they need income at both. The
+  // strip underneath compares destinations only — and insisting on the origin
+  // there would quietly delete the origins that produce refugees, since Syria,
+  // Afghanistan, Eritrea, Somalia and South Sudan are among the countries the
+  // World Bank does not publish GDP per head for. It costs the bottom tier a
+  // seventh of its people and a third of its refugees.
   const known = model.rows.filter((r) => model.gdp(r.o) && model.gdp(r.d));
+  const placed = model.rows.filter((r) => model.gdp(r.d));
   const total = known.reduce((sum, r) => sum + r.people, 0);
-  const slice = (label, test) => {
-    const rows = known.filter(test);
+  const placedTotal = placed.reduce((sum, r) => sum + r.people, 0);
+
+  const slice = (from, denominator) => (label, test) => {
+    const rows = from.filter(test);
     const people = rows.reduce((s, r) => s + r.people, 0);
     const forced = rows.reduce((s, r) => s + r.forced, 0);
-    return { label, people, forced, share: pct(people, total), forcedShare: pct(forced, people) };
+    return {
+      label,
+      people,
+      forced,
+      share: pct(people, denominator),
+      forcedShare: pct(forced, people),
+    };
   };
-  const tiers = TIERS.map(([lo, hi, label]) =>
-    slice(label, (r) => model.gdp(r.d) >= lo && model.gdp(r.d) < hi),
-  );
+  const inTier = ([lo, hi]) => (r) => model.gdp(r.d) >= lo && model.gdp(r.d) < hi;
+  const tiers = TIERS.map((tier) => slice(known, total)(tier[2], inTier(tier)));
+  const fled = TIERS.map((tier) => slice(placed, placedTotal)(tier[2], inTier(tier)));
   const steps = [
     ["at least 4× richer", (r) => model.gdp(r.d) >= 4 * model.gdp(r.o)],
     ["richer, under 4×", (r) => model.gdp(r.d) > model.gdp(r.o) && model.gdp(r.d) < 4 * model.gdp(r.o)],
     ["poorer", (r) => model.gdp(r.d) <= model.gdp(r.o)],
-  ].map(([label, test]) => slice(label, test));
-  const forcedTotal = known.reduce((s, r) => s + r.forced, 0);
-  return { known, total, tiers, steps, forcedTotal };
+  ].map(([label, test]) => slice(known, total)(label, test));
+  const forcedTotal = model.rows.reduce((s, r) => s + r.forced, 0);
+  return { known, total, placed, placedTotal, tiers, fled, steps, forcedTotal };
 }
 
 function drawIncome() {
@@ -941,7 +956,7 @@ function drawIncome() {
   const { ctx, width, height } = api.surface(canvas);
   const { PEOPLE, ACCESS, INK, MUTE } = api.colours;
   const list = register("q-income");
-  const { tiers, steps } = incomeData();
+  const { tiers, fled, steps, placedTotal } = incomeData();
 
   const left = 16;
   const right = width - 16;
@@ -1010,7 +1025,8 @@ function drawIncome() {
   ctx.lineTo(right, top + 0.5);
   ctx.stroke();
 
-  for (const { part, x, w } of tierBoxes) {
+  tierBoxes.forEach(({ x, w }, i) => {
+    const part = fled[i];
     const drop = Math.min(part.forcedShare / CEIL, 1) * deep;
     ctx.fillStyle = `rgba(${api.rgb(INK)},0.68)`;
     ctx.fillRect(x, top, Math.max(w - 1.5, 0), drop);
@@ -1024,14 +1040,20 @@ function drawIncome() {
       label:
         `<b>Destinations ${part.label} a head</b><br>` +
         `${api.format.fmt.format(part.forced)} refugees and asylum seekers, ` +
-        `${one(part.forcedShare)}% of the foreign-born living there`,
+        `${one(part.forcedShare)}% of the ` +
+        `${api.format.compact.format(part.people)} foreign-born living there`,
     });
-  }
+  });
   ctx.fillStyle = MUTE;
   ctx.font = "10px -apple-system, system-ui, sans-serif";
   ctx.textAlign = "right";
   ctx.textBaseline = "alphabetic";
-  ctx.fillText(`depth scaled to ${CEIL}%`, right, top - 14);
+  ctx.fillText(
+    `depth scaled to ${CEIL}% · ${api.format.compact.format(placedTotal)} people with a ` +
+      `destination income`,
+    right,
+    top - 14,
+  );
 
   stack(steps, ACCESS, 260, "The destination against their own country of birth");
 
@@ -1048,28 +1070,30 @@ function drawIncome() {
 }
 
 function answerIncome() {
-  const { known, total, tiers, steps, forcedTotal } = incomeData();
+  const { known, total, fled, steps, forcedTotal } = incomeData();
   const coverage = pct(total, model.total);
-  const top = tiers.at(-1);
-  const bottom = tiers[0];
+  const top = fled.at(-1);
+  const bottom = fled[0];
   return (
     `The shipped data cannot tell you who has a degree. UN DESA's stock table is split by sex and ` +
     `age, not by education, and the table that does split by education — OECD DIOC — is not in ` +
     `this build. What the data can show is the thing skill-selective visa systems actually do: ` +
     `sort people by destination income. ` +
-    `<b>${one(top.share)}%</b> of migrants live in a country above $50,000 a head, and ` +
-    `<b>${one(steps[0].share + steps[1].share)}%</b> live somewhere richer than where they were born ` +
-    `— <b>${one(steps[0].share)}%</b> of them at least four times richer. ` +
-    `Only <b>${one(steps[2].share)}%</b> moved down the income ladder. ` +
-    `The bars hanging under the first one answer the question underneath this one: how ` +
-    `much of this was a choice. UNHCR counts <b>${api.format.fmt.format(forcedTotal)}</b> refugees and ` +
-    `asylum seekers on these corridors, <b>${one(pct(forcedTotal, total))}%</b> of everybody on ` +
-    `them — and they are not spread evenly. In destinations under $5,000 a head, ` +
-    `<b>${one(bottom.forcedShare)}%</b> of the foreign-born population fled; above $50,000 it is ` +
-    `<b>${one(top.forcedShare)}%</b>. The poorest countries in this chart are not competing for ` +
-    `talent. They are next door to a war. ` +
-    `This covers the <b>${one(coverage)}%</b> of people on corridors where the World Bank publishes ` +
-    `GDP per head at both ends (${api.format.fmt.format(known.length)} corridors). ` +
+    `<b>${one(steps[0].share + steps[1].share)}%</b> of migrants live somewhere richer than where ` +
+    `they were born — <b>${one(steps[0].share)}%</b> of them at least four times richer. ` +
+    `Only <b>${one(steps[2].share)}%</b> moved down the income ladder. That is sorting, and it ` +
+    `looks like selection. ` +
+    `The bars hanging under the first one are the question underneath this one: how much of it ` +
+    `was a choice. UNHCR counts <b>${api.format.fmt.format(forcedTotal)}</b> refugees and asylum ` +
+    `seekers on the corridors this page carries, <b>${one(pct(forcedTotal, model.total))}%</b> of ` +
+    `everybody on them — and they are nowhere near evenly spread. Of the foreign-born living in ` +
+    `destinations under $5,000 a head, <b>${one(bottom.forcedShare)}%</b> fled; above $50,000, ` +
+    `<b>${one(top.forcedShare)}%</b>. A third of the poorest tier is not a labour market at all, ` +
+    `and reading the whole chart as skill selection misses it. ` +
+    `The two income bars cover the <b>${one(coverage)}%</b> of people on corridors where the World ` +
+    `Bank publishes GDP per head at both ends (${api.format.fmt.format(known.length)} corridors); ` +
+    `the fled bars ask only about the destination, because insisting on both ends drops Syria, ` +
+    `Afghanistan and South Sudan from their own story. ` +
     `Read the income bars as evidence about sorting, not about skill: a nurse and a nanny both ` +
     `show up in the top tier, and nothing here separates them.`
   );
@@ -1250,9 +1274,13 @@ function setupRingControls() {
   if (ends) ends.innerHTML = `<span>${years[0]}</span><span>${years.at(-1)}</span>`;
   slider.max = String(years.length - 1);
   slider.value = String(Math.max(years.indexOf(ringState.year), 0));
+  // The slider's value is an index into the eight snapshots, so without this a
+  // screen reader announces "3" where the page says 2005.
+  slider.setAttribute("aria-valuetext", String(ringState.year));
 
   slider.addEventListener("input", (event) => {
     ringState.year = years[Number(event.target.value)] ?? YEAR;
+    slider.setAttribute("aria-valuetext", String(ringState.year));
     const now = $("q-ring-now");
     if (now) now.textContent = String(ringState.year);
     redrawRing();
