@@ -1260,7 +1260,7 @@
             </div>
             <details class="qa" id="views">
               <summary>
-                <span class="qa-cue">The five extra views</span>
+                <span class="qa-cue">The four extra views</span>
               </summary>
               <div class="qa-body">
                 <p aria-live="polite" class="status-line" id="v-status"></p>
@@ -1334,12 +1334,11 @@
                 <div class="notice">
                   <span class="ico">🕰️</span>
                   <span>
-                    <b>The next three have a date on them.</b> The rest of the
+                    <b>The next two have a date on them.</b> The rest of the
                     page is eight five-year snapshots and cannot see a month, a
-                    war or a border closing. These three can, and they are
-                    three different sources counting three different things:
-                    asylum applications in Europe, border closures worldwide,
-                    deaths worldwide.
+                    war or a border closing. These two can, and they are two
+                    different sources counting two different things: asylum
+                    applications in Europe, and border closures worldwide.
                   </span>
                 </div>
 
@@ -1375,18 +1374,6 @@
                   </p>
                   <div class="echart closures" id="v-closures"></div>
                   <p class="qa-answer" id="v-closures-answer"></p>
-                </article>
-
-                <article class="qa-item">
-                  <h3>5 &middot; Deaths on the routes, day by day</h3>
-                  <p class="axis-note">
-                    The people who did not arrive. IOM's Missing Migrants
-                    Project, one row per recorded incident; one cell is one
-                    day, and the darker it is, the more were recorded dead or
-                    missing on a migration route.
-                  </p>
-                  <div class="echart calendar" id="v-calendar"></div>
-                  <p class="qa-answer" id="v-calendar-answer"></p>
                 </article>
               </div>
             </details>
@@ -1584,20 +1571,6 @@
                       stops at the end of 2022.
                     </p>
                     <p class="sub">
-                      <b>The deaths calendar.</b> IOM Missing Migrants Project via
-                      HDX, CC BY-IGO, binned by the date an incident was
-                      reported. It is one of the three dated sources here, with
-                      Eurostat by the month and the Oxford tracker by the
-                      day, and the only one that is global and dated at
-                      once. It counts
-                      recorded incidents: IOM says the record is an undercount
-                      by an unknown amount that differs by route, so a brighter
-                      year can be a better-watched one rather than a worse one.
-                      A single cell is frequently a single boat, and the number
-                      missing after a shipwreck is estimated from what
-                      survivors say.
-                    </p>
-                    <p class="sub">
                       <b>The map.</b> Natural Earth 1:110m admin-0 boundaries,
                       public domain.
                       <code>scripts/migration/build_world_outline.py</code> keeps
@@ -1656,8 +1629,8 @@
                       <code>week03_corridor_control.py</code> for the networks,
                       then <code>_tails</code>, <code>_gravity</code>,
                       <code>_communities</code>, <code>_country_networks</code>,
-                      <code>_asylum</code>, <code>_closures</code> and
-                      <code>_calendar</code>. None is typed by hand.
+                      <code>_asylum</code> and <code>_closures</code>.
+                      None is typed by hand.
                     </p>
                   </div>
                 </div>
@@ -1672,7 +1645,6 @@
           <span>
             Sources: UN DESA International Migrant Stock (Rev. 2024) ·
             UNHCR Refugee Data Finder (end-2024) ·
-            IOM Missing Migrants Project (CC BY-IGO) ·
             US BTS T-100 International Segment (public domain) ·
             Eurostat monthly asylum applications ·
             Oxford Covid-19 Government Response Tracker (CC BY 4.0) ·
@@ -1686,6 +1658,6 @@
       </footer>
     </main>
 
-    <script src="../../assets/js/week03-boot.js?v=d6c443389f" type="module"></script>
+    <script src="../../assets/js/week03-boot.js?v=898f1f5770" type="module"></script>
   </body>
 </html>

@@ -80,8 +80,6 @@ COMMITTED = [
      "analysis/week03_corridor_control.py", "UN DESA stock + OpenFlights + UNHCR"),
     ("docs/assets/data/week03_cartography.json",
      "analysis/week03_cartography.py", "roles inside the communities, per year"),
-    ("docs/assets/data/week03_calendar.json",
-     "analysis/week03_calendar.py", "IOM Missing Migrants Project via HDX"),
     ("docs/assets/data/week03_asylum.json",
      "analysis/week03_asylum.py", "Eurostat migr_asyappctzm, monthly"),
     ("docs/assets/data/week03_closures.json",
