@@ -12,3 +12,4 @@ materials/
 output/
 build/
 .playwright-mcp/
+.env

@@ -420,8 +420,10 @@ function answerRing() {
         `${names(joined) || "nobody"} moved in, ` +
         `${names(left) || "nobody"} dropped out. ` +
         `Its share of the world fell from <b>${one(earlyShare)}%</b> to ` +
-        `<b>${one(share)}%</b> — not because the big corridors shrank, but ` +
-        `because everything else grew around them.`;
+        `<b>${one(share)}%</b>, and not by shrinking: between ${first} and ` +
+        `${ringState.year} the club's own traffic grew ` +
+        `<b>${one(pct(among - earlyAmong, earlyAmong))}%</b> while the world's grew ` +
+        `<b>${one(pct(data.total - early.total, early.total))}%</b>.`;
 
   return (
     `These ${RING_N} countries are the ones most people move between, in ` +
@@ -987,22 +989,26 @@ function answerWealth() {
   const richest = bands.at(-1);
   const range = ([lo, hi]) => `${lo.toFixed(2)} to ${hi.toFixed(2)}`;
   return (
-    `Wealth explains a lot; growth explains nothing. Across <b>${data.length}</b> countries the ` +
-    `correlation between GDP per head and the foreign-born share of the population is ` +
+    `Income tracks the foreign-born share; this year's growth does not. Across ` +
+    `<b>${data.length}</b> countries the correlation between GDP per head and the ` +
+    `foreign-born share of the population is ` +
     `<b>${level.toFixed(2)}</b> (95% ${range(correlationInterval(level, data.length))}) on log ` +
     `axes — ten times the income, roughly ` +
     `<b>${(10 ** fitLine(data.map((d) => Math.log10(d.gdp)), data.map((d) => Math.log10(Math.max(d.share, 0.02)))).slope).toFixed(1)}×</b> ` +
     `the foreign-born share. Put the same countries against their 2024 growth rate and it falls ` +
     `to <b>${speed.toFixed(2)}</b> (95% ${range(correlationInterval(speed, growing.length))}, ` +
-    `an interval that contains zero): a fast year does not fill a country with migrants, a ` +
-    `rich decade does. ` +
+    `an interval that contains zero). Being rich and having a large foreign-born ` +
+    `population go together; growing fast this year and having one do not. Section 10 ` +
+    `puts the same question to a model that holds size and distance fixed, which is as ` +
+    `close to "wealth pulls people" as this data gets. ` +
     `Wealth also buys distance, which is the right-hand panel and the real reason the two ` +
     `findings are one finding. The median person living in a country under $5,000 a head came ` +
     `<b>${api.format.fmt.format(poorest.median)} km</b> — a border crossing. In countries over ` +
     `$50,000 the median came <b>${api.format.fmt.format(richest.median)} km</b>, and ` +
     `<b>${one(richest.far)}%</b> of them came further than 5,000 km, against ` +
-    `<b>${one(poorest.far)}%</b> at the bottom. Poor countries take their neighbours because ` +
-    `neighbours are who arrives. Rich ones draw from the whole map.`
+    `<b>${one(poorest.far)}%</b> at the bottom. Whatever is behind it — cost, visas, ` +
+    `who already lives there — the reach of a destination rises with its income, and ` +
+    `this chart measures the reach rather than the reason.`
   );
 }
 
