@@ -176,18 +176,43 @@ export function install(api, echarts) {
     const instance = chart("scatter-between");
     if (!instance) return;
     const y = String(state.data.null_year);
-    const migration = withMetrics(y)
-      .filter((r) => r.m.in_degree > 0 && r.m.betweenness > 0)
-      .map((r) => point(r.m.in_degree, r.m.betweenness, r.iso3, r.n.name,
-        `<b>${r.n.name}</b><span>Migration network</span>` +
-        `<span>${r.m.in_degree} origins · #${r.m.in_degree_rank}</span>` +
-        `<span>betweenness ${r.m.betweenness.toExponential(2)} · #${r.m.betweenness_rank}</span>`));
-    const flights = state.data.countries
+    const rows = withMetrics(y).filter((r) => r.m.in_degree > 0);
+    const flightRows = state.data.countries
       .map((iso3) => ({ iso3, n: node(iso3) }))
-      .filter((r) => r.n.flight_in_degree > 0 && r.n.flight_betweenness > 0)
-      .map((r) => point(r.n.flight_in_degree, r.n.flight_betweenness, r.iso3, r.n.name,
-        `<b>${r.n.name}</b><span>Flight network</span>` +
-        `<span>${r.n.flight_in_degree} flight partners</span>`));
+      .filter((r) => r.n.flight_in_degree > 0);
+    // A log axis cannot hold a zero, and half the world has one. Rather than
+    // drop those countries, they are drawn on a baseline row below the lowest
+    // real value, with the tooltip saying the value is exactly zero.
+    const positive = [
+      ...rows.map((r) => r.m.betweenness),
+      ...flightRows.map((r) => r.n.flight_betweenness),
+    ].filter((value) => value > 0);
+    const minB = Math.min(...positive);
+    const zeroRow = minB / 4;
+    const migrationTip = (r) =>
+      `<b>${r.n.name}</b><span>Migration network</span>` +
+      `<span>${r.m.in_degree} origins · #${r.m.in_degree_rank}</span>` +
+      (r.m.betweenness > 0
+        ? `<span>betweenness ${r.m.betweenness.toExponential(2)} · #${r.m.betweenness_rank}</span>`
+        : "<span>betweenness 0 · on no shortest path between two other countries</span>");
+    const flightTip = (r) =>
+      `<b>${r.n.name}</b><span>Flight network</span>` +
+      `<span>${r.n.flight_in_degree} flight partners</span>` +
+      (r.n.flight_betweenness > 0
+        ? `<span>betweenness ${r.n.flight_betweenness.toExponential(2)}</span>`
+        : "<span>betweenness 0 · on no shortest path between two other countries</span>");
+    const migration = rows
+      .filter((r) => r.m.betweenness > 0)
+      .map((r) => point(r.m.in_degree, r.m.betweenness, r.iso3, r.n.name, migrationTip(r)));
+    const flights = flightRows
+      .filter((r) => r.n.flight_betweenness > 0)
+      .map((r) => point(r.n.flight_in_degree, r.n.flight_betweenness, r.iso3, r.n.name, flightTip(r)));
+    const zeros = [
+      ...rows.filter((r) => r.m.betweenness === 0)
+        .map((r) => point(r.m.in_degree, zeroRow, r.iso3, r.n.name, migrationTip(r))),
+      ...flightRows.filter((r) => r.n.flight_betweenness === 0)
+        .map((r) => point(r.n.flight_in_degree, zeroRow, r.iso3, r.n.name, flightTip(r))),
+    ];
     const chosen = state.selected ? metrics(state.selected, y) : null;
     instance.setOption(
       {
@@ -195,13 +220,32 @@ export function install(api, echarts) {
         legend: { top: 0, textStyle: { color: "#46618a", fontSize: 11 } },
         grid: { left: 62, right: 18, top: 30, bottom: 46 },
         xAxis: { ...AXIS, type: "log", name: "In-degree", nameLocation: "middle", nameGap: 26 },
-        yAxis: { ...AXIS, type: "log", name: "Betweenness", nameLocation: "middle", nameGap: 44 },
+        yAxis: {
+          ...AXIS,
+          type: "log",
+          min: minB / 8,
+          // Ticks below the smallest real value would label the baseline row
+          // with a number, and the row is an exact zero. The row gets its own
+          // label from the markLine instead.
+          axisLabel: { ...AXIS.axisLabel, formatter: (value) => (value < minB ? "" : String(value)) },
+          name: "Betweenness",
+          nameLocation: "middle",
+          nameGap: 44,
+        },
         tooltip: { show: false },
         series: [
           scatterSeries("Migration", migration, colours.PEOPLE, 9),
           scatterSeries("Flights", flights, colours.ACCESS, 8),
-          ...(chosen && chosen.betweenness > 0
-            ? highlightSeries(state.selected, chosen.in_degree, chosen.betweenness)
+          {
+            ...scatterSeries("Betweenness 0", zeros, "#9fb2c9", 7),
+            symbol: "diamond",
+          },
+          ...(chosen && chosen.in_degree > 0
+            ? highlightSeries(
+                state.selected,
+                chosen.in_degree,
+                chosen.betweenness > 0 ? chosen.betweenness : zeroRow,
+              )
             : []),
         ],
       },
@@ -254,9 +298,15 @@ export function install(api, echarts) {
   function denmark() {
     const focus = spotlight();
     const y = String(state.data.null_year);
-    const rows = withMetrics(y).filter((r) => r.m.in_degree > 0 && r.m.betweenness > 0);
+    const rows = withMetrics(y).filter((r) => r.m.in_degree > 0);
     const dk = metrics(focus.iso3, y);
     if (!dk) return;
+    // The same baseline row as section 3: a country that brokers nothing stays
+    // on its own chart instead of disappearing from it.
+    const positive = rows.map((r) => r.m.betweenness).filter((value) => value > 0);
+    const minB = Math.min(...positive);
+    const zeroRow = minB / 4;
+    const onRow = (value) => (value > 0 ? value : zeroRow);
 
     const small = (id, option) => {
       const instance = chart(id);
@@ -266,20 +316,32 @@ export function install(api, echarts) {
     small("dk-scatter", {
       grid: { left: 48, right: 12, top: 14, bottom: 34 },
       xAxis: { ...AXIS, type: "log", name: "Degree", nameLocation: "middle", nameGap: 22 },
-      yAxis: { ...AXIS, type: "log" },
+      yAxis: {
+        ...AXIS,
+        type: "log",
+        min: zeroRow,
+        // The axis floor is the baseline row itself, so its label reads 0.
+        axisLabel: {
+          ...AXIS.axisLabel,
+          showMinLabel: true,
+          formatter: (value) => (value <= zeroRow * 1.001 ? "0" : String(value)),
+        },
+      },
       tooltip: { show: false },
       series: [
         scatterSeries(
           "Countries",
-          rows.map((r) => point(r.m.in_degree, r.m.betweenness, r.iso3, r.n.name,
+          rows.map((r) => point(r.m.in_degree, onRow(r.m.betweenness), r.iso3, r.n.name,
             `<b>${r.n.name}</b><span>${r.m.in_degree} origins</span>` +
-            `<span>betweenness #${r.m.betweenness_rank}</span>`)),
+            (r.m.betweenness > 0
+              ? `<span>betweenness #${r.m.betweenness_rank}</span>`
+              : "<span>betweenness 0</span>"))),
           "#c9d7e8",
           6,
         ),
         scatterSeries(
           focus.name,
-          [point(dk.in_degree, dk.betweenness, focus.iso3, focus.name)],
+          [point(dk.in_degree, onRow(dk.betweenness), focus.iso3, focus.name)],
           "#d0021b",
           10,
         ),

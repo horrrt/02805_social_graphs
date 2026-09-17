@@ -302,6 +302,28 @@ function withMetrics(y = year()) {
     .filter((row) => row.m);
 }
 
+// How much brokerage a country carries beyond what its partner count alone
+// would give it, in the units of betweenness itself. The z-score asks the same
+// question in units of the null spread, and for a country whose shuffled
+// betweenness is zero in most draws that spread collapses and the z inflates:
+// Palau clears z = 6 on a betweenness of 0.009, thirty times under Germany's.
+// This number does not have that failure mode, so it is what the broker list
+// is ranked by, with z kept as the significance test.
+function excessBetweenness(iso3, m) {
+  const stats = state.data.null_summary?.[iso3];
+  if (!stats || !m || m.betweenness === undefined) return null;
+  return m.betweenness - stats.null_mean;
+}
+
+// Countries whose betweenness the degree sequence cannot explain, strongest
+// first. Section 3 labels the top of this list and section 4 lists it.
+function brokers(y) {
+  return withMetrics(y)
+    .filter((r) => (r.m.z ?? 0) >= 2)
+    .map((r) => ({ ...r, excess: excessBetweenness(r.iso3, r.m) ?? 0 }))
+    .sort((a, b) => b.excess - a.excess);
+}
+
 // Section 8 analyses one country, and that country is whatever is selected on
 // the page. Everything it needs is already per-country in the payload, so the
 // section works for any of the 236 without shipping a block for each.
@@ -371,7 +393,7 @@ export const GLOSSARY = {
   Betweenness:
     "How often this country sits on the shortest path between two others. A heavy corridor counts as a short step, so it measures brokerage in a weighted sense. High betweenness means traffic between other countries passes through here.",
   "Betweenness z-score":
-    "How surprising that betweenness is once the country's number of partners is held fixed, measured against 100 degree-preserving shuffles. Zero means 'exactly what its partner count predicts'. Above +2 is a broker the degree sequence cannot explain.",
+    "How surprising that betweenness is once the country's number of partners is held fixed, measured against 100 degree-preserving shuffles. Above +2 is a broker the degree sequence cannot explain. A zero is ambiguous: it means the real value matches the shuffles, and for the half of the world that brokers nothing both are zero, so there is nothing to be surprised by.",
   "Flight partners":
     "How many countries have at least one direct air route to here. Access, not people.",
   "Flight routes":
@@ -1472,54 +1494,75 @@ function drawBetweenness() {
   const { ctx, width, height } = surface(canvas);
   const box = frame(width, height, { l: 56, r: 16, t: 14, b: 38 });
   const y = String(state.data.null_year);
-  const rows = withMetrics(y).filter((r) => r.m.in_degree > 0 && r.m.betweenness > 0);
+  // Half the world sits on no shortest path at all, and a log axis cannot draw
+  // a zero. Dropping those countries would turn "popular is not a bridge" into
+  // a claim about the countries that already are bridges, so they go on a
+  // baseline row under the axis break instead.
+  const rows = withMetrics(y).filter((r) => r.m.in_degree > 0);
   // Both series carry the same two quantities, computed the same way on their
   // own network: in-degree, and betweenness with distance = 1 / weight.
   const flights = state.data.countries
     .map((iso3) => ({ iso3, n: node(iso3) }))
-    .filter((r) => r.n.flight_in_degree > 0 && r.n.flight_betweenness > 0);
+    .filter((r) => r.n.flight_in_degree > 0);
   const maxK = Math.max(
     ...rows.map((r) => r.m.in_degree),
     ...flights.map((r) => r.n.flight_in_degree),
   );
-  const minB = Math.min(
+  const positive = [
     ...rows.map((r) => r.m.betweenness),
     ...flights.map((r) => r.n.flight_betweenness),
-  );
-  const maxB = Math.max(
-    ...rows.map((r) => r.m.betweenness),
-    ...flights.map((r) => r.n.flight_betweenness),
-  );
+  ].filter((value) => value > 0);
+  const minB = Math.min(...positive);
+  const maxB = Math.max(...positive);
+  const zeroRow = minB / 4;
+  const axisBreak = minB / 2;
   box.x = logScale(box, [1, maxK], "x");
-  box.y = logScale(box, [minB, maxB], "y");
+  box.y = logScale(box, [minB / 8, maxB], "y");
   axes(ctx, box, {
     xTicks: logTicks(1, maxK),
-    yTicks: logTicks(minB, maxB),
+    yTicks: [{ value: zeroRow, label: "0" }, ...logTicks(minB, maxB)],
     xLabel: "Origins (in-degree)",
     yLabel: "Betweenness",
   });
+  // The break. Everything below this line is an exact zero, not a small number.
+  ctx.strokeStyle = "#c2d0e2";
+  ctx.setLineDash([3, 4]);
+  ctx.beginPath();
+  const cut = Math.round(box.y(axisBreak)) + 0.5;
+  ctx.moveTo(box.left, cut);
+  ctx.lineTo(box.right, cut);
+  ctx.stroke();
+  ctx.setLineDash([]);
+  // Zeros would pile onto one pixel row, so each country is nudged by a fixed
+  // amount derived from its code: the same country lands in the same place on
+  // every redraw.
+  const nudge = (iso3) => (((iso3.charCodeAt(0) * 7 + iso3.charCodeAt(2) * 3) % 9) - 4);
+  const place = (value, iso3) => (value > 0 ? box.y(value) : box.y(zeroRow) + nudge(iso3));
   const marks = collect("scatter-between");
+  const zeroNote = (kind) =>
+    `<span>betweenness 0 · on no shortest path between two other ${kind}</span>`;
   plotDots(ctx, marks, flights.map((r) => ({
     x: box.x(r.n.flight_in_degree),
-    y: box.y(r.n.flight_betweenness),
+    y: place(r.n.flight_betweenness, r.iso3),
     iso3: r.iso3,
     label: `<b>${r.n.name}</b><span>Flight network</span>` +
       `<span>${r.n.flight_in_degree} flight partners</span>` +
-      `<span>betweenness ${r.n.flight_betweenness.toExponential(2)} · #${r.n.flight_betweenness_rank}</span>`,
+      (r.n.flight_betweenness > 0
+        ? `<span>betweenness ${r.n.flight_betweenness.toExponential(2)} · #${r.n.flight_betweenness_rank}</span>`
+        : zeroNote("countries")),
   })), ACCESS + "88", 2);
   plotDots(ctx, marks, rows.map((r) => ({
-    x: box.x(r.m.in_degree), y: box.y(r.m.betweenness), iso3: r.iso3,
+    x: box.x(r.m.in_degree), y: place(r.m.betweenness, r.iso3), iso3: r.iso3,
     label: `<b>${r.n.name}</b><span>Migration network</span>` +
       `<span>${r.m.in_degree} origins · #${r.m.in_degree_rank}</span>` +
-      `<span>betweenness ${r.m.betweenness.toExponential(2)} · #${r.m.betweenness_rank}</span>` +
+      (r.m.betweenness > 0
+        ? `<span>betweenness ${r.m.betweenness.toExponential(2)} · #${r.m.betweenness_rank}</span>`
+        : zeroNote("countries")) +
       (r.m.z === undefined ? "" : `<span>z = ${r.m.z.toFixed(2)} against the null</span>`),
   })), PEOPLE + "cc", 2.4);
   // Label only the brokers a reader should look up, and only where the label
   // will not sit on top of one already placed.
-  const notable = rows
-    .filter((r) => (r.m.z ?? 0) >= 2 && r.m.in_degree >= 10)
-    .sort((a, b) => (b.m.z ?? 0) - (a.m.z ?? 0))
-    .slice(0, 6);
+  const notable = brokers(y).slice(0, 6);
   ctx.font = "600 10px -apple-system, system-ui, sans-serif";
   ctx.fillStyle = INK;
   ctx.textAlign = "left";
@@ -1531,9 +1574,30 @@ function drawBetweenness() {
     const py = box.y(r.m.betweenness) - 5;
     if (placed.some((p) => Math.abs(p.x - x) < 110 && Math.abs(p.y - py) < 12)) continue;
     placed.push({ x, y: py });
-    ctx.fillText(`${r.n.name} (z = ${r.m.z.toFixed(1)})`, x, py);
+    ctx.fillText(`${r.n.name} (+${r.excess.toFixed(2)})`, x, py);
   }
-  markSelectedPoint(ctx, box, (m) => [m.in_degree, m.betweenness], y);
+  markSelectedPoint(ctx, box, (m) => [m.in_degree, m.betweenness], y, place);
+}
+
+// The caption says how many countries are on the baseline, because a reader who
+// cannot see that number cannot tell a sparse cloud from a truncated one. It is
+// written from the data rather than by a renderer, so every skin says the same.
+function writeBetweennessNote() {
+  const target = $("between-note");
+  if (!target) return;
+  const y = String(state.data.null_year);
+  const rows = withMetrics(y).filter((r) => r.m.in_degree > 0);
+  const flights = state.data.countries
+    .map((iso3) => ({ iso3, n: node(iso3) }))
+    .filter((r) => r.n.flight_in_degree > 0);
+  const zeroMigration = rows.filter((r) => r.m.betweenness === 0).length;
+  const zeroFlights = flights.filter((r) => r.n.flight_betweenness === 0).length;
+  target.textContent =
+    `Every country is here. ${zeroMigration} of ${rows.length} broker nothing in the ` +
+    `migration network and ${zeroFlights} of ${flights.length} broker nothing in the ` +
+    "flight network: they sit on no shortest path between two others, so they are " +
+    "drawn on the baseline row marked 0, under the dashed break. A log axis cannot " +
+    "place a zero anywhere else.";
 }
 
 function drawZ() {
@@ -1597,14 +1661,16 @@ function plotDots(ctx, marks, points, colour, radius) {
   }
 }
 
-function markSelectedPoint(ctx, box, pick, y) {
+// `place` lets a chart put a value somewhere other than its log position, which
+// is how the selected country still gets a ring when its betweenness is zero.
+function markSelectedPoint(ctx, box, pick, y, place) {
   if (!state.selected) return;
   const m = metrics(state.selected, y);
   if (!m) return;
   const [vx, vy] = pick(m);
   if (vy === undefined) return;
   const x = box.x(vx);
-  const py = box.y(vy);
+  const py = place ? place(vy, state.selected) : box.y(vy);
   ctx.strokeStyle = INK;
   ctx.lineWidth = 1.5;
   ctx.beginPath();
@@ -1885,30 +1951,45 @@ function drawDenmark() {
   const n = node(iso3);
   if (!m) return;
 
-  const rows = withMetrics(y).filter((r) => r.m.in_degree > 0 && r.m.betweenness > 0);
+  const rows = withMetrics(y).filter((r) => r.m.in_degree > 0);
   small($("dk-scatter"), (ctx, box) => {
     const maxK = Math.max(...rows.map((r) => r.m.in_degree));
-    const minB = Math.min(...rows.map((r) => r.m.betweenness));
-    const maxB = Math.max(...rows.map((r) => r.m.betweenness));
+    const positive = rows.map((r) => r.m.betweenness).filter((value) => value > 0);
+    const minB = Math.min(...positive);
+    const maxB = Math.max(...positive);
+    // Same baseline row as section 3, so a country that brokers nothing keeps
+    // its place here too rather than dropping off its own chart.
+    const zeroRow = minB / 4;
     box.x = logScale(box, [1, maxK], "x");
-    box.y = logScale(box, [minB, maxB], "y");
+    box.y = logScale(box, [minB / 8, maxB], "y");
     axes(ctx, box, {
       xTicks: logTicks(1, maxK),
-      yTicks: logTicks(minB, maxB),
+      yTicks: [{ value: zeroRow, label: "0" }, ...logTicks(minB, maxB)],
       xLabel: "Origins (in-degree)",
       yLabel: "Betweenness",
     });
+    const at = (value) => (value > 0 ? box.y(value) : box.y(zeroRow));
+    ctx.strokeStyle = "#c2d0e2";
+    ctx.setLineDash([3, 4]);
+    ctx.beginPath();
+    const cut = Math.round(box.y(minB / 2)) + 0.5;
+    ctx.moveTo(box.left, cut);
+    ctx.lineTo(box.right, cut);
+    ctx.stroke();
+    ctx.setLineDash([]);
     const marks = collect("dk-scatter");
     plotDots(ctx, marks, rows.map((r) => ({
-      x: box.x(r.m.in_degree), y: box.y(r.m.betweenness), iso3: r.iso3,
+      x: box.x(r.m.in_degree), y: at(r.m.betweenness), iso3: r.iso3,
       label: `<b>${r.n.name}</b><span>${r.m.in_degree} origins · #${r.m.in_degree_rank}</span>` +
-        `<span>betweenness #${r.m.betweenness_rank}</span>`,
+        (r.m.betweenness > 0
+          ? `<span>betweenness #${r.m.betweenness_rank}</span>`
+          : "<span>betweenness 0 · on no shortest path between two other countries</span>"),
     })), "#c9d7e8", 1.8);
-    dot(ctx, box.x(m.in_degree), box.y(m.betweenness), "#d0021b", n.name, 4, box.right);
+    dot(ctx, box.x(m.in_degree), at(m.betweenness), "#d0021b", n.name, 4, box.right);
     for (const other of focus.peers) {
       if (other.iso3 === iso3) continue;
       const om = metrics(other.iso3, y);
-      if (om) dot(ctx, box.x(om.in_degree), box.y(om.betweenness), PEOPLE, other.iso3, 2.6, box.right);
+      if (om) dot(ctx, box.x(om.in_degree), at(om.betweenness), PEOPLE, other.iso3, 2.6, box.right);
     }
   });
 
@@ -2068,6 +2149,9 @@ function line(ctx, box, rows, getX, getY, colour) {
 function setYear(value) {
   state.year = state.data.years[value];
   $("year-now").textContent = String(state.year);
+  // Section 2 redraws with the slider, so its tag cannot be a fixed year.
+  const tag = $("tails-tag");
+  if (tag) tag.textContent = `(${state.year} · follows the slider)`;
   R.globe();
   R.map();
   R.hist();
@@ -2198,24 +2282,32 @@ function renderTwinStats() {
   $("null-tag").textContent = `(null model · ${state.data.null_year} · ${state.data.shuffles} shuffles)`;
   $("twin-tag").textContent = `(migration ${state.data.null_year} · flights undated)`;
 
-  // A country with four corridors gets a tiny null spread and so a huge z for
-  // very little reason. The list keeps countries with at least ten partners and
-  // the caption says what was excluded, rather than quietly dropping them.
-  const scored = withMetrics(y).filter((r) => r.m.z !== undefined);
-  const solid = scored.filter((r) => r.m.in_degree >= 10);
-  const excluded = scored.filter(
-    (r) => r.m.in_degree < 10 && r.m.z >= Math.min(...solid.slice(0, 6).map((s) => s.m.z)),
-  ).length;
-  $("z-top").innerHTML = solid
-    .sort((a, b) => b.m.z - a.m.z)
+  // A country whose shuffled betweenness is zero in most of the hundred draws
+  // gets a null spread near zero, and its z-score inflates without its
+  // brokerage going anywhere. Ranking by how much betweenness the degree
+  // sequence leaves unexplained keeps the same question and drops that
+  // artifact; z stays as the test for getting on the list at all.
+  const ranked = brokers(y);
+  $("z-top").innerHTML = ranked
     .slice(0, 6)
     .map(
       (r) =>
-        `<li><span>${r.n.name} <span style="color:#7a8fac">k=${r.m.in_degree}</span></span><b>z = ${r.m.z.toFixed(1)}</b></li>`,
+        `<li><span>${r.n.name} <span style="color:#7a8fac">z = ${r.m.z.toFixed(1)}</span></span>` +
+        `<b>+${r.excess.toFixed(3)}</b></li>`,
     )
     .join("");
-  $("z-floor").textContent = excluded
-    ? `Countries with fewer than ten origins are held out of this list: ${excluded} of them score higher, on a null spread too small to trust.`
+  const tail = ranked.slice(6);
+  // The countries the old ranking put at the top: a z built on a null spread
+  // that has collapsed, over an amount of brokerage that rounds to nothing.
+  const fragile = tail.filter((r) => r.excess < ranked[0].excess / 20);
+  const named = fragile.slice(0, 3).map((r) => r.n.name).join(", ");
+  const rest = fragile.length > 3 ? ` and ${fragile.length - 3} more` : "";
+  $("z-floor").textContent = tail.length
+    ? `Ranked by betweenness beyond the null's average, not by z. ${tail.length} more ` +
+      `countries clear z = 2. ${fragile.length} of them (${named}${rest}) broker under a ` +
+      "twentieth of what the top of this list does, and still score up to " +
+      `z = ${Math.max(...fragile.map((r) => r.m.z)).toFixed(1)}: their betweenness is zero ` +
+      `in most shuffles, so the null spread collapses and the z inflates.`
     : "";
 }
 
@@ -2318,6 +2410,7 @@ async function main() {
     setupEdgeInspector();
     setupSpotlightPicker();
     renderTwinStats();
+    writeBetweennessNote();
     renderTypology();
     // The page opens on the country section 8 is built around, so the default
     // selection and the default analysis are the same country.
