@@ -8,10 +8,18 @@ code, change the URL, and no cache can hand back the old file.
 
 Each asset carries a hash of what it actually depends on, rather than one
 hash over everything. The stylesheet's stamp moves when the stylesheet moves;
-the boot module's moves when any module in its import graph moves. That
-matters for the diff more than for the reader: a stylesheet-only stamp means
-the style guide, which loads no JavaScript, stops being rewritten every time
-a chart changes. Under one shared hash it was rewritten on every commit.
+the boot module's moves when any module in its import graph moves, or when
+any of the seven data files it fetches does. That matters for the diff more
+than for the reader: a stylesheet-only stamp means the style guide, which
+loads no JavaScript, stops being rewritten every time a chart changes. Under
+one shared hash it was rewritten on every commit.
+
+The code and the data share one stamp rather than taking one each, because a
+data file is fetched from inside a module and there is nowhere else to put a
+version. The modules pass their own ?v= down to the files they fetch, so one
+number has to cover both. It costs a re-download of the other half whenever
+either moves, which on a static course site is nothing next to serving a
+reader last week's numbers.
 
     python scripts/stamp_week03.py           # rewrite what is stale
     python scripts/stamp_week03.py --check   # exit non-zero if stale
@@ -19,8 +27,9 @@ a chart changes. Under one shared hash it was rewritten on every commit.
                                              # conflicts on the generated stamp
 
 The boot module hashes the whole graph rather than only itself because it
-passes its own ?v= down to every module it imports — see week03-boot.js — so
-one stamp busts the lot.
+passes its own ?v= down to every module it imports, and those modules pass it
+down again to every data file they fetch. See week03-boot.js and the dataUrl
+helper in corridor.js. One stamp busts the lot.
 """
 
 from __future__ import annotations
@@ -51,6 +60,20 @@ ASSETS = {
         "docs/assets/js/variants/globe.js",
         "docs/assets/js/variants/atlas.js",
         "docs/assets/js/variants/deck.js",
+        # The seven files the page fetches. They belong to this stamp because
+        # a data file is fetched at a fixed URL from inside a module, so
+        # nothing else can bust it: new URL() drops the query when it resolves
+        # a relative path, and a reader would keep the previous deploy's
+        # numbers for as long as the cache holds them. That happened during
+        # the rank fix, with the browser showing one set of ranks while the
+        # server served another.
+        "docs/assets/data/week03_corridors.json",
+        "docs/assets/data/week03_edges.json",
+        "docs/assets/data/week03_cartography.json",
+        "docs/assets/data/week03_asylum.json",
+        "docs/assets/data/week03_closures.json",
+        "docs/assets/data/week03_calendar.json",
+        "docs/assets/data/world_outline.geo.json",
     ],
 }
 
