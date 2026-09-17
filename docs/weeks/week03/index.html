@@ -9,7 +9,7 @@
     />
     <title>Corridor Control · Log–Log Legends</title>
     <link href="../../assets/favicon.svg" rel="icon" type="image/svg+xml" />
-    <link href="../../assets/css/corridor.css?v=0f8eda4287" rel="stylesheet" />
+    <link href="../../assets/css/corridor.css?v=54f71459a0" rel="stylesheet" />
   </head>
   <body class="corridor">
     <a class="skip" href="#main">Skip to content</a>
@@ -697,17 +697,66 @@
                   <p class="qa-answer" id="v-area-answer"></p>
                 </article>
 
+                <div class="notice">
+                  <span class="ico">🕰️</span>
+                  <span>
+                    <b>The next three have a date on them.</b> Everything else
+                    on this page runs on UN DESA's stock table, which is eight
+                    five-year snapshots: it cannot see a month, a war or a
+                    border closing. These three come from the only dated
+                    sources in the catalogue that reach further. Eurostat
+                    counts asylum applications by the month, the Oxford
+                    tracker codes travel restrictions by the day, and IOM
+                    records deaths by the incident. Different sources, so the
+                    three grids are three different things counted three
+                    different ways, and none of them is the corridor data
+                    above.
+                  </span>
+                </div>
+
                 <article class="qa-item">
-                  <h3>3 &middot; Deaths on the routes, day by day</h3>
+                  <h3>3 &middot; A war, month by month</h3>
+                  <div class="qa-controls">
+                    <label for="v-asylum-origin">People from</label>
+                    <select
+                      aria-label="Country of citizenship"
+                      id="v-asylum-origin"
+                    ></select>
+                  </div>
                   <p class="axis-note">
-                    Every other chart here counts people who arrived. UN DESA's
-                    table has no date in it — it is eight five-year snapshots —
-                    so nothing else on this page can show a day, a week or a
-                    season. This one can, because it comes from a different
-                    source that records incidents: IOM's Missing Migrants
-                    Project. One cell is one day. The darker it is, the more
-                    people were recorded dead or missing on a migration route
-                    that day.
+                    First-time asylum applications lodged in 34 European
+                    countries, by month, from Eurostat. One row is a year, one
+                    cell a month. Picking a country here also selects it
+                    everywhere else on the page. Temporary protection is a
+                    different legal route and is not in this table, so most
+                    Ukrainians after February 2022 are missing from it.
+                  </p>
+                  <div class="echart grid" id="v-asylum"></div>
+                  <p class="qa-answer" id="v-asylum-answer"></p>
+                </article>
+
+                <article class="qa-item">
+                  <h3>4 &middot; The day the borders shut</h3>
+                  <p class="axis-note">
+                    One cell is one day. The darker it is, the more countries
+                    were closed to arrivals from everywhere that day, on the
+                    Oxford tracker's top level of travel restriction. The
+                    denominator moves as countries enter and leave the panel,
+                    so every count comes with the number reporting.
+                  </p>
+                  <div class="echart closures" id="v-closures"></div>
+                  <p class="qa-answer" id="v-closures-answer"></p>
+                </article>
+
+                <article class="qa-item">
+                  <h3>5 &middot; Deaths on the routes, day by day</h3>
+                  <p class="axis-note">
+                    The two charts above count people who applied and borders
+                    that closed. This one counts the people who did not
+                    arrive: IOM's Missing Migrants Project, one row per
+                    recorded incident. One cell is one day, and the darker it
+                    is, the more people were recorded dead or missing on a
+                    migration route.
                   </p>
                   <div class="echart calendar" id="v-calendar"></div>
                   <p class="qa-answer" id="v-calendar-answer"></p>
@@ -780,7 +829,30 @@
                   </div>
                   <div>
                     <p class="sub">
-                      <b>The calendar.</b> IOM Missing Migrants Project via
+                      <b>Monthly applications.</b> Eurostat migr_asyappctzm,
+                      first-time asylum applicants of all ages and both sexes,
+                      by citizenship and reporting country, monthly since
+                      2013. Reuse with attribution. Eurostat ships aggregate
+                      rows inside both dimensions — EU27 sits beside its own
+                      members, TOTAL beside every citizenship — and summing
+                      over them counts most of Europe twice, so both are
+                      dropped. Applications are not arrivals, temporary
+                      protection is a different route and is not counted, and
+                      small cells are suppressed, which is why a month with no
+                      figure is drawn as a hole rather than a zero.
+                    </p>
+                    <p class="sub">
+                      <b>Border closures.</b> Oxford Covid-19 Government
+                      Response Tracker, CC BY 4.0, indicator C8: policy toward
+                      foreign travellers on a 0 to 4 scale, one value per
+                      country per day, national rows only. Level 4 is a ban on
+                      all regions or a total closure. It is policy on paper
+                      rather than traffic, the panel is 185 countries and the
+                      number reporting moves from day to day, and the tracker
+                      stops at the end of 2022.
+                    </p>
+                    <p class="sub">
+                      <b>The deaths calendar.</b> IOM Missing Migrants Project via
                       HDX, CC BY-IGO, binned by the date an incident was
                       reported. It is the only dated source on the page, which
                       is why section 10 can show a day at all. It counts
@@ -847,6 +919,8 @@
             Sources: UN DESA International Migrant Stock (Rev. 2024) ·
             UNHCR Refugee Data Finder (end-2024) ·
             IOM Missing Migrants Project (CC BY-IGO) ·
+            Eurostat monthly asylum applications ·
+            Oxford Covid-19 Government Response Tracker (CC BY 4.0) ·
             OpenFlights routes (air access proxy, undated snapshot) ·
             Natural Earth 1:110m country outlines (public domain)
           </span>
@@ -857,6 +931,6 @@
       </footer>
     </main>
 
-    <script src="../../assets/js/week03-boot.js?v=0f8eda4287" type="module"></script>
+    <script src="../../assets/js/week03-boot.js?v=54f71459a0" type="module"></script>
   </body>
 </html>
