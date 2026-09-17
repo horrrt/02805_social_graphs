@@ -1882,3 +1882,64 @@ body > .chart-tip[hidden] {
   --gain: #3d6f9e;
   --loss: #9e5a3d;
 }
+
+/* --- the table under every chart ------------------------------------- */
+
+.corridor .chart-table {
+  border-top: 1px solid var(--line-soft);
+  margin-top: 6px;
+}
+
+.corridor .chart-table > summary {
+  color: var(--ink-soft);
+  cursor: pointer;
+  font-size: 11px;
+  font-weight: 700;
+  list-style: none;
+  padding: 7px 2px;
+}
+
+.corridor .chart-table > summary::-webkit-details-marker {
+  display: none;
+}
+
+.corridor .chart-table > summary::before {
+  content: "▸ ";
+}
+
+.corridor .chart-table[open] > summary::before {
+  content: "▾ ";
+}
+
+.corridor .chart-table-scroll {
+  max-height: 320px;
+  overflow: auto;
+}
+
+.corridor .chart-table table {
+  border-collapse: collapse;
+  font-size: 12px;
+  width: 100%;
+}
+
+.corridor .chart-table th,
+.corridor .chart-table td {
+  border-bottom: 1px solid var(--line-soft);
+  padding: 4px 8px 4px 0;
+  text-align: left;
+}
+
+.corridor .chart-table thead th {
+  background: var(--card);
+  color: var(--ink-mute);
+  font-size: 10.5px;
+  letter-spacing: 0.04em;
+  position: sticky;
+  text-transform: uppercase;
+  top: 0;
+}
+
+.corridor .chart-table .num {
+  font-variant-numeric: tabular-nums;
+  text-align: right;
+}

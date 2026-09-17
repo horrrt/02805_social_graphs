@@ -1570,9 +1570,9 @@ function ccdf(entries) {
 }
 
 const SERIES = [
-  { key: "in", colour: PEOPLE, pick: (n, m) => m.in_degree },
-  { key: "out", colour: INK, pick: (n, m) => m.out_degree },
-  { key: "flight", colour: ACCESS, pick: (n) => n.flight_degree },
+  { key: "in", label: "In-degree", colour: PEOPLE, pick: (n, m) => m.in_degree },
+  { key: "out", label: "Out-degree", colour: INK, pick: (n, m) => m.out_degree },
+  { key: "flight", label: "Flight degree", colour: ACCESS, pick: (n) => n.flight_degree },
 ];
 
 function binnedDegrees(pick) {
@@ -1641,6 +1641,19 @@ function drawHistogram() {
   });
   // The x-axis is bins now, so the marker is placed by which bin the country
   // falls in rather than by its raw degree.
+  chartTable(
+    "hist",
+    "countries by partner count",
+    ["Partners", ...SERIES.map((s) => s.label)],
+    DEGREE_BINS.map((bin) => [
+      bin.label,
+      ...all.map((points) => {
+        const hit = points.find((d) => d.lo === bin.lo);
+        return hit ? fmt.format(hit.c) : "0";
+      }),
+    ]),
+  );
+
   markSelected(ctx, box, (n, m) => {
     const index = DEGREE_BINS.findIndex((bin) => m.in_degree >= bin.lo && m.in_degree < bin.hi);
     const bin = all[0].find((d) => d.lo === DEGREE_BINS[index]?.lo);
@@ -1718,6 +1731,43 @@ function drawCcdf() {
     const point = series[0].find((d) => d.k === m.in_degree);
     return [m.in_degree, point?.p ?? 1];
   });
+}
+
+// Every chart on this page is a canvas, which means a screen reader and a
+// keyboard reach exactly nothing in it and a tooltip is the only way to read
+// a number. This puts the same numbers under each chart as a real table,
+// closed by default so it costs a reader nothing until they want it.
+//
+// The table is built from the arrays the draw function already has, so it
+// cannot drift from the picture above it.
+function chartTable(hostId, caption, headers, rows) {
+  const host = $(hostId);
+  if (!host || !rows.length) return;
+  const id = `${hostId}-table`;
+  let box = document.getElementById(id);
+  if (!box) {
+    box = document.createElement("details");
+    box.className = "chart-table";
+    box.id = id;
+    host.after(box);
+  }
+  const open = box.open;
+  box.innerHTML =
+    `<summary>Table${caption ? `: ${caption}` : ""}</summary>` +
+    "<div class=\"chart-table-scroll\"><table>" +
+    `<thead><tr>${headers
+      .map((h, i) => `<th${i ? ' scope="col" class="num"' : ' scope="col"'}>${h}</th>`)
+      .join("")}</tr></thead><tbody>` +
+    rows
+      .map(
+        (row) =>
+          `<tr>${row
+            .map((cell, i) => (i ? `<td class="num">${cell}</td>` : `<th scope="row">${cell}</th>`))
+            .join("")}</tr>`,
+      )
+      .join("") +
+    "</tbody></table></div>";
+  box.open = open;
 }
 
 function markSelected(ctx, box, pick, opts = {}) {
@@ -2812,7 +2862,7 @@ export const api = {
   paintPhotoGlobe,
   // Chart furniture, so the questions section draws on the same axes as the
   // rest of the post instead of inventing its own.
-  surface, frame, axes, logTicks, logScale, linearScale, flag,
+  surface, frame, axes, logTicks, logScale, linearScale, flag, chartTable,
   // The net layer, so a renderer that draws its own map can draw this one too.
   netBalance, netColour, netNote, drawNet: drawNetMap,
   spotlight, earthScale, globeRadius, EARTH_SIZES, typologyNote,
