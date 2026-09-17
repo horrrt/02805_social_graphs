@@ -408,6 +408,13 @@
   padding: 20px 22px;
 }
 
+/* A step can hold more than one card now that the deeper material sits under
+   one number. Without this they would meet with no gap and read as one panel
+   with a rule through it. */
+.corridor .step .card + .card {
+  margin-top: 18px;
+}
+
 .corridor .step-head {
   align-items: baseline;
   display: flex;

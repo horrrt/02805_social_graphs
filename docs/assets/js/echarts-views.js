@@ -740,181 +740,6 @@ function answerClosures() {
     `its border on paper; who actually crossed it is a different dataset.`;
 }
 
-/* ---------------------------------------------------------------- calendar
-
-   The one chart on this page with a date on it. Everything else is UN DESA's
-   stock table, which is eight five-year snapshots and cannot show a day, a
-   week or a season. IOM's Missing Migrants Project can, and what it counts is
-   the other end of a corridor: the people who did not arrive. */
-
-let calendar = null;
-
-async function loadCalendar() {
-  if (calendar) return calendar;
-  const url = dataUrl("week03_calendar.json");
-  calendar = await fetch(url).then((r) => r.json());
-  return calendar;
-}
-
-function drawCalendar() {
-  const instance = chart("v-calendar");
-  if (!instance || !calendar) return;
-  const { PEOPLE, INK, MUTE, GRID } = api.colours;
-  const years = calendar.years;
-  const entries = Object.entries(calendar.days);
-
-  // A continuous ramp is useless here: most days are single figures and one
-  // shipwreck is six hundred, so a linear scale paints the whole calendar
-  // pale. Buckets that roughly double give every band something to hold.
-  const BANDS = [
-    [0, 0],
-    [1, 2],
-    [3, 5],
-    [6, 10],
-    [11, 25],
-    [26, 50],
-    [51, Infinity],
-  ];
-
-  const partial = years.filter((y) => !calendar.complete_years.includes(y));
-  const cellSize = 13;
-  const top = 34;
-  const gap = 92;
-  const calendars = years.map((year, i) => ({
-    top: top + i * gap,
-    left: 58,
-    right: 24,
-    cellSize: [cellSize, cellSize],
-    range: year,
-    splitLine: { show: false },
-    itemStyle: { color: "transparent", borderColor: GRID, borderWidth: 1 },
-    yearLabel: {
-      show: true,
-      formatter: calendar.complete_years.includes(year) ? `${year}` : `${year} ·`,
-      color: INK,
-      fontSize: 13,
-      fontWeight: 700,
-      margin: 34,
-    },
-    monthLabel: { show: i === 0, color: MUTE, fontSize: 10 },
-    dayLabel: { show: true, firstDay: 1, nameMap: ["S", "M", "T", "W", "T", "F", "S"], color: MUTE, fontSize: 9 },
-  }));
-
-  const series = years.map((year, i) => ({
-    type: "heatmap",
-    coordinateSystem: "calendar",
-    calendarIndex: i,
-    data: entries.filter(([date]) => date.startsWith(year)).map(([date, v]) => ({
-      value: [date, v[0]],
-      day: v,
-    })),
-  }));
-
-  instance.setOption(
-    {
-      ...BASE,
-      tooltip: tip((p) => {
-        const [date, people] = p.value;
-        const [, incidents, region, route, worst] = p.data.day;
-        return (
-          `<b>${date}</b><br>` +
-          `${fmt(people)} dead or missing in ${incidents} ` +
-          `${incidents === 1 ? "incident" : "incidents"}<br>` +
-          `${[region, route].filter(Boolean).join(" · ")}` +
-          (worst ? `<br><span style="opacity:.75">${worst}</span>` : "")
-        );
-      }),
-      visualMap: {
-        type: "piecewise",
-        orient: "horizontal",
-        left: 58,
-        top: 0,
-        itemWidth: 12,
-        itemHeight: 12,
-        itemGap: 6,
-        textStyle: { color: MUTE, fontSize: 10 },
-        pieces: BANDS.map(([lo, hi], i) => ({
-          min: lo,
-          max: Number.isFinite(hi) ? hi : undefined,
-          label:
-            lo === 0 ? "none recorded" : Number.isFinite(hi) ? `${lo}–${hi}` : `${lo}+`,
-          color:
-            lo === 0
-              ? `rgba(${api.rgb(MUTE)},0.12)`
-              : `rgba(${api.rgb(PEOPLE)},${(0.18 + (i / (BANDS.length - 1)) * 0.82).toFixed(2)})`,
-        })),
-      },
-      calendar: calendars,
-      graphic: partial.length
-        ? [
-            {
-              type: "text",
-              right: 24,
-              top: 4,
-              style: {
-                text: `${partial.join(", ")} runs to ${entries.at(-1)[0]}, not to December`,
-                fill: MUTE,
-                font: "10px -apple-system, system-ui, sans-serif",
-              },
-            },
-          ]
-        : [],
-      series,
-    },
-    true,
-  );
-  api.chartTable(
-    "v-calendar",
-    "the fifty worst days",
-    ["Date", "Dead or missing", "Incidents", "Region"],
-    [...entries]
-      .sort((a, b) => b[1][0] - a[1][0])
-      .slice(0, 50)
-      .map(([date, v]) => [date, fmt(v[0]), String(v[1]), v[2] || "—"]),
-  );
-  answerCalendar();
-}
-
-function answerCalendar() {
-  const host = $("v-calendar-answer");
-  if (!host || !calendar) return;
-  const entries = Object.entries(calendar.days);
-  const byYear = new Map();
-  for (const [date, v] of entries) {
-    const year = date.slice(0, 4);
-    byYear.set(year, (byYear.get(year) ?? 0) + v[0]);
-  }
-  const complete = calendar.complete_years;
-  const worst = entries.slice().sort((a, b) => b[1][0] - a[1][0])[0];
-  // Days the file has no row for at all, which is the honest version of
-  // "quiet": a day with no recorded incident, not a day with no death.
-  const span =
-    (Date.parse(entries.at(-1)[0]) - Date.parse(entries[0][0])) / 86400000 + 1;
-  const unrecorded = Math.round(span) - entries.length;
-  const total = entries.reduce((sum, [, v]) => sum + v[0], 0);
-  const busiest = [...byYear.entries()]
-    .filter(([y]) => complete.includes(y))
-    .sort((a, b) => b[1] - a[1])[0];
-  const first = complete[0];
-  const last = complete.at(-1);
-  host.innerHTML =
-    `<b>${fmt(total)}</b> people are recorded dead or missing across ` +
-    `<b>${fmt(entries.length)}</b> days here, and the calendar almost never goes ` +
-    `dark: in ${entries[0][0].slice(0, 4)} to ${entries.at(-1)[0].slice(0, 4)} only ` +
-    `<b>${unrecorded}</b> days carry no recorded incident at all. ` +
-    `The worst single day is <b>${worst[0]}</b>, <b>${fmt(worst[1][0])}</b> people` +
-    (worst[1][4] ? `, ${worst[1][4]}` : "") +
-    `${worst[1][4]?.endsWith("…") ? "" : "."} Of the full years, <b>${busiest[0]}</b> is the heaviest at ` +
-    `<b>${fmt(busiest[1])}</b>, against <b>${fmt(byYear.get(first))}</b> in ${first} ` +
-    `and <b>${fmt(byYear.get(last))}</b> in ${last}. ` +
-    `Read a bright cell as a recorded incident, not as a measured death toll. ` +
-    `IOM states that its record is an undercount, by an unknown amount that ` +
-    `differs by route, so a brighter year can be a better-watched one. ` +
-    `A single cell is often a single boat: the number missing after a shipwreck ` +
-    `is estimated from what survivors say, and one estimate can outweigh a month ` +
-    `of land crossings.`;
-}
-
 /* ----------------------------------------------------------------- controls */
 
 function wireGraph() {
@@ -970,7 +795,6 @@ function renderAll() {
   drawArea();
   drawAsylum();
   drawClosures();
-  drawCalendar();
 }
 
 /* ------------------------------------------------------------------ install */
@@ -1005,15 +829,14 @@ export function installViews(shared, loadVendor) {
         return;
       }
     }
-    // Three data files the rest of the page does not load. A failure on one
-    // of them must not take the other four views down.
+    // Two data files the rest of the page does not load. A failure on one
+    // of them must not take the other three views down.
     const status = $("v-status");
     const missing = [];
     await Promise.all(
       [
         ["monthly asylum applications", loadAsylum],
         ["the border-closure tracker", loadClosures],
-        ["the deaths calendar", loadCalendar],
       ].map(([label, load]) =>
         load().catch(() => {
           missing.push(label);

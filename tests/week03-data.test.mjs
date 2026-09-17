@@ -18,7 +18,6 @@ const load = (name) =>
 
 const corridors = load("week03_corridors.json");
 const edges = load("week03_edges.json");
-const calendar = load("week03_calendar.json");
 const closures = load("week03_closures.json");
 const asylum = load("week03_asylum.json");
 const cart = load("week03_cartography.json");
@@ -104,8 +103,8 @@ test("the forced-displacement cap is still needed, and still the size the page c
   );
 });
 
-test("every day in the two calendars is a real date in range", () => {
-  for (const [name, file] of [["deaths", calendar], ["closures", closures]]) {
+test("every day in the closure calendar is a real date in range", () => {
+  for (const [name, file] of [["closures", closures]]) {
     const days = Object.keys(file.days);
     assert.ok(days.length > 300, `${name} has only ${days.length} days`);
     for (const day of days) {

@@ -72,7 +72,6 @@ ASSETS = {
         "docs/assets/data/week03_cartography.json",
         "docs/assets/data/week03_asylum.json",
         "docs/assets/data/week03_closures.json",
-        "docs/assets/data/week03_calendar.json",
         "docs/assets/data/world_outline.geo.json",
     ],
 }
