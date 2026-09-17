@@ -321,10 +321,7 @@ export function install(api, Globe) {
         }
         map();
       });
-      $("map-canvas").addEventListener("click", (event) => {
-        const rect = event.currentTarget.getBoundingClientRect();
-        const x = event.clientX - rect.left;
-        const y = event.clientY - rect.top;
+      const nearestCountry = (rect, x, y) => {
         let best = null;
         for (const iso3 of state.data.countries) {
           const coord = node(iso3)?.coord;
@@ -333,7 +330,20 @@ export function install(api, Globe) {
           const d = Math.hypot(p.x - x, p.y - y);
           if (d < 14 && (!best || d < best.d)) best = { iso3, d };
         }
-        if (best) select(best.iso3);
+        return best?.iso3 ?? null;
+      };
+      $("map-canvas").addEventListener("click", (event) => {
+        const rect = event.currentTarget.getBoundingClientRect();
+        const iso3 = nearestCountry(rect, event.clientX - rect.left, event.clientY - rect.top);
+        if (iso3) select(iso3);
+      });
+      // The canvas renderer's map shows a pointer cursor before you click;
+      // give this one the same tell, even though it skips the territory fill
+      // test the canvas map's click also does.
+      $("map-canvas").addEventListener("pointermove", (event) => {
+        const rect = event.currentTarget.getBoundingClientRect();
+        const iso3 = nearestCountry(rect, event.clientX - rect.left, event.clientY - rect.top);
+        event.currentTarget.style.cursor = iso3 ? "pointer" : "default";
       });
     },
   };
