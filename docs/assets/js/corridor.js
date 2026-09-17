@@ -2376,12 +2376,18 @@ function drawDenmark() {
 
   small($("dk-rank"), (ctx, box) => {
     const years = focus.series.map((s) => s.year);
-    const maxR = Math.max(...focus.series.map((s) => s.betweenness_rank));
+    const ranks = focus.series.map((s) => s.betweenness_rank);
+    // Fitted to the ranks this country actually held, not anchored at #1.
+    // Denmark ran between #18 and #36, and an axis that started at the top
+    // spent two thirds of the panel on positions it never occupied.
+    const pad = Math.max(1, Math.round((Math.max(...ranks) - Math.min(...ranks)) * 0.12));
+    const hi = Math.max(1, Math.min(...ranks) - pad);
+    const lo = Math.max(...ranks) + pad;
     box.x = linearScale(box, [years[0], years.at(-1)], "x");
-    box.y = linearScale(box, [maxR, 1], "y");
+    box.y = linearScale(box, [lo, hi], "y");
     axes(ctx, box, {
       xTicks: [years[0], years.at(-1)].map((v) => ({ value: v, label: String(v) })),
-      yTicks: [1, Math.round(maxR / 2), maxR].map((v) => ({ value: v, label: `#${v}` })),
+      yTicks: [hi, Math.round((hi + lo) / 2), lo].map((v) => ({ value: v, label: `#${v}` })),
       xLabel: "Year",
       yLabel: "Bridge rank",
     });
@@ -2399,37 +2405,102 @@ function drawDenmark() {
 
   small($("dk-nordic"), (ctx, box) => {
     const items = focus.peers;
-    const maxDeg = Math.max(...items.map((i) => i.in_degree), 1);
-    const maxFlight = Math.max(...items.map((i) => i.flight_degree), 1);
-    const maxZ = Math.max(...items.map((i) => Math.abs(i.z ?? 0)), 1);
-    box.x = linearScale(box, [0, items.length], "x");
-    box.y = linearScale(box, [0, 1], "y");
-    axes(ctx, box, {
-      xTicks: items.map((i, idx) => ({ value: idx + 0.5, label: i.iso3 })),
-      yTicks: [0, 0.5, 1].map((v) => ({ value: v, label: v === 1 ? "max" : v === 0 ? "0" : "" })),
-      xLabel: `${focus.name} and its four nearest neighbours`,
-      yLabel: "Share of the largest",
-    });
-    const bars = [
-      { name: "Origins", read: (i) => i.in_degree, get: (i) => i.in_degree / maxDeg, colour: PEOPLE },
-      { name: "z-score", read: (i) => (i.z ?? 0).toFixed(2), get: (i) => Math.abs(i.z ?? 0) / maxZ, colour: INK },
-      { name: "Flight partners", read: (i) => i.flight_degree, get: (i) => i.flight_degree / maxFlight, colour: ACCESS },
+    // Three measures in three panels rather than three bars on one axis. The
+    // old chart divided each measure by its own maximum and called the result
+    // "share of the largest", which put a count of origins, a count of flight
+    // partners and a z-score on one scale where none of them belong — and it
+    // took the absolute value of the z, so Denmark's −1.23 drew as a bar
+    // pointing the same way as a broker's +5.
+    const panels = [
+      {
+        name: "Origins",
+        value: (i) => i.in_degree,
+        format: (v) => fmt.format(v),
+        colour: PEOPLE,
+      },
+      {
+        name: "Bridge z-score",
+        value: (i) => i.z ?? 0,
+        format: (v) => v.toFixed(2),
+        colour: INK,
+        signed: true,
+      },
+      {
+        name: "Flight partners",
+        value: (i) => i.flight_degree,
+        format: (v) => fmt.format(v),
+        colour: ACCESS,
+      },
     ];
     const marks = collect("dk-nordic");
-    items.forEach((item, idx) => {
-      bars.forEach((bar, bi) => {
-        const w = (box.x(1) - box.x(0)) / 4;
-        const x = box.x(idx) + w * (bi + 0.5);
-        const yv = box.y(bar.get(item));
-        ctx.fillStyle = bar.colour;
-        ctx.fillRect(x, yv, w * 0.8, box.bottom - yv);
+    // Enough room between panels that a negative bar and the next panel's
+    // name are never in the same pixels.
+    const gap = 30;
+    // The first panel's name is drawn above its own top edge, so the stack
+    // starts one line down from the frame.
+    const head = 12;
+    const tall =
+      (box.bottom - box.top - head - gap * (panels.length - 1)) / panels.length;
+    const slot = (box.right - box.left) / items.length;
+
+    panels.forEach((panel, pi) => {
+      const top = box.top + head + pi * (tall + gap);
+      const bottom = top + tall;
+      const values = items.map(panel.value);
+      const high = Math.max(...values, panel.signed ? 0.5 : 1);
+      const low = panel.signed ? Math.min(...values, -0.5) : 0;
+      const y = (v) => bottom - ((v - low) / (high - low || 1)) * tall;
+      const base = y(panel.signed ? 0 : 0);
+
+      ctx.strokeStyle = GRID;
+      ctx.lineWidth = 1;
+      ctx.beginPath();
+      ctx.moveTo(box.left, Math.round(base) + 0.5);
+      ctx.lineTo(box.right, Math.round(base) + 0.5);
+      ctx.stroke();
+
+      ctx.fillStyle = MUTE;
+      ctx.font = "600 10px -apple-system, system-ui, sans-serif";
+      ctx.textAlign = "left";
+      ctx.textBaseline = "bottom";
+      ctx.fillText(panel.name, box.left, top - 4);
+
+      items.forEach((item, idx) => {
+        const value = panel.value(item);
+        const x = box.left + slot * idx + slot * 0.22;
+        const w = slot * 0.56;
+        const yv = y(value);
+        ctx.fillStyle = panel.colour;
+        ctx.fillRect(x, Math.min(yv, base), w, Math.max(1.5, Math.abs(base - yv)));
+        ctx.fillStyle = INK;
+        ctx.font = "9px -apple-system, system-ui, sans-serif";
+        ctx.textAlign = "center";
+        ctx.textBaseline = yv <= base ? "bottom" : "top";
+        ctx.fillText(panel.format(value), x + w / 2, yv + (yv <= base ? -2 : 2));
         marks.push({
-          x: x + w * 0.4, y: (yv + box.bottom) / 2, iso3: item.iso3,
-          label: `<b>${item.name}</b><span>${bar.name}: ${bar.read(item)}</span>` +
+          box: [x - 2, Math.min(yv, base) - 10, x + w + 2, Math.max(yv, base) + 10],
+          iso3: item.iso3,
+          label: `<b>${item.name}</b><span>${panel.name}: ${panel.format(value)}</span>` +
             `<span>betweenness rank #${item.betweenness_rank}</span>` +
             `<span>${item.km ? `${fmt.format(item.km)} km away` : "the country in question"}</span>`,
         });
       });
+
+      // Country codes under the last panel only; the columns line up.
+      if (pi === panels.length - 1) {
+        ctx.fillStyle = MUTE;
+        ctx.font = "10px -apple-system, system-ui, sans-serif";
+        ctx.textAlign = "center";
+        ctx.textBaseline = "top";
+        items.forEach((item, idx) => {
+          ctx.fillText(item.iso3, box.left + slot * (idx + 0.5), bottom + 6);
+        });
+        ctx.fillText(
+          `${focus.name} and its four nearest neighbours`,
+          (box.left + box.right) / 2,
+          bottom + 20,
+        );
+      }
     });
   });
 }
