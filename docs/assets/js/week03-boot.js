@@ -23,18 +23,15 @@ const stamped = (path) => (BUILD ? `${path}?v=${BUILD}` : path);
 
 const { api, installRenderer, restyle, start } = await import(stamped("./corridor.js"));
 const { installQuestions } = await import(stamped("./questions.js"));
+const { installViews } = await import(stamped("./echarts-views.js"));
 
 export const RENDERERS = {
   canvas: {
     label: "Canvas",
-    swaps: "Everything, hand-rolled on a 2D canvas.",
-    library: "none",
     bytes: 0,
   },
   d3: {
     label: "D3",
-    swaps: "All charts to SVG, and the globe to a d3-geo orthographic.",
-    library: "d3 7.9.0",
     bytes: 279706,
     script: "d3-7.9.0.min.js",
     global: "d3",
@@ -42,8 +39,6 @@ export const RENDERERS = {
   },
   echarts: {
     label: "ECharts",
-    swaps: "Every chart. The globe and the twin map stay on canvas.",
-    library: "echarts 5.5.1",
     bytes: 1030855,
     script: "echarts-5.5.1.min.js",
     global: "echarts",
@@ -51,8 +46,6 @@ export const RENDERERS = {
   },
   globe: {
     label: "globe.gl",
-    swaps: "The hero globe, in WebGL. The twin map and the charts stay on canvas.",
-    library: "globe.gl 2.32.0, bundling three.js",
     bytes: 1032643,
     script: "globe.gl-2.32.0.min.js",
     global: "Globe",
@@ -60,8 +53,6 @@ export const RENDERERS = {
   },
   atlas: {
     label: "Atlas",
-    swaps: "The hero globe and the twin map, as a photographic Earth.",
-    library: "globe.gl plus 482 KB of NASA Blue Marble imagery",
     bytes: 1526503,
     script: "globe.gl-2.32.0.min.js",
     global: "Globe",
@@ -69,8 +60,6 @@ export const RENDERERS = {
   },
   deck: {
     label: "deck.gl",
-    swaps: "The hero globe and the twin map, as a GlobeView with arc layers.",
-    library: "deck.gl 9.0.30",
     bytes: 1246673,
     script: "deck.gl-9.0.30.min.js",
     global: "deck",
@@ -79,71 +68,71 @@ export const RENDERERS = {
 };
 
 export const PALETTES = {
-  signal: { label: "Signal", note: "Orange for people, blue for access." },
-  ember: { label: "Ember", note: "Hotter orange against teal." },
-  iris: { label: "Iris", note: "Violet against sky blue." },
-  okabe: { label: "Okabe-Ito", note: "The standard colourblind-safe pair." },
-  slate: { label: "Slate", note: "One hue, separated by value. Prints well." },
+  signal: { label: "Signal" },
+  ember: { label: "Ember" },
+  iris: { label: "Iris" },
+  okabe: { label: "Okabe-Ito" },
+  slate: { label: "Slate" },
 };
 
 export const ARCS = {
-  curve: { label: "Curved", note: "A corridor bows away from the straight line." },
-  straight: { label: "Straight", note: "Shortest path on the page, flat on the globe." },
-  flow: { label: "Flowing", note: "Dashes travel from origin to destination." },
-  taper: { label: "Tapered", note: "Heavy where people leave, thin where they land." },
+  curve: { label: "Curved" },
+  straight: { label: "Straight" },
+  flow: { label: "Flowing" },
+  taper: { label: "Tapered" },
 };
 
 export const LINKS = {
-  width: { label: "Width by size", note: "A doubling of people is a doubling of ink." },
-  colour: { label: "Colour by size", note: "Red for the lightest links, green for the heaviest." },
-  both: { label: "Width and colour", note: "Both channels carry the same number, which is redundant on purpose." },
-  uniform: { label: "Uniform", note: "Every link the same, so only the shape of the network shows." },
+  width: { label: "Width by size" },
+  colour: { label: "Colour by size" },
+  both: { label: "Width and colour" },
+  uniform: { label: "Uniform" },
 };
 
 export const THICKNESS = {
-  thin: { label: "Thin", note: "" },
-  normal: { label: "Normal", note: "" },
-  thick: { label: "Thick", note: "" },
+  thin: { label: "Thin" },
+  normal: { label: "Normal" },
+  thick: { label: "Thick" },
 };
 
 export const FOCUS = {
-  all: { label: "Keep all", note: "Every link stays drawn when a country is selected." },
-  dim: { label: "Fade the rest", note: "The rest of the network fades to context." },
-  only: { label: "Only the selection", note: "Only the selected country's links are drawn." },
+  all: { label: "Keep all" },
+  dim: { label: "Fade the rest" },
+  only: { label: "Only the selection" },
 };
 
 export const DOTS = {
-  on: { label: "Show dots", note: "" },
-  off: { label: "Hide dots", note: "Territories carry the selection instead." },
+  on: { label: "Show dots" },
+  off: { label: "Hide dots" },
 };
 
 export const BASEMAP = {
-  outline: { label: "Country outlines", note: "Borders, so a corridor lands somewhere you recognise." },
-  photo: { label: "Photographic Earth", note: "NASA Blue Marble, in whichever renderer is loaded." },
-  none: { label: "No basemap", note: "Corridors alone, with nothing under them." },
+  outline: { label: "Country outlines" },
+  photo: { label: "Photographic Earth" },
+  none: { label: "No basemap" },
 };
 
 // How much of its panel the globe fills. corridor.js turns each of these into
 // a number; every renderer reads that same number in its own units.
 export const EARTH = {
-  small: { label: "Small", note: "" },
-  medium: { label: "Medium", note: "" },
-  large: { label: "Large", note: "" },
-  huge: { label: "Fills the panel", note: "The globe runs to the edges." },
+  small: { label: "Small" },
+  medium: { label: "Medium" },
+  large: { label: "Large" },
+  huge: { label: "Fills the panel" },
 };
 
 export const SKINS = {
-  clean: { label: "Clean", note: "System type, soft cards. The default." },
-  editorial: { label: "Editorial", note: "A serif face, a narrower column, section numbers on a rail." },
-  terminal: { label: "Terminal", note: "Monospace on a dark ground, nothing rounded." },
-  poster: { label: "Poster", note: "Oversized type, hard borders, a printed feel." },
+  clean: { label: "Clean" },
+  editorial: { label: "Editorial" },
+  terminal: { label: "Terminal" },
+  poster: { label: "Poster" },
 };
 
 export const TABLES = {
-  rules: { label: "Rules", note: "A hairline between rows." },
-  zebra: { label: "Zebra", note: "Alternating row tint." },
-  cards: { label: "Cards", note: "Every row in its own box." },
-  compact: { label: "Compact", note: "Denser, for comparing more at once." },
+  rules: { label: "Rules" },
+  zebra: { label: "Zebra" },
+  cards: { label: "Cards" },
+  compact: { label: "Compact" },
 };
 
 const DIMENSIONS = [
@@ -152,10 +141,10 @@ const DIMENSIONS = [
   { key: "arcs", label: "Link shape", options: ARCS, fallback: "curve" },
   { key: "links", label: "Link encoding", options: LINKS, fallback: "width" },
   { key: "thickness", label: "Link thickness", options: THICKNESS, fallback: "normal" },
-  { key: "focus", label: "On selection", options: FOCUS, fallback: "all" },
+  { key: "focus", label: "On selection", options: FOCUS, fallback: "dim" },
   { key: "basemap", label: "The world", options: BASEMAP, fallback: "photo" },
   { key: "earth", label: "Earth size", options: EARTH, fallback: "large" },
-  { key: "dots", label: "Country dots", options: DOTS, fallback: "on" },
+  { key: "dots", label: "Country dots", options: DOTS, fallback: "off" },
   { key: "skin", label: "Skin", options: SKINS, fallback: "clean" },
   { key: "tables", label: "Tables", options: TABLES, fallback: "rules" },
 ];
@@ -217,22 +206,6 @@ function apply(chosen) {
   api.state.earth = chosen.earth;
 }
 
-function describe(chosen) {
-  const renderer = RENDERERS[chosen.variant];
-  return (
-    `<b>${renderer.label}.</b> ${renderer.swaps} ` +
-    `${PALETTES[chosen.palette].note} ${ARCS[chosen.arcs].note} ` +
-    `${LINKS[chosen.links].note} ${FOCUS[chosen.focus].note} ` +
-    `${BASEMAP[chosen.basemap].note} ${EARTH[chosen.earth].note} ${DOTS[chosen.dots].note} ` +
-    `${SKINS[chosen.skin].note} ` +
-    `${TABLES[chosen.tables].note} ` +
-    (renderer.bytes
-      ? `Library: ${renderer.library}, ${kb(renderer.bytes)}, vendored in the repo.`
-      : "No charting library is loaded; every mark is drawn by hand.") +
-    " The data and the numbers are the same in every combination."
-  );
-}
-
 // The menu opens from the top bar, so the controls stay out of the reading
 // flow until somebody wants them. Renderer and basemap are chips; the rest
 // sit under "More options" so the common choices are one tap away.
@@ -253,7 +226,7 @@ function wireMenu(chosen) {
   const bar = document.getElementById("style-bar");
   if (!trigger || !bar) return;
   const label = document.getElementById("style-trigger-label");
-  if (label) label.textContent = `View · ${RENDERERS[chosen.variant].label}`;
+  if (label) label.textContent = "Views";
 
   const close = () => {
     bar.hidden = true;
@@ -314,8 +287,7 @@ function renderBar(chosen, onChange) {
     `<details class="style-more">` +
     `<summary>More options</summary>` +
     `<div class="style-more-grid">${moreFields}</div>` +
-    `</details>` +
-    `<p class="style-note" id="style-note">${describe(chosen)}</p>`;
+    `</details>`;
 
   host.querySelectorAll(".style-chips").forEach((group) => {
     group.addEventListener("click", (event) => {
@@ -338,7 +310,7 @@ function renderBar(chosen, onChange) {
   });
 
   const label = document.getElementById("style-trigger-label");
-  if (label) label.textContent = `View · ${RENDERERS[chosen.variant].label}`;
+  if (label) label.textContent = "Views";
 }
 
 // The two heavy-tail charts can be read on three scales; the buttons live in
@@ -408,13 +380,12 @@ async function boot() {
     }
     window.history.replaceState(null, "", url.pathname + url.search);
     apply(chosen);
-    const note = document.getElementById("style-note");
-    if (note) note.innerHTML = describe(chosen);
     restyle();
   });
 
   await start();
   installQuestions(api);
+  installViews(api, loadVendor);
   restoreScroll();
 }
 

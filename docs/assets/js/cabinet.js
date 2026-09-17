@@ -191,7 +191,7 @@ export function setupChrome() {
   });
   const host = $("#arcade-chrome");
   if (host)
-    host.innerHTML = `<a class="arcade-wordmark" href="${url("")}">LOG–LOG <b>ARCADE</b></a><nav aria-label="Arcade navigation"><a href="${url("#weeks")}">Posts</a><a href="${url("#network")}">The network</a><button class="quiet" data-progress id="open-logbook">LOGBOOK 0/${liveWeeks().length}</button></nav>`;
+    host.innerHTML = `<a class="arcade-wordmark" href="${url("")}">LOG–LOG <b>LEGENDS</b></a><nav aria-label="Site navigation"><a href="${url("#weeks")}">Posts</a><a href="${url("#network")}">The network</a><button class="quiet" data-progress id="open-logbook">LOGBOOK 0/${liveWeeks().length}</button></nav>`;
   if (!$("#logbook"))
     document.body.insertAdjacentHTML(
       "beforeend",

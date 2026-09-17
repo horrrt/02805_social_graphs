@@ -1835,3 +1835,22 @@ body > .chart-tip[hidden] {
 .corridor .metric.explains span {
   text-decoration: inherit;
 }
+
+/* --- the three ECharts views, section 10 ----------------------------- */
+
+.corridor .echart {
+  height: 520px;
+  width: 100%;
+}
+
+.corridor .echart.tall {
+  height: 640px;
+}
+
+.corridor .echart.wide {
+  height: 460px;
+}
+
+.corridor .echart.calendar {
+  height: 820px;
+}
