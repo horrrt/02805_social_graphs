@@ -15,7 +15,8 @@ a chart changes. Under one shared hash it was rewritten on every commit.
 
     python scripts/stamp_week03.py           # rewrite what is stale
     python scripts/stamp_week03.py --check   # exit non-zero if stale
-    python scripts/stamp_week03.py --hook    # run it for me, before each commit
+    python scripts/stamp_week03.py --hook    # run it for me, and stop merge
+                                             # conflicts on the generated stamp
 
 The boot module hashes the whole graph rather than only itself because it
 passes its own ?v= down to every module it imports — see week03-boot.js — so
@@ -89,6 +90,17 @@ def install_hook() -> None:
     target.write_text(HOOK, encoding="utf-8")
     target.chmod(target.stat().st_mode | stat.S_IXUSR | stat.S_IXGRP)
     print(f"installed {target.relative_to(ROOT)} — the stamp now runs before every commit")
+
+    # The merge driver .gitattributes points at. Git only allows a driver to
+    # be named in config, never in a committed file, so every clone installs
+    # it once — which is what this flag is for.
+    import subprocess
+    for key, value in (
+        ("merge.stamped.name", "build-stamped HTML"),
+        ("merge.stamped.driver", "python3 scripts/merge_stamped.py %O %A %B %L"),
+    ):
+        subprocess.run(["git", "config", key, value], cwd=ROOT, check=True)
+    print("configured the merge driver — a rebase no longer stops on the stamp")
 
 
 def main() -> None:
