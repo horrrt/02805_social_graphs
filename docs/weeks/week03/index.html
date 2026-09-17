@@ -708,11 +708,185 @@
           </div>
         </section>
 
+        <!-- what is left after gravity -------------------------------------- -->
+        <section class="step" id="gravity">
+          <div class="card">
+            <div class="step-head">
+              <span class="num">10</span>
+              <h2>What is left after gravity</h2>
+            </div>
+            <p class="sub">
+              Section 4 showed two things separately: rich countries hold more
+              foreign-born people, and the people in them came from further
+              away. Two charts is not a model, so neither one holds the other
+              fixed. Gravity does. It is the standard baseline in the
+              migration literature and it is almost embarrassingly good:
+              people on a corridor rise with the size of both ends and fall
+              with the distance between them.
+            </p>
+            <p class="sub">
+              Fitted here by Poisson pseudo-maximum-likelihood on all
+              8,301 corridors with population and
+              income at both ends —
+              <code>analysis/week03_gravity.py</code>. Counts rather than
+              log counts, because logging drops every corridor carrying
+              nobody and biases the rest. Each coefficient is an elasticity:
+              a one per cent rise in the term moves the corridor by that many
+              per cent. Intervals are 200 bootstrap resamples of the
+              corridors.
+            </p>
+            <table class="ego">
+              <tr>
+                <th>Term</th>
+                <th style="text-align: right">Elasticity</th>
+                <th style="text-align: right">95% interval</th>
+              </tr>
+              <tr><td>Distance between the two</td><td style="text-align: right"><b>−1.19</b></td><td style="text-align: right">−1.42 to −1.00</td></tr>
+              <tr><td>Destination income per head</td><td style="text-align: right"><b>+0.85</b></td><td style="text-align: right">+0.71 to +1.01</td></tr>
+              <tr><td>Destination population</td><td style="text-align: right">+0.69</td><td style="text-align: right">+0.61 to +0.76</td></tr>
+              <tr><td>Origin population</td><td style="text-align: right">+0.51</td><td style="text-align: right">+0.43 to +0.59</td></tr>
+              <tr><td>Origin income per head</td><td style="text-align: right">−0.25</td><td style="text-align: right">−0.33 to −0.17</td></tr>
+              <tr><td>Under 1,000 km apart</td><td style="text-align: right">−0.28</td><td style="text-align: right">−0.75 to +0.15</td></tr>
+            </table>
+            <div class="notice">
+              <span class="ico">💡</span>
+              <span>
+                <b>Doubling the distance roughly halves the corridor, and
+                that is the single strongest term here.</b>
+                Destination income comes next: with size and distance held
+                fixed, a country twice as rich holds about 1.8 times as many
+                people from any given origin. Origin income runs the other
+                way — poorer origins send more — which is the selection the
+                income bars in section 5 could only show as a marginal. The
+                last row is a failed proxy, kept rather than deleted: this
+                repo has coordinates and no border table, so "share a border"
+                had to be approximated by "centres within 1,000 km", and with
+                distance already in the model it measures nothing. Its
+                interval crosses zero and dropping it moves distance from
+                −1.19 to −1.11 and leaves everything else where it was.
+              </span>
+            </div>
+
+            <h3>The corridors gravity cannot explain</h3>
+            <p class="sub">
+              The fit is not the finding. The residual is. These carry the
+              most people relative to what size and distance predict, among
+              corridors of at least 50,000 people.
+            </p>
+            <table class="ego">
+              <tr>
+                <th>Corridor</th>
+                <th style="text-align: right">People</th>
+                <th style="text-align: right">Gravity says</th>
+                <th style="text-align: right">Ratio</th>
+              </tr>
+                    <tr>
+                      <td>Russia → Ukraine</td>
+                      <td style="text-align: right">3,375,095</td>
+                      <td style="text-align: right">21,069</td>
+                      <td style="text-align: right"><b>×160</b></td>
+                    </tr>
+                    <tr>
+                      <td>United Kingdom → New Zealand</td>
+                      <td style="text-align: right">254,524</td>
+                      <td style="text-align: right">2,868</td>
+                      <td style="text-align: right"><b>×89</b></td>
+                    </tr>
+                    <tr>
+                      <td>Sudan → Chad</td>
+                      <td style="text-align: right">1,071,034</td>
+                      <td style="text-align: right">13,398</td>
+                      <td style="text-align: right"><b>×80</b></td>
+                    </tr>
+                    <tr>
+                      <td>United Kingdom → Australia</td>
+                      <td style="text-align: right">1,107,102</td>
+                      <td style="text-align: right">14,101</td>
+                      <td style="text-align: right"><b>×78</b></td>
+                    </tr>
+                    <tr>
+                      <td>Russia → Tajikistan</td>
+                      <td style="text-align: right">235,636</td>
+                      <td style="text-align: right">3,244</td>
+                      <td style="text-align: right"><b>×73</b></td>
+                    </tr>
+                    <tr>
+                      <td>Russia → Belarus</td>
+                      <td style="text-align: right">664,610</td>
+                      <td style="text-align: right">12,631</td>
+                      <td style="text-align: right"><b>×53</b></td>
+                    </tr>
+                    <tr>
+                      <td>Russia → Uzbekistan</td>
+                      <td style="text-align: right">865,767</td>
+                      <td style="text-align: right">16,758</td>
+                      <td style="text-align: right"><b>×52</b></td>
+                    </tr>
+                    <tr>
+                      <td>Venezuela → Peru</td>
+                      <td style="text-align: right">1,596,667</td>
+                      <td style="text-align: right">35,353</td>
+                      <td style="text-align: right"><b>×45</b></td>
+                    </tr>
+                    <tr>
+                      <td>Ukraine → Russia</td>
+                      <td style="text-align: right">2,872,612</td>
+                      <td style="text-align: right">81,908</td>
+                      <td style="text-align: right"><b>×35</b></td>
+                    </tr>
+                    <tr>
+                      <td>Ivory Coast → Burkina Faso</td>
+                      <td style="text-align: right">574,409</td>
+                      <td style="text-align: right">16,687</td>
+                      <td style="text-align: right"><b>×34</b></td>
+                    </tr>
+                    <tr>
+                      <td>Burkina Faso → Ivory Coast</td>
+                      <td style="text-align: right">1,820,882</td>
+                      <td style="text-align: right">54,234</td>
+                      <td style="text-align: right"><b>×34</b></td>
+                    </tr>
+                    <tr>
+                      <td>New Zealand → Australia</td>
+                      <td style="text-align: right">588,088</td>
+                      <td style="text-align: right">17,777</td>
+                      <td style="text-align: right"><b>×33</b></td>
+                    </tr>
+            </table>
+            <div class="notice">
+              <span class="ico">💡</span>
+              <span>
+                <b>Read the list and the categories name themselves.</b>
+                Four of the top twelve are Russia and its Soviet successor
+                states, in both directions. Three are the old British
+                settler network: the United Kingdom to New Zealand and
+                Australia, and New Zealand to Australia, which today is a
+                free-movement zone. Two are the ECOWAS free-movement area,
+                Burkina Faso and Ivory Coast exchanging in both directions.
+                Two are wars, Sudan to Chad and Venezuela to Peru. None of
+                these is in the model, and every one of them beats the model
+                by a factor of thirty or more.
+              </span>
+            </div>
+            <p class="fineprint">
+              Every term is measured in the same year as the outcome, so
+              nothing here identifies a cause: a corridor thirty times over
+              its prediction is a corridor worth explaining, not an
+              explanation. The fit reaches R² 0.45 across the range of the
+              data and 0.19 on the raw counts, where a handful of enormous
+              corridors dominate. And the bottom of the residual list — where
+              gravity expects a crowd and DESA reports five people — is a map
+              of which statistics offices file small origins under "other",
+              not of where nobody went.
+            </p>
+          </div>
+        </section>
+
         <!-- three more views ---------------------------------------------- -->
         <section class="step" id="more">
           <div class="card">
             <div class="step-head">
-              <span class="num">10</span>
+              <span class="num">11</span>
               <h2>More ways to look at this</h2>
             </div>
             <details class="qa" id="views">
