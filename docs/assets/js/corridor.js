@@ -1598,7 +1598,7 @@ function drawMap() {
   }
 }
 
-/* ---------------------------------------------------------------- section 3 */
+/* ---------------------------------------------------------------- section 2 */
 
 // Partner counts, binned by doubling. One bar per distinct value put a
 // hundred and fifty spikes on the panel, most of them one country tall, in
@@ -2324,7 +2324,7 @@ function markSelectedPoint(ctx, box, pick, y, place) {
   ctx.fillText(node(state.selected).name, Math.min(x + 8, box.right - 70), py + 3);
 }
 
-/* ---------------------------------------------------------------- section 7 */
+/* ---------------------------------------------------------------- section 6 */
 
 // The cartographic map itself: participation across, within-community
 // strength up. Guimer\u00e0 and Amaral's cut-offs are drawn as lines rather than
@@ -2703,7 +2703,7 @@ function openTypologyDrawer(key) {
   });
 }
 
-/* ---------------------------------------------------------------- section 8 */
+/* ---------------------------------------------------------------- section 7 */
 
 function edgeLookup(origin, dest) {
   const oi = state.edges.countries.indexOf(origin);
@@ -2763,7 +2763,7 @@ function renderEdge() {
           : "<b>Neither network connects these two.</b>";
 }
 
-/* ---------------------------------------------------------------- section 9 */
+/* ---------------------------------------------------------------- section 8 */
 
 function renderDenmarkPanels() {
   const focus = spotlight();

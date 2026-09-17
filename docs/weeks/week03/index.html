@@ -130,6 +130,13 @@
               <h2>Heavy tails in migration</h2>
               <span class="year-tag" id="tails-tag">(2020 · follows the slider)</span>
             </div>
+            <p class="sub">
+              <b>All four tails on this page fail the test for a power
+              law</b>, two of them narrowly. The lognormal describes the data
+              better on every tail where the two can be told apart. The charts
+              below show none of that, which is the reason for fitting rather
+              than looking.
+            </p>
             <div class="grid2">
               <div class="plot">
                 <h3>A. Distribution of partners</h3>
@@ -389,6 +396,12 @@
               <span class="year-tag" id="twin-tag">(analysis year: 2020)</span>
             </div>
             <p class="sub">
+              <b>16 countries out of 228 broker more than their number of
+              partners can explain.</b> The rest sit inside what a shuffled
+              network produces, which is why the scatter carries a null model
+              beside it rather than a ranking.
+            </p>
+            <p class="sub">
               The null-model scatter and the twin map share the same country
               selection: click either one and the other follows.
             </p>
@@ -501,6 +514,13 @@
               <h2>Roles inside the communities</h2>
               <span class="year-tag" id="typology-tag"></span>
             </div>
+            <p class="sub">
+              <b>54 countries changed the part they play between 1990 and
+              2024.</b> Venezuela and Ukraine both moved from peripheral to
+              provincial hub: large inside one community, barely present in the
+              others. The chart below gives every country two coordinates, and
+              the year slider moves them.
+            </p>
             <p class="sub">
               Section 11 splits the world into communities. This asks what part
               each country plays in the one it lands in, on two coordinates
@@ -777,7 +797,13 @@
               <h2>What is left after gravity</h2>
             </div>
             <p class="sub">
-              Section 4 showed two things separately: rich countries hold more
+              <b>Size and distance predict most of the world's migration, and
+              the corridors they miss are the interesting ones.</b> Russia to
+              Ukraine carries 160 times what the model expects. The list of
+              corridors like it is the finding here, not the fit.
+            </p>
+            <p class="sub">
+              Question 4 showed two things separately: rich countries hold more
               foreign-born people, and the people in them came from further
               away. Two charts is not a model, so neither one holds the other
               fixed. Gravity does. It is the standard baseline in the
@@ -822,7 +848,7 @@
                 fixed, a country twice as rich holds about 1.8 times as many
                 people from any given origin. Origin income runs the other
                 way (poorer origins send more), which is the selection the
-                income bars in section 5 could only show as a marginal. The
+                income bars in question 5 could only show as a marginal. The
                 last row is a failed proxy, kept rather than deleted: this
                 repo has coordinates and no border table, so "share a border"
                 had to be approximated by "centres within 1,000 km", and with
@@ -966,6 +992,13 @@
               <span class="num">11</span>
               <h2>Does the world split into groups?</h2>
             </div>
+            <p class="sub">
+              <b>70.6% of the world's migrants move inside one of eight
+              groups.</b> Shuffle the network keeping every country's partner
+              count and Louvain still returns almost the same modularity, so
+              the amount of grouping says nothing on its own. Which countries
+              land together does.
+            </p>
             <p class="sub">
               A course on social graphs asks this in week three and this post
               had not. Louvain on the undirected network, weighted by people
@@ -1578,7 +1611,7 @@
                       dimensions over one dataset. Only the drawing changes: a
                       variant overrides the visuals it improves and inherits the
                       rest. The libraries sit in the repository, so the page
-                      fetches no third-party JavaScript. Section 10 is the one
+                      fetches no third-party JavaScript. Section 12 is the one
                       exception to the renderer choice: its three views are
                       ECharts whichever renderer you picked, and the megabyte
                       that costs is fetched when you open the section and not
@@ -1653,6 +1686,6 @@
       </footer>
     </main>
 
-    <script src="../../assets/js/week03-boot.js?v=2dc060ddd7" type="module"></script>
+    <script src="../../assets/js/week03-boot.js?v=d6c443389f" type="module"></script>
   </body>
 </html>
