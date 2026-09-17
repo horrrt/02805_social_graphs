@@ -152,6 +152,46 @@ def coordinates(graph, home):
     return z, p
 
 
+def verify_against_bctpy(graph, home) -> None:
+    """Check `coordinates` against the Brain Connectivity Toolbox.
+
+    Both measures are ours rather than a library's, which is worth a second
+    opinion: the power-law fitting on this page was also ours until a library
+    showed it had been computing a Kolmogorov-Smirnov distance wrong for
+    months. bctpy is the reference implementation of both, and on the 2020
+    graph the two agree to 2e-16 on participation and 9e-16 on the z-score,
+    which is floating-point noise and not a difference.
+
+    It is not a dependency. The version on PyPI is a 2023 snapshot that
+    predates numpy 2, and the fixes since then exist only on GitHub master, so
+    pinning it would mean pinning an unreleased commit in a project other
+    people have to rebuild. Install it when you want to re-run this check:
+
+        pip install git+https://github.com/aestrivex/bctpy
+        python analysis/week03_cartography.py --verify
+    """
+    try:
+        import bct
+    except ImportError:
+        print("  bctpy is not installed; skipping the cross-check. "
+              "pip install git+https://github.com/aestrivex/bctpy")
+        return
+    import networkx as nx_local
+
+    nodes = sorted(graph)
+    matrix = nx_local.to_numpy_array(graph, nodelist=nodes, weight="weight")
+    # bctpy numbers communities from one.
+    labels = [home[n] + 1 for n in nodes]
+    z, p = coordinates(graph, home)
+    theirs_p = bct.participation_coef(matrix, labels)
+    theirs_z = bct.module_degree_zscore(matrix, labels)
+    gap_p = max(abs(p[n] - theirs_p[i]) for i, n in enumerate(nodes))
+    gap_z = max(abs(z[n] - theirs_z[i]) for i, n in enumerate(nodes))
+    print(f"  vs bctpy: participation differs by at most {gap_p:.1e}, "
+          f"z-score by at most {gap_z:.1e}")
+    assert gap_p < 1e-9 and gap_z < 1e-9, "our coordinates disagree with bctpy"
+
+
 def ensemble(graph, seeds: int):
     """Partition `seeds` times and let every run vote."""
     votes = collections.defaultdict(collections.Counter)
@@ -201,12 +241,23 @@ def main() -> None:
                         help="the floor section 11 uses; keep them the same")
     parser.add_argument("--confident", type=float, default=0.9,
                         help="share of runs that must agree before a role counts")
+    parser.add_argument("--verify", action="store_true",
+                        help="cross-check the two coordinates against bctpy and stop")
     args = parser.parse_args()
 
     edges = json.loads((DATA / "week03_edges.json").read_text())
     corridors = json.loads((DATA / "week03_corridors.json").read_text())
     names = {iso3: node["name"] for iso3, node in corridors["nodes"].items()}
     everyone = set(corridors["nodes"])
+
+    if args.verify:
+        graph = build(edges, edges["years"][-1], args.threshold)
+        partition = nx.community.louvain_communities(graph, weight="weight", seed=0)
+        print(f"{graph.number_of_nodes()} countries, {len(partition)} communities")
+        verify_against_bctpy(
+            graph, {n: i for i, group in enumerate(partition) for n in group}
+        )
+        return
 
     years = {}
     for year in edges["years"]:
