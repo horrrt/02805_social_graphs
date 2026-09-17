@@ -319,30 +319,47 @@ test("the palette is read from CSS rather than hard-coded twice", () => {
 test("the build stamp on the week 3 assets matches their contents", () => {
   // GitHub Pages caches for minutes; a stale stamp means a reader can run the
   // previous deploy's code against this one's markup.
-  const watched = [
-    "docs/assets/js/week03-boot.js",
-    "docs/assets/js/corridor.js",
-    "docs/assets/js/questions.js",
-    "docs/assets/js/variants/d3.js",
-    "docs/assets/js/variants/echarts.js",
-    "docs/assets/js/variants/globe.js",
-    "docs/assets/js/variants/atlas.js",
-    "docs/assets/js/variants/deck.js",
-    "docs/assets/css/corridor.css",
-  ];
-  const hash = createHash("sha256");
-  for (const name of watched) hash.update(readFileSync(join(ROOT, name)));
-  const stamp = hash.digest("hex").slice(0, 10);
+  //
+  // The list of files behind each stamp is read out of the stamping script
+  // rather than repeated here. It used to be repeated, the copy in this file
+  // fell behind when echarts-views.js was added, and for several commits the
+  // test was checking a hash over a set of files that was no longer the set
+  // the page loads.
+  const script = read("scripts/stamp_week03.py");
+  const block = script.slice(script.indexOf("ASSETS = {"), script.indexOf("\nHOOK ="));
+  const assets = new Map();
+  for (const [, asset, body] of block.matchAll(/"([\w.-]+)": \[([\s\S]*?)\]/g)) {
+    assets.set(asset, [...body.matchAll(/"([^"]+)"/g)].map((m) => m[1]));
+  }
+  assert.ok(assets.size >= 2, "could not read ASSETS out of the stamping script");
+  assert.ok(
+    assets.get("week03-boot.js").includes("docs/assets/js/echarts-views.js"),
+    "the boot stamp does not cover every module the page loads",
+  );
+
+  const stamps = new Map();
+  for (const [asset, files] of assets) {
+    const hash = createHash("sha256");
+    for (const name of files) hash.update(readFileSync(join(ROOT, name)));
+    stamps.set(asset, hash.digest("hex").slice(0, 10));
+  }
 
   for (const page of ["docs/weeks/week03/index.html", "docs/styleguide/index.html"]) {
     const html = read(page);
-    // The guide loads only the stylesheet; the two editions load both.
-    const assets = page.includes("styleguide") ? ["corridor.css"] : ["week03-boot.js", "corridor.css"];
-    for (const asset of assets) {
+    // The guide loads only the stylesheet; the post loads both.
+    const wanted = page.includes("styleguide")
+      ? ["corridor.css"]
+      : ["week03-boot.js", "corridor.css"];
+    for (const asset of wanted) {
       assert.ok(
-        html.includes(`${asset}?v=${stamp}`),
+        html.includes(`${asset}?v=${stamps.get(asset)}`),
         `${page} has a stale stamp on ${asset}; run: python scripts/stamp_week03.py`,
       );
+    }
+    // And nothing the page does not load should be carrying a stamp.
+    for (const asset of assets.keys()) {
+      if (wanted.includes(asset)) continue;
+      assert.ok(!html.includes(`${asset}?v=`), `${page} stamps ${asset} and does not load it`);
     }
   }
 });
