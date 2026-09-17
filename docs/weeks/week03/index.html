@@ -9,7 +9,7 @@
     />
     <title>Corridor Control · Log–Log Arcade</title>
     <link href="../../assets/favicon.svg" rel="icon" type="image/svg+xml" />
-    <link href="../../assets/css/corridor.css?v=30183e389b" rel="stylesheet" />
+    <link href="../../assets/css/corridor.css?v=085704f03d" rel="stylesheet" />
   </head>
   <body class="corridor">
     <a class="skip" href="#main">Skip to content</a>
@@ -81,7 +81,8 @@
               />
               <div class="ends"><span>1990</span><span>2024</span></div>
               <label for="year-slider">
-                Year (map animation) · showing <b id="year-now">2020</b>
+                Year · moves the globe, the map, both distributions and the
+                panels · showing <b id="year-now">2020</b>
               </label>
             </div>
           </div>
@@ -136,7 +137,7 @@
             <div class="step-head">
               <span class="num">2</span>
               <h2>Heavy tails in migration</h2>
-              <span class="year-tag">(analysis year: 2020)</span>
+              <span class="year-tag" id="tails-tag">(2020 · follows the slider)</span>
             </div>
             <div class="grid2">
               <div class="plot">
@@ -203,8 +204,8 @@
           <div class="card">
             <div class="step-head">
               <span class="num">3</span>
-              <h2>Popular ≠ bridge</h2>
-              <span class="year-tag">(analysis year: 2020)</span>
+              <h2>Popular ≠ bridge. Big ≠ prestigious.</h2>
+              <span class="year-tag">(2020 only · the null-model year)</span>
             </div>
             <div class="grid-side">
               <div class="plot">
@@ -216,6 +217,7 @@
                   country; every chart and panel on the page follows, and the
                   page does not scroll.
                 </p>
+                <p class="axis-note" id="between-note"></p>
                 <div class="legend">
                   <span><i style="background: #f2820c"></i> Migration</span>
                   <span><i style="background: #1f8fd6"></i> Flights</span>
@@ -245,6 +247,46 @@
                     Popular ≠ bridge.
                   </span>
                 </div>
+              </aside>
+            </div>
+
+            <div class="grid-side" style="margin-top: 22px">
+              <div class="plot">
+                <h3>Big ≠ prestigious: rank by people, rank by PageRank</h3>
+                <p class="axis-note" id="prestige-note"></p>
+                <div class="legend">
+                  <span><i style="background: #f2820c"></i> Rises on PageRank</span>
+                  <span><i style="background: #1f8fd6"></i> Falls on PageRank</span>
+                </div>
+                <canvas
+                  class="chart"
+                  height="620"
+                  id="prestige"
+                  width="900"
+                ></canvas>
+                <div class="notice">
+                  <span class="ico">💡</span>
+                  <span>
+                    <b>What to notice</b>
+                    <span id="prestige-movers"></span>
+                  </span>
+                </div>
+              </div>
+              <aside class="panel">
+                <h2>Where the PageRank comes from</h2>
+                <div class="who">
+                  <span class="flag" id="pr-flag">🌍</span>
+                  <span>
+                    <strong id="pr-name">Pick a country</strong><br />
+                    <span class="codes" id="pr-codes">—</span>
+                  </span>
+                </div>
+                <dl class="stats" id="pr-stats"></dl>
+                <div class="corridor-list">
+                  <h3>→ The three senders that give it most</h3>
+                  <ol id="pr-sources"></ol>
+                </div>
+                <p class="fineprint" id="pr-note"></p>
               </aside>
             </div>
           </div>
@@ -288,9 +330,12 @@
                     <span>
                       <b>What to notice</b>
                       The z-score says how surprising a country's betweenness is
-                      once its number of partners is held fixed. z = 0 means
-                      "just degree". Above +2 is a broker the degree sequence
-                      cannot explain.
+                      once its number of partners is held fixed. Above +2 is a
+                      broker the degree sequence cannot explain. Read a zero
+                      carefully: half the countries here broker nothing in the
+                      real network and nothing in the shuffles either, so their
+                      z sits near zero because there is nothing to be surprised
+                      by. Nothing on this chart falls below −2.
                     </span>
                   </div>
                   <div class="corridor-list">
@@ -339,7 +384,7 @@
             <div class="step-head">
               <span class="num">6</span>
               <h2>Typology</h2>
-              <span class="year-tag">(analysis year: 2020)</span>
+              <span class="year-tag">(2020 only · the null-model year)</span>
             </div>
             <p class="sub">
               Six labels from one cascade of rank tests, read left to right:
@@ -388,7 +433,7 @@
             <div class="step-head">
               <span class="num">8</span>
               <h2>Let's analyse <span class="dk-name">Denmark</span></h2>
-              <span class="year-tag">(analysis year: 2020)</span>
+              <span class="year-tag">(2020 only · the null-model year)</span>
               <select aria-label="Country to analyse" id="dk-country"></select>
             </div>
             <p class="sub">
@@ -398,19 +443,9 @@
             </p>
             <div class="dk-head" id="dk-head"></div>
 
-            <div class="grid3">
+            <div class="grid2">
               <div class="plot">
-                <h3>A. <span class="dk-name">Denmark</span> on the global scatters</h3>
-                <p class="axis-note">Betweenness vs origins · click any point</p>
-                <canvas class="chart" height="330" id="dk-scatter" width="440"></canvas>
-              </div>
-              <div class="plot">
-                <h3>&nbsp;</h3>
-                <p class="axis-note">Betweenness z-score vs origins</p>
-                <canvas class="chart" height="330" id="dk-z" width="440"></canvas>
-              </div>
-              <div class="plot">
-                <h3>B. <span class="dk-name">Denmark</span>, in and out</h3>
+                <h3>A. <span class="dk-name">Denmark</span>, in and out</h3>
                 <p class="axis-note">Migrant stock, 2020</p>
                 <div class="grid2" style="gap: 10px">
                   <table class="ego" id="dk-in">
@@ -425,17 +460,20 @@
                   </table>
                 </div>
               </div>
-            </div>
-
-            <div class="grid3" style="margin-top: 18px">
               <div class="plot">
-                <h3>C. <span class="dk-name">Denmark</span> through time</h3>
+                <h3>B. <span class="dk-name">Denmark</span> through time</h3>
                 <p class="axis-note">Incoming and outgoing people, 1990–2024</p>
                 <canvas class="chart" height="330" id="dk-time" width="440"></canvas>
               </div>
+            </div>
+
+            <div class="grid2" style="margin-top: 18px">
               <div class="plot">
-                <h3>&nbsp;</h3>
-                <p class="axis-note">Bridge rank over time (1 = top bridge)</p>
+                <h3>C. Bridge rank, 1990–2024</h3>
+                <p class="axis-note">
+                  Where <span class="dk-name">Denmark</span> sits in the world's
+                  betweenness ranking, year by year · 1 = top bridge
+                </p>
                 <canvas class="chart" height="330" id="dk-rank" width="440"></canvas>
               </div>
               <div class="plot">
@@ -667,6 +705,6 @@
       </footer>
     </main>
 
-    <script src="../../assets/js/week03-boot.js?v=30183e389b" type="module"></script>
+    <script src="../../assets/js/week03-boot.js?v=085704f03d" type="module"></script>
   </body>
 </html>

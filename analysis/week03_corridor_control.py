@@ -330,6 +330,28 @@ def main():
         per_year[args.null_year][node]["typology"] = typology(
             node, per_year[args.null_year], flight_rank, count)
 
+    # Where a country's PageRank comes from. In the weighted random walk a
+    # sender hands node i the share alpha * PR_j * w_ji / out_strength_j, so a
+    # country ranks high by drawing a large slice of the outflow of countries
+    # that are themselves drawn to. Saudi Arabia holds the world's second
+    # largest foreign-born population and ranks 38th here, because its senders
+    # carry little weight of their own; this is the field that shows that.
+    def pagerank_sources(graph, ranks, scores, node, limit=3):
+        if node not in graph:
+            return []
+        out_strength = dict(graph.out_degree(weight="weight"))
+        parts = []
+        for sender in graph.predecessors(node):
+            share = graph[sender][node]["weight"] / out_strength[sender]
+            parts.append({
+                "other": sender,
+                "gives": round(0.85 * scores[sender] * share, 8),
+                "share": round(share, 4),
+                "sender_rank": ranks[sender],
+            })
+        parts.sort(key=lambda part: -part["gives"])
+        return parts[:limit]
+
     def corridors(graph, node, direction, limit=5):
         if node not in graph:
             return []
@@ -359,6 +381,12 @@ def main():
                 record["years"][str(year)] = per_year[year][iso3]
         record["top_in"] = corridors(migration[args.null_year], iso3, "in")
         record["top_out"] = corridors(migration[args.null_year], iso3, "out")
+        record["pagerank_sources"] = pagerank_sources(
+            migration[args.null_year],
+            {n: m["pagerank_rank"] for n, m in per_year[args.null_year].items()},
+            {n: m["pagerank"] for n, m in per_year[args.null_year].items()},
+            iso3,
+        )
         nodes[iso3] = record
 
     # Section 8 analyses one country, and the reader picks which. The page

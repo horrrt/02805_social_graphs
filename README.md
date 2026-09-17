@@ -31,8 +31,8 @@ fails if the lobby or the prediction logbook drifts from it. To open a week: set
 its status to `live`, add its cabinet, and update the "exactly weeks … are live"
 assertion in the test.
 
-The previous Baymax mission remains at `/play/`. The 48-concept design archive
-remains at `/mockups/`; those image mockups are separate from the working arcade.
+The 48-concept design archive remains at `/mockups/`; those image mockups are
+separate from the working arcade.
 
 ## The frozen data
 
@@ -114,29 +114,6 @@ tests pin the lobby and the logbook to the course schedule and check every
 fragment link. The theme tests check that every canvas colour the scripts read
 is defined in the stylesheet. Browser review covers the published posts and
 saved progress.
-
-## Terminal examples
-
-```text
-bfs baymax spider-man
-bfs "Doctor Strange" hulk --undirected
-top --in 10
-top --betweenness 10
-rewire --swaps 20 --seed 7
-strand hulk
-triangles
-walk spider-man --steps 32 --seed 7
-search spider
-restore
-help
-```
-
-The terminal is a graph interpreter, not a shell. Interactive rewiring starts
-from the observed core each time, preserves connectivity and degrees, and accepts
-up to 2,000 swaps. It creates one demonstration world, not a substitute for the
-recorded 1,000-draw benchmark or a claim of uniform null sampling. Directed paths
-always use the original snapshot; undirected paths, walks and removals use the
-current scenario. The nine-node island and original isolates are preserved.
 
 ## The migration project
 

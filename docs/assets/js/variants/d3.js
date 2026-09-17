@@ -214,35 +214,74 @@ export function install(api, d3) {
     const box = svgFor("scatter-between", { l: 62, r: 18, t: 14, b: 42 });
     if (!box) return;
     const y3 = String(state.data.null_year);
-    const migration = withMetrics(y3)
-      .filter((r) => r.m.in_degree > 0 && r.m.betweenness > 0)
-      .map((r) => ({
-        x: r.m.in_degree,
-        y: r.m.betweenness,
-        iso3: r.iso3,
-        title: `<b>${r.n.name}</b><span>Migration network</span><span>${r.m.in_degree} origins · #${r.m.in_degree_rank}</span><span>betweenness #${r.m.betweenness_rank}</span>`,
-      }));
-    const flights = state.data.countries
+    const zeroTip = "<span>betweenness 0 · on no shortest path between two other countries</span>";
+    const rows = withMetrics(y3).filter((r) => r.m.in_degree > 0);
+    const flightRows = state.data.countries
       .map((iso3) => ({ iso3, n: node(iso3) }))
-      .filter((r) => r.n.flight_in_degree > 0 && r.n.flight_betweenness > 0)
-      .map((r) => ({
-        x: r.n.flight_in_degree,
-        y: r.n.flight_betweenness,
-        iso3: r.iso3,
-        title: `<b>${r.n.name}</b><span>Flight network</span><span>${r.n.flight_in_degree} flight partners</span>`,
-      }));
+      .filter((r) => r.n.flight_in_degree > 0);
+    const migration = rows.map((r) => ({
+      x: r.m.in_degree,
+      y: r.m.betweenness,
+      iso3: r.iso3,
+      title: `<b>${r.n.name}</b><span>Migration network</span><span>${r.m.in_degree} origins · #${r.m.in_degree_rank}</span>` +
+        (r.m.betweenness > 0 ? `<span>betweenness #${r.m.betweenness_rank}</span>` : zeroTip),
+    }));
+    const flights = flightRows.map((r) => ({
+      x: r.n.flight_in_degree,
+      y: r.n.flight_betweenness,
+      iso3: r.iso3,
+      title: `<b>${r.n.name}</b><span>Flight network</span><span>${r.n.flight_in_degree} flight partners</span>` +
+        (r.n.flight_betweenness > 0 ? "" : zeroTip),
+    }));
     const all = migration.concat(flights);
+    // Half of these countries broker nothing, and a log axis has no room for a
+    // zero. They keep their place on a baseline row under a dashed break
+    // instead of being filtered out of the chart and out of the claim.
+    const positive = all.map((d) => d.y).filter((v) => v > 0);
+    const minB = d3.min(positive);
+    const zeroRow = minB / 4;
     const x = d3.scaleLog().domain([1, d3.max(all, (d) => d.x)]).range([box.inner.left, box.inner.right]);
     const y = d3
       .scaleLog()
-      .domain([d3.min(all, (d) => d.y), d3.max(all, (d) => d.y)])
+      .domain([minB / 8, d3.max(positive)])
       .range([box.inner.bottom, box.inner.top]);
-    axes(box.svg, box.inner, x, y, { xLabel: "In-degree", yLabel: "Betweenness", yFormat: ".0e" });
-    plotPoints(box.svg, flights, x, y, `${colours.ACCESS}99`, 2.2, select);
-    plotPoints(box.svg, migration, x, y, `${colours.PEOPLE}cc`, 2.6, select);
+    const g = axes(box.svg, box.inner, x, y, { xLabel: "In-degree", yLabel: "Betweenness", yFormat: ".0e" });
+    // The axis floor is only there to make room for the baseline row, so its
+    // tick is dropped: the one label below the break is the 0 written here.
+    g.selectAll(".tick")
+      .filter((value) => value < minB)
+      .selectAll("text")
+      .remove();
+    box.svg
+      .append("line")
+      .attr("x1", box.inner.left)
+      .attr("x2", box.inner.right)
+      .attr("y1", y(minB / 2))
+      .attr("y2", y(minB / 2))
+      .attr("stroke", "#c2d0e2")
+      .attr("stroke-dasharray", "3 4");
+    box.svg
+      .append("text")
+      .attr("x", box.inner.left - 6)
+      .attr("y", y(zeroRow))
+      .attr("text-anchor", "end")
+      .attr("dominant-baseline", "middle")
+      .attr("fill", "#7a8fac")
+      .attr("font-size", 10)
+      .text("0");
+    const onRow = (rowsIn) =>
+      rowsIn.map((d) => (d.y > 0 ? d : { ...d, y: zeroRow }));
+    plotPoints(box.svg, onRow(flights), x, y, `${colours.ACCESS}99`, 2.2, select);
+    plotPoints(box.svg, onRow(migration), x, y, `${colours.PEOPLE}cc`, 2.6, select);
     const chosen = state.selected ? metrics(state.selected, y3) : null;
-    if (chosen?.betweenness > 0) {
-      highlight(box.svg, x, y, { x: chosen.in_degree, y: chosen.betweenness }, node(state.selected).name);
+    if (chosen && chosen.in_degree > 0) {
+      highlight(
+        box.svg,
+        x,
+        y,
+        { x: chosen.in_degree, y: chosen.betweenness > 0 ? chosen.betweenness : zeroRow },
+        node(state.selected).name,
+      );
     }
   }
 
@@ -281,42 +320,7 @@ export function install(api, d3) {
     const y3 = String(state.data.null_year);
     const dk = metrics(focus.iso3, y3);
     if (!dk) return;
-    const rows = withMetrics(y3).filter((r) => r.m.in_degree > 0 && r.m.betweenness > 0);
     const pad = { l: 44, r: 12, t: 12, b: 30 };
-
-    let box = svgFor("dk-scatter", pad);
-    if (box) {
-      const x = d3.scaleLog().domain([1, d3.max(rows, (r) => r.m.in_degree)]).range([box.inner.left, box.inner.right]);
-      const y = d3
-        .scaleLog()
-        .domain([d3.min(rows, (r) => r.m.betweenness), d3.max(rows, (r) => r.m.betweenness)])
-        .range([box.inner.bottom, box.inner.top]);
-      axes(box.svg, box.inner, x, y, { xLabel: "Degree", xTicks: 3, yTicks: 3, yFormat: ".0e" });
-      plotPoints(
-        box.svg,
-        rows.map((r) => ({ x: r.m.in_degree, y: r.m.betweenness, iso3: r.iso3, title: `<b>${r.n.name}</b><span>${r.m.in_degree} origins</span>` })),
-        x, y, "#c9d7e8", 1.9, select,
-      );
-      highlight(box.svg, x, y, { x: dk.in_degree, y: dk.betweenness }, focus.name);
-    }
-
-    box = svgFor("dk-z", pad);
-    if (box) {
-      const zRows = rows.filter((r) => r.m.z !== undefined);
-      const x = d3.scaleLog().domain([1, d3.max(zRows, (r) => r.m.in_degree)]).range([box.inner.left, box.inner.right]);
-      const y = d3
-        .scaleLinear()
-        .domain([d3.min(zRows, (r) => r.m.z), d3.max(zRows, (r) => r.m.z)])
-        .nice()
-        .range([box.inner.bottom, box.inner.top]);
-      axes(box.svg, box.inner, x, y, { xLabel: "Degree", xTicks: 3, yTicks: 3, yFormat: "d" });
-      plotPoints(
-        box.svg,
-        zRows.map((r) => ({ x: r.m.in_degree, y: r.m.z, iso3: r.iso3, title: `<b>${r.n.name}</b><span>z = ${r.m.z.toFixed(2)}</span>` })),
-        x, y, "#c9d7e8", 1.9, select,
-      );
-      if (dk.z !== undefined) highlight(box.svg, x, y, { x: dk.in_degree, y: dk.z }, focus.name);
-    }
 
     // Each series carries its own tip, so dk-time's two lines (in and out
     // strength) read the same hover card the canvas and echarts renderers show,
