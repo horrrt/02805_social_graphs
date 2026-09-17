@@ -123,7 +123,9 @@ export function linkAlpha(edge) {
   const a = state.edges.countries[edge.oi];
   const b = state.edges.countries[edge.di];
   if (a === state.selected || b === state.selected) return 1;
-  return state.focus === "only" ? 0 : 0.12;
+  // Enough to read as context on a photographic globe, not enough to compete
+  // with the selection.
+  return state.focus === "only" ? 0 : 0.18;
 }
 
 const $ = (id) => document.getElementById(id);
@@ -1034,15 +1036,37 @@ function syncFlow() {
 
 // The globe and the flat map share one edge budget: the heaviest corridors
 // only. Drawing all 9,095 would be a solid orange disc.
+// The heaviest corridors of the year, plus every corridor of the selected
+// country. Without that second half, selecting a small country while the rest
+// of the network is faded leaves the globe blank: Denmark's biggest corridor
+// is 42,000 people and the cut for the top 500 is several times that, so
+// there would be nothing bright left to look at.
+const SELECTED_EDGES = 60;
+
 function topEdges(limit) {
   const y = state.data.years.indexOf(state.year);
   const list = [];
+  const mine = [];
+  const selected = state.focus === "all" ? null : state.selected;
   for (const [oi, di, series, routes] of state.edges.edges) {
     const weight = series[y] ?? 0;
-    if (weight > 0) list.push({ oi, di, weight, routes });
+    if (weight <= 0) continue;
+    const edge = { oi, di, weight, routes };
+    list.push(edge);
+    if (
+      selected &&
+      (state.edges.countries[oi] === selected || state.edges.countries[di] === selected)
+    )
+      mine.push(edge);
   }
   list.sort((a, b) => b.weight - a.weight);
-  return list.slice(0, limit);
+  const kept = list.slice(0, limit);
+  if (!mine.length) return kept;
+  mine.sort((a, b) => b.weight - a.weight);
+  const seen = new Set(kept.map((e) => `${e.oi}-${e.di}`));
+  for (const edge of mine.slice(0, SELECTED_EDGES))
+    if (!seen.has(`${edge.oi}-${edge.di}`)) kept.push(edge);
+  return kept;
 }
 
 function flightEdges(limit) {
