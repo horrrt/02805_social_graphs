@@ -1,16 +1,4 @@
 /* Visual system for the six entry pages. Existing experiments retain their themes. */
-@font-face {
-  font-family: Barlow;
-  src: url("../fonts/barlow-400.ttf");
-  font-weight: 400;
-  font-display: swap;
-}
-@font-face {
-  font-family: Barlow;
-  src: url("../fonts/barlow-600.ttf");
-  font-weight: 600;
-  font-display: swap;
-}
 .visual-design {
   --visual-radius: 20px;
 }
@@ -78,11 +66,11 @@
   color: var(--muted);
 }
 .visual-design.guided-lobby .hero h1 {
-  font-family: Barlow, system-ui, sans-serif;
+  font-family: var(--sans);
   font-size: clamp(52px, 6.5vw, 88px);
-  font-weight: 600;
+  font-weight: 700;
   line-height: 0.99;
-  letter-spacing: -0.055em;
+  letter-spacing: -0.035em;
   margin: 22px 0;
 }
 .visual-design .hero h1 em {
@@ -321,11 +309,11 @@
   padding: 40px 0 48px;
 }
 .visual-design.guided-post .hero h1 {
-  font-family: Barlow, system-ui, sans-serif;
+  font-family: var(--sans);
   font-size: clamp(38px, 4.4vw, 58px);
-  font-weight: 600;
+  font-weight: 700;
   line-height: 1.04;
-  letter-spacing: -0.045em;
+  letter-spacing: -0.03em;
   max-width: 17ch;
   margin: 18px 0;
 }
@@ -452,9 +440,9 @@
 }
 .visual-design.guided-post #post h2,
 .visual-design.guided-post #results h2 {
-  font-family: Barlow, system-ui, sans-serif;
+  font-family: var(--sans);
   font-size: 36px;
-  font-weight: 600;
+  font-weight: 700;
   letter-spacing: -0.03em;
   max-width: 27ch;
 }
@@ -533,8 +521,7 @@
 .visual-design .learning-comparison h3,
 .visual-design .null-insight h3 {
   font:
-    600 24px/1.2 Barlow,
-    sans-serif;
+    600 24px/1.2 var(--sans);
   letter-spacing: -0.025em;
   margin: 0 0 12px;
 }
@@ -614,8 +601,7 @@
 }
 .visual-design .companion-callout h3 {
   font:
-    600 22px/1.2 Barlow,
-    sans-serif;
+    600 22px/1.2 var(--sans);
   letter-spacing: -0.025em;
   margin: 0 0 10px;
 }
@@ -663,8 +649,7 @@
 }
 .visual-design .ride-ticket h3 {
   font:
-    600 28px/1.2 Barlow,
-    sans-serif;
+    600 28px/1.2 var(--sans);
   letter-spacing: -0.03em;
   margin: 8px 0;
 }
@@ -684,8 +669,7 @@
 }
 .visual-design .ride-route h4 {
   font:
-    600 13px Barlow,
-    sans-serif;
+    600 13px var(--sans);
   color: var(--muted);
   margin: 0 0 8px;
 }
@@ -719,8 +703,7 @@
   box-shadow: none;
   color: var(--paper);
   font:
-    600 15px/1.25 Barlow,
-    sans-serif;
+    600 15px/1.25 var(--sans);
   border-radius: 8px;
   padding: 44px 8px 10px;
   min-height: 76px;

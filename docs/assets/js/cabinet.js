@@ -4,6 +4,9 @@ import { liveWeeks, weekLabel, FREE_PLAY_PREDICTIONS } from "./weeks.js";
 // Scripts, data and fonts all live under docs/assets/, so SITE is docs/, and
 // every link and every fetch resolves against it.
 export const SITE = new URL("../../", import.meta.url);
+// Week 3's type, for text drawn on canvas; the stylesheets use --sans.
+export const SANS =
+  '-apple-system, BlinkMacSystemFont, "Segoe UI", Inter, system-ui, sans-serif';
 export const url = (path) => new URL(path, SITE).href;
 // Canvas colours are CSS custom properties named --cv-<area>-<role>. They are
 // read from body so the per-page theme-* palettes apply. The fallback is the
@@ -402,7 +405,7 @@ export function drawNetwork(
   }
   if (label) {
     c.fillStyle = color;
-    c.font = "12px monospace";
+    c.font = `12px ${SANS}`;
     c.fillText(label, 16, h - 12);
   }
 }

@@ -10,6 +10,7 @@ import {
   canvasStage,
   tone,
   errorMessage,
+  SANS,
 } from "./cabinet.js";
 import { mountRide } from "./ride.mjs";
 import { graph, bfs, outcome } from "./arcade-core.mjs";
@@ -112,7 +113,7 @@ try {
         c.lineTo(x + 5, y + 5);
         c.stroke();
       }
-      c.font = `${active ? "600 " : ""}${w < 550 ? 10 : 13}px Barlow`;
+      c.font = `${active ? "600 " : ""}${w < 550 ? 10 : 13}px ${SANS}`;
       c.textAlign = "center";
       const words = name(station.id).split(" "),
         lines = [];
@@ -138,7 +139,7 @@ try {
     }
     c.textAlign = "left";
     c.fillStyle = tone("--cv-transit-caption", "#46618a");
-    c.font = "11px Barlow";
+    c.font = `11px ${SANS}`;
     c.fillText(
       "Circles = stations. Unmarked crossings are not connections.",
       12,

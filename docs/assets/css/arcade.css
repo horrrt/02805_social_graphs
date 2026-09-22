@@ -1,19 +1,13 @@
 @font-face {
-  font-family: Barlow;
-  src: url("../fonts/barlow-400.ttf");
-}
-@font-face {
-  font-family: Barlow;
-  src: url("../fonts/barlow-600.ttf");
-  font-weight: 600;
-}
-@font-face {
   font-family: Condensed;
   src: url("../fonts/barlow-condensed-800.ttf");
   font-weight: 800;
 }
 :root {
   color-scheme: light;
+  /* Week 3's type: the platform's own sans, as on the corridor post. */
+  --sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Inter, system-ui,
+    sans-serif;
   /* Week 3's palette, now the whole site's: white cards on a cool ground,
      navy ink, dark blue for actions and orange for what is at stake. */
   --bg: #eef3f9;
@@ -63,9 +57,10 @@ body {
   margin: 0;
   background: var(--bg);
   color: var(--paper);
-  font-family: Barlow, system-ui, sans-serif;
+  font-family: var(--sans);
   font-size: 18px;
   line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
 }
 a {
   color: inherit;
@@ -156,12 +151,10 @@ h3 {
   line-height: 1.05;
 }
 h1 {
-  font-family: Condensed, Impact, sans-serif;
   font-size: clamp(4rem, 10vw, 9.4rem);
-  font-weight: 800;
-  letter-spacing: -0.025em;
+  font-weight: 700;
+  letter-spacing: -0.03em;
   margin-bottom: 24px;
-  text-transform: uppercase;
 }
 h2 {
   font-size: clamp(1.8rem, 3vw, 2.7rem);
@@ -183,8 +176,12 @@ strong {
   font-weight: 600;
 }
 .eyebrow,
-.mono,
 .tag {
+  font: 800 11.5px/1.5 var(--sans);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+.mono {
   font:
     12px/1.5 ui-monospace,
     SFMono-Regular,
@@ -277,7 +274,9 @@ strong {
   padding-left: 30px;
 }
 .hero-aside .big {
-  font-family: Condensed;
+  font-family: var(--sans);
+  font-weight: 700;
+  letter-spacing: -0.03em;
   font-size: 8rem;
   line-height: 1;
   color: var(--accent);
@@ -376,10 +375,8 @@ strong {
   margin-bottom: 32px;
 }
 .prediction-label {
-  font:
-    12px ui-monospace,
-    monospace;
-  letter-spacing: 0.1em;
+  font: 800 11.5px var(--sans);
+  letter-spacing: 0.14em;
   color: var(--accent);
   display: flex;
   justify-content: space-between;
@@ -419,7 +416,9 @@ strong {
 }
 .metric strong {
   display: block;
-  font-family: Condensed;
+  font-family: var(--sans);
+  font-weight: 700;
+  letter-spacing: -0.03em;
   font-size: clamp(2.5rem, 5vw, 4.8rem);
   line-height: 1.1;
   color: var(--accent);
@@ -542,7 +541,7 @@ dialog::backdrop {
   padding: 14px;
 }
 .score-list span {
-  font: 12px monospace;
+  font: 700 12px var(--sans);
   color: var(--accent);
 }
 .score-list strong {
@@ -588,7 +587,9 @@ a.cabinet-link:hover {
   transform: translateY(-4px);
 }
 .cabinet-link h2 {
-  font-family: Condensed;
+  font-family: var(--sans);
+  font-weight: 700;
+  letter-spacing: -0.03em;
   font-size: 2rem;
   margin: 9px 0;
 }
@@ -680,7 +681,9 @@ a.cabinet-link:hover {
   position: relative;
 }
 .hero-card .card-monogram {
-  font-family: Condensed;
+  font-family: var(--sans);
+  font-weight: 700;
+  letter-spacing: -0.03em;
   font-size: 3.7rem;
   line-height: 1;
   color: var(--accent);
@@ -694,14 +697,16 @@ a.cabinet-link:hover {
   margin: 12px 0;
 }
 .hero-card h3 {
-  font-family: Condensed;
+  font-family: var(--sans);
+  font-weight: 700;
+  letter-spacing: -0.03em;
   text-transform: uppercase;
   font-size: 1.65rem;
   margin: 12px 0;
   min-height: 2em;
 }
 .hero-card .card-id {
-  font: 10px monospace;
+  font: 700 10px var(--sans);
   letter-spacing: 0.07em;
   color: var(--muted);
 }
@@ -720,7 +725,7 @@ a.cabinet-link:hover {
   background: var(--accent);
   color: var(--ink);
   padding: 1px 5px;
-  font: 10px monospace;
+  font: 700 10px var(--sans);
 }
 .collection-grid {
   display: grid;
@@ -750,7 +755,7 @@ a.cabinet-link:hover {
 }
 .card-battle .versus {
   text-align: center;
-  font: 2rem Condensed;
+  font: 700 2rem var(--sans);
   color: var(--accent);
 }
 .draft-slots {

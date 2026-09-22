@@ -8,6 +8,7 @@ import {
   canvasStage,
   tone,
   errorMessage,
+  SANS,
 } from "./cabinet.js";
 import { expectedDistinct } from "./collection-model.mjs";
 import { rng } from "./arcade-core.mjs";
@@ -205,7 +206,7 @@ try {
       W = w - left - right,
       H = h - top - bottom;
     c.clearRect(0, 0, w, h);
-    c.font = "12px Barlow";
+    c.font = `12px ${SANS}`;
     c.fillStyle = tone("--cv-packs-text", "#46618a");
     c.strokeStyle = tone("--cv-packs-grid", "#dce5f0");
     const maxY = 100;
@@ -299,7 +300,7 @@ try {
         c.fillRect(x + bw * 0.4, h - 35 - ah, bw * 0.38, ah);
       }
       c.fillStyle = tone("--cv-packs-text", "#46618a");
-      c.font = "12px Barlow";
+      c.font = `12px ${SANS}`;
       c.fillText(String(guess[i]), x, h - 40 - height);
     }
     c.fillStyle = tone("--cv-packs-text", "#46618a");
