@@ -41,10 +41,23 @@
 
 /* ----------------------------------------------------------------- top bar */
 
+/* The bar is the site's, not the post's: the same dark ground, wordmark and
+   lime accent as the lobby, whatever the skin. */
+@font-face {
+  font-family: Condensed;
+  src: url("../fonts/barlow-condensed-800.ttf");
+  font-weight: 800;
+}
+
 .corridor .topbar {
-  background: rgba(255, 255, 255, 0.92);
-  backdrop-filter: saturate(160%) blur(12px);
-  border-bottom: 1px solid var(--line);
+  --bar: #101813;
+  --bar-text: #e5eedc;
+  --bar-muted: #b0bcae;
+  --bar-line: #465144;
+  --bar-accent: #c2ff63;
+  background: var(--bar);
+  border-bottom: 1px solid var(--bar-line);
+  color: var(--bar-text);
   height: 52px;
   position: sticky;
   top: 0;
@@ -59,31 +72,38 @@
 }
 
 .corridor .brand {
-  align-items: center;
-  color: var(--ink);
-  display: flex;
-  font-weight: 700;
-  gap: 10px;
-  text-decoration: none;
-}
-
-.corridor .brand .mark {
-  background: var(--dtu);
-  border-radius: 5px;
-  color: #fff;
-  display: grid;
-  font-size: 11px;
+  color: var(--bar-text);
+  font-family: Condensed, Impact, sans-serif;
+  font-size: 20px;
   font-weight: 800;
-  height: 26px;
-  letter-spacing: 0.04em;
-  place-items: center;
-  width: 34px;
+  letter-spacing: 0.01em;
+  text-decoration: none;
+  white-space: nowrap;
 }
 
-.corridor .brand small {
-  color: var(--ink-mute);
-  font-size: 13px;
-  font-weight: 500;
+.corridor .brand::before {
+  color: var(--bar-accent);
+  content: "✳";
+  font-size: 24px;
+  margin-right: 8px;
+  vertical-align: -2px;
+}
+
+.corridor .brand b {
+  color: var(--bar-accent);
+  font-weight: inherit;
+}
+
+.corridor .site-link {
+  color: var(--bar-muted);
+  font-size: 13.5px;
+  font-weight: 600;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.corridor .site-link:hover {
+  color: var(--bar-text);
 }
 
 .corridor .topnav {
@@ -94,7 +114,7 @@
 
 .corridor .topnav a {
   border-radius: 999px;
-  color: var(--ink-soft);
+  color: var(--bar-muted);
   font-size: 13.5px;
   font-weight: 600;
   padding: 7px 13px;
@@ -102,13 +122,27 @@
 }
 
 .corridor .topnav a:hover {
-  background: var(--line-soft);
-  color: var(--ink);
+  background: rgba(229, 238, 220, 0.08);
+  color: var(--bar-text);
 }
 
 .corridor .topnav a.here {
-  background: var(--access-soft);
-  color: #14618f;
+  background: rgba(194, 255, 99, 0.14);
+  color: var(--bar-accent);
+}
+
+.corridor .topbar .style-trigger {
+  background: transparent;
+  border-color: var(--bar-line);
+  color: var(--bar-muted);
+}
+
+.corridor .topbar .style-trigger:hover,
+.corridor .topbar .style-trigger[aria-expanded="true"] {
+  background: rgba(229, 238, 220, 0.08);
+  border-color: var(--bar-muted);
+  box-shadow: none;
+  color: var(--bar-text);
 }
 
 /* Sticky topbar is 52px; leave room so section titles are not hidden under it. */
@@ -1706,10 +1740,6 @@ body > .chart-tip[hidden] {
   --radius: 3px;
   --shadow: none;
   font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
-}
-
-.corridor[data-skin="terminal"] .topbar {
-  background: rgba(11, 15, 20, 0.94);
 }
 
 .corridor[data-skin="terminal"] .card,
