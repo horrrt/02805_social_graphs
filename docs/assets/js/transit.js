@@ -57,7 +57,7 @@ try {
     const renderLine = (line, active) => {
       c.strokeStyle = active
         ? colors[(line.id - 1) % colors.length]
-        : tone("--cv-transit-line-inactive", "#cbd2cb");
+        : tone("--cv-transit-line-inactive", "#d3dce8");
       c.lineWidth = active ? 4 : 1;
       c.lineJoin = "round";
       for (let i = 1; i < line.stations.length; i++) {
@@ -94,13 +94,13 @@ try {
     for (const station of transit.stations) {
       const [x, y] = pt(station.id),
         active = !current || current.stations.includes(station.id);
-      c.fillStyle = tone("--cv-transit-station-fill", "#f7f5ec");
+      c.fillStyle = tone("--cv-transit-station-fill", "#ffffff");
       c.strokeStyle =
         station.id === closed
-          ? tone("--cv-transit-station-closed", "#a33d23")
+          ? tone("--cv-transit-station-closed", "#d9480f")
           : active
-            ? tone("--cv-transit-station-active", "#152b35")
-            : tone("--cv-transit-station-inactive", "#849393");
+            ? tone("--cv-transit-station-active", "#0f2340")
+            : tone("--cv-transit-station-inactive", "#7a8fac");
       c.lineWidth = active ? 2 : 1;
       c.beginPath();
       c.arc(x, y, station.id === closed ? 7 : 5, 0, Math.PI * 2);
@@ -128,16 +128,16 @@ try {
       lines.forEach((text, i) => {
         const yy = y + 20 + i * 14;
         const width = c.measureText(text).width;
-        c.fillStyle = tone("--cv-transit-label-bg", "#f7f5ecee");
+        c.fillStyle = tone("--cv-transit-label-bg", "#ffffffee");
         c.fillRect(x - width / 2 - 3, yy - 11, width + 6, 14);
         c.fillStyle = active
-          ? tone("--cv-transit-label-active", "#152b35")
-          : tone("--cv-transit-label-inactive", "#617271");
+          ? tone("--cv-transit-label-active", "#0f2340")
+          : tone("--cv-transit-label-inactive", "#46618a");
         c.fillText(text, x, yy);
       });
     }
     c.textAlign = "left";
-    c.fillStyle = tone("--cv-transit-caption", "#465b61");
+    c.fillStyle = tone("--cv-transit-caption", "#46618a");
     c.font = "11px Barlow";
     c.fillText(
       "Circles = stations. Unmarked crossings are not connections.",

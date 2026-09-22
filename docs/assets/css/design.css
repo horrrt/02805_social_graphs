@@ -18,12 +18,13 @@
   width: min(1120px, calc(100% - 64px));
   max-width: 1120px;
 }
+/* Week 3's bar: translucent white over the page, one hairline below. */
 .visual-design .chrome {
-  min-height: 80px;
-  padding: 16px max(32px, calc((100vw - 1120px) / 2));
-  background: var(--bg);
-  backdrop-filter: none;
-  border-bottom: 0;
+  min-height: 64px;
+  padding: 10px max(32px, calc((100vw - 1120px) / 2));
+  background: rgba(255, 255, 255, 0.92);
+  backdrop-filter: saturate(160%) blur(12px);
+  border-bottom: 1px solid var(--line);
 }
 .visual-design .arcade-wordmark {
   font-size: 20px;
@@ -506,11 +507,9 @@
 .visual-design .post-cover img {
   object-fit: contain;
 }
-.visual-design .cover-packs {
-  background: #f4df98;
-}
+.visual-design .cover-packs,
 .visual-design .cover-transit {
-  background: #dce8ed;
+  background: var(--band);
 }
 .visual-design .pack-tray .empty {
   max-width: none;
@@ -782,4 +781,42 @@
 }
 .visual-design #numeric-guess > summary {
   font-size: 14px;
+}
+
+/* Every hero sits on Week 3's navy band. The band runs the full width of the
+   window behind the centred column, and the hero's own tokens flip to light
+   ink so the copy, buttons and pills inside it need no rules of their own. */
+.visual-design {
+  overflow-x: clip;
+}
+.visual-design .lobby-hero,
+.visual-design .story-hero {
+  --paper: #eaf2fb;
+  --muted: #a9c3e0;
+  --accent: #ffb768;
+  --ink: #0b1f3a;
+  --line: #ffffff2e;
+  --surface: #ffffff12;
+  --band: #ffffff12;
+  position: relative;
+  isolation: isolate;
+  color: var(--paper);
+}
+.visual-design .lobby-hero::before,
+.visual-design .story-hero::before {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  inset: 0 calc(50% - 50vw);
+  background: radial-gradient(
+    120% 130% at 78% 18%,
+    #173f6d 0%,
+    #0b1f3a 55%,
+    #071427 100%
+  );
+  border-radius: 0 0 14px 14px;
+}
+.visual-design .lobby-hero .eyebrow,
+.visual-design .story-hero .eyebrow {
+  color: var(--accent);
 }

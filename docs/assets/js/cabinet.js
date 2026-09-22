@@ -351,7 +351,7 @@ export function drawNetwork(
     removed = new Set(),
     hollow = new Set(),
     links = data.links,
-    color = tone("--cv-net-active", "#baff5b"),
+    color = tone("--cv-net-active", "#1f8fd6"),
     label = "",
   } = {},
 ) {
@@ -363,7 +363,7 @@ export function drawNetwork(
   );
   c.clearRect(0, 0, w, h);
   c.lineWidth = 0.6;
-  c.strokeStyle = tone("--cv-net-edge", "#53625850");
+  c.strokeStyle = tone("--cv-net-edge", "#46618a38");
   for (const [a, b] of links) {
     if (
       removed.has(a) ||
@@ -379,7 +379,7 @@ export function drawNetwork(
     c.lineTo(...q);
     c.stroke();
   }
-  const node = tone("--cv-net-node", "#637167");
+  const node = tone("--cv-net-node", "#7a8fac");
   for (const n of data.nodes) {
     if (removed.has(n.id) || hollow.has(n.id)) continue;
     const [x, y] = positions.get(n.id);
@@ -391,7 +391,7 @@ export function drawNetwork(
   if (hollow.size) {
     // Hollow nodes (the isolates) are rings drawn over the filled dots.
     c.lineWidth = 1.5;
-    c.strokeStyle = tone("--cv-net-hollow", "#ff937c");
+    c.strokeStyle = tone("--cv-net-hollow", "#f2820c");
     for (const n of data.nodes) {
       if (!hollow.has(n.id) || removed.has(n.id)) continue;
       const [x, y] = positions.get(n.id);

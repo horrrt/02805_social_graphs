@@ -41,8 +41,8 @@
 
 /* ----------------------------------------------------------------- top bar */
 
-/* The bar is the site's, not the post's: the same dark ground, wordmark and
-   lime accent as the lobby, whatever the skin. */
+/* The bar is the site's: the same wordmark and "All posts" link as the lobby.
+   Its colours follow the skin, so the terminal skin keeps a dark bar. */
 @font-face {
   font-family: Condensed;
   src: url("../fonts/barlow-condensed-800.ttf");
@@ -50,11 +50,14 @@
 }
 
 .corridor .topbar {
-  --bar: #101813;
-  --bar-text: #e5eedc;
-  --bar-muted: #b0bcae;
-  --bar-line: #465144;
-  --bar-accent: #c2ff63;
+  --bar: rgba(255, 255, 255, 0.92);
+  --bar-text: var(--ink);
+  --bar-muted: var(--ink-soft);
+  --bar-line: var(--line);
+  --bar-accent: #14618f;
+  --bar-hover: var(--line-soft);
+  --bar-here: var(--access-soft);
+  backdrop-filter: saturate(160%) blur(12px);
   background: var(--bar);
   border-bottom: 1px solid var(--bar-line);
   color: var(--bar-text);
@@ -122,27 +125,13 @@
 }
 
 .corridor .topnav a:hover {
-  background: rgba(229, 238, 220, 0.08);
+  background: var(--bar-hover);
   color: var(--bar-text);
 }
 
 .corridor .topnav a.here {
-  background: rgba(194, 255, 99, 0.14);
+  background: var(--bar-here);
   color: var(--bar-accent);
-}
-
-.corridor .topbar .style-trigger {
-  background: transparent;
-  border-color: var(--bar-line);
-  color: var(--bar-muted);
-}
-
-.corridor .topbar .style-trigger:hover,
-.corridor .topbar .style-trigger[aria-expanded="true"] {
-  background: rgba(229, 238, 220, 0.08);
-  border-color: var(--bar-muted);
-  box-shadow: none;
-  color: var(--bar-text);
 }
 
 /* Sticky topbar is 52px; leave room so section titles are not hidden under it. */
@@ -1740,6 +1729,13 @@ body > .chart-tip[hidden] {
   --radius: 3px;
   --shadow: none;
   font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+}
+
+.corridor[data-skin="terminal"] .topbar {
+  --bar: rgba(11, 15, 20, 0.94);
+  --bar-accent: #5fb3ea;
+  --bar-hover: #16202b;
+  --bar-here: #10293a;
 }
 
 .corridor[data-skin="terminal"] .card,
