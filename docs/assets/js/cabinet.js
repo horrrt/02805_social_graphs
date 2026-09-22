@@ -4,6 +4,9 @@ import { liveWeeks, weekLabel, FREE_PLAY_PREDICTIONS } from "./weeks.js";
 // Scripts, data and fonts all live under docs/assets/, so SITE is docs/, and
 // every link and every fetch resolves against it.
 export const SITE = new URL("../../", import.meta.url);
+// Week 3's type, for text drawn on canvas; the stylesheets use --sans.
+export const SANS =
+  '-apple-system, BlinkMacSystemFont, "Segoe UI", Inter, system-ui, sans-serif';
 export const url = (path) => new URL(path, SITE).href;
 // Canvas colours are CSS custom properties named --cv-<area>-<role>. They are
 // read from body so the per-page theme-* palettes apply. The fallback is the
@@ -191,7 +194,7 @@ export function setupChrome() {
   });
   const host = $("#arcade-chrome");
   if (host)
-    host.innerHTML = `<a class="arcade-wordmark" href="${url("")}">LOG–LOG <b>LEGENDS</b></a><nav aria-label="Site navigation"><a href="${url("#weeks")}">Posts</a><a href="${url("#network")}">The network</a><button class="quiet" data-progress id="open-logbook">LOGBOOK 0/${liveWeeks().length}</button></nav>`;
+    host.innerHTML = `<a class="arcade-wordmark" href="${url("")}">LOG–LOG <b>LEGENDS</b></a><nav aria-label="Site navigation"><a href="${url("#weeks")}">Posts</a><a href="${url("#network")}">The data</a><button class="quiet" data-progress id="open-logbook">LOGBOOK 0/${liveWeeks().length}</button></nav>`;
   if (!$("#logbook"))
     document.body.insertAdjacentHTML(
       "beforeend",
@@ -351,7 +354,7 @@ export function drawNetwork(
     removed = new Set(),
     hollow = new Set(),
     links = data.links,
-    color = tone("--cv-net-active", "#baff5b"),
+    color = tone("--cv-net-active", "#1f8fd6"),
     label = "",
   } = {},
 ) {
@@ -363,7 +366,7 @@ export function drawNetwork(
   );
   c.clearRect(0, 0, w, h);
   c.lineWidth = 0.6;
-  c.strokeStyle = tone("--cv-net-edge", "#53625850");
+  c.strokeStyle = tone("--cv-net-edge", "#46618a38");
   for (const [a, b] of links) {
     if (
       removed.has(a) ||
@@ -379,7 +382,7 @@ export function drawNetwork(
     c.lineTo(...q);
     c.stroke();
   }
-  const node = tone("--cv-net-node", "#637167");
+  const node = tone("--cv-net-node", "#7a8fac");
   for (const n of data.nodes) {
     if (removed.has(n.id) || hollow.has(n.id)) continue;
     const [x, y] = positions.get(n.id);
@@ -391,7 +394,7 @@ export function drawNetwork(
   if (hollow.size) {
     // Hollow nodes (the isolates) are rings drawn over the filled dots.
     c.lineWidth = 1.5;
-    c.strokeStyle = tone("--cv-net-hollow", "#ff937c");
+    c.strokeStyle = tone("--cv-net-hollow", "#f2820c");
     for (const n of data.nodes) {
       if (!hollow.has(n.id) || removed.has(n.id)) continue;
       const [x, y] = positions.get(n.id);
@@ -402,7 +405,7 @@ export function drawNetwork(
   }
   if (label) {
     c.fillStyle = color;
-    c.font = "12px monospace";
+    c.font = `12px ${SANS}`;
     c.fillText(label, 16, h - 12);
   }
 }

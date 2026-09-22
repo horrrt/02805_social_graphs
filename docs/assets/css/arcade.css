@@ -1,53 +1,50 @@
 @font-face {
-  font-family: Barlow;
-  src: url("../fonts/barlow-400.ttf");
-}
-@font-face {
-  font-family: Barlow;
-  src: url("../fonts/barlow-600.ttf");
-  font-weight: 600;
-}
-@font-face {
   font-family: Condensed;
   src: url("../fonts/barlow-condensed-800.ttf");
   font-weight: 800;
 }
 :root {
-  color-scheme: dark;
-  --bg: #101813;
-  --surface: #18251d;
-  --paper: #e5eedc;
-  --muted: #b0bcae;
-  --accent: #c2ff63;
-  --line: #465144;
-  --ink: #112018;
-  --hot: #ff937c;
+  color-scheme: light;
+  /* Week 3's type: the platform's own sans, as on the corridor post. */
+  --sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Inter, system-ui,
+    sans-serif;
+  /* Week 3's palette, now the whole site's: white cards on a cool ground,
+     navy ink, dark blue for actions and orange for what is at stake. */
+  --bg: #eef3f9;
+  --surface: #ffffff;
+  --paper: #0f2340;
+  --muted: #46618a;
+  --accent: #14618f;
+  --line: #dce5f0;
+  --ink: #ffffff;
+  --hot: #f2820c;
+  --band: #eaf0f7;
   /* Canvas tokens, --cv-<area>-<role>. Scripts read them through tone() in
      cabinet.js and fall back to these same values when a token is missing. */
-  --cv-lobby-line: #465144;
-  --cv-lobby-fill-live: #233728;
-  --cv-lobby-fill: #1b221d;
-  --cv-lobby-stroke-live: #c2ff63;
-  --cv-lobby-stroke: #566154;
-  --cv-lobby-marquee-live: #c2ff63;
-  --cv-lobby-marquee: #72846e;
-  --cv-lobby-marquee-text-live: #112018;
-  --cv-lobby-marquee-text: #112018;
-  --cv-lobby-screen: #0c120e;
-  --cv-lobby-number-stroke-live: #c2ff63;
-  --cv-lobby-number-stroke: #778571;
-  --cv-lobby-number-live: #c2ff63;
-  --cv-lobby-number: #687460;
-  --cv-lobby-dot: #b7c2a8;
-  --cv-lobby-button-live: #ff937c;
-  --cv-lobby-button: #6b7263;
-  --cv-lobby-status-live: #c2ff63;
-  --cv-lobby-status: #8b9784;
-  --cv-lobby-sheet: #acb99b16;
-  --cv-net-active: #baff5b;
-  --cv-net-edge: #53625850;
-  --cv-net-node: #637167;
-  --cv-net-hollow: #ff937c;
+  --cv-lobby-line: #dce5f0;
+  --cv-lobby-fill-live: #d9ecf9;
+  --cv-lobby-fill: #ffffff;
+  --cv-lobby-stroke-live: #1f8fd6;
+  --cv-lobby-stroke: #b9c7d8;
+  --cv-lobby-marquee-live: #1f8fd6;
+  --cv-lobby-marquee: #b9c7d8;
+  --cv-lobby-marquee-text-live: #ffffff;
+  --cv-lobby-marquee-text: #0f2340;
+  --cv-lobby-screen: #0b1f3a;
+  --cv-lobby-number-stroke-live: #1f8fd6;
+  --cv-lobby-number-stroke: #b9c7d8;
+  --cv-lobby-number-live: #1f8fd6;
+  --cv-lobby-number: #7a8fac;
+  --cv-lobby-dot: #7a8fac;
+  --cv-lobby-button-live: #f2820c;
+  --cv-lobby-button: #b9c7d8;
+  --cv-lobby-status-live: #1f8fd6;
+  --cv-lobby-status: #7a8fac;
+  --cv-lobby-sheet: #0f234012;
+  --cv-net-active: #1f8fd6;
+  --cv-net-edge: #46618a38;
+  --cv-net-node: #7a8fac;
+  --cv-net-hollow: #f2820c;
 }
 * {
   box-sizing: border-box;
@@ -60,9 +57,10 @@ body {
   margin: 0;
   background: var(--bg);
   color: var(--paper);
-  font-family: Barlow, system-ui, sans-serif;
+  font-family: var(--sans);
   font-size: 18px;
   line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
 }
 a {
   color: inherit;
@@ -153,12 +151,10 @@ h3 {
   line-height: 1.05;
 }
 h1 {
-  font-family: Condensed, Impact, sans-serif;
   font-size: clamp(4rem, 10vw, 9.4rem);
-  font-weight: 800;
-  letter-spacing: -0.025em;
+  font-weight: 700;
+  letter-spacing: -0.03em;
   margin-bottom: 24px;
-  text-transform: uppercase;
 }
 h2 {
   font-size: clamp(1.8rem, 3vw, 2.7rem);
@@ -180,8 +176,12 @@ strong {
   font-weight: 600;
 }
 .eyebrow,
-.mono,
 .tag {
+  font: 800 11.5px/1.5 var(--sans);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+.mono {
   font:
     12px/1.5 ui-monospace,
     SFMono-Regular,
@@ -274,7 +274,9 @@ strong {
   padding-left: 30px;
 }
 .hero-aside .big {
-  font-family: Condensed;
+  font-family: var(--sans);
+  font-weight: 700;
+  letter-spacing: -0.03em;
   font-size: 8rem;
   line-height: 1;
   color: var(--accent);
@@ -373,10 +375,8 @@ strong {
   margin-bottom: 32px;
 }
 .prediction-label {
-  font:
-    12px ui-monospace,
-    monospace;
-  letter-spacing: 0.1em;
+  font: 800 11.5px var(--sans);
+  letter-spacing: 0.14em;
   color: var(--accent);
   display: flex;
   justify-content: space-between;
@@ -416,7 +416,9 @@ strong {
 }
 .metric strong {
   display: block;
-  font-family: Condensed;
+  font-family: var(--sans);
+  font-weight: 700;
+  letter-spacing: -0.03em;
   font-size: clamp(2.5rem, 5vw, 4.8rem);
   line-height: 1.1;
   color: var(--accent);
@@ -539,7 +541,7 @@ dialog::backdrop {
   padding: 14px;
 }
 .score-list span {
-  font: 12px monospace;
+  font: 700 12px var(--sans);
   color: var(--accent);
 }
 .score-list strong {
@@ -585,7 +587,9 @@ a.cabinet-link:hover {
   transform: translateY(-4px);
 }
 .cabinet-link h2 {
-  font-family: Condensed;
+  font-family: var(--sans);
+  font-weight: 700;
+  letter-spacing: -0.03em;
   font-size: 2rem;
   margin: 9px 0;
 }
@@ -654,20 +658,12 @@ a.cabinet-link:hover {
 }
 /* Hero Packs uses cards, not a dashboard shell. */
 .theme-packs {
-  --bg: #221b13;
-  --surface: #30261b;
-  --paper: #fff2d8;
-  --muted: #cebea1;
-  --accent: #ffd15c;
-  --line: #625139;
-  --ink: #281a07;
-  --hot: #ff9f86;
-  --cv-packs-text: #cebea1;
-  --cv-packs-grid: #625139;
-  --cv-packs-dot: #ffd15c;
-  --cv-packs-ring: #ff9f86;
-  --cv-packs-bar: #ffd15c;
-  --cv-packs-bar-actual: #ff9f86;
+  --cv-packs-text: #46618a;
+  --cv-packs-grid: #dce5f0;
+  --cv-packs-dot: #14618f;
+  --cv-packs-ring: #f2820c;
+  --cv-packs-bar: #14618f;
+  --cv-packs-bar-actual: #f2820c;
 }
 .pack-tray {
   display: grid;
@@ -685,7 +681,9 @@ a.cabinet-link:hover {
   position: relative;
 }
 .hero-card .card-monogram {
-  font-family: Condensed;
+  font-family: var(--sans);
+  font-weight: 700;
+  letter-spacing: -0.03em;
   font-size: 3.7rem;
   line-height: 1;
   color: var(--accent);
@@ -699,14 +697,16 @@ a.cabinet-link:hover {
   margin: 12px 0;
 }
 .hero-card h3 {
-  font-family: Condensed;
+  font-family: var(--sans);
+  font-weight: 700;
+  letter-spacing: -0.03em;
   text-transform: uppercase;
   font-size: 1.65rem;
   margin: 12px 0;
   min-height: 2em;
 }
 .hero-card .card-id {
-  font: 10px monospace;
+  font: 700 10px var(--sans);
   letter-spacing: 0.07em;
   color: var(--muted);
 }
@@ -725,7 +725,7 @@ a.cabinet-link:hover {
   background: var(--accent);
   color: var(--ink);
   padding: 1px 5px;
-  font: 10px monospace;
+  font: 700 10px var(--sans);
 }
 .collection-grid {
   display: grid;
@@ -755,7 +755,7 @@ a.cabinet-link:hover {
 }
 .card-battle .versus {
   text-align: center;
-  font: 2rem Condensed;
+  font: 700 2rem var(--sans);
   color: var(--accent);
 }
 .draft-slots {
@@ -806,25 +806,16 @@ a.cabinet-link:hover {
 }
 /* Transit borrows the clarity of a service map. */
 .theme-transit {
-  color-scheme: light;
-  --bg: #f4f1e8;
-  --surface: #e8e8df;
-  --paper: #152b35;
-  --muted: #465b61;
-  --accent: #075b64;
-  --line: #bbc8c5;
-  --ink: #fff;
-  --hot: #a33d23;
   --cv-transit-lines: #005c68,#b23e29,#765096,#27784a,#956900,#254caa,#972d68;
-  --cv-transit-line-inactive: #cbd2cb;
-  --cv-transit-station-fill: #f7f5ec;
-  --cv-transit-station-closed: #a33d23;
-  --cv-transit-station-active: #152b35;
-  --cv-transit-station-inactive: #849393;
-  --cv-transit-label-bg: #f7f5ecee;
-  --cv-transit-label-active: #152b35;
-  --cv-transit-label-inactive: #617271;
-  --cv-transit-caption: #465b61;
+  --cv-transit-line-inactive: #d3dce8;
+  --cv-transit-station-fill: #ffffff;
+  --cv-transit-station-closed: #d9480f;
+  --cv-transit-station-active: #0f2340;
+  --cv-transit-station-inactive: #7a8fac;
+  --cv-transit-label-bg: #ffffffee;
+  --cv-transit-label-active: #0f2340;
+  --cv-transit-label-inactive: #46618a;
+  --cv-transit-caption: #46618a;
 }
 .departure-board {
   background: #142b35;
@@ -852,7 +843,7 @@ a.cabinet-link:hover {
 }
 .transit-map {
   height: 620px;
-  background: #f7f5ec;
+  background: var(--surface);
 }
 .route-strip {
   display: flex;

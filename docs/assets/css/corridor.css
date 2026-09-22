@@ -41,10 +41,26 @@
 
 /* ----------------------------------------------------------------- top bar */
 
+/* The bar is the site's: the same wordmark and "All posts" link as the lobby.
+   Its colours follow the skin, so the terminal skin keeps a dark bar. */
+@font-face {
+  font-family: Condensed;
+  src: url("../fonts/barlow-condensed-800.ttf");
+  font-weight: 800;
+}
+
 .corridor .topbar {
-  background: rgba(255, 255, 255, 0.92);
+  --bar: rgba(255, 255, 255, 0.92);
+  --bar-text: var(--ink);
+  --bar-muted: var(--ink-soft);
+  --bar-line: var(--line);
+  --bar-accent: #14618f;
+  --bar-hover: var(--line-soft);
+  --bar-here: var(--access-soft);
   backdrop-filter: saturate(160%) blur(12px);
-  border-bottom: 1px solid var(--line);
+  background: var(--bar);
+  border-bottom: 1px solid var(--bar-line);
+  color: var(--bar-text);
   height: 52px;
   position: sticky;
   top: 0;
@@ -59,31 +75,38 @@
 }
 
 .corridor .brand {
-  align-items: center;
-  color: var(--ink);
-  display: flex;
-  font-weight: 700;
-  gap: 10px;
-  text-decoration: none;
-}
-
-.corridor .brand .mark {
-  background: var(--dtu);
-  border-radius: 5px;
-  color: #fff;
-  display: grid;
-  font-size: 11px;
+  color: var(--bar-text);
+  font-family: Condensed, Impact, sans-serif;
+  font-size: 20px;
   font-weight: 800;
-  height: 26px;
-  letter-spacing: 0.04em;
-  place-items: center;
-  width: 34px;
+  letter-spacing: 0.01em;
+  text-decoration: none;
+  white-space: nowrap;
 }
 
-.corridor .brand small {
-  color: var(--ink-mute);
-  font-size: 13px;
-  font-weight: 500;
+.corridor .brand::before {
+  color: var(--bar-accent);
+  content: "✳";
+  font-size: 24px;
+  margin-right: 8px;
+  vertical-align: -2px;
+}
+
+.corridor .brand b {
+  color: var(--bar-accent);
+  font-weight: inherit;
+}
+
+.corridor .site-link {
+  color: var(--bar-muted);
+  font-size: 13.5px;
+  font-weight: 600;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.corridor .site-link:hover {
+  color: var(--bar-text);
 }
 
 .corridor .topnav {
@@ -94,7 +117,7 @@
 
 .corridor .topnav a {
   border-radius: 999px;
-  color: var(--ink-soft);
+  color: var(--bar-muted);
   font-size: 13.5px;
   font-weight: 600;
   padding: 7px 13px;
@@ -102,13 +125,13 @@
 }
 
 .corridor .topnav a:hover {
-  background: var(--line-soft);
-  color: var(--ink);
+  background: var(--bar-hover);
+  color: var(--bar-text);
 }
 
 .corridor .topnav a.here {
-  background: var(--access-soft);
-  color: #14618f;
+  background: var(--bar-here);
+  color: var(--bar-accent);
 }
 
 /* Sticky topbar is 52px; leave room so section titles are not hidden under it. */
@@ -1709,7 +1732,10 @@ body > .chart-tip[hidden] {
 }
 
 .corridor[data-skin="terminal"] .topbar {
-  background: rgba(11, 15, 20, 0.94);
+  --bar: rgba(11, 15, 20, 0.94);
+  --bar-accent: #5fb3ea;
+  --bar-hover: #16202b;
+  --bar-here: #10293a;
 }
 
 .corridor[data-skin="terminal"] .card,

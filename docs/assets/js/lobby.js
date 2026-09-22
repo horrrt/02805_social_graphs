@@ -6,6 +6,7 @@ import {
   drawNetwork,
   tone,
   errorMessage,
+  SANS,
 } from "./cabinet.js";
 import { WEEKS, shortDate } from "./weeks.js";
 setupChrome();
@@ -44,7 +45,7 @@ function arcadeScene() {
   canvasStage(canvas, (c, w, h) => {
     c.clearRect(0, 0, w, h);
     const floor = h * 0.91;
-    c.strokeStyle = tone("--cv-lobby-line", "#465144");
+    c.strokeStyle = tone("--cv-lobby-line", "#dce5f0");
     c.lineWidth = 1;
     for (let i = 0; i < 16; i++) {
       c.beginPath();
@@ -70,11 +71,11 @@ function arcadeScene() {
         y = floor - ch;
       boxes.push({ x, y, w: cw, h: ch });
       c.fillStyle = live
-        ? tone("--cv-lobby-fill-live", "#233728")
-        : tone("--cv-lobby-fill", "#1b221d");
+        ? tone("--cv-lobby-fill-live", "#d9ecf9")
+        : tone("--cv-lobby-fill", "#ffffff");
       c.strokeStyle = live
-        ? tone("--cv-lobby-stroke-live", "#c2ff63")
-        : tone("--cv-lobby-stroke", "#566154");
+        ? tone("--cv-lobby-stroke-live", "#1f8fd6")
+        : tone("--cv-lobby-stroke", "#b9c7d8");
       c.lineWidth = 2;
       c.beginPath();
       c.moveTo(x + 8, y);
@@ -91,13 +92,13 @@ function arcadeScene() {
       c.fill();
       c.stroke();
       c.fillStyle = live
-        ? tone("--cv-lobby-marquee-live", "#c2ff63")
-        : tone("--cv-lobby-marquee", "#72846e");
+        ? tone("--cv-lobby-marquee-live", "#1f8fd6")
+        : tone("--cv-lobby-marquee", "#b9c7d8");
       c.fillRect(x + 7, y + 10, cw - 14, 24);
       c.fillStyle = live
-        ? tone("--cv-lobby-marquee-text-live", "#112018")
-        : tone("--cv-lobby-marquee-text", "#112018");
-      c.font = `bold ${Math.max(6, cw * 0.087)}px monospace`;
+        ? tone("--cv-lobby-marquee-text-live", "#ffffff")
+        : tone("--cv-lobby-marquee-text", "#0f2340");
+      c.font = `bold ${Math.max(6, cw * 0.087)}px ${SANS}`;
       c.textAlign = "center";
       c.fillText(
         live ? wk.cabinet.marquee || wk.cabinet.name.toUpperCase() : wk.short,
@@ -105,30 +106,30 @@ function arcadeScene() {
         y + 26,
         cw - 15,
       );
-      c.fillStyle = tone("--cv-lobby-screen", "#0c120e");
+      c.fillStyle = tone("--cv-lobby-screen", "#0b1f3a");
       c.fillRect(x + 9, y + 46, cw - 18, ch * 0.36);
       c.strokeStyle = live
-        ? tone("--cv-lobby-number-stroke-live", "#c2ff63")
-        : tone("--cv-lobby-number-stroke", "#778571");
-      c.font = `bold ${cw * 0.4}px monospace`;
+        ? tone("--cv-lobby-number-stroke-live", "#1f8fd6")
+        : tone("--cv-lobby-number-stroke", "#b9c7d8");
+      c.font = `bold ${cw * 0.4}px ${SANS}`;
       c.fillStyle = live
-        ? tone("--cv-lobby-number-live", "#c2ff63")
-        : tone("--cv-lobby-number", "#687460");
+        ? tone("--cv-lobby-number-live", "#1f8fd6")
+        : tone("--cv-lobby-number", "#7a8fac");
       c.fillText(String(wk.n).padStart(2, "0"), x + cw / 2, y + ch * 0.41);
-      c.fillStyle = tone("--cv-lobby-dot", "#b7c2a8");
+      c.fillStyle = tone("--cv-lobby-dot", "#7a8fac");
       c.beginPath();
       c.arc(x + cw * 0.3, y + ch * 0.58, 3, 0, Math.PI * 2);
       c.fill();
       c.fillStyle = live
-        ? tone("--cv-lobby-button-live", "#ff937c")
-        : tone("--cv-lobby-button", "#6b7263");
+        ? tone("--cv-lobby-button-live", "#f2820c")
+        : tone("--cv-lobby-button", "#b9c7d8");
       c.beginPath();
       c.arc(x + cw * 0.72, y + ch * 0.59, 4, 0, Math.PI * 2);
       c.fill();
       c.fillStyle = live
-        ? tone("--cv-lobby-status-live", "#c2ff63")
-        : tone("--cv-lobby-status", "#8b9784");
-      c.font = `${Math.max(6, cw * 0.075)}px monospace`;
+        ? tone("--cv-lobby-status-live", "#1f8fd6")
+        : tone("--cv-lobby-status", "#7a8fac");
+      c.font = `${Math.max(6, cw * 0.075)}px ${SANS}`;
       c.fillText(
         live ? "READY TO PLAY" : `COMING ${shortDate(wk.date)}`,
         x + cw / 2,
@@ -136,7 +137,7 @@ function arcadeScene() {
         cw - 15,
       );
       if (!live) {
-        c.fillStyle = tone("--cv-lobby-sheet", "#acb99b16");
+        c.fillStyle = tone("--cv-lobby-sheet", "#0f234012");
         c.beginPath();
         c.moveTo(x - 3, y - 4);
         c.lineTo(x + cw + 2, y - 4);
