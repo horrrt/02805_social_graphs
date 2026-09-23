@@ -7,5 +7,14 @@
   "files.exclude": {
     "**/.ipynb_checkpoints": true,
     "**/__pycache__": true
+  },
+  "github.copilot.chat.codeGeneration.useInstructionFiles": true,
+  "chat.useAgentsMdFile": true,
+  "chat.tools.terminal.autoApprove": {
+    "node --test": true,
+    "git status": true,
+    "git diff": true,
+    "git log": true,
+    "/^(\\.venv-course/bin/)?python3? analysis/week04_names_check\\.py$/": true
   }
 }

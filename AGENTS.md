@@ -1,5 +1,9 @@
 # Social Graphs post work
 
+The rules every coding assistant follows here (Copilot, Claude Code, Codex) are in
+[.github/copilot-instructions.md](.github/copilot-instructions.md), with rules for analysis code, site code
+and prose in [.github/instructions/](.github/instructions/). Read them before changing anything.
+
 Before creating or editing a weekly post, read [POST_GUIDE.md](POST_GUIDE.md). It records the user's design, writing, review and scope preferences and the required post-review workflow. Read the official brief for that week and retain existing data, routes, anchors and saved progress.
 
-Use the frontend-design and writing-clearly-and-concisely skills when applicable. Prefer codebase-memory-mcp for code discovery; fall back to file searches when graph results are insufficient.
+Claude Code only: use the frontend-design and writing-clearly-and-concisely skills when applicable. Prefer codebase-memory-mcp for code discovery; fall back to file searches when graph results are insufficient.

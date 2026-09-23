@@ -115,6 +115,29 @@ fragment link. The theme tests check that every canvas colour the scripts read
 is defined in the stylesheet. Browser review covers the published posts and
 saved progress.
 
+## Coding assistants (Copilot in VS Code)
+
+The repository tells GitHub Copilot how to work here, on every plan including Free and Student:
+
+| File | What it does |
+| --- | --- |
+| `.github/copilot-instructions.md` | Rules for every request: read first, plan, run the checks, report honestly, and what never to do |
+| `.github/instructions/*.instructions.md` | Extra rules that apply to `analysis/`, to `docs/` and `tests/`, and to prose |
+| `.github/prompts/*.prompt.md` | Slash commands in Copilot Chat: `/check`, `/review`, `/ship` |
+| `AGENTS.md` | Points Copilot, Claude Code and Codex at the same rules |
+| `.vscode/settings.json` | Turns instruction files on and lets the read-only checks run without a prompt |
+
+`tests/assistant-docs.test.mjs` fails when one of these files names a path or script that no longer exists.
+
+To use them, open the repository folder in VS Code and use Copilot Chat in **Agent** mode, so it can run
+the checks itself. Type `/check` before a commit, `/review` before a pull request, and `/ship` to open one.
+Copilot Free and Student choose the model automatically, so no file can pick one; the instructions ask
+every model to read, plan and verify instead.
+
+If VS Code still asks before running `node --test` or the names check, add the same
+`chat.tools.terminal.autoApprove` entries from `.vscode/settings.json` to your user settings. Some
+Copilot session types only read that setting there.
+
 ## The migration project
 
 From week 3 the project also works on a second domain: global migration. Two
