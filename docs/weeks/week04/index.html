@@ -1,0 +1,153 @@
+<!doctype html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width,initial-scale=1" name="viewport" />
+    <meta
+      content="Who hires America's foreign workers? Three networks from US H-1B and green-card filings: places, jobs and companies."
+      name="description"
+    />
+    <!-- Draft: remove noindex when the post goes live. -->
+    <meta content="noindex" name="robots" />
+    <title>Who hires America's foreign workers? · Log–Log Legends</title>
+    <link href="../../assets/css/arcade.css" rel="stylesheet" />
+    <link href="../../assets/favicon.svg" rel="icon" type="image/svg+xml" />
+    <script>
+      document.documentElement.classList.add("js");
+    </script>
+    <link href="../../assets/css/story.css" rel="stylesheet" />
+    <link rel="stylesheet" href="../../assets/css/design.css" />
+  </head>
+  <body class="guided-post visual-design">
+    <a class="skip" href="#main">Skip to content</a>
+    <header class="chrome" id="arcade-chrome">
+      <a class="arcade-wordmark" href="../../">LOG–LOG ARCADE</a
+      ><a href="#opening">The post</a>
+    </header>
+    <main class="wrap" id="main">
+      <!-- Draft skeleton. Each section names its owner; replace the draft
+           text and the question list with the finished section. Numbers come
+           from analysis/week04_*.json, never typed by hand. -->
+      <section class="hero story-hero">
+        <div class="hero-copy">
+          <p class="eyebrow">Week 4 · Communities &amp; backbones</p>
+          <h1>Who hires America's foreign workers?</h1>
+          <p class="intro">
+            Draft. One sentence on the question and what the reader will see.
+          </p>
+          <nav aria-label="This post" class="story-nav">
+            <a href="#where">Where</a><a href="#jobs">Which jobs</a
+            ><a href="#who">Who</a>
+          </nav>
+          <p class="story-scope">
+            Draft. This covers visa-sponsored hiring only, from the US
+            Department of Labor's public H-1B and green-card filings, FY2025.
+          </p>
+        </div>
+      </section>
+
+      <!-- Opening · owner: Niklas -->
+      <section aria-labelledby="opening-title" class="section post" id="opening">
+        <p class="eyebrow">Opening · Niklas</p>
+        <h2 id="opening-title">Draft title</h2>
+        <div class="story-copy">
+          <ul>
+            <li>What is an H-1B filing?</li>
+            <li>Why companies instead of the philosophers?</li>
+            <li>What does this data leave out?</li>
+          </ul>
+          <p>Draft.</p>
+        </div>
+      </section>
+
+      <!-- 1 · owner: Àngela · analysis/week04_where.py -->
+      <section aria-labelledby="where-title" class="section post" id="where">
+        <p class="eyebrow">1 · Where does the hiring happen? · Àngela</p>
+        <h2 id="where-title">Draft finding</h2>
+        <div class="story-copy">
+          <ul>
+            <li>Which cities hire the most?</li>
+            <li>Once the small links go, what's left of the map?</li>
+            <li>Is it one national job market or several regional ones?</li>
+            <li>Do the same employers tie distant cities together?</li>
+          </ul>
+          <p>Draft. Figure: the metro backbone, coloured by community.</p>
+        </div>
+      </section>
+
+      <!-- 2 · owner: Niklas · analysis/week04_jobs.py -->
+      <section aria-labelledby="jobs-title" class="section post" id="jobs">
+        <p class="eyebrow">2 · Which jobs go together? · Niklas</p>
+        <h2 id="jobs-title">Draft finding</h2>
+        <div class="story-copy">
+          <ul>
+            <li>Which jobs are hired together?</li>
+            <li>Which jobs belong to two clusters at once?</li>
+            <li>Do the clusters follow the official job groups?</li>
+          </ul>
+          <p>Draft. Figure: the occupation backbone with overlapping clusters.</p>
+        </div>
+      </section>
+
+      <!-- 3 · owner: Gyula · analysis/week04_staffing.py -->
+      <section aria-labelledby="who-title" class="section post" id="who">
+        <p class="eyebrow">3 · Who really employs them? · Gyula</p>
+        <h2 id="who-title">Draft finding</h2>
+        <div class="story-copy">
+          <ul>
+            <li>How many workers sit at a client instead of their own employer?</li>
+            <li>Do clients group by industry or by the firm that staffs them?</li>
+            <li>Who relies on a single vendor?</li>
+            <li>Does it hold from year to year?</li>
+          </ul>
+          <p>Draft. Figure: outsourcing firms and their clients, by community.</p>
+        </div>
+      </section>
+
+      <!-- Closing · owner: Niklas -->
+      <section class="section" id="results">
+        <p class="eyebrow">THE TAKEAWAY · Niklas</p>
+        <h2>Draft takeaway</h2>
+        <ul>
+          <li>What do place, job and company add up to?</li>
+          <li>One takeaway, one limit, one next step for the project.</li>
+        </ul>
+        <p class="story-end">
+          <a href="../../#weeks">Back to weekly posts →</a>
+        </p>
+      </section>
+
+      <section class="section evidence" id="evidence">
+        <h2>Curious? Go deeper.</h2>
+        <details>
+          <summary>Data and methods</summary>
+          <p>
+            Draft. Sources: US Department of Labor, Office of Foreign Labor
+            Certification, LCA and PERM disclosure data, FY2024 and FY2025.
+            Scripts: analysis/week04_data.py and one script per section.
+          </p>
+        </details>
+        <details>
+          <summary>AI use and how we checked it</summary>
+          <p>Draft. What the agent did, and the check each number passed.</p>
+        </details>
+      </section>
+    </main>
+    <footer class="wrap footer">
+      <span
+        >Log–Log Legends · 02805 Social graphs and interactions · Fall
+        2026</span
+      ><span
+        ><a href="../../">Legends</a> /
+        <a href="../../weeks/week01/">Week 1</a> /
+        <a href="../../weeks/week02/">Week 2</a> /
+        <a href="../../weeks/week03/">Week 3</a></span
+      >
+    </footer>
+    <script type="module">
+      import { setupChrome } from "../../assets/js/cabinet.js";
+      setupChrome();
+    </script>
+  </body>
+</html>
