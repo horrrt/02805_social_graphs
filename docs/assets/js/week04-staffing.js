@@ -190,6 +190,40 @@ root.querySelectorAll(".staffing-years button").forEach((button) => {
 });
 window.addEventListener("resize", () => chart.resize());
 
+// Communities with and without filing counts, from analysis/week04_staffing.py.
+const stats = document.querySelector("#staffing-community-stats");
+const two = (v) => v.toFixed(2);
+fetch(new URL("../../weeks/week04/data/staffing_communities.json", import.meta.url))
+  .then((r) => r.json())
+  .then((c) => {
+    const m = c.modularity;
+    const w = c.weighted_vs_unweighted;
+    const iv = c.industry_or_vendor;
+    const row = (label, weighted, plain) =>
+      `<tr><td>${label}</td><td style="text-align:right">${weighted}</td><td style="text-align:right">${plain}</td></tr>`;
+    stats.querySelector("tbody").innerHTML = [
+      row("Communities (median run)", num(m.communities_median), num(w.communities_median_unweighted)),
+      row("Modularity, real network", two(m.weighted_vs_rewired.real), two(m.wiring_only.real)),
+      row("Modularity, rewired null", two(m.weighted_vs_rewired.null), two(m.wiring_only.null)),
+      row("NMI between two seeds", two(w.nmi_between_seeds_weighted), two(w.nmi_between_seeds_unweighted)),
+      row("NMI with client industry", two(iv.nmi_community_industry), two(iv.unweighted.nmi_community_industry)),
+      row("NMI with main vendor", two(iv.nmi_community_main_vendor_same_clients),
+        two(iv.unweighted.nmi_community_main_vendor_same_clients)),
+    ].join("");
+    const fill = {
+      ".cross": w.nmi_median,
+      ".seeds": w.nmi_between_seeds_weighted,
+      ".seeds-plain": w.nmi_between_seeds_unweighted,
+      ".vendor": iv.nmi_community_main_vendor_same_clients,
+      ".vendor-plain": iv.unweighted.nmi_community_main_vendor_same_clients,
+      ".industry": iv.nmi_community_industry,
+    };
+    for (const [sel, v] of Object.entries(fill)) stats.querySelector(sel).textContent = two(v);
+  })
+  .catch(() => {
+    stats.querySelector("tbody").innerHTML = "<tr><td>The community numbers did not load.</td></tr>";
+  });
+
 fetch(new URL("../../weeks/week04/data/staffing_clients.json", import.meta.url))
   .then((r) => r.json())
   .then((json) => {
