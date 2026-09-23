@@ -1,0 +1,899 @@
+{
+ "generated_by": "analysis/week04_staffing.py",
+ "weight": "filings",
+ "runs": 100,
+ "years": {
+  "2022": {
+   "months": 12,
+   "certified_filings": 597093,
+   "placed_filings": 130226,
+   "placed_share": 0.2181,
+   "positions": 1048973,
+   "placed_positions": 239978,
+   "placed_positions_share": 0.2288,
+   "client_rows": 173052,
+   "placeholder_client_rows": 26081,
+   "placeholder_share": 0.1507,
+   "edges": 59600,
+   "firms": 8202,
+   "clients": 22938,
+   "top_firms_by_filings": [
+    [
+     "TATA CONSULTANCY SERVICES LIMITED",
+     8964
+    ],
+    [
+     "COGNIZANT TECHNOLOGY SOLUTIONS US CORP",
+     6108
+    ],
+    [
+     "INFOSYS LIMITED",
+     5148
+    ],
+    [
+     "HCL AMERICA, INC.",
+     2556
+    ],
+    [
+     "COMPUNNEL SOFTWARE GROUP, INC",
+     2249
+    ],
+    [
+     "Accenture LLP",
+     2144
+    ],
+    [
+     "WIPRO LIMITED",
+     1845
+    ],
+    [
+     "Larsen & Toubro Infotech Limited ",
+     1748
+    ]
+   ],
+   "top_firms_by_positions": [
+    [
+     "INFOSYS LIMITED",
+     70811
+    ],
+    [
+     "Grandison Management, Inc.",
+     19920
+    ],
+    [
+     "TATA CONSULTANCY SERVICES LIMITED",
+     9529
+    ],
+    [
+     "WIPRO LIMITED",
+     8395
+    ],
+    [
+     "KFORCE INC. ",
+     8210
+    ],
+    [
+     "COGNIZANT TECHNOLOGY SOLUTIONS US CORP",
+     6108
+    ],
+    [
+     "Mastech Digital Technologies, Inc.",
+     5658
+    ],
+    [
+     "HCL AMERICA, INC.",
+     2556
+    ]
+   ],
+   "grandison": {
+    "filings": 500,
+    "positions": 20000,
+    "positions_per_filing": 40.0,
+    "clients": 121,
+    "occupations": {
+     "Physical Therapists": 499,
+     "Occupational Therapists": 1
+    }
+   }
+  },
+  "2023": {
+   "months": 12,
+   "certified_filings": 518012,
+   "placed_filings": 115577,
+   "placed_share": 0.2231,
+   "positions": 933165,
+   "placed_positions": 177455,
+   "placed_positions_share": 0.1902,
+   "client_rows": 153044,
+   "placeholder_client_rows": 26095,
+   "placeholder_share": 0.1705,
+   "edges": 51621,
+   "firms": 8306,
+   "clients": 21350,
+   "top_firms_by_filings": [
+    [
+     "COGNIZANT TECHNOLOGY SOLUTIONS US CORP",
+     7232
+    ],
+    [
+     "TATA CONSULTANCY SERVICES LIMITED",
+     6879
+    ],
+    [
+     "INFOSYS LIMITED",
+     5370
+    ],
+    [
+     "HCL AMERICA INC",
+     2453
+    ],
+    [
+     "Accenture LLP",
+     2430
+    ],
+    [
+     "WIPRO LIMITED",
+     2295
+    ],
+    [
+     "LTIMINDTREE Limited",
+     1962
+    ],
+    [
+     "COMPUNNEL SOFTWARE GROUP, INC",
+     1907
+    ]
+   ],
+   "top_firms_by_positions": [
+    [
+     "INFOSYS LIMITED",
+     27490
+    ],
+    [
+     "Grandison Management, Inc.",
+     17600
+    ],
+    [
+     "WIPRO LIMITED",
+     9816
+    ],
+    [
+     "COGNIZANT TECHNOLOGY SOLUTIONS US CORP",
+     7232
+    ],
+    [
+     "KFORCE INC. ",
+     7150
+    ],
+    [
+     "TATA CONSULTANCY SERVICES LIMITED",
+     6899
+    ],
+    [
+     "Mastech Digital Technologies, Inc.",
+     3210
+    ],
+    [
+     "Accenture LLP",
+     2463
+    ]
+   ],
+   "grandison": {
+    "filings": 440,
+    "positions": 17600,
+    "positions_per_filing": 40.0,
+    "clients": 95,
+    "occupations": {
+     "Physical Therapists": 362,
+     "Occupational Therapists": 78
+    }
+   }
+  },
+  "2024": {
+   "months": 12,
+   "certified_filings": 534037,
+   "placed_filings": 113771,
+   "placed_share": 0.213,
+   "positions": 795657,
+   "placed_positions": 159325,
+   "placed_positions_share": 0.2002,
+   "client_rows": 148878,
+   "placeholder_client_rows": 25461,
+   "placeholder_share": 0.171,
+   "edges": 48525,
+   "firms": 8440,
+   "clients": 21036,
+   "top_firms_by_filings": [
+    [
+     "TATA CONSULTANCY SERVICES LIMITED",
+     8768
+    ],
+    [
+     "COGNIZANT TECHNOLOGY SOLUTIONS US CORP",
+     5606
+    ],
+    [
+     "INFOSYS LIMITED",
+     3919
+    ],
+    [
+     "HCL AMERICA INC",
+     3180
+    ],
+    [
+     "Accenture LLP",
+     2414
+    ],
+    [
+     "LTIMindtree Limited",
+     2304
+    ],
+    [
+     "IBM Corporation",
+     1946
+    ],
+    [
+     "WIPRO LIMITED",
+     1697
+    ]
+   ],
+   "top_firms_by_positions": [
+    [
+     "Grandison Management, Inc.",
+     19400
+    ],
+    [
+     "INFOSYS LIMITED",
+     11321
+    ],
+    [
+     "TATA CONSULTANCY SERVICES LIMITED",
+     9039
+    ],
+    [
+     "KFORCE INC. ",
+     6440
+    ],
+    [
+     "COGNIZANT TECHNOLOGY SOLUTIONS US CORP",
+     5606
+    ],
+    [
+     "WIPRO LIMITED",
+     4839
+    ],
+    [
+     "HCL AMERICA INC",
+     3180
+    ],
+    [
+     "RANDSTAD DIGITAL, LLC",
+     2514
+    ]
+   ],
+   "grandison": {
+    "filings": 485,
+    "positions": 19400,
+    "positions_per_filing": 40.0,
+    "clients": 100,
+    "occupations": {
+     "Physical Therapists": 461,
+     "Occupational Therapists": 24
+    }
+   }
+  },
+  "2025": {
+   "months": 12,
+   "certified_filings": 567907,
+   "placed_filings": 109374,
+   "placed_share": 0.1926,
+   "positions": 913750,
+   "placed_positions": 197282,
+   "placed_positions_share": 0.2159,
+   "client_rows": 145572,
+   "placeholder_client_rows": 23641,
+   "placeholder_share": 0.1624,
+   "edges": 48215,
+   "firms": 8781,
+   "clients": 21026,
+   "top_firms_by_filings": [
+    [
+     "TATA CONSULTANCY SERVICES LIMITED",
+     7221
+    ],
+    [
+     "COGNIZANT TECHNOLOGY SOLUTIONS US CORP",
+     5044
+    ],
+    [
+     "INFOSYS LIMITED",
+     3762
+    ],
+    [
+     "HCL AMERICA INC",
+     2525
+    ],
+    [
+     "COMPUNNEL SOFTWARE GROUP, INC",
+     2237
+    ],
+    [
+     "LTIMindtree Limited",
+     2141
+    ],
+    [
+     "Accenture LLP",
+     1974
+    ],
+    [
+     "IBM Corporation",
+     1755
+    ]
+   ],
+   "top_firms_by_positions": [
+    [
+     "Grandison Management, Inc.",
+     57800
+    ],
+    [
+     "INFOSYS LIMITED",
+     11490
+    ],
+    [
+     "KFORCE INC. ",
+     7710
+    ],
+    [
+     "TATA CONSULTANCY SERVICES LIMITED",
+     7565
+    ],
+    [
+     "CGI Technologies and Solutions Inc.",
+     5228
+    ],
+    [
+     "COGNIZANT TECHNOLOGY SOLUTIONS US CORP",
+     5219
+    ],
+    [
+     "WIPRO LIMITED",
+     4652
+    ],
+    [
+     "LTIMindtree Limited",
+     3005
+    ]
+   ],
+   "grandison": {
+    "filings": 1446,
+    "positions": 57840,
+    "positions_per_filing": 40.0,
+    "clients": 137,
+    "occupations": {
+     "Physical Therapists": 789,
+     "Occupational Therapists": 657
+    }
+   }
+  },
+  "2026": {
+   "months": 9,
+   "certified_filings": 417721,
+   "placed_filings": 75369,
+   "placed_share": 0.1804,
+   "positions": 835406,
+   "placed_positions": 177670,
+   "placed_positions_share": 0.2127,
+   "client_rows": 68234,
+   "placeholder_client_rows": 10895,
+   "placeholder_share": 0.1597,
+   "edges": 28960,
+   "firms": 6832,
+   "clients": 13290,
+   "top_firms_by_filings": [
+    [
+     "INFOSYS LIMITED",
+     2984
+    ],
+    [
+     "TATA CONSULTANCY SERVICES LIMITED",
+     2624
+    ],
+    [
+     "COGNIZANT TECHNOLOGY SOLUTIONS US CORP",
+     2160
+    ],
+    [
+     "Grandison Management, Inc.",
+     1978
+    ],
+    [
+     "COMPUNNEL SOFTWARE GROUP, INC",
+     1916
+    ],
+    [
+     "WIPRO LIMITED",
+     1236
+    ],
+    [
+     "HCL AMERICA INC",
+     988
+    ],
+    [
+     "Ernst & Young U.S. LLP",
+     974
+    ]
+   ],
+   "top_firms_by_positions": [
+    [
+     "Grandison Management, Inc.",
+     79120
+    ],
+    [
+     "CGI Technologies and Solutions Inc.",
+     10885
+    ],
+    [
+     "INFOSYS LIMITED",
+     6160
+    ],
+    [
+     "KFORCE INC. ",
+     5730
+    ],
+    [
+     "TATA CONSULTANCY SERVICES LIMITED",
+     2624
+    ],
+    [
+     "COGNIZANT TECHNOLOGY SOLUTIONS US CORP",
+     2160
+    ],
+    [
+     "COMPUNNEL SOFTWARE GROUP, INC",
+     1916
+    ],
+    [
+     "RANDSTAD DIGITAL, LLC",
+     1683
+    ]
+   ],
+   "grandison": {
+    "filings": 1978,
+    "positions": 79120,
+    "positions_per_filing": 40.0,
+    "clients": 122,
+    "occupations": {
+     "Occupational Therapists": 1025,
+     "Physical Therapists": 953
+    }
+   }
+  }
+ },
+ "main": {
+  "year": 2025,
+  "clients": 21026,
+  "single_vendor_clients": 16372,
+  "single_vendor_filing_share": 0.2403,
+  "big_clients": 718,
+  "big_clients_over_90pct_one_vendor": 107,
+  "big_clients_median_top_vendor_share": 0.3929,
+  "largest_clients": [
+   {
+    "client": "Citigroup",
+    "filings": 2180,
+    "vendors": 114,
+    "top_vendor": "TATA CONSULTANCY SERVICES LIMITED",
+    "top_vendor_share": 0.244,
+    "sector": "52"
+   },
+   {
+    "client": "Verizon",
+    "filings": 1959,
+    "vendors": 521,
+    "top_vendor": "COGNIZANT TECHNOLOGY SOLUTIONS US CORP",
+    "top_vendor_share": 0.09,
+    "sector": "51"
+   },
+   {
+    "client": "Bank of America",
+    "filings": 1858,
+    "vendors": 47,
+    "top_vendor": "RANDSTAD DIGITAL, LLC",
+    "top_vendor_share": 0.181,
+    "sector": "52"
+   },
+   {
+    "client": "Fidelity Investments",
+    "filings": 1752,
+    "vendors": 241,
+    "top_vendor": "COMPUNNEL SOFTWARE GROUP, INC",
+    "top_vendor_share": 0.277,
+    "sector": "52"
+   },
+   {
+    "client": "Wells Fargo",
+    "filings": 1580,
+    "vendors": 457,
+    "top_vendor": "Mphasis Corporation",
+    "top_vendor_share": 0.065,
+    "sector": "52"
+   },
+   {
+    "client": "American Express",
+    "filings": 1298,
+    "vendors": 367,
+    "top_vendor": "TATA CONSULTANCY SERVICES LIMITED",
+    "top_vendor_share": 0.105,
+    "sector": "52"
+   },
+   {
+    "client": "USAA",
+    "filings": 1103,
+    "vendors": 239,
+    "top_vendor": "HCL AMERICA INC",
+    "top_vendor_share": 0.29,
+    "sector": "52"
+   },
+   {
+    "client": "Capital One",
+    "filings": 1102,
+    "vendors": 428,
+    "top_vendor": "COMPUNNEL SOFTWARE GROUP, INC",
+    "top_vendor_share": 0.058,
+    "sector": "52"
+   },
+   {
+    "client": "Apple",
+    "filings": 1047,
+    "vendors": 315,
+    "top_vendor": "INFOSYS LIMITED",
+    "top_vendor_share": 0.124,
+    "sector": "31-33"
+   },
+   {
+    "client": "JPMorgan Chase",
+    "filings": 987,
+    "vendors": 303,
+    "top_vendor": "Mphasis Corporation",
+    "top_vendor_share": 0.183,
+    "sector": "52"
+   },
+   {
+    "client": "T-Mobile",
+    "filings": 934,
+    "vendors": 346,
+    "top_vendor": "HCL AMERICA INC",
+    "top_vendor_share": 0.069,
+    "sector": "51"
+   },
+   {
+    "client": "AT&T",
+    "filings": 896,
+    "vendors": 314,
+    "top_vendor": "TECH MAHINDRA (AMERICAS), INC",
+    "top_vendor_share": 0.146,
+    "sector": "51"
+   },
+   {
+    "client": "Walmart",
+    "filings": 863,
+    "vendors": 298,
+    "top_vendor": "COMPUNNEL SOFTWARE GROUP, INC",
+    "top_vendor_share": 0.107,
+    "sector": "44-45"
+   },
+   {
+    "client": "Renewal Rehab",
+    "filings": 762,
+    "vendors": 2,
+    "top_vendor": "Grandison Management, Inc.",
+    "top_vendor_share": 0.999,
+    "sector": "62"
+   },
+   {
+    "client": "Charles Schwab",
+    "filings": 707,
+    "vendors": 102,
+    "top_vendor": "Mphasis Corporation",
+    "top_vendor_share": 0.246,
+    "sector": "52"
+   },
+   {
+    "client": "Ford",
+    "filings": 691,
+    "vendors": 102,
+    "top_vendor": "Epitec, Inc.",
+    "top_vendor_share": 0.148,
+    "sector": "31-33"
+   },
+   {
+    "client": "Freddie Mac",
+    "filings": 648,
+    "vendors": 309,
+    "top_vendor": "Hexaware Technologies, Inc.",
+    "top_vendor_share": 0.231,
+    "sector": "52"
+   },
+   {
+    "client": "PNC",
+    "filings": 643,
+    "vendors": 65,
+    "top_vendor": "CGI Technologies and Solutions Inc.",
+    "top_vendor_share": 0.263,
+    "sector": "52"
+   },
+   {
+    "client": "Elevance Health",
+    "filings": 640,
+    "vendors": 146,
+    "top_vendor": "UST Global Inc",
+    "top_vendor_share": 0.314,
+    "sector": "52"
+   },
+   {
+    "client": "Johnson & Johnson",
+    "filings": 622,
+    "vendors": 139,
+    "top_vendor": "TATA CONSULTANCY SERVICES LIMITED",
+    "top_vendor_share": 0.193,
+    "sector": "31-33"
+   },
+   {
+    "client": "CVS Health",
+    "filings": 610,
+    "vendors": 172,
+    "top_vendor": "COGNIZANT TECHNOLOGY SOLUTIONS US CORP",
+    "top_vendor_share": 0.193,
+    "sector": "44-45"
+   },
+   {
+    "client": "Charter Communications",
+    "filings": 601,
+    "vendors": 282,
+    "top_vendor": "INFOSYS LIMITED",
+    "top_vendor_share": 0.123,
+    "sector": "51"
+   },
+   {
+    "client": "Cisco",
+    "filings": 574,
+    "vendors": 100,
+    "top_vendor": "TATA CONSULTANCY SERVICES LIMITED",
+    "top_vendor_share": 0.192,
+    "sector": "31-33"
+   },
+   {
+    "client": "Comcast",
+    "filings": 541,
+    "vendors": 157,
+    "top_vendor": "Capgemini America Inc",
+    "top_vendor_share": 0.165,
+    "sector": "51"
+   },
+   {
+    "client": "Fiserv",
+    "filings": 523,
+    "vendors": 174,
+    "top_vendor": "Infinite Computer Solutions, Inc.",
+    "top_vendor_share": 0.14,
+    "sector": "52"
+   }
+  ],
+  "giant": {
+   "nodes": 23763,
+   "edges": 44131,
+   "share_of_filings": 0.9457
+  },
+  "modularity": {
+   "communities_median": 77,
+   "nmi_between_seeds_median": 0.713,
+   "rewired_components_median": 618,
+   "weighted_vs_rewired": {
+    "real": 0.6194,
+    "real_sd": 0.0008,
+    "null": 0.7472,
+    "null_sd": 0.0013,
+    "z": -99.71,
+    "null_runs_at_or_above_real": 100
+   },
+   "wiring_only": {
+    "real": 0.585,
+    "real_sd": 0.0015,
+    "null": 0.5438,
+    "null_sd": 0.0007,
+    "z": 58.68,
+    "null_runs_at_or_above_real": 0
+   },
+   "weights_only": {
+    "real": 0.6194,
+    "real_sd": 0.0008,
+    "null": 0.7587,
+    "null_sd": 0.0012,
+    "z": -118.49,
+    "null_runs_at_or_above_real": 100
+   }
+  },
+  "industry_or_vendor": {
+   "clients_with_2plus_vendors": 4527,
+   "their_filing_share": 0.7539,
+   "with_sector_label": 216,
+   "nmi_community_industry": 0.322,
+   "p_industry": 0.001,
+   "nmi_community_main_vendor": 0.654,
+   "p_vendor": 0.001,
+   "nmi_community_main_vendor_same_clients": 0.821,
+   "p_vendor_same_clients": 0.001
+  },
+  "largest_communities": [
+   {
+    "filings": 12354,
+    "firms": 331,
+    "clients": 892,
+    "top_firms": [
+     "TATA CONSULTANCY SERVICES LIMITED",
+     "LTIMindtree Limited",
+     "CGI Technologies and Solutions Inc.",
+     "PHOTON INFOTECH, INC."
+    ],
+    "top_clients": [
+     "Citigroup",
+     "PNC",
+     "Johnson & Johnson",
+     "Cisco",
+     "Cigna",
+     "Humana"
+    ],
+    "sectors": {
+     "52": 10,
+     "31-33": 10,
+     "44-45": 4,
+     "48-49": 2
+    }
+   },
+   {
+    "filings": 7386,
+    "firms": 292,
+    "clients": 658,
+    "top_firms": [
+     "Mphasis Corporation",
+     "RANDSTAD DIGITAL, LLC",
+     "VIRTUSA CORPORATION",
+     "Synechron Inc."
+    ],
+    "top_clients": [
+     "Bank of America",
+     "Wells Fargo",
+     "JPMorgan Chase",
+     "Charles Schwab",
+     "FedEx",
+     "Duke Energy"
+    ],
+    "sectors": {
+     "52": 4,
+     "48-49": 1,
+     "22": 1
+    }
+   },
+   {
+    "filings": 6874,
+    "firms": 265,
+    "clients": 730,
+    "top_firms": [
+     "COGNIZANT TECHNOLOGY SOLUTIONS US CORP",
+     "Cigniti Technologies, Inc.",
+     "AGILISIUM CONSULTING LLC",
+     "Relevantz Technology Services, Inc."
+    ],
+    "top_clients": [
+     "CVS Health",
+     "BNY Mellon",
+     "Northern Trust",
+     "American Airlines",
+     "Travelers",
+     "AbbVie"
+    ],
+    "sectors": {
+     "52": 15,
+     "31-33": 6,
+     "44-45": 1,
+     "48-49": 1
+    }
+   },
+   {
+    "filings": 6039,
+    "firms": 286,
+    "clients": 571,
+    "top_firms": [
+     "INFOSYS LIMITED",
+     "Bitwise Inc.",
+     "INFOSTRETCH CORPORATION",
+     "ITC INFOTECH (USA), INC."
+    ],
+    "top_clients": [
+     "Charter Communications",
+     "Toyota",
+     "Goldman Sachs",
+     "Citizens Bank",
+     "Nike",
+     "Kroger"
+    ],
+    "sectors": {
+     "52": 10,
+     "31-33": 6,
+     "22": 2,
+     "51": 1
+    }
+   },
+   {
+    "filings": 5909,
+    "firms": 571,
+    "clients": 975,
+    "top_firms": [
+     "Tredence Inc. ",
+     "Tek Leaders Inc",
+     "Elite IT Technologies LLC",
+     "VISTA APPLIED SOLUTIONS GROUP INC"
+    ],
+    "top_clients": [
+     "Capital One",
+     "Walmart",
+     "Vanguard",
+     "eBay",
+     "FINRA",
+     "SWIFT"
+    ],
+    "sectors": {
+     "52": 5,
+     "44-45": 2,
+     "56": 1
+    }
+   },
+   {
+    "filings": 4931,
+    "firms": 293,
+    "clients": 585,
+    "top_firms": [
+     "IBM Corporation",
+     "UST Global Inc",
+     "Deloitte Consulting LLP",
+     "SOPHLOGIC GLOBAL LLC."
+    ],
+    "top_clients": [
+     "T-Mobile",
+     "Elevance Health",
+     "Truist",
+     "Pfizer",
+     "UPS",
+     "Equifax"
+    ],
+    "sectors": {
+     "52": 9,
+     "56": 2,
+     "22": 2,
+     "51": 1
+    }
+   }
+  ]
+ },
+ "stability": [
+  {
+   "from": 2022,
+   "to": 2023,
+   "shared_clients": 7752,
+   "nmi": 0.29
+  },
+  {
+   "from": 2023,
+   "to": 2024,
+   "shared_clients": 7282,
+   "nmi": 0.311
+  },
+  {
+   "from": 2024,
+   "to": 2025,
+   "shared_clients": 7059,
+   "nmi": 0.335
+  }
+ ],
+ "seconds": 499
+}

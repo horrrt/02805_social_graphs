@@ -18,6 +18,7 @@
     </script>
     <link href="../../assets/css/story.css" rel="stylesheet" />
     <link rel="stylesheet" href="../../assets/css/design.css" />
+    <link rel="stylesheet" href="../../assets/css/week04.css" />
   </head>
   <body class="guided-post visual-design">
     <a class="skip" href="#main">Skip to content</a>
@@ -101,8 +102,60 @@
             <li>Who relies on a single vendor?</li>
             <li>Does it hold from year to year?</li>
           </ul>
-          <p>Draft. Figure: outsourcing firms and their clients, by community.</p>
+          <p>Draft.</p>
         </div>
+        <figure class="staffing" id="staffing-figure">
+          <div class="staffing-controls">
+            <div aria-label="Fiscal year" class="staffing-years" role="group">
+              <button aria-pressed="false" data-year="2022" type="button">FY2022</button
+              ><button aria-pressed="false" data-year="2023" type="button">FY2023</button
+              ><button aria-pressed="false" data-year="2024" type="button">FY2024</button
+              ><button aria-pressed="true" data-year="2025" type="button">FY2025</button
+              ><button aria-pressed="false" data-year="2026" type="button">
+                FY2026 · Oct–Jun
+              </button>
+            </div>
+            <label class="staffing-search"
+              >Find a client
+              <input autocomplete="off" list="staffing-names" type="search" />
+              <datalist id="staffing-names"></datalist>
+            </label>
+          </div>
+          <div class="staffing-grid">
+            <div class="staffing-chart">
+              <svg
+                aria-label="Scatter plot of client companies: placed H-1B filings against the share supplied by the client's largest vendor. The table below lists the same data."
+                role="img"
+              ></svg>
+              <div class="staffing-tip" hidden></div>
+            </div>
+            <div aria-live="polite" class="staffing-panel">Loading the filings…</div>
+          </div>
+          <ul class="staffing-legend"></ul>
+          <figcaption>
+            One dot per client company with 20 or more H-1B filings that placed
+            a worker there in the year. Further right, more filings; higher up,
+            more of them from a single outsourcing firm. Click a dot or type a
+            name to see who supplies that client. Sector labels cover the most
+            frequent clients only; grey dots have none.
+          </figcaption>
+          <details>
+            <summary>The 25 largest clients as a table</summary>
+            <table>
+              <thead>
+                <tr>
+                  <th>Client</th>
+                  <th>Sector</th>
+                  <th class="num">Filings</th>
+                  <th class="num">Vendors</th>
+                  <th>Largest vendor</th>
+                  <th class="num">Its share</th>
+                </tr>
+              </thead>
+              <tbody></tbody>
+            </table>
+          </details>
+        </figure>
       </section>
 
       <!-- Closing · owner: Niklas -->
@@ -145,9 +198,11 @@
         <a href="../../weeks/week03/">Week 3</a></span
       >
     </footer>
+    <script src="../../assets/vendor/d3-7.9.0.min.js"></script>
     <script type="module">
       import { setupChrome } from "../../assets/js/cabinet.js";
       setupChrome();
     </script>
+    <script src="../../assets/js/week04-staffing.js" type="module"></script>
   </body>
 </html>
