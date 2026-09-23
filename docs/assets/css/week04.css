@@ -227,6 +227,18 @@
 .corridor .jobs-bridge-list button:focus-visible {
   border-color: var(--accent);
 }
+.corridor .jobs-back {
+  margin-top: 12px;
+  border: 0;
+  background: none;
+  color: var(--ink-soft);
+  font: inherit;
+  font-size: 13px;
+  text-decoration: underline;
+  cursor: pointer;
+  padding: 0;
+}
+
 .corridor .jobs-bridge-list b {
   color: var(--ink-soft);
   font-variant-numeric: tabular-nums;

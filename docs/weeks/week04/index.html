@@ -461,10 +461,10 @@
             </div>
             <p class="sub">
               <b>Employers reveal bundles of work.</b>
-              Two occupations are connected when the same firms hire both. The
-              network below keeps the strongest shared-employer links, then lets
-              an occupation belong to a second cluster when it genuinely bridges
-              the two.
+              Two occupations are linked when the same companies file for both.
+              Clusters come from the whole network of <span data-jobs="occupations">…</span>
+              occupations. The figures show the 60 occupations with the most
+              filings, each with its three strongest links.
             </p>
           </div>
 
@@ -477,8 +477,10 @@
               <span class="year-tag">shared employers</span>
             </div>
             <p class="sub">
-              Each bar is a pair of occupations. Its length is the number of
-              employers that filed for both, not the number of workers requested.
+              Each bar is a pair among the 60 largest occupations. Its length is
+              the number of companies that filed for both, not the number of
+              workers requested. Software Developers sit in 8 of the 12 pairs
+              because almost every sponsoring company hires them.
             </p>
             <div class="jobs-grid">
               <div class="plot">
@@ -486,8 +488,8 @@
                 <div class="chart-host jobs-pairs" id="chart-job-pairs"></div>
               </div>
               <aside class="panel jobs-inspector" id="jobs-inspector">
-                <h2>Select an occupation</h2>
-                <p>Click a point in the network below to see its closest hiring partners.</p>
+                <h2>Select a pair</h2>
+                <p>Click a bar to see the two occupations and their filings.</p>
               </aside>
             </div>
           </div>
@@ -499,9 +501,10 @@
               <span class="year-tag">overlap</span>
             </div>
             <p class="sub">
-              The coloured groups come from the co-hiring network. A ringed node
-              is a bridge: its employers connect two otherwise different bundles
-              of work. Click a node to inspect it.
+              Colours are clusters found by Louvain in the full co-hiring
+              network, named after their largest occupation. A ringed node also
+              belongs to a second cluster: its employers tie it to that cluster
+              more than the cluster's size predicts. Click a node to inspect it.
             </p>
             <div class="jobs-grid jobs-network-grid">
               <div class="plot">
@@ -542,23 +545,32 @@
               <span class="ico">💡</span>
               <span>
                 <b>What to notice</b>
-                The observed NMI is higher than the shuffled average when the
-                network’s bundles resemble official occupational groups. It is
-                still a comparison, not evidence that the government labels
-                caused the hiring pattern.
+                The clusters follow the official groups only in part: NMI
+                <strong data-jobs="nmi">…</strong> against <strong data-jobs="shuffled">…</strong> for
+                shuffled labels (AMI <strong data-jobs="ami">…</strong>), over the
+                <span data-jobs="scored">…</span> occupations in clusters of two
+                or more. The software cluster also holds engineers, accountants
+                and managers: companies hire across the official groups.
               </span>
             </div>
             <details class="qa">
               <summary><span class="qa-cue">How the comparison works</span></summary>
               <div class="qa-body">
                 <p class="sub">
-                  We keep certified H-1B filings, collapse employer spellings
-                  to company families, and count one shared employer per edge.
-                  The projection is clustered 100 times with different seeds;
-                  the page reports the best modularity run. NMI is calculated
-                  across all occupations and compared with 100 random
-                  permutations of the SOC major-group labels. FY2024 is kept
-                  as a stability check in the data file.
+                  We keep certified H-1B filings and identify companies by tax
+                  number, as in the other sections. A link counts the companies
+                  that filed for both occupations. Filings still on 2010 computer
+                  codes (<span data-jobs="legacy">…</span>) move to their 2018
+                  successors. Louvain runs 100 times on the full projection and
+                  the best modularity run is kept. An occupation's second cluster
+                  is the one its employer ties exceed most over the expectation
+                  modularity uses (its strength times the cluster's, over twice
+                  the total weight), when that ratio is above 1. NMI and AMI
+                  leave out occupations alone in a cluster and are compared with
+                  100 shuffles of the major-group labels. The same method on
+                  FY2024 gives clusters that match FY2025 at NMI
+                  <span data-jobs="years">…</span> on the
+                  <span data-jobs="shared">…</span> occupations both years share.
                 </p>
               </div>
             </details>
@@ -697,8 +709,8 @@
               <span class="ico">!</span>
               <span>
                 <b>One important limit</b>
-                A shared employer link means that two occupations or places
-                appear in the same filings. It does not prove that the jobs are
+                A shared employer link means that the same companies file for
+                both occupations or in both places. It does not prove that the jobs are
                 performed together, that one caused the other, or that the
                 network represents workers who were actually hired.
               </span>
