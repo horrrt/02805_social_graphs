@@ -12,6 +12,7 @@ import json
 from pathlib import Path
 
 import week04_names as names
+from week04_schemas import check
 from week04_staffing import MIN_FILINGS, certified, employer_labels, placements, resolver
 
 OUT = Path(__file__).resolve().parents[1] / "docs/weeks/week04/data/staffing_clients.json"
@@ -89,6 +90,7 @@ def main():
         }
         print(f"FY{year}: {len(clients)} clients with {MIN_FILINGS}+ filings", flush=True)
     OUT.parent.mkdir(parents=True, exist_ok=True)
+    check(OUT, out)
     OUT.write_text(json.dumps(out, separators=(",", ":")) + "\n")
     print(f"{OUT.stat().st_size / 1024:.0f} KB -> {OUT}")
 

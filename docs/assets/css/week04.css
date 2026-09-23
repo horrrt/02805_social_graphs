@@ -20,6 +20,9 @@
   height: 420px;
 }
 
+.corridor .chart-host.short {
+  height: 240px;
+}
 .corridor .chart-host.map {
   height: 540px;
 }

@@ -18,10 +18,13 @@ applyTo: "analysis/**"
 - Weight links by filings, not requested positions: one firm asks for 40 positions on every filing.
 - Every claim needs a baseline. Report modularity against the degree-preserving rewiring (`rewire()`), and
   NMI against shuffled labels (`shuffled_nmi()`), with the p-value.
-- Run Louvain many times with fixed seeds (`SEED + i`), not once, and report the spread.
+- Run Louvain through `louvain(graph, seed)` in `analysis/week04_staffing.py` (igraph, about 25 times faster
+  than networkx), many times with fixed seeds (`SEED + i`), not once, and report the spread.
 - Write every number the page quotes to the script's JSON in `analysis/` or `docs/`. The page reads it
   from there.
+- When a page script reads a new field, add it to its model in `analysis/week04_schemas.py`, and call
+  `check(path, data)` before writing the page file.
 - Wrap a loop that runs longer than a minute in `tracked()` from `analysis/week04_staffing.py`, so it prints
   progress and time left.
-- Use a tested library (networkx, scikit-learn, rapidfuzz) for any method with a name in the literature.
+- Use a tested library (networkx, igraph, scikit-learn, rapidfuzz) for any method with a name in the literature.
 - Add a dependency to both `requirements.txt` and `requirements-lock.txt` with an exact version.

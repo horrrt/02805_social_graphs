@@ -31,6 +31,8 @@ Checks
   without filing counts, beside the NMI between two seeds of the same kind, so
   a low number can be told apart from Louvain's own run-to-run noise.
 - The same analysis for FY2022 to FY2025, compared on shared clients.
+- Infomap (the map equation) on the same network, compared with Louvain and
+  with the same industry and vendor labels.
 - USCIS approvals and denials for FY2022 (the Employer Data Hub's last full
   year), placing firms against direct employers.
 
@@ -45,6 +47,7 @@ from collections import Counter
 from functools import lru_cache
 from pathlib import Path
 
+import igraph as ig
 import networkx as nx
 from rapidfuzz import fuzz
 import numpy as np
@@ -264,8 +267,32 @@ def tracked(label, total):
 
 
 def louvain(g, seed):
-    parts = nx.community.louvain_communities(g, weight="weight", seed=seed)
-    return parts, nx.community.modularity(g, parts, weight="weight")
+    """Louvain on a networkx graph: (list of node sets, modularity). igraph's
+    multilevel is the same method as networkx's louvain_communities and runs about
+    25 times faster; the seed fixes the order it visits nodes. Weighted by the edges'
+    "weight" when they carry one."""
+    nodes, h, weights = to_igraph(g)
+    ig.set_random_number_generator(random.Random(seed))
+    part = h.community_multilevel(weights=weights)
+    return [{nodes[i] for i in c} for c in part], h.modularity(part, weights=weights)
+
+
+def infomap(g, seed, trials=10):
+    """Infomap (Rosvall and Bergstrom 2008), the flow-based alternative to
+    modularity: (list of node sets, code length in bits). A random walker's path is
+    compressed best when modules trap the walk; one module means no split pays."""
+    nodes, h, weights = to_igraph(g)
+    ig.set_random_number_generator(random.Random(seed))
+    part = h.community_infomap(edge_weights=weights, trials=trials)
+    return [{nodes[i] for i in c} for c in part], part.codelength
+
+
+def to_igraph(g):
+    """A networkx graph as (node list, igraph graph, edge weights, 1 where absent)."""
+    nodes = list(g)
+    index = {n: i for i, n in enumerate(nodes)}
+    h = ig.Graph(n=len(nodes), edges=[(index[u], index[v]) for u, v in g.edges()])
+    return nodes, h, [d.get("weight", 1) for *_, d in g.edges(data=True)]
 
 
 def labels(parts):
@@ -445,6 +472,22 @@ def main():
                        "p_vendor_same_clients": round(ven_plain_p, 4)},
     }
 
+    # Infomap, the flow-based alternative: does a random walk find the same groups?
+    modules, codelength = infomap(giant, SEED)
+    member_info = labels(modules)
+    comm_info = [member_info[("C", c)] for c in sector_clients]
+    info_ind, info_ind_p = shuffled_nmi(comm_info, [names.naics2(c) for c in sector_clients], rng)
+    info_ven, info_ven_p = shuffled_nmi(comm_info, [main_vendor[c] for c in sector_clients], rng)
+    sizes = sorted((len(m) for m in modules), reverse=True)
+    result["infomap"] = {
+        "modules": len(modules), "modules_of_two_or_more": sum(x > 1 for x in sizes),
+        "largest_module_share_of_nodes": round(sizes[0] / giant.number_of_nodes(), 4),
+        "codelength_bits": round(float(codelength), 3),
+        "nmi_with_louvain": round(float(over(member, member_info)), 3),
+        "nmi_community_industry": round(info_ind, 3), "p_industry": round(info_ind_p, 4),
+        "nmi_community_main_vendor_same_clients": round(info_ven, 3), "p_vendor_same_clients": round(info_ven_p, 4),
+    }
+
     # The largest communities, named by their biggest firms and clients.
     strength = dict(giant.degree(weight="weight"))
     described = []
@@ -476,10 +519,13 @@ def main():
 
     out["seconds"] = round(time.time() - started)
     OUT.write_text(json.dumps(out, indent=1, default=str) + "\n")
-    PAGE.write_text(json.dumps({
+    page = {
         "generated_by": "analysis/week04_staffing.py", "year": MAIN, "runs": RUNS,
-        **{k: result[k] for k in ("modularity", "weighted_vs_unweighted", "industry_or_vendor")},
-    }, indent=1) + "\n")
+        **{k: result[k] for k in ("modularity", "weighted_vs_unweighted", "industry_or_vendor", "infomap")},
+    }
+    from week04_schemas import check  # here, not at the top: week04_schemas has no reason to load at import
+    check(PAGE, page)
+    PAGE.write_text(json.dumps(page, indent=1) + "\n")
     print(json.dumps({k: v for k, v in result.items() if k != "largest_clients"}, indent=1, default=str))
     print(json.dumps(stability))
 

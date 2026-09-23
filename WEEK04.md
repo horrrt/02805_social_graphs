@@ -100,6 +100,8 @@ Layout differences the loader already handles:
   match exactly. Merges beyond a tax number are written down: company families in
   `analysis/week04_client_aliases.csv`, misspellings in `analysis/week04_name_merges.csv`. The rule for
   "same company" is at the top of the CSV. Add to those files rather than to your own script.
+- **Run `python analysis/week04_schemas.py` after changing any page data.** It checks each JSON file
+  against the fields and cross-references its page script reads (Pydantic models, one per file).
 - **Run `python analysis/week04_names_check.py` after changing either file.** It scores the rules
   against tax numbers and fails if a known pair merges or splits wrongly
   (`analysis/week04_names_check.json`).

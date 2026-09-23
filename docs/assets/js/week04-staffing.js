@@ -295,7 +295,11 @@ fetch(new URL("../../weeks/week04/data/staffing_communities.json", import.meta.u
       ".vendor": iv.nmi_community_main_vendor_same_clients,
       ".vendor-plain": iv.unweighted.nmi_community_main_vendor_same_clients,
       ".industry": iv.nmi_community_industry,
+      ".im-louvain": c.infomap.nmi_with_louvain,
+      ".im-vendor": c.infomap.nmi_community_main_vendor_same_clients,
+      ".im-industry": c.infomap.nmi_community_industry,
     };
+    stats.querySelector(".im-modules").textContent = num(c.infomap.modules);
     for (const [sel, v] of Object.entries(fill)) stats.querySelector(sel).textContent = two(v);
   })
   .catch(() => {

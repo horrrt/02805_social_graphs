@@ -77,7 +77,7 @@
   "Q": 0.049,
   "Q_runs_mean": 0.052,
   "partitions_found": 2,
-  "modal_runs": 29,
+  "modal_runs": 31,
   "Q_null_mean": 0.013,
   "Q_null_std": 0.0011,
   "z": 31.64,
@@ -89,6 +89,15 @@
   "p_division": 0.1119,
   "seeds": 50,
   "communities": 3
+ },
+ "infomap": {
+  "modules": 1,
+  "sizes": [
+   40
+  ],
+  "codelength_bits": 5.03,
+  "nmi_with_louvain": 0.0,
+  "nmi_census_region": 0.0
  },
  "communities": [
   {
