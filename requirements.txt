@@ -9,3 +9,5 @@ powerlaw>=2.0
 python-calamine>=0.8
 scikit-learn>=1.5
 rapidfuzz>=3.9
+polars>=1.44
+pydantic>=2.13
