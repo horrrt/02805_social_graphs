@@ -30,11 +30,12 @@ def main():
     if payload["fields"][-1] != "forced":
         payload["fields"] = [*payload["fields"], "forced"]
 
+    idx = payload["fields"].index("forced")
     matched = people = 0
     for edge in payload["edges"]:
         value = forced.get((countries[edge[0]], countries[edge[1]]), 0)
-        if len(edge) == 7:
-            edge[6] = value
+        if idx < len(edge):
+            edge[idx] = value
         else:
             edge.append(value)
         if value:

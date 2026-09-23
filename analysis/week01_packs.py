@@ -36,6 +36,9 @@ def build():
     nonisolate_weights = [w for r, w in zip(rows, weights) if graph.degree(r["node_id"]) > 0]
     nonisolate_draws, _ = expectation(nonisolate_weights, total)
     isolated_draws = total * sum(1 / k for k in range(1, 18))
+    uniform_expected_draws = 303 * sum(1 / k for k in range(1, 304))
+    uniform_expected_packs = round(uniform_expected_draws / 5 + 0.4)
+    slowdown_vs_uniform = all_draws / uniform_expected_draws
     # Independent simulation of exponential races checks numerical integration.
     rng = np.random.default_rng(20260910)
     means = [np.max(rng.exponential(total / np.array(weights), size=(1000, 303)), axis=1) for _ in range(20)]
@@ -48,6 +51,9 @@ def build():
                "collector": {"expectedDraws": all_draws, "numericalError": error,
                              "expectedPacksLower": all_draws / 5, "expectedPacksUpper": all_draws / 5 + .8,
                              "expectedPacksRounded": round(all_draws / 5 + 0.4), "minimumRateCards": 58,
+                             "uniformExpectedDraws": uniform_expected_draws,
+                             "uniformExpectedPacks": uniform_expected_packs,
+                             "slowdownVsUniform": slowdown_vs_uniform,
                              "isolatesOnlyExpectedDraws": isolated_draws,
                              "withoutIsolateRequirementExpectedDraws": nonisolate_draws,
                              "isolateMarginalExpectedDraws": all_draws - nonisolate_draws,
@@ -57,6 +63,7 @@ def build():
                              "isolateInterpretation": "Marginal extra wait compares requiring all cards with requiring only non-isolates under the SAME draw probabilities. The expected time for isolates alone is not an additive share of completion time."}}
     write("week01_packs.json", payload)
     print(f"Collector: {all_draws:.2f} draws; about {round(all_draws / 5 + 0.4):,} five-card packs; 58 equally rare cards (including 17 isolates).")
+    print(f"Uniform baseline: {uniform_expected_draws:.2f} draws; about {uniform_expected_packs:,} five-card packs; slowdown {slowdown_vs_uniform:.2f}x.")
 
 
 if __name__ == "__main__":

@@ -160,7 +160,7 @@
       </section>
       <section aria-labelledby="post-title" class="section post" id="post">
         <p class="eyebrow">What we found</p>
-        <h2 id="post-title">58 articles receive no links at all.</h2>
+        <h2 id="post-title">58 articles receive no incoming links.</h2>
         <p>
           Within our set of 303 Wikipedia articles, Spider-Man receives
           references from 106 pages, while 58—including Baymax—receive none. We
@@ -247,10 +247,14 @@
       <section class="section" id="results">
         <p class="eyebrow">THE TAKEAWAY</p>
         <h2>The last few cards take the longest.</h2>
-        <div class="metrics">
+        <div class="metrics metrics-four">
           <div class="metric">
             <strong>≈1,945</strong
             ><span>five-card packs to finish, on average under our rule</span>
+          </div>
+          <div class="metric">
+            <strong>≈382</strong
+            ><span>packs if every card had equal odds</span>
           </div>
           <div class="metric">
             <strong>58</strong
@@ -283,9 +287,9 @@
             <figure>
               <img
                 alt="Four scatter plots of degree frequency P(k) against k + 1: in-degree on linear and log–log axes, out-degree on linear and log–log axes. In-degree has a long tail reaching 106; out-degree stops at 28."
-                height="1574"
+                height="1336"
                 src="figures/degree_distributions.png"
-                width="2290"
+                width="1954"
               />
               <figcaption>
                 All 303 articles. The horizontal quantity is degree + 1 so
@@ -310,8 +314,9 @@
                   <h3>What we asked</h3>
                   <p>
                     Which articles get linked to, which ones do the linking, and
-                    who is left out entirely? And does being famous make a card
-                    easy or hard to draw?
+                    who is left out entirely? And how much longer does a
+                    collection take when a card's odds follow its incoming links
+                    instead of being equal?
                   </p>
                   <h3>What we did</h3>
                   <p>
@@ -328,12 +333,16 @@
                 <div>
                   <h3>What surprised us</h3>
                   <p>
-                    The hubs are the easy cards. Spider-Man alone is linked by
-                    106 articles, while 58 articles share the lowest drop rate,
-                    including all 17 isolates. Finishing the set takes about
-                    1,945 packs on average. And the articles that link out most
-                    (Betsy Braddock, 28 outgoing links) are not the ones that
-                    get linked to most.
+                    Under our rule the hubs are the easy cards by construction:
+                    a card's odds grow with its incoming links. Spider-Man alone
+                    is linked by 106 articles, while 58 articles share the
+                    lowest drop rate, including all 17 isolates. Finishing the
+                    set takes about 1,945 packs on average, about five times the
+                    382 packs it would take if every card had equal odds: the
+                    rare cards set the pace. The finding about the data itself
+                    is different: the articles that link out most (Betsy
+                    Braddock, 28 outgoing links) are not the ones that get
+                    linked to most.
                   </p>
                   <p>
                     The other surprise was structural: a nine-character island
@@ -347,14 +356,15 @@
                 <figure>
                   <img
                     alt="Scatter plot of in-degree against out-degree for all 303 articles with an in = out reference line. Spider-Man, Hulk, Wolverine and Doctor Strange sit high above the line; Betsy Braddock, Cloak and Dagger, Adam Warlock, U.S. Agent and Noh-Varr sit far to the right, below it."
-                    height="1322"
+                    height="1316"
                     loading="lazy"
                     src="figures/in_vs_out.png"
-                    width="1954"
+                    width="1953"
                   />
                   <figcaption>
-                    Two different populations: the most linked-to articles and
-                    the most outward-linking ones barely overlap.
+                    In- and out-degree are positively correlated across all 303
+                    articles (Spearman 0.70), but the leaders differ: the most
+                    linked-to articles are not the ones that link out most.
                   </figcaption>
                 </figure>
               </details>
@@ -368,10 +378,11 @@
               </p>
               <p>
                 Spider-Man receives 106 links and links out to 9; Betsy Braddock
-                links out to 28 and receives 7. Only Deadpool, Doctor Strange
-                and She-Hulk appear in both top-ten lists. Across all 303
-                articles, in- and out-degree correlate (Spearman 0.70, Pearson
-                0.50), despite the different leaders.
+                links out to 28 and receives 7. Five articles tie for tenth
+                place in outgoing links; counting all of them, Deadpool, Doctor
+                Strange, She-Hulk and Wolverine appear in both top-ten lists.
+                Across all 303 articles, in- and out-degree correlate (Spearman
+                0.70, Pearson 0.50), despite the different leaders.
               </p>
               <details>
                 <summary>
@@ -459,13 +470,13 @@
               <figure>
                 <img
                   alt="Force-directed drawing of the 303 articles. A single dense blue hairball fills the left two-thirds, with Spider-Man, Hulk, Wolverine, Doctor Strange, Deadpool and She-Hulk labelled as its darkest, largest nodes. To the right, separated, sit an orange nine-node island labelled Strikeforce: Morituri and a grid of 17 green dots labelled the 17 isolates."
-                  height="597"
+                  height="1198"
                   src="figures/map.png"
-                  width="1024"
+                  width="1961"
                 />
                 <figcaption>
-                  Node size and shade follow total degree; position comes from a
-                  force-directed layout, so distance on the page is a drawing
+                  Node size follows total links; shade follows incoming links;
+                  position comes from a force-directed layout, so distance on the page is a drawing
                   artefact and not a measured quantity. The two groups on the
                   right are drawn apart because they genuinely are apart: no
                   link joins them to the giant component.
@@ -493,11 +504,11 @@
                 <summary>The island, drawn on its own</summary>
                 <figure>
                   <img
-                    alt="Directed drawing of the nine Strikeforce: Morituri characters. Radian sits at the centre with arrows to and from Blackthorn, Snapdragon, Vyking, Shear, Toxyn, Scaredycat and Scatterbrain; Backhand hangs off Vyking and Shear. Twenty-two arrows in total, none leaving the group."
-                    height="681"
+                    alt="Directed drawing of the nine Strikeforce: Morituri characters. Radian is the hub: it links out to Blackthorn, Scaredycat, Shear, Snapdragon, Toxyn and Vyking, and is linked from Blackthorn, Scaredycat, Shear and Snapdragon. Backhand hangs off Vyking and Shear. Twenty-two arrows in total, none leaving the group."
+                    height="1290"
                     loading="lazy"
                     src="figures/island.png"
-                    width="1024"
+                    width="1950"
                   />
                   <figcaption>
                     Nine characters, 22 arcs among themselves, zero to the other
@@ -666,7 +677,8 @@
               against 20,000 independent exponential-race simulations. Expected
               whole packs lie between 1,944.19 and 1,944.99; approximately 1,945
               is a rounded presentation, not an exact value. See
-              analysis/week01_packs.py and the downloadable week01_packs.json.
+              analysis/week01_packs.py and the downloadable
+              <a href="../../assets/data/week01_packs.json">week01_packs.json</a>.
             </p>
             <p>
               <a
@@ -682,8 +694,9 @@
               Built with AI assistance for interface design, programming,
               explanation drafts and test construction. Metrics come from the
               provided snapshot and reproducible analysis; the games and
-              metaphors are authored presentation choices. Numerical checks
-              compare independent Python and browser implementations.
+              metaphors are authored presentation choices. Tests check the
+              browser's collection model against exact enumeration and the
+              page's numbers against the analysis output.
             </p>
           </details>
         </details>

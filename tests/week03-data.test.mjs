@@ -88,13 +88,13 @@ test("the forced-displacement cap is still needed, and still the size the page c
   let over = 0;
   for (const edge of edges.edges) {
     const people = edge[2][yi];
-    const forced = edge[6] ?? 0;
+    const forced = edge[5] ?? 0;
     if (!people) continue;
     if (forced > people) over += 1;
     // What the page actually renders, and the invariant question 5 depends on.
     assert.ok(Math.min(forced, people) <= people, "the cap does not cap");
   }
-  const claimed = 273;
+  const claimed = 281;
   assert.equal(
     over,
     claimed,

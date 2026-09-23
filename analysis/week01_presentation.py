@@ -6,16 +6,23 @@ Positions are a deterministic drawing aid; all relationships and counts are data
 import csv
 import json
 import math
+import sys
 from pathlib import Path
 
 import networkx as nx
 
 ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(ROOT / "analysis"))
+
+from arcade_data import DISPLAY_NAME_OVERRIDES  # noqa: E402
 
 
 def build():
     with (ROOT / "data/week1_nodes.tsv").open() as file:
         rows = list(csv.DictReader((line for line in file if not line.startswith("#")), delimiter="\t"))
+    for row in rows:
+        if row["node_id"] in DISPLAY_NAME_OVERRIDES:
+            row["name"] = DISPLAY_NAME_OVERRIDES[row["node_id"]]
     graph = nx.DiGraph()
     graph.add_nodes_from(row["node_id"] for row in rows)
     with (ROOT / "data/week1_edges.tsv").open() as file:

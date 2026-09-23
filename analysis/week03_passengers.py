@@ -172,6 +172,17 @@ def main():
     print(f"  the middle half of them sit between {iqr[0]:,.0f} and {iqr[1]:,.0f} "
           f"passengers per route, a factor of {iqr[1] / iqr[0]:.1f}")
 
+    # Venezuela sits at the bottom on services the 2019 snapshot still lists
+    # as flying, so the headline spread and the middle half are also given
+    # with it dropped — the number the prose actually wants to quote.
+    solid_ex = [(v, c) for v, c in solid if c != "Venezuela"]
+    spread_ex = solid_ex[0][0] / solid_ex[-1][0] if solid_ex and solid_ex[-1][0] else float("inf")
+    quart_ex = sorted(v for v, _ in solid_ex)
+    iqr_ex = (quart_ex[len(quart_ex) // 4], quart_ex[3 * len(quart_ex) // 4])
+    print(f"  excluding Venezuela, {len(solid_ex)} countries, "
+          f"a factor of {spread_ex:,.1f} ({solid_ex[0][1]} to {solid_ex[-1][1]}), "
+          f"middle half {iqr_ex[0]:,.0f} to {iqr_ex[1]:,.0f}")
+
     print("\n  Most passengers per route:")
     for value, country in per[:6]:
         print(f"    {country[:26]:<26} {routes[country]:>3} routes  "
@@ -205,6 +216,13 @@ def main():
             "middle_half": [int(iqr[0]), int(iqr[1])],
             "min_routes": 5,
             "countries": len(solid),
+            "without_venezuela": {
+                "countries": len(solid_ex),
+                "spread": round(spread_ex, 1),
+                "middle_half": [int(iqr_ex[0]), int(iqr_ex[1])],
+                "highest": solid_ex[0][1],
+                "lowest": solid_ex[-1][1],
+            },
         },
         "note": "Route counts come from the same OpenFlights table the page's flight "
                 "network is built from, so both sides of the comparison are keyed "

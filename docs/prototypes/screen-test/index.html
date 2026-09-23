@@ -249,7 +249,7 @@ code{font-family:var(--mono);font-size:12.5px;background:#f0ede6;padding:1px 5px
         <button class="go ghost" id="draw-reset" type="button">Clear</button>
         <span class="lbl" id="draw-tally">0 draws</span>
       </div>
-      <p class="lbl" style="max-width:68ch;line-height:1.7">The handle measures single draws: one character, one of their neighbours. The 87.4% quoted below is the other common form, comparing each article with the <em>average</em> of all its neighbours. Both are the friendship paradox; they are not the same number, and neither survives the null.</p>
+      <p class="lbl" style="max-width:68ch;line-height:1.7">The handle measures single draws: one character, one of their neighbours. The 87.4% quoted below is the other common form, comparing each article with the <em>average</em> of all its neighbours. Both are the friendship paradox, and they are not the same number: the neighbour-average form below matches what the shuffle predicts, but the single-draw form here is slightly weaker than the shuffle predicts.</p>
       <div class="finding warn" id="verdict-04"></div>
     </div>
   </section>
@@ -576,7 +576,7 @@ $("cap-hist").textContent="Average clustering across "+M.samples+" degree-preser
   $("verdict-03").innerHTML="<p><strong>Half the clustering is the hubs. Half is not.</strong> Scrambling the wiring while holding every degree fixed drops clustering from "+
     f(cl.real,3)+" to "+f(cl.mu,3)+", so the degree sequence alone accounts for roughly "+
     Math.round(cl.mu/cl.real*100)+"% of it. What is left stands "+f(cl.z,1)+
-    " standard deviations clear of chance. Had we compared against plain random links instead, we would have credited the entire amount to the hubs.</p>";
+    " standard deviations clear of chance. Had we compared against plain random links instead, we would have credited the whole amount to the wiring and missed the half the hubs explain.</p>";
 })();
 $("stats-toggle").addEventListener("click", function(ev){
   var b=ev.target.closest("button"); if(!b) return;
@@ -615,11 +615,11 @@ $("draw-reset").addEventListener("click", function(){
 });
 (function(){
   var pa=D.rows.filter(function(r){return r.key==="paradox";})[0];
-  $("verdict-04").innerHTML="<p><strong>The paradox is real, and it tells us nothing about Marvel.</strong> "+
+  $("verdict-04").innerHTML="<p><strong>The neighbour-average paradox is real, and on its own it tells us nothing about Marvel.</strong> "+
     f(pa.real*100,1)+"% of articles have neighbours more connected than themselves on average. "+
     "Then we ran the same measurement on "+M.samples+" shuffled networks, where the wiring is destroyed and only the degrees survive: "+
     f(pa.mu*100,1)+"%"+", if anything slightly higher. That is a z of "+f(pa.z,2)+" and an empirical p of "+f(pa.p,2)+
-    ". The paradox here is a consequence of the degree sequence alone. We expected it to be a fact about Marvel, and it is not; it would appear in any network with these link counts.</p>";
+    ". In this neighbour-average form the paradox is a consequence of the degree sequence alone; it would appear in any network with these link counts. The single-draw form measured by the handle above is different: it does differ from the shuffle, just slightly weaker than the degrees alone would predict.</p>";
 })();
 
 /* ---- 05 receipts ---- */

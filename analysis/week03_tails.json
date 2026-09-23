@@ -8,80 +8,80 @@
   "fits": {
     "in_degree": {
       "label": "Origins per destination (in-degree)",
-      "n": 227,
-      "xmin": 15.0,
-      "alpha": 1.972,
-      "n_tail": 149,
-      "ks": 0.0933,
-      "p": 0.0,
+      "n": 230,
+      "xmin": 33.0,
+      "alpha": 2.323,
+      "n_tail": 85,
+      "ks": 0.0967,
+      "p": 0.004,
       "vs": {
         "lognormal": {
-          "R": -2.924,
-          "p": 0.003
+          "R": -1.801,
+          "p": 0.072
         },
         "exponential": {
-          "R": -0.793,
-          "p": 0.428
+          "R": -1.302,
+          "p": 0.193
         }
       },
-      "verdict": "Ruled out on its own terms: a power law above 15 produces a fit this poor in 0% of its own draws. The lognormal describes the same tail better. The exponential cannot be separated from it either way."
+      "verdict": "Ruled out on its own terms: a power law above 33 produces a fit this poor in 0% of its own draws. The lognormal describes the same tail better. The exponential cannot be separated from it either way."
     },
     "out_degree": {
       "label": "Destinations per origin (out-degree)",
-      "n": 228,
+      "n": 232,
       "xmin": 33.0,
-      "alpha": 2.991,
-      "n_tail": 122,
-      "ks": 0.1249,
-      "p": 0.06,
+      "alpha": 2.948,
+      "n_tail": 124,
+      "ks": 0.1223,
+      "p": 0.034,
       "vs": {
         "lognormal": {
-          "R": -2.777,
-          "p": 0.005
+          "R": -2.905,
+          "p": 0.004
         },
         "exponential": {
-          "R": -3.343,
-          "p": 0.001
+          "R": -3.546,
+          "p": 0.0
         }
       },
-      "verdict": "Ruled out on its own terms: a power law above 33 produces a fit this poor in 6% of its own draws. That is close to the 0.1 line the convention draws, and with 122 points in the tail it is the weakest kind of rejection. The lognormal and exponential describe the same tail better."
+      "verdict": "Ruled out on its own terms: a power law above 33 produces a fit this poor in 3% of its own draws. The lognormal and exponential describe the same tail better."
     },
-    "flight_degree": {
+    "flight_partners": {
       "label": "Flight partners per country",
       "n": 208,
-      "xmin": 44.0,
-      "alpha": 2.806,
-      "n_tail": 75,
-      "ks": 0.0986,
-      "p": 0.092,
+      "xmin": 27.0,
+      "alpha": 2.931,
+      "n_tail": 57,
+      "ks": 0.0926,
+      "p": 0.208,
       "vs": {
         "lognormal": {
-          "R": -1.573,
-          "p": 0.116
+          "R": -1.738,
+          "p": 0.082
         },
         "exponential": {
-          "R": -1.204,
-          "p": 0.229
+          "R": -1.768,
+          "p": 0.077
         }
       },
-      "verdict": "Ruled out on its own terms: a power law above 44 produces a fit this poor in 9% of its own draws. That is close to the 0.1 line the convention draws, and with 75 points in the tail it is the weakest kind of rejection. The lognormal and exponential cannot be separated from it either way."
+      "verdict": "Not ruled out on its own terms (p = 0.21 over 57 points in the tail), which is a weak thing to be able to say at this size. The lognormal and exponential describe the same tail better."
     },
     "corridor_people": {
       "label": "People on a corridor",
-      "n": 8792,
+      "n": 9031,
       "xmin": 126665.0,
-      "alpha": 2.043,
-      "n_tail": 377,
-      "ks": 0.0442,
-      "p": 0.012,
+      "alpha": 2.053,
+      "n_tail": 393,
+      "ks": 0.0433,
+      "p": 0.01,
       "vs": {
         "lognormal": {
-          "R": -2.273,
-          "p": 0.023
+          "R": -2.232,
+          "p": 0.026
         },
         "exponential": {
-          "R": 2.683,
-          "p": 0.007
+          "R": 2.841,
+          "p": 0.004
         }
       },
       "verdict": "Ruled out on its own terms: a power law above 126665 produces a fit this poor in 1% of its own draws. The lognormal describes the same tail better."

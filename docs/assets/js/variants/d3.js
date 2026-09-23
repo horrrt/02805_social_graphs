@@ -130,7 +130,7 @@ export function install(api, d3) {
   const series = () => [
     ["In-degree", (n, m) => m.in_degree, colours.PEOPLE],
     ["Out-degree", (n, m) => m.out_degree, colours.OUTBOUND],
-    ["Flight degree", (n) => n.flight_degree, colours.ACCESS],
+    ["Flight partners", (n) => n.flight_partners, colours.ACCESS],
   ];
 
   function hist() {
@@ -375,7 +375,7 @@ export function install(api, d3) {
       const bars = [
         ["In-degree", (i) => i.in_degree, colours.PEOPLE],
         ["z-score", (i) => Math.abs(i.z ?? 0), colours.INK],
-        ["Flights", (i) => i.flight_degree, colours.ACCESS],
+        ["Flights", (i) => i.flight_partners, colours.ACCESS],
       ];
       const x0 = d3
         .scaleBand()

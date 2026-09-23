@@ -77,7 +77,7 @@ def build(year: int):
     yi = edges["years"].index(year)
 
     rows, people, pairs = [], [], []
-    for origin_i, dest_i, stocks, _routes, km, *_rest in edges["edges"]:
+    for origin_i, dest_i, stocks, km, *_rest in edges["edges"]:
         count = stocks[yi]
         o, d = countries[origin_i], countries[dest_i]
         io, idd = ind.get(o), ind.get(d)

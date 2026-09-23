@@ -285,11 +285,11 @@
           <h3>Missing three models? Play Screen Test.</h3>
           <p>
             This post covers shuffling, the friendship paradox and
-            clustering. The week's other three models &mdash;
-            Watts&ndash;Strogatz, Barab&aacute;si&ndash;Albert and the power
-            laws behind them &mdash; get their own piece: three candidates
-            audition against the Marvel network, and only one measurement
-            says which properties survive.
+            clustering. The week's other three models &mdash; Erd&odblac;s&ndash;R&eacute;nyi
+            random graphs, Watts&ndash;Strogatz and Barab&aacute;si&ndash;Albert
+            &mdash; get their own piece: three candidates audition against the
+            Marvel network, and only one measurement says which properties
+            survive.
           </p>
           <a href="../../prototypes/screen-test/">Play Screen Test &#8599;</a>
         </div>
@@ -318,9 +318,9 @@
                 ><strong>0.307</strong>
               </div>
               <div>
-                <span>Same link counts</span
+                <span>Same degree per article</span
                 ><meter
-                  aria-label="Same link counts"
+                  aria-label="Same degree per article"
                   max="0.35"
                   min="0"
                   value="0.143"
@@ -329,9 +329,9 @@
                 ><strong>0.143</strong>
               </div>
               <div>
-                <span>Random links</span
+                <span>Same total links only</span
                 ><meter
-                  aria-label="Random links"
+                  aria-label="Same total links only"
                   max="0.35"
                   min="0"
                   value="0.032"
@@ -350,7 +350,7 @@
             <summary>Could the result happen by chance?</summary>
             <figure>
               <img
-                alt="Four histograms of stranded counts across 1,000 degree-preserving rewires, one per removed article, each with a dashed line at the real count. Spider-Man’s real 5 sits at the far right tail; Black Widow’s real 3 lies beyond every rewired value; Hulk’s 0 is the most common rewired outcome; Doctor Strange’s 2 appears in 85 of 1,000."
+                alt="Four histograms of stranded counts across 1,000 degree-preserving rewires, one per removed article, each with a dashed line at the real count. Spider-Man’s real 5 sits at the far right tail; Black Widow’s real 3 lies beyond every rewired value; Hulk’s 0 is the most common rewired outcome; Doctor Strange’s 2 or more appears in 85 of 1,000."
                 height="576"
                 loading="lazy"
                 src="figures/null_comparison.svg"
@@ -370,6 +370,11 @@
               0.001 — no rewired world managed more than 2. Doctor Strange’s 2
               against 0.51 gives p = 0.086, and Hulk’s 0 against 0.58 is the
               most ordinary outcome there is (p = 1.0).
+            </p>
+            <p>
+              Black Widow was chosen after scanning all 277 removals, so her
+              p-value describes her rank rather than testing a prior guess.
+              The four p-values are one-sided and unadjusted.
             </p>
             <p class="fine">
               A z-score describes distance from the null mean in standard
@@ -435,10 +440,10 @@
                   width="1260"
                 />
                 <figcaption>
-                  Blue is the degree-preserving shuffle, purple is random G(n,
-                  m), the dashed line is the real network. Read each panel by
-                  asking one question: is the dashed line inside the blue bars
-                  or outside them?
+                  Lavender is the degree-preserving shuffle, salmon is random
+                  G(n, m), the dashed line is the real network. Read each
+                  panel by asking one question: is the dashed line inside the
+                  lavender bars or outside them?
                   <a
                     download=""
                     href="../../assets/data/week02_nullmodels_draws.csv"
@@ -618,6 +623,15 @@
                 establish unusual wiring; the choice of baseline matters.
               </p>
               <p>
+                Part of that gap is the shuffle merging islands into the
+                giant: its giant component averages about 286 nodes against
+                the real 277, and the Morituri island merges into it in about
+                962 of 1,000 draws. A like-for-like check that holds the
+                population fixed instead, shuffling only the 277-article core
+                used in Screen Test, gives 2.674 against a null mean of 2.601
+                (z = +5.2).
+              </p>
+              <p>
                 Clustering is 0.307 versus a shuffle mean of 0.143 (sd 0.008);
                 no draw reached the observed value. The network has 1,839
                 triangles versus 1,158 on average under the shuffle. Links among
@@ -627,7 +641,7 @@
               <h3>The same number, two nulls, two conclusions</h3>
               <p>
                 Clustering is about ten times the G(n, m) mean (0.032), but
-                about 2.1 times the degree-preserving mean (0.143). Holding
+                about 2.2 times the degree-preserving mean (0.143). Holding
                 degrees fixed reduces the apparent excess without eliminating
                 it. The two nulls answer different questions; G(n, m) does not
                 control for hubs.
@@ -740,9 +754,11 @@
                 <span class="tag">16 HUBS · SCHEMATIC · UNDIRECTED</span>
               </div>
               <p>
-                This is a readable overview of the 16 biggest interchanges.
-                Select a line to follow its actual links. The full journey
-                planner below includes every article.
+                This is a readable overview of the 16 best-connected articles
+                (four tie at 27 links for the last two places; we keep the
+                first two alphabetically, Emma Frost and Hank Pym). Select a
+                line to follow its actual links. The full journey planner
+                below includes every article.
               </p>
               <div class="line-chips" id="line-chips"></div>
               <canvas
@@ -844,8 +860,8 @@
               draws per null, 20 successful swaps per link for the
               degree-preserving one and
               <code>gnm_random_graph(303, 1434)</code> for the random one. Every
-              draw asserts that the degree sequence is unchanged before it is
-              measured. Empirical tails are (1 + draws at least as extreme) / (1
+              shuffle draw asserts that the degree sequence is unchanged
+              before it is measured. Empirical tails are (1 + draws at least as extreme) / (1
               + draws), one-sided and unadjusted across the twelve quantities,
               so treat any single p near 0.05 as a hint rather than a result. A
               finite swap chain approximates the null ensemble rather than

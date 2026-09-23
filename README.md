@@ -128,6 +128,7 @@ The repository tells GitHub Copilot how to work here, on every plan including Fr
 | `.vscode/settings.json` | Turns instruction files on and lets the read-only checks run without a prompt |
 
 `tests/assistant-docs.test.mjs` fails when one of these files names a path or script that no longer exists.
+`python analysis/check_pages.py` checks every week's page data against the fields its page scripts read.
 
 To use them, open the repository folder in VS Code and use Copilot Chat in **Agent** mode, so it can run
 the checks itself. Type `/check` before a commit, `/review` before a pull request, and `/ship` to open one.

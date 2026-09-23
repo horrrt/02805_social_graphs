@@ -4,6 +4,8 @@ import numpy as np
 import pandas as pd
 import networkx as nx
 
+from arcade_data import DISPLAY_NAME_OVERRIDES
+
 DATA = "data"
 
 nodes = pd.read_csv(f"{DATA}/week1_nodes.tsv", sep="\t", comment="#")
@@ -15,6 +17,7 @@ D.add_nodes_from(nodes.node_id)          # isolates survive because of this line
 D.add_edges_from(edges.itertuples(index=False, name=None))
 
 name = dict(zip(nodes.node_id, nodes.name))
+name.update({k: v for k, v in DISPLAY_NAME_OVERRIDES.items() if k in name})
 url = dict(zip(nodes.node_id, nodes.url))
 blurb = dict(zip(nodes.node_id, nodes.description))
 N = D.number_of_nodes()
@@ -56,16 +59,20 @@ f["avg_clustering"] = round(nx.average_clustering(U), 4)
 
 # --- leaderboards -----------------------------------------------------------
 def top(dv, n=10):
+    ranked = sorted(dv.items(), key=lambda kv: (-kv[1], name[kv[0]]))
+    if len(ranked) > n:
+        cutoff = ranked[n - 1][1]
+        ranked = [kv for kv in ranked if kv[1] >= cutoff]
     return [{"id": k, "name": name[k], "k": v, "kin": kin[k], "kout": kout[k]}
-            for k, v in sorted(dv.items(), key=lambda kv: (-kv[1], name[kv[0]]))[:n]]
+            for k, v in ranked]
 
 f["top_in"] = top(kin)
 f["top_out"] = top(kout)
 f["spiderman_share"] = round(100 * kin["Spider-Man"] / (N - 1), 1)
 
-# overlap between the two top-10s
-f["top10_overlap"] = sorted({r["id"] for r in f["top_in"][:10]} &
-                            {r["id"] for r in f["top_out"][:10]})
+# tie-inclusive overlap between the two top-ten lists (ties at 10th place count)
+f["top10_overlap"] = sorted({r["id"] for r in f["top_in"]} &
+                            {r["id"] for r in f["top_out"]})
 
 # --- in vs out --------------------------------------------------------------
 a = np.array([kin[n_] for n_ in D])

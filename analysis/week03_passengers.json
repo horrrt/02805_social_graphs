@@ -149,7 +149,17 @@
       186353
     ],
     "min_routes": 5,
-    "countries": 59
+    "countries": 59,
+    "without_venezuela": {
+      "countries": 58,
+      "spread": 14.5,
+      "middle_half": [
+        60125,
+        186353
+      ],
+      "highest": "Hong Kong",
+      "lowest": "Nigeria"
+    }
   },
   "note": "Route counts come from the same OpenFlights table the page's flight network is built from, so both sides of the comparison are keyed the same way. The OpenFlights snapshot is undated and last substantially refreshed around 2014, which is the main reason to compare against 2019 rather than a later year."
 }

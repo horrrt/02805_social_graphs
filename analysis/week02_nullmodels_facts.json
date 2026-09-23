@@ -11,14 +11,14 @@
     "draws": 1000,
     "swapFactor": 20,
     "firstSeed": 2026091200,
-    "python": "3.14.3",
+    "python": "3.13.15",
     "networkx": "3.6.1",
     "graph": "The whole 303-article snapshot, collapsed to simple undirected links.",
     "nulls": {
       "swap": "Degree-preserving double edge swaps, 20 successful swaps per link. Keeps every article's degree exactly; scrambles who links to whom. Not conditioned on connectedness, so the island count is free to move.",
       "er": "Erdos-Renyi G(n, m) with n = 303 and m = 1,434. Keeps only the node and link counts; every degree is redrawn by chance."
     },
-    "statistics": "z = (real - null mean) / null sd. Empirical tails use (1 + draws at least as extreme) / (1 + draws), so 1,000 draws can never report p = 0. Tails are one-sided and unadjusted across the ten quantities; read the histograms before quoting a z.",
+    "statistics": "z = (real - null mean) / null sd. Empirical tails use (1 + draws at least as extreme) / (1 + draws), so 1,000 draws can never report p = 0. Tails are one-sided and unadjusted across the twelve quantities; read the histograms before quoting a z.",
     "limitations": "A finite swap chain approximates the null ensemble rather than sampling it uniformly. Quantities fixed by a null's construction have no z-score, which is the point, not a failure.",
     "hashes": {
       "week1_nodes.tsv": "a10ec309ac60ea8b72bcc1a18aba801414896676dac172619def0435e585391e",
@@ -96,7 +96,7 @@
       },
       {
         "id": "Phoenix_Force",
-        "name": "Phoenix (Guardians of the Galaxy)",
+        "name": "Phoenix Force",
         "degree": 32,
         "namedAsFriend": 32,
         "shareOfPairs": 0.0112

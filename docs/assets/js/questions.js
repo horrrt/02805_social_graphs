@@ -27,7 +27,7 @@ function build() {
   const indicators = state.data.indicators ?? {};
 
   const rows = [];
-  for (const [oi, di, stocks, , km, female, forced = 0] of edges.edges) {
+  for (const [oi, di, stocks, km, female, forced = 0] of edges.edges) {
     const people = stocks[yi];
     if (!people) continue;
     rows.push({
@@ -93,7 +93,7 @@ function correlation(xs, ys) {
 }
 
 // A correlation with no interval is a number a reader cannot argue with, and
-// at n = 173 the interval is wide enough to matter. Fisher's z transform is
+// at n = 175 the interval is wide enough to matter. Fisher's z transform is
 // the closed form: transform, add the normal interval, transform back.
 function correlationInterval(r, n, confidence = 1.96) {
   if (n < 4 || Math.abs(r) >= 1) return [r, r];
@@ -461,7 +461,7 @@ function drawHosts() {
   const canvas = $("q-hosts");
   if (!canvas) return;
   const { ctx, width, height } = api.surface(canvas);
-  const { PEOPLE, ACCESS, INK, MUTE, GRID } = api.colours;
+  const { PEOPLE, OUTBOUND, INK, MUTE, GRID } = api.colours;
   const list = register("q-hosts");
   const rows = hostsData().slice(0, 15);
 
@@ -476,7 +476,7 @@ function drawHosts() {
 
   ctx.font = "10px -apple-system, system-ui, sans-serif";
   ctx.textBaseline = "middle";
-  ctx.fillStyle = ACCESS;
+  ctx.fillStyle = OUTBOUND;
   ctx.textAlign = "right";
   ctx.fillText("← born here, living abroad", mid - gutter / 2 - 4, 16);
   ctx.fillStyle = PEOPLE;
@@ -496,7 +496,7 @@ function drawHosts() {
     ctx.lineTo(width - 12, Math.round(y + rowHeight / 2) + 0.5);
     ctx.stroke();
 
-    ctx.fillStyle = ACCESS;
+    ctx.fillStyle = OUTBOUND;
     ctx.fillRect(mid - gutter / 2 - left, y - bar / 2, left, bar);
     ctx.fillStyle = PEOPLE;
     ctx.fillRect(mid + gutter / 2, y - bar / 2, right, bar);
@@ -998,7 +998,7 @@ function answerWealth() {
     `the foreign-born share. Put the same countries against their 2024 growth rate and it falls ` +
     `to <b>${speed.toFixed(2)}</b> (95% ${range(correlationInterval(speed, growing.length))}, ` +
     `an interval that contains zero). Being rich and having a large foreign-born ` +
-    `population go together; growing fast this year and having one do not. Section 10 ` +
+    `population go together; growing fast this year and having one do not. This section ` +
     `puts the same question to a model that holds size and distance fixed, which is as ` +
     `close to "wealth pulls people" as this data gets. ` +
     `Wealth also buys distance, which is the right-hand panel and the real reason the two ` +

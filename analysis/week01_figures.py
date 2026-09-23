@@ -1,5 +1,7 @@
 """Week 1 site figures. White ground, three-colour palette carried over from notebook 01."""
-import json
+import sys
+from pathlib import Path
+
 import numpy as np
 import pandas as pd
 import networkx as nx
@@ -8,6 +10,9 @@ matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 import matplotlib.patheffects as pe
 from matplotlib.colors import LinearSegmentedColormap
+
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from arcade_data import DISPLAY_NAME_OVERRIDES
 
 BLUE, ORANGE, GREEN = "#2a78d6", "#eb6834", "#1baf7a"
 INK, MUTED, GRID, PAPER = "#1c1c1c", "#7a7a7a", "#e4e4e4", "#ffffff"
@@ -24,6 +29,7 @@ D = nx.DiGraph()
 D.add_nodes_from(nodes.node_id)
 D.add_edges_from(edges.itertuples(index=False, name=None))
 name = dict(zip(nodes.node_id, nodes.name))
+name.update({k: v for k, v in DISPLAY_NAME_OVERRIDES.items() if k in name})
 url = dict(zip(nodes.node_id, nodes.url))
 N = D.number_of_nodes()
 kin, kout = dict(D.in_degree()), dict(D.out_degree())
@@ -66,7 +72,7 @@ def figure_map():
     for i, n in enumerate(isolates):                       # tidy grid, 6 wide
         pos[n] = np.array([1.36 + 0.115 * (i % 6), -0.46 - 0.115 * (i // 6)])
 
-    fig, ax = plt.subplots(figsize=(13.2, 7.6))
+    fig, ax = plt.subplots(figsize=(6.6, 3.8))
     for u, v in D.to_undirected().edges():
         x0, y0 = pos[u]; x1, y1 = pos[v]
         ax.plot([x0, x1], [y0, y1], color="#8fa9c6", linewidth=0.3, alpha=0.30,
@@ -106,7 +112,7 @@ def figure_map():
     ax.set_xlim(-1.42, 2.14); ax.set_ylim(-1.05, 1.05)
     ax.axis("off")
     fig.tight_layout(pad=0.1)
-    fig.savefig(f"{OUT}/map.png", dpi=210, bbox_inches="tight")
+    fig.savefig(f"{OUT}/map.png", dpi=300, bbox_inches="tight")
     plt.close(fig)
 
 # ------------------------------------------------------- 2. the distributions
@@ -117,7 +123,7 @@ def raw_pk(deg, n):
 def figure_dist():
     k_in = [d for _, d in D.in_degree()]
     k_out = [d for _, d in D.out_degree()]
-    fig, axes = plt.subplots(2, 2, figsize=(11, 7.6))
+    fig, axes = plt.subplots(2, 2, figsize=(6.6, 4.56))
     for row, (label, ks, colour) in enumerate([("In-degree", k_in, BLUE),
                                                ("Out-degree", k_out, ORANGE)]):
         u, p = raw_pk(ks, N)
@@ -130,12 +136,12 @@ def figure_dist():
             style(ax, "k + 1", "P(k)",
                   f"{label}, {'log-log' if logscale else 'linear'} axes")
     fig.tight_layout()
-    fig.savefig(f"{OUT}/degree_distributions.png", dpi=210, bbox_inches="tight")
+    fig.savefig(f"{OUT}/degree_distributions.png", dpi=300, bbox_inches="tight")
     plt.close(fig)
 
 # ------------------------------------------------------------- 3. in vs out
 def figure_scatter():
-    fig, ax = plt.subplots(figsize=(9.4, 6.4))
+    fig, ax = plt.subplots(figsize=(6.6, 4.49))
     rng = np.random.default_rng(1)
     xs = np.array([kout[n] for n in D], float) + rng.normal(0, .09, N)
     ys = np.array([kin[n] for n in D], float) + rng.normal(0, .09, N)
@@ -149,21 +155,24 @@ def figure_scatter():
              "Quasar_(character)"]
     for n in picks:
         c = ORANGE if kout[n] > kin[n] else INK
-        halo(ax.text(kout[n] + .55, kin[n] + .7, name[n].split(" (")[0],
-                     fontsize=8.4, color=c, zorder=4))
+        # U.S. Agent (20, 6) sits close to Adam Warlock's marker at (22, 8)
+        # and Noh-Varr's label at (18, 4); drop its label clear below both.
+        dx, dy, ha = (2.3, -3.4, "left") if n == "U.S._Agent" else (.55, .7, "left")
+        halo(ax.text(kout[n] + dx, kin[n] + dy, name[n].split(" (")[0],
+                     fontsize=8.4, color=c, ha=ha, zorder=4))
         ax.scatter([kout[n]], [kin[n]], s=42, c=c, zorder=3,
                    linewidths=.8, edgecolors="white")
     style(ax, "out-degree   (links this article writes)",
           "in-degree   (links other articles give it)",
-          "Two different populations")
+          "The most linked-to and the most linking articles differ")
     ax.set_xlim(-1, 35); ax.set_ylim(-3, 114)
     fig.tight_layout()
-    fig.savefig(f"{OUT}/in_vs_out.png", dpi=210, bbox_inches="tight")
+    fig.savefig(f"{OUT}/in_vs_out.png", dpi=300, bbox_inches="tight")
     plt.close(fig)
 
 # ------------------------------------------------------------- 4. the island
 def figure_island():
-    fig, ax = plt.subplots(figsize=(9, 6))
+    fig, ax = plt.subplots(figsize=(6.6, 4.4))
     S = D.subgraph(island)
     pos = nx.spring_layout(S.to_undirected(), k=1.1, iterations=500, seed=11)
     for u, v in S.edges():
@@ -185,22 +194,8 @@ def figure_island():
                  fontsize=10.5, color=INK, loc="left", pad=14)
     ax.margins(.16)
     fig.tight_layout()
-    fig.savefig(f"{OUT}/island.png", dpi=210, bbox_inches="tight")
+    fig.savefig(f"{OUT}/island.png", dpi=300, bbox_inches="tight")
     plt.close(fig)
 
-# --------------------------------------------------- 5. json for the d3 graph
-def export_json():
-    comp = {}
-    for n in giant: comp[n] = "giant"
-    for n in island: comp[n] = "island"
-    for n in isolates: comp[n] = "isolate"
-    payload = {
-        "nodes": [{"id": n, "name": name[n], "url": url[n],
-                   "kin": kin[n], "kout": kout[n], "grp": comp[n]} for n in D],
-        "links": [{"s": u, "t": v} for u, v in D.edges()],
-    }
-    with open("docs/assets/data/marvel_week1.json", "w") as fh:
-        json.dump(payload, fh, separators=(",", ":"))
-
-for fn in (figure_map, figure_dist, figure_scatter, figure_island, export_json):
+for fn in (figure_map, figure_dist, figure_scatter, figure_island):
     fn(); print("done:", fn.__name__)

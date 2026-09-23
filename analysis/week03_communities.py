@@ -30,15 +30,20 @@ different grouping to every reader.
 from __future__ import annotations
 
 import argparse
+import collections
 import json
 import pathlib
 import random
 
 import networkx as nx
 
+from week04_staffing import labels, louvain, nmi
+
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 DATA = ROOT / "docs" / "assets" / "data"
 OUT = ROOT / "analysis"
+
+STABILITY_SEEDS = range(100)
 
 
 def build(year: int, threshold: int):
@@ -66,10 +71,10 @@ def build(year: int, threshold: int):
 
 
 def partition(graph, seed):
-    communities = nx.community.louvain_communities(
-        graph, weight="weight", seed=seed, resolution=1.0
-    )
-    return communities, nx.community.modularity(graph, communities, weight="weight")
+    """igraph's multilevel Louvain (week04_staffing.louvain): same method as
+    nx.community.louvain_communities, about 25x faster, which is what makes a
+    100-seed stability check affordable here."""
+    return louvain(graph, seed)
 
 
 def null_modularity(graph, shuffles, seed):
@@ -111,7 +116,30 @@ def main():
 
     communities, q = partition(graph, args.seed)
     communities = sorted(communities, key=len, reverse=True)
-    print(f"\nLouvain: {len(communities)} communities, modularity {q:.3f}")
+    print(f"\nLouvain (seed {args.seed}): {len(communities)} communities, modularity {q:.3f}")
+
+    # Seed stability: one seeded run is one draw from Louvain's own run-to-run
+    # noise. 100 more seeds say how much of the nine-group partition is the
+    # network and how much is that one draw: how many seeds land on the same
+    # group count, how many reproduce this exact partition, and how close the
+    # rest come to it by NMI.
+    nodes = list(graph.nodes())
+    published_labels = labels(communities)
+    runs = [partition(graph, seed) for seed in STABILITY_SEEDS]
+    canon = lambda parts: frozenset(frozenset(part) for part in parts)
+    published_canon = canon(communities)
+    counts = collections.Counter(canon(parts) for parts, _ in runs)
+    same_count = sum(1 for parts, _ in runs if len(parts) == len(communities))
+    exact_match = counts[published_canon]
+    nmis = [nmi([published_labels[n] for n in nodes], [labels(parts)[n] for n in nodes])
+            for parts, _ in runs]
+    modal_canon, modal_freq = counts.most_common(1)[0]
+    modal_matches_published = modal_canon == published_canon
+    print(f"\n100-seed stability: {same_count}/100 give {len(communities)} groups, "
+          f"{exact_match}/100 reproduce this exact partition, "
+          f"mean NMI {sum(nmis) / len(nmis):.3f}, min NMI {min(nmis):.3f}")
+    print(f"  modal partition (seen {modal_freq}/100): "
+          f"{'matches the published one' if modal_matches_published else 'DIFFERS from the published one'}")
 
     nulls = null_modularity(graph, args.shuffles, args.seed)
     mean = sum(nulls) / len(nulls)
@@ -188,6 +216,18 @@ def main():
         "share_inside_kept": round(share_kept, 1),
         "people": int(all_total),
         "people_kept": int(total),
+        "stability": {
+            "seeds": len(STABILITY_SEEDS),
+            "same_group_count": same_count,
+            "exact_match": exact_match,
+            "mean_nmi": round(sum(nmis) / len(nmis), 3),
+            "min_nmi": round(min(nmis), 3),
+            "modal_seen": modal_freq,
+            "modal_matches_published": modal_matches_published,
+            "note": "Louvain finds a different partition on every seed. 100 more seeds "
+                    "besides the published one, each compared to it by group count, exact "
+                    "match, and normalised mutual information (NMI).",
+        },
         "null": {
             "shuffles": args.shuffles,
             "mean": round(mean, 4),

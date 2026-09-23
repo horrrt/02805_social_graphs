@@ -17,13 +17,15 @@ setupChrome();
 try {
   const [data, packs] = await Promise.all([load(), load("week01_packs.json")]);
   $("#app-status").hidden = true;
+  const N = data.nodes.length;
+  const maxDegree = Math.max(...packs.histogram.map((row) => row.degree));
   prediction($("#prediction"), {
     id: "w1-packs",
     week: 1,
     prompt: "How many five-card packs to collect every article, on average?",
     min: 0,
     max: 4000,
-    answer: 1945,
+    answer: packs.collector.expectedPacksRounded,
     unit: "packs",
     explain:
       "An approximate expectation, not a guaranteed finish. The slow part is finding the last rare cards.",
@@ -112,7 +114,11 @@ try {
       all
         .slice(0, limit)
         .map((n) =>
-          card(n, { index: data.nodes.indexOf(n), count: counts[n.id] || 0 }),
+          card(n, {
+            index: data.nodes.indexOf(n),
+            count: counts[n.id] || 0,
+            community: false,
+          }),
         )
         .join("") || '<p class="empty">No cards match this view.</p>';
     $("#collection-count").textContent =
@@ -128,10 +134,10 @@ try {
         ? `Your ${pulls} draws found ${distinct} different ${distinct === 1 ? "card" : "cards"} and ${repeats} ${repeats === 1 ? "repeat" : "repeats"}. ${pulls < 20 ? "A few packs can vary a lot. Try more, then compare the two draw rules below." : "This is one collection, not an average. Compare the two draw rules below to see the longer-term effect."}`
         : "Watch how many cards are new and how many repeat. You do not need to finish the collection to see the idea.";
     }
-    $("#unique-count").textContent = `${Object.keys(counts).length} / 303`;
+    $("#unique-count").textContent = `${Object.keys(counts).length} / ${N}`;
     $("#pull-count").textContent = pulls.toLocaleString();
     $("#rare-count").textContent =
-      `${data.nodes.filter((n) => n.kin === 0 && counts[n.id]).length} / 58`;
+      `${data.nodes.filter((n) => n.kin === 0 && counts[n.id]).length} / ${packs.collector.minimumRateCards}`;
     collection();
   }
   $("#open-pack").disabled = false;
@@ -180,7 +186,7 @@ try {
       return;
     counts = {};
     pulls = 0;
-    random = rng(Number($("#pack-seed").value) || 7);
+    random = rng(Number($("#pack-seed").value));
     save();
     metrics();
     drawChart();
@@ -209,18 +215,37 @@ try {
     c.font = `12px ${SANS}`;
     c.fillStyle = tone("--cv-packs-text", "#46618a");
     c.strokeStyle = tone("--cv-packs-grid", "#dce5f0");
-    const maxY = 100;
+    const drawn = new Map();
+    for (const n of data.nodes)
+      drawn.set(n.kin, (drawn.get(n.kin) || 0) + (counts[n.id] || 0));
+    const snapshotShares = packs.histogram.map((row) => (row.count / N) * 100);
+    const drawnShares = pulls
+      ? packs.histogram.map((row) => ((drawn.get(row.degree) || 0) / pulls) * 100)
+      : [];
+    // The snapshot tops out near 19%; a fixed 0–100 axis wastes most of the
+    // chart. Size it to what is actually on screen, rounded up a little.
+    const maxY = log
+      ? 100
+      : Math.max(5, Math.ceil(Math.max(...snapshotShares, ...drawnShares) / 5) * 5);
+    // On the log axis, clamping every small share to a fixed 0.3% floor makes
+    // a card drawn once in a thousand pulls look identical to one drawn never.
+    // Use the smallest share one draw could actually produce instead.
+    const logFloor = Math.min(0.3, pulls ? 100 / pulls : 0.3);
     const X = (k) =>
-      left + (log ? Math.log10(k + 1) / Math.log10(107) : k / 106) * W;
+      left +
+      (log ? Math.log10(k + 1) / Math.log10(maxDegree + 1) : k / maxDegree) * W;
     const Y = (p) =>
       top +
       H -
       (log
-        ? (Math.log10(Math.max(p, 0.3)) - Math.log10(0.3)) /
-          (Math.log10(maxY) - Math.log10(0.3))
+        ? (Math.log10(Math.max(p, logFloor)) - Math.log10(logFloor)) /
+          (Math.log10(maxY) - Math.log10(logFloor))
         : p / maxY) *
         H;
-    for (const p of log ? [0.3, 1, 3, 10, 30, 100] : [0, 25, 50, 75, 100]) {
+    const yTicks = log
+      ? [0.3, 1, 3, 10, 30, 100]
+      : [0, 0.25, 0.5, 0.75, 1].map((f) => Math.round(f * maxY));
+    for (const p of yTicks) {
       const y = Y(p);
       c.beginPath();
       c.moveTo(left, y);
@@ -228,15 +253,14 @@ try {
       c.stroke();
       c.fillText(p + "%", 5, y + 4);
     }
-    for (const k of log ? [0, 1, 3, 9, 29, 106] : [0, 20, 40, 60, 80, 106]) {
+    for (const k of log
+      ? [0, 1, 3, 9, 29, maxDegree]
+      : [0, 20, 40, 60, 80, maxDegree]) {
       c.fillText(log ? String(k + 1) : String(k), X(k) - 5, h - bottom + 20);
     }
-    const drawn = new Map();
-    for (const n of data.nodes)
-      drawn.set(n.kin, (drawn.get(n.kin) || 0) + (counts[n.id] || 0));
     for (const row of packs.histogram) {
       const x = X(row.degree),
-        y = Y((row.count / 303) * 100);
+        y = Y((row.count / N) * 100);
       c.fillStyle = tone("--cv-packs-dot", "#14618f");
       c.beginPath();
       c.arc(x, y, 4, 0, Math.PI * 2);
@@ -263,7 +287,7 @@ try {
     packs.histogram
       .map(
         (r) =>
-          `<tr><td>${r.degree}</td><td class="num">${r.count}</td><td class="num">${((r.count / 303) * 100).toFixed(2)}%</td></tr>`,
+          `<tr><td>${r.degree}</td><td class="num">${r.count}</td><td class="num">${((r.count / N) * 100).toFixed(2)}%</td></tr>`,
       )
       .join("") +
     "</tbody></table>";
@@ -274,7 +298,7 @@ try {
       [4, 7],
       [8, 15],
       [16, 31],
-      [32, 106],
+      [32, maxDegree],
     ],
     guess = [40, 40, 40, 40, 40, 40, 40],
     actual = bins.map(
@@ -355,7 +379,7 @@ try {
     compare = true;
     drawSketch();
     $("#sketch-feedback").textContent =
-      `Gold = your sketch; coral = snapshot. Actual counts from left to right: ${actual.join(", ")}. The distribution is uneven; this alone does not prove a power law.`;
+      `Blue = your sketch; orange = snapshot. Actual counts from left to right: ${actual.join(", ")}. The distribution is uneven; this alone does not prove a power law.`;
   });
   metrics();
 } catch (error) {

@@ -16,12 +16,16 @@ import json
 import math
 import random
 import statistics as st
+import sys
 from pathlib import Path
 
 import networkx as nx
 import numpy as np
 
 ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(ROOT / "analysis"))
+from week04_staffing import tracked  # noqa: E402
+
 DATA = ROOT / "docs/assets/data"
 SEED = 20260914
 SAMPLES = 400
@@ -121,7 +125,7 @@ def main():
     swaps = 10 * m
     rng = random.Random(SEED)
     null = {k: [] for k in ("clus", "trans", "paradox", "path", "kmax")}
-    for _ in range(SAMPLES):
+    for _ in tracked("null shuffles", SAMPLES):
         shuffled = marvel.copy()
         nx.double_edge_swap(
             shuffled, nswap=swaps, max_tries=40 * swaps, seed=rng.randint(0, 10**9)
