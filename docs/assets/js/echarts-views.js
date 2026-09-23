@@ -122,7 +122,10 @@ function graphData() {
       // Area, not radius, carries the number: a country twice the size gets
       // twice the ink rather than four times it.
       symbolSize: 8 + Math.sqrt(total.get(iso3) / biggest) * 42,
-      itemStyle: { color: inn >= out ? api.colours.ACCESS : api.colours.PEOPLE },
+      // Net receiver or net sender, on the same PEOPLE/OUTBOUND pair the rest
+      // of the page uses for incoming/outgoing, not ACCESS: that blue means
+      // flights everywhere else on this page.
+      itemStyle: { color: inn >= out ? api.colours.PEOPLE : api.colours.OUTBOUND },
       label: { show: named.has(iso3) },
     };
   });

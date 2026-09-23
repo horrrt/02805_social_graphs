@@ -14,6 +14,9 @@ from pathlib import Path
 
 import networkx as nx
 
+from arcade_data import DISPLAY_NAME_OVERRIDES
+from week04_staffing import tracked
+
 ROOT = Path(__file__).resolve().parents[1]
 OUT = ROOT / "docs/assets/data"
 SEED = 2026090900
@@ -25,6 +28,9 @@ LABELS = ["Spider-Man", "Hulk", "Black Widow", "Doctor Strange"]
 def load_graph():
     with (ROOT / "data/week1_nodes.tsv").open() as f:
         roster = list(csv.DictReader((l for l in f if not l.startswith("#")), delimiter="\t"))
+    for r in roster:
+        if r["node_id"] in DISPLAY_NAME_OVERRIDES:
+            r["name"] = DISPLAY_NAME_OVERRIDES[r["node_id"]]
     directed = nx.DiGraph()
     directed.add_nodes_from(r["node_id"] for r in roster)
     with (ROOT / "data/week1_edges.tsv").open() as f:
@@ -79,10 +85,19 @@ def export_removal_scan(graph, roster):
     print(f"Verified all {len(scan)} removals against the articulation-point algorithm; {len(articulation_points)} fragment the graph.", flush=True)
 
 
-def ensemble(graph, draws, factor, seed_base, keep_examples=False):
+def friend_at_least(graph):
+    """Chance a random friend of a random linked character is at least as linked: single-draw form."""
+    degree = dict(graph.degree())
+    linked = [u for u in graph if degree[u]]
+    return statistics.fmean(
+        sum(degree[v] >= degree[u] for v in graph[u]) / degree[u] for u in linked)
+
+
+def ensemble(graph, draws, factor, seed_base, keep_examples=False, measure_paradox=False):
     expected_degrees = dict(graph.degree())
-    records, examples = [], []
+    records, examples, paradox = [], [], []
     attempts = rejected = 0
+    progress = tracked(f"{factor}x swap draws", draws)
     while len(records) < draws:
         seed = seed_base + attempts
         attempts += 1
@@ -99,11 +114,12 @@ def ensemble(graph, draws, factor, seed_base, keep_examples=False):
             continue
         results = {node: outcome(shuffled, node) for node in CASES}
         records.append({"seed": seed, **{n: v["count"] for n, v in results.items()}})
+        if measure_paradox:
+            paradox.append(friend_at_least(shuffled))
         if keep_examples and len(examples) < 4:
             examples.append({"seed": seed, "links": [list(e) for e in shuffled.edges()], "outcomes": results})
-        if len(records) % 200 == 0:
-            print(f"{factor}m swaps: {len(records)}/{draws} accepted ({rejected} disconnected draws rejected)", flush=True)
-    return records, examples, rejected
+        next(progress, None)
+    return records, examples, rejected, paradox
 
 
 def main():
@@ -115,13 +131,24 @@ def main():
     # These outcomes are also checked in the browser with a separate traversal.
     assert [actual[n]["count"] for n in CASES] == [5, 0, 3, 2]
     assert graph.degree("Spider-Man") == max(dict(graph.degree()).values())
-    draws, examples, rejected = ensemble(graph, N_DRAWS, 20, SEED, True)
-    sensitivity, _, sensitivity_rejected = ensemble(graph, 200, 50, SEED + 100000)
+    draws, examples, rejected, _ = ensemble(graph, N_DRAWS, 20, SEED, True)
+    sensitivity, _, sensitivity_rejected, paradox_draws = ensemble(
+        graph, 200, 50, SEED + 100000, measure_paradox=True)
     positions = {n["id"]: n for n in json.loads((OUT / "marvel_story.json").read_text())["nodes"]}
     cases = [{"id": node, "label": label, "degree": graph.degree(node),
               "real": actual[node], "null": summarize([r[node] for r in draws], actual[node]["count"]),
               "sensitivity": summarize([r[node] for r in sensitivity], actual[node]["count"])}
              for node, label in zip(CASES, LABELS)]
+    # The single-draw friendship paradox (Screen Test's "handle"), measured on
+    # this 277-node core instead of the full 303-article snapshot, against the
+    # same 200 sensitivity draws used above.
+    real_paradox = friend_at_least(graph)
+    paradox_mean = statistics.fmean(paradox_draws)
+    paradox_sd = statistics.stdev(paradox_draws)
+    paradox_core = {
+        "real": round(real_paradox, 4), "mean": round(paradox_mean, 4), "sd": round(paradox_sd, 4),
+        "draws": len(paradox_draws), "atMostReal": sum(1 for v in paradox_draws if v <= real_paradox),
+    }
     payload = {
         "snapshot": "2026-08-26", "analysisDate": "2026-09-09",
         "population": {"roster": 303, "nodes": 277, "edges": 1421, "excluded": 26},
@@ -139,6 +166,7 @@ def main():
                    "x": round((positions[n]["x"] - 55) / 605 * 780 + 45, 2),
                    "y": round((positions[n]["y"] - 60) / 520 * 510 + 45, 2)} for n in graph],
         "links": [list(e) for e in graph.edges()], "cases": cases, "examples": examples,
+        "paradoxCore": paradox_core,
     }
     OUT.mkdir(parents=True, exist_ok=True)
     (OUT / "week02_resilience.json").write_text(json.dumps(payload, separators=(",", ":")) + "\n")

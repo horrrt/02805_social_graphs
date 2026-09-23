@@ -1,4 +1,4 @@
-"""Week 2: shuffle-test ten quantities against two different null models.
+"""Week 2: shuffle-test twelve quantities against two different null models.
 
 Run: python analysis/week02_nullmodels.py
 Unlike week02_resilience.py, which works on the connected 277-article core, this
@@ -12,10 +12,13 @@ import hashlib
 import json
 import platform
 import statistics
-import time
 from pathlib import Path
 
+import igraph
 import networkx as nx
+
+from arcade_data import DISPLAY_NAME_OVERRIDES
+from week04_staffing import tracked
 
 ROOT = Path(__file__).resolve().parents[1]
 OUT = ROOT / "docs/assets/data"
@@ -23,7 +26,7 @@ SEED = 2026091200
 N_DRAWS = 1000
 SWAP_FACTOR = 20
 
-# label, how the site formats it, and whether a high real value is the claim
+# label, how the site formats it, and how many decimal places to report
 QUANTITIES = [
     ("avg_clustering", "Average clustering C", 3),
     ("transitivity", "Transitivity", 3),
@@ -44,6 +47,9 @@ def load_graph():
     """The week-1 snapshot, undirected, with all 303 nodes added before any edge."""
     with (ROOT / "data/week1_nodes.tsv").open() as f:
         roster = list(csv.DictReader((l for l in f if not l.startswith("#")), delimiter="\t"))
+    for r in roster:
+        if r["node_id"] in DISPLAY_NAME_OVERRIDES:
+            r["name"] = DISPLAY_NAME_OVERRIDES[r["node_id"]]
     directed = nx.DiGraph()
     directed.add_nodes_from(r["node_id"] for r in roster)
     with (ROOT / "data/week1_edges.tsv").open() as f:
@@ -76,23 +82,40 @@ def paradox_context(graph, roster):
     }
 
 
+def to_igraph(graph):
+    """A networkx Graph as an igraph Graph, node order preserved by insertion."""
+    index = {n: i for i, n in enumerate(graph)}
+    return igraph.Graph(n=len(index), edges=[(index[u], index[v]) for u, v in graph.edges()])
+
+
 def measure(graph):
-    """The quantities under test. Every one is a single number per network."""
+    """The quantities under test. Every one is a single number per network.
+
+    Seven of these (clustering through average path length) run through
+    igraph rather than networkx: the audit that ported them checked all
+    seven against networkx to 6 decimal places on this graph and confirmed
+    igraph is about 80 times faster per call, which is most of this script's
+    runtime over 2,000 draws. nx.double_edge_swap still draws the shuffles;
+    igraph's rewire() counts trials differently and would change every
+    seeded draw.
+    """
     degree = dict(graph.degree())
     degrees = list(degree.values())
     mean_k = statistics.fmean(degrees)
     mean_k2 = statistics.fmean(d * d for d in degrees)
-    sizes = sorted((len(c) for c in nx.connected_components(graph)), reverse=True)
-    giant = graph.subgraph(max(nx.connected_components(graph), key=len))
     # The friendship paradox, sampled the way the course states it: pick a
     # character uniformly at random, then one of their friends uniformly. Only
     # characters with at least one friend can take part.
     linked = [u for u in graph if degree[u]]
+    ig = to_igraph(graph)
+    comps = ig.connected_components()
+    sizes = sorted(comps.sizes(), reverse=True)
+    giant = ig.induced_subgraph(max(comps, key=len))
     return {
-        "avg_clustering": nx.average_clustering(graph),
-        "transitivity": nx.transitivity(graph),
-        "triangles": sum(nx.triangles(graph).values()) // 3,
-        "assortativity": nx.degree_assortativity_coefficient(graph),
+        "avg_clustering": statistics.fmean(ig.transitivity_local_undirected(mode="zero")),
+        "transitivity": ig.transitivity_undirected(),
+        "triangles": len(ig.list_triangles()),
+        "assortativity": ig.assortativity_degree(),
         # <k^2>/<k>: a function of the degree sequence alone, so the swap null
         # cannot move it by even one decimal. That is the finding, not a bug.
         "neighbour_degree_edge": mean_k2 / mean_k,
@@ -104,7 +127,7 @@ def measure(graph):
         "components": len(sizes),
         "giant_size": sizes[0],
         "hub_share": max(degrees) / (2 * graph.number_of_edges()),
-        "avg_path_giant": nx.average_shortest_path_length(giant),
+        "avg_path_giant": giant.average_path_length(),
     }
 
 
@@ -129,13 +152,10 @@ def er_null(graph, seed):
 
 def ensemble(graph, build, draws, seed_base, name):
     """Measure every quantity on `draws` networks from one null."""
-    started = time.perf_counter()
     samples = {key: [] for key, *_ in QUANTITIES}
-    for i in range(draws):
+    for i in tracked(name, draws):
         for key, value in measure(build(graph, seed_base + i)).items():
             samples[key].append(value)
-        if (i + 1) % 250 == 0:
-            print(f"{name}: {i + 1}/{draws} draws ({time.perf_counter() - started:.0f}s)", flush=True)
     return samples
 
 
@@ -194,7 +214,7 @@ def main():
             "statistics": "z = (real - null mean) / null sd. Empirical tails use "
                           "(1 + draws at least as extreme) / (1 + draws), so 1,000 draws "
                           "can never report p = 0. Tails are one-sided and unadjusted "
-                          "across the ten quantities; read the histograms before quoting a z.",
+                          "across the twelve quantities; read the histograms before quoting a z.",
             "limitations": "A finite swap chain approximates the null ensemble rather than "
                            "sampling it uniformly. Quantities fixed by a null's construction "
                            "have no z-score, which is the point, not a failure.",

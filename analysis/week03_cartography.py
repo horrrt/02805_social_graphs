@@ -31,20 +31,20 @@ instead of one bucket:
 
 Writes docs/assets/data/week03_cartography.json.
 
-The graph is the one section 11 already shows: undirected, weighted by people
+The graph is the one section 5 already shows: undirected, weighted by people
 moving both ways, corridors under 10,000 people dropped. Same floor, so the
 communities a reader sees there are the communities these roles are measured
-inside. 193 countries clear that floor in 1990 and 205 in 2024; the rest have
+inside. 196 countries clear that floor in 1990 and 208 in 2024; the rest have
 no role, and the page says so rather than inventing one.
 
 Why an ensemble. Louvain is stochastic, and on this graph that is not a detail:
-two seeds at 2020 disagree about 26 of 228 roles, which is the same size as the
+two seeds at 2020 disagree about 28 of 207 roles, which is the same size as the
 change between one five-year snapshot and the next. A single run would have
 produced an animation of its own random seed. So every year is partitioned
 `--seeds` times, each run votes for a role, and a country carries its modal
 role plus the share of runs that agreed. Only countries confident in both years
 count as having changed. z and P themselves are far steadier than the role is:
-the United States sits at z 5.92 with a standard deviation of 0.03 across 100
+the United States sits at z 5.20 with a standard deviation of 0.08 across 100
 runs, and the wobble is concentrated at the threshold crossings.
 
 What this cannot tell you. The thresholds are Guimerà and Amaral's, calibrated
@@ -238,7 +238,7 @@ def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--seeds", type=int, default=100)
     parser.add_argument("--threshold", type=int, default=10000,
-                        help="the floor section 11 uses; keep them the same")
+                        help="the floor section 5 uses; keep them the same")
     parser.add_argument("--confident", type=float, default=0.9,
                         help="share of runs that must agree before a role counts")
     parser.add_argument("--verify", action="store_true",
@@ -302,7 +302,7 @@ def main() -> None:
     payload = {
         "generated": "analysis/week03_cartography.py",
         "method": "Guimerà and Amaral role cartography (Nature 433, 2005), on the "
-                  "undirected people-weighted migration graph section 11 partitions.",
+                  "undirected people-weighted migration graph section 5 partitions.",
         "threshold": args.threshold,
         "seeds": args.seeds,
         "confident": args.confident,

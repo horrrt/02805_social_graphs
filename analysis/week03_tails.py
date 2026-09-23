@@ -65,10 +65,15 @@ import json
 import os
 import pathlib
 import warnings
-from concurrent.futures import ProcessPoolExecutor
+import sys
+import time
+from concurrent.futures import ProcessPoolExecutor, as_completed
 
 import numpy as np
 import powerlaw
+
+sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent))
+from week04_staffing import span  # noqa: E402  (module import order kept flat)
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 DATA = ROOT / "docs" / "assets" / "data"
@@ -90,9 +95,15 @@ def _one_draw(args):
     """One synthetic dataset, fitted from scratch. Top level, so it pickles."""
     below, alpha, xmin, n_tail, n_below, discrete, seed = args
     rng = np.random.default_rng(seed)
-    # The inverse CDF of a power law above x_min, which is what
-    # powerlaw's own sampler does, written out so the draw follows the seed
-    # this worker was given rather than the global numpy stream.
+    # The inverse CDF of a continuous power law above x_min: this is
+    # `powerlaw`'s own _generate_random_continuous formula (distributions.py),
+    # written out so the draw follows the seed this worker was given rather
+    # than the global numpy stream. For a discrete tail this is only an
+    # approximation of `powerlaw`'s sampler: its
+    # _generate_random_discrete_estimate applies a continuity correction,
+    # (xmin - 0.5) * (1 - r) ** (-1/(alpha-1)) + 0.5, that the plain round()
+    # below does not. The difference is small for the x_min values these
+    # tails fit at, but it is a difference.
     tail = xmin * (1 - rng.random(n_tail)) ** (-1 / (alpha - 1))
     if discrete:
         tail = np.round(tail)
@@ -128,8 +139,18 @@ def goodness_of_fit(values, fit, discrete, reps, seed):
         (below, float(fit.alpha), float(fit.xmin), n_tail, n_below, discrete, seed + i)
         for i in range(reps)
     ]
+    started = time.time()
+    step = max(1, reps // 10)
+    distances = []
     with ProcessPoolExecutor(max_workers=os.cpu_count()) as pool:
-        distances = list(pool.map(_one_draw, jobs, chunksize=8))
+        futures = [pool.submit(_one_draw, job) for job in jobs]
+        for done, future in enumerate(as_completed(futures), start=1):
+            distances.append(future.result())
+            if done % step == 0 or done == reps:
+                elapsed = time.time() - started
+                print(f"    bootstrap: {done}/{reps} ({done / reps:.0%}), "
+                      f"{span(elapsed)} elapsed, "
+                      f"about {span(elapsed / done * (reps - done))} left", flush=True)
     return sum(1 for d in distances if d >= fit.D) / reps
 
 
@@ -222,9 +243,9 @@ def main():
             "values": [n["years"][year]["out_degree"] for n in nodes.values() if year in n.get("years", {})],
             "discrete": True,
         },
-        "flight_degree": {
+        "flight_partners": {
             "label": "Flight partners per country",
-            "values": [n["flight_degree"] for n in nodes.values()],
+            "values": [n["flight_partners"] for n in nodes.values()],
             "discrete": True,
         },
         "corridor_people": {

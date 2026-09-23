@@ -16,7 +16,7 @@
     "sensitivityDraws": 200,
     "sensitivitySwapFactor": 50,
     "sensitivityRejectedDisconnected": 7,
-    "python": "3.14.6",
+    "python": "3.13.15",
     "networkx": "3.6.1",
     "null": "Simple undirected degree-preserving edge swaps, conditioned on connected output.",
     "metric": "Remaining articles outside the largest component after removing one named article and all its incident edges.",
@@ -380,5 +380,12 @@
         ]
       }
     }
-  ]
+  ],
+  "paradoxCore": {
+    "real": 0.7533,
+    "mean": 0.7608,
+    "sd": 0.0031,
+    "draws": 200,
+    "atMostReal": 0
+  }
 }

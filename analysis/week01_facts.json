@@ -217,13 +217,42 @@
    "k": 17,
    "kin": 50,
    "kout": 17
+  },
+  {
+   "id": "Emma_Frost",
+   "name": "Emma Frost",
+   "k": 17,
+   "kin": 21,
+   "kout": 17
+  },
+  {
+   "id": "Hercules_(Marvel_Comics)",
+   "name": "Hercules (Marvel Comics)",
+   "k": 17,
+   "kin": 19,
+   "kout": 17
+  },
+  {
+   "id": "Phoenix_Force",
+   "name": "Phoenix Force",
+   "k": 17,
+   "kin": 24,
+   "kout": 17
+  },
+  {
+   "id": "Wolverine_(character)",
+   "name": "Wolverine (character)",
+   "k": 17,
+   "kin": 60,
+   "kout": 17
   }
  ],
  "spiderman_share": 35.1,
  "top10_overlap": [
   "Deadpool",
   "Doctor_Strange",
-  "She-Hulk"
+  "She-Hulk",
+  "Wolverine_(character)"
  ],
  "pearson_in_out": 0.496,
  "pearson_in_out_nonisolate": 0.48,

@@ -178,10 +178,13 @@ def degree_preserving_null(graph, shuffles, seed):
     dealt back out at random. So a high z-score means a country brokers more than
     its number of partners and the world's weight distribution can explain.
     """
+    from week04_staffing import tracked  # noqa: E402  (analysis/ is already on sys.path)
+
     samples = collections.defaultdict(list)
     rng = random.Random(seed)
     weights = [w for _, _, w in graph.edges(data="weight")]
-    for run in range(shuffles):
+    swap_shortfalls = 0
+    for run in tracked("  null shuffle", shuffles):
         shuffled = graph.copy()
         try:
             nx.directed_edge_swap(
@@ -190,8 +193,14 @@ def degree_preserving_null(graph, shuffles, seed):
                 max_tries=100 * shuffled.number_of_edges(),
                 seed=rng.randint(0, 2 ** 31),
             )
-        except nx.NetworkXAlgorithmError:
-            pass
+        except nx.NetworkXAlgorithmError as error:
+            # max_tries ran out before nswap swaps landed (dense/high-degree
+            # graphs make a swap likelier to collide with an edge that
+            # already exists). The shuffle below still runs on whatever
+            # topology resulted, so this is not fatal, but it should be
+            # visible rather than silently swallowed.
+            swap_shortfalls += 1
+            print(f"    shuffle {run + 1}/{shuffles}: {error}", flush=True)
         drawn = weights[:]
         rng.shuffle(drawn)
         nx.set_edge_attributes(
@@ -201,8 +210,9 @@ def degree_preserving_null(graph, shuffles, seed):
         )
         for node, value in weighted_betweenness(shuffled).items():
             samples[node].append(value)
-        if (run + 1) % 10 == 0:
-            print(f"    shuffle {run + 1}/{shuffles}", flush=True)
+    if swap_shortfalls:
+        print(f"  {swap_shortfalls}/{shuffles} shuffles fell short of the requested "
+              f"swap count (see above)", flush=True)
     return samples
 
 
@@ -271,6 +281,12 @@ def main():
 
     flight_in = dict(flights.in_degree())
     flight_out = dict(flights.out_degree())
+    # in + out double-counts every two-way route (the common case): the US
+    # shows flight_degree 176 against 89 actual partner countries. Partners
+    # is the undirected distinct-neighbour count; to_undirected() merges a
+    # pair's two directed edges into one, so degree() here counts each
+    # partner once regardless of whether the route runs one way or both.
+    flight_partners = dict(flights.to_undirected().degree())
     flight_strength = dict(flights.in_degree(weight="weight"))
     flight_rank = ranked(flight_strength)
     # Same definition as the migration side: distance = 1 / routes, so a pair of
@@ -336,6 +352,33 @@ def main():
                 "null_mean": round(mean, 8), "null_sd": round(spread, 8), "z": round(z, 3),
             }
 
+    # The broker count section 4's headline quotes. Ranked by how much
+    # betweenness the degree sequence leaves unexplained (excess over the
+    # null mean), with z >= 2 as the significance floor: a country with
+    # excess but no z clearing 2 could be noise on a near-zero null spread,
+    # and a country with z clearing 2 but excess under a twentieth of the
+    # leader's is a floor artifact (Guam, Réunion), not a broker. Both
+    # brokers() in corridor.js and this count use the same two conditions,
+    # so the page and the script never drift apart.
+    broker_year = per_year[args.null_year]
+    z_floor_isos = [iso for iso, m in broker_year.items() if (m.get("z") or 0) >= 2]
+    leader_excess = max(
+        (broker_year[iso]["betweenness"] - null_summary[iso]["null_mean"] for iso in null_summary),
+        default=0.0,
+    )
+    broker_isos = [
+        iso for iso in z_floor_isos
+        if (broker_year[iso]["betweenness"] - null_summary[iso]["null_mean"]) > leader_excess / 20
+    ]
+    broker_summary = {
+        "tested": len(null_summary),
+        "z_floor_count": len(z_floor_isos),
+        "broker_count": len(broker_isos),
+        "excess_floor": "1/20 of the leader's excess betweenness",
+    }
+    print(f"  brokers: {len(null_summary)} tested, {len(z_floor_isos)} clear z >= 2, "
+          f"{len(broker_isos)} also clear the leader's excess / 20")
+
     # The six-label typology that used to be written here is gone. Three of
     # its tests compared this year's migration ranking against the undated
     # flight snapshot, so 30 countries carried a label mixing two vintages and
@@ -383,6 +426,7 @@ def main():
             "name": names.get(iso3, iso3),
             "coord": coords.get(iso3),
             "flight_degree": flight_in.get(iso3, 0) + flight_out.get(iso3, 0),
+            "flight_partners": flight_partners.get(iso3, 0),
             "flight_in_degree": flight_in.get(iso3, 0),
             "flight_strength": flight_strength.get(iso3, 0),
             "flight_rank": flight_rank.get(iso3),
@@ -437,6 +481,7 @@ def main():
         },
         "corridor_count": len(all_weights),
         "null_summary": null_summary,
+        "broker_summary": broker_summary,
     }
 
     # Country context for the questions section: wealth and size, so a corridor
@@ -491,7 +536,6 @@ def main():
         female = row.get("female_2024", "")
         edges.append([
             index[a], index[b], series,
-            flight_weight.get((a, b), 0),
             great_circle(a, b),
             int(female) if str(female).isdigit() else -1,
             forced.get((a, b), 0),
@@ -500,16 +544,33 @@ def main():
         {
             "countries": countries,
             "years": YEARS,
-            # [origin, destination, stock per year, flight routes, km,
-            #  women in 2024, refugees and asylum seekers in 2024]
-            "fields": ["origin", "destination", "stocks", "routes", "km",
-                       "female", "forced"],
+            # [origin, destination, stock per year, km, women in 2024,
+            #  refugees and asylum seekers in 2024]. Flight routes used to
+            #  ride along here, but only for the 2,583 pairs that also had a
+            #  DESA migration row: 1,748 of 4,331 directed flight pairs,
+            #  including the heaviest, China <-> Taiwan, were silently
+            #  dropped. Flights are their own file now: week03_flights.json.
+            "fields": ["origin", "destination", "stocks", "km", "female", "forced"],
             "edges": edges,
+        },
+        separators=(",", ":")))
+
+    # Flight routes, independent of whether a DESA migration row exists for
+    # the pair. Same countries list/order as week03_corridors.json, so an
+    # index here means the same country there.
+    flight_edges = [[index[a], index[b], w] for (a, b), w in flight_weight.items()
+                     if a in index and b in index and w > 0]
+    (OUT / "week03_flights.json").write_text(json.dumps(
+        {
+            "countries": countries,
+            "fields": ["origin", "destination", "routes"],
+            "edges": flight_edges,
         },
         separators=(",", ":")))
 
     print(f"\nwrote {(OUT / 'week03_corridors.json').relative_to(ROOT)}")
     print(f"wrote {(OUT / 'week03_edges.json').relative_to(ROOT)} ({len(edges)} corridors)")
+    print(f"wrote {(OUT / 'week03_flights.json').relative_to(ROOT)} ({len(flight_edges)} flight pairs)")
     top = sorted(per_year[args.null_year].items(),
                  key=lambda kv: kv[1]["betweenness_rank"])[:8]
     print(f"\ntop betweenness {args.null_year}: " +

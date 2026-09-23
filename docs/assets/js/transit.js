@@ -24,8 +24,14 @@ try {
   const byId = new Map(data.nodes.map((n) => [n.id, n])),
     stationById = new Map(transit.stations.map((n) => [n.id, n]));
   const name = (id) => shortName(byId.get(id));
+  // The rows of the schematic grid, so a same-row segment can be routed
+  // through the gap between rows instead of straight through it.
+  const rowsY = [...new Set(transit.stations.map((s) => s.y))].sort((a, b) => a - b);
+  const rowGap = rowsY.length > 1 ? rowsY[1] - rowsY[0] : 170;
+  const totalLinks = transit.lines.reduce((sum, line) => sum + line.stations.length - 1, 0);
   let closed = null,
     selectedLine = 1,
+    hoverLine = null,
     drawMap = () => {};
   articleOptions($("#route-from"), data, "Spider-Man");
   articleOptions($("#route-to"), data, "Hulk");
@@ -45,7 +51,7 @@ try {
     const line = transit.lines.find((l) => l.id === selectedLine);
     $("#line-description").textContent = line
       ? `Line ${line.id}: ${line.stations.map(name).join(" → ")}. ${closed ? "Closed station: " + name(closed) + "." : ""}`
-      : "All 60 real links among these 16 hubs. Crossings without a station circle are not connections. Select one line for a clearer view.";
+      : `All ${totalLinks} real links among these 16 hubs. Crossings without a station circle are not connections. Select one line for a clearer view.`;
   }
   drawMap = canvasStage($("#transit-map"), (c, w, h) => {
     c.clearRect(0, 0, w, h);
@@ -69,27 +75,45 @@ try {
         if (a === closed || b === closed) {
           c.setLineDash([4, 5]);
         } else c.setLineDash([]);
-        // Offset track lanes keep a direct edge from visually stopping at intervening stations.
-        const d = Math.min(16, w / 48) + (line.id % 3) * 2,
-          sign = q[0] >= p[0] ? 1 : -1,
-          offset = (line.id % 2 ? 1 : -1) * d;
-        let lane = (p[0] + q[0]) / 2;
-        if (transit.stations.some((s) => Math.abs(s.x * sx - lane) < d))
-          lane += d * 1.8;
         c.beginPath();
         c.moveTo(...p);
-        c.lineTo(p[0] + sign * d, p[1] + offset);
-        c.lineTo(lane, p[1] + offset);
-        c.lineTo(lane, q[1] + offset);
-        c.lineTo(q[0] - sign * d, q[1] + offset);
-        c.lineTo(...q);
+        if (p[1] === q[1]) {
+          // A same-row run would otherwise draw straight through every
+          // station between its ends. Route it through the gap between
+          // rows instead, the way the lane jump below already keeps a
+          // cross-row run clear of intervening station columns.
+          const rowY = stationById.get(a).y,
+            lastRow = rowY === rowsY[rowsY.length - 1],
+            corridor =
+              (lastRow ? rowY - rowGap / 2 : rowY + rowGap / 2) * sy +
+              20 +
+              ((line.id % 5) - 2) * 3;
+          c.lineTo(p[0], corridor);
+          c.lineTo(q[0], corridor);
+          c.lineTo(...q);
+        } else {
+          // Offset track lanes keep a direct edge from visually stopping at intervening stations.
+          const d = Math.min(16, w / 48) + (line.id % 3) * 2,
+            sign = q[0] >= p[0] ? 1 : -1,
+            offset = (line.id % 2 ? 1 : -1) * d;
+          let lane = (p[0] + q[0]) / 2;
+          if (transit.stations.some((s) => Math.abs(s.x * sx - lane) < d))
+            lane += d * 1.8;
+          c.lineTo(p[0] + sign * d, p[1] + offset);
+          c.lineTo(lane, p[1] + offset);
+          c.lineTo(lane, q[1] + offset);
+          c.lineTo(q[0] - sign * d, q[1] + offset);
+          c.lineTo(...q);
+        }
         c.stroke();
       }
       c.setLineDash([]);
     };
+    // In "All tracks" every line shares a neutral grey; only the selected or
+    // hovered line takes its own colour, so 15 lines never repeat a hue.
     transit.lines
       .filter((l) => l.id !== selectedLine)
-      .forEach((l) => renderLine(l, selectedLine === 0));
+      .forEach((l) => renderLine(l, selectedLine === 0 && l.id === hoverLine));
     const current = transit.lines.find((l) => l.id === selectedLine);
     if (current) renderLine(current, true);
     for (const station of transit.stations) {
@@ -146,16 +170,27 @@ try {
       h - 12,
     );
   });
-  $$("#line-chips button").forEach((button) =>
+  $$("#line-chips button").forEach((button) => {
+    const lineId = Number(button.dataset.line);
     button.addEventListener("click", () => {
-      selectedLine = Number(button.dataset.line);
+      selectedLine = lineId;
       $$("#line-chips button").forEach((b) =>
         b.setAttribute("aria-pressed", b === button),
       );
       drawMap();
       describe();
-    }),
-  );
+    });
+    if (lineId !== 0) {
+      const hover = (on) => () => {
+        hoverLine = on ? lineId : null;
+        drawMap();
+      };
+      button.addEventListener("mouseenter", hover(true));
+      button.addEventListener("mouseleave", hover(false));
+      button.addEventListener("focus", hover(true));
+      button.addEventListener("blur", hover(false));
+    }
+  });
   function plan() {
     const from = $("#route-from").value,
       to = $("#route-to").value,

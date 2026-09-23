@@ -9,7 +9,7 @@ code, change the URL, and no cache can hand back the old file.
 Each asset carries a hash of what it actually depends on, rather than one
 hash over everything. The stylesheet's stamp moves when the stylesheet moves;
 the boot module's moves when any module in its import graph moves, or when
-any of the seven data files it fetches does. That matters for the diff more
+any of the eight data files it fetches does. That matters for the diff more
 than for the reader: a stylesheet-only stamp means the style guide, which
 loads no JavaScript, stops being rewritten every time a chart changes. Under
 one shared hash it was rewritten on every commit.
@@ -60,7 +60,7 @@ ASSETS = {
         "docs/assets/js/variants/globe.js",
         "docs/assets/js/variants/atlas.js",
         "docs/assets/js/variants/deck.js",
-        # The seven files the page fetches. They belong to this stamp because
+        # The eight files the page fetches. They belong to this stamp because
         # a data file is fetched at a fixed URL from inside a module, so
         # nothing else can bust it: new URL() drops the query when it resolves
         # a relative path, and a reader would keep the previous deploy's
@@ -69,6 +69,7 @@ ASSETS = {
         # server served another.
         "docs/assets/data/week03_corridors.json",
         "docs/assets/data/week03_edges.json",
+        "docs/assets/data/week03_flights.json",
         "docs/assets/data/week03_cartography.json",
         "docs/assets/data/week03_asylum.json",
         "docs/assets/data/week03_closures.json",

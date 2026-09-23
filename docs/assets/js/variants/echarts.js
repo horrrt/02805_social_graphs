@@ -108,7 +108,7 @@ export function install(api, echarts) {
     const series = [
       ["In-degree", (n, m) => m.in_degree, colours.PEOPLE],
       ["Out-degree", (n, m) => m.out_degree, colours.OUTBOUND],
-      ["Flight degree", (n) => n.flight_degree, colours.ACCESS],
+      ["Flight partners", (n) => n.flight_partners, colours.ACCESS],
     ].map(([name, pick, colour]) => ({
       name,
       type: "bar",
@@ -145,7 +145,7 @@ export function install(api, echarts) {
     const series = [
       ["In-degree", (n, m) => m.in_degree, colours.PEOPLE],
       ["Out-degree", (n, m) => m.out_degree, colours.OUTBOUND],
-      ["Flight degree", (n) => n.flight_degree, colours.ACCESS],
+      ["Flight partners", (n) => n.flight_partners, colours.ACCESS],
     ].map(([name, pick, colour]) =>
       scatterSeries(
         name,
@@ -375,7 +375,7 @@ export function install(api, echarts) {
       series: [
         ["In-degree", (i) => i.in_degree, (i) => i.in_degree, colours.PEOPLE],
         ["z-score", (i) => Math.abs(i.z ?? 0), (i) => (i.z ?? 0).toFixed(2), colours.INK],
-        ["Flight degree", (i) => i.flight_degree, (i) => i.flight_degree, colours.ACCESS],
+        ["Flight partners", (i) => i.flight_partners, (i) => i.flight_partners, colours.ACCESS],
       ].map(([name, pick, raw, colour]) => {
         const max = Math.max(...focus.peers.map(pick), 1);
         return {

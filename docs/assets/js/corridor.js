@@ -182,6 +182,7 @@ export function installRenderer(overrides) {
 const state = {
   data: null,
   edges: null,
+  flights: null,
   cart: null,
   world: null,
   year: 2020,
@@ -364,7 +365,7 @@ function brokers(y) {
 
 // Section 8 analyses one country, and that country is whatever is selected on
 // the page. Everything it needs is already per-country in the payload, so the
-// section works for any of the 236 without shipping a block for each.
+// section works for any of the 238 without shipping a block for each.
 function spotlight() {
   const iso3 = state.selected && node(state.selected)
     ? state.selected
@@ -403,7 +404,7 @@ function peersOf(iso3) {
     km: Math.round(r.km),
     in_degree: r.m.in_degree,
     z: r.m.z,
-    flight_degree: r.n.flight_degree,
+    flight_partners: r.n.flight_partners,
     betweenness_rank: r.m.betweenness_rank,
   }));
 }
@@ -433,20 +434,20 @@ export const GLOSSARY = {
   "Betweenness z-score":
     "How surprising that betweenness is once the country's number of partners is held fixed, measured against 100 degree-preserving shuffles. Above +2 is a broker the degree sequence cannot explain. A zero is ambiguous: it means the real value matches the shuffles, and for the half of the world that brokers nothing both are zero, so there is nothing to be surprised by.",
   "Flight partners":
-    "How many countries have at least one direct air route to here. Access, not people.",
+    "How many other countries have a direct air route to or from here, counted once each way. Access, not people.",
   "Flight routes":
     "How many distinct airport-to-airport routes connect here to somewhere abroad. A route existing says nothing about seats or frequency.",
   PageRank:
     "A weighted random walk over the corridors, asking not how many people you draw but whether you draw them from countries that are themselves well-connected.",
   Role:
-    "Where a country sits inside the communities of section 11, on two coordinates: z, how large it is among the other members of its own community, and P, how evenly its corridors are spread across all the communities. The seven names and the cut-offs between them are Guimer\u00e0 and Amaral's (Nature 433, 2005). Section 6 draws both coordinates.",
+    "Where a country sits inside the communities of section 8, on two coordinates: z, how large it is among the other members of its own community, and P, how evenly its corridors are spread across all the communities. The seven names and the cut-offs between them are Guimer\u00e0 and Amaral's (Nature 433, 2005). Section 5 draws both coordinates.",
   "k (in)": "In-degree: the number of countries that send people here.",
   Rank: "Position among all countries on this measure, 1 being the highest.",
   "z-score":
     "Distance from the degree-preserving null, in standard deviations. Above +2 is more of a bridge than its partner count explains.",
   "Migration links": "Country pairs with at least one person on them, in this year.",
   "People counted": "Everyone on every link, added up. People with two migrations appear once, at their current residence.",
-  "Flight links": "Country pairs with at least one direct air route.",
+  "Flight links": "Directed origin-destination pairs with at least one direct air route: A to B and B to A count separately, so a two-way route counts twice.",
   "Countries with flights": "How many countries appear anywhere in the route data.",
   "People on this link (stock)": "People born in the origin who live in the destination.",
   "Share of the origin's emigrants": "What fraction of everyone who left the origin is on this one link.",
@@ -495,7 +496,7 @@ function renderInspector() {
         row("Betweenness", `${m.betweenness.toFixed(5)} <span style="color:#7a8fac">(#${m.betweenness_rank})</span>`),
         row("Betweenness z-score", z === undefined ? "— (2020 only)" : z.toFixed(2)),
         row("PageRank", `${m.pagerank.toFixed(5)} <span style="color:#7a8fac">(#${m.pagerank_rank})</span>`),
-        row("Flight partners", fmt.format(n.flight_degree)),
+        row("Flight partners", fmt.format(n.flight_partners)),
         row("Flight routes", fmt.format(n.flight_strength)),
         roleRow(),
       ].join("")
@@ -603,7 +604,8 @@ function nearestMark(canvas, event, radius = 22) {
   const y = event.clientY - rect.top;
   let best = null;
   for (const mark of marks) {
-    // Bars (hist) expose a vertical hit strip; points use a circular target.
+    // Bars (hist) expose a vertical hit strip; boxed marks (the Denmark
+    // panels) a rectangle; everything else a circular target around x/y.
     let d;
     if (mark.kind === "bar") {
       const half = mark.half ?? 6;
@@ -611,6 +613,10 @@ function nearestMark(canvas, event, radius = 22) {
       const inY = y >= mark.y - 4 && y <= mark.bottom + 4;
       if (!inX || !inY) continue;
       d = Math.abs(mark.x - x);
+    } else if (mark.box) {
+      const [x0, y0, x1, y1] = mark.box;
+      if (x < x0 || x > x1 || y < y0 || y > y1) continue;
+      d = 0;
     } else {
       d = Math.hypot(mark.x - x, mark.y - y);
       if (d > radius) continue;
@@ -1268,6 +1274,24 @@ function arc(ctx, a, b, lift) {
   if (spec.dashed) ctx.restore();
 }
 
+// A corridor whose shorter way round crosses the date line (Philippines to
+// the US, say) used to be dropped outright once it stretched more than 0.6
+// of the map's width, because a straight arc across the whole canvas reads
+// as noise, not a route. Wrapping it is closer to true: draw it twice, each
+// half shifted a full map width so it approaches from the near edge instead
+// of stretching across the middle. Only one half falls inside the canvas;
+// the other draws off-screen and is clipped for free.
+function wrappedArc(ctx, a, b, lift, width) {
+  const dx = b.x - a.x;
+  if (Math.abs(dx) <= width / 2) {
+    arc(ctx, a, b, lift);
+    return;
+  }
+  const shift = dx > 0 ? -width : width;
+  arc(ctx, a, { x: b.x + shift, y: b.y }, lift);
+  arc(ctx, { x: a.x - shift, y: a.y }, b, lift);
+}
+
 // Only the flowing style animates, and only when the reader has not asked for
 // less motion. Twenty frames a second is plenty for a dash offset.
 let flowTimer = null;
@@ -1302,10 +1326,10 @@ function topEdges(limit) {
   const list = [];
   const mine = [];
   const selected = state.focus === "all" ? null : state.selected;
-  for (const [oi, di, series, routes] of state.edges.edges) {
+  for (const [oi, di, series] of state.edges.edges) {
     const weight = series[y] ?? 0;
     if (weight <= 0) continue;
-    const edge = { oi, di, weight, routes };
+    const edge = { oi, di, weight };
     list.push(edge);
     if (
       selected &&
@@ -1324,9 +1348,10 @@ function topEdges(limit) {
 }
 
 function flightEdges(limit) {
-  const list = state.edges.edges
-    .filter((e) => e[3] > 0)
-    .map(([oi, di, , routes]) => ({ oi, di, routes }));
+  // Own file, independent of whether the pair also has a DESA migration row
+  // (see main()): week03_flights.json carries every directed pair with a
+  // route, all 4,331 of them, not just the 2,583 that also moved people.
+  const list = (state.flights?.edges ?? []).map(([oi, di, routes]) => ({ oi, di, routes }));
   list.sort((a, b) => b.routes - a.routes);
   return list.slice(0, limit);
 }
@@ -1549,14 +1574,14 @@ function drawMap() {
     for (const edge of edges) {
       const a = points.get(edge.oi);
       const b = points.get(edge.di);
-      if (!a || !b || Math.abs(a.x - b.x) > width * 0.6) continue;
+      if (!a || !b) continue;
       const alpha = linkAlpha(edge);
       if (alpha === 0) continue;
       const share = Math.sqrt(edge.weight / heaviest);
       const tint = link.ramp ? rampColour(share) : base;
       ctx.strokeStyle = `rgba(${tint},${(0.1 + share * 0.5) * alpha})`;
       ctx.lineWidth = (link.width ? 0.3 + share * 2.4 : 1.2) * scale;
-      arc(ctx, a, b, 0.13);
+      wrappedArc(ctx, a, b, 0.13, width);
     }
   }
   if (state.layer !== "migration") {
@@ -1566,14 +1591,14 @@ function drawMap() {
     for (const edge of edges) {
       const a = points.get(edge.oi);
       const b = points.get(edge.di);
-      if (!a || !b || Math.abs(a.x - b.x) > width * 0.6) continue;
+      if (!a || !b) continue;
       const alpha = linkAlpha(edge);
       if (alpha === 0) continue;
       const share = Math.sqrt(edge.routes / heaviest);
       const tint = link.ramp ? rampColour(share) : base;
       ctx.strokeStyle = `rgba(${tint},${(0.08 + share * 0.45) * alpha})`;
       ctx.lineWidth = (link.width ? 0.3 + share * 2 : 1) * scale;
-      arc(ctx, a, b, -0.13);
+      wrappedArc(ctx, a, b, -0.13, width);
     }
   }
 
@@ -1656,13 +1681,31 @@ function ccdf(entries) {
 const SERIES = [
   { key: "in", label: "In-degree", colour: PEOPLE, pick: (n, m) => m.in_degree },
   { key: "out", label: "Out-degree", colour: OUTBOUND, pick: (n, m) => m.out_degree },
-  { key: "flight", label: "Flight degree", colour: ACCESS, pick: (n) => n.flight_degree },
+  { key: "flight", label: "Flight partners", colour: ACCESS, pick: (n) => n.flight_partners },
 ];
 
-function binnedDegrees(pick) {
+// Equal-width bins covering 1..maxK, for the log-linear and linear modes.
+// DEGREE_BINS doubles in width on purpose (see above); on an x axis that is
+// not log, a doubling bin draws the same picture as a log-x one would, which
+// is exactly what made log-log and log-linear indistinguishable.
+function linearBins(maxK, count = DEGREE_BINS.length) {
+  const width = Math.max(1, Math.ceil(maxK / count));
+  return Array.from({ length: count }, (_, i) => {
+    const lo = 1 + i * width;
+    const hi = i === count - 1 ? Infinity : lo + width;
+    return {
+      lo,
+      hi,
+      at: Number.isFinite(hi) ? (lo + hi - 1) / 2 : lo + width / 2,
+      label: Number.isFinite(hi) ? (width === 1 ? String(lo) : `${lo}–${hi - 1}`) : `${lo}+`,
+    };
+  });
+}
+
+function binnedDegrees(pick, bins) {
   const exact = degreeCounts(pick);
   const maxK = Math.max(...exact.map((d) => d.k), 1);
-  return DEGREE_BINS.map((bin) => {
+  return bins.map((bin) => {
     const inside = exact.filter((d) => d.k >= bin.lo && d.k < bin.hi);
     const countries = inside.reduce((sum, d) => sum + d.c, 0);
     // The representative for a click is the biggest country in the bin, which
@@ -1683,16 +1726,24 @@ function drawHistogram() {
   if (!canvas) return;
   const { ctx, width, height } = surface(canvas);
   const box = frame(width, height);
-  const all = SERIES.map((s) => binnedDegrees(s.pick));
+  const mode = modeFlags("hist");
+  // loglog bins the x axis by doubling, which is what makes a power law
+  // straight on a log axis; log-linear and linear use equal-width bins, or
+  // the two modes drew the same picture (a doubling bin looks log-x however
+  // the axis itself is drawn).
+  const overallMax = Math.max(
+    ...SERIES.map((s) => Math.max(...degreeCounts(s.pick).map((d) => d.k), 1)),
+  );
+  const bins = mode.x ? DEGREE_BINS : linearBins(overallMax);
+  const all = SERIES.map((s) => binnedDegrees(s.pick, bins));
   const maxC = Math.max(...all.flat().map((d) => d.density), 1);
   const minC = Math.min(...all.flat().map((d) => d.density));
-  const mode = modeFlags("hist");
-  box.x = linearScale(box, [0, DEGREE_BINS.length], "x");
+  box.x = linearScale(box, [0, bins.length], "x");
   box.y = mode.y
     ? logScale(box, [minC * 0.7, maxC], "y")
     : linearScale(box, [0, maxC], "y");
   axes(ctx, box, {
-    xTicks: DEGREE_BINS.map((bin, i) => ({ value: i + 0.5, label: bin.label })),
+    xTicks: bins.map((bin, i) => ({ value: i + 0.5, label: bin.label })),
     yTicks: mode.y
       ? logTicks(minC * 0.7, maxC)
       : ticksFor([0, maxC], false),
@@ -1700,11 +1751,11 @@ function drawHistogram() {
     yLabel: "Countries per partner value",
   });
   const marks = collect("hist");
-  const slot = (box.right - box.left) / DEGREE_BINS.length;
+  const slot = (box.right - box.left) / bins.length;
   const barW = Math.max(3, (slot * 0.66) / SERIES.length);
   all.forEach((points, i) => {
     for (const d of points) {
-      const index = DEGREE_BINS.findIndex((bin) => bin.lo === d.lo);
+      const index = bins.findIndex((bin) => bin.lo === d.lo);
       const x = box.left + slot * (index + 0.5) + (i - 1) * (barW + 1.5);
       const y = box.y(d.density);
       const hovered = d.iso3 === state.hover;
@@ -1729,7 +1780,7 @@ function drawHistogram() {
     "hist",
     "countries by partner count",
     ["Partners", ...SERIES.map((s) => s.label)],
-    DEGREE_BINS.map((bin) => [
+    bins.map((bin) => [
       bin.label,
       ...all.map((points) => {
         const hit = points.find((d) => d.lo === bin.lo);
@@ -1739,8 +1790,8 @@ function drawHistogram() {
   );
 
   markSelected(ctx, box, (n, m) => {
-    const index = DEGREE_BINS.findIndex((bin) => m.in_degree >= bin.lo && m.in_degree < bin.hi);
-    const bin = all[0].find((d) => d.lo === DEGREE_BINS[index]?.lo);
+    const index = bins.findIndex((bin) => m.in_degree >= bin.lo && m.in_degree < bin.hi);
+    const bin = all[0].find((d) => d.lo === bins[index]?.lo);
     return [box.left + slot * (Math.max(index, 0) + 0.5), bin?.density ?? 1];
   }, { raw: true, note: `k = ${metrics(state.selected)?.in_degree ?? "—"}` });
 }
@@ -2510,7 +2561,7 @@ function renderTypology() {
   }
   const total = ROLE_ORDER.reduce((sum, key) => sum + buckets.get(key).length, 0);
   // Against the countries that are in the migration network this year, not
-  // against the whole payload: the eight territories with no migration figures
+  // against the whole payload: the six territories with no migration figures
   // at all were never candidates for a role and counting them as missing one
   // would overstate what the floor costs.
   const inNetwork = withMetrics(y).length;
@@ -2711,6 +2762,16 @@ function edgeLookup(origin, dest) {
   return state.edges.edges.find((e) => e[0] === oi && e[1] === di) ?? null;
 }
 
+// Flights are indexed separately (see main()), so a route can exist here
+// with no migration edge at all: UK -> Germany's 73 routes, or China <->
+// Taiwan, which never had a DESA row to ride along on.
+function flightLookup(origin, dest) {
+  const oi = state.edges.countries.indexOf(origin);
+  const di = state.edges.countries.indexOf(dest);
+  const edge = (state.flights?.edges ?? []).find((e) => e[0] === oi && e[1] === di);
+  return edge ? edge[2] : 0;
+}
+
 function renderEdge() {
   const origin = $("edge-origin").value;
   const dest = $("edge-dest").value;
@@ -2725,7 +2786,7 @@ function renderEdge() {
   const edge = edgeLookup(origin, dest);
   const reverse = edgeLookup(dest, origin);
   const weight = edge ? edge[2][yi] : 0;
-  const routes = edge ? edge[3] : 0;
+  const routes = flightLookup(origin, dest);
   const om = metrics(origin);
   const dm = metrics(dest);
 
@@ -2782,7 +2843,7 @@ function renderDenmarkPanels() {
       ["Destinations", `${m.out_degree} (#${m.out_degree_rank})`],
       ["Betweenness", `#${m.betweenness_rank}`],
       ["z-score", m.z === undefined ? "—" : m.z.toFixed(2)],
-      ["Flight partners", fmt.format(n.flight_degree)],
+      ["Flight partners", fmt.format(n.flight_partners)],
       ["Role", cartRow(iso3, y) ? label(cartRow(iso3, y).role) : "none"],
     ]
       .map(([k, v]) => {
@@ -2861,7 +2922,7 @@ function drawDenmark() {
       yLabel: "People (stock)",
     });
     line(ctx, box, focus.series, (s) => s.year, (s) => s.in_strength, PEOPLE);
-    line(ctx, box, focus.series, (s) => s.year, (s) => s.out_strength, ACCESS);
+    line(ctx, box, focus.series, (s) => s.year, (s) => s.out_strength, OUTBOUND);
     const timeMarks = collect("dk-time");
     for (const point of focus.series) {
       timeMarks.push({
@@ -2938,7 +2999,7 @@ function drawDenmark() {
       },
       {
         name: "Flight partners",
-        value: (i) => i.flight_degree,
+        value: (i) => i.flight_partners,
         format: (v) => fmt.format(v),
         colour: ACCESS,
       },
@@ -3017,7 +3078,7 @@ function drawDenmark() {
       "dk-nordic",
       "the country and its four nearest neighbours",
       ["Country", "Origins", "Bridge z-score", "Flight partners"],
-      items.map((i) => [i.name, fmt.format(i.in_degree), (i.z ?? 0).toFixed(2), fmt.format(i.flight_degree)]),
+      items.map((i) => [i.name, fmt.format(i.in_degree), (i.z ?? 0).toFixed(2), fmt.format(i.flight_partners)]),
     );
   });
 }
@@ -3219,7 +3280,7 @@ function renderTwinStats() {
   $("twin-stats").innerHTML = [
     row("Migration links", fmt.format(totals.corridors)),
     row("People counted", compact.format(totals.people)),
-    row("Flight links", fmt.format(snap.country_pairs)),
+    row("Flight links", fmt.format(snap.country_pairs)),  // directed pairs, see the glossary
     row("Countries with flights", fmt.format(snap.countries)),
   ].join("");
   $("flight-caveat").textContent = snap.note;
@@ -3325,9 +3386,14 @@ async function main() {
     // files whatever depth it is served from, and stamped so a deploy cannot
     // serve one reader this week's code against last week's numbers.
     const data = dataUrl;
-    const [corridors, edges, cart, world] = await Promise.all([
+    const [corridors, edges, flights, cart, world] = await Promise.all([
       fetch(data("week03_corridors.json")).then((r) => r.json()),
       fetch(data("week03_edges.json")).then((r) => r.json()),
+      // Flight routes used to ride along inside week03_edges.json, only for
+      // pairs that also had a DESA migration row, which dropped 1,748 of
+      // 4,331 directed flight pairs (China <-> Taiwan among them). They are
+      // their own file now, independent of whether people move on the pair.
+      fetch(data("week03_flights.json")).then((r) => r.json()),
       // Section 6 is the only reader, and a page that still works without its
       // role cartography is better than one that fails to open without it.
       fetch(data("week03_cartography.json"))
@@ -3341,6 +3407,7 @@ async function main() {
     ]);
     state.data = corridors;
     state.edges = edges;
+    state.flights = flights;
     state.cart = cart;
     state.world = world;
     state.year = corridors.null_year;
@@ -3350,7 +3417,7 @@ async function main() {
     $("status").textContent =
       `${fmt.format(corridors.countries.length)} countries · ` +
       `${fmt.format(corridors.corridor_count)} migration links · ` +
-      `${fmt.format(corridors.flight_snapshot.country_pairs)} flight links · ` +
+      `${fmt.format(corridors.flight_snapshot.country_pairs)} directed flight links · ` +
       `null model: ${corridors.shuffles} shuffles of ${corridors.null_year}`;
 
     R.setupGlobe();

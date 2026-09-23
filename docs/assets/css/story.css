@@ -81,6 +81,10 @@
 .guided-post .metrics {
   gap: 16px;
 }
+/* Week 1's takeaway pairs its result with the equal-odds baseline: one row of four. */
+.guided-post .metrics.metrics-four {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
 .guided-post .metric {
   padding: 16px 0;
   background: transparent;

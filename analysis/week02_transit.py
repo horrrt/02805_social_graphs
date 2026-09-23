@@ -9,6 +9,9 @@ def build():
     byid = {r["node_id"]: r for r in rows}
     # The core map intentionally shows only 16 interchanges. Every segment is
     # a real edge in that induced subgraph. Route strips use the full graph.
+    # The 15th and 16th places are a four-way tie at degree 27 (Emma Frost,
+    # Hank Pym, Moon Knight, Storm); node-id order keeps the first two
+    # alphabetically. The page text discloses this.
     hubs = sorted(graph, key=lambda n: (-graph.degree(n), n))[:16]
     edges = {tuple(sorted((a, b))) for a, b in graph.subgraph(hubs).edges()}
     remaining = set(edges)

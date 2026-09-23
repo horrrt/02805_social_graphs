@@ -11,10 +11,26 @@ import networkx as nx
 ROOT = Path(__file__).resolve().parents[1]
 OUT = ROOT / "docs/assets/data"
 
+# The roster's "name" column is the Wikidata label for the article's subject,
+# which for these five is a different character or civilian identity than the
+# Marvel Wikipedia article itself, so it reads wrong on every card that shows
+# it. Override the display name only; node_id, url and every metric keep
+# reading the original roster row.
+DISPLAY_NAME_OVERRIDES = {
+    "NFL_SuperPro": "NFL SuperPro",
+    "Phoenix_Force": "Phoenix Force",
+    "Anne_Weying": "She-Venom (Anne Weying)",
+    "Doctor_Spectrum": "Doctor Spectrum",
+    "Red_Raven_(Marvel_Comics)": "Red Raven",
+}
+
 
 def load():
     with (ROOT / "data/week1_nodes.tsv").open() as f:
         rows = list(csv.DictReader((l for l in f if not l.startswith("#")), delimiter="\t"))
+    for r in rows:
+        if r["node_id"] in DISPLAY_NAME_OVERRIDES:
+            r["name"] = DISPLAY_NAME_OVERRIDES[r["node_id"]]
     graph = nx.DiGraph()
     graph.add_nodes_from(r["node_id"] for r in rows)
     with (ROOT / "data/week1_edges.tsv").open() as f:

@@ -11,9 +11,12 @@ Three sources, none of which needs a key:
       remittances in and out, GDP per capita, refugee counts.
 
 Countries are keyed by ISO 3166-1 alpha-3 throughout; UN M49 codes from the
-DESA workbook are mapped over through Wikidata. Rows whose code is an aggregate
-(World, Europe, "Least developed countries") are dropped, and the aggregates
-that DESA ships are not re-derived here.
+DESA workbook are mapped over through a pinned ISO 3166-1/M49 code table (see
+ISO3166_M49_URL). Rows whose code is a regional or income-group aggregate
+(World, Europe, "Least developed countries", M49 >= 900) are dropped, and the
+aggregates that DESA ships are not re-derived here. Any other unmapped code is
+a bug, not a silent drop: desa_flows() raises unless the code is on
+UNMAPPED_ALLOWLIST. See test_m49_mapping.py.
 
     python scripts/migration/fetch_country_layer.py [--year 2024] [--data DIR]
 """
@@ -21,6 +24,8 @@ that DESA ships are not re-derived here.
 from __future__ import annotations
 
 import argparse
+import collections
+import csv
 import json
 import pathlib
 import sys
@@ -29,13 +34,34 @@ import urllib.request
 
 sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent))
 
-from wikiclients import USER_AGENT, _request, sparql
+from wikiclients import _request
 
 DESA_URL = (
     "https://www.un.org/development/desa/pd/sites/www.un.org.development.desa.pd"
     "/files/undesa_pd_2024_ims_stock_by_sex_destination_and_origin.xlsx"
 )
 DESA_YEARS = [1990, 1995, 2000, 2005, 2010, 2015, 2020, 2024]
+
+# UN M49 numeric code -> ISO 3166-1 alpha-3, pinned to a commit so the mapping
+# does not move under us. Wikidata's P298/P2082 pairing used to do this job,
+# but it only carries an iso3 for items that also hold a *current* m49 claim,
+# and it drops five real DESA units: the Netherlands (M49 528 is on the
+# Kingdom-of-the-Netherlands item, ISO3 NLD is on a separate "Netherlands
+# (country)" item), Palestine (275), Taiwan (158), Bonaire/Sint Eustatius/Saba
+# (535), and Channel Islands (830, see below). Between them these accounted
+# for about 9.6M migrants uncounted in 2024, Netherlands alone ~2.96M. A
+# direct numeric-code table has no such gap for real ISO3166 entities.
+ISO3166_M49_URL = (
+    "https://raw.githubusercontent.com/lukes/ISO-3166-Countries-with-Regional-Codes"
+    "/145f1ad3caff212ed25f42b0ee2c8b92a75af895/all/all.csv"
+)
+
+# M49 830, Channel Islands, is DESA's own aggregate of Jersey and Guernsey,
+# which are two separate ISO 3166-1 entities (JEY, GGY) with no combined code.
+# The workbook does not split the row between them, so there is no correct
+# single ISO3 to assign it; it is dropped on purpose, not silently, as an
+# unmapped code below 900 that this allowlist says is fine to skip.
+UNMAPPED_ALLOWLIST = {"830": "Channel Islands: no single ISO 3166-1 entity (Jersey and Guernsey are separate)"}
 UNHCR_API = "https://api.unhcr.org/population/v1/population/"
 
 WORLD_BANK_INDICATORS = {
@@ -53,14 +79,18 @@ WORLD_BANK_INDICATORS = {
 }  # the World Bank refugee series (SM.POP.REFG) is archived; UNHCR covers it
 
 
-def m49_to_iso3():
-    rows = sparql(
-        "SELECT ?iso3 ?m49 ?label WHERE { ?c wdt:P298 ?iso3 . ?c wdt:P2082 ?m49 . "
-        "?c rdfs:label ?label FILTER(lang(?label) = 'en') }"
-    )
-    # Wikidata stores M49 zero-padded ("036"); the DESA workbook does not ("36").
-    return ({r["m49"].lstrip("0"): r["iso3"] for r in rows},
-            {r["iso3"]: r["label"] for r in rows})
+def m49_to_iso3(cache):
+    path = download(ISO3166_M49_URL, cache / "iso3166_m49.csv")
+    # This table's own "country-code" column is UN M49, zero-padded ("036");
+    # the DESA workbook writes it unpadded ("36").
+    iso_by_m49, name_by_iso = {}, {}
+    with path.open(encoding="utf-8-sig") as fh:
+        for row in csv.DictReader(fh):
+            m49, iso3 = row["country-code"].lstrip("0"), row["alpha-3"]
+            if m49 and iso3:
+                iso_by_m49[m49] = iso3
+                name_by_iso.setdefault(iso3, row["name"])
+    return iso_by_m49, name_by_iso
 
 
 def download(url, path):
@@ -74,25 +104,40 @@ def download(url, path):
 
 
 def desa_flows(path, iso_by_m49):
-    import openpyxl
+    # The project venv carries pandas + python-calamine, not openpyxl (see
+    # analysis/week04_where.py and analysis/week04_data.py for the same
+    # engine choice); data rows start at worksheet row 12, so skiprows=11.
+    import pandas as pd
 
-    workbook = openpyxl.load_workbook(path, read_only=True, data_only=True)
-    sheet = workbook["Table 1"]
+    sheet = pd.read_excel(path, sheet_name="Table 1", header=None, skiprows=11,
+                          engine="calamine")
     rows = []
-    skipped = 0
-    for row in sheet.iter_rows(min_row=12, values_only=True):
-        if row[0] is None:
+    aggregate = 0
+    unmapped = collections.Counter()
+    for row in sheet.itertuples(index=False, name=None):
+        if pd.isna(row[0]):
             continue
-        dest_code = str(row[4]).strip().lstrip("0")
-        origin_code = str(row[6]).strip().lstrip("0")
+        dest_code = str(int(row[4])).strip()
+        origin_code = str(int(row[6])).strip()
+        problem = False
+        for code in (dest_code, origin_code):
+            if code in iso_by_m49 or code in UNMAPPED_ALLOWLIST:
+                continue
+            if int(code) >= 900:
+                continue  # regional/income aggregate, counted below
+            unmapped[code] += 1
+            problem = True
+        if problem:
+            continue
         dest, origin = iso_by_m49.get(dest_code), iso_by_m49.get(origin_code)
         if not dest or not origin or dest == origin:
-            skipped += 1
+            aggregate += 1
             continue
         stocks = []
         for offset in range(len(DESA_YEARS)):
             value = row[7 + offset]
-            stocks.append(int(value) if isinstance(value, (int, float)) else "")
+            stocks.append(int(value) if isinstance(value, (int, float)) and not pd.isna(value)
+                          else "")
         if not any(isinstance(s, int) and s > 0 for s in stocks):
             continue
         female = row[23 + len(DESA_YEARS) - 1]
@@ -102,9 +147,17 @@ def desa_flows(path, iso_by_m49):
             "origin_name": str(row[5]).strip(),
             "destination_name": str(row[1]).strip(),
             "stocks": stocks,
-            "female_2024": int(female) if isinstance(female, (int, float)) else "",
+            "female_2024": int(female) if isinstance(female, (int, float)) and not pd.isna(female)
+                           else "",
         })
-    print(f"  bilateral pairs with a stock: {len(rows)} (skipped {skipped} aggregate rows)")
+    if unmapped:
+        listed = ", ".join(f"{code} ({count}x)" for code, count in sorted(unmapped.items()))
+        raise SystemExit(
+            f"DESA Table 1 has M49 codes below 900 that are neither in the ISO "
+            f"3166-1 code table nor on UNMAPPED_ALLOWLIST: {listed}. Add each one "
+            f"to UNMAPPED_ALLOWLIST with a reason, or fix the mapping table.")
+    print(f"  bilateral pairs with a stock: {len(rows)} "
+          f"(skipped {aggregate} aggregate/regional rows)")
     return rows
 
 
@@ -167,7 +220,7 @@ def main():
     cache = pathlib.Path(args.cache)
 
     print("mapping UN M49 codes to ISO 3166-1 alpha-3")
-    iso_by_m49, name_by_iso = m49_to_iso3()
+    iso_by_m49, name_by_iso = m49_to_iso3(cache)
     print(f"  {len(iso_by_m49)} countries")
 
     if args.only == "all":

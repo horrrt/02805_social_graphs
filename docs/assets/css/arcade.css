@@ -817,6 +817,16 @@ a.cabinet-link:hover {
   --cv-transit-label-inactive: #46618a;
   --cv-transit-caption: #46618a;
 }
+/* null_survivors.svg and null_comparison.svg are drawn at 1260px and 792px;
+   the shared reading column renders them too small to read their annotations.
+   Let just these two figures break out of it and grow toward their own size. */
+.theme-transit .evidence-item figure:has(img[src*="null_survivors"]),
+.theme-transit .evidence-item figure:has(img[src*="null_comparison"]) {
+  max-width: min(1260px, 90vw);
+  width: 100vw;
+  margin-left: 50%;
+  transform: translateX(-50%);
+}
 .departure-board {
   background: #142b35;
   color: #f8efca;

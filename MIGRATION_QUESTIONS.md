@@ -130,7 +130,7 @@ Candidates for the weekly posts and for the final project. Each one has a *stake
 
 Four fit week 3. Of those, **Are refugees a different network from migrants?** is the one to build: it runs on the files already in `data/`, and the finding is checked in [`analysis/week03_country_facts.json`](analysis/week03_country_facts.json), written by [`analysis/week03_country_networks.py`](analysis/week03_country_networks.py). The 2024 migrant stock network and the 2024 refugee network share only 4 of their top 15 destinations.
 
-One warning that applies to every betweenness question below. On the raw DESA matrix the top brokers come out as Australia, Norway, the USA, Denmark, Greece and China, and mean path length is 1.74. That ranking is measuring statistical reporting systems: register countries name hundreds of tiny origins and survey countries bucket them into 'other'. Threshold the edges at 100,000 people and the ranking becomes the USA, France, Germany, the UK, Russia and DR Congo, with mean path 2.93. Threshold first, and show the sweep.
+One warning that applies to every betweenness question below. On the raw DESA matrix the top brokers come out as Australia, Norway, the USA, Denmark, Greece and China, and mean path length is 1.75. That ranking is measuring statistical reporting systems: register countries name hundreds of tiny origins and survey countries bucket them into 'other'. Threshold the edges at 100,000 people and the ranking becomes the USA, France, Germany, the UK, Russia and DR Congo, with mean path 2.93. Threshold first, and show the sweep.
 
 | Verdict | Count |
 | --- | ---: |
