@@ -42,8 +42,8 @@
               Where the work is filed, which occupations travel together, and
               which firms staff the seats — all from the same Department of
               Labor disclosures. This page builds out
-              <a href="#place" style="color:#ffb768">where the hiring is</a>;
-              the jobs and staffing sections are stubs for the rest of the post.
+              <a href="#place" style="color:#ffb768">where the hiring is</a>,
+              which occupations travel together, and who staffs the seats.
             </p>
             <p class="caution">
               A shared employer is not a shared labour market.
@@ -406,19 +406,117 @@
           </div>
         </section>
 
-        <!-- Jobs · Track B (stub) --------------------------------------- -->
-        <section class="step stub" id="jobs">
+        <!-- Jobs · Track B ---------------------------------------------- -->
+        <section class="step" id="jobs">
           <div class="card">
             <div class="step-head">
               <span class="num">2</span>
               <h2>Which jobs go together</h2>
-              <span class="year-tag">stub · companies × occupations</span>
+              <span class="year-tag">companies × occupations · FY2025</span>
             </div>
-            <p class="stub-note">
-              Overlap and backbones on the occupation projection. Which jobs are
-              hired together; which belong to two clusters; do clusters follow
-              official SOC groups?
+            <p class="sub">
+              <b>Employers reveal bundles of work.</b>
+              Two occupations are connected when the same firms hire both. The
+              network below keeps the strongest shared-employer links, then lets
+              an occupation belong to a second cluster when it genuinely bridges
+              the two.
             </p>
+          </div>
+
+          <p aria-live="polite" class="status-line" id="jobs-status">Loading job data…</p>
+
+          <div class="card jobs-card" id="jobs-together">
+            <div class="step-head">
+              <span class="num">A</span>
+              <h2>Which jobs are hired together?</h2>
+              <span class="year-tag">shared employers</span>
+            </div>
+            <p class="sub">
+              Each bar is a pair of occupations. Its length is the number of
+              employers that filed for both, not the number of workers requested.
+            </p>
+            <div class="jobs-grid">
+              <div class="plot">
+                <h3>Strongest occupation pairings</h3>
+                <div class="chart-host jobs-pairs" id="chart-job-pairs"></div>
+              </div>
+              <aside class="panel jobs-inspector" id="jobs-inspector">
+                <h2>Select an occupation</h2>
+                <p>Click a point in the network below to see its closest hiring partners.</p>
+              </aside>
+            </div>
+          </div>
+
+          <div class="card jobs-card" id="jobs-bridges">
+            <div class="step-head">
+              <span class="num">B</span>
+              <h2>Which jobs belong to two clusters?</h2>
+              <span class="year-tag">overlap</span>
+            </div>
+            <p class="sub">
+              The coloured groups come from the co-hiring network. A ringed node
+              is a bridge: its employers connect two otherwise different bundles
+              of work. Click a node to inspect it.
+            </p>
+            <div class="jobs-grid jobs-network-grid">
+              <div class="plot">
+                <h3>Occupation network</h3>
+                <div class="chart-host jobs-network" id="chart-job-network"></div>
+              </div>
+              <aside class="panel jobs-inspector" id="jobs-node-inspector">
+                <h2>Bridge jobs</h2>
+                <p>Ringed occupations belong to more than one cluster.</p>
+                <div class="jobs-bridge-list" id="jobs-bridge-list"></div>
+              </aside>
+            </div>
+          </div>
+
+          <div class="card jobs-card" id="jobs-groups">
+            <div class="step-head">
+              <span class="num">C</span>
+              <h2>Do the clusters follow official job groups?</h2>
+              <span class="year-tag">SOC comparison</span>
+            </div>
+            <p class="sub">
+              The government groups occupations by their first two SOC digits.
+              We compare those labels with the clusters found from hiring
+              patterns. The shuffled bars keep the clusters fixed and scramble
+              only the official labels.
+            </p>
+            <div class="jobs-grid jobs-groups-grid">
+              <div class="plot">
+                <h3>Cluster × official major group</h3>
+                <div class="chart-host jobs-groups" id="chart-job-groups"></div>
+              </div>
+              <div class="plot">
+                <h3>Observed match versus shuffled labels</h3>
+                <div class="chart-host jobs-nmi" id="chart-job-nmi"></div>
+              </div>
+            </div>
+            <div class="notice">
+              <span class="ico">💡</span>
+              <span>
+                <b>What to notice</b>
+                The observed NMI is higher than the shuffled average when the
+                network’s bundles resemble official occupational groups. It is
+                still a comparison, not evidence that the government labels
+                caused the hiring pattern.
+              </span>
+            </div>
+            <details class="qa">
+              <summary><span class="qa-cue">How the comparison works</span></summary>
+              <div class="qa-body">
+                <p class="sub">
+                  We keep certified H-1B filings, collapse employer spellings
+                  to company families, and count one shared employer per edge.
+                  The projection is clustered 100 times with different seeds;
+                  the page reports the best modularity run. NMI is calculated
+                  across all occupations and compared with 100 random
+                  permutations of the SOC major-group labels. FY2024 is kept
+                  as a stability check in the data file.
+                </p>
+              </div>
+            </details>
           </div>
         </section>
 
@@ -565,6 +663,7 @@
     <!-- One ECharts for both sections; week04-place.js skips its own loader when this is present. -->
     <script src="../../assets/vendor/echarts-5.5.1.min.js"></script>
     <script src="../../assets/js/week04-place.js" type="module"></script>
+    <script src="../../assets/js/week04-jobs.js?v=3" type="module"></script>
     <script src="../../assets/js/week04-staffing.js" type="module"></script>
   </body>
 </html>
