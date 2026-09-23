@@ -98,8 +98,10 @@ Layout differences the loader already handles:
 - **Certified H-1B only** unless a section says otherwise: `CASE_STATUS` starts with "Certified" and
   `VISA_CLASS` is "H-1B".
 - **Say it once per section:** this is visa-sponsored hiring, not all hiring, and outsourcing firms
-  dominate it (Infosys, CGI, Kforce, Tata Consultancy Services and Cognizant are the five largest senders
-  of placed workers).
+  dominate the placements. In FY2025 the largest by filings that place workers at a client were Tata
+  Consultancy Services (7,221), Cognizant (5,044), Infosys (3,762), HCL America (2,525) and Compunnel
+  (2,237). By requested positions the largest is Grandison Management (57,800), which asks for 40
+  physical or occupational therapists on every filing: weight by filings, not positions.
 
 ## What every section delivers
 
