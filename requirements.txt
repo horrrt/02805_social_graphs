@@ -7,3 +7,4 @@ scipy>=1.14
 statsmodels>=0.15
 powerlaw>=2.0
 python-calamine>=0.8
+scikit-learn>=1.5
