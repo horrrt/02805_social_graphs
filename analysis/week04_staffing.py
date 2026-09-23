@@ -14,8 +14,10 @@ Questions
 
 Edges come from the worksites file (every client of a case, not only the one
 on the main row), restricted to certified H-1B cases, one edge per (case,
-client). Employers and clients are both keyed by company family
-(week04_names), so a firm has the same key in every year and on both sides.
+client). Companies are keyed by week04_names.Resolver: an employer by its tax
+number (FY2022 and FY2023 borrow it by name), grouped into families only by the
+reviewed alias table; a client by name, taking an employer's tax number when
+the names match. week04_names_check.py tests the rules against tax numbers.
 
 Checks
 - Modularity of 100 Louvain runs against 100 degree-preserving bipartite
@@ -26,6 +28,8 @@ Checks
 - NMI of communities with client industry and with the client's main vendor,
   each against shuffled labels, over clients with two or more vendors.
 - The same analysis for FY2022 to FY2025, compared on shared clients.
+- USCIS approvals and denials for FY2022 (the Employer Data Hub's last full
+  year), placing firms against direct employers.
 
 Output: analysis/week04_staffing.json
 """
@@ -34,9 +38,11 @@ import json
 import random
 import time
 from collections import Counter
+from functools import lru_cache
 from pathlib import Path
 
 import networkx as nx
+from rapidfuzz import fuzz
 import numpy as np
 import pandas as pd
 from sklearn.metrics import normalized_mutual_info_score as nmi
@@ -52,13 +58,21 @@ SEED = 2805
 MIN_FILINGS = 20  # clients this large or larger get a concentration score
 
 
+@lru_cache(maxsize=None)
+def resolver():
+    """Company keys for every year, learnt from the years that carry tax numbers."""
+    rows = [load(f"lca_fy{y}")[["EMPLOYER_NAME", "EMPLOYER_FEIN"]] for y in (2024, 2025, 2026)]
+    both = pd.concat(rows)
+    return names.Resolver(both["EMPLOYER_NAME"], both["EMPLOYER_FEIN"])
+
+
 def certified(year):
     lca = load(f"lca_fy{year}")
     lca = lca[lca["CASE_STATUS"].str.startswith("Certified") & (lca["VISA_CLASS"] == "H-1B")].copy()
     lca["positions"] = pd.to_numeric(lca["TOTAL_WORKER_POSITIONS"], errors="coerce").fillna(1)
-    # Keyed by company family, not tax number: a firm keeps one key in every
-    # year (FY2022 and FY2023 have no tax number) and its subsidiaries join it.
-    lca["employer"] = lca["EMPLOYER_NAME"].map(names.employer)
+    # A tax number where there is one; FY2022 and FY2023 names borrow theirs.
+    fein = lca["EMPLOYER_FEIN"] if "EMPLOYER_FEIN" in lca else pd.Series("", index=lca.index)
+    lca["employer"] = [resolver().employer(n, f) for n, f in zip(lca["EMPLOYER_NAME"], fein)]
     return lca
 
 
@@ -73,8 +87,8 @@ def intermediaries(lca):
 
 
 def employer_labels(lca):
-    """A readable name per employer key: its most frequent spelling."""
-    return lca.groupby("employer")["EMPLOYER_NAME"].agg(lambda s: s.value_counts().index[0]).to_dict()
+    """A readable name per employer key."""
+    return {k: resolver().label(k) for k in lca["employer"].unique()}
 
 
 def placements(year, lca):
@@ -82,11 +96,89 @@ def placements(year, lca):
     sites = load(f"worksites_fy{year}")
     sites = sites[sites["SECONDARY_ENTITY"].str.upper().str.startswith("Y")]
     sites = sites[sites["CASE_NUMBER"].isin(lca["CASE_NUMBER"])]
-    sites = sites.assign(client=sites["SECONDARY_ENTITY_BUSINESS_NAME"].map(names.client))
+    sites = sites.assign(client=sites["SECONDARY_ENTITY_BUSINESS_NAME"].map(resolver().client))
     placeholder = int(sites["client"].isna().sum())
     rows = sites.dropna(subset=["client"]).drop_duplicates(["CASE_NUMBER", "client"])
     rows = rows.merge(lca[["CASE_NUMBER", "employer"]], on="CASE_NUMBER")
     return rows[["CASE_NUMBER", "employer", "client"]], placeholder, len(sites)
+
+
+def uscis_outcomes(year=2022):
+    """What happened to the petitions behind the filings: USCIS approvals and
+    denials per employer (the Employer Data Hub), set against the employer's
+    certified filings that year. An application (LCA) is not a hire; an approved
+    petition is as close as public data gets.
+
+    USCIS gives only the last four digits of an employer's tax number and
+    abbreviates names ("TATA CONSULTANCY SVCS LTD"). Those four digits narrow an
+    employer to the dozen or so filers whose tax number ends the same way; the
+    closest name among them (rapidfuzz token-sort ratio 85 or more) is the
+    match. An employer none of them fits keeps its name-only key when the
+    reviewed table knows it, and is otherwise left unmatched."""
+    r = resolver()
+    hub = load(f"uscis_fy{year}")
+    for col in ("INITIAL_APPROVAL", "INITIAL_DENIAL", "CONTINUING_APPROVAL", "CONTINUING_DENIAL"):
+        hub[col] = pd.to_numeric(hub[col].str.replace(",", ""), errors="coerce").fillna(0)
+    block = {}
+    for f in r.major:
+        block.setdefault(f[-4:], []).append(f)
+
+    def match(name, tax):
+        key = names.legal_name(name)
+        best, score = None, 0
+        for f in block.get(tax.zfill(4), []):
+            s = fuzz.token_sort_ratio(key, r.major[f])
+            if s > score:
+                best, score = f, s
+        if best and score >= 85:
+            return r.family_of[best]
+        fam = names.family(key)
+        return fam if fam in names.canonicals() else ""
+
+    pairs = hub[["EMPLOYER", "TAX_ID"]].drop_duplicates()
+    keys = {(n, t): match(n, t) for n, t in pairs.itertuples(index=False) if n.strip()}
+    hub["key"] = [keys.get((n, t), "") for n, t in zip(hub["EMPLOYER"], hub["TAX_ID"])]
+    hub["matched"] = hub["key"] != ""
+    petitions = hub[hub["matched"]].groupby("key")[
+        ["INITIAL_APPROVAL", "INITIAL_DENIAL", "CONTINUING_APPROVAL", "CONTINUING_DENIAL"]].sum()
+
+    lca = certified(year)
+    lca["placed"] = lca["SECONDARY_ENTITY"].str.upper().str.startswith("Y")
+    firms = lca.groupby("employer").agg(filings=("placed", "size"), placed=("placed", "sum"))
+    firms = firms[firms["filings"] >= MIN_FILINGS].join(petitions, how="inner")
+    firms["kind"] = np.where(firms["placed"] / firms["filings"] >= 0.5, "placing", "direct")
+
+    def summary(frame):
+        decided = frame["INITIAL_APPROVAL"] + frame["INITIAL_DENIAL"]
+        return {
+            "employers": int(len(frame)),
+            "certified_filings": int(frame["filings"].sum()),
+            "initial_approvals": int(frame["INITIAL_APPROVAL"].sum()),
+            "initial_denial_rate": round(float(frame["INITIAL_DENIAL"].sum() / decided.sum()), 4),
+            "continuing_denial_rate": round(float(frame["CONTINUING_DENIAL"].sum() / (
+                frame["CONTINUING_APPROVAL"] + frame["CONTINUING_DENIAL"]).sum()), 4),
+            "approvals_per_filing": round(float(
+                (frame["INITIAL_APPROVAL"] + frame["CONTINUING_APPROVAL"]).sum() / frame["filings"].sum()), 3),
+        }
+
+    top = firms[firms["kind"] == "placing"].sort_values("placed", ascending=False).head(10)
+    return {
+        "year": year,
+        "hub_employers": int(len(hub)),
+        "hub_initial_approvals": int(hub["INITIAL_APPROVAL"].sum()),
+        "matched_share_of_initial_approvals": round(float(
+            hub.loc[hub["matched"], "INITIAL_APPROVAL"].sum() / hub["INITIAL_APPROVAL"].sum()), 4),
+        "matched_to_a_filer_share_of_initial_approvals": round(float(
+            hub.loc[hub["matched"] & hub["key"].isin(lca["employer"]), "INITIAL_APPROVAL"].sum()
+            / hub["INITIAL_APPROVAL"].sum()), 4),
+        "placing": summary(firms[firms["kind"] == "placing"]),
+        "direct": summary(firms[firms["kind"] == "direct"]),
+        "top_placing_firms": [
+            {"firm": resolver().label(k), "placed_filings": int(r["placed"]), "certified_filings": int(r["filings"]),
+             "initial_approvals": int(r["INITIAL_APPROVAL"]), "continuing_approvals": int(r["CONTINUING_APPROVAL"]),
+             "initial_denial_rate": round(float(r["INITIAL_DENIAL"] / max(1, r["INITIAL_APPROVAL"] + r["INITIAL_DENIAL"])), 4)}
+            for k, r in top.iterrows()],
+    }
 
 
 def graph(rows):
@@ -193,7 +285,8 @@ def main():
             "employer_tax_numbers": int(fein.nunique()) if fein is not None else None,
             "placements_to_intermediaries": int(chain.sum()),
             "intermediary_share": round(float(chain.mean()), 4),
-            "top_intermediary_clients": rows[chain]["client"].value_counts().head(6).to_dict(),
+            "top_intermediary_clients": {resolver().label(k): int(v) for k, v in
+                                         rows[chain]["client"].value_counts().head(6).items()},
             "firms": int(rows["employer"].nunique()),
             "clients": int(rows["client"].nunique()),
             "top_firms_by_filings": [[firm_names[k], int(v)] for k, v in by_filings.head(8).items()],
@@ -210,6 +303,9 @@ def main():
             graphs[year] = (graph(rows), rows)
         print(f"FY{year}: {len(placed):,} of {len(lca):,} filings placed; "
               f"{out['years'][year]['clients']:,} clients", flush=True)
+
+    out["uscis"] = uscis_outcomes(2022)
+    print("USCIS FY2022:", {k: out["uscis"][k] for k in ("placing", "direct")}, flush=True)
 
     g, rows = graphs[MAIN]
     result = out["main"] = {"year": MAIN}
@@ -229,7 +325,7 @@ def main():
     result["big_clients_over_90pct_one_vendor"] = int((top_share[big] >= 0.9).sum())
     result["big_clients_median_top_vendor_share"] = round(float(top_share[big].median()), 4)
     result["largest_clients"] = [
-        {"client": c, "filings": int(totals[c]), "vendors": int(vendors[c]),
+        {"client": resolver().label(c), "filings": int(totals[c]), "vendors": int(vendors[c]),
          "top_vendor": firm_names.get(main_vendor[c], main_vendor[c]),
          "top_vendor_share": round(float(top_share[c]), 3), "sector": names.naics2(c)}
         for c in totals.sort_values(ascending=False).head(25).index
@@ -307,7 +403,7 @@ def main():
             "filings": int(sum(strength[n] for n in firms)),
             "firms": len(firms), "clients": len(clients),
             "top_firms": [firm_names.get(n[1], n[1]) for n in firms[:4]],
-            "top_clients": [n[1] for n in clients[:6]],
+            "top_clients": [resolver().label(n[1]) for n in clients[:6]],
             "sectors": dict(sectors.most_common(4)),
         })
     result["largest_communities"] = described

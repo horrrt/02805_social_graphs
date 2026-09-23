@@ -25,7 +25,7 @@ commit anything under build/.
     python analysis/week04_data.py                    # download and trim everything
     python analysis/week04_data.py --years 2025       # one fiscal year
     python analysis/week04_data.py --local DIR [DIR]  # use workbooks already in these folders
-    python analysis/week04_data.py --refs             # also the Census metro and BLS SOC files
+    python analysis/week04_data.py --refs             # also the Census, USCIS and BLS reference files
 
 Sources (public domain, US government):
 https://www.dol.gov/agencies/eta/foreign-labor/performance
@@ -165,6 +165,10 @@ REFS = {
     # Census 2023 gazetteer: one row per metro area with its centre point.
     "cbsa_gazetteer_2023.zip": "https://www2.census.gov/geo/docs/maps-data/data/gazetteer/"
     "2023_Gazetteer/2023_Gaz_cbsa_national.zip",
+    # USCIS H-1B Employer Data Hub: petitions approved and denied per employer,
+    # by the fiscal year of the decision. Published to FY2023 as files.
+    "uscis_fy2022.csv": "https://www.uscis.gov/sites/default/files/document/data/h1b_datahubexport-2022.csv",
+    "uscis_fy2023.csv": "https://www.uscis.gov/sites/default/files/document/data/h1b_datahubexport-2023.csv",
     # BLS 2018 SOC structure: occupation code -> major and minor group.
     "soc_structure_2018.xlsx": "https://www.bls.gov/soc/2018/soc_structure_2018.xlsx",
 }
@@ -249,6 +253,18 @@ def build(name, local):
     print(f"{name}: {len(table):,} rows from {len(parts)} file(s) -> {target.relative_to(ROOT)}", flush=True)
 
 
+def uscis(year, local=()):
+    """The USCIS Employer Data Hub for one fiscal year, as build/week04/uscis_fy<year>.csv.gz.
+    Its "Tax ID" holds only the last four digits of the employer's tax number."""
+    name = f"uscis_fy{year}.csv"
+    source = find(f"h1b_datahubexport-{year}.csv", REFS[name], [*local, *(Path(d) / "uscis-hub" for d in local)])
+    frame = pd.read_csv(source, dtype=str, keep_default_na=False)
+    frame.columns = [c.strip().upper().replace(" ", "_") for c in frame.columns]
+    OUT.mkdir(parents=True, exist_ok=True)
+    frame.to_csv(OUT / f"{name}.gz", index=False)
+    print(f"uscis_fy{year}: {len(frame):,} employers -> build/week04/{name}.gz")
+
+
 def load(name):
     """The trimmed table as strings; convert the columns you use yourself."""
     path = OUT / f"{name}.csv.gz"
@@ -275,6 +291,8 @@ def main():
     if args.refs:
         download(REFS["cbsa_2023.xlsx"], RAW / "cbsa_2023.xlsx")
         download(REFS["cbsa_gazetteer_2023.zip"], RAW / "cbsa_gazetteer_2023.zip")
+        for year in (2022, 2023):
+            uscis(year, args.local)
         # BLS answers 403 unless the User-Agent names a contact.
         contact = os.environ.get("CONTACT_EMAIL")
         if contact:

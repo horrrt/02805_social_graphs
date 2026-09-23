@@ -40,16 +40,17 @@
             <p class="lede">Three networks from H-1B filings</p>
             <p class="body">
               Where the work is filed, which occupations travel together, and
-              which firms staff the seats — all from the same Department of
-              Labor disclosures. This page builds out
-              <a href="#place" style="color:#ffb768">where the hiring is</a>;
-              the jobs and staffing sections are stubs for the rest of the post.
+              which firms staff the seats, all from the same Department of
+              Labor disclosures.
+              <a href="#place" style="color:#ffb768">Where the hiring is</a>
+              and who staffs whom are built; which jobs go together is still a
+              stub.
             </p>
             <p class="caution">
               A shared employer is not a shared labour market.
             </p>
             <div class="keys place-keys">
-              <span class="key people"><i></i> Positions (workers)</span>
+              <span class="key people"><i></i> Requested positions</span>
               <span class="key access"><i></i> Employers / staffing</span>
             </div>
           </div>
@@ -105,8 +106,9 @@
               <b>Four questions about the map of H-1B worksites.</b>
               Rank the cities, strip the network to its backbone, ask whether
               communities match Census regions, then see which employers draw
-              the long lines. Backbones and communities vs Census — the Week 4
-              methods for this network.
+              the long lines. Backbones and communities against a null model
+              are the Week 4 methods; the cities are the 40 metro areas with
+              the most filings, 85% of the year's total.
             </p>
           </div>
 
@@ -130,8 +132,10 @@
               <span class="year-tag">(FY2025)</span>
             </div>
             <p class="sub">
-              <b>The city with the most H-1B bodies is not always the one with
-              the most employers.</b>
+              <b>San Jose asks for the most positions; New York has the most
+              employers.</b>
+              A position is a seat an employer asks to fill, not a worker who
+              arrived.
               Toggle the metric; click a bar or a bubble to inspect one city.
             </p>
 
@@ -188,9 +192,13 @@
               <span class="ico">💡</span>
               <span>
                 <b>What to notice</b>
-                A city can lead on headcount because a few filers are huge, or
-                lead on employer count with thinner filings. Watch how the
-                ranking reshuffles when you toggle Positions ↔ Employers.
+                San Jose's 50,517 filings request 158,082 positions, about three
+                per filing, and Google files one in ten of them. New York files
+                more (69,533) from three times as many employers (13,198), with
+                about two positions per filing, and its largest filer, EY, has
+                under 4%. In Seattle one company, Amazon, files 30%. Positions
+                reward a few firms asking for many seats; employer counts reward
+                a broad market.
               </span>
             </div>
           </div>
@@ -251,11 +259,14 @@
               </summary>
               <div class="qa-body">
                 <p class="sub">
-                  A global threshold keeps every weak spoke of a huge staffing
-                  firm and drops a mid-size city’s strongest local tie. The
-                  disparity filter keeps a link if it is significant for either
-                  endpoint at α — same method as the philosophers backbone on
-                  the course page. Weights come from
+                  Two metros are linked when a company files in both; the
+                  weight adds up, over those companies, the smaller of its two
+                  filing counts. One weight threshold would keep the links among
+                  the big hubs and cut a mid-size metro's strongest tie, which
+                  is light next to New York and Dallas. The disparity filter
+                  keeps a link when it carries an unusually large share of
+                  either endpoint's weight at level α, the method the course
+                  used for the philosophers backbone. Weights come from
                   <code>analysis/week04_where.py</code>.
                 </p>
                 <table class="ego">
@@ -291,9 +302,8 @@
               <span class="year-tag">(communities vs Census)</span>
             </div>
             <p class="sub">
-              <b>Modularity alone will say the map has groups. The question is
-              whether those groups are geography — or the reach of a few
-              employers.</b>
+              <b>One national market. Louvain finds two groups, and they are
+              tiers of metros, not regions.</b>
               Toggle Louvain communities against Census regions on the same
               map.
             </p>
@@ -346,10 +356,14 @@
               <span class="ico">💡</span>
               <span>
                 <b>What to notice</b>
-                If NMI with Census is high, the country really is regional
-                labour markets. If Q beats the null but NMI with Census is low,
-                the colours are not West / South / Midwest — they are something
-                else (often vendor geography).
+                The split is real but weak: modularity is 0.053 against 0.013
+                for rewired networks that keep each company's number of metros
+                (z = 28), and all 50 Louvain runs find it. It sorts metros by
+                size. The ten largest metros, New York to Los Angeles, plus San
+                Diego sit in one group that spans four Census regions; the 29
+                smaller metros form the other. NMI with
+                Census regions is 0.035 and with divisions 0.098, no better than
+                shuffled labels (p = 0.57 and 0.34).
               </span>
             </div>
           </div>
@@ -359,13 +373,15 @@
             <div class="step-head">
               <span class="num">D</span>
               <h2>Do the same employers tie distant cities together?</h2>
-              <span class="year-tag">(staffing on the backbone)</span>
+              <span class="year-tag">(who leads the long links)</span>
             </div>
             <p class="sub">
-              <b>The long lines on the backbone are mostly the same handful of
-              staffing firms filing in both cities — not two regional markets
-              shaking hands.</b>
-              Bridge into the staffing section of the post.
+              <b>Mostly not. Big direct employers lead the long links, Amazon
+              above all, and no single firm carries one.</b>
+              The shortlist is the five firms that place the most filings at
+              client sites: Tata Consultancy Services, Cognizant, Infosys, HCL
+              and Compunnel. The staffing section follows them to their
+              clients.
             </p>
 
             <div class="longhaul-stack">
@@ -374,7 +390,7 @@
                 <p class="axis-note">
                   Each point is a backbone edge. Size scales gently with weight.
                   Far edges are labeled by their top employer. Use the legend to
-                  separate staffing shortlist from local mix; click a point to
+                  separate the shortlist from other lead employers; click a point to
                   select a city.
                 </p>
                 <div class="chart-host" id="chart-longhaul"></div>
@@ -398,9 +414,13 @@
               <span class="ico">💡</span>
               <span>
                 <b>What to notice</b>
-                Long, heavy edges tend to sit in orange. The map looks national
-                because a short list of vendors files everywhere — the staffing
-                section asks who those vendors seat at the client.
+                Of the 84 backbone links longer than 1,500 km, the shortlist
+                leads 24 (29%); it leads 49 of the 99 shorter ones (49%). Amazon
+                leads the most long links (24), then Cognizant (18), EY and
+                Deloitte. The leading company carries a median 12% of a long
+                link's weight, and only one long link, San Jose to Fayetteville
+                (Walmart), has a company with half of it. Distant metros are
+                tied by many companies filing in both.
               </span>
             </div>
           </div>

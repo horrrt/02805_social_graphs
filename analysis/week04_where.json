@@ -45,26 +45,42 @@
    40
   ],
   "edges_kept": [
-   28,
-   62,
+   27,
+   63,
    183,
-   424,
-   660
+   422,
+   663
   ],
   "snap_alpha": 0.05,
-  "snap_note": "Below α = 0.1 the giant component drops from 32 metros to 18; at α = 0.05 it keeps 28 links."
+  "snap_note": "Below α = 0.1 the giant component drops from 32 metros to 18; at α = 0.05 it keeps 27 links. The largest to fall off: Los Angeles, Detroit, Phoenix and 11 more.",
+  "snap_dropped": [
+   "Los Angeles",
+   "Detroit",
+   "Phoenix",
+   "Miami",
+   "Minneapolis",
+   "Tampa",
+   "Columbus",
+   "Portland",
+   "Baltimore",
+   "Orlando",
+   "San Antonio",
+   "Richmond",
+   "Memphis",
+   "Stockton"
+  ]
  },
  "null_model": {
   "Q": 0.053,
-  "Q_sd": 0.0011,
+  "Q_sd": 0.0017,
   "Q_null_mean": 0.013,
-  "Q_null_std": 0.0015,
-  "z": 26.94,
+  "Q_null_std": 0.0014,
+  "z": 28.2,
   "nmi_seeds": 1.0,
   "nmi_census_region": 0.035,
-  "p_region": 0.5435,
+  "p_region": 0.5674,
   "nmi_census_division": 0.098,
-  "p_division": 0.3267,
+  "p_division": 0.3407,
   "seeds": 50,
   "communities": 2
  },
@@ -97,13 +113,13 @@
  "longhaul": {
   "backbone_links": 183,
   "threshold_km": 1500,
-  "long_links": 85,
-  "long_led_by_shortlist": 27,
-  "short_links": 98,
-  "short_led_by_shortlist": 52
+  "long_links": 84,
+  "long_led_by_shortlist": 24,
+  "short_links": 99,
+  "short_led_by_shortlist": 49
  },
  "shortlist": [
-  "Tata Consultancy",
+  "Tata Consultancy Services",
   "Cognizant",
   "Infosys",
   "HCL",

@@ -1,0 +1,188 @@
+{
+ "generated_by": "analysis/week04_names_check.py",
+ "bridge": {
+  "fy2025_filings": 567906,
+  "bridged_share": 0.8638,
+  "correct_fein_share_of_bridged": 0.9984,
+  "correct_company_share_of_bridged": 0.9984
+ },
+ "name_rules": {
+  "pairwise_precision": 0.9997,
+  "pairwise_recall": 0.9978,
+  "filings_under_a_name_key_spanning_companies": 0.0607,
+  "filings_of_a_company_split_across_name_keys": 0.1393,
+  "largest_false_merges": [
+   {
+    "key": "Amazon",
+    "companies": [
+     "Amazon",
+     "FEIN 911646860"
+    ]
+   },
+   {
+    "key": "ADP",
+    "companies": [
+     "ADP",
+     "FEIN 133036745"
+    ]
+   },
+   {
+    "key": "PERSISTENT SYSTEMS",
+    "companies": [
+     "FEIN 770584954",
+     "FEIN 980557089"
+    ]
+   },
+   {
+    "key": "ASML",
+    "companies": [
+     "FEIN 770568140",
+     "FEIN 822530621"
+    ]
+   },
+   {
+    "key": "UBS BUSINESS SOLUTIONS",
+    "companies": [
+     "FEIN 205947231",
+     "UBS"
+    ]
+   },
+   {
+    "key": "SNAP",
+    "companies": [
+     "FEIN 455452795",
+     "FEIN 541886708"
+    ]
+   },
+   {
+    "key": "COFORGE",
+    "companies": [
+     "FEIN 200871709",
+     "FEIN 260320547"
+    ]
+   },
+   {
+    "key": "JUNIPER NETWORKS",
+    "companies": [
+     "FEIN 770422528",
+     "FEIN 770559888"
+    ]
+   }
+  ]
+ },
+ "regressions": {
+  "must_merge": 11,
+  "must_not_merge": 11,
+  "failures": []
+ },
+ "merges": {
+  "rows": 1003,
+  "sample": [
+   {
+    "variant": "COOPER SURGICALS",
+    "target": "COOPER SURGICAL",
+    "variant_filings": 2,
+    "target_filings": 21,
+    "score": 96.8
+   },
+   {
+    "variant": "RANDOLPH BROOK FEDERAL CREDIT UNION",
+    "target": "RANDOLPH BROOKS FEDERAL CREDIT UNION",
+    "variant_filings": 1,
+    "target_filings": 37,
+    "score": 98.6
+   },
+   {
+    "variant": "BAYERHEALTHCARE",
+    "target": "BAYER HEALTHCARE",
+    "variant_filings": 3,
+    "target_filings": 20,
+    "score": 96.8
+   },
+   {
+    "variant": "UNIVERSAL SERVICES ADMINISTRATIVE",
+    "target": "UNIVERSAL SERVICE ADMINISTRATIVE",
+    "variant_filings": 3,
+    "target_filings": 55,
+    "score": 98.5
+   },
+   {
+    "variant": "OPTUM UNITED HEALTH CARE",
+    "target": "OPTUM UNITED HEALTHCARE",
+    "variant_filings": 1,
+    "target_filings": 34,
+    "score": 97.9
+   },
+   {
+    "variant": "ST MARYS MEDICAL CENTER",
+    "target": "ST MARY S MEDICAL CENTER",
+    "variant_filings": 1,
+    "target_filings": 20,
+    "score": 97.9
+   },
+   {
+    "variant": "CLEAN EARTH ENVIRONMENT SOLUTIONS",
+    "target": "CLEAN EARTH ENVIRONMENTAL SOLUTIONS",
+    "variant_filings": 3,
+    "target_filings": 38,
+    "score": 97.1
+   },
+   {
+    "variant": "BLACK AND VEATECH",
+    "target": "BLACK AND VEATCH",
+    "variant_filings": 1,
+    "target_filings": 34,
+    "score": 97.0
+   },
+   {
+    "variant": "STATE OF OHIO DEPARTMENT OF ADMINISTRATION SERVICES",
+    "target": "STATE OF OHIO DEPARTMENT OF ADMINISTRATIVE SERVICES",
+    "variant_filings": 3,
+    "target_filings": 26,
+    "score": 96.1
+   },
+   {
+    "variant": "INTERNATIONAL BANK FOR RECONSTRUCTION DEVELOPMENT",
+    "target": "INTERNATIONAL BANK FOR RECONSTRUCTION AND DEVELOPMENT",
+    "variant_filings": 1,
+    "target_filings": 124,
+    "score": 96.1
+   },
+   {
+    "variant": "UNIVERSITY OF PITTSBURGH MEDICAL CENTRE",
+    "target": "UNIVERSITY OF PITTSBURGH MEDICAL CENTER",
+    "variant_filings": 1,
+    "target_filings": 41,
+    "score": 97.4
+   },
+   {
+    "variant": "CONOCO PHILLIP",
+    "target": "CONOCO PHILLIPS",
+    "variant_filings": 1,
+    "target_filings": 97,
+    "score": 96.6
+   },
+   {
+    "variant": "MGM RESORT INTERNATIONAL",
+    "target": "MGM RESORTS INTERNATIONAL",
+    "variant_filings": 2,
+    "target_filings": 58,
+    "score": 98.0
+   },
+   {
+    "variant": "HYUNDAI AUTOEVER AMERICA S",
+    "target": "HYUNDAI AUTOEVER AMERICA",
+    "variant_filings": 1,
+    "target_filings": 79,
+    "score": 96.0
+   },
+   {
+    "variant": "BJ S WHOLE SALE CLUB",
+    "target": "BJ S WHOLESALE CLUB",
+    "variant_filings": 1,
+    "target_filings": 69,
+    "score": 97.4
+   }
+  ]
+ }
+}

@@ -16,7 +16,7 @@ Inputs: certified H-1B filings of FY2025 (load("lca_fy2025")) and every
 worksite of each (load("worksites_fy2025")); Census county -> metro
 (cbsa_2023.xlsx) and metro centres (cbsa_gazetteer_2023.zip), both from
 python analysis/week04_data.py --refs. Companies are keyed by
-week04_names.employer(), the same company families as section 3.
+week04_names.Resolver (tax number first), the same keys as section 3.
 
 Checks
 - Louvain, 50 runs, against 50 degree-preserving rewirings of the
@@ -47,7 +47,7 @@ from sklearn.metrics import normalized_mutual_info_score as nmi
 
 import week04_names as names
 from week04_data import RAW, load
-from week04_staffing import rewire
+from week04_staffing import resolver, rewire
 
 ROOT = Path(__file__).resolve().parents[1]
 OUT = Path(__file__).with_suffix(".json")
@@ -121,7 +121,7 @@ def worksite_metros(lookup):
     """One row per worksite of FY2025's certified H-1B filings, with its metro and employer."""
     lca = load(f"lca_fy{YEAR}")
     lca = lca[lca["CASE_STATUS"].str.startswith("Certified") & (lca["VISA_CLASS"] == "H-1B")]
-    lca = lca.assign(employer=lca["EMPLOYER_NAME"].map(names.employer))
+    lca = lca.assign(employer=[resolver().employer(n, f) for n, f in zip(lca["EMPLOYER_NAME"], lca["EMPLOYER_FEIN"])])
     sites = load(f"worksites_fy{YEAR}")
     sites = sites[sites["CASE_NUMBER"].isin(lca["CASE_NUMBER"])].copy()
     sites["workers"] = pd.to_numeric(sites["WORKSITE_WORKERS"], errors="coerce").fillna(1)
@@ -196,11 +196,9 @@ def shuffled_nmi(a, b, rng, times=1000):
     return observed, (beats + 1) / (times + 1)
 
 
-def label(name):
-    """A firm's display name: its family as the alias table spells it, else the
-    normalized key in title case."""
-    families = {canonical for canonical, _ in names.aliases().values()}
-    return name if name in families or name != name.upper() else name.title()
+def label(key):
+    """A company's display name, from the same resolver as section 3."""
+    return resolver().label(key)
 
 
 def main():
@@ -276,6 +274,15 @@ def main():
     snap = ALPHAS[i]
     snap_note = (f"Below α = {ALPHAS[i + 1]} the giant component drops from {gc_size[i + 1]} "
                  f"metros to {gc_size[i]}; at α = {snap} it keeps {edges_kept[i]} links.")
+    # Which metros the snap cuts loose, largest first: the brief asks what breaks.
+    lost = sorted(set(graphs[str(ALPHAS[i + 1])]["nodes"]) - set(graphs[str(snap)]["nodes"]),
+                  key=lambda m: -filings[m])
+    snap_dropped = [by_id[m]["name"] for m in lost]
+    if snap_dropped:
+        head = snap_dropped[:3]
+        more = len(snap_dropped) - len(head)
+        snap_note += (f" The largest to fall off: {', '.join(head)}"
+                      + (f" and {more} more." if more else "."))
 
     # C · communities against Census labels, and against re-projected rewirings.
     runs = [nx.community.louvain_communities(g, weight="weight", seed=SEED + r) for r in range(RUNS)]
@@ -366,7 +373,8 @@ def main():
         "communities": communities,
         "census_colours": CENSUS_COLOURS,
         "backbone": {"alphas": ALPHAS, "default_alpha": DEFAULT_ALPHA, "gc_size": gc_size,
-                     "edges_kept": edges_kept, "snap_alpha": snap, "snap_note": snap_note, "graphs": graphs},
+                     "edges_kept": edges_kept, "snap_alpha": snap, "snap_note": snap_note,
+                     "snap_dropped": snap_dropped, "graphs": graphs},
         "null_model": null_model,
         "longhaul": {"staffing": [label(e) for e in shortlist], "edges": edges, "employer_arcs": arcs},
     }
