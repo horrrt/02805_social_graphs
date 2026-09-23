@@ -1,0 +1,426 @@
+{
+  "meta": {
+    "status": "placeholder",
+    "note": "Illustrative shapes for the Place UI scaffold. Replace from analysis/week04_where.py — no number on this page is final until status is live.",
+    "scope": "Certified H-1B · FY2025 · worksite cities",
+    "script": "analysis/week04_where.py"
+  },
+  "cities": [
+    {
+      "id": "nyc",
+      "name": "New York",
+      "state": "NY",
+      "lon": -74.0,
+      "lat": 40.7,
+      "positions": 18420,
+      "employers": 2140,
+      "top_employer": "Infosys",
+      "top_share": 0.11,
+      "census": "Northeast",
+      "community": 0
+    },
+    {
+      "id": "sfo",
+      "name": "San Francisco",
+      "state": "CA",
+      "lon": -122.4,
+      "lat": 37.8,
+      "positions": 16280,
+      "employers": 1890,
+      "top_employer": "Infosys",
+      "top_share": 0.09,
+      "census": "West",
+      "community": 1
+    },
+    {
+      "id": "sea",
+      "name": "Seattle",
+      "state": "WA",
+      "lon": -122.3,
+      "lat": 47.6,
+      "positions": 12110,
+      "employers": 980,
+      "top_employer": "TCS",
+      "top_share": 0.14,
+      "census": "West",
+      "community": 1
+    },
+    {
+      "id": "dfw",
+      "name": "Dallas",
+      "state": "TX",
+      "lon": -96.8,
+      "lat": 32.8,
+      "positions": 10940,
+      "employers": 1320,
+      "top_employer": "Cognizant",
+      "top_share": 0.12,
+      "census": "South",
+      "community": 2
+    },
+    {
+      "id": "chi",
+      "name": "Chicago",
+      "state": "IL",
+      "lon": -87.6,
+      "lat": 41.9,
+      "positions": 9870,
+      "employers": 1180,
+      "top_employer": "CGI",
+      "top_share": 0.16,
+      "census": "Midwest",
+      "community": 0
+    },
+    {
+      "id": "bos",
+      "name": "Boston",
+      "state": "MA",
+      "lon": -71.1,
+      "lat": 42.4,
+      "positions": 8640,
+      "employers": 1040,
+      "top_employer": "Infosys",
+      "top_share": 0.1,
+      "census": "Northeast",
+      "community": 0
+    },
+    {
+      "id": "aus",
+      "name": "Austin",
+      "state": "TX",
+      "lon": -97.7,
+      "lat": 30.3,
+      "positions": 7210,
+      "employers": 640,
+      "top_employer": "TCS",
+      "top_share": 0.18,
+      "census": "South",
+      "community": 2
+    },
+    {
+      "id": "atl",
+      "name": "Atlanta",
+      "state": "GA",
+      "lon": -84.4,
+      "lat": 33.7,
+      "positions": 6980,
+      "employers": 890,
+      "top_employer": "Cognizant",
+      "top_share": 0.13,
+      "census": "South",
+      "community": 2
+    },
+    {
+      "id": "sjc",
+      "name": "San Jose",
+      "state": "CA",
+      "lon": -121.9,
+      "lat": 37.3,
+      "positions": 6540,
+      "employers": 720,
+      "top_employer": "Infosys",
+      "top_share": 0.15,
+      "census": "West",
+      "community": 1
+    },
+    {
+      "id": "phx",
+      "name": "Phoenix",
+      "state": "AZ",
+      "lon": -112.1,
+      "lat": 33.4,
+      "positions": 5120,
+      "employers": 410,
+      "top_employer": "Infosys",
+      "top_share": 0.22,
+      "census": "West",
+      "community": 1
+    },
+    {
+      "id": "den",
+      "name": "Denver",
+      "state": "CO",
+      "lon": -105.0,
+      "lat": 39.7,
+      "positions": 4380,
+      "employers": 520,
+      "top_employer": "Wipro",
+      "top_share": 0.11,
+      "census": "West",
+      "community": 3
+    },
+    {
+      "id": "rtp",
+      "name": "Raleigh",
+      "state": "NC",
+      "lon": -78.6,
+      "lat": 35.8,
+      "positions": 3920,
+      "employers": 380,
+      "top_employer": "CGI",
+      "top_share": 0.19,
+      "census": "South",
+      "community": 2
+    },
+    {
+      "id": "det",
+      "name": "Detroit",
+      "state": "MI",
+      "lon": -83.0,
+      "lat": 42.3,
+      "positions": 3410,
+      "employers": 290,
+      "top_employer": "TCS",
+      "top_share": 0.24,
+      "census": "Midwest",
+      "community": 0
+    },
+    {
+      "id": "msp",
+      "name": "Minneapolis",
+      "state": "MN",
+      "lon": -93.3,
+      "lat": 44.98,
+      "positions": 3180,
+      "employers": 310,
+      "top_employer": "Infosys",
+      "top_share": 0.17,
+      "census": "Midwest",
+      "community": 0
+    },
+    {
+      "id": "pit",
+      "name": "Pittsburgh",
+      "state": "PA",
+      "lon": -80.0,
+      "lat": 40.4,
+      "positions": 2740,
+      "employers": 180,
+      "top_employer": "CGI",
+      "top_share": 0.41,
+      "census": "Northeast",
+      "community": 0
+    }
+  ],
+  "communities": [
+    { "id": 0, "label": "New York–Chicago belt", "colour": "#f2820c" },
+    { "id": 1, "label": "Pacific tech corridor", "colour": "#1f8fd6" },
+    { "id": 2, "label": "Sun Belt filings", "colour": "#6b4fbb" },
+    { "id": 3, "label": "Mountain outliers", "colour": "#2a9d8f" }
+  ],
+  "census_colours": {
+    "Northeast": "#f2820c",
+    "Midwest": "#c45c26",
+    "South": "#6b4fbb",
+    "West": "#1f8fd6"
+  },
+  "backbone": {
+    "alphas": [0.05, 0.1, 0.2, 0.3, 0.5],
+    "default_alpha": 0.2,
+    "gc_size": [4, 7, 11, 13, 15],
+    "edges_kept": [6, 12, 22, 34, 48],
+    "snap_alpha": 0.1,
+    "snap_note": "Below α = 0.1 the giant component drops from 11 cities to 7; the Pacific corridor peels off.",
+    "graphs": {
+      "0.05": {
+        "nodes": ["nyc", "bos", "chi", "pit"],
+        "edges": [
+          ["nyc", "bos", 420],
+          ["nyc", "chi", 310],
+          ["chi", "pit", 180],
+          ["nyc", "pit", 95]
+        ]
+      },
+      "0.1": {
+        "nodes": ["nyc", "bos", "chi", "pit", "dfw", "atl", "aus"],
+        "edges": [
+          ["nyc", "bos", 420],
+          ["nyc", "chi", 310],
+          ["chi", "pit", 180],
+          ["dfw", "atl", 260],
+          ["dfw", "aus", 220],
+          ["atl", "aus", 140],
+          ["nyc", "dfw", 90]
+        ]
+      },
+      "0.2": {
+        "nodes": ["nyc", "bos", "chi", "pit", "dfw", "atl", "aus", "sfo", "sea", "sjc", "phx"],
+        "edges": [
+          ["nyc", "bos", 420],
+          ["nyc", "chi", 310],
+          ["chi", "pit", 180],
+          ["dfw", "atl", 260],
+          ["dfw", "aus", 220],
+          ["atl", "aus", 140],
+          ["sfo", "sea", 380],
+          ["sfo", "sjc", 510],
+          ["sea", "sjc", 200],
+          ["sfo", "phx", 160],
+          ["nyc", "sfo", 240],
+          ["nyc", "dfw", 90]
+        ]
+      },
+      "0.3": {
+        "nodes": ["nyc", "bos", "chi", "pit", "dfw", "atl", "aus", "sfo", "sea", "sjc", "phx", "den", "rtp"],
+        "edges": [
+          ["nyc", "bos", 420],
+          ["nyc", "chi", 310],
+          ["chi", "pit", 180],
+          ["dfw", "atl", 260],
+          ["dfw", "aus", 220],
+          ["atl", "aus", 140],
+          ["sfo", "sea", 380],
+          ["sfo", "sjc", 510],
+          ["sea", "sjc", 200],
+          ["sfo", "phx", 160],
+          ["nyc", "sfo", 240],
+          ["nyc", "dfw", 90],
+          ["den", "sfo", 110],
+          ["rtp", "atl", 95],
+          ["den", "chi", 70]
+        ]
+      },
+      "0.5": {
+        "nodes": ["nyc", "bos", "chi", "pit", "dfw", "atl", "aus", "sfo", "sea", "sjc", "phx", "den", "rtp", "det", "msp"],
+        "edges": [
+          ["nyc", "bos", 420],
+          ["nyc", "chi", 310],
+          ["chi", "pit", 180],
+          ["dfw", "atl", 260],
+          ["dfw", "aus", 220],
+          ["atl", "aus", 140],
+          ["sfo", "sea", 380],
+          ["sfo", "sjc", 510],
+          ["sea", "sjc", 200],
+          ["sfo", "phx", 160],
+          ["nyc", "sfo", 240],
+          ["nyc", "dfw", 90],
+          ["den", "sfo", 110],
+          ["rtp", "atl", 95],
+          ["den", "chi", 70],
+          ["det", "chi", 130],
+          ["msp", "chi", 120],
+          ["det", "nyc", 60]
+        ]
+      }
+    }
+  },
+  "null_model": {
+    "Q": 0.41,
+    "Q_null_mean": 0.29,
+    "Q_null_std": 0.02,
+    "nmi_seeds": 0.72,
+    "nmi_census_region": 0.38,
+    "nmi_census_division": 0.31,
+    "seeds": 50
+  },
+  "longhaul": {
+    "staffing": ["Infosys", "CGI", "TCS", "Cognizant", "Wipro"],
+    "edges": [
+      {
+        "a": "nyc",
+        "b": "sfo",
+        "distance_km": 4130,
+        "weight": 240,
+        "top_employer": "Infosys",
+        "staffing": true
+      },
+      {
+        "a": "nyc",
+        "b": "dfw",
+        "distance_km": 2210,
+        "weight": 90,
+        "top_employer": "Infosys",
+        "staffing": true
+      },
+      {
+        "a": "sfo",
+        "b": "sea",
+        "distance_km": 1090,
+        "weight": 380,
+        "top_employer": "TCS",
+        "staffing": true
+      },
+      {
+        "a": "chi",
+        "b": "pit",
+        "distance_km": 660,
+        "weight": 180,
+        "top_employer": "CGI",
+        "staffing": true
+      },
+      {
+        "a": "dfw",
+        "b": "atl",
+        "distance_km": 1150,
+        "weight": 260,
+        "top_employer": "Cognizant",
+        "staffing": true
+      },
+      {
+        "a": "bos",
+        "b": "nyc",
+        "distance_km": 306,
+        "weight": 420,
+        "top_employer": "Local mix",
+        "staffing": false
+      },
+      {
+        "a": "sfo",
+        "b": "sjc",
+        "distance_km": 70,
+        "weight": 510,
+        "top_employer": "Local mix",
+        "staffing": false
+      },
+      {
+        "a": "den",
+        "b": "sfo",
+        "distance_km": 1530,
+        "weight": 110,
+        "top_employer": "Wipro",
+        "staffing": true
+      },
+      {
+        "a": "chi",
+        "b": "msp",
+        "distance_km": 570,
+        "weight": 120,
+        "top_employer": "Infosys",
+        "staffing": true
+      },
+      {
+        "a": "atl",
+        "b": "aus",
+        "distance_km": 1310,
+        "weight": 140,
+        "top_employer": "Cognizant",
+        "staffing": true
+      }
+    ],
+    "employer_arcs": {
+      "Infosys": [
+        ["nyc", "sfo"],
+        ["nyc", "dfw"],
+        ["nyc", "bos"],
+        ["sfo", "phx"],
+        ["chi", "msp"]
+      ],
+      "CGI": [
+        ["chi", "pit"],
+        ["rtp", "atl"],
+        ["nyc", "chi"]
+      ],
+      "TCS": [
+        ["sfo", "sea"],
+        ["sea", "sjc"],
+        ["dfw", "aus"]
+      ],
+      "Cognizant": [
+        ["dfw", "atl"],
+        ["atl", "aus"]
+      ],
+      "Wipro": [["den", "sfo"], ["den", "chi"]]
+    }
+  }
+}
