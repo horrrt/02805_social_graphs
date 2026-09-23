@@ -21,7 +21,21 @@
 }
 
 .corridor .chart-host.map {
-  height: 440px;
+  height: 540px;
+}
+
+.corridor #place-longhaul .chart-host {
+  height: 400px;
+}
+
+.corridor #place-longhaul .chart-host.map {
+  height: 540px;
+}
+
+.corridor #place-longhaul .longhaul-stack {
+  display: grid;
+  gap: 22px;
+  grid-template-columns: 1fr;
 }
 
 .corridor .draft-banner {
@@ -119,8 +133,10 @@
 @media (max-width: 860px) {
   .corridor .chart-host,
   .corridor .chart-host.tall,
-  .corridor .chart-host.map {
-    height: 300px;
+  .corridor .chart-host.map,
+  .corridor #place-longhaul .chart-host,
+  .corridor #place-longhaul .chart-host.map {
+    height: 320px;
   }
 }
 

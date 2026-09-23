@@ -177,9 +177,9 @@
             <div class="plot" style="margin-top: 18px">
               <h3>On the map</h3>
               <p class="axis-note">
-                US basemap with city bubbles (size = positions, opacity follows
-                the active metric). Drag to pan, scroll to zoom, click a bubble
-                to select.
+                Fixed US map; city bubbles sized gently by positions (colour /
+                opacity follow the active metric). Click a bubble to select —
+                the map does not pan or zoom.
               </p>
               <div class="chart-host map" id="chart-citymap"></div>
             </div>
@@ -320,8 +320,9 @@
             <div class="plot">
               <h3>Same cities, two labelings</h3>
               <p class="axis-note">
-                Bubbles coloured by the active labelling. Communities are named
-                after their largest city — not invented regional brands.
+                Same fixed map; bubbles coloured by the active labelling.
+                Communities are named after their largest city — not invented
+                regional brands. Click a city to select it.
               </p>
               <div class="chart-host map" id="chart-regions"></div>
             </div>
@@ -367,22 +368,23 @@
               Bridge into the staffing section of the post.
             </p>
 
-            <div class="grid2">
+            <div class="longhaul-stack">
               <div class="plot">
                 <h3>Distance vs weight</h3>
                 <p class="axis-note">
-                  Each bubble is a backbone edge.
-                  <span style="color: #f2820c; font-weight: 600">Orange</span>
-                  = top employer on the staffing shortlist;
-                  <span style="color: #1f8fd6; font-weight: 600">blue</span>
-                  = local mix.
+                  Each point is a backbone edge. Size scales gently with weight.
+                  Far edges are labeled by their top employer. Use the legend to
+                  separate staffing shortlist from local mix; click a point to
+                  select a city.
                 </p>
                 <div class="chart-host" id="chart-longhaul"></div>
               </div>
               <div class="plot">
                 <h3>One employer’s map</h3>
                 <p class="axis-note">
-                  Animated arcs between worksite cities for the selected firm.
+                  Only the cities this firm links — no grey background clutter.
+                  Arcs animate along the route. Map is fixed; click a city to
+                  select it.
                 </p>
                 <div class="select-row">
                   <label for="place-employer">Employer</label>

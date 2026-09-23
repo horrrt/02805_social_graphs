@@ -135,6 +135,15 @@ export async function startPlace(echarts) {
     return state.metric === "positions" ? ORANGE : BLUE;
   }
 
+  /** Tight bubble scale so hubs do not swallow the map. */
+  function bubbleSize(positions, minPx = 7, maxPx = 18) {
+    const vals = data.cities.map((c) => c.positions);
+    const lo = Math.min(...vals);
+    const hi = Math.max(...vals);
+    const t = Math.sqrt((positions - lo) / (hi - lo || 1));
+    return Math.round(minPx + t * (maxPx - minPx));
+  }
+
   function renderBars() {
     const c = chart("chart-rank");
     if (!c) return;
@@ -210,6 +219,9 @@ export async function startPlace(echarts) {
     const colour = metricColour();
     const values = data.cities.map((city) => city[state.metric]);
     const vmax = Math.max(...values, 1);
+    // Colour carries meaning in partition mode; keep sizes almost even.
+    const sizeMin = colourMode === "partition" ? 8 : 7;
+    const sizeMax = colourMode === "partition" ? 14 : 18;
 
     const bubbles = data.cities.map((city) => {
       const dim = state.selected && state.selected !== city.id;
@@ -219,17 +231,14 @@ export async function startPlace(echarts) {
         id: city.id,
         value: [city.lon, city.lat, city[state.metric]],
         itemStyle: {
-          color:
-            colourMode === "partition"
-              ? colourFor(city)
-              : colour,
-          opacity: dim ? 0.22 : 0.55 + 0.45 * t,
+          color: colourMode === "partition" ? colourFor(city) : colour,
+          opacity: dim ? 0.2 : colourMode === "partition" ? 0.88 : 0.5 + 0.45 * t,
           borderColor: "#fff",
-          borderWidth: 2,
-          shadowBlur: dim ? 0 : 10,
-          shadowColor: "rgba(15,35,64,0.28)",
+          borderWidth: 1.5,
+          shadowBlur: dim ? 0 : 4,
+          shadowColor: "rgba(15,35,64,0.18)",
         },
-        symbolSize: 12 + Math.sqrt(city.positions) / 6.5,
+        symbolSize: bubbleSize(city.positions, sizeMin, sizeMax),
       };
     });
 
@@ -240,20 +249,19 @@ export async function startPlace(echarts) {
         ...BASE,
         geo: {
           map: "USA",
-          roam: true,
-          scaleLimit: { min: 0.85, max: 5 },
-          layoutCenter: ["50%", "54%"],
-          layoutSize: "125%",
+          roam: false,
+          layoutCenter: ["50%", "52%"],
+          layoutSize: "108%",
           itemStyle: {
             areaColor: "#eef3f9",
             borderColor: "#c5d3e6",
             borderWidth: 0.9,
           },
           emphasis: {
-            itemStyle: { areaColor: "#e2ebf5" },
-            label: { show: false },
+            disabled: true,
           },
           select: { disabled: true },
+          silent: true,
         },
         series: [
           {
@@ -262,7 +270,7 @@ export async function startPlace(echarts) {
             data: bubbles,
             zlevel: 2,
             emphasis: {
-              scale: 1.35,
+              scale: 1.25,
               itemStyle: { borderColor: INK, borderWidth: 2 },
             },
           },
@@ -278,22 +286,22 @@ export async function startPlace(echarts) {
                       value: [sel.lon, sel.lat, sel[state.metric]],
                     },
                   ],
-                  symbolSize: 20 + Math.sqrt(sel.positions) / 8,
+                  symbolSize: bubbleSize(sel.positions, sizeMin, sizeMax) + 4,
                   showEffectOn: "render",
-                  rippleEffect: { brushType: "stroke", scale: 2.6, period: 3.2 },
+                  rippleEffect: { brushType: "stroke", scale: 1.8, period: 3.5 },
                   itemStyle: {
                     color: colourMode === "partition" ? colourFor(sel) : colour,
-                    shadowBlur: 14,
-                    shadowColor: "rgba(15,35,64,0.35)",
+                    shadowBlur: 8,
+                    shadowColor: "rgba(15,35,64,0.28)",
                   },
                   label: {
                     show: true,
                     formatter: sel.name,
                     position: "right",
                     color: INK,
-                    fontSize: 13,
+                    fontSize: 12,
                     fontWeight: 700,
-                    distance: 10,
+                    distance: 8,
                   },
                   tooltip: { show: false },
                 },
@@ -505,49 +513,89 @@ export async function startPlace(echarts) {
   function renderScatter() {
     const c = chart("chart-longhaul");
     if (!c) return;
-    const points = data.longhaul.edges.map((e) => {
+    const weights = data.longhaul.edges.map((e) => e.weight);
+    const wMin = Math.min(...weights);
+    const wMax = Math.max(...weights);
+
+    function edgeSize(w) {
+      const t = Math.sqrt((w - wMin) / (wMax - wMin || 1));
+      return Math.round(8 + t * 10);
+    }
+
+    const staffing = [];
+    const local = [];
+    for (const e of data.longhaul.edges) {
       const tied =
         !state.selected || state.selected === e.a || state.selected === e.b;
-      return {
+      const point = {
         value: [e.distance_km, e.weight],
         name: `${byId[e.a].name} – ${byId[e.b].name}`,
         staffing: e.staffing,
         employer: e.top_employer,
         a: e.a,
         b: e.b,
+        symbolSize: edgeSize(e.weight),
         itemStyle: {
           color: e.staffing ? ORANGE : BLUE,
-          opacity: tied ? 0.92 : 0.15,
+          opacity: tied ? 0.9 : 0.12,
           borderColor: "#fff",
-          borderWidth: 1,
-          shadowBlur: tied ? 8 : 0,
-          shadowColor: "rgba(15,35,64,0.2)",
+          borderWidth: 1.5,
         },
-        symbolSize: 12 + Math.sqrt(e.weight) / 3,
+        label: {
+          show: tied && e.distance_km >= 1500,
+          formatter: e.top_employer === "Local mix" ? "" : e.top_employer,
+          position: "top",
+          color: MUTE,
+          fontSize: 10,
+          fontWeight: 600,
+          distance: 4,
+        },
       };
-    });
+      (e.staffing ? staffing : local).push(point);
+    }
 
     c.setOption({
       ...BASE,
-      grid: { left: 56, right: 20, top: 28, bottom: 48 },
+      legend: {
+        top: 4,
+        right: 8,
+        icon: "circle",
+        itemWidth: 8,
+        itemHeight: 8,
+        textStyle: { color: MUTE, fontSize: 11, fontWeight: 600 },
+        data: [
+          { name: "Staffing shortlist", itemStyle: { color: ORANGE } },
+          { name: "Local mix", itemStyle: { color: BLUE } },
+        ],
+      },
+      grid: { left: 58, right: 24, top: 40, bottom: 52 },
       xAxis: {
         type: "value",
         name: "Distance between cities (km)",
         ...AXIS,
         nameLocation: "middle",
-        nameGap: 32,
+        nameGap: 34,
+        splitLine: { lineStyle: { color: LINE, type: "dashed" } },
       },
       yAxis: {
         type: "value",
         name: "Backbone weight",
         ...AXIS,
-        nameGap: 40,
+        nameGap: 42,
+        splitLine: { lineStyle: { color: LINE, type: "dashed" } },
       },
       series: [
         {
+          name: "Staffing shortlist",
           type: "scatter",
-          data: points,
-          emphasis: { scale: 1.3 },
+          data: staffing,
+          emphasis: { scale: 1.2, focus: "series" },
+        },
+        {
+          name: "Local mix",
+          type: "scatter",
+          data: local,
+          emphasis: { scale: 1.2, focus: "series" },
         },
       ],
       tooltip: {
@@ -573,94 +621,106 @@ export async function startPlace(echarts) {
     const pairs = data.longhaul.employer_arcs[state.employer] ?? [];
     const connected = new Set(pairs.flat());
 
-    const lines = pairs.map(([a, b]) => ({
+    const lines = pairs.map(([a, b], i) => ({
       coords: [
         [byId[a].lon, byId[a].lat],
         [byId[b].lon, byId[b].lat],
       ],
       a,
       b,
+      lineStyle: {
+        // Slightly different curve per arc so parallel routes separate.
+        curveness: 0.18 + (i % 3) * 0.06,
+      },
     }));
 
-    const points = data.cities.map((city) => {
-      const on = connected.has(city.id);
-      return {
+    // Only cities this employer touches — drop the grey clutter.
+    const points = data.cities
+      .filter((city) => connected.has(city.id))
+      .map((city) => ({
         name: city.name,
         id: city.id,
         value: [city.lon, city.lat],
-        symbolSize: on ? 14 : 7,
+        symbolSize: 11,
         itemStyle: {
-          color: on ? ORANGE : "#c9d7e8",
+          color: ORANGE,
           borderColor: "#fff",
-          borderWidth: on ? 2 : 1,
-          opacity: on ? 1 : 0.55,
+          borderWidth: 2,
+          shadowBlur: 6,
+          shadowColor: "rgba(242,130,12,0.35)",
         },
         label: {
-          show: on,
+          show: true,
           formatter: city.name,
           position: "bottom",
           color: INK,
-          fontSize: 10,
+          fontSize: 11,
           fontWeight: 600,
+          distance: 6,
         },
-      };
-    });
+      }));
 
-    c.setOption({
-      ...BASE,
-      geo: {
-        map: "USA",
-        roam: true,
-        layoutCenter: ["50%", "52%"],
-        layoutSize: "118%",
-        itemStyle: {
-          areaColor: "#f7fafd",
-          borderColor: "#d5e0ee",
-          borderWidth: 0.8,
-        },
-        emphasis: { disabled: true },
-        silent: true,
-      },
-      series: [
-        {
-          type: "lines",
-          coordinateSystem: "geo",
-          data: lines,
-          lineStyle: {
-            color: ORANGE,
-            width: 2,
-            opacity: 0.75,
-            curveness: 0.22,
+    c.setOption(
+      {
+        ...BASE,
+        geo: {
+          map: "USA",
+          roam: false,
+          layoutCenter: ["50%", "52%"],
+          layoutSize: "108%",
+          itemStyle: {
+            areaColor: "#f3f7fb",
+            borderColor: "#d0dcec",
+            borderWidth: 0.9,
           },
-          effect: {
-            show: true,
-            period: 5,
-            trailLength: 0.35,
-            symbol: "arrow",
-            symbolSize: 5,
-            color: ORANGE,
+          emphasis: { disabled: true },
+          silent: true,
+        },
+        series: [
+          {
+            type: "lines",
+            coordinateSystem: "geo",
+            data: lines,
+            lineStyle: {
+              color: ORANGE,
+              width: 2.2,
+              opacity: 0.7,
+            },
+            effect: {
+              show: true,
+              period: 4.5,
+              trailLength: 0.25,
+              symbol: "circle",
+              symbolSize: 4,
+              color: "#ffb768",
+            },
+            zlevel: 1,
           },
-          zlevel: 1,
-        },
-        {
-          type: "scatter",
-          coordinateSystem: "geo",
-          data: points,
-          zlevel: 2,
-        },
-      ],
-      tooltip: {
-        ...BASE.tooltip,
-        formatter: (p) => {
-          if (p.seriesType === "lines") {
-            return tipHtml(state.employer, [
-              ["Link", `${byId[p.data.a].name} – ${byId[p.data.b].name}`],
-            ]);
-          }
-          return p.data?.name ?? "";
+          {
+            type: "scatter",
+            coordinateSystem: "geo",
+            data: points,
+            zlevel: 2,
+            emphasis: {
+              scale: 1.2,
+              itemStyle: { borderColor: INK, borderWidth: 2 },
+            },
+          },
+        ],
+        tooltip: {
+          ...BASE.tooltip,
+          formatter: (p) => {
+            if (p.seriesType === "lines") {
+              return tipHtml(state.employer, [
+                ["Link", `${byId[p.data.a].name} – ${byId[p.data.b].name}`],
+              ]);
+            }
+            return p.data?.name ?? "";
+          },
         },
       },
-    });
+      { notMerge: true },
+    );
     c.off("click");
     c.on("click", (ev) => {
       if (ev.data?.id) select(ev.data.id);
