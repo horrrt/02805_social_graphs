@@ -14,7 +14,7 @@ Questions
 Inputs: load("lca_fy2025"), load("worksites_fy2025"), load("lca_fy2024") for
 the stability check; build/raw/week04/cbsa_2023.xlsx (python
 analysis/week04_data.py --refs; read with header=2) maps county + state to a
-metro area. Identify companies by EMPLOYER_FEIN, not by name.
+metro area. Identify companies with week04_names.employer(EMPLOYER_NAME).
 
 Checks the post needs
 - NMI between communities and Census regions, against shuffled regions.

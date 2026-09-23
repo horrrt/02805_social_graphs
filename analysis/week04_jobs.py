@@ -10,12 +10,12 @@ Questions
 - Which jobs belong to two clusters at once?
 - Do the clusters follow the official job groups?
 
-Inputs: load("lca_fy2025") (SOC_CODE, EMPLOYER_FEIN, TOTAL_WORKER_POSITIONS),
+Inputs: load("lca_fy2025") (SOC_CODE, EMPLOYER_NAME, TOTAL_WORKER_POSITIONS),
 load("perm_fy2025") (PWD_SOC_CODE, EMP_FEIN) for green-card hiring,
 load("lca_fy2024") for the stability check. The first two digits of a SOC
 code are its major group; build/raw/week04/soc_structure_2018.xlsx has the
 names (run python analysis/week04_data.py --refs with CONTACT_EMAIL set).
-Identify companies by FEIN, not by name.
+Identify companies with week04_names.employer(EMPLOYER_NAME).
 
 Checks the post needs
 - NMI between clusters and SOC major groups, against shuffled groups.

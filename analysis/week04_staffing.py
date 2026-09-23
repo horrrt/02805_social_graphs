@@ -14,8 +14,8 @@ Questions
 
 Edges come from the worksites file (every client of a case, not only the one
 on the main row), restricted to certified H-1B cases, one edge per (case,
-client). Employers are keyed by tax number from FY2024, by normalized name
-before that. Clients are cleaned by week04_names.
+client). Employers and clients are both keyed by company family
+(week04_names), so a firm has the same key in every year and on both sides.
 
 Checks
 - Modularity of 100 Louvain runs against 100 degree-preserving bipartite
@@ -56,9 +56,20 @@ def certified(year):
     lca = load(f"lca_fy{year}")
     lca = lca[lca["CASE_STATUS"].str.startswith("Certified") & (lca["VISA_CLASS"] == "H-1B")].copy()
     lca["positions"] = pd.to_numeric(lca["TOTAL_WORKER_POSITIONS"], errors="coerce").fillna(1)
-    fein = lca.get("EMPLOYER_FEIN", pd.Series("", index=lca.index)).str.replace(r"\D", "", regex=True)
-    lca["employer"] = np.where(fein.str.len() == 9, "FEIN " + fein, lca["EMPLOYER_NAME"].map(names.normalize))
+    # Keyed by company family, not tax number: a firm keeps one key in every
+    # year (FY2022 and FY2023 have no tax number) and its subsidiaries join it.
+    lca["employer"] = lca["EMPLOYER_NAME"].map(names.employer)
     return lca
+
+
+def intermediaries(lca):
+    """Families that themselves place workers at clients (MIN_FILINGS or more
+    placed filings in the year). A client in this set is a subcontracting chain:
+    one outsourcer placing workers with another. An industry code does not do:
+    Citigroup and Google file some applications as IT-services firms too."""
+    placed = lca[lca["SECONDARY_ENTITY"].str.upper().str.startswith("Y")]
+    counts = placed["employer"].value_counts()
+    return set(counts[counts >= MIN_FILINGS].index)
 
 
 def employer_labels(lca):
@@ -164,6 +175,8 @@ def main():
         by_filings = placed.groupby("employer").size().sort_values(ascending=False)
         by_positions = placed.groupby("employer")["positions"].sum().sort_values(ascending=False)
         firm_names.update(employer_labels(lca))
+        chain = rows["client"].isin(intermediaries(lca))
+        fein = lca["EMPLOYER_FEIN"] if "EMPLOYER_FEIN" in lca else None
         out["years"][year] = {
             "months": 9 if year == 2026 else 12,
             "certified_filings": len(lca),
@@ -176,6 +189,11 @@ def main():
             "placeholder_client_rows": placeholder,
             "placeholder_share": round(placeholder / site_rows, 4),
             "edges": int(rows.groupby(["employer", "client"]).ngroups),
+            "employer_keys": int(lca["employer"].nunique()),
+            "employer_tax_numbers": int(fein.nunique()) if fein is not None else None,
+            "placements_to_intermediaries": int(chain.sum()),
+            "intermediary_share": round(float(chain.mean()), 4),
+            "top_intermediary_clients": rows[chain]["client"].value_counts().head(6).to_dict(),
             "firms": int(rows["employer"].nunique()),
             "clients": int(rows["client"].nunique()),
             "top_firms_by_filings": [[firm_names[k], int(v)] for k, v in by_filings.head(8).items()],
