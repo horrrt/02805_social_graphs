@@ -1,0 +1,140 @@
+# Week 4 · Who hires America's foreign workers?
+
+The plan for the Week 4 post (communities and backbones), proposed 23 September 2026. The post goes in
+[docs/weeks/week04/index.html](docs/weeks/week04/index.html); every number comes from a script in
+`analysis/`.
+
+## The story
+
+The US Department of Labor publishes every H-1B and green-card (PERM) filing: which company hires, for
+which job, where, and, for outsourcing, which client the worker actually sits at. The post follows one
+hire outwards: the place, then the job, then the company behind it. Each step is a different network and
+carries a different part of Week 4.
+
+| Section | Owner | Network | Week 4 method | Script |
+| --- | --- | --- | --- | --- |
+| Opening | Niklas | | | |
+| 1 · Where does the hiring happen? | Àngela | Companies × cities, projected onto metro areas | Backbones, communities against Census regions | `analysis/week04_where.py` |
+| 2 · Which jobs go together? | Niklas | Companies × occupations, projected onto occupations | Backbones, overlapping communities | `analysis/week04_jobs.py` |
+| 3 · Who really employs them? | Gyula | Outsourcing firm → client company | Communities, weights | `analysis/week04_staffing.py` |
+| Closing | Niklas | | | |
+
+### Opening · Niklas
+
+- What is an H-1B filing?
+- Why companies instead of the philosophers?
+- What does this data leave out?
+
+### 1 · Where does the hiring happen? · Àngela
+
+- Which cities hire the most?
+- Once the small links go, what's left of the map?
+- Is it one national job market or several regional ones?
+- Do the same employers tie distant cities together?
+
+### 2 · Which jobs go together? · Niklas
+
+- Which jobs are hired together?
+- Which jobs belong to two clusters at once?
+- Do the clusters follow the official job groups?
+
+### 3 · Who really employs them? · Gyula
+
+- How many workers sit at a client instead of their own employer?
+- Do clients group by industry or by the firm that staffs them?
+- Who relies on a single vendor?
+- Does it hold from year to year?
+
+### Closing · Niklas
+
+- What do place, job and company add up to?
+- One takeaway, one limit, the AI-use note.
+
+## Start here
+
+```bash
+python -m pip install -r requirements-lock.txt   # adds python-calamine, the Excel reader
+python analysis/week04_data.py                   # downloads about 330 MB, writes build/week04/
+CONTACT_EMAIL=you@student.dtu.dk python analysis/week04_data.py --refs --only
+python analysis/week04_where.py                  # or week04_jobs.py, week04_staffing.py
+```
+
+`week04_data.py` downloads the four workbooks to `build/raw/week04/`, keeps only the allowed columns and
+writes gzipped CSVs to `build/week04/`. Your script reads them with `load("lca_fy2025")`. The
+`--refs` run fetches the Census metro file and the BLS occupation groups; BLS refuses requests whose
+User-Agent has no contact address, hence `CONTACT_EMAIL`. `build/` is gitignored.
+
+What you get (FY2025 unless stated):
+
+| Table | Rows | What one row is |
+| --- | --- | --- |
+| `lca_fy2025` | 118,580 | One H-1B application (112,131 certified H-1B) |
+| `lca_fy2024` | 120,897 | Same, previous year, for the stability check |
+| `worksites_fy2025` | 897,289 | One worksite of an application; carries extra clients |
+| `perm_fy2025` | 147,056 | One green-card labour certification |
+
+## Data rules
+
+- **Never commit a raw workbook or anything under `build/`.** The files hold names, emails and phone
+  numbers of employer contacts and lawyers, and some worksite addresses are workers' homes. The loader
+  refuses those columns; do not add them back.
+- **Identify employers by `EMPLOYER_FEIN`** (the tax number, on every row). Only section 3 needs to clean
+  names, because clients have no tax number.
+- **Certified H-1B only** unless a section says otherwise: `CASE_STATUS` starts with "Certified" and
+  `VISA_CLASS` is "H-1B".
+- **Say it once per section:** this is visa-sponsored hiring, not all hiring, and outsourcing firms
+  dominate it (Infosys, CGI, Kforce, Tata Consultancy Services and Cognizant are the five largest senders
+  of placed workers).
+
+## What every section delivers
+
+1. An edge list from its script.
+2. Its main number against a shuffled baseline (a network that keeps everyone's number of links, or
+   shuffled labels for NMI).
+3. 100 Louvain runs instead of one, and FY2024 against FY2025.
+4. One figure and one finding that could have come out the other way.
+5. About 250 words, and a JSON file (`analysis/week04_<section>.json`) with every number it quotes.
+
+## Shared jobs
+
+| Job | Owner |
+| --- | --- |
+| Put the page live: lobby card, `docs/assets/js/weeks.js`, the site test, remove `noindex` | Àngela |
+| Opening and closing sections, AI-use note | Niklas |
+| Teams post, feedback on another group, final read against the brief | Gyula |
+
+## Timeline
+
+| When | What |
+| --- | --- |
+| Wed 23 Sep | Everyone runs `week04_data.py` and their section's script |
+| Fri 25 Sep, 18:00 | Progress note: first number, any blocker |
+| Sun 27 Sep, 18:00 | Figure, finding and text ready |
+| Sun 27 Sep, evening | Review together |
+| Mon 28 Sep, 16:00 | Page live |
+| Mon 28 Sep, evening | Link in the Teams channel, feedback on another group |
+| Wed 30 Sep, 08:10 | Test 1, building 208, room 054 |
+
+The 🧠 exercises (4.1, 4.2, 4.3, 4.7, 4.8, 4.10) are Test 1 material: everyone does all of them on paper.
+
+## Sources
+
+All checked on 23 September 2026.
+
+| Source | Use | Access |
+| --- | --- | --- |
+| [DOL OFLC performance data](https://www.dol.gov/agencies/eta/foreign-labor/performance): LCA disclosure FY2024 and FY2025, LCA worksites FY2025, PERM FY2025 | All three sections | Public domain. dol.gov serves a plain client and blocks a spoofed browser User-Agent |
+| [LCA record layout FY2025](https://www.dol.gov/sites/dolgov/files/ETA/oflc/pdfs/LCA_Record_Layout_FY2025_Q4.pdf) | What each column means | Public |
+| [Census CBSA delineation, July 2023](https://www.census.gov/geographies/reference-files/time-series/demo/metro-micro/delineation-files.html) | County → metro area (section 1) | Public; header on row 3 |
+| [Census regions and divisions](https://www2.census.gov/geo/pdfs/maps-data/maps/reference/us_regdiv.pdf) | Labels for NMI (section 1) | Public |
+| [BLS 2018 SOC structure](https://www.bls.gov/soc/2018/soc_structure_2018.xlsx) | Occupation groups (section 2) | Public; User-Agent must name a contact |
+| [USCIS H-1B Employer Data Hub](https://www.uscis.gov/tools/reports-and-studies/h-1b-employer-data-hub) | Approvals per employer, optional attributes | Public |
+
+Traps found so far (from the FY2025 profile):
+
+- 21.3% of certified filings name a client; 8.6% of those clients are placeholders such as "Home Address",
+  "Beneficiary's Residence", "Remote" or "TBD Open".
+- Corporate families survive simple name cleaning ("Bank of America" and "Bank of America N A").
+- The staffing network is a forest of stars (median degree 1). One Louvain run gives 46 communities at
+  modularity 0.735, which a shuffled network may match: section 3 must show the comparison.
+- Clients carry no industry code; only 17.2% match a filing employer's NAICS by name.
