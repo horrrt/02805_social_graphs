@@ -162,6 +162,9 @@ REFS = {
     # Census CBSA delineation, July 2023: county -> metro area.
     "cbsa_2023.xlsx": "https://www2.census.gov/programs-surveys/metro-micro/"
     "geographies/reference-files/2023/delineation-files/list1_2023.xlsx",
+    # Census 2023 gazetteer: one row per metro area with its centre point.
+    "cbsa_gazetteer_2023.zip": "https://www2.census.gov/geo/docs/maps-data/data/gazetteer/"
+    "2023_Gazetteer/2023_Gaz_cbsa_national.zip",
     # BLS 2018 SOC structure: occupation code -> major and minor group.
     "soc_structure_2018.xlsx": "https://www.bls.gov/soc/2018/soc_structure_2018.xlsx",
 }
@@ -271,6 +274,7 @@ def main():
 
     if args.refs:
         download(REFS["cbsa_2023.xlsx"], RAW / "cbsa_2023.xlsx")
+        download(REFS["cbsa_gazetteer_2023.zip"], RAW / "cbsa_gazetteer_2023.zip")
         # BLS answers 403 unless the User-Agent names a contact.
         contact = os.environ.get("CONTACT_EMAIL")
         if contact:

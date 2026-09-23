@@ -1,0 +1,112 @@
+{
+ "generated_by": "analysis/week04_where.py",
+ "year": 2025,
+ "coverage": {
+  "worksite_rows": 846626,
+  "blank_county_rows": 139348,
+  "blank_county_resolved": 138198,
+  "rows_in_a_metro": 797447,
+  "metros": 883,
+  "top_metros": 40,
+  "top_metros_filing_share": 0.8532
+ },
+ "ranking": {
+  "top_by_positions": "San Jose",
+  "top_by_employers": "New York",
+  "top5_by_positions": [
+   "San Jose",
+   "New York",
+   "Dallas",
+   "Seattle",
+   "San Francisco"
+  ],
+  "top5_by_employers": [
+   "New York",
+   "Dallas",
+   "San Francisco",
+   "Los Angeles",
+   "Chicago"
+  ]
+ },
+ "backbone": {
+  "alphas": [
+   0.05,
+   0.1,
+   0.2,
+   0.3,
+   0.5
+  ],
+  "default_alpha": 0.2,
+  "gc_size": [
+   18,
+   32,
+   40,
+   40,
+   40
+  ],
+  "edges_kept": [
+   28,
+   62,
+   183,
+   424,
+   660
+  ],
+  "snap_alpha": 0.05,
+  "snap_note": "Below α = 0.1 the giant component drops from 32 metros to 18; at α = 0.05 it keeps 28 links."
+ },
+ "null_model": {
+  "Q": 0.053,
+  "Q_sd": 0.0011,
+  "Q_null_mean": 0.013,
+  "Q_null_std": 0.0015,
+  "z": 26.94,
+  "nmi_seeds": 1.0,
+  "nmi_census_region": 0.035,
+  "p_region": 0.5435,
+  "nmi_census_division": 0.098,
+  "p_division": 0.3267,
+  "seeds": 50,
+  "communities": 2
+ },
+ "communities": [
+  {
+   "id": 0,
+   "label": "New York–Dallas",
+   "colour": "#f2820c",
+   "metros": 11,
+   "regions": {
+    "West": 5,
+    "South": 4,
+    "Northeast": 1,
+    "Midwest": 1
+   }
+  },
+  {
+   "id": 1,
+   "label": "Houston–Philadelphia",
+   "colour": "#1f8fd6",
+   "metros": 29,
+   "regions": {
+    "South": 14,
+    "Midwest": 6,
+    "West": 6,
+    "Northeast": 3
+   }
+  }
+ ],
+ "longhaul": {
+  "backbone_links": 183,
+  "threshold_km": 1500,
+  "long_links": 85,
+  "long_led_by_shortlist": 27,
+  "short_links": 98,
+  "short_led_by_shortlist": 52
+ },
+ "shortlist": [
+  "Tata Consultancy",
+  "Cognizant",
+  "Infosys",
+  "HCL",
+  "Compunnel Software"
+ ]
+}

@@ -200,64 +200,9 @@
 .staffing-chart {
   position: relative;
 }
-.staffing-chart svg {
-  display: block;
+.staffing-chart .chart-host {
   width: 100%;
-  height: auto;
-  overflow: visible;
-}
-.staffing-chart .grid line {
-  stroke: var(--grid);
-}
-.staffing-chart .axis text,
-.staffing-chart .axis-title {
-  fill: var(--muted);
-  font: 12px var(--sans);
-}
-.staffing-chart .axis path,
-.staffing-chart .axis line {
-  stroke: none;
-}
-.staffing-chart .dot {
-  stroke: var(--surface);
-  stroke-width: 1.5px;
-}
-.staffing-chart .dot.s1 { fill: var(--series-1); }
-.staffing-chart .dot.s2 { fill: var(--series-2); }
-.staffing-chart .dot.s3 { fill: var(--series-3); }
-.staffing-chart .dot.s0 { fill: var(--series-none); }
-.staffing-chart .dot.selected {
-  stroke: var(--paper);
-  stroke-width: 2.5px;
-}
-.staffing-chart .label {
-  fill: var(--paper);
-  font: 600 12px var(--sans);
-  paint-order: stroke;
-  stroke: var(--surface);
-  stroke-width: 4px;
-  pointer-events: none;
-}
-.staffing-tip {
-  position: absolute;
-  z-index: 2;
-  max-width: 250px;
-  padding: 9px 11px;
-  border: 1px solid var(--line);
-  border-radius: 10px;
-  background: var(--surface);
-  box-shadow: 0 8px 24px #0f234024;
-  font-size: 13px;
-  line-height: 1.4;
-  color: var(--paper);
-  pointer-events: none;
-}
-.staffing-tip strong {
-  display: block;
-  font-size: 14px;
-}
-.staffing-tip span {
-  color: var(--muted);
+  height: 470px;
 }
 .staffing-panel h3 {
   margin: 0 0 2px;
@@ -307,28 +252,6 @@
   font-size: 13px;
   color: var(--muted);
 }
-.staffing-legend {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 6px 18px;
-  margin: 14px 0 0;
-  padding: 0;
-  list-style: none;
-  font-size: 13px;
-  color: var(--muted);
-}
-.staffing-legend i {
-  display: inline-block;
-  width: 10px;
-  height: 10px;
-  margin-right: 6px;
-  border-radius: 50%;
-  vertical-align: -1px;
-}
-.staffing-legend .s1 { background: var(--series-1); }
-.staffing-legend .s2 { background: var(--series-2); }
-.staffing-legend .s3 { background: var(--series-3); }
-.staffing-legend .s0 { background: var(--series-none); }
 .staffing figcaption {
   margin-top: 12px;
   font-size: 14px;
