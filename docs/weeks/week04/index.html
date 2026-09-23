@@ -633,6 +633,39 @@
                 </table>
               </details>
             </figure>
+
+            <details class="qa" id="staffing-community-stats" style="margin-top: 18px">
+              <summary>
+                <span class="qa-cue">With filing counts or without?</span>
+              </summary>
+              <div class="qa-body">
+                <p class="sub">
+                  Louvain on the firm–client network for FY2025, 100 runs each:
+                  once with links weighted by filings, once with every link
+                  counting one. The two partitions share an NMI of
+                  <b class="cross">…</b>, less than two runs of either kind with
+                  different seeds (<b class="seeds">…</b> weighted,
+                  <b class="seeds-plain">…</b> unweighted), so the filing counts
+                  change the grouping. They pull it toward vendors: NMI with
+                  each client's main vendor rises from
+                  <b class="vendor-plain">…</b> to <b class="vendor">…</b> when
+                  filings count, while NMI with industry stays near
+                  <b class="industry">…</b>. The null rewires the network so
+                  every firm and client keeps its number of partners. Figures
+                  from analysis/week04_staffing.py:
+                </p>
+                <table class="ego">
+                  <thead>
+                    <tr>
+                      <th></th>
+                      <th style="text-align: right">Weighted</th>
+                      <th style="text-align: right">Unweighted</th>
+                    </tr>
+                  </thead>
+                  <tbody></tbody>
+                </table>
+              </div>
+            </details>
           </div>
         </section>
 

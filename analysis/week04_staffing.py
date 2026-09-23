@@ -27,11 +27,15 @@ Checks
   the real wiring with its filing counts shuffled.
 - NMI of communities with client industry and with the client's main vendor,
   each against shuffled labels, over clients with two or more vendors.
+- Weighted against unweighted: NMI between the Louvain partitions with and
+  without filing counts, beside the NMI between two seeds of the same kind, so
+  a low number can be told apart from Louvain's own run-to-run noise.
 - The same analysis for FY2022 to FY2025, compared on shared clients.
 - USCIS approvals and denials for FY2022 (the Employer Data Hub's last full
   year), placing firms against direct employers.
 
-Output: analysis/week04_staffing.json
+Output: analysis/week04_staffing.json, and the community numbers the page quotes in
+docs/weeks/week04/data/staffing_communities.json
 """
 
 import json
@@ -51,6 +55,8 @@ import week04_names as names
 from week04_data import load
 
 OUT = Path(__file__).with_suffix(".json")
+# The community numbers the page quotes, for week04-staffing.js.
+PAGE = Path(__file__).resolve().parents[1] / "docs/weeks/week04/data/staffing_communities.json"
 YEARS = [2022, 2023, 2024, 2025]
 MAIN = 2025
 RUNS = 100
@@ -232,6 +238,26 @@ def shuffle_weights(g, rng):
     return h
 
 
+def span(seconds):
+    """A duration without leading zeros: 45s, 9m32s, 1h5m."""
+    m, s = divmod(int(seconds), 60)
+    h, m = divmod(m, 60)
+    return f"{h}h{m}m" if h else f"{m}m{s}s" if m else f"{s}s"
+
+
+def tracked(label, total):
+    """range(total) that prints a progress line every tenth: done, share, elapsed, time left."""
+    started = time.time()
+    step = max(1, total // 10)
+    for i in range(total):
+        yield i
+        done = i + 1
+        if done % step == 0 or done == total:
+            elapsed = time.time() - started
+            print(f"{label}: {done}/{total} ({done / total:.0%}), {span(elapsed)} elapsed, "
+                  f"about {span(elapsed / done * (total - done))} left", flush=True)
+
+
 def louvain(g, seed):
     parts = nx.community.louvain_communities(g, weight="weight", seed=seed)
     return parts, nx.community.modularity(g, parts, weight="weight")
@@ -333,15 +359,16 @@ def main():
 
     # Q2 · communities, against degree-preserving rewirings.
     giant = g.subgraph(max(nx.connected_components(g), key=len)).copy()
-    runs = [louvain(giant, SEED + i) for i in range(RUNS)]
+    runs = [louvain(giant, SEED + i) for i in tracked("Louvain, weighted", RUNS)]
     qs = np.array([q for _, q in runs])
     # Three nulls, so the wiring and the weights can be told apart: rewired
     # wiring with shuffled weights; rewired wiring, unweighted, against the real
     # wiring unweighted; and the real wiring with its weights shuffled.
     plain = unweighted(giant)
-    qs_plain = np.array([louvain(plain, SEED + i)[1] for i in range(RUNS)])
+    runs_plain = [louvain(plain, SEED + i) for i in tracked("Louvain, unweighted", RUNS)]
+    qs_plain = np.array([q for _, q in runs_plain])
     null_qs, null_plain, null_weights, pieces = [], [], [], []
-    for i in range(RUNS):
+    for i in tracked("Nulls, three per run", RUNS):
         h = rewire(giant, rng)
         if i == 0:
             check_rewire(giant, h)
@@ -354,8 +381,14 @@ def main():
     member = labels(best_parts)
     nodes = list(giant)
     run_labels = [labels(p) for p, _ in runs[:20]]
-    pairs = [nmi([run_labels[i][n] for n in nodes], [run_labels[i + 1][n] for n in nodes])
-             for i in range(0, len(run_labels) - 1, 2)]
+    over = lambda a, b: nmi([a[n] for n in nodes], [b[n] for n in nodes])
+    pairs = [over(run_labels[i], run_labels[i + 1]) for i in range(0, len(run_labels) - 1, 2)]
+    # Weighted against unweighted, seed for seed, beside the unweighted seed-to-seed noise.
+    plain_labels = [labels(p) for p, _ in runs_plain[:20]]
+    plain_pairs = [over(plain_labels[i], plain_labels[i + 1]) for i in range(0, len(plain_labels) - 1, 2)]
+    cross = [over(run_labels[i], plain_labels[i]) for i in range(len(run_labels))]
+    best_plain = max(runs_plain, key=lambda r: r[1])[0]
+    member_plain = labels(best_plain)
     result["giant"] = {"nodes": giant.number_of_nodes(), "edges": giant.number_of_edges(),
                      "share_of_filings": round(giant.size("weight") / g.size("weight"), 4)}
     def compare(real, null):
@@ -372,6 +405,14 @@ def main():
         "wiring_only": compare(qs_plain, null_plain),
         "weights_only": compare(qs, null_weights),
     }
+    result["weighted_vs_unweighted"] = {
+        "communities_median_unweighted": int(np.median([len(p) for p, _ in runs_plain])),
+        "nmi_median": round(float(np.median(cross)), 3),
+        "nmi_best_partitions": round(float(over(member, member_plain)), 3),
+        "nmi_between_seeds_weighted": round(float(np.median(pairs)), 3),
+        "nmi_between_seeds_unweighted": round(float(np.median(plain_pairs)), 3),
+        "runs_compared": len(cross),
+    }
 
     # Industry or vendor? Only clients with two or more vendors can say.
     test = [c for c in multi if ("C", c) in member]
@@ -382,6 +423,9 @@ def main():
     ven_obs, ven_p = shuffled_nmi(comm_all, [main_vendor[c] for c in test], rng)
     # The same comparison on the labelled clients alone, so both NMIs see the same clients.
     ven_same, ven_same_p = shuffled_nmi(comm, [main_vendor[c] for c in sector_clients], rng)
+    comm_plain = [member_plain[("C", c)] for c in sector_clients]
+    ind_plain, ind_plain_p = shuffled_nmi(comm_plain, [names.naics2(c) for c in sector_clients], rng)
+    ven_plain, ven_plain_p = shuffled_nmi(comm_plain, [main_vendor[c] for c in sector_clients], rng)
     result["industry_or_vendor"] = {
         "clients_with_2plus_vendors": len(test),
         "their_filing_share": round(float(totals[test].sum() / totals.sum()), 4),
@@ -390,6 +434,9 @@ def main():
         "nmi_community_main_vendor": round(ven_obs, 3), "p_vendor": round(ven_p, 4),
         "nmi_community_main_vendor_same_clients": round(ven_same, 3),
         "p_vendor_same_clients": round(ven_same_p, 4),
+        "unweighted": {"nmi_community_industry": round(ind_plain, 3), "p_industry": round(ind_plain_p, 4),
+                       "nmi_community_main_vendor_same_clients": round(ven_plain, 3),
+                       "p_vendor_same_clients": round(ven_plain_p, 4)},
     }
 
     # The largest communities, named by their biggest firms and clients.
@@ -423,6 +470,10 @@ def main():
 
     out["seconds"] = round(time.time() - started)
     OUT.write_text(json.dumps(out, indent=1, default=str) + "\n")
+    PAGE.write_text(json.dumps({
+        "generated_by": "analysis/week04_staffing.py", "year": MAIN, "runs": RUNS,
+        **{k: result[k] for k in ("modularity", "weighted_vs_unweighted", "industry_or_vendor")},
+    }, indent=1) + "\n")
     print(json.dumps({k: v for k, v in result.items() if k != "largest_clients"}, indent=1, default=str))
     print(json.dumps(stability))
 

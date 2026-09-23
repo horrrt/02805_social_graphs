@@ -1,0 +1,59 @@
+{
+ "generated_by": "analysis/week04_staffing.py",
+ "year": 2025,
+ "runs": 100,
+ "modularity": {
+  "communities_median": 73,
+  "nmi_between_seeds_median": 0.725,
+  "rewired_components_median": 598,
+  "weighted_vs_rewired": {
+   "real": 0.6068,
+   "real_sd": 0.001,
+   "null": 0.7426,
+   "null_sd": 0.0012,
+   "z": -110.87,
+   "null_runs_at_or_above_real": 100
+  },
+  "wiring_only": {
+   "real": 0.5748,
+   "real_sd": 0.0014,
+   "null": 0.5342,
+   "null_sd": 0.0007,
+   "z": 61.79,
+   "null_runs_at_or_above_real": 0
+  },
+  "weights_only": {
+   "real": 0.6068,
+   "real_sd": 0.001,
+   "null": 0.754,
+   "null_sd": 0.0013,
+   "z": -109.14,
+   "null_runs_at_or_above_real": 100
+  }
+ },
+ "weighted_vs_unweighted": {
+  "communities_median_unweighted": 67,
+  "nmi_median": 0.389,
+  "nmi_best_partitions": 0.388,
+  "nmi_between_seeds_weighted": 0.725,
+  "nmi_between_seeds_unweighted": 0.513,
+  "runs_compared": 20
+ },
+ "industry_or_vendor": {
+  "clients_with_2plus_vendors": 4331,
+  "their_filing_share": 0.7648,
+  "with_sector_label": 882,
+  "nmi_community_industry": 0.164,
+  "p_industry": 0.001,
+  "nmi_community_main_vendor": 0.65,
+  "p_vendor": 0.001,
+  "nmi_community_main_vendor_same_clients": 0.722,
+  "p_vendor_same_clients": 0.001,
+  "unweighted": {
+   "nmi_community_industry": 0.169,
+   "p_industry": 0.001,
+   "nmi_community_main_vendor_same_clients": 0.464,
+   "p_vendor_same_clients": 0.001
+  }
+ }
+}

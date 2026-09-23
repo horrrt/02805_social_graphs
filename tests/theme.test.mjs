@@ -13,9 +13,9 @@ const JS = join(DOCS, "assets/js");
 // These scripts drive pages that ship their own stylesheet and palette, so the
 // shared --cv-* token contract does not apply to them: mockups.js and signal.js
 // are legacy, corridor.js is the week 3 post with its own palette in
-// corridor.css, and week04-place.js draws week 4's first section on the same
-// Corridor page.
-const LEGACY = ["mockups.js", "signal.js", "corridor.js", "week04-place.js"];
+// corridor.css, and week04-place.js and week04-jobs.js draw week 4's first and
+// second sections on the same Corridor page.
+const LEGACY = ["mockups.js", "signal.js", "corridor.js", "week04-place.js", "week04-jobs.js"];
 const scripts = () =>
   readdirSync(JS)
     .filter((f) => f.endsWith(".js") && !LEGACY.includes(f))

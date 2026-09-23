@@ -47,7 +47,7 @@ from sklearn.metrics import normalized_mutual_info_score as nmi
 
 import week04_names as names
 from week04_data import RAW, load
-from week04_staffing import resolver, rewire
+from week04_staffing import resolver, rewire, tracked
 
 ROOT = Path(__file__).resolve().parents[1]
 OUT = Path(__file__).with_suffix(".json")
@@ -295,7 +295,7 @@ def main():
     for e, m, f in pairs[pairs["metro"].isin(top)].itertuples(index=False):
         bip.add_edge(("F", e), ("C", m), weight=int(f))
     null_q = []
-    for r in range(RUNS):
+    for r in tracked("Rewired nulls", RUNS):
         h = rewire(bip, rng)
         rows = [(u[1], v[1], d["weight"]) if u[0] == "F" else (v[1], u[1], d["weight"])
                 for u, v, d in h.edges(data=True)]

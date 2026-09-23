@@ -878,6 +878,14 @@
     "null_runs_at_or_above_real": 100
    }
   },
+  "weighted_vs_unweighted": {
+   "communities_median_unweighted": 67,
+   "nmi_median": 0.389,
+   "nmi_best_partitions": 0.388,
+   "nmi_between_seeds_weighted": 0.725,
+   "nmi_between_seeds_unweighted": 0.513,
+   "runs_compared": 20
+  },
   "industry_or_vendor": {
    "clients_with_2plus_vendors": 4331,
    "their_filing_share": 0.7648,
@@ -887,7 +895,13 @@
    "nmi_community_main_vendor": 0.65,
    "p_vendor": 0.001,
    "nmi_community_main_vendor_same_clients": 0.722,
-   "p_vendor_same_clients": 0.001
+   "p_vendor_same_clients": 0.001,
+   "unweighted": {
+    "nmi_community_industry": 0.169,
+    "p_industry": 0.001,
+    "nmi_community_main_vendor_same_clients": 0.464,
+    "p_vendor_same_clients": 0.001
+   }
   },
   "largest_communities": [
    {
@@ -1062,5 +1076,5 @@
    "nmi": 0.348
   }
  ],
- "seconds": 563
+ "seconds": 662
 }
