@@ -510,6 +510,8 @@ export async function startPlace(echarts) {
     });
   }
 
+  const LABELS = 8;
+
   function renderScatter() {
     const c = chart("chart-longhaul");
     if (!c) return;
@@ -522,11 +524,25 @@ export async function startPlace(echarts) {
       return Math.round(8 + t * 10);
     }
 
+    // 84 links pass 1,500 km and their names would pile up. Label each
+    // company once, on its heaviest far edge (of the selected city, if one is
+    // selected), for the LABELS heaviest companies.
+    const isTied = (e) =>
+      !state.selected || state.selected === e.a || state.selected === e.b;
+    const heaviest = new Map();
+    for (const e of data.longhaul.edges) {
+      if (!isTied(e) || e.distance_km < 1500) continue;
+      const best = heaviest.get(e.top_employer);
+      if (!best || e.weight > best.weight) heaviest.set(e.top_employer, e);
+    }
+    const labelled = new Set(
+      [...heaviest.values()].sort((x, y) => y.weight - x.weight).slice(0, LABELS),
+    );
+
     const staffing = [];
     const local = [];
     for (const e of data.longhaul.edges) {
-      const tied =
-        !state.selected || state.selected === e.a || state.selected === e.b;
+      const tied = isTied(e);
       const point = {
         value: [e.distance_km, e.weight],
         name: `${byId[e.a].name} – ${byId[e.b].name}`,
@@ -540,15 +556,6 @@ export async function startPlace(echarts) {
           opacity: tied ? 0.9 : 0.12,
           borderColor: "#fff",
           borderWidth: 1.5,
-        },
-        label: {
-          show: tied && e.distance_km >= 1500,
-          formatter: e.top_employer === "Other lead employer" ? "" : e.top_employer,
-          position: "top",
-          color: MUTE,
-          fontSize: 10,
-          fontWeight: 600,
-          distance: 4,
         },
       };
       (e.staffing ? staffing : local).push(point);
@@ -596,6 +603,31 @@ export async function startPlace(echarts) {
           type: "scatter",
           data: local,
           emphasis: { scale: 1.2, focus: "series" },
+        },
+        // The labels ride in a series of their own, above every dot.
+        {
+          name: "Labels",
+          type: "scatter",
+          silent: true,
+          z: 5,
+          itemStyle: { color: "transparent" },
+          label: {
+            show: true,
+            formatter: (p) => p.data.employer,
+            position: "top",
+            color: MUTE,
+            fontSize: 10,
+            fontWeight: 600,
+            distance: 4,
+            textBorderColor: "#fff",
+            textBorderWidth: 3,
+          },
+          labelLayout: { hideOverlap: true },
+          data: [...labelled].map((e) => ({
+            value: [e.distance_km, e.weight],
+            employer: e.top_employer,
+            symbolSize: edgeSize(e.weight),
+          })),
         },
       ],
       tooltip: {
