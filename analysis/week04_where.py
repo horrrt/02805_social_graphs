@@ -55,7 +55,7 @@ from sklearn.metrics import normalized_mutual_info_score as nmi
 
 import week04_names as names
 from week04_data import RAW, load
-from week04_staffing import resolver, rewire, tracked
+from week04_staffing import louvain, resolver, rewire, tracked
 
 ROOT = Path(__file__).resolve().parents[1]
 OUT = Path(__file__).with_suffix(".json")
@@ -356,7 +356,7 @@ def main():
                       + (f" and {more} more." if more else "."))
 
     # C · communities against Census labels, and against re-projected rewirings.
-    runs = [nx.community.louvain_communities(g, weight="weight", seed=SEED + r) for r in range(RUNS)]
+    runs = [louvain(g, SEED + r)[0] for r in range(RUNS)]
     qs = np.array([nx.community.modularity(g, c, weight="weight") for c in runs])
     # Louvain does not always find the same partition on a graph this dense. The
     # page shows the one found most often (ties: the higher modularity), and every
@@ -377,8 +377,7 @@ def main():
         rows = [(u[1], v[1], d["weight"]) if u[0] == "F" else (v[1], u[1], d["weight"])
                 for u, v, d in h.edges(data=True)]
         hp = project(pd.DataFrame(rows, columns=["employer", "metro", "filings"]), top)
-        null_q.append(nx.community.modularity(
-            hp, nx.community.louvain_communities(hp, weight="weight", seed=SEED + r), weight="weight"))
+        null_q.append(louvain(hp, SEED + r)[1])
     null_q = np.array(null_q)
     comm = [member[m] for m in top]
     region_nmi, region_p = shuffled_nmi(comm, [by_id[m]["census"] for m in top], rng)
