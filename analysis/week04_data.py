@@ -1,18 +1,31 @@
-"""Week 4 data: US H-1B and green-card filings, trimmed to the columns we use.
+"""Week 4 data: five years of US H-1B and green-card filings, trimmed to the columns we use.
 
-Downloads the Department of Labor disclosure files, keeps only the columns on
-the allow-lists below, and writes gzipped CSVs to build/week04/ (gitignored).
-Every week 4 script reads those CSVs through load(); nobody opens the raw
-workbooks directly.
+Downloads the Department of Labor disclosure files for FY2022 to FY2026 (the
+last up to June 2026), keeps only the columns on the allow-lists below, and
+writes one gzipped CSV per table and year to build/week04/ (gitignored). Every
+week 4 script reads those CSVs through load(); nobody opens the workbooks.
+
+A US fiscal year runs from 1 October to 30 September: FY2025 is October 2024
+to September 2025.
+
+    lca_fy2022 ... lca_fy2026         H-1B applications (LCA). DOL publishes one
+                                      file per quarter; a year is its four files.
+                                      FY2026 is one file covering Q1 to Q3.
+    worksites_fy2022 ... _fy2026      one row per worksite of an application
+    perm_fy2022 ... perm_fy2026       green-card labour certifications. FY2022 to
+                                      FY2024 use the old form; their columns are
+                                      renamed to the new form's names.
 
 The raw files carry names, emails and phone numbers of employer contacts,
-lawyers and preparers, and worksite street addresses that are sometimes a
-worker's home. None of those columns is on an allow-list, and check_columns()
-refuses to write one if it ever is. Never commit anything under build/.
+lawyers and preparers, the worker's country of citizenship, and worksite
+street addresses that are sometimes a worker's home. None of those columns is
+on an allow-list, and check_columns() refuses to read one if it ever is. Never
+commit anything under build/.
 
-    python analysis/week04_data.py                  # download and trim FY2025, FY2024
-    python analysis/week04_data.py --local DIR      # trim copies already in DIR
-    python analysis/week04_data.py --refs           # also the Census metro and BLS SOC files
+    python analysis/week04_data.py                    # download and trim everything
+    python analysis/week04_data.py --years 2025       # one fiscal year
+    python analysis/week04_data.py --local DIR [DIR]  # use workbooks already in these folders
+    python analysis/week04_data.py --refs             # also the Census metro and BLS SOC files
 
 Sources (public domain, US government):
 https://www.dol.gov/agencies/eta/foreign-labor/performance
@@ -32,12 +45,14 @@ RAW = ROOT / "build" / "raw" / "week04"
 OUT = ROOT / "build" / "week04"
 
 DOL = "https://www.dol.gov/sites/dolgov/files/ETA/oflc/pdfs/"
+YEARS = [2022, 2023, 2024, 2025, 2026]
 
 LCA_COLUMNS = [
     "CASE_NUMBER",
     "CASE_STATUS",
     "VISA_CLASS",
     "RECEIVED_DATE",
+    "DECISION_DATE",
     "JOB_TITLE",
     "SOC_CODE",
     "SOC_TITLE",
@@ -75,6 +90,7 @@ WORKSITE_COLUMNS = [
 PERM_COLUMNS = [
     "CASE_NUMBER",
     "CASE_STATUS",
+    "RECEIVED_DATE",
     "DECISION_DATE",
     "EMP_BUSINESS_NAME",
     "EMP_FEIN",
@@ -92,14 +108,54 @@ PERM_COLUMNS = [
     "PRIMARY_WORKSITE_COUNTY",
     "PRIMARY_WORKSITE_STATE",
 ]
-
-# name -> (workbook on dol.gov, allow-list)
-TABLES = {
-    "lca_fy2025": ("LCA_Disclosure_Data_FY2025_Q4.xlsx", LCA_COLUMNS),
-    "lca_fy2024": ("LCA_Disclosure_Data_FY2024_Q4.xlsx", LCA_COLUMNS),
-    "worksites_fy2025": ("LCA_Worksites_FY2025_Q4.xlsx", WORKSITE_COLUMNS),
-    "perm_fy2025": ("PERM_Disclosure_Data_FY2025_Q4.xlsx", PERM_COLUMNS),
+# The old PERM form (FY2022 to FY2024) names the same fields differently.
+PERM_OLD_NAMES = {
+    "EMPLOYER_NAME": "EMP_BUSINESS_NAME",
+    "EMPLOYER_FEIN": "EMP_FEIN",
+    "EMPLOYER_STATE_PROVINCE": "EMP_STATE",
+    "NAICS_CODE": "EMP_NAICS",
+    "EMPLOYER_NUM_EMPLOYEES": "EMP_NUM_PAYROLL",
+    "EMP_YEAR_COMMENCED_BUSINESS": "EMP_YEAR_COMMENCED",
+    "AGENT_ATTORNEY_FIRM_NAME": "ATTY_AG_LAW_FIRM_NAME",
+    "PW_SOC_CODE": "PWD_SOC_CODE",
+    "PW_SOC_TITLE": "PWD_SOC_TITLE",
+    "WAGE_OFFER_FROM": "JOB_OPP_WAGE_FROM",
+    "WAGE_OFFER_UNIT_OF_PAY": "JOB_OPP_WAGE_PER",
+    "WORKSITE_CITY": "PRIMARY_WORKSITE_CITY",
+    "WORKSITE_STATE": "PRIMARY_WORKSITE_STATE",
 }
+KINDS = {
+    "lca": (LCA_COLUMNS, {}),
+    "worksites": (WORKSITE_COLUMNS, {}),
+    "perm": (PERM_COLUMNS, PERM_OLD_NAMES),
+}
+
+
+def _files(kind, year):
+    """(saved file name, url) for every workbook that makes up one table."""
+    if year == 2026:
+        # FY2026 so far: one file per kind covering Q1 to Q3, at other paths.
+        return {
+            "lca": [("LCA_Disclosure_Data_FY2026_Q3.xlsx",
+                     "https://www.dol.gov/media/LCA_Disclosure_Data_FY2026_Q3.xlsx")],
+            "worksites": [("LCA_Worksites_FY2026_Q3.xlsx",
+                           DOL + "FY26Q3/LCA_Worksites_FY_2026_Q3.xlsx")],
+            "perm": [("PERM_Disclosure_Data_FY2026_Q3.xlsx",
+                      "https://www.dol.gov/media/PERM_Disclosure_Data_FY2026_Q3.xlsx")],
+        }[kind]
+    if kind == "lca":
+        names = [f"LCA_Disclosure_Data_FY{year}_Q{q}.xlsx" for q in (1, 2, 3, 4)]
+    elif kind == "worksites":
+        names = [f"LCA_Worksites_FY{year}_Q4.xlsx"]
+    else:
+        names = [f"PERM_Disclosure_Data_FY{year}_Q4.xlsx"]
+        if year == 2024:
+            # FY2024 switched forms mid-year and was published as two files.
+            names.append("PERM_Disclosure_Data_New_Form_FY2024_Q4.xlsx")
+    return [(n, DOL + n) for n in names]
+
+
+TABLES = {f"{kind}_fy{year}": (kind, year) for kind in KINDS for year in YEARS}
 
 # Reference tables for the metro and occupation sections.
 REFS = {
@@ -111,13 +167,16 @@ REFS = {
 }
 
 PERSONAL = re.compile(
-    r"POC|ATTORNEY|ATTY_AG_(?!LAW_FIRM_NAME)|PREPARER|EMAIL|PHONE|ADDRESS|ADDR|POSTAL|PROVINCE"
+    r"POC|CONTACT|ATTORNEY|ATTY|PREPARER|EMAIL|PHONE|ADDRESS|ADDR|POSTAL|PROVINCE"
+    r"|CITIZENSHIP|BIRTH|CLASS_OF_ADMISSION"
 )
+# Business names that contain a flagged word but name a firm, not a person.
+FIRM_COLUMNS = {"ATTY_AG_LAW_FIRM_NAME", "AGENT_ATTORNEY_FIRM_NAME", "EMPLOYER_STATE_PROVINCE"}
 
 
 def check_columns(columns):
-    """Refuse any column that names or locates a person."""
-    bad = [c for c in columns if PERSONAL.search(c)]
+    """Refuse any column that names, locates or describes a person."""
+    bad = [c for c in columns if PERSONAL.search(c) and c not in FIRM_COLUMNS]
     if bad:
         raise SystemExit(f"refusing personal columns: {bad}")
 
@@ -143,20 +202,48 @@ def download(url, dest, user_agent=None):
     return dest
 
 
-def trim(name, source):
-    """Read only the allowed columns of one workbook and write build/week04/<name>.csv.gz."""
-    _, columns = TABLES[name]
-    check_columns(columns)
+def find(name, url, local):
+    """A workbook from the first local folder that has it, else downloaded to build/raw/week04/."""
+    for folder in local:
+        if (folder / name).exists():
+            return folder / name
+    return download(url, RAW / name)
+
+
+def read(source, kind):
+    """The allowed columns of one workbook, renamed to the table's names."""
+    columns, old_names = KINDS[kind]
     header = pd.read_excel(source, engine="calamine", nrows=0).columns
-    present = [c for c in columns if c in header]
-    missing = sorted(set(columns) - set(present))
+    wanted = {c: c for c in header if c in columns}
+    wanted |= {c: old_names[c] for c in header if c in old_names and old_names[c] not in wanted.values()}
+    check_columns(wanted)
+    frame = pd.read_excel(source, engine="calamine", usecols=list(wanted), dtype=str)
+    return frame.rename(columns=wanted)
+
+
+def build(name, local):
+    kind, year = TABLES[name]
+    columns, _ = KINDS[kind]
+    parts = []
+    for file_name, url in _files(kind, year):
+        frame = read(find(file_name, url, local), kind)
+        frame["SOURCE_FILE"] = file_name.removesuffix(".xlsx")
+        parts.append(frame)
+    table = pd.concat(parts, ignore_index=True)
+    missing = [c for c in columns if c not in table]
     if missing:
-        print(f"{name}: not in this year's layout, skipped: {missing}")
-    frame = pd.read_excel(source, engine="calamine", usecols=present, dtype=str)
+        print(f"{name}: not in this year's layout: {missing}")
+    table = table[[c for c in columns if c in table] + ["SOURCE_FILE"]]
+    if kind != "worksites":
+        # A case decided again in a later quarter keeps its latest row.
+        before = len(table)
+        table = table.drop_duplicates("CASE_NUMBER", keep="last")
+        if len(table) < before:
+            print(f"{name}: dropped {before - len(table):,} repeated cases")
     OUT.mkdir(parents=True, exist_ok=True)
     target = OUT / f"{name}.csv.gz"
-    frame.to_csv(target, index=False)
-    print(f"{name}: {len(frame):,} rows, {len(present)} columns -> {target.relative_to(ROOT)}")
+    table.to_csv(target, index=False)
+    print(f"{name}: {len(table):,} rows from {len(parts)} file(s) -> {target.relative_to(ROOT)}", flush=True)
 
 
 def load(name):
@@ -169,17 +256,18 @@ def load(name):
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__.split("\n")[0])
-    parser.add_argument("--local", type=Path, help="folder that already holds the DOL workbooks")
+    parser.add_argument("--local", type=Path, nargs="+", default=[],
+                        help="folders that already hold DOL workbooks")
+    parser.add_argument("--years", type=int, nargs="+", choices=YEARS, default=YEARS)
+    parser.add_argument("--kinds", nargs="+", choices=sorted(KINDS), default=sorted(KINDS))
     parser.add_argument("--refs", action="store_true", help="also fetch the Census and BLS tables")
-    parser.add_argument("--only", nargs="*", choices=sorted(TABLES), help="trim just these tables")
+    parser.add_argument("--no-tables", action="store_true", help="skip the DOL tables (with --refs)")
     args = parser.parse_args()
 
-    for name in TABLES if args.only is None else args.only:
-        workbook, _ = TABLES[name]
-        source = args.local / workbook if args.local else download(DOL + workbook, RAW / workbook)
-        if not source.exists():
-            sys.exit(f"{source} not found")
-        trim(name, source)
+    if not args.no_tables:
+        for kind in args.kinds:
+            for year in args.years:
+                build(f"{kind}_fy{year}", args.local)
 
     if args.refs:
         download(REFS["cbsa_2023.xlsx"], RAW / "cbsa_2023.xlsx")
@@ -193,4 +281,4 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    sys.exit(main())

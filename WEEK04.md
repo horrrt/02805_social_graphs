@@ -53,25 +53,40 @@ carries a different part of Week 4.
 ## Start here
 
 ```bash
-python -m pip install -r requirements-lock.txt   # adds python-calamine, the Excel reader
-python analysis/week04_data.py                   # downloads about 330 MB, writes build/week04/
-CONTACT_EMAIL=you@student.dtu.dk python analysis/week04_data.py --refs --only
-python analysis/week04_where.py                  # or week04_jobs.py, week04_staffing.py
+python -m pip install -r requirements-lock.txt     # adds python-calamine, the Excel reader
+python analysis/week04_data.py --years 2025        # one year first: about 560 MB
+python analysis/week04_data.py                     # all five years: 2.6 GB, about 6 minutes
+CONTACT_EMAIL=you@student.dtu.dk python analysis/week04_data.py --refs --no-tables
+python analysis/week04_where.py                    # or week04_jobs.py, week04_staffing.py
 ```
 
-`week04_data.py` downloads the four workbooks to `build/raw/week04/`, keeps only the allowed columns and
-writes gzipped CSVs to `build/week04/`. Your script reads them with `load("lca_fy2025")`. The
-`--refs` run fetches the Census metro file and the BLS occupation groups; BLS refuses requests whose
+`week04_data.py` downloads the DOL workbooks to `build/raw/week04/`, keeps only the allowed columns and
+writes one gzipped CSV per table and year to `build/week04/`. Your script reads them with
+`load("lca_fy2025")`. If you already have the workbooks, point at them with `--local DIR [DIR ...]`.
+The `--refs` run fetches the Census metro file and the BLS occupation groups; BLS refuses requests whose
 User-Agent has no contact address, hence `CONTACT_EMAIL`. `build/` is gitignored.
 
-What you get (FY2025 unless stated):
+A US fiscal year runs from 1 October to 30 September: FY2025 is October 2024 to September 2025.
+**DOL publishes H-1B applications one file per quarter**; the loader joins a year's four files, and
+every row keeps its `SOURCE_FILE`. FY2026 is the latest release (7 August 2026) and stops at June 2026.
 
-| Table | Rows | What one row is |
-| --- | --- | --- |
-| `lca_fy2025` | 118,580 | One H-1B application (112,131 certified H-1B) |
-| `lca_fy2024` | 120,897 | Same, previous year, for the stability check |
-| `worksites_fy2025` | 897,289 | One worksite of an application; carries extra clients |
-| `perm_fy2025` | 147,056 | One green-card labour certification |
+| Year | `lca_fy…` (H-1B applications) | Certified H-1B | Name a client | `worksites_fy…` | `perm_fy…` (green card) |
+| --- | --- | --- | --- | --- | --- |
+| FY2022 | 626,084 | 597,093 | 130,226 | 936,558 | 104,600 |
+| FY2023 | 543,580 | 518,012 | 115,577 | 803,849 | 116,306 |
+| FY2024 | 561,037 | 534,037 | 113,771 | 841,561 | 114,499 |
+| FY2025 | 594,821 | 567,907 | 109,374 | 897,289 | 147,056 |
+| FY2026 (Oct to Jun) | 437,496 | 417,721 | 75,369 | 444,064 | 112,550 |
+
+Layout differences the loader already handles:
+
+- **No employer tax number before FY2024.** `EMPLOYER_FEIN` is missing from the H-1B files for FY2022
+  and FY2023, and `EMP_FEIN` from green-card files for FY2022 and FY2023. Match employers by name for
+  those years.
+- **The green-card form changed in FY2024.** FY2022 to FY2024 use the old form; the loader renames its
+  columns to the new form's names, and FY2024 joins both files.
+- **Repeated cases.** A few cases appear in two quarterly files; the loader keeps the latest row. The
+  FY2023 "Q2" file already contains Q1, so 101,027 Q1 rows were duplicates.
 
 ## Data rules
 
@@ -91,7 +106,8 @@ What you get (FY2025 unless stated):
 1. An edge list from its script.
 2. Its main number against a shuffled baseline (a network that keeps everyone's number of links, or
    shuffled labels for NMI).
-3. 100 Louvain runs instead of one, and FY2024 against FY2025.
+3. 100 Louvain runs instead of one, and the same analysis on another year (FY2022 to FY2025 are
+   complete years; FY2026 is nine months).
 4. One figure and one finding that could have come out the other way.
 5. About 250 words, and a JSON file (`analysis/week04_<section>.json`) with every number it quotes.
 
@@ -107,7 +123,7 @@ What you get (FY2025 unless stated):
 
 | When | What |
 | --- | --- |
-| Wed 23 Sep | Everyone runs `week04_data.py` and their section's script |
+| Wed 23 Sep | Everyone runs `week04_data.py --years 2025` and their section's script |
 | Fri 25 Sep, 18:00 | Progress note: first number, any blocker |
 | Sun 27 Sep, 18:00 | Figure, finding and text ready |
 | Sun 27 Sep, evening | Review together |
@@ -130,11 +146,13 @@ All checked on 23 September 2026.
 | [BLS 2018 SOC structure](https://www.bls.gov/soc/2018/soc_structure_2018.xlsx) | Occupation groups (section 2) | Public; User-Agent must name a contact |
 | [USCIS H-1B Employer Data Hub](https://www.uscis.gov/tools/reports-and-studies/h-1b-employer-data-hub) | Approvals per employer, optional attributes | Public |
 
-Traps found so far (from the FY2025 profile):
+Traps found so far:
 
-- 21.3% of certified filings name a client; 8.6% of those clients are placeholders such as "Home Address",
-  "Beneficiary's Residence", "Remote" or "TBD Open".
+- 19.3% of certified H-1B filings in FY2025 name a client (109,374 of 567,907).
+- In a first look at July to September 2025 only, 8.6% of client names were placeholders such as
+  "Home Address", "Beneficiary's Residence", "Remote" or "TBD Open".
 - Corporate families survive simple name cleaning ("Bank of America" and "Bank of America N A").
-- The staffing network is a forest of stars (median degree 1). One Louvain run gives 46 communities at
-  modularity 0.735, which a shuffled network may match: section 3 must show the comparison.
-- Clients carry no industry code; only 17.2% match a filing employer's NAICS by name.
+- In that same quarter the staffing network was a forest of stars (median degree 1), and one Louvain run
+  gave 46 communities at modularity 0.735, which a shuffled network may match. Section 3 must show the
+  comparison, on the full year.
+- Clients carry no industry code; in that quarter only 17.2% matched a filing employer's NAICS by name.
