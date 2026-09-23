@@ -8,7 +8,7 @@ applyTo: "analysis/**"
 
 - Run scripts from the repository root with the project environment (`.venv-course`).
 - Read week 4 data with `load("lca_fy2025")` from `analysis/week04_data.py`. Never read `build/raw/` directly.
-- Keep to certified H-1B filings unless the section says otherwise: `CASE_STATUS` starts with "Certified" and
+- Keep to certified H-1B filings unless the section says otherwise: `CASE_STATUS` is exactly "Certified" (not "Certified - Withdrawn") and
   `VISA_CLASS` is "H-1B".
 - Identify companies only through `resolver()` in `analysis/week04_staffing.py`: `employer(name, fein)`,
   `client(name)` and `label(key)`. Do not write your own name cleaning.

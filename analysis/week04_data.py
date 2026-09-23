@@ -165,6 +165,13 @@ REFS = {
     # Census 2023 gazetteer: one row per metro area with its centre point.
     "cbsa_gazetteer_2023.zip": "https://www2.census.gov/geo/docs/maps-data/data/gazetteer/"
     "2023_Gazetteer/2023_Gaz_cbsa_national.zip",
+    # Census 2023 gazetteer, county subdivisions: New England towns -> county
+    # (Connecticut's 2023 planning regions), for worksites filed under a town.
+    "cousub_gazetteer_2023.zip": "https://www2.census.gov/geo/docs/maps-data/data/gazetteer/"
+    "2023_Gazetteer/2023_Gaz_cousubs_national.zip",
+    # Census 2023 gazetteer, places: where each metro's first-named city lies.
+    "place_gazetteer_2023.zip": "https://www2.census.gov/geo/docs/maps-data/data/gazetteer/"
+    "2023_Gazetteer/2023_Gaz_place_national.zip",
     # USCIS H-1B Employer Data Hub: petitions approved and denied per employer,
     # by the fiscal year of the decision. Published to FY2023 as files.
     "uscis_fy2022.csv": "https://www.uscis.gov/sites/default/files/document/data/h1b_datahubexport-2022.csv",
@@ -291,6 +298,8 @@ def main():
     if args.refs:
         download(REFS["cbsa_2023.xlsx"], RAW / "cbsa_2023.xlsx")
         download(REFS["cbsa_gazetteer_2023.zip"], RAW / "cbsa_gazetteer_2023.zip")
+        download(REFS["cousub_gazetteer_2023.zip"], RAW / "cousub_gazetteer_2023.zip")
+        download(REFS["place_gazetteer_2023.zip"], RAW / "place_gazetteer_2023.zip")
         for year in (2022, 2023):
             uscis(year, args.local)
         # BLS answers 403 unless the User-Agent names a contact.

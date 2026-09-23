@@ -28,6 +28,8 @@ let data;
 let year;
 let selected;
 const chart = echarts.init(host, null, { renderer: "canvas" });
+const flowsHost = root.querySelector(".staffing-flows .chart-host");
+const flowsChart = echarts.init(flowsHost, null, { renderer: "canvas" });
 
 function clients() {
   return data.years[year].shown;
@@ -163,7 +165,80 @@ function draw() {
   root.querySelector("#staffing-names").innerHTML =
     rows.map((d) => `<option value="${esc(d.name)}"></option>`).join("");
   table(rows);
+  drawFlows();
   show(rows.find((d) => selected && d.name === selected.name) ?? rows[0]);
+}
+
+// Vendor -> client flows. Node names carry a side prefix, because a firm can be
+// a vendor and a client at once (Deloitte places workers and receives them).
+function drawFlows() {
+  const f = data.years[year].flows;
+  const v = (i) => `v:${f.vendors[i].name}`;
+  const c = (i) => `c:${f.clients[i].name}`;
+  const side = (name) => name.slice(2);
+  const nodes = [
+    ...f.vendors.map((d, i) => ({
+      name: v(i),
+      placed: d.placed,
+      vendor: true,
+      other: d.other,
+      label: { position: "left" },
+      itemStyle: d.other ? { color: token("--series-none") } : undefined,
+    })),
+    ...f.clients.map((d, i) => ({ name: c(i), placed: d.placed, vendor: false, label: { position: "right" } })),
+  ];
+  flowsChart.setOption(
+    {
+      animationDuration: 300,
+      textStyle: { fontFamily: token("--sans") },
+      tooltip: {
+        trigger: "item",
+        confine: true,
+        backgroundColor: token("--surface"),
+        borderColor: token("--line"),
+        textStyle: { color: token("--paper"), fontSize: 13 },
+        formatter: (p) => {
+          if (p.dataType === "edge") {
+            const client = f.clients.find((d) => d.name === side(p.data.target));
+            return `<strong>${esc(side(p.data.source))} → ${esc(side(p.data.target))}</strong><br />
+              ${num(p.data.value)} filings, ${pct(p.data.value / client.placed)} of the client's placed filings`;
+          }
+          const d = p.data;
+          if (d.other) return `<strong>All other firms</strong><br />${num(d.placed)} filings to these ${f.clients.length} clients`;
+          return `<strong>${esc(side(d.name))}</strong><br />${num(d.placed)} placed filings in the year${
+            d.vendor ? ", to all its clients" : ", from all firms"}`;
+        },
+      },
+      series: [
+        {
+          type: "sankey",
+          left: 170,
+          right: 190,
+          top: 8,
+          bottom: 8,
+          nodeWidth: 10,
+          nodeGap: 6,
+          layoutIterations: 0,
+          draggable: false,
+          emphasis: { focus: "adjacency" },
+          itemStyle: { color: token("--paper"), borderWidth: 0 },
+          lineStyle: { color: token("--series-none"), opacity: 0.55, curveness: 0.5 },
+          label: { color: token("--paper"), fontSize: 12, formatter: (p) => side(p.name) },
+          data: nodes,
+          links: f.links.map(([vi, ci, n]) => ({
+            source: v(vi),
+            target: c(ci),
+            value: n,
+            // The named firms' bands in colour; every other firm's in grey.
+            lineStyle: f.vendors[vi].other ? { opacity: 0.35 } : { color: token("--series-1"), opacity: 0.45 },
+          })),
+        },
+      ],
+    },
+    { notMerge: true },
+  );
+  root.querySelector(".flows-coverage").textContent =
+    `The ${f.vendors.length - 1} largest firms supply ${num(f.from_top_vendors)} of the ${num(f.client_filings)} filings these ${f.clients.length} clients receive (${pct(f.from_top_vendors / f.client_filings)}); every other firm together supplies the rest.`;
 }
 
 function table(rows) {
@@ -188,7 +263,10 @@ root.querySelectorAll(".staffing-years button").forEach((button) => {
     draw();
   });
 });
-window.addEventListener("resize", () => chart.resize());
+window.addEventListener("resize", () => {
+  chart.resize();
+  flowsChart.resize();
+});
 
 // Communities with and without filing counts, from analysis/week04_staffing.py.
 const stats = document.querySelector("#staffing-community-stats");

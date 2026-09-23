@@ -1,16 +1,16 @@
 {
  "generated_by": "analysis/week04_names_check.py",
  "bridge": {
-  "fy2025_filings": 567906,
-  "bridged_share": 0.8638,
+  "fy2025_filings": 537795,
+  "bridged_share": 0.8608,
   "correct_fein_share_of_bridged": 0.9984,
   "correct_company_share_of_bridged": 0.9984
  },
  "name_rules": {
   "pairwise_precision": 0.9997,
-  "pairwise_recall": 0.9978,
-  "filings_under_a_name_key_spanning_companies": 0.0607,
-  "filings_of_a_company_split_across_name_keys": 0.1393,
+  "pairwise_recall": 0.9982,
+  "filings_under_a_name_key_spanning_companies": 0.0628,
+  "filings_of_a_company_split_across_name_keys": 0.1344,
   "largest_false_merges": [
    {
     "key": "Amazon",
@@ -48,13 +48,6 @@
     ]
    },
    {
-    "key": "SNAP",
-    "companies": [
-     "FEIN 455452795",
-     "FEIN 541886708"
-    ]
-   },
-   {
     "key": "COFORGE",
     "companies": [
      "FEIN 200871709",
@@ -62,10 +55,17 @@
     ]
    },
    {
-    "key": "JUNIPER NETWORKS",
+    "key": "SNAP",
     "companies": [
-     "FEIN 770422528",
-     "FEIN 770559888"
+     "FEIN 455452795",
+     "FEIN 541886708"
+    ]
+   },
+   {
+    "key": "CVS SHARED SERVICES RESOURCES",
+    "companies": [
+     "CVS Health",
+     "FEIN 992848079"
     ]
    }
   ]

@@ -334,6 +334,21 @@
 .staffing-chart {
   position: relative;
 }
+.staffing-flows {
+  margin-top: 28px;
+}
+.staffing-flows h3 {
+  margin: 0 0 6px;
+  font-size: 15px;
+}
+.staffing-flows .chart-host {
+  height: 640px;
+}
+.staffing-flows .flows-caption {
+  color: var(--muted);
+  font-size: 13px;
+  margin: 8px 0 0;
+}
 .staffing-chart .chart-host {
   width: 100%;
   height: 470px;

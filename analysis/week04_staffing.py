@@ -74,7 +74,7 @@ def resolver():
 
 def certified(year):
     lca = load(f"lca_fy{year}")
-    lca = lca[lca["CASE_STATUS"].str.startswith("Certified") & (lca["VISA_CLASS"] == "H-1B")].copy()
+    lca = lca[(lca["CASE_STATUS"] == "Certified") & (lca["VISA_CLASS"] == "H-1B")].copy()
     lca["positions"] = pd.to_numeric(lca["TOTAL_WORKER_POSITIONS"], errors="coerce").fillna(1)
     # A tax number where there is one; FY2022 and FY2023 names borrow theirs.
     fein = lca["EMPLOYER_FEIN"] if "EMPLOYER_FEIN" in lca else pd.Series("", index=lca.index)

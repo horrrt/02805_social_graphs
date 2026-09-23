@@ -12,16 +12,23 @@ Questions
 - Is it one national job market or several regional ones?
 - Do the same employers tie distant cities together?
 
-Inputs: certified H-1B filings of FY2025 (load("lca_fy2025")) and every
-worksite of each (load("worksites_fy2025")); Census county -> metro
-(cbsa_2023.xlsx) and metro centres (cbsa_gazetteer_2023.zip), both from
-python analysis/week04_data.py --refs. Companies are keyed by
-week04_names.Resolver (tax number first), the same keys as section 3.
+Inputs: certified H-1B filings of FY2025 (load("lca_fy2025"), status exactly
+"Certified", so withdrawn ones are out) and every worksite of each
+(load("worksites_fy2025")); from python analysis/week04_data.py --refs: Census
+county -> metro (cbsa_2023.xlsx), towns -> county (cousub_gazetteer_2023.zip;
+New England filings name a town where other states name a county, and
+Connecticut's counties are 2023 planning regions) and city centres
+(place_gazetteer_2023.zip; a metro sits at its first-named city). Companies are
+keyed by week04_names.Resolver (tax number first), the same keys as section 3.
+A filing counts at most its own requested positions in each metro, however
+many addresses there it lists.
 
 Checks
-- Louvain, 50 runs, against 50 degree-preserving rewirings of the
-  company x metro graph, re-projected (each company and each metro keeps its
-  number of partners).
+- Louvain, 50 runs. The page shows the partition found most often and
+  reports how often; its modularity is compared with 50 degree-preserving
+  rewirings of the company x metro graph, re-projected (each company and each
+  metro keeps its number of partners; filing counts are dealt back out at
+  random), one Louvain run each.
 - NMI of the communities with Census regions and divisions, against 1,000
   shuffles of the labels.
 - The disparity filter (Serrano, Boguna and Vespignani 2009) at five alphas.
@@ -37,6 +44,7 @@ import json
 import math
 import random
 import re
+from collections import Counter
 from itertools import combinations
 from pathlib import Path
 
@@ -97,7 +105,10 @@ CENSUS = {
 REGION = {s: r for r, divs in CENSUS.items() for states in divs.values() for s in states}
 DIVISION = {s: d for divs in CENSUS.values() for d, states in divs.items() for s in states}
 COLOURS = ["#f2820c", "#1f8fd6", "#6b4fbb", "#2a9d8f", "#c45c26", "#d4a017", "#7a8fac", "#9b3d6e"]
-CENSUS_COLOURS = {"Northeast": "#f2820c", "Midwest": "#c45c26", "South": "#6b4fbb", "West": "#1f8fd6"}
+# Census colours share no hue with the community colours above.
+CENSUS_COLOURS = {"Northeast": "#2a9d8f", "Midwest": "#9b3d6e", "South": "#d4a017", "West": "#4a5a78"}
+NEW_ENGLAND = {"CT", "MA", "ME", "NH", "RI", "VT"}
+ARC_EMPLOYERS = 6  # companies on the one-employer map: those leading the most backbone links
 
 
 def county_key(name):
@@ -106,21 +117,61 @@ def county_key(name):
     return " ".join(s.split())
 
 
+def town_key(name):
+    """A New England town without its type: "BOSTON CITY", "Natick town" and
+    "Barnstable Town city" become BOSTON, NATICK and BARNSTABLE."""
+    s = re.sub(r"[^A-Z ]", " ", name.upper())
+    words = s.split()
+    while words[:2] in (["CITY", "OF"], ["TOWN", "OF"]):
+        words = words[2:]
+    while words and words[-1] in {"CITY", "TOWN", "TOWNSHIP", "PLANTATION", "GORE", "GRANT", "LOCATION",
+                                  "PURCHASE", "VILLAGE"}:
+        words.pop()
+    return " ".join(words)
+
+
+def gazetteer(name):
+    gaz = pd.read_csv(RAW / name, sep="\t", dtype=str)
+    gaz.columns = [c.strip() for c in gaz.columns]
+    return gaz
+
+
 def metros():
-    """(state name, county key) -> CBSA code, and one row per metro with its centre."""
+    """(state name, county key) -> CBSA code, (state, town) -> CBSA code for New
+    England, and one row per metro."""
     table = pd.read_excel(RAW / "cbsa_2023.xlsx", engine="calamine", header=2, dtype=str).dropna(
         subset=["CBSA Code", "County/County Equivalent"])
     lookup = {(r["State Name"].upper(), county_key(r["County/County Equivalent"])): r["CBSA Code"]
               for _, r in table.iterrows()}
-    gaz = pd.read_csv(RAW / "cbsa_gazetteer_2023.zip", sep="\t", dtype=str)
-    gaz.columns = [c.strip() for c in gaz.columns]
-    return lookup, gaz.set_index("GEOID")
+    by_fips = dict(zip(table["FIPS State Code"] + table["FIPS County Code"], table["CBSA Code"]))
+    towns = gazetteer("cousub_gazetteer_2023.zip")
+    towns = towns[towns["USPS"].isin(NEW_ENGLAND)].assign(key=lambda t: t["NAME"].map(town_key))
+    # A town name used twice in one state could be either: left out.
+    towns = towns[~towns.duplicated(["USPS", "key"], keep=False)]
+    town_lookup = {(st, k): by_fips.get(g[:5]) for st, k, g in zip(towns["USPS"], towns["key"], towns["GEOID"])}
+    return lookup, {k: v for k, v in town_lookup.items() if v}, gazetteer("cbsa_gazetteer_2023.zip").set_index("GEOID")
 
 
-def worksite_metros(lookup):
+def first_state(title):
+    """ "Dallas-Fort Worth-Arlington, TX Metro Area" -> TX; "…, DC-VA-MD-WV Metro Area" -> DC."""
+    return title.split(", ")[1].split()[0].split("-")[0]
+
+
+def first_city(title, places):
+    """(lat, lon) of a metro's first-named city: "San Jose-Sunnyvale-Santa Clara, CA"
+    is San Jose, California. None if the place list has no such city."""
+    city, state = title.split(",")[0].split("-")[0].strip(), first_state(title)
+    mine = places[(places["USPS"] == state) & places["NAME"].str.match(re.escape(city) + r"(?:[ \-(/]|$)")]
+    if mine.empty:
+        return None
+    best = mine.loc[pd.to_numeric(mine["ALAND"]).idxmax()]
+    return float(best["INTPTLAT"]), float(best["INTPTLONG"])
+
+
+def worksite_metros(lookup, town_lookup):
     """One row per worksite of FY2025's certified H-1B filings, with its metro and employer."""
     lca = load(f"lca_fy{YEAR}")
-    lca = lca[lca["CASE_STATUS"].str.startswith("Certified") & (lca["VISA_CLASS"] == "H-1B")]
+    lca = lca[(lca["CASE_STATUS"] == "Certified") & (lca["VISA_CLASS"] == "H-1B")]
     lca = lca.assign(employer=[resolver().employer(n, f) for n, f in zip(lca["EMPLOYER_NAME"], lca["EMPLOYER_FEIN"])])
     sites = load(f"worksites_fy{YEAR}")
     sites = sites[sites["CASE_NUMBER"].isin(lca["CASE_NUMBER"])].copy()
@@ -135,13 +186,24 @@ def worksite_metros(lookup):
     sites.loc[blank, "county"] = [usual.get((c.upper(), s), "") for c, s in
                                   zip(sites.loc[blank, "WORKSITE_CITY"], sites.loc[blank, "state"])]
     sites["metro"] = [lookup.get(k) for k in zip(sites["state"], sites["county"])]
+    # New England filings often name a town as the county: look the town up,
+    # from the county field first, then the city.
+    # The worksite file spells the state out ("MASSACHUSETTS"); the town list uses "MA".
+    abbr = {n.upper(): a for a, n in STATE_NAMES.items()}
+    town = sites["metro"].isna() & sites["state"].map(abbr).isin(NEW_ENGLAND)
+    sites.loc[town, "metro"] = [
+        town_lookup.get((st, town_key(c))) or town_lookup.get((st, town_key(ci)))
+        for st, c, ci in zip(sites.loc[town, "state"].map(abbr), sites.loc[town, "WORKSITE_COUNTY"].fillna(""),
+                             sites.loc[town, "WORKSITE_CITY"].fillna(""))]
     stats = {
         "worksite_rows": len(sites),
         "blank_county_rows": int(blank.sum()),
         "blank_county_resolved": int((blank & (sites["county"] != "")).sum()),
+        "new_england_rows_by_town": int((town & sites["metro"].notna()).sum()),
         "rows_in_a_metro": int(sites["metro"].notna().sum()),
     }
-    sites = sites.merge(lca[["CASE_NUMBER", "employer"]], on="CASE_NUMBER")
+    lca = lca.assign(total=pd.to_numeric(lca["TOTAL_WORKER_POSITIONS"], errors="coerce").fillna(1))
+    sites = sites.merge(lca[["CASE_NUMBER", "employer", "total"]], on="CASE_NUMBER")
     return sites.dropna(subset=["metro"]), lca, stats
 
 
@@ -204,35 +266,43 @@ def label(key):
 def main():
     check_disparity()
     rng = random.Random(SEED)
-    lookup, gaz = metros()
-    sites, lca, stats = worksite_metros(lookup)
+    lookup, town_lookup, gaz = metros()
+    places = gazetteer("place_gazetteer_2023.zip")
+    sites, lca, stats = worksite_metros(lookup, town_lookup)
 
     # A · rankings. One filing counts once per metro it names.
     per_case = sites.drop_duplicates(["CASE_NUMBER", "metro"])
     pairs = per_case.groupby(["employer", "metro"]).size().rename("filings").reset_index()
     filings = per_case.groupby("metro").size().sort_values(ascending=False)
-    positions = sites.groupby("metro")["workers"].sum()
+    # A filing that lists three addresses for its 100 positions asks for 100, not 300.
+    per_case_metro = sites.groupby(["CASE_NUMBER", "metro"]).agg(workers=("workers", "sum"), total=("total", "first"))
+    positions = per_case_metro["workers"].clip(upper=per_case_metro["total"]).groupby("metro").sum()
+    stats["positions_capped_share"] = round(float(1 - positions.sum() / sites["workers"].sum()), 4)
     employers = pairs.groupby("metro")["employer"].nunique()
     top = list(filings.head(TOP).index)
     stats |= {"metros": int(filings.size), "top_metros": TOP,
+              "filings": int(per_case["CASE_NUMBER"].nunique()),
               "top_metros_filing_share": round(float(filings.head(TOP).sum() / filings.sum()), 4)}
 
     placed = lca[lca["SECONDARY_ENTITY"].str.upper().str.startswith("Y")]
     shortlist = list(placed["employer"].value_counts().head(SHORTLIST).index)
 
-    state_of = per_case.groupby("metro")["state"].agg(lambda s: s.value_counts().index[0])
-    abbr = {n.upper(): a for a, n in STATE_NAMES.items()}
-    cities = []
+    cities, unplaced = [], []
     for m in top:
         mine = pairs[pairs["metro"] == m].sort_values("filings", ascending=False)
-        st = abbr[state_of[m]]
         title = gaz.loc[m, "NAME"]
+        # The metro's first-named state and city: Washington, DC is DC, not Virginia.
+        st = first_state(title)
+        point = first_city(title, places)
+        if point is None:
+            unplaced.append(title)
+            point = float(gaz.loc[m, "INTPTLAT"]), float(gaz.loc[m, "INTPTLONG"])
         cities.append({
             "id": m,
             "name": title.split(",")[0].split("-")[0],
             "state": st,
-            "lon": round(float(gaz.loc[m, "INTPTLONG"]), 3),
-            "lat": round(float(gaz.loc[m, "INTPTLAT"]), 3),
+            "lon": round(point[1], 3),
+            "lat": round(point[0], 3),
             "positions": int(positions[m]),
             "filings": int(filings[m]),
             "employers": int(employers[m]),
@@ -243,6 +313,7 @@ def main():
             "metro_title": title,
         })
     by_id = {c["id"]: c for c in cities}
+    stats["metros_at_cbsa_centre"] = unplaced  # no first-named city in the place list
 
     # The claim in the section's lead: the headcount leader is not the employer-count leader.
     rank_pos = sorted(top, key=lambda m: -positions[m])
@@ -287,10 +358,16 @@ def main():
     # C · communities against Census labels, and against re-projected rewirings.
     runs = [nx.community.louvain_communities(g, weight="weight", seed=SEED + r) for r in range(RUNS)]
     qs = np.array([nx.community.modularity(g, c, weight="weight") for c in runs])
-    best = runs[int(np.argmax(qs))]
+    # Louvain does not always find the same partition on a graph this dense. The
+    # page shows the one found most often (ties: the higher modularity), and every
+    # number below is computed on that partition.
+    found = Counter(frozenset(frozenset(c) for c in part) for part in runs)
+    q_of = {k: nx.community.modularity(g, [set(c) for c in k], weight="weight") for k in found}
+    modal = max(found, key=lambda k: (found[k], q_of[k]))
+    best = [set(c) for c in sorted(modal, key=lambda c: (-len(c), min(c)))]
     member = {m: i for i, part in enumerate(best) for m in part}
-    run_labels = [{m: i for i, part in enumerate(c) for m in part} for c in runs[:20]]
-    seeds_nmi = [nmi([a[m] for m in top], [b[m] for m in top]) for a, b in zip(run_labels, run_labels[1:])]
+    run_labels = [{m: i for i, part in enumerate(c) for m in part} for c in runs]
+    seeds_nmi = [nmi([a[m] for m in top], [b[m] for m in top]) for a, b in combinations(run_labels, 2)]
     bip = nx.Graph()
     for e, m, f in pairs[pairs["metro"].isin(top)].itertuples(index=False):
         bip.add_edge(("F", e), ("C", m), weight=int(f))
@@ -345,18 +422,23 @@ def main():
         "backbone_links": len(edges), "threshold_km": LONG_KM,
         "long_links": len(long), "long_led_by_shortlist": sum(e["staffing"] for e in long),
         "short_links": len(short), "short_led_by_shortlist": sum(e["staffing"] for e in short),
+        "long_leaders": Counter(e["top_employer"] for e in long).most_common(6),
+        "long_median_top_share": round(float(np.median([e["top_share"] for e in long])), 3) if long else None,
+        "long_links_one_company_half": [f'{by_id[e["a"]]["name"]}–{by_id[e["b"]]["name"]} ({e["top_employer"]})'
+                                        for e in long if e["top_share"] >= 0.5],
     }
-    arcs = {}
-    for e in shortlist:
-        f = per_employer.get(e, {})
-        both = sorted(combinations(sorted(f), 2), key=lambda ab: -min(f[ab[0]], f[ab[1]]))
-        arcs[label(e)] = [list(ab) for ab in both[:6]]
+    # The one-employer map: the companies that lead the most backbone links, each
+    # with the links it leads.
+    leaders = [name for name, _ in Counter(e["top_employer"] for e in edges).most_common(ARC_EMPLOYERS)]
+    arcs = {name: [[e["a"], e["b"]] for e in edges if e["top_employer"] == name] for name in leaders}
 
+    q_modal = q_of[modal]
     null_model = {
-        "Q": round(float(qs.mean()), 3), "Q_sd": round(float(qs.std()), 4),
+        "Q": round(float(q_modal), 3), "Q_runs_mean": round(float(qs.mean()), 3),
+        "partitions_found": len(found), "modal_runs": found[modal],
         "Q_null_mean": round(float(null_q.mean()), 3), "Q_null_std": round(float(null_q.std()), 4),
-        "z": round(float((qs.mean() - null_q.mean()) / null_q.std()), 2),
-        "nmi_seeds": round(float(np.median(seeds_nmi)), 3),
+        "z": round(float((q_modal - null_q.mean()) / null_q.std()), 2),
+        "nmi_seeds": round(float(np.median(seeds_nmi)), 3), "nmi_seeds_min": round(float(min(seeds_nmi)), 3),
         "nmi_census_region": round(region_nmi, 3), "p_region": round(region_p, 4),
         "nmi_census_division": round(division_nmi, 3), "p_division": round(division_p, 4),
         "seeds": RUNS, "communities": len(best),
@@ -376,7 +458,8 @@ def main():
                      "edges_kept": edges_kept, "snap_alpha": snap, "snap_note": snap_note,
                      "snap_dropped": snap_dropped, "graphs": graphs},
         "null_model": null_model,
-        "longhaul": {"staffing": [label(e) for e in shortlist], "edges": edges, "employer_arcs": arcs},
+        "longhaul": {"staffing": [label(e) for e in shortlist], "edges": edges, "employer_arcs": arcs,
+                     "arc_employers": leaders},
     }
     PAGE.write_text(json.dumps(page, indent=1, ensure_ascii=False) + "\n")
     summary = {

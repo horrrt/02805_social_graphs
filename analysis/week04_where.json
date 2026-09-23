@@ -2,13 +2,17 @@
  "generated_by": "analysis/week04_where.py",
  "year": 2025,
  "coverage": {
-  "worksite_rows": 846626,
-  "blank_county_rows": 139348,
-  "blank_county_resolved": 138198,
-  "rows_in_a_metro": 797447,
-  "metros": 883,
+  "worksite_rows": 800922,
+  "blank_county_rows": 137609,
+  "blank_county_resolved": 136417,
+  "new_england_rows_by_town": 38709,
+  "rows_in_a_metro": 793674,
+  "positions_capped_share": 0.2287,
+  "metros": 901,
   "top_metros": 40,
-  "top_metros_filing_share": 0.8532
+  "filings": 533235,
+  "top_metros_filing_share": 0.845,
+  "metros_at_cbsa_centre": []
  },
  "ranking": {
   "top_by_positions": "San Jose",
@@ -16,8 +20,8 @@
   "top5_by_positions": [
    "San Jose",
    "New York",
-   "Dallas",
    "Seattle",
+   "Dallas",
    "San Francisco"
   ],
   "top5_by_employers": [
@@ -38,7 +42,7 @@
   ],
   "default_alpha": 0.2,
   "gc_size": [
-   18,
+   19,
    32,
    40,
    40,
@@ -46,77 +50,119 @@
   ],
   "edges_kept": [
    27,
-   63,
-   183,
-   422,
-   663
+   60,
+   180,
+   418,
+   667
   ],
   "snap_alpha": 0.05,
-  "snap_note": "Below α = 0.1 the giant component drops from 32 metros to 18; at α = 0.05 it keeps 27 links. The largest to fall off: Los Angeles, Detroit, Phoenix and 11 more.",
+  "snap_note": "Below α = 0.1 the giant component drops from 32 metros to 19; at α = 0.05 it keeps 27 links. The largest to fall off: Los Angeles, Detroit, Phoenix and 10 more.",
   "snap_dropped": [
    "Los Angeles",
    "Detroit",
    "Phoenix",
-   "Miami",
    "Minneapolis",
    "Tampa",
    "Columbus",
    "Portland",
+   "Hartford",
    "Baltimore",
    "Orlando",
    "San Antonio",
    "Richmond",
-   "Memphis",
-   "Stockton"
+   "Memphis"
   ]
  },
  "null_model": {
-  "Q": 0.053,
-  "Q_sd": 0.0017,
+  "Q": 0.049,
+  "Q_runs_mean": 0.052,
+  "partitions_found": 2,
+  "modal_runs": 29,
   "Q_null_mean": 0.013,
-  "Q_null_std": 0.0014,
-  "z": 28.2,
+  "Q_null_std": 0.0011,
+  "z": 31.64,
   "nmi_seeds": 1.0,
-  "nmi_census_region": 0.035,
-  "p_region": 0.5674,
-  "nmi_census_division": 0.098,
-  "p_division": 0.3407,
+  "nmi_seeds_min": 0.642,
+  "nmi_census_region": 0.137,
+  "p_region": 0.1189,
+  "nmi_census_division": 0.214,
+  "p_division": 0.1119,
   "seeds": 50,
-  "communities": 2
+  "communities": 3
  },
  "communities": [
   {
    "id": 0,
    "label": "New York–Dallas",
    "colour": "#f2820c",
-   "metros": 11,
+   "metros": 7,
    "regions": {
-    "West": 5,
     "South": 4,
-    "Northeast": 1,
+    "Northeast": 2,
     "Midwest": 1
    }
   },
   {
    "id": 1,
-   "label": "Houston–Philadelphia",
+   "label": "San Jose–San Francisco",
    "colour": "#1f8fd6",
-   "metros": 29,
+   "metros": 8,
    "regions": {
-    "South": 14,
+    "West": 5,
+    "South": 2,
+    "Northeast": 1
+   }
+  },
+  {
+   "id": 2,
+   "label": "Detroit–Phoenix",
+   "colour": "#6b4fbb",
+   "metros": 25,
+   "regions": {
+    "South": 11,
     "Midwest": 6,
-    "West": 6,
+    "West": 5,
     "Northeast": 3
    }
   }
  ],
  "longhaul": {
-  "backbone_links": 183,
+  "backbone_links": 180,
   "threshold_km": 1500,
-  "long_links": 84,
-  "long_led_by_shortlist": 24,
-  "short_links": 99,
-  "short_led_by_shortlist": 49
+  "long_links": 83,
+  "long_led_by_shortlist": 22,
+  "short_links": 97,
+  "short_led_by_shortlist": 48,
+  "long_leaders": [
+   [
+    "Amazon",
+    30
+   ],
+   [
+    "Cognizant",
+    17
+   ],
+   [
+    "EY",
+    8
+   ],
+   [
+    "Deloitte",
+    7
+   ],
+   [
+    "Walmart",
+    3
+   ],
+   [
+    "Tata Consultancy Services",
+    3
+   ]
+  ],
+  "long_median_top_share": 0.138,
+  "long_links_one_company_half": [
+   "San Jose–Fayetteville (Walmart)"
+  ]
  },
  "shortlist": [
   "Tata Consultancy Services",
