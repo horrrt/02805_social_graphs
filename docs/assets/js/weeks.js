@@ -53,7 +53,13 @@ export const WEEKS = [
     courseTitle: "Communities & backbones",
     short: "COMMUNITIES",
     date: "2026-09-23",
-    status: "coming",
+    status: "live",
+    cabinet: {
+      name: "Who Hires",
+      marquee: "WHO HIRES",
+      href: "weeks/week04/",
+      blurb: "Where H-1B hiring happens — cities, backbones, and who ties them.",
+    },
   },
   {
     n: 5,
