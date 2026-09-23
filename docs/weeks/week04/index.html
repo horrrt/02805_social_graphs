@@ -260,23 +260,23 @@
               </label>
             </div>
 
-            <div class="grid2">
-              <div class="plot">
-                <h3>Giant component vs α</h3>
-                <p class="axis-note">
-                  How many cities stay in the largest connected piece as the
-                  filter tightens. The dashed line marks where it snaps.
-                </p>
-                <div class="chart-host" id="chart-gc"></div>
-              </div>
-              <div class="plot">
-                <h3>Backbone at this α</h3>
-                <p class="axis-note">
-                  City–city network after the filter. Nodes sit near their map
-                  position; drag to rearrange. Click a node to select it.
-                </p>
-                <div class="chart-host" id="chart-backbone"></div>
-              </div>
+            <div class="plot">
+              <h3>Backbone at this α</h3>
+              <p class="axis-note">
+                Each line is a link the filter keeps at the α set above, thicker
+                when more filings share it. Metros in grey have fallen out of the
+                largest connected piece. Colours are the communities of card C.
+                Click a metro to select it.
+              </p>
+              <div class="chart-host map" id="chart-backbone"></div>
+            </div>
+            <div class="plot" style="margin-top: 18px">
+              <h3>Giant component vs α</h3>
+              <p class="axis-note">
+                How many metros stay in the largest connected piece as the filter
+                tightens. The dashed line marks where it snaps.
+              </p>
+              <div class="chart-host short" id="chart-gc"></div>
             </div>
 
             <details class="qa">
@@ -396,7 +396,9 @@
                 and Louvain finds it in 31 of 50 runs; the other 19 find one
                 other split. NMI with Census regions is 0.14 and with
                 divisions 0.21, no better than shuffled labels (p = 0.12 and
-                0.11).
+                0.11). Infomap, which follows a random walk between metros
+                instead of counting links, finds no split at all: one module
+                holds all 40.
               </span>
             </div>
           </div>
@@ -583,6 +585,11 @@
                   FY2024 gives clusters that match FY2025 at NMI
                   <span data-jobs="years">…</span> on the
                   <span data-jobs="shared">…</span> occupations both years share.
+                  Infomap, the random-walk method, finds
+                  <span data-jobs="infomap">…</span> clusters of two or more
+                  occupations; they agree with Louvain's at NMI
+                  <span data-jobs="infomap-louvain">…</span> and match the official
+                  groups at <span data-jobs="infomap-soc">…</span>.
                 </p>
               </div>
             </details>
@@ -705,6 +712,16 @@
                   </thead>
                   <tbody></tbody>
                 </table>
+                <p class="sub" style="margin-top: 12px">
+                  Infomap, which follows a random walk instead of counting links,
+                  splits the same network into <b class="im-modules">…</b> small
+                  modules, most of them a firm with its clients. They agree with
+                  Louvain at NMI <b class="im-louvain">…</b> and follow the vendor
+                  far more than the industry (<b class="im-vendor">…</b> against
+                  <b class="im-industry">…</b>). Finer partitions raise every NMI,
+                  so compare vendor with industry within one method, not across
+                  methods.
+                </p>
               </div>
             </details>
           </div>
@@ -729,10 +746,11 @@
             </p>
             <p class="sub">
               The useful takeaway is not that America has one uniform market or
-              a neat set of regional ones. A small set of repeat employers can
-              connect distant places and several occupations at once. The
-              structure we see is therefore partly a structure of outsourcing
-              and filing practice.
+              a neat set of regional ones. Distant metros are tied by many
+              companies at once, led by large direct employers such as Amazon;
+              the five biggest outsourcing firms lead only 27% of the long links.
+              Outsourcing shows in a different network: which clients group
+              together follows the firm that staffs them, not their industry.
             </p>
             <div class="notice">
               <span class="ico">!</span>

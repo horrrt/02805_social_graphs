@@ -24,9 +24,12 @@ If the request is ambiguous or a rule below blocks it, stop and ask. Do not gues
 - Site or tests changed: `node --test 'tests/*.test.mjs'` must end with `fail 0`.
 - `analysis/week04_names.py`, `analysis/week04_client_aliases.csv` or `analysis/week04_name_merges.csv`
   changed: `python analysis/week04_names_check.py` must exit 0 and print `"failures": []`.
+- Any page data changed: `python analysis/week04_schemas.py` must print `ok` for every file. It checks that
+  each JSON has the fields and cross-references its page script reads; every script also runs it before
+  writing.
 - A page quotes a script's output: rerun that script and use its fresh JSON. Section 1 is
   `analysis/week04_where.py`, section 2 `analysis/week04_jobs.py`, section 3 `analysis/week04_staffing.py`
-  then `analysis/week04_staffing_figure.py`. The staffing script takes about 11 minutes and prints progress.
+  then `analysis/week04_staffing_figure.py`. The staffing script takes about 2 minutes and prints progress.
 - Page changed: serve it with `python -m http.server 8765 --directory docs`, open
   http://localhost:8765/weeks/week04/, and confirm the browser console shows no errors. Desktop only.
 - Use the project environment: `.venv-course/bin/python` (Windows: `.venv-course\Scripts\python`), built

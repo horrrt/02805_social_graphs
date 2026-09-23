@@ -31,6 +31,7 @@ Checks
   random), one Louvain run each.
 - NMI of the communities with Census regions and divisions, against 1,000
   shuffles of the labels.
+- Infomap on the same projection, compared with Louvain and Census regions.
 - The disparity filter (Serrano, Boguna and Vespignani 2009) at five alphas.
   netbone implements it but pins networkx 2.8 and numpy 1.26, so the ten-line
   formula lives here and check_disparity() tests it on the course's own
@@ -54,8 +55,9 @@ import pandas as pd
 from sklearn.metrics import normalized_mutual_info_score as nmi
 
 import week04_names as names
+from week04_schemas import check
 from week04_data import RAW, load
-from week04_staffing import louvain, resolver, rewire, tracked
+from week04_staffing import infomap, louvain, resolver, rewire, tracked
 
 ROOT = Path(__file__).resolve().parents[1]
 OUT = Path(__file__).with_suffix(".json")
@@ -398,6 +400,17 @@ def main():
     for c in cities:
         c["community"] = renumber[member[c["id"]]]
 
+    # Infomap, the flow-based alternative: does a random walk split the metros at all?
+    modules, codelength = infomap(g, SEED, trials=20)
+    info_member = {m: i for i, part in enumerate(modules) for m in part}
+    info = [info_member[m] for m in top]
+    infomap_check = {
+        "modules": len(modules), "sizes": sorted((len(x) for x in modules), reverse=True),
+        "codelength_bits": round(float(codelength), 3),
+        "nmi_with_louvain": round(float(nmi(comm, info)), 3),
+        "nmi_census_region": round(float(nmi(info, [by_id[m]["census"] for m in top])), 3),
+    }
+
     # D · long links on the backbone, and whose they are.
     kept = [(u, v) for (u, v), pv in p.items() if pv < DEFAULT_ALPHA]
     grouped = pairs[pairs["metro"].isin(top)].set_index(["employer", "metro"])["filings"]
@@ -457,15 +470,18 @@ def main():
                      "edges_kept": edges_kept, "snap_alpha": snap, "snap_note": snap_note,
                      "snap_dropped": snap_dropped, "graphs": graphs},
         "null_model": null_model,
+        "infomap": infomap_check,
         "longhaul": {"staffing": [label(e) for e in shortlist], "edges": edges, "employer_arcs": arcs,
                      "arc_employers": leaders},
     }
+    check(PAGE, page)
     PAGE.write_text(json.dumps(page, indent=1, ensure_ascii=False) + "\n")
     summary = {
         "generated_by": "analysis/week04_where.py", "year": YEAR, "coverage": stats,
         "ranking": rank_check,
         "backbone": {k: v for k, v in page["backbone"].items() if k != "graphs"},
-        "null_model": null_model, "communities": communities, "longhaul": longhaul_check,
+        "null_model": null_model, "infomap": infomap_check, "communities": communities,
+        "longhaul": longhaul_check,
         "shortlist": [label(e) for e in shortlist],
     }
     OUT.write_text(json.dumps(summary, indent=1, ensure_ascii=False) + "\n")

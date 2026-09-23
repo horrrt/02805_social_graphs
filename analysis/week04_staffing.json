@@ -908,6 +908,17 @@
     "p_vendor_same_clients": 0.001
    }
   },
+  "infomap": {
+   "modules": 1731,
+   "modules_of_two_or_more": 1731,
+   "largest_module_share_of_nodes": 0.0218,
+   "codelength_bits": 7.747,
+   "nmi_with_louvain": 0.661,
+   "nmi_community_industry": 0.359,
+   "p_industry": 0.001,
+   "nmi_community_main_vendor_same_clients": 0.87,
+   "p_vendor_same_clients": 0.001
+  },
   "largest_communities": [
    {
     "filings": 11905,
@@ -1081,5 +1092,5 @@
    "nmi": 0.327
   }
  ],
- "seconds": 134
+ "seconds": 151
 }

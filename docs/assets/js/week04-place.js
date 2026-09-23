@@ -435,87 +435,100 @@ export async function startPlace(echarts) {
     if (!c) return;
     const g = data.backbone.graphs[state.alpha];
     if (!g) return;
+    // The backbone drawn on the map: lines are the links kept at this alpha, and
+    // metros outside the giant component turn grey.
+    const inGiant = new Set(g.nodes);
+    const maxW = Math.max(...g.edges.map(([, , w]) => w), 1);
+    const at = (id) => [byId[id].lon, byId[id].lat];
+    const named = new Set(
+      [...data.cities].sort((a, b) => b.filings - a.filings).slice(0, 12).map((city) => city.id),
+    );
+    if (state.selected) named.add(state.selected);
 
-    const nodes = g.nodes.map((id) => {
-      const city = byId[id];
-      const on = state.selected === id;
-      return {
-        id,
-        name: city.name,
-        symbolSize: 14 + Math.sqrt(city.positions) / 9,
-        category: city.community,
-        x: (city.lon + 126) * 6,
-        y: -(city.lat - 24) * 10,
-        itemStyle: {
-          color: colourFor(city),
-          borderColor: on ? INK : "#fff",
-          borderWidth: on ? 3 : 2,
-          shadowBlur: on ? 14 : 6,
-          shadowColor: "rgba(15,35,64,0.2)",
+    c.setOption(
+      {
+        ...BASE,
+        geo: {
+          map: "USA",
+          roam: false,
+          layoutCenter: ["50%", "50%"],
+          layoutSize: "165%",
+          itemStyle: { areaColor: "#eef3f9", borderColor: "#c5d3e6", borderWidth: 0.9 },
+          emphasis: { disabled: true },
+          select: { disabled: true },
+          silent: true,
         },
-        label: {
-          show: true,
-          color: INK,
-          fontSize: on ? 12 : 10,
-          fontWeight: on ? 700 : 600,
-          position: "bottom",
-          distance: 6,
-        },
-      };
-    });
-
-    const links = g.edges.map(([a, b, w]) => ({
-      source: a,
-      target: b,
-      value: w,
-      lineStyle: {
-        width: 1 + Math.log10(w + 1) * 1.4,
-        color: "#8aa0b8",
-        opacity: 0.55,
-        curveness: 0.12,
-      },
-    }));
-
-    c.setOption({
-      ...BASE,
-      series: [
-        {
-          type: "graph",
-          layout: "none",
-          roam: true,
-          draggable: true,
-          data: nodes,
-          links,
-          categories: data.communities.map((com) => ({ name: com.label })),
-          lineStyle: { curveness: 0.12 },
-          emphasis: {
-            focus: "adjacency",
-            lineStyle: { width: 4, opacity: 0.9, color: ORANGE },
+        series: [
+          {
+            type: "lines",
+            coordinateSystem: "geo",
+            zlevel: 1,
+            data: g.edges.map(([a, b, w]) => ({
+              coords: [at(a), at(b)],
+              a,
+              b,
+              value: w,
+              lineStyle: {
+                width: 0.6 + 5 * Math.sqrt(w / maxW),
+                opacity: !state.selected || state.selected === a || state.selected === b ? 0.5 : 0.08,
+              },
+            })),
+            lineStyle: { color: "#5f7896", curveness: 0.18 },
           },
-          scaleLimit: { min: 0.6, max: 3 },
-        },
-      ],
-      tooltip: {
-        ...BASE.tooltip,
-        formatter: (p) => {
-          if (p.dataType === "edge") {
-            return tipHtml(`${byId[p.data.source].name} – ${byId[p.data.target].name}`, [
-              ["Shared weight", fmt(p.data.value)],
+          {
+            type: "scatter",
+            coordinateSystem: "geo",
+            zlevel: 2,
+            data: data.cities.map((city) => ({
+              id: city.id,
+              name: city.name,
+              value: [city.lon, city.lat],
+              symbolSize: bubbleSize(city.positions),
+              itemStyle: {
+                color: inGiant.has(city.id) ? colourFor(city) : "#c3ccd8",
+                borderColor: state.selected === city.id ? INK : "#fff",
+                borderWidth: state.selected === city.id ? 3 : 1.5,
+              },
+              label: {
+                show: named.has(city.id),
+                formatter: city.name,
+                position: "right",
+                color: INK,
+                fontSize: 11,
+                fontWeight: 600,
+                textBorderColor: "#fff",
+                textBorderWidth: 2,
+              },
+            })),
+            labelLayout: { hideOverlap: true },
+          },
+        ],
+        tooltip: {
+          ...BASE.tooltip,
+          formatter: (p) => {
+            if (p.seriesType === "lines") {
+              return tipHtml(`${byId[p.data.a].name} – ${byId[p.data.b].name}`, [
+                ["Shared weight", fmt(p.data.value)],
+              ]);
+            }
+            const city = byId[p.data.id];
+            return tipHtml(city.name, [
+              ["Filings", fmt(city.filings)],
+              ["Backbone links at this α", fmt(g.edges.filter(([a, b]) => a === city.id || b === city.id).length)],
+              ["In the giant component", inGiant.has(city.id) ? "yes" : "no"],
+              ["Community", data.communities[city.community]?.label ?? "—"],
             ]);
-          }
-          const city = byId[p.data.id];
-          return tipHtml(city.name, [
-            ["Positions", fmt(city.positions)],
-            ["Community", data.communities[city.community]?.label ?? "—"],
-          ]);
+          },
         },
       },
-    });
+      { notMerge: true },
+    );
     c.off("click");
     c.on("click", (ev) => {
-      if (ev.dataType === "node" && ev.data?.id) select(ev.data.id);
+      if (ev.data?.id) select(ev.data.id);
     });
   }
+
 
   const LABELS = 8;
 
@@ -793,6 +806,8 @@ export async function startPlace(echarts) {
       row("NMI between two runs, median (lowest)", `${n.nmi_seeds.toFixed(2)} (${n.nmi_seeds_min.toFixed(2)})`),
       row("NMI with Census regions (p)", `${n.nmi_census_region.toFixed(3)} (${p(n.p_region)})`),
       row("NMI with Census divisions (p)", `${n.nmi_census_division.toFixed(3)} (${p(n.p_division)})`),
+      row("Infomap modules (random-walk method)", data.infomap.modules === 1
+        ? "1: all metros together" : `${data.infomap.modules} (NMI with Louvain ${data.infomap.nmi_with_louvain.toFixed(2)})`),
     ].join("");
   }
 

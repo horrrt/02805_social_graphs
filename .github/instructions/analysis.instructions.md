@@ -22,6 +22,8 @@ applyTo: "analysis/**"
   than networkx), many times with fixed seeds (`SEED + i`), not once, and report the spread.
 - Write every number the page quotes to the script's JSON in `analysis/` or `docs/`. The page reads it
   from there.
+- When a page script reads a new field, add it to its model in `analysis/week04_schemas.py`, and call
+  `check(path, data)` before writing the page file.
 - Wrap a loop that runs longer than a minute in `tracked()` from `analysis/week04_staffing.py`, so it prints
   progress and time left.
 - Use a tested library (networkx, igraph, scikit-learn, rapidfuzz) for any method with a name in the literature.

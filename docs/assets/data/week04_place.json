@@ -7710,6 +7710,15 @@
   "seeds": 50,
   "communities": 3
  },
+ "infomap": {
+  "modules": 1,
+  "sizes": [
+   40
+  ],
+  "codelength_bits": 5.03,
+  "nmi_with_louvain": 0.0,
+  "nmi_census_region": 0.0
+ },
  "longhaul": {
   "staffing": [
    "Tata Consultancy Services",

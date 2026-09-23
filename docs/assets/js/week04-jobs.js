@@ -181,6 +181,8 @@ fetch(DATA_URL).then((response) => {
     occupations: num(data.meta.occupations), nmi: q.nmi.toFixed(2), shuffled: q.nmi_shuffled.mean.toFixed(2),
     ami: q.ami.toFixed(2), scored: num(q.occupations), legacy: `${num(data.meta.legacy_filings_recoded)} filings`,
     years: data.comparison.nmi_between_years.toFixed(2), shared: num(data.comparison.shared_occupations),
+    infomap: num(q.infomap.modules_of_two_or_more), "infomap-louvain": q.infomap.nmi_with_louvain.toFixed(2),
+    "infomap-soc": q.infomap.nmi_with_soc.toFixed(2),
   };
   document.querySelectorAll("[data-jobs]").forEach((el) => { el.textContent = fill[el.dataset.jobs]; });
   window.addEventListener("resize", () => charts.forEach((item) => item.resize()));

@@ -24,6 +24,7 @@ Method
   groups, over occupations in clusters of two or more, against 100 shuffles
   of the major-group labels. The same partition for FY2024, compared on the
   occupations both years share.
+- Infomap on the same projection, compared with Louvain and the SOC groups.
 
 The page shows the 60 occupations with the most filings, each with its three
 strongest links to the others.
@@ -42,7 +43,8 @@ import networkx as nx
 from sklearn.metrics import adjusted_mutual_info_score as ami
 from sklearn.metrics import normalized_mutual_info_score as nmi
 
-from week04_staffing import certified, louvain
+from week04_schemas import check
+from week04_staffing import certified, infomap, louvain
 
 ROOT = Path(__file__).resolve().parents[1]
 OUT = ROOT / "docs" / "weeks" / "week04" / "data" / "jobs.json"
@@ -163,6 +165,17 @@ def build(year):
     graph, filings = projection(frame)
     labels, louvain_stats = communities(graph)
     membership = second_clusters(graph, labels)
+    # Infomap, the flow-based alternative, on the same projection.
+    modules, codelength = infomap(graph, SEED)
+    info = {n: i for i, m in enumerate(modules) for n in m}
+    size = Counter(labels.values())
+    scored = sorted(n for n in labels if size[labels[n]] > 1)
+    infomap_check = {
+        "modules": len(modules), "modules_of_two_or_more": sum(len(m) > 1 for m in modules),
+        "codelength_bits": round(float(codelength), 3),
+        "nmi_with_louvain": nmi([labels[n] for n in scored], [info[n] for n in scored]),
+        "nmi_with_soc": nmi([info[n] for n in scored], [n[:2] for n in scored]),
+    }
     shown = sorted(filings, key=lambda n: (-filings[n], n))[:SHOWN]
     keep = set(shown)
 
@@ -208,7 +221,7 @@ def build(year):
         "clusters": clusters,
         "bridges": {"shown": sum(n["bridge"] for n in nodes),
                     "all_occupations": sum(len(m) > 1 for m in membership.values())},
-        "quality": {"louvain": louvain_stats, **agreement(labels, graph)},
+        "quality": {"louvain": louvain_stats, **agreement(labels, graph), "infomap": infomap_check},
         "_labels": labels,
     }
 
@@ -227,6 +240,7 @@ def main():
         "nmi_between_years": nmi([now[n] for n in shared], [before[n] for n in shared]),
     }
     OUT.parent.mkdir(parents=True, exist_ok=True)
+    check(OUT, current)
     OUT.write_text(json.dumps(current, separators=(",", ":")), encoding="utf-8")
     q = current["quality"]
     print(f"{current['meta']['filings']:,} filings, {current['meta']['occupations']:,} occupations, "
