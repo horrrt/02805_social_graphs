@@ -106,7 +106,12 @@ def placements(year, lca):
     placeholder = int(sites["client"].isna().sum())
     rows = sites.dropna(subset=["client"]).drop_duplicates(["CASE_NUMBER", "client"])
     rows = rows.merge(lca[["CASE_NUMBER", "employer"]], on="CASE_NUMBER")
-    return rows[["CASE_NUMBER", "employer", "client"]], placeholder, len(sites)
+    # A firm that names itself as the client (HCL placing at HCL) has placed no
+    # one: the worker sits at their own employer. Counted, then dropped.
+    own = rows["employer"] == rows["client"]
+    rows = rows[~own][["CASE_NUMBER", "employer", "client"]]
+    rows.attrs["own_company_rows"] = int(own.sum())
+    return rows, placeholder, len(sites)
 
 
 def uscis_outcomes(year=2022):
@@ -306,6 +311,7 @@ def main():
             "client_rows": site_rows,
             "placeholder_client_rows": placeholder,
             "placeholder_share": round(placeholder / site_rows, 4),
+            "own_company_client_rows": rows.attrs["own_company_rows"],
             "edges": int(rows.groupby(["employer", "client"]).ngroups),
             "employer_keys": int(lca["employer"].nunique()),
             "employer_tax_numbers": int(fein.nunique()) if fein is not None else None,

@@ -14,21 +14,22 @@
    "client_rows": 173052,
    "placeholder_client_rows": 26108,
    "placeholder_share": 0.1509,
-   "edges": 58467,
-   "employer_keys": 52423,
+   "own_company_client_rows": 1726,
+   "edges": 58085,
+   "employer_keys": 52422,
    "employer_tax_numbers": null,
-   "placements_to_intermediaries": 3626,
-   "intermediary_share": 0.0263,
+   "placements_to_intermediaries": 2422,
+   "intermediary_share": 0.0178,
    "top_intermediary_clients": {
-    "Deloitte": 442,
-    "Miracle Software Systems": 182,
-    "Visionet Systems": 158,
-    "EY": 138,
-    "Orion Systems Integrators": 123,
-    "Arista Networks": 113
+    "Deloitte": 440,
+    "EY": 137,
+    "Infosys": 82,
+    "Cognizant": 82,
+    "HCL": 66,
+    "Tech Mahindra": 64
    },
-   "firms": 8083,
-   "clients": 21806,
+   "firms": 7935,
+   "clients": 21503,
    "top_firms_by_filings": [
     [
      "Tata Consultancy Services",
@@ -119,21 +120,22 @@
    "client_rows": 153044,
    "placeholder_client_rows": 26142,
    "placeholder_share": 0.1708,
-   "edges": 50541,
-   "employer_keys": 51010,
+   "own_company_client_rows": 1369,
+   "edges": 50175,
+   "employer_keys": 51009,
    "employer_tax_numbers": null,
-   "placements_to_intermediaries": 2477,
-   "intermediary_share": 0.0207,
+   "placements_to_intermediaries": 1678,
+   "intermediary_share": 0.0142,
    "top_intermediary_clients": {
     "Deloitte": 420,
-    "Miracle Software Systems": 151,
     "EY": 113,
-    "Dana-Farber Cancer Institute": 75,
-    "Orion Systems Integrators": 71,
-    "Infosys": 69
+    "Infosys": 63,
+    "HCL": 61,
+    "Cognizant": 55,
+    "Accenture": 52
    },
-   "firms": 8174,
-   "clients": 20320,
+   "firms": 8049,
+   "clients": 20017,
    "top_firms_by_filings": [
     [
      "Cognizant",
@@ -224,21 +226,22 @@
    "client_rows": 148878,
    "placeholder_client_rows": 25518,
    "placeholder_share": 0.1714,
-   "edges": 47695,
-   "employer_keys": 54771,
+   "own_company_client_rows": 1920,
+   "edges": 47309,
+   "employer_keys": 54770,
    "employer_tax_numbers": 54840,
-   "placements_to_intermediaries": 3022,
-   "intermediary_share": 0.0258,
+   "placements_to_intermediaries": 1810,
+   "intermediary_share": 0.0157,
    "top_intermediary_clients": {
     "Deloitte": 510,
-    "HCL": 434,
-    "People Tech Group": 304,
-    "Miracle Software Systems": 117,
+    "People Tech Group": 182,
     "EY": 96,
-    "Dana-Farber Cancer Institute": 93
+    "Cognizant": 88,
+    "Infosys": 74,
+    "Accenture": 72
    },
-   "firms": 8433,
-   "clients": 20074,
+   "firms": 8282,
+   "clients": 19743,
    "top_firms_by_filings": [
     [
      "Tata Consultancy Services",
@@ -329,21 +332,22 @@
    "client_rows": 145572,
    "placeholder_client_rows": 23655,
    "placeholder_share": 0.1625,
-   "edges": 47518,
-   "employer_keys": 60974,
+   "own_company_client_rows": 1950,
+   "edges": 47136,
+   "employer_keys": 60973,
    "employer_tax_numbers": 61036,
-   "placements_to_intermediaries": 2939,
-   "intermediary_share": 0.0255,
+   "placements_to_intermediaries": 1591,
+   "intermediary_share": 0.014,
    "top_intermediary_clients": {
     "Deloitte": 475,
-    "HCL": 453,
-    "People Tech Group": 177,
-    "Veenus Infotechs": 115,
     "Cognizant": 112,
-    "Dana-Farber Cancer Institute": 95
+    "Infosys": 93,
+    "Accenture": 79,
+    "West Virginia University": 78,
+    "EY": 74
    },
-   "firms": 8772,
-   "clients": 20083,
+   "firms": 8634,
+   "clients": 19747,
    "top_firms_by_filings": [
     [
      "Tata Consultancy Services",
@@ -434,21 +438,22 @@
    "client_rows": 68234,
    "placeholder_client_rows": 10896,
    "placeholder_share": 0.1597,
-   "edges": 28643,
-   "employer_keys": 51703,
+   "own_company_client_rows": 510,
+   "edges": 28440,
+   "employer_keys": 51702,
    "employer_tax_numbers": 51763,
-   "placements_to_intermediaries": 1113,
-   "intermediary_share": 0.0202,
+   "placements_to_intermediaries": 884,
+   "intermediary_share": 0.0162,
    "top_intermediary_clients": {
     "Deloitte": 310,
     "West Virginia University": 69,
-    "Dana-Farber Cancer Institute": 59,
     "Cognizant": 57,
-    "Miracle Software Systems": 47,
-    "Infosys": 45
+    "Infosys": 45,
+    "Accenture": 34,
+    "EY": 27
    },
-   "firms": 6828,
-   "clients": 12710,
+   "firms": 6744,
+   "clients": 12527,
    "top_firms_by_filings": [
     [
      "Infosys",
@@ -544,7 +549,7 @@
    "approvals_per_filing": 0.674
   },
   "direct": {
-   "employers": 2450,
+   "employers": 2449,
    "certified_filings": 304188,
    "initial_approvals": 61571,
    "initial_denial_rate": 0.0128,
@@ -636,19 +641,19 @@
  },
  "main": {
   "year": 2025,
-  "clients": 20083,
-  "single_vendor_clients": 15624,
-  "single_vendor_filing_share": 0.2294,
-  "big_clients": 674,
-  "big_clients_over_90pct_one_vendor": 90,
-  "big_clients_median_top_vendor_share": 0.3764,
+  "clients": 19747,
+  "single_vendor_clients": 15316,
+  "single_vendor_filing_share": 0.2252,
+  "big_clients": 661,
+  "big_clients_over_90pct_one_vendor": 79,
+  "big_clients_median_top_vendor_share": 0.3708,
   "largest_clients": [
    {
     "client": "Citigroup",
-    "filings": 2182,
-    "vendors": 114,
+    "filings": 2214,
+    "vendors": 116,
     "top_vendor": "Tata Consultancy Services",
-    "top_vendor_share": 0.244,
+    "top_vendor_share": 0.24,
     "sector": "52"
    },
    {
@@ -845,69 +850,69 @@
    }
   ],
   "giant": {
-   "nodes": 23013,
-   "edges": 43577,
-   "share_of_filings": 0.9475
+   "nodes": 22753,
+   "edges": 43271,
+   "share_of_filings": 0.9479
   },
   "modularity": {
-   "communities_median": 73,
-   "nmi_between_seeds_median": 0.725,
-   "rewired_components_median": 598,
+   "communities_median": 70,
+   "nmi_between_seeds_median": 0.731,
+   "rewired_components_median": 603,
    "weighted_vs_rewired": {
-    "real": 0.6068,
-    "real_sd": 0.001,
-    "null": 0.7426,
-    "null_sd": 0.0012,
-    "z": -110.87,
+    "real": 0.6005,
+    "real_sd": 0.0009,
+    "null": 0.7394,
+    "null_sd": 0.0015,
+    "z": -94.51,
     "null_runs_at_or_above_real": 100
    },
    "wiring_only": {
-    "real": 0.5748,
-    "real_sd": 0.0014,
-    "null": 0.5342,
+    "real": 0.5724,
+    "real_sd": 0.0015,
+    "null": 0.532,
     "null_sd": 0.0007,
-    "z": 61.79,
+    "z": 56.65,
     "null_runs_at_or_above_real": 0
    },
    "weights_only": {
-    "real": 0.6068,
-    "real_sd": 0.001,
-    "null": 0.754,
-    "null_sd": 0.0013,
-    "z": -109.14,
+    "real": 0.6005,
+    "real_sd": 0.0009,
+    "null": 0.7505,
+    "null_sd": 0.0012,
+    "z": -125.1,
     "null_runs_at_or_above_real": 100
    }
   },
   "weighted_vs_unweighted": {
    "communities_median_unweighted": 67,
-   "nmi_median": 0.389,
-   "nmi_best_partitions": 0.388,
-   "nmi_between_seeds_weighted": 0.725,
-   "nmi_between_seeds_unweighted": 0.513,
+   "nmi_median": 0.383,
+   "nmi_best_partitions": 0.386,
+   "nmi_between_seeds_weighted": 0.731,
+   "nmi_between_seeds_unweighted": 0.514,
    "runs_compared": 20
   },
   "industry_or_vendor": {
-   "clients_with_2plus_vendors": 4331,
-   "their_filing_share": 0.7648,
-   "with_sector_label": 882,
-   "nmi_community_industry": 0.164,
+   "clients_with_2plus_vendors": 4283,
+   "their_filing_share": 0.7685,
+   "with_sector_label": 880,
+   "nmi_community_industry": 0.16,
    "p_industry": 0.001,
-   "nmi_community_main_vendor": 0.65,
+   "nmi_community_main_vendor": 0.643,
    "p_vendor": 0.001,
-   "nmi_community_main_vendor_same_clients": 0.722,
+   "nmi_community_main_vendor_same_clients": 0.71,
    "p_vendor_same_clients": 0.001,
    "unweighted": {
-    "nmi_community_industry": 0.169,
+    "nmi_community_industry": 0.176,
     "p_industry": 0.001,
-    "nmi_community_main_vendor_same_clients": 0.464,
+    "nmi_community_main_vendor_same_clients": 0.474,
     "p_vendor_same_clients": 0.001
    }
   },
   "largest_communities": [
    {
-    "filings": 11996,
-    "firms": 304,
-    "clients": 796,
+    "filings": 12180,
+    "firms": 338,
+    "clients": 819,
     "top_firms": [
      "Tata Consultancy Services",
      "LTIMindtree",
@@ -920,19 +925,19 @@
      "Johnson & Johnson",
      "Cisco",
      "Cigna",
-     "Humana"
+     "United Airlines"
     ],
     "sectors": {
-     "31-33": 59,
-     "52": 25,
+     "31-33": 55,
+     "52": 26,
      "44-45": 10,
-     "42": 7
+     "48-49": 7
     }
    },
    {
-    "filings": 9465,
-    "firms": 376,
-    "clients": 637,
+    "filings": 9339,
+    "firms": 368,
+    "clients": 627,
     "top_firms": [
      "Infosys",
      "Randstad",
@@ -942,47 +947,47 @@
     "top_clients": [
      "Bank of America",
      "Wells Fargo",
-     "Charter Communications",
      "Morgan Stanley",
+     "Toyota",
      "Goldman Sachs",
      "Citizens Bank"
     ],
     "sectors": {
-     "31-33": 26,
-     "52": 21,
-     "22": 6,
-     "44-45": 5
+     "31-33": 29,
+     "52": 23,
+     "22": 7,
+     "44-45": 4
     }
    },
    {
-    "filings": 7819,
-    "firms": 497,
-    "clients": 927,
+    "filings": 6472,
+    "firms": 421,
+    "clients": 705,
     "top_firms": [
-     "Compunnel Software",
-     "Kforce",
-     "Mastech Digital Technologies",
-     "Photon Infotech"
+     "IBM",
+     "UST Global",
+     "Deloitte",
+     "Atos Syntel"
     ],
     "top_clients": [
-     "Fidelity Investments",
-     "Walmart",
-     "Vanguard",
-     "Intuit",
-     "Mastercard",
-     "7-Eleven"
+     "American Express",
+     "T-Mobile",
+     "Elevance Health",
+     "Truist",
+     "UPS",
+     "Pfizer"
     ],
     "sectors": {
-     "52": 14,
-     "31-33": 12,
-     "51": 7,
-     "56": 5
+     "31-33": 26,
+     "52": 20,
+     "56": 9,
+     "22": 5
     }
    },
    {
-    "filings": 6958,
-    "firms": 247,
-    "clients": 697,
+    "filings": 6735,
+    "firms": 224,
+    "clients": 673,
     "top_firms": [
      "Cognizant",
      "EXL",
@@ -992,66 +997,66 @@
     "top_clients": [
      "CVS Health",
      "Northern Trust",
-     "BNY Mellon",
      "Travelers",
      "AbbVie",
-     "The Hartford"
+     "The Hartford",
+     "PepsiCo"
     ],
     "sectors": {
-     "52": 28,
-     "31-33": 24,
-     "44-45": 3,
+     "52": 26,
+     "31-33": 26,
+     "44-45": 4,
      "51": 3
     }
    },
    {
-    "filings": 5575,
-    "firms": 532,
-    "clients": 915,
+    "filings": 7237,
+    "firms": 396,
+    "clients": 841,
     "top_firms": [
-     "Hexaware Technologies",
-     "MSR Technology",
-     "Collaborate Solutions",
-     "TEK Leaders"
+     "Compunnel Software",
+     "Kforce",
+     "Mastech Digital Technologies",
+     "Photon Infotech"
     ],
     "top_clients": [
-     "Capital One",
-     "Freddie Mac",
-     "Fannie Mae",
-     "EY",
-     "BCBS Michigan",
-     "Supreme Court OF Virginia"
+     "Fidelity Investments",
+     "Walmart",
+     "Intuit",
+     "7-Eleven",
+     "Credit One Bank",
+     "Optum"
     ],
     "sectors": {
+     "31-33": 13,
      "52": 12,
-     "31-33": 10,
-     "56": 5,
-     "54": 3
+     "51": 9,
+     "22": 5
     }
    },
    {
-    "filings": 4979,
-    "firms": 257,
-    "clients": 641,
+    "filings": 6274,
+    "firms": 391,
+    "clients": 1011,
     "top_firms": [
      "HCL",
      "Intellectt",
-     "Infogain",
-     "Mirafra"
+     "Vastek",
+     "Infogain"
     ],
     "top_clients": [
      "USAA",
-     "HCL",
      "Google",
      "Meta",
      "Abbott",
-     "Merck"
+     "Merck",
+     "Regeneron"
     ],
     "sectors": {
-     "31-33": 39,
-     "52": 5,
+     "31-33": 74,
+     "52": 6,
      "51": 5,
-     "42": 2
+     "72": 3
     }
    }
   ]
@@ -1060,21 +1065,21 @@
   {
    "from": 2022,
    "to": 2023,
-   "shared_clients": 7429,
-   "nmi": 0.299
+   "shared_clients": 7351,
+   "nmi": 0.303
   },
   {
    "from": 2023,
    "to": 2024,
-   "shared_clients": 7011,
-   "nmi": 0.33
+   "shared_clients": 6934,
+   "nmi": 0.331
   },
   {
    "from": 2024,
    "to": 2025,
-   "shared_clients": 6765,
-   "nmi": 0.348
+   "shared_clients": 6688,
+   "nmi": 0.343
   }
  ],
- "seconds": 662
+ "seconds": 678
 }

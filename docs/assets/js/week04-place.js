@@ -61,7 +61,13 @@ export async function startPlace(echarts) {
     }),
   ]);
 
-  echarts.registerMap("USA", usa);
+  // No top-40 metro lies outside the contiguous states; drawing Alaska, Hawaii
+  // and Puerto Rico shrank the 48 states to a corner of every map.
+  const OFF_MAINLAND = new Set(["Alaska", "Hawaii", "Puerto Rico"]);
+  echarts.registerMap("USA", {
+    ...usa,
+    features: usa.features.filter((f) => !OFF_MAINLAND.has(f.properties.name)),
+  });
 
   const byId = Object.fromEntries(data.cities.map((c) => [c.id, c]));
   const state = {
@@ -250,8 +256,8 @@ export async function startPlace(echarts) {
         geo: {
           map: "USA",
           roam: false,
-          layoutCenter: ["50%", "52%"],
-          layoutSize: "108%",
+          layoutCenter: ["50%", "50%"],
+          layoutSize: "165%",
           itemStyle: {
             areaColor: "#eef3f9",
             borderColor: "#c5d3e6",
@@ -698,8 +704,8 @@ export async function startPlace(echarts) {
         geo: {
           map: "USA",
           roam: false,
-          layoutCenter: ["50%", "52%"],
-          layoutSize: "108%",
+          layoutCenter: ["50%", "50%"],
+          layoutSize: "165%",
           itemStyle: {
             areaColor: "#f3f7fb",
             borderColor: "#d0dcec",
