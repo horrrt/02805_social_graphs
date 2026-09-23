@@ -7,6 +7,8 @@
       content="Who hires America's foreign workers? Places, jobs and companies from US H-1B filings — Week 4 go-nuts, Log–Log Legends."
       name="description"
     />
+    <!-- Draft: keep noindex until the whole post is final. -->
+    <meta content="noindex" name="robots" />
     <title>Who hires America's foreign workers? · Log–Log Legends</title>
     <link href="../../assets/favicon.svg" rel="icon" type="image/svg+xml" />
     <link href="../../assets/css/corridor.css" rel="stylesheet" />
@@ -253,7 +255,7 @@
                   firm and drops a mid-size city’s strongest local tie. The
                   disparity filter keeps a link if it is significant for either
                   endpoint at α — same method as the philosophers backbone on
-                  the course page. Live weights will come from
+                  the course page. Weights come from
                   <code>analysis/week04_where.py</code>.
                 </p>
                 <table class="ego">
@@ -331,7 +333,7 @@
               <div class="qa-body">
                 <p class="sub">
                   Report Q against a degree-preserving shuffle, and NMI across
-                  seeds and against Census labels. Placeholder figures:
+                  seeds and against Census labels. Figures from analysis/week04_where.py:
                 </p>
                 <table class="ego">
                   <tbody id="place-null-stats"></tbody>
@@ -454,15 +456,14 @@
               </div>
               <div class="staffing-grid">
                 <div class="staffing-chart">
-                  <svg
+                  <div
                     aria-label="Scatter plot of client companies: placed H-1B filings against the share supplied by the client's largest vendor. The table below lists the same data."
+                    class="chart-host"
                     role="img"
-                  ></svg>
-                  <div class="staffing-tip" hidden></div>
+                  ></div>
                 </div>
                 <div aria-live="polite" class="staffing-panel">Loading the filings…</div>
               </div>
-              <ul class="staffing-legend"></ul>
               <figcaption>
                 One dot per client company with 20 or more H-1B filings that placed
                 a worker there in the year. Further right, more filings; higher up,
@@ -559,8 +560,9 @@
       </footer>
     </main>
 
+    <!-- One ECharts for both sections; week04-place.js skips its own loader when this is present. -->
+    <script src="../../assets/vendor/echarts-5.5.1.min.js"></script>
     <script src="../../assets/js/week04-place.js" type="module"></script>
-    <script src="../../assets/vendor/d3-7.9.0.min.js"></script>
     <script src="../../assets/js/week04-staffing.js" type="module"></script>
   </body>
 </html>

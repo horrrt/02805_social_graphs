@@ -1,59 +1,51 @@
 // Section 3 figure: every client with 20 or more placed H-1B filings in a year.
 // x = filings (log), y = share supplied by its largest vendor. Hover a dot for
-// its numbers; click it, or search, to list its vendors. d3 is the vendored
-// UMD build, loaded by the page before this module.
+// its numbers; click it, or search, to list its vendors. Drawn with the
+// vendored ECharts build that the page loads before its modules, the same
+// library as section 1.
 import { esc } from "./cabinet.js";
 
-const d3 = window.d3;
+const echarts = window.echarts;
 const root = document.querySelector("#staffing-figure");
+const host = root.querySelector(".staffing-chart .chart-host");
+const panel = root.querySelector(".staffing-panel");
+const search = root.querySelector(".staffing-search input");
+const css = getComputedStyle(root);
+const token = (name) => css.getPropertyValue(name).trim();
 const SECTORS = [
-  ["s1", "Finance and insurance", (s) => s === "52"],
-  ["s2", "Health care", (s) => s === "62"],
-  ["s3", "Other labelled sector", (s) => s !== ""],
-  ["s0", "No sector label", () => true],
+  ["Finance and insurance", "--series-1", (s) => s === "52"],
+  ["Health care", "--series-2", (s) => s === "62"],
+  ["Other labelled sector", "--series-3", (s) => s !== ""],
+  ["No sector label", "--series-none", () => true],
 ];
 const sectorOf = (s) => SECTORS.find(([, , test]) => test(s));
-const pct = (v) => (v > 0 && v < 0.005 ? "<1%" : d3.format(".0%")(v));
-const num = d3.format(",");
-const W = 700;
-const H = 440;
-const M = { top: 34, right: 18, bottom: 46, left: 52 };
+const whole = new Intl.NumberFormat("en-US");
+const num = (v) => whole.format(v);
+const pct = (v) => (v > 0 && v < 0.005 ? "<1%" : `${Math.round(v * 100)}%`);
+const share = (d) => d.top[0][1] / d.filings;
 
 let data;
 let year;
 let selected;
-
-const svg = d3.select(root).select(".staffing-chart svg").attr("viewBox", `0 0 ${W} ${H}`);
-const tip = d3.select(root).select(".staffing-tip");
-const panel = root.querySelector(".staffing-panel");
-const search = root.querySelector(".staffing-search input");
-const x = d3.scaleLog().range([M.left, W - M.right]);
-const y = d3.scaleLinear().domain([0, 1]).range([H - M.bottom, M.top]);
-
-const gridY = svg.append("g").attr("class", "grid");
-const axisX = svg.append("g").attr("class", "axis").attr("transform", `translate(0,${H - M.bottom})`);
-const axisY = svg.append("g").attr("class", "axis").attr("transform", `translate(${M.left},0)`);
-const dots = svg.append("g");
-const labels = svg.append("g");
-svg.append("text").attr("class", "axis-title").attr("x", W - M.right).attr("y", H - 8)
-  .attr("text-anchor", "end").text("Placed filings in the year (log scale) →");
-svg.append("text").attr("class", "axis-title").attr("x", M.left - 44).attr("y", 12)
-  .text("↑ Share from the largest vendor");
+const chart = echarts.init(host, null, { renderer: "canvas" });
 
 function clients() {
   return data.years[year].shown;
 }
 
+function point(d) {
+  return { value: [d.filings, share(d)], name: d.name, client: d };
+}
+
 function show(client) {
   selected = client;
-  dots.selectAll("circle").classed("selected", (d) => d === client).filter((d) => d === client).raise();
+  chart.setOption({ series: [{ id: "selected", data: client ? [point(client)] : [] }] });
   if (!client) return;
-  const [, sector] = sectorOf(client.sector);
   const top = client.top.map(([f, n]) => [data.firms[f], n]);
   panel.innerHTML = `
     <h3>${esc(client.name)}</h3>
-    <p class="meta">${sector} · ${num(client.filings)} placed filings · ${num(client.vendors)}
-      ${client.vendors === 1 ? "vendor" : "vendors"}</p>
+    <p class="meta">${sectorOf(client.sector)[0]} · ${num(client.filings)} placed filings ·
+      ${num(client.vendors)} ${client.vendors === 1 ? "vendor" : "vendors"}</p>
     <ol>${top.map(([name, n]) => `
       <li><span class="name" title="${esc(name)}">${esc(name)}</span>
         <span class="share">${pct(n / client.filings)}</span>
@@ -65,30 +57,107 @@ function show(client) {
 
 function draw() {
   const rows = clients();
-  const share = (d) => d.top[0][1] / d.filings;
-  x.domain([data.min_filings, d3.max(rows, (d) => d.filings) * 1.15]);
-
-  gridY.selectAll("line").data(y.ticks(5)).join("line")
-    .attr("x1", M.left).attr("x2", W - M.right).attr("y1", y).attr("y2", y);
-  const ticks = [20, 50, 100, 200, 500, 1000, 2000, 5000].filter((t) => t <= x.domain()[1]);
-  axisX.call(d3.axisBottom(x).tickValues(ticks).tickFormat(d3.format("~s")).tickSizeOuter(0));
-  axisY.call(d3.axisLeft(y).ticks(5).tickFormat(pct).tickSize(0).tickPadding(8));
-
-  dots.selectAll("circle").data(rows, (d) => d.name).join("circle")
-    .attr("class", (d) => `dot ${sectorOf(d.sector)[0]}`)
-    .attr("r", 4.5)
-    .attr("cx", (d) => x(d.filings))
-    .attr("cy", (d) => y(share(d)));
-
   // Name the three largest clients and the largest one-vendor client, no more.
-  const loyal = rows.filter((d) => share(d) >= 0.9).slice(0, 1);
-  const named = [...new Set([...rows.slice(0, 3), ...loyal])];
-  labels.selectAll("text").data(named, (d) => d.name).join("text")
-    .attr("class", "label")
-    .attr("x", (d) => x(d.filings) - 9)
-    .attr("y", (d) => y(share(d)) + 4)
-    .attr("text-anchor", "end")
-    .text((d) => d.name);
+  // ECharts copies data items, so match labels by name, not by object.
+  const named = new Set([...rows.slice(0, 3), ...rows.filter((d) => share(d) >= 0.9).slice(0, 1)].map((d) => d.name));
+  const series = SECTORS.map(([name, colour, test]) => ({
+    type: "scatter",
+    name,
+    symbolSize: 9,
+    itemStyle: { color: token(colour), borderColor: token("--surface"), borderWidth: 1.5 },
+    emphasis: { scale: 1.4 },
+    data: rows.filter((d) => sectorOf(d.sector)[2] === test).map(point),
+  }));
+  // The named clients carry their labels in a series of their own.
+  series.push({
+    id: "names",
+    type: "scatter",
+    name: "Names",
+    symbolSize: 1,
+    silent: true,
+    itemStyle: { color: "transparent" },
+    label: {
+      show: true,
+      position: "left",
+      distance: 8,
+      color: token("--paper"),
+      fontWeight: 600,
+      fontSize: 12,
+      textBorderColor: token("--surface"),
+      textBorderWidth: 3,
+      formatter: (p) => p.data.name,
+    },
+    // The largest client sits among the other large ones: its name goes above.
+    data: rows.filter((d) => named.has(d.name)).map((d, i) => ({
+      ...point(d),
+      label: i === 0 ? { position: "top", distance: 10 } : undefined,
+    })),
+  });
+  series.push({
+    id: "selected",
+    type: "scatter",
+    name: "Selected",
+    symbolSize: 14,
+    silent: true,
+    z: 5,
+    itemStyle: { color: "transparent", borderColor: token("--paper"), borderWidth: 2.5 },
+    data: [],
+  });
+  chart.setOption(
+    {
+      animationDuration: 300,
+      textStyle: { fontFamily: token("--sans") },
+      grid: { left: 52, right: 20, top: 36, bottom: 64 },
+      legend: {
+        bottom: 0,
+        left: 0,
+        icon: "circle",
+        itemWidth: 10,
+        itemHeight: 10,
+        textStyle: { color: token("--muted"), fontSize: 13 },
+        data: SECTORS.map(([name]) => name),
+      },
+      tooltip: {
+        trigger: "item",
+        confine: true,
+        backgroundColor: token("--surface"),
+        borderColor: token("--line"),
+        textStyle: { color: token("--paper"), fontSize: 13 },
+        formatter: (p) => {
+          const d = p.data.client;
+          return `<strong>${esc(d.name)}</strong><br />${num(d.filings)} filings · ${num(d.vendors)} vendors<br />
+            ${pct(share(d))} from ${esc(data.firms[d.top[0][0]])}`;
+        },
+      },
+      xAxis: {
+        type: "log",
+        logBase: 10,
+        min: data.min_filings,
+        // The next round value (1, 2 or 5 times a power of ten) past the largest client.
+        max: (v) => [1, 2, 5, 10].map((m) => m * 10 ** Math.floor(Math.log10(v.max))).find((t) => t >= v.max * 1.05),
+        name: "Placed filings in the year (log scale) →",
+        nameLocation: "end",
+        nameGap: 0,
+        nameTextStyle: { color: token("--muted"), align: "right", verticalAlign: "top", padding: [28, 0, 0, 0] },
+        axisLine: { show: false },
+        axisTick: { show: false },
+        axisLabel: { color: token("--muted"), formatter: (v) => (v >= 1000 ? `${v / 1000}k` : `${v}`) },
+        splitLine: { lineStyle: { color: token("--grid") } },
+      },
+      yAxis: {
+        type: "value",
+        min: 0,
+        max: 1,
+        interval: 0.2,
+        name: "↑ Share from the largest vendor",
+        nameTextStyle: { color: token("--muted"), align: "left", padding: [0, 0, 6, -44] },
+        axisLabel: { color: token("--muted"), formatter: (v) => `${Math.round(v * 100)}%` },
+        splitLine: { lineStyle: { color: token("--grid") } },
+      },
+      series,
+    },
+    { replaceMerge: ["series"] },
+  );
 
   search.setAttribute("placeholder", `${rows.length} clients · type a name`);
   root.querySelector("#staffing-names").innerHTML =
@@ -98,37 +167,14 @@ function draw() {
 }
 
 function table(rows) {
-  const body = root.querySelector("tbody");
-  body.innerHTML = rows.slice(0, 25).map((d) => `<tr><td>${esc(d.name)}</td>
-    <td>${sectorOf(d.sector)[1]}</td><td class="num">${num(d.filings)}</td>
+  root.querySelector("tbody").innerHTML = rows.slice(0, 25).map((d) => `<tr><td>${esc(d.name)}</td>
+    <td>${sectorOf(d.sector)[0]}</td><td class="num">${num(d.filings)}</td>
     <td class="num">${num(d.vendors)}</td><td>${esc(data.firms[d.top[0][0]])}</td>
-    <td class="num">${pct(d.top[0][1] / d.filings)}</td></tr>`).join("");
+    <td class="num">${pct(share(d))}</td></tr>`).join("");
 }
 
-// One nearest-dot lookup for hover and click, so the hit area is wider than the dot.
-function nearest(event) {
-  const [mx, my] = d3.pointer(event, svg.node());
-  const rows = clients();
-  const i = d3.Delaunay.from(rows, (d) => x(d.filings), (d) => y(d.top[0][1] / d.filings)).find(mx, my);
-  const d = rows[i];
-  return Math.hypot(x(d.filings) - mx, y(d.top[0][1] / d.filings) - my) < 18 ? d : null;
-}
-
-svg.on("pointermove", (event) => {
-  const d = nearest(event);
-  if (!d) return tip.attr("hidden", true);
-  const box = svg.node().getBoundingClientRect();
-  const scale = box.width / W;
-  tip.attr("hidden", null)
-    .style("left", `${x(d.filings) * scale + 12}px`)
-    .style("top", `${y(d.top[0][1] / d.filings) * scale - 10}px`)
-    .html(`<strong>${esc(d.name)}</strong>${num(d.filings)} filings · ${num(d.vendors)} vendors<br />
-      <span>${pct(d.top[0][1] / d.filings)} from ${esc(data.firms[d.top[0][0]])}</span>`);
-});
-svg.on("pointerleave", () => tip.attr("hidden", true));
-svg.on("click", (event) => {
-  const d = nearest(event);
-  if (d) show(d);
+chart.on("click", (p) => {
+  if (p.data?.client) show(p.data.client);
 });
 search.addEventListener("change", () => {
   const d = clients().find((c) => c.name.toLowerCase() === search.value.trim().toLowerCase());
@@ -142,9 +188,7 @@ root.querySelectorAll(".staffing-years button").forEach((button) => {
     draw();
   });
 });
-
-root.querySelector(".staffing-legend").innerHTML = SECTORS
-  .map(([cls, name]) => `<li><i class="${cls}"></i>${name}</li>`).join("");
+window.addEventListener("resize", () => chart.resize());
 
 fetch(new URL("../../weeks/week04/data/staffing_clients.json", import.meta.url))
   .then((r) => r.json())

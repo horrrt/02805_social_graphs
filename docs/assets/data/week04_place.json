@@ -1,426 +1,9499 @@
 {
-  "meta": {
-    "status": "placeholder",
-    "note": "Illustrative shapes for the Place UI scaffold. Replace from analysis/week04_where.py — no number on this page is final until status is live.",
-    "scope": "Certified H-1B · FY2025 · worksite cities",
-    "script": "analysis/week04_where.py"
+ "meta": {
+  "status": "live",
+  "note": "Certified H-1B filings, FY2025; the 40 metro areas with the most filings. Metros are linked by the companies that file in both; weights count filings.",
+  "scope": "Certified H-1B · FY2025 · top 40 metro areas by filings",
+  "script": "analysis/week04_where.py"
+ },
+ "cities": [
+  {
+   "id": "35620",
+   "name": "New York",
+   "state": "NY",
+   "lon": -73.808,
+   "lat": 40.735,
+   "positions": 146702,
+   "filings": 69533,
+   "employers": 13238,
+   "top_employer": "EY",
+   "top_share": 0.036,
+   "census": "Northeast",
+   "division": "Middle Atlantic",
+   "metro_title": "New York-Newark-Jersey City, NY-NJ Metro Area",
+   "community": 0
   },
-  "cities": [
-    {
-      "id": "nyc",
-      "name": "New York",
-      "state": "NY",
-      "lon": -74.0,
-      "lat": 40.7,
-      "positions": 18420,
-      "employers": 2140,
-      "top_employer": "Infosys",
-      "top_share": 0.11,
-      "census": "Northeast",
-      "community": 0
-    },
-    {
-      "id": "sfo",
-      "name": "San Francisco",
-      "state": "CA",
-      "lon": -122.4,
-      "lat": 37.8,
-      "positions": 16280,
-      "employers": 1890,
-      "top_employer": "Infosys",
-      "top_share": 0.09,
-      "census": "West",
-      "community": 1
-    },
-    {
-      "id": "sea",
-      "name": "Seattle",
-      "state": "WA",
-      "lon": -122.3,
-      "lat": 47.6,
-      "positions": 12110,
-      "employers": 980,
-      "top_employer": "TCS",
-      "top_share": 0.14,
-      "census": "West",
-      "community": 1
-    },
-    {
-      "id": "dfw",
-      "name": "Dallas",
-      "state": "TX",
-      "lon": -96.8,
-      "lat": 32.8,
-      "positions": 10940,
-      "employers": 1320,
-      "top_employer": "Cognizant",
-      "top_share": 0.12,
-      "census": "South",
-      "community": 2
-    },
-    {
-      "id": "chi",
-      "name": "Chicago",
-      "state": "IL",
-      "lon": -87.6,
-      "lat": 41.9,
-      "positions": 9870,
-      "employers": 1180,
-      "top_employer": "CGI",
-      "top_share": 0.16,
-      "census": "Midwest",
-      "community": 0
-    },
-    {
-      "id": "bos",
-      "name": "Boston",
-      "state": "MA",
-      "lon": -71.1,
-      "lat": 42.4,
-      "positions": 8640,
-      "employers": 1040,
-      "top_employer": "Infosys",
-      "top_share": 0.1,
-      "census": "Northeast",
-      "community": 0
-    },
-    {
-      "id": "aus",
-      "name": "Austin",
-      "state": "TX",
-      "lon": -97.7,
-      "lat": 30.3,
-      "positions": 7210,
-      "employers": 640,
-      "top_employer": "TCS",
-      "top_share": 0.18,
-      "census": "South",
-      "community": 2
-    },
-    {
-      "id": "atl",
-      "name": "Atlanta",
-      "state": "GA",
-      "lon": -84.4,
-      "lat": 33.7,
-      "positions": 6980,
-      "employers": 890,
-      "top_employer": "Cognizant",
-      "top_share": 0.13,
-      "census": "South",
-      "community": 2
-    },
-    {
-      "id": "sjc",
-      "name": "San Jose",
-      "state": "CA",
-      "lon": -121.9,
-      "lat": 37.3,
-      "positions": 6540,
-      "employers": 720,
-      "top_employer": "Infosys",
-      "top_share": 0.15,
-      "census": "West",
-      "community": 1
-    },
-    {
-      "id": "phx",
-      "name": "Phoenix",
-      "state": "AZ",
-      "lon": -112.1,
-      "lat": 33.4,
-      "positions": 5120,
-      "employers": 410,
-      "top_employer": "Infosys",
-      "top_share": 0.22,
-      "census": "West",
-      "community": 1
-    },
-    {
-      "id": "den",
-      "name": "Denver",
-      "state": "CO",
-      "lon": -105.0,
-      "lat": 39.7,
-      "positions": 4380,
-      "employers": 520,
-      "top_employer": "Wipro",
-      "top_share": 0.11,
-      "census": "West",
-      "community": 3
-    },
-    {
-      "id": "rtp",
-      "name": "Raleigh",
-      "state": "NC",
-      "lon": -78.6,
-      "lat": 35.8,
-      "positions": 3920,
-      "employers": 380,
-      "top_employer": "CGI",
-      "top_share": 0.19,
-      "census": "South",
-      "community": 2
-    },
-    {
-      "id": "det",
-      "name": "Detroit",
-      "state": "MI",
-      "lon": -83.0,
-      "lat": 42.3,
-      "positions": 3410,
-      "employers": 290,
-      "top_employer": "TCS",
-      "top_share": 0.24,
-      "census": "Midwest",
-      "community": 0
-    },
-    {
-      "id": "msp",
-      "name": "Minneapolis",
-      "state": "MN",
-      "lon": -93.3,
-      "lat": 44.98,
-      "positions": 3180,
-      "employers": 310,
-      "top_employer": "Infosys",
-      "top_share": 0.17,
-      "census": "Midwest",
-      "community": 0
-    },
-    {
-      "id": "pit",
-      "name": "Pittsburgh",
-      "state": "PA",
-      "lon": -80.0,
-      "lat": 40.4,
-      "positions": 2740,
-      "employers": 180,
-      "top_employer": "CGI",
-      "top_share": 0.41,
-      "census": "Northeast",
-      "community": 0
-    }
-  ],
-  "communities": [
-    { "id": 0, "label": "New York–Chicago belt", "colour": "#f2820c" },
-    { "id": 1, "label": "Pacific tech corridor", "colour": "#1f8fd6" },
-    { "id": 2, "label": "Sun Belt filings", "colour": "#6b4fbb" },
-    { "id": 3, "label": "Mountain outliers", "colour": "#2a9d8f" }
-  ],
-  "census_colours": {
-    "Northeast": "#f2820c",
-    "Midwest": "#c45c26",
-    "South": "#6b4fbb",
-    "West": "#1f8fd6"
+  {
+   "id": "19100",
+   "name": "Dallas",
+   "state": "TX",
+   "lon": -96.97,
+   "lat": 32.849,
+   "positions": 119726,
+   "filings": 56814,
+   "employers": 9088,
+   "top_employer": "Cognizant",
+   "top_share": 0.027,
+   "census": "South",
+   "division": "West South Central",
+   "metro_title": "Dallas-Fort Worth-Arlington, TX Metro Area",
+   "community": 0
   },
-  "backbone": {
-    "alphas": [0.05, 0.1, 0.2, 0.3, 0.5],
-    "default_alpha": 0.2,
-    "gc_size": [4, 7, 11, 13, 15],
-    "edges_kept": [6, 12, 22, 34, 48],
-    "snap_alpha": 0.1,
-    "snap_note": "Below α = 0.1 the giant component drops from 11 cities to 7; the Pacific corridor peels off.",
-    "graphs": {
-      "0.05": {
-        "nodes": ["nyc", "bos", "chi", "pit"],
-        "edges": [
-          ["nyc", "bos", 420],
-          ["nyc", "chi", 310],
-          ["chi", "pit", 180],
-          ["nyc", "pit", 95]
-        ]
-      },
-      "0.1": {
-        "nodes": ["nyc", "bos", "chi", "pit", "dfw", "atl", "aus"],
-        "edges": [
-          ["nyc", "bos", 420],
-          ["nyc", "chi", 310],
-          ["chi", "pit", 180],
-          ["dfw", "atl", 260],
-          ["dfw", "aus", 220],
-          ["atl", "aus", 140],
-          ["nyc", "dfw", 90]
-        ]
-      },
-      "0.2": {
-        "nodes": ["nyc", "bos", "chi", "pit", "dfw", "atl", "aus", "sfo", "sea", "sjc", "phx"],
-        "edges": [
-          ["nyc", "bos", 420],
-          ["nyc", "chi", 310],
-          ["chi", "pit", 180],
-          ["dfw", "atl", 260],
-          ["dfw", "aus", 220],
-          ["atl", "aus", 140],
-          ["sfo", "sea", 380],
-          ["sfo", "sjc", 510],
-          ["sea", "sjc", 200],
-          ["sfo", "phx", 160],
-          ["nyc", "sfo", 240],
-          ["nyc", "dfw", 90]
-        ]
-      },
-      "0.3": {
-        "nodes": ["nyc", "bos", "chi", "pit", "dfw", "atl", "aus", "sfo", "sea", "sjc", "phx", "den", "rtp"],
-        "edges": [
-          ["nyc", "bos", 420],
-          ["nyc", "chi", 310],
-          ["chi", "pit", 180],
-          ["dfw", "atl", 260],
-          ["dfw", "aus", 220],
-          ["atl", "aus", 140],
-          ["sfo", "sea", 380],
-          ["sfo", "sjc", 510],
-          ["sea", "sjc", 200],
-          ["sfo", "phx", 160],
-          ["nyc", "sfo", 240],
-          ["nyc", "dfw", 90],
-          ["den", "sfo", 110],
-          ["rtp", "atl", 95],
-          ["den", "chi", 70]
-        ]
-      },
-      "0.5": {
-        "nodes": ["nyc", "bos", "chi", "pit", "dfw", "atl", "aus", "sfo", "sea", "sjc", "phx", "den", "rtp", "det", "msp"],
-        "edges": [
-          ["nyc", "bos", 420],
-          ["nyc", "chi", 310],
-          ["chi", "pit", 180],
-          ["dfw", "atl", 260],
-          ["dfw", "aus", 220],
-          ["atl", "aus", 140],
-          ["sfo", "sea", 380],
-          ["sfo", "sjc", 510],
-          ["sea", "sjc", 200],
-          ["sfo", "phx", 160],
-          ["nyc", "sfo", 240],
-          ["nyc", "dfw", 90],
-          ["den", "sfo", 110],
-          ["rtp", "atl", 95],
-          ["den", "chi", 70],
-          ["det", "chi", 130],
-          ["msp", "chi", 120],
-          ["det", "nyc", 60]
-        ]
-      }
-    }
+  {
+   "id": "41940",
+   "name": "San Jose",
+   "state": "CA",
+   "lon": -121.371,
+   "lat": 36.908,
+   "positions": 158082,
+   "filings": 50517,
+   "employers": 4487,
+   "top_employer": "Google",
+   "top_share": 0.1,
+   "census": "West",
+   "division": "Pacific",
+   "metro_title": "San Jose-Sunnyvale-Santa Clara, CA Metro Area",
+   "community": 0
   },
-  "null_model": {
-    "Q": 0.41,
-    "Q_null_mean": 0.29,
-    "Q_null_std": 0.02,
-    "nmi_seeds": 0.72,
-    "nmi_census_region": 0.38,
-    "nmi_census_division": 0.31,
-    "seeds": 50
+  {
+   "id": "41860",
+   "name": "San Francisco",
+   "state": "CA",
+   "lon": -122.274,
+   "lat": 37.774,
+   "positions": 63320,
+   "filings": 37869,
+   "employers": 6253,
+   "top_employer": "Meta",
+   "top_share": 0.091,
+   "census": "West",
+   "division": "Pacific",
+   "metro_title": "San Francisco-Oakland-Fremont, CA Metro Area",
+   "community": 0
   },
-  "longhaul": {
-    "staffing": ["Infosys", "CGI", "TCS", "Cognizant", "Wipro"],
-    "edges": [
-      {
-        "a": "nyc",
-        "b": "sfo",
-        "distance_km": 4130,
-        "weight": 240,
-        "top_employer": "Infosys",
-        "staffing": true
-      },
-      {
-        "a": "nyc",
-        "b": "dfw",
-        "distance_km": 2210,
-        "weight": 90,
-        "top_employer": "Infosys",
-        "staffing": true
-      },
-      {
-        "a": "sfo",
-        "b": "sea",
-        "distance_km": 1090,
-        "weight": 380,
-        "top_employer": "TCS",
-        "staffing": true
-      },
-      {
-        "a": "chi",
-        "b": "pit",
-        "distance_km": 660,
-        "weight": 180,
-        "top_employer": "CGI",
-        "staffing": true
-      },
-      {
-        "a": "dfw",
-        "b": "atl",
-        "distance_km": 1150,
-        "weight": 260,
-        "top_employer": "Cognizant",
-        "staffing": true
-      },
-      {
-        "a": "bos",
-        "b": "nyc",
-        "distance_km": 306,
-        "weight": 420,
-        "top_employer": "Local mix",
-        "staffing": false
-      },
-      {
-        "a": "sfo",
-        "b": "sjc",
-        "distance_km": 70,
-        "weight": 510,
-        "top_employer": "Local mix",
-        "staffing": false
-      },
-      {
-        "a": "den",
-        "b": "sfo",
-        "distance_km": 1530,
-        "weight": 110,
-        "top_employer": "Wipro",
-        "staffing": true
-      },
-      {
-        "a": "chi",
-        "b": "msp",
-        "distance_km": 570,
-        "weight": 120,
-        "top_employer": "Infosys",
-        "staffing": true
-      },
-      {
-        "a": "atl",
-        "b": "aus",
-        "distance_km": 1310,
-        "weight": 140,
-        "top_employer": "Cognizant",
-        "staffing": true
-      }
-    ],
-    "employer_arcs": {
-      "Infosys": [
-        ["nyc", "sfo"],
-        ["nyc", "dfw"],
-        ["nyc", "bos"],
-        ["sfo", "phx"],
-        ["chi", "msp"]
-      ],
-      "CGI": [
-        ["chi", "pit"],
-        ["rtp", "atl"],
-        ["nyc", "chi"]
-      ],
-      "TCS": [
-        ["sfo", "sea"],
-        ["sea", "sjc"],
-        ["dfw", "aus"]
-      ],
-      "Cognizant": [
-        ["dfw", "atl"],
-        ["atl", "aus"]
-      ],
-      "Wipro": [["den", "sfo"], ["den", "chi"]]
-    }
+  {
+   "id": "42660",
+   "name": "Seattle",
+   "state": "WA",
+   "lon": -121.834,
+   "lat": 47.491,
+   "positions": 101576,
+   "filings": 36247,
+   "employers": 3350,
+   "top_employer": "Amazon Com",
+   "top_share": 0.216,
+   "census": "West",
+   "division": "Pacific",
+   "metro_title": "Seattle-Tacoma-Bellevue, WA Metro Area",
+   "community": 0
+  },
+  {
+   "id": "12060",
+   "name": "Atlanta",
+   "state": "GA",
+   "lon": -84.393,
+   "lat": 33.732,
+   "positions": 36069,
+   "filings": 23082,
+   "employers": 4830,
+   "top_employer": "EY",
+   "top_share": 0.024,
+   "census": "South",
+   "division": "South Atlantic",
+   "metro_title": "Atlanta-Sandy Springs-Roswell, GA Metro Area",
+   "community": 0
+  },
+  {
+   "id": "16980",
+   "name": "Chicago",
+   "state": "IL",
+   "lon": -87.842,
+   "lat": 41.759,
+   "positions": 44363,
+   "filings": 22847,
+   "employers": 5276,
+   "top_employer": "EY",
+   "top_share": 0.033,
+   "census": "Midwest",
+   "division": "East North Central",
+   "metro_title": "Chicago-Naperville-Elgin, IL-IN Metro Area",
+   "community": 0
+  },
+  {
+   "id": "12420",
+   "name": "Austin",
+   "state": "TX",
+   "lon": -97.65,
+   "lat": 30.25,
+   "positions": 45164,
+   "filings": 20836,
+   "employers": 4346,
+   "top_employer": "Amazon Com",
+   "top_share": 0.064,
+   "census": "South",
+   "division": "West South Central",
+   "metro_title": "Austin-Round Rock-San Marcos, TX Metro Area",
+   "community": 0
+  },
+  {
+   "id": "47900",
+   "name": "Washington",
+   "state": "VA",
+   "lon": -77.496,
+   "lat": 38.83,
+   "positions": 34320,
+   "filings": 18498,
+   "employers": 4905,
+   "top_employer": "Amazon Com",
+   "top_share": 0.037,
+   "census": "South",
+   "division": "South Atlantic",
+   "metro_title": "Washington-Arlington-Alexandria, DC-VA-MD-WV Metro Area",
+   "community": 0
+  },
+  {
+   "id": "31080",
+   "name": "Los Angeles",
+   "state": "CA",
+   "lon": -118.183,
+   "lat": 34.109,
+   "positions": 28660,
+   "filings": 17654,
+   "employers": 5565,
+   "top_employer": "EY",
+   "top_share": 0.029,
+   "census": "West",
+   "division": "Pacific",
+   "metro_title": "Los Angeles-Long Beach-Anaheim, CA Metro Area",
+   "community": 0
+  },
+  {
+   "id": "26420",
+   "name": "Houston",
+   "state": "TX",
+   "lon": -95.343,
+   "lat": 29.801,
+   "positions": 20219,
+   "filings": 14072,
+   "employers": 4284,
+   "top_employer": "EY",
+   "top_share": 0.025,
+   "census": "South",
+   "division": "West South Central",
+   "metro_title": "Houston-Pasadena-The Woodlands, TX Metro Area",
+   "community": 1
+  },
+  {
+   "id": "37980",
+   "name": "Philadelphia",
+   "state": "PA",
+   "lon": -75.312,
+   "lat": 39.895,
+   "positions": 21049,
+   "filings": 13775,
+   "employers": 3380,
+   "top_employer": "Trustees Of The University Of Pennsylvania",
+   "top_share": 0.033,
+   "census": "Northeast",
+   "division": "Middle Atlantic",
+   "metro_title": "Philadelphia-Camden-Wilmington, PA-NJ-DE-MD Metro Area",
+   "community": 1
+  },
+  {
+   "id": "19820",
+   "name": "Detroit",
+   "state": "MI",
+   "lon": -83.201,
+   "lat": 42.722,
+   "positions": 18990,
+   "filings": 12259,
+   "employers": 2537,
+   "top_employer": "Ford",
+   "top_share": 0.062,
+   "census": "Midwest",
+   "division": "East North Central",
+   "metro_title": "Detroit-Warren-Dearborn, MI Metro Area",
+   "community": 1
+  },
+  {
+   "id": "16740",
+   "name": "Charlotte",
+   "state": "NC",
+   "lon": -80.797,
+   "lat": 35.166,
+   "positions": 16905,
+   "filings": 11239,
+   "employers": 2709,
+   "top_employer": "Cognizant",
+   "top_share": 0.054,
+   "census": "South",
+   "division": "South Atlantic",
+   "metro_title": "Charlotte-Concord-Gastonia, NC-SC Metro Area",
+   "community": 1
+  },
+  {
+   "id": "38060",
+   "name": "Phoenix",
+   "state": "AZ",
+   "lon": -112.068,
+   "lat": 33.186,
+   "positions": 15498,
+   "filings": 9827,
+   "employers": 2388,
+   "top_employer": "American Express",
+   "top_share": 0.052,
+   "census": "West",
+   "division": "Mountain",
+   "metro_title": "Phoenix-Mesa-Chandler, AZ Metro Area",
+   "community": 1
+  },
+  {
+   "id": "39580",
+   "name": "Raleigh",
+   "state": "NC",
+   "lon": -78.46,
+   "lat": 35.757,
+   "positions": 16687,
+   "filings": 9746,
+   "employers": 2507,
+   "top_employer": "Fidelity Technology Group Llc",
+   "top_share": 0.063,
+   "census": "South",
+   "division": "South Atlantic",
+   "metro_title": "Raleigh-Cary, NC Metro Area",
+   "community": 1
+  },
+  {
+   "id": "41740",
+   "name": "San Diego",
+   "state": "CA",
+   "lon": -116.776,
+   "lat": 33.024,
+   "positions": 15284,
+   "filings": 6731,
+   "employers": 1423,
+   "top_employer": "Qualcomm",
+   "top_share": 0.211,
+   "census": "West",
+   "division": "Pacific",
+   "metro_title": "San Diego-Chula Vista-Carlsbad, CA Metro Area",
+   "community": 0
+  },
+  {
+   "id": "33100",
+   "name": "Miami",
+   "state": "FL",
+   "lon": -80.479,
+   "lat": 26.102,
+   "positions": 8859,
+   "filings": 6270,
+   "employers": 2450,
+   "top_employer": "University Of Miami",
+   "top_share": 0.033,
+   "census": "South",
+   "division": "South Atlantic",
+   "metro_title": "Miami-Fort Lauderdale-West Palm Beach, FL Metro Area",
+   "community": 1
+  },
+  {
+   "id": "33460",
+   "name": "Minneapolis",
+   "state": "MN",
+   "lon": -93.275,
+   "lat": 45.097,
+   "positions": 10767,
+   "filings": 6013,
+   "employers": 1612,
+   "top_employer": "Cognizant",
+   "top_share": 0.051,
+   "census": "Midwest",
+   "division": "West North Central",
+   "metro_title": "Minneapolis-St. Paul-Bloomington, MN-WI Metro Area",
+   "community": 1
+  },
+  {
+   "id": "45300",
+   "name": "Tampa",
+   "state": "FL",
+   "lon": -82.525,
+   "lat": 28.121,
+   "positions": 8712,
+   "filings": 5869,
+   "employers": 1770,
+   "top_employer": "Citigroup",
+   "top_share": 0.052,
+   "census": "South",
+   "division": "South Atlantic",
+   "metro_title": "Tampa-St. Petersburg-Clearwater, FL Metro Area",
+   "community": 1
+  },
+  {
+   "id": "18140",
+   "name": "Columbus",
+   "state": "OH",
+   "lon": -82.836,
+   "lat": 39.969,
+   "positions": 8816,
+   "filings": 5414,
+   "employers": 1355,
+   "top_employer": "JPMorgan Chase",
+   "top_share": 0.073,
+   "census": "Midwest",
+   "division": "East North Central",
+   "metro_title": "Columbus, OH Metro Area",
+   "community": 1
+  },
+  {
+   "id": "41180",
+   "name": "St. Louis",
+   "state": "MO",
+   "lon": -90.346,
+   "lat": 38.74,
+   "positions": 10272,
+   "filings": 5093,
+   "employers": 1349,
+   "top_employer": "Mastercard",
+   "top_share": 0.105,
+   "census": "Midwest",
+   "division": "West North Central",
+   "metro_title": "St. Louis, MO-IL Metro Area",
+   "community": 1
+  },
+  {
+   "id": "19740",
+   "name": "Denver",
+   "state": "CO",
+   "lon": -104.901,
+   "lat": 39.435,
+   "positions": 8830,
+   "filings": 5042,
+   "employers": 1476,
+   "top_employer": "Charter Communications",
+   "top_share": 0.068,
+   "census": "West",
+   "division": "Mountain",
+   "metro_title": "Denver-Aurora-Centennial, CO Metro Area",
+   "community": 1
+  },
+  {
+   "id": "38900",
+   "name": "Portland",
+   "state": "OR",
+   "lon": -122.484,
+   "lat": 45.601,
+   "positions": 9303,
+   "filings": 4325,
+   "employers": 924,
+   "top_employer": "Intel",
+   "top_share": 0.282,
+   "census": "West",
+   "division": "Pacific",
+   "metro_title": "Portland-Vancouver-Hillsboro, OR-WA Metro Area",
+   "community": 1
+  },
+  {
+   "id": "38300",
+   "name": "Pittsburgh",
+   "state": "PA",
+   "lon": -79.864,
+   "lat": 40.471,
+   "positions": 10568,
+   "filings": 4282,
+   "employers": 1075,
+   "top_employer": "University Of Pittsburgh",
+   "top_share": 0.072,
+   "census": "Northeast",
+   "division": "Middle Atlantic",
+   "metro_title": "Pittsburgh, PA Metro Area",
+   "community": 1
+  },
+  {
+   "id": "45940",
+   "name": "Trenton",
+   "state": "NJ",
+   "lon": -74.704,
+   "lat": 40.283,
+   "positions": 4931,
+   "filings": 4282,
+   "employers": 1091,
+   "top_employer": "Compunnel Software",
+   "top_share": 0.087,
+   "census": "Northeast",
+   "division": "Middle Atlantic",
+   "metro_title": "Trenton-Princeton, NJ Metro Area",
+   "community": 1
+  },
+  {
+   "id": "20500",
+   "name": "Durham",
+   "state": "NC",
+   "lon": -79.097,
+   "lat": 35.996,
+   "positions": 5509,
+   "filings": 3772,
+   "employers": 698,
+   "top_employer": "Fidelity Technology Group Llc",
+   "top_share": 0.178,
+   "census": "South",
+   "division": "South Atlantic",
+   "metro_title": "Durham-Chapel Hill, NC Metro Area",
+   "community": 1
+  },
+  {
+   "id": "12580",
+   "name": "Baltimore",
+   "state": "MD",
+   "lon": -76.55,
+   "lat": 39.304,
+   "positions": 7405,
+   "filings": 3771,
+   "employers": 1255,
+   "top_employer": "Johns Hopkins University",
+   "top_share": 0.121,
+   "census": "South",
+   "division": "South Atlantic",
+   "metro_title": "Baltimore-Columbia-Towson, MD Metro Area",
+   "community": 1
+  },
+  {
+   "id": "22220",
+   "name": "Fayetteville",
+   "state": "AR",
+   "lon": -94.08,
+   "lat": 36.116,
+   "positions": 4369,
+   "filings": 3654,
+   "employers": 566,
+   "top_employer": "Wal Mart Associates",
+   "top_share": 0.561,
+   "census": "South",
+   "division": "West South Central",
+   "metro_title": "Fayetteville-Springdale-Rogers, AR Metro Area",
+   "community": 1
+  },
+  {
+   "id": "17140",
+   "name": "Cincinnati",
+   "state": "OH",
+   "lon": -84.464,
+   "lat": 39.079,
+   "positions": 6374,
+   "filings": 3632,
+   "employers": 985,
+   "top_employer": "Tata Consultancy",
+   "top_share": 0.064,
+   "census": "Midwest",
+   "division": "East North Central",
+   "metro_title": "Cincinnati, OH-KY-IN Metro Area",
+   "community": 1
+  },
+  {
+   "id": "34980",
+   "name": "Nashville",
+   "state": "TN",
+   "lon": -86.723,
+   "lat": 36.092,
+   "positions": 6487,
+   "filings": 3628,
+   "employers": 1026,
+   "top_employer": "Amazon Com",
+   "top_share": 0.078,
+   "census": "South",
+   "division": "East South Central",
+   "metro_title": "Nashville-Davidson--Murfreesboro--Franklin, TN Metro Area",
+   "community": 1
+  },
+  {
+   "id": "26900",
+   "name": "Indianapolis",
+   "state": "IN",
+   "lon": -86.124,
+   "lat": 39.791,
+   "positions": 5604,
+   "filings": 3549,
+   "employers": 957,
+   "top_employer": "Eli Lilly",
+   "top_share": 0.103,
+   "census": "Midwest",
+   "division": "East North Central",
+   "metro_title": "Indianapolis-Carmel-Greenwood, IN Metro Area",
+   "community": 1
+  },
+  {
+   "id": "36740",
+   "name": "Orlando",
+   "state": "FL",
+   "lon": -81.356,
+   "lat": 28.434,
+   "positions": 5654,
+   "filings": 3458,
+   "employers": 1218,
+   "top_employer": "Deloitte",
+   "top_share": 0.149,
+   "census": "South",
+   "division": "South Atlantic",
+   "metro_title": "Orlando-Kissimmee-Sanford, FL Metro Area",
+   "community": 1
+  },
+  {
+   "id": "41700",
+   "name": "San Antonio",
+   "state": "TX",
+   "lon": -98.607,
+   "lat": 29.433,
+   "positions": 4212,
+   "filings": 2958,
+   "employers": 918,
+   "top_employer": "HCL",
+   "top_share": 0.108,
+   "census": "South",
+   "division": "West South Central",
+   "metro_title": "San Antonio-New Braunfels, TX Metro Area",
+   "community": 1
+  },
+  {
+   "id": "40900",
+   "name": "Sacramento",
+   "state": "CA",
+   "lon": -121.006,
+   "lat": 38.79,
+   "positions": 4722,
+   "filings": 2957,
+   "employers": 933,
+   "top_employer": "Intel",
+   "top_share": 0.094,
+   "census": "West",
+   "division": "Pacific",
+   "metro_title": "Sacramento-Roseville-Folsom, CA Metro Area",
+   "community": 1
+  },
+  {
+   "id": "40060",
+   "name": "Richmond",
+   "state": "VA",
+   "lon": -77.442,
+   "lat": 37.411,
+   "positions": 4157,
+   "filings": 2782,
+   "employers": 941,
+   "top_employer": "Capital One",
+   "top_share": 0.062,
+   "census": "South",
+   "division": "South Atlantic",
+   "metro_title": "Richmond, VA Metro Area",
+   "community": 1
+  },
+  {
+   "id": "41620",
+   "name": "Salt Lake City",
+   "state": "UT",
+   "lon": -112.953,
+   "lat": 40.573,
+   "positions": 30523,
+   "filings": 2651,
+   "employers": 699,
+   "top_employer": "Goldman Sachs",
+   "top_share": 0.21,
+   "census": "West",
+   "division": "Mountain",
+   "metro_title": "Salt Lake City-Murray, UT Metro Area",
+   "community": 1
+  },
+  {
+   "id": "32820",
+   "name": "Memphis",
+   "state": "TN",
+   "lon": -89.821,
+   "lat": 35.01,
+   "positions": 4455,
+   "filings": 2493,
+   "employers": 459,
+   "top_employer": "Federal Express",
+   "top_share": 0.214,
+   "census": "South",
+   "division": "East South Central",
+   "metro_title": "Memphis, TN-MS-AR Metro Area",
+   "community": 1
+  },
+  {
+   "id": "44700",
+   "name": "Stockton",
+   "state": "CA",
+   "lon": -121.272,
+   "lat": 37.935,
+   "positions": 2714,
+   "filings": 2473,
+   "employers": 945,
+   "top_employer": "Wal Mart Associates",
+   "top_share": 0.04,
+   "census": "West",
+   "division": "Pacific",
+   "metro_title": "Stockton-Lodi, CA Metro Area",
+   "community": 1
+  },
+  {
+   "id": "27260",
+   "name": "Jacksonville",
+   "state": "FL",
+   "lon": -81.756,
+   "lat": 30.234,
+   "positions": 3275,
+   "filings": 2427,
+   "employers": 755,
+   "top_employer": "Fis Management",
+   "top_share": 0.105,
+   "census": "South",
+   "division": "South Atlantic",
+   "metro_title": "Jacksonville, FL Metro Area",
+   "community": 1
   }
+ ],
+ "communities": [
+  {
+   "id": 0,
+   "label": "New York–Dallas",
+   "colour": "#f2820c",
+   "metros": 11,
+   "regions": {
+    "West": 5,
+    "South": 4,
+    "Northeast": 1,
+    "Midwest": 1
+   }
+  },
+  {
+   "id": 1,
+   "label": "Houston–Philadelphia",
+   "colour": "#1f8fd6",
+   "metros": 29,
+   "regions": {
+    "South": 14,
+    "Midwest": 6,
+    "West": 6,
+    "Northeast": 3
+   }
+  }
+ ],
+ "census_colours": {
+  "Northeast": "#f2820c",
+  "Midwest": "#c45c26",
+  "South": "#6b4fbb",
+  "West": "#1f8fd6"
+ },
+ "backbone": {
+  "alphas": [
+   0.05,
+   0.1,
+   0.2,
+   0.3,
+   0.5
+  ],
+  "default_alpha": 0.2,
+  "gc_size": [
+   18,
+   32,
+   40,
+   40,
+   40
+  ],
+  "edges_kept": [
+   28,
+   62,
+   183,
+   424,
+   660
+  ],
+  "snap_alpha": 0.05,
+  "snap_note": "Below α = 0.1 the giant component drops from 32 metros to 18; at α = 0.05 it keeps 28 links.",
+  "graphs": {
+   "0.05": {
+    "nodes": [
+     "35620",
+     "19100",
+     "41940",
+     "41860",
+     "42660",
+     "12060",
+     "16980",
+     "12420",
+     "47900",
+     "26420",
+     "37980",
+     "16740",
+     "39580",
+     "41740",
+     "45940",
+     "20500",
+     "22220",
+     "41620"
+    ],
+    "edges": [
+     [
+      "35620",
+      "41940",
+      11725
+     ],
+     [
+      "35620",
+      "12420",
+      9401
+     ],
+     [
+      "35620",
+      "16980",
+      9516
+     ],
+     [
+      "35620",
+      "41860",
+      12451
+     ],
+     [
+      "35620",
+      "19100",
+      19684
+     ],
+     [
+      "35620",
+      "42660",
+      10929
+     ],
+     [
+      "35620",
+      "47900",
+      7470
+     ],
+     [
+      "35620",
+      "45940",
+      2657
+     ],
+     [
+      "35620",
+      "12060",
+      9993
+     ],
+     [
+      "35620",
+      "37980",
+      6690
+     ],
+     [
+      "35620",
+      "41620",
+      1310
+     ],
+     [
+      "19100",
+      "12420",
+      9924
+     ],
+     [
+      "19100",
+      "16740",
+      7136
+     ],
+     [
+      "19100",
+      "12060",
+      11232
+     ],
+     [
+      "19100",
+      "37980",
+      6505
+     ],
+     [
+      "19100",
+      "26420",
+      5960
+     ],
+     [
+      "19100",
+      "47900",
+      7970
+     ],
+     [
+      "19100",
+      "39580",
+      5907
+     ],
+     [
+      "19100",
+      "16980",
+      9628
+     ],
+     [
+      "19100",
+      "20500",
+      2262
+     ],
+     [
+      "19100",
+      "41620",
+      1394
+     ],
+     [
+      "41940",
+      "12420",
+      10005
+     ],
+     [
+      "41940",
+      "42660",
+      14556
+     ],
+     [
+      "41940",
+      "41860",
+      17231
+     ],
+     [
+      "41940",
+      "22220",
+      1702
+     ],
+     [
+      "41940",
+      "41740",
+      2826
+     ],
+     [
+      "41860",
+      "42660",
+      11317
+     ],
+     [
+      "39580",
+      "20500",
+      2363
+     ]
+    ]
+   },
+   "0.1": {
+    "nodes": [
+     "35620",
+     "19100",
+     "41940",
+     "41860",
+     "42660",
+     "12060",
+     "16980",
+     "12420",
+     "47900",
+     "31080",
+     "26420",
+     "37980",
+     "19820",
+     "16740",
+     "38060",
+     "39580",
+     "41740",
+     "33100",
+     "33460",
+     "45300",
+     "18140",
+     "38900",
+     "45940",
+     "20500",
+     "12580",
+     "22220",
+     "36740",
+     "41700",
+     "40060",
+     "41620",
+     "32820",
+     "44700"
+    ],
+    "edges": [
+     [
+      "35620",
+      "41940",
+      11725
+     ],
+     [
+      "35620",
+      "31080",
+      6234
+     ],
+     [
+      "35620",
+      "12420",
+      9401
+     ],
+     [
+      "35620",
+      "16980",
+      9516
+     ],
+     [
+      "35620",
+      "41860",
+      12451
+     ],
+     [
+      "35620",
+      "16740",
+      6106
+     ],
+     [
+      "35620",
+      "19100",
+      19684
+     ],
+     [
+      "35620",
+      "42660",
+      10929
+     ],
+     [
+      "35620",
+      "26420",
+      4830
+     ],
+     [
+      "35620",
+      "47900",
+      7470
+     ],
+     [
+      "35620",
+      "45940",
+      2657
+     ],
+     [
+      "35620",
+      "12060",
+      9993
+     ],
+     [
+      "35620",
+      "37980",
+      6690
+     ],
+     [
+      "35620",
+      "38060",
+      4228
+     ],
+     [
+      "35620",
+      "39580",
+      4777
+     ],
+     [
+      "35620",
+      "41620",
+      1310
+     ],
+     [
+      "35620",
+      "45300",
+      3308
+     ],
+     [
+      "35620",
+      "33100",
+      2384
+     ],
+     [
+      "19100",
+      "31080",
+      5552
+     ],
+     [
+      "19100",
+      "12420",
+      9924
+     ],
+     [
+      "19100",
+      "16740",
+      7136
+     ],
+     [
+      "19100",
+      "41940",
+      8703
+     ],
+     [
+      "19100",
+      "42660",
+      7749
+     ],
+     [
+      "19100",
+      "12060",
+      11232
+     ],
+     [
+      "19100",
+      "37980",
+      6505
+     ],
+     [
+      "19100",
+      "26420",
+      5960
+     ],
+     [
+      "19100",
+      "41860",
+      8676
+     ],
+     [
+      "19100",
+      "47900",
+      7970
+     ],
+     [
+      "19100",
+      "19820",
+      3248
+     ],
+     [
+      "19100",
+      "18140",
+      3001
+     ],
+     [
+      "19100",
+      "39580",
+      5907
+     ],
+     [
+      "19100",
+      "16980",
+      9628
+     ],
+     [
+      "19100",
+      "44700",
+      1607
+     ],
+     [
+      "19100",
+      "20500",
+      2262
+     ],
+     [
+      "19100",
+      "33460",
+      3012
+     ],
+     [
+      "19100",
+      "38060",
+      4717
+     ],
+     [
+      "19100",
+      "40060",
+      1805
+     ],
+     [
+      "19100",
+      "41620",
+      1394
+     ],
+     [
+      "19100",
+      "45300",
+      3693
+     ],
+     [
+      "19100",
+      "45940",
+      1964
+     ],
+     [
+      "19100",
+      "41700",
+      2000
+     ],
+     [
+      "19100",
+      "36740",
+      1907
+     ],
+     [
+      "19100",
+      "22220",
+      1494
+     ],
+     [
+      "19100",
+      "32820",
+      928
+     ],
+     [
+      "41940",
+      "12420",
+      10005
+     ],
+     [
+      "41940",
+      "31080",
+      5282
+     ],
+     [
+      "41940",
+      "42660",
+      14556
+     ],
+     [
+      "41940",
+      "41860",
+      17231
+     ],
+     [
+      "41940",
+      "38900",
+      1915
+     ],
+     [
+      "41940",
+      "44700",
+      1765
+     ],
+     [
+      "41940",
+      "22220",
+      1702
+     ],
+     [
+      "41940",
+      "41740",
+      2826
+     ],
+     [
+      "41860",
+      "12420",
+      8028
+     ],
+     [
+      "41860",
+      "44700",
+      1879
+     ],
+     [
+      "41860",
+      "42660",
+      11317
+     ],
+     [
+      "41860",
+      "31080",
+      5543
+     ],
+     [
+      "42660",
+      "12420",
+      7363
+     ],
+     [
+      "12060",
+      "16980",
+      6696
+     ],
+     [
+      "12060",
+      "16740",
+      4996
+     ],
+     [
+      "12420",
+      "41740",
+      2259
+     ],
+     [
+      "47900",
+      "12580",
+      1531
+     ],
+     [
+      "39580",
+      "20500",
+      2363
+     ]
+    ]
+   },
+   "0.2": {
+    "nodes": [
+     "35620",
+     "19100",
+     "41940",
+     "41860",
+     "42660",
+     "12060",
+     "16980",
+     "12420",
+     "47900",
+     "31080",
+     "26420",
+     "37980",
+     "19820",
+     "16740",
+     "38060",
+     "39580",
+     "41740",
+     "33100",
+     "33460",
+     "45300",
+     "18140",
+     "41180",
+     "19740",
+     "38900",
+     "45940",
+     "38300",
+     "20500",
+     "12580",
+     "22220",
+     "17140",
+     "34980",
+     "26900",
+     "36740",
+     "41700",
+     "40900",
+     "40060",
+     "41620",
+     "32820",
+     "44700",
+     "27260"
+    ],
+    "edges": [
+     [
+      "35620",
+      "41940",
+      11725
+     ],
+     [
+      "35620",
+      "31080",
+      6234
+     ],
+     [
+      "35620",
+      "12420",
+      9401
+     ],
+     [
+      "35620",
+      "16980",
+      9516
+     ],
+     [
+      "35620",
+      "36740",
+      1657
+     ],
+     [
+      "35620",
+      "41740",
+      1819
+     ],
+     [
+      "35620",
+      "41860",
+      12451
+     ],
+     [
+      "35620",
+      "16740",
+      6106
+     ],
+     [
+      "35620",
+      "19100",
+      19684
+     ],
+     [
+      "35620",
+      "42660",
+      10929
+     ],
+     [
+      "35620",
+      "17140",
+      1722
+     ],
+     [
+      "35620",
+      "26420",
+      4830
+     ],
+     [
+      "35620",
+      "47900",
+      7470
+     ],
+     [
+      "35620",
+      "45940",
+      2657
+     ],
+     [
+      "35620",
+      "19820",
+      2541
+     ],
+     [
+      "35620",
+      "38900",
+      1414
+     ],
+     [
+      "35620",
+      "12060",
+      9993
+     ],
+     [
+      "35620",
+      "18140",
+      2535
+     ],
+     [
+      "35620",
+      "20500",
+      1456
+     ],
+     [
+      "35620",
+      "26900",
+      1286
+     ],
+     [
+      "35620",
+      "27260",
+      1043
+     ],
+     [
+      "35620",
+      "33460",
+      2441
+     ],
+     [
+      "35620",
+      "37980",
+      6690
+     ],
+     [
+      "35620",
+      "38060",
+      4228
+     ],
+     [
+      "35620",
+      "39580",
+      4777
+     ],
+     [
+      "35620",
+      "40060",
+      1427
+     ],
+     [
+      "35620",
+      "41180",
+      1951
+     ],
+     [
+      "35620",
+      "41620",
+      1310
+     ],
+     [
+      "35620",
+      "45300",
+      3308
+     ],
+     [
+      "35620",
+      "44700",
+      1370
+     ],
+     [
+      "35620",
+      "33100",
+      2384
+     ],
+     [
+      "35620",
+      "41700",
+      1499
+     ],
+     [
+      "35620",
+      "12580",
+      1231
+     ],
+     [
+      "35620",
+      "19740",
+      2113
+     ],
+     [
+      "35620",
+      "22220",
+      976
+     ],
+     [
+      "35620",
+      "40900",
+      1136
+     ],
+     [
+      "35620",
+      "38300",
+      1774
+     ],
+     [
+      "35620",
+      "32820",
+      561
+     ],
+     [
+      "35620",
+      "34980",
+      1753
+     ],
+     [
+      "19100",
+      "31080",
+      5552
+     ],
+     [
+      "19100",
+      "12420",
+      9924
+     ],
+     [
+      "19100",
+      "16740",
+      7136
+     ],
+     [
+      "19100",
+      "41940",
+      8703
+     ],
+     [
+      "19100",
+      "42660",
+      7749
+     ],
+     [
+      "19100",
+      "12060",
+      11232
+     ],
+     [
+      "19100",
+      "37980",
+      6505
+     ],
+     [
+      "19100",
+      "26420",
+      5960
+     ],
+     [
+      "19100",
+      "41860",
+      8676
+     ],
+     [
+      "19100",
+      "47900",
+      7970
+     ],
+     [
+      "19100",
+      "19820",
+      3248
+     ],
+     [
+      "19100",
+      "17140",
+      2002
+     ],
+     [
+      "19100",
+      "18140",
+      3001
+     ],
+     [
+      "19100",
+      "19740",
+      2398
+     ],
+     [
+      "19100",
+      "27260",
+      1112
+     ],
+     [
+      "19100",
+      "39580",
+      5907
+     ],
+     [
+      "19100",
+      "41740",
+      1701
+     ],
+     [
+      "19100",
+      "16980",
+      9628
+     ],
+     [
+      "19100",
+      "38900",
+      1536
+     ],
+     [
+      "19100",
+      "44700",
+      1607
+     ],
+     [
+      "19100",
+      "20500",
+      2262
+     ],
+     [
+      "19100",
+      "26900",
+      1424
+     ],
+     [
+      "19100",
+      "33460",
+      3012
+     ],
+     [
+      "19100",
+      "38060",
+      4717
+     ],
+     [
+      "19100",
+      "40060",
+      1805
+     ],
+     [
+      "19100",
+      "41180",
+      2108
+     ],
+     [
+      "19100",
+      "41620",
+      1394
+     ],
+     [
+      "19100",
+      "45300",
+      3693
+     ],
+     [
+      "19100",
+      "45940",
+      1964
+     ],
+     [
+      "19100",
+      "33100",
+      2284
+     ],
+     [
+      "19100",
+      "41700",
+      2000
+     ],
+     [
+      "19100",
+      "12580",
+      1299
+     ],
+     [
+      "19100",
+      "34980",
+      2013
+     ],
+     [
+      "19100",
+      "36740",
+      1907
+     ],
+     [
+      "19100",
+      "38300",
+      1877
+     ],
+     [
+      "19100",
+      "40900",
+      1281
+     ],
+     [
+      "19100",
+      "22220",
+      1494
+     ],
+     [
+      "19100",
+      "32820",
+      928
+     ],
+     [
+      "41940",
+      "12420",
+      10005
+     ],
+     [
+      "41940",
+      "31080",
+      5282
+     ],
+     [
+      "41940",
+      "42660",
+      14556
+     ],
+     [
+      "41940",
+      "41860",
+      17231
+     ],
+     [
+      "41940",
+      "26420",
+      3148
+     ],
+     [
+      "41940",
+      "16980",
+      4486
+     ],
+     [
+      "41940",
+      "12060",
+      5224
+     ],
+     [
+      "41940",
+      "38060",
+      3243
+     ],
+     [
+      "41940",
+      "38900",
+      1915
+     ],
+     [
+      "41940",
+      "47900",
+      4930
+     ],
+     [
+      "41940",
+      "40900",
+      1372
+     ],
+     [
+      "41940",
+      "44700",
+      1765
+     ],
+     [
+      "41940",
+      "22220",
+      1702
+     ],
+     [
+      "41940",
+      "41740",
+      2826
+     ],
+     [
+      "41860",
+      "47900",
+      5240
+     ],
+     [
+      "41860",
+      "12420",
+      8028
+     ],
+     [
+      "41860",
+      "16980",
+      5076
+     ],
+     [
+      "41860",
+      "41740",
+      1989
+     ],
+     [
+      "41860",
+      "40900",
+      1329
+     ],
+     [
+      "41860",
+      "26420",
+      3201
+     ],
+     [
+      "41860",
+      "12060",
+      5437
+     ],
+     [
+      "41860",
+      "44700",
+      1879
+     ],
+     [
+      "41860",
+      "38060",
+      3061
+     ],
+     [
+      "41860",
+      "42660",
+      11317
+     ],
+     [
+      "41860",
+      "19740",
+      1821
+     ],
+     [
+      "41860",
+      "22220",
+      1100
+     ],
+     [
+      "41860",
+      "31080",
+      5543
+     ],
+     [
+      "41860",
+      "38900",
+      1520
+     ],
+     [
+      "42660",
+      "12420",
+      7363
+     ],
+     [
+      "42660",
+      "31080",
+      4662
+     ],
+     [
+      "42660",
+      "12060",
+      4766
+     ],
+     [
+      "42660",
+      "47900",
+      4853
+     ],
+     [
+      "42660",
+      "44700",
+      1237
+     ],
+     [
+      "42660",
+      "41740",
+      1836
+     ],
+     [
+      "12060",
+      "16980",
+      6696
+     ],
+     [
+      "12060",
+      "37980",
+      4540
+     ],
+     [
+      "12060",
+      "12420",
+      5985
+     ],
+     [
+      "12060",
+      "47900",
+      4806
+     ],
+     [
+      "12060",
+      "36740",
+      1420
+     ],
+     [
+      "12060",
+      "38060",
+      3395
+     ],
+     [
+      "12060",
+      "38300",
+      1421
+     ],
+     [
+      "12060",
+      "40060",
+      1289
+     ],
+     [
+      "12060",
+      "18140",
+      1975
+     ],
+     [
+      "12060",
+      "26420",
+      4150
+     ],
+     [
+      "12060",
+      "26900",
+      1157
+     ],
+     [
+      "12060",
+      "27260",
+      915
+     ],
+     [
+      "12060",
+      "33460",
+      2395
+     ],
+     [
+      "12060",
+      "39580",
+      3825
+     ],
+     [
+      "12060",
+      "41180",
+      1622
+     ],
+     [
+      "12060",
+      "45300",
+      2319
+     ],
+     [
+      "12060",
+      "45940",
+      1355
+     ],
+     [
+      "12060",
+      "19820",
+      2411
+     ],
+     [
+      "12060",
+      "31080",
+      4431
+     ],
+     [
+      "12060",
+      "33100",
+      1745
+     ],
+     [
+      "12060",
+      "41700",
+      1317
+     ],
+     [
+      "12060",
+      "19740",
+      1874
+     ],
+     [
+      "12060",
+      "34980",
+      1526
+     ],
+     [
+      "12060",
+      "16740",
+      4996
+     ],
+     [
+      "12060",
+      "17140",
+      1717
+     ],
+     [
+      "12060",
+      "32820",
+      532
+     ],
+     [
+      "16980",
+      "38060",
+      3215
+     ],
+     [
+      "16980",
+      "37980",
+      4372
+     ],
+     [
+      "16980",
+      "12420",
+      5321
+     ],
+     [
+      "16980",
+      "36740",
+      1296
+     ],
+     [
+      "16980",
+      "33100",
+      1724
+     ],
+     [
+      "16980",
+      "19820",
+      2323
+     ],
+     [
+      "16980",
+      "31080",
+      4023
+     ],
+     [
+      "16980",
+      "47900",
+      4347
+     ],
+     [
+      "16980",
+      "18140",
+      1981
+     ],
+     [
+      "16980",
+      "26420",
+      3796
+     ],
+     [
+      "16980",
+      "26900",
+      1126
+     ],
+     [
+      "16980",
+      "33460",
+      2203
+     ],
+     [
+      "16980",
+      "39580",
+      3279
+     ],
+     [
+      "16980",
+      "45300",
+      2137
+     ],
+     [
+      "16980",
+      "41700",
+      1251
+     ],
+     [
+      "16980",
+      "16740",
+      4169
+     ],
+     [
+      "16980",
+      "17140",
+      1603
+     ],
+     [
+      "12420",
+      "36740",
+      1310
+     ],
+     [
+      "12420",
+      "41740",
+      2259
+     ],
+     [
+      "12420",
+      "16740",
+      3985
+     ],
+     [
+      "12420",
+      "31080",
+      4311
+     ],
+     [
+      "12420",
+      "37980",
+      3841
+     ],
+     [
+      "12420",
+      "47900",
+      5141
+     ],
+     [
+      "12420",
+      "44700",
+      1356
+     ],
+     [
+      "12420",
+      "26420",
+      3797
+     ],
+     [
+      "12420",
+      "33460",
+      2122
+     ],
+     [
+      "12420",
+      "38060",
+      3751
+     ],
+     [
+      "12420",
+      "39580",
+      3767
+     ],
+     [
+      "12420",
+      "41180",
+      1558
+     ],
+     [
+      "12420",
+      "19820",
+      2273
+     ],
+     [
+      "12420",
+      "38900",
+      1693
+     ],
+     [
+      "12420",
+      "41700",
+      1364
+     ],
+     [
+      "12420",
+      "34980",
+      1554
+     ],
+     [
+      "12420",
+      "40900",
+      1301
+     ],
+     [
+      "12420",
+      "19740",
+      2041
+     ],
+     [
+      "47900",
+      "26420",
+      3111
+     ],
+     [
+      "47900",
+      "12580",
+      1531
+     ],
+     [
+      "47900",
+      "31080",
+      3734
+     ],
+     [
+      "47900",
+      "40060",
+      1374
+     ],
+     [
+      "31080",
+      "41740",
+      1659
+     ],
+     [
+      "37980",
+      "18140",
+      2088
+     ],
+     [
+      "37980",
+      "45940",
+      1496
+     ],
+     [
+      "37980",
+      "16740",
+      3535
+     ],
+     [
+      "16740",
+      "39580",
+      3241
+     ],
+     [
+      "38060",
+      "38900",
+      1317
+     ],
+     [
+      "39580",
+      "20500",
+      2363
+     ]
+    ]
+   },
+   "0.3": {
+    "nodes": [
+     "35620",
+     "19100",
+     "41940",
+     "41860",
+     "42660",
+     "12060",
+     "16980",
+     "12420",
+     "47900",
+     "31080",
+     "26420",
+     "37980",
+     "19820",
+     "16740",
+     "38060",
+     "39580",
+     "41740",
+     "33100",
+     "33460",
+     "45300",
+     "18140",
+     "41180",
+     "19740",
+     "38900",
+     "45940",
+     "38300",
+     "20500",
+     "12580",
+     "22220",
+     "17140",
+     "34980",
+     "26900",
+     "36740",
+     "41700",
+     "40900",
+     "40060",
+     "41620",
+     "32820",
+     "44700",
+     "27260"
+    ],
+    "edges": [
+     [
+      "35620",
+      "41940",
+      11725
+     ],
+     [
+      "35620",
+      "31080",
+      6234
+     ],
+     [
+      "35620",
+      "12420",
+      9401
+     ],
+     [
+      "35620",
+      "16980",
+      9516
+     ],
+     [
+      "35620",
+      "36740",
+      1657
+     ],
+     [
+      "35620",
+      "41740",
+      1819
+     ],
+     [
+      "35620",
+      "41860",
+      12451
+     ],
+     [
+      "35620",
+      "16740",
+      6106
+     ],
+     [
+      "35620",
+      "19100",
+      19684
+     ],
+     [
+      "35620",
+      "42660",
+      10929
+     ],
+     [
+      "35620",
+      "17140",
+      1722
+     ],
+     [
+      "35620",
+      "26420",
+      4830
+     ],
+     [
+      "35620",
+      "47900",
+      7470
+     ],
+     [
+      "35620",
+      "45940",
+      2657
+     ],
+     [
+      "35620",
+      "19820",
+      2541
+     ],
+     [
+      "35620",
+      "38900",
+      1414
+     ],
+     [
+      "35620",
+      "12060",
+      9993
+     ],
+     [
+      "35620",
+      "18140",
+      2535
+     ],
+     [
+      "35620",
+      "20500",
+      1456
+     ],
+     [
+      "35620",
+      "26900",
+      1286
+     ],
+     [
+      "35620",
+      "27260",
+      1043
+     ],
+     [
+      "35620",
+      "33460",
+      2441
+     ],
+     [
+      "35620",
+      "37980",
+      6690
+     ],
+     [
+      "35620",
+      "38060",
+      4228
+     ],
+     [
+      "35620",
+      "39580",
+      4777
+     ],
+     [
+      "35620",
+      "40060",
+      1427
+     ],
+     [
+      "35620",
+      "41180",
+      1951
+     ],
+     [
+      "35620",
+      "41620",
+      1310
+     ],
+     [
+      "35620",
+      "45300",
+      3308
+     ],
+     [
+      "35620",
+      "44700",
+      1370
+     ],
+     [
+      "35620",
+      "33100",
+      2384
+     ],
+     [
+      "35620",
+      "41700",
+      1499
+     ],
+     [
+      "35620",
+      "12580",
+      1231
+     ],
+     [
+      "35620",
+      "19740",
+      2113
+     ],
+     [
+      "35620",
+      "22220",
+      976
+     ],
+     [
+      "35620",
+      "40900",
+      1136
+     ],
+     [
+      "35620",
+      "38300",
+      1774
+     ],
+     [
+      "35620",
+      "32820",
+      561
+     ],
+     [
+      "35620",
+      "34980",
+      1753
+     ],
+     [
+      "19100",
+      "31080",
+      5552
+     ],
+     [
+      "19100",
+      "12420",
+      9924
+     ],
+     [
+      "19100",
+      "16740",
+      7136
+     ],
+     [
+      "19100",
+      "41940",
+      8703
+     ],
+     [
+      "19100",
+      "42660",
+      7749
+     ],
+     [
+      "19100",
+      "12060",
+      11232
+     ],
+     [
+      "19100",
+      "37980",
+      6505
+     ],
+     [
+      "19100",
+      "26420",
+      5960
+     ],
+     [
+      "19100",
+      "41860",
+      8676
+     ],
+     [
+      "19100",
+      "47900",
+      7970
+     ],
+     [
+      "19100",
+      "19820",
+      3248
+     ],
+     [
+      "19100",
+      "17140",
+      2002
+     ],
+     [
+      "19100",
+      "18140",
+      3001
+     ],
+     [
+      "19100",
+      "19740",
+      2398
+     ],
+     [
+      "19100",
+      "27260",
+      1112
+     ],
+     [
+      "19100",
+      "39580",
+      5907
+     ],
+     [
+      "19100",
+      "41740",
+      1701
+     ],
+     [
+      "19100",
+      "16980",
+      9628
+     ],
+     [
+      "19100",
+      "38900",
+      1536
+     ],
+     [
+      "19100",
+      "44700",
+      1607
+     ],
+     [
+      "19100",
+      "20500",
+      2262
+     ],
+     [
+      "19100",
+      "26900",
+      1424
+     ],
+     [
+      "19100",
+      "33460",
+      3012
+     ],
+     [
+      "19100",
+      "38060",
+      4717
+     ],
+     [
+      "19100",
+      "40060",
+      1805
+     ],
+     [
+      "19100",
+      "41180",
+      2108
+     ],
+     [
+      "19100",
+      "41620",
+      1394
+     ],
+     [
+      "19100",
+      "45300",
+      3693
+     ],
+     [
+      "19100",
+      "45940",
+      1964
+     ],
+     [
+      "19100",
+      "33100",
+      2284
+     ],
+     [
+      "19100",
+      "41700",
+      2000
+     ],
+     [
+      "19100",
+      "12580",
+      1299
+     ],
+     [
+      "19100",
+      "34980",
+      2013
+     ],
+     [
+      "19100",
+      "36740",
+      1907
+     ],
+     [
+      "19100",
+      "38300",
+      1877
+     ],
+     [
+      "19100",
+      "40900",
+      1281
+     ],
+     [
+      "19100",
+      "22220",
+      1494
+     ],
+     [
+      "19100",
+      "32820",
+      928
+     ],
+     [
+      "41940",
+      "12420",
+      10005
+     ],
+     [
+      "41940",
+      "16740",
+      2827
+     ],
+     [
+      "41940",
+      "31080",
+      5282
+     ],
+     [
+      "41940",
+      "42660",
+      14556
+     ],
+     [
+      "41940",
+      "41860",
+      17231
+     ],
+     [
+      "41940",
+      "19820",
+      1949
+     ],
+     [
+      "41940",
+      "26420",
+      3148
+     ],
+     [
+      "41940",
+      "36740",
+      1060
+     ],
+     [
+      "41940",
+      "37980",
+      3088
+     ],
+     [
+      "41940",
+      "16980",
+      4486
+     ],
+     [
+      "41940",
+      "33460",
+      1699
+     ],
+     [
+      "41940",
+      "12060",
+      5224
+     ],
+     [
+      "41940",
+      "20500",
+      1107
+     ],
+     [
+      "41940",
+      "26900",
+      950
+     ],
+     [
+      "41940",
+      "33100",
+      1494
+     ],
+     [
+      "41940",
+      "38060",
+      3243
+     ],
+     [
+      "41940",
+      "38900",
+      1915
+     ],
+     [
+      "41940",
+      "39580",
+      2996
+     ],
+     [
+      "41940",
+      "41700",
+      1195
+     ],
+     [
+      "41940",
+      "47900",
+      4930
+     ],
+     [
+      "41940",
+      "34980",
+      1258
+     ],
+     [
+      "41940",
+      "38300",
+      1202
+     ],
+     [
+      "41940",
+      "40900",
+      1372
+     ],
+     [
+      "41940",
+      "45300",
+      1792
+     ],
+     [
+      "41940",
+      "17140",
+      1175
+     ],
+     [
+      "41940",
+      "41620",
+      598
+     ],
+     [
+      "41940",
+      "44700",
+      1765
+     ],
+     [
+      "41940",
+      "12580",
+      780
+     ],
+     [
+      "41940",
+      "18140",
+      1522
+     ],
+     [
+      "41940",
+      "22220",
+      1702
+     ],
+     [
+      "41940",
+      "41180",
+      1137
+     ],
+     [
+      "41940",
+      "19740",
+      1564
+     ],
+     [
+      "41940",
+      "41740",
+      2826
+     ],
+     [
+      "41860",
+      "47900",
+      5240
+     ],
+     [
+      "41860",
+      "12420",
+      8028
+     ],
+     [
+      "41860",
+      "16980",
+      5076
+     ],
+     [
+      "41860",
+      "36740",
+      1042
+     ],
+     [
+      "41860",
+      "41740",
+      1989
+     ],
+     [
+      "41860",
+      "39580",
+      2966
+     ],
+     [
+      "41860",
+      "19820",
+      2008
+     ],
+     [
+      "41860",
+      "40900",
+      1329
+     ],
+     [
+      "41860",
+      "16740",
+      3110
+     ],
+     [
+      "41860",
+      "26420",
+      3201
+     ],
+     [
+      "41860",
+      "12060",
+      5437
+     ],
+     [
+      "41860",
+      "12580",
+      825
+     ],
+     [
+      "41860",
+      "44700",
+      1879
+     ],
+     [
+      "41860",
+      "18140",
+      1592
+     ],
+     [
+      "41860",
+      "20500",
+      1026
+     ],
+     [
+      "41860",
+      "26900",
+      884
+     ],
+     [
+      "41860",
+      "27260",
+      716
+     ],
+     [
+      "41860",
+      "33460",
+      1873
+     ],
+     [
+      "41860",
+      "37980",
+      3359
+     ],
+     [
+      "41860",
+      "38060",
+      3061
+     ],
+     [
+      "41860",
+      "41180",
+      1224
+     ],
+     [
+      "41860",
+      "41620",
+      649
+     ],
+     [
+      "41860",
+      "45300",
+      1737
+     ],
+     [
+      "41860",
+      "45940",
+      1168
+     ],
+     [
+      "41860",
+      "42660",
+      11317
+     ],
+     [
+      "41860",
+      "17140",
+      1231
+     ],
+     [
+      "41860",
+      "19740",
+      1821
+     ],
+     [
+      "41860",
+      "22220",
+      1100
+     ],
+     [
+      "41860",
+      "31080",
+      5543
+     ],
+     [
+      "41860",
+      "38900",
+      1520
+     ],
+     [
+      "41860",
+      "38300",
+      1249
+     ],
+     [
+      "41860",
+      "33100",
+      1595
+     ],
+     [
+      "41860",
+      "34980",
+      1295
+     ],
+     [
+      "41860",
+      "41700",
+      972
+     ],
+     [
+      "41860",
+      "32820",
+      408
+     ],
+     [
+      "42660",
+      "12420",
+      7363
+     ],
+     [
+      "42660",
+      "16740",
+      2751
+     ],
+     [
+      "42660",
+      "31080",
+      4662
+     ],
+     [
+      "42660",
+      "19820",
+      1749
+     ],
+     [
+      "42660",
+      "12060",
+      4766
+     ],
+     [
+      "42660",
+      "16980",
+      4173
+     ],
+     [
+      "42660",
+      "26420",
+      2971
+     ],
+     [
+      "42660",
+      "26900",
+      987
+     ],
+     [
+      "42660",
+      "33100",
+      1458
+     ],
+     [
+      "42660",
+      "37980",
+      3015
+     ],
+     [
+      "42660",
+      "38060",
+      2501
+     ],
+     [
+      "42660",
+      "38900",
+      1271
+     ],
+     [
+      "42660",
+      "39580",
+      2605
+     ],
+     [
+      "42660",
+      "41700",
+      1071
+     ],
+     [
+      "42660",
+      "47900",
+      4853
+     ],
+     [
+      "42660",
+      "41620",
+      604
+     ],
+     [
+      "42660",
+      "17140",
+      1295
+     ],
+     [
+      "42660",
+      "45300",
+      1862
+     ],
+     [
+      "42660",
+      "27260",
+      679
+     ],
+     [
+      "42660",
+      "38300",
+      1126
+     ],
+     [
+      "42660",
+      "34980",
+      1283
+     ],
+     [
+      "42660",
+      "40900",
+      888
+     ],
+     [
+      "42660",
+      "36740",
+      1059
+     ],
+     [
+      "42660",
+      "22220",
+      726
+     ],
+     [
+      "42660",
+      "44700",
+      1237
+     ],
+     [
+      "42660",
+      "41740",
+      1836
+     ],
+     [
+      "42660",
+      "33460",
+      1582
+     ],
+     [
+      "42660",
+      "19740",
+      1567
+     ],
+     [
+      "12060",
+      "16980",
+      6696
+     ],
+     [
+      "12060",
+      "37980",
+      4540
+     ],
+     [
+      "12060",
+      "12420",
+      5985
+     ],
+     [
+      "12060",
+      "12580",
+      980
+     ],
+     [
+      "12060",
+      "47900",
+      4806
+     ],
+     [
+      "12060",
+      "36740",
+      1420
+     ],
+     [
+      "12060",
+      "38060",
+      3395
+     ],
+     [
+      "12060",
+      "38300",
+      1421
+     ],
+     [
+      "12060",
+      "40060",
+      1289
+     ],
+     [
+      "12060",
+      "18140",
+      1975
+     ],
+     [
+      "12060",
+      "20500",
+      1157
+     ],
+     [
+      "12060",
+      "26420",
+      4150
+     ],
+     [
+      "12060",
+      "26900",
+      1157
+     ],
+     [
+      "12060",
+      "27260",
+      915
+     ],
+     [
+      "12060",
+      "33460",
+      2395
+     ],
+     [
+      "12060",
+      "39580",
+      3825
+     ],
+     [
+      "12060",
+      "41180",
+      1622
+     ],
+     [
+      "12060",
+      "41620",
+      609
+     ],
+     [
+      "12060",
+      "41740",
+      1284
+     ],
+     [
+      "12060",
+      "45300",
+      2319
+     ],
+     [
+      "12060",
+      "45940",
+      1355
+     ],
+     [
+      "12060",
+      "19820",
+      2411
+     ],
+     [
+      "12060",
+      "31080",
+      4431
+     ],
+     [
+      "12060",
+      "33100",
+      1745
+     ],
+     [
+      "12060",
+      "38900",
+      1196
+     ],
+     [
+      "12060",
+      "41700",
+      1317
+     ],
+     [
+      "12060",
+      "19740",
+      1874
+     ],
+     [
+      "12060",
+      "34980",
+      1526
+     ],
+     [
+      "12060",
+      "16740",
+      4996
+     ],
+     [
+      "12060",
+      "17140",
+      1717
+     ],
+     [
+      "12060",
+      "22220",
+      768
+     ],
+     [
+      "12060",
+      "44700",
+      1022
+     ],
+     [
+      "12060",
+      "32820",
+      532
+     ],
+     [
+      "12060",
+      "40900",
+      972
+     ],
+     [
+      "16980",
+      "38060",
+      3215
+     ],
+     [
+      "16980",
+      "37980",
+      4372
+     ],
+     [
+      "16980",
+      "12420",
+      5321
+     ],
+     [
+      "16980",
+      "36740",
+      1296
+     ],
+     [
+      "16980",
+      "41740",
+      1227
+     ],
+     [
+      "16980",
+      "33100",
+      1724
+     ],
+     [
+      "16980",
+      "19820",
+      2323
+     ],
+     [
+      "16980",
+      "31080",
+      4023
+     ],
+     [
+      "16980",
+      "38900",
+      1101
+     ],
+     [
+      "16980",
+      "47900",
+      4347
+     ],
+     [
+      "16980",
+      "18140",
+      1981
+     ],
+     [
+      "16980",
+      "20500",
+      1039
+     ],
+     [
+      "16980",
+      "26420",
+      3796
+     ],
+     [
+      "16980",
+      "26900",
+      1126
+     ],
+     [
+      "16980",
+      "27260",
+      818
+     ],
+     [
+      "16980",
+      "33460",
+      2203
+     ],
+     [
+      "16980",
+      "39580",
+      3279
+     ],
+     [
+      "16980",
+      "40060",
+      1167
+     ],
+     [
+      "16980",
+      "41180",
+      1466
+     ],
+     [
+      "16980",
+      "41620",
+      598
+     ],
+     [
+      "16980",
+      "45300",
+      2137
+     ],
+     [
+      "16980",
+      "45940",
+      1326
+     ],
+     [
+      "16980",
+      "44700",
+      932
+     ],
+     [
+      "16980",
+      "41700",
+      1251
+     ],
+     [
+      "16980",
+      "19740",
+      1729
+     ],
+     [
+      "16980",
+      "34980",
+      1428
+     ],
+     [
+      "16980",
+      "16740",
+      4169
+     ],
+     [
+      "16980",
+      "17140",
+      1603
+     ],
+     [
+      "16980",
+      "22220",
+      716
+     ],
+     [
+      "16980",
+      "12580",
+      983
+     ],
+     [
+      "16980",
+      "38300",
+      1340
+     ],
+     [
+      "16980",
+      "40900",
+      866
+     ],
+     [
+      "16980",
+      "32820",
+      479
+     ],
+     [
+      "12420",
+      "36740",
+      1310
+     ],
+     [
+      "12420",
+      "41740",
+      2259
+     ],
+     [
+      "12420",
+      "16740",
+      3985
+     ],
+     [
+      "12420",
+      "31080",
+      4311
+     ],
+     [
+      "12420",
+      "37980",
+      3841
+     ],
+     [
+      "12420",
+      "12580",
+      932
+     ],
+     [
+      "12420",
+      "47900",
+      5141
+     ],
+     [
+      "12420",
+      "22220",
+      730
+     ],
+     [
+      "12420",
+      "32820",
+      518
+     ],
+     [
+      "12420",
+      "44700",
+      1356
+     ],
+     [
+      "12420",
+      "18140",
+      1852
+     ],
+     [
+      "12420",
+      "20500",
+      1140
+     ],
+     [
+      "12420",
+      "26420",
+      3797
+     ],
+     [
+      "12420",
+      "26900",
+      1106
+     ],
+     [
+      "12420",
+      "27260",
+      772
+     ],
+     [
+      "12420",
+      "33460",
+      2122
+     ],
+     [
+      "12420",
+      "38060",
+      3751
+     ],
+     [
+      "12420",
+      "39580",
+      3767
+     ],
+     [
+      "12420",
+      "40060",
+      1061
+     ],
+     [
+      "12420",
+      "41180",
+      1558
+     ],
+     [
+      "12420",
+      "41620",
+      668
+     ],
+     [
+      "12420",
+      "45300",
+      2057
+     ],
+     [
+      "12420",
+      "45940",
+      1203
+     ],
+     [
+      "12420",
+      "19820",
+      2273
+     ],
+     [
+      "12420",
+      "33100",
+      1647
+     ],
+     [
+      "12420",
+      "38900",
+      1693
+     ],
+     [
+      "12420",
+      "41700",
+      1364
+     ],
+     [
+      "12420",
+      "34980",
+      1554
+     ],
+     [
+      "12420",
+      "38300",
+      1327
+     ],
+     [
+      "12420",
+      "40900",
+      1301
+     ],
+     [
+      "12420",
+      "17140",
+      1475
+     ],
+     [
+      "12420",
+      "19740",
+      2041
+     ],
+     [
+      "47900",
+      "16740",
+      3265
+     ],
+     [
+      "47900",
+      "26420",
+      3111
+     ],
+     [
+      "47900",
+      "12580",
+      1531
+     ],
+     [
+      "47900",
+      "45940",
+      1173
+     ],
+     [
+      "47900",
+      "18140",
+      1633
+     ],
+     [
+      "47900",
+      "17140",
+      1277
+     ],
+     [
+      "47900",
+      "19740",
+      1737
+     ],
+     [
+      "47900",
+      "27260",
+      721
+     ],
+     [
+      "47900",
+      "19820",
+      1852
+     ],
+     [
+      "47900",
+      "31080",
+      3734
+     ],
+     [
+      "47900",
+      "38900",
+      1037
+     ],
+     [
+      "47900",
+      "20500",
+      931
+     ],
+     [
+      "47900",
+      "26900",
+      892
+     ],
+     [
+      "47900",
+      "33460",
+      1759
+     ],
+     [
+      "47900",
+      "37980",
+      3370
+     ],
+     [
+      "47900",
+      "38060",
+      2631
+     ],
+     [
+      "47900",
+      "39580",
+      2923
+     ],
+     [
+      "47900",
+      "40060",
+      1374
+     ],
+     [
+      "47900",
+      "41180",
+      1375
+     ],
+     [
+      "47900",
+      "41620",
+      574
+     ],
+     [
+      "47900",
+      "41740",
+      1196
+     ],
+     [
+      "47900",
+      "45300",
+      1820
+     ],
+     [
+      "47900",
+      "33100",
+      1492
+     ],
+     [
+      "47900",
+      "41700",
+      976
+     ],
+     [
+      "47900",
+      "34980",
+      1382
+     ],
+     [
+      "47900",
+      "36740",
+      1023
+     ],
+     [
+      "47900",
+      "38300",
+      1229
+     ],
+     [
+      "47900",
+      "40900",
+      839
+     ],
+     [
+      "47900",
+      "44700",
+      972
+     ],
+     [
+      "47900",
+      "22220",
+      790
+     ],
+     [
+      "31080",
+      "16740",
+      2625
+     ],
+     [
+      "31080",
+      "19740",
+      1428
+     ],
+     [
+      "31080",
+      "19820",
+      1766
+     ],
+     [
+      "31080",
+      "38900",
+      1092
+     ],
+     [
+      "31080",
+      "37980",
+      2646
+     ],
+     [
+      "31080",
+      "26420",
+      2853
+     ],
+     [
+      "31080",
+      "26900",
+      910
+     ],
+     [
+      "31080",
+      "33100",
+      1387
+     ],
+     [
+      "31080",
+      "38060",
+      2420
+     ],
+     [
+      "31080",
+      "39580",
+      2358
+     ],
+     [
+      "31080",
+      "41700",
+      969
+     ],
+     [
+      "31080",
+      "40900",
+      874
+     ],
+     [
+      "31080",
+      "18140",
+      1444
+     ],
+     [
+      "31080",
+      "17140",
+      1214
+     ],
+     [
+      "31080",
+      "41740",
+      1659
+     ],
+     [
+      "31080",
+      "36740",
+      974
+     ],
+     [
+      "31080",
+      "33460",
+      1661
+     ],
+     [
+      "31080",
+      "44700",
+      940
+     ],
+     [
+      "31080",
+      "34980",
+      1172
+     ],
+     [
+      "31080",
+      "38300",
+      1060
+     ],
+     [
+      "31080",
+      "45300",
+      1651
+     ],
+     [
+      "26420",
+      "16740",
+      3088
+     ],
+     [
+      "26420",
+      "36740",
+      1073
+     ],
+     [
+      "26420",
+      "19820",
+      1710
+     ],
+     [
+      "26420",
+      "39580",
+      2463
+     ],
+     [
+      "26420",
+      "18140",
+      1530
+     ],
+     [
+      "26420",
+      "26900",
+      881
+     ],
+     [
+      "26420",
+      "33460",
+      1572
+     ],
+     [
+      "26420",
+      "37980",
+      3013
+     ],
+     [
+      "26420",
+      "38060",
+      2387
+     ],
+     [
+      "26420",
+      "40060",
+      933
+     ],
+     [
+      "26420",
+      "41180",
+      1196
+     ],
+     [
+      "26420",
+      "45300",
+      1846
+     ],
+     [
+      "26420",
+      "45940",
+      1016
+     ],
+     [
+      "26420",
+      "33100",
+      1478
+     ],
+     [
+      "26420",
+      "41700",
+      1005
+     ],
+     [
+      "26420",
+      "17140",
+      1211
+     ],
+     [
+      "26420",
+      "40900",
+      810
+     ],
+     [
+      "26420",
+      "34980",
+      1126
+     ],
+     [
+      "26420",
+      "38300",
+      1031
+     ],
+     [
+      "26420",
+      "19740",
+      1515
+     ],
+     [
+      "37980",
+      "40060",
+      1096
+     ],
+     [
+      "37980",
+      "18140",
+      2088
+     ],
+     [
+      "37980",
+      "20500",
+      954
+     ],
+     [
+      "37980",
+      "26900",
+      906
+     ],
+     [
+      "37980",
+      "27260",
+      752
+     ],
+     [
+      "37980",
+      "33460",
+      1954
+     ],
+     [
+      "37980",
+      "38060",
+      2559
+     ],
+     [
+      "37980",
+      "39580",
+      2939
+     ],
+     [
+      "37980",
+      "41180",
+      1337
+     ],
+     [
+      "37980",
+      "45300",
+      2059
+     ],
+     [
+      "37980",
+      "45940",
+      1496
+     ],
+     [
+      "37980",
+      "19820",
+      1867
+     ],
+     [
+      "37980",
+      "33100",
+      1474
+     ],
+     [
+      "37980",
+      "41700",
+      1167
+     ],
+     [
+      "37980",
+      "16740",
+      3535
+     ],
+     [
+      "37980",
+      "34980",
+      1197
+     ],
+     [
+      "37980",
+      "36740",
+      1201
+     ],
+     [
+      "37980",
+      "38300",
+      1193
+     ],
+     [
+      "37980",
+      "17140",
+      1426
+     ],
+     [
+      "37980",
+      "12580",
+      891
+     ],
+     [
+      "37980",
+      "19740",
+      1552
+     ],
+     [
+      "37980",
+      "32820",
+      402
+     ],
+     [
+      "37980",
+      "22220",
+      664
+     ],
+     [
+      "19820",
+      "16740",
+      1889
+     ],
+     [
+      "19820",
+      "39580",
+      1709
+     ],
+     [
+      "19820",
+      "38060",
+      1619
+     ],
+     [
+      "19820",
+      "18140",
+      1414
+     ],
+     [
+      "16740",
+      "20500",
+      877
+     ],
+     [
+      "16740",
+      "17140",
+      1415
+     ],
+     [
+      "16740",
+      "38300",
+      1079
+     ],
+     [
+      "16740",
+      "39580",
+      3241
+     ],
+     [
+      "16740",
+      "26900",
+      975
+     ],
+     [
+      "16740",
+      "34980",
+      1168
+     ],
+     [
+      "16740",
+      "36740",
+      1001
+     ],
+     [
+      "16740",
+      "45300",
+      1963
+     ],
+     [
+      "16740",
+      "19740",
+      1549
+     ],
+     [
+      "16740",
+      "18140",
+      1723
+     ],
+     [
+      "16740",
+      "41700",
+      1082
+     ],
+     [
+      "16740",
+      "12580",
+      785
+     ],
+     [
+      "16740",
+      "33460",
+      1972
+     ],
+     [
+      "16740",
+      "38060",
+      2805
+     ],
+     [
+      "16740",
+      "45940",
+      1203
+     ],
+     [
+      "16740",
+      "32820",
+      432
+     ],
+     [
+      "16740",
+      "33100",
+      1316
+     ],
+     [
+      "16740",
+      "40060",
+      1067
+     ],
+     [
+      "16740",
+      "41180",
+      1443
+     ],
+     [
+      "16740",
+      "27260",
+      790
+     ],
+     [
+      "38060",
+      "18140",
+      1473
+     ],
+     [
+      "38060",
+      "26900",
+      884
+     ],
+     [
+      "38060",
+      "27260",
+      676
+     ],
+     [
+      "38060",
+      "33460",
+      1591
+     ],
+     [
+      "38060",
+      "39580",
+      2498
+     ],
+     [
+      "38060",
+      "45300",
+      1626
+     ],
+     [
+      "38060",
+      "38900",
+      1317
+     ],
+     [
+      "38060",
+      "41700",
+      939
+     ],
+     [
+      "38060",
+      "17140",
+      1184
+     ],
+     [
+      "38060",
+      "34980",
+      1212
+     ],
+     [
+      "38060",
+      "19740",
+      1374
+     ],
+     [
+      "38060",
+      "40900",
+      1039
+     ],
+     [
+      "38060",
+      "32820",
+      423
+     ],
+     [
+      "39580",
+      "17140",
+      1306
+     ],
+     [
+      "39580",
+      "38300",
+      1108
+     ],
+     [
+      "39580",
+      "18140",
+      1542
+     ],
+     [
+      "39580",
+      "20500",
+      2363
+     ],
+     [
+      "39580",
+      "26900",
+      988
+     ],
+     [
+      "39580",
+      "27260",
+      665
+     ],
+     [
+      "39580",
+      "33460",
+      1696
+     ],
+     [
+      "39580",
+      "40060",
+      973
+     ],
+     [
+      "39580",
+      "41180",
+      1165
+     ],
+     [
+      "39580",
+      "45300",
+      1679
+     ],
+     [
+      "39580",
+      "45940",
+      1080
+     ],
+     [
+      "39580",
+      "44700",
+      852
+     ],
+     [
+      "39580",
+      "33100",
+      1314
+     ],
+     [
+      "39580",
+      "38900",
+      988
+     ],
+     [
+      "39580",
+      "41700",
+      1040
+     ],
+     [
+      "39580",
+      "19740",
+      1449
+     ],
+     [
+      "39580",
+      "12580",
+      790
+     ],
+     [
+      "39580",
+      "36740",
+      987
+     ],
+     [
+      "39580",
+      "34980",
+      1159
+     ],
+     [
+      "45300",
+      "27260",
+      663
+     ],
+     [
+      "38900",
+      "40900",
+      880
+     ]
+    ]
+   },
+   "0.5": {
+    "nodes": [
+     "35620",
+     "19100",
+     "41940",
+     "41860",
+     "42660",
+     "12060",
+     "16980",
+     "12420",
+     "47900",
+     "31080",
+     "26420",
+     "37980",
+     "19820",
+     "16740",
+     "38060",
+     "39580",
+     "41740",
+     "33100",
+     "33460",
+     "45300",
+     "18140",
+     "41180",
+     "19740",
+     "38900",
+     "45940",
+     "38300",
+     "20500",
+     "12580",
+     "22220",
+     "17140",
+     "34980",
+     "26900",
+     "36740",
+     "41700",
+     "40900",
+     "40060",
+     "41620",
+     "32820",
+     "44700",
+     "27260"
+    ],
+    "edges": [
+     [
+      "35620",
+      "41940",
+      11725
+     ],
+     [
+      "35620",
+      "31080",
+      6234
+     ],
+     [
+      "35620",
+      "12420",
+      9401
+     ],
+     [
+      "35620",
+      "16980",
+      9516
+     ],
+     [
+      "35620",
+      "36740",
+      1657
+     ],
+     [
+      "35620",
+      "41740",
+      1819
+     ],
+     [
+      "35620",
+      "41860",
+      12451
+     ],
+     [
+      "35620",
+      "16740",
+      6106
+     ],
+     [
+      "35620",
+      "19100",
+      19684
+     ],
+     [
+      "35620",
+      "42660",
+      10929
+     ],
+     [
+      "35620",
+      "17140",
+      1722
+     ],
+     [
+      "35620",
+      "26420",
+      4830
+     ],
+     [
+      "35620",
+      "47900",
+      7470
+     ],
+     [
+      "35620",
+      "45940",
+      2657
+     ],
+     [
+      "35620",
+      "19820",
+      2541
+     ],
+     [
+      "35620",
+      "38900",
+      1414
+     ],
+     [
+      "35620",
+      "12060",
+      9993
+     ],
+     [
+      "35620",
+      "18140",
+      2535
+     ],
+     [
+      "35620",
+      "20500",
+      1456
+     ],
+     [
+      "35620",
+      "26900",
+      1286
+     ],
+     [
+      "35620",
+      "27260",
+      1043
+     ],
+     [
+      "35620",
+      "33460",
+      2441
+     ],
+     [
+      "35620",
+      "37980",
+      6690
+     ],
+     [
+      "35620",
+      "38060",
+      4228
+     ],
+     [
+      "35620",
+      "39580",
+      4777
+     ],
+     [
+      "35620",
+      "40060",
+      1427
+     ],
+     [
+      "35620",
+      "41180",
+      1951
+     ],
+     [
+      "35620",
+      "41620",
+      1310
+     ],
+     [
+      "35620",
+      "45300",
+      3308
+     ],
+     [
+      "35620",
+      "44700",
+      1370
+     ],
+     [
+      "35620",
+      "33100",
+      2384
+     ],
+     [
+      "35620",
+      "41700",
+      1499
+     ],
+     [
+      "35620",
+      "12580",
+      1231
+     ],
+     [
+      "35620",
+      "19740",
+      2113
+     ],
+     [
+      "35620",
+      "22220",
+      976
+     ],
+     [
+      "35620",
+      "40900",
+      1136
+     ],
+     [
+      "35620",
+      "38300",
+      1774
+     ],
+     [
+      "35620",
+      "32820",
+      561
+     ],
+     [
+      "35620",
+      "34980",
+      1753
+     ],
+     [
+      "19100",
+      "31080",
+      5552
+     ],
+     [
+      "19100",
+      "12420",
+      9924
+     ],
+     [
+      "19100",
+      "16740",
+      7136
+     ],
+     [
+      "19100",
+      "41940",
+      8703
+     ],
+     [
+      "19100",
+      "42660",
+      7749
+     ],
+     [
+      "19100",
+      "12060",
+      11232
+     ],
+     [
+      "19100",
+      "37980",
+      6505
+     ],
+     [
+      "19100",
+      "26420",
+      5960
+     ],
+     [
+      "19100",
+      "41860",
+      8676
+     ],
+     [
+      "19100",
+      "47900",
+      7970
+     ],
+     [
+      "19100",
+      "19820",
+      3248
+     ],
+     [
+      "19100",
+      "17140",
+      2002
+     ],
+     [
+      "19100",
+      "18140",
+      3001
+     ],
+     [
+      "19100",
+      "19740",
+      2398
+     ],
+     [
+      "19100",
+      "27260",
+      1112
+     ],
+     [
+      "19100",
+      "39580",
+      5907
+     ],
+     [
+      "19100",
+      "41740",
+      1701
+     ],
+     [
+      "19100",
+      "16980",
+      9628
+     ],
+     [
+      "19100",
+      "38900",
+      1536
+     ],
+     [
+      "19100",
+      "44700",
+      1607
+     ],
+     [
+      "19100",
+      "20500",
+      2262
+     ],
+     [
+      "19100",
+      "26900",
+      1424
+     ],
+     [
+      "19100",
+      "33460",
+      3012
+     ],
+     [
+      "19100",
+      "38060",
+      4717
+     ],
+     [
+      "19100",
+      "40060",
+      1805
+     ],
+     [
+      "19100",
+      "41180",
+      2108
+     ],
+     [
+      "19100",
+      "41620",
+      1394
+     ],
+     [
+      "19100",
+      "45300",
+      3693
+     ],
+     [
+      "19100",
+      "45940",
+      1964
+     ],
+     [
+      "19100",
+      "33100",
+      2284
+     ],
+     [
+      "19100",
+      "41700",
+      2000
+     ],
+     [
+      "19100",
+      "12580",
+      1299
+     ],
+     [
+      "19100",
+      "34980",
+      2013
+     ],
+     [
+      "19100",
+      "36740",
+      1907
+     ],
+     [
+      "19100",
+      "38300",
+      1877
+     ],
+     [
+      "19100",
+      "40900",
+      1281
+     ],
+     [
+      "19100",
+      "22220",
+      1494
+     ],
+     [
+      "19100",
+      "32820",
+      928
+     ],
+     [
+      "41940",
+      "12420",
+      10005
+     ],
+     [
+      "41940",
+      "16740",
+      2827
+     ],
+     [
+      "41940",
+      "31080",
+      5282
+     ],
+     [
+      "41940",
+      "42660",
+      14556
+     ],
+     [
+      "41940",
+      "41860",
+      17231
+     ],
+     [
+      "41940",
+      "19820",
+      1949
+     ],
+     [
+      "41940",
+      "26420",
+      3148
+     ],
+     [
+      "41940",
+      "36740",
+      1060
+     ],
+     [
+      "41940",
+      "37980",
+      3088
+     ],
+     [
+      "41940",
+      "40060",
+      811
+     ],
+     [
+      "41940",
+      "16980",
+      4486
+     ],
+     [
+      "41940",
+      "33460",
+      1699
+     ],
+     [
+      "41940",
+      "12060",
+      5224
+     ],
+     [
+      "41940",
+      "20500",
+      1107
+     ],
+     [
+      "41940",
+      "26900",
+      950
+     ],
+     [
+      "41940",
+      "33100",
+      1494
+     ],
+     [
+      "41940",
+      "38060",
+      3243
+     ],
+     [
+      "41940",
+      "38900",
+      1915
+     ],
+     [
+      "41940",
+      "39580",
+      2996
+     ],
+     [
+      "41940",
+      "41700",
+      1195
+     ],
+     [
+      "41940",
+      "47900",
+      4930
+     ],
+     [
+      "41940",
+      "34980",
+      1258
+     ],
+     [
+      "41940",
+      "38300",
+      1202
+     ],
+     [
+      "41940",
+      "40900",
+      1372
+     ],
+     [
+      "41940",
+      "45300",
+      1792
+     ],
+     [
+      "41940",
+      "17140",
+      1175
+     ],
+     [
+      "41940",
+      "41620",
+      598
+     ],
+     [
+      "41940",
+      "44700",
+      1765
+     ],
+     [
+      "41940",
+      "12580",
+      780
+     ],
+     [
+      "41940",
+      "18140",
+      1522
+     ],
+     [
+      "41940",
+      "22220",
+      1702
+     ],
+     [
+      "41940",
+      "41180",
+      1137
+     ],
+     [
+      "41940",
+      "45940",
+      996
+     ],
+     [
+      "41940",
+      "19740",
+      1564
+     ],
+     [
+      "41940",
+      "32820",
+      348
+     ],
+     [
+      "41940",
+      "41740",
+      2826
+     ],
+     [
+      "41940",
+      "27260",
+      580
+     ],
+     [
+      "41860",
+      "47900",
+      5240
+     ],
+     [
+      "41860",
+      "12420",
+      8028
+     ],
+     [
+      "41860",
+      "16980",
+      5076
+     ],
+     [
+      "41860",
+      "36740",
+      1042
+     ],
+     [
+      "41860",
+      "41740",
+      1989
+     ],
+     [
+      "41860",
+      "39580",
+      2966
+     ],
+     [
+      "41860",
+      "19820",
+      2008
+     ],
+     [
+      "41860",
+      "40900",
+      1329
+     ],
+     [
+      "41860",
+      "16740",
+      3110
+     ],
+     [
+      "41860",
+      "26420",
+      3201
+     ],
+     [
+      "41860",
+      "12060",
+      5437
+     ],
+     [
+      "41860",
+      "12580",
+      825
+     ],
+     [
+      "41860",
+      "44700",
+      1879
+     ],
+     [
+      "41860",
+      "18140",
+      1592
+     ],
+     [
+      "41860",
+      "20500",
+      1026
+     ],
+     [
+      "41860",
+      "26900",
+      884
+     ],
+     [
+      "41860",
+      "27260",
+      716
+     ],
+     [
+      "41860",
+      "33460",
+      1873
+     ],
+     [
+      "41860",
+      "37980",
+      3359
+     ],
+     [
+      "41860",
+      "38060",
+      3061
+     ],
+     [
+      "41860",
+      "40060",
+      855
+     ],
+     [
+      "41860",
+      "41180",
+      1224
+     ],
+     [
+      "41860",
+      "41620",
+      649
+     ],
+     [
+      "41860",
+      "45300",
+      1737
+     ],
+     [
+      "41860",
+      "45940",
+      1168
+     ],
+     [
+      "41860",
+      "42660",
+      11317
+     ],
+     [
+      "41860",
+      "17140",
+      1231
+     ],
+     [
+      "41860",
+      "19740",
+      1821
+     ],
+     [
+      "41860",
+      "22220",
+      1100
+     ],
+     [
+      "41860",
+      "31080",
+      5543
+     ],
+     [
+      "41860",
+      "38900",
+      1520
+     ],
+     [
+      "41860",
+      "38300",
+      1249
+     ],
+     [
+      "41860",
+      "33100",
+      1595
+     ],
+     [
+      "41860",
+      "34980",
+      1295
+     ],
+     [
+      "41860",
+      "41700",
+      972
+     ],
+     [
+      "41860",
+      "32820",
+      408
+     ],
+     [
+      "42660",
+      "12420",
+      7363
+     ],
+     [
+      "42660",
+      "16740",
+      2751
+     ],
+     [
+      "42660",
+      "31080",
+      4662
+     ],
+     [
+      "42660",
+      "19820",
+      1749
+     ],
+     [
+      "42660",
+      "12060",
+      4766
+     ],
+     [
+      "42660",
+      "16980",
+      4173
+     ],
+     [
+      "42660",
+      "20500",
+      790
+     ],
+     [
+      "42660",
+      "26420",
+      2971
+     ],
+     [
+      "42660",
+      "26900",
+      987
+     ],
+     [
+      "42660",
+      "33100",
+      1458
+     ],
+     [
+      "42660",
+      "37980",
+      3015
+     ],
+     [
+      "42660",
+      "38060",
+      2501
+     ],
+     [
+      "42660",
+      "38900",
+      1271
+     ],
+     [
+      "42660",
+      "39580",
+      2605
+     ],
+     [
+      "42660",
+      "41700",
+      1071
+     ],
+     [
+      "42660",
+      "47900",
+      4853
+     ],
+     [
+      "42660",
+      "41620",
+      604
+     ],
+     [
+      "42660",
+      "17140",
+      1295
+     ],
+     [
+      "42660",
+      "18140",
+      1399
+     ],
+     [
+      "42660",
+      "45300",
+      1862
+     ],
+     [
+      "42660",
+      "12580",
+      774
+     ],
+     [
+      "42660",
+      "27260",
+      679
+     ],
+     [
+      "42660",
+      "38300",
+      1126
+     ],
+     [
+      "42660",
+      "34980",
+      1283
+     ],
+     [
+      "42660",
+      "40060",
+      893
+     ],
+     [
+      "42660",
+      "41180",
+      1086
+     ],
+     [
+      "42660",
+      "40900",
+      888
+     ],
+     [
+      "42660",
+      "36740",
+      1059
+     ],
+     [
+      "42660",
+      "32820",
+      335
+     ],
+     [
+      "42660",
+      "22220",
+      726
+     ],
+     [
+      "42660",
+      "44700",
+      1237
+     ],
+     [
+      "42660",
+      "41740",
+      1836
+     ],
+     [
+      "42660",
+      "33460",
+      1582
+     ],
+     [
+      "42660",
+      "45940",
+      1000
+     ],
+     [
+      "42660",
+      "19740",
+      1567
+     ],
+     [
+      "12060",
+      "16980",
+      6696
+     ],
+     [
+      "12060",
+      "37980",
+      4540
+     ],
+     [
+      "12060",
+      "12420",
+      5985
+     ],
+     [
+      "12060",
+      "12580",
+      980
+     ],
+     [
+      "12060",
+      "47900",
+      4806
+     ],
+     [
+      "12060",
+      "36740",
+      1420
+     ],
+     [
+      "12060",
+      "38060",
+      3395
+     ],
+     [
+      "12060",
+      "38300",
+      1421
+     ],
+     [
+      "12060",
+      "40060",
+      1289
+     ],
+     [
+      "12060",
+      "18140",
+      1975
+     ],
+     [
+      "12060",
+      "20500",
+      1157
+     ],
+     [
+      "12060",
+      "26420",
+      4150
+     ],
+     [
+      "12060",
+      "26900",
+      1157
+     ],
+     [
+      "12060",
+      "27260",
+      915
+     ],
+     [
+      "12060",
+      "33460",
+      2395
+     ],
+     [
+      "12060",
+      "39580",
+      3825
+     ],
+     [
+      "12060",
+      "41180",
+      1622
+     ],
+     [
+      "12060",
+      "41620",
+      609
+     ],
+     [
+      "12060",
+      "41740",
+      1284
+     ],
+     [
+      "12060",
+      "45300",
+      2319
+     ],
+     [
+      "12060",
+      "45940",
+      1355
+     ],
+     [
+      "12060",
+      "19820",
+      2411
+     ],
+     [
+      "12060",
+      "31080",
+      4431
+     ],
+     [
+      "12060",
+      "33100",
+      1745
+     ],
+     [
+      "12060",
+      "38900",
+      1196
+     ],
+     [
+      "12060",
+      "41700",
+      1317
+     ],
+     [
+      "12060",
+      "19740",
+      1874
+     ],
+     [
+      "12060",
+      "34980",
+      1526
+     ],
+     [
+      "12060",
+      "16740",
+      4996
+     ],
+     [
+      "12060",
+      "17140",
+      1717
+     ],
+     [
+      "12060",
+      "22220",
+      768
+     ],
+     [
+      "12060",
+      "44700",
+      1022
+     ],
+     [
+      "12060",
+      "32820",
+      532
+     ],
+     [
+      "12060",
+      "40900",
+      972
+     ],
+     [
+      "16980",
+      "38060",
+      3215
+     ],
+     [
+      "16980",
+      "37980",
+      4372
+     ],
+     [
+      "16980",
+      "12420",
+      5321
+     ],
+     [
+      "16980",
+      "36740",
+      1296
+     ],
+     [
+      "16980",
+      "41740",
+      1227
+     ],
+     [
+      "16980",
+      "33100",
+      1724
+     ],
+     [
+      "16980",
+      "19820",
+      2323
+     ],
+     [
+      "16980",
+      "31080",
+      4023
+     ],
+     [
+      "16980",
+      "38900",
+      1101
+     ],
+     [
+      "16980",
+      "47900",
+      4347
+     ],
+     [
+      "16980",
+      "18140",
+      1981
+     ],
+     [
+      "16980",
+      "20500",
+      1039
+     ],
+     [
+      "16980",
+      "26420",
+      3796
+     ],
+     [
+      "16980",
+      "26900",
+      1126
+     ],
+     [
+      "16980",
+      "27260",
+      818
+     ],
+     [
+      "16980",
+      "33460",
+      2203
+     ],
+     [
+      "16980",
+      "39580",
+      3279
+     ],
+     [
+      "16980",
+      "40060",
+      1167
+     ],
+     [
+      "16980",
+      "41180",
+      1466
+     ],
+     [
+      "16980",
+      "41620",
+      598
+     ],
+     [
+      "16980",
+      "45300",
+      2137
+     ],
+     [
+      "16980",
+      "45940",
+      1326
+     ],
+     [
+      "16980",
+      "44700",
+      932
+     ],
+     [
+      "16980",
+      "41700",
+      1251
+     ],
+     [
+      "16980",
+      "19740",
+      1729
+     ],
+     [
+      "16980",
+      "34980",
+      1428
+     ],
+     [
+      "16980",
+      "16740",
+      4169
+     ],
+     [
+      "16980",
+      "17140",
+      1603
+     ],
+     [
+      "16980",
+      "22220",
+      716
+     ],
+     [
+      "16980",
+      "12580",
+      983
+     ],
+     [
+      "16980",
+      "38300",
+      1340
+     ],
+     [
+      "16980",
+      "40900",
+      866
+     ],
+     [
+      "16980",
+      "32820",
+      479
+     ],
+     [
+      "12420",
+      "36740",
+      1310
+     ],
+     [
+      "12420",
+      "41740",
+      2259
+     ],
+     [
+      "12420",
+      "16740",
+      3985
+     ],
+     [
+      "12420",
+      "31080",
+      4311
+     ],
+     [
+      "12420",
+      "37980",
+      3841
+     ],
+     [
+      "12420",
+      "12580",
+      932
+     ],
+     [
+      "12420",
+      "47900",
+      5141
+     ],
+     [
+      "12420",
+      "22220",
+      730
+     ],
+     [
+      "12420",
+      "32820",
+      518
+     ],
+     [
+      "12420",
+      "44700",
+      1356
+     ],
+     [
+      "12420",
+      "18140",
+      1852
+     ],
+     [
+      "12420",
+      "20500",
+      1140
+     ],
+     [
+      "12420",
+      "26420",
+      3797
+     ],
+     [
+      "12420",
+      "26900",
+      1106
+     ],
+     [
+      "12420",
+      "27260",
+      772
+     ],
+     [
+      "12420",
+      "33460",
+      2122
+     ],
+     [
+      "12420",
+      "38060",
+      3751
+     ],
+     [
+      "12420",
+      "39580",
+      3767
+     ],
+     [
+      "12420",
+      "40060",
+      1061
+     ],
+     [
+      "12420",
+      "41180",
+      1558
+     ],
+     [
+      "12420",
+      "41620",
+      668
+     ],
+     [
+      "12420",
+      "45300",
+      2057
+     ],
+     [
+      "12420",
+      "45940",
+      1203
+     ],
+     [
+      "12420",
+      "19820",
+      2273
+     ],
+     [
+      "12420",
+      "33100",
+      1647
+     ],
+     [
+      "12420",
+      "38900",
+      1693
+     ],
+     [
+      "12420",
+      "41700",
+      1364
+     ],
+     [
+      "12420",
+      "34980",
+      1554
+     ],
+     [
+      "12420",
+      "38300",
+      1327
+     ],
+     [
+      "12420",
+      "40900",
+      1301
+     ],
+     [
+      "12420",
+      "17140",
+      1475
+     ],
+     [
+      "12420",
+      "19740",
+      2041
+     ],
+     [
+      "47900",
+      "16740",
+      3265
+     ],
+     [
+      "47900",
+      "26420",
+      3111
+     ],
+     [
+      "47900",
+      "12580",
+      1531
+     ],
+     [
+      "47900",
+      "45940",
+      1173
+     ],
+     [
+      "47900",
+      "18140",
+      1633
+     ],
+     [
+      "47900",
+      "17140",
+      1277
+     ],
+     [
+      "47900",
+      "19740",
+      1737
+     ],
+     [
+      "47900",
+      "27260",
+      721
+     ],
+     [
+      "47900",
+      "19820",
+      1852
+     ],
+     [
+      "47900",
+      "31080",
+      3734
+     ],
+     [
+      "47900",
+      "38900",
+      1037
+     ],
+     [
+      "47900",
+      "20500",
+      931
+     ],
+     [
+      "47900",
+      "26900",
+      892
+     ],
+     [
+      "47900",
+      "33460",
+      1759
+     ],
+     [
+      "47900",
+      "37980",
+      3370
+     ],
+     [
+      "47900",
+      "38060",
+      2631
+     ],
+     [
+      "47900",
+      "39580",
+      2923
+     ],
+     [
+      "47900",
+      "40060",
+      1374
+     ],
+     [
+      "47900",
+      "41180",
+      1375
+     ],
+     [
+      "47900",
+      "41620",
+      574
+     ],
+     [
+      "47900",
+      "41740",
+      1196
+     ],
+     [
+      "47900",
+      "45300",
+      1820
+     ],
+     [
+      "47900",
+      "33100",
+      1492
+     ],
+     [
+      "47900",
+      "41700",
+      976
+     ],
+     [
+      "47900",
+      "34980",
+      1382
+     ],
+     [
+      "47900",
+      "36740",
+      1023
+     ],
+     [
+      "47900",
+      "38300",
+      1229
+     ],
+     [
+      "47900",
+      "40900",
+      839
+     ],
+     [
+      "47900",
+      "44700",
+      972
+     ],
+     [
+      "47900",
+      "22220",
+      790
+     ],
+     [
+      "47900",
+      "32820",
+      373
+     ],
+     [
+      "31080",
+      "16740",
+      2625
+     ],
+     [
+      "31080",
+      "19740",
+      1428
+     ],
+     [
+      "31080",
+      "19820",
+      1766
+     ],
+     [
+      "31080",
+      "38900",
+      1092
+     ],
+     [
+      "31080",
+      "37980",
+      2646
+     ],
+     [
+      "31080",
+      "41620",
+      516
+     ],
+     [
+      "31080",
+      "20500",
+      705
+     ],
+     [
+      "31080",
+      "26420",
+      2853
+     ],
+     [
+      "31080",
+      "26900",
+      910
+     ],
+     [
+      "31080",
+      "33100",
+      1387
+     ],
+     [
+      "31080",
+      "38060",
+      2420
+     ],
+     [
+      "31080",
+      "39580",
+      2358
+     ],
+     [
+      "31080",
+      "41700",
+      969
+     ],
+     [
+      "31080",
+      "32820",
+      327
+     ],
+     [
+      "31080",
+      "40900",
+      874
+     ],
+     [
+      "31080",
+      "18140",
+      1444
+     ],
+     [
+      "31080",
+      "41180",
+      1060
+     ],
+     [
+      "31080",
+      "17140",
+      1214
+     ],
+     [
+      "31080",
+      "41740",
+      1659
+     ],
+     [
+      "31080",
+      "36740",
+      974
+     ],
+     [
+      "31080",
+      "40060",
+      876
+     ],
+     [
+      "31080",
+      "33460",
+      1661
+     ],
+     [
+      "31080",
+      "27260",
+      589
+     ],
+     [
+      "31080",
+      "45940",
+      874
+     ],
+     [
+      "31080",
+      "12580",
+      712
+     ],
+     [
+      "31080",
+      "44700",
+      940
+     ],
+     [
+      "31080",
+      "22220",
+      541
+     ],
+     [
+      "31080",
+      "34980",
+      1172
+     ],
+     [
+      "31080",
+      "38300",
+      1060
+     ],
+     [
+      "31080",
+      "45300",
+      1651
+     ],
+     [
+      "26420",
+      "16740",
+      3088
+     ],
+     [
+      "26420",
+      "36740",
+      1073
+     ],
+     [
+      "26420",
+      "19820",
+      1710
+     ],
+     [
+      "26420",
+      "39580",
+      2463
+     ],
+     [
+      "26420",
+      "41740",
+      907
+     ],
+     [
+      "26420",
+      "18140",
+      1530
+     ],
+     [
+      "26420",
+      "20500",
+      804
+     ],
+     [
+      "26420",
+      "26900",
+      881
+     ],
+     [
+      "26420",
+      "27260",
+      641
+     ],
+     [
+      "26420",
+      "33460",
+      1572
+     ],
+     [
+      "26420",
+      "37980",
+      3013
+     ],
+     [
+      "26420",
+      "38060",
+      2387
+     ],
+     [
+      "26420",
+      "40060",
+      933
+     ],
+     [
+      "26420",
+      "41180",
+      1196
+     ],
+     [
+      "26420",
+      "41620",
+      507
+     ],
+     [
+      "26420",
+      "45300",
+      1846
+     ],
+     [
+      "26420",
+      "45940",
+      1016
+     ],
+     [
+      "26420",
+      "33100",
+      1478
+     ],
+     [
+      "26420",
+      "38900",
+      965
+     ],
+     [
+      "26420",
+      "41700",
+      1005
+     ],
+     [
+      "26420",
+      "12580",
+      739
+     ],
+     [
+      "26420",
+      "17140",
+      1211
+     ],
+     [
+      "26420",
+      "40900",
+      810
+     ],
+     [
+      "26420",
+      "22220",
+      587
+     ],
+     [
+      "26420",
+      "34980",
+      1126
+     ],
+     [
+      "26420",
+      "38300",
+      1031
+     ],
+     [
+      "26420",
+      "19740",
+      1515
+     ],
+     [
+      "26420",
+      "32820",
+      391
+     ],
+     [
+      "26420",
+      "44700",
+      713
+     ],
+     [
+      "37980",
+      "40060",
+      1096
+     ],
+     [
+      "37980",
+      "18140",
+      2088
+     ],
+     [
+      "37980",
+      "20500",
+      954
+     ],
+     [
+      "37980",
+      "26900",
+      906
+     ],
+     [
+      "37980",
+      "27260",
+      752
+     ],
+     [
+      "37980",
+      "33460",
+      1954
+     ],
+     [
+      "37980",
+      "38060",
+      2559
+     ],
+     [
+      "37980",
+      "39580",
+      2939
+     ],
+     [
+      "37980",
+      "41180",
+      1337
+     ],
+     [
+      "37980",
+      "41620",
+      525
+     ],
+     [
+      "37980",
+      "41740",
+      887
+     ],
+     [
+      "37980",
+      "45300",
+      2059
+     ],
+     [
+      "37980",
+      "45940",
+      1496
+     ],
+     [
+      "37980",
+      "19820",
+      1867
+     ],
+     [
+      "37980",
+      "33100",
+      1474
+     ],
+     [
+      "37980",
+      "38900",
+      931
+     ],
+     [
+      "37980",
+      "41700",
+      1167
+     ],
+     [
+      "37980",
+      "16740",
+      3535
+     ],
+     [
+      "37980",
+      "34980",
+      1197
+     ],
+     [
+      "37980",
+      "36740",
+      1201
+     ],
+     [
+      "37980",
+      "38300",
+      1193
+     ],
+     [
+      "37980",
+      "40900",
+      774
+     ],
+     [
+      "37980",
+      "17140",
+      1426
+     ],
+     [
+      "37980",
+      "44700",
+      709
+     ],
+     [
+      "37980",
+      "12580",
+      891
+     ],
+     [
+      "37980",
+      "19740",
+      1552
+     ],
+     [
+      "37980",
+      "32820",
+      402
+     ],
+     [
+      "37980",
+      "22220",
+      664
+     ],
+     [
+      "19820",
+      "16740",
+      1889
+     ],
+     [
+      "19820",
+      "39580",
+      1709
+     ],
+     [
+      "19820",
+      "41740",
+      711
+     ],
+     [
+      "19820",
+      "38900",
+      710
+     ],
+     [
+      "19820",
+      "20500",
+      564
+     ],
+     [
+      "19820",
+      "26900",
+      813
+     ],
+     [
+      "19820",
+      "33100",
+      1032
+     ],
+     [
+      "19820",
+      "38060",
+      1619
+     ],
+     [
+      "19820",
+      "41700",
+      670
+     ],
+     [
+      "19820",
+      "33460",
+      1374
+     ],
+     [
+      "19820",
+      "41620",
+      391
+     ],
+     [
+      "19820",
+      "12580",
+      612
+     ],
+     [
+      "19820",
+      "17140",
+      1071
+     ],
+     [
+      "19820",
+      "45300",
+      1237
+     ],
+     [
+      "19820",
+      "22220",
+      476
+     ],
+     [
+      "19820",
+      "18140",
+      1414
+     ],
+     [
+      "19820",
+      "36740",
+      729
+     ],
+     [
+      "19820",
+      "40060",
+      739
+     ],
+     [
+      "19820",
+      "41180",
+      1043
+     ],
+     [
+      "19820",
+      "44700",
+      532
+     ],
+     [
+      "19820",
+      "45940",
+      713
+     ],
+     [
+      "19820",
+      "38300",
+      855
+     ],
+     [
+      "19820",
+      "19740",
+      1057
+     ],
+     [
+      "19820",
+      "32820",
+      325
+     ],
+     [
+      "19820",
+      "34980",
+      988
+     ],
+     [
+      "19820",
+      "27260",
+      534
+     ],
+     [
+      "19820",
+      "40900",
+      575
+     ],
+     [
+      "16740",
+      "20500",
+      877
+     ],
+     [
+      "16740",
+      "17140",
+      1415
+     ],
+     [
+      "16740",
+      "38300",
+      1079
+     ],
+     [
+      "16740",
+      "39580",
+      3241
+     ],
+     [
+      "16740",
+      "41740",
+      796
+     ],
+     [
+      "16740",
+      "44700",
+      722
+     ],
+     [
+      "16740",
+      "26900",
+      975
+     ],
+     [
+      "16740",
+      "34980",
+      1168
+     ],
+     [
+      "16740",
+      "36740",
+      1001
+     ],
+     [
+      "16740",
+      "38900",
+      929
+     ],
+     [
+      "16740",
+      "40900",
+      750
+     ],
+     [
+      "16740",
+      "45300",
+      1963
+     ],
+     [
+      "16740",
+      "19740",
+      1549
+     ],
+     [
+      "16740",
+      "22220",
+      636
+     ],
+     [
+      "16740",
+      "18140",
+      1723
+     ],
+     [
+      "16740",
+      "41700",
+      1082
+     ],
+     [
+      "16740",
+      "12580",
+      785
+     ],
+     [
+      "16740",
+      "33460",
+      1972
+     ],
+     [
+      "16740",
+      "38060",
+      2805
+     ],
+     [
+      "16740",
+      "45940",
+      1203
+     ],
+     [
+      "16740",
+      "32820",
+      432
+     ],
+     [
+      "16740",
+      "33100",
+      1316
+     ],
+     [
+      "16740",
+      "40060",
+      1067
+     ],
+     [
+      "16740",
+      "41180",
+      1443
+     ],
+     [
+      "16740",
+      "27260",
+      790
+     ],
+     [
+      "16740",
+      "41620",
+      500
+     ],
+     [
+      "38060",
+      "36740",
+      885
+     ],
+     [
+      "38060",
+      "38300",
+      949
+     ],
+     [
+      "38060",
+      "40060",
+      868
+     ],
+     [
+      "38060",
+      "18140",
+      1473
+     ],
+     [
+      "38060",
+      "20500",
+      799
+     ],
+     [
+      "38060",
+      "26900",
+      884
+     ],
+     [
+      "38060",
+      "27260",
+      676
+     ],
+     [
+      "38060",
+      "33460",
+      1591
+     ],
+     [
+      "38060",
+      "39580",
+      2498
+     ],
+     [
+      "38060",
+      "41180",
+      1075
+     ],
+     [
+      "38060",
+      "41620",
+      466
+     ],
+     [
+      "38060",
+      "41740",
+      1051
+     ],
+     [
+      "38060",
+      "45300",
+      1626
+     ],
+     [
+      "38060",
+      "45940",
+      865
+     ],
+     [
+      "38060",
+      "33100",
+      1239
+     ],
+     [
+      "38060",
+      "38900",
+      1317
+     ],
+     [
+      "38060",
+      "41700",
+      939
+     ],
+     [
+      "38060",
+      "17140",
+      1184
+     ],
+     [
+      "38060",
+      "12580",
+      707
+     ],
+     [
+      "38060",
+      "22220",
+      563
+     ],
+     [
+      "38060",
+      "34980",
+      1212
+     ],
+     [
+      "38060",
+      "19740",
+      1374
+     ],
+     [
+      "38060",
+      "40900",
+      1039
+     ],
+     [
+      "38060",
+      "44700",
+      739
+     ],
+     [
+      "38060",
+      "32820",
+      423
+     ],
+     [
+      "39580",
+      "17140",
+      1306
+     ],
+     [
+      "39580",
+      "38300",
+      1108
+     ],
+     [
+      "39580",
+      "41740",
+      910
+     ],
+     [
+      "39580",
+      "18140",
+      1542
+     ],
+     [
+      "39580",
+      "20500",
+      2363
+     ],
+     [
+      "39580",
+      "26900",
+      988
+     ],
+     [
+      "39580",
+      "27260",
+      665
+     ],
+     [
+      "39580",
+      "33460",
+      1696
+     ],
+     [
+      "39580",
+      "40060",
+      973
+     ],
+     [
+      "39580",
+      "41180",
+      1165
+     ],
+     [
+      "39580",
+      "41620",
+      514
+     ],
+     [
+      "39580",
+      "45300",
+      1679
+     ],
+     [
+      "39580",
+      "45940",
+      1080
+     ],
+     [
+      "39580",
+      "44700",
+      852
+     ],
+     [
+      "39580",
+      "33100",
+      1314
+     ],
+     [
+      "39580",
+      "38900",
+      988
+     ],
+     [
+      "39580",
+      "41700",
+      1040
+     ],
+     [
+      "39580",
+      "19740",
+      1449
+     ],
+     [
+      "39580",
+      "22220",
+      601
+     ],
+     [
+      "39580",
+      "40900",
+      776
+     ],
+     [
+      "39580",
+      "12580",
+      790
+     ],
+     [
+      "39580",
+      "32820",
+      348
+     ],
+     [
+      "39580",
+      "36740",
+      987
+     ],
+     [
+      "39580",
+      "34980",
+      1159
+     ],
+     [
+      "41740",
+      "44700",
+      661
+     ],
+     [
+      "41740",
+      "19740",
+      696
+     ],
+     [
+      "41740",
+      "38900",
+      741
+     ],
+     [
+      "41740",
+      "34980",
+      647
+     ],
+     [
+      "41740",
+      "40900",
+      541
+     ],
+     [
+      "33100",
+      "20500",
+      536
+     ],
+     [
+      "33100",
+      "26900",
+      584
+     ],
+     [
+      "33100",
+      "38900",
+      605
+     ],
+     [
+      "33100",
+      "41700",
+      642
+     ],
+     [
+      "33100",
+      "34980",
+      713
+     ],
+     [
+      "33100",
+      "45300",
+      1164
+     ],
+     [
+      "33100",
+      "19740",
+      981
+     ],
+     [
+      "33100",
+      "36740",
+      741
+     ],
+     [
+      "33100",
+      "40060",
+      635
+     ],
+     [
+      "33100",
+      "18140",
+      883
+     ],
+     [
+      "33100",
+      "38300",
+      679
+     ],
+     [
+      "33100",
+      "40900",
+      488
+     ],
+     [
+      "33100",
+      "17140",
+      783
+     ],
+     [
+      "33100",
+      "41180",
+      795
+     ],
+     [
+      "33100",
+      "12580",
+      565
+     ],
+     [
+      "33100",
+      "45940",
+      646
+     ],
+     [
+      "33100",
+      "22220",
+      396
+     ],
+     [
+      "33100",
+      "41620",
+      397
+     ],
+     [
+      "33100",
+      "27260",
+      561
+     ],
+     [
+      "33100",
+      "33460",
+      997
+     ],
+     [
+      "33460",
+      "18140",
+      1260
+     ],
+     [
+      "33460",
+      "20500",
+      568
+     ],
+     [
+      "33460",
+      "26900",
+      726
+     ],
+     [
+      "33460",
+      "27260",
+      519
+     ],
+     [
+      "33460",
+      "40060",
+      718
+     ],
+     [
+      "33460",
+      "41180",
+      921
+     ],
+     [
+      "33460",
+      "41620",
+      380
+     ],
+     [
+      "33460",
+      "45300",
+      1148
+     ],
+     [
+      "33460",
+      "45940",
+      760
+     ],
+     [
+      "33460",
+      "12580",
+      580
+     ],
+     [
+      "33460",
+      "17140",
+      1034
+     ],
+     [
+      "33460",
+      "36740",
+      608
+     ],
+     [
+      "33460",
+      "22220",
+      454
+     ],
+     [
+      "33460",
+      "34980",
+      821
+     ],
+     [
+      "33460",
+      "38300",
+      811
+     ],
+     [
+      "33460",
+      "40900",
+      506
+     ],
+     [
+      "33460",
+      "41700",
+      755
+     ],
+     [
+      "33460",
+      "38900",
+      667
+     ],
+     [
+      "33460",
+      "19740",
+      1056
+     ],
+     [
+      "33460",
+      "32820",
+      323
+     ],
+     [
+      "45300",
+      "18140",
+      1405
+     ],
+     [
+      "45300",
+      "20500",
+      543
+     ],
+     [
+      "45300",
+      "26900",
+      739
+     ],
+     [
+      "45300",
+      "27260",
+      663
+     ],
+     [
+      "45300",
+      "40060",
+      753
+     ],
+     [
+      "45300",
+      "41180",
+      1054
+     ],
+     [
+      "45300",
+      "41620",
+      382
+     ],
+     [
+      "45300",
+      "45940",
+      836
+     ],
+     [
+      "45300",
+      "36740",
+      905
+     ],
+     [
+      "45300",
+      "34980",
+      898
+     ],
+     [
+      "45300",
+      "38300",
+      887
+     ],
+     [
+      "45300",
+      "38900",
+      616
+     ],
+     [
+      "45300",
+      "40900",
+      562
+     ],
+     [
+      "45300",
+      "12580",
+      641
+     ],
+     [
+      "45300",
+      "17140",
+      1083
+     ],
+     [
+      "45300",
+      "22220",
+      468
+     ],
+     [
+      "45300",
+      "41700",
+      732
+     ],
+     [
+      "45300",
+      "32820",
+      334
+     ],
+     [
+      "45300",
+      "19740",
+      1035
+     ],
+     [
+      "45300",
+      "44700",
+      481
+     ],
+     [
+      "18140",
+      "17140",
+      1062
+     ],
+     [
+      "18140",
+      "19740",
+      974
+     ],
+     [
+      "18140",
+      "27260",
+      501
+     ],
+     [
+      "18140",
+      "20500",
+      528
+     ],
+     [
+      "18140",
+      "26900",
+      665
+     ],
+     [
+      "18140",
+      "40060",
+      752
+     ],
+     [
+      "18140",
+      "41180",
+      952
+     ],
+     [
+      "18140",
+      "41620",
+      336
+     ],
+     [
+      "18140",
+      "45940",
+      747
+     ],
+     [
+      "18140",
+      "12580",
+      582
+     ],
+     [
+      "18140",
+      "22220",
+      485
+     ],
+     [
+      "18140",
+      "41700",
+      722
+     ],
+     [
+      "18140",
+      "36740",
+      640
+     ],
+     [
+      "18140",
+      "34980",
+      772
+     ],
+     [
+      "18140",
+      "38300",
+      876
+     ],
+     [
+      "18140",
+      "40900",
+      545
+     ],
+     [
+      "18140",
+      "32820",
+      334
+     ],
+     [
+      "18140",
+      "38900",
+      606
+     ],
+     [
+      "41180",
+      "26900",
+      545
+     ],
+     [
+      "41180",
+      "27260",
+      467
+     ],
+     [
+      "41180",
+      "40060",
+      698
+     ],
+     [
+      "41180",
+      "45940",
+      651
+     ],
+     [
+      "41180",
+      "34980",
+      723
+     ],
+     [
+      "41180",
+      "12580",
+      582
+     ],
+     [
+      "41180",
+      "22220",
+      459
+     ],
+     [
+      "41180",
+      "17140",
+      814
+     ],
+     [
+      "41180",
+      "36740",
+      568
+     ],
+     [
+      "41180",
+      "40900",
+      503
+     ],
+     [
+      "41180",
+      "38300",
+      646
+     ],
+     [
+      "41180",
+      "32820",
+      284
+     ],
+     [
+      "41180",
+      "19740",
+      1068
+     ],
+     [
+      "41180",
+      "41700",
+      554
+     ],
+     [
+      "19740",
+      "17140",
+      789
+     ],
+     [
+      "19740",
+      "27260",
+      460
+     ],
+     [
+      "19740",
+      "34980",
+      797
+     ],
+     [
+      "19740",
+      "22220",
+      420
+     ],
+     [
+      "19740",
+      "32820",
+      302
+     ],
+     [
+      "19740",
+      "36740",
+      648
+     ],
+     [
+      "19740",
+      "40060",
+      630
+     ],
+     [
+      "19740",
+      "41700",
+      599
+     ],
+     [
+      "19740",
+      "38900",
+      736
+     ],
+     [
+      "19740",
+      "44700",
+      587
+     ],
+     [
+      "19740",
+      "41620",
+      391
+     ],
+     [
+      "19740",
+      "26900",
+      591
+     ],
+     [
+      "19740",
+      "40900",
+      550
+     ],
+     [
+      "19740",
+      "45940",
+      666
+     ],
+     [
+      "19740",
+      "38300",
+      748
+     ],
+     [
+      "19740",
+      "12580",
+      557
+     ],
+     [
+      "19740",
+      "20500",
+      534
+     ],
+     [
+      "38900",
+      "40900",
+      880
+     ],
+     [
+      "38900",
+      "44700",
+      536
+     ],
+     [
+      "38300",
+      "17140",
+      683
+     ],
+     [
+      "38300",
+      "36740",
+      555
+     ],
+     [
+      "38300",
+      "26900",
+      523
+     ],
+     [
+      "38300",
+      "34980",
+      637
+     ],
+     [
+      "38300",
+      "41700",
+      555
+     ],
+     [
+      "38300",
+      "12580",
+      469
+     ],
+     [
+      "38300",
+      "45940",
+      608
+     ],
+     [
+      "38300",
+      "27260",
+      437
+     ],
+     [
+      "38300",
+      "32820",
+      374
+     ],
+     [
+      "45940",
+      "20500",
+      520
+     ],
+     [
+      "45940",
+      "26900",
+      486
+     ],
+     [
+      "45940",
+      "27260",
+      443
+     ],
+     [
+      "45940",
+      "40060",
+      544
+     ],
+     [
+      "45940",
+      "12580",
+      489
+     ],
+     [
+      "45940",
+      "17140",
+      620
+     ],
+     [
+      "45940",
+      "34980",
+      591
+     ],
+     [
+      "45940",
+      "32820",
+      247
+     ],
+     [
+      "12580",
+      "17140",
+      481
+     ],
+     [
+      "12580",
+      "40060",
+      534
+     ],
+     [
+      "12580",
+      "34980",
+      453
+     ],
+     [
+      "22220",
+      "17140",
+      481
+     ],
+     [
+      "22220",
+      "40060",
+      444
+     ],
+     [
+      "17140",
+      "27260",
+      475
+     ],
+     [
+      "17140",
+      "26900",
+      652
+     ],
+     [
+      "17140",
+      "40060",
+      703
+     ],
+     [
+      "17140",
+      "41700",
+      687
+     ],
+     [
+      "17140",
+      "36740",
+      584
+     ],
+     [
+      "17140",
+      "32820",
+      266
+     ],
+     [
+      "17140",
+      "34980",
+      690
+     ],
+     [
+      "34980",
+      "26900",
+      538
+     ],
+     [
+      "34980",
+      "36740",
+      578
+     ],
+     [
+      "34980",
+      "41620",
+      333
+     ],
+     [
+      "34980",
+      "27260",
+      439
+     ],
+     [
+      "34980",
+      "32820",
+      302
+     ],
+     [
+      "26900",
+      "27260",
+      381
+     ],
+     [
+      "36740",
+      "40900",
+      519
+     ],
+     [
+      "36740",
+      "27260",
+      425
+     ],
+     [
+      "41700",
+      "27260",
+      395
+     ],
+     [
+      "40900",
+      "44700",
+      542
+     ],
+     [
+      "40060",
+      "27260",
+      382
+     ]
+    ]
+   }
+  }
+ },
+ "null_model": {
+  "Q": 0.053,
+  "Q_sd": 0.0011,
+  "Q_null_mean": 0.013,
+  "Q_null_std": 0.0015,
+  "z": 26.94,
+  "nmi_seeds": 1.0,
+  "nmi_census_region": 0.035,
+  "p_region": 0.5435,
+  "nmi_census_division": 0.098,
+  "p_division": 0.3267,
+  "seeds": 50,
+  "communities": 2
+ },
+ "longhaul": {
+  "staffing": [
+   "Tata Consultancy",
+   "Cognizant",
+   "Infosys",
+   "HCL",
+   "Compunnel Software"
+  ],
+  "edges": [
+   {
+    "a": "35620",
+    "b": "41940",
+    "distance_km": 4092,
+    "weight": 11725,
+    "top_employer": "Amazon Com",
+    "top_share": 0.11,
+    "staffing": false
+   },
+   {
+    "a": "35620",
+    "b": "31080",
+    "distance_km": 3945,
+    "weight": 6234,
+    "top_employer": "EY",
+    "top_share": 0.082,
+    "staffing": false
+   },
+   {
+    "a": "35620",
+    "b": "12420",
+    "distance_km": 2442,
+    "weight": 9401,
+    "top_employer": "Amazon Com",
+    "top_share": 0.138,
+    "staffing": false
+   },
+   {
+    "a": "35620",
+    "b": "16980",
+    "distance_km": 1177,
+    "weight": 9516,
+    "top_employer": "EY",
+    "top_share": 0.08,
+    "staffing": false
+   },
+   {
+    "a": "35620",
+    "b": "36740",
+    "distance_km": 1531,
+    "weight": 1657,
+    "top_employer": "Deloitte",
+    "top_share": 0.221,
+    "staffing": false
+   },
+   {
+    "a": "35620",
+    "b": "41740",
+    "distance_km": 3877,
+    "weight": 1819,
+    "top_employer": "Amazon Com",
+    "top_share": 0.107,
+    "staffing": false
+   },
+   {
+    "a": "35620",
+    "b": "41860",
+    "distance_km": 4133,
+    "weight": 12451,
+    "top_employer": "Amazon Com",
+    "top_share": 0.076,
+    "staffing": false
+   },
+   {
+    "a": "35620",
+    "b": "16740",
+    "distance_km": 871,
+    "weight": 6106,
+    "top_employer": "Cognizant",
+    "top_share": 0.099,
+    "staffing": true
+   },
+   {
+    "a": "35620",
+    "b": "19100",
+    "distance_km": 2232,
+    "weight": 19684,
+    "top_employer": "Cognizant",
+    "top_share": 0.061,
+    "staffing": true
+   },
+   {
+    "a": "35620",
+    "b": "42660",
+    "distance_km": 3844,
+    "weight": 10929,
+    "top_employer": "Amazon Com",
+    "top_share": 0.118,
+    "staffing": false
+   },
+   {
+    "a": "35620",
+    "b": "17140",
+    "distance_km": 927,
+    "weight": 1722,
+    "top_employer": "Tata Consultancy",
+    "top_share": 0.136,
+    "staffing": true
+   },
+   {
+    "a": "35620",
+    "b": "26420",
+    "distance_km": 2293,
+    "weight": 4830,
+    "top_employer": "EY",
+    "top_share": 0.073,
+    "staffing": false
+   },
+   {
+    "a": "35620",
+    "b": "47900",
+    "distance_km": 380,
+    "weight": 7470,
+    "top_employer": "Amazon Com",
+    "top_share": 0.093,
+    "staffing": false
+   },
+   {
+    "a": "35620",
+    "b": "45940",
+    "distance_km": 91,
+    "weight": 2657,
+    "top_employer": "Compunnel Software",
+    "top_share": 0.14,
+    "staffing": true
+   },
+   {
+    "a": "35620",
+    "b": "19820",
+    "distance_km": 810,
+    "weight": 2541,
+    "top_employer": "Cognizant",
+    "top_share": 0.078,
+    "staffing": true
+   },
+   {
+    "a": "35620",
+    "b": "38900",
+    "distance_km": 3923,
+    "weight": 1414,
+    "top_employer": "Cognizant",
+    "top_share": 0.047,
+    "staffing": true
+   },
+   {
+    "a": "35620",
+    "b": "12060",
+    "distance_km": 1217,
+    "weight": 9993,
+    "top_employer": "EY",
+    "top_share": 0.054,
+    "staffing": false
+   },
+   {
+    "a": "35620",
+    "b": "18140",
+    "distance_km": 769,
+    "weight": 2535,
+    "top_employer": "JPMorgan Chase",
+    "top_share": 0.155,
+    "staffing": false
+   },
+   {
+    "a": "35620",
+    "b": "20500",
+    "distance_km": 700,
+    "weight": 1456,
+    "top_employer": "IBM",
+    "top_share": 0.131,
+    "staffing": false
+   },
+   {
+    "a": "35620",
+    "b": "26900",
+    "distance_km": 1049,
+    "weight": 1286,
+    "top_employer": "Infosys",
+    "top_share": 0.118,
+    "staffing": true
+   },
+   {
+    "a": "35620",
+    "b": "27260",
+    "distance_km": 1370,
+    "weight": 1043,
+    "top_employer": "Tata Consultancy",
+    "top_share": 0.071,
+    "staffing": true
+   },
+   {
+    "a": "35620",
+    "b": "33460",
+    "distance_km": 1653,
+    "weight": 2441,
+    "top_employer": "Cognizant",
+    "top_share": 0.127,
+    "staffing": true
+   },
+   {
+    "a": "35620",
+    "b": "37980",
+    "distance_km": 158,
+    "weight": 6690,
+    "top_employer": "JPMorgan Chase",
+    "top_share": 0.066,
+    "staffing": false
+   },
+   {
+    "a": "35620",
+    "b": "38060",
+    "distance_km": 3472,
+    "weight": 4228,
+    "top_employer": "Cognizant",
+    "top_share": 0.073,
+    "staffing": true
+   },
+   {
+    "a": "35620",
+    "b": "39580",
+    "distance_km": 686,
+    "weight": 4777,
+    "top_employer": "Cognizant",
+    "top_share": 0.069,
+    "staffing": true
+   },
+   {
+    "a": "35620",
+    "b": "40060",
+    "distance_km": 485,
+    "weight": 1427,
+    "top_employer": "Capital One",
+    "top_share": 0.085,
+    "staffing": false
+   },
+   {
+    "a": "35620",
+    "b": "41180",
+    "distance_km": 1429,
+    "weight": 1951,
+    "top_employer": "Cognizant",
+    "top_share": 0.074,
+    "staffing": true
+   },
+   {
+    "a": "35620",
+    "b": "41620",
+    "distance_km": 3274,
+    "weight": 1310,
+    "top_employer": "Goldman Sachs",
+    "top_share": 0.426,
+    "staffing": false
+   },
+   {
+    "a": "35620",
+    "b": "45300",
+    "distance_km": 1612,
+    "weight": 3308,
+    "top_employer": "Citigroup",
+    "top_share": 0.093,
+    "staffing": false
+   },
+   {
+    "a": "35620",
+    "b": "44700",
+    "distance_km": 4044,
+    "weight": 1370,
+    "top_employer": "Wal Mart Associates",
+    "top_share": 0.072,
+    "staffing": false
+   },
+   {
+    "a": "35620",
+    "b": "33100",
+    "distance_km": 1740,
+    "weight": 2384,
+    "top_employer": "Cognizant",
+    "top_share": 0.05,
+    "staffing": true
+   },
+   {
+    "a": "35620",
+    "b": "41700",
+    "distance_km": 2570,
+    "weight": 1499,
+    "top_employer": "HCL",
+    "top_share": 0.174,
+    "staffing": true
+   },
+   {
+    "a": "35620",
+    "b": "12580",
+    "distance_km": 283,
+    "weight": 1231,
+    "top_employer": "Cognizant",
+    "top_share": 0.063,
+    "staffing": true
+   },
+   {
+    "a": "35620",
+    "b": "19740",
+    "distance_km": 2635,
+    "weight": 2113,
+    "top_employer": "Cognizant",
+    "top_share": 0.064,
+    "staffing": true
+   },
+   {
+    "a": "35620",
+    "b": "22220",
+    "distance_km": 1834,
+    "weight": 976,
+    "top_employer": "Wal Mart Associates",
+    "top_share": 0.203,
+    "staffing": false
+   },
+   {
+    "a": "35620",
+    "b": "40900",
+    "distance_km": 3991,
+    "weight": 1136,
+    "top_employer": "Deloitte",
+    "top_share": 0.083,
+    "staffing": false
+   },
+   {
+    "a": "35620",
+    "b": "38300",
+    "distance_km": 512,
+    "weight": 1774,
+    "top_employer": "Tata Consultancy",
+    "top_share": 0.074,
+    "staffing": true
+   },
+   {
+    "a": "35620",
+    "b": "32820",
+    "distance_km": 1540,
+    "weight": 561,
+    "top_employer": "Mphasis",
+    "top_share": 0.093,
+    "staffing": false
+   },
+   {
+    "a": "35620",
+    "b": "34980",
+    "distance_km": 1236,
+    "weight": 1753,
+    "top_employer": "Amazon Com",
+    "top_share": 0.162,
+    "staffing": false
+   },
+   {
+    "a": "19100",
+    "b": "31080",
+    "distance_km": 1969,
+    "weight": 5552,
+    "top_employer": "EY",
+    "top_share": 0.093,
+    "staffing": false
+   },
+   {
+    "a": "19100",
+    "b": "12420",
+    "distance_km": 296,
+    "weight": 9924,
+    "top_employer": "Amazon Com",
+    "top_share": 0.056,
+    "staffing": false
+   },
+   {
+    "a": "19100",
+    "b": "16740",
+    "distance_km": 1511,
+    "weight": 7136,
+    "top_employer": "Cognizant",
+    "top_share": 0.085,
+    "staffing": true
+   },
+   {
+    "a": "19100",
+    "b": "41940",
+    "distance_km": 2265,
+    "weight": 8703,
+    "top_employer": "Amazon Com",
+    "top_share": 0.064,
+    "staffing": false
+   },
+   {
+    "a": "19100",
+    "b": "42660",
+    "distance_km": 2647,
+    "weight": 7749,
+    "top_employer": "Amazon Com",
+    "top_share": 0.071,
+    "staffing": false
+   },
+   {
+    "a": "19100",
+    "b": "12060",
+    "distance_km": 1172,
+    "weight": 11232,
+    "top_employer": "EY",
+    "top_share": 0.048,
+    "staffing": false
+   },
+   {
+    "a": "19100",
+    "b": "37980",
+    "distance_km": 2085,
+    "weight": 6505,
+    "top_employer": "JPMorgan Chase",
+    "top_share": 0.068,
+    "staffing": false
+   },
+   {
+    "a": "19100",
+    "b": "26420",
+    "distance_km": 372,
+    "weight": 5960,
+    "top_employer": "EY",
+    "top_share": 0.059,
+    "staffing": false
+   },
+   {
+    "a": "19100",
+    "b": "41860",
+    "distance_km": 2353,
+    "weight": 8676,
+    "top_employer": "Amazon Com",
+    "top_share": 0.064,
+    "staffing": false
+   },
+   {
+    "a": "19100",
+    "b": "47900",
+    "distance_km": 1873,
+    "weight": 7970,
+    "top_employer": "Amazon Com",
+    "top_share": 0.069,
+    "staffing": false
+   },
+   {
+    "a": "19100",
+    "b": "19820",
+    "distance_km": 1630,
+    "weight": 3248,
+    "top_employer": "Cognizant",
+    "top_share": 0.061,
+    "staffing": true
+   },
+   {
+    "a": "19100",
+    "b": "17140",
+    "distance_km": 1320,
+    "weight": 2002,
+    "top_employer": "Tata Consultancy",
+    "top_share": 0.117,
+    "staffing": true
+   },
+   {
+    "a": "19100",
+    "b": "18140",
+    "distance_km": 1489,
+    "weight": 3001,
+    "top_employer": "JPMorgan Chase",
+    "top_share": 0.131,
+    "staffing": false
+   },
+   {
+    "a": "19100",
+    "b": "19740",
+    "distance_km": 1021,
+    "weight": 2398,
+    "top_employer": "Cognizant",
+    "top_share": 0.057,
+    "staffing": true
+   },
+   {
+    "a": "19100",
+    "b": "27260",
+    "distance_km": 1469,
+    "weight": 1112,
+    "top_employer": "Tata Consultancy",
+    "top_share": 0.067,
+    "staffing": true
+   },
+   {
+    "a": "19100",
+    "b": "39580",
+    "distance_km": 1728,
+    "weight": 5907,
+    "top_employer": "Fidelity Technology Group Llc",
+    "top_share": 0.104,
+    "staffing": false
+   },
+   {
+    "a": "19100",
+    "b": "41740",
+    "distance_km": 1846,
+    "weight": 1701,
+    "top_employer": "Amazon Com",
+    "top_share": 0.114,
+    "staffing": false
+   },
+   {
+    "a": "19100",
+    "b": "16980",
+    "distance_km": 1276,
+    "weight": 9628,
+    "top_employer": "Cognizant",
+    "top_share": 0.073,
+    "staffing": true
+   },
+   {
+    "a": "19100",
+    "b": "38900",
+    "distance_km": 2598,
+    "weight": 1536,
+    "top_employer": "Cognizant",
+    "top_share": 0.043,
+    "staffing": true
+   },
+   {
+    "a": "19100",
+    "b": "44700",
+    "distance_km": 2267,
+    "weight": 1607,
+    "top_employer": "Wal Mart Associates",
+    "top_share": 0.062,
+    "staffing": false
+   },
+   {
+    "a": "19100",
+    "b": "20500",
+    "distance_km": 1674,
+    "weight": 2262,
+    "top_employer": "Fidelity Technology Group Llc",
+    "top_share": 0.273,
+    "staffing": false
+   },
+   {
+    "a": "19100",
+    "b": "26900",
+    "distance_km": 1239,
+    "weight": 1424,
+    "top_employer": "Infosys",
+    "top_share": 0.107,
+    "staffing": true
+   },
+   {
+    "a": "19100",
+    "b": "33460",
+    "distance_km": 1398,
+    "weight": 3012,
+    "top_employer": "Cognizant",
+    "top_share": 0.103,
+    "staffing": true
+   },
+   {
+    "a": "19100",
+    "b": "38060",
+    "distance_km": 1407,
+    "weight": 4717,
+    "top_employer": "Cognizant",
+    "top_share": 0.065,
+    "staffing": true
+   },
+   {
+    "a": "19100",
+    "b": "40060",
+    "distance_km": 1843,
+    "weight": 1805,
+    "top_employer": "Capital One",
+    "top_share": 0.095,
+    "staffing": false
+   },
+   {
+    "a": "19100",
+    "b": "41180",
+    "distance_km": 886,
+    "weight": 2108,
+    "top_employer": "Cognizant",
+    "top_share": 0.068,
+    "staffing": true
+   },
+   {
+    "a": "19100",
+    "b": "41620",
+    "distance_km": 1660,
+    "weight": 1394,
+    "top_employer": "Goldman Sachs",
+    "top_share": 0.4,
+    "staffing": false
+   },
+   {
+    "a": "19100",
+    "b": "45300",
+    "distance_km": 1479,
+    "weight": 3693,
+    "top_employer": "Citigroup",
+    "top_share": 0.083,
+    "staffing": false
+   },
+   {
+    "a": "19100",
+    "b": "45940",
+    "distance_km": 2146,
+    "weight": 1964,
+    "top_employer": "Compunnel Software",
+    "top_share": 0.189,
+    "staffing": true
+   },
+   {
+    "a": "19100",
+    "b": "33100",
+    "distance_km": 1761,
+    "weight": 2284,
+    "top_employer": "Cognizant",
+    "top_share": 0.052,
+    "staffing": true
+   },
+   {
+    "a": "19100",
+    "b": "41700",
+    "distance_km": 411,
+    "weight": 2000,
+    "top_employer": "HCL",
+    "top_share": 0.159,
+    "staffing": true
+   },
+   {
+    "a": "19100",
+    "b": "12580",
+    "distance_km": 1965,
+    "weight": 1299,
+    "top_employer": "Cognizant",
+    "top_share": 0.06,
+    "staffing": true
+   },
+   {
+    "a": "19100",
+    "b": "34980",
+    "distance_km": 1006,
+    "weight": 2013,
+    "top_employer": "Amazon Com",
+    "top_share": 0.141,
+    "staffing": false
+   },
+   {
+    "a": "19100",
+    "b": "36740",
+    "distance_km": 1571,
+    "weight": 1907,
+    "top_employer": "Deloitte",
+    "top_share": 0.27,
+    "staffing": false
+   },
+   {
+    "a": "19100",
+    "b": "38300",
+    "distance_km": 1741,
+    "weight": 1877,
+    "top_employer": "Tata Consultancy",
+    "top_share": 0.07,
+    "staffing": true
+   },
+   {
+    "a": "19100",
+    "b": "40900",
+    "distance_km": 2258,
+    "weight": 1281,
+    "top_employer": "Deloitte",
+    "top_share": 0.073,
+    "staffing": false
+   },
+   {
+    "a": "19100",
+    "b": "22220",
+    "distance_km": 450,
+    "weight": 1494,
+    "top_employer": "Wal Mart Associates",
+    "top_share": 0.297,
+    "staffing": false
+   },
+   {
+    "a": "19100",
+    "b": "32820",
+    "distance_km": 702,
+    "weight": 928,
+    "top_employer": "Federal Express",
+    "top_share": 0.204,
+    "staffing": false
+   },
+   {
+    "a": "41940",
+    "b": "12420",
+    "distance_km": 2312,
+    "weight": 10005,
+    "top_employer": "Amazon Com",
+    "top_share": 0.133,
+    "staffing": false
+   },
+   {
+    "a": "41940",
+    "b": "31080",
+    "distance_km": 424,
+    "weight": 5282,
+    "top_employer": "Amazon Com",
+    "top_share": 0.088,
+    "staffing": false
+   },
+   {
+    "a": "41940",
+    "b": "42660",
+    "distance_km": 1177,
+    "weight": 14556,
+    "top_employer": "Amazon Com",
+    "top_share": 0.151,
+    "staffing": false
+   },
+   {
+    "a": "41940",
+    "b": "41860",
+    "distance_km": 125,
+    "weight": 17231,
+    "top_employer": "Meta",
+    "top_share": 0.108,
+    "staffing": false
+   },
+   {
+    "a": "41940",
+    "b": "26420",
+    "distance_km": 2534,
+    "weight": 3148,
+    "top_employer": "EY",
+    "top_share": 0.109,
+    "staffing": false
+   },
+   {
+    "a": "41940",
+    "b": "16980",
+    "distance_km": 2915,
+    "weight": 4486,
+    "top_employer": "EY",
+    "top_share": 0.077,
+    "staffing": false
+   },
+   {
+    "a": "41940",
+    "b": "12060",
+    "distance_km": 3353,
+    "weight": 5224,
+    "top_employer": "EY",
+    "top_share": 0.066,
+    "staffing": false
+   },
+   {
+    "a": "41940",
+    "b": "38060",
+    "distance_km": 942,
+    "weight": 3243,
+    "top_employer": "Intel",
+    "top_share": 0.104,
+    "staffing": false
+   },
+   {
+    "a": "41940",
+    "b": "38900",
+    "distance_km": 971,
+    "weight": 1915,
+    "top_employer": "Intel",
+    "top_share": 0.229,
+    "staffing": false
+   },
+   {
+    "a": "41940",
+    "b": "47900",
+    "distance_km": 3820,
+    "weight": 4930,
+    "top_employer": "Amazon Com",
+    "top_share": 0.14,
+    "staffing": false
+   },
+   {
+    "a": "41940",
+    "b": "40900",
+    "distance_km": 212,
+    "weight": 1372,
+    "top_employer": "Intel",
+    "top_share": 0.203,
+    "staffing": false
+   },
+   {
+    "a": "41940",
+    "b": "44700",
+    "distance_km": 115,
+    "weight": 1765,
+    "top_employer": "Wal Mart Associates",
+    "top_share": 0.056,
+    "staffing": false
+   },
+   {
+    "a": "41940",
+    "b": "22220",
+    "distance_km": 2432,
+    "weight": 1702,
+    "top_employer": "Wal Mart Associates",
+    "top_share": 0.675,
+    "staffing": false
+   },
+   {
+    "a": "41940",
+    "b": "41740",
+    "distance_km": 601,
+    "weight": 2826,
+    "top_employer": "Apple",
+    "top_share": 0.192,
+    "staffing": false
+   },
+   {
+    "a": "41860",
+    "b": "47900",
+    "distance_km": 3869,
+    "weight": 5240,
+    "top_employer": "Amazon Com",
+    "top_share": 0.132,
+    "staffing": false
+   },
+   {
+    "a": "41860",
+    "b": "12420",
+    "distance_km": 2410,
+    "weight": 8028,
+    "top_employer": "Amazon Com",
+    "top_share": 0.119,
+    "staffing": false
+   },
+   {
+    "a": "41860",
+    "b": "16980",
+    "distance_km": 2956,
+    "weight": 5076,
+    "top_employer": "EY",
+    "top_share": 0.099,
+    "staffing": false
+   },
+   {
+    "a": "41860",
+    "b": "41740",
+    "distance_km": 726,
+    "weight": 1989,
+    "top_employer": "Amazon Com",
+    "top_share": 0.098,
+    "staffing": false
+   },
+   {
+    "a": "41860",
+    "b": "40900",
+    "distance_km": 158,
+    "weight": 1329,
+    "top_employer": "Deloitte",
+    "top_share": 0.071,
+    "staffing": false
+   },
+   {
+    "a": "41860",
+    "b": "26420",
+    "distance_km": 2631,
+    "weight": 3201,
+    "top_employer": "EY",
+    "top_share": 0.11,
+    "staffing": false
+   },
+   {
+    "a": "41860",
+    "b": "12060",
+    "distance_km": 3424,
+    "weight": 5437,
+    "top_employer": "EY",
+    "top_share": 0.093,
+    "staffing": false
+   },
+   {
+    "a": "41860",
+    "b": "44700",
+    "distance_km": 90,
+    "weight": 1879,
+    "top_employer": "Wal Mart Associates",
+    "top_share": 0.053,
+    "staffing": false
+   },
+   {
+    "a": "41860",
+    "b": "38060",
+    "distance_km": 1055,
+    "weight": 3061,
+    "top_employer": "Amazon Com",
+    "top_share": 0.08,
+    "staffing": false
+   },
+   {
+    "a": "41860",
+    "b": "42660",
+    "distance_km": 1081,
+    "weight": 11317,
+    "top_employer": "Meta",
+    "top_share": 0.144,
+    "staffing": false
+   },
+   {
+    "a": "41860",
+    "b": "19740",
+    "distance_km": 1518,
+    "weight": 1821,
+    "top_employer": "Cognizant",
+    "top_share": 0.075,
+    "staffing": true
+   },
+   {
+    "a": "41860",
+    "b": "22220",
+    "distance_km": 2503,
+    "weight": 1100,
+    "top_employer": "Wal Mart Associates",
+    "top_share": 0.445,
+    "staffing": false
+   },
+   {
+    "a": "41860",
+    "b": "31080",
+    "distance_km": 549,
+    "weight": 5543,
+    "top_employer": "EY",
+    "top_share": 0.091,
+    "staffing": false
+   },
+   {
+    "a": "41860",
+    "b": "38900",
+    "distance_km": 870,
+    "weight": 1520,
+    "top_employer": "Intel",
+    "top_share": 0.055,
+    "staffing": false
+   },
+   {
+    "a": "42660",
+    "b": "12420",
+    "distance_km": 2817,
+    "weight": 7363,
+    "top_employer": "Amazon Com",
+    "top_share": 0.18,
+    "staffing": false
+   },
+   {
+    "a": "42660",
+    "b": "31080",
+    "distance_km": 1519,
+    "weight": 4662,
+    "top_employer": "Amazon Com",
+    "top_share": 0.1,
+    "staffing": false
+   },
+   {
+    "a": "42660",
+    "b": "12060",
+    "distance_km": 3467,
+    "weight": 4766,
+    "top_employer": "Microsoft",
+    "top_share": 0.069,
+    "staffing": false
+   },
+   {
+    "a": "42660",
+    "b": "47900",
+    "distance_km": 3669,
+    "weight": 4853,
+    "top_employer": "Amazon Com",
+    "top_share": 0.143,
+    "staffing": false
+   },
+   {
+    "a": "42660",
+    "b": "44700",
+    "distance_km": 1064,
+    "weight": 1237,
+    "top_employer": "Wal Mart Associates",
+    "top_share": 0.08,
+    "staffing": false
+   },
+   {
+    "a": "42660",
+    "b": "41740",
+    "distance_km": 1664,
+    "weight": 1836,
+    "top_employer": "Apple",
+    "top_share": 0.215,
+    "staffing": false
+   },
+   {
+    "a": "12060",
+    "b": "16980",
+    "distance_km": 942,
+    "weight": 6696,
+    "top_employer": "EY",
+    "top_share": 0.081,
+    "staffing": false
+   },
+   {
+    "a": "12060",
+    "b": "37980",
+    "distance_km": 1059,
+    "weight": 4540,
+    "top_employer": "Deloitte",
+    "top_share": 0.068,
+    "staffing": false
+   },
+   {
+    "a": "12060",
+    "b": "12420",
+    "distance_km": 1308,
+    "weight": 5985,
+    "top_employer": "Tata Consultancy",
+    "top_share": 0.053,
+    "staffing": true
+   },
+   {
+    "a": "12060",
+    "b": "47900",
+    "distance_km": 838,
+    "weight": 4806,
+    "top_employer": "EY",
+    "top_share": 0.075,
+    "staffing": false
+   },
+   {
+    "a": "12060",
+    "b": "36740",
+    "distance_km": 656,
+    "weight": 1420,
+    "top_employer": "Deloitte",
+    "top_share": 0.225,
+    "staffing": false
+   },
+   {
+    "a": "12060",
+    "b": "38060",
+    "distance_km": 2560,
+    "weight": 3395,
+    "top_employer": "Cognizant",
+    "top_share": 0.091,
+    "staffing": true
+   },
+   {
+    "a": "12060",
+    "b": "38300",
+    "distance_km": 850,
+    "weight": 1421,
+    "top_employer": "Tata Consultancy",
+    "top_share": 0.092,
+    "staffing": true
+   },
+   {
+    "a": "12060",
+    "b": "40060",
+    "distance_km": 750,
+    "weight": 1289,
+    "top_employer": "Cognizant",
+    "top_share": 0.091,
+    "staffing": true
+   },
+   {
+    "a": "12060",
+    "b": "18140",
+    "distance_km": 707,
+    "weight": 1975,
+    "top_employer": "Cognizant",
+    "top_share": 0.106,
+    "staffing": true
+   },
+   {
+    "a": "12060",
+    "b": "26420",
+    "distance_km": 1123,
+    "weight": 4150,
+    "top_employer": "EY",
+    "top_share": 0.085,
+    "staffing": false
+   },
+   {
+    "a": "12060",
+    "b": "26900",
+    "distance_km": 691,
+    "weight": 1157,
+    "top_employer": "Infosys",
+    "top_share": 0.131,
+    "staffing": true
+   },
+   {
+    "a": "12060",
+    "b": "27260",
+    "distance_km": 462,
+    "weight": 915,
+    "top_employer": "Tata Consultancy",
+    "top_share": 0.081,
+    "staffing": true
+   },
+   {
+    "a": "12060",
+    "b": "33460",
+    "distance_km": 1474,
+    "weight": 2395,
+    "top_employer": "Cognizant",
+    "top_share": 0.129,
+    "staffing": true
+   },
+   {
+    "a": "12060",
+    "b": "39580",
+    "distance_km": 587,
+    "weight": 3825,
+    "top_employer": "Cognizant",
+    "top_share": 0.086,
+    "staffing": true
+   },
+   {
+    "a": "12060",
+    "b": "41180",
+    "distance_km": 771,
+    "weight": 1622,
+    "top_employer": "Cognizant",
+    "top_share": 0.089,
+    "staffing": true
+   },
+   {
+    "a": "12060",
+    "b": "45300",
+    "distance_km": 649,
+    "weight": 2319,
+    "top_employer": "Tata Consultancy",
+    "top_share": 0.073,
+    "staffing": true
+   },
+   {
+    "a": "12060",
+    "b": "45940",
+    "distance_km": 1126,
+    "weight": 1355,
+    "top_employer": "Compunnel Software",
+    "top_share": 0.103,
+    "staffing": true
+   },
+   {
+    "a": "12060",
+    "b": "19820",
+    "distance_km": 1005,
+    "weight": 2411,
+    "top_employer": "Cognizant",
+    "top_share": 0.082,
+    "staffing": true
+   },
+   {
+    "a": "12060",
+    "b": "31080",
+    "distance_km": 3104,
+    "weight": 4431,
+    "top_employer": "EY",
+    "top_share": 0.116,
+    "staffing": false
+   },
+   {
+    "a": "12060",
+    "b": "33100",
+    "distance_km": 928,
+    "weight": 1745,
+    "top_employer": "Cognizant",
+    "top_share": 0.068,
+    "staffing": true
+   },
+   {
+    "a": "12060",
+    "b": "41700",
+    "distance_km": 1427,
+    "weight": 1317,
+    "top_employer": "Tata Consultancy",
+    "top_share": 0.172,
+    "staffing": true
+   },
+   {
+    "a": "12060",
+    "b": "19740",
+    "distance_km": 1933,
+    "weight": 1874,
+    "top_employer": "Cognizant",
+    "top_share": 0.073,
+    "staffing": true
+   },
+   {
+    "a": "12060",
+    "b": "34980",
+    "distance_km": 338,
+    "weight": 1526,
+    "top_employer": "Amazon Com",
+    "top_share": 0.113,
+    "staffing": false
+   },
+   {
+    "a": "12060",
+    "b": "16740",
+    "distance_km": 366,
+    "weight": 4996,
+    "top_employer": "Cognizant",
+    "top_share": 0.099,
+    "staffing": true
+   },
+   {
+    "a": "12060",
+    "b": "17140",
+    "distance_km": 595,
+    "weight": 1717,
+    "top_employer": "Tata Consultancy",
+    "top_share": 0.136,
+    "staffing": true
+   },
+   {
+    "a": "12060",
+    "b": "32820",
+    "distance_km": 518,
+    "weight": 532,
+    "top_employer": "Mphasis",
+    "top_share": 0.098,
+    "staffing": false
+   },
+   {
+    "a": "16980",
+    "b": "38060",
+    "distance_km": 2330,
+    "weight": 3215,
+    "top_employer": "Cognizant",
+    "top_share": 0.096,
+    "staffing": true
+   },
+   {
+    "a": "16980",
+    "b": "37980",
+    "distance_km": 1073,
+    "weight": 4372,
+    "top_employer": "Cognizant",
+    "top_share": 0.069,
+    "staffing": true
+   },
+   {
+    "a": "16980",
+    "b": "12420",
+    "distance_km": 1552,
+    "weight": 5321,
+    "top_employer": "Tata Consultancy",
+    "top_share": 0.059,
+    "staffing": true
+   },
+   {
+    "a": "16980",
+    "b": "36740",
+    "distance_km": 1594,
+    "weight": 1296,
+    "top_employer": "Deloitte",
+    "top_share": 0.211,
+    "staffing": false
+   },
+   {
+    "a": "16980",
+    "b": "33100",
+    "distance_km": 1867,
+    "weight": 1724,
+    "top_employer": "Cognizant",
+    "top_share": 0.069,
+    "staffing": true
+   },
+   {
+    "a": "16980",
+    "b": "19820",
+    "distance_km": 397,
+    "weight": 2323,
+    "top_employer": "Cognizant",
+    "top_share": 0.085,
+    "staffing": true
+   },
+   {
+    "a": "16980",
+    "b": "31080",
+    "distance_km": 2777,
+    "weight": 4023,
+    "top_employer": "EY",
+    "top_share": 0.128,
+    "staffing": false
+   },
+   {
+    "a": "16980",
+    "b": "47900",
+    "distance_km": 935,
+    "weight": 4347,
+    "top_employer": "EY",
+    "top_share": 0.083,
+    "staffing": false
+   },
+   {
+    "a": "16980",
+    "b": "18140",
+    "distance_km": 466,
+    "weight": 1981,
+    "top_employer": "Cognizant",
+    "top_share": 0.106,
+    "staffing": true
+   },
+   {
+    "a": "16980",
+    "b": "26420",
+    "distance_km": 1490,
+    "weight": 3796,
+    "top_employer": "EY",
+    "top_share": 0.093,
+    "staffing": false
+   },
+   {
+    "a": "16980",
+    "b": "26900",
+    "distance_km": 262,
+    "weight": 1126,
+    "top_employer": "Infosys",
+    "top_share": 0.135,
+    "staffing": true
+   },
+   {
+    "a": "16980",
+    "b": "33460",
+    "distance_km": 574,
+    "weight": 2203,
+    "top_employer": "Cognizant",
+    "top_share": 0.14,
+    "staffing": true
+   },
+   {
+    "a": "16980",
+    "b": "39580",
+    "distance_km": 1051,
+    "weight": 3279,
+    "top_employer": "Cognizant",
+    "top_share": 0.1,
+    "staffing": true
+   },
+   {
+    "a": "16980",
+    "b": "45300",
+    "distance_km": 1591,
+    "weight": 2137,
+    "top_employer": "Tata Consultancy",
+    "top_share": 0.079,
+    "staffing": true
+   },
+   {
+    "a": "16980",
+    "b": "41700",
+    "distance_km": 1678,
+    "weight": 1251,
+    "top_employer": "Tata Consultancy",
+    "top_share": 0.181,
+    "staffing": true
+   },
+   {
+    "a": "16980",
+    "b": "16740",
+    "distance_km": 955,
+    "weight": 4169,
+    "top_employer": "Cognizant",
+    "top_share": 0.145,
+    "staffing": true
+   },
+   {
+    "a": "16980",
+    "b": "17140",
+    "distance_km": 413,
+    "weight": 1603,
+    "top_employer": "Tata Consultancy",
+    "top_share": 0.146,
+    "staffing": true
+   },
+   {
+    "a": "12420",
+    "b": "36740",
+    "distance_km": 1591,
+    "weight": 1310,
+    "top_employer": "Deloitte",
+    "top_share": 0.195,
+    "staffing": false
+   },
+   {
+    "a": "12420",
+    "b": "41740",
+    "distance_km": 1834,
+    "weight": 2259,
+    "top_employer": "Apple",
+    "top_share": 0.24,
+    "staffing": false
+   },
+   {
+    "a": "12420",
+    "b": "16740",
+    "distance_km": 1666,
+    "weight": 3985,
+    "top_employer": "Cognizant",
+    "top_share": 0.064,
+    "staffing": true
+   },
+   {
+    "a": "12420",
+    "b": "31080",
+    "distance_km": 1976,
+    "weight": 4311,
+    "top_employer": "Amazon Com",
+    "top_share": 0.108,
+    "staffing": false
+   },
+   {
+    "a": "12420",
+    "b": "37980",
+    "distance_km": 2289,
+    "weight": 3841,
+    "top_employer": "Cognizant",
+    "top_share": 0.067,
+    "staffing": true
+   },
+   {
+    "a": "12420",
+    "b": "47900",
+    "distance_km": 2071,
+    "weight": 5141,
+    "top_employer": "Amazon Com",
+    "top_share": 0.135,
+    "staffing": false
+   },
+   {
+    "a": "12420",
+    "b": "44700",
+    "distance_km": 2329,
+    "weight": 1356,
+    "top_employer": "Tesla",
+    "top_share": 0.069,
+    "staffing": false
+   },
+   {
+    "a": "12420",
+    "b": "26420",
+    "distance_km": 228,
+    "weight": 3797,
+    "top_employer": "Infosys",
+    "top_share": 0.065,
+    "staffing": true
+   },
+   {
+    "a": "12420",
+    "b": "33460",
+    "distance_km": 1695,
+    "weight": 2122,
+    "top_employer": "Cognizant",
+    "top_share": 0.121,
+    "staffing": true
+   },
+   {
+    "a": "12420",
+    "b": "38060",
+    "distance_km": 1401,
+    "weight": 3751,
+    "top_employer": "Cognizant",
+    "top_share": 0.068,
+    "staffing": true
+   },
+   {
+    "a": "12420",
+    "b": "39580",
+    "distance_km": 1888,
+    "weight": 3767,
+    "top_employer": "Cognizant",
+    "top_share": 0.068,
+    "staffing": true
+   },
+   {
+    "a": "12420",
+    "b": "41180",
+    "distance_km": 1156,
+    "weight": 1558,
+    "top_employer": "Cognizant",
+    "top_share": 0.092,
+    "staffing": true
+   },
+   {
+    "a": "12420",
+    "b": "19820",
+    "distance_km": 1890,
+    "weight": 2273,
+    "top_employer": "Cognizant",
+    "top_share": 0.087,
+    "staffing": true
+   },
+   {
+    "a": "12420",
+    "b": "38900",
+    "distance_km": 2748,
+    "weight": 1693,
+    "top_employer": "Intel",
+    "top_share": 0.131,
+    "staffing": false
+   },
+   {
+    "a": "12420",
+    "b": "41700",
+    "distance_km": 130,
+    "weight": 1364,
+    "top_employer": "Tata Consultancy",
+    "top_share": 0.166,
+    "staffing": true
+   },
+   {
+    "a": "12420",
+    "b": "34980",
+    "distance_km": 1206,
+    "weight": 1554,
+    "top_employer": "Amazon Com",
+    "top_share": 0.183,
+    "staffing": false
+   },
+   {
+    "a": "12420",
+    "b": "40900",
+    "distance_km": 2332,
+    "weight": 1301,
+    "top_employer": "Intel",
+    "top_share": 0.17,
+    "staffing": false
+   },
+   {
+    "a": "12420",
+    "b": "19740",
+    "distance_km": 1216,
+    "weight": 2041,
+    "top_employer": "Cognizant",
+    "top_share": 0.067,
+    "staffing": true
+   },
+   {
+    "a": "47900",
+    "b": "26420",
+    "distance_km": 1917,
+    "weight": 3111,
+    "top_employer": "EY",
+    "top_share": 0.113,
+    "staffing": false
+   },
+   {
+    "a": "47900",
+    "b": "12580",
+    "distance_km": 97,
+    "weight": 1531,
+    "top_employer": "Cognizant",
+    "top_share": 0.051,
+    "staffing": true
+   },
+   {
+    "a": "47900",
+    "b": "31080",
+    "distance_km": 3646,
+    "weight": 3734,
+    "top_employer": "Amazon Com",
+    "top_share": 0.125,
+    "staffing": false
+   },
+   {
+    "a": "47900",
+    "b": "40060",
+    "distance_km": 158,
+    "weight": 1374,
+    "top_employer": "Capital One",
+    "top_share": 0.126,
+    "staffing": false
+   },
+   {
+    "a": "31080",
+    "b": "41740",
+    "distance_km": 178,
+    "weight": 1659,
+    "top_employer": "Amazon Com",
+    "top_share": 0.117,
+    "staffing": false
+   },
+   {
+    "a": "37980",
+    "b": "18140",
+    "distance_km": 641,
+    "weight": 2088,
+    "top_employer": "JPMorgan Chase",
+    "top_share": 0.189,
+    "staffing": false
+   },
+   {
+    "a": "37980",
+    "b": "45940",
+    "distance_km": 67,
+    "weight": 1496,
+    "top_employer": "Compunnel Software",
+    "top_share": 0.072,
+    "staffing": true
+   },
+   {
+    "a": "37980",
+    "b": "16740",
+    "distance_km": 714,
+    "weight": 3535,
+    "top_employer": "Cognizant",
+    "top_share": 0.085,
+    "staffing": true
+   },
+   {
+    "a": "16740",
+    "b": "39580",
+    "distance_km": 222,
+    "weight": 3241,
+    "top_employer": "Cognizant",
+    "top_share": 0.102,
+    "staffing": true
+   },
+   {
+    "a": "38060",
+    "b": "38900",
+    "distance_km": 1642,
+    "weight": 1317,
+    "top_employer": "Intel",
+    "top_share": 0.255,
+    "staffing": false
+   },
+   {
+    "a": "39580",
+    "b": "20500",
+    "distance_km": 63,
+    "weight": 2363,
+    "top_employer": "Fidelity Technology Group Llc",
+    "top_share": 0.259,
+    "staffing": false
+   }
+  ],
+  "employer_arcs": {
+   "Tata Consultancy": [
+    [
+     "19100",
+     "35620"
+    ],
+    [
+     "12060",
+     "19100"
+    ],
+    [
+     "12060",
+     "35620"
+    ],
+    [
+     "12060",
+     "16980"
+    ],
+    [
+     "16980",
+     "19100"
+    ],
+    [
+     "16980",
+     "35620"
+    ]
+   ],
+   "Cognizant": [
+    [
+     "19100",
+     "35620"
+    ],
+    [
+     "16980",
+     "19100"
+    ],
+    [
+     "16980",
+     "35620"
+    ],
+    [
+     "16740",
+     "16980"
+    ],
+    [
+     "16740",
+     "19100"
+    ],
+    [
+     "16740",
+     "35620"
+    ]
+   ],
+   "Infosys": [
+    [
+     "19100",
+     "35620"
+    ],
+    [
+     "19100",
+     "39580"
+    ],
+    [
+     "35620",
+     "39580"
+    ],
+    [
+     "12060",
+     "19100"
+    ],
+    [
+     "12060",
+     "35620"
+    ],
+    [
+     "12060",
+     "39580"
+    ]
+   ],
+   "HCL": [
+    [
+     "19100",
+     "41700"
+    ],
+    [
+     "19100",
+     "35620"
+    ],
+    [
+     "35620",
+     "41700"
+    ],
+    [
+     "19100",
+     "41940"
+    ],
+    [
+     "35620",
+     "41940"
+    ],
+    [
+     "41700",
+     "41940"
+    ]
+   ],
+   "Compunnel Software": [
+    [
+     "19100",
+     "35620"
+    ],
+    [
+     "19100",
+     "45940"
+    ],
+    [
+     "35620",
+     "45940"
+    ],
+    [
+     "12060",
+     "19100"
+    ],
+    [
+     "12060",
+     "35620"
+    ],
+    [
+     "12060",
+     "45940"
+    ]
+   ]
+  }
+ }
 }
