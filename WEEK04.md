@@ -81,8 +81,8 @@ every row keeps its `SOURCE_FILE`. FY2026 is the latest release (7 August 2026) 
 Layout differences the loader already handles:
 
 - **No employer tax number before FY2024.** `EMPLOYER_FEIN` is missing from the H-1B files for FY2022
-  and FY2023, and `EMP_FEIN` from green-card files for FY2022 and FY2023. Match employers by name for
-  those years.
+  and FY2023, and `EMP_FEIN` from green-card files for FY2022 and FY2023. Use the name keys below,
+  which work in every year.
 - **The green-card form changed in FY2024.** FY2022 to FY2024 use the old form; the loader renames its
   columns to the new form's names, and FY2024 joins both files.
 - **Repeated cases.** A few cases appear in two quarterly files; the loader keeps the latest row. The
@@ -93,13 +93,17 @@ Layout differences the loader already handles:
 - **Never commit a raw workbook or anything under `build/`.** The files hold names, emails and phone
   numbers of employer contacts and lawyers, and some worksite addresses are workers' homes. The loader
   refuses those columns; do not add them back.
-- **Identify employers by `EMPLOYER_FEIN`** (the tax number, on every row). Only section 3 needs to clean
-  names, because clients have no tax number.
+- **Identify companies with `analysis/week04_names.py`**: `employer(EMPLOYER_NAME)` for the filing firm,
+  `client(SECONDARY_ENTITY_BUSINESS_NAME)` for a client. Both return the company family, so "Citibank,
+  N.A." and "CITIGROUP TECHNOLOGY" are one key, a firm keeps its key in years without a tax number, and
+  a company has the same key as employer and as client. The families and their sectors live in
+  `analysis/week04_client_aliases.csv` (509 spellings, 378 companies); add to it rather than to your
+  own script.
 - **Certified H-1B only** unless a section says otherwise: `CASE_STATUS` starts with "Certified" and
   `VISA_CLASS` is "H-1B".
 - **Say it once per section:** this is visa-sponsored hiring, not all hiring, and outsourcing firms
   dominate the placements. In FY2025 the largest by filings that place workers at a client were Tata
-  Consultancy Services (7,221), Cognizant (5,044), Infosys (3,762), HCL America (2,525) and Compunnel
+  Consultancy Services (7,220), Cognizant (5,044), Infosys (3,762), HCL America (2,560) and Compunnel
   (2,237). By requested positions the largest is Grandison Management (57,800), which asks for 40
   physical or occupational therapists on every filing: weight by filings, not positions.
 
@@ -141,7 +145,7 @@ All checked on 23 September 2026.
 
 | Source | Use | Access |
 | --- | --- | --- |
-| [DOL OFLC performance data](https://www.dol.gov/agencies/eta/foreign-labor/performance): LCA disclosure FY2024 and FY2025, LCA worksites FY2025, PERM FY2025 | All three sections | Public domain. dol.gov serves a plain client and blocks a spoofed browser User-Agent |
+| [DOL OFLC performance data](https://www.dol.gov/agencies/eta/foreign-labor/performance): LCA disclosure (quarterly), LCA worksites and PERM, FY2022 to FY2026 Q3 | All three sections | Public domain. dol.gov serves a plain client and blocks a spoofed browser User-Agent |
 | [LCA record layout FY2025](https://www.dol.gov/sites/dolgov/files/ETA/oflc/pdfs/LCA_Record_Layout_FY2025_Q4.pdf) | What each column means | Public |
 | [Census CBSA delineation, July 2023](https://www.census.gov/geographies/reference-files/time-series/demo/metro-micro/delineation-files.html) | County → metro area (section 1) | Public; header on row 3 |
 | [Census regions and divisions](https://www2.census.gov/geo/pdfs/maps-data/maps/reference/us_regdiv.pdf) | Labels for NMI (section 1) | Public |
