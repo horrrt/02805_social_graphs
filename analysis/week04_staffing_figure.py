@@ -12,7 +12,7 @@ import json
 from pathlib import Path
 
 import week04_names as names
-from week04_staffing import MIN_FILINGS, certified, employer_labels, placements
+from week04_staffing import MIN_FILINGS, certified, employer_labels, placements, resolver
 
 OUT = Path(__file__).resolve().parents[1] / "docs/weeks/week04/data/staffing_clients.json"
 YEARS = [2022, 2023, 2024, 2025, 2026]
@@ -42,7 +42,7 @@ def main():
             vendors = pairs[pairs["client"] == client].sort_values("filings", ascending=False)
             top = vendors.head(TOP_VENDORS)
             clients.append({
-                "name": client,
+                "name": resolver().label(client),
                 "sector": names.naics2(client),
                 "filings": int(totals[client]),
                 "vendors": int(len(vendors)),

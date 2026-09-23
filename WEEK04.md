@@ -93,17 +93,32 @@ Layout differences the loader already handles:
 - **Never commit a raw workbook or anything under `build/`.** The files hold names, emails and phone
   numbers of employer contacts and lawyers, and some worksite addresses are workers' homes. The loader
   refuses those columns; do not add them back.
-- **Identify companies with `analysis/week04_names.py`**: `employer(EMPLOYER_NAME)` for the filing firm,
-  `client(SECONDARY_ENTITY_BUSINESS_NAME)` for a client. Both return the company family, so "Citibank,
-  N.A." and "CITIGROUP TECHNOLOGY" are one key, a firm keeps its key in years without a tax number, and
-  a company has the same key as employer and as client. The families and their sectors live in
-  `analysis/week04_client_aliases.csv` (509 spellings, 378 companies); add to it rather than to your
-  own script.
+- **Identify companies with `week04_names.Resolver`** (built once as `week04_staffing.resolver()`):
+  `resolver().employer(EMPLOYER_NAME, EMPLOYER_FEIN)` for the filing firm, `resolver().client(name)` for
+  a client, `resolver().label(key)` to display either. An employer is its tax number (FY2022 and FY2023
+  borrow it from the same name in later years); a client takes an employer's tax number when the names
+  match exactly. Merges beyond a tax number are written down: company families in
+  `analysis/week04_client_aliases.csv`, misspellings in `analysis/week04_name_merges.csv`. The rule for
+  "same company" is at the top of the CSV. Add to those files rather than to your own script.
+- **Run `python analysis/week04_names_check.py` after changing either file.** It scores the rules
+  against tax numbers and fails if a known pair merges or splits wrongly
+  (`analysis/week04_names_check.json`).
+- **Sectors come from two tables.** `week04_names.naics2(key)` returns the reviewed sector in the alias
+  CSV, else the SEC's: `python analysis/week04_sec.py` matches our companies with 5+ filings to the SEC's
+  list of listed companies by exact name key, takes each one's SIC code and converts it to a NAICS
+  sector (`analysis/week04_sec_sectors.csv`, 1,640 companies). A name the SEC spells differently stays
+  unlabelled.
+- **Approvals come from USCIS.** `week04_data.py --refs` also fetches the USCIS H-1B Employer Data Hub
+  for FY2022 (complete) and FY2023 (partial) into `build/week04/uscis_fy{year}.csv.gz`. The hub gives
+  only the last four digits of the tax number and abbreviates names ("SVCS"), so
+  `week04_staffing.uscis_outcomes()` matches on those four digits plus a fuzzy name score of 85. In
+  FY2022, firms that place most of their filings at clients had 2.75% of first-time petitions denied,
+  against 1.28% for firms that hire directly.
 - **Certified H-1B only** unless a section says otherwise: `CASE_STATUS` starts with "Certified" and
   `VISA_CLASS` is "H-1B".
 - **Say it once per section:** this is visa-sponsored hiring, not all hiring, and outsourcing firms
   dominate the placements. In FY2025 the largest by filings that place workers at a client were Tata
-  Consultancy Services (7,220), Cognizant (5,044), Infosys (3,762), HCL America (2,560) and Compunnel
+  Consultancy Services (7,221), Cognizant (5,044), Infosys (3,762), HCL (2,561) and Compunnel
   (2,237). By requested positions the largest is Grandison Management (57,800), which asks for 40
   physical or occupational therapists on every filing: weight by filings, not positions.
 
@@ -150,7 +165,8 @@ All checked on 23 September 2026.
 | [Census CBSA delineation, July 2023](https://www.census.gov/geographies/reference-files/time-series/demo/metro-micro/delineation-files.html) | County → metro area (section 1) | Public; header on row 3 |
 | [Census regions and divisions](https://www2.census.gov/geo/pdfs/maps-data/maps/reference/us_regdiv.pdf) | Labels for NMI (section 1) | Public |
 | [BLS 2018 SOC structure](https://www.bls.gov/soc/2018/soc_structure_2018.xlsx) | Occupation groups (section 2) | Public; User-Agent must name a contact |
-| [USCIS H-1B Employer Data Hub](https://www.uscis.gov/tools/reports-and-studies/h-1b-employer-data-hub) | Approvals per employer, optional attributes | Public |
+| [USCIS H-1B Employer Data Hub](https://www.uscis.gov/tools/reports-and-studies/h-1b-employer-data-hub) | Approvals and denials per employer, FY2022 and FY2023 (section 3) | Public |
+| [SEC company tickers](https://www.sec.gov/files/company_tickers.json) and [submissions API](https://www.sec.gov/search-filings/edgar-application-programming-interfaces) | SIC industry of listed companies (sectors, section 3) | Public; www.sec.gov needs a contact User-Agent, data.sec.gov does not |
 
 Traps found so far:
 

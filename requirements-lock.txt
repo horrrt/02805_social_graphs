@@ -83,6 +83,7 @@ pyparsing==3.3.2
 python-calamine==0.8.2
 python-dateutil==2.9.0.post0
 python-json-logger==4.2.0
+RapidFuzz==3.14.6
 PyYAML==6.0.3
 pyzmq==27.2.0
 referencing==0.37.0

@@ -543,7 +543,7 @@ export async function startPlace(echarts) {
         },
         label: {
           show: tied && e.distance_km >= 1500,
-          formatter: e.top_employer === "Local mix" ? "" : e.top_employer,
+          formatter: e.top_employer === "Other lead employer" ? "" : e.top_employer,
           position: "top",
           color: MUTE,
           fontSize: 10,
@@ -565,7 +565,7 @@ export async function startPlace(echarts) {
         textStyle: { color: MUTE, fontSize: 11, fontWeight: 600 },
         data: [
           { name: "Staffing shortlist", itemStyle: { color: ORANGE } },
-          { name: "Local mix", itemStyle: { color: BLUE } },
+          { name: "Other lead employer", itemStyle: { color: BLUE } },
         ],
       },
       grid: { left: 58, right: 24, top: 40, bottom: 52 },
@@ -592,7 +592,7 @@ export async function startPlace(echarts) {
           emphasis: { scale: 1.2, focus: "series" },
         },
         {
-          name: "Local mix",
+          name: "Other lead employer",
           type: "scatter",
           data: local,
           emphasis: { scale: 1.2, focus: "series" },
@@ -605,7 +605,7 @@ export async function startPlace(echarts) {
             ["Distance", `${fmt(p.value[0])} km`],
             ["Weight", fmt(p.value[1])],
             ["Top employer", p.data.employer],
-            ["Type", p.data.staffing ? "Staffing shortlist" : "Local mix"],
+            ["Type", p.data.staffing ? "Staffing shortlist" : "Other lead employer"],
           ]),
       },
     });

@@ -12,88 +12,88 @@
    "placed_positions": 239978,
    "placed_positions_share": 0.2288,
    "client_rows": 173052,
-   "placeholder_client_rows": 26103,
-   "placeholder_share": 0.1508,
-   "edges": 58531,
-   "employer_keys": 52189,
+   "placeholder_client_rows": 26108,
+   "placeholder_share": 0.1509,
+   "edges": 58467,
+   "employer_keys": 52423,
    "employer_tax_numbers": null,
-   "placements_to_intermediaries": 4282,
-   "intermediary_share": 0.0311,
+   "placements_to_intermediaries": 3626,
+   "intermediary_share": 0.0263,
    "top_intermediary_clients": {
     "Deloitte": 442,
-    "Miracle Software Systems": 181,
+    "Miracle Software Systems": 182,
     "Visionet Systems": 158,
-    "EY": 152,
+    "EY": 138,
     "Orion Systems Integrators": 123,
-    "IBM": 117
+    "Arista Networks": 113
    },
-   "firms": 7939,
-   "clients": 21841,
+   "firms": 8083,
+   "clients": 21806,
    "top_firms_by_filings": [
     [
-     "TATA CONSULTANCY SERVICES LIMITED",
+     "Tata Consultancy Services",
      8964
     ],
     [
-     "COGNIZANT TECHNOLOGY SOLUTIONS US CORP",
+     "Cognizant",
      6108
     ],
     [
-     "INFOSYS LIMITED",
+     "Infosys",
      5148
     ],
     [
-     "HCL AMERICA, INC.",
+     "HCL",
      2718
     ],
     [
-     "COMPUNNEL SOFTWARE GROUP, INC",
+     "Compunnel Software",
      2249
     ],
     [
-     "Accenture LLP",
+     "Accenture",
      2144
     ],
     [
-     "WIPRO LIMITED",
-     1845
+     "IBM",
+     2013
     ],
     [
-     "Larsen & Toubro Infotech Limited ",
-     1748
+     "Wipro",
+     1845
     ]
    ],
    "top_firms_by_positions": [
     [
-     "INFOSYS LIMITED",
+     "Infosys",
      70811
     ],
     [
-     "Grandison Management, Inc.",
+     "Grandison Management",
      19920
     ],
     [
-     "TATA CONSULTANCY SERVICES LIMITED",
+     "Tata Consultancy Services",
      9529
     ],
     [
-     "WIPRO LIMITED",
+     "Wipro",
      8395
     ],
     [
-     "KFORCE INC. ",
+     "Kforce",
      8210
     ],
     [
-     "COGNIZANT TECHNOLOGY SOLUTIONS US CORP",
+     "Cognizant",
      6108
     ],
     [
-     "Mastech Digital Technologies, Inc.",
-     5778
+     "Mastech Digital Technologies",
+     5658
     ],
     [
-     "HCL AMERICA, INC.",
+     "HCL",
      2718
     ]
    ],
@@ -117,88 +117,88 @@
    "placed_positions": 177455,
    "placed_positions_share": 0.1902,
    "client_rows": 153044,
-   "placeholder_client_rows": 26140,
+   "placeholder_client_rows": 26142,
    "placeholder_share": 0.1708,
-   "edges": 50748,
-   "employer_keys": 50861,
+   "edges": 50541,
+   "employer_keys": 51010,
    "employer_tax_numbers": null,
-   "placements_to_intermediaries": 2855,
-   "intermediary_share": 0.0239,
+   "placements_to_intermediaries": 2477,
+   "intermediary_share": 0.0207,
    "top_intermediary_clients": {
     "Deloitte": 420,
     "Miracle Software Systems": 151,
     "EY": 113,
-    "IBM": 90,
-    "Infosys": 72,
-    "Orion Systems Integrators": 71
+    "Dana-Farber Cancer Institute": 75,
+    "Orion Systems Integrators": 71,
+    "Infosys": 69
    },
-   "firms": 8045,
-   "clients": 20458,
+   "firms": 8174,
+   "clients": 20320,
    "top_firms_by_filings": [
     [
-     "COGNIZANT TECHNOLOGY SOLUTIONS US CORP",
+     "Cognizant",
      7232
     ],
     [
-     "TATA CONSULTANCY SERVICES LIMITED",
+     "Tata Consultancy Services",
      6879
     ],
     [
-     "INFOSYS LIMITED",
+     "Infosys",
      5370
     ],
     [
-     "HCL AMERICA INC",
+     "HCL",
      2632
     ],
     [
-     "Accenture LLP",
+     "Accenture",
      2430
     ],
     [
-     "WIPRO LIMITED",
+     "Wipro",
      2295
     ],
     [
-     "LTIMINDTREE Limited",
-     1962
+     "LTIMindtree",
+     2174
     ],
     [
-     "COMPUNNEL SOFTWARE GROUP, INC",
+     "Compunnel Software",
      1907
     ]
    ],
    "top_firms_by_positions": [
     [
-     "INFOSYS LIMITED",
+     "Infosys",
      27490
     ],
     [
-     "Grandison Management, Inc.",
+     "Grandison Management",
      17600
     ],
     [
-     "WIPRO LIMITED",
+     "Wipro",
      9816
     ],
     [
-     "COGNIZANT TECHNOLOGY SOLUTIONS US CORP",
+     "Cognizant",
      7232
     ],
     [
-     "KFORCE INC. ",
+     "Kforce",
      7150
     ],
     [
-     "TATA CONSULTANCY SERVICES LIMITED",
+     "Tata Consultancy Services",
      6899
     ],
     [
-     "Mastech Digital Technologies, Inc.",
-     3294
+     "Mastech Digital Technologies",
+     3210
     ],
     [
-     "HCL AMERICA INC",
+     "HCL",
      2632
     ]
    ],
@@ -224,86 +224,86 @@
    "client_rows": 148878,
    "placeholder_client_rows": 25518,
    "placeholder_share": 0.1714,
-   "edges": 47876,
-   "employer_keys": 55038,
+   "edges": 47695,
+   "employer_keys": 54771,
    "employer_tax_numbers": 54840,
-   "placements_to_intermediaries": 3568,
-   "intermediary_share": 0.0305,
+   "placements_to_intermediaries": 3022,
+   "intermediary_share": 0.0258,
    "top_intermediary_clients": {
-    "Deloitte": 511,
+    "Deloitte": 510,
     "HCL": 434,
     "People Tech Group": 304,
     "Miracle Software Systems": 117,
     "EY": 96,
-    "Dana-Farber Cancer Institute": 92
+    "Dana-Farber Cancer Institute": 93
    },
-   "firms": 8330,
-   "clients": 20149,
+   "firms": 8433,
+   "clients": 20074,
    "top_firms_by_filings": [
     [
-     "TATA CONSULTANCY SERVICES LIMITED",
+     "Tata Consultancy Services",
      8768
     ],
     [
-     "COGNIZANT TECHNOLOGY SOLUTIONS US CORP",
+     "Cognizant",
      5606
     ],
     [
-     "INFOSYS LIMITED",
+     "Infosys",
      3919
     ],
     [
-     "HCL AMERICA INC",
-     3285
+     "HCL",
+     3286
     ],
     [
-     "Accenture LLP",
+     "Accenture",
      2414
     ],
     [
-     "LTIMindtree Limited",
-     2303
+     "LTIMindtree",
+     2304
     ],
     [
-     "IBM Corporation",
-     1881
+     "IBM",
+     1946
     ],
     [
-     "WIPRO LIMITED",
+     "Wipro",
      1697
     ]
    ],
    "top_firms_by_positions": [
     [
-     "Grandison Management, Inc.",
+     "Grandison Management",
      19400
     ],
     [
-     "INFOSYS LIMITED",
+     "Infosys",
      11321
     ],
     [
-     "TATA CONSULTANCY SERVICES LIMITED",
+     "Tata Consultancy Services",
      9039
     ],
     [
-     "KFORCE INC. ",
+     "Kforce",
      6440
     ],
     [
-     "COGNIZANT TECHNOLOGY SOLUTIONS US CORP",
+     "Cognizant",
      5606
     ],
     [
-     "WIPRO LIMITED",
+     "Wipro",
      4839
     ],
     [
-     "HCL AMERICA INC",
-     3285
+     "HCL",
+     3286
     ],
     [
-     "RANDSTAD DIGITAL, LLC",
+     "Randstad",
      2514
     ]
    ],
@@ -327,89 +327,89 @@
    "placed_positions": 197282,
    "placed_positions_share": 0.2159,
    "client_rows": 145572,
-   "placeholder_client_rows": 23654,
+   "placeholder_client_rows": 23655,
    "placeholder_share": 0.1625,
-   "edges": 47706,
-   "employer_keys": 61231,
+   "edges": 47518,
+   "employer_keys": 60974,
    "employer_tax_numbers": 61036,
-   "placements_to_intermediaries": 3273,
-   "intermediary_share": 0.0284,
+   "placements_to_intermediaries": 2939,
+   "intermediary_share": 0.0255,
    "top_intermediary_clients": {
-    "Deloitte": 476,
-    "HCL": 452,
+    "Deloitte": 475,
+    "HCL": 453,
     "People Tech Group": 177,
     "Veenus Infotechs": 115,
     "Cognizant": 112,
     "Dana-Farber Cancer Institute": 95
    },
-   "firms": 8674,
-   "clients": 20208,
+   "firms": 8772,
+   "clients": 20083,
    "top_firms_by_filings": [
     [
-     "TATA CONSULTANCY SERVICES LIMITED",
-     7220
+     "Tata Consultancy Services",
+     7221
     ],
     [
-     "COGNIZANT TECHNOLOGY SOLUTIONS US CORP",
+     "Cognizant",
      5044
     ],
     [
-     "INFOSYS LIMITED",
+     "Infosys",
      3762
     ],
     [
-     "HCL AMERICA INC",
-     2560
+     "HCL",
+     2561
     ],
     [
-     "COMPUNNEL SOFTWARE GROUP, INC",
+     "Compunnel Software",
      2237
     ],
     [
-     "LTIMindtree Limited",
-     2140
+     "LTIMindtree",
+     2141
     ],
     [
-     "Accenture LLP",
+     "Accenture",
      1974
     ],
     [
-     "IBM Corporation",
-     1743
+     "IBM",
+     1755
     ]
    ],
    "top_firms_by_positions": [
     [
-     "Grandison Management, Inc.",
+     "Grandison Management",
      57800
     ],
     [
-     "INFOSYS LIMITED",
+     "Infosys",
      11490
     ],
     [
-     "KFORCE INC. ",
+     "Kforce",
      7710
     ],
     [
-     "TATA CONSULTANCY SERVICES LIMITED",
-     7564
+     "Tata Consultancy Services",
+     7565
     ],
     [
-     "CGI Technologies and Solutions Inc.",
+     "CGI Technologies and Solutions",
      5228
     ],
     [
-     "COGNIZANT TECHNOLOGY SOLUTIONS US CORP",
+     "Cognizant",
      5219
     ],
     [
-     "WIPRO LIMITED",
+     "Wipro",
      4652
     ],
     [
-     "LTIMindtree Limited",
-     3004
+     "LTIMindtree",
+     3005
     ]
    ],
    "grandison": {
@@ -434,86 +434,86 @@
    "client_rows": 68234,
    "placeholder_client_rows": 10896,
    "placeholder_share": 0.1597,
-   "edges": 28730,
-   "employer_keys": 51829,
+   "edges": 28643,
+   "employer_keys": 51703,
    "employer_tax_numbers": 51763,
-   "placements_to_intermediaries": 1304,
-   "intermediary_share": 0.0237,
+   "placements_to_intermediaries": 1113,
+   "intermediary_share": 0.0202,
    "top_intermediary_clients": {
-    "Deloitte": 312,
-    "IBM": 74,
-    "WEST VIRGINIA UNIVERSITY": 69,
-    "Cognizant": 62,
+    "Deloitte": 310,
+    "West Virginia University": 69,
     "Dana-Farber Cancer Institute": 59,
-    "Miracle Software Systems": 47
+    "Cognizant": 57,
+    "Miracle Software Systems": 47,
+    "Infosys": 45
    },
-   "firms": 6752,
-   "clients": 12751,
+   "firms": 6828,
+   "clients": 12710,
    "top_firms_by_filings": [
     [
-     "INFOSYS LIMITED",
+     "Infosys",
      2984
     ],
     [
-     "TATA CONSULTANCY SERVICES LIMITED",
-     2623
+     "Tata Consultancy Services",
+     2624
     ],
     [
-     "COGNIZANT TECHNOLOGY SOLUTIONS US CORP",
+     "Cognizant",
      2160
     ],
     [
-     "Grandison Management, Inc.",
+     "Grandison Management",
      1978
     ],
     [
-     "COMPUNNEL SOFTWARE GROUP, INC",
+     "Compunnel Software",
      1916
     ],
     [
-     "WIPRO LIMITED",
+     "Wipro",
      1236
     ],
     [
-     "HCL AMERICA INC",
+     "HCL",
      991
     ],
     [
-     "Ernst & Young U.S. LLP",
+     "EY",
      974
     ]
    ],
    "top_firms_by_positions": [
     [
-     "Grandison Management, Inc.",
+     "Grandison Management",
      79120
     ],
     [
-     "CGI Technologies and Solutions Inc.",
+     "CGI Technologies and Solutions",
      10885
     ],
     [
-     "INFOSYS LIMITED",
+     "Infosys",
      6160
     ],
     [
-     "KFORCE INC. ",
+     "Kforce",
      5730
     ],
     [
-     "TATA CONSULTANCY SERVICES LIMITED",
-     2623
+     "Tata Consultancy Services",
+     2624
     ],
     [
-     "COGNIZANT TECHNOLOGY SOLUTIONS US CORP",
+     "Cognizant",
      2160
     ],
     [
-     "COMPUNNEL SOFTWARE GROUP, INC",
+     "Compunnel Software",
      1916
     ],
     [
-     "RANDSTAD DIGITAL, LLC",
+     "Randstad",
      1683
     ]
    ],
@@ -529,52 +529,157 @@
    }
   }
  },
+ "uscis": {
+  "year": 2022,
+  "hub_employers": 59983,
+  "hub_initial_approvals": 138381,
+  "matched_share_of_initial_approvals": 0.8823,
+  "matched_to_a_filer_share_of_initial_approvals": 0.8448,
+  "placing": {
+   "employers": 1095,
+   "certified_filings": 104936,
+   "initial_approvals": 24860,
+   "initial_denial_rate": 0.0275,
+   "continuing_denial_rate": 0.0233,
+   "approvals_per_filing": 0.674
+  },
+  "direct": {
+   "employers": 2450,
+   "certified_filings": 304188,
+   "initial_approvals": 61571,
+   "initial_denial_rate": 0.0128,
+   "continuing_denial_rate": 0.0145,
+   "approvals_per_filing": 0.812
+  },
+  "top_placing_firms": [
+   {
+    "firm": "Tata Consultancy Services",
+    "placed_filings": 8964,
+    "certified_filings": 11118,
+    "initial_approvals": 2725,
+    "continuing_approvals": 7251,
+    "initial_denial_rate": 0.0306
+   },
+   {
+    "firm": "Infosys",
+    "placed_filings": 5148,
+    "certified_filings": 7633,
+    "initial_approvals": 3128,
+    "continuing_approvals": 3987,
+    "initial_denial_rate": 0.0157
+   },
+   {
+    "firm": "HCL",
+    "placed_filings": 2718,
+    "certified_filings": 4036,
+    "initial_approvals": 1260,
+    "continuing_approvals": 1881,
+    "initial_denial_rate": 0.036
+   },
+   {
+    "firm": "Compunnel Software",
+    "placed_filings": 2249,
+    "certified_filings": 2281,
+    "initial_approvals": 106,
+    "continuing_approvals": 1207,
+    "initial_denial_rate": 0.0536
+   },
+   {
+    "firm": "Accenture",
+    "placed_filings": 2144,
+    "certified_filings": 2979,
+    "initial_approvals": 1097,
+    "continuing_approvals": 1136,
+    "initial_denial_rate": 0.0054
+   },
+   {
+    "firm": "IBM",
+    "placed_filings": 2013,
+    "certified_filings": 3848,
+    "initial_approvals": 1238,
+    "continuing_approvals": 1835,
+    "initial_denial_rate": 0.0151
+   },
+   {
+    "firm": "Wipro",
+    "placed_filings": 1845,
+    "certified_filings": 2413,
+    "initial_approvals": 1152,
+    "continuing_approvals": 1119,
+    "initial_denial_rate": 0.0221
+   },
+   {
+    "firm": "LTIMindtree",
+    "placed_filings": 1748,
+    "certified_filings": 1835,
+    "initial_approvals": 230,
+    "continuing_approvals": 1120,
+    "initial_denial_rate": 0.0295
+   },
+   {
+    "firm": "Tekorg",
+    "placed_filings": 1621,
+    "certified_filings": 2209,
+    "initial_approvals": 4,
+    "continuing_approvals": 8,
+    "initial_denial_rate": 0.3333
+   },
+   {
+    "firm": "Tech Mahindra",
+    "placed_filings": 1111,
+    "certified_filings": 1618,
+    "initial_approvals": 499,
+    "continuing_approvals": 679,
+    "initial_denial_rate": 0.0348
+   }
+  ]
+ },
  "main": {
   "year": 2025,
-  "clients": 20208,
-  "single_vendor_clients": 15634,
-  "single_vendor_filing_share": 0.2245,
-  "big_clients": 680,
-  "big_clients_over_90pct_one_vendor": 91,
-  "big_clients_median_top_vendor_share": 0.3838,
+  "clients": 20083,
+  "single_vendor_clients": 15624,
+  "single_vendor_filing_share": 0.2294,
+  "big_clients": 674,
+  "big_clients_over_90pct_one_vendor": 90,
+  "big_clients_median_top_vendor_share": 0.3764,
   "largest_clients": [
    {
     "client": "Citigroup",
-    "filings": 2186,
+    "filings": 2182,
     "vendors": 114,
-    "top_vendor": "TATA CONSULTANCY SERVICES LIMITED",
-    "top_vendor_share": 0.243,
+    "top_vendor": "Tata Consultancy Services",
+    "top_vendor_share": 0.244,
     "sector": "52"
    },
    {
     "client": "Verizon",
-    "filings": 2010,
-    "vendors": 533,
-    "top_vendor": "COGNIZANT TECHNOLOGY SOLUTIONS US CORP",
+    "filings": 2004,
+    "vendors": 532,
+    "top_vendor": "Cognizant",
     "top_vendor_share": 0.095,
     "sector": "51"
    },
    {
-    "client": "Fidelity Investments",
-    "filings": 1953,
-    "vendors": 252,
-    "top_vendor": "COMPUNNEL SOFTWARE GROUP, INC",
-    "top_vendor_share": 0.253,
-    "sector": "52"
-   },
-   {
     "client": "Bank of America",
     "filings": 1858,
-    "vendors": 49,
-    "top_vendor": "RANDSTAD DIGITAL, LLC",
+    "vendors": 47,
+    "top_vendor": "Randstad",
     "top_vendor_share": 0.181,
     "sector": "52"
    },
    {
+    "client": "Fidelity Investments",
+    "filings": 1791,
+    "vendors": 221,
+    "top_vendor": "Compunnel Software",
+    "top_vendor_share": 0.276,
+    "sector": "52"
+   },
+   {
     "client": "Wells Fargo",
-    "filings": 1636,
-    "vendors": 478,
-    "top_vendor": "Mphasis Corporation",
+    "filings": 1632,
+    "vendors": 479,
+    "top_vendor": "Mphasis",
     "top_vendor_share": 0.063,
     "sector": "52"
    },
@@ -582,63 +687,63 @@
     "client": "American Express",
     "filings": 1300,
     "vendors": 368,
-    "top_vendor": "TATA CONSULTANCY SERVICES LIMITED",
+    "top_vendor": "Tata Consultancy Services",
     "top_vendor_share": 0.105,
     "sector": "52"
    },
    {
+    "client": "JPMorgan Chase",
+    "filings": 1194,
+    "vendors": 380,
+    "top_vendor": "Mphasis",
+    "top_vendor_share": 0.152,
+    "sector": "52"
+   },
+   {
     "client": "Capital One",
-    "filings": 1173,
-    "vendors": 453,
-    "top_vendor": "COMPUNNEL SOFTWARE GROUP, INC",
+    "filings": 1174,
+    "vendors": 456,
+    "top_vendor": "Compunnel Software",
     "top_vendor_share": 0.055,
     "sector": "52"
    },
    {
-    "client": "JPMorgan Chase",
-    "filings": 1166,
-    "vendors": 360,
-    "top_vendor": "Mphasis Corporation",
-    "top_vendor_share": 0.155,
-    "sector": "52"
-   },
-   {
     "client": "USAA",
-    "filings": 1108,
-    "vendors": 241,
-    "top_vendor": "HCL AMERICA INC",
-    "top_vendor_share": 0.29,
+    "filings": 1109,
+    "vendors": 242,
+    "top_vendor": "HCL",
+    "top_vendor_share": 0.289,
     "sector": "52"
    },
    {
     "client": "Apple",
     "filings": 1047,
-    "vendors": 310,
-    "top_vendor": "INFOSYS LIMITED",
+    "vendors": 315,
+    "top_vendor": "Infosys",
     "top_vendor_share": 0.124,
     "sector": "31-33"
    },
    {
     "client": "T-Mobile",
-    "filings": 937,
-    "vendors": 343,
-    "top_vendor": "HCL AMERICA INC",
-    "top_vendor_share": 0.072,
+    "filings": 942,
+    "vendors": 349,
+    "top_vendor": "HCL",
+    "top_vendor_share": 0.068,
     "sector": "51"
    },
    {
     "client": "Walmart",
-    "filings": 903,
-    "vendors": 311,
-    "top_vendor": "COMPUNNEL SOFTWARE GROUP, INC",
+    "filings": 912,
+    "vendors": 313,
+    "top_vendor": "Compunnel Software",
     "top_vendor_share": 0.103,
     "sector": "44-45"
    },
    {
     "client": "AT&T",
-    "filings": 899,
-    "vendors": 317,
-    "top_vendor": "TECH MAHINDRA (AMERICAS), INC",
+    "filings": 896,
+    "vendors": 314,
+    "top_vendor": "Tech Mahindra",
     "top_vendor_share": 0.146,
     "sector": "51"
    },
@@ -646,293 +751,293 @@
     "client": "Renewal Rehab",
     "filings": 762,
     "vendors": 2,
-    "top_vendor": "Grandison Management, Inc.",
+    "top_vendor": "Grandison Management",
     "top_vendor_share": 0.999,
     "sector": "62"
    },
    {
+    "client": "Charles Schwab",
+    "filings": 707,
+    "vendors": 102,
+    "top_vendor": "Mphasis",
+    "top_vendor_share": 0.246,
+    "sector": "52"
+   },
+   {
     "client": "CVS Health",
-    "filings": 714,
-    "vendors": 193,
-    "top_vendor": "COGNIZANT TECHNOLOGY SOLUTIONS US CORP",
-    "top_vendor_share": 0.209,
+    "filings": 698,
+    "vendors": 191,
+    "top_vendor": "Cognizant",
+    "top_vendor_share": 0.213,
     "sector": "44-45"
    },
    {
-    "client": "Charles Schwab",
-    "filings": 707,
-    "vendors": 99,
-    "top_vendor": "Mphasis Corporation",
-    "top_vendor_share": 0.246,
+    "client": "Elevance Health",
+    "filings": 691,
+    "vendors": 148,
+    "top_vendor": "UST Global",
+    "top_vendor_share": 0.291,
     "sector": "52"
    },
    {
     "client": "Ford",
     "filings": 691,
-    "vendors": 98,
-    "top_vendor": "Epitec, Inc.",
+    "vendors": 100,
+    "top_vendor": "Epitec",
     "top_vendor_share": 0.148,
     "sector": "31-33"
    },
    {
-    "client": "Elevance Health",
-    "filings": 688,
-    "vendors": 149,
-    "top_vendor": "UST Global Inc",
-    "top_vendor_share": 0.292,
+    "client": "Freddie Mac",
+    "filings": 656,
+    "vendors": 315,
+    "top_vendor": "Hexaware Technologies",
+    "top_vendor_share": 0.229,
     "sector": "52"
-   },
-   {
-    "client": "Johnson & Johnson",
-    "filings": 659,
-    "vendors": 148,
-    "top_vendor": "TATA CONSULTANCY SERVICES LIMITED",
-    "top_vendor_share": 0.185,
-    "sector": "31-33"
    },
    {
     "client": "PNC",
     "filings": 652,
     "vendors": 65,
-    "top_vendor": "CGI Technologies and Solutions Inc.",
+    "top_vendor": "CGI Technologies and Solutions",
     "top_vendor_share": 0.261,
-    "sector": "52"
-   },
-   {
-    "client": "Freddie Mac",
-    "filings": 648,
-    "vendors": 308,
-    "top_vendor": "Hexaware Technologies, Inc.",
-    "top_vendor_share": 0.231,
     "sector": "52"
    },
    {
     "client": "Charter Communications",
     "filings": 623,
-    "vendors": 292,
-    "top_vendor": "INFOSYS LIMITED",
+    "vendors": 293,
+    "top_vendor": "Infosys",
     "top_vendor_share": 0.119,
     "sector": "51"
    },
    {
+    "client": "Johnson & Johnson",
+    "filings": 616,
+    "vendors": 142,
+    "top_vendor": "Tata Consultancy Services",
+    "top_vendor_share": 0.195,
+    "sector": "31-33"
+   },
+   {
     "client": "Morgan Stanley",
     "filings": 599,
-    "vendors": 169,
-    "top_vendor": "Synechron Inc.",
+    "vendors": 170,
+    "top_vendor": "Synechron",
     "top_vendor_share": 0.127,
     "sector": "52"
    },
    {
-    "client": "Cisco",
-    "filings": 574,
-    "vendors": 100,
-    "top_vendor": "TATA CONSULTANCY SERVICES LIMITED",
-    "top_vendor_share": 0.192,
+    "client": "Toyota",
+    "filings": 575,
+    "vendors": 183,
+    "top_vendor": "Infosys",
+    "top_vendor_share": 0.111,
     "sector": "31-33"
    },
    {
-    "client": "Toyota",
-    "filings": 565,
-    "vendors": 177,
-    "top_vendor": "INFOSYS LIMITED",
-    "top_vendor_share": 0.113,
+    "client": "Cisco",
+    "filings": 574,
+    "vendors": 99,
+    "top_vendor": "Tata Consultancy Services",
+    "top_vendor_share": 0.192,
     "sector": "31-33"
    }
   ],
   "giant": {
-   "nodes": 22953,
-   "edges": 43657,
-   "share_of_filings": 0.9449
+   "nodes": 23013,
+   "edges": 43577,
+   "share_of_filings": 0.9475
   },
   "modularity": {
    "communities_median": 73,
-   "nmi_between_seeds_median": 0.717,
-   "rewired_components_median": 595,
+   "nmi_between_seeds_median": 0.725,
+   "rewired_components_median": 598,
    "weighted_vs_rewired": {
-    "real": 0.6029,
-    "real_sd": 0.0008,
-    "null": 0.741,
-    "null_sd": 0.0014,
-    "z": -98.8,
+    "real": 0.6068,
+    "real_sd": 0.001,
+    "null": 0.7426,
+    "null_sd": 0.0012,
+    "z": -110.87,
     "null_runs_at_or_above_real": 100
    },
    "wiring_only": {
-    "real": 0.5735,
-    "real_sd": 0.0016,
-    "null": 0.5321,
-    "null_sd": 0.0006,
-    "z": 64.79,
+    "real": 0.5748,
+    "real_sd": 0.0014,
+    "null": 0.5342,
+    "null_sd": 0.0007,
+    "z": 61.79,
     "null_runs_at_or_above_real": 0
    },
    "weights_only": {
-    "real": 0.6029,
-    "real_sd": 0.0008,
-    "null": 0.7523,
+    "real": 0.6068,
+    "real_sd": 0.001,
+    "null": 0.754,
     "null_sd": 0.0013,
-    "z": -117.12,
+    "z": -109.14,
     "null_runs_at_or_above_real": 100
    }
   },
   "industry_or_vendor": {
-   "clients_with_2plus_vendors": 4426,
-   "their_filing_share": 0.7678,
-   "with_sector_label": 366,
-   "nmi_community_industry": 0.264,
+   "clients_with_2plus_vendors": 4331,
+   "their_filing_share": 0.7648,
+   "with_sector_label": 882,
+   "nmi_community_industry": 0.164,
    "p_industry": 0.001,
-   "nmi_community_main_vendor": 0.648,
+   "nmi_community_main_vendor": 0.65,
    "p_vendor": 0.001,
-   "nmi_community_main_vendor_same_clients": 0.783,
+   "nmi_community_main_vendor_same_clients": 0.722,
    "p_vendor_same_clients": 0.001
   },
   "largest_communities": [
    {
-    "filings": 12864,
-    "firms": 327,
-    "clients": 847,
+    "filings": 11996,
+    "firms": 304,
+    "clients": 796,
     "top_firms": [
-     "TATA CONSULTANCY SERVICES LIMITED",
-     "LTIMindtree Limited",
-     "VIRTUSA CORPORATION",
-     "CGI Technologies and Solutions Inc."
+     "Tata Consultancy Services",
+     "LTIMindtree",
+     "CGI Technologies and Solutions",
+     "Iris Software"
     ],
     "top_clients": [
      "Citigroup",
-     "Johnson & Johnson",
      "PNC",
+     "Johnson & Johnson",
      "Cisco",
      "Cigna",
      "Humana"
     ],
     "sectors": {
-     "31-33": 17,
-     "52": 16,
-     "44-45": 6,
-     "42": 5
+     "31-33": 59,
+     "52": 25,
+     "44-45": 10,
+     "42": 7
     }
    },
    {
-    "filings": 9409,
-    "firms": 544,
-    "clients": 1098,
+    "filings": 9465,
+    "firms": 376,
+    "clients": 637,
     "top_firms": [
-     "COMPUNNEL SOFTWARE GROUP, INC",
-     "KFORCE INC. ",
-     "Mastech Digital Technologies, Inc.",
-     "SLK AMERICA INC"
+     "Infosys",
+     "Randstad",
+     "Synechron",
+     "Innova Solutions"
+    ],
+    "top_clients": [
+     "Bank of America",
+     "Wells Fargo",
+     "Charter Communications",
+     "Morgan Stanley",
+     "Goldman Sachs",
+     "Citizens Bank"
+    ],
+    "sectors": {
+     "31-33": 26,
+     "52": 21,
+     "22": 6,
+     "44-45": 5
+    }
+   },
+   {
+    "filings": 7819,
+    "firms": 497,
+    "clients": 927,
+    "top_firms": [
+     "Compunnel Software",
+     "Kforce",
+     "Mastech Digital Technologies",
+     "Photon Infotech"
     ],
     "top_clients": [
      "Fidelity Investments",
-     "Capital One",
      "Walmart",
-     "Fifth Third Bank",
-     "7-Eleven",
-     "Credit One Bank"
+     "Vanguard",
+     "Intuit",
+     "Mastercard",
+     "7-Eleven"
     ],
     "sectors": {
-     "52": 10,
-     "44-45": 3,
-     "22": 3,
-     "54": 2
+     "52": 14,
+     "31-33": 12,
+     "51": 7,
+     "56": 5
     }
    },
    {
-    "filings": 7079,
-    "firms": 265,
-    "clients": 725,
+    "filings": 6958,
+    "firms": 247,
+    "clients": 697,
     "top_firms": [
-     "COGNIZANT TECHNOLOGY SOLUTIONS US CORP",
-     "ExlService.com, LLC",
-     "Technumen, Inc.",
-     "COGNIER INC"
+     "Cognizant",
+     "EXL",
+     "Cigniti Technologies",
+     "Cognier"
     ],
     "top_clients": [
      "CVS Health",
      "Northern Trust",
      "BNY Mellon",
-     "American Airlines",
      "Travelers",
-     "AbbVie"
+     "AbbVie",
+     "The Hartford"
     ],
     "sectors": {
-     "52": 20,
+     "52": 28,
+     "31-33": 24,
+     "44-45": 3,
+     "51": 3
+    }
+   },
+   {
+    "filings": 5575,
+    "firms": 532,
+    "clients": 915,
+    "top_firms": [
+     "Hexaware Technologies",
+     "MSR Technology",
+     "Collaborate Solutions",
+     "TEK Leaders"
+    ],
+    "top_clients": [
+     "Capital One",
+     "Freddie Mac",
+     "Fannie Mae",
+     "EY",
+     "BCBS Michigan",
+     "Supreme Court OF Virginia"
+    ],
+    "sectors": {
+     "52": 12,
      "31-33": 10,
-     "48-49": 2,
-     "44-45": 1
-    }
-   },
-   {
-    "filings": 6995,
-    "firms": 376,
-    "clients": 636,
-    "top_firms": [
-     "INFOSYS LIMITED",
-     "INFOSTRETCH CORPORATION",
-     "Bitwise Inc.",
-     "ITC INFOTECH (USA), INC."
-    ],
-    "top_clients": [
-     "Apple",
-     "Charter Communications",
-     "Toyota",
-     "Goldman Sachs",
-     "Citizens Bank",
-     "Nike"
-    ],
-    "sectors": {
-     "52": 10,
-     "31-33": 8,
-     "22": 3,
-     "51": 2
-    }
-   },
-   {
-    "filings": 6675,
-    "firms": 398,
-    "clients": 796,
-    "top_firms": [
-     "WIPRO LIMITED",
-     "Mphasis Corporation",
-     "PERSISTENT SYSTEMS, INC.",
-     "Populus Group LLC"
-    ],
-    "top_clients": [
-     "JPMorgan Chase",
-     "Charles Schwab",
-     "U.S. Bank",
-     "State Street",
-     "Intuit",
-     "UnitedHealth Group"
-    ],
-    "sectors": {
-     "52": 9,
-     "51": 3,
-     "31-33": 3,
+     "56": 5,
      "54": 3
     }
    },
    {
-    "filings": 5325,
-    "firms": 307,
-    "clients": 579,
+    "filings": 4979,
+    "firms": 257,
+    "clients": 641,
     "top_firms": [
-     "IBM Corporation",
-     "UST Global Inc",
-     "Deloitte Consulting LLP",
-     "ATOS SYNTEL INC"
+     "HCL",
+     "Intellectt",
+     "Infogain",
+     "Mirafra"
     ],
     "top_clients": [
-     "American Express",
-     "Elevance Health",
-     "Truist",
-     "UPS",
-     "Pfizer",
-     "Equifax"
+     "USAA",
+     "HCL",
+     "Google",
+     "Meta",
+     "Abbott",
+     "Merck"
     ],
     "sectors": {
-     "52": 11,
-     "31-33": 5,
-     "22": 3,
-     "56": 2
+     "31-33": 39,
+     "52": 5,
+     "51": 5,
+     "42": 2
     }
    }
   ]
@@ -942,20 +1047,20 @@
    "from": 2022,
    "to": 2023,
    "shared_clients": 7429,
-   "nmi": 0.276
+   "nmi": 0.299
   },
   {
    "from": 2023,
    "to": 2024,
-   "shared_clients": 6972,
-   "nmi": 0.311
+   "shared_clients": 7011,
+   "nmi": 0.33
   },
   {
    "from": 2024,
    "to": 2025,
-   "shared_clients": 6836,
-   "nmi": 0.347
+   "shared_clients": 6765,
+   "nmi": 0.348
   }
  ],
- "seconds": 488
+ "seconds": 563
 }
