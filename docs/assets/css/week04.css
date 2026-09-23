@@ -1,280 +1,409 @@
-/* Week 4 — Where the hiring is (extras on corridor.css) */
+/* Week 4 — Who hires America's foreign workers? (extras on arcade.css,
+   story.css and design.css — the shared guided-post system, not Corridor's).
+   Everything here is scoped under .theme-hiring so weeks 1–3 are untouched. */
 
-.corridor .hero .shell {
-  grid-template-columns: minmax(0, 1.4fr) minmax(240px, 320px);
-  max-width: 1180px;
-  min-height: auto;
-  padding-block: 36px 40px;
+/* ------------------------------------------------------------- hero keys */
+.theme-hiring .story-hero .keys {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 20px;
+  margin: 16px 0 6px;
+}
+.theme-hiring .story-hero .key {
+  align-items: center;
+  color: var(--muted);
+  display: inline-flex;
+  font-size: 12.5px;
+  gap: 8px;
+}
+.theme-hiring .story-hero .key i {
+  border-radius: 2px;
+  display: block;
+  height: 3px;
+  width: 22px;
+}
+.theme-hiring .story-hero .key.people i {
+  background: var(--hot);
+}
+.theme-hiring .story-hero .key.access i {
+  background: #1f8fd6;
 }
 
-.corridor .chart-host {
+/* --------------------------------------------------------- eyebrows/subs */
+/* The numbered badge + year-tag of the old card layout collapse into one
+   eyebrow line per section and per sub-block. */
+.theme-hiring .sub-block {
+  border-top: 1px solid var(--line);
+  margin-top: 28px;
+  padding-top: 28px;
+}
+.theme-hiring .sub-block h3 {
+  font-size: clamp(20px, 2.4vw, 26px);
+  letter-spacing: -0.015em;
+  line-height: 1.2;
+  margin: 4px 0 10px;
+  max-width: 32ch;
+}
+.theme-hiring .sub-block .eyebrow {
+  margin-bottom: 8px;
+}
+.theme-hiring .plot h4,
+.theme-hiring .panel h4 {
+  font-size: 14px;
+  margin: 0 0 4px;
+}
+.theme-hiring .plot .axis-note {
+  color: var(--muted);
+  font-size: 12.5px;
+  margin: 0 0 10px;
+}
+
+/* ------------------------------------------------------------- side cols */
+.theme-hiring .split {
+  align-items: start;
+  display: grid;
+  gap: 20px;
+  grid-template-columns: minmax(0, 1fr) 280px;
+  margin-top: 8px;
+}
+@media (max-width: 860px) {
+  .theme-hiring .split {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ------------------------------------------------------------- who panel */
+.theme-hiring .panel .who {
+  align-items: center;
+  display: flex;
+  gap: 9px;
+  margin-bottom: 12px;
+}
+.theme-hiring .panel .who .flag {
+  font-size: 21px;
+  line-height: 1;
+}
+.theme-hiring .panel .who strong {
+  font-size: 17px;
+  letter-spacing: -0.01em;
+}
+.theme-hiring .panel .who .codes {
+  color: var(--muted);
+  font-size: 11.5px;
+  font-weight: 600;
+}
+.theme-hiring dl.stats {
+  display: grid;
+  margin: 0;
+}
+.theme-hiring dl.stats > div {
+  border-bottom: 1px solid var(--line);
+  display: flex;
+  font-size: 12.5px;
+  justify-content: space-between;
+  padding: 6px 0;
+}
+.theme-hiring dl.stats dt {
+  color: var(--muted);
+}
+.theme-hiring dl.stats dd {
+  font-variant-numeric: tabular-nums;
+  font-weight: 700;
+  margin: 0;
+}
+
+/* ------------------------------------------------------------- notices */
+/* Reuses the site's .note (a coloured left rule); the icon glyph moves into
+   the bold lead instead of a separate icon column. */
+.theme-hiring .note {
+  margin-top: 14px;
+}
+.theme-hiring .note b {
+  display: block;
+  margin-bottom: 4px;
+}
+.theme-hiring .note p {
+  margin: 0;
+  font-size: 13.5px;
+  line-height: 1.55;
+}
+.theme-hiring .note code {
+  font-size: 0.92em;
+}
+
+/* --------------------------------------------------------------- charts */
+.theme-hiring .chart-host {
   background: linear-gradient(180deg, #ffffff 0%, #f7fafd 100%);
-  border: 1px solid var(--line-soft);
+  border: 1px solid var(--line);
   border-radius: 12px;
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.8);
   height: 360px;
   width: 100%;
 }
-
-.corridor .chart-host.tall {
+.theme-hiring .chart-host.tall {
   height: 420px;
 }
-
-.corridor .chart-host.short {
+.theme-hiring .chart-host.short {
   height: 240px;
 }
-.corridor .chart-host.map {
+.theme-hiring .chart-host.map {
   height: 540px;
 }
-
-.corridor #place-longhaul .chart-host {
+.theme-hiring #place-longhaul .chart-host {
   height: 400px;
 }
-
-.corridor #place-longhaul .chart-host.map {
+.theme-hiring #place-longhaul .chart-host.map {
   height: 540px;
 }
-
-.corridor #place-longhaul .longhaul-stack {
+.theme-hiring .longhaul-stack {
   display: grid;
   gap: 22px;
   grid-template-columns: 1fr;
 }
+@media (max-width: 860px) {
+  .theme-hiring .chart-host,
+  .theme-hiring .chart-host.tall,
+  .theme-hiring .chart-host.map,
+  .theme-hiring #place-longhaul .chart-host,
+  .theme-hiring #place-longhaul .chart-host.map {
+    height: 320px;
+  }
+}
 
-.corridor .draft-banner {
+/* --------------------------------------------------------- draft banner */
+.theme-hiring .note#place-draft-banner {
   background: #fff6e8;
-  border: 1px solid #f5d5a6;
-  border-radius: 10px;
+  border-left-color: #f5d5a6;
   color: #8a5a12;
   font-size: 13px;
-  line-height: 1.45;
-  margin: 0 0 18px;
-  padding: 12px 14px;
 }
-
-.corridor .draft-banner[hidden] {
-  display: none;
-}
-
-.corridor .stub {
-  opacity: 0.7;
-}
-
-.corridor .stub .card {
-  border-style: dashed;
-}
-
-.corridor .stub-note {
-  color: var(--ink-mute);
+.theme-hiring .note#place-draft-banner p {
   font-size: 13px;
-  margin: 0;
 }
 
-.corridor .place-hero-aside {
-  margin-top: 8px;
-}
-
-.corridor .select-row {
+/* ------------------------------------------------------------ controls */
+.theme-hiring .select-row {
   align-items: center;
   display: flex;
   flex-wrap: wrap;
   gap: 10px;
   margin: 0 0 10px;
 }
-
-.corridor .select-row label {
-  color: var(--ink-soft);
+.theme-hiring .select-row label {
+  color: var(--muted);
   font-size: 12.5px;
   font-weight: 600;
 }
-
-.corridor .select-row select {
+.theme-hiring .select-row select {
   background: #fff;
   border: 1px solid var(--line);
   border-radius: 8px;
-  color: var(--ink);
+  color: var(--paper);
   font: inherit;
   font-size: 13px;
   padding: 6px 10px;
 }
-
-.corridor #place .grid-side {
-  margin-top: 8px;
-}
-
-.corridor .place-keys {
-  margin-bottom: 8px;
-}
-
-.corridor .region-legend {
+.theme-hiring .region-legend {
   display: flex;
   flex-wrap: wrap;
   gap: 12px 16px;
-  margin: 0 0 10px;
+  margin: 8px 0 10px;
 }
-
-.corridor .region-legend span {
+.theme-hiring .region-legend span {
   align-items: center;
-  color: var(--ink-soft);
+  color: var(--muted);
   display: inline-flex;
   font-size: 11.5px;
   font-weight: 600;
   gap: 6px;
 }
-
-.corridor .region-legend i {
+.theme-hiring .region-legend i {
   border-radius: 50%;
   display: inline-block;
   height: 8px;
   width: 8px;
 }
-
-.corridor #place .card + .card {
-  margin-top: 20px;
+.theme-hiring .axis-modes {
+  background: var(--band);
+  border-radius: 999px;
+  display: inline-flex;
+  margin-bottom: 8px;
+  padding: 2px;
 }
-
-@media (max-width: 860px) {
-  .corridor .chart-host,
-  .corridor .chart-host.tall,
-  .corridor .chart-host.map,
-  .corridor #place-longhaul .chart-host,
-  .corridor #place-longhaul .chart-host.map {
-    height: 320px;
-  }
+.theme-hiring .axis-modes button {
+  background: none;
+  border: 0;
+  border-radius: 999px;
+  color: var(--muted);
+  cursor: pointer;
+  font-size: 11.5px;
+  font-weight: 700;
+  min-height: 0;
+  padding: 6px 12px;
 }
-
-/* Section 2 · Which jobs go together ---------------------------------- */
-.corridor #jobs .card + .card {
-  margin-top: 20px;
+.theme-hiring .axis-modes button[aria-pressed="true"] {
+  background: var(--surface);
+  box-shadow: 0 1px 3px #0f23401f;
+  color: var(--paper);
 }
-.corridor .jobs-card {
-  opacity: 1;
-}
-.corridor .jobs-grid {
-  align-items: start;
+.theme-hiring .yearline {
   display: grid;
-  gap: 22px;
-  grid-template-columns: minmax(0, 1.7fr) minmax(230px, 1fr);
-  margin-top: 16px;
+  gap: 1px;
+  margin: 4px 0 14px;
+  max-width: 420px;
 }
-.corridor .jobs-network-grid {
-  grid-template-columns: minmax(0, 1.8fr) minmax(230px, 0.8fr);
-}
-.corridor .jobs-groups-grid {
-  grid-template-columns: minmax(0, 1.4fr) minmax(280px, 0.9fr);
-}
-.corridor .jobs-pairs {
-  height: 470px;
-}
-.corridor .jobs-network {
-  height: 520px;
-}
-.corridor .jobs-groups,
-.corridor .jobs-nmi {
-  height: 360px;
-}
-.corridor .jobs-inspector h2 {
-  font-size: 20px;
-  margin: 0 0 5px;
-}
-.corridor .jobs-inspector h3 {
-  color: var(--ink-soft);
-  font-size: 12px;
-  letter-spacing: 0.04em;
-  margin: 18px 0 8px;
+.theme-hiring .yearline label {
+  color: var(--muted);
+  display: block;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  margin-top: 8px;
   text-transform: uppercase;
 }
-.corridor .jobs-meta {
-  color: var(--ink-mute);
-  font-size: 12px;
-  margin: 0 0 10px;
-}
-.corridor .jobs-partners {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-}
-.corridor .jobs-partners li {
-  border-bottom: 1px solid var(--line-soft);
+.theme-hiring .yearline .ends {
+  color: var(--muted);
   display: flex;
-  font-size: 13px;
-  gap: 8px;
+  font-size: 12px;
+  font-weight: 700;
   justify-content: space-between;
-  padding: 7px 0;
 }
-.corridor .jobs-partners b {
-  color: var(--accent);
+.theme-hiring input[type="range"] {
+  accent-color: var(--accent);
+  width: 100%;
+}
+
+/* ------------------------------------------------------------- ego table */
+.theme-hiring table.ego {
+  border-collapse: collapse;
+  font-size: 12px;
+  width: 100%;
+}
+.theme-hiring table.ego th {
+  color: var(--muted);
+  font-size: 11px;
+  font-weight: 600;
+  padding: 4px 6px 6px;
+  text-align: left;
+}
+.theme-hiring table.ego td {
+  border-top: 1px solid var(--line);
+  padding: 4.5px 6px;
+}
+.theme-hiring table.ego td:last-child {
   font-variant-numeric: tabular-nums;
+  text-align: right;
 }
-.corridor .jobs-bridge-list {
+
+/* -------------------------------------------------------- inline Q&A boxes */
+/* Corridor's "qa" pattern, re-themed for the guided-post surface. Used for
+   the mid-section methodology asides (not the outer evidence details). */
+.theme-hiring .qa {
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  margin-top: 14px;
+  overflow: hidden;
+}
+.theme-hiring .qa > summary {
+  background: var(--band);
+  cursor: pointer;
+  list-style: none;
+  padding: 13px 16px;
+}
+.theme-hiring .qa > summary::-webkit-details-marker {
+  display: none;
+}
+.theme-hiring .qa > summary:hover {
+  background: var(--line);
+}
+.theme-hiring .qa-cue {
+  color: var(--paper);
+  font-size: 13.5px;
+  font-weight: 700;
+}
+.theme-hiring .qa-cue::before {
+  color: var(--accent);
+  content: "▸";
+  display: inline-block;
+  margin-right: 8px;
+  transition: transform 0.15s ease;
+}
+.theme-hiring .qa[open] .qa-cue::before {
+  transform: rotate(90deg);
+}
+.theme-hiring .qa-body {
+  border-top: 1px solid var(--line);
+  padding: 12px 16px 16px;
+}
+.theme-hiring .qa-body p {
+  font-size: 13.5px;
+  line-height: 1.6;
+}
+
+/* Section 2 · Which jobs go together ------------------------------------ */
+.theme-hiring .jobs-bridge-list {
   display: grid;
   gap: 7px;
   margin-top: 16px;
 }
-.corridor .jobs-bridge-list button {
+.theme-hiring .jobs-bridge-list button {
   align-items: center;
   background: #fff8ee;
   border: 1px solid #f5d5a6;
   border-radius: 8px;
-  color: var(--ink);
+  color: var(--paper);
   cursor: pointer;
   display: flex;
   font: inherit;
   font-size: 12px;
   gap: 8px;
   justify-content: space-between;
+  min-height: 0;
   padding: 8px 10px;
   text-align: left;
 }
-.corridor .jobs-bridge-list button:hover,
-.corridor .jobs-bridge-list button:focus-visible {
+.theme-hiring .jobs-bridge-list button:hover,
+.theme-hiring .jobs-bridge-list button:focus-visible {
   border-color: var(--accent);
 }
-.corridor .jobs-back {
-  margin-top: 12px;
-  border: 0;
-  background: none;
-  color: var(--ink-soft);
-  font: inherit;
-  font-size: 13px;
-  text-decoration: underline;
-  cursor: pointer;
-  padding: 0;
-}
-
-.corridor .jobs-bridge-list b {
-  color: var(--ink-soft);
+.theme-hiring .jobs-bridge-list b {
+  color: var(--muted);
   font-variant-numeric: tabular-nums;
 }
-
+.theme-hiring .jobs-pairs {
+  height: 470px;
+}
+.theme-hiring .jobs-network {
+  height: 520px;
+}
+.theme-hiring .jobs-groups,
+.theme-hiring .jobs-nmi {
+  height: 360px;
+}
 @media (max-width: 860px) {
-  .corridor .jobs-grid,
-  .corridor .jobs-network-grid,
-  .corridor .jobs-groups-grid {
-    grid-template-columns: 1fr;
-  }
-  .corridor .jobs-pairs,
-  .corridor .jobs-network,
-  .corridor .jobs-groups,
-  .corridor .jobs-nmi {
+  .theme-hiring .jobs-pairs,
+  .theme-hiring .jobs-network,
+  .theme-hiring .jobs-groups,
+  .theme-hiring .jobs-nmi {
     height: 340px;
   }
 }
 
-/* Section 3 · Who staffs whom ----------------------------------------- */
+/* Section 3 · Who staffs whom -------------------------------------------- */
 
-/* Week 4 figures. Section 3: clients by filings and by how much one vendor supplies.
-   Three categorical slots at most on a scatter (the reference palette's
-   all-pairs limit, validated on a white surface); clients without a sector
-   label are a neutral grey, not a fourth hue. */
+/* Week 4 figures. Section 3: clients by filings and by how much one vendor
+   supplies. Three categorical slots at most on a scatter (the reference
+   palette's all-pairs limit, validated on a white surface); clients without
+   a sector label are a neutral grey, not a fourth hue. The base tokens
+   (--surface, --paper, --muted, --line, --sans, --accent) already match the
+   site's own :root values, so only the chart-only tokens need setting here. */
+/* The post design caps figures at 740px for static images; the interactive
+   staffing figure needs the full column, like the section 1 and 2 charts. */
+.theme-hiring .post figure.staffing {
+  max-width: none;
+  margin: 28px 0 0;
+}
 .staffing {
-  /* The Corridor page's tokens under the names this figure was written with. */
-  --surface: var(--card);
-  --paper: var(--ink);
-  --muted: var(--ink-soft);
-  --band: var(--line-soft);
-  --accent: #14618f;
-  --sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Inter, system-ui, sans-serif;
   --series-1: #2a78d6; /* finance and insurance */
   --series-2: #eb6834; /* health care */
   --series-3: #1baf7a; /* other labelled sectors */
@@ -336,6 +465,18 @@
 }
 .staffing-chart {
   position: relative;
+}
+.staffing-prose {
+  max-width: 72ch;
+  margin: 4px 0 20px;
+}
+.staffing-prose h3 {
+  margin: 18px 0 4px;
+  font-size: 15px;
+}
+.staffing-prose p {
+  margin: 0;
+  line-height: 1.6;
 }
 .staffing-flows {
   margin-top: 28px;
@@ -429,4 +570,22 @@
 .staffing th.num {
   text-align: right;
   font-variant-numeric: tabular-nums;
+}
+@media (max-width: 860px) {
+  .staffing-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* The slider label names alpha: upper case would turn "α" into a Greek capital that reads as "A". */
+.theme-hiring .yearline label {
+  text-transform: none;
+  letter-spacing: 0;
+}
+/* Side panels hold a small heading, not a section heading. */
+#jobs-inspector h2,
+#jobs-node-inspector h2 {
+  font-size: 18px;
+  line-height: 1.3;
+  margin: 0 0 8px;
 }
