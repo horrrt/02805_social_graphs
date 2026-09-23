@@ -243,7 +243,7 @@ def tidy(key):
     small = {"Of", "The", "And", "For", "At", "In", "On"}
     out = []
     for i, w in enumerate(key.split()):
-        if len(w) <= 3 and w.isalpha() and w not in {"AND", "THE", "FOR"}:
+        if len(w) <= 3 and w.isalpha() and w.title() not in small:
             out.append(w)  # IBM, HCL, EY, ADP
         else:
             t = w.title()

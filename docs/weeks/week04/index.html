@@ -132,7 +132,7 @@
               communities match Census regions, then see which employers draw
               the long lines. Backbones and communities against a null model
               are the Week 4 methods; the cities are the 40 metro areas with
-              the most filings, 85% of the year's total.
+              the most filings, 84.5% of the year's total.
             </p>
           </div>
 
@@ -205,9 +205,10 @@
             <div class="plot" style="margin-top: 18px">
               <h3>On the map</h3>
               <p class="axis-note">
-                Fixed US map; city bubbles sized gently by positions (colour /
-                opacity follow the active metric). Click a bubble to select —
-                the map does not pan or zoom.
+                The 48 contiguous states; none of the 40 metros lies outside
+                them. Bubbles are sized by requested positions; colour and
+                opacity follow the active metric. Each metro sits at its
+                first-named city. Click a bubble to select it.
               </p>
               <div class="chart-host map" id="chart-citymap"></div>
             </div>
@@ -216,13 +217,14 @@
               <span class="ico">💡</span>
               <span>
                 <b>What to notice</b>
-                San Jose's 50,517 filings request 158,082 positions, about three
-                per filing, and Google files one in ten of them. New York files
-                more (69,533) from three times as many employers (13,198), with
-                about two positions per filing, and its largest filer, EY, has
-                under 4%. In Seattle one company, Amazon, files 30%. Positions
-                reward a few firms asking for many seats; employer counts reward
-                a broad market.
+                San Jose's 48,692 filings request 124,265 positions, 2.6 per
+                filing, and Google files one in ten of them. New York files more
+                (65,935) from three times as many employers (12,730), with 1.5
+                positions per filing, and its largest filer, EY, has under 4%.
+                In Seattle one company, Amazon, files 31%. Positions reward a few
+                firms asking for many seats; employer counts reward a broad
+                market. A filing counts once in each metro it names, with at
+                most the positions it requests.
               </span>
             </div>
           </div>
@@ -326,8 +328,9 @@
               <span class="year-tag">(communities vs Census)</span>
             </div>
             <p class="sub">
-              <b>One national market. Louvain finds two groups, and they are
-              tiers of metros, not regions.</b>
+              <b>Not regional markets. Louvain splits the large hubs into two
+              groups, which cross regions, and leaves the smaller metros as a
+              third.</b>
               Toggle Louvain communities against Census regions on the same
               map.
             </p>
@@ -354,9 +357,9 @@
             <div class="plot">
               <h3>Same cities, two labelings</h3>
               <p class="axis-note">
-                Same fixed map; bubbles coloured by the active labelling.
-                Communities are named after their largest city — not invented
-                regional brands. Click a city to select it.
+                The same map, coloured by the active labelling. Communities are
+                named after their two largest metros. Click a city to select
+                it.
               </p>
               <div class="chart-host map" id="chart-regions"></div>
             </div>
@@ -367,8 +370,12 @@
               </summary>
               <div class="qa-body">
                 <p class="sub">
-                  Report Q against a degree-preserving shuffle, and NMI across
-                  seeds and against Census labels. Figures from analysis/week04_where.py:
+                  The map shows the partition Louvain finds most often, and
+                  every number below is computed on it. The null rewires the
+                  company × metro network so each company and each metro keeps
+                  its number of partners, deals the filing counts back out at
+                  random, and projects it again. Figures from
+                  analysis/week04_where.py:
                 </p>
                 <table class="ego">
                   <tbody id="place-null-stats"></tbody>
@@ -380,14 +387,16 @@
               <span class="ico">💡</span>
               <span>
                 <b>What to notice</b>
-                The split is real but weak: modularity is 0.053 against 0.013
-                for rewired networks that keep each company's number of metros
-                (z = 28), and all 50 Louvain runs find it. It sorts metros by
-                size. The ten largest metros, New York to Los Angeles, plus San
-                Diego sit in one group that spans four Census regions; the 29
-                smaller metros form the other. NMI with
-                Census regions is 0.035 and with divisions 0.098, no better than
-                shuffled labels (p = 0.57 and 0.34).
+                One group holds New York, Dallas, Atlanta, Chicago, Houston,
+                Philadelphia and Charlotte. The other holds San Jose, San
+                Francisco, Seattle, Los Angeles, San Diego, Austin, Boston and
+                Washington. The 25 smaller metros form the third. The split is
+                real but weak: modularity is 0.049 against 0.013 for rewired
+                networks that keep each company's number of metros (z = 32),
+                and Louvain finds it in 29 of 50 runs; the other 21 find one
+                other split. NMI with Census regions is 0.14 and with
+                divisions 0.21, no better than shuffled labels (p = 0.12 and
+                0.11).
               </span>
             </div>
           </div>
@@ -401,7 +410,7 @@
             </div>
             <p class="sub">
               <b>Mostly not. Big direct employers lead the long links, Amazon
-              above all, and no single firm carries one.</b>
+              above all, and a single company rarely carries one.</b>
               The shortlist is the five firms that place the most filings at
               client sites: Tata Consultancy Services, Cognizant, Infosys, HCL
               and Compunnel. The staffing section follows them to their
@@ -412,20 +421,23 @@
               <div class="plot">
                 <h3>Distance vs weight</h3>
                 <p class="axis-note">
-                  Each point is a backbone edge. Size scales gently with weight.
-                  Each label names a company on its heaviest edge over 1,500 km,
-                  for the eight heaviest; hover any point for its own. Use the legend to
-                  separate the shortlist from other lead employers; click a point to
-                  select a city.
+                  Each point is a link in the backbone at α = 0.2, the default
+                  above; size grows with its weight. A label names a company on
+                  its heaviest link over 1,500 km, for the eight heaviest; hover
+                  any point for its own. The legend separates links led by the
+                  shortlist from links led by any other company; click a point
+                  to select a city.
                 </p>
                 <div class="chart-host" id="chart-longhaul"></div>
               </div>
               <div class="plot">
                 <h3>One employer’s map</h3>
                 <p class="axis-note">
-                  Only the cities this firm links — no grey background clutter.
-                  Arcs animate along the route. Map is fixed; click a city to
-                  select it.
+                  The backbone links (α = 0.2) this company leads: of all the
+                  companies filing in both cities, it adds the most to the
+                  link's weight. The list
+                  holds the six companies that lead the most links. Click a
+                  city to select it.
                 </p>
                 <div class="select-row">
                   <label for="place-employer">Employer</label>
@@ -439,10 +451,10 @@
               <span class="ico">💡</span>
               <span>
                 <b>What to notice</b>
-                Of the 84 backbone links longer than 1,500 km, the shortlist
-                leads 24 (29%); it leads 49 of the 99 shorter ones (49%). Amazon
-                leads the most long links (24), then Cognizant (18), EY and
-                Deloitte. The leading company carries a median 12% of a long
+                Of the 83 backbone links longer than 1,500 km, the shortlist
+                leads 22 (27%); it leads 48 of the 97 shorter ones (49%). Amazon
+                leads the most long links (30), then Cognizant (17), EY (8) and
+                Deloitte (7). The leading company carries a median 14% of a long
                 link's weight, and only one long link, San Jose to Fayetteville
                 (Walmart), has a company with half of it. Distant metros are
                 tied by many companies filing in both.
@@ -461,10 +473,10 @@
             </div>
             <p class="sub">
               <b>Employers reveal bundles of work.</b>
-              Two occupations are connected when the same firms hire both. The
-              network below keeps the strongest shared-employer links, then lets
-              an occupation belong to a second cluster when it genuinely bridges
-              the two.
+              Two occupations are linked when the same companies file for both.
+              Clusters come from the whole network of <span data-jobs="occupations">…</span>
+              occupations. The figures show the 60 occupations with the most
+              filings, each with its three strongest links.
             </p>
           </div>
 
@@ -477,8 +489,10 @@
               <span class="year-tag">shared employers</span>
             </div>
             <p class="sub">
-              Each bar is a pair of occupations. Its length is the number of
-              employers that filed for both, not the number of workers requested.
+              Each bar is a pair among the 60 largest occupations. Its length is
+              the number of companies that filed for both, not the number of
+              workers requested. Software Developers sit in 8 of the 12 pairs
+              because almost every sponsoring company hires them.
             </p>
             <div class="jobs-grid">
               <div class="plot">
@@ -486,8 +500,8 @@
                 <div class="chart-host jobs-pairs" id="chart-job-pairs"></div>
               </div>
               <aside class="panel jobs-inspector" id="jobs-inspector">
-                <h2>Select an occupation</h2>
-                <p>Click a point in the network below to see its closest hiring partners.</p>
+                <h2>Select a pair</h2>
+                <p>Click a bar to see the two occupations and their filings.</p>
               </aside>
             </div>
           </div>
@@ -499,9 +513,10 @@
               <span class="year-tag">overlap</span>
             </div>
             <p class="sub">
-              The coloured groups come from the co-hiring network. A ringed node
-              is a bridge: its employers connect two otherwise different bundles
-              of work. Click a node to inspect it.
+              Colours are clusters found by Louvain in the full co-hiring
+              network, named after their largest occupation. A ringed node also
+              belongs to a second cluster: its employers tie it to that cluster
+              more than the cluster's size predicts. Click a node to inspect it.
             </p>
             <div class="jobs-grid jobs-network-grid">
               <div class="plot">
@@ -542,23 +557,32 @@
               <span class="ico">💡</span>
               <span>
                 <b>What to notice</b>
-                The observed NMI is higher than the shuffled average when the
-                network’s bundles resemble official occupational groups. It is
-                still a comparison, not evidence that the government labels
-                caused the hiring pattern.
+                The clusters follow the official groups only in part: NMI
+                <strong data-jobs="nmi">…</strong> against <strong data-jobs="shuffled">…</strong> for
+                shuffled labels (AMI <strong data-jobs="ami">…</strong>), over the
+                <span data-jobs="scored">…</span> occupations in clusters of two
+                or more. The software cluster also holds engineers, accountants
+                and managers: companies hire across the official groups.
               </span>
             </div>
             <details class="qa">
               <summary><span class="qa-cue">How the comparison works</span></summary>
               <div class="qa-body">
                 <p class="sub">
-                  We keep certified H-1B filings, collapse employer spellings
-                  to company families, and count one shared employer per edge.
-                  The projection is clustered 100 times with different seeds;
-                  the page reports the best modularity run. NMI is calculated
-                  across all occupations and compared with 100 random
-                  permutations of the SOC major-group labels. FY2024 is kept
-                  as a stability check in the data file.
+                  We keep certified H-1B filings and identify companies by tax
+                  number, as in the other sections. A link counts the companies
+                  that filed for both occupations. Filings still on 2010 computer
+                  codes (<span data-jobs="legacy">…</span>) move to their 2018
+                  successors. Louvain runs 100 times on the full projection and
+                  the best modularity run is kept. An occupation's second cluster
+                  is the one its employer ties exceed most over the expectation
+                  modularity uses (its strength times the cluster's, over twice
+                  the total weight), when that ratio is above 1. NMI and AMI
+                  leave out occupations alone in a cluster and are compared with
+                  100 shuffles of the major-group labels. The same method on
+                  FY2024 gives clusters that match FY2025 at NMI
+                  <span data-jobs="years">…</span> on the
+                  <span data-jobs="shared">…</span> occupations both years share.
                 </p>
               </div>
             </details>
@@ -632,6 +656,23 @@
                   <tbody></tbody>
                 </table>
               </details>
+              <div class="staffing-flows">
+                <h3>Who supplies the largest clients</h3>
+                <div
+                  aria-label="Flow chart: the eight outsourcing firms that place the most H-1B filings, plus one source for all other firms, on the left; the twenty clients that receive the most on the right; a band for the filings between each pair."
+                  class="chart-host"
+                  role="img"
+                ></div>
+                <p class="flows-caption">
+                  The eight firms that place the most filings, and the 20
+                  clients that receive the most, in the year chosen above. Band
+                  width is the number of placed filings from a firm to a client;
+                  the grey source gathers every other firm. Each client sits next
+                  to the named firm that supplies it most. Hover a firm or a
+                  client to follow its bands.
+                  <span class="flows-coverage"></span>
+                </p>
+              </div>
             </figure>
 
             <details class="qa" id="staffing-community-stats" style="margin-top: 18px">
@@ -697,8 +738,8 @@
               <span class="ico">!</span>
               <span>
                 <b>One important limit</b>
-                A shared employer link means that two occupations or places
-                appear in the same filings. It does not prove that the jobs are
+                A shared employer link means that the same companies file for
+                both occupations or in both places. It does not prove that the jobs are
                 performed together, that one caused the other, or that the
                 network represents workers who were actually hired.
               </span>

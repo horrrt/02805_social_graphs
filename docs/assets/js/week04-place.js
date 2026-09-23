@@ -61,14 +61,20 @@ export async function startPlace(echarts) {
     }),
   ]);
 
-  echarts.registerMap("USA", usa);
+  // No top-40 metro lies outside the contiguous states; drawing Alaska, Hawaii
+  // and Puerto Rico shrank the 48 states to a corner of every map.
+  const OFF_MAINLAND = new Set(["Alaska", "Hawaii", "Puerto Rico"]);
+  echarts.registerMap("USA", {
+    ...usa,
+    features: usa.features.filter((f) => !OFF_MAINLAND.has(f.properties.name)),
+  });
 
   const byId = Object.fromEntries(data.cities.map((c) => [c.id, c]));
   const state = {
     metric: "positions",
     alpha: String(data.backbone.default_alpha),
     regionMode: "communities",
-    employer: "Infosys",
+    employer: null,
     selected: null,
   };
 
@@ -113,6 +119,7 @@ export async function startPlace(echarts) {
       return;
     }
     stats.innerHTML = `
+      <div><dt>Filings</dt><dd>${fmt(c.filings)}</dd></div>
       <div><dt>Positions</dt><dd>${fmt(c.positions)}</dd></div>
       <div><dt>Employers</dt><dd>${fmt(c.employers)}</dd></div>
       <div><dt>Top filer</dt><dd>${c.top_employer} · ${pct(c.top_share)}</dd></div>
@@ -250,8 +257,8 @@ export async function startPlace(echarts) {
         geo: {
           map: "USA",
           roam: false,
-          layoutCenter: ["50%", "52%"],
-          layoutSize: "108%",
+          layoutCenter: ["50%", "50%"],
+          layoutSize: "165%",
           itemStyle: {
             areaColor: "#eef3f9",
             borderColor: "#c5d3e6",
@@ -314,6 +321,7 @@ export async function startPlace(echarts) {
             if (p.data?.id) {
               const city = byId[p.data.id];
               return tipHtml(city.name, [
+                ["Filings", fmt(city.filings)],
                 ["Positions", fmt(city.positions)],
                 ["Employers", fmt(city.employers)],
                 ["Region", city.census],
@@ -345,13 +353,12 @@ export async function startPlace(echarts) {
       grid: { left: 52, right: 24, top: 36, bottom: 44 },
       xAxis: {
         type: "value",
-        name: "α  (stricter →)",
+        name: "←  stricter      α      looser  →",
         min: 0,
         max: 0.55,
         ...AXIS,
         nameLocation: "middle",
         nameGap: 28,
-        inverse: true,
       },
       yAxis: {
         type: "value",
@@ -364,7 +371,7 @@ export async function startPlace(echarts) {
         {
           type: "line",
           data: alphas.map((a, i) => [a, gc[i]]),
-          smooth: 0.2,
+          smooth: false,
           symbol: "circle",
           symbolSize: 10,
           lineStyle: { color: BLUE, width: 3 },
@@ -645,6 +652,18 @@ export async function startPlace(echarts) {
     c.on("click", (ev) => {
       if (ev.data?.a) select(ev.data.a);
     });
+    // Hiding a series in the legend hides its labels too.
+    c.off("legendselectchanged");
+    c.on("legendselectchanged", (ev) => {
+      const shown = (e) => ev.selected[e.staffing ? "Staffing shortlist" : "Other lead employer"] !== false;
+      c.setOption({
+        series: [{}, {}, {
+          data: [...labelled].filter(shown).map((e) => ({
+            value: [e.distance_km, e.weight], employer: e.top_employer, symbolSize: edgeSize(e.weight),
+          })),
+        }],
+      });
+    });
   }
 
   function renderArcs() {
@@ -698,8 +717,8 @@ export async function startPlace(echarts) {
         geo: {
           map: "USA",
           roam: false,
-          layoutCenter: ["50%", "52%"],
-          layoutSize: "108%",
+          layoutCenter: ["50%", "50%"],
+          layoutSize: "165%",
           itemStyle: {
             areaColor: "#f3f7fb",
             borderColor: "#d0dcec",
@@ -763,13 +782,18 @@ export async function startPlace(echarts) {
     const box = $("place-null-stats");
     if (!box) return;
     const n = data.null_model;
-    box.innerHTML = `
-      <tr><td>Q (Louvain)</td><td style="text-align:right">${n.Q.toFixed(2)}</td></tr>
-      <tr><td>Q null mean ± sd</td><td style="text-align:right">${n.Q_null_mean.toFixed(2)} ± ${n.Q_null_std.toFixed(2)}</td></tr>
-      <tr><td>NMI across ${n.seeds} seeds</td><td style="text-align:right">${n.nmi_seeds.toFixed(2)}</td></tr>
-      <tr><td>NMI vs Census regions</td><td style="text-align:right">${n.nmi_census_region.toFixed(2)}</td></tr>
-      <tr><td>NMI vs Census divisions</td><td style="text-align:right">${n.nmi_census_division.toFixed(2)}</td></tr>
-    `;
+    const row = (k, v) => `<tr><td>${k}</td><td style="text-align:right">${v}</td></tr>`;
+    const p = (v) => (v < 0.001 ? "< 0.001" : v.toFixed(3));
+    box.innerHTML = [
+      row("Partition shown: found in", `${n.modal_runs} of ${n.seeds} Louvain runs`),
+      row("Distinct partitions found", n.partitions_found),
+      row("Q of the partition shown", n.Q.toFixed(3)),
+      row("Q of rewired networks, mean ± sd", `${n.Q_null_mean.toFixed(3)} ± ${n.Q_null_std.toFixed(3)}`),
+      row("z", n.z.toFixed(1)),
+      row("NMI between two runs, median (lowest)", `${n.nmi_seeds.toFixed(2)} (${n.nmi_seeds_min.toFixed(2)})`),
+      row("NMI with Census regions (p)", `${n.nmi_census_region.toFixed(3)} (${p(n.p_region)})`),
+      row("NMI with Census divisions (p)", `${n.nmi_census_division.toFixed(3)} (${p(n.p_division)})`),
+    ].join("");
   }
 
   function renderAlphaTable() {
@@ -862,8 +886,10 @@ export async function startPlace(echarts) {
 
   const employer = $("place-employer");
   if (employer) {
-    employer.innerHTML = data.longhaul.staffing
-      .map((name) => `<option value="${name}">${name}</option>`)
+    // The companies that lead the most backbone links.
+    state.employer = data.longhaul.arc_employers[0];
+    employer.innerHTML = data.longhaul.arc_employers
+      .map((name) => `<option value="${name}">${name} · ${data.longhaul.employer_arcs[name].length} links</option>`)
       .join("");
     employer.value = state.employer;
     employer.addEventListener("change", () => {

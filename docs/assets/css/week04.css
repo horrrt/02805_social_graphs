@@ -227,6 +227,18 @@
 .corridor .jobs-bridge-list button:focus-visible {
   border-color: var(--accent);
 }
+.corridor .jobs-back {
+  margin-top: 12px;
+  border: 0;
+  background: none;
+  color: var(--ink-soft);
+  font: inherit;
+  font-size: 13px;
+  text-decoration: underline;
+  cursor: pointer;
+  padding: 0;
+}
+
 .corridor .jobs-bridge-list b {
   color: var(--ink-soft);
   font-variant-numeric: tabular-nums;
@@ -321,6 +333,21 @@
 }
 .staffing-chart {
   position: relative;
+}
+.staffing-flows {
+  margin-top: 28px;
+}
+.staffing-flows h3 {
+  margin: 0 0 6px;
+  font-size: 15px;
+}
+.staffing-flows .chart-host {
+  height: 640px;
+}
+.staffing-flows .flows-caption {
+  color: var(--muted);
+  font-size: 13px;
+  margin: 8px 0 0;
 }
 .staffing-chart .chart-host {
   width: 100%;

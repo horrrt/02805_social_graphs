@@ -72,11 +72,11 @@ every row keeps its `SOURCE_FILE`. FY2026 is the latest release (7 August 2026) 
 
 | Year | `lca_fy…` (H-1B applications) | Certified H-1B | Name a client | `worksites_fy…` | `perm_fy…` (green card) |
 | --- | --- | --- | --- | --- | --- |
-| FY2022 | 626,084 | 597,093 | 130,226 | 936,558 | 104,600 |
-| FY2023 | 543,580 | 518,012 | 115,577 | 803,849 | 116,306 |
-| FY2024 | 561,037 | 534,037 | 113,771 | 841,561 | 114,499 |
-| FY2025 | 594,821 | 567,907 | 109,374 | 897,289 | 147,056 |
-| FY2026 (Oct to Jun) | 437,496 | 417,721 | 75,369 | 444,064 | 112,550 |
+| FY2022 | 626,084 | 562,631 | 123,317 | 936,558 | 104,600 |
+| FY2023 | 543,580 | 485,508 | 109,686 | 803,849 | 116,306 |
+| FY2024 | 561,037 | 502,374 | 106,862 | 841,561 | 114,499 |
+| FY2025 | 594,821 | 537,796 | 104,732 | 897,289 | 147,056 |
+| FY2026 (Oct to Jun) | 437,496 | 392,175 | 70,872 | 444,064 | 112,550 |
 
 Layout differences the loader already handles:
 
@@ -112,15 +112,19 @@ Layout differences the loader already handles:
   for FY2022 (complete) and FY2023 (partial) into `build/week04/uscis_fy{year}.csv.gz`. The hub gives
   only the last four digits of the tax number and abbreviates names ("SVCS"), so
   `week04_staffing.uscis_outcomes()` matches on those four digits plus a fuzzy name score of 85. In
-  FY2022, firms that place most of their filings at clients had 2.75% of first-time petitions denied,
-  against 1.28% for firms that hire directly.
-- **Certified H-1B only** unless a section says otherwise: `CASE_STATUS` starts with "Certified" and
+  FY2022, firms that place most of their filings at clients had 2.73% of first-time petitions denied,
+  against 1.27% for firms that hire directly.
+- **Certified H-1B only** unless a section says otherwise: `CASE_STATUS` is exactly "Certified" (withdrawn filings are out) and
   `VISA_CLASS` is "H-1B".
 - **Say it once per section:** this is visa-sponsored hiring, not all hiring, and outsourcing firms
   dominate the placements. In FY2025 the largest by filings that place workers at a client were Tata
-  Consultancy Services (7,221), Cognizant (5,044), Infosys (3,762), HCL (2,561) and Compunnel
+  Consultancy Services (7,188), Cognizant (5,044), Infosys (3,761), HCL (2,530) and Compunnel
   (2,237). By requested positions the largest is Grandison Management (57,800), which asks for 40
   physical or occupational therapists on every filing: weight by filings, not positions.
+- **A filing's positions count once per metro.** The worksite file repeats a filing's workers on
+  every address it lists, so summing `WORKSITE_WORKERS` counted one 100-position filing with three
+  addresses as 300. Cap each (filing, metro) at the filing's `TOTAL_WORKER_POSITIONS`.
+- **A firm naming itself as the client placed no one.** Section 3 drops those rows (1,881 in FY2025).
 
 ## What every section delivers
 
@@ -163,6 +167,7 @@ All checked on 23 September 2026.
 | [DOL OFLC performance data](https://www.dol.gov/agencies/eta/foreign-labor/performance): LCA disclosure (quarterly), LCA worksites and PERM, FY2022 to FY2026 Q3 | All three sections | Public domain. dol.gov serves a plain client and blocks a spoofed browser User-Agent |
 | [LCA record layout FY2025](https://www.dol.gov/sites/dolgov/files/ETA/oflc/pdfs/LCA_Record_Layout_FY2025_Q4.pdf) | What each column means | Public |
 | [Census CBSA delineation, July 2023](https://www.census.gov/geographies/reference-files/time-series/demo/metro-micro/delineation-files.html) | County → metro area (section 1) | Public; header on row 3 |
+| [Census 2023 gazetteer](https://www.census.gov/geographies/reference-files/time-series/geo/gazetteer-files.html): county subdivisions and places | New England towns → county (their filings name a town where other states name a county; Connecticut's counties are 2023 planning regions); each metro's first-named city (section 1) | Public |
 | [Census regions and divisions](https://www2.census.gov/geo/pdfs/maps-data/maps/reference/us_regdiv.pdf) | Labels for NMI (section 1) | Public |
 | [BLS 2018 SOC structure](https://www.bls.gov/soc/2018/soc_structure_2018.xlsx) | Occupation groups (section 2) | Public; User-Agent must name a contact |
 | [USCIS H-1B Employer Data Hub](https://www.uscis.gov/tools/reports-and-studies/h-1b-employer-data-hub) | Approvals and denials per employer, FY2022 and FY2023 (section 3) | Public |
@@ -170,7 +175,8 @@ All checked on 23 September 2026.
 
 Traps found so far:
 
-- 19.3% of certified H-1B filings in FY2025 name a client (109,374 of 567,907).
+- 19.5% of certified H-1B filings in FY2025 name a client (104,732 of 537,796), counting only
+  "Certified", not "Certified - Withdrawn" (30,111 more that year).
 - In a first look at July to September 2025 only, 8.6% of client names were placeholders such as
   "Home Address", "Beneficiary's Residence", "Remote" or "TBD Open".
 - Corporate families survive simple name cleaning ("Bank of America" and "Bank of America N A").

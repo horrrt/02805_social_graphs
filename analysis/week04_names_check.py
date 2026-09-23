@@ -77,7 +77,7 @@ def filings():
     frames = []
     for year in YEARS:
         lca = load(f"lca_fy{year}")
-        lca = lca[lca["CASE_STATUS"].str.startswith("Certified") & (lca["VISA_CLASS"] == "H-1B")]
+        lca = lca[(lca["CASE_STATUS"] == "Certified") & (lca["VISA_CLASS"] == "H-1B")]
         fein = lca["EMPLOYER_FEIN"] if "EMPLOYER_FEIN" in lca else ""
         frames.append(pd.DataFrame({"name": lca["EMPLOYER_NAME"], "fein": fein, "year": year,
                                     "case": lca["CASE_NUMBER"]}))
@@ -88,7 +88,7 @@ def client_names():
     rows = []
     for year in YEARS:
         lca = load(f"lca_fy{year}")
-        ok = lca[lca["CASE_STATUS"].str.startswith("Certified") & (lca["VISA_CLASS"] == "H-1B")]["CASE_NUMBER"]
+        ok = lca[(lca["CASE_STATUS"] == "Certified") & (lca["VISA_CLASS"] == "H-1B")]["CASE_NUMBER"]
         sites = load(f"worksites_fy{year}")
         sites = sites[sites["SECONDARY_ENTITY"].str.upper().str.startswith("Y") & sites["CASE_NUMBER"].isin(ok)]
         rows.append(sites.drop_duplicates(["CASE_NUMBER", "SECONDARY_ENTITY_BUSINESS_NAME"])
