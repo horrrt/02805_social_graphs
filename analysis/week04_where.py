@@ -24,15 +24,19 @@ A filing counts at most its own requested positions in each metro, however
 many addresses there it lists.
 
 Checks
-- Louvain, 50 runs. The page shows the partition found most often and
-  reports how often; its modularity is compared with 50 degree-preserving
+- Louvain, 100 runs. The page shows the partition found most often and
+  reports how often; its modularity is compared with 100 degree-preserving
   rewirings of the company x metro graph, re-projected (each company and each
   metro keeps its number of partners; filing counts are dealt back out at
   random), one Louvain run each.
 - NMI of the communities with Census regions and divisions, against 1,000
   shuffles of the labels.
 - Infomap on the same projection, compared with Louvain and Census regions.
+- The same communities on FY2024, on the same 40 metros: the median NMI
+  between a FY2024 run and a FY2025 run, beside the median NMI between two
+  FY2025 runs.
 - The disparity filter (Serrano, Boguna and Vespignani 2009) at five alphas.
+  The map opens at the smallest alpha that keeps all 40 metros connected.
   netbone implements it but pins networkx 2.8 and numpy 1.26, so the ten-line
   formula lives here and check_disparity() tests it on the course's own
   worked example.
@@ -66,7 +70,8 @@ YEAR = 2025
 TOP = 40  # metros on the page, by filings
 ALPHAS = [0.05, 0.1, 0.2, 0.3, 0.5]
 DEFAULT_ALPHA = 0.2
-RUNS = 50
+RUNS = 100
+OTHER_YEAR = 2024  # a complete fiscal year, for the community step
 SHORTLIST = 5  # largest placing firms, as in section 3
 LONG_KM = 1500
 SEED = 2805
@@ -170,12 +175,12 @@ def first_city(title, places):
     return float(best["INTPTLAT"]), float(best["INTPTLONG"])
 
 
-def worksite_metros(lookup, town_lookup):
-    """One row per worksite of FY2025's certified H-1B filings, with its metro and employer."""
-    lca = load(f"lca_fy{YEAR}")
+def worksite_metros(lookup, town_lookup, year=YEAR):
+    """One row per worksite of a year's certified H-1B filings, with its metro and employer."""
+    lca = load(f"lca_fy{year}")
     lca = lca[(lca["CASE_STATUS"] == "Certified") & (lca["VISA_CLASS"] == "H-1B")]
     lca = lca.assign(employer=[resolver().employer(n, f) for n, f in zip(lca["EMPLOYER_NAME"], lca["EMPLOYER_FEIN"])])
-    sites = load(f"worksites_fy{YEAR}")
+    sites = load(f"worksites_fy{year}")
     sites = sites[sites["CASE_NUMBER"].isin(lca["CASE_NUMBER"])].copy()
     sites["workers"] = pd.to_numeric(sites["WORKSITE_WORKERS"], errors="coerce").fillna(1)
     sites["state"] = sites["WORKSITE_STATE"].str.upper().str.strip()
@@ -351,6 +356,16 @@ def main():
     lost = sorted(set(graphs[str(ALPHAS[i + 1])]["nodes"]) - set(graphs[str(snap)]["nodes"]),
                   key=lambda m: -filings[m])
     snap_dropped = [by_id[m]["name"] for m in lost]
+    # Why the map opens where it does: the smallest alpha that keeps every metro in one piece.
+    whole = [k for k, a in enumerate(ALPHAS) if gc_size[k] == TOP]
+    connected_alpha = ALPHAS[whole[0]] if whole else None
+    k = ALPHAS.index(DEFAULT_ALPHA)
+    choice_note = (
+        (f"The map opens at α = {DEFAULT_ALPHA}, the smallest α in the sweep that keeps all {TOP} metros "
+         if DEFAULT_ALPHA == connected_alpha else f"The map opens at α = {DEFAULT_ALPHA}, which keeps "
+         f"{gc_size[k]} of {TOP} metros ")
+        + f"connected, with {edges_kept[k]} links. At α = {ALPHAS[k - 1]} it keeps {edges_kept[k - 1]} links "
+        f"and {gc_size[k - 1]} connected metros; at α = {ALPHAS[k + 1]}, {edges_kept[k + 1]} links.")
     if snap_dropped:
         head = snap_dropped[:3]
         more = len(snap_dropped) - len(head)
@@ -381,6 +396,31 @@ def main():
         hp = project(pd.DataFrame(rows, columns=["employer", "metro", "filings"]), top)
         null_q.append(louvain(hp, SEED + r)[1])
     null_q = np.array(null_q)
+
+    # The same step on another complete year, on the same metros.
+    sites_b, _, _ = worksite_metros(lookup, town_lookup, OTHER_YEAR)
+    pairs_b = (sites_b.drop_duplicates(["CASE_NUMBER", "metro"]).groupby(["employer", "metro"]).size()
+               .rename("filings").reset_index())
+    g_b = project(pairs_b, top)
+    runs_b = [louvain(g_b, SEED + r)[0] for r in range(RUNS)]
+    labels_b = [{m: i for i, part in enumerate(c) for m in part} for c in runs_b]
+    found_b = Counter(frozenset(frozenset(c) for c in part) for part in runs_b)
+    modal_b = max(found_b, key=lambda k: (found_b[k], nx.community.modularity(g_b, [set(c) for c in k], weight="weight")))
+    member_b = {m: i for i, part in enumerate(modal_b) for m in part}
+    vec = lambda lab: [lab[m] for m in top]
+    across = [nmi(vec(a), vec(b)) for a in labels_b for b in run_labels]
+    within_b = [nmi(vec(a), vec(b)) for a, b in combinations(labels_b, 2)]
+    other_year = {
+        "year": OTHER_YEAR, "metros": TOP, "runs": RUNS,
+        "filings": int(sites_b["CASE_NUMBER"].nunique()),
+        "communities": len(modal_b), "modal_runs": found_b[modal_b], "partitions_found": len(found_b),
+        "nmi_modal_partitions": round(float(nmi(vec(member_b), vec(member))), 3),
+        "nmi_across_years_median": round(float(np.median(across)), 3),
+        "nmi_within_fy2025_median": round(float(np.median(seeds_nmi)), 3),
+        "nmi_within_other_year_median": round(float(np.median(within_b)), 3),
+        # FY2025 runs that find exactly the FY2024 split.
+        "fy2025_runs_equal_to_other_year": int(sum(frozenset(frozenset(c) for c in part) == modal_b for part in runs)),
+    }
     comm = [member[m] for m in top]
     region_nmi, region_p = shuffled_nmi(comm, [by_id[m]["census"] for m in top], rng)
     division_nmi, division_p = shuffled_nmi(comm, [by_id[m]["division"] for m in top], rng)
@@ -454,6 +494,7 @@ def main():
         "nmi_census_region": round(region_nmi, 3), "p_region": round(region_p, 4),
         "nmi_census_division": round(division_nmi, 3), "p_division": round(division_p, 4),
         "seeds": RUNS, "communities": len(best),
+        "other_year": other_year,
     }
     page = {
         "meta": {
@@ -468,6 +509,7 @@ def main():
         "census_colours": CENSUS_COLOURS,
         "backbone": {"alphas": ALPHAS, "default_alpha": DEFAULT_ALPHA, "gc_size": gc_size,
                      "edges_kept": edges_kept, "snap_alpha": snap, "snap_note": snap_note,
+                     "connected_alpha": connected_alpha, "choice_note": choice_note,
                      "snap_dropped": snap_dropped, "graphs": graphs},
         "null_model": null_model,
         "infomap": infomap_check,

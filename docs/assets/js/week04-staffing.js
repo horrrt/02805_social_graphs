@@ -282,22 +282,42 @@ fetch(new URL("../../weeks/week04/data/staffing_communities.json", import.meta.u
     stats.querySelector("tbody").innerHTML = [
       row("Communities (median run)", num(m.communities_median), num(w.communities_median_unweighted)),
       row("Modularity, real network", two(m.weighted_vs_rewired.real), two(m.wiring_only.real)),
-      row("Modularity, rewired null", two(m.weighted_vs_rewired.null), two(m.wiring_only.null)),
+      row("Modularity, rewired null (largest piece)", two(m.weighted_vs_rewired.null), two(m.wiring_only.null)),
+      row("Modularity, filing counts shuffled", two(m.weights_only.null), "–"),
       row("NMI between two seeds", two(w.nmi_between_seeds_weighted), two(w.nmi_between_seeds_unweighted)),
       row("NMI with client industry", two(iv.nmi_community_industry), two(iv.unweighted.nmi_community_industry)),
       row("NMI with main vendor", two(iv.nmi_community_main_vendor_same_clients),
         two(iv.unweighted.nmi_community_main_vendor_same_clients)),
+      row("AMI with client industry", two(iv.ami_community_industry), two(iv.unweighted.ami_community_industry)),
+      row("AMI with main vendor", two(iv.ami_community_main_vendor_same_clients),
+        two(iv.unweighted.ami_community_main_vendor_same_clients)),
+      row("Clients in their main vendor's group", pct(iv.share_with_own_main_vendor),
+        pct(iv.unweighted.share_with_own_main_vendor)),
     ].join("");
+    const wc = m.weights_check;
+    const shares = {
+      ".cross-share": 1 - wc.real_inside_share,
+      ".cross-share-null": 1 - wc.shuffled_inside_share,
+      ".multi-filings": wc.filings_to_multi_vendor_clients_share,
+      ".multi-links": wc.links_to_multi_vendor_clients_share,
+    };
+    for (const [sel, v] of Object.entries(shares)) stats.querySelector(sel).textContent = pct(v);
+    stats.querySelector(".pieces").textContent = num(m.rewired_components_median);
     const fill = {
       ".cross": w.nmi_median,
       ".seeds": w.nmi_between_seeds_weighted,
       ".seeds-plain": w.nmi_between_seeds_unweighted,
-      ".vendor": iv.nmi_community_main_vendor_same_clients,
-      ".vendor-plain": iv.unweighted.nmi_community_main_vendor_same_clients,
-      ".industry": iv.nmi_community_industry,
+      ".vendor": iv.ami_community_main_vendor_same_clients,
+      ".vendor-plain": iv.unweighted.ami_community_main_vendor_same_clients,
+      ".industry": iv.ami_community_industry,
       ".im-louvain": c.infomap.nmi_with_louvain,
-      ".im-vendor": c.infomap.nmi_community_main_vendor_same_clients,
-      ".im-industry": c.infomap.nmi_community_industry,
+      ".im-vendor": c.infomap.ami_community_main_vendor_same_clients,
+      ".im-industry": c.infomap.ami_community_industry,
+      ".mod": m.weighted_vs_rewired.real,
+      ".null": m.weighted_vs_rewired.null,
+      ".mod-plain": m.wiring_only.real,
+      ".null-plain": m.wiring_only.null,
+      ".null-weights": m.weights_only.null,
     };
     stats.querySelector(".im-modules").textContent = num(c.infomap.modules);
     for (const [sel, v] of Object.entries(fill)) stats.querySelector(sel).textContent = two(v);

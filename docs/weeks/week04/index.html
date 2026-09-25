@@ -39,11 +39,9 @@
             <h1>Who hires<br />America's foreign workers?</h1>
             <p class="lede">Three networks from H-1B filings</p>
             <p class="body">
-              Where the work is filed, which occupations travel together, and
-              which firms staff the seats — all from the same Department of
-              Labor disclosures. This page builds out
-              <a href="#place" style="color:#ffb768">where the hiring is</a>,
-              which occupations travel together, and who staffs the seats.
+              <a href="#place" style="color:#ffb768">Where the hiring is</a>,
+              which occupations travel together, and which firms staff the
+              seats, all from the same Department of Labor disclosures.
             </p>
             <p class="caution">
               A shared employer is not a shared labour market.
@@ -241,6 +239,7 @@
               only the links that are heavy for someone, and it comes apart.</b>
               Cities are linked when they share an employer. The slider is the
               disparity-filter α from Week 4.
+              <span id="place-alpha-choice"></span>
             </p>
 
             <div class="yearline">
@@ -392,13 +391,15 @@
                 Francisco, Seattle, Los Angeles, San Diego, Austin, Boston and
                 Washington. The 25 smaller metros form the third. The split is
                 real but weak: modularity is 0.049 against 0.013 for rewired
-                networks that keep each company's number of metros (z = 32),
-                and Louvain finds it in 31 of 50 runs; the other 19 find one
-                other split. NMI with Census regions is 0.14 and with
-                divisions 0.21, no better than shuffled labels (p = 0.12 and
-                0.11). Infomap, which follows a random walk between metros
-                instead of counting links, finds no split at all: one module
-                holds all 40.
+                networks that keep each company's number of metros (z = 33),
+                and Louvain finds it in 64 of 100 runs; the other 36 find one
+                other split, into two groups. FY2024 gives that two-group split
+                in all 100 runs, so it matches the split shown here at NMI 0.64,
+                against 1.00 between two FY2025 runs. NMI with Census regions is
+                0.14 and with divisions 0.21, no better than shuffled labels
+                (p = 0.11 and 0.11). Infomap, which follows a random walk between
+                metros instead of counting links, finds no split at all: one
+                module holds all 40.
               </span>
             </div>
           </div>
@@ -477,8 +478,12 @@
               <b>Employers reveal bundles of work.</b>
               Two occupations are linked when the same companies file for both.
               Clusters come from the whole network of <span data-jobs="occupations">…</span>
-              occupations. The figures show the 60 occupations with the most
-              filings, each with its three strongest links.
+              occupations, and they are real: modularity
+              <span data-jobs="null-real">…</span> against
+              <span data-jobs="null-null">…</span> for rewired networks in which
+              every company keeps its number of occupations. The figures show
+              the 60 occupations with the most filings, each drawn with its three
+              strongest links, a display choice rather than a backbone.
             </p>
           </div>
 
@@ -516,9 +521,15 @@
             </div>
             <p class="sub">
               Colours are clusters found by Louvain in the full co-hiring
-              network, named after their largest occupation. A ringed node also
-              belongs to a second cluster: its employers tie it to that cluster
-              more than the cluster's size predicts. Click a node to inspect it.
+              network, named after their largest occupation. We looked for
+              occupations that also belong to a second cluster, with more
+              employer ties there than any rewired network gives them. Only
+              <span data-jobs="bridges-pass">…</span> of
+              <span data-jobs="bridges-tested">…</span> pass, fewer than the
+              <span data-jobs="bridges-chance">…</span> a test this strict
+              passes by chance, so no occupation clearly belongs to two
+              clusters. A ringed node would be one that passes. Click a node to
+              inspect it.
             </p>
             <div class="jobs-grid jobs-network-grid">
               <div class="plot">
@@ -527,7 +538,7 @@
               </div>
               <aside class="panel jobs-inspector" id="jobs-node-inspector">
                 <h2>Bridge jobs</h2>
-                <p>Ringed occupations belong to more than one cluster.</p>
+                <p>Ringed occupations pass the second-cluster test.</p>
                 <div class="jobs-bridge-list" id="jobs-bridge-list"></div>
               </aside>
             </div>
@@ -576,10 +587,30 @@
                   that filed for both occupations. Filings still on 2010 computer
                   codes (<span data-jobs="legacy">…</span>) move to their 2018
                   successors. Louvain runs 100 times on the full projection and
-                  the best modularity run is kept. An occupation's second cluster
-                  is the one its employer ties exceed most over the expectation
-                  modularity uses (its strength times the cluster's, over twice
-                  the total weight), when that ratio is above 1. NMI and AMI
+                  the best modularity run is kept; the runs agree at a median NMI
+                  of <span data-jobs="runs-nmi">…</span>. The null rewires the
+                  company × occupation network <span data-jobs="null-runs">…</span>
+                  times, keeping each company's number of occupations and each
+                  occupation's number of companies, and projects it again; real
+                  and rewired networks are scored on their largest connected
+                  piece (z = <span data-jobs="null-z">…</span>). An occupation's
+                  second cluster is the one its employer ties exceed most over
+                  the expectation modularity uses (its strength times the
+                  cluster's, over twice the total weight). A ratio above 1, our
+                  first rule, marks <span data-jobs="lift1">…</span> occupations,
+                  but the rewired networks mark
+                  <span data-jobs="lift1-chance">…</span> on average with the
+                  same cluster labels. So an occupation now counts only when its
+                  ratio beats its own ratio in every rewired network. The
+                  disparity filter at α = <span data-jobs="bb-alpha">…</span>, as
+                  in the place section, keeps <span data-jobs="bb-links">…</span>
+                  of <span data-jobs="bb-total">…</span> links and
+                  <span data-jobs="bb-occ">…</span> occupations. Louvain on that
+                  backbone finds <span data-jobs="bb-clusters">…</span> clusters,
+                  which match the full network's at NMI
+                  <span data-jobs="bb-nmi">…</span>, against
+                  <span data-jobs="bb-base">…</span> between two runs on the full
+                  network: the clusters only partly survive the filter. NMI and AMI
                   leave out occupations alone in a cluster and are compared with
                   100 shuffles of the major-group labels. The same method on
                   FY2024 gives clusters that match FY2025 at NMI
@@ -596,43 +627,54 @@
           </div>
         </section>
 
-        <!-- Staffing · Track A (stub) ----------------------------------- -->
+        <!-- Staffing · Track A ------------------------------------------ -->
         <section class="step" id="who">
           <div class="card">
             <div class="step-head">
               <span class="num">3</span>
               <h2>Who staffs whom</h2>
-              <span class="year-tag">Gyula · firm → client</span>
+              <span class="year-tag">firm → client · FY2025</span>
             </div>
             <p class="sub">
-              <b>One H-1B filing in five places the worker at another company.
-              Clients group by the firm that staffs them, far more than by their
-              industry.</b>
+              <b>One certified H-1B filing in five names a client company as the
+              worksite. Held to a random baseline, clients group only weakly, and
+              about as much by industry as by the firm that staffs them.</b>
             </p>
             <div class="staffing-prose">
               <h3>How many workers sit at a client?</h3>
               <p>
-                In FY2025, 104,732 of the 537,796 certified filings (19.5%) name
-                a client site: the worker is employed by one company and works
-                at another, down from 21.9% in FY2022. We leave out the 16% of
-                client entries that name no company, such as "Home Address".
-                Placing firms also fare worse at USCIS: in FY2022 it denied 2.7%
-                of their first-time petitions, against 1.3% for direct employers.
+                A filing is a request to employ someone, not a hire. In FY2025,
+                104,732 of the 537,796 certified filings (19.5%) mark a client
+                site. The worksites file lists every client a filing names; we
+                leave out the 16% of client entries that name no company, such
+                as "Home Address", and the 1,881 where a firm names itself.
+                Counted that way, 101,763 filings (18.9%) name a client company:
+                the worker is employed by one company and works at another, down
+                from 21.9% in FY2022. Placing firms also fare worse
+                at USCIS: in FY2022 it denied 2.7% of their first-time petitions,
+                against 1.3% for direct employers.
               </p>
               <h3>Do clients group by industry or by the firm that staffs them?</h3>
               <p>
-                Louvain splits the firm–client network, weighted by filings, into
-                about 70 groups. Among the 862 clients with a known industry and
-                two or more firms, a client's group matches its main vendor far
-                better than its industry: NMI 0.70 against 0.17, and both beat
-                shuffled labels. Infomap agrees (0.87 against 0.36). Without the
-                filing counts, the vendor match falls to 0.47.
+                By both, weakly. With every firm–client link counted once,
+                Louvain splits the network into about 65 groups, and the split
+                beats rewired networks that keep everyone's number of partners
+                (modularity 0.57 against 0.53). Among the 862 clients with a
+                known industry and two or more firms, the groups match the main
+                vendor at an adjusted mutual information (AMI) of 0.09 and the
+                industry at 0.07; both beat shuffled labels. AMI corrects NMI for
+                chance, which matters here: these clients have 339 main vendors
+                but only 18 industries. Counting filings pulls clients to their
+                main vendor (AMI 0.51 against 0.06), but that split scores below
+                rewired networks with the same filing counts (0.60 against 0.74),
+                and the vendor's head start is built in: the vendor is a node in
+                the same network, and 87% of these clients land in its group.
               </p>
               <h3>Who relies on a single vendor?</h3>
               <p>
-                Small clients. 14,678 of the 18,926 clients use one firm, but they
-                hold 22% of placed filings. Of the 630 clients with 20 or more
-                filings, 70 get over 90% from one firm, and the median one gets
+                Small clients. 14,679 of the 18,924 clients use one firm, but they
+                hold 22% of placed filings. Of the 629 clients with 20 or more
+                filings, 69 get over 90% from one firm, and the median one gets
                 37% from its largest. Citigroup, the largest client, uses 114
                 firms, and Tata Consultancy Services supplies a quarter. The eight
                 largest firms supply only 27% of what the 20 largest clients
@@ -640,10 +682,10 @@
               </p>
               <h3>Does it hold from year to year?</h3>
               <p>
-                The groups do not. On the clients present in both years,
-                consecutive years agree at NMI 0.29 to 0.33, far below the 0.71
-                between two runs on the same year. We compared vendor and
-                industry on FY2025 only.
+                Only in part. On the clients present in both years, consecutive
+                years agree at NMI 0.21 to 0.27, about half the 0.47 to 0.52
+                between two runs of the same year on the same clients. We
+                compared vendor and industry on FY2025 only.
               </p>
             </div>
             <figure class="staffing" id="staffing-figure">
@@ -727,13 +769,31 @@
                   <b class="cross">…</b>, less than two runs of either kind with
                   different seeds (<b class="seeds">…</b> weighted,
                   <b class="seeds-plain">…</b> unweighted), so the filing counts
-                  change the grouping. They pull it toward vendors: NMI with
-                  each client's main vendor rises from
-                  <b class="vendor-plain">…</b> to <b class="vendor">…</b> when
-                  filings count, while NMI with industry stays near
-                  <b class="industry">…</b>. The null rewires the network so
-                  every firm and client keeps its number of partners. Figures
-                  from analysis/week04_staffing.py:
+                  change the grouping. They pull it toward vendors: AMI with each
+                  client's main vendor rises from <b class="vendor-plain">…</b>
+                  to <b class="vendor">…</b> when filings count, while AMI with
+                  industry stays near <b class="industry">…</b>.
+                </p>
+                <p class="sub">
+                  The null rewires the network so every firm and client keeps its
+                  number of partners, and deals the filing counts back out at
+                  random. Rewiring breaks the network into a median of
+                  <b class="pieces">…</b> pieces, each a free community, so we
+                  score each rewired network on its largest piece, as we do the
+                  real one. Without weights the real network wins
+                  (<b class="mod-plain">…</b> against
+                  <b class="null-plain">…</b>). With weights it loses
+                  (<b class="mod">…</b> against <b class="null">…</b>), and it
+                  loses when only the filing counts are shuffled on the real
+                  links (<b class="null-weights">…</b>). The real counts leave
+                  <b class="cross-share">…</b> of filings on links between
+                  groups, against <b class="cross-share-null">…</b> with shuffled
+                  counts: clients that use several firms hold
+                  <b class="multi-links">…</b> of the links but
+                  <b class="multi-filings">…</b> of the filings, and only their
+                  links can cross: a client with one firm sits in that firm's
+                  group. Figures from
+                  analysis/week04_staffing.py:
                 </p>
                 <table class="ego">
                   <thead>
@@ -749,10 +809,11 @@
                   Infomap, which follows a random walk instead of counting links,
                   splits the same network into <b class="im-modules">…</b> small
                   modules, most of them a firm with its clients. They agree with
-                  Louvain at NMI <b class="im-louvain">…</b> and follow the vendor
-                  far more than the industry (<b class="im-vendor">…</b> against
-                  <b class="im-industry">…</b>). Finer partitions raise every NMI,
-                  so compare vendor with industry within one method, not across
+                  Louvain at NMI <b class="im-louvain">…</b> and, like weighted
+                  Louvain, follow the vendor far more than the industry (AMI
+                  <b class="im-vendor">…</b> against
+                  <b class="im-industry">…</b>). Finer partitions raise every NMI;
+                  AMI corrects for that, so it is the number to compare across
                   methods.
                 </p>
               </div>
@@ -772,18 +833,24 @@
               <b>Place, job, and company describe different parts of the same
               sponsored-hiring system.</b>
               The map shows where applications are filed. The occupation network
-              shows which kinds of work employers request together, including
-              bridge jobs that connect more than one cluster. The staffing view
-              shows when the firm filing the application is not the company where
-              the worker is placed.
+              shows which kinds of work employers request together. The staffing
+              view shows when the firm filing the application is not the company
+              where the worker is placed.
             </p>
             <p class="sub">
               The useful takeaway is not that America has one uniform market or
               a neat set of regional ones. Distant metros are tied by many
               companies at once, led by large direct employers such as Amazon;
               the five biggest outsourcing firms lead only 27% of the long links.
-              Outsourcing shows in a different network: which clients group
-              together follows the firm that staffs them, not their industry.
+              Outsourcing shows in a different network, and there the groups are
+              weak: held to a random baseline, clients group about as much by
+              industry as by the firm that staffs them.
+            </p>
+            <p class="sub">
+              <b>What surprised us.</b> The long links between distant metros
+              belong to direct employers more than to outsourcing firms: Amazon
+              alone leads 30 of the 83 backbone links longer than 1,500 km, and
+              the five largest outsourcing firms together lead 22.
             </p>
             <div class="notice">
               <span class="ico">!</span>
@@ -799,12 +866,19 @@
               <summary><span class="qa-cue">AI use and how we checked it</span></summary>
               <div class="qa-body">
                 <p class="sub">
-                  AI assistance was used to help structure the page, write
-                  analysis code, and test the visual presentation. The numbers
-                  come from the public Department of Labor files and the scripts
-                  linked in the evidence section. We checked generated tables,
-                  comparisons, source scope, and the page behaviour against the
-                  local data before including a claim.
+                  AI coding assistants helped structure the page, wrote analysis
+                  and page code, drafted and revised text, and tested the visual
+                  presentation. The numbers come from the public Department of
+                  Labor files through the scripts linked in
+                  <a href="#evidence">Data and methods</a>. Each script writes
+                  the numbers its section quotes to a JSON file the page reads.
+                  <code>week04_schemas.py</code> checks each file against the
+                  fields the page uses, <code>week04_names_check.py</code> tests
+                  the company-name rules against tax numbers, and the site tests
+                  fail when the section 3 text, the regions card of section 1 or
+                  this closing drifts from its script's output. We checked generated tables, comparisons, source scope,
+                  and the page behaviour against the local data before including
+                  a claim.
                 </p>
               </div>
             </details>
@@ -830,24 +904,29 @@
                 <p class="sub">
                   Sources: US Department of Labor, Office of Foreign Labor
                   Certification — LCA disclosures and worksites file, public
-                  domain. Loader: <code>analysis/week04_data.py</code>. Place
-                  analysis will live in <code>analysis/week04_where.py</code>
-                  and write <code>docs/assets/data/week04_place.json</code>.
-                  Only allow-listed columns leave the build folder (no
-                  addresses, emails or phone numbers).
+                  domain. Only allow-listed columns leave the build folder (no
+                  addresses, emails or phone numbers). Each script writes the
+                  numbers its section quotes to a JSON file the page reads:
                 </p>
-              </div>
-            </details>
-            <details class="qa">
-              <summary>
-                <span class="qa-cue">AI use and how we checked it</span>
-              </summary>
-              <div class="qa-body">
-                <p class="sub">
-                  Draft. Closing will record what the agent built and which
-                  script each number on the page came from. Until then, treat
-                  every figure in the Place cards as a UI placeholder.
-                </p>
+                <ul class="sub">
+                  <li><a href="https://github.com/horrrt/02805_social_graphs/blob/main/analysis/week04_data.py"><code>week04_data.py</code></a>
+                    downloads the filings and keeps the allowed columns.</li>
+                  <li><a href="https://github.com/horrrt/02805_social_graphs/blob/main/analysis/week04_where.py"><code>week04_where.py</code></a>
+                    builds the place network and writes <code>docs/assets/data/week04_place.json</code>.</li>
+                  <li><a href="https://github.com/horrrt/02805_social_graphs/blob/main/analysis/week04_jobs.py"><code>week04_jobs.py</code></a>
+                    builds the occupation network.</li>
+                  <li><a href="https://github.com/horrrt/02805_social_graphs/blob/main/analysis/week04_staffing.py"><code>week04_staffing.py</code></a>
+                    and <a href="https://github.com/horrrt/02805_social_graphs/blob/main/analysis/week04_staffing_figure.py"><code>week04_staffing_figure.py</code></a>
+                    build the firm → client network and its figure.</li>
+                  <li><a href="https://github.com/horrrt/02805_social_graphs/blob/main/analysis/week04_names.py"><code>week04_names.py</code></a>
+                    decides which names are the same company;
+                    <a href="https://github.com/horrrt/02805_social_graphs/blob/main/analysis/week04_names_check.py"><code>week04_names_check.py</code></a>
+                    tests its rules against tax numbers, and
+                    <a href="https://github.com/horrrt/02805_social_graphs/blob/main/analysis/week04_sec.py"><code>week04_sec.py</code></a>
+                    adds industry codes from the SEC.</li>
+                  <li><a href="https://github.com/horrrt/02805_social_graphs/blob/main/analysis/week04_schemas.py"><code>week04_schemas.py</code></a>
+                    checks every JSON file against the fields the page reads.</li>
+                </ul>
               </div>
             </details>
           </div>
@@ -858,8 +937,7 @@
         <div class="shell">
           <span>
             Sources: US DOL OFLC LCA / worksites (public domain) · Census CBSA
-            delineations (when joined) · Week 4 methods: communities, weights,
-            backbones
+            delineations · Week 4 methods: communities, weights, backbones
           </span>
           <span>
             Who hires America's foreign workers? ·
