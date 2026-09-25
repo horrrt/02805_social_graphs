@@ -362,15 +362,17 @@ test("the topology-null table (clustering, assortativity, distance, diameter, cl
   // Issue 7: these rows had no baseline before. Each cell reads
   // "<real> (null <mean> ± <sd>, z = <z>)"; z = null instead prints
   // "no spread" (sd 0, which is what the migrant diameter null gives).
-  const fmtZ = (z) => (z === null ? "no spread" : `z = ${z >= 0 ? "+" : "-"}${Math.abs(z).toFixed(1)}`);
+  // The page writes negatives with a true minus sign (U+2212), as elsewhere on it.
+  const minus = (s) => s.replace("-", "\u2212");
+  const fmtZ = (z) => (z === null ? "no spread" : `z = ${z >= 0 ? "+" : "\u2212"}${Math.abs(z).toFixed(1)}`);
 
   for (const [net, label] of [["stock", "Migrants"], ["refugees", "Refugees"]]) {
     const topo = countryFacts[net].topology;
     const real = countryFacts[net];
     const cases = [
-      ["Clustering", real.clustering.toFixed(2), topo.null.clustering],
-      ["Degree assortativity", real.degree_assortativity.toFixed(2), topo.null.assortativity],
-      ["Average distance", real.mean_path.toFixed(2), topo.null.mean_path],
+      ["Clustering", minus(real.clustering.toFixed(2)), topo.null.clustering],
+      ["Degree assortativity", minus(real.degree_assortativity.toFixed(2)), topo.null.assortativity],
+      ["Average distance", minus(real.mean_path.toFixed(2)), topo.null.mean_path],
       ["Diameter", String(real.diameter), topo.null.diameter],
     ];
     for (const [rowLabel, realStr, nullValue] of cases) {
@@ -382,7 +384,7 @@ test("the topology-null table (clustering, assortativity, distance, diameter, cl
       );
       // The migrant diameter's null has zero spread, and the page writes
       // that mean as a bare integer ("null 3") rather than "3.00".
-      const nullMeanStr = nullValue.sd === 0 ? String(nullValue.mean) : nullValue.mean.toFixed(2);
+      const nullMeanStr = nullValue.sd === 0 ? String(nullValue.mean) : minus(nullValue.mean.toFixed(2));
       assert.ok(
         rowMatch[1].includes(`null ${nullMeanStr}`),
         `"${rowLabel}" (${label}) does not show null mean ${nullMeanStr}`,

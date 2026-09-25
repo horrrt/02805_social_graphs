@@ -1158,19 +1158,19 @@
               <tr><td>Corridors</td><td style="text-align: right">9,035</td><td style="text-align: right">4,792</td></tr>
               <tr><td>People</td><td style="text-align: right">282m</td><td style="text-align: right">31m</td></tr>
               <tr><td>Reciprocity</td><td style="text-align: right">0.41</td><td style="text-align: right">0.11</td></tr>
-              <tr><td>Clustering</td><td style="text-align: right">0.71 (null 0.67 ± 0.00, z = +17.2)</td><td style="text-align: right">0.60 (null 0.61 ± 0.00, z = -4.1)</td></tr>
-              <tr><td>Degree assortativity</td><td style="text-align: right">-0.26 (null -0.33 ± 0.00, z = +22.0)</td><td style="text-align: right">-0.34 (null -0.31 ± 0.00, z = -8.7)</td></tr>
-              <tr><td>Average distance</td><td style="text-align: right">1.75 (null 1.73 ± 0.00, z = +8.1)</td><td style="text-align: right">1.87 (null 1.84 ± 0.01, z = +3.2)</td></tr>
-              <tr><td>Diameter</td><td style="text-align: right">3 (null 3, no spread)</td><td style="text-align: right">4 (null 3.94 ± 0.24, z = +0.3)</td></tr>
-              <tr><td>Largest clique</td><td style="text-align: right">43 (null 27.31 ± 1.17, z = +13.4)</td><td style="text-align: right">20 (null 21.10 ± 0.98, z = -1.1)</td></tr>
+              <tr><td>Clustering</td><td style="text-align: right">0.71 (null 0.67 ± 0.002, z = +17.2)</td><td style="text-align: right">0.60 (null 0.61 ± 0.004, z = −4.1)</td></tr>
+              <tr><td>Degree assortativity</td><td style="text-align: right">−0.26 (null −0.33 ± 0.003, z = +22.0)</td><td style="text-align: right">−0.34 (null −0.31 ± 0.004, z = −8.7)</td></tr>
+              <tr><td>Average distance</td><td style="text-align: right">1.75 (null 1.73 ± 0.001, z = +8.1)</td><td style="text-align: right">1.87 (null 1.84 ± 0.009, z = +3.2)</td></tr>
+              <tr><td>Diameter</td><td style="text-align: right">3 (null 3, no spread)</td><td style="text-align: right">4 (null 3.94 ± 0.237, z = +0.3)</td></tr>
+              <tr><td>Largest clique</td><td style="text-align: right">43 (null 27.31 ± 1.172, z = +13.4)</td><td style="text-align: right">20 (null 21.10 ± 0.985, z = −1.1)</td></tr>
             </table>
-            <p class="fineprint">
+            <p class="sub">
               Clustering, assortativity, average distance, diameter and the
               largest clique are all computed on the undirected, unweighted
               core: whether two countries share any corridor, not how many
               people or how many corridors. The null is 100 degree-preserving
               double-edge-swap shuffles of that same core, from
-              <code>analysis/week03_country_networks.py</code>; z is (real -
+              <code>analysis/week03_country_networks.py</code>; z is (real −
               null mean) / null standard deviation. The migrant network's
               diameter never moved across 100 shuffles, so it has no z to
               report.
@@ -1185,8 +1185,8 @@
                 density on its own: in a directed graph wired at random, the
                 share of arcs whose reverse also exists is just the density.
                 Against that baseline migration is reciprocal
-                <b>2.4×</b> more than chance, and displacement is
-                <b>0.9×</b>, which is to say not at all. People who move for
+                <strong>2.4×</strong> more than chance, and displacement is
+                <strong>0.9×</strong>, which is to say not at all. People who move for
                 work come and go; people who flee do not go back down the
                 same edge, and the refugee network is no more two-way than a
                 random graph of its size would be. The eleven destinations that are refugee-only are
