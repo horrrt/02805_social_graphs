@@ -175,6 +175,7 @@ code{font-family:var(--mono);font-size:12.5px;background:#f0ede6;padding:1px 5px
           <tbody id="score-body"></tbody>
         </table>
       </div>
+      <p class="lbl" id="score-note">One seed per model, one run &middot; not an average over many draws.</p>
       <div class="finding" id="verdict-01"></div>
     </div>
   </section>
@@ -183,7 +184,7 @@ code{font-family:var(--mono);font-size:12.5px;background:#f0ede6;padding:1px 5px
     <div class="rail"><div class="no">02</div><p class="lbl tag">The tail</p></div>
     <div class="act-body">
       <h2>Where the candidates give themselves away</h2>
-      <p>The share of articles with at least <em class="key">k</em> links, on log axes, with no binning. A heavy tail runs straight and far. A coin-flip tail falls off a cliff.</p>
+      <p>The share of articles with at least <em class="key">k</em> links, on log axes, with no binning. A heavy tail runs straight and far. A coin-flip tail falls off a cliff. This is a visual read, not a fitted power law: no distribution was fit to these tails.</p>
       <figure><canvas id="cv-ccdf" style="aspect-ratio:1/0.5"></canvas>
         <figcaption>P(K &ge; k) against k &middot; both axes logarithmic &middot; click a name to hide it</figcaption></figure>
       <div class="controls" id="ccdf-keys"></div>
@@ -404,7 +405,7 @@ buildScore(); paintCandidate();
   ["er","ws","ba"].forEach(function(k){
     if(["path","clus","kmax"].every(function(key){ return verdictCell(k,key).ok; })) n++;
   });
-  $("verdict-01").innerHTML = "<p><strong>No candidate passes all three scenes.</strong> Random links get the short paths and nothing else. Watts"+EN+"Strogatz buys the clustering with a ring lattice and its biggest hub reaches "+D.models.ws.kmax+", against Marvel's "+D.models.marvel.kmax+". Preferential attachment finally grows hubs, and its clustering falls to "+f(D.models.ba.clus,3)+" against Marvel's "+f(D.models.marvel.clus,3)+". Each mechanism explains one scene, and "+(n===0?"none explains the network":"the combination still escapes them")+".</p>";
+  $("verdict-01").innerHTML = "<p><strong>No candidate passes all three scenes.</strong> Short paths come free to all three, even random links. Random links stop there: clustering falls to "+f(D.models.er.clus,3)+" and its biggest hub reaches only "+D.models.er.kmax+", both far off Marvel's "+f(D.models.marvel.clus,3)+" and "+D.models.marvel.kmax+". Watts"+EN+"Strogatz also buys the clustering scene with a ring lattice, but its biggest hub still reaches only "+D.models.ws.kmax+". Preferential attachment buys the hub scene instead, reaching "+D.models.ba.kmax+", but its clustering falls to "+f(D.models.ba.clus,3)+". Two scenes each is the best any candidate manages, and "+(n===0?"none plays all three":"the combination still escapes them")+".</p>";
 })();
 
 /* ---- 02 CCDF ---- */
