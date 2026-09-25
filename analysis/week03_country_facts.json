@@ -10,7 +10,95 @@
   "diameter": 3,
   "clustering": 0.7106,
   "degree_assortativity": -0.2633,
-  "total_people": 281873569
+  "total_people": 281873569,
+  "topology": {
+   "null": {
+    "assortativity": {
+     "mean": -0.3337,
+     "sd": 0.0032,
+     "n": 100,
+     "z": 22.0
+    },
+    "clustering": {
+     "mean": 0.6693,
+     "sd": 0.0024,
+     "n": 100,
+     "z": 17.208
+    },
+    "mean_path": {
+     "mean": 1.7347,
+     "sd": 0.0014,
+     "n": 100,
+     "z": 8.071
+    },
+    "diameter": {
+     "mean": 3,
+     "sd": 0.0,
+     "n": 100,
+     "z": null
+    }
+   },
+   "null_meta": {
+    "draws": 100,
+    "swap_shortfalls": 0,
+    "disconnected_draws": 0,
+    "clique_timed_out": false
+   },
+   "largest_clique": {
+    "size": 43,
+    "members": [
+     "ARG",
+     "AUS",
+     "AUT",
+     "BEL",
+     "BGR",
+     "BOL",
+     "BRA",
+     "CAN",
+     "CHE",
+     "CHL",
+     "CHN",
+     "COL",
+     "CRI",
+     "CYP",
+     "DEU",
+     "DNK",
+     "ESP",
+     "EST",
+     "FIN",
+     "FRA",
+     "GBR",
+     "GRC",
+     "HRV",
+     "HUN",
+     "ISL",
+     "ISR",
+     "ITA",
+     "LTU",
+     "LUX",
+     "LVA",
+     "MEX",
+     "NLD",
+     "NOR",
+     "PER",
+     "POL",
+     "PRT",
+     "ROU",
+     "RUS",
+     "SVK",
+     "SVN",
+     "USA",
+     "VEN",
+     "ZAF"
+    ],
+    "null": {
+     "mean": 27.31,
+     "sd": 1.1721,
+     "n": 100,
+     "z": 13.386
+    }
+   }
+  }
  },
  "refugees": {
   "nodes": 204,
@@ -22,7 +110,72 @@
   "diameter": 4,
   "clustering": 0.5991,
   "degree_assortativity": -0.3434,
-  "total_people": 30958200
+  "total_people": 30958200,
+  "topology": {
+   "null": {
+    "assortativity": {
+     "mean": -0.3058,
+     "sd": 0.0043,
+     "n": 100,
+     "z": -8.744
+    },
+    "clustering": {
+     "mean": 0.6142,
+     "sd": 0.0037,
+     "n": 100,
+     "z": -4.081
+    },
+    "mean_path": {
+     "mean": 1.8384,
+     "sd": 0.0089,
+     "n": 100,
+     "z": 3.213
+    },
+    "diameter": {
+     "mean": 3.94,
+     "sd": 0.2375,
+     "n": 100,
+     "z": 0.253
+    }
+   },
+   "null_meta": {
+    "draws": 100,
+    "swap_shortfalls": 0,
+    "disconnected_draws": 1,
+    "clique_timed_out": false
+   },
+   "largest_clique": {
+    "size": 20,
+    "members": [
+     "BRA",
+     "CAN",
+     "CIV",
+     "DEU",
+     "EGY",
+     "ERI",
+     "ETH",
+     "GBR",
+     "IRQ",
+     "ITA",
+     "LBN",
+     "MAR",
+     "NLD",
+     "NOR",
+     "SDN",
+     "SOM",
+     "SWE",
+     "SYR",
+     "USA",
+     "YEM"
+    ],
+    "null": {
+     "mean": 21.1,
+     "sd": 0.9849,
+     "n": 100,
+     "z": -1.117
+    }
+   }
+  }
  },
  "stock_rankings": {
   "weighted_in_degree": [

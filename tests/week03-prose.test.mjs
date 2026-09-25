@@ -37,6 +37,8 @@ const tails = loadAnalysis("week03_tails.json");
 const gravity = loadAnalysis("week03_gravity.json");
 const communities = loadAnalysis("week03_communities.json");
 const passengers = loadAnalysis("week03_passengers.json");
+const countryFacts = loadAnalysis("week03_country_facts.json");
+const corridorNodes = corridors.nodes;
 
 test("the page's country counts match the corridors file", () => {
   const total = corridors.countries.length;
@@ -278,6 +280,149 @@ test("the passenger-per-route figures match week03_passengers.json, Venezuela ha
     hasPhrase(`${venezuela.routes} routes for ${venezuela.per_route.toLocaleString("en-US")}`),
     `page does not quote Venezuela's exact per_route figure ${venezuela.per_route}`,
   );
+});
+
+test("the top-15 destination overlap names match country_facts.json, not the old Iran mix-up", () => {
+  const overlap = countryFacts.destination_overlap;
+  const names = overlap.in_both.map((iso3) => corridorNodes[iso3].name);
+  assert.ok(
+    hasPhrase(`only four appear in both: ${names.join(", ")}`),
+    `page's shared-destination list does not match country_facts.json (${names.join(", ")})`,
+  );
+});
+
+test("the raw-count R2 in the gravity paragraph matches gravity.json", () => {
+  const r2 = gravity.r2_counts.toFixed(2);
+  assert.ok(
+    hasPhrase(`and ${r2} on the raw counts`),
+    `page does not quote r2_counts ${r2} from week03_gravity.json`,
+  );
+});
+
+test("the role-change count and named movers match cartography.json", () => {
+  const moved = cart.moved;
+  assert.ok(
+    hasPhrase(`<b>${moved.length} countries changed the part they play`),
+    `page does not quote ${moved.length} moved countries from cartography.json`,
+  );
+  const venezuela = moved.find((row) => row.iso3 === "VEN");
+  const colombia = moved.find((row) => row.iso3 === "COL");
+  assert.ok(venezuela, "Venezuela is not in cartography.json's moved list");
+  assert.ok(colombia, "Colombia is not in cartography.json's moved list");
+  assert.ok(
+    hasPhrase(`Venezuela moved from ${venezuela.from} to ${venezuela.to}`),
+    `page does not describe Venezuela's move as ${venezuela.from} to ${venezuela.to}`,
+  );
+  assert.ok(
+    hasPhrase(`Colombia moved from ${colombia.from} to ${colombia.to}`),
+    `page does not describe Colombia's move as ${colombia.from} to ${colombia.to}`,
+  );
+  // Ukraine no longer appears in the "both moved" sentence; the JSON is the
+  // reason why (it is not in the moved list at all).
+  assert.ok(
+    !cart.moved.some((row) => row.iso3 === "UKR"),
+    "Ukraine now appears in cartography.json's moved list; the page's Ukraine removal should be revisited",
+  );
+});
+
+test("the destinations-per-origin fit p in the tail-fix paragraph matches tails.json, rounded", () => {
+  const p = tails.fits.out_degree.p.toFixed(2);
+  assert.ok(
+    hasPhrase(`and it reads ${p}`),
+    `page does not quote the corrected out-degree fit p ${p} from week03_tails.json`,
+  );
+});
+
+test("the null-model overclaim framing names what the null holds fixed", () => {
+  // Issue 6: the null preserves each country's number of partners (degree),
+  // not its total corridor weight, so the headline and glossary must not
+  // claim the degree sequence alone "explains" or "cannot explain"
+  // betweenness.
+  assert.ok(!/the degree sequence cannot explain/.test(flat));
+  assert.ok(!/partners can explain/.test(flat));
+  assert.ok(
+    hasPhrase("predicts when the corridor sizes are dealt out at random"),
+    "page does not reword the broker headline around what the null preserves",
+  );
+});
+
+test("PageRank's damping factor (0.85) is stated where PageRank appears", () => {
+  assert.ok(
+    hasPhrase("damping factor"),
+    "page never states the PageRank damping factor where PageRank is introduced",
+  );
+  assert.ok(hasPhrase("0.85"), "page never states the PageRank damping factor 0.85");
+  assert.ok(
+    /0\.85/.test(corridor),
+    "corridor.js panel text does not mention the 0.85 damping factor",
+  );
+});
+
+test("the topology-null table (clustering, assortativity, distance, diameter, clique) matches country_facts.json", () => {
+  // Issue 7: these rows had no baseline before. Each cell reads
+  // "<real> (null <mean> ± <sd>, z = <z>)"; z = null instead prints
+  // "no spread" (sd 0, which is what the migrant diameter null gives).
+  const fmtZ = (z) => (z === null ? "no spread" : `z = ${z >= 0 ? "+" : "-"}${Math.abs(z).toFixed(1)}`);
+
+  for (const [net, label] of [["stock", "Migrants"], ["refugees", "Refugees"]]) {
+    const topo = countryFacts[net].topology;
+    const real = countryFacts[net];
+    const cases = [
+      ["Clustering", real.clustering.toFixed(2), topo.null.clustering],
+      ["Degree assortativity", real.degree_assortativity.toFixed(2), topo.null.assortativity],
+      ["Average distance", real.mean_path.toFixed(2), topo.null.mean_path],
+      ["Diameter", String(real.diameter), topo.null.diameter],
+    ];
+    for (const [rowLabel, realStr, nullValue] of cases) {
+      const rowMatch = html.match(new RegExp(`<td>${rowLabel}</td>([\\s\\S]*?)</tr>`));
+      assert.ok(rowMatch, `page is missing a "${rowLabel}" row`);
+      assert.ok(
+        rowMatch[1].includes(realStr),
+        `"${rowLabel}" (${label}) does not show real value ${realStr}`,
+      );
+      // The migrant diameter's null has zero spread, and the page writes
+      // that mean as a bare integer ("null 3") rather than "3.00".
+      const nullMeanStr = nullValue.sd === 0 ? String(nullValue.mean) : nullValue.mean.toFixed(2);
+      assert.ok(
+        rowMatch[1].includes(`null ${nullMeanStr}`),
+        `"${rowLabel}" (${label}) does not show null mean ${nullMeanStr}`,
+      );
+      assert.ok(
+        rowMatch[1].includes(fmtZ(nullValue.z)),
+        `"${rowLabel}" (${label}) does not show ${fmtZ(nullValue.z)}`,
+      );
+    }
+    const clique = topo.largest_clique;
+    const rowMatch = html.match(new RegExp(`<td>Largest clique</td>([\\s\\S]*?)</tr>`));
+    assert.ok(rowMatch, "page is missing a \"Largest clique\" row");
+    assert.ok(
+      rowMatch[1].includes(String(clique.size)),
+      `Largest clique row (${label}) does not show real size ${clique.size}`,
+    );
+    assert.ok(
+      rowMatch[1].includes(`null ${clique.null.mean.toFixed(2)}`),
+      `Largest clique row (${label}) does not show null mean ${clique.null.mean.toFixed(2)}`,
+    );
+    assert.ok(
+      rowMatch[1].includes(fmtZ(clique.null.z)),
+      `Largest clique row (${label}) does not show ${fmtZ(clique.null.z)}`,
+    );
+  }
+});
+
+test("the two named cliques list exactly the countries in country_facts.json's largest_clique.members", () => {
+  const nodes = loadData("week03_corridors.json").nodes;
+  for (const net of ["stock", "refugees"]) {
+    const members = countryFacts[net].topology.largest_clique.members;
+    const names = members.map((iso3) => nodes[iso3].name).sort();
+    for (const name of names) {
+      assert.ok(hasPhrase(name), `clique write-up is missing ${name} (from ${net})`);
+    }
+    assert.ok(
+      hasPhrase(`(${members.length} countries)`),
+      `clique write-up does not state the ${members.length}-country count for ${net}`,
+    );
+  }
 });
 
 test("section references point at sections that exist (1-8 only)", () => {

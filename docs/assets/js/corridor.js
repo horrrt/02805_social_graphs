@@ -354,8 +354,9 @@ function excessBetweenness(iso3, m) {
   return m.betweenness - stats.null_mean;
 }
 
-// Countries whose betweenness the degree sequence cannot explain, strongest
-// first. Section 3 labels the top of this list and section 4 lists it.
+// Countries whose betweenness is more than their number of partners predicts
+// when the corridor sizes are dealt out at random, strongest first. Section 3
+// labels the top of this list and section 4 lists it.
 function brokers(y) {
   return withMetrics(y)
     .filter((r) => (r.m.z ?? 0) >= 2)
@@ -432,7 +433,7 @@ export const GLOSSARY = {
   Betweenness:
     "How often this country sits on the shortest path between two others. A heavy corridor counts as a short step, so it measures brokerage in a weighted sense. High betweenness means traffic between other countries passes through here.",
   "Betweenness z-score":
-    "How surprising that betweenness is once the country's number of partners is held fixed, measured against 100 degree-preserving shuffles. Above +2 is a broker the degree sequence cannot explain. A zero is ambiguous: it means the real value matches the shuffles, and for the half of the world that brokers nothing both are zero, so there is nothing to be surprised by.",
+    "How surprising that betweenness is once the country's number of partners is held fixed and its corridor sizes are dealt out at random, measured against 100 degree-preserving shuffles. Above +2 is more brokering than the fixed partner count predicts, though a country with large corridors can still land there partly because of their size. A zero is ambiguous: it means the real value matches the shuffles, and for the half of the world that brokers nothing both are zero, so there is nothing to be surprised by.",
   "Flight partners":
     "How many other countries have a direct air route to or from here, counted once each way. Access, not people.",
   "Flight routes":
@@ -2207,8 +2208,9 @@ function writePrestigeNote(rows, shown) {
   const partners = rankCorrelation(rows.map((r) => ({ a: r.m.pagerank, b: r.m.in_degree })));
   target.textContent =
     "Every country in either top twelve, with the rank it holds in the world on " +
-    "each side. PageRank runs on the same weighted graph as the rest of the page, " +
-    "so a link is people: it tracks the people ranking closely " +
+    "each side. PageRank runs on the same weighted graph as the rest of the page " +
+    "with the standard damping factor, 0.85, so a link is people: it tracks the " +
+    "people ranking closely " +
     `(ρ = ${people.toFixed(2)}) and the partner count loosely (ρ = ${partners.toFixed(2)}). ` +
     "The lines that cross are the point. Click a country to see which senders " +
     "give it its score.";
@@ -2279,8 +2281,8 @@ function renderPrestigePanel(iso3) {
     : "<li><span>No incoming corridors recorded</span><b>—</b></li>";
   $("pr-note").textContent = sources.length
     ? "Each share is how much of this country's PageRank that sender hands over: " +
-      "the sender's own score, times the fraction of its people who came here. " +
-      "A big sender that ranks low gives little."
+      "0.85 times the sender's own score, times the fraction of its people who " +
+      "came here. A big sender that ranks low gives little."
     : "";
 }
 
