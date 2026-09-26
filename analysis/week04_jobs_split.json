@@ -580,6 +580,17 @@
     "ami_mean": 0.5707654252505142,
     "filing_share_of_group_a_mean": 0.2179,
     "filing_share_of_group_a_sd": 0.0099
+   },
+   "size_matched": {
+    "runs": 20,
+    "matched_on": "matched_bins",
+    "n_shared_qualifying_median": 294,
+    "nmi_mean": 0.6146161795879143,
+    "nmi_sd": 0.053081395751593714,
+    "nmi_min": 0.5115267297251748,
+    "ami_mean": 0.6091875135140711,
+    "filing_share_of_group_a_mean": 0.2113,
+    "filing_share_of_group_a_sd": 0.0041
    }
   },
   "headline": {
@@ -587,7 +598,12 @@
    "observed_nmi": 0.4229651336891435,
    "observed_ami": 0.4105121956707437,
    "observed_n": 217,
-   "verdict": "no, consistent with the null"
+   "verdict": "no, consistent with the null",
+   "null_matched_nmi_mean": 0.6146161795879143,
+   "null_matched_nmi_sd": 0.053081395751593714,
+   "null_matched_filing_share": 0.2113,
+   "matched_z": -3.610512556897425,
+   "matched_verdict": "different"
   }
  },
  "q2": {
@@ -760,5 +776,5 @@
    "in_top15_count": 2
   }
  },
- "seconds": 240
+ "seconds": 255
 }

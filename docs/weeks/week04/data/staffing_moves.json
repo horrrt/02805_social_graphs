@@ -3,20 +3,34 @@
  "year": 2025,
  "finding": {
   "q1_pooled_observed_share": 0.2581,
-  "q1_pooled_null_mean": 0.034,
-  "q1_pooled_null_sd": 0.005,
+  "q1_pooled_null_mean": 0.0341,
+  "q1_pooled_null_sd": 0.0051,
   "q1_pooled_p": 0.001,
+  "q1_pooled_z": 44.23,
+  "q1_pooled_lift": 7.57,
   "q1_answer": "yes",
+  "q1_share_new_vendor_already_linked": 0.6105,
+  "q1_pooled_stricter_observed_share": 0.2618,
+  "q1_pooled_stricter_null_mean": 0.208,
+  "q1_pooled_stricter_null_sd": 0.0066,
+  "q1_pooled_stricter_z": 8.17,
+  "q1_pooled_stricter_lift": 1.26,
   "q2_share_move": 0.6574,
-  "q2_noise_floor_weighted": 0.346,
-  "q2_noise_floor_unweighted": 0.5233,
+  "q2_noise_floor_weighted": 0.284,
+  "q2_noise_floor_weighted_min": 0.2345,
+  "q2_noise_floor_weighted_max": 0.346,
+  "q2_noise_floor_unweighted": 0.526,
+  "q2_noise_floor_unweighted_min": 0.493,
+  "q2_noise_floor_unweighted_max": 0.5573,
   "q2_movers_2plus_vendor_share": 0.3142,
   "q2_all_clients_2plus_vendor_share": 0.2691,
   "q2_answer": "no",
   "q3_two_community_clients": 1842,
-  "q3_null_mean": 2040.82,
-  "q3_null_sd": 27.53,
-  "q3_z": -7.22
+  "q3_null_mean": 2165.4,
+  "q3_null_sd": 20.82,
+  "q3_z": -15.53,
+  "q3_verdict": "fewer split clients than rewirings that keep each client's filing counts; the groups follow clients' main suppliers",
+  "q3_control_within_client_shuffle_count": 2113
  },
  "q1_pairs": [
   {
@@ -26,10 +40,11 @@
    "observed_share_same_community": 0.2355,
    "null": {
     "mean": 0.0353,
-    "sd": 0.0085,
-    "z": 23.59,
+    "sd": 0.0084,
+    "z": 23.87,
     "p": 0.001
    },
+   "lift": 6.67,
    "answer": "yes"
   },
   {
@@ -38,11 +53,12 @@
    "switches_scored": 398,
    "observed_share_same_community": 0.2688,
    "null": {
-    "mean": 0.035,
-    "sd": 0.0093,
-    "z": 25.08,
+    "mean": 0.0348,
+    "sd": 0.0091,
+    "z": 25.72,
     "p": 0.001
    },
+   "lift": 7.73,
    "answer": "yes"
   },
   {
@@ -51,11 +67,12 @@
    "switches_scored": 406,
    "observed_share_same_community": 0.2734,
    "null": {
-    "mean": 0.0316,
-    "sd": 0.0081,
-    "z": 29.77,
+    "mean": 0.0321,
+    "sd": 0.0085,
+    "z": 28.4,
     "p": 0.001
    },
+   "lift": 8.52,
    "answer": "yes"
   }
  ],

@@ -12,13 +12,25 @@
   "q2_permutation_p": 0.4785,
   "q2_placing_pooled_ratio": 0.1085,
   "q2_direct_pooled_ratio": 0.1808,
+  "q2_direct_pooled_ci95": [
+   0.1487,
+   0.2161
+  ],
   "q2_perm_match_rate_20plus_h1b_employers": 0.8025,
   "q3_placed_pays_lower_level": true,
   "q3_odds_ratio": 3.5947,
   "q3_odds_ratio_ci95": [
    3.5303,
    3.6602
-  ]
+  ],
+  "q3_odds_ratio_cluster_ci95": [
+   2.6805,
+   4.8784
+  ],
+  "q3_wage_ratio_placed_min": 1.0,
+  "q3_wage_ratio_placed_max": 1.0004,
+  "q3_wage_ratio_direct_min": 1.0012,
+  "q3_wage_ratio_direct_max": 1.0842
  },
  "q1": {
   "lawfirm_column_coverage": 0.7561,
@@ -93,13 +105,13 @@
    "perm_filings": 12473,
    "pooled_ratio": 0.1085,
    "pooled_ci95": [
-    0.0809,
-    0.1498
+    0.0794,
+    0.1481
    ],
    "median_ratio": 0.1046,
    "median_ci95": [
-    0.0919,
-    0.12
+    0.0909,
+    0.1194
    ],
    "perm_match_rate": 0.7592,
    "perm_match_rate_by_filings": 0.7838
@@ -110,8 +122,8 @@
    "perm_filings": 48378,
    "pooled_ratio": 0.1808,
    "pooled_ci95": [
-    0.1455,
-    0.2135
+    0.1487,
+    0.2161
    ],
    "median_ratio": 0.141,
    "median_ci95": [
@@ -124,8 +136,9 @@
   "permutation_p": 0.4785,
   "between_community_variance": 0.001819
  },
- "q2_top6_communities": {
-  "5": {
+ "q2_top6_communities": [
+  {
+   "community": 5,
    "firms": 307,
    "h1b_filings": 15740,
    "perm_filings": 1567,
@@ -137,7 +150,8 @@
    ],
    "largest_firm_filing_share": 0.4951
   },
-  "9": {
+  {
+   "community": 9,
    "firms": 465,
    "h1b_filings": 12652,
    "perm_filings": 1201,
@@ -149,7 +163,8 @@
    ],
    "largest_firm_filing_share": 0.4537
   },
-  "8": {
+  {
+   "community": 8,
    "firms": 442,
    "h1b_filings": 10341,
    "perm_filings": 1575,
@@ -161,7 +176,8 @@
    ],
    "largest_firm_filing_share": 0.2201
   },
-  "1": {
+  {
+   "community": 1,
    "firms": 240,
    "h1b_filings": 14058,
    "perm_filings": 402,
@@ -173,7 +189,8 @@
    ],
    "largest_firm_filing_share": 0.7872
   },
-  "19": {
+  {
+   "community": 19,
    "firms": 290,
    "h1b_filings": 9193,
    "perm_filings": 1307,
@@ -185,7 +202,8 @@
    ],
    "largest_firm_filing_share": 0.2345
   },
-  "3": {
+  {
+   "community": 3,
    "firms": 402,
    "h1b_filings": 22025,
    "perm_filings": 3162,
@@ -196,6 +214,28 @@
     "IBM"
    ],
    "largest_firm_filing_share": 0.2409
+  }
+ ],
+ "q2_named_perm": {
+  "Amazon": {
+   "fy2024": {
+    "all_statuses_name_match": 3638,
+    "certified_or_expired_resolver_match": 277
+   },
+   "fy2025": {
+    "all_statuses_name_match": 15,
+    "certified_or_expired_resolver_match": 0
+   }
+  },
+  "Google": {
+   "fy2024": {
+    "all_statuses_name_match": 1618,
+    "certified_or_expired_resolver_match": 0
+   },
+   "fy2025": {
+    "all_statuses_name_match": 3,
+    "certified_or_expired_resolver_match": 0
+   }
   }
  },
  "q3": {
@@ -213,9 +253,36 @@
    3.5303,
    3.6602
   ],
+  "odds_ratio_cluster_ci95": [
+   2.6805,
+   4.8784
+  ],
+  "odds_ratio_after_dropping_top_placing_firms": {
+   "top5": {
+    "placed_filing_share": 0.2019,
+    "odds_ratio": 3.8507,
+    "strata_kept": 82
+   },
+   "top10": {
+    "placed_filing_share": 0.2863,
+    "odds_ratio": 4.281,
+    "strata_kept": 82
+   },
+   "top20": {
+    "placed_filing_share": 0.3626,
+    "odds_ratio": 4.9353,
+    "strata_kept": 81
+   }
+  },
   "cmh_p": 0.0,
   "breslow_day_p": 0.0,
-  "wage_ratio_coverage": 0.9971
+  "wage_ratio_coverage": 0.9971,
+  "wage_ratio_medians_range": {
+   "placed_min": 1.0,
+   "placed_max": 1.0004,
+   "direct_min": 1.0012,
+   "direct_max": 1.0842
+  }
  },
  "q3_top5_soc": [
   {

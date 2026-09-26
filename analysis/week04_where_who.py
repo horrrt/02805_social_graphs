@@ -47,11 +47,15 @@ Method, Q2
   collapse between alpha 0.1 and 0.05, because that collapse can be a cascade
   of many single-metro peels rather than one snapping link, which is exactly
   what turns out to be the case here.
-- (c) every link lost between alpha 0.1 and 0.05 that ties a metro still in
-  the alpha-0.1 giant component to one that falls off by alpha 0.05, plus the
-  link found in (b); each link's leading employer (largest share of the
-  link's weight, where.py's longhaul method) and whether that employer is in
-  SHORTLIST. A hypergeom test compares the share of breaking links led by a
+- (c) a link lost between alpha 0.1 and 0.05 only counts as breaking if its
+  own removal step drops the giant component (drop > 0): a link that touches
+  a metro which falls off at some other step, without itself cutting anything
+  loose, is not a break. A tied step (several links removed together at the
+  same alpha) counts once as a step, though every one of its links is still
+  recorded. The flagged set is these in-window breaking steps plus the step
+  found in (b); each link's leading employer (largest share of the link's
+  weight, where.py's longhaul method) and whether that employer is in
+  SHORTLIST. A hypergeom test compares the share of flagged links led by a
   shortlist firm against the alpha-0.2 backbone's own share (70 of 180, from
   week04_where.json's longhaul: 22 of 83 long links, 48 of 97 short links).
 
@@ -262,19 +266,27 @@ def q2_backbone_break(net, by_name):
     per_employer = {e: grp.droplevel(0).to_dict() for e, grp in grouped.groupby(level=0)}
 
     # Sweep every distinct p, decreasing (least significant edges first).
+    # Each step also records which metros actually fall out of the giant
+    # component at that step (its "before" giant minus its "after" giant),
+    # so a step's own drop tells us whether it is the one that cuts a metro
+    # loose, rather than merely touching a metro that falls off later.
     distinct_desc = sorted(set(p.values()), reverse=True)
     h = g.copy()
-    sweep = [{"alpha": 1.0, "gc_size": len(max(nx.connected_components(h), key=len))}]
+    giant_before = max(nx.connected_components(h), key=len)
+    sweep = [{"alpha": 1.0, "gc_size": len(giant_before)}]
     steps = []
     for val in distinct_desc:
         edges_here = [(u, v) for (u, v), pv in p.items() if pv == val]
         before = sweep[-1]["gc_size"]
         h.remove_edges_from(edges_here)
         comps = list(nx.connected_components(h))
-        giant = max(comps, key=len) if comps else set()
-        after = len(giant)
+        giant_after = max(comps, key=len) if comps else set()
+        after = len(giant_after)
+        fallen_here = giant_before - giant_after
         sweep.append({"alpha": val, "gc_size": after})
-        steps.append({"alpha": val, "edges": edges_here, "before": before, "after": after, "drop": before - after})
+        steps.append({"alpha": val, "edges": edges_here, "before": before, "after": after,
+                      "drop": before - after, "fallen": sorted(fallen_here)})
+        giant_before = giant_after
 
     ties_grouped = sum(1 for s in steps if len(s["edges"]) > 1)
 
@@ -286,30 +298,6 @@ def q2_backbone_break(net, by_name):
         "edges_removed": first_below["edges"], "gc_after": first_below["after"],
     }
 
-    # (b) the single step with the largest drop.
-    max_drop = max(s["drop"] for s in steps)
-    top_steps = [s for s in steps if s["drop"] == max_drop]
-    part_b = {
-        "drop": max_drop, "tied_steps": len(top_steps),
-        "steps": [{
-            "alpha": s["alpha"], "edges": [[u, v] for u, v in s["edges"]],
-            "weight": [int(g[u][v]["weight"]) for u, v in s["edges"]],
-            "gc_before": s["before"], "gc_after": s["after"],
-        } for s in top_steps],
-        "note": ("This is the largest single-link drop found anywhere in the sweep; it does not "
-                 "fall in the coarse 0.1-0.05 window that shows the 32 -> 19 collapse, because that "
-                 "collapse turns out to be a cascade of many one-metro peels rather than one break."),
-    }
-
-    # (c) the coarse 0.1 / 0.05 window: which links tie a surviving metro to one that falls off.
-    h01, gc01 = kept_graph(g, p, top, BREAK_HI)
-    h005, gc005 = kept_graph(g, p, top, BREAK_LO)
-    fallen = gc01 - gc005
-    lost = [(u, v) for (u, v), pv in p.items() if BREAK_LO <= pv < BREAK_HI]
-    breaking = [(u, v) for u, v in lost
-                if (u in gc005 and v in fallen) or (v in gc005 and u in fallen)]
-    redundant = len(lost) - len(breaking)
-
     def link_row(u, v):
         who, share = leader_of(u, v, per_employer, g[u][v]["weight"])
         return {
@@ -320,10 +308,42 @@ def q2_backbone_break(net, by_name):
             "shortlist": who in shortlist,
         }
 
+    # (b) the single step with the largest drop.
+    max_drop = max(s["drop"] for s in steps)
+    top_steps = [s for s in steps if s["drop"] == max_drop]
+    part_b = {
+        "drop": max_drop, "tied_steps": len(top_steps),
+        "steps": [{
+            "alpha": s["alpha"], "edges": [[u, v] for u, v in s["edges"]],
+            "weight": [int(g[u][v]["weight"]) for u, v in s["edges"]],
+            "links": [link_row(u, v) for u, v in s["edges"]],
+            "gc_before": s["before"], "gc_after": s["after"],
+            "fallen_metros": [by_name[m] for m in s["fallen"]],
+        } for s in top_steps],
+        "note": ("This is the largest single-link drop found anywhere in the sweep; it does not "
+                 "fall in the coarse 0.1-0.05 window that shows the 32 -> 19 collapse, because that "
+                 "collapse turns out to be a cascade of many one-metro peels rather than one break."),
+    }
+
+    # (c) the coarse 0.1 / 0.05 window: a breaking link is a removal step
+    # whose giant-component drop is > 0 (i.e. it actually cuts a metro loose),
+    # not merely a link that touches a metro which falls off at some other
+    # step. A tied step (several links removed together at the same alpha)
+    # counts once as a step, but every one of its links is still recorded.
+    h01, gc01 = kept_graph(g, p, top, BREAK_HI)
+    h005, gc005 = kept_graph(g, p, top, BREAK_LO)
+    fallen = gc01 - gc005
+    lost = [(u, v) for (u, v), pv in p.items() if BREAK_LO <= pv < BREAK_HI]
+    window_steps = [s for s in steps if BREAK_LO <= s["alpha"] < BREAK_HI and s["drop"] > 0]
+    breaking = [(u, v) for s in window_steps for (u, v) in s["edges"]]
+    redundant = len(lost) - len(breaking)
+
     breaking_rows = [link_row(u, v) for u, v in breaking]
     b_link_rows = [link_row(u, v) for step in top_steps for u, v in step["edges"]]
     all_flagged = breaking_rows + [r for r in b_link_rows if r not in breaking_rows]
     led_by_shortlist = sum(r["shortlist"] for r in all_flagged)
+    leaders = Counter(r["top_employer"] for r in all_flagged)
+    q2_leaders = sorted(leaders.items(), key=lambda kv: (-kv[1], kv[0]))
 
     backbone_02 = json.loads(WHERE_JSON.read_text())["longhaul"]
     backbone_total = backbone_02["backbone_links"]
@@ -341,9 +361,11 @@ def q2_backbone_break(net, by_name):
         "window": [BREAK_LO, BREAK_HI], "gc_at_0.1": len(gc01), "gc_at_0.05": len(gc005),
         "fallen_metros": sorted(by_name[m] for m in fallen),
         "links_lost_in_window": len(lost), "links_lost_redundant": redundant,
+        "breaking_steps_in_window": len(window_steps),
         "breaking_links": breaking_rows, "breaking_links_count": len(breaking_rows),
         "b_links_included": [r for r in b_link_rows if r not in breaking_rows],
         "led_by_shortlist": led_by_shortlist, "flagged_links": len(all_flagged),
+        "leaders": q2_leaders,
         "backbone_alpha02_total": backbone_total, "backbone_alpha02_shortlist": backbone_shortlist,
         "backbone_alpha02_shortlist_share": round(backbone_shortlist / backbone_total, 3),
         "flagged_shortlist_share": round(led_by_shortlist / len(all_flagged), 3) if all_flagged else None,
@@ -418,6 +440,10 @@ def main():
             "naics54_dominant_metros": q1["coverage"]["naics54_dominant_metros"],
             "q2_alpha_drops_below_40": q2["part_a"]["alpha_drops_below_40"],
             "q2_max_single_drop": q2["part_b"]["drop"],
+            "q2_breaking_steps_in_window": q2["part_c"]["breaking_steps_in_window"],
+            "q2_leaders": q2["part_c"]["leaders"],
+            "q2_gc_size_alpha_0_1": q2["part_c"]["gc_at_0.1"],
+            "q2_gc_size_alpha_0_05": q2["part_c"]["gc_at_0.05"],
             "q2_breaking_links_led_by_shortlist": q2["part_c"]["led_by_shortlist"],
             "q2_breaking_links_flagged": q2["part_c"]["flagged_links"],
             "q2_backbone_shortlist_share": q2["part_c"]["backbone_alpha02_shortlist_share"],

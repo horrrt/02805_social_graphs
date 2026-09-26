@@ -99,7 +99,7 @@
   ],
   "same_split_as_vendors": true,
   "finding": "Yes, above chance but weak (AMI 0.037, NMI 0.132)",
-  "seconds": 25
+  "seconds": 15
  },
  "q2": {
   "certified_h1b_filings": 537796,
@@ -113,13 +113,13 @@
    "perm_filings": 12473,
    "pooled_ratio": 0.1085,
    "pooled_ci95": [
-    0.0809,
-    0.1498
+    0.0794,
+    0.1481
    ],
    "median_ratio": 0.1046,
    "median_ci95": [
-    0.0919,
-    0.12
+    0.0909,
+    0.1194
    ],
    "perm_match_rate": 0.7592,
    "perm_match_rate_by_filings": 0.7838
@@ -130,8 +130,8 @@
    "perm_filings": 48378,
    "pooled_ratio": 0.1808,
    "pooled_ci95": [
-    0.1455,
-    0.2135
+    0.1487,
+    0.2161
    ],
    "median_ratio": 0.141,
    "median_ci95": [
@@ -141,7 +141,29 @@
    "perm_match_rate": 0.8157,
    "perm_match_rate_by_filings": 0.8006
   },
-  "perm_match_rate_caveat": "match rates differ between the two groups, by employer count and by the H-1B filings behind them (perm_match_rate / perm_match_rate_by_filings above), though the filing-weighted gap is small (about 2 points). 42436 of 137,753 PERM filings kept a name-only key that never joined an LCA-side FEIN family; many of those belong to employers that file no H-1B at all, so this is an upper bound on join failures, not a count of them. Checked directly for the four largest H-1B employers with perm_filings of 0 (Amazon, Google, Cognizant, Infosys): their FY2025 PERM rows under any spelling of the name are themselves near zero (0 to 3 rows before any key-matching), so these zeros are real, not a resolver join failure; whether that reflects true sponsorship, a filing under a legal-entity name this check did not try, or a certification lag was not investigated further.",
+  "q2_named_perm": {
+   "Amazon": {
+    "fy2024": {
+     "all_statuses_name_match": 3638,
+     "certified_or_expired_resolver_match": 277
+    },
+    "fy2025": {
+     "all_statuses_name_match": 15,
+     "certified_or_expired_resolver_match": 0
+    }
+   },
+   "Google": {
+    "fy2024": {
+     "all_statuses_name_match": 1618,
+     "certified_or_expired_resolver_match": 0
+    },
+    "fy2025": {
+     "all_statuses_name_match": 3,
+     "certified_or_expired_resolver_match": 0
+    }
+   }
+  },
+  "perm_match_rate_caveat": "match rates differ between the two groups, by employer count and by the H-1B filings behind them (perm_match_rate / perm_match_rate_by_filings above), though the filing-weighted gap is small (about 1.7 points). 42436 of 137,753 PERM filings kept a name-only key that never joined an LCA-side FEIN family; many of those belong to employers that file no H-1B at all, so this is an upper bound on join failures, not a count of them. See q2_named_perm for Amazon and Google's own PERM filing counts under both an unrestricted name match and the resolver key this ratio uses; whether a gap between the two reflects true sponsorship, a filing under a legal-entity name this check did not try, or a certification lag was not investigated further.",
   "top10_zero_perm_employers": [
    "Amazon",
    "Cognizant",
@@ -155,13 +177,13 @@
     "perm_filings": 11173,
     "pooled_ratio": 0.133,
     "pooled_ci95": [
-     0.1018,
-     0.1768
+     0.1016,
+     0.1842
     ],
     "median_ratio": 0.1015,
     "median_ci95": [
-     0.0924,
-     0.119
+     0.0925,
+     0.12
     ],
     "perm_match_rate": 0.7363,
     "perm_match_rate_by_filings": 0.8229
@@ -172,21 +194,22 @@
     "perm_filings": 49678,
     "pooled_ratio": 0.1664,
     "pooled_ci95": [
-     0.1347,
-     0.1978
+     0.1337,
+     0.2018
     ],
     "median_ratio": 0.1429,
     "median_ci95": [
-     0.1333,
+     0.134,
      0.15
     ],
     "perm_match_rate": 0.8271,
     "perm_match_rate_by_filings": 0.7879
    }
   },
-  "placing_vs_direct_ci_overlap": "the pooled-ratio 95% CIs already touch under the spec rule (placing up to 0.149, direct from 0.141) and overlap more under the share-based sensitivity rule (0.101-0.180 vs 0.132-0.202): the placing/direct gap in pooled ratios is not robust to how 'placing' is defined.",
-  "top6_staffing_communities_by_filings": {
-   "5": {
+  "placing_vs_direct_ci_overlap": "the pooled-ratio 95% CIs already touch under the spec rule (placing up to 0.148, direct from 0.149) and overlap more under the share-based sensitivity rule (0.102-0.184 vs 0.134-0.202): the placing/direct gap in pooled ratios is not robust to how 'placing' is defined.",
+  "top6_staffing_communities_by_filings": [
+   {
+    "community": 5,
     "firms": 307,
     "h1b_filings": 15740,
     "perm_filings": 1567,
@@ -198,7 +221,8 @@
     ],
     "largest_firm_filing_share": 0.4951
    },
-   "9": {
+   {
+    "community": 9,
     "firms": 465,
     "h1b_filings": 12652,
     "perm_filings": 1201,
@@ -210,7 +234,8 @@
     ],
     "largest_firm_filing_share": 0.4537
    },
-   "8": {
+   {
+    "community": 8,
     "firms": 442,
     "h1b_filings": 10341,
     "perm_filings": 1575,
@@ -222,7 +247,8 @@
     ],
     "largest_firm_filing_share": 0.2201
    },
-   "1": {
+   {
+    "community": 1,
     "firms": 240,
     "h1b_filings": 14058,
     "perm_filings": 402,
@@ -234,7 +260,8 @@
     ],
     "largest_firm_filing_share": 0.7872
    },
-   "19": {
+   {
+    "community": 19,
     "firms": 290,
     "h1b_filings": 9193,
     "perm_filings": 1307,
@@ -246,7 +273,8 @@
     ],
     "largest_firm_filing_share": 0.2345
    },
-   "3": {
+   {
+    "community": 3,
     "firms": 402,
     "h1b_filings": 22025,
     "perm_filings": 3162,
@@ -258,7 +286,7 @@
     ],
     "largest_firm_filing_share": 0.2409
    }
-  },
+  ],
   "between_community_variance": 0.001819,
   "permutation_shuffles": 1000,
   "permutation_p": 0.4785,
@@ -346,7 +374,7 @@
   ],
   "between_communities_matters": false,
   "finding": "No, no reliable difference",
-  "seconds": 5
+  "seconds": 4
  },
  "q3": {
   "certified_filings": 537796,
@@ -373,11 +401,39 @@
    3.5303,
    3.6602
   ],
+  "odds_ratio_ci95_caveat": "the Mantel-Haenszel CI above treats every filing as an independent draw; it ignores that a handful of firms file many rows each. odds_ratio_cluster_ci95 is the wider, employer-cluster-bootstrap CI below.",
   "cmh_statistic": 20865.744,
   "cmh_p": 0.0,
   "breslow_day_statistic": 4174.119,
   "breslow_day_p": 0.0,
   "breslow_day_caveat": "large and significant at this many filings almost by construction; read it as 'the odds ratio is not exactly uniform across jobs', not as a reason to distrust the pooled direction (strata_or_above_1_share above).",
+  "employer_cluster_bootstrap": {
+   "resamples": 200,
+   "method": "stratified bootstrap: placed employers and direct employers each resampled with replacement within their own set (never mixed), the kept SOCs' 2x2 tables rebuilt from the resampled firms' filings, and the pooled MH odds ratio recomputed each draw",
+   "placed_employers": 8093,
+   "direct_employers": 54306
+  },
+  "odds_ratio_cluster_ci95": [
+   2.6805,
+   4.8784
+  ],
+  "odds_ratio_after_dropping_top_placing_firms": {
+   "top5": {
+    "placed_filing_share": 0.2019,
+    "odds_ratio": 3.8507,
+    "strata_kept": 82
+   },
+   "top10": {
+    "placed_filing_share": 0.2863,
+    "odds_ratio": 4.281,
+    "strata_kept": 82
+   },
+   "top20": {
+    "placed_filing_share": 0.3626,
+    "odds_ratio": 4.9353,
+    "strata_kept": 81
+   }
+  },
   "top5_soc_by_filings": [
    {
     "soc7": "15-1252",
@@ -448,9 +504,15 @@
     "direct_median_ratio": 1.0012
    }
   ],
+  "wage_ratio_medians_range": {
+   "placed_min": 1.0,
+   "placed_max": 1.0004,
+   "direct_min": 1.0012,
+   "direct_max": 1.0842
+  },
   "placed_pays_lower_level": true,
   "finding": "Yes, a lower wage level",
-  "seconds": 1
+  "seconds": 6
  },
- "seconds": 56
+ "seconds": 48
 }

@@ -243,19 +243,21 @@
               <span>
                 <b>What to notice</b>
                 The first metro falls off at α = 0.135. No single removal cuts
-                off more than two metros (Chicago–Louisville at α = 0.041, New
-                York–Detroit at 0.022), and the fall from 32 to 19 is 18 separate
-                links, each peeling one metro away. The company adding most weight
-                to those links is often a direct employer: Amazon leads four,
-                Citigroup two, JPMorgan Chase, FedEx, Capital One and Intel one
-                each. Of the 20 links whose removal cuts a metro loose, the five
-                largest placing firms (Tata Consultancy Services, Cognizant,
-                Infosys, HCL, Compunnel) lead 6 (30%), against 70 of the 180 links
-                in the whole backbone at α = 0.2 (39%, p = 0.27).
+                off more than two metros: Dallas–Durham at α = 0.041 takes Durham
+                and Raleigh with it, and New York–San Francisco at 0.022 splits
+                the last five metros three and two. The fall from 32 to 19 is 13
+                separate links, each peeling one metro away. Of the 15 links whose
+                removal cuts a metro loose, the five largest placing firms (Tata
+                Consultancy Services, Cognizant, Infosys, HCL, Compunnel) lead 5
+                (33%): Cognizant four, HCL one. That is no more than their 70 of
+                the 180 links in the whole backbone at α = 0.2 (39%, p = 0.43).
+                The other ten are led by Amazon (two), Intel, Deloitte, Capital
+                One, JPMorgan Chase, Citigroup, FedEx, Fidelity Investments and
+                the University of Maryland.
               </span>
             </div>
             <details class="qa">
-              <summary><span class="qa-cue">The 18 links that peel metros off</span></summary>
+              <summary><span class="qa-cue">The 13 links that peel metros off between α = 0.1 and 0.05</span></summary>
               <div class="qa-body">
                 <table class="ego">
                   <thead>
@@ -306,8 +308,9 @@
               <span class="year-tag">two networks, one comparison</span>
             </div>
             <p class="sub">
-              <b>Mostly not. Their job clusters differ about as much as two random
-              groups of companies of the same sizes.</b>
+              <b>Yes. Their job clusters differ more than those of random groups
+              with the same number of companies and the same share of
+              filings.</b>
               We split the companies in two: the 818 firms that place 20 or more
               filings at client sites (21% of all filings) and the 58,412 others.
               Each group gets its own occupation network and its own Louvain
@@ -316,15 +319,19 @@
               cluster of two or more on both sides. Alone, that number means
               little: splitting companies into a small and a large group changes
               the clusters even if nobody behaves differently. So the baseline
-              splits the companies at random, 20 times.
+              draws 20 random groups that match the outsourcing firms in both
+              respects: the same number of companies of each size, from the
+              one-filing firms to the giants.
             </p>
             <div class="jobs-grid jobs-groups-grid">
               <div class="plot">
                 <h3>Observed agreement against random splits</h3>
                 <p class="axis-note">
                   NMI between the two groups' clusters. Whiskers span one standard
-                  deviation over 20 random splits. One baseline keeps the number
-                  of companies in each group, the other the number of filings.
+                  deviation over 20 random splits. The blue baseline matches the
+                  outsourcing firms on number and size of companies; the grey
+                  ones match only the number of companies or only the number of
+                  filings.
                 </p>
                 <div class="chart-host jobs-nmi" id="chart-jobs-split-nmi"></div>
               </div>
@@ -341,14 +348,18 @@
               <span class="ico">💡</span>
               <span>
                 <b>What to notice</b>
-                The two clusterings agree at NMI 0.42. Random groups with the same
-                numbers of companies agree at 0.47 ± 0.07, so the real split is
-                inside the noise. Random groups with the same filing volumes agree
-                at 0.58 ± 0.05; they hold many more companies, which is why we
-                read the first baseline as the fair one. Software developers are
-                28% of the outsourcing firms' filings and 33% of the direct
-                employers'. The difference is breadth: direct employers file for
-                283 occupations the outsourcing firms never touch.
+                The two clusterings agree at NMI 0.42. Random groups matched on
+                size agree at 0.61 ± 0.05 (z = −3.6), so the outsourcing firms
+                bundle jobs differently from companies like them. The half-matched
+                baselines show why the match matters: random groups with only the
+                same number of companies hold 1.5% of filings and agree at
+                0.47 ± 0.07, which would have hidden the difference. At the top
+                the two mixes look alike: software developers are 28% of the
+                outsourcing firms' filings and 33% of the direct employers'. Below
+                that they part: "computer occupations, all other" is 22% of the
+                outsourcing firms' filings and 5% of the direct employers', and
+                direct employers file for 283 occupations the outsourcing firms
+                never touch.
               </span>
             </div>
           </div>
@@ -434,8 +445,8 @@
               <span class="year-tag">FY2022 to FY2025</span>
             </div>
             <p class="sub">
-              <b>Yes, eight times as often as chance: one switch in four stays
-              inside the client's group.</b>
+              <b>Yes, nearly eight times as often as for a random vendor: one
+              switch in four stays inside the client's group.</b>
               A client's main vendor is the firm that files most placements
               there in a year. We followed the clients with five or more filings
               in two consecutive years and found 1,271 switches of main vendor
@@ -459,12 +470,13 @@
               <span>
                 <b>What to notice</b>
                 Pooled over the three pairs of years, 25.8% of switches stay in
-                the group against 3.4% ± 0.5% for random vendors (z = 47). Part of
-                that is familiarity: 61% of new main vendors already placed
+                the group against 3.4% ± 0.5% for random vendors (z = 44). Much
+                of that is familiarity: 61% of new main vendors already placed
                 someone at the client the year before. A stricter baseline that
-                draws only among those firms still falls short each year (24%
-                against 19%, 27% against 20%, 28% against 24%). The groups hold
-                real information about where a client turns next.
+                draws only among the firms already at the client narrows the gap
+                to 26.2% against 20.8% ± 0.7% (z = 8), a lift of 1.26 rather
+                than 7.6. The groups hold some information about where a client
+                turns next beyond the vendors it already knows.
               </span>
             </div>
           </div>
@@ -498,8 +510,10 @@
               <span>
                 <b>What to notice</b>
                 65.7% of clients move between the weighted and unweighted
-                partitions, above the 34.6% between two weighted seeds and the
-                52.3% between two unweighted ones. We expected the movers to be
+                partitions. Two runs of the same kind move fewer: a median 28.4%
+                between two weighted seeds and 52.6% between two unweighted ones,
+                over ten pairs of seeds each (ranges 23.4% to 34.6% and 49.3% to
+                55.7%). We expected the movers to be
                 clients with several vendors, since only their filing counts can
                 pull them one way or another. They are, but barely: 31.4% of
                 movers have two or more vendors, against 26.9% of all clients.
@@ -537,12 +551,14 @@
             </div>
             <p class="sub">
               <b>1,842 clients get a fifth or more of their filings from a second
-              group, fewer than in rewired networks.</b>
+              group, fewer than in rewired networks that keep each client's
+              filing counts.</b>
               A Louvain partition gives each client one group, but a client with
               several vendors can draw on firms from different groups. We counted
               clients whose second group supplies at least 20% of their filings,
-              and did the same on 100 rewired networks in which every firm and
-              client keeps its number of partners.
+              and did the same on 100 rewired networks in which every firm keeps
+              its number of clients and every client keeps its filing counts,
+              only attached to different firms.
             </p>
             <div class="plot">
               <h3>Clients split between two groups</h3>
@@ -556,11 +572,14 @@
               <span class="ico">💡</span>
               <span>
                 <b>What to notice</b>
-                The rewired networks give 2,041 ± 28 split clients, so the real
-                groups hold their clients together more than chance does
-                (z = −7). A caution: rewiring breaks the network into smaller
-                groups, which split clients more easily, so the gap is partly a
-                difference in group size. The largest split clients are banks,
+                The rewired networks give 2,165 ± 21 split clients (z = −16), so
+                real clients draw on fewer groups than the same filing counts
+                spread at random would. Two cautions. Louvain builds the groups
+                from these filing counts, so it already tends to put a client
+                with its heaviest vendors; and rewired networks split into
+                different groups from the real one. Read the count as the groups
+                following clients' main suppliers, not as a separate measure of
+                loyalty. The largest split clients are banks,
                 insurers and manufacturers. USAA gets 44% of its filings from
                 HCL's group and 26% from Tata Consultancy Services'; Stellantis
                 43% from L&amp;T Technology Services' group and 39% from Tata
@@ -744,15 +763,15 @@
               <span>
                 <b>What to notice</b>
                 Outsourcing firms file 0.11 green cards per H-1B filing (95%
-                interval 0.08 to 0.15), direct employers 0.18 (0.14 to 0.22). The
+                interval 0.08 to 0.15), direct employers 0.18 (0.15 to 0.22). The
                 gap shrinks to 0.13 against 0.17 when a firm counts as outsourcing
                 only if most of its filings go to clients. Across the six largest
                 staffing groups the rate runs from 0.03 in Cognizant's group,
                 where Cognizant itself filed almost none, to 0.15, a spread that
                 shuffled group labels match half the time (p = 0.48). Single
-                companies swing these rates more than any group does: Amazon and
-                Google filed 3,638 and 1,618 PERM applications in FY2024, and 15
-                and 3 in FY2025.
+                companies swing these rates more than any group does: counting
+                every case status, filings in the names of Amazon and Google fell
+                from 3,638 and 1,618 in FY2024 to 15 and 3 in FY2025.
               </span>
             </div>
           </div>
@@ -787,11 +806,14 @@
                 <b>What to notice</b>
                 Overall, 79% of placed filings sit at level I or II against 58% of
                 direct ones. Within the 83 occupations with 20 or more filings of
-                each kind, the Mantel–Haenszel odds ratio is 3.59 (95% interval
-                3.53 to 3.66), and 69 of the 83 point the same way. Software
+                each kind, the Mantel–Haenszel odds ratio is 3.59, and 69 of the
+                83 point the same way. A few large firms file most placements, so
+                the interval comes from resampling whole employers: 2.68 to 4.88.
+                It is not one firm's doing: without the 5, 10 or 20 largest
+                placing firms the ratio rises to 3.85, 4.28 and 4.94. Software
                 developers: 87% against 52%. Offered wages follow: placed filings
                 offer a median 1.00 times the prevailing wage in the five largest
-                occupations, direct ones 1.02 to 1.08 times. A level describes the
+                occupations, direct ones 1.00 to 1.08 times. A level describes the
                 job as filed, not the worker, so this shows cheaper job
                 descriptions, not lower pay for the same person.
               </span>
@@ -810,9 +832,11 @@
               <b>The groups in these networks are weak, but they are not
               noise.</b>
               Cities group by who hires there, not by region. Outsourcing firms
-              and direct employers bundle jobs alike. And when a client drops
+              bundle jobs differently from direct employers of the same size.
+              And when a client drops
               its main vendor, the new one comes from the same Louvain group
-              eight times as often as chance.
+              nearly eight times as often as a random vendor would, though
+              mostly because clients return to firms they already use.
               Take out the ten largest filers, most of them national tech and
               consulting employers, and the metro groups start to follow Census
               regions.

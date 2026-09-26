@@ -37,25 +37,38 @@ test("section 1: the backbone sheds metros, it does not snap", () => {
   const d = json("docs/weeks/week04/data/where_who.json");
   const f = d.finding;
   says("place-break", `The first metro falls off at α = ${f.q2_alpha_drops_below_40.toFixed(3)}`);
-  says("place-break", `No single removal cuts off more than two metros`);
   assert.equal(f.q2_max_single_drop, 2);
-  says("place-break", `is ${d.breaking_links.length} separate links`);
+  says("place-break", `No single removal cuts off more than two metros`);
+  const names = d.break.steps.map((s) => s.links.map((l) => `${l.a_name}–${l.b_name}`).join(", "));
+  says("place-break", `${names[0]} at α = ${d.break.steps[0].alpha.toFixed(3)}`);
+  says("place-break", `${names[1]} at ${d.break.steps[1].alpha.toFixed(3)}`);
+  says("place-break", `The fall from ${f.q2_gc_size_alpha_0_1} to ${f.q2_gc_size_alpha_0_05} is ${f.q2_breaking_steps_in_window} separate links`);
+  assert.equal(d.breaking_links.length, f.q2_breaking_steps_in_window);
   says("place-break", `Of the ${f.q2_breaking_links_flagged} links whose removal cuts a metro loose`);
   says("place-break", `lead ${f.q2_breaking_links_led_by_shortlist} (${pct(f.q2_flagged_shortlist_share)})`);
   says("place-break", `(${pct(f.q2_backbone_shortlist_share)}, p = ${f2(f.q2_hypergeom_p)})`);
-  const amazon = d.breaking_links.filter((l) => l.top_employer === "Amazon").length;
-  says("place-break", `Amazon leads ${["zero", "one", "two", "three", "four", "five"][amazon]}`);
+  const lead = Object.fromEntries(f.q2_leaders);
+  says("place-break", `Cognizant ${["zero", "one", "two", "three", "four", "five"][lead.Cognizant]}, HCL ${["zero", "one"][lead.HCL]}`);
+  says("place-break", `Amazon (${["zero", "one", "two", "three"][lead.Amazon]})`);
+  says("place-break", `The ${d.breaking_links.length} links that peel metros off`);
 });
 
-test("section 2: outsourcers and direct employers bundle jobs alike", () => {
-  const f = json("docs/weeks/week04/data/jobs_split.json").finding;
-  assert.match(f.q1_verdict, /^no/);
+test("section 2: outsourcers bundle jobs differently from companies like them", () => {
+  const d = json("docs/weeks/week04/data/jobs_split.json");
+  const f = d.finding;
+  const nulls = json("analysis/week04_jobs_split.json").q1.null;
+  assert.equal(f.q1_matched_verdict, "different");
   says("jobs-split", `the ${count(f.q1_placing_companies)} firms that place 20 or more`);
   says("jobs-split", `(${pct(f.q1_placing_filing_share)} of all filings) and the ${count(f.q1_direct_companies)} others`);
   says("jobs-split", `on the ${f.q1_observed_n} occupations`);
   says("jobs-split", `agree at NMI ${f2(f.q1_observed_nmi)}`);
-  says("jobs-split", `numbers of companies agree at ${f2(f.q1_null_count_matched_nmi_mean)}`);
-  says("jobs-split", `same filing volumes agree at ${f2(f.q1_null_filings_matched_nmi_mean)}`);
+  says("jobs-split", `matched on size agree at ${f2(f.q1_null_matched_nmi_mean)} ± ${f2(f.q1_null_matched_nmi_sd)} (z = −${(-f.q1_matched_z).toFixed(1)})`);
+  says("jobs-split", `hold ${pct(nulls.company_count_matched.filing_share_of_group_a_mean, 1)} of filings and agree at ${f2(f.q1_null_count_matched_nmi_mean)} ± ${f2(f.q1_null_count_matched_nmi_sd)}`);
+  const share = (list, id) => list.find((o) => o.id === id).share;
+  const [p, q] = [d.q1.placing_top_occupations, d.q1.direct_top_occupations];
+  says("jobs-split", `software developers are ${pct(share(p, "15-1252"))} of the outsourcing firms' filings and ${pct(share(q, "15-1252"))}`);
+  says("jobs-split", `is ${pct(share(p, "15-1299"))} of the outsourcing firms' filings and ${pct(share(q, "15-1299"))}`);
+  says("jobs-split", `direct employers file for ${d.q1.only_in_direct.count} occupations`);
 });
 
 test("section 2: link communities find no clear two-cluster job", () => {
@@ -73,14 +86,16 @@ test("section 3: switches stay in the group, movers and split clients", () => {
   assert.equal(f.q1_answer, "yes");
   const switches = d.q1_pairs.reduce((sum, p) => sum + p.switches_scored, 0);
   says("who-switch", `found ${count(switches)} switches`);
-  says("who-switch", `${pct(f.q1_pooled_observed_share, 1)} of switches stay in the group against ${pct(f.q1_pooled_null_mean, 1)}`);
+  says("who-switch", `${pct(f.q1_pooled_observed_share, 1)} of switches stay in the group against ${pct(f.q1_pooled_null_mean, 1)} ± ${pct(f.q1_pooled_null_sd, 1)} for random vendors (z = ${Math.round(f.q1_pooled_z)})`);
+  says("who-switch", `${pct(f.q1_share_new_vendor_already_linked)} of new main vendors`);
+  says("who-switch", `${pct(f.q1_pooled_stricter_observed_share, 1)} against ${pct(f.q1_pooled_stricter_null_mean, 1)} ± ${pct(f.q1_pooled_stricter_null_sd, 1)} (z = ${Math.round(f.q1_pooled_stricter_z)}), a lift of ${f2(f.q1_pooled_stricter_lift)} rather than ${f.q1_pooled_lift.toFixed(1)}`);
   says("who-movers", `${pct(f.q2_share_move, 1)} of clients move`);
-  says("who-movers", `above the ${pct(f.q2_noise_floor_weighted, 1)} between two weighted seeds`);
-  says("who-movers", `the ${pct(f.q2_noise_floor_unweighted, 1)} between two unweighted ones`);
+  says("who-movers", `a median ${pct(f.q2_noise_floor_weighted, 1)} between two weighted seeds and ${pct(f.q2_noise_floor_unweighted, 1)} between two unweighted ones`);
+  says("who-movers", `(ranges ${pct(f.q2_noise_floor_weighted_min, 1)} to ${pct(f.q2_noise_floor_weighted_max, 1)} and ${pct(f.q2_noise_floor_unweighted_min, 1)} to ${pct(f.q2_noise_floor_unweighted_max, 1)})`);
+  assert.ok(f.q2_share_move > f.q2_noise_floor_unweighted_max, "movers must exceed every seed pair");
   says("who-movers", `${pct(f.q2_movers_2plus_vendor_share, 1)} of movers have two or more vendors, against ${pct(f.q2_all_clients_2plus_vendor_share, 1)}`);
   says("who-overlap", `${count(f.q3_two_community_clients)} clients get a fifth or more`);
-  says("who-overlap", `give ${count(Math.round(f.q3_null_mean))} ±`);
-  says("who-overlap", `(z = −${Math.round(-f.q3_z)})`);
+  says("who-overlap", `give ${count(Math.round(f.q3_null_mean))} ± ${Math.round(f.q3_null_sd)} split clients (z = −${Math.round(-f.q3_z)})`);
 });
 
 test("beyond: law firms, green cards and wage levels", () => {
@@ -97,8 +112,18 @@ test("beyond: law firms, green cards and wage levels", () => {
   says("beyond-perm", `(p = ${f2(f.q2_permutation_p)})`);
   assert.equal(f.q2_between_communities_matters, false);
   assert.equal(f.q3_placed_pays_lower_level, true);
-  says("beyond-wage", `Mantel–Haenszel odds ratio is ${f2(f.q3_odds_ratio)} (95% interval ${f2(f.q3_odds_ratio_ci95[0])} to ${f2(f.q3_odds_ratio_ci95[1])})`);
+  says("beyond-wage", `Mantel–Haenszel odds ratio is ${f2(f.q3_odds_ratio)}`);
   says("beyond-wage", `${pct(d.q3.crude.placed_low_share)} of placed filings sit at level I or II against ${pct(d.q3.crude.direct_low_share)}`);
+  const [clo, chi] = f.q3_odds_ratio_cluster_ci95;
+  says("beyond-wage", `resampling whole employers: ${f2(clo)} to ${f2(chi)}`);
+  const drops = d.q3.odds_ratio_after_dropping_top_placing_firms;
+  says("beyond-wage", `rises to ${f2(drops.top5.odds_ratio)}, ${f2(drops.top10.odds_ratio)} and ${f2(drops.top20.odds_ratio)}`);
+  says("beyond-wage", `placed filings offer a median ${f2(f.q3_wage_ratio_placed_max)} times`);
+  says("beyond-wage", `direct ones ${f2(f.q3_wage_ratio_direct_min)} to ${f2(f.q3_wage_ratio_direct_max)} times`);
+  const [dlo, dhi] = f.q2_direct_pooled_ci95;
+  says("beyond-perm", `direct employers ${f2(f.q2_direct_pooled_ratio)} (${f2(dlo)} to ${f2(dhi)})`);
+  const named = d.q2_named_perm;
+  says("beyond-perm", `from ${count(named.Amazon.fy2024.all_statuses_name_match)} and ${count(named.Google.fy2024.all_statuses_name_match)} in FY2024 to ${named.Amazon.fy2025.all_statuses_name_match} and ${named.Google.fy2025.all_statuses_name_match} in FY2025`);
   says("beyond-wage", `Within the ${d.q3.strata_kept_20plus_each_side} occupations`);
 });
 

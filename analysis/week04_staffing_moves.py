@@ -43,10 +43,19 @@ Method
   is the share sitting with vendors that are not in the client's own
   community. A "two-community client" has vendors in 2+ communities and a
   second community carrying at least 20% of its filings. The null reruns
-  Louvain once on each of 100 degree-preserving bipartite rewirings (each
-  firm and each client keeps its number of partners; filings dealt back out
-  at random), scored on the rewiring's own giant component, and counts the
-  same thing there.
+  Louvain once on each of 100 degree-preserving bipartite rewirings that keep
+  each client's own weight profile intact -- only the firm endpoints of two
+  edges are swapped, so a client's filings stay split the same way across
+  its (now different) vendors, and each firm keeps its degree -- scored on
+  the rewiring's own giant component, and counts the same thing there. (An
+  earlier version of this null, week04_staffing.rewire(), also dealt every
+  filing weight out at random across the whole network; that loses each
+  client's own weight concentration along with the wiring, so its z score
+  was measuring the loss of that concentration, not of community structure.)
+  A second, simpler control checks the counting method itself: real wiring,
+  real partition, only a client's own weights reshuffled among its own
+  vendors -- if that barely changes the count, the metric doesn't hinge on
+  which of a client's vendors happens to hold which weight.
 
 Checks
 - FY2025 giant component node and edge counts against
@@ -59,10 +68,11 @@ Checks
 - Q2's noise floor: if the weighted-vs-unweighted "move" share is no bigger
   than the seed-to-seed noise floor of either kind, moving is not a real
   effect of the weights, just Louvain's own instability.
-- Q3's null: if two-community clients are just as common after rewiring
-  (weights dealt out at random on a randomised bipartite skeleton), split
-  loyalties are a property of network structure in general, not of these
-  specific communities.
+- Q3's null: with each client's own weight concentration held fixed, a z
+  outside +/-2 says whether real clients split their loyalty across
+  communities more, or less, than a random rewiring of that same weight
+  profile would produce -- not an artifact of weight concentration, since
+  the null already carries it.
 
 Outputs: analysis/week04_staffing_moves.json (every number, with the checks)
 and docs/weeks/week04/data/staffing_moves.json (the small page figure).
@@ -70,10 +80,12 @@ and docs/weeks/week04/data/staffing_moves.json (the small page figure).
 
 import json
 import random
+import statistics
 import time
 from collections import Counter
 from pathlib import Path
 
+import networkx as nx
 import numpy as np
 from scipy.optimize import linear_sum_assignment
 from sklearn.metrics import normalized_mutual_info_score as nmi
@@ -135,6 +147,15 @@ def null_summary(observed, null_draw):
         "z": round((observed - mean) / sd, 2) if sd > 0 else None,
         "p": round(float((np.sum(null_draw >= observed) + 1) / (len(null_draw) + 1)), 4),
     }
+
+
+def lift(observed, summary):
+    """observed / null mean: how many times more likely than chance the
+    switch landed in the same community. None when there is no null mean to
+    divide by."""
+    if observed is None or summary is None or not summary.get("mean"):
+        return None
+    return round(observed / summary["mean"], 2)
 
 
 def verdict(observed, summary):
@@ -203,10 +224,12 @@ def q1_switching(data, rng_np):
     pooled_n, pooled_matches = 0, 0
     pooled_null = np.zeros(DRAWS)
     pooled_linked_n, pooled_linked_yes = 0, 0
+    pooled_strict_n, pooled_strict_matches = 0, 0
+    pooled_strict_null = np.zeros(DRAWS)
 
     for t, t1 in zip(YEARS, YEARS[1:]):
         dt, dt1 = data[t], data[t1]
-        common = set(dt["client_totals"]) & set(dt1["client_totals"])
+        common = sorted(set(dt["client_totals"]) & set(dt1["client_totals"]))
         n_at = {th: sum(1 for c in common if dt["client_totals"][c] >= th and dt1["client_totals"][c] >= th)
                 for th in THRESHOLDS}
         kept = [c for c in common if dt["client_totals"][c] >= MAIN_THRESHOLD
@@ -228,8 +251,9 @@ def q1_switching(data, rng_np):
         strict_obs, strict_null_draw, n_elig = stricter_null(dt, valid, rng_np) if n else (None, None, 0)
         strict_summary = None
         if share_linked is not None and share_linked >= LINKED_SHARE_GATE and strict_null_draw is not None:
+            s = null_summary(strict_obs, strict_null_draw)
             strict_summary = {"n_eligible": n_elig, "observed_share": round(strict_obs, 4),
-                               **null_summary(strict_obs, strict_null_draw)}
+                               **s, "lift": lift(strict_obs, s)}
 
         pairs.append({
             "from": t, "to": t1,
@@ -241,6 +265,7 @@ def q1_switching(data, rng_np):
             "switches_dropped_vendor_outside_giant": dropped,
             "observed_share_same_community": round(observed, 4) if observed is not None else None,
             "null": summary,
+            "lift": lift(observed, summary),
             "share_new_vendor_already_linked": round(share_linked, 4) if share_linked is not None else None,
             "stricter_null": strict_summary,
             "answer": verdict(observed, summary),
@@ -252,15 +277,34 @@ def q1_switching(data, rng_np):
             pooled_null += null_draw * n
             pooled_linked_n += n
             pooled_linked_yes += share_linked * n
+        if n_elig:
+            pooled_strict_n += n_elig
+            pooled_strict_matches += strict_obs * n_elig
+            pooled_strict_null += strict_null_draw * n_elig
 
     pooled_observed = pooled_matches / pooled_n if pooled_n else None
     pooled_null_draw = pooled_null / pooled_n if pooled_n else np.zeros(DRAWS)
     pooled_summary = null_summary(pooled_observed, pooled_null_draw) if pooled_n else None
+    pooled_share_linked = pooled_linked_yes / pooled_linked_n if pooled_linked_n else None
+
+    # Pooled stricter null: same gate as each pair (need enough real switches
+    # to already-linked vendors for the comparison to mean anything), applied
+    # to the pooled share rather than per pair.
+    pooled_strict_observed = pooled_strict_matches / pooled_strict_n if pooled_strict_n else None
+    pooled_strict_null_draw = pooled_strict_null / pooled_strict_n if pooled_strict_n else np.zeros(DRAWS)
+    pooled_strict_summary = None
+    if pooled_share_linked is not None and pooled_share_linked >= LINKED_SHARE_GATE and pooled_strict_n:
+        s = null_summary(pooled_strict_observed, pooled_strict_null_draw)
+        pooled_strict_summary = {"n_eligible": pooled_strict_n, "observed_share": round(pooled_strict_observed, 4),
+                                  **s, "lift": lift(pooled_strict_observed, s)}
+
     pooled = {
         "switches_scored": pooled_n,
         "observed_share_same_community": round(pooled_observed, 4) if pooled_observed is not None else None,
         "null": pooled_summary,
-        "share_new_vendor_already_linked": round(pooled_linked_yes / pooled_linked_n, 4) if pooled_linked_n else None,
+        "lift": lift(pooled_observed, pooled_summary),
+        "share_new_vendor_already_linked": round(pooled_share_linked, 4) if pooled_share_linked is not None else None,
+        "stricter_null": pooled_strict_summary,
         "answer": verdict(pooled_observed, pooled_summary),
     }
     return pairs, pooled
@@ -316,13 +360,24 @@ def q2_movers(data):
     movers = [c for c in clients if al_w[c] != al_u[c]]
     share_move = len(movers) / len(clients)
 
-    # Noise floor: two seeds of the same kind, same alignment method.
-    mw0, mw1 = st.labels(runs_w[0][0]), st.labels(runs_w[1][0])
-    aw0, aw1 = align(mw0, mw1, nodes)
-    noise_weighted = sum(1 for c in clients if aw0[c] != aw1[c]) / len(clients)
-    mu0, mu1 = st.labels(runs_u[0][0]), st.labels(runs_u[1][0])
-    au0, au1 = align(mu0, mu1, nodes)
-    noise_unweighted = sum(1 for c in clients if au0[c] != au1[c]) / len(clients)
+    # Noise floor: 10 disjoint seed pairs of the same kind (20 of the 100
+    # runs already computed, never reusing a seed across pairs), same
+    # alignment method as the weighted-vs-unweighted comparison above. One
+    # seed pair is an arbitrary draw; the median (and min/max) across ten
+    # says how much of that is just Louvain being Louvain.
+    def noise_floor(runs):
+        shares = []
+        for k in range(10):
+            i, j = 2 * k, 2 * k + 1
+            m0, m1 = st.labels(runs[i][0]), st.labels(runs[j][0])
+            a0, a1 = align(m0, m1, nodes)
+            shares.append(sum(1 for c in clients if a0[c] != a1[c]) / len(clients))
+        return shares
+
+    noise_weighted_all = noise_floor(runs_w)
+    noise_unweighted_all = noise_floor(runs_u)
+    noise_weighted = statistics.median(noise_weighted_all)
+    noise_unweighted = statistics.median(noise_unweighted_all)
 
     vendors = {c: dt["vendors_per_client"].get(c[1], 0) for c in clients}
     totals = {c: dt["client_totals"].get(c[1], 0) for c in clients}
@@ -349,7 +404,11 @@ def q2_movers(data):
         "movers": len(movers),
         "share_move": round(share_move, 4),
         "noise_floor_weighted_seeds": round(noise_weighted, 4),
+        "noise_floor_weighted_seeds_min": round(min(noise_weighted_all), 4),
+        "noise_floor_weighted_seeds_max": round(max(noise_weighted_all), 4),
         "noise_floor_unweighted_seeds": round(noise_unweighted, 4),
+        "noise_floor_unweighted_seeds_min": round(min(noise_unweighted_all), 4),
+        "noise_floor_unweighted_seeds_max": round(max(noise_unweighted_all), 4),
         "movers_2plus_vendor_share": round(share_2plus_by_count(movers), 4) if movers else None,
         "all_clients_2plus_vendor_share": round(share_2plus_by_count(clients), 4),
         "movers_2plus_vendor_filing_share": round(share_2plus_by_filings(movers), 4) if movers else None,
@@ -385,6 +444,62 @@ def two_community_stats(g, member, min_filings=None):
     return count, count_min
 
 
+def rewire_keep_client_weights(g, rng):
+    """Degree-preserving bipartite rewiring in which every edge's weight
+    travels with its CLIENT end: only the firm endpoints of two edges are
+    swapped. Each client keeps its own multiset of weights (its filing
+    concentration across vendors is untouched); each firm keeps its degree
+    (how many clients it serves), just not the same ones. This is the null
+    week04_staffing.rewire() should have been: that one also shuffles every
+    weight across the whole network, so a client's real concentration on one
+    or two vendors is destroyed along with the community structure, and the
+    resulting null answers a different question (does weight concentration
+    in general produce split clients) than the one Q3 asks (do these
+    specific communities)."""
+    firms, clients, weights = [], [], []
+    for u, v in g.edges():
+        f, c = (u, v) if u[0] == "F" else (v, u)
+        firms.append(f)
+        clients.append(c)
+        weights.append(g[u][v]["weight"])
+    present = set(zip(firms, clients))
+    n = len(firms)
+    for _ in range(10 * n):
+        i, j = rng.randrange(n), rng.randrange(n)
+        if i == j:
+            continue
+        f1, f2 = firms[i], firms[j]
+        c1, c2 = clients[i], clients[j]
+        if f1 == f2 or c1 == c2 or (f1, c2) in present or (f2, c1) in present:
+            continue
+        present -= {(f1, c1), (f2, c2)}
+        present |= {(f1, c2), (f2, c1)}
+        firms[i], firms[j] = f2, f1
+    h = nx.Graph()
+    h.add_weighted_edges_from(zip(firms, clients, weights))
+    return h
+
+
+def shuffle_weights_within_client(g, rng):
+    """Real wiring, real weights, real partition: for every client with 2+
+    vendors, its own filing counts are dealt back out at random across its
+    own edges only (each vendor still gets one of the client's real weight
+    values, just not necessarily the one it actually filed). A sanity check,
+    not a null: it asks whether the two-community count depends on which of
+    a client's own vendors happens to hold which weight, rather than on the
+    community structure itself."""
+    h = g.copy()
+    for n in h:
+        if n[0] != "C":
+            continue
+        neighbors = list(h.neighbors(n))
+        weights = [h[n][f]["weight"] for f in neighbors]
+        rng.shuffle(weights)
+        for f, w in zip(neighbors, weights):
+            h[n][f]["weight"] = w
+    return h
+
+
 def q3_two_communities(data, rng):
     dt = data[MAIN]
     giant = dt["giant"]
@@ -414,9 +529,20 @@ def q3_two_communities(data, rng):
 
     real_count, real_count_min = two_community_stats(giant, member, st.MIN_FILINGS)
 
+    # Sanity check, not a null: same wiring, same partition, each client's own
+    # weights dealt back out across its own edges only. If the two-community
+    # count barely moves, the metric is not an artifact of which vendor holds
+    # which weight.
+    control_g = shuffle_weights_within_client(giant, rng)
+    control_count, _ = two_community_stats(control_g, member)
+    control_identical = control_count == real_count
+
+    # The null: rewire the bipartite skeleton (who is linked to whom) while
+    # keeping each client's own weight profile intact, then re-run Louvain on
+    # the rewiring's own giant component and count the same thing there.
     null_counts = []
-    for i in st.tracked("Rewirings, one Louvain run each", RUNS):
-        h = st.rewire(giant, rng)
+    for i in st.tracked("Rewirings (client-weight-preserving), one Louvain run each", RUNS):
+        h = rewire_keep_client_weights(giant, rng)
         hg = st.giant_of(h)
         parts, _ = st.louvain(hg, SEED + i)
         mem = st.labels(parts)
@@ -424,6 +550,17 @@ def q3_two_communities(data, rng):
         null_counts.append(c)
     null_counts = np.array(null_counts)
     z = (real_count - null_counts.mean()) / null_counts.std() if null_counts.std() > 0 else None
+    # This null already holds each client's own weight concentration fixed
+    # (only the wiring is rewired), so a z outside +/-2 is not a weight-
+    # concentration artifact; it says whether real clients split their
+    # loyalty across communities more, or less, than random rewiring of that
+    # same weight profile would produce.
+    verdict3 = (
+        "no data" if z is None else
+        "yes, more split loyalty than chance" if z >= 2 else
+        "fewer split clients than rewirings that keep each client's filing counts; the groups follow clients' main suppliers" if z <= -2 else
+        "no, indistinguishable from chance"
+    )
 
     top15 = sorted(detail, key=lambda d: -d["filings"])[:15]
     return {
@@ -433,6 +570,11 @@ def q3_two_communities(data, rng):
         "null_mean": round(float(null_counts.mean()), 2),
         "null_sd": round(float(null_counts.std()), 2),
         "z": round(float(z), 2) if z is not None else None,
+        "verdict": verdict3,
+        "control_within_client_shuffle": {
+            "two_community_clients": control_count,
+            "identical_to_observed": control_identical,
+        },
         "top_by_filings": top15,
     }
 
@@ -468,27 +610,47 @@ def main():
     }
     OUT.write_text(json.dumps(out, indent=1, default=str) + "\n")
 
+    q1_stricter = q1_pooled.get("stricter_null")
+    finding = {
+        "q1_pooled_observed_share": q1_pooled["observed_share_same_community"],
+        "q1_pooled_null_mean": q1_pooled["null"]["mean"] if q1_pooled["null"] else None,
+        "q1_pooled_null_sd": q1_pooled["null"]["sd"] if q1_pooled["null"] else None,
+        "q1_pooled_p": q1_pooled["null"]["p"] if q1_pooled["null"] else None,
+        "q1_pooled_z": q1_pooled["null"]["z"] if q1_pooled["null"] else None,
+        "q1_pooled_lift": q1_pooled.get("lift"),
+        "q1_answer": q1_pooled["answer"],
+        "q1_share_new_vendor_already_linked": q1_pooled["share_new_vendor_already_linked"],
+        "q1_pooled_stricter_observed_share": q1_stricter["observed_share"] if q1_stricter else None,
+        "q1_pooled_stricter_null_mean": q1_stricter["mean"] if q1_stricter else None,
+        "q1_pooled_stricter_null_sd": q1_stricter["sd"] if q1_stricter else None,
+        "q1_pooled_stricter_z": q1_stricter["z"] if q1_stricter else None,
+        "q1_pooled_stricter_lift": q1_stricter["lift"] if q1_stricter else None,
+        "q2_share_move": q2["share_move"],
+        "q2_noise_floor_weighted": q2["noise_floor_weighted_seeds"],
+        "q2_noise_floor_weighted_min": q2["noise_floor_weighted_seeds_min"],
+        "q2_noise_floor_weighted_max": q2["noise_floor_weighted_seeds_max"],
+        "q2_noise_floor_unweighted": q2["noise_floor_unweighted_seeds"],
+        "q2_noise_floor_unweighted_min": q2["noise_floor_unweighted_seeds_min"],
+        "q2_noise_floor_unweighted_max": q2["noise_floor_unweighted_seeds_max"],
+        "q2_movers_2plus_vendor_share": q2["movers_2plus_vendor_share"],
+        "q2_all_clients_2plus_vendor_share": q2["all_clients_2plus_vendor_share"],
+        "q2_answer": q2["answer"],
+        "q3_two_community_clients": q3["two_community_clients"],
+        "q3_null_mean": q3["null_mean"],
+        "q3_null_sd": q3["null_sd"],
+        "q3_z": q3["z"],
+        "q3_verdict": q3["verdict"],
+    }
+    if not q3["control_within_client_shuffle"]["identical_to_observed"]:
+        # Only worth a spot on the page if it turned out NOT to be a pure
+        # sanity check -- see the module docstring's Q3 method note.
+        finding["q3_control_within_client_shuffle_count"] = q3["control_within_client_shuffle"]["two_community_clients"]
+
     page = {
         "generated_by": "analysis/week04_staffing_moves.py", "year": MAIN,
-        "finding": {
-            "q1_pooled_observed_share": q1_pooled["observed_share_same_community"],
-            "q1_pooled_null_mean": q1_pooled["null"]["mean"] if q1_pooled["null"] else None,
-            "q1_pooled_null_sd": q1_pooled["null"]["sd"] if q1_pooled["null"] else None,
-            "q1_pooled_p": q1_pooled["null"]["p"] if q1_pooled["null"] else None,
-            "q1_answer": q1_pooled["answer"],
-            "q2_share_move": q2["share_move"],
-            "q2_noise_floor_weighted": q2["noise_floor_weighted_seeds"],
-            "q2_noise_floor_unweighted": q2["noise_floor_unweighted_seeds"],
-            "q2_movers_2plus_vendor_share": q2["movers_2plus_vendor_share"],
-            "q2_all_clients_2plus_vendor_share": q2["all_clients_2plus_vendor_share"],
-            "q2_answer": q2["answer"],
-            "q3_two_community_clients": q3["two_community_clients"],
-            "q3_null_mean": q3["null_mean"],
-            "q3_null_sd": q3["null_sd"],
-            "q3_z": q3["z"],
-        },
+        "finding": finding,
         "q1_pairs": [{k: p[k] for k in ("from", "to", "switches_scored", "observed_share_same_community",
-                                        "null", "answer")} for p in q1_pairs],
+                                        "null", "lift", "answer")} for p in q1_pairs],
         "q2_top_movers": q2["top_movers_by_filings"][:15],
         "q3_top_clients": q3["top_by_filings"][:15],
     }

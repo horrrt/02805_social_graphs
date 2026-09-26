@@ -30,8 +30,17 @@ Method, Q1
   badly mismatches filing volume here (818 companies chosen at random hold a
   tiny share of filings; the real 818 placing firms hold about a fifth), so a
   second null instead samples companies until each random group's filing total
-  matches the real group's. Louvain uses 10 seeds per projection (best Q, not
-  the full 100-seed week04_jobs.communities, to keep 20 nulls affordable).
+  matches the real group's. Neither null matches both at once, so a third
+  null stratifies every company into log2 filing-count bins (1, 2-3, 4-7, ...)
+  and, for each of 20 draws, samples from each bin exactly as many companies
+  (without replacement, excluding nothing) as the real placing group has in
+  that bin; this matches both the placing group's company count and its
+  filing share by construction. The headline verdict on "different job mixes"
+  still comes from the count- and filing-matched nulls; this size-matched
+  null instead gives a z-score and a plain "different"/"no difference" call
+  against the observed NMI, reported alongside. Louvain uses 10 seeds per
+  projection (best Q, not the full 100-seed week04_jobs.communities, to keep
+  20 nulls affordable).
 - Occupations shown only in one group's projection (never filed by any company
   in the other group), and each group's 15 most-filed occupations with their
   share of the group's filings.
@@ -81,6 +90,7 @@ docs/weeks/week04/data/jobs_split.json (the page's numbers).
 
 import itertools
 import json
+import math
 import random
 import sys
 import time
@@ -181,6 +191,33 @@ def random_split_by_filings(companies, filing_of, target, rng):
     return a, companies - a, total
 
 
+def filing_bin(n):
+    """log2 bin label for a filing count: 1, 2-3, 4-7, 8-15, ..."""
+    k = 0 if n <= 1 else int(math.floor(math.log2(n)))
+    lo, hi = 1 << k, (1 << (k + 1)) - 1
+    return str(lo) if lo == hi else f"{lo}-{hi}"
+
+
+def random_split_matched_bins(companies, filing_of, placing_companies, rng):
+    """Stratify every company by its log2 filing-count bin, then from each bin
+    draw (without replacement, excluding nothing) exactly as many companies as
+    the real placing group holds in that bin. The rest form the direct group.
+    Bin membership and draw order both come from sorted() lists, so the draws
+    are reproducible across processes regardless of set/dict hash order."""
+    bins_all = {}
+    for c in sorted(companies):
+        bins_all.setdefault(filing_bin(filing_of.get(c, 0)), []).append(c)
+    bins_needed = Counter(filing_bin(filing_of.get(c, 0)) for c in sorted(placing_companies))
+    a = set()
+    for label, need in bins_needed.items():
+        pool = sorted(bins_all[label])
+        if need > len(pool):
+            raise ValueError(f"filing bin {label} has only {len(pool)} companies, need {need}")
+        rng.shuffle(pool)
+        a.update(pool[:need])
+    return a, companies - a
+
+
 def null_partition(frame_group):
     """The best of NULL_SEEDS Louvain seeds on a group's projection."""
     graph, _ = jobs.projection(frame_group)
@@ -188,15 +225,19 @@ def null_partition(frame_group):
     return graph, jobs.as_labels(best[0]), best[1]
 
 
-def q1_null(frame, companies, n_placing, filing_of, target_filings, kind, label):
+def q1_null(frame, companies, n_placing, filing_of, target_filings, kind, label,
+            placing_companies=None):
     """NULLS random splits of every company (matched by company count when
-    kind == "count", by filing total when kind == "filings"), rebuilt
-    projections, best-of-NULL_SEEDS Louvain, compared like the real groups."""
+    kind == "count", by filing total when kind == "filings", by filing-count
+    bin when kind == "matched_bins"), rebuilt projections, best-of-NULL_SEEDS
+    Louvain, compared like the real groups."""
     rng = random.Random(SEED)
     results, filing_shares = [], []
     for i in tracked(label, NULLS):
         if kind == "count":
             a, b = random_split_by_count(companies, n_placing, rng)
+        elif kind == "matched_bins":
+            a, b = random_split_matched_bins(companies, filing_of, placing_companies, rng)
         else:
             a, b, _ = random_split_by_filings(companies, filing_of, target_filings, rng)
         fa, fb = group_frame(frame, a), group_frame(frame, b)
@@ -262,6 +303,9 @@ def q1(frame, titles):
                           "count", "Q1 null, company-count matched")
     null_filings = q1_null(frame, companies, len(placing), filing_of, placing_filings,
                             "filings", "Q1 null, filing-total matched")
+    null_matched = q1_null(frame, companies, len(placing), filing_of, placing_filings,
+                            "matched_bins", "Q1 null, filing-count bin matched",
+                            placing_companies=placing)
     observed = out["variants"]["min20"]["observed"]
     verdict = "no result: too few qualifying occupations to compare"
     if observed["nmi"] is not None and null_count["nmi_mean"] is not None:
@@ -269,12 +313,24 @@ def q1(frame, titles):
         below_filings = null_filings["nmi_mean"] is None or observed["nmi"] < (
             null_filings["nmi_mean"] - 2 * (null_filings["nmi_sd"] or 0))
         verdict = "yes, different job mixes" if below_count and below_filings else "no, consistent with the null"
-    out["null"] = {"company_count_matched": null_count, "filing_total_matched": null_filings}
+    matched_z, matched_verdict = None, "no result: too few qualifying occupations to compare"
+    if observed["nmi"] is not None and null_matched["nmi_mean"] is not None and null_matched["nmi_sd"]:
+        matched_z = (observed["nmi"] - null_matched["nmi_mean"]) / null_matched["nmi_sd"]
+        matched_verdict = "no difference" if abs(matched_z) < 2 else "different"
+    out["null"] = {
+        "company_count_matched": null_count, "filing_total_matched": null_filings,
+        "size_matched": null_matched,
+    }
     out["headline"] = {
         "variant": "min20", "observed_nmi": out["variants"]["min20"]["observed"]["nmi"],
         "observed_ami": out["variants"]["min20"]["observed"]["ami"],
         "observed_n": out["variants"]["min20"]["observed"]["n"],
         "verdict": verdict,
+        "null_matched_nmi_mean": null_matched["nmi_mean"],
+        "null_matched_nmi_sd": null_matched["nmi_sd"],
+        "null_matched_filing_share": null_matched["filing_share_of_group_a_mean"],
+        "matched_z": matched_z,
+        "matched_verdict": matched_verdict,
     }
     return out
 
@@ -508,6 +564,11 @@ def main():
             "q1_null_count_matched_nmi_sd": q1_result["null"]["company_count_matched"]["nmi_sd"],
             "q1_null_filings_matched_nmi_mean": q1_result["null"]["filing_total_matched"]["nmi_mean"],
             "q1_null_filings_matched_nmi_sd": q1_result["null"]["filing_total_matched"]["nmi_sd"],
+            "q1_null_matched_nmi_mean": headline["null_matched_nmi_mean"],
+            "q1_null_matched_nmi_sd": headline["null_matched_nmi_sd"],
+            "q1_null_matched_filing_share": headline["null_matched_filing_share"],
+            "q1_matched_z": headline["matched_z"],
+            "q1_matched_verdict": headline["matched_verdict"],
             "q1_placing_companies": variant["placing_companies"], "q1_direct_companies": variant["direct_companies"],
             "q1_placing_filing_share": variant["placing_filing_share"],
             "q1_placing_modularity": variant["placing_modularity"], "q1_direct_modularity": variant["direct_modularity"],
@@ -537,6 +598,8 @@ def main():
     print("Q1 headline (min20):", headline)
     print("Q1 null, company-count matched:", q1_result["null"]["company_count_matched"])
     print("Q1 null, filing-total matched:", q1_result["null"]["filing_total_matched"])
+    print("Q1 null, filing-count bin matched:", q1_result["null"]["size_matched"])
+    print("Q1 matched z, verdict:", headline["matched_z"], headline["matched_verdict"])
     print("Q2:", {k: v for k, v in q2_result.items() if k not in
                   ("top15_by_communities_per_link", "bridges")})
     print("Q2 bridges:", q2_result.get("bridges"))

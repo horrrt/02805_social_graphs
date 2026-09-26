@@ -270,12 +270,35 @@ def question1(rng, lca, staffing_giant, staffing_member, out):
     return result
 
 
+def named_perm(perm_by_year, names=("Amazon", "Google")):
+    """PERM filing counts for a shortlist of named companies, under two bases:
+    (a) all case statuses, a raw name match on PERM's own EMP_BUSINESS_NAME;
+    (b) the Certified/Certified-Expired filter this question's ratio uses,
+    matched through resolver().employer() the same way the ratio's own
+    employer key is built."""
+    out = {}
+    for label in names:
+        by_year = {}
+        for year, perm_y in perm_by_year.items():
+            raw = int(perm_y["EMP_BUSINESS_NAME"].str.upper().str.contains(label.upper(), na=False).sum())
+            cert = perm_y[perm_y["CASE_STATUS"].isin(["Certified", "Certified - Expired"])]
+            keys = [resolver().employer(n, f) for n, f in zip(cert["EMP_BUSINESS_NAME"], cert["EMP_FEIN"])]
+            by_year[f"fy{year}"] = {
+                "all_statuses_name_match": raw,
+                "certified_or_expired_resolver_match": int(sum(1 for k in keys if k == label)),
+            }
+        out[label] = by_year
+    return out
+
+
 def question2(rng, lca, staffing_giant, staffing_member, out):
     """Does a firm's staffing community predict whether it sponsors green cards?"""
     started = time.time()
-    perm = load("perm_fy2025")
-    perm = perm[perm["CASE_STATUS"].isin(["Certified", "Certified - Expired"])].copy()
+    perm_raw_2025 = load("perm_fy2025")
+    perm_raw_2024 = load("perm_fy2024")
+    perm = perm_raw_2025[perm_raw_2025["CASE_STATUS"].isin(["Certified", "Certified - Expired"])].copy()
     perm["employer"] = [resolver().employer(n, f) for n, f in zip(perm["EMP_BUSINESS_NAME"], perm["EMP_FEIN"])]
+    q2_named_perm = named_perm({2024: perm_raw_2024, 2025: perm_raw_2025})
 
     h1b_counts = lca.groupby("employer").size()
     perm_counts = perm.groupby("employer").size()
@@ -289,7 +312,10 @@ def question2(rng, lca, staffing_giant, staffing_member, out):
     overall_match_rate = round(len(big_h1b & set(perm_counts.index)) / len(big_h1b), 4)
 
     def group_stats(keys):
-        keys = list(keys)
+        # A set's iteration order is not stable across processes (Python's
+        # string hash randomization), so a bootstrap over list(a_set) draws
+        # different resamples each run; sorting fixes the order the rng sees.
+        keys = sorted(keys)
         h = h1b_counts.reindex(keys, fill_value=0)
         p = perm_counts.reindex(keys, fill_value=0)
         matched_keys_here = set(keys) & set(perm_counts.index)
@@ -346,18 +372,23 @@ def question2(rng, lca, staffing_giant, staffing_member, out):
         return float(np.var(ratios))
 
     observed_var = variance_of_pooled(comm_of)
-    per_community = {}
+    # An ordered list, largest community by filings first, each carrying its
+    # own community id: a JSON object keyed by that id has no fixed order once
+    # parsed (JS reorders numeric-looking keys), which silently relabelled the
+    # bars in the page's chart.
+    per_community = []
     for c in top6:
         members = comm_of[comm_of == c].index
         h_c, p_c = h1b_counts.reindex(members, fill_value=0), perm_counts.reindex(members, fill_value=0)
         top_firms = h_c.sort_values(ascending=False).head(3)
-        per_community[str(c)] = {
+        per_community.append({
+            "community": int(c),
             "firms": int(len(members)),
             "h1b_filings": int(h_c.sum()), "perm_filings": int(p_c.sum()),
             "pooled_ratio": round(pooled(p_c.values, h_c.values), 4),
             "top_firms": [resolver().label(k) for k in top_firms.index],
             "largest_firm_filing_share": round(float(top_firms.iloc[0] / h_c.sum()), 4) if h_c.sum() else None,
-        }
+        })
     labels_arr = comm_of.values.copy()
     beats = 0
     for _ in tracked("Q2: community permutation", SHUFFLES):
@@ -374,6 +405,8 @@ def question2(rng, lca, staffing_giant, staffing_member, out):
     ]
 
     same_direction = perm_p < 0.05
+    match_rate_gap_points = round(
+        (placing_stats["perm_match_rate_by_filings"] - direct_stats["perm_match_rate_by_filings"]) * 100, 1)
     result = {
         "certified_h1b_filings": int(len(lca)), "perm_certified_or_expired_filings": int(len(perm)),
         "min_filings": MIN_FILINGS,
@@ -383,26 +416,27 @@ def question2(rng, lca, staffing_giant, staffing_member, out):
                           "alone, the same rules FY2022-FY2023 H-1B filings rely on.",
         "placing_firms_20plus_placed": placing_stats,
         "direct_firms_20plus_h1b": direct_stats,
+        "q2_named_perm": q2_named_perm,
         "perm_match_rate_caveat": "match rates differ between the two groups, by employer count and by the "
                                   "H-1B filings behind them (perm_match_rate / perm_match_rate_by_filings "
-                                  "above), though the filing-weighted gap is small (about 2 points). "
-                                  f"{perm_fein_unmatched} of {len(perm):,} PERM filings kept a name-only key "
+                                  f"above), though the filing-weighted gap is small (about {abs(match_rate_gap_points)} "
+                                  f"points). {perm_fein_unmatched} of {len(perm):,} PERM filings kept a name-only key "
                                   "that never joined an LCA-side FEIN family; many of those belong to "
                                   "employers that file no H-1B at all, so this is an upper bound on join "
-                                  "failures, not a count of them. Checked directly for the four largest "
-                                  "H-1B employers with perm_filings of 0 (Amazon, Google, Cognizant, Infosys): "
-                                  "their FY2025 PERM rows under any spelling of the name are themselves near "
-                                  "zero (0 to 3 rows before any key-matching), so these zeros are real, not a "
-                                  "resolver join failure; whether that reflects true sponsorship, a filing "
-                                  "under a legal-entity name this check did not try, or a certification lag "
-                                  "was not investigated further.",
+                                  "failures, not a count of them. See q2_named_perm for Amazon and Google's own "
+                                  "PERM filing counts under both an unrestricted name match and the resolver key "
+                                  "this ratio uses; whether a gap between the two reflects true sponsorship, a "
+                                  "filing under a legal-entity name this check did not try, or a certification "
+                                  "lag was not investigated further.",
         "top10_zero_perm_employers": [t["employer"] for t in top10 if t["perm_filings"] == 0],
         "sensitivity_share_based_placing_rule": sensitivity,
-        "placing_vs_direct_ci_overlap": "the pooled-ratio 95% CIs already touch under the spec rule "
-                                        "(placing up to 0.149, direct from 0.141) and overlap more under the "
-                                        "share-based sensitivity rule (0.101-0.180 vs 0.132-0.202): the "
-                                        "placing/direct gap in pooled ratios is not robust to how 'placing' "
-                                        "is defined.",
+        "placing_vs_direct_ci_overlap": (
+            f"the pooled-ratio 95% CIs already touch under the spec rule (placing up to "
+            f"{placing_stats['pooled_ci95'][1]:.3f}, direct from {direct_stats['pooled_ci95'][0]:.3f}) and "
+            f"overlap more under the share-based sensitivity rule "
+            f"({sensitivity['placing']['pooled_ci95'][0]:.3f}-{sensitivity['placing']['pooled_ci95'][1]:.3f} vs "
+            f"{sensitivity['direct']['pooled_ci95'][0]:.3f}-{sensitivity['direct']['pooled_ci95'][1]:.3f}): the "
+            "placing/direct gap in pooled ratios is not robust to how 'placing' is defined."),
         "top6_staffing_communities_by_filings": per_community,
         "between_community_variance": round(observed_var, 6),
         "permutation_shuffles": SHUFFLES, "permutation_p": round(perm_p, 4),
@@ -416,7 +450,10 @@ def question2(rng, lca, staffing_giant, staffing_member, out):
     return result
 
 
-def question3(lca, out):
+CLUSTER_RESAMPLES = 200
+
+
+def question3(rng, lca, out):
     """Do firms that place workers at clients pay a lower wage level for the same job?"""
     started = time.time()
     valid_level = lca["PW_WAGE_LEVEL"].isin(["I", "II", "III", "IV"])
@@ -429,7 +466,7 @@ def question3(lca, out):
         "share_of_blanks_that_are_placed": round(float(placed[blank].mean()), 4) if blank.sum() else None,
     }
 
-    df = lca.loc[valid_level, ["PW_WAGE_LEVEL", "SOC_CODE"]].copy()
+    df = lca.loc[valid_level, ["PW_WAGE_LEVEL", "SOC_CODE", "employer"]].copy()
     df["placed"] = placed[valid_level]
     df["low"] = df["PW_WAGE_LEVEL"].isin(["I", "II"])
     df["soc7"] = df["SOC_CODE"].str[:7]
@@ -466,6 +503,67 @@ def question3(lca, out):
     or_ci = tuple(float(x) for x in st.oddsratio_pooled_confint())
     cmh = st.test_null_odds(correction=True)
     bd = st.test_equal_odds()
+
+    # The plain CI above treats every filing as an independent draw; a handful
+    # of firms file many rows each, so it understates the uncertainty. An
+    # employer-cluster bootstrap resamples firms instead of filings: placed
+    # employers and direct employers are each resampled with replacement
+    # within their own set (a stratified bootstrap on which side a firm sits;
+    # the two sides are never mixed), the kept SOCs' 2x2 tables are rebuilt
+    # from the resampled firms' filings, and the pooled MH odds ratio is
+    # recomputed each draw.
+    kept_socs = [s["soc7"] for s in kept_strata]
+
+    def employer_soc_matrix(sub, employers):
+        idx = pd.MultiIndex.from_product([employers, kept_socs], names=["employer", "soc7"])
+        g = sub.groupby(["employer", "soc7"])["low"].agg(low="sum", n="size").reindex(idx, fill_value=0)
+        shape = (len(employers), len(kept_socs))
+        return g["low"].to_numpy().reshape(shape), g["n"].to_numpy().reshape(shape)
+
+    placed_employers = sorted(df.loc[df["placed"], "employer"].unique())
+    direct_employers = sorted(df.loc[~df["placed"], "employer"].unique())
+    placed_low, placed_n = employer_soc_matrix(df[df["placed"]], placed_employers)
+    direct_low, direct_n = employer_soc_matrix(df[~df["placed"]], direct_employers)
+    n_placed_employers, n_direct_employers = len(placed_employers), len(direct_employers)
+
+    cluster_draws = []
+    for _ in tracked("Q3: employer-cluster bootstrap", CLUSTER_RESAMPLES):
+        pl_idx = rng.choices(range(n_placed_employers), k=n_placed_employers)
+        dr_idx = rng.choices(range(n_direct_employers), k=n_direct_employers)
+        p_low, p_n = placed_low[pl_idx].sum(axis=0), placed_n[pl_idx].sum(axis=0)
+        d_low, d_n = direct_low[dr_idx].sum(axis=0), direct_n[dr_idx].sum(axis=0)
+        draw_tables = [[[int(p_low[i]), int(p_n[i] - p_low[i])], [int(d_low[i]), int(d_n[i] - d_low[i])]]
+                       for i in range(len(kept_socs)) if p_n[i] > 0 and d_n[i] > 0]
+        cluster_draws.append(float(StratifiedTable(draw_tables).oddsratio_pooled))
+    cluster_draws = np.array(cluster_draws)
+    or_cluster_ci = (float(np.percentile(cluster_draws, 2.5)), float(np.percentile(cluster_draws, 97.5)))
+
+    # A handful of firms file many placed filings each; report the pooled odds
+    # ratio again after dropping the largest ones, by placed filing count.
+    placed_filing_counts = df.loc[df["placed"], "employer"].value_counts()
+    placed_filing_counts = placed_filing_counts.reindex(sorted(placed_filing_counts.index)).sort_values(
+        ascending=False, kind="mergesort")
+
+    def odds_ratio_dropping(drop_employers):
+        sub = df[~df["employer"].isin(drop_employers)]
+        drop_tables = []
+        for soc, g in sub.groupby("soc7"):
+            p, d = g[g["placed"]], g[~g["placed"]]
+            if len(p) < MIN_FILINGS or len(d) < MIN_FILINGS:
+                continue
+            drop_tables.append([[int(p["low"].sum()), int((~p["low"]).sum())],
+                                 [int(d["low"].sum()), int((~d["low"]).sum())]])
+        return float(StratifiedTable(drop_tables).oddsratio_pooled), len(drop_tables)
+
+    top_drops = {}
+    for n in (5, 10, 20):
+        dropped = set(placed_filing_counts.head(n).index)
+        odds_ratio, strata_kept = odds_ratio_dropping(dropped)
+        top_drops[n] = {
+            "placed_filing_share": round(float(placed_filing_counts.head(n).sum() / placed_filing_counts.sum()), 4),
+            "odds_ratio": round(odds_ratio, 4),
+            "strata_kept": strata_kept,
+        }
 
     # Each soc7's title, from its base ".00" rows when present, the most
     # common SOC_TITLE otherwise (week04_jobs.titles_of does the same thing
@@ -510,6 +608,14 @@ def question3(lca, out):
             "placed_median_ratio": round(float(g.loc[g["placed"], "ratio"].median()), 4) if g["placed"].any() else None,
             "direct_median_ratio": round(float(g.loc[~g["placed"], "ratio"].median()), 4) if (~g["placed"]).any() else None,
         })
+    placed_medians = [r["placed_median_ratio"] for r in top5_wage if r["placed_median_ratio"] is not None]
+    direct_medians = [r["direct_median_ratio"] for r in top5_wage if r["direct_median_ratio"] is not None]
+    wage_ratio_medians_range = {
+        "placed_min": round(min(placed_medians), 4) if placed_medians else None,
+        "placed_max": round(max(placed_medians), 4) if placed_medians else None,
+        "direct_min": round(min(direct_medians), 4) if direct_medians else None,
+        "direct_max": round(max(direct_medians), 4) if direct_medians else None,
+    }
 
     # table rows are (placed, direct), columns are (level I/II, level III/IV): an
     # odds ratio above 1, with a CI clear of 1, means placed filings have higher
@@ -527,15 +633,29 @@ def question3(lca, out):
         "strata_or_above_1_share": round(strata_or_above_1 / len(tables), 4),
         "mantel_haenszel_odds_ratio": round(or_pooled, 4),
         "odds_ratio_ci95": [round(x, 4) for x in or_ci],
+        "odds_ratio_ci95_caveat": "the Mantel-Haenszel CI above treats every filing as an independent draw; it "
+                                  "ignores that a handful of firms file many rows each. "
+                                  "odds_ratio_cluster_ci95 is the wider, employer-cluster-bootstrap CI below.",
         "cmh_statistic": round(float(cmh.statistic), 3), "cmh_p": float(cmh.pvalue),
         "breslow_day_statistic": round(float(bd.statistic), 3) if not np.isnan(bd.statistic) else None,
         "breslow_day_p": float(bd.pvalue) if not np.isnan(bd.pvalue) else None,
         "breslow_day_caveat": "large and significant at this many filings almost by construction; read it as "
                               "'the odds ratio is not exactly uniform across jobs', not as a reason to "
                               "distrust the pooled direction (strata_or_above_1_share above).",
+        "employer_cluster_bootstrap": {
+            "resamples": CLUSTER_RESAMPLES,
+            "method": "stratified bootstrap: placed employers and direct employers each resampled with "
+                      "replacement within their own set (never mixed), the kept SOCs' 2x2 tables rebuilt from "
+                      "the resampled firms' filings, and the pooled MH odds ratio recomputed each draw",
+            "placed_employers": n_placed_employers, "direct_employers": n_direct_employers,
+        },
+        "odds_ratio_cluster_ci95": [round(x, 4) for x in or_cluster_ci],
+        "odds_ratio_after_dropping_top_placing_firms": {
+            f"top{n}": v for n, v in top_drops.items()},
         "top5_soc_by_filings": top5_shares,
         "wage_ratio_coverage": round(wage_coverage, 4),
         "top5_soc_wage_ratio": top5_wage,
+        "wage_ratio_medians_range": wage_ratio_medians_range,
         "placed_pays_lower_level": lower_wage,
         "finding": "Yes, a lower wage level" if lower_wage else "No, not a reliable difference",
         "seconds": round(time.time() - started),
@@ -566,7 +686,7 @@ def main():
 
     q1 = question1(rng, lca, staffing_giant, staffing_member, out)
     q2 = question2(rng, lca, staffing_giant, staffing_member, out)
-    q3 = question3(lca, out)
+    q3 = question3(rng, lca, out)
 
     out["seconds"] = round(time.time() - started)
     OUT.write_text(json.dumps(clean(out), indent=1, default=str) + "\n")
@@ -582,10 +702,16 @@ def main():
             "q2_permutation_p": q2["permutation_p"],
             "q2_placing_pooled_ratio": q2["placing_firms_20plus_placed"]["pooled_ratio"],
             "q2_direct_pooled_ratio": q2["direct_firms_20plus_h1b"]["pooled_ratio"],
+            "q2_direct_pooled_ci95": q2["direct_firms_20plus_h1b"]["pooled_ci95"],
             "q2_perm_match_rate_20plus_h1b_employers": q2["perm_match_rate_20plus_h1b_employers"],
             "q3_placed_pays_lower_level": q3["placed_pays_lower_level"],
             "q3_odds_ratio": q3["mantel_haenszel_odds_ratio"],
             "q3_odds_ratio_ci95": q3["odds_ratio_ci95"],
+            "q3_odds_ratio_cluster_ci95": q3["odds_ratio_cluster_ci95"],
+            "q3_wage_ratio_placed_min": q3["wage_ratio_medians_range"]["placed_min"],
+            "q3_wage_ratio_placed_max": q3["wage_ratio_medians_range"]["placed_max"],
+            "q3_wage_ratio_direct_min": q3["wage_ratio_medians_range"]["direct_min"],
+            "q3_wage_ratio_direct_max": q3["wage_ratio_medians_range"]["direct_max"],
         },
         "q1": {k: q1[k] for k in (
             "lawfirm_column_coverage", "distinct_raw_spellings", "distinct_law_firms_after_normalize",
@@ -597,9 +723,12 @@ def main():
             "placing_firms_20plus_placed", "direct_firms_20plus_h1b", "permutation_p",
             "between_community_variance")},
         "q2_top6_communities": q2["top6_staffing_communities_by_filings"],
+        "q2_named_perm": q2["q2_named_perm"],
         "q3": {k: q3[k] for k in (
             "pw_wage_level_coverage", "crude", "strata_kept_20plus_each_side", "strata_or_above_1_share",
-            "mantel_haenszel_odds_ratio", "odds_ratio_ci95", "cmh_p", "breslow_day_p", "wage_ratio_coverage")},
+            "mantel_haenszel_odds_ratio", "odds_ratio_ci95", "odds_ratio_cluster_ci95",
+            "odds_ratio_after_dropping_top_placing_firms", "cmh_p", "breslow_day_p", "wage_ratio_coverage",
+            "wage_ratio_medians_range")},
         "q3_top5_soc": q3["top5_soc_by_filings"],
     }
     page = clean(page)

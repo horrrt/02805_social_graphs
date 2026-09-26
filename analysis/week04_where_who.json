@@ -1,7 +1,7 @@
 {
  "generated_by": "analysis/week04_where_who.py",
  "year": 2025,
- "seconds": 25.1,
+ "seconds": 23.1,
  "reproduction": {
   "communities": 3,
   "Q": 0.049,
@@ -531,8 +531,25 @@
      "weight": [
       2210
      ],
+     "links": [
+      {
+       "a": "19100",
+       "b": "20500",
+       "a_name": "Dallas",
+       "b_name": "Durham",
+       "alpha": 0.041129561673435636,
+       "weight": 2210,
+       "top_employer": "Fidelity Investments",
+       "top_share": 0.381,
+       "shortlist": false
+      }
+     ],
      "gc_before": 14,
-     "gc_after": 12
+     "gc_after": 12,
+     "fallen_metros": [
+      "Durham",
+      "Raleigh"
+     ]
     },
     {
      "alpha": 0.02246974481328852,
@@ -545,8 +562,25 @@
      "weight": [
       11853
      ],
+     "links": [
+      {
+       "a": "35620",
+       "b": "41860",
+       "a_name": "New York",
+       "b_name": "San Francisco",
+       "alpha": 0.02246974481328852,
+       "weight": 11853,
+       "top_employer": "Amazon",
+       "top_share": 0.127,
+       "shortlist": false
+      }
+     ],
      "gc_before": 5,
-     "gc_after": 3
+     "gc_after": 3,
+     "fallen_metros": [
+      "Dallas",
+      "New York"
+     ]
     }
    ],
    "note": "This is the largest single-link drop found anywhere in the sweep; it does not fall in the coarse 0.1-0.05 window that shows the 32 -> 19 collapse, because that collapse turns out to be a cascade of many one-metro peels rather than one break."
@@ -574,116 +608,18 @@
     "Tampa"
    ],
    "links_lost_in_window": 33,
-   "links_lost_redundant": 15,
+   "links_lost_redundant": 20,
+   "breaking_steps_in_window": 13,
    "breaking_links": [
     {
-     "a": "35620",
-     "b": "31080",
-     "a_name": "New York",
-     "b_name": "Los Angeles",
-     "alpha": 0.060422036304506724,
-     "weight": 5898,
-     "top_employer": "Amazon",
-     "top_share": 0.1,
-     "shortlist": false
-    },
-    {
-     "a": "35620",
-     "b": "45300",
-     "a_name": "New York",
-     "b_name": "Tampa",
-     "alpha": 0.08446987391562263,
-     "weight": 3141,
-     "top_employer": "Citigroup",
-     "top_share": 0.099,
-     "shortlist": false
-    },
-    {
-     "a": "35620",
-     "b": "25540",
-     "a_name": "New York",
-     "b_name": "Hartford",
-     "alpha": 0.07871852629399655,
-     "weight": 2375,
-     "top_employer": "Cognizant",
-     "top_share": 0.256,
-     "shortlist": true
-    },
-    {
-     "a": "19100",
-     "b": "18140",
-     "a_name": "Dallas",
-     "b_name": "Columbus",
-     "alpha": 0.08292109610491477,
-     "weight": 2828,
-     "top_employer": "JPMorgan Chase",
-     "top_share": 0.139,
-     "shortlist": false
-    },
-    {
-     "a": "19100",
-     "b": "31080",
-     "a_name": "Dallas",
-     "b_name": "Los Angeles",
-     "alpha": 0.08160532944426234,
-     "weight": 5287,
-     "top_employer": "Amazon",
-     "top_share": 0.111,
-     "shortlist": false
-    },
-    {
-     "a": "19100",
-     "b": "19820",
-     "a_name": "Dallas",
-     "b_name": "Detroit",
-     "alpha": 0.08874848100883748,
-     "weight": 3013,
-     "top_employer": "Cognizant",
-     "top_share": 0.065,
-     "shortlist": true
-    },
-    {
-     "a": "19100",
-     "b": "33460",
-     "a_name": "Dallas",
-     "b_name": "Minneapolis",
-     "alpha": 0.09002958540303561,
-     "weight": 2901,
-     "top_employer": "Cognizant",
-     "top_share": 0.107,
-     "shortlist": true
-    },
-    {
-     "a": "19100",
-     "b": "45300",
-     "a_name": "Dallas",
-     "b_name": "Tampa",
-     "alpha": 0.06153779980618285,
-     "weight": 3529,
-     "top_employer": "Citigroup",
-     "top_share": 0.088,
-     "shortlist": false
-    },
-    {
-     "a": "19100",
-     "b": "38060",
-     "a_name": "Dallas",
-     "b_name": "Phoenix",
-     "alpha": 0.07475940011332273,
-     "weight": 4499,
-     "top_employer": "Cognizant",
-     "top_share": 0.068,
-     "shortlist": true
-    },
-    {
-     "a": "19100",
-     "b": "32820",
-     "a_name": "Dallas",
-     "b_name": "Memphis",
-     "alpha": 0.055507280432466374,
-     "weight": 873,
-     "top_employer": "FedEx",
-     "top_share": 0.215,
+     "a": "41940",
+     "b": "38900",
+     "a_name": "San Jose",
+     "b_name": "Portland",
+     "alpha": 0.09765655986284068,
+     "weight": 1857,
+     "top_employer": "Intel",
+     "top_share": 0.236,
      "shortlist": false
     },
     {
@@ -699,28 +635,6 @@
     },
     {
      "a": "19100",
-     "b": "41700",
-     "a_name": "Dallas",
-     "b_name": "San Antonio",
-     "alpha": 0.07108659537017017,
-     "weight": 1938,
-     "top_employer": "HCL",
-     "top_share": 0.163,
-     "shortlist": true
-    },
-    {
-     "a": "19100",
-     "b": "25540",
-     "a_name": "Dallas",
-     "b_name": "Hartford",
-     "alpha": 0.08012471414131037,
-     "weight": 2359,
-     "top_employer": "Cognizant",
-     "top_share": 0.258,
-     "shortlist": true
-    },
-    {
-     "a": "19100",
      "b": "40060",
      "a_name": "Dallas",
      "b_name": "Richmond",
@@ -731,37 +645,48 @@
      "shortlist": false
     },
     {
-     "a": "41940",
-     "b": "31080",
-     "a_name": "San Jose",
-     "b_name": "Los Angeles",
-     "alpha": 0.09335324900753855,
-     "weight": 5012,
-     "top_employer": "Amazon",
-     "top_share": 0.117,
+     "a": "19100",
+     "b": "33460",
+     "a_name": "Dallas",
+     "b_name": "Minneapolis",
+     "alpha": 0.09002958540303561,
+     "weight": 2901,
+     "top_employer": "Cognizant",
+     "top_share": 0.107,
+     "shortlist": true
+    },
+    {
+     "a": "19100",
+     "b": "19820",
+     "a_name": "Dallas",
+     "b_name": "Detroit",
+     "alpha": 0.08874848100883748,
+     "weight": 3013,
+     "top_employer": "Cognizant",
+     "top_share": 0.065,
+     "shortlist": true
+    },
+    {
+     "a": "19100",
+     "b": "18140",
+     "a_name": "Dallas",
+     "b_name": "Columbus",
+     "alpha": 0.08292109610491477,
+     "weight": 2828,
+     "top_employer": "JPMorgan Chase",
+     "top_share": 0.139,
      "shortlist": false
     },
     {
-     "a": "41940",
-     "b": "38900",
-     "a_name": "San Jose",
-     "b_name": "Portland",
-     "alpha": 0.09765655986284068,
-     "weight": 1857,
-     "top_employer": "Intel",
-     "top_share": 0.236,
-     "shortlist": false
-    },
-    {
-     "a": "41860",
-     "b": "31080",
-     "a_name": "San Francisco",
-     "b_name": "Los Angeles",
-     "alpha": 0.08192579640486185,
-     "weight": 5279,
-     "top_employer": "Amazon",
-     "top_share": 0.111,
-     "shortlist": false
+     "a": "35620",
+     "b": "25540",
+     "a_name": "New York",
+     "b_name": "Hartford",
+     "alpha": 0.07871852629399655,
+     "weight": 2375,
+     "top_employer": "Cognizant",
+     "top_share": 0.256,
+     "shortlist": true
     },
     {
      "a": "47900",
@@ -773,9 +698,64 @@
      "top_employer": "University of Maryland College Park",
      "top_share": 0.109,
      "shortlist": false
+    },
+    {
+     "a": "19100",
+     "b": "38060",
+     "a_name": "Dallas",
+     "b_name": "Phoenix",
+     "alpha": 0.07475940011332273,
+     "weight": 4499,
+     "top_employer": "Cognizant",
+     "top_share": 0.068,
+     "shortlist": true
+    },
+    {
+     "a": "19100",
+     "b": "41700",
+     "a_name": "Dallas",
+     "b_name": "San Antonio",
+     "alpha": 0.07108659537017017,
+     "weight": 1938,
+     "top_employer": "HCL",
+     "top_share": 0.163,
+     "shortlist": true
+    },
+    {
+     "a": "19100",
+     "b": "45300",
+     "a_name": "Dallas",
+     "b_name": "Tampa",
+     "alpha": 0.06153779980618285,
+     "weight": 3529,
+     "top_employer": "Citigroup",
+     "top_share": 0.088,
+     "shortlist": false
+    },
+    {
+     "a": "35620",
+     "b": "31080",
+     "a_name": "New York",
+     "b_name": "Los Angeles",
+     "alpha": 0.060422036304506724,
+     "weight": 5898,
+     "top_employer": "Amazon",
+     "top_share": 0.1,
+     "shortlist": false
+    },
+    {
+     "a": "19100",
+     "b": "32820",
+     "a_name": "Dallas",
+     "b_name": "Memphis",
+     "alpha": 0.055507280432466374,
+     "weight": 873,
+     "top_employer": "FedEx",
+     "top_share": 0.215,
+     "shortlist": false
     }
    ],
-   "breaking_links_count": 18,
+   "breaking_links_count": 13,
    "b_links_included": [
     {
      "a": "19100",
@@ -800,14 +780,60 @@
      "shortlist": false
     }
    ],
-   "led_by_shortlist": 6,
-   "flagged_links": 20,
+   "led_by_shortlist": 5,
+   "flagged_links": 15,
+   "leaders": [
+    [
+     "Cognizant",
+     4
+    ],
+    [
+     "Amazon",
+     2
+    ],
+    [
+     "Capital One",
+     1
+    ],
+    [
+     "Citigroup",
+     1
+    ],
+    [
+     "Deloitte",
+     1
+    ],
+    [
+     "FedEx",
+     1
+    ],
+    [
+     "Fidelity Investments",
+     1
+    ],
+    [
+     "HCL",
+     1
+    ],
+    [
+     "Intel",
+     1
+    ],
+    [
+     "JPMorgan Chase",
+     1
+    ],
+    [
+     "University of Maryland College Park",
+     1
+    ]
+   ],
    "backbone_alpha02_total": 180,
    "backbone_alpha02_shortlist": 70,
    "backbone_alpha02_shortlist_share": 0.389,
-   "flagged_shortlist_share": 0.3,
-   "hypergeom_expected_shortlist": 7.78,
-   "hypergeom_p": 0.2706
+   "flagged_shortlist_share": 0.333,
+   "hypergeom_expected_shortlist": 5.83,
+   "hypergeom_p": 0.4339
   },
   "sweep_thinned": [
    {

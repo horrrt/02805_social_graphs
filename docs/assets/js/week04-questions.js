@@ -184,17 +184,20 @@ function renderJobsSplitNmi(data) {
   charts.push(c);
   if (!c) return;
   const f = data.finding;
-  const cats = ["Observed", "Count-matched\nnull mean", "Filing-matched\nnull mean"];
+  const cats = ["Observed", "Count-matched\nnull mean", "Filing-matched\nnull mean", "Size-matched\nnull mean"];
   const bars = [
     { value: f.q1_observed_nmi, itemStyle: { color: ORANGE } },
     { value: f.q1_null_count_matched_nmi_mean, itemStyle: { color: GREY } },
     { value: f.q1_null_filings_matched_nmi_mean, itemStyle: { color: LIGHT_GREY } },
+    { value: f.q1_null_matched_nmi_mean, itemStyle: { color: BLUE } },
   ];
   const whiskers = [
     [1, f.q1_null_count_matched_nmi_mean - f.q1_null_count_matched_nmi_sd,
       f.q1_null_count_matched_nmi_mean + f.q1_null_count_matched_nmi_sd],
     [2, f.q1_null_filings_matched_nmi_mean - f.q1_null_filings_matched_nmi_sd,
       f.q1_null_filings_matched_nmi_mean + f.q1_null_filings_matched_nmi_sd],
+    [3, f.q1_null_matched_nmi_mean - f.q1_null_matched_nmi_sd,
+      f.q1_null_matched_nmi_mean + f.q1_null_matched_nmi_sd],
   ];
   c.setOption({
     ...base,
@@ -325,11 +328,18 @@ function renderWhoMovers(data) {
     xAxis: { ...axis, type: "category", data: bars.map((b) => b.label), axisLabel: { ...axis.axisLabel, lineHeight: 13 } },
     yAxis: { ...axis, type: "value", min: 0, axisLabel: { ...axis.axisLabel, formatter: (v) => `${Math.round(v * 100)}%` } },
     tooltip: { ...base.tooltip, formatter: (p) => `${esc(p.name.replace("\n", " "))}<br>${(p.value * 100).toFixed(1)}%` },
-    series: [{
-      type: "bar", barMaxWidth: 42,
-      data: bars.map((b) => ({ value: b.value, itemStyle: { color: b.color } })),
-      label: { show: true, position: "top", color: INK, formatter: (p) => pct(p.value, 1) },
-    }],
+    series: [
+      {
+        type: "bar", barMaxWidth: 42,
+        data: bars.map((b) => ({ value: b.value, itemStyle: { color: b.color } })),
+        label: { show: true, position: "top", color: INK, formatter: (p) => pct(p.value, 1) },
+      },
+      // Medians over 10 disjoint seed pairs; the whisker is that range's min/max, not a sd.
+      whiskerSeries([
+        [0, f.q2_noise_floor_weighted_min, f.q2_noise_floor_weighted_max],
+        [1, f.q2_noise_floor_unweighted_min, f.q2_noise_floor_unweighted_max],
+      ]),
+    ],
   });
 }
 
@@ -430,7 +440,7 @@ function renderBeyondPerm(data) {
       ci: q2.direct_firms_20plus_h1b.pooled_ci95, color: BLUE,
     },
   ];
-  Object.values(data.q2_top6_communities).forEach((g) => {
+  data.q2_top6_communities.forEach((g) => {
     groups.push({ label: `${short(g.top_firms[0])}'s\ngroup`, value: g.pooled_ratio, ci: null, color: GREY });
   });
   const whiskers = groups.map((g, i) => (g.ci ? [i, g.ci[0], g.ci[1]] : null)).filter(Boolean);

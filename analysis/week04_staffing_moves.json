@@ -26,18 +26,20 @@
     "observed_share_same_community": 0.2355,
     "null": {
      "mean": 0.0353,
-     "sd": 0.0085,
-     "z": 23.59,
+     "sd": 0.0084,
+     "z": 23.87,
      "p": 0.001
     },
+    "lift": 6.67,
     "share_new_vendor_already_linked": 0.5782,
     "stricter_null": {
      "n_eligible": 454,
      "observed_share": 0.2379,
-     "mean": 0.1912,
-     "sd": 0.0111,
-     "z": 4.2,
-     "p": 0.001
+     "mean": 0.1914,
+     "sd": 0.0113,
+     "z": 4.13,
+     "p": 0.001,
+     "lift": 1.24
     },
     "answer": "yes"
    },
@@ -56,19 +58,21 @@
     "switches_dropped_vendor_outside_giant": 99,
     "observed_share_same_community": 0.2688,
     "null": {
-     "mean": 0.035,
-     "sd": 0.0093,
-     "z": 25.08,
+     "mean": 0.0348,
+     "sd": 0.0091,
+     "z": 25.72,
      "p": 0.001
     },
+    "lift": 7.73,
     "share_new_vendor_already_linked": 0.6307,
     "stricter_null": {
      "n_eligible": 389,
      "observed_share": 0.2751,
-     "mean": 0.1978,
-     "sd": 0.0116,
-     "z": 6.63,
-     "p": 0.001
+     "mean": 0.1977,
+     "sd": 0.0119,
+     "z": 6.51,
+     "p": 0.001,
+     "lift": 1.39
     },
     "answer": "yes"
    },
@@ -87,19 +91,21 @@
     "switches_dropped_vendor_outside_giant": 29,
     "observed_share_same_community": 0.2734,
     "null": {
-     "mean": 0.0316,
-     "sd": 0.0081,
-     "z": 29.77,
+     "mean": 0.0321,
+     "sd": 0.0085,
+     "z": 28.4,
      "p": 0.001
     },
+    "lift": 8.52,
     "share_new_vendor_already_linked": 0.6281,
     "stricter_null": {
      "n_eligible": 402,
      "observed_share": 0.2761,
-     "mean": 0.2374,
-     "sd": 0.0119,
-     "z": 3.26,
-     "p": 0.001
+     "mean": 0.2368,
+     "sd": 0.0118,
+     "z": 3.34,
+     "p": 0.001,
+     "lift": 1.17
     },
     "answer": "yes"
    }
@@ -108,12 +114,22 @@
    "switches_scored": 1271,
    "observed_share_same_community": 0.2581,
    "null": {
-    "mean": 0.034,
-    "sd": 0.005,
-    "z": 45.0,
+    "mean": 0.0341,
+    "sd": 0.0051,
+    "z": 44.23,
     "p": 0.001
    },
+   "lift": 7.57,
    "share_new_vendor_already_linked": 0.6105,
+   "stricter_null": {
+    "n_eligible": 1245,
+    "observed_share": 0.2618,
+    "mean": 0.208,
+    "sd": 0.0066,
+    "z": 8.17,
+    "p": 0.001,
+    "lift": 1.26
+   },
    "answer": "yes"
   }
  },
@@ -122,8 +138,12 @@
   "clients": 15199,
   "movers": 9992,
   "share_move": 0.6574,
-  "noise_floor_weighted_seeds": 0.346,
-  "noise_floor_unweighted_seeds": 0.5233,
+  "noise_floor_weighted_seeds": 0.284,
+  "noise_floor_weighted_seeds_min": 0.2345,
+  "noise_floor_weighted_seeds_max": 0.346,
+  "noise_floor_unweighted_seeds": 0.526,
+  "noise_floor_unweighted_seeds_min": 0.493,
+  "noise_floor_unweighted_seeds_max": 0.5573,
   "movers_2plus_vendor_share": 0.3142,
   "all_clients_2plus_vendor_share": 0.2691,
   "movers_2plus_vendor_filing_share": 0.8614,
@@ -256,9 +276,14 @@
   "two_community_clients": 1842,
   "two_community_clients_min_filings": 129,
   "min_filings_cutoff": 20,
-  "null_mean": 2040.82,
-  "null_sd": 27.53,
-  "z": -7.22,
+  "null_mean": 2165.4,
+  "null_sd": 20.82,
+  "z": -15.53,
+  "verdict": "fewer split clients than rewirings that keep each client's filing counts; the groups follow clients' main suppliers",
+  "control_within_client_shuffle": {
+   "two_community_clients": 2113,
+   "identical_to_observed": false
+  },
   "top_by_filings": [
    {
     "client": "USAA",
@@ -472,5 +497,5 @@
    }
   ]
  },
- "seconds": 253
+ "seconds": 278
 }

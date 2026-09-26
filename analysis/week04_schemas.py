@@ -414,6 +414,10 @@ class WhereWhoFinding(Model):
     naics54_dominant_metros: int = Count
     q2_alpha_drops_below_40: float
     q2_max_single_drop: int = Count
+    q2_breaking_steps_in_window: int = Count
+    q2_leaders: list[tuple[str, int]]
+    q2_gc_size_alpha_0_1: int = Count
+    q2_gc_size_alpha_0_05: int = Count
     q2_breaking_links_led_by_shortlist: int = Count
     q2_breaking_links_flagged: int = Count
     q2_backbone_shortlist_share: float = Share
@@ -483,6 +487,11 @@ class JobsSplitFinding(Model):
     q1_null_count_matched_nmi_sd: float = Count
     q1_null_filings_matched_nmi_mean: float = Share
     q1_null_filings_matched_nmi_sd: float = Count
+    q1_null_matched_nmi_mean: float = Share
+    q1_null_matched_nmi_sd: float = Count
+    q1_null_matched_filing_share: float = Share
+    q1_matched_z: float
+    q1_matched_verdict: str
     q1_placing_companies: int = Count
     q1_direct_companies: int = Count
     q1_placing_filing_share: float = Share
@@ -563,6 +572,7 @@ class Q1Pair(Model):
     switches_scored: int = Count
     observed_share_same_community: float = Share
     null: SwitchNull
+    lift: float | None = None
     answer: str
 
 
@@ -571,10 +581,22 @@ class StaffingMovesFinding(Model):
     q1_pooled_null_mean: float = Share
     q1_pooled_null_sd: float = Count
     q1_pooled_p: float = Share
+    q1_pooled_z: float
+    q1_pooled_lift: float | None = None
     q1_answer: str
+    q1_share_new_vendor_already_linked: float = Share
+    q1_pooled_stricter_observed_share: float | None = None
+    q1_pooled_stricter_null_mean: float | None = None
+    q1_pooled_stricter_null_sd: float | None = None
+    q1_pooled_stricter_z: float | None = None
+    q1_pooled_stricter_lift: float | None = None
     q2_share_move: float = Share
     q2_noise_floor_weighted: float = Share
+    q2_noise_floor_weighted_min: float = Share
+    q2_noise_floor_weighted_max: float = Share
     q2_noise_floor_unweighted: float = Share
+    q2_noise_floor_unweighted_min: float = Share
+    q2_noise_floor_unweighted_max: float = Share
     q2_movers_2plus_vendor_share: float = Share
     q2_all_clients_2plus_vendor_share: float = Share
     q2_answer: str
@@ -582,6 +604,8 @@ class StaffingMovesFinding(Model):
     q3_null_mean: float
     q3_null_sd: float = Count
     q3_z: float
+    q3_verdict: str
+    q3_control_within_client_shuffle_count: int | None = None
 
 
 class TopMover(Model):
@@ -630,10 +654,16 @@ class BeyondFinding(Model):
     q2_permutation_p: float = Share
     q2_placing_pooled_ratio: float = Field(ge=0)
     q2_direct_pooled_ratio: float = Field(ge=0)
+    q2_direct_pooled_ci95: list[float] = Field(min_length=2, max_length=2)
     q2_perm_match_rate_20plus_h1b_employers: float = Share
     q3_placed_pays_lower_level: bool
     q3_odds_ratio: float = Field(gt=0)
     q3_odds_ratio_ci95: list[float] = Field(min_length=2, max_length=2)
+    q3_odds_ratio_cluster_ci95: list[float] = Field(min_length=2, max_length=2)
+    q3_wage_ratio_placed_min: float | None = Field(ge=0, default=None)
+    q3_wage_ratio_placed_max: float | None = Field(ge=0, default=None)
+    q3_wage_ratio_direct_min: float | None = Field(ge=0, default=None)
+    q3_wage_ratio_direct_max: float | None = Field(ge=0, default=None)
 
 
 class BeyondQ1(Model):
@@ -671,12 +701,23 @@ class BeyondQ2(Model):
 
 
 class Community6(Model):
+    community: int
     firms: int = Count
     h1b_filings: int = Count
     perm_filings: int = Count
     pooled_ratio: float = Field(ge=0)
     top_firms: list[str] = Field(min_length=1)
     largest_firm_filing_share: float = Share
+
+
+class NamedPermYear(Model):
+    all_statuses_name_match: int = Count
+    certified_or_expired_resolver_match: int = Count
+
+
+class NamedPermCompany(Model):
+    fy2024: NamedPermYear
+    fy2025: NamedPermYear
 
 
 class BeyondQ3Crude(Model):
@@ -686,6 +727,19 @@ class BeyondQ3Crude(Model):
     direct_filings: int = Count
 
 
+class TopDrop(Model):
+    placed_filing_share: float = Share
+    odds_ratio: float = Field(gt=0)
+    strata_kept: int = Count
+
+
+class WageRatioRange(Model):
+    placed_min: float | None = Field(ge=0, default=None)
+    placed_max: float | None = Field(ge=0, default=None)
+    direct_min: float | None = Field(ge=0, default=None)
+    direct_max: float | None = Field(ge=0, default=None)
+
+
 class BeyondQ3(Model):
     pw_wage_level_coverage: float = Share
     crude: BeyondQ3Crude
@@ -693,9 +747,12 @@ class BeyondQ3(Model):
     strata_or_above_1_share: float = Share
     mantel_haenszel_odds_ratio: float = Field(gt=0)
     odds_ratio_ci95: list[float] = Field(min_length=2, max_length=2)
+    odds_ratio_cluster_ci95: list[float] = Field(min_length=2, max_length=2)
+    odds_ratio_after_dropping_top_placing_firms: dict[str, TopDrop]
     cmh_p: float = Field(ge=0, le=1)
     breslow_day_p: float | None = Field(ge=0, le=1, default=None)
     wage_ratio_coverage: float = Share
+    wage_ratio_medians_range: WageRatioRange
 
 
 class Top5Soc(Model):
@@ -713,7 +770,8 @@ class Beyond(Model):
     q1: BeyondQ1
     q1_top_law_firms: list[LawFirmRow] = Field(min_length=1)
     q2: BeyondQ2
-    q2_top6_communities: dict[str, Community6]
+    q2_top6_communities: list[Community6] = Field(min_length=1)
+    q2_named_perm: dict[str, NamedPermCompany]
     q3: BeyondQ3
     q3_top5_soc: list[Top5Soc] = Field(min_length=1)
 
