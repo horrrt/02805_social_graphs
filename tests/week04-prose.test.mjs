@@ -19,7 +19,9 @@ const text = (from, to) => {
     .replace(/<[^>]+>/g, " ")
     .replace(/\s+/g, " ");
 };
-const prose = text('id="who"', '<figure class="staffing"');
+// Section 3 keeps one answer per question; its full text sits in the Go deeper box.
+const section3 = text('id="who"', '<figure class="staffing"');
+const prose = section3 + text('id="staffing-more"', "</details>");
 const regions = text('id="place-regions"', 'id="place-longhaul"');
 const closing = text('id="closing"', 'id="evidence"');
 const lotteryText = text('id="staffing-lottery"', "</details>");
@@ -53,6 +55,30 @@ test("how many workers sit at a client", () => {
   says("every year from FY2022 on, it denied about twice the share");
   says(`${pct(series[2022].placing.initial_denial_rate, 1)} against ${pct(series[2022].direct.initial_denial_rate, 1)} for direct employers in FY2022`);
   says(`${pct(series[2026].placing.initial_denial_rate, 1)} against ${pct(series[2026].direct.initial_denial_rate, 1)} from October 2025 to June 2026`);
+});
+
+test("section 3's short answers match the full numbers", () => {
+  const short = (s) => assert.ok(section3.includes(s), `section 3 should say "${s}"`);
+  const now = fy["2025"];
+  const k = lottery["2024"].by_kind;
+  const series = staffing.uscis_series;
+  const iv = main.industry_or_vendor.unweighted;
+  const m = main.modularity;
+  short(`${count(now.client_company_filings)} of the ${count(now.certified_filings)} certified filings (${pct(now.client_company_share, 1)}) name a client company`);
+  short(`down from ${pct(fy["2022"].client_company_share, 1)} in FY2022`);
+  short(`they sent ${k.placing.registrations_per_approval.toFixed(1)} registrations per approved petition, against ${k.direct.registrations_per_approval.toFixed(1)} for direct employers`);
+  assert.ok(lottery["2024"].gap_to_direct.placing.petition_share > 0.5, '"mostly because drawn tickets went unused"');
+  assert.ok(series.every((e) => e.placing.initial_denial_rate > 1.6 * e.direct.initial_denial_rate), '"about twice the share"');
+  short(`about ${main.weighted_vs_unweighted.communities_median_unweighted} groups`);
+  short(`(modularity ${m.wiring_only.real.toFixed(2)} against ${m.wiring_only.null.toFixed(2)})`);
+  short(`main vendor (AMI ${iv.ami_community_main_vendor_same_clients.toFixed(2)}) about as well as its industry (${iv.ami_community_industry.toFixed(2)})`);
+  short(`${count(main.single_vendor_clients)} of the ${count(main.clients)} clients use one firm`);
+  short(`they hold ${pct(main.single_vendor_filing_share)} of placed filings`);
+  const citi = main.largest_clients[0];
+  short(`${citi.client}, the largest client, uses ${citi.vendors} firms`);
+  const nmis = staffing.stability.map((s) => s.unweighted_nmi);
+  const same = staffing.stability.map((s) => s.unweighted_same_year_nmi);
+  short(`NMI ${Math.min(...nmis).toFixed(2)} to ${Math.max(...nmis).toFixed(2)}, about half the ${Math.min(...same).toFixed(2)} to ${Math.max(...same).toFixed(2)}`);
 });
 
 test("the lottery shows the same split one step earlier", () => {
@@ -168,4 +194,94 @@ test("closing: what surprised us", () => {
   says1(`together lead ${where.long_led_by_shortlist}`);
   assert.ok(links > where.long_led_by_shortlist, "the leader alone must lead more than the five firms");
   says1(`lead only ${pct(where.long_led_by_shortlist / where.long_links)} of the long links`);
+});
+
+// The Go deeper boxes: one per extra network, each pinned to its script's JSON.
+const box = (id) => text(`id="${id}"`, "</details>");
+const inBox = (id) => (s) => assert.ok(box(id).includes(s), `#${id} should say "${s}"`);
+
+test("law-firm backbone", () => {
+  const has = inBox("deeper-lawfirms");
+  const y = json("analysis/week04_lawfirms.json").years;
+  const now = y["2025"];
+  const c = now.coverage;
+  const b = now.backbones["0.2"];
+  has(`In FY2025, ${pct(c.share_with_a_law_firm, 1)} of certified filings name the law firm`);
+  has(`five firms file ${pct(c.top_5_share_of_filings_with_a_firm, 1)} of those; Fragomen alone files ${pct(c.top_10_law_firms[0].share_of_filings_with_a_firm, 1)}`);
+  assert.ok(c.top_10_law_firms[0].firm.startsWith("Fragomen"));
+  has(`(${pct(now.network.employers_with_2plus_firms_share, 1)} of employers did)`);
+  assert.equal(b.threshold.t, 2);
+  has(`keeps ${b.threshold.links_kept} links, and ${pct(b.threshold.top_5_share_of_links, 1)} of them touch the five`);
+  has(`keeps fewer links (${b.disparity.links_kept}) but more firms (${b.disparity.firms_with_a_link} against ${b.threshold.firms_with_a_link})`);
+  has(`only ${pct(b.disparity.top_5_share_of_links, 1)} of its links touch the big five: ${b.kept_by_filter_dropped_by_threshold.firms} small firms`);
+  has(`(${now.communities.Q_mean.toFixed(2)} against ${now.communities.null_mean.toFixed(2)})`);
+  assert.ok(now.communities.Q_mean <= now.communities.null_mean, '"no more modular than rewired copies"');
+  has(`FY2025 (AMI ${now.labels.client_kind.ami.toFixed(2)} against ${now.labels.employer_state.ami.toFixed(2)})`);
+  const before = y["2024"].labels;
+  has(`FY2024 (${before.client_kind.ami.toFixed(2)} against ${before.employer_state.ami.toFixed(2)})`);
+  assert.ok(before.client_kind.ami < before.employer_state.ami, '"the order flips in FY2024"');
+});
+
+test("green cards as the strong tie", () => {
+  const has = inBox("deeper-perm");
+  const y = json("analysis/week04_perm.json").years;
+  const now = y["2025"];
+  const one = (x) => x.toFixed(1);
+  has(`filed ${one(now.scored_median_ratio)} green cards per 100`);
+  has(`(Spearman ${now.lca_vs_perm_filings.spearman_rho.toFixed(2)})`);
+  const high = Object.fromEntries(now.highest_ratio_among_big_filers.map((r) => [r.employer.split(" ")[0], r]));
+  has(`Oracle filed ${Math.round(high.Oracle.ratio)} green cards per 100 H-1B filings, Uber ${Math.round(high.Uber.ratio)} and Salesforce ${Math.round(high.Salesforce.ratio)}`);
+  const low = Object.fromEntries(now.lowest_ratio_among_big_filers.map((r) => [r.employer, r]));
+  for (const name of ["Amazon", "Cognizant", "Google"]) {
+    // "almost none" must hold by key and by a raw name search.
+    assert.ok(low[name].perm_filings_by_name <= 5 && low[name].ratio < 1, `${name} must file almost no green cards`);
+    has(`${name} (${count(low[name].lca_filings)}`);
+  }
+  const g = now.kind_gap;
+  has(`(${one(g.placing_pooled_ratio)} against ${one(g.direct_pooled_ratio)} per 100)`);
+  has(`gives a gap that large ${pct(g.p_gap)} of the time (p = ${g.p_gap})`);
+  const b = y["2024"].kind_gap;
+  has(`(${one(b.placing_pooled_ratio)} against ${one(b.direct_pooled_ratio)}, p = ${b.p_gap})`);
+  has(`Only ${pct(now.perm_employer_key_matches_lca_share)} of certified green cards`);
+});
+
+test("wage levels and the staffing groups", () => {
+  const has = inBox("deeper-wages");
+  const w = json("analysis/week04_wages.json");
+  const y = w.years["2025"];
+  has(`${pct(y.placed.shares_of_known.II)} of placed filings against ${pct(y.not_placed.shares_of_known.II)} of the rest`);
+  has(`${pct(y.placed.shares_of_known.IV)} reach Level IV against ${pct(y.not_placed.shares_of_known.IV)}`);
+  const a = w.octjun.fy2025.all.shares_of_known;
+  const b = w.octjun.fy2026.all.shares_of_known;
+  has(`Level IV rose from ${pct(a.IV)} of filings with a recorded level in FY2025 to ${pct(b.IV)} in FY2026, and Level I fell from ${pct(a.I)} to ${pct(b.I)}`);
+  const c = w.community_test["2025"];
+  has(`Among the ${count(c.clients_with_wage_label)} clients`);
+  has(`explain ${pct(c.unweighted.eta_squared)} of the variance`);
+  has(`against ${pct(c.unweighted.eta_squared_shuffled)} when the group labels`);
+  has(`AMI ${c.unweighted.ami_median.toFixed(2)}, below the main vendor (${c.unweighted.staffing_ami_community_main_vendor.toFixed(2)}) and the industry (${c.unweighted.staffing_ami_community_industry.toFixed(2)})`);
+});
+
+test("a network of countries", () => {
+  const has = inBox("deeper-countries");
+  const c = json("analysis/week04_countries.json");
+  const p = c.perm["2023"];
+  assert.equal(c.min_cell, 10);
+  has(`dropping every count under ${c.min_cell}`);
+  has(`drops ${pct(p.cells_dropped_share)} of the cells and ${pct(p.filings_dropped_share)} of FY2023's`);
+  const [india, china] = p.descriptive.top;
+  assert.equal(india.country, "INDIA");
+  assert.equal(china.country, "CHINA");
+  has(`India holds ${pct(india.share)} of those filings and China ${pct(china.share)}`);
+  has(`India holds ${pct(c.lottery["2023"].descriptive.top[0].share)} in the March 2022 draw and ${pct(c.lottery["2024"].descriptive.top[0].share)} in March 2023`);
+  has(`and ${c.network["2023"].country_nodes} countries remain`);
+  const m = c.modularity;
+  has(`into ${m.communities_median === 3 ? "three" : m.communities_median} groups`);
+  has(`(${m.weighted_vs_rewired.real.toFixed(2)} against ${m.weighted_vs_rewired.null.toFixed(2)})`);
+  assert.ok(m.weighted_vs_rewired.real < m.weighted_vs_rewired.null, '"less modular than rewired copies"');
+  const india5 = c.labels.largest_communities.find((g) => g.top_countries.includes("India"));
+  assert.deepEqual(india5.top_countries.slice(0, 5), ["China", "India", "Canada", "Belarus", "Costa Rica"]);
+  has(`world regions (AMI ${c.labels.ami_region.toFixed(2)}) and Week 3's migration communities (${c.labels.ami_week3_migrant_communities.toFixed(2)})`);
+  const d = Object.fromEntries(c.diversity.top_employers.map((e) => [e.employer, e]));
+  assert.equal(Math.max(...c.diversity.top_employers.map((e) => e.effective_countries)), d.Google.effective_countries);
+  has(`${d.Google.effective_countries.toFixed(1)} effective countries with India at ${pct(d.Google.india_share)}, against Amazon's ${d.Amazon.effective_countries.toFixed(1)} at ${pct(d.Amazon.india_share)}`);
 });

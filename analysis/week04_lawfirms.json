@@ -1,0 +1,396 @@
+{
+ "generated_by": "analysis/week04_lawfirms.py",
+ "weight": "shared employers",
+ "runs": 100,
+ "main_alpha": 0.2,
+ "years": {
+  "2024": {
+   "year": 2024,
+   "coverage": {
+    "filings": 502374,
+    "filings_with_a_law_firm": 369194,
+    "share_with_a_law_firm": 0.7349,
+    "law_firms": 4198,
+    "top_10_law_firms": [
+     {
+      "firm": "Fragomen DEL REY Bernsen and Loewy",
+      "filings": 67129,
+      "share_of_filings_with_a_firm": 0.1818
+     },
+     {
+      "firm": "Berry Appleman and Leiden",
+      "filings": 29172,
+      "share_of_filings_with_a_firm": 0.079
+     },
+     {
+      "firm": "Ogletree Deakins Nash Smoak and Stewart PC",
+      "filings": 18503,
+      "share_of_filings_with_a_firm": 0.0501
+     },
+     {
+      "firm": "EY LAW",
+      "filings": 11663,
+      "share_of_filings_with_a_firm": 0.0316
+     },
+     {
+      "firm": "Corporate Immigration Partners PC",
+      "filings": 10449,
+      "share_of_filings_with_a_firm": 0.0283
+     },
+     {
+      "firm": "Seyfarth Shaw",
+      "filings": 8731,
+      "share_of_filings_with_a_firm": 0.0236
+     },
+     {
+      "firm": "LAW Office of Thomas V Allen Pllc",
+      "filings": 6652,
+      "share_of_filings_with_a_firm": 0.018
+     },
+     {
+      "firm": "Erickson Immigration",
+      "filings": 5830,
+      "share_of_filings_with_a_firm": 0.0158
+     },
+     {
+      "firm": "Goel and Anderson",
+      "filings": 4820,
+      "share_of_filings_with_a_firm": 0.0131
+     },
+     {
+      "firm": "LAW Firm of SIM Parvathaneni and Brown Pllc",
+      "filings": 3915,
+      "share_of_filings_with_a_firm": 0.0106
+     }
+    ],
+    "top_5_share_of_filings_with_a_firm": 0.3709
+   },
+   "network": {
+    "employers_used": 49314,
+    "law_firms_in_graph": 4198,
+    "edges": 3697,
+    "employers_with_2plus_firms": 3702,
+    "employers_with_2plus_firms_share": 0.0751,
+    "top_firm": "Fragomen DEL REY Bernsen and Loewy",
+    "top_firm_degree": 227,
+    "top_firm_strength": 403
+   },
+   "backbones": {
+    "0.05": {
+     "disparity": {
+      "links_kept": 179,
+      "firms_with_a_link": 321,
+      "giant_component": 16,
+      "top_5_share_of_links": 0.1061
+     },
+     "threshold": {
+      "t": 3,
+      "links_kept": 199,
+      "firms_with_a_link": 216,
+      "giant_component": 82,
+      "top_5_share_of_links": 0.2513
+     }
+    },
+    "0.1": {
+     "disparity": {
+      "links_kept": 239,
+      "firms_with_a_link": 381,
+      "giant_component": 57,
+      "top_5_share_of_links": 0.1548
+     },
+     "threshold": {
+      "t": 3,
+      "links_kept": 199,
+      "firms_with_a_link": 216,
+      "giant_component": 82,
+      "top_5_share_of_links": 0.2513
+     }
+    },
+    "0.2": {
+     "disparity": {
+      "links_kept": 419,
+      "firms_with_a_link": 551,
+      "giant_component": 129,
+      "top_5_share_of_links": 0.1885
+     },
+     "threshold": {
+      "t": 2,
+      "links_kept": 505,
+      "firms_with_a_link": 454,
+      "giant_component": 254,
+      "top_5_share_of_links": 0.2376
+     },
+     "kept_by_filter_dropped_by_threshold": {
+      "firms": 218,
+      "examples": [
+       {
+        "firm": "Patil and Associates",
+        "strongest_weight_elsewhere": 1
+       },
+       {
+        "firm": "HAN and Associates Pllc",
+        "strongest_weight_elsewhere": 1
+       },
+       {
+        "firm": "LAW Office of Hongwei Shang",
+        "strongest_weight_elsewhere": 1
+       }
+      ]
+     }
+    },
+    "0.3": {
+     "disparity": {
+      "links_kept": 557,
+      "firms_with_a_link": 633,
+      "giant_component": 228,
+      "top_5_share_of_links": 0.1903
+     },
+     "threshold": {
+      "t": 2,
+      "links_kept": 505,
+      "firms_with_a_link": 454,
+      "giant_component": 254,
+      "top_5_share_of_links": 0.2376
+     }
+    },
+    "0.5": {
+     "disparity": {
+      "links_kept": 2987,
+      "firms_with_a_link": 1538,
+      "giant_component": 1281,
+      "top_5_share_of_links": 0.1158
+     },
+     "threshold": {
+      "t": 1,
+      "links_kept": 3697,
+      "firms_with_a_link": 1884,
+      "giant_component": 1587,
+      "top_5_share_of_links": 0.1404
+     }
+    }
+   },
+   "giant_of_alpha_0_2": {
+    "nodes": 129,
+    "edges": 184
+   },
+   "communities": {
+    "Q_mean": 0.5615,
+    "Q_sd": 0.0065,
+    "null_mean": 0.5919,
+    "null_sd": 0.0219,
+    "z": -1.38,
+    "communities_median": 10,
+    "nmi_between_seeds_median": 0.831
+   },
+   "labels": {
+    "client_kind": {
+     "firms_labelled": 123,
+     "nmi": 0.17,
+     "p": 0.001,
+     "ami": 0.143
+    },
+    "employer_state": {
+     "firms_labelled": 129,
+     "nmi": 0.378,
+     "p": 0.001,
+     "ami": 0.189
+    }
+   }
+  },
+  "2025": {
+   "year": 2025,
+   "coverage": {
+    "filings": 537796,
+    "filings_with_a_law_firm": 406605,
+    "share_with_a_law_firm": 0.7561,
+    "law_firms": 4415,
+    "top_10_law_firms": [
+     {
+      "firm": "Fragomen DEL REY Bernsen and Loewy",
+      "filings": 78839,
+      "share_of_filings_with_a_firm": 0.1939
+     },
+     {
+      "firm": "Berry Appleman and Leiden",
+      "filings": 38374,
+      "share_of_filings_with_a_firm": 0.0944
+     },
+     {
+      "firm": "Ogletree Deakins Nash Smoak and Stewart PC",
+      "filings": 22252,
+      "share_of_filings_with_a_firm": 0.0547
+     },
+     {
+      "firm": "EY LAW",
+      "filings": 13978,
+      "share_of_filings_with_a_firm": 0.0344
+     },
+     {
+      "firm": "Corporate Immigration Partners PC",
+      "filings": 12020,
+      "share_of_filings_with_a_firm": 0.0296
+     },
+     {
+      "firm": "Erickson Immigration",
+      "filings": 6308,
+      "share_of_filings_with_a_firm": 0.0155
+     },
+     {
+      "firm": "LAW Office of Thomas V Allen Pllc",
+      "filings": 6074,
+      "share_of_filings_with_a_firm": 0.0149
+     },
+     {
+      "firm": "Goel and Anderson",
+      "filings": 4360,
+      "share_of_filings_with_a_firm": 0.0107
+     },
+     {
+      "firm": "Vialto Partners",
+      "filings": 4061,
+      "share_of_filings_with_a_firm": 0.01
+     },
+     {
+      "firm": "Usilaw",
+      "filings": 3969,
+      "share_of_filings_with_a_firm": 0.0098
+     }
+    ],
+    "top_5_share_of_filings_with_a_firm": 0.4069
+   },
+   "network": {
+    "employers_used": 54730,
+    "law_firms_in_graph": 4415,
+    "edges": 3750,
+    "employers_with_2plus_firms": 3785,
+    "employers_with_2plus_firms_share": 0.0692,
+    "top_firm": "Fragomen DEL REY Bernsen and Loewy",
+    "top_firm_degree": 236,
+    "top_firm_strength": 528
+   },
+   "backbones": {
+    "0.05": {
+     "disparity": {
+      "links_kept": 155,
+      "firms_with_a_link": 264,
+      "giant_component": 20,
+      "top_5_share_of_links": 0.1419
+     },
+     "threshold": {
+      "t": 4,
+      "links_kept": 119,
+      "firms_with_a_link": 143,
+      "giant_component": 33,
+      "top_5_share_of_links": 0.2689
+     }
+    },
+    "0.1": {
+     "disparity": {
+      "links_kept": 217,
+      "firms_with_a_link": 333,
+      "giant_component": 58,
+      "top_5_share_of_links": 0.1797
+     },
+     "threshold": {
+      "t": 3,
+      "links_kept": 216,
+      "firms_with_a_link": 233,
+      "giant_component": 97,
+      "top_5_share_of_links": 0.3102
+     }
+    },
+    "0.2": {
+     "disparity": {
+      "links_kept": 388,
+      "firms_with_a_link": 498,
+      "giant_component": 134,
+      "top_5_share_of_links": 0.1985
+     },
+     "threshold": {
+      "t": 2,
+      "links_kept": 509,
+      "firms_with_a_link": 452,
+      "giant_component": 240,
+      "top_5_share_of_links": 0.275
+     },
+     "kept_by_filter_dropped_by_threshold": {
+      "firms": 154,
+      "examples": [
+       {
+        "firm": "Baker Donelson",
+        "strongest_weight_elsewhere": 1
+       },
+       {
+        "firm": "Statminds",
+        "strongest_weight_elsewhere": 1
+       },
+       {
+        "firm": "University of Arkansas System Office of General Counsel",
+        "strongest_weight_elsewhere": 1
+       }
+      ]
+     }
+    },
+    "0.3": {
+     "disparity": {
+      "links_kept": 535,
+      "firms_with_a_link": 576,
+      "giant_component": 219,
+      "top_5_share_of_links": 0.228
+     },
+     "threshold": {
+      "t": 2,
+      "links_kept": 509,
+      "firms_with_a_link": 452,
+      "giant_component": 240,
+      "top_5_share_of_links": 0.275
+     }
+    },
+    "0.5": {
+     "disparity": {
+      "links_kept": 3108,
+      "firms_with_a_link": 1563,
+      "giant_component": 1351,
+      "top_5_share_of_links": 0.1062
+     },
+     "threshold": {
+      "t": 1,
+      "links_kept": 3750,
+      "firms_with_a_link": 1892,
+      "giant_component": 1648,
+      "top_5_share_of_links": 0.1349
+     }
+    }
+   },
+   "giant_of_alpha_0_2": {
+    "nodes": 134,
+    "edges": 183
+   },
+   "communities": {
+    "Q_mean": 0.5909,
+    "Q_sd": 0.0026,
+    "null_mean": 0.6324,
+    "null_sd": 0.0259,
+    "z": -1.6,
+    "communities_median": 11,
+    "nmi_between_seeds_median": 0.865
+   },
+   "labels": {
+    "client_kind": {
+     "firms_labelled": 124,
+     "nmi": 0.212,
+     "p": 0.001,
+     "ami": 0.178
+    },
+    "employer_state": {
+     "firms_labelled": 134,
+     "nmi": 0.336,
+     "p": 0.001,
+     "ami": 0.09
+    }
+   }
+  }
+ },
+ "which_label_communities_follow": "client kind",
+ "seconds": 20
+}
