@@ -65,8 +65,15 @@ test("the lottery shows the same split one step earlier", () => {
   says(`placing firms ${k.placing.registrations_per_approval.toFixed(1)}`);
   says(`firms with fewer than 20 filings ${k.small.registrations_per_approval.toFixed(1)}`);
   says(`those small firms sent ${pct(k.small.registration_share)} of the ${count(f.registrations)} registrations`);
-  says(`${pct(f.multi_registration_share)} of registrations named a worker`);
+  says(`When USCIS drew a direct employer's registration, a petition followed ${pct(k.direct.selected_that_became_petitions)} of the time`);
+  says(`a placing firm's, ${pct(k.placing.selected_that_became_petitions)}; a small firm's, ${pct(k.small.selected_that_became_petitions)}`);
+  const g = l.gap_to_direct.placing;
+  assert.ok(g.petition_share > 0.5, '"Most of the gap is drawn tickets nobody used" needs the petition step above half');
+  says(`That step carries ${pct(g.petition_share)} of the gap between placing and direct firms, and the draw itself ${pct(g.draw_share)}`);
+  says(`${pct(f.multi_registration_share)} of registrations named one`);
   says(`a petition followed ${pct(f.selected_became_petitions_multi)} of the time, against ${pct(f.selected_became_petitions_single)}`);
+  // The lottery rows must be keyed like the LCAs, or firms fall into "small".
+  assert.ok(l.employer_keys.agreement_after > 0.99, "lottery and LCA employer keys disagree");
   says(`${count(l.clients.petitions_to_client_companies)} of the petitions lead to a client company`);
   const top = l.clients.top_clients[0];
   says(`${top.client} received the most, ${top.petitions} through ${top.vendors} firms`);

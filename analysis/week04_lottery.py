@@ -30,6 +30,12 @@ more, fewer than half), "small" (fewer than 20 certified filings that year,
 including none).
 
 Checks
+- Employer keys: a lottery row has the full tax number, an FY2022 or FY2023 LCA
+  none, so the resolver can key one firm two ways. align() gives each tax number
+  the key its own petitions' LCAs carry; agreement on matched petitions goes
+  from about 95% to over 99% (employer_keys in the JSON).
+- Why a kind needs more registrations per approval: gap() splits the ratio to
+  direct employers into the draw, the petition and the approval steps.
 - The draw should not favour a kind: selection rates by kind are reported. The
   master's-degree round lifts employers who hire more US graduates, so small
   differences are expected.
@@ -56,6 +62,7 @@ import pandas as pd
 from sklearn.metrics import adjusted_mutual_info_score as ami
 
 from week04_data import load
+from week04_names import fein_of
 from week04_staffing import (MIN_FILINGS, RUNS, SEED, certified, giant_of, graph, labels, louvain,
                              placements, resolver, shuffled_nmi, span, tracked, unweighted)
 
@@ -94,16 +101,40 @@ def kinds(lca_year):
 
 
 def lca_cases():
-    """Every LCA case number (any status) -> its fiscal year, and the client
-    companies certified H-1B cases name, both keyed without dashes."""
-    years, clients = {}, []
+    """Every LCA case number (any status) -> its fiscal year and its employer key,
+    and the client companies certified H-1B cases name, all keyed without dashes."""
+    years, keys, clients = {}, {}, []
     for y in LCA_YEARS:
-        cases = load(f"lca_fy{y}")["CASE_NUMBER"].str.replace("-", "")
+        lca = load(f"lca_fy{y}")
+        cases = lca["CASE_NUMBER"].str.replace("-", "")
         years.update(dict.fromkeys(cases, y))
+        fein = lca["EMPLOYER_FEIN"] if "EMPLOYER_FEIN" in lca else pd.Series("", index=lca.index)
+        keys.update(zip(cases, (resolver().employer(n, f) for n, f in zip(lca["EMPLOYER_NAME"], fein))))
         rows, *_ = placements(y, certified(y))
         clients.append(rows.assign(case=rows["CASE_NUMBER"].str.replace("-", "")))
     clients = pd.concat(clients).drop_duplicates(["case", "client"])
-    return pd.Series(years), clients
+    return pd.Series(years), pd.Series(keys), clients
+
+
+def align(t, keys):
+    """Key each tax number the way its own petitions' LCAs are keyed.
+
+    FY2022 and FY2023 LCAs carry no tax number, so the resolver keys some of
+    their firms by name ("PERSISTENT SYSTEMS") while the lottery row, which has
+    the full tax number, gets "FEIN 770584954". A firm keyed two ways would count
+    as "small" and drop out of the community test. A tax number with matched
+    petitions takes the key most of their LCAs have; the rest keep the resolver's.
+    Returns the agreement on matched petitions before and after."""
+    m = t[t["petition"] & t["case"].isin(keys.index)]
+    lca_key = m["case"].map(keys)
+    before = float((lca_key == m["employer"]).mean())
+    fein = t["FEIN"].map(fein_of)
+    pairs = pd.DataFrame({"fein": fein[m.index], "key": lca_key})
+    pairs = pairs[pairs["fein"] != ""]
+    mode = pairs.groupby("fein")["key"].agg(lambda s: s.value_counts().index[0])
+    t["employer"] = [mode.get(f, e) if f else e for f, e in zip(fein, t["employer"])]
+    after = float((lca_key == t.loc[m.index, "employer"]).mean())
+    return {"petitions_compared": len(m), "agreement_before": round(before, 4), "agreement_after": round(after, 4)}
 
 
 def rate(a, b):
@@ -155,10 +186,27 @@ def by_kind(t):
             "selection_rate": rate(len(sel), len(g)),
             "selected_that_became_petitions": rate(sel["petition"].sum(), len(sel)),
             "approved": int(g["approved"].sum()),
+            "approved_per_petition": rate(g["approved"].sum(), g["petition"].sum()),
             "registrations_per_approval": round(len(g) / g["approved"].sum(), 2),
             "denial_rate": rate(g["denied"].sum(), g["approved"].sum() + g["denied"].sum()),
         }
     return out
+
+
+def gap(t, kind, base="direct"):
+    """Why a kind needs more registrations per approval than the base kind.
+
+    Registrations per approval = (registrations / selected) x (selected /
+    petitions) x (petitions / approved), exactly. The log of the ratio between
+    two kinds splits into the three steps; each step's share of the log gap."""
+    def steps(g):
+        n, s, p, a = len(g), g["selected"].sum(), g["petition"].sum(), g["approved"].sum()
+        return {"draw": np.log(n / s), "petition": np.log(s / p), "approval": np.log(p / a)}
+    k, b = steps(t[t["kind"] == kind]), steps(t[t["kind"] == base])
+    diff = {step: k[step] - b[step] for step in k}
+    total = sum(diff.values())
+    return {"ratio": round(float(np.exp(total)), 3),
+            **{f"{step}_share": round(float(d / total), 3) for step, d in diff.items()}}
 
 
 def to_clients(t, clients, top=12):
@@ -239,17 +287,19 @@ def community_test(t, lca_year, rng):
 def main():
     started = time.time()
     rng = random.Random(SEED)
-    case_year, clients = lca_cases()
+    case_year, keys, clients = lca_cases()
     out = {"generated_by": "analysis/week04_lottery.py",
            "source": "USCIS H-1B registrations and petitions, FY2021 to FY2024 lotteries, "
                      "obtained by Bloomberg News under FOIA",
            "lotteries": {}}
     for year, lca_year in LOTTERIES.items():
         t = registrations(year)
-        t["kind"] = t["employer"].map(kinds(lca_year)).fillna("small")
         entry = out["lotteries"][year] = {"lottery_held": f"March {year - 1}", "lca_year": lca_year}
+        entry["employer_keys"] = align(t, keys)
+        t["kind"] = t["employer"].map(kinds(lca_year)).fillna("small")
         entry["funnel"] = funnel(t, case_year, clients)
         entry["by_kind"] = by_kind(t)
+        entry["gap_to_direct"] = {kind: gap(t, kind) for kind in ("placing", "small")}
         entry["clients"] = to_clients(t, clients)
         entry["community_test"] = community_test(t, lca_year, rng)
         print(f"FY{year} lottery:", json.dumps({k: entry[k] for k in ("funnel", "by_kind")}), flush=True)
