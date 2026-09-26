@@ -644,84 +644,41 @@
               <h3>How many workers sit at a client?</h3>
               <p>
                 A filing is a request to employ someone, not a hire. In FY2025,
-                104,732 of the 537,796 certified filings (19.5%) mark a client
-                site. The worksites file lists every client a filing names; we
-                leave out the 16% of client entries that name no company, such
-                as "Home Address", and the 1,881 where a firm names itself.
-                Counted that way, 101,763 filings (18.9%) name a client company:
-                the worker is employed by one company and works at another, down
-                from 21.9% in FY2022. Placing firms also fare worse
-                at USCIS: every year from FY2022 on, it denied about twice the
-                share of their first-time petitions, 2.7% against 1.2% for
-                direct employers in FY2022 and 3.4% against 2.0% from October
-                2025 to June 2026.
-              </p>
-              <p>
-                The lottery shows the same split one step earlier. Each new
-                H-1B worker starts as a registration that USCIS draws at
-                random, and USCIS gave Bloomberg News every registration from
-                the March 2023 draw after a FOIA lawsuit. Every petition that
-                followed names its filing, so we can follow a ticket to its
-                client. Direct employers sent 5.1 registrations per approved
-                petition, placing firms 9.1, and firms with fewer than 20
-                filings 12.2; those small firms sent 53% of the 758,967
-                registrations. Most of the gap is drawn tickets nobody used.
-                When USCIS drew a direct employer's registration, a petition
-                followed 76% of the time; a placing firm's, 50%; a small
-                firm's, 35%. That step carries 74% of the gap between placing
-                and direct firms, and the draw itself 24%. Much of it comes from
-                workers registered by several employers: 54% of registrations
-                named one, and when USCIS drew one, a petition followed 23% of
-                the time, against 81% for a worker registered once. 18,307 of
-                the petitions lead to a client company. Citigroup received the
-                most, 342 through 38 firms.
+                101,763 of the 537,796 certified filings (18.9%) name a client
+                company: the worker is employed by one company and works at
+                another, down from 21.9% in FY2022. The firms that place them
+                fare worse at every step. In the March 2023 lottery they sent
+                9.1 registrations per approved petition, against 5.1 for direct
+                employers, mostly because drawn tickets went unused; and every
+                year from FY2022 on, USCIS denied about twice the share of their
+                first-time petitions.
               </p>
               <h3>Do clients group by industry or by the firm that staffs them?</h3>
               <p>
-                By both, weakly, and slightly more by vendor. With every
-                firm–client link counted once,
-                Louvain splits the network into about 65 groups, and the split
-                beats rewired networks that keep everyone's number of partners
-                (modularity 0.57 against 0.53). Among the 1,214 clients with a
-                known industry and two or more firms, the groups match the main
-                vendor at an adjusted mutual information (AMI) of 0.11 and the
-                industry at 0.07; both beat shuffled labels. AMI corrects NMI for
-                chance, which matters here: these clients have 492 main vendors
-                but only 18 industries. Counting filings pulls clients to their
-                main vendor (AMI 0.48 against 0.07), but that split scores below
-                rewired networks with the same filing counts (0.60 against 0.74),
-                and the vendor's head start is built in: the vendor is a node in
-                the same network, and 86% of these clients land in its group.
+                By both, weakly, and slightly more by vendor. Louvain splits the
+                network into about 65 groups, a little more cleanly than rewired
+                networks that keep everyone's number of partners (modularity
+                0.57 against 0.53). The groups match each client's main vendor
+                (AMI 0.11) a little better than its industry (0.07).
               </p>
               <h3>Who relies on a single vendor?</h3>
               <p>
-                Small clients. 14,679 of the 18,924 clients use one firm, but they
-                hold 22% of placed filings. Of the 629 clients with 20 or more
-                filings, 69 get over 90% from one firm, and the median one gets
-                37% from its largest. Citigroup, the largest client, uses 114
-                firms, and Tata Consultancy Services supplies a quarter. The eight
-                largest firms supply only 27% of what the 20 largest clients
-                receive.
+                Small clients. 14,679 of the 18,924 clients use one firm, but
+                they hold 22% of placed filings. Citigroup, the largest client,
+                uses 114 firms.
               </p>
               <h3>Does it hold from year to year?</h3>
               <p>
-                Only in part. On the clients present in both years, consecutive
-                years agree at NMI 0.21 to 0.27, about half the 0.47 to 0.52
-                between two runs of the same year on the same clients. We
-                compared vendor and industry on FY2025 only.
+                Only in part. Consecutive years agree at NMI 0.21 to 0.27, about
+                half the 0.47 to 0.52 between two runs of the same year. FY2026
+                breaks the pattern at the top: from January to June, filings
+                that name a client company fell 16.5%, and Tata Consultancy
+                Services filed 2,079, down from 5,256.
               </p>
               <p>
-                FY2026 breaks the pattern at the top. We compare January to June
-                of each year, because October 2025, the month of the federal
-                shutdown, holds 1,306 certified filings against 35,258 a year
-                earlier. From January to June, certified filings fell 5.8% after
-                rising 9.5% the year before, and filings that name a client
-                company fell 16.5% after holding flat (-0.1%). Tata Consultancy
-                Services filed 2,079, down from 5,256. Of the 352 clients it supplied most from January to June 2025, 226 still appear, and 114 of those now
-                get most of their workers from another firm, most often Infosys.
-                Across clients with five or more filings in both years, 48%
-                changed their main vendor, against 43% a year earlier. These are
-                applications, so they show what employers asked for, not why.
+                The full numbers, the lottery chain behind them and more
+                networks are in the boxes below and under
+                <a href="#evidence">Curious? Go deeper</a>.
               </p>
             </div>
             <figure class="staffing" id="staffing-figure">
@@ -1035,6 +992,151 @@
               <span class="num">?</span>
               <h2>Curious? Go deeper.</h2>
             </div>
+            <details class="qa" id="staffing-more">
+              <summary>
+                <span class="qa-cue">Who staffs whom: the full numbers</span>
+              </summary>
+              <div class="qa-body staffing-prose">
+              <h3>How many workers sit at a client?</h3>
+              <p>
+                A filing is a request to employ someone, not a hire. In FY2025,
+                104,732 of the 537,796 certified filings (19.5%) mark a client
+                site. The worksites file lists every client a filing names; we
+                leave out the 16% of client entries that name no company, such
+                as "Home Address", and the 1,881 where a firm names itself.
+                Counted that way, 101,763 filings (18.9%) name a client company:
+                the worker is employed by one company and works at another, down
+                from 21.9% in FY2022. Placing firms also fare worse
+                at USCIS: every year from FY2022 on, it denied about twice the
+                share of their first-time petitions, 2.7% against 1.2% for
+                direct employers in FY2022 and 3.4% against 2.0% from October
+                2025 to June 2026.
+              </p>
+              <p>
+                The lottery shows the same split one step earlier. Each new
+                H-1B worker starts as a registration that USCIS draws at
+                random, and USCIS gave Bloomberg News every registration from
+                the March 2023 draw after a FOIA lawsuit. Every petition that
+                followed names its filing, so we can follow a ticket to its
+                client. Direct employers sent 5.1 registrations per approved
+                petition, placing firms 9.1, and firms with fewer than 20
+                filings 12.2; those small firms sent 53% of the 758,967
+                registrations. Most of the gap is drawn tickets nobody used.
+                When USCIS drew a direct employer's registration, a petition
+                followed 76% of the time; a placing firm's, 50%; a small
+                firm's, 35%. That step carries 74% of the gap between placing
+                and direct firms, and the draw itself 24%. Much of it comes from
+                workers registered by several employers: 54% of registrations
+                named one, and when USCIS drew one, a petition followed 23% of
+                the time, against 81% for a worker registered once. 18,307 of
+                the petitions lead to a client company. Citigroup received the
+                most, 342 through 38 firms.
+              </p>
+              <h3>Do clients group by industry or by the firm that staffs them?</h3>
+              <p>
+                By both, weakly, and slightly more by vendor. With every
+                firm–client link counted once,
+                Louvain splits the network into about 65 groups, and the split
+                beats rewired networks that keep everyone's number of partners
+                (modularity 0.57 against 0.53). Among the 1,214 clients with a
+                known industry and two or more firms, the groups match the main
+                vendor at an adjusted mutual information (AMI) of 0.11 and the
+                industry at 0.07; both beat shuffled labels. AMI corrects NMI for
+                chance, which matters here: these clients have 492 main vendors
+                but only 18 industries. Counting filings pulls clients to their
+                main vendor (AMI 0.48 against 0.07), but that split scores below
+                rewired networks with the same filing counts (0.60 against 0.74),
+                and the vendor's head start is built in: the vendor is a node in
+                the same network, and 86% of these clients land in its group.
+              </p>
+              <h3>Who relies on a single vendor?</h3>
+              <p>
+                Small clients. 14,679 of the 18,924 clients use one firm, but they
+                hold 22% of placed filings. Of the 629 clients with 20 or more
+                filings, 69 get over 90% from one firm, and the median one gets
+                37% from its largest. Citigroup, the largest client, uses 114
+                firms, and Tata Consultancy Services supplies a quarter. The eight
+                largest firms supply only 27% of what the 20 largest clients
+                receive.
+              </p>
+              <h3>Does it hold from year to year?</h3>
+              <p>
+                Only in part. On the clients present in both years, consecutive
+                years agree at NMI 0.21 to 0.27, about half the 0.47 to 0.52
+                between two runs of the same year on the same clients. We
+                compared vendor and industry on FY2025 only.
+              </p>
+              <p>
+                FY2026 breaks the pattern at the top. We compare January to June
+                of each year, because October 2025, the month of the federal
+                shutdown, holds 1,306 certified filings against 35,258 a year
+                earlier. From January to June, certified filings fell 5.8% after
+                rising 9.5% the year before, and filings that name a client
+                company fell 16.5% after holding flat (-0.1%). Tata Consultancy
+                Services filed 2,079, down from 5,256. Of the 352 clients it supplied most from January to June 2025, 226 still appear, and 114 of those now
+                get most of their workers from another firm, most often Infosys.
+                Across clients with five or more filings in both years, 48%
+                changed their main vendor, against 43% a year earlier. These are
+                applications, so they show what employers asked for, not why.
+              </p>
+                          </div>
+            </details>
+
+            <details class="qa" id="deeper-perm">
+              <summary>
+                <span class="qa-cue">Who keeps them? Green cards as the strong tie</span>
+              </summary>
+              <div class="qa-body">
+                <p class="sub">
+                  An H-1B filing is a weak tie between an employer and a worker;
+                  a green-card filing (PERM) is a strong one, because the
+                  employer sponsors the worker to stay. In FY2025 the median
+                  employer with 20 or more H-1B filings filed 13.2 green cards
+                  per 100 of them, and the two counts rank employers only loosely
+                  alike (Spearman 0.49). As with degree and strength in the
+                  course, the exceptions carry the story: Oracle filed 95 green
+                  cards per 100 H-1B filings, Uber 64 and Salesforce 45, while
+                  Amazon (22,493 H-1B filings), Cognizant (11,067) and Google
+                  (8,657) filed almost none. Placing firms file fewer than direct
+                  employers (13.3 against 16.6 per 100), but shuffling the labels
+                  gives a gap that large 14% of the time (p = 0.136); in FY2024
+                  the gap is clearer (12.6 against 15.4, p = 0.045). Only 65% of
+                  certified green cards come from an employer we can match to an
+                  H-1B filer. Figures from analysis/week04_perm.py.
+                </p>
+              </div>
+            </details>
+
+            <details class="qa" id="deeper-countries">
+              <summary>
+                <span class="qa-cue">Where are they from? A network of countries</span>
+              </summary>
+              <div class="qa-body">
+                <p class="sub">
+                  A worker's citizenship is personal, so we read it only in
+                  memory and keep counts per country and employer, dropping every
+                  count under 10. That drops 96% of the cells and 43% of FY2023's
+                  certified green-card filings. India holds 52% of those filings
+                  and China 12%; among lottery registrations, India holds 77% in
+                  the March 2022 draw and 81% in March 2023. Link two countries
+                  by the green cards their citizens receive at the same employers
+                  and 55 countries remain. Louvain splits them into three groups.
+                  Counted once each, the links group a little more than rewired
+                  copies (modularity 0.10 against 0.06); weighted by shared green
+                  cards, they group less (0.26 against 0.40). India and China
+                  share one group with Canada, Belarus and Costa Rica, and India
+                  keeps 79% of its weight inside it. The groups
+                  match world regions (AMI 0.10) and Week 3's migration
+                  communities (0.10) only weakly: green-card hiring does not sort
+                  countries into regional blocs. Among the ten largest sponsors,
+                  Google's green cards are the most varied, 4.7 effective
+                  countries with India at 30%, against Amazon's 3.0 at 67%.
+                  Figures from analysis/week04_countries.py; no row about a
+                  person leaves the script.
+                </p>
+              </div>
+            </details>
+
             <details class="qa">
               <summary>
                 <span class="qa-cue">Data and methods</span>
@@ -1043,7 +1145,9 @@
                 <p class="sub">
                   Sources: US Department of Labor, Office of Foreign Labor
                   Certification — LCA disclosures and worksites file, public
-                  domain. Only allow-listed columns leave the build folder (no
+                  domain; USCIS H-1B Employer Data Hub, FY2022 to June 2026;
+                  H-1B lottery registrations for the FY2022 to FY2024 draws,
+                  USCIS data obtained by Bloomberg News under FOIA. Only allow-listed columns leave the build folder (no
                   addresses, emails or phone numbers). Each script writes the
                   numbers its section quotes to a JSON file the page reads:
                 </p>
@@ -1063,6 +1167,12 @@
                     tests strong and weak ties and wage levels; and
                     <a href="https://github.com/horrrt/02805_social_graphs/blob/main/analysis/week04_lawfirms.py"><code>week04_lawfirms.py</code></a>
                     builds the law-firm network and its backbones.</li>
+                  <li><a href="https://github.com/horrrt/02805_social_graphs/blob/main/analysis/week04_lottery.py"><code>week04_lottery.py</code></a>
+                    follows lottery registrations to petitions, filings and clients;
+                    <a href="https://github.com/horrrt/02805_social_graphs/blob/main/analysis/week04_perm.py"><code>week04_perm.py</code></a>
+                    compares green cards with H-1B filings; and
+                    <a href="https://github.com/horrrt/02805_social_graphs/blob/main/analysis/week04_countries.py"><code>week04_countries.py</code></a>
+                    counts green cards by country and employer, hides every count under 10, and builds the country network.</li>
                   <li><a href="https://github.com/horrrt/02805_social_graphs/blob/main/analysis/week04_names.py"><code>week04_names.py</code></a>
                     decides which names are the same company;
                     <a href="https://github.com/horrrt/02805_social_graphs/blob/main/analysis/week04_names_check.py"><code>week04_names_check.py</code></a>

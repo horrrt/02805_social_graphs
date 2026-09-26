@@ -1,0 +1,573 @@
+{
+ "generated_by": "analysis/week04_countries.py",
+ "min_cell": 10,
+ "runs": 100,
+ "seed": 2805,
+ "main_year": 2023,
+ "second_year": 2022,
+ "perm": {
+  "2022": {
+   "case_statuses": {
+    "Certified-Expired": 54023,
+    "Certified": 40462,
+    "Withdrawn": 5542,
+    "Denied": 4573
+   },
+   "certified_filings": 94485,
+   "descriptive": {
+    "total": 94485,
+    "countries": 176,
+    "top": [
+     {
+      "country": "INDIA",
+      "filings": 53737,
+      "share": 0.5687
+     },
+     {
+      "country": "CHINA",
+      "filings": 10021,
+      "share": 0.1061
+     },
+     {
+      "country": "MEXICO",
+      "filings": 3714,
+      "share": 0.0393
+     },
+     {
+      "country": "PHILIPPINES",
+      "filings": 2667,
+      "share": 0.0282
+     },
+     {
+      "country": "CANADA",
+      "filings": 2487,
+      "share": 0.0263
+     },
+     {
+      "country": "SOUTH KOREA",
+      "filings": 2254,
+      "share": 0.0239
+     },
+     {
+      "country": "BRAZIL",
+      "filings": 2010,
+      "share": 0.0213
+     },
+     {
+      "country": "NEPAL",
+      "filings": 1063,
+      "share": 0.0113
+     },
+     {
+      "country": "VIETNAM",
+      "filings": 902,
+      "share": 0.0095
+     },
+     {
+      "country": "PAKISTAN",
+      "filings": 851,
+      "share": 0.009
+     }
+    ]
+   },
+   "cells_before_suppression": 29206,
+   "cells_dropped_under_min": 28052,
+   "cells_dropped_share": 0.9605,
+   "filings_dropped_share": 0.4657
+  },
+  "2023": {
+   "case_statuses": {
+    "Certified": 52715,
+    "Certified-Expired": 49571,
+    "Withdrawn": 7777,
+    "Denied": 6364
+   },
+   "certified_filings": 102286,
+   "descriptive": {
+    "total": 102286,
+    "countries": 177,
+    "top": [
+     {
+      "country": "INDIA",
+      "filings": 53412,
+      "share": 0.5222
+     },
+     {
+      "country": "CHINA",
+      "filings": 11950,
+      "share": 0.1168
+     },
+     {
+      "country": "MEXICO",
+      "filings": 3852,
+      "share": 0.0377
+     },
+     {
+      "country": "VIETNAM",
+      "filings": 3280,
+      "share": 0.0321
+     },
+     {
+      "country": "PHILIPPINES",
+      "filings": 2702,
+      "share": 0.0264
+     },
+     {
+      "country": "CANADA",
+      "filings": 2621,
+      "share": 0.0256
+     },
+     {
+      "country": "BRAZIL",
+      "filings": 2541,
+      "share": 0.0248
+     },
+     {
+      "country": "SOUTH KOREA",
+      "filings": 2153,
+      "share": 0.021
+     },
+     {
+      "country": "NEPAL",
+      "filings": 1580,
+      "share": 0.0154
+     },
+     {
+      "country": "PAKISTAN",
+      "filings": 1083,
+      "share": 0.0106
+     }
+    ]
+   },
+   "cells_before_suppression": 29408,
+   "cells_dropped_under_min": 28156,
+   "cells_dropped_share": 0.9574,
+   "filings_dropped_share": 0.4339
+  },
+  "2024": {
+   "case_statuses": {
+    "Certified-Expired": 50814,
+    "Certified": 35505,
+    "Denied": 4892,
+    "Withdrawn": 1047
+   },
+   "certified_filings": 86319,
+   "descriptive": {
+    "total": 86319,
+    "countries": 177,
+    "top": [
+     {
+      "country": "INDIA",
+      "filings": 40771,
+      "share": 0.4723
+     },
+     {
+      "country": "CHINA",
+      "filings": 8159,
+      "share": 0.0945
+     },
+     {
+      "country": "MEXICO",
+      "filings": 3701,
+      "share": 0.0429
+     },
+     {
+      "country": "VIETNAM",
+      "filings": 3596,
+      "share": 0.0417
+     },
+     {
+      "country": "PHILIPPINES",
+      "filings": 3160,
+      "share": 0.0366
+     },
+     {
+      "country": "CANADA",
+      "filings": 2340,
+      "share": 0.0271
+     },
+     {
+      "country": "BRAZIL",
+      "filings": 2185,
+      "share": 0.0253
+     },
+     {
+      "country": "SOUTH KOREA",
+      "filings": 2067,
+      "share": 0.0239
+     },
+     {
+      "country": "NEPAL",
+      "filings": 1397,
+      "share": 0.0162
+     },
+     {
+      "country": "BANGLADESH",
+      "filings": 1360,
+      "share": 0.0158
+     }
+    ]
+   },
+   "cells_before_suppression": 28687,
+   "cells_dropped_under_min": 27652,
+   "cells_dropped_share": 0.9639,
+   "filings_dropped_share": 0.4946
+  }
+ },
+ "unmatched_country_names": {
+  "SERBIA AND MONTENEGRO": 8,
+  "SOVIET UNION": 2
+ },
+ "blank_citizenship_filings": 6,
+ "lottery": {
+  "2022": {
+   "registrations": 301419,
+   "redacted_rows_dropped": 28,
+   "descriptive": {
+    "total": 301419,
+    "countries": 201,
+    "top": [
+     {
+      "country": "IND",
+      "filings": 221872,
+      "share": 0.7361
+     },
+     {
+      "country": "CHN",
+      "filings": 30287,
+      "share": 0.1005
+     },
+     {
+      "country": "CAN",
+      "filings": 3118,
+      "share": 0.0103
+     },
+     {
+      "country": "KOR",
+      "filings": 2827,
+      "share": 0.0094
+     },
+     {
+      "country": "MEX",
+      "filings": 2721,
+      "share": 0.009
+     },
+     {
+      "country": "TWN",
+      "filings": 2451,
+      "share": 0.0081
+     },
+     {
+      "country": "PAK",
+      "filings": 2163,
+      "share": 0.0072
+     },
+     {
+      "country": "BRA",
+      "filings": 2135,
+      "share": 0.0071
+     },
+     {
+      "country": "NPL",
+      "filings": 2075,
+      "share": 0.0069
+     },
+     {
+      "country": "PHL",
+      "filings": 2061,
+      "share": 0.0068
+     }
+    ]
+   }
+  },
+  "2023": {
+   "registrations": 474384,
+   "redacted_rows_dropped": 37,
+   "descriptive": {
+    "total": 474384,
+    "countries": 208,
+    "top": [
+     {
+      "country": "IND",
+      "filings": 365980,
+      "share": 0.7715
+     },
+     {
+      "country": "CHN",
+      "filings": 35110,
+      "share": 0.074
+     },
+     {
+      "country": "CAN",
+      "filings": 4416,
+      "share": 0.0093
+     },
+     {
+      "country": "PHL",
+      "filings": 4353,
+      "share": 0.0092
+     },
+     {
+      "country": "MEX",
+      "filings": 4298,
+      "share": 0.0091
+     },
+     {
+      "country": "PAK",
+      "filings": 3800,
+      "share": 0.008
+     },
+     {
+      "country": "KOR",
+      "filings": 3714,
+      "share": 0.0078
+     },
+     {
+      "country": "NPL",
+      "filings": 3580,
+      "share": 0.0075
+     },
+     {
+      "country": "TWN",
+      "filings": 3322,
+      "share": 0.007
+     },
+     {
+      "country": "BRA",
+      "filings": 2843,
+      "share": 0.006
+     }
+    ]
+   }
+  },
+  "2024": {
+   "registrations": 758967,
+   "redacted_rows_dropped": 27,
+   "descriptive": {
+    "total": 758967,
+    "countries": 213,
+    "top": [
+     {
+      "country": "IND",
+      "filings": 617601,
+      "share": 0.8137
+     },
+     {
+      "country": "CHN",
+      "filings": 45660,
+      "share": 0.0602
+     },
+     {
+      "country": "PAK",
+      "filings": 6508,
+      "share": 0.0086
+     },
+     {
+      "country": "PHL",
+      "filings": 6104,
+      "share": 0.008
+     },
+     {
+      "country": "MEX",
+      "filings": 5428,
+      "share": 0.0072
+     },
+     {
+      "country": "CAN",
+      "filings": 5238,
+      "share": 0.0069
+     },
+     {
+      "country": "NPL",
+      "filings": 5159,
+      "share": 0.0068
+     },
+     {
+      "country": "KOR",
+      "filings": 4970,
+      "share": 0.0065
+     },
+     {
+      "country": "TWN",
+      "filings": 4287,
+      "share": 0.0056
+     },
+     {
+      "country": "BRA",
+      "filings": 3539,
+      "share": 0.0047
+     }
+    ]
+   }
+  }
+ },
+ "network": {
+  "2023": {
+   "bipartite_nodes": 1034,
+   "bipartite_edges": 1252,
+   "country_nodes": 55,
+   "country_edges": 492,
+   "giant_nodes": 49,
+   "giant_edges": 492,
+   "giant_weight_share": 1.0
+  },
+  "2022": {
+   "bipartite_nodes": 1009,
+   "bipartite_edges": 1154,
+   "country_nodes": 47,
+   "country_edges": 342
+  }
+ },
+ "modularity": {
+  "communities_median": 3,
+  "nmi_between_seeds_median": 1.0,
+  "rewired_components_median": 1,
+  "rewired_giant_node_share_median": 1.0,
+  "weighted_vs_rewired": {
+   "real": 0.2614,
+   "real_sd": 0.0004,
+   "null": 0.402,
+   "null_sd": 0.0188,
+   "z": -7.49,
+   "null_runs_at_or_above_real": 100
+  },
+  "wiring_only": {
+   "real": 0.1033,
+   "real_sd": 0.0048,
+   "null": 0.0613,
+   "null_sd": 0.0044,
+   "z": 9.46,
+   "null_runs_at_or_above_real": 0
+  }
+ },
+ "labels": {
+  "countries_matched_to_a_region": 49,
+  "countries_with_region": 49,
+  "nmi_region": 0.18,
+  "p_region": 0.016,
+  "nmi_subregion": 0.211,
+  "p_subregion": 0.049,
+  "ami_region": 0.103,
+  "ami_subregion": 0.068,
+  "week3_shared_countries": 49,
+  "nmi_week3_migrant_communities": 0.217,
+  "p_week3": 0.014,
+  "ami_week3_migrant_communities": 0.1,
+  "india_share_of_weight_inside_its_community": 0.7937,
+  "largest_communities": [
+   {
+    "countries": 37,
+    "weight": 25366,
+    "top_countries": [
+     "Taiwan, Province of China",
+     "Viet Nam",
+     "Mexico",
+     "Brazil",
+     "Korea, Republic of",
+     "Nigeria",
+     "Bangladesh",
+     "Nepal"
+    ]
+   },
+   {
+    "countries": 5,
+    "weight": 21430,
+    "top_countries": [
+     "China",
+     "India",
+     "Canada",
+     "Belarus",
+     "Costa Rica"
+    ]
+   },
+   {
+    "countries": 7,
+    "weight": 994,
+    "top_countries": [
+     "Philippines",
+     "Kenya",
+     "Ghana",
+     "Zimbabwe",
+     "Ethiopia",
+     "Cameroon",
+     "Jamaica"
+    ]
+   }
+  ]
+ },
+ "diversity": {
+  "top_employers": [
+   {
+    "countries": 24,
+    "filings": 6124,
+    "effective_countries": 3.0,
+    "india_share": 0.6656,
+    "employer": "Amazon"
+   },
+   {
+    "countries": 26,
+    "filings": 4176,
+    "effective_countries": 4.71,
+    "india_share": 0.302,
+    "employer": "Google"
+   },
+   {
+    "countries": 12,
+    "filings": 2158,
+    "effective_countries": 3.36,
+    "india_share": 0.646,
+    "employer": "Microsoft"
+   },
+   {
+    "countries": 11,
+    "filings": 1709,
+    "effective_countries": 2.44,
+    "india_share": 0.8092,
+    "employer": "Intel"
+   },
+   {
+    "countries": 6,
+    "filings": 1604,
+    "effective_countries": 2.71,
+    "india_share": 0.4682,
+    "employer": "Meta"
+   },
+   {
+    "countries": 7,
+    "filings": 1087,
+    "effective_countries": 2.7,
+    "india_share": 0.6789,
+    "employer": "Apple"
+   },
+   {
+    "countries": 1,
+    "filings": 1081,
+    "effective_countries": 1.0,
+    "india_share": 1.0,
+    "employer": "Cognizant"
+   },
+   {
+    "countries": 1,
+    "filings": 1005,
+    "effective_countries": 1.0,
+    "india_share": 1.0,
+    "employer": "Tata Consultancy Services"
+   },
+   {
+    "countries": 1,
+    "filings": 832,
+    "effective_countries": 1.0,
+    "india_share": 0.0,
+    "employer": "Wayne Farms"
+   },
+   {
+    "countries": 1,
+    "filings": 773,
+    "effective_countries": 1.0,
+    "india_share": 1.0,
+    "employer": "Infosys"
+   }
+  ]
+ },
+ "seconds": 76
+}

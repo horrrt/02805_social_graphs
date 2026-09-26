@@ -163,22 +163,27 @@ Layout differences the loader already handles:
 | Opening and closing sections, AI-use note | Niklas |
 | Teams post, feedback on another group, final read against the brief | Gyula |
 
-## Proposal, not agreed: country of birth
+## Country of birth: built, aggregates only
 
-Proposed by Gyula on 26 September 2026; it needs all three of us before anyone builds it. Nothing below
-is in the code.
+Gyula decided on 26 September 2026 to build the country network (the "Where are they from?" box under
+Curious? Go deeper); Àngela and Niklas should look it over in the Sunday review.
 
-The rule above keeps the worker's citizenship and country of birth out of `build/`. Two public sources
-have them: the old green-card form (`COUNTRY_OF_CITIZENSHIP` and `FOREIGN_WORKER_BIRTH_COUNTRY`, FY2022
-to FY2024; the new form dropped both) and the lottery release (`country_of_birth` on every registration).
-The proposal: a separate script reads the column in memory and writes only counts per (country,
-employer), hiding every cell under 10. No row about a person reaches `build/` or the repository, and the
-DOL loader keeps refusing the column.
+The DOL loader still refuses citizenship and country of birth. `analysis/week04_countries.py` reads
+them on its own, in memory only: `COUNTRY_OF_CITIZENSHIP` from the old-form green-card workbooks
+(FY2022 to FY2024; the new form dropped it) and `country_of_birth` from the lottery release. It keeps
+counts per (country, employer), drops every count under 10 before anything else uses them, and writes
+only aggregates to `analysis/week04_countries.json`. No row about a person reaches `build/` or the
+repository. The suppression drops 43% of FY2023's certified green cards, so the network covers the
+large country-employer pairs only.
 
-What it would add: a country–employer network, projected onto countries, whose nodes are the same
-countries as Week 3's migration network. Counted in memory on 26 September: India is 77% of FY2023
-lottery registrations and 81% of FY2024's, so the lottery gives one giant node; certified FY2023 green
-cards are more varied (India 52%, China 12%, Mexico 4%, Vietnam 3%, 176 countries).
+## Go deeper
+
+Section 3 keeps one short answer per question; its full text moved unchanged into the page's Curious?
+Go deeper box `#staffing-more`, beside two boxes of their own: `week04_perm.py` (green cards per 100
+H-1B filings, naming an employer only when a raw name search agrees with its key) and
+`week04_countries.py` (above). The law-firm network, weak ties and wage levels stay in section 3's
+own boxes (`week04_lawfirms.py`, `week04_ties.py`, `week04_shift.py`). `tests/week04-prose.test.mjs`
+pins both the short and the full text.
 
 ## Timeline
 
