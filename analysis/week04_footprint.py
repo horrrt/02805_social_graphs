@@ -30,28 +30,39 @@ Checks
   does).
 - Modularity Q of that partition against a null: degree-preserving rewirings
   of THAT VARIANT's own company x metro (or company x occupation) bipartite
-  graph, re-projected, one Louvain run per rewiring. 50 nulls for the full
-  network and the two named drops (10 for the matched controls, to keep the
-  runtime bounded); z = (Q - null mean) / null sd.
+  graph, re-projected with the SAME filings-weighted rule as the observed
+  partition (never the company-count projection), one Louvain run per
+  rewiring, scored on the same node set the observed partition uses (no
+  giant-component restriction unless the observed one has it). 50 nulls for
+  the full metro network and its two named drops; 20 for the full job network
+  and its two named drops (the job reprojection costs more per null, so the
+  count is lower to keep the runtime bounded); 10 nulls per matched-control
+  draw, for both metros and jobs; z = (Q - null mean) / null sd.
 - Median NMI between the 100 seeds (run-to-run noise), and NMI between the
   variant's partition and the full network's partition (does removing the
   firms relabel the map, or leave it alone).
 - Part 1 only: AMI and a shuffle p-value (1,000 shuffles) of the modal
   partition against Census region. Part 2 only: NMI against SOC major group
   over occupations in clusters of two or more.
-- The answer is "no, the map is not just their footprint" if Q's z-score and
-  the partition survive the big-firm drop about as well as they survive the
-  volume-matched random drop; "yes" if the big-firm drop breaks the structure
-  markedly more than a same-size random drop does.
+- A named drop "survives" a check when, for each of its available metrics
+  (NMI vs. full, Q's z, and for metros AMI vs. region), the drop's value sits
+  within 2 sd of the matched controls' own mean and sd for that metric -- not
+  against a fixed tolerance, since the controls' own spread sets what "about
+  as well as a random cut of this size" means. A drop with no comparable
+  metric available never passes by default. The answer is "no, the map is not
+  just their footprint" only when every available metric survives for both
+  named drops; "yes" (mixed) otherwise.
 
 Speed: the 40-metro projection re-runs 780 metro pairs per rewiring, done with
 a dense employer x metro numpy matrix (project_vectorized) instead of the
 per-employer Python loop week04_where.project uses; the two give identical
 edge weights (checked once, at startup, with an assertion). The independent
 work -- nulls within a named variant, and the 20 draws of a control -- runs in
-a forked process pool (every task's random state is seeded from (SEED, variant,
-draw index), never from a shared generator, so results do not depend on
-which worker finishes first).
+a forked process pool. Every task's random state is seeded from a stable hash
+of (SEED, part, variant id, draw index, purpose, sub-index), never from a
+shared generator or from arithmetic offsets on a shared base -- offsets used
+to collide (e.g. one control draw's seeds landing exactly on the next draw's),
+which the hash keys rule out by construction.
 
 Outputs: analysis/week04_footprint.json (every number) and
 docs/weeks/week04/data/footprint.json (the shape a page figure would draw).
@@ -61,6 +72,7 @@ analysis/week04_footprint.partial.json as soon as each half finishes, and that
 file is removed again once the real outputs are written.
 """
 
+import hashlib
 import json
 import multiprocessing as mp
 import os
@@ -88,11 +100,22 @@ PAGE = ROOT / "docs/weeks/week04/data/footprint.json"
 YEAR = 2025
 SEED = 2805
 RUNS = 100
-NULLS_MAIN = 50     # nulls for the full network and the two named drops
-NULLS_CONTROL = 10  # nulls per matched-control draw
+NULLS_MAIN = 50     # nulls for the full metro network and its two named drops
+NULLS_JOBS = 20     # nulls for the full job network and its two named drops (pricier per null)
+NULLS_CONTROL = 10  # nulls per matched-control draw (metros and jobs alike)
 DRAWS = 20          # volume-matched control draws per named drop
 TOP10 = 10          # employers dropped for variant c
 WORKERS = 8         # forked worker processes (machine has 10 cores)
+
+
+def seed_for(part, variant_id, draw_idx, purpose, i=0):
+    """A seed derived from a stable hash of (SEED, part, variant id, draw
+    index, purpose, sub-index), so no two tasks anywhere in the script can
+    share a seed by accident of arithmetic (as fixed offsets on a shared base
+    once did: one control draw's seeds landed exactly on the next draw's)."""
+    key = repr((SEED, part, variant_id, draw_idx, purpose, i)).encode()
+    digest = hashlib.blake2b(key, digest_size=8).digest()
+    return int.from_bytes(digest, "big") % (2 ** 31)
 
 # Module-level state a forked worker inherits at Pool-creation time (copy on
 # write: cheap, and nothing needs to be pickled per task beyond a seed and a
@@ -156,10 +179,10 @@ def check_project_vectorized(pairs, keep):
 
 # --- shared partition/NMI helpers ------------------------------------------
 
-def modal_partition(graph, seed0, runs=RUNS):
+def modal_partition(graph, seeds, runs=RUNS):
     """Louvain runs, the partition found most often (ties: higher Q), as
-    where.py picks it."""
-    parts_list = [louvain(graph, seed0 + r)[0] for r in range(runs)]
+    where.py picks it. `seeds` is a list of `runs` distinct seeds, one per run."""
+    parts_list = [louvain(graph, seeds[r])[0] for r in range(runs)]
     found = Counter(frozenset(frozenset(c) for c in part) for part in parts_list)
     q_of = {k: nx.community.modularity(graph, [set(c) for c in k], weight="weight") for k in found}
     modal = max(found, key=lambda k: (found[k], q_of[k]))
@@ -168,9 +191,10 @@ def modal_partition(graph, seed0, runs=RUNS):
     return best, member, q_of[modal], parts_list
 
 
-def best_q_partition(graph, seed0, runs=RUNS):
-    """Louvain runs, the single best-modularity partition, as jobs.py picks it."""
-    found = [louvain(graph, seed0 + r) for r in range(runs)]
+def best_q_partition(graph, seeds, runs=RUNS):
+    """Louvain runs, the single best-modularity partition, as jobs.py picks it.
+    `seeds` is a list of `runs` distinct seeds, one per run."""
+    found = [louvain(graph, seeds[r]) for r in range(runs)]
     parts_list = [p for p, _ in found]
     best_p, best_q = max(found, key=lambda pq: pq[1])
     best = sorted(best_p, key=lambda c: (-len(c), min(c)))
@@ -221,15 +245,16 @@ def summarise_draws(rows, keys):
     return out
 
 
-def matched_draws_deterministic(pairs, keep, exclude, target_total, n_draws, seed_base):
-    """n_draws sets of employer keys, each sampled with its OWN seed
-    (seed_base + draw index), so a draw's composition never depends on any
-    other draw or on scheduling order in the process pool."""
+def matched_draws_deterministic(pairs, keep, exclude, target_total, n_draws, part, control_name):
+    """n_draws sets of employer keys, each sampled with its OWN hash-derived
+    seed (part, control_name, draw index, "compose"), so a draw's composition
+    never depends on any other draw, on any other control set, or on
+    scheduling order in the process pool."""
     totals = pairs[pairs["metro"].isin(keep)].groupby("employer")["filings"].sum()
-    pool = [e for e in totals.index if e not in exclude]
+    pool = sorted(e for e in totals.index if e not in exclude)  # sorted: set/dict order is per-process
     draws = []
     for i in range(n_draws):
-        r = random.Random(seed_base + i)
+        r = random.Random(seed_for(part, control_name, i, "compose"))
         order = pool[:]
         r.shuffle(order)
         cum, chosen = 0, []
@@ -253,9 +278,9 @@ def _metro_null_task(seed):
     return louvain(hp, seed)[1]
 
 
-def run_metro_nulls_parallel(pairs, keep, seed0, n_nulls, label_text):
+def run_metro_nulls_parallel(pairs, keep, seeds, label_text):
     _set_globals(pairs=pairs, keep=keep)
-    seeds = list(range(seed0, seed0 + n_nulls))
+    n_nulls = len(seeds)
     started = time.time()
     qs = []
     with mp.get_context("fork").Pool(processes=WORKERS) as pool:
@@ -266,31 +291,35 @@ def run_metro_nulls_parallel(pairs, keep, seed0, n_nulls, label_text):
 
 
 def _metro_draw_task(payload):
-    seed_base, dropped_list, achieved = payload
+    control_name, draw_idx, dropped_list, achieved = payload
     dropped = set(dropped_list)
     keep = _G["keep"]
     full_member, full_labels, regions = _G["full_member"], _G["full_labels"], _G["regions"]
     total_in_top = _G["total_in_top"]
     pv = _G["pairs"][~_G["pairs"]["employer"].isin(dropped)]
     g = project_vectorized(pv, keep)
-    best, member, q, parts_list = modal_partition(g, seed_base, RUNS)
+    seeds_run = [seed_for("metro", control_name, draw_idx, "louvain_run", r) for r in range(RUNS)]
+    best, member, q, parts_list = modal_partition(g, seeds_run, RUNS)
     nodes = sorted(keep)
     nmi_seeds, labels_list = seed_nmi(parts_list, nodes)
     nmi_vs_full = nmi([full_member[n] for n in nodes], [member[n] for n in nodes])
     nmi_vs_full_runs = cross_nmi_median(labels_list, full_labels, nodes)
     comm = [member[n] for n in nodes]
     region_labels = [regions[n] for n in nodes]
-    region_ami, region_p = shuffled_ami(comm, region_labels, seed_base + 777)
+    region_seed = seed_for("metro", control_name, draw_idx, "region_shuffle")
+    region_ami, region_p = shuffled_ami(comm, region_labels, region_seed)
     region_nmi = nmi(comm, region_labels)
 
     bip = bipartite_of(pv, keep)
     qs = []
     for i in range(NULLS_CONTROL):
-        h = rewire(bip, random.Random(seed_base + 5000 + i))
+        rewire_seed = seed_for("metro", control_name, draw_idx, "control_rewire", i)
+        h = rewire(bip, random.Random(rewire_seed))
         rows = [(u[1], v[1], d["weight"]) if u[0] == "F" else (v[1], u[1], d["weight"])
                 for u, v, d in h.edges(data=True)]
         hp = project_vectorized(pd.DataFrame(rows, columns=["employer", "metro", "filings"]), keep)
-        qs.append(louvain(hp, seed_base + 6000 + i)[1])
+        louvain_seed = seed_for("metro", control_name, draw_idx, "control_louvain", i)
+        qs.append(louvain(hp, louvain_seed)[1])
     qs = np.array(qs)
 
     return {
@@ -307,11 +336,11 @@ def _metro_draw_task(payload):
 
 
 def run_metro_draws_parallel(pairs, keep, full_member, full_labels, regions, total_in_top,
-                              exclude, target, seed_base, n_draws, label_text):
-    draws = matched_draws_deterministic(pairs, keep, exclude, target, n_draws, seed_base)
+                              exclude, target, control_name, n_draws, label_text):
+    draws = matched_draws_deterministic(pairs, keep, exclude, target, n_draws, "metro", control_name)
     _set_globals(pairs=pairs, keep=keep, full_member=full_member, full_labels=full_labels,
                  regions=regions, total_in_top=total_in_top)
-    payload = [(seed_base + 10000 + i * 100, sorted(dropped), achieved)
+    payload = [(control_name, i, sorted(dropped), achieved)
                for i, (dropped, achieved) in enumerate(draws)]
     started = time.time()
     rows = []
@@ -325,19 +354,23 @@ def run_metro_draws_parallel(pairs, keep, full_member, full_labels, regions, tot
 # --- job workers (run in forked child processes) ----------------------------
 
 def _jobs_null_task(seed):
+    """Rewire the (filings-weighted) company x occupation bipartite graph and
+    re-project it with the SAME filings-min rule the observed partition uses
+    (where.project, not jobs.reproject's company-count rule), scored on the
+    full occupation node set the observed partition uses (no giant-component
+    restriction -- the observed one has none either)."""
     occupations = _G["occupations"]
-    bip = nx.Graph()
-    for e, o, f in _G["pairs"].itertuples(index=False):
-        bip.add_edge(("F", e), ("C", o), weight=int(f))
+    bip = bipartite_of(_G["pairs"], occupations)
     h = rewire(bip, random.Random(seed))
-    hp = jobs.reproject(h, occupations)
-    hg = jobs.giant_of(hp)
-    return louvain(hg, seed)[1]
+    rows = [(u[1], v[1], d["weight"]) if u[0] == "F" else (v[1], u[1], d["weight"])
+            for u, v, d in h.edges(data=True)]
+    hp = where.project(pd.DataFrame(rows, columns=["employer", "metro", "filings"]), occupations)
+    return louvain(hp, seed)[1]
 
 
-def run_jobs_nulls_parallel(pairs, occupations, seed0, n_nulls, label_text):
+def run_jobs_nulls_parallel(pairs, occupations, seeds, label_text):
     _set_globals(pairs=pairs, occupations=occupations)
-    seeds = list(range(seed0, seed0 + n_nulls))
+    n_nulls = len(seeds)
     started = time.time()
     qs = []
     with mp.get_context("fork").Pool(processes=WORKERS) as pool:
@@ -348,7 +381,7 @@ def run_jobs_nulls_parallel(pairs, occupations, seed0, n_nulls, label_text):
 
 
 def _jobs_draw_task(payload):
-    seed_base, dropped_list, achieved = payload
+    control_name, draw_idx, dropped_list, achieved = payload
     dropped = set(dropped_list)
     occupations = _G["occupations"]
     major = _G["major"]
@@ -356,28 +389,47 @@ def _jobs_draw_task(payload):
     total_filings = _G["total_filings"]
     pv = _G["pairs"][~_G["pairs"]["employer"].isin(dropped)]
     g = where.project(pv, occupations)
-    best, member, q, parts_list = best_q_partition(g, seed_base, RUNS)
+    seeds_run = [seed_for("jobs", control_name, draw_idx, "louvain_run", r) for r in range(RUNS)]
+    best, member, q, parts_list = best_q_partition(g, seeds_run, RUNS)
     nmi_seeds, _ = seed_nmi(parts_list, occupations)
     nmi_vs_full = nmi([full_member[n] for n in occupations], [member[n] for n in occupations])
     clusters2 = [c for c in best if len(c) > 1]
     scored = sorted(n for c in clusters2 for n in c)
     soc_nmi = nmi([member[n] for n in scored], [major[n] for n in scored]) if scored else None
+
+    # Control null: same rewiring-and-reproject rule as the named drops', so a
+    # control draw's z is comparable to a named drop's z (bug fix: previously
+    # jobs control draws had no null at all, so control z was always missing).
+    bip = bipartite_of(pv, occupations)
+    qs = []
+    for i in range(NULLS_CONTROL):
+        rewire_seed = seed_for("jobs", control_name, draw_idx, "control_rewire", i)
+        h = rewire(bip, random.Random(rewire_seed))
+        rows = [(u[1], v[1], d["weight"]) if u[0] == "F" else (v[1], u[1], d["weight"])
+                for u, v, d in h.edges(data=True)]
+        hp = where.project(pd.DataFrame(rows, columns=["employer", "metro", "filings"]), occupations)
+        louvain_seed = seed_for("jobs", control_name, draw_idx, "control_louvain", i)
+        qs.append(louvain(hp, louvain_seed)[1])
+    qs = np.array(qs)
+
     return {
         "Q": round(float(q), 4), "communities": len(clusters2),
         "nmi_seeds_median": round(nmi_seeds, 3),
         "nmi_vs_full": round(float(nmi_vs_full), 3),
         "nmi_soc_major": round(float(soc_nmi), 3) if soc_nmi is not None else None,
+        "null_mean": round(float(qs.mean()), 4), "null_sd": round(float(qs.std()), 4),
+        "z": round(float((q - qs.mean()) / qs.std()), 2), "null_runs": NULLS_CONTROL,
         "filings_removed_share": round(achieved / total_filings, 4),
     }
 
 
 def run_jobs_draws_parallel(pairs, occupations, major, full_member, total_filings,
-                             by_company, exclude, target, seed_base, n_draws, label_text):
+                             by_company, exclude, target, control_name, n_draws, label_text):
     totals = by_company[~by_company.index.isin(exclude)]
-    pool_ids = list(totals.index)
+    pool_ids = sorted(totals.index)  # sorted: set/dict order is per-process
     draws = []
     for i in range(n_draws):
-        r = random.Random(seed_base + i)
+        r = random.Random(seed_for("jobs", control_name, i, "compose"))
         order = pool_ids[:]
         r.shuffle(order)
         cum, chosen = 0, []
@@ -389,28 +441,30 @@ def run_jobs_draws_parallel(pairs, occupations, major, full_member, total_filing
         draws.append((set(chosen), cum))
     _set_globals(pairs=pairs, occupations=occupations, major=major, full_member=full_member,
                  total_filings=total_filings)
-    payload = [(seed_base + 10000 + i * 100, sorted(dropped), achieved)
+    payload = [(control_name, i, sorted(dropped), achieved)
                for i, (dropped, achieved) in enumerate(draws)]
     rows = []
     with mp.get_context("fork").Pool(processes=WORKERS) as pool:
         for done, res in enumerate(pool.imap(_jobs_draw_task, payload), 1):
             rows.append(res)
-            print(f"{label_text} draw {done}/{n_draws}: Q={res['Q']}", flush=True)
+            print(f"{label_text} draw {done}/{n_draws}: Q={res['Q']}, z={res['z']}", flush=True)
     return rows
 
 
 # --- part 1: metros ----------------------------------------------------------
 
-def named_metro_variant(pairs, keep, seed0, full_member, full_labels, regions, n_nulls, label_text):
+def named_metro_variant(pairs, keep, variant_id, full_member, full_labels, regions, n_nulls, label_text):
     g = project_vectorized(pairs, keep)
-    best, member, q, parts_list = modal_partition(g, seed0, RUNS)
+    seeds_run = [seed_for("metro", variant_id, None, "louvain_run", r) for r in range(RUNS)]
+    best, member, q, parts_list = modal_partition(g, seeds_run, RUNS)
     nodes = sorted(keep)
     nmi_seeds, labels_list = seed_nmi(parts_list, nodes)
     nmi_vs_full = nmi([full_member[n] for n in nodes], [member[n] for n in nodes]) if full_member else 1.0
     nmi_vs_full_runs = cross_nmi_median(labels_list, full_labels, nodes) if full_labels else nmi_seeds
     comm = [member[n] for n in nodes]
     region_labels = [regions[n] for n in nodes]
-    region_ami, region_p = shuffled_ami(comm, region_labels, seed0 + 777)
+    region_seed = seed_for("metro", variant_id, None, "region_shuffle")
+    region_ami, region_p = shuffled_ami(comm, region_labels, region_seed)
     region_nmi = nmi(comm, region_labels)
     result = {
         "Q": round(float(q), 4), "communities": len(best),
@@ -420,7 +474,8 @@ def named_metro_variant(pairs, keep, seed0, full_member, full_labels, regions, n
         "ami_region": round(float(region_ami), 3), "p_region": round(region_p, 4),
         "nmi_region": round(float(region_nmi), 3),
     }
-    nulls = run_metro_nulls_parallel(pairs, keep, seed0 + 1000, n_nulls, label_text)
+    null_seeds = [seed_for("metro", variant_id, None, "null", i) for i in range(n_nulls)]
+    nulls = run_metro_nulls_parallel(pairs, keep, null_seeds, label_text)
     result |= {"null_mean": round(float(nulls.mean()), 4), "null_sd": round(float(nulls.std()), 4),
                "z": round(float((q - nulls.mean()) / nulls.std()), 2), "null_runs": n_nulls}
     return result, member, labels_list
@@ -453,32 +508,32 @@ def run_metros():
     variants = []
 
     full_res, full_member, full_labels = named_metro_variant(
-        pairs, top, SEED, None, None, regions, NULLS_MAIN, "metro nulls (full)")
+        pairs, top, "full", None, None, regions, NULLS_MAIN, "metro nulls (full)")
     variants.append({"id": "full", "label": "Full network", "dropped": [], "control": False,
                       "filings_removed_share": 0.0, **full_res})
 
     pairs_b = pairs[~pairs["employer"].isin(shortlist)]
     res_b, _, _ = named_metro_variant(
-        pairs_b, top, SEED + 1, full_member, full_labels, regions, NULLS_MAIN, "metro nulls (drop shortlist)")
+        pairs_b, top, "drop_shortlist", full_member, full_labels, regions, NULLS_MAIN, "metro nulls (drop shortlist)")
     variants.append({"id": "drop_shortlist", "label": "Without the 5 largest placing firms",
                       "dropped": [resolver().label(e) for e in shortlist], "control": False,
                       "filings_removed_share": dropped_share(shortlist), **res_b})
 
     pairs_c = pairs[~pairs["employer"].isin(top10)]
     res_c, _, _ = named_metro_variant(
-        pairs_c, top, SEED + 2, full_member, full_labels, regions, NULLS_MAIN, "metro nulls (drop top10)")
+        pairs_c, top, "drop_top10_filings", full_member, full_labels, regions, NULLS_MAIN, "metro nulls (drop top10)")
     variants.append({"id": "drop_top10_filings", "label": "Without the 10 largest filers",
                       "dropped": [resolver().label(e) for e in top10], "control": False,
                       "filings_removed_share": dropped_share(top10), **res_c})
 
     target_b = int(by_employer[by_employer.index.isin(shortlist)].sum())
     target_c = int(by_employer[by_employer.index.isin(top10)].sum())
-    for name, exclude, target, seed_base in (
-            ("shortlist", set(shortlist), target_b, SEED + 100),
-            ("top10_filings", set(top10), target_c, SEED + 200)):
+    for name, exclude, target in (
+            ("shortlist", set(shortlist), target_b),
+            ("top10_filings", set(top10), target_c)):
         rows = run_metro_draws_parallel(
             pairs, top, full_member, full_labels, regions, total_in_top,
-            exclude, target, seed_base, DRAWS, f"metro control ({name})")
+            exclude, target, name, DRAWS, f"metro control ({name})")
         keys = ["Q", "communities", "nmi_seeds_median", "nmi_vs_full", "nmi_vs_full_runs_median",
                 "ami_region", "p_region", "nmi_region", "null_mean", "null_sd", "z",
                 "filings_removed_share"]
@@ -502,9 +557,10 @@ def jobs_pairs(frame):
             .rename(columns={"company": "employer", "occupation": "metro"}))
 
 
-def named_jobs_variant(pairs, occupations, major, seed0, full_member, n_nulls, label_text):
+def named_jobs_variant(pairs, occupations, major, variant_id, full_member, n_nulls, label_text):
     g = where.project(pairs, occupations)
-    best, member, q, parts_list = best_q_partition(g, seed0, RUNS)
+    seeds_run = [seed_for("jobs", variant_id, None, "louvain_run", r) for r in range(RUNS)]
+    best, member, q, parts_list = best_q_partition(g, seeds_run, RUNS)
     nmi_seeds, labels_list = seed_nmi(parts_list, occupations)
     nmi_vs_full = nmi([full_member[n] for n in occupations], [member[n] for n in occupations]) if full_member else 1.0
     clusters2 = [c for c in best if len(c) > 1]
@@ -516,7 +572,8 @@ def named_jobs_variant(pairs, occupations, major, seed0, full_member, n_nulls, l
         "nmi_vs_full": round(float(nmi_vs_full), 3),
         "nmi_soc_major": round(float(soc_nmi), 3) if soc_nmi is not None else None,
     }
-    nulls = run_jobs_nulls_parallel(pairs, occupations, seed0 + 2000, n_nulls, label_text)
+    null_seeds = [seed_for("jobs", variant_id, None, "null", i) for i in range(n_nulls)]
+    nulls = run_jobs_nulls_parallel(pairs, occupations, null_seeds, label_text)
     result |= {"null_mean": round(float(nulls.mean()), 4), "null_sd": round(float(nulls.std()), 4),
                "z": round(float((q - nulls.mean()) / nulls.std()), 2), "null_runs": n_nulls}
     return result, member, labels_list
@@ -555,19 +612,20 @@ def run_jobs():
     pairs = jobs_pairs(frame)
 
     variants = []
-    full_res, full_member, _ = named_jobs_variant(pairs, occupations, major, SEED + 10, None, 20, "jobs nulls (full)")
+    full_res, full_member, _ = named_jobs_variant(pairs, occupations, major, "full", None, NULLS_JOBS,
+                                                    "jobs nulls (full)")
     variants.append({"id": "full", "label": "Full network", "dropped": [], "control": False,
                       "filings_removed_share": 0.0, **full_res})
 
     pairs_b = pairs[~pairs["employer"].isin(shortlist)]
-    res_b, _, _ = named_jobs_variant(pairs_b, occupations, major, SEED + 11, full_member, 20,
+    res_b, _, _ = named_jobs_variant(pairs_b, occupations, major, "drop_shortlist", full_member, NULLS_JOBS,
                                       "jobs nulls (drop shortlist)")
     variants.append({"id": "drop_shortlist", "label": "Without the 5 largest placing firms",
                       "dropped": [resolver().label(e) for e in shortlist], "control": False,
                       "filings_removed_share": dropped_share(shortlist), **res_b})
 
     pairs_c = pairs[~pairs["employer"].isin(top10)]
-    res_c, _, _ = named_jobs_variant(pairs_c, occupations, major, SEED + 12, full_member, 20,
+    res_c, _, _ = named_jobs_variant(pairs_c, occupations, major, "drop_top10_filings", full_member, NULLS_JOBS,
                                       "jobs nulls (drop top10)")
     variants.append({"id": "drop_top10_filings", "label": "Without the 10 largest filers",
                       "dropped": [resolver().label(e) for e in top10], "control": False,
@@ -575,13 +633,14 @@ def run_jobs():
 
     target_b = int(by_company[by_company.index.isin(shortlist)].sum())
     target_c = int(by_company[by_company.index.isin(top10)].sum())
-    for name, exclude, target, seed_base in (
-            ("shortlist", set(shortlist), target_b, SEED + 300),
-            ("top10_filings", set(top10), target_c, SEED + 400)):
+    for name, exclude, target in (
+            ("shortlist", set(shortlist), target_b),
+            ("top10_filings", set(top10), target_c)):
         rows = run_jobs_draws_parallel(pairs, occupations, major, full_member, total_filings,
-                                        by_company, exclude, target, seed_base, DRAWS,
+                                        by_company, exclude, target, name, DRAWS,
                                         f"jobs control ({name})")
-        keys = ["Q", "communities", "nmi_seeds_median", "nmi_vs_full", "nmi_soc_major", "filings_removed_share"]
+        keys = ["Q", "communities", "nmi_seeds_median", "nmi_vs_full", "nmi_soc_major",
+                "null_mean", "null_sd", "z", "filings_removed_share"]
         summary = summarise_draws(rows, keys)
         variants.append({"id": f"control_{name}", "label": f"Volume-matched random drop (like {name})",
                           "dropped": [], "control": True, "draws": DRAWS, **summary})
@@ -601,6 +660,38 @@ def find(variants, vid):
     return next(v for v in variants if v["id"] == vid)
 
 
+def vs_control_sd(named, control_mean, control_sd):
+    """(named - control mean) / control sd; None if any input is missing or
+    the control sd is zero (nothing to divide by)."""
+    if named is None or control_mean is None or not control_sd:
+        return None
+    return round(float((named - control_mean) / control_sd), 2)
+
+
+def drop_vs_control(named, control, region_key=False):
+    """z-scores of a named drop's NMI-vs-full and (where available) Q's z and
+    (metros only) AMI-vs-region against the matched controls' own mean and sd
+    for that metric -- the controls' spread sets what "about as well as a
+    random cut this size" means, rather than a fixed tolerance."""
+    out = {
+        "nmi_vs_control_sd": vs_control_sd(named.get("nmi_vs_full"), control.get("nmi_vs_full"),
+                                            control.get("nmi_vs_full_sd")),
+        "z_vs_control_sd": vs_control_sd(named.get("z"), control.get("z"), control.get("z_sd")),
+    }
+    if region_key:
+        out["ami_region_vs_control_sd"] = vs_control_sd(named.get("ami_region"), control.get("ami_region"),
+                                                          control.get("ami_region_sd"))
+    return out
+
+
+def survives(vs_control):
+    """A drop 'survives' when every vs-control z-score available for it is
+    within 2 sd of the matched controls' spread. A drop with no comparable
+    metric available never passes by default."""
+    vals = [v for v in vs_control.values() if v is not None]
+    return bool(vals) and all(abs(v) < 2 for v in vals)
+
+
 def finding(metros, jobs_res):
     m = metros["variants"]
     j = jobs_res["variants"]
@@ -608,44 +699,38 @@ def finding(metros, jobs_res):
     def get(variants, vid, key):
         return find(variants, vid).get(key)
 
-    def survives(named_z, control_z, named_nmi, control_nmi):
-        # "About as well" as the matched random drop: z doesn't fall further
-        # below the control's z than the control itself sits below the full
-        # network's, and the partition stays at least as similar to the full one.
-        z_ok = (named_z is None or control_z is None) or (named_z >= control_z - 1.0)
-        nmi_ok = (named_nmi is None or control_nmi is None) or (named_nmi >= control_nmi - 0.1)
-        return bool(z_ok and nmi_ok)
+    m_shortlist, m_top10 = find(m, "drop_shortlist"), find(m, "drop_top10_filings")
+    m_control_shortlist, m_control_top10 = find(m, "control_shortlist"), find(m, "control_top10_filings")
+    m_shortlist_vs = drop_vs_control(m_shortlist, m_control_shortlist, region_key=True)
+    m_top10_vs = drop_vs_control(m_top10, m_control_top10, region_key=True)
+    metros_answer_no = survives(m_shortlist_vs) and survives(m_top10_vs)
 
-    shortlist_z, top10_z = get(m, "drop_shortlist", "z"), get(m, "drop_top10_filings", "z")
-    control_shortlist_z, control_top10_z = get(m, "control_shortlist", "z"), get(m, "control_top10_filings", "z")
-    shortlist_nmi, top10_nmi = get(m, "drop_shortlist", "nmi_vs_full"), get(m, "drop_top10_filings", "nmi_vs_full")
-    control_shortlist_nmi = get(m, "control_shortlist", "nmi_vs_full")
-    control_top10_nmi = get(m, "control_top10_filings", "nmi_vs_full")
-    metros_answer_no = (survives(shortlist_z, control_shortlist_z, shortlist_nmi, control_shortlist_nmi)
-                        and survives(top10_z, control_top10_z, top10_nmi, control_top10_nmi))
-
-    jf_shortlist_z, jf_top10_z = get(j, "drop_shortlist", "z"), get(j, "drop_top10_filings", "z")
-    jf_control_shortlist_z = get(j, "control_shortlist", "z")
-    jf_control_top10_z = get(j, "control_top10_filings", "z")
-    jf_shortlist_nmi, jf_top10_nmi = get(j, "drop_shortlist", "nmi_vs_full"), get(j, "drop_top10_filings", "nmi_vs_full")
-    jf_control_shortlist_nmi = get(j, "control_shortlist", "nmi_vs_full")
-    jf_control_top10_nmi = get(j, "control_top10_filings", "nmi_vs_full")
-    jobs_answer_no = (survives(jf_shortlist_z, jf_control_shortlist_z, jf_shortlist_nmi, jf_control_shortlist_nmi)
-                      and survives(jf_top10_z, jf_control_top10_z, jf_top10_nmi, jf_control_top10_nmi))
+    j_shortlist, j_top10 = find(j, "drop_shortlist"), find(j, "drop_top10_filings")
+    j_control_shortlist, j_control_top10 = find(j, "control_shortlist"), find(j, "control_top10_filings")
+    j_shortlist_vs = drop_vs_control(j_shortlist, j_control_shortlist)
+    j_top10_vs = drop_vs_control(j_top10, j_control_top10)
+    jobs_answer_no = survives(j_shortlist_vs) and survives(j_top10_vs)
 
     return {
         "question": "Is the map just a few companies' footprints?",
         "metros": {
-            "full_z": get(m, "full", "z"), "drop_shortlist_z": shortlist_z, "drop_top10_z": top10_z,
-            "control_shortlist_z": control_shortlist_z, "control_top10_z": control_top10_z,
-            "drop_shortlist_nmi_vs_full": shortlist_nmi, "drop_top10_nmi_vs_full": top10_nmi,
-            "control_shortlist_nmi_vs_full": control_shortlist_nmi, "control_top10_nmi_vs_full": control_top10_nmi,
+            "full_z": get(m, "full", "z"),
+            "drop_shortlist_z": m_shortlist.get("z"), "drop_top10_z": m_top10.get("z"),
+            "control_shortlist_z": m_control_shortlist.get("z"), "control_top10_z": m_control_top10.get("z"),
+            "drop_shortlist_nmi_vs_full": m_shortlist.get("nmi_vs_full"),
+            "drop_top10_nmi_vs_full": m_top10.get("nmi_vs_full"),
+            "control_shortlist_nmi_vs_full": m_control_shortlist.get("nmi_vs_full"),
+            "control_top10_nmi_vs_full": m_control_top10.get("nmi_vs_full"),
+            "drop_shortlist_vs_control": m_shortlist_vs, "drop_top10_vs_control": m_top10_vs,
             "answer_no_not_just_their_footprint": metros_answer_no,
         },
         "jobs": {
-            "full_z": get(j, "full", "z"), "drop_shortlist_z": jf_shortlist_z, "drop_top10_z": jf_top10_z,
-            "control_shortlist_z": jf_control_shortlist_z, "control_top10_z": jf_control_top10_z,
-            "drop_shortlist_nmi_vs_full": jf_shortlist_nmi, "drop_top10_nmi_vs_full": jf_top10_nmi,
+            "full_z": get(j, "full", "z"),
+            "drop_shortlist_z": j_shortlist.get("z"), "drop_top10_z": j_top10.get("z"),
+            "control_shortlist_z": j_control_shortlist.get("z"), "control_top10_z": j_control_top10.get("z"),
+            "drop_shortlist_nmi_vs_full": j_shortlist.get("nmi_vs_full"),
+            "drop_top10_nmi_vs_full": j_top10.get("nmi_vs_full"),
+            "drop_shortlist_vs_control": j_shortlist_vs, "drop_top10_vs_control": j_top10_vs,
             "answer_no_not_just_their_footprint": jobs_answer_no,
             "caveat": "the company-count projection cannot show this at all (see jobs.structurally_"
                       "uninformative_check); this uses the filings-weighted reprojection instead",
@@ -672,9 +757,11 @@ def page_variant(v, region_key=False, soc_key=False):
 
 def main():
     started = time.time()
-    print(f"Expected runtime with {WORKERS} parallel workers: about 8-12 minutes "
-          f"(metro nulls: {NULLS_MAIN} x 3 named variants + {NULLS_CONTROL} x {DRAWS} x 2 control sets, "
-          f"nulls and draws run in a forked process pool; jobs nulls: 20 x 3; loading FY2025 data ~20s).",
+    print(f"Expected runtime with {WORKERS} parallel workers: about 11-17 minutes "
+          f"(metro nulls: {NULLS_MAIN} x 3 named variants + {NULLS_CONTROL} x {DRAWS} x 2 control sets; "
+          f"jobs nulls: {NULLS_JOBS} x 3 named variants + {NULLS_CONTROL} x {DRAWS} x 2 control sets "
+          f"(new: control draws now get their own null too); "
+          f"nulls and draws run in a forked process pool; loading FY2025 data ~20s).",
           flush=True)
 
     metros_res = run_metros()
