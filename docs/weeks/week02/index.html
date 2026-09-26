@@ -248,6 +248,12 @@
             nine of those maps lost at least five articles when Spider-Man was
             removed. Its particular connections matter.
           </p>
+          <h3>What surprised us</h3>
+          <p>
+            Black Widow has 25 links, far fewer than Hulk's 65, yet removing
+            Black Widow strands 3 articles while removing Hulk strands none.
+            Link count alone does not predict which station is a bridge.
+          </p>
         </div>
         <figure>
           <img
@@ -282,14 +288,15 @@
           Charts, data and methods for anyone who wants to check the details.
         </p>
         <div class="companion-callout">
-          <h3>Missing three models? Play Screen Test.</h3>
+          <h3>Missing two more models? Play Screen Test.</h3>
           <p>
-            This post covers shuffling, the friendship paradox and
-            clustering. The week's other three models &mdash; Erd&odblac;s&ndash;R&eacute;nyi
-            random graphs, Watts&ndash;Strogatz and Barab&aacute;si&ndash;Albert
-            &mdash; get their own piece: three candidates audition against the
-            Marvel network, and only one measurement says which properties
-            survive.
+            This post covers the degree-preserving shuffle, the
+            Erd&odblac;s&ndash;R&eacute;nyi random graph, the friendship
+            paradox and clustering, and compares path length against both
+            nulls. Screen Test adds two more candidates, Watts&ndash;Strogatz
+            and Barab&aacute;si&ndash;Albert, and the degree tail: three
+            mechanisms audition against the Marvel network, and only one
+            measurement says which properties survive.
           </p>
           <a href="../../prototypes/screen-test/">Play Screen Test &#8599;</a>
         </div>
@@ -310,7 +317,13 @@
               is not the finding; its excess over a suitable baseline is.
             </p>
             <figure class="baseline">
-              <figcaption>Average clustering · all 303 articles</figcaption>
+              <figcaption>
+                Average clustering · all 303 articles. Each bar is a mean
+                clustering value; compare the observed bar's length with the
+                two null-model bars below it to see how much of the
+                clustering survives once degree or link count alone is held
+                fixed.
+              </figcaption>
               <div>
                 <span>Observed</span
                 ><meter aria-label="Observed" max="0.35" min="0" value="0.307">
@@ -624,12 +637,18 @@
               </p>
               <p>
                 Part of that gap is the shuffle merging islands into the
-                giant: its giant component averages about 286 nodes against
-                the real 277, and the Morituri island merges into it in about
-                962 of 1,000 draws. A like-for-like check that holds the
-                population fixed instead, shuffling only the 277-article core
-                used in Screen Test, gives 2.674 against a null mean of 2.601
-                (z = +5.2).
+                giant. Swaps cannot link the 17 isolates, since a degree-zero
+                article stays degree zero, which leaves 286 linked articles
+                (303 minus 17). In all 1,000 draws those 286 land in a single
+                component: the nine-character Morituri island is absorbed
+                every time. In 962 draws the giant is exactly those 286
+                nodes; in the other 38, an unrelated two-article pair happens
+                to split off elsewhere, leaving a giant of 284. A
+                like-for-like check that holds the population fixed instead,
+                shuffling only the 277-article core used in Screen Test,
+                gives 2.674 against a null mean of 2.601 (z = +5.2, from 400
+                shuffles at 10 swaps per link, fewer than the 1,000 draws at
+                20 swaps per link used elsewhere on this page).
               </p>
               <p>
                 Clustering is 0.307 versus a shuffle mean of 0.143 (sd 0.008);
@@ -649,11 +668,16 @@
               <p>
                 The observed 19 components compare with 18.04 under
                 degree-preserving rewiring (p = 0.039) and about 1.02 under G(n,
-                m) (z = +131.6). The shuffle retains the 17 isolates. The
-                nine-character Morituri island is usually absorbed into the
-                giant component: the largest component averages 285.9 nodes
-                versus the observed 277 (z = −23.3). Treat the component-count
-                p-value as exploratory.
+                m) (z = +131.6). The shuffle retains the 17 isolates, and it
+                absorbs the nine-character Morituri island into the giant
+                component in every one of the 1,000 draws: the largest
+                component averages 285.9 nodes versus the observed 277
+                (z = −23.3). The draws that reach 19 components (38 of 1,000)
+                do so because a different, unrelated pair of articles splits
+                off elsewhere, not because the shuffle keeps the Morituri
+                island separate. Treat the component-count p-value as
+                exploratory: matching the real count of 19 does not mean the
+                null reproduces the island structure.
               </p>
               <div class="note">
                 <h3>Clustering, with its baseline</h3>
@@ -690,6 +714,17 @@
                 24.19 (z = +0.1, p = 0.47). This quantity can change with
                 rewiring. The edge-sampled mean, ⟨k²⟩/⟨k⟩ = 22.08, is different:
                 it depends only on degrees and is exactly preserved.
+              </p>
+              <p>
+                The paradox itself follows from the degree sequence alone:
+                scrambling who links to whom leaves the average friend's
+                degree at 24.19, almost exactly the observed 24.22. Its
+                per-character form tells a different story. The share of
+                linked articles whose random friend is at least as linked as
+                they are is 75.3% in the real network against a shuffle mean
+                of 76.3% (z = −3.5) &mdash; below every one of the 1,000 draws.
+                By this measure Marvel is slightly less paradoxical than
+                degree-preserving rewiring predicts.
               </p>
               <p>
                 It does not need hubs to exist, only variance. Under random G(n,
@@ -875,16 +910,6 @@
               never edited.
             </p>
           </details>
-          <details>
-            <summary>AI use and authorship</summary>
-            <p>
-              Built with AI assistance for interface design, programming,
-              explanation drafts and test construction. Metrics come from the
-              provided snapshot and reproducible analysis; the games and
-              metaphors are authored presentation choices. Numerical checks
-              compare independent Python and browser implementations.
-            </p>
-          </details>
           <p class="downloads">
             <a download="" href="../../assets/data/week02_all_removals.csv"
               >All 277 removals (CSV)</a
@@ -893,6 +918,16 @@
             <a download="" href="../../assets/data/week02_nullmodels.json"
               >Shuffle-test table (JSON)</a
             >
+          </p>
+        </details>
+        <details id="ai-disclosure">
+          <summary>AI use and authorship</summary>
+          <p>
+            Built with AI assistance for interface design, programming,
+            explanation drafts and test construction. Metrics come from the
+            provided snapshot and reproducible analysis; the games and
+            metaphors are authored presentation choices. Numerical checks
+            compare independent Python and browser implementations.
           </p>
         </details>
       </section>

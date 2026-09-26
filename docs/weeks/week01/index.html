@@ -51,9 +51,9 @@
           </div>
           <p class="story-scope">
             We turned 303 Wikipedia articles about Marvel superheroes into
-            cards. A link is a reference from one of these pages to another. The
-            cards use those reference counts; they do not rank the characters’
-            strength.
+            cards. A link is a reference from one of these pages to another,
+            not a sign of friendship or fame. The cards use those reference
+            counts; they do not rank the characters’ strength.
           </p>
           <details class="post-primer">
             <summary>The dataset and a few useful terms</summary>
@@ -68,7 +68,11 @@
               <dd>
                 If Spider-Man’s page links to Hulk’s, that is one outgoing link
                 for Spider-Man and one incoming link for Hulk. Hulk need not
-                link back.
+                link back. Counting direction, there are 1,784 links;
+                ignoring it, they join 1,434 distinct pairs of articles,
+                since 350 pairs link both ways. Every link has one sender and
+                one receiver, so the average in-degree and the average
+                out-degree are equal: 5.89 links per article.
               </dd>
               <dt>Degree</dt>
               <dd>
@@ -243,6 +247,53 @@
             </p>
           </figure>
         </details>
+        <div class="two-col">
+          <div>
+            <h3>What we asked</h3>
+            <p>
+              Which articles get linked to, which ones do the linking, and
+              who is left out entirely? And how much longer does a
+              collection take when a card's odds follow its incoming links
+              instead of being equal?
+            </p>
+            <h3>What we did</h3>
+            <p>
+              We loaded all 303 roster entries before adding a single edge,
+              so the 17 isolates survive. Then we plotted in-degree and
+              out-degree on linear and log–log axes, drew the whole roster
+              to find what sits outside the giant component, and built a
+              five-card pack rule where each draw picks an article with
+              weight (incoming links + 1) / 2,087. Finally we asked
+              Wikipedia's API to re-derive three articles' out-links and
+              checked them against the snapshot.
+            </p>
+          </div>
+          <div>
+            <h3>What surprised us</h3>
+            <p>
+              The articles that link out most are not the ones that get
+              linked to most: Betsy Braddock links out to 28 articles but
+              only 7 link back to her, while Spider-Man alone is linked by
+              106. A second surprise was structural: a nine-character
+              island from a single series,
+              <a href="https://en.wikipedia.org/wiki/Strikeforce:_Morituri"
+                >Strikeforce: Morituri</a
+              >
+              (Marvel, 1986–1989), that cites itself 22 times and the rest
+              of the roster never.
+            </p>
+            <p>
+              Under our rule the hubs are the easy cards by construction: a
+              card's odds grow with its incoming links, so those same 106
+              links make Spider-Man common while 58 articles, including all
+              17 isolates, share the lowest drop rate. Finishing the set
+              takes about 1,945 packs on average, about five times the 382
+              packs it would take if every card had equal odds: the rare
+              cards set the pace, honestly reflecting a rule we chose, not a
+              measure of fame.
+            </p>
+          </div>
+        </div>
       </section>
       <section class="section" id="results">
         <p class="eyebrow">THE TAKEAWAY</p>
@@ -293,8 +344,11 @@
               />
               <figcaption>
                 All 303 articles. The horizontal quantity is degree + 1 so
-                zero-degree articles stay visible on log axes. Visual
-                straightness alone does not establish a power law.
+                zero-degree articles stay visible on log axes. On linear axes,
+                the long in-degree tail flattens against zero; log–log axes
+                spread it over about two decades, so the few hubs are
+                visible. Visual straightness alone does not establish a power
+                law.
               </figcaption>
             </figure>
           </details>
@@ -309,48 +363,6 @@
               <h2 id="degree-evidence-title">
                 Who gets linked, and who does the linking?
               </h2>
-              <div class="two-col">
-                <div>
-                  <h3>What we asked</h3>
-                  <p>
-                    Which articles get linked to, which ones do the linking, and
-                    who is left out entirely? And how much longer does a
-                    collection take when a card's odds follow its incoming links
-                    instead of being equal?
-                  </p>
-                  <h3>What we did</h3>
-                  <p>
-                    We loaded all 303 roster entries before adding a single
-                    edge, so the 17 isolates survive. Then we plotted in-degree
-                    and out-degree on linear and log–log axes, drew the whole
-                    roster to find what sits outside the giant component, and
-                    built a five-card pack rule where each draw picks an article
-                    with weight (incoming links + 1) / 2,087. Finally we asked
-                    Wikipedia's API to re-derive three articles' out-links and
-                    checked them against the snapshot.
-                  </p>
-                </div>
-                <div>
-                  <h3>What surprised us</h3>
-                  <p>
-                    Under our rule the hubs are the easy cards by construction:
-                    a card's odds grow with its incoming links. Spider-Man alone
-                    is linked by 106 articles, while 58 articles share the
-                    lowest drop rate, including all 17 isolates. Finishing the
-                    set takes about 1,945 packs on average, about five times the
-                    382 packs it would take if every card had equal odds: the
-                    rare cards set the pace. The finding about the data itself
-                    is different: the articles that link out most (Betsy
-                    Braddock, 28 outgoing links) are not the ones that get
-                    linked to most.
-                  </p>
-                  <p>
-                    The other surprise was structural: a nine-character island
-                    from a single 1986 series that cites itself 22 times and the
-                    rest of the roster never.
-                  </p>
-                </div>
-              </div>
               <details>
                 <summary>In-degree against out-degree</summary>
                 <figure>
@@ -484,8 +496,9 @@
               </figure>
               <h3>The islands outside the giant component</h3>
               <p>
-                The nine-article island is a single 1986 limited series,
-                <em>Strikeforce: Morituri</em>. Its characters cite each other
+                The nine-article island is a single series,
+                <em>Strikeforce: Morituri</em> (Marvel, 1986–1989). Its
+                characters cite each other
                 22 times and never once cite anyone else in the roster — and
                 nobody else cites them. That is the shape a self-contained
                 corner of a canon makes in a link network: not a weak connection
@@ -549,8 +562,8 @@
               <div class="chart-key">
                 <span><i class="swatch"></i>Share of all 303 articles</span
                 ><span
-                  ><i class="swatch alt"></i>Your weighted draws (after 20
-                  cards)</span
+                  ><i class="swatch alt"></i>Your weighted draws (shown once
+                  you have drawn 20 cards)</span
                 >
               </div>
               <p class="fine">
@@ -688,18 +701,16 @@
               never edited.
             </p>
           </details>
-          <details>
-            <summary>AI use and authorship</summary>
-            <p>
-              Built with AI assistance for interface design, programming,
-              explanation drafts and test construction. Metrics come from the
-              provided snapshot and reproducible analysis; the games and
-              metaphors are authored presentation choices. Tests check the
-              browser's collection model against exact enumeration and the
-              page's numbers against the analysis output.
-            </p>
-          </details>
         </details>
+        <h3>AI use and authorship</h3>
+        <p>
+          Built with AI assistance for interface design, programming,
+          explanation drafts and test construction. Metrics come from the
+          provided snapshot and reproducible analysis; the games and
+          metaphors are authored presentation choices. Tests check the
+          browser's collection model against exact enumeration and the
+          page's numbers against the analysis output.
+        </p>
       </section>
     </main>
     <footer class="wrap footer">

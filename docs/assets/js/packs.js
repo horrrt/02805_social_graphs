@@ -130,8 +130,17 @@ try {
     if (insight) {
       const distinct = Object.keys(counts).length,
         repeats = pulls - distinct;
+      const baseline = pulls
+        ? ` On average, ${pulls} draws would find about ${expectedDistinct(
+            data.nodes.map(() => 1 / data.nodes.length),
+            pulls,
+          ).toFixed(1)} different cards under equal odds, or about ${expectedDistinct(
+            packs.cards.map((c) => c.probability),
+            pulls,
+          ).toFixed(1)} under our weighted rule.`
+        : "";
       insight.textContent = pulls
-        ? `Your ${pulls} draws found ${distinct} different ${distinct === 1 ? "card" : "cards"} and ${repeats} ${repeats === 1 ? "repeat" : "repeats"}. ${pulls < 20 ? "A few packs can vary a lot. Try more, then compare the two draw rules below." : "This is one collection, not an average. Compare the two draw rules below to see the longer-term effect."}`
+        ? `Your ${pulls} draws found ${distinct} different ${distinct === 1 ? "card" : "cards"} and ${repeats} ${repeats === 1 ? "repeat" : "repeats"}.${baseline} ${pulls < 20 ? "A few packs can vary a lot. Try more, then compare the two draw rules below." : "This is one collection, not an average. Compare the two draw rules below to see the longer-term effect."}`
         : "Watch how many cards are new and how many repeat. You do not need to finish the collection to see the idea.";
     }
     $("#unique-count").textContent = `${Object.keys(counts).length} / ${N}`;

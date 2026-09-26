@@ -63,6 +63,11 @@
             <p class="caution">
               Thick corridors are not friendship. They are people.
             </p>
+            <p class="body" id="question">
+              <b>What we asked:</b> which countries broker global migration
+              and asylum, and is that the same as which countries simply
+              have the most people moving through them?
+            </p>
             <div class="keys">
               <span class="key people"><i></i> Migration (people)</span>
               <span class="key access"><i></i> Flights (access)</span>
@@ -311,6 +316,13 @@
                   corridor is a short step. Click any point to select that
                   country; every chart and panel on the page follows.
                 </p>
+                <p class="axis-note">
+                  A "path" here is a chain of migrant-stock corridors, A to B
+                  to C, not a route anyone travels. Betweenness counts how
+                  often a country sits on the strongest such chains linking
+                  other countries: a structural position in the stock
+                  network, not a measure of people passing through.
+                </p>
                 <p class="axis-note" id="between-note"></p>
                 <div class="legend">
                   <span><i style="background: #f2820c"></i> Migration</span>
@@ -347,6 +359,12 @@
             <div class="grid-side" style="margin-top: 22px">
               <div class="plot">
                 <h3>Big ≠ prestigious: rank by people, rank by PageRank</h3>
+                <p class="axis-note">
+                  PageRank on the weighted migration graph, damping factor
+                  α = 0.85: a country's score is mostly what its senders hand
+                  it, and only a small constant share comes from anywhere at
+                  random.
+                </p>
                 <p class="axis-note" id="prestige-note"></p>
                 <div class="legend">
                   <span><i style="background: #f2820c"></i> Rises on PageRank</span>
@@ -397,15 +415,20 @@
             </div>
             <p class="sub">
               <b>10 countries out of 232 broker more than their number of
-              partners can explain.</b> That takes both a z of 2 or more
-              against the null and excess betweenness above a twentieth of
-              the leader's (the United States). Either test alone is looser:
-              12 countries clear z = 2 on its own, but two of them, Guam and
-              Réunion, do it on an excess so small it is noise around a
-              near-zero base, which is what the second test catches. The
-              rest sit inside what a shuffled network produces, which is why
-              the scatter carries a null model beside it rather than a
-              ranking.
+              partners predicts when the corridor sizes are dealt out at
+              random.</b> That takes both a z of 2 or more against the null
+              and excess betweenness above a twentieth of the leader's (the
+              United States). Either test alone is looser: 12 countries
+              clear z = 2 on its own, but two of them, Guam and Réunion, do
+              it on an excess so small it is noise around a near-zero base,
+              which is what the second test catches. The rest sit inside
+              what a shuffled network produces, which is why the scatter
+              carries a null model beside it rather than a ranking. The null
+              keeps each country's number of partners fixed but not its
+              total corridor weight, so a country with large corridors can
+              still score high partly because of their size: 7 of the top
+              10 by z sit at or above the 86th percentile of mean corridor
+              weight.
             </p>
             <p class="sub">
               The null-model scatter and the twin map share the same country
@@ -434,8 +457,11 @@
                     <span>
                       <b>What to notice</b>
                       The z-score says how surprising a country's betweenness is
-                      once its number of partners is held fixed. Above +2 is a
-                      broker the degree sequence cannot explain. Read a zero
+                      once its number of partners is held fixed and the
+                      corridor sizes are dealt out at random. Above +2 is
+                      more brokering than that fixed partner count predicts,
+                      though a country with large corridors can still land
+                      there partly because of their size. Read a zero
                       carefully: half the countries here broker nothing in the
                       real network and nothing in the shuffles either, so their
                       z sits near zero because there is nothing to be surprised
@@ -522,11 +548,13 @@
               <span class="year-tag" id="typology-tag"></span>
             </div>
             <p class="sub">
-              <b>54 countries changed the part they play between 1990 and
-              2024.</b> Venezuela and Ukraine both moved from peripheral to
-              provincial hub: large inside one community, barely present in the
-              others. The chart below gives every country two coordinates, and
-              the year slider moves them.
+              <b>42 countries changed the part they play between 1990 and
+              2024.</b> Venezuela moved from peripheral to provincial hub:
+              large inside one community, barely present in the others.
+              Colombia moved from ultra-peripheral to peripheral, keeping
+              most of its corridors inside one community but gaining a few
+              outside it. The chart below gives every country two
+              coordinates, and the year slider moves them.
             </p>
             <p class="sub">
               Section 8 splits the world into communities once, with a single
@@ -832,9 +860,12 @@
               have the population and income data gravity needs. PPML keeps
               those zeros deliberately (see below). Counts rather than
               log counts, because logging drops every corridor carrying
-              nobody and biases the rest. Each coefficient is an elasticity:
-              a one per cent rise in the term moves the corridor by that many
-              per cent. Intervals are the heteroskedasticity-robust
+              nobody and biases the rest. Each distance and population
+              coefficient is an elasticity: a one per cent rise in the term
+              moves the corridor by that many per cent. The under-1,000 km
+              term is a yes/no shift, not an elasticity: it moves the
+              corridor by a fixed share when the two centres are that close.
+              Intervals are the heteroskedasticity-robust
               sandwich the method calls for, which statsmodels fits directly
               and scikit-learn could not report at all.
             </p>
@@ -988,7 +1019,7 @@
               nothing here identifies a cause: a corridor thirty times over
               its prediction is a corridor worth explaining, not an
               explanation. The fit reaches R² 0.45 across the range of the
-              data and 0.19 on the raw counts, where a handful of enormous
+              data and 0.17 on the raw counts, where a handful of enormous
               corridors dominate.
             </p>
             <p class="fineprint">
@@ -1098,8 +1129,7 @@
                 and Louvain still returns 0.521 on average.
                 12 of the
                 100 shuffles score at or above the real
-                network, which is z = +1.1, and 12 of 100 shuffles match or
-                beat it: no evidence either way. Louvain finds communities in noise, so
+                network, which is z = +1.1: no evidence either way. Louvain finds communities in noise, so
                 the number on its own was never going to say much. This one
                 seeded run is one draw from Louvain's own randomness too: 100
                 more seeds give nine groups 56 times out of 100 and this exact
@@ -1128,21 +1158,35 @@
               <tr><td>Corridors</td><td style="text-align: right">9,035</td><td style="text-align: right">4,792</td></tr>
               <tr><td>People</td><td style="text-align: right">282m</td><td style="text-align: right">31m</td></tr>
               <tr><td>Reciprocity</td><td style="text-align: right">0.41</td><td style="text-align: right">0.11</td></tr>
-              <tr><td>Clustering</td><td style="text-align: right">0.71</td><td style="text-align: right">0.60</td></tr>
-              <tr><td>Degree assortativity</td><td style="text-align: right">-0.26</td><td style="text-align: right">-0.34</td></tr>
+              <tr><td>Clustering</td><td style="text-align: right">0.71 (null 0.67 ± 0.002, z = +17.2)</td><td style="text-align: right">0.60 (null 0.61 ± 0.004, z = −4.1)</td></tr>
+              <tr><td>Degree assortativity</td><td style="text-align: right">−0.26 (null −0.33 ± 0.003, z = +22.0)</td><td style="text-align: right">−0.34 (null −0.31 ± 0.004, z = −8.7)</td></tr>
+              <tr><td>Average distance</td><td style="text-align: right">1.75 (null 1.73 ± 0.001, z = +8.1)</td><td style="text-align: right">1.87 (null 1.84 ± 0.009, z = +3.2)</td></tr>
+              <tr><td>Diameter</td><td style="text-align: right">3 (null 3, no spread)</td><td style="text-align: right">4 (null 3.94 ± 0.237, z = +0.3)</td></tr>
+              <tr><td>Largest clique</td><td style="text-align: right">43 (null 27.31 ± 1.172, z = +13.4)</td><td style="text-align: right">20 (null 21.10 ± 0.985, z = −1.1)</td></tr>
             </table>
+            <p class="sub">
+              Clustering, assortativity, average distance, diameter and the
+              largest clique are all computed on the undirected, unweighted
+              core: whether two countries share any corridor, not how many
+              people or how many corridors. The null is 100 degree-preserving
+              double-edge-swap shuffles of that same core, from
+              <code>analysis/week03_country_networks.py</code>; z is (real −
+              null mean) / null standard deviation. The migrant network's
+              diameter never moved across 100 shuffles, so it has no z to
+              report.
+            </p>
             <div class="notice">
               <span class="ico">💡</span>
               <span>
                 <b>Of the fifteen biggest destinations in each network,
-                only four appear in both: Germany, France, Iran, Turkey.</b>
+                only four appear in both: Germany, France, Jordan, Turkey.</b>
                 Comparing 0.41 against 0.11 the way the table does is unfair
                 to the smaller network, because reciprocity rises with
                 density on its own: in a directed graph wired at random, the
                 share of arcs whose reverse also exists is just the density.
                 Against that baseline migration is reciprocal
-                <b>2.4×</b> more than chance, and displacement is
-                <b>0.9×</b>, which is to say not at all. People who move for
+                <strong>2.4×</strong> more than chance, and displacement is
+                <strong>0.9×</strong>, which is to say not at all. People who move for
                 work come and go; people who flee do not go back down the
                 same edge, and the refugee network is no more two-way than a
                 random graph of its size would be. The eleven destinations that are refugee-only are
@@ -1151,6 +1195,29 @@
                 top fifteen.
               </span>
             </div>
+            <details class="qa" id="cliques">
+              <summary>The two largest cliques, by name</summary>
+              <p class="sub">
+                <b>Migrants (43 countries):</b> Argentina, Australia,
+                Austria, Belgium, Bolivia, Brazil, Bulgaria, Canada, Chile,
+                Colombia, Costa Rica, Croatia, Cyprus, Denmark, Estonia,
+                Finland, France, Germany, Greece, Hungary, Iceland, Israel,
+                Italy, Kingdom of the Netherlands, Latvia, Lithuania,
+                Luxembourg, Mexico, Norway, People's Republic of China,
+                Peru, Poland, Portugal, Romania, Russia, Slovakia, Slovenia,
+                South Africa, Spain, Switzerland, United Kingdom, United
+                States, Venezuela: every pair among them shares at least one
+                migration corridor in either direction.
+              </p>
+              <p class="sub">
+                <b>Refugees (20 countries):</b> Brazil, Canada, Egypt,
+                Eritrea, Ethiopia, Germany, Iraq, Italy, Ivory Coast, Kingdom
+                of the Netherlands, Lebanon, Morocco, Norway, Somalia,
+                Sudan, Sweden, Syria, United Kingdom, United States, Yemen: a
+                mix of asylum countries and the origins that send them
+                refugees, each pair connected by a corridor.
+              </p>
+            </details>
 
             <table class="ego">
               <tr>
@@ -1283,6 +1350,23 @@
                 path.
               </span>
             </div>
+          </div>
+
+          <div class="card" id="surprise">
+            <h3>What surprised us</h3>
+            <p class="sub">
+              Betweenness on the raw, unweighted matrix does not rank
+              countries at all: it ranks statistics offices. Australia,
+              Norway and Denmark top it at a corridor floor of zero because
+              their population registers name every origin however small, so
+              hundreds of one-person corridors count as paths that a
+              survey-based country would never report. Raise the floor and
+              all three vanish. Big ≠ prestigious carried the same lesson a
+              different way: a country's PageRank tracks who sends it people
+              far more closely than it tracks how many people it holds in
+              total, so size and structural importance are not the same
+              question.
+            </p>
           </div>
 
           <div class="card" id="more">
@@ -1536,7 +1620,7 @@
                       tails had been fitted above the wrong cut. Destinations
                       per origin is the one that changes its mind: it used to
                       read p = 0.88, a power law surviving comfortably, and it
-                      reads 0.06.
+                      reads 0.03.
                     </p>
                     <p class="sub">
                       <b>Which countries, and how many.</b> Six different
@@ -1668,10 +1752,12 @@
                       then <code>_tails</code>, <code>_gravity</code>,
                       <code>_communities</code>, <code>_country_networks</code>,
                       <code>_asylum</code> and <code>_closures</code>.
-                      The prose is typed by hand: every number in the text is
-                      checked against the analysis output by
-                      <code>tests/week03-prose.test.mjs</code>, so a hand-typed
-                      figure cannot drift from the file it claims to quote.
+                      The prose is typed by hand:
+                      <code>tests/week03-prose.test.mjs</code> pins the
+                      figures most likely to drift against the analysis
+                      output, so a rebuild that changes one of those gets
+                      caught before a reader does. It does not cover every
+                      number on the page.
                     </p>
                   </div>
                 </div>
@@ -1699,6 +1785,6 @@
       </footer>
     </main>
 
-    <script src="../../assets/js/week03-boot.js?v=e30e3c9a09" type="module"></script>
+    <script src="../../assets/js/week03-boot.js?v=92ec259622" type="module"></script>
   </body>
 </html>
