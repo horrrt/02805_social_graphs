@@ -80,6 +80,7 @@ from sklearn.metrics import normalized_mutual_info_score as nmi
 
 import week04_names as names
 import week04_staffing as st
+from week04_schemas import check
 
 OUT = Path(__file__).with_suffix(".json")
 PAGE = Path(__file__).resolve().parents[1] / "docs/weeks/week04/data/staffing_moves.json"
@@ -472,6 +473,7 @@ def main():
         "finding": {
             "q1_pooled_observed_share": q1_pooled["observed_share_same_community"],
             "q1_pooled_null_mean": q1_pooled["null"]["mean"] if q1_pooled["null"] else None,
+            "q1_pooled_null_sd": q1_pooled["null"]["sd"] if q1_pooled["null"] else None,
             "q1_pooled_p": q1_pooled["null"]["p"] if q1_pooled["null"] else None,
             "q1_answer": q1_pooled["answer"],
             "q2_share_move": q2["share_move"],
@@ -482,6 +484,7 @@ def main():
             "q2_answer": q2["answer"],
             "q3_two_community_clients": q3["two_community_clients"],
             "q3_null_mean": q3["null_mean"],
+            "q3_null_sd": q3["null_sd"],
             "q3_z": q3["z"],
         },
         "q1_pairs": [{k: p[k] for k in ("from", "to", "switches_scored", "observed_share_same_community",
@@ -489,6 +492,7 @@ def main():
         "q2_top_movers": q2["top_movers_by_filings"][:15],
         "q3_top_clients": q3["top_by_filings"][:15],
     }
+    check(PAGE, page)
     PAGE.write_text(json.dumps(page, indent=1) + "\n")
 
     print(json.dumps(out["q1_switching"], indent=1, default=str))

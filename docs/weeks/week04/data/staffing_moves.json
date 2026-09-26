@@ -3,7 +3,8 @@
  "year": 2025,
  "finding": {
   "q1_pooled_observed_share": 0.2581,
-  "q1_pooled_null_mean": 0.0341,
+  "q1_pooled_null_mean": 0.034,
+  "q1_pooled_null_sd": 0.005,
   "q1_pooled_p": 0.001,
   "q1_answer": "yes",
   "q2_share_move": 0.6574,
@@ -14,6 +15,7 @@
   "q2_answer": "no",
   "q3_two_community_clients": 1842,
   "q3_null_mean": 2040.82,
+  "q3_null_sd": 27.53,
   "q3_z": -7.22
  },
  "q1_pairs": [
@@ -25,7 +27,7 @@
    "null": {
     "mean": 0.0353,
     "sd": 0.0085,
-    "z": 23.66,
+    "z": 23.59,
     "p": 0.001
    },
    "answer": "yes"
@@ -36,9 +38,9 @@
    "switches_scored": 398,
    "observed_share_same_community": 0.2688,
    "null": {
-    "mean": 0.0347,
-    "sd": 0.0086,
-    "z": 27.32,
+    "mean": 0.035,
+    "sd": 0.0093,
+    "z": 25.08,
     "p": 0.001
    },
    "answer": "yes"
@@ -49,9 +51,9 @@
    "switches_scored": 406,
    "observed_share_same_community": 0.2734,
    "null": {
-    "mean": 0.0321,
-    "sd": 0.0087,
-    "z": 27.7,
+    "mean": 0.0316,
+    "sd": 0.0081,
+    "z": 29.77,
     "p": 0.001
    },
    "answer": "yes"

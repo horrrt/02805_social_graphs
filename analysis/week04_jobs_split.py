@@ -94,6 +94,7 @@ from sklearn.metrics import normalized_mutual_info_score as nmi
 
 import week04_jobs as jobs
 import week04_where as where
+from week04_schemas import check
 from week04_staffing import MIN_FILINGS, intermediaries, louvain, tracked
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -504,7 +505,9 @@ def main():
             "q1_observed_nmi": headline["observed_nmi"], "q1_observed_ami": headline["observed_ami"],
             "q1_observed_n": headline["observed_n"],
             "q1_null_count_matched_nmi_mean": q1_result["null"]["company_count_matched"]["nmi_mean"],
+            "q1_null_count_matched_nmi_sd": q1_result["null"]["company_count_matched"]["nmi_sd"],
             "q1_null_filings_matched_nmi_mean": q1_result["null"]["filing_total_matched"]["nmi_mean"],
+            "q1_null_filings_matched_nmi_sd": q1_result["null"]["filing_total_matched"]["nmi_sd"],
             "q1_placing_companies": variant["placing_companies"], "q1_direct_companies": variant["direct_companies"],
             "q1_placing_filing_share": variant["placing_filing_share"],
             "q1_placing_modularity": variant["placing_modularity"], "q1_direct_modularity": variant["direct_modularity"],
@@ -527,6 +530,7 @@ def main():
         },
     }
     PAGE.parent.mkdir(parents=True, exist_ok=True)
+    check(PAGE, page)
     PAGE.write_text(json.dumps(page, indent=1) + "\n")
 
     print(f"{seconds}s total")

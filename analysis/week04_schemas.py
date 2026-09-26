@@ -384,11 +384,349 @@ class StaffingCommunities(Model):
     infomap: Infomap3
 
 
+
+# Section 1 follow-up · docs/weeks/week04/data/where_who.json, read by week04-questions.js -
+
+class WhereWhoRow(Model):
+    id: str
+    name: str
+    community: int = Count
+    region: str
+    division: str
+    placed_share: float = Share
+    naics54_share: float = Share
+    placed_share_tercile: Literal["low", "mid", "high"]
+    naics54_share_tercile: Literal["low", "mid", "high"]
+
+
+class LabelScore(Model):
+    nmi: float = Share
+    ami: float = Field(ge=-1, le=1)
+    p_shuffle: float = Share
+    median_ami_over_100_runs: float = Field(ge=-1, le=1)
+
+
+class WhereWhoFinding(Model):
+    q1_answer: str
+    q1_best_who_hires_ami: float
+    q1_best_census_ami: float
+    q1_scores: dict[str, LabelScore]
+    naics54_dominant_metros: int = Count
+    q2_alpha_drops_below_40: float
+    q2_max_single_drop: int = Count
+    q2_breaking_links_led_by_shortlist: int = Count
+    q2_breaking_links_flagged: int = Count
+    q2_backbone_shortlist_share: float = Share
+    q2_flagged_shortlist_share: float = Share
+    q2_hypergeom_p: float = Share
+
+
+class SweepPoint(Model):
+    alpha: float = Count
+    gc_size: int = Count
+
+
+class BreakStep(Model):
+    alpha: float = Count
+    edges: list[tuple[str, str]]
+    weight: list[int]
+    gc_before: int = Count
+    gc_after: int = Count
+
+
+class BreakingLink(Model):
+    a: str
+    b: str
+    a_name: str
+    b_name: str
+    alpha: float = Count
+    weight: int = Count
+    top_employer: str
+    top_share: float = Share
+    shortlist: bool
+
+
+class WhereWho(Model):
+    rows: list[WhereWhoRow] = Field(min_length=1)
+    finding: WhereWhoFinding
+    backbone_sweep: list[SweepPoint] = Field(min_length=1)
+    breaking_links: list[BreakingLink] = Field(min_length=1)
+
+    @model_validator(mode="after")
+    def references(self):
+        ids = {r.id for r in self.rows}
+        assert all(link.a in ids and link.b in ids for link in self.breaking_links), \
+            "a breaking link names a metro not in rows"
+        return self
+
+
+# Section 2 follow-up · docs/weeks/week04/data/jobs_split.json ---------------------
+
+class OccShare(Model):
+    id: str
+    title: str
+    filings: int = Count
+    share: float = Share
+
+
+class UniqueGroup(Model):
+    count: int = Count
+    top: list[dict]
+
+
+class JobsSplitFinding(Model):
+    q1_verdict: str
+    q1_observed_nmi: float = Share
+    q1_observed_ami: float = Field(ge=-1, le=1)
+    q1_observed_n: int = Count
+    q1_null_count_matched_nmi_mean: float = Share
+    q1_null_count_matched_nmi_sd: float = Count
+    q1_null_filings_matched_nmi_mean: float = Share
+    q1_null_filings_matched_nmi_sd: float = Count
+    q1_placing_companies: int = Count
+    q1_direct_companies: int = Count
+    q1_placing_filing_share: float = Share
+    q1_placing_modularity: float
+    q1_direct_modularity: float
+    q2_status: str
+    q2_on: str | None = None
+    q2_D_at_cut: float | None = None
+    q2_link_clusters_of_3_or_more: int | None = None
+    q2_spearman_communities_vs_degree: float | None = None
+    q2_bridges_count: int | None = None
+    q2_bridges_in_top15_count: int | None = None
+
+
+class JobsSplitQ1(Model):
+    placing_top_occupations: list[OccShare] = Field(min_length=1)
+    direct_top_occupations: list[OccShare] = Field(min_length=1)
+    only_in_placing: UniqueGroup
+    only_in_direct: UniqueGroup
+
+
+class LinkComOcc(Model):
+    id: str
+    title: str
+    links: int = Count
+    communities: int = Count
+    communities_per_link: float = Field(ge=0)
+
+
+class BridgeOcc(Model):
+    id: str
+    title: str
+    links: int = Count
+
+
+class Bridges2(Model):
+    all_occupations: list[BridgeOcc]
+    count: int = Count
+    in_top15: list[str]
+    in_top15_count: int = Count
+
+
+class JobsSplitQ2(Model):
+    top15_by_communities_per_link: list[LinkComOcc]
+    bridges: Bridges2
+
+
+class JobsSplit(Model):
+    generated_by: str
+    year: int
+    finding: JobsSplitFinding
+    q1: JobsSplitQ1
+    q2: JobsSplitQ2
+
+    @model_validator(mode="after")
+    def references(self):
+        shown = {o.id for o in self.q2.top15_by_communities_per_link}
+        bridges = {b.id for b in self.q2.bridges.all_occupations}
+        flagged = set(self.q2.bridges.in_top15)
+        assert flagged <= shown, "a flagged bridge is not in the top15 table"
+        assert flagged <= bridges, "a flagged bridge is not among the bridge occupations"
+        return self
+
+
+# Section 3 follow-up · docs/weeks/week04/data/staffing_moves.json ----------------
+
+class SwitchNull(Model):
+    mean: float = Share
+    sd: float = Count
+    z: float
+    p: float = Share
+
+
+class Q1Pair(Model):
+    model_config = ConfigDict(extra="allow", populate_by_name=True)
+    from_year: int = Field(alias="from")
+    to: int
+    switches_scored: int = Count
+    observed_share_same_community: float = Share
+    null: SwitchNull
+    answer: str
+
+
+class StaffingMovesFinding(Model):
+    q1_pooled_observed_share: float = Share
+    q1_pooled_null_mean: float = Share
+    q1_pooled_null_sd: float = Count
+    q1_pooled_p: float = Share
+    q1_answer: str
+    q2_share_move: float = Share
+    q2_noise_floor_weighted: float = Share
+    q2_noise_floor_unweighted: float = Share
+    q2_movers_2plus_vendor_share: float = Share
+    q2_all_clients_2plus_vendor_share: float = Share
+    q2_answer: str
+    q3_two_community_clients: int = Count
+    q3_null_mean: float
+    q3_null_sd: float = Count
+    q3_z: float
+
+
+class TopMover(Model):
+    client: str
+    filings: int = Count
+    vendors: int = Count
+    main_vendor: str
+    weighted_community_top_firm: str
+    unweighted_community_top_firm: str
+
+
+class TopOverlapClient(Model):
+    client: str
+    sector: str
+    filings: int = Count
+    communities: list[str] = Field(min_length=2, max_length=2)
+    shares: list[float] = Field(min_length=2, max_length=2)
+    main_vendor: str | None = None
+
+
+class StaffingMoves(Model):
+    generated_by: str
+    year: int
+    finding: StaffingMovesFinding
+    q1_pairs: list[Q1Pair] = Field(min_length=1)
+    q2_top_movers: list[TopMover] = Field(min_length=1)
+    q3_top_clients: list[TopOverlapClient] = Field(min_length=1)
+
+
+# Beyond the three networks · docs/weeks/week04/data/beyond.json -----------------
+
+class LawFirmRow(Model):
+    law_firm: str
+    filings: int = Count
+    employers: int = Count
+
+
+class BeyondFinding(Model):
+    q1_same_split_as_vendors: bool
+    q1_ami: float = Field(ge=-1, le=1)
+    q1_ami_z_vs_rewired: float
+    q1_ami_rewired_mean: float = Field(ge=-1, le=1)
+    q1_ami_rewired_sd: float = Count
+    q1_nmi: float = Share
+    q2_between_communities_matters: bool
+    q2_permutation_p: float = Share
+    q2_placing_pooled_ratio: float = Field(ge=0)
+    q2_direct_pooled_ratio: float = Field(ge=0)
+    q2_perm_match_rate_20plus_h1b_employers: float = Share
+    q3_placed_pays_lower_level: bool
+    q3_odds_ratio: float = Field(gt=0)
+    q3_odds_ratio_ci95: list[float] = Field(min_length=2, max_length=2)
+
+
+class BeyondQ1(Model):
+    lawfirm_column_coverage: float = Share
+    distinct_raw_spellings: int = Count
+    distinct_law_firms_after_normalize: int = Count
+    spellings_collapsed: int = Count
+    modularity_best: float
+    modularity_z_vs_rewired: float
+    nmi_with_staffing_partition: float = Share
+    nmi_shuffle_p: float = Share
+    ami_with_staffing_partition: float = Field(ge=-1, le=1)
+    ami_shuffle_p: float = Share
+    ami_z_vs_rewired: float
+    single_law_firm_filing_share: float = Share
+
+
+class GroupStats(Model):
+    employers: int = Count
+    h1b_filings: int = Count
+    perm_filings: int = Count
+    pooled_ratio: float = Field(ge=0)
+    pooled_ci95: list[float] = Field(min_length=2, max_length=2)
+    median_ratio: float = Field(ge=0)
+    median_ci95: list[float] = Field(min_length=2, max_length=2)
+    perm_match_rate: float = Share
+    perm_match_rate_by_filings: float = Share
+
+
+class BeyondQ2(Model):
+    placing_firms_20plus_placed: GroupStats
+    direct_firms_20plus_h1b: GroupStats
+    permutation_p: float = Share
+    between_community_variance: float = Field(ge=0)
+
+
+class Community6(Model):
+    firms: int = Count
+    h1b_filings: int = Count
+    perm_filings: int = Count
+    pooled_ratio: float = Field(ge=0)
+    top_firms: list[str] = Field(min_length=1)
+    largest_firm_filing_share: float = Share
+
+
+class BeyondQ3Crude(Model):
+    placed_low_share: float = Share
+    direct_low_share: float = Share
+    placed_filings: int = Count
+    direct_filings: int = Count
+
+
+class BeyondQ3(Model):
+    pw_wage_level_coverage: float = Share
+    crude: BeyondQ3Crude
+    strata_kept_20plus_each_side: int = Count
+    strata_or_above_1_share: float = Share
+    mantel_haenszel_odds_ratio: float = Field(gt=0)
+    odds_ratio_ci95: list[float] = Field(min_length=2, max_length=2)
+    cmh_p: float = Field(ge=0, le=1)
+    breslow_day_p: float | None = Field(ge=0, le=1, default=None)
+    wage_ratio_coverage: float = Share
+
+
+class Top5Soc(Model):
+    soc7: str
+    title: str
+    filings: int = Count
+    placed_low_share: float = Share
+    direct_low_share: float = Share
+
+
+class Beyond(Model):
+    generated_by: str
+    year: int
+    finding: BeyondFinding
+    q1: BeyondQ1
+    q1_top_law_firms: list[LawFirmRow] = Field(min_length=1)
+    q2: BeyondQ2
+    q2_top6_communities: dict[str, Community6]
+    q3: BeyondQ3
+    q3_top5_soc: list[Top5Soc] = Field(min_length=1)
+
+
 PAGES = {
     "docs/assets/data/week04_place.json": Place,
     "docs/weeks/week04/data/jobs.json": Jobs,
     "docs/weeks/week04/data/staffing_clients.json": StaffingClients,
     "docs/weeks/week04/data/staffing_communities.json": StaffingCommunities,
+    "docs/weeks/week04/data/where_who.json": WhereWho,
+    "docs/weeks/week04/data/jobs_split.json": JobsSplit,
+    "docs/weeks/week04/data/staffing_moves.json": StaffingMoves,
+    "docs/weeks/week04/data/beyond.json": Beyond,
 }
 
 

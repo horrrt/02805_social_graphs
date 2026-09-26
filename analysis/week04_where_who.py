@@ -89,6 +89,7 @@ from sklearn.metrics import adjusted_mutual_info_score as ami
 from sklearn.metrics import normalized_mutual_info_score as nmi
 
 import week04_where as where
+from week04_schemas import check
 
 ROOT = Path(__file__).resolve().parents[1]
 OUT = Path(__file__).with_suffix(".json")
@@ -427,6 +428,7 @@ def main():
         "break": q2["part_b"],
         "breaking_links": q2["part_c"]["breaking_links"],
     }
+    check(PAGE, page)
     PAGE.write_text(json.dumps(page, indent=1, ensure_ascii=False) + "\n")
 
     print(f"seconds: {seconds}")

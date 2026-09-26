@@ -72,8 +72,7 @@ Checks
 
 Outputs: analysis/week04_beyond.json (every number, with nulls, n's and
 coverage) and docs/weeks/week04/data/beyond.json (the numbers a page figure
-would need). beyond.json has no page in week04_schemas.PAGES, so it is not
-checked against a Pydantic model.
+would need), checked against week04_schemas.Beyond before it is written.
 """
 
 import json
@@ -89,6 +88,7 @@ from statsmodels.stats.contingency_tables import StratifiedTable
 
 import week04_names as names
 from week04_data import load
+from week04_schemas import check
 from week04_staffing import (
     SEED, MIN_FILINGS, certified, check_rewire, giant_of, graph, intermediaries,
     labels, louvain, placements, resolver, rewire, tracked,
@@ -467,13 +467,27 @@ def question3(lca, out):
     cmh = st.test_null_odds(correction=True)
     bd = st.test_equal_odds()
 
+    # Each soc7's title, from its base ".00" rows when present, the most
+    # common SOC_TITLE otherwise (week04_jobs.titles_of does the same thing
+    # off a differently-shaped frame, so this is redone here rather than
+    # imported).
+    titles_frame = pd.DataFrame({
+        "soc7": df["soc7"],
+        "SOC_TITLE": lca.loc[df.index, "SOC_TITLE"],
+        "is_base": lca.loc[df.index, "SOC_CODE"].str.strip().str.endswith(".00"),
+    })
+    mode_title = lambda s: s.str.strip().mode().iloc[0]  # noqa: E731
+    soc_titles = titles_frame[titles_frame["is_base"]].groupby("soc7")["SOC_TITLE"].agg(mode_title).to_dict()
+    rest = titles_frame[~titles_frame["soc7"].isin(soc_titles)]
+    soc_titles |= rest.groupby("soc7")["SOC_TITLE"].agg(mode_title).to_dict()
+
     kept_strata.sort(key=lambda s: -s["filings"])
     top5 = kept_strata[:5]
     top5_shares = []
     for s in top5:
         g = df[df["soc7"] == s["soc7"]]
         top5_shares.append({
-            "soc7": s["soc7"], "filings": s["filings"],
+            "soc7": s["soc7"], "title": soc_titles.get(s["soc7"], s["soc7"]), "filings": s["filings"],
             "placed_low_share": round(float(g.loc[g["placed"], "low"].mean()), 4),
             "direct_low_share": round(float(g.loc[~g["placed"], "low"].mean()), 4),
         })
@@ -562,6 +576,7 @@ def main():
         "finding": {
             "q1_same_split_as_vendors": q1["same_split_as_vendors"],
             "q1_ami": q1["ami_with_staffing_partition"], "q1_ami_z_vs_rewired": q1["ami_z_vs_rewired"],
+            "q1_ami_rewired_mean": q1["ami_rewired_null_mean"], "q1_ami_rewired_sd": q1["ami_rewired_null_sd"],
             "q1_nmi": q1["nmi_with_staffing_partition"],
             "q2_between_communities_matters": q2["between_communities_matters"],
             "q2_permutation_p": q2["permutation_p"],
@@ -587,7 +602,9 @@ def main():
             "mantel_haenszel_odds_ratio", "odds_ratio_ci95", "cmh_p", "breslow_day_p", "wage_ratio_coverage")},
         "q3_top5_soc": q3["top5_soc_by_filings"],
     }
-    PAGE.write_text(json.dumps(clean(page), indent=1) + "\n")
+    page = clean(page)
+    check(PAGE, page)
+    PAGE.write_text(json.dumps(page, indent=1) + "\n")
     print(f"wrote {OUT} and {PAGE} in {out['seconds']}s")
 
 
