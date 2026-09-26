@@ -1,0 +1,1068 @@
+{
+ "generated_by": "analysis/week04_where_who.py",
+ "year": 2025,
+ "seconds": 18.1,
+ "reproduction": {
+  "communities": 3,
+  "Q": 0.049,
+  "modal_runs": 64,
+  "partitions_found": 2,
+  "matches_week04_where": true
+ },
+ "q1_who_hires": {
+  "coverage": {
+   "filings_scored": 514148,
+   "blank_naics_code": 0,
+   "metros": 40,
+   "naics54_dominant_metros": 35
+  },
+  "scores": {
+   "census_region": {
+    "nmi": 0.137,
+    "ami": 0.061,
+    "p_shuffle": 0.1119,
+    "median_ami_over_100_runs": 0.061
+   },
+   "census_division": {
+    "nmi": 0.214,
+    "ami": 0.062,
+    "p_shuffle": 0.0849,
+    "median_ami_over_100_runs": 0.062
+   },
+   "placed_share_tercile": {
+    "nmi": 0.172,
+    "ami": 0.122,
+    "p_shuffle": 0.012,
+    "median_ami_over_100_runs": 0.122
+   },
+   "naics54_share_tercile": {
+    "nmi": 0.219,
+    "ami": 0.172,
+    "p_shuffle": 0.002,
+    "median_ami_over_100_runs": 0.172
+   }
+  },
+  "answer": "yes, by who hires",
+  "who_hires_labels": [
+   "placed_share_tercile",
+   "naics54_share_tercile"
+  ],
+  "census_labels": [
+   "census_region",
+   "census_division"
+  ],
+  "winners": [
+   "placed_share_tercile",
+   "naics54_share_tercile"
+  ],
+  "shuffles": 1000,
+  "rows": [
+   {
+    "id": "35620",
+    "name": "New York",
+    "community": 0,
+    "region": "Northeast",
+    "division": "Middle Atlantic",
+    "placed_share": 0.1696,
+    "naics54_share": 0.477,
+    "placed_share_tercile": "low",
+    "naics54_share_tercile": "mid"
+   },
+   {
+    "id": "19100",
+    "name": "Dallas",
+    "community": 0,
+    "region": "South",
+    "division": "West South Central",
+    "placed_share": 0.3342,
+    "naics54_share": 0.6574,
+    "placed_share_tercile": "high",
+    "naics54_share_tercile": "high"
+   },
+   {
+    "id": "41940",
+    "name": "San Jose",
+    "community": 1,
+    "region": "West",
+    "division": "Pacific",
+    "placed_share": 0.0673,
+    "naics54_share": 0.3952,
+    "placed_share_tercile": "low",
+    "naics54_share_tercile": "low"
+   },
+   {
+    "id": "41860",
+    "name": "San Francisco",
+    "community": 1,
+    "region": "West",
+    "division": "Pacific",
+    "placed_share": 0.0724,
+    "naics54_share": 0.4317,
+    "placed_share_tercile": "low",
+    "naics54_share_tercile": "low"
+   },
+   {
+    "id": "42660",
+    "name": "Seattle",
+    "community": 1,
+    "region": "West",
+    "division": "Pacific",
+    "placed_share": 0.0599,
+    "naics54_share": 0.2442,
+    "placed_share_tercile": "low",
+    "naics54_share_tercile": "low"
+   },
+   {
+    "id": "12060",
+    "name": "Atlanta",
+    "community": 0,
+    "region": "South",
+    "division": "South Atlantic",
+    "placed_share": 0.2703,
+    "naics54_share": 0.5975,
+    "placed_share_tercile": "mid",
+    "naics54_share_tercile": "high"
+   },
+   {
+    "id": "16980",
+    "name": "Chicago",
+    "community": 0,
+    "region": "Midwest",
+    "division": "East North Central",
+    "placed_share": 0.2328,
+    "naics54_share": 0.5378,
+    "placed_share_tercile": "mid",
+    "naics54_share_tercile": "mid"
+   },
+   {
+    "id": "12420",
+    "name": "Austin",
+    "community": 1,
+    "region": "South",
+    "division": "West South Central",
+    "placed_share": 0.172,
+    "naics54_share": 0.449,
+    "placed_share_tercile": "low",
+    "naics54_share_tercile": "low"
+   },
+   {
+    "id": "14460",
+    "name": "Boston",
+    "community": 1,
+    "region": "Northeast",
+    "division": "New England",
+    "placed_share": 0.1111,
+    "naics54_share": 0.4217,
+    "placed_share_tercile": "low",
+    "naics54_share_tercile": "low"
+   },
+   {
+    "id": "47900",
+    "name": "Washington",
+    "community": 1,
+    "region": "South",
+    "division": "South Atlantic",
+    "placed_share": 0.231,
+    "naics54_share": 0.5606,
+    "placed_share_tercile": "mid",
+    "naics54_share_tercile": "mid"
+   },
+   {
+    "id": "31080",
+    "name": "Los Angeles",
+    "community": 1,
+    "region": "West",
+    "division": "Pacific",
+    "placed_share": 0.1246,
+    "naics54_share": 0.4509,
+    "placed_share_tercile": "low",
+    "naics54_share_tercile": "low"
+   },
+   {
+    "id": "26420",
+    "name": "Houston",
+    "community": 0,
+    "region": "South",
+    "division": "West South Central",
+    "placed_share": 0.2505,
+    "naics54_share": 0.6104,
+    "placed_share_tercile": "mid",
+    "naics54_share_tercile": "high"
+   },
+   {
+    "id": "37980",
+    "name": "Philadelphia",
+    "community": 0,
+    "region": "Northeast",
+    "division": "Middle Atlantic",
+    "placed_share": 0.2757,
+    "naics54_share": 0.5512,
+    "placed_share_tercile": "high",
+    "naics54_share_tercile": "mid"
+   },
+   {
+    "id": "19820",
+    "name": "Detroit",
+    "community": 2,
+    "region": "Midwest",
+    "division": "East North Central",
+    "placed_share": 0.2485,
+    "naics54_share": 0.4685,
+    "placed_share_tercile": "mid",
+    "naics54_share_tercile": "mid"
+   },
+   {
+    "id": "16740",
+    "name": "Charlotte",
+    "community": 0,
+    "region": "South",
+    "division": "South Atlantic",
+    "placed_share": 0.3967,
+    "naics54_share": 0.6456,
+    "placed_share_tercile": "high",
+    "naics54_share_tercile": "high"
+   },
+   {
+    "id": "38060",
+    "name": "Phoenix",
+    "community": 2,
+    "region": "West",
+    "division": "Mountain",
+    "placed_share": 0.2724,
+    "naics54_share": 0.4855,
+    "placed_share_tercile": "mid",
+    "naics54_share_tercile": "mid"
+   },
+   {
+    "id": "39580",
+    "name": "Raleigh",
+    "community": 2,
+    "region": "South",
+    "division": "South Atlantic",
+    "placed_share": 0.2473,
+    "naics54_share": 0.5749,
+    "placed_share_tercile": "mid",
+    "naics54_share_tercile": "high"
+   },
+   {
+    "id": "41740",
+    "name": "San Diego",
+    "community": 1,
+    "region": "West",
+    "division": "Pacific",
+    "placed_share": 0.0799,
+    "naics54_share": 0.326,
+    "placed_share_tercile": "low",
+    "naics54_share_tercile": "low"
+   },
+   {
+    "id": "33100",
+    "name": "Miami",
+    "community": 2,
+    "region": "South",
+    "division": "South Atlantic",
+    "placed_share": 0.1988,
+    "naics54_share": 0.4403,
+    "placed_share_tercile": "low",
+    "naics54_share_tercile": "low"
+   },
+   {
+    "id": "33460",
+    "name": "Minneapolis",
+    "community": 2,
+    "region": "Midwest",
+    "division": "West North Central",
+    "placed_share": 0.2964,
+    "naics54_share": 0.5226,
+    "placed_share_tercile": "high",
+    "naics54_share_tercile": "mid"
+   },
+   {
+    "id": "45300",
+    "name": "Tampa",
+    "community": 2,
+    "region": "South",
+    "division": "South Atlantic",
+    "placed_share": 0.3073,
+    "naics54_share": 0.5979,
+    "placed_share_tercile": "high",
+    "naics54_share_tercile": "high"
+   },
+   {
+    "id": "18140",
+    "name": "Columbus",
+    "community": 2,
+    "region": "Midwest",
+    "division": "East North Central",
+    "placed_share": 0.3375,
+    "naics54_share": 0.5779,
+    "placed_share_tercile": "high",
+    "naics54_share_tercile": "high"
+   },
+   {
+    "id": "41180",
+    "name": "St. Louis",
+    "community": 2,
+    "region": "Midwest",
+    "division": "West North Central",
+    "placed_share": 0.2965,
+    "naics54_share": 0.4983,
+    "placed_share_tercile": "high",
+    "naics54_share_tercile": "mid"
+   },
+   {
+    "id": "19740",
+    "name": "Denver",
+    "community": 2,
+    "region": "West",
+    "division": "Mountain",
+    "placed_share": 0.2002,
+    "naics54_share": 0.4389,
+    "placed_share_tercile": "low",
+    "naics54_share_tercile": "low"
+   },
+   {
+    "id": "38900",
+    "name": "Portland",
+    "community": 2,
+    "region": "West",
+    "division": "Pacific",
+    "placed_share": 0.1487,
+    "naics54_share": 0.2841,
+    "placed_share_tercile": "low",
+    "naics54_share_tercile": "low"
+   },
+   {
+    "id": "45940",
+    "name": "Trenton",
+    "community": 2,
+    "region": "Northeast",
+    "division": "Middle Atlantic",
+    "placed_share": 0.3433,
+    "naics54_share": 0.6844,
+    "placed_share_tercile": "high",
+    "naics54_share_tercile": "high"
+   },
+   {
+    "id": "38300",
+    "name": "Pittsburgh",
+    "community": 2,
+    "region": "Northeast",
+    "division": "Middle Atlantic",
+    "placed_share": 0.2749,
+    "naics54_share": 0.508,
+    "placed_share_tercile": "mid",
+    "naics54_share_tercile": "mid"
+   },
+   {
+    "id": "22220",
+    "name": "Fayetteville",
+    "community": 2,
+    "region": "South",
+    "division": "West South Central",
+    "placed_share": 0.1662,
+    "naics54_share": 0.2964,
+    "placed_share_tercile": "low",
+    "naics54_share_tercile": "low"
+   },
+   {
+    "id": "20500",
+    "name": "Durham",
+    "community": 2,
+    "region": "South",
+    "division": "South Atlantic",
+    "placed_share": 0.2092,
+    "naics54_share": 0.4299,
+    "placed_share_tercile": "mid",
+    "naics54_share_tercile": "low"
+   },
+   {
+    "id": "17140",
+    "name": "Cincinnati",
+    "community": 2,
+    "region": "Midwest",
+    "division": "East North Central",
+    "placed_share": 0.3338,
+    "naics54_share": 0.6015,
+    "placed_share_tercile": "high",
+    "naics54_share_tercile": "high"
+   },
+   {
+    "id": "34980",
+    "name": "Nashville",
+    "community": 2,
+    "region": "South",
+    "division": "East South Central",
+    "placed_share": 0.2505,
+    "naics54_share": 0.4866,
+    "placed_share_tercile": "mid",
+    "naics54_share_tercile": "mid"
+   },
+   {
+    "id": "25540",
+    "name": "Hartford",
+    "community": 2,
+    "region": "Northeast",
+    "division": "New England",
+    "placed_share": 0.4067,
+    "naics54_share": 0.6908,
+    "placed_share_tercile": "high",
+    "naics54_share_tercile": "high"
+   },
+   {
+    "id": "12580",
+    "name": "Baltimore",
+    "community": 2,
+    "region": "South",
+    "division": "South Atlantic",
+    "placed_share": 0.299,
+    "naics54_share": 0.5278,
+    "placed_share_tercile": "high",
+    "naics54_share_tercile": "mid"
+   },
+   {
+    "id": "36740",
+    "name": "Orlando",
+    "community": 2,
+    "region": "South",
+    "division": "South Atlantic",
+    "placed_share": 0.2362,
+    "naics54_share": 0.6181,
+    "placed_share_tercile": "mid",
+    "naics54_share_tercile": "high"
+   },
+   {
+    "id": "26900",
+    "name": "Indianapolis",
+    "community": 2,
+    "region": "Midwest",
+    "division": "East North Central",
+    "placed_share": 0.2185,
+    "naics54_share": 0.4697,
+    "placed_share_tercile": "mid",
+    "naics54_share_tercile": "mid"
+   },
+   {
+    "id": "41700",
+    "name": "San Antonio",
+    "community": 2,
+    "region": "South",
+    "division": "West South Central",
+    "placed_share": 0.4837,
+    "naics54_share": 0.6693,
+    "placed_share_tercile": "high",
+    "naics54_share_tercile": "high"
+   },
+   {
+    "id": "40900",
+    "name": "Sacramento",
+    "community": 2,
+    "region": "West",
+    "division": "Pacific",
+    "placed_share": 0.2317,
+    "naics54_share": 0.5117,
+    "placed_share_tercile": "mid",
+    "naics54_share_tercile": "mid"
+   },
+   {
+    "id": "40060",
+    "name": "Richmond",
+    "community": 2,
+    "region": "South",
+    "division": "South Atlantic",
+    "placed_share": 0.4263,
+    "naics54_share": 0.6586,
+    "placed_share_tercile": "high",
+    "naics54_share_tercile": "high"
+   },
+   {
+    "id": "41620",
+    "name": "Salt Lake City",
+    "community": 2,
+    "region": "West",
+    "division": "Mountain",
+    "placed_share": 0.1276,
+    "naics54_share": 0.2989,
+    "placed_share_tercile": "low",
+    "naics54_share_tercile": "low"
+   },
+   {
+    "id": "32820",
+    "name": "Memphis",
+    "community": 2,
+    "region": "South",
+    "division": "East South Central",
+    "placed_share": 0.1843,
+    "naics54_share": 0.2701,
+    "placed_share_tercile": "low",
+    "naics54_share_tercile": "low"
+   }
+  ]
+ },
+ "q2_backbone_break": {
+  "coverage": {
+   "edges": 780,
+   "distinct_p": 762,
+   "tie_steps_grouped": 18
+  },
+  "part_a": {
+   "alpha_still_40": 0.13866874547285962,
+   "alpha_drops_below_40": 0.13492805371337732,
+   "edges_removed": [
+    [
+     "19100",
+     "26900"
+    ]
+   ],
+   "gc_after": 39
+  },
+  "part_b": {
+   "drop": 2,
+   "tied_steps": 2,
+   "steps": [
+    {
+     "alpha": 0.041129561673435636,
+     "edges": [
+      [
+       "19100",
+       "20500"
+      ]
+     ],
+     "weight": [
+      2210
+     ],
+     "gc_before": 14,
+     "gc_after": 12
+    },
+    {
+     "alpha": 0.02246974481328852,
+     "edges": [
+      [
+       "35620",
+       "41860"
+      ]
+     ],
+     "weight": [
+      11853
+     ],
+     "gc_before": 5,
+     "gc_after": 3
+    }
+   ],
+   "note": "This is the largest single-link drop found anywhere in the sweep; it does not fall in the coarse 0.1-0.05 window that shows the 32 -> 19 collapse, because that collapse turns out to be a cascade of many one-metro peels rather than one break."
+  },
+  "part_c": {
+   "window": [
+    0.05,
+    0.1
+   ],
+   "gc_at_0.1": 32,
+   "gc_at_0.05": 19,
+   "fallen_metros": [
+    "Baltimore",
+    "Columbus",
+    "Detroit",
+    "Hartford",
+    "Los Angeles",
+    "Memphis",
+    "Minneapolis",
+    "Orlando",
+    "Phoenix",
+    "Portland",
+    "Richmond",
+    "San Antonio",
+    "Tampa"
+   ],
+   "links_lost_in_window": 33,
+   "links_lost_redundant": 15,
+   "breaking_links": [
+    {
+     "a": "35620",
+     "b": "31080",
+     "a_name": "New York",
+     "b_name": "Los Angeles",
+     "alpha": 0.060422036304506724,
+     "weight": 5898,
+     "top_employer": "Amazon",
+     "top_share": 0.1,
+     "shortlist": false
+    },
+    {
+     "a": "35620",
+     "b": "45300",
+     "a_name": "New York",
+     "b_name": "Tampa",
+     "alpha": 0.08446987391562263,
+     "weight": 3141,
+     "top_employer": "Citigroup",
+     "top_share": 0.099,
+     "shortlist": false
+    },
+    {
+     "a": "35620",
+     "b": "25540",
+     "a_name": "New York",
+     "b_name": "Hartford",
+     "alpha": 0.07871852629399655,
+     "weight": 2375,
+     "top_employer": "Cognizant",
+     "top_share": 0.256,
+     "shortlist": true
+    },
+    {
+     "a": "19100",
+     "b": "18140",
+     "a_name": "Dallas",
+     "b_name": "Columbus",
+     "alpha": 0.08292109610491477,
+     "weight": 2828,
+     "top_employer": "JPMorgan Chase",
+     "top_share": 0.139,
+     "shortlist": false
+    },
+    {
+     "a": "19100",
+     "b": "31080",
+     "a_name": "Dallas",
+     "b_name": "Los Angeles",
+     "alpha": 0.08160532944426234,
+     "weight": 5287,
+     "top_employer": "Amazon",
+     "top_share": 0.111,
+     "shortlist": false
+    },
+    {
+     "a": "19100",
+     "b": "19820",
+     "a_name": "Dallas",
+     "b_name": "Detroit",
+     "alpha": 0.08874848100883748,
+     "weight": 3013,
+     "top_employer": "Cognizant",
+     "top_share": 0.065,
+     "shortlist": true
+    },
+    {
+     "a": "19100",
+     "b": "33460",
+     "a_name": "Dallas",
+     "b_name": "Minneapolis",
+     "alpha": 0.09002958540303561,
+     "weight": 2901,
+     "top_employer": "Cognizant",
+     "top_share": 0.107,
+     "shortlist": true
+    },
+    {
+     "a": "19100",
+     "b": "45300",
+     "a_name": "Dallas",
+     "b_name": "Tampa",
+     "alpha": 0.06153779980618285,
+     "weight": 3529,
+     "top_employer": "Citigroup",
+     "top_share": 0.088,
+     "shortlist": false
+    },
+    {
+     "a": "19100",
+     "b": "38060",
+     "a_name": "Dallas",
+     "b_name": "Phoenix",
+     "alpha": 0.07475940011332273,
+     "weight": 4499,
+     "top_employer": "Cognizant",
+     "top_share": 0.068,
+     "shortlist": true
+    },
+    {
+     "a": "19100",
+     "b": "32820",
+     "a_name": "Dallas",
+     "b_name": "Memphis",
+     "alpha": 0.055507280432466374,
+     "weight": 873,
+     "top_employer": "FedEx",
+     "top_share": 0.215,
+     "shortlist": false
+    },
+    {
+     "a": "19100",
+     "b": "36740",
+     "a_name": "Dallas",
+     "b_name": "Orlando",
+     "alpha": 0.09397693858615946,
+     "weight": 1844,
+     "top_employer": "Deloitte",
+     "top_share": 0.279,
+     "shortlist": false
+    },
+    {
+     "a": "19100",
+     "b": "41700",
+     "a_name": "Dallas",
+     "b_name": "San Antonio",
+     "alpha": 0.07108659537017017,
+     "weight": 1938,
+     "top_employer": "HCL",
+     "top_share": 0.163,
+     "shortlist": true
+    },
+    {
+     "a": "19100",
+     "b": "25540",
+     "a_name": "Dallas",
+     "b_name": "Hartford",
+     "alpha": 0.08012471414131037,
+     "weight": 2359,
+     "top_employer": "Cognizant",
+     "top_share": 0.258,
+     "shortlist": true
+    },
+    {
+     "a": "19100",
+     "b": "40060",
+     "a_name": "Dallas",
+     "b_name": "Richmond",
+     "alpha": 0.09028689278033593,
+     "weight": 1725,
+     "top_employer": "Capital One",
+     "top_share": 0.1,
+     "shortlist": false
+    },
+    {
+     "a": "41940",
+     "b": "31080",
+     "a_name": "San Jose",
+     "b_name": "Los Angeles",
+     "alpha": 0.09335324900753855,
+     "weight": 5012,
+     "top_employer": "Amazon",
+     "top_share": 0.117,
+     "shortlist": false
+    },
+    {
+     "a": "41940",
+     "b": "38900",
+     "a_name": "San Jose",
+     "b_name": "Portland",
+     "alpha": 0.09765655986284068,
+     "weight": 1857,
+     "top_employer": "Intel",
+     "top_share": 0.236,
+     "shortlist": false
+    },
+    {
+     "a": "41860",
+     "b": "31080",
+     "a_name": "San Francisco",
+     "b_name": "Los Angeles",
+     "alpha": 0.08192579640486185,
+     "weight": 5279,
+     "top_employer": "Amazon",
+     "top_share": 0.111,
+     "shortlist": false
+    },
+    {
+     "a": "47900",
+     "b": "12580",
+     "a_name": "Washington",
+     "b_name": "Baltimore",
+     "alpha": 0.07826033953884744,
+     "weight": 1549,
+     "top_employer": "University of Maryland College Park",
+     "top_share": 0.109,
+     "shortlist": false
+    }
+   ],
+   "breaking_links_count": 18,
+   "b_links_included": [
+    {
+     "a": "19100",
+     "b": "20500",
+     "a_name": "Dallas",
+     "b_name": "Durham",
+     "alpha": 0.041129561673435636,
+     "weight": 2210,
+     "top_employer": "Fidelity Investments",
+     "top_share": 0.381,
+     "shortlist": false
+    },
+    {
+     "a": "35620",
+     "b": "41860",
+     "a_name": "New York",
+     "b_name": "San Francisco",
+     "alpha": 0.02246974481328852,
+     "weight": 11853,
+     "top_employer": "Amazon",
+     "top_share": 0.127,
+     "shortlist": false
+    }
+   ],
+   "led_by_shortlist": 6,
+   "flagged_links": 20,
+   "backbone_alpha02_total": 180,
+   "backbone_alpha02_shortlist": 70,
+   "backbone_alpha02_shortlist_share": 0.389,
+   "flagged_shortlist_share": 0.3,
+   "hypergeom_expected_shortlist": 7.78,
+   "hypergeom_p": 0.2706
+  },
+  "sweep_thinned": [
+   {
+    "alpha": 1.0,
+    "gc_size": 40
+   },
+   {
+    "alpha": 0.1387,
+    "gc_size": 40
+   },
+   {
+    "alpha": 0.1349,
+    "gc_size": 39
+   },
+   {
+    "alpha": 0.1296,
+    "gc_size": 39
+   },
+   {
+    "alpha": 0.1288,
+    "gc_size": 38
+   },
+   {
+    "alpha": 0.1277,
+    "gc_size": 38
+   },
+   {
+    "alpha": 0.1255,
+    "gc_size": 37
+   },
+   {
+    "alpha": 0.1216,
+    "gc_size": 37
+   },
+   {
+    "alpha": 0.118,
+    "gc_size": 36
+   },
+   {
+    "alpha": 0.1156,
+    "gc_size": 36
+   },
+   {
+    "alpha": 0.1132,
+    "gc_size": 35
+   },
+   {
+    "alpha": 0.1124,
+    "gc_size": 34
+   },
+   {
+    "alpha": 0.111,
+    "gc_size": 34
+   },
+   {
+    "alpha": 0.1104,
+    "gc_size": 33
+   },
+   {
+    "alpha": 0.1066,
+    "gc_size": 32
+   },
+   {
+    "alpha": 0.09958,
+    "gc_size": 32
+   },
+   {
+    "alpha": 0.09766,
+    "gc_size": 31
+   },
+   {
+    "alpha": 0.09398,
+    "gc_size": 30
+   },
+   {
+    "alpha": 0.09048,
+    "gc_size": 30
+   },
+   {
+    "alpha": 0.09029,
+    "gc_size": 29
+   },
+   {
+    "alpha": 0.09003,
+    "gc_size": 28
+   },
+   {
+    "alpha": 0.08903,
+    "gc_size": 28
+   },
+   {
+    "alpha": 0.08875,
+    "gc_size": 27
+   },
+   {
+    "alpha": 0.08447,
+    "gc_size": 27
+   },
+   {
+    "alpha": 0.08292,
+    "gc_size": 26
+   },
+   {
+    "alpha": 0.07887,
+    "gc_size": 26
+   },
+   {
+    "alpha": 0.07872,
+    "gc_size": 25
+   },
+   {
+    "alpha": 0.07826,
+    "gc_size": 24
+   },
+   {
+    "alpha": 0.07531,
+    "gc_size": 24
+   },
+   {
+    "alpha": 0.07476,
+    "gc_size": 23
+   },
+   {
+    "alpha": 0.07252,
+    "gc_size": 23
+   },
+   {
+    "alpha": 0.07109,
+    "gc_size": 22
+   },
+   {
+    "alpha": 0.06551,
+    "gc_size": 22
+   },
+   {
+    "alpha": 0.06154,
+    "gc_size": 21
+   },
+   {
+    "alpha": 0.0613,
+    "gc_size": 21
+   },
+   {
+    "alpha": 0.06042,
+    "gc_size": 20
+   },
+   {
+    "alpha": 0.05864,
+    "gc_size": 20
+   },
+   {
+    "alpha": 0.05551,
+    "gc_size": 19
+   },
+   {
+    "alpha": 0.05021,
+    "gc_size": 19
+   },
+   {
+    "alpha": 0.0495,
+    "gc_size": 18
+   },
+   {
+    "alpha": 0.04845,
+    "gc_size": 18
+   },
+   {
+    "alpha": 0.0479,
+    "gc_size": 17
+   },
+   {
+    "alpha": 0.04632,
+    "gc_size": 16
+   },
+   {
+    "alpha": 0.04559,
+    "gc_size": 16
+   },
+   {
+    "alpha": 0.04192,
+    "gc_size": 15
+   },
+   {
+    "alpha": 0.04139,
+    "gc_size": 14
+   },
+   {
+    "alpha": 0.04113,
+    "gc_size": 12
+   },
+   {
+    "alpha": 0.04099,
+    "gc_size": 11
+   },
+   {
+    "alpha": 0.04036,
+    "gc_size": 11
+   },
+   {
+    "alpha": 0.04008,
+    "gc_size": 10
+   },
+   {
+    "alpha": 0.03942,
+    "gc_size": 9
+   },
+   {
+    "alpha": 0.03904,
+    "gc_size": 8
+   },
+   {
+    "alpha": 0.03631,
+    "gc_size": 8
+   },
+   {
+    "alpha": 0.03607,
+    "gc_size": 7
+   },
+   {
+    "alpha": 0.03206,
+    "gc_size": 7
+   },
+   {
+    "alpha": 0.03047,
+    "gc_size": 6
+   },
+   {
+    "alpha": 0.03007,
+    "gc_size": 6
+   },
+   {
+    "alpha": 0.02304,
+    "gc_size": 5
+   },
+   {
+    "alpha": 0.02256,
+    "gc_size": 5
+   },
+   {
+    "alpha": 0.02247,
+    "gc_size": 3
+   },
+   {
+    "alpha": 0.00954,
+    "gc_size": 3
+   },
+   {
+    "alpha": 0.007103,
+    "gc_size": 2
+   },
+   {
+    "alpha": 0.004579,
+    "gc_size": 1
+   }
+  ],
+  "sweep_points": 63
+ }
+}

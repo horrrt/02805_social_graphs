@@ -1,0 +1,764 @@
+{
+ "generated_by": "analysis/week04_jobs_split.py",
+ "year": 2025,
+ "seed": 204,
+ "meta": {
+  "filings": 537796,
+  "companies": 59230,
+  "occupations": 501
+ },
+ "q1": {
+  "variants": {
+   "min20": {
+    "placing_companies": 818,
+    "direct_companies": 58412,
+    "placing_filings": 115010,
+    "direct_filings": 422786,
+    "placing_filing_share": 0.2139,
+    "placing_occupations": 218,
+    "direct_occupations": 500,
+    "observed": {
+     "n": 217,
+     "nmi": 0.4229651336891435,
+     "ami": 0.4105121956707437
+    },
+    "placing_modularity": 0.22319573135554513,
+    "direct_modularity": 0.29554144160092116,
+    "placing_clusters": 4,
+    "direct_clusters": 69,
+    "placing_soc_agreement": {
+     "nmi": 0.30894709905338474,
+     "ami": 0.26899673960209713,
+     "occupations": 218
+    },
+    "direct_soc_agreement": {
+     "nmi": 0.23763258226132492,
+     "ami": 0.1962351538119702,
+     "occupations": 437
+    },
+    "placing_top_occupations": [
+     {
+      "id": "15-1252",
+      "title": "Software Developers",
+      "filings": 31913,
+      "share": 0.2775
+     },
+     {
+      "id": "15-1299",
+      "title": "Computer Occupations, All Other",
+      "filings": 25379,
+      "share": 0.2207
+     },
+     {
+      "id": "15-1251",
+      "title": "Computer Programmers",
+      "filings": 8588,
+      "share": 0.0747
+     },
+     {
+      "id": "15-1253",
+      "title": "Software Quality Assurance Analysts and Testers",
+      "filings": 8375,
+      "share": 0.0728
+     },
+     {
+      "id": "15-1211",
+      "title": "Computer Systems Analysts",
+      "filings": 7252,
+      "share": 0.0631
+     },
+     {
+      "id": "13-2011",
+      "title": "Accountants and Auditors",
+      "filings": 4298,
+      "share": 0.0374
+     },
+     {
+      "id": "15-1242",
+      "title": "Database Administrators",
+      "filings": 3075,
+      "share": 0.0267
+     },
+     {
+      "id": "15-2051",
+      "title": "Data Scientists",
+      "filings": 3002,
+      "share": 0.0261
+     },
+     {
+      "id": "11-3021",
+      "title": "Computer and Information Systems Managers",
+      "filings": 2349,
+      "share": 0.0204
+     },
+     {
+      "id": "13-1111",
+      "title": "Management Analysts",
+      "filings": 2092,
+      "share": 0.0182
+     },
+     {
+      "id": "15-1244",
+      "title": "Network and Computer Systems Administrators",
+      "filings": 2038,
+      "share": 0.0177
+     },
+     {
+      "id": "17-2141",
+      "title": "Mechanical Engineers",
+      "filings": 1423,
+      "share": 0.0124
+     },
+     {
+      "id": "15-1212",
+      "title": "Information Security Analysts",
+      "filings": 1336,
+      "share": 0.0116
+     },
+     {
+      "id": "15-2031",
+      "title": "Operations Research Analysts",
+      "filings": 1171,
+      "share": 0.0102
+     },
+     {
+      "id": "15-1243",
+      "title": "Database Architects",
+      "filings": 1136,
+      "share": 0.0099
+     }
+    ],
+    "direct_top_occupations": [
+     {
+      "id": "15-1252",
+      "title": "Software Developers",
+      "filings": 138527,
+      "share": 0.3277
+     },
+     {
+      "id": "15-2051",
+      "title": "Data Scientists",
+      "filings": 28463,
+      "share": 0.0673
+     },
+     {
+      "id": "15-1299",
+      "title": "Computer Occupations, All Other",
+      "filings": 22085,
+      "share": 0.0522
+     },
+     {
+      "id": "11-3021",
+      "title": "Computer and Information Systems Managers",
+      "filings": 10236,
+      "share": 0.0242
+     },
+     {
+      "id": "15-1253",
+      "title": "Software Quality Assurance Analysts and Testers",
+      "filings": 10225,
+      "share": 0.0242
+     },
+     {
+      "id": "17-2112",
+      "title": "Industrial Engineers",
+      "filings": 8900,
+      "share": 0.0211
+     },
+     {
+      "id": "17-2141",
+      "title": "Mechanical Engineers",
+      "filings": 8711,
+      "share": 0.0206
+     },
+     {
+      "id": "17-2072",
+      "title": "Electronics Engineers, Except Computer",
+      "filings": 7647,
+      "share": 0.0181
+     },
+     {
+      "id": "13-2051",
+      "title": "Financial and Investment Analysts",
+      "filings": 6598,
+      "share": 0.0156
+     },
+     {
+      "id": "17-2071",
+      "title": "Electrical Engineers",
+      "filings": 6536,
+      "share": 0.0155
+     },
+     {
+      "id": "15-2031",
+      "title": "Operations Research Analysts",
+      "filings": 6304,
+      "share": 0.0149
+     },
+     {
+      "id": "17-2051",
+      "title": "Civil Engineers",
+      "filings": 5737,
+      "share": 0.0136
+     },
+     {
+      "id": "15-1211",
+      "title": "Computer Systems Analysts",
+      "filings": 5689,
+      "share": 0.0135
+     },
+     {
+      "id": "29-1229",
+      "title": "Physicians, All Other",
+      "filings": 5291,
+      "share": 0.0125
+     },
+     {
+      "id": "13-2011",
+      "title": "Accountants and Auditors",
+      "filings": 5179,
+      "share": 0.0122
+     }
+    ],
+    "only_in_placing": {
+     "count": 1,
+     "top": [
+      {
+       "id": "27-2032",
+       "filings": 1
+      }
+     ]
+    },
+    "only_in_direct": {
+     "count": 283,
+     "top": [
+      {
+       "id": "19-1012",
+       "filings": 411
+      },
+      {
+       "id": "27-1025",
+       "filings": 379
+      },
+      {
+       "id": "17-1012",
+       "filings": 353
+      },
+      {
+       "id": "29-1131",
+       "filings": 345
+      },
+      {
+       "id": "27-1014",
+       "filings": 285
+      },
+      {
+       "id": "21-2011",
+       "filings": 247
+      },
+      {
+       "id": "19-3051",
+       "filings": 235
+      },
+      {
+       "id": "11-9151",
+       "filings": 220
+      },
+      {
+       "id": "19-3099",
+       "filings": 214
+      },
+      {
+       "id": "17-2144",
+       "filings": 212
+      }
+     ]
+    }
+   },
+   "any": {
+    "placing_companies": 8282,
+    "direct_companies": 50948,
+    "placing_filings": 215870,
+    "direct_filings": 321926,
+    "placing_filing_share": 0.4014,
+    "placing_occupations": 329,
+    "direct_occupations": 496,
+    "observed": {
+     "n": 311,
+     "nmi": 0.5213257264272586,
+     "ami": 0.5101976977477916
+    },
+    "placing_modularity": 0.3166298650333333,
+    "direct_modularity": 0.2860779768024966,
+    "placing_clusters": 15,
+    "direct_clusters": 73,
+    "placing_soc_agreement": {
+     "nmi": 0.22133678845300714,
+     "ami": 0.18603359345822637,
+     "occupations": 318
+    },
+    "direct_soc_agreement": {
+     "nmi": 0.25757133437336766,
+     "ami": 0.20867500225271196,
+     "occupations": 431
+    },
+    "placing_top_occupations": [
+     {
+      "id": "15-1252",
+      "title": "Software Developers",
+      "filings": 71251,
+      "share": 0.3301
+     },
+     {
+      "id": "15-1299",
+      "title": "Computer Occupations, All Other",
+      "filings": 31648,
+      "share": 0.1466
+     },
+     {
+      "id": "15-1251",
+      "title": "Computer Programmers",
+      "filings": 11917,
+      "share": 0.0552
+     },
+     {
+      "id": "15-1253",
+      "title": "Software Quality Assurance Analysts and Testers",
+      "filings": 11743,
+      "share": 0.0544
+     },
+     {
+      "id": "15-1211",
+      "title": "Computer Systems Analysts",
+      "filings": 9864,
+      "share": 0.0457
+     },
+     {
+      "id": "15-2051",
+      "title": "Data Scientists",
+      "filings": 9132,
+      "share": 0.0423
+     },
+     {
+      "id": "13-2011",
+      "title": "Accountants and Auditors",
+      "filings": 4792,
+      "share": 0.0222
+     },
+     {
+      "id": "15-1242",
+      "title": "Database Administrators",
+      "filings": 4512,
+      "share": 0.0209
+     },
+     {
+      "id": "11-3021",
+      "title": "Computer and Information Systems Managers",
+      "filings": 4355,
+      "share": 0.0202
+     },
+     {
+      "id": "15-1244",
+      "title": "Network and Computer Systems Administrators",
+      "filings": 3377,
+      "share": 0.0156
+     },
+     {
+      "id": "29-1229",
+      "title": "Physicians, All Other",
+      "filings": 2817,
+      "share": 0.013
+     },
+     {
+      "id": "13-1111",
+      "title": "Management Analysts",
+      "filings": 2695,
+      "share": 0.0125
+     },
+     {
+      "id": "17-2112",
+      "title": "Industrial Engineers",
+      "filings": 2527,
+      "share": 0.0117
+     },
+     {
+      "id": "17-2141",
+      "title": "Mechanical Engineers",
+      "filings": 2474,
+      "share": 0.0115
+     },
+     {
+      "id": "15-2031",
+      "title": "Operations Research Analysts",
+      "filings": 2415,
+      "share": 0.0112
+     }
+    ],
+    "direct_top_occupations": [
+     {
+      "id": "15-1252",
+      "title": "Software Developers",
+      "filings": 99189,
+      "share": 0.3081
+     },
+     {
+      "id": "15-2051",
+      "title": "Data Scientists",
+      "filings": 22333,
+      "share": 0.0694
+     },
+     {
+      "id": "15-1299",
+      "title": "Computer Occupations, All Other",
+      "filings": 15816,
+      "share": 0.0491
+     },
+     {
+      "id": "11-3021",
+      "title": "Computer and Information Systems Managers",
+      "filings": 8230,
+      "share": 0.0256
+     },
+     {
+      "id": "17-2141",
+      "title": "Mechanical Engineers",
+      "filings": 7660,
+      "share": 0.0238
+     },
+     {
+      "id": "17-2112",
+      "title": "Industrial Engineers",
+      "filings": 7490,
+      "share": 0.0233
+     },
+     {
+      "id": "15-1253",
+      "title": "Software Quality Assurance Analysts and Testers",
+      "filings": 6857,
+      "share": 0.0213
+     },
+     {
+      "id": "13-2051",
+      "title": "Financial and Investment Analysts",
+      "filings": 6391,
+      "share": 0.0199
+     },
+     {
+      "id": "17-2072",
+      "title": "Electronics Engineers, Except Computer",
+      "filings": 6080,
+      "share": 0.0189
+     },
+     {
+      "id": "17-2071",
+      "title": "Electrical Engineers",
+      "filings": 5705,
+      "share": 0.0177
+     },
+     {
+      "id": "15-2031",
+      "title": "Operations Research Analysts",
+      "filings": 5060,
+      "share": 0.0157
+     },
+     {
+      "id": "13-2011",
+      "title": "Accountants and Auditors",
+      "filings": 4685,
+      "share": 0.0146
+     },
+     {
+      "id": "17-2051",
+      "title": "Civil Engineers",
+      "filings": 4682,
+      "share": 0.0145
+     },
+     {
+      "id": "13-1161",
+      "title": "Market Research Analysts and Marketing Specialists",
+      "filings": 4550,
+      "share": 0.0141
+     },
+     {
+      "id": "13-1111",
+      "title": "Management Analysts",
+      "filings": 3652,
+      "share": 0.0113
+     }
+    ],
+    "only_in_placing": {
+     "count": 5,
+     "top": [
+      {
+       "id": "23-1021",
+       "filings": 2
+      },
+      {
+       "id": "17-3028",
+       "filings": 1
+      },
+      {
+       "id": "27-2032",
+       "filings": 1
+      },
+      {
+       "id": "31-1133",
+       "filings": 1
+      },
+      {
+       "id": "49-9071",
+       "filings": 1
+      }
+     ]
+    },
+    "only_in_direct": {
+     "count": 172,
+     "top": [
+      {
+       "id": "13-2052",
+       "filings": 82
+      },
+      {
+       "id": "25-3021",
+       "filings": 64
+      },
+      {
+       "id": "29-1291",
+       "filings": 61
+      },
+      {
+       "id": "21-1099",
+       "filings": 51
+      },
+      {
+       "id": "11-9031",
+       "filings": 49
+      },
+      {
+       "id": "13-2053",
+       "filings": 43
+      },
+      {
+       "id": "43-3031",
+       "filings": 39
+      },
+      {
+       "id": "21-1093",
+       "filings": 34
+      },
+      {
+       "id": "11-9141",
+       "filings": 32
+      },
+      {
+       "id": "13-2072",
+       "filings": 31
+      }
+     ]
+    }
+   }
+  },
+  "null": {
+   "company_count_matched": {
+    "runs": 20,
+    "matched_on": "count",
+    "n_shared_qualifying_median": 182,
+    "nmi_mean": 0.47051275505192364,
+    "nmi_sd": 0.0704316299276849,
+    "nmi_min": 0.35691783721009473,
+    "ami_mean": 0.44996861638920455,
+    "filing_share_of_group_a_mean": 0.0153,
+    "filing_share_of_group_a_sd": 0.0079
+   },
+   "filing_total_matched": {
+    "runs": 20,
+    "matched_on": "filings",
+    "n_shared_qualifying_median": 331,
+    "nmi_mean": 0.5798512929295015,
+    "nmi_sd": 0.05320827452142241,
+    "nmi_min": 0.4562606727302854,
+    "ami_mean": 0.5707654252505142,
+    "filing_share_of_group_a_mean": 0.2179,
+    "filing_share_of_group_a_sd": 0.0099
+   }
+  },
+  "headline": {
+   "variant": "min20",
+   "observed_nmi": 0.4229651336891435,
+   "observed_ami": 0.4105121956707437,
+   "observed_n": 217,
+   "verdict": "no, consistent with the null"
+  }
+ },
+ "q2": {
+  "occupations": 501,
+  "links": 28155,
+  "link_pairs_sharing_a_node": 5724942,
+  "budget": 30000000,
+  "on": "full projection",
+  "D_at_cut": 0.5671121945516808,
+  "cut_similarity": 0.5352941155433655,
+  "merges": 27825,
+  "merges_possible": 28154,
+  "link_clusters": 330,
+  "link_clusters_of_3_or_more": 121,
+  "spearman_communities_vs_degree": {
+   "rho": 0.8391750148189645,
+   "p": 2.140789059086314e-117,
+   "n": 438
+  },
+  "top15_by_communities_per_link": [
+   {
+    "id": "31-2022",
+    "title": "Physical Therapist Aides",
+    "links": 10,
+    "communities": 4,
+    "communities_per_link": 0.4
+   },
+   {
+    "id": "11-9032",
+    "title": "Education Administrators, Kindergarten through Secondary",
+    "links": 31,
+    "communities": 12,
+    "communities_per_link": 0.387
+   },
+   {
+    "id": "11-9031",
+    "title": "Education and Childcare Administrators, Preschool and Daycare",
+    "links": 11,
+    "communities": 4,
+    "communities_per_link": 0.364
+   },
+   {
+    "id": "43-2099",
+    "title": "Communications Equipment Operators, All Other",
+    "links": 11,
+    "communities": 4,
+    "communities_per_link": 0.364
+   },
+   {
+    "id": "49-9051",
+    "title": "Electrical Power-Line Installers and Repairers",
+    "links": 11,
+    "communities": 4,
+    "communities_per_link": 0.364
+   },
+   {
+    "id": "25-2057",
+    "title": "Special Education Teachers, Middle School",
+    "links": 40,
+    "communities": 14,
+    "communities_per_link": 0.35
+   },
+   {
+    "id": "29-2061",
+    "title": "Licensed Practical and Licensed Vocational Nurses",
+    "links": 15,
+    "communities": 5,
+    "communities_per_link": 0.333
+   },
+   {
+    "id": "43-4111",
+    "title": "Interviewers, Except Eligibility and Loan",
+    "links": 19,
+    "communities": 6,
+    "communities_per_link": 0.316
+   },
+   {
+    "id": "25-2023",
+    "title": "Career/Technical Education Teachers, Middle School",
+    "links": 13,
+    "communities": 4,
+    "communities_per_link": 0.308
+   },
+   {
+    "id": "25-2058",
+    "title": "Special Education Teachers, Secondary School",
+    "links": 49,
+    "communities": 15,
+    "communities_per_link": 0.306
+   },
+   {
+    "id": "25-2012",
+    "title": "Kindergarten Teachers, Except Special Education",
+    "links": 43,
+    "communities": 13,
+    "communities_per_link": 0.302
+   },
+   {
+    "id": "35-1011",
+    "title": "Chefs and Head Cooks",
+    "links": 17,
+    "communities": 5,
+    "communities_per_link": 0.294
+   },
+   {
+    "id": "25-2021",
+    "title": "Elementary School Teachers, Except Special Education",
+    "links": 66,
+    "communities": 19,
+    "communities_per_link": 0.288
+   },
+   {
+    "id": "21-1013",
+    "title": "Marriage and Family Therapists",
+    "links": 18,
+    "communities": 5,
+    "communities_per_link": 0.278
+   },
+   {
+    "id": "13-2071",
+    "title": "Credit Counselors",
+    "links": 11,
+    "communities": 3,
+    "communities_per_link": 0.273
+   }
+  ],
+  "bridges": {
+   "all_occupations": [
+    {
+     "id": "11-9081",
+     "title": "Lodging Managers",
+     "links": 26
+    },
+    {
+     "id": "13-2071",
+     "title": "Credit Counselors",
+     "links": 11
+    },
+    {
+     "id": "17-3013",
+     "title": "Mechanical Drafters",
+     "links": 9
+    },
+    {
+     "id": "27-3099",
+     "title": "Media and Communication Workers, All Other",
+     "links": 44
+    },
+    {
+     "id": "29-1125",
+     "title": "Recreational Therapists",
+     "links": 94
+    },
+    {
+     "id": "41-1011",
+     "title": "First-Line Supervisors of Retail Sales Workers",
+     "links": 65
+    },
+    {
+     "id": "43-4111",
+     "title": "Interviewers, Except Eligibility and Loan",
+     "links": 19
+    }
+   ],
+   "count": 7,
+   "in_top15": [
+    "13-2071",
+    "43-4111"
+   ],
+   "in_top15_count": 2
+  }
+ },
+ "seconds": 151
+}

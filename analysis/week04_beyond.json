@@ -1,0 +1,451 @@
+{
+ "generated_by": "analysis/week04_beyond.py",
+ "year": 2025,
+ "runs": 100,
+ "seed": 2805,
+ "staffing_rebuild": {
+  "nodes": 21759,
+  "edges": 41212,
+  "modularity_best": 0.5983,
+  "communities": 68
+ },
+ "q1": {
+  "lawfirm_column_coverage": 0.7561,
+  "certified_filings": 537796,
+  "distinct_raw_spellings": 6853,
+  "distinct_law_firms_after_normalize": 4479,
+  "spellings_collapsed": 2374,
+  "rows_with_no_usable_key_after_normalize": 0,
+  "caveat": "normalize() does not strip PC/PLLC/APC suffixes or firm-name abbreviations, so the same firm can sit under two keys (e.g. 'OGLETREE DEAKINS NASH SMOAK AND STEWART PC' beside the short form 'OGLETREE DEAKINS'); no further merging was applied.",
+  "staffing_giant_firms": 6560,
+  "employers_naming_a_law_firm": 54730,
+  "employers_restricted_to_staffing_firms": 5302,
+  "law_graph": {
+   "nodes": 4939,
+   "edges": 5450,
+   "firms": 4576,
+   "law_firms": 363
+  },
+  "runs": 100,
+  "modularity_mean": 0.8992,
+  "modularity_sd": 0.0,
+  "modularity_best": 0.8992,
+  "rewired_null_mean": 0.9304,
+  "rewired_null_sd": 0.0062,
+  "rewired_giant_node_share_median": 0.9333,
+  "modularity_z_vs_rewired": -5.07,
+  "modularity_z_caveat": "negative: the rewired giant is nearly as large as the real one (rewired_giant_node_share_median above) yet still scores higher. Many employers use a single law firm, so the wiring is sparse and close to a forest of stars; that shape gives high modularity to both the real network and its reshuffled wiring (the trap WEEK04.md's traps list already names for section 3's own sparse quarter). Q does not discriminate here; AMI against the rewired null does.",
+  "firms_compared": 4576,
+  "nmi_with_staffing_partition": 0.132,
+  "nmi_shuffle_p": 0.001,
+  "ami_with_staffing_partition": 0.037,
+  "ami_shuffle_p": 0.001,
+  "ami_rewired_null_mean": -0.0002,
+  "ami_rewired_null_sd": 0.0021,
+  "ami_z_vs_rewired": 18.12,
+  "single_law_firm_employers": 4510,
+  "single_law_firm_filing_share": 0.6444,
+  "top_law_firms": [
+   {
+    "law_firm": "Fragomen DEL REY Bernsen and Loewy",
+    "filings": 14087,
+    "employers": 131
+   },
+   {
+    "law_firm": "EY LAW",
+    "filings": 10274,
+    "employers": 8
+   },
+   {
+    "law_firm": "Berry Appleman and Leiden",
+    "filings": 9532,
+    "employers": 23
+   },
+   {
+    "law_firm": "LAW Office of Thomas V Allen Pllc",
+    "filings": 5413,
+    "employers": 493
+   },
+   {
+    "law_firm": "Goel and Anderson",
+    "filings": 4269,
+    "employers": 17
+   },
+   {
+    "law_firm": "Usilaw",
+    "filings": 3909,
+    "employers": 23
+   },
+   {
+    "law_firm": "Chugh",
+    "filings": 3261,
+    "employers": 135
+   },
+   {
+    "law_firm": "Fakhoury Global Immigration USA PC",
+    "filings": 2959,
+    "employers": 18
+   },
+   {
+    "law_firm": "BBI LAW Group PC",
+    "filings": 2735,
+    "employers": 306
+   },
+   {
+    "law_firm": "LAW Firm of SIM Parvathaneni and Brown Pllc",
+    "filings": 2649,
+    "employers": 332
+   }
+  ],
+  "same_split_as_vendors": true,
+  "finding": "Yes, above chance but weak (AMI 0.037, NMI 0.132)",
+  "seconds": 12
+ },
+ "q2": {
+  "certified_h1b_filings": 537796,
+  "perm_certified_or_expired_filings": 137753,
+  "min_filings": 20,
+  "perm_match_rate_20plus_h1b_employers": 0.8025,
+  "perm_fein_note": "PERM carries an employer tax number only from FY2024 onward, so an employer without one on the PERM side is matched by resolver().employer()'s name rules alone, the same rules FY2022-FY2023 H-1B filings rely on.",
+  "placing_firms_20plus_placed": {
+   "employers": 818,
+   "h1b_filings": 115010,
+   "perm_filings": 12473,
+   "pooled_ratio": 0.1085,
+   "pooled_ci95": [
+    0.0798,
+    0.1507
+   ],
+   "median_ratio": 0.1046,
+   "median_ci95": [
+    0.0909,
+    0.1196
+   ],
+   "perm_match_rate": 0.7592,
+   "perm_match_rate_by_filings": 0.7838
+  },
+  "direct_firms_20plus_h1b": {
+   "employers": 2675,
+   "h1b_filings": 267573,
+   "perm_filings": 48378,
+   "pooled_ratio": 0.1808,
+   "pooled_ci95": [
+    0.1447,
+    0.2153
+   ],
+   "median_ratio": 0.141,
+   "median_ci95": [
+    0.1333,
+    0.1493
+   ],
+   "perm_match_rate": 0.8157,
+   "perm_match_rate_by_filings": 0.8006
+  },
+  "perm_match_rate_caveat": "match rates differ between the two groups, by employer count and by the H-1B filings behind them (perm_match_rate / perm_match_rate_by_filings above), though the filing-weighted gap is small (about 2 points). 42436 of 137,753 PERM filings kept a name-only key that never joined an LCA-side FEIN family; many of those belong to employers that file no H-1B at all, so this is an upper bound on join failures, not a count of them. Checked directly for the four largest H-1B employers with perm_filings of 0 (Amazon, Google, Cognizant, Infosys): their FY2025 PERM rows under any spelling of the name are themselves near zero (0 to 3 rows before any key-matching), so these zeros are real, not a resolver join failure; whether that reflects true sponsorship, a filing under a legal-entity name this check did not try, or a certification lag was not investigated further.",
+  "top10_zero_perm_employers": [
+   "Amazon",
+   "Cognizant",
+   "Google",
+   "Infosys"
+  ],
+  "sensitivity_share_based_placing_rule": {
+   "placing": {
+    "employers": 948,
+    "h1b_filings": 83989,
+    "perm_filings": 11173,
+    "pooled_ratio": 0.133,
+    "pooled_ci95": [
+     0.1012,
+     0.1784
+    ],
+    "median_ratio": 0.1015,
+    "median_ci95": [
+     0.0915,
+     0.12
+    ],
+    "perm_match_rate": 0.7363,
+    "perm_match_rate_by_filings": 0.8229
+   },
+   "direct": {
+    "employers": 2545,
+    "h1b_filings": 298594,
+    "perm_filings": 49678,
+    "pooled_ratio": 0.1664,
+    "pooled_ci95": [
+     0.133,
+     0.1989
+    ],
+    "median_ratio": 0.1429,
+    "median_ci95": [
+     0.1346,
+     0.15
+    ],
+    "perm_match_rate": 0.8271,
+    "perm_match_rate_by_filings": 0.7879
+   }
+  },
+  "placing_vs_direct_ci_overlap": "the pooled-ratio 95% CIs already touch under the spec rule (placing up to 0.149, direct from 0.141) and overlap more under the share-based sensitivity rule (0.101-0.180 vs 0.132-0.202): the placing/direct gap in pooled ratios is not robust to how 'placing' is defined.",
+  "top6_staffing_communities_by_filings": {
+   "5": {
+    "firms": 307,
+    "h1b_filings": 15740,
+    "perm_filings": 1567,
+    "pooled_ratio": 0.0996,
+    "top_firms": [
+     "Tata Consultancy Services",
+     "LTIMindtree",
+     "CGI Technologies and Solutions"
+    ],
+    "largest_firm_filing_share": 0.4951
+   },
+   "9": {
+    "firms": 465,
+    "h1b_filings": 12652,
+    "perm_filings": 1201,
+    "pooled_ratio": 0.0949,
+    "top_firms": [
+     "Infosys",
+     "Slalom",
+     "Schneider Electric"
+    ],
+    "largest_firm_filing_share": 0.4537
+   },
+   "8": {
+    "firms": 442,
+    "h1b_filings": 10341,
+    "perm_filings": 1575,
+    "pooled_ratio": 0.1523,
+    "top_firms": [
+     "Compunnel Software",
+     "Kforce",
+     "Mastech Digital Technologies"
+    ],
+    "largest_firm_filing_share": 0.2201
+   },
+   "1": {
+    "firms": 240,
+    "h1b_filings": 14058,
+    "perm_filings": 402,
+    "pooled_ratio": 0.0286,
+    "top_firms": [
+     "Cognizant",
+     "University of California SAN Francisco",
+     "Cigniti Technologies"
+    ],
+    "largest_firm_filing_share": 0.7872
+   },
+   "19": {
+    "firms": 290,
+    "h1b_filings": 9193,
+    "perm_filings": 1307,
+    "pooled_ratio": 0.1422,
+    "top_firms": [
+     "Wipro",
+     "Mphasis",
+     "Virtusa"
+    ],
+    "largest_firm_filing_share": 0.2345
+   },
+   "3": {
+    "firms": 402,
+    "h1b_filings": 22025,
+    "perm_filings": 3162,
+    "pooled_ratio": 0.1436,
+    "top_firms": [
+     "Deloitte",
+     "Intel",
+     "IBM"
+    ],
+    "largest_firm_filing_share": 0.2409
+   }
+  },
+  "between_community_variance": 0.001819,
+  "permutation_shuffles": 1000,
+  "permutation_p": 0.4785,
+  "top10_h1b_employers": [
+   {
+    "employer": "Amazon",
+    "h1b_filings": 22493,
+    "perm_filings": 0,
+    "ratio": 0.0,
+    "in_placing": false,
+    "perm_matched": false
+   },
+   {
+    "employer": "Cognizant",
+    "h1b_filings": 11067,
+    "perm_filings": 0,
+    "ratio": 0.0,
+    "in_placing": true,
+    "perm_matched": false
+   },
+   {
+    "employer": "EY",
+    "h1b_filings": 9440,
+    "perm_filings": 279,
+    "ratio": 0.0296,
+    "in_placing": true,
+    "perm_matched": true
+   },
+   {
+    "employer": "Microsoft",
+    "h1b_filings": 9106,
+    "perm_filings": 2928,
+    "ratio": 0.3215,
+    "in_placing": false,
+    "perm_matched": true
+   },
+   {
+    "employer": "Google",
+    "h1b_filings": 8657,
+    "perm_filings": 0,
+    "ratio": 0.0,
+    "in_placing": false,
+    "perm_matched": false
+   },
+   {
+    "employer": "Tata Consultancy Services",
+    "h1b_filings": 7793,
+    "perm_filings": 506,
+    "ratio": 0.0649,
+    "in_placing": true,
+    "perm_matched": true
+   },
+   {
+    "employer": "Apple",
+    "h1b_filings": 6919,
+    "perm_filings": 1224,
+    "ratio": 0.1769,
+    "in_placing": false,
+    "perm_matched": true
+   },
+   {
+    "employer": "Meta",
+    "h1b_filings": 6418,
+    "perm_filings": 386,
+    "ratio": 0.0601,
+    "in_placing": false,
+    "perm_matched": true
+   },
+   {
+    "employer": "Infosys",
+    "h1b_filings": 5740,
+    "perm_filings": 0,
+    "ratio": 0.0,
+    "in_placing": true,
+    "perm_matched": false
+   },
+   {
+    "employer": "Deloitte",
+    "h1b_filings": 5306,
+    "perm_filings": 317,
+    "ratio": 0.0597,
+    "in_placing": true,
+    "perm_matched": true
+   }
+  ],
+  "between_communities_matters": false,
+  "finding": "No, no reliable difference",
+  "seconds": 3
+ },
+ "q3": {
+  "certified_filings": 537796,
+  "pw_wage_level_coverage": 0.9205,
+  "blank_by_group": {
+   "placed": 0.0182,
+   "direct": 0.0943,
+   "share_of_blanks_that_are_placed": 0.0446
+  },
+  "crude": {
+   "placed_low_share": 0.7949,
+   "direct_low_share": 0.5795,
+   "placed_filings": 102826,
+   "direct_filings": 392213
+  },
+  "strata_total": 499,
+  "strata_kept_20plus_each_side": 83,
+  "strata_kept_filing_share": 0.9159,
+  "strata_with_a_zero_cell": 2,
+  "strata_with_or_above_1": 69,
+  "strata_or_above_1_share": 0.8313,
+  "mantel_haenszel_odds_ratio": 3.5947,
+  "odds_ratio_ci95": [
+   3.5303,
+   3.6602
+  ],
+  "cmh_statistic": 20865.744,
+  "cmh_p": 0.0,
+  "breslow_day_statistic": 4174.119,
+  "breslow_day_p": 0.0,
+  "breslow_day_caveat": "large and significant at this many filings almost by construction; read it as 'the odds ratio is not exactly uniform across jobs', not as a reason to distrust the pooled direction (strata_or_above_1_share above).",
+  "top5_soc_by_filings": [
+   {
+    "soc7": "15-1252",
+    "filings": 152455,
+    "placed_low_share": 0.866,
+    "direct_low_share": 0.5199
+   },
+   {
+    "soc7": "15-1299",
+    "filings": 46748,
+    "placed_low_share": 0.6646,
+    "direct_low_share": 0.3841
+   },
+   {
+    "soc7": "15-2051",
+    "filings": 29224,
+    "placed_low_share": 0.8853,
+    "direct_low_share": 0.5919
+   },
+   {
+    "soc7": "15-1253",
+    "filings": 18002,
+    "placed_low_share": 0.7639,
+    "direct_low_share": 0.4954
+   },
+   {
+    "soc7": "15-1251",
+    "filings": 13376,
+    "placed_low_share": 0.8621,
+    "direct_low_share": 0.8434
+   }
+  ],
+  "wage_ratio_coverage": 0.9971,
+  "top5_soc_wage_ratio": [
+   {
+    "soc7": "15-1252",
+    "filings": 170082,
+    "placed_median_ratio": 1.0,
+    "direct_median_ratio": 1.0524
+   },
+   {
+    "soc7": "15-1299",
+    "filings": 47358,
+    "placed_median_ratio": 1.0,
+    "direct_median_ratio": 1.0205
+   },
+   {
+    "soc7": "15-2051",
+    "filings": 31387,
+    "placed_median_ratio": 1.0004,
+    "direct_median_ratio": 1.0842
+   },
+   {
+    "soc7": "15-1253",
+    "filings": 18565,
+    "placed_median_ratio": 1.0,
+    "direct_median_ratio": 1.0343
+   },
+   {
+    "soc7": "15-1251",
+    "filings": 13390,
+    "placed_median_ratio": 1.0,
+    "direct_median_ratio": 1.0012
+   }
+  ],
+  "placed_pays_lower_level": true,
+  "finding": "Yes, a lower wage level",
+  "seconds": 0
+ },
+ "seconds": 32
+}
