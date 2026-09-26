@@ -7,6 +7,7 @@ const WHERE_WHO_URL = new URL("../../weeks/week04/data/where_who.json", import.m
 const JOBS_SPLIT_URL = new URL("../../weeks/week04/data/jobs_split.json", import.meta.url);
 const STAFFING_MOVES_URL = new URL("../../weeks/week04/data/staffing_moves.json", import.meta.url);
 const BEYOND_URL = new URL("../../weeks/week04/data/beyond.json", import.meta.url);
+const FOOTPRINT_URL = new URL("../../weeks/week04/data/footprint.json", import.meta.url);
 
 const INK = "#0f2340";
 const MUTE = "#7a8fac";
@@ -230,10 +231,10 @@ function renderJobsSplitMix(data) {
   }).sort((a, b) => b.combined - a.combined).slice(0, 8).reverse();
   c.setOption({
     ...base,
-    grid: { left: 210, right: 24, top: 12, bottom: 36 },
-    legend: { bottom: 0, textStyle: { color: MUTE, fontSize: 11 } },
+    grid: { left: 210, right: 24, top: 34, bottom: 40 },
+    legend: { top: 0, right: 0, textStyle: { color: MUTE, fontSize: 11 } },
     xAxis: {
-      ...axis, type: "value", name: "share of group's filings →", nameLocation: "middle", nameGap: 28,
+      ...axis, type: "value", name: "share of group's filings →", nameLocation: "middle", nameGap: 26, splitNumber: 4,
       axisLabel: { ...axis.axisLabel, formatter: (v) => `${Math.round(v * 100)}%` },
     },
     yAxis: {
@@ -526,6 +527,100 @@ fetch(BEYOND_URL).then((response) => {
 }).catch((error) => {
   errorInto(["chart-beyond-law", "chart-beyond-perm", "chart-beyond-wage"],
     `Beyond data failed to load: ${error.message}`);
+});
+
+// Section 4 — without the biggest firms ------------------------------------
+// Each named drop sits beside its volume-matched random drop (mean ± sd of 20).
+const DROPS = [
+  ["drop_shortlist", "Five placing\nfirms out"],
+  ["control_shortlist", "Random cut,\nsame volume"],
+  ["drop_top10_filings", "Ten largest\nfilers out"],
+  ["control_top10_filings", "Random cut,\nsame volume"],
+];
+const variant = (part, id) => part.variants.find((v) => v.id === id);
+
+function dropBars(part, field) {
+  const bars = DROPS.map(([id]) => {
+    const v = variant(part, id);
+    return { value: v[field], itemStyle: { color: v.control ? GREY : ORANGE } };
+  });
+  const whiskers = DROPS.flatMap(([id], i) => {
+    const v = variant(part, id);
+    const sd = v[`${field}_sd`];
+    return v.control && sd != null ? [[i, v[field] - sd, v[field] + sd]] : [];
+  });
+  return { bars, whiskers };
+}
+
+function renderFootprintRegion(data) {
+  const c = chart("chart-footprint-region");
+  charts.push(c);
+  if (!c) return;
+  const full = variant(data.metros, "full");
+  const { bars, whiskers } = dropBars(data.metros, "ami_region");
+  c.setOption({
+    ...base,
+    grid: { left: 46, right: 18, top: 28, bottom: 46 },
+    xAxis: { ...axis, type: "category", data: DROPS.map(([, label]) => label), axisLabel: { ...axis.axisLabel, lineHeight: 13 } },
+    yAxis: { ...axis, type: "value", name: "AMI with Census regions", nameTextStyle: { color: MUTE, align: "left" } },
+    tooltip: { ...base.tooltip, formatter: (p) => `${esc(p.name.replace("\n", " "))}<br>AMI ${p.value.toFixed(3)}` },
+    series: [
+      {
+        type: "bar", data: bars, barMaxWidth: 42,
+        label: { show: true, position: "top", color: INK, formatter: (p) => p.value.toFixed(2) },
+        markLine: {
+          silent: true, symbol: "none", lineStyle: { color: MUTE, type: "dashed" },
+          label: { color: MUTE, formatter: `all firms ${full.ami_region.toFixed(2)}`, position: "insideEndTop" },
+          data: [{ yAxis: full.ami_region }],
+        },
+      },
+      whiskerSeries(whiskers),
+    ],
+  });
+}
+
+function renderFootprintNmi(data) {
+  const c = chart("chart-footprint-nmi");
+  charts.push(c);
+  if (!c) return;
+  const metros = dropBars(data.metros, "nmi_vs_full");
+  const jobs = dropBars(data.jobs, "nmi_vs_full");
+  // Unique keys per half, so the axis labels every bar and the shading finds its range.
+  const cats = ["metros", "jobs"].flatMap((part) => DROPS.map(([id]) => `${part}:${id}`));
+  const labelOf = (key) => DROPS.find(([id]) => id === key.split(":")[1])[1];
+  // Eight bars share half the width, so the axis gets short labels; the tooltip keeps the long ones.
+  const SHORT = { drop_shortlist: "5 placing\nout", control_shortlist: "random", drop_top10_filings: "10 largest\nout", control_top10_filings: "random" };
+  const shortOf = (key) => SHORT[key.split(":")[1]];
+  const shift = (w, n) => w.map(([i, lo, hi]) => [i + n, lo, hi]);
+  c.setOption({
+    ...base,
+    grid: { left: 46, right: 18, top: 28, bottom: 46 },
+    xAxis: { ...axis, type: "category", data: cats, axisLabel: { ...axis.axisLabel, interval: 0, lineHeight: 12, fontSize: 10, formatter: shortOf } },
+    yAxis: { ...axis, type: "value", min: 0, max: 1.1, interval: 0.2, name: "NMI with the full network's groups", nameTextStyle: { color: MUTE, align: "left" }, axisLabel: { ...axis.axisLabel, formatter: (v) => (v <= 1 ? v.toFixed(1) : "") } },
+    tooltip: { ...base.tooltip, formatter: (p) => `${p.dataIndex < 4 ? "Metros" : "Jobs"} · ${esc(labelOf(p.name).replace("\n", " "))}<br>NMI ${p.value.toFixed(2)}` },
+    series: [
+      {
+        type: "bar", data: [...metros.bars, ...jobs.bars], barMaxWidth: 34,
+        label: { show: true, position: "top", color: INK, formatter: (p) => p.value.toFixed(2) },
+        markArea: {
+          silent: true, itemStyle: { color: "rgba(31,143,214,0.05)" },
+          label: { color: MUTE, position: "insideTop" },
+          data: [[{ name: "Metros", xAxis: cats[0] }, { xAxis: cats[3] }], [{ name: "Jobs", xAxis: cats[4] }, { xAxis: cats[7] }]],
+        },
+      },
+      whiskerSeries([...metros.whiskers, ...shift(jobs.whiskers, 4)]),
+    ],
+  });
+}
+
+fetch(FOOTPRINT_URL).then((response) => {
+  if (!response.ok) throw new Error(`footprint data ${response.status}`);
+  return response.json();
+}).then((data) => {
+  renderFootprintRegion(data);
+  renderFootprintNmi(data);
+}).catch((error) => {
+  errorInto(["chart-footprint-region", "chart-footprint-nmi"], `Footprint data failed to load: ${error.message}`);
 });
 
 window.addEventListener("resize", () => charts.forEach((item) => item && item.resize()));

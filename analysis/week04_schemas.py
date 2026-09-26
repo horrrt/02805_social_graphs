@@ -718,6 +718,42 @@ class Beyond(Model):
     q3_top5_soc: list[Top5Soc] = Field(min_length=1)
 
 
+# Section 4 · docs/weeks/week04/data/footprint.json, read by week04-questions.js --
+
+class DropVariant(Model):
+    id: str
+    control: bool
+    filings_removed_share: float = Share
+    Q: float
+    nmi_vs_full: float = Share
+    nmi_vs_full_sd: float | None = None
+    ami_region: float | None = None
+    ami_region_sd: float | None = None
+
+
+class DropSet(Model):
+    variants: list[DropVariant]
+
+    @model_validator(mode="after")
+    def every_drop(self):
+        ids = {v.id for v in self.variants}
+        need = {"full", "drop_shortlist", "control_shortlist", "drop_top10_filings", "control_top10_filings"}
+        assert need <= ids, f"footprint variants missing: {sorted(need - ids)}"
+        assert all(v.nmi_vs_full_sd is not None for v in self.variants if v.control), \
+            "a control row needs the sd its whisker draws"
+        return self
+
+
+class Footprint(Model):
+    metros: DropSet
+    jobs: DropSet
+
+    @model_validator(mode="after")
+    def regions(self):
+        assert all(v.ami_region is not None for v in self.metros.variants), "metro rows need ami_region"
+        return self
+
+
 PAGES = {
     "docs/assets/data/week04_place.json": Place,
     "docs/weeks/week04/data/jobs.json": Jobs,
@@ -727,6 +763,7 @@ PAGES = {
     "docs/weeks/week04/data/jobs_split.json": JobsSplit,
     "docs/weeks/week04/data/staffing_moves.json": StaffingMoves,
     "docs/weeks/week04/data/beyond.json": Beyond,
+    "docs/weeks/week04/data/footprint.json": Footprint,
 }
 
 

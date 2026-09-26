@@ -588,7 +588,74 @@
         </section>
 
         <!-- Closing ----------------------------------------------------- -->
-        <!-- NEW-FOOTPRINT -->
+        <!-- Without the biggest firms ------------------------------------ -->
+        <section class="step" id="footprint">
+          <div class="card">
+            <div class="step-head">
+              <span class="num">4</span>
+              <h2>Without the biggest firms</h2>
+              <span class="year-tag">metros and jobs · FY2025</span>
+            </div>
+            <p class="sub">
+              <b>Take out the ten largest filers and the metro map turns
+              regional; the job clusters mostly hold.</b>
+              A handful of companies file a large share of everything: the
+              five largest placing firms (Tata Consultancy Services, Cognizant,
+              Infosys, HCL, Compunnel) file 5.6% of the filings in the 40
+              metros, and the ten largest filers of any kind 18.8%. A company
+              that files everywhere links every pair of metros and every pair
+              of its jobs, so its footprint could be all the structure there is.
+              We removed each set, reran 100 Louvain runs on the metro network
+              and on the job network (weighted here by filings, since a count of
+              companies barely moves when ten of 59,230 leave), and compared the
+              groups with the full network's. Removing less data changes the
+              groups too, so each removal sits beside 20 random cuts of
+              companies that remove the same share of filings.
+            </p>
+            <div class="jobs-grid jobs-groups-grid">
+              <div class="plot">
+                <h3>Do the metro groups follow Census regions?</h3>
+                <p class="axis-note">
+                  AMI between the metro groups and the four Census regions.
+                  Orange bars remove named firms, grey bars random firms with the
+                  same share of filings (mean of 20, whisker one standard
+                  deviation). The dashed line is the full network.
+                </p>
+                <div class="chart-host jobs-nmi" id="chart-footprint-region"></div>
+              </div>
+              <div class="plot">
+                <h3>How much do the groups change?</h3>
+                <p class="axis-note">
+                  NMI between the groups after a removal and the full network's
+                  groups: 1 means unchanged. Metros on the left, jobs on the
+                  right.
+                </p>
+                <div class="chart-host jobs-nmi" id="chart-footprint-nmi"></div>
+              </div>
+            </div>
+            <div class="notice">
+              <span class="ico">💡</span>
+              <span>
+                <b>What to notice</b>
+                Without the ten largest filers (Amazon, Cognizant, Google,
+                Microsoft, EY, Meta, Apple, Tata Consultancy Services, Deloitte,
+                Infosys), the metro groups match Census regions at AMI 0.16
+                (p = 0.007), against 0.06 for the full network and 0.01 ± 0.03
+                for random cuts. The national employers are what hide the
+                regional pattern. Removing the five placing firms instead moves
+                the metros to a two-group split at NMI 0.64, the value of the
+                other split Louvain already finds in 36 of 100 runs of the full
+                network, so that change says more about the split's instability
+                than about the firms. The job clusters hold at NMI 0.90 and 0.81,
+                though random cuts leave them closer still (0.95 and 0.89); they
+                also sharpen,
+                with modularity rising from 0.28 to 0.32 without the ten largest
+                filers. Every version still beats its own rewired networks by a
+                wide margin (metros z = 23 or more).
+              </span>
+            </div>
+          </div>
+        </section>
 
         <!-- Beyond the three networks ------------------------------------ -->
         <section class="step" id="beyond">
@@ -746,7 +813,9 @@
               and direct employers bundle jobs alike. And when a client drops
               its main vendor, the new one comes from the same Louvain group
               eight times as often as chance.
-              <!-- FOOTPRINT-CLOSING -->
+              Take out the ten largest filers, most of them national tech and
+              consulting employers, and the metro groups start to follow Census
+              regions.
             </p>
             <p class="sub">
               Where outsourcing shows most is outside the networks: a filing
@@ -1530,7 +1599,7 @@
     <script src="../../assets/js/week04-place.js" type="module"></script>
     <script src="../../assets/js/week04-jobs.js?v=3" type="module"></script>
     <script src="../../assets/js/week04-staffing.js" type="module"></script>
-    <script src="../../assets/js/week04-questions.js" type="module"></script>
-    <script src="../../assets/js/week04-cut.js" type="module"></script>
+    <script src="../../assets/js/week04-questions.js?v=3" type="module"></script>
+    <script src="../../assets/js/week04-cut.js?v=2" type="module"></script>
   </body>
 </html>

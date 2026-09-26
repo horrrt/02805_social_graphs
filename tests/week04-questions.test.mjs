@@ -101,3 +101,25 @@ test("beyond: law firms, green cards and wage levels", () => {
   says("beyond-wage", `${pct(d.q3.crude.placed_low_share)} of placed filings sit at level I or II against ${pct(d.q3.crude.direct_low_share)}`);
   says("beyond-wage", `Within the ${d.q3.strata_kept_20plus_each_side} occupations`);
 });
+
+test("section 4: without the biggest firms", () => {
+  const d = json("docs/weeks/week04/data/footprint.json");
+  const at = (part, id) => d[part].variants.find((v) => v.id === id);
+  const lead = html.slice(html.indexOf('id="footprint"'), html.indexOf('id="beyond"')).replace(/<[^>]+>/g, " ").replace(/\s+/g, " ");
+  const has = (t) => assert.ok(lead.includes(t), `section 4 should say "${t}"`);
+  const [full, top10, top10c] = ["full", "drop_top10_filings", "control_top10_filings"].map((id) => at("metros", id));
+  const short = at("metros", "drop_shortlist");
+  has(`file ${pct(short.filings_removed_share, 1)} of the filings in the 40 metros, and the ten largest filers of any kind ${pct(top10.filings_removed_share, 1)}`);
+  has(`match Census regions at AMI ${f2(top10.ami_region)} (p = ${top10.p_region.toFixed(3)}), against ${f2(full.ami_region)} for the full network and ${f2(top10c.ami_region)} ± ${f2(top10c.ami_region_sd)}`);
+  assert.ok(top10.ami_region - top10c.ami_region > 3 * top10c.ami_region_sd, "the regional turn must stand clear of random cuts");
+  has(`two-group split at NMI ${f2(short.nmi_vs_full)}`);
+  const where = json("docs/assets/data/week04_place.json").null_model;
+  assert.equal(short.nmi_vs_full.toFixed(2), where.other_year.nmi_modal_partitions.toFixed(2), "the shortlist drop lands on Louvain's other split");
+  has(`${where.seeds - where.modal_runs} of ${where.seeds} runs`);
+  const [js, jsc, jt, jtc] = ["drop_shortlist", "control_shortlist", "drop_top10_filings", "control_top10_filings"].map((id) => at("jobs", id));
+  has(`NMI ${f2(js.nmi_vs_full)} and ${f2(jt.nmi_vs_full)}`);
+  has(`(${f2(jsc.nmi_vs_full)} and ${f2(jtc.nmi_vs_full)})`);
+  has(`from ${f2(at("jobs", "full").Q)} to ${f2(jt.Q)}`);
+  const minZ = Math.min(...d.metros.variants.filter((v) => !v.control).map((v) => v.z));
+  has(`metros z = ${Math.round(minZ)} or more`);
+});
