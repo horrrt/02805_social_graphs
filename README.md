@@ -60,8 +60,23 @@ python -m ipykernel install --sys-prefix --name socialgraphs --display-name "Soc
 python -m jupyterlab
 ```
 
-The two notebooks are in `notebooks/`. Open either in JupyterLab, select
-**Social Graphs (Python 3.13)**, and choose
+The notebooks are in `notebooks/`:
+
+| Notebook | What it holds |
+| --- | --- |
+| `01_toolbox_shakedown.ipynb` | Exercise 1.3: karate club and the adjacency-matrix explorable |
+| `02_marvel_degrees.ipynb` | Exercise 1.6 in full: Marvel degree distributions and binning |
+| `03_marvel_exercises.ipynb` | Every data exercise from weeks 1-4 on the Marvel network, plus the dataset-free parts (random graphs, Watts-Strogatz, preferential attachment, karate) |
+| `04_migration_exercises.ipynb` | The same exercises on the UN DESA 2024 migrant stock network |
+| `05_h1b_exercises.ipynb` | The same exercises on the FY2025 H-1B outsourcing firm to client network |
+
+Two notebooks read gitignored files from `build/`. Notebook 04 needs
+`build/raw/iso3166_m49.csv`, the pinned ISO 3166 to UN M49 region table that
+`scripts/migration/fetch_country_layer.py` downloads (its URL is
+`ISO3166_M49_URL` in that script). Notebook 05 reads the Week 4 filings from
+`build/week04/`, so run `python analysis/week04_data.py` first on a fresh clone;
+it takes about 14 minutes to run. Open a notebook in
+JupyterLab, select **Social Graphs (Python 3.13)**, and choose
 **Restart Kernel and Run All Cells**. Run analysis scripts from the repository
 root. The lock records the Python 3.13 environment tested on macOS; other
 platforms may need a compatible resolution from `requirements.txt`.
