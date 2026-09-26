@@ -120,31 +120,36 @@
      "client": "Citigroup",
      "placed_filings_from_vendors": 1919,
      "own_certified_lca_filings": 1006,
-     "own_perm_filings": 154
+     "own_perm_filings": 154,
+     "own_perm_filings_by_name": 13
     },
     {
      "client": "Bank of America",
      "placed_filings_from_vendors": 1680,
      "own_certified_lca_filings": 541,
-     "own_perm_filings": 71
+     "own_perm_filings": 71,
+     "own_perm_filings_by_name": 936
     },
     {
      "client": "Verizon",
      "placed_filings_from_vendors": 1634,
      "own_certified_lca_filings": 208,
-     "own_perm_filings": 0
+     "own_perm_filings": 0,
+     "own_perm_filings_by_name": 75
     },
     {
      "client": "American Express",
      "placed_filings_from_vendors": 1400,
      "own_certified_lca_filings": 663,
-     "own_perm_filings": 91
+     "own_perm_filings": 91,
+     "own_perm_filings_by_name": 447
     },
     {
      "client": "Fidelity Investments",
      "placed_filings_from_vendors": 1231,
      "own_certified_lca_filings": 1737,
-     "own_perm_filings": 0
+     "own_perm_filings": 0,
+     "own_perm_filings_by_name": 1
     }
    ],
    "zero_own_lca_clients_name_check": {}
@@ -339,91 +344,106 @@
      "client": "Citigroup",
      "placed_filings_from_vendors": 2156,
      "own_certified_lca_filings": 1514,
-     "own_perm_filings": 389
+     "own_perm_filings": 389,
+     "own_perm_filings_by_name": 29
     },
     {
      "client": "Verizon",
      "placed_filings_from_vendors": 1925,
      "own_certified_lca_filings": 341,
-     "own_perm_filings": 0
+     "own_perm_filings": 0,
+     "own_perm_filings_by_name": 122
     },
     {
      "client": "Bank of America",
      "placed_filings_from_vendors": 1819,
      "own_certified_lca_filings": 780,
-     "own_perm_filings": 150
+     "own_perm_filings": 150,
+     "own_perm_filings_by_name": 1629
     },
     {
      "client": "Fidelity Investments",
      "placed_filings_from_vendors": 1756,
      "own_certified_lca_filings": 2158,
-     "own_perm_filings": 0
+     "own_perm_filings": 0,
+     "own_perm_filings_by_name": 9
     },
     {
      "client": "Wells Fargo",
      "placed_filings_from_vendors": 1547,
      "own_certified_lca_filings": 624,
-     "own_perm_filings": 167
+     "own_perm_filings": 167,
+     "own_perm_filings_by_name": 182
     },
     {
      "client": "American Express",
      "placed_filings_from_vendors": 1230,
      "own_certified_lca_filings": 902,
-     "own_perm_filings": 107
+     "own_perm_filings": 107,
+     "own_perm_filings_by_name": 647
     },
     {
      "client": "Capital One",
      "placed_filings_from_vendors": 1136,
      "own_certified_lca_filings": 1124,
-     "own_perm_filings": 99
+     "own_perm_filings": 99,
+     "own_perm_filings_by_name": 588
     },
     {
      "client": "JPMorgan Chase",
      "placed_filings_from_vendors": 1125,
      "own_certified_lca_filings": 3461,
-     "own_perm_filings": 712
+     "own_perm_filings": 712,
+     "own_perm_filings_by_name": 711
     },
     {
      "client": "USAA",
      "placed_filings_from_vendors": 1080,
      "own_certified_lca_filings": 269,
-     "own_perm_filings": 74
+     "own_perm_filings": 74,
+     "own_perm_filings_by_name": 49
     },
     {
      "client": "Apple",
      "placed_filings_from_vendors": 1013,
      "own_certified_lca_filings": 6919,
-     "own_perm_filings": 1224
+     "own_perm_filings": 1224,
+     "own_perm_filings_by_name": 1248
     },
     {
      "client": "T-Mobile",
      "placed_filings_from_vendors": 919,
      "own_certified_lca_filings": 465,
-     "own_perm_filings": 3
+     "own_perm_filings": 3,
+     "own_perm_filings_by_name": 3
     },
     {
      "client": "Walmart",
      "placed_filings_from_vendors": 871,
      "own_certified_lca_filings": 4006,
-     "own_perm_filings": 933
+     "own_perm_filings": 933,
+     "own_perm_filings_by_name": 0
     },
     {
      "client": "AT&T",
      "placed_filings_from_vendors": 845,
      "own_certified_lca_filings": 546,
-     "own_perm_filings": 168
+     "own_perm_filings": 168,
+     "own_perm_filings_by_name": 180
     },
     {
      "client": "Renewal Rehab",
      "placed_filings_from_vendors": 762,
      "own_certified_lca_filings": 0,
-     "own_perm_filings": 0
+     "own_perm_filings": 0,
+     "own_perm_filings_by_name": 0
     },
     {
      "client": "CVS Health",
      "placed_filings_from_vendors": 688,
      "own_certified_lca_filings": 398,
-     "own_perm_filings": 24
+     "own_perm_filings": 24,
+     "own_perm_filings_by_name": 4153
     }
    ],
    "zero_own_lca_clients_name_check": {
@@ -436,5 +456,5 @@
    }
   }
  },
- "seconds": 23
+ "seconds": 31
 }

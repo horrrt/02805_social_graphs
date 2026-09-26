@@ -1102,7 +1102,11 @@
                   gives a gap that large 14% of the time (p = 0.136); in FY2024
                   the gap is clearer (12.6 against 15.4, p = 0.045). Only 65% of
                   certified green cards come from an employer we can match to an
-                  H-1B filer. Figures from analysis/week04_perm.py.
+                  H-1B filer. Clients sponsor their own staff too: Wells Fargo
+                  receives 1,547 H-1B filings from vendors, files 624 of its own
+                  and 167 green cards. Firms with more clients sponsor slightly
+                  more green cards, not fewer (Spearman 0.13). Figures from
+                  analysis/week04_perm.py.
                 </p>
               </div>
             </details>
@@ -1130,9 +1134,116 @@
                   communities (0.10) only weakly: green-card hiring does not sort
                   countries into regional blocs. Among the ten largest sponsors,
                   Google's green cards are the most varied, 4.7 effective
-                  countries with India at 30%, against Amazon's 3.0 at 67%.
+                  countries with India at 30%, against Amazon's 3.0 at 67%. The
+                  third group gathers the Philippines, Kenya, Ghana, Zimbabwe,
+                  Ethiopia, Cameroon and Jamaica. Wayne Farms, a poultry company,
+                  filed 832 green cards in the counted cells, none for Indian
+                  citizens.
                   Figures from analysis/week04_countries.py; no row about a
                   person leaves the script.
+                </p>
+              </div>
+            </details>
+
+            <details class="qa" id="deeper-density">
+              <summary>
+                <span class="qa-cue">Where is the hiring densest? Filings per 1,000 jobs</span>
+              </summary>
+              <div class="qa-body">
+                <p class="sub">
+                  Section 1 counts filings. Divide each metro's FY2025 filings by
+                  its jobs in the Bureau of Labor Statistics' May 2025
+                  employment survey (OEWS) and the map shifts: nationally it is
+                  4.5 filings per 1,000 jobs. New York files the most, 65,935,
+                  but that is 6.9 per 1,000 jobs; San Jose files 42.9, Trenton
+                  17.2 and Seattle 16.8. Among the 203 metros with 100,000 jobs
+                  or more, count and density rank alike (Spearman 0.90), yet
+                  only 5 of the 10 largest by count stay in the top 10 by
+                  density: Dallas, San Jose, San Francisco, Seattle and Austin.
+                  For software developers alone the national rate is 139
+                  filings per 1,000 jobs, and Fayetteville, Arkansas, the metro
+                  around Bentonville, reaches 896, 6.4 times the national share.
+                  A filing is a request, not a hire, so a rate can run high.
+                  Figures from analysis/week04_oews.py.
+                </p>
+              </div>
+            </details>
+
+            <details class="qa" id="deeper-strength">
+              <summary>
+                <span class="qa-cue">Strength against degree: where do the heavy links go?</span>
+              </summary>
+              <div class="qa-body">
+                <p class="sub">
+                  The course compares a node's degree (how many partners) with
+                  its strength (how many filings over all its links), and finds
+                  the exceptions tell the story. In the FY2025 firm–client
+                  network the two rank firms almost alike (Spearman 0.91) and
+                  clients less so (0.75). The clients with the most filings from
+                  a single firm are Ultimate Therapy, 133 filings from one firm;
+                  Sigma Rehab, 95; Post Rehab Services, 61; and Grady Memorial
+                  Hospital, 58. Three of the top five are therapy and rehab
+                  clinics: the heaviest one-to-one ties belong to health care,
+                  not IT. Figures from analysis/week04_ties.py.
+                </p>
+              </div>
+            </details>
+
+            <details class="qa" id="deeper-lottery">
+              <summary>
+                <span class="qa-cue">The lottery a year apart, and who receives the winners</span>
+              </summary>
+              <div class="qa-body">
+                <p class="sub">
+                  Between the March 2022 and March 2023 draws, registrations for
+                  a worker whom another employer had also registered rose from
+                  35% to 54% of the total, and the share of drawn registrations
+                  that became a petition fell from 74% to 49%. One approved
+                  petition took 5.2 registrations in 2022 and 8.5 in 2023. The
+                  order held both years: direct employers needed the fewest (4.3,
+                  then 5.1), placing firms more (6.3, then 9.1). Of the March
+                  2023 petitions, 20% lead to a client company, 66% of those
+                  through placing firms. Citigroup received 342, 94% through
+                  placing firms; Microsoft 150, 95%, with LTIMindtree supplying
+                  47%; AT&amp;T 153, with Tech Mahindra supplying 41%. USCIS also
+                  denied 2.0% of the placing firms' lottery petitions against
+                  1.1% of direct employers'. Figures from
+                  analysis/week04_lottery.py.
+                </p>
+              </div>
+            </details>
+
+            <details class="qa" id="deeper-uscis">
+              <summary>
+                <span class="qa-cue">USCIS denials, year by year</span>
+              </summary>
+              <div class="qa-body">
+                <p class="sub">
+                  Share of first-time H-1B petitions USCIS denied, for employers
+                  with 20 or more certified filings that year. Placing firms put
+                  half or more of their filings at a client. From the hub's
+                  Tableau export; FY2026 runs October to June.
+                </p>
+                <table class="ego">
+                  <thead>
+                    <tr>
+                      <th>Year</th>
+                      <th style="text-align: right">Placing firms</th>
+                      <th style="text-align: right">Direct employers</th>
+                      <th style="text-align: right">Placing firms counted</th>
+                      <th style="text-align: right">Direct employers counted</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr><td>FY2022</td><td style="text-align: right">2.71%</td><td style="text-align: right">1.22%</td><td style="text-align: right">1,057</td><td style="text-align: right">2,295</td></tr>
+                    <tr><td>FY2023</td><td style="text-align: right">3.57%</td><td style="text-align: right">1.48%</td><td style="text-align: right">873</td><td style="text-align: right">2,087</td></tr>
+                    <tr><td>FY2024</td><td style="text-align: right">2.65%</td><td style="text-align: right">1.28%</td><td style="text-align: right">884</td><td style="text-align: right">2,414</td></tr>
+                    <tr><td>FY2025</td><td style="text-align: right">3.20%</td><td style="text-align: right">1.56%</td><td style="text-align: right">933</td><td style="text-align: right">2,480</td></tr>
+                    <tr><td>FY2026, Oct–Jun</td><td style="text-align: right">3.35%</td><td style="text-align: right">1.98%</td><td style="text-align: right">601</td><td style="text-align: right">1,877</td></tr>
+                  </tbody>
+                </table>
+                <p class="sub" style="margin-top: 12px">
+                  Figures from analysis/week04_staffing.py (uscis_series).
                 </p>
               </div>
             </details>
@@ -1173,6 +1284,8 @@
                     compares green cards with H-1B filings; and
                     <a href="https://github.com/horrrt/02805_social_graphs/blob/main/analysis/week04_countries.py"><code>week04_countries.py</code></a>
                     counts green cards by country and employer, hides every count under 10, and builds the country network.</li>
+                  <li><a href="https://github.com/horrrt/02805_social_graphs/blob/main/analysis/week04_oews.py"><code>week04_oews.py</code></a>
+                    divides filings by the Bureau of Labor Statistics' OEWS jobs per metro and occupation.</li>
                   <li><a href="https://github.com/horrrt/02805_social_graphs/blob/main/analysis/week04_names.py"><code>week04_names.py</code></a>
                     decides which names are the same company;
                     <a href="https://github.com/horrrt/02805_social_graphs/blob/main/analysis/week04_names_check.py"><code>week04_names_check.py</code></a>
