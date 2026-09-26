@@ -825,6 +825,8 @@ export async function startPlace(echarts) {
   function renderSnapNote() {
     const el = $("place-snap-note");
     if (el) el.textContent = data.backbone.snap_note;
+    const choice = $("place-alpha-choice");
+    if (choice) choice.textContent = data.backbone.choice_note || "";
   }
 
   function renderLegendChips() {

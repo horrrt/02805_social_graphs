@@ -1,5 +1,6 @@
-// Pins the section 3 text of the week 4 post to the analysis output, so a rerun
-// that moves a number fails here instead of leaving the prose behind.
+// Pins the section 1 and 3 text and the closing of the week 4 post to the
+// analysis output, so a rerun that moves a number fails here instead of leaving
+// the prose behind.
 import test from "node:test";
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
@@ -11,11 +12,16 @@ const read = (name) => readFileSync(join(ROOT, name), "utf8");
 const json = (name) => JSON.parse(read(name));
 
 const html = read("docs/weeks/week04/index.html");
-const start = html.indexOf('id="who"');
-const prose = html
-  .slice(start, html.indexOf('<figure class="staffing"', start))
-  .replace(/<[^>]+>/g, " ")
-  .replace(/\s+/g, " ");
+const text = (from, to) => {
+  const start = html.indexOf(from);
+  return html
+    .slice(start, html.indexOf(to, start))
+    .replace(/<[^>]+>/g, " ")
+    .replace(/\s+/g, " ");
+};
+const prose = text('id="who"', '<figure class="staffing"');
+const regions = text('id="place-regions"', 'id="place-longhaul"');
+const closing = text('id="closing"', 'id="evidence"');
 const staffing = json("analysis/week04_staffing.json");
 const main = staffing.main;
 const fy = staffing.years;
@@ -23,25 +29,47 @@ const flows = json("docs/weeks/week04/data/staffing_clients.json").years["2025"]
 
 const count = (n) => n.toLocaleString("en-US");
 const pct = (x, digits = 0) => `${(100 * x).toFixed(digits)}%`;
-const says = (text) => assert.ok(prose.includes(text), `section 3 should say "${text}"`);
+const says = (t) => assert.ok(prose.includes(t), `section 3 should say "${t}"`);
+const WORDS = ["zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten"];
 
 test("how many workers sit at a client", () => {
-  says(`${count(fy["2025"].placed_filings)} of the ${count(fy["2025"].certified_filings)} certified filings`);
-  says(`(${pct(fy["2025"].placed_share, 1)})`);
-  says(`down from ${pct(fy["2022"].placed_share, 1)} in FY2022`);
-  says(`the ${pct(fy["2025"].placeholder_share)} of client entries`);
+  const now = fy["2025"];
+  says(`One certified H-1B filing in ${WORDS[now.client_company_one_in]} names a client company`);
+  says("A filing is a request to employ someone, not a hire.");
+  says(`${count(now.placed_filings)} of the ${count(now.certified_filings)} certified filings`);
+  says(`(${pct(now.placed_share, 1)}) mark a client site`);
+  says(`the ${pct(now.placeholder_share)} of client entries`);
+  says(`the ${count(now.own_company_client_rows)} where a firm names itself`);
+  says(`Counted that way, ${count(now.client_company_filings)} filings (${pct(now.client_company_share, 1)}) name a client company`);
+  says(`down from ${pct(fy["2022"].client_company_share, 1)} in FY2022`);
   says(`denied ${pct(staffing.uscis.placing.initial_denial_rate, 1)}`);
   says(`against ${pct(staffing.uscis.direct.initial_denial_rate, 1)} for direct employers`);
 });
 
-test("clients group by vendor, not industry", () => {
+test("clients group weakly, about as much by industry as by vendor", () => {
+  const m = main.modularity;
   const iv = main.industry_or_vendor;
-  says(`about ${main.modularity.communities_median} groups`);
+  const plain = iv.unweighted;
+  // The headline rests on the unweighted split because it beats its null ...
+  assert.equal(m.wiring_only.null_runs_at_or_above_real, 0, "unweighted must beat every rewired network");
+  says(`about ${main.weighted_vs_unweighted.communities_median_unweighted} groups`);
+  says(`(modularity ${m.wiring_only.real.toFixed(2)} against ${m.wiring_only.null.toFixed(2)})`);
   says(`Among the ${count(iv.with_sector_label)} clients`);
-  says(`NMI ${iv.nmi_community_main_vendor_same_clients.toFixed(2)} against ${iv.nmi_community_industry.toFixed(2)}`);
-  assert.ok(iv.p_vendor_same_clients < 0.05 && iv.p_industry < 0.05, "both must beat shuffled labels");
-  says(`Infomap agrees (${main.infomap.nmi_community_main_vendor_same_clients.toFixed(2)} against ${main.infomap.nmi_community_industry.toFixed(2)})`);
-  says(`vendor match falls to ${iv.unweighted.nmi_community_main_vendor_same_clients.toFixed(2)}`);
+  says(`(AMI) of ${plain.ami_community_main_vendor_same_clients.toFixed(2)} and the industry at ${plain.ami_community_industry.toFixed(2)}`);
+  assert.ok(Math.abs(plain.ami_community_main_vendor_same_clients - plain.ami_community_industry) < 0.05,
+    '"about as much" needs the two AMIs within 0.05');
+  assert.ok(Math.abs(plain.ami_gap_over_runs.median) < 0.05, '"about as much" must hold over runs, not one partition');
+  assert.ok(plain.p_vendor_same_clients < 0.05 && plain.p_industry < 0.05, "both must beat shuffled labels");
+  says(`${iv.vendor_labels} main vendors but only ${iv.industry_labels} industries`);
+  // ... and the weighted split, which favours vendors, loses to its own.
+  assert.equal(m.weighted_vs_rewired.null_runs_at_or_above_real, 100, "weighted must lose to every rewired network");
+  says(`main vendor (AMI ${iv.ami_community_main_vendor_same_clients.toFixed(2)} against ${iv.ami_community_industry.toFixed(2)})`);
+  says(`(${m.weighted_vs_rewired.real.toFixed(2)} against ${m.weighted_vs_rewired.null.toFixed(2)})`);
+  says(`${pct(iv.share_with_own_main_vendor)} of these clients land in its group`);
+  const weights = json("docs/weeks/week04/data/staffing_communities.json").modularity.weights_check;
+  assert.ok(weights.single_vendor_clients_with_their_firm > 0.99, "a one-firm client sits in its firm's group");
+  assert.ok(weights.real_inside_share < weights.shuffled_inside_share, "real counts must leave more filings between groups");
+  assert.ok(weights.filings_to_multi_vendor_clients_share > weights.links_to_multi_vendor_clients_share);
 });
 
 test("who relies on a single vendor", () => {
@@ -58,8 +86,41 @@ test("who relies on a single vendor", () => {
   assert.equal(flows.vendors.filter((v) => !v.other).length, 8);
 });
 
-test("the groups do not hold from year to year", () => {
-  const nmis = staffing.stability.map((s) => s.nmi);
-  says(`NMI ${Math.min(...nmis).toFixed(2)} to ${Math.max(...nmis).toFixed(2)}`);
-  says(`far below the ${main.weighted_vs_unweighted.nmi_between_seeds_weighted.toFixed(2)} between two runs`);
+test("the groups hold only partly from year to year", () => {
+  // Unweighted, like the headline, and against two seeds of the same year on the same clients.
+  const across = staffing.stability.map((s) => s.unweighted_nmi);
+  const within = staffing.stability.map((s) => s.unweighted_same_year_nmi);
+  says(`NMI ${Math.min(...across).toFixed(2)} to ${Math.max(...across).toFixed(2)}`);
+  says(`about half the ${Math.min(...within).toFixed(2)} to ${Math.max(...within).toFixed(2)} between two runs of the same year on the same clients`);
+  staffing.stability.forEach((s) => {
+    const ratio = s.unweighted_nmi / s.unweighted_same_year_nmi;
+    assert.ok(ratio > 0.4 && ratio < 0.6, `"about half" but FY${s.from}-FY${s.to} is ${ratio.toFixed(2)}`);
+  });
+});
+
+test("section 1: communities against the null, runs, FY2024 and Census", () => {
+  const n = json("docs/assets/data/week04_place.json").null_model;
+  const o = n.other_year;
+  const has = (t) => assert.ok(regions.includes(t), `section 1 should say "${t}"`);
+  has(`modularity is ${n.Q.toFixed(3)} against ${n.Q_null_mean.toFixed(3)}`);
+  has(`(z = ${Math.round(n.z)})`);
+  has(`finds it in ${n.modal_runs} of ${n.seeds} runs; the other ${n.seeds - n.modal_runs} find one other split`);
+  assert.equal(n.partitions_found, 2, '"one other split" needs exactly two partitions');
+  assert.equal(o.fy2025_runs_equal_to_other_year, n.seeds - n.modal_runs, "FY2024's split is FY2025's other one");
+  has(`FY${o.year} gives that two-group split in all ${o.runs} runs`);
+  assert.equal(o.modal_runs, o.runs);
+  assert.equal(o.communities, 2);
+  has(`at NMI ${o.nmi_across_years_median.toFixed(2)}, against ${o.nmi_within_fy2025_median.toFixed(2)} between two FY2025 runs`);
+  has(`Census regions is ${n.nmi_census_region.toFixed(2)} and with divisions ${n.nmi_census_division.toFixed(2)}`);
+  has(`(p = ${n.p_region.toFixed(2)} and ${n.p_division.toFixed(2)})`);
+});
+
+test("closing: what surprised us", () => {
+  const where = json("analysis/week04_where.json").longhaul;
+  const [leader, links] = where.long_leaders[0];
+  const says1 = (t) => assert.ok(closing.includes(t), `closing should say "${t}"`);
+  says1(`${leader} alone leads ${links} of the ${where.long_links} backbone links longer than ${count(where.threshold_km)} km`);
+  says1(`together lead ${where.long_led_by_shortlist}`);
+  assert.ok(links > where.long_led_by_shortlist, "the leader alone must lead more than the five firms");
+  says1(`lead only ${pct(where.long_led_by_shortlist / where.long_links)} of the long links`);
 });

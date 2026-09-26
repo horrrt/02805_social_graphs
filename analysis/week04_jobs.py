@@ -16,10 +16,22 @@ Method
   are moved to their 2018 successors (LEGACY). Each code takes its title from
   its base ".00" rows, not from an O*NET sub-title.
 - Louvain (igraph's multilevel) on the full projection, 100 seeds, the best
-  modularity run kept.
-- A second cluster: an occupation also belongs to another cluster when its
-  employer ties to that cluster exceed what the cluster's size predicts
-  (observed weight over k_i * S_c / 2m, the expectation modularity uses).
+  modularity run kept; the median NMI over all pairs of the 100 runs says how
+  stable the split is.
+- Modularity against NULLS degree-preserving rewirings of the company x
+  occupation network (week04_staffing.rewire: each company keeps its number of
+  occupations, each occupation its number of companies), re-projected. The
+  projection has isolated occupations and small pieces, so real and rewired
+  networks are both scored on their giant component; the real score is the
+  mean of 100 seeds there, each null one run.
+- A second cluster: the other cluster an occupation's employer ties exceed most
+  over what the cluster's size predicts (lift: observed weight over
+  k_i * S_c / 2m, the expectation modularity uses). Lift above 1 happens by
+  chance, so the rule is tested on the same rewired networks with the real
+  cluster labels held fixed: an occupation counts as a bridge only when its
+  best lift beats its own best lift in every rewired network (p < 1/(NULLS+1)).
+- The disparity-filter backbone of the projection (week04_where.disparity, at
+  section 1's alpha), and whether Louvain on it finds the same clusters.
 - NMI and adjusted mutual information (AMI) between clusters and SOC major
   groups, over occupations in clusters of two or more, against 100 shuffles
   of the major-group labels. The same partition for FY2024, compared on the
@@ -27,7 +39,7 @@ Method
 - Infomap on the same projection, compared with Louvain and the SOC groups.
 
 The page shows the 60 occupations with the most filings, each with its three
-strongest links to the others.
+strongest links to the others: a display filter, not the backbone.
 
 Output: docs/weeks/week04/data/jobs.json (every number the section quotes).
 """
@@ -43,8 +55,11 @@ import networkx as nx
 from sklearn.metrics import adjusted_mutual_info_score as ami
 from sklearn.metrics import normalized_mutual_info_score as nmi
 
+import numpy as np
+
 from week04_schemas import check
-from week04_staffing import certified, infomap, louvain
+from week04_staffing import certified, infomap, louvain, rewire, tracked
+from week04_where import DEFAULT_ALPHA, disparity
 
 ROOT = Path(__file__).resolve().parents[1]
 OUT = ROOT / "docs" / "weeks" / "week04" / "data" / "jobs.json"
@@ -52,6 +67,7 @@ SHOWN = 60
 LINKS_PER_NODE = 3
 PARTNERS = 5
 SEED = 204
+NULLS = 20  # rewirings; the brief's own count (one takes about 3 s)
 
 # 2010 computer occupations and the 2018 codes that replaced them (BLS SOC
 # 2010-to-2018 crosswalk; a code that split goes to its main successor).
@@ -107,27 +123,38 @@ def projection(frame):
     return graph, filings
 
 
+def as_labels(groups):
+    return {node: i for i, group in enumerate(groups) for node in group}
+
+
 def communities(graph):
     found = [louvain(graph, seed) for seed in range(100)]
     runs, scores = [r for r, _ in found], [q for _, q in found]
     best = runs[scores.index(max(scores))]
     # Clusters numbered by size, largest first, so labels read 1, 2, 3.
     best = sorted(best, key=lambda g: (-len(g), min(g)))
-    labels = {node: i for i, group in enumerate(best) for node in group}
+    labels = as_labels(best)
+    # Run-to-run stability: NMI over every pair of the 100 runs, on all occupations.
+    nodes = sorted(graph)
+    run_labels = [as_labels(r) for r in runs]
+    vectors = [[lab[n] for n in nodes] for lab in run_labels]
+    pairs = [nmi(a, b) for a, b in itertools.combinations(vectors, 2)]
     return labels, {"runs": len(runs), "modularity_mean": sum(scores) / len(scores),
                     "modularity_best": max(scores), "clusters": len(best),
-                    "clusters_of_two_or_more": sum(len(g) > 1 for g in best)}
+                    "clusters_of_two_or_more": sum(len(g) > 1 for g in best),
+                    "nmi_between_runs_median": float(np.median(pairs)),
+                    "nmi_between_runs_min": float(min(pairs)), "run_pairs": len(pairs)}, run_labels
 
 
-def second_clusters(graph, labels):
-    """An occupation's clusters: its own, plus the other cluster its employer ties
-    exceed most over what that cluster's size predicts (lift above 1), if any."""
+def best_other_lift(graph, labels):
+    """Each occupation's other cluster with the highest lift (employer ties over
+    k_i * S_c / 2m, the expectation modularity uses), as (cluster, lift)."""
     strength = dict(graph.degree(weight="weight"))
     total = sum(strength.values())  # 2m
     cluster_strength = Counter()
     for node, c in labels.items():
-        cluster_strength[c] += strength[node]
-    membership = {}
+        cluster_strength[c] += strength.get(node, 0)
+    out = {}
     for node in graph:
         ties = Counter()
         for other, edge in graph[node].items():
@@ -136,8 +163,93 @@ def second_clusters(graph, labels):
         lift = {c: w / (strength[node] * cluster_strength[c] / total)
                 for c, w in ties.items() if c != own and strength[node]}
         best = max(lift, key=lift.get, default=None)
-        membership[node] = [own] + ([best] if best is not None and lift[best] > 1 else [])
-    return membership
+        out[node] = (best, lift[best] if best is not None else 0.0)
+    return out
+
+
+def second_clusters(graph, labels, null_lifts=None):
+    """An occupation's clusters: its own, plus its best other cluster when the
+    lift there is above 1 (no null given) or beats the node's best lift in every
+    rewired network (null_lifts: one {node: lift} per rewiring)."""
+    real = best_other_lift(graph, labels)
+    membership = {}
+    for node, (best, lift) in real.items():
+        if null_lifts is None:
+            passes = best is not None and lift > 1
+        else:
+            passes = best is not None and all(lift > null.get(node, 0.0) for null in null_lifts)
+        membership[node] = [labels[node]] + ([best] if passes else [])
+    return membership, real
+
+
+def giant_of(graph):
+    return graph.subgraph(max(nx.connected_components(graph), key=len)).copy()
+
+
+def reproject(bipartite, occupations):
+    """A rewired company x occupation graph back onto occupations."""
+    jobs_of = {}
+    for u, v in bipartite.edges():
+        company, job = (u, v) if u[0] == "F" else (v, u)
+        jobs_of.setdefault(company, set()).add(job[1])
+    graph = nx.Graph()
+    graph.add_nodes_from(occupations)
+    for jobs in jobs_of.values():
+        for left, right in itertools.combinations(sorted(jobs), 2):
+            if graph.has_edge(left, right):
+                graph[left][right]["weight"] += 1
+            else:
+                graph.add_edge(left, right, weight=1)
+    return graph
+
+
+def null_check(frame, graph, labels):
+    """Modularity against rewired networks, each scored on its giant component
+    like the real one, and each occupation's best other-cluster lift in each
+    rewired network with the real labels held fixed."""
+    bipartite = nx.Graph()
+    for company, job in frame[["company", "occupation"]].drop_duplicates().itertuples(index=False):
+        bipartite.add_edge(("F", company), ("C", job), weight=1)
+    giant = giant_of(graph)
+    real = np.array([louvain(giant, seed)[1] for seed in range(100)])
+    rng = random.Random(SEED)
+    null_q, null_lifts, null_sizes = [], [], []
+    for i in tracked("Jobs nulls", NULLS):
+        h = reproject(rewire(bipartite, rng), list(graph))
+        hg = giant_of(h)
+        null_sizes.append(hg.number_of_nodes())
+        null_q.append(louvain(hg, SEED + i)[1])
+        null_lifts.append({n: lift for n, (_, lift) in best_other_lift(h, labels).items()})
+    null_q = np.array(null_q)
+    stats = {"runs": NULLS, "scored_on": "the giant component of each network",
+             "real_giant_occupations": giant.number_of_nodes(),
+             "null_giant_occupations_median": int(np.median(null_sizes)),
+             "real": float(real.mean()), "real_sd": float(real.std()),
+             "null": float(null_q.mean()), "null_sd": float(null_q.std()),
+             "z": float((real.mean() - null_q.mean()) / null_q.std()),
+             "null_runs_at_or_above_real": int((null_q >= real.mean()).sum())}
+    return stats, null_lifts
+
+
+def backbone_check(graph, labels, run_labels):
+    """The disparity-filter backbone at section 1's alpha, and whether Louvain on
+    it finds the clusters of the full projection."""
+    p = disparity(graph)
+    kept = [(u, v, graph[u][v]["weight"]) for (u, v), pv in p.items() if pv < DEFAULT_ALPHA]
+    bone = nx.Graph()
+    bone.add_weighted_edges_from(kept)
+    parts = max((louvain(bone, seed) for seed in range(100)), key=lambda r: r[1])[0]
+    on_bone = as_labels(parts)
+    nodes = sorted(bone)
+    # Baseline: two runs on the full projection, compared on the same occupations.
+    base = [nmi([a[n] for n in nodes], [b[n] for n in nodes])
+            for a, b in zip(run_labels[0::2], run_labels[1::2])]
+    return {"alpha": DEFAULT_ALPHA, "links": len(kept), "links_total": graph.number_of_edges(),
+            "occupations_linked": bone.number_of_nodes(), "occupations_total": graph.number_of_nodes(),
+            "giant": len(max(nx.connected_components(bone), key=len)),
+            "clusters_on_backbone": len(parts),
+            "nmi_with_full_clusters": nmi([labels[n] for n in nodes], [on_bone[n] for n in nodes]),
+            "nmi_between_full_runs_median": float(np.median(base))}
 
 
 def agreement(labels, graph):
@@ -159,12 +271,17 @@ def agreement(labels, graph):
                              "max": max(shuffled)}}
 
 
-def build(year):
+def build(year, checks=False):
     frame = filtered(year)
     titles = titles_of(frame)
     graph, filings = projection(frame)
-    labels, louvain_stats = communities(graph)
-    membership = second_clusters(graph, labels)
+    labels, louvain_stats, run_labels = communities(graph)
+    null_stats, null_lifts, backbone = None, None, None
+    if checks:
+        null_stats, null_lifts = null_check(frame, graph, labels)
+        backbone = backbone_check(graph, labels, run_labels)
+    plain, real_lift = second_clusters(graph, labels)
+    membership = second_clusters(graph, labels, null_lifts)[0] if checks else plain
     # Infomap, the flow-based alternative, on the same projection.
     modules, codelength = infomap(graph, SEED)
     info = {n: i for i, m in enumerate(modules) for n in m}
@@ -220,14 +337,24 @@ def build(year):
         "pairs": pairs,
         "clusters": clusters,
         "bridges": {"shown": sum(n["bridge"] for n in nodes),
-                    "all_occupations": sum(len(m) > 1 for m in membership.values())},
-        "quality": {"louvain": louvain_stats, **agreement(labels, graph), "infomap": infomap_check},
+                    "all_occupations": sum(len(m) > 1 for m in membership.values()),
+                    "rule": "best other-cluster lift beats the same occupation's in every rewired network"
+                    if checks else "best other-cluster lift above 1",
+                    **({"tested": sum(best is not None for best, _ in real_lift.values()),
+                        "lift_above_1": sum(len(m) > 1 for m in plain.values()),
+                        "lift_above_1_by_chance_mean": float(np.mean(
+                            [sum(v > 1 for v in null.values()) for null in null_lifts])),
+                        "expected_false_positives": sum(best is not None for best, _ in real_lift.values())
+                        / (NULLS + 1)} if checks else {})},
+        "quality": {"louvain": louvain_stats, **agreement(labels, graph), "infomap": infomap_check,
+                    **({"null": null_stats} if checks else {})},
+        **({"backbone": backbone} if checks else {}),
         "_labels": labels,
     }
 
 
 def main():
-    current = build(2025)
+    current = build(2025, checks=True)
     previous = build(2024)
     now, before = current.pop("_labels"), previous.pop("_labels")
     size_now, size_before = Counter(now.values()), Counter(before.values())
@@ -249,6 +376,8 @@ def main():
           f"({q['louvain']['clusters_of_two_or_more']} of two or more) -> {OUT.relative_to(ROOT)}")
     print(f"NMI {q['nmi']:.3f}, AMI {q['ami']:.3f} over {q['occupations']} occupations; "
           f"shuffled mean {q['nmi_shuffled']['mean']:.3f}, max {q['nmi_shuffled']['max']:.3f}")
+    print("null", q["null"], "runs", {k: v for k, v in q["louvain"].items()})
+    print("backbone", current["backbone"])
     print(f"bridges: {current['bridges']}; FY2024 vs FY2025 NMI "
           f"{current['comparison']['nmi_between_years']:.3f} on {len(shared)} occupations")
 

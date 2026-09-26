@@ -90,7 +90,7 @@ let network;
 
 function bridgeList(data) {
   const bridges = data.nodes.filter((node) => node.bridge);
-  $("jobs-node-inspector").innerHTML = `<h2>Bridge jobs</h2><p>${bridges.length} of the ${data.nodes.length} occupations shown have more employer ties to a second cluster than its size predicts. Ringed in the network.</p><div class="jobs-bridge-list" id="jobs-bridge-list"></div>`;
+  $("jobs-node-inspector").innerHTML = `<h2>Bridge jobs</h2><p>${bridges.length} of the ${data.nodes.length} occupations shown have more employer ties to a second cluster than any rewired network gives them.${bridges.length ? " Ringed in the network." : ""}</p><div class="jobs-bridge-list" id="jobs-bridge-list"></div>`;
   $("jobs-bridge-list").innerHTML = bridges.map((node) => `<button type="button" data-job-id="${esc(node.id)}"><span>${esc(short(node.title))}</span><b>${num(node.filings)}</b></button>`).join("") || "<p>No occupation passed the overlap test.</p>";
   $("jobs-bridge-list").querySelectorAll("button").forEach((button) => button.addEventListener("click", () => {
     const node = data.nodes.find((item) => item.id === button.dataset.jobId);
@@ -183,6 +183,16 @@ fetch(DATA_URL).then((response) => {
     years: data.comparison.nmi_between_years.toFixed(2), shared: num(data.comparison.shared_occupations),
     infomap: num(q.infomap.modules_of_two_or_more), "infomap-louvain": q.infomap.nmi_with_louvain.toFixed(2),
     "infomap-soc": q.infomap.nmi_with_soc.toFixed(2),
+    "null-real": q.null.real.toFixed(2), "null-null": q.null.null.toFixed(2),
+    "null-z": num(Math.round(q.null.z)), "null-runs": num(q.null.runs),
+    "runs-nmi": q.louvain.nmi_between_runs_median.toFixed(2),
+    "bridges-pass": num(data.bridges.all_occupations), "bridges-tested": num(data.bridges.tested),
+    "bridges-chance": num(Math.round(data.bridges.expected_false_positives)),
+    lift1: num(data.bridges.lift_above_1), "lift1-chance": num(Math.round(data.bridges.lift_above_1_by_chance_mean)),
+    "bb-alpha": String(data.backbone.alpha), "bb-links": num(data.backbone.links),
+    "bb-total": num(data.backbone.links_total), "bb-occ": num(data.backbone.occupations_linked),
+    "bb-clusters": num(data.backbone.clusters_on_backbone), "bb-nmi": data.backbone.nmi_with_full_clusters.toFixed(2),
+    "bb-base": data.backbone.nmi_between_full_runs_median.toFixed(2),
   };
   document.querySelectorAll("[data-jobs]").forEach((el) => { el.textContent = fill[el.dataset.jobs]; });
   window.addEventListener("resize", () => charts.forEach((item) => item.resize()));

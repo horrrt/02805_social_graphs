@@ -51,6 +51,8 @@ PLACEHOLDER = re.compile(
     r"|\bWFH\b|TBD|TO BE DETERMINED|^HOUSE$|^ADDRESS|WORKER S ADDRESS|HOME WORKSITE"
     r"|CLIENT LOCATION|CLIENT SITE|VARIOUS|MULTIPLE|NOT APPLICABLE|^N ?A$|^NONE$|^SAME AS"
     r"|^EMPLOYEE\b|BENEFICIAR|^CLIENT$|^UNKNOWN"
+    # Whole-name matches only: an unanchored HOME would eat Home Depot.
+    r"|^(?:HOME|WORK FOR HOME|WORKING FROM HOME)$"
 )
 DBA = re.compile(r"\b(?:DBA|DOING BUSINESS AS|AKA)\b")
 # Trailing phrases that describe the site rather than name the company.

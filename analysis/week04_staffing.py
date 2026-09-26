@@ -24,13 +24,23 @@ Checks
   rewirings (each firm and each client keeps its number of partners; filing
   counts are dealt back out at random, as in Week 3). Two more nulls separate
   the wiring from the weights: unweighted real against unweighted rewired, and
-  the real wiring with its filing counts shuffled.
-- NMI of communities with client industry and with the client's main vendor,
-  each against shuffled labels, over clients with two or more vendors.
+  the real wiring with its filing counts shuffled. Louvain runs on the giant
+  component of the real network, and a rewiring splits that component into
+  hundreds of pieces, each a free community; so each rewired network is scored
+  on its own giant component too (the like-for-like null), with the score over
+  all its pieces kept beside it.
+- Why shuffled filing counts score higher: modularity split into its two terms
+  (the share of filings inside communities, and the penalty for large
+  communities), for the real counts and for the shuffled ones.
+- NMI and AMI (chance-corrected) of communities with client industry and with
+  the client's main vendor, each against shuffled labels, over clients with
+  two or more vendors. A client's main vendor is its heaviest neighbour in the
+  very network Louvain splits, so the vendor label has a head start.
 - Weighted against unweighted: NMI between the Louvain partitions with and
   without filing counts, beside the NMI between two seeds of the same kind, so
   a low number can be told apart from Louvain's own run-to-run noise.
-- The same analysis for FY2022 to FY2025, compared on shared clients.
+- The same analysis for FY2022 to FY2025, compared on shared clients, beside
+  two seeds of the same year on the same clients.
 - Infomap (the map equation) on the same network, compared with Louvain and
   with the same industry and vendor labels.
 - USCIS approvals and denials for FY2022 (the Employer Data Hub's last full
@@ -52,6 +62,7 @@ import networkx as nx
 from rapidfuzz import fuzz
 import numpy as np
 import pandas as pd
+from sklearn.metrics import adjusted_mutual_info_score as ami
 from sklearn.metrics import normalized_mutual_info_score as nmi
 
 import week04_names as names
@@ -114,6 +125,8 @@ def placements(year, lca):
     own = rows["employer"] == rows["client"]
     rows = rows[~own][["CASE_NUMBER", "employer", "client"]]
     rows.attrs["own_company_rows"] = int(own.sum())
+    # Filings with at least one real client company left.
+    rows.attrs["client_company_filings"] = int(rows["CASE_NUMBER"].nunique())
     return rows, placeholder, len(sites)
 
 
@@ -246,6 +259,24 @@ def shuffle_weights(g, rng):
     return h
 
 
+def giant_of(g):
+    return g.subgraph(max(nx.connected_components(g), key=len)).copy()
+
+
+def q_terms(g, parts):
+    """Modularity's two terms for a partition: the share of weight inside
+    communities, and the expected share (the sum of squared community strength
+    shares). Q is the first minus the second."""
+    member = labels(parts)
+    total = g.size("weight")
+    inside = sum(w for u, v, w in g.edges(data="weight") if member[u] == member[v]) / total
+    strength = Counter()
+    for n, s in g.degree(weight="weight"):
+        strength[member[n]] += s
+    penalty = sum((s / (2 * total)) ** 2 for s in strength.values())
+    return inside, penalty
+
+
 def span(seconds):
     """A duration without leading zeros: 45s, 9m32s, 1h5m."""
     m, s = divmod(int(seconds), 60)
@@ -339,6 +370,10 @@ def main():
             "placeholder_client_rows": placeholder,
             "placeholder_share": round(placeholder / site_rows, 4),
             "own_company_client_rows": rows.attrs["own_company_rows"],
+            # The lead's number: placeholders and self-named firms out.
+            "client_company_filings": rows.attrs["client_company_filings"],
+            "client_company_share": round(rows.attrs["client_company_filings"] / len(lca), 4),
+            "client_company_one_in": round(len(lca) / rows.attrs["client_company_filings"]),
             "edges": int(rows.groupby(["employer", "client"]).ngroups),
             "employer_keys": int(lca["employer"].nunique()),
             "employer_tax_numbers": int(fein.nunique()) if fein is not None else None,
@@ -401,15 +436,26 @@ def main():
     runs_plain = [louvain(plain, SEED + i) for i in tracked("Louvain, unweighted", RUNS)]
     qs_plain = np.array([q for _, q in runs_plain])
     null_qs, null_plain, null_weights, pieces = [], [], [], []
-    for i in tracked("Nulls, three per run", RUNS):
+    null_all, null_plain_all, null_share, null_weight_share, shuffled_terms = [], [], [], [], []
+    for i in tracked("Nulls, five Louvain runs each", RUNS):
         h = rewire(giant, rng)
         if i == 0:
             check_rewire(giant, h)
         pieces.append(nx.number_connected_components(h))
-        null_qs.append(louvain(h, SEED + i)[1])
-        null_plain.append(louvain(unweighted(h), SEED + i)[1])
-        null_weights.append(louvain(shuffle_weights(giant, rng), SEED + i)[1])
-    null_qs, null_plain, null_weights = map(np.array, (null_qs, null_plain, null_weights))
+        # Scored like the real network, on its giant component; and over all its pieces.
+        hg = giant_of(h)
+        null_share.append(hg.number_of_nodes() / h.number_of_nodes())
+        null_weight_share.append(hg.size("weight") / h.size("weight"))
+        null_qs.append(louvain(hg, SEED + i)[1])
+        null_all.append(louvain(h, SEED + i)[1])
+        null_plain.append(louvain(unweighted(hg), SEED + i)[1])
+        null_plain_all.append(louvain(unweighted(h), SEED + i)[1])
+        shuffled = shuffle_weights(giant, rng)
+        parts_w, q_w = louvain(shuffled, SEED + i)
+        null_weights.append(q_w)
+        shuffled_terms.append(q_terms(shuffled, parts_w))
+    null_qs, null_plain, null_weights, null_all, null_plain_all = map(
+        np.array, (null_qs, null_plain, null_weights, null_all, null_plain_all))
     best_parts = max(runs, key=lambda r: r[1])[0]
     member = labels(best_parts)
     nodes = list(giant)
@@ -430,13 +476,44 @@ def main():
                 "z": round(float((real.mean() - null.mean()) / null.std()), 2),
                 "null_runs_at_or_above_real": int((null >= real.mean()).sum())}
 
+    # Why shuffled filing counts score higher: Q's two terms, real against shuffled.
+    real_terms = np.array([q_terms(giant, p) for p, _ in runs])
+    shuffled_terms = np.array(shuffled_terms)
+    w_sorted = np.sort([w for *_, w in giant.edges(data="weight")])[::-1]
+    n_top = max(1, len(w_sorted) // 100)
+    client_of = lambda u, v: u if u[0] == "C" else v
+    multi_edge = [w for u, v, w in giant.edges(data="weight") if giant.degree(client_of(u, v)) >= 2]
+    # In the best weighted partition: do one-firm clients sit with their firm, and
+    # which links carry the filings that cross between groups?
+    single = [(u, v) for u, v in giant.edges() if giant.degree(client_of(u, v)) == 1]
+    crossing = [(w, giant.degree(client_of(u, v)) >= 2) for u, v, w in giant.edges(data="weight")
+                if member[u] != member[v]]
     result["modularity"] = {
         "communities_median": int(np.median([len(p) for p, _ in runs])),
         "nmi_between_seeds_median": round(float(np.median(pairs)), 3),
         "rewired_components_median": int(np.median(pieces)),
+        "null_scored_on": "the giant component of each rewired network, as the real network is",
+        "rewired_giant_node_share_median": round(float(np.median(null_share)), 4),
+        "rewired_giant_filing_share_median": round(float(np.median(null_weight_share)), 4),
         "weighted_vs_rewired": compare(qs, null_qs),
         "wiring_only": compare(qs_plain, null_plain),
         "weights_only": compare(qs, null_weights),
+        # The earlier null, scored over every piece of the rewired network.
+        "all_pieces": {"weighted_vs_rewired": compare(qs, null_all),
+                       "wiring_only": compare(qs_plain, null_plain_all)},
+        "weights_check": {
+            "real_inside_share": round(float(real_terms[:, 0].mean()), 4),
+            "real_penalty": round(float(real_terms[:, 1].mean()), 4),
+            "shuffled_inside_share": round(float(shuffled_terms[:, 0].mean()), 4),
+            "shuffled_penalty": round(float(shuffled_terms[:, 1].mean()), 4),
+            "heaviest_1pct_links": int(n_top),
+            "heaviest_1pct_filing_share": round(float(w_sorted[:n_top].sum() / w_sorted.sum()), 4),
+            "single_vendor_clients_with_their_firm": round(float(np.mean([member[u] == member[v] for u, v in single])), 4),
+            "crossing_filings_on_multi_vendor_links_share": round(float(
+                sum(w for w, m in crossing if m) / sum(w for w, _ in crossing)), 4),
+            "links_to_multi_vendor_clients_share": round(len(multi_edge) / giant.number_of_edges(), 4),
+            "filings_to_multi_vendor_clients_share": round(float(sum(multi_edge) / giant.size("weight")), 4),
+        },
     }
     result["weighted_vs_unweighted"] = {
         "communities_median_unweighted": int(np.median([len(p) for p, _ in runs_plain])),
@@ -459,6 +536,12 @@ def main():
     comm_plain = [member_plain[("C", c)] for c in sector_clients]
     ind_plain, ind_plain_p = shuffled_nmi(comm_plain, [names.naics2(c) for c in sector_clients], rng)
     ven_plain, ven_plain_p = shuffled_nmi(comm_plain, [main_vendor[c] for c in sector_clients], rng)
+    industry = [names.naics2(c) for c in sector_clients]
+    vendor = [main_vendor[c] for c in sector_clients]
+    gaps = [ami([lab[("C", c)] for c in sector_clients], vendor) - ami([lab[("C", c)] for c in sector_clients], industry)
+            for lab in plain_labels]
+    # How often a client shares its community with its own main vendor's node.
+    with_vendor = lambda m: round(float(np.mean([m[("C", c)] == m.get(("F", main_vendor[c])) for c in sector_clients])), 4)
     result["industry_or_vendor"] = {
         "clients_with_2plus_vendors": len(test),
         "their_filing_share": round(float(totals[test].sum() / totals.sum()), 4),
@@ -467,9 +550,21 @@ def main():
         "nmi_community_main_vendor": round(ven_obs, 3), "p_vendor": round(ven_p, 4),
         "nmi_community_main_vendor_same_clients": round(ven_same, 3),
         "p_vendor_same_clients": round(ven_same_p, 4),
+        "ami_community_industry": round(float(ami(comm, industry)), 3),
+        "ami_community_main_vendor_same_clients": round(float(ami(comm, vendor)), 3),
+        "industry_labels": len(set(industry)), "vendor_labels": len(set(vendor)),
+        "communities_among_these_clients": len(set(comm)),
+        "share_with_own_main_vendor": with_vendor(member),
         "unweighted": {"nmi_community_industry": round(ind_plain, 3), "p_industry": round(ind_plain_p, 4),
                        "nmi_community_main_vendor_same_clients": round(ven_plain, 3),
-                       "p_vendor_same_clients": round(ven_plain_p, 4)},
+                       "p_vendor_same_clients": round(ven_plain_p, 4),
+                       "ami_community_industry": round(float(ami(comm_plain, industry)), 3),
+                       "ami_community_main_vendor_same_clients": round(float(ami(comm_plain, vendor)), 3),
+                       "communities_among_these_clients": len(set(comm_plain)),
+                       # Over 20 unweighted runs, not only the best: vendor AMI minus industry AMI.
+                       "ami_gap_over_runs": {k: round(float(f(gaps)), 3) for k, f in
+                                             (("median", np.median), ("min", np.min), ("max", np.max))},
+                       "share_with_own_main_vendor": with_vendor(member_plain)},
     }
 
     # Infomap, the flow-based alternative: does a random walk find the same groups?
@@ -486,14 +581,17 @@ def main():
         "nmi_with_louvain": round(float(over(member, member_info)), 3),
         "nmi_community_industry": round(info_ind, 3), "p_industry": round(info_ind_p, 4),
         "nmi_community_main_vendor_same_clients": round(info_ven, 3), "p_vendor_same_clients": round(info_ven_p, 4),
+        "ami_community_industry": round(float(ami(comm_info, industry)), 3),
+        "ami_community_main_vendor_same_clients": round(float(ami(comm_info, vendor)), 3),
     }
 
     # The largest communities, named by their biggest firms and clients.
     strength = dict(giant.degree(weight="weight"))
     described = []
     for part in sorted(best_parts, key=lambda p: -sum(strength[n] for n in p))[:6]:
-        firms = sorted((n for n in part if n[0] == "F"), key=lambda n: -strength[n])
-        clients = sorted((n for n in part if n[0] == "C"), key=lambda n: -strength[n])
+        # Ties in strength break on the name, so a rerun lists the same companies.
+        firms = sorted((n for n in part if n[0] == "F"), key=lambda n: (-strength[n], firm_names.get(n[1], n[1])))
+        clients = sorted((n for n in part if n[0] == "C"), key=lambda n: (-strength[n], resolver().label(n[1])))
         sectors = Counter(names.naics2(n[1]) for n in clients if names.naics2(n[1]))
         described.append({
             "filings": int(sum(strength[n] for n in firms)),
@@ -505,16 +603,25 @@ def main():
     result["largest_communities"] = described
 
     # Q4 · does it hold from year to year?
+    # Two seeds per year, weighted and unweighted, so the year-to-year NMI can be
+    # set beside two runs of the same year on the very same shared clients.
     yearly = {}
     for year in YEARS:
-        gy = graphs[year][0]
-        gy = gy.subgraph(max(nx.connected_components(gy), key=len)).copy()
-        yearly[year] = labels(louvain(gy, SEED)[0])
+        gy = giant_of(graphs[year][0])
+        yearly[year] = {kind: [labels(louvain(h, SEED + k)[0]) for k in (0, 1)]
+                        for kind, h in (("weighted", gy), ("unweighted", unweighted(gy)))}
     stability = []
+    on = lambda a, b, shared: round(nmi([a[n] for n in shared], [b[n] for n in shared]), 3)
     for a, b in zip(YEARS, YEARS[1:]):
-        shared = [n for n in yearly[a] if n in yearly[b] and n[0] == "C"]
-        stability.append({"from": a, "to": b, "shared_clients": len(shared),
-                          "nmi": round(nmi([yearly[a][n] for n in shared], [yearly[b][n] for n in shared]), 3)})
+        A, B = yearly[a]["weighted"], yearly[b]["weighted"]
+        shared = [n for n in A[0] if n in B[0] and n[0] == "C"]
+        entry = {"from": a, "to": b, "shared_clients": len(shared)}
+        for kind in ("weighted", "unweighted"):
+            A, B = yearly[a][kind], yearly[b][kind]
+            key = "" if kind == "weighted" else "unweighted_"
+            entry[f"{key}nmi"] = on(A[0], B[0], shared)
+            entry[f"{key}same_year_nmi"] = on(B[0], B[1], shared)  # two seeds of the later year
+        stability.append(entry)
     out["stability"] = stability
 
     out["seconds"] = round(time.time() - started)
@@ -522,6 +629,7 @@ def main():
     page = {
         "generated_by": "analysis/week04_staffing.py", "year": MAIN, "runs": RUNS,
         **{k: result[k] for k in ("modularity", "weighted_vs_unweighted", "industry_or_vendor", "infomap")},
+        "stability": stability,
     }
     from week04_schemas import check  # here, not at the top: week04_schemas has no reason to load at import
     check(PAGE, page)

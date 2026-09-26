@@ -64,6 +64,7 @@ class Backbone(Model):
     edges_kept: list[int]
     snap_alpha: float
     snap_note: str
+    choice_note: str  # why the map opens at default_alpha
     graphs: dict[str, dict]
 
     @model_validator(mode="after")
@@ -191,12 +192,43 @@ class Infomap2(Model):
     nmi_with_soc: float = Share
 
 
+class JobLouvain(Model):
+    nmi_between_runs_median: float = Share
+
+
+class JobNull(Model):
+    runs: int = Field(ge=1)
+    real: float
+    null: float
+    z: float
+
+
 class JobQuality(Model):
     nmi: float = Share
     ami: float = Field(ge=-1, le=1)
     occupations: int = Field(ge=1)
     nmi_shuffled: Shuffled
     infomap: Infomap2
+    louvain: JobLouvain
+    null: JobNull
+
+
+class Bridges(Model):
+    all_occupations: int = Count
+    tested: int = Count
+    expected_false_positives: float = Count
+    lift_above_1: int = Count
+    lift_above_1_by_chance_mean: float = Count
+
+
+class JobBackbone(Model):
+    alpha: float = Share
+    links: int = Count
+    links_total: int = Count
+    occupations_linked: int = Count
+    clusters_on_backbone: int = Field(ge=1)
+    nmi_with_full_clusters: float = Share
+    nmi_between_full_runs_median: float = Share
 
 
 class JobMeta(Model):
@@ -220,6 +252,8 @@ class Jobs(Model):
     clusters: list[Cluster] = Field(min_length=1)
     quality: JobQuality
     comparison: Comparison
+    bridges: Bridges
+    backbone: JobBackbone
 
     @model_validator(mode="after")
     def references(self):
@@ -299,10 +333,20 @@ class Compare(Model):
     null: float
 
 
+class WeightsCheck(Model):
+    real_inside_share: float = Share
+    shuffled_inside_share: float = Share
+    links_to_multi_vendor_clients_share: float = Share
+    filings_to_multi_vendor_clients_share: float = Share
+
+
 class Modularity(Model):
     communities_median: int = Field(ge=1)
+    rewired_components_median: int = Field(ge=1)
     weighted_vs_rewired: Compare
     wiring_only: Compare
+    weights_only: Compare
+    weights_check: WeightsCheck
 
 
 class WeightedVsUnweighted(Model):
@@ -315,10 +359,17 @@ class WeightedVsUnweighted(Model):
 class LabelNmi(Model):
     nmi_community_industry: float = Share
     nmi_community_main_vendor_same_clients: float = Share
+    # AMI can dip below zero when a split matches worse than chance.
+    ami_community_industry: float = Field(ge=-1, le=1)
+    ami_community_main_vendor_same_clients: float = Field(ge=-1, le=1)
 
 
-class IndustryOrVendor(LabelNmi):
-    unweighted: LabelNmi
+class Partition(LabelNmi):
+    share_with_own_main_vendor: float = Share
+
+
+class IndustryOrVendor(Partition):
+    unweighted: Partition
 
 
 class Infomap3(LabelNmi):

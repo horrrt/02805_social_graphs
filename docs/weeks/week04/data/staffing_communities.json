@@ -4,67 +4,146 @@
  "runs": 100,
  "modularity": {
   "communities_median": 70,
-  "nmi_between_seeds_median": 0.708,
-  "rewired_components_median": 583,
+  "nmi_between_seeds_median": 0.731,
+  "rewired_components_median": 588,
+  "null_scored_on": "the giant component of each rewired network, as the real network is",
+  "rewired_giant_node_share_median": 0.9412,
+  "rewired_giant_filing_share_median": 0.9835,
   "weighted_vs_rewired": {
-   "real": 0.5965,
-   "real_sd": 0.0009,
-   "null": 0.7407,
-   "null_sd": 0.0011,
-   "z": -130.08,
+   "real": 0.5963,
+   "real_sd": 0.0008,
+   "null": 0.7362,
+   "null_sd": 0.0016,
+   "z": -89.4,
    "null_runs_at_or_above_real": 100
   },
   "wiring_only": {
-   "real": 0.5724,
+   "real": 0.5725,
    "real_sd": 0.0014,
-   "null": 0.5336,
-   "null_sd": 0.0007,
-   "z": 53.09,
+   "null": 0.525,
+   "null_sd": 0.0009,
+   "z": 50.13,
    "null_runs_at_or_above_real": 0
   },
   "weights_only": {
-   "real": 0.5965,
-   "real_sd": 0.0009,
-   "null": 0.7522,
-   "null_sd": 0.0014,
-   "z": -113.04,
+   "real": 0.5963,
+   "real_sd": 0.0008,
+   "null": 0.7521,
+   "null_sd": 0.0015,
+   "z": -103.89,
    "null_runs_at_or_above_real": 100
+  },
+  "all_pieces": {
+   "weighted_vs_rewired": {
+    "real": 0.5963,
+    "real_sd": 0.0008,
+    "null": 0.7409,
+    "null_sd": 0.0014,
+    "z": -105.32,
+    "null_runs_at_or_above_real": 100
+   },
+   "wiring_only": {
+    "real": 0.5725,
+    "real_sd": 0.0014,
+    "null": 0.5337,
+    "null_sd": 0.0008,
+    "z": 49.45,
+    "null_runs_at_or_above_real": 0
+   }
+  },
+  "weights_check": {
+   "real_inside_share": 0.6477,
+   "real_penalty": 0.0514,
+   "shuffled_inside_share": 0.767,
+   "shuffled_penalty": 0.0149,
+   "heaviest_1pct_links": 412,
+   "heaviest_1pct_filing_share": 0.2421,
+   "single_vendor_clients_with_their_firm": 1.0,
+   "crossing_filings_on_multi_vendor_links_share": 1.0,
+   "links_to_multi_vendor_clients_share": 0.7304,
+   "filings_to_multi_vendor_clients_share": 0.8151
   }
  },
  "weighted_vs_unweighted": {
   "communities_median_unweighted": 65,
-  "nmi_median": 0.378,
-  "nmi_best_partitions": 0.393,
-  "nmi_between_seeds_weighted": 0.708,
-  "nmi_between_seeds_unweighted": 0.505,
+  "nmi_median": 0.376,
+  "nmi_best_partitions": 0.371,
+  "nmi_between_seeds_weighted": 0.731,
+  "nmi_between_seeds_unweighted": 0.506,
   "runs_compared": 20
  },
  "industry_or_vendor": {
-  "clients_with_2plus_vendors": 4093,
-  "their_filing_share": 0.7694,
+  "clients_with_2plus_vendors": 4090,
+  "their_filing_share": 0.7693,
   "with_sector_label": 862,
-  "nmi_community_industry": 0.169,
+  "nmi_community_industry": 0.16,
   "p_industry": 0.001,
-  "nmi_community_main_vendor": 0.643,
+  "nmi_community_main_vendor": 0.638,
   "p_vendor": 0.001,
-  "nmi_community_main_vendor_same_clients": 0.705,
+  "nmi_community_main_vendor_same_clients": 0.709,
   "p_vendor_same_clients": 0.001,
+  "ami_community_industry": 0.06,
+  "ami_community_main_vendor_same_clients": 0.507,
+  "industry_labels": 18,
+  "vendor_labels": 339,
+  "communities_among_these_clients": 43,
+  "share_with_own_main_vendor": 0.8654,
   "unweighted": {
-   "nmi_community_industry": 0.174,
+   "nmi_community_industry": 0.183,
    "p_industry": 0.001,
-   "nmi_community_main_vendor_same_clients": 0.469,
-   "p_vendor_same_clients": 0.001
+   "nmi_community_main_vendor_same_clients": 0.476,
+   "p_vendor_same_clients": 0.001,
+   "ami_community_industry": 0.073,
+   "ami_community_main_vendor_same_clients": 0.089,
+   "communities_among_these_clients": 50,
+   "ami_gap_over_runs": {
+    "median": 0.012,
+    "min": -0.002,
+    "max": 0.054
+   },
+   "share_with_own_main_vendor": 0.4269
   }
  },
  "infomap": {
-  "modules": 1731,
-  "modules_of_two_or_more": 1731,
-  "largest_module_share_of_nodes": 0.0218,
-  "codelength_bits": 7.747,
-  "nmi_with_louvain": 0.661,
-  "nmi_community_industry": 0.359,
+  "modules": 1713,
+  "modules_of_two_or_more": 1713,
+  "largest_module_share_of_nodes": 0.0213,
+  "codelength_bits": 7.75,
+  "nmi_with_louvain": 0.651,
+  "nmi_community_industry": 0.363,
   "p_industry": 0.001,
   "nmi_community_main_vendor_same_clients": 0.87,
-  "p_vendor_same_clients": 0.001
- }
+  "p_vendor_same_clients": 0.001,
+  "ami_community_industry": 0.064,
+  "ami_community_main_vendor_same_clients": 0.614
+ },
+ "stability": [
+  {
+   "from": 2022,
+   "to": 2023,
+   "shared_clients": 6893,
+   "nmi": 0.301,
+   "same_year_nmi": 0.748,
+   "unweighted_nmi": 0.211,
+   "unweighted_same_year_nmi": 0.472
+  },
+  {
+   "from": 2023,
+   "to": 2024,
+   "shared_clients": 6489,
+   "nmi": 0.324,
+   "same_year_nmi": 0.717,
+   "unweighted_nmi": 0.249,
+   "unweighted_same_year_nmi": 0.505
+  },
+  {
+   "from": 2024,
+   "to": 2025,
+   "shared_clients": 6221,
+   "nmi": 0.333,
+   "same_year_nmi": 0.713,
+   "unweighted_nmi": 0.271,
+   "unweighted_same_year_nmi": 0.518
+  }
+ ]
 }

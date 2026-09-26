@@ -156,7 +156,7 @@ Layout differences the loader already handles:
 | Sun 27 Sep, evening | Review together |
 | Mon 28 Sep, 16:00 | Page live |
 | Mon 28 Sep, evening | Link in the Teams channel, feedback on another group |
-| Wed 30 Sep, 08:10 | Test 1, building 208, room 054 |
+| Wed 30 Sep, 08:10 | Test 1, building 303A, Auditorium 42 or 43 (an email says which) |
 
 The 🧠 exercises (4.1, 4.2, 4.3, 4.7, 4.8, 4.10) are Test 1 material: everyone does all of them on paper.
 
