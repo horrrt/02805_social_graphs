@@ -61,6 +61,9 @@ test("clients group weakly, about as much by industry as by vendor", () => {
   assert.ok(Math.abs(plain.ami_gap_over_runs.median) < 0.05, '"about as much" must hold over runs, not one partition');
   assert.ok(plain.p_vendor_same_clients < 0.05 && plain.p_industry < 0.05, "both must beat shuffled labels");
   says(`${iv.vendor_labels} main vendors but only ${iv.industry_labels} industries`);
+  // Niklas's closing repeats the claim; the conditions above guard it too.
+  assert.ok(closing.includes("clients group about as much by industry as by the firm that staffs them"),
+    "the closing's version of the claim moved; check it still matches the numbers above");
   // ... and the weighted split, which favours vendors, loses to its own.
   assert.equal(m.weighted_vs_rewired.null_runs_at_or_above_real, 100, "weighted must lose to every rewired network");
   says(`main vendor (AMI ${iv.ami_community_main_vendor_same_clients.toFixed(2)} against ${iv.ami_community_industry.toFixed(2)})`);
@@ -111,7 +114,7 @@ test("FY2026 so far, January to June against the year before", () => {
   const tcs = j.employer_kinds.top_15_placing.find((f) => f.firm === "Tata Consultancy Services");
   says(`Tata Consultancy Services filed ${count(tcs.FY2026)}, down from ${count(tcs.FY2025)}`);
   const c = j.client_churn.tata_consultancy_services;
-  says(`Of the ${c.fy2025_main_vendor_clients} clients it supplied most in FY2025, ${c.still_filing_fy2026} still appear, and ${c.switched_main_vendor} of those`);
+  says(`Of the ${c.fy2025_main_vendor_clients} clients it supplied most from January to June 2025, ${c.still_filing_fy2026} still appear, and ${c.switched_main_vendor} of those`);
   assert.equal(c.top_5_new_main_vendors[0][0], "Infosys");
   const [before, after] = j.client_churn.pairs.map((p) => p.main_vendor_changed_share);
   says(`${pct(after)} changed their main vendor, against ${pct(before)} a year earlier`);
@@ -133,8 +136,8 @@ test("strong ties, weak ties and pay", () => {
   const b = w.overlap_by_weight_bucket;
   has(`mean overlap of ${b["1"].mean_overlap.toFixed(3)}, links with 21 or more ${b["21+"].mean_overlap.toFixed(3)}`);
   const wage = ties.wage;
-  has(`the groups explain ${pct(wage.eta_squared_clients.eta_squared)} of the variance`);
-  has(`averaged per firm, ${pct(wage.eta_squared_firms.eta_squared)}`);
+  has(`the groups explain ${pct(wage.eta_squared_clients.eta_squared)} of the variance in wage level`);
+  has(`averaged per firm over all its filings, ${pct(wage.eta_squared_firms.eta_squared)}`);
   assert.equal(wage.eta_squared_clients.shuffles, 1000);
   assert.ok(wage.eta_squared_clients.p <= 0.001 && wage.eta_squared_firms.p <= 0.001, '"none of 1,000 shuffles reached either"');
   const d = wage.wage_distribution_placing_vs_direct_filings;
@@ -148,7 +151,7 @@ test("strong ties, weak ties and pay", () => {
 test("who files the paperwork", () => {
   const law = json("analysis/week04_lawfirms.json");
   const y = law.years["2025"];
-  const block = text('id="staffing-lawyers"', 'id="closing"');
+  const block = text('id="staffing-lawyers"', 'id="staffing-community-stats"');
   const has = (t) => assert.ok(block.includes(t), `the law-firm text should say "${t}"`);
   const c = y.concentration;
   assert.ok(Math.abs(c.named_share - 0.75) < 0.02, `"three in four" but the share is ${c.named_share}`);
@@ -174,7 +177,10 @@ test("who files the paperwork", () => {
   has(`Louvain finds ${m.communities} groups at modularity ${m.vs_null.real.toFixed(2)}, against ${m.vs_null.null.toFixed(2)}`);
   has(`(z = ${Math.round(m.vs_null.z)})`);
   assert.equal(m.vs_null.null_runs_at_or_above_real, 0);
-  has(`Census regions is NMI ${m.labels.nmi_region.toFixed(2)}`);
+  has(`(NMI ${m.labels.nmi_region.toFixed(2)} with Census regions, though above every shuffle)`);
+  assert.ok(m.labels.p_region <= 0.001, '"above every shuffle"');
+  has(`The threshold keeps the larger connected core, ${count(b.threshold_giant_component)} firms against the filter's ${count(b.giant_component)}`);
+  assert.ok(b.threshold_giant_component > b.giant_component);
   const top = m.largest_communities.map((g) => g.top_employers.slice(0, 4));
   assert.ok(top.some((e) => e.includes("Google") && e.includes("Apple") && e.includes("Meta")));
   assert.ok(top.some((e) => e.includes("Tata Consultancy Services") && e.includes("LTIMindtree")));

@@ -120,11 +120,11 @@
    "positions": 898747,
    "placed_positions": 171521,
    "placed_positions_share": 0.1908,
-   "client_rows": 145023,
-   "placeholder_client_rows": 24945,
+   "client_rows": 145026,
+   "placeholder_client_rows": 24947,
    "placeholder_share": 0.172,
    "own_company_client_rows": 1312,
-   "client_company_filings": 106891,
+   "client_company_filings": 106892,
    "client_company_share": 0.2202,
    "client_company_one_in": 5,
    "edges": 47250,
@@ -447,28 +447,28 @@
    "positions": 808358,
    "placed_positions": 172414,
    "placed_positions_share": 0.2133,
-   "client_rows": 63997,
-   "placeholder_client_rows": 10240,
-   "placeholder_share": 0.16,
-   "own_company_client_rows": 481,
-   "client_company_filings": 48221,
-   "client_company_share": 0.123,
-   "client_company_one_in": 8,
-   "edges": 27052,
+   "client_rows": 83960,
+   "placeholder_client_rows": 12541,
+   "placeholder_share": 0.1494,
+   "own_company_client_rows": 619,
+   "client_company_filings": 65745,
+   "client_company_share": 0.1676,
+   "client_company_one_in": 6,
+   "edges": 32954,
    "employer_keys": 50247,
    "employer_tax_numbers": 50307,
-   "placements_to_intermediaries": 826,
-   "intermediary_share": 0.0162,
+   "placements_to_intermediaries": 1046,
+   "intermediary_share": 0.0153,
    "top_intermediary_clients": {
-    "Deloitte": 297,
-    "West Virginia University": 64,
-    "Cognizant": 55,
-    "Infosys": 44,
-    "Accenture": 30,
-    "EY": 26
+    "Deloitte": 376,
+    "West Virginia University": 70,
+    "Cognizant": 68,
+    "Infosys": 53,
+    "Accenture": 42,
+    "EY": 36
    },
-   "firms": 6611,
-   "clients": 11957,
+   "firms": 7248,
+   "clients": 13776,
    "top_firms_by_filings": [
     [
      "Infosys",
@@ -942,33 +942,33 @@
   "industry_or_vendor": {
    "clients_with_2plus_vendors": 4090,
    "their_filing_share": 0.7693,
-   "with_sector_label": 862,
-   "nmi_community_industry": 0.16,
+   "with_sector_label": 1214,
+   "nmi_community_industry": 0.148,
    "p_industry": 0.001,
    "nmi_community_main_vendor": 0.638,
    "p_vendor": 0.001,
-   "nmi_community_main_vendor_same_clients": 0.709,
+   "nmi_community_main_vendor_same_clients": 0.695,
    "p_vendor_same_clients": 0.001,
-   "ami_community_industry": 0.06,
-   "ami_community_main_vendor_same_clients": 0.507,
+   "ami_community_industry": 0.068,
+   "ami_community_main_vendor_same_clients": 0.478,
    "industry_labels": 18,
-   "vendor_labels": 339,
-   "communities_among_these_clients": 43,
-   "share_with_own_main_vendor": 0.8654,
+   "vendor_labels": 492,
+   "communities_among_these_clients": 48,
+   "share_with_own_main_vendor": 0.8649,
    "unweighted": {
-    "nmi_community_industry": 0.183,
+    "nmi_community_industry": 0.155,
     "p_industry": 0.001,
-    "nmi_community_main_vendor_same_clients": 0.476,
+    "nmi_community_main_vendor_same_clients": 0.487,
     "p_vendor_same_clients": 0.001,
-    "ami_community_industry": 0.073,
-    "ami_community_main_vendor_same_clients": 0.089,
-    "communities_among_these_clients": 50,
+    "ami_community_industry": 0.068,
+    "ami_community_main_vendor_same_clients": 0.106,
+    "communities_among_these_clients": 54,
     "ami_gap_over_runs": {
-     "median": 0.012,
-     "min": -0.002,
-     "max": 0.054
+     "median": 0.024,
+     "min": 0.003,
+     "max": 0.046
     },
-    "share_with_own_main_vendor": 0.4269
+    "share_with_own_main_vendor": 0.4819
    }
   },
   "infomap": {
@@ -977,12 +977,12 @@
    "largest_module_share_of_nodes": 0.0213,
    "codelength_bits": 7.75,
    "nmi_with_louvain": 0.651,
-   "nmi_community_industry": 0.363,
+   "nmi_community_industry": 0.346,
    "p_industry": 0.001,
-   "nmi_community_main_vendor_same_clients": 0.87,
+   "nmi_community_main_vendor_same_clients": 0.881,
    "p_vendor_same_clients": 0.001,
-   "ami_community_industry": 0.064,
-   "ami_community_main_vendor_same_clients": 0.614
+   "ami_community_industry": 0.063,
+   "ami_community_main_vendor_same_clients": 0.624
   },
   "largest_communities": [
    {
@@ -1004,9 +1004,9 @@
      "Humana"
     ],
     "sectors": {
-     "31-33": 57,
-     "52": 26,
-     "44-45": 9,
+     "31-33": 62,
+     "52": 35,
+     "44-45": 11,
      "48-49": 7
     }
    },
@@ -1029,10 +1029,10 @@
      "Citizens Bank"
     ],
     "sectors": {
-     "31-33": 38,
-     "52": 16,
-     "51": 6,
-     "22": 6
+     "31-33": 42,
+     "52": 22,
+     "51": 7,
+     "44-45": 7
     }
    },
    {
@@ -1054,10 +1054,10 @@
      "Credit One Bank"
     ],
     "sectors": {
-     "31-33": 13,
-     "52": 12,
-     "51": 8,
-     "44-45": 4
+     "52": 22,
+     "31-33": 17,
+     "44-45": 11,
+     "51": 11
     }
    },
    {
@@ -1079,10 +1079,10 @@
      "The Hartford"
     ],
     "sectors": {
-     "52": 27,
-     "31-33": 26,
-     "44-45": 4,
-     "51": 3
+     "52": 30,
+     "31-33": 29,
+     "44-45": 8,
+     "51": 4
     }
    },
    {
@@ -1104,10 +1104,10 @@
      "Equifax"
     ],
     "sectors": {
-     "31-33": 24,
-     "52": 17,
+     "31-33": 29,
+     "52": 22,
      "56": 6,
-     "22": 5
+     "62": 6
     }
    },
    {
@@ -1129,10 +1129,10 @@
      "TD Bank"
     ],
     "sectors": {
-     "31-33": 14,
-     "52": 13,
-     "54": 4,
-     "51": 3
+     "52": 22,
+     "31-33": 16,
+     "51": 5,
+     "54": 5
     }
    }
   ]
@@ -1166,5 +1166,5 @@
    "unweighted_same_year_nmi": 0.518
   }
  ],
- "seconds": 203
+ "seconds": 264
 }

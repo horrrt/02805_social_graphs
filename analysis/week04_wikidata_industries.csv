@@ -1,0 +1,58 @@
+# Reviewed NAICS sector for a Wikidata industry (P452) that Wikidata itself gives no
+# NAICS/SIC code. Read by week04_wikidata.sector_of() only after a matched company's own
+# P3224 and its industries' P3224 both give nothing; a majority of these across a
+# company's industries breaks the tie, same as every other step there.
+# Built from week04_wikidata_sectors.csv: every P452 industry qid on a matched company
+# that still had no sector, ranked by filings among those companies (companies/filings
+# below are counts among that unsectored set only, not the industry's true size).
+# A sector is given only where one is clearly right: software industry/enterprise
+# software/SaaS/cloud computing/video game industry -> 51 (Information), the same
+# "software publishers are Information" convention week04_sec.sector_of_sic uses for SIC;
+# IT consulting/outsourcing/management consulting/engineering/marketing services -> 54
+# (Professional services); banking/insurance/asset management/payments -> 52 (Finance and
+# Insurance); manufacturing industries -> 31-33; health care -> 62; higher education -> 61;
+# retail -> 44-45; transport -> 48-49; telecommunications and media -> 51. An ambiguous or
+# purely topical label (technology, research, analytics, robotics, automation, computer
+# science, a specific software category, or anything that reads like an academic subject
+# rather than a business classification) is left blank with a note, never guessed.
+qid,label,companies,filings,naics2,note
+Q837171,financial services,78,9879,52,
+Q136822,higher education,13,5795,61,
+Q880371,software industry,13,5594,51,software publisher convention
+Q75,Internet,3,5224,,too broad; a topic not an industry classification
+Q31207,health care,31,4008,62,
+Q42240,research,3,3573,,too broad; academia or R&D; the company usually has a clearer tag too
+Q1481411,IT service management,6,3232,54,IT service not a software product
+Q126793,retail,38,3213,44-45,
+Q56611639,media industry,5,2888,51,
+Q21198,computer science,1,2393,,academic discipline not an industry
+Q23699878,management consulting industry,3,2278,54,
+Q507443,pharmaceutical industry,33,2193,31-33,
+Q57774188,financial sector,21,2042,52,
+Q1318054,enterprise software,2,1942,51,software publisher convention
+Q187939,industrial manufacturing,11,1809,31-33,
+Q2401742,telecommunications industry,13,1566,51,
+Q485396,analytics,2,1562,,could be software or a professional service; ambiguous
+Q1540863,information technology consulting,3,1561,54,
+Q1254596,software as a service,3,1542,51,software publisher convention
+Q806718,economics of banking,17,1497,52,reviewed 26 Sep: every company carrying it here is a bank or credit union
+Q43183,insurance,23,1461,52,
+Q11661,information technology,5,1431,,too broad like technology
+Q184199,automation,2,1415,,too broad; spans manufacturing and software
+Q941594,video game industry,5,1414,51,software publisher convention
+Q483639,cloud computing,1,1401,51,data hosting/software convention
+Q485643,customer relationship management,1,1401,,a software category not an industry
+Q1142726,intelligent agent,1,1401,,a technical concept not an industry
+Q1155133,email marketing,1,1401,54,marketing service
+Q130370834,hospitals and rehabilitation,10,1368,62,
+Q190117,automotive industry,27,1212,31-33,
+Q7590,transport,3,1117,48-49,
+Q97466005,mobile payment industry,1,1062,52,
+Q170978,robotics,1,1031,,spans manufacturing software and R&D
+Q15067276,health care industry,12,1010,62,
+Q2220942,IT outsourcing industry,1,987,54,
+Q5358497,electronics industry,5,929,31-33,
+Q873442,asset management,4,842,52,
+Q101333,mechanical engineering,7,828,31-33,reviewed 26 Sep: tags equipment makers here (Siemens, Schindler, TK Elevator, Electrolux, Dematic)
+Q207652,chemical industry,12,808,31-33,
+Q130286,business and other management consultancy activities,2,793,54,

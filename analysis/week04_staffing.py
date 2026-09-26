@@ -265,7 +265,14 @@ def shuffle_weights(g, rng):
 
 
 def giant_of(g):
-    return g.subgraph(max(nx.connected_components(g), key=len)).copy()
+    """The largest component, its nodes and links in g's own order. A subgraph
+    view walks its node set instead, whose order changes with Python's string
+    hashing from run to run, and Louvain's result depends on node order."""
+    comp = max(nx.connected_components(g), key=len)
+    h = nx.Graph()
+    h.add_nodes_from((n, g.nodes[n]) for n in g if n in comp)
+    h.add_edges_from((u, v, d) for u, v, d in g.edges(data=True) if u in comp)
+    return h
 
 
 def q_terms(g, parts):
@@ -431,7 +438,7 @@ def main():
     ]
 
     # Q2 · communities, against degree-preserving rewirings.
-    giant = g.subgraph(max(nx.connected_components(g), key=len)).copy()
+    giant = giant_of(g)
     runs = [louvain(giant, SEED + i) for i in tracked("Louvain, weighted", RUNS)]
     qs = np.array([q for _, q in runs])
     # Three nulls, so the wiring and the weights can be told apart: rewired

@@ -257,9 +257,12 @@ def hub_examples(g, h_filter, filter_only, dups):
         if (f, hub) in probable_dup:
             continue
         scored.append((f, hub, w))
-    scored.sort(key=lambda t: -(t[2] / strength[t[0]]))
+    # Ties in share go to the bigger hub, then by key, so every run picks the same.
+    scored.sort(key=lambda t: (-(t[2] / strength[t[0]]), -strength[t[1]], t[1], t[0]))
+    # The small firm stays unnamed: many are one lawyer's practice, and the
+    # repository keeps lawyers' names out. The hub is a large firm.
     return [{
-        "firm": resolver().label(f), "degree": int(g.degree(f)), "strength": int(strength[f]),
+        "degree": int(g.degree(f)), "strength": int(strength[f]),
         "tie_weight": int(w), "tie_share_of_firm_strength": round(w / strength[f], 4),
         "hub": resolver().label(hub), "hub_strength": int(strength[hub]),
         "tie_share_of_hub_strength": round(w / strength[hub], 4),
@@ -459,6 +462,9 @@ def main():
     filter_only_iso, filter_only_rest = split_isolated(filter_only, isolated)
     threshold_iso, threshold_rest = split_isolated(kept, isolated)
     dups = duplicate_pairs(g)
+    print("Probable one firm under two spellings (candidates for week04_name_merges.csv):")
+    for d in dups[:20]:
+        print(f"  {d['filings']:>4}  {d['a_label']}  |  {d['b_label']}", flush=True)
     examples = hub_examples(g, h_f, filter_only, dups)
     placing_main = set(employer_kind(lca_year[MAIN])[lambda s: s == "placing"].index)
     filter_giant, threshold_giant = giant_nodes(h_f), giant_nodes(h_t)
@@ -468,7 +474,8 @@ def main():
                                      "rest": filter_only_rest},
         "threshold_kept_firms": {"total": len(kept), "isolated_pairs": threshold_iso, "rest": threshold_rest},
         "examples": examples,
-        "duplicate_name_pairs_in_projection": len(dups), "duplicate_name_pairs_top20": dups[:20],
+        # Names stay out of the JSON (see hub_examples); the candidates print for review.
+        "duplicate_name_pairs_in_projection": len(dups),
         "filter_top5_link_share": top5_link_share(h_f, top5),
         "threshold_top5_link_share": top5_link_share(h_t, top5),
         "filter_giant_firms_serving_a_placing_employer": firms_serving(named_year[MAIN], filter_giant, placing_main),

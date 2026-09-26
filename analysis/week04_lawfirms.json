@@ -156,14 +156,14 @@
    "communities": {
     "nodes": 1594,
     "edges": 3577,
-    "communities": 25,
-    "modularity": 0.586,
+    "communities": 23,
+    "modularity": 0.5859,
     "vs_null": {
-     "real": 0.5836,
-     "real_sd": 0.0034,
+     "real": 0.5835,
+     "real_sd": 0.0035,
      "null": 0.5479,
-     "null_sd": 0.0106,
-     "z": 3.36,
+     "null_sd": 0.0107,
+     "z": 3.34,
      "null_runs_at_or_above_real": 0
     }
    }
@@ -331,7 +331,6 @@
     },
     "examples": [
      {
-      "firm": "Qiqi Huang Attorney at LAW",
       "degree": 2,
       "strength": 3,
       "tie_weight": 2,
@@ -341,37 +340,15 @@
       "tie_share_of_hub_strength": 0.0417
      },
      {
-      "firm": "Ahluwalia LAW Offices PC",
       "degree": 3,
       "strength": 5,
       "tie_weight": 3,
       "tie_share_of_firm_strength": 0.6,
-      "hub": "BBI LAW Group PC",
-      "hub_strength": 342,
-      "tie_share_of_hub_strength": 0.0088
+      "hub": "Ogletree Deakins Nash Smoak and Stewart PC",
+      "hub_strength": 4277,
+      "tie_share_of_hub_strength": 0.0007
      },
      {
-      "firm": "Seltzer Firm Pllc",
-      "degree": 3,
-      "strength": 5,
-      "tie_weight": 3,
-      "tie_share_of_firm_strength": 0.6,
-      "hub": "Green and Spiegel",
-      "hub_strength": 94,
-      "tie_share_of_hub_strength": 0.0319
-     },
-     {
-      "firm": "Willmoth Immigration LAW",
-      "degree": 3,
-      "strength": 5,
-      "tie_weight": 3,
-      "tie_share_of_firm_strength": 0.6,
-      "hub": "Jackson Lewis PC",
-      "hub_strength": 284,
-      "tie_share_of_hub_strength": 0.0106
-     },
-     {
-      "firm": "Azarmehr LAW",
       "degree": 3,
       "strength": 5,
       "tie_weight": 3,
@@ -379,151 +356,27 @@
       "hub": "Corporate Immigration Partners PC",
       "hub_strength": 879,
       "tie_share_of_hub_strength": 0.0034
+     },
+     {
+      "degree": 3,
+      "strength": 5,
+      "tie_weight": 3,
+      "tie_share_of_firm_strength": 0.6,
+      "hub": "Corporate Immigration Partners PC",
+      "hub_strength": 879,
+      "tie_share_of_hub_strength": 0.0034
+     },
+     {
+      "degree": 3,
+      "strength": 5,
+      "tie_weight": 3,
+      "tie_share_of_firm_strength": 0.6,
+      "hub": "BBI LAW Group PC",
+      "hub_strength": 342,
+      "tie_share_of_hub_strength": 0.0088
      }
     ],
     "duplicate_name_pairs_in_projection": 138,
-    "duplicate_name_pairs_top20": [
-     {
-      "a": "FEIN 571044820",
-      "a_label": "Ogletree Deakins Nash Smoak and Stewart PC",
-      "b": "OGLETREE DEAKINS NASH SMOAK AND STEWART",
-      "b_label": "Ogletree Deakins Nash Smoak and Stewart",
-      "filings": 215
-     },
-     {
-      "a": "FEIN 132726464",
-      "a_label": "Fragomen DEL REY Bernsen and Loewy",
-      "b": "FRAGOMEN DEL REY BERNSEN AND LOWEY",
-      "b_label": "Fragomen DEL REY Bernsen and Lowey",
-      "filings": 76
-     },
-     {
-      "a": "FEIN 160766172",
-      "a_label": "Harter Secrest and Emery",
-      "b": "HARTER SECREST EMERY",
-      "b_label": "Harter Secrest Emery",
-      "filings": 44
-     },
-     {
-      "a": "ZOLLINGER IMMIGRATION",
-      "a_label": "Zollinger Immigration",
-      "b": "ZOLLINGER IMMIGRATION ALC",
-      "b_label": "Zollinger Immigration ALC",
-      "filings": 33
-     },
-     {
-      "a": "LAW OFFICE OF LEILA FREIJY",
-      "a_label": "LAW Office of Leila Freijy",
-      "b": "LAW OFFICE OF LEILA FREIJY PLLC",
-      "b_label": "LAW Office of Leila Freijy Pllc",
-      "filings": 30
-     },
-     {
-      "a": "LAW OFFICE OF RICHARD A GUMP JR",
-      "a_label": "LAW Office of Richard A Gump JR",
-      "b": "LAW OFFICES OF RICHARD A GUMP JR",
-      "b_label": "LAW Offices of Richard A Gump JR",
-      "filings": 23
-     },
-     {
-      "a": "LAW OFFICES OF DAKSHINI R SEN PC",
-      "a_label": "LAW Offices of Dakshini R SEN PC",
-      "b": "LAW OFFICES OF DAKSHINI RPC",
-      "b_label": "LAW Offices of Dakshini RPC",
-      "filings": 21
-     },
-     {
-      "a": "MUSILLO UNKENHOLT",
-      "a_label": "Musillo Unkenholt",
-      "b": "MUSILLOUNKHENHOLT",
-      "b_label": "Musillounkhenholt",
-      "filings": 20
-     },
-     {
-      "a": "FEIN 132726464",
-      "a_label": "Fragomen DEL REY Bernsen and Loewy",
-      "b": "FRAGOMEN DEL REY BERNSEN AND LOEWYLLP",
-      "b_label": "Fragomen DEL REY Bernsen and Loewyllp",
-      "filings": 17
-     },
-     {
-      "a": "MUSILLO UNKENHOLT",
-      "a_label": "Musillo Unkenholt",
-      "b": "MUSILLOUNKENHOLT",
-      "b_label": "Musillounkenholt",
-      "filings": 17
-     },
-     {
-      "a": "DEHENG LAW OFFICES PC",
-      "a_label": "Deheng LAW Offices PC",
-      "b": "FEIN 810867000",
-      "b_label": "Deheng LAW Offices",
-      "filings": 16
-     },
-     {
-      "a": "ZOLLINGER IMMIGRATION A LAW",
-      "a_label": "Zollinger Immigration A LAW",
-      "b": "ZOLLINGER IMMIGRATION ALC",
-      "b_label": "Zollinger Immigration ALC",
-      "filings": 15
-     },
-     {
-      "a": "MUSILLOUNKENHOLT",
-      "a_label": "Musillounkenholt",
-      "b": "MUSILLOUNKHENHOLT",
-      "b_label": "Musillounkhenholt",
-      "filings": 14
-     },
-     {
-      "a": "FEIN 230891050",
-      "a_label": "Morgan Lewis and Bockius",
-      "b": "MORGAN LEWIS BOCKIUS",
-      "b_label": "Morgan Lewis Bockius",
-      "filings": 13
-     },
-     {
-      "a": "BBI LAW GROU PC",
-      "a_label": "BBI LAW Grou PC",
-      "b": "FEIN 261155608",
-      "b_label": "BBI LAW Group PC",
-      "filings": 12
-     },
-     {
-      "a": "FEIN 132726464",
-      "a_label": "Fragomen DEL REY Bernsen and Loewy",
-      "b": "FRAGOMEN DEL REY BERSEN AND LOEWY",
-      "b_label": "Fragomen DEL REY Bersen and Loewy",
-      "filings": 10
-     },
-     {
-      "a": "WARNER NORCROSS AND JUDD",
-      "a_label": "Warner Norcross and Judd",
-      "b": "WARNER NORCROSS JUDD",
-      "b_label": "Warner Norcross Judd",
-      "filings": 10
-     },
-     {
-      "a": "BUSINESS AND IMIMGRATION LAWYERS PC",
-      "a_label": "Business and Imimgration Lawyers PC",
-      "b": "BUSINESS AND IMMIGRATION LAWYERS PC",
-      "b_label": "Business and Immigration Lawyers PC",
-      "filings": 8
-     },
-     {
-      "a": "FEIN 460653611",
-      "a_label": "LAW Office of Thomas V Allen Pllc",
-      "b": "LAW OFFICES OF THOMAS V ALLEN PLLC",
-      "b_label": "LAW Offices of Thomas V Allen Pllc",
-      "filings": 8
-     },
-     {
-      "a": "LAW OFFICES OF ARUNA VENKIDU",
-      "a_label": "LAW Offices of Aruna Venkidu",
-      "b": "LAW OFFICES OF ARUNA VENKIDU AND RAJ",
-      "b_label": "LAW Offices of Aruna Venkidu and RAJ",
-      "filings": 8
-     }
-    ],
     "filter_top5_link_share": 0.1897,
     "threshold_top5_link_share": 0.2597,
     "filter_giant_firms_serving_a_placing_employer": 117,
@@ -533,7 +386,7 @@
     "nodes": 1646,
     "edges": 3643,
     "communities": 34,
-    "modularity": 0.6673,
+    "modularity": 0.6672,
     "labels": {
      "eligible_communities_of_2plus": 1646,
      "with_region": 1639,
@@ -543,18 +396,18 @@
       "PR",
       "VI"
      ],
-     "nmi_region": 0.049,
+     "nmi_region": 0.052,
      "p_region": 0.001,
-     "ami_region": 0.033,
+     "ami_region": 0.037,
      "with_sector": 1646,
-     "nmi_sector": 0.12,
+     "nmi_sector": 0.121,
      "p_sector": 0.001,
-     "ami_sector": 0.07
+     "ami_sector": 0.071
     },
     "largest_communities": [
      {
-      "filings": 18627,
-      "firms": 142,
+      "filings": 18642,
+      "firms": 144,
       "top_firms": [
        "Fragomen DEL REY Bernsen and Loewy",
        "Ogletree Deakins Nash Smoak and Stewart PC",
@@ -573,8 +426,8 @@
       "dominant_sector": "54"
      },
      {
-      "filings": 9432,
-      "firms": 52,
+      "filings": 9428,
+      "firms": 54,
       "top_firms": [
        "Usilaw",
        "Goel and Anderson",
@@ -593,8 +446,8 @@
       "dominant_sector": "54"
      },
      {
-      "filings": 4664,
-      "firms": 271,
+      "filings": 4656,
+      "firms": 264,
       "top_firms": [
        "LAW Office of Thomas V Allen Pllc",
        "BBI LAW Group PC",
@@ -613,8 +466,8 @@
       "dominant_sector": "54"
      },
      {
-      "filings": 3432,
-      "firms": 186,
+      "filings": 3396,
+      "firms": 179,
       "top_firms": [
        "Corporate Immigration Partners PC",
        "Tafapolsky and Smith",
@@ -653,8 +506,8 @@
       "dominant_sector": "54"
      },
      {
-      "filings": 2469,
-      "firms": 29,
+      "filings": 2212,
+      "firms": 18,
       "top_firms": [
        "Faegre Drinker Biddle and Reath",
        "Quarles and Brady",
@@ -666,19 +519,19 @@
        "Target Enterprise",
        "MPG Operations",
        "Ascendion INC Formerly Known AS Collabera",
-       "Transunion",
-       "Collabera"
+       "Collabera",
+       "Best Buy"
       ],
       "dominant_region": "Midwest",
       "dominant_sector": "54"
      }
     ],
     "vs_null": {
-     "real": 0.6655,
-     "real_sd": 0.0019,
-     "null": 0.5463,
+     "real": 0.6658,
+     "real_sd": 0.0016,
+     "null": 0.5464,
      "null_sd": 0.0098,
-     "z": 12.18,
+     "z": 12.2,
      "null_runs_at_or_above_real": 0
     }
    }
@@ -714,8 +567,8 @@
  },
  "stability": {
   "shared_law_firms": 1041,
-  "nmi_fy2024_fy2025": 0.307,
-  "nmi_two_fy2025_seeds": 0.857
+  "nmi_fy2024_fy2025": 0.294,
+  "nmi_two_fy2025_seeds": 0.882
  },
- "seconds": 481
+ "seconds": 828
 }

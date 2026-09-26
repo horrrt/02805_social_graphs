@@ -659,16 +659,16 @@
                 By both, weakly. With every firm–client link counted once,
                 Louvain splits the network into about 65 groups, and the split
                 beats rewired networks that keep everyone's number of partners
-                (modularity 0.57 against 0.53). Among the 862 clients with a
+                (modularity 0.57 against 0.53). Among the 1,214 clients with a
                 known industry and two or more firms, the groups match the main
-                vendor at an adjusted mutual information (AMI) of 0.09 and the
+                vendor at an adjusted mutual information (AMI) of 0.11 and the
                 industry at 0.07; both beat shuffled labels. AMI corrects NMI for
-                chance, which matters here: these clients have 339 main vendors
+                chance, which matters here: these clients have 492 main vendors
                 but only 18 industries. Counting filings pulls clients to their
-                main vendor (AMI 0.51 against 0.06), but that split scores below
+                main vendor (AMI 0.48 against 0.07), but that split scores below
                 rewired networks with the same filing counts (0.60 against 0.74),
                 and the vendor's head start is built in: the vendor is a node in
-                the same network, and 87% of these clients land in its group.
+                the same network, and 86% of these clients land in its group.
               </p>
               <h3>Who relies on a single vendor?</h3>
               <p>
@@ -694,8 +694,7 @@
                 earlier. From January to June, certified filings fell 5.8% after
                 rising 9.5% the year before, and filings that name a client
                 company fell 16.5% after holding flat (-0.1%). Tata Consultancy
-                Services filed 2,079, down from 5,256. Of the 352 clients it
-                supplied most in FY2025, 226 still appear, and 114 of those now
+                Services filed 2,079, down from 5,256. Of the 352 clients it supplied most from January to June 2025, 226 still appear, and 114 of those now
                 get most of their workers from another firm, most often Infosys.
                 Across clients with five or more filings in both years, 48%
                 changed their main vendor, against 43% a year earlier. These are
@@ -770,6 +769,47 @@
                 </p>
               </div>
             </figure>
+
+            <div class="staffing-prose" id="staffing-lawyers" style="margin-top: 18px">
+              <h3>Who files the paperwork?</h3>
+              <p>
+                Three filings in four name an outside law firm, and five firms
+                file 40% of those. Fragomen alone files 78,531 for 3,139
+                employers. Outsourcing firms mostly do without: they file 52% of
+                their applications with no outside firm and send 3% to the five
+                largest, while direct employers send those five 48%. Per
+                employer the averages are 2% and 31%, and none of 1,000 shuffles
+                of which employer is which produced a gap that wide.
+              </p>
+              <p>
+                Two law firms share filings when the same employer uses both:
+                for each such employer, the smaller of its filings through
+                either. That network has one giant hub, the case the disparity
+                filter was made for. A weight threshold of four shared filings
+                keeps 770 links and spends 26% of them on the five largest
+                firms. The disparity filter at &alpha; = 0.2 keeps 696 and
+                spends 19%. It also keeps 115 small firms the threshold drops,
+                such as one law office whose link to BBI Law Group is 3 of its
+                5 shared filings and 3 of BBI's 342. The threshold keeps the
+                larger connected core, 395 firms against the filter's 350. Another 144 firms stay only
+                because they form a pair linked to nobody else, where neither
+                end can judge the link.
+              </p>
+              <p>
+                Louvain finds 34 groups at modularity 0.67, against 0.55 for
+                rewired networks that keep each employer's and each law firm's
+                number of partners (z = 12). The groups are barely regional
+                (NMI 0.05 with Census regions, though above every shuffle), and
+                the largest gather around shared employers. Google,
+                Apple and Meta share Fragomen, Ogletree Deakins and Berry
+                Appleman &amp; Leiden; Tata Consultancy, LTIMindtree and
+                Salesforce share Usilaw, Goel &amp; Anderson and Chugh; Vialto,
+                once PwC's law firm, serves Doordash and Databricks. The groups
+                move from year to year: FY2024 and FY2025 agree at NMI 0.29 on
+                the 1,041 law firms in both, against 0.88 between two runs of
+                FY2025. Figures from analysis/week04_lawfirms.py.
+              </p>
+            </div>
 
             <details class="qa" id="staffing-community-stats" style="margin-top: 18px">
               <summary>
@@ -857,11 +897,13 @@
                   links between groups.
                 </p>
                 <p class="sub">
-                  Pay follows the groups for clients, not for firms. Each filing
-                  states one of four wage levels, from entry (I) to fully
-                  competent (IV). Averaged per client, the groups explain 12% of
-                  the variance in wage level; averaged per firm, 2%. None of 1,000
-                  shuffles of the group labels reached either. Outsourcing firms
+                  Each filing states one of four wage levels, from entry (I) to
+                  fully competent (IV). Averaged per client over the filings that
+                  reach it, the groups explain 12% of the variance in wage level;
+                  averaged per firm over all its filings, 2%. None of 1,000
+                  shuffles of the group labels reached either. A client's filings
+                  come from the vendors that also decide its group, so part of
+                  the 12% is built in. Outsourcing firms
                   file 66% of their applications at level II and 5% at level IV;
                   direct employers file 35% and 22%. From January to June 2026,
                   level IV rose to 17.7% of all filings from 13.6% a year
@@ -870,46 +912,6 @@
                 </p>
               </div>
             </details>
-
-            <div class="staffing-prose" id="staffing-lawyers" style="margin-top: 18px">
-              <h3>Who files the paperwork?</h3>
-              <p>
-                Three filings in four name an outside law firm, and five firms
-                file 40% of those. Fragomen alone files 78,531 for 3,139
-                employers. Outsourcing firms mostly do without: they file 52% of
-                their applications with no outside firm and send 3% to the five
-                largest, while direct employers send those five 48%. Per
-                employer the averages are 2% and 31%, and none of 1,000 shuffles
-                of which employer is which produced a gap that wide.
-              </p>
-              <p>
-                Two law firms share filings when the same employer uses both:
-                for each such employer, the smaller of its filings through
-                either. That network has one giant hub, the case the disparity
-                filter was made for. A weight threshold of four shared filings
-                keeps 770 links and spends 26% of them on the five largest
-                firms. The disparity filter at &alpha; = 0.2 keeps 696 and
-                spends 19%. It also keeps 115 small firms the threshold drops,
-                each tied to a larger one by a link that is most of its own
-                work: one law office's link to BBI Law Group is 3 of its 5
-                shared filings and 3 of BBI's 342. Another 144 firms stay only
-                because they form a pair linked to nobody else, where neither
-                end can judge the link.
-              </p>
-              <p>
-                Louvain finds 34 groups at modularity 0.67, against 0.55 for
-                rewired networks that keep each employer's and each law firm's
-                number of partners (z = 12). The groups follow clients, not
-                places: their agreement with Census regions is NMI 0.05. Google,
-                Apple and Meta share Fragomen, Ogletree Deakins and Berry
-                Appleman &amp; Leiden; Tata Consultancy, LTIMindtree and
-                Salesforce share Usilaw, Goel &amp; Anderson and Chugh; Vialto,
-                once PwC's law firm, serves Doordash and Databricks. The groups
-                move from year to year: FY2024 and FY2025 agree at NMI 0.31 on
-                the 1,041 law firms in both, against 0.86 between two runs of
-                FY2025. Figures from analysis/week04_lawfirms.py.
-              </p>
-            </div>
           </div>
         </section>
 
@@ -1021,7 +1023,10 @@
                     <a href="https://github.com/horrrt/02805_social_graphs/blob/main/analysis/week04_names_check.py"><code>week04_names_check.py</code></a>
                     tests its rules against tax numbers, and
                     <a href="https://github.com/horrrt/02805_social_graphs/blob/main/analysis/week04_sec.py"><code>week04_sec.py</code></a>
-                    adds industry codes from the SEC.</li>
+                    adds industry codes from the SEC, and
+                    <a href="https://github.com/horrrt/02805_social_graphs/blob/main/analysis/week04_wikidata.py"><code>week04_wikidata.py</code></a>
+                    adds them from Wikidata (CC0) for clients the SEC does not
+                    list, through a reviewed table of Wikidata industries.</li>
                   <li><a href="https://github.com/horrrt/02805_social_graphs/blob/main/analysis/week04_schemas.py"><code>week04_schemas.py</code></a>
                     checks every JSON file against the fields the page reads.</li>
                 </ul>
