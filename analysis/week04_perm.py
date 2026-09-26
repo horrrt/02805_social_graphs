@@ -206,7 +206,8 @@ def year_block(year, rng, main):
     perm_own = perm.groupby("employer").size()
     top_clients = [
         {"client": resolver().label(c), "placed_filings_from_vendors": int(n),
-         "own_certified_lca_filings": int(lca_own.get(c, 0)), "own_perm_filings": int(perm_own.get(c, 0))}
+         "own_certified_lca_filings": int(lca_own.get(c, 0)), "own_perm_filings": int(perm_own.get(c, 0)),
+         "own_perm_filings_by_name": by_name(perm, resolver().label(c))}
         for c, n in totals.head(TOP_CLIENTS[year]).items()
     ]
     # A client with no LCA filings of its own is either a real vendor-only

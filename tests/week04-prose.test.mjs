@@ -353,3 +353,76 @@ test("a network of countries", () => {
   assert.equal(Math.max(...c.diversity.top_employers.map((e) => e.effective_countries)), d.Google.effective_countries);
   has(`${d.Google.effective_countries.toFixed(1)} effective countries with India at ${pct(d.Google.india_share)}, against Amazon's ${d.Amazon.effective_countries.toFixed(1)} at ${pct(d.Amazon.india_share)}`);
 });
+
+test("filings per 1,000 jobs", () => {
+  const has = inBox("deeper-density");
+  const o = json("analysis/week04_oews.json");
+  const m = o.metro_rates;
+  const one = (x) => x.toFixed(1);
+  has(`nationally it is ${one(m.national_rate_per_1000)} filings per 1,000 jobs`);
+  const ny = m.top_by_count[0];
+  assert.equal(ny.name, "New York, NY");
+  has(`New York files the most, ${count(ny.filings)}, but that is ${one(ny.rate)} per 1,000 jobs`);
+  const [sj, tr, se] = m.top_by_intensity;
+  assert.deepEqual([sj.name, tr.name, se.name], ["San Jose, CA", "Trenton, NJ", "Seattle, WA"]);
+  has(`San Jose files ${one(sj.rate)}, Trenton ${one(tr.rate)} and Seattle ${one(se.rate)}`);
+  has(`Among the ${m.metros_at_or_above_floor} metros with ${count(m.intensity_jobs_floor)} jobs`);
+  has(`(Spearman ${m.spearman_count_vs_intensity.rho.toFixed(2)})`);
+  const stay = m.top10_by_count_still_top10_by_intensity;
+  has(`only ${stay.count} of the 10 largest by count stay in the top 10 by density: Dallas, San Jose, San Francisco, Seattle and Austin`);
+  assert.deepEqual(stay.metros, ["Dallas, TX", "San Jose, CA", "San Francisco, CA", "Seattle, WA", "Austin, TX"]);
+  const sw = o.occupations["15-1252"];
+  const fay = sw.top_metros[0];
+  assert.equal(fay.name, "Fayetteville, AR");
+  has(`the national rate is ${Math.round(sw.national_rate_per_1000)} filings per 1,000 jobs`);
+  has(`reaches ${Math.round(fay.rate)}, ${one(fay.lq)} times the national share`);
+});
+
+test("strength against degree", () => {
+  const has = inBox("deeper-strength");
+  const s = json("analysis/week04_ties.json").strength_vs_degree;
+  has(`rank firms almost alike (Spearman ${s.firms.spearman.rho.toFixed(2)}) and clients less so (${s.clients.spearman.rho.toFixed(2)})`);
+  const [a, b, c, d] = s.clients.high_strength_low_degree;
+  for (const x of [a, b, c, d]) assert.equal(x.degree, 1);
+  has(`${a.label}, ${a.strength} filings from one firm; ${b.label}, ${b.strength}; ${c.label}, ${c.strength}; and ${d.label}, ${d.strength}`);
+});
+
+test("the lottery a year apart", () => {
+  const has = inBox("deeper-lottery");
+  const [a, b] = [lottery["2023"], lottery["2024"]];
+  has(`rose from ${pct(a.funnel.multi_registration_share)} to ${pct(b.funnel.multi_registration_share)} of the total`);
+  has(`fell from ${pct(a.funnel.selected_that_became_petitions)} to ${pct(b.funnel.selected_that_became_petitions)}`);
+  has(`took ${a.funnel.registrations_per_approval.toFixed(1)} registrations in 2022 and ${b.funnel.registrations_per_approval.toFixed(1)} in 2023`);
+  has(`the fewest (${a.by_kind.direct.registrations_per_approval.toFixed(1)}, then ${b.by_kind.direct.registrations_per_approval.toFixed(1)}), placing firms more (${a.by_kind.placing.registrations_per_approval.toFixed(1)}, then ${b.by_kind.placing.registrations_per_approval.toFixed(1)})`);
+  has(`${pct(b.funnel.lca_names_a_client_company_share)} lead to a client company, ${pct(b.clients.via_placing_firms_share)} of those`);
+  const top = Object.fromEntries(b.clients.top_clients.map((c) => [c.client, c]));
+  has(`Citigroup received ${top.Citigroup.petitions}, ${pct(top.Citigroup.via_placing_firms_share)} through`);
+  has(`Microsoft ${top.Microsoft.petitions}, ${pct(top.Microsoft.via_placing_firms_share)}, with ${top.Microsoft.top_vendor} supplying ${pct(top.Microsoft.top_vendor_share)}`);
+  has(`AT&amp;T ${top["AT&T"].petitions}, with ${top["AT&T"].top_vendor} supplying ${pct(top["AT&T"].top_vendor_share)}`);
+  has(`denied ${pct(b.by_kind.placing.denial_rate, 1)} of the placing firms' lottery petitions against ${pct(b.by_kind.direct.denial_rate, 1)}`);
+});
+
+test("USCIS denials year by year", () => {
+  const rows = box("deeper-uscis");
+  for (const e of staffing.uscis_series) {
+    const label = e.year === 2026 ? "FY2026, Oct–Jun" : `FY${e.year}`;
+    const row = `${label} ${pct(e.placing.initial_denial_rate, 2)} ${pct(e.direct.initial_denial_rate, 2)} ${count(e.placing.employers)} ${count(e.direct.employers)}`;
+    assert.ok(rows.includes(row), `#deeper-uscis should have the row "${row}"`);
+  }
+});
+
+test("green-card and country details", () => {
+  const perm = json("analysis/week04_perm.json").years["2025"];
+  const wf = perm.top_clients.find((c) => c.client === "Wells Fargo");
+  // Quoted only while a raw name search agrees with the key.
+  assert.ok(Math.abs(wf.own_perm_filings - wf.own_perm_filings_by_name) / wf.own_perm_filings < 0.2);
+  inBox("deeper-perm")(`Wells Fargo receives ${count(wf.placed_filings_from_vendors)} H-1B filings from vendors, files ${count(wf.own_certified_lca_filings)} of its own and ${wf.own_perm_filings} green cards`);
+  inBox("deeper-perm")(`(Spearman ${perm.client_degree_vs_ratio.spearman_rho.toFixed(2)})`);
+  assert.ok(perm.client_degree_vs_ratio.spearman_rho > 0, '"slightly more green cards, not fewer"');
+  const c = json("analysis/week04_countries.json");
+  const third = c.labels.largest_communities[2].top_countries;
+  assert.deepEqual(third, ["Philippines", "Kenya", "Ghana", "Zimbabwe", "Ethiopia", "Cameroon", "Jamaica"]);
+  const wayne = c.diversity.top_employers.find((e) => e.employer === "Wayne Farms");
+  assert.equal(wayne.india_share, 0);
+  inBox("deeper-countries")(`Wayne Farms, a poultry company, filed ${wayne.filings} green cards in the counted cells`);
+});
