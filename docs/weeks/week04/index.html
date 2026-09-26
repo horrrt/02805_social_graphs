@@ -651,8 +651,26 @@
                 Counted that way, 101,763 filings (18.9%) name a client company:
                 the worker is employed by one company and works at another, down
                 from 21.9% in FY2022. Placing firms also fare worse
-                at USCIS: in FY2022 it denied 2.7% of their first-time petitions,
-                against 1.3% for direct employers.
+                at USCIS: every year from FY2022 on, it denied about twice the
+                share of their first-time petitions, 2.7% against 1.2% for
+                direct employers in FY2022 and 3.4% against 2.0% from October
+                2025 to June 2026.
+              </p>
+              <p>
+                The lottery shows the same split one step earlier. Each new
+                H-1B worker starts as a registration that USCIS draws at
+                random, and USCIS gave Bloomberg News every registration from
+                the March 2023 draw after a FOIA lawsuit. Every petition that
+                followed names its filing, so we can follow a ticket to its
+                client. Direct
+                employers sent 5.1 registrations per approved petition, placing
+                firms 9.1, and firms with fewer than 20 filings 11.8; those
+                small firms sent 55% of the 758,967 registrations. Most of the
+                gap is tickets nobody used: 54% of registrations named a worker
+                that another employer had registered too, and when USCIS drew
+                one, a petition followed 23% of the time, against 81% for a
+                worker registered once. 18,307 of the petitions lead to a client
+                company. Citigroup received the most, 342 through 38 firms.
               </p>
               <h3>Do clients group by industry or by the firm that staffs them?</h3>
               <p>
@@ -815,6 +833,28 @@
                   <b class="im-industry">…</b>). Finer partitions raise every NMI;
                   AMI corrects for that, so it is the number to compare across
                   methods.
+                </p>
+              </div>
+            </details>
+
+            <details class="qa" id="staffing-lottery">
+              <summary>
+                <span class="qa-cue">Do the firms that register the same workers staff the same clients?</span>
+              </summary>
+              <div class="qa-body">
+                <p class="sub">
+                  We took the 2,827 firms in the FY2023 staffing network that
+                  sent 20 or more registrations to the March 2023 draw, and split
+                  them at the median share of workers another employer had also
+                  registered (78%). If the high firms clustered, a high firm's
+                  Louvain group would be mostly high firms. It is 50.6% high,
+                  against 50.0% when the labels are shuffled (p = 0.006 over
+                  1,000 shuffles), and AMI with the groups is 0.004 over 100
+                  runs. The March 2022 draw against the FY2022 network gives
+                  51.6% against 49.7%. Registering the same workers is spread
+                  across the staffing groups; it does not mark a cluster of
+                  firms. The lottery data is USCIS's, obtained by Bloomberg News;
+                  figures from analysis/week04_lottery.py.
                 </p>
               </div>
             </details>

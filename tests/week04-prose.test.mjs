@@ -22,7 +22,9 @@ const text = (from, to) => {
 const prose = text('id="who"', '<figure class="staffing"');
 const regions = text('id="place-regions"', 'id="place-longhaul"');
 const closing = text('id="closing"', 'id="evidence"');
+const lotteryText = text('id="staffing-lottery"', "</details>");
 const staffing = json("analysis/week04_staffing.json");
+const lottery = json("analysis/week04_lottery.json").lotteries;
 const main = staffing.main;
 const fy = staffing.years;
 const flows = json("docs/weeks/week04/data/staffing_clients.json").years["2025"].flows;
@@ -42,8 +44,44 @@ test("how many workers sit at a client", () => {
   says(`the ${count(now.own_company_client_rows)} where a firm names itself`);
   says(`Counted that way, ${count(now.client_company_filings)} filings (${pct(now.client_company_share, 1)}) name a client company`);
   says(`down from ${pct(fy["2022"].client_company_share, 1)} in FY2022`);
-  says(`denied ${pct(staffing.uscis.placing.initial_denial_rate, 1)}`);
-  says(`against ${pct(staffing.uscis.direct.initial_denial_rate, 1)} for direct employers`);
+  // The USCIS sentence quotes the hub's Tableau series, one source for every year.
+  const series = Object.fromEntries(staffing.uscis_series.map((e) => [e.year, e]));
+  for (const e of staffing.uscis_series) {
+    const ratio = e.placing.initial_denial_rate / e.direct.initial_denial_rate;
+    assert.ok(ratio >= 1.6 && ratio <= 2.5, `"about twice" fails in FY${e.year}: ${ratio.toFixed(2)}`);
+  }
+  says("every year from FY2022 on, it denied about twice the share");
+  says(`${pct(series[2022].placing.initial_denial_rate, 1)} against ${pct(series[2022].direct.initial_denial_rate, 1)} for direct employers in FY2022`);
+  says(`${pct(series[2026].placing.initial_denial_rate, 1)} against ${pct(series[2026].direct.initial_denial_rate, 1)} from October 2025 to June 2026`);
+});
+
+test("the lottery shows the same split one step earlier", () => {
+  const l = lottery["2024"];
+  const f = l.funnel;
+  const k = l.by_kind;
+  assert.equal(l.lottery_held, "March 2023");
+  says(`every registration from the March 2023 draw`);
+  says(`Direct employers sent ${k.direct.registrations_per_approval.toFixed(1)} registrations per approved petition`);
+  says(`placing firms ${k.placing.registrations_per_approval.toFixed(1)}`);
+  says(`firms with fewer than 20 filings ${k.small.registrations_per_approval.toFixed(1)}`);
+  says(`those small firms sent ${pct(k.small.registration_share)} of the ${count(f.registrations)} registrations`);
+  says(`${pct(f.multi_registration_share)} of registrations named a worker`);
+  says(`a petition followed ${pct(f.selected_became_petitions_multi)} of the time, against ${pct(f.selected_became_petitions_single)}`);
+  says(`${count(l.clients.petitions_to_client_companies)} of the petitions lead to a client company`);
+  const top = l.clients.top_clients[0];
+  says(`${top.client} received the most, ${top.petitions} through ${top.vendors} firms`);
+});
+
+test("registering the same workers does not mark a cluster of firms", () => {
+  const has = (t) => assert.ok(lotteryText.includes(t), `the lottery disclosure should say "${t}"`);
+  const now = lottery["2024"].community_test;
+  const before = lottery["2023"].community_test;
+  has(`We took the ${count(now.firms_tested)} firms in the FY${now.lca_year} staffing network`);
+  has(`registered (${pct(now.median_multi_share)})`);
+  has(`It is ${pct(now.unweighted.high_mates_share, 1)} high, against ${pct(now.unweighted.high_mates_share_shuffled, 1)} when the labels are shuffled (p = ${now.unweighted.p_mates} over 1,000 shuffles)`);
+  has(`AMI with the groups is ${now.unweighted.ami_median.toFixed(3)} over 100 runs`);
+  has(`the FY${before.lca_year} network gives ${pct(before.unweighted.high_mates_share, 1)} against ${pct(before.unweighted.high_mates_share_shuffled, 1)}`);
+  assert.ok(now.unweighted.ami_median < 0.02 && before.unweighted.ami_median < 0.02, '"spread across" needs AMI near zero');
 });
 
 test("clients group weakly, about as much by industry as by vendor", () => {

@@ -1,0 +1,403 @@
+{
+ "generated_by": "analysis/week04_lottery.py",
+ "source": "USCIS H-1B registrations and petitions, FY2021 to FY2024 lotteries, obtained by Bloomberg News under FOIA",
+ "lotteries": {
+  "2024": {
+   "lottery_held": "March 2023",
+   "lca_year": 2023,
+   "funnel": {
+    "registrations": 758967,
+    "withheld_rows": 27,
+    "employers": 51844,
+    "multi_registration_share": 0.5387,
+    "selected": 188364,
+    "selection_rate": 0.2482,
+    "petitions": 92339,
+    "selected_that_became_petitions": 0.4902,
+    "selected_became_petitions_multi": 0.2283,
+    "selected_became_petitions_single": 0.8067,
+    "approved": 89139,
+    "denied": 1951,
+    "registrations_per_approval": 8.51,
+    "petitions_with_lca_case": 91864,
+    "matched_to_an_lca": 91480,
+    "matched_share": 0.9958,
+    "matched_by_lca_year": {
+     "2023": 82685,
+     "2024": 8696,
+     "2022": 99
+    },
+    "lca_names_a_client_company": 18307,
+    "lca_names_a_client_company_share": 0.2001,
+    "petition_says_off_site_share": 0.198
+   },
+   "by_kind": {
+    "direct": {
+     "employers": 1725,
+     "registrations": 188826,
+     "registration_share": 0.2488,
+     "multi_registration_share": 0.3255,
+     "selection_rate": 0.2609,
+     "selected_that_became_petitions": 0.7655,
+     "approved": 37053,
+     "registrations_per_approval": 5.1,
+     "denial_rate": 0.0107
+    },
+    "placing": {
+     "employers": 857,
+     "registrations": 154673,
+     "registration_share": 0.2038,
+     "multi_registration_share": 0.4686,
+     "selection_rate": 0.2274,
+     "selected_that_became_petitions": 0.4995,
+     "approved": 17008,
+     "registrations_per_approval": 9.09,
+     "denial_rate": 0.0197
+    },
+    "small": {
+     "employers": 49262,
+     "registrations": 415468,
+     "registration_share": 0.5474,
+     "multi_registration_share": 0.6618,
+     "selection_rate": 0.2501,
+     "selected_that_became_petitions": 0.3566,
+     "approved": 35078,
+     "registrations_per_approval": 11.84,
+     "denial_rate": 0.0333
+    }
+   },
+   "clients": {
+    "petitions_to_client_companies": 18307,
+    "clients": 4575,
+    "via_placing_firms_share": 0.6354,
+    "via_small_firms_share": 0.298,
+    "top_clients": [
+     {
+      "client": "Citigroup",
+      "petitions": 342,
+      "vendors": 38,
+      "top_vendor": "Tata Consultancy Services",
+      "top_vendor_share": 0.19,
+      "via_placing_firms_share": 0.933
+     },
+     {
+      "client": "Verizon",
+      "petitions": 212,
+      "vendors": 78,
+      "top_vendor": "Tech Mahindra",
+      "top_vendor_share": 0.132,
+      "via_placing_firms_share": 0.675
+     },
+     {
+      "client": "American Express",
+      "petitions": 175,
+      "vendors": 28,
+      "top_vendor": "IBM",
+      "top_vendor_share": 0.229,
+      "via_placing_firms_share": 0.874
+     },
+     {
+      "client": "AT&T",
+      "petitions": 153,
+      "vendors": 40,
+      "top_vendor": "Tech Mahindra",
+      "top_vendor_share": 0.405,
+      "via_placing_firms_share": 0.81
+     },
+     {
+      "client": "Microsoft",
+      "petitions": 150,
+      "vendors": 18,
+      "top_vendor": "LTIMindtree",
+      "top_vendor_share": 0.467,
+      "via_placing_firms_share": 0.953
+     },
+     {
+      "client": "Cisco",
+      "petitions": 138,
+      "vendors": 32,
+      "top_vendor": "SRS Consulting",
+      "top_vendor_share": 0.145,
+      "via_placing_firms_share": 0.826
+     },
+     {
+      "client": "CVS Health",
+      "petitions": 134,
+      "vendors": 42,
+      "top_vendor": "Infosys",
+      "top_vendor_share": 0.261,
+      "via_placing_firms_share": 0.813
+     },
+     {
+      "client": "Wells Fargo",
+      "petitions": 128,
+      "vendors": 45,
+      "top_vendor": "Infosys",
+      "top_vendor_share": 0.164,
+      "via_placing_firms_share": 0.531
+     },
+     {
+      "client": "Johnson & Johnson",
+      "petitions": 127,
+      "vendors": 28,
+      "top_vendor": "Tata Consultancy Services",
+      "top_vendor_share": 0.205,
+      "via_placing_firms_share": 0.748
+     },
+     {
+      "client": "Ford",
+      "petitions": 120,
+      "vendors": 39,
+      "top_vendor": "Wipro",
+      "top_vendor_share": 0.183,
+      "via_placing_firms_share": 0.725
+     },
+     {
+      "client": "JPMorgan Chase",
+      "petitions": 117,
+      "vendors": 36,
+      "top_vendor": "Cognizant",
+      "top_vendor_share": 0.291,
+      "via_placing_firms_share": 0.795
+     },
+     {
+      "client": "Elevance Health",
+      "petitions": 115,
+      "vendors": 32,
+      "top_vendor": "IBM",
+      "top_vendor_share": 0.191,
+      "via_placing_firms_share": 0.626
+     }
+    ]
+   },
+   "community_test": {
+    "lca_year": 2023,
+    "firms_tested": 2827,
+    "high_firms": 1413,
+    "median_multi_share": 0.7829,
+    "tested_firms_filing_share": 0.7358,
+    "unweighted": {
+     "communities_holding_tested_firms": 54,
+     "nmi": 0.0076,
+     "p_nmi": 0.006,
+     "ami_median": 0.0039,
+     "ami_min": 0.001,
+     "ami_max": 0.0062,
+     "high_mates_share": 0.5058,
+     "high_mates_share_shuffled": 0.4997,
+     "p_mates": 0.006
+    },
+    "weighted": {
+     "communities_holding_tested_firms": 72,
+     "nmi": 0.0101,
+     "p_nmi": 0.002,
+     "ami_median": 0.0033,
+     "ami_min": 0.0014,
+     "ami_max": 0.0053,
+     "high_mates_share": 0.5073,
+     "high_mates_share_shuffled": 0.4996,
+     "p_mates": 0.001
+    }
+   }
+  },
+  "2023": {
+   "lottery_held": "March 2022",
+   "lca_year": 2022,
+   "funnel": {
+    "registrations": 474384,
+    "withheld_rows": 37,
+    "employers": 44931,
+    "multi_registration_share": 0.3482,
+    "selected": 127563,
+    "selection_rate": 0.2689,
+    "petitions": 94254,
+    "selected_that_became_petitions": 0.7389,
+    "selected_became_petitions_multi": 0.468,
+    "selected_became_petitions_single": 0.8889,
+    "approved": 90792,
+    "denied": 3294,
+    "registrations_per_approval": 5.22,
+    "petitions_with_lca_case": 91832,
+    "matched_to_an_lca": 91358,
+    "matched_share": 0.9948,
+    "matched_by_lca_year": {
+     "2022": 88833,
+     "2023": 1303,
+     "2024": 1222
+    },
+    "lca_names_a_client_company": 23750,
+    "lca_names_a_client_company_share": 0.26,
+    "petition_says_off_site_share": 0.1843
+   },
+   "by_kind": {
+    "direct": {
+     "employers": 2015,
+     "registrations": 162643,
+     "registration_share": 0.3429,
+     "multi_registration_share": 0.246,
+     "selection_rate": 0.2828,
+     "selected_that_became_petitions": 0.8511,
+     "approved": 38038,
+     "registrations_per_approval": 4.28,
+     "denial_rate": 0.027
+    },
+    "placing": {
+     "employers": 1050,
+     "registrations": 132886,
+     "registration_share": 0.2801,
+     "multi_registration_share": 0.396,
+     "selection_rate": 0.2506,
+     "selected_that_became_petitions": 0.6633,
+     "approved": 21209,
+     "registrations_per_approval": 6.27,
+     "denial_rate": 0.038
+    },
+    "small": {
+     "employers": 41866,
+     "registrations": 178855,
+     "registration_share": 0.377,
+     "multi_registration_share": 0.4056,
+     "selection_rate": 0.2699,
+     "selected_that_became_petitions": 0.6841,
+     "approved": 31545,
+     "registrations_per_approval": 5.67,
+     "denial_rate": 0.0425
+    }
+   },
+   "clients": {
+    "petitions_to_client_companies": 23750,
+    "clients": 5333,
+    "via_placing_firms_share": 0.6421,
+    "via_small_firms_share": 0.2552,
+    "top_clients": [
+     {
+      "client": "Citigroup",
+      "petitions": 521,
+      "vendors": 54,
+      "top_vendor": "Tata Consultancy Services",
+      "top_vendor_share": 0.324,
+      "via_placing_firms_share": 0.898
+     },
+     {
+      "client": "AT&T",
+      "petitions": 354,
+      "vendors": 122,
+      "top_vendor": "Tech Mahindra",
+      "top_vendor_share": 0.319,
+      "via_placing_firms_share": 0.771
+     },
+     {
+      "client": "Verizon",
+      "petitions": 336,
+      "vendors": 159,
+      "top_vendor": "Tata Consultancy Services",
+      "top_vendor_share": 0.08,
+      "via_placing_firms_share": 0.649
+     },
+     {
+      "client": "American Express",
+      "petitions": 223,
+      "vendors": 67,
+      "top_vendor": "IBM",
+      "top_vendor_share": 0.215,
+      "via_placing_firms_share": 0.785
+     },
+     {
+      "client": "USAA",
+      "petitions": 218,
+      "vendors": 73,
+      "top_vendor": "Tata Consultancy Services",
+      "top_vendor_share": 0.284,
+      "via_placing_firms_share": 0.83
+     },
+     {
+      "client": "Capital One",
+      "petitions": 215,
+      "vendors": 142,
+      "top_vendor": "Iquest Solutions",
+      "top_vendor_share": 0.051,
+      "via_placing_firms_share": 0.526
+     },
+     {
+      "client": "Ford",
+      "petitions": 189,
+      "vendors": 60,
+      "top_vendor": "Epitec",
+      "top_vendor_share": 0.079,
+      "via_placing_firms_share": 0.614
+     },
+     {
+      "client": "Cisco",
+      "petitions": 188,
+      "vendors": 39,
+      "top_vendor": "Tata Consultancy Services",
+      "top_vendor_share": 0.176,
+      "via_placing_firms_share": 0.856
+     },
+     {
+      "client": "MetLife",
+      "petitions": 188,
+      "vendors": 17,
+      "top_vendor": "IBM",
+      "top_vendor_share": 0.181,
+      "via_placing_firms_share": 0.936
+     },
+     {
+      "client": "Apple",
+      "petitions": 172,
+      "vendors": 72,
+      "top_vendor": "Infosys",
+      "top_vendor_share": 0.267,
+      "via_placing_firms_share": 0.674
+     },
+     {
+      "client": "CVS Health",
+      "petitions": 166,
+      "vendors": 83,
+      "top_vendor": "Infosys",
+      "top_vendor_share": 0.223,
+      "via_placing_firms_share": 0.633
+     },
+     {
+      "client": "T-Mobile",
+      "petitions": 158,
+      "vendors": 81,
+      "top_vendor": "Infosys",
+      "top_vendor_share": 0.152,
+      "via_placing_firms_share": 0.658
+     }
+    ]
+   },
+   "community_test": {
+    "lca_year": 2022,
+    "firms_tested": 2213,
+    "high_firms": 1101,
+    "median_multi_share": 0.625,
+    "tested_firms_filing_share": 0.7096,
+    "unweighted": {
+     "communities_holding_tested_firms": 53,
+     "nmi": 0.0153,
+     "p_nmi": 0.001,
+     "ami_median": 0.0081,
+     "ami_min": 0.0037,
+     "ami_max": 0.013,
+     "high_mates_share": 0.5164,
+     "high_mates_share_shuffled": 0.4974,
+     "p_mates": 0.001
+    },
+    "weighted": {
+     "communities_holding_tested_firms": 72,
+     "nmi": 0.0157,
+     "p_nmi": 0.001,
+     "ami_median": 0.0062,
+     "ami_min": 0.0033,
+     "ami_max": 0.01,
+     "high_mates_share": 0.5124,
+     "high_mates_share_shuffled": 0.4974,
+     "p_mates": 0.001
+    }
+   }
+  }
+ },
+ "seconds": 85
+}

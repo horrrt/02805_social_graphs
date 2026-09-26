@@ -43,8 +43,9 @@ Checks
   two seeds of the same year on the same clients.
 - Infomap (the map equation) on the same network, compared with Louvain and
   with the same industry and vendor labels.
-- USCIS approvals and denials for FY2022 (the Employer Data Hub's last full
-  year), placing firms against direct employers.
+- USCIS approvals and denials, placing firms against direct employers: FY2022
+  from the hub's old CSV (the number the page first quoted), and FY2022 to
+  FY2026 Q3 from the hub's Tableau export, one source for the whole series.
 
 Output: analysis/week04_staffing.json, and the community numbers the page quotes in
 docs/weeks/week04/data/staffing_communities.json
@@ -130,11 +131,16 @@ def placements(year, lca):
     return rows, placeholder, len(sites)
 
 
-def uscis_outcomes(year=2022):
+def uscis_outcomes(year=2022, table="uscis"):
     """What happened to the petitions behind the filings: USCIS approvals and
     denials per employer (the Employer Data Hub), set against the employer's
     certified filings that year. An application (LCA) is not a hire; an approved
     petition is as close as public data gets.
+
+    table "uscis" is the hub's old CSV export (FY2022 and FY2023); "uscis_hub" is
+    the Tableau export, FY2022 to FY2026 Q3, which also splits out new employment
+    (a worker's first H-1B petition). The two disagree by about 5% on FY2022, so a
+    series takes every year from one of them.
 
     USCIS gives only the last four digits of an employer's tax number and
     abbreviates names ("TATA CONSULTANCY SVCS LTD"). Those four digits narrow an
@@ -143,8 +149,11 @@ def uscis_outcomes(year=2022):
     match. An employer none of them fits keeps its name-only key when the
     reviewed table knows it, and is otherwise left unmatched."""
     r = resolver()
-    hub = load(f"uscis_fy{year}")
-    for col in ("INITIAL_APPROVAL", "INITIAL_DENIAL", "CONTINUING_APPROVAL", "CONTINUING_DENIAL"):
+    hub = load(f"{table}_fy{year}")
+    counts = ["INITIAL_APPROVAL", "INITIAL_DENIAL", "CONTINUING_APPROVAL", "CONTINUING_DENIAL"]
+    if "NEW_EMPLOYMENT_APPROVAL" in hub:
+        counts += ["NEW_EMPLOYMENT_APPROVAL", "NEW_EMPLOYMENT_DENIAL"]
+    for col in counts:
         hub[col] = pd.to_numeric(hub[col].str.replace(",", ""), errors="coerce").fillna(0)
     block = {}
     for f in r.major:
@@ -166,8 +175,7 @@ def uscis_outcomes(year=2022):
     keys = {(n, t): match(n, t) for n, t in pairs.itertuples(index=False) if n.strip()}
     hub["key"] = [keys.get((n, t), "") for n, t in zip(hub["EMPLOYER"], hub["TAX_ID"])]
     hub["matched"] = hub["key"] != ""
-    petitions = hub[hub["matched"]].groupby("key")[
-        ["INITIAL_APPROVAL", "INITIAL_DENIAL", "CONTINUING_APPROVAL", "CONTINUING_DENIAL"]].sum()
+    petitions = hub[hub["matched"]].groupby("key")[counts].sum()
 
     lca = certified(year)
     lca["placed"] = lca["SECONDARY_ENTITY"].str.upper().str.startswith("Y")
@@ -177,6 +185,14 @@ def uscis_outcomes(year=2022):
 
     def summary(frame):
         decided = frame["INITIAL_APPROVAL"] + frame["INITIAL_DENIAL"]
+        new = {}
+        if "NEW_EMPLOYMENT_APPROVAL" in frame:
+            new = {"new_employment_approvals": int(frame["NEW_EMPLOYMENT_APPROVAL"].sum()),
+                   "new_employment_denial_rate": round(float(frame["NEW_EMPLOYMENT_DENIAL"].sum() / (
+                       frame["NEW_EMPLOYMENT_APPROVAL"] + frame["NEW_EMPLOYMENT_DENIAL"]).sum()), 4),
+                   # Rates and shares compare across years; FY2026 counts cover nine months.
+                   "new_employment_approvals_per_100_filings": round(float(
+                       100 * frame["NEW_EMPLOYMENT_APPROVAL"].sum() / frame["filings"].sum()), 2)}
         return {
             "employers": int(len(frame)),
             "certified_filings": int(frame["filings"].sum()),
@@ -186,11 +202,13 @@ def uscis_outcomes(year=2022):
                 frame["CONTINUING_APPROVAL"] + frame["CONTINUING_DENIAL"]).sum()), 4),
             "approvals_per_filing": round(float(
                 (frame["INITIAL_APPROVAL"] + frame["CONTINUING_APPROVAL"]).sum() / frame["filings"].sum()), 3),
+            **new,
         }
 
     top = firms[firms["kind"] == "placing"].sort_values("placed", ascending=False).head(10)
     return {
         "year": year,
+        "source": table,
         "hub_employers": int(len(hub)),
         "hub_initial_approvals": int(hub["INITIAL_APPROVAL"].sum()),
         "matched_share_of_initial_approvals": round(float(
@@ -400,6 +418,10 @@ def main():
 
     out["uscis"] = uscis_outcomes(2022)
     print("USCIS FY2022:", {k: out["uscis"][k] for k in ("placing", "direct")}, flush=True)
+    # The same comparison every year from the Tableau export alone; FY2026 is October to June.
+    out["uscis_series"] = [uscis_outcomes(y, "uscis_hub") for y in YEARS + [2026]]
+    for entry in out["uscis_series"]:
+        print(f"USCIS FY{entry['year']}:", {k: entry[k]["initial_denial_rate"] for k in ("placing", "direct")}, flush=True)
 
     g, rows = graphs[MAIN]
     result = out["main"] = {"year": MAIN}
