@@ -124,15 +124,15 @@
       "firms": 218,
       "examples": [
        {
-        "firm": "Patil and Associates",
+        "firm": "LAW Office of Sook JIN Kang PC",
         "strongest_weight_elsewhere": 1
        },
        {
-        "firm": "HAN and Associates Pllc",
+        "firm": "Gordon Davis Johnson and Shane PC",
         "strongest_weight_elsewhere": 1
        },
        {
-        "firm": "LAW Office of Hongwei Shang",
+        "firm": "National Capital Legal Services",
         "strongest_weight_elsewhere": 1
        }
       ]
@@ -174,13 +174,20 @@
     "edges": 184
    },
    "communities": {
-    "Q_mean": 0.5615,
-    "Q_sd": 0.0065,
-    "null_mean": 0.5919,
-    "null_sd": 0.0219,
-    "z": -1.38,
-    "communities_median": 10,
-    "nmi_between_seeds_median": 0.831
+    "Q_mean": 0.5602,
+    "Q_sd": 0.007,
+    "null_mean": 0.5966,
+    "null_sd": 0.0207,
+    "z": -1.76,
+    "wiring_only": {
+     "real": 0.6207,
+     "null": 0.5251,
+     "null_sd": 0.0166,
+     "z": 5.75
+    },
+    "rewired_giant_node_share_median": 0.9031,
+    "communities_median": 11,
+    "nmi_between_seeds_median": 0.849
    },
    "labels": {
     "client_kind": {
@@ -317,15 +324,15 @@
       "firms": 154,
       "examples": [
        {
-        "firm": "Baker Donelson",
+        "firm": "YK LAW Firm",
         "strongest_weight_elsewhere": 1
        },
        {
-        "firm": "Statminds",
+        "firm": "Drake Immigration LAW",
         "strongest_weight_elsewhere": 1
        },
        {
-        "firm": "University of Arkansas System Office of General Counsel",
+        "firm": "PVR Technologie",
         "strongest_weight_elsewhere": 1
        }
       ]
@@ -367,13 +374,20 @@
     "edges": 183
    },
    "communities": {
-    "Q_mean": 0.5909,
-    "Q_sd": 0.0026,
-    "null_mean": 0.6324,
-    "null_sd": 0.0259,
-    "z": -1.6,
+    "Q_mean": 0.5917,
+    "Q_sd": 0.0021,
+    "null_mean": 0.6342,
+    "null_sd": 0.0247,
+    "z": -1.72,
+    "wiring_only": {
+     "real": 0.6119,
+     "null": 0.5434,
+     "null_sd": 0.0152,
+     "z": 4.5
+    },
+    "rewired_giant_node_share_median": 0.903,
     "communities_median": 11,
-    "nmi_between_seeds_median": 0.865
+    "nmi_between_seeds_median": 0.928
    },
    "labels": {
     "client_kind": {
@@ -392,5 +406,5 @@
   }
  },
  "which_label_communities_follow": "client kind",
- "seconds": 20
+ "seconds": 23
 }

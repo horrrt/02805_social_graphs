@@ -63,7 +63,7 @@ from sklearn.metrics import normalized_mutual_info_score as nmi
 
 import week04_names as names
 from week04_lottery import kinds
-from week04_staffing import SEED, certified, giant_of, labels, louvain, shuffled_nmi, span, tracked
+from week04_staffing import SEED, certified, giant_of, labels, louvain, shuffled_nmi, span, tracked, unweighted
 from week04_where import check_disparity, disparity
 
 OUT = Path(__file__).with_suffix(".json")
@@ -259,11 +259,17 @@ def communities(giant, rng):
     rewirings scored the same way (their own giant component)."""
     runs = [louvain(giant, SEED + i) for i in tracked("Louvain on the alpha 0.2 backbone", RUNS)]
     qs = np.array([q for _, q in runs])
-    null_qs = []
+    # Unweighted too, as week04_staffing.py does: rewiring and shuffling the
+    # weights at once can raise Q through the weights alone.
+    plain_qs = np.array([louvain(unweighted(giant), SEED + i)[1] for i in range(RUNS)])
+    null_qs, null_plain, null_share = [], [], []
     for i in tracked("Null: rewired one-mode graphs", RUNS):
         h = rewire_onemode(giant, rng)
-        null_qs.append(louvain(giant_of(h), SEED + i)[1])
-    null_qs = np.array(null_qs)
+        hg = giant_of(h)
+        null_share.append(hg.number_of_nodes() / h.number_of_nodes())
+        null_qs.append(louvain(hg, SEED + i)[1])
+        null_plain.append(louvain(unweighted(hg), SEED + i)[1])
+    null_qs, null_plain = np.array(null_qs), np.array(null_plain)
     nodes = list(giant)
     member_runs = [labels(p) for p, _ in runs]
     pairs_nmi = [nmi([member_runs[i][n] for n in nodes], [member_runs[i + 1][n] for n in nodes])
@@ -273,6 +279,10 @@ def communities(giant, rng):
         "Q_mean": round(float(qs.mean()), 4), "Q_sd": round(float(qs.std()), 4),
         "null_mean": round(float(null_qs.mean()), 4), "null_sd": round(float(null_qs.std()), 4),
         "z": round(float((qs.mean() - null_qs.mean()) / null_qs.std()), 2),
+        "wiring_only": {"real": round(float(plain_qs.mean()), 4), "null": round(float(null_plain.mean()), 4),
+                        "null_sd": round(float(null_plain.std()), 4),
+                        "z": round(float((plain_qs.mean() - null_plain.mean()) / null_plain.std()), 2)},
+        "rewired_giant_node_share_median": round(float(np.median(null_share)), 4),
         "communities_median": int(np.median([len(p) for p, _ in runs])),
         "nmi_between_seeds_median": round(float(np.median(pairs_nmi)), 3),
     }, labels(best_parts)

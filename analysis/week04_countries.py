@@ -63,6 +63,7 @@ Output: analysis/week04_countries.json
 """
 
 import io
+import os
 import json
 import random
 import time
@@ -76,7 +77,8 @@ import pandas as pd
 from sklearn.metrics import adjusted_mutual_info_score as ami
 from sklearn.metrics import normalized_mutual_info_score as nmi
 
-from week04_staffing import RUNS, SEED, giant_of, louvain, resolver, shuffled_nmi, tracked
+from week04_data import DOL, find
+from week04_staffing import RUNS, SEED, giant_of, louvain, resolver, shuffled_nmi, tracked, unweighted
 from week04_staffing import labels as louvain_labels
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -87,7 +89,9 @@ WEEK3 = Path(__file__).with_name("week03_communities.json")
 MIN_CELL = 10  # a (country, employer) cell must reach this many filings to be used at all
 CERTIFIED = {"Certified", "Certified-Expired"}
 
-PERM_DIR = Path("/Users/gyula/Documents/Projects/5y-planning-data/shared/data/visa")
+# Old-form green-card workbooks: found in build/raw/week04/ or a folder named in
+# WEEK04_LOCAL (the week04_data.py --local convention), else downloaded from DOL.
+LOCAL = [Path(d) for d in os.environ.get("WEEK04_LOCAL", "").split(os.pathsep) if d]
 PERM_YEARS = [2022, 2023, 2024]  # old-form workbooks only; the new form drops COUNTRY_OF_CITIZENSHIP
 MAIN_YEAR = 2023
 SECOND_YEAR = 2022
@@ -173,7 +177,8 @@ def perm_cells(year):
     dropped before the row-level frame is discarded. Nothing this function
     returns lets a count under MIN_CELL be read out beside a country or an
     employer name."""
-    path = PERM_DIR / f"PERM_Disclosure_Data_FY{year}_Q4.xlsx"
+    name = f"PERM_Disclosure_Data_FY{year}_Q4.xlsx"
+    path = find(name, DOL + name, LOCAL)
     header = pd.read_excel(path, engine="calamine", nrows=0).columns
     cols = ["CASE_STATUS", "EMPLOYER_NAME", "COUNTRY_OF_CITIZENSHIP"]
     has_fein = "EMPLOYER_FEIN" in header
@@ -371,14 +376,18 @@ def main():
     over = lambda a, b: nmi([a[n] for n in nodes], [b[n] for n in nodes])
     seed_pairs = [over(run_labels[i], run_labels[i + 1]) for i in range(0, len(run_labels) - 1, 2)]
 
-    null_qs, pieces, null_share = [], [], []
+    # Unweighted too, as week04_staffing.py does: India and China carry most of
+    # the weight, and dealing those weights out to random pairs can build groups.
+    plain_qs = np.array([louvain(unweighted(giant), SEED + i)[1] for i in range(RUNS)])
+    null_qs, null_plain, pieces, null_share = [], [], [], []
     for i in tracked("Nulls, one-mode rewiring", RUNS):
         h = rewire_onemode(giant, rng)
         pieces.append(nx.number_connected_components(h))
         hg = giant_of(h)
         null_share.append(hg.number_of_nodes() / h.number_of_nodes())
         null_qs.append(louvain(hg, SEED + i)[1])
-    null_qs = np.array(null_qs)
+        null_plain.append(louvain(unweighted(hg), SEED + i)[1])
+    null_qs, null_plain = np.array(null_qs), np.array(null_plain)
 
     out["modularity"] = {
         "communities_median": int(np.median([len(p) for p, _ in runs])),
@@ -386,6 +395,7 @@ def main():
         "rewired_components_median": int(np.median(pieces)),
         "rewired_giant_node_share_median": round(float(np.median(null_share)), 4),
         "weighted_vs_rewired": compare(qs, null_qs),
+        "wiring_only": compare(plain_qs, null_plain),
     }
 
     # Section 4 -- labels: UN region/sub-region, and Week 3's migrant communities.

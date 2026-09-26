@@ -998,9 +998,10 @@
                   links (388) but more firms (498 against 452), and only 19.9%
                   of its links touch the big five: 154 small firms stay attached
                   through the one tie that matters to them. Grouped with Louvain,
-                  the backbone is no more modular than rewired copies
-                  (0.59 against 0.63), partly because a rewired sparse backbone
-                  falls into pieces that each score well. The groups follow the
+                  the backbone beats rewired copies when every link counts once
+                  (modularity 0.61 against 0.54), but not once shared employers
+                  weight the links (0.59 against 0.63): the heavy links do not
+                  stay inside the groups. The groups follow the
                   clients' kind, placing or direct, more than their state in
                   FY2025 (AMI 0.18 against 0.09), but the order flips in FY2024
                   (0.14 against 0.19), so neither label holds. Figures from
@@ -1048,10 +1049,9 @@
                   fell from 21% to 19%. Among the 2,093 clients with two or more
                   firms, Louvain's groups explain 14% of the variance in a
                   client's average wage level, against 3% when the group labels
-                  are shuffled. The majority level matches the groups at AMI
-                  0.03, below the main vendor (0.09) and the industry (0.07): pay
-                  follows the network a little, the firms that supply the workers
-                  more. Figures from analysis/week04_wages.py.
+                  are shuffled. The majority level matches the groups only at AMI
+                  0.03: pay follows the network a little. Figures from
+                  analysis/week04_wages.py.
                 </p>
               </div>
             </details>
@@ -1069,10 +1069,12 @@
                   and China 12%; among lottery registrations, India holds 77% in
                   the March 2022 draw and 81% in March 2023. Link two countries
                   by the green cards their citizens receive at the same employers
-                  and 55 countries remain. Louvain splits them into three groups,
-                  less modular than rewired copies (0.26 against 0.40). India and
-                  China share one group with Canada, Belarus and Costa Rica,
-                  because nearly every large sponsor hires from both. The groups
+                  and 55 countries remain. Louvain splits them into three groups.
+                  Counted once each, the links group a little more than rewired
+                  copies (modularity 0.10 against 0.06); weighted by shared green
+                  cards, they group less (0.26 against 0.40). India and China
+                  share one group with Canada, Belarus and Costa Rica, and India
+                  keeps 79% of its weight inside it. The groups
                   match world regions (AMI 0.10) and Week 3's migration
                   communities (0.10) only weakly: green-card hiring does not sort
                   countries into regional blocs. Among the ten largest sponsors,

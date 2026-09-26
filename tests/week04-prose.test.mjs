@@ -214,8 +214,11 @@ test("law-firm backbone", () => {
   has(`keeps ${b.threshold.links_kept} links, and ${pct(b.threshold.top_5_share_of_links, 1)} of them touch the five`);
   has(`keeps fewer links (${b.disparity.links_kept}) but more firms (${b.disparity.firms_with_a_link} against ${b.threshold.firms_with_a_link})`);
   has(`only ${pct(b.disparity.top_5_share_of_links, 1)} of its links touch the big five: ${b.kept_by_filter_dropped_by_threshold.firms} small firms`);
-  has(`(${now.communities.Q_mean.toFixed(2)} against ${now.communities.null_mean.toFixed(2)})`);
-  assert.ok(now.communities.Q_mean <= now.communities.null_mean, '"no more modular than rewired copies"');
+  const cm = now.communities;
+  // The two nulls say different things, and the box says both.
+  assert.ok(cm.wiring_only.real > cm.wiring_only.null && cm.Q_mean < cm.null_mean);
+  has(`(modularity ${cm.wiring_only.real.toFixed(2)} against ${cm.wiring_only.null.toFixed(2)}), but not once shared employers`);
+  has(`weight the links (${cm.Q_mean.toFixed(2)} against ${cm.null_mean.toFixed(2)})`);
   has(`FY2025 (AMI ${now.labels.client_kind.ami.toFixed(2)} against ${now.labels.employer_state.ami.toFixed(2)})`);
   const before = y["2024"].labels;
   has(`FY2024 (${before.client_kind.ami.toFixed(2)} against ${before.employer_state.ami.toFixed(2)})`);
@@ -230,6 +233,11 @@ test("green cards as the strong tie", () => {
   has(`filed ${one(now.scored_median_ratio)} green cards per 100`);
   has(`(Spearman ${now.lca_vs_perm_filings.spearman_rho.toFixed(2)})`);
   const high = Object.fromEntries(now.highest_ratio_among_big_filers.map((r) => [r.employer.split(" ")[0], r]));
+  for (const name of ["Oracle", "Uber", "Salesforce"]) {
+    // A high ratio must not come from H-1B filings split over tax numbers.
+    const r = high[name];
+    assert.ok(Math.abs(r.lca_filings - r.lca_filings_by_name) / r.lca_filings_by_name < 0.2, `${name}: keyed and by-name H-1B counts disagree`);
+  }
   has(`Oracle filed ${Math.round(high.Oracle.ratio)} green cards per 100 H-1B filings, Uber ${Math.round(high.Uber.ratio)} and Salesforce ${Math.round(high.Salesforce.ratio)}`);
   const low = Object.fromEntries(now.lowest_ratio_among_big_filers.map((r) => [r.employer, r]));
   for (const name of ["Amazon", "Cognizant", "Google"]) {
@@ -258,7 +266,7 @@ test("wage levels and the staffing groups", () => {
   has(`Among the ${count(c.clients_with_wage_label)} clients`);
   has(`explain ${pct(c.unweighted.eta_squared)} of the variance`);
   has(`against ${pct(c.unweighted.eta_squared_shuffled)} when the group labels`);
-  has(`AMI ${c.unweighted.ami_median.toFixed(2)}, below the main vendor (${c.unweighted.staffing_ami_community_main_vendor.toFixed(2)}) and the industry (${c.unweighted.staffing_ami_community_industry.toFixed(2)})`);
+  has(`only at AMI ${c.unweighted.ami_median.toFixed(2)}: pay follows the network a little`);
 });
 
 test("a network of countries", () => {
@@ -276,8 +284,10 @@ test("a network of countries", () => {
   has(`and ${c.network["2023"].country_nodes} countries remain`);
   const m = c.modularity;
   has(`into ${m.communities_median === 3 ? "three" : m.communities_median} groups`);
-  has(`(${m.weighted_vs_rewired.real.toFixed(2)} against ${m.weighted_vs_rewired.null.toFixed(2)})`);
-  assert.ok(m.weighted_vs_rewired.real < m.weighted_vs_rewired.null, '"less modular than rewired copies"');
+  assert.ok(m.wiring_only.real > m.wiring_only.null && m.weighted_vs_rewired.real < m.weighted_vs_rewired.null);
+  has(`copies (modularity ${m.wiring_only.real.toFixed(2)} against ${m.wiring_only.null.toFixed(2)})`);
+  has(`they group less (${m.weighted_vs_rewired.real.toFixed(2)} against ${m.weighted_vs_rewired.null.toFixed(2)})`);
+  has(`India keeps ${pct(c.labels.india_share_of_weight_inside_its_community)} of its weight inside it`);
   const india5 = c.labels.largest_communities.find((g) => g.top_countries.includes("India"));
   assert.deepEqual(india5.top_countries.slice(0, 5), ["China", "India", "Canada", "Belarus", "Costa Rica"]);
   has(`world regions (AMI ${c.labels.ami_region.toFixed(2)}) and Week 3's migration communities (${c.labels.ami_week3_migrant_communities.toFixed(2)})`);

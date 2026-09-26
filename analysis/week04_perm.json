@@ -46,6 +46,7 @@
      "perm_filings": 0,
      "ratio": 0.0,
      "perm_filings_by_name": 0,
+     "lca_filings_by_name": 2206,
      "top_perm_occupation": null
     },
     {
@@ -54,6 +55,7 @@
      "perm_filings": 0,
      "ratio": 0.0,
      "perm_filings_by_name": 1,
+     "lca_filings_by_name": 1918,
      "top_perm_occupation": null
     },
     {
@@ -62,6 +64,7 @@
      "perm_filings": 0,
      "ratio": 0.0,
      "perm_filings_by_name": 144,
+     "lca_filings_by_name": 2160,
      "top_perm_occupation": null
     },
     {
@@ -70,6 +73,7 @@
      "perm_filings": 0,
      "ratio": 0.0,
      "perm_filings_by_name": 23,
+     "lca_filings_by_name": 807,
      "top_perm_occupation": null
     }
    ],
@@ -80,6 +84,7 @@
      "perm_filings": 710,
      "ratio": 85.34,
      "perm_filings_by_name": 721,
+     "lca_filings_by_name": 891,
      "top_perm_occupation": "Software Developers"
     },
     {
@@ -88,6 +93,7 @@
      "perm_filings": 371,
      "ratio": 68.83,
      "perm_filings_by_name": 462,
+     "lca_filings_by_name": 860,
      "top_perm_occupation": "Software Developers"
     },
     {
@@ -96,6 +102,7 @@
      "perm_filings": 541,
      "ratio": 49.0,
      "perm_filings_by_name": 541,
+     "lca_filings_by_name": 1104,
      "top_perm_occupation": "Software Developers"
     },
     {
@@ -104,6 +111,7 @@
      "perm_filings": 1421,
      "ratio": 41.02,
      "perm_filings_by_name": 1436,
+     "lca_filings_by_name": 3530,
      "top_perm_occupation": "Software Developers"
     }
    ],
@@ -185,6 +193,7 @@
      "perm_filings": 0,
      "ratio": 0.0,
      "perm_filings_by_name": 1,
+     "lca_filings_by_name": 22758,
      "top_perm_occupation": null
     },
     {
@@ -193,6 +202,7 @@
      "perm_filings": 0,
      "ratio": 0.0,
      "perm_filings_by_name": 0,
+     "lca_filings_by_name": 11121,
      "top_perm_occupation": null
     },
     {
@@ -201,6 +211,7 @@
      "perm_filings": 0,
      "ratio": 0.0,
      "perm_filings_by_name": 3,
+     "lca_filings_by_name": 8666,
      "top_perm_occupation": null
     },
     {
@@ -209,6 +220,7 @@
      "perm_filings": 0,
      "ratio": 0.0,
      "perm_filings_by_name": 53,
+     "lca_filings_by_name": 6104,
      "top_perm_occupation": null
     },
     {
@@ -217,6 +229,7 @@
      "perm_filings": 0,
      "ratio": 0.0,
      "perm_filings_by_name": 9,
+     "lca_filings_by_name": 2485,
      "top_perm_occupation": null
     },
     {
@@ -225,6 +238,7 @@
      "perm_filings": 0,
      "ratio": 0.0,
      "perm_filings_by_name": 274,
+     "lca_filings_by_name": 2532,
      "top_perm_occupation": null
     },
     {
@@ -233,6 +247,7 @@
      "perm_filings": 3,
      "ratio": 0.21,
      "perm_filings_by_name": 3,
+     "lca_filings_by_name": 1446,
      "top_perm_occupation": "Occupational Therapists"
     },
     {
@@ -241,6 +256,7 @@
      "perm_filings": 21,
      "ratio": 1.04,
      "perm_filings_by_name": 27,
+     "lca_filings_by_name": 2242,
      "top_perm_occupation": "Electronics Engineers, Except Computer"
     }
    ],
@@ -251,6 +267,7 @@
      "perm_filings": 1190,
      "ratio": 94.59,
      "perm_filings_by_name": 1199,
+     "lca_filings_by_name": 1332,
      "top_perm_occupation": "Software Developers"
     },
     {
@@ -259,6 +276,7 @@
      "perm_filings": 527,
      "ratio": 63.57,
      "perm_filings_by_name": 549,
+     "lca_filings_by_name": 963,
      "top_perm_occupation": "Software Developers"
     },
     {
@@ -267,6 +285,7 @@
      "perm_filings": 347,
      "ratio": 56.98,
      "perm_filings_by_name": 348,
+     "lca_filings_by_name": 609,
      "top_perm_occupation": "Management Analysts"
     },
     {
@@ -275,6 +294,7 @@
      "perm_filings": 325,
      "ratio": 56.33,
      "perm_filings_by_name": 327,
+     "lca_filings_by_name": 594,
      "top_perm_occupation": "Software Developers"
     },
     {
@@ -283,6 +303,7 @@
      "perm_filings": 310,
      "ratio": 45.39,
      "perm_filings_by_name": 470,
+     "lca_filings_by_name": 1166,
      "top_perm_occupation": "Software Developers"
     },
     {
@@ -291,6 +312,7 @@
      "perm_filings": 809,
      "ratio": 44.99,
      "perm_filings_by_name": 809,
+     "lca_filings_by_name": 1798,
      "top_perm_occupation": "Software Developers"
     },
     {
@@ -299,6 +321,7 @@
      "perm_filings": 371,
      "ratio": 41.64,
      "perm_filings_by_name": 371,
+     "lca_filings_by_name": 891,
      "top_perm_occupation": "Software Developers"
     },
     {
@@ -307,6 +330,7 @@
      "perm_filings": 463,
      "ratio": 40.51,
      "perm_filings_by_name": 463,
+     "lca_filings_by_name": 1144,
      "top_perm_occupation": "Software Developers"
     }
    ],
@@ -412,5 +436,5 @@
    }
   }
  },
- "seconds": 21
+ "seconds": 23
 }

@@ -141,20 +141,27 @@ def top_occupation(perm, key):
     return titles.value_counts().index[0] if len(titles) else None
 
 
+def first_word(label):
+    return next((w for w in label.upper().split() if len(w) >= 4), label.upper())
+
+
 def by_name(perm, label):
     """Certified PERM filings whose employer name contains the label's first word
     (four letters or more), whatever key they got. A key can miss a green card
     filed by a sister company under another name or tax number ("VERIZON
     COMMUNICATIONS INC AND ALL ITS SUBSIDIARIES"); only an employer whose name
     check is also near zero may be quoted as sponsoring none."""
-    word = next((w for w in label.upper().split() if len(w) >= 4), label.upper())
-    return int(perm["EMP_BUSINESS_NAME"].str.upper().str.contains(word, regex=False).sum())
+    return int(perm["EMP_BUSINESS_NAME"].str.upper().str.contains(first_word(label), regex=False).sum())
 
 
-def named(frame, keys, perm):
+def named(frame, keys, perm, lca):
+    """The same name check on the H-1B side: a high ratio could come from an
+    employer whose H-1B filings are split over tax numbers the key missed."""
+    lca_names = lca["EMPLOYER_NAME"].str.upper()
     return [{"employer": resolver().label(k), "lca_filings": int(frame.at[k, "lca_filings"]),
              "perm_filings": int(frame.at[k, "perm_filings"]), "ratio": round(float(frame.at[k, "ratio"]), 2),
              "perm_filings_by_name": by_name(perm, resolver().label(k)),
+             "lca_filings_by_name": int(lca_names.str.contains(first_word(resolver().label(k)), regex=False).sum()),
              "top_perm_occupation": top_occupation(perm, k)}
             for k in keys]
 
@@ -221,8 +228,8 @@ def year_block(year, rng, main):
         "lca_vs_perm_filings": {"spearman_rho": round(float(rho), 3), "p": round(float(rho_p), 4)},
         "scored_median_ratio": round(float(scored["ratio"].median()), 2),
         "big_filers": {"threshold": BIG_LCA_FILINGS, "employers": int(len(big))},
-        "lowest_ratio_among_big_filers": named(lowest_ratio, lowest_ratio.index, perm),
-        "highest_ratio_among_big_filers": named(best_ratio, best_ratio.index, perm),
+        "lowest_ratio_among_big_filers": named(lowest_ratio, lowest_ratio.index, perm, lca),
+        "highest_ratio_among_big_filers": named(best_ratio, best_ratio.index, perm, lca),
         "top_clients": top_clients,
         "zero_own_lca_clients_name_check": name_hits,
     }

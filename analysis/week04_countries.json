@@ -430,6 +430,14 @@
    "null_sd": 0.0188,
    "z": -7.49,
    "null_runs_at_or_above_real": 100
+  },
+  "wiring_only": {
+   "real": 0.1033,
+   "real_sd": 0.0048,
+   "null": 0.0613,
+   "null_sd": 0.0044,
+   "z": 9.46,
+   "null_runs_at_or_above_real": 0
   }
  },
  "labels": {
@@ -561,5 +569,5 @@
    }
   ]
  },
- "seconds": 50
+ "seconds": 76
 }
