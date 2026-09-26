@@ -551,6 +551,7 @@
  },
  "uscis": {
   "year": 2022,
+  "source": "uscis",
   "hub_employers": 59983,
   "hub_initial_approvals": 138381,
   "matched_share_of_initial_approvals": 0.8823,
@@ -654,6 +655,568 @@
    }
   ]
  },
+ "uscis_series": [
+  {
+   "year": 2022,
+   "source": "uscis_hub",
+   "hub_employers": 59606,
+   "hub_initial_approvals": 132659,
+   "matched_share_of_initial_approvals": 0.8871,
+   "matched_to_a_filer_share_of_initial_approvals": 0.8492,
+   "placing": {
+    "employers": 1057,
+    "certified_filings": 98399,
+    "initial_approvals": 24555,
+    "initial_denial_rate": 0.0271,
+    "continuing_denial_rate": 0.023,
+    "approvals_per_filing": 0.705,
+    "new_employment_approvals": 24200,
+    "new_employment_denial_rate": 0.0267,
+    "new_employment_approvals_per_100_filings": 24.59
+   },
+   "direct": {
+    "employers": 2295,
+    "certified_filings": 285013,
+    "initial_approvals": 57883,
+    "initial_denial_rate": 0.0122,
+    "continuing_denial_rate": 0.0144,
+    "approvals_per_filing": 0.807,
+    "new_employment_approvals": 57525,
+    "new_employment_denial_rate": 0.0122,
+    "new_employment_approvals_per_100_filings": 20.18
+   },
+   "top_placing_firms": [
+    {
+     "firm": "Tata Consultancy Services",
+     "placed_filings": 8963,
+     "certified_filings": 11117,
+     "initial_approvals": 2730,
+     "continuing_approvals": 7237,
+     "initial_denial_rate": 0.0305
+    },
+    {
+     "firm": "Infosys",
+     "placed_filings": 5145,
+     "certified_filings": 7629,
+     "initial_approvals": 3130,
+     "continuing_approvals": 3986,
+     "initial_denial_rate": 0.0157
+    },
+    {
+     "firm": "HCL",
+     "placed_filings": 2708,
+     "certified_filings": 4020,
+     "initial_approvals": 1260,
+     "continuing_approvals": 1883,
+     "initial_denial_rate": 0.036
+    },
+    {
+     "firm": "Compunnel Software",
+     "placed_filings": 2244,
+     "certified_filings": 2276,
+     "initial_approvals": 110,
+     "continuing_approvals": 1202,
+     "initial_denial_rate": 0.0517
+    },
+    {
+     "firm": "Accenture",
+     "placed_filings": 2138,
+     "certified_filings": 2970,
+     "initial_approvals": 1114,
+     "continuing_approvals": 1119,
+     "initial_denial_rate": 0.0054
+    },
+    {
+     "firm": "IBM",
+     "placed_filings": 1911,
+     "certified_filings": 3659,
+     "initial_approvals": 1237,
+     "continuing_approvals": 1835,
+     "initial_denial_rate": 0.0151
+    },
+    {
+     "firm": "Wipro",
+     "placed_filings": 1844,
+     "certified_filings": 2411,
+     "initial_approvals": 1151,
+     "continuing_approvals": 1121,
+     "initial_denial_rate": 0.0221
+    },
+    {
+     "firm": "LTIMindtree",
+     "placed_filings": 1742,
+     "certified_filings": 1829,
+     "initial_approvals": 230,
+     "continuing_approvals": 1120,
+     "initial_denial_rate": 0.0295
+    },
+    {
+     "firm": "Tech Mahindra",
+     "placed_filings": 1010,
+     "certified_filings": 1477,
+     "initial_approvals": 499,
+     "continuing_approvals": 679,
+     "initial_denial_rate": 0.0348
+    },
+    {
+     "firm": "Mphasis",
+     "placed_filings": 968,
+     "certified_filings": 1747,
+     "initial_approvals": 130,
+     "continuing_approvals": 782,
+     "initial_denial_rate": 0.0152
+    }
+   ]
+  },
+  {
+   "year": 2023,
+   "source": "uscis_hub",
+   "hub_employers": 57415,
+   "hub_initial_approvals": 118951,
+   "matched_share_of_initial_approvals": 0.9024,
+   "matched_to_a_filer_share_of_initial_approvals": 0.857,
+   "placing": {
+    "employers": 873,
+    "certified_filings": 94679,
+    "initial_approvals": 20108,
+    "initial_denial_rate": 0.0357,
+    "continuing_denial_rate": 0.027,
+    "approvals_per_filing": 0.738,
+    "new_employment_approvals": 19825,
+    "new_employment_denial_rate": 0.0351,
+    "new_employment_approvals_per_100_filings": 20.94
+   },
+   "direct": {
+    "employers": 2087,
+    "certified_filings": 235059,
+    "initial_approvals": 49047,
+    "initial_denial_rate": 0.0148,
+    "continuing_denial_rate": 0.019,
+    "approvals_per_filing": 0.771,
+    "new_employment_approvals": 48720,
+    "new_employment_denial_rate": 0.0147,
+    "new_employment_approvals_per_100_filings": 20.73
+   },
+   "top_placing_firms": [
+    {
+     "firm": "Cognizant",
+     "placed_filings": 7197,
+     "certified_filings": 12870,
+     "initial_approvals": 2583,
+     "continuing_approvals": 5075,
+     "initial_denial_rate": 0.0069
+    },
+    {
+     "firm": "Tata Consultancy Services",
+     "placed_filings": 6852,
+     "certified_filings": 8483,
+     "initial_approvals": 1169,
+     "continuing_approvals": 5710,
+     "initial_denial_rate": 0.0394
+    },
+    {
+     "firm": "Infosys",
+     "placed_filings": 5370,
+     "certified_filings": 7755,
+     "initial_approvals": 2147,
+     "continuing_approvals": 5203,
+     "initial_denial_rate": 0.0214
+    },
+    {
+     "firm": "HCL",
+     "placed_filings": 2629,
+     "certified_filings": 3832,
+     "initial_approvals": 715,
+     "continuing_approvals": 2097,
+     "initial_denial_rate": 0.0377
+    },
+    {
+     "firm": "Accenture",
+     "placed_filings": 2418,
+     "certified_filings": 3436,
+     "initial_approvals": 538,
+     "continuing_approvals": 1599,
+     "initial_denial_rate": 0.0182
+    },
+    {
+     "firm": "Wipro",
+     "placed_filings": 2295,
+     "certified_filings": 2843,
+     "initial_approvals": 971,
+     "continuing_approvals": 1450,
+     "initial_denial_rate": 0.0396
+    },
+    {
+     "firm": "LTIMindtree",
+     "placed_filings": 2141,
+     "certified_filings": 2442,
+     "initial_approvals": 668,
+     "continuing_approvals": 1265,
+     "initial_denial_rate": 0.003
+    },
+    {
+     "firm": "Compunnel Software",
+     "placed_filings": 1907,
+     "certified_filings": 1966,
+     "initial_approvals": 100,
+     "continuing_approvals": 1204,
+     "initial_denial_rate": 0.0566
+    },
+    {
+     "firm": "IBM",
+     "placed_filings": 1529,
+     "certified_filings": 2603,
+     "initial_approvals": 970,
+     "continuing_approvals": 1490,
+     "initial_denial_rate": 0.0102
+    },
+    {
+     "firm": "Tech Mahindra",
+     "placed_filings": 1005,
+     "certified_filings": 1374,
+     "initial_approvals": 589,
+     "continuing_approvals": 738,
+     "initial_denial_rate": 0.0051
+    }
+   ]
+  },
+  {
+   "year": 2024,
+   "source": "uscis_hub",
+   "hub_employers": 62014,
+   "hub_initial_approvals": 141206,
+   "matched_share_of_initial_approvals": 0.9468,
+   "matched_to_a_filer_share_of_initial_approvals": 0.9361,
+   "placing": {
+    "employers": 884,
+    "certified_filings": 81763,
+    "initial_approvals": 20186,
+    "initial_denial_rate": 0.0265,
+    "continuing_denial_rate": 0.024,
+    "approvals_per_filing": 0.769,
+    "new_employment_approvals": 19993,
+    "new_employment_denial_rate": 0.0263,
+    "new_employment_approvals_per_100_filings": 24.45
+   },
+   "direct": {
+    "employers": 2414,
+    "certified_filings": 268074,
+    "initial_approvals": 64784,
+    "initial_denial_rate": 0.0128,
+    "continuing_denial_rate": 0.0124,
+    "approvals_per_filing": 0.771,
+    "new_employment_approvals": 64425,
+    "new_employment_denial_rate": 0.0128,
+    "new_employment_approvals_per_100_filings": 24.03
+   },
+   "top_placing_firms": [
+    {
+     "firm": "Tata Consultancy Services",
+     "placed_filings": 8747,
+     "certified_filings": 9605,
+     "initial_approvals": 1449,
+     "continuing_approvals": 6090,
+     "initial_denial_rate": 0.0116
+    },
+    {
+     "firm": "Infosys",
+     "placed_filings": 3919,
+     "certified_filings": 5860,
+     "initial_approvals": 2489,
+     "continuing_approvals": 5652,
+     "initial_denial_rate": 0.0123
+    },
+    {
+     "firm": "HCL",
+     "placed_filings": 3279,
+     "certified_filings": 4044,
+     "initial_approvals": 1248,
+     "continuing_approvals": 1734,
+     "initial_denial_rate": 0.0087
+    },
+    {
+     "firm": "Accenture",
+     "placed_filings": 2410,
+     "certified_filings": 3299,
+     "initial_approvals": 832,
+     "continuing_approvals": 1325,
+     "initial_denial_rate": 0.0095
+    },
+    {
+     "firm": "LTIMindtree",
+     "placed_filings": 2284,
+     "certified_filings": 2831,
+     "initial_approvals": 798,
+     "continuing_approvals": 1338,
+     "initial_denial_rate": 0.0099
+    },
+    {
+     "firm": "IBM",
+     "placed_filings": 1655,
+     "certified_filings": 3138,
+     "initial_approvals": 1347,
+     "continuing_approvals": 1555,
+     "initial_denial_rate": 0.0044
+    },
+    {
+     "firm": "Compunnel Software",
+     "placed_filings": 1649,
+     "certified_filings": 1679,
+     "initial_approvals": 113,
+     "continuing_approvals": 889,
+     "initial_denial_rate": 0.0174
+    },
+    {
+     "firm": "Wipro",
+     "placed_filings": 1642,
+     "certified_filings": 2174,
+     "initial_approvals": 601,
+     "continuing_approvals": 1031,
+     "initial_denial_rate": 0.0228
+    },
+    {
+     "firm": "Tech Mahindra",
+     "placed_filings": 1066,
+     "certified_filings": 1459,
+     "initial_approvals": 493,
+     "continuing_approvals": 718,
+     "initial_denial_rate": 0.01
+    },
+    {
+     "firm": "Mphasis",
+     "placed_filings": 814,
+     "certified_filings": 1394,
+     "initial_approvals": 195,
+     "continuing_approvals": 590,
+     "initial_denial_rate": 0.0
+    }
+   ]
+  },
+  {
+   "year": 2025,
+   "source": "uscis_hub",
+   "hub_employers": 62415,
+   "hub_initial_approvals": 114804,
+   "matched_share_of_initial_approvals": 0.9678,
+   "matched_to_a_filer_share_of_initial_approvals": 0.9356,
+   "placing": {
+    "employers": 933,
+    "certified_filings": 83225,
+    "initial_approvals": 11461,
+    "initial_denial_rate": 0.032,
+    "continuing_denial_rate": 0.0261,
+    "approvals_per_filing": 0.662,
+    "new_employment_approvals": 11284,
+    "new_employment_denial_rate": 0.0312,
+    "new_employment_approvals_per_100_filings": 13.56
+   },
+   "direct": {
+    "employers": 2480,
+    "certified_filings": 292470,
+    "initial_approvals": 57072,
+    "initial_denial_rate": 0.0156,
+    "continuing_denial_rate": 0.0141,
+    "approvals_per_filing": 0.776,
+    "new_employment_approvals": 56766,
+    "new_employment_denial_rate": 0.0154,
+    "new_employment_approvals_per_100_filings": 19.41
+   },
+   "top_placing_firms": [
+    {
+     "firm": "Tata Consultancy Services",
+     "placed_filings": 7188,
+     "certified_filings": 7793,
+     "initial_approvals": 846,
+     "continuing_approvals": 5286,
+     "initial_denial_rate": 0.022
+    },
+    {
+     "firm": "Infosys",
+     "placed_filings": 3761,
+     "certified_filings": 5740,
+     "initial_approvals": 257,
+     "continuing_approvals": 2599,
+     "initial_denial_rate": 0.0586
+    },
+    {
+     "firm": "HCL",
+     "placed_filings": 2530,
+     "certified_filings": 2928,
+     "initial_approvals": 379,
+     "continuing_approvals": 1877,
+     "initial_denial_rate": 0.0619
+    },
+    {
+     "firm": "Compunnel Software",
+     "placed_filings": 2237,
+     "certified_filings": 2276,
+     "initial_approvals": 152,
+     "continuing_approvals": 1122,
+     "initial_denial_rate": 0.0318
+    },
+    {
+     "firm": "LTIMindtree",
+     "placed_filings": 2131,
+     "certified_filings": 2635,
+     "initial_approvals": 401,
+     "continuing_approvals": 1806,
+     "initial_denial_rate": 0.0498
+    },
+    {
+     "firm": "Accenture",
+     "placed_filings": 1974,
+     "certified_filings": 2848,
+     "initial_approvals": 250,
+     "continuing_approvals": 1636,
+     "initial_denial_rate": 0.0157
+    },
+    {
+     "firm": "Wipro",
+     "placed_filings": 1626,
+     "certified_filings": 2156,
+     "initial_approvals": 261,
+     "continuing_approvals": 1542,
+     "initial_denial_rate": 0.0188
+    },
+    {
+     "firm": "IBM",
+     "placed_filings": 1503,
+     "certified_filings": 2584,
+     "initial_approvals": 500,
+     "continuing_approvals": 1544,
+     "initial_denial_rate": 0.0099
+    },
+    {
+     "firm": "Grandison Management",
+     "placed_filings": 1445,
+     "certified_filings": 1446,
+     "initial_approvals": 29,
+     "continuing_approvals": 28,
+     "initial_denial_rate": 0.0938
+    },
+    {
+     "firm": "Capgemini",
+     "placed_filings": 1361,
+     "certified_filings": 2657,
+     "initial_approvals": 401,
+     "continuing_approvals": 1784,
+     "initial_denial_rate": 0.0361
+    }
+   ]
+  },
+  {
+   "year": 2026,
+   "source": "uscis_hub",
+   "hub_employers": 49495,
+   "hub_initial_approvals": 86346,
+   "matched_share_of_initial_approvals": 0.9766,
+   "matched_to_a_filer_share_of_initial_approvals": 0.8813,
+   "placing": {
+    "employers": 601,
+    "certified_filings": 47890,
+    "initial_approvals": 10723,
+    "initial_denial_rate": 0.0335,
+    "continuing_denial_rate": 0.0372,
+    "approvals_per_filing": 0.711,
+    "new_employment_approvals": 10636,
+    "new_employment_denial_rate": 0.0327,
+    "new_employment_approvals_per_100_filings": 22.21
+   },
+   "direct": {
+    "employers": 1877,
+    "certified_filings": 208890,
+    "initial_approvals": 38414,
+    "initial_denial_rate": 0.0198,
+    "continuing_denial_rate": 0.0216,
+    "approvals_per_filing": 0.676,
+    "new_employment_approvals": 38310,
+    "new_employment_denial_rate": 0.0196,
+    "new_employment_approvals_per_100_filings": 18.34
+   },
+   "top_placing_firms": [
+    {
+     "firm": "Infosys",
+     "placed_filings": 2980,
+     "certified_filings": 4553,
+     "initial_approvals": 2076,
+     "continuing_approvals": 2037,
+     "initial_denial_rate": 0.0407
+    },
+    {
+     "firm": "Tata Consultancy Services",
+     "placed_filings": 2613,
+     "certified_filings": 2881,
+     "initial_approvals": 1524,
+     "continuing_approvals": 2926,
+     "initial_denial_rate": 0.0281
+    },
+    {
+     "firm": "Grandison Management",
+     "placed_filings": 1967,
+     "certified_filings": 1967,
+     "initial_approvals": 33,
+     "continuing_approvals": 12,
+     "initial_denial_rate": 0.0571
+    },
+    {
+     "firm": "Compunnel Software",
+     "placed_filings": 1915,
+     "certified_filings": 1939,
+     "initial_approvals": 107,
+     "continuing_approvals": 846,
+     "initial_denial_rate": 0.1008
+    },
+    {
+     "firm": "Wipro",
+     "placed_filings": 1031,
+     "certified_filings": 1535,
+     "initial_approvals": 226,
+     "continuing_approvals": 949,
+     "initial_denial_rate": 0.0424
+    },
+    {
+     "firm": "LTIMindtree",
+     "placed_filings": 940,
+     "certified_filings": 1313,
+     "initial_approvals": 266,
+     "continuing_approvals": 1023,
+     "initial_denial_rate": 0.0185
+    },
+    {
+     "firm": "Accenture",
+     "placed_filings": 906,
+     "certified_filings": 1453,
+     "initial_approvals": 285,
+     "continuing_approvals": 942,
+     "initial_denial_rate": 0.007
+    },
+    {
+     "firm": "HCL",
+     "placed_filings": 904,
+     "certified_filings": 1252,
+     "initial_approvals": 451,
+     "continuing_approvals": 1074,
+     "initial_denial_rate": 0.0217
+    },
+    {
+     "firm": "Randstad",
+     "placed_filings": 714,
+     "certified_filings": 718,
+     "initial_approvals": 76,
+     "continuing_approvals": 319,
+     "initial_denial_rate": 0.038
+    },
+    {
+     "firm": "Kforce",
+     "placed_filings": 573,
+     "certified_filings": 598,
+     "initial_approvals": 51,
+     "continuing_approvals": 276,
+     "initial_denial_rate": 0.1053
+    }
+   ]
+  }
+ ],
  "main": {
   "year": 2025,
   "clients": 18924,
@@ -1166,5 +1729,5 @@
    "unweighted_same_year_nmi": 0.518
   }
  ],
- "seconds": 203
+ "seconds": 249
 }

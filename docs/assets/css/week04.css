@@ -349,6 +349,9 @@
   margin: 0;
   line-height: 1.6;
 }
+.staffing-prose p + p {
+  margin-top: 10px;
+}
 .staffing-flows {
   margin-top: 28px;
 }
