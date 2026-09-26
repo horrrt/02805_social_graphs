@@ -40,6 +40,8 @@ ALIASES = Path(__file__).with_name("week04_client_aliases.csv")
 MERGES = Path(__file__).with_name("week04_name_merges.csv")
 # SEC industry for listed companies, built by week04_sec.py.
 SEC = Path(__file__).with_name("week04_sec_sectors.csv")
+# Wikidata industry for companies the SEC doesn't list, built by week04_wikidata.py.
+WIKIDATA = Path(__file__).with_name("week04_wikidata_sectors.csv")
 
 SUFFIXES = {
     "AND", "INC", "INCORPORATED", "LLC", "L L C", "LTD", "LIMITED", "CORP", "CORPORATION", "CO",
@@ -150,13 +152,28 @@ def _sec_sectors():
         return {r["key"]: r["naics2"] for r in rows if r["naics2"]}
 
 
+@lru_cache(maxsize=None)
+def _wikidata_sectors():
+    if not WIKIDATA.exists():
+        return {}
+    with open(WIKIDATA, newline="", encoding="utf-8") as fh:
+        rows = csv.DictReader(line for line in fh if not line.startswith("#"))
+        return {r["key"]: r["naics2"] for r in rows if r["naics2"]}
+
+
 def naics2(key):
-    """A company's NAICS sector: the reviewed table's, else the SEC's, else ''."""
-    return _sectors().get(key) or _sec_sectors().get(key, "")
+    """A company's NAICS sector: the reviewed table's, else the SEC's, else Wikidata's, else ''."""
+    return _sectors().get(key) or _sec_sectors().get(key) or _wikidata_sectors().get(key, "")
 
 
 def sector_source(key):
-    return "reviewed" if key in _sectors() else "sec" if key in _sec_sectors() else ""
+    if key in _sectors():
+        return "reviewed"
+    if key in _sec_sectors():
+        return "sec"
+    if key in _wikidata_sectors():
+        return "wikidata"
+    return ""
 
 
 def legal_name(raw):

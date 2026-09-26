@@ -638,7 +638,7 @@
             <p class="sub">
               <b>One certified H-1B filing in five names a client company as the
               worksite. Held to a random baseline, clients group only weakly, and
-              about as much by industry as by the firm that staffs them.</b>
+              slightly more by the firm that staffs them than by industry.</b>
             </p>
             <div class="staffing-prose">
               <h3>How many workers sit at a client?</h3>
@@ -655,11 +655,11 @@
               </p>
               <h3>Do clients group by industry or by the firm that staffs them?</h3>
               <p>
-                By both, weakly. Louvain splits the network into about 65
-                groups, a little more cleanly than rewired networks that keep
-                everyone's number of partners (modularity 0.57 against 0.53).
-                The groups match each client's main vendor (AMI 0.09) about as
-                well as its industry (0.07).
+                By both, weakly, and slightly more by vendor. Louvain splits the
+                network into about 65 groups, a little more cleanly than rewired
+                networks that keep everyone's number of partners (modularity
+                0.57 against 0.53). The groups match each client's main vendor
+                (AMI 0.11) a little better than its industry (0.07).
               </p>
               <h3>Who relies on a single vendor?</h3>
               <p>
@@ -670,11 +670,15 @@
               <h3>Does it hold from year to year?</h3>
               <p>
                 Only in part. Consecutive years agree at NMI 0.21 to 0.27, about
-                half the 0.47 to 0.52 between two runs of the same year.
+                half the 0.47 to 0.52 between two runs of the same year. FY2026
+                breaks the pattern at the top: from January to June, filings
+                that name a client company fell 16.5%, and Tata Consultancy
+                Services filed 2,079, down from 5,256.
               </p>
               <p>
-                The full numbers, the lottery chain behind them and four more
-                networks are under <a href="#evidence">Curious? Go deeper</a>.
+                The full numbers, the lottery chain behind them and more
+                networks are in the boxes below and under
+                <a href="#evidence">Curious? Go deeper</a>.
               </p>
             </div>
             <figure class="staffing" id="staffing-figure">
@@ -746,6 +750,47 @@
               </div>
             </figure>
 
+            <div class="staffing-prose" id="staffing-lawyers" style="margin-top: 18px">
+              <h3>Who files the paperwork?</h3>
+              <p>
+                Three filings in four name an outside law firm, and five firms
+                file 40% of those. Fragomen alone files 78,531 for 3,139
+                employers. Outsourcing firms mostly do without: they file 52% of
+                their applications with no outside firm and send 3% to the five
+                largest, while direct employers send those five 48%. Per
+                employer the averages are 2% and 31%, and none of 1,000 shuffles
+                of which employer is which produced a gap that wide.
+              </p>
+              <p>
+                Two law firms share filings when the same employer uses both:
+                for each such employer, the smaller of its filings through
+                either. That network has one giant hub, the case the disparity
+                filter was made for. A weight threshold of four shared filings
+                keeps 770 links and spends 26% of them on the five largest
+                firms. The disparity filter at &alpha; = 0.2 keeps 696 and
+                spends 19%. It also keeps 115 small firms the threshold drops,
+                such as one law office whose link to BBI Law Group is 3 of its
+                5 shared filings and 3 of BBI's 342. The threshold keeps the
+                larger connected core, 395 firms against the filter's 350. Another 144 firms stay only
+                because they form a pair linked to nobody else, where neither
+                end can judge the link.
+              </p>
+              <p>
+                Louvain finds 34 groups at modularity 0.67, against 0.55 for
+                rewired networks that keep each employer's and each law firm's
+                number of partners (z = 12). The groups are barely regional
+                (NMI 0.05 with Census regions, though above every shuffle), and
+                the largest gather around shared employers. Google,
+                Apple and Meta share Fragomen, Ogletree Deakins and Berry
+                Appleman &amp; Leiden; Tata Consultancy, LTIMindtree and
+                Salesforce share Usilaw, Goel &amp; Anderson and Chugh; Vialto,
+                once PwC's law firm, serves Doordash and Databricks. The groups
+                move from year to year: FY2024 and FY2025 agree at NMI 0.29 on
+                the 1,041 law firms in both, against 0.88 between two runs of
+                FY2025. Figures from analysis/week04_lawfirms.py.
+              </p>
+            </div>
+
             <details class="qa" id="staffing-community-stats" style="margin-top: 18px">
               <summary>
                 <span class="qa-cue">With filing counts or without?</span>
@@ -804,6 +849,46 @@
                   <b class="im-industry">…</b>). Finer partitions raise every NMI;
                   AMI corrects for that, so it is the number to compare across
                   methods.
+                </p>
+              </div>
+            </details>
+
+            <details class="qa" id="staffing-ties">
+              <summary>
+                <span class="qa-cue">Strong ties, weak ties and pay</span>
+              </summary>
+              <div class="qa-body">
+                <p class="sub">
+                  Among friends, the strongest ties sit inside tight groups where
+                  your close friends also know each other, and weak ties bridge
+                  the groups (Granovetter 1973; Onnela and colleagues confirmed it
+                  on millions of phone users in 2007). A link's
+                  <b>overlap</b> measures the tightness: of the firm's other
+                  clients and the client's other firms, the share that are linked
+                  to each other. Here the pattern runs the other way, faintly.
+                  Over the 28,151 links where overlap is defined, filings and
+                  overlap correlate at Spearman -0.04; with the filing counts
+                  shuffled over the same links the correlation is 0.00 ±
+                  0.01 (z = -6.5; FY2024 gives z = -4.2). Links with one filing
+                  have a mean overlap of 0.065, links with 21 or more 0.034. Heavy
+                  links mostly belong to the largest firms, whose many clients
+                  rarely share other firms, so part of this is size. It agrees
+                  with the result above: the real filing counts put weight on
+                  links between groups.
+                </p>
+                <p class="sub">
+                  Each filing states one of four wage levels, from entry (I) to
+                  fully competent (IV). Averaged per client over the filings that
+                  reach it, the groups explain 12% of the variance in wage level;
+                  averaged per firm over all its filings, 2%. None of 1,000
+                  shuffles of the group labels reached either. A client's filings
+                  come from the vendors that also decide its group, so part of
+                  the 12% is built in. Outsourcing firms
+                  file 66% of their applications at level II and 5% at level IV;
+                  direct employers file 35% and 22%. From January to June 2026,
+                  level IV rose to 17.7% of all filings from 13.6% a year
+                  earlier, and level I fell to 18.0% from 21.8%. Figures from
+                  analysis/week04_ties.py and analysis/week04_shift.py.
                 </p>
               </div>
             </details>
@@ -949,19 +1034,20 @@
               </p>
               <h3>Do clients group by industry or by the firm that staffs them?</h3>
               <p>
-                By both, weakly. With every firm–client link counted once,
+                By both, weakly, and slightly more by vendor. With every
+                firm–client link counted once,
                 Louvain splits the network into about 65 groups, and the split
                 beats rewired networks that keep everyone's number of partners
-                (modularity 0.57 against 0.53). Among the 862 clients with a
+                (modularity 0.57 against 0.53). Among the 1,214 clients with a
                 known industry and two or more firms, the groups match the main
-                vendor at an adjusted mutual information (AMI) of 0.09 and the
+                vendor at an adjusted mutual information (AMI) of 0.11 and the
                 industry at 0.07; both beat shuffled labels. AMI corrects NMI for
-                chance, which matters here: these clients have 339 main vendors
+                chance, which matters here: these clients have 492 main vendors
                 but only 18 industries. Counting filings pulls clients to their
-                main vendor (AMI 0.51 against 0.06), but that split scores below
+                main vendor (AMI 0.48 against 0.07), but that split scores below
                 rewired networks with the same filing counts (0.60 against 0.74),
                 and the vendor's head start is built in: the vendor is a node in
-                the same network, and 87% of these clients land in its group.
+                the same network, and 86% of these clients land in its group.
               </p>
               <h3>Who relies on a single vendor?</h3>
               <p>
@@ -980,34 +1066,20 @@
                 between two runs of the same year on the same clients. We
                 compared vendor and industry on FY2025 only.
               </p>
+              <p>
+                FY2026 breaks the pattern at the top. We compare January to June
+                of each year, because October 2025, the month of the federal
+                shutdown, holds 1,306 certified filings against 35,258 a year
+                earlier. From January to June, certified filings fell 5.8% after
+                rising 9.5% the year before, and filings that name a client
+                company fell 16.5% after holding flat (-0.1%). Tata Consultancy
+                Services filed 2,079, down from 5,256. Of the 352 clients it supplied most from January to June 2025, 226 still appear, and 114 of those now
+                get most of their workers from another firm, most often Infosys.
+                Across clients with five or more filings in both years, 48%
+                changed their main vendor, against 43% a year earlier. These are
+                applications, so they show what employers asked for, not why.
+              </p>
                           </div>
-            </details>
-            <details class="qa" id="deeper-lawfirms">
-              <summary>
-                <span class="qa-cue">Who files the paperwork? A backbone of law firms</span>
-              </summary>
-              <div class="qa-body">
-                <p class="sub">
-                  In FY2025, 75.6% of certified filings name the law firm that
-                  filed them, and five firms file 40.7% of those; Fragomen alone
-                  files 19.4%. Link two law firms when an employer used both
-                  (6.9% of employers did), and the network has the hub the
-                  course warns about. A global threshold, two or more shared
-                  employers, keeps 509 links, and 27.5% of them touch the five
-                  largest firms. The disparity filter at α = 0.2 keeps fewer
-                  links (388) but more firms (498 against 452), and only 19.9%
-                  of its links touch the big five: 154 small firms stay attached
-                  through the one tie that matters to them. Grouped with Louvain,
-                  the backbone beats rewired copies when every link counts once
-                  (modularity 0.61 against 0.54), but not once shared employers
-                  weight the links (0.59 against 0.63): the heavy links do not
-                  stay inside the groups. The groups follow the
-                  clients' kind, placing or direct, more than their state in
-                  FY2025 (AMI 0.18 against 0.09), but the order flips in FY2024
-                  (0.14 against 0.19), so neither label holds. Figures from
-                  analysis/week04_lawfirms.py.
-                </p>
-              </div>
             </details>
 
             <details class="qa" id="deeper-perm">
@@ -1031,27 +1103,6 @@
                   the gap is clearer (12.6 against 15.4, p = 0.045). Only 65% of
                   certified green cards come from an employer we can match to an
                   H-1B filer. Figures from analysis/week04_perm.py.
-                </p>
-              </div>
-            </details>
-
-            <details class="qa" id="deeper-wages">
-              <summary>
-                <span class="qa-cue">Do the groups split by pay?</span>
-              </summary>
-              <div class="qa-body">
-                <p class="sub">
-                  Every filing states a wage level, from I (entry) to IV. Placed
-                  workers bunch at Level II: in FY2025, 64% of placed filings
-                  against 36% of the rest, and 5% reach Level IV against 20%.
-                  Between October and June, Level IV rose from 16% of filings
-                  with a recorded level in FY2025 to 20% in FY2026, and Level I
-                  fell from 21% to 19%. Among the 2,093 clients with two or more
-                  firms, Louvain's groups explain 14% of the variance in a
-                  client's average wage level, against 3% when the group labels
-                  are shuffled. The majority level matches the groups only at AMI
-                  0.03: pay follows the network a little. Figures from
-                  analysis/week04_wages.py.
                 </p>
               </div>
             </details>
@@ -1109,21 +1160,28 @@
                     builds the occupation network.</li>
                   <li><a href="https://github.com/horrrt/02805_social_graphs/blob/main/analysis/week04_staffing.py"><code>week04_staffing.py</code></a>
                     and <a href="https://github.com/horrrt/02805_social_graphs/blob/main/analysis/week04_staffing_figure.py"><code>week04_staffing_figure.py</code></a>
-                    build the firm → client network and its figure.</li>
+                    build the firm → client network and its figure;
+                    <a href="https://github.com/horrrt/02805_social_graphs/blob/main/analysis/week04_shift.py"><code>week04_shift.py</code></a>
+                    compares January to June of FY2024, FY2025 and FY2026;
+                    <a href="https://github.com/horrrt/02805_social_graphs/blob/main/analysis/week04_ties.py"><code>week04_ties.py</code></a>
+                    tests strong and weak ties and wage levels; and
+                    <a href="https://github.com/horrrt/02805_social_graphs/blob/main/analysis/week04_lawfirms.py"><code>week04_lawfirms.py</code></a>
+                    builds the law-firm network and its backbones.</li>
                   <li><a href="https://github.com/horrrt/02805_social_graphs/blob/main/analysis/week04_lottery.py"><code>week04_lottery.py</code></a>
-                    follows lottery registrations to petitions, filings and clients.</li>
-                  <li><a href="https://github.com/horrrt/02805_social_graphs/blob/main/analysis/week04_lawfirms.py"><code>week04_lawfirms.py</code></a>,
-                    <a href="https://github.com/horrrt/02805_social_graphs/blob/main/analysis/week04_perm.py"><code>week04_perm.py</code></a> and
-                    <a href="https://github.com/horrrt/02805_social_graphs/blob/main/analysis/week04_wages.py"><code>week04_wages.py</code></a>
-                    build the law-firm backbone, the green-card comparison and the wage test.</li>
-                  <li><a href="https://github.com/horrrt/02805_social_graphs/blob/main/analysis/week04_countries.py"><code>week04_countries.py</code></a>
+                    follows lottery registrations to petitions, filings and clients;
+                    <a href="https://github.com/horrrt/02805_social_graphs/blob/main/analysis/week04_perm.py"><code>week04_perm.py</code></a>
+                    compares green cards with H-1B filings; and
+                    <a href="https://github.com/horrrt/02805_social_graphs/blob/main/analysis/week04_countries.py"><code>week04_countries.py</code></a>
                     counts green cards by country and employer, hides every count under 10, and builds the country network.</li>
                   <li><a href="https://github.com/horrrt/02805_social_graphs/blob/main/analysis/week04_names.py"><code>week04_names.py</code></a>
                     decides which names are the same company;
                     <a href="https://github.com/horrrt/02805_social_graphs/blob/main/analysis/week04_names_check.py"><code>week04_names_check.py</code></a>
                     tests its rules against tax numbers, and
                     <a href="https://github.com/horrrt/02805_social_graphs/blob/main/analysis/week04_sec.py"><code>week04_sec.py</code></a>
-                    adds industry codes from the SEC.</li>
+                    adds industry codes from the SEC, and
+                    <a href="https://github.com/horrrt/02805_social_graphs/blob/main/analysis/week04_wikidata.py"><code>week04_wikidata.py</code></a>
+                    adds them from Wikidata (CC0) for clients the SEC does not
+                    list, through a reviewed table of Wikidata industries.</li>
                   <li><a href="https://github.com/horrrt/02805_social_graphs/blob/main/analysis/week04_schemas.py"><code>week04_schemas.py</code></a>
                     checks every JSON file against the fields the page reads.</li>
                 </ul>
