@@ -8,7 +8,8 @@ function reveal() {
   const target = id && document.getElementById(id);
   if (!target) return;
   let opened = false;
-  for (let el = target.parentElement; el; el = el.parentElement) {
+  // A link to a details box opens the box itself as well as its ancestors.
+  for (let el = target.tagName === "DETAILS" ? target : target.parentElement; el; el = el.parentElement) {
     if (el.tagName === "DETAILS" && !el.open) {
       el.open = true;
       opened = true;

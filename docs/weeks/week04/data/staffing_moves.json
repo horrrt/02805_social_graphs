@@ -6,7 +6,7 @@
   "q1_pooled_null_mean": 0.0341,
   "q1_pooled_null_sd": 0.0051,
   "q1_pooled_p": 0.001,
-  "q1_pooled_z": 44.23,
+  "q1_pooled_z": 44.16,
   "q1_pooled_lift": 7.57,
   "q1_answer": "yes",
   "q1_share_new_vendor_already_linked": 0.6105,
@@ -55,7 +55,7 @@
    "null": {
     "mean": 0.0348,
     "sd": 0.0091,
-    "z": 25.72,
+    "z": 25.75,
     "p": 0.001
    },
    "lift": 7.73,

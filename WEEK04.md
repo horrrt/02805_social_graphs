@@ -57,6 +57,7 @@ python -m pip install -r requirements-lock.txt     # adds python-calamine, the E
 python analysis/week04_data.py --years 2025        # one year first: about 560 MB
 python analysis/week04_data.py                     # all five years: 2.6 GB, about 6 minutes
 CONTACT_EMAIL=you@student.dtu.dk python analysis/week04_data.py --refs --no-tables
+python analysis/week04_data.py --hub --lottery --no-tables  # USCIS approvals and lottery registrations: about 580 MB
 python analysis/week04_where.py                    # or week04_jobs.py, week04_staffing.py
 ```
 
@@ -116,6 +117,22 @@ Layout differences the loader already handles:
   `week04_staffing.uscis_outcomes()` matches on those four digits plus a fuzzy name score of 85. In
   FY2022, firms that place most of their filings at clients had 2.73% of first-time petitions denied,
   against 1.27% for firms that hire directly.
+- **Later years come from the hub's Tableau view.** The hub's CSV files stop at FY2023, but the Tableau
+  view behind the hub page covers FY2009 to June 2026. `week04_data.py --hub` exports FY2022 to FY2026
+  into `build/week04/uscis_hub_fy{year}.csv.gz`, with six petition types each approved or denied.
+  Initial means new employment plus new concurrent employment; Continuing is the other four (checked
+  against the old FY2022 file: Infosys and Cognizant agree to within one petition). The view counts
+  about 5% fewer FY2022 petitions than the old file, so `uscis_outcomes(year, "uscis_hub")` builds the
+  series from the view alone (`uscis_series` in `week04_staffing.json`). The view's server answers 403
+  to Python's default User-Agent, and its year filter is the column header with three trailing spaces:
+  without them it silently returns FY2026. FY2026 is nine months, so compare rates, not counts.
+- **Lottery registrations come from a FOIA release.** USCIS gave Bloomberg News every H-1B lottery
+  registration, selection and petition for the FY2021 to FY2024 lotteries; `week04_data.py --lottery`
+  keeps FY2022 to FY2024 in `build/week04/lottery_fy{year}.csv.gz`, with an explicit allow-list that
+  leaves out the worker's country, birth year, gender and education and the agent's name and address.
+  A lottery is named by the fiscal year the visa starts, so the FY2024 lottery ran in March 2023 and its
+  petitions cite LCAs from FY2023. The petition's `DOL_ETA_CASE_NUMBER` is our `CASE_NUMBER` without
+  dashes. `analysis/week04_lottery.py` follows each registration to its client.
 - **Certified H-1B only** unless a section says otherwise: `CASE_STATUS` is exactly "Certified" (withdrawn filings are out) and
   `VISA_CLASS` is "H-1B".
 - **Say it once per section:** this is visa-sponsored hiring, not all hiring, and outsourcing firms
@@ -146,6 +163,28 @@ Layout differences the loader already handles:
 | Opening and closing sections, AI-use note | Niklas |
 | Teams post, feedback on another group, final read against the brief | Gyula |
 
+## Country of birth: built, aggregates only
+
+Gyula decided on 26 September 2026 to build the country network (the "Where are they from?" box under
+Curious? Go deeper); Àngela and Niklas should look it over in the Sunday review.
+
+The DOL loader still refuses citizenship and country of birth. `analysis/week04_countries.py` reads
+them on its own, in memory only: `COUNTRY_OF_CITIZENSHIP` from the old-form green-card workbooks
+(FY2022 to FY2024; the new form dropped it) and `country_of_birth` from the lottery release. It keeps
+counts per (country, employer), drops every count under 10 before anything else uses them, and writes
+only aggregates to `analysis/week04_countries.json`. No row about a person reaches `build/` or the
+repository. The suppression drops 43% of FY2023's certified green cards, so the network covers the
+large country-employer pairs only.
+
+## Go deeper
+
+Section 3 keeps one short answer per question; its full text moved unchanged into the page's Curious?
+Go deeper box `#staffing-more`, beside two boxes of their own: `week04_perm.py` (green cards per 100
+H-1B filings, naming an employer only when a raw name search agrees with its key) and
+`week04_countries.py` (above). The law-firm network, weak ties and wage levels stay in section 3's
+own boxes (`week04_lawfirms.py`, `week04_ties.py`, `week04_shift.py`). `tests/week04-prose.test.mjs`
+pins both the short and the full text.
+
 ## Timeline
 
 | When | What |
@@ -173,9 +212,32 @@ All checked on 23 September 2026.
 | [Census regions and divisions](https://www2.census.gov/geo/pdfs/maps-data/maps/reference/us_regdiv.pdf) | Labels for NMI (section 1) | Public |
 | [BLS 2018 SOC structure](https://www.bls.gov/soc/2018/soc_structure_2018.xlsx) | Occupation groups (section 2) | Public; User-Agent must name a contact |
 | [USCIS H-1B Employer Data Hub](https://www.uscis.gov/tools/reports-and-studies/h-1b-employer-data-hub) | Approvals and denials per employer, FY2022 and FY2023 (section 3) | Public |
+| [USCIS hub, Tableau view](https://bigdataanalyticspub-sb.uscis.dhs.gov/views/H1BEmployerDataHub-Final/H1BPublic) | Approvals and denials per employer and petition type, FY2022 to FY2026 Q3 (section 3) | Public; `.csv` export per year |
+| [H-1B lottery registrations, FY2021 to FY2024](https://github.com/BloombergGraphics/2024-h1b-immigration-data) | Registrations, draws, petitions and their LCA case numbers (section 3) | USCIS data obtained by Bloomberg News under FOIA; Apache 2.0. Cite it that way |
 | [SEC company tickers](https://www.sec.gov/files/company_tickers.json) and [submissions API](https://www.sec.gov/search-filings/edgar-application-programming-interfaces) | SIC industry of listed companies (sectors, section 3) | Public; www.sec.gov needs a contact User-Agent, data.sec.gov does not |
+| [BLS OEWS, May 2025, metropolitan areas](https://www.bls.gov/oes/tables.htm) (`oesm25ma.zip`) | Jobs per metro and per occupation: filings per 1,000 jobs (`analysis/week04_oews.py`, for section 1) | Public; bls.gov needs a contact User-Agent (`CONTACT_EMAIL`) |
+| [Wikidata](https://www.wikidata.org/) (wbsearchentities, wbgetentities, SPARQL) | Industry (P452, P3224 NAICS, P3242 SIC) of clients the SEC does not list (`analysis/week04_wikidata.py`, section 3) | CC0; cached in `build/raw/week04/wikidata/` |
+
+Added 26 September 2026, section 3 (Gyula): `week04_shift.py` (January to June of FY2024, FY2025 and
+FY2026), `week04_ties.py` (strength against degree, bipartite link overlap against filings, wage level
+by community, PERM against H-1B per employer), `week04_lawfirms.py` (employer x law firm, projected onto
+law firms: disparity filter against a threshold, communities). `week04_oews.py` writes denominators for
+section 1 but the page does not quote it yet. For Àngela, if section 1 wants it: divided by BLS jobs,
+San Jose files 42.9 per 1,000 jobs against 4.5 nationally, and New York, Atlanta, Chicago, Boston and
+Washington leave the top 10 (5 of the top 10 by count stay).
 
 Traps found so far:
+
+- **The FY2026 worksites file misses 22% of placed filings** (15,718 of January to June's placed filings
+  have no row there; FY2022 to FY2025 miss none). `week04_staffing.placements()` falls back to the client
+  on the filing's main row for those.
+- **October 2025 is nearly empty:** 1,306 certified filings against 35,258 in October 2024, during the
+  federal shutdown, and November carries a backlog. Compare FY2026 with earlier years on January to June.
+- **PERM does not join cleanly to H-1B employers:** only 65% of FY2025 certified PERM filings reach an
+  H-1B employer key, and Infosys shows none although the raw file has 53. Amazon and Google really do
+  file almost no PERM in FY2025 (thousands in FY2023). The post leaves PERM out.
+- **The law-firm projection holds about 138 links between two spellings of one firm** (Ogletree Deakins,
+  a "Lowey" Fragomen). `week04_lawfirms.json` lists the top 20 as candidates for the name tables.
 
 - 19.5% of certified H-1B filings in FY2025 name a client (104,732 of 537,796), counting only
   "Certified", not "Certified - Withdrawn" (30,111 more that year).

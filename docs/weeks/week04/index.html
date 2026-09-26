@@ -425,15 +425,18 @@
             </div>
             <p class="sub">
               <b>One certified H-1B filing in five names a client company as the
-              worksite. The Louvain groups of firms and clients are weak, but
-              clients that change vendor stay inside them.</b>
+              worksite. Held to a random baseline, clients group only weakly, and
+              slightly more by the firm that staffs them than by industry. Yet a
+              client that changes vendor stays inside its group far more often
+              than chance.</b>
               Here the network links an outsourcing firm to each client company
               where it places workers, and a link weighs the filings between
               them. Louvain runs on the largest connected piece: 21,759 firms and
               clients, 41,212 links. Counted once per link, the groups beat
               rewired networks in which every firm and client keeps its number of
-              partners (modularity 0.57 against 0.53), and they follow the
-              client's industry about as much as its main vendor. The three
+              partners (modularity 0.57 against 0.53), and they match each
+              client's main vendor (AMI 0.11) a little better than its industry
+              (0.07). The three
               questions below ask whether the groups behave like markets.
             </p>
           </div>
@@ -729,7 +732,10 @@
                 network scores 0.90, below the 0.93 of its rewired copies, because
                 stars split into near-perfect groups whatever the wiring.
                 Fragomen files the most (14,087 filings for 131 of these
-                companies); EY Law files 10,274 for eight.
+                companies); EY Law files 10,274 for eight. The network of law
+                firms themselves, across every employer, is in
+                <a href="#staffing-lawyers">Who files the paperwork?</a> in the
+                deep dive.
               </span>
             </div>
           </div>
@@ -772,7 +778,9 @@
                 shuffled group labels match half the time (p = 0.48). Single
                 companies swing these rates more than any group does: counting
                 every case status, filings in the names of Amazon and Google fell
-                from 3,638 and 1,618 in FY2024 to 15 and 3 in FY2025.
+                from 3,638 and 1,618 in FY2024 to 15 and 3 in FY2025. Green cards
+                per company and the strongest employer ties are in
+                <a href="#deeper-perm">Curious? Go deeper</a>.
               </span>
             </div>
           </div>
@@ -1374,187 +1382,283 @@
               </div>
             </details>
             <details class="qa cut" id="cut-who">
-              <summary><span class="qa-cue">Who staffs whom: four earlier questions</span></summary>
+              <summary><span class="qa-cue">Who staffs whom: four earlier questions, the law firms and the lottery</span></summary>
               <div class="qa-body cut-body">
                 <div class="card cut-card" id="who-first-round">
-              <div class="staffing-prose">
-                <h3>How many workers sit at a client?</h3>
-                <p>
-                  A filing is a request to employ someone, not a hire. In FY2025,
-                  104,732 of the 537,796 certified filings (19.5%) mark a client
-                  site. The worksites file lists every client a filing names; we
-                  leave out the 16% of client entries that name no company, such
-                  as "Home Address", and the 1,881 where a firm names itself.
-                  Counted that way, 101,763 filings (18.9%) name a client company:
-                  the worker is employed by one company and works at another, down
-                  from 21.9% in FY2022. Placing firms also fare worse
-                  at USCIS: in FY2022 it denied 2.7% of their first-time petitions,
-                  against 1.3% for direct employers.
-                </p>
-                <h3>Do clients group by industry or by the firm that staffs them?</h3>
-                <p>
-                  By both, weakly. With every firm–client link counted once,
-                  Louvain splits the network into about 65 groups, and the split
-                  beats rewired networks that keep everyone's number of partners
-                  (modularity 0.57 against 0.53). Among the 862 clients with a
-                  known industry and two or more firms, the groups match the main
-                  vendor at an adjusted mutual information (AMI) of 0.09 and the
-                  industry at 0.07; both beat shuffled labels. AMI corrects NMI for
-                  chance, which matters here: these clients have 339 main vendors
-                  but only 18 industries. Counting filings pulls clients to their
-                  main vendor (AMI 0.51 against 0.06), but that split scores below
-                  rewired networks with the same filing counts (0.60 against 0.74),
-                  and the vendor's head start is built in: the vendor is a node in
-                  the same network, and 87% of these clients land in its group.
-                </p>
-                <h3>Who relies on a single vendor?</h3>
-                <p>
-                  Small clients. 14,679 of the 18,924 clients use one firm, but they
-                  hold 22% of placed filings. Of the 629 clients with 20 or more
-                  filings, 69 get over 90% from one firm, and the median one gets
-                  37% from its largest. Citigroup, the largest client, uses 114
-                  firms, and Tata Consultancy Services supplies a quarter. The eight
-                  largest firms supply only 27% of what the 20 largest clients
-                  receive.
-                </p>
-                <h3>Does it hold from year to year?</h3>
-                <p>
-                  Only in part. On the clients present in both years, consecutive
-                  years agree at NMI 0.21 to 0.27, about half the 0.47 to 0.52
-                  between two runs of the same year on the same clients. We
-                  compared vendor and industry on FY2025 only.
-                </p>
-              </div>
-              <figure class="staffing" id="staffing-figure">
-                <div class="staffing-controls">
-                  <div aria-label="Fiscal year" class="staffing-years" role="group">
-                    <button aria-pressed="false" data-year="2022" type="button">FY2022</button
-                    ><button aria-pressed="false" data-year="2023" type="button">FY2023</button
-                    ><button aria-pressed="false" data-year="2024" type="button">FY2024</button
-                    ><button aria-pressed="true" data-year="2025" type="button">FY2025</button
-                    ><button aria-pressed="false" data-year="2026" type="button">
-                      FY2026 · Oct–Jun
-                    </button>
-                  </div>
-                  <label class="staffing-search"
-                    >Find a client
-                    <input autocomplete="off" list="staffing-names" type="search" />
-                    <datalist id="staffing-names"></datalist>
-                  </label>
+                <div class="staffing-prose">
+                  <h3>How many workers sit at a client?</h3>
+                  <p>
+                    A filing is a request to employ someone, not a hire. In FY2025,
+                    101,763 of the 537,796 certified filings (18.9%) name a client
+                    company: the worker is employed by one company and works at
+                    another, down from 21.9% in FY2022. The firms that place them
+                    fare worse at every step. In the March 2023 lottery they sent
+                    9.1 registrations per approved petition, against 5.1 for direct
+                    employers, mostly because drawn tickets went unused; and every
+                    year from FY2022 on, USCIS denied about twice the share of their
+                    first-time petitions.
+                  </p>
+                  <h3>Do clients group by industry or by the firm that staffs them?</h3>
+                  <p>
+                    By both, weakly, and slightly more by vendor. Louvain splits the
+                    network into about 65 groups, a little more cleanly than rewired
+                    networks that keep everyone's number of partners (modularity
+                    0.57 against 0.53). The groups match each client's main vendor
+                    (AMI 0.11) a little better than its industry (0.07).
+                  </p>
+                  <h3>Who relies on a single vendor?</h3>
+                  <p>
+                    Small clients. 14,679 of the 18,924 clients use one firm, but
+                    they hold 22% of placed filings. Citigroup, the largest client,
+                    uses 114 firms.
+                  </p>
+                  <h3>Does it hold from year to year?</h3>
+                  <p>
+                    Only in part. Consecutive years agree at NMI 0.21 to 0.27, about
+                    half the 0.47 to 0.52 between two runs of the same year. FY2026
+                    breaks the pattern at the top: from January to June, filings
+                    that name a client company fell 16.5%, and Tata Consultancy
+                    Services filed 2,079, down from 5,256.
+                  </p>
+                  <p>
+                    The full numbers, the lottery chain behind them and more
+                    networks are in the boxes below and under
+                    <a href="#evidence">Curious? Go deeper</a>.
+                  </p>
                 </div>
-                <div class="staffing-grid">
-                  <div class="staffing-chart">
+                <figure class="staffing" id="staffing-figure">
+                  <div class="staffing-controls">
+                    <div aria-label="Fiscal year" class="staffing-years" role="group">
+                      <button aria-pressed="false" data-year="2022" type="button">FY2022</button
+                      ><button aria-pressed="false" data-year="2023" type="button">FY2023</button
+                      ><button aria-pressed="false" data-year="2024" type="button">FY2024</button
+                      ><button aria-pressed="true" data-year="2025" type="button">FY2025</button
+                      ><button aria-pressed="false" data-year="2026" type="button">
+                        FY2026 · Oct–Jun
+                      </button>
+                    </div>
+                    <label class="staffing-search"
+                      >Find a client
+                      <input autocomplete="off" list="staffing-names" type="search" />
+                      <datalist id="staffing-names"></datalist>
+                    </label>
+                  </div>
+                  <div class="staffing-grid">
+                    <div class="staffing-chart">
+                      <div
+                        aria-label="Scatter plot of client companies: placed H-1B filings against the share supplied by the client's largest vendor. The table below lists the same data."
+                        class="chart-host"
+                        role="img"
+                      ></div>
+                    </div>
+                    <div aria-live="polite" class="staffing-panel">Loading the filings…</div>
+                  </div>
+                  <figcaption>
+                    One dot per client company with 20 or more H-1B filings that placed
+                    a worker there in the year. Further right, more filings; higher up,
+                    more of them from a single outsourcing firm. Click a dot or type a
+                    name to see who supplies that client. Sector labels cover the most
+                    frequent clients only; grey dots have none.
+                  </figcaption>
+                  <details>
+                    <summary>The 25 largest clients as a table</summary>
+                    <table>
+                      <thead>
+                        <tr>
+                          <th>Client</th>
+                          <th>Sector</th>
+                          <th class="num">Filings</th>
+                          <th class="num">Vendors</th>
+                          <th>Largest vendor</th>
+                          <th class="num">Its share</th>
+                        </tr>
+                      </thead>
+                      <tbody></tbody>
+                    </table>
+                  </details>
+                  <div class="staffing-flows">
+                    <h3>Who supplies the largest clients</h3>
                     <div
-                      aria-label="Scatter plot of client companies: placed H-1B filings against the share supplied by the client's largest vendor. The table below lists the same data."
+                      aria-label="Flow chart: the eight outsourcing firms that place the most H-1B filings, plus one source for all other firms, on the left; the twenty clients that receive the most on the right; a band for the filings between each pair."
                       class="chart-host"
                       role="img"
                     ></div>
+                    <p class="flows-caption">
+                      The eight firms that place the most filings, and the 20
+                      clients that receive the most, in the year chosen above. Band
+                      width is the number of placed filings from a firm to a client;
+                      the grey source gathers every other firm. Each client sits next
+                      to the named firm that supplies it most. Hover a firm or a
+                      client to follow its bands.
+                      <span class="flows-coverage"></span>
+                    </p>
                   </div>
-                  <div aria-live="polite" class="staffing-panel">Loading the filings…</div>
-                </div>
-                <figcaption>
-                  One dot per client company with 20 or more H-1B filings that placed
-                  a worker there in the year. Further right, more filings; higher up,
-                  more of them from a single outsourcing firm. Click a dot or type a
-                  name to see who supplies that client. Sector labels cover the most
-                  frequent clients only; grey dots have none.
-                </figcaption>
-                <details>
-                  <summary>The 25 largest clients as a table</summary>
-                  <table>
-                    <thead>
-                      <tr>
-                        <th>Client</th>
-                        <th>Sector</th>
-                        <th class="num">Filings</th>
-                        <th class="num">Vendors</th>
-                        <th>Largest vendor</th>
-                        <th class="num">Its share</th>
-                      </tr>
-                    </thead>
-                    <tbody></tbody>
-                  </table>
-                </details>
-                <div class="staffing-flows">
-                  <h3>Who supplies the largest clients</h3>
-                  <div
-                    aria-label="Flow chart: the eight outsourcing firms that place the most H-1B filings, plus one source for all other firms, on the left; the twenty clients that receive the most on the right; a band for the filings between each pair."
-                    class="chart-host"
-                    role="img"
-                  ></div>
-                  <p class="flows-caption">
-                    The eight firms that place the most filings, and the 20
-                    clients that receive the most, in the year chosen above. Band
-                    width is the number of placed filings from a firm to a client;
-                    the grey source gathers every other firm. Each client sits next
-                    to the named firm that supplies it most. Hover a firm or a
-                    client to follow its bands.
-                    <span class="flows-coverage"></span>
-                  </p>
-                </div>
-              </figure>
+                </figure>
 
-              <details class="qa" id="staffing-community-stats" style="margin-top: 18px">
-                <summary>
-                  <span class="qa-cue">With filing counts or without?</span>
-                </summary>
-                <div class="qa-body">
-                  <p class="sub">
-                    Louvain on the firm–client network for FY2025, 100 runs each:
-                    once with links weighted by filings, once with every link
-                    counting one. The two partitions share an NMI of
-                    <b class="cross">…</b>, less than two runs of either kind with
-                    different seeds (<b class="seeds">…</b> weighted,
-                    <b class="seeds-plain">…</b> unweighted), so the filing counts
-                    change the grouping. They pull it toward vendors: AMI with each
-                    client's main vendor rises from <b class="vendor-plain">…</b>
-                    to <b class="vendor">…</b> when filings count, while AMI with
-                    industry stays near <b class="industry">…</b>.
+                <div class="staffing-prose" id="staffing-lawyers" style="margin-top: 18px">
+                  <h3>Who files the paperwork?</h3>
+                  <p>
+                    Three filings in four name an outside law firm, and five firms
+                    file 40% of those. Fragomen alone files 78,531 for 3,139
+                    employers. Outsourcing firms mostly do without: they file 52% of
+                    their applications with no outside firm and send 3% to the five
+                    largest, while direct employers send those five 48%. Per
+                    employer the averages are 2% and 31%, and none of 1,000 shuffles
+                    of which employer is which produced a gap that wide.
                   </p>
-                  <p class="sub">
-                    The null rewires the network so every firm and client keeps its
-                    number of partners, and deals the filing counts back out at
-                    random. Rewiring breaks the network into a median of
-                    <b class="pieces">…</b> pieces, each a free community, so we
-                    score each rewired network on its largest piece, as we do the
-                    real one. Without weights the real network wins
-                    (<b class="mod-plain">…</b> against
-                    <b class="null-plain">…</b>). With weights it loses
-                    (<b class="mod">…</b> against <b class="null">…</b>), and it
-                    loses when only the filing counts are shuffled on the real
-                    links (<b class="null-weights">…</b>). The real counts leave
-                    <b class="cross-share">…</b> of filings on links between
-                    groups, against <b class="cross-share-null">…</b> with shuffled
-                    counts: clients that use several firms hold
-                    <b class="multi-links">…</b> of the links but
-                    <b class="multi-filings">…</b> of the filings, and only their
-                    links can cross: a client with one firm sits in that firm's
-                    group. Figures from
-                    analysis/week04_staffing.py:
+                  <p>
+                    Two law firms share filings when the same employer uses both:
+                    for each such employer, the smaller of its filings through
+                    either. That network has one giant hub, the case the disparity
+                    filter was made for. A weight threshold of four shared filings
+                    keeps 770 links and spends 26% of them on the five largest
+                    firms. The disparity filter at &alpha; = 0.2 keeps 696 and
+                    spends 19%. It also keeps 115 small firms the threshold drops,
+                    such as one law office whose link to BBI Law Group is 3 of its
+                    5 shared filings and 3 of BBI's 342. The threshold keeps the
+                    larger connected core, 395 firms against the filter's 350. Another 144 firms stay only
+                    because they form a pair linked to nobody else, where neither
+                    end can judge the link.
                   </p>
-                  <table class="ego">
-                    <thead>
-                      <tr>
-                        <th></th>
-                        <th style="text-align: right">Weighted</th>
-                        <th style="text-align: right">Unweighted</th>
-                      </tr>
-                    </thead>
-                    <tbody></tbody>
-                  </table>
-                  <p class="sub" style="margin-top: 12px">
-                    Infomap, which follows a random walk instead of counting links,
-                    splits the same network into <b class="im-modules">…</b> small
-                    modules, most of them a firm with its clients. They agree with
-                    Louvain at NMI <b class="im-louvain">…</b> and, like weighted
-                    Louvain, follow the vendor far more than the industry (AMI
-                    <b class="im-vendor">…</b> against
-                    <b class="im-industry">…</b>). Finer partitions raise every NMI;
-                    AMI corrects for that, so it is the number to compare across
-                    methods.
+                  <p>
+                    Louvain finds 34 groups at modularity 0.67, against 0.55 for
+                    rewired networks that keep each employer's and each law firm's
+                    number of partners (z = 12). The groups are barely regional
+                    (NMI 0.05 with Census regions, though above every shuffle), and
+                    the largest gather around shared employers. Google,
+                    Apple and Meta share Fragomen, Ogletree Deakins and Berry
+                    Appleman &amp; Leiden; Tata Consultancy, LTIMindtree and
+                    Salesforce share Usilaw, Goel &amp; Anderson and Chugh; Vialto,
+                    once PwC's law firm, serves Doordash and Databricks. The groups
+                    move from year to year: FY2024 and FY2025 agree at NMI 0.29 on
+                    the 1,041 law firms in both, against 0.88 between two runs of
+                    FY2025. Figures from analysis/week04_lawfirms.py.
                   </p>
                 </div>
-              </details>
+
+                <details class="qa" id="staffing-community-stats" style="margin-top: 18px">
+                  <summary>
+                    <span class="qa-cue">With filing counts or without?</span>
+                  </summary>
+                  <div class="qa-body">
+                    <p class="sub">
+                      Louvain on the firm–client network for FY2025, 100 runs each:
+                      once with links weighted by filings, once with every link
+                      counting one. The two partitions share an NMI of
+                      <b class="cross">…</b>, less than two runs of either kind with
+                      different seeds (<b class="seeds">…</b> weighted,
+                      <b class="seeds-plain">…</b> unweighted), so the filing counts
+                      change the grouping. They pull it toward vendors: AMI with each
+                      client's main vendor rises from <b class="vendor-plain">…</b>
+                      to <b class="vendor">…</b> when filings count, while AMI with
+                      industry stays near <b class="industry">…</b>.
+                    </p>
+                    <p class="sub">
+                      The null rewires the network so every firm and client keeps its
+                      number of partners, and deals the filing counts back out at
+                      random. Rewiring breaks the network into a median of
+                      <b class="pieces">…</b> pieces, each a free community, so we
+                      score each rewired network on its largest piece, as we do the
+                      real one. Without weights the real network wins
+                      (<b class="mod-plain">…</b> against
+                      <b class="null-plain">…</b>). With weights it loses
+                      (<b class="mod">…</b> against <b class="null">…</b>), and it
+                      loses when only the filing counts are shuffled on the real
+                      links (<b class="null-weights">…</b>). The real counts leave
+                      <b class="cross-share">…</b> of filings on links between
+                      groups, against <b class="cross-share-null">…</b> with shuffled
+                      counts: clients that use several firms hold
+                      <b class="multi-links">…</b> of the links but
+                      <b class="multi-filings">…</b> of the filings, and only their
+                      links can cross: a client with one firm sits in that firm's
+                      group. Figures from
+                      analysis/week04_staffing.py:
+                    </p>
+                    <table class="ego">
+                      <thead>
+                        <tr>
+                          <th></th>
+                          <th style="text-align: right">Weighted</th>
+                          <th style="text-align: right">Unweighted</th>
+                        </tr>
+                      </thead>
+                      <tbody></tbody>
+                    </table>
+                    <p class="sub" style="margin-top: 12px">
+                      Infomap, which follows a random walk instead of counting links,
+                      splits the same network into <b class="im-modules">…</b> small
+                      modules, most of them a firm with its clients. They agree with
+                      Louvain at NMI <b class="im-louvain">…</b> and, like weighted
+                      Louvain, follow the vendor far more than the industry (AMI
+                      <b class="im-vendor">…</b> against
+                      <b class="im-industry">…</b>). Finer partitions raise every NMI;
+                      AMI corrects for that, so it is the number to compare across
+                      methods.
+                    </p>
+                  </div>
+                </details>
+
+                <details class="qa" id="staffing-ties">
+                  <summary>
+                    <span class="qa-cue">Strong ties, weak ties and pay</span>
+                  </summary>
+                  <div class="qa-body">
+                    <p class="sub">
+                      Among friends, the strongest ties sit inside tight groups where
+                      your close friends also know each other, and weak ties bridge
+                      the groups (Granovetter 1973; Onnela and colleagues confirmed it
+                      on millions of phone users in 2007). A link's
+                      <b>overlap</b> measures the tightness: of the firm's other
+                      clients and the client's other firms, the share that are linked
+                      to each other. Here the pattern runs the other way, faintly.
+                      Over the 28,151 links where overlap is defined, filings and
+                      overlap correlate at Spearman -0.04; with the filing counts
+                      shuffled over the same links the correlation is 0.00 ±
+                      0.01 (z = -6.5; FY2024 gives z = -4.2). Links with one filing
+                      have a mean overlap of 0.065, links with 21 or more 0.034. Heavy
+                      links mostly belong to the largest firms, whose many clients
+                      rarely share other firms, so part of this is size. It agrees
+                      with the result above: the real filing counts put weight on
+                      links between groups.
+                    </p>
+                    <p class="sub">
+                      Each filing states one of four wage levels, from entry (I) to
+                      fully competent (IV). Averaged per client over the filings that
+                      reach it, the groups explain 12% of the variance in wage level;
+                      averaged per firm over all its filings, 2%. None of 1,000
+                      shuffles of the group labels reached either. A client's filings
+                      come from the vendors that also decide its group, so part of
+                      the 12% is built in. Outsourcing firms
+                      file 66% of their applications at level II and 5% at level IV;
+                      direct employers file 35% and 22%. From January to June 2026,
+                      level IV rose to 17.7% of all filings from 13.6% a year
+                      earlier, and level I fell to 18.0% from 21.8%. Figures from
+                      analysis/week04_ties.py and analysis/week04_shift.py.
+                    </p>
+                  </div>
+                </details>
+
+                <details class="qa" id="staffing-lottery">
+                  <summary>
+                    <span class="qa-cue">Do the firms that register the same workers staff the same clients?</span>
+                  </summary>
+                  <div class="qa-body">
+                    <p class="sub">
+                      We took the 2,944 firms in the FY2023 staffing network that
+                      sent 20 or more registrations to the March 2023 draw, and split
+                      them at the median share of workers another employer had also
+                      registered (78%). If the high firms clustered, a high firm's
+                      Louvain group would be mostly high firms. It is 50.6% high,
+                      against 50.0% when the labels are shuffled (p = 0.001 over
+                      1,000 shuffles), and AMI with the groups is 0.004 over 100
+                      runs. The March 2022 draw against the FY2022 network gives
+                      52.0% against 50.0%. Registering the same workers is spread
+                      across the staffing groups; it does not mark a cluster of
+                      firms. The lottery data is USCIS's, obtained by Bloomberg News;
+                      figures from analysis/week04_lottery.py.
+                    </p>
+                  </div>
+                </details>
                 </div>
               </div>
             </details>
@@ -1568,6 +1672,262 @@
               <span class="num">?</span>
               <h2>Curious? Go deeper.</h2>
             </div>
+            <details class="qa" id="staffing-more">
+              <summary>
+                <span class="qa-cue">Who staffs whom: the full numbers</span>
+              </summary>
+              <div class="qa-body staffing-prose">
+              <h3>How many workers sit at a client?</h3>
+              <p>
+                A filing is a request to employ someone, not a hire. In FY2025,
+                104,732 of the 537,796 certified filings (19.5%) mark a client
+                site. The worksites file lists every client a filing names; we
+                leave out the 16% of client entries that name no company, such
+                as "Home Address", and the 1,881 where a firm names itself.
+                Counted that way, 101,763 filings (18.9%) name a client company:
+                the worker is employed by one company and works at another, down
+                from 21.9% in FY2022. Placing firms also fare worse
+                at USCIS: every year from FY2022 on, it denied about twice the
+                share of their first-time petitions, 2.7% against 1.2% for
+                direct employers in FY2022 and 3.4% against 2.0% from October
+                2025 to June 2026.
+              </p>
+              <p>
+                The lottery shows the same split one step earlier. Each new
+                H-1B worker starts as a registration that USCIS draws at
+                random, and USCIS gave Bloomberg News every registration from
+                the March 2023 draw after a FOIA lawsuit. Every petition that
+                followed names its filing, so we can follow a ticket to its
+                client. Direct employers sent 5.1 registrations per approved
+                petition, placing firms 9.1, and firms with fewer than 20
+                filings 12.2; those small firms sent 53% of the 758,967
+                registrations. Most of the gap is drawn tickets nobody used.
+                When USCIS drew a direct employer's registration, a petition
+                followed 76% of the time; a placing firm's, 50%; a small
+                firm's, 35%. That step carries 74% of the gap between placing
+                and direct firms, and the draw itself 24%. Much of it comes from
+                workers registered by several employers: 54% of registrations
+                named one, and when USCIS drew one, a petition followed 23% of
+                the time, against 81% for a worker registered once. 18,307 of
+                the petitions lead to a client company. Citigroup received the
+                most, 342 through 38 firms.
+              </p>
+              <h3>Do clients group by industry or by the firm that staffs them?</h3>
+              <p>
+                By both, weakly, and slightly more by vendor. With every
+                firm–client link counted once,
+                Louvain splits the network into about 65 groups, and the split
+                beats rewired networks that keep everyone's number of partners
+                (modularity 0.57 against 0.53). Among the 1,214 clients with a
+                known industry and two or more firms, the groups match the main
+                vendor at an adjusted mutual information (AMI) of 0.11 and the
+                industry at 0.07; both beat shuffled labels. AMI corrects NMI for
+                chance, which matters here: these clients have 492 main vendors
+                but only 18 industries. Counting filings pulls clients to their
+                main vendor (AMI 0.48 against 0.07), but that split scores below
+                rewired networks with the same filing counts (0.60 against 0.74),
+                and the vendor's head start is built in: the vendor is a node in
+                the same network, and 86% of these clients land in its group.
+              </p>
+              <h3>Who relies on a single vendor?</h3>
+              <p>
+                Small clients. 14,679 of the 18,924 clients use one firm, but they
+                hold 22% of placed filings. Of the 629 clients with 20 or more
+                filings, 69 get over 90% from one firm, and the median one gets
+                37% from its largest. Citigroup, the largest client, uses 114
+                firms, and Tata Consultancy Services supplies a quarter. The eight
+                largest firms supply only 27% of what the 20 largest clients
+                receive.
+              </p>
+              <h3>Does it hold from year to year?</h3>
+              <p>
+                Only in part. On the clients present in both years, consecutive
+                years agree at NMI 0.21 to 0.27, about half the 0.47 to 0.52
+                between two runs of the same year on the same clients. We
+                compared vendor and industry on FY2025 only.
+              </p>
+              <p>
+                FY2026 breaks the pattern at the top. We compare January to June
+                of each year, because October 2025, the month of the federal
+                shutdown, holds 1,306 certified filings against 35,258 a year
+                earlier. From January to June, certified filings fell 5.8% after
+                rising 9.5% the year before, and filings that name a client
+                company fell 16.5% after holding flat (-0.1%). Tata Consultancy
+                Services filed 2,079, down from 5,256. Of the 352 clients it supplied most from January to June 2025, 226 still appear, and 114 of those now
+                get most of their workers from another firm, most often Infosys.
+                Across clients with five or more filings in both years, 48%
+                changed their main vendor, against 43% a year earlier. These are
+                applications, so they show what employers asked for, not why.
+              </p>
+                          </div>
+            </details>
+
+            <details class="qa" id="deeper-perm">
+              <summary>
+                <span class="qa-cue">Who keeps them? Green cards as the strong tie</span>
+              </summary>
+              <div class="qa-body">
+                <p class="sub">
+                  An H-1B filing is a weak tie between an employer and a worker;
+                  a green-card filing (PERM) is a strong one, because the
+                  employer sponsors the worker to stay. In FY2025 the median
+                  employer with 20 or more H-1B filings filed 13.2 green cards
+                  per 100 of them, and the two counts rank employers only loosely
+                  alike (Spearman 0.49). As with degree and strength in the
+                  course, the exceptions carry the story: Oracle filed 95 green
+                  cards per 100 H-1B filings, Uber 64 and Salesforce 45, while
+                  Amazon (22,493 H-1B filings), Cognizant (11,067) and Google
+                  (8,657) filed almost none. Placing firms file fewer than direct
+                  employers (13.3 against 16.6 per 100), but shuffling the labels
+                  gives a gap that large 14% of the time (p = 0.136); in FY2024
+                  the gap is clearer (12.6 against 15.4, p = 0.045). Only 65% of
+                  certified green cards come from an employer we can match to an
+                  H-1B filer. Clients sponsor their own staff too: Wells Fargo
+                  receives 1,547 H-1B filings from vendors, files 624 of its own
+                  and 167 green cards. Firms with more clients sponsor slightly
+                  more green cards, not fewer (Spearman 0.13). Figures from
+                  analysis/week04_perm.py.
+                </p>
+              </div>
+            </details>
+
+            <details class="qa" id="deeper-countries">
+              <summary>
+                <span class="qa-cue">Where are they from? A network of countries</span>
+              </summary>
+              <div class="qa-body">
+                <p class="sub">
+                  A worker's citizenship is personal, so we read it only in
+                  memory and keep counts per country and employer, dropping every
+                  count under 10. That drops 96% of the cells and 43% of FY2023's
+                  certified green-card filings. India holds 52% of those filings
+                  and China 12%; among lottery registrations, India holds 77% in
+                  the March 2022 draw and 81% in March 2023. Link two countries
+                  by the green cards their citizens receive at the same employers
+                  and 55 countries remain. Louvain splits them into three groups.
+                  Counted once each, the links group a little more than rewired
+                  copies (modularity 0.10 against 0.06); weighted by shared green
+                  cards, they group less (0.26 against 0.40). India and China
+                  share one group with Canada, Belarus and Costa Rica, and India
+                  keeps 79% of its weight inside it. The groups
+                  match world regions (AMI 0.10) and Week 3's migration
+                  communities (0.10) only weakly: green-card hiring does not sort
+                  countries into regional blocs. Among the ten largest sponsors,
+                  Google's green cards are the most varied, 4.7 effective
+                  countries with India at 30%, against Amazon's 3.0 at 67%. The
+                  third group gathers the Philippines, Kenya, Ghana, Zimbabwe,
+                  Ethiopia, Cameroon and Jamaica. Wayne Farms, a poultry company,
+                  filed 832 green cards in the counted cells, none for Indian
+                  citizens.
+                  Figures from analysis/week04_countries.py; no row about a
+                  person leaves the script.
+                </p>
+              </div>
+            </details>
+
+            <details class="qa" id="deeper-density">
+              <summary>
+                <span class="qa-cue">Where is the hiring densest? Filings per 1,000 jobs</span>
+              </summary>
+              <div class="qa-body">
+                <p class="sub">
+                  Section 1 counts filings. Divide each metro's FY2025 filings by
+                  its jobs in the Bureau of Labor Statistics' May 2025
+                  employment survey (OEWS) and the map shifts: nationally it is
+                  4.5 filings per 1,000 jobs. New York files the most, 65,935,
+                  but that is 6.9 per 1,000 jobs; San Jose files 42.9, Trenton
+                  17.2 and Seattle 16.8. Among the 203 metros with 100,000 jobs
+                  or more, count and density rank alike (Spearman 0.90), yet
+                  only 5 of the 10 largest by count stay in the top 10 by
+                  density: Dallas, San Jose, San Francisco, Seattle and Austin.
+                  For software developers alone the national rate is 139
+                  filings per 1,000 jobs, and Fayetteville, Arkansas, the metro
+                  around Bentonville, reaches 896, 6.4 times the national share.
+                  A filing is a request, not a hire, so a rate can run high.
+                  Figures from analysis/week04_oews.py.
+                </p>
+              </div>
+            </details>
+
+            <details class="qa" id="deeper-strength">
+              <summary>
+                <span class="qa-cue">Strength against degree: where do the heavy links go?</span>
+              </summary>
+              <div class="qa-body">
+                <p class="sub">
+                  The course compares a node's degree (how many partners) with
+                  its strength (how many filings over all its links), and finds
+                  the exceptions tell the story. In the FY2025 firm–client
+                  network the two rank firms almost alike (Spearman 0.91) and
+                  clients less so (0.75). The clients with the most filings from
+                  a single firm are Ultimate Therapy, 133 filings from one firm;
+                  Sigma Rehab, 95; Post Rehab Services, 61; and Grady Memorial
+                  Hospital, 58. Three of the top five are therapy and rehab
+                  clinics: the heaviest one-to-one ties belong to health care,
+                  not IT. Figures from analysis/week04_ties.py.
+                </p>
+              </div>
+            </details>
+
+            <details class="qa" id="deeper-lottery">
+              <summary>
+                <span class="qa-cue">The lottery a year apart, and who receives the winners</span>
+              </summary>
+              <div class="qa-body">
+                <p class="sub">
+                  Between the March 2022 and March 2023 draws, registrations for
+                  a worker whom another employer had also registered rose from
+                  35% to 54% of the total, and the share of drawn registrations
+                  that became a petition fell from 74% to 49%. One approved
+                  petition took 5.2 registrations in 2022 and 8.5 in 2023. The
+                  order held both years: direct employers needed the fewest (4.3,
+                  then 5.1), placing firms more (6.3, then 9.1). Of the March
+                  2023 petitions, 20% lead to a client company, 66% of those
+                  through placing firms. Citigroup received 342, 94% through
+                  placing firms; Microsoft 150, 95%, with LTIMindtree supplying
+                  47%; AT&amp;T 153, with Tech Mahindra supplying 41%. USCIS also
+                  denied 2.0% of the placing firms' lottery petitions against
+                  1.1% of direct employers'. Figures from
+                  analysis/week04_lottery.py.
+                </p>
+              </div>
+            </details>
+
+            <details class="qa" id="deeper-uscis">
+              <summary>
+                <span class="qa-cue">USCIS denials, year by year</span>
+              </summary>
+              <div class="qa-body">
+                <p class="sub">
+                  Share of first-time H-1B petitions USCIS denied, for employers
+                  with 20 or more certified filings that year. Placing firms put
+                  half or more of their filings at a client. From the hub's
+                  Tableau export; FY2026 runs October to June.
+                </p>
+                <table class="ego">
+                  <thead>
+                    <tr>
+                      <th>Year</th>
+                      <th style="text-align: right">Placing firms</th>
+                      <th style="text-align: right">Direct employers</th>
+                      <th style="text-align: right">Placing firms counted</th>
+                      <th style="text-align: right">Direct employers counted</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr><td>FY2022</td><td style="text-align: right">2.71%</td><td style="text-align: right">1.22%</td><td style="text-align: right">1,057</td><td style="text-align: right">2,295</td></tr>
+                    <tr><td>FY2023</td><td style="text-align: right">3.57%</td><td style="text-align: right">1.48%</td><td style="text-align: right">873</td><td style="text-align: right">2,087</td></tr>
+                    <tr><td>FY2024</td><td style="text-align: right">2.65%</td><td style="text-align: right">1.28%</td><td style="text-align: right">884</td><td style="text-align: right">2,414</td></tr>
+                    <tr><td>FY2025</td><td style="text-align: right">3.20%</td><td style="text-align: right">1.56%</td><td style="text-align: right">933</td><td style="text-align: right">2,480</td></tr>
+                    <tr><td>FY2026, Oct–Jun</td><td style="text-align: right">3.35%</td><td style="text-align: right">1.98%</td><td style="text-align: right">601</td><td style="text-align: right">1,877</td></tr>
+                  </tbody>
+                </table>
+                <p class="sub" style="margin-top: 12px">
+                  Figures from analysis/week04_staffing.py (uscis_series).
+                </p>
+              </div>
+            </details>
+
             <details class="qa">
               <summary>
                 <span class="qa-cue">Data and methods</span>
@@ -1576,7 +1936,9 @@
                 <p class="sub">
                   Sources: US Department of Labor, Office of Foreign Labor
                   Certification — LCA disclosures and worksites file, public
-                  domain. Only allow-listed columns leave the build folder (no
+                  domain; USCIS H-1B Employer Data Hub, FY2022 to June 2026;
+                  H-1B lottery registrations for the FY2022 to FY2024 draws,
+                  USCIS data obtained by Bloomberg News under FOIA. Only allow-listed columns leave the build folder (no
                   addresses, emails or phone numbers). Each script writes the
                   numbers its section quotes to a JSON file the page reads:
                 </p>
@@ -1589,13 +1951,37 @@
                     builds the occupation network.</li>
                   <li><a href="https://github.com/horrrt/02805_social_graphs/blob/main/analysis/week04_staffing.py"><code>week04_staffing.py</code></a>
                     and <a href="https://github.com/horrrt/02805_social_graphs/blob/main/analysis/week04_staffing_figure.py"><code>week04_staffing_figure.py</code></a>
-                    build the firm → client network and its figure.</li>
+                    build the firm → client network and its figure;
+                    <a href="https://github.com/horrrt/02805_social_graphs/blob/main/analysis/week04_shift.py"><code>week04_shift.py</code></a>
+                    compares January to June of FY2024, FY2025 and FY2026;
+                    <a href="https://github.com/horrrt/02805_social_graphs/blob/main/analysis/week04_ties.py"><code>week04_ties.py</code></a>
+                    tests strong and weak ties and wage levels; and
+                    <a href="https://github.com/horrrt/02805_social_graphs/blob/main/analysis/week04_lawfirms.py"><code>week04_lawfirms.py</code></a>
+                    builds the law-firm network and its backbones.</li>
+                  <li><a href="https://github.com/horrrt/02805_social_graphs/blob/main/analysis/week04_lottery.py"><code>week04_lottery.py</code></a>
+                    follows lottery registrations to petitions, filings and clients;
+                    <a href="https://github.com/horrrt/02805_social_graphs/blob/main/analysis/week04_perm.py"><code>week04_perm.py</code></a>
+                    compares green cards with H-1B filings; and
+                    <a href="https://github.com/horrrt/02805_social_graphs/blob/main/analysis/week04_countries.py"><code>week04_countries.py</code></a>
+                    counts green cards by country and employer, hides every count under 10, and builds the country network.</li>
+                  <li><a href="https://github.com/horrrt/02805_social_graphs/blob/main/analysis/week04_oews.py"><code>week04_oews.py</code></a>
+                    divides filings by the Bureau of Labor Statistics' OEWS jobs per metro and occupation.</li>
                   <li><a href="https://github.com/horrrt/02805_social_graphs/blob/main/analysis/week04_names.py"><code>week04_names.py</code></a>
                     decides which names are the same company;
                     <a href="https://github.com/horrrt/02805_social_graphs/blob/main/analysis/week04_names_check.py"><code>week04_names_check.py</code></a>
                     tests its rules against tax numbers, and
                     <a href="https://github.com/horrrt/02805_social_graphs/blob/main/analysis/week04_sec.py"><code>week04_sec.py</code></a>
-                    adds industry codes from the SEC.</li>
+                    adds industry codes from the SEC, and
+                    <a href="https://github.com/horrrt/02805_social_graphs/blob/main/analysis/week04_wikidata.py"><code>week04_wikidata.py</code></a>
+                    adds them from Wikidata (CC0) for clients the SEC does not
+                    list, through a reviewed table of Wikidata industries.</li>
+                  <li><a href="https://github.com/horrrt/02805_social_graphs/blob/main/analysis/week04_where_who.py"><code>week04_where_who.py</code></a>,
+                    <a href="https://github.com/horrrt/02805_social_graphs/blob/main/analysis/week04_jobs_split.py"><code>week04_jobs_split.py</code></a>,
+                    <a href="https://github.com/horrrt/02805_social_graphs/blob/main/analysis/week04_staffing_moves.py"><code>week04_staffing_moves.py</code></a>,
+                    <a href="https://github.com/horrrt/02805_social_graphs/blob/main/analysis/week04_footprint.py"><code>week04_footprint.py</code></a> and
+                    <a href="https://github.com/horrrt/02805_social_graphs/blob/main/analysis/week04_beyond.py"><code>week04_beyond.py</code></a>
+                    answer the questions in sections 1 to 5, each against its own
+                    null model.</li>
                   <li><a href="https://github.com/horrrt/02805_social_graphs/blob/main/analysis/week04_schemas.py"><code>week04_schemas.py</code></a>
                     checks every JSON file against the fields the page reads.</li>
                 </ul>
@@ -1625,6 +2011,6 @@
     <script src="../../assets/js/week04-jobs.js?v=3" type="module"></script>
     <script src="../../assets/js/week04-staffing.js" type="module"></script>
     <script src="../../assets/js/week04-questions.js?v=3" type="module"></script>
-    <script src="../../assets/js/week04-cut.js?v=2" type="module"></script>
+    <script src="../../assets/js/week04-cut.js?v=3" type="module"></script>
   </body>
 </html>

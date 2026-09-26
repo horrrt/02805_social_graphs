@@ -1,0 +1,1048 @@
+{
+ "generated_by": "analysis/week04_oews.py",
+ "source": {
+  "release_used": "May 2025",
+  "file": "oesm25ma.zip",
+  "note": "May 2025 preferred over the brief's May 2024 file: it is published, and it pairs with FY2025, the main year below. May 2024 (oesm24ma.zip) was checked and is also live on bls.gov."
+ },
+ "coverage": {
+  "metros_with_filings": 901,
+  "metropolitan_metros": 385,
+  "metropolitan_matched": 385,
+  "micropolitan_metros": 516,
+  "micropolitan_filings": 9427,
+  "micropolitan_filings_share": 0.0155,
+  "reason": "OEWS's metropolitan-area file carries only CBSAs the Census gazetteer marks Metropolitan (CBSA_TYPE 1); a Micropolitan CBSA (CBSA_TYPE 2) has no row there, whatever its filing count.",
+  "top40_matched": 40,
+  "top40_total": 40
+ },
+ "metro_rates": {
+  "year": 2025,
+  "top_by_count": [
+   {
+    "metro": "35620",
+    "name": "New York, NY",
+    "filings": 65935,
+    "jobs": 9492000,
+    "rate": 6.946
+   },
+   {
+    "metro": "19100",
+    "name": "Dallas, TX",
+    "filings": 54705,
+    "jobs": 4049800,
+    "rate": 13.508
+   },
+   {
+    "metro": "41940",
+    "name": "San Jose, CA",
+    "filings": 48692,
+    "jobs": 1134970,
+    "rate": 42.902
+   },
+   {
+    "metro": "41860",
+    "name": "San Francisco, CA",
+    "filings": 35650,
+    "jobs": 2373920,
+    "rate": 15.017
+   },
+   {
+    "metro": "42660",
+    "name": "Seattle, WA",
+    "filings": 35083,
+    "jobs": 2086210,
+    "rate": 16.817
+   },
+   {
+    "metro": "12060",
+    "name": "Atlanta, GA",
+    "filings": 22004,
+    "jobs": 2889670,
+    "rate": 7.615
+   },
+   {
+    "metro": "16980",
+    "name": "Chicago, IL",
+    "filings": 21597,
+    "jobs": 4513280,
+    "rate": 4.785
+   },
+   {
+    "metro": "12420",
+    "name": "Austin, TX",
+    "filings": 20029,
+    "jobs": 1293690,
+    "rate": 15.482
+   },
+   {
+    "metro": "14460",
+    "name": "Boston, MA",
+    "filings": 18755,
+    "jobs": 2703890,
+    "rate": 6.936
+   },
+   {
+    "metro": "47900",
+    "name": "Washington, DC",
+    "filings": 17462,
+    "jobs": 3136190,
+    "rate": 5.568
+   },
+   {
+    "metro": "31080",
+    "name": "Los Angeles, CA",
+    "filings": 16563,
+    "jobs": 6271560,
+    "rate": 2.641
+   },
+   {
+    "metro": "26420",
+    "name": "Houston, TX",
+    "filings": 13284,
+    "jobs": 3289720,
+    "rate": 4.038
+   },
+   {
+    "metro": "37980",
+    "name": "Philadelphia, PA",
+    "filings": 12651,
+    "jobs": 2897830,
+    "rate": 4.366
+   },
+   {
+    "metro": "19820",
+    "name": "Detroit, MI",
+    "filings": 11370,
+    "jobs": 1904530,
+    "rate": 5.97
+   },
+   {
+    "metro": "16740",
+    "name": "Charlotte, NC",
+    "filings": 10687,
+    "jobs": 1358370,
+    "rate": 7.868
+   }
+  ],
+  "top_by_intensity": [
+   {
+    "metro": "41940",
+    "name": "San Jose, CA",
+    "filings": 48692,
+    "jobs": 1134970,
+    "rate": 42.902
+   },
+   {
+    "metro": "45940",
+    "name": "Trenton, NJ",
+    "filings": 4122,
+    "jobs": 240190,
+    "rate": 17.161
+   },
+   {
+    "metro": "42660",
+    "name": "Seattle, WA",
+    "filings": 35083,
+    "jobs": 2086210,
+    "rate": 16.817
+   },
+   {
+    "metro": "12420",
+    "name": "Austin, TX",
+    "filings": 20029,
+    "jobs": 1293690,
+    "rate": 15.482
+   },
+   {
+    "metro": "41860",
+    "name": "San Francisco, CA",
+    "filings": 35650,
+    "jobs": 2373920,
+    "rate": 15.017
+   },
+   {
+    "metro": "19100",
+    "name": "Dallas, TX",
+    "filings": 54705,
+    "jobs": 4049800,
+    "rate": 13.508
+   },
+   {
+    "metro": "22220",
+    "name": "Fayetteville, AR",
+    "filings": 3573,
+    "jobs": 275180,
+    "rate": 12.984
+   },
+   {
+    "metro": "39580",
+    "name": "Raleigh, NC",
+    "filings": 9325,
+    "jobs": 743120,
+    "rate": 12.548
+   },
+   {
+    "metro": "20500",
+    "name": "Durham, NC",
+    "filings": 3538,
+    "jobs": 344020,
+    "rate": 10.284
+   },
+   {
+    "metro": "44700",
+    "name": "Stockton, CA",
+    "filings": 2363,
+    "jobs": 289660,
+    "rate": 8.158
+   },
+   {
+    "metro": "16740",
+    "name": "Charlotte, NC",
+    "filings": 10687,
+    "jobs": 1358370,
+    "rate": 7.868
+   },
+   {
+    "metro": "12060",
+    "name": "Atlanta, GA",
+    "filings": 22004,
+    "jobs": 2889670,
+    "rate": 7.615
+   },
+   {
+    "metro": "35620",
+    "name": "New York, NY",
+    "filings": 65935,
+    "jobs": 9492000,
+    "rate": 6.946
+   },
+   {
+    "metro": "14460",
+    "name": "Boston, MA",
+    "filings": 18755,
+    "jobs": 2703890,
+    "rate": 6.936
+   },
+   {
+    "metro": "11460",
+    "name": "Ann Arbor, MI",
+    "filings": 1361,
+    "jobs": 219730,
+    "rate": 6.194
+   }
+  ],
+  "intensity_jobs_floor": 100000,
+  "metros_at_or_above_floor": 203,
+  "spearman_count_vs_intensity": {
+   "rho": 0.898,
+   "p": "<1e-4",
+   "n": 203
+  },
+  "spearman_count_vs_intensity_all_matched": {
+   "rho": 0.856,
+   "p": "<1e-4",
+   "n": 385
+  },
+  "national_rate_per_1000": 4.493,
+  "top10_by_count": [
+   "New York, NY",
+   "Dallas, TX",
+   "San Jose, CA",
+   "San Francisco, CA",
+   "Seattle, WA",
+   "Atlanta, GA",
+   "Chicago, IL",
+   "Austin, TX",
+   "Boston, MA",
+   "Washington, DC"
+  ],
+  "top10_by_count_still_top10_by_intensity": {
+   "count": 5,
+   "metros": [
+    "Dallas, TX",
+    "San Jose, CA",
+    "San Francisco, CA",
+    "Seattle, WA",
+    "Austin, TX"
+   ]
+  }
+ },
+ "metro_rates_other_year": {
+  "year": 2024,
+  "note": "Filings from FY2024, divided by the same May 2025 jobs used above (no separate 2024-dated OEWS file was fetched).",
+  "top_by_count": [
+   {
+    "metro": "35620",
+    "name": "New York, NY",
+    "filings": 61595,
+    "jobs": 9492000,
+    "rate": 6.489
+   },
+   {
+    "metro": "19100",
+    "name": "Dallas, TX",
+    "filings": 52483,
+    "jobs": 4049800,
+    "rate": 12.959
+   },
+   {
+    "metro": "41940",
+    "name": "San Jose, CA",
+    "filings": 42538,
+    "jobs": 1134970,
+    "rate": 37.479
+   },
+   {
+    "metro": "41860",
+    "name": "San Francisco, CA",
+    "filings": 33744,
+    "jobs": 2373920,
+    "rate": 14.214
+   },
+   {
+    "metro": "42660",
+    "name": "Seattle, WA",
+    "filings": 32729,
+    "jobs": 2086210,
+    "rate": 15.688
+   },
+   {
+    "metro": "12060",
+    "name": "Atlanta, GA",
+    "filings": 22541,
+    "jobs": 2889670,
+    "rate": 7.801
+   },
+   {
+    "metro": "16980",
+    "name": "Chicago, IL",
+    "filings": 20460,
+    "jobs": 4513280,
+    "rate": 4.533
+   },
+   {
+    "metro": "14460",
+    "name": "Boston, MA",
+    "filings": 18422,
+    "jobs": 2703890,
+    "rate": 6.813
+   },
+   {
+    "metro": "12420",
+    "name": "Austin, TX",
+    "filings": 17992,
+    "jobs": 1293690,
+    "rate": 13.908
+   },
+   {
+    "metro": "47900",
+    "name": "Washington, DC",
+    "filings": 17495,
+    "jobs": 3136190,
+    "rate": 5.578
+   },
+   {
+    "metro": "31080",
+    "name": "Los Angeles, CA",
+    "filings": 15734,
+    "jobs": 6271560,
+    "rate": 2.509
+   },
+   {
+    "metro": "26420",
+    "name": "Houston, TX",
+    "filings": 12531,
+    "jobs": 3289720,
+    "rate": 3.809
+   },
+   {
+    "metro": "37980",
+    "name": "Philadelphia, PA",
+    "filings": 12338,
+    "jobs": 2897830,
+    "rate": 4.258
+   },
+   {
+    "metro": "19820",
+    "name": "Detroit, MI",
+    "filings": 11625,
+    "jobs": 1904530,
+    "rate": 6.104
+   },
+   {
+    "metro": "16740",
+    "name": "Charlotte, NC",
+    "filings": 9654,
+    "jobs": 1358370,
+    "rate": 7.107
+   }
+  ],
+  "top_by_intensity": [
+   {
+    "metro": "41940",
+    "name": "San Jose, CA",
+    "filings": 42538,
+    "jobs": 1134970,
+    "rate": 37.479
+   },
+   {
+    "metro": "42660",
+    "name": "Seattle, WA",
+    "filings": 32729,
+    "jobs": 2086210,
+    "rate": 15.688
+   },
+   {
+    "metro": "45940",
+    "name": "Trenton, NJ",
+    "filings": 3649,
+    "jobs": 240190,
+    "rate": 15.192
+   },
+   {
+    "metro": "41860",
+    "name": "San Francisco, CA",
+    "filings": 33744,
+    "jobs": 2373920,
+    "rate": 14.214
+   },
+   {
+    "metro": "12420",
+    "name": "Austin, TX",
+    "filings": 17992,
+    "jobs": 1293690,
+    "rate": 13.908
+   },
+   {
+    "metro": "19100",
+    "name": "Dallas, TX",
+    "filings": 52483,
+    "jobs": 4049800,
+    "rate": 12.959
+   },
+   {
+    "metro": "39580",
+    "name": "Raleigh, NC",
+    "filings": 8815,
+    "jobs": 743120,
+    "rate": 11.862
+   },
+   {
+    "metro": "20500",
+    "name": "Durham, NC",
+    "filings": 3760,
+    "jobs": 344020,
+    "rate": 10.93
+   },
+   {
+    "metro": "22220",
+    "name": "Fayetteville, AR",
+    "filings": 2777,
+    "jobs": 275180,
+    "rate": 10.092
+   },
+   {
+    "metro": "12060",
+    "name": "Atlanta, GA",
+    "filings": 22541,
+    "jobs": 2889670,
+    "rate": 7.801
+   },
+   {
+    "metro": "16740",
+    "name": "Charlotte, NC",
+    "filings": 9654,
+    "jobs": 1358370,
+    "rate": 7.107
+   },
+   {
+    "metro": "44700",
+    "name": "Stockton, CA",
+    "filings": 2011,
+    "jobs": 289660,
+    "rate": 6.943
+   },
+   {
+    "metro": "14460",
+    "name": "Boston, MA",
+    "filings": 18422,
+    "jobs": 2703890,
+    "rate": 6.813
+   },
+   {
+    "metro": "35620",
+    "name": "New York, NY",
+    "filings": 61595,
+    "jobs": 9492000,
+    "rate": 6.489
+   },
+   {
+    "metro": "19820",
+    "name": "Detroit, MI",
+    "filings": 11625,
+    "jobs": 1904530,
+    "rate": 6.104
+   }
+  ],
+  "intensity_jobs_floor": 100000,
+  "metros_at_or_above_floor": 203,
+  "spearman_count_vs_intensity": {
+   "rho": 0.901,
+   "p": "<1e-4",
+   "n": 203
+  },
+  "spearman_count_vs_intensity_all_matched": {
+   "rho": 0.867,
+   "p": "<1e-4",
+   "n": 385
+  },
+  "national_rate_per_1000": 4.234,
+  "top10_by_count": [
+   "New York, NY",
+   "Dallas, TX",
+   "San Jose, CA",
+   "San Francisco, CA",
+   "Seattle, WA",
+   "Atlanta, GA",
+   "Chicago, IL",
+   "Boston, MA",
+   "Austin, TX",
+   "Washington, DC"
+  ],
+  "top10_by_count_still_top10_by_intensity": {
+   "count": 6,
+   "metros": [
+    "Dallas, TX",
+    "San Jose, CA",
+    "San Francisco, CA",
+    "Seattle, WA",
+    "Atlanta, GA",
+    "Austin, TX"
+   ]
+  }
+ },
+ "occupations": {
+  "15-1252": {
+   "title": "Software Developers",
+   "national_filings": 170435,
+   "metro_row_filings_with_oews_data": 199291,
+   "metros_with_oews_data": 338,
+   "metros_suppressed_or_unpublished": 178,
+   "filings_in_suppressed_or_unpublished_metros": 961,
+   "metros_at_or_above_floor": 115,
+   "national_rate_per_1000": 139.097,
+   "top_metros": [
+    {
+     "metro": "22220",
+     "name": "Fayetteville, AR",
+     "filings": 2232,
+     "jobs": 2490,
+     "rate": 896.386,
+     "lq": 6.44
+    },
+    {
+     "metro": "19100",
+     "name": "Dallas, TX",
+     "filings": 25281,
+     "jobs": 67030,
+     "rate": 377.159,
+     "lq": 2.71
+    },
+    {
+     "metro": "45940",
+     "name": "Trenton, NJ",
+     "filings": 1258,
+     "jobs": 3390,
+     "rate": 371.091,
+     "lq": 2.67
+    },
+    {
+     "metro": "39580",
+     "name": "Raleigh, NC",
+     "filings": 3903,
+     "jobs": 12580,
+     "rate": 310.254,
+     "lq": 2.23
+    },
+    {
+     "metro": "49340",
+     "name": "Worcester, MA",
+     "filings": 527,
+     "jobs": 1800,
+     "rate": 292.778,
+     "lq": 2.1
+    }
+   ]
+  },
+  "15-1299": {
+   "title": "Computer Occupations, All Other",
+   "national_filings": 47447,
+   "metro_row_filings_with_oews_data": 51550,
+   "metros_with_oews_data": 264,
+   "metros_suppressed_or_unpublished": 94,
+   "filings_in_suppressed_or_unpublished_metros": 1302,
+   "metros_at_or_above_floor": 60,
+   "national_rate_per_1000": 152.434,
+   "top_metros": [
+    {
+     "metro": "25540",
+     "name": "Hartford, CT",
+     "filings": 898,
+     "jobs": 1020,
+     "rate": 880.392,
+     "lq": 5.78
+    },
+    {
+     "metro": "16740",
+     "name": "Charlotte, NC",
+     "filings": 1494,
+     "jobs": 3290,
+     "rate": 454.103,
+     "lq": 2.98
+    },
+    {
+     "metro": "39580",
+     "name": "Raleigh, NC",
+     "filings": 1311,
+     "jobs": 3620,
+     "rate": 362.155,
+     "lq": 2.38
+    },
+    {
+     "metro": "35620",
+     "name": "New York, NY",
+     "filings": 5739,
+     "jobs": 16230,
+     "rate": 353.604,
+     "lq": 2.32
+    },
+    {
+     "metro": "19100",
+     "name": "Dallas, TX",
+     "filings": 6730,
+     "jobs": 19540,
+     "rate": 344.422,
+     "lq": 2.26
+    }
+   ]
+  },
+  "15-2051": {
+   "title": "Data Scientists",
+   "national_filings": 31465,
+   "metro_row_filings_with_oews_data": 36474,
+   "metros_with_oews_data": 243,
+   "metros_suppressed_or_unpublished": 133,
+   "filings_in_suppressed_or_unpublished_metros": 280,
+   "metros_at_or_above_floor": 46,
+   "national_rate_per_1000": 165.814,
+   "top_metros": [
+    {
+     "metro": "41940",
+     "name": "San Jose, CA",
+     "filings": 3061,
+     "jobs": 6060,
+     "rate": 505.116,
+     "lq": 3.05
+    },
+    {
+     "metro": "42660",
+     "name": "Seattle, WA",
+     "filings": 3267,
+     "jobs": 8370,
+     "rate": 390.323,
+     "lq": 2.35
+    },
+    {
+     "metro": "12420",
+     "name": "Austin, TX",
+     "filings": 1197,
+     "jobs": 3730,
+     "rate": 320.912,
+     "lq": 1.94
+    },
+    {
+     "metro": "19100",
+     "name": "Dallas, TX",
+     "filings": 3242,
+     "jobs": 10120,
+     "rate": 320.356,
+     "lq": 1.93
+    },
+    {
+     "metro": "41860",
+     "name": "San Francisco, CA",
+     "filings": 2677,
+     "jobs": 10460,
+     "rate": 255.927,
+     "lq": 1.54
+    }
+   ]
+  },
+  "15-1253": {
+   "title": "Software Quality Assurance Analysts and Testers",
+   "national_filings": 18600,
+   "metro_row_filings_with_oews_data": 20995,
+   "metros_with_oews_data": 176,
+   "metros_suppressed_or_unpublished": 99,
+   "filings_in_suppressed_or_unpublished_metros": 580,
+   "metros_at_or_above_floor": 34,
+   "national_rate_per_1000": 139.28,
+   "top_metros": [
+    {
+     "metro": "19100",
+     "name": "Dallas, TX",
+     "filings": 2693,
+     "jobs": 8840,
+     "rate": 304.638,
+     "lq": 2.19
+    },
+    {
+     "metro": "39580",
+     "name": "Raleigh, NC",
+     "filings": 496,
+     "jobs": 1760,
+     "rate": 281.818,
+     "lq": 2.02
+    },
+    {
+     "metro": "41940",
+     "name": "San Jose, CA",
+     "filings": 1583,
+     "jobs": 6480,
+     "rate": 244.29,
+     "lq": 1.75
+    },
+    {
+     "metro": "19820",
+     "name": "Detroit, MI",
+     "filings": 505,
+     "jobs": 2140,
+     "rate": 235.981,
+     "lq": 1.69
+    },
+    {
+     "metro": "12420",
+     "name": "Austin, TX",
+     "filings": 783,
+     "jobs": 3340,
+     "rate": 234.431,
+     "lq": 1.68
+    }
+   ]
+  },
+  "15-1251": {
+   "title": "Computer Programmers",
+   "national_filings": 13418,
+   "metro_row_filings_with_oews_data": 13607,
+   "metros_with_oews_data": 161,
+   "metros_suppressed_or_unpublished": 82,
+   "filings_in_suppressed_or_unpublished_metros": 1396,
+   "metros_at_or_above_floor": 17,
+   "national_rate_per_1000": 204.401,
+   "top_metros": [
+    {
+     "metro": "19100",
+     "name": "Dallas, TX",
+     "filings": 2425,
+     "jobs": 3260,
+     "rate": 743.865,
+     "lq": 3.64
+    },
+    {
+     "metro": "12060",
+     "name": "Atlanta, GA",
+     "filings": 725,
+     "jobs": 1260,
+     "rate": 575.397,
+     "lq": 2.82
+    },
+    {
+     "metro": "47900",
+     "name": "Washington, DC",
+     "filings": 810,
+     "jobs": 2680,
+     "rate": 302.239,
+     "lq": 1.48
+    },
+    {
+     "metro": "26420",
+     "name": "Houston, TX",
+     "filings": 403,
+     "jobs": 1340,
+     "rate": 300.746,
+     "lq": 1.47
+    },
+    {
+     "metro": "41860",
+     "name": "San Francisco, CA",
+     "filings": 593,
+     "jobs": 2440,
+     "rate": 243.033,
+     "lq": 1.19
+    }
+   ]
+  },
+  "15-1211": {
+   "title": "Computer Systems Analysts",
+   "national_filings": 12926,
+   "metro_row_filings_with_oews_data": 14735,
+   "metros_with_oews_data": 240,
+   "metros_suppressed_or_unpublished": 61,
+   "filings_in_suppressed_or_unpublished_metros": 115,
+   "metros_at_or_above_floor": 73,
+   "national_rate_per_1000": 34.722,
+   "top_metros": [
+    {
+     "metro": "45940",
+     "name": "Trenton, NJ",
+     "filings": 200,
+     "jobs": 1130,
+     "rate": 176.991,
+     "lq": 5.1
+    },
+    {
+     "metro": "12060",
+     "name": "Atlanta, GA",
+     "filings": 849,
+     "jobs": 8300,
+     "rate": 102.289,
+     "lq": 2.95
+    },
+    {
+     "metro": "20500",
+     "name": "Durham, NC",
+     "filings": 210,
+     "jobs": 2530,
+     "rate": 83.004,
+     "lq": 2.39
+    },
+    {
+     "metro": "19100",
+     "name": "Dallas, TX",
+     "filings": 1617,
+     "jobs": 20000,
+     "rate": 80.85,
+     "lq": 2.33
+    },
+    {
+     "metro": "37980",
+     "name": "Philadelphia, PA",
+     "filings": 688,
+     "jobs": 8520,
+     "rate": 80.751,
+     "lq": 2.33
+    }
+   ]
+  },
+  "11-3021": {
+   "title": "Computer and Information Systems Managers",
+   "national_filings": 12585,
+   "metro_row_filings_with_oews_data": 14812,
+   "metros_with_oews_data": 206,
+   "metros_suppressed_or_unpublished": 39,
+   "filings_in_suppressed_or_unpublished_metros": 66,
+   "metros_at_or_above_floor": 81,
+   "national_rate_per_1000": 26.503,
+   "top_metros": [
+    {
+     "metro": "42660",
+     "name": "Seattle, WA",
+     "filings": 1279,
+     "jobs": 13170,
+     "rate": 97.115,
+     "lq": 3.66
+    },
+    {
+     "metro": "41940",
+     "name": "San Jose, CA",
+     "filings": 1718,
+     "jobs": 19070,
+     "rate": 90.089,
+     "lq": 3.4
+    },
+    {
+     "metro": "41860",
+     "name": "San Francisco, CA",
+     "filings": 1518,
+     "jobs": 23830,
+     "rate": 63.701,
+     "lq": 2.4
+    },
+    {
+     "metro": "22220",
+     "name": "Fayetteville, AR",
+     "filings": 64,
+     "jobs": 1050,
+     "rate": 60.952,
+     "lq": 2.3
+    },
+    {
+     "metro": "49340",
+     "name": "Worcester, MA",
+     "filings": 69,
+     "jobs": 1150,
+     "rate": 60.0,
+     "lq": 2.26
+    }
+   ]
+  },
+  "17-2141": {
+   "title": "Mechanical Engineers",
+   "national_filings": 10134,
+   "metro_row_filings_with_oews_data": 10977,
+   "metros_with_oews_data": 275,
+   "metros_suppressed_or_unpublished": 166,
+   "filings_in_suppressed_or_unpublished_metros": 445,
+   "metros_at_or_above_floor": 57,
+   "national_rate_per_1000": 44.228,
+   "top_metros": [
+    {
+     "metro": "18020",
+     "name": "Columbus, IN",
+     "filings": 272,
+     "jobs": 1000,
+     "rate": 272.0,
+     "lq": 6.15
+    },
+    {
+     "metro": "41940",
+     "name": "San Jose, CA",
+     "filings": 1002,
+     "jobs": 5540,
+     "rate": 180.866,
+     "lq": 4.09
+    },
+    {
+     "metro": "41860",
+     "name": "San Francisco, CA",
+     "filings": 719,
+     "jobs": 5150,
+     "rate": 139.612,
+     "lq": 3.16
+    },
+    {
+     "metro": "12420",
+     "name": "Austin, TX",
+     "filings": 214,
+     "jobs": 1790,
+     "rate": 119.553,
+     "lq": 2.7
+    },
+    {
+     "metro": "12060",
+     "name": "Atlanta, GA",
+     "filings": 363,
+     "jobs": 3070,
+     "rate": 118.241,
+     "lq": 2.67
+    }
+   ]
+  },
+  "17-2112": {
+   "title": "Industrial Engineers",
+   "national_filings": 10017,
+   "metro_row_filings_with_oews_data": 10672,
+   "metros_with_oews_data": 286,
+   "metros_suppressed_or_unpublished": 188,
+   "filings_in_suppressed_or_unpublished_metros": 652,
+   "metros_at_or_above_floor": 69,
+   "national_rate_per_1000": 34.685,
+   "top_metros": [
+    {
+     "metro": "41940",
+     "name": "San Jose, CA",
+     "filings": 1142,
+     "jobs": 4800,
+     "rate": 237.917,
+     "lq": 6.86
+    },
+    {
+     "metro": "41860",
+     "name": "San Francisco, CA",
+     "filings": 782,
+     "jobs": 5470,
+     "rate": 142.962,
+     "lq": 4.12
+    },
+    {
+     "metro": "39900",
+     "name": "Reno, NV",
+     "filings": 143,
+     "jobs": 1050,
+     "rate": 136.19,
+     "lq": 3.93
+    },
+    {
+     "metro": "12420",
+     "name": "Austin, TX",
+     "filings": 431,
+     "jobs": 3440,
+     "rate": 125.291,
+     "lq": 3.61
+    },
+    {
+     "metro": "47900",
+     "name": "Washington, DC",
+     "filings": 180,
+     "jobs": 2000,
+     "rate": 90.0,
+     "lq": 2.59
+    }
+   ]
+  },
+  "13-2011": {
+   "title": "Accountants and Auditors",
+   "national_filings": 9477,
+   "metro_row_filings_with_oews_data": 9760,
+   "metros_with_oews_data": 217,
+   "metros_suppressed_or_unpublished": 57,
+   "filings_in_suppressed_or_unpublished_metros": 75,
+   "metros_at_or_above_floor": 139,
+   "national_rate_per_1000": 8.408,
+   "top_metros": [
+    {
+     "metro": "41940",
+     "name": "San Jose, CA",
+     "filings": 551,
+     "jobs": 13180,
+     "rate": 41.806,
+     "lq": 4.97
+    },
+    {
+     "metro": "41860",
+     "name": "San Francisco, CA",
+     "filings": 663,
+     "jobs": 25170,
+     "rate": 26.341,
+     "lq": 3.13
+    },
+    {
+     "metro": "42660",
+     "name": "Seattle, WA",
+     "filings": 399,
+     "jobs": 22100,
+     "rate": 18.054,
+     "lq": 2.15
+    },
+    {
+     "metro": "35620",
+     "name": "New York, NY",
+     "filings": 1898,
+     "jobs": 111930,
+     "rate": 16.957,
+     "lq": 2.02
+    },
+    {
+     "metro": "14860",
+     "name": "Bridgeport, CT",
+     "filings": 73,
+     "jobs": 5000,
+     "rate": 14.6,
+     "lq": 1.74
+    }
+   ]
+  }
+ },
+ "seconds": 37.6
+}

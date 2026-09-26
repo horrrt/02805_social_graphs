@@ -1,0 +1,407 @@
+{
+ "generated_by": "analysis/week04_wikidata.py",
+ "priority_only": true,
+ "workers": 4,
+ "rate_per_second": 5.0,
+ "requests_made": 0,
+ "budget_seconds": null,
+ "budget_hit": false,
+ "targets": 37521,
+ "targets_filing_share_note": "MIN_FILINGS=5, summed FY2022-FY2025, clients and filing firms",
+ "todo_before_wikidata": 35805,
+ "todo_filing_share_of_targets": 0.5371,
+ "queued": 2816,
+ "processed": 2816,
+ "matched": 1400,
+ "matched_with_sector": 352,
+ "matched_with_sector_by_source": {
+  "reviewed industry table": 348,
+  "P3224 (company)": 1,
+  "P3224 (industry)": 3
+ },
+ "unmatched_reasons": {
+  "no Wikidata candidates for this name": 1063,
+  "no candidate's label or alias matches our name rules exactly": 262,
+  "matched a name but no candidate is a kind of organization": 91
+ },
+ "ambiguous_ties": [
+  {
+   "key": "FEIN 951780067",
+   "label": "City National Bank",
+   "qid": "Q16958644"
+  },
+  {
+   "key": "FEIN 752614700",
+   "label": "Infovision",
+   "qid": "Q137598951"
+  },
+  {
+   "key": "FEIN 611293786",
+   "label": "University Medical Center",
+   "qid": "Q7894762"
+  },
+  {
+   "key": "FEIN 743197526",
+   "label": "Boehringer Ingelheim",
+   "qid": "Q30260626"
+  },
+  {
+   "key": "FEIN 561376950",
+   "label": "Novant Health",
+   "qid": "Q14956815"
+  },
+  {
+   "key": "FIRST NATIONAL BANK",
+   "label": "First National Bank",
+   "qid": "Q11602127"
+  },
+  {
+   "key": "THOMAS JEFFERSON UNIVERSITY HOSPITAL",
+   "label": "Thomas Jefferson University Hospital",
+   "qid": "Q14956773"
+  },
+  {
+   "key": "MERCY MEDICAL CENTER",
+   "label": "Mercy Medical Center",
+   "qid": "Q6818780"
+  },
+  {
+   "key": "FEIN 742206635",
+   "label": "Mission Regional Medical Center",
+   "qid": "Q6878595"
+  },
+  {
+   "key": "FEIN 582504530",
+   "label": "ST Francis Hospital",
+   "qid": "Q7401259"
+  },
+  {
+   "key": "BNYM",
+   "label": "Bnym",
+   "qid": "Q93362847"
+  },
+  {
+   "key": "ST LUKE S HOSPITAL",
+   "label": "ST Luke S Hospital",
+   "qid": "Q124022568"
+  },
+  {
+   "key": "WESCO",
+   "label": "Wesco",
+   "qid": "Q36875363"
+  },
+  {
+   "key": "FEIN 576000217",
+   "label": "Citadel",
+   "qid": "Q2974366"
+  },
+  {
+   "key": "DEPARTMENT OF HUMAN SERVICES",
+   "label": "Department of Human Services",
+   "qid": "Q56395328"
+  },
+  {
+   "key": "FEIN 410695598",
+   "label": "ST Francis Medical Center",
+   "qid": "Q91025320"
+  },
+  {
+   "key": "SAINT FRANCIS HOSPITAL",
+   "label": "Saint Francis Hospital",
+   "qid": "Q7401259"
+  },
+  {
+   "key": "FEIN 274933380",
+   "label": "LCF",
+   "qid": "Q30261524"
+  },
+  {
+   "key": "SAINT MARY S REGIONAL MEDICAL CENTER",
+   "label": "Saint Mary S Regional Medical Center",
+   "qid": "Q7401841"
+  },
+  {
+   "key": "ST PETER S HOSPITAL",
+   "label": "ST Peter S Hospital",
+   "qid": "Q18392694"
+  },
+  {
+   "key": "FEIN 746000057",
+   "label": "Office of the Attorney General",
+   "qid": "Q13022698"
+  },
+  {
+   "key": "CIRCLE K",
+   "label": "Circle K",
+   "qid": "Q139573172"
+  },
+  {
+   "key": "FEIN 042266945",
+   "label": "Flexcon",
+   "qid": "Q5426522"
+  },
+  {
+   "key": "SALEM HOSPITAL",
+   "label": "Salem Hospital",
+   "qid": "Q22001404"
+  },
+  {
+   "key": "ST ANNE S HOSPITAL",
+   "label": "ST Anne S Hospital",
+   "qid": "Q6818755"
+  }
+ ],
+ "sector_conflicts": [
+  {
+   "key": "FEIN 471523316",
+   "label": "Zoox",
+   "naics2": "48-49",
+   "industry_labels": "transport|industrial manufacturing|robotics"
+  },
+  {
+   "key": "FEIN 861432226",
+   "label": "Collabera",
+   "naics2": "54",
+   "industry_labels": "human resource management|IT service management|enterprise software"
+  },
+  {
+   "key": "FEIN 860673401",
+   "label": "Blue Yonder",
+   "naics2": "54",
+   "industry_labels": "supply chain management|information technology consulting|software industry|software development"
+  },
+  {
+   "key": "FEIN 223713430",
+   "label": "Avaya",
+   "naics2": "51",
+   "industry_labels": "telecommunications industry|mechanical engineering"
+  },
+  {
+   "key": "FEIN 133461988",
+   "label": "Fresenius Medical Care",
+   "naics2": "62",
+   "industry_labels": "health care|medical technology industry|pharmaceutical industry"
+  }
+ ],
+ "coverage_lift_fy2025_multi_vendor_clients": {
+  "clients": 4090,
+  "filing_share_of_fy2025": 0.7693,
+  "with_sector_before": 862,
+  "with_sector_after": 1214,
+  "filing_share_before": 0.5732,
+  "filing_share_after": 0.6037
+ },
+ "sample_accepted_matches": [
+  {
+   "key": "CHRISTUS HEALTH",
+   "label": "Christus Health",
+   "wikidata_label": "CHRISTUS Health",
+   "qid": "Q5011309",
+   "naics2": "62"
+  },
+  {
+   "key": "FEIN 111631788",
+   "label": "Jamaica Hospital Medical Center",
+   "wikidata_label": "Jamaica Hospital Medical Center",
+   "qid": "Q97354861",
+   "naics2": ""
+  },
+  {
+   "key": "FEIN 330502805",
+   "label": "Desert Valley Hospital",
+   "wikidata_label": "Desert Valley Hospital",
+   "qid": "Q14681826",
+   "naics2": ""
+  },
+  {
+   "key": "WESCO",
+   "label": "Wesco",
+   "wikidata_label": "Wesco",
+   "qid": "Q36875363",
+   "naics2": ""
+  },
+  {
+   "key": "FEIN 941441976",
+   "label": "Dodge and COX",
+   "wikidata_label": "Dodge & Cox",
+   "qid": "Q1234076",
+   "naics2": ""
+  },
+  {
+   "key": "HENNEPIN COUNTY MEDICAL CENTER",
+   "label": "Hennepin County Medical Center",
+   "wikidata_label": "Hennepin County Medical Center",
+   "qid": "Q5714832",
+   "naics2": ""
+  },
+  {
+   "key": "FEIN 822266384",
+   "label": "Form Energy",
+   "wikidata_label": "Form Energy",
+   "qid": "Q107803062",
+   "naics2": ""
+  },
+  {
+   "key": "FEIN 043335829",
+   "label": "Harbourvest Partners",
+   "wikidata_label": "HarbourVest Partners",
+   "qid": "Q16994799",
+   "naics2": ""
+  },
+  {
+   "key": "WATERBURY HOSPITAL",
+   "label": "Waterbury Hospital",
+   "wikidata_label": "Waterbury Hospital",
+   "qid": "Q30281090",
+   "naics2": ""
+  },
+  {
+   "key": "FEIN 362756407",
+   "label": "Options Clearing",
+   "wikidata_label": "Options Clearing Corporation",
+   "qid": "Q7099026",
+   "naics2": "52"
+  },
+  {
+   "key": "ALIXPARTNERS",
+   "label": "Alixpartners",
+   "wikidata_label": "AlixPartners",
+   "qid": "Q4727496",
+   "naics2": "54"
+  },
+  {
+   "key": "US NATIONAL INSTITUTES OF HEALTH",
+   "label": "US National Institutes of Health",
+   "wikidata_label": "United States National Institutes of Health",
+   "qid": "Q390551",
+   "naics2": ""
+  },
+  {
+   "key": "FEIN 382182248",
+   "label": "Vizient",
+   "wikidata_label": "Vizient, Inc.",
+   "qid": "Q120486111",
+   "naics2": "62"
+  },
+  {
+   "key": "TEXAS EDUCATION AGENCY",
+   "label": "Texas Education Agency",
+   "wikidata_label": "Texas Education Agency",
+   "qid": "Q1647529",
+   "naics2": ""
+  },
+  {
+   "key": "CALSAWS",
+   "label": "Calsaws",
+   "wikidata_label": "California Statewide Automated Welfare System",
+   "qid": "Q138817501",
+   "naics2": ""
+  },
+  {
+   "key": "FEIN 390619790",
+   "label": "AO Smith",
+   "wikidata_label": "A. O. Smith",
+   "qid": "Q4648219",
+   "naics2": ""
+  },
+  {
+   "key": "FEIN 770401990",
+   "label": "Omnivision Technologies",
+   "wikidata_label": "OmniVision Technologies",
+   "qid": "Q17084327",
+   "naics2": ""
+  },
+  {
+   "key": "TRUSTAGE FINANCIAL",
+   "label": "Trustage Financial",
+   "wikidata_label": "TruStage Financial Group",
+   "qid": "Q140870595",
+   "naics2": ""
+  },
+  {
+   "key": "OHIO DEPARTMENT OF EDUCATION",
+   "label": "Ohio Department of Education",
+   "wikidata_label": "Ohio Department of Education and Workforce",
+   "qid": "Q7080796",
+   "naics2": ""
+  },
+  {
+   "key": "FEIN 300002784",
+   "label": "Aetna",
+   "wikidata_label": "Aetna",
+   "qid": "Q26049",
+   "naics2": "52"
+  },
+  {
+   "key": "FIDELITY",
+   "label": "Fidelity",
+   "wikidata_label": "Fidelity Investments",
+   "qid": "Q1411292",
+   "naics2": "52"
+  },
+  {
+   "key": "KEYBANK",
+   "label": "Keybank",
+   "wikidata_label": "KeyBank",
+   "qid": "Q1740314",
+   "naics2": "52"
+  },
+  {
+   "key": "FEIN 520888853",
+   "label": "Perdue Farms",
+   "wikidata_label": "Perdue Farms",
+   "qid": "Q7167716",
+   "naics2": ""
+  },
+  {
+   "key": "PARAMOUNT",
+   "label": "Paramount",
+   "wikidata_label": "Paramount",
+   "qid": "Q927134",
+   "naics2": ""
+  },
+  {
+   "key": "TEXAS DEPARTMENT OF TRANSPORTATION",
+   "label": "Texas Department of Transportation",
+   "wikidata_label": "Texas Department of Transportation",
+   "qid": "Q568743",
+   "naics2": ""
+  },
+  {
+   "key": "FEIN 581954432",
+   "label": "Northside Hospital",
+   "wikidata_label": "Northside Hospital Atlanta",
+   "qid": "Q7059745",
+   "naics2": ""
+  },
+  {
+   "key": "RITE AID",
+   "label": "Rite AID",
+   "wikidata_label": "Rite Aid",
+   "qid": "Q3433273",
+   "naics2": "44-45"
+  },
+  {
+   "key": "FEIN 470966043",
+   "label": "Textron Aviation",
+   "wikidata_label": "Textron Aviation",
+   "qid": "Q16985472",
+   "naics2": ""
+  },
+  {
+   "key": "BIRMINGHAM VA MEDICAL CENTER",
+   "label": "Birmingham VA Medical Center",
+   "wikidata_label": "Birmingham VA Medical Center",
+   "qid": "Q30253386",
+   "naics2": ""
+  },
+  {
+   "key": "FEIN 560532129",
+   "label": "Duke University",
+   "wikidata_label": "Duke University",
+   "qid": "Q168751",
+   "naics2": "61"
+  }
+ ],
+ "seconds": 43
+}
