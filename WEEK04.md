@@ -174,8 +174,29 @@ All checked on 23 September 2026.
 | [BLS 2018 SOC structure](https://www.bls.gov/soc/2018/soc_structure_2018.xlsx) | Occupation groups (section 2) | Public; User-Agent must name a contact |
 | [USCIS H-1B Employer Data Hub](https://www.uscis.gov/tools/reports-and-studies/h-1b-employer-data-hub) | Approvals and denials per employer, FY2022 and FY2023 (section 3) | Public |
 | [SEC company tickers](https://www.sec.gov/files/company_tickers.json) and [submissions API](https://www.sec.gov/search-filings/edgar-application-programming-interfaces) | SIC industry of listed companies (sectors, section 3) | Public; www.sec.gov needs a contact User-Agent, data.sec.gov does not |
+| [BLS OEWS, May 2025, metropolitan areas](https://www.bls.gov/oes/tables.htm) (`oesm25ma.zip`) | Jobs per metro and per occupation: filings per 1,000 jobs (`analysis/week04_oews.py`, for section 1) | Public; bls.gov needs a contact User-Agent (`CONTACT_EMAIL`) |
+| [Wikidata](https://www.wikidata.org/) (wbsearchentities, wbgetentities, SPARQL) | Industry (P452, P3224 NAICS, P3242 SIC) of clients the SEC does not list (`analysis/week04_wikidata.py`, section 3) | CC0; cached in `build/raw/week04/wikidata/` |
+
+Added 26 September 2026, section 3 (Gyula): `week04_shift.py` (January to June of FY2024, FY2025 and
+FY2026), `week04_ties.py` (strength against degree, bipartite link overlap against filings, wage level
+by community, PERM against H-1B per employer), `week04_lawfirms.py` (employer x law firm, projected onto
+law firms: disparity filter against a threshold, communities). `week04_oews.py` writes denominators for
+section 1 but the page does not quote it yet. For Àngela, if section 1 wants it: divided by BLS jobs,
+San Jose files 42.9 per 1,000 jobs against 4.5 nationally, and New York, Atlanta, Chicago, Boston and
+Washington leave the top 10 (5 of the top 10 by count stay).
 
 Traps found so far:
+
+- **The FY2026 worksites file misses 22% of placed filings** (15,718 of January to June's placed filings
+  have no row there; FY2022 to FY2025 miss none). `week04_staffing.placements()` falls back to the client
+  on the filing's main row for those.
+- **October 2025 is nearly empty:** 1,306 certified filings against 35,258 in October 2024, during the
+  federal shutdown, and November carries a backlog. Compare FY2026 with earlier years on January to June.
+- **PERM does not join cleanly to H-1B employers:** only 65% of FY2025 certified PERM filings reach an
+  H-1B employer key, and Infosys shows none although the raw file has 53. Amazon and Google really do
+  file almost no PERM in FY2025 (thousands in FY2023). The post leaves PERM out.
+- **The law-firm projection holds about 138 links between two spellings of one firm** (Ogletree Deakins,
+  a "Lowey" Fragomen). `week04_lawfirms.json` lists the top 20 as candidates for the name tables.
 
 - 19.5% of certified H-1B filings in FY2025 name a client (104,732 of 537,796), counting only
   "Certified", not "Certified - Withdrawn" (30,111 more that year).

@@ -687,6 +687,20 @@
                 between two runs of the same year on the same clients. We
                 compared vendor and industry on FY2025 only.
               </p>
+              <p>
+                FY2026 breaks the pattern at the top. We compare January to June
+                of each year, because October 2025, the month of the federal
+                shutdown, holds 1,306 certified filings against 35,258 a year
+                earlier. From January to June, certified filings fell 5.8% after
+                rising 9.5% the year before, and filings that name a client
+                company fell 16.5% after holding flat (-0.1%). Tata Consultancy
+                Services filed 2,079, down from 5,256. Of the 352 clients it
+                supplied most in FY2025, 226 still appear, and 114 of those now
+                get most of their workers from another firm, most often Infosys.
+                Across clients with five or more filings in both years, 48%
+                changed their main vendor, against 43% a year earlier. These are
+                applications, so they show what employers asked for, not why.
+              </p>
             </div>
             <figure class="staffing" id="staffing-figure">
               <div class="staffing-controls">
@@ -818,6 +832,84 @@
                 </p>
               </div>
             </details>
+
+            <details class="qa" id="staffing-ties">
+              <summary>
+                <span class="qa-cue">Strong ties, weak ties and pay</span>
+              </summary>
+              <div class="qa-body">
+                <p class="sub">
+                  Among friends, the strongest ties sit inside tight groups where
+                  your close friends also know each other, and weak ties bridge
+                  the groups (Granovetter 1973; Onnela and colleagues confirmed it
+                  on millions of phone users in 2007). A link's
+                  <b>overlap</b> measures the tightness: of the firm's other
+                  clients and the client's other firms, the share that are linked
+                  to each other. Here the pattern runs the other way, faintly.
+                  Over the 28,151 links where overlap is defined, filings and
+                  overlap correlate at Spearman -0.04; with the filing counts
+                  shuffled over the same links the correlation is 0.00 ±
+                  0.01 (z = -6.5; FY2024 gives z = -4.2). Links with one filing
+                  have a mean overlap of 0.065, links with 21 or more 0.034. Heavy
+                  links mostly belong to the largest firms, whose many clients
+                  rarely share other firms, so part of this is size. It agrees
+                  with the result above: the real filing counts put weight on
+                  links between groups.
+                </p>
+                <p class="sub">
+                  Pay follows the groups for clients, not for firms. Each filing
+                  states one of four wage levels, from entry (I) to fully
+                  competent (IV). Averaged per client, the groups explain 12% of
+                  the variance in wage level; averaged per firm, 2%. None of 1,000
+                  shuffles of the group labels reached either. Outsourcing firms
+                  file 66% of their applications at level II and 5% at level IV;
+                  direct employers file 35% and 22%. From January to June 2026,
+                  level IV rose to 17.7% of all filings from 13.6% a year
+                  earlier, and level I fell to 18.0% from 21.8%. Figures from
+                  analysis/week04_ties.py and analysis/week04_shift.py.
+                </p>
+              </div>
+            </details>
+
+            <div class="staffing-prose" id="staffing-lawyers" style="margin-top: 18px">
+              <h3>Who files the paperwork?</h3>
+              <p>
+                Three filings in four name an outside law firm, and five firms
+                file 40% of those. Fragomen alone files 78,531 for 3,139
+                employers. Outsourcing firms mostly do without: they file 52% of
+                their applications with no outside firm and send 3% to the five
+                largest, while direct employers send those five 48%. Per
+                employer the averages are 2% and 31%, and none of 1,000 shuffles
+                of which employer is which produced a gap that wide.
+              </p>
+              <p>
+                Two law firms share filings when the same employer uses both:
+                for each such employer, the smaller of its filings through
+                either. That network has one giant hub, the case the disparity
+                filter was made for. A weight threshold of four shared filings
+                keeps 770 links and spends 26% of them on the five largest
+                firms. The disparity filter at &alpha; = 0.2 keeps 696 and
+                spends 19%. It also keeps 115 small firms the threshold drops,
+                each tied to a larger one by a link that is most of its own
+                work: one law office's link to BBI Law Group is 3 of its 5
+                shared filings and 3 of BBI's 342. Another 144 firms stay only
+                because they form a pair linked to nobody else, where neither
+                end can judge the link.
+              </p>
+              <p>
+                Louvain finds 34 groups at modularity 0.67, against 0.55 for
+                rewired networks that keep each employer's and each law firm's
+                number of partners (z = 12). The groups follow clients, not
+                places: their agreement with Census regions is NMI 0.05. Google,
+                Apple and Meta share Fragomen, Ogletree Deakins and Berry
+                Appleman &amp; Leiden; Tata Consultancy, LTIMindtree and
+                Salesforce share Usilaw, Goel &amp; Anderson and Chugh; Vialto,
+                once PwC's law firm, serves Doordash and Databricks. The groups
+                move from year to year: FY2024 and FY2025 agree at NMI 0.31 on
+                the 1,041 law firms in both, against 0.86 between two runs of
+                FY2025. Figures from analysis/week04_lawfirms.py.
+              </p>
+            </div>
           </div>
         </section>
 
@@ -917,7 +1009,13 @@
                     builds the occupation network.</li>
                   <li><a href="https://github.com/horrrt/02805_social_graphs/blob/main/analysis/week04_staffing.py"><code>week04_staffing.py</code></a>
                     and <a href="https://github.com/horrrt/02805_social_graphs/blob/main/analysis/week04_staffing_figure.py"><code>week04_staffing_figure.py</code></a>
-                    build the firm → client network and its figure.</li>
+                    build the firm → client network and its figure;
+                    <a href="https://github.com/horrrt/02805_social_graphs/blob/main/analysis/week04_shift.py"><code>week04_shift.py</code></a>
+                    compares January to June of FY2024, FY2025 and FY2026;
+                    <a href="https://github.com/horrrt/02805_social_graphs/blob/main/analysis/week04_ties.py"><code>week04_ties.py</code></a>
+                    tests strong and weak ties and wage levels; and
+                    <a href="https://github.com/horrrt/02805_social_graphs/blob/main/analysis/week04_lawfirms.py"><code>week04_lawfirms.py</code></a>
+                    builds the law-firm network and its backbones.</li>
                   <li><a href="https://github.com/horrrt/02805_social_graphs/blob/main/analysis/week04_names.py"><code>week04_names.py</code></a>
                     decides which names are the same company;
                     <a href="https://github.com/horrrt/02805_social_graphs/blob/main/analysis/week04_names_check.py"><code>week04_names_check.py</code></a>

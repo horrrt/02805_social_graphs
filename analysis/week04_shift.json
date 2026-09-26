@@ -1,0 +1,1481 @@
+{
+ "generated_by": "analysis/week04_shift.py",
+ "weight": "filings",
+ "runs": 100,
+ "windows": {
+  "oct_jun": "October to June",
+  "jan_jun": "January to June (after the shutdown and its backlog)"
+ },
+ "headline_window": "jan_jun",
+ "periods": {
+  "FY2024": "of the FY2024 fiscal year, filtered down",
+  "FY2025": "of the FY2025 fiscal year, filtered down",
+  "FY2026": "the whole file (verified below to already run Oct-Jun)"
+ },
+ "date_parsing": {
+  "oct_jun": {
+   "FY2024": {
+    "rows_before": 502374,
+    "bad_dates": 0,
+    "outside_window": 107031,
+    "rows_after": 395343
+   },
+   "FY2025": {
+    "rows_before": 537796,
+    "bad_dates": 0,
+    "outside_window": 103285,
+    "rows_after": 434511
+   },
+   "FY2026": {
+    "rows_before": 392175,
+    "bad_dates": 0,
+    "outside_window": 0,
+    "rows_after": 392175
+   }
+  },
+  "jan_jun": {
+   "FY2024": {
+    "rows_before": 502374,
+    "bad_dates": 0,
+    "outside_window": 191442,
+    "rows_after": 310932
+   },
+   "FY2025": {
+    "rows_before": 537796,
+    "bad_dates": 0,
+    "outside_window": 197412,
+    "rows_after": 340384
+   },
+   "FY2026": {
+    "rows_before": 392175,
+    "bad_dates": 0,
+    "outside_window": 71631,
+    "rows_after": 320544
+   }
+  }
+ },
+ "fy2026_window_check": {
+  "decision_date_min": "2025-10-01",
+  "decision_date_max": "2026-06-30",
+  "received_date_min": "2025-09-24",
+  "received_date_max": "2026-06-23",
+  "bad_decision_dates": 0,
+  "bad_received_dates": 0
+ },
+ "monthly": {
+  "FY2024": [
+   {
+    "month": "2023-10",
+    "certified_filings": 34458,
+    "placed_filings": 9109
+   },
+   {
+    "month": "2023-11",
+    "certified_filings": 26207,
+    "placed_filings": 5350
+   },
+   {
+    "month": "2023-12",
+    "certified_filings": 23746,
+    "placed_filings": 4698
+   },
+   {
+    "month": "2024-01",
+    "certified_filings": 28531,
+    "placed_filings": 5474
+   },
+   {
+    "month": "2024-02",
+    "certified_filings": 37309,
+    "placed_filings": 6626
+   },
+   {
+    "month": "2024-03",
+    "certified_filings": 45191,
+    "placed_filings": 8070
+   },
+   {
+    "month": "2024-04",
+    "certified_filings": 54204,
+    "placed_filings": 9647
+   },
+   {
+    "month": "2024-05",
+    "certified_filings": 74741,
+    "placed_filings": 16871
+   },
+   {
+    "month": "2024-06",
+    "certified_filings": 70956,
+    "placed_filings": 18303
+   }
+  ],
+  "FY2025": [
+   {
+    "month": "2024-10",
+    "certified_filings": 35258,
+    "placed_filings": 7387
+   },
+   {
+    "month": "2024-11",
+    "certified_filings": 27082,
+    "placed_filings": 5364
+   },
+   {
+    "month": "2024-12",
+    "certified_filings": 31787,
+    "placed_filings": 5770
+   },
+   {
+    "month": "2025-01",
+    "certified_filings": 31908,
+    "placed_filings": 5812
+   },
+   {
+    "month": "2025-02",
+    "certified_filings": 40037,
+    "placed_filings": 5998
+   },
+   {
+    "month": "2025-03",
+    "certified_filings": 47574,
+    "placed_filings": 6881
+   },
+   {
+    "month": "2025-04",
+    "certified_filings": 63671,
+    "placed_filings": 10100
+   },
+   {
+    "month": "2025-05",
+    "certified_filings": 79484,
+    "placed_filings": 14627
+   },
+   {
+    "month": "2025-06",
+    "certified_filings": 77710,
+    "placed_filings": 20192
+   }
+  ],
+  "FY2026": [
+   {
+    "month": "2025-10",
+    "certified_filings": 1306,
+    "placed_filings": 299
+   },
+   {
+    "month": "2025-11",
+    "certified_filings": 40508,
+    "placed_filings": 8633
+   },
+   {
+    "month": "2025-12",
+    "certified_filings": 29817,
+    "placed_filings": 6044
+   },
+   {
+    "month": "2026-01",
+    "certified_filings": 34762,
+    "placed_filings": 5834
+   },
+   {
+    "month": "2026-02",
+    "certified_filings": 32775,
+    "placed_filings": 6776
+   },
+   {
+    "month": "2026-03",
+    "certified_filings": 40300,
+    "placed_filings": 7228
+   },
+   {
+    "month": "2026-04",
+    "certified_filings": 69713,
+    "placed_filings": 9930
+   },
+   {
+    "month": "2026-05",
+    "certified_filings": 74397,
+    "placed_filings": 11087
+   },
+   {
+    "month": "2026-06",
+    "certified_filings": 68597,
+    "placed_filings": 15041
+   }
+  ]
+ },
+ "oct_jun": {
+  "totals": {
+   "FY2024": {
+    "certified_filings": 395343,
+    "placed_filings": 84148,
+    "placed_share": 0.2128,
+    "main_row_only_placed_filings": 0,
+    "client_company_filings": 80179,
+    "client_company_share": 0.2028,
+    "firms": 7313,
+    "clients": 16063
+   },
+   "FY2025": {
+    "certified_filings": 434511,
+    "placed_filings": 82131,
+    "placed_share": 0.189,
+    "main_row_only_placed_filings": 0,
+    "client_company_filings": 79901,
+    "client_company_share": 0.1839,
+    "firms": 7653,
+    "clients": 16170
+   },
+   "FY2026": {
+    "certified_filings": 392175,
+    "placed_filings": 70872,
+    "placed_share": 0.1807,
+    "main_row_only_placed_filings": 19963,
+    "client_company_filings": 65745,
+    "client_company_share": 0.1676,
+    "firms": 7248,
+    "clients": 13776
+   }
+  },
+  "totals_change": {
+   "fy24_to_fy25": {
+    "certified_filings": {
+     "absolute": 39168,
+     "percent": 9.9
+    },
+    "placed_filings": {
+     "absolute": -2017,
+     "percent": -2.4
+    },
+    "client_company_filings": {
+     "absolute": -278,
+     "percent": -0.3
+    },
+    "firms": {
+     "absolute": 340,
+     "percent": 4.6
+    },
+    "clients": {
+     "absolute": 107,
+     "percent": 0.7
+    },
+    "placed_share_pp": -2.38,
+    "client_company_share_pp": -1.89
+   },
+   "fy25_to_fy26": {
+    "certified_filings": {
+     "absolute": -42336,
+     "percent": -9.7
+    },
+    "placed_filings": {
+     "absolute": -11259,
+     "percent": -13.7
+    },
+    "client_company_filings": {
+     "absolute": -14156,
+     "percent": -17.7
+    },
+    "firms": {
+     "absolute": -405,
+     "percent": -5.3
+    },
+    "clients": {
+     "absolute": -2394,
+     "percent": -14.8
+    },
+    "placed_share_pp": -0.83,
+    "client_company_share_pp": -1.63
+   }
+  },
+  "employer_kinds": {
+   "min_filings_fy2025": 20,
+   "qualifying_employers": 2727,
+   "placing_employers": 664,
+   "direct_employers": 2063,
+   "group_filings": {
+    "placing": {
+     "FY2024": 61247,
+     "FY2025": 61091,
+     "FY2026": 48598
+    },
+    "direct": {
+     "FY2024": 195258,
+     "FY2025": 234417,
+     "FY2026": 204061
+    }
+   },
+   "group_change": {
+    "placing": {
+     "fy24_to_fy25": {
+      "absolute": -156,
+      "percent": -0.3
+     },
+     "fy25_to_fy26": {
+      "absolute": -12493,
+      "percent": -20.4
+     }
+    },
+    "direct": {
+     "fy24_to_fy25": {
+      "absolute": 39159,
+      "percent": 20.1
+     },
+     "fy25_to_fy26": {
+      "absolute": -30356,
+      "percent": -12.9
+     }
+    }
+   },
+   "top_15_placing": [
+    {
+     "firm": "Tata Consultancy Services",
+     "FY2024": 8050,
+     "FY2025": 6490,
+     "FY2026": 2881,
+     "change_fy24_fy25_pct": -19.4,
+     "change_fy25_fy26_pct": -55.6
+    },
+    {
+     "firm": "Infosys",
+     "FY2024": 4865,
+     "FY2025": 3865,
+     "FY2026": 4553,
+     "change_fy24_fy25_pct": -20.6,
+     "change_fy25_fy26_pct": 17.8
+    },
+    {
+     "firm": "HCL",
+     "FY2024": 3099,
+     "FY2025": 2272,
+     "FY2026": 1252,
+     "change_fy24_fy25_pct": -26.7,
+     "change_fy25_fy26_pct": -44.9
+    },
+    {
+     "firm": "Accenture",
+     "FY2024": 2472,
+     "FY2025": 2261,
+     "FY2026": 1453,
+     "change_fy24_fy25_pct": -8.5,
+     "change_fy25_fy26_pct": -35.7
+    },
+    {
+     "firm": "IBM",
+     "FY2024": 2573,
+     "FY2025": 2169,
+     "FY2026": 734,
+     "change_fy24_fy25_pct": -15.7,
+     "change_fy25_fy26_pct": -66.2
+    },
+    {
+     "firm": "LTIMindtree",
+     "FY2024": 2281,
+     "FY2025": 2125,
+     "FY2026": 1313,
+     "change_fy24_fy25_pct": -6.8,
+     "change_fy25_fy26_pct": -38.2
+    },
+    {
+     "firm": "Capgemini",
+     "FY2024": 2107,
+     "FY2025": 2059,
+     "FY2026": 1468,
+     "change_fy24_fy25_pct": -2.3,
+     "change_fy25_fy26_pct": -28.7
+    },
+    {
+     "firm": "Compunnel Software",
+     "FY2024": 1217,
+     "FY2025": 1635,
+     "FY2026": 1939,
+     "change_fy24_fy25_pct": 34.3,
+     "change_fy25_fy26_pct": 18.6
+    },
+    {
+     "firm": "Wipro",
+     "FY2024": 1592,
+     "FY2025": 1627,
+     "FY2026": 1535,
+     "change_fy24_fy25_pct": 2.2,
+     "change_fy25_fy26_pct": -5.7
+    },
+    {
+     "firm": "Grandison Management",
+     "FY2024": 470,
+     "FY2025": 1432,
+     "FY2026": 1967,
+     "change_fy24_fy25_pct": 204.7,
+     "change_fy25_fy26_pct": 37.4
+    },
+    {
+     "firm": "Mphasis",
+     "FY2024": 1075,
+     "FY2025": 1119,
+     "FY2026": 1011,
+     "change_fy24_fy25_pct": 4.1,
+     "change_fy25_fy26_pct": -9.7
+    },
+    {
+     "firm": "Tech Mahindra",
+     "FY2024": 1189,
+     "FY2025": 1089,
+     "FY2026": 540,
+     "change_fy24_fy25_pct": -8.4,
+     "change_fy25_fy26_pct": -50.4
+    },
+    {
+     "firm": "UST Global",
+     "FY2024": 619,
+     "FY2025": 716,
+     "FY2026": 505,
+     "change_fy24_fy25_pct": 15.7,
+     "change_fy25_fy26_pct": -29.5
+    },
+    {
+     "firm": "Kforce",
+     "FY2024": 533,
+     "FY2025": 608,
+     "FY2026": 598,
+     "change_fy24_fy25_pct": 14.1,
+     "change_fy25_fy26_pct": -1.6
+    },
+    {
+     "firm": "L&T Technology Services",
+     "FY2024": 612,
+     "FY2025": 575,
+     "FY2026": 400,
+     "change_fy24_fy25_pct": -6.0,
+     "change_fy25_fy26_pct": -30.4
+    }
+   ],
+   "top_15_direct": [
+    {
+     "firm": "Amazon",
+     "FY2024": 15904,
+     "FY2025": 18733,
+     "FY2026": 19769,
+     "change_fy24_fy25_pct": 17.8,
+     "change_fy25_fy26_pct": 5.5
+    },
+    {
+     "firm": "Cognizant",
+     "FY2024": 8525,
+     "FY2025": 8577,
+     "FY2026": 5766,
+     "change_fy24_fy25_pct": 0.6,
+     "change_fy25_fy26_pct": -32.8
+    },
+    {
+     "firm": "EY",
+     "FY2024": 8362,
+     "FY2025": 8026,
+     "FY2026": 5066,
+     "change_fy24_fy25_pct": -4.0,
+     "change_fy25_fy26_pct": -36.9
+    },
+    {
+     "firm": "Google",
+     "FY2024": 7281,
+     "FY2025": 7764,
+     "FY2026": 7336,
+     "change_fy24_fy25_pct": 6.6,
+     "change_fy25_fy26_pct": -5.5
+    },
+    {
+     "firm": "Microsoft",
+     "FY2024": 6532,
+     "FY2025": 7339,
+     "FY2026": 5107,
+     "change_fy24_fy25_pct": 12.4,
+     "change_fy25_fy26_pct": -30.4
+    },
+    {
+     "firm": "Meta",
+     "FY2024": 4244,
+     "FY2025": 5564,
+     "FY2026": 5152,
+     "change_fy24_fy25_pct": 31.1,
+     "change_fy25_fy26_pct": -7.4
+    },
+    {
+     "firm": "Apple",
+     "FY2024": 2478,
+     "FY2025": 5462,
+     "FY2026": 4828,
+     "change_fy24_fy25_pct": 120.4,
+     "change_fy25_fy26_pct": -11.6
+    },
+    {
+     "firm": "Deloitte",
+     "FY2024": 2730,
+     "FY2025": 4110,
+     "FY2026": 3341,
+     "change_fy24_fy25_pct": 50.5,
+     "change_fy25_fy26_pct": -18.7
+    },
+    {
+     "firm": "Walmart",
+     "FY2024": 2680,
+     "FY2025": 3323,
+     "FY2026": 2166,
+     "change_fy24_fy25_pct": 24.0,
+     "change_fy25_fy26_pct": -34.8
+    },
+    {
+     "firm": "JPMorgan Chase",
+     "FY2024": 2132,
+     "FY2025": 2847,
+     "FY2026": 2743,
+     "change_fy24_fy25_pct": 33.5,
+     "change_fy25_fy26_pct": -3.7
+    },
+    {
+     "firm": "Intel",
+     "FY2024": 3252,
+     "FY2025": 2524,
+     "FY2026": 1745,
+     "change_fy24_fy25_pct": -22.4,
+     "change_fy25_fy26_pct": -30.9
+    },
+    {
+     "firm": "Tesla",
+     "FY2024": 1613,
+     "FY2025": 2305,
+     "FY2026": 2563,
+     "change_fy24_fy25_pct": 42.9,
+     "change_fy25_fy26_pct": 11.2
+    },
+    {
+     "firm": "Goldman Sachs",
+     "FY2024": 1578,
+     "FY2025": 2009,
+     "FY2026": 1963,
+     "change_fy24_fy25_pct": 27.3,
+     "change_fy25_fy26_pct": -2.3
+    },
+    {
+     "firm": "Qualcomm",
+     "FY2024": 1660,
+     "FY2025": 1751,
+     "FY2026": 851,
+     "change_fy24_fy25_pct": 5.5,
+     "change_fy25_fy26_pct": -51.4
+    },
+    {
+     "firm": "Fidelity Investments",
+     "FY2024": 1422,
+     "FY2025": 1709,
+     "FY2026": 2227,
+     "change_fy24_fy25_pct": 20.2,
+     "change_fy25_fy26_pct": 30.3
+    }
+   ]
+  },
+  "filing_type": {
+   "FY2024": {
+    "placing": {
+     "filings": 61247,
+     "new_employment_share": 0.3651,
+     "change_employer_share": 0.1706
+    },
+    "direct": {
+     "filings": 195258,
+     "new_employment_share": 0.357,
+     "change_employer_share": 0.1522
+    }
+   },
+   "FY2025": {
+    "placing": {
+     "filings": 61091,
+     "new_employment_share": 0.349,
+     "change_employer_share": 0.1767
+    },
+    "direct": {
+     "filings": 234417,
+     "new_employment_share": 0.3378,
+     "change_employer_share": 0.147
+    }
+   },
+   "FY2026": {
+    "placing": {
+     "filings": 48598,
+     "new_employment_share": 0.225,
+     "change_employer_share": 0.2001
+    },
+    "direct": {
+     "filings": 204061,
+     "new_employment_share": 0.3493,
+     "change_employer_share": 0.1487
+    }
+   }
+  },
+  "wage_level": {
+   "FY2024": {
+    "overall": {
+     "II": 0.422,
+     "III": 0.1852,
+     "I": 0.1831,
+     "IV": 0.1336,
+     "missing": 0.0761
+    },
+    "placing": {
+     "II": 0.6797,
+     "III": 0.1674,
+     "I": 0.0905,
+     "IV": 0.0537,
+     "missing": 0.0087
+    },
+    "direct": {
+     "II": 0.3303,
+     "III": 0.2293,
+     "IV": 0.1742,
+     "I": 0.143,
+     "missing": 0.1232
+    }
+   },
+   "FY2025": {
+    "overall": {
+     "II": 0.3891,
+     "I": 0.1982,
+     "III": 0.1887,
+     "IV": 0.1472,
+     "missing": 0.0769
+    },
+    "placing": {
+     "II": 0.6514,
+     "III": 0.156,
+     "I": 0.1301,
+     "IV": 0.051,
+     "missing": 0.0115
+    },
+    "direct": {
+     "II": 0.3207,
+     "III": 0.2276,
+     "IV": 0.1896,
+     "I": 0.1479,
+     "missing": 0.1141
+    }
+   },
+   "FY2026": {
+    "overall": {
+     "II": 0.3601,
+     "III": 0.1856,
+     "IV": 0.1802,
+     "I": 0.1701,
+     "missing": 0.104
+    },
+    "placing": {
+     "II": 0.5939,
+     "III": 0.2076,
+     "I": 0.1149,
+     "IV": 0.0719,
+     "missing": 0.0116
+    },
+    "direct": {
+     "II": 0.2877,
+     "IV": 0.2134,
+     "III": 0.1846,
+     "missing": 0.1663,
+     "I": 0.148
+    }
+   }
+  },
+  "network": {
+   "FY2024": {
+    "nodes": 23376,
+    "edges": 35571,
+    "giant_nodes": 17985,
+    "giant_edges": 31801,
+    "giant_filing_share": 0.9238
+   },
+   "FY2025": {
+    "nodes": 23823,
+    "edges": 36692,
+    "giant_nodes": 18275,
+    "giant_edges": 32835,
+    "giant_filing_share": 0.9165
+   },
+   "FY2026": {
+    "nodes": 21024,
+    "edges": 32954,
+    "giant_nodes": 16034,
+    "giant_edges": 29439,
+    "giant_filing_share": 0.9232
+   }
+  },
+  "modularity": {
+   "FY2026": {
+    "communities_median": 68,
+    "giant_nodes": 16034,
+    "giant_edges": 29439,
+    "rewired_components_median": 519,
+    "real": 0.612,
+    "real_sd": 0.0008,
+    "null": 0.72,
+    "null_sd": 0.0017,
+    "z": -63.86,
+    "null_runs_at_or_above_real": 100
+   },
+   "FY2025": {
+    "communities_median": 70,
+    "giant_nodes": 18275,
+    "giant_edges": 32835,
+    "rewired_components_median": 565,
+    "real": 0.6079,
+    "real_sd": 0.0008,
+    "null": 0.7421,
+    "null_sd": 0.0017,
+    "z": -79.76,
+    "null_runs_at_or_above_real": 100
+   }
+  },
+  "stability": [
+   {
+    "from": "FY2024",
+    "to": "FY2025",
+    "shared_clients": 5003,
+    "nmi": 0.335,
+    "same_period_nmi": 0.732,
+    "unweighted_nmi": 0.266,
+    "unweighted_same_period_nmi": 0.494
+   },
+   {
+    "from": "FY2025",
+    "to": "FY2026",
+    "shared_clients": 4451,
+    "nmi": 0.296,
+    "same_period_nmi": 0.73,
+    "unweighted_nmi": 0.245,
+    "unweighted_same_period_nmi": 0.531
+   }
+  ],
+  "client_churn": {
+   "pairs": [
+    {
+     "from": "FY2024",
+     "to": "FY2025",
+     "clients_a": 16063,
+     "clients_b": 16170,
+     "shared": 6331,
+     "exits": 9732,
+     "exit_filing_share_of_a": 0.1732,
+     "entries": 9839,
+     "entry_filing_share_of_b": 0.1758,
+     "clients_with_5plus_filings_both_periods": 1442,
+     "main_vendor_changed_share": 0.4272
+    },
+    {
+     "from": "FY2025",
+     "to": "FY2026",
+     "clients_a": 16170,
+     "clients_b": 13776,
+     "shared": 5701,
+     "exits": 10469,
+     "exit_filing_share_of_a": 0.1857,
+     "entries": 8075,
+     "entry_filing_share_of_b": 0.1654,
+     "clients_with_5plus_filings_both_periods": 1231,
+     "main_vendor_changed_share": 0.4728
+    }
+   ],
+   "tata_consultancy_services": {
+    "vendor": "Tata Consultancy Services",
+    "found": true,
+    "fy2025_main_vendor_clients": 382,
+    "still_filing_fy2026": 255,
+    "kept_as_main_vendor": 142,
+    "switched_main_vendor": 113,
+    "top_5_new_main_vendors": [
+     [
+      "Infosys",
+      11
+     ],
+     [
+      "Cognizant",
+      7
+     ],
+     [
+      "Capgemini",
+      7
+     ],
+     [
+      "Compunnel Software",
+      6
+     ],
+     [
+      "Virtusa",
+      4
+     ]
+    ]
+   },
+   "cognizant": {
+    "vendor": "Cognizant",
+    "found": true,
+    "fy2025_main_vendor_clients": 401,
+    "still_filing_fy2026": 222,
+    "kept_as_main_vendor": 136,
+    "switched_main_vendor": 86,
+    "top_5_new_main_vendors": [
+     [
+      "Infosys",
+      13
+     ],
+     [
+      "Compunnel Software",
+      5
+     ],
+     [
+      "LTIMindtree",
+      5
+     ],
+     [
+      "HCL",
+      4
+     ],
+     [
+      "Tata Consultancy Services",
+      4
+     ]
+    ]
+   }
+  }
+ },
+ "jan_jun": {
+  "totals": {
+   "FY2024": {
+    "certified_filings": 310932,
+    "placed_filings": 64991,
+    "placed_share": 0.209,
+    "main_row_only_placed_filings": 0,
+    "client_company_filings": 62111,
+    "client_company_share": 0.1998,
+    "firms": 6487,
+    "clients": 13347
+   },
+   "FY2025": {
+    "certified_filings": 340384,
+    "placed_filings": 63610,
+    "placed_share": 0.1869,
+    "main_row_only_placed_filings": 0,
+    "client_company_filings": 62053,
+    "client_company_share": 0.1823,
+    "firms": 6905,
+    "clients": 13636
+   },
+   "FY2026": {
+    "certified_filings": 320544,
+    "placed_filings": 55896,
+    "placed_share": 0.1744,
+    "main_row_only_placed_filings": 15718,
+    "client_company_filings": 51805,
+    "client_company_share": 0.1616,
+    "firms": 6598,
+    "clients": 11885
+   }
+  },
+  "totals_change": {
+   "fy24_to_fy25": {
+    "certified_filings": {
+     "absolute": 29452,
+     "percent": 9.5
+    },
+    "placed_filings": {
+     "absolute": -1381,
+     "percent": -2.1
+    },
+    "client_company_filings": {
+     "absolute": -58,
+     "percent": -0.1
+    },
+    "firms": {
+     "absolute": 418,
+     "percent": 6.4
+    },
+    "clients": {
+     "absolute": 289,
+     "percent": 2.2
+    },
+    "placed_share_pp": -2.21,
+    "client_company_share_pp": -1.75
+   },
+   "fy25_to_fy26": {
+    "certified_filings": {
+     "absolute": -19840,
+     "percent": -5.8
+    },
+    "placed_filings": {
+     "absolute": -7714,
+     "percent": -12.1
+    },
+    "client_company_filings": {
+     "absolute": -10248,
+     "percent": -16.5
+    },
+    "firms": {
+     "absolute": -307,
+     "percent": -4.4
+    },
+    "clients": {
+     "absolute": -1751,
+     "percent": -12.8
+    },
+    "placed_share_pp": -1.25,
+    "client_company_share_pp": -2.07
+   }
+  },
+  "employer_kinds": {
+   "min_filings_fy2025": 20,
+   "qualifying_employers": 2096,
+   "placing_employers": 477,
+   "direct_employers": 1619,
+   "group_filings": {
+    "placing": {
+     "FY2024": 44599,
+     "FY2025": 44797,
+     "FY2026": 35298
+    },
+    "direct": {
+     "FY2024": 145958,
+     "FY2025": 172276,
+     "FY2026": 157821
+    }
+   },
+   "group_change": {
+    "placing": {
+     "fy24_to_fy25": {
+      "absolute": 198,
+      "percent": 0.4
+     },
+     "fy25_to_fy26": {
+      "absolute": -9499,
+      "percent": -21.2
+     }
+    },
+    "direct": {
+     "fy24_to_fy25": {
+      "absolute": 26318,
+      "percent": 18.0
+     },
+     "fy25_to_fy26": {
+      "absolute": -14455,
+      "percent": -8.4
+     }
+    }
+   },
+   "top_15_placing": [
+    {
+     "firm": "Tata Consultancy Services",
+     "FY2024": 6836,
+     "FY2025": 5256,
+     "FY2026": 2079,
+     "change_fy24_fy25_pct": -23.1,
+     "change_fy25_fy26_pct": -60.4
+    },
+    {
+     "firm": "Infosys",
+     "FY2024": 3861,
+     "FY2025": 3126,
+     "FY2026": 3810,
+     "change_fy24_fy25_pct": -19.0,
+     "change_fy25_fy26_pct": 21.9
+    },
+    {
+     "firm": "HCL",
+     "FY2024": 2474,
+     "FY2025": 1770,
+     "FY2026": 1012,
+     "change_fy24_fy25_pct": -28.5,
+     "change_fy25_fy26_pct": -42.8
+    },
+    {
+     "firm": "Accenture",
+     "FY2024": 2073,
+     "FY2025": 1752,
+     "FY2026": 1166,
+     "change_fy24_fy25_pct": -15.5,
+     "change_fy25_fy26_pct": -33.4
+    },
+    {
+     "firm": "IBM",
+     "FY2024": 1997,
+     "FY2025": 1687,
+     "FY2026": 563,
+     "change_fy24_fy25_pct": -15.5,
+     "change_fy25_fy26_pct": -66.6
+    },
+    {
+     "firm": "LTIMindtree",
+     "FY2024": 1859,
+     "FY2025": 1579,
+     "FY2026": 1024,
+     "change_fy24_fy25_pct": -15.1,
+     "change_fy25_fy26_pct": -35.1
+    },
+    {
+     "firm": "Capgemini",
+     "FY2024": 1474,
+     "FY2025": 1491,
+     "FY2026": 1048,
+     "change_fy24_fy25_pct": 1.2,
+     "change_fy25_fy26_pct": -29.7
+    },
+    {
+     "firm": "Grandison Management",
+     "FY2024": 447,
+     "FY2025": 1335,
+     "FY2026": 1575,
+     "change_fy24_fy25_pct": 198.7,
+     "change_fy25_fy26_pct": 18.0
+    },
+    {
+     "firm": "Wipro",
+     "FY2024": 1173,
+     "FY2025": 1280,
+     "FY2026": 1204,
+     "change_fy24_fy25_pct": 9.1,
+     "change_fy25_fy26_pct": -5.9
+    },
+    {
+     "firm": "Compunnel Software",
+     "FY2024": 865,
+     "FY2025": 1195,
+     "FY2026": 1458,
+     "change_fy24_fy25_pct": 38.2,
+     "change_fy25_fy26_pct": 22.0
+    },
+    {
+     "firm": "Mphasis",
+     "FY2024": 806,
+     "FY2025": 868,
+     "FY2026": 716,
+     "change_fy24_fy25_pct": 7.7,
+     "change_fy25_fy26_pct": -17.5
+    },
+    {
+     "firm": "Tech Mahindra",
+     "FY2024": 990,
+     "FY2025": 818,
+     "FY2026": 433,
+     "change_fy24_fy25_pct": -17.4,
+     "change_fy25_fy26_pct": -47.1
+    },
+    {
+     "firm": "UST Global",
+     "FY2024": 420,
+     "FY2025": 573,
+     "FY2026": 386,
+     "change_fy24_fy25_pct": 36.4,
+     "change_fy25_fy26_pct": -32.6
+    },
+    {
+     "firm": "L&T Technology Services",
+     "FY2024": 466,
+     "FY2025": 450,
+     "FY2026": 310,
+     "change_fy24_fy25_pct": -3.4,
+     "change_fy25_fy26_pct": -31.1
+    },
+    {
+     "firm": "Kforce",
+     "FY2024": 388,
+     "FY2025": 430,
+     "FY2026": 463,
+     "change_fy24_fy25_pct": 10.8,
+     "change_fy25_fy26_pct": 7.7
+    }
+   ],
+   "top_15_direct": [
+    {
+     "firm": "Amazon",
+     "FY2024": 11464,
+     "FY2025": 13860,
+     "FY2026": 16484,
+     "change_fy24_fy25_pct": 20.9,
+     "change_fy25_fy26_pct": 18.9
+    },
+    {
+     "firm": "EY",
+     "FY2024": 5865,
+     "FY2025": 6512,
+     "FY2026": 3556,
+     "change_fy24_fy25_pct": 11.0,
+     "change_fy25_fy26_pct": -45.4
+    },
+    {
+     "firm": "Cognizant",
+     "FY2024": 6966,
+     "FY2025": 6502,
+     "FY2026": 4344,
+     "change_fy24_fy25_pct": -6.7,
+     "change_fy25_fy26_pct": -33.2
+    },
+    {
+     "firm": "Google",
+     "FY2024": 6126,
+     "FY2025": 6344,
+     "FY2026": 6548,
+     "change_fy24_fy25_pct": 3.6,
+     "change_fy25_fy26_pct": 3.2
+    },
+    {
+     "firm": "Microsoft",
+     "FY2024": 4997,
+     "FY2025": 4865,
+     "FY2026": 3769,
+     "change_fy24_fy25_pct": -2.6,
+     "change_fy25_fy26_pct": -22.5
+    },
+    {
+     "firm": "Apple",
+     "FY2024": 1751,
+     "FY2025": 3967,
+     "FY2026": 3672,
+     "change_fy24_fy25_pct": 126.6,
+     "change_fy25_fy26_pct": -7.4
+    },
+    {
+     "firm": "Meta",
+     "FY2024": 3245,
+     "FY2025": 3944,
+     "FY2026": 4336,
+     "change_fy24_fy25_pct": 21.5,
+     "change_fy25_fy26_pct": 9.9
+    },
+    {
+     "firm": "Deloitte",
+     "FY2024": 2047,
+     "FY2025": 3314,
+     "FY2026": 2416,
+     "change_fy24_fy25_pct": 61.9,
+     "change_fy25_fy26_pct": -27.1
+    },
+    {
+     "firm": "Walmart",
+     "FY2024": 2182,
+     "FY2025": 2464,
+     "FY2026": 1850,
+     "change_fy24_fy25_pct": 12.9,
+     "change_fy25_fy26_pct": -24.9
+    },
+    {
+     "firm": "JPMorgan Chase",
+     "FY2024": 1646,
+     "FY2025": 2123,
+     "FY2026": 2210,
+     "change_fy24_fy25_pct": 29.0,
+     "change_fy25_fy26_pct": 4.1
+    },
+    {
+     "firm": "Intel",
+     "FY2024": 2653,
+     "FY2025": 2106,
+     "FY2026": 1501,
+     "change_fy24_fy25_pct": -20.6,
+     "change_fy25_fy26_pct": -28.7
+    },
+    {
+     "firm": "Tesla",
+     "FY2024": 1439,
+     "FY2025": 1911,
+     "FY2026": 2276,
+     "change_fy24_fy25_pct": 32.8,
+     "change_fy25_fy26_pct": 19.1
+    },
+    {
+     "firm": "Goldman Sachs",
+     "FY2024": 1347,
+     "FY2025": 1754,
+     "FY2026": 1863,
+     "change_fy24_fy25_pct": 30.2,
+     "change_fy25_fy26_pct": 6.2
+    },
+    {
+     "firm": "Qualcomm",
+     "FY2024": 1413,
+     "FY2025": 1355,
+     "FY2026": 531,
+     "change_fy24_fy25_pct": -4.1,
+     "change_fy25_fy26_pct": -60.8
+    },
+    {
+     "firm": "Fidelity Investments",
+     "FY2024": 929,
+     "FY2025": 1232,
+     "FY2026": 1707,
+     "change_fy24_fy25_pct": 32.6,
+     "change_fy25_fy26_pct": 38.6
+    }
+   ]
+  },
+  "filing_type": {
+   "FY2024": {
+    "placing": {
+     "filings": 44599,
+     "new_employment_share": 0.4038,
+     "change_employer_share": 0.1573
+    },
+    "direct": {
+     "filings": 145958,
+     "new_employment_share": 0.4065,
+     "change_employer_share": 0.1331
+    }
+   },
+   "FY2025": {
+    "placing": {
+     "filings": 44797,
+     "new_employment_share": 0.409,
+     "change_employer_share": 0.1539
+    },
+    "direct": {
+     "filings": 172276,
+     "new_employment_share": 0.4012,
+     "change_employer_share": 0.1301
+    }
+   },
+   "FY2026": {
+    "placing": {
+     "filings": 35298,
+     "new_employment_share": 0.2562,
+     "change_employer_share": 0.189
+    },
+    "direct": {
+     "filings": 157821,
+     "new_employment_share": 0.412,
+     "change_employer_share": 0.1316
+    }
+   }
+  },
+  "wage_level": {
+   "FY2024": {
+    "overall": {
+     "II": 0.4234,
+     "I": 0.1941,
+     "III": 0.1789,
+     "IV": 0.1266,
+     "missing": 0.077
+    },
+    "placing": {
+     "II": 0.6822,
+     "III": 0.165,
+     "I": 0.0904,
+     "IV": 0.0536,
+     "missing": 0.0089
+    },
+    "direct": {
+     "II": 0.3367,
+     "III": 0.2253,
+     "IV": 0.1643,
+     "I": 0.1465,
+     "missing": 0.1273
+    }
+   },
+   "FY2025": {
+    "overall": {
+     "II": 0.3923,
+     "I": 0.2176,
+     "III": 0.1781,
+     "IV": 0.1359,
+     "missing": 0.0761
+    },
+    "placing": {
+     "II": 0.6512,
+     "III": 0.1509,
+     "I": 0.1385,
+     "IV": 0.0473,
+     "missing": 0.012
+    },
+    "direct": {
+     "II": 0.3288,
+     "III": 0.2194,
+     "IV": 0.176,
+     "I": 0.1598,
+     "missing": 0.116
+    }
+   },
+   "FY2026": {
+    "overall": {
+     "II": 0.3595,
+     "I": 0.1802,
+     "III": 0.1785,
+     "IV": 0.177,
+     "missing": 0.1048
+    },
+    "placing": {
+     "II": 0.5771,
+     "III": 0.2111,
+     "I": 0.1201,
+     "IV": 0.0796,
+     "missing": 0.0121
+    },
+    "direct": {
+     "II": 0.2903,
+     "IV": 0.2056,
+     "missing": 0.1734,
+     "III": 0.1724,
+     "I": 0.1583
+    }
+   }
+  },
+  "network": {
+   "FY2024": {
+    "nodes": 19834,
+    "edges": 28193,
+    "giant_nodes": 14796,
+    "giant_edges": 24710,
+    "giant_filing_share": 0.9102
+   },
+   "FY2025": {
+    "nodes": 20541,
+    "edges": 29527,
+    "giant_nodes": 15330,
+    "giant_edges": 25940,
+    "giant_filing_share": 0.9014
+   },
+   "FY2026": {
+    "nodes": 18483,
+    "edges": 27047,
+    "giant_nodes": 13596,
+    "giant_edges": 23650,
+    "giant_filing_share": 0.9073
+   }
+  },
+  "modularity": {
+   "FY2026": {
+    "communities_median": 63,
+    "giant_nodes": 13596,
+    "giant_edges": 23650,
+    "rewired_components_median": 508,
+    "real": 0.629,
+    "real_sd": 0.0008,
+    "null": 0.7285,
+    "null_sd": 0.0018,
+    "z": -55.37,
+    "null_runs_at_or_above_real": 100
+   },
+   "FY2025": {
+    "communities_median": 68,
+    "giant_nodes": 15330,
+    "giant_edges": 25940,
+    "rewired_components_median": 562,
+    "real": 0.6287,
+    "real_sd": 0.0007,
+    "null": 0.7523,
+    "null_sd": 0.0018,
+    "z": -67.9,
+    "null_runs_at_or_above_real": 100
+   }
+  },
+  "stability": [
+   {
+    "from": "FY2024",
+    "to": "FY2025",
+    "shared_clients": 3986,
+    "nmi": 0.351,
+    "same_period_nmi": 0.772,
+    "unweighted_nmi": 0.296,
+    "unweighted_same_period_nmi": 0.58
+   },
+   {
+    "from": "FY2025",
+    "to": "FY2026",
+    "shared_clients": 3560,
+    "nmi": 0.302,
+    "same_period_nmi": 0.731,
+    "unweighted_nmi": 0.276,
+    "unweighted_same_period_nmi": 0.545
+   }
+  ],
+  "client_churn": {
+   "pairs": [
+    {
+     "from": "FY2024",
+     "to": "FY2025",
+     "clients_a": 13347,
+     "clients_b": 13636,
+     "shared": 5164,
+     "exits": 8183,
+     "exit_filing_share_of_a": 0.1904,
+     "entries": 8472,
+     "entry_filing_share_of_b": 0.194,
+     "clients_with_5plus_filings_both_periods": 1155,
+     "main_vendor_changed_share": 0.4312
+    },
+    {
+     "from": "FY2025",
+     "to": "FY2026",
+     "clients_a": 13636,
+     "clients_b": 11885,
+     "shared": 4732,
+     "exits": 8904,
+     "exit_filing_share_of_a": 0.2021,
+     "entries": 7153,
+     "entry_filing_share_of_b": 0.1849,
+     "clients_with_5plus_filings_both_periods": 989,
+     "main_vendor_changed_share": 0.4813
+    }
+   ],
+   "tata_consultancy_services": {
+    "vendor": "Tata Consultancy Services",
+    "found": true,
+    "fy2025_main_vendor_clients": 352,
+    "still_filing_fy2026": 226,
+    "kept_as_main_vendor": 112,
+    "switched_main_vendor": 114,
+    "top_5_new_main_vendors": [
+     [
+      "Infosys",
+      14
+     ],
+     [
+      "Cognizant",
+      8
+     ],
+     [
+      "HCL",
+      5
+     ],
+     [
+      "Synechron",
+      4
+     ],
+     [
+      "Compunnel Software",
+      4
+     ]
+    ]
+   },
+   "cognizant": {
+    "vendor": "Cognizant",
+    "found": true,
+    "fy2025_main_vendor_clients": 360,
+    "still_filing_fy2026": 192,
+    "kept_as_main_vendor": 109,
+    "switched_main_vendor": 83,
+    "top_5_new_main_vendors": [
+     [
+      "Infosys",
+      15
+     ],
+     [
+      "HCL",
+      5
+     ],
+     [
+      "Compunnel Software",
+      5
+     ],
+     [
+      "Accenture",
+      3
+     ],
+     [
+      "Capgemini",
+      3
+     ]
+    ]
+   }
+  }
+ },
+ "seconds": 406
+}

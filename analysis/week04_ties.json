@@ -1,0 +1,646 @@
+{
+ "generated_by": "analysis/week04_ties.py",
+ "seed": 2805,
+ "constants": {
+  "min_filings": 20,
+  "large_filings": 100,
+  "near_zero_ratio": 0.5,
+  "runs": 100,
+  "null_runs": 100
+ },
+ "perm_ties": {
+  "2025": {
+   "year": 2025,
+   "case_status_counts": {
+    "Certified": 80680,
+    "Certified - Expired": 57073,
+    "Withdrawn": 6688,
+    "Denied": 2615
+   },
+   "certified_statuses_used": [
+    "Certified",
+    "Certified-Expired (either spacing)"
+   ],
+   "certified_perm_filings": 137753,
+   "perm_join_landed_on_h1b_employer_share": 0.6501,
+   "perm_join_landed_on_min20_employer_share": 0.4417,
+   "h1b_employers_min20_filings": 3493,
+   "spearman_h1b_vs_perm_filings": {
+    "rho": 0.494,
+    "p": 0.0,
+    "n": 3493
+   },
+   "placing": {
+    "employers": 948,
+    "h1b_filings": 83989,
+    "perm_filings": 11173,
+    "perm_per_100_h1b": 13.303
+   },
+   "direct": {
+    "employers": 2545,
+    "h1b_filings": 298594,
+    "perm_filings": 49678,
+    "perm_per_100_h1b": 16.637
+   },
+   "kind_permutation_test": {
+    "observed_gap_per_100": -3.334,
+    "shuffles": 1000,
+    "p": 0.2997
+   },
+   "top_placing_by_h1b": [
+    {
+     "employer": "Tata Consultancy Services",
+     "h1b_filings": 7793,
+     "perm_filings": 506,
+     "perm_per_100_h1b": 6.49
+    },
+    {
+     "employer": "Infosys",
+     "h1b_filings": 5740,
+     "perm_filings": 0,
+     "perm_per_100_h1b": 0.0
+    },
+    {
+     "employer": "HCL",
+     "h1b_filings": 2928,
+     "perm_filings": 350,
+     "perm_per_100_h1b": 11.95
+    },
+    {
+     "employer": "Accenture",
+     "h1b_filings": 2848,
+     "perm_filings": 320,
+     "perm_per_100_h1b": 11.24
+    },
+    {
+     "employer": "Capgemini",
+     "h1b_filings": 2657,
+     "perm_filings": 321,
+     "perm_per_100_h1b": 12.08
+    },
+    {
+     "employer": "LTIMindtree",
+     "h1b_filings": 2635,
+     "perm_filings": 205,
+     "perm_per_100_h1b": 7.78
+    },
+    {
+     "employer": "IBM",
+     "h1b_filings": 2584,
+     "perm_filings": 303,
+     "perm_per_100_h1b": 11.73
+    },
+    {
+     "employer": "Compunnel Software",
+     "h1b_filings": 2276,
+     "perm_filings": 337,
+     "perm_per_100_h1b": 14.81
+    },
+    {
+     "employer": "Wipro",
+     "h1b_filings": 2156,
+     "perm_filings": 506,
+     "perm_per_100_h1b": 23.47
+    },
+    {
+     "employer": "Grandison Management",
+     "h1b_filings": 1446,
+     "perm_filings": 3,
+     "perm_per_100_h1b": 0.21
+    },
+    {
+     "employer": "Mphasis",
+     "h1b_filings": 1428,
+     "perm_filings": 132,
+     "perm_per_100_h1b": 9.24
+    },
+    {
+     "employer": "Tech Mahindra",
+     "h1b_filings": 1335,
+     "perm_filings": 48,
+     "perm_per_100_h1b": 3.6
+    },
+    {
+     "employer": "UST Global",
+     "h1b_filings": 861,
+     "perm_filings": 52,
+     "perm_per_100_h1b": 6.04
+    },
+    {
+     "employer": "Kforce",
+     "h1b_filings": 783,
+     "perm_filings": 126,
+     "perm_per_100_h1b": 16.09
+    },
+    {
+     "employer": "L&T Technology Services",
+     "h1b_filings": 739,
+     "perm_filings": 61,
+     "perm_per_100_h1b": 8.25
+    }
+   ],
+   "top_direct_by_h1b": [
+    {
+     "employer": "Amazon",
+     "h1b_filings": 22493,
+     "perm_filings": 0,
+     "perm_per_100_h1b": 0.0
+    },
+    {
+     "employer": "Cognizant",
+     "h1b_filings": 11067,
+     "perm_filings": 0,
+     "perm_per_100_h1b": 0.0
+    },
+    {
+     "employer": "EY",
+     "h1b_filings": 9440,
+     "perm_filings": 279,
+     "perm_per_100_h1b": 2.96
+    },
+    {
+     "employer": "Microsoft",
+     "h1b_filings": 9106,
+     "perm_filings": 2928,
+     "perm_per_100_h1b": 32.15
+    },
+    {
+     "employer": "Google",
+     "h1b_filings": 8657,
+     "perm_filings": 0,
+     "perm_per_100_h1b": 0.0
+    },
+    {
+     "employer": "Apple",
+     "h1b_filings": 6919,
+     "perm_filings": 1224,
+     "perm_per_100_h1b": 17.69
+    },
+    {
+     "employer": "Meta",
+     "h1b_filings": 6418,
+     "perm_filings": 386,
+     "perm_per_100_h1b": 6.01
+    },
+    {
+     "employer": "Deloitte",
+     "h1b_filings": 5306,
+     "perm_filings": 317,
+     "perm_per_100_h1b": 5.97
+    },
+    {
+     "employer": "Walmart",
+     "h1b_filings": 4006,
+     "perm_filings": 933,
+     "perm_per_100_h1b": 23.29
+    },
+    {
+     "employer": "JPMorgan Chase",
+     "h1b_filings": 3461,
+     "perm_filings": 712,
+     "perm_per_100_h1b": 20.57
+    },
+    {
+     "employer": "Intel",
+     "h1b_filings": 2806,
+     "perm_filings": 942,
+     "perm_per_100_h1b": 33.57
+    },
+    {
+     "employer": "Tesla",
+     "h1b_filings": 2596,
+     "perm_filings": 400,
+     "perm_per_100_h1b": 15.41
+    },
+    {
+     "employer": "Goldman Sachs",
+     "h1b_filings": 2275,
+     "perm_filings": 577,
+     "perm_per_100_h1b": 25.36
+    },
+    {
+     "employer": "Fidelity Investments",
+     "h1b_filings": 2158,
+     "perm_filings": 0,
+     "perm_per_100_h1b": 0.0
+    },
+    {
+     "employer": "Qualcomm",
+     "h1b_filings": 2011,
+     "perm_filings": 21,
+     "perm_per_100_h1b": 1.04
+    }
+   ],
+   "exceptions": {
+    "large_filings_threshold": 100,
+    "near_zero_ratio_threshold": 0.5,
+    "big_h1b_near_zero_perm": [
+     {
+      "employer": "Amazon",
+      "h1b_filings": 22493,
+      "perm_filings": 0
+     },
+     {
+      "employer": "Cognizant",
+      "h1b_filings": 11067,
+      "perm_filings": 0
+     },
+     {
+      "employer": "Google",
+      "h1b_filings": 8657,
+      "perm_filings": 0
+     },
+     {
+      "employer": "Infosys",
+      "h1b_filings": 5740,
+      "perm_filings": 0
+     },
+     {
+      "employer": "Fidelity Investments",
+      "h1b_filings": 2158,
+      "perm_filings": 0
+     }
+    ],
+    "highest_ratio_large_employers": [
+     {
+      "employer": "Management Health Systems",
+      "h1b_filings": 169,
+      "perm_filings": 1179,
+      "perm_per_100_h1b": 697.63
+     },
+     {
+      "employer": "Epam Systems",
+      "h1b_filings": 118,
+      "perm_filings": 193,
+      "perm_per_100_h1b": 163.56
+     },
+     {
+      "employer": "Vmware",
+      "h1b_filings": 139,
+      "perm_filings": 224,
+      "perm_per_100_h1b": 161.15
+     },
+     {
+      "employer": "Best Buy",
+      "h1b_filings": 138,
+      "perm_filings": 135,
+      "perm_per_100_h1b": 97.83
+     },
+     {
+      "employer": "Oracle America",
+      "h1b_filings": 1258,
+      "perm_filings": 1190,
+      "perm_per_100_h1b": 94.59
+     }
+    ]
+   }
+  },
+  "2024": {
+   "year": 2024,
+   "case_status_counts": {
+    "Certified": 51180,
+    "Certified-Expired": 50814,
+    "Withdrawn": 7478,
+    "Denied": 5027
+   },
+   "certified_statuses_used": [
+    "Certified",
+    "Certified-Expired (either spacing)"
+   ],
+   "certified_perm_filings": 101994,
+   "perm_join_landed_on_h1b_employer_share": 0.697,
+   "perm_join_landed_on_min20_employer_share": 0.5177,
+   "h1b_employers_min20_filings": 3386,
+   "spearman_h1b_vs_perm_filings": {
+    "rho": 0.453,
+    "p": 0.0,
+    "n": 3386
+   },
+   "placing": {
+    "employers": 898,
+    "h1b_filings": 82811,
+    "perm_filings": 10471,
+    "perm_per_100_h1b": 12.644
+   },
+   "direct": {
+    "employers": 2488,
+    "h1b_filings": 274609,
+    "perm_filings": 42332,
+    "perm_per_100_h1b": 15.415
+   },
+   "kind_permutation_test": {
+    "observed_gap_per_100": -2.771,
+    "shuffles": 1000,
+    "p": 0.1079
+   }
+  }
+ },
+ "strength_vs_degree": {
+  "firms": {
+   "n": 6560,
+   "spearman": {
+    "rho": 0.909,
+    "p": 0.0
+   },
+   "high_strength_low_degree": [
+    {
+     "label": "Gradestaffing",
+     "degree": 1,
+     "strength": 55,
+     "degree_rank": 5584,
+     "strength_rank": 178
+    },
+    {
+     "label": "Hectologic",
+     "degree": 1,
+     "strength": 43,
+     "degree_rank": 5584,
+     "strength_rank": 251
+    },
+    {
+     "label": "Murthy LAW Firm",
+     "degree": 1,
+     "strength": 38,
+     "degree_rank": 5584,
+     "strength_rank": 304
+    },
+    {
+     "label": "Murthy LAW Firm",
+     "degree": 1,
+     "strength": 35,
+     "degree_rank": 5584,
+     "strength_rank": 346
+    },
+    {
+     "label": "Matlen Silver",
+     "degree": 1,
+     "strength": 34,
+     "degree_rank": 5584,
+     "strength_rank": 360
+    }
+   ],
+   "high_degree_low_strength": [
+    {
+     "label": "Workcog",
+     "degree": 5,
+     "strength": 5,
+     "degree_rank": 2068,
+     "strength_rank": 2822
+    },
+    {
+     "label": "Winsai",
+     "degree": 5,
+     "strength": 5,
+     "degree_rank": 2068,
+     "strength_rank": 2822
+    },
+    {
+     "label": "Virtus Solutions",
+     "degree": 5,
+     "strength": 5,
+     "degree_rank": 2068,
+     "strength_rank": 2822
+    },
+    {
+     "label": "Vigna",
+     "degree": 5,
+     "strength": 5,
+     "degree_rank": 2068,
+     "strength_rank": 2822
+    },
+    {
+     "label": "Venusgeo Solutions",
+     "degree": 5,
+     "strength": 5,
+     "degree_rank": 2068,
+     "strength_rank": 2822
+    }
+   ]
+  },
+  "clients": {
+   "n": 15199,
+   "spearman": {
+    "rho": 0.748,
+    "p": 0.0
+   },
+   "high_strength_low_degree": [
+    {
+     "label": "Ultimate Therapy",
+     "degree": 1,
+     "strength": 133,
+     "degree_rank": 9645,
+     "strength_rank": 102
+    },
+    {
+     "label": "Sigma Rehab",
+     "degree": 1,
+     "strength": 95,
+     "degree_rank": 9645,
+     "strength_rank": 132
+    },
+    {
+     "label": "Post Rehab Services",
+     "degree": 1,
+     "strength": 61,
+     "degree_rank": 9645,
+     "strength_rank": 191
+    },
+    {
+     "label": "Grady Memorial Hospital",
+     "degree": 1,
+     "strength": 58,
+     "degree_rank": 9645,
+     "strength_rank": 201
+    },
+    {
+     "label": "Northwestern Mutual Life",
+     "degree": 1,
+     "strength": 48,
+     "degree_rank": 9645,
+     "strength_rank": 229
+    }
+   ],
+   "high_degree_low_strength": [
+    {
+     "label": "Zoox Labs",
+     "degree": 2,
+     "strength": 2,
+     "degree_rank": 3183,
+     "strength_rank": 5699
+    },
+    {
+     "label": "Zensar Technologies",
+     "degree": 2,
+     "strength": 2,
+     "degree_rank": 3183,
+     "strength_rank": 5699
+    },
+    {
+     "label": "Zayo",
+     "degree": 2,
+     "strength": 2,
+     "degree_rank": 3183,
+     "strength_rank": 5699
+    },
+    {
+     "label": "Yamaha Motor",
+     "degree": 2,
+     "strength": 2,
+     "degree_rank": 3183,
+     "strength_rank": 5699
+    },
+    {
+     "label": "YUM Restaurant Services",
+     "degree": 2,
+     "strength": 2,
+     "degree_rank": 3183,
+     "strength_rank": 5699
+    }
+   ]
+  }
+ },
+ "overlap_formula_check": {
+  "toy_graph": "ok",
+  "real_links_checked": 200
+ },
+ "weak_ties": {
+  "2025": {
+   "year": 2025,
+   "giant_nodes": 21759,
+   "giant_edges": 41212,
+   "undefined_links": 13061,
+   "undefined_links_filing_share": 0.2186,
+   "defined_links": 28151,
+   "spearman_weight_overlap": {
+    "rho": -0.04,
+    "p": 0.0,
+    "n": 28151
+   },
+   "weight_shuffle_null": {
+    "runs": 100,
+    "mean_rho": 0.0001,
+    "sd_rho": 0.0061,
+    "z": -6.52,
+    "p_two_sided": 0.0
+   },
+   "louvain": {
+    "runs": 100,
+    "modularity_min": 0.5941,
+    "modularity_median": 0.5963,
+    "modularity_max": 0.5983,
+    "communities_median": 70,
+    "note": "modularity vs the rewired null is week04_staffing.json's main.modularity"
+   },
+   "overlap_inside_vs_across_community": {
+    "mean_overlap_inside": 0.0689,
+    "mean_overlap_across": 0.0585,
+    "n_inside": 10797,
+    "n_across": 17354,
+    "direction": "higher overlap inside communities"
+   },
+   "weight_overlap_direction": "negative: heavier links sit in less overlapping neighbourhoods",
+   "overlap_by_weight_bucket": {
+    "1": {
+     "n": 18638,
+     "mean_overlap": 0.0649
+    },
+    "2": {
+     "n": 4609,
+     "mean_overlap": 0.0613
+    },
+    "3": {
+     "n": 1566,
+     "mean_overlap": 0.0629
+    },
+    "4-5": {
+     "n": 1267,
+     "mean_overlap": 0.0585
+    },
+    "6-10": {
+     "n": 1016,
+     "mean_overlap": 0.0513
+    },
+    "11-20": {
+     "n": 573,
+     "mean_overlap": 0.0452
+    },
+    "21+": {
+     "n": 482,
+     "mean_overlap": 0.034
+    }
+   }
+  },
+  "2024": {
+   "year": 2024,
+   "giant_nodes": 21431,
+   "giant_edges": 39954,
+   "undefined_links": 12828,
+   "undefined_links_filing_share": 0.2132,
+   "defined_links": 27126,
+   "spearman_weight_overlap": {
+    "rho": -0.024,
+    "p": 0.0001,
+    "n": 27126
+   },
+   "weight_shuffle_null": {
+    "runs": 100,
+    "mean_rho": 0.0007,
+    "sd_rho": 0.0058,
+    "z": -4.18,
+    "p_two_sided": 0.0
+   },
+   "louvain": {
+    "runs": 100,
+    "modularity_min": 0.5905,
+    "modularity_median": 0.5925,
+    "modularity_max": 0.5942,
+    "communities_median": 90,
+    "note": "modularity vs the rewired null is week04_staffing.json's main.modularity"
+   },
+   "overlap_inside_vs_across_community": {
+    "mean_overlap_inside": 0.0671,
+    "mean_overlap_across": 0.0548,
+    "n_inside": 10493,
+    "n_across": 16633,
+    "direction": "higher overlap inside communities"
+   },
+   "weight_overlap_direction": "negative: heavier links sit in less overlapping neighbourhoods"
+  }
+ },
+ "wage": {
+  "wage_level_map": {
+   "I": 1,
+   "II": 2,
+   "III": 3,
+   "IV": 4
+  },
+  "missing_share_filings": 0.0795,
+  "eta_squared_firms": {
+   "n": 6476,
+   "eta_squared": 0.023,
+   "shuffles": 1000,
+   "p": 0.001
+  },
+  "eta_squared_clients": {
+   "n": 14291,
+   "eta_squared": 0.1233,
+   "shuffles": 1000,
+   "p": 0.001
+  },
+  "wage_distribution_placing_vs_direct_filings": {
+   "placing": {
+    "1": 0.126,
+    "2": 0.6641,
+    "3": 0.1582,
+    "4": 0.0517
+   },
+   "direct": {
+    "1": 0.1643,
+    "2": 0.3543,
+    "3": 0.2585,
+    "4": 0.2229
+   }
+  }
+ },
+ "seconds": 49
+}

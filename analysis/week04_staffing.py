@@ -116,6 +116,11 @@ def placements(year, lca):
     sites = load(f"worksites_fy{year}")
     sites = sites[sites["SECONDARY_ENTITY"].str.upper().str.startswith("Y")]
     sites = sites[sites["CASE_NUMBER"].isin(lca["CASE_NUMBER"])]
+    # The FY2026 worksites file leaves out about a fifth of the placed filings
+    # (FY2022 to FY2025 have every one). Those keep the client on their main row.
+    placed = lca[lca["SECONDARY_ENTITY"].str.upper().str.startswith("Y")]
+    missing = placed[~placed["CASE_NUMBER"].isin(sites["CASE_NUMBER"])]
+    sites = pd.concat([sites, missing[["CASE_NUMBER", "SECONDARY_ENTITY", "SECONDARY_ENTITY_BUSINESS_NAME"]]])
     sites = sites.assign(client=sites["SECONDARY_ENTITY_BUSINESS_NAME"].map(resolver().client))
     placeholder = int(sites["client"].isna().sum())
     rows = sites.dropna(subset=["client"]).drop_duplicates(["CASE_NUMBER", "client"])

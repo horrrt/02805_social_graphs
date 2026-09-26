@@ -98,6 +98,90 @@ test("the groups hold only partly from year to year", () => {
   });
 });
 
+test("FY2026 so far, January to June against the year before", () => {
+  const shift = json("analysis/week04_shift.json");
+  const j = shift.jan_jun;
+  const change = j.totals_change;
+  const oneDp = (x) => `${Math.abs(x).toFixed(1)}%`;
+  const oct = (fy, month) => shift.monthly[fy].find((m) => m.month === month).certified_filings;
+  says(`holds ${count(oct("FY2026", "2025-10"))} certified filings against ${count(oct("FY2025", "2024-10"))} a year earlier`);
+  assert.ok(change.fy25_to_fy26.certified_filings.percent < 0 && change.fy24_to_fy25.certified_filings.percent > 0);
+  says(`certified filings fell ${oneDp(change.fy25_to_fy26.certified_filings.percent)} after rising ${oneDp(change.fy24_to_fy25.certified_filings.percent)}`);
+  says(`fell ${oneDp(change.fy25_to_fy26.client_company_filings.percent)} after holding flat (-${oneDp(change.fy24_to_fy25.client_company_filings.percent)})`);
+  const tcs = j.employer_kinds.top_15_placing.find((f) => f.firm === "Tata Consultancy Services");
+  says(`Tata Consultancy Services filed ${count(tcs.FY2026)}, down from ${count(tcs.FY2025)}`);
+  const c = j.client_churn.tata_consultancy_services;
+  says(`Of the ${c.fy2025_main_vendor_clients} clients it supplied most in FY2025, ${c.still_filing_fy2026} still appear, and ${c.switched_main_vendor} of those`);
+  assert.equal(c.top_5_new_main_vendors[0][0], "Infosys");
+  const [before, after] = j.client_churn.pairs.map((p) => p.main_vendor_changed_share);
+  says(`${pct(after)} changed their main vendor, against ${pct(before)} a year earlier`);
+});
+
+test("strong ties, weak ties and pay", () => {
+  const ties = json("analysis/week04_ties.json");
+  const shift = json("analysis/week04_shift.json");
+  const block = text('id="staffing-ties"', "</details>");
+  const has = (t) => assert.ok(block.includes(t), `the ties disclosure should say "${t}"`);
+  const [w, w24] = [ties.weak_ties["2025"], ties.weak_ties["2024"]];
+  const minus = (x, d) => `-${Math.abs(x).toFixed(d)}`;
+  assert.ok(w.spearman_weight_overlap.rho < 0 && w24.spearman_weight_overlap.rho < 0, '"the other way" in both years');
+  has(`Over the ${count(w.defined_links)} links where overlap is defined`);
+  has(`Spearman ${minus(w.spearman_weight_overlap.rho, 2)}`);
+  has(`0.00 ± ${w.weight_shuffle_null.sd_rho.toFixed(2)}`);
+  assert.equal(Math.abs(w.weight_shuffle_null.mean_rho).toFixed(2), "0.00");
+  has(`(z = ${minus(w.weight_shuffle_null.z, 1)}; FY2024 gives z = ${minus(w24.weight_shuffle_null.z, 1)})`);
+  const b = w.overlap_by_weight_bucket;
+  has(`mean overlap of ${b["1"].mean_overlap.toFixed(3)}, links with 21 or more ${b["21+"].mean_overlap.toFixed(3)}`);
+  const wage = ties.wage;
+  has(`the groups explain ${pct(wage.eta_squared_clients.eta_squared)} of the variance`);
+  has(`averaged per firm, ${pct(wage.eta_squared_firms.eta_squared)}`);
+  assert.equal(wage.eta_squared_clients.shuffles, 1000);
+  assert.ok(wage.eta_squared_clients.p <= 0.001 && wage.eta_squared_firms.p <= 0.001, '"none of 1,000 shuffles reached either"');
+  const d = wage.wage_distribution_placing_vs_direct_filings;
+  has(`file ${pct(d.placing["2"])} of their applications at level II and ${pct(d.placing["4"])} at level IV`);
+  has(`direct employers file ${pct(d.direct["2"])} and ${pct(d.direct["4"])}`);
+  const lv = shift.jan_jun.wage_level;
+  has(`level IV rose to ${pct(lv.FY2026.overall.IV, 1)} of all filings from ${pct(lv.FY2025.overall.IV, 1)}`);
+  has(`level I fell to ${pct(lv.FY2026.overall.I, 1)} from ${pct(lv.FY2025.overall.I, 1)}`);
+});
+
+test("who files the paperwork", () => {
+  const law = json("analysis/week04_lawfirms.json");
+  const y = law.years["2025"];
+  const block = text('id="staffing-lawyers"', 'id="closing"');
+  const has = (t) => assert.ok(block.includes(t), `the law-firm text should say "${t}"`);
+  const c = y.concentration;
+  assert.ok(Math.abs(c.named_share - 0.75) < 0.02, `"three in four" but the share is ${c.named_share}`);
+  has(`five firms file ${pct(c.top5_share_of_named)} of those`);
+  const [name, filings] = c.top_firms_by_filings[0];
+  assert.ok(name.startsWith("Fragomen"));
+  assert.equal(c.top_firms_by_employers[0][0], name);
+  has(`Fragomen alone files ${count(filings)} for ${count(c.top_firms_by_employers[0][1])}`);
+  const o = law.outsourcing;
+  has(`they file ${pct(o.placing.no_firm_share_pooled)} of their applications with no outside firm and send ${pct(o.placing.top5_share_pooled)}`);
+  has(`direct employers send those five ${pct(o.direct.top5_share_pooled)}`);
+  has(`the averages are ${pct(o.placing.top5_share_mean)} and ${pct(o.direct.top5_share_mean)}`);
+  assert.ok(o.p_permutation <= 0.001, '"none of 1,000 shuffles"');
+  const b = y.backbone.find((r) => r.alpha === 0.2);
+  const d = y.backbone_detail;
+  has(`A weight threshold of ${["zero", "one", "two", "three", "four", "five"][b.threshold_t]} shared filings keeps ${count(b.threshold_links)} links and spends ${pct(d.threshold_top5_link_share)}`);
+  has(`keeps ${count(b.links_kept)} and spends ${pct(d.filter_top5_link_share)}`);
+  has(`It also keeps ${d.attached_by_filter_only.rest} small firms`);
+  has(`Another ${d.attached_by_filter_only.isolated_pairs} firms stay only`);
+  const bbi = d.examples.find((e) => e.hub === "BBI LAW Group PC");
+  has(`is ${bbi.tie_weight} of its ${bbi.strength} shared filings and ${bbi.tie_weight} of BBI's ${bbi.hub_strength}`);
+  const m = y.communities;
+  has(`Louvain finds ${m.communities} groups at modularity ${m.vs_null.real.toFixed(2)}, against ${m.vs_null.null.toFixed(2)}`);
+  has(`(z = ${Math.round(m.vs_null.z)})`);
+  assert.equal(m.vs_null.null_runs_at_or_above_real, 0);
+  has(`Census regions is NMI ${m.labels.nmi_region.toFixed(2)}`);
+  const top = m.largest_communities.map((g) => g.top_employers.slice(0, 4));
+  assert.ok(top.some((e) => e.includes("Google") && e.includes("Apple") && e.includes("Meta")));
+  assert.ok(top.some((e) => e.includes("Tata Consultancy Services") && e.includes("LTIMindtree")));
+  const s = law.stability;
+  has(`agree at NMI ${s.nmi_fy2024_fy2025.toFixed(2)} on the ${count(s.shared_law_firms)} law firms in both, against ${s.nmi_two_fy2025_seeds.toFixed(2)}`);
+});
+
 test("section 1: communities against the null, runs, FY2024 and Census", () => {
   const n = json("docs/assets/data/week04_place.json").null_model;
   const o = n.other_year;
