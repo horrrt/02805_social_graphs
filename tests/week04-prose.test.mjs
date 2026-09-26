@@ -19,11 +19,12 @@ const text = (from, to) => {
     .replace(/<[^>]+>/g, " ")
     .replace(/\s+/g, " ");
 };
-// Section 3 keeps one answer per question; its full text sits in the Go deeper box.
-const section3 = text('id="who"', '<figure class="staffing"');
+// Section 3's first-round answers now sit in the deep-dive section (#who-first-round);
+// their full text is in its Go deeper box.
+const section3 = text('id="who"', 'id="who-switch"') + text('id="who-first-round"', '<figure class="staffing"');
 const prose = section3 + text('id="staffing-more"', "</details>");
 const regions = text('id="place-regions"', 'id="place-longhaul"');
-const closing = text('id="closing"', 'id="evidence"');
+const closing = text('id="closing"', 'id="cut"');
 const lotteryText = text('id="staffing-lottery"', "</details>");
 const staffing = json("analysis/week04_staffing.json");
 const lottery = json("analysis/week04_lottery.json").lotteries;
@@ -286,13 +287,11 @@ test("section 1: communities against the null, runs, FY2024 and Census", () => {
 });
 
 test("closing: what surprised us", () => {
-  const where = json("analysis/week04_where.json").longhaul;
-  const [leader, links] = where.long_leaders[0];
+  const moves = json("docs/weeks/week04/data/staffing_moves.json").finding;
   const says1 = (t) => assert.ok(closing.includes(t), `closing should say "${t}"`);
-  says1(`${leader} alone leads ${links} of the ${where.long_links} backbone links longer than ${count(where.threshold_km)} km`);
-  says1(`together lead ${where.long_led_by_shortlist}`);
-  assert.ok(links > where.long_led_by_shortlist, "the leader alone must lead more than the five firms");
-  says1(`lead only ${pct(where.long_led_by_shortlist / where.long_links)} of the long links`);
+  says1(`${pct(moves.q1_pooled_observed_share, 1)} of vendor switches stay inside them, against ${pct(moves.q1_pooled_null_mean, 1)}`);
+  const who = json("docs/weeks/week04/data/where_who.json").finding;
+  says1(`no single link cuts off more than ${WORDS[who.q2_max_single_drop]} metros`);
 });
 
 // The Go deeper boxes: one per extra network, each pinned to its script's JSON.
