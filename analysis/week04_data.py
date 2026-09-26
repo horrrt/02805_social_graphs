@@ -198,6 +198,9 @@ REFS = {
     "uscis_fy2023.csv": "https://www.uscis.gov/sites/default/files/document/data/h1b_datahubexport-2023.csv",
     # BLS 2018 SOC structure: occupation code -> major and minor group.
     "soc_structure_2018.xlsx": "https://www.bls.gov/soc/2018/soc_structure_2018.xlsx",
+    # BLS OEWS, May 2025, metropolitan area file: jobs per metro and occupation,
+    # the denominator for section 1's filings-per-metro rate.
+    "oesm25ma.zip": "https://www.bls.gov/oes/special-requests/oesm25ma.zip",
 }
 
 # The hub's static CSV exports stop at FY2023; the Tableau view behind the hub
@@ -429,8 +432,10 @@ def main():
         if contact:
             download(REFS["soc_structure_2018.xlsx"], RAW / "soc_structure_2018.xlsx",
                      user_agent=f"Mozilla/5.0 (research; {contact})")
+            download(REFS["oesm25ma.zip"], RAW / "oesm25ma.zip",
+                     user_agent=f"Mozilla/5.0 (research; {contact})")
         else:
-            print("skipped the BLS SOC file: set CONTACT_EMAIL=you@student.dtu.dk and rerun with --refs")
+            print("skipped the BLS SOC and OEWS files: set CONTACT_EMAIL=you@student.dtu.dk and rerun with --refs")
 
     if args.hub:
         for year in HUB_YEARS:

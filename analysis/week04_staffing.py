@@ -117,6 +117,11 @@ def placements(year, lca):
     sites = load(f"worksites_fy{year}")
     sites = sites[sites["SECONDARY_ENTITY"].str.upper().str.startswith("Y")]
     sites = sites[sites["CASE_NUMBER"].isin(lca["CASE_NUMBER"])]
+    # The FY2026 worksites file leaves out about a fifth of the placed filings
+    # (FY2022 to FY2025 have every one). Those keep the client on their main row.
+    placed = lca[lca["SECONDARY_ENTITY"].str.upper().str.startswith("Y")]
+    missing = placed[~placed["CASE_NUMBER"].isin(sites["CASE_NUMBER"])]
+    sites = pd.concat([sites, missing[["CASE_NUMBER", "SECONDARY_ENTITY", "SECONDARY_ENTITY_BUSINESS_NAME"]]])
     sites = sites.assign(client=sites["SECONDARY_ENTITY_BUSINESS_NAME"].map(resolver().client))
     placeholder = int(sites["client"].isna().sum())
     rows = sites.dropna(subset=["client"]).drop_duplicates(["CASE_NUMBER", "client"])
@@ -278,7 +283,14 @@ def shuffle_weights(g, rng):
 
 
 def giant_of(g):
-    return g.subgraph(max(nx.connected_components(g), key=len)).copy()
+    """The largest component, its nodes and links in g's own order. A subgraph
+    view walks its node set instead, whose order changes with Python's string
+    hashing from run to run, and Louvain's result depends on node order."""
+    comp = max(nx.connected_components(g), key=len)
+    h = nx.Graph()
+    h.add_nodes_from((n, g.nodes[n]) for n in g if n in comp)
+    h.add_edges_from((u, v, d) for u, v, d in g.edges(data=True) if u in comp)
+    return h
 
 
 def q_terms(g, parts):
@@ -448,7 +460,7 @@ def main():
     ]
 
     # Q2 · communities, against degree-preserving rewirings.
-    giant = g.subgraph(max(nx.connected_components(g), key=len)).copy()
+    giant = giant_of(g)
     runs = [louvain(giant, SEED + i) for i in tracked("Louvain, weighted", RUNS)]
     qs = np.array([q for _, q in runs])
     # Three nulls, so the wiring and the weights can be told apart: rewired
