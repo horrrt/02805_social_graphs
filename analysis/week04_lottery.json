@@ -7,13 +7,13 @@
    "lca_year": 2023,
    "employer_keys": {
     "petitions_compared": 91480,
-    "agreement_before": 0.9567,
-    "agreement_after": 0.9954
+    "agreement_before": 0.9577,
+    "agreement_after": 0.9955
    },
    "funnel": {
     "registrations": 758967,
     "withheld_rows": 27,
-    "employers": 51711,
+    "employers": 51685,
     "multi_registration_share": 0.5387,
     "selected": 188364,
     "selection_rate": 0.2482,
@@ -38,37 +38,37 @@
    },
    "by_kind": {
     "direct": {
-     "employers": 1831,
-     "registrations": 199027,
-     "registration_share": 0.2622,
-     "multi_registration_share": 0.3315,
+     "employers": 1820,
+     "registrations": 199148,
+     "registration_share": 0.2624,
+     "multi_registration_share": 0.3313,
      "selection_rate": 0.2607,
-     "selected_that_became_petitions": 0.7595,
-     "approved": 38706,
-     "approved_per_petition": 0.9822,
+     "selected_that_became_petitions": 0.7596,
+     "approved": 38729,
+     "approved_per_petition": 0.9821,
      "registrations_per_approval": 5.14,
      "denial_rate": 0.011
     },
     "placing": {
      "employers": 898,
-     "registrations": 160684,
-     "registration_share": 0.2117,
-     "multi_registration_share": 0.4723,
+     "registrations": 160735,
+     "registration_share": 0.2118,
+     "multi_registration_share": 0.4725,
      "selection_rate": 0.2276,
      "selected_that_became_petitions": 0.4983,
-     "approved": 17629,
+     "approved": 17631,
      "approved_per_petition": 0.9675,
-     "registrations_per_approval": 9.11,
+     "registrations_per_approval": 9.12,
      "denial_rate": 0.02
     },
     "small": {
-     "employers": 48982,
-     "registrations": 399256,
-     "registration_share": 0.5261,
-     "multi_registration_share": 0.6688,
-     "selection_rate": 0.2502,
-     "selected_that_became_petitions": 0.3474,
-     "approved": 32804,
+     "employers": 48967,
+     "registrations": 399084,
+     "registration_share": 0.5258,
+     "multi_registration_share": 0.6689,
+     "selection_rate": 0.2503,
+     "selected_that_became_petitions": 0.3472,
+     "approved": 32779,
      "approved_per_petition": 0.9451,
      "registrations_per_approval": 12.17,
      "denial_rate": 0.0342
@@ -82,15 +82,15 @@
      "approval_share": 0.026
     },
     "small": {
-     "ratio": 2.367,
-     "draw_share": 0.048,
+     "ratio": 2.368,
+     "draw_share": 0.047,
      "petition_share": 0.908,
      "approval_share": 0.045
     }
    },
    "clients": {
     "petitions_to_client_companies": 18307,
-    "clients": 4575,
+    "clients": 4563,
     "via_placing_firms_share": 0.6571,
     "via_small_firms_share": 0.2719,
     "top_clients": [
@@ -160,19 +160,19 @@
      },
      {
       "client": "Johnson & Johnson",
-      "petitions": 127,
-      "vendors": 28,
+      "petitions": 128,
+      "vendors": 29,
       "top_vendor": "Tata Consultancy Services",
-      "top_vendor_share": 0.205,
-      "via_placing_firms_share": 0.748
+      "top_vendor_share": 0.203,
+      "via_placing_firms_share": 0.75
      },
      {
       "client": "Ford",
-      "petitions": 120,
+      "petitions": 121,
       "vendors": 39,
       "top_vendor": "Wipro",
-      "top_vendor_share": 0.183,
-      "via_placing_firms_share": 0.742
+      "top_vendor_share": 0.182,
+      "via_placing_firms_share": 0.744
      },
      {
       "client": "JPMorgan Chase",
@@ -194,29 +194,29 @@
    },
    "community_test": {
     "lca_year": 2023,
-    "firms_tested": 2944,
-    "high_firms": 1472,
+    "firms_tested": 2942,
+    "high_firms": 1471,
     "median_multi_share": 0.7815,
     "tested_firms_filing_share": 0.7598,
     "unweighted": {
-     "communities_holding_tested_firms": 54,
-     "nmi": 0.0075,
-     "p_nmi": 0.002,
-     "ami_median": 0.0039,
-     "ami_min": 0.0011,
-     "ami_max": 0.0071,
-     "high_mates_share": 0.506,
+     "communities_holding_tested_firms": 61,
+     "nmi": 0.011,
+     "p_nmi": 0.001,
+     "ami_median": 0.0037,
+     "ami_min": 0.0018,
+     "ami_max": 0.0075,
+     "high_mates_share": 0.5121,
      "high_mates_share_shuffled": 0.4999,
      "p_mates": 0.001
     },
     "weighted": {
-     "communities_holding_tested_firms": 72,
-     "nmi": 0.0099,
-     "p_nmi": 0.002,
-     "ami_median": 0.0032,
-     "ami_min": 0.0013,
-     "ami_max": 0.005,
-     "high_mates_share": 0.5076,
+     "communities_holding_tested_firms": 76,
+     "nmi": 0.0109,
+     "p_nmi": 0.001,
+     "ami_median": 0.003,
+     "ami_min": 0.0012,
+     "ami_max": 0.0053,
+     "high_mates_share": 0.5089,
      "high_mates_share_shuffled": 0.4998,
      "p_mates": 0.001
     }
@@ -227,13 +227,13 @@
    "lca_year": 2022,
    "employer_keys": {
     "petitions_compared": 91358,
-    "agreement_before": 0.9478,
-    "agreement_after": 0.9967
+    "agreement_before": 0.9486,
+    "agreement_after": 0.9968
    },
    "funnel": {
     "registrations": 474384,
     "withheld_rows": 37,
-    "employers": 44782,
+    "employers": 44755,
     "multi_registration_share": 0.3482,
     "selected": 127563,
     "selection_rate": 0.2689,
@@ -258,20 +258,20 @@
    },
    "by_kind": {
     "direct": {
-     "employers": 2166,
-     "registrations": 170705,
-     "registration_share": 0.3598,
-     "multi_registration_share": 0.2473,
+     "employers": 2154,
+     "registrations": 170768,
+     "registration_share": 0.36,
+     "multi_registration_share": 0.2472,
      "selection_rate": 0.2826,
-     "selected_that_became_petitions": 0.8507,
-     "approved": 39874,
+     "selected_that_became_petitions": 0.8508,
+     "approved": 39892,
      "approved_per_petition": 0.9716,
      "registrations_per_approval": 4.28,
      "denial_rate": 0.027
     },
     "placing": {
      "employers": 1105,
-     "registrations": 138426,
+     "registrations": 138428,
      "registration_share": 0.2918,
      "multi_registration_share": 0.401,
      "selection_rate": 0.2509,
@@ -282,13 +282,13 @@
      "denial_rate": 0.0389
     },
     "small": {
-     "employers": 41511,
-     "registrations": 165253,
-     "registration_share": 0.3484,
-     "multi_registration_share": 0.4081,
+     "employers": 41496,
+     "registrations": 165188,
+     "registration_share": 0.3482,
+     "multi_registration_share": 0.4083,
      "selection_rate": 0.2698,
-     "selected_that_became_petitions": 0.6783,
-     "approved": 28880,
+     "selected_that_became_petitions": 0.6782,
+     "approved": 28862,
      "approved_per_petition": 0.9549,
      "registrations_per_approval": 5.72,
      "denial_rate": 0.0429
@@ -304,13 +304,13 @@
     "small": {
      "ratio": 1.337,
      "draw_share": 0.16,
-     "petition_share": 0.78,
+     "petition_share": 0.781,
      "approval_share": 0.06
     }
    },
    "clients": {
     "petitions_to_client_companies": 23750,
-    "clients": 5333,
+    "clients": 5315,
     "via_placing_firms_share": 0.6657,
     "via_small_firms_share": 0.2281,
     "top_clients": [
@@ -341,18 +341,18 @@
      {
       "client": "American Express",
       "petitions": 223,
-      "vendors": 67,
+      "vendors": 66,
       "top_vendor": "IBM",
       "top_vendor_share": 0.215,
       "via_placing_firms_share": 0.794
      },
      {
       "client": "USAA",
-      "petitions": 218,
+      "petitions": 219,
       "vendors": 73,
       "top_vendor": "Tata Consultancy Services",
-      "top_vendor_share": 0.284,
-      "via_placing_firms_share": 0.835
+      "top_vendor_share": 0.288,
+      "via_placing_firms_share": 0.836
      },
      {
       "client": "Capital One",
@@ -364,11 +364,19 @@
      },
      {
       "client": "Ford",
-      "petitions": 189,
-      "vendors": 60,
+      "petitions": 190,
+      "vendors": 61,
       "top_vendor": "Epitec",
       "top_vendor_share": 0.079,
-      "via_placing_firms_share": 0.651
+      "via_placing_firms_share": 0.653
+     },
+     {
+      "client": "MetLife",
+      "petitions": 189,
+      "vendors": 18,
+      "top_vendor": "IBM",
+      "top_vendor_share": 0.18,
+      "via_placing_firms_share": 0.931
      },
      {
       "client": "Cisco",
@@ -377,14 +385,6 @@
       "top_vendor": "Tata Consultancy Services",
       "top_vendor_share": 0.176,
       "via_placing_firms_share": 0.883
-     },
-     {
-      "client": "MetLife",
-      "petitions": 188,
-      "vendors": 17,
-      "top_vendor": "IBM",
-      "top_vendor_share": 0.181,
-      "via_placing_firms_share": 0.936
      },
      {
       "client": "Apple",
@@ -403,45 +403,45 @@
       "via_placing_firms_share": 0.687
      },
      {
-      "client": "T-Mobile",
-      "petitions": 158,
-      "vendors": 81,
-      "top_vendor": "Infosys",
-      "top_vendor_share": 0.152,
-      "via_placing_firms_share": 0.665
+      "client": "Johnson & Johnson",
+      "petitions": 161,
+      "vendors": 39,
+      "top_vendor": "Tata Consultancy Services",
+      "top_vendor_share": 0.311,
+      "via_placing_firms_share": 0.894
      }
     ]
    },
    "community_test": {
     "lca_year": 2022,
-    "firms_tested": 2332,
-    "high_firms": 1166,
-    "median_multi_share": 0.6201,
-    "tested_firms_filing_share": 0.7362,
+    "firms_tested": 2330,
+    "high_firms": 1165,
+    "median_multi_share": 0.6204,
+    "tested_firms_filing_share": 0.7363,
     "unweighted": {
-     "communities_holding_tested_firms": 53,
-     "nmi": 0.0155,
+     "communities_holding_tested_firms": 57,
+     "nmi": 0.0159,
      "p_nmi": 0.001,
      "ami_median": 0.0082,
-     "ami_min": 0.0037,
-     "ami_max": 0.0132,
-     "high_mates_share": 0.5198,
-     "high_mates_share_shuffled": 0.4998,
+     "ami_min": 0.0038,
+     "ami_max": 0.0139,
+     "high_mates_share": 0.5194,
+     "high_mates_share_shuffled": 0.4997,
      "p_mates": 0.001
     },
     "weighted": {
-     "communities_holding_tested_firms": 73,
-     "nmi": 0.0153,
+     "communities_holding_tested_firms": 78,
+     "nmi": 0.0138,
      "p_nmi": 0.001,
-     "ami_median": 0.0061,
-     "ami_min": 0.0036,
-     "ami_max": 0.0092,
-     "high_mates_share": 0.5141,
-     "high_mates_share_shuffled": 0.4997,
+     "ami_median": 0.0057,
+     "ami_min": 0.0035,
+     "ami_max": 0.0085,
+     "high_mates_share": 0.5115,
+     "high_mates_share_shuffled": 0.4999,
      "p_mates": 0.001
     }
    }
   }
  },
- "seconds": 144
+ "seconds": 252
 }

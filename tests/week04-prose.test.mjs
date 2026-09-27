@@ -322,6 +322,8 @@ test("green cards as the strong tie", () => {
   has(`(${one(g.placing_pooled_ratio)} against ${one(g.direct_pooled_ratio)} per 100)`);
   has(`gives a gap that large ${pct(g.p_gap)} of the time (p = ${g.p_gap})`);
   const b = y["2024"].kind_gap;
+  // "comes close": above 0.05 but not by much; "clearer" would need p < 0.05.
+  assert.ok(g.p_gap > 0.05 && b.p_gap > 0.05 && b.p_gap < 0.1, "the green-card wording needs rewriting");
   has(`(${one(b.placing_pooled_ratio)} against ${one(b.direct_pooled_ratio)}, p = ${b.p_gap})`);
   has(`Only ${pct(now.perm_employer_key_matches_lca_share)} of certified green cards`);
 });

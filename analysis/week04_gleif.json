@@ -1,0 +1,3451 @@
+{
+ "generated_by": "analysis/week04_gleif.py",
+ "source": "GLEIF Golden Copy, 26 September 2026 (CC0): LEI records and relationship records",
+ "min_filings": 20,
+ "spellings": 17410,
+ "spelling_filings": 2990289,
+ "us_active_entities": 362091,
+ "spellings_matched": 4420,
+ "matched_filing_share": 0.4869,
+ "spellings_with_one_parent": 4132,
+ "ambiguous": [
+  {
+   "spelling": "ERNST AND YOUNG",
+   "filings": 44999,
+   "parents": [
+    "254900H1VLSDPE6LJK37",
+    "254900Y3CIB1KF938C31"
+   ]
+  },
+  {
+   "spelling": "MPHASIS",
+   "filings": 7706,
+   "parents": [
+    "254900MFKNAV1EOJTW57",
+    "335800NSYTIQLQKUYP62"
+   ]
+  },
+  {
+   "spelling": "CUMMINS",
+   "filings": 4635,
+   "parents": [
+    "6E77MG1DHHMDNWZLGL41",
+    "ZUNI8PYC725B6H8JU438"
+   ]
+  },
+  {
+   "spelling": "GENERAL MOTORS",
+   "filings": 3854,
+   "parents": [
+    "5493001871EE1F4JHK38",
+    "54930070NSV60J38I987"
+   ]
+  },
+  {
+   "spelling": "CHARLES SCHWAB",
+   "filings": 3093,
+   "parents": [
+    "549300VSGCJ7E698NM85",
+    "549300ZP8XN77GK5BS04"
+   ]
+  },
+  {
+   "spelling": "NIKE",
+   "filings": 2344,
+   "parents": [
+    "549300Z2ZSKKGUE3J147",
+    "787RXPR0UX0O0XUXPZ81"
+   ]
+  },
+  {
+   "spelling": "HP",
+   "filings": 1911,
+   "parents": [
+    "254900I8UQY3NF7A5L53",
+    "WHKXQACZ14C5XRO8LW03"
+   ]
+  },
+  {
+   "spelling": "WAYFAIR",
+   "filings": 1908,
+   "parents": [
+    "54930027N9ZAVYFDHK53",
+    "549300CTUWTZGOXMYI40"
+   ]
+  },
+  {
+   "spelling": "JUNIPER NETWORKS",
+   "filings": 1846,
+   "parents": [
+    "549300XTC50EMSMJIL10",
+    "AUHIXNGG7U2U7JEHM527"
+   ]
+  },
+  {
+   "spelling": "FMR",
+   "filings": 1831,
+   "parents": [
+    "254900T2NE6KFHIOIB52",
+    "6X064LF7Y6B4DKF2GZ26"
+   ]
+  },
+  {
+   "spelling": "STATE STREET BANK AND TRUST",
+   "filings": 1795,
+   "parents": [
+    "54930040JC7I4R2I8K66",
+    "549300ZFEEJ2IP5VME73"
+   ]
+  },
+  {
+   "spelling": "GLOBALLOGIC",
+   "filings": 1554,
+   "parents": [
+    "549300047NM5XM5G8O91",
+    "549300T6IPOCDWLKC615"
+   ]
+  },
+  {
+   "spelling": "EMC",
+   "filings": 1364,
+   "parents": [
+    "5493007E13OFNZU1V564",
+    "549300TJB5YBRUPOG437"
+   ]
+  },
+  {
+   "spelling": "DELL",
+   "filings": 1305,
+   "parents": [
+    "5493000KTUMELV9VHS25",
+    "549300TJB5YBRUPOG437"
+   ]
+  },
+  {
+   "spelling": "FCA",
+   "filings": 1289,
+   "parents": [
+    "254900ZK74B5MUQ62N95",
+    "549300F364TR4G4L2G10",
+    "549300LKT9PW7ZIBDF31"
+   ]
+  },
+  {
+   "spelling": "OKTA",
+   "filings": 896,
+   "parents": [
+    "254900HVHW7WTG74L093",
+    "549300N8J06I8MRHU620"
+   ]
+  },
+  {
+   "spelling": "APTIV",
+   "filings": 807,
+   "parents": [
+    "254900PNETKVRH3VS362",
+    "TELFIN0KBT6PIRGM0X52"
+   ]
+  },
+  {
+   "spelling": "CHILDREN S HOSPITAL",
+   "filings": 766,
+   "parents": [
+    "549300C1PQZDYQ6KZS51",
+    "549300D0E0DI1GV1CM17",
+    "549300NXFO6BISJLOS32",
+    "984500C47B3I98C67268"
+   ]
+  },
+  {
+   "spelling": "COTIVITI",
+   "filings": 755,
+   "parents": [
+    "254900YAQHVRTG4IFI64",
+    "549300NH52FNW9SEET71"
+   ]
+  },
+  {
+   "spelling": "INFORMATICA",
+   "filings": 727,
+   "parents": [
+    "5493007SV33RZV7RPS40",
+    "RCGZFPDMRW58VJ54VR07"
+   ]
+  },
+  {
+   "spelling": "AFFIRM",
+   "filings": 681,
+   "parents": [
+    "529900LZI7FSF8IS2V41",
+    "549300321VLJGEZJZD05"
+   ]
+  },
+  {
+   "spelling": "MANHATTAN ASSOCIATES",
+   "filings": 665,
+   "parents": [
+    "254900YQ8R7GRKQ8QW09",
+    "529900Q1GJP7KD52SW51"
+   ]
+  },
+  {
+   "spelling": "SCHNEIDER ELECTRIC",
+   "filings": 655,
+   "parents": [
+    "549300VWCIODX2E4CV57",
+    "969500A1YF1XUYYXS284"
+   ]
+  },
+  {
+   "spelling": "UNIVERSITY OF KENTUCKY",
+   "filings": 648,
+   "parents": [
+    "549300CXE3YQ1HXYCQ71",
+    "549300V5YG1VXZAU5G02"
+   ]
+  },
+  {
+   "spelling": "CITY NATIONAL BANK",
+   "filings": 618,
+   "parents": [
+    "549300PMBS0TJQ35TP58",
+    "ES7IP3U3RHIGC71XBU11"
+   ]
+  },
+  {
+   "spelling": "GAP",
+   "filings": 587,
+   "parents": [
+    "9845001EDF577C3D3F95",
+    "T2ZG1WRWZ4BUCMQL9224"
+   ]
+  },
+  {
+   "spelling": "HITACHI VANTARA",
+   "filings": 572,
+   "parents": [
+    "5493001DR462F17VXL23",
+    "549300T6IPOCDWLKC615"
+   ]
+  },
+  {
+   "spelling": "ATHENAHEALTH",
+   "filings": 551,
+   "parents": [
+    "254900AA3KZN4Q7A5Z33",
+    "5493004JZ4RQIZBHP241"
+   ]
+  },
+  {
+   "spelling": "BROADCOM",
+   "filings": 491,
+   "parents": [
+    "549300WV6GIDOZJTV909",
+    "KFFV4ZWM9DJH1ND3BD89"
+   ]
+  },
+  {
+   "spelling": "COMPASS",
+   "filings": 479,
+   "parents": [
+    "254900DMGQSTC3I2IM78",
+    "254900QDNHFT26JCYA95",
+    "54930082YONLE4MP0Y24"
+   ]
+  },
+  {
+   "spelling": "NIELSEN",
+   "filings": 421,
+   "parents": [
+    "549300BLI5VZI0BWFN47",
+    "549300ZVCBHQE0XHG367"
+   ]
+  },
+  {
+   "spelling": "CLOUD SOFTWARE",
+   "filings": 402,
+   "parents": [
+    "04EEB871XLHVNY4RZJ65",
+    "9845004B9FACCA2A3B48"
+   ]
+  },
+  {
+   "spelling": "EDWARDS LIFESCIENCES",
+   "filings": 398,
+   "parents": [
+    "984500A1TE2C8H67G109",
+    "YA13X31F3V31L8TMPR58"
+   ]
+  },
+  {
+   "spelling": "WHIRLPOOL",
+   "filings": 396,
+   "parents": [
+    "549300HFW12Y5RSMOW48",
+    "WHENKOULSSK7WUM60H03"
+   ]
+  },
+  {
+   "spelling": "JOHNSON CONTROLS",
+   "filings": 393,
+   "parents": [
+    "2138007EEYRGP54M3S87",
+    "549300XQ6S1GYKGBL205"
+   ]
+  },
+  {
+   "spelling": "RIVIAN",
+   "filings": 389,
+   "parents": [
+    "25490004LNKJ84MFYY24",
+    "98450079DA0B78DD6764"
+   ]
+  },
+  {
+   "spelling": "ZOOMINFO TECHNOLOGIES",
+   "filings": 388,
+   "parents": [
+    "2549008GSAHW4UWFEM58",
+    "254900NOX7TLOJ3WS309"
+   ]
+  },
+  {
+   "spelling": "PTC",
+   "filings": 383,
+   "parents": [
+    "25490094ZAU447N6Z834",
+    "54930050SSMU8SKDJ030",
+    "549300VZGHO4NMEK8Q91"
+   ]
+  },
+  {
+   "spelling": "WELLINGTON MANAGEMENT",
+   "filings": 375,
+   "parents": [
+    "5493002CYKEKC8C01T66",
+    "549300YHP12TEZNLCX41"
+   ]
+  },
+  {
+   "spelling": "SUSQUEHANNA INTERNATIONAL",
+   "filings": 353,
+   "parents": [
+    "5493007BQ353ZEOVY042",
+    "549300UHLZVQ1CWNT812"
+   ]
+  }
+ ],
+ "ambiguous_count": 288,
+ "groups_with_2plus_companies": 240,
+ "proposed_rows": [
+  {
+   "name": "DELOITTE AND TOUCHE",
+   "canonical": "Deloitte",
+   "naics2": "54",
+   "filings": 7020,
+   "parent": "DELOITTE LLP"
+  },
+  {
+   "name": "SALESFORCE COM",
+   "canonical": "Salesforce",
+   "naics2": "51",
+   "filings": 2186,
+   "parent": "SALESFORCE, INC."
+  },
+  {
+   "name": "DELL PRODUCTS",
+   "canonical": "Dell",
+   "naics2": "31-33",
+   "filings": 1052,
+   "parent": "Dell Technologies Inc."
+  },
+  {
+   "name": "MOODY S ANALYTICS",
+   "canonical": "Moody's",
+   "naics2": "52",
+   "filings": 816,
+   "parent": "MOODY'S CORPORATION"
+  },
+  {
+   "name": "BARCLAYS CAPITAL",
+   "canonical": "Barclays",
+   "naics2": "52",
+   "filings": 651,
+   "parent": "BARCLAYS PLC"
+  },
+  {
+   "name": "MOODY S INVESTORS SERVICE",
+   "canonical": "Moody's",
+   "naics2": "52",
+   "filings": 634,
+   "parent": "MOODY'S CORPORATION"
+  },
+  {
+   "name": "DELL MARKETING",
+   "canonical": "Dell",
+   "naics2": "31-33",
+   "filings": 416,
+   "parent": "Dell Technologies Inc."
+  },
+  {
+   "name": "FIDELITY BROKERAGE SERVICES",
+   "canonical": "Fidelity Investments",
+   "naics2": "52",
+   "filings": 392,
+   "parent": "FMR LLC"
+  },
+  {
+   "name": "BAYER RESEARCH AND DEVELOPMENT SERVICES",
+   "canonical": "Bayer",
+   "naics2": "31-33",
+   "filings": 314,
+   "parent": "Bayer Aktiengesellschaft"
+  },
+  {
+   "name": "USAA FEDERAL SAVINGS BANK",
+   "canonical": "USAA",
+   "naics2": "52",
+   "filings": 291,
+   "parent": "UNITED SERVICES AUTOMOBILE ASSOCIATION"
+  },
+  {
+   "name": "FORD MOTOR CREDIT",
+   "canonical": "Ford",
+   "naics2": "31-33",
+   "filings": 276,
+   "parent": "FORD MOTOR COMPANY"
+  },
+  {
+   "name": "BLACKROCK INVESTMENT MANAGEMENT",
+   "canonical": "BlackRock",
+   "naics2": "52",
+   "filings": 232,
+   "parent": "BlackRock, Inc."
+  },
+  {
+   "name": "BARCLAYS BANK DELAWARE",
+   "canonical": "Barclays",
+   "naics2": "52",
+   "filings": 220,
+   "parent": "BARCLAYS PLC"
+  },
+  {
+   "name": "MIZUHO SECURITIES",
+   "canonical": "Mizuho",
+   "naics2": "52",
+   "filings": 153,
+   "parent": "\u682a\u5f0f\u4f1a\u793e\u307f\u305a\u307b\u30d5\u30a3\u30ca\u30f3\u30b7\u30e3\u30eb\u30b0\u30eb\u30fc\u30d7"
+  },
+  {
+   "name": "BAYER CROPSCIENCE",
+   "canonical": "Bayer",
+   "naics2": "31-33",
+   "filings": 147,
+   "parent": "Bayer Aktiengesellschaft"
+  },
+  {
+   "name": "MORGAN STANLEY INVESTMENT MANAGEMENT",
+   "canonical": "Morgan Stanley",
+   "naics2": "52",
+   "filings": 132,
+   "parent": "MORGAN STANLEY"
+  },
+  {
+   "name": "ACCENTURE FEDERAL SERVICES",
+   "canonical": "Accenture",
+   "naics2": "54",
+   "filings": 111,
+   "parent": "ACCENTURE PUBLIC LIMITED COMPANY"
+  },
+  {
+   "name": "MOODY S SHARED SERVICES",
+   "canonical": "Moody's",
+   "naics2": "52",
+   "filings": 98,
+   "parent": "MOODY'S CORPORATION"
+  },
+  {
+   "name": "MORGAN STANLEY FUND SERVICES",
+   "canonical": "Morgan Stanley",
+   "naics2": "52",
+   "filings": 92,
+   "parent": "MORGAN STANLEY"
+  },
+  {
+   "name": "CORTEVA",
+   "canonical": "Corteva",
+   "naics2": "31-33",
+   "filings": 83,
+   "parent": "CORTEVA, INC."
+  },
+  {
+   "name": "CHUBB INA",
+   "canonical": "Chubb",
+   "naics2": "52",
+   "filings": 83,
+   "parent": "Chubb Limited"
+  },
+  {
+   "name": "JOHNSON AND JOHNSON VISION CARE",
+   "canonical": "Johnson & Johnson",
+   "naics2": "31-33",
+   "filings": 81,
+   "parent": "Johnson & Johnson"
+  },
+  {
+   "name": "MARS INFORMATION SERVICES",
+   "canonical": "Mars",
+   "naics2": "31-33",
+   "filings": 79,
+   "parent": "MARS, INCORPORATED"
+  },
+  {
+   "name": "COGNIZANT WORLDWIDE",
+   "canonical": "Cognizant",
+   "naics2": "54",
+   "filings": 76,
+   "parent": "COGNIZANT TECHNOLOGY SOLUTIONS CORPORATION"
+  },
+  {
+   "name": "AMAZON PAYMENTS",
+   "canonical": "Amazon",
+   "naics2": "44-45",
+   "filings": 67,
+   "parent": "AMAZON.COM, INC."
+  },
+  {
+   "name": "BAYER HEALTHCARE",
+   "canonical": "Bayer",
+   "naics2": "31-33",
+   "filings": 65,
+   "parent": "Bayer Aktiengesellschaft"
+  },
+  {
+   "name": "METLIFE INSURANCE",
+   "canonical": "MetLife",
+   "naics2": "52",
+   "filings": 62,
+   "parent": "METLIFE, INC."
+  },
+  {
+   "name": "BLACKROCK INSTITUTIONAL SERVICES",
+   "canonical": "BlackRock",
+   "naics2": "52",
+   "filings": 57,
+   "parent": "BlackRock, Inc."
+  },
+  {
+   "name": "ABBOTT CARDIOVASCULAR SYSTEMS",
+   "canonical": "Abbott",
+   "naics2": "31-33",
+   "filings": 56,
+   "parent": "ABBOTT LABORATORIES"
+  },
+  {
+   "name": "INFOSYS PUBLIC SERVICES",
+   "canonical": "Infosys",
+   "naics2": "54",
+   "filings": 54,
+   "parent": "INFOSYS LIMITED"
+  },
+  {
+   "name": "BIOGEN MA",
+   "canonical": "Biogen",
+   "naics2": "31-33",
+   "filings": 53,
+   "parent": "BIOGEN INC."
+  },
+  {
+   "name": "CATERPILLAR FINANCIAL SERVICES",
+   "canonical": "Caterpillar",
+   "naics2": "31-33",
+   "filings": 48,
+   "parent": "CATERPILLAR INC."
+  },
+  {
+   "name": "HARTFORD INSURANCE",
+   "canonical": "The Hartford",
+   "naics2": "52",
+   "filings": 46,
+   "parent": "THE HARTFORD INSURANCE GROUP, INC."
+  },
+  {
+   "name": "INFOSYS NOVA",
+   "canonical": "Infosys",
+   "naics2": "54",
+   "filings": 38,
+   "parent": "INFOSYS LIMITED"
+  },
+  {
+   "name": "AVIS BUDGET",
+   "canonical": "Avis Budget",
+   "naics2": "53",
+   "filings": 36,
+   "parent": "AVIS BUDGET GROUP, INC."
+  },
+  {
+   "name": "FIDELITY SERVICE",
+   "canonical": "Fidelity Investments",
+   "naics2": "52",
+   "filings": 36,
+   "parent": "FMR LLC"
+  },
+  {
+   "name": "INFOSYS MCCAMISH SYSTEMS",
+   "canonical": "Infosys",
+   "naics2": "54",
+   "filings": 35,
+   "parent": "INFOSYS LIMITED"
+  },
+  {
+   "name": "NESTLE PURINA PETCARE",
+   "canonical": "Nestle",
+   "naics2": "31-33",
+   "filings": 35,
+   "parent": "NESTL\u00c9 S.A."
+  },
+  {
+   "name": "APPLE COMPUTER",
+   "canonical": "Apple",
+   "naics2": "31-33",
+   "filings": 34,
+   "parent": "Apple Inc."
+  },
+  {
+   "name": "LIBERTY MUTUAL GROUP ASSET MANAGEMENT",
+   "canonical": "Liberty Mutual",
+   "naics2": "52",
+   "filings": 32,
+   "parent": "Liberty Mutual Holding Company Inc."
+  },
+  {
+   "name": "LINCOLN NATIONAL LIFE INSURANCE",
+   "canonical": "Lincoln Financial",
+   "naics2": "52",
+   "filings": 31,
+   "parent": "LINCOLN NATIONAL CORPORATION"
+  },
+  {
+   "name": "CITIGROUP ENERGY",
+   "canonical": "Citigroup",
+   "naics2": "52",
+   "filings": 28,
+   "parent": "CITIGROUP INC."
+  },
+  {
+   "name": "SHELL TRADING",
+   "canonical": "Shell",
+   "naics2": "21",
+   "filings": 27,
+   "parent": "SHELL PLC"
+  },
+  {
+   "name": "HONDA TRADING AMERICA",
+   "canonical": "Honda",
+   "naics2": "31-33",
+   "filings": 27,
+   "parent": "\u672c\u7530\u6280\u7814\u5de5\u696d\u682a\u5f0f\u4f1a\u793e"
+  },
+  {
+   "name": "ALLSTATE",
+   "canonical": "Allstate",
+   "naics2": "52",
+   "filings": 25,
+   "parent": "THE ALLSTATE CORPORATION"
+  },
+  {
+   "name": "BLACKROCK INDEX SERVICES",
+   "canonical": "BlackRock",
+   "naics2": "52",
+   "filings": 22,
+   "parent": "BlackRock, Inc."
+  },
+  {
+   "name": "MARS PETCARE",
+   "canonical": "Mars",
+   "naics2": "31-33",
+   "filings": 22,
+   "parent": "MARS, INCORPORATED"
+  }
+ ],
+ "proposed_filings": 16571,
+ "review": [
+  {
+   "name": "LINKEDIN",
+   "canonical": "Microsoft",
+   "filings": 7433,
+   "parent": "MICROSOFT CORPORATION"
+  },
+  {
+   "name": "BOFA SECURITIES",
+   "canonical": "Bank of America",
+   "filings": 1420,
+   "parent": "BANK OF AMERICA CORPORATION"
+  },
+  {
+   "name": "NTT DATA SERVICES",
+   "canonical": "NTT Data Americas",
+   "filings": 1086,
+   "parent": "\uff2e\uff34\uff34\u682a\u5f0f\u4f1a\u793e"
+  },
+  {
+   "name": "RED HAT",
+   "canonical": "IBM",
+   "filings": 958,
+   "parent": "INTERNATIONAL BUSINESS MACHINES CORPORATION"
+  },
+  {
+   "name": "DB USA CORE",
+   "canonical": "DB Global Technology",
+   "filings": 909,
+   "parent": "DEUTSCHE BANK AKTIENGESELLSCHAFT"
+  },
+  {
+   "name": "SPLUNK",
+   "canonical": "Cisco",
+   "filings": 900,
+   "parent": "CISCO SYSTEMS, INC."
+  },
+  {
+   "name": "CREDIT KARMA",
+   "canonical": "Intuit",
+   "filings": 776,
+   "parent": "INTUIT INC."
+  },
+  {
+   "name": "DEUTSCHE BANK SECURITIES",
+   "canonical": "DB Global Technology",
+   "filings": 775,
+   "parent": "DEUTSCHE BANK AKTIENGESELLSCHAFT"
+  },
+  {
+   "name": "CONFLUENT",
+   "canonical": "IBM",
+   "filings": 716,
+   "parent": "INTERNATIONAL BUSINESS MACHINES CORPORATION"
+  },
+  {
+   "name": "DXC TECHNOLOGY SERVICES",
+   "canonical": "Computer Sciences",
+   "filings": 540,
+   "parent": "DXC TECHNOLOGY COMPANY"
+  },
+  {
+   "name": "ARIBA",
+   "canonical": "SAP America",
+   "filings": 539,
+   "parent": "SAP SE"
+  },
+  {
+   "name": "ST JUDE MEDICAL CARDIOLOGY DIVISION",
+   "canonical": "Abbott",
+   "filings": 534,
+   "parent": "ABBOTT LABORATORIES"
+  },
+  {
+   "name": "TWITCH INTERACTIVE",
+   "canonical": "Amazon",
+   "filings": 526,
+   "parent": "AMAZON.COM, INC."
+  },
+  {
+   "name": "ACE AMERICAN INSURANCE",
+   "canonical": "Chubb",
+   "filings": 521,
+   "parent": "Chubb Limited"
+  },
+  {
+   "name": "LEXISNEXIS RISK SOLUTIONS FL",
+   "canonical": "Relx",
+   "filings": 458,
+   "parent": "RELX PLC"
+  },
+  {
+   "name": "MEDIDATA SOLUTIONS",
+   "canonical": "Dassault Systemes Americas",
+   "filings": 453,
+   "parent": "GROUPE INDUSTRIEL MARCEL DASSAULT"
+  },
+  {
+   "name": "CA",
+   "canonical": "Broadcom",
+   "filings": 438,
+   "parent": "BROADCOM INC."
+  },
+  {
+   "name": "VARIAN MEDICAL SYSTEMS",
+   "canonical": "Siemens Industry Software",
+   "filings": 405,
+   "parent": "Siemens Aktiengesellschaft"
+  },
+  {
+   "name": "SANDISK TECHNOLOGIES",
+   "canonical": "Western Digital Technologies",
+   "filings": 396,
+   "parent": "WESTERN DIGITAL CORPORATION"
+  },
+  {
+   "name": "AURIS HEALTH",
+   "canonical": "Johnson & Johnson",
+   "filings": 384,
+   "parent": "Johnson & Johnson"
+  },
+  {
+   "name": "UBS SECURITIES",
+   "canonical": "UBS",
+   "filings": 382,
+   "parent": "UBS Group AG"
+  },
+  {
+   "name": "LUXOFT",
+   "canonical": "Computer Sciences",
+   "filings": 360,
+   "parent": "DXC TECHNOLOGY COMPANY"
+  },
+  {
+   "name": "CSC COVANSYS",
+   "canonical": "Computer Sciences",
+   "filings": 351,
+   "parent": "DXC TECHNOLOGY COMPANY"
+  },
+  {
+   "name": "MERRILL LYNCH",
+   "canonical": "Bank of America",
+   "filings": 329,
+   "parent": "BANK OF AMERICA CORPORATION"
+  },
+  {
+   "name": "BNP PARIBAS RCC",
+   "canonical": "BNP Paribas Securities",
+   "filings": 326,
+   "parent": "BNP PARIBAS"
+  },
+  {
+   "name": "SG AMERICAS OPERATIONAL SERVICES",
+   "canonical": "SG Americas Securities",
+   "filings": 311,
+   "parent": "SOCIETE GENERALE"
+  },
+  {
+   "name": "SUCCESSFACTORS",
+   "canonical": "SAP America",
+   "filings": 305,
+   "parent": "SAP SE"
+  },
+  {
+   "name": "S AND P GLOBAL MARKET INTELLIGENCE",
+   "canonical": "S&P Global",
+   "filings": 287,
+   "parent": "S&P GLOBAL INC."
+  },
+  {
+   "name": "JANSSEN RESEARCH AND DEVELOPMENT",
+   "canonical": "Johnson & Johnson",
+   "filings": 278,
+   "parent": "Johnson & Johnson"
+  },
+  {
+   "name": "STANDARD AND POOR S FINANCIAL SERVICES",
+   "canonical": "S&P Global",
+   "filings": 277,
+   "parent": "S&P GLOBAL INC."
+  },
+  {
+   "name": "CYPRESS SEMICONDUCTOR",
+   "canonical": "Infineon Technologies Americas",
+   "filings": 276,
+   "parent": "Infineon Technologies AG"
+  },
+  {
+   "name": "DEPUY SYNTHES",
+   "canonical": "Johnson & Johnson",
+   "filings": 272,
+   "parent": "Johnson & Johnson"
+  },
+  {
+   "name": "CERNER",
+   "canonical": "Oracle America",
+   "filings": 252,
+   "parent": "ORACLE CORPORATION"
+  },
+  {
+   "name": "BNP PARIBAS",
+   "canonical": "BNP Paribas Securities",
+   "filings": 223,
+   "parent": "BNP PARIBAS"
+  },
+  {
+   "name": "ELSEVIER",
+   "canonical": "Relx",
+   "filings": 205,
+   "parent": "RELX PLC"
+  },
+  {
+   "name": "CITY OF HOPE NATIONAL MEDICAL CENTER",
+   "canonical": "Beckman Research Institute of the City of Hope",
+   "filings": 193,
+   "parent": "CITY OF HOPE"
+  },
+  {
+   "name": "ELAVON",
+   "canonical": "U.S. Bank",
+   "filings": 192,
+   "parent": "U.S. BANCORP"
+  },
+  {
+   "name": "BIOSENSE WEBSTER",
+   "canonical": "Johnson & Johnson",
+   "filings": 192,
+   "parent": "Johnson & Johnson"
+  },
+  {
+   "name": "ABIOMED",
+   "canonical": "Johnson & Johnson",
+   "filings": 187,
+   "parent": "Johnson & Johnson"
+  },
+  {
+   "name": "AETNA",
+   "canonical": "CVS Health",
+   "filings": 172,
+   "parent": "CVS HEALTH CORPORATION"
+  },
+  {
+   "name": "DETROIT DIESEL",
+   "canonical": "Daimler Truck North America",
+   "filings": 163,
+   "parent": "Daimler Truck Holding AG"
+  },
+  {
+   "name": "GBT",
+   "canonical": "American Express",
+   "filings": 156,
+   "parent": "AMERICAN EXPRESS COMPANY"
+  },
+  {
+   "name": "SIGMA ALDRICH",
+   "canonical": "EMD Millipore",
+   "filings": 151,
+   "parent": "E. Merck KG"
+  },
+  {
+   "name": "MERCER",
+   "canonical": "Marsh",
+   "filings": 149,
+   "parent": "MARSH & MCLENNAN COMPANIES, INC."
+  },
+  {
+   "name": "MANUFACTURERS AND TRADERS TRUST",
+   "canonical": "M&T Bank",
+   "filings": 148,
+   "parent": "M&T BANK CORPORATION"
+  },
+  {
+   "name": "NORTONLIFELOCK",
+   "canonical": "GEN Digital",
+   "filings": 147,
+   "parent": "GEN DIGITAL INC."
+  },
+  {
+   "name": "ETHICON ENDO SURGERY",
+   "canonical": "Johnson & Johnson",
+   "filings": 146,
+   "parent": "Johnson & Johnson"
+  },
+  {
+   "name": "RISK MANAGEMENT SOLUTIONS",
+   "canonical": "Moody's",
+   "filings": 146,
+   "parent": "MOODY'S CORPORATION"
+  },
+  {
+   "name": "IHS GLOBAL",
+   "canonical": "S&P Global",
+   "filings": 141,
+   "parent": "S&P GLOBAL INC."
+  },
+  {
+   "name": "VCA",
+   "canonical": "Mars",
+   "filings": 138,
+   "parent": "MARS, INCORPORATED"
+  },
+  {
+   "name": "BE AEROSPACE",
+   "canonical": "Rockwell Collins",
+   "filings": 132,
+   "parent": "RTX CORPORATION"
+  },
+  {
+   "name": "ETHICON",
+   "canonical": "Johnson & Johnson",
+   "filings": 129,
+   "parent": "Johnson & Johnson"
+  },
+  {
+   "name": "SYNAPSE DESIGN AUTOMATION",
+   "canonical": "Quest Global Services",
+   "filings": 120,
+   "parent": "QUEST GLOBAL SERVICES PTE. LTD."
+  },
+  {
+   "name": "CYMER",
+   "canonical": "ASML",
+   "filings": 119,
+   "parent": "ASML Holding N.V."
+  },
+  {
+   "name": "GUY CARPENTER",
+   "canonical": "Marsh",
+   "filings": 114,
+   "parent": "MARSH & MCLENNAN COMPANIES, INC."
+  },
+  {
+   "name": "NATIONAL FINANCIAL SERVICES",
+   "canonical": "Fidelity Investments",
+   "filings": 114,
+   "parent": "FMR LLC"
+  },
+  {
+   "name": "GITHUB",
+   "canonical": "Microsoft",
+   "filings": 112,
+   "parent": "MICROSOFT CORPORATION"
+  },
+  {
+   "name": "FIDELITY NATIONAL INFORMATION SERVICES",
+   "canonical": "FIS",
+   "filings": 108,
+   "parent": "FIDELITY NATIONAL INFORMATION SERVICES, INC."
+  },
+  {
+   "name": "IBG",
+   "canonical": "Interactive Brokers",
+   "filings": 108,
+   "parent": "INTERACTIVE BROKERS GROUP, INC."
+  },
+  {
+   "name": "NATIONAL INDEMNITY",
+   "canonical": "Berkshire Hathaway Specialty Insurance",
+   "filings": 106,
+   "parent": "BERKSHIRE HATHAWAY INC."
+  },
+  {
+   "name": "IMC AMERICAS",
+   "canonical": "Polar Operations",
+   "filings": 102,
+   "parent": "IMC Global Holdings LLC"
+  },
+  {
+   "name": "EVERPURE",
+   "canonical": "Pure Storage",
+   "filings": 102,
+   "parent": "EVERPURE, INC."
+  },
+  {
+   "name": "OLIVER WYMAN",
+   "canonical": "Marsh",
+   "filings": 97,
+   "parent": "MARSH & MCLENNAN COMPANIES, INC."
+  },
+  {
+   "name": "S AND P OPCO",
+   "canonical": "S&P Global",
+   "filings": 97,
+   "parent": "S&P GLOBAL INC."
+  },
+  {
+   "name": "AMERICAN FAMILY LIFE ASSURANCE COMPANY OF COLUMBUS",
+   "canonical": "Aflac",
+   "filings": 96,
+   "parent": "AFLAC INCORPORATED"
+  },
+  {
+   "name": "ICE CLEAR CREDIT",
+   "canonical": "Intercontinental Exchange",
+   "filings": 95,
+   "parent": "INTERCONTINENTAL EXCHANGE, INC."
+  },
+  {
+   "name": "PERSHING",
+   "canonical": "BNY Mellon",
+   "filings": 91,
+   "parent": "THE BANK OF NEW YORK MELLON CORPORATION"
+  },
+  {
+   "name": "MIDAMERICAN ENERGY",
+   "canonical": "Berkshire Hathaway Specialty Insurance",
+   "filings": 90,
+   "parent": "BERKSHIRE HATHAWAY INC."
+  },
+  {
+   "name": "LNRS DATA SERVICES",
+   "canonical": "Relx",
+   "filings": 90,
+   "parent": "RELX PLC"
+  },
+  {
+   "name": "ZF TRANSMISSIONS GRAY COURT",
+   "canonical": "ZF North America",
+   "filings": 87,
+   "parent": "ZF Friedrichshafen AG"
+  },
+  {
+   "name": "TRIPACTIONS",
+   "canonical": "Navan",
+   "filings": 86,
+   "parent": "NAVAN, INC."
+  },
+  {
+   "name": "JANSSEN PHARMACEUTICALS",
+   "canonical": "Johnson & Johnson",
+   "filings": 86,
+   "parent": "Johnson & Johnson"
+  },
+  {
+   "name": "SHOCKWAVE MEDICAL",
+   "canonical": "Johnson & Johnson",
+   "filings": 86,
+   "parent": "Johnson & Johnson"
+  },
+  {
+   "name": "FIDELITY INFORMATION SERVICES",
+   "canonical": "FIS",
+   "filings": 84,
+   "parent": "FIDELITY NATIONAL INFORMATION SERVICES, INC."
+  },
+  {
+   "name": "BERNSTEIN INSTITUTIONAL SERVICES",
+   "canonical": "SG Americas Securities",
+   "filings": 83,
+   "parent": "SOCIETE GENERALE"
+  },
+  {
+   "name": "LAHEY CLINIC",
+   "canonical": "Beth Israel Deaconess Medical Center",
+   "filings": 83,
+   "parent": "BETH ISRAEL LAHEY HEALTH, INC."
+  },
+  {
+   "name": "HAMILTON SUNDSTRAND",
+   "canonical": "Rockwell Collins",
+   "filings": 82,
+   "parent": "RTX CORPORATION"
+  },
+  {
+   "name": "BACKOFFICE ASSOCIATES",
+   "canonical": "Capgemini",
+   "filings": 81,
+   "parent": "CAPGEMINI"
+  },
+  {
+   "name": "MICRO FOCUS",
+   "canonical": "Open Text",
+   "filings": 80,
+   "parent": "Open Text Corporation"
+  },
+  {
+   "name": "DWS INVESTMENT MANAGEMENT AMERICAS",
+   "canonical": "DB Global Technology",
+   "filings": 80,
+   "parent": "DEUTSCHE BANK AKTIENGESELLSCHAFT"
+  },
+  {
+   "name": "LIFE INSURANCE COMPANY OF NORTH AMERICA",
+   "canonical": "New York Life",
+   "filings": 80,
+   "parent": "NEW YORK LIFE INSURANCE COMPANY"
+  },
+  {
+   "name": "GENERAL REINSURANCE",
+   "canonical": "Berkshire Hathaway Specialty Insurance",
+   "filings": 77,
+   "parent": "BERKSHIRE HATHAWAY INC."
+  },
+  {
+   "name": "UOP",
+   "canonical": "Honeywell",
+   "filings": 76,
+   "parent": "HONEYWELL INTERNATIONAL INC."
+  },
+  {
+   "name": "IMPERVA",
+   "canonical": "Thales Avionics",
+   "filings": 75,
+   "parent": "THALES"
+  },
+  {
+   "name": "CORPAY",
+   "canonical": "Fleetcor Technologies",
+   "filings": 73,
+   "parent": "CORPAY, INC."
+  },
+  {
+   "name": "SAN DIEGO GAS AND ELECTRIC",
+   "canonical": "Southern California GAS",
+   "filings": 72,
+   "parent": "SEMPRA"
+  },
+  {
+   "name": "DXC TECHNOLOGY",
+   "canonical": "Computer Sciences",
+   "filings": 71,
+   "parent": "DXC TECHNOLOGY COMPANY"
+  },
+  {
+   "name": "HAND HELD PRODUCTS",
+   "canonical": "Honeywell",
+   "filings": 70,
+   "parent": "HONEYWELL INTERNATIONAL INC."
+  },
+  {
+   "name": "AETNA MEDICAID ADMINISTRATORS",
+   "canonical": "CVS Health",
+   "filings": 70,
+   "parent": "CVS HEALTH CORPORATION"
+  },
+  {
+   "name": "SEMPRA",
+   "canonical": "Southern California GAS",
+   "filings": 69,
+   "parent": "SEMPRA"
+  },
+  {
+   "name": "FLATIRON CONSTRUCTION",
+   "canonical": "Turner Construction",
+   "filings": 68,
+   "parent": "ACS ACTIVIDADES DE CONSTRUCCION Y SERVICIOS, S.A."
+  },
+  {
+   "name": "PGIM",
+   "canonical": "Prudential",
+   "filings": 68,
+   "parent": "PRUDENTIAL FINANCIAL, INC."
+  },
+  {
+   "name": "ENACT MORTGAGE INSURANCE",
+   "canonical": "Genworth North America",
+   "filings": 67,
+   "parent": "GENWORTH FINANCIAL, INC."
+  },
+  {
+   "name": "COMMONSPIRIT HEALTH",
+   "canonical": "Catholic Health Initiatives",
+   "filings": 67,
+   "parent": "CommonSpirit Health"
+  },
+  {
+   "name": "CIBER GLOBAL",
+   "canonical": "HTC Global Services",
+   "filings": 65,
+   "parent": "HTC Global Services, Inc."
+  },
+  {
+   "name": "OPTUM TECHNOLOGY",
+   "canonical": "UnitedHealth Group",
+   "filings": 65,
+   "parent": "UNITEDHEALTH GROUP INCORPORATED"
+  },
+  {
+   "name": "DEUTSCHE BANK TRUST COMPANY AMERICAS",
+   "canonical": "DB Global Technology",
+   "filings": 65,
+   "parent": "DEUTSCHE BANK AKTIENGESELLSCHAFT"
+  },
+  {
+   "name": "CWC TRAVEL",
+   "canonical": "Costco",
+   "filings": 64,
+   "parent": "COSTCO WHOLESALE CORPORATION"
+  },
+  {
+   "name": "GE VERNOVA OPERATIONS",
+   "canonical": "GE",
+   "filings": 62,
+   "parent": "GENERAL ELECTRIC COMPANY"
+  },
+  {
+   "name": "INTRALINKS",
+   "canonical": "SS and C Technologies",
+   "filings": 62,
+   "parent": "SS&C TECHNOLOGIES HOLDINGS, INC."
+  },
+  {
+   "name": "CALLIDUS SOFTWARE",
+   "canonical": "SAP America",
+   "filings": 61,
+   "parent": "SAP SE"
+  },
+  {
+   "name": "PARAMOUNT GLOBAL",
+   "canonical": "CBS Interactive",
+   "filings": 61,
+   "parent": "PARAMOUNT GLOBAL"
+  },
+  {
+   "name": "TAKE TWO INTERACTIVE SOFTWARE",
+   "canonical": "Rockstar Games",
+   "filings": 60,
+   "parent": "Take-Two Interactive Software, Inc."
+  },
+  {
+   "name": "NEW YORK AIR BRAKE",
+   "canonical": "Bendix Commercial Vehicle Systems",
+   "filings": 60,
+   "parent": "Knorr-Bremse Aktiengesellschaft"
+  },
+  {
+   "name": "RAYTHEON TECHNOLOGIES",
+   "canonical": "Rockwell Collins",
+   "filings": 59,
+   "parent": "RTX CORPORATION"
+  },
+  {
+   "name": "CONGA",
+   "canonical": "Apttus",
+   "filings": 58,
+   "parent": "CONGA CORPORATION"
+  },
+  {
+   "name": "CVS CAREMARK",
+   "canonical": "CVS Health",
+   "filings": 58,
+   "parent": "CVS HEALTH CORPORATION"
+  },
+  {
+   "name": "UBS ASSET MANAGEMENT AMERICAS",
+   "canonical": "UBS",
+   "filings": 57,
+   "parent": "UBS Group AG"
+  },
+  {
+   "name": "AXIOMA",
+   "canonical": "Nodal Exchange",
+   "filings": 55,
+   "parent": "Deutsche B\u00f6rse Aktiengesellschaft"
+  },
+  {
+   "name": "GE ENERGY POWER CONVERSION",
+   "canonical": "GE",
+   "filings": 54,
+   "parent": "GENERAL ELECTRIC COMPANY"
+  },
+  {
+   "name": "QUICKEN LOANS",
+   "canonical": "Rocket Mortgage",
+   "filings": 54,
+   "parent": "ROCKET MORTGAGE, LLC"
+  },
+  {
+   "name": "ADENZA",
+   "canonical": "Nasdaq",
+   "filings": 53,
+   "parent": "NASDAQ, INC."
+  },
+  {
+   "name": "ULTIUM CELLS",
+   "canonical": "General Motors",
+   "filings": 53,
+   "parent": "GENERAL MOTORS COMPANY"
+  },
+  {
+   "name": "NATIONAL UNION FIRE INSURANCE COMPANY OF PITTSBURGH PA",
+   "canonical": "American General Life Insurance",
+   "filings": 52,
+   "parent": "AMERICAN INTERNATIONAL GROUP, INC."
+  },
+  {
+   "name": "TBWA WORLDWIDE",
+   "canonical": "OMD",
+   "filings": 51,
+   "parent": "OMNICOM GROUP INC."
+  },
+  {
+   "name": "PRIORITY HEALTH",
+   "canonical": "Corewell Health",
+   "filings": 51,
+   "parent": "COREWELL HEALTH"
+  },
+  {
+   "name": "LOOMIS SAYLES",
+   "canonical": "Natixis North America",
+   "filings": 51,
+   "parent": "BPCE"
+  },
+  {
+   "name": "WESTINGHOUSE ELECTRIC",
+   "canonical": "Toshiba Global Commerce Solutions",
+   "filings": 51,
+   "parent": "\u682a\u5f0f\u4f1a\u793e\u6771\u829d"
+  },
+  {
+   "name": "MOMENTIVE",
+   "canonical": "Surveymonkey",
+   "filings": 51,
+   "parent": "MOMENTIVE GLOBAL INC."
+  },
+  {
+   "name": "DENTSU INTERNATIONAL AMERICAS",
+   "canonical": "Merkle",
+   "filings": 50,
+   "parent": "\u682a\u5f0f\u4f1a\u793e\u96fb\u901a\u30b0\u30eb\u30fc\u30d7"
+  },
+  {
+   "name": "MEDTRONIC MINIMED",
+   "canonical": "Covidien",
+   "filings": 50,
+   "parent": "MEDTRONIC PUBLIC LIMITED COMPANY"
+  },
+  {
+   "name": "DST TECHNOLOGIES",
+   "canonical": "SS and C Technologies",
+   "filings": 50,
+   "parent": "SS&C TECHNOLOGIES HOLDINGS, INC."
+  },
+  {
+   "name": "WNS NORTH AMERICA",
+   "canonical": "Capgemini",
+   "filings": 50,
+   "parent": "CAPGEMINI"
+  },
+  {
+   "name": "HEATCRAFT REFRIGERATION PRODUCTS",
+   "canonical": "Lennox International",
+   "filings": 49,
+   "parent": "LENNOX INTERNATIONAL INC."
+  },
+  {
+   "name": "VM CONSOLIDATED",
+   "canonical": "Verra Mobility",
+   "filings": 49,
+   "parent": "VERRA MOBILITY CORPORATION"
+  },
+  {
+   "name": "NICE SYSTEMS",
+   "canonical": "Actimize",
+   "filings": 48,
+   "parent": "\u05e0\u05d9\u05d9\u05e1 \u05d1\u05e2\"\u05de"
+  },
+  {
+   "name": "TRANSACTION NETWORK SERVICES",
+   "canonical": "Infor",
+   "filings": 48,
+   "parent": "Koch, Inc."
+  },
+  {
+   "name": "TAULIA",
+   "canonical": "SAP America",
+   "filings": 47,
+   "parent": "SAP SE"
+  },
+  {
+   "name": "INSTITUTIONAL SHAREHOLDER SERVICES",
+   "canonical": "Nodal Exchange",
+   "filings": 46,
+   "parent": "Deutsche B\u00f6rse Aktiengesellschaft"
+  },
+  {
+   "name": "MEDICAL DEVICE BUSINESS SERVICES",
+   "canonical": "Johnson & Johnson",
+   "filings": 46,
+   "parent": "Johnson & Johnson"
+  },
+  {
+   "name": "FLATIRON DRAGADOS",
+   "canonical": "Turner Construction",
+   "filings": 45,
+   "parent": "ACS ACTIVIDADES DE CONSTRUCCION Y SERVICIOS, S.A."
+  },
+  {
+   "name": "BMO BANK NATIONAL ASSOCIATION",
+   "canonical": "BMO Capital Markets",
+   "filings": 45,
+   "parent": "Bank of Montr\u00e9al"
+  },
+  {
+   "name": "YUNEX",
+   "canonical": "Siemens Industry Software",
+   "filings": 45,
+   "parent": "Siemens Aktiengesellschaft"
+  },
+  {
+   "name": "MANUFACTURERS BANK",
+   "canonical": "Smbc Capital Markets",
+   "filings": 45,
+   "parent": "\u682a\u5f0f\u4f1a\u793e\u4e09\u4e95\u4f4f\u53cb\u30d5\u30a3\u30ca\u30f3\u30b7\u30e3\u30eb\u30b0\u30eb\u30fc\u30d7"
+  },
+  {
+   "name": "NORTHERN NATURAL GAS",
+   "canonical": "Berkshire Hathaway Specialty Insurance",
+   "filings": 44,
+   "parent": "BERKSHIRE HATHAWAY INC."
+  },
+  {
+   "name": "RESTORATION HARDWARE",
+   "canonical": "RH",
+   "filings": 44,
+   "parent": "RH"
+  },
+  {
+   "name": "IPTIQ AMERICAS",
+   "canonical": "Swiss RE Management",
+   "filings": 44,
+   "parent": "SWISS RE AG"
+  },
+  {
+   "name": "PG AND E",
+   "canonical": "PG&E",
+   "filings": 43,
+   "parent": "PG&E CORPORATION"
+  },
+  {
+   "name": "KKR CREDIT ADVISORS",
+   "canonical": "Kohlberg Kravis Roberts",
+   "filings": 43,
+   "parent": "KKR & CO. INC."
+  },
+  {
+   "name": "ST JUDE MEDICAL BUSINESS SERVICES",
+   "canonical": "Abbott",
+   "filings": 43,
+   "parent": "ABBOTT LABORATORIES"
+  },
+  {
+   "name": "THREATMETRIX",
+   "canonical": "Relx",
+   "filings": 42,
+   "parent": "RELX PLC"
+  },
+  {
+   "name": "ASPEN TECHNOLOGY",
+   "canonical": "Emerson Electric",
+   "filings": 42,
+   "parent": "EMERSON ELECTRIC CO."
+  },
+  {
+   "name": "CYBERARK SOFTWARE",
+   "canonical": "Palo Alto Networks",
+   "filings": 42,
+   "parent": "PALO ALTO NETWORKS, INC."
+  },
+  {
+   "name": "AEGON GLOBAL SERVICES",
+   "canonical": "Money Services",
+   "filings": 42,
+   "parent": "Aegon Ltd."
+  },
+  {
+   "name": "TECHTRONIC CORDLESS GP",
+   "canonical": "Milwaukee Electric Tool",
+   "filings": 42,
+   "parent": "TECHTRONIC INDUSTRIES COMPANY LIMITED"
+  },
+  {
+   "name": "ON SEMICONDUCTOR",
+   "canonical": "Semiconductor Components Industries",
+   "filings": 42,
+   "parent": "ON SEMICONDUCTOR CORPORATION"
+  },
+  {
+   "name": "CORIXA",
+   "canonical": "GSK",
+   "filings": 41,
+   "parent": "GSK PLC"
+  },
+  {
+   "name": "ROYAL CANIN",
+   "canonical": "Mars",
+   "filings": 41,
+   "parent": "MARS, INCORPORATED"
+  },
+  {
+   "name": "COLUMBIA MANAGEMENT INVESTMENT ADVISERS",
+   "canonical": "Ameriprise Financial",
+   "filings": 41,
+   "parent": "AMERIPRISE FINANCIAL, INC."
+  },
+  {
+   "name": "LOGRHYTHM",
+   "canonical": "Exabeam",
+   "filings": 40,
+   "parent": "LogRhythm, Inc."
+  },
+  {
+   "name": "CT CORPORATION SYSTEM",
+   "canonical": "Wolters Kluwer United States",
+   "filings": 40,
+   "parent": "Wolters Kluwer N.V."
+  },
+  {
+   "name": "ICE DATA INDICES",
+   "canonical": "Intercontinental Exchange",
+   "filings": 39,
+   "parent": "INTERCONTINENTAL EXCHANGE, INC."
+  },
+  {
+   "name": "CALLAWAY GOLF",
+   "canonical": "Topgolf Callaway Brands",
+   "filings": 38,
+   "parent": "TOPGOLF CALLAWAY BRANDS CORP."
+  },
+  {
+   "name": "DTE ELECTRIC",
+   "canonical": "DTE Energy",
+   "filings": 38,
+   "parent": "DTE ENERGY COMPANY"
+  },
+  {
+   "name": "BANK OF NEW YORK",
+   "canonical": "BNY Mellon",
+   "filings": 38,
+   "parent": "THE BANK OF NEW YORK MELLON CORPORATION"
+  },
+  {
+   "name": "ST LUKE S HEALTH SYSTEM",
+   "canonical": "Catholic Health Initiatives",
+   "filings": 37,
+   "parent": "CommonSpirit Health"
+  },
+  {
+   "name": "AMERICAN HONDA FINANCE",
+   "canonical": "Honda",
+   "filings": 37,
+   "parent": "\u672c\u7530\u6280\u7814\u5de5\u696d\u682a\u5f0f\u4f1a\u793e"
+  },
+  {
+   "name": "HARTFORD STEAM BOILER INSPECTION AND INSURANCE",
+   "canonical": "Munich American Reassurance",
+   "filings": 37,
+   "parent": "M\u00fcnchener R\u00fcckversicherungs-Gesellschaft Aktiengesellschaft in M\u00fcnchen"
+  },
+  {
+   "name": "STATE AUTOMOBILE MUTUAL INSURANCE",
+   "canonical": "Liberty Mutual",
+   "filings": 36,
+   "parent": "Liberty Mutual Holding Company Inc."
+  },
+  {
+   "name": "DRAGADOS",
+   "canonical": "Turner Construction",
+   "filings": 36,
+   "parent": "ACS ACTIVIDADES DE CONSTRUCCION Y SERVICIOS, S.A."
+  },
+  {
+   "name": "CREDITEX",
+   "canonical": "Intercontinental Exchange",
+   "filings": 36,
+   "parent": "INTERCONTINENTAL EXCHANGE, INC."
+  },
+  {
+   "name": "VERSANT MEDIA",
+   "canonical": "Comcast",
+   "filings": 35,
+   "parent": "COMCAST CORPORATION"
+  },
+  {
+   "name": "ALPHABET",
+   "canonical": "Google",
+   "filings": 35,
+   "parent": "ALPHABET INC."
+  },
+  {
+   "name": "NEW YORK LIFE INSURANCE AND ANNUITY",
+   "canonical": "New York Life",
+   "filings": 35,
+   "parent": "NEW YORK LIFE INSURANCE COMPANY"
+  },
+  {
+   "name": "LAKELAND HOSPITALS AT NILES AND ST JOSEPH",
+   "canonical": "Corewell Health",
+   "filings": 34,
+   "parent": "COREWELL HEALTH"
+  },
+  {
+   "name": "HARRIS TEETER",
+   "canonical": "Kroger",
+   "filings": 34,
+   "parent": "THE KROGER CO."
+  },
+  {
+   "name": "MOUNT AUBURN HOSPITAL",
+   "canonical": "Beth Israel Deaconess Medical Center",
+   "filings": 33,
+   "parent": "BETH ISRAEL LAHEY HEALTH, INC."
+  },
+  {
+   "name": "DISCOVERY",
+   "canonical": "Warner Bros Discovery",
+   "filings": 33,
+   "parent": "WARNER BROS. DISCOVERY, INC."
+  },
+  {
+   "name": "OSAIC",
+   "canonical": "Advisor",
+   "filings": 33,
+   "parent": "Osaic Holdings, Inc."
+  },
+  {
+   "name": "BHE RENEWABLES",
+   "canonical": "Berkshire Hathaway Specialty Insurance",
+   "filings": 32,
+   "parent": "BERKSHIRE HATHAWAY INC."
+  },
+  {
+   "name": "TEGRA118 WEALTH SOLUTIONS",
+   "canonical": "Investcloud",
+   "filings": 32,
+   "parent": "INVESTCLOUD, INC."
+  },
+  {
+   "name": "KNORR BRAKE",
+   "canonical": "Bendix Commercial Vehicle Systems",
+   "filings": 32,
+   "parent": "Knorr-Bremse Aktiengesellschaft"
+  },
+  {
+   "name": "DIRECT ENERGY",
+   "canonical": "NRG Energy",
+   "filings": 32,
+   "parent": "NRG ENERGY, INC."
+  },
+  {
+   "name": "CCC INFORMATION SERVICES",
+   "canonical": "CCC Intelligent Solutions",
+   "filings": 32,
+   "parent": "CCC INTELLIGENT SOLUTIONS INC."
+  },
+  {
+   "name": "RESIDEO",
+   "canonical": "Ademco",
+   "filings": 32,
+   "parent": "RESIDEO TECHNOLOGIES, INC."
+  },
+  {
+   "name": "SOLVEDA",
+   "canonical": "Saksoft",
+   "filings": 31,
+   "parent": "SAKSOFT LIMITED"
+  },
+  {
+   "name": "ADVENT SOFTWARE",
+   "canonical": "SS and C Technologies",
+   "filings": 31,
+   "parent": "SS&C TECHNOLOGIES HOLDINGS, INC."
+  },
+  {
+   "name": "AETNA LIFE INSURANCE",
+   "canonical": "CVS Health",
+   "filings": 31,
+   "parent": "CVS HEALTH CORPORATION"
+  },
+  {
+   "name": "MERRILL LYNCH COMMODITIES",
+   "canonical": "Bank of America",
+   "filings": 31,
+   "parent": "BANK OF AMERICA CORPORATION"
+  },
+  {
+   "name": "CREDIT SUISSE ASSET MANAGEMENT",
+   "canonical": "UBS",
+   "filings": 30,
+   "parent": "UBS Group AG"
+  },
+  {
+   "name": "DEPUY SYNTHES PRODUCTS",
+   "canonical": "Johnson & Johnson",
+   "filings": 30,
+   "parent": "Johnson & Johnson"
+  },
+  {
+   "name": "RBC BANK GEORGIA NATIONAL ASSOCIATION",
+   "canonical": "RBC Capital Markets",
+   "filings": 30,
+   "parent": "Royal Bank of Canada"
+  },
+  {
+   "name": "UGI UTILITIES",
+   "canonical": "Amerigas Propane",
+   "filings": 30,
+   "parent": "UGI CORPORATION"
+  },
+  {
+   "name": "VOCOLLECT",
+   "canonical": "Honeywell",
+   "filings": 30,
+   "parent": "HONEYWELL INTERNATIONAL INC."
+  },
+  {
+   "name": "KOCH AG AND ENERGY SOLUTIONS",
+   "canonical": "Infor",
+   "filings": 30,
+   "parent": "Koch, Inc."
+  },
+  {
+   "name": "METRO GOLDWYN MAYER STUDIOS",
+   "canonical": "Amazon",
+   "filings": 29,
+   "parent": "AMAZON.COM, INC."
+  },
+  {
+   "name": "UNION UNDERWEAR",
+   "canonical": "Berkshire Hathaway Specialty Insurance",
+   "filings": 29,
+   "parent": "BERKSHIRE HATHAWAY INC."
+  },
+  {
+   "name": "ZECO SYSTEMS",
+   "canonical": "Shell",
+   "filings": 29,
+   "parent": "SHELL PLC"
+  },
+  {
+   "name": "ROCHESTER GAS AND ELECTRIC",
+   "canonical": "Avangrid",
+   "filings": 29,
+   "parent": "AVANGRID, INC."
+  },
+  {
+   "name": "PUTNAM US HOLDINGS I",
+   "canonical": "Franklin Templeton",
+   "filings": 29,
+   "parent": "Franklin Templeton, Inc."
+  },
+  {
+   "name": "RETAIL FINANCE INTERNATIONAL",
+   "canonical": "Synchrony Bank",
+   "filings": 29,
+   "parent": "SYNCHRONY FINANCIAL"
+  },
+  {
+   "name": "PITCHBOOK DATA",
+   "canonical": "Morningstar",
+   "filings": 28,
+   "parent": "MORNINGSTAR, INC."
+  },
+  {
+   "name": "UNIVERSITY OF DENVER",
+   "canonical": "Colorado Seminary",
+   "filings": 28,
+   "parent": "UNIVERSITY OF DENVER"
+  },
+  {
+   "name": "PARAMOUNT PICTURES",
+   "canonical": "CBS Interactive",
+   "filings": 28,
+   "parent": "PARAMOUNT GLOBAL"
+  },
+  {
+   "name": "CENTRAL HUDSON GAS AND ELECTRIC",
+   "canonical": "Tucson Electric Power",
+   "filings": 28,
+   "parent": "Fortis Inc."
+  },
+  {
+   "name": "DBRS",
+   "canonical": "Morningstar",
+   "filings": 27,
+   "parent": "MORNINGSTAR, INC."
+  },
+  {
+   "name": "AXA EQUITABLE LIFE INSURANCE",
+   "canonical": "Equitable Financial Life Insurance",
+   "filings": 27,
+   "parent": "EQUITABLE FINANCIAL LIFE INSURANCE COMPANY"
+  },
+  {
+   "name": "SIMCORP",
+   "canonical": "Nodal Exchange",
+   "filings": 26,
+   "parent": "Deutsche B\u00f6rse Aktiengesellschaft"
+  },
+  {
+   "name": "ICE DATA PRICING AND REFERENCE DATA",
+   "canonical": "Intercontinental Exchange",
+   "filings": 26,
+   "parent": "INTERCONTINENTAL EXCHANGE, INC."
+  },
+  {
+   "name": "JENNISON ASSOCIATES",
+   "canonical": "Prudential",
+   "filings": 26,
+   "parent": "PRUDENTIAL FINANCIAL, INC."
+  },
+  {
+   "name": "CITY OF HOPE",
+   "canonical": "Beckman Research Institute of the City of Hope",
+   "filings": 26,
+   "parent": "CITY OF HOPE"
+  },
+  {
+   "name": "ARCESIUM",
+   "canonical": "DE Shaw",
+   "filings": 25,
+   "parent": "D. E. SHAW & CO., L.P."
+  },
+  {
+   "name": "CORINDUS",
+   "canonical": "Siemens Industry Software",
+   "filings": 25,
+   "parent": "Siemens Aktiengesellschaft"
+  },
+  {
+   "name": "REALOGY",
+   "canonical": "Anywhere Real Estate",
+   "filings": 25,
+   "parent": "ANYWHERE REAL ESTATE INC."
+  },
+  {
+   "name": "BNP PARIBAS FINANCIAL SERVICES",
+   "canonical": "BNP Paribas Securities",
+   "filings": 25,
+   "parent": "BNP PARIBAS"
+  },
+  {
+   "name": "REINSURANCE GROUP OF AMERICA",
+   "canonical": "RGA Enterprise Services",
+   "filings": 25,
+   "parent": "REINSURANCE GROUP OF AMERICA, INCORPORATED"
+  },
+  {
+   "name": "PUTNAM INVESTMENT MANAGEMENT",
+   "canonical": "Franklin Templeton",
+   "filings": 25,
+   "parent": "Franklin Templeton, Inc."
+  },
+  {
+   "name": "BANCO SANTANDER INTERNATIONAL",
+   "canonical": "Santander",
+   "filings": 25,
+   "parent": "BANCO SANTANDER S.A."
+  },
+  {
+   "name": "EQUITABLE",
+   "canonical": "Alliancebernstein",
+   "filings": 24,
+   "parent": "EQUITABLE HOLDINGS, INC."
+  },
+  {
+   "name": "HARVEY AI",
+   "canonical": "Counsel AI",
+   "filings": 24,
+   "parent": "HARVEY AI CORPORATION"
+  },
+  {
+   "name": "FOOT LOCKER",
+   "canonical": "Dick S Sporting Goods",
+   "filings": 24,
+   "parent": "DICK'S SPORTING GOODS, INC."
+  },
+  {
+   "name": "EXPRESS SCRIPTS HOLDING",
+   "canonical": "Cigna",
+   "filings": 24,
+   "parent": "THE CIGNA GROUP"
+  },
+  {
+   "name": "HPS INVESTMENT PARTNERS",
+   "canonical": "BlackRock",
+   "filings": 24,
+   "parent": "BlackRock, Inc."
+  },
+  {
+   "name": "PPL ELECTRIC UTILITIES",
+   "canonical": "PPL",
+   "filings": 24,
+   "parent": "PPL CORPORATION"
+  },
+  {
+   "name": "TRUSTAGE FINANCIAL",
+   "canonical": "Cmfg Life Insurance",
+   "filings": 24,
+   "parent": "CUNA MUTUAL HOLDING COMPANY"
+  },
+  {
+   "name": "ST MARY S MEDICAL CENTER",
+   "canonical": "Tenet Healthcare",
+   "filings": 23,
+   "parent": "Tenet Healthcare Corporation"
+  },
+  {
+   "name": "XL REINSURANCE AMERICA",
+   "canonical": "XL Global Services",
+   "filings": 23,
+   "parent": "AXA"
+  },
+  {
+   "name": "SWISSLOG LOGISTICS",
+   "canonical": "Kuka Systems North America",
+   "filings": 23,
+   "parent": "\u7f8e\u7684\u96c6\u56e2\u80a1\u4efd\u6709\u9650\u516c\u53f8"
+  },
+  {
+   "name": "DEPUY SYNTHES SALES",
+   "canonical": "Johnson & Johnson",
+   "filings": 23,
+   "parent": "Johnson & Johnson"
+  },
+  {
+   "name": "CURTIS INSTRUMENTS",
+   "canonical": "Parker Hannifin",
+   "filings": 23,
+   "parent": "PARKER-HANNIFIN CORPORATION"
+  },
+  {
+   "name": "AIR LIQUIDE",
+   "canonical": "American AIR Liquide",
+   "filings": 23,
+   "parent": "L'AIR LIQUIDE SOCIETE ANONYME POUR L'ETUDE ET L'EXPLOITATION DES PROCEDES GEORGES CLAUDE"
+  },
+  {
+   "name": "DAVID J JOSEPH",
+   "canonical": "Nucor",
+   "filings": 23,
+   "parent": "NUCOR CORPORATION"
+  },
+  {
+   "name": "GE PACKAGED POWER",
+   "canonical": "GE",
+   "filings": 22,
+   "parent": "GENERAL ELECTRIC COMPANY"
+  },
+  {
+   "name": "LER PRODUCT DESIGN",
+   "canonical": "Siemens Industry Software",
+   "filings": 22,
+   "parent": "Siemens Aktiengesellschaft"
+  },
+  {
+   "name": "VENTURA FOODS",
+   "canonical": "CHS",
+   "filings": 22,
+   "parent": "CHS Inc."
+  },
+  {
+   "name": "VTECH",
+   "canonical": "Ascendum Solutions",
+   "filings": 22,
+   "parent": "ASCENDUM SOLUTIONS LLC"
+  },
+  {
+   "name": "DAYFORCE",
+   "canonical": "Ceridian HCM",
+   "filings": 22,
+   "parent": "DAYFORCE, INC."
+  },
+  {
+   "name": "CREDITSIGHTS",
+   "canonical": "Fitch Ratings",
+   "filings": 21,
+   "parent": "THE HEARST CORPORATION"
+  },
+  {
+   "name": "NTT AMERICA",
+   "canonical": "NTT Data Americas",
+   "filings": 21,
+   "parent": "\uff2e\uff34\uff34\u682a\u5f0f\u4f1a\u793e"
+  },
+  {
+   "name": "ABB ENTERPRISE SOFTWARE",
+   "canonical": "Hitachi Digital Services",
+   "filings": 21,
+   "parent": "\u682a\u5f0f\u4f1a\u793e \u65e5\u7acb\u88fd\u4f5c\u6240"
+  },
+  {
+   "name": "RREEF MANAGEMENT",
+   "canonical": "DB Global Technology",
+   "filings": 21,
+   "parent": "DEUTSCHE BANK AKTIENGESELLSCHAFT"
+  },
+  {
+   "name": "ALERE",
+   "canonical": "Abbott",
+   "filings": 21,
+   "parent": "ABBOTT LABORATORIES"
+  },
+  {
+   "name": "PGIM QUANTITATIVE SOLUTIONS",
+   "canonical": "Prudential",
+   "filings": 21,
+   "parent": "PRUDENTIAL FINANCIAL, INC."
+  },
+  {
+   "name": "BNP PARIBAS US WHOLESALE",
+   "canonical": "BNP Paribas Securities",
+   "filings": 21,
+   "parent": "BNP PARIBAS"
+  },
+  {
+   "name": "KLA TENCOR",
+   "canonical": "KLA",
+   "filings": 21,
+   "parent": "KLA CORPORATION"
+  },
+  {
+   "name": "ERP LOGIC",
+   "canonical": "Nobl Q",
+   "filings": 21,
+   "parent": "Nobl Q LLC"
+  },
+  {
+   "name": "ICE CLEAR",
+   "canonical": "Intercontinental Exchange",
+   "filings": 20,
+   "parent": "INTERCONTINENTAL EXCHANGE, INC."
+  },
+  {
+   "name": "JANSSEN GLOBAL SERVICES",
+   "canonical": "Johnson & Johnson",
+   "filings": 20,
+   "parent": "Johnson & Johnson"
+  },
+  {
+   "name": "AEGON USA REALTY ADVISORS",
+   "canonical": "Money Services",
+   "filings": 20,
+   "parent": "Aegon Ltd."
+  },
+  {
+   "name": "EFRONT FINANCIAL SOLUTIONS",
+   "canonical": "BlackRock",
+   "filings": 20,
+   "parent": "BlackRock, Inc."
+  },
+  {
+   "name": "ENVESTNET",
+   "canonical": "Yodlee",
+   "filings": 20,
+   "parent": "ENVESTNET, INC."
+  },
+  {
+   "name": "AIG ASSET MANAGEMENT",
+   "canonical": "Corebridge Financial",
+   "filings": 20,
+   "parent": "COREBRIDGE FINANCIAL, INC."
+  }
+ ],
+ "new_families": [
+  {
+   "name": "ORACLE AMERICA",
+   "canonical": "Oracle America",
+   "naics2": "",
+   "filings": 8540,
+   "parent": "ORACLE CORPORATION"
+  },
+  {
+   "name": "MCKINSEY AND COMPANY INC UNITED STATES",
+   "canonical": "Mckinsey and Company INC United States",
+   "naics2": "",
+   "filings": 3728,
+   "parent": "MCKINSEY & COMPANY, INC."
+  },
+  {
+   "name": "MAYO CLINIC",
+   "canonical": "Mayo Clinic",
+   "naics2": "62",
+   "filings": 2533,
+   "parent": "Mayo Clinic"
+  },
+  {
+   "name": "WESTERN DIGITAL TECHNOLOGIES",
+   "canonical": "Western Digital Technologies",
+   "naics2": "",
+   "filings": 2242,
+   "parent": "WESTERN DIGITAL CORPORATION"
+  },
+  {
+   "name": "UNIVERSITY OF CHICAGO",
+   "canonical": "University of Chicago",
+   "naics2": "61",
+   "filings": 1332,
+   "parent": "THE UNIVERSITY OF CHICAGO"
+  },
+  {
+   "name": "SIEMENS INDUSTRY SOFTWARE",
+   "canonical": "Siemens Industry Software",
+   "naics2": "",
+   "filings": 1322,
+   "parent": "Siemens Aktiengesellschaft"
+  },
+  {
+   "name": "SCHLUMBERGER TECHNOLOGY",
+   "canonical": "Schlumberger Technology",
+   "naics2": "",
+   "filings": 665,
+   "parent": "SLB N.V."
+  },
+  {
+   "name": "ZOOM VIDEO COMMUNICATIONS",
+   "canonical": "Zoom Video Communications",
+   "naics2": "54",
+   "filings": 645,
+   "parent": "ZOOM COMMUNICATIONS, INC."
+  },
+  {
+   "name": "SIEMENS INDUSTRY",
+   "canonical": "Siemens Industry Software",
+   "naics2": "",
+   "filings": 592,
+   "parent": "Siemens Aktiengesellschaft"
+  },
+  {
+   "name": "ADVENTIST HEALTH SYSTEM SUNBELT",
+   "canonical": "Adventist Health System Sunbelt",
+   "naics2": "",
+   "filings": 572,
+   "parent": "ADVENTIST HEALTH SYSTEM SUNBELT HEALTHCARE CORPORATION"
+  },
+  {
+   "name": "SIEMENS MEDICAL SOLUTIONS",
+   "canonical": "Siemens Industry Software",
+   "naics2": "",
+   "filings": 547,
+   "parent": "Siemens Aktiengesellschaft"
+  },
+  {
+   "name": "MODERNATX",
+   "canonical": "Modernatx",
+   "naics2": "",
+   "filings": 507,
+   "parent": "MODERNA, INC."
+  },
+  {
+   "name": "DASSAULT SYSTEMES AMERICAS",
+   "canonical": "Dassault Systemes Americas",
+   "naics2": "",
+   "filings": 499,
+   "parent": "GROUPE INDUSTRIEL MARCEL DASSAULT"
+  },
+  {
+   "name": "TYSON FRESH MEATS",
+   "canonical": "Tyson Fresh Meats",
+   "naics2": "",
+   "filings": 454,
+   "parent": "TYSON FOODS, INC."
+  },
+  {
+   "name": "INFINEON TECHNOLOGIES AMERICAS",
+   "canonical": "Infineon Technologies Americas",
+   "naics2": "",
+   "filings": 435,
+   "parent": "Infineon Technologies AG"
+  },
+  {
+   "name": "LENDINGCLUB BANK NATIONAL ASSOCIATION",
+   "canonical": "Lendingclub Bank National Association",
+   "naics2": "",
+   "filings": 434,
+   "parent": "LENDINGCLUB CORPORATION"
+  },
+  {
+   "name": "SYNCHRONY BANK",
+   "canonical": "Synchrony Bank",
+   "naics2": "",
+   "filings": 414,
+   "parent": "SYNCHRONY FINANCIAL"
+  },
+  {
+   "name": "AMERICAN GENERAL LIFE INSURANCE",
+   "canonical": "American General Life Insurance",
+   "naics2": "",
+   "filings": 411,
+   "parent": "AMERICAN INTERNATIONAL GROUP, INC."
+  },
+  {
+   "name": "HITACHI DIGITAL SERVICES",
+   "canonical": "Hitachi Digital Services",
+   "naics2": "",
+   "filings": 406,
+   "parent": "\u682a\u5f0f\u4f1a\u793e \u65e5\u7acb\u88fd\u4f5c\u6240"
+  },
+  {
+   "name": "ZOOM COMMUNICATIONS",
+   "canonical": "Zoom Video Communications",
+   "naics2": "54",
+   "filings": 404,
+   "parent": "ZOOM COMMUNICATIONS, INC."
+  },
+  {
+   "name": "LULULEMON",
+   "canonical": "Lululemon",
+   "naics2": "31-33",
+   "filings": 399,
+   "parent": "LULULEMON ATHLETICA INC."
+  },
+  {
+   "name": "SABRE GLBL",
+   "canonical": "Sabre Glbl",
+   "naics2": "",
+   "filings": 346,
+   "parent": "SABRE CORPORATION"
+  },
+  {
+   "name": "HITACHI ENERGY",
+   "canonical": "Hitachi Digital Services",
+   "naics2": "",
+   "filings": 330,
+   "parent": "\u682a\u5f0f\u4f1a\u793e \u65e5\u7acb\u88fd\u4f5c\u6240"
+  },
+  {
+   "name": "ORACLE FINANCIAL SERVICES SOFTWARE",
+   "canonical": "Oracle America",
+   "naics2": "",
+   "filings": 320,
+   "parent": "ORACLE CORPORATION"
+  },
+  {
+   "name": "ADVENTIST HEALTH SYSTEM SUNBELT HEALTHCARE",
+   "canonical": "Adventist Health System Sunbelt",
+   "naics2": "",
+   "filings": 314,
+   "parent": "ADVENTIST HEALTH SYSTEM SUNBELT HEALTHCARE CORPORATION"
+  },
+  {
+   "name": "HSBC TECHNOLOGY AND SERVICES",
+   "canonical": "Hsbc Technology and Services",
+   "naics2": "",
+   "filings": 307,
+   "parent": "HSBC HOLDINGS PLC"
+  },
+  {
+   "name": "SIEMENS MOBILITY",
+   "canonical": "Siemens Industry Software",
+   "naics2": "",
+   "filings": 299,
+   "parent": "Siemens Aktiengesellschaft"
+  },
+  {
+   "name": "SIEMENS",
+   "canonical": "Siemens Industry Software",
+   "naics2": "",
+   "filings": 295,
+   "parent": "Siemens Aktiengesellschaft"
+  },
+  {
+   "name": "NOMURA HOLDING AMERICA",
+   "canonical": "Nomura Holding America",
+   "naics2": "",
+   "filings": 288,
+   "parent": "\u91ce\u6751\u30db\u30fc\u30eb\u30c7\u30a3\u30f3\u30b0\u30b9\u682a\u5f0f\u4f1a\u793e"
+  },
+  {
+   "name": "MARSH",
+   "canonical": "Marsh",
+   "naics2": "",
+   "filings": 278,
+   "parent": "MARSH & MCLENNAN COMPANIES, INC."
+  },
+  {
+   "name": "SIEMENS HEALTHCARE DIAGNOSTICS",
+   "canonical": "Siemens Industry Software",
+   "naics2": "",
+   "filings": 277,
+   "parent": "Siemens Aktiengesellschaft"
+  },
+  {
+   "name": "MORNINGSTAR",
+   "canonical": "Morningstar",
+   "naics2": "52",
+   "filings": 258,
+   "parent": "MORNINGSTAR, INC."
+  },
+  {
+   "name": "NOMURA SECURITIES INTERNATIONAL",
+   "canonical": "Nomura Holding America",
+   "naics2": "",
+   "filings": 250,
+   "parent": "\u91ce\u6751\u30db\u30fc\u30eb\u30c7\u30a3\u30f3\u30b0\u30b9\u682a\u5f0f\u4f1a\u793e"
+  },
+  {
+   "name": "HARMAN BECKER AUTOMOTIVE SYSTEMS",
+   "canonical": "Harman Becker Automotive Systems",
+   "naics2": "",
+   "filings": 233,
+   "parent": "\uc0bc\uc131\uc804\uc790(\uc8fc)"
+  },
+  {
+   "name": "TERADATA OPERATIONS",
+   "canonical": "Teradata Operations",
+   "naics2": "",
+   "filings": 233,
+   "parent": "TERADATA CORPORATION"
+  },
+  {
+   "name": "SCHAEFFLER",
+   "canonical": "Schaeffler",
+   "naics2": "",
+   "filings": 226,
+   "parent": "INA-Holding Schaeffler GmbH & Co. KG"
+  },
+  {
+   "name": "DENSO INTERNATIONAL AMERICA",
+   "canonical": "Denso International America",
+   "naics2": "",
+   "filings": 221,
+   "parent": "\u682a\u5f0f\u4f1a\u793e\u30c7\u30f3\u30bd\u30fc"
+  },
+  {
+   "name": "CONSTELLATION ENERGY GENERATION",
+   "canonical": "Constellation Energy Generation",
+   "naics2": "",
+   "filings": 221,
+   "parent": "Constellation Energy Corporation"
+  },
+  {
+   "name": "BLACKLINE SYSTEMS",
+   "canonical": "Blackline Systems",
+   "naics2": "",
+   "filings": 215,
+   "parent": "BLACKLINE, INC."
+  },
+  {
+   "name": "SOUTHERN GLAZER S WINE AND SPIRITS",
+   "canonical": "Southern Glazer S Wine and Spirits",
+   "naics2": "",
+   "filings": 214,
+   "parent": "SOUTHERN GLAZER'S WINE AND SPIRITS, LLC"
+  },
+  {
+   "name": "HYATT",
+   "canonical": "Hyatt",
+   "naics2": "",
+   "filings": 205,
+   "parent": "HYATT HOTELS CORPORATION"
+  },
+  {
+   "name": "SMBC CAPITAL MARKETS",
+   "canonical": "Smbc Capital Markets",
+   "naics2": "",
+   "filings": 198,
+   "parent": "\u682a\u5f0f\u4f1a\u793e\u4e09\u4e95\u4f4f\u53cb\u30d5\u30a3\u30ca\u30f3\u30b7\u30e3\u30eb\u30b0\u30eb\u30fc\u30d7"
+  },
+  {
+   "name": "THALES AVIONICS",
+   "canonical": "Thales Avionics",
+   "naics2": "",
+   "filings": 188,
+   "parent": "THALES"
+  },
+  {
+   "name": "GENWORTH NORTH AMERICA",
+   "canonical": "Genworth North America",
+   "naics2": "",
+   "filings": 187,
+   "parent": "GENWORTH FINANCIAL, INC."
+  },
+  {
+   "name": "FITCH RATINGS",
+   "canonical": "Fitch Ratings",
+   "naics2": "52",
+   "filings": 186,
+   "parent": "THE HEARST CORPORATION"
+  },
+  {
+   "name": "CIENA",
+   "canonical": "Ciena",
+   "naics2": "31-33",
+   "filings": 180,
+   "parent": "CIENA CORPORATION"
+  },
+  {
+   "name": "TYSON FOODS",
+   "canonical": "Tyson Fresh Meats",
+   "naics2": "",
+   "filings": 178,
+   "parent": "TYSON FOODS, INC."
+  },
+  {
+   "name": "HITACHI RAIL STS",
+   "canonical": "Hitachi Digital Services",
+   "naics2": "",
+   "filings": 170,
+   "parent": "\u682a\u5f0f\u4f1a\u793e \u65e5\u7acb\u88fd\u4f5c\u6240"
+  },
+  {
+   "name": "CIBC BANK",
+   "canonical": "Cibc Bank",
+   "naics2": "",
+   "filings": 163,
+   "parent": "Canadian Imperial Bank of Commerce"
+  },
+  {
+   "name": "NOMURA AMERICA SERVICES",
+   "canonical": "Nomura Holding America",
+   "naics2": "",
+   "filings": 155,
+   "parent": "\u91ce\u6751\u30db\u30fc\u30eb\u30c7\u30a3\u30f3\u30b0\u30b9\u682a\u5f0f\u4f1a\u793e"
+  },
+  {
+   "name": "WORLD FUEL SERVICES",
+   "canonical": "World Fuel Services",
+   "naics2": "",
+   "filings": 155,
+   "parent": "WORLD KINECT CORPORATION"
+  },
+  {
+   "name": "UNIVERSITY OF CHICAGO MEDICAL CENTER",
+   "canonical": "University of Chicago",
+   "naics2": "61",
+   "filings": 154,
+   "parent": "THE UNIVERSITY OF CHICAGO"
+  },
+  {
+   "name": "FREEPORT MINERALS",
+   "canonical": "Freeport Minerals",
+   "naics2": "",
+   "filings": 152,
+   "parent": "FREEPORT-MCMORAN INC."
+  },
+  {
+   "name": "POLARIS INDUSTRIES",
+   "canonical": "Polaris Industries",
+   "naics2": "31-33",
+   "filings": 149,
+   "parent": "Polaris Inc."
+  },
+  {
+   "name": "AMERICAN INTERNATIONAL",
+   "canonical": "American General Life Insurance",
+   "naics2": "",
+   "filings": 147,
+   "parent": "AMERICAN INTERNATIONAL GROUP, INC."
+  },
+  {
+   "name": "SWISS RE MANAGEMENT",
+   "canonical": "Swiss RE Management",
+   "naics2": "",
+   "filings": 143,
+   "parent": "SWISS RE AG"
+  },
+  {
+   "name": "MARSH AND MCLENNAN SHARED SERVICES",
+   "canonical": "Marsh",
+   "naics2": "",
+   "filings": 142,
+   "parent": "MARSH & MCLENNAN COMPANIES, INC."
+  },
+  {
+   "name": "CLEAN HARBORS ENVIRONMENTAL SERVICES",
+   "canonical": "Clean Harbors Environmental Services",
+   "naics2": "",
+   "filings": 137,
+   "parent": "CLEAN HARBORS, INC."
+  },
+  {
+   "name": "MODERNA",
+   "canonical": "Modernatx",
+   "naics2": "",
+   "filings": 133,
+   "parent": "MODERNA, INC."
+  },
+  {
+   "name": "KRAFT HEINZ",
+   "canonical": "Kraft Heinz",
+   "naics2": "31-33",
+   "filings": 130,
+   "parent": "THE KRAFT HEINZ COMPANY"
+  },
+  {
+   "name": "DASSAULT SYSTEMES SIMULIA",
+   "canonical": "Dassault Systemes Americas",
+   "naics2": "",
+   "filings": 130,
+   "parent": "GROUPE INDUSTRIEL MARCEL DASSAULT"
+  },
+  {
+   "name": "ALLIANZ TECHNOLOGY OF AMERICA",
+   "canonical": "Allianz Technology of America",
+   "naics2": "",
+   "filings": 129,
+   "parent": "Allianz SE"
+  },
+  {
+   "name": "SCOR GLOBAL LIFE AMERICAS REINSURANCE",
+   "canonical": "Scor Global Life Americas Reinsurance",
+   "naics2": "",
+   "filings": 127,
+   "parent": "SCOR SE"
+  },
+  {
+   "name": "TERADATA",
+   "canonical": "Teradata Operations",
+   "naics2": "",
+   "filings": 126,
+   "parent": "TERADATA CORPORATION"
+  },
+  {
+   "name": "HANWHA Q CELLS",
+   "canonical": "Hanwha Q Cells",
+   "naics2": "",
+   "filings": 125,
+   "parent": "(\uc8fc)\ud55c\ud654"
+  },
+  {
+   "name": "SENTARA HEALTHCARE",
+   "canonical": "Sentara Healthcare",
+   "naics2": "62",
+   "filings": 124,
+   "parent": "SENTARA HEALTH"
+  },
+  {
+   "name": "WESCO DISTRIBUTION",
+   "canonical": "Wesco Distribution",
+   "naics2": "",
+   "filings": 122,
+   "parent": "WESCO INTERNATIONAL, INC."
+  },
+  {
+   "name": "AFLAC",
+   "canonical": "Aflac",
+   "naics2": "52",
+   "filings": 122,
+   "parent": "AFLAC INCORPORATED"
+  },
+  {
+   "name": "SWISS RE AMERICA HOLDING",
+   "canonical": "Swiss RE Management",
+   "naics2": "",
+   "filings": 120,
+   "parent": "SWISS RE AG"
+  },
+  {
+   "name": "MERITOR HEAVY VEHICLE SYSTEMS",
+   "canonical": "Meritor Heavy Vehicle Systems",
+   "naics2": "",
+   "filings": 119,
+   "parent": "MERITOR, INC."
+  },
+  {
+   "name": "LOANDEPOT COM",
+   "canonical": "Loandepot COM",
+   "naics2": "",
+   "filings": 116,
+   "parent": "LOANDEPOT, INC."
+  },
+  {
+   "name": "BERKSHIRE HATHAWAY SPECIALTY INSURANCE",
+   "canonical": "Berkshire Hathaway Specialty Insurance",
+   "naics2": "",
+   "filings": 114,
+   "parent": "BERKSHIRE HATHAWAY INC."
+  },
+  {
+   "name": "MARSH AND MCLENNAN COMPANIES",
+   "canonical": "Marsh",
+   "naics2": "",
+   "filings": 110,
+   "parent": "MARSH & MCLENNAN COMPANIES, INC."
+  },
+  {
+   "name": "HANESBRANDS",
+   "canonical": "Hanesbrands",
+   "naics2": "",
+   "filings": 106,
+   "parent": "HANESBRANDS INC."
+  },
+  {
+   "name": "NEXTRACKER",
+   "canonical": "Nextracker",
+   "naics2": "31-33",
+   "filings": 101,
+   "parent": "FLEX LTD."
+  },
+  {
+   "name": "BERKSHIRE HATHAWAY ENERGY",
+   "canonical": "Berkshire Hathaway Specialty Insurance",
+   "naics2": "",
+   "filings": 101,
+   "parent": "BERKSHIRE HATHAWAY INC."
+  },
+  {
+   "name": "PUBLIC PARTNERSHIPS",
+   "canonical": "Public Partnerships",
+   "naics2": "",
+   "filings": 99,
+   "parent": "PUBLIC CONSULTING GROUP, INC."
+  },
+  {
+   "name": "ENDURANCE SERVICES",
+   "canonical": "Endurance Services",
+   "naics2": "",
+   "filings": 98,
+   "parent": "\uff33\uff2f\uff2d\uff30\uff2f\u30db\u30fc\u30eb\u30c7\u30a3\u30f3\u30b0\u30b9\u682a\u5f0f\u4f1a\u793e"
+  },
+  {
+   "name": "ADVANCE STORES",
+   "canonical": "Advance Stores",
+   "naics2": "",
+   "filings": 97,
+   "parent": "Advance Auto Parts, Inc."
+  },
+  {
+   "name": "CIBC WORLD MARKETS",
+   "canonical": "Cibc Bank",
+   "naics2": "",
+   "filings": 97,
+   "parent": "Canadian Imperial Bank of Commerce"
+  },
+  {
+   "name": "THALES DIS CPL",
+   "canonical": "Thales Avionics",
+   "naics2": "",
+   "filings": 93,
+   "parent": "THALES"
+  },
+  {
+   "name": "HENKEL",
+   "canonical": "Henkel",
+   "naics2": "",
+   "filings": 92,
+   "parent": "Henkel AG & Co. KGaA"
+  },
+  {
+   "name": "BRIGHTHOUSE FINANCIAL",
+   "canonical": "Brighthouse Financial",
+   "naics2": "52",
+   "filings": 85,
+   "parent": "BRIGHTHOUSE FINANCIAL, INC."
+  },
+  {
+   "name": "LULULEMON ATHLETICA",
+   "canonical": "Lululemon",
+   "naics2": "31-33",
+   "filings": 85,
+   "parent": "LULULEMON ATHLETICA INC."
+  },
+  {
+   "name": "NASDAQ",
+   "canonical": "Nasdaq",
+   "naics2": "52",
+   "filings": 84,
+   "parent": "NASDAQ, INC."
+  },
+  {
+   "name": "CEVA LOGISTICS",
+   "canonical": "Ceva Logistics",
+   "naics2": "",
+   "filings": 83,
+   "parent": "MERIT CORPORATION SAL"
+  },
+  {
+   "name": "FREEPORT MCMORAN",
+   "canonical": "Freeport Minerals",
+   "naics2": "",
+   "filings": 83,
+   "parent": "FREEPORT-MCMORAN INC."
+  },
+  {
+   "name": "VONAGE BUSINESS",
+   "canonical": "Vonage Business",
+   "naics2": "",
+   "filings": 81,
+   "parent": "Telefonaktiebolaget LM Ericsson"
+  },
+  {
+   "name": "SABRE",
+   "canonical": "Sabre Glbl",
+   "naics2": "",
+   "filings": 80,
+   "parent": "SABRE CORPORATION"
+  },
+  {
+   "name": "SYNCHRONY FINANCIAL",
+   "canonical": "Synchrony Bank",
+   "naics2": "",
+   "filings": 78,
+   "parent": "SYNCHRONY FINANCIAL"
+  },
+  {
+   "name": "COMMSCOPE TECHNOLOGIES",
+   "canonical": "Commscope Technologies",
+   "naics2": "",
+   "filings": 78,
+   "parent": "VISTANCE NETWORKS, INC."
+  },
+  {
+   "name": "SMBC NIKKO SECURITIES AMERICA",
+   "canonical": "Smbc Capital Markets",
+   "naics2": "",
+   "filings": 78,
+   "parent": "\u682a\u5f0f\u4f1a\u793e\u4e09\u4e95\u4f4f\u53cb\u30d5\u30a3\u30ca\u30f3\u30b7\u30e3\u30eb\u30b0\u30eb\u30fc\u30d7"
+  },
+  {
+   "name": "ENBRIDGE",
+   "canonical": "Enbridge",
+   "naics2": "48-49",
+   "filings": 77,
+   "parent": "Enbridge Inc."
+  },
+  {
+   "name": "UPMC HEALTH PLAN",
+   "canonical": "Upmc Health Plan",
+   "naics2": "",
+   "filings": 76,
+   "parent": "UPMC"
+  },
+  {
+   "name": "DASSAULT SYSTEMES SOLIDWORKS",
+   "canonical": "Dassault Systemes Americas",
+   "naics2": "",
+   "filings": 76,
+   "parent": "GROUPE INDUSTRIEL MARCEL DASSAULT"
+  },
+  {
+   "name": "ENERGY TRANSFER PARTNERS",
+   "canonical": "Energy Transfer Partners",
+   "naics2": "",
+   "filings": 75,
+   "parent": "ENERGY TRANSFER LP"
+  },
+  {
+   "name": "SMBC MANUBANK",
+   "canonical": "Smbc Capital Markets",
+   "naics2": "",
+   "filings": 74,
+   "parent": "\u682a\u5f0f\u4f1a\u793e\u4e09\u4e95\u4f4f\u53cb\u30d5\u30a3\u30ca\u30f3\u30b7\u30e3\u30eb\u30b0\u30eb\u30fc\u30d7"
+  },
+  {
+   "name": "SENTARA HEALTH",
+   "canonical": "Sentara Healthcare",
+   "naics2": "62",
+   "filings": 73,
+   "parent": "SENTARA HEALTH"
+  },
+  {
+   "name": "ADVANCE AUTO PARTS",
+   "canonical": "Advance Stores",
+   "naics2": "",
+   "filings": 71,
+   "parent": "Advance Auto Parts, Inc."
+  },
+  {
+   "name": "FEDERAL MOGUL POWERTRAIN",
+   "canonical": "Federal Mogul Powertrain",
+   "naics2": "",
+   "filings": 71,
+   "parent": "FEDERAL-MOGUL LLC"
+  },
+  {
+   "name": "ALLIANZ LIFE INSURANCE COMPANY OF NORTH AMERICA",
+   "canonical": "Allianz Technology of America",
+   "naics2": "",
+   "filings": 69,
+   "parent": "Allianz SE"
+  },
+  {
+   "name": "HSBC",
+   "canonical": "Hsbc Technology and Services",
+   "naics2": "",
+   "filings": 68,
+   "parent": "HSBC HOLDINGS PLC"
+  },
+  {
+   "name": "HANWHA Q CELLS GEORGIA",
+   "canonical": "Hanwha Q Cells",
+   "naics2": "",
+   "filings": 68,
+   "parent": "(\uc8fc)\ud55c\ud654"
+  },
+  {
+   "name": "PHILIPS RS NORTH AMERICA",
+   "canonical": "Philips RS North America",
+   "naics2": "",
+   "filings": 65,
+   "parent": "Koninklijke Philips N.V."
+  },
+  {
+   "name": "POLARIS",
+   "canonical": "Polaris Industries",
+   "naics2": "31-33",
+   "filings": 64,
+   "parent": "Polaris Inc."
+  },
+  {
+   "name": "KRAFT HEINZ FOODS",
+   "canonical": "Kraft Heinz",
+   "naics2": "31-33",
+   "filings": 63,
+   "parent": "THE KRAFT HEINZ COMPANY"
+  },
+  {
+   "name": "ENBRIDGE EMPLOYEE SERVICES",
+   "canonical": "Enbridge",
+   "naics2": "48-49",
+   "filings": 62,
+   "parent": "Enbridge Inc."
+  },
+  {
+   "name": "HSBC SECURITIES",
+   "canonical": "Hsbc Technology and Services",
+   "naics2": "",
+   "filings": 61,
+   "parent": "HSBC HOLDINGS PLC"
+  },
+  {
+   "name": "MORNINGSTAR INVESTMENT MANAGEMENT",
+   "canonical": "Morningstar",
+   "naics2": "52",
+   "filings": 60,
+   "parent": "MORNINGSTAR, INC."
+  },
+  {
+   "name": "CLEVELAND CLIFFS STEEL",
+   "canonical": "Cleveland Cliffs Steel",
+   "naics2": "",
+   "filings": 59,
+   "parent": "CLEVELAND-CLIFFS INC."
+  },
+  {
+   "name": "WORLD KINECT",
+   "canonical": "World Fuel Services",
+   "naics2": "",
+   "filings": 59,
+   "parent": "WORLD KINECT CORPORATION"
+  },
+  {
+   "name": "WESTLAKE",
+   "canonical": "Westlake",
+   "naics2": "31-33",
+   "filings": 59,
+   "parent": "WESTLAKE CORPORATION"
+  },
+  {
+   "name": "PHILIPS ULTRASOUND",
+   "canonical": "Philips RS North America",
+   "naics2": "",
+   "filings": 58,
+   "parent": "Koninklijke Philips N.V."
+  },
+  {
+   "name": "GENWORTH FINANCIAL",
+   "canonical": "Genworth North America",
+   "naics2": "",
+   "filings": 56,
+   "parent": "GENWORTH FINANCIAL, INC."
+  },
+  {
+   "name": "MCKINSEY",
+   "canonical": "Mckinsey and Company INC United States",
+   "naics2": "",
+   "filings": 56,
+   "parent": "MCKINSEY & COMPANY, INC."
+  },
+  {
+   "name": "MERITOR",
+   "canonical": "Meritor Heavy Vehicle Systems",
+   "naics2": "",
+   "filings": 52,
+   "parent": "MERITOR, INC."
+  },
+  {
+   "name": "CLEVELAND CLIFFS",
+   "canonical": "Cleveland Cliffs Steel",
+   "naics2": "",
+   "filings": 51,
+   "parent": "CLEVELAND-CLIFFS INC."
+  },
+  {
+   "name": "CARESOURCE",
+   "canonical": "Caresource",
+   "naics2": "62",
+   "filings": 50,
+   "parent": "CARESOURCE"
+  },
+  {
+   "name": "PUBLIC CONSULTING",
+   "canonical": "Public Partnerships",
+   "naics2": "",
+   "filings": 49,
+   "parent": "PUBLIC CONSULTING GROUP, INC."
+  },
+  {
+   "name": "HENKEL US OPERATIONS",
+   "canonical": "Henkel",
+   "naics2": "",
+   "filings": 49,
+   "parent": "Henkel AG & Co. KGaA"
+  },
+  {
+   "name": "FRANKLIN TEMPLETON",
+   "canonical": "Franklin Templeton",
+   "naics2": "52",
+   "filings": 49,
+   "parent": "Franklin Templeton, Inc."
+  },
+  {
+   "name": "INFINEON TECHNOLOGIES",
+   "canonical": "Infineon Technologies Americas",
+   "naics2": "",
+   "filings": 47,
+   "parent": "Infineon Technologies AG"
+  },
+  {
+   "name": "ARVATO",
+   "canonical": "Arvato",
+   "naics2": "",
+   "filings": 47,
+   "parent": "Bertelsmann SE & Co. KGaA"
+  },
+  {
+   "name": "HITACHI AMERICA",
+   "canonical": "Hitachi Digital Services",
+   "naics2": "",
+   "filings": 46,
+   "parent": "\u682a\u5f0f\u4f1a\u793e \u65e5\u7acb\u88fd\u4f5c\u6240"
+  },
+  {
+   "name": "HARMAN INTERNATIONAL INDUSTRIES",
+   "canonical": "Harman Becker Automotive Systems",
+   "naics2": "",
+   "filings": 43,
+   "parent": "\uc0bc\uc131\uc804\uc790(\uc8fc)"
+  },
+  {
+   "name": "ORACLE",
+   "canonical": "Oracle America",
+   "naics2": "",
+   "filings": 41,
+   "parent": "ORACLE CORPORATION"
+  },
+  {
+   "name": "INGERSOLL RAND INDUSTRIAL",
+   "canonical": "Ingersoll Rand Industrial",
+   "naics2": "",
+   "filings": 41,
+   "parent": "INGERSOLL RAND INC."
+  },
+  {
+   "name": "HYSTER YALE",
+   "canonical": "Hyster Yale",
+   "naics2": "31-33",
+   "filings": 41,
+   "parent": "HYSTER-YALE MATERIALS HANDLING, INC."
+  },
+  {
+   "name": "ENDURANCE",
+   "canonical": "Endurance Services",
+   "naics2": "",
+   "filings": 39,
+   "parent": "\uff33\uff2f\uff2d\uff30\uff2f\u30db\u30fc\u30eb\u30c7\u30a3\u30f3\u30b0\u30b9\u682a\u5f0f\u4f1a\u793e"
+  },
+  {
+   "name": "VONAGE AMERICA",
+   "canonical": "Vonage Business",
+   "naics2": "",
+   "filings": 39,
+   "parent": "Telefonaktiebolaget LM Ericsson"
+  },
+  {
+   "name": "WESTERN DIGITAL",
+   "canonical": "Western Digital Technologies",
+   "naics2": "",
+   "filings": 38,
+   "parent": "WESTERN DIGITAL CORPORATION"
+  },
+  {
+   "name": "CEVA FREIGHT",
+   "canonical": "Ceva Logistics",
+   "naics2": "",
+   "filings": 38,
+   "parent": "MERIT CORPORATION SAL"
+  },
+  {
+   "name": "BUNGE NORTH AMERICA",
+   "canonical": "Bunge North America",
+   "naics2": "",
+   "filings": 37,
+   "parent": "Bunge Global SA"
+  },
+  {
+   "name": "INGERSOLL RAND",
+   "canonical": "Ingersoll Rand Industrial",
+   "naics2": "",
+   "filings": 37,
+   "parent": "INGERSOLL RAND INC."
+  },
+  {
+   "name": "VERINT SYSTEMS",
+   "canonical": "Verint Systems",
+   "naics2": "",
+   "filings": 37,
+   "parent": "Verint Systems Inc."
+  },
+  {
+   "name": "BUNGE MANAGEMENT SERVICES",
+   "canonical": "Bunge North America",
+   "naics2": "",
+   "filings": 36,
+   "parent": "Bunge Global SA"
+  },
+  {
+   "name": "NASDAQ STOCK MARKET",
+   "canonical": "Nasdaq",
+   "naics2": "52",
+   "filings": 36,
+   "parent": "NASDAQ, INC."
+  },
+  {
+   "name": "MAHLE BEHR",
+   "canonical": "Mahle Behr",
+   "naics2": "",
+   "filings": 35,
+   "parent": "MAHLE GmbH"
+  },
+  {
+   "name": "OSHKOSH",
+   "canonical": "Oshkosh",
+   "naics2": "31-33",
+   "filings": 35,
+   "parent": "OSHKOSH CORPORATION"
+  },
+  {
+   "name": "CLEAN HARBORS",
+   "canonical": "Clean Harbors Environmental Services",
+   "naics2": "",
+   "filings": 34,
+   "parent": "CLEAN HARBORS, INC."
+  },
+  {
+   "name": "ENERGY TRANSFER",
+   "canonical": "Energy Transfer Partners",
+   "naics2": "",
+   "filings": 34,
+   "parent": "ENERGY TRANSFER LP"
+  },
+  {
+   "name": "NEXTPOWER",
+   "canonical": "Nextracker",
+   "naics2": "31-33",
+   "filings": 33,
+   "parent": "FLEX LTD."
+  },
+  {
+   "name": "SIEMENS FINANCIAL SERVICES",
+   "canonical": "Siemens Industry Software",
+   "naics2": "",
+   "filings": 33,
+   "parent": "Siemens Aktiengesellschaft"
+  },
+  {
+   "name": "CITADEL",
+   "canonical": "Citadel",
+   "naics2": "",
+   "filings": 33,
+   "parent": "CITADEL ENTERPRISE AMERICAS LLC"
+  },
+  {
+   "name": "SCHLUMBERGER",
+   "canonical": "Schlumberger Technology",
+   "naics2": "",
+   "filings": 32,
+   "parent": "SLB N.V."
+  },
+  {
+   "name": "LOANDEPOT",
+   "canonical": "Loandepot COM",
+   "naics2": "",
+   "filings": 32,
+   "parent": "LOANDEPOT, INC."
+  },
+  {
+   "name": "HYSTER YALE MATERIALS HANDLING",
+   "canonical": "Hyster Yale",
+   "naics2": "31-33",
+   "filings": 32,
+   "parent": "HYSTER-YALE MATERIALS HANDLING, INC."
+  },
+  {
+   "name": "CITADEL ENTERPRISE AMERICAS",
+   "canonical": "Citadel",
+   "naics2": "",
+   "filings": 32,
+   "parent": "CITADEL ENTERPRISE AMERICAS LLC"
+  },
+  {
+   "name": "HYATT HOTELS",
+   "canonical": "Hyatt",
+   "naics2": "",
+   "filings": 31,
+   "parent": "HYATT HOTELS CORPORATION"
+  },
+  {
+   "name": "PAXOS TECHNOLOGY SOLUTIONS",
+   "canonical": "Paxos Technology Solutions",
+   "naics2": "",
+   "filings": 30,
+   "parent": "Kabompo Holdings, Ltd."
+  },
+  {
+   "name": "WESCO INTERNATIONAL",
+   "canonical": "Wesco Distribution",
+   "naics2": "",
+   "filings": 30,
+   "parent": "WESCO INTERNATIONAL, INC."
+  },
+  {
+   "name": "SCOR REINSURANCE",
+   "canonical": "Scor Global Life Americas Reinsurance",
+   "naics2": "",
+   "filings": 30,
+   "parent": "SCOR SE"
+  },
+  {
+   "name": "UPMC",
+   "canonical": "Upmc Health Plan",
+   "naics2": "",
+   "filings": 29,
+   "parent": "UPMC"
+  },
+  {
+   "name": "FEDERAL MOGUL MOTORPARTS",
+   "canonical": "Federal Mogul Powertrain",
+   "naics2": "",
+   "filings": 29,
+   "parent": "FEDERAL-MOGUL LLC"
+  },
+  {
+   "name": "CONSTELLATION ENERGY",
+   "canonical": "Constellation Energy Generation",
+   "naics2": "",
+   "filings": 29,
+   "parent": "Constellation Energy Corporation"
+  },
+  {
+   "name": "SOUTHERN WINE AND SPIRITS OF AMERICA",
+   "canonical": "Southern Glazer S Wine and Spirits",
+   "naics2": "",
+   "filings": 28,
+   "parent": "SOUTHERN GLAZER'S WINE AND SPIRITS, LLC"
+  },
+  {
+   "name": "WESTLAKE CHEMICAL",
+   "canonical": "Westlake",
+   "naics2": "31-33",
+   "filings": 28,
+   "parent": "WESTLAKE CORPORATION"
+  },
+  {
+   "name": "AFLAC ASSET MANAGEMENT",
+   "canonical": "Aflac",
+   "naics2": "52",
+   "filings": 27,
+   "parent": "AFLAC INCORPORATED"
+  },
+  {
+   "name": "FITCH SOLUTIONS",
+   "canonical": "Fitch Ratings",
+   "naics2": "52",
+   "filings": 26,
+   "parent": "THE HEARST CORPORATION"
+  },
+  {
+   "name": "BRIGHTHOUSE SERVICES",
+   "canonical": "Brighthouse Financial",
+   "naics2": "52",
+   "filings": 26,
+   "parent": "BRIGHTHOUSE FINANCIAL, INC."
+  },
+  {
+   "name": "BLACKLINE",
+   "canonical": "Blackline Systems",
+   "naics2": "",
+   "filings": 26,
+   "parent": "BLACKLINE, INC."
+  },
+  {
+   "name": "DENSO TEN AMERICA",
+   "canonical": "Denso International America",
+   "naics2": "",
+   "filings": 26,
+   "parent": "\u682a\u5f0f\u4f1a\u793e\u30c7\u30f3\u30bd\u30fc"
+  },
+  {
+   "name": "VERINT AMERICAS",
+   "canonical": "Verint Systems",
+   "naics2": "",
+   "filings": 26,
+   "parent": "Verint Systems Inc."
+  },
+  {
+   "name": "CARESOURCE MANAGEMENT",
+   "canonical": "Caresource",
+   "naics2": "62",
+   "filings": 26,
+   "parent": "CARESOURCE"
+  },
+  {
+   "name": "PHILIPS HEALTHCARE INFORMATICS",
+   "canonical": "Philips RS North America",
+   "naics2": "",
+   "filings": 25,
+   "parent": "Koninklijke Philips N.V."
+  },
+  {
+   "name": "PAXOS TRUST",
+   "canonical": "Paxos Technology Solutions",
+   "naics2": "",
+   "filings": 24,
+   "parent": "Kabompo Holdings, Ltd."
+  },
+  {
+   "name": "MAYO CLINIC LABORATORIES",
+   "canonical": "Mayo Clinic",
+   "naics2": "62",
+   "filings": 23,
+   "parent": "Mayo Clinic"
+  },
+  {
+   "name": "PHILIPS IMAGE GUIDED THERAPY",
+   "canonical": "Philips RS North America",
+   "naics2": "",
+   "filings": 23,
+   "parent": "Koninklijke Philips N.V."
+  },
+  {
+   "name": "LENDINGCLUB",
+   "canonical": "Lendingclub Bank National Association",
+   "naics2": "",
+   "filings": 23,
+   "parent": "LENDINGCLUB CORPORATION"
+  },
+  {
+   "name": "CIENA COMMUNICATIONS",
+   "canonical": "Ciena",
+   "naics2": "31-33",
+   "filings": 22,
+   "parent": "CIENA CORPORATION"
+  },
+  {
+   "name": "OSHKOSH DEFENSE",
+   "canonical": "Oshkosh",
+   "naics2": "31-33",
+   "filings": 22,
+   "parent": "OSHKOSH CORPORATION"
+  },
+  {
+   "name": "FRANKLIN ADVISERS",
+   "canonical": "Franklin Templeton",
+   "naics2": "52",
+   "filings": 22,
+   "parent": "Franklin Templeton, Inc."
+  },
+  {
+   "name": "ARVATO DIGITAL SERVICES",
+   "canonical": "Arvato",
+   "naics2": "",
+   "filings": 21,
+   "parent": "Bertelsmann SE & Co. KGaA"
+  },
+  {
+   "name": "COMMSCOPE",
+   "canonical": "Commscope Technologies",
+   "naics2": "",
+   "filings": 21,
+   "parent": "VISTANCE NETWORKS, INC."
+  },
+  {
+   "name": "ARVATO SYSTEMS NORTH AMERICA",
+   "canonical": "Arvato",
+   "naics2": "",
+   "filings": 20,
+   "parent": "Bertelsmann SE & Co. KGaA"
+  },
+  {
+   "name": "SCHAEFFLER TRANSMISSION SYSTEMS",
+   "canonical": "Schaeffler",
+   "naics2": "",
+   "filings": 20,
+   "parent": "INA-Holding Schaeffler GmbH & Co. KG"
+  },
+  {
+   "name": "MAHLE INDUSTRIES",
+   "canonical": "Mahle Behr",
+   "naics2": "",
+   "filings": 20,
+   "parent": "MAHLE GmbH"
+  },
+  {
+   "name": "HANES BRANDS",
+   "canonical": "Hanesbrands",
+   "naics2": "",
+   "filings": 20,
+   "parent": "HANESBRANDS INC."
+  }
+ ],
+ "kept_apart": [
+  {
+   "parent_lei": "529900NNUPAGGOMPXZ31",
+   "parent": "VOLKSWAGEN AKTIENGESELLSCHAFT",
+   "members": [
+    {
+     "spelling": "VOLKSWAGEN GROUP OF AMERICA",
+     "filings": 152,
+     "now": "Volkswagen"
+    },
+    {
+     "spelling": "SCOUT MOTORS",
+     "filings": 80,
+     "now": "SCOUT MOTORS"
+    },
+    {
+     "spelling": "VOLKSWAGEN OF AMERICA",
+     "filings": 65,
+     "now": "VOLKSWAGEN OF AMERICA"
+    },
+    {
+     "spelling": "INTERNATIONAL MOTORS",
+     "filings": 54,
+     "now": "Navistar"
+    },
+    {
+     "spelling": "VW CREDIT",
+     "filings": 45,
+     "now": "VW CREDIT"
+    },
+    {
+     "spelling": "ELECTRIFY AMERICA",
+     "filings": 33,
+     "now": "ELECTRIFY AMERICA"
+    },
+    {
+     "spelling": "MAN ENERGY SOLUTIONS",
+     "filings": 20,
+     "now": "MAN ENERGY SOLUTIONS"
+    }
+   ],
+   "canonicals": [
+    "Navistar",
+    "Volkswagen"
+   ]
+  },
+  {
+   "parent_lei": "549300Z40J86GGSTL398",
+   "parent": "AT&T INC.",
+   "members": [
+    {
+     "spelling": "DIRECTV",
+     "filings": 313,
+     "now": "DirecTV"
+    }
+   ],
+   "canonicals": [
+    "AT&T",
+    "DirecTV"
+   ]
+  },
+  {
+   "parent_lei": "254900RHL9MEUS5NKX63",
+   "parent": "NextEra Energy, Inc.",
+   "members": [
+    {
+     "spelling": "FLORIDA POWER AND LIGHT",
+     "filings": 172,
+     "now": "Florida Power & Light"
+    }
+   ],
+   "canonicals": [
+    "Florida Power & Light",
+    "NextEra Energy"
+   ]
+  }
+ ]
+}

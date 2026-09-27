@@ -4,31 +4,31 @@
  "seed": 204,
  "meta": {
   "filings": 537796,
-  "companies": 59230,
+  "companies": 59196,
   "occupations": 501
  },
  "q1": {
   "variants": {
    "min20": {
-    "placing_companies": 818,
-    "direct_companies": 58412,
-    "placing_filings": 115010,
-    "direct_filings": 422786,
-    "placing_filing_share": 0.2139,
+    "placing_companies": 817,
+    "direct_companies": 58379,
+    "placing_filings": 115063,
+    "direct_filings": 422733,
+    "placing_filing_share": 0.214,
     "placing_occupations": 218,
     "direct_occupations": 500,
     "observed": {
      "n": 217,
-     "nmi": 0.4229651336891435,
-     "ami": 0.4105121956707437
+     "nmi": 0.4249823076080533,
+     "ami": 0.41256212939601244
     },
-    "placing_modularity": 0.22319573135554513,
-    "direct_modularity": 0.29554144160092116,
+    "placing_modularity": 0.22372421585640684,
+    "direct_modularity": 0.2951930064111792,
     "placing_clusters": 4,
     "direct_clusters": 69,
     "placing_soc_agreement": {
-     "nmi": 0.30894709905338474,
-     "ami": 0.26899673960209713,
+     "nmi": 0.31324932128656213,
+     "ami": 0.27354516284025227,
      "occupations": 218
     },
     "direct_soc_agreement": {
@@ -40,32 +40,32 @@
      {
       "id": "15-1252",
       "title": "Software Developers",
-      "filings": 31913,
-      "share": 0.2775
+      "filings": 31921,
+      "share": 0.2774
      },
      {
       "id": "15-1299",
       "title": "Computer Occupations, All Other",
-      "filings": 25379,
-      "share": 0.2207
+      "filings": 25408,
+      "share": 0.2208
      },
      {
       "id": "15-1251",
       "title": "Computer Programmers",
       "filings": 8588,
-      "share": 0.0747
+      "share": 0.0746
      },
      {
       "id": "15-1253",
       "title": "Software Quality Assurance Analysts and Testers",
-      "filings": 8375,
+      "filings": 8381,
       "share": 0.0728
      },
      {
       "id": "15-1211",
       "title": "Computer Systems Analysts",
       "filings": 7252,
-      "share": 0.0631
+      "share": 0.063
      },
      {
       "id": "13-2011",
@@ -94,7 +94,7 @@
      {
       "id": "13-1111",
       "title": "Management Analysts",
-      "filings": 2092,
+      "filings": 2094,
       "share": 0.0182
      },
      {
@@ -106,7 +106,7 @@
      {
       "id": "17-2141",
       "title": "Mechanical Engineers",
-      "filings": 1423,
+      "filings": 1431,
       "share": 0.0124
      },
      {
@@ -132,7 +132,7 @@
      {
       "id": "15-1252",
       "title": "Software Developers",
-      "filings": 138527,
+      "filings": 138519,
       "share": 0.3277
      },
      {
@@ -144,7 +144,7 @@
      {
       "id": "15-1299",
       "title": "Computer Occupations, All Other",
-      "filings": 22085,
+      "filings": 22056,
       "share": 0.0522
      },
      {
@@ -156,7 +156,7 @@
      {
       "id": "15-1253",
       "title": "Software Quality Assurance Analysts and Testers",
-      "filings": 10225,
+      "filings": 10219,
       "share": 0.0242
      },
      {
@@ -168,7 +168,7 @@
      {
       "id": "17-2141",
       "title": "Mechanical Engineers",
-      "filings": 8711,
+      "filings": 8703,
       "share": 0.0206
      },
      {
@@ -217,7 +217,7 @@
       "id": "13-2011",
       "title": "Accountants and Auditors",
       "filings": 5179,
-      "share": 0.0122
+      "share": 0.0123
      }
     ],
     "only_in_placing": {
@@ -276,25 +276,25 @@
     }
    },
    "any": {
-    "placing_companies": 8282,
-    "direct_companies": 50948,
-    "placing_filings": 215870,
-    "direct_filings": 321926,
-    "placing_filing_share": 0.4014,
+    "placing_companies": 8278,
+    "direct_companies": 50918,
+    "placing_filings": 216209,
+    "direct_filings": 321587,
+    "placing_filing_share": 0.402,
     "placing_occupations": 329,
     "direct_occupations": 496,
     "observed": {
      "n": 311,
-     "nmi": 0.5213257264272586,
-     "ami": 0.5101976977477916
+     "nmi": 0.4958497313034336,
+     "ami": 0.4869275788670567
     },
-    "placing_modularity": 0.3166298650333333,
-    "direct_modularity": 0.2860779768024966,
-    "placing_clusters": 15,
+    "placing_modularity": 0.3169311386104648,
+    "direct_modularity": 0.2857697821157637,
+    "placing_clusters": 14,
     "direct_clusters": 73,
     "placing_soc_agreement": {
-     "nmi": 0.22133678845300714,
-     "ami": 0.18603359345822637,
+     "nmi": 0.217955760663569,
+     "ami": 0.19185632431267363,
      "occupations": 318
     },
     "direct_soc_agreement": {
@@ -306,38 +306,38 @@
      {
       "id": "15-1252",
       "title": "Software Developers",
-      "filings": 71251,
-      "share": 0.3301
+      "filings": 71330,
+      "share": 0.3299
      },
      {
       "id": "15-1299",
       "title": "Computer Occupations, All Other",
-      "filings": 31648,
-      "share": 0.1466
+      "filings": 31683,
+      "share": 0.1465
      },
      {
       "id": "15-1251",
       "title": "Computer Programmers",
       "filings": 11917,
-      "share": 0.0552
+      "share": 0.0551
      },
      {
       "id": "15-1253",
       "title": "Software Quality Assurance Analysts and Testers",
-      "filings": 11743,
-      "share": 0.0544
+      "filings": 11787,
+      "share": 0.0545
      },
      {
       "id": "15-1211",
       "title": "Computer Systems Analysts",
-      "filings": 9864,
-      "share": 0.0457
+      "filings": 9865,
+      "share": 0.0456
      },
      {
       "id": "15-2051",
       "title": "Data Scientists",
-      "filings": 9132,
-      "share": 0.0423
+      "filings": 9173,
+      "share": 0.0424
      },
      {
       "id": "13-2011",
@@ -348,20 +348,20 @@
      {
       "id": "15-1242",
       "title": "Database Administrators",
-      "filings": 4512,
+      "filings": 4516,
       "share": 0.0209
      },
      {
       "id": "11-3021",
       "title": "Computer and Information Systems Managers",
-      "filings": 4355,
+      "filings": 4363,
       "share": 0.0202
      },
      {
       "id": "15-1244",
       "title": "Network and Computer Systems Administrators",
-      "filings": 3377,
-      "share": 0.0156
+      "filings": 3384,
+      "share": 0.0157
      },
      {
       "id": "29-1229",
@@ -372,75 +372,75 @@
      {
       "id": "13-1111",
       "title": "Management Analysts",
-      "filings": 2695,
+      "filings": 2704,
       "share": 0.0125
      },
      {
       "id": "17-2112",
       "title": "Industrial Engineers",
-      "filings": 2527,
+      "filings": 2530,
       "share": 0.0117
      },
      {
       "id": "17-2141",
       "title": "Mechanical Engineers",
-      "filings": 2474,
+      "filings": 2476,
       "share": 0.0115
      },
      {
       "id": "15-2031",
       "title": "Operations Research Analysts",
-      "filings": 2415,
-      "share": 0.0112
+      "filings": 2434,
+      "share": 0.0113
      }
     ],
     "direct_top_occupations": [
      {
       "id": "15-1252",
       "title": "Software Developers",
-      "filings": 99189,
-      "share": 0.3081
+      "filings": 99110,
+      "share": 0.3082
      },
      {
       "id": "15-2051",
       "title": "Data Scientists",
-      "filings": 22333,
-      "share": 0.0694
+      "filings": 22292,
+      "share": 0.0693
      },
      {
       "id": "15-1299",
       "title": "Computer Occupations, All Other",
-      "filings": 15816,
+      "filings": 15781,
       "share": 0.0491
      },
      {
       "id": "11-3021",
       "title": "Computer and Information Systems Managers",
-      "filings": 8230,
+      "filings": 8222,
       "share": 0.0256
      },
      {
       "id": "17-2141",
       "title": "Mechanical Engineers",
-      "filings": 7660,
+      "filings": 7658,
       "share": 0.0238
      },
      {
       "id": "17-2112",
       "title": "Industrial Engineers",
-      "filings": 7490,
+      "filings": 7487,
       "share": 0.0233
      },
      {
       "id": "15-1253",
       "title": "Software Quality Assurance Analysts and Testers",
-      "filings": 6857,
-      "share": 0.0213
+      "filings": 6813,
+      "share": 0.0212
      },
      {
       "id": "13-2051",
       "title": "Financial and Investment Analysts",
-      "filings": 6391,
+      "filings": 6389,
       "share": 0.0199
      },
      {
@@ -452,13 +452,13 @@
      {
       "id": "17-2071",
       "title": "Electrical Engineers",
-      "filings": 5705,
+      "filings": 5704,
       "share": 0.0177
      },
      {
       "id": "15-2031",
       "title": "Operations Research Analysts",
-      "filings": 5060,
+      "filings": 5041,
       "share": 0.0157
      },
      {
@@ -471,18 +471,18 @@
       "id": "17-2051",
       "title": "Civil Engineers",
       "filings": 4682,
-      "share": 0.0145
+      "share": 0.0146
      },
      {
       "id": "13-1161",
       "title": "Market Research Analysts and Marketing Specialists",
-      "filings": 4550,
+      "filings": 4523,
       "share": 0.0141
      },
      {
       "id": "13-1111",
       "title": "Management Analysts",
-      "filings": 3652,
+      "filings": 3643,
       "share": 0.0113
      }
     ],
@@ -562,65 +562,65 @@
    "company_count_matched": {
     "runs": 20,
     "matched_on": "count",
-    "n_shared_qualifying_median": 182,
-    "nmi_mean": 0.47051275505192364,
-    "nmi_sd": 0.0704316299276849,
-    "nmi_min": 0.35691783721009473,
-    "ami_mean": 0.44996861638920455,
-    "filing_share_of_group_a_mean": 0.0153,
-    "filing_share_of_group_a_sd": 0.0079
+    "n_shared_qualifying_median": 179,
+    "nmi_mean": 0.43743704248786697,
+    "nmi_sd": 0.0954657187697905,
+    "nmi_min": 0.24737598430650948,
+    "ami_mean": 0.4161549442521726,
+    "filing_share_of_group_a_mean": 0.0134,
+    "filing_share_of_group_a_sd": 0.0059
    },
    "filing_total_matched": {
     "runs": 20,
     "matched_on": "filings",
     "n_shared_qualifying_median": 331,
-    "nmi_mean": 0.5798512929295015,
-    "nmi_sd": 0.05320827452142241,
-    "nmi_min": 0.4562606727302854,
-    "ami_mean": 0.5707654252505142,
-    "filing_share_of_group_a_mean": 0.2179,
-    "filing_share_of_group_a_sd": 0.0099
+    "nmi_mean": 0.5874955890739443,
+    "nmi_sd": 0.05022976387821024,
+    "nmi_min": 0.5005534778545488,
+    "ami_mean": 0.5775729751488774,
+    "filing_share_of_group_a_mean": 0.2157,
+    "filing_share_of_group_a_sd": 0.0035
    },
    "size_matched": {
     "runs": 20,
     "matched_on": "matched_bins",
-    "n_shared_qualifying_median": 294,
-    "nmi_mean": 0.6146161795879143,
-    "nmi_sd": 0.053081395751593714,
-    "nmi_min": 0.5115267297251748,
-    "ami_mean": 0.6091875135140711,
-    "filing_share_of_group_a_mean": 0.2113,
-    "filing_share_of_group_a_sd": 0.0041
+    "n_shared_qualifying_median": 295,
+    "nmi_mean": 0.6068963749399955,
+    "nmi_sd": 0.04431569297674775,
+    "nmi_min": 0.531964305829315,
+    "ami_mean": 0.6019046340561223,
+    "filing_share_of_group_a_mean": 0.2122,
+    "filing_share_of_group_a_sd": 0.0039
    }
   },
   "headline": {
    "variant": "min20",
-   "observed_nmi": 0.4229651336891435,
-   "observed_ami": 0.4105121956707437,
+   "observed_nmi": 0.4249823076080533,
+   "observed_ami": 0.41256212939601244,
    "observed_n": 217,
    "verdict": "no, consistent with the null",
-   "null_matched_nmi_mean": 0.6146161795879143,
-   "null_matched_nmi_sd": 0.053081395751593714,
-   "null_matched_filing_share": 0.2113,
-   "matched_z": -3.610512556897425,
+   "null_matched_nmi_mean": 0.6068963749399955,
+   "null_matched_nmi_sd": 0.04431569297674775,
+   "null_matched_filing_share": 0.2122,
+   "matched_z": -4.1049582013168955,
    "matched_verdict": "different"
   }
  },
  "q2": {
   "occupations": 501,
-  "links": 28155,
-  "link_pairs_sharing_a_node": 5724942,
+  "links": 28158,
+  "link_pairs_sharing_a_node": 5725940,
   "budget": 30000000,
   "on": "full projection",
-  "D_at_cut": 0.5671121945516808,
+  "D_at_cut": 0.5671460193669146,
   "cut_similarity": 0.5352941155433655,
-  "merges": 27825,
-  "merges_possible": 28154,
+  "merges": 27828,
+  "merges_possible": 28157,
   "link_clusters": 330,
   "link_clusters_of_3_or_more": 121,
   "spearman_communities_vs_degree": {
-   "rho": 0.8391750148189645,
-   "p": 2.140789059086314e-117,
+   "rho": 0.8393046832337219,
+   "p": 1.823125578330934e-117,
    "n": 438
   },
   "top15_by_communities_per_link": [
@@ -743,14 +743,9 @@
      "links": 11
     },
     {
-     "id": "17-3013",
-     "title": "Mechanical Drafters",
-     "links": 9
-    },
-    {
-     "id": "27-3099",
-     "title": "Media and Communication Workers, All Other",
-     "links": 44
+     "id": "27-1019",
+     "title": "Artists and Related Workers, All Other",
+     "links": 30
     },
     {
      "id": "29-1125",
@@ -758,23 +753,18 @@
      "links": 94
     },
     {
-     "id": "41-1011",
-     "title": "First-Line Supervisors of Retail Sales Workers",
-     "links": 65
-    },
-    {
-     "id": "43-4111",
-     "title": "Interviewers, Except Eligibility and Loan",
-     "links": 19
+     "id": "31-2022",
+     "title": "Physical Therapist Aides",
+     "links": 10
     }
    ],
-   "count": 7,
+   "count": 5,
    "in_top15": [
     "13-2071",
-    "43-4111"
+    "31-2022"
    ],
    "in_top15_count": 2
   }
  },
- "seconds": 255
+ "seconds": 459
 }

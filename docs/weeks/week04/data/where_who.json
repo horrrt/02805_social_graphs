@@ -477,9 +477,9 @@
    }
   },
   "naics54_dominant_metros": 35,
-  "q2_alpha_drops_below_40": 0.13492805371337732,
+  "q2_alpha_drops_below_40": 0.13602494047408678,
   "q2_max_single_drop": 2,
-  "q2_breaking_steps_in_window": 13,
+  "q2_breaking_steps_in_window": 14,
   "q2_leaders": [
    [
     "Cognizant",
@@ -487,7 +487,7 @@
    ],
    [
     "Amazon",
-    2
+    3
    ],
    [
     "Capital One",
@@ -527,12 +527,12 @@
    ]
   ],
   "q2_gc_size_alpha_0_1": 32,
-  "q2_gc_size_alpha_0_05": 19,
+  "q2_gc_size_alpha_0_05": 18,
   "q2_breaking_links_led_by_shortlist": 5,
-  "q2_breaking_links_flagged": 15,
-  "q2_backbone_shortlist_share": 0.389,
-  "q2_flagged_shortlist_share": 0.333,
-  "q2_hypergeom_p": 0.4339
+  "q2_breaking_links_flagged": 16,
+  "q2_backbone_shortlist_share": 0.383,
+  "q2_flagged_shortlist_share": 0.312,
+  "q2_hypergeom_p": 0.373
  },
  "backbone_sweep": [
   {
@@ -540,143 +540,151 @@
    "gc_size": 40
   },
   {
-   "alpha": 0.1387,
+   "alpha": 0.1361,
    "gc_size": 40
   },
   {
-   "alpha": 0.1349,
+   "alpha": 0.136,
+   "gc_size": 39
+  },
+  {
+   "alpha": 0.13,
    "gc_size": 39
   },
   {
    "alpha": 0.1296,
-   "gc_size": 39
-  },
-  {
-   "alpha": 0.1288,
    "gc_size": 38
   },
   {
-   "alpha": 0.1277,
+   "alpha": 0.128,
    "gc_size": 38
   },
   {
-   "alpha": 0.1255,
+   "alpha": 0.1275,
    "gc_size": 37
   },
   {
-   "alpha": 0.1216,
+   "alpha": 0.1209,
    "gc_size": 37
   },
   {
-   "alpha": 0.118,
+   "alpha": 0.1185,
    "gc_size": 36
   },
   {
-   "alpha": 0.1156,
+   "alpha": 0.116,
    "gc_size": 36
   },
   {
-   "alpha": 0.1132,
+   "alpha": 0.1135,
    "gc_size": 35
   },
   {
-   "alpha": 0.1124,
+   "alpha": 0.1131,
    "gc_size": 34
   },
   {
-   "alpha": 0.111,
+   "alpha": 0.1113,
    "gc_size": 34
   },
   {
-   "alpha": 0.1104,
+   "alpha": 0.1111,
    "gc_size": 33
   },
   {
-   "alpha": 0.1066,
+   "alpha": 0.1111,
+   "gc_size": 33
+  },
+  {
+   "alpha": 0.107,
    "gc_size": 32
   },
   {
-   "alpha": 0.09958,
+   "alpha": 0.1002,
    "gc_size": 32
   },
   {
-   "alpha": 0.09766,
+   "alpha": 0.09846,
    "gc_size": 31
   },
   {
-   "alpha": 0.09398,
+   "alpha": 0.09811,
    "gc_size": 30
   },
   {
-   "alpha": 0.09048,
+   "alpha": 0.09343,
    "gc_size": 30
   },
   {
-   "alpha": 0.09029,
+   "alpha": 0.09086,
    "gc_size": 29
   },
   {
-   "alpha": 0.09003,
+   "alpha": 0.09084,
+   "gc_size": 29
+  },
+  {
+   "alpha": 0.09069,
    "gc_size": 28
   },
   {
-   "alpha": 0.08903,
+   "alpha": 0.08931,
    "gc_size": 28
   },
   {
-   "alpha": 0.08875,
+   "alpha": 0.08913,
    "gc_size": 27
   },
   {
-   "alpha": 0.08447,
+   "alpha": 0.08471,
    "gc_size": 27
   },
   {
-   "alpha": 0.08292,
+   "alpha": 0.08335,
    "gc_size": 26
   },
   {
-   "alpha": 0.07887,
+   "alpha": 0.079,
    "gc_size": 26
   },
   {
-   "alpha": 0.07872,
+   "alpha": 0.07895,
    "gc_size": 25
   },
   {
-   "alpha": 0.07826,
+   "alpha": 0.07825,
    "gc_size": 24
   },
   {
-   "alpha": 0.07531,
+   "alpha": 0.07543,
    "gc_size": 24
   },
   {
-   "alpha": 0.07476,
+   "alpha": 0.07504,
    "gc_size": 23
   },
   {
-   "alpha": 0.07252,
+   "alpha": 0.07278,
    "gc_size": 23
   },
   {
-   "alpha": 0.07109,
+   "alpha": 0.07101,
    "gc_size": 22
   },
   {
-   "alpha": 0.06551,
+   "alpha": 0.06565,
    "gc_size": 22
   },
   {
-   "alpha": 0.06154,
+   "alpha": 0.06179,
    "gc_size": 21
   },
   {
-   "alpha": 0.0613,
+   "alpha": 0.06176,
    "gc_size": 21
   },
   {
-   "alpha": 0.06042,
+   "alpha": 0.06112,
    "gc_size": 20
   },
   {
@@ -684,107 +692,107 @@
    "gc_size": 20
   },
   {
-   "alpha": 0.05551,
+   "alpha": 0.05565,
    "gc_size": 19
   },
   {
-   "alpha": 0.05021,
+   "alpha": 0.05024,
    "gc_size": 19
   },
   {
-   "alpha": 0.0495,
+   "alpha": 0.05011,
    "gc_size": 18
   },
   {
-   "alpha": 0.04845,
+   "alpha": 0.0485,
    "gc_size": 18
   },
   {
-   "alpha": 0.0479,
+   "alpha": 0.04823,
    "gc_size": 17
   },
   {
-   "alpha": 0.04632,
+   "alpha": 0.04636,
    "gc_size": 16
   },
   {
-   "alpha": 0.04559,
+   "alpha": 0.04586,
    "gc_size": 16
   },
   {
-   "alpha": 0.04192,
+   "alpha": 0.04264,
    "gc_size": 15
   },
   {
-   "alpha": 0.04139,
+   "alpha": 0.04173,
    "gc_size": 14
   },
   {
-   "alpha": 0.04113,
-   "gc_size": 12
+   "alpha": 0.04136,
+   "gc_size": 13
   },
   {
-   "alpha": 0.04099,
+   "alpha": 0.04072,
    "gc_size": 11
   },
   {
-   "alpha": 0.04036,
-   "gc_size": 11
-  },
-  {
-   "alpha": 0.04008,
+   "alpha": 0.04023,
    "gc_size": 10
   },
   {
-   "alpha": 0.03942,
+   "alpha": 0.04007,
+   "gc_size": 10
+  },
+  {
+   "alpha": 0.0398,
    "gc_size": 9
   },
   {
-   "alpha": 0.03904,
+   "alpha": 0.03922,
    "gc_size": 8
   },
   {
-   "alpha": 0.03631,
+   "alpha": 0.03651,
    "gc_size": 8
   },
   {
-   "alpha": 0.03607,
+   "alpha": 0.03616,
    "gc_size": 7
   },
   {
-   "alpha": 0.03206,
+   "alpha": 0.03228,
    "gc_size": 7
   },
   {
-   "alpha": 0.03047,
+   "alpha": 0.0307,
    "gc_size": 6
   },
   {
-   "alpha": 0.03007,
+   "alpha": 0.03028,
    "gc_size": 6
   },
   {
-   "alpha": 0.02304,
+   "alpha": 0.02322,
    "gc_size": 5
   },
   {
-   "alpha": 0.02256,
+   "alpha": 0.0227,
    "gc_size": 5
   },
   {
-   "alpha": 0.02247,
+   "alpha": 0.02267,
    "gc_size": 3
   },
   {
-   "alpha": 0.00954,
+   "alpha": 0.009306,
    "gc_size": 3
   },
   {
-   "alpha": 0.007103,
+   "alpha": 0.007153,
    "gc_size": 2
   },
   {
-   "alpha": 0.004579,
+   "alpha": 0.004644,
    "gc_size": 1
   }
  ],
@@ -793,7 +801,7 @@
   "tied_steps": 2,
   "steps": [
    {
-    "alpha": 0.041129561673435636,
+    "alpha": 0.040715404661587636,
     "edges": [
      [
       "19100",
@@ -801,7 +809,7 @@
      ]
     ],
     "weight": [
-     2210
+     2221
     ],
     "links": [
      {
@@ -809,41 +817,41 @@
       "b": "20500",
       "a_name": "Dallas",
       "b_name": "Durham",
-      "alpha": 0.041129561673435636,
-      "weight": 2210,
+      "alpha": 0.040715404661587636,
+      "weight": 2221,
       "top_employer": "Fidelity Investments",
-      "top_share": 0.381,
+      "top_share": 0.388,
       "shortlist": false
      }
     ],
-    "gc_before": 14,
-    "gc_after": 12,
+    "gc_before": 13,
+    "gc_after": 11,
     "fallen_metros": [
      "Durham",
      "Raleigh"
     ]
    },
    {
-    "alpha": 0.02246974481328852,
+    "alpha": 0.022672955703316074,
     "edges": [
      [
       "35620",
-      "41860"
+      "42660"
      ]
     ],
     "weight": [
-     11853
+     10586
     ],
     "links": [
      {
       "a": "35620",
-      "b": "41860",
+      "b": "42660",
       "a_name": "New York",
-      "b_name": "San Francisco",
-      "alpha": 0.02246974481328852,
-      "weight": 11853,
+      "b_name": "Seattle",
+      "alpha": 0.022672955703316074,
+      "weight": 10586,
       "top_employer": "Amazon",
-      "top_share": 0.127,
+      "top_share": 0.18,
       "shortlist": false
      }
     ],
@@ -859,11 +867,22 @@
  },
  "breaking_links": [
   {
+   "a": "19100",
+   "b": "36740",
+   "a_name": "Dallas",
+   "b_name": "Orlando",
+   "alpha": 0.09845612017489289,
+   "weight": 1844,
+   "top_employer": "Deloitte",
+   "top_share": 0.289,
+   "shortlist": false
+  },
+  {
    "a": "41940",
    "b": "38900",
    "a_name": "San Jose",
    "b_name": "Portland",
-   "alpha": 0.09765655986284068,
+   "alpha": 0.09810619769384019,
    "weight": 1857,
    "top_employer": "Intel",
    "top_share": 0.236,
@@ -871,21 +890,21 @@
   },
   {
    "a": "19100",
-   "b": "36740",
+   "b": "33460",
    "a_name": "Dallas",
-   "b_name": "Orlando",
-   "alpha": 0.09397693858615946,
-   "weight": 1844,
-   "top_employer": "Deloitte",
-   "top_share": 0.279,
-   "shortlist": false
+   "b_name": "Minneapolis",
+   "alpha": 0.09085564604459061,
+   "weight": 2903,
+   "top_employer": "Cognizant",
+   "top_share": 0.107,
+   "shortlist": true
   },
   {
    "a": "19100",
    "b": "40060",
    "a_name": "Dallas",
    "b_name": "Richmond",
-   "alpha": 0.09028689278033593,
+   "alpha": 0.09069340649767993,
    "weight": 1725,
    "top_employer": "Capital One",
    "top_share": 0.1,
@@ -893,22 +912,11 @@
   },
   {
    "a": "19100",
-   "b": "33460",
-   "a_name": "Dallas",
-   "b_name": "Minneapolis",
-   "alpha": 0.09002958540303561,
-   "weight": 2901,
-   "top_employer": "Cognizant",
-   "top_share": 0.107,
-   "shortlist": true
-  },
-  {
-   "a": "19100",
    "b": "19820",
    "a_name": "Dallas",
    "b_name": "Detroit",
-   "alpha": 0.08874848100883748,
-   "weight": 3013,
+   "alpha": 0.08912967121704653,
+   "weight": 3014,
    "top_employer": "Cognizant",
    "top_share": 0.065,
    "shortlist": true
@@ -918,7 +926,7 @@
    "b": "18140",
    "a_name": "Dallas",
    "b_name": "Columbus",
-   "alpha": 0.08292109610491477,
+   "alpha": 0.08335199207728348,
    "weight": 2828,
    "top_employer": "JPMorgan Chase",
    "top_share": 0.139,
@@ -929,8 +937,8 @@
    "b": "25540",
    "a_name": "New York",
    "b_name": "Hartford",
-   "alpha": 0.07871852629399655,
-   "weight": 2375,
+   "alpha": 0.07894707950969387,
+   "weight": 2376,
    "top_employer": "Cognizant",
    "top_share": 0.256,
    "shortlist": true
@@ -940,8 +948,8 @@
    "b": "12580",
    "a_name": "Washington",
    "b_name": "Baltimore",
-   "alpha": 0.07826033953884744,
-   "weight": 1549,
+   "alpha": 0.0782480806279928,
+   "weight": 1550,
    "top_employer": "University of Maryland College Park",
    "top_share": 0.109,
    "shortlist": false
@@ -951,10 +959,10 @@
    "b": "38060",
    "a_name": "Dallas",
    "b_name": "Phoenix",
-   "alpha": 0.07475940011332273,
+   "alpha": 0.07503610173298311,
    "weight": 4499,
    "top_employer": "Cognizant",
-   "top_share": 0.068,
+   "top_share": 0.07,
    "shortlist": true
   },
   {
@@ -962,10 +970,10 @@
    "b": "41700",
    "a_name": "Dallas",
    "b_name": "San Antonio",
-   "alpha": 0.07108659537017017,
-   "weight": 1938,
+   "alpha": 0.07101406664805418,
+   "weight": 1940,
    "top_employer": "HCL",
-   "top_share": 0.163,
+   "top_share": 0.162,
    "shortlist": true
   },
   {
@@ -973,7 +981,7 @@
    "b": "45300",
    "a_name": "Dallas",
    "b_name": "Tampa",
-   "alpha": 0.06153779980618285,
+   "alpha": 0.061791329960005546,
    "weight": 3529,
    "top_employer": "Citigroup",
    "top_share": 0.088,
@@ -984,8 +992,8 @@
    "b": "31080",
    "a_name": "New York",
    "b_name": "Los Angeles",
-   "alpha": 0.060422036304506724,
-   "weight": 5898,
+   "alpha": 0.06111971700368989,
+   "weight": 5899,
    "top_employer": "Amazon",
    "top_share": 0.1,
    "shortlist": false
@@ -995,10 +1003,21 @@
    "b": "32820",
    "a_name": "Dallas",
    "b_name": "Memphis",
-   "alpha": 0.055507280432466374,
+   "alpha": 0.05564727094199858,
    "weight": 873,
    "top_employer": "FedEx",
    "top_share": 0.215,
+   "shortlist": false
+  },
+  {
+   "a": "35620",
+   "b": "14460",
+   "a_name": "New York",
+   "b_name": "Boston",
+   "alpha": 0.05011420224838171,
+   "weight": 6574,
+   "top_employer": "Amazon",
+   "top_share": 0.126,
    "shortlist": false
   }
  ]
