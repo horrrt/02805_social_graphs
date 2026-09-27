@@ -23,6 +23,7 @@ const DATA = {
   beyond: new URL("../../weeks/week04/data/beyond.json", import.meta.url),
   place: new URL("../data/week04_place.json", import.meta.url),
   footprint: new URL("../../weeks/week04/data/footprint.json", import.meta.url),
+  whereWho: new URL("../../weeks/week04/data/where_who.json", import.meta.url),
 };
 
 /** A plain HTML element: node() from week04-strip.js is SVG-namespaced, wrong for a wrapper div. */
@@ -266,6 +267,77 @@ async function drawBeyondIntro() {
   host.replaceChildren(wrap);
 }
 
+// ---- closing · what surprised us ----------------------------------------
+// Two statements, each with its evidence: vendor switches against a random
+// vendor, and the backbone losing metros one or two at a time as α tightens.
+
+function backboneSteps(sweep, { lo, hi }) {
+  const W = 470;
+  const H = 150;
+  const L = 34;
+  const R = 10;
+  const T = 14;
+  const B = 30;
+  const lx0 = Math.log10(0.004);
+  const lx1 = Math.log10(1);
+  const X = (a) => L + ((Math.log10(Math.max(a, 0.004)) - lx0) * (W - L - R)) / (lx1 - lx0);
+  const Y = (v) => T + ((40 - v) * (H - T - B)) / 40;
+  const ink = token("--ink");
+  const mute = token("--ink-mute");
+  const soft = token("--ink-soft");
+  const grid = token("--line");
+  const band = token("--line-soft");
+  const svg = node("svg", {
+    viewBox: `0 0 ${W} ${H}`,
+    width: W,
+    height: H,
+    role: "img",
+    "aria-label": `Metros in the largest connected piece as the disparity filter tightens: it falls in small steps, with no single drop between α = ${hi} and ${lo}`,
+  });
+  svg.append(node("rect", { x: X(lo), y: T, width: X(hi) - X(lo), height: H - T - B, fill: band }));
+  for (const v of [0, 20, 40]) {
+    svg.append(node("line", { x1: L, x2: W - R, y1: Y(v), y2: Y(v), stroke: grid, "stroke-width": 1 }));
+    svg.append(node("text", { x: L - 8, y: Y(v) + 4, "text-anchor": "end", "font-size": 11, fill: mute }, String(v)));
+  }
+  const pts = sweep.map((p) => [Math.max(p.alpha, 0.004), p.gc_size]).sort((a, b) => b[0] - a[0]);
+  let d = `M${X(pts[0][0]).toFixed(1)} ${Y(pts[0][1]).toFixed(1)}`;
+  let prev = pts[0][1];
+  for (const [a, size] of pts.slice(1)) {
+    d += ` L${X(a).toFixed(1)} ${Y(prev).toFixed(1)} L${X(a).toFixed(1)} ${Y(size).toFixed(1)}`;
+    prev = size;
+  }
+  const line = node("path", { d, fill: "none", stroke: ink, "stroke-width": 2 });
+  line.append(node("title", {}, "Metros still connected at each α; every step is one link removed"));
+  svg.append(line);
+  for (const [a, label] of [[0.01, "0.01"], [0.1, "0.1"], [1, "1"]]) {
+    svg.append(node("text", { x: X(a), y: H - B + 16, "text-anchor": "middle", "font-size": 11, fill: mute }, label));
+  }
+  svg.append(node("text", { x: W - R, y: H - 4, "text-anchor": "end", "font-size": 11, fill: mute }, "α, disparity filter →"));
+  svg.append(node("text", { x: (X(lo) + X(hi)) / 2, y: T + 12, "text-anchor": "middle", "font-size": 10.5, "font-weight": 700, fill: soft }, `α ${lo}–${hi}`));
+  svg.append(node("text", { x: L, y: T - 3, "font-size": 10.5, fill: mute }, "metros connected"));
+  return svg;
+}
+
+async function drawClosingSurprises() {
+  const switches = document.querySelector('[data-strip="closing-switches"]');
+  const backbone = document.querySelector('[data-strip="closing-backbone"]');
+  if (!switches && !backbone) return;
+  const [moves, whereWho] = await Promise.all([load(DATA.moves), load(DATA.whereWho)]);
+  const f = moves.finding;
+  switches?.replaceChildren(
+    miniStrip({
+      domain: [0, 0.3],
+      real: f.q1_pooled_observed_share,
+      realLabel: pct(f.q1_pooled_observed_share, 1),
+      base: [f.q1_pooled_null_mean, f.q1_pooled_null_sd],
+      baseLabel: `random vendor ${pct(f.q1_pooled_null_mean, 1)}`,
+      aria: "Vendor switches that stay in the client's group, against a random vendor",
+      width: 440,
+    }),
+  );
+  backbone?.replaceChildren(backboneSteps(whereWho.backbone_sweep, { lo: 0.05, hi: 0.1 }));
+}
+
 // ---- closing · a compact recap of the five sections --------------------
 
 async function drawClosingRecap() {
@@ -363,3 +435,4 @@ drawJobsIntro().catch((err) => console.error("jobs intro", err));
 drawWhoIntro().catch((err) => console.error("who intro", err));
 drawBeyondIntro().catch((err) => console.error("beyond intro", err));
 drawClosingRecap().catch((err) => console.error("closing recap", err));
+drawClosingSurprises().catch((err) => console.error("closing surprises", err));
