@@ -632,14 +632,14 @@ def explore_clients():
             spark_svg.append(circle(x, y, 3.2, "#ffffff" if i == 4 else INK, INK if i == 4 else "#ffffff", 1.4))
         spark_svg.append("</g>")
     for i, y in enumerate(YEARS):
-        spark_svg.append(text(SX(i), sh - 4, YL[y].replace("FY20", "’"), 10.5, INK_MUTE, 400, "middle", tabular=False))
+        spark_svg.append(text(SX(i), sh - 4, y, 10.5, INK_MUTE, 400, "middle", tabular=False))
     spark_svg.append('<line x1="{{ spx }}" y1="6" x2="{{ spx }}" y2="%d" style="stroke: %s; stroke-width: 1.4px; stroke-dasharray: 3 2"></line>' % (sh - 18, ACCENT))
     spark_svg.append("</svg>")
 
     yseg = "".join(
         f'<button type="button" onClick="{{{{ y{i} }}}}" aria-pressed="{{{{ yp{i} }}}}" style="padding: 7px 12px; border-radius: 999px; border: 1px solid {LINE}; '
         f'background: {{{{ ybg{i} }}}}; color: {{{{ yfg{i} }}}}; font-family: inherit; font-size: 12.5px; font-weight: 700; cursor: pointer">'
-        f'{YL[y]}{" · Oct–Jun" if y == "2026" else ""}</button>' for i, y in enumerate(YEARS))
+        f'{y}{" · Oct–Jun" if y == "2026" else ""}</button>' for i, y in enumerate(YEARS))
     cseg = "".join(
         f'<button type="button" onClick="{{{{ c{k} }}}}" aria-pressed="{{{{ cp{k} }}}}" style="padding: 5px 10px; border-radius: 8px; border: 1px solid {LINE}; '
         f'background: {{{{ cbg{k} }}}}; color: {INK}; font-family: inherit; font-size: 12px; font-weight: 600; cursor: pointer">{t(name)}</button>'
@@ -661,7 +661,7 @@ def explore_clients():
         f'<span style="color: {INK_SOFT}; font-variant-numeric: tabular-nums">{{{{ f.v }}}}</span></div>'
         f'<div style="height: 6px; border-radius: 3px; background: {LINE_SOFT}"><div style="height: 6px; border-radius: 3px; background: {PEOPLE}; width: {{{{ f.w }}}}"></div></div>'
         "</div></sc-for>"
-        + label_caps("Placed filings, FY2022 to FY2026", INK_MUTE, 10.5)
+        + label_caps(f"Placed filings, {YEARS[0]} to {YEARS[-1]}", INK_MUTE, 10.5)
         + "".join(spark_svg)
         + "</aside>"
     )
@@ -670,7 +670,8 @@ def explore_clients():
         + label_caps("Explore", ACCENT)
         + f'<h3 style="margin: 0; font-size: 22px; font-weight: 700; letter-spacing: -0.01em; color: {INK}">Clients by size and by loyalty, five years</h3>'
         + para("One dot per client company with 20 or more H-1B filings that placed a worker there in the year. Further right, more filings; "
-               "higher up, more of them from a single outsourcing firm. Pick a year, then a client, to see who supplies it.", measure="820px")
+               "higher up, more of them from a single outsourcing firm. Pick a year (fiscal, October to September), then a client, "
+               "to see who supplies it.", measure="820px")
         + "</div>\n"
         f'<div style="display: flex; flex-direction: column; gap: 10px"><div role="group" aria-label="Fiscal year" style="display: flex; gap: 6px; flex-wrap: wrap">{yseg}</div>'
         f'<div role="group" aria-label="Client" style="display: flex; gap: 6px; flex-wrap: wrap">{cseg}</div></div>\n'
@@ -686,7 +687,7 @@ def explore_clients():
         f"const C = {json.dumps(C, ensure_ascii=False)};\n"
         f"const PICKS = {json.dumps(picks, ensure_ascii=False)};\n"
         f"const YEARS = {json.dumps(YEARS)};\n"
-        f"const LABEL = {json.dumps({y: YL[y] + (' (Oct' + chr(8211) + 'Jun)' if y == '2026' else '') for y in YEARS}, ensure_ascii=False)};\n"
+        f"const LABEL = {json.dumps({y: y + (' (Oct' + chr(8211) + 'Jun)' if y == '2026' else '') for y in YEARS}, ensure_ascii=False)};\n"
         f"const COUNT = {json.dumps(per_year_counts)};\n"
         f"const SPX = {json.dumps([round(SX(i), 1) for i in range(5)])};\n"
         "const st = this.state || {};\n"
