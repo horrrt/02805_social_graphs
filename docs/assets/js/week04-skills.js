@@ -231,8 +231,7 @@ function card2(c) {
           real: s.mean,
           realLabel: sim(s.mean),
           realTip: `Same cluster, no direct tie: mean ${sim(s.mean)}, sd ${sim(s.sd)}`,
-          ref: a.mean,
-          refLabel: `random pair ${sim(a.mean)}`,
+          ref: [a.mean, `random pair ${sim(a.mean)}`],
         },
         {
           label: "Different cluster",
