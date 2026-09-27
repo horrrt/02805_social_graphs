@@ -265,6 +265,7 @@ function buildGN(echarts, explore, place, ctx) {
       nextText: next ? `${NAME[next.edge[0]]}–${NAME[next.edge[1]]}` : "none left",
       bet: next ? next.betweenness.toFixed(1) : "–",
       nextEdge: next ? next.edge : null,
+      li,
     });
   }
   const splitSteps = [...new Set(levels.map((l) => l.step))].sort((a, b) => a - b);
@@ -343,7 +344,7 @@ function buildGN(echarts, explore, place, ctx) {
     $("w4m-gn-next").textContent = st.nextText;
     $("w4m-gn-bet").textContent = st.bet;
     $("w4m-gn-q").textContent = st.Q.toFixed(4);
-    lineChart.move(s);
+    lineChart.move(st.li);
   }
 
   let s = 0;
