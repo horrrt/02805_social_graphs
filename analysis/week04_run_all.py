@@ -25,10 +25,12 @@ HERE = Path(__file__).resolve().parent
 LOGS = HERE.parent / "build" / "logs"
 SCRIPTS = ["week04_where", "week04_where_who", "week04_jobs", "week04_jobs_split", "week04_staffing",
            "week04_staffing_figure", "week04_staffing_moves", "week04_lottery", "week04_perm", "week04_countries",
-           "week04_ties", "week04_shift", "week04_lawfirms", "week04_oews", "week04_beyond", "week04_footprint"]
-# script -> the script whose output it reads (the moves and where_who scripts check theirs reproduces).
-AFTER = {"week04_staffing_figure": "week04_staffing", "week04_staffing_moves": "week04_staffing",
-         "week04_where_who": "week04_where"}
+           "week04_ties", "week04_shift", "week04_lawfirms", "week04_oews", "week04_beyond", "week04_footprint",
+           "week04_explore", "week04_years"]
+# script -> the scripts whose output it reads (the moves and where_who scripts check theirs reproduces).
+AFTER = {"week04_staffing_figure": ("week04_staffing",), "week04_staffing_moves": ("week04_staffing",),
+         "week04_where_who": ("week04_where",), "week04_explore": ("week04_where",),
+         "week04_years": ("week04_staffing", "week04_shift", "week04_countries", "week04_lottery")}
 # One process per core: each loads a few hundred MB of filings.
 MAX_PARALLEL = os.cpu_count() or 4
 
@@ -54,7 +56,7 @@ def main():
     print(f"running {len(wanted)} scripts in parallel; logs in {LOGS.relative_to(HERE.parent)}/", flush=True)
     done = set()
     while waiting or running:
-        ready = [w for w in waiting if AFTER.get(w) not in waiting and AFTER.get(w) not in running]
+        ready = [w for w in waiting if not any(d in waiting or d in running for d in AFTER.get(w, ()))]
         for name in ready[:max(0, MAX_PARALLEL - len(running))]:
             waiting.remove(name)
             launch(name)
