@@ -2080,6 +2080,136 @@
               <summary><span class="qa-cue">The course's four community methods, step by step on the 40 metros</span></summary>
               <div class="qa-body cut-body" id="methods-body">
                 <p aria-live="polite" class="status-line" id="methods-status">Loading the community explorables…</p>
+                <div class="w4m" hidden id="w4m-root">
+                  <div class="w4m-tabs">
+                    <button aria-pressed="true" class="w4m-tab" data-panel="gn" id="w4m-tab-gn" type="button">Girvan–Newman</button>
+                    <button aria-pressed="false" class="w4m-tab" data-panel="mod" id="w4m-tab-mod" type="button">Modularity</button>
+                    <button aria-pressed="false" class="w4m-tab" data-panel="louvain" id="w4m-tab-louvain" type="button">Louvain</button>
+                    <button aria-pressed="false" class="w4m-tab" data-panel="overlap" id="w4m-tab-overlap" type="button">Overlap</button>
+                  </div>
+
+                  <section aria-labelledby="w4m-tab-gn" class="w4m-panel" data-panel="gn" id="w4m-panel-gn">
+                    <p class="w4m-eyebrow">Explore · after the course's week 4</p>
+                    <h3 class="w4m-title" id="w4m-gn-title">Girvan–Newman, one cut at a time</h3>
+                    <p class="w4m-lead" id="w4m-gn-lead"></p>
+                    <div class="w4m-controls" role="group" aria-label="Girvan–Newman controls">
+                      <button class="w4m-btn primary" data-act="step" type="button">Step</button>
+                      <button class="w4m-btn" data-act="split" type="button">Next split</button>
+                      <button class="w4m-btn" data-act="back" type="button">Back</button>
+                      <button class="w4m-btn" data-act="reset" type="button">Reset</button>
+                    </div>
+                    <div class="w4m-grid">
+                      <div class="w4m-map" id="w4m-gn-map"></div>
+                      <div aria-live="polite" class="w4m-side">
+                        <div class="w4m-stats">
+                          <div class="w4m-stat"><b id="w4m-gn-step"></b><span>links removed</span></div>
+                          <div class="w4m-stat"><b id="w4m-gn-comps"></b><span>pieces, largest first: <span id="w4m-gn-sizes"></span></span></div>
+                        </div>
+                        <div class="w4m-rows">
+                          <div class="w4m-row"><span>Next to go</span><b id="w4m-gn-next"></b></div>
+                          <div class="w4m-row"><span>Its edge betweenness</span><b id="w4m-gn-bet"></b></div>
+                          <div class="w4m-row"><span>Modularity of these pieces</span><b id="w4m-gn-q"></b></div>
+                        </div>
+                        <p class="w4m-note">Thick line: the next link to go, the one carrying the most shortest paths. Dashed: links already cut. Hollow dots: metros cut off on their own.</p>
+                      </div>
+                    </div>
+                    <figure class="w4m-figure">
+                      <figcaption>
+                        <span class="w4m-fig-title">Modularity after each split</span>
+                        <span class="w4m-fig-caption" id="w4m-gn-caption"></span>
+                      </figcaption>
+                      <svg class="w4m-chart" id="w4m-gn-chart" role="img"></svg>
+                    </figure>
+                  </section>
+
+                  <section aria-labelledby="w4m-tab-mod" class="w4m-panel" data-panel="mod" hidden id="w4m-panel-mod">
+                    <p class="w4m-eyebrow">Explore · after the course's week 4</p>
+                    <h3 class="w4m-title">Move a metro, watch modularity</h3>
+                    <p class="w4m-lead" id="w4m-mod-lead"></p>
+                    <div class="w4m-controls" role="group" aria-label="Modularity controls">
+                      <button class="w4m-btn primary" data-act="reset" type="button">Louvain's groups</button>
+                      <button class="w4m-btn" data-act="shuffle" type="button">Shuffle the labels</button>
+                      <button class="w4m-btn" data-act="one" type="button">Everyone in one group</button>
+                    </div>
+                    <div class="w4m-grid">
+                      <div class="w4m-map" id="w4m-mod-map"></div>
+                      <div aria-live="polite" class="w4m-side">
+                        <div class="w4m-stats">
+                          <div class="w4m-stat"><b id="w4m-mod-q"></b><span id="w4m-mod-q-label">modularity of your three groups</span></div>
+                        </div>
+                        <svg class="w4m-strip" id="w4m-mod-strip" role="img"></svg>
+                        <div class="w4m-rows">
+                          <div class="w4m-row"><span>Metros per group</span><b id="w4m-mod-sizes"></b></div>
+                          <div class="w4m-row"><span>Last move</span><b id="w4m-mod-last">none yet</b></div>
+                        </div>
+                        <p class="w4m-note">Grey band: rewired networks in which each company keeps its number of metros, Louvain's best on each, mean and one standard deviation.</p>
+                      </div>
+                    </div>
+                  </section>
+
+                  <section aria-labelledby="w4m-tab-louvain" class="w4m-panel" data-panel="louvain" hidden id="w4m-panel-louvain">
+                    <p class="w4m-eyebrow">Explore · after the course's week 4</p>
+                    <h3 class="w4m-title">Louvain, move by move</h3>
+                    <p class="w4m-lead" id="w4m-louvain-lead"></p>
+                    <div class="w4m-controls" role="group" aria-label="Louvain controls">
+                      <button class="w4m-btn primary" data-act="step" type="button">Step</button>
+                      <button class="w4m-btn" data-act="level" type="button">Finish this level</button>
+                      <button class="w4m-btn" data-act="back" type="button">Back</button>
+                      <button class="w4m-btn" data-act="reset" type="button">Reset</button>
+                    </div>
+                    <div class="w4m-grid">
+                      <div class="w4m-map" id="w4m-louvain-map"></div>
+                      <div aria-live="polite" class="w4m-side">
+                        <div class="w4m-stats">
+                          <div class="w4m-stat"><b id="w4m-louvain-q"></b><span>modularity after this move</span></div>
+                          <div class="w4m-stat"><b id="w4m-louvain-n"></b><span>communities</span></div>
+                        </div>
+                        <div class="w4m-rows">
+                          <div class="w4m-row"><span>Move</span><b id="w4m-louvain-step"></b></div>
+                          <div class="w4m-row"><span>Level</span><b id="w4m-louvain-level"></b></div>
+                          <div class="w4m-row"><span>Moved</span><b id="w4m-louvain-moved"></b></div>
+                          <div class="w4m-row"><span>Gain in modularity</span><b id="w4m-louvain-gain"></b></div>
+                        </div>
+                        <p class="w4m-note">Hollow dots are alone in their community. A community of two or more takes the colour of the metro group most of its members end in.</p>
+                      </div>
+                    </div>
+                    <figure class="w4m-figure">
+                      <figcaption>
+                        <span class="w4m-fig-title">Modularity after each move</span>
+                        <span class="w4m-fig-caption">The dashed line is where Louvain lands on rewired networks. The ring marks the current move.</span>
+                      </figcaption>
+                      <svg class="w4m-chart" id="w4m-louvain-chart" role="img"></svg>
+                    </figure>
+                  </section>
+
+                  <section aria-labelledby="w4m-tab-overlap" class="w4m-panel" data-panel="overlap" hidden id="w4m-panel-overlap">
+                    <p class="w4m-eyebrow">Explore · after the course's week 4</p>
+                    <h3 class="w4m-title">Overlap: k-cliques and link communities</h3>
+                    <p class="w4m-lead" id="w4m-overlap-lead"></p>
+                    <div class="w4m-controls" id="w4m-overlap-modes" role="group" aria-label="Overlap controls">
+                      <button aria-pressed="true" class="w4m-btn segment" data-mode="link" type="button">Link communities</button>
+                      <button aria-pressed="false" class="w4m-btn segment" data-mode="k3" type="button">k = 3</button>
+                      <button aria-pressed="false" class="w4m-btn segment" data-mode="k4" type="button">k = 4</button>
+                      <button aria-pressed="false" class="w4m-btn segment" data-mode="k5" type="button">k = 5</button>
+                      <button aria-pressed="false" class="w4m-btn segment" data-mode="k6" type="button">k = 6</button>
+                      <button class="w4m-btn primary" data-act="next" type="button">Next community</button>
+                    </div>
+                    <div class="w4m-grid">
+                      <div class="w4m-map" id="w4m-overlap-map"></div>
+                      <div aria-live="polite" class="w4m-side">
+                        <div class="w4m-stats">
+                          <div class="w4m-stat"><b id="w4m-overlap-count"></b><span>communities · <span id="w4m-overlap-title"></span></span></div>
+                        </div>
+                        <p class="w4m-extra" id="w4m-overlap-extra"></p>
+                        <div class="w4m-rows">
+                          <div class="w4m-row"><span>Showing</span><b id="w4m-overlap-which"></b></div>
+                        </div>
+                        <p class="w4m-names" id="w4m-overlap-names"></p>
+                        <p class="w4m-note">Dark links and filled dots: the community shown. Rings: metros that belong to two or more communities at this setting.</p>
+                      </div>
+                    </div>
+                  </section>
+                </div>
               </div>
             </details>
             <details class="qa cut" id="evidence">
