@@ -20,7 +20,7 @@ const text = (from, to) => {
     .replace(/\s+/g, " ");
 };
 // Section 3's first-round answers now sit in the deep-dive section (#who-first-round);
-// their full text is in its Go deeper box.
+// their full text is in the deep dive.
 const section3 = text('id="who"', 'id="who-switch"') + text('id="who-first-round"', '<figure class="staffing"');
 // The first-round answers, in full, sit in the deep dive's who-first-round card.
 const prose = section3;
@@ -267,7 +267,7 @@ test("closing: what surprised us", () => {
   says1(`no single link cuts off more than ${WORDS[who.q2_max_single_drop]} metros`);
 });
 
-// The Go deeper boxes: one per extra network, each pinned to its script's JSON.
+// The deep dive's "More networks" boxes: one per extra network, each pinned to its script's JSON.
 const box = (id) => text(`id="${id}"`, "</details>");
 const inBox = (id) => (s) => assert.ok(box(id).includes(s), `#${id} should say "${s}"`);
 
@@ -400,4 +400,13 @@ test("one count of outsourcing firms across the page", () => {
   const split = json("analysis/week04_jobs_split.json");
   assert.ok(html.includes(`the ${n} companies that place 20 or more`), "section 5B's count of outsourcing firms");
   assert.ok(html.includes(`the ${n} firms that place 20 or more`), "section 2's count must match section 5B's");
+});
+
+test("one deep dive: the extra networks and the methods sit inside it", () => {
+  const cut = html.slice(html.indexOf('id="cut"'));
+  for (const id of ["cut-more", "deeper-perm", "deeper-countries", "deeper-density", "deeper-strength", "deeper-lottery", "deeper-uscis", "evidence"]) {
+    assert.ok(cut.includes(`id="${id}"`), `#${id} should sit inside the deep dive`);
+  }
+  assert.ok(!html.includes("Curious? Go deeper"), "the old Go deeper section is gone");
+  assert.equal((html.match(/id="evidence"/g) || []).length, 1, '"#evidence" links need exactly one target');
 });
