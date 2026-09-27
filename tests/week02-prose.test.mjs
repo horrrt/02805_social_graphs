@@ -72,6 +72,15 @@ test("the population counts (303 / 277 core / 9 island / 17 isolates / 1,784 arc
   says(`ISOLATED ARTICLES ${count(isolates)} STATIONS`);
   // The closing "What the data means" summary.
   says(`${count(total)} article entries and ${count(nulls.population.arcs)} directed links`);
+
+  // "the nine-character Morituri island" repeats three times (the two null-model
+  // paragraphs and the paradox pill caption); catch any one going stale.
+  const islandPhrase = `the ${WORDS[island]}-character Morituri island`;
+  says(islandPhrase);
+  const islandMatches = prose.split(islandPhrase).length - 1;
+  assert.equal(islandMatches, 3, `expected "${islandPhrase}" 3 times, found ${islandMatches}`);
+  // "(303 minus 17)" deriving the 286 linked articles.
+  says(`(${count(total)} minus ${count(isolates)})`);
 });
 
 test("the post-narrative degrees for Hulk and Black Widow match week02_resilience.json's cases", () => {
