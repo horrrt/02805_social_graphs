@@ -26,6 +26,9 @@ applyTo: "docs/**,tests/**"
 - Version page scripts, stylesheets and fetched data, so one deploy's code never meets another's numbers.
   Week 3 stamps a content hash with `scripts/stamp_week03.py`; Week 4 appends `?v=` by hand.
 - Ship no draft or placeholder text ("Draft", "The finding goes here", "TODO") on a live page.
+- Credit each data source on the page that uses it, in the form its licence asks for (CC BY names the
+  source and any change you made; ODbL and CC BY-SA also cover what you derive). `tests/credits.test.mjs`
+  checks the footers; add a line there when a page gains a source.
 - Keep existing element IDs, anchors and routes: other sections and tests link to them.
 - When you add a page or change the lobby, update `docs/assets/js/weeks.js` and run
   `node --test 'tests/*.test.mjs'`.
