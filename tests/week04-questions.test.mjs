@@ -158,12 +158,12 @@ test("section 4: which firm hides the regions", () => {
   const firm = (name) => d.single.find((s) => s.firm === name);
   const amazon = firm("Amazon");
   has(`Amazon files ${pct(amazon.filings_removed_share, 1)} of the filings`);
-  has(`at AMI ${f2(amazon.ami_region)} (${amazon.ami_vs_control_sd.toFixed(1)} standard deviations above its random cuts), ${pct(f.q_single_firm.movers[0]["share_of_the_0.16_gap"])} of the way`);
-  has(`full network's ${f2(f.full_ami_region)} to the ${f2(f.q_single_firm.all10_ami_region)}`);
+  has(`at AMI ${f2(amazon.ami_region)} (${amazon.ami_vs_control_sd.toFixed(1)} standard deviations above its random cuts), more than the ${f2(f.q_single_firm.all10_ami_region)} without all ten`);
+  assert.ok(amazon.ami_region > f.q_single_firm.all10_ami_region, '"more than without all ten" needs Amazon alone above the ten-firm value');
   // Only Amazon pushes the match up beyond its random cuts.
   const up = d.single.filter((s) => s.ami_vs_control_sd >= 2).map((s) => s.firm);
   assert.deepEqual(up, ["Amazon"]);
-  for (const name of ["Cognizant", "EY", "Apple", "Deloitte"]) {
+  for (const name of ["EY", "Meta", "Deloitte", "Apple"]) {
     assert.ok(firm(name).ami_region < 0, `${name} alone must give a negative AMI`);
   }
   has(`ignores regions (AMI −${Math.abs(firm("Deloitte").ami_region).toFixed(3)})`);
@@ -172,7 +172,8 @@ test("section 4: which firm hides the regions", () => {
   assert.equal(steps.length, 20);
   assert.ok(steps.every((s) => s.ami_region - s.control_ami_mean > 2 * s.control_ami_sd), "every step must clear 2 sd");
   const at = (k) => d.sweep.find((s) => s.k === k).ami_region;
-  for (const k of [8, 17, 18, 19]) assert.ok(Math.abs(at(k) - 0.07) < 0.01, `"about 0.07" at k = ${k}`);
+  for (const k of [17, 18, 19]) assert.ok(Math.abs(at(k) - 0.07) < 0.01, `"about 0.07" at k = ${k}`);
+  assert.ok(d.sweep.filter((s) => s.k >= 1 && s.k <= 16).every((s) => s.ami_region > 0.1), "no other dip before k = 17");
   has(`peaks at ${f2(at(20))} without the top 20`);
   assert.equal(Math.max(...d.sweep.map((s) => s.ami_region)), at(20));
   const y = Object.fromEntries(d.fy2024.map((r) => [r.id, r]));

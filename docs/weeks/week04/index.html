@@ -143,7 +143,7 @@
               Dallas, eight tech hubs led by San Jose and San Francisco, and the
               other 25. The split is weak
               but real: modularity 0.049 against 0.013 for rewired networks in
-              which each company keeps its number of metros (z = 33). The two
+              which each company keeps its number of metros (z = 29). The two
               questions below ask what the groups follow and where the network
               comes apart.
             </p>
@@ -244,22 +244,22 @@
               <span class="ico">💡</span>
               <span>
                 <b>What to notice</b>
-                The first metro falls off at α = 0.135. No single removal cuts
+                The first metro falls off at α = 0.136. No single removal cuts
                 off more than two metros: Dallas–Durham at α = 0.041 takes Durham
-                and Raleigh with it, and New York–San Francisco at 0.022 splits
-                the last five metros three and two. The fall from 32 to 19 is 13
-                separate links, each peeling one metro away. Of the 15 links whose
+                and Raleigh with it, and New York–Seattle at 0.023 splits
+                the last five metros three and two. The fall from 32 to 18 is 14
+                separate links, each peeling one metro away. Of the 16 links whose
                 removal cuts a metro loose, the five largest placing firms (Tata
                 Consultancy Services, Cognizant, Infosys, HCL, Compunnel) lead 5
-                (33%): Cognizant four, HCL one. That is no more than their 70 of
-                the 180 links in the whole backbone at α = 0.2 (39%, p = 0.43).
-                The other ten are led by Amazon (two), Intel, Deloitte, Capital
+                (31%): Cognizant four, HCL one. That is no more than their 70 of
+                the 180 links in the whole backbone at α = 0.2 (38%, p = 0.37).
+                The other eleven are led by Amazon (three), Intel, Deloitte, Capital
                 One, JPMorgan Chase, Citigroup, FedEx, Fidelity Investments and
                 the University of Maryland.
               </span>
             </div>
             <details class="qa">
-              <summary><span class="qa-cue">The 13 links that peel metros off between α = 0.1 and 0.05</span></summary>
+              <summary><span class="qa-cue">The 14 links that peel metros off between α = 0.1 and 0.05</span></summary>
               <div class="qa-body">
                 <table class="ego">
                   <thead>
@@ -313,8 +313,8 @@
               <b>Yes. Their job clusters differ more than those of random groups
               with the same number of companies and the same share of
               filings.</b>
-              We split the companies in two: the 818 firms that place 20 or more
-              filings at client sites (21% of all filings) and the 58,412 others.
+              We split the companies in two: the 817 firms that place 20 or more
+              filings at client sites (21% of all filings) and the 58,379 others.
               Each group gets its own occupation network and its own Louvain
               clusters, and the normalized mutual information (NMI) says how
               alike the two clusterings are on the 217 occupations that sit in a
@@ -351,11 +351,11 @@
               <span>
                 <b>What to notice</b>
                 The two clusterings agree at NMI 0.42. Random groups matched on
-                size agree at 0.61 ± 0.05 (z = −3.6), so the outsourcing firms
+                size agree at 0.61 ± 0.04 (z = −4.1), so the outsourcing firms
                 bundle jobs differently from companies like them. The half-matched
                 baselines show why the match matters: random groups with only the
-                same number of companies hold 1.5% of filings and agree at
-                0.47 ± 0.07, which would have hidden the difference. At the top
+                same number of companies hold 1.3% of filings and agree at
+                0.44 ± 0.10, which would have hidden the difference. At the top
                 the two mixes look alike: software developers are 28% of the
                 outsourcing firms' filings and 33% of the direct employers'. Below
                 that they part: "computer occupations, all other" is 22% of the
@@ -391,7 +391,7 @@
                 A job's number of communities mostly counts its links (Spearman
                 0.84), so the table ranks by communities per link, as the course
                 suggests. The top is small occupations such as physical therapist
-                aides (4 communities over 10 links). Only 2 of the 7 occupations
+                aides (4 communities over 10 links). Only 2 of the 5 occupations
                 that section 2's first test flagged as bridges appear in it:
                 credit counselors and interviewers. Two methods give two different
                 lists of small occupations, so we cannot name a job that clearly
@@ -454,7 +454,7 @@
               switch in four stays inside the client's group.</b>
               A client's main vendor is the firm that files most placements
               there in a year. We followed the clients with five or more filings
-              in two consecutive years and found 1,271 switches of main vendor
+              in two consecutive years and found 1,261 switches of main vendor
               between FY2022 and FY2025. For each, we asked whether the new
               vendor sat in the client's Louvain group of the earlier year. The
               baseline draws a new vendor at random, a large firm as often as its
@@ -474,13 +474,13 @@
               <span class="ico">💡</span>
               <span>
                 <b>What to notice</b>
-                Pooled over the three pairs of years, 25.8% of switches stay in
-                the group against 3.4% ± 0.5% for random vendors (z = 44). Much
-                of that is familiarity: 61% of new main vendors already placed
+                Pooled over the three pairs of years, 26.5% of switches stay in
+                the group against 3.2% ± 0.5% for random vendors (z = 47). Much
+                of that is familiarity: 62% of new main vendors already placed
                 someone at the client the year before. A stricter baseline that
                 draws only among the firms already at the client narrows the gap
-                to 26.2% against 20.8% ± 0.7% (z = 8), a lift of 1.26 rather
-                than 7.6. The groups hold some information about where a client
+                to 26.8% against 20.8% ± 0.7% (z = 9), a lift of 1.29 rather
+                than 8.3. The groups hold some information about where a client
                 turns next beyond the vendors it already knows.
               </span>
             </div>
@@ -514,14 +514,14 @@
               <span class="ico">💡</span>
               <span>
                 <b>What to notice</b>
-                65.7% of clients move between the weighted and unweighted
-                partitions. Two runs of the same kind move fewer: a median 28.4%
-                between two weighted seeds and 52.6% between two unweighted ones,
-                over ten pairs of seeds each (ranges 23.4% to 34.6% and 49.3% to
-                55.7%). We expected the movers to be
+                64.4% of clients move between the weighted and unweighted
+                partitions. Two runs of the same kind move fewer: a median 33.3%
+                between two weighted seeds and 53.1% between two unweighted ones,
+                over ten pairs of seeds each (ranges 26.8% to 39.3% and 49.4% to
+                55.9%). We expected the movers to be
                 clients with several vendors, since only their filing counts can
-                pull them one way or another. They are, but barely: 31.4% of
-                movers have two or more vendors, against 26.9% of all clients.
+                pull them one way or another. They are, but barely: 31.8% of
+                movers have two or more vendors, against 26.8% of all clients.
                 The largest movers are the largest clients: Citigroup sits with
                 Tata Consultancy Services when filings count and with EXL when
                 they do not; Bank of America moves from Randstad's group to Tata
@@ -555,7 +555,7 @@
               <span class="year-tag">split loyalties</span>
             </div>
             <p class="sub">
-              <b>1,842 clients get a fifth or more of their filings from a second
+              <b>1,823 clients get a fifth or more of their filings from a second
               group, fewer than in rewired networks that keep each client's
               filing counts.</b>
               A Louvain partition gives each client one group, but a client with
@@ -577,7 +577,7 @@
               <span class="ico">💡</span>
               <span>
                 <b>What to notice</b>
-                The rewired networks give 2,165 ± 21 split clients (z = −16), so
+                The rewired networks give 2,154 ± 20 split clients (z = −16), so
                 real clients draw on fewer groups than the same filing counts
                 spread at random would. Two cautions. Louvain builds the groups
                 from these filing counts, so it already tends to put a client
@@ -627,12 +627,12 @@
               A handful of companies file a large share of everything: the
               five largest placing firms (Tata Consultancy Services, Cognizant,
               Infosys, HCL, Compunnel) file 5.6% of the filings in the 40
-              metros, and the ten largest filers of any kind 18.8%. A company
+              metros, and the ten largest filers of any kind 19.1%. A company
               that files everywhere links every pair of metros and every pair
               of its jobs, so its footprint could be all the structure there is.
               We removed each set, reran 100 Louvain runs on the metro network
               and on the job network (weighted here by filings, since a count of
-              companies barely moves when ten of 59,230 leave), and compared the
+              companies barely moves when ten of 59,196 leave), and compared the
               groups with the full network's. Removing less data changes the
               groups too, so each removal sits beside 50 random cuts of
               companies that remove the same share of filings.
@@ -663,26 +663,26 @@
               <span>
                 <b>What to notice</b>
                 Without the ten largest filers (Amazon, Cognizant, Google,
-                Microsoft, EY, Meta, Apple, Tata Consultancy Services, Deloitte,
-                Infosys), the metro groups match Census regions at AMI 0.16
-                (p = 0.005), against 0.06 for the full network and 0.00 ± 0.02
-                for random cuts, 8.2 standard deviations away. The national
+                Microsoft, EY, Meta, Deloitte, Apple, Tata Consultancy Services,
+                Infosys), the metro groups match Census regions at AMI 0.13
+                (p = 0.013), against 0.06 for the full network and 0.01 ± 0.03
+                for random cuts, 4.6 standard deviations away. The national
                 employers are what hide the regional pattern. Removing the five
                 placing firms changes little: the groups stay close to the full
-                network's (NMI 0.92, random cuts 0.87 ± 0.15), and the regional
+                network's (NMI 0.92, random cuts 0.85 ± 0.14), and the regional
                 match rises only to 0.09, inside the range of random cuts
-                (0.04 ± 0.04). The job clusters hold at NMI 0.90 and 0.81, but
+                (0.04 ± 0.05). The job clusters hold at NMI 0.90 and 0.82, but
                 random cuts of the same volume leave them closer still (0.96 and
-                0.89, 3.0 and 3.7 standard deviations away), so the biggest firms
+                0.88, 3.0 and 3.2 standard deviations away), so the biggest firms
                 do shape which jobs cluster together. Without the ten largest
                 filers the clusters also sharpen, modularity rising from 0.28 to
                 0.32. Every version still beats its own rewired networks by a
-                wide margin (z = 26 or more).
+                wide margin (z = 25 or more).
               </span>
             </div>
 
             <p class="sub" id="footprint-which" style="margin-top: 22px">
-              <b>Which firm hides the regions? Mostly Amazon.</b>
+              <b>Which firm hides the regions? Amazon.</b>
               We removed each of the ten largest filers alone, and then the top
               1, 2, 3 … 20 filers in turn, each time beside random cuts of
               companies that remove the same share of filings (50 for a single
@@ -716,18 +716,18 @@
                 <b>What to notice</b>
                 Amazon files 5.1% of the filings in the 40 metros. Without it
                 alone, the metro groups match Census regions at AMI 0.14
-                (3.4 standard deviations above its random cuts), 81% of the way
-                from the full network's 0.06 to the 0.16 without all ten. No
-                other single firm pushes the match up: removing Cognizant, EY,
-                Apple or Deloitte alone tips Louvain into a two-group split that
-                ignores regions (AMI −0.005). Removed in rank order, the largest
-                filers keep the match above random cuts at every step from one to
-                twenty, but not smoothly: it dips to about 0.07 without the top 8
-                and the top 17 to 19, where several partitions compete, and peaks
-                at 0.20 without the top 20. FY2024 tells the same story more
-                strongly. Its full network shows no regional match (AMI −0.005);
-                without its ten largest filers the match is 0.22 (p = 0.001),
-                against −0.01 ± 0.01 for random cuts.
+                (3.5 standard deviations above its random cuts), more than the
+                0.13 without all ten. No other single firm pushes the match up
+                beyond its random cuts: removing EY, Meta, Deloitte or Apple
+                alone tips Louvain into a two-group split that ignores regions
+                (AMI −0.005). Removed in rank order, the largest filers keep the
+                match above random cuts at every step from one to twenty, but not
+                smoothly: it dips to about 0.07 without the top 17 to 19, where
+                several partitions compete, and peaks at 0.20 without the top 20.
+                FY2024 tells the same story more strongly. Its full network shows
+                no regional match (AMI −0.005); without its ten largest filers
+                the match is 0.22 (p = 0.001), against −0.01 ± 0.01 for random
+                cuts.
               </span>
             </div>
           </div>
@@ -781,7 +781,7 @@
               <span>
                 <b>What to notice</b>
                 AMI 0.037 against 0.000 ± 0.002 for rewired networks: real
-                (z = 18) and small. Modularity would mislead here. The law-firm
+                (z = 15) and small. Modularity would mislead here. The law-firm
                 network scores 0.90, below the 0.93 of its rewired copies, because
                 stars split into near-perfect groups whatever the wiring.
                 Fragomen files the most (14,087 filings for 131 of these
@@ -823,12 +823,12 @@
               <span>
                 <b>What to notice</b>
                 Outsourcing firms file 0.11 green cards per H-1B filing (95%
-                interval 0.08 to 0.15), direct employers 0.18 (0.15 to 0.22). The
+                interval 0.08 to 0.15), direct employers 0.18 (0.14 to 0.21). The
                 gap shrinks to 0.13 against 0.17 when a firm counts as outsourcing
                 only if most of its filings go to clients. Across the six largest
                 staffing groups the rate runs from 0.03 in Cognizant's group,
                 where Cognizant itself filed almost none, to 0.15, a spread that
-                shuffled group labels match half the time (p = 0.48). Single
+                shuffled group labels match 28% of the time (p = 0.28). Single
                 companies swing these rates more than any group does: counting
                 every case status, filings in the names of Amazon and Google fell
                 from 3,638 and 1,618 in FY2024 to 15 and 3 in FY2025. Green cards
@@ -870,7 +870,7 @@
                 direct ones. Within the 83 occupations with 20 or more filings of
                 each kind, the Mantel–Haenszel odds ratio is 3.59, and 69 of the
                 83 point the same way. A few large firms file most placements, so
-                the interval comes from resampling whole employers: 2.68 to 4.88.
+                the interval comes from resampling whole employers: 2.87 to 5.04.
                 It is not one firm's doing: without the 5, 10 or 20 largest
                 placing firms the ratio rises to 3.85, 4.28 and 4.94. Software
                 developers: 87% against 52%. Offered wages follow: placed filings
@@ -901,7 +901,7 @@
               mostly because clients return to firms they already use.
               Take out the ten largest filers, most of them national tech and
               consulting employers, and the metro groups start to follow Census
-              regions; Amazon alone does most of that.
+              regions; Amazon alone does all of that.
             </p>
             <p class="sub">
               Where outsourcing shows most is outside the networks: a filing
@@ -912,7 +912,7 @@
             <p class="sub">
               <b>What surprised us.</b> The staffing groups looked weak in our
               first round, following industry about as much as vendor, yet
-              25.8% of vendor switches stay inside them, against 3.4% for a
+              26.5% of vendor switches stay inside them, against 3.2% for a
               random vendor. And the backbone that seemed to snap between
               α = 0.1 and 0.05 never snaps: no single link cuts off more than
               two metros.
@@ -1218,13 +1218,13 @@
                   Francisco, Seattle, Los Angeles, San Diego, Austin, Boston and
                   Washington. The 25 smaller metros form the third. The split is
                   real but weak: modularity is 0.049 against 0.013 for rewired
-                  networks that keep each company's number of metros (z = 33),
-                  and Louvain finds it in 64 of 100 runs; the other 36 find one
+                  networks that keep each company's number of metros (z = 29),
+                  and Louvain finds it in 65 of 100 runs; the other 35 find one
                   other split, into two groups. FY2024 gives that two-group split
                   in all 100 runs, so it matches the split shown here at NMI 0.64,
                   against 1.00 between two FY2025 runs. NMI with Census regions is
                   0.14 and with divisions 0.21, no better than shuffled labels
-                  (p = 0.11 and 0.11). Infomap, which follows a random walk between
+                  (p = 0.10 and 0.11). Infomap, which follows a random walk between
                   metros instead of counting links, finds no split at all: one
                   module holds all 40.
                 </span>
@@ -1461,14 +1461,14 @@
                   </p>
                   <h3>Who relies on a single vendor?</h3>
                   <p>
-                    Small clients. 14,679 of the 18,924 clients use one firm, but
+                    Small clients. 14,678 of the 18,900 clients use one firm, but
                     they hold 22% of placed filings. Citigroup, the largest client,
                     uses 114 firms.
                   </p>
                   <h3>Does it hold from year to year?</h3>
                   <p>
                     Only in part. Consecutive years agree at NMI 0.21 to 0.27, about
-                    half the 0.47 to 0.52 between two runs of the same year. FY2026
+                    half the 0.48 to 0.50 between two runs of the same year. FY2026
                     breaks the pattern at the top: from January to June, filings
                     that name a client company fell 16.5%, and Tata Consultancy
                     Services filed 2,079, down from 5,256.
@@ -1552,11 +1552,11 @@
                   <h3>Who files the paperwork?</h3>
                   <p>
                     Three filings in four name an outside law firm, and five firms
-                    file 40% of those. Fragomen alone files 78,531 for 3,139
+                    file 40% of those. Fragomen alone files 78,531 for 3,129
                     employers. Outsourcing firms mostly do without: they file 52% of
                     their applications with no outside firm and send 3% to the five
                     largest, while direct employers send those five 48%. Per
-                    employer the averages are 2% and 31%, and none of 1,000 shuffles
+                    employer the averages are 2% and 30%, and none of 1,000 shuffles
                     of which employer is which produced a gap that wide.
                   </p>
                   <p>
@@ -1564,12 +1564,12 @@
                     for each such employer, the smaller of its filings through
                     either. That network has one giant hub, the case the disparity
                     filter was made for. A weight threshold of four shared filings
-                    keeps 770 links and spends 26% of them on the five largest
-                    firms. The disparity filter at &alpha; = 0.2 keeps 696 and
+                    keeps 771 links and spends 26% of them on the five largest
+                    firms. The disparity filter at &alpha; = 0.2 keeps 697 and
                     spends 19%. It also keeps 115 small firms the threshold drops,
                     such as one law office whose link to BBI Law Group is 3 of its
                     5 shared filings and 3 of BBI's 342. The threshold keeps the
-                    larger connected core, 395 firms against the filter's 350. Another 144 firms stay only
+                    larger connected core, 395 firms against the filter's 351. Another 144 firms stay only
                     because they form a pair linked to nobody else, where neither
                     end can judge the link.
                   </p>
@@ -1583,7 +1583,7 @@
                     Appleman &amp; Leiden; Tata Consultancy, LTIMindtree and
                     Salesforce share Usilaw, Goel &amp; Anderson and Chugh; Vialto,
                     once PwC's law firm, serves Doordash and Databricks. The groups
-                    move from year to year: FY2024 and FY2025 agree at NMI 0.29 on
+                    move from year to year: FY2024 and FY2025 agree at NMI 0.30 on
                     the 1,041 law firms in both, against 0.88 between two runs of
                     FY2025. Figures from analysis/week04_lawfirms.py.
                   </p>
@@ -1664,10 +1664,10 @@
                       <b>overlap</b> measures the tightness: of the firm's other
                       clients and the client's other firms, the share that are linked
                       to each other. Here the pattern runs the other way, faintly.
-                      Over the 28,151 links where overlap is defined, filings and
+                      Over the 28,104 links where overlap is defined, filings and
                       overlap correlate at Spearman -0.04; with the filing counts
                       shuffled over the same links the correlation is 0.00 ±
-                      0.01 (z = -6.5; FY2024 gives z = -4.2). Links with one filing
+                      0.01 (z = -6.3; FY2024 gives z = -3.7). Links with one filing
                       have a mean overlap of 0.065, links with 21 or more 0.034. Heavy
                       links mostly belong to the largest firms, whose many clients
                       rarely share other firms, so part of this is size. It agrees
@@ -1677,8 +1677,8 @@
                     <p class="sub">
                       Each filing states one of four wage levels, from entry (I) to
                       fully competent (IV). Averaged per client over the filings that
-                      reach it, the groups explain 12% of the variance in wage level;
-                      averaged per firm over all its filings, 2%. None of 1,000
+                      reach it, the groups explain 13% of the variance in wage level;
+                      averaged per firm over all its filings, 3%. None of 1,000
                       shuffles of the group labels reached either. A client's filings
                       come from the vendors that also decide its group, so part of
                       the 12% is built in. Outsourcing firms
@@ -1697,15 +1697,15 @@
                   </summary>
                   <div class="qa-body">
                     <p class="sub">
-                      We took the 2,944 firms in the FY2023 staffing network that
+                      We took the 2,942 firms in the FY2023 staffing network that
                       sent 20 or more registrations to the March 2023 draw, and split
                       them at the median share of workers another employer had also
                       registered (78%). If the high firms clustered, a high firm's
-                      Louvain group would be mostly high firms. It is 50.6% high,
+                      Louvain group would be mostly high firms. It is 51.2% high,
                       against 50.0% when the labels are shuffled (p = 0.001 over
                       1,000 shuffles), and AMI with the groups is 0.004 over 100
                       runs. The March 2022 draw against the FY2022 network gives
-                      52.0% against 50.0%. Registering the same workers is spread
+                      51.9% against 50.0%. Registering the same workers is spread
                       across the staffing groups; it does not mark a cluster of
                       firms. The lottery data is USCIS's, obtained by Bloomberg News;
                       figures from analysis/week04_lottery.py.
@@ -1771,12 +1771,12 @@
                 firm–client link counted once,
                 Louvain splits the network into about 65 groups, and the split
                 beats rewired networks that keep everyone's number of partners
-                (modularity 0.57 against 0.53). Among the 1,214 clients with a
+                (modularity 0.57 against 0.53). Among the 1,209 clients with a
                 known industry and two or more firms, the groups match the main
                 vendor at an adjusted mutual information (AMI) of 0.11 and the
                 industry at 0.07; both beat shuffled labels. AMI corrects NMI for
-                chance, which matters here: these clients have 492 main vendors
-                but only 18 industries. Counting filings pulls clients to their
+                chance, which matters here: these clients have 478 main vendors
+                but only 17 industries. Counting filings pulls clients to their
                 main vendor (AMI 0.48 against 0.07), but that split scores below
                 rewired networks with the same filing counts (0.60 against 0.74),
                 and the vendor's head start is built in: the vendor is a node in
@@ -1784,7 +1784,7 @@
               </p>
               <h3>Who relies on a single vendor?</h3>
               <p>
-                Small clients. 14,679 of the 18,924 clients use one firm, but they
+                Small clients. 14,678 of the 18,900 clients use one firm, but they
                 hold 22% of placed filings. Of the 629 clients with 20 or more
                 filings, 69 get over 90% from one firm, and the median one gets
                 37% from its largest. Citigroup, the largest client, uses 114
@@ -1795,7 +1795,7 @@
               <h3>Does it hold from year to year?</h3>
               <p>
                 Only in part. On the clients present in both years, consecutive
-                years agree at NMI 0.21 to 0.27, about half the 0.47 to 0.52
+                years agree at NMI 0.21 to 0.27, about half the 0.48 to 0.50
                 between two runs of the same year on the same clients. We
                 compared vendor and industry on FY2025 only.
               </p>
@@ -1806,10 +1806,10 @@
                 earlier. From January to June, certified filings fell 5.8% after
                 rising 9.5% the year before, and filings that name a client
                 company fell 16.5% after holding flat (-0.1%). Tata Consultancy
-                Services filed 2,079, down from 5,256. Of the 352 clients it supplied most from January to June 2025, 226 still appear, and 114 of those now
+                Services filed 2,079, down from 5,256. Of the 349 clients it supplied most from January to June 2025, 223 still appear, and 111 of those now
                 get most of their workers from another firm, most often Infosys.
-                Across clients with five or more filings in both years, 48%
-                changed their main vendor, against 43% a year earlier. These are
+                Across clients with five or more filings in both years, 47%
+                changed their main vendor, against 44% a year earlier. These are
                 applications, so they show what employers asked for, not why.
               </p>
                           </div>
@@ -1826,14 +1826,14 @@
                   employer sponsors the worker to stay. In FY2025 the median
                   employer with 20 or more H-1B filings filed 13.2 green cards
                   per 100 of them, and the two counts rank employers only loosely
-                  alike (Spearman 0.49). As with degree and strength in the
+                  alike (Spearman 0.50). As with degree and strength in the
                   course, the exceptions carry the story: Oracle filed 95 green
                   cards per 100 H-1B filings, Uber 64 and Salesforce 45, while
-                  Amazon (22,493 H-1B filings), Cognizant (11,067) and Google
+                  Amazon (22,509 H-1B filings), Cognizant (11,085) and Google
                   (8,657) filed almost none. Placing firms file fewer than direct
-                  employers (13.3 against 16.6 per 100), but shuffling the labels
-                  gives a gap that large 14% of the time (p = 0.136); in FY2024
-                  the gap is clearer (12.6 against 15.4, p = 0.045). Only 65% of
+                  employers (13.3 against 16.7 per 100), but shuffling the labels
+                  gives a gap that large 14% of the time (p = 0.141); in FY2024
+                  it comes close (12.6 against 15.4, p = 0.052). Only 65% of
                   certified green cards come from an employer we can match to an
                   H-1B filer. Clients sponsor their own staff too: Wells Fargo
                   receives 1,547 H-1B filings from vendors, files 624 of its own
@@ -1968,11 +1968,11 @@
                     </tr>
                   </thead>
                   <tbody>
-                    <tr><td>FY2022</td><td style="text-align: right">2.71%</td><td style="text-align: right">1.22%</td><td style="text-align: right">1,057</td><td style="text-align: right">2,295</td></tr>
-                    <tr><td>FY2023</td><td style="text-align: right">3.57%</td><td style="text-align: right">1.48%</td><td style="text-align: right">873</td><td style="text-align: right">2,087</td></tr>
-                    <tr><td>FY2024</td><td style="text-align: right">2.65%</td><td style="text-align: right">1.28%</td><td style="text-align: right">884</td><td style="text-align: right">2,414</td></tr>
-                    <tr><td>FY2025</td><td style="text-align: right">3.20%</td><td style="text-align: right">1.56%</td><td style="text-align: right">933</td><td style="text-align: right">2,480</td></tr>
-                    <tr><td>FY2026, Oct–Jun</td><td style="text-align: right">3.35%</td><td style="text-align: right">1.98%</td><td style="text-align: right">601</td><td style="text-align: right">1,877</td></tr>
+                    <tr><td>FY2022</td><td style="text-align: right">2.71%</td><td style="text-align: right">1.22%</td><td style="text-align: right">1,057</td><td style="text-align: right">2,288</td></tr>
+                    <tr><td>FY2023</td><td style="text-align: right">3.57%</td><td style="text-align: right">1.48%</td><td style="text-align: right">873</td><td style="text-align: right">2,080</td></tr>
+                    <tr><td>FY2024</td><td style="text-align: right">2.65%</td><td style="text-align: right">1.28%</td><td style="text-align: right">884</td><td style="text-align: right">2,403</td></tr>
+                    <tr><td>FY2025</td><td style="text-align: right">3.20%</td><td style="text-align: right">1.56%</td><td style="text-align: right">933</td><td style="text-align: right">2,466</td></tr>
+                    <tr><td>FY2026, Oct–Jun</td><td style="text-align: right">3.35%</td><td style="text-align: right">1.98%</td><td style="text-align: right">601</td><td style="text-align: right">1,863</td></tr>
                   </tbody>
                 </table>
                 <p class="sub" style="margin-top: 12px">

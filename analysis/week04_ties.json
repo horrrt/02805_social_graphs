@@ -22,30 +22,30 @@
     "Certified-Expired (either spacing)"
    ],
    "certified_perm_filings": 137753,
-   "perm_join_landed_on_h1b_employer_share": 0.6501,
-   "perm_join_landed_on_min20_employer_share": 0.4417,
-   "h1b_employers_min20_filings": 3493,
+   "perm_join_landed_on_h1b_employer_share": 0.651,
+   "perm_join_landed_on_min20_employer_share": 0.4429,
+   "h1b_employers_min20_filings": 3479,
    "spearman_h1b_vs_perm_filings": {
-    "rho": 0.494,
+    "rho": 0.498,
     "p": 0.0,
-    "n": 3493
+    "n": 3479
    },
    "placing": {
     "employers": 948,
-    "h1b_filings": 83989,
-    "perm_filings": 11173,
-    "perm_per_100_h1b": 13.303
+    "h1b_filings": 84024,
+    "perm_filings": 11187,
+    "perm_per_100_h1b": 13.314
    },
    "direct": {
-    "employers": 2545,
-    "h1b_filings": 298594,
-    "perm_filings": 49678,
-    "perm_per_100_h1b": 16.637
+    "employers": 2531,
+    "h1b_filings": 298738,
+    "perm_filings": 49830,
+    "perm_per_100_h1b": 16.68
    },
    "kind_permutation_test": {
-    "observed_gap_per_100": -3.334,
+    "observed_gap_per_100": -3.366,
     "shuffles": 1000,
-    "p": 0.2997
+    "p": 0.2977
    },
    "top_placing_by_h1b": [
     {
@@ -56,9 +56,9 @@
     },
     {
      "employer": "Infosys",
-     "h1b_filings": 5740,
-     "perm_filings": 0,
-     "perm_per_100_h1b": 0.0
+     "h1b_filings": 5775,
+     "perm_filings": 14,
+     "perm_per_100_h1b": 0.24
     },
     {
      "employer": "HCL",
@@ -142,13 +142,13 @@
    "top_direct_by_h1b": [
     {
      "employer": "Amazon",
-     "h1b_filings": 22493,
+     "h1b_filings": 22509,
      "perm_filings": 0,
      "perm_per_100_h1b": 0.0
     },
     {
      "employer": "Cognizant",
-     "h1b_filings": 11067,
+     "h1b_filings": 11085,
      "perm_filings": 0,
      "perm_per_100_h1b": 0.0
     },
@@ -177,16 +177,16 @@
      "perm_per_100_h1b": 17.69
     },
     {
+     "employer": "Deloitte",
+     "h1b_filings": 6737,
+     "perm_filings": 349,
+     "perm_per_100_h1b": 5.18
+    },
+    {
      "employer": "Meta",
      "h1b_filings": 6418,
      "perm_filings": 386,
      "perm_per_100_h1b": 6.01
-    },
-    {
-     "employer": "Deloitte",
-     "h1b_filings": 5306,
-     "perm_filings": 317,
-     "perm_per_100_h1b": 5.97
     },
     {
      "employer": "Walmart",
@@ -220,7 +220,7 @@
     },
     {
      "employer": "Fidelity Investments",
-     "h1b_filings": 2158,
+     "h1b_filings": 2242,
      "perm_filings": 0,
      "perm_per_100_h1b": 0.0
     },
@@ -237,12 +237,12 @@
     "big_h1b_near_zero_perm": [
      {
       "employer": "Amazon",
-      "h1b_filings": 22493,
+      "h1b_filings": 22509,
       "perm_filings": 0
      },
      {
       "employer": "Cognizant",
-      "h1b_filings": 11067,
+      "h1b_filings": 11085,
       "perm_filings": 0
      },
      {
@@ -252,12 +252,12 @@
      },
      {
       "employer": "Infosys",
-      "h1b_filings": 5740,
-      "perm_filings": 0
+      "h1b_filings": 5775,
+      "perm_filings": 14
      },
      {
       "employer": "Fidelity Investments",
-      "h1b_filings": 2158,
+      "h1b_filings": 2242,
       "perm_filings": 0
      }
     ],
@@ -308,36 +308,36 @@
     "Certified-Expired (either spacing)"
    ],
    "certified_perm_filings": 101994,
-   "perm_join_landed_on_h1b_employer_share": 0.697,
-   "perm_join_landed_on_min20_employer_share": 0.5177,
-   "h1b_employers_min20_filings": 3386,
+   "perm_join_landed_on_h1b_employer_share": 0.6972,
+   "perm_join_landed_on_min20_employer_share": 0.5182,
+   "h1b_employers_min20_filings": 3374,
    "spearman_h1b_vs_perm_filings": {
-    "rho": 0.453,
+    "rho": 0.454,
     "p": 0.0,
-    "n": 3386
+    "n": 3374
    },
    "placing": {
     "employers": 898,
-    "h1b_filings": 82811,
+    "h1b_filings": 82839,
     "perm_filings": 10471,
-    "perm_per_100_h1b": 12.644
+    "perm_per_100_h1b": 12.64
    },
    "direct": {
-    "employers": 2488,
-    "h1b_filings": 274609,
-    "perm_filings": 42332,
-    "perm_per_100_h1b": 15.415
+    "employers": 2476,
+    "h1b_filings": 274747,
+    "perm_filings": 42380,
+    "perm_per_100_h1b": 15.425
    },
    "kind_permutation_test": {
-    "observed_gap_per_100": -2.771,
+    "observed_gap_per_100": -2.785,
     "shuffles": 1000,
-    "p": 0.1079
+    "p": 0.0939
    }
   }
  },
  "strength_vs_degree": {
   "firms": {
-   "n": 6560,
+   "n": 6556,
    "spearman": {
     "rho": 0.909,
     "p": 0.0
@@ -347,35 +347,35 @@
      "label": "Gradestaffing",
      "degree": 1,
      "strength": 55,
-     "degree_rank": 5584,
+     "degree_rank": 5580,
      "strength_rank": 178
     },
     {
      "label": "Hectologic",
      "degree": 1,
      "strength": 43,
-     "degree_rank": 5584,
+     "degree_rank": 5580,
      "strength_rank": 251
     },
     {
      "label": "Murthy LAW Firm",
      "degree": 1,
      "strength": 38,
-     "degree_rank": 5584,
+     "degree_rank": 5580,
      "strength_rank": 304
     },
     {
      "label": "Murthy LAW Firm",
      "degree": 1,
      "strength": 35,
-     "degree_rank": 5584,
+     "degree_rank": 5580,
      "strength_rank": 346
     },
     {
      "label": "Matlen Silver",
      "degree": 1,
      "strength": 34,
-     "degree_rank": 5584,
+     "degree_rank": 5580,
      "strength_rank": 360
     }
    ],
@@ -384,43 +384,43 @@
      "label": "Workcog",
      "degree": 5,
      "strength": 5,
-     "degree_rank": 2068,
-     "strength_rank": 2822
+     "degree_rank": 2065,
+     "strength_rank": 2820
     },
     {
      "label": "Winsai",
      "degree": 5,
      "strength": 5,
-     "degree_rank": 2068,
-     "strength_rank": 2822
+     "degree_rank": 2065,
+     "strength_rank": 2820
     },
     {
      "label": "Virtus Solutions",
      "degree": 5,
      "strength": 5,
-     "degree_rank": 2068,
-     "strength_rank": 2822
+     "degree_rank": 2065,
+     "strength_rank": 2820
     },
     {
      "label": "Vigna",
      "degree": 5,
      "strength": 5,
-     "degree_rank": 2068,
-     "strength_rank": 2822
+     "degree_rank": 2065,
+     "strength_rank": 2820
     },
     {
      "label": "Venusgeo Solutions",
      "degree": 5,
      "strength": 5,
-     "degree_rank": 2068,
-     "strength_rank": 2822
+     "degree_rank": 2065,
+     "strength_rank": 2820
     }
    ]
   },
   "clients": {
-   "n": 15199,
+   "n": 15175,
    "spearman": {
-    "rho": 0.748,
+    "rho": 0.747,
     "p": 0.0
    },
    "high_strength_low_degree": [
@@ -428,36 +428,36 @@
      "label": "Ultimate Therapy",
      "degree": 1,
      "strength": 133,
-     "degree_rank": 9645,
+     "degree_rank": 9621,
      "strength_rank": 102
     },
     {
      "label": "Sigma Rehab",
      "degree": 1,
      "strength": 95,
-     "degree_rank": 9645,
-     "strength_rank": 132
+     "degree_rank": 9621,
+     "strength_rank": 133
     },
     {
      "label": "Post Rehab Services",
      "degree": 1,
      "strength": 61,
-     "degree_rank": 9645,
+     "degree_rank": 9621,
      "strength_rank": 191
     },
     {
      "label": "Grady Memorial Hospital",
      "degree": 1,
      "strength": 58,
-     "degree_rank": 9645,
+     "degree_rank": 9621,
      "strength_rank": 201
     },
     {
      "label": "Northwestern Mutual Life",
      "degree": 1,
      "strength": 48,
-     "degree_rank": 9645,
-     "strength_rank": 229
+     "degree_rank": 9621,
+     "strength_rank": 231
     }
    ],
    "high_degree_low_strength": [
@@ -465,36 +465,36 @@
      "label": "Zoox Labs",
      "degree": 2,
      "strength": 2,
-     "degree_rank": 3183,
-     "strength_rank": 5699
+     "degree_rank": 3161,
+     "strength_rank": 5676
     },
     {
      "label": "Zensar Technologies",
      "degree": 2,
      "strength": 2,
-     "degree_rank": 3183,
-     "strength_rank": 5699
+     "degree_rank": 3161,
+     "strength_rank": 5676
     },
     {
      "label": "Zayo",
      "degree": 2,
      "strength": 2,
-     "degree_rank": 3183,
-     "strength_rank": 5699
+     "degree_rank": 3161,
+     "strength_rank": 5676
     },
     {
      "label": "Yamaha Motor",
      "degree": 2,
      "strength": 2,
-     "degree_rank": 3183,
-     "strength_rank": 5699
+     "degree_rank": 3161,
+     "strength_rank": 5676
     },
     {
      "label": "YUM Restaurant Services",
      "degree": 2,
      "strength": 2,
-     "degree_rank": 3183,
-     "strength_rank": 5699
+     "degree_rank": 3161,
+     "strength_rank": 5676
     }
    ]
   }
@@ -506,102 +506,102 @@
  "weak_ties": {
   "2025": {
    "year": 2025,
-   "giant_nodes": 21759,
-   "giant_edges": 41212,
-   "undefined_links": 13061,
+   "giant_nodes": 21731,
+   "giant_edges": 41164,
+   "undefined_links": 13060,
    "undefined_links_filing_share": 0.2186,
-   "defined_links": 28151,
+   "defined_links": 28104,
    "spearman_weight_overlap": {
-    "rho": -0.04,
+    "rho": -0.039,
     "p": 0.0,
-    "n": 28151
+    "n": 28104
    },
    "weight_shuffle_null": {
     "runs": 100,
     "mean_rho": 0.0001,
-    "sd_rho": 0.0061,
-    "z": -6.52,
+    "sd_rho": 0.0062,
+    "z": -6.34,
     "p_two_sided": 0.0
    },
    "louvain": {
     "runs": 100,
-    "modularity_min": 0.5941,
-    "modularity_median": 0.5963,
-    "modularity_max": 0.5983,
+    "modularity_min": 0.5928,
+    "modularity_median": 0.5955,
+    "modularity_max": 0.5973,
     "communities_median": 70,
     "note": "modularity vs the rewired null is week04_staffing.json's main.modularity"
    },
    "overlap_inside_vs_across_community": {
-    "mean_overlap_inside": 0.0689,
+    "mean_overlap_inside": 0.0695,
     "mean_overlap_across": 0.0585,
-    "n_inside": 10797,
-    "n_across": 17354,
+    "n_inside": 10622,
+    "n_across": 17482,
     "direction": "higher overlap inside communities"
    },
    "weight_overlap_direction": "negative: heavier links sit in less overlapping neighbourhoods",
    "overlap_by_weight_bucket": {
     "1": {
-     "n": 18638,
-     "mean_overlap": 0.0649
+     "n": 18601,
+     "mean_overlap": 0.0651
     },
     "2": {
-     "n": 4609,
+     "n": 4601,
      "mean_overlap": 0.0613
     },
     "3": {
-     "n": 1566,
-     "mean_overlap": 0.0629
+     "n": 1564,
+     "mean_overlap": 0.0632
     },
     "4-5": {
-     "n": 1267,
-     "mean_overlap": 0.0585
+     "n": 1263,
+     "mean_overlap": 0.0588
     },
     "6-10": {
-     "n": 1016,
-     "mean_overlap": 0.0513
+     "n": 1017,
+     "mean_overlap": 0.0516
     },
     "11-20": {
-     "n": 573,
-     "mean_overlap": 0.0452
+     "n": 576,
+     "mean_overlap": 0.0455
     },
     "21+": {
      "n": 482,
-     "mean_overlap": 0.034
+     "mean_overlap": 0.0341
     }
    }
   },
   "2024": {
    "year": 2024,
-   "giant_nodes": 21431,
-   "giant_edges": 39954,
-   "undefined_links": 12828,
-   "undefined_links_filing_share": 0.2132,
-   "defined_links": 27126,
+   "giant_nodes": 21401,
+   "giant_edges": 39912,
+   "undefined_links": 12824,
+   "undefined_links_filing_share": 0.2133,
+   "defined_links": 27088,
    "spearman_weight_overlap": {
     "rho": -0.024,
     "p": 0.0001,
-    "n": 27126
+    "n": 27088
    },
    "weight_shuffle_null": {
     "runs": 100,
-    "mean_rho": 0.0007,
-    "sd_rho": 0.0058,
-    "z": -4.18,
+    "mean_rho": -0.0001,
+    "sd_rho": 0.0066,
+    "z": -3.68,
     "p_two_sided": 0.0
    },
    "louvain": {
     "runs": 100,
-    "modularity_min": 0.5905,
-    "modularity_median": 0.5925,
-    "modularity_max": 0.5942,
+    "modularity_min": 0.5902,
+    "modularity_median": 0.5917,
+    "modularity_max": 0.5944,
     "communities_median": 90,
     "note": "modularity vs the rewired null is week04_staffing.json's main.modularity"
    },
    "overlap_inside_vs_across_community": {
-    "mean_overlap_inside": 0.0671,
-    "mean_overlap_across": 0.0548,
-    "n_inside": 10493,
-    "n_across": 16633,
+    "mean_overlap_inside": 0.0669,
+    "mean_overlap_across": 0.055,
+    "n_inside": 10411,
+    "n_across": 16677,
     "direction": "higher overlap inside communities"
    },
    "weight_overlap_direction": "negative: heavier links sit in less overlapping neighbourhoods"
@@ -616,23 +616,23 @@
   },
   "missing_share_filings": 0.0795,
   "eta_squared_firms": {
-   "n": 6476,
-   "eta_squared": 0.023,
+   "n": 6472,
+   "eta_squared": 0.0258,
    "shuffles": 1000,
    "p": 0.001
   },
   "eta_squared_clients": {
-   "n": 14291,
-   "eta_squared": 0.1233,
+   "n": 14267,
+   "eta_squared": 0.1252,
    "shuffles": 1000,
    "p": 0.001
   },
   "wage_distribution_placing_vs_direct_filings": {
    "placing": {
-    "1": 0.126,
-    "2": 0.6641,
-    "3": 0.1582,
-    "4": 0.0517
+    "1": 0.1259,
+    "2": 0.6639,
+    "3": 0.1583,
+    "4": 0.0519
    },
    "direct": {
     "1": 0.1643,
@@ -642,5 +642,5 @@
    }
   }
  },
- "seconds": 75
+ "seconds": 84
 }

@@ -103,6 +103,17 @@ Layout differences the loader already handles:
   "same company" is at the top of the CSV. Add to those files rather than to your own script.
 - **Run `python analysis/week04_schemas.py` after changing any page data.** It checks each JSON file
   against the fields and cross-references its page script reads (Pydantic models, one per file).
+- **Corporate parents come from GLEIF.** `python analysis/week04_gleif.py` matches every company spelling
+  with 20+ filings to the US entries of GLEIF's register (Golden Copy, 26 Sep 2026, CC0) by exact
+  normalized name and follows each to its ultimate parent. Spellings that share a parent and a brand
+  with a company the alias table already names are appended there with `--write` (47 rows on 26 Sep:
+  Deloitte & Touche, Salesforce.com, Dell Marketing, Moody's units, Infosys Public Services, Ford Motor
+  Credit...). Separately branded companies (LinkedIn, Red Hat, Splunk, Twitch) and new families the
+  script would have to name itself go to `review` and `new_families` in `analysis/week04_gleif.json`
+  for a person to decide. The raw files are in `build/raw/gleif/` (482 MB; fetch with aria2c).
+- **Rerun everything in parallel after a name change:** `python analysis/week04_run_all.py` starts every
+  week 4 script at once (the staffing figure waits for staffing) and logs to `build/logs/`; about
+  7 minutes instead of 21. Then run the site tests, which name every sentence whose number moved.
 - **Run `python analysis/week04_names_check.py` after changing either file.** It scores the rules
   against tax numbers and fails if a known pair merges or splits wrongly
   (`analysis/week04_names_check.json`).

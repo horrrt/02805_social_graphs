@@ -4,8 +4,8 @@
  "draws": 1000,
  "year": 2025,
  "giant_check": {
-  "nodes": 21759,
-  "edges": 41212,
+  "nodes": 21731,
+  "edges": 41164,
   "match": true
  },
  "q1_switching": {
@@ -13,141 +13,141 @@
    {
     "from": 2022,
     "to": 2023,
-    "clients_in_both_years": 8160,
+    "clients_in_both_years": 8136,
     "n_at_threshold": {
-     "3": 3067,
-     "5": 1985,
-     "10": 1070
+     "3": 3046,
+     "5": 1967,
+     "10": 1063
     },
-    "clients_kept_at_5": 1486,
-    "switches_raw": 511,
-    "switches_scored": 467,
+    "clients_kept_at_5": 1480,
+    "switches_raw": 509,
+    "switches_scored": 465,
     "switches_dropped_vendor_outside_giant": 44,
-    "observed_share_same_community": 0.2355,
+    "observed_share_same_community": 0.2344,
     "null": {
-     "mean": 0.0353,
-     "sd": 0.0084,
-     "z": 23.87,
+     "mean": 0.0334,
+     "sd": 0.0082,
+     "z": 24.48,
      "p": 0.001
     },
-    "lift": 6.67,
-    "share_new_vendor_already_linked": 0.5782,
+    "lift": 7.02,
+    "share_new_vendor_already_linked": 0.5828,
     "stricter_null": {
-     "n_eligible": 454,
-     "observed_share": 0.2379,
-     "mean": 0.1914,
-     "sd": 0.0113,
-     "z": 4.13,
+     "n_eligible": 453,
+     "observed_share": 0.2362,
+     "mean": 0.1983,
+     "sd": 0.0109,
+     "z": 3.48,
      "p": 0.001,
-     "lift": 1.24
+     "lift": 1.19
     },
     "answer": "yes"
    },
    {
     "from": 2023,
     "to": 2024,
-    "clients_in_both_years": 7976,
+    "clients_in_both_years": 7950,
     "n_at_threshold": {
-     "3": 2898,
-     "5": 1879,
-     "10": 979
+     "3": 2878,
+     "5": 1865,
+     "10": 973
     },
-    "clients_kept_at_5": 1433,
-    "switches_raw": 497,
-    "switches_scored": 398,
+    "clients_kept_at_5": 1427,
+    "switches_raw": 493,
+    "switches_scored": 394,
     "switches_dropped_vendor_outside_giant": 99,
-    "observed_share_same_community": 0.2688,
+    "observed_share_same_community": 0.2817,
     "null": {
-     "mean": 0.0348,
-     "sd": 0.0091,
-     "z": 25.75,
+     "mean": 0.0303,
+     "sd": 0.0085,
+     "z": 29.53,
      "p": 0.001
     },
-    "lift": 7.73,
-    "share_new_vendor_already_linked": 0.6307,
+    "lift": 9.3,
+    "share_new_vendor_already_linked": 0.6371,
     "stricter_null": {
-     "n_eligible": 389,
-     "observed_share": 0.2751,
-     "mean": 0.1977,
-     "sd": 0.0119,
-     "z": 6.51,
+     "n_eligible": 385,
+     "observed_share": 0.2857,
+     "mean": 0.1874,
+     "sd": 0.0117,
+     "z": 8.38,
      "p": 0.001,
-     "lift": 1.39
+     "lift": 1.52
     },
     "answer": "yes"
    },
    {
     "from": 2024,
     "to": 2025,
-    "clients_in_both_years": 7674,
+    "clients_in_both_years": 7651,
     "n_at_threshold": {
-     "3": 2717,
-     "5": 1799,
-     "10": 967
+     "3": 2697,
+     "5": 1785,
+     "10": 962
     },
-    "clients_kept_at_5": 1372,
-    "switches_raw": 435,
-    "switches_scored": 406,
+    "clients_kept_at_5": 1364,
+    "switches_raw": 431,
+    "switches_scored": 402,
     "switches_dropped_vendor_outside_giant": 29,
-    "observed_share_same_community": 0.2734,
+    "observed_share_same_community": 0.2836,
     "null": {
-     "mean": 0.0321,
-     "sd": 0.0085,
-     "z": 28.4,
+     "mean": 0.0313,
+     "sd": 0.0083,
+     "z": 30.24,
      "p": 0.001
     },
-    "lift": 8.52,
-    "share_new_vendor_already_linked": 0.6281,
+    "lift": 9.06,
+    "share_new_vendor_already_linked": 0.6318,
     "stricter_null": {
-     "n_eligible": 402,
-     "observed_share": 0.2761,
-     "mean": 0.2368,
-     "sd": 0.0118,
-     "z": 3.34,
+     "n_eligible": 398,
+     "observed_share": 0.2864,
+     "mean": 0.2402,
+     "sd": 0.0119,
+     "z": 3.9,
      "p": 0.001,
-     "lift": 1.17
+     "lift": 1.19
     },
     "answer": "yes"
    }
   ],
   "pooled": {
-   "switches_scored": 1271,
-   "observed_share_same_community": 0.2581,
+   "switches_scored": 1261,
+   "observed_share_same_community": 0.2649,
    "null": {
-    "mean": 0.0341,
-    "sd": 0.0051,
-    "z": 44.16,
+    "mean": 0.0318,
+    "sd": 0.0049,
+    "z": 47.18,
     "p": 0.001
    },
-   "lift": 7.57,
-   "share_new_vendor_already_linked": 0.6105,
+   "lift": 8.33,
+   "share_new_vendor_already_linked": 0.6154,
    "stricter_null": {
-    "n_eligible": 1245,
-    "observed_share": 0.2618,
-    "mean": 0.208,
-    "sd": 0.0066,
-    "z": 8.17,
+    "n_eligible": 1236,
+    "observed_share": 0.2678,
+    "mean": 0.2084,
+    "sd": 0.0065,
+    "z": 9.11,
     "p": 0.001,
-    "lift": 1.26
+    "lift": 1.29
    },
    "answer": "yes"
   }
  },
  "q2_movers": {
-  "nmi_best_partitions": 0.371,
-  "clients": 15199,
-  "movers": 9992,
-  "share_move": 0.6574,
-  "noise_floor_weighted_seeds": 0.284,
-  "noise_floor_weighted_seeds_min": 0.2345,
-  "noise_floor_weighted_seeds_max": 0.346,
-  "noise_floor_unweighted_seeds": 0.526,
-  "noise_floor_unweighted_seeds_min": 0.493,
-  "noise_floor_unweighted_seeds_max": 0.5573,
-  "movers_2plus_vendor_share": 0.3142,
-  "all_clients_2plus_vendor_share": 0.2691,
-  "movers_2plus_vendor_filing_share": 0.8614,
-  "all_clients_2plus_vendor_filing_share": 0.8151,
+  "nmi_best_partitions": 0.392,
+  "clients": 15175,
+  "movers": 9768,
+  "share_move": 0.6437,
+  "noise_floor_weighted_seeds": 0.3331,
+  "noise_floor_weighted_seeds_min": 0.2679,
+  "noise_floor_weighted_seeds_max": 0.3931,
+  "noise_floor_unweighted_seeds": 0.5307,
+  "noise_floor_unweighted_seeds_min": 0.4939,
+  "noise_floor_unweighted_seeds_max": 0.5593,
+  "movers_2plus_vendor_share": 0.3178,
+  "all_clients_2plus_vendor_share": 0.268,
+  "movers_2plus_vendor_filing_share": 0.8598,
+  "all_clients_2plus_vendor_filing_share": 0.8152,
   "answer": "no",
   "top_movers_by_filings": [
    {
@@ -156,15 +156,23 @@
     "vendors": 114,
     "main_vendor": "Tata Consultancy Services",
     "weighted_community_top_firm": "Tata Consultancy Services",
-    "unweighted_community_top_firm": "EXL"
+    "unweighted_community_top_firm": "EY"
+   },
+   {
+    "client": "Verizon",
+    "filings": 1925,
+    "vendors": 518,
+    "main_vendor": "Cognizant",
+    "weighted_community_top_firm": "Skilltune Technologies",
+    "unweighted_community_top_firm": "Skilltune Technologies"
    },
    {
     "client": "Bank of America",
     "filings": 1819,
     "vendors": 45,
     "main_vendor": "Randstad",
-    "weighted_community_top_firm": "Randstad",
-    "unweighted_community_top_firm": "Tata Consultancy Services"
+    "weighted_community_top_firm": "Infosys",
+    "unweighted_community_top_firm": "IBM"
    },
    {
     "client": "Fidelity Investments",
@@ -175,43 +183,27 @@
     "unweighted_community_top_firm": "Skilltune Technologies"
    },
    {
-    "client": "Wells Fargo",
-    "filings": 1547,
-    "vendors": 468,
-    "main_vendor": "Mphasis",
-    "weighted_community_top_firm": "Randstad",
-    "unweighted_community_top_firm": "Skilltune Technologies"
-   },
-   {
     "client": "American Express",
     "filings": 1230,
-    "vendors": 351,
+    "vendors": 349,
     "main_vendor": "Tata Consultancy Services",
     "weighted_community_top_firm": "IBM",
     "unweighted_community_top_firm": "Skilltune Technologies"
    },
    {
-    "client": "JPMorgan Chase",
-    "filings": 1125,
-    "vendors": 372,
-    "main_vendor": "Mphasis",
-    "weighted_community_top_firm": "Wipro",
-    "unweighted_community_top_firm": "Skilltune Technologies"
-   },
-   {
     "client": "USAA",
-    "filings": 1080,
-    "vendors": 234,
+    "filings": 1085,
+    "vendors": 235,
     "main_vendor": "HCL",
     "weighted_community_top_firm": "HCL",
     "unweighted_community_top_firm": "Skilltune Technologies"
    },
    {
     "client": "Apple",
-    "filings": 1013,
-    "vendors": 300,
+    "filings": 1020,
+    "vendors": 301,
     "main_vendor": "Infosys",
-    "weighted_community_top_firm": "Infosys",
+    "weighted_community_top_firm": "Quest Global Services",
     "unweighted_community_top_firm": "Skilltune Technologies"
    },
    {
@@ -219,8 +211,8 @@
     "filings": 919,
     "vendors": 339,
     "main_vendor": "HCL",
-    "weighted_community_top_firm": "IBM",
-    "unweighted_community_top_firm": "Infovision"
+    "weighted_community_top_firm": "UST Global",
+    "unweighted_community_top_firm": "Skilltune Technologies"
    },
    {
     "client": "Walmart",
@@ -233,7 +225,7 @@
    {
     "client": "AT&T",
     "filings": 845,
-    "vendors": 303,
+    "vendors": 302,
     "main_vendor": "Tech Mahindra",
     "weighted_community_top_firm": "Tech Mahindra",
     "unweighted_community_top_firm": "Skilltune Technologies"
@@ -244,7 +236,7 @@
     "vendors": 186,
     "main_vendor": "Cognizant",
     "weighted_community_top_firm": "Cognizant",
-    "unweighted_community_top_firm": "Skilltune Technologies"
+    "unweighted_community_top_firm": "Compunnel Software"
    },
    {
     "client": "Charles Schwab",
@@ -259,43 +251,51 @@
     "filings": 657,
     "vendors": 141,
     "main_vendor": "UST Global",
-    "weighted_community_top_firm": "IBM",
-    "unweighted_community_top_firm": "Coforge"
+    "weighted_community_top_firm": "UST Global",
+    "unweighted_community_top_firm": "Saipsit"
    },
    {
-    "client": "Freddie Mac",
-    "filings": 636,
-    "vendors": 306,
-    "main_vendor": "Hexaware Technologies",
-    "weighted_community_top_firm": "Hexaware Technologies",
-    "unweighted_community_top_firm": "ERP Analysts"
+    "client": "PNC",
+    "filings": 635,
+    "vendors": 62,
+    "main_vendor": "CGI Technologies and Solutions",
+    "weighted_community_top_firm": "Tata Consultancy Services",
+    "unweighted_community_top_firm": "IBM"
+   },
+   {
+    "client": "Johnson & Johnson",
+    "filings": 602,
+    "vendors": 140,
+    "main_vendor": "Tata Consultancy Services",
+    "weighted_community_top_firm": "Tata Consultancy Services",
+    "unweighted_community_top_firm": "Intellectt"
    }
   ]
  },
  "q3_two_communities": {
-  "two_community_clients": 1842,
-  "two_community_clients_min_filings": 129,
+  "two_community_clients": 1823,
+  "two_community_clients_min_filings": 130,
   "min_filings_cutoff": 20,
-  "null_mean": 2165.4,
-  "null_sd": 20.82,
-  "z": -15.53,
+  "null_mean": 2153.87,
+  "null_sd": 20.47,
+  "z": -16.16,
   "verdict": "fewer split clients than rewirings that keep each client's filing counts; the groups follow clients' main suppliers",
   "control_within_client_shuffle": {
-   "two_community_clients": 2113,
+   "two_community_clients": 2099,
    "identical_to_observed": false
   },
   "top_by_filings": [
    {
     "client": "USAA",
     "sector": "52",
-    "filings": 1080,
+    "filings": 1085,
     "communities": [
      "HCL",
      "Tata Consultancy Services"
     ],
     "shares": [
-     0.437,
-     0.256
+     0.439,
+     0.258
     ],
     "main_vendor": "HCL"
    },
@@ -316,14 +316,14 @@
    {
     "client": "Honda",
     "sector": "31-33",
-    "filings": 248,
+    "filings": 254,
     "communities": [
      "L&T Technology Services",
      "Tata Consultancy Services"
     ],
     "shares": [
-     0.54,
-     0.214
+     0.535,
+     0.224
     ],
     "main_vendor": "LTIMindtree"
    },
@@ -350,8 +350,8 @@
      "Tata Consultancy Services"
     ],
     "shares": [
-     0.43,
-     0.387
+     0.46,
+     0.34
     ],
     "main_vendor": "Tata Consultancy Services"
    },
@@ -365,7 +365,7 @@
     ],
     "shares": [
      0.567,
-     0.206
+     0.21
     ],
     "main_vendor": "Capgemini"
    },
@@ -392,8 +392,8 @@
      "Accenture"
     ],
     "shares": [
-     0.286,
-     0.219
+     0.307,
+     0.214
     ],
     "main_vendor": "IBM"
    },
@@ -406,7 +406,7 @@
      "Tata Consultancy Services"
     ],
     "shares": [
-     0.337,
+     0.353,
      0.321
     ],
     "main_vendor": "Cognizant"
@@ -420,24 +420,10 @@
      "Tata Consultancy Services"
     ],
     "shares": [
-     0.415,
-     0.372
+     0.475,
+     0.366
     ],
     "main_vendor": "Cognizant"
-   },
-   {
-    "client": "Nike",
-    "sector": "31-33",
-    "filings": 180,
-    "communities": [
-     "Infosys",
-     "Compunnel Software"
-    ],
-    "shares": [
-     0.294,
-     0.211
-    ],
-    "main_vendor": "Infosys"
    },
    {
     "client": "Liberty Mutual",
@@ -448,7 +434,7 @@
      "Tata Consultancy Services"
     ],
     "shares": [
-     0.512,
+     0.5,
      0.268
     ],
     "main_vendor": "Cognizant"
@@ -462,7 +448,7 @@
      "Tata Consultancy Services"
     ],
     "shares": [
-     0.539,
+     0.545,
      0.344
     ],
     "main_vendor": "Cognizant"
@@ -472,11 +458,11 @@
     "sector": "56",
     "filings": 153,
     "communities": [
-     "IBM",
+     "UST Global",
      "Tata Consultancy Services"
     ],
     "shares": [
-     0.556,
+     0.542,
      0.216
     ],
     "main_vendor": "UST Global"
@@ -487,15 +473,29 @@
     "filings": 142,
     "communities": [
      "Skilltune Technologies",
-     "Randstad"
+     "Infosys"
     ],
     "shares": [
-     0.451,
-     0.268
+     0.444,
+     0.275
     ],
     "main_vendor": "Brillio"
+   },
+   {
+    "client": "Prudential",
+    "sector": "52",
+    "filings": 142,
+    "communities": [
+     "IBM",
+     "Tata Consultancy Services"
+    ],
+    "shares": [
+     0.296,
+     0.254
+    ],
+    "main_vendor": "Tata Consultancy Services"
    }
   ]
  },
- "seconds": 162
+ "seconds": 344
 }

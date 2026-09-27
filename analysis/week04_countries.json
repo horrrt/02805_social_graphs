@@ -70,10 +70,10 @@
      }
     ]
    },
-   "cells_before_suppression": 29206,
-   "cells_dropped_under_min": 28052,
+   "cells_before_suppression": 29178,
+   "cells_dropped_under_min": 28025,
    "cells_dropped_share": 0.9605,
-   "filings_dropped_share": 0.4657
+   "filings_dropped_share": 0.4652
   },
   "2023": {
    "case_statuses": {
@@ -139,10 +139,10 @@
      }
     ]
    },
-   "cells_before_suppression": 29408,
-   "cells_dropped_under_min": 28156,
+   "cells_before_suppression": 29375,
+   "cells_dropped_under_min": 28123,
    "cells_dropped_share": 0.9574,
-   "filings_dropped_share": 0.4339
+   "filings_dropped_share": 0.4332
   },
   "2024": {
    "case_statuses": {
@@ -208,10 +208,10 @@
      }
     ]
    },
-   "cells_before_suppression": 28687,
-   "cells_dropped_under_min": 27652,
+   "cells_before_suppression": 28641,
+   "cells_dropped_under_min": 27606,
    "cells_dropped_share": 0.9639,
-   "filings_dropped_share": 0.4946
+   "filings_dropped_share": 0.4937
   }
  },
  "unmatched_country_names": {
@@ -403,7 +403,7 @@
  },
  "network": {
   "2023": {
-   "bipartite_nodes": 1034,
+   "bipartite_nodes": 1032,
    "bipartite_edges": 1252,
    "country_nodes": 55,
    "country_edges": 492,
@@ -412,8 +412,8 @@
    "giant_weight_share": 1.0
   },
   "2022": {
-   "bipartite_nodes": 1009,
-   "bipartite_edges": 1154,
+   "bipartite_nodes": 1007,
+   "bipartite_edges": 1153,
    "country_nodes": 47,
    "country_edges": 342
   }
@@ -424,10 +424,10 @@
   "rewired_components_median": 1,
   "rewired_giant_node_share_median": 1.0,
   "weighted_vs_rewired": {
-   "real": 0.2614,
+   "real": 0.2618,
    "real_sd": 0.0004,
-   "null": 0.402,
-   "null_sd": 0.0188,
+   "null": 0.403,
+   "null_sd": 0.0189,
    "z": -7.49,
    "null_runs_at_or_above_real": 100
   },
@@ -453,11 +453,11 @@
   "nmi_week3_migrant_communities": 0.217,
   "p_week3": 0.014,
   "ami_week3_migrant_communities": 0.1,
-  "india_share_of_weight_inside_its_community": 0.7937,
+  "india_share_of_weight_inside_its_community": 0.7945,
   "largest_communities": [
    {
     "countries": 37,
-    "weight": 25366,
+    "weight": 25376,
     "top_countries": [
      "Taiwan, Province of China",
      "Viet Nam",
@@ -471,7 +471,7 @@
    },
    {
     "countries": 5,
-    "weight": 21430,
+    "weight": 21562,
     "top_countries": [
      "China",
      "India",
@@ -499,7 +499,7 @@
   "top_employers": [
    {
     "countries": 24,
-    "filings": 6124,
+    "filings": 6125,
     "effective_countries": 3.0,
     "india_share": 0.6656,
     "employer": "Amazon"
@@ -569,5 +569,5 @@
    }
   ]
  },
- "seconds": 76
+ "seconds": 124
 }

@@ -11,9 +11,9 @@
   "Microsoft",
   "EY",
   "Meta",
+  "Deloitte",
   "Apple",
   "Tata Consultancy Services",
-  "Deloitte",
   "Infosys",
   "Walmart",
   "Compunnel Software",
@@ -42,28 +42,28 @@
    "p_region": 0.011,
    "nmi_vs_full": 0.7145,
    "communities": 3,
-   "modal_runs": 65,
+   "modal_runs": 68,
    "partitions_found": 3,
-   "control_ami_mean": 0.028,
-   "control_ami_sd": 0.034,
-   "control_nmi_mean": 0.8547,
-   "control_nmi_sd": 0.1478,
-   "ami_vs_control_sd": 3.42
+   "control_ami_mean": 0.0274,
+   "control_ami_sd": 0.0333,
+   "control_nmi_mean": 0.8622,
+   "control_nmi_sd": 0.1448,
+   "ami_vs_control_sd": 3.51
   },
   {
    "firm": "Cognizant",
    "filings_removed_share": 0.0192,
-   "ami_region": -0.0047,
-   "p_region": 0.4196,
-   "nmi_vs_full": 0.6417,
-   "communities": 2,
-   "modal_runs": 96,
-   "partitions_found": 2,
-   "control_ami_mean": 0.0484,
-   "control_ami_sd": 0.0339,
-   "control_nmi_mean": 0.9161,
-   "control_nmi_sd": 0.1407,
-   "ami_vs_control_sd": -1.57
+   "ami_region": 0.0881,
+   "p_region": 0.0569,
+   "nmi_vs_full": 0.9182,
+   "communities": 3,
+   "modal_runs": 57,
+   "partitions_found": 3,
+   "control_ami_mean": 0.0447,
+   "control_ami_sd": 0.033,
+   "control_nmi_mean": 0.9194,
+   "control_nmi_sd": 0.1293,
+   "ami_vs_control_sd": 1.32
   },
   {
    "firm": "Google",
@@ -72,13 +72,13 @@
    "p_region": 0.1159,
    "nmi_vs_full": 1.0,
    "communities": 3,
-   "modal_runs": 83,
+   "modal_runs": 84,
    "partitions_found": 2,
-   "control_ami_mean": 0.0557,
-   "control_ami_sd": 0.036,
-   "control_nmi_mean": 0.928,
-   "control_nmi_sd": 0.1267,
-   "ami_vs_control_sd": 0.14
+   "control_ami_mean": 0.0583,
+   "control_ami_sd": 0.0323,
+   "control_nmi_mean": 0.9432,
+   "control_nmi_sd": 0.1079,
+   "ami_vs_control_sd": 0.07
   },
   {
    "firm": "Microsoft",
@@ -87,13 +87,13 @@
    "p_region": 0.1129,
    "nmi_vs_full": 1.0,
    "communities": 3,
-   "modal_runs": 74,
+   "modal_runs": 76,
    "partitions_found": 2,
-   "control_ami_mean": 0.0489,
-   "control_ami_sd": 0.0329,
-   "control_nmi_mean": 0.9268,
-   "control_nmi_sd": 0.1154,
-   "ami_vs_control_sd": 0.36
+   "control_ami_mean": 0.0552,
+   "control_ami_sd": 0.0312,
+   "control_nmi_mean": 0.9475,
+   "control_nmi_sd": 0.0958,
+   "ami_vs_control_sd": 0.18
   },
   {
    "firm": "EY",
@@ -102,13 +102,13 @@
    "p_region": 0.4366,
    "nmi_vs_full": 0.6417,
    "communities": 2,
-   "modal_runs": 70,
+   "modal_runs": 68,
    "partitions_found": 2,
-   "control_ami_mean": 0.0527,
-   "control_ami_sd": 0.0235,
-   "control_nmi_mean": 0.9658,
-   "control_nmi_sd": 0.0815,
-   "ami_vs_control_sd": -2.44
+   "control_ami_mean": 0.0556,
+   "control_ami_sd": 0.0236,
+   "control_nmi_mean": 0.9585,
+   "control_nmi_sd": 0.0956,
+   "ami_vs_control_sd": -2.56
   },
   {
    "firm": "Meta",
@@ -117,12 +117,27 @@
    "p_region": 0.4376,
    "nmi_vs_full": 0.8362,
    "communities": 2,
-   "modal_runs": 85,
+   "modal_runs": 86,
    "partitions_found": 2,
-   "control_ami_mean": 0.0548,
-   "control_ami_sd": 0.0307,
-   "control_nmi_mean": 0.9395,
-   "control_nmi_sd": 0.1185,
+   "control_ami_mean": 0.0546,
+   "control_ami_sd": 0.031,
+   "control_nmi_mean": 0.9396,
+   "control_nmi_sd": 0.1197,
+   "ami_vs_control_sd": -1.94
+  },
+  {
+   "firm": "Deloitte",
+   "filings_removed_share": 0.0137,
+   "ami_region": -0.0047,
+   "p_region": 0.4466,
+   "nmi_vs_full": 0.6417,
+   "communities": 2,
+   "modal_runs": 100,
+   "partitions_found": 1,
+   "control_ami_mean": 0.0481,
+   "control_ami_sd": 0.0269,
+   "control_nmi_mean": 0.9539,
+   "control_nmi_sd": 0.0973,
    "ami_vs_control_sd": -1.96
   },
   {
@@ -132,13 +147,13 @@
    "p_region": 0.4346,
    "nmi_vs_full": 0.8362,
    "communities": 2,
-   "modal_runs": 63,
+   "modal_runs": 65,
    "partitions_found": 3,
-   "control_ami_mean": 0.0605,
-   "control_ami_sd": 0.0257,
-   "control_nmi_mean": 0.9607,
-   "control_nmi_sd": 0.0959,
-   "ami_vs_control_sd": -2.56
+   "control_ami_mean": 0.0623,
+   "control_ami_sd": 0.0262,
+   "control_nmi_mean": 0.9674,
+   "control_nmi_sd": 0.0815,
+   "ami_vs_control_sd": -2.58
   },
   {
    "firm": "Tata Consultancy Services",
@@ -147,43 +162,28 @@
    "p_region": 0.0529,
    "nmi_vs_full": 0.9182,
    "communities": 3,
-   "modal_runs": 80,
+   "modal_runs": 82,
    "partitions_found": 2,
-   "control_ami_mean": 0.0535,
-   "control_ami_sd": 0.0216,
-   "control_nmi_mean": 0.9611,
-   "control_nmi_sd": 0.1041,
-   "ami_vs_control_sd": 1.6
-  },
-  {
-   "firm": "Deloitte",
-   "filings_removed_share": 0.011,
-   "ami_region": -0.0047,
-   "p_region": 0.4466,
-   "nmi_vs_full": 0.6417,
-   "communities": 2,
-   "modal_runs": 57,
-   "partitions_found": 2,
-   "control_ami_mean": 0.0605,
-   "control_ami_sd": 0.0107,
-   "control_nmi_mean": 0.9896,
-   "control_nmi_sd": 0.0522,
-   "ami_vs_control_sd": -6.09
+   "control_ami_mean": 0.0503,
+   "control_ami_sd": 0.0238,
+   "control_nmi_mean": 0.9658,
+   "control_nmi_sd": 0.0831,
+   "ami_vs_control_sd": 1.59
   },
   {
    "firm": "Infosys",
-   "filings_removed_share": 0.0104,
+   "filings_removed_share": 0.0105,
    "ami_region": 0.0881,
    "p_region": 0.039,
    "nmi_vs_full": 0.9182,
    "communities": 3,
-   "modal_runs": 56,
+   "modal_runs": 61,
    "partitions_found": 3,
-   "control_ami_mean": 0.0553,
-   "control_ami_sd": 0.0206,
-   "control_nmi_mean": 0.9705,
-   "control_nmi_sd": 0.0838,
-   "ami_vs_control_sd": 1.59
+   "control_ami_mean": 0.0555,
+   "control_ami_sd": 0.0178,
+   "control_nmi_mean": 0.9752,
+   "control_nmi_sd": 0.0873,
+   "ami_vs_control_sd": 1.83
   }
  ],
  "sweep": [
@@ -211,11 +211,11 @@
    "p_region": 0.006,
    "nmi_vs_full": 0.7145,
    "communities": 3,
-   "modal_runs": 63,
+   "modal_runs": 68,
    "partitions_found": 2,
-   "control_ami_mean": 0.0358,
-   "control_ami_sd": 0.0338,
-   "ami_vs_control_sd": 3.21
+   "control_ami_mean": 0.0346,
+   "control_ami_sd": 0.0316,
+   "ami_vs_control_sd": 3.47
   },
   {
    "k": 2,
@@ -227,11 +227,11 @@
    "p_region": 0.008,
    "nmi_vs_full": 0.8737,
    "communities": 3,
-   "modal_runs": 93,
-   "partitions_found": 4,
-   "control_ami_mean": 0.0316,
-   "control_ami_sd": 0.0356,
-   "ami_vs_control_sd": 2.73
+   "modal_runs": 96,
+   "partitions_found": 3,
+   "control_ami_mean": 0.0298,
+   "control_ami_sd": 0.0347,
+   "ami_vs_control_sd": 2.85
   },
   {
    "k": 3,
@@ -245,281 +245,281 @@
    "communities": 3,
    "modal_runs": 100,
    "partitions_found": 1,
-   "control_ami_mean": 0.0176,
-   "control_ami_sd": 0.0313,
-   "ami_vs_control_sd": 3.55
+   "control_ami_mean": 0.0137,
+   "control_ami_sd": 0.031,
+   "ami_vs_control_sd": 3.71
   },
   {
    "k": 4,
    "added": [
     "Microsoft"
    ],
-   "filings_removed_share": 0.1063,
+   "filings_removed_share": 0.1064,
    "ami_region": 0.1288,
    "p_region": 0.025,
    "nmi_vs_full": 0.8737,
    "communities": 3,
-   "modal_runs": 67,
-   "partitions_found": 3,
-   "control_ami_mean": 0.0105,
-   "control_ami_sd": 0.0289,
-   "ami_vs_control_sd": 4.09
+   "modal_runs": 70,
+   "partitions_found": 2,
+   "control_ami_mean": 0.0001,
+   "control_ami_sd": 0.0211,
+   "ami_vs_control_sd": 6.1
   },
   {
    "k": 5,
    "added": [
     "EY"
    ],
-   "filings_removed_share": 0.1233,
+   "filings_removed_share": 0.1234,
    "ami_region": 0.1306,
    "p_region": 0.018,
    "nmi_vs_full": 0.6277,
    "communities": 3,
-   "modal_runs": 39,
+   "modal_runs": 48,
    "partitions_found": 5,
-   "control_ami_mean": 0.0064,
-   "control_ami_sd": 0.0278,
-   "ami_vs_control_sd": 4.47
+   "control_ami_mean": 0.0153,
+   "control_ami_sd": 0.0335,
+   "ami_vs_control_sd": 3.44
   },
   {
    "k": 6,
    "added": [
     "Meta"
    ],
-   "filings_removed_share": 0.1403,
-   "ami_region": 0.1502,
-   "p_region": 0.008,
-   "nmi_vs_full": 0.579,
+   "filings_removed_share": 0.1404,
+   "ami_region": 0.1742,
+   "p_region": 0.006,
+   "nmi_vs_full": 0.6192,
    "communities": 3,
-   "modal_runs": 78,
+   "modal_runs": 72,
    "partitions_found": 4,
-   "control_ami_mean": 0.0047,
-   "control_ami_sd": 0.0291,
-   "ami_vs_control_sd": 5.0
+   "control_ami_mean": 0.0088,
+   "control_ami_sd": 0.0308,
+   "ami_vs_control_sd": 5.37
   },
   {
    "k": 7,
    "added": [
-    "Apple"
+    "Deloitte"
    ],
-   "filings_removed_share": 0.1539,
-   "ami_region": 0.1502,
-   "p_region": 0.004,
-   "nmi_vs_full": 0.579,
+   "filings_removed_share": 0.1541,
+   "ami_region": 0.1637,
+   "p_region": 0.002,
+   "nmi_vs_full": 0.5379,
    "communities": 3,
-   "modal_runs": 53,
+   "modal_runs": 71,
    "partitions_found": 3,
-   "control_ami_mean": 0.0051,
-   "control_ami_sd": 0.0229,
-   "ami_vs_control_sd": 6.34
+   "control_ami_mean": 0.0063,
+   "control_ami_sd": 0.0246,
+   "ami_vs_control_sd": 6.4
   },
   {
    "k": 8,
    "added": [
-    "Tata Consultancy Services"
+    "Apple"
    ],
-   "filings_removed_share": 0.167,
-   "ami_region": 0.0685,
-   "p_region": 0.0699,
-   "nmi_vs_full": 0.8231,
+   "filings_removed_share": 0.1676,
+   "ami_region": 0.1637,
+   "p_region": 0.002,
+   "nmi_vs_full": 0.5379,
    "communities": 3,
-   "modal_runs": 54,
+   "modal_runs": 74,
    "partitions_found": 3,
-   "control_ami_mean": -0.0013,
-   "control_ami_sd": 0.0142,
-   "ami_vs_control_sd": 4.92
+   "control_ami_mean": 0.0051,
+   "control_ami_sd": 0.0234,
+   "ami_vs_control_sd": 6.78
   },
   {
    "k": 9,
    "added": [
-    "Deloitte"
+    "Tata Consultancy Services"
    ],
-   "filings_removed_share": 0.178,
+   "filings_removed_share": 0.1808,
    "ami_region": 0.1637,
    "p_region": 0.004,
    "nmi_vs_full": 0.5379,
    "communities": 3,
-   "modal_runs": 80,
+   "modal_runs": 69,
    "partitions_found": 3,
-   "control_ami_mean": 0.0022,
-   "control_ami_sd": 0.0195,
-   "ami_vs_control_sd": 8.28
+   "control_ami_mean": 0.0021,
+   "control_ami_sd": 0.019,
+   "ami_vs_control_sd": 8.51
   },
   {
    "k": 10,
    "added": [
     "Infosys"
    ],
-   "filings_removed_share": 0.1884,
-   "ami_region": 0.1637,
-   "p_region": 0.005,
-   "nmi_vs_full": 0.5379,
+   "filings_removed_share": 0.1912,
+   "ami_region": 0.1303,
+   "p_region": 0.02,
+   "nmi_vs_full": 0.5047,
    "communities": 3,
-   "modal_runs": 63,
-   "partitions_found": 2,
-   "control_ami_mean": 0.0089,
-   "control_ami_sd": 0.0259,
-   "ami_vs_control_sd": 5.98
+   "modal_runs": 71,
+   "partitions_found": 3,
+   "control_ami_mean": 0.0017,
+   "control_ami_sd": 0.0197,
+   "ami_vs_control_sd": 6.53
   },
   {
    "k": 11,
    "added": [
     "Walmart"
    ],
-   "filings_removed_share": 0.1977,
-   "ami_region": 0.1886,
-   "p_region": 0.004,
-   "nmi_vs_full": 0.5771,
+   "filings_removed_share": 0.2006,
+   "ami_region": 0.156,
+   "p_region": 0.007,
+   "nmi_vs_full": 0.543,
    "communities": 3,
    "modal_runs": 98,
    "partitions_found": 3,
-   "control_ami_mean": -0.0014,
-   "control_ami_sd": 0.0143,
-   "ami_vs_control_sd": 13.29
+   "control_ami_mean": -0.0013,
+   "control_ami_sd": 0.0142,
+   "ami_vs_control_sd": 11.08
   },
   {
    "k": 12,
    "added": [
     "Compunnel Software"
    ],
-   "filings_removed_share": 0.2054,
-   "ami_region": 0.1354,
-   "p_region": 0.007,
-   "nmi_vs_full": 0.6744,
+   "filings_removed_share": 0.2083,
+   "ami_region": 0.1536,
+   "p_region": 0.005,
+   "nmi_vs_full": 0.6192,
    "communities": 3,
    "modal_runs": 99,
    "partitions_found": 2,
-   "control_ami_mean": 0.002,
+   "control_ami_mean": 0.0018,
    "control_ami_sd": 0.0196,
-   "ami_vs_control_sd": 6.81
+   "ami_vs_control_sd": 7.74
   },
   {
    "k": 13,
    "added": [
     "JPMorgan Chase"
    ],
-   "filings_removed_share": 0.2125,
-   "ami_region": 0.1354,
-   "p_region": 0.009,
-   "nmi_vs_full": 0.6744,
+   "filings_removed_share": 0.2154,
+   "ami_region": 0.156,
+   "p_region": 0.003,
+   "nmi_vs_full": 0.543,
    "communities": 3,
-   "modal_runs": 100,
-   "partitions_found": 1,
-   "control_ami_mean": 0.0086,
-   "control_ami_sd": 0.0256,
-   "ami_vs_control_sd": 4.95
+   "modal_runs": 99,
+   "partitions_found": 2,
+   "control_ami_mean": -0.0012,
+   "control_ami_sd": 0.0143,
+   "ami_vs_control_sd": 10.99
   },
   {
    "k": 14,
    "added": [
     "Fidelity Investments"
    ],
-   "filings_removed_share": 0.2183,
-   "ami_region": 0.1354,
-   "p_region": 0.009,
-   "nmi_vs_full": 0.6744,
+   "filings_removed_share": 0.2214,
+   "ami_region": 0.1536,
+   "p_region": 0.005,
+   "nmi_vs_full": 0.6192,
    "communities": 3,
-   "modal_runs": 97,
-   "partitions_found": 3,
-   "control_ami_mean": -0.0037,
-   "control_ami_sd": 0.0017,
-   "ami_vs_control_sd": 81.82
+   "modal_runs": 98,
+   "partitions_found": 2,
+   "control_ami_mean": -0.0042,
+   "control_ami_sd": 0.0013,
+   "ami_vs_control_sd": 121.38
   },
   {
    "k": 15,
    "added": [
     "HCL"
    ],
-   "filings_removed_share": 0.2239,
+   "filings_removed_share": 0.2269,
    "ami_region": 0.1536,
    "p_region": 0.009,
    "nmi_vs_full": 0.6192,
    "communities": 3,
    "modal_runs": 100,
    "partitions_found": 1,
-   "control_ami_mean": 0.0018,
-   "control_ami_sd": 0.0196,
-   "ami_vs_control_sd": 7.74
+   "control_ami_mean": 0.0072,
+   "control_ami_sd": 0.0268,
+   "ami_vs_control_sd": 5.46
   },
   {
    "k": 16,
    "added": [
     "LTIMindtree"
    ],
-   "filings_removed_share": 0.2294,
+   "filings_removed_share": 0.2324,
    "ami_region": 0.1536,
    "p_region": 0.006,
    "nmi_vs_full": 0.6192,
    "communities": 3,
-   "modal_runs": 95,
-   "partitions_found": 2,
-   "control_ami_mean": 0.0084,
-   "control_ami_sd": 0.0262,
-   "ami_vs_control_sd": 5.54
+   "modal_runs": 89,
+   "partitions_found": 3,
+   "control_ami_mean": -0.0066,
+   "control_ami_sd": 0.0061,
+   "ami_vs_control_sd": 26.26
   },
   {
    "k": 17,
    "added": [
     "Intel"
    ],
-   "filings_removed_share": 0.2348,
+   "filings_removed_share": 0.2378,
    "ami_region": 0.0741,
    "p_region": 0.0579,
    "nmi_vs_full": 0.7619,
    "communities": 3,
-   "modal_runs": 97,
+   "modal_runs": 96,
    "partitions_found": 2,
-   "control_ami_mean": -0.0044,
-   "control_ami_sd": 0.0011,
-   "ami_vs_control_sd": 71.36
+   "control_ami_mean": -0.0046,
+   "control_ami_sd": 0.0008,
+   "ami_vs_control_sd": 98.37
   },
   {
    "k": 18,
    "added": [
     "Capgemini"
    ],
-   "filings_removed_share": 0.2398,
+   "filings_removed_share": 0.2428,
    "ami_region": 0.0741,
    "p_region": 0.0669,
    "nmi_vs_full": 0.7619,
    "communities": 3,
-   "modal_runs": 87,
+   "modal_runs": 84,
    "partitions_found": 4,
-   "control_ami_mean": 0.0023,
-   "control_ami_sd": 0.0195,
-   "ami_vs_control_sd": 3.68
+   "control_ami_mean": -0.0048,
+   "control_ami_sd": 0.0002,
+   "ami_vs_control_sd": 394.5
   },
   {
    "k": 19,
    "added": [
     "IBM"
    ],
-   "filings_removed_share": 0.2448,
+   "filings_removed_share": 0.2478,
    "ami_region": 0.0741,
    "p_region": 0.0699,
    "nmi_vs_full": 0.7619,
    "communities": 3,
-   "modal_runs": 86,
+   "modal_runs": 66,
    "partitions_found": 3,
-   "control_ami_mean": 0.0028,
-   "control_ami_sd": 0.0194,
-   "ami_vs_control_sd": 3.68
+   "control_ami_mean": -0.0001,
+   "control_ami_sd": 0.0212,
+   "ami_vs_control_sd": 3.5
   },
   {
    "k": 20,
    "added": [
     "Accenture"
    ],
-   "filings_removed_share": 0.2497,
+   "filings_removed_share": 0.2527,
    "ami_region": 0.1989,
    "p_region": 0.001,
    "nmi_vs_full": 0.3901,
    "communities": 2,
-   "modal_runs": 95,
-   "partitions_found": 4,
-   "control_ami_mean": 0.0024,
-   "control_ami_sd": 0.0195,
-   "ami_vs_control_sd": 10.08
+   "modal_runs": 92,
+   "partitions_found": 2,
+   "control_ami_mean": 0.0076,
+   "control_ami_sd": 0.0269,
+   "ami_vs_control_sd": 7.11
   }
  ],
  "fy2024": [
@@ -540,30 +540,30 @@
   {
    "id": "drop_fy2024_top10",
    "label": "Without FY2024's own 10 largest filers",
-   "filings_removed_share": 0.1902,
+   "filings_removed_share": 0.193,
    "ami_region": 0.2163,
    "p_region": 0.001,
    "nmi_vs_full": 0.3452,
    "communities": 3,
-   "modal_runs": 97,
-   "partitions_found": 3,
-   "control_ami_mean": -0.0087,
-   "control_ami_sd": 0.008,
-   "ami_vs_control_sd": 28.12
+   "modal_runs": 84,
+   "partitions_found": 2,
+   "control_ami_mean": -0.0083,
+   "control_ami_sd": 0.0077,
+   "ami_vs_control_sd": 29.17
   },
   {
    "id": "drop_fy2025_top10",
    "label": "Without FY2025's 10 largest filers",
-   "filings_removed_share": 0.1881,
-   "ami_region": 0.1735,
-   "p_region": 0.004,
-   "nmi_vs_full": 0.3669,
+   "filings_removed_share": 0.1909,
+   "ami_region": 0.189,
+   "p_region": 0.002,
+   "nmi_vs_full": 0.3089,
    "communities": 3,
-   "modal_runs": 99,
-   "partitions_found": 2,
-   "control_ami_mean": -0.0063,
-   "control_ami_sd": 0.0055,
-   "ami_vs_control_sd": 32.69
+   "modal_runs": 98,
+   "partitions_found": 3,
+   "control_ami_mean": -0.0055,
+   "control_ami_sd": 0.0039,
+   "ami_vs_control_sd": 49.87
   }
  ],
  "fy2024_meta": {
@@ -578,8 +578,8 @@
    "Tata Consultancy Services",
    "Meta",
    "Infosys",
-   "Walmart",
-   "Deloitte"
+   "Deloitte",
+   "Walmart"
   ],
   "top10_2025_missing": []
  },
@@ -590,30 +590,24 @@
     {
      "firm": "Amazon",
      "ami_region": 0.1444,
-     "ami_vs_control_sd": 3.42,
-     "share_of_the_0.16_gap": 0.813
+     "ami_vs_control_sd": 3.51,
+     "share_of_the_0.16_gap": 1.203
     },
     {
      "firm": "EY",
      "ami_region": -0.0047,
-     "ami_vs_control_sd": -2.44,
-     "share_of_the_0.16_gap": -0.635
+     "ami_vs_control_sd": -2.56,
+     "share_of_the_0.16_gap": -0.94
     },
     {
      "firm": "Apple",
      "ami_region": -0.0054,
-     "ami_vs_control_sd": -2.56,
-     "share_of_the_0.16_gap": -0.642
-    },
-    {
-     "firm": "Deloitte",
-     "ami_region": -0.0047,
-     "ami_vs_control_sd": -6.09,
-     "share_of_the_0.16_gap": -0.635
+     "ami_vs_control_sd": -2.58,
+     "share_of_the_0.16_gap": -0.95
     }
    ],
    "any_single_firm_beyond_2sd": true,
-   "all10_ami_region": 0.1637
+   "all10_ami_region": 0.1303
   },
   "q_rank_sweep": {
    "stable_k": 1,
@@ -625,9 +619,9 @@
   "q_fy2024": {
    "full_ami_region": -0.0047,
    "drop_fy2024_top10_ami_region": 0.2163,
-   "drop_fy2024_top10_z": 28.12,
-   "drop_fy2025_top10_ami_region": 0.1735,
-   "drop_fy2025_top10_z": 32.69,
+   "drop_fy2024_top10_z": 29.17,
+   "drop_fy2025_top10_ami_region": 0.189,
+   "drop_fy2025_top10_z": 49.87,
    "regional_turn_holds_in_fy2024": true
   }
  }
