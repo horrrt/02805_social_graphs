@@ -1064,6 +1064,63 @@ class Years(Model):
         return self
 
 
+# Deep dive · Roles · docs/weeks/week04/data/roles.json, read by week04-roles.js -
+
+class RolesPartial(Model):
+    year: Literal["2026"]
+    months: int = Field(gt=0, le=12)
+    window: str
+
+
+class RoleSeries(Model):
+    name: str
+    code: str | None
+    top_in: list[Literal["FY2022", "FY2023", "FY2024", "FY2025", "FY2026"]]
+    counts: list[int] = Field(min_length=5, max_length=5)
+    oct_jun: list[int] = Field(min_length=5, max_length=5)
+
+
+class RoleFinding(Model):
+    name: str
+    code: str | None
+    share_fy2022_percent: float
+    share_fy2025_percent: float
+    change_pp: float
+    direction: Literal["grew", "shrank"]
+    entered_top: bool
+    left_top: bool
+
+
+class RoleSplit(Model):
+    top_n: int = Field(ge=2)
+    other_name: str
+    series: list[RoleSeries] = Field(min_length=2)
+    finding: RoleFinding
+
+
+class Roles(Model):
+    generated_by: str
+    years: list[Literal["2022", "2023", "2024", "2025", "2026"]] = Field(min_length=5, max_length=5)
+    partial: RolesPartial
+    totals: dict[Literal["2022", "2023", "2024", "2025", "2026"], int] = Field(min_length=5, max_length=5)
+    oct_jun_totals: dict[Literal["2022", "2023", "2024", "2025", "2026"], int] = Field(min_length=5, max_length=5)
+    splits: dict[Literal["occupations", "groups", "employer", "placement"], RoleSplit]
+    legacy_recoded: dict[str, int]
+    uncoded: dict[str, int]
+
+    @model_validator(mode="after")
+    def checks(self):
+        years = ["2022", "2023", "2024", "2025", "2026"]
+        for name, split in self.splits.items():
+            for i, y in enumerate(years):
+                total = sum(s.counts[i] for s in split.series)
+                assert total == self.totals[y], f"{name} {y}: series counts must sum to the certified total"
+                oj_total = sum(s.oct_jun[i] for s in split.series)
+                assert oj_total == self.oct_jun_totals[y], \
+                    f"{name} {y}: series October-to-June counts must sum to the October-to-June total"
+        return self
+
+
 # Deep dive · Skills · docs/weeks/week04/data/skills.json, read by week04-skills.js -
 
 class SkillsExample(Model):
@@ -1340,6 +1397,7 @@ PAGES = {
     "docs/weeks/week04/data/footprint_rank.json": FootprintRank,
     "docs/weeks/week04/data/explore.json": Explore,
     "docs/weeks/week04/data/years.json": Years,
+    "docs/weeks/week04/data/roles.json": Roles,
     "docs/weeks/week04/data/more.json": More,
     "docs/weeks/week04/data/staffing_deep.json": StaffingDeep,
 }
