@@ -18,21 +18,21 @@
    "client_company_filings": 123056,
    "client_company_share": 0.2187,
    "client_company_one_in": 5,
-   "edges": 55284,
-   "employer_keys": 50950,
+   "edges": 55201,
+   "employer_keys": 50914,
    "employer_tax_numbers": null,
-   "placements_to_intermediaries": 2057,
-   "intermediary_share": 0.016,
+   "placements_to_intermediaries": 2075,
+   "intermediary_share": 0.0162,
    "top_intermediary_clients": {
-    "Deloitte": 419,
+    "Deloitte": 425,
     "EY": 128,
     "Cognizant": 77,
     "Infosys": 77,
-    "HCL": 64,
-    "Tech Mahindra": 61
+    "Accenture": 76,
+    "HCL": 64
    },
-   "firms": 7777,
-   "clients": 20322,
+   "firms": 7773,
+   "clients": 20293,
    "top_firms_by_filings": [
     [
      "Tata Consultancy Services",
@@ -40,11 +40,11 @@
     ],
     [
      "Cognizant",
-     6036
+     6053
     ],
     [
      "Infosys",
-     5145
+     5151
     ],
     [
      "HCL",
@@ -70,7 +70,7 @@
    "top_firms_by_positions": [
     [
      "Infosys",
-     70751
+     70781
     ],
     [
      "Grandison Management",
@@ -90,7 +90,7 @@
     ],
     [
      "Cognizant",
-     6036
+     6053
     ],
     [
      "Mastech Digital Technologies",
@@ -127,25 +127,25 @@
    "client_company_filings": 106892,
    "client_company_share": 0.2202,
    "client_company_one_in": 5,
-   "edges": 47250,
-   "employer_keys": 49206,
+   "edges": 47193,
+   "employer_keys": 49173,
    "employer_tax_numbers": null,
-   "placements_to_intermediaries": 1576,
-   "intermediary_share": 0.0141,
+   "placements_to_intermediaries": 1614,
+   "intermediary_share": 0.0144,
    "top_intermediary_clients": {
-    "Deloitte": 407,
+    "Deloitte": 409,
     "EY": 112,
+    "Accenture": 86,
     "HCL": 60,
-    "Infosys": 54,
-    "Cognizant": 53,
-    "Accenture": 49
+    "Infosys": 55,
+    "Cognizant": 53
    },
-   "firms": 7864,
-   "clients": 19303,
+   "firms": 7860,
+   "clients": 19275,
    "top_firms_by_filings": [
     [
      "Cognizant",
-     7197
+     7200
     ],
     [
      "Tata Consultancy Services",
@@ -153,7 +153,7 @@
     ],
     [
      "Infosys",
-     5370
+     5376
     ],
     [
      "HCL",
@@ -179,7 +179,7 @@
    "top_firms_by_positions": [
     [
      "Infosys",
-     27490
+     27518
     ],
     [
      "Grandison Management",
@@ -191,7 +191,7 @@
     ],
     [
      "Cognizant",
-     7197
+     7200
     ],
     [
      "Kforce",
@@ -236,21 +236,21 @@
    "client_company_filings": 102241,
    "client_company_share": 0.2035,
    "client_company_one_in": 5,
-   "edges": 43832,
-   "employer_keys": 53175,
+   "edges": 43790,
+   "employer_keys": 53144,
    "employer_tax_numbers": 53242,
-   "placements_to_intermediaries": 1622,
-   "intermediary_share": 0.0151,
+   "placements_to_intermediaries": 1646,
+   "intermediary_share": 0.0153,
    "top_intermediary_clients": {
-    "Deloitte": 499,
+    "Deloitte": 502,
     "People Tech Group": 136,
+    "Accenture": 92,
     "EY": 91,
     "Cognizant": 87,
-    "Accenture": 71,
     "Infosys": 62
    },
-   "firms": 8116,
-   "clients": 18885,
+   "firms": 8113,
+   "clients": 18858,
    "top_firms_by_filings": [
     [
      "Tata Consultancy Services",
@@ -258,11 +258,11 @@
     ],
     [
      "Cognizant",
-     5569
+     5573
     ],
     [
      "Infosys",
-     3919
+     3922
     ],
     [
      "HCL",
@@ -292,7 +292,7 @@
     ],
     [
      "Infosys",
-     11321
+     11328
     ],
     [
      "Tata Consultancy Services",
@@ -304,7 +304,7 @@
     ],
     [
      "Cognizant",
-     5569
+     5573
     ],
     [
      "Wipro",
@@ -345,21 +345,21 @@
    "client_company_filings": 101763,
    "client_company_share": 0.1892,
    "client_company_one_in": 5,
-   "edges": 45113,
-   "employer_keys": 59230,
+   "edges": 45065,
+   "employer_keys": 59196,
    "employer_tax_numbers": 59292,
-   "placements_to_intermediaries": 1473,
-   "intermediary_share": 0.0136,
+   "placements_to_intermediaries": 1488,
+   "intermediary_share": 0.0138,
    "top_intermediary_clients": {
-    "Deloitte": 459,
+    "Deloitte": 468,
     "Cognizant": 107,
-    "Infosys": 92,
-    "Accenture": 75,
+    "Infosys": 93,
+    "Accenture": 89,
     "West Virginia University": 74,
     "EY": 74
    },
-   "firms": 8473,
-   "clients": 18924,
+   "firms": 8469,
+   "clients": 18900,
    "top_firms_by_filings": [
     [
      "Tata Consultancy Services",
@@ -367,11 +367,11 @@
     ],
     [
      "Cognizant",
-     5044
+     5051
     ],
     [
      "Infosys",
-     3761
+     3764
     ],
     [
      "HCL",
@@ -401,7 +401,7 @@
     ],
     [
      "Infosys",
-     11489
+     11492
     ],
     [
      "Kforce",
@@ -413,7 +413,7 @@
     ],
     [
      "Cognizant",
-     5219
+     5226
     ],
     [
      "CGI Technologies and Solutions",
@@ -454,25 +454,25 @@
    "client_company_filings": 65745,
    "client_company_share": 0.1676,
    "client_company_one_in": 6,
-   "edges": 32954,
-   "employer_keys": 50247,
+   "edges": 32934,
+   "employer_keys": 50216,
    "employer_tax_numbers": 50307,
-   "placements_to_intermediaries": 1046,
-   "intermediary_share": 0.0153,
+   "placements_to_intermediaries": 1056,
+   "intermediary_share": 0.0154,
    "top_intermediary_clients": {
-    "Deloitte": 376,
+    "Deloitte": 377,
     "West Virginia University": 70,
     "Cognizant": 68,
-    "Infosys": 53,
-    "Accenture": 42,
+    "Infosys": 56,
+    "Accenture": 48,
     "EY": 36
    },
-   "firms": 7248,
-   "clients": 13776,
+   "firms": 7245,
+   "clients": 13751,
    "top_firms_by_filings": [
     [
      "Infosys",
-     2980
+     2983
     ],
     [
      "Tata Consultancy Services",
@@ -480,7 +480,7 @@
     ],
     [
      "Cognizant",
-     2160
+     2161
     ],
     [
      "Grandison Management",
@@ -514,7 +514,7 @@
     ],
     [
      "Infosys",
-     6156
+     6159
     ],
     [
      "Kforce",
@@ -526,7 +526,7 @@
     ],
     [
      "Cognizant",
-     2160
+     2161
     ],
     [
      "Compunnel Software",
@@ -554,23 +554,23 @@
   "source": "uscis",
   "hub_employers": 59983,
   "hub_initial_approvals": 138381,
-  "matched_share_of_initial_approvals": 0.8823,
-  "matched_to_a_filer_share_of_initial_approvals": 0.8446,
+  "matched_share_of_initial_approvals": 0.8843,
+  "matched_to_a_filer_share_of_initial_approvals": 0.8473,
   "placing": {
    "employers": 1053,
-   "certified_filings": 98256,
+   "certified_filings": 98274,
    "initial_approvals": 24725,
    "initial_denial_rate": 0.0273,
    "continuing_denial_rate": 0.0233,
    "approvals_per_filing": 0.714
   },
   "direct": {
-   "employers": 2287,
-   "certified_filings": 284670,
-   "initial_approvals": 60777,
-   "initial_denial_rate": 0.0127,
+   "employers": 2280,
+   "certified_filings": 286732,
+   "initial_approvals": 61182,
+   "initial_denial_rate": 0.0126,
    "continuing_denial_rate": 0.0144,
-   "approvals_per_filing": 0.858
+   "approvals_per_filing": 0.861
   },
   "top_placing_firms": [
    {
@@ -583,10 +583,10 @@
    },
    {
     "firm": "Infosys",
-    "placed_filings": 5145,
-    "certified_filings": 7629,
+    "placed_filings": 5151,
+    "certified_filings": 7647,
     "initial_approvals": 3128,
-    "continuing_approvals": 3987,
+    "continuing_approvals": 4003,
     "initial_denial_rate": 0.0157
    },
    {
@@ -661,11 +661,11 @@
    "source": "uscis_hub",
    "hub_employers": 59606,
    "hub_initial_approvals": 132659,
-   "matched_share_of_initial_approvals": 0.8871,
-   "matched_to_a_filer_share_of_initial_approvals": 0.8492,
+   "matched_share_of_initial_approvals": 0.8892,
+   "matched_to_a_filer_share_of_initial_approvals": 0.852,
    "placing": {
     "employers": 1057,
-    "certified_filings": 98399,
+    "certified_filings": 98417,
     "initial_approvals": 24555,
     "initial_denial_rate": 0.0271,
     "continuing_denial_rate": 0.023,
@@ -675,14 +675,14 @@
     "new_employment_approvals_per_100_filings": 24.59
    },
    "direct": {
-    "employers": 2295,
-    "certified_filings": 285013,
-    "initial_approvals": 57883,
+    "employers": 2288,
+    "certified_filings": 287075,
+    "initial_approvals": 58284,
     "initial_denial_rate": 0.0122,
-    "continuing_denial_rate": 0.0144,
-    "approvals_per_filing": 0.807,
-    "new_employment_approvals": 57525,
-    "new_employment_denial_rate": 0.0122,
+    "continuing_denial_rate": 0.0143,
+    "approvals_per_filing": 0.811,
+    "new_employment_approvals": 57925,
+    "new_employment_denial_rate": 0.0121,
     "new_employment_approvals_per_100_filings": 20.18
    },
    "top_placing_firms": [
@@ -696,10 +696,10 @@
     },
     {
      "firm": "Infosys",
-     "placed_filings": 5145,
-     "certified_filings": 7629,
+     "placed_filings": 5151,
+     "certified_filings": 7647,
      "initial_approvals": 3130,
-     "continuing_approvals": 3986,
+     "continuing_approvals": 4002,
      "initial_denial_rate": 0.0157
     },
     {
@@ -774,36 +774,36 @@
    "hub_employers": 57415,
    "hub_initial_approvals": 118951,
    "matched_share_of_initial_approvals": 0.9024,
-   "matched_to_a_filer_share_of_initial_approvals": 0.857,
+   "matched_to_a_filer_share_of_initial_approvals": 0.8575,
    "placing": {
     "employers": 873,
-    "certified_filings": 94679,
-    "initial_approvals": 20108,
+    "certified_filings": 94707,
+    "initial_approvals": 20110,
     "initial_denial_rate": 0.0357,
     "continuing_denial_rate": 0.027,
     "approvals_per_filing": 0.738,
-    "new_employment_approvals": 19825,
+    "new_employment_approvals": 19827,
     "new_employment_denial_rate": 0.0351,
     "new_employment_approvals_per_100_filings": 20.94
    },
    "direct": {
-    "employers": 2087,
-    "certified_filings": 235059,
-    "initial_approvals": 49047,
+    "employers": 2080,
+    "certified_filings": 235587,
+    "initial_approvals": 49128,
     "initial_denial_rate": 0.0148,
-    "continuing_denial_rate": 0.019,
+    "continuing_denial_rate": 0.0191,
     "approvals_per_filing": 0.771,
-    "new_employment_approvals": 48720,
+    "new_employment_approvals": 48801,
     "new_employment_denial_rate": 0.0147,
-    "new_employment_approvals_per_100_filings": 20.73
+    "new_employment_approvals_per_100_filings": 20.71
    },
    "top_placing_firms": [
     {
      "firm": "Cognizant",
-     "placed_filings": 7197,
-     "certified_filings": 12870,
+     "placed_filings": 7200,
+     "certified_filings": 12876,
      "initial_approvals": 2583,
-     "continuing_approvals": 5075,
+     "continuing_approvals": 5078,
      "initial_denial_rate": 0.0069
     },
     {
@@ -816,10 +816,10 @@
     },
     {
      "firm": "Infosys",
-     "placed_filings": 5370,
-     "certified_filings": 7755,
-     "initial_approvals": 2147,
-     "continuing_approvals": 5203,
+     "placed_filings": 5376,
+     "certified_filings": 7777,
+     "initial_approvals": 2149,
+     "continuing_approvals": 5216,
      "initial_denial_rate": 0.0214
     },
     {
@@ -889,23 +889,23 @@
    "matched_to_a_filer_share_of_initial_approvals": 0.9361,
    "placing": {
     "employers": 884,
-    "certified_filings": 81763,
-    "initial_approvals": 20186,
+    "certified_filings": 81791,
+    "initial_approvals": 20193,
     "initial_denial_rate": 0.0265,
     "continuing_denial_rate": 0.024,
     "approvals_per_filing": 0.769,
-    "new_employment_approvals": 19993,
-    "new_employment_denial_rate": 0.0263,
+    "new_employment_approvals": 20000,
+    "new_employment_denial_rate": 0.0262,
     "new_employment_approvals_per_100_filings": 24.45
    },
    "direct": {
-    "employers": 2414,
-    "certified_filings": 268074,
-    "initial_approvals": 64784,
+    "employers": 2403,
+    "certified_filings": 268279,
+    "initial_approvals": 64814,
     "initial_denial_rate": 0.0128,
     "continuing_denial_rate": 0.0124,
     "approvals_per_filing": 0.771,
-    "new_employment_approvals": 64425,
+    "new_employment_approvals": 64455,
     "new_employment_denial_rate": 0.0128,
     "new_employment_approvals_per_100_filings": 24.03
    },
@@ -920,10 +920,10 @@
     },
     {
      "firm": "Infosys",
-     "placed_filings": 3919,
-     "certified_filings": 5860,
-     "initial_approvals": 2489,
-     "continuing_approvals": 5652,
+     "placed_filings": 3922,
+     "certified_filings": 5888,
+     "initial_approvals": 2496,
+     "continuing_approvals": 5675,
      "initial_denial_rate": 0.0123
     },
     {
@@ -1001,23 +1001,23 @@
    "matched_to_a_filer_share_of_initial_approvals": 0.9356,
    "placing": {
     "employers": 933,
-    "certified_filings": 83225,
-    "initial_approvals": 11461,
+    "certified_filings": 83260,
+    "initial_approvals": 11464,
     "initial_denial_rate": 0.032,
     "continuing_denial_rate": 0.0261,
     "approvals_per_filing": 0.662,
-    "new_employment_approvals": 11284,
+    "new_employment_approvals": 11287,
     "new_employment_denial_rate": 0.0312,
     "new_employment_approvals_per_100_filings": 13.56
    },
    "direct": {
-    "employers": 2480,
-    "certified_filings": 292470,
-    "initial_approvals": 57072,
+    "employers": 2466,
+    "certified_filings": 292614,
+    "initial_approvals": 57113,
     "initial_denial_rate": 0.0156,
     "continuing_denial_rate": 0.0141,
     "approvals_per_filing": 0.776,
-    "new_employment_approvals": 56766,
+    "new_employment_approvals": 56807,
     "new_employment_denial_rate": 0.0154,
     "new_employment_approvals_per_100_filings": 19.41
    },
@@ -1032,11 +1032,11 @@
     },
     {
      "firm": "Infosys",
-     "placed_filings": 3761,
-     "certified_filings": 5740,
-     "initial_approvals": 257,
-     "continuing_approvals": 2599,
-     "initial_denial_rate": 0.0586
+     "placed_filings": 3764,
+     "certified_filings": 5775,
+     "initial_approvals": 260,
+     "continuing_approvals": 2622,
+     "initial_denial_rate": 0.058
     },
     {
      "firm": "HCL",
@@ -1113,34 +1113,34 @@
    "matched_to_a_filer_share_of_initial_approvals": 0.8813,
    "placing": {
     "employers": 601,
-    "certified_filings": 47890,
-    "initial_approvals": 10723,
+    "certified_filings": 47914,
+    "initial_approvals": 10725,
     "initial_denial_rate": 0.0335,
     "continuing_denial_rate": 0.0372,
     "approvals_per_filing": 0.711,
-    "new_employment_approvals": 10636,
+    "new_employment_approvals": 10638,
     "new_employment_denial_rate": 0.0327,
-    "new_employment_approvals_per_100_filings": 22.21
+    "new_employment_approvals_per_100_filings": 22.2
    },
    "direct": {
-    "employers": 1877,
-    "certified_filings": 208890,
-    "initial_approvals": 38414,
+    "employers": 1863,
+    "certified_filings": 208966,
+    "initial_approvals": 38422,
     "initial_denial_rate": 0.0198,
     "continuing_denial_rate": 0.0216,
     "approvals_per_filing": 0.676,
-    "new_employment_approvals": 38310,
+    "new_employment_approvals": 38318,
     "new_employment_denial_rate": 0.0196,
     "new_employment_approvals_per_100_filings": 18.34
    },
    "top_placing_firms": [
     {
      "firm": "Infosys",
-     "placed_filings": 2980,
-     "certified_filings": 4553,
-     "initial_approvals": 2076,
-     "continuing_approvals": 2037,
-     "initial_denial_rate": 0.0407
+     "placed_filings": 2983,
+     "certified_filings": 4577,
+     "initial_approvals": 2078,
+     "continuing_approvals": 2050,
+     "initial_denial_rate": 0.0406
     },
     {
      "firm": "Tata Consultancy Services",
@@ -1219,9 +1219,9 @@
  ],
  "main": {
   "year": 2025,
-  "clients": 18924,
-  "single_vendor_clients": 14679,
-  "single_vendor_filing_share": 0.224,
+  "clients": 18900,
+  "single_vendor_clients": 14678,
+  "single_vendor_filing_share": 0.2239,
   "big_clients": 629,
   "big_clients_over_90pct_one_vendor": 69,
   "big_clients_median_top_vendor_share": 0.3696,
@@ -1261,7 +1261,7 @@
    {
     "client": "Wells Fargo",
     "filings": 1547,
-    "vendors": 468,
+    "vendors": 467,
     "top_vendor": "Mphasis",
     "top_vendor_share": 0.06,
     "sector": "52"
@@ -1269,7 +1269,7 @@
    {
     "client": "American Express",
     "filings": 1230,
-    "vendors": 351,
+    "vendors": 349,
     "top_vendor": "Tata Consultancy Services",
     "top_vendor_share": 0.111,
     "sector": "52"
@@ -1285,25 +1285,25 @@
    {
     "client": "JPMorgan Chase",
     "filings": 1125,
-    "vendors": 372,
+    "vendors": 371,
     "top_vendor": "Mphasis",
     "top_vendor_share": 0.128,
     "sector": "52"
    },
    {
     "client": "USAA",
-    "filings": 1080,
-    "vendors": 234,
+    "filings": 1085,
+    "vendors": 235,
     "top_vendor": "HCL",
-    "top_vendor_share": 0.294,
+    "top_vendor_share": 0.292,
     "sector": "52"
    },
    {
     "client": "Apple",
-    "filings": 1013,
-    "vendors": 300,
+    "filings": 1020,
+    "vendors": 301,
     "top_vendor": "Infosys",
-    "top_vendor_share": 0.128,
+    "top_vendor_share": 0.127,
     "sector": "31-33"
    },
    {
@@ -1325,7 +1325,7 @@
    {
     "client": "AT&T",
     "filings": 845,
-    "vendors": 303,
+    "vendors": 302,
     "top_vendor": "Tech Mahindra",
     "top_vendor_share": 0.153,
     "sector": "51"
@@ -1380,10 +1380,18 @@
    },
    {
     "client": "Johnson & Johnson",
-    "filings": 591,
-    "vendors": 137,
+    "filings": 602,
+    "vendors": 140,
     "top_vendor": "Tata Consultancy Services",
-    "top_vendor_share": 0.203,
+    "top_vendor_share": 0.208,
+    "sector": "31-33"
+   },
+   {
+    "client": "Ford",
+    "filings": 587,
+    "vendors": 88,
+    "top_vendor": "Epitec",
+    "top_vendor_share": 0.097,
     "sector": "31-33"
    },
    {
@@ -1403,14 +1411,6 @@
     "sector": "52"
    },
    {
-    "client": "Ford",
-    "filings": 580,
-    "vendors": 88,
-    "top_vendor": "Epitec",
-    "top_vendor_share": 0.098,
-    "sector": "31-33"
-   },
-   {
     "client": "Toyota",
     "filings": 563,
     "vendors": 178,
@@ -1428,130 +1428,130 @@
    }
   ],
   "giant": {
-   "nodes": 21759,
-   "edges": 41212,
+   "nodes": 21731,
+   "edges": 41164,
    "share_of_filings": 0.9438
   },
   "modularity": {
    "communities_median": 70,
-   "nmi_between_seeds_median": 0.731,
-   "rewired_components_median": 588,
+   "nmi_between_seeds_median": 0.696,
+   "rewired_components_median": 583,
    "null_scored_on": "the giant component of each rewired network, as the real network is",
-   "rewired_giant_node_share_median": 0.9412,
+   "rewired_giant_node_share_median": 0.941,
    "rewired_giant_filing_share_median": 0.9835,
    "weighted_vs_rewired": {
-    "real": 0.5963,
-    "real_sd": 0.0008,
-    "null": 0.7362,
-    "null_sd": 0.0016,
-    "z": -89.4,
+    "real": 0.5954,
+    "real_sd": 0.0009,
+    "null": 0.7366,
+    "null_sd": 0.0014,
+    "z": -99.84,
     "null_runs_at_or_above_real": 100
    },
    "wiring_only": {
-    "real": 0.5725,
-    "real_sd": 0.0014,
-    "null": 0.525,
-    "null_sd": 0.0009,
-    "z": 50.13,
+    "real": 0.5721,
+    "real_sd": 0.0013,
+    "null": 0.5251,
+    "null_sd": 0.001,
+    "z": 45.6,
     "null_runs_at_or_above_real": 0
    },
    "weights_only": {
-    "real": 0.5963,
-    "real_sd": 0.0008,
-    "null": 0.7521,
-    "null_sd": 0.0015,
-    "z": -103.89,
+    "real": 0.5954,
+    "real_sd": 0.0009,
+    "null": 0.7524,
+    "null_sd": 0.0014,
+    "z": -111.64,
     "null_runs_at_or_above_real": 100
    },
    "all_pieces": {
     "weighted_vs_rewired": {
-     "real": 0.5963,
-     "real_sd": 0.0008,
-     "null": 0.7409,
-     "null_sd": 0.0014,
-     "z": -105.32,
+     "real": 0.5954,
+     "real_sd": 0.0009,
+     "null": 0.7412,
+     "null_sd": 0.0012,
+     "z": -123.78,
      "null_runs_at_or_above_real": 100
     },
     "wiring_only": {
-     "real": 0.5725,
-     "real_sd": 0.0014,
+     "real": 0.5721,
+     "real_sd": 0.0013,
      "null": 0.5337,
      "null_sd": 0.0008,
-     "z": 49.45,
+     "z": 49.91,
      "null_runs_at_or_above_real": 0
     }
    },
    "weights_check": {
-    "real_inside_share": 0.6477,
-    "real_penalty": 0.0514,
-    "shuffled_inside_share": 0.767,
+    "real_inside_share": 0.6473,
+    "real_penalty": 0.0519,
+    "shuffled_inside_share": 0.7673,
     "shuffled_penalty": 0.0149,
-    "heaviest_1pct_links": 412,
+    "heaviest_1pct_links": 411,
     "heaviest_1pct_filing_share": 0.2421,
     "single_vendor_clients_with_their_firm": 1.0,
     "crossing_filings_on_multi_vendor_links_share": 1.0,
-    "links_to_multi_vendor_clients_share": 0.7304,
-    "filings_to_multi_vendor_clients_share": 0.8151
+    "links_to_multi_vendor_clients_share": 0.7302,
+    "filings_to_multi_vendor_clients_share": 0.8152
    }
   },
   "weighted_vs_unweighted": {
    "communities_median_unweighted": 65,
-   "nmi_median": 0.376,
-   "nmi_best_partitions": 0.371,
-   "nmi_between_seeds_weighted": 0.731,
-   "nmi_between_seeds_unweighted": 0.506,
+   "nmi_median": 0.377,
+   "nmi_best_partitions": 0.392,
+   "nmi_between_seeds_weighted": 0.696,
+   "nmi_between_seeds_unweighted": 0.499,
    "runs_compared": 20
   },
   "industry_or_vendor": {
-   "clients_with_2plus_vendors": 4090,
-   "their_filing_share": 0.7693,
-   "with_sector_label": 1214,
-   "nmi_community_industry": 0.148,
+   "clients_with_2plus_vendors": 4067,
+   "their_filing_share": 0.7694,
+   "with_sector_label": 1209,
+   "nmi_community_industry": 0.145,
    "p_industry": 0.001,
-   "nmi_community_main_vendor": 0.638,
+   "nmi_community_main_vendor": 0.642,
    "p_vendor": 0.001,
-   "nmi_community_main_vendor_same_clients": 0.695,
+   "nmi_community_main_vendor_same_clients": 0.694,
    "p_vendor_same_clients": 0.001,
-   "ami_community_industry": 0.068,
-   "ami_community_main_vendor_same_clients": 0.478,
-   "industry_labels": 18,
-   "vendor_labels": 492,
+   "ami_community_industry": 0.066,
+   "ami_community_main_vendor_same_clients": 0.481,
+   "industry_labels": 17,
+   "vendor_labels": 478,
    "communities_among_these_clients": 48,
-   "share_with_own_main_vendor": 0.8649,
+   "share_with_own_main_vendor": 0.8586,
    "unweighted": {
-    "nmi_community_industry": 0.155,
+    "nmi_community_industry": 0.162,
     "p_industry": 0.001,
     "nmi_community_main_vendor_same_clients": 0.487,
     "p_vendor_same_clients": 0.001,
-    "ami_community_industry": 0.068,
-    "ami_community_main_vendor_same_clients": 0.106,
-    "communities_among_these_clients": 54,
+    "ami_community_industry": 0.075,
+    "ami_community_main_vendor_same_clients": 0.108,
+    "communities_among_these_clients": 56,
     "ami_gap_over_runs": {
-     "median": 0.024,
-     "min": 0.003,
-     "max": 0.046
+     "median": 0.022,
+     "min": 0.01,
+     "max": 0.041
     },
-    "share_with_own_main_vendor": 0.4819
+    "share_with_own_main_vendor": 0.4682
    }
   },
   "infomap": {
-   "modules": 1713,
-   "modules_of_two_or_more": 1713,
-   "largest_module_share_of_nodes": 0.0213,
-   "codelength_bits": 7.75,
-   "nmi_with_louvain": 0.651,
-   "nmi_community_industry": 0.346,
+   "modules": 1725,
+   "modules_of_two_or_more": 1725,
+   "largest_module_share_of_nodes": 0.0205,
+   "codelength_bits": 7.748,
+   "nmi_with_louvain": 0.663,
+   "nmi_community_industry": 0.345,
    "p_industry": 0.001,
-   "nmi_community_main_vendor_same_clients": 0.881,
+   "nmi_community_main_vendor_same_clients": 0.876,
    "p_vendor_same_clients": 0.001,
-   "ami_community_industry": 0.063,
-   "ami_community_main_vendor_same_clients": 0.624
+   "ami_community_industry": 0.064,
+   "ami_community_main_vendor_same_clients": 0.617
   },
   "largest_communities": [
    {
-    "filings": 11962,
+    "filings": 11924,
     "firms": 307,
-    "clients": 806,
+    "clients": 790,
     "top_firms": [
      "Tata Consultancy Services",
      "LTIMindtree",
@@ -1568,69 +1568,44 @@
     ],
     "sectors": {
      "31-33": 62,
-     "52": 35,
+     "52": 33,
      "44-45": 11,
-     "48-49": 7
+     "42": 8
     }
    },
    {
-    "filings": 7560,
-    "firms": 465,
-    "clients": 729,
+    "filings": 9435,
+    "firms": 381,
+    "clients": 652,
     "top_firms": [
      "Infosys",
-     "Quest Global Services",
-     "Infostretch",
-     "Inteli Platforms"
+     "Randstad",
+     "Synechron",
+     "Innova Solutions"
     ],
     "top_clients": [
-     "Apple",
-     "Charter Communications",
+     "Bank of America",
+     "Wells Fargo",
+     "Morgan Stanley",
      "Toyota",
      "Truist",
-     "Goldman Sachs",
-     "Citizens Bank"
+     "Goldman Sachs"
     ],
     "sectors": {
-     "31-33": 42,
-     "52": 22,
-     "51": 7,
-     "44-45": 7
+     "52": 34,
+     "31-33": 34,
+     "44-45": 7,
+     "22": 7
     }
    },
    {
-    "filings": 7380,
-    "firms": 442,
-    "clients": 817,
-    "top_firms": [
-     "Compunnel Software",
-     "Kforce",
-     "Mastech Digital Technologies",
-     "Photon Infotech"
-    ],
-    "top_clients": [
-     "Fidelity Investments",
-     "Walmart",
-     "Vanguard",
-     "Intuit",
-     "7-Eleven",
-     "Credit One Bank"
-    ],
-    "sectors": {
-     "52": 22,
-     "31-33": 17,
-     "44-45": 11,
-     "51": 11
-    }
-   },
-   {
-    "filings": 6574,
-    "firms": 240,
-    "clients": 648,
+    "filings": 6852,
+    "firms": 256,
+    "clients": 683,
     "top_firms": [
      "Cognizant",
+     "EXL",
      "Cigniti Technologies",
-     "Technumen",
      "Cognier"
     ],
     "top_clients": [
@@ -1642,46 +1617,46 @@
      "The Hartford"
     ],
     "sectors": {
-     "52": 30,
+     "52": 36,
      "31-33": 29,
      "44-45": 8,
      "51": 4
     }
    },
    {
-    "filings": 5714,
-    "firms": 402,
-    "clients": 641,
+    "filings": 7126,
+    "firms": 420,
+    "clients": 823,
     "top_firms": [
-     "IBM",
-     "UST Global",
-     "Deloitte",
-     "Atos Syntel"
+     "Compunnel Software",
+     "Kforce",
+     "Mastech Digital Technologies",
+     "Photon Infotech"
     ],
     "top_clients": [
-     "American Express",
-     "T-Mobile",
-     "Elevance Health",
-     "Pfizer",
-     "UPS",
-     "Equifax"
+     "Fidelity Investments",
+     "Walmart",
+     "Intuit",
+     "Mastercard",
+     "7-Eleven",
+     "Credit One Bank"
     ],
     "sectors": {
-     "31-33": 29,
-     "52": 22,
-     "56": 6,
-     "62": 6
+     "52": 21,
+     "31-33": 15,
+     "51": 11,
+     "44-45": 9
     }
    },
    {
-    "filings": 5954,
-    "firms": 290,
-    "clients": 636,
+    "filings": 5844,
+    "firms": 306,
+    "clients": 614,
     "top_firms": [
      "Wipro",
      "Mphasis",
      "Virtusa",
-     "EXL"
+     "Persistent Systems"
     ],
     "top_clients": [
      "JPMorgan Chase",
@@ -1692,10 +1667,35 @@
      "TD Bank"
     ],
     "sectors": {
-     "52": 22,
-     "31-33": 16,
-     "51": 5,
-     "54": 5
+     "52": 21,
+     "31-33": 15,
+     "54": 7,
+     "51": 6
+    }
+   },
+   {
+    "filings": 4429,
+    "firms": 256,
+    "clients": 634,
+    "top_firms": [
+     "HCL",
+     "Intellectt",
+     "Infogain",
+     "Mirafra"
+    ],
+    "top_clients": [
+     "USAA",
+     "Google",
+     "Meta",
+     "Abbott",
+     "Merck",
+     "Becton Dickinson"
+    ],
+    "sectors": {
+     "31-33": 46,
+     "52": 9,
+     "51": 8,
+     "62": 3
     }
    }
   ]
@@ -1704,30 +1704,30 @@
   {
    "from": 2022,
    "to": 2023,
-   "shared_clients": 6893,
-   "nmi": 0.301,
-   "same_year_nmi": 0.748,
-   "unweighted_nmi": 0.211,
-   "unweighted_same_year_nmi": 0.472
+   "shared_clients": 6870,
+   "nmi": 0.287,
+   "same_year_nmi": 0.755,
+   "unweighted_nmi": 0.208,
+   "unweighted_same_year_nmi": 0.479
   },
   {
    "from": 2023,
    "to": 2024,
-   "shared_clients": 6489,
-   "nmi": 0.324,
-   "same_year_nmi": 0.717,
-   "unweighted_nmi": 0.249,
-   "unweighted_same_year_nmi": 0.505
+   "shared_clients": 6464,
+   "nmi": 0.31,
+   "same_year_nmi": 0.707,
+   "unweighted_nmi": 0.233,
+   "unweighted_same_year_nmi": 0.502
   },
   {
    "from": 2024,
    "to": 2025,
-   "shared_clients": 6221,
-   "nmi": 0.333,
-   "same_year_nmi": 0.713,
-   "unweighted_nmi": 0.271,
-   "unweighted_same_year_nmi": 0.518
+   "shared_clients": 6198,
+   "nmi": 0.319,
+   "same_year_nmi": 0.702,
+   "unweighted_nmi": 0.272,
+   "unweighted_same_year_nmi": 0.502
   }
  ],
- "seconds": 249
+ "seconds": 256
 }

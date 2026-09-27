@@ -12,7 +12,7 @@
     "law_firms": 4145,
     "top5_share_of_named": 0.3676,
     "employers_per_firm_median": 3.0,
-    "employers_per_firm_max": 2747,
+    "employers_per_firm_max": 2741,
     "top_firms_by_filings": [
      [
       "Fragomen DEL REY Bernsen and Loewy",
@@ -58,7 +58,7 @@
     "top_firms_by_employers": [
      [
       "Fragomen DEL REY Bernsen and Loewy",
-      2747
+      2741
      ],
      [
       "Corporate Immigration Partners PC",
@@ -66,7 +66,7 @@
      ],
      [
       "Ogletree Deakins Nash Smoak and Stewart PC",
-      875
+      869
      ],
      [
       "LAW Office of Thomas V Allen Pllc",
@@ -78,7 +78,7 @@
      ],
      [
       "Berry Appleman and Leiden",
-      553
+      546
      ],
      [
       "Global Immigration Partners",
@@ -134,7 +134,7 @@
     },
     {
      "alpha": 0.3,
-     "links_kept": 1019,
+     "links_kept": 1018,
      "firms_with_a_link": 987,
      "giant_component": 522,
      "threshold_t": 3,
@@ -156,15 +156,15 @@
    "communities": {
     "nodes": 1594,
     "edges": 3577,
-    "communities": 23,
-    "modularity": 0.5859,
+    "communities": 24,
+    "modularity": 0.5893,
     "vs_null": {
-     "real": 0.5835,
-     "real_sd": 0.0035,
-     "null": 0.5479,
+     "real": 0.5865,
+     "real_sd": 0.0036,
+     "null": 0.5493,
      "null_sd": 0.0107,
-     "z": 3.34,
-     "null_runs_at_or_above_real": 0
+     "z": 3.48,
+     "null_runs_at_or_above_real": 1
     }
    }
   },
@@ -176,7 +176,7 @@
     "law_firms": 4352,
     "top5_share_of_named": 0.4032,
     "employers_per_firm_median": 3.0,
-    "employers_per_firm_max": 3139,
+    "employers_per_firm_max": 3129,
     "top_firms_by_filings": [
      [
       "Fragomen DEL REY Bernsen and Loewy",
@@ -222,15 +222,15 @@
     "top_firms_by_employers": [
      [
       "Fragomen DEL REY Bernsen and Loewy",
-      3139
+      3129
      ],
      [
       "Corporate Immigration Partners PC",
-      1073
+      1072
      ],
      [
       "Ogletree Deakins Nash Smoak and Stewart PC",
-      971
+      966
      ],
      [
       "LAW Office of Thomas V Allen Pllc",
@@ -242,7 +242,7 @@
      ],
      [
       "Berry Appleman and Leiden",
-      656
+      648
      ],
      [
       "Global Immigration Partners",
@@ -272,9 +272,9 @@
      "firms_with_a_link": 451,
      "giant_component": 132,
      "threshold_t": 9,
-     "threshold_links": 326,
-     "threshold_firms_with_a_link": 277,
-     "threshold_giant_component": 186
+     "threshold_links": 327,
+     "threshold_firms_with_a_link": 278,
+     "threshold_giant_component": 187
     },
     {
      "alpha": 0.1,
@@ -288,17 +288,17 @@
     },
     {
      "alpha": 0.2,
-     "links_kept": 696,
-     "firms_with_a_link": 764,
-     "giant_component": 350,
+     "links_kept": 697,
+     "firms_with_a_link": 765,
+     "giant_component": 351,
      "threshold_t": 4,
-     "threshold_links": 770,
+     "threshold_links": 771,
      "threshold_firms_with_a_link": 569,
      "threshold_giant_component": 395
     },
     {
      "alpha": 0.3,
-     "links_kept": 990,
+     "links_kept": 991,
      "firms_with_a_link": 938,
      "giant_component": 545,
      "threshold_t": 3,
@@ -354,7 +354,7 @@
       "tie_weight": 3,
       "tie_share_of_firm_strength": 0.6,
       "hub": "Corporate Immigration Partners PC",
-      "hub_strength": 879,
+      "hub_strength": 882,
       "tie_share_of_hub_strength": 0.0034
      },
      {
@@ -363,7 +363,7 @@
       "tie_weight": 3,
       "tie_share_of_firm_strength": 0.6,
       "hub": "Corporate Immigration Partners PC",
-      "hub_strength": 879,
+      "hub_strength": 882,
       "tie_share_of_hub_strength": 0.0034
      },
      {
@@ -377,16 +377,16 @@
      }
     ],
     "duplicate_name_pairs_in_projection": 138,
-    "filter_top5_link_share": 0.1897,
-    "threshold_top5_link_share": 0.2597,
-    "filter_giant_firms_serving_a_placing_employer": 117,
-    "threshold_giant_firms_serving_a_placing_employer": 131
+    "filter_top5_link_share": 0.1894,
+    "threshold_top5_link_share": 0.2594,
+    "filter_giant_firms_serving_a_placing_employer": 118,
+    "threshold_giant_firms_serving_a_placing_employer": 132
    },
    "communities": {
     "nodes": 1646,
     "edges": 3643,
     "communities": 34,
-    "modularity": 0.6672,
+    "modularity": 0.6673,
     "labels": {
      "eligible_communities_of_2plus": 1646,
      "with_region": 1639,
@@ -417,8 +417,8 @@
       "top_employers": [
        "Google",
        "Apple",
-       "Meta",
        "Deloitte",
+       "Meta",
        "Amazon",
        "Walmart"
       ],
@@ -466,7 +466,7 @@
       "dominant_sector": "54"
      },
      {
-      "filings": 3396,
+      "filings": 3404,
       "firms": 179,
       "top_firms": [
        "Corporate Immigration Partners PC",
@@ -527,11 +527,11 @@
      }
     ],
     "vs_null": {
-     "real": 0.6658,
+     "real": 0.6659,
      "real_sd": 0.0016,
-     "null": 0.5464,
-     "null_sd": 0.0098,
-     "z": 12.2,
+     "null": 0.548,
+     "null_sd": 0.0102,
+     "z": 11.6,
      "null_runs_at_or_above_real": 0
     }
    }
@@ -543,32 +543,32 @@
    "employers": 948,
    "no_firm_share_median": 0.1168,
    "no_firm_share_mean": 0.4267,
-   "no_firm_share_pooled": 0.5241,
+   "no_firm_share_pooled": 0.5239,
    "top5_share_median": 0.0,
    "top5_share_mean": 0.0234,
-   "top5_share_pooled": 0.0324,
+   "top5_share_pooled": 0.0325,
    "firms_per_employer_median": 1.0,
-   "firms_per_employer_mean": 0.969
+   "firms_per_employer_mean": 0.972
   },
   "direct": {
-   "employers": 2545,
+   "employers": 2531,
    "no_firm_share_median": 0.0,
-   "no_firm_share_mean": 0.1658,
+   "no_firm_share_mean": 0.1666,
    "no_firm_share_pooled": 0.2392,
    "top5_share_median": 0.0,
-   "top5_share_mean": 0.3054,
+   "top5_share_mean": 0.3036,
    "top5_share_pooled": 0.4786,
    "firms_per_employer_median": 1.0,
-   "firms_per_employer_mean": 1.253
+   "firms_per_employer_mean": 1.252
   },
-  "top5_share_gap": -0.2819,
-  "top5_share_pooled_gap": -0.4462,
+  "top5_share_gap": -0.2801,
+  "top5_share_pooled_gap": -0.4461,
   "p_permutation": 0.001
  },
  "stability": {
   "shared_law_firms": 1041,
-  "nmi_fy2024_fy2025": 0.294,
+  "nmi_fy2024_fy2025": 0.298,
   "nmi_two_fy2025_seeds": 0.882
  },
- "seconds": 828
+ "seconds": 418
 }

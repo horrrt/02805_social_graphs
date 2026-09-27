@@ -391,13 +391,13 @@
                 Francisco, Seattle, Los Angeles, San Diego, Austin, Boston and
                 Washington. The 25 smaller metros form the third. The split is
                 real but weak: modularity is 0.049 against 0.013 for rewired
-                networks that keep each company's number of metros (z = 33),
-                and Louvain finds it in 64 of 100 runs; the other 36 find one
+                networks that keep each company's number of metros (z = 29),
+                and Louvain finds it in 65 of 100 runs; the other 35 find one
                 other split, into two groups. FY2024 gives that two-group split
                 in all 100 runs, so it matches the split shown here at NMI 0.64,
                 against 1.00 between two FY2025 runs. NMI with Census regions is
                 0.14 and with divisions 0.21, no better than shuffled labels
-                (p = 0.11 and 0.11). Infomap, which follows a random walk between
+                (p = 0.10 and 0.11). Infomap, which follows a random walk between
                 metros instead of counting links, finds no split at all: one
                 module holds all 40.
               </span>
@@ -663,14 +663,14 @@
               </p>
               <h3>Who relies on a single vendor?</h3>
               <p>
-                Small clients. 14,679 of the 18,924 clients use one firm, but
+                Small clients. 14,678 of the 18,900 clients use one firm, but
                 they hold 22% of placed filings. Citigroup, the largest client,
                 uses 114 firms.
               </p>
               <h3>Does it hold from year to year?</h3>
               <p>
                 Only in part. Consecutive years agree at NMI 0.21 to 0.27, about
-                half the 0.47 to 0.52 between two runs of the same year. FY2026
+                half the 0.48 to 0.50 between two runs of the same year. FY2026
                 breaks the pattern at the top: from January to June, filings
                 that name a client company fell 16.5%, and Tata Consultancy
                 Services filed 2,079, down from 5,256.
@@ -754,11 +754,11 @@
               <h3>Who files the paperwork?</h3>
               <p>
                 Three filings in four name an outside law firm, and five firms
-                file 40% of those. Fragomen alone files 78,531 for 3,139
+                file 40% of those. Fragomen alone files 78,531 for 3,129
                 employers. Outsourcing firms mostly do without: they file 52% of
                 their applications with no outside firm and send 3% to the five
                 largest, while direct employers send those five 48%. Per
-                employer the averages are 2% and 31%, and none of 1,000 shuffles
+                employer the averages are 2% and 30%, and none of 1,000 shuffles
                 of which employer is which produced a gap that wide.
               </p>
               <p>
@@ -766,12 +766,12 @@
                 for each such employer, the smaller of its filings through
                 either. That network has one giant hub, the case the disparity
                 filter was made for. A weight threshold of four shared filings
-                keeps 770 links and spends 26% of them on the five largest
-                firms. The disparity filter at &alpha; = 0.2 keeps 696 and
+                keeps 771 links and spends 26% of them on the five largest
+                firms. The disparity filter at &alpha; = 0.2 keeps 697 and
                 spends 19%. It also keeps 115 small firms the threshold drops,
                 such as one law office whose link to BBI Law Group is 3 of its
                 5 shared filings and 3 of BBI's 342. The threshold keeps the
-                larger connected core, 395 firms against the filter's 350. Another 144 firms stay only
+                larger connected core, 395 firms against the filter's 351. Another 144 firms stay only
                 because they form a pair linked to nobody else, where neither
                 end can judge the link.
               </p>
@@ -785,7 +785,7 @@
                 Appleman &amp; Leiden; Tata Consultancy, LTIMindtree and
                 Salesforce share Usilaw, Goel &amp; Anderson and Chugh; Vialto,
                 once PwC's law firm, serves Doordash and Databricks. The groups
-                move from year to year: FY2024 and FY2025 agree at NMI 0.29 on
+                move from year to year: FY2024 and FY2025 agree at NMI 0.30 on
                 the 1,041 law firms in both, against 0.88 between two runs of
                 FY2025. Figures from analysis/week04_lawfirms.py.
               </p>
@@ -866,10 +866,10 @@
                   <b>overlap</b> measures the tightness: of the firm's other
                   clients and the client's other firms, the share that are linked
                   to each other. Here the pattern runs the other way, faintly.
-                  Over the 28,151 links where overlap is defined, filings and
+                  Over the 28,104 links where overlap is defined, filings and
                   overlap correlate at Spearman -0.04; with the filing counts
                   shuffled over the same links the correlation is 0.00 ±
-                  0.01 (z = -6.5; FY2024 gives z = -4.2). Links with one filing
+                  0.01 (z = -6.3; FY2024 gives z = -3.7). Links with one filing
                   have a mean overlap of 0.065, links with 21 or more 0.034. Heavy
                   links mostly belong to the largest firms, whose many clients
                   rarely share other firms, so part of this is size. It agrees
@@ -879,8 +879,8 @@
                 <p class="sub">
                   Each filing states one of four wage levels, from entry (I) to
                   fully competent (IV). Averaged per client over the filings that
-                  reach it, the groups explain 12% of the variance in wage level;
-                  averaged per firm over all its filings, 2%. None of 1,000
+                  reach it, the groups explain 13% of the variance in wage level;
+                  averaged per firm over all its filings, 3%. None of 1,000
                   shuffles of the group labels reached either. A client's filings
                   come from the vendors that also decide its group, so part of
                   the 12% is built in. Outsourcing firms
@@ -899,15 +899,15 @@
               </summary>
               <div class="qa-body">
                 <p class="sub">
-                  We took the 2,944 firms in the FY2023 staffing network that
+                  We took the 2,942 firms in the FY2023 staffing network that
                   sent 20 or more registrations to the March 2023 draw, and split
                   them at the median share of workers another employer had also
                   registered (78%). If the high firms clustered, a high firm's
-                  Louvain group would be mostly high firms. It is 50.6% high,
+                  Louvain group would be mostly high firms. It is 51.2% high,
                   against 50.0% when the labels are shuffled (p = 0.001 over
                   1,000 shuffles), and AMI with the groups is 0.004 over 100
                   runs. The March 2022 draw against the FY2022 network gives
-                  52.0% against 50.0%. Registering the same workers is spread
+                  51.9% against 50.0%. Registering the same workers is spread
                   across the staffing groups; it does not mark a cluster of
                   firms. The lottery data is USCIS's, obtained by Bloomberg News;
                   figures from analysis/week04_lottery.py.
@@ -1038,12 +1038,12 @@
                 firm–client link counted once,
                 Louvain splits the network into about 65 groups, and the split
                 beats rewired networks that keep everyone's number of partners
-                (modularity 0.57 against 0.53). Among the 1,214 clients with a
+                (modularity 0.57 against 0.53). Among the 1,209 clients with a
                 known industry and two or more firms, the groups match the main
                 vendor at an adjusted mutual information (AMI) of 0.11 and the
                 industry at 0.07; both beat shuffled labels. AMI corrects NMI for
-                chance, which matters here: these clients have 492 main vendors
-                but only 18 industries. Counting filings pulls clients to their
+                chance, which matters here: these clients have 478 main vendors
+                but only 17 industries. Counting filings pulls clients to their
                 main vendor (AMI 0.48 against 0.07), but that split scores below
                 rewired networks with the same filing counts (0.60 against 0.74),
                 and the vendor's head start is built in: the vendor is a node in
@@ -1051,7 +1051,7 @@
               </p>
               <h3>Who relies on a single vendor?</h3>
               <p>
-                Small clients. 14,679 of the 18,924 clients use one firm, but they
+                Small clients. 14,678 of the 18,900 clients use one firm, but they
                 hold 22% of placed filings. Of the 629 clients with 20 or more
                 filings, 69 get over 90% from one firm, and the median one gets
                 37% from its largest. Citigroup, the largest client, uses 114
@@ -1062,7 +1062,7 @@
               <h3>Does it hold from year to year?</h3>
               <p>
                 Only in part. On the clients present in both years, consecutive
-                years agree at NMI 0.21 to 0.27, about half the 0.47 to 0.52
+                years agree at NMI 0.21 to 0.27, about half the 0.48 to 0.50
                 between two runs of the same year on the same clients. We
                 compared vendor and industry on FY2025 only.
               </p>
@@ -1073,10 +1073,10 @@
                 earlier. From January to June, certified filings fell 5.8% after
                 rising 9.5% the year before, and filings that name a client
                 company fell 16.5% after holding flat (-0.1%). Tata Consultancy
-                Services filed 2,079, down from 5,256. Of the 352 clients it supplied most from January to June 2025, 226 still appear, and 114 of those now
+                Services filed 2,079, down from 5,256. Of the 349 clients it supplied most from January to June 2025, 223 still appear, and 111 of those now
                 get most of their workers from another firm, most often Infosys.
-                Across clients with five or more filings in both years, 48%
-                changed their main vendor, against 43% a year earlier. These are
+                Across clients with five or more filings in both years, 47%
+                changed their main vendor, against 44% a year earlier. These are
                 applications, so they show what employers asked for, not why.
               </p>
                           </div>
@@ -1093,14 +1093,14 @@
                   employer sponsors the worker to stay. In FY2025 the median
                   employer with 20 or more H-1B filings filed 13.2 green cards
                   per 100 of them, and the two counts rank employers only loosely
-                  alike (Spearman 0.49). As with degree and strength in the
+                  alike (Spearman 0.50). As with degree and strength in the
                   course, the exceptions carry the story: Oracle filed 95 green
                   cards per 100 H-1B filings, Uber 64 and Salesforce 45, while
-                  Amazon (22,493 H-1B filings), Cognizant (11,067) and Google
+                  Amazon (22,509 H-1B filings), Cognizant (11,085) and Google
                   (8,657) filed almost none. Placing firms file fewer than direct
-                  employers (13.3 against 16.6 per 100), but shuffling the labels
-                  gives a gap that large 14% of the time (p = 0.136); in FY2024
-                  the gap is clearer (12.6 against 15.4, p = 0.045). Only 65% of
+                  employers (13.3 against 16.7 per 100), but shuffling the labels
+                  gives a gap that large 14% of the time (p = 0.141); in FY2024
+                  it comes close (12.6 against 15.4, p = 0.052). Only 65% of
                   certified green cards come from an employer we can match to an
                   H-1B filer. Clients sponsor their own staff too: Wells Fargo
                   receives 1,547 H-1B filings from vendors, files 624 of its own
@@ -1235,11 +1235,11 @@
                     </tr>
                   </thead>
                   <tbody>
-                    <tr><td>FY2022</td><td style="text-align: right">2.71%</td><td style="text-align: right">1.22%</td><td style="text-align: right">1,057</td><td style="text-align: right">2,295</td></tr>
-                    <tr><td>FY2023</td><td style="text-align: right">3.57%</td><td style="text-align: right">1.48%</td><td style="text-align: right">873</td><td style="text-align: right">2,087</td></tr>
-                    <tr><td>FY2024</td><td style="text-align: right">2.65%</td><td style="text-align: right">1.28%</td><td style="text-align: right">884</td><td style="text-align: right">2,414</td></tr>
-                    <tr><td>FY2025</td><td style="text-align: right">3.20%</td><td style="text-align: right">1.56%</td><td style="text-align: right">933</td><td style="text-align: right">2,480</td></tr>
-                    <tr><td>FY2026, Oct–Jun</td><td style="text-align: right">3.35%</td><td style="text-align: right">1.98%</td><td style="text-align: right">601</td><td style="text-align: right">1,877</td></tr>
+                    <tr><td>FY2022</td><td style="text-align: right">2.71%</td><td style="text-align: right">1.22%</td><td style="text-align: right">1,057</td><td style="text-align: right">2,288</td></tr>
+                    <tr><td>FY2023</td><td style="text-align: right">3.57%</td><td style="text-align: right">1.48%</td><td style="text-align: right">873</td><td style="text-align: right">2,080</td></tr>
+                    <tr><td>FY2024</td><td style="text-align: right">2.65%</td><td style="text-align: right">1.28%</td><td style="text-align: right">884</td><td style="text-align: right">2,403</td></tr>
+                    <tr><td>FY2025</td><td style="text-align: right">3.20%</td><td style="text-align: right">1.56%</td><td style="text-align: right">933</td><td style="text-align: right">2,466</td></tr>
+                    <tr><td>FY2026, Oct–Jun</td><td style="text-align: right">3.35%</td><td style="text-align: right">1.98%</td><td style="text-align: right">601</td><td style="text-align: right">1,863</td></tr>
                   </tbody>
                 </table>
                 <p class="sub" style="margin-top: 12px">

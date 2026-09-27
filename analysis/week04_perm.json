@@ -6,7 +6,7 @@
    "year": 2024,
    "certified_lca_filings": 502374,
    "certified_perm_filings": 101994,
-   "perm_employer_key_matches_lca_share": 0.697,
+   "perm_employer_key_matches_lca_share": 0.6972,
    "fein_check": {
     "perm_fein_parse_rate": 0.9613,
     "sample_raw_perm_feins": [
@@ -18,26 +18,26 @@
     ],
     "perm_fein_in_lca_feins_share": 0.668
    },
-   "employers_scored": 3386,
+   "employers_scored": 3374,
    "min_filings": 20,
    "kind_gap": {
     "placing_pooled_ratio": 12.64,
-    "direct_pooled_ratio": 15.42,
-    "observed_gap": 2.77,
+    "direct_pooled_ratio": 15.43,
+    "observed_gap": 2.78,
     "placing_median_ratio": 6.87,
     "direct_median_ratio": 10.0,
     "permutations": 1000,
-    "permutations_at_or_above_observed": 45,
-    "p_gap": 0.045
+    "permutations_at_or_above_observed": 52,
+    "p_gap": 0.052
    },
    "lca_vs_perm_filings": {
-    "spearman_rho": 0.453,
+    "spearman_rho": 0.454,
     "p": 0.0
    },
    "scored_median_ratio": 9.09,
    "big_filers": {
     "threshold": 500,
-    "employers": 75
+    "employers": 74
    },
    "lowest_ratio_among_big_filers": [
     {
@@ -51,7 +51,7 @@
     },
     {
      "employer": "Fidelity Investments",
-     "lca_filings": 1737,
+     "lca_filings": 1812,
      "perm_filings": 0,
      "ratio": 0.0,
      "perm_filings_by_name": 1,
@@ -60,7 +60,7 @@
     },
     {
      "employer": "Ford",
-     "lca_filings": 811,
+     "lca_filings": 861,
      "perm_filings": 0,
      "ratio": 0.0,
      "perm_filings_by_name": 144,
@@ -119,7 +119,7 @@
     {
      "client": "Citigroup",
      "placed_filings_from_vendors": 1919,
-     "own_certified_lca_filings": 1006,
+     "own_certified_lca_filings": 1010,
      "own_perm_filings": 154,
      "own_perm_filings_by_name": 13
     },
@@ -134,7 +134,7 @@
      "client": "Verizon",
      "placed_filings_from_vendors": 1634,
      "own_certified_lca_filings": 208,
-     "own_perm_filings": 0,
+     "own_perm_filings": 9,
      "own_perm_filings_by_name": 75
     },
     {
@@ -147,7 +147,7 @@
     {
      "client": "Fidelity Investments",
      "placed_filings_from_vendors": 1231,
-     "own_certified_lca_filings": 1737,
+     "own_certified_lca_filings": 1812,
      "own_perm_filings": 0,
      "own_perm_filings_by_name": 1
     }
@@ -158,7 +158,7 @@
    "year": 2025,
    "certified_lca_filings": 537796,
    "certified_perm_filings": 137753,
-   "perm_employer_key_matches_lca_share": 0.6501,
+   "perm_employer_key_matches_lca_share": 0.651,
    "fein_check": {
     "perm_fein_parse_rate": 1.0,
     "sample_raw_perm_feins": [
@@ -170,31 +170,31 @@
     ],
     "perm_fein_in_lca_feins_share": 0.6493
    },
-   "employers_scored": 3493,
+   "employers_scored": 3479,
    "min_filings": 20,
    "kind_gap": {
-    "placing_pooled_ratio": 13.3,
-    "direct_pooled_ratio": 16.64,
-    "observed_gap": 3.33,
+    "placing_pooled_ratio": 13.31,
+    "direct_pooled_ratio": 16.68,
+    "observed_gap": 3.37,
     "placing_median_ratio": 10.15,
     "direct_median_ratio": 14.29,
     "permutations": 1000,
-    "permutations_at_or_above_observed": 136,
-    "p_gap": 0.136
+    "permutations_at_or_above_observed": 141,
+    "p_gap": 0.141
    },
    "lca_vs_perm_filings": {
-    "spearman_rho": 0.494,
+    "spearman_rho": 0.498,
     "p": 0.0
    },
    "scored_median_ratio": 13.16,
    "big_filers": {
     "threshold": 500,
-    "employers": 83
+    "employers": 84
    },
    "lowest_ratio_among_big_filers": [
     {
      "employer": "Amazon",
-     "lca_filings": 22493,
+     "lca_filings": 22509,
      "perm_filings": 0,
      "ratio": 0.0,
      "perm_filings_by_name": 1,
@@ -203,7 +203,7 @@
     },
     {
      "employer": "Cognizant",
-     "lca_filings": 11067,
+     "lca_filings": 11085,
      "perm_filings": 0,
      "ratio": 0.0,
      "perm_filings_by_name": 0,
@@ -220,30 +220,12 @@
      "top_perm_occupation": null
     },
     {
-     "employer": "Infosys",
-     "lca_filings": 5740,
-     "perm_filings": 0,
-     "ratio": 0.0,
-     "perm_filings_by_name": 53,
-     "lca_filings_by_name": 6104,
-     "top_perm_occupation": null
-    },
-    {
      "employer": "Fidelity Investments",
-     "lca_filings": 2158,
+     "lca_filings": 2242,
      "perm_filings": 0,
      "ratio": 0.0,
      "perm_filings_by_name": 9,
      "lca_filings_by_name": 2485,
-     "top_perm_occupation": null
-    },
-    {
-     "employer": "Ford",
-     "lca_filings": 978,
-     "perm_filings": 0,
-     "ratio": 0.0,
-     "perm_filings_by_name": 274,
-     "lca_filings_by_name": 2532,
      "top_perm_occupation": null
     },
     {
@@ -254,6 +236,24 @@
      "perm_filings_by_name": 3,
      "lca_filings_by_name": 1446,
      "top_perm_occupation": "Occupational Therapists"
+    },
+    {
+     "employer": "Infosys",
+     "lca_filings": 5775,
+     "perm_filings": 14,
+     "ratio": 0.24,
+     "perm_filings_by_name": 53,
+     "lca_filings_by_name": 6104,
+     "top_perm_occupation": "Project Management Specialists"
+    },
+    {
+     "employer": "Ford",
+     "lca_filings": 1020,
+     "perm_filings": 8,
+     "ratio": 0.78,
+     "perm_filings_by_name": 274,
+     "lca_filings_by_name": 2532,
+     "top_perm_occupation": "Software Developers"
     },
     {
      "employer": "Qualcomm",
@@ -343,7 +343,7 @@
     {
      "client": "Citigroup",
      "placed_filings_from_vendors": 2156,
-     "own_certified_lca_filings": 1514,
+     "own_certified_lca_filings": 1520,
      "own_perm_filings": 389,
      "own_perm_filings_by_name": 29
     },
@@ -351,7 +351,7 @@
      "client": "Verizon",
      "placed_filings_from_vendors": 1925,
      "own_certified_lca_filings": 341,
-     "own_perm_filings": 0,
+     "own_perm_filings": 122,
      "own_perm_filings_by_name": 122
     },
     {
@@ -364,7 +364,7 @@
     {
      "client": "Fidelity Investments",
      "placed_filings_from_vendors": 1756,
-     "own_certified_lca_filings": 2158,
+     "own_certified_lca_filings": 2242,
      "own_perm_filings": 0,
      "own_perm_filings_by_name": 9
     },
@@ -398,14 +398,14 @@
     },
     {
      "client": "USAA",
-     "placed_filings_from_vendors": 1080,
-     "own_certified_lca_filings": 269,
-     "own_perm_filings": 74,
+     "placed_filings_from_vendors": 1085,
+     "own_certified_lca_filings": 297,
+     "own_perm_filings": 123,
      "own_perm_filings_by_name": 49
     },
     {
      "client": "Apple",
-     "placed_filings_from_vendors": 1013,
+     "placed_filings_from_vendors": 1020,
      "own_certified_lca_filings": 6919,
      "own_perm_filings": 1224,
      "own_perm_filings_by_name": 1248
@@ -450,11 +450,11 @@
     "Renewal Rehab": 3
    },
    "client_degree_vs_ratio": {
-    "firms_in_network_and_scored": 1640,
+    "firms_in_network_and_scored": 1638,
     "spearman_rho": 0.134,
     "p": 0.0
    }
   }
  },
- "seconds": 31
+ "seconds": 47
 }

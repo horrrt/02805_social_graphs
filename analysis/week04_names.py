@@ -60,12 +60,17 @@ DBA = re.compile(r"\b(?:DBA|DOING BUSINESS AS|AKA)\b")
 # Trailing phrases that describe the site rather than name the company.
 SITE_PHRASE = re.compile(r"\s*[-(,]\s*(CLIENT LOCATION|CLIENT SITE|CLIENT|END CLIENT|PROJECT).*$")
 MAX_ACRONYM = 4
+# Boilerplate after the name: "VERIZON COMMUNICATIONS INC AND ALL ITS SUBSIDIARIES
+# AND AFFILIATES" is Verizon Communications. Only after an AND, so a name that
+# starts with the word (AFFILIATED COMPUTER SERVICES) keeps it.
+SUBSIDIARIES = re.compile(r"\s+AND\s+(?:ALL\s+)?(?:OF\s+)?(?:ITS|THEIR)?\s*(?:\w+\s+){0,2}?(?:SUBSIDIARIES|AFFILIATES)\b.*$")
 
 
 def normalize(name):
     """Upper case, no punctuation, no legal suffix: a spelling-free key."""
     s = name.upper().replace("&", " AND ")
     s = re.sub(r"[^A-Z0-9 ]+", " ", s)
+    s = SUBSIDIARIES.sub("", s)
     words = s.split()
     while words and words[-1] in SUFFIXES:
         words.pop()

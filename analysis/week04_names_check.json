@@ -9,14 +9,21 @@
  "name_rules": {
   "pairwise_precision": 0.9997,
   "pairwise_recall": 0.9982,
-  "filings_under_a_name_key_spanning_companies": 0.0628,
-  "filings_of_a_company_split_across_name_keys": 0.1344,
+  "filings_under_a_name_key_spanning_companies": 0.073,
+  "filings_of_a_company_split_across_name_keys": 0.1225,
   "largest_false_merges": [
    {
     "key": "Amazon",
     "companies": [
      "Amazon",
      "FEIN 911646860"
+    ]
+   },
+   {
+    "key": "Infosys",
+    "companies": [
+     "FEIN 341620905",
+     "Infosys"
     ]
    },
    {
@@ -59,13 +66,6 @@
     "companies": [
      "FEIN 455452795",
      "FEIN 541886708"
-    ]
-   },
-   {
-    "key": "CVS SHARED SERVICES RESOURCES",
-    "companies": [
-     "CVS Health",
-     "FEIN 992848079"
     ]
    }
   ]

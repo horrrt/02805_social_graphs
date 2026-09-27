@@ -1,0 +1,70 @@
+"""Rerun every week 4 analysis script at once, as separate processes.
+
+The scripts share no state except their inputs in build/ and one real
+dependency: week04_staffing_figure.py reads week04_staffing.py's output, so it
+starts when that one finishes. Everything else starts immediately, so a full
+rerun takes about as long as the slowest script (week04_lawfirms.py, about 7
+minutes) instead of the sum (about 21). Each script's output goes to
+build/logs/<script>.log; a line prints as each one finishes, with the time so far.
+
+    python analysis/week04_run_all.py                  # everything
+    python analysis/week04_run_all.py staffing lottery # just these (the week04_ prefix is optional)
+
+Run it after changing week04_names.py or either name table, then rerun the
+site tests: tests/week04-prose.test.mjs names every sentence whose number moved.
+"""
+
+import subprocess
+import sys
+import time
+from pathlib import Path
+
+HERE = Path(__file__).resolve().parent
+LOGS = HERE.parent / "build" / "logs"
+SCRIPTS = ["week04_where", "week04_jobs", "week04_staffing", "week04_staffing_figure", "week04_lottery",
+           "week04_perm", "week04_countries", "week04_ties", "week04_shift", "week04_lawfirms", "week04_oews"]
+AFTER = {"week04_staffing_figure": "week04_staffing"}  # script -> the script whose output it reads
+
+
+def span(seconds):
+    m, s = divmod(int(seconds), 60)
+    return f"{m}m{s}s" if m else f"{s}s"
+
+
+def main():
+    wanted = [a if a.startswith("week04_") else f"week04_{a}" for a in sys.argv[1:]] or SCRIPTS
+    unknown = [w for w in wanted if w not in SCRIPTS]
+    if unknown:
+        raise SystemExit(f"unknown scripts: {unknown}; choose from {SCRIPTS}")
+    LOGS.mkdir(parents=True, exist_ok=True)
+    started, running, waiting, failed = time.time(), {}, list(wanted), []
+
+    def launch(name):
+        log = open(LOGS / f"{name}.log", "w")
+        running[name] = (subprocess.Popen([sys.executable, str(HERE / f"{name}.py")], stdout=log,
+                                          stderr=subprocess.STDOUT, cwd=HERE.parent), log)
+
+    print(f"running {len(wanted)} scripts in parallel; logs in {LOGS.relative_to(HERE.parent)}/", flush=True)
+    done = set()
+    while waiting or running:
+        for name in [w for w in waiting if AFTER.get(w) not in waiting and AFTER.get(w) not in running]:
+            waiting.remove(name)
+            launch(name)
+        time.sleep(2)
+        for name, (proc, log) in list(running.items()):
+            if proc.poll() is None:
+                continue
+            log.close()
+            del running[name]
+            done.add(name)
+            status = "ok" if proc.returncode == 0 else f"FAILED ({proc.returncode}), see build/logs/{name}.log"
+            if proc.returncode:
+                failed.append(name)
+            print(f"{len(done)}/{len(wanted)} {name}: {status}, {span(time.time() - started)} elapsed; "
+                  f"still running: {', '.join(running) or 'nothing'}", flush=True)
+    print(f"all done in {span(time.time() - started)}" + (f"; failed: {failed}" if failed else ""))
+    return 1 if failed else 0
+
+
+if __name__ == "__main__":
+    sys.exit(main())
