@@ -1,0 +1,2551 @@
+{
+ "meta": {
+  "source": "O*NET 31.0 Database, U.S. Department of Labor, CC BY 4.0; O*NET 25.0 for the archived profiles",
+  "scale": "Importance",
+  "domains": [
+   "essential_skills",
+   "transferable_skills",
+   "knowledge",
+   "work_activities"
+  ],
+  "descriptors": 109,
+  "years": [
+   2024,
+   2025
+  ],
+  "pairs_file": "build/week04/skills_similarity.csv.gz"
+ },
+ "profiles": 913,
+ "codes": 788,
+ "archived": {
+  "13-2051.00": {
+   "from": "13-2051.00",
+   "rated": [
+    "07/2016"
+   ],
+   "title": "Financial and Investment Analysts"
+  },
+  "13-2054.00": {
+   "from": "13-2099.02",
+   "rated": [
+    "08/2018"
+   ],
+   "title": "Financial Risk Specialists"
+  }
+ },
+ "filled_ratings": 137,
+ "coverage": {
+  "h1b_occupations": 562,
+  "covered": 479,
+  "filings": 1040169,
+  "filing_share_covered": 0.9946,
+  "unrated": [
+   {
+    "code": "29-1212",
+    "title": "Cardiologists",
+    "filings": 870
+   },
+   {
+    "code": "29-1249",
+    "title": "Surgeons, All Other",
+    "filings": 812
+   },
+   {
+    "code": "25-1199",
+    "title": "Postsecondary Teachers, All Other",
+    "filings": 340
+   },
+   {
+    "code": "25-3099",
+    "title": "Teachers and Instructors, All Other",
+    "filings": 251
+   },
+   {
+    "code": "27-1029",
+    "title": "Designers, All Other",
+    "filings": 123
+   },
+   {
+    "code": "21-1099",
+    "title": "Community and Social Service Specialists, All Other",
+    "filings": 118
+   },
+   {
+    "code": "23-2099",
+    "title": "Legal Support Workers, All Other",
+    "filings": 116
+   },
+   {
+    "code": "29-1029",
+    "title": "Dentists, All Other Specialists",
+    "filings": 109
+   },
+   {
+    "code": "29-1242",
+    "title": "Orthopedic Surgeons, Except Pediatric",
+    "filings": 106
+   },
+   {
+    "code": "19-1099",
+    "title": "Life Scientists, All Other",
+    "filings": 90
+   },
+   {
+    "code": "25-1069",
+    "title": "Social Sciences Teachers, Postsecondary, All Other",
+    "filings": 79
+   },
+   {
+    "code": "29-1243",
+    "title": "Pediatric Surgeons",
+    "filings": 59
+   },
+   {
+    "code": "11-9039",
+    "title": "Education Administrators, All Other",
+    "filings": 59
+   },
+   {
+    "code": "21-1029",
+    "title": "Social Workers, All Other",
+    "filings": 56
+   },
+   {
+    "code": "27-3099",
+    "title": "Media and Communication Workers, All Other",
+    "filings": 29
+   },
+   {
+    "code": "21-1019",
+    "title": "Counselors, All Other",
+    "filings": 22
+   },
+   {
+    "code": "25-9099",
+    "title": "Educational Instruction and Library Workers, All Other",
+    "filings": 20
+   },
+   {
+    "code": "21-2099",
+    "title": "Religious Workers, All Other",
+    "filings": 17
+   },
+   {
+    "code": "43-9199",
+    "title": "Office and Administrative Support Workers, All Other",
+    "filings": 13
+   },
+   {
+    "code": "27-1019",
+    "title": "Artists and Related Workers, All Other",
+    "filings": 10
+   },
+   {
+    "code": "41-9099",
+    "title": "Sales and Related Workers, All Other",
+    "filings": 6
+   },
+   {
+    "code": "29-9021",
+    "title": "Health Information Technologists and Medical Registrars",
+    "filings": 6
+   },
+   {
+    "code": "27-2099",
+    "title": "Entertainers and Performers, Sports and Related Workers, All Other",
+    "filings": 5
+   },
+   {
+    "code": "17-3019",
+    "title": "Drafters, All Other",
+    "filings": 5
+   },
+   {
+    "code": "25-9049",
+    "title": "Teaching Assistants, All Other",
+    "filings": 2
+   },
+   {
+    "code": "43-3099",
+    "title": "Financial Clerks, All Other",
+    "filings": 2
+   },
+   {
+    "code": "43-2099",
+    "title": "Communications Equipment Operators, All Other",
+    "filings": 2
+   },
+   {
+    "code": "53-6099",
+    "title": "Transportation Workers, All Other",
+    "filings": 1
+   },
+   {
+    "code": "45-2099",
+    "title": "Agricultural Workers, All Other",
+    "filings": 1
+   },
+   {
+    "code": "51-6099",
+    "title": "Textile, Apparel, and Furnishings Workers, All Other",
+    "filings": 1
+   },
+   {
+    "code": "27-4015",
+    "title": "Lighting Technicians",
+    "filings": 1
+   },
+   {
+    "code": "11-1031",
+    "title": "Legislators",
+    "filings": 1
+   },
+   {
+    "code": "39-9099",
+    "title": "Personal Care and Service Workers, All Other",
+    "filings": 1
+   },
+   {
+    "code": "53-3054",
+    "title": "Taxi Drivers",
+    "filings": 1
+   },
+   {
+    "code": "51-4199",
+    "title": "Metal Workers and Plastic Workers, All Other",
+    "filings": 1
+   },
+   {
+    "code": "43-4199",
+    "title": "Information and Record Clerks, All Other",
+    "filings": 1
+   },
+   {
+    "code": "27-4099",
+    "title": "Media and Communication Equipment Workers, All Other",
+    "filings": 1
+   },
+   {
+    "code": "49-9069",
+    "title": "Precision Instrument and Equipment Repairers, All Other",
+    "filings": 1
+   }
+  ],
+  "not_in_onet": [
+   {
+    "code": "15-1295",
+    "filings": 708
+   },
+   {
+    "code": "17-2144",
+    "filings": 408
+   },
+   {
+    "code": "17-2074",
+    "filings": 368
+   },
+   {
+    "code": "15-1296",
+    "filings": 206
+   },
+   {
+    "code": "15-1217",
+    "filings": 150
+   },
+   {
+    "code": "17-2053",
+    "filings": 149
+   },
+   {
+    "code": "17-2076",
+    "filings": 55
+   },
+   {
+    "code": "17-2143",
+    "filings": 42
+   },
+   {
+    "code": "15-1297",
+    "filings": 39
+   },
+   {
+    "code": "15-1218",
+    "filings": 36
+   },
+   {
+    "code": "15-1293",
+    "filings": 30
+   },
+   {
+    "code": "17-2073",
+    "filings": 24
+   },
+   {
+    "code": "15-1247",
+    "filings": 17
+   },
+   {
+    "code": "15-1294",
+    "filings": 16
+   },
+   {
+    "code": "17-2052",
+    "filings": 15
+   },
+   {
+    "code": "17-2075",
+    "filings": 8
+   },
+   {
+    "code": "15-1248",
+    "filings": 6
+   },
+   {
+    "code": "17-2063",
+    "filings": 5
+   },
+   {
+    "code": "24-1124",
+    "filings": 3
+   },
+   {
+    "code": "15-1298",
+    "filings": 3
+   },
+   {
+    "code": "12-2051",
+    "filings": 3
+   },
+   {
+    "code": "40-9031",
+    "filings": 3
+   },
+   {
+    "code": "12-1252",
+    "filings": 2
+   },
+   {
+    "code": "29-1069",
+    "filings": 2
+   },
+   {
+    "code": "25-1099",
+    "filings": 1
+   },
+   {
+    "code": "25-2054",
+    "filings": 1
+   },
+   {
+    "code": "12-1229",
+    "filings": 1
+   },
+   {
+    "code": "15-1051",
+    "filings": 1
+   },
+   {
+    "code": "15-2071",
+    "filings": 1
+   },
+   {
+    "code": "29-1992",
+    "filings": 1
+   },
+   {
+    "code": "15-1263",
+    "filings": 1
+   },
+   {
+    "code": "15-2052",
+    "filings": 1
+   },
+   {
+    "code": "15-1521",
+    "filings": 1
+   },
+   {
+    "code": "29-1067",
+    "filings": 1
+   },
+   {
+    "code": "20-1011",
+    "filings": 1
+   },
+   {
+    "code": "17-2711",
+    "filings": 1
+   },
+   {
+    "code": "17-1299",
+    "filings": 1
+   },
+   {
+    "code": "15-2141",
+    "filings": 1
+   },
+   {
+    "code": "12-1051",
+    "filings": 1
+   },
+   {
+    "code": "12-1299",
+    "filings": 1
+   },
+   {
+    "code": "20-1021",
+    "filings": 1
+   },
+   {
+    "code": "17-1252",
+    "filings": 1
+   },
+   {
+    "code": "12-2011",
+    "filings": 1
+   },
+   {
+    "code": "15-1031",
+    "filings": 1
+   },
+   {
+    "code": "37-3043",
+    "filings": 1
+   }
+  ]
+ },
+ "mixed": {
+  "11-1011": {
+   "title": "Chief Executives",
+   "h1b_filings": 823,
+   "residual_share": 0.011,
+   "within_similarity": 0.995,
+   "profiles": [
+    {
+     "code": "11-1011.00",
+     "title": "Chief Executives",
+     "share": 0.985
+    },
+    {
+     "code": "11-1011.03",
+     "title": "Chief Sustainability Officers",
+     "share": 0.015
+    }
+   ]
+  },
+  "11-3013": {
+   "title": "Facilities Managers",
+   "h1b_filings": 28,
+   "residual_share": 0.0,
+   "within_similarity": 0.905,
+   "profiles": [
+    {
+     "code": "11-3013.00",
+     "title": "Facilities Managers",
+     "share": 0.679
+    },
+    {
+     "code": "11-3013.01",
+     "title": "Security Managers",
+     "share": 0.321
+    }
+   ]
+  },
+  "11-3031": {
+   "title": "Financial Managers",
+   "h1b_filings": 2839,
+   "residual_share": 0.011,
+   "within_similarity": 0.916,
+   "profiles": [
+    {
+     "code": "11-3031.00",
+     "title": "Financial Managers",
+     "share": 0.853
+    },
+    {
+     "code": "11-3031.01",
+     "title": "Treasurers and Controllers",
+     "share": 0.078
+    },
+    {
+     "code": "11-3031.03",
+     "title": "Investment Fund Managers",
+     "share": 0.069
+    }
+   ]
+  },
+  "11-3051": {
+   "title": "Industrial Production Managers",
+   "h1b_filings": 1812,
+   "residual_share": 0.006,
+   "within_similarity": 0.878,
+   "profiles": [
+    {
+     "code": "11-3051.00",
+     "title": "Industrial Production Managers",
+     "share": 0.666
+    },
+    {
+     "code": "11-3051.01",
+     "title": "Quality Control Systems Managers",
+     "share": 0.329
+    },
+    {
+     "code": "11-3051.03",
+     "title": "Biofuels Production Managers",
+     "share": 0.004
+    },
+    {
+     "code": "11-3051.04",
+     "title": "Biomass Power Plant Managers",
+     "share": 0.001
+    },
+    {
+     "code": "11-3051.06",
+     "title": "Hydroelectric Production Managers",
+     "share": 0.001
+    }
+   ]
+  },
+  "11-3071": {
+   "title": "Transportation, Storage, and Distribution Managers",
+   "h1b_filings": 2534,
+   "residual_share": 0.002,
+   "within_similarity": 0.964,
+   "profiles": [
+    {
+     "code": "11-3071.04",
+     "title": "Supply Chain Managers",
+     "share": 0.747
+    },
+    {
+     "code": "11-3071.00",
+     "title": "Transportation, Storage, and Distribution Managers",
+     "share": 0.253
+    }
+   ]
+  },
+  "11-9041": {
+   "title": "Architectural and Engineering Managers",
+   "h1b_filings": 4224,
+   "residual_share": 0.01,
+   "within_similarity": 0.998,
+   "profiles": [
+    {
+     "code": "11-9041.00",
+     "title": "Architectural and Engineering Managers",
+     "share": 0.998
+    },
+    {
+     "code": "11-9041.01",
+     "title": "Biofuels/Biodiesel Technology and Product Development Managers",
+     "share": 0.002
+    }
+   ]
+  },
+  "11-9121": {
+   "title": "Natural Sciences Managers",
+   "h1b_filings": 1364,
+   "residual_share": 0.007,
+   "within_similarity": 0.687,
+   "profiles": [
+    {
+     "code": "11-9121.00",
+     "title": "Natural Sciences Managers",
+     "share": 0.638
+    },
+    {
+     "code": "11-9121.01",
+     "title": "Clinical Research Coordinators",
+     "share": 0.353
+    },
+    {
+     "code": "11-9121.02",
+     "title": "Water Resource Specialists",
+     "share": 0.009
+    }
+   ]
+  },
+  "11-9179": {
+   "title": "Personal Service Managers, All Other",
+   "h1b_filings": 24,
+   "residual_share": 0.083,
+   "within_similarity": 0.98,
+   "profiles": [
+    {
+     "code": "11-9179.01",
+     "title": "Fitness and Wellness Coordinators",
+     "share": 0.955
+    },
+    {
+     "code": "11-9179.02",
+     "title": "Spa Managers",
+     "share": 0.045
+    }
+   ]
+  },
+  "11-9199": {
+   "title": "Managers, All Other",
+   "h1b_filings": 967,
+   "residual_share": 0.135,
+   "within_similarity": 0.796,
+   "profiles": [
+    {
+     "code": "11-9199.01",
+     "title": "Regulatory Affairs Managers",
+     "share": 0.53
+    },
+    {
+     "code": "11-9199.02",
+     "title": "Compliance Managers",
+     "share": 0.453
+    },
+    {
+     "code": "11-9199.10",
+     "title": "Wind Energy Development Managers",
+     "share": 0.014
+    },
+    {
+     "code": "11-9199.08",
+     "title": "Loss Prevention Managers",
+     "share": 0.002
+    }
+   ]
+  },
+  "13-1041": {
+   "title": "Compliance Officers",
+   "h1b_filings": 2027,
+   "residual_share": 0.002,
+   "within_similarity": 0.776,
+   "profiles": [
+    {
+     "code": "13-1041.07",
+     "title": "Regulatory Affairs Specialists",
+     "share": 0.771
+    },
+    {
+     "code": "13-1041.00",
+     "title": "Compliance Officers",
+     "share": 0.213
+    },
+    {
+     "code": "13-1041.01",
+     "title": "Environmental Compliance Inspectors",
+     "share": 0.011
+    },
+    {
+     "code": "13-1041.03",
+     "title": "Equal Opportunity Representatives and Officers",
+     "share": 0.004
+    },
+    {
+     "code": "13-1041.08",
+     "title": "Customs Brokers",
+     "share": 0.001
+    }
+   ]
+  },
+  "13-1081": {
+   "title": "Logisticians",
+   "h1b_filings": 4868,
+   "residual_share": 0.004,
+   "within_similarity": 0.83,
+   "profiles": [
+    {
+     "code": "13-1081.00",
+     "title": "Logisticians",
+     "share": 0.502
+    },
+    {
+     "code": "13-1081.02",
+     "title": "Logistics Analysts",
+     "share": 0.331
+    },
+    {
+     "code": "13-1081.01",
+     "title": "Logistics Engineers",
+     "share": 0.167
+    }
+   ]
+  },
+  "13-1161": {
+   "title": "Market Research Analysts and Marketing Specialists",
+   "h1b_filings": 9324,
+   "residual_share": 0.005,
+   "within_similarity": 0.981,
+   "profiles": [
+    {
+     "code": "13-1161.00",
+     "title": "Market Research Analysts and Marketing Specialists",
+     "share": 0.945
+    },
+    {
+     "code": "13-1161.01",
+     "title": "Search Marketing Strategists",
+     "share": 0.055
+    }
+   ]
+  },
+  "13-1199": {
+   "title": "Business Operations Specialists, All Other",
+   "h1b_filings": 1265,
+   "residual_share": 0.587,
+   "within_similarity": 0.825,
+   "profiles": [
+    {
+     "code": "13-1199.05",
+     "title": "Sustainability Specialists",
+     "share": 0.808
+    },
+    {
+     "code": "13-1199.04",
+     "title": "Business Continuity Planners",
+     "share": 0.079
+    },
+    {
+     "code": "13-1199.07",
+     "title": "Security Management Specialists",
+     "share": 0.075
+    },
+    {
+     "code": "13-1199.06",
+     "title": "Online Merchants",
+     "share": 0.038
+    }
+   ]
+  },
+  "13-2099": {
+   "title": "Financial Specialists, All Other",
+   "h1b_filings": 6973,
+   "residual_share": 0.06,
+   "within_similarity": 0.984,
+   "profiles": [
+    {
+     "code": "13-2099.01",
+     "title": "Financial Quantitative Analysts",
+     "share": 0.985
+    },
+    {
+     "code": "13-2099.04",
+     "title": "Fraud Examiners, Investigators and Analysts",
+     "share": 0.015
+    }
+   ]
+  },
+  "15-1211": {
+   "title": "Computer Systems Analysts",
+   "h1b_filings": 29223,
+   "residual_share": 0.079,
+   "within_similarity": 0.992,
+   "profiles": [
+    {
+     "code": "15-1211.00",
+     "title": "Computer Systems Analysts",
+     "share": 0.992
+    },
+    {
+     "code": "15-1211.01",
+     "title": "Health Informatics Specialists",
+     "share": 0.008
+    }
+   ]
+  },
+  "15-1241": {
+   "title": "Computer Network Architects",
+   "h1b_filings": 3853,
+   "residual_share": 0.007,
+   "within_similarity": 0.994,
+   "profiles": [
+    {
+     "code": "15-1241.00",
+     "title": "Computer Network Architects",
+     "share": 0.989
+    },
+    {
+     "code": "15-1241.01",
+     "title": "Telecommunications Engineering Specialists",
+     "share": 0.011
+    }
+   ]
+  },
+  "15-1243": {
+   "title": "Database Architects",
+   "h1b_filings": 8328,
+   "residual_share": 0.006,
+   "within_similarity": 0.947,
+   "profiles": [
+    {
+     "code": "15-1243.00",
+     "title": "Database Architects",
+     "share": 0.767
+    },
+    {
+     "code": "15-1243.01",
+     "title": "Data Warehousing Specialists",
+     "share": 0.233
+    }
+   ]
+  },
+  "15-1255": {
+   "title": "Web and Digital Interface Designers",
+   "h1b_filings": 2907,
+   "residual_share": 0.006,
+   "within_similarity": 0.948,
+   "profiles": [
+    {
+     "code": "15-1255.00",
+     "title": "Web and Digital Interface Designers",
+     "share": 0.935
+    },
+    {
+     "code": "15-1255.01",
+     "title": "Video Game Designers",
+     "share": 0.065
+    }
+   ]
+  },
+  "15-1299": {
+   "title": "Computer Occupations, All Other",
+   "h1b_filings": 103800,
+   "residual_share": 0.03,
+   "within_similarity": 0.703,
+   "profiles": [
+    {
+     "code": "15-1299.08",
+     "title": "Computer Systems Engineers/Architects",
+     "share": 0.588
+    },
+    {
+     "code": "15-1299.09",
+     "title": "Information Technology Project Managers",
+     "share": 0.379
+    },
+    {
+     "code": "15-1299.05",
+     "title": "Information Security Engineers",
+     "share": 0.025
+    },
+    {
+     "code": "15-1299.02",
+     "title": "Geographic Information Systems Technologists and Technicians",
+     "share": 0.003
+    },
+    {
+     "code": "15-1299.01",
+     "title": "Web Administrators",
+     "share": 0.003
+    },
+    {
+     "code": "15-1299.03",
+     "title": "Document Management Specialists",
+     "share": 0.001
+    },
+    {
+     "code": "15-1299.07",
+     "title": "Blockchain Engineers",
+     "share": 0.001
+    },
+    {
+     "code": "15-1299.04",
+     "title": "Penetration Testers",
+     "share": 0.0
+    },
+    {
+     "code": "15-1299.06",
+     "title": "Digital Forensics Analysts",
+     "share": 0.0
+    }
+   ]
+  },
+  "15-2041": {
+   "title": "Statisticians",
+   "h1b_filings": 8225,
+   "residual_share": 0.017,
+   "within_similarity": 0.959,
+   "profiles": [
+    {
+     "code": "15-2041.00",
+     "title": "Statisticians",
+     "share": 0.812
+    },
+    {
+     "code": "15-2041.01",
+     "title": "Biostatisticians",
+     "share": 0.188
+    }
+   ]
+  },
+  "15-2051": {
+   "title": "Data Scientists",
+   "h1b_filings": 55150,
+   "residual_share": 0.004,
+   "within_similarity": 0.895,
+   "profiles": [
+    {
+     "code": "15-2051.00",
+     "title": "Data Scientists",
+     "share": 0.568
+    },
+    {
+     "code": "15-2051.01",
+     "title": "Business Intelligence Analysts",
+     "share": 0.41
+    },
+    {
+     "code": "15-2051.02",
+     "title": "Clinical Data Managers",
+     "share": 0.022
+    }
+   ]
+  },
+  "17-1022": {
+   "title": "Surveyors",
+   "h1b_filings": 36,
+   "residual_share": 0.0,
+   "within_similarity": 0.884,
+   "profiles": [
+    {
+     "code": "17-1022.00",
+     "title": "Surveyors",
+     "share": 0.75
+    },
+    {
+     "code": "17-1022.01",
+     "title": "Geodetic Surveyors",
+     "share": 0.25
+    }
+   ]
+  },
+  "17-2051": {
+   "title": "Civil Engineers",
+   "h1b_filings": 10355,
+   "residual_share": 0.015,
+   "within_similarity": 0.978,
+   "profiles": [
+    {
+     "code": "17-2051.00",
+     "title": "Civil Engineers",
+     "share": 0.91
+    },
+    {
+     "code": "17-2051.01",
+     "title": "Transportation Engineers",
+     "share": 0.06
+    },
+    {
+     "code": "17-2051.02",
+     "title": "Water/Wastewater Engineers",
+     "share": 0.03
+    }
+   ]
+  },
+  "17-2072": {
+   "title": "Electronics Engineers, Except Computer",
+   "h1b_filings": 14897,
+   "residual_share": 0.007,
+   "within_similarity": 0.999,
+   "profiles": [
+    {
+     "code": "17-2072.00",
+     "title": "Electronics Engineers, Except Computer",
+     "share": 0.998
+    },
+    {
+     "code": "17-2072.01",
+     "title": "Radio Frequency Identification Device Specialists",
+     "share": 0.002
+    }
+   ]
+  },
+  "17-2111": {
+   "title": "Health and Safety Engineers, Except Mining Safety Engineers and Inspectors",
+   "h1b_filings": 273,
+   "residual_share": 0.0,
+   "within_similarity": 0.904,
+   "profiles": [
+    {
+     "code": "17-2111.00",
+     "title": "Health and Safety Engineers, Except Mining Safety Engineers and Inspectors",
+     "share": 0.806
+    },
+    {
+     "code": "17-2111.02",
+     "title": "Fire-Prevention and Protection Engineers",
+     "share": 0.194
+    }
+   ]
+  },
+  "17-2112": {
+   "title": "Industrial Engineers",
+   "h1b_filings": 18371,
+   "residual_share": 0.003,
+   "within_similarity": 0.76,
+   "profiles": [
+    {
+     "code": "17-2112.00",
+     "title": "Industrial Engineers",
+     "share": 0.528
+    },
+    {
+     "code": "17-2112.02",
+     "title": "Validation Engineers",
+     "share": 0.236
+    },
+    {
+     "code": "17-2112.03",
+     "title": "Manufacturing Engineers",
+     "share": 0.205
+    },
+    {
+     "code": "17-2112.01",
+     "title": "Human Factors Engineers and Ergonomists",
+     "share": 0.031
+    }
+   ]
+  },
+  "17-2141": {
+   "title": "Mechanical Engineers",
+   "h1b_filings": 19094,
+   "residual_share": 0.007,
+   "within_similarity": 0.955,
+   "profiles": [
+    {
+     "code": "17-2141.00",
+     "title": "Mechanical Engineers",
+     "share": 0.908
+    },
+    {
+     "code": "17-2141.02",
+     "title": "Automotive Engineers",
+     "share": 0.088
+    },
+    {
+     "code": "17-2141.01",
+     "title": "Fuel Cell Engineers",
+     "share": 0.004
+    }
+   ]
+  },
+  "17-2199": {
+   "title": "Engineers, All Other",
+   "h1b_filings": 4354,
+   "residual_share": 0.118,
+   "within_similarity": 0.771,
+   "profiles": [
+    {
+     "code": "17-2199.05",
+     "title": "Mechatronics Engineers",
+     "share": 0.352
+    },
+    {
+     "code": "17-2199.08",
+     "title": "Robotics Engineers",
+     "share": 0.303
+    },
+    {
+     "code": "17-2199.07",
+     "title": "Photonics Engineers",
+     "share": 0.111
+    },
+    {
+     "code": "17-2199.03",
+     "title": "Energy Engineers, Except Wind and Solar",
+     "share": 0.107
+    },
+    {
+     "code": "17-2199.11",
+     "title": "Solar Energy Systems Engineers",
+     "share": 0.061
+    },
+    {
+     "code": "17-2199.09",
+     "title": "Nanosystems Engineers",
+     "share": 0.035
+    },
+    {
+     "code": "17-2199.06",
+     "title": "Microsystems Engineers",
+     "share": 0.023
+    },
+    {
+     "code": "17-2199.10",
+     "title": "Wind Energy Engineers",
+     "share": 0.008
+    }
+   ]
+  },
+  "17-3024": {
+   "title": "Electro-Mechanical and Mechatronics Technologists and Technicians",
+   "h1b_filings": 20,
+   "residual_share": 0.0,
+   "within_similarity": 0.943,
+   "profiles": [
+    {
+     "code": "17-3024.00",
+     "title": "Electro-Mechanical and Mechatronics Technologists and Technicians",
+     "share": 0.6
+    },
+    {
+     "code": "17-3024.01",
+     "title": "Robotics Technicians",
+     "share": 0.4
+    }
+   ]
+  },
+  "17-3026": {
+   "title": "Industrial Engineering Technologists and Technicians",
+   "h1b_filings": 52,
+   "residual_share": 0.0,
+   "within_similarity": 0.813,
+   "profiles": [
+    {
+     "code": "17-3026.00",
+     "title": "Industrial Engineering Technologists and Technicians",
+     "share": 0.712
+    },
+    {
+     "code": "17-3026.01",
+     "title": "Nanotechnology Engineering Technologists and Technicians",
+     "share": 0.288
+    }
+   ]
+  },
+  "17-3027": {
+   "title": "Mechanical Engineering Technologists and Technicians",
+   "h1b_filings": 56,
+   "residual_share": 0.0,
+   "within_similarity": 0.959,
+   "profiles": [
+    {
+     "code": "17-3027.00",
+     "title": "Mechanical Engineering Technologists and Technicians",
+     "share": 0.929
+    },
+    {
+     "code": "17-3027.01",
+     "title": "Automotive Engineering Technicians",
+     "share": 0.071
+    }
+   ]
+  },
+  "19-1029": {
+   "title": "Biological Scientists, All Other",
+   "h1b_filings": 8041,
+   "residual_share": 0.201,
+   "within_similarity": 0.759,
+   "profiles": [
+    {
+     "code": "19-1029.02",
+     "title": "Molecular and Cellular Biologists",
+     "share": 0.5
+    },
+    {
+     "code": "19-1029.01",
+     "title": "Bioinformatics Scientists",
+     "share": 0.404
+    },
+    {
+     "code": "19-1029.04",
+     "title": "Biologists",
+     "share": 0.058
+    },
+    {
+     "code": "19-1029.03",
+     "title": "Geneticists",
+     "share": 0.038
+    }
+   ]
+  },
+  "19-1031": {
+   "title": "Conservation Scientists",
+   "h1b_filings": 62,
+   "residual_share": 0.0,
+   "within_similarity": 0.967,
+   "profiles": [
+    {
+     "code": "19-1031.00",
+     "title": "Conservation Scientists",
+     "share": 0.935
+    },
+    {
+     "code": "19-1031.02",
+     "title": "Range Managers",
+     "share": 0.065
+    }
+   ]
+  },
+  "19-2041": {
+   "title": "Environmental Scientists and Specialists, Including Health",
+   "h1b_filings": 883,
+   "residual_share": 0.01,
+   "within_similarity": 0.815,
+   "profiles": [
+    {
+     "code": "19-2041.00",
+     "title": "Environmental Scientists and Specialists, Including Health",
+     "share": 0.778
+    },
+    {
+     "code": "19-2041.01",
+     "title": "Climate Change Policy Analysts",
+     "share": 0.188
+    },
+    {
+     "code": "19-2041.03",
+     "title": "Industrial Ecologists",
+     "share": 0.027
+    },
+    {
+     "code": "19-2041.02",
+     "title": "Environmental Restoration Planners",
+     "share": 0.007
+    }
+   ]
+  },
+  "19-3011": {
+   "title": "Economists",
+   "h1b_filings": 1633,
+   "residual_share": 0.002,
+   "within_similarity": 0.98,
+   "profiles": [
+    {
+     "code": "19-3011.00",
+     "title": "Economists",
+     "share": 0.927
+    },
+    {
+     "code": "19-3011.01",
+     "title": "Environmental Economists",
+     "share": 0.073
+    }
+   ]
+  },
+  "19-3039": {
+   "title": "Psychologists, All Other",
+   "h1b_filings": 183,
+   "residual_share": 0.623,
+   "within_similarity": 0.979,
+   "profiles": [
+    {
+     "code": "19-3039.02",
+     "title": "Neuropsychologists",
+     "share": 0.841
+    },
+    {
+     "code": "19-3039.03",
+     "title": "Clinical Neuropsychologists",
+     "share": 0.159
+    }
+   ]
+  },
+  "19-4012": {
+   "title": "Agricultural Technicians",
+   "h1b_filings": 42,
+   "residual_share": 0.0,
+   "within_similarity": 0.837,
+   "profiles": [
+    {
+     "code": "19-4012.00",
+     "title": "Agricultural Technicians",
+     "share": 0.857
+    },
+    {
+     "code": "19-4012.01",
+     "title": "Precision Agriculture Technicians",
+     "share": 0.143
+    }
+   ]
+  },
+  "19-4099": {
+   "title": "Life, Physical, and Social Science Technicians, All Other",
+   "h1b_filings": 157,
+   "residual_share": 0.045,
+   "within_similarity": 0.958,
+   "profiles": [
+    {
+     "code": "19-4099.01",
+     "title": "Quality Control Analysts",
+     "share": 0.973
+    },
+    {
+     "code": "19-4099.03",
+     "title": "Remote Sensing Technicians",
+     "share": 0.027
+    }
+   ]
+  },
+  "27-2012": {
+   "title": "Producers and Directors",
+   "h1b_filings": 216,
+   "residual_share": 0.065,
+   "within_similarity": 0.904,
+   "profiles": [
+    {
+     "code": "27-2012.00",
+     "title": "Producers and Directors",
+     "share": 0.861
+    },
+    {
+     "code": "27-2012.05",
+     "title": "Media Technical Directors/Managers",
+     "share": 0.088
+    },
+    {
+     "code": "27-2012.03",
+     "title": "Media Programming Directors",
+     "share": 0.042
+    },
+    {
+     "code": "27-2012.04",
+     "title": "Talent Directors",
+     "share": 0.009
+    }
+   ]
+  },
+  "27-3043": {
+   "title": "Writers and Authors",
+   "h1b_filings": 74,
+   "residual_share": 0.0,
+   "within_similarity": 0.994,
+   "profiles": [
+    {
+     "code": "27-3043.00",
+     "title": "Writers and Authors",
+     "share": 0.986
+    },
+    {
+     "code": "27-3043.05",
+     "title": "Poets, Lyricists and Creative Writers",
+     "share": 0.014
+    }
+   ]
+  },
+  "29-1071": {
+   "title": "Physician Assistants",
+   "h1b_filings": 99,
+   "residual_share": 0.01,
+   "within_similarity": 0.881,
+   "profiles": [
+    {
+     "code": "29-1071.00",
+     "title": "Physician Assistants",
+     "share": 0.879
+    },
+    {
+     "code": "29-1071.01",
+     "title": "Anesthesiologist Assistants",
+     "share": 0.121
+    }
+   ]
+  },
+  "29-1129": {
+   "title": "Therapists, All Other",
+   "h1b_filings": 54,
+   "residual_share": 0.444,
+   "within_similarity": 0.979,
+   "profiles": [
+    {
+     "code": "29-1129.02",
+     "title": "Music Therapists",
+     "share": 0.867
+    },
+    {
+     "code": "29-1129.01",
+     "title": "Art Therapists",
+     "share": 0.133
+    }
+   ]
+  },
+  "29-1141": {
+   "title": "Registered Nurses",
+   "h1b_filings": 2332,
+   "residual_share": 0.003,
+   "within_similarity": 0.943,
+   "profiles": [
+    {
+     "code": "29-1141.00",
+     "title": "Registered Nurses",
+     "share": 0.783
+    },
+    {
+     "code": "29-1141.03",
+     "title": "Critical Care Nurses",
+     "share": 0.155
+    },
+    {
+     "code": "29-1141.01",
+     "title": "Acute Care Nurses",
+     "share": 0.038
+    },
+    {
+     "code": "29-1141.04",
+     "title": "Clinical Nurse Specialists",
+     "share": 0.022
+    },
+    {
+     "code": "29-1141.02",
+     "title": "Advanced Practice Psychiatric Nurses",
+     "share": 0.002
+    }
+   ]
+  },
+  "29-1229": {
+   "title": "Physicians, All Other",
+   "h1b_filings": 10810,
+   "residual_share": 0.717,
+   "within_similarity": 0.981,
+   "profiles": [
+    {
+     "code": "29-1229.02",
+     "title": "Hospitalists",
+     "share": 0.943
+    },
+    {
+     "code": "29-1229.03",
+     "title": "Urologists",
+     "share": 0.03
+    },
+    {
+     "code": "29-1229.04",
+     "title": "Physical Medicine and Rehabilitation Physicians",
+     "share": 0.01
+    },
+    {
+     "code": "29-1229.01",
+     "title": "Allergists and Immunologists",
+     "share": 0.009
+    },
+    {
+     "code": "29-1229.06",
+     "title": "Sports Medicine Physicians",
+     "share": 0.005
+    },
+    {
+     "code": "29-1229.05",
+     "title": "Preventive Medicine Physicians",
+     "share": 0.003
+    }
+   ]
+  },
+  "29-1299": {
+   "title": "Healthcare Diagnosing or Treating Practitioners, All Other",
+   "h1b_filings": 477,
+   "residual_share": 0.985,
+   "within_similarity": 0.795,
+   "profiles": [
+    {
+     "code": "29-1299.01",
+     "title": "Naturopathic Physicians",
+     "share": 0.714
+    },
+    {
+     "code": "29-1299.02",
+     "title": "Orthoptists",
+     "share": 0.286
+    }
+   ]
+  },
+  "29-2011": {
+   "title": "Medical and Clinical Laboratory Technologists",
+   "h1b_filings": 5027,
+   "residual_share": 0.005,
+   "within_similarity": 0.967,
+   "profiles": [
+    {
+     "code": "29-2011.00",
+     "title": "Medical and Clinical Laboratory Technologists",
+     "share": 0.976
+    },
+    {
+     "code": "29-2011.04",
+     "title": "Histotechnologists",
+     "share": 0.013
+    },
+    {
+     "code": "29-2011.01",
+     "title": "Cytogenetic Technologists",
+     "share": 0.006
+    },
+    {
+     "code": "29-2011.02",
+     "title": "Cytotechnologists",
+     "share": 0.004
+    }
+   ]
+  },
+  "29-2012": {
+   "title": "Medical and Clinical Laboratory Technicians",
+   "h1b_filings": 58,
+   "residual_share": 0.017,
+   "within_similarity": 0.98,
+   "profiles": [
+    {
+     "code": "29-2012.00",
+     "title": "Medical and Clinical Laboratory Technicians",
+     "share": 0.983
+    },
+    {
+     "code": "29-2012.01",
+     "title": "Histology Technicians",
+     "share": 0.017
+    }
+   ]
+  },
+  "29-2099": {
+   "title": "Health Technologists and Technicians, All Other",
+   "h1b_filings": 30,
+   "residual_share": 0.867,
+   "within_similarity": 0.715,
+   "profiles": [
+    {
+     "code": "29-2099.01",
+     "title": "Neurodiagnostic Technologists",
+     "share": 0.75
+    },
+    {
+     "code": "29-2099.08",
+     "title": "Patient Representatives",
+     "share": 0.25
+    }
+   ]
+  },
+  "41-4011": {
+   "title": "Sales Representatives, Wholesale and Manufacturing, Technical and Scientific Products",
+   "h1b_filings": 248,
+   "residual_share": 0.0,
+   "within_similarity": 0.995,
+   "profiles": [
+    {
+     "code": "41-4011.00",
+     "title": "Sales Representatives, Wholesale and Manufacturing, Technical and Scientific Products",
+     "share": 0.996
+    },
+    {
+     "code": "41-4011.07",
+     "title": "Solar Sales Representatives and Assessors",
+     "share": 0.004
+    }
+   ]
+  },
+  "47-4011": {
+   "title": "Construction and Building Inspectors",
+   "h1b_filings": 10,
+   "residual_share": 0.0,
+   "within_similarity": 0.769,
+   "profiles": [
+    {
+     "code": "47-4011.01",
+     "title": "Energy Auditors",
+     "share": 0.6
+    },
+    {
+     "code": "47-4011.00",
+     "title": "Construction and Building Inspectors",
+     "share": 0.4
+    }
+   ]
+  },
+  "51-9071": {
+   "title": "Jewelers and Precious Stone and Metal Workers",
+   "h1b_filings": 2,
+   "residual_share": 0.0,
+   "within_similarity": 0.771,
+   "profiles": [
+    {
+     "code": "51-9071.00",
+     "title": "Jewelers and Precious Stone and Metal Workers",
+     "share": 0.5
+    },
+    {
+     "code": "51-9071.06",
+     "title": "Gem and Diamond Workers",
+     "share": 0.5
+    }
+   ]
+  },
+  "53-6051": {
+   "title": "Transportation Inspectors",
+   "h1b_filings": 18,
+   "residual_share": 0.0,
+   "within_similarity": 0.926,
+   "profiles": [
+    {
+     "code": "53-6051.00",
+     "title": "Transportation Inspectors",
+     "share": 0.944
+    },
+    {
+     "code": "53-6051.01",
+     "title": "Aviation Inspectors",
+     "share": 0.056
+    }
+   ]
+  }
+ },
+ "similarity_uncentred": {
+  "pairs": 416328,
+  "mean": 0.953,
+  "q05": 0.914,
+  "q25": 0.941,
+  "q50": 0.956,
+  "q75": 0.968,
+  "q95": 0.981
+ },
+ "similarity_all": {
+  "pairs": 310078,
+  "mean": 0.002,
+  "q05": -0.521,
+  "q25": -0.273,
+  "q50": -0.019,
+  "q75": 0.259,
+  "q95": 0.6
+ },
+ "similarity_h1b": {
+  "pairs": 114481,
+  "mean": 0.053,
+  "q05": -0.452,
+  "q25": -0.179,
+  "q50": 0.051,
+  "q75": 0.278,
+  "q95": 0.574
+ },
+ "smoke_test": {
+  "occupations": 479,
+  "related_links": 2467,
+  "share_in_nearest": 0.432,
+  "share_by_chance": 0.013,
+  "related_similarity_median": 0.625
+ },
+ "neighbours": {
+  "15-1252": {
+   "title": "Software Developers",
+   "filings": 334566,
+   "nearest": [
+    {
+     "code": "15-1254",
+     "title": "Web Developers",
+     "similarity": 0.781
+    },
+    {
+     "code": "15-1242",
+     "title": "Database Administrators",
+     "similarity": 0.779
+    },
+    {
+     "code": "15-1243",
+     "title": "Database Architects",
+     "similarity": 0.774
+    },
+    {
+     "code": "15-1253",
+     "title": "Software Quality Assurance Analysts and Testers",
+     "similarity": 0.744
+    },
+    {
+     "code": "15-1255",
+     "title": "Web and Digital Interface Designers",
+     "similarity": 0.738
+    }
+   ]
+  },
+  "15-1299": {
+   "title": "Computer Occupations, All Other",
+   "filings": 103800,
+   "nearest": [
+    {
+     "code": "15-1241",
+     "title": "Computer Network Architects",
+     "similarity": 0.672
+    },
+    {
+     "code": "11-3021",
+     "title": "Computer and Information Systems Managers",
+     "similarity": 0.666
+    },
+    {
+     "code": "15-1221",
+     "title": "Computer and Information Research Scientists",
+     "similarity": 0.607
+    },
+    {
+     "code": "17-2071",
+     "title": "Electrical Engineers",
+     "similarity": 0.599
+    },
+    {
+     "code": "17-2061",
+     "title": "Computer Hardware Engineers",
+     "similarity": 0.594
+    }
+   ]
+  },
+  "15-2051": {
+   "title": "Data Scientists",
+   "filings": 55150,
+   "nearest": [
+    {
+     "code": "15-2041",
+     "title": "Statisticians",
+     "similarity": 0.812
+    },
+    {
+     "code": "13-2099",
+     "title": "Financial Specialists, All Other",
+     "similarity": 0.808
+    },
+    {
+     "code": "19-3011",
+     "title": "Economists",
+     "similarity": 0.74
+    },
+    {
+     "code": "15-2021",
+     "title": "Mathematicians",
+     "similarity": 0.735
+    },
+    {
+     "code": "15-2011",
+     "title": "Actuaries",
+     "similarity": 0.719
+    }
+   ]
+  },
+  "15-1253": {
+   "title": "Software Quality Assurance Analysts and Testers",
+   "filings": 35412,
+   "nearest": [
+    {
+     "code": "15-1243",
+     "title": "Database Architects",
+     "similarity": 0.776
+    },
+    {
+     "code": "15-1254",
+     "title": "Web Developers",
+     "similarity": 0.752
+    },
+    {
+     "code": "15-1252",
+     "title": "Software Developers",
+     "similarity": 0.744
+    },
+    {
+     "code": "15-1251",
+     "title": "Computer Programmers",
+     "similarity": 0.74
+    },
+    {
+     "code": "15-1242",
+     "title": "Database Administrators",
+     "similarity": 0.684
+    }
+   ]
+  },
+  "15-1211": {
+   "title": "Computer Systems Analysts",
+   "filings": 29223,
+   "nearest": [
+    {
+     "code": "15-1244",
+     "title": "Network and Computer Systems Administrators",
+     "similarity": 0.756
+    },
+    {
+     "code": "15-1241",
+     "title": "Computer Network Architects",
+     "similarity": 0.747
+    },
+    {
+     "code": "15-1252",
+     "title": "Software Developers",
+     "similarity": 0.734
+    },
+    {
+     "code": "15-1221",
+     "title": "Computer and Information Research Scientists",
+     "similarity": 0.702
+    },
+    {
+     "code": "15-1242",
+     "title": "Database Administrators",
+     "similarity": 0.701
+    }
+   ]
+  },
+  "15-1251": {
+   "title": "Computer Programmers",
+   "filings": 25992,
+   "nearest": [
+    {
+     "code": "15-1254",
+     "title": "Web Developers",
+     "similarity": 0.782
+    },
+    {
+     "code": "15-1243",
+     "title": "Database Architects",
+     "similarity": 0.77
+    },
+    {
+     "code": "15-1221",
+     "title": "Computer and Information Research Scientists",
+     "similarity": 0.744
+    },
+    {
+     "code": "15-1253",
+     "title": "Software Quality Assurance Analysts and Testers",
+     "similarity": 0.74
+    },
+    {
+     "code": "15-1252",
+     "title": "Software Developers",
+     "similarity": 0.734
+    }
+   ]
+  },
+  "11-3021": {
+   "title": "Computer and Information Systems Managers",
+   "filings": 23209,
+   "nearest": [
+    {
+     "code": "11-9111",
+     "title": "Medical and Health Services Managers",
+     "similarity": 0.721
+    },
+    {
+     "code": "13-1082",
+     "title": "Project Management Specialists",
+     "similarity": 0.719
+    },
+    {
+     "code": "11-1021",
+     "title": "General and Operations Managers",
+     "similarity": 0.707
+    },
+    {
+     "code": "11-1011",
+     "title": "Chief Executives",
+     "similarity": 0.703
+    },
+    {
+     "code": "11-3131",
+     "title": "Training and Development Managers",
+     "similarity": 0.69
+    }
+   ]
+  },
+  "17-2141": {
+   "title": "Mechanical Engineers",
+   "filings": 19094,
+   "nearest": [
+    {
+     "code": "17-2011",
+     "title": "Aerospace Engineers",
+     "similarity": 0.761
+    },
+    {
+     "code": "17-2121",
+     "title": "Marine Engineers and Naval Architects",
+     "similarity": 0.758
+    },
+    {
+     "code": "17-2041",
+     "title": "Chemical Engineers",
+     "similarity": 0.756
+    },
+    {
+     "code": "17-2031",
+     "title": "Bioengineers and Biomedical Engineers",
+     "similarity": 0.755
+    },
+    {
+     "code": "17-2131",
+     "title": "Materials Engineers",
+     "similarity": 0.753
+    }
+   ]
+  },
+  "17-2112": {
+   "title": "Industrial Engineers",
+   "filings": 18371,
+   "nearest": [
+    {
+     "code": "17-2131",
+     "title": "Materials Engineers",
+     "similarity": 0.732
+    },
+    {
+     "code": "17-2141",
+     "title": "Mechanical Engineers",
+     "similarity": 0.711
+    },
+    {
+     "code": "17-2011",
+     "title": "Aerospace Engineers",
+     "similarity": 0.705
+    },
+    {
+     "code": "17-2041",
+     "title": "Chemical Engineers",
+     "similarity": 0.678
+    },
+    {
+     "code": "17-2161",
+     "title": "Nuclear Engineers",
+     "similarity": 0.664
+    }
+   ]
+  },
+  "13-2011": {
+   "title": "Accountants and Auditors",
+   "filings": 18035,
+   "nearest": [
+    {
+     "code": "13-2031",
+     "title": "Budget Analysts",
+     "similarity": 0.759
+    },
+    {
+     "code": "13-2082",
+     "title": "Tax Preparers",
+     "similarity": 0.746
+    },
+    {
+     "code": "13-2052",
+     "title": "Personal Financial Advisors",
+     "similarity": 0.746
+    },
+    {
+     "code": "15-2011",
+     "title": "Actuaries",
+     "similarity": 0.73
+    },
+    {
+     "code": "41-3031",
+     "title": "Securities, Commodities, and Financial Services Sales Agents",
+     "similarity": 0.725
+    }
+   ]
+  },
+  "15-2031": {
+   "title": "Operations Research Analysts",
+   "filings": 15716,
+   "nearest": [
+    {
+     "code": "15-2041",
+     "title": "Statisticians",
+     "similarity": 0.777
+    },
+    {
+     "code": "13-2099",
+     "title": "Financial Specialists, All Other",
+     "similarity": 0.718
+    },
+    {
+     "code": "15-2011",
+     "title": "Actuaries",
+     "similarity": 0.713
+    },
+    {
+     "code": "19-3011",
+     "title": "Economists",
+     "similarity": 0.71
+    },
+    {
+     "code": "15-1243",
+     "title": "Database Architects",
+     "similarity": 0.708
+    }
+   ]
+  },
+  "17-2072": {
+   "title": "Electronics Engineers, Except Computer",
+   "filings": 14897,
+   "nearest": [
+    {
+     "code": "17-2061",
+     "title": "Computer Hardware Engineers",
+     "similarity": 0.787
+    },
+    {
+     "code": "17-2199",
+     "title": "Engineers, All Other",
+     "similarity": 0.764
+    },
+    {
+     "code": "17-3027",
+     "title": "Mechanical Engineering Technologists and Technicians",
+     "similarity": 0.756
+    },
+    {
+     "code": "17-2141",
+     "title": "Mechanical Engineers",
+     "similarity": 0.75
+    },
+    {
+     "code": "17-2031",
+     "title": "Bioengineers and Biomedical Engineers",
+     "similarity": 0.75
+    }
+   ]
+  },
+  "13-2051": {
+   "title": "Financial and Investment Analysts",
+   "filings": 14277,
+   "nearest": [
+    {
+     "code": "13-2041",
+     "title": "Credit Analysts",
+     "similarity": 0.686
+    },
+    {
+     "code": "13-2031",
+     "title": "Budget Analysts",
+     "similarity": 0.684
+    },
+    {
+     "code": "41-3031",
+     "title": "Securities, Commodities, and Financial Services Sales Agents",
+     "similarity": 0.669
+    },
+    {
+     "code": "19-3011",
+     "title": "Economists",
+     "similarity": 0.655
+    },
+    {
+     "code": "43-9111",
+     "title": "Statistical Assistants",
+     "similarity": 0.627
+    }
+   ]
+  },
+  "15-1242": {
+   "title": "Database Administrators",
+   "filings": 12989,
+   "nearest": [
+    {
+     "code": "15-1252",
+     "title": "Software Developers",
+     "similarity": 0.779
+    },
+    {
+     "code": "15-1212",
+     "title": "Information Security Analysts",
+     "similarity": 0.741
+    },
+    {
+     "code": "15-1254",
+     "title": "Web Developers",
+     "similarity": 0.716
+    },
+    {
+     "code": "15-1251",
+     "title": "Computer Programmers",
+     "similarity": 0.716
+    },
+    {
+     "code": "15-1211",
+     "title": "Computer Systems Analysts",
+     "similarity": 0.701
+    }
+   ]
+  },
+  "17-2071": {
+   "title": "Electrical Engineers",
+   "filings": 12883,
+   "nearest": [
+    {
+     "code": "17-2061",
+     "title": "Computer Hardware Engineers",
+     "similarity": 0.801
+    },
+    {
+     "code": "17-2011",
+     "title": "Aerospace Engineers",
+     "similarity": 0.745
+    },
+    {
+     "code": "17-2021",
+     "title": "Agricultural Engineers",
+     "similarity": 0.741
+    },
+    {
+     "code": "17-2141",
+     "title": "Mechanical Engineers",
+     "similarity": 0.73
+    },
+    {
+     "code": "17-2031",
+     "title": "Bioengineers and Biomedical Engineers",
+     "similarity": 0.714
+    }
+   ]
+  },
+  "13-1111": {
+   "title": "Management Analysts",
+   "filings": 12052,
+   "nearest": [
+    {
+     "code": "11-1011",
+     "title": "Chief Executives",
+     "similarity": 0.833
+    },
+    {
+     "code": "11-2032",
+     "title": "Public Relations Managers",
+     "similarity": 0.808
+    },
+    {
+     "code": "11-3121",
+     "title": "Human Resources Managers",
+     "similarity": 0.804
+    },
+    {
+     "code": "19-3032",
+     "title": "Industrial-Organizational Psychologists",
+     "similarity": 0.797
+    },
+    {
+     "code": "11-2022",
+     "title": "Sales Managers",
+     "similarity": 0.788
+    }
+   ]
+  },
+  "29-1229": {
+   "title": "Physicians, All Other",
+   "filings": 10810,
+   "nearest": [
+    {
+     "code": "29-1214",
+     "title": "Emergency Medicine Physicians",
+     "similarity": 0.904
+    },
+    {
+     "code": "29-1161",
+     "title": "Nurse Midwives",
+     "similarity": 0.898
+    },
+    {
+     "code": "29-1171",
+     "title": "Nurse Practitioners",
+     "similarity": 0.89
+    },
+    {
+     "code": "29-1217",
+     "title": "Neurologists",
+     "similarity": 0.89
+    },
+    {
+     "code": "29-1218",
+     "title": "Obstetricians and Gynecologists",
+     "similarity": 0.877
+    }
+   ]
+  },
+  "17-2051": {
+   "title": "Civil Engineers",
+   "filings": 10355,
+   "nearest": [
+    {
+     "code": "11-9041",
+     "title": "Architectural and Engineering Managers",
+     "similarity": 0.781
+    },
+    {
+     "code": "17-2081",
+     "title": "Environmental Engineers",
+     "similarity": 0.754
+    },
+    {
+     "code": "17-2151",
+     "title": "Mining and Geological Engineers, Including Mining Safety Engineers",
+     "similarity": 0.754
+    },
+    {
+     "code": "17-1011",
+     "title": "Architects, Except Landscape and Naval",
+     "similarity": 0.751
+    },
+    {
+     "code": "17-1012",
+     "title": "Landscape Architects",
+     "similarity": 0.708
+    }
+   ]
+  },
+  "15-1244": {
+   "title": "Network and Computer Systems Administrators",
+   "filings": 9443,
+   "nearest": [
+    {
+     "code": "15-1211",
+     "title": "Computer Systems Analysts",
+     "similarity": 0.756
+    },
+    {
+     "code": "15-1241",
+     "title": "Computer Network Architects",
+     "similarity": 0.754
+    },
+    {
+     "code": "15-1231",
+     "title": "Computer Network Support Specialists",
+     "similarity": 0.737
+    },
+    {
+     "code": "15-1212",
+     "title": "Information Security Analysts",
+     "similarity": 0.679
+    },
+    {
+     "code": "17-3023",
+     "title": "Electrical and Electronic Engineering Technologists and Technicians",
+     "similarity": 0.672
+    }
+   ]
+  },
+  "13-1161": {
+   "title": "Market Research Analysts and Marketing Specialists",
+   "filings": 9324,
+   "nearest": [
+    {
+     "code": "19-3022",
+     "title": "Survey Researchers",
+     "similarity": 0.749
+    },
+    {
+     "code": "19-3011",
+     "title": "Economists",
+     "similarity": 0.713
+    },
+    {
+     "code": "13-2052",
+     "title": "Personal Financial Advisors",
+     "similarity": 0.71
+    },
+    {
+     "code": "13-2053",
+     "title": "Insurance Underwriters",
+     "similarity": 0.679
+    },
+    {
+     "code": "15-2011",
+     "title": "Actuaries",
+     "similarity": 0.665
+    }
+   ]
+  },
+  "19-1042": {
+   "title": "Medical Scientists, Except Epidemiologists",
+   "filings": 8960,
+   "nearest": [
+    {
+     "code": "19-1029",
+     "title": "Biological Scientists, All Other",
+     "similarity": 0.734
+    },
+    {
+     "code": "19-1021",
+     "title": "Biochemists and Biophysicists",
+     "similarity": 0.694
+    },
+    {
+     "code": "29-2036",
+     "title": "Medical Dosimetrists",
+     "similarity": 0.693
+    },
+    {
+     "code": "19-2011",
+     "title": "Astronomers",
+     "similarity": 0.64
+    },
+    {
+     "code": "19-1041",
+     "title": "Epidemiologists",
+     "similarity": 0.636
+    }
+   ]
+  },
+  "15-1243": {
+   "title": "Database Architects",
+   "filings": 8328,
+   "nearest": [
+    {
+     "code": "15-1254",
+     "title": "Web Developers",
+     "similarity": 0.798
+    },
+    {
+     "code": "15-1253",
+     "title": "Software Quality Assurance Analysts and Testers",
+     "similarity": 0.776
+    },
+    {
+     "code": "15-1252",
+     "title": "Software Developers",
+     "similarity": 0.774
+    },
+    {
+     "code": "15-1251",
+     "title": "Computer Programmers",
+     "similarity": 0.77
+    },
+    {
+     "code": "15-1221",
+     "title": "Computer and Information Research Scientists",
+     "similarity": 0.73
+    }
+   ]
+  },
+  "15-2041": {
+   "title": "Statisticians",
+   "filings": 8225,
+   "nearest": [
+    {
+     "code": "15-2051",
+     "title": "Data Scientists",
+     "similarity": 0.812
+    },
+    {
+     "code": "15-2031",
+     "title": "Operations Research Analysts",
+     "similarity": 0.777
+    },
+    {
+     "code": "15-2021",
+     "title": "Mathematicians",
+     "similarity": 0.776
+    },
+    {
+     "code": "19-3011",
+     "title": "Economists",
+     "similarity": 0.768
+    },
+    {
+     "code": "15-2011",
+     "title": "Actuaries",
+     "similarity": 0.767
+    }
+   ]
+  },
+  "19-1029": {
+   "title": "Biological Scientists, All Other",
+   "filings": 8041,
+   "nearest": [
+    {
+     "code": "19-1021",
+     "title": "Biochemists and Biophysicists",
+     "similarity": 0.738
+    },
+    {
+     "code": "19-1042",
+     "title": "Medical Scientists, Except Epidemiologists",
+     "similarity": 0.734
+    },
+    {
+     "code": "19-2012",
+     "title": "Physicists",
+     "similarity": 0.694
+    },
+    {
+     "code": "19-2011",
+     "title": "Astronomers",
+     "similarity": 0.678
+    },
+    {
+     "code": "25-1052",
+     "title": "Chemistry Teachers, Postsecondary",
+     "similarity": 0.651
+    }
+   ]
+  },
+  "15-1212": {
+   "title": "Information Security Analysts",
+   "filings": 8021,
+   "nearest": [
+    {
+     "code": "15-1242",
+     "title": "Database Administrators",
+     "similarity": 0.741
+    },
+    {
+     "code": "15-1241",
+     "title": "Computer Network Architects",
+     "similarity": 0.694
+    },
+    {
+     "code": "15-1244",
+     "title": "Network and Computer Systems Administrators",
+     "similarity": 0.679
+    },
+    {
+     "code": "15-1211",
+     "title": "Computer Systems Analysts",
+     "similarity": 0.647
+    },
+    {
+     "code": "15-1232",
+     "title": "Computer User Support Specialists",
+     "similarity": 0.632
+    }
+   ]
+  },
+  "13-2099": {
+   "title": "Financial Specialists, All Other",
+   "filings": 6973,
+   "nearest": [
+    {
+     "code": "15-2011",
+     "title": "Actuaries",
+     "similarity": 0.862
+    },
+    {
+     "code": "15-2051",
+     "title": "Data Scientists",
+     "similarity": 0.808
+    },
+    {
+     "code": "19-3011",
+     "title": "Economists",
+     "similarity": 0.802
+    },
+    {
+     "code": "15-2041",
+     "title": "Statisticians",
+     "similarity": 0.757
+    },
+    {
+     "code": "15-2021",
+     "title": "Mathematicians",
+     "similarity": 0.722
+    }
+   ]
+  },
+  "15-1221": {
+   "title": "Computer and Information Research Scientists",
+   "filings": 6367,
+   "nearest": [
+    {
+     "code": "17-2061",
+     "title": "Computer Hardware Engineers",
+     "similarity": 0.766
+    },
+    {
+     "code": "15-1251",
+     "title": "Computer Programmers",
+     "similarity": 0.744
+    },
+    {
+     "code": "19-2012",
+     "title": "Physicists",
+     "similarity": 0.736
+    },
+    {
+     "code": "15-1243",
+     "title": "Database Architects",
+     "similarity": 0.73
+    },
+    {
+     "code": "17-2031",
+     "title": "Bioengineers and Biomedical Engineers",
+     "similarity": 0.723
+    }
+   ]
+  },
+  "19-1021": {
+   "title": "Biochemists and Biophysicists",
+   "filings": 5207,
+   "nearest": [
+    {
+     "code": "19-2012",
+     "title": "Physicists",
+     "similarity": 0.821
+    },
+    {
+     "code": "25-1054",
+     "title": "Physics Teachers, Postsecondary",
+     "similarity": 0.775
+    },
+    {
+     "code": "19-1022",
+     "title": "Microbiologists",
+     "similarity": 0.775
+    },
+    {
+     "code": "17-2031",
+     "title": "Bioengineers and Biomedical Engineers",
+     "similarity": 0.761
+    },
+    {
+     "code": "19-2042",
+     "title": "Geoscientists, Except Hydrologists and Geographers",
+     "similarity": 0.739
+    }
+   ]
+  },
+  "29-2011": {
+   "title": "Medical and Clinical Laboratory Technologists",
+   "filings": 5027,
+   "nearest": [
+    {
+     "code": "29-2012",
+     "title": "Medical and Clinical Laboratory Technicians",
+     "similarity": 0.74
+    },
+    {
+     "code": "29-1151",
+     "title": "Nurse Anesthetists",
+     "similarity": 0.662
+    },
+    {
+     "code": "29-1124",
+     "title": "Radiation Therapists",
+     "similarity": 0.647
+    },
+    {
+     "code": "19-2031",
+     "title": "Chemists",
+     "similarity": 0.596
+    },
+    {
+     "code": "29-2033",
+     "title": "Nuclear Medicine Technologists",
+     "similarity": 0.594
+    }
+   ]
+  },
+  "13-1081": {
+   "title": "Logisticians",
+   "filings": 4868,
+   "nearest": [
+    {
+     "code": "11-3071",
+     "title": "Transportation, Storage, and Distribution Managers",
+     "similarity": 0.783
+    },
+    {
+     "code": "19-3099",
+     "title": "Social Scientists and Related Workers, All Other",
+     "similarity": 0.728
+    },
+    {
+     "code": "11-3061",
+     "title": "Purchasing Managers",
+     "similarity": 0.712
+    },
+    {
+     "code": "13-1111",
+     "title": "Management Analysts",
+     "similarity": 0.707
+    },
+    {
+     "code": "11-1011",
+     "title": "Chief Executives",
+     "similarity": 0.697
+    }
+   ]
+  }
+ }
+}
