@@ -39,6 +39,7 @@ def main():
 
     index_path = os.path.join(B.OUT, "canvas.json")
     idx = json.load(open(index_path))
+    before = json.dumps(idx, sort_keys=True)
     row2_y = idx["boards"]["ChartKit.dc.html"]["y"]
     x = max(e["x"] + e["w"] for e in idx["boards"].values() if e["y"] == row2_y) + 80
     for name, title, _, h in boards:
@@ -48,8 +49,9 @@ def main():
         idx["boards"][name] = {"x": x, "y": row2_y, "w": kit.W, "h": h, "title": title, "is_interactive": True}
         idx["order"].append(name)
         x += kit.W + 80
-    with open(index_path, "w") as f:
-        json.dump(idx, f, ensure_ascii=False, indent=1)
+    if json.dumps(idx, sort_keys=True) != before:  # leave the canvas's own formatting alone when nothing moved
+        with open(index_path, "w") as f:
+            json.dump(idx, f, ensure_ascii=False, indent=1)
     print(f"{len(boards)} boards -> {os.path.relpath(B.OUT)}")
 
 
