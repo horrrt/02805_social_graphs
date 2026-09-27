@@ -43,6 +43,7 @@ test("section 1: the backbone sheds metros, it does not snap", () => {
   says("place-break", `${names[0]} at α = ${d.break.steps[0].alpha.toFixed(3)}`);
   says("place-break", `${names[1]} at ${d.break.steps[1].alpha.toFixed(3)}`);
   says("place-break", `The fall from ${f.q2_gc_size_alpha_0_1} to ${f.q2_gc_size_alpha_0_05} is ${f.q2_breaking_steps_in_window} separate links`);
+  says("place-break", `the largest piece of the map fell from ${f.q2_gc_size_alpha_0_1} metros at α = 0.1 to ${f.q2_gc_size_alpha_0_05} at α = 0.05`);
   assert.equal(d.breaking_links.length, f.q2_breaking_steps_in_window);
   says("place-break", `Of the ${f.q2_breaking_links_flagged} links whose removal cuts a metro loose`);
   says("place-break", `lead ${f.q2_breaking_links_led_by_shortlist} (${pct(f.q2_flagged_shortlist_share)})`);
