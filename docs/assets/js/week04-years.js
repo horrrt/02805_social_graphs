@@ -150,7 +150,11 @@ function twoLines(a, b, width, height, fmt, aria, pal, names, colors) {
     pts.forEach(([px, py], i) => {
       const last = i === 4;
       out.push(circleEl(px, py, 4.5, last ? pal.card : col, col, 2, `${YL(YEARS[i])} ${name}: ${fmt(series[i])}`));
-      out.push(textEl(px, py - 10, fmt(series[i]), 11, pal.ink, 700, "middle"));
+      // The first point sits on the y-axis, so its centred label would land
+      // on top of the axis's own tick labels whenever the two are close in
+      // height; start-anchor it just to the right of the point instead.
+      const first = i === 0;
+      out.push(textEl(first ? px + 6 : px, py - 10, fmt(series[i]), 11, pal.ink, 700, first ? "start" : "middle"));
     });
     out.push(textEl(pts.at(-1)[0] + 12, pts.at(-1)[1] + 4, name, 12, pal.ink, 700, "start"));
   });
