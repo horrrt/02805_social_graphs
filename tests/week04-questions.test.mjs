@@ -98,6 +98,25 @@ test("section 3: switches stay in the group, movers and split clients", () => {
   says("who-overlap", `give ${count(Math.round(f.q3_null_mean))} ± ${Math.round(f.q3_null_sd)} split clients (z = −${Math.round(-f.q3_z)})`);
 });
 
+test("section 3: the named movers and split clients follow the JSON", () => {
+  // Names are not numbers, so the checks above let a rerun on new company keys leave them behind.
+  const d = json("docs/weeks/week04/data/staffing_moves.json");
+  const poss = (name) => (name.endsWith("s") ? `${name}'` : `${name}'s`);
+  const plain = (id) => card(id).replace(/&amp;/g, "&");
+  const has = (id, t) => assert.ok(plain(id).includes(t), `${id} should say "${t}"`);
+  const mover = (name) => d.q2_top_movers.find((m) => m.client === name);
+  assert.equal(d.q2_top_movers[0].client, "Citigroup", '"the largest movers are the largest clients" starts with Citigroup');
+  const citi = mover("Citigroup");
+  const boa = mover("Bank of America");
+  has("who-movers", `Citigroup sits with ${citi.weighted_community_top_firm} when filings count and with ${citi.unweighted_community_top_firm} when they do not`);
+  has("who-movers", `Bank of America moves from ${poss(boa.weighted_community_top_firm)} group to ${poss(boa.unweighted_community_top_firm)}`);
+  const split = (name) => d.q3_top_clients.find((c) => c.client === name);
+  const usaa = split("USAA");
+  const stellantis = split("Stellantis");
+  has("who-overlap", `USAA gets ${pct(usaa.shares[0])} of its filings from ${poss(usaa.communities[0])} group and ${pct(usaa.shares[1])} from ${poss(usaa.communities[1])}`);
+  has("who-overlap", `Stellantis ${pct(stellantis.shares[0])} from ${poss(stellantis.communities[0])} group and ${pct(stellantis.shares[1])} from ${poss(stellantis.communities[1])}`);
+});
+
 test("beyond: law firms, green cards and wage levels", () => {
   const d = json("docs/weeks/week04/data/beyond.json");
   const f = d.finding;
