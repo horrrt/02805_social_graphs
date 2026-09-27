@@ -7,10 +7,12 @@ argument-hint: what the change does, in one line
 
 Ship the current work as a pull request and merge it. The person's one-line summary: ${input:summary:what the change does}
 
-1. If the current branch is `main`, create a branch named after the change (`week04-<short-name>`) first.
+1. If the current branch is `main`, create a branch named after the change and its scope
+   (`week03-<short-name>`, `site-<short-name>`) first.
 2. `git fetch origin` and merge `origin/main` into the branch. If files conflict, stop and show the
    conflicts; do not resolve another member's section on your own.
-3. Run the checks as `/check` describes. Stop and report if any fails.
+3. Run the checks as `/check` describes, then review the diff as `/review` describes. Stop and report if a
+   check fails; fix what the review finds before you go on.
 4. Stage only the files this change needs. Never stage `build/`, raw workbooks or personal data.
 5. Commit with a message in the house style (`.github/instructions/writing.instructions.md`): a short
    subject line, then what changed and why.
