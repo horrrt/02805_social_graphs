@@ -152,8 +152,10 @@ export async function startPlace(echarts) {
     return GROUP[city.community] ?? MUTE;
   }
 
+  // Counts of positions or employers carry no placed-or-direct meaning, so
+  // they take the neutral ink tone rather than the grammar's orange or blue.
   function metricColour() {
-    return state.metric === "positions" ? ORANGE : BLUE;
+    return token("--ink-soft");
   }
 
   /** Tight bubble scale so hubs do not swallow the map. */
