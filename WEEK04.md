@@ -176,8 +176,8 @@ Layout differences the loader already handles:
 
 ## Country of birth: built, aggregates only
 
-Gyula decided on 26 September 2026 to build the country network (the "Where are they from?" box under
-Curious? Go deeper); Àngela and Niklas should look it over in the Sunday review.
+Gyula decided on 26 September 2026 to build the country network (the "Where are they from?" box in the
+deep dive's "More networks"); Àngela and Niklas should look it over in the Sunday review.
 
 The DOL loader still refuses citizenship and country of birth. `analysis/week04_countries.py` reads
 them on its own, in memory only: `COUNTRY_OF_CITIZENSHIP` from the old-form green-card workbooks
@@ -187,14 +187,13 @@ only aggregates to `analysis/week04_countries.json`. No row about a person reach
 repository. The suppression drops 43% of FY2023's certified green cards, so the network covers the
 large country-employer pairs only.
 
-## Go deeper
+## The deep dive
 
-Section 3 keeps one short answer per question; its full text moved unchanged into the page's Curious?
-Go deeper box `#staffing-more`, beside two boxes of their own: `week04_perm.py` (green cards per 100
-H-1B filings, naming an employer only when a raw name search agrees with its key) and
-`week04_countries.py` (above). The law-firm network, weak ties and wage levels stay in section 3's
-own boxes (`week04_lawfirms.py`, `week04_ties.py`, `week04_shift.py`). `tests/week04-prose.test.mjs`
-pins both the short and the full text.
+Everything past the closing sits in one section, `#cut` ("Deep dive"): the first round of questions
+for sections 1 to 3 (section 3's in full, in `#who-first-round`), then "More networks" (`#cut-more`:
+green cards, countries, jobs per metro, strength against degree, the lottery a year apart, USCIS
+denials by year), then "Data and methods" (`#evidence`, the target of every "Data and methods" link).
+`tests/week04-prose.test.mjs` pins each box's numbers and fails if a box leaves the deep dive.
 
 ## Timeline
 
