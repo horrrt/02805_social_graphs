@@ -1,8 +1,11 @@
 // Invariants between analysis/week01_packs.py's output and the Week 1 page.
 //
-// The page used to hand-type 1,945, 303, 58 and 106/107 into packs.js and the
-// prose, so a rerun of the script could silently drift from what the page
-// says. These pin the page's numbers to the JSON the script writes.
+// The page used to hand-type its pack-collecting numbers, so a rerun of the
+// script could silently drift from what the page says. These pin totalWeight,
+// each card's probability, the histogram's count of 303, and the page's
+// ≈1,945 / ≈382 / 1,944.19–1,944.99 figures to week01_packs.json. See
+// tests/week01-prose.test.mjs for the rest of the page's numbers (58, 2,087,
+// 106/107 and the others).
 import test from "node:test";
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
