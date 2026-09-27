@@ -1,2 +1,24 @@
 /* Week 4 redesign · the deep dive: every "Go deeper" box laid out like the
    question cards above it (review/week04-redesign/, boards Deep1 to DeepMethods). */
+
+/* The first-round questions inside one card: each block stacks its header,
+   text and reveal buttons with the same rhythm as a card's left column. */
+.corridor .w4-q-block {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.corridor .w4-q-block + .w4-q-block {
+  border-top: 1px solid var(--line-soft);
+  padding-top: 18px;
+}
+
+.corridor .w4-q-block > p.sub {
+  margin: 0;
+  max-width: 76ch;
+}
+
+.corridor .w4-q-block .w4-q h2 {
+  font-size: 18px;
+}
