@@ -1467,17 +1467,18 @@
             <details class="qa cut" id="cut-jobs">
               <summary><span class="qa-cue">Which jobs go together: three earlier questions</span></summary>
               <div class="qa-body cut-body">
-            <div class="card jobs-card" id="jobs-together">
-              <div class="step-head">
-                <span class="num">A</span>
+            <div class="card jobs-card w4-card" id="jobs-together">
+                          <header class="w4-q">
+              <span class="w4-num">A</span>
+              <div>
                 <h2>Which jobs are hired together?</h2>
-                <span class="year-tag">shared employers</span>
+                <p class="w4-answer">Software Developers sit in 8 of the 12 pairs because almost every sponsoring company hires them.</p>
               </div>
-              <p class="sub">
+            </header>
+<p class="sub">
                 Each bar is a pair among the 60 largest occupations. Its length is
                 the number of companies that filed for both, not the number of
-                workers requested. Software Developers sit in 8 of the 12 pairs
-                because almost every sponsoring company hires them.
+                workers requested. 
               </p>
               <div class="jobs-grid">
                 <div class="plot">
@@ -1491,22 +1492,19 @@
               </div>
             </div>
 
-            <div class="card jobs-card" id="jobs-bridges">
-              <div class="step-head">
-                <span class="num">B</span>
+            <div class="card jobs-card w4-card" id="jobs-bridges">
+                          <header class="w4-q">
+              <span class="w4-num">B</span>
+              <div>
                 <h2>Which jobs belong to two clusters?</h2>
-                <span class="year-tag">overlap</span>
+                <p class="w4-answer">Only <span data-jobs="bridges-pass">…</span> of <span data-jobs="bridges-tested">…</span> pass, fewer than the <span data-jobs="bridges-chance">…</span> a test this strict passes by chance, so no occupation clearly belongs to two clusters.</p>
               </div>
-              <p class="sub">
+            </header>
+<p class="sub">
                 Colours are clusters found by Louvain in the full co-hiring
                 network, named after their largest occupation. We looked for
                 occupations that also belong to a second cluster, with more
-                employer ties there than any rewired network gives them. Only
-                <span data-jobs="bridges-pass">…</span> of
-                <span data-jobs="bridges-tested">…</span> pass, fewer than the
-                <span data-jobs="bridges-chance">…</span> a test this strict
-                passes by chance, so no occupation clearly belongs to two
-                clusters. A ringed node would be one that passes. Click a node to
+                employer ties there than any rewired network gives them.  A ringed node would be one that passes. Click a node to
                 inspect it.
               </p>
               <div class="jobs-grid jobs-network-grid">
@@ -1522,12 +1520,15 @@
               </div>
             </div>
 
-            <div class="card jobs-card" id="jobs-groups">
-              <div class="step-head">
-                <span class="num">C</span>
+            <div class="card jobs-card w4-card" id="jobs-groups">
+                          <header class="w4-q">
+              <span class="w4-num">C</span>
+              <div>
                 <h2>Do the clusters follow official job groups?</h2>
-                <span class="year-tag">SOC comparison</span>
+                <p class="w4-answer">The clusters follow the official groups only in part: NMI <strong data-jobs="nmi">…</strong> against <strong data-jobs="shuffled">…</strong> for shuffled labels (AMI <strong data-jobs="ami">…</strong>), over the <span data-jobs="scored">…</span> occupations in clusters of two or more.</p>
               </div>
+            </header>
+
               <p class="sub">
                 The government groups occupations by their first two SOC digits.
                 We compare those labels with the clusters found from hiring
@@ -1548,11 +1549,7 @@
                 <span class="ico">💡</span>
                 <span>
                   <b>What to notice</b>
-                  The clusters follow the official groups only in part: NMI
-                  <strong data-jobs="nmi">…</strong> against <strong data-jobs="shuffled">…</strong> for
-                  shuffled labels (AMI <strong data-jobs="ami">…</strong>), over the
-                  <span data-jobs="scored">…</span> occupations in clusters of two
-                  or more. The software cluster also holds engineers, accountants
+                   The software cluster also holds engineers, accountants
                   and managers: companies hire across the official groups.
                 </span>
               </div>
