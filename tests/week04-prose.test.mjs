@@ -440,3 +440,15 @@ test("the hero's numbers and map legend follow the analysis", () => {
   has(`${tech} · ${WORDS[size(1)]} tech hubs`);
   has(`${rest} · the other ${size(2)}`);
 });
+
+test("section 2's first round: Software Developers' pairs follow the analysis", () => {
+  // Hand-typed in the deep dive, so a rerun used to leave it behind.
+  const together = text('id="jobs-together"', 'id="jobs-bridges"');
+  const jobs = json("docs/weeks/week04/data/jobs.json");
+  const pairs = jobs.pairs.slice(0, 12);
+  const sdPairs = pairs.filter((p) => [p.source, p.target].includes("15-1252")).length;
+  assert.ok(
+    together.includes(`Software Developers sit in ${sdPairs} of the 12 pairs`),
+    `section 2's first round should say "Software Developers sit in ${sdPairs} of the 12 pairs"`,
+  );
+});
