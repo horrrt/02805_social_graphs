@@ -656,7 +656,9 @@ export async function startPlace(echarts) {
             textBorderColor: "#fff",
             textBorderWidth: 3,
           },
-          labelLayout: { hideOverlap: true },
+          // The heaviest labels crowd into one corner of the scatter; shift
+          // them apart vertically instead of hiding the eight the caption promises.
+          labelLayout: { hideOverlap: true, moveOverlap: "shiftY" },
           data: [...labelled].map((e) => ({
             value: [e.distance_km, e.weight],
             employer: e.top_employer,
