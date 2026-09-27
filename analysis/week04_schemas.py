@@ -990,6 +990,98 @@ class FootprintRank(Model):
         return self
 
 
+# Deep dive · Skills · docs/weeks/week04/data/skills.json, read by week04-skills.js -
+
+class SkillsExample(Model):
+    a: str
+    a_title: str
+    b: str
+    b_title: str
+    similarity: float = Field(ge=-1, le=1)
+
+
+class SkillsGroup(Model):
+    n: int = Count
+    mean: float | None
+    sd: float | None
+    examples: list[SkillsExample]
+
+
+class Cohiring(Model):
+    source: dict
+    occupations: int = Field(ge=2)
+    occupations_without_a_profile: int = Count
+    direct_ties: SkillsGroup
+    same_cluster_other_pairs: SkillsGroup
+    different_cluster_pairs: SkillsGroup
+    all_pairs: SkillsGroup
+
+
+class Skills(Model):
+    meta: dict
+    cohiring: Cohiring
+
+
+# Deep dive · PageRank · docs/weeks/week04/data/pagerank.json, read by week04-pagerank.js -
+
+class PagerankRow(Model):
+    code: str
+    title: str
+    filings: int = Count
+    degree: int = Count
+    strength: int = Count
+    pagerank: float = Field(ge=0)
+    rank: int = Field(ge=1)
+
+
+class PagerankIterRow(Model):
+    code: str
+    title: str
+    pagerank: float = Field(ge=0)
+
+
+class PagerankStep(Model):
+    step: int = Count
+    rows: list[PagerankIterRow] = Field(min_length=1)
+
+
+class PagerankIteration(Model):
+    alpha: float
+    steps: list[PagerankStep] = Field(min_length=1)
+    max_error_vs_nx_pagerank: float = Field(ge=0)
+
+
+class PagerankMover(Model):
+    code: str
+    title: str
+    rank_d0_5: int = Field(ge=1)
+    rank_d0_99: int = Field(ge=1)
+    rank_shift: int
+    degree_rank: int = Field(ge=1)
+    degree: int = Count
+    strength: int = Count
+    pagerank_d0_5: float = Field(ge=0)
+    pagerank_d0_99: float = Field(ge=0)
+
+
+class Pagerank(Model):
+    meta: dict
+    damping: list[float] = Field(min_length=3)
+    rankings: dict[str, list[PagerankRow]]
+    iteration: PagerankIteration
+    movers: list[PagerankMover] = Field(min_length=1)
+    finding: dict
+
+    @model_validator(mode="after")
+    def references(self):
+        assert set(self.rankings) == {str(d) for d in self.damping}, \
+            "rankings keys must be str(d) for every damping value"
+        for d, rows in self.rankings.items():
+            ranks = [r.rank for r in rows]
+            assert ranks == list(range(1, len(rows) + 1)), f"rankings[{d}] is not ranked in order"
+        return self
+
+
 PAGES = {
     "docs/assets/data/week04_place.json": Place,
     "docs/weeks/week04/data/jobs.json": Jobs,
@@ -997,6 +1089,8 @@ PAGES = {
     "docs/weeks/week04/data/staffing_communities.json": StaffingCommunities,
     "docs/weeks/week04/data/where_who.json": WhereWho,
     "docs/weeks/week04/data/jobs_split.json": JobsSplit,
+    "docs/weeks/week04/data/skills.json": Skills,
+    "docs/weeks/week04/data/pagerank.json": Pagerank,
     "docs/weeks/week04/data/staffing_moves.json": StaffingMoves,
     "docs/weeks/week04/data/beyond.json": Beyond,
     "docs/weeks/week04/data/footprint.json": Footprint,
