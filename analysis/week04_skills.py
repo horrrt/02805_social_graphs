@@ -40,16 +40,33 @@ Coverage is reported as a share of certified FY2024 and FY2025 filings, the
 years section 2 uses. Codes O*NET does not list, and listed codes without any
 rated profile, are named with their filings.
 
+Deep-dive box (docs/weeks/week04/data/skills.json)
+- Reuses section 2's own network, docs/weeks/week04/data/jobs.json: its 60
+  shown occupations, their direct co-hiring ties (edges) and their Louvain
+  clusters, already checked there against degree-preserving rewirings.
+- Q1: among those 60 occupations, is the O*NET similarity of a pair with a
+  direct co-hiring tie higher than a random pair from the same 60 (all
+  pairs)? This is a within-population comparison, not against every rated
+  occupation, so a large, popular field (which tends to co-hire more and,
+  separately, to have a less extreme O*NET profile) does not by itself
+  inflate the answer.
+- Q2: does that also hold one level up, between whole clusters that need not
+  share a single direct hire: same-cluster pairs (excluding the direct ties
+  Q1 already counts) against different-cluster pairs, both again within the
+  60.
+
 Outputs
 - build/week04/skills_similarity.csv.gz: every pair of codes with a profile.
 - analysis/week04_skills.json: coverage, the mixed codes and their weights,
   the similarity spread, the smoke test and each large H-1B occupation's
   nearest neighbours.
+- docs/weeks/week04/data/skills.json: the deep-dive box's two questions.
 """
 
 import json
 import zipfile
 from collections import Counter
+from itertools import combinations
 
 import numpy as np
 import pandas as pd
@@ -57,11 +74,14 @@ from sklearn.metrics.pairwise import cosine_similarity
 
 from week04_data import OUT as BUILD, RAW, ROOT
 from week04_jobs import filtered
+from week04_schemas import check
 
 ONET_DIR = RAW / "onet"
 ARCHIVE = ONET_DIR / "db_25_0_text.zip"
 PAIRS = BUILD / "skills_similarity.csv.gz"
 OUT = ROOT / "analysis" / "week04_skills.json"
+JOBS_PAGE = ROOT / "docs" / "weeks" / "week04" / "data" / "jobs.json"
+PAGE = ROOT / "docs" / "weeks" / "week04" / "data" / "skills.json"
 YEARS = (2024, 2025)
 DOMAINS = ["essential_skills", "transferable_skills", "knowledge", "work_activities"]
 ARCHIVE_DOMAINS = ["Skills", "Knowledge", "Work Activities"]
@@ -192,6 +212,56 @@ def smoke_test(sim, focus, pairs):
             "related_similarity_median": round(float(np.median(values)), 3)}
 
 
+def group_stats(pairs, sim, titles, extreme=3):
+    """Mean, sd and n of sim over a list of (code, code) pairs, plus the most and
+    least similar pairs so the reveal can name one instead of only a mean."""
+    if not pairs:
+        return {"n": 0, "mean": None, "sd": None, "examples": []}
+    values = np.array([sim.at[a, b] for a, b in pairs])
+    order = np.argsort(-values)
+    shown = [pairs[i] for i in order[:extreme]] + ([pairs[i] for i in order[-extreme:]] if len(pairs) > extreme else [])
+    examples = [{"a": a, "a_title": titles.get(a, a), "b": b, "b_title": titles.get(b, b),
+                 "similarity": round(float(sim.at[a, b]), 3)} for a, b in shown]
+    return {"n": int(len(values)), "mean": round(float(values.mean()), 3),
+            "sd": round(float(values.std(ddof=0)), 3), "examples": examples}
+
+
+def cohiring_view(sim, titles):
+    """Section 2's own 60-occupation network (docs/weeks/week04/data/jobs.json):
+    do occupations with a direct co-hiring tie need more alike skills than a
+    random pair from the same 60, and does that hold at the cluster level too?
+    Every comparison stays inside this 60-occupation population, so a large,
+    popular field cannot inflate the answer merely by being large."""
+    if not JOBS_PAGE.exists():
+        raise SystemExit(f"{JOBS_PAGE.relative_to(ROOT)} is missing: run python analysis/week04_jobs.py first")
+    jobs = json.loads(JOBS_PAGE.read_text())
+    nodes = [n["id"] for n in jobs["nodes"] if n["id"] in sim.index]
+    dropped = [n["id"] for n in jobs["nodes"] if n["id"] not in sim.index]
+    cluster_of = {n["id"]: n["cluster"] for n in jobs["nodes"] if n["id"] in sim.index}
+    covered = set(nodes)
+
+    edge_pairs = sorted({tuple(sorted((e["source"], e["target"])))
+                          for e in jobs["edges"] if e["source"] in covered and e["target"] in covered})
+    all_pairs = list(combinations(sorted(nodes), 2))
+    edge_set = set(edge_pairs)
+    # Excludes direct ties from both groups (a handful of edges cross clusters,
+    # i.e. bridges), so direct_ties, same_cluster_other_pairs and
+    # different_cluster_pairs are disjoint and sum to all_pairs exactly.
+    same_cluster = [(a, b) for a, b in all_pairs
+                     if (a, b) not in edge_set and cluster_of[a] == cluster_of[b]]
+    diff_cluster = [(a, b) for a, b in all_pairs
+                     if (a, b) not in edge_set and cluster_of[a] != cluster_of[b]]
+
+    return {
+        "source": {"page": "docs/weeks/week04/data/jobs.json", "year": jobs["meta"]["year"]},
+        "occupations": len(nodes), "occupations_without_a_profile": len(dropped),
+        "direct_ties": group_stats(edge_pairs, sim, titles),
+        "same_cluster_other_pairs": group_stats(same_cluster, sim, titles),
+        "different_cluster_pairs": group_stats(diff_cluster, sim, titles),
+        "all_pairs": group_stats(all_pairs, sim, titles),
+    }
+
+
 def main():
     wide, archived, missing = detailed_profiles()
     profiles = list(wide.index)
@@ -258,9 +328,16 @@ def main():
         "neighbours": neighbours,
     }
     OUT.write_text(json.dumps(result, indent=1, ensure_ascii=False) + "\n")
+
+    cohiring = cohiring_view(sim, title_of)
+    page = {"meta": {"generated_by": "analysis/week04_skills.py", **result["meta"]}, "cohiring": cohiring}
+    check(PAGE, page)
+    PAGE.write_text(json.dumps(page, indent=1, ensure_ascii=False) + "\n")
+
     brief = {k: result[k] for k in ("profiles", "codes", "archived", "similarity_uncentred",
                                     "similarity_all", "similarity_h1b", "smoke_test")}
     brief["coverage"] = {k: v for k, v in result["coverage"].items() if k not in ("unrated", "not_in_onet")}
+    brief["cohiring"] = cohiring
     print(json.dumps(brief, indent=1))
 
 

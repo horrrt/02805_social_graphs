@@ -776,8 +776,8 @@ class Beyond(Model):
     q3_top5_soc: list[Top5Soc] = Field(min_length=1)
 
 
-# Section 1 explorables · docs/weeks/week04/data/explore.json, for four community
-# explorables; no page script reads it yet ----------------------------------------
+# Section 1 explorables · docs/weeks/week04/data/explore.json, read by
+# week04-methods.js, the #cut-methods box -----------------------------------------
 
 class ExploreMetro(Model):
     id: str
@@ -990,6 +990,180 @@ class FootprintRank(Model):
         return self
 
 
+# Five years of filings · docs/weeks/week04/data/years.json, read by
+# week04-years.js, the #cut-years box --------------------------------------
+
+class YearStats(Model):
+    certified_filings: int = Count
+    placed_share: float = Share
+    clients: int = Count
+    firms: int = Count
+    top_firms_by_filings: list[tuple[str, int]] = Field(min_length=1)
+
+
+class OctJunTotal(Model):
+    certified_filings: int = Count
+
+
+class OctJun(Model):
+    totals: dict[Literal["FY2024", "FY2025", "FY2026"], OctJunTotal]
+    certified_filings_change_fy25_fy26_percent: float
+
+
+class YearMonthRow(Model):
+    month: str = Field(pattern=r"^\d{4}-(10|11|12|01|02|03|04|05|06)$")
+    certified_filings: int = Count
+    placed_filings: int = Count
+
+
+class UscisYear(Model):
+    year: int
+    placing_initial_denial_rate: float = Share
+    direct_initial_denial_rate: float = Share
+
+
+class LotteryDraw(Model):
+    registrations: int = Count
+
+
+class LotteryFunnel(Model):
+    registrations_per_approval: float = Field(gt=0)
+
+
+class YearsFinding(Model):
+    fy2025_certified_filings: int = Count
+    fy22_to_fy23_certified_change_percent: int
+    fy25_to_fy26_certified_change_percent: float
+    oct_2025_certified_filings: int = Count
+    oct_2024_certified_filings: int = Count
+
+
+class Years(Model):
+    generated_by: str
+    years: dict[Literal["2022", "2023", "2024", "2025", "2026"], YearStats]
+    oct_jun: OctJun
+    monthly: dict[Literal["FY2024", "FY2025", "FY2026"], list[YearMonthRow]]
+    uscis_series: list[UscisYear] = Field(min_length=5, max_length=5)
+    uscis_min_filings: int = Count
+    lottery_draws: dict[Literal["2022", "2023", "2024"], LotteryDraw]
+    lottery_funnels: dict[Literal["2023", "2024"], LotteryFunnel]
+    finding: YearsFinding
+
+    @model_validator(mode="after")
+    def checks(self):
+        for fy, rows in self.monthly.items():
+            assert len(rows) == 9, f"{fy}: the monthly series must cover nine months"
+            assert [m.month[5:] for m in rows] == ["10", "11", "12", "01", "02", "03", "04", "05", "06"], \
+                f"{fy}: months must run October to June in order"
+        assert [u.year for u in self.uscis_series] == [2022, 2023, 2024, 2025, 2026], \
+            "uscis_series must cover FY2022 to FY2026 in order"
+        shares = [self.years[y].placed_share for y in ("2023", "2024", "2025", "2026")]
+        assert shares == sorted(shares, reverse=True), "the placed share must fall every year from FY2023"
+        assert "HCL" not in dict(self.years["2026"].top_firms_by_filings), \
+            "HCL is expected to leave FY2026's top firms by filings"
+        return self
+
+
+# Deep dive · Skills · docs/weeks/week04/data/skills.json, read by week04-skills.js -
+
+class SkillsExample(Model):
+    a: str
+    a_title: str
+    b: str
+    b_title: str
+    similarity: float = Field(ge=-1, le=1)
+
+
+class SkillsGroup(Model):
+    n: int = Count
+    mean: float | None
+    sd: float | None
+    examples: list[SkillsExample]
+
+
+class Cohiring(Model):
+    source: dict
+    occupations: int = Field(ge=2)
+    occupations_without_a_profile: int = Count
+    direct_ties: SkillsGroup
+    same_cluster_other_pairs: SkillsGroup
+    different_cluster_pairs: SkillsGroup
+    all_pairs: SkillsGroup
+
+
+class Skills(Model):
+    meta: dict
+    cohiring: Cohiring
+
+
+# Deep dive · PageRank · docs/weeks/week04/data/pagerank.json, read by week04-pagerank.js -
+
+class PagerankRow(Model):
+    code: str
+    title: str
+    filings: int = Count
+    degree: int = Count
+    strength: int = Count
+    degree_rank: int = Field(ge=1)
+    pagerank: float = Field(ge=0)
+    rank: int = Field(ge=1)
+
+
+class PagerankIterRow(Model):
+    code: str
+    title: str
+    pagerank: float = Field(ge=0)
+
+
+class PagerankStep(Model):
+    step: int = Count
+    rows: list[PagerankIterRow] = Field(min_length=1)
+
+    @model_validator(mode="after")
+    def sorted_by_own_score(self):
+        scores = [r.pagerank for r in self.rows]
+        assert scores == sorted(scores, reverse=True), \
+            f"step {self.step}: rows must be this step's own top scores, in order"
+        return self
+
+
+class PagerankIteration(Model):
+    alpha: float
+    steps: list[PagerankStep] = Field(min_length=1)
+    max_error_vs_nx_pagerank: float = Field(ge=0)
+
+
+class PagerankMover(Model):
+    code: str
+    title: str
+    rank_d0_5: int = Field(ge=1)
+    rank_d0_99: int = Field(ge=1)
+    rank_shift: int
+    degree_rank: int = Field(ge=1)
+    degree: int = Count
+    strength: int = Count
+    pagerank_d0_5: float = Field(ge=0)
+    pagerank_d0_99: float = Field(ge=0)
+
+
+class Pagerank(Model):
+    meta: dict
+    damping: list[float] = Field(min_length=3)
+    rankings: dict[str, list[PagerankRow]]
+    iteration: PagerankIteration
+    movers: list[PagerankMover] = Field(min_length=1)
+    finding: dict
+
+    @model_validator(mode="after")
+    def references(self):
+        assert set(self.rankings) == {str(d) for d in self.damping}, \
+            "rankings keys must be str(d) for every damping value"
+        for d, rows in self.rankings.items():
+            ranks = [r.rank for r in rows]
+            assert ranks == list(range(1, len(rows) + 1)), f"rankings[{d}] is not ranked in order"
+        return self
+
+
 PAGES = {
     "docs/assets/data/week04_place.json": Place,
     "docs/weeks/week04/data/jobs.json": Jobs,
@@ -997,11 +1171,14 @@ PAGES = {
     "docs/weeks/week04/data/staffing_communities.json": StaffingCommunities,
     "docs/weeks/week04/data/where_who.json": WhereWho,
     "docs/weeks/week04/data/jobs_split.json": JobsSplit,
+    "docs/weeks/week04/data/skills.json": Skills,
+    "docs/weeks/week04/data/pagerank.json": Pagerank,
     "docs/weeks/week04/data/staffing_moves.json": StaffingMoves,
     "docs/weeks/week04/data/beyond.json": Beyond,
     "docs/weeks/week04/data/footprint.json": Footprint,
     "docs/weeks/week04/data/footprint_rank.json": FootprintRank,
     "docs/weeks/week04/data/explore.json": Explore,
+    "docs/weeks/week04/data/years.json": Years,
 }
 
 

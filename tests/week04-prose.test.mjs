@@ -426,3 +426,17 @@ test("section 1's first round: the cities and the long links follow the analysis
   has(long, `Of the ${lh.long_links} backbone links longer than 1,500 km, the shortlist leads ${lh.long_led_by_shortlist} (${pct(lh.long_led_by_shortlist / lh.long_links)})`);
   has(long, `it leads ${lh.short_led_by_shortlist} of the ${lh.short_links} shorter ones (${pct(lh.short_led_by_shortlist / lh.short_links)})`);
 });
+
+test("the hero's numbers and map legend follow the analysis", () => {
+  const hero = text('id="top"', 'id="findings"');
+  const place = json("docs/assets/data/week04_place.json");
+  const share = json("analysis/week04_where.json").coverage.top_metros_filing_share;
+  const has = (t) => assert.ok(hero.includes(t), `the hero should say "${t}"`);
+  has(`${count(fy["2025"].certified_filings)} certified H-1B filings, FY2025`);
+  has(`${place.cities.length} metro areas with the most filings, ${pct(share, 1)} of the year’s total`);
+  const size = (id) => place.cities.filter((c) => c.community === id).length;
+  const [hubs, tech, rest] = place.communities.map((c) => c.label);
+  has(`${hubs} · ${WORDS[size(0)]} large hubs`);
+  has(`${tech} · ${WORDS[size(1)]} tech hubs`);
+  has(`${rest} · the other ${size(2)}`);
+});

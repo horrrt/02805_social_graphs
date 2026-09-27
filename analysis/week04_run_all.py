@@ -1,11 +1,18 @@
 """Rerun every week 4 analysis script at once, as separate processes.
 
-The scripts share no state except their inputs in build/ and one real
-dependency: week04_staffing_figure.py reads week04_staffing.py's output, so it
-starts when that one finishes. Everything else starts immediately, so a full
-rerun takes about as long as the slowest script (week04_lawfirms.py, about 7
-minutes) instead of the sum (about 21 for the first eleven scripts). At most
-one script per core runs at a time. Each script's output goes to
+The scripts share no state except their inputs in build/, aside from the real
+dependencies listed in AFTER below (each maps a script to the ones whose
+output it reads: week04_staffing_figure.py and week04_staffing_moves.py read
+week04_staffing.py's; week04_where_who.py and week04_explore.py read
+week04_where.py's; week04_years.py reads week04_staffing.py, week04_staffing_figure.py,
+week04_shift.py, week04_countries.py and week04_lottery.py's; week04_skills.py
+reads week04_jobs.py's, its own 60-occupation network). week04_pagerank.py imports
+week04_jobs.py's and week04_where.py's functions directly and recomputes the
+projection and backbone itself, so it reads no file either writes and needs
+no entry here. Everything else starts immediately, so a full rerun takes
+about as long as the slowest script (week04_lawfirms.py, about 7 minutes)
+instead of the sum (about 21 for the first eleven scripts). At most one
+script per core runs at a time. Each script's output goes to
 build/logs/<script>.log; a line prints as each one finishes, with the time so far.
 
     python analysis/week04_run_all.py                  # everything
@@ -25,10 +32,14 @@ HERE = Path(__file__).resolve().parent
 LOGS = HERE.parent / "build" / "logs"
 SCRIPTS = ["week04_where", "week04_where_who", "week04_jobs", "week04_jobs_split", "week04_staffing",
            "week04_staffing_figure", "week04_staffing_moves", "week04_lottery", "week04_perm", "week04_countries",
-           "week04_ties", "week04_shift", "week04_lawfirms", "week04_oews", "week04_beyond", "week04_footprint"]
-# script -> the script whose output it reads (the moves and where_who scripts check theirs reproduces).
-AFTER = {"week04_staffing_figure": "week04_staffing", "week04_staffing_moves": "week04_staffing",
-         "week04_where_who": "week04_where"}
+           "week04_ties", "week04_shift", "week04_lawfirms", "week04_oews", "week04_beyond", "week04_footprint",
+           "week04_explore", "week04_years", "week04_pagerank", "week04_skills"]
+# script -> the scripts whose output it reads (the moves and where_who scripts check theirs reproduces).
+AFTER = {"week04_staffing_figure": ("week04_staffing",), "week04_staffing_moves": ("week04_staffing",),
+         "week04_where_who": ("week04_where",), "week04_explore": ("week04_where",),
+         "week04_years": ("week04_staffing", "week04_shift", "week04_countries", "week04_lottery",
+                           "week04_staffing_figure"),
+         "week04_skills": ("week04_jobs",)}
 # One process per core: each loads a few hundred MB of filings.
 MAX_PARALLEL = os.cpu_count() or 4
 
@@ -54,7 +65,7 @@ def main():
     print(f"running {len(wanted)} scripts in parallel; logs in {LOGS.relative_to(HERE.parent)}/", flush=True)
     done = set()
     while waiting or running:
-        ready = [w for w in waiting if AFTER.get(w) not in waiting and AFTER.get(w) not in running]
+        ready = [w for w in waiting if not any(d in waiting or d in running for d in AFTER.get(w, ()))]
         for name in ready[:max(0, MAX_PARALLEL - len(running))]:
             waiting.remove(name)
             launch(name)
