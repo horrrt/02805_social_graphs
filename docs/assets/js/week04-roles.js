@@ -33,9 +33,16 @@ const pct = (v, d = 1) => `${(v * 100).toFixed(d)}%`;
 let data;
 let chart;
 const state = { split: "occupations", scale: "count", window: "full" };
+// Series hidden from the legend, per split. The ten named employers file about
+// a fifth of all filings, so the Employer split starts with its catch-all band
+// hidden; otherwise that band fills four fifths of the 100% view.
+const hidden = { occupations: new Set(), groups: new Set(), employer: new Set(["All other employers"]), placement: new Set() };
 
+// The catch-all band ("All other …") goes on top of the stack and last in the
+// legend, so the named series sit together from the baseline up.
 function seriesOf(split) {
-  return data.splits[split].series;
+  const all = data.splits[split].series;
+  return [...all.filter((s) => s.code !== null), ...all.filter((s) => s.code === null)];
 }
 
 function colourOf(split, s, i) {
@@ -99,7 +106,7 @@ function render() {
       animationDuration: 280,
       textStyle: { fontFamily: "-apple-system, BlinkMacSystemFont, system-ui, sans-serif" },
       grid: { left: 56, right: 20, top: 20, bottom: 40 },
-      legend: { show: false, data: names },
+      legend: { show: false, data: names, selected: Object.fromEntries([...hidden[state.split]].map((n) => [n, false])) },
       xAxis: {
         type: "category",
         data: xLabels,
@@ -110,7 +117,9 @@ function render() {
       yAxis: {
         type: "value",
         min: 0,
-        max: state.scale === "percent" ? 100 : null,
+        // 100% is the ceiling only while every series shows; with some hidden the
+        // axis fits what is left, still as a share of all filings.
+        max: state.scale === "percent" && hidden[state.split].size === 0 ? 100 : null,
         axisLabel: {
           color: token("--ink-mute"), fontSize: 11,
           formatter: (v) => (state.scale === "percent" ? `${v}%` : num(v)),
@@ -168,9 +177,12 @@ function renderLegend() {
     btn.addEventListener("mouseenter", () => chart.dispatchAction({ type: "highlight", name: s.name }));
     btn.addEventListener("mouseleave", () => chart.dispatchAction({ type: "downplay", name: s.name }));
     btn.addEventListener("click", () => {
-      chart.dispatchAction({ type: "legendToggleSelect", name: s.name });
-      const now = chart.getOption().legend[0].selected || {};
-      btn.setAttribute("aria-pressed", String(now[s.name] !== false));
+      if (hidden[state.split].has(s.name)) hidden[state.split].delete(s.name);
+      else hidden[state.split].add(s.name);
+      // Re-render so the 100% axis ceiling follows what is shown.
+      render();
+      renderLegend();
+      legendEl.querySelectorAll("button")[i]?.focus();
     });
     legendEl.appendChild(btn);
   });
@@ -189,16 +201,16 @@ function renderText() {
       "of FY2025's certified filings placed the worker at a client, not their own employer.";
   } else {
     const top = split.series.find((s) => s.code !== null) || split.series[0];
+    const noun = state.split === "occupations" ? "role" : state.split === "groups" ? "occupation group" : "employer";
     answerEl.textContent =
-      `${esc(top.name)} leads every named ${state.split === "occupations" ? "role" : state.split === "groups" ? "group" : "employer"}` +
-      `, with ${num(top.counts[3])} certified filings in FY2025.`;
+      `${top.name} is the largest ${noun} over the five years, with ${num(top.counts[3])} certified filings in FY2025.`;
   }
 
   if (f) {
     const entered = f.entered_top ? " It entered the top between FY2022 and FY2025." : "";
     const left = f.left_top ? " It left the top between FY2022 and FY2025." : "";
     noticeText.textContent =
-      `${esc(f.name)}'s share of certified filings ${f.direction} the most from FY2022 to FY2025, ` +
+      `${f.name} ${f.direction} the most as a share of certified filings from FY2022 to FY2025: ` +
       `${pct(f.share_fy2022_percent / 100)} to ${pct(f.share_fy2025_percent / 100)}` +
       `, ${Math.abs(f.change_pp).toFixed(1)} percentage points.${entered}${left}`;
   }
