@@ -54,6 +54,7 @@ class Transit(Model):
     stations: list[Station] = Field(min_length=2)
     lines: list[Line] = Field(min_length=1)
     closures: list[Closure] = Field(min_length=1)
+    coreNodes: int = Count
 
     @model_validator(mode="after")
     def references(self):
@@ -65,6 +66,8 @@ class Transit(Model):
         assert all(s in set(ids) for line in self.lines for s in line.stations), "a line visits an unknown station"
         assert all(seg in links for seg in segments), "a line joins two stations with no link between them"
         assert len(set(segments)) == len(segments), "two lines share a segment"
+        assert self.coreNodes == sum(1 for n in nodes.values() if n["component"] == "core"), \
+            "coreNodes must equal the count of core articles in arcade_graph.json"
         for c in self.closures:
             assert c.id in nodes and nodes[c.id]["component"] == "core", f"{c.id}: closures must be core articles"
             assert c.degree == nodes[c.id]["degree"], f"{c.id}: degree differs from arcade_graph.json"
