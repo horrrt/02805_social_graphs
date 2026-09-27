@@ -67,5 +67,5 @@ Why the change was needed, in plain sentences, wrapped at 72 characters.
   or data file that other code reads.
 - Put an email address, password or token in code. Downloads that need a contact read `CONTACT_EMAIL`
   from the environment.
-- Push to `main` or merge a pull request unless the person asks you to. Work on a branch and open a PR.
+- Push straight to `main`. Work on a branch, open a pull request and merge it once its checks pass.
 - Delete or rewrite another member's section without being asked. Section owners are listed in `WEEK04.md`.

@@ -1,11 +1,11 @@
 ---
 name: ship
-description: Bring the branch up to date with main, run the checks, commit and open a pull request.
+description: Bring the branch up to date with main, run the checks, commit, then open and merge a pull request.
 agent: agent
 argument-hint: what the change does, in one line
 ---
 
-Ship the current work as a pull request. The person's one-line summary: ${input:summary:what the change does}
+Ship the current work as a pull request and merge it. The person's one-line summary: ${input:summary:what the change does}
 
 1. If the current branch is `main`, create a branch named after the change (`week04-<short-name>`) first.
 2. `git fetch origin` and merge `origin/main` into the branch. If files conflict, stop and show the
@@ -17,4 +17,5 @@ Ship the current work as a pull request. The person's one-line summary: ${input:
 6. Push the branch and open a pull request into `main`: with `gh pr create` if the GitHub CLI is set up,
    otherwise give the link GitHub prints after the push. The description lists what changed and which
    checks ran.
-7. Do not merge. Report the pull request link.
+7. Once the pull request's checks pass, merge it with a merge commit (`gh pr merge --merge`). If a check
+   fails, stop and report it instead. Report the pull request link.
