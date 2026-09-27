@@ -1,0 +1,246 @@
+{
+ "v": 3,
+ "attachments": {},
+ "boards": {
+  "ChartKit.dc.html": {
+   "h": 3400,
+   "is_interactive": true,
+   "title": "Chart kit: one colour key, one strip, before and after",
+   "w": 1440,
+   "x": 0,
+   "y": 4040
+  },
+  "Closing.dc.html": {
+   "h": 1950,
+   "is_interactive": true,
+   "title": "Closing and the deep dive",
+   "w": 1440,
+   "x": 4560,
+   "y": 0
+  },
+  "Deep1.dc.html": {
+   "h": 3260,
+   "is_interactive": true,
+   "title": "Deep dive · first round, section 1",
+   "w": 1440,
+   "x": 6080,
+   "y": 0
+  },
+  "Deep2.dc.html": {
+   "h": 3140,
+   "is_interactive": true,
+   "title": "Deep dive · first round, section 2",
+   "w": 1440,
+   "x": 7600,
+   "y": 0
+  },
+  "Deep3a.dc.html": {
+   "h": 3180,
+   "is_interactive": true,
+   "title": "Deep dive · first round, section 3",
+   "w": 1440,
+   "x": 9120,
+   "y": 0
+  },
+  "Deep3b.dc.html": {
+   "h": 3620,
+   "is_interactive": true,
+   "title": "Deep dive · section 3, law firms, weights, lottery",
+   "w": 1440,
+   "x": 10640,
+   "y": 0
+  },
+  "DeepMethods.dc.html": {
+   "h": 1620,
+   "is_interactive": true,
+   "title": "Deep dive · data and methods",
+   "w": 1440,
+   "x": 15229,
+   "y": 0
+  },
+  "DeepMoreA.dc.html": {
+   "h": 2960,
+   "is_interactive": true,
+   "title": "Deep dive · more networks, 1 to 3",
+   "w": 1440,
+   "x": 12160,
+   "y": 0
+  },
+  "DeepMoreB.dc.html": {
+   "h": 2400,
+   "is_interactive": true,
+   "title": "Deep dive · more networks, 4 to 6",
+   "w": 1440,
+   "x": 13680,
+   "y": 0
+  },
+  "ExploreBackbone.dc.html": {
+   "h": 1500,
+   "is_interactive": true,
+   "title": "Explore · strip the hairball",
+   "w": 1440,
+   "x": 5360,
+   "y": 4040
+  },
+  "ExploreClients.dc.html": {
+   "h": 1320,
+   "is_interactive": true,
+   "title": "Explore · clients by size and loyalty, five years",
+   "w": 1440,
+   "x": 6880,
+   "y": 4040
+  },
+  "ExploreMetros.dc.html": {
+   "h": 1460,
+   "is_interactive": true,
+   "title": "Explore · the 40 metros, one at a time",
+   "w": 1440,
+   "x": 3840,
+   "y": 4040
+  },
+  "FiveYears.dc.html": {
+   "h": 2640,
+   "title": "Five years of filings, FY2022 to FY2026",
+   "w": 1440,
+   "x": 2320,
+   "y": 4040
+  },
+  "Main.dc.html": {
+   "h": 3500,
+   "is_interactive": true,
+   "title": "Top of the page: hero, findings, opening, section 1",
+   "w": 1440,
+   "x": 0,
+   "y": 0
+  },
+  "Section3.dc.html": {
+   "h": 3200,
+   "is_interactive": true,
+   "title": "Section 3 · who staffs whom",
+   "w": 1440,
+   "x": 1520,
+   "y": 0
+  },
+  "Section4.dc.html": {
+   "h": 2600,
+   "is_interactive": true,
+   "title": "Section 4 · the one interaction",
+   "w": 1440,
+   "x": 3040,
+   "y": 0
+  },
+  "Today.dc.html": {
+   "h": 5135,
+   "title": "Week 4 today, for comparison",
+   "w": 720,
+   "x": 1520,
+   "y": 4040
+  },
+  "ExploreGN.dc.html": {
+   "x": 8400,
+   "y": 4040,
+   "w": 1440,
+   "h": 1480,
+   "title": "Explore · Girvan–Newman, one cut at a time",
+   "is_interactive": true
+  },
+  "ExploreModularity.dc.html": {
+   "x": 9920,
+   "y": 4040,
+   "w": 1440,
+   "h": 1180,
+   "title": "Explore · move a metro, watch modularity",
+   "is_interactive": true
+  },
+  "ExploreLouvain.dc.html": {
+   "x": 11440,
+   "y": 4040,
+   "w": 1440,
+   "h": 1500,
+   "title": "Explore · Louvain, move by move",
+   "is_interactive": true
+  },
+  "ExploreOverlap.dc.html": {
+   "x": 12960,
+   "y": 4040,
+   "w": 1440,
+   "h": 1160,
+   "title": "Explore · k-cliques and link communities",
+   "is_interactive": true
+  }
+ },
+ "createdOnFiles": {
+  "at": "2026-09-27T10:57:25Z",
+  "v": 1
+ },
+ "designSystems": [
+  {
+   "artifact": "https://claude.ai/artifact/2DfxHtPMWbJSRnDk19Hxf8",
+   "copiedAt": "2026-09-27T10:57:25Z",
+   "namespace": "logloglegends",
+   "title": "Log–Log Legends",
+   "version": "1790425882-cfa5"
+  }
+ ],
+ "launch": {
+  "view": "canvas"
+ },
+ "notes": {
+  "extras": {
+   "kind": "title1",
+   "maxW": 6000,
+   "text": "Five years, and three explorables in the course’s style",
+   "w": 240,
+   "x": 2320,
+   "y": 3740
+  },
+  "row1": {
+   "kind": "title1",
+   "maxW": 8000,
+   "text": "Week 4, redesigned: the page from top to bottom, then the deep dive opened",
+   "w": 240,
+   "x": 0,
+   "y": -300
+  },
+  "row2": {
+   "kind": "title1",
+   "maxW": 2240,
+   "text": "The chart kit, and the page as it is today",
+   "w": 240,
+   "x": 0,
+   "y": 3740
+  },
+  "course4": {
+   "x": 8400,
+   "y": 3740,
+   "text": "The course’s four community explorables, on the 40 metros",
+   "kind": "title1",
+   "maxW": 6000
+  }
+ },
+ "order": [
+  "Main.dc.html",
+  "Section3.dc.html",
+  "Section4.dc.html",
+  "Closing.dc.html",
+  "ChartKit.dc.html",
+  "Today.dc.html",
+  "Deep1.dc.html",
+  "Deep2.dc.html",
+  "Deep3a.dc.html",
+  "Deep3b.dc.html",
+  "DeepMoreA.dc.html",
+  "DeepMoreB.dc.html",
+  "DeepMethods.dc.html",
+  "FiveYears.dc.html",
+  "ExploreMetros.dc.html",
+  "ExploreBackbone.dc.html",
+  "ExploreClients.dc.html",
+  "ExploreGN.dc.html",
+  "ExploreModularity.dc.html",
+  "ExploreLouvain.dc.html",
+  "ExploreOverlap.dc.html"
+ ],
+ "pages": [],
+ "title": "Week 4 redesign"
+}

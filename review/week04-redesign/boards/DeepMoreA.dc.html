@@ -1,0 +1,313 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>Week 4 · deep dive, more networks</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@800&amp;display=swap" />
+<style>
+body{margin:0;background:#eef3f9}
+a{color:#14618f}a:hover{color:#0f2340}
+summary{cursor:pointer}
+.pop{display:none}
+.tip:hover>.pop,.tip:focus-within>.pop,.pop.open{display:block}
+</style>
+</helmet>
+<div style="width: 1440px; height: 2960px; box-sizing: border-box; overflow: hidden; background: #eef3f9; color: #0f2340; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Inter, system-ui, sans-serif; display: flex; flex-direction: column; -webkit-font-smoothing: antialiased">
+<header style="flex: none; height: 52px; box-sizing: border-box; background: rgba(255, 255, 255, 0.92); border-bottom: 1px solid #dce5f0; display: flex; align-items: center; justify-content: center">
+<div style="width: 1180px; display: flex; align-items: center; gap: 22px">
+<a href="#top" style="display: flex; align-items: center; gap: 7px; text-decoration: none; font-family: 'Barlow Condensed', Impact, sans-serif; font-weight: 800; font-size: 20px; line-height: 1; letter-spacing: 0.01em; color: #0f2340"><span style="color: #14618f">✳︎</span><span>LOG–LOG <span style="color: #14618f">LEGENDS</span></span></a>
+<a href="#all-posts" style="font-size: 13px; font-weight: 600; color: #46618a; text-decoration: none">All posts</a>
+<nav aria-label="Sections of this post" style="margin-left: auto; display: flex; gap: 2px">
+<a href="#opening" style="display: flex; align-items: center; gap: 6px; padding: 7px 12px; border-radius: 999px; font-size: 13px; font-weight: 600; text-decoration: none; color: #46618a;"><span style="font-variant-numeric: tabular-nums; font-weight: 800; color: #7a8fac">0</span>Opening</a>
+<a href="#place" style="display: flex; align-items: center; gap: 6px; padding: 7px 12px; border-radius: 999px; font-size: 13px; font-weight: 600; text-decoration: none; color: #46618a;"><span style="font-variant-numeric: tabular-nums; font-weight: 800; color: #7a8fac">1</span>Where</a>
+<a href="#jobs" style="display: flex; align-items: center; gap: 6px; padding: 7px 12px; border-radius: 999px; font-size: 13px; font-weight: 600; text-decoration: none; color: #46618a;"><span style="font-variant-numeric: tabular-nums; font-weight: 800; color: #7a8fac">2</span>Jobs</a>
+<a href="#who" style="display: flex; align-items: center; gap: 6px; padding: 7px 12px; border-radius: 999px; font-size: 13px; font-weight: 600; text-decoration: none; color: #46618a;"><span style="font-variant-numeric: tabular-nums; font-weight: 800; color: #7a8fac">3</span>Staffing</a>
+<a href="#footprint" style="display: flex; align-items: center; gap: 6px; padding: 7px 12px; border-radius: 999px; font-size: 13px; font-weight: 600; text-decoration: none; color: #46618a;"><span style="font-variant-numeric: tabular-nums; font-weight: 800; color: #7a8fac">4</span>Biggest firms</a>
+<a href="#beyond" style="display: flex; align-items: center; gap: 6px; padding: 7px 12px; border-radius: 999px; font-size: 13px; font-weight: 600; text-decoration: none; color: #46618a;"><span style="font-variant-numeric: tabular-nums; font-weight: 800; color: #7a8fac">5</span>Beyond</a>
+<a href="#closing" style="display: flex; align-items: center; gap: 6px; padding: 7px 12px; border-radius: 999px; font-size: 13px; font-weight: 600; text-decoration: none; color: #46618a;"><span style="font-variant-numeric: tabular-nums; font-weight: 800; color: #7a8fac">✓</span>Closing</a>
+<a href="#cut" aria-current="true" style="display: flex; align-items: center; gap: 6px; padding: 7px 12px; border-radius: 999px; font-size: 13px; font-weight: 600; text-decoration: none; background: #d9ecf9; color: #14618f;"><span style="font-variant-numeric: tabular-nums; font-weight: 800; color: #14618f">+</span>Deep dive</a>
+</nav>
+</div>
+</header>
+<div style="flex: none; display: flex; align-items: flex-start; padding-top: 36px">
+<nav aria-label="Contents of this post" style="flex: none; width: 130px; display: flex; justify-content: center; padding-top: 6px">
+<div style="display: flex; flex-direction: column; align-items: center; gap: 8px; padding: 4px 0; background: linear-gradient(#dce5f0, #dce5f0) center / 2px 100% no-repeat">
+<span class="tip" style="position: relative; display: inline-flex"><a href="#opening" aria-label="0 · Opening" style="width: 36px; height: 36px; box-sizing: border-box; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 800; text-decoration: none; font-variant-numeric: tabular-nums; background: #ffffff; color: #14618f; border: 1px solid #dce5f0;">0</a><span class="pop" aria-hidden="true" style="position: absolute; left: calc(100% + 10px); top: 50%; transform: translateY(-50%); z-index: 40; width: max-content; max-width: 300px; box-sizing: border-box; background: rgba(11, 31, 58, 0.97); border-radius: 8px; padding: 6px 10px; font-size: 12px; line-height: 1.4; font-weight: 600; color: #eaf2fb; text-align: left; white-space: normal; box-shadow: 0 2px 6px rgba(15, 35, 64, 0.08), 0 12px 28px rgba(15, 35, 64, 0.14)">0 · Opening</span></span>
+<span class="tip" style="position: relative; display: inline-flex"><a href="#place" aria-label="1 · Where the hiring is" style="width: 36px; height: 36px; box-sizing: border-box; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 800; text-decoration: none; font-variant-numeric: tabular-nums; background: #ffffff; color: #14618f; border: 1px solid #dce5f0;">1</a><span class="pop" aria-hidden="true" style="position: absolute; left: calc(100% + 10px); top: 50%; transform: translateY(-50%); z-index: 40; width: max-content; max-width: 300px; box-sizing: border-box; background: rgba(11, 31, 58, 0.97); border-radius: 8px; padding: 6px 10px; font-size: 12px; line-height: 1.4; font-weight: 600; color: #eaf2fb; text-align: left; white-space: normal; box-shadow: 0 2px 6px rgba(15, 35, 64, 0.08), 0 12px 28px rgba(15, 35, 64, 0.14)">1 · Where the hiring is</span></span>
+<span class="tip" style="position: relative; display: inline-flex"><a href="#jobs" aria-label="2 · Which jobs go together" style="width: 36px; height: 36px; box-sizing: border-box; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 800; text-decoration: none; font-variant-numeric: tabular-nums; background: #ffffff; color: #14618f; border: 1px solid #dce5f0;">2</a><span class="pop" aria-hidden="true" style="position: absolute; left: calc(100% + 10px); top: 50%; transform: translateY(-50%); z-index: 40; width: max-content; max-width: 300px; box-sizing: border-box; background: rgba(11, 31, 58, 0.97); border-radius: 8px; padding: 6px 10px; font-size: 12px; line-height: 1.4; font-weight: 600; color: #eaf2fb; text-align: left; white-space: normal; box-shadow: 0 2px 6px rgba(15, 35, 64, 0.08), 0 12px 28px rgba(15, 35, 64, 0.14)">2 · Which jobs go together</span></span>
+<span class="tip" style="position: relative; display: inline-flex"><a href="#who" aria-label="3 · Who staffs whom" style="width: 36px; height: 36px; box-sizing: border-box; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 800; text-decoration: none; font-variant-numeric: tabular-nums; background: #ffffff; color: #14618f; border: 1px solid #dce5f0;">3</a><span class="pop" aria-hidden="true" style="position: absolute; left: calc(100% + 10px); top: 50%; transform: translateY(-50%); z-index: 40; width: max-content; max-width: 300px; box-sizing: border-box; background: rgba(11, 31, 58, 0.97); border-radius: 8px; padding: 6px 10px; font-size: 12px; line-height: 1.4; font-weight: 600; color: #eaf2fb; text-align: left; white-space: normal; box-shadow: 0 2px 6px rgba(15, 35, 64, 0.08), 0 12px 28px rgba(15, 35, 64, 0.14)">3 · Who staffs whom</span></span>
+<span class="tip" style="position: relative; display: inline-flex"><a href="#footprint" aria-label="4 · Without the biggest firms" style="width: 36px; height: 36px; box-sizing: border-box; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 800; text-decoration: none; font-variant-numeric: tabular-nums; background: #ffffff; color: #14618f; border: 1px solid #dce5f0;">4</a><span class="pop" aria-hidden="true" style="position: absolute; left: calc(100% + 10px); top: 50%; transform: translateY(-50%); z-index: 40; width: max-content; max-width: 300px; box-sizing: border-box; background: rgba(11, 31, 58, 0.97); border-radius: 8px; padding: 6px 10px; font-size: 12px; line-height: 1.4; font-weight: 600; color: #eaf2fb; text-align: left; white-space: normal; box-shadow: 0 2px 6px rgba(15, 35, 64, 0.08), 0 12px 28px rgba(15, 35, 64, 0.14)">4 · Without the biggest firms</span></span>
+<span class="tip" style="position: relative; display: inline-flex"><a href="#beyond" aria-label="5 · Beyond the three networks" style="width: 36px; height: 36px; box-sizing: border-box; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 800; text-decoration: none; font-variant-numeric: tabular-nums; background: #ffffff; color: #14618f; border: 1px solid #dce5f0;">5</a><span class="pop" aria-hidden="true" style="position: absolute; left: calc(100% + 10px); top: 50%; transform: translateY(-50%); z-index: 40; width: max-content; max-width: 300px; box-sizing: border-box; background: rgba(11, 31, 58, 0.97); border-radius: 8px; padding: 6px 10px; font-size: 12px; line-height: 1.4; font-weight: 600; color: #eaf2fb; text-align: left; white-space: normal; box-shadow: 0 2px 6px rgba(15, 35, 64, 0.08), 0 12px 28px rgba(15, 35, 64, 0.14)">5 · Beyond the three networks</span></span>
+<span class="tip" style="position: relative; display: inline-flex"><a href="#closing" aria-label="✓ · Closing" style="width: 36px; height: 36px; box-sizing: border-box; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 800; text-decoration: none; font-variant-numeric: tabular-nums; background: #ffffff; color: #14618f; border: 1px solid #dce5f0;">✓</a><span class="pop" aria-hidden="true" style="position: absolute; left: calc(100% + 10px); top: 50%; transform: translateY(-50%); z-index: 40; width: max-content; max-width: 300px; box-sizing: border-box; background: rgba(11, 31, 58, 0.97); border-radius: 8px; padding: 6px 10px; font-size: 12px; line-height: 1.4; font-weight: 600; color: #eaf2fb; text-align: left; white-space: normal; box-shadow: 0 2px 6px rgba(15, 35, 64, 0.08), 0 12px 28px rgba(15, 35, 64, 0.14)">✓ · Closing</span></span>
+<span class="tip" style="position: relative; display: inline-flex"><a href="#cut" aria-label="+ · Deep dive" style="width: 36px; height: 36px; box-sizing: border-box; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 800; text-decoration: none; font-variant-numeric: tabular-nums; background: #14618f; color: #ffffff; border: 1px solid #14618f;">+</a><span class="pop" aria-hidden="true" style="position: absolute; left: calc(100% + 10px); top: 50%; transform: translateY(-50%); z-index: 40; width: max-content; max-width: 300px; box-sizing: border-box; background: rgba(11, 31, 58, 0.97); border-radius: 8px; padding: 6px 10px; font-size: 12px; line-height: 1.4; font-weight: 600; color: #eaf2fb; text-align: left; white-space: normal; box-shadow: 0 2px 6px rgba(15, 35, 64, 0.08), 0 12px 28px rgba(15, 35, 64, 0.14)">+ · Deep dive</span></span>
+<div style="display: flex; flex-direction: column; align-items: center; gap: 5px"><span class="tip" style="position: relative; display: inline-flex"><a href="#cut-place" aria-label="First round: where the hiring is" style="width: 24px; height: 24px; box-sizing: border-box; border-radius: 999px; display: flex; align-items: center; justify-content: center; font-size: 10.5px; font-weight: 800; text-decoration: none; background: #eef3f9; color: #46618a; border: 1px solid #dce5f0;">1</a><span class="pop" aria-hidden="true" style="position: absolute; left: calc(100% + 10px); top: 50%; transform: translateY(-50%); z-index: 40; width: max-content; max-width: 300px; box-sizing: border-box; background: rgba(11, 31, 58, 0.97); border-radius: 8px; padding: 6px 10px; font-size: 12px; line-height: 1.4; font-weight: 600; color: #eaf2fb; text-align: left; white-space: normal; box-shadow: 0 2px 6px rgba(15, 35, 64, 0.08), 0 12px 28px rgba(15, 35, 64, 0.14)">First round: where the hiring is</span></span><span class="tip" style="position: relative; display: inline-flex"><a href="#cut-jobs" aria-label="First round: which jobs go together" style="width: 24px; height: 24px; box-sizing: border-box; border-radius: 999px; display: flex; align-items: center; justify-content: center; font-size: 10.5px; font-weight: 800; text-decoration: none; background: #eef3f9; color: #46618a; border: 1px solid #dce5f0;">2</a><span class="pop" aria-hidden="true" style="position: absolute; left: calc(100% + 10px); top: 50%; transform: translateY(-50%); z-index: 40; width: max-content; max-width: 300px; box-sizing: border-box; background: rgba(11, 31, 58, 0.97); border-radius: 8px; padding: 6px 10px; font-size: 12px; line-height: 1.4; font-weight: 600; color: #eaf2fb; text-align: left; white-space: normal; box-shadow: 0 2px 6px rgba(15, 35, 64, 0.08), 0 12px 28px rgba(15, 35, 64, 0.14)">First round: which jobs go together</span></span><span class="tip" style="position: relative; display: inline-flex"><a href="#cut-who" aria-label="First round: who staffs whom" style="width: 24px; height: 24px; box-sizing: border-box; border-radius: 999px; display: flex; align-items: center; justify-content: center; font-size: 10.5px; font-weight: 800; text-decoration: none; background: #eef3f9; color: #46618a; border: 1px solid #dce5f0;">3</a><span class="pop" aria-hidden="true" style="position: absolute; left: calc(100% + 10px); top: 50%; transform: translateY(-50%); z-index: 40; width: max-content; max-width: 300px; box-sizing: border-box; background: rgba(11, 31, 58, 0.97); border-radius: 8px; padding: 6px 10px; font-size: 12px; line-height: 1.4; font-weight: 600; color: #eaf2fb; text-align: left; white-space: normal; box-shadow: 0 2px 6px rgba(15, 35, 64, 0.08), 0 12px 28px rgba(15, 35, 64, 0.14)">First round: who staffs whom</span></span><span class="tip" style="position: relative; display: inline-flex"><a href="#cut-more" aria-label="More networks" style="width: 24px; height: 24px; box-sizing: border-box; border-radius: 999px; display: flex; align-items: center; justify-content: center; font-size: 10.5px; font-weight: 800; text-decoration: none; background: #0f2340; color: #ffffff; border: 1px solid #0f2340;">M</a><span class="pop" aria-hidden="true" style="position: absolute; left: calc(100% + 10px); top: 50%; transform: translateY(-50%); z-index: 40; width: max-content; max-width: 300px; box-sizing: border-box; background: rgba(11, 31, 58, 0.97); border-radius: 8px; padding: 6px 10px; font-size: 12px; line-height: 1.4; font-weight: 600; color: #eaf2fb; text-align: left; white-space: normal; box-shadow: 0 2px 6px rgba(15, 35, 64, 0.08), 0 12px 28px rgba(15, 35, 64, 0.14)">More networks</span></span><span class="tip" style="position: relative; display: inline-flex"><a href="#evidence" aria-label="Data and methods" style="width: 24px; height: 24px; box-sizing: border-box; border-radius: 999px; display: flex; align-items: center; justify-content: center; font-size: 10.5px; font-weight: 800; text-decoration: none; background: #eef3f9; color: #46618a; border: 1px solid #dce5f0;">D</a><span class="pop" aria-hidden="true" style="position: absolute; left: calc(100% + 10px); top: 50%; transform: translateY(-50%); z-index: 40; width: max-content; max-width: 300px; box-sizing: border-box; background: rgba(11, 31, 58, 0.97); border-radius: 8px; padding: 6px 10px; font-size: 12px; line-height: 1.4; font-weight: 600; color: #eaf2fb; text-align: left; white-space: normal; box-shadow: 0 2px 6px rgba(15, 35, 64, 0.08), 0 12px 28px rgba(15, 35, 64, 0.14)">Data and methods</span></span></div>
+</div>
+</nav>
+<div style="width: 1180px; flex: none; display: flex; flex-direction: column; gap: 26px">
+<section id="cut-more" style="display: flex; gap: 22px; align-items: flex-start; padding: 12px 0 2px">
+<div aria-hidden="true" style="flex: none; width: 58px; font-size: 64px; line-height: 0.86; font-weight: 800; letter-spacing: -0.04em; color: #14618f; font-variant-numeric: tabular-nums">+</div>
+<div style="display: flex; flex-direction: column; gap: 10px; padding-top: 2px">
+<div style="display: flex; align-items: center; gap: 14px">
+<h2 style="margin: 0; font-size: 30px; line-height: 1.1; font-weight: 700; letter-spacing: -0.02em; color: #0f2340">More networks</h2>
+</div>
+<p style="margin: 0; max-width: 860px; font-size: 18px; line-height: 1.45; font-weight: 600; letter-spacing: -0.005em; color: #0f2340; text-wrap: pretty">Six more networks from the same filings.</p>
+</div>
+</section>
+<article id="deeper-perm" style="background: #ffffff; border: 1px solid #dce5f0; border-radius: 14px; box-shadow: 0 1px 2px rgba(15, 35, 64, 0.06), 0 8px 24px rgba(15, 35, 64, 0.05); padding: 24px 28px 26px; display: flex; flex-direction: column; gap: 18px">
+<div style="display: flex; justify-content: flex-end; align-items: center; gap: 12px"><button type="button" aria-expanded="true" aria-controls="deeper-perm-body" style="display: inline-flex; align-items: center; gap: 6px; padding: 5px 11px; border-radius: 999px; border: 1px solid #dce5f0; background: #f7fafd; color: #46618a; font-family: inherit; font-size: 12px; font-weight: 700; cursor: pointer">Close <span aria-hidden="true">▴</span></button></div>
+<header style="display: flex; align-items: flex-start; gap: 14px">
+<span style="flex: none; min-width: 40px; height: 30px; padding: 0 8px; box-sizing: border-box; border-radius: 8px; background: #d9ecf9; color: #14618f; font-size: 13px; font-weight: 800; display: flex; align-items: center; justify-content: center; font-variant-numeric: tabular-nums">M1</span>
+<div style="flex: 1; display: flex; flex-direction: column; gap: 8px">
+<div style="display: flex; align-items: center; gap: 12px">
+<h3 style="margin: 0; font-size: 20px; line-height: 1.25; font-weight: 700; letter-spacing: -0.01em; color: #0f2340">Who keeps them? Green cards as the strong tie</h3>
+</div>
+<p style="margin: 0; max-width: 900px; font-size: 16px; line-height: 1.45; font-weight: 600; color: #0f2340; text-wrap: pretty">An H-1B filing is a weak tie between an employer and a worker; a green-card filing (PERM) is a strong one, because the employer sponsors the worker to stay.</p>
+</div>
+</header>
+<div id="deeper-perm-body">
+<div style="display: grid; grid-template-columns: 520px minmax(0, 1fr); gap: 40px; align-items: start">
+<div style="display: flex; flex-direction: column; gap: 14px">
+<p style="margin: 0; max-width: 68ch; font-size: 13.5px; line-height: 1.62; font-weight: 400; color: #46618a; text-wrap: pretty">In FY2025 the median employer with 20 or more H-1B filings filed 13.2 green cards per 100 of them, and the two counts rank employers only loosely alike (Spearman 0.50).</p>
+<p style="margin: 0; max-width: 68ch; font-size: 13.5px; line-height: 1.62; font-weight: 400; color: #46618a; text-wrap: pretty">As with degree and strength in the course, the exceptions carry the story: Oracle filed 95 green cards per 100 H-1B filings, Uber 64 and Salesforce 45, while Amazon (22,509 H-1B filings), Cognizant (11,085) and Google (8,657) filed almost none.</p>
+<div style="display: flex; gap: 11px; align-items: flex-start; background: #f7fafd; border: 1px solid #eaf0f7; border-radius: 10px; padding: 12px 14px">
+<span aria-hidden="true" style="flex: none; width: 18px; text-align: center; font-weight: 800; color: #14618f">!</span>
+<p style="margin: 0; font-size: 12.5px; line-height: 1.55; color: #46618a; text-wrap: pretty"><b style="color: #0f2340">Scope.</b> Only 65% of certified green cards come from an employer we can match to an H-1B filer.</p>
+</div>
+<div style="display: flex; flex-wrap: wrap; gap: 8px; align-items: center"><span class="tip" style="position: relative; display: inline-flex"><button type="button" aria-describedby="more-49" style="display: inline-flex; align-items: center; gap: 6px; padding: 6px 11px; border-radius: 999px; border: 1px solid #dce5f0; background: #ffffff; color: #14618f; font-family: inherit; font-size: 12px; font-weight: 700; line-height: 1.1; cursor: help"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true" style="flex: none"><circle cx="12" cy="12" r="9" style="fill: none; stroke: currentColor; stroke-width: 2px"></circle><path d="M12 8v8M8 12h8" style="fill: none; stroke: currentColor; stroke-width: 2px; stroke-linecap: round"></path></svg>More numbers</button><span class="pop" id="more-49" role="tooltip" style="position: absolute; left: 0; top: calc(100% + 8px); width: 440px; z-index: 40; box-sizing: border-box; background: rgba(11, 31, 58, 0.97); border: 1px solid rgba(255, 255, 255, 0.12); border-radius: 9px; padding: 12px 14px; box-shadow: 0 2px 6px rgba(15, 35, 64, 0.08), 0 18px 44px rgba(15, 35, 64, 0.16); font-size: 12.5px; line-height: 1.55; font-weight: 400; font-style: normal; color: #cfe0f2; text-align: left; white-space: normal; letter-spacing: 0"><b style="display: block; margin-bottom: 4px; color: #eaf2fb; font-weight: 700">More numbers</b>Whether outsourcing firms sponsor fewer is section 5B. Clients sponsor their own staff too: Wells Fargo receives 1,547 H-1B filings from vendors, files 624 of its own and 167 green cards. Firms with more clients sponsor slightly more green cards, not fewer (Spearman 0.13). Figures from analysis/week04_perm.py.</span></span></div>
+</div>
+<div style="display: flex; flex-direction: column; gap: 14px">
+<figure style="margin: 0; display: flex; flex-direction: column; gap: 8px">
+<figcaption style="display: flex; flex-direction: column; gap: 3px"><span style="font-size: 13.5px; font-weight: 700; color: #0f2340">Green cards per 100 H-1B filings</span><span style="font-size: 11.5px; line-height: 1.45; color: #46618a">The six employers the text names, FY2025; not a ranking. Dashed: the median employer with 20 or more H-1B filings.</span></figcaption>
+<div style="background: #f7fafd; border: 1px solid #eaf0f7; border-radius: 10px; padding: 14px 14px 10px">
+<svg width="556" height="324" viewBox="0 0 556 324" role="img" aria-label="Green cards per 100 H-1B filings for the named employers" style="display: block; overflow: visible; max-width: 100%; height: auto; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Inter, system-ui, sans-serif">
+<line x1="150.0" y1="22.0" x2="150.0" y2="290.0" style="stroke: #e6ecf3; stroke-width: 1px; stroke-linecap: butt"></line>
+<text x="150.0" y="306.0" style="font-size: 11px; fill: #7a8fac; font-weight: 400; text-anchor: middle; font-variant-numeric: tabular-nums">0</text>
+<line x1="246.5" y1="22.0" x2="246.5" y2="290.0" style="stroke: #e6ecf3; stroke-width: 1px; stroke-linecap: butt"></line>
+<text x="246.5" y="306.0" style="font-size: 11px; fill: #7a8fac; font-weight: 400; text-anchor: middle; font-variant-numeric: tabular-nums">25</text>
+<line x1="343.0" y1="22.0" x2="343.0" y2="290.0" style="stroke: #e6ecf3; stroke-width: 1px; stroke-linecap: butt"></line>
+<text x="343.0" y="306.0" style="font-size: 11px; fill: #7a8fac; font-weight: 400; text-anchor: middle; font-variant-numeric: tabular-nums">50</text>
+<line x1="439.5" y1="22.0" x2="439.5" y2="290.0" style="stroke: #e6ecf3; stroke-width: 1px; stroke-linecap: butt"></line>
+<text x="439.5" y="306.0" style="font-size: 11px; fill: #7a8fac; font-weight: 400; text-anchor: middle; font-variant-numeric: tabular-nums">75</text>
+<line x1="536.0" y1="22.0" x2="536.0" y2="290.0" style="stroke: #e6ecf3; stroke-width: 1px; stroke-linecap: butt"></line>
+<text x="536.0" y="306.0" style="font-size: 11px; fill: #7a8fac; font-weight: 400; text-anchor: middle; font-variant-numeric: tabular-nums">100</text>
+<line x1="200.8" y1="20.0" x2="200.8" y2="290.0" style="stroke: #46618a; stroke-width: 1.2px; stroke-linecap: butt; stroke-dasharray: 4 3"></line>
+<text x="150.0" y="16.0" style="font-size: 11px; fill: #46618a; font-weight: 600; text-anchor: start; font-variant-numeric: tabular-nums">median employer 13.2</text>
+<text x="0.0" y="43.0" style="font-size: 12px; fill: #0f2340; font-weight: 600; text-anchor: start">Oracle</text>
+<text x="0.0" y="58.0" style="font-size: 11px; fill: #7a8fac; font-weight: 400; text-anchor: start; font-variant-numeric: tabular-nums">1,258 H-1B filings</text>
+<line x1="150.0" y1="46.0" x2="536.0" y2="46.0" style="stroke: #dce5f0; stroke-width: 1px; stroke-linecap: butt"></line>
+<circle cx="515.1" cy="46.0" r="6.5" style="fill: #0f2340; stroke: #ffffff; stroke-width: 2px"></circle>
+<text x="515.1" y="33.0" style="font-size: 12px; fill: #0f2340; font-weight: 700; text-anchor: middle; font-variant-numeric: tabular-nums">95</text>
+<text x="0.0" y="87.0" style="font-size: 12px; fill: #0f2340; font-weight: 600; text-anchor: start">Uber</text>
+<text x="0.0" y="102.0" style="font-size: 11px; fill: #7a8fac; font-weight: 400; text-anchor: start; font-variant-numeric: tabular-nums">829 H-1B filings</text>
+<line x1="150.0" y1="90.0" x2="536.0" y2="90.0" style="stroke: #dce5f0; stroke-width: 1px; stroke-linecap: butt"></line>
+<circle cx="395.4" cy="90.0" r="6.5" style="fill: #0f2340; stroke: #ffffff; stroke-width: 2px"></circle>
+<text x="395.4" y="77.0" style="font-size: 12px; fill: #0f2340; font-weight: 700; text-anchor: middle; font-variant-numeric: tabular-nums">64</text>
+<text x="0.0" y="131.0" style="font-size: 12px; fill: #0f2340; font-weight: 600; text-anchor: start">Salesforce</text>
+<text x="0.0" y="146.0" style="font-size: 11px; fill: #7a8fac; font-weight: 400; text-anchor: start; font-variant-numeric: tabular-nums">1,798 H-1B filings</text>
+<line x1="150.0" y1="134.0" x2="536.0" y2="134.0" style="stroke: #dce5f0; stroke-width: 1px; stroke-linecap: butt"></line>
+<circle cx="323.7" cy="134.0" r="6.5" style="fill: #0f2340; stroke: #ffffff; stroke-width: 2px"></circle>
+<text x="323.7" y="121.0" style="font-size: 12px; fill: #0f2340; font-weight: 700; text-anchor: middle; font-variant-numeric: tabular-nums">45</text>
+<line x1="0.0" y1="160.0" x2="556.0" y2="160.0" style="stroke: #dce5f0; stroke-width: 1px; stroke-linecap: butt; stroke-dasharray: 2 3"></line>
+<text x="0.0" y="175.0" style="font-size: 12px; fill: #0f2340; font-weight: 600; text-anchor: start">Amazon</text>
+<text x="0.0" y="190.0" style="font-size: 11px; fill: #7a8fac; font-weight: 400; text-anchor: start; font-variant-numeric: tabular-nums">22,509 H-1B filings</text>
+<line x1="150.0" y1="178.0" x2="536.0" y2="178.0" style="stroke: #dce5f0; stroke-width: 1px; stroke-linecap: butt"></line>
+<circle cx="150.0" cy="178.0" r="6.5" style="fill: #0f2340; stroke: #ffffff; stroke-width: 2px"></circle>
+<text x="150.0" y="165.0" style="font-size: 12px; fill: #0f2340; font-weight: 700; text-anchor: start; font-variant-numeric: tabular-nums">0</text>
+<text x="0.0" y="219.0" style="font-size: 12px; fill: #0f2340; font-weight: 600; text-anchor: start">Cognizant</text>
+<text x="0.0" y="234.0" style="font-size: 11px; fill: #7a8fac; font-weight: 400; text-anchor: start; font-variant-numeric: tabular-nums">11,085 H-1B filings</text>
+<line x1="150.0" y1="222.0" x2="536.0" y2="222.0" style="stroke: #dce5f0; stroke-width: 1px; stroke-linecap: butt"></line>
+<circle cx="150.0" cy="222.0" r="6.5" style="fill: #0f2340; stroke: #ffffff; stroke-width: 2px"></circle>
+<text x="150.0" y="209.0" style="font-size: 12px; fill: #0f2340; font-weight: 700; text-anchor: start; font-variant-numeric: tabular-nums">0</text>
+<text x="0.0" y="263.0" style="font-size: 12px; fill: #0f2340; font-weight: 600; text-anchor: start">Google</text>
+<text x="0.0" y="278.0" style="font-size: 11px; fill: #7a8fac; font-weight: 400; text-anchor: start; font-variant-numeric: tabular-nums">8,657 H-1B filings</text>
+<line x1="150.0" y1="266.0" x2="536.0" y2="266.0" style="stroke: #dce5f0; stroke-width: 1px; stroke-linecap: butt"></line>
+<circle cx="150.0" cy="266.0" r="6.5" style="fill: #0f2340; stroke: #ffffff; stroke-width: 2px"></circle>
+<text x="150.0" y="253.0" style="font-size: 12px; fill: #0f2340; font-weight: 700; text-anchor: start; font-variant-numeric: tabular-nums">0</text>
+</svg>
+</div>
+</figure>
+</div>
+</div>
+</div>
+<nav aria-label="More in the deep dive" style="display: flex; justify-content: space-between; gap: 16px; border-top: 1px solid #eaf0f7; padding-top: 12px"><span></span><a href="#deeper-countries" style="font-size: 12.5px; font-weight: 600; text-decoration: none">Where are they from? A network of countries →</a></nav>
+</article>
+<article id="deeper-countries" style="background: #ffffff; border: 1px solid #dce5f0; border-radius: 14px; box-shadow: 0 1px 2px rgba(15, 35, 64, 0.06), 0 8px 24px rgba(15, 35, 64, 0.05); padding: 24px 28px 26px; display: flex; flex-direction: column; gap: 18px">
+<div style="display: flex; justify-content: flex-end; align-items: center; gap: 12px"><button type="button" aria-expanded="true" aria-controls="deeper-countries-body" style="display: inline-flex; align-items: center; gap: 6px; padding: 5px 11px; border-radius: 999px; border: 1px solid #dce5f0; background: #f7fafd; color: #46618a; font-family: inherit; font-size: 12px; font-weight: 700; cursor: pointer">Close <span aria-hidden="true">▴</span></button></div>
+<header style="display: flex; align-items: flex-start; gap: 14px">
+<span style="flex: none; min-width: 40px; height: 30px; padding: 0 8px; box-sizing: border-box; border-radius: 8px; background: #d9ecf9; color: #14618f; font-size: 13px; font-weight: 800; display: flex; align-items: center; justify-content: center; font-variant-numeric: tabular-nums">M2</span>
+<div style="flex: 1; display: flex; flex-direction: column; gap: 8px">
+<div style="display: flex; align-items: center; gap: 12px">
+<h3 style="margin: 0; font-size: 20px; line-height: 1.25; font-weight: 700; letter-spacing: -0.01em; color: #0f2340">Where are they from? A network of countries</h3>
+</div>
+<p style="margin: 0; max-width: 900px; font-size: 16px; line-height: 1.45; font-weight: 600; color: #0f2340; text-wrap: pretty">The groups match world regions (AMI 0.10) and Week 3’s migration communities (0.10) only weakly: green-card hiring does not sort countries into regional blocs.</p>
+</div>
+</header>
+<div id="deeper-countries-body">
+<div style="display: grid; grid-template-columns: 520px minmax(0, 1fr); gap: 40px; align-items: start">
+<div style="display: flex; flex-direction: column; gap: 14px">
+<p style="margin: 0; max-width: 68ch; font-size: 13.5px; line-height: 1.62; font-weight: 400; color: #46618a; text-wrap: pretty">India holds 52% of those filings and China 12%; among lottery registrations, India holds 77% in the March 2022 draw and 81% in March 2023. Link two countries by the green cards their citizens receive at the same employers and 55 countries remain. Louvain splits them into three groups.</p>
+<div style="display: flex; flex-wrap: wrap; gap: 8px; align-items: center"><span class="tip" style="position: relative; display: inline-flex"><button type="button" aria-describedby="more-50" style="display: inline-flex; align-items: center; gap: 6px; padding: 6px 11px; border-radius: 999px; border: 1px solid #dce5f0; background: #ffffff; color: #14618f; font-family: inherit; font-size: 12px; font-weight: 700; line-height: 1.1; cursor: help"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true" style="flex: none"><circle cx="12" cy="12" r="9" style="fill: none; stroke: currentColor; stroke-width: 2px"></circle><path d="M12 11v6M12 7.6v.4" style="fill: none; stroke: currentColor; stroke-width: 2.2px; stroke-linecap: round"></path></svg>How we kept it private</button><span class="pop" id="more-50" role="tooltip" style="position: absolute; left: 0; top: calc(100% + 8px); width: 440px; z-index: 40; box-sizing: border-box; background: rgba(11, 31, 58, 0.97); border: 1px solid rgba(255, 255, 255, 0.12); border-radius: 9px; padding: 12px 14px; box-shadow: 0 2px 6px rgba(15, 35, 64, 0.08), 0 18px 44px rgba(15, 35, 64, 0.16); font-size: 12.5px; line-height: 1.55; font-weight: 400; font-style: normal; color: #cfe0f2; text-align: left; white-space: normal; letter-spacing: 0"><b style="display: block; margin-bottom: 4px; color: #eaf2fb; font-weight: 700">How we kept it private</b>A worker’s citizenship is personal, so we read it only in memory and keep counts per country and employer, dropping every count under 10. That drops 96% of the cells and 43% of FY2023’s certified green-card filings. Figures from analysis/week04_countries.py; no row about a person leaves the script.</span></span><span class="tip" style="position: relative; display: inline-flex"><button type="button" aria-describedby="more-51" style="display: inline-flex; align-items: center; gap: 6px; padding: 6px 11px; border-radius: 999px; border: 1px solid #dce5f0; background: #ffffff; color: #14618f; font-family: inherit; font-size: 12px; font-weight: 700; line-height: 1.1; cursor: help"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true" style="flex: none"><circle cx="12" cy="12" r="9" style="fill: none; stroke: currentColor; stroke-width: 2px"></circle><path d="M12 8v8M8 12h8" style="fill: none; stroke: currentColor; stroke-width: 2px; stroke-linecap: round"></path></svg>More numbers</button><span class="pop" id="more-51" role="tooltip" style="position: absolute; left: 0; top: calc(100% + 8px); width: 500px; z-index: 40; box-sizing: border-box; background: rgba(11, 31, 58, 0.97); border: 1px solid rgba(255, 255, 255, 0.12); border-radius: 9px; padding: 12px 14px; box-shadow: 0 2px 6px rgba(15, 35, 64, 0.08), 0 18px 44px rgba(15, 35, 64, 0.16); font-size: 12.5px; line-height: 1.55; font-weight: 400; font-style: normal; color: #cfe0f2; text-align: left; white-space: normal; letter-spacing: 0"><b style="display: block; margin-bottom: 4px; color: #eaf2fb; font-weight: 700">More numbers</b>Counted once each, the links group a little more than rewired copies (modularity 0.10 against 0.06); weighted by shared green cards, they group less (0.26 against 0.40). India and China share one group with Canada, Belarus and Costa Rica, and India keeps 79% of its weight inside it. Among the ten largest sponsors, Google’s green cards are the most varied, 4.7 effective countries with India at 30%, against Amazon’s 3.0 at 67%. The third group gathers the Philippines, Kenya, Ghana, Zimbabwe, Ethiopia, Cameroon and Jamaica. Wayne Farms, a poultry company, filed 832 green cards in the counted cells, none for Indian citizens.</span></span></div>
+</div>
+<div style="display: flex; flex-direction: column; gap: 14px">
+<figure style="margin: 0; display: flex; flex-direction: column; gap: 8px">
+<figcaption style="display: flex; flex-direction: column; gap: 3px"><span style="font-size: 13.5px; font-weight: 700; color: #0f2340">Citizenship of FY2023’s green cards</span><span style="font-size: 11.5px; line-height: 1.45; color: #46618a">Share of certified green-card filings in the counted cells.</span></figcaption>
+<div style="background: #f7fafd; border: 1px solid #eaf0f7; border-radius: 10px; padding: 14px 14px 10px">
+<svg width="556" height="232" viewBox="0 0 556 232" role="img" aria-label="Shares of FY2023 certified green-card filings by citizenship" style="display: block; overflow: visible; max-width: 100%; height: auto; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Inter, system-ui, sans-serif">
+<text x="100.0" y="18.5" style="font-size: 12px; fill: #0f2340; font-weight: 700; text-anchor: end">India</text>
+<rect x="110.0" y="6.0" width="390.0" height="17.0" rx="3" style="fill: #0f2340"></rect>
+<text x="506.0" y="18.5" style="font-size: 11.5px; fill: #0f2340; font-weight: 700; text-anchor: start; font-variant-numeric: tabular-nums">52.2%</text>
+<text x="100.0" y="44.5" style="font-size: 12px; fill: #0f2340; font-weight: 700; text-anchor: end">China</text>
+<rect x="110.0" y="32.0" width="87.2" height="17.0" rx="3" style="fill: #0f2340"></rect>
+<text x="203.2" y="44.5" style="font-size: 11.5px; fill: #0f2340; font-weight: 700; text-anchor: start; font-variant-numeric: tabular-nums">11.7%</text>
+<text x="100.0" y="70.5" style="font-size: 12px; fill: #0f2340; font-weight: 400; text-anchor: end">Mexico</text>
+<rect x="110.0" y="58.0" width="28.2" height="17.0" rx="3" style="fill: #0f2340; opacity: 0.42"></rect>
+<text x="144.2" y="70.5" style="font-size: 11.5px; fill: #0f2340; font-weight: 600; text-anchor: start; font-variant-numeric: tabular-nums">3.8%</text>
+<text x="100.0" y="96.5" style="font-size: 12px; fill: #0f2340; font-weight: 400; text-anchor: end">Vietnam</text>
+<rect x="110.0" y="84.0" width="24.0" height="17.0" rx="3" style="fill: #0f2340; opacity: 0.42"></rect>
+<text x="140.0" y="96.5" style="font-size: 11.5px; fill: #0f2340; font-weight: 600; text-anchor: start; font-variant-numeric: tabular-nums">3.2%</text>
+<text x="100.0" y="122.5" style="font-size: 12px; fill: #0f2340; font-weight: 400; text-anchor: end">Philippines</text>
+<rect x="110.0" y="110.0" width="19.7" height="17.0" rx="3" style="fill: #0f2340; opacity: 0.42"></rect>
+<text x="135.7" y="122.5" style="font-size: 11.5px; fill: #0f2340; font-weight: 600; text-anchor: start; font-variant-numeric: tabular-nums">2.6%</text>
+<text x="100.0" y="148.5" style="font-size: 12px; fill: #0f2340; font-weight: 400; text-anchor: end">Canada</text>
+<rect x="110.0" y="136.0" width="19.1" height="17.0" rx="3" style="fill: #0f2340; opacity: 0.42"></rect>
+<text x="135.1" y="148.5" style="font-size: 11.5px; fill: #0f2340; font-weight: 600; text-anchor: start; font-variant-numeric: tabular-nums">2.6%</text>
+<text x="100.0" y="174.5" style="font-size: 12px; fill: #0f2340; font-weight: 400; text-anchor: end">Brazil</text>
+<rect x="110.0" y="162.0" width="18.5" height="17.0" rx="3" style="fill: #0f2340; opacity: 0.42"></rect>
+<text x="134.5" y="174.5" style="font-size: 11.5px; fill: #0f2340; font-weight: 600; text-anchor: start; font-variant-numeric: tabular-nums">2.5%</text>
+<text x="100.0" y="200.5" style="font-size: 12px; fill: #0f2340; font-weight: 400; text-anchor: end">South Korea</text>
+<rect x="110.0" y="188.0" width="15.7" height="17.0" rx="3" style="fill: #0f2340; opacity: 0.42"></rect>
+<text x="131.7" y="200.5" style="font-size: 11.5px; fill: #0f2340; font-weight: 600; text-anchor: start; font-variant-numeric: tabular-nums">2.1%</text>
+</svg>
+</div>
+</figure>
+<figure style="margin: 0; display: flex; flex-direction: column; gap: 8px">
+<figcaption style="display: flex; flex-direction: column; gap: 3px"><span style="font-size: 13.5px; font-weight: 700; color: #0f2340">Do countries group?</span><span style="font-size: 11.5px; line-height: 1.45; color: #46618a">Modularity of the country network against rewired copies.</span></figcaption>
+<div style="background: #f7fafd; border: 1px solid #eaf0f7; border-radius: 10px; padding: 14px 14px 10px">
+<svg width="556" height="164" viewBox="0 0 556 164" role="img" aria-label="Modularity of the country network against rewired copies" style="display: block; overflow: visible; max-width: 100%; height: auto; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Inter, system-ui, sans-serif">
+<line x1="170.0" y1="6.0" x2="170.0" y2="130.0" style="stroke: #e6ecf3; stroke-width: 1px; stroke-linecap: butt"></line>
+<text x="170.0" y="146.0" style="font-size: 11px; fill: #7a8fac; font-weight: 400; text-anchor: middle; font-variant-numeric: tabular-nums">0.0</text>
+<line x1="232.0" y1="6.0" x2="232.0" y2="130.0" style="stroke: #e6ecf3; stroke-width: 1px; stroke-linecap: butt"></line>
+<text x="232.0" y="146.0" style="font-size: 11px; fill: #7a8fac; font-weight: 400; text-anchor: middle; font-variant-numeric: tabular-nums">0.1</text>
+<line x1="294.0" y1="6.0" x2="294.0" y2="130.0" style="stroke: #e6ecf3; stroke-width: 1px; stroke-linecap: butt"></line>
+<text x="294.0" y="146.0" style="font-size: 11px; fill: #7a8fac; font-weight: 400; text-anchor: middle; font-variant-numeric: tabular-nums">0.2</text>
+<line x1="356.0" y1="6.0" x2="356.0" y2="130.0" style="stroke: #e6ecf3; stroke-width: 1px; stroke-linecap: butt"></line>
+<text x="356.0" y="146.0" style="font-size: 11px; fill: #7a8fac; font-weight: 400; text-anchor: middle; font-variant-numeric: tabular-nums">0.3</text>
+<line x1="418.0" y1="6.0" x2="418.0" y2="130.0" style="stroke: #e6ecf3; stroke-width: 1px; stroke-linecap: butt"></line>
+<text x="418.0" y="146.0" style="font-size: 11px; fill: #7a8fac; font-weight: 400; text-anchor: middle; font-variant-numeric: tabular-nums">0.4</text>
+<line x1="480.0" y1="6.0" x2="480.0" y2="130.0" style="stroke: #e6ecf3; stroke-width: 1px; stroke-linecap: butt"></line>
+<text x="480.0" y="146.0" style="font-size: 11px; fill: #7a8fac; font-weight: 400; text-anchor: middle; font-variant-numeric: tabular-nums">0.5</text>
+<text x="0.0" y="35.0" style="font-size: 12px; fill: #0f2340; font-weight: 600; text-anchor: start">Links counted once</text>
+<text x="0.0" y="50.0" style="font-size: 11px; fill: #7a8fac; font-weight: 400; text-anchor: start; font-variant-numeric: tabular-nums">against rewired</text>
+<line x1="170.0" y1="38.0" x2="480.0" y2="38.0" style="stroke: #dce5f0; stroke-width: 1px; stroke-linecap: butt"></line>
+<rect x="205.3" y="32.0" width="5.5" height="12.0" rx="6" style="fill: rgba(185, 196, 210, 0.62)"></rect>
+<line x1="208.0" y1="29.0" x2="208.0" y2="47.0" style="stroke: #7a8fac; stroke-width: 2px; stroke-linecap: butt"></line>
+<text x="208.0" y="63.0" style="font-size: 11px; fill: #46618a; font-weight: 400; text-anchor: middle; font-variant-numeric: tabular-nums">rewired 0.06</text>
+<circle cx="234.0" cy="38.0" r="6.5" style="fill: #0f2340; stroke: #ffffff; stroke-width: 2px"></circle>
+<text x="234.0" y="25.0" style="font-size: 12px; fill: #0f2340; font-weight: 700; text-anchor: middle; font-variant-numeric: tabular-nums">0.10</text>
+<rect x="492.0" y="28.0" width="59.1" height="20.0" rx="10" style="fill: #eef3f9"></rect>
+<text x="521.6" y="42.0" style="font-size: 11px; fill: #0f2340; font-weight: 700; text-anchor: middle; font-variant-numeric: tabular-nums">z = 9.5</text>
+<text x="0.0" y="95.0" style="font-size: 12px; fill: #0f2340; font-weight: 600; text-anchor: start">Weighted by green cards</text>
+<text x="0.0" y="110.0" style="font-size: 11px; fill: #7a8fac; font-weight: 400; text-anchor: start; font-variant-numeric: tabular-nums">against rewired</text>
+<line x1="170.0" y1="98.0" x2="480.0" y2="98.0" style="stroke: #dce5f0; stroke-width: 1px; stroke-linecap: butt"></line>
+<rect x="408.1" y="92.0" width="23.4" height="12.0" rx="6" style="fill: rgba(185, 196, 210, 0.62)"></rect>
+<line x1="419.9" y1="89.0" x2="419.9" y2="107.0" style="stroke: #7a8fac; stroke-width: 2px; stroke-linecap: butt"></line>
+<text x="419.9" y="123.0" style="font-size: 11px; fill: #46618a; font-weight: 400; text-anchor: middle; font-variant-numeric: tabular-nums">rewired 0.40</text>
+<circle cx="332.3" cy="98.0" r="6.5" style="fill: #0f2340; stroke: #ffffff; stroke-width: 2px"></circle>
+<text x="332.3" y="85.0" style="font-size: 12px; fill: #0f2340; font-weight: 700; text-anchor: middle; font-variant-numeric: tabular-nums">0.26</text>
+<rect x="492.0" y="88.0" width="65.3" height="20.0" rx="10" style="fill: #eef3f9"></rect>
+<text x="524.6" y="102.0" style="font-size: 11px; fill: #0f2340; font-weight: 700; text-anchor: middle; font-variant-numeric: tabular-nums">z = −7.5</text>
+</svg>
+</div>
+</figure>
+</div>
+</div>
+</div>
+<nav aria-label="More in the deep dive" style="display: flex; justify-content: space-between; gap: 16px; border-top: 1px solid #eaf0f7; padding-top: 12px"><a href="#deeper-perm" style="font-size: 12.5px; font-weight: 600; text-decoration: none">← Who keeps them? Green cards as the strong tie</a><a href="#deeper-density" style="font-size: 12.5px; font-weight: 600; text-decoration: none">Where is the hiring densest? Filings per 1,000 jobs →</a></nav>
+</article>
+<article id="deeper-density" style="background: #ffffff; border: 1px solid #dce5f0; border-radius: 14px; box-shadow: 0 1px 2px rgba(15, 35, 64, 0.06), 0 8px 24px rgba(15, 35, 64, 0.05); padding: 24px 28px 26px; display: flex; flex-direction: column; gap: 18px">
+<div style="display: flex; justify-content: flex-end; align-items: center; gap: 12px"><button type="button" aria-expanded="true" aria-controls="deeper-density-body" style="display: inline-flex; align-items: center; gap: 6px; padding: 5px 11px; border-radius: 999px; border: 1px solid #dce5f0; background: #f7fafd; color: #46618a; font-family: inherit; font-size: 12px; font-weight: 700; cursor: pointer">Close <span aria-hidden="true">▴</span></button></div>
+<header style="display: flex; align-items: flex-start; gap: 14px">
+<span style="flex: none; min-width: 40px; height: 30px; padding: 0 8px; box-sizing: border-box; border-radius: 8px; background: #d9ecf9; color: #14618f; font-size: 13px; font-weight: 800; display: flex; align-items: center; justify-content: center; font-variant-numeric: tabular-nums">M3</span>
+<div style="flex: 1; display: flex; flex-direction: column; gap: 8px">
+<div style="display: flex; align-items: center; gap: 12px">
+<h3 style="margin: 0; font-size: 20px; line-height: 1.25; font-weight: 700; letter-spacing: -0.01em; color: #0f2340">Where is the hiring densest? Filings per 1,000 jobs</h3>
+</div>
+<p style="margin: 0; max-width: 900px; font-size: 16px; line-height: 1.45; font-weight: 600; color: #0f2340; text-wrap: pretty">New York files the most, 65,935, but that is 6.9 per 1,000 jobs; San Jose files 42.9, Trenton 17.2 and Seattle 16.8.</p>
+</div>
+</header>
+<div id="deeper-density-body">
+<div style="display: grid; grid-template-columns: 520px minmax(0, 1fr); gap: 40px; align-items: start">
+<div style="display: flex; flex-direction: column; gap: 14px">
+<p style="margin: 0; max-width: 68ch; font-size: 13.5px; line-height: 1.62; font-weight: 400; color: #46618a; text-wrap: pretty">Among the 203 metros with 100,000 jobs or more, count and density rank alike (Spearman 0.90), yet only 5 of the 10 largest by count stay in the top 10 by density: Dallas, San Jose, San Francisco, Seattle and Austin.</p>
+<div style="display: flex; gap: 11px; align-items: flex-start; background: #f7fafd; border: 1px solid #eaf0f7; border-radius: 10px; padding: 12px 14px">
+<span aria-hidden="true" style="flex: none; width: 18px; text-align: center; font-weight: 800; color: #14618f">!</span>
+<p style="margin: 0; font-size: 12.5px; line-height: 1.55; color: #46618a; text-wrap: pretty"><b style="color: #0f2340">Scope.</b> A filing is a request, not a hire, so a rate can run high.</p>
+</div>
+<div style="display: flex; flex-wrap: wrap; gap: 8px; align-items: center"><span class="tip" style="position: relative; display: inline-flex"><button type="button" aria-describedby="more-52" style="display: inline-flex; align-items: center; gap: 6px; padding: 6px 11px; border-radius: 999px; border: 1px solid #dce5f0; background: #ffffff; color: #14618f; font-family: inherit; font-size: 12px; font-weight: 700; line-height: 1.1; cursor: help"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true" style="flex: none"><circle cx="12" cy="12" r="9" style="fill: none; stroke: currentColor; stroke-width: 2px"></circle><path d="M12 11v6M12 7.6v.4" style="fill: none; stroke: currentColor; stroke-width: 2.2px; stroke-linecap: round"></path></svg>How we divide</button><span class="pop" id="more-52" role="tooltip" style="position: absolute; left: 0; top: calc(100% + 8px); width: 440px; z-index: 40; box-sizing: border-box; background: rgba(11, 31, 58, 0.97); border: 1px solid rgba(255, 255, 255, 0.12); border-radius: 9px; padding: 12px 14px; box-shadow: 0 2px 6px rgba(15, 35, 64, 0.08), 0 18px 44px rgba(15, 35, 64, 0.16); font-size: 12.5px; line-height: 1.55; font-weight: 400; font-style: normal; color: #cfe0f2; text-align: left; white-space: normal; letter-spacing: 0"><b style="display: block; margin-bottom: 4px; color: #eaf2fb; font-weight: 700">How we divide</b>Section 1 counts filings. Divide each metro’s FY2025 filings by its jobs in the Bureau of Labor Statistics’ May 2025 employment survey (OEWS) and the map shifts: nationally it is 4.5 filings per 1,000 jobs. Figures from analysis/week04_oews.py.</span></span><span class="tip" style="position: relative; display: inline-flex"><button type="button" aria-describedby="more-53" style="display: inline-flex; align-items: center; gap: 6px; padding: 6px 11px; border-radius: 999px; border: 1px solid #dce5f0; background: #ffffff; color: #14618f; font-family: inherit; font-size: 12px; font-weight: 700; line-height: 1.1; cursor: help"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true" style="flex: none"><circle cx="12" cy="12" r="9" style="fill: none; stroke: currentColor; stroke-width: 2px"></circle><path d="M12 8v8M8 12h8" style="fill: none; stroke: currentColor; stroke-width: 2px; stroke-linecap: round"></path></svg>More numbers</button><span class="pop open" id="more-53" role="tooltip" style="position: absolute; left: 0; top: calc(100% + 8px); width: 440px; z-index: 40; box-sizing: border-box; background: rgba(11, 31, 58, 0.97); border: 1px solid rgba(255, 255, 255, 0.12); border-radius: 9px; padding: 12px 14px; box-shadow: 0 2px 6px rgba(15, 35, 64, 0.08), 0 18px 44px rgba(15, 35, 64, 0.16); font-size: 12.5px; line-height: 1.55; font-weight: 400; font-style: normal; color: #cfe0f2; text-align: left; white-space: normal; letter-spacing: 0"><b style="display: block; margin-bottom: 4px; color: #eaf2fb; font-weight: 700">More numbers</b>For software developers alone the national rate is 139 filings per 1,000 jobs, and Fayetteville, Arkansas, the metro around Bentonville, reaches 896, 6.4 times the national share.</span></span></div>
+</div>
+<div style="display: flex; flex-direction: column; gap: 14px">
+<figure style="margin: 0; display: flex; flex-direction: column; gap: 8px">
+<figcaption style="display: flex; flex-direction: column; gap: 3px"><span style="font-size: 13.5px; font-weight: 700; color: #0f2340">Filings per 1,000 jobs</span><span style="font-size: 11.5px; line-height: 1.45; color: #46618a">The ten densest metros with 100,000 jobs or more, and New York (outlined), which files the most. Dashed: the national rate.</span></figcaption>
+<div style="background: #f7fafd; border: 1px solid #eaf0f7; border-radius: 10px; padding: 14px 14px 10px">
+<svg width="556" height="310" viewBox="0 0 556 310" role="img" aria-label="Certified H-1B filings per 1,000 jobs by metro" style="display: block; overflow: visible; max-width: 100%; height: auto; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Inter, system-ui, sans-serif">
+<line x1="169.4" y1="4.0" x2="169.4" y2="292.0" style="stroke: #46618a; stroke-width: 1.2px; stroke-linecap: butt; stroke-dasharray: 4 3"></line>
+<text x="169.4" y="307.0" style="font-size: 11px; fill: #46618a; font-weight: 600; text-anchor: middle; font-variant-numeric: tabular-nums">national 4.5</text>
+<text x="120.0" y="18.5" style="font-size: 12px; fill: #0f2340; font-weight: 700; text-anchor: end">San Jose</text>
+<rect x="130.0" y="6.0" width="376.0" height="17.0" rx="3" style="fill: #0f2340"></rect>
+<text x="512.0" y="18.5" style="font-size: 11.5px; fill: #0f2340; font-weight: 700; text-anchor: start; font-variant-numeric: tabular-nums">42.9</text>
+<text x="120.0" y="44.5" style="font-size: 12px; fill: #0f2340; font-weight: 400; text-anchor: end">Trenton</text>
+<rect x="130.0" y="32.0" width="150.4" height="17.0" rx="3" style="fill: #0f2340; opacity: 0.42"></rect>
+<text x="286.4" y="44.5" style="font-size: 11.5px; fill: #0f2340; font-weight: 600; text-anchor: start; font-variant-numeric: tabular-nums">17.2</text>
+<text x="120.0" y="70.5" style="font-size: 12px; fill: #0f2340; font-weight: 400; text-anchor: end">Seattle</text>
+<rect x="130.0" y="58.0" width="147.4" height="17.0" rx="3" style="fill: #0f2340; opacity: 0.42"></rect>
+<text x="283.4" y="70.5" style="font-size: 11.5px; fill: #0f2340; font-weight: 600; text-anchor: start; font-variant-numeric: tabular-nums">16.8</text>
+<text x="120.0" y="96.5" style="font-size: 12px; fill: #0f2340; font-weight: 400; text-anchor: end">Austin</text>
+<rect x="130.0" y="84.0" width="135.7" height="17.0" rx="3" style="fill: #0f2340; opacity: 0.42"></rect>
+<text x="271.7" y="96.5" style="font-size: 11.5px; fill: #0f2340; font-weight: 600; text-anchor: start; font-variant-numeric: tabular-nums">15.5</text>
+<text x="120.0" y="122.5" style="font-size: 12px; fill: #0f2340; font-weight: 400; text-anchor: end">San Francisco</text>
+<rect x="130.0" y="110.0" width="131.6" height="17.0" rx="3" style="fill: #0f2340; opacity: 0.42"></rect>
+<text x="267.6" y="122.5" style="font-size: 11.5px; fill: #0f2340; font-weight: 600; text-anchor: start; font-variant-numeric: tabular-nums">15.0</text>
+<text x="120.0" y="148.5" style="font-size: 12px; fill: #0f2340; font-weight: 400; text-anchor: end">Dallas</text>
+<rect x="130.0" y="136.0" width="118.4" height="17.0" rx="3" style="fill: #0f2340; opacity: 0.42"></rect>
+<text x="254.4" y="148.5" style="font-size: 11.5px; fill: #0f2340; font-weight: 600; text-anchor: start; font-variant-numeric: tabular-nums">13.5</text>
+<text x="120.0" y="174.5" style="font-size: 12px; fill: #0f2340; font-weight: 400; text-anchor: end">Fayetteville</text>
+<rect x="130.0" y="162.0" width="113.8" height="17.0" rx="3" style="fill: #0f2340; opacity: 0.42"></rect>
+<text x="249.8" y="174.5" style="font-size: 11.5px; fill: #0f2340; font-weight: 600; text-anchor: start; font-variant-numeric: tabular-nums">13.0</text>
+<text x="120.0" y="200.5" style="font-size: 12px; fill: #0f2340; font-weight: 400; text-anchor: end">Raleigh</text>
+<rect x="130.0" y="188.0" width="110.0" height="17.0" rx="3" style="fill: #0f2340; opacity: 0.42"></rect>
+<text x="246.0" y="200.5" style="font-size: 11.5px; fill: #0f2340; font-weight: 600; text-anchor: start; font-variant-numeric: tabular-nums">12.5</text>
+<text x="120.0" y="226.5" style="font-size: 12px; fill: #0f2340; font-weight: 400; text-anchor: end">Durham</text>
+<rect x="130.0" y="214.0" width="90.1" height="17.0" rx="3" style="fill: #0f2340; opacity: 0.42"></rect>
+<text x="226.1" y="226.5" style="font-size: 11.5px; fill: #0f2340; font-weight: 600; text-anchor: start; font-variant-numeric: tabular-nums">10.3</text>
+<text x="120.0" y="252.5" style="font-size: 12px; fill: #0f2340; font-weight: 400; text-anchor: end">Stockton</text>
+<rect x="130.0" y="240.0" width="71.5" height="17.0" rx="3" style="fill: #0f2340; opacity: 0.42"></rect>
+<text x="207.5" y="252.5" style="font-size: 11.5px; fill: #0f2340; font-weight: 600; text-anchor: start; font-variant-numeric: tabular-nums">8.2</text>
+<text x="120.0" y="278.5" style="font-size: 12px; fill: #0f2340; font-weight: 400; text-anchor: end">New York</text>
+<rect x="130.0" y="266.0" width="60.9" height="17.0" rx="3" style="fill: #ffffff; stroke: #0f2340; stroke-width: 1.4px"></rect>
+<text x="196.9" y="278.5" style="font-size: 11.5px; fill: #0f2340; font-weight: 600; text-anchor: start; font-variant-numeric: tabular-nums">6.9</text>
+</svg>
+</div>
+</figure>
+</div>
+</div>
+</div>
+<nav aria-label="More in the deep dive" style="display: flex; justify-content: space-between; gap: 16px; border-top: 1px solid #eaf0f7; padding-top: 12px"><a href="#deeper-countries" style="font-size: 12.5px; font-weight: 600; text-decoration: none">← Where are they from? A network of countries</a><a href="DeepMoreB.dc.html" style="font-size: 12.5px; font-weight: 600; text-decoration: none">Strength against degree →</a></nav>
+</article>
+</div>
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview": {"width": 1440, "height": 2960}}'>
+class Component extends DCLogic {
+renderVals() {
+return {};
+}
+}
+</script>
+</body>
+</html>

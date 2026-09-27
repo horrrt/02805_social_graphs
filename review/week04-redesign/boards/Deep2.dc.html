@@ -1,0 +1,336 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>Week 4 · deep dive, first round of section 2</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@800&amp;display=swap" />
+<style>
+body{margin:0;background:#eef3f9}
+a{color:#14618f}a:hover{color:#0f2340}
+summary{cursor:pointer}
+.pop{display:none}
+.tip:hover>.pop,.tip:focus-within>.pop,.pop.open{display:block}
+</style>
+</helmet>
+<div style="width: 1440px; height: 3140px; box-sizing: border-box; overflow: hidden; background: #eef3f9; color: #0f2340; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Inter, system-ui, sans-serif; display: flex; flex-direction: column; -webkit-font-smoothing: antialiased">
+<header style="flex: none; height: 52px; box-sizing: border-box; background: rgba(255, 255, 255, 0.92); border-bottom: 1px solid #dce5f0; display: flex; align-items: center; justify-content: center">
+<div style="width: 1180px; display: flex; align-items: center; gap: 22px">
+<a href="#top" style="display: flex; align-items: center; gap: 7px; text-decoration: none; font-family: 'Barlow Condensed', Impact, sans-serif; font-weight: 800; font-size: 20px; line-height: 1; letter-spacing: 0.01em; color: #0f2340"><span style="color: #14618f">✳︎</span><span>LOG–LOG <span style="color: #14618f">LEGENDS</span></span></a>
+<a href="#all-posts" style="font-size: 13px; font-weight: 600; color: #46618a; text-decoration: none">All posts</a>
+<nav aria-label="Sections of this post" style="margin-left: auto; display: flex; gap: 2px">
+<a href="#opening" style="display: flex; align-items: center; gap: 6px; padding: 7px 12px; border-radius: 999px; font-size: 13px; font-weight: 600; text-decoration: none; color: #46618a;"><span style="font-variant-numeric: tabular-nums; font-weight: 800; color: #7a8fac">0</span>Opening</a>
+<a href="#place" style="display: flex; align-items: center; gap: 6px; padding: 7px 12px; border-radius: 999px; font-size: 13px; font-weight: 600; text-decoration: none; color: #46618a;"><span style="font-variant-numeric: tabular-nums; font-weight: 800; color: #7a8fac">1</span>Where</a>
+<a href="#jobs" style="display: flex; align-items: center; gap: 6px; padding: 7px 12px; border-radius: 999px; font-size: 13px; font-weight: 600; text-decoration: none; color: #46618a;"><span style="font-variant-numeric: tabular-nums; font-weight: 800; color: #7a8fac">2</span>Jobs</a>
+<a href="#who" style="display: flex; align-items: center; gap: 6px; padding: 7px 12px; border-radius: 999px; font-size: 13px; font-weight: 600; text-decoration: none; color: #46618a;"><span style="font-variant-numeric: tabular-nums; font-weight: 800; color: #7a8fac">3</span>Staffing</a>
+<a href="#footprint" style="display: flex; align-items: center; gap: 6px; padding: 7px 12px; border-radius: 999px; font-size: 13px; font-weight: 600; text-decoration: none; color: #46618a;"><span style="font-variant-numeric: tabular-nums; font-weight: 800; color: #7a8fac">4</span>Biggest firms</a>
+<a href="#beyond" style="display: flex; align-items: center; gap: 6px; padding: 7px 12px; border-radius: 999px; font-size: 13px; font-weight: 600; text-decoration: none; color: #46618a;"><span style="font-variant-numeric: tabular-nums; font-weight: 800; color: #7a8fac">5</span>Beyond</a>
+<a href="#closing" style="display: flex; align-items: center; gap: 6px; padding: 7px 12px; border-radius: 999px; font-size: 13px; font-weight: 600; text-decoration: none; color: #46618a;"><span style="font-variant-numeric: tabular-nums; font-weight: 800; color: #7a8fac">✓</span>Closing</a>
+<a href="#cut" aria-current="true" style="display: flex; align-items: center; gap: 6px; padding: 7px 12px; border-radius: 999px; font-size: 13px; font-weight: 600; text-decoration: none; background: #d9ecf9; color: #14618f;"><span style="font-variant-numeric: tabular-nums; font-weight: 800; color: #14618f">+</span>Deep dive</a>
+</nav>
+</div>
+</header>
+<div style="flex: none; display: flex; align-items: flex-start; padding-top: 36px">
+<nav aria-label="Contents of this post" style="flex: none; width: 130px; display: flex; justify-content: center; padding-top: 6px">
+<div style="display: flex; flex-direction: column; align-items: center; gap: 8px; padding: 4px 0; background: linear-gradient(#dce5f0, #dce5f0) center / 2px 100% no-repeat">
+<span class="tip" style="position: relative; display: inline-flex"><a href="#opening" aria-label="0 · Opening" style="width: 36px; height: 36px; box-sizing: border-box; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 800; text-decoration: none; font-variant-numeric: tabular-nums; background: #ffffff; color: #14618f; border: 1px solid #dce5f0;">0</a><span class="pop" aria-hidden="true" style="position: absolute; left: calc(100% + 10px); top: 50%; transform: translateY(-50%); z-index: 40; width: max-content; max-width: 300px; box-sizing: border-box; background: rgba(11, 31, 58, 0.97); border-radius: 8px; padding: 6px 10px; font-size: 12px; line-height: 1.4; font-weight: 600; color: #eaf2fb; text-align: left; white-space: normal; box-shadow: 0 2px 6px rgba(15, 35, 64, 0.08), 0 12px 28px rgba(15, 35, 64, 0.14)">0 · Opening</span></span>
+<span class="tip" style="position: relative; display: inline-flex"><a href="#place" aria-label="1 · Where the hiring is" style="width: 36px; height: 36px; box-sizing: border-box; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 800; text-decoration: none; font-variant-numeric: tabular-nums; background: #ffffff; color: #14618f; border: 1px solid #dce5f0;">1</a><span class="pop" aria-hidden="true" style="position: absolute; left: calc(100% + 10px); top: 50%; transform: translateY(-50%); z-index: 40; width: max-content; max-width: 300px; box-sizing: border-box; background: rgba(11, 31, 58, 0.97); border-radius: 8px; padding: 6px 10px; font-size: 12px; line-height: 1.4; font-weight: 600; color: #eaf2fb; text-align: left; white-space: normal; box-shadow: 0 2px 6px rgba(15, 35, 64, 0.08), 0 12px 28px rgba(15, 35, 64, 0.14)">1 · Where the hiring is</span></span>
+<span class="tip" style="position: relative; display: inline-flex"><a href="#jobs" aria-label="2 · Which jobs go together" style="width: 36px; height: 36px; box-sizing: border-box; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 800; text-decoration: none; font-variant-numeric: tabular-nums; background: #ffffff; color: #14618f; border: 1px solid #dce5f0;">2</a><span class="pop" aria-hidden="true" style="position: absolute; left: calc(100% + 10px); top: 50%; transform: translateY(-50%); z-index: 40; width: max-content; max-width: 300px; box-sizing: border-box; background: rgba(11, 31, 58, 0.97); border-radius: 8px; padding: 6px 10px; font-size: 12px; line-height: 1.4; font-weight: 600; color: #eaf2fb; text-align: left; white-space: normal; box-shadow: 0 2px 6px rgba(15, 35, 64, 0.08), 0 12px 28px rgba(15, 35, 64, 0.14)">2 · Which jobs go together</span></span>
+<span class="tip" style="position: relative; display: inline-flex"><a href="#who" aria-label="3 · Who staffs whom" style="width: 36px; height: 36px; box-sizing: border-box; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 800; text-decoration: none; font-variant-numeric: tabular-nums; background: #ffffff; color: #14618f; border: 1px solid #dce5f0;">3</a><span class="pop" aria-hidden="true" style="position: absolute; left: calc(100% + 10px); top: 50%; transform: translateY(-50%); z-index: 40; width: max-content; max-width: 300px; box-sizing: border-box; background: rgba(11, 31, 58, 0.97); border-radius: 8px; padding: 6px 10px; font-size: 12px; line-height: 1.4; font-weight: 600; color: #eaf2fb; text-align: left; white-space: normal; box-shadow: 0 2px 6px rgba(15, 35, 64, 0.08), 0 12px 28px rgba(15, 35, 64, 0.14)">3 · Who staffs whom</span></span>
+<span class="tip" style="position: relative; display: inline-flex"><a href="#footprint" aria-label="4 · Without the biggest firms" style="width: 36px; height: 36px; box-sizing: border-box; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 800; text-decoration: none; font-variant-numeric: tabular-nums; background: #ffffff; color: #14618f; border: 1px solid #dce5f0;">4</a><span class="pop" aria-hidden="true" style="position: absolute; left: calc(100% + 10px); top: 50%; transform: translateY(-50%); z-index: 40; width: max-content; max-width: 300px; box-sizing: border-box; background: rgba(11, 31, 58, 0.97); border-radius: 8px; padding: 6px 10px; font-size: 12px; line-height: 1.4; font-weight: 600; color: #eaf2fb; text-align: left; white-space: normal; box-shadow: 0 2px 6px rgba(15, 35, 64, 0.08), 0 12px 28px rgba(15, 35, 64, 0.14)">4 · Without the biggest firms</span></span>
+<span class="tip" style="position: relative; display: inline-flex"><a href="#beyond" aria-label="5 · Beyond the three networks" style="width: 36px; height: 36px; box-sizing: border-box; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 800; text-decoration: none; font-variant-numeric: tabular-nums; background: #ffffff; color: #14618f; border: 1px solid #dce5f0;">5</a><span class="pop" aria-hidden="true" style="position: absolute; left: calc(100% + 10px); top: 50%; transform: translateY(-50%); z-index: 40; width: max-content; max-width: 300px; box-sizing: border-box; background: rgba(11, 31, 58, 0.97); border-radius: 8px; padding: 6px 10px; font-size: 12px; line-height: 1.4; font-weight: 600; color: #eaf2fb; text-align: left; white-space: normal; box-shadow: 0 2px 6px rgba(15, 35, 64, 0.08), 0 12px 28px rgba(15, 35, 64, 0.14)">5 · Beyond the three networks</span></span>
+<span class="tip" style="position: relative; display: inline-flex"><a href="#closing" aria-label="✓ · Closing" style="width: 36px; height: 36px; box-sizing: border-box; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 800; text-decoration: none; font-variant-numeric: tabular-nums; background: #ffffff; color: #14618f; border: 1px solid #dce5f0;">✓</a><span class="pop" aria-hidden="true" style="position: absolute; left: calc(100% + 10px); top: 50%; transform: translateY(-50%); z-index: 40; width: max-content; max-width: 300px; box-sizing: border-box; background: rgba(11, 31, 58, 0.97); border-radius: 8px; padding: 6px 10px; font-size: 12px; line-height: 1.4; font-weight: 600; color: #eaf2fb; text-align: left; white-space: normal; box-shadow: 0 2px 6px rgba(15, 35, 64, 0.08), 0 12px 28px rgba(15, 35, 64, 0.14)">✓ · Closing</span></span>
+<span class="tip" style="position: relative; display: inline-flex"><a href="#cut" aria-label="+ · Deep dive" style="width: 36px; height: 36px; box-sizing: border-box; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 800; text-decoration: none; font-variant-numeric: tabular-nums; background: #14618f; color: #ffffff; border: 1px solid #14618f;">+</a><span class="pop" aria-hidden="true" style="position: absolute; left: calc(100% + 10px); top: 50%; transform: translateY(-50%); z-index: 40; width: max-content; max-width: 300px; box-sizing: border-box; background: rgba(11, 31, 58, 0.97); border-radius: 8px; padding: 6px 10px; font-size: 12px; line-height: 1.4; font-weight: 600; color: #eaf2fb; text-align: left; white-space: normal; box-shadow: 0 2px 6px rgba(15, 35, 64, 0.08), 0 12px 28px rgba(15, 35, 64, 0.14)">+ · Deep dive</span></span>
+<div style="display: flex; flex-direction: column; align-items: center; gap: 5px"><span class="tip" style="position: relative; display: inline-flex"><a href="#cut-place" aria-label="First round: where the hiring is" style="width: 24px; height: 24px; box-sizing: border-box; border-radius: 999px; display: flex; align-items: center; justify-content: center; font-size: 10.5px; font-weight: 800; text-decoration: none; background: #eef3f9; color: #46618a; border: 1px solid #dce5f0;">1</a><span class="pop" aria-hidden="true" style="position: absolute; left: calc(100% + 10px); top: 50%; transform: translateY(-50%); z-index: 40; width: max-content; max-width: 300px; box-sizing: border-box; background: rgba(11, 31, 58, 0.97); border-radius: 8px; padding: 6px 10px; font-size: 12px; line-height: 1.4; font-weight: 600; color: #eaf2fb; text-align: left; white-space: normal; box-shadow: 0 2px 6px rgba(15, 35, 64, 0.08), 0 12px 28px rgba(15, 35, 64, 0.14)">First round: where the hiring is</span></span><span class="tip" style="position: relative; display: inline-flex"><a href="#cut-jobs" aria-label="First round: which jobs go together" style="width: 24px; height: 24px; box-sizing: border-box; border-radius: 999px; display: flex; align-items: center; justify-content: center; font-size: 10.5px; font-weight: 800; text-decoration: none; background: #0f2340; color: #ffffff; border: 1px solid #0f2340;">2</a><span class="pop" aria-hidden="true" style="position: absolute; left: calc(100% + 10px); top: 50%; transform: translateY(-50%); z-index: 40; width: max-content; max-width: 300px; box-sizing: border-box; background: rgba(11, 31, 58, 0.97); border-radius: 8px; padding: 6px 10px; font-size: 12px; line-height: 1.4; font-weight: 600; color: #eaf2fb; text-align: left; white-space: normal; box-shadow: 0 2px 6px rgba(15, 35, 64, 0.08), 0 12px 28px rgba(15, 35, 64, 0.14)">First round: which jobs go together</span></span><span class="tip" style="position: relative; display: inline-flex"><a href="#cut-who" aria-label="First round: who staffs whom" style="width: 24px; height: 24px; box-sizing: border-box; border-radius: 999px; display: flex; align-items: center; justify-content: center; font-size: 10.5px; font-weight: 800; text-decoration: none; background: #eef3f9; color: #46618a; border: 1px solid #dce5f0;">3</a><span class="pop" aria-hidden="true" style="position: absolute; left: calc(100% + 10px); top: 50%; transform: translateY(-50%); z-index: 40; width: max-content; max-width: 300px; box-sizing: border-box; background: rgba(11, 31, 58, 0.97); border-radius: 8px; padding: 6px 10px; font-size: 12px; line-height: 1.4; font-weight: 600; color: #eaf2fb; text-align: left; white-space: normal; box-shadow: 0 2px 6px rgba(15, 35, 64, 0.08), 0 12px 28px rgba(15, 35, 64, 0.14)">First round: who staffs whom</span></span><span class="tip" style="position: relative; display: inline-flex"><a href="#cut-more" aria-label="More networks" style="width: 24px; height: 24px; box-sizing: border-box; border-radius: 999px; display: flex; align-items: center; justify-content: center; font-size: 10.5px; font-weight: 800; text-decoration: none; background: #eef3f9; color: #46618a; border: 1px solid #dce5f0;">M</a><span class="pop" aria-hidden="true" style="position: absolute; left: calc(100% + 10px); top: 50%; transform: translateY(-50%); z-index: 40; width: max-content; max-width: 300px; box-sizing: border-box; background: rgba(11, 31, 58, 0.97); border-radius: 8px; padding: 6px 10px; font-size: 12px; line-height: 1.4; font-weight: 600; color: #eaf2fb; text-align: left; white-space: normal; box-shadow: 0 2px 6px rgba(15, 35, 64, 0.08), 0 12px 28px rgba(15, 35, 64, 0.14)">More networks</span></span><span class="tip" style="position: relative; display: inline-flex"><a href="#evidence" aria-label="Data and methods" style="width: 24px; height: 24px; box-sizing: border-box; border-radius: 999px; display: flex; align-items: center; justify-content: center; font-size: 10.5px; font-weight: 800; text-decoration: none; background: #eef3f9; color: #46618a; border: 1px solid #dce5f0;">D</a><span class="pop" aria-hidden="true" style="position: absolute; left: calc(100% + 10px); top: 50%; transform: translateY(-50%); z-index: 40; width: max-content; max-width: 300px; box-sizing: border-box; background: rgba(11, 31, 58, 0.97); border-radius: 8px; padding: 6px 10px; font-size: 12px; line-height: 1.4; font-weight: 600; color: #eaf2fb; text-align: left; white-space: normal; box-shadow: 0 2px 6px rgba(15, 35, 64, 0.08), 0 12px 28px rgba(15, 35, 64, 0.14)">Data and methods</span></span></div>
+</div>
+</nav>
+<div style="width: 1180px; flex: none; display: flex; flex-direction: column; gap: 26px">
+<section id="cut-jobs" style="display: flex; gap: 22px; align-items: flex-start; padding: 12px 0 2px">
+<div aria-hidden="true" style="flex: none; width: 58px; font-size: 64px; line-height: 0.86; font-weight: 800; letter-spacing: -0.04em; color: #14618f; font-variant-numeric: tabular-nums">+</div>
+<div style="display: flex; flex-direction: column; gap: 10px; padding-top: 2px">
+<div style="display: flex; align-items: center; gap: 14px">
+<h2 style="margin: 0; font-size: 30px; line-height: 1.1; font-weight: 700; letter-spacing: -0.02em; color: #0f2340">Which jobs go together: three earlier questions</h2>
+</div>
+<p style="margin: 0; max-width: 860px; font-size: 18px; line-height: 1.45; font-weight: 600; letter-spacing: -0.005em; color: #0f2340; text-wrap: pretty">Our first round of questions, with their charts.</p>
+</div>
+</section>
+<article id="jobs-together" style="background: #ffffff; border: 1px solid #dce5f0; border-radius: 14px; box-shadow: 0 1px 2px rgba(15, 35, 64, 0.06), 0 8px 24px rgba(15, 35, 64, 0.05); padding: 24px 28px 26px; display: flex; flex-direction: column; gap: 18px">
+<div style="display: flex; justify-content: flex-end; align-items: center; gap: 12px"><button type="button" aria-expanded="true" aria-controls="jobs-together-body" style="display: inline-flex; align-items: center; gap: 6px; padding: 5px 11px; border-radius: 999px; border: 1px solid #dce5f0; background: #f7fafd; color: #46618a; font-family: inherit; font-size: 12px; font-weight: 700; cursor: pointer">Close <span aria-hidden="true">▴</span></button></div>
+<header style="display: flex; align-items: flex-start; gap: 14px">
+<span style="flex: none; min-width: 40px; height: 30px; padding: 0 8px; box-sizing: border-box; border-radius: 8px; background: #d9ecf9; color: #14618f; font-size: 13px; font-weight: 800; display: flex; align-items: center; justify-content: center; font-variant-numeric: tabular-nums">A</span>
+<div style="flex: 1; display: flex; flex-direction: column; gap: 8px">
+<div style="display: flex; align-items: center; gap: 12px">
+<h3 style="margin: 0; font-size: 20px; line-height: 1.25; font-weight: 700; letter-spacing: -0.01em; color: #0f2340">Which jobs are hired together?</h3>
+</div>
+<p style="margin: 0; max-width: 900px; font-size: 16px; line-height: 1.45; font-weight: 600; color: #0f2340; text-wrap: pretty">Software Developers sit in 8 of the 12 pairs because almost every sponsoring company hires them.</p>
+</div>
+</header>
+<div id="jobs-together-body">
+<div style="display: grid; grid-template-columns: 520px minmax(0, 1fr); gap: 40px; align-items: start">
+<div style="display: flex; flex-direction: column; gap: 14px">
+<p style="margin: 0; max-width: 68ch; font-size: 13.5px; line-height: 1.62; font-weight: 400; color: #46618a; text-wrap: pretty">Each bar is a pair among the 60 largest occupations. Its length is the number of companies that filed for both, not the number of workers requested.</p>
+</div>
+<div style="display: flex; flex-direction: column; gap: 14px">
+<figure style="margin: 0; display: flex; flex-direction: column; gap: 8px">
+<figcaption style="display: flex; flex-direction: column; gap: 3px"><span style="font-size: 13.5px; font-weight: 700; color: #0f2340">Strongest occupation pairings</span><span style="font-size: 11.5px; line-height: 1.45; color: #46618a">Companies that filed for both occupations in FY2025. Dark bars include Software Developers.</span></figcaption>
+<div style="background: #f7fafd; border: 1px solid #eaf0f7; border-radius: 10px; padding: 14px 14px 10px">
+<svg width="556" height="336" viewBox="0 0 556 336" role="img" aria-label="The twelve strongest occupation pairs" style="display: block; overflow: visible; max-width: 100%; height: auto; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Inter, system-ui, sans-serif">
+<text x="320.0" y="18.5" style="font-size: 12px; fill: #0f2340; font-weight: 700; text-anchor: end">Software Developers + Data Scientists</text>
+<rect x="330.0" y="6.0" width="174.0" height="17.0" rx="3" style="fill: #0f2340"></rect>
+<text x="510.0" y="18.5" style="font-size: 11.5px; fill: #0f2340; font-weight: 700; text-anchor: start; font-variant-numeric: tabular-nums">4,529</text>
+<text x="320.0" y="44.5" style="font-size: 12px; fill: #0f2340; font-weight: 700; text-anchor: end">Software Developers + Computer occupations, other</text>
+<rect x="330.0" y="32.0" width="171.3" height="17.0" rx="3" style="fill: #0f2340"></rect>
+<text x="507.3" y="44.5" style="font-size: 11.5px; fill: #0f2340; font-weight: 700; text-anchor: start; font-variant-numeric: tabular-nums">4,459</text>
+<text x="320.0" y="70.5" style="font-size: 12px; fill: #0f2340; font-weight: 700; text-anchor: end">Software Developers + Software QA analysts</text>
+<rect x="330.0" y="58.0" width="127.3" height="17.0" rx="3" style="fill: #0f2340"></rect>
+<text x="463.3" y="70.5" style="font-size: 11.5px; fill: #0f2340; font-weight: 700; text-anchor: start; font-variant-numeric: tabular-nums">3,313</text>
+<text x="320.0" y="96.5" style="font-size: 12px; fill: #0f2340; font-weight: 400; text-anchor: end">Computer occupations, other + Data Scientists</text>
+<rect x="330.0" y="84.0" width="102.5" height="17.0" rx="3" style="fill: #0f2340; opacity: 0.42"></rect>
+<text x="438.5" y="96.5" style="font-size: 11.5px; fill: #0f2340; font-weight: 600; text-anchor: start; font-variant-numeric: tabular-nums">2,669</text>
+<text x="320.0" y="122.5" style="font-size: 12px; fill: #0f2340; font-weight: 400; text-anchor: end">Computer occupations, other + Software QA analysts</text>
+<rect x="330.0" y="110.0" width="78.6" height="17.0" rx="3" style="fill: #0f2340; opacity: 0.42"></rect>
+<text x="414.6" y="122.5" style="font-size: 11.5px; fill: #0f2340; font-weight: 600; text-anchor: start; font-variant-numeric: tabular-nums">2,046</text>
+<text x="320.0" y="148.5" style="font-size: 12px; fill: #0f2340; font-weight: 700; text-anchor: end">Software Developers + IT managers</text>
+<rect x="330.0" y="136.0" width="78.4" height="17.0" rx="3" style="fill: #0f2340"></rect>
+<text x="414.4" y="148.5" style="font-size: 11.5px; fill: #0f2340; font-weight: 700; text-anchor: start; font-variant-numeric: tabular-nums">2,040</text>
+<text x="320.0" y="174.5" style="font-size: 12px; fill: #0f2340; font-weight: 700; text-anchor: end">Software Developers + Computer systems analysts</text>
+<rect x="330.0" y="162.0" width="76.4" height="17.0" rx="3" style="fill: #0f2340"></rect>
+<text x="412.4" y="174.5" style="font-size: 11.5px; fill: #0f2340; font-weight: 700; text-anchor: start; font-variant-numeric: tabular-nums">1,988</text>
+<text x="320.0" y="200.5" style="font-size: 12px; fill: #0f2340; font-weight: 400; text-anchor: end">Data Scientists + Software QA analysts</text>
+<rect x="330.0" y="188.0" width="72.3" height="17.0" rx="3" style="fill: #0f2340; opacity: 0.42"></rect>
+<text x="408.3" y="200.5" style="font-size: 11.5px; fill: #0f2340; font-weight: 600; text-anchor: start; font-variant-numeric: tabular-nums">1,883</text>
+<text x="320.0" y="226.5" style="font-size: 12px; fill: #0f2340; font-weight: 700; text-anchor: end">Software Developers + Database Administrators</text>
+<rect x="330.0" y="214.0" width="60.7" height="17.0" rx="3" style="fill: #0f2340"></rect>
+<text x="396.7" y="226.5" style="font-size: 11.5px; fill: #0f2340; font-weight: 700; text-anchor: start; font-variant-numeric: tabular-nums">1,579</text>
+<text x="320.0" y="252.5" style="font-size: 12px; fill: #0f2340; font-weight: 700; text-anchor: end">Software Developers + Computer Programmers</text>
+<rect x="330.0" y="240.0" width="59.4" height="17.0" rx="3" style="fill: #0f2340"></rect>
+<text x="395.4" y="252.5" style="font-size: 11.5px; fill: #0f2340; font-weight: 700; text-anchor: start; font-variant-numeric: tabular-nums">1,545</text>
+<text x="320.0" y="278.5" style="font-size: 12px; fill: #0f2340; font-weight: 700; text-anchor: end">Software Developers + Database Architects</text>
+<rect x="330.0" y="266.0" width="53.3" height="17.0" rx="3" style="fill: #0f2340"></rect>
+<text x="389.3" y="278.5" style="font-size: 11.5px; fill: #0f2340; font-weight: 700; text-anchor: start; font-variant-numeric: tabular-nums">1,388</text>
+<text x="320.0" y="304.5" style="font-size: 12px; fill: #0f2340; font-weight: 400; text-anchor: end">Data Scientists + IT managers</text>
+<rect x="330.0" y="292.0" width="51.7" height="17.0" rx="3" style="fill: #0f2340; opacity: 0.42"></rect>
+<text x="387.7" y="304.5" style="font-size: 11.5px; fill: #0f2340; font-weight: 600; text-anchor: start; font-variant-numeric: tabular-nums">1,346</text>
+</svg>
+</div>
+</figure>
+</div>
+</div>
+</div>
+<nav aria-label="More in the deep dive" style="display: flex; justify-content: space-between; gap: 16px; border-top: 1px solid #eaf0f7; padding-top: 12px"><span></span><a href="#jobs-bridges" style="font-size: 12.5px; font-weight: 600; text-decoration: none">Which jobs belong to two clusters? →</a></nav>
+</article>
+<article id="jobs-bridges" style="background: #ffffff; border: 1px solid #dce5f0; border-radius: 14px; box-shadow: 0 1px 2px rgba(15, 35, 64, 0.06), 0 8px 24px rgba(15, 35, 64, 0.05); padding: 24px 28px 26px; display: flex; flex-direction: column; gap: 18px">
+<div style="display: flex; justify-content: flex-end; align-items: center; gap: 12px"><button type="button" aria-expanded="true" aria-controls="jobs-bridges-body" style="display: inline-flex; align-items: center; gap: 6px; padding: 5px 11px; border-radius: 999px; border: 1px solid #dce5f0; background: #f7fafd; color: #46618a; font-family: inherit; font-size: 12px; font-weight: 700; cursor: pointer">Close <span aria-hidden="true">▴</span></button></div>
+<header style="display: flex; align-items: flex-start; gap: 14px">
+<span style="flex: none; min-width: 40px; height: 30px; padding: 0 8px; box-sizing: border-box; border-radius: 8px; background: #d9ecf9; color: #14618f; font-size: 13px; font-weight: 800; display: flex; align-items: center; justify-content: center; font-variant-numeric: tabular-nums">B</span>
+<div style="flex: 1; display: flex; flex-direction: column; gap: 8px">
+<div style="display: flex; align-items: center; gap: 12px">
+<h3 style="margin: 0; font-size: 20px; line-height: 1.25; font-weight: 700; letter-spacing: -0.01em; color: #0f2340">Which jobs belong to two clusters?</h3>
+</div>
+<p style="margin: 0; max-width: 900px; font-size: 16px; line-height: 1.45; font-weight: 600; color: #0f2340; text-wrap: pretty">Only 5 of 393 pass, fewer than the 19 a test this strict passes by chance, so no occupation clearly belongs to two clusters.</p>
+</div>
+</header>
+<div id="jobs-bridges-body">
+<div style="display: grid; grid-template-columns: 520px minmax(0, 1fr); gap: 40px; align-items: start">
+<div style="display: flex; flex-direction: column; gap: 14px">
+<p style="margin: 0; max-width: 68ch; font-size: 13.5px; line-height: 1.62; font-weight: 400; color: #46618a; text-wrap: pretty">We looked for occupations that also belong to a second cluster, with more employer ties there than any rewired network gives them.</p>
+<div style="display: flex; flex-wrap: wrap; gap: 8px; align-items: center"><span class="tip" style="position: relative; display: inline-flex"><button type="button" aria-describedby="more-28" style="display: inline-flex; align-items: center; gap: 6px; padding: 6px 11px; border-radius: 999px; border: 1px solid #dce5f0; background: #ffffff; color: #14618f; font-family: inherit; font-size: 12px; font-weight: 700; line-height: 1.1; cursor: help"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true" style="flex: none"><circle cx="12" cy="12" r="9" style="fill: none; stroke: currentColor; stroke-width: 2px"></circle><path d="M12 11v6M12 7.6v.4" style="fill: none; stroke: currentColor; stroke-width: 2.2px; stroke-linecap: round"></path></svg>How the test works</button><span class="pop" id="more-28" role="tooltip" style="position: absolute; left: 0; top: calc(100% + 8px); width: 480px; z-index: 40; box-sizing: border-box; background: rgba(11, 31, 58, 0.97); border: 1px solid rgba(255, 255, 255, 0.12); border-radius: 9px; padding: 12px 14px; box-shadow: 0 2px 6px rgba(15, 35, 64, 0.08), 0 18px 44px rgba(15, 35, 64, 0.16); font-size: 12.5px; line-height: 1.55; font-weight: 400; font-style: normal; color: #cfe0f2; text-align: left; white-space: normal; letter-spacing: 0"><b style="display: block; margin-bottom: 4px; color: #eaf2fb; font-weight: 700">How the test works</b>An occupation’s second cluster is the one its employer ties exceed most over the expectation modularity uses (its strength times the cluster’s, over twice the total weight). A ratio above 1, our first rule, marks 145 occupations, but the rewired networks mark 452 on average with the same cluster labels. So an occupation now counts only when its ratio beats its own ratio in every rewired network.</span></span></div>
+</div>
+<div style="display: flex; flex-direction: column; gap: 14px">
+<figure style="margin: 0; display: flex; flex-direction: column; gap: 8px">
+<figcaption style="display: flex; flex-direction: column; gap: 3px"><span style="font-size: 13.5px; font-weight: 700; color: #0f2340">Occupations that pass each rule</span><span style="font-size: 11.5px; line-height: 1.45; color: #46618a">Dots: the real network. Dashed marks: what rewired networks give with the same cluster labels.</span></figcaption>
+<div style="background: #f7fafd; border: 1px solid #eaf0f7; border-radius: 10px; padding: 14px 14px 10px">
+<svg width="556" height="104" viewBox="0 0 556 104" role="img" aria-label="Occupations passing the first rule, real against rewired" style="display: block; overflow: visible; max-width: 100%; height: auto; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Inter, system-ui, sans-serif">
+<line x1="150.0" y1="6.0" x2="150.0" y2="70.0" style="stroke: #e6ecf3; stroke-width: 1px; stroke-linecap: butt"></line>
+<text x="150.0" y="86.0" style="font-size: 11px; fill: #7a8fac; font-weight: 400; text-anchor: middle; font-variant-numeric: tabular-nums">0</text>
+<line x1="227.2" y1="6.0" x2="227.2" y2="70.0" style="stroke: #e6ecf3; stroke-width: 1px; stroke-linecap: butt"></line>
+<text x="227.2" y="86.0" style="font-size: 11px; fill: #7a8fac; font-weight: 400; text-anchor: middle; font-variant-numeric: tabular-nums">100</text>
+<line x1="304.4" y1="6.0" x2="304.4" y2="70.0" style="stroke: #e6ecf3; stroke-width: 1px; stroke-linecap: butt"></line>
+<text x="304.4" y="86.0" style="font-size: 11px; fill: #7a8fac; font-weight: 400; text-anchor: middle; font-variant-numeric: tabular-nums">200</text>
+<line x1="381.6" y1="6.0" x2="381.6" y2="70.0" style="stroke: #e6ecf3; stroke-width: 1px; stroke-linecap: butt"></line>
+<text x="381.6" y="86.0" style="font-size: 11px; fill: #7a8fac; font-weight: 400; text-anchor: middle; font-variant-numeric: tabular-nums">300</text>
+<line x1="458.8" y1="6.0" x2="458.8" y2="70.0" style="stroke: #e6ecf3; stroke-width: 1px; stroke-linecap: butt"></line>
+<text x="458.8" y="86.0" style="font-size: 11px; fill: #7a8fac; font-weight: 400; text-anchor: middle; font-variant-numeric: tabular-nums">400</text>
+<line x1="536.0" y1="6.0" x2="536.0" y2="70.0" style="stroke: #e6ecf3; stroke-width: 1px; stroke-linecap: butt"></line>
+<text x="536.0" y="86.0" style="font-size: 11px; fill: #7a8fac; font-weight: 400; text-anchor: middle; font-variant-numeric: tabular-nums">500</text>
+<text x="0.0" y="35.0" style="font-size: 12px; fill: #0f2340; font-weight: 600; text-anchor: start">First rule</text>
+<text x="0.0" y="50.0" style="font-size: 11px; fill: #7a8fac; font-weight: 400; text-anchor: start; font-variant-numeric: tabular-nums">ratio above 1</text>
+<line x1="150.0" y1="38.0" x2="536.0" y2="38.0" style="stroke: #dce5f0; stroke-width: 1px; stroke-linecap: butt"></line>
+<line x1="498.6" y1="28.0" x2="498.6" y2="48.0" style="stroke: #46618a; stroke-width: 1.4px; stroke-linecap: butt; stroke-dasharray: 3 2"></line>
+<text x="498.6" y="63.0" style="font-size: 11px; fill: #46618a; font-weight: 400; text-anchor: middle; font-variant-numeric: tabular-nums">rewired 452</text>
+<circle cx="261.9" cy="38.0" r="6.5" style="fill: #0f2340; stroke: #ffffff; stroke-width: 2px"></circle>
+<text x="261.9" y="25.0" style="font-size: 12px; fill: #0f2340; font-weight: 700; text-anchor: middle; font-variant-numeric: tabular-nums">145</text>
+</svg><svg width="556" height="104" viewBox="0 0 556 104" role="img" aria-label="Occupations passing the strict rule, against the number expected by chance" style="display: block; overflow: visible; max-width: 100%; height: auto; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Inter, system-ui, sans-serif">
+<line x1="150.0" y1="6.0" x2="150.0" y2="70.0" style="stroke: #e6ecf3; stroke-width: 1px; stroke-linecap: butt"></line>
+<text x="150.0" y="86.0" style="font-size: 11px; fill: #7a8fac; font-weight: 400; text-anchor: middle; font-variant-numeric: tabular-nums">0</text>
+<line x1="227.2" y1="6.0" x2="227.2" y2="70.0" style="stroke: #e6ecf3; stroke-width: 1px; stroke-linecap: butt"></line>
+<text x="227.2" y="86.0" style="font-size: 11px; fill: #7a8fac; font-weight: 400; text-anchor: middle; font-variant-numeric: tabular-nums">5</text>
+<line x1="304.4" y1="6.0" x2="304.4" y2="70.0" style="stroke: #e6ecf3; stroke-width: 1px; stroke-linecap: butt"></line>
+<text x="304.4" y="86.0" style="font-size: 11px; fill: #7a8fac; font-weight: 400; text-anchor: middle; font-variant-numeric: tabular-nums">10</text>
+<line x1="381.6" y1="6.0" x2="381.6" y2="70.0" style="stroke: #e6ecf3; stroke-width: 1px; stroke-linecap: butt"></line>
+<text x="381.6" y="86.0" style="font-size: 11px; fill: #7a8fac; font-weight: 400; text-anchor: middle; font-variant-numeric: tabular-nums">15</text>
+<line x1="458.8" y1="6.0" x2="458.8" y2="70.0" style="stroke: #e6ecf3; stroke-width: 1px; stroke-linecap: butt"></line>
+<text x="458.8" y="86.0" style="font-size: 11px; fill: #7a8fac; font-weight: 400; text-anchor: middle; font-variant-numeric: tabular-nums">20</text>
+<line x1="536.0" y1="6.0" x2="536.0" y2="70.0" style="stroke: #e6ecf3; stroke-width: 1px; stroke-linecap: butt"></line>
+<text x="536.0" y="86.0" style="font-size: 11px; fill: #7a8fac; font-weight: 400; text-anchor: middle; font-variant-numeric: tabular-nums">25</text>
+<text x="0.0" y="35.0" style="font-size: 12px; fill: #0f2340; font-weight: 700; text-anchor: start">Strict rule</text>
+<text x="0.0" y="50.0" style="font-size: 11px; fill: #7a8fac; font-weight: 400; text-anchor: start; font-variant-numeric: tabular-nums">beats every rewired network</text>
+<line x1="150.0" y1="38.0" x2="536.0" y2="38.0" style="stroke: #dce5f0; stroke-width: 1px; stroke-linecap: butt"></line>
+<line x1="438.9" y1="28.0" x2="438.9" y2="48.0" style="stroke: #46618a; stroke-width: 1.4px; stroke-linecap: butt; stroke-dasharray: 3 2"></line>
+<text x="438.9" y="63.0" style="font-size: 11px; fill: #46618a; font-weight: 400; text-anchor: middle; font-variant-numeric: tabular-nums">by chance 19</text>
+<circle cx="227.2" cy="38.0" r="6.5" style="fill: #0f2340; stroke: #ffffff; stroke-width: 2px"></circle>
+<text x="227.2" y="25.0" style="font-size: 12px; fill: #0f2340; font-weight: 700; text-anchor: middle; font-variant-numeric: tabular-nums">5</text>
+</svg>
+</div>
+</figure>
+<figure style="margin: 0; display: flex; flex-direction: column; gap: 8px">
+<figcaption style="display: flex; flex-direction: column; gap: 3px"><span style="font-size: 13.5px; font-weight: 700; color: #0f2340">The largest clusters</span><span style="font-size: 11.5px; line-height: 1.45; color: #46618a">Each named after its largest occupation.</span></figcaption>
+<div style="background: #f7fafd; border: 1px solid #eaf0f7; border-radius: 10px; padding: 14px 14px 10px">
+<table style="width: 100%; border-collapse: collapse; font-size: 12.5px; font-variant-numeric: tabular-nums"><tr style="border-top: 1px solid #eaf0f7"><td style="padding: 6px 8px 6px 0; color: #0f2340; font-weight: 600">Physicians, All Other</td><td style="padding: 6px 0; text-align: right; color: #46618a">247 occupations</td></tr><tr style="border-top: 1px solid #eaf0f7"><td style="padding: 6px 8px 6px 0; color: #0f2340; font-weight: 600">Software Developers</td><td style="padding: 6px 0; text-align: right; color: #46618a">146 occupations</td></tr><tr style="border-top: 1px solid #eaf0f7"><td style="padding: 6px 8px 6px 0; color: #0f2340; font-weight: 600">Civil Engineers</td><td style="padding: 6px 0; text-align: right; color: #46618a">21 occupations</td></tr><tr style="border-top: 1px solid #eaf0f7"><td style="padding: 6px 8px 6px 0; color: #0f2340; font-weight: 600">Elementary School Teachers, Except Special Education</td><td style="padding: 6px 0; text-align: right; color: #46618a">20 occupations</td></tr></table>
+</div>
+</figure>
+</div>
+</div>
+</div>
+<nav aria-label="More in the deep dive" style="display: flex; justify-content: space-between; gap: 16px; border-top: 1px solid #eaf0f7; padding-top: 12px"><a href="#jobs-together" style="font-size: 12.5px; font-weight: 600; text-decoration: none">← Which jobs are hired together?</a><a href="#jobs-groups" style="font-size: 12.5px; font-weight: 600; text-decoration: none">Do the clusters follow official job groups? →</a></nav>
+</article>
+<article id="jobs-groups" style="background: #ffffff; border: 1px solid #dce5f0; border-radius: 14px; box-shadow: 0 1px 2px rgba(15, 35, 64, 0.06), 0 8px 24px rgba(15, 35, 64, 0.05); padding: 24px 28px 26px; display: flex; flex-direction: column; gap: 18px">
+<div style="display: flex; justify-content: flex-end; align-items: center; gap: 12px"><button type="button" aria-expanded="true" aria-controls="jobs-groups-body" style="display: inline-flex; align-items: center; gap: 6px; padding: 5px 11px; border-radius: 999px; border: 1px solid #dce5f0; background: #f7fafd; color: #46618a; font-family: inherit; font-size: 12px; font-weight: 700; cursor: pointer">Close <span aria-hidden="true">▴</span></button></div>
+<header style="display: flex; align-items: flex-start; gap: 14px">
+<span style="flex: none; min-width: 40px; height: 30px; padding: 0 8px; box-sizing: border-box; border-radius: 8px; background: #d9ecf9; color: #14618f; font-size: 13px; font-weight: 800; display: flex; align-items: center; justify-content: center; font-variant-numeric: tabular-nums">C</span>
+<div style="flex: 1; display: flex; flex-direction: column; gap: 8px">
+<div style="display: flex; align-items: center; gap: 12px">
+<h3 style="margin: 0; font-size: 20px; line-height: 1.25; font-weight: 700; letter-spacing: -0.01em; color: #0f2340">Do the clusters follow official job groups?</h3>
+</div>
+<p style="margin: 0; max-width: 900px; font-size: 16px; line-height: 1.45; font-weight: 600; color: #0f2340; text-wrap: pretty">The clusters follow the official groups only in part: NMI 0.23 against 0.05 for shuffled labels (AMI 0.19), over the 438 occupations in clusters of two or more.</p>
+</div>
+</header>
+<div id="jobs-groups-body">
+<div style="display: grid; grid-template-columns: 520px minmax(0, 1fr); gap: 40px; align-items: start">
+<div style="display: flex; flex-direction: column; gap: 14px">
+<p style="margin: 0; max-width: 68ch; font-size: 13.5px; line-height: 1.62; font-weight: 400; color: #46618a; text-wrap: pretty">The government groups occupations by their first two SOC digits. We compare those labels with the clusters found from hiring patterns.</p>
+<div style="display: flex; gap: 11px; align-items: flex-start; background: #f7fafd; border: 1px solid #eaf0f7; border-radius: 10px; padding: 12px 14px">
+<svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true" style="flex: none; margin-top: 1px"><path d="M9 18h6M10 21h4M12 3a6 6 0 0 0-3.6 10.8c.6.5 1 1.2 1 2V17h5.2v-1.2c0-.8.4-1.5 1-2A6 6 0 0 0 12 3z" style="fill: none; stroke: #14618f; stroke-width: 1.6px; stroke-linecap: round; stroke-linejoin: round"></path></svg>
+<p style="margin: 0; font-size: 12.5px; line-height: 1.55; color: #46618a; text-wrap: pretty"><b style="color: #0f2340">What to notice.</b> The software cluster also holds engineers, accountants and managers: companies hire across the official groups.</p>
+</div>
+<div style="display: flex; flex-wrap: wrap; gap: 8px; align-items: center"><span class="tip" style="position: relative; display: inline-flex"><button type="button" aria-describedby="more-29" style="display: inline-flex; align-items: center; gap: 6px; padding: 6px 11px; border-radius: 999px; border: 1px solid #dce5f0; background: #ffffff; color: #14618f; font-family: inherit; font-size: 12px; font-weight: 700; line-height: 1.1; cursor: help"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true" style="flex: none"><circle cx="12" cy="12" r="9" style="fill: none; stroke: currentColor; stroke-width: 2px"></circle><path d="M12 11v6M12 7.6v.4" style="fill: none; stroke: currentColor; stroke-width: 2.2px; stroke-linecap: round"></path></svg>How the comparison works</button><span class="pop" id="more-29" role="tooltip" style="position: absolute; left: 0; top: calc(100% + 8px); width: 480px; z-index: 40; box-sizing: border-box; background: rgba(11, 31, 58, 0.97); border: 1px solid rgba(255, 255, 255, 0.12); border-radius: 9px; padding: 12px 14px; box-shadow: 0 2px 6px rgba(15, 35, 64, 0.08), 0 18px 44px rgba(15, 35, 64, 0.16); font-size: 12.5px; line-height: 1.55; font-weight: 400; font-style: normal; color: #cfe0f2; text-align: left; white-space: normal; letter-spacing: 0"><b style="display: block; margin-bottom: 4px; color: #eaf2fb; font-weight: 700">How the comparison works</b>The shuffled bars keep the clusters fixed and scramble only the official labels. We keep certified H-1B filings and identify companies by tax number, as in the other sections. A link counts the companies that filed for both occupations. Filings still on 2010 computer codes (48 filings) move to their 2018 successors. Louvain runs 100 times on the full projection and the best modularity run is kept; the runs agree at a median NMI of 0.99. The null rewires the company × occupation network 20 times, keeping each company’s number of occupations and each occupation’s number of companies, and projects it again; real and rewired networks are scored on their largest connected piece (z = 285).</span></span><span class="tip" style="position: relative; display: inline-flex"><button type="button" aria-describedby="more-30" style="display: inline-flex; align-items: center; gap: 6px; padding: 6px 11px; border-radius: 999px; border: 1px solid #dce5f0; background: #ffffff; color: #14618f; font-family: inherit; font-size: 12px; font-weight: 700; line-height: 1.1; cursor: help"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true" style="flex: none"><circle cx="12" cy="12" r="9" style="fill: none; stroke: currentColor; stroke-width: 2px"></circle><path d="M12 8v8M8 12h8" style="fill: none; stroke: currentColor; stroke-width: 2px; stroke-linecap: round"></path></svg>Backbone, FY2024 and Infomap</button><span class="pop open" id="more-30" role="tooltip" style="position: absolute; left: 0; top: calc(100% + 8px); width: 480px; z-index: 40; box-sizing: border-box; background: rgba(11, 31, 58, 0.97); border: 1px solid rgba(255, 255, 255, 0.12); border-radius: 9px; padding: 12px 14px; box-shadow: 0 2px 6px rgba(15, 35, 64, 0.08), 0 18px 44px rgba(15, 35, 64, 0.16); font-size: 12.5px; line-height: 1.55; font-weight: 400; font-style: normal; color: #cfe0f2; text-align: left; white-space: normal; letter-spacing: 0"><b style="display: block; margin-bottom: 4px; color: #eaf2fb; font-weight: 700">Backbone, FY2024 and Infomap</b>The disparity filter at α = 0.2, as in the place section, keeps 7,639 of 28,158 links and 345 occupations. Louvain on that backbone finds 8 clusters, which match the full network’s at NMI 0.69, against 1.00 between two runs on the full network: the clusters only partly survive the filter. NMI and AMI leave out occupations alone in a cluster and are compared with 100 shuffles of the major-group labels. The same method on FY2024 gives clusters that match FY2025 at NMI 0.59 on the 388 occupations both years share. Infomap, the random-walk method, finds 9 clusters of two or more occupations; they agree with Louvain’s at NMI 0.75 and match the official groups at 0.25.</span></span></div>
+</div>
+<div style="display: flex; flex-direction: column; gap: 14px">
+<figure style="margin: 0; display: flex; flex-direction: column; gap: 8px">
+<figcaption style="display: flex; flex-direction: column; gap: 3px"><span style="font-size: 13.5px; font-weight: 700; color: #0f2340">Cluster × official major group</span><span style="font-size: 11.5px; line-height: 1.45; color: #46618a">Share of each cluster’s filings in each major group, among the 60 largest occupations.</span></figcaption>
+<div style="background: #f7fafd; border: 1px solid #eaf0f7; border-radius: 10px; padding: 14px 14px 10px">
+<svg width="556" height="268" viewBox="0 0 556 268" role="img" aria-label="Share of each cluster's filings by official major group, among the 60 largest occupations" style="display: block; overflow: visible; max-width: 100%; height: auto; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Inter, system-ui, sans-serif">
+<text x="253.2" y="19.0" style="font-size: 11px; fill: #46618a; font-weight: 600; text-anchor: middle">Physicians,</text>
+<text x="253.2" y="32.0" style="font-size: 11px; fill: #46618a; font-weight: 600; text-anchor: middle">All Other</text>
+<text x="339.8" y="19.0" style="font-size: 11px; fill: #46618a; font-weight: 600; text-anchor: middle">Software</text>
+<text x="339.8" y="32.0" style="font-size: 11px; fill: #46618a; font-weight: 600; text-anchor: middle">Developers</text>
+<text x="426.2" y="19.0" style="font-size: 11px; fill: #46618a; font-weight: 600; text-anchor: middle">Civil</text>
+<text x="426.2" y="32.0" style="font-size: 11px; fill: #46618a; font-weight: 600; text-anchor: middle">Engineers</text>
+<text x="512.8" y="19.0" style="font-size: 11px; fill: #46618a; font-weight: 600; text-anchor: middle">Elementary</text>
+<text x="512.8" y="32.0" style="font-size: 11px; fill: #46618a; font-weight: 600; text-anchor: middle">school</text>
+<text x="200.0" y="58.0" style="font-size: 12px; fill: #0f2340; font-weight: 600; text-anchor: end">Computer and mathematical</text>
+<rect x="211.0" y="41.0" width="84.5" height="26.0" rx="3" style="fill: #0f2340; opacity: 0.098"></rect>
+<text x="253.2" y="58.0" style="font-size: 10.5px; fill: #0f2340; font-weight: 700; text-anchor: middle; font-variant-numeric: tabular-nums">10%</text>
+<rect x="297.5" y="41.0" width="84.5" height="26.0" rx="3" style="fill: #0f2340; opacity: 0.755"></rect>
+<text x="339.8" y="58.0" style="font-size: 10.5px; fill: #ffffff; font-weight: 700; text-anchor: middle; font-variant-numeric: tabular-nums">76%</text>
+<rect x="384.0" y="41.0" width="84.5" height="26.0" rx="3" style="fill: #eef3f9"></rect>
+<rect x="470.5" y="41.0" width="84.5" height="26.0" rx="3" style="fill: #eef3f9"></rect>
+<text x="200.0" y="86.0" style="font-size: 12px; fill: #0f2340; font-weight: 600; text-anchor: end">Architecture and engineering</text>
+<rect x="211.0" y="69.0" width="84.5" height="26.0" rx="3" style="fill: #0f2340; opacity: 0.08"></rect>
+<text x="253.2" y="86.0" style="font-size: 10.5px; fill: #0f2340; font-weight: 700; text-anchor: middle; font-variant-numeric: tabular-nums">8%</text>
+<rect x="297.5" y="69.0" width="84.5" height="26.0" rx="3" style="fill: #0f2340; opacity: 0.088"></rect>
+<text x="339.8" y="86.0" style="font-size: 10.5px; fill: #0f2340; font-weight: 700; text-anchor: middle; font-variant-numeric: tabular-nums">9%</text>
+<rect x="384.0" y="69.0" width="84.5" height="26.0" rx="3" style="fill: #0f2340; opacity: 0.863"></rect>
+<text x="426.2" y="86.0" style="font-size: 10.5px; fill: #ffffff; font-weight: 700; text-anchor: middle; font-variant-numeric: tabular-nums">86%</text>
+<rect x="470.5" y="69.0" width="84.5" height="26.0" rx="3" style="fill: #eef3f9"></rect>
+<text x="200.0" y="114.0" style="font-size: 12px; fill: #0f2340; font-weight: 600; text-anchor: end">Business and financial</text>
+<rect x="211.0" y="97.0" width="84.5" height="26.0" rx="3" style="fill: #eef3f9"></rect>
+<rect x="297.5" y="97.0" width="84.5" height="26.0" rx="3" style="fill: #0f2340; opacity: 0.092"></rect>
+<text x="339.8" y="114.0" style="font-size: 10.5px; fill: #0f2340; font-weight: 700; text-anchor: middle; font-variant-numeric: tabular-nums">9%</text>
+<rect x="384.0" y="97.0" width="84.5" height="26.0" rx="3" style="fill: #eef3f9"></rect>
+<rect x="470.5" y="97.0" width="84.5" height="26.0" rx="3" style="fill: #eef3f9"></rect>
+<text x="200.0" y="142.0" style="font-size: 12px; fill: #0f2340; font-weight: 600; text-anchor: end">Management</text>
+<rect x="211.0" y="125.0" width="84.5" height="26.0" rx="3" style="fill: #eef3f9"></rect>
+<rect x="297.5" y="125.0" width="84.5" height="26.0" rx="3" style="fill: #0f2340; opacity: 0.06"></rect>
+<text x="339.8" y="142.0" style="font-size: 10.5px; fill: #0f2340; font-weight: 700; text-anchor: middle; font-variant-numeric: tabular-nums">5%</text>
+<rect x="384.0" y="125.0" width="84.5" height="26.0" rx="3" style="fill: #0f2340; opacity: 0.137"></rect>
+<text x="426.2" y="142.0" style="font-size: 10.5px; fill: #0f2340; font-weight: 700; text-anchor: middle; font-variant-numeric: tabular-nums">14%</text>
+<rect x="470.5" y="125.0" width="84.5" height="26.0" rx="3" style="fill: #eef3f9"></rect>
+<text x="200.0" y="170.0" style="font-size: 12px; fill: #0f2340; font-weight: 600; text-anchor: end">Life, physical and social science</text>
+<rect x="211.0" y="153.0" width="84.5" height="26.0" rx="3" style="fill: #0f2340; opacity: 0.337"></rect>
+<text x="253.2" y="170.0" style="font-size: 10.5px; fill: #0f2340; font-weight: 700; text-anchor: middle; font-variant-numeric: tabular-nums">34%</text>
+<rect x="297.5" y="153.0" width="84.5" height="26.0" rx="3" style="fill: #eef3f9"></rect>
+<rect x="384.0" y="153.0" width="84.5" height="26.0" rx="3" style="fill: #eef3f9"></rect>
+<rect x="470.5" y="153.0" width="84.5" height="26.0" rx="3" style="fill: #eef3f9"></rect>
+<text x="200.0" y="198.0" style="font-size: 12px; fill: #0f2340; font-weight: 600; text-anchor: end">Healthcare practitioners</text>
+<rect x="211.0" y="181.0" width="84.5" height="26.0" rx="3" style="fill: #0f2340; opacity: 0.337"></rect>
+<text x="253.2" y="198.0" style="font-size: 10.5px; fill: #0f2340; font-weight: 700; text-anchor: middle; font-variant-numeric: tabular-nums">34%</text>
+<rect x="297.5" y="181.0" width="84.5" height="26.0" rx="3" style="fill: #eef3f9"></rect>
+<rect x="384.0" y="181.0" width="84.5" height="26.0" rx="3" style="fill: #eef3f9"></rect>
+<rect x="470.5" y="181.0" width="84.5" height="26.0" rx="3" style="fill: #eef3f9"></rect>
+<text x="200.0" y="226.0" style="font-size: 12px; fill: #0f2340; font-weight: 600; text-anchor: end">Education and library</text>
+<rect x="211.0" y="209.0" width="84.5" height="26.0" rx="3" style="fill: #0f2340; opacity: 0.148"></rect>
+<text x="253.2" y="226.0" style="font-size: 10.5px; fill: #0f2340; font-weight: 700; text-anchor: middle; font-variant-numeric: tabular-nums">15%</text>
+<rect x="297.5" y="209.0" width="84.5" height="26.0" rx="3" style="fill: #eef3f9"></rect>
+<rect x="384.0" y="209.0" width="84.5" height="26.0" rx="3" style="fill: #eef3f9"></rect>
+<rect x="470.5" y="209.0" width="84.5" height="26.0" rx="3" style="fill: #0f2340; opacity: 1.0"></rect>
+<text x="512.8" y="226.0" style="font-size: 10.5px; fill: #ffffff; font-weight: 700; text-anchor: middle; font-variant-numeric: tabular-nums">100%</text>
+<text x="200.0" y="254.0" style="font-size: 12px; fill: #0f2340; font-weight: 600; text-anchor: end">Sales</text>
+<rect x="211.0" y="237.0" width="84.5" height="26.0" rx="3" style="fill: #eef3f9"></rect>
+<rect x="297.5" y="237.0" width="84.5" height="26.0" rx="3" style="fill: #0f2340; opacity: 0.06"></rect>
+<rect x="384.0" y="237.0" width="84.5" height="26.0" rx="3" style="fill: #eef3f9"></rect>
+<rect x="470.5" y="237.0" width="84.5" height="26.0" rx="3" style="fill: #eef3f9"></rect>
+</svg>
+</div>
+</figure>
+<figure style="margin: 0; display: flex; flex-direction: column; gap: 8px">
+<figcaption style="display: flex; flex-direction: column; gap: 3px"><span style="font-size: 13.5px; font-weight: 700; color: #0f2340">Observed match against shuffled labels</span><span style="font-size: 11.5px; line-height: 1.45; color: #46618a">Dot: the clusters’ match with the official groups. Dashed: the mean of 100 shuffles.</span></figcaption>
+<div style="background: #f7fafd; border: 1px solid #eaf0f7; border-radius: 10px; padding: 14px 14px 10px">
+<svg width="556" height="164" viewBox="0 0 556 164" role="img" aria-label="Agreement between the clusters and the official groups, against shuffled labels" style="display: block; overflow: visible; max-width: 100%; height: auto; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Inter, system-ui, sans-serif">
+<line x1="150.0" y1="6.0" x2="150.0" y2="130.0" style="stroke: #e6ecf3; stroke-width: 1px; stroke-linecap: butt"></line>
+<text x="150.0" y="146.0" style="font-size: 11px; fill: #7a8fac; font-weight: 400; text-anchor: middle; font-variant-numeric: tabular-nums">0.0</text>
+<line x1="278.7" y1="6.0" x2="278.7" y2="130.0" style="stroke: #e6ecf3; stroke-width: 1px; stroke-linecap: butt"></line>
+<text x="278.7" y="146.0" style="font-size: 11px; fill: #7a8fac; font-weight: 400; text-anchor: middle; font-variant-numeric: tabular-nums">0.1</text>
+<line x1="407.3" y1="6.0" x2="407.3" y2="130.0" style="stroke: #e6ecf3; stroke-width: 1px; stroke-linecap: butt"></line>
+<text x="407.3" y="146.0" style="font-size: 11px; fill: #7a8fac; font-weight: 400; text-anchor: middle; font-variant-numeric: tabular-nums">0.2</text>
+<line x1="536.0" y1="6.0" x2="536.0" y2="130.0" style="stroke: #e6ecf3; stroke-width: 1px; stroke-linecap: butt"></line>
+<text x="536.0" y="146.0" style="font-size: 11px; fill: #7a8fac; font-weight: 400; text-anchor: middle; font-variant-numeric: tabular-nums">0.3</text>
+<line x1="150.0" y1="6.0" x2="150.0" y2="130.0" style="stroke: #7a8fac; stroke-width: 1px; stroke-linecap: butt"></line>
+<text x="0.0" y="35.0" style="font-size: 12px; fill: #0f2340; font-weight: 600; text-anchor: start">NMI</text>
+<text x="0.0" y="50.0" style="font-size: 11px; fill: #7a8fac; font-weight: 400; text-anchor: start; font-variant-numeric: tabular-nums">with the official groups</text>
+<line x1="150.0" y1="38.0" x2="536.0" y2="38.0" style="stroke: #dce5f0; stroke-width: 1px; stroke-linecap: butt"></line>
+<line x1="216.4" y1="28.0" x2="216.4" y2="48.0" style="stroke: #46618a; stroke-width: 1.4px; stroke-linecap: butt; stroke-dasharray: 3 2"></line>
+<text x="216.4" y="63.0" style="font-size: 11px; fill: #46618a; font-weight: 400; text-anchor: middle; font-variant-numeric: tabular-nums">shuffled 0.05</text>
+<circle cx="450.9" cy="38.0" r="6.5" style="fill: #0f2340; stroke: #ffffff; stroke-width: 2px"></circle>
+<text x="450.9" y="25.0" style="font-size: 12px; fill: #0f2340; font-weight: 700; text-anchor: middle; font-variant-numeric: tabular-nums">0.23</text>
+<line x1="0.0" y1="72.0" x2="556.0" y2="72.0" style="stroke: #dce5f0; stroke-width: 1px; stroke-linecap: butt; stroke-dasharray: 2 3"></line>
+<text x="0.0" y="95.0" style="font-size: 12px; fill: #0f2340; font-weight: 600; text-anchor: start">AMI</text>
+<text x="0.0" y="110.0" style="font-size: 11px; fill: #7a8fac; font-weight: 400; text-anchor: start; font-variant-numeric: tabular-nums">corrected for chance</text>
+<line x1="150.0" y1="98.0" x2="536.0" y2="98.0" style="stroke: #dce5f0; stroke-width: 1px; stroke-linecap: butt"></line>
+<circle cx="397.6" cy="98.0" r="6.5" style="fill: #0f2340; stroke: #ffffff; stroke-width: 2px"></circle>
+<text x="397.6" y="85.0" style="font-size: 12px; fill: #0f2340; font-weight: 700; text-anchor: middle; font-variant-numeric: tabular-nums">0.19</text>
+</svg>
+</div>
+</figure>
+</div>
+</div>
+</div>
+<nav aria-label="More in the deep dive" style="display: flex; justify-content: space-between; gap: 16px; border-top: 1px solid #eaf0f7; padding-top: 12px"><a href="#jobs-bridges" style="font-size: 12.5px; font-weight: 600; text-decoration: none">← Which jobs belong to two clusters?</a><a href="Deep3a.dc.html" style="font-size: 12.5px; font-weight: 600; text-decoration: none">Who staffs whom: the first round →</a></nav>
+</article>
+</div>
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview": {"width": 1440, "height": 3140}}'>
+class Component extends DCLogic {
+renderVals() {
+return {};
+}
+}
+</script>
+</body>
+</html>

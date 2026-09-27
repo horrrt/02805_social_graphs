@@ -1,0 +1,330 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>Week 4 · chart kit</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@800&amp;display=swap" />
+<style>
+body{margin:0;background:#eef3f9}
+a{color:#14618f}a:hover{color:#0f2340}
+summary{cursor:pointer}
+.pop{display:none}
+.tip:hover>.pop,.tip:focus-within>.pop,.pop.open{display:block}
+</style>
+</helmet>
+<div style="width: 1440px; height: 3400px; box-sizing: border-box; overflow: hidden; background: #eef3f9; color: #0f2340; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Inter, system-ui, sans-serif; display: flex; flex-direction: column; -webkit-font-smoothing: antialiased">
+<header style="flex: none; padding: 44px 130px 8px; display: flex; flex-direction: column; gap: 8px"><span style="font-size: 11.5px; font-weight: 800; letter-spacing: 0.14em; text-transform: uppercase; color: #14618f">Week 4 · chart kit</span><h1 style="margin: 0; font-size: 34px; line-height: 1.1; font-weight: 700; letter-spacing: -0.02em; color: #0f2340">One way to read every chart</h1><p style="margin: 0; max-width: 760px; font-size: 14px; line-height: 1.6; color: #46618a">Almost every answer on the page compares the real network with a random baseline. One meaning per colour, and one strip for every comparison, make it read the same in every section.</p></header>
+<div style="flex: none; width: 1180px; align-self: center; display: flex; flex-direction: column; gap: 24px; padding-top: 18px">
+<div style="display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 16px"><div style="background: #ffffff; border: 1px solid #dce5f0; border-radius: 14px; padding: 16px 18px; display: flex; flex-direction: column; gap: 8px"><div style="height: 20px; display: flex; align-items: center"><span style="width: 18px; height: 18px; border-radius: 999px; background: #0f2340"></span></div><span style="font-size: 15px; font-weight: 700; color: #0f2340">The real network</span><span style="font-size: 12.5px; line-height: 1.5; color: #46618a">What we measured in the filings. Always the dark dot or line.</span><span style="font-size: 11.5px; color: #7a8fac">Every chart</span></div><div style="background: #ffffff; border: 1px solid #dce5f0; border-radius: 14px; padding: 16px 18px; display: flex; flex-direction: column; gap: 8px"><div style="height: 20px; display: flex; align-items: center"><span style="width: 48px; height: 16px; border-radius: 8px; background: rgba(185, 196, 210, 0.62); display: flex; justify-content: center"><span style="width: 2px; height: 16px; background: #7a8fac"></span></span></div><span style="font-size: 15px; font-weight: 700; color: #0f2340">Random baseline</span><span style="font-size: 12.5px; line-height: 1.5; color: #46618a">Mean and one standard deviation of the null: rewired networks, random draws or random cuts. Always grey.</span><span style="font-size: 11.5px; color: #7a8fac">Every chart</span></div><div style="background: #ffffff; border: 1px solid #dce5f0; border-radius: 14px; padding: 16px 18px; display: flex; flex-direction: column; gap: 8px"><div style="height: 20px; display: flex; align-items: center"><span style="width: 18px; height: 18px; border-radius: 4px; background: #f2820c"></span></div><span style="font-size: 15px; font-weight: 700; color: #0f2340">Placed at a client</span><span style="font-size: 12.5px; line-height: 1.5; color: #46618a">Outsourcing firms, and filings that put the worker at another company.</span><span style="font-size: 11.5px; color: #7a8fac">2A, 5B, 5C</span></div><div style="background: #ffffff; border: 1px solid #dce5f0; border-radius: 14px; padding: 16px 18px; display: flex; flex-direction: column; gap: 8px"><div style="height: 20px; display: flex; align-items: center"><span style="width: 18px; height: 18px; border-radius: 4px; background: #1f8fd6"></span></div><span style="font-size: 15px; font-weight: 700; color: #0f2340">Direct employer</span><span style="font-size: 12.5px; line-height: 1.5; color: #46618a">Filings for the employer’s own site. Never a baseline.</span><span style="font-size: 11.5px; color: #7a8fac">2A, 5B, 5C</span></div><div style="background: #ffffff; border: 1px solid #dce5f0; border-radius: 14px; padding: 16px 18px; display: flex; flex-direction: column; gap: 8px"><div style="height: 20px; display: flex; align-items: center"><span style="display: flex; gap: 5px"><span style="width: 16px; height: 16px; border-radius: 999px; background: #6d4fd6"></span><span style="width: 16px; height: 16px; border-radius: 999px; background: #15896a"></span><span style="width: 16px; height: 16px; border-radius: 999px; background: #7a8fac"></span></span></div><span style="font-size: 15px; font-weight: 700; color: #0f2340">Metro groups</span><span style="font-size: 12.5px; line-height: 1.5; color: #46618a">The three Louvain groups of section 1. Maps only, never in a result chart.</span><span style="font-size: 11.5px; color: #7a8fac">The hero map, section 1</span></div></div>
+<article style="background: #ffffff; border: 1px solid #dce5f0; border-radius: 14px; box-shadow: 0 1px 2px rgba(15, 35, 64, 0.06), 0 8px 24px rgba(15, 35, 64, 0.05); padding: 24px 28px 26px; display: flex; flex-direction: column; gap: 18px">
+<span style="font-size: 17px; font-weight: 700; color: #0f2340">One strip for every “real against random” answer</span>
+<div style="background: #f7fafd; border: 1px solid #eaf0f7; border-radius: 10px; padding: 18px 16px 8px"><svg width="1100" height="114" viewBox="0 0 1100 114" role="img" aria-label="Anatomy of a strip: the real network against its random baseline" style="display: block; overflow: visible; max-width: 100%; height: auto; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Inter, system-ui, sans-serif">
+<line x1="170.0" y1="6.0" x2="170.0" y2="80.0" style="stroke: #e6ecf3; stroke-width: 1px; stroke-linecap: butt"></line>
+<text x="170.0" y="96.0" style="font-size: 11px; fill: #7a8fac; font-weight: 400; text-anchor: middle; font-variant-numeric: tabular-nums">0%</text>
+<line x1="302.8" y1="6.0" x2="302.8" y2="80.0" style="stroke: #e6ecf3; stroke-width: 1px; stroke-linecap: butt"></line>
+<text x="302.8" y="96.0" style="font-size: 11px; fill: #7a8fac; font-weight: 400; text-anchor: middle; font-variant-numeric: tabular-nums">5%</text>
+<line x1="435.6" y1="6.0" x2="435.6" y2="80.0" style="stroke: #e6ecf3; stroke-width: 1px; stroke-linecap: butt"></line>
+<text x="435.6" y="96.0" style="font-size: 11px; fill: #7a8fac; font-weight: 400; text-anchor: middle; font-variant-numeric: tabular-nums">10%</text>
+<line x1="568.4" y1="6.0" x2="568.4" y2="80.0" style="stroke: #e6ecf3; stroke-width: 1px; stroke-linecap: butt"></line>
+<text x="568.4" y="96.0" style="font-size: 11px; fill: #7a8fac; font-weight: 400; text-anchor: middle; font-variant-numeric: tabular-nums">15%</text>
+<line x1="701.2" y1="6.0" x2="701.2" y2="80.0" style="stroke: #e6ecf3; stroke-width: 1px; stroke-linecap: butt"></line>
+<text x="701.2" y="96.0" style="font-size: 11px; fill: #7a8fac; font-weight: 400; text-anchor: middle; font-variant-numeric: tabular-nums">20%</text>
+<line x1="834.1" y1="6.0" x2="834.1" y2="80.0" style="stroke: #e6ecf3; stroke-width: 1px; stroke-linecap: butt"></line>
+<text x="834.1" y="96.0" style="font-size: 11px; fill: #7a8fac; font-weight: 400; text-anchor: middle; font-variant-numeric: tabular-nums">25%</text>
+<line x1="966.9" y1="6.0" x2="966.9" y2="80.0" style="stroke: #e6ecf3; stroke-width: 1px; stroke-linecap: butt"></line>
+<text x="966.9" y="96.0" style="font-size: 11px; fill: #7a8fac; font-weight: 400; text-anchor: middle; font-variant-numeric: tabular-nums">30%</text>
+<text x="0.0" y="40.0" style="font-size: 12px; fill: #0f2340; font-weight: 700; text-anchor: start">Pooled switches</text>
+<text x="0.0" y="55.0" style="font-size: 11px; fill: #7a8fac; font-weight: 400; text-anchor: start; font-variant-numeric: tabular-nums">FY2022 to FY2025</text>
+<line x1="170.0" y1="43.0" x2="1020.0" y2="43.0" style="stroke: #dce5f0; stroke-width: 1px; stroke-linecap: butt"></line>
+<rect x="241.5" y="37.0" width="26.0" height="12.0" rx="6" style="fill: rgba(185, 196, 210, 0.62)"></rect>
+<line x1="254.5" y1="34.0" x2="254.5" y2="52.0" style="stroke: #7a8fac; stroke-width: 2px; stroke-linecap: butt"></line>
+<text x="254.5" y="68.0" style="font-size: 11px; fill: #46618a; font-weight: 400; text-anchor: middle; font-variant-numeric: tabular-nums">random 3.2% ± 0.5%</text>
+<circle cx="873.6" cy="43.0" r="6.5" style="fill: #0f2340; stroke: #ffffff; stroke-width: 2px"></circle>
+<text x="873.6" y="30.0" style="font-size: 12px; fill: #0f2340; font-weight: 700; text-anchor: middle; font-variant-numeric: tabular-nums">26.5%</text>
+<rect x="1032.0" y="33.0" width="53.0" height="20.0" rx="10" style="fill: #eef3f9"></rect>
+<text x="1058.5" y="47.0" style="font-size: 11px; fill: #0f2340; font-weight: 700; text-anchor: middle; font-variant-numeric: tabular-nums">z = 47</text>
+</svg></div>
+<div style="display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px"><div style="display: flex; gap: 10px"><span style="flex: none; width: 22px; height: 22px; border-radius: 999px; background: #0f2340; color: #ffffff; font-size: 11px; font-weight: 800; display: flex; align-items: center; justify-content: center">1</span><span style="display: flex; flex-direction: column; gap: 2px"><b style="font-size: 13px; color: #0f2340">Label and population</b><span style="font-size: 12px; line-height: 1.45; color: #46618a">What the row counts, and how many.</span></span></div><div style="display: flex; gap: 10px"><span style="flex: none; width: 22px; height: 22px; border-radius: 999px; background: #0f2340; color: #ffffff; font-size: 11px; font-weight: 800; display: flex; align-items: center; justify-content: center">2</span><span style="display: flex; flex-direction: column; gap: 2px"><b style="font-size: 13px; color: #0f2340">Random baseline</b><span style="font-size: 12px; line-height: 1.45; color: #46618a">Grey band: one standard deviation each side of the mean tick.</span></span></div><div style="display: flex; gap: 10px"><span style="flex: none; width: 22px; height: 22px; border-radius: 999px; background: #0f2340; color: #ffffff; font-size: 11px; font-weight: 800; display: flex; align-items: center; justify-content: center">3</span><span style="display: flex; flex-direction: column; gap: 2px"><b style="font-size: 13px; color: #0f2340">The real network</b><span style="font-size: 12px; line-height: 1.45; color: #46618a">Dark dot with its value above it.</span></span></div><div style="display: flex; gap: 10px"><span style="flex: none; width: 22px; height: 22px; border-radius: 999px; background: #0f2340; color: #ffffff; font-size: 11px; font-weight: 800; display: flex; align-items: center; justify-content: center">4</span><span style="display: flex; flex-direction: column; gap: 2px"><b style="font-size: 13px; color: #0f2340">Distance</b><span style="font-size: 12px; line-height: 1.45; color: #46618a">z, standard deviations or p, outside the axis.</span></span></div></div>
+<div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px 40px"><div style="background: #f7fafd; border: 1px solid #eaf0f7; border-radius: 10px; padding: 12px 14px 4px"><svg width="540" height="104" viewBox="0 0 540 104" role="img" aria-label="A result above random" style="display: block; overflow: visible; max-width: 100%; height: auto; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Inter, system-ui, sans-serif">
+<line x1="130.0" y1="6.0" x2="130.0" y2="70.0" style="stroke: #e6ecf3; stroke-width: 1px; stroke-linecap: butt"></line>
+<text x="130.0" y="86.0" style="font-size: 11px; fill: #7a8fac; font-weight: 400; text-anchor: middle; font-variant-numeric: tabular-nums">0%</text>
+<line x1="237.5" y1="6.0" x2="237.5" y2="70.0" style="stroke: #e6ecf3; stroke-width: 1px; stroke-linecap: butt"></line>
+<text x="237.5" y="86.0" style="font-size: 11px; fill: #7a8fac; font-weight: 400; text-anchor: middle; font-variant-numeric: tabular-nums">10%</text>
+<line x1="345.0" y1="6.0" x2="345.0" y2="70.0" style="stroke: #e6ecf3; stroke-width: 1px; stroke-linecap: butt"></line>
+<text x="345.0" y="86.0" style="font-size: 11px; fill: #7a8fac; font-weight: 400; text-anchor: middle; font-variant-numeric: tabular-nums">20%</text>
+<line x1="452.5" y1="6.0" x2="452.5" y2="70.0" style="stroke: #e6ecf3; stroke-width: 1px; stroke-linecap: butt"></line>
+<text x="452.5" y="86.0" style="font-size: 11px; fill: #7a8fac; font-weight: 400; text-anchor: middle; font-variant-numeric: tabular-nums">30%</text>
+<text x="0.0" y="35.0" style="font-size: 12px; fill: #0f2340; font-weight: 600; text-anchor: start">Above random</text>
+<text x="0.0" y="50.0" style="font-size: 11px; fill: #7a8fac; font-weight: 400; text-anchor: start; font-variant-numeric: tabular-nums">3A, pooled</text>
+<line x1="130.0" y1="38.0" x2="474.0" y2="38.0" style="stroke: #dce5f0; stroke-width: 1px; stroke-linecap: butt"></line>
+<rect x="158.9" y="32.0" width="10.5" height="12.0" rx="6" style="fill: rgba(185, 196, 210, 0.62)"></rect>
+<line x1="164.2" y1="29.0" x2="164.2" y2="47.0" style="stroke: #7a8fac; stroke-width: 2px; stroke-linecap: butt"></line>
+<text x="164.2" y="63.0" style="font-size: 11px; fill: #46618a; font-weight: 400; text-anchor: middle; font-variant-numeric: tabular-nums">random</text>
+<circle cx="414.8" cy="38.0" r="6.5" style="fill: #0f2340; stroke: #ffffff; stroke-width: 2px"></circle>
+<text x="414.8" y="25.0" style="font-size: 12px; fill: #0f2340; font-weight: 700; text-anchor: middle; font-variant-numeric: tabular-nums">26.5%</text>
+<rect x="486.0" y="28.0" width="53.0" height="20.0" rx="10" style="fill: #eef3f9"></rect>
+<text x="512.5" y="42.0" style="font-size: 11px; fill: #0f2340; font-weight: 700; text-anchor: middle; font-variant-numeric: tabular-nums">z = 47</text>
+</svg></div><div style="background: #f7fafd; border: 1px solid #eaf0f7; border-radius: 10px; padding: 12px 14px 4px"><svg width="540" height="104" viewBox="0 0 540 104" role="img" aria-label="A result below random" style="display: block; overflow: visible; max-width: 100%; height: auto; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Inter, system-ui, sans-serif">
+<line x1="130.0" y1="6.0" x2="130.0" y2="70.0" style="stroke: #e6ecf3; stroke-width: 1px; stroke-linecap: butt"></line>
+<text x="130.0" y="86.0" style="font-size: 11px; fill: #7a8fac; font-weight: 400; text-anchor: middle; font-variant-numeric: tabular-nums">1,600</text>
+<line x1="277.4" y1="6.0" x2="277.4" y2="70.0" style="stroke: #e6ecf3; stroke-width: 1px; stroke-linecap: butt"></line>
+<text x="277.4" y="86.0" style="font-size: 11px; fill: #7a8fac; font-weight: 400; text-anchor: middle; font-variant-numeric: tabular-nums">1,900</text>
+<line x1="424.9" y1="6.0" x2="424.9" y2="70.0" style="stroke: #e6ecf3; stroke-width: 1px; stroke-linecap: butt"></line>
+<text x="424.9" y="86.0" style="font-size: 11px; fill: #7a8fac; font-weight: 400; text-anchor: middle; font-variant-numeric: tabular-nums">2,200</text>
+<text x="0.0" y="35.0" style="font-size: 12px; fill: #0f2340; font-weight: 600; text-anchor: start">Below random</text>
+<text x="0.0" y="50.0" style="font-size: 11px; fill: #7a8fac; font-weight: 400; text-anchor: start; font-variant-numeric: tabular-nums">3C, split clients</text>
+<line x1="130.0" y1="38.0" x2="474.0" y2="38.0" style="stroke: #dce5f0; stroke-width: 1px; stroke-linecap: butt"></line>
+<rect x="392.1" y="32.0" width="20.1" height="12.0" rx="6" style="fill: rgba(185, 196, 210, 0.62)"></rect>
+<line x1="402.2" y1="29.0" x2="402.2" y2="47.0" style="stroke: #7a8fac; stroke-width: 2px; stroke-linecap: butt"></line>
+<text x="402.2" y="63.0" style="font-size: 11px; fill: #46618a; font-weight: 400; text-anchor: middle; font-variant-numeric: tabular-nums">rewired</text>
+<circle cx="239.6" cy="38.0" r="6.5" style="fill: #0f2340; stroke: #ffffff; stroke-width: 2px"></circle>
+<text x="239.6" y="25.0" style="font-size: 12px; fill: #0f2340; font-weight: 700; text-anchor: middle; font-variant-numeric: tabular-nums">1,823</text>
+<rect x="486.0" y="28.0" width="59.1" height="20.0" rx="10" style="fill: #eef3f9"></rect>
+<text x="515.6" y="42.0" style="font-size: 11px; fill: #0f2340; font-weight: 700; text-anchor: middle; font-variant-numeric: tabular-nums">z = −16</text>
+</svg></div><div style="background: #f7fafd; border: 1px solid #eaf0f7; border-radius: 10px; padding: 12px 14px 4px"><svg width="540" height="104" viewBox="0 0 540 104" role="img" aria-label="A result inside the random range" style="display: block; overflow: visible; max-width: 100%; height: auto; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Inter, system-ui, sans-serif">
+<line x1="198.8" y1="6.0" x2="198.8" y2="70.0" style="stroke: #e6ecf3; stroke-width: 1px; stroke-linecap: butt"></line>
+<text x="198.8" y="86.0" style="font-size: 11px; fill: #7a8fac; font-weight: 400; text-anchor: middle; font-variant-numeric: tabular-nums">0.0</text>
+<line x1="336.4" y1="6.0" x2="336.4" y2="70.0" style="stroke: #e6ecf3; stroke-width: 1px; stroke-linecap: butt"></line>
+<text x="336.4" y="86.0" style="font-size: 11px; fill: #7a8fac; font-weight: 400; text-anchor: middle; font-variant-numeric: tabular-nums">0.1</text>
+<line x1="474.0" y1="6.0" x2="474.0" y2="70.0" style="stroke: #e6ecf3; stroke-width: 1px; stroke-linecap: butt"></line>
+<text x="474.0" y="86.0" style="font-size: 11px; fill: #7a8fac; font-weight: 400; text-anchor: middle; font-variant-numeric: tabular-nums">0.2</text>
+<text x="0.0" y="35.0" style="font-size: 12px; fill: #0f2340; font-weight: 600; text-anchor: start">Inside random</text>
+<text x="0.0" y="50.0" style="font-size: 11px; fill: #7a8fac; font-weight: 400; text-anchor: start; font-variant-numeric: tabular-nums">4, five placing firms out</text>
+<line x1="130.0" y1="38.0" x2="474.0" y2="38.0" style="stroke: #dce5f0; stroke-width: 1px; stroke-linecap: butt"></line>
+<rect x="186.0" y="32.0" width="129.6" height="12.0" rx="6" style="fill: rgba(185, 196, 210, 0.62)"></rect>
+<line x1="250.8" y1="29.0" x2="250.8" y2="47.0" style="stroke: #7a8fac; stroke-width: 2px; stroke-linecap: butt"></line>
+<text x="250.8" y="63.0" style="font-size: 11px; fill: #46618a; font-weight: 400; text-anchor: middle; font-variant-numeric: tabular-nums">random cuts</text>
+<circle cx="319.9" cy="38.0" r="6.5" style="fill: #0f2340; stroke: #ffffff; stroke-width: 2px"></circle>
+<text x="319.9" y="25.0" style="font-size: 12px; fill: #0f2340; font-weight: 700; text-anchor: middle; font-variant-numeric: tabular-nums">0.09</text>
+<rect x="486.0" y="28.0" width="53.0" height="20.0" rx="10" style="fill: #eef3f9"></rect>
+<text x="512.5" y="42.0" style="font-size: 11px; fill: #0f2340; font-weight: 700; text-anchor: middle; font-variant-numeric: tabular-nums">1.1 sd</text>
+</svg></div><div style="background: #f7fafd; border: 1px solid #eaf0f7; border-radius: 10px; padding: 12px 14px 4px"><svg width="540" height="104" viewBox="0 0 540 104" role="img" aria-label="An estimate with its interval" style="display: block; overflow: visible; max-width: 100%; height: auto; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Inter, system-ui, sans-serif">
+<line x1="130.0" y1="6.0" x2="130.0" y2="70.0" style="stroke: #e6ecf3; stroke-width: 1px; stroke-linecap: butt"></line>
+<text x="130.0" y="86.0" style="font-size: 11px; fill: #7a8fac; font-weight: 400; text-anchor: middle; font-variant-numeric: tabular-nums">0</text>
+<line x1="187.3" y1="6.0" x2="187.3" y2="70.0" style="stroke: #e6ecf3; stroke-width: 1px; stroke-linecap: butt"></line>
+<text x="187.3" y="86.0" style="font-size: 11px; fill: #7a8fac; font-weight: 400; text-anchor: middle; font-variant-numeric: tabular-nums">1</text>
+<line x1="244.7" y1="6.0" x2="244.7" y2="70.0" style="stroke: #e6ecf3; stroke-width: 1px; stroke-linecap: butt"></line>
+<text x="244.7" y="86.0" style="font-size: 11px; fill: #7a8fac; font-weight: 400; text-anchor: middle; font-variant-numeric: tabular-nums">2</text>
+<line x1="302.0" y1="6.0" x2="302.0" y2="70.0" style="stroke: #e6ecf3; stroke-width: 1px; stroke-linecap: butt"></line>
+<text x="302.0" y="86.0" style="font-size: 11px; fill: #7a8fac; font-weight: 400; text-anchor: middle; font-variant-numeric: tabular-nums">3</text>
+<line x1="359.3" y1="6.0" x2="359.3" y2="70.0" style="stroke: #e6ecf3; stroke-width: 1px; stroke-linecap: butt"></line>
+<text x="359.3" y="86.0" style="font-size: 11px; fill: #7a8fac; font-weight: 400; text-anchor: middle; font-variant-numeric: tabular-nums">4</text>
+<line x1="416.7" y1="6.0" x2="416.7" y2="70.0" style="stroke: #e6ecf3; stroke-width: 1px; stroke-linecap: butt"></line>
+<text x="416.7" y="86.0" style="font-size: 11px; fill: #7a8fac; font-weight: 400; text-anchor: middle; font-variant-numeric: tabular-nums">5</text>
+<line x1="474.0" y1="6.0" x2="474.0" y2="70.0" style="stroke: #e6ecf3; stroke-width: 1px; stroke-linecap: butt"></line>
+<text x="474.0" y="86.0" style="font-size: 11px; fill: #7a8fac; font-weight: 400; text-anchor: middle; font-variant-numeric: tabular-nums">6</text>
+<text x="0.0" y="35.0" style="font-size: 12px; fill: #0f2340; font-weight: 600; text-anchor: start">An interval</text>
+<text x="0.0" y="50.0" style="font-size: 11px; fill: #7a8fac; font-weight: 400; text-anchor: start; font-variant-numeric: tabular-nums">5C, odds ratio</text>
+<line x1="130.0" y1="38.0" x2="474.0" y2="38.0" style="stroke: #dce5f0; stroke-width: 1px; stroke-linecap: butt"></line>
+<line x1="187.3" y1="28.0" x2="187.3" y2="48.0" style="stroke: #46618a; stroke-width: 1.4px; stroke-linecap: butt; stroke-dasharray: 3 2"></line>
+<text x="187.3" y="63.0" style="font-size: 11px; fill: #46618a; font-weight: 400; text-anchor: middle; font-variant-numeric: tabular-nums">same odds</text>
+<line x1="294.5" y1="38.0" x2="418.7" y2="38.0" style="stroke: #0f2340; stroke-width: 2px; stroke-linecap: butt"></line>
+<line x1="294.5" y1="33.0" x2="294.5" y2="43.0" style="stroke: #0f2340; stroke-width: 2px; stroke-linecap: butt"></line>
+<line x1="418.7" y1="33.0" x2="418.7" y2="43.0" style="stroke: #0f2340; stroke-width: 2px; stroke-linecap: butt"></line>
+<circle cx="336.1" cy="38.0" r="6.5" style="fill: #0f2340; stroke: #ffffff; stroke-width: 2px"></circle>
+<text x="336.1" y="25.0" style="font-size: 12px; fill: #0f2340; font-weight: 700; text-anchor: middle; font-variant-numeric: tabular-nums">3.59</text>
+<rect x="486.0" y="28.0" width="44.0" height="20.0" rx="10" style="fill: #eef3f9"></rect>
+<text x="508.0" y="42.0" style="font-size: 11px; fill: #0f2340; font-weight: 700; text-anchor: middle; font-variant-numeric: tabular-nums">95%</text>
+</svg></div></div>
+</article>
+<article style="background: #ffffff; border: 1px solid #dce5f0; border-radius: 14px; box-shadow: 0 1px 2px rgba(15, 35, 64, 0.06), 0 8px 24px rgba(15, 35, 64, 0.05); padding: 24px 28px 26px; display: flex; flex-direction: column; gap: 18px">
+<span style="font-size: 17px; font-weight: 700; color: #0f2340">Short on the page, the rest one hover away</span>
+<div style="display: grid; grid-template-columns: 420px minmax(0, 1fr); gap: 48px; align-items: start">
+<div style="display: flex; flex-direction: column"><div style="display: flex; flex-direction: column; gap: 3px; padding: 10px 0; border-top: 1px solid #eaf0f7"><b style="font-size: 13px; color: #0f2340">Always on the page</b><span style="font-size: 12.5px; line-height: 1.5; color: #46618a">The answer, the comparison with the baseline, and the caveat that limits the claim.</span></div><div style="display: flex; flex-direction: column; gap: 3px; padding: 10px 0; border-top: 1px solid #eaf0f7"><b style="font-size: 13px; color: #0f2340">Behind a button</b><span style="font-size: 12.5px; line-height: 1.5; color: #46618a">How we tested it, the rest of the numbers, and the words a reader may not know.</span></div><div style="display: flex; flex-direction: column; gap: 3px; padding: 10px 0; border-top: 1px solid #eaf0f7"><b style="font-size: 13px; color: #0f2340">How it opens</b><span style="font-size: 12.5px; line-height: 1.5; color: #46618a">On hover and on keyboard focus. The text stays in the page, so screen readers and search still read it.</span></div><div style="display: flex; flex-direction: column; gap: 3px; padding: 10px 0; border-top: 1px solid #eaf0f7"><b style="font-size: 13px; color: #0f2340">What goes in</b><span style="font-size: 12.5px; line-height: 1.5; color: #46618a">Buttons hold the page’s own sentences, moved word for word. Only the short definitions behind dotted terms are new.</span></div></div>
+<div style="display: flex; flex-direction: column; gap: 14px"><div style="font-size: 11px; line-height: 1.2; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: #46618a">A button, open</div><div style="height: 250px"><div style="display: flex; flex-wrap: wrap; gap: 8px; align-items: center"><span class="tip" style="position: relative; display: inline-flex"><button type="button" aria-describedby="more-18" style="display: inline-flex; align-items: center; gap: 6px; padding: 6px 11px; border-radius: 999px; border: 1px solid #dce5f0; background: #ffffff; color: #14618f; font-family: inherit; font-size: 12px; font-weight: 700; line-height: 1.1; cursor: help"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true" style="flex: none"><circle cx="12" cy="12" r="9" style="fill: none; stroke: currentColor; stroke-width: 2px"></circle><path d="M12 11v6M12 7.6v.4" style="fill: none; stroke: currentColor; stroke-width: 2.2px; stroke-linecap: round"></path></svg>How we tested it</button><span class="pop open" id="more-18" role="tooltip" style="position: absolute; left: 0; top: calc(100% + 8px); width: 420px; z-index: 40; box-sizing: border-box; background: rgba(11, 31, 58, 0.97); border: 1px solid rgba(255, 255, 255, 0.12); border-radius: 9px; padding: 12px 14px; box-shadow: 0 2px 6px rgba(15, 35, 64, 0.08), 0 18px 44px rgba(15, 35, 64, 0.16); font-size: 12.5px; line-height: 1.55; font-weight: 400; font-style: normal; color: #cfe0f2; text-align: left; white-space: normal; letter-spacing: 0"><b style="display: block; margin-bottom: 4px; color: #eaf2fb; font-weight: 700">How we tested it</b>A client’s main vendor is the firm that files most placements there in a year. The baseline draws a new vendor at random, a large firm as often as its filings make it likely.</span></span><span class="tip" style="position: relative; display: inline-flex"><button type="button" aria-describedby="more-19" style="display: inline-flex; align-items: center; gap: 6px; padding: 6px 11px; border-radius: 999px; border: 1px solid #dce5f0; background: #ffffff; color: #14618f; font-family: inherit; font-size: 12px; font-weight: 700; line-height: 1.1; cursor: help"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true" style="flex: none"><circle cx="12" cy="12" r="9" style="fill: none; stroke: currentColor; stroke-width: 2px"></circle><path d="M12 8v8M8 12h8" style="fill: none; stroke: currentColor; stroke-width: 2px; stroke-linecap: round"></path></svg>More numbers</button><span class="pop" id="more-19" role="tooltip" style="position: absolute; left: 0; top: calc(100% + 8px); width: 440px; z-index: 40; box-sizing: border-box; background: rgba(11, 31, 58, 0.97); border: 1px solid rgba(255, 255, 255, 0.12); border-radius: 9px; padding: 12px 14px; box-shadow: 0 2px 6px rgba(15, 35, 64, 0.08), 0 18px 44px rgba(15, 35, 64, 0.16); font-size: 12.5px; line-height: 1.55; font-weight: 400; font-style: normal; color: #cfe0f2; text-align: left; white-space: normal; letter-spacing: 0"><b style="display: block; margin-bottom: 4px; color: #eaf2fb; font-weight: 700">More numbers</b>Shown on hover or focus, like the button beside it.</span></span></div></div><div style="font-size: 11px; line-height: 1.2; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: #46618a">A term, open</div><div style="height: 150px"><p style="margin: 0; font-size: 13.5px; line-height: 1.62; color: #46618a">The groups match each client’s main vendor at <span class="tip" style="position: relative; display: inline"><button type="button" aria-describedby="term-20" style="padding: 0; margin: 0; border: 0; border-bottom: 1px dotted #46618a; background: none; font: inherit; color: inherit; cursor: help">AMI</button><span class="pop open" id="term-20" role="tooltip" style="position: absolute; left: 0; top: calc(100% + 6px); width: 330px; z-index: 40; box-sizing: border-box; background: rgba(11, 31, 58, 0.97); border: 1px solid rgba(255, 255, 255, 0.12); border-radius: 9px; padding: 12px 14px; box-shadow: 0 2px 6px rgba(15, 35, 64, 0.08), 0 18px 44px rgba(15, 35, 64, 0.16); font-size: 12.5px; line-height: 1.55; font-weight: 400; font-style: normal; color: #cfe0f2; text-align: left; white-space: normal; letter-spacing: 0">Adjusted mutual information: how well two groupings of the same things agree, corrected for chance. 0 means no better than labels dealt at random, 1 means the same grouping.</span></span> 0.11 and its industry at 0.07.</p></div></div>
+</div>
+</article>
+<article style="background: #ffffff; border: 1px solid #dce5f0; border-radius: 14px; box-shadow: 0 1px 2px rgba(15, 35, 64, 0.06), 0 8px 24px rgba(15, 35, 64, 0.05); padding: 24px 28px 26px; display: flex; flex-direction: column; gap: 18px">
+<span style="font-size: 17px; font-weight: 700; color: #0f2340">2A · Observed agreement against random splits</span>
+<div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 40px; align-items: start">
+<div style="display: flex; flex-direction: column; gap: 10px"><div style="font-size: 11px; line-height: 1.2; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: #46618a">Today</div><img src="/_blob/4a754a06a0967dc82458bc9a26519519" alt="2A · Observed agreement against random splits as the page draws it today" style="width: 540px; height: 213px; display: block; border: 1px solid #dce5f0; border-radius: 10px" /><ul style="margin: 0; padding-left: 18px; display: flex; flex-direction: column; gap: 4px; font-size: 12.5px; line-height: 1.5; color: #46618a"><li style="margin: 0">The size-matched baseline is blue, the colour that means direct employers in the chart beside it.</li><li style="margin: 0">Value labels sit on the whisker caps: 0.44, 0.59, 0.61.</li><li style="margin: 0">Occupation names are cut: “Software Quality Assurance Anal…”.</li></ul></div>
+<div style="display: flex; flex-direction: column; gap: 10px"><div style="font-size: 11px; line-height: 1.2; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: #14618f">Proposed</div><div style="background: #f7fafd; border: 1px solid #eaf0f7; border-radius: 10px; padding: 14px 14px 6px"><svg width="540" height="238" viewBox="0 0 540 238" role="img" aria-label="Observed agreement between the two groups' clusters against three random splits" style="display: block; overflow: visible; max-width: 100%; height: auto; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Inter, system-ui, sans-serif">
+<line x1="140.0" y1="6.0" x2="140.0" y2="190.0" style="stroke: #e6ecf3; stroke-width: 1px; stroke-linecap: butt"></line>
+<text x="140.0" y="206.0" style="font-size: 11px; fill: #7a8fac; font-weight: 400; text-anchor: middle; font-variant-numeric: tabular-nums">0.2</text>
+<line x1="248.7" y1="6.0" x2="248.7" y2="190.0" style="stroke: #e6ecf3; stroke-width: 1px; stroke-linecap: butt"></line>
+<text x="248.7" y="206.0" style="font-size: 11px; fill: #7a8fac; font-weight: 400; text-anchor: middle; font-variant-numeric: tabular-nums">0.4</text>
+<line x1="357.3" y1="6.0" x2="357.3" y2="190.0" style="stroke: #e6ecf3; stroke-width: 1px; stroke-linecap: butt"></line>
+<text x="357.3" y="206.0" style="font-size: 11px; fill: #7a8fac; font-weight: 400; text-anchor: middle; font-variant-numeric: tabular-nums">0.6</text>
+<line x1="466.0" y1="6.0" x2="466.0" y2="190.0" style="stroke: #e6ecf3; stroke-width: 1px; stroke-linecap: butt"></line>
+<text x="466.0" y="206.0" style="font-size: 11px; fill: #7a8fac; font-weight: 400; text-anchor: middle; font-variant-numeric: tabular-nums">0.8</text>
+<text x="466.0" y="222.0" style="font-size: 11px; fill: #7a8fac; font-weight: 400; text-anchor: end; font-variant-numeric: tabular-nums">NMI between the two groups’ clusters</text>
+<text x="0.0" y="35.0" style="font-size: 12px; fill: #0f2340; font-weight: 600; text-anchor: start">Count-matched</text>
+<text x="0.0" y="50.0" style="font-size: 11px; fill: #7a8fac; font-weight: 400; text-anchor: start; font-variant-numeric: tabular-nums">same number of companies</text>
+<line x1="140.0" y1="38.0" x2="466.0" y2="38.0" style="stroke: #dce5f0; stroke-width: 1px; stroke-linecap: butt"></line>
+<rect x="217.1" y="32.0" width="103.7" height="12.0" rx="6" style="fill: rgba(185, 196, 210, 0.62)"></rect>
+<line x1="269.0" y1="29.0" x2="269.0" y2="47.0" style="stroke: #7a8fac; stroke-width: 2px; stroke-linecap: butt"></line>
+<text x="269.0" y="63.0" style="font-size: 11px; fill: #46618a; font-weight: 400; text-anchor: middle; font-variant-numeric: tabular-nums">0.44 ± 0.10</text>
+<circle cx="262.2" cy="38.0" r="6.5" style="fill: #0f2340; stroke: #ffffff; stroke-width: 2px"></circle>
+<text x="0.0" y="95.0" style="font-size: 12px; fill: #0f2340; font-weight: 600; text-anchor: start">Filing-matched</text>
+<text x="0.0" y="110.0" style="font-size: 11px; fill: #7a8fac; font-weight: 400; text-anchor: start; font-variant-numeric: tabular-nums">same share of filings</text>
+<line x1="140.0" y1="98.0" x2="466.0" y2="98.0" style="stroke: #dce5f0; stroke-width: 1px; stroke-linecap: butt"></line>
+<rect x="323.2" y="92.0" width="54.6" height="12.0" rx="6" style="fill: rgba(185, 196, 210, 0.62)"></rect>
+<line x1="350.5" y1="89.0" x2="350.5" y2="107.0" style="stroke: #7a8fac; stroke-width: 2px; stroke-linecap: butt"></line>
+<text x="350.5" y="123.0" style="font-size: 11px; fill: #46618a; font-weight: 400; text-anchor: middle; font-variant-numeric: tabular-nums">0.59 ± 0.05</text>
+<circle cx="262.2" cy="98.0" r="6.5" style="fill: #0f2340; stroke: #ffffff; stroke-width: 2px"></circle>
+<text x="0.0" y="155.0" style="font-size: 12px; fill: #0f2340; font-weight: 700; text-anchor: start">Size-matched</text>
+<text x="0.0" y="170.0" style="font-size: 11px; fill: #7a8fac; font-weight: 400; text-anchor: start; font-variant-numeric: tabular-nums">the fair baseline</text>
+<line x1="140.0" y1="158.0" x2="466.0" y2="158.0" style="stroke: #dce5f0; stroke-width: 1px; stroke-linecap: butt"></line>
+<rect x="337.0" y="152.0" width="48.2" height="12.0" rx="6" style="fill: rgba(185, 196, 210, 0.62)"></rect>
+<line x1="361.1" y1="149.0" x2="361.1" y2="167.0" style="stroke: #7a8fac; stroke-width: 2px; stroke-linecap: butt"></line>
+<text x="361.1" y="183.0" style="font-size: 11px; fill: #46618a; font-weight: 400; text-anchor: middle; font-variant-numeric: tabular-nums">0.61 ± 0.04</text>
+<circle cx="262.2" cy="158.0" r="6.5" style="fill: #0f2340; stroke: #ffffff; stroke-width: 2px"></circle>
+<text x="262.2" y="145.0" style="font-size: 12px; fill: #0f2340; font-weight: 700; text-anchor: middle; font-variant-numeric: tabular-nums">0.42</text>
+<rect x="478.0" y="148.0" width="65.3" height="20.0" rx="10" style="fill: #eef3f9"></rect>
+<text x="510.6" y="162.0" style="font-size: 11px; fill: #0f2340; font-weight: 700; text-anchor: middle; font-variant-numeric: tabular-nums">z = −4.1</text>
+</svg></div><div style="background: #f7fafd; border: 1px solid #eaf0f7; border-radius: 10px; padding: 12px 14px 6px; display: flex; flex-direction: column; gap: 8px"><div style="display: flex; gap: 16px; font-size: 12px; color: #46618a"><span style="display: flex; align-items: center; gap: 6px"><span style="width: 11px; height: 11px; border-radius: 999px; background: #f2820c"></span>outsourcing firms</span><span style="display: flex; align-items: center; gap: 6px"><span style="width: 11px; height: 11px; border-radius: 999px; background: #1f8fd6"></span>direct employers</span></div><svg width="540" height="244" viewBox="0 0 540 244" role="img" aria-label="Share of each group's filings for the largest occupations: outsourcing firms against direct employers" style="display: block; overflow: visible; max-width: 100%; height: auto; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Inter, system-ui, sans-serif">
+<line x1="200.0" y1="6.0" x2="200.0" y2="210.0" style="stroke: #e6ecf3; stroke-width: 1px; stroke-linecap: butt"></line>
+<text x="200.0" y="226.0" style="font-size: 11px; fill: #7a8fac; font-weight: 400; text-anchor: middle; font-variant-numeric: tabular-nums">0%</text>
+<line x1="281.5" y1="6.0" x2="281.5" y2="210.0" style="stroke: #e6ecf3; stroke-width: 1px; stroke-linecap: butt"></line>
+<text x="281.5" y="226.0" style="font-size: 11px; fill: #7a8fac; font-weight: 400; text-anchor: middle; font-variant-numeric: tabular-nums">10%</text>
+<line x1="363.0" y1="6.0" x2="363.0" y2="210.0" style="stroke: #e6ecf3; stroke-width: 1px; stroke-linecap: butt"></line>
+<text x="363.0" y="226.0" style="font-size: 11px; fill: #7a8fac; font-weight: 400; text-anchor: middle; font-variant-numeric: tabular-nums">20%</text>
+<line x1="444.5" y1="6.0" x2="444.5" y2="210.0" style="stroke: #e6ecf3; stroke-width: 1px; stroke-linecap: butt"></line>
+<text x="444.5" y="226.0" style="font-size: 11px; fill: #7a8fac; font-weight: 400; text-anchor: middle; font-variant-numeric: tabular-nums">30%</text>
+<line x1="526.0" y1="6.0" x2="526.0" y2="210.0" style="stroke: #e6ecf3; stroke-width: 1px; stroke-linecap: butt"></line>
+<text x="526.0" y="226.0" style="font-size: 11px; fill: #7a8fac; font-weight: 400; text-anchor: middle; font-variant-numeric: tabular-nums">40%</text>
+<text x="0.0" y="32.0" style="font-size: 12px; fill: #0f2340; font-weight: 600; text-anchor: start">Software Developers</text>
+<line x1="200.0" y1="28.0" x2="526.0" y2="28.0" style="stroke: #dce5f0; stroke-width: 1px; stroke-linecap: butt"></line>
+<line x1="426.1" y1="28.0" x2="467.1" y2="28.0" style="stroke: #dce5f0; stroke-width: 4px; stroke-linecap: round"></line>
+<circle cx="426.1" cy="28.0" r="6.5" style="fill: #f2820c; stroke: #ffffff; stroke-width: 2px"></circle>
+<text x="415.1" y="32.0" style="font-size: 11.5px; fill: #0f2340; font-weight: 700; text-anchor: end; font-variant-numeric: tabular-nums">28%</text>
+<circle cx="467.1" cy="28.0" r="6.5" style="fill: #1f8fd6; stroke: #ffffff; stroke-width: 2px"></circle>
+<text x="478.1" y="32.0" style="font-size: 11.5px; fill: #0f2340; font-weight: 700; text-anchor: start; font-variant-numeric: tabular-nums">33%</text>
+<text x="0.0" y="72.0" style="font-size: 12px; fill: #0f2340; font-weight: 600; text-anchor: start">Computer occupations, all other</text>
+<line x1="200.0" y1="68.0" x2="526.0" y2="68.0" style="stroke: #dce5f0; stroke-width: 1px; stroke-linecap: butt"></line>
+<line x1="380.0" y1="68.0" x2="242.5" y2="68.0" style="stroke: #dce5f0; stroke-width: 4px; stroke-linecap: round"></line>
+<circle cx="380.0" cy="68.0" r="6.5" style="fill: #f2820c; stroke: #ffffff; stroke-width: 2px"></circle>
+<text x="391.0" y="72.0" style="font-size: 11.5px; fill: #0f2340; font-weight: 700; text-anchor: start; font-variant-numeric: tabular-nums">22%</text>
+<circle cx="242.5" cy="68.0" r="6.5" style="fill: #1f8fd6; stroke: #ffffff; stroke-width: 2px"></circle>
+<text x="231.5" y="72.0" style="font-size: 11.5px; fill: #0f2340; font-weight: 700; text-anchor: end; font-variant-numeric: tabular-nums">5%</text>
+<text x="0.0" y="112.0" style="font-size: 12px; fill: #0f2340; font-weight: 600; text-anchor: start">Data Scientists</text>
+<line x1="200.0" y1="108.0" x2="526.0" y2="108.0" style="stroke: #dce5f0; stroke-width: 1px; stroke-linecap: butt"></line>
+<line x1="221.3" y1="108.0" x2="254.8" y2="108.0" style="stroke: #dce5f0; stroke-width: 4px; stroke-linecap: round"></line>
+<circle cx="221.3" cy="108.0" r="6.5" style="fill: #f2820c; stroke: #ffffff; stroke-width: 2px"></circle>
+<text x="210.3" y="112.0" style="font-size: 11.5px; fill: #0f2340; font-weight: 700; text-anchor: end; font-variant-numeric: tabular-nums">3%</text>
+<circle cx="254.8" cy="108.0" r="6.5" style="fill: #1f8fd6; stroke: #ffffff; stroke-width: 2px"></circle>
+<text x="265.8" y="112.0" style="font-size: 11.5px; fill: #0f2340; font-weight: 700; text-anchor: start; font-variant-numeric: tabular-nums">7%</text>
+<text x="0.0" y="152.0" style="font-size: 12px; fill: #0f2340; font-weight: 600; text-anchor: start">Software QA analysts and testers</text>
+<line x1="200.0" y1="148.0" x2="526.0" y2="148.0" style="stroke: #dce5f0; stroke-width: 1px; stroke-linecap: butt"></line>
+<line x1="259.3" y1="148.0" x2="219.7" y2="148.0" style="stroke: #dce5f0; stroke-width: 4px; stroke-linecap: round"></line>
+<circle cx="259.3" cy="148.0" r="6.5" style="fill: #f2820c; stroke: #ffffff; stroke-width: 2px"></circle>
+<text x="270.3" y="152.0" style="font-size: 11.5px; fill: #0f2340; font-weight: 700; text-anchor: start; font-variant-numeric: tabular-nums">7%</text>
+<circle cx="219.7" cy="148.0" r="6.5" style="fill: #1f8fd6; stroke: #ffffff; stroke-width: 2px"></circle>
+<text x="208.7" y="152.0" style="font-size: 11.5px; fill: #0f2340; font-weight: 700; text-anchor: end; font-variant-numeric: tabular-nums">2%</text>
+<text x="0.0" y="192.0" style="font-size: 12px; fill: #0f2340; font-weight: 600; text-anchor: start">Computer Systems Analysts</text>
+<line x1="200.0" y1="188.0" x2="526.0" y2="188.0" style="stroke: #dce5f0; stroke-width: 1px; stroke-linecap: butt"></line>
+<line x1="251.3" y1="188.0" x2="211.0" y2="188.0" style="stroke: #dce5f0; stroke-width: 4px; stroke-linecap: round"></line>
+<circle cx="251.3" cy="188.0" r="6.5" style="fill: #f2820c; stroke: #ffffff; stroke-width: 2px"></circle>
+<text x="262.3" y="192.0" style="font-size: 11.5px; fill: #0f2340; font-weight: 700; text-anchor: start; font-variant-numeric: tabular-nums">6%</text>
+<circle cx="211.0" cy="188.0" r="6.5" style="fill: #1f8fd6; stroke: #ffffff; stroke-width: 2px"></circle>
+<text x="200.0" y="192.0" style="font-size: 11.5px; fill: #0f2340; font-weight: 700; text-anchor: end; font-variant-numeric: tabular-nums">1%</text>
+</svg></div></div>
+</div>
+</article>
+<article style="background: #ffffff; border: 1px solid #dce5f0; border-radius: 14px; box-shadow: 0 1px 2px rgba(15, 35, 64, 0.06), 0 8px 24px rgba(15, 35, 64, 0.05); padding: 24px 28px 26px; display: flex; flex-direction: column; gap: 18px">
+<span style="font-size: 17px; font-weight: 700; color: #0f2340">3C · Clients split between two groups</span>
+<div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 40px; align-items: start">
+<div style="display: flex; flex-direction: column; gap: 10px"><div style="font-size: 11px; line-height: 1.2; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: #46618a">Today</div><img src="/_blob/df79a7e8d40c36aa4745a7ed892c1797" alt="3C · Clients split between two groups as the page draws it today" style="width: 540px; height: 143px; display: block; border: 1px solid #dce5f0; border-radius: 10px" /><ul style="margin: 0; padding-left: 18px; display: flex; flex-direction: column; gap: 4px; font-size: 12.5px; line-height: 1.5; color: #46618a"><li style="margin: 0">A full-width chart, 250 px tall, for two numbers.</li><li style="margin: 0">Bars from zero hide the gap that matters: 331 clients against a spread of 20.</li><li style="margin: 0">The axis title is clipped at the top.</li></ul></div>
+<div style="display: flex; flex-direction: column; gap: 10px"><div style="font-size: 11px; line-height: 1.2; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: #14618f">Proposed</div><div style="background: #f7fafd; border: 1px solid #eaf0f7; border-radius: 10px; padding: 14px 14px 6px"><svg width="540" height="104" viewBox="0 0 540 104" role="img" aria-label="Clients split between two groups, real against rewired" style="display: block; overflow: visible; max-width: 100%; height: auto; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Inter, system-ui, sans-serif">
+<line x1="140.0" y1="6.0" x2="140.0" y2="70.0" style="stroke: #e6ecf3; stroke-width: 1px; stroke-linecap: butt"></line>
+<text x="140.0" y="86.0" style="font-size: 11px; fill: #7a8fac; font-weight: 400; text-anchor: middle; font-variant-numeric: tabular-nums">1,600</text>
+<line x1="234.3" y1="6.0" x2="234.3" y2="70.0" style="stroke: #e6ecf3; stroke-width: 1px; stroke-linecap: butt"></line>
+<text x="234.3" y="86.0" style="font-size: 11px; fill: #7a8fac; font-weight: 400; text-anchor: middle; font-variant-numeric: tabular-nums">1,800</text>
+<line x1="328.6" y1="6.0" x2="328.6" y2="70.0" style="stroke: #e6ecf3; stroke-width: 1px; stroke-linecap: butt"></line>
+<text x="328.6" y="86.0" style="font-size: 11px; fill: #7a8fac; font-weight: 400; text-anchor: middle; font-variant-numeric: tabular-nums">2,000</text>
+<line x1="422.9" y1="6.0" x2="422.9" y2="70.0" style="stroke: #e6ecf3; stroke-width: 1px; stroke-linecap: butt"></line>
+<text x="422.9" y="86.0" style="font-size: 11px; fill: #7a8fac; font-weight: 400; text-anchor: middle; font-variant-numeric: tabular-nums">2,200</text>
+<text x="0.0" y="35.0" style="font-size: 12px; fill: #0f2340; font-weight: 700; text-anchor: start">Split clients</text>
+<text x="0.0" y="50.0" style="font-size: 11px; fill: #7a8fac; font-weight: 400; text-anchor: start; font-variant-numeric: tabular-nums">second group ≥ 20%</text>
+<line x1="140.0" y1="38.0" x2="470.0" y2="38.0" style="stroke: #dce5f0; stroke-width: 1px; stroke-linecap: butt"></line>
+<rect x="391.5" y="32.0" width="19.3" height="12.0" rx="6" style="fill: rgba(185, 196, 210, 0.62)"></rect>
+<line x1="401.1" y1="29.0" x2="401.1" y2="47.0" style="stroke: #7a8fac; stroke-width: 2px; stroke-linecap: butt"></line>
+<text x="401.1" y="63.0" style="font-size: 11px; fill: #46618a; font-weight: 400; text-anchor: middle; font-variant-numeric: tabular-nums">rewired 2,154 ± 20</text>
+<circle cx="245.1" cy="38.0" r="6.5" style="fill: #0f2340; stroke: #ffffff; stroke-width: 2px"></circle>
+<text x="245.1" y="25.0" style="font-size: 12px; fill: #0f2340; font-weight: 700; text-anchor: middle; font-variant-numeric: tabular-nums">1,823</text>
+<rect x="482.0" y="28.0" width="59.1" height="20.0" rx="10" style="fill: #eef3f9"></rect>
+<text x="511.6" y="42.0" style="font-size: 11px; fill: #0f2340; font-weight: 700; text-anchor: middle; font-variant-numeric: tabular-nums">z = −16</text>
+</svg></div><p style="margin: 0; max-width: 68ch; font-size: 12.5px; line-height: 1.62; font-weight: 400; color: #46618a; text-wrap: pretty">The same two numbers in 110 px. The strip reads at once: the real count sits far below the rewired band.</p></div>
+</div>
+</article>
+<article style="background: #ffffff; border: 1px solid #dce5f0; border-radius: 14px; box-shadow: 0 1px 2px rgba(15, 35, 64, 0.06), 0 8px 24px rgba(15, 35, 64, 0.05); padding: 24px 28px 26px; display: flex; flex-direction: column; gap: 18px">
+<span style="font-size: 17px; font-weight: 700; color: #0f2340">5C · Labels read in full, never rotated</span>
+<p style="margin: 0; max-width: 900px; font-size: 12.5px; line-height: 1.62; font-weight: 400; color: #46618a; text-wrap: pretty">Occupations go down the side, so their names fit. One row per job, placed and direct on the same line: the gap is the finding.</p>
+<div style="display: flex; gap: 16px; font-size: 12px; color: #46618a"><span style="display: flex; align-items: center; gap: 6px"><span style="width: 11px; height: 11px; border-radius: 999px; background: #f2820c"></span>placed at a client</span><span style="display: flex; align-items: center; gap: 6px"><span style="width: 11px; height: 11px; border-radius: 999px; background: #1f8fd6"></span>employer’s own site</span></div>
+<div style="background: #f7fafd; border: 1px solid #eaf0f7; border-radius: 10px; padding: 14px 16px 6px"><svg width="1100" height="298" viewBox="0 0 1100 298" role="img" aria-label="Share of filings at wage level I or II, placed at a client against the employer's own site, for the five largest occupations" style="display: block; overflow: visible; max-width: 100%; height: auto; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Inter, system-ui, sans-serif">
+<line x1="260.0" y1="6.0" x2="260.0" y2="250.0" style="stroke: #e6ecf3; stroke-width: 1px; stroke-linecap: butt"></line>
+<text x="260.0" y="266.0" style="font-size: 11px; fill: #7a8fac; font-weight: 400; text-anchor: middle; font-variant-numeric: tabular-nums">30%</text>
+<line x1="377.1" y1="6.0" x2="377.1" y2="250.0" style="stroke: #e6ecf3; stroke-width: 1px; stroke-linecap: butt"></line>
+<text x="377.1" y="266.0" style="font-size: 11px; fill: #7a8fac; font-weight: 400; text-anchor: middle; font-variant-numeric: tabular-nums">40%</text>
+<line x1="494.3" y1="6.0" x2="494.3" y2="250.0" style="stroke: #e6ecf3; stroke-width: 1px; stroke-linecap: butt"></line>
+<text x="494.3" y="266.0" style="font-size: 11px; fill: #7a8fac; font-weight: 400; text-anchor: middle; font-variant-numeric: tabular-nums">50%</text>
+<line x1="611.4" y1="6.0" x2="611.4" y2="250.0" style="stroke: #e6ecf3; stroke-width: 1px; stroke-linecap: butt"></line>
+<text x="611.4" y="266.0" style="font-size: 11px; fill: #7a8fac; font-weight: 400; text-anchor: middle; font-variant-numeric: tabular-nums">60%</text>
+<line x1="728.6" y1="6.0" x2="728.6" y2="250.0" style="stroke: #e6ecf3; stroke-width: 1px; stroke-linecap: butt"></line>
+<text x="728.6" y="266.0" style="font-size: 11px; fill: #7a8fac; font-weight: 400; text-anchor: middle; font-variant-numeric: tabular-nums">70%</text>
+<line x1="845.7" y1="6.0" x2="845.7" y2="250.0" style="stroke: #e6ecf3; stroke-width: 1px; stroke-linecap: butt"></line>
+<text x="845.7" y="266.0" style="font-size: 11px; fill: #7a8fac; font-weight: 400; text-anchor: middle; font-variant-numeric: tabular-nums">80%</text>
+<line x1="962.9" y1="6.0" x2="962.9" y2="250.0" style="stroke: #e6ecf3; stroke-width: 1px; stroke-linecap: butt"></line>
+<text x="962.9" y="266.0" style="font-size: 11px; fill: #7a8fac; font-weight: 400; text-anchor: middle; font-variant-numeric: tabular-nums">90%</text>
+<line x1="1080.0" y1="6.0" x2="1080.0" y2="250.0" style="stroke: #e6ecf3; stroke-width: 1px; stroke-linecap: butt"></line>
+<text x="1080.0" y="266.0" style="font-size: 11px; fill: #7a8fac; font-weight: 400; text-anchor: middle; font-variant-numeric: tabular-nums">100%</text>
+<text x="1080.0" y="282.0" style="font-size: 11px; fill: #7a8fac; font-weight: 400; text-anchor: end; font-variant-numeric: tabular-nums">Share of filings at wage level I or II</text>
+<text x="0.0" y="29.0" style="font-size: 12px; fill: #0f2340; font-weight: 600; text-anchor: start">Software Developers</text>
+<text x="0.0" y="44.0" style="font-size: 11px; fill: #7a8fac; font-weight: 400; text-anchor: start; font-variant-numeric: tabular-nums">152,455 filings</text>
+<line x1="260.0" y1="32.0" x2="1080.0" y2="32.0" style="stroke: #dce5f0; stroke-width: 1px; stroke-linecap: butt"></line>
+<line x1="923.0" y1="32.0" x2="517.6" y2="32.0" style="stroke: #dce5f0; stroke-width: 4px; stroke-linecap: round"></line>
+<circle cx="923.0" cy="32.0" r="6.5" style="fill: #f2820c; stroke: #ffffff; stroke-width: 2px"></circle>
+<text x="934.0" y="36.0" style="font-size: 11.5px; fill: #0f2340; font-weight: 700; text-anchor: start; font-variant-numeric: tabular-nums">87%</text>
+<circle cx="517.6" cy="32.0" r="6.5" style="fill: #1f8fd6; stroke: #ffffff; stroke-width: 2px"></circle>
+<text x="506.6" y="36.0" style="font-size: 11.5px; fill: #0f2340; font-weight: 700; text-anchor: end; font-variant-numeric: tabular-nums">52%</text>
+<text x="0.0" y="77.0" style="font-size: 12px; fill: #0f2340; font-weight: 600; text-anchor: start">Computer occupations, all other</text>
+<text x="0.0" y="92.0" style="font-size: 11px; fill: #7a8fac; font-weight: 400; text-anchor: start; font-variant-numeric: tabular-nums">46,748 filings</text>
+<line x1="260.0" y1="80.0" x2="1080.0" y2="80.0" style="stroke: #dce5f0; stroke-width: 1px; stroke-linecap: butt"></line>
+<line x1="687.1" y1="80.0" x2="358.5" y2="80.0" style="stroke: #dce5f0; stroke-width: 4px; stroke-linecap: round"></line>
+<circle cx="687.1" cy="80.0" r="6.5" style="fill: #f2820c; stroke: #ffffff; stroke-width: 2px"></circle>
+<text x="698.1" y="84.0" style="font-size: 11.5px; fill: #0f2340; font-weight: 700; text-anchor: start; font-variant-numeric: tabular-nums">66%</text>
+<circle cx="358.5" cy="80.0" r="6.5" style="fill: #1f8fd6; stroke: #ffffff; stroke-width: 2px"></circle>
+<text x="347.5" y="84.0" style="font-size: 11.5px; fill: #0f2340; font-weight: 700; text-anchor: end; font-variant-numeric: tabular-nums">38%</text>
+<text x="0.0" y="125.0" style="font-size: 12px; fill: #0f2340; font-weight: 600; text-anchor: start">Data Scientists</text>
+<text x="0.0" y="140.0" style="font-size: 11px; fill: #7a8fac; font-weight: 400; text-anchor: start; font-variant-numeric: tabular-nums">29,224 filings</text>
+<line x1="260.0" y1="128.0" x2="1080.0" y2="128.0" style="stroke: #dce5f0; stroke-width: 1px; stroke-linecap: butt"></line>
+<line x1="945.6" y1="128.0" x2="601.9" y2="128.0" style="stroke: #dce5f0; stroke-width: 4px; stroke-linecap: round"></line>
+<circle cx="945.6" cy="128.0" r="6.5" style="fill: #f2820c; stroke: #ffffff; stroke-width: 2px"></circle>
+<text x="956.6" y="132.0" style="font-size: 11.5px; fill: #0f2340; font-weight: 700; text-anchor: start; font-variant-numeric: tabular-nums">89%</text>
+<circle cx="601.9" cy="128.0" r="6.5" style="fill: #1f8fd6; stroke: #ffffff; stroke-width: 2px"></circle>
+<text x="590.9" y="132.0" style="font-size: 11.5px; fill: #0f2340; font-weight: 700; text-anchor: end; font-variant-numeric: tabular-nums">59%</text>
+<text x="0.0" y="173.0" style="font-size: 12px; fill: #0f2340; font-weight: 600; text-anchor: start">Software QA analysts and testers</text>
+<text x="0.0" y="188.0" style="font-size: 11px; fill: #7a8fac; font-weight: 400; text-anchor: start; font-variant-numeric: tabular-nums">18,002 filings</text>
+<line x1="260.0" y1="176.0" x2="1080.0" y2="176.0" style="stroke: #dce5f0; stroke-width: 1px; stroke-linecap: butt"></line>
+<line x1="803.4" y1="176.0" x2="488.9" y2="176.0" style="stroke: #dce5f0; stroke-width: 4px; stroke-linecap: round"></line>
+<circle cx="803.4" cy="176.0" r="6.5" style="fill: #f2820c; stroke: #ffffff; stroke-width: 2px"></circle>
+<text x="814.4" y="180.0" style="font-size: 11.5px; fill: #0f2340; font-weight: 700; text-anchor: start; font-variant-numeric: tabular-nums">76%</text>
+<circle cx="488.9" cy="176.0" r="6.5" style="fill: #1f8fd6; stroke: #ffffff; stroke-width: 2px"></circle>
+<text x="477.9" y="180.0" style="font-size: 11.5px; fill: #0f2340; font-weight: 700; text-anchor: end; font-variant-numeric: tabular-nums">50%</text>
+<text x="0.0" y="221.0" style="font-size: 12px; fill: #0f2340; font-weight: 600; text-anchor: start">Computer Programmers</text>
+<text x="0.0" y="236.0" style="font-size: 11px; fill: #7a8fac; font-weight: 400; text-anchor: start; font-variant-numeric: tabular-nums">13,376 filings</text>
+<line x1="260.0" y1="224.0" x2="1080.0" y2="224.0" style="stroke: #dce5f0; stroke-width: 1px; stroke-linecap: butt"></line>
+<line x1="918.5" y1="224.0" x2="896.6" y2="224.0" style="stroke: #dce5f0; stroke-width: 4px; stroke-linecap: round"></line>
+<circle cx="918.5" cy="224.0" r="6.5" style="fill: #f2820c; stroke: #ffffff; stroke-width: 2px"></circle>
+<text x="929.5" y="228.0" style="font-size: 11.5px; fill: #0f2340; font-weight: 700; text-anchor: start; font-variant-numeric: tabular-nums">86%</text>
+<circle cx="896.6" cy="224.0" r="6.5" style="fill: #1f8fd6; stroke: #ffffff; stroke-width: 2px"></circle>
+<text x="885.6" y="228.0" style="font-size: 11.5px; fill: #0f2340; font-weight: 700; text-anchor: end; font-variant-numeric: tabular-nums">84%</text>
+</svg></div>
+</article>
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview": {"width": 1440, "height": 3400}}'>
+class Component extends DCLogic {
+renderVals() {
+return {};
+}
+}
+</script>
+</body>
+</html>

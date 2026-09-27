@@ -1,0 +1,424 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>Week 4 · section 4, remove the biggest firms</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@800&amp;display=swap" />
+<style>
+body{margin:0;background:#eef3f9}
+a{color:#14618f}a:hover{color:#0f2340}
+summary{cursor:pointer}
+.pop{display:none}
+.tip:hover>.pop,.tip:focus-within>.pop,.pop.open{display:block}
+</style>
+</helmet>
+<div style="width: 1440px; height: 2600px; box-sizing: border-box; overflow: hidden; background: #eef3f9; color: #0f2340; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Inter, system-ui, sans-serif; display: flex; flex-direction: column; -webkit-font-smoothing: antialiased">
+<header style="flex: none; height: 52px; box-sizing: border-box; background: rgba(255, 255, 255, 0.92); border-bottom: 1px solid #dce5f0; display: flex; align-items: center; justify-content: center">
+<div style="width: 1180px; display: flex; align-items: center; gap: 22px">
+<a href="#top" style="display: flex; align-items: center; gap: 7px; text-decoration: none; font-family: 'Barlow Condensed', Impact, sans-serif; font-weight: 800; font-size: 20px; line-height: 1; letter-spacing: 0.01em; color: #0f2340"><span style="color: #14618f">✳︎</span><span>LOG–LOG <span style="color: #14618f">LEGENDS</span></span></a>
+<a href="#all-posts" style="font-size: 13px; font-weight: 600; color: #46618a; text-decoration: none">All posts</a>
+<nav aria-label="Sections of this post" style="margin-left: auto; display: flex; gap: 2px">
+<a href="#opening" style="display: flex; align-items: center; gap: 6px; padding: 7px 12px; border-radius: 999px; font-size: 13px; font-weight: 600; text-decoration: none; color: #46618a;"><span style="font-variant-numeric: tabular-nums; font-weight: 800; color: #7a8fac">0</span>Opening</a>
+<a href="#place" style="display: flex; align-items: center; gap: 6px; padding: 7px 12px; border-radius: 999px; font-size: 13px; font-weight: 600; text-decoration: none; color: #46618a;"><span style="font-variant-numeric: tabular-nums; font-weight: 800; color: #7a8fac">1</span>Where</a>
+<a href="#jobs" style="display: flex; align-items: center; gap: 6px; padding: 7px 12px; border-radius: 999px; font-size: 13px; font-weight: 600; text-decoration: none; color: #46618a;"><span style="font-variant-numeric: tabular-nums; font-weight: 800; color: #7a8fac">2</span>Jobs</a>
+<a href="#who" style="display: flex; align-items: center; gap: 6px; padding: 7px 12px; border-radius: 999px; font-size: 13px; font-weight: 600; text-decoration: none; color: #46618a;"><span style="font-variant-numeric: tabular-nums; font-weight: 800; color: #7a8fac">3</span>Staffing</a>
+<a href="#footprint" aria-current="true" style="display: flex; align-items: center; gap: 6px; padding: 7px 12px; border-radius: 999px; font-size: 13px; font-weight: 600; text-decoration: none; background: #d9ecf9; color: #14618f;"><span style="font-variant-numeric: tabular-nums; font-weight: 800; color: #14618f">4</span>Biggest firms</a>
+<a href="#beyond" style="display: flex; align-items: center; gap: 6px; padding: 7px 12px; border-radius: 999px; font-size: 13px; font-weight: 600; text-decoration: none; color: #46618a;"><span style="font-variant-numeric: tabular-nums; font-weight: 800; color: #7a8fac">5</span>Beyond</a>
+<a href="#closing" style="display: flex; align-items: center; gap: 6px; padding: 7px 12px; border-radius: 999px; font-size: 13px; font-weight: 600; text-decoration: none; color: #46618a;"><span style="font-variant-numeric: tabular-nums; font-weight: 800; color: #7a8fac">✓</span>Closing</a>
+<a href="#cut" style="display: flex; align-items: center; gap: 6px; padding: 7px 12px; border-radius: 999px; font-size: 13px; font-weight: 600; text-decoration: none; color: #46618a;"><span style="font-variant-numeric: tabular-nums; font-weight: 800; color: #7a8fac">+</span>Deep dive</a>
+</nav>
+</div>
+</header>
+<div style="flex: none; display: flex; align-items: flex-start; padding-top: 36px">
+<nav aria-label="Contents of this post" style="flex: none; width: 130px; display: flex; justify-content: center; padding-top: 6px">
+<div style="display: flex; flex-direction: column; align-items: center; gap: 8px; padding: 4px 0; background: linear-gradient(#dce5f0, #dce5f0) center / 2px 100% no-repeat">
+<span class="tip" style="position: relative; display: inline-flex"><a href="#opening" aria-label="0 · Opening" style="width: 36px; height: 36px; box-sizing: border-box; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 800; text-decoration: none; font-variant-numeric: tabular-nums; background: #ffffff; color: #14618f; border: 1px solid #dce5f0;">0</a><span class="pop" aria-hidden="true" style="position: absolute; left: calc(100% + 10px); top: 50%; transform: translateY(-50%); z-index: 40; width: max-content; max-width: 300px; box-sizing: border-box; background: rgba(11, 31, 58, 0.97); border-radius: 8px; padding: 6px 10px; font-size: 12px; line-height: 1.4; font-weight: 600; color: #eaf2fb; text-align: left; white-space: normal; box-shadow: 0 2px 6px rgba(15, 35, 64, 0.08), 0 12px 28px rgba(15, 35, 64, 0.14)">0 · Opening</span></span>
+<span class="tip" style="position: relative; display: inline-flex"><a href="#place" aria-label="1 · Where the hiring is" style="width: 36px; height: 36px; box-sizing: border-box; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 800; text-decoration: none; font-variant-numeric: tabular-nums; background: #ffffff; color: #14618f; border: 1px solid #dce5f0;">1</a><span class="pop" aria-hidden="true" style="position: absolute; left: calc(100% + 10px); top: 50%; transform: translateY(-50%); z-index: 40; width: max-content; max-width: 300px; box-sizing: border-box; background: rgba(11, 31, 58, 0.97); border-radius: 8px; padding: 6px 10px; font-size: 12px; line-height: 1.4; font-weight: 600; color: #eaf2fb; text-align: left; white-space: normal; box-shadow: 0 2px 6px rgba(15, 35, 64, 0.08), 0 12px 28px rgba(15, 35, 64, 0.14)">1 · Where the hiring is</span></span>
+<span class="tip" style="position: relative; display: inline-flex"><a href="#jobs" aria-label="2 · Which jobs go together" style="width: 36px; height: 36px; box-sizing: border-box; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 800; text-decoration: none; font-variant-numeric: tabular-nums; background: #ffffff; color: #14618f; border: 1px solid #dce5f0;">2</a><span class="pop" aria-hidden="true" style="position: absolute; left: calc(100% + 10px); top: 50%; transform: translateY(-50%); z-index: 40; width: max-content; max-width: 300px; box-sizing: border-box; background: rgba(11, 31, 58, 0.97); border-radius: 8px; padding: 6px 10px; font-size: 12px; line-height: 1.4; font-weight: 600; color: #eaf2fb; text-align: left; white-space: normal; box-shadow: 0 2px 6px rgba(15, 35, 64, 0.08), 0 12px 28px rgba(15, 35, 64, 0.14)">2 · Which jobs go together</span></span>
+<span class="tip" style="position: relative; display: inline-flex"><a href="#who" aria-label="3 · Who staffs whom" style="width: 36px; height: 36px; box-sizing: border-box; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 800; text-decoration: none; font-variant-numeric: tabular-nums; background: #ffffff; color: #14618f; border: 1px solid #dce5f0;">3</a><span class="pop" aria-hidden="true" style="position: absolute; left: calc(100% + 10px); top: 50%; transform: translateY(-50%); z-index: 40; width: max-content; max-width: 300px; box-sizing: border-box; background: rgba(11, 31, 58, 0.97); border-radius: 8px; padding: 6px 10px; font-size: 12px; line-height: 1.4; font-weight: 600; color: #eaf2fb; text-align: left; white-space: normal; box-shadow: 0 2px 6px rgba(15, 35, 64, 0.08), 0 12px 28px rgba(15, 35, 64, 0.14)">3 · Who staffs whom</span></span>
+<span class="tip" style="position: relative; display: inline-flex"><a href="#footprint" aria-label="4 · Without the biggest firms" style="width: 36px; height: 36px; box-sizing: border-box; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 800; text-decoration: none; font-variant-numeric: tabular-nums; background: #14618f; color: #ffffff; border: 1px solid #14618f;">4</a><span class="pop" aria-hidden="true" style="position: absolute; left: calc(100% + 10px); top: 50%; transform: translateY(-50%); z-index: 40; width: max-content; max-width: 300px; box-sizing: border-box; background: rgba(11, 31, 58, 0.97); border-radius: 8px; padding: 6px 10px; font-size: 12px; line-height: 1.4; font-weight: 600; color: #eaf2fb; text-align: left; white-space: normal; box-shadow: 0 2px 6px rgba(15, 35, 64, 0.08), 0 12px 28px rgba(15, 35, 64, 0.14)">4 · Without the biggest firms</span></span>
+<div style="display: flex; flex-direction: column; align-items: center; gap: 5px"><span class="tip" style="position: relative; display: inline-flex"><a href="#footprint-which" aria-label="4A · Which firm hides the regions?" style="width: 24px; height: 24px; box-sizing: border-box; border-radius: 999px; display: flex; align-items: center; justify-content: center; font-size: 10.5px; font-weight: 800; text-decoration: none; background: #0f2340; color: #ffffff; border: 1px solid #0f2340;">A</a><span class="pop" aria-hidden="true" style="position: absolute; left: calc(100% + 10px); top: 50%; transform: translateY(-50%); z-index: 40; width: max-content; max-width: 300px; box-sizing: border-box; background: rgba(11, 31, 58, 0.97); border-radius: 8px; padding: 6px 10px; font-size: 12px; line-height: 1.4; font-weight: 600; color: #eaf2fb; text-align: left; white-space: normal; box-shadow: 0 2px 6px rgba(15, 35, 64, 0.08), 0 12px 28px rgba(15, 35, 64, 0.14)">4A · Which firm hides the regions?</span></span></div>
+<span class="tip" style="position: relative; display: inline-flex"><a href="#beyond" aria-label="5 · Beyond the three networks" style="width: 36px; height: 36px; box-sizing: border-box; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 800; text-decoration: none; font-variant-numeric: tabular-nums; background: #ffffff; color: #14618f; border: 1px solid #dce5f0;">5</a><span class="pop" aria-hidden="true" style="position: absolute; left: calc(100% + 10px); top: 50%; transform: translateY(-50%); z-index: 40; width: max-content; max-width: 300px; box-sizing: border-box; background: rgba(11, 31, 58, 0.97); border-radius: 8px; padding: 6px 10px; font-size: 12px; line-height: 1.4; font-weight: 600; color: #eaf2fb; text-align: left; white-space: normal; box-shadow: 0 2px 6px rgba(15, 35, 64, 0.08), 0 12px 28px rgba(15, 35, 64, 0.14)">5 · Beyond the three networks</span></span>
+<span class="tip" style="position: relative; display: inline-flex"><a href="#closing" aria-label="✓ · Closing" style="width: 36px; height: 36px; box-sizing: border-box; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 800; text-decoration: none; font-variant-numeric: tabular-nums; background: #ffffff; color: #14618f; border: 1px solid #dce5f0;">✓</a><span class="pop" aria-hidden="true" style="position: absolute; left: calc(100% + 10px); top: 50%; transform: translateY(-50%); z-index: 40; width: max-content; max-width: 300px; box-sizing: border-box; background: rgba(11, 31, 58, 0.97); border-radius: 8px; padding: 6px 10px; font-size: 12px; line-height: 1.4; font-weight: 600; color: #eaf2fb; text-align: left; white-space: normal; box-shadow: 0 2px 6px rgba(15, 35, 64, 0.08), 0 12px 28px rgba(15, 35, 64, 0.14)">✓ · Closing</span></span>
+<span class="tip" style="position: relative; display: inline-flex"><a href="#cut" aria-label="+ · Deep dive" style="width: 36px; height: 36px; box-sizing: border-box; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 800; text-decoration: none; font-variant-numeric: tabular-nums; background: #ffffff; color: #14618f; border: 1px solid #dce5f0;">+</a><span class="pop" aria-hidden="true" style="position: absolute; left: calc(100% + 10px); top: 50%; transform: translateY(-50%); z-index: 40; width: max-content; max-width: 300px; box-sizing: border-box; background: rgba(11, 31, 58, 0.97); border-radius: 8px; padding: 6px 10px; font-size: 12px; line-height: 1.4; font-weight: 600; color: #eaf2fb; text-align: left; white-space: normal; box-shadow: 0 2px 6px rgba(15, 35, 64, 0.08), 0 12px 28px rgba(15, 35, 64, 0.14)">+ · Deep dive</span></span>
+</div>
+</nav>
+<div style="width: 1180px; flex: none; display: flex; flex-direction: column; gap: 26px">
+<section id="footprint" style="display: flex; gap: 22px; align-items: flex-start; padding: 12px 0 2px">
+<div aria-hidden="true" style="flex: none; width: 58px; font-size: 64px; line-height: 0.86; font-weight: 800; letter-spacing: -0.04em; color: #14618f; font-variant-numeric: tabular-nums">4</div>
+<div style="display: flex; flex-direction: column; gap: 10px; padding-top: 2px">
+<div style="display: flex; align-items: center; gap: 14px">
+<h2 style="margin: 0; font-size: 30px; line-height: 1.1; font-weight: 700; letter-spacing: -0.02em; color: #0f2340">Without the biggest firms</h2>
+</div>
+<p style="margin: 0; max-width: 860px; font-size: 18px; line-height: 1.45; font-weight: 600; letter-spacing: -0.005em; color: #0f2340; text-wrap: pretty">Take out the largest filers, Amazon above all, and the metro groups start to follow Census regions; the job clusters shift but hold.</p>
+</div>
+</section>
+<div style="display: grid; grid-template-columns: 540px minmax(0, 1fr); gap: 40px; align-items: start">
+<div style="display: flex; flex-direction: column; gap: 14px">
+<p style="margin: 0; max-width: 68ch; font-size: 13.5px; line-height: 1.62; font-weight: 400; color: #46618a; text-wrap: pretty">A handful of companies file a large share of everything: the five largest placing firms (Tata Consultancy Services, Cognizant, Infosys, HCL, Compunnel) file 5.6% of the filings in the 40 metros, and the ten largest filers of any kind 19.1%. A company that files everywhere links every pair of metros and every pair of its jobs, so its footprint could be all the structure there is.</p>
+<div style="display: flex; gap: 11px; align-items: flex-start; background: #f7fafd; border: 1px solid #eaf0f7; border-radius: 10px; padding: 12px 14px">
+<svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true" style="flex: none; margin-top: 1px"><path d="M9 18h6M10 21h4M12 3a6 6 0 0 0-3.6 10.8c.6.5 1 1.2 1 2V17h5.2v-1.2c0-.8.4-1.5 1-2A6 6 0 0 0 12 3z" style="fill: none; stroke: #14618f; stroke-width: 1.6px; stroke-linecap: round; stroke-linejoin: round"></path></svg>
+<p style="margin: 0; font-size: 12.5px; line-height: 1.55; color: #46618a; text-wrap: pretty"><b style="color: #0f2340">What to notice.</b> Without the ten largest filers (Amazon, Cognizant, Google, Microsoft, EY, Meta, Deloitte, Apple, Tata Consultancy Services, Infosys), the metro groups match Census regions at <span class="tip" style="position: relative; display: inline"><button type="button" aria-describedby="term-14" style="padding: 0; margin: 0; border: 0; border-bottom: 1px dotted #46618a; background: none; font: inherit; color: inherit; cursor: help">AMI</button><span class="pop" id="term-14" role="tooltip" style="position: absolute; left: 0; top: calc(100% + 6px); width: 330px; z-index: 40; box-sizing: border-box; background: rgba(11, 31, 58, 0.97); border: 1px solid rgba(255, 255, 255, 0.12); border-radius: 9px; padding: 12px 14px; box-shadow: 0 2px 6px rgba(15, 35, 64, 0.08), 0 18px 44px rgba(15, 35, 64, 0.16); font-size: 12.5px; line-height: 1.55; font-weight: 400; font-style: normal; color: #cfe0f2; text-align: left; white-space: normal; letter-spacing: 0">Adjusted mutual information: how well two groupings of the same things agree, corrected for chance. 0 means no better than labels dealt at random, 1 means the same grouping.</span></span> 0.13 (p = 0.013), against 0.06 for the full network and 0.01 ± 0.03 for random cuts, 4.6 standard deviations away. The national employers are what hide the regional pattern. The job clusters hold at NMI 0.90 and 0.82, but random cuts of the same volume leave them closer still (0.96 and 0.88, 3.0 and 3.2 standard deviations away), so the biggest firms do shape which jobs cluster together.</p>
+</div>
+<div style="display: flex; flex-wrap: wrap; gap: 8px; align-items: center"><span class="tip" style="position: relative; display: inline-flex"><button type="button" aria-describedby="more-15" style="display: inline-flex; align-items: center; gap: 6px; padding: 6px 11px; border-radius: 999px; border: 1px solid #dce5f0; background: #ffffff; color: #14618f; font-family: inherit; font-size: 12px; font-weight: 700; line-height: 1.1; cursor: help"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true" style="flex: none"><circle cx="12" cy="12" r="9" style="fill: none; stroke: currentColor; stroke-width: 2px"></circle><path d="M12 11v6M12 7.6v.4" style="fill: none; stroke: currentColor; stroke-width: 2.2px; stroke-linecap: round"></path></svg>How we tested it</button><span class="pop" id="more-15" role="tooltip" style="position: absolute; left: 0; top: calc(100% + 8px); width: 440px; z-index: 40; box-sizing: border-box; background: rgba(11, 31, 58, 0.97); border: 1px solid rgba(255, 255, 255, 0.12); border-radius: 9px; padding: 12px 14px; box-shadow: 0 2px 6px rgba(15, 35, 64, 0.08), 0 18px 44px rgba(15, 35, 64, 0.16); font-size: 12.5px; line-height: 1.55; font-weight: 400; font-style: normal; color: #cfe0f2; text-align: left; white-space: normal; letter-spacing: 0"><b style="display: block; margin-bottom: 4px; color: #eaf2fb; font-weight: 700">How we tested it</b>We removed each set, reran 100 Louvain runs on the metro network and on the job network (weighted here by filings, since a count of companies barely moves when ten of 59,196 leave), and compared the groups with the full network’s. Removing less data changes the groups too, so each removal sits beside 50 random cuts of companies that remove the same share of filings.</span></span><span class="tip" style="position: relative; display: inline-flex"><button type="button" aria-describedby="more-16" style="display: inline-flex; align-items: center; gap: 6px; padding: 6px 11px; border-radius: 999px; border: 1px solid #dce5f0; background: #ffffff; color: #14618f; font-family: inherit; font-size: 12px; font-weight: 700; line-height: 1.1; cursor: help"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true" style="flex: none"><circle cx="12" cy="12" r="9" style="fill: none; stroke: currentColor; stroke-width: 2px"></circle><path d="M12 8v8M8 12h8" style="fill: none; stroke: currentColor; stroke-width: 2px; stroke-linecap: round"></path></svg>More numbers</button><span class="pop" id="more-16" role="tooltip" style="position: absolute; left: 0; top: calc(100% + 8px); width: 440px; z-index: 40; box-sizing: border-box; background: rgba(11, 31, 58, 0.97); border: 1px solid rgba(255, 255, 255, 0.12); border-radius: 9px; padding: 12px 14px; box-shadow: 0 2px 6px rgba(15, 35, 64, 0.08), 0 18px 44px rgba(15, 35, 64, 0.16); font-size: 12.5px; line-height: 1.55; font-weight: 400; font-style: normal; color: #cfe0f2; text-align: left; white-space: normal; letter-spacing: 0"><b style="display: block; margin-bottom: 4px; color: #eaf2fb; font-weight: 700">More numbers</b>Removing the five placing firms changes little: the groups stay close to the full network’s (NMI 0.92, random cuts 0.85 ± 0.14), and the regional match rises only to 0.09, inside the range of random cuts (0.04 ± 0.05). Without the ten largest filers the clusters also sharpen, modularity rising from 0.28 to 0.32. Every version still beats its own rewired networks by a wide margin (z = 25 or more).</span></span></div>
+</div>
+<div style="display: flex; flex-direction: column; gap: 14px">
+<figure style="margin: 0; display: flex; flex-direction: column; gap: 8px">
+<figcaption style="display: flex; flex-direction: column; gap: 3px"><span style="font-size: 13.5px; font-weight: 700; color: #0f2340">Do the metro groups follow Census regions?</span><span style="font-size: 11.5px; line-height: 1.45; color: #46618a">AMI between the metro groups and the four Census regions. Dots remove named firms; grey bands are random cuts of the same share of filings, mean and one standard deviation over 50. Dashed: the full network.</span></figcaption>
+<div style="background: #f7fafd; border: 1px solid #eaf0f7; border-radius: 10px; padding: 14px 14px 10px">
+<svg width="556" height="180" viewBox="0 0 556 180" role="img" aria-label="AMI with Census regions after removing named firms, against random cuts" style="display: block; overflow: visible; max-width: 100%; height: auto; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Inter, system-ui, sans-serif">
+<line x1="160.0" y1="22.0" x2="160.0" y2="146.0" style="stroke: #e6ecf3; stroke-width: 1px; stroke-linecap: butt"></line>
+<text x="160.0" y="162.0" style="font-size: 11px; fill: #7a8fac; font-weight: 400; text-anchor: middle; font-variant-numeric: tabular-nums">−0.05</text>
+<line x1="226.8" y1="22.0" x2="226.8" y2="146.0" style="stroke: #e6ecf3; stroke-width: 1px; stroke-linecap: butt"></line>
+<text x="226.8" y="162.0" style="font-size: 11px; fill: #7a8fac; font-weight: 400; text-anchor: middle; font-variant-numeric: tabular-nums">0.00</text>
+<line x1="293.6" y1="22.0" x2="293.6" y2="146.0" style="stroke: #e6ecf3; stroke-width: 1px; stroke-linecap: butt"></line>
+<text x="293.6" y="162.0" style="font-size: 11px; fill: #7a8fac; font-weight: 400; text-anchor: middle; font-variant-numeric: tabular-nums">0.05</text>
+<line x1="360.4" y1="22.0" x2="360.4" y2="146.0" style="stroke: #e6ecf3; stroke-width: 1px; stroke-linecap: butt"></line>
+<text x="360.4" y="162.0" style="font-size: 11px; fill: #7a8fac; font-weight: 400; text-anchor: middle; font-variant-numeric: tabular-nums">0.10</text>
+<line x1="427.2" y1="22.0" x2="427.2" y2="146.0" style="stroke: #e6ecf3; stroke-width: 1px; stroke-linecap: butt"></line>
+<text x="427.2" y="162.0" style="font-size: 11px; fill: #7a8fac; font-weight: 400; text-anchor: middle; font-variant-numeric: tabular-nums">0.15</text>
+<line x1="494.0" y1="22.0" x2="494.0" y2="146.0" style="stroke: #e6ecf3; stroke-width: 1px; stroke-linecap: butt"></line>
+<text x="494.0" y="162.0" style="font-size: 11px; fill: #7a8fac; font-weight: 400; text-anchor: middle; font-variant-numeric: tabular-nums">0.20</text>
+<line x1="308.3" y1="20.0" x2="308.3" y2="146.0" style="stroke: #46618a; stroke-width: 1.2px; stroke-linecap: butt; stroke-dasharray: 4 3"></line>
+<text x="308.3" y="16.0" style="font-size: 11px; fill: #46618a; font-weight: 600; text-anchor: middle; font-variant-numeric: tabular-nums">all firms 0.06</text>
+<text x="0.0" y="51.0" style="font-size: 12px; fill: #0f2340; font-weight: 600; text-anchor: start">Five placing firms out</text>
+<text x="0.0" y="66.0" style="font-size: 11px; fill: #7a8fac; font-weight: 400; text-anchor: start; font-variant-numeric: tabular-nums">5.6% of filings</text>
+<line x1="160.0" y1="54.0" x2="494.0" y2="54.0" style="stroke: #dce5f0; stroke-width: 1px; stroke-linecap: butt"></line>
+<rect x="214.4" y="48.0" width="125.9" height="12.0" rx="6" style="fill: rgba(185, 196, 210, 0.62)"></rect>
+<line x1="277.3" y1="45.0" x2="277.3" y2="63.0" style="stroke: #7a8fac; stroke-width: 2px; stroke-linecap: butt"></line>
+<text x="277.3" y="79.0" style="font-size: 11px; fill: #46618a; font-weight: 400; text-anchor: middle; font-variant-numeric: tabular-nums">random cuts</text>
+<circle cx="344.4" cy="54.0" r="6.5" style="fill: #0f2340; stroke: #ffffff; stroke-width: 2px"></circle>
+<text x="344.4" y="41.0" style="font-size: 12px; fill: #0f2340; font-weight: 700; text-anchor: middle; font-variant-numeric: tabular-nums">0.09</text>
+<rect x="506.0" y="44.0" width="53.0" height="20.0" rx="10" style="fill: #eef3f9"></rect>
+<text x="532.5" y="58.0" style="font-size: 11px; fill: #0f2340; font-weight: 700; text-anchor: middle; font-variant-numeric: tabular-nums">1.1 sd</text>
+<text x="0.0" y="111.0" style="font-size: 12px; fill: #0f2340; font-weight: 700; text-anchor: start">Ten largest filers out</text>
+<text x="0.0" y="126.0" style="font-size: 11px; fill: #7a8fac; font-weight: 400; text-anchor: start; font-variant-numeric: tabular-nums">19.1% of filings</text>
+<line x1="160.0" y1="114.0" x2="494.0" y2="114.0" style="stroke: #dce5f0; stroke-width: 1px; stroke-linecap: butt"></line>
+<rect x="202.9" y="108.0" width="70.3" height="12.0" rx="6" style="fill: rgba(185, 196, 210, 0.62)"></rect>
+<line x1="238.0" y1="105.0" x2="238.0" y2="123.0" style="stroke: #7a8fac; stroke-width: 2px; stroke-linecap: butt"></line>
+<text x="238.0" y="139.0" style="font-size: 11px; fill: #46618a; font-weight: 400; text-anchor: middle; font-variant-numeric: tabular-nums">random cuts</text>
+<circle cx="400.5" cy="114.0" r="6.5" style="fill: #0f2340; stroke: #ffffff; stroke-width: 2px"></circle>
+<text x="400.5" y="101.0" style="font-size: 12px; fill: #0f2340; font-weight: 700; text-anchor: middle; font-variant-numeric: tabular-nums">0.13</text>
+<rect x="506.0" y="104.0" width="53.0" height="20.0" rx="10" style="fill: #eef3f9"></rect>
+<text x="532.5" y="118.0" style="font-size: 11px; fill: #0f2340; font-weight: 700; text-anchor: middle; font-variant-numeric: tabular-nums">4.6 sd</text>
+</svg>
+</div>
+</figure>
+<figure style="margin: 0; display: flex; flex-direction: column; gap: 8px">
+<figcaption style="display: flex; flex-direction: column; gap: 3px"><span style="font-size: 13.5px; font-weight: 700; color: #0f2340">How much do the groups change?</span><span style="font-size: 11.5px; line-height: 1.45; color: #46618a">NMI between the groups after a removal and the full network’s groups: 1 means unchanged.</span></figcaption>
+<div style="background: #f7fafd; border: 1px solid #eaf0f7; border-radius: 10px; padding: 14px 14px 10px">
+<svg width="556" height="268" viewBox="0 0 556 268" role="img" aria-label="NMI between the groups after a removal and the full network's groups, against random cuts" style="display: block; overflow: visible; max-width: 100%; height: auto; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Inter, system-ui, sans-serif">
+<line x1="207.1" y1="22.0" x2="207.1" y2="234.0" style="stroke: #e6ecf3; stroke-width: 1px; stroke-linecap: butt"></line>
+<text x="207.1" y="250.0" style="font-size: 11px; fill: #7a8fac; font-weight: 400; text-anchor: middle; font-variant-numeric: tabular-nums">0.4</text>
+<line x1="301.4" y1="22.0" x2="301.4" y2="234.0" style="stroke: #e6ecf3; stroke-width: 1px; stroke-linecap: butt"></line>
+<text x="301.4" y="250.0" style="font-size: 11px; fill: #7a8fac; font-weight: 400; text-anchor: middle; font-variant-numeric: tabular-nums">0.6</text>
+<line x1="395.7" y1="22.0" x2="395.7" y2="234.0" style="stroke: #e6ecf3; stroke-width: 1px; stroke-linecap: butt"></line>
+<text x="395.7" y="250.0" style="font-size: 11px; fill: #7a8fac; font-weight: 400; text-anchor: middle; font-variant-numeric: tabular-nums">0.8</text>
+<line x1="490.0" y1="22.0" x2="490.0" y2="234.0" style="stroke: #e6ecf3; stroke-width: 1px; stroke-linecap: butt"></line>
+<text x="490.0" y="250.0" style="font-size: 11px; fill: #7a8fac; font-weight: 400; text-anchor: middle; font-variant-numeric: tabular-nums">1.0</text>
+<line x1="490.0" y1="20.0" x2="490.0" y2="234.0" style="stroke: #46618a; stroke-width: 1.2px; stroke-linecap: butt; stroke-dasharray: 4 3"></line>
+<text x="490.0" y="16.0" style="font-size: 11px; fill: #46618a; font-weight: 600; text-anchor: end; font-variant-numeric: tabular-nums">unchanged</text>
+<text x="0.0" y="47.0" style="font-size: 12px; fill: #0f2340; font-weight: 600; text-anchor: start">Metros</text>
+<text x="0.0" y="62.0" style="font-size: 11px; fill: #7a8fac; font-weight: 400; text-anchor: start; font-variant-numeric: tabular-nums">five placing firms out</text>
+<line x1="160.0" y1="50.0" x2="490.0" y2="50.0" style="stroke: #dce5f0; stroke-width: 1px; stroke-linecap: butt"></line>
+<rect x="355.0" y="44.0" width="132.1" height="12.0" rx="6" style="fill: rgba(185, 196, 210, 0.62)"></rect>
+<line x1="421.1" y1="41.0" x2="421.1" y2="59.0" style="stroke: #7a8fac; stroke-width: 2px; stroke-linecap: butt"></line>
+<circle cx="451.3" cy="50.0" r="6.5" style="fill: #0f2340; stroke: #ffffff; stroke-width: 2px"></circle>
+<text x="451.3" y="37.0" style="font-size: 12px; fill: #0f2340; font-weight: 700; text-anchor: middle; font-variant-numeric: tabular-nums">0.92</text>
+<rect x="502.0" y="40.0" width="53.0" height="20.0" rx="10" style="fill: #eef3f9"></rect>
+<text x="528.5" y="54.0" style="font-size: 11px; fill: #0f2340; font-weight: 700; text-anchor: middle; font-variant-numeric: tabular-nums">0.5 sd</text>
+<text x="0.0" y="99.0" style="font-size: 12px; fill: #0f2340; font-weight: 600; text-anchor: start">Metros</text>
+<text x="0.0" y="114.0" style="font-size: 11px; fill: #7a8fac; font-weight: 400; text-anchor: start; font-variant-numeric: tabular-nums">ten largest out</text>
+<line x1="160.0" y1="102.0" x2="490.0" y2="102.0" style="stroke: #dce5f0; stroke-width: 1px; stroke-linecap: butt"></line>
+<rect x="296.1" y="96.0" width="135.8" height="12.0" rx="6" style="fill: rgba(185, 196, 210, 0.62)"></rect>
+<line x1="364.0" y1="93.0" x2="364.0" y2="111.0" style="stroke: #7a8fac; stroke-width: 2px; stroke-linecap: butt"></line>
+<circle cx="256.6" cy="102.0" r="6.5" style="fill: #0f2340; stroke: #ffffff; stroke-width: 2px"></circle>
+<text x="256.6" y="89.0" style="font-size: 12px; fill: #0f2340; font-weight: 700; text-anchor: middle; font-variant-numeric: tabular-nums">0.51</text>
+<rect x="502.0" y="92.0" width="59.1" height="20.0" rx="10" style="fill: #eef3f9"></rect>
+<text x="531.6" y="106.0" style="font-size: 11px; fill: #0f2340; font-weight: 700; text-anchor: middle; font-variant-numeric: tabular-nums">−1.6 sd</text>
+<line x1="0.0" y1="132.0" x2="556.0" y2="132.0" style="stroke: #dce5f0; stroke-width: 1px; stroke-linecap: butt; stroke-dasharray: 2 3"></line>
+<text x="0.0" y="151.0" style="font-size: 12px; fill: #0f2340; font-weight: 600; text-anchor: start">Jobs</text>
+<text x="0.0" y="166.0" style="font-size: 11px; fill: #7a8fac; font-weight: 400; text-anchor: start; font-variant-numeric: tabular-nums">five placing firms out</text>
+<line x1="160.0" y1="154.0" x2="490.0" y2="154.0" style="stroke: #dce5f0; stroke-width: 1px; stroke-linecap: butt"></line>
+<rect x="460.9" y="148.0" width="17.5" height="12.0" rx="6" style="fill: rgba(185, 196, 210, 0.62)"></rect>
+<line x1="469.6" y1="145.0" x2="469.6" y2="163.0" style="stroke: #7a8fac; stroke-width: 2px; stroke-linecap: butt"></line>
+<circle cx="442.9" cy="154.0" r="6.5" style="fill: #0f2340; stroke: #ffffff; stroke-width: 2px"></circle>
+<text x="442.9" y="141.0" style="font-size: 12px; fill: #0f2340; font-weight: 700; text-anchor: middle; font-variant-numeric: tabular-nums">0.90</text>
+<rect x="502.0" y="144.0" width="59.1" height="20.0" rx="10" style="fill: #eef3f9"></rect>
+<text x="531.6" y="158.0" style="font-size: 11px; fill: #0f2340; font-weight: 700; text-anchor: middle; font-variant-numeric: tabular-nums">−3.0 sd</text>
+<text x="0.0" y="203.0" style="font-size: 12px; fill: #0f2340; font-weight: 600; text-anchor: start">Jobs</text>
+<text x="0.0" y="218.0" style="font-size: 11px; fill: #7a8fac; font-weight: 400; text-anchor: start; font-variant-numeric: tabular-nums">ten largest out</text>
+<line x1="160.0" y1="206.0" x2="490.0" y2="206.0" style="stroke: #dce5f0; stroke-width: 1px; stroke-linecap: butt"></line>
+<rect x="425.8" y="200.0" width="17.6" height="12.0" rx="6" style="fill: rgba(185, 196, 210, 0.62)"></rect>
+<line x1="434.6" y1="197.0" x2="434.6" y2="215.0" style="stroke: #7a8fac; stroke-width: 2px; stroke-linecap: butt"></line>
+<circle cx="406.1" cy="206.0" r="6.5" style="fill: #0f2340; stroke: #ffffff; stroke-width: 2px"></circle>
+<text x="406.1" y="193.0" style="font-size: 12px; fill: #0f2340; font-weight: 700; text-anchor: middle; font-variant-numeric: tabular-nums">0.82</text>
+<rect x="502.0" y="196.0" width="59.1" height="20.0" rx="10" style="fill: #eef3f9"></rect>
+<text x="531.6" y="210.0" style="font-size: 11px; fill: #0f2340; font-weight: 700; text-anchor: middle; font-variant-numeric: tabular-nums">−3.2 sd</text>
+</svg>
+</div>
+</figure>
+</div>
+</div>
+<article id="footprint-which" style="background: #ffffff; border: 1px solid #dce5f0; border-radius: 14px; box-shadow: 0 1px 2px rgba(15, 35, 64, 0.06), 0 8px 24px rgba(15, 35, 64, 0.05); padding: 24px 28px 26px; display: flex; flex-direction: column; gap: 18px">
+<header style="display: flex; align-items: flex-start; gap: 14px">
+<span style="flex: none; min-width: 40px; height: 30px; padding: 0 8px; box-sizing: border-box; border-radius: 8px; background: #d9ecf9; color: #14618f; font-size: 13px; font-weight: 800; display: flex; align-items: center; justify-content: center; font-variant-numeric: tabular-nums">4A</span>
+<div style="flex: 1; display: flex; flex-direction: column; gap: 8px">
+<div style="display: flex; align-items: center; gap: 12px">
+<h3 style="margin: 0; font-size: 20px; line-height: 1.25; font-weight: 700; letter-spacing: -0.01em; color: #0f2340">Which firm hides the regions?</h3>
+</div>
+<p style="margin: 0; max-width: 900px; font-size: 16px; line-height: 1.45; font-weight: 600; color: #0f2340; text-wrap: pretty">Amazon.</p>
+</div>
+</header>
+<p style="margin: 0; max-width: 900px; font-size: 13.5px; line-height: 1.62; font-weight: 400; color: #46618a; text-wrap: pretty">We removed each of the ten largest filers alone, and then the top 1, 2, 3 … 20 filers in turn, each time beside random cuts of companies that remove the same share of filings (50 for a single firm, 20 for each step of the sweep).</p>
+<div style="background: #f7fafd; border: 1px solid #eaf0f7; border-radius: 10px; padding: 16px 18px; display: flex; flex-direction: column; gap: 12px">
+<div style="display: flex; align-items: center; gap: 14px; flex-wrap: wrap">
+<label for="giants-k" style="font-size: 13px; font-weight: 700; color: #0f2340">Largest filers removed</label>
+<button type="button" onClick="{{ dec }}" disabled="{{ atMin }}" aria-label="Put the last firm back" style="width: 36px; height: 36px; border-radius: 9px; border: 1px solid #dce5f0; background: #ffffff; color: #0f2340; font-size: 18px; font-weight: 700; cursor: pointer">−</button>
+<input id="giants-k" type="range" min="0" max="20" step="1" value="{{ k }}" onChange="{{ onK }}" style="width: 420px; accent-color: #14618f" />
+<button type="button" onClick="{{ inc }}" disabled="{{ atMax }}" aria-label="Remove the next largest filer" style="width: 36px; height: 36px; border-radius: 9px; border: 1px solid #dce5f0; background: #ffffff; color: #0f2340; font-size: 18px; font-weight: 700; cursor: pointer">+</button>
+<span style="font-size: 22px; font-weight: 700; color: #0f2340; font-variant-numeric: tabular-nums; min-width: 40px">{{ k }}</span>
+<span style="font-size: 12.5px; color: #46618a">of 20 · <b style="color: #0f2340">{{ share }}</b> of the filings in the 40 metros · {{ groups }}</span>
+</div>
+<div style="display: flex; flex-wrap: wrap; gap: 6px; min-height: 26px; align-items: center">
+<sc-if value="{{ none }}" hint-placeholder-val="{{ false }}"><span style="font-size: 12.5px; color: #46618a">No firm removed: every company files.</span></sc-if>
+<sc-for list="{{ removed }}" as="f" hint-placeholder-count="1"><span style="padding: 4px 10px; border-radius: 999px; background: #eef3f9; border: 1px solid #dce5f0; font-size: 12px; font-weight: 600; color: #0f2340">{{ f.name }}</span></sc-for>
+</div>
+<svg width="1100" height="64" viewBox="0 0 1100 64" role="img" aria-label="Match with Census regions for the current removal, against random cuts" style="display: block; overflow: visible; max-width: 100%; height: auto; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Inter, system-ui, sans-serif">
+<line x1="170.0" y1="30.0" x2="1030.0" y2="30.0" style="stroke: #dce5f0; stroke-width: 1px; stroke-linecap: butt"></line>
+<text x="0.0" y="26.0" style="font-size: 12px; fill: #0f2340; font-weight: 700; text-anchor: start">Match with Census regions</text>
+<text x="0.0" y="42.0" style="font-size: 11px; fill: #7a8fac; font-weight: 400; text-anchor: start">AMI, 40 metros</text>
+<line x1="483.0" y1="16.0" x2="483.0" y2="44.0" style="stroke: #46618a; stroke-width: 1.2px; stroke-linecap: butt; stroke-dasharray: 4 3"></line>
+<text x="483.0" y="58.0" style="font-size: 11px; fill: #46618a; font-weight: 600; text-anchor: middle; font-variant-numeric: tabular-nums">all firms 0.06</text>
+<rect x="{{ bandX }}" y="24" width="{{ bandW }}" height="12" rx="6" style="fill: rgba(185, 196, 210, 0.62)"></rect>
+<line x1="{{ meanX }}" y1="21" x2="{{ meanX }}" y2="39" style="stroke: #7a8fac; stroke-width: 2px"></line>
+<circle cx="{{ dotX }}" cy="30" r="7.5" style="fill: #0f2340; stroke: #ffffff; stroke-width: 2px"></circle>
+<text x="{{ dotX }}" y="14" style="font-size: 13px; fill: #0f2340; font-weight: 700; text-anchor: middle; font-variant-numeric: tabular-nums">{{ realLabel }}</text>
+</svg>
+<p style="margin: 0; font-size: 14px; line-height: 1.5; color: #0f2340"><b>{{ realLabel }}</b> <span style="color: #46618a">{{ verdict }}</span></p>
+</div>
+<figure style="margin: 0; display: flex; flex-direction: column; gap: 8px">
+<figcaption style="display: flex; flex-direction: column; gap: 3px"><span style="font-size: 13.5px; font-weight: 700; color: #0f2340">The largest filers removed in turn</span><span style="font-size: 11.5px; line-height: 1.45; color: #46618a">AMI with Census regions after removing the k largest filers (line) against random cuts of the same volume (grey band, one standard deviation). The ring marks the current step.</span></figcaption>
+<div style="background: #f7fafd; border: 1px solid #eaf0f7; border-radius: 10px; padding: 14px 14px 10px">
+<svg width="1100" height="300" viewBox="0 0 1100 300" role="img" aria-label="AMI between the metro groups and Census regions as the k largest filers are removed, against random cuts" style="display: block; overflow: visible; max-width: 100%; height: auto; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Inter, system-ui, sans-serif">
+<line x1="56.0" y1="228.6" x2="1076.0" y2="228.6" style="stroke: #e6ecf3; stroke-width: 1px; stroke-linecap: butt"></line>
+<text x="46.0" y="232.6" style="font-size: 11px; fill: #7a8fac; font-weight: 400; text-anchor: end; font-variant-numeric: tabular-nums">0.00</text>
+<line x1="56.0" y1="183.0" x2="1076.0" y2="183.0" style="stroke: #e6ecf3; stroke-width: 1px; stroke-linecap: butt"></line>
+<text x="46.0" y="187.0" style="font-size: 11px; fill: #7a8fac; font-weight: 400; text-anchor: end; font-variant-numeric: tabular-nums">0.05</text>
+<line x1="56.0" y1="137.4" x2="1076.0" y2="137.4" style="stroke: #e6ecf3; stroke-width: 1px; stroke-linecap: butt"></line>
+<text x="46.0" y="141.4" style="font-size: 11px; fill: #7a8fac; font-weight: 400; text-anchor: end; font-variant-numeric: tabular-nums">0.10</text>
+<line x1="56.0" y1="91.8" x2="1076.0" y2="91.8" style="stroke: #e6ecf3; stroke-width: 1px; stroke-linecap: butt"></line>
+<text x="46.0" y="95.8" style="font-size: 11px; fill: #7a8fac; font-weight: 400; text-anchor: end; font-variant-numeric: tabular-nums">0.15</text>
+<line x1="56.0" y1="46.2" x2="1076.0" y2="46.2" style="stroke: #e6ecf3; stroke-width: 1px; stroke-linecap: butt"></line>
+<text x="46.0" y="50.2" style="font-size: 11px; fill: #7a8fac; font-weight: 400; text-anchor: end; font-variant-numeric: tabular-nums">0.20</text>
+<path d="M56.0 173.3 L107.0 168.3 L158.0 169.8 L209.0 187.9 L260.0 209.3 L311.0 184.1 L362.0 192.5 L413.0 200.5 L464.0 202.6 L515.0 209.4 L566.0 209.1 L617.0 216.9 L668.0 209.1 L719.0 216.7 L770.0 231.3 L821.0 197.6 L872.0 229.1 L923.0 232.1 L974.0 232.8 L1025.0 209.4 L1076.0 197.2 L1076.0 246.2 L1025.0 248.1 L974.0 233.2 L923.0 233.6 L872.0 240.2 L821.0 246.5 L770.0 233.7 L719.0 242.8 L668.0 244.9 L617.0 242.8 L566.0 245.1 L515.0 244.1 L464.0 245.3 L413.0 245.3 L362.0 248.7 L311.0 245.2 L260.0 247.8 L209.0 244.4 L158.0 233.1 L107.0 225.9 L56.0 173.3 Z" style="fill: rgba(185, 196, 210, 0.62)"></path>
+<path d="M56.0 173.3 L107.0 197.1 L158.0 201.5 L209.0 216.1 L260.0 228.5 L311.0 214.7 L362.0 220.6 L413.0 222.9 L464.0 224.0 L515.0 226.7 L566.0 227.1 L617.0 229.8 L668.0 227.0 L719.0 229.7 L770.0 232.5 L821.0 222.1 L872.0 234.7 L923.0 232.8 L974.0 233.0 L1025.0 228.7 L1076.0 221.7" style="fill: none; stroke: #7a8fac; stroke-width: 1.5px; stroke-linejoin: round; stroke-linecap: round"></path>
+<line x1="56.0" y1="173.0" x2="1076.0" y2="173.0" style="stroke: #46618a; stroke-width: 1.2px; stroke-linecap: butt; stroke-dasharray: 4 3"></line>
+<text x="1076.0" y="167.0" style="font-size: 11px; fill: #46618a; font-weight: 600; text-anchor: end; font-variant-numeric: tabular-nums">all firms 0.06</text>
+<path d="M56.0 173.3 L107.0 96.9 L158.0 111.2 L209.0 111.2 L260.0 111.2 L311.0 109.5 L362.0 69.8 L413.0 79.3 L464.0 79.3 L515.0 79.3 L566.0 109.8 L617.0 86.4 L668.0 88.6 L719.0 86.4 L770.0 88.6 L821.0 88.6 L872.0 88.6 L923.0 161.1 L974.0 161.1 L1025.0 161.1 L1076.0 47.2" style="fill: none; stroke: #0f2340; stroke-width: 2.2px; stroke-linejoin: round; stroke-linecap: round"></path>
+<circle cx="56.0" cy="173.3" r="3.6" style="fill: #0f2340; stroke: #ffffff; stroke-width: 1.2px"></circle>
+<circle cx="107.0" cy="96.9" r="3.6" style="fill: #0f2340; stroke: #ffffff; stroke-width: 1.2px"></circle>
+<circle cx="158.0" cy="111.2" r="3.6" style="fill: #0f2340; stroke: #ffffff; stroke-width: 1.2px"></circle>
+<circle cx="209.0" cy="111.2" r="3.6" style="fill: #0f2340; stroke: #ffffff; stroke-width: 1.2px"></circle>
+<circle cx="260.0" cy="111.2" r="3.6" style="fill: #0f2340; stroke: #ffffff; stroke-width: 1.2px"></circle>
+<circle cx="311.0" cy="109.5" r="3.6" style="fill: #0f2340; stroke: #ffffff; stroke-width: 1.2px"></circle>
+<circle cx="362.0" cy="69.8" r="3.6" style="fill: #0f2340; stroke: #ffffff; stroke-width: 1.2px"></circle>
+<circle cx="413.0" cy="79.3" r="3.6" style="fill: #0f2340; stroke: #ffffff; stroke-width: 1.2px"></circle>
+<circle cx="464.0" cy="79.3" r="3.6" style="fill: #0f2340; stroke: #ffffff; stroke-width: 1.2px"></circle>
+<circle cx="515.0" cy="79.3" r="3.6" style="fill: #0f2340; stroke: #ffffff; stroke-width: 1.2px"></circle>
+<circle cx="566.0" cy="109.8" r="3.6" style="fill: #0f2340; stroke: #ffffff; stroke-width: 1.2px"></circle>
+<circle cx="617.0" cy="86.4" r="3.6" style="fill: #0f2340; stroke: #ffffff; stroke-width: 1.2px"></circle>
+<circle cx="668.0" cy="88.6" r="3.6" style="fill: #0f2340; stroke: #ffffff; stroke-width: 1.2px"></circle>
+<circle cx="719.0" cy="86.4" r="3.6" style="fill: #0f2340; stroke: #ffffff; stroke-width: 1.2px"></circle>
+<circle cx="770.0" cy="88.6" r="3.6" style="fill: #0f2340; stroke: #ffffff; stroke-width: 1.2px"></circle>
+<circle cx="821.0" cy="88.6" r="3.6" style="fill: #0f2340; stroke: #ffffff; stroke-width: 1.2px"></circle>
+<circle cx="872.0" cy="88.6" r="3.6" style="fill: #0f2340; stroke: #ffffff; stroke-width: 1.2px"></circle>
+<circle cx="923.0" cy="161.1" r="3.6" style="fill: #0f2340; stroke: #ffffff; stroke-width: 1.2px"></circle>
+<circle cx="974.0" cy="161.1" r="3.6" style="fill: #0f2340; stroke: #ffffff; stroke-width: 1.2px"></circle>
+<circle cx="1025.0" cy="161.1" r="3.6" style="fill: #0f2340; stroke: #ffffff; stroke-width: 1.2px"></circle>
+<circle cx="1076.0" cy="47.2" r="3.6" style="fill: #0f2340; stroke: #ffffff; stroke-width: 1.2px"></circle>
+<text x="56.0" y="274.0" style="font-size: 11px; fill: #7a8fac; font-weight: 400; text-anchor: middle; font-variant-numeric: tabular-nums">0</text>
+<text x="158.0" y="274.0" style="font-size: 11px; fill: #7a8fac; font-weight: 400; text-anchor: middle; font-variant-numeric: tabular-nums">2</text>
+<text x="260.0" y="274.0" style="font-size: 11px; fill: #7a8fac; font-weight: 400; text-anchor: middle; font-variant-numeric: tabular-nums">4</text>
+<text x="362.0" y="274.0" style="font-size: 11px; fill: #7a8fac; font-weight: 400; text-anchor: middle; font-variant-numeric: tabular-nums">6</text>
+<text x="464.0" y="274.0" style="font-size: 11px; fill: #7a8fac; font-weight: 400; text-anchor: middle; font-variant-numeric: tabular-nums">8</text>
+<text x="566.0" y="274.0" style="font-size: 11px; fill: #7a8fac; font-weight: 400; text-anchor: middle; font-variant-numeric: tabular-nums">10</text>
+<text x="668.0" y="274.0" style="font-size: 11px; fill: #7a8fac; font-weight: 400; text-anchor: middle; font-variant-numeric: tabular-nums">12</text>
+<text x="770.0" y="274.0" style="font-size: 11px; fill: #7a8fac; font-weight: 400; text-anchor: middle; font-variant-numeric: tabular-nums">14</text>
+<text x="872.0" y="274.0" style="font-size: 11px; fill: #7a8fac; font-weight: 400; text-anchor: middle; font-variant-numeric: tabular-nums">16</text>
+<text x="974.0" y="274.0" style="font-size: 11px; fill: #7a8fac; font-weight: 400; text-anchor: middle; font-variant-numeric: tabular-nums">18</text>
+<text x="1076.0" y="274.0" style="font-size: 11px; fill: #7a8fac; font-weight: 400; text-anchor: middle; font-variant-numeric: tabular-nums">20</text>
+<text x="1076.0" y="294.0" style="font-size: 11px; fill: #7a8fac; font-weight: 400; text-anchor: end">largest filers removed →</text>
+<text x="115.0" y="86.9" style="font-size: 11.5px; fill: #0f2340; font-weight: 700; text-anchor: start">Amazon alone 0.14</text>
+<text x="974.0" y="149.1" style="font-size: 11px; fill: #46618a; font-weight: 600; text-anchor: middle">top 17 to 19: 0.07</text>
+<text x="1068.0" y="51.2" style="font-size: 11.5px; fill: #0f2340; font-weight: 700; text-anchor: end; font-variant-numeric: tabular-nums">0.20</text>
+<line x1="{{ markX }}" y1="22" x2="{{ markX }}" y2="256" style="stroke: #14618f; stroke-width: 1.5px"></line>
+<circle cx="{{ markX }}" cy="{{ markY }}" r="8" style="fill: none; stroke: #14618f; stroke-width: 2px"></circle>
+</svg>
+</div>
+</figure>
+<div style="display: grid; grid-template-columns: 540px minmax(0, 1fr); gap: 40px; align-items: start">
+<div style="display: flex; flex-direction: column; gap: 14px">
+<div style="display: flex; gap: 11px; align-items: flex-start; background: #f7fafd; border: 1px solid #eaf0f7; border-radius: 10px; padding: 12px 14px">
+<svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true" style="flex: none; margin-top: 1px"><path d="M9 18h6M10 21h4M12 3a6 6 0 0 0-3.6 10.8c.6.5 1 1.2 1 2V17h5.2v-1.2c0-.8.4-1.5 1-2A6 6 0 0 0 12 3z" style="fill: none; stroke: #14618f; stroke-width: 1.6px; stroke-linecap: round; stroke-linejoin: round"></path></svg>
+<p style="margin: 0; font-size: 12.5px; line-height: 1.55; color: #46618a; text-wrap: pretty"><b style="color: #0f2340">What to notice.</b> Amazon files 5.1% of the filings in the 40 metros. Without it alone, the metro groups match Census regions at AMI 0.14 (3.5 standard deviations above its random cuts), more than the 0.13 without all ten. No other single firm pushes the match up beyond its random cuts: removing EY, Meta, Deloitte or Apple alone tips Louvain into a two-group split that ignores regions (AMI −0.005).</p>
+</div>
+<div style="display: flex; flex-wrap: wrap; gap: 8px; align-items: center"><span class="tip" style="position: relative; display: inline-flex"><button type="button" aria-describedby="more-17" style="display: inline-flex; align-items: center; gap: 6px; padding: 6px 11px; border-radius: 999px; border: 1px solid #dce5f0; background: #ffffff; color: #14618f; font-family: inherit; font-size: 12px; font-weight: 700; line-height: 1.1; cursor: help"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true" style="flex: none"><circle cx="12" cy="12" r="9" style="fill: none; stroke: currentColor; stroke-width: 2px"></circle><path d="M12 8v8M8 12h8" style="fill: none; stroke: currentColor; stroke-width: 2px; stroke-linecap: round"></path></svg>More numbers</button><span class="pop open" id="more-17" role="tooltip" style="position: absolute; left: 0; top: calc(100% + 8px); width: 440px; z-index: 40; box-sizing: border-box; background: rgba(11, 31, 58, 0.97); border: 1px solid rgba(255, 255, 255, 0.12); border-radius: 9px; padding: 12px 14px; box-shadow: 0 2px 6px rgba(15, 35, 64, 0.08), 0 18px 44px rgba(15, 35, 64, 0.16); font-size: 12.5px; line-height: 1.55; font-weight: 400; font-style: normal; color: #cfe0f2; text-align: left; white-space: normal; letter-spacing: 0"><b style="display: block; margin-bottom: 4px; color: #eaf2fb; font-weight: 700">More numbers</b>Removed in rank order, the largest filers keep the match above random cuts at every step from one to twenty, but not smoothly: it dips to about 0.07 without the top 17 to 19, where several partitions compete, and peaks at 0.20 without the top 20. FY2024 tells the same story more strongly. Its full network shows no regional match (AMI −0.005); without its ten largest filers the match is 0.22 (p = 0.001), against −0.01 ± 0.01 for random cuts.</span></span></div>
+</div>
+<div style="display: flex; flex-direction: column; gap: 14px">
+<figure style="margin: 0; display: flex; flex-direction: column; gap: 8px">
+<figcaption style="display: flex; flex-direction: column; gap: 3px"><span style="font-size: 13.5px; font-weight: 700; color: #0f2340">One firm out at a time</span><span style="font-size: 11.5px; line-height: 1.45; color: #46618a">AMI with Census regions with one firm removed (dot) and random cuts of the same volume (grey, mean and one standard deviation). Dashed: the full network.</span></figcaption>
+<div style="background: #f7fafd; border: 1px solid #eaf0f7; border-radius: 10px; padding: 14px 14px 10px">
+<svg width="556" height="520" viewBox="0 0 556 520" role="img" aria-label="AMI with Census regions with one firm removed, against random cuts of the same volume" style="display: block; overflow: visible; max-width: 100%; height: auto; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Inter, system-ui, sans-serif">
+<line x1="178.0" y1="22.0" x2="178.0" y2="486.0" style="stroke: #e6ecf3; stroke-width: 1px; stroke-linecap: butt"></line>
+<text x="178.0" y="502.0" style="font-size: 11px; fill: #7a8fac; font-weight: 400; text-anchor: middle; font-variant-numeric: tabular-nums">−0.05</text>
+<line x1="240.4" y1="22.0" x2="240.4" y2="486.0" style="stroke: #e6ecf3; stroke-width: 1px; stroke-linecap: butt"></line>
+<text x="240.4" y="502.0" style="font-size: 11px; fill: #7a8fac; font-weight: 400; text-anchor: middle; font-variant-numeric: tabular-nums">0.00</text>
+<line x1="302.8" y1="22.0" x2="302.8" y2="486.0" style="stroke: #e6ecf3; stroke-width: 1px; stroke-linecap: butt"></line>
+<text x="302.8" y="502.0" style="font-size: 11px; fill: #7a8fac; font-weight: 400; text-anchor: middle; font-variant-numeric: tabular-nums">0.05</text>
+<line x1="365.2" y1="22.0" x2="365.2" y2="486.0" style="stroke: #e6ecf3; stroke-width: 1px; stroke-linecap: butt"></line>
+<text x="365.2" y="502.0" style="font-size: 11px; fill: #7a8fac; font-weight: 400; text-anchor: middle; font-variant-numeric: tabular-nums">0.10</text>
+<line x1="427.6" y1="22.0" x2="427.6" y2="486.0" style="stroke: #e6ecf3; stroke-width: 1px; stroke-linecap: butt"></line>
+<text x="427.6" y="502.0" style="font-size: 11px; fill: #7a8fac; font-weight: 400; text-anchor: middle; font-variant-numeric: tabular-nums">0.15</text>
+<line x1="490.0" y1="22.0" x2="490.0" y2="486.0" style="stroke: #e6ecf3; stroke-width: 1px; stroke-linecap: butt"></line>
+<text x="490.0" y="502.0" style="font-size: 11px; fill: #7a8fac; font-weight: 400; text-anchor: middle; font-variant-numeric: tabular-nums">0.20</text>
+<line x1="316.5" y1="20.0" x2="316.5" y2="486.0" style="stroke: #46618a; stroke-width: 1.2px; stroke-linecap: butt; stroke-dasharray: 4 3"></line>
+<text x="316.5" y="16.0" style="font-size: 11px; fill: #46618a; font-weight: 600; text-anchor: middle; font-variant-numeric: tabular-nums">all firms 0.06</text>
+<text x="0.0" y="44.0" style="font-size: 12px; fill: #0f2340; font-weight: 700; text-anchor: start">Amazon</text>
+<text x="0.0" y="59.0" style="font-size: 11px; fill: #7a8fac; font-weight: 400; text-anchor: start; font-variant-numeric: tabular-nums">5.1% of filings</text>
+<line x1="178.0" y1="47.0" x2="490.0" y2="47.0" style="stroke: #dce5f0; stroke-width: 1px; stroke-linecap: butt"></line>
+<rect x="233.0" y="41.0" width="83.1" height="12.0" rx="6" style="fill: rgba(185, 196, 210, 0.62)"></rect>
+<line x1="274.6" y1="38.0" x2="274.6" y2="56.0" style="stroke: #7a8fac; stroke-width: 2px; stroke-linecap: butt"></line>
+<circle cx="420.6" cy="47.0" r="6.5" style="fill: #0f2340; stroke: #ffffff; stroke-width: 2px"></circle>
+<text x="420.6" y="34.0" style="font-size: 12px; fill: #0f2340; font-weight: 700; text-anchor: middle; font-variant-numeric: tabular-nums">0.14</text>
+<rect x="502.0" y="37.0" width="53.0" height="20.0" rx="10" style="fill: #eef3f9"></rect>
+<text x="528.5" y="51.0" style="font-size: 11px; fill: #0f2340; font-weight: 700; text-anchor: middle; font-variant-numeric: tabular-nums">3.5 sd</text>
+<text x="0.0" y="90.0" style="font-size: 12px; fill: #0f2340; font-weight: 600; text-anchor: start">Cognizant</text>
+<text x="0.0" y="105.0" style="font-size: 11px; fill: #7a8fac; font-weight: 400; text-anchor: start; font-variant-numeric: tabular-nums">1.9% of filings</text>
+<line x1="178.0" y1="93.0" x2="490.0" y2="93.0" style="stroke: #dce5f0; stroke-width: 1px; stroke-linecap: butt"></line>
+<rect x="255.0" y="87.0" width="82.4" height="12.0" rx="6" style="fill: rgba(185, 196, 210, 0.62)"></rect>
+<line x1="296.2" y1="84.0" x2="296.2" y2="102.0" style="stroke: #7a8fac; stroke-width: 2px; stroke-linecap: butt"></line>
+<circle cx="350.3" cy="93.0" r="6.5" style="fill: #0f2340; stroke: #ffffff; stroke-width: 2px"></circle>
+<text x="350.3" y="80.0" style="font-size: 12px; fill: #0f2340; font-weight: 700; text-anchor: middle; font-variant-numeric: tabular-nums">0.09</text>
+<rect x="502.0" y="83.0" width="53.0" height="20.0" rx="10" style="fill: #eef3f9"></rect>
+<text x="528.5" y="97.0" style="font-size: 11px; fill: #0f2340; font-weight: 700; text-anchor: middle; font-variant-numeric: tabular-nums">1.3 sd</text>
+<text x="0.0" y="136.0" style="font-size: 12px; fill: #0f2340; font-weight: 600; text-anchor: start">Google</text>
+<text x="0.0" y="151.0" style="font-size: 11px; fill: #7a8fac; font-weight: 400; text-anchor: start; font-variant-numeric: tabular-nums">1.8% of filings</text>
+<line x1="178.0" y1="139.0" x2="490.0" y2="139.0" style="stroke: #dce5f0; stroke-width: 1px; stroke-linecap: butt"></line>
+<rect x="272.8" y="133.0" width="80.6" height="12.0" rx="6" style="fill: rgba(185, 196, 210, 0.62)"></rect>
+<line x1="313.2" y1="130.0" x2="313.2" y2="148.0" style="stroke: #7a8fac; stroke-width: 2px; stroke-linecap: butt"></line>
+<circle cx="316.2" cy="139.0" r="6.5" style="fill: #0f2340; stroke: #ffffff; stroke-width: 2px"></circle>
+<text x="316.2" y="126.0" style="font-size: 12px; fill: #0f2340; font-weight: 700; text-anchor: middle; font-variant-numeric: tabular-nums">0.06</text>
+<rect x="502.0" y="129.0" width="53.0" height="20.0" rx="10" style="fill: #eef3f9"></rect>
+<text x="528.5" y="143.0" style="font-size: 11px; fill: #0f2340; font-weight: 700; text-anchor: middle; font-variant-numeric: tabular-nums">0.1 sd</text>
+<text x="0.0" y="182.0" style="font-size: 12px; fill: #0f2340; font-weight: 600; text-anchor: start">Microsoft</text>
+<text x="0.0" y="197.0" style="font-size: 11px; fill: #7a8fac; font-weight: 400; text-anchor: start; font-variant-numeric: tabular-nums">1.8% of filings</text>
+<line x1="178.0" y1="185.0" x2="490.0" y2="185.0" style="stroke: #dce5f0; stroke-width: 1px; stroke-linecap: butt"></line>
+<rect x="270.4" y="179.0" width="77.9" height="12.0" rx="6" style="fill: rgba(185, 196, 210, 0.62)"></rect>
+<line x1="309.3" y1="176.0" x2="309.3" y2="194.0" style="stroke: #7a8fac; stroke-width: 2px; stroke-linecap: butt"></line>
+<circle cx="316.2" cy="185.0" r="6.5" style="fill: #0f2340; stroke: #ffffff; stroke-width: 2px"></circle>
+<text x="316.2" y="172.0" style="font-size: 12px; fill: #0f2340; font-weight: 700; text-anchor: middle; font-variant-numeric: tabular-nums">0.06</text>
+<rect x="502.0" y="175.0" width="53.0" height="20.0" rx="10" style="fill: #eef3f9"></rect>
+<text x="528.5" y="189.0" style="font-size: 11px; fill: #0f2340; font-weight: 700; text-anchor: middle; font-variant-numeric: tabular-nums">0.2 sd</text>
+<text x="0.0" y="228.0" style="font-size: 12px; fill: #0f2340; font-weight: 600; text-anchor: start">EY</text>
+<text x="0.0" y="243.0" style="font-size: 11px; fill: #7a8fac; font-weight: 400; text-anchor: start; font-variant-numeric: tabular-nums">1.7% of filings</text>
+<line x1="178.0" y1="231.0" x2="490.0" y2="231.0" style="stroke: #dce5f0; stroke-width: 1px; stroke-linecap: butt"></line>
+<rect x="280.3" y="225.0" width="58.9" height="12.0" rx="6" style="fill: rgba(185, 196, 210, 0.62)"></rect>
+<line x1="309.8" y1="222.0" x2="309.8" y2="240.0" style="stroke: #7a8fac; stroke-width: 2px; stroke-linecap: butt"></line>
+<circle cx="234.5" cy="231.0" r="6.5" style="fill: #0f2340; stroke: #ffffff; stroke-width: 2px"></circle>
+<text x="234.5" y="218.0" style="font-size: 12px; fill: #0f2340; font-weight: 700; text-anchor: middle; font-variant-numeric: tabular-nums">−0.00</text>
+<rect x="502.0" y="221.0" width="59.1" height="20.0" rx="10" style="fill: #eef3f9"></rect>
+<text x="531.6" y="235.0" style="font-size: 11px; fill: #0f2340; font-weight: 700; text-anchor: middle; font-variant-numeric: tabular-nums">−2.6 sd</text>
+<text x="0.0" y="274.0" style="font-size: 12px; fill: #0f2340; font-weight: 600; text-anchor: start">Meta</text>
+<text x="0.0" y="289.0" style="font-size: 11px; fill: #7a8fac; font-weight: 400; text-anchor: start; font-variant-numeric: tabular-nums">1.7% of filings</text>
+<line x1="178.0" y1="277.0" x2="490.0" y2="277.0" style="stroke: #dce5f0; stroke-width: 1px; stroke-linecap: butt"></line>
+<rect x="269.9" y="271.0" width="77.4" height="12.0" rx="6" style="fill: rgba(185, 196, 210, 0.62)"></rect>
+<line x1="308.5" y1="268.0" x2="308.5" y2="286.0" style="stroke: #7a8fac; stroke-width: 2px; stroke-linecap: butt"></line>
+<circle cx="233.7" cy="277.0" r="6.5" style="fill: #0f2340; stroke: #ffffff; stroke-width: 2px"></circle>
+<text x="233.7" y="264.0" style="font-size: 12px; fill: #0f2340; font-weight: 700; text-anchor: middle; font-variant-numeric: tabular-nums">−0.01</text>
+<rect x="502.0" y="267.0" width="59.1" height="20.0" rx="10" style="fill: #eef3f9"></rect>
+<text x="531.6" y="281.0" style="font-size: 11px; fill: #0f2340; font-weight: 700; text-anchor: middle; font-variant-numeric: tabular-nums">−1.9 sd</text>
+<text x="0.0" y="320.0" style="font-size: 12px; fill: #0f2340; font-weight: 600; text-anchor: start">Deloitte</text>
+<text x="0.0" y="335.0" style="font-size: 11px; fill: #7a8fac; font-weight: 400; text-anchor: start; font-variant-numeric: tabular-nums">1.4% of filings</text>
+<line x1="178.0" y1="323.0" x2="490.0" y2="323.0" style="stroke: #dce5f0; stroke-width: 1px; stroke-linecap: butt"></line>
+<rect x="266.9" y="317.0" width="67.1" height="12.0" rx="6" style="fill: rgba(185, 196, 210, 0.62)"></rect>
+<line x1="300.4" y1="314.0" x2="300.4" y2="332.0" style="stroke: #7a8fac; stroke-width: 2px; stroke-linecap: butt"></line>
+<circle cx="234.5" cy="323.0" r="6.5" style="fill: #0f2340; stroke: #ffffff; stroke-width: 2px"></circle>
+<text x="234.5" y="310.0" style="font-size: 12px; fill: #0f2340; font-weight: 700; text-anchor: middle; font-variant-numeric: tabular-nums">−0.00</text>
+<rect x="502.0" y="313.0" width="59.1" height="20.0" rx="10" style="fill: #eef3f9"></rect>
+<text x="531.6" y="327.0" style="font-size: 11px; fill: #0f2340; font-weight: 700; text-anchor: middle; font-variant-numeric: tabular-nums">−2.0 sd</text>
+<text x="0.0" y="366.0" style="font-size: 12px; fill: #0f2340; font-weight: 600; text-anchor: start">Apple</text>
+<text x="0.0" y="381.0" style="font-size: 11px; fill: #7a8fac; font-weight: 400; text-anchor: start; font-variant-numeric: tabular-nums">1.4% of filings</text>
+<line x1="178.0" y1="369.0" x2="490.0" y2="369.0" style="stroke: #dce5f0; stroke-width: 1px; stroke-linecap: butt"></line>
+<rect x="285.5" y="363.0" width="65.4" height="12.0" rx="6" style="fill: rgba(185, 196, 210, 0.62)"></rect>
+<line x1="318.2" y1="360.0" x2="318.2" y2="378.0" style="stroke: #7a8fac; stroke-width: 2px; stroke-linecap: butt"></line>
+<circle cx="233.7" cy="369.0" r="6.5" style="fill: #0f2340; stroke: #ffffff; stroke-width: 2px"></circle>
+<text x="233.7" y="356.0" style="font-size: 12px; fill: #0f2340; font-weight: 700; text-anchor: middle; font-variant-numeric: tabular-nums">−0.01</text>
+<rect x="502.0" y="359.0" width="59.1" height="20.0" rx="10" style="fill: #eef3f9"></rect>
+<text x="531.6" y="373.0" style="font-size: 11px; fill: #0f2340; font-weight: 700; text-anchor: middle; font-variant-numeric: tabular-nums">−2.6 sd</text>
+<text x="0.0" y="412.0" style="font-size: 12px; fill: #0f2340; font-weight: 600; text-anchor: start">Tata Consultancy Services</text>
+<text x="0.0" y="427.0" style="font-size: 11px; fill: #7a8fac; font-weight: 400; text-anchor: start; font-variant-numeric: tabular-nums">1.3% of filings</text>
+<line x1="178.0" y1="415.0" x2="490.0" y2="415.0" style="stroke: #dce5f0; stroke-width: 1px; stroke-linecap: butt"></line>
+<rect x="273.5" y="409.0" width="59.4" height="12.0" rx="6" style="fill: rgba(185, 196, 210, 0.62)"></rect>
+<line x1="303.2" y1="406.0" x2="303.2" y2="424.0" style="stroke: #7a8fac; stroke-width: 2px; stroke-linecap: butt"></line>
+<circle cx="350.3" cy="415.0" r="6.5" style="fill: #0f2340; stroke: #ffffff; stroke-width: 2px"></circle>
+<text x="350.3" y="402.0" style="font-size: 12px; fill: #0f2340; font-weight: 700; text-anchor: middle; font-variant-numeric: tabular-nums">0.09</text>
+<rect x="502.0" y="405.0" width="53.0" height="20.0" rx="10" style="fill: #eef3f9"></rect>
+<text x="528.5" y="419.0" style="font-size: 11px; fill: #0f2340; font-weight: 700; text-anchor: middle; font-variant-numeric: tabular-nums">1.6 sd</text>
+<text x="0.0" y="458.0" style="font-size: 12px; fill: #0f2340; font-weight: 600; text-anchor: start">Infosys</text>
+<text x="0.0" y="473.0" style="font-size: 11px; fill: #7a8fac; font-weight: 400; text-anchor: start; font-variant-numeric: tabular-nums">1.1% of filings</text>
+<line x1="178.0" y1="461.0" x2="490.0" y2="461.0" style="stroke: #dce5f0; stroke-width: 1px; stroke-linecap: butt"></line>
+<rect x="287.4" y="455.0" width="44.4" height="12.0" rx="6" style="fill: rgba(185, 196, 210, 0.62)"></rect>
+<line x1="309.7" y1="452.0" x2="309.7" y2="470.0" style="stroke: #7a8fac; stroke-width: 2px; stroke-linecap: butt"></line>
+<circle cx="350.3" cy="461.0" r="6.5" style="fill: #0f2340; stroke: #ffffff; stroke-width: 2px"></circle>
+<text x="350.3" y="448.0" style="font-size: 12px; fill: #0f2340; font-weight: 700; text-anchor: middle; font-variant-numeric: tabular-nums">0.09</text>
+<rect x="502.0" y="451.0" width="53.0" height="20.0" rx="10" style="fill: #eef3f9"></rect>
+<text x="528.5" y="465.0" style="font-size: 11px; fill: #0f2340; font-weight: 700; text-anchor: middle; font-variant-numeric: tabular-nums">1.8 sd</text>
+</svg>
+</div>
+</figure>
+</div>
+</div>
+</article>
+</div>
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview": {"width": 1440, "height": 2600}}'>
+class Component extends DCLogic {
+renderVals() {
+const S = [{"removed": [], "share": "0.0%", "dotX": 482.0, "bandX": 480.0, "bandW": 4.0, "meanX": 482.0, "realLabel": "0.06", "verdict": "with every company in the network: no better than chance at matching Census regions.", "markX": 56.0, "markY": 173.3, "groups": "3 groups"}, {"removed": ["Amazon"], "share": "5.1%", "dotX": 769.9, "bandX": 283.5, "bandW": 217.4, "meanX": 392.2, "realLabel": "0.14", "verdict": "against 0.03 ± 0.03 for random cuts of the same volume: 3.5 standard deviations above them.", "markX": 107.0, "markY": 96.9, "groups": "3 groups"}, {"removed": ["Amazon", "Cognizant"], "share": "7.0%", "dotX": 716.3, "bandX": 256.3, "bandW": 238.7, "meanX": 375.7, "realLabel": "0.13", "verdict": "against 0.03 ± 0.03 for random cuts of the same volume: 2.9 standard deviations above them.", "markX": 158.0, "markY": 111.2, "groups": "3 groups"}, {"removed": ["Amazon", "Cognizant", "Google"], "share": "8.8%", "dotX": 716.3, "bandX": 213.7, "bandW": 213.3, "meanX": 320.3, "realLabel": "0.13", "verdict": "against 0.01 ± 0.03 for random cuts of the same volume: 3.7 standard deviations above them.", "markX": 209.0, "markY": 111.2, "groups": "3 groups"}, {"removed": ["Amazon", "Cognizant", "Google", "Microsoft"], "share": "10.6%", "dotX": 716.3, "bandX": 201.0, "bandW": 145.2, "meanX": 273.5, "realLabel": "0.13", "verdict": "against 0.00 ± 0.02 for random cuts of the same volume: 6.1 standard deviations above them.", "markX": 260.0, "markY": 111.2, "groups": "3 groups"}, {"removed": ["Amazon", "Cognizant", "Google", "Microsoft", "EY"], "share": "12.3%", "dotX": 722.5, "bandX": 210.6, "bandW": 230.5, "meanX": 325.8, "realLabel": "0.13", "verdict": "against 0.02 ± 0.03 for random cuts of the same volume: 3.4 standard deviations above them.", "markX": 311.0, "markY": 109.5, "groups": "3 groups"}, {"removed": ["Amazon", "Cognizant", "Google", "Microsoft", "EY", "Meta"], "share": "14.0%", "dotX": 872.4, "bandX": 197.5, "bandW": 211.9, "meanX": 303.5, "realLabel": "0.17", "verdict": "against 0.01 ± 0.03 for random cuts of the same volume: 5.4 standard deviations above them.", "markX": 362.0, "markY": 69.8, "groups": "3 groups"}, {"removed": ["Amazon", "Cognizant", "Google", "Microsoft", "EY", "Meta", "Deloitte"], "share": "15.4%", "dotX": 836.3, "bandX": 210.2, "bandW": 169.2, "meanX": 294.9, "realLabel": "0.16", "verdict": "against 0.01 ± 0.02 for random cuts of the same volume: 6.4 standard deviations above them.", "markX": 413.0, "markY": 79.3, "groups": "3 groups"}, {"removed": ["Amazon", "Cognizant", "Google", "Microsoft", "EY", "Meta", "Deloitte", "Apple"], "share": "16.8%", "dotX": 836.3, "bandX": 210.2, "bandW": 161.0, "meanX": 290.7, "realLabel": "0.16", "verdict": "against 0.01 ± 0.02 for random cuts of the same volume: 6.8 standard deviations above them.", "markX": 464.0, "markY": 79.3, "groups": "3 groups"}, {"removed": ["Amazon", "Cognizant", "Google", "Microsoft", "EY", "Meta", "Deloitte", "Apple", "Tata Consultancy Services"], "share": "18.1%", "dotX": 836.3, "bandX": 215.1, "bandW": 130.7, "meanX": 280.4, "realLabel": "0.16", "verdict": "against 0.00 ± 0.02 for random cuts of the same volume: 8.5 standard deviations above them.", "markX": 515.0, "markY": 79.3, "groups": "3 groups"}, {"removed": ["Amazon", "Cognizant", "Google", "Microsoft", "EY", "Meta", "Deloitte", "Apple", "Tata Consultancy Services", "Infosys"], "share": "19.1%", "dotX": 721.4, "bandX": 211.3, "bandW": 135.5, "meanX": 279.0, "realLabel": "0.13", "verdict": "against 0.00 ± 0.02 for random cuts of the same volume: 6.5 standard deviations above them.", "markX": 566.0, "markY": 109.8, "groups": "3 groups"}, {"removed": ["Amazon", "Cognizant", "Google", "Microsoft", "EY", "Meta", "Deloitte", "Apple", "Tata Consultancy Services", "Infosys", "Walmart"], "share": "20.1%", "dotX": 809.8, "bandX": 219.9, "bandW": 97.7, "meanX": 268.7, "realLabel": "0.16", "verdict": "against 0.00 ± 0.01 for random cuts of the same volume: 11.1 standard deviations above them.", "markX": 617.0, "markY": 86.4, "groups": "3 groups"}, {"removed": ["Amazon", "Cognizant", "Google", "Microsoft", "EY", "Meta", "Deloitte", "Apple", "Tata Consultancy Services", "Infosys", "Walmart", "Compunnel Software"], "share": "20.8%", "dotX": 801.6, "bandX": 212.0, "bandW": 134.8, "meanX": 279.4, "realLabel": "0.15", "verdict": "against 0.00 ± 0.02 for random cuts of the same volume: 7.7 standard deviations above them.", "markX": 668.0, "markY": 88.6, "groups": "3 groups"}, {"removed": ["Amazon", "Cognizant", "Google", "Microsoft", "EY", "Meta", "Deloitte", "Apple", "Tata Consultancy Services", "Infosys", "Walmart", "Compunnel Software", "JPMorgan Chase"], "share": "21.5%", "dotX": 809.8, "bandX": 219.9, "bandW": 98.4, "meanX": 269.1, "realLabel": "0.16", "verdict": "against 0.00 ± 0.01 for random cuts of the same volume: 11.0 standard deviations above them.", "markX": 719.0, "markY": 86.4, "groups": "3 groups"}, {"removed": ["Amazon", "Cognizant", "Google", "Microsoft", "EY", "Meta", "Deloitte", "Apple", "Tata Consultancy Services", "Infosys", "Walmart", "Compunnel Software", "JPMorgan Chase", "Fidelity Investments"], "share": "22.1%", "dotX": 801.6, "bandX": 254.3, "bandW": 8.9, "meanX": 258.8, "realLabel": "0.15", "verdict": "against 0.00 ± 0.00 for random cuts of the same volume, whose spread is tiny at this step.", "markX": 770.0, "markY": 88.6, "groups": "3 groups"}, {"removed": ["Amazon", "Cognizant", "Google", "Microsoft", "EY", "Meta", "Deloitte", "Apple", "Tata Consultancy Services", "Infosys", "Walmart", "Compunnel Software", "JPMorgan Chase", "Fidelity Investments", "HCL"], "share": "22.7%", "dotX": 801.6, "bandX": 205.8, "bandW": 184.4, "meanX": 298.0, "realLabel": "0.15", "verdict": "against 0.01 ± 0.03 for random cuts of the same volume: 5.5 standard deviations above them.", "markX": 821.0, "markY": 88.6, "groups": "3 groups"}, {"removed": ["Amazon", "Cognizant", "Google", "Microsoft", "EY", "Meta", "Deloitte", "Apple", "Tata Consultancy Services", "Infosys", "Walmart", "Compunnel Software", "JPMorgan Chase", "Fidelity Investments", "HCL", "LTIMindtree"], "share": "23.2%", "dotX": 801.6, "bandX": 229.5, "bandW": 42.0, "meanX": 250.5, "realLabel": "0.15", "verdict": "against −0.01 ± 0.01 for random cuts of the same volume, whose spread is tiny at this step.", "markX": 872.0, "markY": 88.6, "groups": "3 groups"}, {"removed": ["Amazon", "Cognizant", "Google", "Microsoft", "EY", "Meta", "Deloitte", "Apple", "Tata Consultancy Services", "Infosys", "Walmart", "Compunnel Software", "JPMorgan Chase", "Fidelity Investments", "HCL", "LTIMindtree", "Intel"], "share": "23.8%", "dotX": 528.1, "bandX": 254.6, "bandW": 5.5, "meanX": 257.4, "realLabel": "0.07", "verdict": "against 0.00 ± 0.00 for random cuts of the same volume, whose spread is tiny at this step.", "markX": 923.0, "markY": 161.1, "groups": "3 groups"}, {"removed": ["Amazon", "Cognizant", "Google", "Microsoft", "EY", "Meta", "Deloitte", "Apple", "Tata Consultancy Services", "Infosys", "Walmart", "Compunnel Software", "JPMorgan Chase", "Fidelity Investments", "HCL", "LTIMindtree", "Intel", "Capgemini"], "share": "24.3%", "dotX": 528.1, "bandX": 254.7, "bandW": 4.0, "meanX": 256.7, "realLabel": "0.07", "verdict": "against 0.00 ± 0.00 for random cuts of the same volume, whose spread is tiny at this step.", "markX": 974.0, "markY": 161.1, "groups": "3 groups"}, {"removed": ["Amazon", "Cognizant", "Google", "Microsoft", "EY", "Meta", "Deloitte", "Apple", "Tata Consultancy Services", "Infosys", "Walmart", "Compunnel Software", "JPMorgan Chase", "Fidelity Investments", "HCL", "LTIMindtree", "Intel", "Capgemini", "IBM"], "share": "24.8%", "dotX": 528.1, "bandX": 199.9, "bandW": 145.9, "meanX": 272.9, "realLabel": "0.07", "verdict": "against 0.00 ± 0.02 for random cuts of the same volume: 3.5 standard deviations above them.", "markX": 1025.0, "markY": 161.1, "groups": "3 groups"}, {"removed": ["Amazon", "Cognizant", "Google", "Microsoft", "EY", "Meta", "Deloitte", "Apple", "Tata Consultancy Services", "Infosys", "Walmart", "Compunnel Software", "JPMorgan Chase", "Fidelity Investments", "HCL", "LTIMindtree", "Intel", "Capgemini", "IBM", "Accenture"], "share": "25.3%", "dotX": 957.4, "bandX": 206.8, "bandW": 185.1, "meanX": 299.3, "realLabel": "0.20", "verdict": "against 0.01 ± 0.03 for random cuts of the same volume: 7.1 standard deviations above them.", "markX": 1076.0, "markY": 47.2, "groups": "2 groups"}];
+const st = this.state || {};
+const k = typeof st.k === 'number' ? st.k : 1;
+const s = S[k];
+const set = (v) => this.setState({ k: Math.max(0, Math.min(20, v)) });
+return {
+k: k,
+removed: s.removed.map((n) => ({ name: n })),
+none: k === 0,
+share: s.share,
+groups: s.groups,
+dotX: s.dotX,
+bandX: s.bandX,
+bandW: s.bandW,
+meanX: s.meanX,
+realLabel: s.realLabel,
+verdict: s.verdict,
+markX: s.markX,
+markY: s.markY,
+atMin: k === 0,
+atMax: k === 20,
+dec: () => set(k - 1),
+inc: () => set(k + 1),
+onK: (e) => set(Number(e.target.value)),
+};
+}
+}
+</script>
+</body>
+</html>
