@@ -1,0 +1,65 @@
+/* Week 4 redesign · the deep dive's O*NET skills box (#cut-skills) and its
+   PageRank explorable (#cut-pagerank). Everything shared with the rest of the
+   deep dive (card, w4-q, w4-two, notice, plot, w4-reveals, axis-modes,
+   yearline, table.ego) lives in week04.css and corridor.css; this file only
+   holds what those two boxes need on top of it. */
+
+.corridor .w4-legend {
+  align-items: center;
+  color: var(--ink-soft);
+  display: flex;
+  flex-wrap: wrap;
+  font-size: 12px;
+  gap: 14px;
+  margin: 6px 0 2px;
+}
+
+.corridor .w4-legend span {
+  align-items: center;
+  display: inline-flex;
+  gap: 6px;
+}
+
+.corridor .w4-legend i {
+  border-radius: 3px;
+  display: inline-block;
+  height: 10px;
+  width: 10px;
+}
+
+.corridor .w4-legend i.ring {
+  background: none;
+  border: 2px solid currentColor;
+  border-radius: 50%;
+  height: 8px;
+  width: 8px;
+}
+
+.corridor .w4-step-row {
+  align-items: center;
+  display: flex;
+  gap: 10px;
+  margin: 4px 0 14px;
+}
+
+.corridor .w4-step-row .axis-modes {
+  flex-wrap: wrap;
+}
+
+.corridor .w4-step-note {
+  color: var(--ink-mute);
+  font-size: 12px;
+}
+
+.corridor .w4-rank-shift {
+  font-variant-numeric: tabular-nums;
+  font-weight: 600;
+}
+
+.corridor .w4-rank-shift.up {
+  color: var(--w4-group-1, var(--ink));
+}
+
+.corridor .w4-rank-shift.down {
+  color: var(--ink-soft);
+}
