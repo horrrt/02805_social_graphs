@@ -16,6 +16,8 @@ const text = (from, to) => {
   const start = html.indexOf(from);
   return html
     .slice(start, html.indexOf(to, start))
+    // Glossary popovers are asides, not prose.
+    .replace(/<span class="w4-pop" id="w4-term-[^"]*"[^>]*>[^<]*<\/span>/g, " ")
     .replace(/<[^>]+>/g, " ")
     .replace(/\s+/g, " ");
 };

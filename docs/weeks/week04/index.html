@@ -283,7 +283,7 @@
             <div>
               <p class="sub">
                 The cities are the 40 metro areas with the most filings, 84.5% of
-                the year's total. Louvain splits the 40
+                the year's total. <span class="w4-term"><button aria-describedby="w4-term-place-louvain" type="button">Louvain</button><span class="w4-pop" id="w4-term-place-louvain" role="tooltip">A method that finds groups by moving each node into the neighbouring group that raises modularity most, then merging the groups and repeating until no move helps. It starts from a random order, so two runs can differ.</span></span> splits the 40
                 metros into three groups: seven large hubs led by New York and
                 Dallas, eight tech hubs led by San Jose and San Francisco, and the
                 other 25. The split is weak
@@ -489,7 +489,7 @@
                   real but weak: modularity is 0.049 against 0.013 for rewired
                   networks that keep each company's number of metros (z = 29),
                   and Louvain finds it in 65 of 100 runs; the other 35 find one
-                  other split, into two groups. FY2024 gives that two-group split
+                  other split, into two groups. NMI, normalized mutual information, scores how alike two groupings are, from 0 for unrelated to 1 for the same. FY2024 gives that two-group split
                   in all 100 runs, so it matches the split shown here at NMI 0.64,
                   against 1.00 between two FY2025 runs. NMI with Census regions is
                   0.14 and with divisions 0.21, no better than shuffled labels
@@ -559,7 +559,7 @@
                 <p class="sub">
                   Every pair of the 40 metros shares some employer, so the full
                   network is one hairball of 780 links. Tried at five values, the largest piece of the map
-                  fell from 32 metros at α = 0.1 to 18 at α = 0.05, which looks like
+                  fell from 32 metros at <span class="w4-term"><button aria-describedby="w4-term-place-alpha" type="button">α</button><span class="w4-pop" id="w4-term-place-alpha" role="tooltip">The disparity filter's threshold. The filter keeps a link only when its weight is larger than chance would give, judged against each metro's own total, and α is the chance it allows. A lower α keeps fewer links. The links that survive form the backbone.</span></span> = 0.1 to 18 at α = 0.05, which looks like
                   one snap. So we removed the links one by one, least significant
                   first, and watched the largest piece after each removal.
                 </p>
@@ -1221,7 +1221,7 @@
             <div class="w4-two">
               <div>
                 <p class="sub">
-                  A green card through work starts with a PERM filing. Here the
+                  A green card through work starts with a <span class="w4-term"><button aria-describedby="w4-term-beyond-perm" type="button">PERM</button><span class="w4-pop" id="w4-term-beyond-perm" role="tooltip">The Department of Labor's permanent labor certification: the employer shows that no qualified US worker is available for the job. Most green cards through work start there.</span></span> filing. Here the
                   outsourcing firms are the 817 companies that place 20 or more
                   filings at client sites.
                 </p>
@@ -1276,7 +1276,7 @@
                     <b>What to notice</b>
                     Overall, 79% of placed filings sit at level I or II against
                     58% of direct ones. Within the 83 occupations with 20 or
-                    more filings of each kind, the Mantel–Haenszel odds ratio
+                    more filings of each kind, the <span class="w4-term"><button aria-describedby="w4-term-beyond-mh" type="button">Mantel–Haenszel odds ratio</button><span class="w4-pop" id="w4-term-beyond-mh" role="tooltip">An odds ratio pooled over those occupations, so each comparison sets placed against direct filings for the same job. 1 means the same odds.</span></span>
                     is 3.59, and 69 of the 83 point the same way. A level
                     describes the job as filed, not the worker, so this shows
                     cheaper job descriptions, not lower pay for the same
@@ -1600,7 +1600,7 @@
             </header>
 
               <p class="sub">
-                The government groups occupations by their first two SOC digits.
+                The government groups occupations by their first two <span class="w4-term"><button aria-describedby="w4-term-jobs-soc" type="button">SOC</button><span class="w4-pop" id="w4-term-jobs-soc" role="tooltip">The Standard Occupational Classification, the federal list of occupation codes. Its first two digits name a major group, such as 15 for computer and mathematical occupations.</span></span> digits.
                 We compare those labels with the clusters found from hiring
                 patterns. The shuffled bars keep the clusters fixed and scramble
                 only the official labels.
