@@ -54,8 +54,11 @@ function geoBase(token) {
   return {
     map: MAP_NAME,
     roam: false,
-    layoutCenter: ["50%", "50%"],
-    layoutSize: "165%",
+    // Fit the mainland inside the host, whatever its shape; the map keeps its aspect.
+    left: 12,
+    right: 12,
+    top: 12,
+    bottom: 12,
     itemStyle: { areaColor: token("--w4-map-fill"), borderColor: token("--w4-map-edge"), borderWidth: 0.9 },
     emphasis: { disabled: true },
     select: { disabled: true },
@@ -896,6 +899,8 @@ async function build() {
 
     $("w4m-root").hidden = false;
     if (status) status.remove();
+    // The maps were set up while their container was hidden; size them now it shows.
+    requestAnimationFrame(() => window.dispatchEvent(new Event("resize")));
   } catch (err) {
     console.error(err);
     if (status) status.textContent = `Community explorables failed to load: ${err.message}`;
