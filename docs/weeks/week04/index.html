@@ -191,41 +191,69 @@
 
         <!-- Opening ----------------------------------------------------- -->
         <section class="step" id="opening">
-          <div class="card">
-            <div class="step-head">
-              <span class="num">0</span>
+          <header class="w4-opener">
+            <span aria-hidden="true" class="w4-opener-num">0</span>
+            <div>
               <h2>Opening</h2>
-              <span class="year-tag">what the filings show</span>
+              <p>An H-1B filing is an employer’s request to hire a non-US worker in a specialty occupation.</p>
             </div>
-            <p class="sub">
-              An H-1B filing is an employer’s request to hire a non-US worker in
-              a specialty occupation. It names the job, the worksite, the
-              wage, and the company asking for permission to employ them. The
-              Department of Labor records the filing even when the worker never
-              arrives, changes employer, or is ultimately not hired.
-            </p>
-            <p class="sub">
-              <b>Why start with companies?</b>
-              A job title tells us what work is requested; a company tells us
-              which jobs, places, and clients are connected by the same hiring
-              system. That makes the employer the thread linking the three
-              networks in this story. The network is about shared filings, not
-              friendships between workers or companies.
-            </p>
-            <div class="notice">
-              <span class="ico">!</span>
-              <span>
-                <b>Read the scope carefully</b>
-                These are visa-sponsored filings, not all hiring in America.
-                They leave out workers without H-1B sponsorship, employers that
-                never file, rejected or withdrawn applications, and the wider
-                conditions that shape who gets hired.
-              </span>
+          </header>
+          <div class="card w4-card">
+            <div class="w4-two">
+              <div>
+                <p class="sub">
+                  It names the job, the worksite, the wage, and the company asking
+                  for permission to employ them. The Department of Labor records
+                  the filing even when the worker never arrives, changes employer,
+                  or is ultimately not hired.
+                </p>
+                <p class="sub">
+                  <b>Why start with companies?</b>
+                  A job title tells us what work is requested; a company tells us
+                  which jobs, places, and clients are connected by the same hiring
+                  system. That makes the employer the thread linking the three
+                  networks in this story. The network is about shared filings, not
+                  friendships between workers or companies.
+                </p>
+                <div class="notice">
+                  <span class="ico">!</span>
+                  <span>
+                    <b>Read the scope carefully</b>
+                    These are visa-sponsored filings, not all hiring in America.
+                    They leave out workers without H-1B sponsorship, employers that
+                    never file, rejected or withdrawn applications, and the wider
+                    conditions that shape who gets hired.
+                  </span>
+                </div>
+                <p class="w4-scope-note">
+                  Unless stated otherwise, the figures below use certified H-1B
+                  filings in FY2025. One filing is a request, not a guaranteed job.
+                </p>
+              </div>
+              <div>
+                <div class="w4-anatomy">
+                  <h3>What one filing names</h3>
+                  <p>Each section builds its network from one of these fields.</p>
+                  <dl>
+                    <div><dt>Employer</dt><dd>The company asking to hire</dd><span class="w4-tag access">Links all three networks</span></div>
+                    <div><dt>Worksite</dt><dd>A city, grouped into its metro area</dd><span class="w4-tag">1 · Where</span></div>
+                    <div><dt>Occupation</dt><dd>The job, as an official occupation code</dd><span class="w4-tag">2 · Jobs</span></div>
+                    <div><dt>Client</dt><dd>The company the worker is placed at, when it is not the employer</dd><span class="w4-tag">3 · Staffing</span></div>
+                    <div><dt>Wage level</dt><dd>I (entry) to IV (fully competent)</dd><span class="w4-tag">5 · Beyond</span></div>
+                    <div><dt>Law firm</dt><dd>Who prepared the filing</dd><span class="w4-tag">5 · Beyond</span></div>
+                  </dl>
+                </div>
+                <div class="w4-howto">
+                  <h3>How to read the charts</h3>
+                  <div><i class="w4-sw-real"></i><b>The real network</b><span>What the filings show.</span></div>
+                  <div><i class="w4-sw-band"></i><b>Random baseline</b><span>Mean and one standard deviation over rewired networks or random draws.</span></div>
+                  <div><i class="w4-sw-people"></i><b>Placed at a client</b><span>Filings that put the worker at another company.</span></div>
+                  <div><i class="w4-sw-access"></i><b>Direct employer</b><span>Filings for the employer’s own site.</span></div>
+                  <div><i class="w4-sw-ref"></i><b>Reference</b><span>The full network, or equal odds.</span></div>
+                  <div><i class="w4-sw-groups"><b class="g0"></b><b class="g1"></b><b class="g2"></b></i><b>Metro groups</b><span>Violet, green and slate mark the three Louvain groups, on maps only.</span></div>
+                </div>
+              </div>
             </div>
-            <p class="fineprint">
-              Unless stated otherwise, the figures below use certified H-1B
-              filings in FY2025. One filing is a request, not a guaranteed job.
-            </p>
           </div>
         </section>
 
@@ -233,27 +261,52 @@
         <!-- Where the hiring is · companies × cities (Track C methods)   -->
         <!-- ============================================================ -->
         <section class="step" id="place">
-          <div class="card">
-            <div class="step-head">
-              <span class="num">1</span>
+          <header class="w4-opener">
+            <span aria-hidden="true" class="w4-opener-num">1</span>
+            <div>
               <h2>Where the hiring is</h2>
-              <span class="year-tag">(companies × cities · FY2025)</span>
+              <p>Cities group by who hires there, not by region, and no single link holds the map together.</p>
             </div>
-            <p class="sub">
-              <b>Cities group by who hires there, not by region, and no single
-              link holds the map together.</b>
-              The cities are the 40 metro areas with the most filings, 84.5% of
-              the year's total. Two metros are linked when the same company
-              files in both; the link weighs, summed over those companies, the
-              smaller of the company's two filing counts. Louvain splits the 40
-              metros into three groups: seven large hubs led by New York and
-              Dallas, eight tech hubs led by San Jose and San Francisco, and the
-              other 25. The split is weak
-              but real: modularity 0.049 against 0.013 for rewired networks in
-              which each company keeps its number of metros (z = 29). The two
-              questions below ask what the groups follow and where the network
-              comes apart.
-            </p>
+          </header>
+          <div class="w4-two w4-intro">
+            <div>
+              <p class="sub">
+                The cities are the 40 metro areas with the most filings, 84.5% of
+                the year's total. Louvain splits the 40
+                metros into three groups: seven large hubs led by New York and
+                Dallas, eight tech hubs led by San Jose and San Francisco, and the
+                other 25. The split is weak
+                but real: <span class="w4-term"><button aria-describedby="w4-term-place-modularity" type="button">modularity</button><span class="w4-pop" id="w4-term-place-modularity" role="tooltip">How much more of the link weight falls inside the groups than a random network with the same number of links per node would put there. Higher means sharper groups.</span></span> 0.049 against 0.013 for
+                <span class="w4-term"><button aria-describedby="w4-term-place-rewired" type="button">rewired networks</button><span class="w4-pop" id="w4-term-place-rewired" role="tooltip">A random copy of the network in which every node keeps its number of partners, but the partners are dealt out again at random.</span></span> in
+                which each company keeps its number of metros (<span class="w4-term"><button aria-describedby="w4-term-place-z" type="button">z</button><span class="w4-pop" id="w4-term-place-z" role="tooltip">How many standard deviations the real value sits from the random baseline’s mean. Beyond about 2 either way is rare by chance.</span></span> = 29). The two
+                questions below ask what the groups follow and where the network
+                comes apart.
+              </p>
+              <div class="w4-example">
+                <svg aria-hidden="true" height="150" viewBox="0 0 250 150" width="250">
+                  <line class="w4-ex-edge" stroke-width="2.4" x1="125" x2="52" y1="34" y2="112"></line>
+                  <line class="w4-ex-edge" stroke-width="1.4" x1="125" x2="198" y1="34" y2="112"></line>
+                  <path class="w4-ex-link" d="M52 112 Q125 150 198 112" stroke-dasharray="5 4" stroke-width="2.2"></path>
+                  <rect class="w4-ex-company" height="26" rx="6" width="50" x="100" y="16"></rect>
+                  <text class="w4-ex-on-ink" x="125" y="33">Company</text>
+                  <circle class="w4-ex-node" cx="52" cy="112" r="13"></circle>
+                  <circle class="w4-ex-node" cx="198" cy="112" r="13"></circle>
+                  <text class="w4-ex-letter" x="52" y="116">A</text>
+                  <text class="w4-ex-letter" x="198" y="116">B</text>
+                  <text class="w4-ex-count" text-anchor="end" x="70" y="66">12 filings</text>
+                  <text class="w4-ex-count" text-anchor="start" x="180" y="66">5 filings</text>
+                  <text class="w4-ex-gain" x="125" y="146">link A–B gains 5</text>
+                </svg>
+                <p><b>How two metros get linked</b>An example, not data. A company that files in both metros adds the smaller of its two filing counts to their link.</p>
+              </div>
+              <div class="w4-reveals">
+                <span class="w4-tip"><button aria-describedby="w4-pop-place-link" type="button"><svg aria-hidden="true" height="14" viewBox="0 0 24 24" width="14"><circle cx="12" cy="12" fill="none" r="9" stroke="currentColor" stroke-width="2"></circle><path d="M12 11v6M12 7.5v.5" fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="2"></path></svg>How a link is weighed</button><span class="w4-pop" id="w4-pop-place-link" role="tooltip"><b>How a link is weighed</b>Two metros are linked when the same company files in both; the link weighs, summed over those companies, the smaller of the company's two filing counts.</span></span>
+              </div>
+            </div>
+            <figure class="w4-figure">
+              <figcaption><b>Weak but real</b><span>The groups against rewired networks in which each company keeps its number of metros.</span></figcaption>
+              <div class="w4-figure-body" data-strip="place-modularity"></div>
+            </figure>
           </div>
 
           <div
@@ -269,101 +322,98 @@
           </div>
 
           <!-- A · Who hires, not where --------------------------------- -->
-          <div class="card" id="place-who">
-            <div class="step-head">
-              <span class="num">A</span>
-              <h2>Do cities group by who hires there instead of by region?</h2>
-              <span class="year-tag">(communities vs four labellings)</span>
-            </div>
-            <p class="sub">
-              <b>By who hires. The groups follow how much of a city's hiring runs
-              through consulting and IT-services firms better than they follow
-              Census regions.</b>
-              We gave each metro four labels: its Census region, its Census
-              division, the third it falls in by the share of its filings that
-              place a worker at a client, and the third it falls in by the share
-              filed by professional and technical services firms (NAICS 54, the
-              sector of IT consultancies). Thirds, because 35 of the 40 metros
-              have that sector as their largest, so "largest sector" says almost
-              nothing. Each bar is the adjusted mutual information (AMI) between
-              the Louvain groups and one labelling: 0 means no better than
-              labels dealt at random, 1 means the same grouping. AMI corrects for
-              the number of labels, so four regions and three thirds compare
-              fairly.
-            </p>
-            <div class="plot">
-              <h3>How well each labelling matches the Louvain groups</h3>
-              <p class="axis-note">
-                AMI for each labelling of the 40 metros; the p-value is the share
-                of 1,000 shuffles of that labelling that match at least as well.
-                Orange bars describe who hires, grey bars where the city is.
-              </p>
-              <div class="chart-host short" id="chart-where-who"></div>
-            </div>
-            <div class="notice">
-              <span class="ico">💡</span>
-              <span>
-                <b>What to notice</b>
-                The IT-services share matches the groups at AMI 0.17 (p = 0.002)
-                and the placed share at 0.12 (p = 0.012). Census regions reach
-                0.06 (p = 0.11) and divisions 0.06 (p = 0.08), no better than
-                chance. Seven of the eight tech-hub metros sit in the lowest third
-                by placed share: there, companies mostly hire for themselves. In
-                the New York–Dallas group the median metro places 27% of its
-                filings at a client and files 60% through IT-services firms. The
-                match is modest: most of what makes two metros alike stays
-                unexplained.
-              </span>
+          <div class="card w4-card" id="place-who">
+            <header class="w4-q">
+              <span class="w4-num">1A</span>
+              <div>
+                <h2>Do cities group by who hires there instead of by region?</h2>
+                <p class="w4-answer">By who hires. The groups follow how much of a city's hiring runs through consulting and IT-services firms better than they follow Census regions.</p>
+              </div>
+            </header>
+            <div class="w4-two">
+              <div>
+                <p class="sub">
+                  Each bar is the adjusted mutual information (AMI) between
+                  the Louvain groups and one labelling: 0 means no better than
+                  labels dealt at random, 1 means the same grouping.
+                </p>
+                <div class="notice">
+                  <span class="ico">💡</span>
+                  <span>
+                    <b>What to notice</b>
+                    The IT-services share matches the groups at AMI 0.17 (p = 0.002)
+                    and the placed share at 0.12 (p = 0.012). Census regions reach
+                    0.06 (p = 0.11) and divisions 0.06 (p = 0.08), no better than
+                    chance. The
+                    match is modest: most of what makes two metros alike stays
+                    unexplained.
+                  </span>
+                </div>
+                <div class="w4-reveals">
+                  <span class="w4-tip"><button aria-describedby="w4-pop-place-who-how" type="button"><svg aria-hidden="true" height="14" viewBox="0 0 24 24" width="14"><circle cx="12" cy="12" fill="none" r="9" stroke="currentColor" stroke-width="2"></circle><path d="M12 11v6M12 7.5v.5" fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="2"></path></svg>How we tested it</button><span class="w4-pop" id="w4-pop-place-who-how" role="tooltip"><b>How we tested it</b>We gave each metro four labels: its Census region, its Census division, the third it falls in by the share of its filings that place a worker at a client, and the third it falls in by the share filed by professional and technical services firms (NAICS 54, the sector of IT consultancies). Thirds, because 35 of the 40 metros have that sector as their largest, so "largest sector" says almost nothing. AMI corrects for the number of labels, so four regions and three thirds compare fairly.</span></span>
+                  <span class="w4-tip"><button aria-describedby="w4-pop-place-who-more" type="button"><svg aria-hidden="true" height="14" viewBox="0 0 24 24" width="14"><circle cx="12" cy="12" fill="none" r="9" stroke="currentColor" stroke-width="2"></circle><path d="M12 8v8M8 12h8" fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="2"></path></svg>More numbers</button><span class="w4-pop" id="w4-pop-place-who-more" role="tooltip"><b>More numbers</b>Seven of the eight tech-hub metros sit in the lowest third by placed share: there, companies mostly hire for themselves. In the New York–Dallas group the median metro places 27% of its filings at a client and files 60% through IT-services firms.</span></span>
+                </div>
+              </div>
+              <div class="plot">
+                <h3>How well each labelling matches the Louvain groups</h3>
+                <p class="axis-note">
+                  AMI for each labelling of the 40 metros; the p-value is the share
+                  of 1,000 shuffles of that labelling that match at least as well.
+                  Orange bars describe who hires, grey bars where the city is.
+                </p>
+                <div class="chart-host short" id="chart-where-who"></div>
+              </div>
             </div>
           </div>
 
           <!-- B · Where the backbone breaks ------------------------------- -->
-          <div class="card" id="place-break">
-            <div class="step-head">
-              <span class="num">B</span>
-              <h2>Where does the backbone break, and whose links hold it?</h2>
-              <span class="year-tag">(disparity filter, one link at a time)</span>
-            </div>
-            <p class="sub">
-              <b>Nowhere in one place. The map sheds metros one or two at a time,
-              and the big outsourcing firms hold no more of those links than of
-              any others.</b>
-              Every pair of the 40 metros shares some employer, so the full
-              network is one hairball of 780 links. The disparity filter keeps a
-              link when it carries an unusually large share of either metro's
-              total weight; α is the test's threshold, and a smaller α keeps
-              fewer links. Tried at five values, the largest piece of the map
-              fell from 32 metros at α = 0.1 to 18 at α = 0.05, which looks like
-              one snap. So we removed the links one by one, least significant
-              first, and watched the largest piece after each removal.
-            </p>
-            <div class="plot">
-              <h3>Metros in the largest piece as the filter tightens</h3>
-              <p class="axis-note">
-                Each step is one or more links removed. Read right to left: as α
-                falls, links go and metros drop out of the largest connected
-                piece. The shaded band is the range from α = 0.1 to 0.05 where the
-                five-value sweep saw the drop.
-              </p>
-              <div class="chart-host short" id="chart-where-break"></div>
-            </div>
-            <div class="notice">
-              <span class="ico">💡</span>
-              <span>
-                <b>What to notice</b>
-                The first metro falls off at α = 0.136. No single removal cuts
-                off more than two metros: Dallas–Durham at α = 0.041 takes Durham
-                and Raleigh with it, and New York–Seattle at 0.023 splits
-                the last five metros three and two. The fall from 32 to 18 is 14
-                separate links, each peeling one metro away. Of the 16 links whose
-                removal cuts a metro loose, the five largest placing firms (Tata
-                Consultancy Services, Cognizant, Infosys, HCL, Compunnel) lead 5
-                (31%): Cognizant four, HCL one. That is no more than their 70 of
-                the 180 links in the whole backbone at α = 0.2 (38%, p = 0.37).
-                The other eleven are led by Amazon (three), Intel, Deloitte, Capital
-                One, JPMorgan Chase, Citigroup, FedEx, Fidelity Investments and
-                the University of Maryland.
-              </span>
+          <div class="card w4-card" id="place-break">
+            <header class="w4-q">
+              <span class="w4-num">1B</span>
+              <div>
+                <h2>Where does the backbone break, and whose links hold it?</h2>
+                <p class="w4-answer">Nowhere in one place. The map sheds metros one or two at a time, and the big outsourcing firms hold no more of those links than of any others.</p>
+              </div>
+            </header>
+            <div class="w4-two">
+              <div>
+                <p class="sub">
+                  Every pair of the 40 metros shares some employer, so the full
+                  network is one hairball of 780 links. Tried at five values, the largest piece of the map
+                  fell from 32 metros at α = 0.1 to 18 at α = 0.05, which looks like
+                  one snap. So we removed the links one by one, least significant
+                  first, and watched the largest piece after each removal.
+                </p>
+                <div class="notice">
+                  <span class="ico">💡</span>
+                  <span>
+                    <b>What to notice</b>
+                    The first metro falls off at α = 0.136. No single removal cuts
+                    off more than two metros: Dallas–Durham at α = 0.041 takes Durham
+                    and Raleigh with it, and New York–Seattle at 0.023 splits
+                    the last five metros three and two. The fall from 32 to 18 is 14
+                    separate links, each peeling one metro away. Of the 16 links whose
+                    removal cuts a metro loose, the five largest placing firms (Tata
+                    Consultancy Services, Cognizant, Infosys, HCL, Compunnel) lead 5
+                    (31%): Cognizant four, HCL one. That is no more than their 70 of
+                    the 180 links in the whole backbone at α = 0.2 (38%, p = 0.37).
+                  </span>
+                </div>
+                <div class="w4-reveals">
+                  <span class="w4-tip"><button aria-describedby="w4-pop-place-break-how" type="button"><svg aria-hidden="true" height="14" viewBox="0 0 24 24" width="14"><circle cx="12" cy="12" fill="none" r="9" stroke="currentColor" stroke-width="2"></circle><path d="M12 11v6M12 7.5v.5" fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="2"></path></svg>How we tested it</button><span class="w4-pop" id="w4-pop-place-break-how" role="tooltip"><b>How we tested it</b>The disparity filter keeps a link when it carries an unusually large share of either metro's total weight; α is the test's threshold, and a smaller α keeps fewer links.</span></span>
+                  <span class="w4-tip"><button aria-describedby="w4-pop-place-break-more" type="button"><svg aria-hidden="true" height="14" viewBox="0 0 24 24" width="14"><circle cx="12" cy="12" fill="none" r="9" stroke="currentColor" stroke-width="2"></circle><path d="M12 8v8M8 12h8" fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="2"></path></svg>More numbers</button><span class="w4-pop" id="w4-pop-place-break-more" role="tooltip"><b>More numbers</b>The other eleven are led by Amazon (three), Intel, Deloitte, Capital One, JPMorgan Chase, Citigroup, FedEx, Fidelity Investments and the University of Maryland.</span></span>
+                </div>
+              </div>
+              <div class="plot">
+                <h3>Metros in the largest piece as the filter tightens</h3>
+                <p class="axis-note">
+                  Each step is one or more links removed. Read right to left: as α
+                  falls, links go and metros drop out of the largest connected
+                  piece. The shaded band is the range from α = 0.1 to 0.05 where the
+                  five-value sweep saw the drop.
+                </p>
+                <div class="chart-host short" id="chart-where-break"></div>
+              </div>
             </div>
             <details class="qa">
               <summary><span class="qa-cue">The 14 links that peel metros off between α = 0.1 and 0.05</span></summary>

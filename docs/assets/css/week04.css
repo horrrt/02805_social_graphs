@@ -1199,3 +1199,218 @@
 .corridor .w4-term.is-open > .w4-pop {
   display: block;
 }
+
+/* ---- a section's intro beside its figure, on the ground under the opener */
+
+.corridor .w4-intro {
+  margin-bottom: 22px;
+}
+
+.corridor .w4-figure {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin: 0;
+}
+
+.corridor .w4-figure figcaption {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.corridor .w4-figure figcaption b {
+  color: var(--ink);
+  font-size: 13.5px;
+}
+
+.corridor .w4-figure figcaption span {
+  color: var(--ink-soft);
+  font-size: 11.5px;
+  line-height: 1.45;
+}
+
+.corridor .w4-figure-body {
+  background: var(--w4-inset);
+  border: 1px solid var(--line-soft);
+  border-radius: 10px;
+  padding: 14px 14px 10px;
+}
+
+.corridor .w4-figure-body svg {
+  display: block;
+  height: auto;
+  max-width: 100%;
+  overflow: visible;
+}
+
+/* the linking example in section 1: a toy, labelled as one */
+.corridor .w4-example {
+  align-items: center;
+  background: var(--w4-inset);
+  border: 1px solid var(--line-soft);
+  border-radius: 10px;
+  display: flex;
+  gap: 16px;
+  padding: 12px 14px;
+}
+
+.corridor .w4-example svg {
+  flex: none;
+  font-family: inherit;
+}
+
+.corridor .w4-example p {
+  color: var(--ink-soft);
+  font-size: 12px;
+  line-height: 1.5;
+  margin: 0;
+}
+
+.corridor .w4-example p b {
+  color: var(--ink);
+  display: block;
+  font-size: 13px;
+  margin-bottom: 4px;
+}
+
+.corridor .w4-ex-edge { stroke: var(--ink-soft); stroke-linecap: round; }
+.corridor .w4-ex-link { fill: none; stroke: var(--ink); }
+.corridor .w4-ex-company { fill: var(--ink); }
+.corridor .w4-ex-node { fill: var(--card); stroke: var(--ink); stroke-width: 2; }
+.corridor .w4-ex-on-ink { fill: var(--card); font-size: 10.5px; font-weight: 700; text-anchor: middle; }
+.corridor .w4-ex-letter { fill: var(--ink); font-size: 11px; font-weight: 800; text-anchor: middle; }
+.corridor .w4-ex-count { fill: var(--ink-soft); font-size: 11px; font-weight: 600; }
+.corridor .w4-ex-gain { fill: var(--ink); font-size: 11px; font-weight: 700; text-anchor: middle; }
+
+/* ---- the opening: what one filing names, and how to read the charts */
+
+.corridor .w4-anatomy,
+.corridor .w4-howto {
+  border: 1px solid var(--line-soft);
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 14px 16px 8px;
+}
+
+.corridor .w4-anatomy {
+  background: var(--w4-inset);
+}
+
+.corridor .w4-howto {
+  gap: 8px;
+  padding-bottom: 14px;
+}
+
+.corridor .w4-anatomy h3,
+.corridor .w4-howto h3 {
+  font-size: 13.5px;
+  margin: 0;
+}
+
+.corridor .w4-anatomy > p {
+  color: var(--ink-soft);
+  font-size: 11.5px;
+  margin: 0;
+  padding-bottom: 6px;
+}
+
+.corridor .w4-anatomy dl {
+  margin: 0;
+}
+
+.corridor .w4-anatomy dl div {
+  align-items: center;
+  display: grid;
+  gap: 12px;
+  grid-template-columns: 96px minmax(0, 1fr) auto;
+  padding: 9px 0;
+}
+
+.corridor .w4-anatomy dl div + div {
+  border-top: 1px solid var(--line-soft);
+}
+
+.corridor .w4-anatomy dt {
+  color: var(--ink-soft);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.corridor .w4-anatomy dd {
+  font-size: 13px;
+  line-height: 1.4;
+  margin: 0;
+}
+
+.corridor .w4-tag {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  color: var(--ink-soft);
+  font-size: 11.5px;
+  font-weight: 600;
+  padding: 3px 9px;
+  white-space: nowrap;
+}
+
+.corridor .w4-tag.access {
+  background: var(--access-soft);
+  border-color: var(--access-soft);
+  color: var(--w4-accent);
+}
+
+.corridor .w4-howto > div {
+  align-items: center;
+  display: grid;
+  font-size: 12px;
+  gap: 10px;
+  grid-template-columns: 30px 128px minmax(0, 1fr);
+}
+
+.corridor .w4-howto > div > b {
+  color: var(--ink);
+}
+
+.corridor .w4-howto > div > span {
+  color: var(--ink-soft);
+}
+
+.corridor .w4-howto i {
+  display: flex;
+  justify-self: center;
+}
+
+.corridor .w4-sw-real { background: var(--ink); border-radius: 999px; height: 12px; width: 12px; }
+.corridor .w4-sw-band { background: var(--w4-band); border-radius: 6px; height: 11px; width: 28px; }
+.corridor .w4-sw-people { background: var(--people); border-radius: 3px; height: 12px; width: 12px; }
+.corridor .w4-sw-access { background: var(--access); border-radius: 3px; height: 12px; width: 12px; }
+.corridor .w4-sw-ref { border-top: 2px dashed var(--ink-soft); height: 0; width: 22px; }
+.corridor .w4-sw-groups { gap: 3px; }
+.corridor .w4-sw-groups b { border-radius: 999px; height: 8px; width: 8px; }
+.corridor .w4-sw-groups .g0 { background: var(--w4-group-0); }
+.corridor .w4-sw-groups .g1 { background: var(--w4-group-1); }
+.corridor .w4-sw-groups .g2 { background: var(--w4-group-2); }
+
+.corridor .w4-scope-note {
+  border-top: 1px solid var(--line-soft);
+  color: var(--ink);
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1.5;
+  margin: 0;
+  padding-top: 12px;
+}
+
+/* the plot inside a two-column card keeps its chart but loses its old margins */
+.corridor .w4-two > .plot .chart-host {
+  margin-top: 0;
+}
+
+.corridor .w4-card > details.qa {
+  margin-top: 0;
+}
