@@ -20,6 +20,7 @@
     <link href="../../assets/css/week04-vis-more.css?v=1" rel="stylesheet" />
     <link href="../../assets/css/week04-vis-intros.css?v=1" rel="stylesheet" />
     <link href="../../assets/css/week04-vis-staffing.css?v=1" rel="stylesheet" />
+    <link href="../../assets/css/week04-sources.css?v=1" rel="stylesheet" />
   </head>
   <body class="corridor">
     <a class="skip" href="#main">Skip to content</a>
@@ -326,10 +327,8 @@
             id="place-draft-banner"
           >
             <b>Scaffold.</b>
-            Charts run on placeholder geography so the page can ship before
-            <code>analysis/week04_where.py</code>. Swap
-            <code>docs/assets/data/week04_place.json</code> when the real
-            numbers are ready — the UI stays.
+            Charts run on placeholder geography while the real numbers are
+            readied.
           </div>
 
             <!-- Start · Which cities hire the most? -------------------------- -->
@@ -469,8 +468,7 @@
                     every number below is computed on it. The null rewires the
                     company × metro network so each company and each metro keeps
                     its number of partners, deals the filing counts back out at
-                    random, and projects it again. Figures from
-                    analysis/week04_where.py:
+                    random, and projects it again:
                   </p>
                   <table class="ego">
                     <tbody id="place-null-stats"></tbody>
@@ -1361,8 +1359,8 @@
                   Labor files through the scripts linked in
                   <a href="#evidence">Data and methods</a>. Each script writes
                   the numbers its section quotes to a JSON file the page reads.
-                  <code>week04_schemas.py</code> checks each file against the
-                  fields the page uses, <code>week04_names_check.py</code> tests
+                  A schema check tests each file against the
+                  fields the page uses, a name-matching check tests
                   the company-name rules against tax numbers, and the site tests
                   fail when the numbers in a card or in this closing drift from
                   its script's output. We checked generated tables, comparisons, source scope,
@@ -1463,8 +1461,7 @@
                     is light next to New York and Dallas. The disparity filter
                     keeps a link when it carries an unusually large share of
                     either endpoint's weight at level α, the method the course
-                    used for the philosophers backbone. Weights come from
-                    <code>analysis/week04_where.py</code>.
+                    used for the philosophers backbone.
                   </p>
                   <table class="ego">
                     <thead>
@@ -1847,7 +1844,7 @@
                 <div class="w4-reveals">
                   <span class="w4-tip"><button aria-describedby="w4-pop-lawyers-numbers" type="button"><svg aria-hidden="true" height="14" viewBox="0 0 24 24" width="14"><circle cx="12" cy="12" fill="none" r="9" stroke="currentColor" stroke-width="2"></circle><path d="M12 8v8M8 12h8" fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="2"></path></svg>The numbers</button><span class="w4-pop" id="w4-pop-lawyers-numbers" role="tooltip"><b>The numbers</b>Fragomen alone files 78,531 for 3,129 employers. Outsourcing firms mostly do without: they file 52% of their applications with no outside firm and send 3% to the five largest, while direct employers send those five 48%. Per employer the averages are 2% and 30%, and none of 1,000 shuffles of which employer is which produced a gap that wide.</span></span>
                   <span class="w4-tip"><button aria-describedby="w4-pop-lawyers-network" type="button"><svg aria-hidden="true" height="14" viewBox="0 0 24 24" width="14"><circle cx="12" cy="12" fill="none" r="9" stroke="currentColor" stroke-width="2"></circle><path d="M12 11v6M12 7.5v.5" fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="2"></path></svg>The law-firm network</button><span class="w4-pop" id="w4-pop-lawyers-network" role="tooltip" style="width: 480px"><b>The law-firm network</b>Two law firms share filings when the same employer uses both: for each such employer, the smaller of its filings through either. That network has one giant hub, the case the disparity filter was made for. A weight threshold of four shared filings keeps 771 links and spends 26% of them on the five largest firms. The disparity filter at &alpha; = 0.2 keeps 697 and spends 19%. It also keeps 115 small firms the threshold drops, such as one law office whose link to BBI Law Group is 3 of its 5 shared filings and 3 of BBI's 342. The threshold keeps the larger connected core, 395 firms against the filter's 351. Another 144 firms stay only because they form a pair linked to nobody else, where neither end can judge the link.</span></span>
-                  <span class="w4-tip"><button aria-describedby="w4-pop-lawyers-groups" type="button"><svg aria-hidden="true" height="14" viewBox="0 0 24 24" width="14"><circle cx="12" cy="12" fill="none" r="9" stroke="currentColor" stroke-width="2"></circle><path d="M12 8v8M8 12h8" fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="2"></path></svg>Its groups</button><span class="w4-pop right" id="w4-pop-lawyers-groups" role="tooltip" style="width: 480px"><b>Its groups</b>Louvain finds 34 groups at modularity 0.67, against 0.55 for rewired networks that keep each employer's and each law firm's number of partners (z = 12). The groups are barely regional (NMI 0.05 with Census regions, though above every shuffle), and the largest gather around shared employers. Google, Apple and Meta share Fragomen, Ogletree Deakins and Berry Appleman &amp; Leiden; Tata Consultancy, LTIMindtree and Salesforce share Usilaw, Goel &amp; Anderson and Chugh; Vialto, once PwC's law firm, serves Doordash and Databricks. The groups move from year to year: FY2024 and FY2025 agree at NMI 0.30 on the 1,041 law firms in both, against 0.88 between two runs of FY2025. Figures from analysis/week04_lawfirms.py.</span></span>
+                  <span class="w4-tip"><button aria-describedby="w4-pop-lawyers-groups" type="button"><svg aria-hidden="true" height="14" viewBox="0 0 24 24" width="14"><circle cx="12" cy="12" fill="none" r="9" stroke="currentColor" stroke-width="2"></circle><path d="M12 8v8M8 12h8" fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="2"></path></svg>Its groups</button><span class="w4-pop right" id="w4-pop-lawyers-groups" role="tooltip" style="width: 480px"><b>Its groups</b>Louvain finds 34 groups at modularity 0.67, against 0.55 for rewired networks that keep each employer's and each law firm's number of partners (z = 12). The groups are barely regional (NMI 0.05 with Census regions, though above every shuffle), and the largest gather around shared employers. Google, Apple and Meta share Fragomen, Ogletree Deakins and Berry Appleman &amp; Leiden; Tata Consultancy, LTIMindtree and Salesforce share Usilaw, Goel &amp; Anderson and Chugh; Vialto, once PwC's law firm, serves Doordash and Databricks. The groups move from year to year: FY2024 and FY2025 agree at NMI 0.30 on the 1,041 law firms in both, against 0.88 between two runs of FY2025.</span></span>
                 </div>
               </div>
               <div>
@@ -1903,8 +1900,7 @@
                       <b class="multi-links">…</b> of the links but
                       <b class="multi-filings">…</b> of the filings, and only their
                       links can cross: a client with one firm sits in that firm's
-                      group. Figures from
-                      analysis/week04_staffing.py:
+                      group:
                     </p>
                     <table class="ego">
                       <thead>
@@ -1954,7 +1950,7 @@
                       <div>
                         <div class="w4-reveals">
                           <span class="w4-tip"><button aria-describedby="w4-pop-ties-idea" type="button"><svg aria-hidden="true" height="14" viewBox="0 0 24 24" width="14"><circle cx="12" cy="12" fill="none" r="9" stroke="currentColor" stroke-width="2"></circle><path d="M12 11v6M12 7.5v.5" fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="2"></path></svg>The idea</button><span class="w4-pop" id="w4-pop-ties-idea" role="tooltip" style="width: 480px"><b>The idea</b>Among friends, the strongest ties sit inside tight groups where your close friends also know each other, and weak ties bridge the groups (Granovetter 1973; Onnela and colleagues confirmed it on millions of phone users in 2007). A link's <b>overlap</b> measures the tightness: of the firm's other clients and the client's other firms, the share that are linked to each other.</span></span>
-                          <span class="w4-tip"><button aria-describedby="w4-pop-ties-numbers" type="button"><svg aria-hidden="true" height="14" viewBox="0 0 24 24" width="14"><circle cx="12" cy="12" fill="none" r="9" stroke="currentColor" stroke-width="2"></circle><path d="M12 8v8M8 12h8" fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="2"></path></svg>The numbers</button><span class="w4-pop right" id="w4-pop-ties-numbers" role="tooltip" style="width: 480px"><b>The numbers</b>Over the 28,104 links where overlap is defined, filings and overlap correlate at Spearman -0.04; with the filing counts shuffled over the same links the correlation is 0.00 ± 0.01 (z = -6.3; FY2024 gives z = -3.7). Links with one filing have a mean overlap of 0.065, links with 21 or more 0.034. Heavy links mostly belong to the largest firms, whose many clients rarely share other firms, so part of this is size. It agrees with the result above: the real filing counts put weight on links between groups. Each filing states one of four wage levels, from entry (I) to fully competent (IV). Averaged per client over the filings that reach it, the groups explain 13% of the variance in wage level; averaged per firm over all its filings, 3%. None of 1,000 shuffles of the group labels reached either. A client's filings come from the vendors that also decide its group, so part of the 13% is built in. Outsourcing firms file 66% of their applications at level II and 5% at level IV; direct employers file 35% and 22%. From January to June 2026, level IV rose to 17.7% of all filings from 13.6% a year earlier, and level I fell to 18.0% from 21.8%. Figures from analysis/week04_ties.py and analysis/week04_shift.py.</span></span>
+                          <span class="w4-tip"><button aria-describedby="w4-pop-ties-numbers" type="button"><svg aria-hidden="true" height="14" viewBox="0 0 24 24" width="14"><circle cx="12" cy="12" fill="none" r="9" stroke="currentColor" stroke-width="2"></circle><path d="M12 8v8M8 12h8" fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="2"></path></svg>The numbers</button><span class="w4-pop right" id="w4-pop-ties-numbers" role="tooltip" style="width: 480px"><b>The numbers</b>Over the 28,104 links where overlap is defined, filings and overlap correlate at Spearman -0.04; with the filing counts shuffled over the same links the correlation is 0.00 ± 0.01 (z = -6.3; FY2024 gives z = -3.7). Links with one filing have a mean overlap of 0.065, links with 21 or more 0.034. Heavy links mostly belong to the largest firms, whose many clients rarely share other firms, so part of this is size. It agrees with the result above: the real filing counts put weight on links between groups. Each filing states one of four wage levels, from entry (I) to fully competent (IV). Averaged per client over the filings that reach it, the groups explain 13% of the variance in wage level; averaged per firm over all its filings, 3%. None of 1,000 shuffles of the group labels reached either. A client's filings come from the vendors that also decide its group, so part of the 13% is built in. Outsourcing firms file 66% of their applications at level II and 5% at level IV; direct employers file 35% and 22%. From January to June 2026, level IV rose to 17.7% of all filings from 13.6% a year earlier, and level I fell to 18.0% from 21.8%.</span></span>
                         </div>
                       </div>
                       <div>
@@ -1987,7 +1983,7 @@
                       <div>
                         <div class="w4-reveals">
                           <span class="w4-tip"><button aria-describedby="w4-pop-lottery-how" type="button"><svg aria-hidden="true" height="14" viewBox="0 0 24 24" width="14"><circle cx="12" cy="12" fill="none" r="9" stroke="currentColor" stroke-width="2"></circle><path d="M12 11v6M12 7.5v.5" fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="2"></path></svg>How we tested it</button><span class="w4-pop" id="w4-pop-lottery-how" role="tooltip"><b>How we tested it</b>We took the 2,942 firms in the FY2023 staffing network that sent 20 or more registrations to the March 2023 draw, and split them at the median share of workers another employer had also registered (78%).</span></span>
-                          <span class="w4-tip"><button aria-describedby="w4-pop-lottery-more" type="button"><svg aria-hidden="true" height="14" viewBox="0 0 24 24" width="14"><circle cx="12" cy="12" fill="none" r="9" stroke="currentColor" stroke-width="2"></circle><path d="M12 8v8M8 12h8" fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="2"></path></svg>More numbers</button><span class="w4-pop right" id="w4-pop-lottery-more" role="tooltip"><b>More numbers</b>If the high firms clustered, a high firm's Louvain group would be mostly high firms. It is 51.2% high, against 50.0% when the labels are shuffled (p = 0.001 over 1,000 shuffles), and AMI with the groups is 0.004 over 100 runs. The March 2022 draw against the FY2022 network gives 51.9% against 50.0%. The lottery data is USCIS's, obtained by Bloomberg News; figures from analysis/week04_lottery.py.</span></span>
+                          <span class="w4-tip"><button aria-describedby="w4-pop-lottery-more" type="button"><svg aria-hidden="true" height="14" viewBox="0 0 24 24" width="14"><circle cx="12" cy="12" fill="none" r="9" stroke="currentColor" stroke-width="2"></circle><path d="M12 8v8M8 12h8" fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="2"></path></svg>More numbers</button><span class="w4-pop right" id="w4-pop-lottery-more" role="tooltip"><b>More numbers</b>If the high firms clustered, a high firm's Louvain group would be mostly high firms. It is 51.2% high, against 50.0% when the labels are shuffled (p = 0.001 over 1,000 shuffles), and AMI with the groups is 0.004 over 100 runs. The March 2022 draw against the FY2022 network gives 51.9% against 50.0%. The lottery data is USCIS's, obtained by Bloomberg News.</span></span>
                         </div>
                       </div>
                       <div>
@@ -2027,8 +2023,7 @@
                         <div class="w4-reveals">
                           <span class="w4-tip"><button aria-describedby="w4-pop-deeper-perm-how" type="button"><svg aria-hidden="true" height="14" viewBox="0 0 24 24" width="14"><circle cx="12" cy="12" fill="none" r="9" stroke="currentColor" stroke-width="2"></circle><path d="M12 11v6M12 7.5v.5" fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="2"></path></svg>How we tested it</button><span class="w4-pop" id="w4-pop-deeper-perm-how" role="tooltip"><b>How we tested it</b>Only 65% of
                           certified green cards come from an employer we can match to an
-                          H-1B filer. Figures from
-                          analysis/week04_perm.py.</span></span>
+                          H-1B filer.</span></span>
                           <span class="w4-tip"><button aria-describedby="w4-pop-deeper-perm-more" type="button"><svg aria-hidden="true" height="14" viewBox="0 0 24 24" width="14"><circle cx="12" cy="12" fill="none" r="9" stroke="currentColor" stroke-width="2"></circle><path d="M12 8v8M8 12h8" fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="2"></path></svg>More numbers</button><span class="w4-pop" id="w4-pop-deeper-perm-more" role="tooltip"><b>More numbers</b> In FY2025 the median
                           employer with 20 or more H-1B filings filed 13.2 green cards
                           per 100 of them, and the two counts rank employers only loosely
@@ -2069,8 +2064,7 @@
                           <span class="w4-tip"><button aria-describedby="w4-pop-deeper-countries-how" type="button"><svg aria-hidden="true" height="14" viewBox="0 0 24 24" width="14"><circle cx="12" cy="12" fill="none" r="9" stroke="currentColor" stroke-width="2"></circle><path d="M12 11v6M12 7.5v.5" fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="2"></path></svg>How we tested it</button><span class="w4-pop" id="w4-pop-deeper-countries-how" role="tooltip"><b>How we tested it</b> A worker's citizenship is personal, so we read it only in
                           memory and keep counts per country and employer, dropping every
                           count under 10. That drops 96% of the cells and 43% of FY2023's
-                          certified green-card filings.
-                          Figures from analysis/week04_countries.py; no row about a
+                          certified green-card filings, and no row about a
                           person leaves the script.</span></span>
                           <span class="w4-tip"><button aria-describedby="w4-pop-deeper-countries-more" type="button"><svg aria-hidden="true" height="14" viewBox="0 0 24 24" width="14"><circle cx="12" cy="12" fill="none" r="9" stroke="currentColor" stroke-width="2"></circle><path d="M12 8v8M8 12h8" fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="2"></path></svg>More numbers</button><span class="w4-pop" id="w4-pop-deeper-countries-more" role="tooltip"><b>More numbers</b> India holds 52% of those filings
                           and China 12%; among lottery registrations, India holds 77% in
@@ -2122,8 +2116,7 @@
                           <span class="w4-tip"><button aria-describedby="w4-pop-deeper-density-how" type="button"><svg aria-hidden="true" height="14" viewBox="0 0 24 24" width="14"><circle cx="12" cy="12" fill="none" r="9" stroke="currentColor" stroke-width="2"></circle><path d="M12 11v6M12 7.5v.5" fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="2"></path></svg>How we tested it</button><span class="w4-pop" id="w4-pop-deeper-density-how" role="tooltip"><b>How we tested it</b> Section 1 counts filings. Divide each metro's FY2025 filings by
                           its jobs in the Bureau of Labor Statistics' May 2025
                           employment survey (OEWS) and the map shifts: nationally it is
-                          4.5 filings per 1,000 jobs. A filing is a request, not a hire, so a rate can run high.
-                          Figures from analysis/week04_oews.py.</span></span>
+                          4.5 filings per 1,000 jobs. A filing is a request, not a hire, so a rate can run high.</span></span>
                           <span class="w4-tip"><button aria-describedby="w4-pop-deeper-density-more" type="button"><svg aria-hidden="true" height="14" viewBox="0 0 24 24" width="14"><circle cx="12" cy="12" fill="none" r="9" stroke="currentColor" stroke-width="2"></circle><path d="M12 8v8M8 12h8" fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="2"></path></svg>More numbers</button><span class="w4-pop" id="w4-pop-deeper-density-more" role="tooltip"><b>More numbers</b> Among the 203 metros with 100,000 jobs
                           or more, count and density rank alike (Spearman 0.90), yet
                           only 5 of the 10 largest by count stay in the top 10 by
@@ -2158,7 +2151,7 @@
                         <div class="w4-reveals">
                           <span class="w4-tip"><button aria-describedby="w4-pop-deeper-strength-how" type="button"><svg aria-hidden="true" height="14" viewBox="0 0 24 24" width="14"><circle cx="12" cy="12" fill="none" r="9" stroke="currentColor" stroke-width="2"></circle><path d="M12 11v6M12 7.5v.5" fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="2"></path></svg>How we tested it</button><span class="w4-pop" id="w4-pop-deeper-strength-how" role="tooltip"><b>How we tested it</b> The course compares a node's degree (how many partners) with
                           its strength (how many filings over all its links), and finds
-                          the exceptions tell the story. Figures from analysis/week04_ties.py.</span></span>
+                          the exceptions tell the story.</span></span>
                           <span class="w4-tip"><button aria-describedby="w4-pop-deeper-strength-more" type="button"><svg aria-hidden="true" height="14" viewBox="0 0 24 24" width="14"><circle cx="12" cy="12" fill="none" r="9" stroke="currentColor" stroke-width="2"></circle><path d="M12 8v8M8 12h8" fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="2"></path></svg>More numbers</button><span class="w4-pop" id="w4-pop-deeper-strength-more" role="tooltip"><b>More numbers</b> In the FY2025 firm–client
                           network the two rank firms almost alike (Spearman 0.91) and
                           clients less so (0.75). The clients with the most filings from
@@ -2190,8 +2183,7 @@
                     <div class="w4-two">
                       <div>
                         <div class="w4-reveals">
-                          <span class="w4-tip"><button aria-describedby="w4-pop-deeper-lottery-how" type="button"><svg aria-hidden="true" height="14" viewBox="0 0 24 24" width="14"><circle cx="12" cy="12" fill="none" r="9" stroke="currentColor" stroke-width="2"></circle><path d="M12 11v6M12 7.5v.5" fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="2"></path></svg>How we tested it</button><span class="w4-pop" id="w4-pop-deeper-lottery-how" role="tooltip"><b>How we tested it</b> Figures from
-                          analysis/week04_lottery.py.</span></span>
+                          <span class="w4-tip"><button aria-describedby="w4-pop-deeper-lottery-how" type="button"><svg aria-hidden="true" height="14" viewBox="0 0 24 24" width="14"><circle cx="12" cy="12" fill="none" r="9" stroke="currentColor" stroke-width="2"></circle><path d="M12 11v6M12 7.5v.5" fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="2"></path></svg>How we tested it</button><span class="w4-pop" id="w4-pop-deeper-lottery-how" role="tooltip"><b>How we tested it</b> The ratio divides each year's registrations by its approved petitions, using USCIS's lottery files, obtained by Bloomberg News.</span></span>
                           <span class="w4-tip"><button aria-describedby="w4-pop-deeper-lottery-more" type="button"><svg aria-hidden="true" height="14" viewBox="0 0 24 24" width="14"><circle cx="12" cy="12" fill="none" r="9" stroke="currentColor" stroke-width="2"></circle><path d="M12 8v8M8 12h8" fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="2"></path></svg>More numbers</button><span class="w4-pop" id="w4-pop-deeper-lottery-more" role="tooltip"><b>More numbers</b> Between the March 2022 and March 2023 draws, registrations for
                           a worker whom another employer had also registered rose from
                           35% to 54% of the total, and the share of drawn registrations
@@ -2248,9 +2240,6 @@
                         <tr><td>FY2026, Oct–Jun</td><td style="text-align: right">3.35%</td><td style="text-align: right">1.98%</td><td style="text-align: right">601</td><td style="text-align: right">1,863</td></tr>
                       </tbody>
                     </table>
-                    <p class="sub" style="margin-top: 12px">
-                      Figures from analysis/week04_staffing.py (uscis_series).
-                    </p>
                   </div>
                 </details>
               </div>
@@ -2416,15 +2405,25 @@
               </summary>
               <div class="qa-body">
                 <p class="sub">
-                  Sources: US Department of Labor, Office of Foreign Labor
-                  Certification — LCA disclosures and worksites file, public
-                  domain; USCIS H-1B Employer Data Hub, FY2022 to June 2026;
-                  H-1B lottery registrations for the FY2022 to FY2024 draws,
-                  USCIS data obtained by Bloomberg News under FOIA. Each script writes the
-                  numbers its section quotes to a JSON file the page reads:
-                
-                  <a href="https://github.com/horrrt/02805_social_graphs/blob/main/analysis/week04_data.py"><code>week04_data.py</code></a>, <a href="https://github.com/horrrt/02805_social_graphs/blob/main/analysis/week04_where.py"><code>week04_where.py</code></a>, <a href="https://github.com/horrrt/02805_social_graphs/blob/main/analysis/week04_jobs.py"><code>week04_jobs.py</code></a>, <a href="https://github.com/horrrt/02805_social_graphs/blob/main/analysis/week04_staffing.py"><code>week04_staffing.py</code></a>, <a href="https://github.com/horrrt/02805_social_graphs/blob/main/analysis/week04_staffing_figure.py"><code>week04_staffing_figure.py</code></a>, <a href="https://github.com/horrrt/02805_social_graphs/blob/main/analysis/week04_shift.py"><code>week04_shift.py</code></a>, <a href="https://github.com/horrrt/02805_social_graphs/blob/main/analysis/week04_ties.py"><code>week04_ties.py</code></a>, <a href="https://github.com/horrrt/02805_social_graphs/blob/main/analysis/week04_lawfirms.py"><code>week04_lawfirms.py</code></a>, <a href="https://github.com/horrrt/02805_social_graphs/blob/main/analysis/week04_lottery.py"><code>week04_lottery.py</code></a>, <a href="https://github.com/horrrt/02805_social_graphs/blob/main/analysis/week04_perm.py"><code>week04_perm.py</code></a>, <a href="https://github.com/horrrt/02805_social_graphs/blob/main/analysis/week04_countries.py"><code>week04_countries.py</code></a>, <a href="https://github.com/horrrt/02805_social_graphs/blob/main/analysis/week04_oews.py"><code>week04_oews.py</code></a>, <a href="https://github.com/horrrt/02805_social_graphs/blob/main/analysis/week04_names.py"><code>week04_names.py</code></a>, <a href="https://github.com/horrrt/02805_social_graphs/blob/main/analysis/week04_names_check.py"><code>week04_names_check.py</code></a>, <a href="https://github.com/horrrt/02805_social_graphs/blob/main/analysis/week04_sec.py"><code>week04_sec.py</code></a>, <a href="https://github.com/horrrt/02805_social_graphs/blob/main/analysis/week04_wikidata.py"><code>week04_wikidata.py</code></a>, <a href="https://github.com/horrrt/02805_social_graphs/blob/main/analysis/week04_where_who.py"><code>week04_where_who.py</code></a>, <a href="https://github.com/horrrt/02805_social_graphs/blob/main/analysis/week04_jobs_split.py"><code>week04_jobs_split.py</code></a>, <a href="https://github.com/horrrt/02805_social_graphs/blob/main/analysis/week04_staffing_moves.py"><code>week04_staffing_moves.py</code></a>, <a href="https://github.com/horrrt/02805_social_graphs/blob/main/analysis/week04_footprint.py"><code>week04_footprint.py</code></a>, <a href="https://github.com/horrrt/02805_social_graphs/blob/main/analysis/week04_footprint_rank.py"><code>week04_footprint_rank.py</code></a>, <a href="https://github.com/horrrt/02805_social_graphs/blob/main/analysis/week04_beyond.py"><code>week04_beyond.py</code></a>, <a href="https://github.com/horrrt/02805_social_graphs/blob/main/analysis/week04_schemas.py"><code>week04_schemas.py</code></a>.
+                  Each script writes the numbers its section quotes to a
+                  JSON file the page reads.
                 </p>
+                <dl class="w4-sources">
+                  <dt><a href="https://www.dol.gov/agencies/eta/foreign-labor/performance">US Department of Labor, Office of Foreign Labor Certification ↗</a></dt>
+                  <dd>LCA disclosures and worksites file, public domain</dd>
+                  <dt><a href="https://www.uscis.gov/tools/reports-and-studies/h-1b-employer-data-hub">USCIS H-1B Employer Data Hub ↗</a></dt>
+                  <dd>FY2022 to June 2026</dd>
+                  <dt><a href="https://github.com/BloombergGraphics/2024-h1b-immigration-data">H-1B lottery registrations ↗</a></dt>
+                  <dd>the FY2022 to FY2024 draws, USCIS data obtained by Bloomberg News under FOIA</dd>
+                  <dt><a href="https://www.census.gov/geographies/reference-files/time-series/demo/metro-micro/delineation-files.html">Census CBSA delineations ↗</a></dt>
+                  <dd>counties to metro areas</dd>
+                  <dt><a href="https://www.bls.gov/oes/tables.htm">Bureau of Labor Statistics OEWS ↗</a></dt>
+                  <dd>jobs per metro and occupation, May 2025</dd>
+                  <dt><a href="https://www.sec.gov/search-filings/edgar-application-programming-interfaces">SEC EDGAR ↗</a></dt>
+                  <dd>industry codes of listed clients</dd>
+                  <dt><a href="https://www.wikidata.org/">Wikidata ↗</a></dt>
+                  <dd>industries of clients the SEC does not list, CC0</dd>
+                </dl>
               </div>
             </details>
           </div>
