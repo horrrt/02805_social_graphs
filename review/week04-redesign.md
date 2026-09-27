@@ -9,9 +9,9 @@ owner shares it from the Share menu.
 
 ## What is here
 
-- `week04-redesign/boards/` holds the 21 boards and the canvas index exactly as published (version 33). The
-  `.dc.html` files need the canvas runtime, so they render on the canvas, not in a browser tab. The Today board's
-  screenshot is stored on the canvas only.
+- `week04-redesign/boards/` holds the 21 boards and the canvas index exactly as the canvas held them on
+  27 September 2026. The `.dc.html` files need the canvas runtime, so they render on the canvas, not in a
+  browser tab. The Today board's screenshot is stored on the canvas only.
 - `week04-redesign/generator/` holds the Python that writes every board except Today from the repository's
   JSON, using the standard library only, and two checks.
 
@@ -44,7 +44,7 @@ owner shares it from the Share menu.
 `analysis/week04_explore.py` writes their data to `docs/weeks/week04/data/explore.json`.
 
 - Girvan–Newman finds no groups on the α = 0.2 backbone. New York and Dallas link to all 39 other metros, so
-  every cut strands a single metro, and modularity stays below zero at every level (best −0.0001).
+  every split strands a single metro, and modularity stays below zero at every level (best −0.0001).
 - Louvain with seed 0 reaches the page's three metro groups in 43 moves, lifting modularity from −0.036 to
   0.049, against 0.013 on rewired networks.
 - Clique percolation finds one community at every k from 3 to 6. Link communities find 16 (partition density
@@ -60,6 +60,8 @@ node review/week04-redesign/generator/holes_check.mjs review/week04-redesign/boa
 
 `build_all.py` keeps the board positions in `canvas.json`, because people move boards on the canvas. The
 canvas keeps its own copy of each board, so a rebuilt board reaches it only when someone publishes it there.
+The canvas is the source of truth. People also edit boards there directly, so refresh this folder by copying
+the canvas's files back; a rebuild would drop any edit the generator does not know about.
 `svgbounds.py` flags chart marks that fall outside their chart, the sign of an axis that stops short of its
 data. `holes_check.mjs` runs a board's script in Node and fails if any `{{ hole }}` stays empty in the given
 states.
