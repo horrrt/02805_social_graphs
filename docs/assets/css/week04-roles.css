@@ -65,8 +65,8 @@
 
 .corridor .roles-chart-wrap {
   display: grid;
-  gap: 16px;
-  grid-template-columns: minmax(0, 1fr) 220px;
+  gap: 12px;
+  grid-template-columns: minmax(0, 1fr);
   margin-top: 16px;
 }
 
@@ -74,14 +74,19 @@
   height: 420px;
 }
 
+/* Under the chart, in as many columns as fit: every series visible, no scroll. */
 .corridor .roles-legend {
-  display: flex;
-  flex-direction: column;
+  display: grid;
   font-size: 12px;
-  gap: 6px;
-  max-height: 420px;
-  overflow-y: auto;
-  padding-right: 4px;
+  gap: 2px 12px;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+}
+
+#cut-roles .axis-note {
+  color: var(--ink-mute);
+  font-size: 12px;
+  line-height: 1.5;
+  margin: 12px 0 0;
 }
 
 .corridor .roles-legend button {
