@@ -1,0 +1,979 @@
+{
+ "generated_by": "analysis/week04_roles.py",
+ "years": [
+  "2022",
+  "2023",
+  "2024",
+  "2025",
+  "2026"
+ ],
+ "partial": {
+  "year": "2026",
+  "months": 9,
+  "window": "October to June"
+ },
+ "totals": {
+  "2022": 562631,
+  "2023": 485508,
+  "2024": 502374,
+  "2025": 537796,
+  "2026": 392175
+ },
+ "oct_jun_totals": {
+  "2022": 460619,
+  "2023": 372795,
+  "2024": 395343,
+  "2025": 434511,
+  "2026": 392175
+ },
+ "splits": {
+  "occupations": {
+   "top_n": 10,
+   "other_name": "All other occupations",
+   "series": [
+    {
+     "name": "Software Developers",
+     "code": "15-1252",
+     "top_in": [
+      "FY2022",
+      "FY2023",
+      "FY2024",
+      "FY2025",
+      "FY2026"
+     ],
+     "counts": [
+      219936,
+      169995,
+      164126,
+      170440,
+      118845
+     ],
+     "oct_jun": [
+      181729,
+      132658,
+      127919,
+      137234,
+      118845
+     ]
+    },
+    {
+     "name": "All other occupations",
+     "code": null,
+     "top_in": [],
+     "counts": [
+      148489,
+      137146,
+      149770,
+      174433,
+      136874
+     ],
+     "oct_jun": [
+      120490,
+      104529,
+      118386,
+      141877,
+      136874
+     ]
+    },
+    {
+     "name": "Computer Occupations, All Other",
+     "code": "15-1299",
+     "top_in": [
+      "FY2022",
+      "FY2023",
+      "FY2024",
+      "FY2025",
+      "FY2026"
+     ],
+     "counts": [
+      71731,
+      43015,
+      56336,
+      47464,
+      29032
+     ],
+     "oct_jun": [
+      62662,
+      31334,
+      43913,
+      37126,
+      29032
+     ]
+    },
+    {
+     "name": "Data Scientists",
+     "code": "15-2051",
+     "top_in": [
+      "FY2023",
+      "FY2024",
+      "FY2025",
+      "FY2026"
+     ],
+     "counts": [
+      2710,
+      19575,
+      23685,
+      31465,
+      26712
+     ],
+     "oct_jun": [
+      2,
+      14699,
+      18985,
+      25907,
+      26712
+     ]
+    },
+    {
+     "name": "Computer Systems Analysts",
+     "code": "15-1211",
+     "top_in": [
+      "FY2022",
+      "FY2023",
+      "FY2024",
+      "FY2025",
+      "FY2026"
+     ],
+     "counts": [
+      32309,
+      28145,
+      16282,
+      12941,
+      7891
+     ],
+     "oct_jun": [
+      25763,
+      22285,
+      12973,
+      10533,
+      7891
+     ]
+    },
+    {
+     "name": "Software Quality Assurance Analysts and Testers",
+     "code": "15-1253",
+     "top_in": [
+      "FY2023",
+      "FY2024",
+      "FY2025",
+      "FY2026"
+     ],
+     "counts": [
+      2771,
+      15271,
+      16812,
+      18600,
+      12799
+     ],
+     "oct_jun": [
+      0,
+      11518,
+      13134,
+      14675,
+      12799
+     ]
+    },
+    {
+     "name": "Computer and Information Systems Managers",
+     "code": "11-3021",
+     "top_in": [
+      "FY2022",
+      "FY2023",
+      "FY2024",
+      "FY2025",
+      "FY2026"
+     ],
+     "counts": [
+      14074,
+      11193,
+      10624,
+      12585,
+      8238
+     ],
+     "oct_jun": [
+      10738,
+      8667,
+      7881,
+      9724,
+      8238
+     ]
+    },
+    {
+     "name": "Computer Programmers",
+     "code": "15-1251",
+     "top_in": [
+      "FY2022",
+      "FY2023",
+      "FY2024",
+      "FY2025",
+      "FY2026"
+     ],
+     "counts": [
+      9029,
+      9987,
+      12574,
+      13418,
+      10405
+     ],
+     "oct_jun": [
+      7572,
+      7540,
+      10099,
+      10415,
+      10405
+     ]
+    },
+    {
+     "name": "Mechanical Engineers",
+     "code": "17-2141",
+     "top_in": [
+      "FY2022",
+      "FY2023",
+      "FY2024",
+      "FY2025",
+      "FY2026"
+     ],
+     "counts": [
+      10340,
+      8471,
+      8960,
+      10134,
+      7135
+     ],
+     "oct_jun": [
+      8587,
+      6267,
+      7058,
+      8288,
+      7135
+     ]
+    },
+    {
+     "name": "Accountants and Auditors",
+     "code": "13-2011",
+     "top_in": [
+      "FY2022",
+      "FY2023",
+      "FY2024",
+      "FY2025"
+     ],
+     "counts": [
+      8634,
+      8869,
+      8558,
+      9477,
+      6039
+     ],
+     "oct_jun": [
+      7187,
+      7002,
+      7150,
+      8108,
+      6039
+     ]
+    },
+    {
+     "name": "Industrial Engineers",
+     "code": "17-2112",
+     "top_in": [
+      "FY2024",
+      "FY2025",
+      "FY2026"
+     ],
+     "counts": [
+      6074,
+      7494,
+      8354,
+      10017,
+      8034
+     ],
+     "oct_jun": [
+      4700,
+      5455,
+      6500,
+      8248,
+      8034
+     ]
+    },
+    {
+     "name": "Operations Research Analysts",
+     "code": "15-2031",
+     "top_in": [
+      "FY2022"
+     ],
+     "counts": [
+      10614,
+      7615,
+      8241,
+      7475,
+      5216
+     ],
+     "oct_jun": [
+      9014,
+      5855,
+      6688,
+      6233,
+      5216
+     ]
+    },
+    {
+     "name": "Electronics Engineers, Except Computer",
+     "code": "17-2072",
+     "top_in": [
+      "FY2022",
+      "FY2023"
+     ],
+     "counts": [
+      8858,
+      7696,
+      7069,
+      7828,
+      5912
+     ],
+     "oct_jun": [
+      7363,
+      6353,
+      5820,
+      6431,
+      5912
+     ]
+    },
+    {
+     "name": "Financial and Investment Analysts",
+     "code": "13-2051",
+     "top_in": [
+      "FY2026"
+     ],
+     "counts": [
+      7432,
+      6630,
+      6676,
+      7601,
+      6766
+     ],
+     "oct_jun": [
+      6396,
+      5209,
+      5507,
+      6471,
+      6766
+     ]
+    },
+    {
+     "name": "Statisticians",
+     "code": "15-2041",
+     "top_in": [
+      "FY2022"
+     ],
+     "counts": [
+      9630,
+      4406,
+      4307,
+      3918,
+      2277
+     ],
+     "oct_jun": [
+      8416,
+      3424,
+      3330,
+      3241,
+      2277
+     ]
+    }
+   ],
+   "finding": {
+    "name": "Software Developers",
+    "code": "15-1252",
+    "share_fy2022_percent": 39.1,
+    "share_fy2025_percent": 31.7,
+    "change_pp": -7.4,
+    "direction": "shrank",
+    "entered_top": false,
+    "left_top": false
+   }
+  },
+  "groups": {
+   "top_n": 7,
+   "other_name": "Other groups",
+   "series": [
+    {
+     "name": "Computer and Mathematical Occupations",
+     "code": "15",
+     "top_in": [
+      "FY2022",
+      "FY2023",
+      "FY2024",
+      "FY2025",
+      "FY2026"
+     ],
+     "counts": [
+      385375,
+      322306,
+      328274,
+      336962,
+      238410
+     ],
+     "oct_jun": [
+      316548,
+      248082,
+      257523,
+      270551,
+      238410
+     ]
+    },
+    {
+     "name": "Architecture and Engineering Occupations",
+     "code": "17",
+     "top_in": [
+      "FY2022",
+      "FY2023",
+      "FY2024",
+      "FY2025",
+      "FY2026"
+     ],
+     "counts": [
+      50257,
+      43326,
+      45747,
+      52783,
+      40866
+     ],
+     "oct_jun": [
+      41787,
+      32986,
+      36364,
+      43671,
+      40866
+     ]
+    },
+    {
+     "name": "Business and Financial Operations Occupations",
+     "code": "13",
+     "top_in": [
+      "FY2022",
+      "FY2023",
+      "FY2024",
+      "FY2025",
+      "FY2026"
+     ],
+     "counts": [
+      37185,
+      35541,
+      38349,
+      44403,
+      37853
+     ],
+     "oct_jun": [
+      31548,
+      27393,
+      31639,
+      37569,
+      37853
+     ]
+    },
+    {
+     "name": "Management Occupations",
+     "code": "11",
+     "top_in": [
+      "FY2022",
+      "FY2023",
+      "FY2024",
+      "FY2025",
+      "FY2026"
+     ],
+     "counts": [
+      26700,
+      22381,
+      23086,
+      27893,
+      19376
+     ],
+     "oct_jun": [
+      20997,
+      17169,
+      17760,
+      22096,
+      19376
+     ]
+    },
+    {
+     "name": "Life, Physical, and Social Science Occupations",
+     "code": "19",
+     "top_in": [
+      "FY2022",
+      "FY2023",
+      "FY2024",
+      "FY2025",
+      "FY2026"
+     ],
+     "counts": [
+      20538,
+      19174,
+      20211,
+      21057,
+      15397
+     ],
+     "oct_jun": [
+      16051,
+      14234,
+      15369,
+      16308,
+      15397
+     ]
+    },
+    {
+     "name": "Healthcare Practitioners and Technical Occupations",
+     "code": "29",
+     "top_in": [
+      "FY2022",
+      "FY2023",
+      "FY2024",
+      "FY2025",
+      "FY2026"
+     ],
+     "counts": [
+      15816,
+      16432,
+      17691,
+      21856,
+      17432
+     ],
+     "oct_jun": [
+      12698,
+      13048,
+      14110,
+      17878,
+      17432
+     ]
+    },
+    {
+     "name": "Educational Instruction and Library Occupations",
+     "code": "25",
+     "top_in": [
+      "FY2022",
+      "FY2023",
+      "FY2024",
+      "FY2025",
+      "FY2026"
+     ],
+     "counts": [
+      14560,
+      15957,
+      17667,
+      19344,
+      12701
+     ],
+     "oct_jun": [
+      10859,
+      11910,
+      13447,
+      15174,
+      12701
+     ]
+    },
+    {
+     "name": "Other groups",
+     "code": null,
+     "top_in": [],
+     "counts": [
+      12200,
+      10391,
+      11349,
+      13498,
+      10140
+     ],
+     "oct_jun": [
+      10131,
+      7973,
+      9131,
+      11264,
+      10140
+     ]
+    }
+   ],
+   "finding": {
+    "name": "Computer and Mathematical Occupations",
+    "code": "15",
+    "share_fy2022_percent": 68.5,
+    "share_fy2025_percent": 62.7,
+    "change_pp": -5.8,
+    "direction": "shrank",
+    "entered_top": false,
+    "left_top": false
+   }
+  },
+  "employer": {
+   "top_n": 10,
+   "other_name": "All other employers",
+   "series": [
+    {
+     "name": "All other employers",
+     "code": null,
+     "top_in": [],
+     "counts": [
+      453202,
+      393029,
+      408915,
+      440429,
+      326322
+     ],
+     "oct_jun": [
+      371652,
+      299408,
+      322042,
+      355034,
+      326322
+     ]
+    },
+    {
+     "name": "Amazon",
+     "code": "Amazon",
+     "top_in": [
+      "FY2022",
+      "FY2023",
+      "FY2024",
+      "FY2025",
+      "FY2026"
+     ],
+     "counts": [
+      22432,
+      18571,
+      20985,
+      22509,
+      19775
+     ],
+     "oct_jun": [
+      17584,
+      15119,
+      15915,
+      18748,
+      19775
+     ]
+    },
+    {
+     "name": "Cognizant",
+     "code": "Cognizant",
+     "top_in": [
+      "FY2022",
+      "FY2023",
+      "FY2024",
+      "FY2025",
+      "FY2026"
+     ],
+     "counts": [
+      13433,
+      12876,
+      11222,
+      11085,
+      5769
+     ],
+     "oct_jun": [
+      10454,
+      9623,
+      8528,
+      8591,
+      5769
+     ]
+    },
+    {
+     "name": "Google",
+     "code": "Google",
+     "top_in": [
+      "FY2022",
+      "FY2023",
+      "FY2024",
+      "FY2025",
+      "FY2026"
+     ],
+     "counts": [
+      11308,
+      9408,
+      8655,
+      8657,
+      7336
+     ],
+     "oct_jun": [
+      9984,
+      8061,
+      7281,
+      7764,
+      7336
+     ]
+    },
+    {
+     "name": "EY",
+     "code": "EY",
+     "top_in": [
+      "FY2022",
+      "FY2023",
+      "FY2024",
+      "FY2025",
+      "FY2026"
+     ],
+     "counts": [
+      9282,
+      10683,
+      9685,
+      9440,
+      5066
+     ],
+     "oct_jun": [
+      7508,
+      9282,
+      8362,
+      8026,
+      5066
+     ]
+    },
+    {
+     "name": "Microsoft",
+     "code": "Microsoft",
+     "top_in": [
+      "FY2022",
+      "FY2023",
+      "FY2024",
+      "FY2025",
+      "FY2026"
+     ],
+     "counts": [
+      11403,
+      7677,
+      9343,
+      9106,
+      5107
+     ],
+     "oct_jun": [
+      9307,
+      5794,
+      6532,
+      7339,
+      5107
+     ]
+    },
+    {
+     "name": "Tata Consultancy Services",
+     "code": "Tata Consultancy Services",
+     "top_in": [
+      "FY2022",
+      "FY2023",
+      "FY2024",
+      "FY2025",
+      "FY2026"
+     ],
+     "counts": [
+      11117,
+      8483,
+      9605,
+      7793,
+      2881
+     ],
+     "oct_jun": [
+      9075,
+      7010,
+      8050,
+      6490,
+      2881
+     ]
+    },
+    {
+     "name": "Infosys",
+     "code": "Infosys",
+     "top_in": [
+      "FY2022",
+      "FY2023",
+      "FY2024",
+      "FY2025",
+      "FY2026"
+     ],
+     "counts": [
+      7647,
+      7777,
+      5888,
+      5775,
+      4577
+     ],
+     "oct_jun": [
+      6279,
+      5772,
+      4888,
+      3892,
+      4577
+     ]
+    },
+    {
+     "name": "Deloitte",
+     "code": "Deloitte",
+     "top_in": [
+      "FY2022",
+      "FY2023",
+      "FY2024",
+      "FY2025",
+      "FY2026"
+     ],
+     "counts": [
+      7851,
+      5446,
+      4828,
+      6737,
+      4110
+     ],
+     "oct_jun": [
+      6412,
+      3984,
+      3924,
+      5329,
+      4110
+     ]
+    },
+    {
+     "name": "Meta",
+     "code": "Meta",
+     "top_in": [
+      "FY2022",
+      "FY2023",
+      "FY2024",
+      "FY2025",
+      "FY2026"
+     ],
+     "counts": [
+      6077,
+      3854,
+      5740,
+      6418,
+      5152
+     ],
+     "oct_jun": [
+      5331,
+      2847,
+      4244,
+      5564,
+      5152
+     ]
+    },
+    {
+     "name": "Apple",
+     "code": "Apple",
+     "top_in": [
+      "FY2022",
+      "FY2023",
+      "FY2025",
+      "FY2026"
+     ],
+     "counts": [
+      4859,
+      3872,
+      3464,
+      6919,
+      4828
+     ],
+     "oct_jun": [
+      3790,
+      3005,
+      2478,
+      5462,
+      4828
+     ]
+    },
+    {
+     "name": "HCL",
+     "code": "HCL",
+     "top_in": [
+      "FY2024"
+     ],
+     "counts": [
+      4020,
+      3832,
+      4044,
+      2928,
+      1252
+     ],
+     "oct_jun": [
+      3243,
+      2890,
+      3099,
+      2272,
+      1252
+     ]
+    }
+   ],
+   "finding": {
+    "name": "Tata Consultancy Services",
+    "code": "Tata Consultancy Services",
+    "share_fy2022_percent": 2.0,
+    "share_fy2025_percent": 1.4,
+    "change_pp": -0.5,
+    "direction": "shrank",
+    "entered_top": false,
+    "left_top": false
+   }
+  },
+  "placement": {
+   "top_n": 2,
+   "other_name": "",
+   "series": [
+    {
+     "name": "Direct employer",
+     "code": null,
+     "top_in": [],
+     "counts": [
+      439314,
+      375822,
+      395512,
+      433064,
+      321303
+     ],
+     "oct_jun": [
+      358869,
+      290000,
+      311195,
+      352380,
+      321303
+     ]
+    },
+    {
+     "name": "Placed at a client",
+     "code": null,
+     "top_in": [],
+     "counts": [
+      123317,
+      109686,
+      106862,
+      104732,
+      70872
+     ],
+     "oct_jun": [
+      101750,
+      82795,
+      84148,
+      82131,
+      70872
+     ]
+    }
+   ],
+   "finding": {
+    "name": "Direct employer",
+    "code": "placed",
+    "share_fy2022_percent": 78.1,
+    "share_fy2025_percent": 80.5,
+    "change_pp": 2.4,
+    "direction": "grew",
+    "entered_top": false,
+    "left_top": false
+   }
+  }
+ },
+ "legacy_recoded": {
+  "2022": 304777,
+  "2023": 80,
+  "2024": 126,
+  "2025": 48,
+  "2026": 0
+ },
+ "uncoded": {
+  "2022": 216,
+  "2023": 0,
+  "2024": 1,
+  "2025": 0,
+  "2026": 1
+ }
+}

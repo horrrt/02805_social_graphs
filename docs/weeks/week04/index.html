@@ -15,6 +15,7 @@
     <link href="../../assets/css/week04.css?v=4" rel="stylesheet" />
     <link href="../../assets/css/week04-deep.css?v=3" rel="stylesheet" />
     <link href="../../assets/css/week04-years.css?v=3" rel="stylesheet" />
+    <link href="../../assets/css/week04-roles.css?v=1" rel="stylesheet" />
     <link href="../../assets/css/week04-methods.css?v=3" rel="stylesheet" />
     <link href="../../assets/css/week04-skills.css?v=3" rel="stylesheet" />
     <link href="../../assets/css/week04-vis-more.css?v=1" rel="stylesheet" />
@@ -146,6 +147,7 @@
               <li data-target="cut-who"><a href="#cut-who">3<span class="w4-rail-label">First round: who staffs whom</span></a></li>
               <li data-target="cut-more"><a href="#cut-more">M<span class="w4-rail-label">More networks</span></a></li>
               <li data-target="cut-years"><a href="#cut-years">Y<span class="w4-rail-label">Five years of filings</span></a></li>
+              <li data-target="cut-roles"><a href="#cut-roles">R<span class="w4-rail-label">Who filed for which roles</span></a></li>
               <li data-target="cut-methods"><a href="#cut-methods">E<span class="w4-rail-label">Four community methods, step by step</span></a></li>
               <li data-target="cut-skills"><a href="#cut-skills">S<span class="w4-rail-label">Skills behind the jobs (O*NET)</span></a></li>
               <li data-target="cut-pagerank"><a href="#cut-pagerank">P<span class="w4-rail-label">PageRank, step by step</span></a></li>
@@ -2261,6 +2263,57 @@
                 <p aria-live="polite" class="status-line" id="years-status">Loading five years of filings…</p>
               </div>
             </details>
+            <details class="qa cut" id="cut-roles">
+              <summary><span class="qa-cue">Who filed for which roles, FY2022 to FY2026</span></summary>
+              <div class="qa-body cut-body" id="roles-body">
+                <p class="w4-box-intro">Certified filings, stacked by detailed occupation, SOC major group or employer, across the same five fiscal years as the box above. Switch the split, the scale or the window; FY2026 covers October 2025 to June 2026 only.</p>
+                <div class="card w4-card" id="roles-card">
+                  <header class="w4-q">
+                    <span class="w4-num">R</span>
+                    <div>
+                      <h2>Who filed, and for which roles?</h2>
+                      <p class="w4-answer" id="roles-answer">Loading…</p>
+                    </div>
+                  </header>
+                  <div class="roles-toolbar" role="group" aria-label="Chart controls">
+                    <div class="axis-modes-group">
+                      <span class="axis-modes-label" id="roles-split-label">Split by</span>
+                      <div aria-labelledby="roles-split-label" class="axis-modes" role="group">
+                        <button aria-pressed="true" data-roles-split="occupations" type="button">Roles</button>
+                        <button aria-pressed="false" data-roles-split="groups" type="button">Occupation groups</button>
+                        <button aria-pressed="false" data-roles-split="employer" type="button">Employer</button>
+                        <button aria-pressed="false" data-roles-split="placement" type="button">Placed or direct</button>
+                      </div>
+                    </div>
+                    <div class="axis-modes-group">
+                      <span class="axis-modes-label" id="roles-scale-label">Scale</span>
+                      <div aria-labelledby="roles-scale-label" class="axis-modes" role="group">
+                        <button aria-pressed="true" data-roles-scale="count" type="button">Filings</button>
+                        <button aria-pressed="false" data-roles-scale="percent" type="button">100%</button>
+                      </div>
+                    </div>
+                    <div class="axis-modes-group">
+                      <span class="axis-modes-label" id="roles-window-label">Months</span>
+                      <div aria-labelledby="roles-window-label" class="axis-modes" role="group">
+                        <button aria-pressed="true" data-roles-window="full" type="button">Full year</button>
+                        <button aria-pressed="false" data-roles-window="oct_jun" type="button">Oct to Jun only</button>
+                      </div>
+                    </div>
+                  </div>
+                  <p class="axis-note">Each band is one series' certified filings, largest total at the bottom. Hover a band or a legend entry to trace one series across years; click a legend entry to hide it. "Oct to Jun only" limits every year to the nine months FY2026 covers, the fair way to set it beside a full year.</p>
+                  <div class="roles-chart-wrap">
+                    <div class="chart-host" id="roles-chart"></div>
+                    <div class="roles-legend" id="roles-legend"></div>
+                  </div>
+                  <p class="roles-summary" id="roles-summary" aria-live="polite"></p>
+                  <div class="notice" id="roles-notice">
+                    <span class="ico">!</span>
+                    <span id="roles-notice-text">Loading…</span>
+                  </div>
+                  <div class="w4-reveals" id="roles-reveals"></div>
+                </div>
+              </div>
+            </details>
             <details class="qa cut" id="cut-methods">
               <summary><span class="qa-cue">The course's four community methods, step by step on the 40 metros</span></summary>
               <div class="qa-body cut-body" id="methods-body">
@@ -2451,6 +2504,7 @@
     <script src="../../assets/js/week04-place.js?v=7" type="module"></script>
     <script src="../../assets/js/week04-frame.js?v=4" type="module"></script>
     <script src="../../assets/js/week04-years.js?v=5" type="module"></script>
+    <script src="../../assets/js/week04-roles.js?v=1" type="module"></script>
     <script src="../../assets/js/week04-methods.js?v=4" type="module"></script>
     <script src="../../assets/js/week04-skills.js?v=5" type="module"></script>
     <script src="../../assets/js/week04-pagerank.js?v=5" type="module"></script>
