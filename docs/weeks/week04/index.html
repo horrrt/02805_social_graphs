@@ -1027,15 +1027,17 @@
         </section>
 
         <section class="step" id="closing">
-          <div class="card">
-            <div class="step-head">
-              <span class="num">✓</span>
+          <header class="w4-opener">
+            <span aria-hidden="true" class="w4-opener-num">✓</span>
+            <div>
               <h2>Closing</h2>
-              <span class="year-tag">one reading of the network</span>
+              <p>The groups in these networks are weak, but they are not noise.</p>
             </div>
-            <p class="sub">
-              <b>The groups in these networks are weak, but they are not
-              noise.</b>
+          </header>
+          <div class="card w4-card">
+            <div class="w4-two">
+              <div>
+                <p class="sub">
               Cities group by who hires there, not by region. Outsourcing firms
               bundle jobs differently from direct employers of the same size.
               And when a client drops
@@ -1046,21 +1048,7 @@
               consulting employers, and the metro groups start to follow Census
               regions; Amazon alone does all of that.
             </p>
-            <p class="sub">
-              Where outsourcing shows most is outside the networks: a filing
-              that places a worker at a client has 3.6 times the odds of a
-              lower wage level for the same occupation. Lawyers and green cards
-              barely follow the staffing groups.
-            </p>
-            <p class="sub">
-              <b>What surprised us.</b> The staffing groups looked weak in our
-              first round, following industry about as much as vendor, yet
-              26.5% of vendor switches stay inside them, against 3.2% for a
-              random vendor. And the backbone that seemed to snap between
-              α = 0.1 and 0.05 never snaps: no single link cuts off more than
-              two metros.
-            </p>
-            <div class="notice">
+                <div class="notice">
               <span class="ico">!</span>
               <span>
                 <b>One important limit</b>
@@ -1069,6 +1057,22 @@
                 performed together, that one caused the other, or that the
                 network represents workers who were actually hired.
               </span>
+            </div>
+              </div>
+              <div>
+                <p class="sub">Where outsourcing shows most is outside the networks: a filing
+              that places a worker at a client has 3.6 times the odds of a
+              lower wage level for the same occupation. Lawyers and green cards
+              barely follow the staffing groups.
+            </p>
+                <p class="sub"><b>What surprised us.</b> The staffing groups looked weak in our
+              first round, following industry about as much as vendor, yet
+              26.5% of vendor switches stay inside them, against 3.2% for a
+              random vendor. And the backbone that seemed to snap between
+              α = 0.1 and 0.05 never snaps: no single link cuts off more than
+              two metros.
+            </p>
+              </div>
             </div>
             <details class="qa">
               <summary><span class="qa-cue">AI use and how we checked it</span></summary>
@@ -1099,14 +1103,15 @@
 
         <!-- Deep dive · the first round of questions ------------------ -->
         <section class="step" id="cut">
-          <div class="card">
-            <div class="step-head">
-              <span class="num">+</span>
+          <header class="w4-opener">
+            <span aria-hidden="true" class="w4-opener-num">+</span>
+            <div>
               <h2>Deep dive</h2>
-              <span class="year-tag">earlier questions · more networks · data and methods</span>
+              <p>Our first round of questions, with their charts.</p>
             </div>
-            <p class="sub" id="cut-intro">
-              Our first round of questions, with their charts. Each answer still
+          </header>
+          <div class="card">
+            <p class="sub" id="cut-intro">Each answer still
               holds; the questions above replaced them because they test the
               communities against something that could have come out the other
               way. The numbers the new cards build on (the three metro groups,
@@ -1118,15 +1123,16 @@
               <summary><span class="qa-cue">Where the hiring is: four earlier questions</span></summary>
               <div class="qa-body cut-body">
             <!-- A · Which cities hire the most? -------------------------- -->
-            <div class="card" id="place-rank">
-              <div class="step-head">
-                <span class="num">A</span>
+            <div class="card w4-card" id="place-rank">
+                          <header class="w4-q">
+              <span class="w4-num">A</span>
+              <div>
                 <h2>Which cities hire the most?</h2>
-                <span class="year-tag">(FY2025)</span>
+                <p class="w4-answer">San Jose asks for the most positions; New York has the most employers.</p>
               </div>
-              <p class="sub">
-                <b>San Jose asks for the most positions; New York has the most
-                employers.</b>
+            </header>
+<p class="sub">
+                
                 A position is a seat an employer asks to fill, not a worker who
                 arrived.
                 Toggle the metric; click a bar or a bubble to inspect one city.
@@ -1199,15 +1205,16 @@
             </div>
 
             <!-- B · Backbone --------------------------------------------- -->
-            <div class="card" id="place-backbone">
-              <div class="step-head">
-                <span class="num">B</span>
+            <div class="card w4-card" id="place-backbone">
+                          <header class="w4-q">
+              <span class="w4-num">B</span>
+              <div>
                 <h2>Once the small links go, what's left of the map?</h2>
-                <span class="year-tag">(disparity filter)</span>
+                <p class="w4-answer">Keep every shared-employer link and the map is one blob; keep only the links that are heavy for someone, and it comes apart.</p>
               </div>
-              <p class="sub">
-                <b>Keep every shared-employer link and the map is one blob; keep
-                only the links that are heavy for someone, and it comes apart.</b>
+            </header>
+<p class="sub">
+                
                 Cities are linked when they share an employer. The slider is the
                 disparity-filter α from Week 4.
                 <span id="place-alpha-choice"></span>
@@ -1291,16 +1298,16 @@
             </div>
 
             <!-- C · Regions ---------------------------------------------- -->
-            <div class="card" id="place-regions">
-              <div class="step-head">
-                <span class="num">C</span>
+            <div class="card w4-card" id="place-regions">
+                          <header class="w4-q">
+              <span class="w4-num">C</span>
+              <div>
                 <h2>Is it one national job market or several regional ones?</h2>
-                <span class="year-tag">(communities vs Census)</span>
+                <p class="w4-answer">Not regional markets. Louvain splits the large hubs into two groups, which cross regions, and leaves the smaller metros as a third.</p>
               </div>
-              <p class="sub">
-                <b>Not regional markets. Louvain splits the large hubs into two
-                groups, which cross regions, and leaves the smaller metros as a
-                third.</b>
+            </header>
+<p class="sub">
+                
                 Toggle Louvain communities against Census regions on the same
                 map.
               </p>
@@ -1376,15 +1383,16 @@
             </div>
 
             <!-- D · Long haul -------------------------------------------- -->
-            <div class="card" id="place-longhaul">
-              <div class="step-head">
-                <span class="num">D</span>
+            <div class="card w4-card" id="place-longhaul">
+                          <header class="w4-q">
+              <span class="w4-num">D</span>
+              <div>
                 <h2>Do the same employers tie distant cities together?</h2>
-                <span class="year-tag">(who leads the long links)</span>
+                <p class="w4-answer">Mostly not. Big direct employers lead the long links, Amazon above all, and a single company rarely carries one.</p>
               </div>
-              <p class="sub">
-                <b>Mostly not. Big direct employers lead the long links, Amazon
-                above all, and a single company rarely carries one.</b>
+            </header>
+<p class="sub">
+                
                 The shortlist is the five firms that place the most filings at
                 client sites: Tata Consultancy Services, Cognizant, Infosys, HCL
                 and Compunnel. The staffing section follows them to their
@@ -1440,17 +1448,18 @@
             <details class="qa cut" id="cut-jobs">
               <summary><span class="qa-cue">Which jobs go together: three earlier questions</span></summary>
               <div class="qa-body cut-body">
-            <div class="card jobs-card" id="jobs-together">
-              <div class="step-head">
-                <span class="num">A</span>
+            <div class="card jobs-card w4-card" id="jobs-together">
+                          <header class="w4-q">
+              <span class="w4-num">A</span>
+              <div>
                 <h2>Which jobs are hired together?</h2>
-                <span class="year-tag">shared employers</span>
+                <p class="w4-answer">Software Developers sit in 8 of the 12 pairs because almost every sponsoring company hires them.</p>
               </div>
-              <p class="sub">
+            </header>
+<p class="sub">
                 Each bar is a pair among the 60 largest occupations. Its length is
                 the number of companies that filed for both, not the number of
-                workers requested. Software Developers sit in 8 of the 12 pairs
-                because almost every sponsoring company hires them.
+                workers requested. 
               </p>
               <div class="jobs-grid">
                 <div class="plot">
@@ -1464,22 +1473,19 @@
               </div>
             </div>
 
-            <div class="card jobs-card" id="jobs-bridges">
-              <div class="step-head">
-                <span class="num">B</span>
+            <div class="card jobs-card w4-card" id="jobs-bridges">
+                          <header class="w4-q">
+              <span class="w4-num">B</span>
+              <div>
                 <h2>Which jobs belong to two clusters?</h2>
-                <span class="year-tag">overlap</span>
+                <p class="w4-answer">Only <span data-jobs="bridges-pass">…</span> of <span data-jobs="bridges-tested">…</span> pass, fewer than the <span data-jobs="bridges-chance">…</span> a test this strict passes by chance, so no occupation clearly belongs to two clusters.</p>
               </div>
-              <p class="sub">
+            </header>
+<p class="sub">
                 Colours are clusters found by Louvain in the full co-hiring
                 network, named after their largest occupation. We looked for
                 occupations that also belong to a second cluster, with more
-                employer ties there than any rewired network gives them. Only
-                <span data-jobs="bridges-pass">…</span> of
-                <span data-jobs="bridges-tested">…</span> pass, fewer than the
-                <span data-jobs="bridges-chance">…</span> a test this strict
-                passes by chance, so no occupation clearly belongs to two
-                clusters. A ringed node would be one that passes. Click a node to
+                employer ties there than any rewired network gives them.  A ringed node would be one that passes. Click a node to
                 inspect it.
               </p>
               <div class="jobs-grid jobs-network-grid">
@@ -1495,12 +1501,15 @@
               </div>
             </div>
 
-            <div class="card jobs-card" id="jobs-groups">
-              <div class="step-head">
-                <span class="num">C</span>
+            <div class="card jobs-card w4-card" id="jobs-groups">
+                          <header class="w4-q">
+              <span class="w4-num">C</span>
+              <div>
                 <h2>Do the clusters follow official job groups?</h2>
-                <span class="year-tag">SOC comparison</span>
+                <p class="w4-answer">The clusters follow the official groups only in part: NMI <strong data-jobs="nmi">…</strong> against <strong data-jobs="shuffled">…</strong> for shuffled labels (AMI <strong data-jobs="ami">…</strong>), over the <span data-jobs="scored">…</span> occupations in clusters of two or more.</p>
               </div>
+            </header>
+
               <p class="sub">
                 The government groups occupations by their first two SOC digits.
                 We compare those labels with the clusters found from hiring
@@ -1521,11 +1530,7 @@
                 <span class="ico">💡</span>
                 <span>
                   <b>What to notice</b>
-                  The clusters follow the official groups only in part: NMI
-                  <strong data-jobs="nmi">…</strong> against <strong data-jobs="shuffled">…</strong> for
-                  shuffled labels (AMI <strong data-jobs="ami">…</strong>), over the
-                  <span data-jobs="scored">…</span> occupations in clusters of two
-                  or more. The software cluster also holds engineers, accountants
+                   The software cluster also holds engineers, accountants
                   and managers: companies hire across the official groups.
                 </span>
               </div>
@@ -1581,91 +1586,82 @@
             <details class="qa cut" id="cut-who">
               <summary><span class="qa-cue">Who staffs whom: four earlier questions, the law firms and the lottery</span></summary>
               <div class="qa-body cut-body">
-                <div class="card cut-card" id="who-first-round">
-                <div class="staffing-prose">
-              <h3>How many workers sit at a client?</h3>
-              <p>
-                A filing is a request to employ someone, not a hire. In FY2025,
+                <div class="card cut-card w4-card" id="who-first-round">
+          <div class="w4-q-block" id="who-q1">
+            <header class="w4-q">
+              <span class="w4-num">A</span>
+              <div>
+                <h2>How many workers sit at a client?</h2>
+                <p class="w4-answer">In FY2025, 104,732 of the 537,796 certified filings (19.5%) mark a client site.</p>
+              </div>
+            </header>
+            <p class="sub">A filing is a request to employ someone, not a hire. In FY2025,
                 104,732 of the 537,796 certified filings (19.5%) mark a client
-                site. The worksites file lists every client a filing names; we
-                leave out the 16% of client entries that name no company, such
-                as "Home Address", and the 1,881 where a firm names itself.
-                Counted that way, 101,763 filings (18.9%) name a client company:
-                the worker is employed by one company and works at another, down
-                from 21.9% in FY2022. Placing firms also fare worse
+                site. </p>
+            <p class="sub"> Placing firms also fare worse
                 at USCIS: every year from FY2022 on, it denied about twice the
                 share of their first-time petitions, 2.7% against 1.2% for
                 direct employers in FY2022 and 3.4% against 2.0% from October
                 2025 to June 2026.
               </p>
-              <p>
-                The lottery shows the same split one step earlier. Each new
-                H-1B worker starts as a registration that USCIS draws at
-                random, and USCIS gave Bloomberg News every registration from
-                the March 2023 draw after a FOIA lawsuit. Every petition that
-                followed names its filing, so we can follow a ticket to its
-                client. Direct employers sent 5.1 registrations per approved
-                petition, placing firms 9.1, and firms with fewer than 20
-                filings 12.2; those small firms sent 53% of the 758,967
-                registrations. Most of the gap is drawn tickets nobody used.
-                When USCIS drew a direct employer's registration, a petition
-                followed 76% of the time; a placing firm's, 50%; a small
-                firm's, 35%. That step carries 74% of the gap between placing
-                and direct firms, and the draw itself 24%. Much of it comes from
-                workers registered by several employers: 54% of registrations
-                named one, and when USCIS drew one, a petition followed 23% of
-                the time, against 81% for a worker registered once. 18,307 of
-                the petitions lead to a client company. Citigroup received the
-                most, 342 through 38 firms.
-              </p>
-              <h3>Do clients group by industry or by the firm that staffs them?</h3>
-              <p>
-                By both, weakly, and slightly more by vendor. With every
+            <div class="w4-reveals">
+              <span class="w4-tip"><button aria-describedby="w4-pop-who-q1-how" type="button"><svg aria-hidden="true" height="14" viewBox="0 0 24 24" width="14"><circle cx="12" cy="12" fill="none" r="9" stroke="currentColor" stroke-width="2"></circle><path d="M12 11v6M12 7.5v.5" fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="2"></path></svg>How we tested it</button><span class="w4-pop" id="w4-pop-who-q1-how" role="tooltip"><b>How we tested it</b>The worksites file lists every client a filing names; we leave out the 16% of client entries that name no company, such as "Home Address", and the 1,881 where a firm names itself. Counted that way, 101,763 filings (18.9%) name a client company: the worker is employed by one company and works at another, down from 21.9% in FY2022.</span></span>
+              <span class="w4-tip"><button aria-describedby="w4-pop-who-q1-more" type="button"><svg aria-hidden="true" height="14" viewBox="0 0 24 24" width="14"><circle cx="12" cy="12" fill="none" r="9" stroke="currentColor" stroke-width="2"></circle><path d="M12 8v8M8 12h8" fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="2"></path></svg>More numbers</button><span class="w4-pop" id="w4-pop-who-q1-more" role="tooltip"><b>More numbers</b>The lottery shows the same split one step earlier. Each new H-1B worker starts as a registration that USCIS draws at random, and USCIS gave Bloomberg News every registration from the March 2023 draw after a FOIA lawsuit. Every petition that followed names its filing, so we can follow a ticket to its client. Direct employers sent 5.1 registrations per approved petition, placing firms 9.1, and firms with fewer than 20 filings 12.2; those small firms sent 53% of the 758,967 registrations. Most of the gap is drawn tickets nobody used. When USCIS drew a direct employer's registration, a petition followed 76% of the time; a placing firm's, 50%; a small firm's, 35%. That step carries 74% of the gap between placing and direct firms, and the draw itself 24%. Much of it comes from workers registered by several employers: 54% of registrations named one, and when USCIS drew one, a petition followed 23% of the time, against 81% for a worker registered once. 18,307 of the petitions lead to a client company. Citigroup received the most, 342 through 38 firms.</span></span>
+            </div>
+          </div>
+          <div class="w4-q-block" id="who-q2">
+            <header class="w4-q">
+              <span class="w4-num">B</span>
+              <div>
+                <h2>Do clients group by industry or by the firm that staffs them?</h2>
+                <p class="w4-answer">By both, weakly, and slightly more by vendor.</p>
+              </div>
+            </header>
+            <p class="sub"> With every
                 firm–client link counted once,
                 Louvain splits the network into about 65 groups, and the split
                 beats rewired networks that keep everyone's number of partners
                 (modularity 0.57 against 0.53). Among the 1,209 clients with a
                 known industry and two or more firms, the groups match the main
                 vendor at an adjusted mutual information (AMI) of 0.11 and the
-                industry at 0.07; both beat shuffled labels. AMI corrects NMI for
-                chance, which matters here: these clients have 478 main vendors
-                but only 17 industries. Counting filings pulls clients to their
-                main vendor (AMI 0.48 against 0.07), but that split scores below
-                rewired networks with the same filing counts (0.60 against 0.74),
-                and the vendor's head start is built in: the vendor is a node in
-                the same network, and 86% of these clients land in its group.
-              </p>
-              <h3>Who relies on a single vendor?</h3>
-              <p>
-                Small clients. 14,678 of the 18,900 clients use one firm, but they
+                industry at 0.07; both beat shuffled labels. </p>
+            <div class="w4-reveals">
+              <span class="w4-tip"><button aria-describedby="w4-pop-who-q2-more" type="button"><svg aria-hidden="true" height="14" viewBox="0 0 24 24" width="14"><circle cx="12" cy="12" fill="none" r="9" stroke="currentColor" stroke-width="2"></circle><path d="M12 8v8M8 12h8" fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="2"></path></svg>More numbers</button><span class="w4-pop" id="w4-pop-who-q2-more" role="tooltip"><b>More numbers</b>AMI corrects NMI for chance, which matters here: these clients have 478 main vendors but only 17 industries. Counting filings pulls clients to their main vendor (AMI 0.48 against 0.07), but that split scores below rewired networks with the same filing counts (0.60 against 0.74), and the vendor's head start is built in: the vendor is a node in the same network, and 86% of these clients land in its group.</span></span>
+            </div>
+          </div>
+          <div class="w4-q-block" id="who-q3">
+            <header class="w4-q">
+              <span class="w4-num">C</span>
+              <div>
+                <h2>Who relies on a single vendor?</h2>
+                <p class="w4-answer">Small clients.</p>
+              </div>
+            </header>
+            <p class="sub"> 14,678 of the 18,900 clients use one firm, but they
                 hold 22% of placed filings. Of the 629 clients with 20 or more
                 filings, 69 get over 90% from one firm, and the median one gets
-                37% from its largest. Citigroup, the largest client, uses 114
-                firms, and Tata Consultancy Services supplies a quarter. The eight
-                largest firms supply only 27% of what the 20 largest clients
-                receive.
-              </p>
-              <h3>Does it hold from year to year?</h3>
-              <p>
-                Only in part. On the clients present in both years, consecutive
-                years agree at NMI 0.21 to 0.27, about half the 0.48 to 0.50
-                between two runs of the same year on the same clients. We
-                compared vendor and industry on FY2025 only.
-              </p>
-              <p>
-                FY2026 breaks the pattern at the top. We compare January to June
-                of each year, because October 2025, the month of the federal
-                shutdown, holds 1,306 certified filings against 35,258 a year
-                earlier. From January to June, certified filings fell 5.8% after
-                rising 9.5% the year before, and filings that name a client
-                company fell 16.5% after holding flat (-0.1%). Tata Consultancy
-                Services filed 2,079, down from 5,256. Of the 349 clients it supplied most from January to June 2025, 223 still appear, and 111 of those now
-                get most of their workers from another firm, most often Infosys.
-                Across clients with five or more filings in both years, 47%
-                changed their main vendor, against 44% a year earlier. These are
-                applications, so they show what employers asked for, not why.
-              </p>
+                37% from its largest. </p>
+            <div class="w4-reveals">
+              <span class="w4-tip"><button aria-describedby="w4-pop-who-q3-more" type="button"><svg aria-hidden="true" height="14" viewBox="0 0 24 24" width="14"><circle cx="12" cy="12" fill="none" r="9" stroke="currentColor" stroke-width="2"></circle><path d="M12 8v8M8 12h8" fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="2"></path></svg>More numbers</button><span class="w4-pop" id="w4-pop-who-q3-more" role="tooltip"><b>More numbers</b>Citigroup, the largest client, uses 114 firms, and Tata Consultancy Services supplies a quarter. The eight largest firms supply only 27% of what the 20 largest clients receive.</span></span>
             </div>
+          </div>
+          <div class="w4-q-block" id="who-q4">
+            <header class="w4-q">
+              <span class="w4-num">D</span>
+              <div>
+                <h2>Does it hold from year to year?</h2>
+                <p class="w4-answer">Only in part.</p>
+              </div>
+            </header>
+            <p class="sub"> On the clients present in both years, consecutive
+                years agree at NMI 0.21 to 0.27, about half the 0.48 to 0.50
+                between two runs of the same year on the same clients. </p>
+            <div class="w4-reveals">
+              <span class="w4-tip"><button aria-describedby="w4-pop-who-q4-scope" type="button"><svg aria-hidden="true" height="14" viewBox="0 0 24 24" width="14"><circle cx="12" cy="12" fill="none" r="9" stroke="currentColor" stroke-width="2"></circle><path d="M12 11v6M12 7.5v.5" fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="2"></path></svg>Scope</button><span class="w4-pop" id="w4-pop-who-q4-scope" role="tooltip"><b>Scope</b>We compared vendor and industry on FY2025 only.</span></span>
+              <span class="w4-tip"><button aria-describedby="w4-pop-who-q4-more" type="button"><svg aria-hidden="true" height="14" viewBox="0 0 24 24" width="14"><circle cx="12" cy="12" fill="none" r="9" stroke="currentColor" stroke-width="2"></circle><path d="M12 8v8M8 12h8" fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="2"></path></svg>More numbers</button><span class="w4-pop right" id="w4-pop-who-q4-more" role="tooltip"><b>More numbers</b>FY2026 breaks the pattern at the top. We compare January to June of each year, because October 2025, the month of the federal shutdown, holds 1,306 certified filings against 35,258 a year earlier. From January to June, certified filings fell 5.8% after rising 9.5% the year before, and filings that name a client company fell 16.5% after holding flat (-0.1%). Tata Consultancy Services filed 2,079, down from 5,256. Of the 349 clients it supplied most from January to June 2025, 223 still appear, and 111 of those now get most of their workers from another firm, most often Infosys. Across clients with five or more filings in both years, 47% changed their main vendor, against 44% a year earlier. These are applications, so they show what employers asked for, not why.</span></span>
+            </div>
+          </div>
+          </div>
                 <figure class="staffing" id="staffing-figure">
                   <div class="staffing-controls">
                     <div aria-label="Fiscal year" class="staffing-years" role="group">
@@ -1735,18 +1731,22 @@
                   </div>
                 </figure>
 
-                <div class="staffing-prose" id="staffing-lawyers" style="margin-top: 18px">
-                  <h3>Who files the paperwork?</h3>
-                  <p>
-                    Three filings in four name an outside law firm, and five firms
-                    file 40% of those. Fragomen alone files 78,531 for 3,129
+                <div class="staffing-prose w4-card" id="staffing-lawyers" style="margin-top: 18px">
+            <header class="w4-q">
+              <span class="w4-num">E</span>
+              <div>
+                <h2>Who files the paperwork?</h2>
+                <p class="w4-answer">Three filings in four name an outside law firm, and five firms file 40% of those.</p>
+              </div>
+            </header>
+                  <p class="sub"> Fragomen alone files 78,531 for 3,129
                     employers. Outsourcing firms mostly do without: they file 52% of
                     their applications with no outside firm and send 3% to the five
                     largest, while direct employers send those five 48%. Per
                     employer the averages are 2% and 30%, and none of 1,000 shuffles
                     of which employer is which produced a gap that wide.
                   </p>
-                  <p>
+                  <p class="sub">
                     Two law firms share filings when the same employer uses both:
                     for each such employer, the smaller of its filings through
                     either. That network has one giant hub, the case the disparity
@@ -1760,7 +1760,7 @@
                     because they form a pair linked to nobody else, where neither
                     end can judge the link.
                   </p>
-                  <p>
+                  <p class="sub">
                     Louvain finds 34 groups at modularity 0.67, against 0.55 for
                     rewired networks that keep each employer's and each law firm's
                     number of partners (z = 12). The groups are barely regional
@@ -1781,14 +1781,17 @@
                     <span class="qa-cue">With filing counts or without?</span>
                   </summary>
                   <div class="qa-body">
+                                <header class="w4-q">
+                                  <span class="w4-num">F</span>
+                                  <div>
+                                    <h2>With filing counts or without?</h2>
+                                    <p class="w4-answer">The two partitions share an NMI of <b class="cross">…</b>, less than two runs of either kind with different seeds (<b class="seeds">…</b> weighted, <b class="seeds-plain">…</b> unweighted), so the filing counts change the grouping.</p>
+                                  </div>
+                                </header>
                     <p class="sub">
                       Louvain on the firm–client network for FY2025, 100 runs each:
                       once with links weighted by filings, once with every link
-                      counting one. The two partitions share an NMI of
-                      <b class="cross">…</b>, less than two runs of either kind with
-                      different seeds (<b class="seeds">…</b> weighted,
-                      <b class="seeds-plain">…</b> unweighted), so the filing counts
-                      change the grouping. They pull it toward vendors: AMI with each
+                      counting one.  They pull it toward vendors: AMI with each
                       client's main vendor rises from <b class="vendor-plain">…</b>
                       to <b class="vendor">…</b> when filings count, while AMI with
                       industry stays near <b class="industry">…</b>.
@@ -1843,6 +1846,13 @@
                     <span class="qa-cue">Strong ties, weak ties and pay</span>
                   </summary>
                   <div class="qa-body">
+                                <header class="w4-q">
+                                  <span class="w4-num">G</span>
+                                  <div>
+                                    <h2>Strong ties, weak ties and pay</h2>
+                                    <p class="w4-answer">Here the pattern runs the other way, faintly.</p>
+                                  </div>
+                                </header>
                     <p class="sub">
                       Among friends, the strongest ties sit inside tight groups where
                       your close friends also know each other, and weak ties bridge
@@ -1850,7 +1860,7 @@
                       on millions of phone users in 2007). A link's
                       <b>overlap</b> measures the tightness: of the firm's other
                       clients and the client's other firms, the share that are linked
-                      to each other. Here the pattern runs the other way, faintly.
+                      to each other. 
                       Over the 28,104 links where overlap is defined, filings and
                       overlap correlate at Spearman -0.04; with the filing counts
                       shuffled over the same links the correlation is 0.00 ±
@@ -1883,6 +1893,13 @@
                     <span class="qa-cue">Do the firms that register the same workers staff the same clients?</span>
                   </summary>
                   <div class="qa-body">
+                                <header class="w4-q">
+                                  <span class="w4-num">H</span>
+                                  <div>
+                                    <h2>Do the firms that register the same workers staff the same clients?</h2>
+                                    <p class="w4-answer">Registering the same workers is spread across the staffing groups; it does not mark a cluster of firms.</p>
+                                  </div>
+                                </header>
                     <p class="sub">
                       We took the 2,942 firms in the FY2023 staffing network that
                       sent 20 or more registrations to the March 2023 draw, and split
@@ -1892,9 +1909,7 @@
                       against 50.0% when the labels are shuffled (p = 0.001 over
                       1,000 shuffles), and AMI with the groups is 0.004 over 100
                       runs. The March 2022 draw against the FY2022 network gives
-                      51.9% against 50.0%. Registering the same workers is spread
-                      across the staffing groups; it does not mark a cluster of
-                      firms. The lottery data is USCIS's, obtained by Bloomberg News;
+                      51.9% against 50.0%.  The lottery data is USCIS's, obtained by Bloomberg News;
                       figures from analysis/week04_lottery.py.
                     </p>
                   </div>
@@ -1910,10 +1925,15 @@
                     <span class="qa-cue">Who keeps them? Green cards as the strong tie</span>
                   </summary>
                   <div class="qa-body">
+                                <header class="w4-q">
+                                  <span class="w4-num">M1</span>
+                                  <div>
+                                    <h2>Who keeps them? Green cards as the strong tie</h2>
+                                    <p class="w4-answer">An H-1B filing is a weak tie between an employer and a worker; a green-card filing (PERM) is a strong one, because the employer sponsors the worker to stay.</p>
+                                  </div>
+                                </header>
                     <p class="sub">
-                      An H-1B filing is a weak tie between an employer and a worker;
-                      a green-card filing (PERM) is a strong one, because the
-                      employer sponsors the worker to stay. In FY2025 the median
+                       In FY2025 the median
                       employer with 20 or more H-1B filings filed 13.2 green cards
                       per 100 of them, and the two counts rank employers only loosely
                       alike (Spearman 0.50). As with degree and strength in the
@@ -1937,6 +1957,13 @@
                     <span class="qa-cue">Where are they from? A network of countries</span>
                   </summary>
                   <div class="qa-body">
+                                <header class="w4-q">
+                                  <span class="w4-num">M2</span>
+                                  <div>
+                                    <h2>Where are they from? A network of countries</h2>
+                                    <p class="w4-answer">The groups match world regions (AMI 0.10) and Week 3's migration communities (0.10) only weakly: green-card hiring does not sort countries into regional blocs.</p>
+                                  </div>
+                                </header>
                     <p class="sub">
                       A worker's citizenship is personal, so we read it only in
                       memory and keep counts per country and employer, dropping every
@@ -1950,10 +1977,7 @@
                       copies (modularity 0.10 against 0.06); weighted by shared green
                       cards, they group less (0.26 against 0.40). India and China
                       share one group with Canada, Belarus and Costa Rica, and India
-                      keeps 79% of its weight inside it. The groups
-                      match world regions (AMI 0.10) and Week 3's migration
-                      communities (0.10) only weakly: green-card hiring does not sort
-                      countries into regional blocs. Among the ten largest sponsors,
+                      keeps 79% of its weight inside it.  Among the ten largest sponsors,
                       Google's green cards are the most varied, 4.7 effective
                       countries with India at 30%, against Amazon's 3.0 at 67%. The
                       third group gathers the Philippines, Kenya, Ghana, Zimbabwe,
@@ -1971,13 +1995,18 @@
                     <span class="qa-cue">Where is the hiring densest? Filings per 1,000 jobs</span>
                   </summary>
                   <div class="qa-body">
+                                <header class="w4-q">
+                                  <span class="w4-num">M3</span>
+                                  <div>
+                                    <h2>Where is the hiring densest? Filings per 1,000 jobs</h2>
+                                    <p class="w4-answer">New York files the most, 65,935, but that is 6.9 per 1,000 jobs; San Jose files 42.9, Trenton 17.2 and Seattle 16.8.</p>
+                                  </div>
+                                </header>
                     <p class="sub">
                       Section 1 counts filings. Divide each metro's FY2025 filings by
                       its jobs in the Bureau of Labor Statistics' May 2025
                       employment survey (OEWS) and the map shifts: nationally it is
-                      4.5 filings per 1,000 jobs. New York files the most, 65,935,
-                      but that is 6.9 per 1,000 jobs; San Jose files 42.9, Trenton
-                      17.2 and Seattle 16.8. Among the 203 metros with 100,000 jobs
+                      4.5 filings per 1,000 jobs.  Among the 203 metros with 100,000 jobs
                       or more, count and density rank alike (Spearman 0.90), yet
                       only 5 of the 10 largest by count stay in the top 10 by
                       density: Dallas, San Jose, San Francisco, Seattle and Austin.
@@ -1995,6 +2024,13 @@
                     <span class="qa-cue">Strength against degree: where do the heavy links go?</span>
                   </summary>
                   <div class="qa-body">
+                                <header class="w4-q">
+                                  <span class="w4-num">M4</span>
+                                  <div>
+                                    <h2>Strength against degree: where do the heavy links go?</h2>
+                                    <p class="w4-answer">Three of the top five are therapy and rehab clinics: the heaviest one-to-one ties belong to health care, not IT.</p>
+                                  </div>
+                                </header>
                     <p class="sub">
                       The course compares a node's degree (how many partners) with
                       its strength (how many filings over all its links), and finds
@@ -2003,9 +2039,7 @@
                       clients less so (0.75). The clients with the most filings from
                       a single firm are Ultimate Therapy, 133 filings from one firm;
                       Sigma Rehab, 95; Post Rehab Services, 61; and Grady Memorial
-                      Hospital, 58. Three of the top five are therapy and rehab
-                      clinics: the heaviest one-to-one ties belong to health care,
-                      not IT. Figures from analysis/week04_ties.py.
+                      Hospital, 58.  Figures from analysis/week04_ties.py.
                     </p>
                   </div>
                 </details>
@@ -2015,12 +2049,18 @@
                     <span class="qa-cue">The lottery a year apart, and who receives the winners</span>
                   </summary>
                   <div class="qa-body">
+                                <header class="w4-q">
+                                  <span class="w4-num">M5</span>
+                                  <div>
+                                    <h2>The lottery a year apart, and who receives the winners</h2>
+                                    <p class="w4-answer">One approved petition took 5.2 registrations in 2022 and 8.5 in 2023.</p>
+                                  </div>
+                                </header>
                     <p class="sub">
                       Between the March 2022 and March 2023 draws, registrations for
                       a worker whom another employer had also registered rose from
                       35% to 54% of the total, and the share of drawn registrations
-                      that became a petition fell from 74% to 49%. One approved
-                      petition took 5.2 registrations in 2022 and 8.5 in 2023. The
+                      that became a petition fell from 74% to 49%.  The
                       order held both years: direct employers needed the fewest (4.3,
                       then 5.1), placing firms more (6.3, then 9.1). Of the March
                       2023 petitions, 20% lead to a client company, 66% of those
@@ -2039,10 +2079,15 @@
                     <span class="qa-cue">USCIS denials, year by year</span>
                   </summary>
                   <div class="qa-body">
+                                <header class="w4-q">
+                                  <span class="w4-num">M6</span>
+                                  <div>
+                                    <h2>USCIS denials, year by year</h2>
+                                    <p class="w4-answer">Share of first-time H-1B petitions USCIS denied, for employers with 20 or more certified filings that year. Placing firms put half or more of their filings at a client.</p>
+                                  </div>
+                                </header>
                     <p class="sub">
-                      Share of first-time H-1B petitions USCIS denied, for employers
-                      with 20 or more certified filings that year. Placing firms put
-                      half or more of their filings at a client. From the hub's
+                       From the hub's
                       Tableau export; FY2026 runs October to June.
                     </p>
                     <table class="ego">
@@ -2222,54 +2267,11 @@
                   Certification — LCA disclosures and worksites file, public
                   domain; USCIS H-1B Employer Data Hub, FY2022 to June 2026;
                   H-1B lottery registrations for the FY2022 to FY2024 draws,
-                  USCIS data obtained by Bloomberg News under FOIA. Only allow-listed columns leave the build folder (no
-                  addresses, emails or phone numbers). Each script writes the
+                  USCIS data obtained by Bloomberg News under FOIA. Each script writes the
                   numbers its section quotes to a JSON file the page reads:
+                
+                  <a href="https://github.com/horrrt/02805_social_graphs/blob/main/analysis/week04_data.py"><code>week04_data.py</code></a>, <a href="https://github.com/horrrt/02805_social_graphs/blob/main/analysis/week04_where.py"><code>week04_where.py</code></a>, <a href="https://github.com/horrrt/02805_social_graphs/blob/main/analysis/week04_jobs.py"><code>week04_jobs.py</code></a>, <a href="https://github.com/horrrt/02805_social_graphs/blob/main/analysis/week04_staffing.py"><code>week04_staffing.py</code></a>, <a href="https://github.com/horrrt/02805_social_graphs/blob/main/analysis/week04_staffing_figure.py"><code>week04_staffing_figure.py</code></a>, <a href="https://github.com/horrrt/02805_social_graphs/blob/main/analysis/week04_shift.py"><code>week04_shift.py</code></a>, <a href="https://github.com/horrrt/02805_social_graphs/blob/main/analysis/week04_ties.py"><code>week04_ties.py</code></a>, <a href="https://github.com/horrrt/02805_social_graphs/blob/main/analysis/week04_lawfirms.py"><code>week04_lawfirms.py</code></a>, <a href="https://github.com/horrrt/02805_social_graphs/blob/main/analysis/week04_lottery.py"><code>week04_lottery.py</code></a>, <a href="https://github.com/horrrt/02805_social_graphs/blob/main/analysis/week04_perm.py"><code>week04_perm.py</code></a>, <a href="https://github.com/horrrt/02805_social_graphs/blob/main/analysis/week04_countries.py"><code>week04_countries.py</code></a>, <a href="https://github.com/horrrt/02805_social_graphs/blob/main/analysis/week04_oews.py"><code>week04_oews.py</code></a>, <a href="https://github.com/horrrt/02805_social_graphs/blob/main/analysis/week04_names.py"><code>week04_names.py</code></a>, <a href="https://github.com/horrrt/02805_social_graphs/blob/main/analysis/week04_names_check.py"><code>week04_names_check.py</code></a>, <a href="https://github.com/horrrt/02805_social_graphs/blob/main/analysis/week04_sec.py"><code>week04_sec.py</code></a>, <a href="https://github.com/horrrt/02805_social_graphs/blob/main/analysis/week04_wikidata.py"><code>week04_wikidata.py</code></a>, <a href="https://github.com/horrrt/02805_social_graphs/blob/main/analysis/week04_where_who.py"><code>week04_where_who.py</code></a>, <a href="https://github.com/horrrt/02805_social_graphs/blob/main/analysis/week04_jobs_split.py"><code>week04_jobs_split.py</code></a>, <a href="https://github.com/horrrt/02805_social_graphs/blob/main/analysis/week04_staffing_moves.py"><code>week04_staffing_moves.py</code></a>, <a href="https://github.com/horrrt/02805_social_graphs/blob/main/analysis/week04_footprint.py"><code>week04_footprint.py</code></a>, <a href="https://github.com/horrrt/02805_social_graphs/blob/main/analysis/week04_footprint_rank.py"><code>week04_footprint_rank.py</code></a>, <a href="https://github.com/horrrt/02805_social_graphs/blob/main/analysis/week04_beyond.py"><code>week04_beyond.py</code></a>, <a href="https://github.com/horrrt/02805_social_graphs/blob/main/analysis/week04_schemas.py"><code>week04_schemas.py</code></a>.
                 </p>
-                <ul class="sub">
-                  <li><a href="https://github.com/horrrt/02805_social_graphs/blob/main/analysis/week04_data.py"><code>week04_data.py</code></a>
-                    downloads the filings and keeps the allowed columns.</li>
-                  <li><a href="https://github.com/horrrt/02805_social_graphs/blob/main/analysis/week04_where.py"><code>week04_where.py</code></a>
-                    builds the place network and writes <code>docs/assets/data/week04_place.json</code>.</li>
-                  <li><a href="https://github.com/horrrt/02805_social_graphs/blob/main/analysis/week04_jobs.py"><code>week04_jobs.py</code></a>
-                    builds the occupation network.</li>
-                  <li><a href="https://github.com/horrrt/02805_social_graphs/blob/main/analysis/week04_staffing.py"><code>week04_staffing.py</code></a>
-                    and <a href="https://github.com/horrrt/02805_social_graphs/blob/main/analysis/week04_staffing_figure.py"><code>week04_staffing_figure.py</code></a>
-                    build the firm → client network and its figure;
-                    <a href="https://github.com/horrrt/02805_social_graphs/blob/main/analysis/week04_shift.py"><code>week04_shift.py</code></a>
-                    compares January to June of FY2024, FY2025 and FY2026;
-                    <a href="https://github.com/horrrt/02805_social_graphs/blob/main/analysis/week04_ties.py"><code>week04_ties.py</code></a>
-                    tests strong and weak ties and wage levels; and
-                    <a href="https://github.com/horrrt/02805_social_graphs/blob/main/analysis/week04_lawfirms.py"><code>week04_lawfirms.py</code></a>
-                    builds the law-firm network and its backbones.</li>
-                  <li><a href="https://github.com/horrrt/02805_social_graphs/blob/main/analysis/week04_lottery.py"><code>week04_lottery.py</code></a>
-                    follows lottery registrations to petitions, filings and clients;
-                    <a href="https://github.com/horrrt/02805_social_graphs/blob/main/analysis/week04_perm.py"><code>week04_perm.py</code></a>
-                    compares green cards with H-1B filings; and
-                    <a href="https://github.com/horrrt/02805_social_graphs/blob/main/analysis/week04_countries.py"><code>week04_countries.py</code></a>
-                    counts green cards by country and employer, hides every count under 10, and builds the country network.</li>
-                  <li><a href="https://github.com/horrrt/02805_social_graphs/blob/main/analysis/week04_oews.py"><code>week04_oews.py</code></a>
-                    divides filings by the Bureau of Labor Statistics' OEWS jobs per metro and occupation.</li>
-                  <li><a href="https://github.com/horrrt/02805_social_graphs/blob/main/analysis/week04_names.py"><code>week04_names.py</code></a>
-                    decides which names are the same company;
-                    <a href="https://github.com/horrrt/02805_social_graphs/blob/main/analysis/week04_names_check.py"><code>week04_names_check.py</code></a>
-                    tests its rules against tax numbers, and
-                    <a href="https://github.com/horrrt/02805_social_graphs/blob/main/analysis/week04_sec.py"><code>week04_sec.py</code></a>
-                    adds industry codes from the SEC, and
-                    <a href="https://github.com/horrrt/02805_social_graphs/blob/main/analysis/week04_wikidata.py"><code>week04_wikidata.py</code></a>
-                    adds them from Wikidata (CC0) for clients the SEC does not
-                    list, through a reviewed table of Wikidata industries.</li>
-                  <li><a href="https://github.com/horrrt/02805_social_graphs/blob/main/analysis/week04_where_who.py"><code>week04_where_who.py</code></a>,
-                    <a href="https://github.com/horrrt/02805_social_graphs/blob/main/analysis/week04_jobs_split.py"><code>week04_jobs_split.py</code></a>,
-                    <a href="https://github.com/horrrt/02805_social_graphs/blob/main/analysis/week04_staffing_moves.py"><code>week04_staffing_moves.py</code></a>,
-                    <a href="https://github.com/horrrt/02805_social_graphs/blob/main/analysis/week04_footprint.py"><code>week04_footprint.py</code></a>,
-                    <a href="https://github.com/horrrt/02805_social_graphs/blob/main/analysis/week04_footprint_rank.py"><code>week04_footprint_rank.py</code></a> and
-                    <a href="https://github.com/horrrt/02805_social_graphs/blob/main/analysis/week04_beyond.py"><code>week04_beyond.py</code></a>
-                    answer the questions in sections 1 to 5, each against its own
-                    null model.</li>
-                  <li><a href="https://github.com/horrrt/02805_social_graphs/blob/main/analysis/week04_schemas.py"><code>week04_schemas.py</code></a>
-                    checks every JSON file against the fields the page reads.</li>
-                </ul>
               </div>
             </details>
           </div>
