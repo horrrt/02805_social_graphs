@@ -203,6 +203,19 @@ REFS = {
     "oesm25ma.zip": "https://www.bls.gov/oes/special-requests/oesm25ma.zip",
 }
 
+# O*NET 31.0 (CC BY 4.0): what each occupation does, rated per skill, knowledge
+# area and work activity, for the skill similarity of occupations (week04_skills.py).
+ONET = "https://www.onetcenter.org/dl_files/database/db_31_0_csv/"
+ONET_FILES = [
+    "occupation_data", "essential_skills", "transferable_skills", "knowledge", "work_activities",
+    "abilities", "software_skills", "task_statements", "related_occupations", "job_zones",
+    "content_model_reference", "scales_reference",
+]
+# O*NET 25.0, the last release on the 2010 taxonomy, still rates the two finance
+# occupations 31.0 leaves blank; the crosswalk maps its codes to 2019 ones.
+ONET_ARCHIVE = "https://www.onetcenter.org/dl_files/database/db_25_0_text.zip"
+ONET_CROSSWALK = "https://www.onetcenter.org/taxonomy/2019/walk/2010_to_2019_Crosswalk.csv?fmt=csv"
+
 # The hub's static CSV exports stop at FY2023; the Tableau view behind the hub
 # page covers FY2009 to FY2026 Q3 and exports any year as CSV.
 HUB_VIEW = "https://bigdataanalyticspub-sb.uscis.dhs.gov/views/H1BEmployerDataHub-Final/H1BPublic.csv"
@@ -409,7 +422,7 @@ def main():
                         help="folders that already hold DOL workbooks")
     parser.add_argument("--years", type=int, nargs="+", choices=YEARS, default=YEARS)
     parser.add_argument("--kinds", nargs="+", choices=sorted(KINDS), default=sorted(KINDS))
-    parser.add_argument("--refs", action="store_true", help="also fetch the Census and BLS tables")
+    parser.add_argument("--refs", action="store_true", help="also fetch the Census, BLS and O*NET tables")
     parser.add_argument("--hub", action="store_true", help="also fetch the USCIS hub for FY2022 to FY2026")
     parser.add_argument("--lottery", action="store_true", help="also fetch the H-1B lottery registrations")
     parser.add_argument("--no-tables", action="store_true", help="skip the DOL tables (with --refs, --hub or --lottery)")
@@ -436,6 +449,10 @@ def main():
                      user_agent=f"Mozilla/5.0 (research; {contact})")
         else:
             print("skipped the BLS SOC and OEWS files: set CONTACT_EMAIL=you@student.dtu.dk and rerun with --refs")
+        for name in ONET_FILES:
+            download(f"{ONET}{name}.csv", RAW / "onet" / f"{name}.csv")
+        download(ONET_ARCHIVE, RAW / "onet" / "db_25_0_text.zip")
+        download(ONET_CROSSWALK, RAW / "onet" / "onet_2010_to_2019_crosswalk.csv")
 
     if args.hub:
         for year in HUB_YEARS:
