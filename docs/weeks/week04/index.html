@@ -1046,15 +1046,17 @@
         </section>
 
         <section class="step" id="closing">
-          <div class="card">
-            <div class="step-head">
-              <span class="num">✓</span>
+          <header class="w4-opener">
+            <span aria-hidden="true" class="w4-opener-num">✓</span>
+            <div>
               <h2>Closing</h2>
-              <span class="year-tag">one reading of the network</span>
+              <p>The groups in these networks are weak, but they are not noise.</p>
             </div>
-            <p class="sub">
-              <b>The groups in these networks are weak, but they are not
-              noise.</b>
+          </header>
+          <div class="card w4-card">
+            <div class="w4-two">
+              <div>
+                <p class="sub">
               Cities group by who hires there, not by region. Outsourcing firms
               bundle jobs differently from direct employers of the same size.
               And when a client drops
@@ -1065,21 +1067,7 @@
               consulting employers, and the metro groups start to follow Census
               regions; Amazon alone does all of that.
             </p>
-            <p class="sub">
-              Where outsourcing shows most is outside the networks: a filing
-              that places a worker at a client has 3.6 times the odds of a
-              lower wage level for the same occupation. Lawyers and green cards
-              barely follow the staffing groups.
-            </p>
-            <p class="sub">
-              <b>What surprised us.</b> The staffing groups looked weak in our
-              first round, following industry about as much as vendor, yet
-              26.5% of vendor switches stay inside them, against 3.2% for a
-              random vendor. And the backbone that seemed to snap between
-              α = 0.1 and 0.05 never snaps: no single link cuts off more than
-              two metros.
-            </p>
-            <div class="notice">
+                <div class="notice">
               <span class="ico">!</span>
               <span>
                 <b>One important limit</b>
@@ -1088,6 +1076,22 @@
                 performed together, that one caused the other, or that the
                 network represents workers who were actually hired.
               </span>
+            </div>
+              </div>
+              <div>
+                <p class="sub">Where outsourcing shows most is outside the networks: a filing
+              that places a worker at a client has 3.6 times the odds of a
+              lower wage level for the same occupation. Lawyers and green cards
+              barely follow the staffing groups.
+            </p>
+                <p class="sub"><b>What surprised us.</b> The staffing groups looked weak in our
+              first round, following industry about as much as vendor, yet
+              26.5% of vendor switches stay inside them, against 3.2% for a
+              random vendor. And the backbone that seemed to snap between
+              α = 0.1 and 0.05 never snaps: no single link cuts off more than
+              two metros.
+            </p>
+              </div>
             </div>
             <details class="qa">
               <summary><span class="qa-cue">AI use and how we checked it</span></summary>
@@ -1118,14 +1122,15 @@
 
         <!-- Deep dive · the first round of questions ------------------ -->
         <section class="step" id="cut">
-          <div class="card">
-            <div class="step-head">
-              <span class="num">+</span>
+          <header class="w4-opener">
+            <span aria-hidden="true" class="w4-opener-num">+</span>
+            <div>
               <h2>Deep dive</h2>
-              <span class="year-tag">earlier questions · more networks · data and methods</span>
+              <p>Our first round of questions, with their charts.</p>
             </div>
-            <p class="sub" id="cut-intro">
-              Our first round of questions, with their charts. Each answer still
+          </header>
+          <div class="card">
+            <p class="sub" id="cut-intro">Each answer still
               holds; the questions above replaced them because they test the
               communities against something that could have come out the other
               way. The numbers the new cards build on (the three metro groups,
@@ -2111,54 +2116,11 @@
                   Certification — LCA disclosures and worksites file, public
                   domain; USCIS H-1B Employer Data Hub, FY2022 to June 2026;
                   H-1B lottery registrations for the FY2022 to FY2024 draws,
-                  USCIS data obtained by Bloomberg News under FOIA. Only allow-listed columns leave the build folder (no
-                  addresses, emails or phone numbers). Each script writes the
+                  USCIS data obtained by Bloomberg News under FOIA. Each script writes the
                   numbers its section quotes to a JSON file the page reads:
+                
+                  <a href="https://github.com/horrrt/02805_social_graphs/blob/main/analysis/week04_data.py"><code>week04_data.py</code></a>, <a href="https://github.com/horrrt/02805_social_graphs/blob/main/analysis/week04_where.py"><code>week04_where.py</code></a>, <a href="https://github.com/horrrt/02805_social_graphs/blob/main/analysis/week04_jobs.py"><code>week04_jobs.py</code></a>, <a href="https://github.com/horrrt/02805_social_graphs/blob/main/analysis/week04_staffing.py"><code>week04_staffing.py</code></a>, <a href="https://github.com/horrrt/02805_social_graphs/blob/main/analysis/week04_staffing_figure.py"><code>week04_staffing_figure.py</code></a>, <a href="https://github.com/horrrt/02805_social_graphs/blob/main/analysis/week04_shift.py"><code>week04_shift.py</code></a>, <a href="https://github.com/horrrt/02805_social_graphs/blob/main/analysis/week04_ties.py"><code>week04_ties.py</code></a>, <a href="https://github.com/horrrt/02805_social_graphs/blob/main/analysis/week04_lawfirms.py"><code>week04_lawfirms.py</code></a>, <a href="https://github.com/horrrt/02805_social_graphs/blob/main/analysis/week04_lottery.py"><code>week04_lottery.py</code></a>, <a href="https://github.com/horrrt/02805_social_graphs/blob/main/analysis/week04_perm.py"><code>week04_perm.py</code></a>, <a href="https://github.com/horrrt/02805_social_graphs/blob/main/analysis/week04_countries.py"><code>week04_countries.py</code></a>, <a href="https://github.com/horrrt/02805_social_graphs/blob/main/analysis/week04_oews.py"><code>week04_oews.py</code></a>, <a href="https://github.com/horrrt/02805_social_graphs/blob/main/analysis/week04_names.py"><code>week04_names.py</code></a>, <a href="https://github.com/horrrt/02805_social_graphs/blob/main/analysis/week04_names_check.py"><code>week04_names_check.py</code></a>, <a href="https://github.com/horrrt/02805_social_graphs/blob/main/analysis/week04_sec.py"><code>week04_sec.py</code></a>, <a href="https://github.com/horrrt/02805_social_graphs/blob/main/analysis/week04_wikidata.py"><code>week04_wikidata.py</code></a>, <a href="https://github.com/horrrt/02805_social_graphs/blob/main/analysis/week04_where_who.py"><code>week04_where_who.py</code></a>, <a href="https://github.com/horrrt/02805_social_graphs/blob/main/analysis/week04_jobs_split.py"><code>week04_jobs_split.py</code></a>, <a href="https://github.com/horrrt/02805_social_graphs/blob/main/analysis/week04_staffing_moves.py"><code>week04_staffing_moves.py</code></a>, <a href="https://github.com/horrrt/02805_social_graphs/blob/main/analysis/week04_footprint.py"><code>week04_footprint.py</code></a>, <a href="https://github.com/horrrt/02805_social_graphs/blob/main/analysis/week04_footprint_rank.py"><code>week04_footprint_rank.py</code></a>, <a href="https://github.com/horrrt/02805_social_graphs/blob/main/analysis/week04_beyond.py"><code>week04_beyond.py</code></a>, <a href="https://github.com/horrrt/02805_social_graphs/blob/main/analysis/week04_schemas.py"><code>week04_schemas.py</code></a>.
                 </p>
-                <ul class="sub">
-                  <li><a href="https://github.com/horrrt/02805_social_graphs/blob/main/analysis/week04_data.py"><code>week04_data.py</code></a>
-                    downloads the filings and keeps the allowed columns.</li>
-                  <li><a href="https://github.com/horrrt/02805_social_graphs/blob/main/analysis/week04_where.py"><code>week04_where.py</code></a>
-                    builds the place network and writes <code>docs/assets/data/week04_place.json</code>.</li>
-                  <li><a href="https://github.com/horrrt/02805_social_graphs/blob/main/analysis/week04_jobs.py"><code>week04_jobs.py</code></a>
-                    builds the occupation network.</li>
-                  <li><a href="https://github.com/horrrt/02805_social_graphs/blob/main/analysis/week04_staffing.py"><code>week04_staffing.py</code></a>
-                    and <a href="https://github.com/horrrt/02805_social_graphs/blob/main/analysis/week04_staffing_figure.py"><code>week04_staffing_figure.py</code></a>
-                    build the firm → client network and its figure;
-                    <a href="https://github.com/horrrt/02805_social_graphs/blob/main/analysis/week04_shift.py"><code>week04_shift.py</code></a>
-                    compares January to June of FY2024, FY2025 and FY2026;
-                    <a href="https://github.com/horrrt/02805_social_graphs/blob/main/analysis/week04_ties.py"><code>week04_ties.py</code></a>
-                    tests strong and weak ties and wage levels; and
-                    <a href="https://github.com/horrrt/02805_social_graphs/blob/main/analysis/week04_lawfirms.py"><code>week04_lawfirms.py</code></a>
-                    builds the law-firm network and its backbones.</li>
-                  <li><a href="https://github.com/horrrt/02805_social_graphs/blob/main/analysis/week04_lottery.py"><code>week04_lottery.py</code></a>
-                    follows lottery registrations to petitions, filings and clients;
-                    <a href="https://github.com/horrrt/02805_social_graphs/blob/main/analysis/week04_perm.py"><code>week04_perm.py</code></a>
-                    compares green cards with H-1B filings; and
-                    <a href="https://github.com/horrrt/02805_social_graphs/blob/main/analysis/week04_countries.py"><code>week04_countries.py</code></a>
-                    counts green cards by country and employer, hides every count under 10, and builds the country network.</li>
-                  <li><a href="https://github.com/horrrt/02805_social_graphs/blob/main/analysis/week04_oews.py"><code>week04_oews.py</code></a>
-                    divides filings by the Bureau of Labor Statistics' OEWS jobs per metro and occupation.</li>
-                  <li><a href="https://github.com/horrrt/02805_social_graphs/blob/main/analysis/week04_names.py"><code>week04_names.py</code></a>
-                    decides which names are the same company;
-                    <a href="https://github.com/horrrt/02805_social_graphs/blob/main/analysis/week04_names_check.py"><code>week04_names_check.py</code></a>
-                    tests its rules against tax numbers, and
-                    <a href="https://github.com/horrrt/02805_social_graphs/blob/main/analysis/week04_sec.py"><code>week04_sec.py</code></a>
-                    adds industry codes from the SEC, and
-                    <a href="https://github.com/horrrt/02805_social_graphs/blob/main/analysis/week04_wikidata.py"><code>week04_wikidata.py</code></a>
-                    adds them from Wikidata (CC0) for clients the SEC does not
-                    list, through a reviewed table of Wikidata industries.</li>
-                  <li><a href="https://github.com/horrrt/02805_social_graphs/blob/main/analysis/week04_where_who.py"><code>week04_where_who.py</code></a>,
-                    <a href="https://github.com/horrrt/02805_social_graphs/blob/main/analysis/week04_jobs_split.py"><code>week04_jobs_split.py</code></a>,
-                    <a href="https://github.com/horrrt/02805_social_graphs/blob/main/analysis/week04_staffing_moves.py"><code>week04_staffing_moves.py</code></a>,
-                    <a href="https://github.com/horrrt/02805_social_graphs/blob/main/analysis/week04_footprint.py"><code>week04_footprint.py</code></a>,
-                    <a href="https://github.com/horrrt/02805_social_graphs/blob/main/analysis/week04_footprint_rank.py"><code>week04_footprint_rank.py</code></a> and
-                    <a href="https://github.com/horrrt/02805_social_graphs/blob/main/analysis/week04_beyond.py"><code>week04_beyond.py</code></a>
-                    answer the questions in sections 1 to 5, each against its own
-                    null model.</li>
-                  <li><a href="https://github.com/horrrt/02805_social_graphs/blob/main/analysis/week04_schemas.py"><code>week04_schemas.py</code></a>
-                    checks every JSON file against the fields the page reads.</li>
-                </ul>
               </div>
             </details>
           </div>
