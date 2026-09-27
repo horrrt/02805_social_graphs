@@ -301,7 +301,13 @@ function renderWhoSwitch(data) {
     grid: { left: 50, right: 18, top: 18, bottom: 50 },
     xAxis: {
       ...axis, type: "category", data: cats,
-      axisLabel: { ...axis.axisLabel, interval: 0, fontSize: 10, lineHeight: 12 },
+      // The year range repeats on both ticks of a pair; showing it only on
+      // the "observed" tick keeps the pair readable without the two labels
+      // bleeding into each other. The full name still reaches the tooltip.
+      axisLabel: {
+        ...axis.axisLabel, interval: 0, fontSize: 10, lineHeight: 12,
+        formatter: (value, index) => (index % 2 === 1 ? value.split("\n")[1] : value),
+      },
     },
     yAxis: { ...axis, type: "value", min: 0, axisLabel: { ...axis.axisLabel, formatter: (v) => `${Math.round(v * 100)}%` } },
     tooltip: { ...base.tooltip, formatter: (p) => `${esc(p.name.replace("\n", " "))}<br>${(p.value * 100).toFixed(1)}%` },
@@ -451,7 +457,10 @@ function renderBeyondPerm(data) {
     grid: { left: 54, right: 18, top: 18, bottom: 62 },
     xAxis: {
       ...axis, type: "category", data: groups.map((g) => g.label),
-      axisLabel: { ...axis.axisLabel, fontSize: 10, lineHeight: 12, interval: 0 },
+      // A long company name is wider than its bar's slot, so it bleeds into
+      // its neighbours; truncate it to fit and leave the full name to the
+      // tooltip.
+      axisLabel: { ...axis.axisLabel, fontSize: 10, lineHeight: 12, interval: 0, width: 54, overflow: "truncate" },
     },
     yAxis: { ...axis, type: "value", min: 0, name: "PERM per H-1B filing", nameTextStyle: { color: MUTE } },
     tooltip: { ...base.tooltip, formatter: (p) => `${esc(p.name.replace("\n", " "))}<br>${p.value.toFixed(3)}` },
@@ -471,11 +480,17 @@ function renderBeyondWage(data) {
   const rows = data.q3_top5_soc;
   c.setOption({
     ...base,
-    grid: { left: 54, right: 18, top: 18, bottom: 76 },
-    legend: { bottom: 0, textStyle: { color: MUTE, fontSize: 11 } },
+    // The rotated occupation labels reach well below the axis; a legend
+    // sitting at the bottom collides with them, so it moves to the top like
+    // the section's other charts.
+    grid: { left: 54, right: 18, top: 34, bottom: 76 },
+    legend: { top: 0, right: 0, textStyle: { color: MUTE, fontSize: 11 } },
     xAxis: {
       ...axis, type: "category", data: rows.map((r) => short(r.title)),
-      axisLabel: { ...axis.axisLabel, rotate: 24, fontSize: 10, width: 120, overflow: "truncate", interval: 0 },
+      // At 24°, a truncated 120px label is wider than its own category slot
+      // and its rotated box lands on the neighbour's; a steeper angle and a
+      // shorter truncation width keep each label inside its own slot.
+      axisLabel: { ...axis.axisLabel, rotate: 32, fontSize: 10, width: 95, overflow: "truncate", interval: 0 },
     },
     yAxis: { ...axis, type: "value", min: 0, max: 1, axisLabel: { ...axis.axisLabel, formatter: (v) => `${Math.round(v * 100)}%` } },
     tooltip: {
