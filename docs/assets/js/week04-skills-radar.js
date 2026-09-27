@@ -10,7 +10,13 @@ import { token } from "./week04-strip.js";
 const DATA = new URL("../../weeks/week04/data/skills_radar.json", import.meta.url);
 const MAX_SELECTED = 5;
 const SYMBOLS = ["circle", "rect", "triangle", "diamond", "pin"];
-const TRUNCATE = { skills: 14, knowledge: 14, work_activities: 11 };
+// Spoke names run along their own spoke, so neighbours never overlap however
+// many spokes a group has. Past LABEL_CHARS a name ends in an ellipsis; the
+// hover tip on the name gives it in full with every occupation's value.
+const LABEL_CHARS = 26;
+const LABEL_SPACE = 164;
+const shorten = (name) => (name.length > LABEL_CHARS ? `${name.slice(0, LABEL_CHARS - 1).trimEnd()}…` : name);
+
 const GROUP_ORDER = ["skills", "knowledge", "work_activities"];
 const fmt2 = (v) => v.toFixed(2);
 
@@ -286,7 +292,12 @@ class Radar {
     const groups = this.data.meta.groups;
     const group = groups[this.group];
     const offset = offsetOf(groups, this.group);
-    const truncateLen = TRUNCATE[this.group];
+    const w = this.chart.getWidth();
+    const h = this.chart.getHeight();
+    const cx = w / 2;
+    const cy = h / 2;
+    const r = Math.max(60, Math.min(w, h) / 2 - LABEL_SPACE);
+    const n = group.names.length;
     const line = token("--line");
     const inset = token("--w4-inset");
     const card = token("--card");
@@ -297,20 +308,30 @@ class Radar {
       tooltip: { show: false },
       legend: { show: false },
       radar: {
-        center: ["50%", "52%"],
-        radius: "58%",
+        center: [cx, cy],
+        radius: r,
         indicator: group.names.map((name) => ({ name, max: 5, min: 1 })),
         shape: "polygon",
         axisLine: { lineStyle: { color: line } },
         splitLine: { lineStyle: { color: line } },
         splitArea: { areaStyle: { color: [card, inset] } },
-        axisName: {
-          color: softInk,
-          fontSize: 9,
-          triggerEvent: true,
-          formatter: (name) => (name.length > truncateLen ? `${name.slice(0, truncateLen - 1)}…` : name),
-        },
+        axisName: { show: false },
       },
+      // ECharts lays indicators out counter-clockwise from the top.
+      graphic: group.names.map((name, i) => {
+        const angle = Math.PI / 2 + (2 * Math.PI * i) / n;
+        const right = Math.cos(angle) >= -1e-9;
+        return {
+          type: "text",
+          x: cx + (r + 8) * Math.cos(angle),
+          y: cy - (r + 8) * Math.sin(angle),
+          // Upright on both sides: the left half reads inward-to-outward from the right end.
+          rotation: right ? Math.atan2(Math.sin(angle), Math.cos(angle)) : Math.atan2(Math.sin(angle), Math.cos(angle)) - Math.PI,
+          style: { text: shorten(name), fill: softInk, font: "10px -apple-system, BlinkMacSystemFont, system-ui, sans-serif", align: right ? "left" : "right", verticalAlign: "middle" },
+          onmouseover: (e) => this.showTip(e.event, i),
+          onmouseout: () => this.hideTip(),
+        };
+      }),
       series: [{
         type: "radar",
         data: this.selected.map((code, i) => {
@@ -381,7 +402,13 @@ class Radar {
     });
 
     this.renderAll();
-    window.addEventListener("resize", () => this.chart.resize());
+    // The host can be laid out after init (the card lands while its <details>
+    // is still opening), which leaves a 0 x 0 canvas; resize whenever the host
+    // itself changes size.
+    new ResizeObserver(() => {
+      this.chart.resize();
+      this.renderChart();
+    }).observe(chartHost);
   }
 }
 

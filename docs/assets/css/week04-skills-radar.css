@@ -13,15 +13,15 @@
 
 .corridor {
   --w4-series-1: var(--ink);
-  --w4-series-2: #d55e00;
-  --w4-series-3: #cc79a7;
-  --w4-series-4: #a68c00;
-  --w4-series-5: #7a5230;
+  --w4-series-2: #b8336a;
+  --w4-series-3: #a68c00;
+  --w4-series-4: #7a5230;
+  --w4-series-5: #cc79a7;
   --w4-series-1-dark: var(--ink);
-  --w4-series-2-dark: #ff9a5c;
-  --w4-series-3-dark: #f0a8d0;
-  --w4-series-4-dark: #e0c22e;
-  --w4-series-5-dark: #c98f5e;
+  --w4-series-2-dark: #e8739f;
+  --w4-series-3-dark: #e0c22e;
+  --w4-series-4-dark: #c98f5e;
+  --w4-series-5-dark: #f0a8d0;
 }
 
 /* Screen-reader-only text: this page loads no shared .sr-only utility. */
@@ -174,7 +174,7 @@
 }
 
 .corridor .w4-radar-host {
-  height: 720px;
+  height: 840px;
   width: 100%;
 }
 
