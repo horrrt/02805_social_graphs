@@ -114,7 +114,8 @@ test("the 962/38 giant-size split matches week02_nullmodels_draws.csv", () => {
       `in the other ${count(minorityCount)}, an unrelated two-article pair happens to split off elsewhere, ` +
       `leaving a giant of ${minority}`,
   );
-  says(`(${count(minorityCount)} of 1,000)`);
+  const nineteen = swapRows.filter((r) => Number(r.components) === 19).length;
+  says(`The draws that reach 19 components (${count(nineteen)} of ${count(swapRows.length)})`);
 });
 
 test("the friendship-paradox pill (\"286 LINKED ARTICLES\") matches week02_nullmodels.json", () => {
