@@ -544,7 +544,8 @@ export async function startPlace(echarts) {
   }
 
 
-  const LABELS = 8;
+  // Five labels fit the crowded corner of the scatter without touching; hover names the rest.
+  const LABELS = 5;
 
   function renderScatter() {
     const c = chart("chart-longhaul");
@@ -656,14 +657,17 @@ export async function startPlace(echarts) {
             textBorderColor: "#fff",
             textBorderWidth: 3,
           },
-          // The heaviest labels crowd into one corner of the scatter; shift
-          // them apart vertically instead of hiding the eight the caption promises.
-          labelLayout: { hideOverlap: true, moveOverlap: "shiftY" },
-          data: [...labelled].map((e) => ({
-            value: [e.distance_km, e.weight],
-            employer: e.top_employer,
-            symbolSize: edgeSize(e.weight),
-          })),
+          // Neighbouring labels alternate above and below their dots, so two
+          // heavy links at similar distances do not print on top of each other.
+          labelLayout: { moveOverlap: "shiftY" },
+          data: [...labelled]
+            .sort((x, y) => x.distance_km - y.distance_km)
+            .map((e, i) => ({
+              value: [e.distance_km, e.weight],
+              employer: e.top_employer,
+              symbolSize: edgeSize(e.weight),
+              label: { position: i % 2 ? "bottom" : "top" },
+            })),
         },
       ],
       tooltip: {
