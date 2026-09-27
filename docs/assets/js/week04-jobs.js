@@ -183,8 +183,9 @@ function renderGroups(data) {
   }));
   c.setOption({
     ...base,
-    grid: { left: 150, right: 18, top: 18, bottom: 96 },
-    xAxis: { ...axis, type: "category", data: majors.map((major) => data.majors[major]), axisLabel: { ...axis.axisLabel, rotate: 35, width: 120, overflow: "truncate", interval: 0 } },
+    // Steep, short column labels: at 35° the official group names ran into each other.
+    grid: { left: 150, right: 18, top: 18, bottom: 150 },
+    xAxis: { ...axis, type: "category", data: majors.map((major) => data.majors[major]), axisLabel: { ...axis.axisLabel, rotate: 60, width: 150, overflow: "truncate", interval: 0 } },
     yAxis: { ...axis, type: "category", inverse: true, data: clusters.map((cluster) => clusterName(data, cluster)), axisLabel: { ...axis.axisLabel, width: 140, overflow: "truncate" } },
     visualMap: { show: false, min: 0, max: Math.max(...values.map((value) => value[2]), 1), inRange: { color: ["#edf5fb", "#1f8fd6"] } },
     tooltip: { ...base.tooltip, formatter: (p) => `<b>${esc(clusterName(data, clusters[p.value[1]]))} cluster × ${esc(data.majors[majors[p.value[0]]])}</b><br>${num(p.value[2])} of the ${data.nodes.length} occupations shown` },
