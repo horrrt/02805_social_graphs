@@ -99,6 +99,8 @@ def main():
 
     fy22_to_fy23_percent = round(100 * (ys["2023"]["certified_filings"] / ys["2022"]["certified_filings"] - 1))
     assert fy22_to_fy23_percent == -14, f"the lead says FY2023 fell 14%, computed {fy22_to_fy23_percent}%"
+    assert ys["2025"]["certified_filings"] > ys["2024"]["certified_filings"], \
+        "the lead says certified filings rose to FY2025's figure"
 
     finding = {
         "fy2025_certified_filings": ys["2025"]["certified_filings"],

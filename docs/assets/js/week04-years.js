@@ -56,8 +56,8 @@ const textEl = (x, y, s, size = 11, fill = "", weight = 400, anchor = "start") =
   `<text x="${x.toFixed(1)}" y="${y.toFixed(1)}" font-size="${size}" fill="${fill}" font-weight="${weight}" text-anchor="${anchor}" ` +
   `font-variant-numeric="tabular-nums">${esc(s)}</text>`;
 const pathEl = (d, stroke, sw = 1, opts = {}) =>
-  `<path d="${d}" fill="none" stroke="${stroke}" stroke-width="${sw}"${opts.dash ? ` stroke-dasharray="${opts.dash}"` : ""} ` +
-  `stroke-linejoin="round" stroke-linecap="round"></path>`;
+  `<path d="${d}" fill="none" stroke="${stroke}" stroke-width="${sw}"${opts.dash ? ` stroke-dasharray="${opts.dash}"` : ""}` +
+  `${opts.op != null ? ` stroke-opacity="${opts.op}"` : ""} stroke-linejoin="round" stroke-linecap="round"></path>`;
 
 // A zero-based axis: the lowest round top tick that holds vmax in three to
 // six steps. Ported from review/week04-redesign/generator/extra.py:nice_axis.
@@ -133,13 +133,14 @@ function yearLine(series, width, height, fmt, aria, pal, color, full = true) {
 // from extra.py:two_lines.
 function twoLines(a, b, width, height, fmt, aria, pal, names, colors) {
   const L = 56, R = 110, T = 18, Bm = 30;
-  const yMax = Math.max(...a, ...b) * 1.15;
+  const { step, top } = niceAxis(Math.max(...a, ...b));
+  const yMax = top;
   const x = (i) => L + (i * (width - L - R)) / 4;
   const y = (v) => T + ((yMax - v) * (height - T - Bm)) / yMax;
   const out = [svgOpen(width, height, aria)];
-  for (let k = 0; k < 5; k++) {
-    const v = (yMax * k) / 4;
-    out.push(lineEl(L, y(v), width - R, y(v), pal.grid, 1));
+  for (let k = 0; k <= Math.round(top / step); k++) {
+    const v = k * step;
+    out.push(lineEl(L, y(v), width - R, y(v), v === 0 ? pal.line : pal.grid, 1));
     out.push(textEl(L - 8, y(v) + 4, fmt(v), 11, pal.inkMute, 400, "end"));
   }
   [[a, colors[0], names[0]], [b, colors[1], names[1]]].forEach(([series, col, name]) => {
@@ -303,15 +304,14 @@ function render(data) {
     "USCIS denials of first-time petitions, placing firms against direct employers", pal,
     ["placing firms", "direct employers"], [pal.people, pal.access]);
 
-  const draws = [
-    { label: "March 2021", v: data.lottery_draws["2022"].registrations },
-    { label: "March 2022", v: data.lottery_draws["2023"].registrations },
-    { label: "March 2023", v: data.lottery_draws["2024"].registrations },
-  ];
+  // Each draw is held the March before the cap year it fills.
+  const capYears = Object.keys(data.lottery_draws).sort();
+  const drawMonth = (capYear) => `March ${Number(capYear) - 1}`;
+  const draws = capYears.map((y) => ({ label: drawMonth(y), v: data.lottery_draws[y].registrations }));
   const s6 = yearBars(draws, 540, 230, num, "H-1B lottery registrations per draw", pal,
-    { partialLast: false, sub: ["FY2022 cap", "FY2023 cap", "FY2024 cap"] });
-  const perApp2023 = data.lottery_funnels["2023"].registrations_per_approval;
-  const perApp2024 = data.lottery_funnels["2024"].registrations_per_approval;
+    { partialLast: false, sub: capYears.map((y) => `FY${y} cap`) });
+  const funnelYears = Object.keys(data.lottery_funnels).sort();
+  const perApp = funnelYears.map((y) => data.lottery_funnels[y].registrations_per_approval);
 
   const clients = YEARS.map((y) => ys[y].clients);
   const firms = YEARS.map((y) => ys[y].firms);
@@ -330,17 +330,42 @@ function render(data) {
     `of the federal shutdown, holds ${num(f.oct_2025_certified_filings)} certified filings against ` +
     `${num(f.oct_2024_certified_filings)} a year earlier, so compare FY2026 with earlier years on matching months.`;
 
-  const alt = `<details class="years-alt"><summary>The numbers behind these charts</summary><table class="ego">` +
-    "<caption>Certified filings, placed share, clients and firms, per fiscal year</caption>" +
-    "<thead><tr><th>Year</th><th style=\"text-align:right\">Certified filings</th>" +
-    "<th style=\"text-align:right\">Placed at a client</th><th style=\"text-align:right\">Clients</th>" +
-    "<th style=\"text-align:right\">Firms</th></tr></thead><tbody>" +
-    YEARS.map((y) => `<tr><td>${YL(y)}${y === "2026" ? ", Oct–Jun" : ""}</td>` +
-      `<td style="text-align:right">${num(ys[y].certified_filings)}</td>` +
-      `<td style="text-align:right">${pct(ys[y].placed_share)}</td>` +
-      `<td style="text-align:right">${num(ys[y].clients)}</td>` +
-      `<td style="text-align:right">${num(ys[y].firms)}</td></tr>`).join("") +
-    "</tbody></table></details>";
+  const r = (cells) => `<tr>${cells.map((c, i) => `<td${i ? ' style="text-align:right"' : ""}>${c}</td>`).join("")}</tr>`;
+  const thead = (cols) => `<thead><tr>${cols.map((c, i) => `<th${i ? ' style="text-align:right"' : ""}>${esc(c)}</th>`).join("")}</tr></thead>`;
+
+  const perFyTable = `<table class="ego"><caption>Certified filings, placed share, clients, firms and USCIS denial rates, per fiscal year</caption>` +
+    thead(["Year", "Certified filings", "Placed at a client", "Clients", "Firms", "Placing firms’ denials", "Direct employers’ denials"]) +
+    "<tbody>" + YEARS.map((y, i) => r([
+      `${YL(y)}${y === "2026" ? ", Oct–Jun" : ""}`, num(ys[y].certified_filings), pct(ys[y].placed_share),
+      num(ys[y].clients), num(ys[y].firms), pct(data.uscis_series[i].placing_initial_denial_rate),
+      pct(data.uscis_series[i].direct_initial_denial_rate),
+    ])).join("") + "</tbody></table>";
+
+  const octJunTable = `<table class="ego"><caption>Certified filings, October to June, three fiscal years</caption>` +
+    thead(["Year", "Certified filings"]) + "<tbody>" +
+    ["FY2024", "FY2025", "FY2026"].map((fy) => r([fy, num(oj[fy].certified_filings)])).join("") +
+    `</tbody></table><p>FY2026 against FY2025: ${data.oct_jun.certified_filings_change_fy25_fy26_percent.toFixed(1)}%.</p>`;
+
+  const monthlyTable = `<table class="ego"><caption>Certified and placed filings per month, October to June, FY2024 to FY2026</caption>` +
+    thead(["Month", "FY2024 certified", "FY2025 certified", "FY2026 certified", "FY2024 placed", "FY2025 placed", "FY2026 placed"]) +
+    "<tbody>" + MONTHS.map((mo, i) => r([mo,
+      num(rows.FY2024[i].certified_filings), num(rows.FY2025[i].certified_filings), num(rows.FY2026[i].certified_filings),
+      num(rows.FY2024[i].placed_filings), num(rows.FY2025[i].placed_filings), num(rows.FY2026[i].placed_filings),
+    ])).join("") + "</tbody></table>";
+
+  const firmsTable = `<table class="ego"><caption>Placed filings for the four largest placing firms, per fiscal year</caption>` +
+    thead(["Firm", ...YEARS.map((y) => `${YL(y)}${y === "2026" ? " (Oct–Jun)" : ""}`)]) + "<tbody>" +
+    FOUR_FIRMS.map((firm) => r([firm, ...YEARS.map((y) => (per[y][firm] != null ? num(per[y][firm]) : "–"))])).join("") +
+    "</tbody></table>";
+
+  const lotteryTable = `<table class="ego"><caption>H-1B lottery: registrations per draw and registrations per approval</caption>` +
+    thead(["Draw", "Cap year", "Registrations", "Registrations per approval"]) + "<tbody>" +
+    capYears.map((y) => r([drawMonth(y), `FY${y}`, num(data.lottery_draws[y].registrations),
+      data.lottery_funnels[y] ? data.lottery_funnels[y].registrations_per_approval.toFixed(2) : "–"])).join("") +
+    "</tbody></table>";
+
+  const alt = '<details class="years-alt"><summary>The numbers behind these charts</summary>' +
+    perFyTable + octJunTable + monthlyTable + firmsTable + lotteryTable + "</details>";
 
   body.innerHTML =
     `<header class="w4-opener"><span aria-hidden="true" class="w4-opener-num">↗</span>` +
@@ -353,11 +378,11 @@ function render(data) {
     panel("Placed at a client", "Share of certified filings that put the worker at another company.", s3) +
     panel("USCIS denials", "Share of first-time petitions denied, employers with 20 or more certified filings. FY2026 runs October to June.", s5) +
     panel("The four largest placing firms",
-      "Placed filings each firm files per fiscal year, on one scale. Hollow: FY2026, nine months. HCL leaves the top eight in FY2026.",
-      firmsHtml, 2) +
+      `Placed filings each firm files per fiscal year, on one scale. Hollow: FY2026, nine months. HCL leaves the top ` +
+      `${ys["2026"].top_firms_by_filings.length} in FY2026.`, firmsHtml, 2) +
     panel("The lottery",
-      `Registrations per draw. One approved petition took ${perApp2023.toFixed(1)} registrations in the March 2022 draw and ` +
-      `${perApp2024.toFixed(1)} in March 2023; USCIS’s data ends there.`, s6) +
+      `Registrations per draw. One approved petition took ${perApp[0].toFixed(1)} registrations in the ${drawMonth(funnelYears[0])} ` +
+      `draw and ${perApp[1].toFixed(1)} in ${drawMonth(funnelYears[1])}; USCIS’s data ends there.`, s6) +
     panel("Clients and firms", "Client companies named on a placed filing, and the firms that place workers, per fiscal year.", s7) +
     "</div>" + alt;
 }

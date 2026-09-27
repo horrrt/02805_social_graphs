@@ -38,7 +38,15 @@ test("the October-to-June fall from FY2025 to FY2026 matches week04_shift.json",
 });
 
 test("the FY2022 to FY2023 change rounds to the lead's 14% fall", () => {
-  assert.equal(years.finding.fy22_to_fy23_certified_change_percent, -14);
+  const computed = Math.round(
+    100 * (staffing.years["2023"].certified_filings / staffing.years["2022"].certified_filings - 1),
+  );
+  assert.equal(computed, -14);
+  assert.equal(years.finding.fy22_to_fy23_certified_change_percent, computed);
+});
+
+test("FY2025 certified filings rose above FY2024, as the lead says", () => {
+  assert.ok(staffing.years["2025"].certified_filings > staffing.years["2024"].certified_filings);
 });
 
 test("each monthly series covers nine months, October to June, in order", () => {
