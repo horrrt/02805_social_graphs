@@ -1,0 +1,9 @@
+/* Week 4 deep dive, "More networks" (#cut-more): the two colours
+   week04-vis-more.js's lottery slope chart needs beyond the tokens week04.css
+   already defines, following the page's own grammar (orange a worker placed
+   at a client, blue a direct employer). */
+
+.corridor {
+  --w4-more-client: #f2820c;
+  --w4-more-employer: #1f8fd6;
+}

@@ -17,6 +17,7 @@
     <link href="../../assets/css/week04-years.css?v=3" rel="stylesheet" />
     <link href="../../assets/css/week04-methods.css?v=3" rel="stylesheet" />
     <link href="../../assets/css/week04-skills.css?v=3" rel="stylesheet" />
+    <link href="../../assets/css/week04-vis-more.css?v=1" rel="stylesheet" />
   </head>
   <body class="corridor">
     <a class="skip" href="#main">Skip to content</a>
@@ -1935,23 +1936,32 @@
                                     <p class="w4-answer">An H-1B filing is a weak tie between an employer and a worker; a green-card filing (PERM) is a strong one, because the employer sponsors the worker to stay.</p>
                                   </div>
                                 </header>
-                    <p class="sub">
-                       In FY2025 the median
-                      employer with 20 or more H-1B filings filed 13.2 green cards
-                      per 100 of them, and the two counts rank employers only loosely
-                      alike (Spearman 0.50). As with degree and strength in the
-                      course, the exceptions carry the story: Oracle filed 95 green
-                      cards per 100 H-1B filings, Uber 64 and Salesforce 45, while
-                      Amazon (22,509 H-1B filings), Cognizant (11,085) and Google
-                      (8,657) filed almost none. Whether outsourcing firms sponsor fewer is
-                      <a href="#beyond-perm">section 5B</a>. Only 65% of
-                      certified green cards come from an employer we can match to an
-                      H-1B filer. Clients sponsor their own staff too: Wells Fargo
-                      receives 1,547 H-1B filings from vendors, files 624 of its own
-                      and 167 green cards. Firms with more clients sponsor slightly
-                      more green cards, not fewer (Spearman 0.13). Figures from
-                      analysis/week04_perm.py.
-                    </p>
+                    <div class="w4-two">
+                      <div>
+                        <div class="w4-reveals">
+                          <span class="w4-tip"><button aria-describedby="w4-pop-deeper-perm-how" type="button"><svg aria-hidden="true" height="14" viewBox="0 0 24 24" width="14"><circle cx="12" cy="12" fill="none" r="9" stroke="currentColor" stroke-width="2"></circle><path d="M12 11v6M12 7.5v.5" fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="2"></path></svg>How we tested it</button><span class="w4-pop" id="w4-pop-deeper-perm-how" role="tooltip"><b>How we tested it</b>Only 65% of
+                          certified green cards come from an employer we can match to an
+                          H-1B filer. Figures from
+                          analysis/week04_perm.py.</span></span>
+                          <span class="w4-tip"><button aria-describedby="w4-pop-deeper-perm-more" type="button"><svg aria-hidden="true" height="14" viewBox="0 0 24 24" width="14"><circle cx="12" cy="12" fill="none" r="9" stroke="currentColor" stroke-width="2"></circle><path d="M12 8v8M8 12h8" fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="2"></path></svg>More numbers</button><span class="w4-pop" id="w4-pop-deeper-perm-more" role="tooltip"><b>More numbers</b> In FY2025 the median
+                          employer with 20 or more H-1B filings filed 13.2 green cards
+                          per 100 of them, and the two counts rank employers only loosely
+                          alike (Spearman 0.50). As with degree and strength in the
+                          course, the exceptions carry the story: Oracle filed 95 green
+                          cards per 100 H-1B filings, Uber 64 and Salesforce 45, while
+                          Amazon (22,509 H-1B filings), Cognizant (11,085) and Google
+                          (8,657) filed almost none. Whether outsourcing firms sponsor fewer is
+                          <a href="#beyond-perm">section 5B</a>. Clients sponsor their own staff too: Wells Fargo
+                          receives 1,547 H-1B filings from vendors, files 624 of its own
+                          and 167 green cards. Firms with more clients sponsor slightly
+                          more green cards, not fewer (Spearman 0.13).</span></span>
+                        </div>
+                      </div>
+                      <figure class="w4-figure">
+                        <figcaption><b>Green cards per 100 H-1B filings</b><span>The six employers the text names, FY2025; not a ranking. Dashed line: the median employer with 20 or more H-1B filings.</span></figcaption>
+                        <div class="w4-figure-body" data-more="perm"></div>
+                      </figure>
+                    </div>
                   </div>
                 </details>
 
@@ -1967,29 +1977,44 @@
                                     <p class="w4-answer">The groups match world regions (AMI 0.10) and Week 3's migration communities (0.10) only weakly: green-card hiring does not sort countries into regional blocs.</p>
                                   </div>
                                 </header>
-                    <p class="sub">
-                      A worker's citizenship is personal, so we read it only in
-                      memory and keep counts per country and employer, dropping every
-                      count under 10. That drops 96% of the cells and 43% of FY2023's
-                      certified green-card filings. India holds 52% of those filings
-                      and China 12%; among lottery registrations, India holds 77% in
-                      the March 2022 draw and 81% in March 2023. Link two countries
-                      by the green cards their citizens receive at the same employers
-                      and 55 countries remain. Louvain splits them into three groups.
-                      Counted once each, the links group a little more than rewired
-                      copies (modularity 0.10 against 0.06); weighted by shared green
-                      cards, they group less (0.26 against 0.40). India and China
-                      share one group with Canada, Belarus and Costa Rica, and India
-                      keeps 79% of its weight inside it.  Among the ten largest sponsors,
-                      Google's green cards are the most varied, 4.7 effective
-                      countries with India at 30%, against Amazon's 3.0 at 67%. The
-                      third group gathers the Philippines, Kenya, Ghana, Zimbabwe,
-                      Ethiopia, Cameroon and Jamaica. Wayne Farms, a poultry company,
-                      filed 832 green cards in the counted cells, none for Indian
-                      citizens.
-                      Figures from analysis/week04_countries.py; no row about a
-                      person leaves the script.
-                    </p>
+                    <div class="w4-two">
+                      <div>
+                        <div class="w4-reveals">
+                          <span class="w4-tip"><button aria-describedby="w4-pop-deeper-countries-how" type="button"><svg aria-hidden="true" height="14" viewBox="0 0 24 24" width="14"><circle cx="12" cy="12" fill="none" r="9" stroke="currentColor" stroke-width="2"></circle><path d="M12 11v6M12 7.5v.5" fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="2"></path></svg>How we tested it</button><span class="w4-pop" id="w4-pop-deeper-countries-how" role="tooltip"><b>How we tested it</b> A worker's citizenship is personal, so we read it only in
+                          memory and keep counts per country and employer, dropping every
+                          count under 10. That drops 96% of the cells and 43% of FY2023's
+                          certified green-card filings.
+                          Figures from analysis/week04_countries.py; no row about a
+                          person leaves the script.</span></span>
+                          <span class="w4-tip"><button aria-describedby="w4-pop-deeper-countries-more" type="button"><svg aria-hidden="true" height="14" viewBox="0 0 24 24" width="14"><circle cx="12" cy="12" fill="none" r="9" stroke="currentColor" stroke-width="2"></circle><path d="M12 8v8M8 12h8" fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="2"></path></svg>More numbers</button><span class="w4-pop" id="w4-pop-deeper-countries-more" role="tooltip"><b>More numbers</b> India holds 52% of those filings
+                          and China 12%; among lottery registrations, India holds 77% in
+                          the March 2022 draw and 81% in March 2023. Link two countries
+                          by the green cards their citizens receive at the same employers
+                          and 55 countries remain. Louvain splits them into three groups.
+                          Counted once each, the links group a little more than rewired
+                          copies (modularity 0.10 against 0.06); weighted by shared green
+                          cards, they group less (0.26 against 0.40). India and China
+                          share one group with Canada, Belarus and Costa Rica, and India
+                          keeps 79% of its weight inside it.  Among the ten largest sponsors,
+                          Google's green cards are the most varied, 4.7 effective
+                          countries with India at 30%, against Amazon's 3.0 at 67%. The
+                          third group gathers the Philippines, Kenya, Ghana, Zimbabwe,
+                          Ethiopia, Cameroon and Jamaica. Wayne Farms, a poultry company,
+                          filed 832 green cards in the counted cells, none for Indian
+                          citizens.</span></span>
+                        </div>
+                      </div>
+                      <div>
+                        <figure class="w4-figure">
+                          <figcaption><b>Citizenship of FY2023's green cards</b><span>Share of certified green-card filings in the counted cells.</span></figcaption>
+                          <div class="w4-figure-body" data-more="countries-top"></div>
+                        </figure>
+                        <figure class="w4-figure">
+                          <figcaption><b>Do countries group?</b><span>Modularity of the country network against rewired copies.</span></figcaption>
+                          <div class="w4-figure-body" data-more="countries-modularity"></div>
+                        </figure>
+                      </div>
+                    </div>
                   </div>
                 </details>
 
@@ -2005,20 +2030,28 @@
                                     <p class="w4-answer">New York files the most, 65,935, but that is 6.9 per 1,000 jobs; San Jose files 42.9, Trenton 17.2 and Seattle 16.8.</p>
                                   </div>
                                 </header>
-                    <p class="sub">
-                      Section 1 counts filings. Divide each metro's FY2025 filings by
-                      its jobs in the Bureau of Labor Statistics' May 2025
-                      employment survey (OEWS) and the map shifts: nationally it is
-                      4.5 filings per 1,000 jobs.  Among the 203 metros with 100,000 jobs
-                      or more, count and density rank alike (Spearman 0.90), yet
-                      only 5 of the 10 largest by count stay in the top 10 by
-                      density: Dallas, San Jose, San Francisco, Seattle and Austin.
-                      For software developers alone the national rate is 139
-                      filings per 1,000 jobs, and Fayetteville, Arkansas, the metro
-                      around Bentonville, reaches 896, 6.4 times the national share.
-                      A filing is a request, not a hire, so a rate can run high.
-                      Figures from analysis/week04_oews.py.
-                    </p>
+                    <div class="w4-two">
+                      <div>
+                        <div class="w4-reveals">
+                          <span class="w4-tip"><button aria-describedby="w4-pop-deeper-density-how" type="button"><svg aria-hidden="true" height="14" viewBox="0 0 24 24" width="14"><circle cx="12" cy="12" fill="none" r="9" stroke="currentColor" stroke-width="2"></circle><path d="M12 11v6M12 7.5v.5" fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="2"></path></svg>How we tested it</button><span class="w4-pop" id="w4-pop-deeper-density-how" role="tooltip"><b>How we tested it</b> Section 1 counts filings. Divide each metro's FY2025 filings by
+                          its jobs in the Bureau of Labor Statistics' May 2025
+                          employment survey (OEWS) and the map shifts: nationally it is
+                          4.5 filings per 1,000 jobs. A filing is a request, not a hire, so a rate can run high.
+                          Figures from analysis/week04_oews.py.</span></span>
+                          <span class="w4-tip"><button aria-describedby="w4-pop-deeper-density-more" type="button"><svg aria-hidden="true" height="14" viewBox="0 0 24 24" width="14"><circle cx="12" cy="12" fill="none" r="9" stroke="currentColor" stroke-width="2"></circle><path d="M12 8v8M8 12h8" fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="2"></path></svg>More numbers</button><span class="w4-pop" id="w4-pop-deeper-density-more" role="tooltip"><b>More numbers</b> Among the 203 metros with 100,000 jobs
+                          or more, count and density rank alike (Spearman 0.90), yet
+                          only 5 of the 10 largest by count stay in the top 10 by
+                          density: Dallas, San Jose, San Francisco, Seattle and Austin.
+                          For software developers alone the national rate is 139
+                          filings per 1,000 jobs, and Fayetteville, Arkansas, the metro
+                          around Bentonville, reaches 896, 6.4 times the national share.</span></span>
+                        </div>
+                      </div>
+                      <figure class="w4-figure">
+                        <figcaption><b>Filings per 1,000 jobs</b><span>The ten densest metros with 100,000 jobs or more, and New York (outlined), which files the most. Dashed: the national rate.</span></figcaption>
+                        <div class="w4-figure-body" data-more="density"></div>
+                      </figure>
+                    </div>
                   </div>
                 </details>
 
@@ -2034,16 +2067,25 @@
                                     <p class="w4-answer">Three of the top five are therapy and rehab clinics: the heaviest one-to-one ties belong to health care, not IT.</p>
                                   </div>
                                 </header>
-                    <p class="sub">
-                      The course compares a node's degree (how many partners) with
-                      its strength (how many filings over all its links), and finds
-                      the exceptions tell the story. In the FY2025 firm–client
-                      network the two rank firms almost alike (Spearman 0.91) and
-                      clients less so (0.75). The clients with the most filings from
-                      a single firm are Ultimate Therapy, 133 filings from one firm;
-                      Sigma Rehab, 95; Post Rehab Services, 61; and Grady Memorial
-                      Hospital, 58.  Figures from analysis/week04_ties.py.
-                    </p>
+                    <div class="w4-two">
+                      <div>
+                        <div class="w4-reveals">
+                          <span class="w4-tip"><button aria-describedby="w4-pop-deeper-strength-how" type="button"><svg aria-hidden="true" height="14" viewBox="0 0 24 24" width="14"><circle cx="12" cy="12" fill="none" r="9" stroke="currentColor" stroke-width="2"></circle><path d="M12 11v6M12 7.5v.5" fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="2"></path></svg>How we tested it</button><span class="w4-pop" id="w4-pop-deeper-strength-how" role="tooltip"><b>How we tested it</b> The course compares a node's degree (how many partners) with
+                          its strength (how many filings over all its links), and finds
+                          the exceptions tell the story. Figures from analysis/week04_ties.py.</span></span>
+                          <span class="w4-tip"><button aria-describedby="w4-pop-deeper-strength-more" type="button"><svg aria-hidden="true" height="14" viewBox="0 0 24 24" width="14"><circle cx="12" cy="12" fill="none" r="9" stroke="currentColor" stroke-width="2"></circle><path d="M12 8v8M8 12h8" fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="2"></path></svg>More numbers</button><span class="w4-pop" id="w4-pop-deeper-strength-more" role="tooltip"><b>More numbers</b> In the FY2025 firm–client
+                          network the two rank firms almost alike (Spearman 0.91) and
+                          clients less so (0.75). The clients with the most filings from
+                          a single firm are Ultimate Therapy, 133 filings from one firm;
+                          Sigma Rehab, 95; Post Rehab Services, 61; and Grady Memorial
+                          Hospital, 58.</span></span>
+                        </div>
+                      </div>
+                      <figure class="w4-figure">
+                        <figcaption><b>The heaviest one-to-one ties</b><span>The clients with the most filings from a single firm. Dark bars: health care.</span></figcaption>
+                        <div class="w4-figure-body" data-more="strength"></div>
+                      </figure>
+                    </div>
                   </div>
                 </details>
 
@@ -2059,21 +2101,30 @@
                                     <p class="w4-answer">One approved petition took 5.2 registrations in 2022 and 8.5 in 2023.</p>
                                   </div>
                                 </header>
-                    <p class="sub">
-                      Between the March 2022 and March 2023 draws, registrations for
-                      a worker whom another employer had also registered rose from
-                      35% to 54% of the total, and the share of drawn registrations
-                      that became a petition fell from 74% to 49%.  The
-                      order held both years: direct employers needed the fewest (4.3,
-                      then 5.1), placing firms more (6.3, then 9.1). Of the March
-                      2023 petitions, 20% lead to a client company, 66% of those
-                      through placing firms. Citigroup received 342, 94% through
-                      placing firms; Microsoft 150, 95%, with LTIMindtree supplying
-                      47%; AT&amp;T 153, with Tech Mahindra supplying 41%. USCIS also
-                      denied 2.0% of the placing firms' lottery petitions against
-                      1.1% of direct employers'. Figures from
-                      analysis/week04_lottery.py.
-                    </p>
+                    <div class="w4-two">
+                      <div>
+                        <div class="w4-reveals">
+                          <span class="w4-tip"><button aria-describedby="w4-pop-deeper-lottery-how" type="button"><svg aria-hidden="true" height="14" viewBox="0 0 24 24" width="14"><circle cx="12" cy="12" fill="none" r="9" stroke="currentColor" stroke-width="2"></circle><path d="M12 11v6M12 7.5v.5" fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="2"></path></svg>How we tested it</button><span class="w4-pop" id="w4-pop-deeper-lottery-how" role="tooltip"><b>How we tested it</b> Figures from
+                          analysis/week04_lottery.py.</span></span>
+                          <span class="w4-tip"><button aria-describedby="w4-pop-deeper-lottery-more" type="button"><svg aria-hidden="true" height="14" viewBox="0 0 24 24" width="14"><circle cx="12" cy="12" fill="none" r="9" stroke="currentColor" stroke-width="2"></circle><path d="M12 8v8M8 12h8" fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="2"></path></svg>More numbers</button><span class="w4-pop" id="w4-pop-deeper-lottery-more" role="tooltip"><b>More numbers</b> Between the March 2022 and March 2023 draws, registrations for
+                          a worker whom another employer had also registered rose from
+                          35% to 54% of the total, and the share of drawn registrations
+                          that became a petition fell from 74% to 49%.  The
+                          order held both years: direct employers needed the fewest (4.3,
+                          then 5.1), placing firms more (6.3, then 9.1). Of the March
+                          2023 petitions, 20% lead to a client company, 66% of those
+                          through placing firms. Citigroup received 342, 94% through
+                          placing firms; Microsoft 150, 95%, with LTIMindtree supplying
+                          47%; AT&amp;T 153, with Tech Mahindra supplying 41%. USCIS also
+                          denied 2.0% of the placing firms' lottery petitions against
+                          1.1% of direct employers'.</span></span>
+                        </div>
+                      </div>
+                      <figure class="w4-figure">
+                        <figcaption><b>Registrations per approved petition</b><span>Each line joins one kind of employer across the two draws.</span></figcaption>
+                        <div class="w4-figure-body" data-more="lottery"></div>
+                      </figure>
+                    </div>
                   </div>
                 </details>
 
@@ -2320,5 +2371,6 @@
     <script src="../../assets/js/week04-staffing.js" type="module"></script>
     <script src="../../assets/js/week04-questions.js?v=6" type="module"></script>
     <script src="../../assets/js/week04-cut.js?v=3" type="module"></script>
+    <script src="../../assets/js/week04-vis-more.js?v=1" type="module"></script>
   </body>
 </html>

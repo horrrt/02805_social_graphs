@@ -1164,6 +1164,78 @@ class Pagerank(Model):
         return self
 
 
+# Deep dive · More networks · docs/weeks/week04/data/more.json, read by
+# week04-vis-more.js -------------------------------------------------------
+
+class MorePermRow(Model):
+    label: str
+    lca_filings: int = Count
+    ratio: float = Field(ge=0)
+
+
+class MorePerm(Model):
+    median_ratio: float = Field(ge=0)
+    rows: list[MorePermRow] = Field(min_length=6, max_length=6)
+
+
+class MoreCountryRow(Model):
+    country: str
+    share: float = Share
+
+
+class MoreModularityRow(Model):
+    real: float
+    null: float
+    null_sd: float
+    z: float
+
+
+class MoreCountries(Model):
+    top: list[MoreCountryRow] = Field(min_length=8, max_length=8)
+    modularity: dict[Literal["unweighted", "weighted"], MoreModularityRow]
+
+
+class MoreDensityRow(Model):
+    metro: str
+    name: str
+    rate: float = Field(ge=0)
+
+
+class MoreDensity(Model):
+    national_rate: float = Field(ge=0)
+    rows: list[MoreDensityRow] = Field(min_length=10, max_length=10)
+    new_york: MoreDensityRow
+
+
+class MoreStrengthRow(Model):
+    label: str
+    strength: int = Count
+    health_care: bool
+
+
+class MoreStrength(Model):
+    rows: list[MoreStrengthRow] = Field(min_length=5, max_length=5)
+
+
+class MoreLotterySeries(Model):
+    label: str
+    values: list[float] = Field(min_length=2, max_length=2)
+
+
+class MoreLottery(Model):
+    draws: list[str] = Field(min_length=2, max_length=2)
+    series: list[MoreLotterySeries] = Field(min_length=3, max_length=3)
+
+
+class More(Model):
+    generated_by: str
+    perm: MorePerm
+    countries: MoreCountries
+    density: MoreDensity
+    strength: MoreStrength
+    lottery: MoreLottery
+
+
 PAGES = {
     "docs/assets/data/week04_place.json": Place,
     "docs/weeks/week04/data/jobs.json": Jobs,
@@ -1179,6 +1251,7 @@ PAGES = {
     "docs/weeks/week04/data/footprint_rank.json": FootprintRank,
     "docs/weeks/week04/data/explore.json": Explore,
     "docs/weeks/week04/data/years.json": Years,
+    "docs/weeks/week04/data/more.json": More,
 }
 
 
