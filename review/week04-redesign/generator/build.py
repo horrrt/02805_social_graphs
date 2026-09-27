@@ -81,6 +81,9 @@ def dp(pts, eps):
     return [pts[0], pts[-1]]
 
 
+HERO_PICK, HERO_LABELLED = {}, []   # filled by hero_map: where each metro sits, and which carry a fixed label
+
+
 def hero_map(w=604, h=392, selected="35620"):
     skip = {"Alaska", "Hawaii", "Puerto Rico"}
     shapes = []
@@ -127,6 +130,14 @@ def hero_map(w=604, h=392, selected="35620"):
         else:
             out.append(line(x1, y1, x2, y2, HERO_LEDE, sw, op=0.13, cap="round"))
 
+    # the picked metro's own links, lit on top of the rest
+    for cid in cities:
+        out.append(f'<g visibility="{{{{ v_{cid} }}}}">')
+        for a_, b_, wt in sorted((e for e in edges if cid in (e[0], e[1])), key=lambda e: e[2]):
+            (x1, y1), (x2, y2) = pos[a_], pos[b_]
+            out.append(line(x1, y1, x2, y2, HERO_INK, 0.8 + 2.4 * math.sqrt(wt / wmax), op=0.55, cap="round"))
+        out.append("</g>")
+
     fmax = max(c["filings"] for c in cities.values())
 
     def R(c):
@@ -135,8 +146,7 @@ def hero_map(w=604, h=392, selected="35620"):
     for c in sorted(cities.values(), key=lambda c: -c["filings"]):
         x, y = pos[c["id"]]
         out.append(circle(x, y, R(c), GROUP_COLOR[c["community"]], DEEP, 1.4))
-    sx, sy = pos[selected]
-    out.append(circle(sx, sy, R(cities[selected]) + 5, "none", HERO_INK, 1.6))
+    out.append('<circle cx="{{ selX }}" cy="{{ selY }}" r="{{ selR }}" style="fill: none; stroke: %s; stroke-width: 1.6px"></circle>' % HERO_INK)
 
     # label offsets in px from the dot's centre, as functions of its radius
     labels = {
@@ -154,54 +164,98 @@ def hero_map(w=604, h=392, selected="35620"):
         c = cities[cid]
         x, y = pos[cid]
         dx, dy = off(R(c))
-        sel = cid == selected
-        out.append(text(x + dx, y + dy, c["name"], 11 if sel else 10.5, HERO_INK if sel else HERO_LEDE, 700 if sel else 600, anchor, tabular=False))
+        out.append(f'<text x="{x + dx:.1f}" y="{y + dy:.1f}" style="font-size: 10.5px; fill: {{{{ lf_{cid} }}}}; '
+                   f'font-weight: {{{{ lw_{cid} }}}}; text-anchor: {anchor}">{t(c["name"])}</text>')
+    # a metro without a fixed label is named above its dot while it is picked
+    out.append('<text x="{{ selX }}" y="{{ labY }}" visibility="{{ selLabVis }}" style="font-size: 11px; fill: %s; font-weight: 700; '
+               'text-anchor: middle">{{ selName }}</text>' % HERO_INK)
+    # click targets, largest first so a small metro beside a big one stays clickable
+    for c in sorted(cities.values(), key=lambda c: -c["filings"]):
+        x, y = pos[c["id"]]
+        out.append(f'<circle cx="{x:.1f}" cy="{y:.1f}" r="{R(c) + 5:.1f}" onClick="{{{{ pick_{c["id"]} }}}}" aria-hidden="true" '
+                   'style="fill: #ffffff; opacity: 0; cursor: pointer"></circle>')
+    HERO_PICK.clear()
+    HERO_PICK.update({cid: {"x": round(pos[cid][0], 1), "y": round(pos[cid][1], 1), "r": round(R(cities[cid]) + 5, 1),
+                            "ly": round(pos[cid][1] - R(cities[cid]) - 9, 1)} for cid in cities})
+    HERO_LABELLED[:] = list(labels)
     out.append("</svg>")
     return "\n".join(out), cities, pos
 
 
-def inspector(cities, selected="35620"):
-    c = cities[selected]
-    who = {r["id"]: r for r in ww["rows"]}[selected]
-    ranks = sorted(cities.values(), key=lambda x: -x["filings"])
-    rank = [x["id"] for x in ranks].index(selected) + 1
-    third = {"low": "lowest third", "mid": "middle third", "high": "top third"}
-    rows = [
-        ("Filings", num(c["filings"])),
-        ("Companies", num(c["employers"])),
-        ("Largest filer", f"{c['top_employer']}, {pct(c['top_share'])}"),
-        ("Placed at a client", pct(who["placed_share"], 0)),
-        ("Census region", c["census"]),
-    ]
+def hero_metros(cities):
+    """What the hero's inspector shows for each metro, keyed by metro id."""
+    who = {r["id"]: r for r in ww["rows"]}
+    edges = place["backbone"]["graphs"]["0.2"]["edges"]
+    out = {}
+    for cid, c in cities.items():
+        mine = sorted((e for e in edges if cid in (e[0], e[1])), key=lambda e: -e[2])
+        out[cid] = {
+            "name": c["name"], "state": c["state"], "group": GROUP_NAME[c["community"]], "gcol": GROUP_ON_LIGHT[c["community"]],
+            "filings": num(c["filings"]), "employers": num(c["employers"]), "top": f"{c['top_employer']}, {pct(c['top_share'])}",
+            "placed": pct(who[cid]["placed_share"], 0), "region": c["census"],
+            "links": [{"to": cities[e[1] if e[0] == cid else e[0]]["name"], "w": num(e[2])} for e in mine[:3]],
+        }
+    return out
+
+
+def inspector():
+    """The hero's inspector; the Main board's script fills it for the metro picked on the map."""
+    rows = [("Filings", "filings"), ("Companies", "employers"), ("Largest filer", "top"), ("Placed at a client", "placed"),
+            ("Census region", "region")]
     dl = "\n".join(
         f'<div style="display: flex; justify-content: space-between; gap: 10px; padding: 7px 0; border-top: 1px solid {LINE_SOFT}">'
         f'<dt style="font-size: 12px; color: {INK_SOFT}">{t(k)}</dt>'
-        f'<dd style="margin: 0; font-size: 12px; font-weight: 700; color: {INK}; text-align: right; font-variant-numeric: tabular-nums">{t(v)}</dd></div>'
+        f'<dd style="margin: 0; font-size: 12px; font-weight: 700; color: {INK}; text-align: right; font-variant-numeric: tabular-nums">{{{{ {v} }}}}</dd></div>'
         for k, v in rows
     )
-    edges = [e for e in place["backbone"]["graphs"]["0.2"]["edges"] if selected in (e[0], e[1])]
-    edges.sort(key=lambda e: -e[2])
-    links = "\n".join(
-        f'<div style="display: flex; justify-content: space-between; gap: 10px; font-size: 12px; padding: 3px 0">'
-        f'<span style="color: {INK}">{t(cities[e[1] if e[0] == selected else e[0]]["name"])}</span>'
-        f'<span style="color: {INK_SOFT}; font-variant-numeric: tabular-nums">{num(e[2])}</span></div>'
-        for e in edges[:3]
-    )
+    links = ('<sc-for list="{{ links }}" as="l" hint-placeholder-count="3">'
+             f'<div style="display: flex; justify-content: space-between; gap: 10px; font-size: 12px; padding: 3px 0">'
+             f'<span style="color: {INK}">{{{{ l.to }}}}</span>'
+             f'<span style="color: {INK_SOFT}; font-variant-numeric: tabular-nums">{{{{ l.w }}}}</span></div></sc-for>')
     return (
-        f'<aside aria-label="Selected metro" style="background: {CARD}; border-radius: 14px; box-shadow: {SHADOW}; padding: 16px 18px 14px; '
-        'display: flex; flex-direction: column; gap: 10px">\n'
+        f'<aside aria-label="Selected metro" aria-live="polite" style="background: {CARD}; border-radius: 14px; box-shadow: {SHADOW}; '
+        'padding: 16px 18px 14px; display: flex; flex-direction: column; gap: 10px">\n'
         + label_caps("Selected metro")
         + '\n<div style="display: flex; flex-direction: column; gap: 6px">'
-        f'<div style="display: flex; align-items: baseline; gap: 8px"><span style="font-size: 18px; font-weight: 700; color: {INK}">{t(c["name"])}</span>'
-        f'<span style="font-size: 12px; color: {INK_MUTE}">{t(c["state"])} · FY2025</span></div>'
+        f'<div style="display: flex; align-items: baseline; gap: 8px"><span style="font-size: 18px; font-weight: 700; color: {INK}">{{{{ name }}}}</span>'
+        f'<span style="font-size: 12px; color: {INK_MUTE}">{{{{ state }}}} · FY2025</span></div>'
         f'<div><span style="display: inline-flex; align-items: center; gap: 7px; padding: 4px 10px; border-radius: 999px; '
         f'background: {GROUND}; border: 1px solid {LINE}; font-size: 11.5px; font-weight: 600; color: {INK}">'
-        f'<span style="width: 9px; height: 9px; border-radius: 999px; background: {GROUP_ON_LIGHT[c["community"]]}"></span>'
-        f'{t(GROUP_NAME[c["community"]])} group</span></div></div>\n'
+        '<span style="width: 9px; height: 9px; border-radius: 999px; background: {{ gcol }}"></span>'
+        '{{ group }} group</span></div></div>\n'
         f'<dl style="margin: 0">\n{dl}\n</dl>\n'
         f'<div style="display: flex; flex-direction: column; gap: 2px; border-top: 1px solid {LINE_SOFT}; padding-top: 8px">'
         + label_caps("Strongest links", INK_MUTE, 10.5)
         + f"\n{links}\n</div>\n</aside>"
+    )
+
+
+def hero_script(cities, default="35620"):
+    """Pick a metro on the hero map: the inspector, the ring, the lit links and the labels follow."""
+    M = hero_metros(cities)
+    for cid, m in M.items():
+        m.update(HERO_PICK[cid])
+    ids = [c["id"] for c in sorted(cities.values(), key=lambda c: -c["filings"])]
+    return (
+        "class Component extends DCLogic {\n"
+        "renderVals() {\n"
+        f"const M = {json.dumps(M, ensure_ascii=False)};\n"
+        f"const IDS = {json.dumps(ids)};\n"
+        f"const LABELLED = {json.dumps(HERO_LABELLED)};\n"
+        "const st = this.state || {};\n"
+        f"const sel = M[st.sel] ? st.sel : '{default}';\n"
+        "const m = M[sel];\n"
+        "const out = { name: m.name, state: m.state, group: m.group, gcol: m.gcol, filings: m.filings, employers: m.employers,\n"
+        "  top: m.top, placed: m.placed, region: m.region, links: m.links, selX: m.x, selY: m.y, selR: m.r, labY: m.ly,\n"
+        "  selName: m.name, selLabVis: LABELLED.includes(sel) ? 'hidden' : 'visible' };\n"
+        "IDS.forEach((id) => {\n"
+        "  out['pick_' + id] = () => this.setState({ sel: id });\n"
+        "  out['v_' + id] = id === sel ? 'visible' : 'hidden';\n"
+        "});\n"
+        f"LABELLED.forEach((id) => {{ out['lf_' + id] = id === sel ? '{HERO_INK}' : '{HERO_LEDE}'; out['lw_' + id] = id === sel ? '700' : '600'; }});\n"
+        "return out;\n"
+        "}\n"
+        "}"
     )
 
 
@@ -240,7 +294,7 @@ def board_main():
         '<div style="display: flex; flex-direction: column; align-items: center; gap: 10px">\n'
         + map_svg
         + f'\n<span style="padding: 6px 12px; border-radius: 999px; background: {STAGE_HINT}; border: 1px solid rgba(255, 255, 255, 0.12); '
-        f'font-size: 12px; color: {STAGE_HINT_INK}">Hover a metro to inspect it. Click to pin it.</span>\n</div>'
+        f'font-size: 12px; color: {STAGE_HINT_INK}">Click any metro to inspect it.</span>\n</div>'
     )
     hero = (
         f'<section id="top-hero" style="flex: none; background: {HERO_BG}; border-radius: 0 0 14px 14px; padding: 38px 64px 40px; '
@@ -250,7 +304,7 @@ def board_main():
         f'<h1 style="margin: 0; font-size: 56px; line-height: 0.98; font-weight: 700; letter-spacing: -0.03em; color: {HERO_INK}">'
         "Who hires America’s foreign workers?</h1>\n"
         '<div style="display: grid; grid-template-columns: 372px 604px 268px; gap: 28px; margin-top: 20px; align-items: start">\n'
-        + left + "\n" + stage + "\n" + inspector(cities) + "\n</div>\n</section>"
+        + left + "\n" + stage + "\n" + inspector() + "\n</div>\n</section>"
     )
 
     # ---- five findings
@@ -480,7 +534,7 @@ def board_main():
 
     content = "\n".join([opening, s1_open, q1a])
     body = "\n".join([topbar("Opening"), hero, findings_card, body_row(rail("0"), content, 30)])
-    return page("Week 4 · top of the page", W, HEIGHTS["Main"], body)
+    return page("Week 4 · top of the page", W, HEIGHTS["Main"], body, hero_script(cities))
 
 
 # ================================================================ Section 3
