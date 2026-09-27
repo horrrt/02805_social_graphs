@@ -1096,6 +1096,56 @@ class Skills(Model):
     cohiring: Cohiring
 
 
+# Deep dive · Skills radar · docs/weeks/week04/data/skills_radar.json, read by
+# week04-skills-radar.js ----------------------------------------------------
+
+class RadarGroup(Model):
+    label: str
+    ids: list[str] = Field(min_length=1)
+    names: list[str] = Field(min_length=1)
+
+    @model_validator(mode="after")
+    def same_length(self):
+        assert len(self.ids) == len(self.names), "ids and names must list the same descriptors"
+        return self
+
+
+class RadarMeta(Model):
+    generated_by: str
+    scale: str
+    groups: dict[Literal["skills", "knowledge", "work_activities"], RadarGroup]
+
+
+class RadarOccupation(Model):
+    code: str
+    title: str
+    filings: int = Count
+    in_network: bool
+    cluster: int | None
+    ratings: list[float]
+
+    @model_validator(mode="after")
+    def ratings_in_range(self):
+        assert all(1 <= v <= 5 for v in self.ratings), "every rating must be an O*NET Importance value, 1 to 5"
+        return self
+
+
+class SkillsRadar(Model):
+    meta: RadarMeta
+    occupations: list[RadarOccupation] = Field(min_length=1)
+    default: list[str] = Field(min_length=1, max_length=5)
+
+    @model_validator(mode="after")
+    def references(self):
+        total = sum(len(g.ids) for g in self.meta.groups.values())
+        codes = {o.code for o in self.occupations}
+        for o in self.occupations:
+            assert len(o.ratings) == total, f"{o.code}: ratings must list one value per descriptor ({total})"
+        for code in self.default:
+            assert code in codes, f"default code {code} is not in occupations"
+        return self
+
+
 # Deep dive · PageRank · docs/weeks/week04/data/pagerank.json, read by week04-pagerank.js -
 
 class PagerankRow(Model):
@@ -1244,6 +1294,7 @@ PAGES = {
     "docs/weeks/week04/data/where_who.json": WhereWho,
     "docs/weeks/week04/data/jobs_split.json": JobsSplit,
     "docs/weeks/week04/data/skills.json": Skills,
+    "docs/weeks/week04/data/skills_radar.json": SkillsRadar,
     "docs/weeks/week04/data/pagerank.json": Pagerank,
     "docs/weeks/week04/data/staffing_moves.json": StaffingMoves,
     "docs/weeks/week04/data/beyond.json": Beyond,

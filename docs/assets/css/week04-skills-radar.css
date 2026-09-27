@@ -1,0 +1,211 @@
+/* Week 4 redesign · S3, the O*NET skills radar (#cut-skills-radar). Card,
+   w4-q, w4-two, notice, plot, w4-reveals, w4-pop and w4-figure-body all live
+   in week04.css and corridor.css; this file only holds what the radar's own
+   controls and chart need on top of that, plus its five series colours.
+
+   Colour grammar: --people (orange, placed at a client) and --access (blue,
+   direct employer) mean one thing each elsewhere on the page; --w4-group-0/1/2
+   mark the metro map's three groups. None of the five apply to occupations
+   on a skills radar, so the series below use five colours of their own,
+   docs/assets/js/week04-skills-radar.js reads with getComputedStyle. Series 1
+   is --ink; the rest sit outside the excluded hues and each carries its own
+   symbol shape in the chart, so no pair depends on hue alone. */
+
+.corridor {
+  --w4-series-1: var(--ink);
+  --w4-series-2: #d55e00;
+  --w4-series-3: #cc79a7;
+  --w4-series-4: #a68c00;
+  --w4-series-5: #7a5230;
+  --w4-series-1-dark: var(--ink);
+  --w4-series-2-dark: #ff9a5c;
+  --w4-series-3-dark: #f0a8d0;
+  --w4-series-4-dark: #e0c22e;
+  --w4-series-5-dark: #c98f5e;
+}
+
+/* Screen-reader-only text: this page loads no shared .sr-only utility. */
+.corridor .w4-sr-only {
+  border: 0;
+  clip: rect(0, 0, 0, 0);
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+  padding: 0;
+  position: absolute;
+  white-space: nowrap;
+  width: 1px;
+}
+
+.corridor .w4-radar-controls {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.corridor .w4-radar-search-row {
+  position: relative;
+}
+
+.corridor .w4-radar-search-row input {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  color: var(--ink);
+  font: inherit;
+  font-size: 13px;
+  padding: 8px 12px;
+  width: 100%;
+}
+
+.corridor .w4-radar-search-row input:disabled {
+  background: var(--w4-inset);
+  color: var(--ink-mute);
+}
+
+.corridor .w4-radar-search-status {
+  color: var(--ink-soft);
+  font-size: 11.5px;
+  margin: 0;
+  min-height: 14px;
+}
+
+.corridor .w4-radar-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.corridor .w4-radar-chip {
+  align-items: center;
+  background: var(--w4-inset);
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  display: inline-flex;
+  gap: 6px;
+  padding: 4px 6px 4px 10px;
+}
+
+.corridor .w4-radar-chip i {
+  border-radius: 999px;
+  flex: none;
+  height: 9px;
+  width: 9px;
+}
+
+.corridor .w4-radar-chip span {
+  color: var(--ink);
+  font-size: 12.5px;
+  font-weight: 600;
+  max-width: 220px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.corridor .w4-radar-chip button {
+  background: none;
+  border: 0;
+  border-radius: 999px;
+  color: var(--ink-soft);
+  cursor: pointer;
+  font-size: 14px;
+  line-height: 1;
+  padding: 2px 6px;
+}
+
+.corridor .w4-radar-chip button:disabled {
+  color: var(--line);
+  cursor: not-allowed;
+}
+
+.corridor .w4-radar-toggle {
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 16px;
+  margin: 0;
+  padding: 10px 12px;
+}
+
+.corridor .w4-radar-toggle legend {
+  color: var(--ink-mute);
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  padding: 0;
+  text-transform: uppercase;
+  width: 100%;
+}
+
+.corridor .w4-radar-toggle label {
+  align-items: center;
+  color: var(--ink-soft);
+  display: inline-flex;
+  font-size: 12.5px;
+  gap: 6px;
+}
+
+.corridor .w4-radar-toggle label:has(input:checked) {
+  color: var(--ink);
+  font-weight: 700;
+}
+
+.corridor .w4-radar-notice-list {
+  list-style: none;
+  margin: 6px 0 0;
+  padding: 0;
+}
+
+.corridor .w4-radar-notice-list li {
+  color: var(--ink-soft);
+  font-size: 12.5px;
+  line-height: 1.5;
+  padding: 2px 0;
+}
+
+.corridor .w4-radar-full {
+  margin-top: 4px;
+}
+
+.corridor .w4-radar-host-wrap {
+  position: relative;
+}
+
+.corridor .w4-radar-host {
+  height: 720px;
+  width: 100%;
+}
+
+.corridor .w4-radar-tip {
+  background: var(--w4-tip-bg);
+  border-radius: 8px;
+  color: var(--w4-tip-ink);
+  font-size: 12px;
+  line-height: 1.5;
+  max-width: 260px;
+  padding: 8px 10px;
+  pointer-events: none;
+  position: absolute;
+  z-index: 30;
+}
+
+.corridor .w4-radar-tip b {
+  color: var(--w4-hero-ink);
+  display: block;
+  margin-bottom: 4px;
+}
+
+.corridor .w4-radar-tip-row {
+  align-items: center;
+  display: flex;
+  gap: 6px;
+}
+
+.corridor .w4-radar-tip-row i {
+  border-radius: 999px;
+  flex: none;
+  height: 7px;
+  width: 7px;
+}
