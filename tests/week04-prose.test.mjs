@@ -22,7 +22,8 @@ const text = (from, to) => {
 // Section 3's first-round answers now sit in the deep-dive section (#who-first-round);
 // their full text is in its Go deeper box.
 const section3 = text('id="who"', 'id="who-switch"') + text('id="who-first-round"', '<figure class="staffing"');
-const prose = section3 + text('id="staffing-more"', "</details>");
+// The first-round answers, in full, sit in the deep dive's who-first-round card.
+const prose = section3;
 const regions = text('id="place-regions"', 'id="place-longhaul"');
 const closing = text('id="closing"', 'id="cut"');
 const lotteryText = text('id="staffing-lottery"', "</details>");
@@ -56,35 +57,6 @@ test("how many workers sit at a client", () => {
   says("every year from FY2022 on, it denied about twice the share");
   says(`${pct(series[2022].placing.initial_denial_rate, 1)} against ${pct(series[2022].direct.initial_denial_rate, 1)} for direct employers in FY2022`);
   says(`${pct(series[2026].placing.initial_denial_rate, 1)} against ${pct(series[2026].direct.initial_denial_rate, 1)} from October 2025 to June 2026`);
-});
-
-test("section 3's short answers match the full numbers", () => {
-  const short = (s) => assert.ok(section3.includes(s), `section 3 should say "${s}"`);
-  const now = fy["2025"];
-  const k = lottery["2024"].by_kind;
-  const series = staffing.uscis_series;
-  const iv = main.industry_or_vendor.unweighted;
-  const m = main.modularity;
-  short(`${count(now.client_company_filings)} of the ${count(now.certified_filings)} certified filings (${pct(now.client_company_share, 1)}) name a client company`);
-  short(`down from ${pct(fy["2022"].client_company_share, 1)} in FY2022`);
-  short(`they sent ${k.placing.registrations_per_approval.toFixed(1)} registrations per approved petition, against ${k.direct.registrations_per_approval.toFixed(1)} for direct employers`);
-  assert.ok(lottery["2024"].gap_to_direct.placing.petition_share > 0.5, '"mostly because drawn tickets went unused"');
-  assert.ok(series.every((e) => e.placing.initial_denial_rate > 1.6 * e.direct.initial_denial_rate), '"about twice the share"');
-  short(`about ${main.weighted_vs_unweighted.communities_median_unweighted} groups`);
-  short(`(modularity ${m.wiring_only.real.toFixed(2)} against ${m.wiring_only.null.toFixed(2)})`);
-  assert.ok(iv.ami_community_main_vendor_same_clients > iv.ami_community_industry, '"slightly more by vendor"');
-  short(`main vendor (AMI ${iv.ami_community_main_vendor_same_clients.toFixed(2)}) a little better than its industry (${iv.ami_community_industry.toFixed(2)})`);
-  short(`${count(main.single_vendor_clients)} of the ${count(main.clients)} clients use one firm`);
-  short(`they hold ${pct(main.single_vendor_filing_share)} of placed filings`);
-  const citi = main.largest_clients[0];
-  short(`${citi.client}, the largest client, uses ${citi.vendors} firms`);
-  const nmis = staffing.stability.map((s) => s.unweighted_nmi);
-  const same = staffing.stability.map((s) => s.unweighted_same_year_nmi);
-  short(`NMI ${Math.min(...nmis).toFixed(2)} to ${Math.max(...nmis).toFixed(2)}, about half the ${Math.min(...same).toFixed(2)} to ${Math.max(...same).toFixed(2)}`);
-  const j = json("analysis/week04_shift.json").jan_jun;
-  short(`filings that name a client company fell ${Math.abs(j.totals_change.fy25_to_fy26.client_company_filings.percent).toFixed(1)}%`);
-  const tcs = j.employer_kinds.top_15_placing.find((f) => f.firm === "Tata Consultancy Services");
-  short(`Tata Consultancy Services filed ${count(tcs.FY2026)}, down from ${count(tcs.FY2025)}`);
 });
 
 test("the lottery shows the same split one step earlier", () => {
@@ -219,6 +191,7 @@ test("strong ties, weak ties and pay", () => {
   const wage = ties.wage;
   has(`the groups explain ${pct(wage.eta_squared_clients.eta_squared)} of the variance in wage level`);
   has(`averaged per firm over all its filings, ${pct(wage.eta_squared_firms.eta_squared)}`);
+  has(`so part of the ${pct(wage.eta_squared_clients.eta_squared)} is built in`);
   assert.equal(wage.eta_squared_clients.shuffles, 1000);
   assert.ok(wage.eta_squared_clients.p <= 0.001 && wage.eta_squared_firms.p <= 0.001, '"none of 1,000 shuffles reached either"');
   const d = wage.wage_distribution_placing_vs_direct_filings;
@@ -318,13 +291,7 @@ test("green cards as the strong tie", () => {
     assert.ok(low[name].perm_filings_by_name <= 5 && low[name].ratio < 1, `${name} must file almost no green cards`);
     has(`${name} (${count(low[name].lca_filings)}`);
   }
-  const g = now.kind_gap;
-  has(`(${one(g.placing_pooled_ratio)} against ${one(g.direct_pooled_ratio)} per 100)`);
-  has(`gives a gap that large ${pct(g.p_gap)} of the time (p = ${g.p_gap})`);
-  const b = y["2024"].kind_gap;
-  // "comes close": above 0.05 but not by much; "clearer" would need p < 0.05.
-  assert.ok(g.p_gap > 0.05 && b.p_gap > 0.05 && b.p_gap < 0.1, "the green-card wording needs rewriting");
-  has(`(${one(b.placing_pooled_ratio)} against ${one(b.direct_pooled_ratio)}, p = ${b.p_gap})`);
+  has(`Whether outsourcing firms sponsor fewer is section 5B`);
   has(`Only ${pct(now.perm_employer_key_matches_lca_share)} of certified green cards`);
 });
 
@@ -426,4 +393,11 @@ test("green-card and country details", () => {
   const wayne = c.diversity.top_employers.find((e) => e.employer === "Wayne Farms");
   assert.equal(wayne.india_share, 0);
   inBox("deeper-countries")(`Wayne Farms, a poultry company, filed ${wayne.filings} green cards in the counted cells`);
+});
+
+test("one count of outsourcing firms across the page", () => {
+  const n = json("analysis/week04_beyond.json").q2.placing_firms_20plus_placed.employers;
+  const split = json("analysis/week04_jobs_split.json");
+  assert.ok(html.includes(`the ${n} companies that place 20 or more`), "section 5B's count of outsourcing firms");
+  assert.ok(html.includes(`the ${n} firms that place 20 or more`), "section 2's count must match section 5B's");
 });
