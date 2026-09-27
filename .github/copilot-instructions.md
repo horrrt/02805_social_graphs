@@ -38,6 +38,24 @@ If the request is ambiguous or a rule below blocks it, stop and ask. Do not gues
 `/check` runs the matching checks for you; `/review` reviews a diff against these rules; `/ship` opens a
 pull request.
 
+## Commit messages and pull request titles
+
+Use [Conventional Commits](https://www.conventionalcommits.org). `.github/workflows/commit-format.yml`
+checks every pull request against `commitlint.config.mjs`.
+
+```
+fix(week04): replace the stale 818 with 817 in section 5B
+
+Why the change was needed, in plain sentences, wrapped at 72 characters.
+```
+
+- Header: `type(scope): subject`, 72 characters at most, imperative ("add", not "added"), no full stop.
+- Types: `feat` (new analysis, section or page feature), `fix` (a wrong number, broken page, bug),
+  `docs`, `refactor` (same result, different structure), `perf`, `test`, `build`, `ci`, `chore`.
+- Scopes: `week01` to `week08`, `site`, `analysis`, `names`, `data`, `tests`, `ci`, `deps`, `docs`.
+- Body: what changed and why, in sentences. Name the number that moved when a rerun moves one.
+- A pull request title follows the same format.
+
 ## Never
 
 - Commit anything under `build/`, a raw DOL or USCIS workbook, or the personal columns the loader refuses:
