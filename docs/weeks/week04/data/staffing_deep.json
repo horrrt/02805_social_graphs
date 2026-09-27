@@ -1,0 +1,111 @@
+{
+ "generated_by": "analysis/week04_staffing_deep_page.py",
+ "q1": {
+  "client_company_share": 0.1892,
+  "by_kind": {
+   "direct": {
+    "registrations_per_approval": 5.14,
+    "selected_that_became_petitions": 0.7596
+   },
+   "placing": {
+    "registrations_per_approval": 9.12,
+    "selected_that_became_petitions": 0.4983
+   },
+   "small": {
+    "registrations_per_approval": 12.17,
+    "selected_that_became_petitions": 0.3472
+   }
+  }
+ },
+ "q3": {
+  "clients": 18900,
+  "single_vendor_clients": 14678,
+  "single_vendor_filing_share": 0.2239,
+  "big_clients": 629,
+  "big_clients_over_90pct_one_vendor": 69,
+  "big_clients_median_top_vendor_share": 0.3696
+ },
+ "q4": {
+  "jan_jun_change": {
+   "certified_filings_percent": {
+    "fy24_to_fy25": 9.5,
+    "fy25_to_fy26": -5.8
+   },
+   "client_company_filings_percent": {
+    "fy24_to_fy25": -0.1,
+    "fy25_to_fy26": -16.5
+   },
+   "main_vendor_changed_share": {
+    "before": 0.4377,
+    "after": 0.4726
+   }
+  }
+ },
+ "lawyers": {
+  "outsourcing": {
+   "placing": {
+    "no_firm_share_pooled": 0.5239,
+    "top5_share_pooled": 0.0325
+   },
+   "direct": {
+    "no_firm_share_pooled": 0.2392,
+    "top5_share_pooled": 0.4786
+   }
+  },
+  "top_firms_by_filings": [
+   [
+    "Fragomen DEL REY Bernsen and Loewy",
+    78531
+   ],
+   [
+    "Berry Appleman and Leiden",
+    38367
+   ],
+   [
+    "Ogletree Deakins Nash Smoak and Stewart PC",
+    20358
+   ],
+   [
+    "EY LAW",
+    13978
+   ],
+   [
+    "Corporate Immigration Partners PC",
+    12009
+   ]
+  ]
+ },
+ "ties": {
+  "spearman_weight_overlap_rho": -0.039,
+  "weight_shuffle_null": {
+   "mean_rho": 0.0001,
+   "sd_rho": 0.0062
+  },
+  "defined_links": 28104,
+  "wage_distribution_placing_vs_direct_filings": {
+   "placing": {
+    "1": 0.1259,
+    "2": 0.6639,
+    "3": 0.1583,
+    "4": 0.0519
+   },
+   "direct": {
+    "1": 0.1643,
+    "2": 0.3543,
+    "3": 0.2585,
+    "4": 0.2229
+   }
+  }
+ },
+ "lottery": {
+  "high_mates_share": 0.5121,
+  "high_mates_share_shuffled": 0.4999,
+  "ami_median": 0.0037,
+  "ami_min": 0.0018,
+  "ami_max": 0.0075,
+  "previous_year": {
+   "high_mates_share": 0.5194,
+   "high_mates_share_shuffled": 0.4997
+  }
+ }
+}
