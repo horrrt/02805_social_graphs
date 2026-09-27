@@ -327,10 +327,12 @@ try {
     for (let i = 0; i < 7; i++) {
       const x = 35 + i * bw,
         height = ((h - 55) * guess[i]) / 160;
-      c.fillStyle = tone("--cv-packs-bar", "#14618f");
+      // Blue means the real snapshot and orange means a reader's own input in
+      // the degree chart above; match that here instead of reversing it.
+      c.fillStyle = tone("--cv-packs-bar-actual", "#f2820c");
       c.fillRect(x, h - 35 - height, bw * 0.38, height);
       if (compare) {
-        c.fillStyle = tone("--cv-packs-bar-actual", "#f2820c");
+        c.fillStyle = tone("--cv-packs-bar", "#14618f");
         const ah = ((h - 55) * actual[i]) / 160;
         c.fillRect(x + bw * 0.4, h - 35 - ah, bw * 0.38, ah);
       }
@@ -390,7 +392,7 @@ try {
     compare = true;
     drawSketch();
     $("#sketch-feedback").textContent =
-      `Blue = your sketch; orange = snapshot. Actual counts from left to right: ${actual.join(", ")}. The distribution is uneven; this alone does not prove a power law.`;
+      `Orange = your sketch; blue = snapshot. Actual counts from left to right: ${actual.join(", ")}. The distribution is uneven; this alone does not prove a power law.`;
   });
   metrics();
 } catch (error) {
