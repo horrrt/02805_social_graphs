@@ -35,7 +35,7 @@ test("S1: a direct hiring tie means more alike skills than a random pair of the 
     c.direct_ties.mean > c.all_pairs.mean,
     `direct ties (${c.direct_ties.mean}) should beat the random-pair baseline (${c.all_pairs.mean})`,
   );
-  // Not just noise: the gap should clear at least a third of the baseline's own spread.
+  // Not just noise: the gap should clear at least a tenth of the baseline's own spread.
   assert.ok(c.direct_ties.mean - c.all_pairs.mean > 0.1 * c.all_pairs.sd);
   assert.ok(c.direct_ties.n > 0 && c.same_cluster_other_pairs.n > 0 && c.different_cluster_pairs.n > 0);
 });
