@@ -6,7 +6,8 @@ output it reads: week04_staffing_figure.py and week04_staffing_moves.py read
 week04_staffing.py's; week04_where_who.py and week04_explore.py read
 week04_where.py's; week04_years.py reads week04_staffing.py, week04_staffing_figure.py,
 week04_shift.py, week04_countries.py and week04_lottery.py's; week04_skills.py
-reads week04_jobs.py's, its own 60-occupation network). week04_pagerank.py imports
+and week04_skills_radar.py read week04_jobs.py's, its own 60-occupation
+network). week04_pagerank.py imports
 week04_jobs.py's and week04_where.py's functions directly and recomputes the
 projection and backbone itself, so it reads no file either writes and needs
 no entry here. Everything else starts immediately, so a full rerun takes
@@ -33,13 +34,13 @@ LOGS = HERE.parent / "build" / "logs"
 SCRIPTS = ["week04_where", "week04_where_who", "week04_jobs", "week04_jobs_split", "week04_staffing",
            "week04_staffing_figure", "week04_staffing_moves", "week04_lottery", "week04_perm", "week04_countries",
            "week04_ties", "week04_shift", "week04_lawfirms", "week04_oews", "week04_beyond", "week04_footprint",
-           "week04_explore", "week04_years", "week04_pagerank", "week04_skills"]
+           "week04_explore", "week04_years", "week04_pagerank", "week04_skills", "week04_skills_radar"]
 # script -> the scripts whose output it reads (the moves and where_who scripts check theirs reproduces).
 AFTER = {"week04_staffing_figure": ("week04_staffing",), "week04_staffing_moves": ("week04_staffing",),
          "week04_where_who": ("week04_where",), "week04_explore": ("week04_where",),
          "week04_years": ("week04_staffing", "week04_shift", "week04_countries", "week04_lottery",
                            "week04_staffing_figure"),
-         "week04_skills": ("week04_jobs",)}
+         "week04_skills": ("week04_jobs",), "week04_skills_radar": ("week04_jobs",)}
 # One process per core: each loads a few hundred MB of filings.
 MAX_PARALLEL = os.cpu_count() or 4
 
