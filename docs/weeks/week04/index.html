@@ -442,14 +442,15 @@
 
         <!-- Jobs · Track B ---------------------------------------------- -->
         <section class="step" id="jobs">
-          <div class="card">
-            <div class="step-head">
-              <span class="num">2</span>
+          <header class="w4-opener">
+            <span aria-hidden="true" class="w4-opener-num">2</span>
+            <div>
               <h2>Which jobs go together</h2>
-              <span class="year-tag">companies × occupations · FY2025</span>
+              <p>Employers reveal bundles of work.</p>
             </div>
+          </header>
+          <div class="card w4-card">
             <p class="sub">
-              <b>Employers reveal bundles of work.</b>
               Two occupations are linked when the same companies file for both.
               Clusters come from the whole network of <span data-jobs="occupations">…</span>
               occupations, and they are real: modularity
@@ -465,29 +466,38 @@
 
           <p aria-live="polite" class="status-line" id="jobs-status">Loading job data…</p>
 
-          <div class="card jobs-card" id="jobs-split">
-            <div class="step-head">
-              <span class="num">A</span>
-              <h2>Do outsourcing firms bundle jobs differently from direct employers?</h2>
-              <span class="year-tag">two networks, one comparison</span>
-            </div>
-            <p class="sub">
-              <b>Yes. Their job clusters differ more than those of random groups
-              with the same number of companies and the same share of
-              filings.</b>
-              We split the companies in two: the 817 firms that place 20 or more
-              filings at client sites (21% of all filings) and the 58,379 others.
-              Each group gets its own occupation network and its own Louvain
-              clusters, and the normalized mutual information (NMI) says how
-              alike the two clusterings are on the 217 occupations that sit in a
-              cluster of two or more on both sides. Alone, that number means
-              little: splitting companies into a small and a large group changes
-              the clusters even if nobody behaves differently. So the baseline
-              draws 20 random groups that match the outsourcing firms in both
-              respects: the same number of companies of each size, from the
-              one-filing firms to the giants.
-            </p>
-            <div class="jobs-grid jobs-groups-grid">
+          <div class="card w4-card" id="jobs-split">
+            <header class="w4-q">
+              <span class="w4-num">2A</span>
+              <div>
+                <h2>Do outsourcing firms bundle jobs differently from direct employers?</h2>
+                <p class="w4-answer">Yes. Their job clusters differ more than those of random groups with the same number of companies and the same share of filings.</p>
+              </div>
+            </header>
+            <div class="w4-two">
+              <div>
+                <p class="sub">
+                  Each group gets its own occupation network and its own
+                  Louvain clusters, and the normalized mutual information
+                  (NMI) says how alike the two clusterings are on the 217
+                  occupations that sit in a cluster of two or more on both
+                  sides.
+                </p>
+                <div class="notice">
+                  <span class="ico">💡</span>
+                  <span>
+                    <b>What to notice</b>
+                    The two clusterings agree at NMI 0.42. Random groups
+                    matched on size agree at 0.61 ± 0.04 (z = −4.1), so the
+                    outsourcing firms bundle jobs differently from companies
+                    like them.
+                  </span>
+                </div>
+                <div class="w4-reveals">
+                  <span class="w4-tip"><button aria-describedby="w4-pop-jobs-split-how" type="button"><svg aria-hidden="true" height="14" viewBox="0 0 24 24" width="14"><circle cx="12" cy="12" fill="none" r="9" stroke="currentColor" stroke-width="2"></circle><path d="M12 11v6M12 7.5v.5" fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="2"></path></svg>How we tested it</button><span class="w4-pop" id="w4-pop-jobs-split-how" role="tooltip"><b>How we tested it</b>We split the companies in two: the 817 firms that place 20 or more filings at client sites (21% of all filings) and the 58,379 others. Alone, that number means little: splitting companies into a small and a large group changes the clusters even if nobody behaves differently. So the baseline draws 20 random groups that match the outsourcing firms in both respects: the same number of companies of each size, from the one-filing firms to the giants.</span></span>
+                  <span class="w4-tip"><button aria-describedby="w4-pop-jobs-split-more" type="button"><svg aria-hidden="true" height="14" viewBox="0 0 24 24" width="14"><circle cx="12" cy="12" fill="none" r="9" stroke="currentColor" stroke-width="2"></circle><path d="M12 8v8M8 12h8" fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="2"></path></svg>More numbers</button><span class="w4-pop" id="w4-pop-jobs-split-more" role="tooltip"><b>More numbers</b>The half-matched baselines show why the match matters: random groups with only the same number of companies hold 1.3% of filings and agree at 0.44 ± 0.10, which would have hidden the difference. At the top the two mixes look alike: software developers are 28% of the outsourcing firms' filings and 33% of the direct employers'. Below that they part: "computer occupations, all other" is 22% of the outsourcing firms' filings and 5% of the direct employers', and direct employers file for 283 occupations the outsourcing firms never touch.</span></span>
+                </div>
+              </div>
               <div class="plot">
                 <h3>Observed agreement against random splits</h3>
                 <p class="axis-note">
@@ -497,68 +507,46 @@
                   ones match only the number of companies or only the number of
                   filings.
                 </p>
-                <div class="chart-host jobs-nmi" id="chart-jobs-split-nmi"></div>
-              </div>
-              <div class="plot">
-                <h3>The largest occupations in each group</h3>
-                <p class="axis-note">
-                  Share of each group's filings, for the eight occupations with
-                  the most filings overall.
-                </p>
-                <div class="chart-host jobs-nmi" id="chart-jobs-split-mix"></div>
+                <div class="chart-host short" id="chart-jobs-split-nmi"></div>
               </div>
             </div>
-            <div class="notice">
-              <span class="ico">💡</span>
-              <span>
-                <b>What to notice</b>
-                The two clusterings agree at NMI 0.42. Random groups matched on
-                size agree at 0.61 ± 0.04 (z = −4.1), so the outsourcing firms
-                bundle jobs differently from companies like them. The half-matched
-                baselines show why the match matters: random groups with only the
-                same number of companies hold 1.3% of filings and agree at
-                0.44 ± 0.10, which would have hidden the difference. At the top
-                the two mixes look alike: software developers are 28% of the
-                outsourcing firms' filings and 33% of the direct employers'. Below
-                that they part: "computer occupations, all other" is 22% of the
-                outsourcing firms' filings and 5% of the direct employers', and
-                direct employers file for 283 occupations the outsourcing firms
-                never touch.
-              </span>
+            <div class="plot">
+              <h3>The largest occupations in each group</h3>
+              <p class="axis-note">
+                Share of each group's filings, for the eight occupations with
+                the most filings overall.
+              </p>
+              <div class="chart-host" id="chart-jobs-split-mix"></div>
             </div>
           </div>
 
-          <div class="card jobs-card" id="jobs-linkcom">
-            <div class="step-head">
-              <span class="num">B</span>
-              <h2>Does any job belong to two clusters at once?</h2>
-              <span class="year-tag">link communities</span>
-            </div>
+          <div class="card w4-card" id="jobs-linkcom">
+            <header class="w4-q">
+              <span class="w4-num">2B</span>
+              <div>
+                <h2>Does any job belong to two clusters at once?</h2>
+                <p class="w4-answer">Not clearly. On a network this dense, link communities pour almost everything into one cluster.</p>
+              </div>
+            </header>
             <p class="sub">
-              <b>Not clearly. On a network this dense, link communities pour
-              almost everything into one cluster.</b>
               A Louvain partition puts every job in exactly one cluster. Link
               communities (Ahn, Bagrow and Lehmann, 2010) group the links
-              instead, so a job belongs to every community its links are in. The
-              cut is chosen where partition density D, the average of how close
-              each community is to a complete one, peaks. On the 28,155 links
-              between 501 occupations it peaks at D = 0.57 with one community
-              holding 85% of the links and 121 small ones of three links or more
-              beside it.
+              instead, so a job belongs to every community its links are in.
             </p>
             <div class="notice">
               <span class="ico">💡</span>
               <span>
                 <b>What to notice</b>
                 A job's number of communities mostly counts its links (Spearman
-                0.84), so the table ranks by communities per link, as the course
-                suggests. The top is small occupations such as physical therapist
-                aides (4 communities over 10 links). Only 2 of the 5 occupations
-                that section 2's first test flagged as bridges appear in it:
-                credit counselors and interviewers. Two methods give two different
-                lists of small occupations, so we cannot name a job that clearly
-                sits in two clusters.
+                0.84), so the table ranks by communities per link, as the
+                course suggests. Two methods give two different lists of small
+                occupations, so we cannot name a job that clearly sits in two
+                clusters.
               </span>
+            </div>
+            <div class="w4-reveals">
+              <span class="w4-tip"><button aria-describedby="w4-pop-jobs-linkcom-how" type="button"><svg aria-hidden="true" height="14" viewBox="0 0 24 24" width="14"><circle cx="12" cy="12" fill="none" r="9" stroke="currentColor" stroke-width="2"></circle><path d="M12 11v6M12 7.5v.5" fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="2"></path></svg>How we tested it</button><span class="w4-pop" id="w4-pop-jobs-linkcom-how" role="tooltip"><b>How we tested it</b>The cut is chosen where partition density D, the average of how close each community is to a complete one, peaks. On the 28,155 links between 501 occupations it peaks at D = 0.57 with one community holding 85% of the links and 121 small ones of three links or more beside it.</span></span>
+              <span class="w4-tip"><button aria-describedby="w4-pop-jobs-linkcom-more" type="button"><svg aria-hidden="true" height="14" viewBox="0 0 24 24" width="14"><circle cx="12" cy="12" fill="none" r="9" stroke="currentColor" stroke-width="2"></circle><path d="M12 8v8M8 12h8" fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="2"></path></svg>More numbers</button><span class="w4-pop" id="w4-pop-jobs-linkcom-more" role="tooltip"><b>More numbers</b>The top is small occupations such as physical therapist aides (4 communities over 10 links). Only 2 of the 5 occupations that section 2's first test flagged as bridges appear in it: credit counselors and interviewers.</span></span>
             </div>
             <details class="qa">
               <summary><span class="qa-cue">The 15 jobs with the most communities per link</span></summary>
@@ -897,15 +885,15 @@
 
         <!-- Beyond the three networks ------------------------------------ -->
         <section class="step" id="beyond">
-          <div class="card">
-            <div class="step-head">
-              <span class="num">5</span>
+          <header class="w4-opener">
+            <span aria-hidden="true" class="w4-opener-num">5</span>
+            <div>
               <h2>Beyond the three networks</h2>
-              <span class="year-tag">law firms · green cards · wage levels · FY2025</span>
+              <p>The section 3 groups barely show in lawyers or green cards; the outsourcing firms stand out in the wage levels they file.</p>
             </div>
+          </header>
+          <div class="card w4-card">
             <p class="sub">
-              <b>The section 3 groups barely show in lawyers or green cards; the
-              outsourcing firms stand out in the wage levels they file.</b>
               The same filings name the law firm that prepared them, and the
               Department of Labor's green-card files name the employers that
               sponsor permanent residence. Three short questions follow the
@@ -913,134 +901,128 @@
             </p>
           </div>
 
-          <div class="card" id="beyond-law">
-            <div class="step-head">
-              <span class="num">A</span>
-              <h2>Do immigration law firms split companies the way vendors do?</h2>
-              <span class="year-tag">employer × law firm</span>
-            </div>
-            <p class="sub">
-              <b>Barely. Law firms group the companies along the section 3 lines
-              only slightly more than chance.</b>
-              75.6% of certified filings name a law firm; after name cleaning
-              there are 4,479. We linked each firm that places workers in section
-              3's network to its law firms, weighted by filings, ran Louvain, and
-              compared the groups with the section 3 groups for the 4,576 firms
-              in both. Most companies use one law firm: 64% of filings come from
-              such companies, which makes the network a set of stars.
-            </p>
-            <div class="plot">
-              <h3>Agreement with the section 3 groups</h3>
-              <p class="axis-note">
-                AMI between the law-firm groups and the staffing groups, against
-                50 rewired law-firm networks in which every company and law firm
-                keeps its number of partners.
-              </p>
-              <div class="chart-host short" id="chart-beyond-law"></div>
-            </div>
-            <div class="notice">
-              <span class="ico">💡</span>
-              <span>
-                <b>What to notice</b>
-                AMI 0.037 against 0.000 ± 0.002 for rewired networks: real
-                (z = 15) and small. Modularity would mislead here. The law-firm
-                network scores 0.90, below the 0.93 of its rewired copies, because
-                stars split into near-perfect groups whatever the wiring.
-                Fragomen files the most (14,087 filings for 131 of these
-                companies); EY Law files 10,274 for eight. The network of law
-                firms themselves, across every employer, is in
-                <a href="#staffing-lawyers">Who files the paperwork?</a> in the
-                deep dive.
-              </span>
+          <div class="card w4-card" id="beyond-law">
+            <header class="w4-q">
+              <span class="w4-num">5A</span>
+              <div>
+                <h2>Do immigration law firms split companies the way vendors do?</h2>
+                <p class="w4-answer">Barely. Law firms group the companies along the section 3 lines only slightly more than chance.</p>
+              </div>
+            </header>
+            <div class="w4-two">
+              <div>
+                <div class="notice">
+                  <span class="ico">💡</span>
+                  <span>
+                    <b>What to notice</b>
+                    AMI 0.037 against 0.000 ± 0.002 for rewired networks: real
+                    (z = 15) and small. Modularity would mislead here.
+                  </span>
+                </div>
+                <div class="w4-reveals">
+                  <span class="w4-tip"><button aria-describedby="w4-pop-beyond-law-how" type="button"><svg aria-hidden="true" height="14" viewBox="0 0 24 24" width="14"><circle cx="12" cy="12" fill="none" r="9" stroke="currentColor" stroke-width="2"></circle><path d="M12 11v6M12 7.5v.5" fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="2"></path></svg>How we tested it</button><span class="w4-pop" id="w4-pop-beyond-law-how" role="tooltip"><b>How we tested it</b>75.6% of certified filings name a law firm; after name cleaning there are 4,479. We linked each firm that places workers in section 3's network to its law firms, weighted by filings, ran Louvain, and compared the groups with the section 3 groups for the 4,576 firms in both. Most companies use one law firm: 64% of filings come from such companies, which makes the network a set of stars.</span></span>
+                  <span class="w4-tip"><button aria-describedby="w4-pop-beyond-law-more" type="button"><svg aria-hidden="true" height="14" viewBox="0 0 24 24" width="14"><circle cx="12" cy="12" fill="none" r="9" stroke="currentColor" stroke-width="2"></circle><path d="M12 8v8M8 12h8" fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="2"></path></svg>More numbers</button><span class="w4-pop" id="w4-pop-beyond-law-more" role="tooltip"><b>More numbers</b>The law-firm network scores 0.90, below the 0.93 of its rewired copies, because stars split into near-perfect groups whatever the wiring. Fragomen files the most (14,087 filings for 131 of these companies); EY Law files 10,274 for eight. The network of law firms themselves, across every employer, is in <a href="#staffing-lawyers">Who files the paperwork?</a> in the deep dive.</span></span>
+                </div>
+              </div>
+              <div class="plot">
+                <h3>Agreement with the section 3 groups</h3>
+                <p class="axis-note">
+                  AMI between the law-firm groups and the staffing groups, against
+                  50 rewired law-firm networks in which every company and law firm
+                  keeps its number of partners.
+                </p>
+                <div class="chart-host short" id="chart-beyond-law"></div>
+              </div>
             </div>
           </div>
 
-          <div class="card" id="beyond-perm">
-            <div class="step-head">
-              <span class="num">B</span>
-              <h2>Do outsourcing firms sponsor fewer green cards?</h2>
-              <span class="year-tag">PERM filings per H-1B filing</span>
-            </div>
-            <p class="sub">
-              <b>Fewer per H-1B filing, but the staffing groups do not differ
-              beyond chance.</b>
-              A green card through work starts with a PERM filing. Here the
-              outsourcing firms are the 817 companies that place 20 or more
-              filings at client sites. For each company with 20 or more H-1B
-              filings we divided its FY2025 PERM
-              filings by its H-1B filings, matching companies by name and tax
-              number.
-            </p>
-            <div class="plot">
-              <h3>Green-card filings per H-1B filing</h3>
-              <p class="axis-note">
-                Pooled over the companies in each bar, with a 95% bootstrap
-                interval for the first two. The six on the right are the largest
-                section 3 groups, named after their largest firm.
-              </p>
-              <div class="chart-host short" id="chart-beyond-perm"></div>
-            </div>
-            <div class="notice">
-              <span class="ico">💡</span>
-              <span>
-                <b>What to notice</b>
-                Outsourcing firms file 0.11 green cards per H-1B filing (95%
-                interval 0.08 to 0.15), direct employers 0.18 (0.14 to 0.21). The
-                gap shrinks to 0.13 against 0.17 when a firm counts as outsourcing
-                only if most of its filings go to clients. Across the six largest
-                staffing groups the rate runs from 0.03 in Cognizant's group,
-                where Cognizant itself filed almost none, to 0.15, a spread that
-                shuffled group labels match 28% of the time (p = 0.28). Single
-                companies swing these rates more than any group does: counting
-                every case status, filings in the names of Amazon and Google fell
-                from 3,638 and 1,618 in FY2024 to 15 and 3 in FY2025. Green cards
-                per company and the strongest employer ties are in
-                <a href="#deeper-perm">the deep dive</a>.
-              </span>
+          <div class="card w4-card" id="beyond-perm">
+            <header class="w4-q">
+              <span class="w4-num">5B</span>
+              <div>
+                <h2>Do outsourcing firms sponsor fewer green cards?</h2>
+                <p class="w4-answer">Fewer per H-1B filing, but the staffing groups do not differ beyond chance.</p>
+              </div>
+            </header>
+            <div class="w4-two">
+              <div>
+                <p class="sub">
+                  A green card through work starts with a PERM filing. Here the
+                  outsourcing firms are the 817 companies that place 20 or more
+                  filings at client sites.
+                </p>
+                <div class="notice">
+                  <span class="ico">💡</span>
+                  <span>
+                    <b>What to notice</b>
+                    Outsourcing firms file 0.11 green cards per H-1B filing
+                    (95% interval 0.08 to 0.15), direct employers 0.18 (0.14 to
+                    0.21). Across the six largest staffing groups the rate
+                    runs from 0.03 in Cognizant's group, where Cognizant
+                    itself filed almost none, to 0.15, a spread that shuffled
+                    group labels match 28% of the time (p = 0.28).
+                  </span>
+                </div>
+                <div class="w4-reveals">
+                  <span class="w4-tip"><button aria-describedby="w4-pop-beyond-perm-how" type="button"><svg aria-hidden="true" height="14" viewBox="0 0 24 24" width="14"><circle cx="12" cy="12" fill="none" r="9" stroke="currentColor" stroke-width="2"></circle><path d="M12 11v6M12 7.5v.5" fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="2"></path></svg>How we tested it</button><span class="w4-pop" id="w4-pop-beyond-perm-how" role="tooltip"><b>How we tested it</b>For each company with 20 or more H-1B filings we divided its FY2025 PERM filings by its H-1B filings, matching companies by name and tax number.</span></span>
+                  <span class="w4-tip"><button aria-describedby="w4-pop-beyond-perm-more" type="button"><svg aria-hidden="true" height="14" viewBox="0 0 24 24" width="14"><circle cx="12" cy="12" fill="none" r="9" stroke="currentColor" stroke-width="2"></circle><path d="M12 8v8M8 12h8" fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="2"></path></svg>More numbers</button><span class="w4-pop" id="w4-pop-beyond-perm-more" role="tooltip"><b>More numbers</b>The gap shrinks to 0.13 against 0.17 when a firm counts as outsourcing only if most of its filings go to clients. Single companies swing these rates more than any group does: counting every case status, filings in the names of Amazon and Google fell from 3,638 and 1,618 in FY2024 to 15 and 3 in FY2025. Green cards per company and the strongest employer ties are in <a href="#deeper-perm">the deep dive</a>.</span></span>
+                </div>
+              </div>
+              <div class="plot">
+                <h3>Green-card filings per H-1B filing</h3>
+                <p class="axis-note">
+                  Pooled over the companies in each bar, with a 95% bootstrap
+                  interval for the first two. The six on the right are the largest
+                  section 3 groups, named after their largest firm.
+                </p>
+                <div class="chart-host short" id="chart-beyond-perm"></div>
+              </div>
             </div>
           </div>
 
-          <div class="card" id="beyond-wage">
-            <div class="step-head">
-              <span class="num">C</span>
-              <h2>Do outsourcing firms file at lower wage levels for the same job?</h2>
-              <span class="year-tag">prevailing-wage levels I to IV</span>
-            </div>
-            <p class="sub">
-              <b>Yes. For the same occupation, a filing that places a worker at a
-              client has 3.6 times the odds of sitting at wage level I or II.</b>
-              Every filing states a prevailing-wage level from I (entry) to IV
-              (fully competent), set by the experience and skills the job asks
-              for; each level carries a wage floor. 92% of filings give one. We
-              compared placed and direct filings within each occupation, so
-              software developers are compared with software developers.
-            </p>
-            <div class="plot">
-              <h3>Share of filings at level I or II</h3>
-              <p class="axis-note">
-                The five occupations with the most filings. Orange bars are
-                filings that place the worker at a client, blue bars filings for
-                the employer's own site.
-              </p>
-              <div class="chart-host short" id="chart-beyond-wage"></div>
-            </div>
-            <div class="notice">
-              <span class="ico">💡</span>
-              <span>
-                <b>What to notice</b>
-                Overall, 79% of placed filings sit at level I or II against 58% of
-                direct ones. Within the 83 occupations with 20 or more filings of
-                each kind, the Mantel–Haenszel odds ratio is 3.59, and 69 of the
-                83 point the same way. A few large firms file most placements, so
-                the interval comes from resampling whole employers: 2.87 to 5.04.
-                It is not one firm's doing: without the 5, 10 or 20 largest
-                placing firms the ratio rises to 3.85, 4.28 and 4.94. Software
-                developers: 87% against 52%. Offered wages follow: placed filings
-                offer a median 1.00 times the prevailing wage in the five largest
-                occupations, direct ones 1.00 to 1.08 times. A level describes the
-                job as filed, not the worker, so this shows cheaper job
-                descriptions, not lower pay for the same person.
-              </span>
+          <div class="card w4-card" id="beyond-wage">
+            <header class="w4-q">
+              <span class="w4-num">5C</span>
+              <div>
+                <h2>Do outsourcing firms file at lower wage levels for the same job?</h2>
+                <p class="w4-answer">Yes. For the same occupation, a filing that places a worker at a client has 3.6 times the odds of sitting at wage level I or II.</p>
+              </div>
+            </header>
+            <div class="w4-two">
+              <div>
+                <p class="sub">
+                  Every filing states a prevailing-wage level from I (entry) to
+                  IV (fully competent), set by the experience and skills the
+                  job asks for; each level carries a wage floor. 92% of
+                  filings give one.
+                </p>
+                <div class="notice">
+                  <span class="ico">💡</span>
+                  <span>
+                    <b>What to notice</b>
+                    Overall, 79% of placed filings sit at level I or II against
+                    58% of direct ones. Within the 83 occupations with 20 or
+                    more filings of each kind, the Mantel–Haenszel odds ratio
+                    is 3.59, and 69 of the 83 point the same way. A level
+                    describes the job as filed, not the worker, so this shows
+                    cheaper job descriptions, not lower pay for the same
+                    person.
+                  </span>
+                </div>
+                <div class="w4-reveals">
+                  <span class="w4-tip"><button aria-describedby="w4-pop-beyond-wage-how" type="button"><svg aria-hidden="true" height="14" viewBox="0 0 24 24" width="14"><circle cx="12" cy="12" fill="none" r="9" stroke="currentColor" stroke-width="2"></circle><path d="M12 11v6M12 7.5v.5" fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="2"></path></svg>How we tested it</button><span class="w4-pop" id="w4-pop-beyond-wage-how" role="tooltip"><b>How we tested it</b>We compared placed and direct filings within each occupation, so software developers are compared with software developers.</span></span>
+                  <span class="w4-tip"><button aria-describedby="w4-pop-beyond-wage-more" type="button"><svg aria-hidden="true" height="14" viewBox="0 0 24 24" width="14"><circle cx="12" cy="12" fill="none" r="9" stroke="currentColor" stroke-width="2"></circle><path d="M12 8v8M8 12h8" fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="2"></path></svg>More numbers</button><span class="w4-pop" id="w4-pop-beyond-wage-more" role="tooltip"><b>More numbers</b>A few large firms file most placements, so the interval comes from resampling whole employers: 2.87 to 5.04. It is not one firm's doing: without the 5, 10 or 20 largest placing firms the ratio rises to 3.85, 4.28 and 4.94. Software developers: 87% against 52%. Offered wages follow: placed filings offer a median 1.00 times the prevailing wage in the five largest occupations, direct ones 1.00 to 1.08 times.</span></span>
+                </div>
+              </div>
+              <div class="plot">
+                <h3>Share of filings at level I or II</h3>
+                <p class="axis-note">
+                  The five occupations with the most filings. Orange bars are
+                  filings that place the worker at a client, blue bars filings for
+                  the employer's own site.
+                </p>
+                <div class="chart-host short" id="chart-beyond-wage"></div>
+              </div>
             </div>
           </div>
         </section>
