@@ -819,6 +819,41 @@
             </div>
           </div>
 
+          <div class="card w4-card" id="who-q1">
+            <header class="w4-q">
+              <span class="w4-num">Start</span>
+              <div>
+                <h2>How many workers sit at a client?</h2>
+                <p class="w4-answer">In FY2025, 104,732 of the 537,796 certified filings (19.5%) mark a client site.</p>
+              </div>
+            </header>
+            <div class="w4-two">
+              <div>
+                <p class="sub">A filing is a request to employ someone, not a hire. Placing firms also fare worse at USCIS: every year from FY2022 on, it denied about twice the share of their first-time petitions, 2.7% against 1.2% for direct employers in FY2022 and 3.4% against 2.0% from October 2025 to June 2026.</p>
+                <div class="w4-reveals">
+                  <span class="w4-tip"><button aria-describedby="w4-pop-who-q1-how" type="button"><svg aria-hidden="true" height="14" viewBox="0 0 24 24" width="14"><circle cx="12" cy="12" fill="none" r="9" stroke="currentColor" stroke-width="2"></circle><path d="M12 11v6M12 7.5v.5" fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="2"></path></svg>How we tested it</button><span class="w4-pop" id="w4-pop-who-q1-how" role="tooltip"><b>How we tested it</b>The worksites file lists every client a filing names; we leave out the 16% of client entries that name no company, such as "Home Address", and the 1,881 where a firm names itself. Counted that way, 101,763 filings (18.9%) name a client company: the worker is employed by one company and works at another, down from 21.9% in FY2022.</span></span>
+                  <span class="w4-tip"><button aria-describedby="w4-pop-who-q1-more" type="button"><svg aria-hidden="true" height="14" viewBox="0 0 24 24" width="14"><circle cx="12" cy="12" fill="none" r="9" stroke="currentColor" stroke-width="2"></circle><path d="M12 8v8M8 12h8" fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="2"></path></svg>More numbers</button><span class="w4-pop" id="w4-pop-who-q1-more" role="tooltip"><b>More numbers</b>The lottery shows the same split one step earlier. Each new H-1B worker starts as a registration that USCIS draws at random, and USCIS gave Bloomberg News every registration from the March 2023 draw after a FOIA lawsuit. Every petition that followed names its filing, so we can follow a ticket to its client. Direct employers sent 5.1 registrations per approved petition, placing firms 9.1, and firms with fewer than 20 filings 12.2; those small firms sent 53% of the 758,967 registrations. Most of the gap is drawn tickets nobody used. When USCIS drew a direct employer's registration, a petition followed 76% of the time; a placing firm's, 50%; a small firm's, 35%. That step carries 74% of the gap between placing and direct firms, and the draw itself 24%. Much of it comes from workers registered by several employers: 54% of registrations named one, and when USCIS drew one, a petition followed 23% of the time, against 81% for a worker registered once. 18,307 of the petitions lead to a client company. Citigroup received the most, 342 through 38 firms.</span></span>
+                </div>
+              </div>
+              <div>
+                <figure class="w4-figure">
+                  <figcaption><b>A filing, a client, a denial</b><span>The orange bar is the share involving a client company; the dot is placing firms' USCIS denial rate, the dashed line direct employers'.</span></figcaption>
+                  <div class="w4-vis-stack">
+                    <div class="w4-figure-body" data-strip="who-q1-split"></div>
+                    <div class="w4-figure-body" data-strip="who-q1-denial"></div>
+                  </div>
+                </figure>
+                <figure class="w4-figure" style="margin-top: 14px">
+                  <figcaption><b>The lottery funnel</b><span>The March 2023 draw: registrations spent per approved petition, and the share of drawn tickets that became a petition, by kind of employer.</span></figcaption>
+                  <div class="w4-vis-stack">
+                    <div class="w4-figure-body" data-strip="who-q1-funnel-registrations"></div>
+                    <div class="w4-figure-body" data-strip="who-q1-funnel-petitions"></div>
+                  </div>
+                </figure>
+              </div>
+            </div>
+          </div>
+
           <!-- A · Does a client stay in its group? ------------------- -->
           <div class="card w4-card" id="who-switch">
             <header class="w4-q">
@@ -1638,46 +1673,12 @@
               </div>
             </details>
             <details class="qa cut" id="cut-who">
-              <summary><span class="qa-cue">Who staffs whom: four earlier questions, the law firms and the lottery</span></summary>
+              <summary><span class="qa-cue">Who staffs whom: three earlier questions, the law firms and the lottery</span></summary>
               <div class="qa-body cut-body">
                 <div class="card cut-card w4-card" id="who-first-round">
-          <div class="w4-q-block" id="who-q1">
-            <header class="w4-q">
-              <span class="w4-num">A</span>
-              <div>
-                <h2>How many workers sit at a client?</h2>
-                <p class="w4-answer">In FY2025, 104,732 of the 537,796 certified filings (19.5%) mark a client site.</p>
-              </div>
-            </header>
-            <div class="w4-two">
-              <div>
-                <div class="w4-reveals">
-                  <span class="w4-tip"><button aria-describedby="w4-pop-who-q1-how" type="button"><svg aria-hidden="true" height="14" viewBox="0 0 24 24" width="14"><circle cx="12" cy="12" fill="none" r="9" stroke="currentColor" stroke-width="2"></circle><path d="M12 11v6M12 7.5v.5" fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="2"></path></svg>How we tested it</button><span class="w4-pop" id="w4-pop-who-q1-how" role="tooltip"><b>How we tested it</b>A filing is a request to employ someone, not a hire. The worksites file lists every client a filing names; we leave out the 16% of client entries that name no company, such as "Home Address", and the 1,881 where a firm names itself. Counted that way, 101,763 filings (18.9%) name a client company: the worker is employed by one company and works at another, down from 21.9% in FY2022.</span></span>
-                  <span class="w4-tip"><button aria-describedby="w4-pop-who-q1-numbers" type="button"><svg aria-hidden="true" height="14" viewBox="0 0 24 24" width="14"><circle cx="12" cy="12" fill="none" r="9" stroke="currentColor" stroke-width="2"></circle><path d="M12 8v8M8 12h8" fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="2"></path></svg>The numbers</button><span class="w4-pop" id="w4-pop-who-q1-numbers" role="tooltip"><b>The numbers</b>In FY2025, 104,732 of the 537,796 certified filings (19.5%) mark a client site. Placing firms also fare worse at USCIS: every year from FY2022 on, it denied about twice the share of their first-time petitions, 2.7% against 1.2% for direct employers in FY2022 and 3.4% against 2.0% from October 2025 to June 2026.</span></span>
-                  <span class="w4-tip"><button aria-describedby="w4-pop-who-q1-more" type="button"><svg aria-hidden="true" height="14" viewBox="0 0 24 24" width="14"><circle cx="12" cy="12" fill="none" r="9" stroke="currentColor" stroke-width="2"></circle><path d="M12 8v8M8 12h8" fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="2"></path></svg>More numbers</button><span class="w4-pop" id="w4-pop-who-q1-more" role="tooltip"><b>More numbers</b>The lottery shows the same split one step earlier. Each new H-1B worker starts as a registration that USCIS draws at random, and USCIS gave Bloomberg News every registration from the March 2023 draw after a FOIA lawsuit. Every petition that followed names its filing, so we can follow a ticket to its client. Direct employers sent 5.1 registrations per approved petition, placing firms 9.1, and firms with fewer than 20 filings 12.2; those small firms sent 53% of the 758,967 registrations. Most of the gap is drawn tickets nobody used. When USCIS drew a direct employer's registration, a petition followed 76% of the time; a placing firm's, 50%; a small firm's, 35%. That step carries 74% of the gap between placing and direct firms, and the draw itself 24%. Much of it comes from workers registered by several employers: 54% of registrations named one, and when USCIS drew one, a petition followed 23% of the time, against 81% for a worker registered once. 18,307 of the petitions lead to a client company. Citigroup received the most, 342 through 38 firms.</span></span>
-                </div>
-              </div>
-              <div>
-                <figure class="w4-figure">
-                  <figcaption><b>A filing, a client, a denial</b><span>The orange bar is the share involving a client company; the dot is placing firms' USCIS denial rate, the dashed line direct employers'.</span></figcaption>
-                  <div class="w4-vis-stack">
-                    <div class="w4-figure-body" data-strip="who-q1-split"></div>
-                    <div class="w4-figure-body" data-strip="who-q1-denial"></div>
-                  </div>
-                </figure>
-                <figure class="w4-figure" style="margin-top: 14px">
-                  <figcaption><b>The lottery funnel</b><span>The March 2023 draw: registrations spent per approved petition, and the share of drawn tickets that became a petition, by kind of employer.</span></figcaption>
-                  <div class="w4-vis-stack">
-                    <div class="w4-figure-body" data-strip="who-q1-funnel-registrations"></div>
-                    <div class="w4-figure-body" data-strip="who-q1-funnel-petitions"></div>
-                  </div>
-                </figure>
-              </div>
-            </div>
-          </div>
           <div class="w4-q-block" id="who-q2">
             <header class="w4-q">
-              <span class="w4-num">B</span>
+              <span class="w4-num">A</span>
               <div>
                 <h2>Do clients group by industry or by the firm that staffs them?</h2>
                 <p class="w4-answer">By both, weakly, and slightly more by vendor.</p>
@@ -1704,7 +1705,7 @@
           </div>
           <div class="w4-q-block" id="who-q3">
             <header class="w4-q">
-              <span class="w4-num">C</span>
+              <span class="w4-num">B</span>
               <div>
                 <h2>Who relies on a single vendor?</h2>
                 <p class="w4-answer">Small clients.</p>
@@ -1731,7 +1732,7 @@
           </div>
           <div class="w4-q-block" id="who-q4">
             <header class="w4-q">
-              <span class="w4-num">D</span>
+              <span class="w4-num">C</span>
               <div>
                 <h2>Does it hold from year to year?</h2>
                 <p class="w4-answer">Only in part.</p>
@@ -1832,7 +1833,7 @@
 
                 <div class="staffing-prose w4-card" id="staffing-lawyers" style="margin-top: 18px">
             <header class="w4-q">
-              <span class="w4-num">E</span>
+              <span class="w4-num">D</span>
               <div>
                 <h2>Who files the paperwork?</h2>
                 <p class="w4-answer">Three filings in four name an outside law firm, and five firms file 40% of those.</p>
@@ -1865,7 +1866,7 @@
                   </summary>
                   <div class="qa-body">
                                 <header class="w4-q">
-                                  <span class="w4-num">F</span>
+                                  <span class="w4-num">E</span>
                                   <div>
                                     <h2>With filing counts or without?</h2>
                                     <p class="w4-answer">The two partitions share an NMI of <b class="cross">…</b>, less than two runs of either kind with different seeds (<b class="seeds">…</b> weighted, <b class="seeds-plain">…</b> unweighted), so the filing counts change the grouping.</p>
@@ -1940,7 +1941,7 @@
                   </summary>
                   <div class="qa-body">
                                 <header class="w4-q">
-                                  <span class="w4-num">G</span>
+                                  <span class="w4-num">F</span>
                                   <div>
                                     <h2>Strong ties, weak ties and pay</h2>
                                     <p class="w4-answer">Here the pattern runs the other way, faintly.</p>
@@ -1973,7 +1974,7 @@
                   </summary>
                   <div class="qa-body">
                                 <header class="w4-q">
-                                  <span class="w4-num">H</span>
+                                  <span class="w4-num">G</span>
                                   <div>
                                     <h2>Do the firms that register the same workers staff the same clients?</h2>
                                     <p class="w4-answer">Registering the same workers is spread across the staffing groups; it does not mark a cluster of firms.</p>
