@@ -18,6 +18,7 @@
     <link href="../../assets/css/week04-methods.css?v=3" rel="stylesheet" />
     <link href="../../assets/css/week04-skills.css?v=3" rel="stylesheet" />
     <link href="../../assets/css/week04-vis-more.css?v=1" rel="stylesheet" />
+    <link href="../../assets/css/week04-vis-intros.css?v=1" rel="stylesheet" />
   </head>
   <body class="corridor">
     <a class="skip" href="#main">Skip to content</a>
@@ -454,18 +455,26 @@
             </div>
           </header>
           <div class="card w4-card">
-            <p class="sub">
-              Two occupations are linked when the same companies file for both.
-              Clusters come from the whole network of <span data-jobs="occupations">…</span>
-              occupations, and they are real: modularity
-              <span data-jobs="null-real">…</span> against
-              <span data-jobs="null-null">…</span> for rewired networks in which
-              every company keeps its number of occupations. Software developers
-              sit in almost every company's mix, so most links run through
-              them. The two questions below test the clusters from two sides:
-              do outsourcing firms and direct employers bundle jobs the same
-              way, and does any job belong to two bundles at once?
-            </p>
+            <div class="w4-two">
+              <div>
+                <p class="sub">
+                  Two occupations are linked when the same companies file for both.
+                  Clusters come from the whole network of <span data-jobs="occupations">…</span>
+                  occupations, and they are real: modularity
+                  <span data-jobs="null-real">…</span> against
+                  <span data-jobs="null-null">…</span> for rewired networks in which
+                  every company keeps its number of occupations. Software developers
+                  sit in almost every company's mix, so most links run through
+                  them. The two questions below test the clusters from two sides:
+                  do outsourcing firms and direct employers bundle jobs the same
+                  way, and does any job belong to two bundles at once?
+                </p>
+              </div>
+              <figure class="w4-figure">
+                <figcaption><b>Real, not noise</b><span>Occupation clusters against rewired networks in which every company keeps its number of occupations.</span></figcaption>
+                <div class="w4-figure-body" data-strip="jobs-modularity"></div>
+              </figure>
+            </div>
           </div>
 
           <p aria-live="polite" class="status-line" id="jobs-status">Loading job data…</p>
@@ -581,17 +590,39 @@
             </div>
           </header>
           <div class="card w4-card">
-            <p class="sub">
-              Here the network links an outsourcing firm to each client company
-              where it places workers, and a link weighs the filings between
-              them. Louvain runs on the largest connected piece: 21,759 firms and
-              clients, 41,212 links. Counted once per link, the groups beat
-              rewired networks in which every firm and client keeps its number of
-              partners (modularity 0.57 against 0.53), and they match each
-              client's main vendor (AMI 0.11) a little better than its industry
-              (0.07). The three
-              questions below ask whether the groups behave like markets.
-            </p>
+            <div class="w4-two">
+              <div>
+                <p class="sub">
+                  Here the network links an outsourcing firm to each client company
+                  where it places workers, and a link weighs the filings between
+                  them. Louvain runs on the largest connected piece: 21,759 firms and
+                  clients, 41,212 links. Counted once per link, the groups beat
+                  rewired networks in which every firm and client keeps its number of
+                  partners (modularity 0.57 against 0.53), and they match each
+                  client's main vendor (AMI 0.11) a little better than its industry
+                  (0.07). The three
+                  questions below ask whether the groups behave like markets.
+                </p>
+                <div class="w4-anatomy w4-anatomy--pair">
+                  <h3>Words in this section</h3>
+                  <dl>
+                    <div><dt>Vendor</dt><dd>An outsourcing firm that files the H-1B and places the worker at another company, its client. Elsewhere the page also calls it a placing firm.</dd></div>
+                    <div><dt>Main vendor</dt><dd>The vendor that files most of a client's placements in a year.</dd></div>
+                    <div><dt>Switch</dt><dd>A year in which a client's main vendor changes, counted for clients with five or more filings in both years.</dd></div>
+                  </dl>
+                </div>
+              </div>
+              <div>
+                <figure class="w4-figure">
+                  <figcaption><b>Weak groups, beyond chance</b><span>Modularity against rewired networks that keep each firm's and client's number of partners; AMI with each client's main vendor and its industry.</span></figcaption>
+                  <div class="w4-figure-body" data-strip="who-modularity"></div>
+                </figure>
+                <figure class="w4-figure">
+                  <figcaption><b>One client, many vendors</b><span>Bank of America's largest staffing firms by filings in FY2025; link width is filings placed there.</span></figcaption>
+                  <div class="w4-figure-body" data-strip="who-ego"></div>
+                </figure>
+              </div>
+            </div>
           </div>
 
           <!-- A · Does a client stay in its group? ------------------- -->
@@ -899,12 +930,20 @@
             </div>
           </header>
           <div class="card w4-card">
-            <p class="sub">
-              The same filings name the law firm that prepared them, and the
-              Department of Labor's green-card files name the employers that
-              sponsor permanent residence. Three short questions follow the
-              section 3 groups into those records.
-            </p>
+            <div class="w4-two">
+              <div>
+                <p class="sub">
+                  The same filings name the law firm that prepared them, and the
+                  Department of Labor's green-card files name the employers that
+                  sponsor permanent residence. Three short questions follow the
+                  section 3 groups into those records.
+                </p>
+              </div>
+              <figure class="w4-figure">
+                <figcaption><b>Three small answers</b><span>Each real value against its baseline: law firms against rewired networks, green cards against direct employers' interval, wage odds against equal odds.</span></figcaption>
+                <div class="w4-figure-body" data-strip="beyond-summary"></div>
+              </figure>
+            </div>
           </div>
 
           <div class="card w4-card" id="beyond-law">
@@ -1065,8 +1104,6 @@
                 network represents workers who were actually hired.
               </span>
             </div>
-              </div>
-              <div>
                 <p class="sub">Where outsourcing shows most is outside the networks: a filing
               that places a worker at a client has 3.6 times the odds of a
               lower wage level for the same occupation. Lawyers and green cards
@@ -1080,6 +1117,10 @@
               two metros.
             </p>
               </div>
+              <figure class="w4-figure">
+                <figcaption><b>Five weak groups, none of them noise</b><span>One row per section: the real network against its random baseline, on the same scale as the findings above the hero.</span></figcaption>
+                <div class="w4-figure-body" data-strip="closing-recap"></div>
+              </figure>
             </div>
             <details class="qa">
               <summary><span class="qa-cue">AI use and how we checked it</span></summary>
@@ -2375,5 +2416,6 @@
     <script src="../../assets/js/week04-questions.js?v=6" type="module"></script>
     <script src="../../assets/js/week04-cut.js?v=3" type="module"></script>
     <script src="../../assets/js/week04-vis-more.js?v=1" type="module"></script>
+    <script src="../../assets/js/week04-vis-intros.js?v=1" type="module"></script>
   </body>
 </html>
