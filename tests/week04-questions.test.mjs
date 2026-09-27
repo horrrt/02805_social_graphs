@@ -43,6 +43,7 @@ test("section 1: the backbone sheds metros, it does not snap", () => {
   says("place-break", `${names[0]} at α = ${d.break.steps[0].alpha.toFixed(3)}`);
   says("place-break", `${names[1]} at ${d.break.steps[1].alpha.toFixed(3)}`);
   says("place-break", `The fall from ${f.q2_gc_size_alpha_0_1} to ${f.q2_gc_size_alpha_0_05} is ${f.q2_breaking_steps_in_window} separate links`);
+  says("place-break", `the largest piece of the map fell from ${f.q2_gc_size_alpha_0_1} metros at α = 0.1 to ${f.q2_gc_size_alpha_0_05} at α = 0.05`);
   assert.equal(d.breaking_links.length, f.q2_breaking_steps_in_window);
   says("place-break", `Of the ${f.q2_breaking_links_flagged} links whose removal cuts a metro loose`);
   says("place-break", `lead ${f.q2_breaking_links_led_by_shortlist} (${pct(f.q2_flagged_shortlist_share)})`);
@@ -96,6 +97,25 @@ test("section 3: switches stay in the group, movers and split clients", () => {
   says("who-movers", `${pct(f.q2_movers_2plus_vendor_share, 1)} of movers have two or more vendors, against ${pct(f.q2_all_clients_2plus_vendor_share, 1)}`);
   says("who-overlap", `${count(f.q3_two_community_clients)} clients get a fifth or more`);
   says("who-overlap", `give ${count(Math.round(f.q3_null_mean))} ± ${Math.round(f.q3_null_sd)} split clients (z = −${Math.round(-f.q3_z)})`);
+});
+
+test("section 3: the named movers and split clients follow the JSON", () => {
+  // Names are not numbers, so the checks above let a rerun on new company keys leave them behind.
+  const d = json("docs/weeks/week04/data/staffing_moves.json");
+  const poss = (name) => (name.endsWith("s") ? `${name}'` : `${name}'s`);
+  const plain = (id) => card(id).replace(/&amp;/g, "&");
+  const has = (id, t) => assert.ok(plain(id).includes(t), `${id} should say "${t}"`);
+  const mover = (name) => d.q2_top_movers.find((m) => m.client === name);
+  assert.equal(d.q2_top_movers[0].client, "Citigroup", '"the largest movers are the largest clients" starts with Citigroup');
+  const citi = mover("Citigroup");
+  const boa = mover("Bank of America");
+  has("who-movers", `Citigroup sits with ${citi.weighted_community_top_firm} when filings count and with ${citi.unweighted_community_top_firm} when they do not`);
+  has("who-movers", `Bank of America moves from ${poss(boa.weighted_community_top_firm)} group to ${poss(boa.unweighted_community_top_firm)}`);
+  const split = (name) => d.q3_top_clients.find((c) => c.client === name);
+  const usaa = split("USAA");
+  const stellantis = split("Stellantis");
+  has("who-overlap", `USAA gets ${pct(usaa.shares[0])} of its filings from ${poss(usaa.communities[0])} group and ${pct(usaa.shares[1])} from ${poss(usaa.communities[1])}`);
+  has("who-overlap", `Stellantis ${pct(stellantis.shares[0])} from ${poss(stellantis.communities[0])} group and ${pct(stellantis.shares[1])} from ${poss(stellantis.communities[1])}`);
 });
 
 test("beyond: law firms, green cards and wage levels", () => {

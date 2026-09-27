@@ -410,3 +410,19 @@ test("one deep dive: the extra networks and the methods sit inside it", () => {
   assert.ok(!html.includes("Curious? Go deeper"), "the old Go deeper section is gone");
   assert.equal((html.match(/id="evidence"/g) || []).length, 1, '"#evidence" links need exactly one target');
 });
+
+test("section 1's first round: the cities and the long links follow the analysis", () => {
+  // Hand-typed in the deep dive, so a rerun used to leave them behind.
+  const place = json("docs/assets/data/week04_place.json");
+  const rank = text('id="place-rank"', 'id="place-backbone"');
+  const long = text('id="place-longhaul"', 'id="cut-jobs"');
+  const has = (part, t) => assert.ok(part.includes(t), `section 1's first round should say "${t}"`);
+  const city = (name) => place.cities.find((c) => c.name === name);
+  const [sj, ny] = [city("San Jose"), city("New York")];
+  has(rank, `San Jose's ${count(sj.filings)} filings request ${count(sj.positions)} positions`);
+  has(rank, `New York files more (${count(ny.filings)}) from three times as many employers (${count(ny.employers)})`);
+  assert.equal(Math.round(ny.employers / sj.employers), 3, '"three times as many employers"');
+  const lh = json("analysis/week04_where.json").longhaul;
+  has(long, `Of the ${lh.long_links} backbone links longer than 1,500 km, the shortlist leads ${lh.long_led_by_shortlist} (${pct(lh.long_led_by_shortlist / lh.long_links)})`);
+  has(long, `it leads ${lh.short_led_by_shortlist} of the ${lh.short_links} shorter ones (${pct(lh.short_led_by_shortlist / lh.short_links)})`);
+});

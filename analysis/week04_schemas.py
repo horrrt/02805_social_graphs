@@ -776,6 +776,131 @@ class Beyond(Model):
     q3_top5_soc: list[Top5Soc] = Field(min_length=1)
 
 
+# Section 1 explorables · docs/weeks/week04/data/explore.json, for four community
+# explorables; no page script reads it yet ----------------------------------------
+
+class ExploreMetro(Model):
+    id: str
+    name: str
+    community: int = Count
+
+
+class ExploreFull(Model):
+    edges: list[tuple[str, str, int]] = Field(min_length=1)
+    total_weight: float = Count
+    Q_page_partition: float
+
+
+class GnCut(Model):
+    step: int = Count
+    edge: tuple[str, str]
+    betweenness: float = Count
+    components: int = Field(ge=1)
+    split: bool
+
+
+class GnLevel(Model):
+    step: int = Count
+    components: int = Field(ge=1)
+    partition: dict[str, int]
+    Q: float
+
+
+class GnBest(Model):
+    step: int = Count
+    components: int = Field(ge=1)
+    Q: float
+
+
+class GirvanNewman(Model):
+    cuts: list[GnCut] = Field(min_length=1)
+    levels: list[GnLevel] = Field(min_length=1)
+    best: GnBest
+
+
+class LouvainMove(Model):
+    model_config = ConfigDict(extra="allow", populate_by_name=True)
+    node: str
+    from_community: int = Field(alias="from")
+    to: int
+    gain: float
+    Q: float
+
+
+class LouvainLevel(Model):
+    level: int = Count
+    moves: list[LouvainMove]
+    sweeps: int = Count
+    communities: int = Field(ge=1)
+    Q_start: float
+    Q: float
+    members: dict[str, list[str]]
+    partition_start: dict[str, int]
+
+
+class LouvainFinal(Model):
+    partition: dict[str, int]
+    Q: float
+    nmi_with_page: float = Share
+
+
+class ExploreLouvain(Model):
+    seed: int = Count
+    levels: list[LouvainLevel] = Field(min_length=1)
+    final: LouvainFinal
+
+
+class KCliqueGroup(Model):
+    communities: list[list[str]]
+    in_two_or_more: list[str]
+    in_none: list[str]
+
+
+class KCliques(Model):
+    graph: str
+    by_k: dict[str, KCliqueGroup]
+
+
+class LinkCommunities(Model):
+    graph: str
+    D: float = Field(ge=0, le=1)
+    communities: list[list[tuple[str, str]]]
+    by_metro: dict[str, list[int]]
+
+
+class Explore(Model):
+    generated_by: str
+    year: int
+    metros: list[ExploreMetro] = Field(min_length=2)
+    full: ExploreFull
+    girvan_newman: GirvanNewman
+    louvain: ExploreLouvain
+    k_cliques: KCliques
+    link_communities: LinkCommunities
+
+    @model_validator(mode="after")
+    def references(self):
+        ids = {m.id for m in self.metros}
+        assert all(a in ids and b in ids for a, b, _ in self.full.edges), \
+            "a full-network edge names an unknown metro"
+        for c in self.girvan_newman.cuts:
+            assert c.edge[0] in ids and c.edge[1] in ids, "a Girvan-Newman cut names an unknown metro"
+        for lv in self.girvan_newman.levels:
+            assert set(lv.partition) <= ids, "a Girvan-Newman level partitions an unknown metro"
+        assert set(self.louvain.final.partition) <= ids, "the Louvain final partition names an unknown metro"
+        for lv in self.louvain.levels:
+            for mv in lv.moves:
+                assert mv.node, "a Louvain move needs a node id"
+        for group in self.k_cliques.by_k.values():
+            covered = {m for community in group.communities for m in community}
+            assert covered <= ids, "a k-clique community names an unknown metro"
+            assert set(group.in_two_or_more) <= ids and set(group.in_none) <= ids
+        touched = {m for community in self.link_communities.communities for a, b in community for m in (a, b)}
+        assert touched <= ids, "a link community names an unknown metro"
+        assert set(self.link_communities.by_metro) <= ids
+        return self
+
+
 # Section 4 · docs/weeks/week04/data/footprint.json, read by week04-questions.js --
 
 class DropVariant(Model):
@@ -876,6 +1001,7 @@ PAGES = {
     "docs/weeks/week04/data/beyond.json": Beyond,
     "docs/weeks/week04/data/footprint.json": Footprint,
     "docs/weeks/week04/data/footprint_rank.json": FootprintRank,
+    "docs/weeks/week04/data/explore.json": Explore,
 }
 
 

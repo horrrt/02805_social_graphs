@@ -1,0 +1,248 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>Week 4 · deep dive, more networks continued</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@800&amp;display=swap" />
+<style>
+body{margin:0;background:#eef3f9}
+a{color:#14618f}a:hover{color:#0f2340}
+summary{cursor:pointer}
+.pop{display:none}
+.tip:hover>.pop,.tip:focus-within>.pop,.pop.open{display:block}
+</style>
+</helmet>
+<div style="width: 1440px; height: 2400px; box-sizing: border-box; overflow: hidden; background: #eef3f9; color: #0f2340; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Inter, system-ui, sans-serif; display: flex; flex-direction: column; -webkit-font-smoothing: antialiased">
+<header style="flex: none; height: 52px; box-sizing: border-box; background: rgba(255, 255, 255, 0.92); border-bottom: 1px solid #dce5f0; display: flex; align-items: center; justify-content: center">
+<div style="width: 1180px; display: flex; align-items: center; gap: 22px">
+<a href="#top" style="display: flex; align-items: center; gap: 7px; text-decoration: none; font-family: 'Barlow Condensed', Impact, sans-serif; font-weight: 800; font-size: 20px; line-height: 1; letter-spacing: 0.01em; color: #0f2340"><span style="color: #14618f">✳︎</span><span>LOG–LOG <span style="color: #14618f">LEGENDS</span></span></a>
+<a href="#all-posts" style="font-size: 13px; font-weight: 600; color: #46618a; text-decoration: none">All posts</a>
+<nav aria-label="Sections of this post" style="margin-left: auto; display: flex; gap: 2px">
+<a href="#opening" style="display: flex; align-items: center; gap: 6px; padding: 7px 12px; border-radius: 999px; font-size: 13px; font-weight: 600; text-decoration: none; color: #46618a;"><span style="font-variant-numeric: tabular-nums; font-weight: 800; color: #7a8fac">0</span>Opening</a>
+<a href="#place" style="display: flex; align-items: center; gap: 6px; padding: 7px 12px; border-radius: 999px; font-size: 13px; font-weight: 600; text-decoration: none; color: #46618a;"><span style="font-variant-numeric: tabular-nums; font-weight: 800; color: #7a8fac">1</span>Where</a>
+<a href="#jobs" style="display: flex; align-items: center; gap: 6px; padding: 7px 12px; border-radius: 999px; font-size: 13px; font-weight: 600; text-decoration: none; color: #46618a;"><span style="font-variant-numeric: tabular-nums; font-weight: 800; color: #7a8fac">2</span>Jobs</a>
+<a href="#who" style="display: flex; align-items: center; gap: 6px; padding: 7px 12px; border-radius: 999px; font-size: 13px; font-weight: 600; text-decoration: none; color: #46618a;"><span style="font-variant-numeric: tabular-nums; font-weight: 800; color: #7a8fac">3</span>Staffing</a>
+<a href="#footprint" style="display: flex; align-items: center; gap: 6px; padding: 7px 12px; border-radius: 999px; font-size: 13px; font-weight: 600; text-decoration: none; color: #46618a;"><span style="font-variant-numeric: tabular-nums; font-weight: 800; color: #7a8fac">4</span>Biggest firms</a>
+<a href="#beyond" style="display: flex; align-items: center; gap: 6px; padding: 7px 12px; border-radius: 999px; font-size: 13px; font-weight: 600; text-decoration: none; color: #46618a;"><span style="font-variant-numeric: tabular-nums; font-weight: 800; color: #7a8fac">5</span>Beyond</a>
+<a href="#closing" style="display: flex; align-items: center; gap: 6px; padding: 7px 12px; border-radius: 999px; font-size: 13px; font-weight: 600; text-decoration: none; color: #46618a;"><span style="font-variant-numeric: tabular-nums; font-weight: 800; color: #7a8fac">✓</span>Closing</a>
+<a href="#cut" aria-current="true" style="display: flex; align-items: center; gap: 6px; padding: 7px 12px; border-radius: 999px; font-size: 13px; font-weight: 600; text-decoration: none; background: #d9ecf9; color: #14618f;"><span style="font-variant-numeric: tabular-nums; font-weight: 800; color: #14618f">+</span>Deep dive</a>
+</nav>
+</div>
+</header>
+<div style="flex: none; display: flex; align-items: flex-start; padding-top: 36px">
+<nav aria-label="Contents of this post" style="flex: none; width: 130px; display: flex; justify-content: center; padding-top: 6px">
+<div style="display: flex; flex-direction: column; align-items: center; gap: 8px; padding: 4px 0; background: linear-gradient(#dce5f0, #dce5f0) center / 2px 100% no-repeat">
+<span class="tip" style="position: relative; display: inline-flex"><a href="#opening" aria-label="0 · Opening" style="width: 36px; height: 36px; box-sizing: border-box; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 800; text-decoration: none; font-variant-numeric: tabular-nums; background: #ffffff; color: #14618f; border: 1px solid #dce5f0;">0</a><span class="pop" aria-hidden="true" style="position: absolute; left: calc(100% + 10px); top: 50%; transform: translateY(-50%); z-index: 40; width: max-content; max-width: 300px; box-sizing: border-box; background: rgba(11, 31, 58, 0.97); border-radius: 8px; padding: 6px 10px; font-size: 12px; line-height: 1.4; font-weight: 600; color: #eaf2fb; text-align: left; white-space: normal; box-shadow: 0 2px 6px rgba(15, 35, 64, 0.08), 0 12px 28px rgba(15, 35, 64, 0.14)">0 · Opening</span></span>
+<span class="tip" style="position: relative; display: inline-flex"><a href="#place" aria-label="1 · Where the hiring is" style="width: 36px; height: 36px; box-sizing: border-box; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 800; text-decoration: none; font-variant-numeric: tabular-nums; background: #ffffff; color: #14618f; border: 1px solid #dce5f0;">1</a><span class="pop" aria-hidden="true" style="position: absolute; left: calc(100% + 10px); top: 50%; transform: translateY(-50%); z-index: 40; width: max-content; max-width: 300px; box-sizing: border-box; background: rgba(11, 31, 58, 0.97); border-radius: 8px; padding: 6px 10px; font-size: 12px; line-height: 1.4; font-weight: 600; color: #eaf2fb; text-align: left; white-space: normal; box-shadow: 0 2px 6px rgba(15, 35, 64, 0.08), 0 12px 28px rgba(15, 35, 64, 0.14)">1 · Where the hiring is</span></span>
+<span class="tip" style="position: relative; display: inline-flex"><a href="#jobs" aria-label="2 · Which jobs go together" style="width: 36px; height: 36px; box-sizing: border-box; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 800; text-decoration: none; font-variant-numeric: tabular-nums; background: #ffffff; color: #14618f; border: 1px solid #dce5f0;">2</a><span class="pop" aria-hidden="true" style="position: absolute; left: calc(100% + 10px); top: 50%; transform: translateY(-50%); z-index: 40; width: max-content; max-width: 300px; box-sizing: border-box; background: rgba(11, 31, 58, 0.97); border-radius: 8px; padding: 6px 10px; font-size: 12px; line-height: 1.4; font-weight: 600; color: #eaf2fb; text-align: left; white-space: normal; box-shadow: 0 2px 6px rgba(15, 35, 64, 0.08), 0 12px 28px rgba(15, 35, 64, 0.14)">2 · Which jobs go together</span></span>
+<span class="tip" style="position: relative; display: inline-flex"><a href="#who" aria-label="3 · Who staffs whom" style="width: 36px; height: 36px; box-sizing: border-box; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 800; text-decoration: none; font-variant-numeric: tabular-nums; background: #ffffff; color: #14618f; border: 1px solid #dce5f0;">3</a><span class="pop" aria-hidden="true" style="position: absolute; left: calc(100% + 10px); top: 50%; transform: translateY(-50%); z-index: 40; width: max-content; max-width: 300px; box-sizing: border-box; background: rgba(11, 31, 58, 0.97); border-radius: 8px; padding: 6px 10px; font-size: 12px; line-height: 1.4; font-weight: 600; color: #eaf2fb; text-align: left; white-space: normal; box-shadow: 0 2px 6px rgba(15, 35, 64, 0.08), 0 12px 28px rgba(15, 35, 64, 0.14)">3 · Who staffs whom</span></span>
+<span class="tip" style="position: relative; display: inline-flex"><a href="#footprint" aria-label="4 · Without the biggest firms" style="width: 36px; height: 36px; box-sizing: border-box; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 800; text-decoration: none; font-variant-numeric: tabular-nums; background: #ffffff; color: #14618f; border: 1px solid #dce5f0;">4</a><span class="pop" aria-hidden="true" style="position: absolute; left: calc(100% + 10px); top: 50%; transform: translateY(-50%); z-index: 40; width: max-content; max-width: 300px; box-sizing: border-box; background: rgba(11, 31, 58, 0.97); border-radius: 8px; padding: 6px 10px; font-size: 12px; line-height: 1.4; font-weight: 600; color: #eaf2fb; text-align: left; white-space: normal; box-shadow: 0 2px 6px rgba(15, 35, 64, 0.08), 0 12px 28px rgba(15, 35, 64, 0.14)">4 · Without the biggest firms</span></span>
+<span class="tip" style="position: relative; display: inline-flex"><a href="#beyond" aria-label="5 · Beyond the three networks" style="width: 36px; height: 36px; box-sizing: border-box; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 800; text-decoration: none; font-variant-numeric: tabular-nums; background: #ffffff; color: #14618f; border: 1px solid #dce5f0;">5</a><span class="pop" aria-hidden="true" style="position: absolute; left: calc(100% + 10px); top: 50%; transform: translateY(-50%); z-index: 40; width: max-content; max-width: 300px; box-sizing: border-box; background: rgba(11, 31, 58, 0.97); border-radius: 8px; padding: 6px 10px; font-size: 12px; line-height: 1.4; font-weight: 600; color: #eaf2fb; text-align: left; white-space: normal; box-shadow: 0 2px 6px rgba(15, 35, 64, 0.08), 0 12px 28px rgba(15, 35, 64, 0.14)">5 · Beyond the three networks</span></span>
+<span class="tip" style="position: relative; display: inline-flex"><a href="#closing" aria-label="✓ · Closing" style="width: 36px; height: 36px; box-sizing: border-box; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 800; text-decoration: none; font-variant-numeric: tabular-nums; background: #ffffff; color: #14618f; border: 1px solid #dce5f0;">✓</a><span class="pop" aria-hidden="true" style="position: absolute; left: calc(100% + 10px); top: 50%; transform: translateY(-50%); z-index: 40; width: max-content; max-width: 300px; box-sizing: border-box; background: rgba(11, 31, 58, 0.97); border-radius: 8px; padding: 6px 10px; font-size: 12px; line-height: 1.4; font-weight: 600; color: #eaf2fb; text-align: left; white-space: normal; box-shadow: 0 2px 6px rgba(15, 35, 64, 0.08), 0 12px 28px rgba(15, 35, 64, 0.14)">✓ · Closing</span></span>
+<span class="tip" style="position: relative; display: inline-flex"><a href="#cut" aria-label="+ · Deep dive" style="width: 36px; height: 36px; box-sizing: border-box; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 800; text-decoration: none; font-variant-numeric: tabular-nums; background: #14618f; color: #ffffff; border: 1px solid #14618f;">+</a><span class="pop" aria-hidden="true" style="position: absolute; left: calc(100% + 10px); top: 50%; transform: translateY(-50%); z-index: 40; width: max-content; max-width: 300px; box-sizing: border-box; background: rgba(11, 31, 58, 0.97); border-radius: 8px; padding: 6px 10px; font-size: 12px; line-height: 1.4; font-weight: 600; color: #eaf2fb; text-align: left; white-space: normal; box-shadow: 0 2px 6px rgba(15, 35, 64, 0.08), 0 12px 28px rgba(15, 35, 64, 0.14)">+ · Deep dive</span></span>
+<div style="display: flex; flex-direction: column; align-items: center; gap: 5px"><span class="tip" style="position: relative; display: inline-flex"><a href="#cut-place" aria-label="First round: where the hiring is" style="width: 24px; height: 24px; box-sizing: border-box; border-radius: 999px; display: flex; align-items: center; justify-content: center; font-size: 10.5px; font-weight: 800; text-decoration: none; background: #eef3f9; color: #46618a; border: 1px solid #dce5f0;">1</a><span class="pop" aria-hidden="true" style="position: absolute; left: calc(100% + 10px); top: 50%; transform: translateY(-50%); z-index: 40; width: max-content; max-width: 300px; box-sizing: border-box; background: rgba(11, 31, 58, 0.97); border-radius: 8px; padding: 6px 10px; font-size: 12px; line-height: 1.4; font-weight: 600; color: #eaf2fb; text-align: left; white-space: normal; box-shadow: 0 2px 6px rgba(15, 35, 64, 0.08), 0 12px 28px rgba(15, 35, 64, 0.14)">First round: where the hiring is</span></span><span class="tip" style="position: relative; display: inline-flex"><a href="#cut-jobs" aria-label="First round: which jobs go together" style="width: 24px; height: 24px; box-sizing: border-box; border-radius: 999px; display: flex; align-items: center; justify-content: center; font-size: 10.5px; font-weight: 800; text-decoration: none; background: #eef3f9; color: #46618a; border: 1px solid #dce5f0;">2</a><span class="pop" aria-hidden="true" style="position: absolute; left: calc(100% + 10px); top: 50%; transform: translateY(-50%); z-index: 40; width: max-content; max-width: 300px; box-sizing: border-box; background: rgba(11, 31, 58, 0.97); border-radius: 8px; padding: 6px 10px; font-size: 12px; line-height: 1.4; font-weight: 600; color: #eaf2fb; text-align: left; white-space: normal; box-shadow: 0 2px 6px rgba(15, 35, 64, 0.08), 0 12px 28px rgba(15, 35, 64, 0.14)">First round: which jobs go together</span></span><span class="tip" style="position: relative; display: inline-flex"><a href="#cut-who" aria-label="First round: who staffs whom" style="width: 24px; height: 24px; box-sizing: border-box; border-radius: 999px; display: flex; align-items: center; justify-content: center; font-size: 10.5px; font-weight: 800; text-decoration: none; background: #eef3f9; color: #46618a; border: 1px solid #dce5f0;">3</a><span class="pop" aria-hidden="true" style="position: absolute; left: calc(100% + 10px); top: 50%; transform: translateY(-50%); z-index: 40; width: max-content; max-width: 300px; box-sizing: border-box; background: rgba(11, 31, 58, 0.97); border-radius: 8px; padding: 6px 10px; font-size: 12px; line-height: 1.4; font-weight: 600; color: #eaf2fb; text-align: left; white-space: normal; box-shadow: 0 2px 6px rgba(15, 35, 64, 0.08), 0 12px 28px rgba(15, 35, 64, 0.14)">First round: who staffs whom</span></span><span class="tip" style="position: relative; display: inline-flex"><a href="#cut-more" aria-label="More networks" style="width: 24px; height: 24px; box-sizing: border-box; border-radius: 999px; display: flex; align-items: center; justify-content: center; font-size: 10.5px; font-weight: 800; text-decoration: none; background: #0f2340; color: #ffffff; border: 1px solid #0f2340;">M</a><span class="pop" aria-hidden="true" style="position: absolute; left: calc(100% + 10px); top: 50%; transform: translateY(-50%); z-index: 40; width: max-content; max-width: 300px; box-sizing: border-box; background: rgba(11, 31, 58, 0.97); border-radius: 8px; padding: 6px 10px; font-size: 12px; line-height: 1.4; font-weight: 600; color: #eaf2fb; text-align: left; white-space: normal; box-shadow: 0 2px 6px rgba(15, 35, 64, 0.08), 0 12px 28px rgba(15, 35, 64, 0.14)">More networks</span></span><span class="tip" style="position: relative; display: inline-flex"><a href="#evidence" aria-label="Data and methods" style="width: 24px; height: 24px; box-sizing: border-box; border-radius: 999px; display: flex; align-items: center; justify-content: center; font-size: 10.5px; font-weight: 800; text-decoration: none; background: #eef3f9; color: #46618a; border: 1px solid #dce5f0;">D</a><span class="pop" aria-hidden="true" style="position: absolute; left: calc(100% + 10px); top: 50%; transform: translateY(-50%); z-index: 40; width: max-content; max-width: 300px; box-sizing: border-box; background: rgba(11, 31, 58, 0.97); border-radius: 8px; padding: 6px 10px; font-size: 12px; line-height: 1.4; font-weight: 600; color: #eaf2fb; text-align: left; white-space: normal; box-shadow: 0 2px 6px rgba(15, 35, 64, 0.08), 0 12px 28px rgba(15, 35, 64, 0.14)">Data and methods</span></span></div>
+</div>
+</nav>
+<div style="width: 1180px; flex: none; display: flex; flex-direction: column; gap: 26px">
+<section id="cut-more-2" style="display: flex; gap: 22px; align-items: flex-start; padding: 12px 0 2px">
+<div aria-hidden="true" style="flex: none; width: 58px; font-size: 64px; line-height: 0.86; font-weight: 800; letter-spacing: -0.04em; color: #14618f; font-variant-numeric: tabular-nums">+</div>
+<div style="display: flex; flex-direction: column; gap: 10px; padding-top: 2px">
+<div style="display: flex; align-items: center; gap: 14px">
+<h2 style="margin: 0; font-size: 30px; line-height: 1.1; font-weight: 700; letter-spacing: -0.02em; color: #0f2340">More networks, continued</h2>
+</div>
+<p style="margin: 0; max-width: 860px; font-size: 18px; line-height: 1.45; font-weight: 600; letter-spacing: -0.005em; color: #0f2340; text-wrap: pretty">Six more networks from the same filings.</p>
+</div>
+</section>
+<article id="deeper-strength" style="background: #ffffff; border: 1px solid #dce5f0; border-radius: 14px; box-shadow: 0 1px 2px rgba(15, 35, 64, 0.06), 0 8px 24px rgba(15, 35, 64, 0.05); padding: 24px 28px 26px; display: flex; flex-direction: column; gap: 18px">
+<div style="display: flex; justify-content: flex-end; align-items: center; gap: 12px"><button type="button" aria-expanded="true" aria-controls="deeper-strength-body" style="display: inline-flex; align-items: center; gap: 6px; padding: 5px 11px; border-radius: 999px; border: 1px solid #dce5f0; background: #f7fafd; color: #46618a; font-family: inherit; font-size: 12px; font-weight: 700; cursor: pointer">Close <span aria-hidden="true">▴</span></button></div>
+<header style="display: flex; align-items: flex-start; gap: 14px">
+<span style="flex: none; min-width: 40px; height: 30px; padding: 0 8px; box-sizing: border-box; border-radius: 8px; background: #d9ecf9; color: #14618f; font-size: 13px; font-weight: 800; display: flex; align-items: center; justify-content: center; font-variant-numeric: tabular-nums">M4</span>
+<div style="flex: 1; display: flex; flex-direction: column; gap: 8px">
+<div style="display: flex; align-items: center; gap: 12px">
+<h3 style="margin: 0; font-size: 20px; line-height: 1.25; font-weight: 700; letter-spacing: -0.01em; color: #0f2340">Strength against degree: where do the heavy links go?</h3>
+</div>
+<p style="margin: 0; max-width: 900px; font-size: 16px; line-height: 1.45; font-weight: 600; color: #0f2340; text-wrap: pretty">Three of the top five are therapy and rehab clinics: the heaviest one-to-one ties belong to health care, not IT.</p>
+</div>
+</header>
+<div id="deeper-strength-body">
+<div style="display: grid; grid-template-columns: 520px minmax(0, 1fr); gap: 40px; align-items: start">
+<div style="display: flex; flex-direction: column; gap: 14px">
+<p style="margin: 0; max-width: 68ch; font-size: 13.5px; line-height: 1.62; font-weight: 400; color: #46618a; text-wrap: pretty">In the FY2025 firm–client network the two rank firms almost alike (Spearman 0.91) and clients less so (0.75).</p>
+<div style="display: flex; flex-wrap: wrap; gap: 8px; align-items: center"><span class="tip" style="position: relative; display: inline-flex"><button type="button" aria-describedby="more-54" style="display: inline-flex; align-items: center; gap: 6px; padding: 6px 11px; border-radius: 999px; border: 1px solid #dce5f0; background: #ffffff; color: #14618f; font-family: inherit; font-size: 12px; font-weight: 700; line-height: 1.1; cursor: help"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true" style="flex: none"><circle cx="12" cy="12" r="9" style="fill: none; stroke: currentColor; stroke-width: 2px"></circle><path d="M12 11v6M12 7.6v.4" style="fill: none; stroke: currentColor; stroke-width: 2.2px; stroke-linecap: round"></path></svg>The idea</button><span class="pop" id="more-54" role="tooltip" style="position: absolute; left: 0; top: calc(100% + 8px); width: 440px; z-index: 40; box-sizing: border-box; background: rgba(11, 31, 58, 0.97); border: 1px solid rgba(255, 255, 255, 0.12); border-radius: 9px; padding: 12px 14px; box-shadow: 0 2px 6px rgba(15, 35, 64, 0.08), 0 18px 44px rgba(15, 35, 64, 0.16); font-size: 12.5px; line-height: 1.55; font-weight: 400; font-style: normal; color: #cfe0f2; text-align: left; white-space: normal; letter-spacing: 0"><b style="display: block; margin-bottom: 4px; color: #eaf2fb; font-weight: 700">The idea</b>The course compares a node’s degree (how many partners) with its strength (how many filings over all its links), and finds the exceptions tell the story. Figures from analysis/week04_ties.py.</span></span></div>
+</div>
+<div style="display: flex; flex-direction: column; gap: 14px">
+<figure style="margin: 0; display: flex; flex-direction: column; gap: 8px">
+<figcaption style="display: flex; flex-direction: column; gap: 3px"><span style="font-size: 13.5px; font-weight: 700; color: #0f2340">The heaviest one-to-one ties</span><span style="font-size: 11.5px; line-height: 1.45; color: #46618a">The clients with the most filings from a single firm are Ultimate Therapy, 133 filings from one firm; Sigma Rehab, 95; Post Rehab Services, 61; and Grady Memorial Hospital, 58. Dark bars: health care.</span></figcaption>
+<div style="background: #f7fafd; border: 1px solid #eaf0f7; border-radius: 10px; padding: 14px 14px 10px">
+<svg width="556" height="154" viewBox="0 0 556 154" role="img" aria-label="The clients with the most filings from a single firm" style="display: block; overflow: visible; max-width: 100%; height: auto; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Inter, system-ui, sans-serif">
+<text x="180.0" y="18.5" style="font-size: 12px; fill: #0f2340; font-weight: 700; text-anchor: end">Ultimate Therapy</text>
+<rect x="190.0" y="6.0" width="316.0" height="17.0" rx="3" style="fill: #0f2340"></rect>
+<text x="512.0" y="18.5" style="font-size: 11.5px; fill: #0f2340; font-weight: 700; text-anchor: start; font-variant-numeric: tabular-nums">133</text>
+<text x="180.0" y="44.5" style="font-size: 12px; fill: #0f2340; font-weight: 700; text-anchor: end">Sigma Rehab</text>
+<rect x="190.0" y="32.0" width="225.7" height="17.0" rx="3" style="fill: #0f2340"></rect>
+<text x="421.7" y="44.5" style="font-size: 11.5px; fill: #0f2340; font-weight: 700; text-anchor: start; font-variant-numeric: tabular-nums">95</text>
+<text x="180.0" y="70.5" style="font-size: 12px; fill: #0f2340; font-weight: 700; text-anchor: end">Post Rehab Services</text>
+<rect x="190.0" y="58.0" width="144.9" height="17.0" rx="3" style="fill: #0f2340"></rect>
+<text x="340.9" y="70.5" style="font-size: 11.5px; fill: #0f2340; font-weight: 700; text-anchor: start; font-variant-numeric: tabular-nums">61</text>
+<text x="180.0" y="96.5" style="font-size: 12px; fill: #0f2340; font-weight: 700; text-anchor: end">Grady Memorial Hospital</text>
+<rect x="190.0" y="84.0" width="137.8" height="17.0" rx="3" style="fill: #0f2340"></rect>
+<text x="333.8" y="96.5" style="font-size: 11.5px; fill: #0f2340; font-weight: 700; text-anchor: start; font-variant-numeric: tabular-nums">58</text>
+<text x="180.0" y="122.5" style="font-size: 12px; fill: #0f2340; font-weight: 400; text-anchor: end">Northwestern Mutual Life</text>
+<rect x="190.0" y="110.0" width="114.0" height="17.0" rx="3" style="fill: #0f2340; opacity: 0.42"></rect>
+<text x="310.0" y="122.5" style="font-size: 11.5px; fill: #0f2340; font-weight: 600; text-anchor: start; font-variant-numeric: tabular-nums">48</text>
+</svg>
+</div>
+</figure>
+</div>
+</div>
+</div>
+<nav aria-label="More in the deep dive" style="display: flex; justify-content: space-between; gap: 16px; border-top: 1px solid #eaf0f7; padding-top: 12px"><a href="DeepMoreA.dc.html" style="font-size: 12.5px; font-weight: 600; text-decoration: none">← Where is the hiring densest?</a><a href="#deeper-lottery" style="font-size: 12.5px; font-weight: 600; text-decoration: none">The lottery a year apart →</a></nav>
+</article>
+<article id="deeper-lottery" style="background: #ffffff; border: 1px solid #dce5f0; border-radius: 14px; box-shadow: 0 1px 2px rgba(15, 35, 64, 0.06), 0 8px 24px rgba(15, 35, 64, 0.05); padding: 24px 28px 26px; display: flex; flex-direction: column; gap: 18px">
+<div style="display: flex; justify-content: flex-end; align-items: center; gap: 12px"><button type="button" aria-expanded="true" aria-controls="deeper-lottery-body" style="display: inline-flex; align-items: center; gap: 6px; padding: 5px 11px; border-radius: 999px; border: 1px solid #dce5f0; background: #f7fafd; color: #46618a; font-family: inherit; font-size: 12px; font-weight: 700; cursor: pointer">Close <span aria-hidden="true">▴</span></button></div>
+<header style="display: flex; align-items: flex-start; gap: 14px">
+<span style="flex: none; min-width: 40px; height: 30px; padding: 0 8px; box-sizing: border-box; border-radius: 8px; background: #d9ecf9; color: #14618f; font-size: 13px; font-weight: 800; display: flex; align-items: center; justify-content: center; font-variant-numeric: tabular-nums">M5</span>
+<div style="flex: 1; display: flex; flex-direction: column; gap: 8px">
+<div style="display: flex; align-items: center; gap: 12px">
+<h3 style="margin: 0; font-size: 20px; line-height: 1.25; font-weight: 700; letter-spacing: -0.01em; color: #0f2340">The lottery a year apart, and who receives the winners</h3>
+</div>
+<p style="margin: 0; max-width: 900px; font-size: 16px; line-height: 1.45; font-weight: 600; color: #0f2340; text-wrap: pretty">One approved petition took 5.2 registrations in 2022 and 8.5 in 2023.</p>
+</div>
+</header>
+<div id="deeper-lottery-body">
+<div style="display: grid; grid-template-columns: 520px minmax(0, 1fr); gap: 40px; align-items: start">
+<div style="display: flex; flex-direction: column; gap: 14px">
+<p style="margin: 0; max-width: 68ch; font-size: 13.5px; line-height: 1.62; font-weight: 400; color: #46618a; text-wrap: pretty">Between the March 2022 and March 2023 draws, registrations for a worker whom another employer had also registered rose from 35% to 54% of the total, and the share of drawn registrations that became a petition fell from 74% to 49%.</p>
+<p style="margin: 0; max-width: 68ch; font-size: 13.5px; line-height: 1.62; font-weight: 400; color: #46618a; text-wrap: pretty">The order held both years: direct employers needed the fewest (4.3, then 5.1), placing firms more (6.3, then 9.1).</p>
+<div style="display: flex; flex-wrap: wrap; gap: 8px; align-items: center"><span class="tip" style="position: relative; display: inline-flex"><button type="button" aria-describedby="more-55" style="display: inline-flex; align-items: center; gap: 6px; padding: 6px 11px; border-radius: 999px; border: 1px solid #dce5f0; background: #ffffff; color: #14618f; font-family: inherit; font-size: 12px; font-weight: 700; line-height: 1.1; cursor: help"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true" style="flex: none"><circle cx="12" cy="12" r="9" style="fill: none; stroke: currentColor; stroke-width: 2px"></circle><path d="M12 8v8M8 12h8" style="fill: none; stroke: currentColor; stroke-width: 2px; stroke-linecap: round"></path></svg>More numbers</button><span class="pop" id="more-55" role="tooltip" style="position: absolute; left: 0; top: calc(100% + 8px); width: 480px; z-index: 40; box-sizing: border-box; background: rgba(11, 31, 58, 0.97); border: 1px solid rgba(255, 255, 255, 0.12); border-radius: 9px; padding: 12px 14px; box-shadow: 0 2px 6px rgba(15, 35, 64, 0.08), 0 18px 44px rgba(15, 35, 64, 0.16); font-size: 12.5px; line-height: 1.55; font-weight: 400; font-style: normal; color: #cfe0f2; text-align: left; white-space: normal; letter-spacing: 0"><b style="display: block; margin-bottom: 4px; color: #eaf2fb; font-weight: 700">More numbers</b>Of the March 2023 petitions, 20% lead to a client company, 66% of those through placing firms. Citigroup received 342, 94% through placing firms; Microsoft 150, 95%, with LTIMindtree supplying 47%; AT&amp;T 153, with Tech Mahindra supplying 41%. USCIS also denied 2.0% of the placing firms’ lottery petitions against 1.1% of direct employers’. Figures from analysis/week04_lottery.py.</span></span></div>
+</div>
+<div style="display: flex; flex-direction: column; gap: 14px">
+<figure style="margin: 0; display: flex; flex-direction: column; gap: 8px">
+<figcaption style="display: flex; flex-direction: column; gap: 3px"><span style="font-size: 13.5px; font-weight: 700; color: #0f2340">Registrations per approved petition</span><span style="font-size: 11.5px; line-height: 1.45; color: #46618a">Each line joins one kind of employer across the two draws.</span></figcaption>
+<div style="background: #f7fafd; border: 1px solid #eaf0f7; border-radius: 10px; padding: 14px 14px 10px">
+<svg width="556" height="250" viewBox="0 0 556 250" role="img" aria-label="Registrations per approved petition, March 2022 against March 2023" style="display: block; overflow: visible; max-width: 100%; height: auto; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Inter, system-ui, sans-serif">
+<text x="150.0" y="14.0" style="font-size: 11.5px; fill: #46618a; font-weight: 700; text-anchor: middle">March 2022</text>
+<text x="406.0" y="14.0" style="font-size: 11.5px; fill: #46618a; font-weight: 700; text-anchor: middle">March 2023</text>
+<line x1="150.0" y1="22.0" x2="150.0" y2="230.0" style="stroke: #dce5f0; stroke-width: 1px; stroke-linecap: butt"></line>
+<line x1="406.0" y1="22.0" x2="406.0" y2="230.0" style="stroke: #dce5f0; stroke-width: 1px; stroke-linecap: butt"></line>
+<line x1="150.0" y1="162.6" x2="406.0" y2="68.6" style="stroke: #0f2340; stroke-width: 3px; stroke-linecap: round"></line>
+<circle cx="150.0" cy="162.6" r="5.5" style="fill: #0f2340; stroke: #ffffff; stroke-width: 2px"></circle>
+<circle cx="406.0" cy="68.6" r="5.5" style="fill: #0f2340; stroke: #ffffff; stroke-width: 2px"></circle>
+<text x="138.0" y="166.6" style="font-size: 12px; fill: #0f2340; font-weight: 700; text-anchor: end">All employers  5.2</text>
+<text x="418.0" y="72.6" style="font-size: 12px; fill: #0f2340; font-weight: 700; text-anchor: start; font-variant-numeric: tabular-nums">8.5</text>
+<line x1="150.0" y1="132.3" x2="406.0" y2="51.1" style="stroke: #f2820c; stroke-width: 2.2px; stroke-linecap: round"></line>
+<circle cx="150.0" cy="132.3" r="5.5" style="fill: #f2820c; stroke: #ffffff; stroke-width: 2px"></circle>
+<circle cx="406.0" cy="51.1" r="5.5" style="fill: #f2820c; stroke: #ffffff; stroke-width: 2px"></circle>
+<text x="138.0" y="136.3" style="font-size: 12px; fill: #0f2340; font-weight: 600; text-anchor: end">Placing firms  6.3</text>
+<text x="418.0" y="55.1" style="font-size: 12px; fill: #0f2340; font-weight: 600; text-anchor: start; font-variant-numeric: tabular-nums">9.1</text>
+<line x1="150.0" y1="189.4" x2="406.0" y2="164.9" style="stroke: #1f8fd6; stroke-width: 2.2px; stroke-linecap: round"></line>
+<circle cx="150.0" cy="189.4" r="5.5" style="fill: #1f8fd6; stroke: #ffffff; stroke-width: 2px"></circle>
+<circle cx="406.0" cy="164.9" r="5.5" style="fill: #1f8fd6; stroke: #ffffff; stroke-width: 2px"></circle>
+<text x="138.0" y="193.4" style="font-size: 12px; fill: #0f2340; font-weight: 600; text-anchor: end">Direct employers  4.3</text>
+<text x="418.0" y="168.9" style="font-size: 12px; fill: #0f2340; font-weight: 600; text-anchor: start; font-variant-numeric: tabular-nums">5.1</text>
+</svg>
+</div>
+</figure>
+</div>
+</div>
+</div>
+<nav aria-label="More in the deep dive" style="display: flex; justify-content: space-between; gap: 16px; border-top: 1px solid #eaf0f7; padding-top: 12px"><a href="#deeper-strength" style="font-size: 12.5px; font-weight: 600; text-decoration: none">← Strength against degree</a><a href="#deeper-uscis" style="font-size: 12.5px; font-weight: 600; text-decoration: none">USCIS denials, year by year →</a></nav>
+</article>
+<article id="deeper-uscis" style="background: #ffffff; border: 1px solid #dce5f0; border-radius: 14px; box-shadow: 0 1px 2px rgba(15, 35, 64, 0.06), 0 8px 24px rgba(15, 35, 64, 0.05); padding: 24px 28px 26px; display: flex; flex-direction: column; gap: 18px">
+<div style="display: flex; justify-content: flex-end; align-items: center; gap: 12px"><button type="button" aria-expanded="true" aria-controls="deeper-uscis-body" style="display: inline-flex; align-items: center; gap: 6px; padding: 5px 11px; border-radius: 999px; border: 1px solid #dce5f0; background: #f7fafd; color: #46618a; font-family: inherit; font-size: 12px; font-weight: 700; cursor: pointer">Close <span aria-hidden="true">▴</span></button></div>
+<header style="display: flex; align-items: flex-start; gap: 14px">
+<span style="flex: none; min-width: 40px; height: 30px; padding: 0 8px; box-sizing: border-box; border-radius: 8px; background: #d9ecf9; color: #14618f; font-size: 13px; font-weight: 800; display: flex; align-items: center; justify-content: center; font-variant-numeric: tabular-nums">M6</span>
+<div style="flex: 1; display: flex; flex-direction: column; gap: 8px">
+<div style="display: flex; align-items: center; gap: 12px">
+<h3 style="margin: 0; font-size: 20px; line-height: 1.25; font-weight: 700; letter-spacing: -0.01em; color: #0f2340">USCIS denials, year by year</h3>
+</div>
+<p style="margin: 0; max-width: 900px; font-size: 16px; line-height: 1.45; font-weight: 600; color: #0f2340; text-wrap: pretty">Placing firms also fare worse at USCIS: every year from FY2022 on, it denied about twice the share of their first-time petitions.</p>
+</div>
+</header>
+<div id="deeper-uscis-body">
+<div style="display: grid; grid-template-columns: 520px minmax(0, 1fr); gap: 40px; align-items: start">
+<div style="display: flex; flex-direction: column; gap: 14px">
+<p style="margin: 0; max-width: 68ch; font-size: 13.5px; line-height: 1.62; font-weight: 400; color: #46618a; text-wrap: pretty">Share of first-time H-1B petitions USCIS denied, for employers with 20 or more certified filings that year. Placing firms put half or more of their filings at a client.</p>
+<div style="display: flex; flex-wrap: wrap; gap: 8px; align-items: center"><span class="tip" style="position: relative; display: inline-flex"><button type="button" aria-describedby="more-56" style="display: inline-flex; align-items: center; gap: 6px; padding: 6px 11px; border-radius: 999px; border: 1px solid #dce5f0; background: #ffffff; color: #14618f; font-family: inherit; font-size: 12px; font-weight: 700; line-height: 1.1; cursor: help"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true" style="flex: none"><circle cx="12" cy="12" r="9" style="fill: none; stroke: currentColor; stroke-width: 2px"></circle><path d="M12 11v6M12 7.6v.4" style="fill: none; stroke: currentColor; stroke-width: 2.2px; stroke-linecap: round"></path></svg>Source</button><span class="pop open" id="more-56" role="tooltip" style="position: absolute; left: 0; top: calc(100% + 8px); width: 440px; z-index: 40; box-sizing: border-box; background: rgba(11, 31, 58, 0.97); border: 1px solid rgba(255, 255, 255, 0.12); border-radius: 9px; padding: 12px 14px; box-shadow: 0 2px 6px rgba(15, 35, 64, 0.08), 0 18px 44px rgba(15, 35, 64, 0.16); font-size: 12.5px; line-height: 1.55; font-weight: 400; font-style: normal; color: #cfe0f2; text-align: left; white-space: normal; letter-spacing: 0"><b style="display: block; margin-bottom: 4px; color: #eaf2fb; font-weight: 700">Source</b>From the hub’s Tableau export; FY2026 runs October to June. Figures from analysis/week04_staffing.py (uscis_series).</span></span></div>
+</div>
+<div style="display: flex; flex-direction: column; gap: 14px">
+<figure style="margin: 0; display: flex; flex-direction: column; gap: 8px">
+<figcaption style="display: flex; flex-direction: column; gap: 3px"><span style="font-size: 13.5px; font-weight: 700; color: #0f2340">First-time petitions denied</span><span style="font-size: 11.5px; line-height: 1.45; color: #46618a">Each row is a year; the gap between the dots is the gap between the two kinds of employer.</span></figcaption>
+<div style="background: #f7fafd; border: 1px solid #eaf0f7; border-radius: 10px; padding: 14px 14px 10px">
+<div style="display: flex; gap: 16px; font-size: 12px; color: #46618a"><span style="display: flex; align-items: center; gap: 6px"><span style="width: 10px; height: 10px; border-radius: 999px; background: #f2820c"></span>placing firms</span><span style="display: flex; align-items: center; gap: 6px"><span style="width: 10px; height: 10px; border-radius: 999px; background: #1f8fd6"></span>direct employers</span></div><svg width="556" height="274" viewBox="0 0 556 274" role="img" aria-label="Share of first-time H-1B petitions denied, placing firms against direct employers" style="display: block; overflow: visible; max-width: 100%; height: auto; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Inter, system-ui, sans-serif">
+<line x1="170.0" y1="6.0" x2="170.0" y2="240.0" style="stroke: #e6ecf3; stroke-width: 1px; stroke-linecap: butt"></line>
+<text x="170.0" y="256.0" style="font-size: 11px; fill: #7a8fac; font-weight: 400; text-anchor: middle; font-variant-numeric: tabular-nums">0%</text>
+<line x1="255.5" y1="6.0" x2="255.5" y2="240.0" style="stroke: #e6ecf3; stroke-width: 1px; stroke-linecap: butt"></line>
+<text x="255.5" y="256.0" style="font-size: 11px; fill: #7a8fac; font-weight: 400; text-anchor: middle; font-variant-numeric: tabular-nums">1%</text>
+<line x1="341.0" y1="6.0" x2="341.0" y2="240.0" style="stroke: #e6ecf3; stroke-width: 1px; stroke-linecap: butt"></line>
+<text x="341.0" y="256.0" style="font-size: 11px; fill: #7a8fac; font-weight: 400; text-anchor: middle; font-variant-numeric: tabular-nums">2%</text>
+<line x1="426.5" y1="6.0" x2="426.5" y2="240.0" style="stroke: #e6ecf3; stroke-width: 1px; stroke-linecap: butt"></line>
+<text x="426.5" y="256.0" style="font-size: 11px; fill: #7a8fac; font-weight: 400; text-anchor: middle; font-variant-numeric: tabular-nums">3%</text>
+<line x1="512.0" y1="6.0" x2="512.0" y2="240.0" style="stroke: #e6ecf3; stroke-width: 1px; stroke-linecap: butt"></line>
+<text x="512.0" y="256.0" style="font-size: 11px; fill: #7a8fac; font-weight: 400; text-anchor: middle; font-variant-numeric: tabular-nums">4%</text>
+<text x="0.0" y="28.0" style="font-size: 12px; fill: #0f2340; font-weight: 600; text-anchor: start">FY2022</text>
+<text x="0.0" y="43.0" style="font-size: 11px; fill: #7a8fac; font-weight: 400; text-anchor: start; font-variant-numeric: tabular-nums">1,057 placing, 2,288 direct</text>
+<line x1="170.0" y1="31.0" x2="512.0" y2="31.0" style="stroke: #dce5f0; stroke-width: 1px; stroke-linecap: butt"></line>
+<line x1="401.7" y1="31.0" x2="274.3" y2="31.0" style="stroke: #dce5f0; stroke-width: 4px; stroke-linecap: round"></line>
+<circle cx="401.7" cy="31.0" r="6.5" style="fill: #f2820c; stroke: #ffffff; stroke-width: 2px"></circle>
+<text x="412.7" y="35.0" style="font-size: 11.5px; fill: #0f2340; font-weight: 700; text-anchor: start; font-variant-numeric: tabular-nums">2.71%</text>
+<circle cx="274.3" cy="31.0" r="6.5" style="fill: #1f8fd6; stroke: #ffffff; stroke-width: 2px"></circle>
+<text x="263.3" y="35.0" style="font-size: 11.5px; fill: #0f2340; font-weight: 700; text-anchor: end; font-variant-numeric: tabular-nums">1.22%</text>
+<text x="0.0" y="74.0" style="font-size: 12px; fill: #0f2340; font-weight: 600; text-anchor: start">FY2023</text>
+<text x="0.0" y="89.0" style="font-size: 11px; fill: #7a8fac; font-weight: 400; text-anchor: start; font-variant-numeric: tabular-nums">873 placing, 2,080 direct</text>
+<line x1="170.0" y1="77.0" x2="512.0" y2="77.0" style="stroke: #dce5f0; stroke-width: 1px; stroke-linecap: butt"></line>
+<line x1="475.2" y1="77.0" x2="296.5" y2="77.0" style="stroke: #dce5f0; stroke-width: 4px; stroke-linecap: round"></line>
+<circle cx="475.2" cy="77.0" r="6.5" style="fill: #f2820c; stroke: #ffffff; stroke-width: 2px"></circle>
+<text x="486.2" y="81.0" style="font-size: 11.5px; fill: #0f2340; font-weight: 700; text-anchor: start; font-variant-numeric: tabular-nums">3.57%</text>
+<circle cx="296.5" cy="77.0" r="6.5" style="fill: #1f8fd6; stroke: #ffffff; stroke-width: 2px"></circle>
+<text x="285.5" y="81.0" style="font-size: 11.5px; fill: #0f2340; font-weight: 700; text-anchor: end; font-variant-numeric: tabular-nums">1.48%</text>
+<text x="0.0" y="120.0" style="font-size: 12px; fill: #0f2340; font-weight: 600; text-anchor: start">FY2024</text>
+<text x="0.0" y="135.0" style="font-size: 11px; fill: #7a8fac; font-weight: 400; text-anchor: start; font-variant-numeric: tabular-nums">884 placing, 2,403 direct</text>
+<line x1="170.0" y1="123.0" x2="512.0" y2="123.0" style="stroke: #dce5f0; stroke-width: 1px; stroke-linecap: butt"></line>
+<line x1="396.6" y1="123.0" x2="279.4" y2="123.0" style="stroke: #dce5f0; stroke-width: 4px; stroke-linecap: round"></line>
+<circle cx="396.6" cy="123.0" r="6.5" style="fill: #f2820c; stroke: #ffffff; stroke-width: 2px"></circle>
+<text x="407.6" y="127.0" style="font-size: 11.5px; fill: #0f2340; font-weight: 700; text-anchor: start; font-variant-numeric: tabular-nums">2.65%</text>
+<circle cx="279.4" cy="123.0" r="6.5" style="fill: #1f8fd6; stroke: #ffffff; stroke-width: 2px"></circle>
+<text x="268.4" y="127.0" style="font-size: 11.5px; fill: #0f2340; font-weight: 700; text-anchor: end; font-variant-numeric: tabular-nums">1.28%</text>
+<text x="0.0" y="166.0" style="font-size: 12px; fill: #0f2340; font-weight: 600; text-anchor: start">FY2025</text>
+<text x="0.0" y="181.0" style="font-size: 11px; fill: #7a8fac; font-weight: 400; text-anchor: start; font-variant-numeric: tabular-nums">933 placing, 2,466 direct</text>
+<line x1="170.0" y1="169.0" x2="512.0" y2="169.0" style="stroke: #dce5f0; stroke-width: 1px; stroke-linecap: butt"></line>
+<line x1="443.6" y1="169.0" x2="303.4" y2="169.0" style="stroke: #dce5f0; stroke-width: 4px; stroke-linecap: round"></line>
+<circle cx="443.6" cy="169.0" r="6.5" style="fill: #f2820c; stroke: #ffffff; stroke-width: 2px"></circle>
+<text x="454.6" y="173.0" style="font-size: 11.5px; fill: #0f2340; font-weight: 700; text-anchor: start; font-variant-numeric: tabular-nums">3.20%</text>
+<circle cx="303.4" cy="169.0" r="6.5" style="fill: #1f8fd6; stroke: #ffffff; stroke-width: 2px"></circle>
+<text x="292.4" y="173.0" style="font-size: 11.5px; fill: #0f2340; font-weight: 700; text-anchor: end; font-variant-numeric: tabular-nums">1.56%</text>
+<text x="0.0" y="212.0" style="font-size: 12px; fill: #0f2340; font-weight: 600; text-anchor: start">FY2026, Oct–Jun</text>
+<text x="0.0" y="227.0" style="font-size: 11px; fill: #7a8fac; font-weight: 400; text-anchor: start; font-variant-numeric: tabular-nums">601 placing, 1,863 direct</text>
+<line x1="170.0" y1="215.0" x2="512.0" y2="215.0" style="stroke: #dce5f0; stroke-width: 1px; stroke-linecap: butt"></line>
+<line x1="456.4" y1="215.0" x2="339.3" y2="215.0" style="stroke: #dce5f0; stroke-width: 4px; stroke-linecap: round"></line>
+<circle cx="456.4" cy="215.0" r="6.5" style="fill: #f2820c; stroke: #ffffff; stroke-width: 2px"></circle>
+<text x="467.4" y="219.0" style="font-size: 11.5px; fill: #0f2340; font-weight: 700; text-anchor: start; font-variant-numeric: tabular-nums">3.35%</text>
+<circle cx="339.3" cy="215.0" r="6.5" style="fill: #1f8fd6; stroke: #ffffff; stroke-width: 2px"></circle>
+<text x="328.3" y="219.0" style="font-size: 11.5px; fill: #0f2340; font-weight: 700; text-anchor: end; font-variant-numeric: tabular-nums">1.98%</text>
+</svg>
+</div>
+</figure>
+</div>
+</div>
+</div>
+<nav aria-label="More in the deep dive" style="display: flex; justify-content: space-between; gap: 16px; border-top: 1px solid #eaf0f7; padding-top: 12px"><a href="#deeper-lottery" style="font-size: 12.5px; font-weight: 600; text-decoration: none">← The lottery a year apart</a><a href="DeepMethods.dc.html" style="font-size: 12.5px; font-weight: 600; text-decoration: none">Data and methods →</a></nav>
+</article>
+</div>
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview": {"width": 1440, "height": 2400}}'>
+class Component extends DCLogic {
+renderVals() {
+return {};
+}
+}
+</script>
+</body>
+</html>
