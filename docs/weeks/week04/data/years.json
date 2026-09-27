@@ -386,6 +386,7 @@
    "direct_initial_denial_rate": 0.0198
   }
  ],
+ "uscis_min_filings": 20,
  "lottery_draws": {
   "2022": {
    "registrations": 301419

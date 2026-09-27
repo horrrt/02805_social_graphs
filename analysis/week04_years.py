@@ -16,6 +16,8 @@ never carries a hand-typed number:
   FY2022-FY2024 caps).
 - analysis/week04_lottery.json: "lotteries" (registrations per approval for
   the March 2022 and March 2023 draws, the two years USCIS's data covers).
+- docs/weeks/week04/data/staffing_clients.json: "min_filings" (the certified-filings
+  floor the USCIS denial-rate comparison uses), so the box's caption never types it.
 
 The only arithmetic here is the two changes the box's lead sentence and its
 notice state: FY2022 to FY2023's certified-filings change (rounds to the "14%"
@@ -52,6 +54,7 @@ def main():
     shift = load("analysis/week04_shift.json")
     countries = load("analysis/week04_countries.json")
     lottery = load("analysis/week04_lottery.json")
+    staffing_clients = load("docs/weeks/week04/data/staffing_clients.json")
 
     ys = staffing["years"]
     years = {
@@ -120,6 +123,7 @@ def main():
         "oct_jun": oct_jun,
         "monthly": monthly,
         "uscis_series": uscis_series,
+        "uscis_min_filings": staffing_clients["min_filings"],
         "lottery_draws": lottery_draws,
         "lottery_funnels": lottery_funnels,
         "finding": finding,

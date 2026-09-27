@@ -1044,6 +1044,7 @@ class Years(Model):
     oct_jun: OctJun
     monthly: dict[Literal["FY2024", "FY2025", "FY2026"], list[YearMonthRow]]
     uscis_series: list[UscisYear] = Field(min_length=5, max_length=5)
+    uscis_min_filings: int = Count
     lottery_draws: dict[Literal["2022", "2023", "2024"], LotteryDraw]
     lottery_funnels: dict[Literal["2023", "2024"], LotteryFunnel]
     finding: YearsFinding
@@ -1060,6 +1061,7 @@ class Years(Model):
         assert shares == sorted(shares, reverse=True), "the placed share must fall every year from FY2023"
         assert "HCL" not in dict(self.years["2026"].top_firms_by_filings), \
             "HCL is expected to leave FY2026's top firms by filings"
+        return self
 
 
 # Deep dive · Skills · docs/weeks/week04/data/skills.json, read by week04-skills.js -

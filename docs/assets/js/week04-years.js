@@ -376,7 +376,7 @@ function render(data) {
     panel("The same months, compared", "October to June of each year: the fair way to set FY2026 beside the two before it.", s1b) +
     panel("Month by month", "October to June of each fiscal year, the months FY2026 covers.", monthlyHtml, 2) +
     panel("Placed at a client", "Share of certified filings that put the worker at another company.", s3) +
-    panel("USCIS denials", "Share of first-time petitions denied, employers with 20 or more certified filings. FY2026 runs October to June.", s5) +
+    panel("USCIS denials", `Share of first-time petitions denied, employers with ${data.uscis_min_filings} or more certified filings. FY2026 runs October to June.`, s5) +
     panel("The four largest placing firms",
       `Placed filings each firm files per fiscal year, on one scale. Hollow: FY2026, nine months. HCL leaves the top ` +
       `${ys["2026"].top_firms_by_filings.length} in FY2026.`, firmsHtml, 2) +
