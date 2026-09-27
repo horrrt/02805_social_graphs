@@ -25,6 +25,7 @@ import numpy as np
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "analysis"))
 from week04_staffing import tracked  # noqa: E402
+from check_pages import check  # noqa: E402
 
 DATA = ROOT / "docs/assets/data"
 SEED = 20260914
@@ -199,6 +200,7 @@ def main():
         "adj": [sorted(marvel[i]) for i in range(n)],
     }
     out = DATA / "week02_screentest.json"
+    check(out, payload)
     out.write_text(json.dumps(payload, separators=(",", ":"), allow_nan=False))
     print(f"\nwrote {out.relative_to(ROOT)} ({out.stat().st_size // 1024} KB)")
 
