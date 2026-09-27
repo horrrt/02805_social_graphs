@@ -4,6 +4,6 @@
    at a client, blue a direct employer). */
 
 .corridor {
-  --w4-more-client: #f2820c;
-  --w4-more-employer: #1f8fd6;
+  --w4-more-client: var(--people);
+  --w4-more-employer: var(--access);
 }
