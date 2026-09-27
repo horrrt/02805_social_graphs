@@ -1,0 +1,42 @@
+/* Figures for the section intros that had no chart, and the closing's
+   visual recap. Reuses the redesign's card, w4-two and w4-figure rules in
+   week04.css; adds the two tokens the ego diagram needs and the layout for
+   a stack of labelled mini strips. */
+
+.corridor {
+  --w4-placed: #f2820c;
+  --w4-direct: #1f8fd6;
+}
+
+.corridor .w4-ego text {
+  font-variant-numeric: tabular-nums;
+}
+
+.corridor .w4-mini-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.corridor .w4-mini-row {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.corridor .w4-mini-label {
+  color: var(--ink);
+  font-size: 12.5px;
+  font-weight: 600;
+  margin: 0;
+}
+
+.corridor .w4-mini-row small {
+  color: var(--ink-mute);
+  font-size: 11px;
+}
+
+/* section 3's word list: like .w4-anatomy, but no tag chip, so two columns */
+.corridor .w4-anatomy--pair dl div {
+  grid-template-columns: 110px minmax(0, 1fr);
+}
