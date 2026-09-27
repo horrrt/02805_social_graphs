@@ -24,7 +24,7 @@ const text = (from, to) => {
 const section3 = text('id="who"', 'id="who-switch"') + text('id="who-first-round"', '<figure class="staffing"');
 // The first-round answers, in full, sit in the deep dive's who-first-round card.
 const prose = section3;
-const regions = text('id="place-regions"', 'id="place-longhaul"');
+const regions = text('id="place-regions"', 'id="place-who"');
 const closing = text('id="closing"', 'id="cut"');
 const lotteryText = text('id="staffing-lottery"', "</details>");
 const staffing = json("analysis/week04_staffing.json");
@@ -414,7 +414,7 @@ test("one deep dive: the extra networks and the methods sit inside it", () => {
 test("section 1's first round: the cities and the long links follow the analysis", () => {
   // Hand-typed in the deep dive, so a rerun used to leave them behind.
   const place = json("docs/assets/data/week04_place.json");
-  const rank = text('id="place-rank"', 'id="place-backbone"');
+  const rank = text('id="place-rank"', 'id="place-regions"');
   const long = text('id="place-longhaul"', 'id="cut-jobs"');
   const has = (part, t) => assert.ok(part.includes(t), `section 1's first round should say "${t}"`);
   const city = (name) => place.cities.find((c) => c.name === name);
@@ -443,7 +443,7 @@ test("the hero's numbers and map legend follow the analysis", () => {
 
 test("section 2's first round: Software Developers' pairs follow the analysis", () => {
   // Hand-typed in the deep dive, so a rerun used to leave it behind.
-  const together = text('id="jobs-together"', 'id="jobs-bridges"');
+  const together = text('id="jobs-together"', 'id="jobs-split"');
   const jobs = json("docs/weeks/week04/data/jobs.json");
   const pairs = jobs.pairs.slice(0, 12);
   const sdPairs = pairs.filter((p) => [p.source, p.target].includes("15-1252")).length;

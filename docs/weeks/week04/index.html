@@ -331,6 +331,174 @@
             numbers are ready — the UI stays.
           </div>
 
+            <!-- Start · Which cities hire the most? -------------------------- -->
+            <div class="card w4-card" id="place-rank">
+                          <header class="w4-q">
+              <span class="w4-num">Start</span>
+              <div>
+                <h2>Which cities hire the most?</h2>
+                <p class="w4-answer">San Jose asks for the most positions; New York has the most employers.</p>
+              </div>
+            </header>
+<p class="sub">
+                
+                A position is a seat an employer asks to fill, not a worker who
+                arrived.
+                Toggle the metric; click a bar or a bubble to inspect one city.
+              </p>
+
+              <div class="axis-modes" role="group" aria-label="Rank cities by">
+                <button
+                  aria-pressed="true"
+                  data-place-metric="positions"
+                  type="button"
+                >
+                  Positions
+                </button>
+                <button
+                  aria-pressed="false"
+                  data-place-metric="employers"
+                  type="button"
+                >
+                  Employers
+                </button>
+              </div>
+
+              <div class="grid-side">
+                <div class="plot">
+                  <h3>Top cities</h3>
+                  <p class="axis-note">
+                    Ranked by the active metric. Click a bar to select that city
+                    everywhere on this page.
+                  </p>
+                  <div class="chart-host tall" id="chart-rank"></div>
+                </div>
+                <aside class="panel" id="place-inspector">
+                  <h2>Selected city</h2>
+                  <div class="who">
+                    <span class="flag">📍</span>
+                    <span>
+                      <strong id="place-sel-name">Pick a city</strong><br />
+                      <span class="codes" id="place-sel-codes">—</span>
+                    </span>
+                  </div>
+                  <dl class="stats" id="place-sel-stats"></dl>
+                </aside>
+              </div>
+
+              <div class="plot" style="margin-top: 18px">
+                <h3>On the map</h3>
+                <p class="axis-note">
+                  The 48 contiguous states; none of the 40 metros lies outside
+                  them. Bubbles are sized by requested positions; colour and
+                  opacity follow the active metric. Each metro sits at its
+                  first-named city. Click a bubble to select it.
+                </p>
+                <div class="chart-host map" id="chart-citymap"></div>
+              </div>
+
+              <div class="notice">
+                <span class="ico">💡</span>
+                <span>
+                  <b>What to notice</b>
+                  San Jose's 48,692 filings request 124,265 positions, 2.6 per
+                  filing, and Google files one in ten of them. New York files more
+                  (65,935) from three times as many employers (12,711), with 1.5
+                  positions per filing, and its largest filer, EY, has under 4%.
+                </span>
+              </div>
+              <div class="w4-reveals">
+                <span class="w4-tip"><button aria-describedby="w4-pop-place-rank-how" type="button"><svg aria-hidden="true" height="14" viewBox="0 0 24 24" width="14"><circle cx="12" cy="12" fill="none" r="9" stroke="currentColor" stroke-width="2"></circle><path d="M12 11v6M12 7.5v.5" fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="2"></path></svg>How we count</button><span class="w4-pop" id="w4-pop-place-rank-how" role="tooltip"><b>How we count</b>A filing counts once in each metro it names, with at most the positions it requests.</span></span>
+                <span class="w4-tip"><button aria-describedby="w4-pop-place-rank-more" type="button"><svg aria-hidden="true" height="14" viewBox="0 0 24 24" width="14"><circle cx="12" cy="12" fill="none" r="9" stroke="currentColor" stroke-width="2"></circle><path d="M12 8v8M8 12h8" fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="2"></path></svg>More numbers</button><span class="w4-pop" id="w4-pop-place-rank-more" role="tooltip"><b>More numbers</b>In Seattle one company, Amazon, files 31%. Positions reward a few firms asking for many seats; employer counts reward a broad market.</span></span>
+              </div>
+            </div>
+
+            <!-- B · Backbone --------------------------------------------- -->
+            <!-- Groups · Regions ---------------------------------------------- -->
+            <div class="card w4-card" id="place-regions">
+                          <header class="w4-q">
+              <span class="w4-num">Groups</span>
+              <div>
+                <h2>Is it one national job market or several regional ones?</h2>
+                <p class="w4-answer">Not regional markets. Louvain splits the large hubs into two groups, which cross regions, and leaves the smaller metros as a third.</p>
+              </div>
+            </header>
+<p class="sub">
+                
+                Toggle Louvain communities against Census regions on the same
+                map.
+              </p>
+
+              <div class="axis-modes" role="group" aria-label="Colour cities by">
+                <button
+                  aria-pressed="true"
+                  data-place-region="communities"
+                  type="button"
+                >
+                  Communities
+                </button>
+                <button
+                  aria-pressed="false"
+                  data-place-region="census"
+                  type="button"
+                >
+                  Census regions
+                </button>
+              </div>
+
+              <div class="region-legend" id="place-region-legend"></div>
+
+              <div class="plot">
+                <h3>Same cities, two labelings</h3>
+                <p class="axis-note">
+                  The same map, coloured by the active labelling. Communities are
+                  named after their two largest metros. Click a city to select
+                  it.
+                </p>
+                <div class="chart-host map" id="chart-regions"></div>
+              </div>
+
+              <details class="qa">
+                <summary>
+                  <span class="qa-cue">Compared to what?</span>
+                </summary>
+                <div class="qa-body">
+                  <p class="sub">
+                    The map shows the partition Louvain finds most often, and
+                    every number below is computed on it. The null rewires the
+                    company × metro network so each company and each metro keeps
+                    its number of partners, deals the filing counts back out at
+                    random, and projects it again. Figures from
+                    analysis/week04_where.py:
+                  </p>
+                  <table class="ego">
+                    <tbody id="place-null-stats"></tbody>
+                  </table>
+                </div>
+              </details>
+
+              <div class="notice">
+                <span class="ico">💡</span>
+                <span>
+                  <b>What to notice</b>
+                  One group holds New York, Dallas, Atlanta, Chicago, Houston,
+                  Philadelphia and Charlotte. The other holds San Jose, San
+                  Francisco, Seattle, Los Angeles, San Diego, Austin, Boston and
+                  Washington. The 25 smaller metros form the third. The split is
+                  real but weak: modularity is 0.049 against 0.013 for rewired
+                  networks that keep each company's number of metros (z = 29),
+                  and Louvain finds it in 65 of 100 runs; the other 35 find one
+                  other split, into two groups. FY2024 gives that two-group split
+                  in all 100 runs, so it matches the split shown here at NMI 0.64,
+                  against 1.00 between two FY2025 runs. NMI with Census regions is
+                  0.14 and with divisions 0.21, no better than shuffled labels
+                  (p = 0.10 and 0.11). Infomap, which follows a random walk between
+                  metros instead of counting links, finds no split at all: one
+                  module holds all 40.
+                </span>
+              </div>
+            </div>
+
           <!-- A · Who hires, not where --------------------------------- -->
           <div class="card w4-card" id="place-who">
             <header class="w4-q">
@@ -478,6 +646,31 @@
           </div>
 
           <p aria-live="polite" class="status-line" id="jobs-status">Loading job data…</p>
+
+            <div class="card jobs-card w4-card" id="jobs-together">
+                          <header class="w4-q">
+              <span class="w4-num">Start</span>
+              <div>
+                <h2>Which jobs are hired together?</h2>
+                <p class="w4-answer">Software Developers sit in 8 of the 12 pairs because almost every sponsoring company hires them.</p>
+              </div>
+            </header>
+<p class="sub">
+                Each bar is a pair among the 60 largest occupations. Its length is
+                the number of companies that filed for both, not the number of
+                workers requested. 
+              </p>
+              <div class="jobs-grid">
+                <div class="plot">
+                  <h3>Strongest occupation pairings</h3>
+                  <div class="chart-host jobs-pairs" id="chart-job-pairs"></div>
+                </div>
+                <aside class="panel jobs-inspector" id="jobs-inspector">
+                  <h2>Select a pair</h2>
+                  <p>Click a bar to see the two occupations and their filings.</p>
+                </aside>
+              </div>
+            </div>
 
           <div class="card w4-card" id="jobs-split">
             <header class="w4-q">
@@ -1168,94 +1361,11 @@
               and the data and methods behind every number.
             </p>
             <details class="qa cut" id="cut-place">
-              <summary><span class="qa-cue">Where the hiring is: four earlier questions</span></summary>
+              <summary><span class="qa-cue">Where the hiring is: two earlier questions</span></summary>
               <div class="qa-body cut-body">
-            <!-- A · Which cities hire the most? -------------------------- -->
-            <div class="card w4-card" id="place-rank">
-                          <header class="w4-q">
-              <span class="w4-num">A</span>
-              <div>
-                <h2>Which cities hire the most?</h2>
-                <p class="w4-answer">San Jose asks for the most positions; New York has the most employers.</p>
-              </div>
-            </header>
-<p class="sub">
-                
-                A position is a seat an employer asks to fill, not a worker who
-                arrived.
-                Toggle the metric; click a bar or a bubble to inspect one city.
-              </p>
-
-              <div class="axis-modes" role="group" aria-label="Rank cities by">
-                <button
-                  aria-pressed="true"
-                  data-place-metric="positions"
-                  type="button"
-                >
-                  Positions
-                </button>
-                <button
-                  aria-pressed="false"
-                  data-place-metric="employers"
-                  type="button"
-                >
-                  Employers
-                </button>
-              </div>
-
-              <div class="grid-side">
-                <div class="plot">
-                  <h3>Top cities</h3>
-                  <p class="axis-note">
-                    Ranked by the active metric. Click a bar to select that city
-                    everywhere on this page.
-                  </p>
-                  <div class="chart-host tall" id="chart-rank"></div>
-                </div>
-                <aside class="panel" id="place-inspector">
-                  <h2>Selected city</h2>
-                  <div class="who">
-                    <span class="flag">📍</span>
-                    <span>
-                      <strong id="place-sel-name">Pick a city</strong><br />
-                      <span class="codes" id="place-sel-codes">—</span>
-                    </span>
-                  </div>
-                  <dl class="stats" id="place-sel-stats"></dl>
-                </aside>
-              </div>
-
-              <div class="plot" style="margin-top: 18px">
-                <h3>On the map</h3>
-                <p class="axis-note">
-                  The 48 contiguous states; none of the 40 metros lies outside
-                  them. Bubbles are sized by requested positions; colour and
-                  opacity follow the active metric. Each metro sits at its
-                  first-named city. Click a bubble to select it.
-                </p>
-                <div class="chart-host map" id="chart-citymap"></div>
-              </div>
-
-              <div class="notice">
-                <span class="ico">💡</span>
-                <span>
-                  <b>What to notice</b>
-                  San Jose's 48,692 filings request 124,265 positions, 2.6 per
-                  filing, and Google files one in ten of them. New York files more
-                  (65,935) from three times as many employers (12,711), with 1.5
-                  positions per filing, and its largest filer, EY, has under 4%.
-                </span>
-              </div>
-              <div class="w4-reveals">
-                <span class="w4-tip"><button aria-describedby="w4-pop-place-rank-how" type="button"><svg aria-hidden="true" height="14" viewBox="0 0 24 24" width="14"><circle cx="12" cy="12" fill="none" r="9" stroke="currentColor" stroke-width="2"></circle><path d="M12 11v6M12 7.5v.5" fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="2"></path></svg>How we count</button><span class="w4-pop" id="w4-pop-place-rank-how" role="tooltip"><b>How we count</b>A filing counts once in each metro it names, with at most the positions it requests.</span></span>
-                <span class="w4-tip"><button aria-describedby="w4-pop-place-rank-more" type="button"><svg aria-hidden="true" height="14" viewBox="0 0 24 24" width="14"><circle cx="12" cy="12" fill="none" r="9" stroke="currentColor" stroke-width="2"></circle><path d="M12 8v8M8 12h8" fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="2"></path></svg>More numbers</button><span class="w4-pop" id="w4-pop-place-rank-more" role="tooltip"><b>More numbers</b>In Seattle one company, Amazon, files 31%. Positions reward a few firms asking for many seats; employer counts reward a broad market.</span></span>
-              </div>
-            </div>
-
-            <!-- B · Backbone --------------------------------------------- -->
             <div class="card w4-card" id="place-backbone">
                           <header class="w4-q">
-              <span class="w4-num">B</span>
+              <span class="w4-num">A</span>
               <div>
                 <h2>Once the small links go, what's left of the map?</h2>
                 <p class="w4-answer">Keep every shared-employer link and the map is one blob; keep only the links that are heavy for someone, and it comes apart.</p>
@@ -1347,95 +1457,10 @@
               </div>
             </div>
 
-            <!-- C · Regions ---------------------------------------------- -->
-            <div class="card w4-card" id="place-regions">
-                          <header class="w4-q">
-              <span class="w4-num">C</span>
-              <div>
-                <h2>Is it one national job market or several regional ones?</h2>
-                <p class="w4-answer">Not regional markets. Louvain splits the large hubs into two groups, which cross regions, and leaves the smaller metros as a third.</p>
-              </div>
-            </header>
-<p class="sub">
-                
-                Toggle Louvain communities against Census regions on the same
-                map.
-              </p>
-
-              <div class="axis-modes" role="group" aria-label="Colour cities by">
-                <button
-                  aria-pressed="true"
-                  data-place-region="communities"
-                  type="button"
-                >
-                  Communities
-                </button>
-                <button
-                  aria-pressed="false"
-                  data-place-region="census"
-                  type="button"
-                >
-                  Census regions
-                </button>
-              </div>
-
-              <div class="region-legend" id="place-region-legend"></div>
-
-              <div class="plot">
-                <h3>Same cities, two labelings</h3>
-                <p class="axis-note">
-                  The same map, coloured by the active labelling. Communities are
-                  named after their two largest metros. Click a city to select
-                  it.
-                </p>
-                <div class="chart-host map" id="chart-regions"></div>
-              </div>
-
-              <details class="qa">
-                <summary>
-                  <span class="qa-cue">Compared to what?</span>
-                </summary>
-                <div class="qa-body">
-                  <p class="sub">
-                    The map shows the partition Louvain finds most often, and
-                    every number below is computed on it. The null rewires the
-                    company × metro network so each company and each metro keeps
-                    its number of partners, deals the filing counts back out at
-                    random, and projects it again. Figures from
-                    analysis/week04_where.py:
-                  </p>
-                  <table class="ego">
-                    <tbody id="place-null-stats"></tbody>
-                  </table>
-                </div>
-              </details>
-
-              <div class="notice">
-                <span class="ico">💡</span>
-                <span>
-                  <b>What to notice</b>
-                  One group holds New York, Dallas, Atlanta, Chicago, Houston,
-                  Philadelphia and Charlotte. The other holds San Jose, San
-                  Francisco, Seattle, Los Angeles, San Diego, Austin, Boston and
-                  Washington. The 25 smaller metros form the third. The split is
-                  real but weak: modularity is 0.049 against 0.013 for rewired
-                  networks that keep each company's number of metros (z = 29),
-                  and Louvain finds it in 65 of 100 runs; the other 35 find one
-                  other split, into two groups. FY2024 gives that two-group split
-                  in all 100 runs, so it matches the split shown here at NMI 0.64,
-                  against 1.00 between two FY2025 runs. NMI with Census regions is
-                  0.14 and with divisions 0.21, no better than shuffled labels
-                  (p = 0.10 and 0.11). Infomap, which follows a random walk between
-                  metros instead of counting links, finds no split at all: one
-                  module holds all 40.
-                </span>
-              </div>
-            </div>
-
             <!-- D · Long haul -------------------------------------------- -->
             <div class="card w4-card" id="place-longhaul">
                           <header class="w4-q">
-              <span class="w4-num">D</span>
+              <span class="w4-num">B</span>
               <div>
                 <h2>Do the same employers tie distant cities together?</h2>
                 <p class="w4-answer">Mostly not. Big direct employers lead the long links, Amazon above all, and a single company rarely carries one.</p>
@@ -1495,36 +1520,11 @@
               </div>
             </details>
             <details class="qa cut" id="cut-jobs">
-              <summary><span class="qa-cue">Which jobs go together: three earlier questions</span></summary>
+              <summary><span class="qa-cue">Which jobs go together: two earlier questions</span></summary>
               <div class="qa-body cut-body">
-            <div class="card jobs-card w4-card" id="jobs-together">
-                          <header class="w4-q">
-              <span class="w4-num">A</span>
-              <div>
-                <h2>Which jobs are hired together?</h2>
-                <p class="w4-answer">Software Developers sit in 8 of the 12 pairs because almost every sponsoring company hires them.</p>
-              </div>
-            </header>
-<p class="sub">
-                Each bar is a pair among the 60 largest occupations. Its length is
-                the number of companies that filed for both, not the number of
-                workers requested. 
-              </p>
-              <div class="jobs-grid">
-                <div class="plot">
-                  <h3>Strongest occupation pairings</h3>
-                  <div class="chart-host jobs-pairs" id="chart-job-pairs"></div>
-                </div>
-                <aside class="panel jobs-inspector" id="jobs-inspector">
-                  <h2>Select a pair</h2>
-                  <p>Click a bar to see the two occupations and their filings.</p>
-                </aside>
-              </div>
-            </div>
-
             <div class="card jobs-card w4-card" id="jobs-bridges">
                           <header class="w4-q">
-              <span class="w4-num">B</span>
+              <span class="w4-num">A</span>
               <div>
                 <h2>Which jobs belong to two clusters?</h2>
                 <p class="w4-answer">Only <span data-jobs="bridges-pass">…</span> of <span data-jobs="bridges-tested">…</span> pass, fewer than the <span data-jobs="bridges-chance">…</span> a test this strict passes by chance, so no occupation clearly belongs to two clusters.</p>
@@ -1556,7 +1556,7 @@
 
             <div class="card jobs-card w4-card" id="jobs-groups">
                           <header class="w4-q">
-              <span class="w4-num">C</span>
+              <span class="w4-num">B</span>
               <div>
                 <h2>Do the clusters follow official job groups?</h2>
                 <p class="w4-answer">The clusters follow the official groups only in part: NMI <strong data-jobs="nmi">…</strong> against <strong data-jobs="shuffled">…</strong> for shuffled labels (AMI <strong data-jobs="ami">…</strong>), over the <span data-jobs="scored">…</span> occupations in clusters of two or more.</p>
