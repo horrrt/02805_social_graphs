@@ -109,7 +109,8 @@ function renderWhereWho(data) {
   const rows = labels.map((l) => ({ ...l, score: data.finding.q1_scores[l.key] }));
   c.setOption({
     ...base,
-    grid: { left: 132, right: 74, top: 12, bottom: 30 },
+    // The card's right column is narrow: leave the bar labels room to finish.
+    grid: { left: 132, right: 140, top: 12, bottom: 30 },
     xAxis: { ...axis, type: "value", min: 0, name: "AMI →", nameLocation: "middle", nameGap: 26 },
     yAxis: {
       ...axis, type: "category", inverse: true, data: rows.map((r) => r.label),
