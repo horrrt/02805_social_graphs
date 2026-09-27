@@ -51,7 +51,7 @@ function pairLine(ex) {
   return `${ex.a_title} and ${ex.b_title} (${sim(ex.similarity)})`;
 }
 
-function card1(c) {
+function card1(c, descriptors) {
   const d = c.direct_ties;
   const a = c.all_pairs;
   const diff = d.mean - a.mean;
@@ -74,7 +74,7 @@ function card1(c) {
   const left = document.createElement("div");
   left.innerHTML = `
     <p class="sub">
-      O*NET rates every detailed occupation on 109 skills, knowledge areas and work activities;
+      O*NET rates every detailed occupation on ${descriptors} skills, knowledge areas and work activities;
       profile similarity is the cosine of those ratings, from -1 to 1. It never looks at which
       companies file for an occupation, so it checks section 2's story with independent data.
     </p>`;
@@ -97,8 +97,8 @@ function card1(c) {
   const howBody = document.createElement("span");
   howBody.append(
     frag(
-      "Every pair here is one of the 60 occupations shown in section 2's jobs network. A direct tie is an edge in " +
-        "that network (the same companies file for both). The random baseline is every pair among those 60, not " +
+      `Every pair here is one of the ${c.occupations} occupations shown in section 2's jobs network. A direct tie is an edge in ` +
+        `that network (the same companies file for both). The random baseline is every pair among those ${c.occupations}, not ` +
         "every occupation O*NET rates, so a large or popular field cannot inflate the answer just by being large.",
     ),
   );
@@ -134,7 +134,7 @@ function card1(c) {
           realTip: `Direct ties: mean ${sim(d.mean)}, sd ${sim(d.sd)}`,
           base: [a.mean, a.sd],
           baseLabel: `random pair ${sim(a.mean)}`,
-          baseTip: `Random pair of the 60: mean ${sim(a.mean)}, sd ${sim(a.sd)}`,
+          baseTip: `Random pair of the ${c.occupations}: mean ${sim(a.mean)}, sd ${sim(a.sd)}`,
         },
       ],
       {
@@ -143,7 +143,7 @@ function card1(c) {
         fmt: (v) => v.toFixed(1),
         labelW: 150,
         badgeW: 0,
-        aria: "Mean O*NET similarity of directly co-hired occupation pairs against a random pair of the same 60",
+        aria: `Mean O*NET similarity of directly co-hired occupation pairs against a random pair of the same ${c.occupations}`,
       },
     ),
   );
@@ -176,7 +176,7 @@ function card2(c) {
   const left = document.createElement("div");
   left.innerHTML = `
     <p class="sub">
-      Section 2 groups the 60 occupations into hiring clusters with Louvain, checked there against
+      Section 2 groups the ${c.occupations} occupations into hiring clusters with Louvain, checked there against
       degree-preserving rewirings. This asks whether that grouping also lines up with skills, using pairs
       that are not already counted in S1 above.
     </p>`;
@@ -200,7 +200,7 @@ function card2(c) {
     frag(
       "Same-cluster pairs exclude the direct ties S1 already counts, so this box asks a different question: does " +
         "the cluster as a whole share skills, beyond the companies that directly link two occupations. Different-" +
-        "cluster pairs are every remaining pair across the 60 occupations' cluster boundaries.",
+        `cluster pairs are every remaining pair across the ${c.occupations} occupations' cluster boundaries.`,
     ),
   );
   const moreBody = document.createElement("span");
@@ -264,7 +264,7 @@ async function render() {
   try {
     const data = await load();
     const c = data.cohiring;
-    body.replaceChildren(card1(c), card2(c));
+    body.replaceChildren(card1(c, data.meta.descriptors), card2(c));
   } catch (err) {
     status.textContent = "Could not load the O*NET comparison.";
     console.error("week04-skills", err);
