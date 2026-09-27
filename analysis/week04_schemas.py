@@ -776,8 +776,8 @@ class Beyond(Model):
     q3_top5_soc: list[Top5Soc] = Field(min_length=1)
 
 
-# Section 1 explorables · docs/weeks/week04/data/explore.json, for four community
-# explorables; no page script reads it yet ----------------------------------------
+# Section 1 explorables · docs/weeks/week04/data/explore.json, read by
+# week04-methods.js, the #cut-methods box -----------------------------------------
 
 class ExploreMetro(Model):
     id: str

@@ -66,8 +66,8 @@ the canvas's files back; a rebuild would drop any edit the generator does not kn
 data. `holes_check.mjs` runs a board's script in Node and fails if any `{{ hole }}` stays empty in the given
 states.
 
-## Still to do
+## On the live page
 
-- Port the chosen design into `docs/weeks/week04/index.html`. The four community explorables need page scripts
-  that read `explore.json`.
-- Decide which explorables and deep-dive boxes the post keeps.
+The redesign is built into `docs/weeks/week04/index.html`. The canvas's metro, backbone and client explorers map
+onto features the page already had: the hero map, the α slider in the deep dive and the client figure. The page
+adds boxes the canvas does not have: skills behind the jobs (O*NET) and PageRank, step by step.
