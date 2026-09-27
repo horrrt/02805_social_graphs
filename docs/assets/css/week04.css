@@ -261,6 +261,45 @@
   }
 }
 
+/* Deep dive · the first round of questions, kept for provenance --------- */
+
+.corridor #cut details.qa.cut + details.qa.cut {
+  margin-top: 14px;
+}
+
+/* The cards moved inside a cut-section's <details> keep their own borders
+   and shadows (unchanged .card rules), which reads as boxes-inside-a-box.
+   A left rule and a tighter top margin make the nesting look intentional
+   instead of accidental. */
+.corridor .cut-body {
+  border-left: 2px solid var(--line);
+  margin-top: 4px;
+  padding-left: 16px;
+}
+
+.corridor .cut-body .card,
+.corridor .cut-body .cut-card {
+  box-shadow: none;
+}
+
+.corridor .cut-body > .card:first-child,
+.corridor .cut-body > .cut-card:first-child {
+  margin-top: 0;
+}
+
+.corridor .tag {
+  background: var(--line-soft);
+  border-radius: 999px;
+  color: var(--ink-soft);
+  display: inline-block;
+  font-size: 10.5px;
+  font-weight: 700;
+  line-height: 1;
+  padding: 3px 8px;
+  vertical-align: middle;
+  white-space: nowrap;
+}
+
 /* Section 3 · Who staffs whom ----------------------------------------- */
 
 /* Week 4 figures. Section 3: clients by filings and by how much one vendor supplies.

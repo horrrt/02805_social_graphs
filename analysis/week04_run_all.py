@@ -4,7 +4,8 @@ The scripts share no state except their inputs in build/ and one real
 dependency: week04_staffing_figure.py reads week04_staffing.py's output, so it
 starts when that one finishes. Everything else starts immediately, so a full
 rerun takes about as long as the slowest script (week04_lawfirms.py, about 7
-minutes) instead of the sum (about 21). Each script's output goes to
+minutes) instead of the sum (about 21 for the first eleven scripts). At most
+one script per core runs at a time. Each script's output goes to
 build/logs/<script>.log; a line prints as each one finishes, with the time so far.
 
     python analysis/week04_run_all.py                  # everything
@@ -14,6 +15,7 @@ Run it after changing week04_names.py or either name table, then rerun the
 site tests: tests/week04-prose.test.mjs names every sentence whose number moved.
 """
 
+import os
 import subprocess
 import sys
 import time
@@ -21,9 +23,14 @@ from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
 LOGS = HERE.parent / "build" / "logs"
-SCRIPTS = ["week04_where", "week04_jobs", "week04_staffing", "week04_staffing_figure", "week04_lottery",
-           "week04_perm", "week04_countries", "week04_ties", "week04_shift", "week04_lawfirms", "week04_oews"]
-AFTER = {"week04_staffing_figure": "week04_staffing"}  # script -> the script whose output it reads
+SCRIPTS = ["week04_where", "week04_where_who", "week04_jobs", "week04_jobs_split", "week04_staffing",
+           "week04_staffing_figure", "week04_staffing_moves", "week04_lottery", "week04_perm", "week04_countries",
+           "week04_ties", "week04_shift", "week04_lawfirms", "week04_oews", "week04_beyond", "week04_footprint"]
+# script -> the script whose output it reads (the moves and where_who scripts check theirs reproduces).
+AFTER = {"week04_staffing_figure": "week04_staffing", "week04_staffing_moves": "week04_staffing",
+         "week04_where_who": "week04_where"}
+# One process per core: each loads a few hundred MB of filings.
+MAX_PARALLEL = os.cpu_count() or 4
 
 
 def span(seconds):
@@ -47,7 +54,8 @@ def main():
     print(f"running {len(wanted)} scripts in parallel; logs in {LOGS.relative_to(HERE.parent)}/", flush=True)
     done = set()
     while waiting or running:
-        for name in [w for w in waiting if AFTER.get(w) not in waiting and AFTER.get(w) not in running]:
+        ready = [w for w in waiting if AFTER.get(w) not in waiting and AFTER.get(w) not in running]
+        for name in ready[:max(0, MAX_PARALLEL - len(running))]:
             waiting.remove(name)
             launch(name)
         time.sleep(2)

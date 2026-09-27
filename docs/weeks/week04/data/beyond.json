@@ -1,0 +1,324 @@
+{
+ "generated_by": "analysis/week04_beyond.py",
+ "year": 2025,
+ "finding": {
+  "q1_same_split_as_vendors": true,
+  "q1_ami": 0.037,
+  "q1_ami_z_vs_rewired": 15.38,
+  "q1_ami_rewired_mean": 0.0001,
+  "q1_ami_rewired_sd": 0.0024,
+  "q1_nmi": 0.133,
+  "q2_between_communities_matters": false,
+  "q2_permutation_p": 0.2767,
+  "q2_placing_pooled_ratio": 0.1085,
+  "q2_direct_pooled_ratio": 0.1813,
+  "q2_direct_pooled_ci95": [
+   0.1439,
+   0.2142
+  ],
+  "q2_perm_match_rate_20plus_h1b_employers": 0.8031,
+  "q3_placed_pays_lower_level": true,
+  "q3_odds_ratio": 3.5947,
+  "q3_odds_ratio_ci95": [
+   3.5303,
+   3.6602
+  ],
+  "q3_odds_ratio_cluster_ci95": [
+   2.8695,
+   5.0363
+  ],
+  "q3_wage_ratio_placed_min": 1.0,
+  "q3_wage_ratio_placed_max": 1.0004,
+  "q3_wage_ratio_direct_min": 1.0012,
+  "q3_wage_ratio_direct_max": 1.0842
+ },
+ "q1": {
+  "lawfirm_column_coverage": 0.7561,
+  "distinct_raw_spellings": 6853,
+  "distinct_law_firms_after_normalize": 4479,
+  "spellings_collapsed": 2374,
+  "modularity_best": 0.8992,
+  "modularity_z_vs_rewired": -4.68,
+  "nmi_with_staffing_partition": 0.133,
+  "nmi_shuffle_p": 0.001,
+  "ami_with_staffing_partition": 0.037,
+  "ami_shuffle_p": 0.001,
+  "ami_z_vs_rewired": 15.38,
+  "single_law_firm_filing_share": 0.6444
+ },
+ "q1_top_law_firms": [
+  {
+   "law_firm": "Fragomen DEL REY Bernsen and Loewy",
+   "filings": 14089,
+   "employers": 131
+  },
+  {
+   "law_firm": "EY LAW",
+   "filings": 10274,
+   "employers": 8
+  },
+  {
+   "law_firm": "Berry Appleman and Leiden",
+   "filings": 9532,
+   "employers": 22
+  },
+  {
+   "law_firm": "LAW Office of Thomas V Allen Pllc",
+   "filings": 5413,
+   "employers": 493
+  },
+  {
+   "law_firm": "Goel and Anderson",
+   "filings": 4269,
+   "employers": 17
+  },
+  {
+   "law_firm": "Usilaw",
+   "filings": 3909,
+   "employers": 23
+  },
+  {
+   "law_firm": "Chugh",
+   "filings": 3261,
+   "employers": 135
+  },
+  {
+   "law_firm": "Fakhoury Global Immigration USA PC",
+   "filings": 2959,
+   "employers": 18
+  },
+  {
+   "law_firm": "BBI LAW Group PC",
+   "filings": 2735,
+   "employers": 306
+  },
+  {
+   "law_firm": "LAW Firm of SIM Parvathaneni and Brown Pllc",
+   "filings": 2649,
+   "employers": 332
+  }
+ ],
+ "q2": {
+  "placing_firms_20plus_placed": {
+   "employers": 817,
+   "h1b_filings": 115063,
+   "perm_filings": 12487,
+   "pooled_ratio": 0.1085,
+   "pooled_ci95": [
+    0.0776,
+    0.1541
+   ],
+   "median_ratio": 0.1053,
+   "median_ci95": [
+    0.0923,
+    0.12
+   ],
+   "perm_match_rate": 0.7601,
+   "perm_match_rate_by_filings": 0.8336
+  },
+  "direct_firms_20plus_h1b": {
+   "employers": 2662,
+   "h1b_filings": 267699,
+   "perm_filings": 48530,
+   "pooled_ratio": 0.1813,
+   "pooled_ci95": [
+    0.1439,
+    0.2142
+   ],
+   "median_ratio": 0.1412,
+   "median_ci95": [
+    0.1333,
+    0.15
+   ],
+   "perm_match_rate": 0.8163,
+   "perm_match_rate_by_filings": 0.8056
+  },
+  "permutation_p": 0.2767,
+  "between_community_variance": 0.001589
+ },
+ "q2_top6_communities": [
+  {
+   "community": 6,
+   "firms": 307,
+   "h1b_filings": 15700,
+   "perm_filings": 1520,
+   "pooled_ratio": 0.0968,
+   "top_firms": [
+    "Tata Consultancy Services",
+    "LTIMindtree",
+    "CGI Technologies and Solutions"
+   ],
+   "largest_firm_filing_share": 0.4964
+  },
+  {
+   "community": 13,
+   "firms": 381,
+   "h1b_filings": 14133,
+   "perm_filings": 1340,
+   "pooled_ratio": 0.0948,
+   "top_firms": [
+    "Infosys",
+    "Randstad",
+    "Synechron"
+   ],
+   "largest_firm_filing_share": 0.4086
+  },
+  {
+   "community": 9,
+   "firms": 420,
+   "h1b_filings": 10122,
+   "perm_filings": 1320,
+   "pooled_ratio": 0.1304,
+   "top_firms": [
+    "Compunnel Software",
+    "Kforce",
+    "Mastech Digital Technologies"
+   ],
+   "largest_firm_filing_share": 0.2249
+  },
+  {
+   "community": 1,
+   "firms": 256,
+   "h1b_filings": 14523,
+   "perm_filings": 440,
+   "pooled_ratio": 0.0303,
+   "top_firms": [
+    "Cognizant",
+    "EXL",
+    "University of California SAN Francisco"
+   ],
+   "largest_firm_filing_share": 0.7633
+  },
+  {
+   "community": 20,
+   "firms": 306,
+   "h1b_filings": 8951,
+   "perm_filings": 1315,
+   "pooled_ratio": 0.1469,
+   "top_firms": [
+    "Wipro",
+    "Mphasis",
+    "Virtusa"
+   ],
+   "largest_firm_filing_share": 0.2409
+  },
+  {
+   "community": 25,
+   "firms": 256,
+   "h1b_filings": 6906,
+   "perm_filings": 984,
+   "pooled_ratio": 0.1425,
+   "top_firms": [
+    "HCL",
+    "Intellectt",
+    "Lawrence Berkeley National Laboratory"
+   ],
+   "largest_firm_filing_share": 0.424
+  }
+ ],
+ "q2_named_perm": {
+  "Amazon": {
+   "fy2024": {
+    "all_statuses_name_match": 3638,
+    "certified_or_expired_resolver_match": 277
+   },
+   "fy2025": {
+    "all_statuses_name_match": 15,
+    "certified_or_expired_resolver_match": 0
+   }
+  },
+  "Google": {
+   "fy2024": {
+    "all_statuses_name_match": 1618,
+    "certified_or_expired_resolver_match": 0
+   },
+   "fy2025": {
+    "all_statuses_name_match": 3,
+    "certified_or_expired_resolver_match": 0
+   }
+  }
+ },
+ "q3": {
+  "pw_wage_level_coverage": 0.9205,
+  "crude": {
+   "placed_low_share": 0.7949,
+   "direct_low_share": 0.5795,
+   "placed_filings": 102826,
+   "direct_filings": 392213
+  },
+  "strata_kept_20plus_each_side": 83,
+  "strata_or_above_1_share": 0.8313,
+  "mantel_haenszel_odds_ratio": 3.5947,
+  "odds_ratio_ci95": [
+   3.5303,
+   3.6602
+  ],
+  "odds_ratio_cluster_ci95": [
+   2.8695,
+   5.0363
+  ],
+  "odds_ratio_after_dropping_top_placing_firms": {
+   "top5": {
+    "placed_filing_share": 0.202,
+    "odds_ratio": 3.8521,
+    "strata_kept": 82
+   },
+   "top10": {
+    "placed_filing_share": 0.2864,
+    "odds_ratio": 4.2832,
+    "strata_kept": 82
+   },
+   "top20": {
+    "placed_filing_share": 0.3627,
+    "odds_ratio": 4.9387,
+    "strata_kept": 81
+   }
+  },
+  "cmh_p": 0.0,
+  "breslow_day_p": 0.0,
+  "wage_ratio_coverage": 0.9971,
+  "wage_ratio_medians_range": {
+   "placed_min": 1.0,
+   "placed_max": 1.0004,
+   "direct_min": 1.0012,
+   "direct_max": 1.0842
+  }
+ },
+ "q3_top5_soc": [
+  {
+   "soc7": "15-1252",
+   "title": "Software Developers",
+   "filings": 152455,
+   "placed_low_share": 0.866,
+   "direct_low_share": 0.5199
+  },
+  {
+   "soc7": "15-1299",
+   "title": "Computer Occupations, All Other",
+   "filings": 46748,
+   "placed_low_share": 0.6646,
+   "direct_low_share": 0.3841
+  },
+  {
+   "soc7": "15-2051",
+   "title": "Data Scientists",
+   "filings": 29224,
+   "placed_low_share": 0.8853,
+   "direct_low_share": 0.5919
+  },
+  {
+   "soc7": "15-1253",
+   "title": "Software Quality Assurance Analysts and Testers",
+   "filings": 18002,
+   "placed_low_share": 0.7639,
+   "direct_low_share": 0.4954
+  },
+  {
+   "soc7": "15-1251",
+   "title": "Computer Programmers",
+   "filings": 13376,
+   "placed_low_share": 0.8621,
+   "direct_low_share": 0.8434
+  }
+ ]
+}
