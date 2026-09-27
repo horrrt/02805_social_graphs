@@ -101,11 +101,11 @@ def power_iteration(g, alpha, steps):
     return rows, index
 
 
-def ranked_rows(scores, titles, filings, degree, strength, limit):
+def ranked_rows(scores, titles, filings, degree, strength, degree_rank, limit):
     order = sorted(scores, key=lambda n: -scores[n])[:limit]
     return [
         {"code": n, "title": titles.get(n, n), "filings": int(filings.get(n, 0)),
-         "degree": int(degree[n]), "strength": int(strength[n]),
+         "degree": int(degree[n]), "strength": int(strength[n]), "degree_rank": int(degree_rank[n]),
          "pagerank": round(float(scores[n]), 5), "rank": i + 1}
         for i, n in enumerate(order)
     ]
@@ -116,32 +116,42 @@ def main():
     g, full, filings, titles = backbone()
     degree = dict(g.degree())
     strength = dict(g.degree(weight="weight"))
+    # Plain unweighted degree rank over every node of the backbone, not just
+    # the top N exported per damping factor: the badge must not move with d.
+    degree_rank = {n: i + 1 for i, n in enumerate(sorted(g.nodes(), key=lambda n: -degree[n]))}
 
     # A tight tolerance so nx.pagerank settles at the same fixed point our own
     # power iteration below is checked against, not at nx's default early stop.
     pageranks = {d: nx.pagerank(g, alpha=d, weight="weight", tol=1e-14, max_iter=2000) for d in DAMPING}
-    rankings = {str(d): ranked_rows(pageranks[d], titles, filings, degree, strength, TOP_N) for d in DAMPING}
+    rankings = {str(d): ranked_rows(pageranks[d], titles, filings, degree, strength, degree_rank, TOP_N)
+                for d in DAMPING}
 
     iter_rows, index = power_iteration(g, DEFAULT_D, STEPS)
     final_check = max(abs(iter_rows[max(STEPS)][n] - pageranks[DEFAULT_D][n]) for n in g.nodes())
     if final_check > 1e-6:
         raise SystemExit(f"power_iteration disagrees with nx.pagerank by {final_check}, expected <= 1e-6")
-    top_at_default = [row["code"] for row in rankings[str(DEFAULT_D)][:10]]
+    # Each step's own top 10 by that step's score, in that order: at an early
+    # step the leading occupations need not be the ones that lead once the
+    # walk has converged, so a fixed list (the final top 10) would mislabel them.
     iteration = {
         "alpha": DEFAULT_D,
         "steps": [
             {"step": step,
              "rows": [{"code": n, "title": titles.get(n, n), "pagerank": round(float(iter_rows[step][n]), 5)}
-                      for n in top_at_default]}
+                      for n in sorted(iter_rows[step], key=lambda n: -iter_rows[step][n])[:10]]}
             for step in STEPS
         ],
         "max_error_vs_nx_pagerank": round(final_check, 8),
     }
 
+    # "Movers": among the MOVER_POOL occupations ranked highest at d = 0.85,
+    # the ones whose rank shifts most between d = 0.5 and d = 0.99 -- but the
+    # rank itself is each occupation's true rank over every node in the
+    # backbone, not just within that pool, so "rank 5 -> 45" means the network
+    # rank, not a rank inside an arbitrary 40-occupation shortlist.
     pool = sorted(pageranks[DEFAULT_D], key=lambda n: -pageranks[DEFAULT_D][n])[:MOVER_POOL]
-    rank_lo = {n: i + 1 for i, n in enumerate(sorted(pool, key=lambda n: -pageranks[0.5][n]))}
-    rank_hi = {n: i + 1 for i, n in enumerate(sorted(pool, key=lambda n: -pageranks[0.99][n]))}
-    degree_rank = {n: i + 1 for i, n in enumerate(sorted(g.nodes(), key=lambda n: -degree[n]))}
+    rank_lo = {n: i + 1 for i, n in enumerate(sorted(g.nodes(), key=lambda n: -pageranks[0.5][n]))}
+    rank_hi = {n: i + 1 for i, n in enumerate(sorted(g.nodes(), key=lambda n: -pageranks[0.99][n]))}
     movers = sorted(pool, key=lambda n: -abs(rank_lo[n] - rank_hi[n]))[:MOVERS_SHOWN]
     mover_rows = [
         {"code": n, "title": titles.get(n, n),
@@ -164,7 +174,8 @@ def main():
             "generated_by": "analysis/week04_pagerank.py", "year": YEAR, "seconds": seconds,
             "network": "Companies x occupations projection (week04_jobs.py), disparity-filter "
                        "backbone at alpha = 0.05, giant component",
-            "alpha_filter": ALPHA, "nodes": g.number_of_nodes(), "edges": g.number_of_edges(),
+            "alpha_filter": ALPHA, "section2_alpha_filter": where.DEFAULT_ALPHA,
+            "nodes": g.number_of_nodes(), "edges": g.number_of_edges(),
             "nodes_before_backbone": full.number_of_nodes(), "edges_before_backbone": full.number_of_edges(),
         },
         "damping": list(DAMPING),

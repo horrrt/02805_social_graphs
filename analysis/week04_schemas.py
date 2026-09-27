@@ -1104,6 +1104,7 @@ class PagerankRow(Model):
     filings: int = Count
     degree: int = Count
     strength: int = Count
+    degree_rank: int = Field(ge=1)
     pagerank: float = Field(ge=0)
     rank: int = Field(ge=1)
 
@@ -1117,6 +1118,13 @@ class PagerankIterRow(Model):
 class PagerankStep(Model):
     step: int = Count
     rows: list[PagerankIterRow] = Field(min_length=1)
+
+    @model_validator(mode="after")
+    def sorted_by_own_score(self):
+        scores = [r.pagerank for r in self.rows]
+        assert scores == sorted(scores, reverse=True), \
+            f"step {self.step}: rows must be this step's own top scores, in order"
+        return self
 
 
 class PagerankIteration(Model):

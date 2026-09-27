@@ -95,12 +95,6 @@ function pagerankRows(list) {
   };
 }
 
-function withDegreeRank(list) {
-  const byDegree = [...list].sort((a, b) => b.degree - a.degree);
-  const rankOf = new Map(byDegree.map((r, i) => [r.code, i + 1]));
-  return list.map((r) => ({ ...r, degree_rank: rankOf.get(r.code) }));
-}
-
 function buildDampingCard(data) {
   const article = document.createElement("div");
   article.className = "card w4-card";
@@ -112,8 +106,8 @@ function buildDampingCard(data) {
     <span class="w4-num">P1</span>
     <div>
       <h2>Change the damping factor: does the ranking move?</h2>
-      <p class="w4-answer">Yes. Raising the damping factor from 0.5 to 0.99 reshuffles the ranking and pulls
-      it away from a plain count of ties, toward occupations linked to the network's biggest hubs.</p>
+      <p class="w4-answer">Yes. Raising the damping factor from ${data.damping[0]} to ${data.damping.at(-1)} reshuffles
+      the ranking and pulls it away from a plain count of ties, toward occupations linked to the network's biggest hubs.</p>
     </div>`;
 
   const two = document.createElement("div");
@@ -170,8 +164,8 @@ function buildDampingCard(data) {
   howBody.append(
     frag(
       `The network is section 2's companies x occupations projection, kept to its disparity-filter backbone at ` +
-        `alpha = ${data.meta.alpha_filter} (stricter than section 2's own alpha = 0.2 backbone, chosen so the ` +
-        `ranking has to lean on network position, not just tie count): ${data.meta.nodes} of the ` +
+        `alpha = ${data.meta.alpha_filter} (stricter than section 2's own alpha = ${data.meta.section2_alpha_filter} ` +
+        `backbone, chosen so the ranking has to lean on network position, not just tie count): ${data.meta.nodes} of the ` +
         `${data.meta.nodes_before_backbone} occupations, ${data.meta.edges} of its ${data.meta.edges_before_backbone} ` +
         `ties. A firm-to-client staffing network was tried first and rejected: with no incoming ties for a firm and ` +
         `no outgoing ones for a client, every firm gets the same score and the damping factor cannot reorder the ` +
@@ -202,7 +196,7 @@ function buildDampingCard(data) {
   plot.append(host);
 
   const drawFor = (d) => {
-    const list = withDegreeRank(data.rankings[d]).slice(0, TOP_SHOWN);
+    const list = data.rankings[d].slice(0, TOP_SHOWN);
     const { max, rows } = pagerankRows(list);
     host.replaceChildren(
       hbars(rows, {
@@ -225,10 +219,28 @@ function buildDampingCard(data) {
   return article;
 }
 
+/** The step (from it.steps) at which keyFn's value settles into its final
+ * value and never changes again, scanning backward from the last step. */
+function stablePoint(steps, keyFn) {
+  const finalKey = keyFn(steps.at(-1));
+  let stable = steps.at(-1).step;
+  for (let i = steps.length - 1; i >= 0 && keyFn(steps[i]) === finalKey; i--) stable = steps[i].step;
+  return stable;
+}
+
+function iterationClaims(it) {
+  const leaderStep = stablePoint(it.steps, (s) => s.rows[0].code);
+  const top10Step = stablePoint(it.steps, (s) => [...s.rows.map((r) => r.code)].sort().join(","));
+  return { leaderStep, top10Step, leaderTitle: it.steps.at(-1).rows[0].title };
+}
+
 function buildIterationCard(data) {
   const article = document.createElement("div");
   article.className = "card w4-card";
   article.id = "cut-pagerank-iteration";
+
+  const it = data.iteration;
+  const claims = iterationClaims(it);
 
   const header = document.createElement("header");
   header.className = "w4-q";
@@ -236,14 +248,13 @@ function buildIterationCard(data) {
     <span class="w4-num">P2</span>
     <div>
       <h2>Stepped one round at a time, how fast does the ranking settle?</h2>
-      <p class="w4-answer">Fast for the leaders, slower near the middle of the top 10: the top occupation is
-      already in front after the first round, but a few ranks below it keep changing place for several rounds.</p>
+      <p class="w4-answer">Unevenly. ${claims.leaderTitle} leads from step ${claims.leaderStep} on and never gives
+      up first place again, but the rest of the top 10 keeps reshuffling until step ${claims.top10Step}.</p>
     </div>`;
 
   const two = document.createElement("div");
   two.className = "w4-two";
   const left = document.createElement("div");
-  const it = data.iteration;
   left.innerHTML = `
     <p class="sub">
       Power iteration at d = ${it.alpha} (the same walk PageRank runs to convergence): every occupation starts
@@ -278,7 +289,7 @@ function buildIterationCard(data) {
   howBody.append(
     frag(
       "Each step redistributes (1 - d)/n to every occupation, plus d times the score its ties send it, split by " +
-        "how many ties each neighbour has. No dangling-node correction is needed: every occupation in this " +
+        "each neighbour's total tie weight. No dangling-node correction is needed: every occupation in this " +
         "network has at least one tie, unlike a firm-to-client network where one whole side has none.",
     ),
   );

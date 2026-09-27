@@ -68,6 +68,51 @@ test("every mover actually moves, and its rank_shift matches rank_d0_5 minus ran
   assert.deepEqual(shifts, [...shifts].sort((a, b) => b - a));
 });
 
+test("mover and row ranks are true network ranks, not ranks within a shortlist", () => {
+  const nodes = d.meta.nodes;
+  for (const m of d.movers) {
+    for (const rank of [m.rank_d0_5, m.rank_d0_99, m.degree_rank]) {
+      assert.ok(rank >= 1 && rank <= nodes, `${m.title}: rank ${rank} should fall within all ${nodes} network nodes`);
+    }
+  }
+  // At least one mover's rank should land outside a 40-occupation shortlist,
+  // proving the rank is not silently capped to whatever pool selected the movers.
+  assert.ok(
+    d.movers.some((m) => m.rank_d0_5 > 40 || m.rank_d0_99 > 40),
+    "at least one mover's true rank should exceed a top-40 pool",
+  );
+});
+
+test("degree_rank is the same occupation-wide rank at every damping factor", () => {
+  const byCode = new Map();
+  for (const damping of d.damping) {
+    for (const row of d.rankings[String(damping)]) {
+      if (byCode.has(row.code)) {
+        assert.equal(row.degree_rank, byCode.get(row.code), `${row.code}: degree_rank should not depend on d`);
+      } else {
+        byCode.set(row.code, row.degree_rank);
+      }
+    }
+  }
+});
+
+test("each iteration step exports its own top 10, sorted by that step's own score", () => {
+  for (const step of d.iteration.steps) {
+    assert.equal(step.rows.length, 10, `step ${step.step} should carry exactly its own top 10`);
+    const scores = step.rows.map((r) => r.pagerank);
+    assert.deepEqual(scores, [...scores].sort((a, b) => b - a), `step ${step.step}: rows must be sorted by that step's score`);
+  }
+  // The converged step's top 10 should agree with the same-damping ranking's own top 10:
+  // both describe the same fixed point, so this is the step's "true" top 10, not a stale list.
+  const finalCodes = d.iteration.steps.at(-1).rows.map((r) => r.code);
+  const rankingCodes = d.rankings[String(d.iteration.alpha)].slice(0, 10).map((r) => r.code);
+  assert.deepEqual(finalCodes, rankingCodes, "the converged step's top 10 should match nx.pagerank's own top 10 at that damping");
+  // An early step's leader need not be the final leader: this is exactly the bug the fix
+  // corrects (a fixed top-10 list mislabelled an early leader), so the data must show it.
+  const leaders = d.iteration.steps.map((s) => s.rows[0].code);
+  assert.ok(new Set(leaders).size > 1, "the leading occupation should change across at least one early step");
+});
+
 test("the network is section 2's own occupation projection, filtered to a stricter backbone", () => {
   const jobs = json("docs/weeks/week04/data/jobs.json");
   assert.equal(d.meta.year, jobs.meta.year);

@@ -2,9 +2,10 @@
  "meta": {
   "generated_by": "analysis/week04_pagerank.py",
   "year": 2025,
-  "seconds": 9.4,
+  "seconds": 9.5,
   "network": "Companies x occupations projection (week04_jobs.py), disparity-filter backbone at alpha = 0.05, giant component",
   "alpha_filter": 0.05,
+  "section2_alpha_filter": 0.2,
   "nodes": 289,
   "edges": 2986,
   "nodes_before_backbone": 501,
@@ -23,6 +24,7 @@
     "filings": 170440,
     "degree": 164,
     "strength": 44112,
+    "degree_rank": 2,
     "pagerank": 0.03397,
     "rank": 1
    },
@@ -32,6 +34,7 @@
     "filings": 31465,
     "degree": 203,
     "strength": 35725,
+    "degree_rank": 1,
     "pagerank": 0.03379,
     "rank": 2
    },
@@ -41,6 +44,7 @@
     "filings": 47464,
     "degree": 115,
     "strength": 29393,
+    "degree_rank": 4,
     "pagerank": 0.02169,
     "rank": 3
    },
@@ -50,6 +54,7 @@
     "filings": 3948,
     "degree": 117,
     "strength": 7074,
+    "degree_rank": 3,
     "pagerank": 0.01276,
     "rank": 4
    },
@@ -59,6 +64,7 @@
     "filings": 5784,
     "degree": 53,
     "strength": 3003,
+    "degree_rank": 32,
     "pagerank": 0.01243,
     "rank": 5
    },
@@ -68,6 +74,7 @@
     "filings": 1190,
     "degree": 85,
     "strength": 5002,
+    "degree_rank": 8,
     "pagerank": 0.01194,
     "rank": 6
    },
@@ -77,6 +84,7 @@
     "filings": 4509,
     "degree": 108,
     "strength": 5824,
+    "degree_rank": 5,
     "pagerank": 0.01177,
     "rank": 7
    },
@@ -86,6 +94,7 @@
     "filings": 18600,
     "degree": 65,
     "strength": 20491,
+    "degree_rank": 18,
     "pagerank": 0.01137,
     "rank": 8
    },
@@ -95,6 +104,7 @@
     "filings": 1325,
     "degree": 76,
     "strength": 4795,
+    "degree_rank": 13,
     "pagerank": 0.01133,
     "rank": 9
    },
@@ -104,6 +114,7 @@
     "filings": 2567,
     "degree": 97,
     "strength": 5783,
+    "degree_rank": 6,
     "pagerank": 0.01032,
     "rank": 10
    },
@@ -113,6 +124,7 @@
     "filings": 12585,
     "degree": 71,
     "strength": 16035,
+    "degree_rank": 17,
     "pagerank": 0.01031,
     "rank": 11
    },
@@ -122,6 +134,7 @@
     "filings": 10134,
     "degree": 72,
     "strength": 9935,
+    "degree_rank": 15,
     "pagerank": 0.00998,
     "rank": 12
    },
@@ -131,6 +144,7 @@
     "filings": 10017,
     "degree": 72,
     "strength": 12366,
+    "degree_rank": 16,
     "pagerank": 0.00991,
     "rank": 13
    },
@@ -140,6 +154,7 @@
     "filings": 768,
     "degree": 79,
     "strength": 4676,
+    "degree_rank": 12,
     "pagerank": 0.00983,
     "rank": 14
    },
@@ -149,6 +164,7 @@
     "filings": 1305,
     "degree": 80,
     "strength": 4627,
+    "degree_rank": 10,
     "pagerank": 0.0098,
     "rank": 15
    },
@@ -158,6 +174,7 @@
     "filings": 957,
     "degree": 83,
     "strength": 4014,
+    "degree_rank": 9,
     "pagerank": 0.00969,
     "rank": 16
    },
@@ -167,6 +184,7 @@
     "filings": 3918,
     "degree": 91,
     "strength": 8601,
+    "degree_rank": 7,
     "pagerank": 0.00909,
     "rank": 17
    },
@@ -176,6 +194,7 @@
     "filings": 5066,
     "degree": 61,
     "strength": 7668,
+    "degree_rank": 23,
     "pagerank": 0.0086,
     "rank": 18
    },
@@ -185,6 +204,7 @@
     "filings": 7475,
     "degree": 79,
     "strength": 10779,
+    "degree_rank": 11,
     "pagerank": 0.0085,
     "rank": 19
    },
@@ -194,6 +214,7 @@
     "filings": 2370,
     "degree": 17,
     "strength": 888,
+    "degree_rank": 112,
     "pagerank": 0.00837,
     "rank": 20
    }
@@ -205,6 +226,7 @@
     "filings": 170440,
     "degree": 164,
     "strength": 44112,
+    "degree_rank": 2,
     "pagerank": 0.05836,
     "rank": 1
    },
@@ -214,6 +236,7 @@
     "filings": 31465,
     "degree": 203,
     "strength": 35725,
+    "degree_rank": 1,
     "pagerank": 0.05243,
     "rank": 2
    },
@@ -223,6 +246,7 @@
     "filings": 47464,
     "degree": 115,
     "strength": 29393,
+    "degree_rank": 4,
     "pagerank": 0.03766,
     "rank": 3
    },
@@ -232,6 +256,7 @@
     "filings": 18600,
     "degree": 65,
     "strength": 20491,
+    "degree_rank": 18,
     "pagerank": 0.02372,
     "rank": 4
    },
@@ -241,6 +266,7 @@
     "filings": 12585,
     "degree": 71,
     "strength": 16035,
+    "degree_rank": 17,
     "pagerank": 0.01928,
     "rank": 5
    },
@@ -250,6 +276,7 @@
     "filings": 10017,
     "degree": 72,
     "strength": 12366,
+    "degree_rank": 16,
     "pagerank": 0.01607,
     "rank": 6
    },
@@ -259,6 +286,7 @@
     "filings": 3948,
     "degree": 117,
     "strength": 7074,
+    "degree_rank": 3,
     "pagerank": 0.01607,
     "rank": 7
    },
@@ -268,6 +296,7 @@
     "filings": 12941,
     "degree": 53,
     "strength": 12730,
+    "degree_rank": 31,
     "pagerank": 0.01473,
     "rank": 8
    },
@@ -277,6 +306,7 @@
     "filings": 4509,
     "degree": 108,
     "strength": 5824,
+    "degree_rank": 5,
     "pagerank": 0.01414,
     "rank": 9
    },
@@ -286,6 +316,7 @@
     "filings": 6926,
     "degree": 56,
     "strength": 12024,
+    "degree_rank": 28,
     "pagerank": 0.01402,
     "rank": 10
    },
@@ -295,6 +326,7 @@
     "filings": 7475,
     "degree": 79,
     "strength": 10779,
+    "degree_rank": 11,
     "pagerank": 0.01392,
     "rank": 11
    },
@@ -304,6 +336,7 @@
     "filings": 10134,
     "degree": 72,
     "strength": 9935,
+    "degree_rank": 15,
     "pagerank": 0.0139,
     "rank": 12
    },
@@ -313,6 +346,7 @@
     "filings": 3918,
     "degree": 91,
     "strength": 8601,
+    "degree_rank": 7,
     "pagerank": 0.01359,
     "rank": 13
    },
@@ -322,6 +356,7 @@
     "filings": 1190,
     "degree": 85,
     "strength": 5002,
+    "degree_rank": 8,
     "pagerank": 0.01292,
     "rank": 14
    },
@@ -331,6 +366,7 @@
     "filings": 4733,
     "degree": 54,
     "strength": 10944,
+    "degree_rank": 30,
     "pagerank": 0.0129,
     "rank": 15
    },
@@ -340,6 +376,7 @@
     "filings": 2567,
     "degree": 97,
     "strength": 5783,
+    "degree_rank": 6,
     "pagerank": 0.01289,
     "rank": 16
    },
@@ -349,6 +386,7 @@
     "filings": 1325,
     "degree": 76,
     "strength": 4795,
+    "degree_rank": 13,
     "pagerank": 0.01227,
     "rank": 17
    },
@@ -358,6 +396,7 @@
     "filings": 5784,
     "degree": 53,
     "strength": 3003,
+    "degree_rank": 32,
     "pagerank": 0.01202,
     "rank": 18
    },
@@ -367,6 +406,7 @@
     "filings": 6894,
     "degree": 63,
     "strength": 8563,
+    "degree_rank": 19,
     "pagerank": 0.01157,
     "rank": 19
    },
@@ -376,6 +416,7 @@
     "filings": 5303,
     "degree": 44,
     "strength": 9914,
+    "degree_rank": 37,
     "pagerank": 0.01144,
     "rank": 20
    }
@@ -387,6 +428,7 @@
     "filings": 170440,
     "degree": 164,
     "strength": 44112,
+    "degree_rank": 2,
     "pagerank": 0.07908,
     "rank": 1
    },
@@ -396,6 +438,7 @@
     "filings": 31465,
     "degree": 203,
     "strength": 35725,
+    "degree_rank": 1,
     "pagerank": 0.06472,
     "rank": 2
    },
@@ -405,6 +448,7 @@
     "filings": 47464,
     "degree": 115,
     "strength": 29393,
+    "degree_rank": 4,
     "pagerank": 0.05252,
     "rank": 3
    },
@@ -414,6 +458,7 @@
     "filings": 18600,
     "degree": 65,
     "strength": 20491,
+    "degree_rank": 18,
     "pagerank": 0.03635,
     "rank": 4
    },
@@ -423,6 +468,7 @@
     "filings": 12585,
     "degree": 71,
     "strength": 16035,
+    "degree_rank": 17,
     "pagerank": 0.02851,
     "rank": 5
    },
@@ -432,6 +478,7 @@
     "filings": 12941,
     "degree": 53,
     "strength": 12730,
+    "degree_rank": 31,
     "pagerank": 0.02258,
     "rank": 6
    },
@@ -441,6 +488,7 @@
     "filings": 10017,
     "degree": 72,
     "strength": 12366,
+    "degree_rank": 16,
     "pagerank": 0.02211,
     "rank": 7
    },
@@ -450,6 +498,7 @@
     "filings": 6926,
     "degree": 56,
     "strength": 12024,
+    "degree_rank": 28,
     "pagerank": 0.02134,
     "rank": 8
    },
@@ -459,6 +508,7 @@
     "filings": 4733,
     "degree": 54,
     "strength": 10944,
+    "degree_rank": 30,
     "pagerank": 0.01943,
     "rank": 9
    },
@@ -468,6 +518,7 @@
     "filings": 7475,
     "degree": 79,
     "strength": 10779,
+    "degree_rank": 11,
     "pagerank": 0.01927,
     "rank": 10
    },
@@ -477,6 +528,7 @@
     "filings": 10134,
     "degree": 72,
     "strength": 9935,
+    "degree_rank": 15,
     "pagerank": 0.01783,
     "rank": 11
    },
@@ -486,6 +538,7 @@
     "filings": 5303,
     "degree": 44,
     "strength": 9914,
+    "degree_rank": 37,
     "pagerank": 0.01758,
     "rank": 12
    },
@@ -495,6 +548,7 @@
     "filings": 3918,
     "degree": 91,
     "strength": 8601,
+    "degree_rank": 7,
     "pagerank": 0.01574,
     "rank": 13
    },
@@ -504,6 +558,7 @@
     "filings": 6894,
     "degree": 63,
     "strength": 8563,
+    "degree_rank": 19,
     "pagerank": 0.01533,
     "rank": 14
    },
@@ -513,6 +568,7 @@
     "filings": 4035,
     "degree": 51,
     "strength": 8621,
+    "degree_rank": 33,
     "pagerank": 0.0153,
     "rank": 15
    },
@@ -522,6 +578,7 @@
     "filings": 7601,
     "degree": 59,
     "strength": 8378,
+    "degree_rank": 25,
     "pagerank": 0.01499,
     "rank": 16
    },
@@ -531,6 +588,7 @@
     "filings": 6347,
     "degree": 50,
     "strength": 7937,
+    "degree_rank": 34,
     "pagerank": 0.01411,
     "rank": 17
    },
@@ -540,6 +598,7 @@
     "filings": 5066,
     "degree": 61,
     "strength": 7668,
+    "degree_rank": 23,
     "pagerank": 0.01375,
     "rank": 18
    },
@@ -549,6 +608,7 @@
     "filings": 3948,
     "degree": 117,
     "strength": 7074,
+    "degree_rank": 3,
     "pagerank": 0.01363,
     "rank": 19
    },
@@ -558,6 +618,7 @@
     "filings": 2880,
     "degree": 60,
     "strength": 7499,
+    "degree_rank": 24,
     "pagerank": 0.01336,
     "rank": 20
    }
@@ -570,18 +631,28 @@
     "step": 0,
     "rows": [
      {
+      "code": "15-1211",
+      "title": "Computer Systems Analysts",
+      "pagerank": 0.00346
+     },
+     {
       "code": "15-1252",
       "title": "Software Developers",
       "pagerank": 0.00346
      },
      {
-      "code": "15-2051",
-      "title": "Data Scientists",
+      "code": "27-1021",
+      "title": "Commercial and Industrial Designers",
       "pagerank": 0.00346
      },
      {
-      "code": "15-1299",
-      "title": "Computer Occupations, All Other",
+      "code": "27-1014",
+      "title": "Special Effects Artists and Animators",
+      "pagerank": 0.00346
+     },
+     {
+      "code": "29-1021",
+      "title": "Dentists, General",
       "pagerank": 0.00346
      },
      {
@@ -595,28 +666,18 @@
       "pagerank": 0.00346
      },
      {
+      "code": "17-2141",
+      "title": "Mechanical Engineers",
+      "pagerank": 0.00346
+     },
+     {
       "code": "17-2112",
       "title": "Industrial Engineers",
       "pagerank": 0.00346
      },
      {
-      "code": "19-1029",
-      "title": "Biological Scientists, All Other",
-      "pagerank": 0.00346
-     },
-     {
-      "code": "15-1211",
-      "title": "Computer Systems Analysts",
-      "pagerank": 0.00346
-     },
-     {
-      "code": "19-1042",
-      "title": "Medical Scientists, Except Epidemiologists",
-      "pagerank": 0.00346
-     },
-     {
-      "code": "15-1242",
-      "title": "Database Administrators",
+      "code": "17-1011",
+      "title": "Architects, Except Landscape and Naval",
       "pagerank": 0.00346
      }
     ]
@@ -625,14 +686,14 @@
     "step": 1,
     "rows": [
      {
-      "code": "15-1252",
-      "title": "Software Developers",
-      "pagerank": 0.05923
-     },
-     {
       "code": "15-2051",
       "title": "Data Scientists",
       "pagerank": 0.06317
+     },
+     {
+      "code": "15-1252",
+      "title": "Software Developers",
+      "pagerank": 0.05923
      },
      {
       "code": "15-1299",
@@ -640,19 +701,19 @@
       "pagerank": 0.0358
      },
      {
-      "code": "15-1253",
-      "title": "Software Quality Assurance Analysts and Testers",
-      "pagerank": 0.01197
+      "code": "29-1229",
+      "title": "Physicians, All Other",
+      "pagerank": 0.0244
      },
      {
-      "code": "11-3021",
-      "title": "Computer and Information Systems Managers",
-      "pagerank": 0.01284
+      "code": "25-1021",
+      "title": "Computer Science Teachers, Postsecondary",
+      "pagerank": 0.02401
      },
      {
-      "code": "17-2112",
-      "title": "Industrial Engineers",
-      "pagerank": 0.01442
+      "code": "25-1011",
+      "title": "Business Teachers, Postsecondary",
+      "pagerank": 0.02265
      },
      {
       "code": "19-1029",
@@ -660,19 +721,19 @@
       "pagerank": 0.02193
      },
      {
-      "code": "15-1211",
-      "title": "Computer Systems Analysts",
-      "pagerank": 0.00646
-     },
-     {
       "code": "19-1042",
       "title": "Medical Scientists, Except Epidemiologists",
       "pagerank": 0.02043
      },
      {
-      "code": "15-1242",
-      "title": "Database Administrators",
-      "pagerank": 0.00678
+      "code": "19-2012",
+      "title": "Physicists",
+      "pagerank": 0.01809
+     },
+     {
+      "code": "25-1032",
+      "title": "Engineering Teachers, Postsecondary",
+      "pagerank": 0.01736
      }
     ]
    },
@@ -700,24 +761,9 @@
       "pagerank": 0.01892
      },
      {
-      "code": "11-3021",
-      "title": "Computer and Information Systems Managers",
-      "pagerank": 0.01545
-     },
-     {
-      "code": "17-2112",
-      "title": "Industrial Engineers",
-      "pagerank": 0.01361
-     },
-     {
       "code": "19-1029",
       "title": "Biological Scientists, All Other",
       "pagerank": 0.01724
-     },
-     {
-      "code": "15-1211",
-      "title": "Computer Systems Analysts",
-      "pagerank": 0.01171
      },
      {
       "code": "19-1042",
@@ -725,9 +771,24 @@
       "pagerank": 0.01562
      },
      {
-      "code": "15-1242",
-      "title": "Database Administrators",
-      "pagerank": 0.01099
+      "code": "29-1229",
+      "title": "Physicians, All Other",
+      "pagerank": 0.01559
+     },
+     {
+      "code": "11-3021",
+      "title": "Computer and Information Systems Managers",
+      "pagerank": 0.01545
+     },
+     {
+      "code": "19-1021",
+      "title": "Biochemists and Biophysicists",
+      "pagerank": 0.01396
+     },
+     {
+      "code": "17-2112",
+      "title": "Industrial Engineers",
+      "pagerank": 0.01361
      }
     ]
    },
@@ -755,24 +816,14 @@
       "pagerank": 0.02031
      },
      {
-      "code": "11-3021",
-      "title": "Computer and Information Systems Managers",
-      "pagerank": 0.01682
-     },
-     {
-      "code": "17-2112",
-      "title": "Industrial Engineers",
-      "pagerank": 0.01458
-     },
-     {
       "code": "19-1029",
       "title": "Biological Scientists, All Other",
       "pagerank": 0.01828
      },
      {
-      "code": "15-1211",
-      "title": "Computer Systems Analysts",
-      "pagerank": 0.0126
+      "code": "11-3021",
+      "title": "Computer and Information Systems Managers",
+      "pagerank": 0.01682
      },
      {
       "code": "19-1042",
@@ -780,9 +831,19 @@
       "pagerank": 0.01627
      },
      {
-      "code": "15-1242",
-      "title": "Database Administrators",
-      "pagerank": 0.01204
+      "code": "29-1229",
+      "title": "Physicians, All Other",
+      "pagerank": 0.01515
+     },
+     {
+      "code": "25-1021",
+      "title": "Computer Science Teachers, Postsecondary",
+      "pagerank": 0.0146
+     },
+     {
+      "code": "17-2112",
+      "title": "Industrial Engineers",
+      "pagerank": 0.01458
      }
     ]
    },
@@ -815,19 +876,14 @@
       "pagerank": 0.01805
      },
      {
-      "code": "17-2112",
-      "title": "Industrial Engineers",
-      "pagerank": 0.01525
-     },
-     {
       "code": "19-1029",
       "title": "Biological Scientists, All Other",
       "pagerank": 0.01711
      },
      {
-      "code": "15-1211",
-      "title": "Computer Systems Analysts",
-      "pagerank": 0.01372
+      "code": "17-2112",
+      "title": "Industrial Engineers",
+      "pagerank": 0.01525
      },
      {
       "code": "19-1042",
@@ -835,9 +891,14 @@
       "pagerank": 0.01516
      },
      {
-      "code": "15-1242",
-      "title": "Database Administrators",
-      "pagerank": 0.01307
+      "code": "15-1211",
+      "title": "Computer Systems Analysts",
+      "pagerank": 0.01372
+     },
+     {
+      "code": "25-1021",
+      "title": "Computer Science Teachers, Postsecondary",
+      "pagerank": 0.01368
      }
     ]
    },
@@ -870,14 +931,14 @@
       "pagerank": 0.01903
      },
      {
-      "code": "17-2112",
-      "title": "Industrial Engineers",
-      "pagerank": 0.0159
-     },
-     {
       "code": "19-1029",
       "title": "Biological Scientists, All Other",
       "pagerank": 0.01628
+     },
+     {
+      "code": "17-2112",
+      "title": "Industrial Engineers",
+      "pagerank": 0.0159
      },
      {
       "code": "15-1211",
@@ -959,8 +1020,8 @@
    "code": "29-1229",
    "title": "Physicians, All Other",
    "rank_d0_5": 5,
-   "rank_d0_99": 37,
-   "rank_shift": -32,
+   "rank_d0_99": 45,
+   "rank_shift": -40,
    "degree_rank": 32,
    "degree": 53,
    "strength": 3003,
@@ -968,11 +1029,35 @@
    "pagerank_d0_99": 0.00639
   },
   {
+   "code": "29-1216",
+   "title": "General Internal Medicine Physicians",
+   "rank_d0_5": 29,
+   "rank_d0_99": 67,
+   "rank_shift": -38,
+   "degree_rank": 48,
+   "degree": 33,
+   "strength": 1541,
+   "pagerank_d0_5": 0.00682,
+   "pagerank_d0_99": 0.00332
+  },
+  {
+   "code": "15-1251",
+   "title": "Computer Programmers",
+   "rank_d0_5": 53,
+   "rank_d0_99": 22,
+   "rank_shift": 31,
+   "degree_rank": 102,
+   "degree": 18,
+   "strength": 6673,
+   "pagerank_d0_5": 0.00421,
+   "pagerank_d0_99": 0.01183
+  },
+  {
    "code": "15-1244",
    "title": "Network and Computer Systems Administrators",
-   "rank_d0_5": 35,
+   "rank_d0_5": 38,
    "rank_d0_99": 12,
-   "rank_shift": 23,
+   "rank_shift": 26,
    "degree_rank": 37,
    "degree": 44,
    "strength": 9914,
@@ -982,9 +1067,9 @@
   {
    "code": "15-1212",
    "title": "Information Security Analysts",
-   "rank_d0_5": 36,
+   "rank_d0_5": 39,
    "rank_d0_99": 15,
-   "rank_shift": 21,
+   "rank_shift": 24,
    "degree_rank": 33,
    "degree": 51,
    "strength": 8621,
@@ -994,9 +1079,9 @@
   {
    "code": "13-1111",
    "title": "Management Analysts",
-   "rank_d0_5": 38,
+   "rank_d0_5": 41,
    "rank_d0_99": 17,
-   "rank_shift": 21,
+   "rank_shift": 24,
    "degree_rank": 34,
    "degree": 50,
    "strength": 7937,
@@ -1004,52 +1089,28 @@
    "pagerank_d0_99": 0.01411
   },
   {
-   "code": "25-1021",
-   "title": "Computer Science Teachers, Postsecondary",
-   "rank_d0_5": 6,
-   "rank_d0_99": 26,
-   "rank_shift": -20,
-   "degree_rank": 8,
-   "degree": 85,
-   "strength": 5002,
-   "pagerank_d0_5": 0.01194,
-   "pagerank_d0_99": 0.00981
+   "code": "25-2021",
+   "title": "Elementary School Teachers, Except Special Education",
+   "rank_d0_5": 20,
+   "rank_d0_99": 43,
+   "rank_shift": -23,
+   "degree_rank": 112,
+   "degree": 17,
+   "strength": 888,
+   "pagerank_d0_5": 0.00837,
+   "pagerank_d0_99": 0.00673
   },
   {
    "code": "15-1243",
    "title": "Database Architects",
-   "rank_d0_5": 29,
+   "rank_d0_5": 30,
    "rank_d0_99": 9,
-   "rank_shift": 20,
+   "rank_shift": 21,
    "degree_rank": 30,
    "degree": 54,
    "strength": 10944,
    "pagerank_d0_5": 0.00678,
    "pagerank_d0_99": 0.01943
-  },
-  {
-   "code": "15-1211",
-   "title": "Computer Systems Analysts",
-   "rank_d0_5": 24,
-   "rank_d0_99": 6,
-   "rank_shift": 18,
-   "degree_rank": 31,
-   "degree": 53,
-   "strength": 12730,
-   "pagerank_d0_5": 0.00736,
-   "pagerank_d0_99": 0.02258
-  },
-  {
-   "code": "25-1011",
-   "title": "Business Teachers, Postsecondary",
-   "rank_d0_5": 9,
-   "rank_d0_99": 27,
-   "rank_shift": -18,
-   "degree_rank": 13,
-   "degree": 76,
-   "strength": 4795,
-   "pagerank_d0_5": 0.01133,
-   "pagerank_d0_99": 0.00938
   }
  ],
  "finding": {
