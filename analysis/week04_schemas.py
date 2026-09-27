@@ -812,6 +812,59 @@ class Footprint(Model):
         return self
 
 
+# Section 4 follow-up · docs/weeks/week04/data/footprint_rank.json, read by
+# week04-questions.js -----------------------------------------------------
+
+class SingleFirmDrop(Model):
+    firm: str
+    filings_removed_share: float = Share
+    ami_region: float
+    p_region: float = Share
+    nmi_vs_full: float = Share
+    control_ami_mean: float
+    control_ami_sd: float
+    ami_vs_control_sd: float | None = None
+
+
+class SweepStep(Model):
+    k: int = Field(ge=0, le=20)
+    added: list[str]
+    filings_removed_share: float = Share
+    ami_region: float
+    p_region: float = Share
+    nmi_vs_full: float = Share
+    control_ami_mean: float
+    control_ami_sd: float
+    ami_vs_control_sd: float | None = None
+
+
+class Fy2024Drop(Model):
+    id: str
+    label: str
+    filings_removed_share: float = Share
+    ami_region: float
+    p_region: float = Share
+    nmi_vs_full: float = Share
+    control_ami_mean: float | None = None
+    control_ami_sd: float | None = None
+    ami_vs_control_sd: float | None = None
+
+
+class FootprintRank(Model):
+    generated_by: str
+    year: int
+    single: list[SingleFirmDrop] = Field(min_length=10, max_length=10)
+    sweep: list[SweepStep] = Field(min_length=21, max_length=21)
+    fy2024: list[Fy2024Drop] = Field(min_length=1)
+    finding: dict
+
+    @model_validator(mode="after")
+    def sweep_covers_k(self):
+        ks = [s.k for s in self.sweep]
+        assert ks == list(range(21)), f"sweep must cover k=0..20 in order, got {ks}"
+        return self
+
+
 PAGES = {
     "docs/assets/data/week04_place.json": Place,
     "docs/weeks/week04/data/jobs.json": Jobs,
@@ -822,6 +875,7 @@ PAGES = {
     "docs/weeks/week04/data/staffing_moves.json": StaffingMoves,
     "docs/weeks/week04/data/beyond.json": Beyond,
     "docs/weeks/week04/data/footprint.json": Footprint,
+    "docs/weeks/week04/data/footprint_rank.json": FootprintRank,
 }
 
 

@@ -149,3 +149,33 @@ test("section 4: without the biggest firms", () => {
   const minZ = Math.min(...["metros", "jobs"].flatMap((part) => d[part].variants.filter((v) => !v.control).map((v) => v.z)));
   has(`(z = ${Math.floor(minZ)} or more)`);
 });
+
+test("section 4: which firm hides the regions", () => {
+  const d = json("docs/weeks/week04/data/footprint_rank.json");
+  const f = d.finding;
+  const part = html.slice(html.indexOf('id="footprint-which"'), html.indexOf('id="beyond"')).replace(/<[^>]+>/g, " ").replace(/\s+/g, " ");
+  const has = (t) => assert.ok(part.includes(t), `the which-firm part should say "${t}"`);
+  const firm = (name) => d.single.find((s) => s.firm === name);
+  const amazon = firm("Amazon");
+  has(`Amazon files ${pct(amazon.filings_removed_share, 1)} of the filings`);
+  has(`at AMI ${f2(amazon.ami_region)} (${amazon.ami_vs_control_sd.toFixed(1)} standard deviations above its random cuts), ${pct(f.q_single_firm.movers[0]["share_of_the_0.16_gap"])} of the way`);
+  has(`full network's ${f2(f.full_ami_region)} to the ${f2(f.q_single_firm.all10_ami_region)}`);
+  // Only Amazon pushes the match up beyond its random cuts.
+  const up = d.single.filter((s) => s.ami_vs_control_sd >= 2).map((s) => s.firm);
+  assert.deepEqual(up, ["Amazon"]);
+  for (const name of ["Cognizant", "EY", "Apple", "Deloitte"]) {
+    assert.ok(firm(name).ami_region < 0, `${name} alone must give a negative AMI`);
+  }
+  has(`ignores regions (AMI −${Math.abs(firm("Deloitte").ami_region).toFixed(3)})`);
+  // "Above random cuts at every step from one to twenty."
+  const steps = d.sweep.filter((s) => s.k >= 1);
+  assert.equal(steps.length, 20);
+  assert.ok(steps.every((s) => s.ami_region - s.control_ami_mean > 2 * s.control_ami_sd), "every step must clear 2 sd");
+  const at = (k) => d.sweep.find((s) => s.k === k).ami_region;
+  for (const k of [8, 17, 18, 19]) assert.ok(Math.abs(at(k) - 0.07) < 0.01, `"about 0.07" at k = ${k}`);
+  has(`peaks at ${f2(at(20))} without the top 20`);
+  assert.equal(Math.max(...d.sweep.map((s) => s.ami_region)), at(20));
+  const y = Object.fromEntries(d.fy2024.map((r) => [r.id, r]));
+  has(`no regional match (AMI −${Math.abs(y.full.ami_region).toFixed(3)})`);
+  has(`the match is ${f2(y.drop_fy2024_top10.ami_region)} (p = ${y.drop_fy2024_top10.p_region.toFixed(3)}), against ${f2(y.drop_fy2024_top10.control_ami_mean).replace("-", "−")} ± ${f2(y.drop_fy2024_top10.control_ami_sd)}`);
+});
