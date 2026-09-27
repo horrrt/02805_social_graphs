@@ -1164,6 +1164,97 @@ class Pagerank(Model):
         return self
 
 
+# Deep dive · section 3 first round, law firms, ties and lottery ·
+# docs/weeks/week04/data/staffing_deep.json, read by week04-vis-staffing.js -
+
+class ByKindRate(Model):
+    registrations_per_approval: float = Field(gt=0)
+    selected_that_became_petitions: float = Share
+
+
+class StaffingDeepQ1(Model):
+    client_company_share: float = Share
+    by_kind: dict[Literal["direct", "placing", "small"], ByKindRate]
+
+
+class StaffingDeepQ3(Model):
+    clients: int = Count
+    single_vendor_clients: int = Count
+    single_vendor_filing_share: float = Share
+    big_clients: int = Count
+    big_clients_over_90pct_one_vendor: int = Count
+    big_clients_median_top_vendor_share: float = Share
+
+
+class PercentPair(Model):
+    fy24_to_fy25: float
+    fy25_to_fy26: float
+
+
+class SharePair(Model):
+    before: float = Share
+    after: float = Share
+
+
+class JanJunChange(Model):
+    certified_filings_percent: PercentPair
+    client_company_filings_percent: PercentPair
+    main_vendor_changed_share: SharePair
+
+
+class StaffingDeepQ4(Model):
+    jan_jun_change: JanJunChange
+
+
+class OutsourcingShare(Model):
+    no_firm_share_pooled: float = Share
+    top5_share_pooled: float = Share
+
+
+class StaffingDeepLawyers(Model):
+    outsourcing: dict[Literal["placing", "direct"], OutsourcingShare]
+    top_firms_by_filings: list[tuple[str, int]] = Field(min_length=5, max_length=5)
+
+
+class WeightShuffleNull(Model):
+    mean_rho: float
+    sd_rho: float = Field(gt=0)
+
+
+class WageDistribution(Model):
+    placing: dict[Literal["1", "2", "3", "4"], float]
+    direct: dict[Literal["1", "2", "3", "4"], float]
+
+
+class StaffingDeepTies(Model):
+    spearman_weight_overlap_rho: float
+    weight_shuffle_null: WeightShuffleNull
+    defined_links: int = Count
+    wage_distribution_placing_vs_direct_filings: WageDistribution
+
+
+class LotteryYearShare(Model):
+    high_mates_share: float = Share
+    high_mates_share_shuffled: float = Share
+
+
+class StaffingDeepLottery(LotteryYearShare):
+    ami_median: float
+    ami_min: float
+    ami_max: float
+    previous_year: LotteryYearShare
+
+
+class StaffingDeep(Model):
+    generated_by: str
+    q1: StaffingDeepQ1
+    q3: StaffingDeepQ3
+    q4: StaffingDeepQ4
+    lawyers: StaffingDeepLawyers
+    ties: StaffingDeepTies
+    lottery: StaffingDeepLottery
+
+
 PAGES = {
     "docs/assets/data/week04_place.json": Place,
     "docs/weeks/week04/data/jobs.json": Jobs,
@@ -1179,6 +1270,7 @@ PAGES = {
     "docs/weeks/week04/data/footprint_rank.json": FootprintRank,
     "docs/weeks/week04/data/explore.json": Explore,
     "docs/weeks/week04/data/years.json": Years,
+    "docs/weeks/week04/data/staffing_deep.json": StaffingDeep,
 }
 
 
