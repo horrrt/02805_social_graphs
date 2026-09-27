@@ -1,0 +1,415 @@
+{
+ "generated_by": "analysis/week04_years.py",
+ "years": {
+  "2022": {
+   "certified_filings": 562631,
+   "placed_share": 0.2192,
+   "clients": 20293,
+   "firms": 7773,
+   "top_firms_by_filings": [
+    [
+     "Tata Consultancy Services",
+     8963
+    ],
+    [
+     "Cognizant",
+     6053
+    ],
+    [
+     "Infosys",
+     5151
+    ],
+    [
+     "HCL",
+     2708
+    ],
+    [
+     "Compunnel Software",
+     2244
+    ],
+    [
+     "Accenture",
+     2138
+    ],
+    [
+     "IBM",
+     1911
+    ],
+    [
+     "Wipro",
+     1844
+    ]
+   ]
+  },
+  "2023": {
+   "certified_filings": 485508,
+   "placed_share": 0.2259,
+   "clients": 19275,
+   "firms": 7860,
+   "top_firms_by_filings": [
+    [
+     "Cognizant",
+     7200
+    ],
+    [
+     "Tata Consultancy Services",
+     6852
+    ],
+    [
+     "Infosys",
+     5376
+    ],
+    [
+     "HCL",
+     2629
+    ],
+    [
+     "Accenture",
+     2418
+    ],
+    [
+     "Wipro",
+     2295
+    ],
+    [
+     "LTIMindtree",
+     2141
+    ],
+    [
+     "Compunnel Software",
+     1907
+    ]
+   ]
+  },
+  "2024": {
+   "certified_filings": 502374,
+   "placed_share": 0.2127,
+   "clients": 18858,
+   "firms": 8113,
+   "top_firms_by_filings": [
+    [
+     "Tata Consultancy Services",
+     8747
+    ],
+    [
+     "Cognizant",
+     5573
+    ],
+    [
+     "Infosys",
+     3922
+    ],
+    [
+     "HCL",
+     3279
+    ],
+    [
+     "Accenture",
+     2410
+    ],
+    [
+     "LTIMindtree",
+     2284
+    ],
+    [
+     "IBM",
+     1655
+    ],
+    [
+     "Compunnel Software",
+     1649
+    ]
+   ]
+  },
+  "2025": {
+   "certified_filings": 537796,
+   "placed_share": 0.1947,
+   "clients": 18900,
+   "firms": 8469,
+   "top_firms_by_filings": [
+    [
+     "Tata Consultancy Services",
+     7188
+    ],
+    [
+     "Cognizant",
+     5051
+    ],
+    [
+     "Infosys",
+     3764
+    ],
+    [
+     "HCL",
+     2530
+    ],
+    [
+     "Compunnel Software",
+     2237
+    ],
+    [
+     "LTIMindtree",
+     2131
+    ],
+    [
+     "Accenture",
+     1974
+    ],
+    [
+     "Wipro",
+     1626
+    ]
+   ]
+  },
+  "2026": {
+   "certified_filings": 392175,
+   "placed_share": 0.1807,
+   "clients": 13751,
+   "firms": 7245,
+   "top_firms_by_filings": [
+    [
+     "Infosys",
+     2983
+    ],
+    [
+     "Tata Consultancy Services",
+     2613
+    ],
+    [
+     "Cognizant",
+     2161
+    ],
+    [
+     "Grandison Management",
+     1967
+    ],
+    [
+     "Compunnel Software",
+     1915
+    ],
+    [
+     "Wipro",
+     1031
+    ],
+    [
+     "LTIMindtree",
+     940
+    ],
+    [
+     "EY",
+     924
+    ]
+   ]
+  }
+ },
+ "oct_jun": {
+  "totals": {
+   "FY2024": {
+    "certified_filings": 395343
+   },
+   "FY2025": {
+    "certified_filings": 434511
+   },
+   "FY2026": {
+    "certified_filings": 392175
+   }
+  },
+  "certified_filings_change_fy25_fy26_percent": -9.7
+ },
+ "monthly": {
+  "FY2024": [
+   {
+    "month": "2023-10",
+    "certified_filings": 34458,
+    "placed_filings": 9109
+   },
+   {
+    "month": "2023-11",
+    "certified_filings": 26207,
+    "placed_filings": 5350
+   },
+   {
+    "month": "2023-12",
+    "certified_filings": 23746,
+    "placed_filings": 4698
+   },
+   {
+    "month": "2024-01",
+    "certified_filings": 28531,
+    "placed_filings": 5474
+   },
+   {
+    "month": "2024-02",
+    "certified_filings": 37309,
+    "placed_filings": 6626
+   },
+   {
+    "month": "2024-03",
+    "certified_filings": 45191,
+    "placed_filings": 8070
+   },
+   {
+    "month": "2024-04",
+    "certified_filings": 54204,
+    "placed_filings": 9647
+   },
+   {
+    "month": "2024-05",
+    "certified_filings": 74741,
+    "placed_filings": 16871
+   },
+   {
+    "month": "2024-06",
+    "certified_filings": 70956,
+    "placed_filings": 18303
+   }
+  ],
+  "FY2025": [
+   {
+    "month": "2024-10",
+    "certified_filings": 35258,
+    "placed_filings": 7387
+   },
+   {
+    "month": "2024-11",
+    "certified_filings": 27082,
+    "placed_filings": 5364
+   },
+   {
+    "month": "2024-12",
+    "certified_filings": 31787,
+    "placed_filings": 5770
+   },
+   {
+    "month": "2025-01",
+    "certified_filings": 31908,
+    "placed_filings": 5812
+   },
+   {
+    "month": "2025-02",
+    "certified_filings": 40037,
+    "placed_filings": 5998
+   },
+   {
+    "month": "2025-03",
+    "certified_filings": 47574,
+    "placed_filings": 6881
+   },
+   {
+    "month": "2025-04",
+    "certified_filings": 63671,
+    "placed_filings": 10100
+   },
+   {
+    "month": "2025-05",
+    "certified_filings": 79484,
+    "placed_filings": 14627
+   },
+   {
+    "month": "2025-06",
+    "certified_filings": 77710,
+    "placed_filings": 20192
+   }
+  ],
+  "FY2026": [
+   {
+    "month": "2025-10",
+    "certified_filings": 1306,
+    "placed_filings": 299
+   },
+   {
+    "month": "2025-11",
+    "certified_filings": 40508,
+    "placed_filings": 8633
+   },
+   {
+    "month": "2025-12",
+    "certified_filings": 29817,
+    "placed_filings": 6044
+   },
+   {
+    "month": "2026-01",
+    "certified_filings": 34762,
+    "placed_filings": 5834
+   },
+   {
+    "month": "2026-02",
+    "certified_filings": 32775,
+    "placed_filings": 6776
+   },
+   {
+    "month": "2026-03",
+    "certified_filings": 40300,
+    "placed_filings": 7228
+   },
+   {
+    "month": "2026-04",
+    "certified_filings": 69713,
+    "placed_filings": 9930
+   },
+   {
+    "month": "2026-05",
+    "certified_filings": 74397,
+    "placed_filings": 11087
+   },
+   {
+    "month": "2026-06",
+    "certified_filings": 68597,
+    "placed_filings": 15041
+   }
+  ]
+ },
+ "uscis_series": [
+  {
+   "year": 2022,
+   "placing_initial_denial_rate": 0.0271,
+   "direct_initial_denial_rate": 0.0122
+  },
+  {
+   "year": 2023,
+   "placing_initial_denial_rate": 0.0357,
+   "direct_initial_denial_rate": 0.0148
+  },
+  {
+   "year": 2024,
+   "placing_initial_denial_rate": 0.0265,
+   "direct_initial_denial_rate": 0.0128
+  },
+  {
+   "year": 2025,
+   "placing_initial_denial_rate": 0.032,
+   "direct_initial_denial_rate": 0.0156
+  },
+  {
+   "year": 2026,
+   "placing_initial_denial_rate": 0.0335,
+   "direct_initial_denial_rate": 0.0198
+  }
+ ],
+ "lottery_draws": {
+  "2022": {
+   "registrations": 301419
+  },
+  "2023": {
+   "registrations": 474384
+  },
+  "2024": {
+   "registrations": 758967
+  }
+ },
+ "lottery_funnels": {
+  "2023": {
+   "registrations_per_approval": 5.22
+  },
+  "2024": {
+   "registrations_per_approval": 8.51
+  }
+ },
+ "finding": {
+  "fy2025_certified_filings": 537796,
+  "fy22_to_fy23_certified_change_percent": -14,
+  "fy25_to_fy26_certified_change_percent": -9.7,
+  "oct_2025_certified_filings": 1306,
+  "oct_2024_certified_filings": 35258
+ }
+}
