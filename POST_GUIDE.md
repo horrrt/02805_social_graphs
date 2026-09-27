@@ -10,7 +10,7 @@ Use this guide before creating or revising a post. It records the user's prefere
 - Focus on desktop. The user explicitly removed mobile layout work from scope.
 - Keep deeper analysis available through descriptive disclosures and direct links. Do not hide the evidence needed to understand the main conclusion.
 - Preserve the group's personality and AI-use disclosure. Remove generic introductions, inflated claims, repeated explanations and forced phrasing.
-- Work on a review branch, push changes and open a draft PR. Do not merge, deploy, submit coursework, send Teams messages, or edit Notion.
+- Work on a branch, push it and open a pull request, then merge it once its checks pass. A draft is not needed. Merging to `main` is how the site deploys: do not deploy any other way, submit coursework, send Teams messages, or edit Notion.
 
 ## Start with the brief
 
@@ -43,7 +43,7 @@ A figure should answer a question, not decorate a paragraph. Captions must say h
 
 Use the frontend-design and writing-clearly-and-concisely skills. Before saving prose, remove filler and duplication, check concrete nouns and active verbs, and preserve facts, uncertainty, citations and the group's notes.
 
-## Before opening a draft PR
+## Before opening a pull request
 
 Check both editions on desktop with a fresh browser context. Complete the main interaction, reload to verify saved progress, open deeper evidence and follow old anchors. Check keyboard controls, empty states, images, local links and JavaScript errors. Run repository tests and meaningful tests for new calculations. Preserve routes, element IDs, data and storage keys.
 
