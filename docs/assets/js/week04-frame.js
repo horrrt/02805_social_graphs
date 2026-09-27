@@ -57,6 +57,10 @@ function wireReveals() {
   document.addEventListener("keydown", (event) => {
     if (event.key !== "Escape") return;
     for (const open of document.querySelectorAll(OPEN)) open.classList.remove("is-open");
+    // .w4-tip:focus-within > .w4-pop still matches after the class is gone, so
+    // a reveal whose button holds focus stays open unless we move focus off it.
+    const active = document.activeElement;
+    if (active && active.closest(".w4-tip, .w4-term")) active.blur();
   });
 }
 
