@@ -581,18 +581,15 @@
 
         <!-- Staffing · Track A ------------------------------------------ -->
         <section class="step" id="who">
-          <div class="card">
-            <div class="step-head">
-              <span class="num">3</span>
+          <header class="w4-opener">
+            <span aria-hidden="true" class="w4-opener-num">3</span>
+            <div>
               <h2>Who staffs whom</h2>
-              <span class="year-tag">firm → client · FY2025</span>
+              <p>One certified H-1B filing in five names a client company as the worksite. Held to a random baseline, clients group only weakly, and slightly more by the firm that staffs them than by industry. Yet a client that changes vendor stays inside its group far more often than chance.</p>
             </div>
+          </header>
+          <div class="card w4-card">
             <p class="sub">
-              <b>One certified H-1B filing in five names a client company as the
-              worksite. Held to a random baseline, clients group only weakly, and
-              slightly more by the firm that staffs them than by industry. Yet a
-              client that changes vendor stays inside its group far more often
-              than chance.</b>
               Here the network links an outsourcing firm to each client company
               where it places workers, and a link weighs the filings between
               them. Louvain runs on the largest connected piece: 21,759 firms and
@@ -605,90 +602,95 @@
             </p>
           </div>
 
-          <div class="card" id="who-switch">
-            <div class="step-head">
-              <span class="num">A</span>
-              <h2>When a client changes its main vendor, does it stay in its group?</h2>
-              <span class="year-tag">FY2022 to FY2025</span>
-            </div>
-            <p class="sub">
-              <b>Yes, nearly eight times as often as for a random vendor: one
-              switch in four stays inside the client's group.</b>
-              A client's main vendor is the firm that files most placements
-              there in a year. We followed the clients with five or more filings
-              in two consecutive years and found 1,261 switches of main vendor
-              between FY2022 and FY2025. For each, we asked whether the new
-              vendor sat in the client's Louvain group of the earlier year. The
-              baseline draws a new vendor at random, a large firm as often as its
-              filings make it likely.
-            </p>
-            <div class="plot">
-              <h3>Switches that stay inside the client's group</h3>
-              <p class="axis-note">
-                Share of switches whose new main vendor is in the client's group
-                of the earlier year, for each pair of years. Grey bars are the
-                baseline's mean over 1,000 draws; whiskers span one standard
-                deviation.
-              </p>
-              <div class="chart-host short" id="chart-who-switch"></div>
-            </div>
-            <div class="notice">
-              <span class="ico">💡</span>
-              <span>
-                <b>What to notice</b>
-                Pooled over the three pairs of years, 26.5% of switches stay in
-                the group against 3.2% ± 0.5% for random vendors (z = 47). Much
-                of that is familiarity: 62% of new main vendors already placed
-                someone at the client the year before. A stricter baseline that
-                draws only among the firms already at the client narrows the gap
-                to 26.8% against 20.8% ± 0.7% (z = 9), a lift of 1.29 rather
-                than 8.3. The groups hold some information about where a client
-                turns next beyond the vendors it already knows.
-              </span>
+          <!-- A · Does a client stay in its group? ------------------- -->
+          <div class="card w4-card" id="who-switch">
+            <header class="w4-q">
+              <span class="w4-num">3A</span>
+              <div>
+                <h2>When a client changes its main vendor, does it stay in its group?</h2>
+                <p class="w4-answer">Yes, nearly eight times as often as for a random vendor: one switch in four stays inside the client's group.</p>
+              </div>
+            </header>
+            <div class="w4-two">
+              <div>
+                <p class="sub">
+                  We followed the clients with five or more filings in two
+                  consecutive years and found 1,261 switches of main vendor
+                  between FY2022 and FY2025. For each, we asked whether the new
+                  vendor sat in the client's Louvain group of the earlier year.
+                </p>
+                <div class="notice">
+                  <span class="ico">💡</span>
+                  <span>
+                    <b>What to notice</b>
+                    Pooled over the three pairs of years, 26.5% of switches stay in
+                    the group against 3.2% ± 0.5% for random vendors (z = 47). Much
+                    of that is familiarity: 62% of new main vendors already placed
+                    someone at the client the year before. The groups hold some
+                    information about where a client turns next beyond the vendors
+                    it already knows.
+                  </span>
+                </div>
+                <div class="w4-reveals">
+                  <span class="w4-tip"><button aria-describedby="w4-pop-who-switch-how" type="button"><svg aria-hidden="true" height="14" viewBox="0 0 24 24" width="14"><circle cx="12" cy="12" fill="none" r="9" stroke="currentColor" stroke-width="2"></circle><path d="M12 11v6M12 7.5v.5" fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="2"></path></svg>How we tested it</button><span class="w4-pop" id="w4-pop-who-switch-how" role="tooltip"><b>How we tested it</b>A client's main vendor is the firm that files most placements there in a year. The baseline draws a new vendor at random, a large firm as often as its filings make it likely.</span></span>
+                  <span class="w4-tip"><button aria-describedby="w4-pop-who-switch-more" type="button"><svg aria-hidden="true" height="14" viewBox="0 0 24 24" width="14"><circle cx="12" cy="12" fill="none" r="9" stroke="currentColor" stroke-width="2"></circle><path d="M12 8v8M8 12h8" fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="2"></path></svg>More numbers</button><span class="w4-pop" id="w4-pop-who-switch-more" role="tooltip"><b>More numbers</b>A stricter baseline that draws only among the firms already at the client narrows the gap to 26.8% against 20.8% ± 0.7% (z = 9), a lift of 1.29 rather than 8.3.</span></span>
+                </div>
+              </div>
+              <div class="plot">
+                <h3>Switches that stay inside the client's group</h3>
+                <p class="axis-note">
+                  Share of switches whose new main vendor is in the client's group
+                  of the earlier year, for each pair of years. Grey bars are the
+                  baseline's mean over 1,000 draws; whiskers span one standard
+                  deviation.
+                </p>
+                <div class="chart-host short" id="chart-who-switch"></div>
+              </div>
             </div>
           </div>
 
-          <div class="card" id="who-movers">
-            <div class="step-head">
-              <span class="num">B</span>
-              <h2>Which clients change group when filing counts are ignored?</h2>
-              <span class="year-tag">weighted vs unweighted</span>
-            </div>
-            <p class="sub">
-              <b>Two in three, but much of that is Louvain's own noise, and the
-              movers are not mainly the clients with several vendors.</b>
-              We ran Louvain with links weighted by filings and with every link
-              counting one, matched each weighted group to the unweighted group
-              it overlaps most, and called a client a mover when its matched
-              group changed. Two runs of the same kind with different seeds set
-              the noise floor.
-            </p>
-            <div class="plot">
-              <h3>Share of clients that change group</h3>
-              <p class="axis-note">
-                The first two bars compare two seeds of the same kind; the third
-                compares the weighted partition with the unweighted one. All three
-                use the same matching of groups.
-              </p>
-              <div class="chart-host short" id="chart-who-movers"></div>
-            </div>
-            <div class="notice">
-              <span class="ico">💡</span>
-              <span>
-                <b>What to notice</b>
-                64.4% of clients move between the weighted and unweighted
-                partitions. Two runs of the same kind move fewer: a median 33.3%
-                between two weighted seeds and 53.1% between two unweighted ones,
-                over ten pairs of seeds each (ranges 26.8% to 39.3% and 49.4% to
-                55.9%). We expected the movers to be
-                clients with several vendors, since only their filing counts can
-                pull them one way or another. They are, but barely: 31.8% of
-                movers have two or more vendors, against 26.8% of all clients.
-                The largest movers are the largest clients: Citigroup sits with
-                Tata Consultancy Services when filings count and with EY when
-                they do not; Bank of America moves from Infosys' group to
-                IBM's.
-              </span>
+          <!-- B · Movers when weights are ignored ---------------------- -->
+          <div class="card w4-card" id="who-movers">
+            <header class="w4-q">
+              <span class="w4-num">3B</span>
+              <div>
+                <h2>Which clients change group when filing counts are ignored?</h2>
+                <p class="w4-answer">Two in three, but much of that is Louvain's own noise, and the movers are not mainly the clients with several vendors.</p>
+              </div>
+            </header>
+            <div class="w4-two">
+              <div>
+                <p class="sub">
+                  We ran Louvain with links weighted by filings and with every
+                  link counting one, matched each weighted group to the
+                  unweighted group it overlaps most, and called a client a mover
+                  when its matched group changed. Two runs of the same kind
+                  with different seeds set the noise floor.
+                </p>
+                <div class="notice">
+                  <span class="ico">💡</span>
+                  <span>
+                    <b>What to notice</b>
+                    64.4% of clients move between the weighted and unweighted
+                    partitions. Two runs of the same kind move fewer: a median 33.3%
+                    between two weighted seeds and 53.1% between two unweighted ones,
+                    over ten pairs of seeds each (ranges 26.8% to 39.3% and 49.4% to
+                    55.9%).
+                  </span>
+                </div>
+                <div class="w4-reveals">
+                  <span class="w4-tip"><button aria-describedby="w4-pop-who-movers-more" type="button"><svg aria-hidden="true" height="14" viewBox="0 0 24 24" width="14"><circle cx="12" cy="12" fill="none" r="9" stroke="currentColor" stroke-width="2"></circle><path d="M12 8v8M8 12h8" fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="2"></path></svg>More numbers</button><span class="w4-pop" id="w4-pop-who-movers-more" role="tooltip"><b>More numbers</b>We expected the movers to be clients with several vendors, since only their filing counts can pull them one way or another. They are, but barely: 31.8% of movers have two or more vendors, against 26.8% of all clients. The largest movers are the largest clients: Citigroup sits with Tata Consultancy Services when filings count and with EY when they do not; Bank of America moves from Infosys' group to IBM's.</span></span>
+                </div>
+              </div>
+              <div class="plot">
+                <h3>Share of clients that change group</h3>
+                <p class="axis-note">
+                  The first two bars compare two seeds of the same kind; the third
+                  compares the weighted partition with the unweighted one. All three
+                  use the same matching of groups.
+                </p>
+                <div class="chart-host short" id="chart-who-movers"></div>
+              </div>
             </div>
             <details class="qa">
               <summary><span class="qa-cue">The 15 largest movers</span></summary>
@@ -710,48 +712,45 @@
             </details>
           </div>
 
-          <div class="card" id="who-overlap">
-            <div class="step-head">
-              <span class="num">C</span>
-              <h2>Which clients sit in two groups at once?</h2>
-              <span class="year-tag">split loyalties</span>
-            </div>
-            <p class="sub">
-              <b>1,823 clients get a fifth or more of their filings from a second
-              group, fewer than in rewired networks that keep each client's
-              filing counts.</b>
-              A Louvain partition gives each client one group, but a client with
-              several vendors can draw on firms from different groups. We counted
-              clients whose second group supplies at least 20% of their filings,
-              and did the same on 100 rewired networks in which every firm keeps
-              its number of clients and every client keeps its filing counts,
-              only attached to different firms.
-            </p>
-            <div class="plot">
-              <h3>Clients split between two groups</h3>
-              <p class="axis-note">
-                The count for the real network against the mean of 100 rewired
-                networks; the whisker spans one standard deviation.
-              </p>
-              <div class="chart-host short" id="chart-who-overlap"></div>
-            </div>
-            <div class="notice">
-              <span class="ico">💡</span>
-              <span>
-                <b>What to notice</b>
-                The rewired networks give 2,154 ± 20 split clients (z = −16), so
-                real clients draw on fewer groups than the same filing counts
-                spread at random would. Two cautions. Louvain builds the groups
-                from these filing counts, so it already tends to put a client
-                with its heaviest vendors; and rewired networks split into
-                different groups from the real one. Read the count as the groups
-                following clients' main suppliers, not as a separate measure of
-                loyalty. The largest split clients are banks,
-                insurers and manufacturers. USAA gets 44% of its filings from
-                HCL's group and 26% from Tata Consultancy Services'; Stellantis
-                46% from L&amp;T Technology Services' group and 34% from Tata
-                Consultancy Services'.
-              </span>
+          <!-- C · Split loyalties ------------------------------------- -->
+          <div class="card w4-card" id="who-overlap">
+            <header class="w4-q">
+              <span class="w4-num">3C</span>
+              <div>
+                <h2>Which clients sit in two groups at once?</h2>
+                <p class="w4-answer">1,823 clients get a fifth or more of their filings from a second group, fewer than in rewired networks that keep each client's filing counts.</p>
+              </div>
+            </header>
+            <div class="w4-two">
+              <div>
+                <p class="sub">
+                  A Louvain partition gives each client one group, but a client
+                  with several vendors can draw on firms from different groups.
+                </p>
+                <div class="notice">
+                  <span class="ico">💡</span>
+                  <span>
+                    <b>What to notice</b>
+                    The rewired networks give 2,154 ± 20 split clients (z = −16), so
+                    real clients draw on fewer groups than the same filing counts
+                    spread at random would. Read the count as the groups
+                    following clients' main suppliers, not as a separate measure of
+                    loyalty.
+                  </span>
+                </div>
+                <div class="w4-reveals">
+                  <span class="w4-tip"><button aria-describedby="w4-pop-who-overlap-how" type="button"><svg aria-hidden="true" height="14" viewBox="0 0 24 24" width="14"><circle cx="12" cy="12" fill="none" r="9" stroke="currentColor" stroke-width="2"></circle><path d="M12 11v6M12 7.5v.5" fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="2"></path></svg>How we tested it</button><span class="w4-pop" id="w4-pop-who-overlap-how" role="tooltip"><b>How we tested it</b>We counted clients whose second group supplies at least 20% of their filings, and did the same on 100 rewired networks in which every firm keeps its number of clients and every client keeps its filing counts, only attached to different firms. Louvain builds the groups from these filing counts, so it already tends to put a client with its heaviest vendors; and rewired networks split into different groups from the real one.</span></span>
+                  <span class="w4-tip"><button aria-describedby="w4-pop-who-overlap-more" type="button"><svg aria-hidden="true" height="14" viewBox="0 0 24 24" width="14"><circle cx="12" cy="12" fill="none" r="9" stroke="currentColor" stroke-width="2"></circle><path d="M12 8v8M8 12h8" fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="2"></path></svg>More numbers</button><span class="w4-pop" id="w4-pop-who-overlap-more" role="tooltip"><b>More numbers</b>The largest split clients are banks, insurers and manufacturers. USAA gets 44% of its filings from HCL's group and 26% from Tata Consultancy Services'; Stellantis 46% from L&amp;T Technology Services' group and 34% from Tata Consultancy Services'.</span></span>
+                </div>
+              </div>
+              <div class="plot">
+                <h3>Clients split between two groups</h3>
+                <p class="axis-note">
+                  The count for the real network against the mean of 100 rewired
+                  networks; the whisker spans one standard deviation.
+                </p>
+                <div class="chart-host short" id="chart-who-overlap"></div>
+              </div>
             </div>
             <details class="qa">
               <summary><span class="qa-cue">The 15 largest split clients</span></summary>
@@ -776,30 +775,45 @@
         <!-- Closing ----------------------------------------------------- -->
         <!-- Without the biggest firms ------------------------------------ -->
         <section class="step" id="footprint">
-          <div class="card">
-            <div class="step-head">
-              <span class="num">4</span>
+          <header class="w4-opener">
+            <span aria-hidden="true" class="w4-opener-num">4</span>
+            <div>
               <h2>Without the biggest firms</h2>
-              <span class="year-tag">metros and jobs · FY2025</span>
+              <p>Take out the largest filers, Amazon above all, and the metro groups start to follow Census regions; the job clusters shift but hold.</p>
             </div>
-            <p class="sub">
-              <b>Take out the largest filers, Amazon above all, and the metro
-              groups start to follow Census regions; the job clusters shift but
-              hold.</b>
-              A handful of companies file a large share of everything: the
-              five largest placing firms (Tata Consultancy Services, Cognizant,
-              Infosys, HCL, Compunnel) file 5.6% of the filings in the 40
-              metros, and the ten largest filers of any kind 19.1%. A company
-              that files everywhere links every pair of metros and every pair
-              of its jobs, so its footprint could be all the structure there is.
-              We removed each set, reran 100 Louvain runs on the metro network
-              and on the job network (weighted here by filings, since a count of
-              companies barely moves when ten of 59,196 leave), and compared the
-              groups with the full network's. Removing less data changes the
-              groups too, so each removal sits beside 50 random cuts of
-              companies that remove the same share of filings.
-            </p>
-            <div class="jobs-grid jobs-groups-grid">
+          </header>
+          <div class="w4-two w4-intro">
+            <div>
+              <p class="sub">
+                A handful of companies file a large share of everything: the
+                five largest placing firms (Tata Consultancy Services, Cognizant,
+                Infosys, HCL, Compunnel) file 5.6% of the filings in the 40
+                metros, and the ten largest filers of any kind 19.1%. A company
+                that files everywhere links every pair of metros and every pair
+                of its jobs, so its footprint could be all the structure there is.
+              </p>
+              <div class="notice">
+                <span class="ico">💡</span>
+                <span>
+                  <b>What to notice</b>
+                  Without the ten largest filers (Amazon, Cognizant, Google,
+                  Microsoft, EY, Meta, Deloitte, Apple, Tata Consultancy Services,
+                  Infosys), the metro groups match Census regions at AMI 0.13
+                  (p = 0.013), against 0.06 for the full network and 0.01 ± 0.03
+                  for random cuts, 4.6 standard deviations away. The national
+                  employers are what hide the regional pattern. The job clusters
+                  hold at NMI 0.90 and 0.82, but random cuts of the same volume
+                  leave them closer still (0.96 and 0.88, 3.0 and 3.2 standard
+                  deviations away), so the biggest firms do shape which jobs
+                  cluster together.
+                </span>
+              </div>
+              <div class="w4-reveals">
+                <span class="w4-tip"><button aria-describedby="w4-pop-footprint-how" type="button"><svg aria-hidden="true" height="14" viewBox="0 0 24 24" width="14"><circle cx="12" cy="12" fill="none" r="9" stroke="currentColor" stroke-width="2"></circle><path d="M12 11v6M12 7.5v.5" fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="2"></path></svg>How we tested it</button><span class="w4-pop" id="w4-pop-footprint-how" role="tooltip"><b>How we tested it</b>We removed each set, reran 100 Louvain runs on the metro network and on the job network (weighted here by filings, since a count of companies barely moves when ten of 59,196 leave), and compared the groups with the full network's. Removing less data changes the groups too, so each removal sits beside 50 random cuts of companies that remove the same share of filings.</span></span>
+                <span class="w4-tip"><button aria-describedby="w4-pop-footprint-more" type="button"><svg aria-hidden="true" height="14" viewBox="0 0 24 24" width="14"><circle cx="12" cy="12" fill="none" r="9" stroke="currentColor" stroke-width="2"></circle><path d="M12 8v8M8 12h8" fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="2"></path></svg>More numbers</button><span class="w4-pop" id="w4-pop-footprint-more" role="tooltip"><b>More numbers</b>Removing the five placing firms changes little: the groups stay close to the full network's (NMI 0.92, random cuts 0.85 ± 0.14), and the regional match rises only to 0.09, inside the range of random cuts (0.04 ± 0.05). Without the ten largest filers the clusters also sharpen, modularity rising from 0.28 to 0.32. Every version still beats its own rewired networks by a wide margin (z = 25 or more).</span></span>
+              </div>
+            </div>
+            <div>
               <div class="plot">
                 <h3>Do the metro groups follow Census regions?</h3>
                 <p class="axis-note">
@@ -820,37 +834,52 @@
                 <div class="chart-host jobs-nmi" id="chart-footprint-nmi"></div>
               </div>
             </div>
-            <div class="notice">
-              <span class="ico">💡</span>
-              <span>
-                <b>What to notice</b>
-                Without the ten largest filers (Amazon, Cognizant, Google,
-                Microsoft, EY, Meta, Deloitte, Apple, Tata Consultancy Services,
-                Infosys), the metro groups match Census regions at AMI 0.13
-                (p = 0.013), against 0.06 for the full network and 0.01 ± 0.03
-                for random cuts, 4.6 standard deviations away. The national
-                employers are what hide the regional pattern. Removing the five
-                placing firms changes little: the groups stay close to the full
-                network's (NMI 0.92, random cuts 0.85 ± 0.14), and the regional
-                match rises only to 0.09, inside the range of random cuts
-                (0.04 ± 0.05). The job clusters hold at NMI 0.90 and 0.82, but
-                random cuts of the same volume leave them closer still (0.96 and
-                0.88, 3.0 and 3.2 standard deviations away), so the biggest firms
-                do shape which jobs cluster together. Without the ten largest
-                filers the clusters also sharpen, modularity rising from 0.28 to
-                0.32. Every version still beats its own rewired networks by a
-                wide margin (z = 25 or more).
-              </span>
-            </div>
+          </div>
 
-            <p class="sub" id="footprint-which" style="margin-top: 22px">
-              <b>Which firm hides the regions? Amazon.</b>
+          <!-- A · Which firm hides the regions? --------------------- -->
+          <div class="card w4-card" id="footprint-which">
+            <header class="w4-q">
+              <span class="w4-num">4A</span>
+              <div>
+                <h2>Which firm hides the regions?</h2>
+                <p class="w4-answer">Amazon.</p>
+              </div>
+            </header>
+            <p class="sub">
               We removed each of the ten largest filers alone, and then the top
               1, 2, 3 … 20 filers in turn, each time beside random cuts of
               companies that remove the same share of filings (50 for a single
               firm, 20 for each step of the sweep).
             </p>
-            <div class="jobs-grid jobs-groups-grid">
+            <div class="plot">
+              <h3>The largest filers removed in turn</h3>
+              <p class="axis-note">
+                AMI with Census regions after removing the k largest filers
+                (orange) against random cuts of the same volume (grey band, one
+                standard deviation). Hover a point for the firm added at that
+                step.
+              </p>
+              <div class="chart-host jobs-nmi" id="chart-footprint-rank"></div>
+            </div>
+            <div class="w4-two">
+              <div>
+                <div class="notice">
+                  <span class="ico">💡</span>
+                  <span>
+                    <b>What to notice</b>
+                    Amazon files 5.1% of the filings in the 40 metros. Without it
+                    alone, the metro groups match Census regions at AMI 0.14
+                    (3.5 standard deviations above its random cuts), more than the
+                    0.13 without all ten. No other single firm pushes the match up
+                    beyond its random cuts: removing EY, Meta, Deloitte or Apple
+                    alone tips Louvain into a two-group split that ignores regions
+                    (AMI −0.005).
+                  </span>
+                </div>
+                <div class="w4-reveals">
+                  <span class="w4-tip"><button aria-describedby="w4-pop-footprint-which-more" type="button"><svg aria-hidden="true" height="14" viewBox="0 0 24 24" width="14"><circle cx="12" cy="12" fill="none" r="9" stroke="currentColor" stroke-width="2"></circle><path d="M12 8v8M8 12h8" fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="2"></path></svg>More numbers</button><span class="w4-pop" id="w4-pop-footprint-which-more" role="tooltip"><b>More numbers</b>Removed in rank order, the largest filers keep the match above random cuts at every step from one to twenty, but not smoothly: it dips to about 0.07 without the top 17 to 19, where several partitions compete, and peaks at 0.20 without the top 20. FY2024 tells the same story more strongly. Its full network shows no regional match (AMI −0.005); without its ten largest filers the match is 0.22 (p = 0.001), against −0.01 ± 0.01 for random cuts.</span></span>
+                </div>
+              </div>
               <div class="plot">
                 <h3>One firm out at a time</h3>
                 <p class="axis-note">
@@ -861,36 +890,6 @@
                 </p>
                 <div class="chart-host jobs-nmi" id="chart-footprint-single"></div>
               </div>
-              <div class="plot">
-                <h3>The largest filers removed in turn</h3>
-                <p class="axis-note">
-                  AMI with Census regions after removing the k largest filers
-                  (orange) against random cuts of the same volume (grey band, one
-                  standard deviation). Hover a point for the firm added at that
-                  step.
-                </p>
-                <div class="chart-host jobs-nmi" id="chart-footprint-rank"></div>
-              </div>
-            </div>
-            <div class="notice">
-              <span class="ico">💡</span>
-              <span>
-                <b>What to notice</b>
-                Amazon files 5.1% of the filings in the 40 metros. Without it
-                alone, the metro groups match Census regions at AMI 0.14
-                (3.5 standard deviations above its random cuts), more than the
-                0.13 without all ten. No other single firm pushes the match up
-                beyond its random cuts: removing EY, Meta, Deloitte or Apple
-                alone tips Louvain into a two-group split that ignores regions
-                (AMI −0.005). Removed in rank order, the largest filers keep the
-                match above random cuts at every step from one to twenty, but not
-                smoothly: it dips to about 0.07 without the top 17 to 19, where
-                several partitions compete, and peaks at 0.20 without the top 20.
-                FY2024 tells the same story more strongly. Its full network shows
-                no regional match (AMI −0.005); without its ten largest filers
-                the match is 0.22 (p = 0.001), against −0.01 ± 0.01 for random
-                cuts.
-              </span>
             </div>
           </div>
         </section>
