@@ -621,8 +621,9 @@
               <span class="year-tag">metros and jobs · FY2025</span>
             </div>
             <p class="sub">
-              <b>Take out the ten largest filers and the metro groups start to
-              follow Census regions; the job clusters shift but hold.</b>
+              <b>Take out the largest filers, Amazon above all, and the metro
+              groups start to follow Census regions; the job clusters shift but
+              hold.</b>
               A handful of companies file a large share of everything: the
               five largest placing firms (Tata Consultancy Services, Cognizant,
               Infosys, HCL, Compunnel) file 5.6% of the filings in the 40
@@ -631,9 +632,9 @@
               of its jobs, so its footprint could be all the structure there is.
               We removed each set, reran 100 Louvain runs on the metro network
               and on the job network (weighted here by filings, since a count of
-              companies barely moves when ten of 59,230 leave), and compared the
+              companies barely moves when ten of 59,196 leave), and compared the
               groups with the full network's. Removing less data changes the
-              groups too, so each removal sits beside 20 random cuts of
+              groups too, so each removal sits beside 50 random cuts of
               companies that remove the same share of filings.
             </p>
             <div class="jobs-grid jobs-groups-grid">
@@ -642,7 +643,7 @@
                 <p class="axis-note">
                   AMI between the metro groups and the four Census regions.
                   Orange bars remove named firms, grey bars random firms with the
-                  same share of filings (mean of 20, whisker one standard
+                  same share of filings (mean of 50, whisker one standard
                   deviation). The dashed line is the full network.
                 </p>
                 <div class="chart-host jobs-nmi" id="chart-footprint-region"></div>
@@ -662,21 +663,71 @@
               <span>
                 <b>What to notice</b>
                 Without the ten largest filers (Amazon, Cognizant, Google,
-                Microsoft, EY, Meta, Apple, Tata Consultancy Services, Deloitte,
+                Microsoft, EY, Meta, Deloitte, Apple, Tata Consultancy Services,
                 Infosys), the metro groups match Census regions at AMI 0.13
                 (p = 0.013), against 0.06 for the full network and 0.01 ± 0.03
                 for random cuts, 4.6 standard deviations away. The national
                 employers are what hide the regional pattern. Removing the five
                 placing firms changes little: the groups stay close to the full
-                network's (NMI 0.92, random cuts 0.88 ± 0.12), and the regional
+                network's (NMI 0.92, random cuts 0.85 ± 0.14), and the regional
                 match rises only to 0.09, inside the range of random cuts
-                (0.03 ± 0.04). The job clusters hold at NMI 0.90 and 0.82, but
-                random cuts of the same volume leave them closer still (0.95 and
-                0.89, 2.3 and 3.6 standard deviations away), so the biggest firms
+                (0.04 ± 0.05). The job clusters hold at NMI 0.90 and 0.82, but
+                random cuts of the same volume leave them closer still (0.96 and
+                0.88, 3.0 and 3.2 standard deviations away), so the biggest firms
                 do shape which jobs cluster together. Without the ten largest
                 filers the clusters also sharpen, modularity rising from 0.28 to
                 0.32. Every version still beats its own rewired networks by a
-                wide margin (z = 22 or more).
+                wide margin (z = 25 or more).
+              </span>
+            </div>
+
+            <p class="sub" id="footprint-which" style="margin-top: 22px">
+              <b>Which firm hides the regions? Amazon.</b>
+              We removed each of the ten largest filers alone, and then the top
+              1, 2, 3 … 20 filers in turn, each time beside random cuts of
+              companies that remove the same share of filings (50 for a single
+              firm, 20 for each step of the sweep).
+            </p>
+            <div class="jobs-grid jobs-groups-grid">
+              <div class="plot">
+                <h3>One firm out at a time</h3>
+                <p class="axis-note">
+                  AMI between the metro groups and Census regions with one firm
+                  removed (orange) and random cuts of the same volume (grey, mean
+                  and one standard deviation). The dashed line is the full
+                  network.
+                </p>
+                <div class="chart-host jobs-nmi" id="chart-footprint-single"></div>
+              </div>
+              <div class="plot">
+                <h3>The largest filers removed in turn</h3>
+                <p class="axis-note">
+                  AMI with Census regions after removing the k largest filers
+                  (orange) against random cuts of the same volume (grey band, one
+                  standard deviation). Hover a point for the firm added at that
+                  step.
+                </p>
+                <div class="chart-host jobs-nmi" id="chart-footprint-rank"></div>
+              </div>
+            </div>
+            <div class="notice">
+              <span class="ico">💡</span>
+              <span>
+                <b>What to notice</b>
+                Amazon files 5.1% of the filings in the 40 metros. Without it
+                alone, the metro groups match Census regions at AMI 0.14
+                (3.5 standard deviations above its random cuts), more than the
+                0.13 without all ten. No other single firm pushes the match up
+                beyond its random cuts: removing EY, Meta, Deloitte or Apple
+                alone tips Louvain into a two-group split that ignores regions
+                (AMI −0.005). Removed in rank order, the largest filers keep the
+                match above random cuts at every step from one to twenty, but not
+                smoothly: it dips to about 0.07 without the top 17 to 19, where
+                several partitions compete, and peaks at 0.20 without the top 20.
+                FY2024 tells the same story more strongly. Its full network shows
+                no regional match (AMI −0.005); without its ten largest filers
+                the match is 0.22 (p = 0.001), against −0.01 ± 0.01 for random
+                cuts.
               </span>
             </div>
           </div>
@@ -850,7 +901,7 @@
               mostly because clients return to firms they already use.
               Take out the ten largest filers, most of them national tech and
               consulting employers, and the metro groups start to follow Census
-              regions.
+              regions; Amazon alone does all of that.
             </p>
             <p class="sub">
               Where outsourcing shows most is outside the networks: a filing
@@ -1980,7 +2031,8 @@
                   <li><a href="https://github.com/horrrt/02805_social_graphs/blob/main/analysis/week04_where_who.py"><code>week04_where_who.py</code></a>,
                     <a href="https://github.com/horrrt/02805_social_graphs/blob/main/analysis/week04_jobs_split.py"><code>week04_jobs_split.py</code></a>,
                     <a href="https://github.com/horrrt/02805_social_graphs/blob/main/analysis/week04_staffing_moves.py"><code>week04_staffing_moves.py</code></a>,
-                    <a href="https://github.com/horrrt/02805_social_graphs/blob/main/analysis/week04_footprint.py"><code>week04_footprint.py</code></a> and
+                    <a href="https://github.com/horrrt/02805_social_graphs/blob/main/analysis/week04_footprint.py"><code>week04_footprint.py</code></a>,
+                    <a href="https://github.com/horrrt/02805_social_graphs/blob/main/analysis/week04_footprint_rank.py"><code>week04_footprint_rank.py</code></a> and
                     <a href="https://github.com/horrrt/02805_social_graphs/blob/main/analysis/week04_beyond.py"><code>week04_beyond.py</code></a>
                     answer the questions in sections 1 to 5, each against its own
                     null model.</li>
@@ -2012,7 +2064,7 @@
     <script src="../../assets/js/week04-place.js" type="module"></script>
     <script src="../../assets/js/week04-jobs.js?v=3" type="module"></script>
     <script src="../../assets/js/week04-staffing.js" type="module"></script>
-    <script src="../../assets/js/week04-questions.js?v=3" type="module"></script>
+    <script src="../../assets/js/week04-questions.js?v=5" type="module"></script>
     <script src="../../assets/js/week04-cut.js?v=3" type="module"></script>
   </body>
 </html>

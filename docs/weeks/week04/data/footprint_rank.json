@@ -1,0 +1,490 @@
+{
+ "generated_by": "analysis/week04_footprint_rank.py",
+ "year": 2025,
+ "single": [
+  {
+   "firm": "Amazon",
+   "filings_removed_share": 0.0512,
+   "ami_region": 0.1444,
+   "p_region": 0.011,
+   "nmi_vs_full": 0.7145,
+   "communities": 3,
+   "control_ami_mean": 0.0274,
+   "control_ami_sd": 0.0333,
+   "ami_vs_control_sd": 3.51
+  },
+  {
+   "firm": "Cognizant",
+   "filings_removed_share": 0.0192,
+   "ami_region": 0.0881,
+   "p_region": 0.0569,
+   "nmi_vs_full": 0.9182,
+   "communities": 3,
+   "control_ami_mean": 0.0447,
+   "control_ami_sd": 0.033,
+   "ami_vs_control_sd": 1.32
+  },
+  {
+   "firm": "Google",
+   "filings_removed_share": 0.0181,
+   "ami_region": 0.0607,
+   "p_region": 0.1159,
+   "nmi_vs_full": 1.0,
+   "communities": 3,
+   "control_ami_mean": 0.0583,
+   "control_ami_sd": 0.0323,
+   "ami_vs_control_sd": 0.07
+  },
+  {
+   "firm": "Microsoft",
+   "filings_removed_share": 0.0179,
+   "ami_region": 0.0607,
+   "p_region": 0.1129,
+   "nmi_vs_full": 1.0,
+   "communities": 3,
+   "control_ami_mean": 0.0552,
+   "control_ami_sd": 0.0312,
+   "ami_vs_control_sd": 0.18
+  },
+  {
+   "firm": "EY",
+   "filings_removed_share": 0.017,
+   "ami_region": -0.0047,
+   "p_region": 0.4366,
+   "nmi_vs_full": 0.6417,
+   "communities": 2,
+   "control_ami_mean": 0.0556,
+   "control_ami_sd": 0.0236,
+   "ami_vs_control_sd": -2.56
+  },
+  {
+   "firm": "Meta",
+   "filings_removed_share": 0.017,
+   "ami_region": -0.0054,
+   "p_region": 0.4376,
+   "nmi_vs_full": 0.8362,
+   "communities": 2,
+   "control_ami_mean": 0.0546,
+   "control_ami_sd": 0.031,
+   "ami_vs_control_sd": -1.94
+  },
+  {
+   "firm": "Deloitte",
+   "filings_removed_share": 0.0137,
+   "ami_region": -0.0047,
+   "p_region": 0.4466,
+   "nmi_vs_full": 0.6417,
+   "communities": 2,
+   "control_ami_mean": 0.0481,
+   "control_ami_sd": 0.0269,
+   "ami_vs_control_sd": -1.96
+  },
+  {
+   "firm": "Apple",
+   "filings_removed_share": 0.0136,
+   "ami_region": -0.0054,
+   "p_region": 0.4346,
+   "nmi_vs_full": 0.8362,
+   "communities": 2,
+   "control_ami_mean": 0.0623,
+   "control_ami_sd": 0.0262,
+   "ami_vs_control_sd": -2.58
+  },
+  {
+   "firm": "Tata Consultancy Services",
+   "filings_removed_share": 0.0131,
+   "ami_region": 0.0881,
+   "p_region": 0.0529,
+   "nmi_vs_full": 0.9182,
+   "communities": 3,
+   "control_ami_mean": 0.0503,
+   "control_ami_sd": 0.0238,
+   "ami_vs_control_sd": 1.59
+  },
+  {
+   "firm": "Infosys",
+   "filings_removed_share": 0.0105,
+   "ami_region": 0.0881,
+   "p_region": 0.039,
+   "nmi_vs_full": 0.9182,
+   "communities": 3,
+   "control_ami_mean": 0.0555,
+   "control_ami_sd": 0.0178,
+   "ami_vs_control_sd": 1.83
+  }
+ ],
+ "sweep": [
+  {
+   "k": 0,
+   "added": [],
+   "filings_removed_share": 0.0,
+   "ami_region": 0.0607,
+   "p_region": 0.1039,
+   "nmi_vs_full": 1.0,
+   "communities": 3,
+   "control_ami_mean": 0.0607,
+   "control_ami_sd": 0.0,
+   "ami_vs_control_sd": null
+  },
+  {
+   "k": 1,
+   "added": [
+    "Amazon"
+   ],
+   "filings_removed_share": 0.0512,
+   "ami_region": 0.1444,
+   "p_region": 0.006,
+   "nmi_vs_full": 0.7145,
+   "communities": 3,
+   "control_ami_mean": 0.0346,
+   "control_ami_sd": 0.0316,
+   "ami_vs_control_sd": 3.47
+  },
+  {
+   "k": 2,
+   "added": [
+    "Cognizant"
+   ],
+   "filings_removed_share": 0.0704,
+   "ami_region": 0.1288,
+   "p_region": 0.008,
+   "nmi_vs_full": 0.8737,
+   "communities": 3,
+   "control_ami_mean": 0.0298,
+   "control_ami_sd": 0.0347,
+   "ami_vs_control_sd": 2.85
+  },
+  {
+   "k": 3,
+   "added": [
+    "Google"
+   ],
+   "filings_removed_share": 0.0885,
+   "ami_region": 0.1288,
+   "p_region": 0.013,
+   "nmi_vs_full": 0.8737,
+   "communities": 3,
+   "control_ami_mean": 0.0137,
+   "control_ami_sd": 0.031,
+   "ami_vs_control_sd": 3.71
+  },
+  {
+   "k": 4,
+   "added": [
+    "Microsoft"
+   ],
+   "filings_removed_share": 0.1064,
+   "ami_region": 0.1288,
+   "p_region": 0.025,
+   "nmi_vs_full": 0.8737,
+   "communities": 3,
+   "control_ami_mean": 0.0001,
+   "control_ami_sd": 0.0211,
+   "ami_vs_control_sd": 6.1
+  },
+  {
+   "k": 5,
+   "added": [
+    "EY"
+   ],
+   "filings_removed_share": 0.1234,
+   "ami_region": 0.1306,
+   "p_region": 0.018,
+   "nmi_vs_full": 0.6277,
+   "communities": 3,
+   "control_ami_mean": 0.0153,
+   "control_ami_sd": 0.0335,
+   "ami_vs_control_sd": 3.44
+  },
+  {
+   "k": 6,
+   "added": [
+    "Meta"
+   ],
+   "filings_removed_share": 0.1404,
+   "ami_region": 0.1742,
+   "p_region": 0.006,
+   "nmi_vs_full": 0.6192,
+   "communities": 3,
+   "control_ami_mean": 0.0088,
+   "control_ami_sd": 0.0308,
+   "ami_vs_control_sd": 5.37
+  },
+  {
+   "k": 7,
+   "added": [
+    "Deloitte"
+   ],
+   "filings_removed_share": 0.1541,
+   "ami_region": 0.1637,
+   "p_region": 0.002,
+   "nmi_vs_full": 0.5379,
+   "communities": 3,
+   "control_ami_mean": 0.0063,
+   "control_ami_sd": 0.0246,
+   "ami_vs_control_sd": 6.4
+  },
+  {
+   "k": 8,
+   "added": [
+    "Apple"
+   ],
+   "filings_removed_share": 0.1676,
+   "ami_region": 0.1637,
+   "p_region": 0.002,
+   "nmi_vs_full": 0.5379,
+   "communities": 3,
+   "control_ami_mean": 0.0051,
+   "control_ami_sd": 0.0234,
+   "ami_vs_control_sd": 6.78
+  },
+  {
+   "k": 9,
+   "added": [
+    "Tata Consultancy Services"
+   ],
+   "filings_removed_share": 0.1808,
+   "ami_region": 0.1637,
+   "p_region": 0.004,
+   "nmi_vs_full": 0.5379,
+   "communities": 3,
+   "control_ami_mean": 0.0021,
+   "control_ami_sd": 0.019,
+   "ami_vs_control_sd": 8.51
+  },
+  {
+   "k": 10,
+   "added": [
+    "Infosys"
+   ],
+   "filings_removed_share": 0.1912,
+   "ami_region": 0.1303,
+   "p_region": 0.02,
+   "nmi_vs_full": 0.5047,
+   "communities": 3,
+   "control_ami_mean": 0.0017,
+   "control_ami_sd": 0.0197,
+   "ami_vs_control_sd": 6.53
+  },
+  {
+   "k": 11,
+   "added": [
+    "Walmart"
+   ],
+   "filings_removed_share": 0.2006,
+   "ami_region": 0.156,
+   "p_region": 0.007,
+   "nmi_vs_full": 0.543,
+   "communities": 3,
+   "control_ami_mean": -0.0013,
+   "control_ami_sd": 0.0142,
+   "ami_vs_control_sd": 11.08
+  },
+  {
+   "k": 12,
+   "added": [
+    "Compunnel Software"
+   ],
+   "filings_removed_share": 0.2083,
+   "ami_region": 0.1536,
+   "p_region": 0.005,
+   "nmi_vs_full": 0.6192,
+   "communities": 3,
+   "control_ami_mean": 0.0018,
+   "control_ami_sd": 0.0196,
+   "ami_vs_control_sd": 7.74
+  },
+  {
+   "k": 13,
+   "added": [
+    "JPMorgan Chase"
+   ],
+   "filings_removed_share": 0.2154,
+   "ami_region": 0.156,
+   "p_region": 0.003,
+   "nmi_vs_full": 0.543,
+   "communities": 3,
+   "control_ami_mean": -0.0012,
+   "control_ami_sd": 0.0143,
+   "ami_vs_control_sd": 10.99
+  },
+  {
+   "k": 14,
+   "added": [
+    "Fidelity Investments"
+   ],
+   "filings_removed_share": 0.2214,
+   "ami_region": 0.1536,
+   "p_region": 0.005,
+   "nmi_vs_full": 0.6192,
+   "communities": 3,
+   "control_ami_mean": -0.0042,
+   "control_ami_sd": 0.0013,
+   "ami_vs_control_sd": 121.38
+  },
+  {
+   "k": 15,
+   "added": [
+    "HCL"
+   ],
+   "filings_removed_share": 0.2269,
+   "ami_region": 0.1536,
+   "p_region": 0.009,
+   "nmi_vs_full": 0.6192,
+   "communities": 3,
+   "control_ami_mean": 0.0072,
+   "control_ami_sd": 0.0268,
+   "ami_vs_control_sd": 5.46
+  },
+  {
+   "k": 16,
+   "added": [
+    "LTIMindtree"
+   ],
+   "filings_removed_share": 0.2324,
+   "ami_region": 0.1536,
+   "p_region": 0.006,
+   "nmi_vs_full": 0.6192,
+   "communities": 3,
+   "control_ami_mean": -0.0066,
+   "control_ami_sd": 0.0061,
+   "ami_vs_control_sd": 26.26
+  },
+  {
+   "k": 17,
+   "added": [
+    "Intel"
+   ],
+   "filings_removed_share": 0.2378,
+   "ami_region": 0.0741,
+   "p_region": 0.0579,
+   "nmi_vs_full": 0.7619,
+   "communities": 3,
+   "control_ami_mean": -0.0046,
+   "control_ami_sd": 0.0008,
+   "ami_vs_control_sd": 98.37
+  },
+  {
+   "k": 18,
+   "added": [
+    "Capgemini"
+   ],
+   "filings_removed_share": 0.2428,
+   "ami_region": 0.0741,
+   "p_region": 0.0669,
+   "nmi_vs_full": 0.7619,
+   "communities": 3,
+   "control_ami_mean": -0.0048,
+   "control_ami_sd": 0.0002,
+   "ami_vs_control_sd": 394.5
+  },
+  {
+   "k": 19,
+   "added": [
+    "IBM"
+   ],
+   "filings_removed_share": 0.2478,
+   "ami_region": 0.0741,
+   "p_region": 0.0699,
+   "nmi_vs_full": 0.7619,
+   "communities": 3,
+   "control_ami_mean": -0.0001,
+   "control_ami_sd": 0.0212,
+   "ami_vs_control_sd": 3.5
+  },
+  {
+   "k": 20,
+   "added": [
+    "Accenture"
+   ],
+   "filings_removed_share": 0.2527,
+   "ami_region": 0.1989,
+   "p_region": 0.001,
+   "nmi_vs_full": 0.3901,
+   "communities": 2,
+   "control_ami_mean": 0.0076,
+   "control_ami_sd": 0.0269,
+   "ami_vs_control_sd": 7.11
+  }
+ ],
+ "fy2024": [
+  {
+   "id": "full",
+   "label": "Full network (FY2024)",
+   "filings_removed_share": 0.0,
+   "ami_region": -0.0047,
+   "p_region": 0.4316,
+   "nmi_vs_full": 1.0,
+   "communities": 2,
+   "control_ami_mean": null,
+   "control_ami_sd": null,
+   "ami_vs_control_sd": null
+  },
+  {
+   "id": "drop_fy2024_top10",
+   "label": "Without FY2024's own 10 largest filers",
+   "filings_removed_share": 0.193,
+   "ami_region": 0.2163,
+   "p_region": 0.001,
+   "nmi_vs_full": 0.3452,
+   "communities": 3,
+   "control_ami_mean": -0.0083,
+   "control_ami_sd": 0.0077,
+   "ami_vs_control_sd": 29.17
+  },
+  {
+   "id": "drop_fy2025_top10",
+   "label": "Without FY2025's 10 largest filers",
+   "filings_removed_share": 0.1909,
+   "ami_region": 0.189,
+   "p_region": 0.002,
+   "nmi_vs_full": 0.3089,
+   "communities": 3,
+   "control_ami_mean": -0.0055,
+   "control_ami_sd": 0.0039,
+   "ami_vs_control_sd": 49.87
+  }
+ ],
+ "finding": {
+  "full_ami_region": 0.0607,
+  "q_single_firm": {
+   "movers": [
+    {
+     "firm": "Amazon",
+     "ami_region": 0.1444,
+     "ami_vs_control_sd": 3.51,
+     "share_of_the_0.16_gap": 1.203
+    },
+    {
+     "firm": "EY",
+     "ami_region": -0.0047,
+     "ami_vs_control_sd": -2.56,
+     "share_of_the_0.16_gap": -0.94
+    },
+    {
+     "firm": "Apple",
+     "ami_region": -0.0054,
+     "ami_vs_control_sd": -2.58,
+     "share_of_the_0.16_gap": -0.95
+    }
+   ],
+   "any_single_firm_beyond_2sd": true,
+   "all10_ami_region": 0.1303
+  },
+  "q_rank_sweep": {
+   "stable_k": 1,
+   "stable_k_note": "z > 2 sd from k=1 through k=20 (not tested beyond k=20)",
+   "largest_jump_k": 20,
+   "largest_jump_firm": "Accenture",
+   "largest_jump_delta_ami": 0.1248
+  },
+  "q_fy2024": {
+   "full_ami_region": -0.0047,
+   "drop_fy2024_top10_ami_region": 0.2163,
+   "drop_fy2024_top10_z": 29.17,
+   "drop_fy2025_top10_ami_region": 0.189,
+   "drop_fy2025_top10_z": 49.87,
+   "regional_turn_holds_in_fy2024": true
+  }
+ }
+}

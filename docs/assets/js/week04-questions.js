@@ -8,6 +8,7 @@ const JOBS_SPLIT_URL = new URL("../../weeks/week04/data/jobs_split.json", import
 const STAFFING_MOVES_URL = new URL("../../weeks/week04/data/staffing_moves.json", import.meta.url);
 const BEYOND_URL = new URL("../../weeks/week04/data/beyond.json", import.meta.url);
 const FOOTPRINT_URL = new URL("../../weeks/week04/data/footprint.json", import.meta.url);
+const FOOTPRINT_RANK_URL = new URL("../../weeks/week04/data/footprint_rank.json", import.meta.url);
 
 const INK = "#0f2340";
 const MUTE = "#7a8fac";
@@ -631,6 +632,129 @@ fetch(FOOTPRINT_URL).then((response) => {
   renderFootprintNmi(data);
 }).catch((error) => {
   errorInto(["chart-footprint-region", "chart-footprint-nmi"], `Footprint data failed to load: ${error.message}`);
+});
+
+// Section 4 follow-up — which firms drive it, and does it hold in FY2024 ----
+// (footprint_rank.json; the FY2024 table has its own markup elsewhere, this
+// file only draws the two charts.)
+
+function renderFootprintSingle(data) {
+  const c = chart("chart-footprint-single");
+  charts.push(c);
+  if (!c) return;
+  const rows = data.single;
+  const label = (firm) => (firm === "Tata Consultancy Services" ? "TCS" : short(firm));
+  // One category per firm, two bars in it; the whisker sits on the grey bar,
+  // half a bar plus half the gap right of the category centre.
+  const BAR = 12;
+  const GAP = 0.2;
+  const offset = (BAR * (1 + GAP)) / 2;
+  const whisker = {
+    type: "custom", silent: true, tooltip: { show: false }, z: 5,
+    data: rows.map((r, i) => [i, r.control_ami_mean - r.control_ami_sd, r.control_ami_mean + r.control_ami_sd]),
+    renderItem(_params, api) {
+      const lo = api.coord([api.value(0), api.value(1)]);
+      const hi = api.coord([api.value(0), api.value(2)]);
+      const x = hi[0] + offset;
+      const style = { stroke: INK, lineWidth: 1.5 };
+      return {
+        type: "group",
+        children: [
+          { type: "line", shape: { x1: x - 5, y1: hi[1], x2: x + 5, y2: hi[1] }, style },
+          { type: "line", shape: { x1: x, y1: lo[1], x2: x, y2: hi[1] }, style },
+          { type: "line", shape: { x1: x - 5, y1: lo[1], x2: x + 5, y2: lo[1] }, style },
+        ],
+      };
+    },
+  };
+  c.setOption({
+    ...base,
+    grid: { left: 46, right: 18, top: 40, bottom: 40 },
+    legend: { top: 0, right: 0, textStyle: { color: MUTE, fontSize: 11 }, data: ["One firm out", "Random cut, same volume"] },
+    xAxis: {
+      ...axis, type: "category", data: rows.map((r) => label(r.firm)),
+      axisLabel: { ...axis.axisLabel, interval: 0, fontSize: 10, rotate: 30 },
+    },
+    yAxis: { ...axis, type: "value", name: "AMI with Census regions", nameTextStyle: { color: MUTE, align: "left" } },
+    tooltip: {
+      ...base.tooltip, trigger: "axis", axisPointer: { type: "shadow" },
+      formatter: (items) => {
+        const r = rows[items[0].dataIndex];
+        return `<b>${esc(r.firm)}</b> out: AMI ${r.ami_region.toFixed(3)}, ${pct(r.filings_removed_share, 1)} of filings`
+          + `<br>Random cut, same volume: ${r.control_ami_mean.toFixed(3)} ± ${r.control_ami_sd.toFixed(3)}`
+          + (r.ami_vs_control_sd == null ? "" : `<br>${r.ami_vs_control_sd.toFixed(1)} sd from the random cuts`);
+      },
+    },
+    series: [
+      {
+        name: "One firm out", type: "bar", barWidth: BAR, barGap: `${GAP * 100}%`,
+        data: rows.map((r) => r.ami_region), itemStyle: { color: ORANGE },
+        markLine: {
+          silent: true, symbol: "none", lineStyle: { color: MUTE, type: "dashed" },
+          label: { color: MUTE, formatter: `full network ${data.finding.full_ami_region.toFixed(2)}`, position: "insideEndTop" },
+          data: [{ yAxis: data.finding.full_ami_region }],
+        },
+      },
+      { name: "Random cut, same volume", type: "bar", barWidth: BAR, data: rows.map((r) => r.control_ami_mean), itemStyle: { color: GREY } },
+      whisker,
+    ],
+  });
+}
+
+function renderFootprintRank(data) {
+  const c = chart("chart-footprint-rank");
+  charts.push(c);
+  if (!c) return;
+  const rows = [...data.sweep].sort((a, b) => a.k - b.k);
+  const ks = rows.map((r) => r.k);
+  // The control band as two stacked "line" series (the standard ECharts
+  // range-band trick): the first, invisible, carries the lower bound; the
+  // second, shaded, carries the (mean+sd) - (mean-sd) gap on top of it.
+  // stackStrategy "all" (not the default "samesign") is required because the
+  // lower bound is often negative -- the controls sit near AMI 0.
+  const lo = rows.map((r) => r.control_ami_mean - r.control_ami_sd);
+  const gap = rows.map((r) => 2 * r.control_ami_sd);
+  c.setOption({
+    ...base,
+    grid: { left: 46, right: 18, top: 24, bottom: 46 },
+    xAxis: {
+      ...axis, type: "category", data: ks, name: "largest filers removed →", nameLocation: "middle", nameGap: 28,
+    },
+    yAxis: { ...axis, type: "value", name: "AMI with Census regions", nameTextStyle: { color: MUTE, align: "left" } },
+    tooltip: {
+      ...base.tooltip, trigger: "axis",
+      formatter: (p) => {
+        const r = rows[p[0].dataIndex];
+        const added = r.added.length ? esc(r.added.join(", ")) : "none";
+        return `<b>k = ${r.k}</b> (added: ${added})<br>AMI ${r.ami_region.toFixed(3)} · random ${r.control_ami_mean.toFixed(3)} ± ${r.control_ami_sd.toFixed(3)}<br>${pct(r.filings_removed_share, 1)} of filings removed`;
+      },
+    },
+    series: [
+      {
+        name: "control lo", type: "line", stack: "band", stackStrategy: "all",
+        symbol: "none", lineStyle: { opacity: 0 }, areaStyle: { opacity: 0 }, data: lo,
+      },
+      {
+        name: "control band", type: "line", stack: "band", stackStrategy: "all",
+        symbol: "none", lineStyle: { opacity: 0 }, areaStyle: { color: "rgba(158,177,199,0.3)" }, data: gap,
+      },
+      {
+        name: "Region AMI", type: "line", showSymbol: true, symbol: "circle", symbolSize: 6,
+        lineStyle: { color: ORANGE, width: 2 }, itemStyle: { color: ORANGE },
+        data: rows.map((r) => r.ami_region),
+      },
+    ],
+  });
+}
+
+fetch(FOOTPRINT_RANK_URL).then((response) => {
+  if (!response.ok) throw new Error(`footprint_rank data ${response.status}`);
+  return response.json();
+}).then((data) => {
+  renderFootprintSingle(data);
+  renderFootprintRank(data);
+}).catch((error) => {
+  errorInto(["chart-footprint-single", "chart-footprint-rank"], `Footprint-rank data failed to load: ${error.message}`);
 });
 
 window.addEventListener("resize", () => charts.forEach((item) => item && item.resize()));
