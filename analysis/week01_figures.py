@@ -14,6 +14,14 @@ from matplotlib.colors import LinearSegmentedColormap
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from arcade_data import DISPLAY_NAME_OVERRIDES
 
+ONES = ["zero", "one", "two", "three", "four", "five", "six", "seven", "eight",
+        "nine", "ten", "eleven", "twelve", "thirteen", "fourteen", "fifteen",
+        "sixteen", "seventeen", "eighteen", "nineteen", "twenty"]
+
+def spell(n):
+    """Word form for small counts, so prose reads 'nine characters', not '9'."""
+    return ONES[n] if 0 <= n < len(ONES) else str(n)
+
 BLUE, ORANGE, GREEN = "#2a78d6", "#eb6834", "#1baf7a"
 INK, MUTED, GRID, PAPER = "#1c1c1c", "#7a7a7a", "#e4e4e4", "#ffffff"
 plt.rcParams.update({
@@ -103,9 +111,9 @@ def figure_map():
 
     halo(ax.text(1.60, 0.94, "Strikeforce: Morituri", fontsize=10, color=ORANGE,
                  ha="center", weight="bold", zorder=4))
-    halo(ax.text(1.60, 0.86, "nine characters, sealed off from the rest",
+    halo(ax.text(1.60, 0.86, f"{spell(len(island))} characters, sealed off from the rest",
                  fontsize=8.4, color=MUTED, ha="center", zorder=4))
-    halo(ax.text(1.70, -0.26, "The 17 isolates", fontsize=10, color=GREEN,
+    halo(ax.text(1.70, -0.26, f"The {len(isolates)} isolates", fontsize=10, color=GREEN,
                  ha="center", weight="bold", zorder=4))
     halo(ax.text(1.70, -0.34, "no link in either direction", fontsize=8.4,
                  color=MUTED, ha="center", zorder=4))
@@ -189,8 +197,8 @@ def figure_island():
         halo(ax.text(pos[n][0], pos[n][1] - .155, name[n].split(" (")[0],
                      fontsize=8.6, color=INK, ha="center", zorder=4))
     ax.axis("off")
-    ax.set_title("The only island: nine characters from Strikeforce: Morituri (1986)\n"
-                 "22 arcs among themselves, zero to the other 294",
+    ax.set_title(f"The only island: {spell(len(island))} characters from Strikeforce: Morituri (1986)\n"
+                 f"{S.number_of_edges()} arcs among themselves, zero to the other {N - len(island)}",
                  fontsize=10.5, color=INK, loc="left", pad=14)
     ax.margins(.16)
     fig.tight_layout()
