@@ -4,6 +4,7 @@
 
 const DATA_URL = new URL("../data/week04_place.json", import.meta.url);
 const USA_URL = new URL("../data/usa.json", import.meta.url);
+const WHERE_WHO_URL = new URL("../../weeks/week04/data/where_who.json", import.meta.url);
 
 const INK = "#0f2340";
 const MUTE = "#7a8fac";
@@ -50,7 +51,7 @@ function tipHtml(title, rows) {
 }
 
 export async function startPlace(echarts) {
-  const [data, usa] = await Promise.all([
+  const [data, usa, whereWho] = await Promise.all([
     fetch(DATA_URL).then((r) => {
       if (!r.ok) throw new Error(`place data ${r.status}`);
       return r.json();
@@ -59,7 +60,20 @@ export async function startPlace(echarts) {
       if (!r.ok) throw new Error(`usa map ${r.status}`);
       return r.json();
     }),
+    fetch(WHERE_WHO_URL).then((r) => {
+      if (!r.ok) throw new Error(`where-who data ${r.status}`);
+      return r.json();
+    }),
   ]);
+
+  // The redesign's colour grammar keeps orange and blue for placed and direct
+  // filings, so the three metro groups take violet, green and slate from the
+  // page's CSS tokens instead of the colours in the data file.
+  const css = getComputedStyle(document.body);
+  const token = (name) => css.getPropertyValue(name).trim();
+  const GROUP = [0, 1, 2].map((g) => token(`--w4-group-${g}`));
+  const GROUP_DARK = [0, 1, 2].map((g) => token(`--w4-group-${g}-dark`));
+  const placedShare = Object.fromEntries(whereWho.rows.map((r) => [r.id, r.placed_share]));
 
   // No top-40 metro lies outside the contiguous states; drawing Alaska, Hawaii
   // and Puerto Rico shrank the 48 states to a corner of every map.
@@ -135,7 +149,7 @@ export async function startPlace(echarts) {
     if (state.regionMode === "census") {
       return data.census_colours[city.census] ?? MUTE;
     }
-    return data.communities[city.community]?.colour ?? MUTE;
+    return GROUP[city.community] ?? MUTE;
   }
 
   function metricColour() {
@@ -835,7 +849,7 @@ export async function startPlace(echarts) {
     const items =
       state.regionMode === "census"
         ? Object.entries(data.census_colours).map(([label, colour]) => ({ label, colour }))
-        : data.communities.map((c) => ({ label: c.label, colour: c.colour }));
+        : data.communities.map((c) => ({ label: c.label, colour: GROUP[c.id] ?? MUTE }));
     el.innerHTML = items
       .map(
         (it) =>
@@ -844,7 +858,185 @@ export async function startPlace(echarts) {
       .join("");
   }
 
+  // ---- the hero: every metro on a dark map, and the inspector beside it.
+  // The hero shares the page's selection; with nothing picked it shows the
+  // metro with the most filings.
+  const heroEdges = data.backbone.graphs["0.2"].edges;
+  const heroDefault = [...data.cities].sort((a, b) => b.filings - a.filings)[0].id;
+  // Label positions for the metros the hero names without a click.
+  const HERO_LABELS = {
+    35620: "top",
+    19100: "right",
+    41940: "bottom",
+    41860: "top",
+    42660: "right",
+    12060: "right",
+    16980: "top",
+    19820: "right",
+    38060: "right",
+  };
+
+  function renderHeroMap() {
+    const c = chart("chart-hero-map");
+    if (!c) return;
+    const selId = state.selected ?? heroDefault;
+    const sel = byId[selId];
+    const fmax = Math.max(...data.cities.map((x) => x.filings));
+    const radius = (city) => 2.6 + 12.4 * Math.sqrt(city.filings / fmax);
+    const wmax = Math.max(...heroEdges.map((e) => e[2]));
+    const line = ([a, b, w], style) => ({
+      coords: [
+        [byId[a].lon, byId[a].lat],
+        [byId[b].lon, byId[b].lat],
+      ],
+      lineStyle: style(byId[a].community, byId[b].community, w),
+    });
+    const all = [...heroEdges]
+      .sort((x, y) => x[2] - y[2])
+      .map((e) =>
+        line(e, (ga, gb, w) => {
+          const same = ga === gb && ga !== 2;
+          return {
+            color: same ? GROUP_DARK[ga] : token("--w4-hero-lede"),
+            opacity: same ? 0.34 : 0.13,
+            width: 0.5 + 2.4 * Math.sqrt(w / wmax),
+          };
+        }),
+      );
+    const mine = heroEdges
+      .filter(([a, b]) => a === selId || b === selId)
+      .map((e) =>
+        line(e, (ga, gb, w) => ({
+          color: token("--w4-hero-ink"),
+          opacity: 0.55,
+          width: 0.8 + 2.4 * Math.sqrt(w / wmax),
+        })),
+      );
+    const dots = [...data.cities]
+      .sort((a, b) => b.filings - a.filings)
+      .map((city) => {
+        const picked = city.id === selId;
+        return {
+          name: city.name,
+          id: city.id,
+          value: [city.lon, city.lat, city.filings],
+          symbolSize: 2 * radius(city),
+          itemStyle: { color: GROUP_DARK[city.community], borderColor: token("--deep"), borderWidth: 1.4 },
+          label: {
+            show: picked || city.id in HERO_LABELS,
+            position: HERO_LABELS[city.id] ?? "top",
+            formatter: city.name,
+            color: picked ? token("--w4-hero-ink") : token("--w4-hero-lede"),
+            fontSize: picked ? 11 : 10.5,
+            fontWeight: picked ? 700 : 600,
+          },
+        };
+      });
+    c.setOption(
+      {
+        ...BASE,
+        geo: {
+          map: "USA",
+          roam: false,
+          layoutCenter: ["50%", "50%"],
+          layoutSize: "150%",
+          itemStyle: {
+            areaColor: token("--w4-hero-state"),
+            borderColor: token("--w4-hero-state-edge"),
+            borderWidth: 0.6,
+          },
+          emphasis: { disabled: true },
+          select: { disabled: true },
+          silent: true,
+        },
+        series: [
+          { type: "lines", coordinateSystem: "geo", zlevel: 1, silent: true, data: all },
+          { type: "lines", coordinateSystem: "geo", zlevel: 2, silent: true, data: mine },
+          {
+            type: "scatter",
+            coordinateSystem: "geo",
+            zlevel: 3,
+            data: dots,
+            cursor: "pointer",
+            labelLayout: { hideOverlap: true },
+            emphasis: { scale: 1.15 },
+          },
+          {
+            type: "scatter",
+            coordinateSystem: "geo",
+            zlevel: 4,
+            silent: true,
+            data: [{ value: [sel.lon, sel.lat] }],
+            symbolSize: 2 * radius(sel) + 10,
+            itemStyle: { color: "transparent", borderColor: token("--w4-hero-ink"), borderWidth: 1.6 },
+          },
+        ],
+        tooltip: {
+          ...BASE.tooltip,
+          formatter: (p) => {
+            const city = p.data?.id ? byId[p.data.id] : null;
+            if (!city) return "";
+            return tipHtml(city.name, [
+              ["Filings", fmt(city.filings)],
+              ["Group", data.communities[city.community]?.label ?? "–"],
+            ]);
+          },
+        },
+      },
+      { notMerge: true },
+    );
+    c.off("click");
+    c.on("click", (ev) => {
+      if (ev.data?.id) select(ev.data.id);
+    });
+  }
+
+  function renderHeroInspector() {
+    const name = $("hero-sel-name");
+    if (!name) return;
+    const city = byId[state.selected ?? heroDefault];
+    name.textContent = city.name;
+    $("hero-sel-codes").textContent = `${city.state} · FY2025`;
+    $("hero-sel-dot").style.background = GROUP[city.community];
+    $("hero-sel-group").textContent = `${data.communities[city.community]?.label ?? "–"} group`;
+    const share = placedShare[city.id];
+    const rows = [
+      ["Filings", fmt(city.filings)],
+      ["Companies", fmt(city.employers)],
+      ["Largest filer", `${city.top_employer}, ${(city.top_share * 100).toFixed(1)}%`],
+      ["Placed at a client", share == null ? "–" : pct(share)],
+      ["Census region", city.census],
+    ];
+    $("hero-sel-stats").replaceChildren(
+      ...rows.map(([k, v]) => {
+        const row = document.createElement("div");
+        const dt = document.createElement("dt");
+        const dd = document.createElement("dd");
+        dt.textContent = k;
+        dd.textContent = v;
+        row.append(dt, dd);
+        return row;
+      }),
+    );
+    const links = heroEdges
+      .filter(([a, b]) => a === city.id || b === city.id)
+      .sort((x, y) => y[2] - x[2])
+      .slice(0, 3);
+    $("hero-sel-links").replaceChildren(
+      ...links.map(([a, b, w]) => {
+        const li = document.createElement("li");
+        const weight = document.createElement("span");
+        li.textContent = byId[a === city.id ? b : a].name;
+        weight.textContent = fmt(w);
+        li.append(weight);
+        return li;
+      }),
+    );
+  }
+
   function renderAll() {
+    renderHeroMap();
+    renderHeroInspector();
     renderInspector();
     renderBars();
     renderUsMap("chart-citymap", { colourMode: "metric" });

@@ -484,3 +484,718 @@
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
+
+/* ================================================================ redesign
+   The Week 4 redesign (review/week04-redesign.md): a hero map with an
+   inspector, the findings strip, the section rail, question headers,
+   two-column cards and reveal buttons. Colour grammar: dark ink is the real
+   network, the grey band the random baseline, orange a worker placed at a
+   client, blue a direct employer. Violet, green and slate mark the three
+   metro groups, on maps only. Scripts read these tokens with getComputedStyle. */
+
+.corridor {
+  --w4-accent: #14618f;
+  --w4-inset: #f7fafd;
+  --w4-grid: #e6ecf3;
+  --w4-band: rgba(185, 196, 210, 0.62);
+  --w4-group-0: #6d4fd6;
+  --w4-group-1: #15896a;
+  --w4-group-2: #7a8fac;
+  --w4-group-0-dark: #b69cff;
+  --w4-group-1-dark: #4fd1a5;
+  --w4-group-2-dark: #c3cfdd;
+  --w4-hero-ink: #eaf2fb;
+  --w4-hero-lede: #b9cde4;
+  --w4-hero-body: #93aecd;
+  --w4-hero-label: #7f9bbd;
+  --w4-hero-state: rgba(255, 255, 255, 0.035);
+  --w4-hero-state-edge: rgba(185, 205, 228, 0.2);
+  --w4-map-fill: #e6edf5;
+  --w4-map-edge: #c3d0e0;
+  --w4-tip-bg: rgba(11, 31, 58, 0.97);
+  --w4-tip-ink: #cfe0f2;
+}
+
+/* ---- hero: the text, the map, the inspector */
+
+.corridor .hero.w4-hero .shell {
+  display: block;
+  max-width: 1180px;
+  min-height: auto;
+  padding-block: 38px 40px;
+}
+
+.corridor .w4-hero h1 {
+  font-size: 54px;
+  margin: 0;
+}
+
+.corridor .w4-hero-grid {
+  align-items: start;
+  display: grid;
+  gap: 28px;
+  grid-template-columns: 300px minmax(0, 1fr) 264px;
+  margin-top: 22px;
+}
+
+.corridor .w4-hero-text {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.corridor .w4-hero-text p.body,
+.corridor .w4-hero-text .caution {
+  margin: 0;
+}
+
+.corridor .w4-hero-text p.body {
+  color: var(--w4-hero-body);
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+.corridor .w4-legend {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.corridor .w4-legend-title {
+  color: var(--w4-hero-label);
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  margin: 0;
+  text-transform: uppercase;
+}
+
+.corridor .w4-legend-row {
+  align-items: center;
+  color: var(--w4-hero-lede);
+  display: flex;
+  font-size: 12.5px;
+  gap: 10px;
+  line-height: 1.4;
+}
+
+.corridor .w4-legend-row b {
+  color: var(--w4-hero-ink);
+  font-weight: 600;
+}
+
+.corridor .w4-dot {
+  border-radius: 999px;
+  flex: none;
+  height: 11px;
+  width: 11px;
+}
+
+.corridor .w4-dot.g0 { background: var(--w4-group-0-dark); }
+.corridor .w4-dot.g1 { background: var(--w4-group-1-dark); }
+.corridor .w4-dot.g2 { background: var(--w4-group-2-dark); }
+
+.corridor .w4-legend-line {
+  background: var(--w4-hero-lede);
+  flex: none;
+  height: 2px;
+  width: 11px;
+}
+
+.corridor .w4-hero-stats {
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  display: grid;
+  gap: 16px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  padding-top: 16px;
+}
+
+.corridor .w4-stat b {
+  color: var(--w4-hero-ink);
+  display: block;
+  font-size: 26px;
+  font-variant-numeric: tabular-nums;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+}
+
+.corridor .w4-stat span {
+  color: var(--w4-hero-body);
+  display: block;
+  font-size: 12px;
+  line-height: 1.4;
+  margin-top: 4px;
+}
+
+.corridor .w4-hero-stage {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin: 0;
+}
+
+.corridor .w4-hero-map {
+  aspect-ratio: 604 / 392;
+  width: 100%;
+}
+
+.corridor .w4-hint {
+  background: rgba(8, 22, 42, 0.72);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 999px;
+  color: #cfe0f2;
+  font-size: 12px;
+  margin: 0;
+  padding: 6px 12px;
+}
+
+/* ---- the inspector beside the hero map */
+
+.corridor .w4-inspector {
+  background: var(--card);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  color: var(--ink);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 16px 18px 14px;
+}
+
+.corridor .w4-caps {
+  color: var(--ink-mute);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  margin: 0;
+  text-transform: uppercase;
+}
+
+.corridor .w4-inspector-name {
+  align-items: baseline;
+  display: flex;
+  gap: 8px;
+}
+
+.corridor .w4-inspector-name b {
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.corridor .w4-inspector-name span {
+  color: var(--ink-mute);
+  font-size: 12px;
+}
+
+.corridor .w4-chip {
+  align-items: center;
+  align-self: flex-start;
+  background: var(--ground);
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  display: inline-flex;
+  font-size: 11.5px;
+  font-weight: 600;
+  gap: 7px;
+  padding: 4px 10px;
+}
+
+.corridor .w4-chip i {
+  border-radius: 999px;
+  height: 9px;
+  width: 9px;
+}
+
+.corridor .w4-inspector dl {
+  margin: 0;
+}
+
+.corridor .w4-inspector dl div {
+  border-top: 1px solid var(--line-soft);
+  display: flex;
+  gap: 10px;
+  justify-content: space-between;
+  padding: 7px 0;
+}
+
+.corridor .w4-inspector dt {
+  color: var(--ink-soft);
+  font-size: 12px;
+}
+
+.corridor .w4-inspector dd {
+  font-size: 12px;
+  font-variant-numeric: tabular-nums;
+  font-weight: 700;
+  margin: 0;
+  text-align: right;
+}
+
+.corridor .w4-links {
+  border-top: 1px solid var(--line-soft);
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding-top: 8px;
+}
+
+.corridor .w4-links ol {
+  list-style: none;
+  margin: 4px 0 0;
+  padding: 0;
+}
+
+.corridor .w4-links li {
+  display: flex;
+  font-size: 12px;
+  justify-content: space-between;
+  padding: 3px 0;
+}
+
+.corridor .w4-links li span {
+  color: var(--ink-soft);
+  font-variant-numeric: tabular-nums;
+}
+
+/* ---- five sections, five findings */
+
+.corridor .w4-findings {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  margin: 32px 0 8px;
+  padding: 22px 28px 10px;
+}
+
+.corridor .w4-findings-head {
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
+  padding-bottom: 6px;
+}
+
+.corridor .w4-key {
+  align-items: center;
+  color: var(--ink-soft);
+  display: flex;
+  font-size: 12px;
+  gap: 18px;
+}
+
+.corridor .w4-key span {
+  align-items: center;
+  display: flex;
+  gap: 7px;
+}
+
+.corridor .w4-key-real {
+  background: var(--ink);
+  border-radius: 999px;
+  height: 11px;
+  width: 11px;
+}
+
+.corridor .w4-key-band {
+  background: var(--w4-band);
+  border-radius: 6px;
+  height: 10px;
+  width: 26px;
+}
+
+.corridor .w4-finding {
+  align-items: center;
+  display: grid;
+  gap: 24px;
+  grid-template-columns: 36px minmax(0, 1fr) 300px 96px;
+  padding: 16px 0;
+}
+
+.corridor .w4-finding + .w4-finding {
+  border-top: 1px solid var(--line-soft);
+}
+
+.corridor .w4-num {
+  align-items: center;
+  background: var(--access-soft);
+  border-radius: 8px;
+  color: var(--w4-accent);
+  display: flex;
+  font-size: 13px;
+  font-variant-numeric: tabular-nums;
+  font-weight: 800;
+  height: 30px;
+  justify-content: center;
+  min-width: 30px;
+  padding: 0 6px;
+}
+
+.corridor .w4-finding h3 {
+  font-size: 15px;
+  margin: 0 0 4px;
+}
+
+.corridor .w4-finding p {
+  color: var(--ink-soft);
+  font-size: 13.5px;
+  line-height: 1.55;
+  margin: 0;
+}
+
+.corridor .w4-mini {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.corridor .w4-mini svg {
+  display: block;
+  height: auto;
+  max-width: 100%;
+  overflow: visible;
+}
+
+.corridor .w4-mini small {
+  color: var(--ink-mute);
+  font-size: 11px;
+  line-height: 1.35;
+}
+
+.corridor .w4-finding > a {
+  color: var(--w4-accent);
+  font-size: 13px;
+  font-weight: 600;
+  justify-self: end;
+  text-decoration: none;
+}
+
+/* ---- the section rail: the numbers down the left margin */
+
+.corridor .w4-rail {
+  display: none;
+}
+
+@media (min-width: 1240px) {
+  .corridor .w4-rail {
+    display: block;
+    left: max(8px, calc(50vw - 590px - 66px));
+    position: fixed;
+    top: 96px;
+    width: 44px;
+    z-index: 20;
+  }
+}
+
+.corridor .w4-rail ol {
+  align-items: center;
+  background: linear-gradient(var(--line), var(--line)) center / 2px 100% no-repeat;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  list-style: none;
+  margin: 0;
+  padding: 4px 0;
+}
+
+.corridor .w4-rail ol ol {
+  background: none;
+  display: none;
+  gap: 5px;
+  padding: 0;
+}
+
+.corridor .w4-rail li.is-current > ol {
+  display: flex;
+}
+
+.corridor .w4-rail li {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  position: relative;
+}
+
+.corridor .w4-rail a {
+  align-items: center;
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  color: var(--w4-accent);
+  display: flex;
+  font-size: 14px;
+  font-variant-numeric: tabular-nums;
+  font-weight: 800;
+  height: 36px;
+  justify-content: center;
+  position: relative;
+  text-decoration: none;
+  width: 36px;
+}
+
+.corridor .w4-rail li.is-current > a {
+  background: var(--w4-accent);
+  border-color: var(--w4-accent);
+  color: #ffffff;
+}
+
+.corridor .w4-rail ol ol a {
+  background: var(--ground);
+  border-radius: 999px;
+  color: var(--ink-soft);
+  font-size: 10.5px;
+  height: 24px;
+  width: 24px;
+}
+
+.corridor .w4-rail ol ol li.is-current > a {
+  background: var(--ink);
+  border-color: var(--ink);
+  color: #ffffff;
+}
+
+.corridor .w4-rail-label {
+  background: var(--w4-tip-bg);
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(15, 35, 64, 0.08), 0 12px 28px rgba(15, 35, 64, 0.14);
+  color: var(--w4-hero-ink);
+  display: none;
+  font-size: 12px;
+  font-weight: 600;
+  left: calc(100% + 10px);
+  line-height: 1.4;
+  max-width: 300px;
+  padding: 6px 10px;
+  position: absolute;
+  text-align: left;
+  top: 50%;
+  transform: translateY(-50%);
+  white-space: normal;
+  width: max-content;
+  z-index: 40;
+}
+
+.corridor .w4-rail a:hover .w4-rail-label,
+.corridor .w4-rail a:focus-visible .w4-rail-label {
+  display: block;
+}
+
+/* ---- a section's opening: the numeral and title on the ground, the finding under it */
+
+.corridor .w4-opener {
+  align-items: flex-start;
+  display: flex;
+  gap: 22px;
+  margin: 8px 0 18px;
+}
+
+.corridor .w4-opener-num {
+  color: var(--w4-accent);
+  flex: none;
+  font-size: 64px;
+  font-variant-numeric: tabular-nums;
+  font-weight: 800;
+  letter-spacing: -0.04em;
+  line-height: 0.86;
+  width: 58px;
+}
+
+.corridor .w4-opener h2 {
+  font-size: 30px;
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+  margin: 0 0 10px;
+}
+
+.corridor .w4-opener p {
+  color: var(--ink);
+  font-size: 18px;
+  font-weight: 600;
+  letter-spacing: -0.005em;
+  line-height: 1.45;
+  margin: 0;
+  max-width: 860px;
+  text-wrap: pretty;
+}
+
+/* ---- cards: a question header over two columns */
+
+.corridor .card.w4-card {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  padding: 24px 28px 26px;
+}
+
+.corridor .w4-q {
+  align-items: flex-start;
+  display: flex;
+  gap: 14px;
+}
+
+.corridor .w4-q .w4-num {
+  min-width: 40px;
+}
+
+.corridor .w4-q h2 {
+  font-size: 20px;
+  letter-spacing: -0.01em;
+  line-height: 1.25;
+  margin: 0 0 8px;
+}
+
+.corridor .w4-answer {
+  color: var(--ink);
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 1.45;
+  margin: 0;
+  max-width: 900px;
+  text-wrap: pretty;
+}
+
+.corridor .w4-two {
+  align-items: start;
+  display: grid;
+  gap: 40px;
+  grid-template-columns: 500px minmax(0, 1fr);
+}
+
+.corridor .w4-two > div {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  min-width: 0;
+}
+
+.corridor .w4-card p.sub,
+.corridor .w4-two p {
+  color: var(--ink-soft);
+  font-size: 13.5px;
+  line-height: 1.62;
+  margin: 0;
+  max-width: 68ch;
+  text-wrap: pretty;
+}
+
+.corridor .w4-card .notice {
+  margin-top: 0;
+}
+
+.corridor .w4-card .plot {
+  margin: 0;
+}
+
+.corridor .w4-card .plot h3 {
+  font-size: 13.5px;
+  margin: 0 0 3px;
+}
+
+.corridor .w4-card .plot p.axis-note {
+  font-size: 11.5px;
+  line-height: 1.45;
+  margin: 0 0 8px;
+}
+
+/* ---- reveals: extra text behind a button, shown on hover, focus or click */
+
+.corridor .w4-reveals {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.corridor .w4-tip {
+  display: inline-flex;
+  position: relative;
+}
+
+.corridor .w4-tip > button {
+  align-items: center;
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  color: var(--w4-accent);
+  cursor: help;
+  display: inline-flex;
+  font: inherit;
+  font-size: 12px;
+  font-weight: 700;
+  gap: 6px;
+  line-height: 1.1;
+  padding: 6px 11px;
+}
+
+.corridor .w4-tip > button svg {
+  flex: none;
+}
+
+.corridor .w4-pop {
+  background: var(--w4-tip-bg);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 9px;
+  box-shadow: 0 2px 6px rgba(15, 35, 64, 0.08), 0 18px 44px rgba(15, 35, 64, 0.16);
+  color: var(--w4-tip-ink);
+  display: none;
+  font-size: 12.5px;
+  font-style: normal;
+  font-weight: 400;
+  left: 0;
+  letter-spacing: 0;
+  line-height: 1.55;
+  padding: 12px 14px;
+  position: absolute;
+  text-align: left;
+  top: calc(100% + 8px);
+  white-space: normal;
+  width: 440px;
+  z-index: 40;
+}
+
+.corridor .w4-pop.right {
+  left: auto;
+  right: 0;
+}
+
+.corridor .w4-pop b {
+  color: var(--w4-hero-ink);
+  display: block;
+  margin-bottom: 4px;
+}
+
+.corridor .w4-tip:hover > .w4-pop,
+.corridor .w4-tip:focus-within > .w4-pop,
+.corridor .w4-tip.is-open > .w4-pop {
+  display: block;
+}
+
+/* a term in running text, defined on hover or focus */
+.corridor .w4-term {
+  display: inline;
+  position: relative;
+}
+
+.corridor .w4-term > button {
+  background: none;
+  border: 0;
+  border-bottom: 1px dotted var(--ink-soft);
+  color: inherit;
+  cursor: help;
+  font: inherit;
+  margin: 0;
+  padding: 0;
+}
+
+.corridor .w4-term > .w4-pop {
+  top: calc(100% + 6px);
+  width: 330px;
+}
+
+.corridor .w4-term:hover > .w4-pop,
+.corridor .w4-term:focus-within > .w4-pop,
+.corridor .w4-term.is-open > .w4-pop {
+  display: block;
+}
