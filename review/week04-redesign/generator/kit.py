@@ -519,7 +519,7 @@ def strip_chart(rows, domain, width, ticks, tick_fmt, label_w=170, row_h=60, bad
                 out.append(smart_text(X(r["real"]), cy - 13, r["real_label"], x0, x1, 12, INK, 700))
         if r.get("badge"):
             bw = max(tw(r["badge"], 11, 700) + 16, 44)
-            bx = x1 + 12
+            bx = min(x1 + 12, width - bw)  # a long badge ends at the chart's edge, not past it
             out.append(rect(bx, cy - 10, bw, 20, GROUND, 10))
             out.append(text(bx + bw / 2, cy + 4, r["badge"], 11, INK, 700, "middle"))
     out.append("</svg>")
