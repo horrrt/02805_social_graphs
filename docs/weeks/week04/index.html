@@ -19,7 +19,7 @@
     <link href="../../assets/css/week04-skills.css?v=3" rel="stylesheet" />
     <link href="../../assets/css/week04-skills-radar.css?v=3" rel="stylesheet" />
     <link href="../../assets/css/week04-vis-more.css?v=1" rel="stylesheet" />
-    <link href="../../assets/css/week04-vis-intros.css?v=1" rel="stylesheet" />
+    <link href="../../assets/css/week04-vis-intros.css?v=3" rel="stylesheet" />
     <link href="../../assets/css/week04-vis-staffing.css?v=1" rel="stylesheet" />
     <link href="../../assets/css/week04-sources.css?v=3" rel="stylesheet" />
   </head>
@@ -1311,60 +1311,46 @@
           <div class="card w4-card">
             <div class="w4-two">
               <div>
-                <p class="sub">
-              Cities group by who hires there, not by region. Outsourcing firms
-              bundle jobs differently from direct employers of the same size.
-              And when a client drops
-              its main vendor, the new one comes from the same Louvain group
-              nearly eight times as often as a random vendor would, though
-              mostly because clients return to firms they already use.
-              Take out the ten largest filers, most of them national tech and
-              consulting employers, and the metro groups start to follow Census
-              regions; Amazon alone does all of that.
-            </p>
-                <div class="notice">
-              <span class="ico">!</span>
-              <span>
-                <b>One important limit</b>
-                A shared employer link means that the same companies file for
-                both occupations or in both places. It does not prove that the jobs are
-                performed together, that one caused the other, or that the
-                network represents workers who were actually hired.
-              </span>
-            </div>
-                <p class="sub">Where outsourcing shows most is outside the networks: a filing
-              that places a worker at a client has 3.6 times the odds of a
-              lower wage level for the same occupation. Lawyers and green cards
-              barely follow the staffing groups.
-            </p>
-                <p class="sub"><b>What surprised us.</b> The staffing groups looked weak in our
-              first round, following industry about as much as vendor, yet
-              26.5% of vendor switches stay inside them, against 3.2% for a
-              random vendor. And the backbone that seemed to snap between
-              α = 0.1 and 0.05 never snaps: no single link cuts off more than
-              two metros.
-            </p>
-              </div>
-              <figure class="w4-figure">
+                <figure class="w4-figure">
                 <figcaption><b>Five weak groups, none of them noise</b><span>One row per section: the real network against its random baseline, on the same scale as the findings above the hero.</span></figcaption>
                 <div class="w4-figure-body" data-strip="closing-recap"></div>
               </figure>
+                <div class="w4-reveals">
+                  <span class="w4-tip"><button aria-describedby="w4-pop-closing-words" type="button"><svg aria-hidden="true" height="14" viewBox="0 0 24 24" width="14"><circle cx="12" cy="12" fill="none" r="9" stroke="currentColor" stroke-width="2"></circle><path d="M12 8v8M8 12h8" fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="2"></path></svg>The findings in words</button><span class="w4-pop" id="w4-pop-closing-words" role="tooltip" style="width: 480px"><b>The findings in words</b>Cities group by who hires there, not by region. Outsourcing firms bundle jobs differently from direct employers of the same size. And when a client drops its main vendor, the new one comes from the same Louvain group nearly eight times as often as a random vendor would, though mostly because clients return to firms they already use. Take out the ten largest filers, most of them national tech and consulting employers, and the metro groups start to follow Census regions; Amazon alone does all of that. Where outsourcing shows most is outside the networks: a filing that places a worker at a client has 3.6 times the odds of a lower wage level for the same occupation. Lawyers and green cards barely follow the staffing groups.</span></span>
+                </div>
+              </div>
+              <div class="w4-surprises">
+                <h3>What surprised us</h3>
+                <div class="w4-surprise">
+                  <p class="w4-surprise-before">The staffing groups looked weak in our first round, following industry about as much as vendor,</p>
+                  <p class="w4-surprise-after">yet 26.5% of vendor switches stay inside them, against 3.2% for a random vendor.</p>
+                  <div class="w4-figure-body" data-strip="closing-switches"></div>
+                </div>
+                <div class="w4-surprise">
+                  <p class="w4-surprise-before">And the backbone that seemed to snap between α = 0.1 and 0.05</p>
+                  <p class="w4-surprise-after">never snaps: no single link cuts off more than two metros.</p>
+                  <div class="w4-figure-body" data-strip="closing-backbone"></div>
+                </div>
+              </div>
             </div>
-            <details class="qa">
+            <div class="notice">
+              <span class="ico">!</span>
+              <span><b>One important limit</b> A shared employer link means that the same companies file for both occupations or in both places. It does not prove that the jobs are performed together, that one caused the other, or that the network represents workers who were actually hired.</span>
+            </div>
+            <details class="qa" id="closing-ai">
               <summary><span class="qa-cue">AI use and how we checked it</span></summary>
               <div class="qa-body">
                 <p class="sub">
                   AI coding assistants helped structure the page, wrote analysis
                   and page code, drafted and revised text, and tested the visual
-                  presentation. The numbers come from the public Department of
-                  Labor files through the scripts linked in
-                  <a href="#evidence">Data and methods</a>. Each script writes
+                  presentation. The numbers come from the public sources listed in
+                  <a href="#evidence">Data and methods</a>. Each analysis step writes
                   the numbers its section quotes to a JSON file the page reads.
                   A schema check tests each file against the
                   fields the page uses, a name-matching check tests
                   the company-name rules against tax numbers, and the site tests
                   fail when the numbers in a card or in this closing drift from
-                  its script's output. We checked generated tables, comparisons, source scope,
+                  the analysis output. We checked generated tables, comparisons, source scope,
                   and the page behaviour against the local data before including
                   a claim.
                 </p>
@@ -1383,18 +1369,70 @@
             <span aria-hidden="true" class="w4-opener-num">+</span>
             <div>
               <h2>Deep dive</h2>
-              <p>Our first round of questions, with their charts.</p>
+              <p>Earlier questions, more networks, and the data behind every number.</p>
             </div>
           </header>
-          <div class="card">
-            <p class="sub" id="cut-intro">Each answer still
-              holds; the questions above replaced them because they test the
-              communities against something that could have come out the other
-              way. The numbers the new cards build on (the three metro groups,
-              the rewired baselines, the weak staffing groups) are explained
-              here in full, followed by six more networks from the same filings
-              and the data and methods behind every number.
-            </p>
+          <div class="card w4-card w4-dd-index">
+            <p class="sub" id="cut-intro">Each answer still holds; the questions above replaced them because they test the communities against something that could have come out the other way. Pick any question to open it.</p>
+            <div class="w4-dd-grid">
+            <div>
+            <h3>Our first round of questions</h3>
+            <p class="w4-dd-sub">Sections 1 to 3, with their charts</p>
+            <p class="w4-dd-group">1 · Where the hiring is</p>
+            <ul class="w4-dd-links">
+              <li><a href="#place-rank">Which cities hire the most?<span aria-hidden="true">→</span></a></li>
+              <li><a href="#place-regions">Is it one national job market or several regional ones?<span aria-hidden="true">→</span></a></li>
+              <li><a href="#place-backbone">Once the small links go, what's left of the map?<span aria-hidden="true">→</span></a></li>
+              <li><a href="#place-longhaul">Do the same employers tie distant cities together?<span aria-hidden="true">→</span></a></li>
+            </ul>
+            <p class="w4-dd-group">2 · Which jobs go together</p>
+            <ul class="w4-dd-links">
+              <li><a href="#jobs-together">Which jobs are hired together?<span aria-hidden="true">→</span></a></li>
+              <li><a href="#jobs-bridges">Which jobs belong to two clusters?<span aria-hidden="true">→</span></a></li>
+              <li><a href="#jobs-groups">Do the clusters follow official job groups?<span aria-hidden="true">→</span></a></li>
+            </ul>
+            <p class="w4-dd-group">3 · Who staffs whom</p>
+            <ul class="w4-dd-links">
+              <li><a href="#who-q1">How many workers sit at a client?<span aria-hidden="true">→</span></a></li>
+              <li><a href="#who-q2">Do clients group by industry or by the firm that staffs them?<span aria-hidden="true">→</span></a></li>
+              <li><a href="#who-q3">Who relies on a single vendor?<span aria-hidden="true">→</span></a></li>
+              <li><a href="#who-q4">Does it hold from year to year?<span aria-hidden="true">→</span></a></li>
+              <li><a href="#staffing-lawyers">Who files the paperwork?<span aria-hidden="true">→</span></a></li>
+              <li><a href="#staffing-community-stats">With filing counts or without?<span aria-hidden="true">→</span></a></li>
+              <li><a href="#staffing-ties">Strong ties, weak ties and pay<span aria-hidden="true">→</span></a></li>
+              <li><a href="#staffing-lottery">Do the firms that register the same workers staff the same clients?<span aria-hidden="true">→</span></a></li>
+            </ul>
+          </div>
+            <div>
+            <h3>More networks</h3>
+            <p class="w4-dd-sub">Green cards, countries, jobs per metro, strong ties, the lottery and USCIS denials</p>
+            <ul class="w4-dd-links">
+              <li><a href="#deeper-perm">Who keeps them? Green cards as the strong tie<span aria-hidden="true">→</span></a></li>
+              <li><a href="#deeper-countries">Where are they from? A network of countries<span aria-hidden="true">→</span></a></li>
+              <li><a href="#deeper-density">Where is the hiring densest? Filings per 1,000 jobs<span aria-hidden="true">→</span></a></li>
+              <li><a href="#deeper-strength">Strength against degree: where do the heavy links go?<span aria-hidden="true">→</span></a></li>
+              <li><a href="#deeper-lottery">The lottery a year apart, and who receives the winners<span aria-hidden="true">→</span></a></li>
+              <li><a href="#deeper-uscis">USCIS denials, year by year<span aria-hidden="true">→</span></a></li>
+            </ul>
+            <h3 class="w4-dd-h3-gap">Explore</h3>
+            <p class="w4-dd-sub">Five years, the course's methods, O*NET skills and PageRank</p>
+            <ul class="w4-dd-links">
+              <li><a href="#cut-years">Five years of filings, FY2022 to FY2026<span aria-hidden="true">→</span></a></li>
+              <li><a href="#cut-methods">The course's four community methods, step by step<span aria-hidden="true">→</span></a></li>
+              <li><a href="#cut-skills">Skills behind the jobs, from O*NET<span aria-hidden="true">→</span></a></li>
+              <li><a href="#cut-pagerank">PageRank on the jobs network, step by step<span aria-hidden="true">→</span></a></li>
+            </ul>
+          </div>
+            <div>
+            <h3>Data and methods</h3>
+            <p class="w4-dd-sub">The sources behind every number</p>
+            <ul class="w4-dd-links">
+              <li><a href="#evidence">Sources<span aria-hidden="true">→</span></a></li>
+              <li><a href="#closing-ai">AI use and how we checked it<span aria-hidden="true">→</span></a></li>
+            </ul>
+          </div>
+            </div>
+          </div>
             <details class="qa cut" id="cut-place">
               <summary><span class="qa-cue">Where the hiring is: two earlier questions</span></summary>
               <div class="qa-body cut-body">
@@ -2001,7 +2039,6 @@
                   </div>
                 </details>
                 </div>
-              </div>
             </details>
             <details class="qa cut" id="cut-more">
               <summary><span class="qa-cue">More networks: green cards, countries, jobs per metro, strong ties, the lottery and USCIS denials</span></summary>
@@ -2426,7 +2463,6 @@
                 </dl>
               </div>
             </details>
-          </div>
         </section>
 
       </div>
@@ -2459,7 +2495,7 @@
     <script src="../../assets/js/week04-questions.js?v=8" type="module"></script>
     <script src="../../assets/js/week04-cut.js?v=3" type="module"></script>
     <script src="../../assets/js/week04-vis-more.js?v=1" type="module"></script>
-    <script src="../../assets/js/week04-vis-intros.js?v=1" type="module"></script>
+    <script src="../../assets/js/week04-vis-intros.js?v=2" type="module"></script>
     <script src="../../assets/js/week04-vis-staffing.js?v=1" type="module"></script>
   </body>
 </html>
