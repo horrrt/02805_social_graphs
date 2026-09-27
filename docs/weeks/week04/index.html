@@ -1605,91 +1605,82 @@
             <details class="qa cut" id="cut-who">
               <summary><span class="qa-cue">Who staffs whom: four earlier questions, the law firms and the lottery</span></summary>
               <div class="qa-body cut-body">
-                <div class="card cut-card" id="who-first-round">
-                <div class="staffing-prose">
-              <h3>How many workers sit at a client?</h3>
-              <p>
-                A filing is a request to employ someone, not a hire. In FY2025,
+                <div class="card cut-card w4-card" id="who-first-round">
+          <div class="w4-q-block" id="who-q1">
+            <header class="w4-q">
+              <span class="w4-num">A</span>
+              <div>
+                <h2>How many workers sit at a client?</h2>
+                <p class="w4-answer">In FY2025, 104,732 of the 537,796 certified filings (19.5%) mark a client site.</p>
+              </div>
+            </header>
+            <p class="sub">A filing is a request to employ someone, not a hire. In FY2025,
                 104,732 of the 537,796 certified filings (19.5%) mark a client
-                site. The worksites file lists every client a filing names; we
-                leave out the 16% of client entries that name no company, such
-                as "Home Address", and the 1,881 where a firm names itself.
-                Counted that way, 101,763 filings (18.9%) name a client company:
-                the worker is employed by one company and works at another, down
-                from 21.9% in FY2022. Placing firms also fare worse
+                site. </p>
+            <p class="sub"> Placing firms also fare worse
                 at USCIS: every year from FY2022 on, it denied about twice the
                 share of their first-time petitions, 2.7% against 1.2% for
                 direct employers in FY2022 and 3.4% against 2.0% from October
                 2025 to June 2026.
               </p>
-              <p>
-                The lottery shows the same split one step earlier. Each new
-                H-1B worker starts as a registration that USCIS draws at
-                random, and USCIS gave Bloomberg News every registration from
-                the March 2023 draw after a FOIA lawsuit. Every petition that
-                followed names its filing, so we can follow a ticket to its
-                client. Direct employers sent 5.1 registrations per approved
-                petition, placing firms 9.1, and firms with fewer than 20
-                filings 12.2; those small firms sent 53% of the 758,967
-                registrations. Most of the gap is drawn tickets nobody used.
-                When USCIS drew a direct employer's registration, a petition
-                followed 76% of the time; a placing firm's, 50%; a small
-                firm's, 35%. That step carries 74% of the gap between placing
-                and direct firms, and the draw itself 24%. Much of it comes from
-                workers registered by several employers: 54% of registrations
-                named one, and when USCIS drew one, a petition followed 23% of
-                the time, against 81% for a worker registered once. 18,307 of
-                the petitions lead to a client company. Citigroup received the
-                most, 342 through 38 firms.
-              </p>
-              <h3>Do clients group by industry or by the firm that staffs them?</h3>
-              <p>
-                By both, weakly, and slightly more by vendor. With every
+            <div class="w4-reveals">
+              <span class="w4-tip"><button aria-describedby="w4-pop-who-q1-how" type="button"><svg aria-hidden="true" height="14" viewBox="0 0 24 24" width="14"><circle cx="12" cy="12" fill="none" r="9" stroke="currentColor" stroke-width="2"></circle><path d="M12 11v6M12 7.5v.5" fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="2"></path></svg>How we tested it</button><span class="w4-pop" id="w4-pop-who-q1-how" role="tooltip"><b>How we tested it</b>The worksites file lists every client a filing names; we leave out the 16% of client entries that name no company, such as "Home Address", and the 1,881 where a firm names itself. Counted that way, 101,763 filings (18.9%) name a client company: the worker is employed by one company and works at another, down from 21.9% in FY2022.</span></span>
+              <span class="w4-tip"><button aria-describedby="w4-pop-who-q1-more" type="button"><svg aria-hidden="true" height="14" viewBox="0 0 24 24" width="14"><circle cx="12" cy="12" fill="none" r="9" stroke="currentColor" stroke-width="2"></circle><path d="M12 8v8M8 12h8" fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="2"></path></svg>More numbers</button><span class="w4-pop" id="w4-pop-who-q1-more" role="tooltip"><b>More numbers</b>The lottery shows the same split one step earlier. Each new H-1B worker starts as a registration that USCIS draws at random, and USCIS gave Bloomberg News every registration from the March 2023 draw after a FOIA lawsuit. Every petition that followed names its filing, so we can follow a ticket to its client. Direct employers sent 5.1 registrations per approved petition, placing firms 9.1, and firms with fewer than 20 filings 12.2; those small firms sent 53% of the 758,967 registrations. Most of the gap is drawn tickets nobody used. When USCIS drew a direct employer's registration, a petition followed 76% of the time; a placing firm's, 50%; a small firm's, 35%. That step carries 74% of the gap between placing and direct firms, and the draw itself 24%. Much of it comes from workers registered by several employers: 54% of registrations named one, and when USCIS drew one, a petition followed 23% of the time, against 81% for a worker registered once. 18,307 of the petitions lead to a client company. Citigroup received the most, 342 through 38 firms.</span></span>
+            </div>
+          </div>
+          <div class="w4-q-block" id="who-q2">
+            <header class="w4-q">
+              <span class="w4-num">B</span>
+              <div>
+                <h2>Do clients group by industry or by the firm that staffs them?</h2>
+                <p class="w4-answer">By both, weakly, and slightly more by vendor.</p>
+              </div>
+            </header>
+            <p class="sub"> With every
                 firm–client link counted once,
                 Louvain splits the network into about 65 groups, and the split
                 beats rewired networks that keep everyone's number of partners
                 (modularity 0.57 against 0.53). Among the 1,209 clients with a
                 known industry and two or more firms, the groups match the main
                 vendor at an adjusted mutual information (AMI) of 0.11 and the
-                industry at 0.07; both beat shuffled labels. AMI corrects NMI for
-                chance, which matters here: these clients have 478 main vendors
-                but only 17 industries. Counting filings pulls clients to their
-                main vendor (AMI 0.48 against 0.07), but that split scores below
-                rewired networks with the same filing counts (0.60 against 0.74),
-                and the vendor's head start is built in: the vendor is a node in
-                the same network, and 86% of these clients land in its group.
-              </p>
-              <h3>Who relies on a single vendor?</h3>
-              <p>
-                Small clients. 14,678 of the 18,900 clients use one firm, but they
+                industry at 0.07; both beat shuffled labels. </p>
+            <div class="w4-reveals">
+              <span class="w4-tip"><button aria-describedby="w4-pop-who-q2-more" type="button"><svg aria-hidden="true" height="14" viewBox="0 0 24 24" width="14"><circle cx="12" cy="12" fill="none" r="9" stroke="currentColor" stroke-width="2"></circle><path d="M12 8v8M8 12h8" fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="2"></path></svg>More numbers</button><span class="w4-pop" id="w4-pop-who-q2-more" role="tooltip"><b>More numbers</b>AMI corrects NMI for chance, which matters here: these clients have 478 main vendors but only 17 industries. Counting filings pulls clients to their main vendor (AMI 0.48 against 0.07), but that split scores below rewired networks with the same filing counts (0.60 against 0.74), and the vendor's head start is built in: the vendor is a node in the same network, and 86% of these clients land in its group.</span></span>
+            </div>
+          </div>
+          <div class="w4-q-block" id="who-q3">
+            <header class="w4-q">
+              <span class="w4-num">C</span>
+              <div>
+                <h2>Who relies on a single vendor?</h2>
+                <p class="w4-answer">Small clients.</p>
+              </div>
+            </header>
+            <p class="sub"> 14,678 of the 18,900 clients use one firm, but they
                 hold 22% of placed filings. Of the 629 clients with 20 or more
                 filings, 69 get over 90% from one firm, and the median one gets
-                37% from its largest. Citigroup, the largest client, uses 114
-                firms, and Tata Consultancy Services supplies a quarter. The eight
-                largest firms supply only 27% of what the 20 largest clients
-                receive.
-              </p>
-              <h3>Does it hold from year to year?</h3>
-              <p>
-                Only in part. On the clients present in both years, consecutive
-                years agree at NMI 0.21 to 0.27, about half the 0.48 to 0.50
-                between two runs of the same year on the same clients. We
-                compared vendor and industry on FY2025 only.
-              </p>
-              <p>
-                FY2026 breaks the pattern at the top. We compare January to June
-                of each year, because October 2025, the month of the federal
-                shutdown, holds 1,306 certified filings against 35,258 a year
-                earlier. From January to June, certified filings fell 5.8% after
-                rising 9.5% the year before, and filings that name a client
-                company fell 16.5% after holding flat (-0.1%). Tata Consultancy
-                Services filed 2,079, down from 5,256. Of the 349 clients it supplied most from January to June 2025, 223 still appear, and 111 of those now
-                get most of their workers from another firm, most often Infosys.
-                Across clients with five or more filings in both years, 47%
-                changed their main vendor, against 44% a year earlier. These are
-                applications, so they show what employers asked for, not why.
-              </p>
+                37% from its largest. </p>
+            <div class="w4-reveals">
+              <span class="w4-tip"><button aria-describedby="w4-pop-who-q3-more" type="button"><svg aria-hidden="true" height="14" viewBox="0 0 24 24" width="14"><circle cx="12" cy="12" fill="none" r="9" stroke="currentColor" stroke-width="2"></circle><path d="M12 8v8M8 12h8" fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="2"></path></svg>More numbers</button><span class="w4-pop" id="w4-pop-who-q3-more" role="tooltip"><b>More numbers</b>Citigroup, the largest client, uses 114 firms, and Tata Consultancy Services supplies a quarter. The eight largest firms supply only 27% of what the 20 largest clients receive.</span></span>
             </div>
+          </div>
+          <div class="w4-q-block" id="who-q4">
+            <header class="w4-q">
+              <span class="w4-num">D</span>
+              <div>
+                <h2>Does it hold from year to year?</h2>
+                <p class="w4-answer">Only in part.</p>
+              </div>
+            </header>
+            <p class="sub"> On the clients present in both years, consecutive
+                years agree at NMI 0.21 to 0.27, about half the 0.48 to 0.50
+                between two runs of the same year on the same clients. </p>
+            <div class="w4-reveals">
+              <span class="w4-tip"><button aria-describedby="w4-pop-who-q4-scope" type="button"><svg aria-hidden="true" height="14" viewBox="0 0 24 24" width="14"><circle cx="12" cy="12" fill="none" r="9" stroke="currentColor" stroke-width="2"></circle><path d="M12 11v6M12 7.5v.5" fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="2"></path></svg>Scope</button><span class="w4-pop" id="w4-pop-who-q4-scope" role="tooltip"><b>Scope</b>We compared vendor and industry on FY2025 only.</span></span>
+              <span class="w4-tip"><button aria-describedby="w4-pop-who-q4-more" type="button"><svg aria-hidden="true" height="14" viewBox="0 0 24 24" width="14"><circle cx="12" cy="12" fill="none" r="9" stroke="currentColor" stroke-width="2"></circle><path d="M12 8v8M8 12h8" fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="2"></path></svg>More numbers</button><span class="w4-pop right" id="w4-pop-who-q4-more" role="tooltip"><b>More numbers</b>FY2026 breaks the pattern at the top. We compare January to June of each year, because October 2025, the month of the federal shutdown, holds 1,306 certified filings against 35,258 a year earlier. From January to June, certified filings fell 5.8% after rising 9.5% the year before, and filings that name a client company fell 16.5% after holding flat (-0.1%). Tata Consultancy Services filed 2,079, down from 5,256. Of the 349 clients it supplied most from January to June 2025, 223 still appear, and 111 of those now get most of their workers from another firm, most often Infosys. Across clients with five or more filings in both years, 47% changed their main vendor, against 44% a year earlier. These are applications, so they show what employers asked for, not why.</span></span>
+            </div>
+          </div>
+          </div>
                 <figure class="staffing" id="staffing-figure">
                   <div class="staffing-controls">
                     <div aria-label="Fiscal year" class="staffing-years" role="group">
@@ -1759,18 +1750,22 @@
                   </div>
                 </figure>
 
-                <div class="staffing-prose" id="staffing-lawyers" style="margin-top: 18px">
-                  <h3>Who files the paperwork?</h3>
-                  <p>
-                    Three filings in four name an outside law firm, and five firms
-                    file 40% of those. Fragomen alone files 78,531 for 3,129
+                <div class="staffing-prose w4-card" id="staffing-lawyers" style="margin-top: 18px">
+            <header class="w4-q">
+              <span class="w4-num">E</span>
+              <div>
+                <h2>Who files the paperwork?</h2>
+                <p class="w4-answer">Three filings in four name an outside law firm, and five firms file 40% of those.</p>
+              </div>
+            </header>
+                  <p class="sub"> Fragomen alone files 78,531 for 3,129
                     employers. Outsourcing firms mostly do without: they file 52% of
                     their applications with no outside firm and send 3% to the five
                     largest, while direct employers send those five 48%. Per
                     employer the averages are 2% and 30%, and none of 1,000 shuffles
                     of which employer is which produced a gap that wide.
                   </p>
-                  <p>
+                  <p class="sub">
                     Two law firms share filings when the same employer uses both:
                     for each such employer, the smaller of its filings through
                     either. That network has one giant hub, the case the disparity
@@ -1784,7 +1779,7 @@
                     because they form a pair linked to nobody else, where neither
                     end can judge the link.
                   </p>
-                  <p>
+                  <p class="sub">
                     Louvain finds 34 groups at modularity 0.67, against 0.55 for
                     rewired networks that keep each employer's and each law firm's
                     number of partners (z = 12). The groups are barely regional
