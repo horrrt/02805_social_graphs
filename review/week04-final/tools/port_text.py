@@ -523,7 +523,12 @@ TOPICS = {"RTopicWhere": "topic-where", "RTopicJobs": "topic-jobs", "RTopicOutso
           "RTopicPaperwork": "topic-paperwork", "RTopicYears": "topic-years", "RData": "evidence"}
 # Board cards the page builds differently; their text moves by hand.
 _METHODS = "a method tab; the page's panels live in details#cut-methods, so its text moves by hand (Appendix A)"
-BY_HAND = {"RTopicWhere": {f"cut>w4-card{s}": _METHODS for s in ("", "#1", "#2", "#3")}}
+_SCRIPT = "a script builds this card, so its text moves in the script (PORT_PLAN 3.3)"
+BY_HAND = {
+    "RTopicWhere": {f"cut>w4-card{s}": _METHODS for s in ("", "#1", "#2", "#3")},
+    "RTopicJobs": {k: _SCRIPT for k in ("cut-skills-direct", "cut-skills-cluster", "cut-skills-radar",
+                                        "cut-pagerank-explore", "cut-pagerank-iteration")},
+}
 
 
 def port(board_name: str, page_src: str, before_cards: dict, overrides: dict) -> tuple[str, dict]:

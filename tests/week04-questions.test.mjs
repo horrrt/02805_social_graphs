@@ -254,3 +254,10 @@ test("section 4: which firm hides the regions", () => {
   has(`no regional match (AMI −${Math.abs(y.full.ami_region).toFixed(3)})`);
   has(`the match is ${f2(y.drop_fy2024_top10.ami_region)} (p = ${y.drop_fy2024_top10.p_region.toFixed(3)}), against ${f2(y.drop_fy2024_top10.control_ami_mean).replace("-", "−")} ± ${f2(y.drop_fy2024_top10.control_ami_sd)}`);
 });
+
+test("topic jobs: no occupation clearly bridges two clusters", () => {
+  const b = json("docs/weeks/week04/data/jobs.json").bridges;
+  says("jobs-bridges", "None clearly: only");
+  says("jobs-bridges", "chance alone passes.");
+  assert.ok(b.all_occupations < Math.round(b.expected_false_positives), '"fewer than chance alone passes" needs fewer passes than the expected false positives');
+});

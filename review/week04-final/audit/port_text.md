@@ -579,3 +579,90 @@ Slot table extension in use: hero lines (`.w4-hero-text > p.body, p.caution`), o
 
 **Style lint (3.7) on the page text:** no new hits
 
+## RTopicJobs
+
+Slot table extension in use: hero lines (`.w4-hero-text > p.body, p.caution`), opener lines (`header.w4-opener h2, p`) and finding lines (`.w4-finding > div > h3, p`).
+
+### jobs-bridges
+- **q-answer#0**
+  - before: Only … of … pass, fewer than the … a test this strict passes by chance, so no occupation clearly belongs to two clusters.
+  - after: None clearly: only … of … pass, fewer than the … chance alone passes.
+- **para#0**
+  - before: Colours are clusters found by Louvain in the full co-hiring network, named after their largest occupation. We looked for occupations that also belong to a second cluster, with more employer ties there than any rewired network gives them. A ringed node would be one that passes. Click a node to inspect it.
+  - after: Colours are Louvain clusters in the full co-hiring network, named after their largest occupation. A ringed node would mark an occupation with more employer ties to a second cluster than any rewired network gives it; click a node to inspect it.
+
+### jobs-groups
+- **q-answer#0**
+  - before: The clusters follow the official groups only in part: NMI … against … for shuffled labels (AMI … ), over the … occupations in clusters of two or more.
+  - after: Only in part: NMI … against … for shuffled labels.
+- **para#0**
+  - before: The government groups occupations by their first two SOC digits. We compare those labels with the clusters found from hiring patterns. The shuffled bars keep the clusters fixed and scramble only the official labels.
+  - after: The government groups occupations by their first two SOC digits. We compare those labels with the clusters found from hiring patterns. The shuffled labels keep the clusters fixed and scramble only the official groups.
+- **axis-note#1**
+  - before: Normalized mutual information from 0 (unrelated) to 1 (the same groups). Orange: the hiring clusters. Ring: Infomap's clusters. Grey: the official labels shuffled 100 times over the same clusters, up to their highest score.
+  - after: Normalised mutual information from 0 (unrelated) to 1 (the same groups). Orange: the hiring clusters. Ring: Infomap's clusters. Grey: the official labels shuffled 100 times over the same clusters, up to their highest score.
+- **drawers#0**
+  - before: Method We keep certified H-1B filings and identify companies by tax number, as in the other sections. A link counts the companies that filed for both occupations. Filings still on 2010 codes ( … ) move to their 2018 successors through O*NET's 2010-to-2019 crosswalk. Louvain runs 100 times on the full projection and the best modularity run is kept; the runs agree at a median NMI of … . The null rewires the company × occupation network … times, keeping each company's number of occupations and each occupation's number of companies, and projects it again; real and rewired networks are scored on their largest connected piece (z = … ). An occupation's second cluster is the one its employer ties exceed most over the expectation modularity uses (its strength times the cluster's, over twice the total weight). A ratio above 1, our first rule, marks … occupations, but the rewired networks mark … on average with the same cluster labels. So an occupation now counts only when its ratio beats its own ratio in every rewired network. The disparity filter at α = … , as in the place section, keeps … of … links and … occupations. Louvain on that backbone finds … clusters, which match the full network's at NMI … , against … between two runs on the full network: the clusters only partly survive the filter. NMI and AMI leave out occupations alone in a cluster and are compared with 100 shuffles of the major-group labels. The same method on 2024 gives clusters that match 2025 at NMI … on the … occupations both years share. Infomap, the random-walk method, finds … clusters of two or more occupations; they agree with Louvain's at NMI … and match the official groups at … .
+  - after: Method We keep certified H-1B filings and identify companies by tax number, as in the other sections. A link counts the companies that filed for both occupations. Filings still on 2010 codes ( … ) move to their 2018 successors through O*NET's 2010-to-2019 crosswalk. Louvain runs 100 times on the full projection and the best modularity run is kept; the runs agree at a median NMI of … . The null rewires the company × occupation network … times, keeping each company's number of occupations and each occupation's number of companies, and projects it again; real and rewired networks are scored on their largest connected piece (z = … ). An occupation's second cluster is the one its employer ties exceed most over the expectation modularity uses (its strength times the cluster's, over twice the total weight). A ratio above 1, our first rule, marks … occupations, but the rewired networks mark … on average with the same cluster labels. So an occupation now counts only when its ratio beats its own ratio in every rewired network. The disparity filter at α = … , as in the place section, keeps … of … links and … occupations. Louvain on that backbone finds … clusters, which match the full network's at NMI … , against … between two runs on the full network: the clusters only partly survive the filter. NMI and AMI leave out occupations alone in a cluster and are compared with 100 shuffles of the major-group labels. The same method on 2024 gives clusters that match 2025 at NMI … on the … occupations both years share. Infomap, the random-walk method, finds … clusters of two or more occupations; they agree with Louvain's at NMI … and match the official groups at … . The shuffled bars keep the clusters fixed and scramble only the official labels. AMI, a version of NMI adjusted for chance agreement, is … . Both scores cover the … occupations in clusters of two or more.
+
+**Terms added:** 
+- `w4-term-jobs-bridges-louvain`
+- `w4-term-jobs-bridges-rewired`
+- `w4-term-jobs-groups-nmi`
+
+**Fix-ups applied (3.7):** none
+
+**Cards a script builds (skipped, see 3.3):** 
+- cut-skills-direct: a script builds this card, so its text moves in the script (PORT_PLAN 3.3)
+- cut-skills-cluster: a script builds this card, so its text moves in the script (PORT_PLAN 3.3)
+- cut-skills-radar: a script builds this card, so its text moves in the script (PORT_PLAN 3.3)
+- cut-pagerank-explore: a script builds this card, so its text moves in the script (PORT_PLAN 3.3)
+- cut-pagerank-iteration: a script builds this card, so its text moves in the script (PORT_PLAN 3.3)
+
+**Held slots: board number not on the page (stale-number rule):** 
+- jobs-bridges q-answer#0: board numbers [] not in the page slot; board text: override used
+- jobs-groups q-answer#0: board numbers [] not in the page slot; board text: override used
+- jobs-groups axis-note#0: board numbers ['438', '2', '2'] not in the page slot; board text: Every occupation in a cluster of two or more, 438 in all, split by its official major group: the three largest named, the rest grey. Two more clusters hold two occupations each: Home Health Aides (2) and First-Line Supervisors of Housekeeping and Janitorial Workers (2).
+- jobs-groups drawers#0: board numbers [] not in the page slot; board text: override used
+
+**Numbers the board drops (accepted, list in the PR body):** 
+- jobs-bridges: ['two', 'one']
+
+**Numbers in new term definitions (check each is a scale, not a result):** none
+
+**Script-owned text that differs from the board (3.3):** none
+
+**Text that still differs from the board, outside script-owned nodes:** 
+- topic-jobs>rx-topic-bar: page «» board «7 boxes»
+- jobs-bridges: page «…» board «5»
+- jobs-bridges: page «…» board «393»
+- jobs-bridges: page «…» board «19»
+- jobs-groups: page «…» board «0.23»
+- jobs-groups: page «…» board «0.05»
+- jobs-groups: page «the four largest clusters, 429» board «a cluster of two or more, 438»
+- jobs-groups: page «The other two» board «Two more»
+- jobs-groups: page «of two or more» board «»
+- jobs-groups: page «each.» board «each: Home Health Aides (2) and First-Line Supervisors of Housekeeping and Janitorial Workers (2).»
+- jobs-groups: page «…» board «48 filings»
+- jobs-groups: page «…» board «0.99»
+- jobs-groups: page «…» board «20»
+- jobs-groups: page «…» board «285»
+- jobs-groups: page «…» board «145»
+- jobs-groups: page «…» board «452»
+- jobs-groups: page «…» board «0.2»
+- jobs-groups: page «…» board «7,639»
+- jobs-groups: page «…» board «28,158»
+- jobs-groups: page «…» board «345»
+- jobs-groups: page «…» board «8»
+- jobs-groups: page «…» board «0.69»
+- jobs-groups: page «…» board «1.00»
+- jobs-groups: page «…» board «0.59»
+- jobs-groups: page «…» board «388»
+- jobs-groups: page «…» board «9»
+- jobs-groups: page «…» board «0.75»
+- jobs-groups: page «…» board «0.25»
+- jobs-groups: page «…» board «0.19»
+- jobs-groups: page «…» board «438»
+
+**Style lint (3.7) on the page text:** no new hits
+

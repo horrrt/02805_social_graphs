@@ -1624,15 +1624,12 @@
                 <span class="w4-num">1</span>
                 <div>
                   <h2>Which jobs belong to two clusters?</h2>
-                  <p class="w4-answer">Only <span data-jobs="bridges-pass">…</span> of <span data-jobs="bridges-tested">…</span> pass, fewer than the <span data-jobs="bridges-chance">…</span> a test this strict passes by chance, so no occupation clearly belongs to two clusters.</p>
+                  <p class="w4-answer">None clearly: only <span data-jobs="bridges-pass">…</span> of <span data-jobs="bridges-tested">…</span> pass, fewer than the <span data-jobs="bridges-chance">…</span> chance alone passes.</p>
                 </div>
               </header>
               <p class="sub">
-                  Colours are clusters found by Louvain in the full co-hiring
-                  network, named after their largest occupation. We looked for
-                  occupations that also belong to a second cluster, with more
-                  employer ties there than any rewired network gives them.  A ringed node would be one that passes. Click a node to
-                  inspect it.
+                  Colours are <span class="w4-term"><button aria-describedby="w4-term-jobs-bridges-louvain" type="button">Louvain</button><span class="w4-pop" id="w4-term-jobs-bridges-louvain" role="tooltip">A standard method that splits a network into groups whose members link more to each other than to the rest.</span></span> clusters in the full co-hiring
+                  network, named after their largest occupation. A ringed node would mark an occupation with more employer ties to a second cluster than any <span class="w4-term"><button aria-describedby="w4-term-jobs-bridges-rewired" type="button">rewired network</button><span class="w4-pop" id="w4-term-jobs-bridges-rewired" role="tooltip">A random copy of the network that keeps each company's number of occupations and each occupation's number of companies. It shows what chance alone produces.</span></span> gives it; click a node to inspect it.
                 </p>
                 <figure class="w4-figure">
                   <figcaption><b>Occupations passing each rule</b><span>Dot: the real network's count. Dashed mark: the mean over 100 rewired networks with the same cluster labels.</span></figcaption>
@@ -1658,15 +1655,14 @@
                 <span class="w4-num">2</span>
                 <div>
                   <h2>Do the clusters follow official job groups?</h2>
-                  <p class="w4-answer">The clusters follow the official groups only in part: NMI <strong data-jobs="nmi">…</strong> against <strong data-jobs="shuffled">…</strong> for shuffled labels (AMI <strong data-jobs="ami">…</strong>), over the <span data-jobs="scored">…</span> occupations in clusters of two or more.</p>
+                  <p class="w4-answer">Only in part: <span class="w4-term"><button aria-describedby="w4-term-jobs-groups-nmi" type="button">NMI</button><span class="w4-pop" id="w4-term-jobs-groups-nmi" role="tooltip">Normalized mutual information: a score for how alike two groupings are, 1 when they match exactly and 0 when they are unrelated.</span></span> <strong data-jobs="nmi">…</strong> against <strong data-jobs="shuffled">…</strong> for shuffled labels.</p>
                 </div>
               </header>
 
                 <p class="sub">
                   The government groups occupations by their first two <span class="w4-term"><button aria-describedby="w4-term-jobs-soc" type="button">SOC</button><span class="w4-pop" id="w4-term-jobs-soc" role="tooltip">The Standard Occupational Classification, the federal list of occupation codes. Its first two digits name a major group, such as 15 for computer and mathematical occupations.</span></span> digits.
                   We compare those labels with the clusters found from hiring
-                  patterns. The shuffled bars keep the clusters fixed and scramble
-                  only the official labels.
+                  patterns. The shuffled labels keep the clusters fixed and scramble only the official groups.
                 </p>
                 <div class="jobs-grid jobs-groups-grid">
                   <div class="plot">
@@ -1682,10 +1678,7 @@
                   <div class="plot">
                     <h3>How closely the clusters match the official groups</h3>
                     <p class="axis-note">
-                      Normalized mutual information from 0 (unrelated) to 1 (the
-                      same groups). Orange: the hiring clusters. Ring: Infomap's
-                      clusters. Grey: the official labels shuffled 100 times over
-                      the same clusters, up to their highest score.
+                      Normalised mutual information from 0 (unrelated) to 1 (the same groups). Orange: the hiring clusters. Ring: Infomap's clusters. Grey: the official labels shuffled 100 times over the same clusters, up to their highest score.
                     </p>
                     <div class="w4-figure-body" id="chart-job-nmi"></div>
                   </div>
@@ -1699,49 +1692,7 @@
                   </span>
                 </div>
                 <div class="rx-drawers rx-foot">
-                  <details class="rx-drawer"><summary>Method</summary><div class="rx-drawer-body">
-                    <p class="sub">
-                      We keep certified H-1B filings and identify companies by tax
-                      number, as in the other sections. A link counts the companies
-                      that filed for both occupations. Filings still on 2010
-                      codes (<span data-jobs="legacy">…</span>) move to their 2018
-                      successors through O*NET's 2010-to-2019 crosswalk. Louvain runs 100 times on the full projection and
-                      the best modularity run is kept; the runs agree at a median NMI
-                      of <span data-jobs="runs-nmi">…</span>. The null rewires the
-                      company × occupation network <span data-jobs="null-runs">…</span>
-                      times, keeping each company's number of occupations and each
-                      occupation's number of companies, and projects it again; real
-                      and rewired networks are scored on their largest connected
-                      piece (z = <span data-jobs="null-z">…</span>). An occupation's
-                      second cluster is the one its employer ties exceed most over
-                      the expectation modularity uses (its strength times the
-                      cluster's, over twice the total weight). A ratio above 1, our
-                      first rule, marks <span data-jobs="lift1">…</span> occupations,
-                      but the rewired networks mark
-                      <span data-jobs="lift1-chance">…</span> on average with the
-                      same cluster labels. So an occupation now counts only when its
-                      ratio beats its own ratio in every rewired network. The
-                      disparity filter at α = <span data-jobs="bb-alpha">…</span>, as
-                      in the place section, keeps <span data-jobs="bb-links">…</span>
-                      of <span data-jobs="bb-total">…</span> links and
-                      <span data-jobs="bb-occ">…</span> occupations. Louvain on that
-                      backbone finds <span data-jobs="bb-clusters">…</span> clusters,
-                      which match the full network's at NMI
-                      <span data-jobs="bb-nmi">…</span>, against
-                      <span data-jobs="bb-base">…</span> between two runs on the full
-                      network: the clusters only partly survive the filter. NMI and AMI
-                      leave out occupations alone in a cluster and are compared with
-                      100 shuffles of the major-group labels. The same method on
-                      2024 gives clusters that match 2025 at NMI
-                      <span data-jobs="years">…</span> on the
-                      <span data-jobs="shared">…</span> occupations both years share.
-                      Infomap, the random-walk method, finds
-                      <span data-jobs="infomap">…</span> clusters of two or more
-                      occupations; they agree with Louvain's at NMI
-                      <span data-jobs="infomap-louvain">…</span> and match the official
-                      groups at <span data-jobs="infomap-soc">…</span>.
-                    </p>
-                  </div></details>
+                  <details class="rx-drawer"><summary>Method</summary><div class="rx-drawer-body"><p class="sub"> We keep certified H-1B filings and identify companies by tax number, as in the other sections. A link counts the companies that filed for both occupations. Filings still on 2010 codes (<span data-jobs="legacy">…</span>) move to their 2018 successors through O*NET's 2010-to-2019 crosswalk. Louvain runs 100 times on the full projection and the best modularity run is kept; the runs agree at a median NMI of <span data-jobs="runs-nmi">…</span>. The null rewires the company × occupation network <span data-jobs="null-runs">…</span> times, keeping each company's number of occupations and each occupation's number of companies, and projects it again; real and rewired networks are scored on their largest connected piece (z = <span data-jobs="null-z">…</span>). An occupation's second cluster is the one its employer ties exceed most over the expectation modularity uses (its strength times the cluster's, over twice the total weight). A ratio above 1, our first rule, marks <span data-jobs="lift1">…</span> occupations, but the rewired networks mark <span data-jobs="lift1-chance">…</span> on average with the same cluster labels. So an occupation now counts only when its ratio beats its own ratio in every rewired network. The disparity filter at α = <span data-jobs="bb-alpha">…</span>, as in the place section, keeps <span data-jobs="bb-links">…</span> of <span data-jobs="bb-total">…</span> links and <span data-jobs="bb-occ">…</span> occupations. Louvain on that backbone finds <span data-jobs="bb-clusters">…</span> clusters, which match the full network's at NMI <span data-jobs="bb-nmi">…</span>, against <span data-jobs="bb-base">…</span> between two runs on the full network: the clusters only partly survive the filter. NMI and AMI leave out occupations alone in a cluster and are compared with 100 shuffles of the major-group labels. The same method on 2024 gives clusters that match 2025 at NMI <span data-jobs="years">…</span> on the <span data-jobs="shared">…</span> occupations both years share. Infomap, the random-walk method, finds <span data-jobs="infomap">…</span> clusters of two or more occupations; they agree with Louvain's at NMI <span data-jobs="infomap-louvain">…</span> and match the official groups at <span data-jobs="infomap-soc">…</span>. </p> <p class="sub">The shuffled bars keep the clusters fixed and scramble only the official labels. AMI, a version of NMI adjusted for chance agreement, is <strong data-jobs="ami">…</strong>. Both scores cover the <span data-jobs="scored">…</span> occupations in clusters of two or more.</p></div></details>
                 </div>
               </div>
             </details>
