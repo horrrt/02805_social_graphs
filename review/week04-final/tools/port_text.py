@@ -587,6 +587,11 @@ def port(board_name: str, page_src: str, before_cards: dict, overrides: dict) ->
                         registry.update(after_row[0])
                         for k2, v in after_row[1].items():
                             log[k2][:] = v
+                elif k == "drawers":
+                    # A hand-written row goes in one drawer at a time as well.
+                    ot = Tree('<main><div class="rx-drawers">' + new + "</div></main>")
+                    oslot = ot.find(lambda n: "rx-drawers" in n.cls)[0]
+                    per = drawer_edits(ot, oslot, page, pslot, pcard, host, registry, log)
                 if per is not None:
                     if not per:
                         continue

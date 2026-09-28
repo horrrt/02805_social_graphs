@@ -552,16 +552,12 @@
               <div>
                 <p class="sub">
                   Two occupations are linked when the same companies file for both.
-                  Clusters come from the whole network of <span data-jobs="occupations">…</span>
-                  occupations, and they are real: modularity
+                  The clusters across all <span data-jobs="occupations">…</span>
+                  occupations are real: <span class="w4-term"><button aria-describedby="w4-term-jobs-modularity" type="button">modularity</button><span class="w4-pop" id="w4-term-jobs-modularity" role="tooltip">A score for how much more a network links inside its clusters than chance would. Higher means cleaner clusters.</span></span>
                   <span data-jobs="null-real">…</span> against
-                  <span data-jobs="null-null">…</span> for rewired networks in which
-                  every company keeps its number of occupations. Software developers
-                  sit in almost every company's mix, so most links run through
-                  them. The two questions below test the clusters from two sides:
-                  do outsourcing firms and direct employers bundle jobs the same
-                  way, and does any job belong to two bundles at once?
+                  <span data-jobs="null-null">…</span> for <span class="w4-term"><button aria-describedby="w4-term-jobs-rewired" type="button">rewired networks</button><span class="w4-pop" id="w4-term-jobs-rewired" role="tooltip">Random copies of the network in which every company keeps its number of occupations. They show how much clustering chance alone produces.</span></span>.
                 </p>
+                <div class="rx-drawers rx-foot"><details class="rx-drawer"><summary>Background</summary><div class="rx-drawer-body"><p>Software developers sit in almost every company's mix, so most links run through them. The two questions below test the clusters from two sides: do outsourcing firms and direct employers bundle jobs the same way, and does any job belong to two bundles at once?</p></div></details></div>
               </div>
               <figure class="w4-figure">
                 <figcaption><b>Real, not noise</b><span>Occupation clusters against rewired networks in which every company keeps its number of occupations.</span></figcaption>
@@ -581,9 +577,7 @@
               </div>
             </header>
 <p class="sub">
-                Each bar is a pair among the 60 largest occupations. Its length is
-                the number of companies that filed for both, not the number of
-                workers requested. 
+                Each bar is one pair of jobs that the same companies hire for. Its length counts the companies that filed for both; the dark bars are pairs with Software Developers. 
               </p>
               <div class="plot">
                 <h3>The 12 most common job pairs</h3>
@@ -602,11 +596,7 @@
             <div class="w4-two">
               <div>
                 <p class="sub">
-                  Each group gets its own occupation network and its own
-                  Louvain clusters, and the normalized mutual information
-                  (NMI) says how alike the two clusterings are on the 217
-                  occupations that sit in a cluster of two or more on both
-                  sides.
+                  Each group gets its own occupation network and its own <span class="w4-term"><button aria-describedby="w4-term-jobs-split-louvain" type="button">Louvain</button><span class="w4-pop" id="w4-term-jobs-split-louvain" role="tooltip">A standard method that splits a network into groups whose members link more to each other than to the rest.</span></span> clusters. <span class="w4-term"><button aria-describedby="w4-term-jobs-split-nmi" type="button">NMI</button><span class="w4-pop" id="w4-term-jobs-split-nmi" role="tooltip">Normalized mutual information: a score for how alike two groupings are, 1 when they match exactly and 0 when they are unrelated.</span></span> says how alike the two clusterings are.
                 </p>
                 <div class="notice">
                   <span class="ico">💡</span>
@@ -619,7 +609,7 @@
                   </span>
                 </div>
                 <div class="rx-drawers rx-foot">
-                  <details class="rx-drawer"><summary>Method</summary><div class="rx-drawer-body"><p>We split the companies in two: the 817 firms that place 20 or more filings at client sites (21% of all filings) and the 58,379 others. Alone, that number means little: splitting companies into a small and a large group changes the clusters even if nobody behaves differently. So the baseline draws 20 random groups that match the outsourcing firms in both respects: the same number of companies of each size, from the one-filing firms to the giants.</p></div></details>
+                  <details class="rx-drawer"><summary>Method</summary><div class="rx-drawer-body"><p>We split the companies in two: the 817 firms that place 20 or more filings at client sites (21% of all filings) and the 58,379 others. Alone, that number means little: splitting companies into a small and a large group changes the clusters even if nobody behaves differently. So the baseline draws 20 random groups that match the outsourcing firms in both respects: the same number of companies of each size, from the one-filing firms to the giants. NMI is measured on the 217 occupations that sit in a cluster of two or more on both sides.</p></div></details>
                   <details class="rx-drawer"><summary>More numbers</summary><div class="rx-drawer-body"><p>The half-matched baselines show why the match matters: random groups with only the same number of companies hold 1.3% of filings and agree at 0.43 ± 0.09, which would have hidden the difference. At the top the two mixes look alike: software developers are 28% of the outsourcing firms' filings and 33% of the direct employers'. Below that they part: "computer occupations, all other" is 22% of the outsourcing firms' filings and 5% of the direct employers', and direct employers file for 276 occupations the outsourcing firms never touch.</p></div></details>
                 </div>
               </div>
@@ -663,9 +653,7 @@
               <span class="ico">💡</span>
               <span>
                 <b>What to notice</b>
-                A job's number of communities mostly counts its links (Spearman
-                0.84), so the table ranks by communities per link, as the
-                course suggests. Two methods give two different lists of small
+                Two methods give two different lists of small
                 occupations, so we cannot name a job that clearly sits in two
                 clusters.
               </span>
@@ -682,7 +670,7 @@
             </div>
             <div class="rx-drawers rx-foot">
               <details class="rx-drawer"><summary>Method</summary><div class="rx-drawer-body"><p>The cut is chosen where partition density D, the average of how close each community is to a complete one, peaks. On the 28,096 links between 494 occupations it peaks at D = 0.57 with one community holding 85% of the links; 117 communities have three links or more, counting it.</p></div></details>
-              <details class="rx-drawer"><summary>More numbers</summary><div class="rx-drawer-body"><p>The top is small occupations such as communications equipment operators and electrical power-line installers (5 communities over 11 links each). Only 3 of the 6 occupations that section 2's first test flagged as bridges appear in it: credit counselors, licensed practical and licensed vocational nurses, and physical therapist aides.</p></div></details>
+              <details class="rx-drawer"><summary>More numbers</summary><div class="rx-drawer-body"><p>The top is small occupations such as communications equipment operators and electrical power-line installers (5 communities over 11 links each). Only 3 of the 6 occupations that section 2's first test flagged as bridges appear in it: credit counselors, licensed practical and licensed vocational nurses, and physical therapist aides.</p><p>A job's number of communities mostly counts its links (Spearman 0.84), so the table ranks by communities per link, as the course suggests.</p></div></details>
               <details class="rx-drawer"><summary>Table: 15 jobs in the most communities</summary><div class="rx-drawer-body">
                 <table class="ego">
                   <thead>

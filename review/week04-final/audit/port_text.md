@@ -173,3 +173,84 @@ Slot table extension in use: hero lines (`.w4-hero-text > p.body, p.caution`), o
 
 **Style lint (3.7) on the page text:** no new hits
 
+## RS2
+
+Slot table extension in use: hero lines (`.w4-hero-text > p.body, p.caution`), opener lines (`header.w4-opener h2, p`) and finding lines (`.w4-finding > div > h3, p`).
+
+### jobs>w4-card
+- **para#0**
+  - before: Two occupations are linked when the same companies file for both. Clusters come from the whole network of … occupations, and they are real: modularity … against … for rewired networks in which every company keeps its number of occupations. Software developers sit in almost every company's mix, so most links run through them. The two questions below test the clusters from two sides: do outsourcing firms and direct employers bundle jobs the same way, and does any job belong to two bundles at once?
+  - after: Two occupations are linked when the same companies file for both. The clusters across all … occupations are real: modularity … against … for rewired networks.
+- **drawers#0 (added)**
+  - before: (none)
+  - after: Background Software developers sit in almost every company's mix, so most links run through them. The two questions below test the clusters from two sides: do outsourcing firms and direct employers bundle jobs the same way, and does any job belong to two bundles at once?
+
+### jobs-together
+- **para#0**
+  - before: Each bar is a pair among the 60 largest occupations. Its length is the number of companies that filed for both, not the number of workers requested.
+  - after: Each bar is one pair of jobs that the same companies hire for. Its length counts the companies that filed for both; the dark bars are pairs with Software Developers.
+
+### jobs-split
+- **para#0**
+  - before: Each group gets its own occupation network and its own Louvain clusters, and the normalized mutual information (NMI) says how alike the two clusterings are on the 217 occupations that sit in a cluster of two or more on both sides.
+  - after: Each group gets its own occupation network and its own Louvain clusters. NMI says how alike the two clusterings are.
+- **drawers#0**
+  - before: Method We split the companies in two: the 817 firms that place 20 or more filings at client sites (21% of all filings) and the 58,379 others. Alone, that number means little: splitting companies into a small and a large group changes the clusters even if nobody behaves differently. So the baseline draws 20 random groups that match the outsourcing firms in both respects: the same number of companies of each size, from the one-filing firms to the giants. More numbers The half-matched baselines show why the match matters: random groups with only the same number of companies hold 1.3% of filings and agree at 0.43 ± 0.09, which would have hidden the difference. At the top the two mixes look alike: software developers are 28% of the outsourcing firms' filings and 33% of the direct employers'. Below that they part: "computer occupations, all other" is 22% of the outsourcing firms' filings and 5% of the direct employers', and direct employers file for 276 occupations the outsourcing firms never touch.
+  - after: Method We split the companies in two: the 817 firms that place 20 or more filings at client sites (21% of all filings) and the 58,379 others. Alone, that number means little: splitting companies into a small and a large group changes the clusters even if nobody behaves differently. So the baseline draws 20 random groups that match the outsourcing firms in both respects: the same number of companies of each size, from the one-filing firms to the giants. NMI is measured on the 217 occupations that sit in a cluster of two or more on both sides. More numbers The half-matched baselines show why the match matters: random groups with only the same number of companies hold 1.3% of filings and agree at 0.43 ± 0.09, which would have hidden the difference. At the top the two mixes look alike: software developers are 28% of the outsourcing firms' filings and 33% of the direct employers'. Below that they part: "computer occupations, all other" is 22% of the outsourcing firms' filings and 5% of the direct employers', and direct employers file for 276 occupations the outsourcing firms never touch.
+
+### jobs-linkcom
+- **notice#0**
+  - before: What to notice A job's number of communities mostly counts its links (Spearman 0.84), so the table ranks by communities per link, as the course suggests. Two methods give two different lists of small occupations, so we cannot name a job that clearly sits in two clusters.
+  - after: What to notice Two methods give two different lists of small occupations, so we cannot name a job that clearly sits in two clusters.
+- **drawers#0**
+  - before: Method The cut is chosen where partition density D, the average of how close each community is to a complete one, peaks. On the 28,096 links between 494 occupations it peaks at D = 0.57 with one community holding 85% of the links; 117 communities have three links or more, counting it. More numbers The top is small occupations such as communications equipment operators and electrical power-line installers (5 communities over 11 links each). Only 3 of the 6 occupations that section 2's first test flagged as bridges appear in it: credit counselors, licensed practical and licensed vocational nurses, and physical therapist aides. Table: 15 jobs in the most communities Occupation Links Communities Per link
+  - after: Method The cut is chosen where partition density D, the average of how close each community is to a complete one, peaks. On the 28,096 links between 494 occupations it peaks at D = 0.57 with one community holding 85% of the links; 117 communities have three links or more, counting it. More numbers The top is small occupations such as communications equipment operators and electrical power-line installers (5 communities over 11 links each). Only 3 of the 6 occupations that section 2's first test flagged as bridges appear in it: credit counselors, licensed practical and licensed vocational nurses, and physical therapist aides. A job's number of communities mostly counts its links (Spearman 0.84), so the table ranks by communities per link, as the course suggests. Table: 15 jobs in the most communities Occupation Links Communities Per link
+
+**Terms added:** 
+- `w4-term-jobs-modularity`
+- `w4-term-jobs-rewired`
+- `w4-term-jobs-split-louvain`
+- `w4-term-jobs-split-nmi`
+
+**Fix-ups applied (3.7):** none
+
+**Cards a script builds (skipped, see 3.3):** none
+
+**Held slots: board number not on the page (stale-number rule):** 
+- jobs>w4-card para#0: board numbers [] not in the page slot; board text: override used
+- jobs-together para#0: board numbers [] not in the page slot; board text: override used
+- jobs-split notice#0: board numbers ['-4.1'] not in the page slot; board text: What to notice The two clusterings agree at NMI 0.42. Random groups matched on size agree at 0.61 ± 0.04 (z = −4.1), so the outsourcing firms bundle jobs differently from companies like them.
+- jobs-split drawers#0: board numbers [] not in the page slot; board text: override used
+- jobs-linkcom figcaption#1: board numbers ['two'] not in the page slot; board text: The 15 jobs with the most communities per link Each dot is a job; dashed lines mark equal rates. Rings: the two jobs section 2's first test flagged as bridges.
+- jobs-linkcom drawers#0: board numbers [] not in the page slot; board text: override used
+
+**Numbers the board drops (accepted, list in the PR body):** 
+- jobs-together: ['60']
+
+**Numbers in new term definitions (check each is a scale, not a result):** 
+- jobs-split para#0: ['1', '0'] in «Normalized mutual information: a score for how alike two groupings are, 1 when they match exactly and 0 when they are unrelated.»
+
+**Script-owned text that differs from the board (3.3):** none
+
+**Text that still differs from the board, outside script-owned nodes:** 
+- jobs>w4-card: page «…» board «501»
+- jobs>w4-card: page «…» board «0.29»
+- jobs>w4-card: page «…» board «0.03»
+- jobs-split: page «−4.2),» board «−4.1),»
+- jobs-split: page «0.43» board «0.44»
+- jobs-split: page «0.09,» board «0.10,»
+- jobs-split: page «276» board «283»
+- jobs-linkcom: page «three» board «two»
+- jobs-linkcom: page «28,096» board «28,155»
+- jobs-linkcom: page «494» board «501»
+- jobs-linkcom: page «links; 117 communities have» board «links and 121 small ones of»
+- jobs-linkcom: page «more, counting» board «more beside»
+- jobs-linkcom: page «communications equipment operators and electrical power-line installers (5» board «physical therapist aides (4»
+- jobs-linkcom: page «11 links each).» board «10 links).»
+- jobs-linkcom: page «3» board «2»
+- jobs-linkcom: page «6» board «5»
+- jobs-linkcom: page «credit counselors, licensed practical» board «interviewers»
+- jobs-linkcom: page «licensed vocational nurses, and physical therapist aides.» board «electrical power-line installers.»
+
+**Style lint (3.7) on the page text:** no new hits
+
