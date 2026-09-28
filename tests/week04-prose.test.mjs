@@ -290,6 +290,7 @@ test("green cards as the strong tie", () => {
     has(`${name} (${count(low[name].lca_filings)}`);
   }
   has(`Whether outsourcing firms sponsor fewer is section 5B`);
+  has(`The median employer files ${one(now.scored_median_ratio)} green cards per 100 H-1B filings, yet Oracle files ${Math.round(high.Oracle.ratio)} while Amazon, with ${count(low.Amazon.lca_filings)} H-1B filings, files almost none.`);
   has(`Only ${pct(now.perm_employer_key_matches_lca_share)} of certified green cards`);
 });
 
@@ -378,6 +379,8 @@ test("the lottery a year apart", () => {
 
 test("USCIS denials year by year", () => {
   const rows = box("deeper-uscis");
+  const y25 = staffing.uscis_series.find((e) => e.year === 2025);
+  inBox("deeper-uscis")(`Every year USCIS denied placing firms about twice the share it denied direct employers: ${pct(y25.placing.initial_denial_rate, 2)} against ${pct(y25.direct.initial_denial_rate, 2)} in 2025.`);
   for (const e of staffing.uscis_series) {
     const label = e.year === 2026 ? "2026, Oct–Jun" : `${e.year}`;
     const row = `${label} ${pct(e.placing.initial_denial_rate, 2)} ${pct(e.direct.initial_denial_rate, 2)} ${count(e.placing.employers)} ${count(e.direct.employers)}`;

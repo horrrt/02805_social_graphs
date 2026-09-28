@@ -593,6 +593,9 @@ def port(board_name: str, page_src: str, before_cards: dict, overrides: dict) ->
             pairs[id(bslot)] = pslot
             label = f"{k}#{i}"
             okey = f"{board_name}|{key}|{label}"
+            if okey in overrides and overrides[okey] is None:  # held by hand: keep the page
+                log["held"].append((key, label, "held by hand (null override)", []))
+                continue
             snap = (set(registry), {k2: list(v) for k2, v in log.items() if isinstance(v, list)})
             new = clean(board, bslot, page, pslot, pcard, host, registry, log, outer=pslot is None)
             if okey in overrides:
@@ -703,7 +706,8 @@ def drawer_edits(board: Tree, bslot: Node, page: Tree, pslot: Node, pcard: Node,
     def same(a: str, b: str) -> bool:
         def norm(x: str):
             x = x.replace("&#x27;", "'")
-            terms = [(m.group(1), m.group(2)) for m in TERM_RE.finditer(x)]
+            ws = lambda t: re.sub(r"\s+", " ", t).strip()
+            terms = [(ws(m.group(1)), ws(m.group(2))) for m in TERM_RE.finditer(x)]
             ids = sorted(i for i in re.findall(r'\bid="([^"]+)"', x) if not i.startswith("w4-term-"))
             return flatten(x), terms, ids
         return norm(a) == norm(b)

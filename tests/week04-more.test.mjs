@@ -6,9 +6,11 @@ import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
+import { block, flatten } from "./week04-html.mjs";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const json = (name) => JSON.parse(readFileSync(join(ROOT, name), "utf8"));
+const html = readFileSync(join(ROOT, "docs/weeks/week04/index.html"), "utf8");
 
 const more = json("docs/weeks/week04/data/more.json");
 const perm = json("analysis/week04_perm.json").years["2025"];
@@ -47,6 +49,13 @@ test("countries: the top eight and both modularity checks match week04_countries
   });
   assert.deepEqual(more.countries.modularity.unweighted, countries.modularity.wiring_only);
   assert.deepEqual(more.countries.modularity.weighted, countries.modularity.weighted_vs_rewired);
+  // The deeper-countries notice: "a little more than rewired copies", weighted "less".
+  const [u, w] = [countries.modularity.wiring_only, countries.modularity.weighted_vs_rewired];
+  const f2 = (x) => x.toFixed(2);
+  const page = flatten(block(html, "deeper-countries"));
+  assert.ok(page.includes(`Counted once, the country links group a little more than rewired copies (modularity ${f2(u.real)} against ${f2(u.null)}); weighted by shared green cards they group less (${f2(w.real)} against ${f2(w.null)}).`));
+  assert.ok(u.real > u.null && u.real - u.null < 0.1 && u.null_runs_at_or_above_real === 0, '"a little more" needs the real value above every rewired copy by under 0.1');
+  assert.ok(w.real < w.null, '"weighted ... group less" needs the real value below the rewired mean');
 });
 
 test("density: the ten densest metros, New York and the national rate match week04_oews.json", () => {

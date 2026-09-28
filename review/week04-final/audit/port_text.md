@@ -787,3 +787,99 @@ Slot table extension in use: hero lines (`.w4-hero-text > p.body, p.caution`), o
 
 **Style lint (3.7) on the page text:** no new hits
 
+## RTopicPaperwork
+
+Slot table extension in use: hero lines (`.w4-hero-text > p.body, p.caution`), opener lines (`header.w4-opener h2, p`) and finding lines (`.w4-finding > div > h3, p`).
+
+### staffing-lawyers
+- **drawers#0**
+  - before: Background Two law firms share filings when the same employer uses both: for each such employer, the smaller of its filings through either. That network has one giant hub, the case the disparity filter was made for. A weight threshold of four shared filings keeps 771 links and spends 26% of them on the five largest firms. The disparity filter at &alpha; = 0.2 keeps 697 and spends 19%. It also keeps 115 small firms the threshold drops, such as one law office whose link to BBI Law Group is 3 of its 5 shared filings and 3 of BBI's 342. The threshold keeps the larger connected core, 395 firms against the filter's 351. Another 144 firms stay only because they form a pair linked to nobody else, where neither end can judge the link. Louvain finds 34 groups at modularity 0.67, against 0.55 for rewired networks that keep each employer's and each law firm's number of partners (z = 12). The groups are barely regional (NMI 0.05 with Census regions, though above every shuffle), and the largest gather around shared employers. Google, Apple and Meta share Fragomen, Ogletree Deakins and Berry Appleman &amp; Leiden; Tata Consultancy, LTIMindtree and Salesforce share Usilaw, Goel &amp; Anderson and Chugh; Vialto, once PwC's law firm, serves Doordash and Databricks. The groups move from year to year: 2024 and 2025 agree at NMI 0.30 on the 1,041 law firms in both, against 0.88 between two runs of 2025. More numbers Fragomen alone files 78,531 for 3,129 employers. Outsourcing firms mostly do without: they file 52% of their applications with no outside firm and send 3% to the five largest, while direct employers send those five 48%. Per employer the averages are 2% and 30%, and none of 1,000 shuffles of which employer is which produced a gap that wide.
+  - after: Background Two law firms share filings when the same employer uses both: for each such employer, the smaller of its filings through either. That network has one giant hub, the case the disparity filter was made for. A weight threshold of four shared filings keeps 771 links and spends 26% of them on the five largest firms. The disparity filter at α = 0.2 keeps 697 and spends 19%. It also keeps 115 small firms the threshold drops, such as one law office whose link to BBI Law Group is 3 of its 5 shared filings and 3 of BBI's 342. The threshold keeps the larger connected core, 395 firms against the filter's 351. Another 144 firms stay only because they form a pair linked to nobody else, where neither end can judge the link. Louvain finds 34 groups at modularity 0.67, against 0.55 for rewired networks that keep each employer's and each law firm's number of partners (z = 12). The groups are barely regional (NMI 0.05 with Census regions, though above every shuffle), and the largest gather around shared employers. Google, Apple and Meta share Fragomen, Ogletree Deakins and Berry Appleman &amp; Leiden; Tata Consultancy, LTIMindtree and Salesforce share Usilaw, Goel &amp; Anderson and Chugh; Vialto, once PwC's law firm, serves Doordash and Databricks. The groups move from year to year: 2024 and 2025 agree at NMI 0.30 on the 1,041 law firms in both, against 0.88 between two runs of 2025. More numbers Fragomen alone files 78,531 for 3,129 employers. Outsourcing firms mostly do without: they file 52% of their applications with no outside firm and send 3% to the five largest, while direct employers send those five 48%. Per employer the averages are 2% and 30%, and none of 1,000 shuffles of which employer is which produced a gap that wide.
+
+### staffing-lottery
+- **q-answer#0**
+  - before: Registering the same workers is spread across the staffing groups; it does not mark a cluster of firms.
+  - after: No. Firms that register the same workers are spread across the staffing groups.
+- **para#0 (added before the drawers)**
+  - before: (none)
+  - after: We took the 2,942 firms in the 2023 staffing network that sent 20 or more registrations to the March 2023 draw, and split them at the median share of workers another employer had also registered (78%).
+- **drawers#0**
+  - before: Method We took the 2,942 firms in the 2023 staffing network that sent 20 or more registrations to the March 2023 draw, and split them at the median share of workers another employer had also registered (78%). More numbers If the high firms clustered, a high firm's Louvain group would be mostly high firms. It is 51.2% high, against 50.0% when the labels are shuffled (p = 0.001 over 1,000 shuffles), and AMI with the groups is 0.004 over 100 runs. The March 2022 draw against the 2022 network gives 51.9% against 50.0%. The lottery data is USCIS's, obtained by Bloomberg News.
+  - after: More numbers If the high firms clustered, a high firm's Louvain group would be mostly high firms. It is 51.2% high, against 50.0% when the labels are shuffled (p = 0.001 over 1,000 shuffles), and AMI with the groups is 0.004 over 100 runs. The March 2022 draw against the 2022 network gives 51.9% against 50.0%. The lottery data is USCIS's, obtained by Bloomberg News.
+
+### deeper-uscis
+- **q-answer#0**
+  - before: Share of first-time H-1B petitions USCIS denied, for employers with 20 or more certified filings that year. Placing firms put half or more of their filings at a client.
+  - after: Share of first-time H-1B petitions USCIS denied, for employers with 20 or more certified filings that year.
+- **para#0**
+  - before: From the hub's Tableau export; 2026 runs October to June.
+  - after: From the hub's Tableau export; 2026 runs October to June. Placing firms put half or more of their filings at a client.
+
+### deeper-perm
+- **q-answer#0**
+  - before: An H-1B filing is a weak tie between an employer and a worker; a green-card filing (PERM) is a strong one, because the employer sponsors the worker to stay.
+  - after: An H-1B filing is a weak tie between employer and worker; a green-card filing (PERM) is a strong one.
+- **para#0 (added before the drawers)**
+  - before: (none)
+  - after: Only 65% of certified green cards come from an employer we can match to an H-1B filer.
+- **notice#0 (added before the drawers)**
+  - before: (none)
+  - after: 💡 What to notice The median employer files 13.2 green cards per 100 H-1B filings, yet Oracle files 95 while Amazon, with 22,509 H-1B filings, files almost none.
+- **drawers#0**
+  - before: Method Only 65% of certified green cards come from an employer we can match to an H-1B filer. More numbers In 2025 the median employer with 20 or more H-1B filings filed 13.2 green cards per 100 of them, and the two counts rank employers only loosely alike (Spearman 0.50). As with degree and strength in the course, the exceptions carry the story: Oracle filed 95 green cards per 100 H-1B filings, Uber 64 and Salesforce 45, while Amazon (22,509 H-1B filings), Cognizant (11,085) and Google (8,657) filed almost none. Whether outsourcing firms sponsor fewer is section 5B . Clients sponsor their own staff too: Wells Fargo receives 1,547 H-1B filings from vendors, files 624 of its own and 167 green cards. Firms with more clients sponsor slightly more green cards, not fewer (Spearman 0.13).
+  - after: More numbers In 2025 the median employer with 20 or more H-1B filings filed 13.2 green cards per 100 of them, and the two counts rank employers only loosely alike (Spearman 0.50). As with degree and strength in the course, the exceptions carry the story: Oracle filed 95 green cards per 100 H-1B filings, Uber 64 and Salesforce 45, while Amazon (22,509 H-1B filings), Cognizant (11,085) and Google (8,657) filed almost none. Whether outsourcing firms sponsor fewer is section 5B . Clients sponsor their own staff too: Wells Fargo receives 1,547 H-1B filings from vendors, files 624 of its own and 167 green cards. Firms with more clients sponsor slightly more green cards, not fewer (Spearman 0.13).
+
+### deeper-countries
+- **q-answer#0**
+  - before: The groups match world regions (AMI 0.10) and Week 3's migration communities (0.10) only weakly: green-card hiring does not sort countries into regional blocs.
+  - after: Green-card hiring does not sort countries into regional blocs.
+- **para#0 (added before the drawers)**
+  - before: (none)
+  - after: We link two countries when the same employers file green cards for citizens of both, then ask whether those links form regional groups. They barely do: the groups match world regions only weakly.
+- **notice#0 (added before the drawers)**
+  - before: (none)
+  - after: 💡 What to notice Counted once, the country links group a little more than rewired copies (modularity 0.10 against 0.06); weighted by shared green cards they group less (0.26 against 0.40).
+- **drawers#0**
+  - before: Method A worker's citizenship is personal, so we read it only in memory and keep counts per country and employer, dropping every count under 10. That drops 96% of the cells and 43% of 2023's certified green-card filings, and no row about a person leaves the script. More numbers India holds 52% of those filings and China 12%; among lottery registrations, India holds 77% in the March 2022 draw and 81% in March 2023. Link two countries by the green cards their citizens receive at the same employers and 55 countries remain. Louvain splits them into three groups. Counted once each, the links group a little more than rewired copies (modularity 0.10 against 0.06); weighted by shared green cards, they group less (0.26 against 0.40). India and China share one group with Canada, Belarus and Costa Rica, and India keeps 79% of its weight inside it. Among the ten largest sponsors, Google's green cards are the most varied, 4.7 effective countries with India at 30%, against Amazon's 3.0 at 67%. The third group gathers the Philippines, Kenya, Ghana, Zimbabwe, Ethiopia, Cameroon and Jamaica. Wayne Farms, a poultry company, filed 832 green cards in the counted cells, none for Indian citizens.
+  - after: Method A worker's citizenship is personal, so we read it only in memory and keep counts per country and employer, dropping every count under 10. That drops 96% of the cells and 43% of 2023's certified green-card filings, and no row about a single person is ever saved. More numbers India holds 52% of those filings and China 12%; among lottery registrations, India holds 77% in the March 2022 draw and 81% in March 2023. Link two countries by the green cards their citizens receive at the same employers and 55 countries remain. Louvain splits them into three groups. Counted once each, the links group a little more than rewired copies (modularity 0.10 against 0.06); weighted by shared green cards, they group less (0.26 against 0.40). India and China share one group with Canada, Belarus and Costa Rica, and India keeps 79% of its weight inside it. Among the ten largest sponsors, Google's green cards are the most varied, 4.7 effective countries with India at 30%, against Amazon's 3.0 at 67%. The third group gathers the Philippines, Kenya, Ghana, Zimbabwe, Ethiopia, Cameroon and Jamaica. Wayne Farms, a poultry company, filed 832 green cards in the counted cells, none for Indian citizens. The groups match world regions (AMI 0.10) and Week 3's migration communities (0.10) only weakly: green-card hiring does not sort countries into regional blocs.
+
+**Terms added:** 
+- `w4-term-staffing-lawyers-disparity`
+- `w4-term-staffing-lawyers-louvain`
+- `w4-term-staffing-lawyers-modularity`
+- `w4-term-staffing-lawyers-nmi`
+- `w4-term-staffing-lottery-ami`
+- `w4-term-deeper-lottery-registrations`
+- `w4-term-deeper-uscis-hub`
+- `w4-term-deeper-perm-perm`
+- `w4-term-deeper-perm-spearman`
+- `w4-term-deeper-countries-effective`
+
+**Fix-ups applied (3.7):** none
+
+**Cards a script builds (skipped, see 3.3):** none
+
+**Held slots: board number not on the page (stale-number rule):** 
+- deeper-lottery para#0: board numbers [] not in the page slot; board text: held by hand (null override)
+- deeper-lottery notice#0: board numbers ['2.2', '4.0', '2.9', '2025'] not in the page slot; board text: What to notice The two draws this box can split by employer were the most crowded: registrations per selection rose from 2.2 in March 2020 to 4.0 in March 2023, then fell to 2.9 by March 2025 once each worker counted once.
+- deeper-lottery drawers#0: board numbers ['1'] not in the page slot; board text: Method The every-draw chart divides eligible by selected registrations from the historical table on USCIS's H-1B Electronic Registration Process page; its selections include later rounds, so its ratio is lower than the one per approved petition. More numbers Between the March 2022 and March 2023 dra
+- deeper-lottery figcaption#0: board numbers ['2024'] not in the page slot; board text: Every draw since 2020 Eligible registrations per selected registration, from USCIS's published totals; the line under each date is the share of registrations for a worker registered more than once. From March 2024 USCIS drew by person, not by registration.
+- deeper-uscis para#0: board numbers [] not in the page slot; board text: override used
+
+**Numbers the board drops (accepted, list in the PR body):** none
+
+**Numbers in new term definitions (check each is a scale, not a result):** none
+
+**Script-owned text that differs from the board (3.3):** none
+
+**Text that still differs from the board, outside script-owned nodes:** 
+- topic-paperwork>rx-topic-bar: page «» board «6 boxes»
+- deeper-lottery: page «Method» board «»
+- deeper-lottery: page «» board «💡 What to notice The two draws this box can split by employer were the most crowded: registrations per selection rose from 2.2 in March 2020 to 4.0 in March 2023, then fell to 2.9 by March 2025 once each worker counted once. Method The every-draw chart divides eligible by selected registrations from the historical table on USCIS's H-1B Electronic Registration Process page; its selections include later rounds, so its ratio is lower than the one per approved petition.»
+- deeper-lottery: page «totals, counting every selection round of» board «totals;»
+- deeper-lottery: page «year; the figure» board «line»
+- deeper-lottery: page «The dashed line marks where» board «From March 2024»
+- deeper-lottery: page «began to draw» board «drew»
+
+**Style lint (3.7) on the page text:** no new hits
+
