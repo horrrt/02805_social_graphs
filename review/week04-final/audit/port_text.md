@@ -336,3 +336,58 @@ Slot table extension in use: hero lines (`.w4-hero-text > p.body, p.caution`), o
 
 **Style lint (3.7) on the page text:** no new hits
 
+## RS4
+
+Slot table extension in use: hero lines (`.w4-hero-text > p.body, p.caution`), opener lines (`header.w4-opener h2, p`) and finding lines (`.w4-finding > div > h3, p`).
+
+### footprint>w4-intro
+- **para#0**
+  - before: A handful of companies file a large share of everything: the five largest placing firms (Tata Consultancy Services, Cognizant, Infosys, HCL, Compunnel) file 5.6% of the filings in the 40 metros, and the ten largest filers of any kind 19.1%. A company that files everywhere links every pair of metros and every pair of its jobs, so its footprint could be all the structure there is.
+  - after: The ten largest filers file 19.1% of the filings in the 40 metros, and the five largest placing firms 5.6%. A company that files everywhere links every pair of metros and jobs, so its footprint could be all the structure there is.
+- **notice#0**
+  - before: What to notice Without the ten largest filers (Amazon, Cognizant, Google, Microsoft, EY, Meta, Deloitte, Apple, Tata Consultancy Services, Infosys), the metro groups match Census regions at AMI 0.13 (p = 0.013), against 0.06 for the full network and 0.01 ± 0.03 for random cuts, 4.6 standard deviations away. The national employers are what hide the regional pattern. The job clusters hold at NMI 0.90 and 0.81, but random cuts of the same volume leave them closer still (0.96 and 0.88, 3.1 and 3.9 standard deviations away), so the biggest firms do shape which jobs cluster together.
+  - after: What to notice Without the ten largest filers, the metro groups match Census regions at AMI 0.13, against 0.06 for the full network: the national employers hide the regional pattern. The job clusters hold (NMI 0.90 and 0.81) but shift more than random cuts of the same volume do.
+- **drawers#0**
+  - before: Method We removed each set, reran 100 Louvain runs on the metro network and on the job network (weighted here by filings, since a count of companies barely moves when ten of 59,196 leave), and compared the groups with the full network's. Removing less data changes the groups too, so each removal sits beside 50 random cuts of companies that remove the same share of filings. More numbers Removing the five placing firms changes little: the groups stay close to the full network's (NMI 0.92, random cuts 0.85 ± 0.14), and the regional match rises only to 0.09, inside the range of random cuts (0.04 ± 0.05). Without the ten largest filers the clusters also sharpen, modularity rising from 0.28 to 0.32. Every version still beats its own rewired networks by a wide margin (z = 25 or more).
+  - after: Background The five largest placing firms are Tata Consultancy Services, Cognizant, Infosys, HCL and Compunnel. The ten largest filers are Amazon, Cognizant, Google, Microsoft, EY, Meta, Deloitte, Apple, Tata Consultancy Services and Infosys. Method We removed each set, reran 100 Louvain runs on the metro network and on the job network (weighted here by filings, since a count of companies barely moves when ten of 59,196 leave), and compared the groups with the full network's. Removing less data changes the groups too, so each removal sits beside 50 random cuts of companies that remove the same share of filings. More numbers Removing the five placing firms changes little: the groups stay close to the full network's (NMI 0.92, random cuts 0.85 ± 0.14), and the regional match rises only to 0.09, inside the range of random cuts (0.04 ± 0.05). Without the ten largest filers the clusters also sharpen, modularity rising from 0.28 to 0.32. Every version still beats its own rewired networks by a wide margin (z = 25 or more). Without the ten largest filers the regional match has p = 0.013, against 0.01 ± 0.03 for random cuts, 4.6 standard deviations away. Random cuts leave the job clusters closer to the full network's (0.96 and 0.88, 3.1 and 3.9 standard deviations away), so the biggest firms do shape which jobs cluster together.
+
+### footprint-which
+- **para#0**
+  - before: We removed each of the ten largest filers alone, and then the top 1, 2, 3 … 20 filers in turn, each time beside random cuts of companies that remove the same share of filings (50 for a single firm, 20 for each step of the sweep).
+  - after: We removed each of the ten largest filers alone, then the top 1, 2, 3 … 20 filers in turn. Each removal sits beside random cuts of companies that remove the same share of filings.
+- **notice#0**
+  - before: What to notice Amazon files 5.1% of the filings in the 40 metros. Without it alone, the metro groups match Census regions at AMI 0.14 (3.5 standard deviations above its random cuts), more than the 0.13 without all ten. No other single firm pushes the match up beyond its random cuts: removing EY, Meta, Deloitte or Apple alone tips Louvain into a two-group split that ignores regions (AMI −0.005).
+  - after: What to notice Amazon files 5.1% of the filings in the 40 metros. Without it alone, the metro groups match Census regions at AMI 0.14, more than the 0.13 without all ten.
+- **drawers#0**
+  - before: More numbers Removed in rank order, the largest filers keep the match above random cuts at every step from one to twenty, but not smoothly: it dips to about 0.07 without the top 17 to 19, where several partitions compete, and peaks at 0.20 without the top 20. 2024 tells the same story more strongly. Its full network shows no regional match (AMI −0.005); without its ten largest filers the match is 0.22 (p = 0.001), against −0.01 ± 0.01 for random cuts.
+  - after: Method 50 random cuts for a single firm, 20 for each step of the sweep. More numbers Amazon's 0.14 sits 3.5 standard deviations above its random cuts. No other single firm pushes the match up beyond its random cuts: removing EY, Meta, Deloitte or Apple alone tips Louvain into a two-group split that ignores regions (AMI −0.005). Removed in rank order, the largest filers keep the match above random cuts at every step from one to twenty, but not smoothly: it dips to about 0.07 without the top 17 to 19, where several partitions compete, and peaks at 0.20 without the top 20. 2024 tells the same story more strongly. Its full network shows no regional match (AMI −0.005); without its ten largest filers the match is 0.22 (p = 0.001), against −0.01 ± 0.01 for random cuts.
+
+**Terms added:** 
+- `w4-term-footprint-placing`
+- `w4-term-footprint-ami`
+- `w4-term-footprint-nmi`
+- `w4-term-footprint-louvain`
+
+**Fix-ups applied (3.7):** none
+
+**Cards a script builds (skipped, see 3.3):** none
+
+**Held slots: board number not on the page (stale-number rule):** 
+- footprint>w4-intro notice#0: board numbers [] not in the page slot; board text: override used
+- footprint>w4-intro drawers#0: board numbers [] not in the page slot; board text: override used
+
+**Numbers the board drops (accepted, list in the PR body):** none
+
+**Numbers in new term definitions (check each is a scale, not a result):** 
+- footprint>w4-intro notice#0: ['0', 'two'] in «Adjusted mutual information: how closely two ways of grouping the same items agree. 0 is what chance gives, 1 is a perfect match.»
+- footprint>w4-intro notice#0: ['0', 'two'] in «Normalised mutual information: how much two groupings of the same items agree, from 0 (unrelated) to 1 (identical).»
+
+**Script-owned text that differs from the board (3.3):** none
+
+**Text that still differs from the board, outside script-owned nodes:** 
+- footprint>w4-intro: page «0.81)» board «0.82)»
+- footprint>w4-intro: page «3.1» board «3.0»
+- footprint>w4-intro: page «3.9» board «3.2»
+
+**Style lint (3.7) on the page text:** no new hits
+

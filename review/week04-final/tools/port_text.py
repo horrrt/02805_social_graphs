@@ -641,7 +641,10 @@ def drawer_edits(board: Tree, bslot: Node, page: Tree, pslot: Node, pcard: Node,
         return flatten(tree.inner(s)) if s is not None else ""
 
     def same(a: str, b: str) -> bool:
-        return flatten(a).replace("&#x27;", "'") == flatten(b).replace("&#x27;", "'")
+        def norm(x: str):
+            x = x.replace("&#x27;", "'")
+            return flatten(x), [(m.group(1), m.group(2)) for m in TERM_RE.finditer(x)]
+        return norm(a) == norm(b)
 
     bd = [d for d in bslot.children if d.tag == "details"]
     pd = [d for d in pslot.children if d.tag == "details"]

@@ -197,8 +197,9 @@ test("section 4: without the biggest firms", () => {
   const has = (t) => assert.ok(lead.includes(t), `section 4 should say "${t}"`);
   const [full, short, shortc, top10, top10c] = ["full", "drop_shortlist", "control_shortlist", "drop_top10_filings", "control_top10_filings"].map((id) => at("metros", id));
   const vs = d.finding.metros;
-  has(`file ${pct(short.filings_removed_share, 1)} of the filings in the 40 metros, and the ten largest filers of any kind ${pct(top10.filings_removed_share, 1)}`);
-  has(`match Census regions at AMI ${f2(top10.ami_region)} (p = ${top10.p_region.toFixed(3)}), against ${f2(full.ami_region)} for the full network and ${f2(top10c.ami_region)} ± ${f2(top10c.ami_region_sd)}`);
+  has(`The ten largest filers file ${pct(top10.filings_removed_share, 1)} of the filings in the 40 metros, and the five largest placing firms ${pct(short.filings_removed_share, 1)}`);
+  has(`match Census regions at AMI ${f2(top10.ami_region)}, against ${f2(full.ami_region)} for the full network`);
+  has(`the regional match has p = ${top10.p_region.toFixed(3)}, against ${f2(top10c.ami_region)} ± ${f2(top10c.ami_region_sd)} for random cuts`);
   has(`${vs.drop_top10_vs_control.ami_region_vs_control_sd.toFixed(1)} standard deviations away`);
   assert.ok(vs.drop_top10_vs_control.ami_region_vs_control_sd > 2, "the regional turn must stand clear of random cuts");
   has(`(NMI ${f2(short.nmi_vs_full)}, random cuts ${f2(shortc.nmi_vs_full)} ± ${f2(shortc.nmi_vs_full_sd)})`);
@@ -206,7 +207,8 @@ test("section 4: without the biggest firms", () => {
   assert.ok(Math.abs(vs.drop_shortlist_vs_control.ami_region_vs_control_sd) < 2 && Math.abs(vs.drop_shortlist_vs_control.nmi_vs_control_sd) < 2);
   const [js, jsc, jt, jtc] = ["drop_shortlist", "control_shortlist", "drop_top10_filings", "control_top10_filings"].map((id) => at("jobs", id));
   const jv = d.finding.jobs;
-  has(`hold at NMI ${f2(js.nmi_vs_full)} and ${f2(jt.nmi_vs_full)}`);
+  has(`The job clusters hold (NMI ${f2(js.nmi_vs_full)} and ${f2(jt.nmi_vs_full)}) but shift more than random cuts of the same volume do`);
+  assert.ok(Math.max(jv.drop_shortlist_vs_control.nmi_vs_control_sd, jv.drop_top10_vs_control.nmi_vs_control_sd) < -2, '"shift more than random cuts" needs both 2 sd below them');
   has(`(${f2(jsc.nmi_vs_full)} and ${f2(jtc.nmi_vs_full)}, ${(-jv.drop_shortlist_vs_control.nmi_vs_control_sd).toFixed(1)} and ${(-jv.drop_top10_vs_control.nmi_vs_control_sd).toFixed(1)} standard deviations away)`);
   has(`from ${f2(at("jobs", "full").Q)} to ${f2(jt.Q)}`);
   const minZ = Math.min(...["metros", "jobs"].flatMap((part) => d[part].variants.filter((v) => !v.control).map((v) => v.z)));
@@ -221,7 +223,8 @@ test("section 4: which firm hides the regions", () => {
   const firm = (name) => d.single.find((s) => s.firm === name);
   const amazon = firm("Amazon");
   has(`Amazon files ${pct(amazon.filings_removed_share, 1)} of the filings`);
-  has(`at AMI ${f2(amazon.ami_region)} (${amazon.ami_vs_control_sd.toFixed(1)} standard deviations above its random cuts), more than the ${f2(f.q_single_firm.all10_ami_region)} without all ten`);
+  has(`match Census regions at AMI ${f2(amazon.ami_region)}, more than the ${f2(f.q_single_firm.all10_ami_region)} without all ten`);
+  has(`Amazon's ${f2(amazon.ami_region)} sits ${amazon.ami_vs_control_sd.toFixed(1)} standard deviations above its random cuts`);
   assert.ok(amazon.ami_region > f.q_single_firm.all10_ami_region, '"more than without all ten" needs Amazon alone above the ten-firm value');
   // Only Amazon pushes the match up beyond its random cuts.
   const up = d.single.filter((s) => s.ami_vs_control_sd >= 2).map((s) => s.firm);
