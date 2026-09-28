@@ -618,11 +618,11 @@
    because the radar lands at the end of the box when it cannot find the
    cluster card. */
 
-#cut-skills[data-show="direct"] article.w4-card:not(#cut-skills-direct),
-#cut-skills[data-show="cluster"] article.w4-card:not(#cut-skills-cluster),
-#cut-skills[data-show="radar"] article.w4-card:not(#cut-skills-radar),
-#cut-pagerank[data-show="explore"] article.w4-card:not(#cut-pagerank-explore),
-#cut-pagerank[data-show="iteration"] article.w4-card:not(#cut-pagerank-iteration) {
+#cut-skills[data-show="direct"] .w4-card:not(#cut-skills-direct),
+#cut-skills[data-show="cluster"] .w4-card:not(#cut-skills-cluster),
+#cut-skills[data-show="radar"] .w4-card:not(#cut-skills-radar),
+#cut-pagerank[data-show="explore"] .w4-card:not(#cut-pagerank-explore),
+#cut-pagerank[data-show="iteration"] .w4-card:not(#cut-pagerank-iteration) {
   display: none;
 }
 
