@@ -510,6 +510,13 @@ function insertAfterS2(body, article) {
     }
   });
   mo.observe(body, { childList: true });
+  // If the S1 and S2 cards never land (their data failed to load), the radar
+  // still has its own data: mount it at the end of the box instead of waiting.
+  setTimeout(() => {
+    if (article.isConnected) return;
+    mo.disconnect();
+    body.append(article);
+  }, 5000);
 }
 
 function resizeWhenVisible(radar) {

@@ -109,7 +109,7 @@ function drawQ1(deep, years) {
       ["Name a client company", [deep.q1.client_company_share, 1 - deep.q1.client_company_share]],
     ],
     ["yes", "no"], ["--w4-vis-client", "--w4-band"],
-    { aria: "Share of FY2025's 537,796 certified filings that place a worker at a client, and that name a client company", digits: 1 },
+    { aria: `Share of FY2025's ${fy.certified_filings.toLocaleString("en-US")} certified filings that place a worker at a client, and that name a client company`, digits: 1 },
   ));
 
   const series = Object.fromEntries(years.uscis_series.map((e) => [e.year, e]));
@@ -322,7 +322,9 @@ function drawTies(deep) {
       ["Direct employers", ["1", "2", "3", "4"].map((k) => wd.direct[k])],
     ],
     ["Level I", "Level II", "Level III", "Level IV"],
-    ["--w4-group-2", "--w4-group-0", "--w4-accent", "--w4-group-1"],
+    // An ordered scale, so one ink ramp: the metro-group hues and the direct-
+    // employer blue each mean something else on this page.
+    ["--w4-level-1", "--w4-level-2", "--w4-level-3", "--w4-level-4"],
     { aria: "Share of each kind of employer's FY2025 filings at each prevailing-wage level" },
   ));
 }

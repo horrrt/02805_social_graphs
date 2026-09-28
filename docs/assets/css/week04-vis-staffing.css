@@ -43,3 +43,12 @@
 :root {
   --w4-vis-client: #b4610f;
 }
+
+/* Prevailing-wage levels I to IV: one ink ramp, darkest at level I, so the
+   white label on the first segment and the ink labels on the rest all read. */
+.corridor {
+  --w4-level-1: #1f3558;
+  --w4-level-2: #7d95b5;
+  --w4-level-3: #aebfd6;
+  --w4-level-4: #d6e0ec;
+}

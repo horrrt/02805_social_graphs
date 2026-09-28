@@ -118,8 +118,7 @@ function drawPerm(data, host) {
       badgeW: 20,
       rowH: 44,
       top: 20,
-      ref: data.median_ratio,
-      refLabel: `median employer ${data.median_ratio.toFixed(1)}`,
+      ref: [data.median_ratio, `median employer ${data.median_ratio.toFixed(1)}`],
       aria: "Green cards per 100 H-1B filings for six employers named in the text",
     }),
   );

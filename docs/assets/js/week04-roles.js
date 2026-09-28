@@ -61,17 +61,27 @@ function valuesFor(s) {
 
 // ---------------------------------------------------------------- the chart
 
-// FY2026 is nine months, not twelve; shaded in the full-year window so its
-// shorter bar is not read as a real fall against a full FY2025, attached to
-// whichever series draws first so it sits behind the stack.
-function partialYearMark(xLabels) {
-  if (state.window !== "full") return undefined;
-  return {
+// FY2026 is nine months, not twelve; in the full-year window the stretch
+// from FY2025 to FY2026 is shaded, so its shorter height is not read as a
+// real fall. The mark lives on its own empty series, which the legend never
+// lists, so hiding a named series cannot take the shading with it.
+function partialYearSeries(xLabels) {
+  if (state.window !== "full") return [];
+  return [{
+    id: "partial-year",
+    name: "partial-year",
+    type: "line",
+    data: [],
     silent: true,
-    itemStyle: { color: token("--w4-band") },
-    label: { show: true, position: "insideTop", formatter: "Partial year", color: token("--ink-mute"), fontSize: 10.5 },
-    data: [[{ xAxis: xLabels[4] }, { xAxis: xLabels[4] }]],
-  };
+    tooltip: { show: false },
+    markArea: {
+      silent: true,
+      itemStyle: { color: token("--w4-band"), opacity: 0.5 },
+      label: { show: true, position: "insideTopRight", formatter: `FY${data.partial.year}: ${data.partial.window} only`, color: token("--ink-mute"), fontSize: 10.5 },
+      data: [[{ xAxis: xLabels[3] }, { xAxis: xLabels[4] }]],
+    },
+    z: 0,
+  }];
 }
 
 function buildSeries(xLabels) {
@@ -88,7 +98,6 @@ function buildSeries(xLabels) {
     lineStyle: { width: 0.5 },
     emphasis: { focus: "series" },
     itemStyle: { color: colourOf(state.split, s, i) },
-    markArea: i === 0 ? partialYearMark(xLabels) : undefined,
     data: valuesFor(s).map((v, yi) => {
       const t = totals[YEARS[yi]];
       return state.scale === "percent" && t ? (100 * v) / t : v;
@@ -126,7 +135,7 @@ function render() {
         },
         splitLine: { lineStyle: { color: token("--w4-grid") } },
       },
-      series: buildSeries(xLabels),
+      series: [...partialYearSeries(xLabels), ...buildSeries(xLabels)],
       tooltip: {
         trigger: "axis",
         confine: true,
@@ -150,7 +159,7 @@ function tooltipHtml(points) {
     .map((p) => {
       const s = series.find((row) => row.name === p.seriesName);
       const v = valuesFor(s)[yi];
-      const top = s && s.top_in && s.top_in.length ? ` <i>(top ${state.split === "employer" ? 10 : state.split === "groups" ? 7 : 10} in ${s.top_in.join(", ")})</i>` : "";
+      const top = s && s.top_in && s.top_in.length ? ` <i>(top ${data.splits[state.split].top_n} in ${s.top_in.join(", ")})</i>` : "";
       return { html: `${p.marker}${esc(p.seriesName)}: <b>${num(v)}</b> (${pct(v / total)})${top}`, v };
     })
     .sort((a, b) => b.v - a.v);
@@ -174,8 +183,8 @@ function renderLegend() {
     const label = document.createElement("span");
     label.textContent = s.name;
     btn.append(sw, label);
-    btn.addEventListener("mouseenter", () => chart.dispatchAction({ type: "highlight", name: s.name }));
-    btn.addEventListener("mouseleave", () => chart.dispatchAction({ type: "downplay", name: s.name }));
+    btn.addEventListener("mouseenter", () => chart.dispatchAction({ type: "highlight", seriesName: s.name }));
+    btn.addEventListener("mouseleave", () => chart.dispatchAction({ type: "downplay", seriesName: s.name }));
     btn.addEventListener("click", () => {
       if (hidden[state.split].has(s.name)) hidden[state.split].delete(s.name);
       else hidden[state.split].add(s.name);
@@ -246,11 +255,17 @@ function renderReveal() {
   if (revealsEl.childElementCount) return;
   const legacy = Object.values(data.legacy_recoded).reduce((a, b) => a + b, 0);
   const uncoded = Object.values(data.uncoded).reduce((a, b) => a + b, 0);
+  const meta = data.meta || {};
+  const codes = meta.legacy_codes ? `the ${num(meta.legacy_codes)} ` : "the ";
+  const crosswalk = meta.crosswalk_codes
+    ? `, ${num(meta.crosswalk_codes)} detailed O*NET codes among them through O*NET's own 2010-to-2019 crosswalk`
+    : "";
+  const p = data.partial;
   const text =
     "Counts are certified H-1B filings only. Occupations are 2018 SOC codes; " +
-    `${num(legacy)} filings still on the twelve 2010 computer-occupation codes are moved to their 2018 successors ` +
+    `${num(legacy)} filings still on ${codes}2010 computer-occupation codes are moved to their 2018 successors${crosswalk} ` +
     `before ranking, and ${num(uncoded)} filings whose SOC code does not parse fall into "All other occupations" ` +
-    'and "Other groups". FY2026 covers October 2025 to June 2026, nine months, not a year: "Oct to Jun only" ' +
+    `and "Other groups". FY${p.year} covers ${p.window} only, ${p.months} months: "Oct to Jun only" ` +
     "compares it with the same months of earlier years.";
   revealsEl.appendChild(reveal("w4-pop-roles-how", "How we counted", text));
 }

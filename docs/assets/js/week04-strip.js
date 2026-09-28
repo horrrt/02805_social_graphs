@@ -68,7 +68,7 @@ function dot(X, cy, value, { color, hollow, tip }) {
  * Each row: { label, sub, real, realLabel, realTip, hollow, color, base: [mean, sd],
  * baseLabel, baseTip, ci: [lo, hi], ciTip, ref: [value, label], badge, divider, bold }.
  */
-export function stripChart(rows, { domain, ticks, fmt, width = 556, labelW = 170, rowH = 60, badgeW = 70, axisTitle, aria, zeroLine, top = 10 }) {
+export function stripChart(rows, { domain, ticks, fmt, width = 556, labelW = 170, rowH = 60, badgeW = 70, axisTitle, aria, zeroLine, ref, top = 10 }) {
   const [d0, d1] = domain;
   const x0 = labelW;
   const x1 = width - badgeW;
@@ -85,6 +85,17 @@ export function stripChart(rows, { domain, ticks, fmt, width = 556, labelW = 170
   }
   if (axisTitle) {
     svg.append(node("text", { x: x1, y: ybot + 32, "font-size": 11, fill: token("--ink-mute"), "text-anchor": "end" }, axisTitle));
+  }
+  // A reference across every row, [value, label]: the label sits above the first row.
+  if (ref) {
+    const [v, lab] = ref;
+    svg.append(
+      titled(
+        node("line", { x1: X(v), y1: top - 4, x2: X(v), y2: ybot, stroke: token("--ink-soft"), "stroke-width": 1.4, "stroke-dasharray": "3 2" }),
+        lab,
+      ),
+    );
+    if (lab) svg.append(smartText(X(v), Math.max(10, top - 8), lab, x0, x1, { size: 11, fill: token("--ink-soft") }));
   }
   rows.forEach((r, i) => {
     const cy = top + i * rowH + rowH / 2 - 2;
