@@ -1,0 +1,650 @@
+{
+ "removed": [
+  {
+   "card": "place>w4-intro",
+   "n": "40",
+   "board_has": null
+  },
+  {
+   "card": "place-break",
+   "n": "four",
+   "board_has": null
+  },
+  {
+   "card": "place-break",
+   "n": "one",
+   "board_has": null
+  },
+  {
+   "card": "jobs-together",
+   "n": "60",
+   "board_has": null
+  },
+  {
+   "card": "place-longhaul",
+   "n": "one",
+   "board_has": null
+  },
+  {
+   "card": "jobs-bridges",
+   "n": "two",
+   "board_has": null
+  },
+  {
+   "card": "jobs-bridges",
+   "n": "one",
+   "board_has": null
+  },
+  {
+   "card": "cut-skills-direct",
+   "n": "2",
+   "board_has": null
+  },
+  {
+   "card": "cut-skills-radar",
+   "n": "1",
+   "board_has": null
+  },
+  {
+   "card": "cut-skills-radar",
+   "n": "5",
+   "board_has": null
+  },
+  {
+   "card": "cut-skills-radar",
+   "n": "three",
+   "board_has": null
+  },
+  {
+   "card": "deeper-strength",
+   "n": "one",
+   "board_has": null
+  }
+ ],
+ "added": [
+  {
+   "card": "place-start",
+   "n": "65",
+   "board_has": null,
+   "elsewhere_before": true
+  },
+  {
+   "card": "place-start",
+   "n": "100",
+   "board_has": null,
+   "elsewhere_before": true
+  },
+  {
+   "card": "place-break",
+   "n": "38%",
+   "board_has": null,
+   "elsewhere_before": true
+  },
+  {
+   "card": "place-break",
+   "n": "0.37",
+   "board_has": null,
+   "elsewhere_before": true
+  },
+  {
+   "card": "jobs-together",
+   "n": "one",
+   "board_has": null,
+   "elsewhere_before": true
+  },
+  {
+   "card": "footprint>w4-intro",
+   "n": "five",
+   "board_has": null,
+   "elsewhere_before": true
+  },
+  {
+   "card": "footprint>w4-intro",
+   "n": "ten",
+   "board_has": null,
+   "elsewhere_before": true
+  },
+  {
+   "card": "footprint>w4-intro",
+   "n": "ten",
+   "board_has": null,
+   "elsewhere_before": true
+  },
+  {
+   "card": "footprint-which",
+   "n": "0.14",
+   "board_has": null,
+   "elsewhere_before": true
+  },
+  {
+   "card": "beyond>w4-card",
+   "n": "5",
+   "board_has": null,
+   "elsewhere_before": true
+  },
+  {
+   "card": "beyond>w4-card",
+   "n": "3",
+   "board_has": null,
+   "elsewhere_before": true
+  },
+  {
+   "card": "beyond>w4-card",
+   "n": "5",
+   "board_has": null,
+   "elsewhere_before": true
+  },
+  {
+   "card": "beyond>w4-card",
+   "n": "1",
+   "board_has": null,
+   "elsewhere_before": true
+  },
+  {
+   "card": "beyond>w4-card",
+   "n": "5",
+   "board_has": null,
+   "elsewhere_before": true
+  },
+  {
+   "card": "beyond>w4-card",
+   "n": "3.6",
+   "board_has": null,
+   "elsewhere_before": true
+  },
+  {
+   "card": "beyond-perm",
+   "n": "0.11",
+   "board_has": null,
+   "elsewhere_before": true
+  },
+  {
+   "card": "beyond-perm",
+   "n": "0.18",
+   "board_has": null,
+   "elsewhere_before": true
+  },
+  {
+   "card": "beyond-perm",
+   "n": "0.03",
+   "board_has": null,
+   "elsewhere_before": true
+  },
+  {
+   "card": "beyond-perm",
+   "n": "0.15",
+   "board_has": null,
+   "elsewhere_before": true
+  },
+  {
+   "card": "beyond-perm",
+   "n": "28%",
+   "board_has": null,
+   "elsewhere_before": true
+  },
+  {
+   "card": "beyond-perm",
+   "n": "1",
+   "board_has": null,
+   "elsewhere_before": true
+  },
+  {
+   "card": "beyond-perm",
+   "n": "six",
+   "board_has": null,
+   "elsewhere_before": true
+  },
+  {
+   "card": "place-backbone",
+   "n": "one",
+   "board_has": null,
+   "elsewhere_before": true
+  },
+  {
+   "card": "deeper-density",
+   "n": "4.5",
+   "board_has": null,
+   "elsewhere_before": true
+  },
+  {
+   "card": "deeper-density",
+   "n": "42.9",
+   "board_has": null,
+   "elsewhere_before": true
+  },
+  {
+   "card": "deeper-density",
+   "n": "6.9",
+   "board_has": null,
+   "elsewhere_before": true
+  },
+  {
+   "card": "deeper-density",
+   "n": "1,000",
+   "board_has": null,
+   "elsewhere_before": true
+  },
+  {
+   "card": "deeper-density",
+   "n": "1,000",
+   "board_has": null,
+   "elsewhere_before": true
+  },
+  {
+   "card": "deeper-density",
+   "n": "ten",
+   "board_has": null,
+   "elsewhere_before": true
+  },
+  {
+   "card": "topic-outsourcing>w4-card#2",
+   "n": "three",
+   "board_has": null,
+   "elsewhere_before": true
+  },
+  {
+   "card": "deeper-strength",
+   "n": "0.91",
+   "board_has": null,
+   "elsewhere_before": true
+  },
+  {
+   "card": "deeper-strength",
+   "n": "0.75",
+   "board_has": null,
+   "elsewhere_before": true
+  },
+  {
+   "card": "deeper-strength",
+   "n": "133",
+   "board_has": null,
+   "elsewhere_before": true
+  },
+  {
+   "card": "deeper-lottery",
+   "n": "2.2",
+   "board_has": null,
+   "elsewhere_before": false
+  },
+  {
+   "card": "deeper-lottery",
+   "n": "4.0",
+   "board_has": null,
+   "elsewhere_before": true
+  },
+  {
+   "card": "deeper-lottery",
+   "n": "2.9",
+   "board_has": null,
+   "elsewhere_before": false
+  },
+  {
+   "card": "deeper-lottery",
+   "n": "2025",
+   "board_has": null,
+   "elsewhere_before": true
+  },
+  {
+   "card": "deeper-lottery",
+   "n": "1",
+   "board_has": null,
+   "elsewhere_before": true
+  },
+  {
+   "card": "deeper-lottery",
+   "n": "2023",
+   "board_has": null,
+   "elsewhere_before": true
+  },
+  {
+   "card": "deeper-lottery",
+   "n": "2020",
+   "board_has": null,
+   "elsewhere_before": true
+  },
+  {
+   "card": "deeper-lottery",
+   "n": "2024",
+   "board_has": null,
+   "elsewhere_before": true
+  },
+  {
+   "card": "deeper-lottery",
+   "n": "one",
+   "board_has": null,
+   "elsewhere_before": true
+  },
+  {
+   "card": "deeper-lottery",
+   "n": "two",
+   "board_has": null,
+   "elsewhere_before": true
+  },
+  {
+   "card": "deeper-uscis",
+   "n": "3.20%",
+   "board_has": null,
+   "elsewhere_before": false
+  },
+  {
+   "card": "deeper-uscis",
+   "n": "1.56%",
+   "board_has": null,
+   "elsewhere_before": false
+  },
+  {
+   "card": "deeper-uscis",
+   "n": "2025",
+   "board_has": null,
+   "elsewhere_before": true
+  },
+  {
+   "card": "deeper-uscis",
+   "n": "twice",
+   "board_has": null,
+   "elsewhere_before": true
+  },
+  {
+   "card": "deeper-perm",
+   "n": "13.2",
+   "board_has": null,
+   "elsewhere_before": true
+  },
+  {
+   "card": "deeper-perm",
+   "n": "95",
+   "board_has": null,
+   "elsewhere_before": true
+  },
+  {
+   "card": "deeper-perm",
+   "n": "22,509",
+   "board_has": null,
+   "elsewhere_before": true
+  },
+  {
+   "card": "deeper-perm",
+   "n": "100",
+   "board_has": null,
+   "elsewhere_before": true
+  },
+  {
+   "card": "deeper-perm",
+   "n": "1",
+   "board_has": null,
+   "elsewhere_before": true
+  },
+  {
+   "card": "deeper-perm",
+   "n": "1",
+   "board_has": null,
+   "elsewhere_before": true
+  },
+  {
+   "card": "deeper-countries",
+   "n": "0.06",
+   "board_has": null,
+   "elsewhere_before": true
+  },
+  {
+   "card": "deeper-countries",
+   "n": "0.26",
+   "board_has": null,
+   "elsewhere_before": true
+  },
+  {
+   "card": "deeper-countries",
+   "n": "0.40",
+   "board_has": null,
+   "elsewhere_before": true
+  },
+  {
+   "card": "deeper-countries",
+   "n": "0.10",
+   "board_has": null,
+   "elsewhere_before": true
+  },
+  {
+   "card": "deeper-countries",
+   "n": "two",
+   "board_has": null,
+   "elsewhere_before": true
+  }
+ ],
+ "invented": [
+  {
+   "card": "deeper-lottery",
+   "n": "2.2",
+   "board_has": null,
+   "elsewhere_before": false
+  },
+  {
+   "card": "deeper-lottery",
+   "n": "2.9",
+   "board_has": null,
+   "elsewhere_before": false
+  },
+  {
+   "card": "deeper-uscis",
+   "n": "3.20%",
+   "board_has": null,
+   "elsewhere_before": false
+  },
+  {
+   "card": "deeper-uscis",
+   "n": "1.56%",
+   "board_has": null,
+   "elsewhere_before": false
+  }
+ ],
+ "pop": [
+  {
+   "card": "(rest)",
+   "n": "1"
+  },
+  {
+   "card": "top",
+   "n": "2025"
+  },
+  {
+   "card": "top",
+   "n": "2024"
+  },
+  {
+   "card": "top",
+   "n": "2025"
+  },
+  {
+   "card": "place-start",
+   "n": "0"
+  },
+  {
+   "card": "place-start",
+   "n": "1"
+  },
+  {
+   "card": "place-start",
+   "n": "one"
+  },
+  {
+   "card": "place-start",
+   "n": "two"
+  },
+  {
+   "card": "place-who",
+   "n": "0"
+  },
+  {
+   "card": "place-who",
+   "n": "1"
+  },
+  {
+   "card": "place-who",
+   "n": "two"
+  },
+  {
+   "card": "jobs-split",
+   "n": "1"
+  },
+  {
+   "card": "jobs-split",
+   "n": "0"
+  },
+  {
+   "card": "jobs-split",
+   "n": "two"
+  },
+  {
+   "card": "who>w4-card",
+   "n": "two"
+  },
+  {
+   "card": "who>w4-card",
+   "n": "two"
+  },
+  {
+   "card": "who-movers",
+   "n": "one"
+  },
+  {
+   "card": "footprint>w4-intro",
+   "n": "0"
+  },
+  {
+   "card": "footprint>w4-intro",
+   "n": "1"
+  },
+  {
+   "card": "footprint>w4-intro",
+   "n": "0"
+  },
+  {
+   "card": "footprint>w4-intro",
+   "n": "1"
+  },
+  {
+   "card": "footprint>w4-intro",
+   "n": "two"
+  },
+  {
+   "card": "footprint>w4-intro",
+   "n": "two"
+  },
+  {
+   "card": "beyond-law",
+   "n": "0"
+  },
+  {
+   "card": "beyond-law",
+   "n": "1"
+  },
+  {
+   "card": "beyond-law",
+   "n": "two"
+  },
+  {
+   "card": "deeper-density",
+   "n": "two"
+  },
+  {
+   "card": "jobs-groups",
+   "n": "1"
+  },
+  {
+   "card": "jobs-groups",
+   "n": "0"
+  },
+  {
+   "card": "jobs-groups",
+   "n": "two"
+  },
+  {
+   "card": "cut-skills-direct",
+   "n": "-1"
+  },
+  {
+   "card": "cut-skills-direct",
+   "n": "1"
+  },
+  {
+   "card": "cut-skills-direct",
+   "n": "two"
+  },
+  {
+   "card": "topic-outsourcing>w4-card",
+   "n": "two"
+  },
+  {
+   "card": "staffing-community-stats",
+   "n": "two"
+  },
+  {
+   "card": "staffing-community-stats",
+   "n": "two"
+  },
+  {
+   "card": "staffing-ties",
+   "n": "two"
+  },
+  {
+   "card": "staffing-lawyers",
+   "n": "0"
+  },
+  {
+   "card": "staffing-lawyers",
+   "n": "1"
+  },
+  {
+   "card": "staffing-lawyers",
+   "n": "two"
+  },
+  {
+   "card": "staffing-lottery",
+   "n": "0"
+  },
+  {
+   "card": "staffing-lottery",
+   "n": "1"
+  },
+  {
+   "card": "staffing-lottery",
+   "n": "two"
+  },
+  {
+   "card": "deeper-lottery",
+   "n": "1"
+  },
+  {
+   "card": "deeper-uscis",
+   "n": "1"
+  },
+  {
+   "card": "deeper-perm",
+   "n": "1"
+  },
+  {
+   "card": "deeper-perm",
+   "n": "0"
+  },
+  {
+   "card": "deeper-perm",
+   "n": "two"
+  },
+  {
+   "card": "years-card",
+   "n": "1"
+  },
+  {
+   "card": "topic-years>w4-card",
+   "n": "0"
+  },
+  {
+   "card": "topic-years>w4-card",
+   "n": "1"
+  },
+  {
+   "card": "topic-years>w4-card",
+   "n": "two"
+  }
+ ]
+}

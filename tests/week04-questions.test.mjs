@@ -114,9 +114,38 @@ test("section 2's deep dive: the cluster-composition captions follow jobs.json",
   says("jobs-groups", `the official labels shuffled ${q.nmi_shuffled.runs} times`);
 });
 
-test("the every-draw chart's caption starts at the first draw", () => {
-  const draws = json("docs/weeks/week04/data/more.json").lottery.all_draws;
+test("the every-draw chart's caption, notice and Method drawer follow USCIS's per-draw totals", () => {
+  const lottery = json("docs/weeks/week04/data/more.json").lottery;
+  const draws = lottery.all_draws.map((d) => ({ ...d, per: d.eligible / d.selected, multi: d.multiple / d.eligible }));
+  const f1 = (x) => x.toFixed(1);
   says("deeper-lottery", `Every draw since ${draws[0].label.split(" ").at(-1)}`);
+  // The by-person draw is the one week04-vis-more.js marks with the dashed line.
+  const byPerson = draws.findIndex((d) => d.label === "March 2024");
+  assert.ok(byPerson > 0, "all_draws must hold the March 2024 draw the chart marks");
+  assert.ok(draws[byPerson].multi < draws[byPerson - 1].multi / 2, '"drew by person" needs the multi-registration share to collapse at that draw');
+  says("deeper-lottery", `From ${draws[byPerson].label} USCIS drew by person, not by registration.`);
+  const [first, last] = [draws[0], draws.at(-1)];
+  const peak = draws.reduce((a, b) => (b.per > a.per ? b : a));
+  says(
+    "deeper-lottery",
+    `registrations per selection rose from ${f1(first.per)} in ${first.label} to ${f1(peak.per)} in ${peak.label}, ` +
+      `then fell to ${f1(last.per)} by ${last.label} once each worker counted once.`,
+  );
+  const i = draws.indexOf(peak);
+  assert.ok(draws.slice(0, i + 1).every((d, k) => k === 0 || d.per > draws[k - 1].per), '"rose" needs every draw up to the peak above the one before');
+  assert.ok(draws.slice(i).every((d, k) => k === 0 || d.per < draws[i + k - 1].per), '"fell" needs every draw after the peak below the one before');
+  assert.equal(i, byPerson - 1, '"once each worker counted once" needs the fall to start at the by-person draw');
+  // "The two draws this box can split by employer were the most crowded".
+  const top2 = [...draws].sort((a, b) => b.per - a.per).slice(0, 2).map((d) => d.label).sort();
+  assert.deepEqual(top2, [...lottery.draws].sort(), "the slopegraph's two draws must be the two highest ratios");
+  says("deeper-lottery", "The two draws this box can split by employer were the most crowded");
+  // Method drawer: "its ratio is lower than the one per approved petition".
+  const all = lottery.series.find((s) => s.label === "All employers").values;
+  lottery.draws.forEach((label, k) => {
+    const d = draws.find((x) => x.label === label);
+    assert.ok(d.per < all[k], `${label}: per selection (${f1(d.per)}) must sit below per approved petition (${all[k]})`);
+  });
+  says("deeper-lottery", "its selections include later rounds, so its ratio is lower than the one per approved petition");
 });
 
 test("section 3: switches stay in the group, movers and split clients", () => {

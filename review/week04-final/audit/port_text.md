@@ -943,3 +943,57 @@ No slot changed.
 
 RData by hand: the board has no cards, only the #evidence source list. Its one change, hover terms on "LCA" and "FOIA" in two `dd` items, went in by hand as `w4-term-evidence-lca` and `w4-term-evidence-foia`.
 
+## RTopicPaperwork
+
+Slot table extension in use: hero lines (`.w4-hero-text > p.body, p.caution`), opener lines (`header.w4-opener h2, p`) and finding lines (`.w4-finding > div > h3, p`).
+
+### deeper-lottery
+- **para#0 (added before the drawers)**
+  - before: (none)
+  - after: The ratio divides each year's registrations by its approved petitions, using USCIS's lottery files, obtained by Bloomberg News.
+- **notice#0 (added before the drawers)**
+  - before: (none)
+  - after: 💡 What to notice The two draws this box can split by employer were the most crowded: registrations per selection rose from 2.2 in March 2020 to 4.0 in March 2023, then fell to 2.9 by March 2025 once each worker counted once.
+- **drawers#0**
+  - before: Method The ratio divides each year's registrations by its approved petitions, using USCIS's lottery files, obtained by Bloomberg News. More numbers Between the March 2022 and March 2023 draws, registrations for a worker whom another employer had also registered rose from 35% to 54% of the total, and the share of drawn registrations that became a petition fell from 74% to 49%. The order held both years: direct employers needed the fewest (4.3, then 5.1), placing firms more (6.3, then 9.1). Of the March 2023 petitions, 20% lead to a client company, 66% of those through placing firms. Citigroup received 342, 94% through placing firms; Microsoft 150, 95%, with LTIMindtree supplying 47%; AT&amp;T 153, with Tech Mahindra supplying 41%. USCIS also denied 2.0% of the placing firms' lottery petitions against 1.1% of direct employers'.
+  - after: Method The every-draw chart divides eligible by selected registrations from the historical table on USCIS's H-1B Electronic Registration Process page; its selections include later rounds, so its ratio is lower than the one per approved petition. More numbers Between the March 2022 and March 2023 draws, registrations for a worker whom another employer had also registered rose from 35% to 54% of the total, and the share of drawn registrations that became a petition fell from 74% to 49%. The order held both years: direct employers needed the fewest (4.3, then 5.1), placing firms more (6.3, then 9.1). Of the March 2023 petitions, 20% lead to a client company, 66% of those through placing firms. Citigroup received 342, 94% through placing firms; Microsoft 150, 95%, with LTIMindtree supplying 47%; AT&amp;T 153, with Tech Mahindra supplying 41%. USCIS also denied 2.0% of the placing firms' lottery petitions against 1.1% of direct employers'.
+- **figcaption#0**
+  - before: Every draw since 2020 Eligible registrations per selected registration, from USCIS's published totals, counting every selection round of the year; the figure under each date is the share of registrations for a worker registered more than once. The dashed line marks where USCIS began to draw by person, not by registration.
+  - after: Every draw since 2020 Eligible registrations per selected registration, from USCIS's published totals, counting every selection round of the year; the figure under each date is the share of registrations for a worker registered more than once. From March 2024 USCIS drew by person, not by registration.
+
+**Terms added:** 
+- `w4-term-staffing-lawyers-disparity`
+- `w4-term-staffing-lawyers-louvain`
+- `w4-term-staffing-lawyers-modularity`
+- `w4-term-staffing-lawyers-nmi`
+- `w4-term-staffing-lottery-ami`
+- `w4-term-deeper-lottery-registrations`
+- `w4-term-deeper-uscis-hub`
+- `w4-term-deeper-perm-perm`
+- `w4-term-deeper-perm-spearman`
+- `w4-term-deeper-countries-effective`
+
+**Fix-ups applied (3.7):** none
+
+**Cards a script builds (skipped, see 3.3):** none
+
+**Held slots: board number not on the page (stale-number rule):** 
+- deeper-lottery notice#0: board numbers [] not in the page slot; board text: override used
+- deeper-lottery drawers#0: board numbers [] not in the page slot; board text: override used
+- deeper-lottery figcaption#0: board numbers [] not in the page slot; board text: override used
+- deeper-uscis para#0: board numbers [] not in the page slot; board text: override used
+
+**Numbers the board drops (accepted, list in the PR body):** none
+
+**Numbers in new term definitions (check each is a scale, not a result):** 
+- deeper-lottery drawers#0: ['1'] in «Entries in the H-1B lottery. Each spring employers register the workers they want to sponsor, and USCIS draws at random from the entries.»
+
+**Script-owned text that differs from the board (3.3):** none
+
+**Text that still differs from the board, outside script-owned nodes:** 
+- topic-paperwork>rx-topic-bar: page «» board «6 boxes»
+- deeper-lottery: page «totals, counting every selection round of» board «totals;»
+- deeper-lottery: page «year; the figure» board «line»
+
+**Style lint (3.7) on the page text:** no new hits
+
