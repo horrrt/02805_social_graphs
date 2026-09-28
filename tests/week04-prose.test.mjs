@@ -356,6 +356,9 @@ test("strength against degree", () => {
   const [a, b, c, d] = s.clients.high_strength_low_degree;
   for (const x of [a, b, c, d]) assert.equal(x.degree, 1);
   has(`${a.label}, ${a.strength} filings from one firm; ${b.label}, ${b.strength}; ${c.label}, ${c.strength}; and ${d.label}, ${d.strength}`);
+  has(`Degree and strength rank firms almost alike (Spearman ${s.firms.spearman.rho.toFixed(2)}) but clients less so (${s.clients.spearman.rho.toFixed(2)})`);
+  has(`led by ${a.label} with ${a.strength} filings from one firm`);
+  assert.ok(s.firms.spearman.rho >= 0.85 && s.clients.spearman.rho < s.firms.spearman.rho, '"almost alike ... but clients less so" needs firms at 0.85 or above and clients below them');
 });
 
 test("the lottery a year apart", () => {

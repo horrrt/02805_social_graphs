@@ -666,3 +666,124 @@ Slot table extension in use: hero lines (`.w4-hero-text > p.body, p.caution`), o
 
 **Style lint (3.7) on the page text:** no new hits
 
+## RTopicOutsourcing
+
+Slot table extension in use: hero lines (`.w4-hero-text > p.body, p.caution`), opener lines (`header.w4-opener h2, p`) and finding lines (`.w4-finding > div > h3, p`).
+
+### topic-outsourcing>w4-card
+- **figcaption#0**
+  - before: Groups against rewired networks Modularity of the real firm–client network, real against rewired networks that keep everyone's number of partners.
+  - after: Groups against rewired networks Modularity of the real firm–client network, real against rewired networks that keep everyone's number of partners.
+- **figcaption#1**
+  - before: Match with vendor and industry AMI between the groups and each client's main vendor or industry, 0 = labels dealt at random. Filled: the main vendor; hollow: the industry.
+  - after: Match with vendor and industry AMI between the groups and each client's main vendor or industry, 0 = labels dealt at random. Filled: the main vendor; hollow: the industry.
+
+### topic-outsourcing>w4-card#1
+- **para#0 (added before the drawers)**
+  - before: (none)
+  - after: 14,678 of the 18,900 clients use one firm, but they hold 22% of placed filings. Of the 629 clients with 20 or more filings, 69 get over 90% from one firm, and the median one gets 37% from its largest.
+- **drawers#0**
+  - before: More numbers 14,678 of the 18,900 clients use one firm, but they hold 22% of placed filings. Of the 629 clients with 20 or more filings, 69 get over 90% from one firm, and the median one gets 37% from its largest. Citigroup, the largest client, uses 114 firms, and Tata Consultancy Services supplies a quarter. The eight largest firms supply only 27% of what the 20 largest clients receive.
+  - after: More numbers Citigroup, the largest client, uses 114 firms, and Tata Consultancy Services supplies a quarter. The eight largest firms supply only 27% of what the 20 largest clients receive.
+
+### topic-outsourcing>w4-card#2
+- **drawers#0 (added)**
+  - before: (none)
+  - after: Background Only three sectors get a colour: finance and insurance, manufacturing and health care. Other known sectors are light grey, and the palest dots are clients with no sector on record. Band width is the number of placed filings from a firm to a client; the grey source gathers every other firm. Each client sits next to the named firm that supplies it most.
+
+### staffing-community-stats
+- **q-answer#0**
+  - before: The two partitions share an NMI of … , less than two runs of either kind with different seeds ( … weighted, … unweighted), so the filing counts change the grouping.
+  - after: Filing counts change the grouping: the two partitions share an NMI of … , less than two seeds of either kind ( … weighted, … unweighted).
+- **para#0**
+  - before: Louvain on the firm–client network for 2025, 100 runs each: once with links weighted by filings, once with every link counting one. They pull it toward vendors: AMI with each client's main vendor rises from … to … when filings count, while AMI with industry stays near … .
+  - after: We ran Louvain on the 2025 firm–client network 100 times each way: with links weighted by filings, and with every link counting one. Filing counts pull clients toward vendors: AMI with each client's main vendor rises from … to … when filings count, while AMI with industry stays near … .
+- **para#1**
+  - before: The null rewires the network so every firm and client keeps its number of partners, and deals the filing counts back out at random. Rewiring breaks the network into a median of … pieces, each a free community, so we score each rewired network on its largest piece, as we do the real one. Without weights the real network wins ( … against … ). With weights it loses ( … against … ), and it loses when only the filing counts are shuffled on the real links ( … ). The real counts leave … of filings on links between groups, against … with shuffled counts: clients that use several firms hold … of the links but … of the filings, and only their links can cross: a client with one firm sits in that firm's group:
+  - after: The null model rewires the network so every firm and client keeps its number of partners. Without weights the real network wins ( … against … ); with weights it loses ( … against … ).
+- **para#2**
+  - before: Infomap, which follows a random walk instead of counting links, splits the same network into … small modules, most of them a firm with its clients. They agree with Louvain at NMI … and, like weighted Louvain, follow the vendor far more than the industry (AMI … against … ). Finer partitions raise every NMI; AMI corrects for that, so it is the number to compare across methods.
+  - after: Infomap, which follows a random walk instead of counting links, splits the same network into … small modules, most of them a firm with its clients. Like weighted Louvain, it follows the vendor far more than the industry (AMI … against … ).
+- **drawers#0 (added)**
+  - before: (none)
+  - after: Method Infomap agrees with Louvain at NMI … . Finer partitions raise every NMI; AMI corrects for that, so it is the number to compare across methods. More numbers The null also deals the filing counts back out at random. Rewiring breaks the network into a median of … pieces, each a free community, so we score each rewired network on its largest piece, as we do the real one. The real network also loses when only the filing counts are shuffled on the real links ( … ). The real counts leave … of filings on links between groups, against … with shuffled counts: clients that use several firms hold … of the links but … of the filings, and only their links can cross, since a client with one firm sits in that firm's group.
+
+### staffing-ties
+- **para#0 (added before the drawers)**
+  - before: (none)
+  - after: Among friends, the strongest ties sit inside tight groups where your close friends also know each other, and weak ties bridge the groups (Granovetter 1973; Onnela and colleagues confirmed it on millions of phone users in 2007).
+- **drawers#0**
+  - before: Background Among friends, the strongest ties sit inside tight groups where your close friends also know each other, and weak ties bridge the groups (Granovetter 1973; Onnela and colleagues confirmed it on millions of phone users in 2007). A link's overlap measures the tightness: of the firm's other clients and the client's other firms, the share that are linked to each other. More numbers Over the 28,104 links where overlap is defined, filings and overlap correlate at Spearman -0.04; with the filing counts shuffled over the same links the correlation is 0.00 ± 0.01 (z = -6.3; 2024 gives z = -3.7). Links with one filing have a mean overlap of 0.065, links with 21 or more 0.034. Heavy links mostly belong to the largest firms, whose many clients rarely share other firms, so part of this is size. It agrees with the result above: the real filing counts put weight on links between groups. Each filing states one of four wage levels, from entry (I) to fully competent (IV). Averaged per client over the filings that reach it, the groups explain 13% of the variance in wage level; averaged per firm over all its filings, 3%. None of 1,000 shuffles of the group labels reached either. A client's filings come from the vendors that also decide its group, so part of the 13% is built in. Outsourcing firms file 66% of their applications at level II and 5% at level IV; direct employers file 35% and 22%. From January to June 2026, level IV rose to 17.7% of all filings from 13.6% a year earlier, and level I fell to 18.0% from 21.8%.
+  - after: Background A link's overlap measures the tightness: of the firm's other clients and the client's other firms, the share that are linked to each other. More numbers Over the 28,104 links where overlap is defined, filings and overlap correlate at Spearman -0.04; with the filing counts shuffled over the same links the correlation is 0.00 ± 0.01 (z = -6.3; 2024 gives z = -3.7). Links with one filing have a mean overlap of 0.065, links with 21 or more 0.034. Heavy links mostly belong to the largest firms, whose many clients rarely share other firms, so part of this is size. It agrees with the result above: the real filing counts put weight on links between groups. Each filing states one of four wage levels, from entry (I) to fully competent (IV). Averaged per client over the filings that reach it, the groups explain 13% of the variance in wage level; averaged per firm over all its filings, 3%. None of 1,000 shuffles of the group labels reached either. A client's filings come from the vendors that also decide its group, so part of the 13% is built in. Outsourcing firms file 66% of their applications at level II and 5% at level IV; direct employers file 35% and 22%. From January to June 2026, level IV rose to 17.7% of all filings from 13.6% a year earlier, and level I fell to 18.0% from 21.8%.
+- **figcaption#0**
+  - before: Heavy links, looser neighbourhoods Spearman correlation between a link's filings and its overlap, against 100 shuffles of the filing counts over the same links.
+  - after: Heavy links, looser neighbourhoods Spearman correlation between a link's filings and its overlap, against 100 shuffles of the filing counts over the same links.
+- **figcaption#1**
+  - before: Wage levels as filed Share of each kind of employer's 2025 filings at each prevailing-wage level.
+  - after: Wage levels as filed Share of each kind of employer's 2025 filings at each prevailing-wage level.
+
+### deeper-strength
+- **q-answer#0**
+  - before: Three of the top five are therapy and rehab clinics: the heaviest one-to-one ties belong to health care, not IT.
+  - after: Three of the top five are therapy and rehab clinics.
+- **para#0 (added before the drawers)**
+  - before: (none)
+  - after: The course compares a node's degree (how many partners) with its strength (how many filings over all its links), and finds the exceptions tell the story.
+- **notice#0 (added before the drawers)**
+  - before: (none)
+  - after: 💡 What to notice Degree and strength rank firms almost alike (Spearman 0.91) but clients less so (0.75): the heaviest single ties belong to small rehab clinics, led by Ultimate Therapy with 133 filings from one firm.
+- **drawers#0**
+  - before: Method The course compares a node's degree (how many partners) with its strength (how many filings over all its links), and finds the exceptions tell the story. More numbers In the 2025 firm–client network the two rank firms almost alike (Spearman 0.91) and clients less so (0.75). The clients with the most filings from a single firm are Ultimate Therapy, 133 filings from one firm; Sigma Rehab, 95; Post Rehab Services, 61; and Grady Memorial Hospital, 58.
+  - after: More numbers In the 2025 firm–client network the two rank firms almost alike (Spearman 0.91) and clients less so (0.75). The clients with the most filings from a single firm are Ultimate Therapy, 133 filings from one firm; Sigma Rehab, 95; Post Rehab Services, 61; and Grady Memorial Hospital, 58.
+
+**Terms added:** 
+- `w4-term-topic-outsourcing-modularity`
+- `w4-term-topic-outsourcing-rewired`
+- `w4-term-topic-outsourcing-ami`
+- `w4-term-staffing-community-stats-nmi`
+- `w4-term-staffing-community-stats-louvain`
+- `w4-term-staffing-community-stats-null`
+- `w4-term-staffing-ties-spearman`
+- `w4-term-staffing-ties-overlap`
+- `w4-term-staffing-ties-wagelevel`
+
+**Fix-ups applied (3.7):** none
+
+**Cards a script builds (skipped, see 3.3):** none
+
+**Held slots: board number not on the page (stale-number rule):** 
+- topic-outsourcing>w4-card#2 drawers#0: board numbers [] not in the page slot; board text: override used
+
+**Numbers the board drops (accepted, list in the PR body):** 
+- deeper-strength: ['one']
+
+**Numbers in new term definitions (check each is a scale, not a result):** 
+- staffing-ties figcaption#0: ['two'] in «A measure of whether two quantities rise together, computed on their ranks rather than their values.»
+
+**Script-owned text that differs from the board (3.3):** none
+
+**Text that still differs from the board, outside script-owned nodes:** 
+- topic-outsourcing>rx-topic-bar: page «» board «6 boxes»
+- staffing-community-stats: page «…» board «0.38»
+- staffing-community-stats: page «…» board «0.70»
+- staffing-community-stats: page «…» board «0.50»
+- staffing-community-stats: page «…» board «0.11»
+- staffing-community-stats: page «…» board «0.48»
+- staffing-community-stats: page «…» board «0.07»
+- staffing-community-stats: page «…» board «0.57»
+- staffing-community-stats: page «…» board «0.53»
+- staffing-community-stats: page «…» board «0.60»
+- staffing-community-stats: page «…» board «0.74»
+- staffing-community-stats: page «…» board «1,725»
+- staffing-community-stats: page «…» board «0.62»
+- staffing-community-stats: page «…» board «0.06»
+- staffing-community-stats: page «…» board «0.66»
+- staffing-community-stats: page «…» board «583»
+- staffing-community-stats: page «…» board «0.75»
+- staffing-community-stats: page «…» board «35%»
+- staffing-community-stats: page «…» board «23%»
+- staffing-community-stats: page «…» board «73%»
+- staffing-community-stats: page «…» board «82%»
+
+**Style lint (3.7) on the page text:** no new hits
+

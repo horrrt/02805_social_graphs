@@ -261,3 +261,11 @@ test("topic jobs: no occupation clearly bridges two clusters", () => {
   says("jobs-bridges", "chance alone passes.");
   assert.ok(b.all_occupations < Math.round(b.expected_false_positives), '"fewer than chance alone passes" needs fewer passes than the expected false positives');
 });
+
+test("topic outsourcing: the client map colours as many sectors as its drawer says", () => {
+  // The count lives in the script's SECTORS list, not in a JSON file.
+  const src = read("docs/assets/js/week04-staffing.js");
+  const coloured = [...src.matchAll(/\["[^"]+", "--w4-sector-(\w+)"/g)].map((m) => m[1]).filter((t) => !["other", "unknown"].includes(t));
+  assert.deepEqual(coloured, ["finance", "manufacturing", "health"]);
+  assert.ok(html.includes(`Only ${["no", "one", "two", "three", "four"][coloured.length]} sectors get a colour: finance and insurance, manufacturing and health care.`));
+});

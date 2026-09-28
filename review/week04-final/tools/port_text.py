@@ -413,12 +413,13 @@ def js_nodes(tree: Tree) -> dict[str, str]:
     return {js_key(n): tree.outer(n) for n in tree.find(is_js_owned, tree.main())}
 
 
-def guard(before: Tree, after: Tree) -> list[str]:
+def guard(before: Tree, after: Tree, allowed: Counter | None = None) -> list[str]:
     fails = []
     new_errors = [e for e in after.errors if e.split(" at ")[0] not in {x.split(" at ")[0] for x in before.errors}]
     if len(after.errors) > len(before.errors) or new_errors:
         fails.append(f"tags: {len(before.errors)} parse errors before, {len(after.errors)} after: {after.errors[:5]}")
     a, b = skeleton(before), skeleton(after)
+    a = a + (allowed or Counter())
     if a != b:
         fails.append(f"skeleton: lost {dict(a - b)}, gained {dict(b - a)}")
     ids = Counter(n.id for n in after.root.walk() if n.id)
@@ -466,6 +467,14 @@ def clean(board: Tree, slot: Node, page: Tree, pslot: Node | None, pcard: Node, 
             raise Stop(f"board slot holds a table ({tid or i}) the page slot lacks")
         edits.append((t.start, t.end, page.outer(mine[0])))
     in_table = {id(d) for t in btables for d in t.walk()}
+    # Placeholders a script fills (<b class="cross">…</b>, <span data-jobs="…">):
+    # the board shows the rendered value; the page keeps the placeholder.
+    def sig(n: Node):
+        return (n.tag, n.attrs.get("class"), tuple(sorted((k, v) for k, v in n.attrs.items() if k.startswith("data-"))))
+    holes = {sig(m) for m in pcard.walk() if not m.children and m.id is None and page.inner(m).strip() == "…"}
+    for n in slot.walk():
+        if n is not slot and not n.children and n.id is None and sig(n) in holes and id(n) not in in_table:
+            edits.append((n.start_end, n.end_start, "…"))
     for n in slot.walk():
         if id(n) in in_table:
             continue
@@ -540,10 +549,13 @@ def port(board_name: str, page_src: str, before_cards: dict, overrides: dict) ->
     log = {"board": board_name, "cards": [], "js_text": [], "terms": [], "fixups": [], "held": [],
            "pop_numbers": [], "residual": [], "skipped": [], "dropped_numbers": []}
     edits: list[tuple[int, int, str]] = []
+    allowed: Counter = Counter()  # skeleton of slots added before a drawer row
     topic = TOPICS.get(board_name)
     if topic:  # a topic board has no topic wrapper, so its cards key by #cut
-        bkeys = {n: (k.replace("cut>", f"{topic}>", 1) if k.startswith("cut>rx-topic-bar") else k)
-                 for n, k in bkeys.items()}
+        def remap(k):
+            t = k.replace("cut>", f"{topic}>", 1)
+            return t if k.startswith("cut>") and t in pby and k not in BY_HAND.get(board_name, {}) else k
+        bkeys = {n: remap(k) for n, k in bkeys.items()}
     for bcard, key in bkeys.items():
         if key in BY_HAND.get(board_name, {}):
             log["skipped"].append(f"{key}: {BY_HAND[board_name][key]}")
@@ -560,8 +572,13 @@ def port(board_name: str, page_src: str, before_cards: dict, overrides: dict) ->
         card_nums += rendered.get("n_text", []) + rendered.get("n_js", []) + rendered.get("n_pop", [])
         bs, ps = slots(board, bcard), slots(page, pcard)
         bk, pk = Counter(k for k, _ in bs), Counter(k for k, _ in ps)
+        # PR1 left some cards with no lead or notice, their text inside the
+        # first drawer. Such a slot goes in front of the card's drawer row.
+        prerow = [n for kk, n in ps if kk == "drawers"]
+        before_row = {k for k in ("para", "notice") if bk[k] and not pk[k] and prerow}
+        pre_inserts: list[str] = []
         for k in bk | pk:
-            if bk[k] > pk[k] and k not in INSERTABLE:
+            if bk[k] > pk[k] and k not in INSERTABLE and k not in before_row:
                 raise Stop(f"{board_name}: card {key} has {bk[k]} {k} slot(s) on the board, {pk[k]} on the page")
             if pk[k] > bk[k]:
                 raise Stop(f"{board_name}: card {key} has {pk[k]} {k} slot(s) on the page, {bk[k]} on the board")
@@ -589,7 +606,7 @@ def port(board_name: str, page_src: str, before_cards: dict, overrides: dict) ->
             old_text = flatten(page.inner(pslot)) if pslot is not None else ""
             # Stale-number rule.
             have = numbers(old_text) + [n for p in pops(page.inner(pslot)) for n in numbers(p)] if pslot is not None else []
-            if k in INSERTABLE:
+            if k in INSERTABLE or k in before_row:
                 have = card_nums
             extra = missing(have, numbers(flatten(new)))
             if extra and okey not in overrides:
@@ -627,16 +644,31 @@ def port(board_name: str, page_src: str, before_cards: dict, overrides: dict) ->
                 else:
                     edits.append((pslot.start_end, pslot.end_start, reindent(new, page.inner(pslot))))
                 changed.append((label, old_text, flatten(new)))
+            elif k in before_row:
+                if k == "notice":  # the whole div.notice, not just its text span
+                    wrap = clean(board, bslot.parent, page, None, pcard, host, registry, log, outer=True)
+                    new = wrap if okey not in overrides else wrap.replace(board.outer(bslot), new)
+                frag = re.sub(r"\s*\n\s*", " ", new.strip())
+                pre_inserts.append(frag)
+                allowed.update({e: c for e, c in skeleton(Tree(f"<main>{frag}</main>")).items() if e[0] != "main"})
+                changed.append((label + " (added before the drawers)", "", flatten(new)))
             else:
                 edits.append(insertion(board, bslot, page, bcard, pcard, new, key))
                 changed.append((label + " (added)", "", flatten(new)))
+        if pre_inserts:
+            row = prerow[0]
+            ls = page.src.rfind("\n", 0, row.start) + 1
+            indent = page.src[ls:row.start]
+            if indent.strip():
+                raise Stop(f"card {key}: the drawer row does not start its own line")
+            edits.append((ls, ls, "".join(indent + h + "\n" for h in pre_inserts)))
         if changed:
             log["cards"].append((key, changed))
     out = page_src
     for s, e, rep in sorted(edits, key=lambda x: x[0], reverse=True):
         out = out[:s] + rep + out[e:]
     after = Tree(out)
-    fails = guard(page, after)
+    fails = guard(page, after, allowed)
     if fails:
         raise Stop(f"{board_name}: guard failed\n  " + "\n  ".join(fails))
     # Numbers a card loses (the board drops them), and text that still

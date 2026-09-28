@@ -1734,13 +1734,13 @@
                   <div class="w4-two">
                     <div>
                       <figure class="w4-figure">
-                        <figcaption><b>Groups against rewired networks</b><span>Modularity of the real firm–client network, real against rewired networks that keep everyone's number of partners.</span></figcaption>
+                        <figcaption><b>Groups against rewired networks</b><span><span class="w4-term"><button aria-describedby="w4-term-topic-outsourcing-modularity" type="button">Modularity</button><span class="w4-pop" id="w4-term-topic-outsourcing-modularity" role="tooltip">How much more of the link weight falls inside the groups than a random network would put there. Higher means cleaner groups.</span></span> of the real firm–client network, real against <span class="w4-term"><button aria-describedby="w4-term-topic-outsourcing-rewired" type="button">rewired networks</button><span class="w4-pop" id="w4-term-topic-outsourcing-rewired" role="tooltip">Random copies of the network in which every firm and client keeps its number of partners, but the partners are dealt out again at random.</span></span> that keep everyone's number of partners.</span></figcaption>
                         <div class="w4-figure-body" data-strip="who-q2-modularity"></div>
                       </figure>
                     </div>
                     <div>
                       <figure class="w4-figure">
-                        <figcaption><b>Match with vendor and industry</b><span>AMI between the groups and each client's main vendor or industry, 0 = labels dealt at random. Filled: the main vendor; hollow: the industry.</span></figcaption>
+                        <figcaption><b>Match with vendor and industry</b><span><span class="w4-term"><button aria-describedby="w4-term-topic-outsourcing-ami" type="button">AMI</button><span class="w4-pop" id="w4-term-topic-outsourcing-ami" role="tooltip">Adjusted mutual information: how closely two ways of grouping the same clients agree, corrected for the agreement random labels would reach by chance.</span></span> between the groups and each client's main vendor or industry, 0 = labels dealt at random. Filled: the main vendor; hollow: the industry.</span></figcaption>
                         <div class="w4-figure-body" data-strip="who-q2-ami"></div>
                       </figure>
                     </div>
@@ -1764,8 +1764,9 @@
                   </header>
                   <div class="w4-two">
                     <div>
+                      <p class="sub">14,678 of the 18,900 clients use one firm, but they hold 22% of placed filings. Of the 629 clients with 20 or more filings, 69 get over 90% from one firm, and the median one gets 37% from its largest.</p>
                       <div class="rx-drawers rx-foot">
-                        <details class="rx-drawer"><summary>More numbers</summary><div class="rx-drawer-body"><p>14,678 of the 18,900 clients use one firm, but they hold 22% of placed filings. Of the 629 clients with 20 or more filings, 69 get over 90% from one firm, and the median one gets 37% from its largest.</p><p>Citigroup, the largest client, uses 114 firms, and Tata Consultancy Services supplies a quarter. The eight largest firms supply only 27% of what the 20 largest clients receive.</p></div></details>
+                        <details class="rx-drawer"><summary>More numbers</summary><div class="rx-drawer-body"><p>Citigroup, the largest client, uses 114 firms, and Tata Consultancy Services supplies a quarter. The eight largest firms supply only 27% of what the 20 largest clients receive.</p></div></details>
                       </div>
                     </div>
                     <div>
@@ -1860,6 +1861,7 @@
                     </p>
                   </div>
                 </figure>
+                <div class="rx-drawers rx-foot"><details class="rx-drawer"><summary>Background</summary><div class="rx-drawer-body"><p>Only three sectors get a colour: finance and insurance, manufacturing and health care. Other known sectors are light grey, and the palest dots are clients with no sector on record.</p><p>Band width is the number of placed filings from a firm to a client; the grey source gathers every other firm. Each client sits next to the named firm that supplies it most.</p></div></details></div>
               </div>
             </details>
             <details class="rx-panel" name="w4-panel-outsourcing" data-box="staffing-community-stats">
@@ -1870,38 +1872,16 @@
                               <span class="w4-num">4</span>
                               <div>
                                 <h2>With filing counts or without?</h2>
-                                <p class="w4-answer">The two partitions share an NMI of <b class="cross">…</b>, less than two runs of either kind with different seeds (<b class="seeds">…</b> weighted, <b class="seeds-plain">…</b> unweighted), so the filing counts change the grouping.</p>
+                                <p class="w4-answer">Filing counts change the grouping: the two partitions share an <span class="w4-term"><button aria-describedby="w4-term-staffing-community-stats-nmi" type="button">NMI</button><span class="w4-pop" id="w4-term-staffing-community-stats-nmi" role="tooltip">Normalised mutual information: how much two groupings of the same clients agree, from unrelated to identical. Unlike AMI, it is not corrected for chance.</span></span> of <b class="cross">…</b>, less than two seeds of either kind (<b class="seeds">…</b> weighted, <b class="seeds-plain">…</b> unweighted).</p>
                               </div>
                             </header>
                 <div class="w4-two">
                   <div>
                 <p class="sub">
-                  Louvain on the firm–client network for 2025, 100 runs each:
-                  once with links weighted by filings, once with every link
-                  counting one.  They pull it toward vendors: AMI with each
-                  client's main vendor rises from <b class="vendor-plain">…</b>
-                  to <b class="vendor">…</b> when filings count, while AMI with
-                  industry stays near <b class="industry">…</b>.
+                  We ran <span class="w4-term"><button aria-describedby="w4-term-staffing-community-stats-louvain" type="button">Louvain</button><span class="w4-pop" id="w4-term-staffing-community-stats-louvain" role="tooltip">A method that finds groups in a network by moving nodes between groups until the links inside groups are as dense as they can get. It starts from a random order, so two runs can differ.</span></span> on the 2025 firm–client network 100 times each way: with links weighted by filings, and with every link counting one. Filing counts pull clients toward vendors: AMI with each client's main vendor rises from <b class="vendor-plain">…</b> to <b class="vendor">…</b> when filings count, while AMI with industry stays near <b class="industry">…</b>.
                 </p>
                 <p class="sub">
-                  The null rewires the network so every firm and client keeps its
-                  number of partners, and deals the filing counts back out at
-                  random. Rewiring breaks the network into a median of
-                  <b class="pieces">…</b> pieces, each a free community, so we
-                  score each rewired network on its largest piece, as we do the
-                  real one. Without weights the real network wins
-                  (<b class="mod-plain">…</b> against
-                  <b class="null-plain">…</b>). With weights it loses
-                  (<b class="mod">…</b> against <b class="null">…</b>), and it
-                  loses when only the filing counts are shuffled on the real
-                  links (<b class="null-weights">…</b>). The real counts leave
-                  <b class="cross-share">…</b> of filings on links between
-                  groups, against <b class="cross-share-null">…</b> with shuffled
-                  counts: clients that use several firms hold
-                  <b class="multi-links">…</b> of the links but
-                  <b class="multi-filings">…</b> of the filings, and only their
-                  links can cross: a client with one firm sits in that firm's
-                  group:
+                  The <span class="w4-term"><button aria-describedby="w4-term-staffing-community-stats-null" type="button">null model</button><span class="w4-pop" id="w4-term-staffing-community-stats-null" role="tooltip">A random version of the network that keeps some of its features, here each node's number of partners, to show what chance alone would give.</span></span> rewires the network so every firm and client keeps its number of partners. Without weights the real network wins (<b class="mod-plain">…</b> against <b class="null-plain">…</b>); with weights it loses (<b class="mod">…</b> against <b class="null">…</b>).
                 </p>
                 <table class="ego">
                   <thead>
@@ -1914,16 +1894,9 @@
                   <tbody></tbody>
                 </table>
                 <p class="sub" style="margin-top: 12px">
-                  Infomap, which follows a random walk instead of counting links,
-                  splits the same network into <b class="im-modules">…</b> small
-                  modules, most of them a firm with its clients. They agree with
-                  Louvain at NMI <b class="im-louvain">…</b> and, like weighted
-                  Louvain, follow the vendor far more than the industry (AMI
-                  <b class="im-vendor">…</b> against
-                  <b class="im-industry">…</b>). Finer partitions raise every NMI;
-                  AMI corrects for that, so it is the number to compare across
-                  methods.
+                  Infomap, which follows a random walk instead of counting links, splits the same network into <b class="im-modules">…</b> small modules, most of them a firm with its clients. Like weighted Louvain, it follows the vendor far more than the industry (AMI <b class="im-vendor">…</b> against <b class="im-industry">…</b>).
                 </p>
+                <div class="rx-drawers rx-foot"><details class="rx-drawer"><summary>Method</summary><div class="rx-drawer-body"><p>Infomap agrees with Louvain at NMI <b class="im-louvain">…</b>. Finer partitions raise every NMI; AMI corrects for that, so it is the number to compare across methods.</p></div></details><details class="rx-drawer"><summary>More numbers</summary><div class="rx-drawer-body"><p>The null also deals the filing counts back out at random. Rewiring breaks the network into a median of <b class="pieces">…</b> pieces, each a free community, so we score each rewired network on its largest piece, as we do the real one. The real network also loses when only the filing counts are shuffled on the real links (<b class="null-weights">…</b>). The real counts leave <b class="cross-share">…</b> of filings on links between groups, against <b class="cross-share-null">…</b> with shuffled counts: clients that use several firms hold <b class="multi-links">…</b> of the links but <b class="multi-filings">…</b> of the filings, and only their links can cross, since a client with one firm sits in that firm's group.</p></div></details></div>
                   </div>
                   <div>
                     <figure class="w4-figure">
@@ -1947,21 +1920,22 @@
                             </header>
                 <div class="w4-two">
                   <div>
+                    <p class="sub">Among friends, the strongest ties sit inside tight groups where your close friends also know each other, and weak ties bridge the groups (Granovetter 1973; Onnela and colleagues confirmed it on millions of phone users in 2007).</p>
                     <div class="rx-drawers rx-foot">
-                      <details class="rx-drawer"><summary>Background</summary><div class="rx-drawer-body"><p>Among friends, the strongest ties sit inside tight groups where your close friends also know each other, and weak ties bridge the groups (Granovetter 1973; Onnela and colleagues confirmed it on millions of phone users in 2007). A link's <b>overlap</b> measures the tightness: of the firm's other clients and the client's other firms, the share that are linked to each other.</p></div></details>
+                      <details class="rx-drawer"><summary>Background</summary><div class="rx-drawer-body"><p>A link's <b>overlap</b> measures the tightness: of the firm's other clients and the client's other firms, the share that are linked to each other.</p></div></details>
                       <details class="rx-drawer"><summary>More numbers</summary><div class="rx-drawer-body"><p>Over the 28,104 links where overlap is defined, filings and overlap correlate at Spearman -0.04; with the filing counts shuffled over the same links the correlation is 0.00 ± 0.01 (z = -6.3; 2024 gives z = -3.7). Links with one filing have a mean overlap of 0.065, links with 21 or more 0.034. Heavy links mostly belong to the largest firms, whose many clients rarely share other firms, so part of this is size. It agrees with the result above: the real filing counts put weight on links between groups. Each filing states one of four wage levels, from entry (I) to fully competent (IV). Averaged per client over the filings that reach it, the groups explain 13% of the variance in wage level; averaged per firm over all its filings, 3%. None of 1,000 shuffles of the group labels reached either. A client's filings come from the vendors that also decide its group, so part of the 13% is built in. Outsourcing firms file 66% of their applications at level II and 5% at level IV; direct employers file 35% and 22%. From January to June 2026, level IV rose to 17.7% of all filings from 13.6% a year earlier, and level I fell to 18.0% from 21.8%.</p></div></details>
                     </div>
                   </div>
                   <div>
                     <figure class="w4-figure">
-                      <figcaption><b>Heavy links, looser neighbourhoods</b><span>Spearman correlation between a link's filings and its overlap, against 100 shuffles of the filing counts over the same links.</span></figcaption>
+                      <figcaption><b>Heavy links, looser neighbourhoods</b><span><span class="w4-term"><button aria-describedby="w4-term-staffing-ties-spearman" type="button">Spearman correlation</button><span class="w4-pop" id="w4-term-staffing-ties-spearman" role="tooltip">A measure of whether two quantities rise together, computed on their ranks rather than their values.</span></span> between a link's filings and its <span class="w4-term"><button aria-describedby="w4-term-staffing-ties-overlap" type="button">overlap</button><span class="w4-pop" id="w4-term-staffing-ties-overlap" role="tooltip">Of the firm's other clients and the client's other firms, the share that are linked to each other. High overlap means a tight neighbourhood.</span></span>, against 100 shuffles of the filing counts over the same links.</span></figcaption>
                       <div class="w4-figure-body" data-strip="staffing-ties-overlap"></div>
                     </figure>
                   </div>
                 </div>
                 <div class="rx-fig-row">
                   <figure class="w4-figure">
-                    <figcaption><b>Wage levels as filed</b><span>Share of each kind of employer's 2025 filings at each prevailing-wage level.</span></figcaption>
+                    <figcaption><b>Wage levels as filed</b><span>Share of each kind of employer's 2025 filings at each <span class="w4-term"><button aria-describedby="w4-term-staffing-ties-wagelevel" type="button">prevailing-wage level</button><span class="w4-pop" id="w4-term-staffing-ties-wagelevel" role="tooltip">A level set by the experience and skills the job asks for, from entry to fully competent. Each level carries a wage floor.</span></span>.</span></figcaption>
                     <div class="w4-figure-body" data-strip="staffing-ties-wage"></div>
                   </figure>
                 </div>
@@ -1975,13 +1949,14 @@
                               <span class="w4-num">6</span>
                               <div>
                                 <h2>Strength against degree: where do the heavy links go?</h2>
-                                <p class="w4-answer">Three of the top five are therapy and rehab clinics: the heaviest one-to-one ties belong to health care, not IT.</p>
+                                <p class="w4-answer">Three of the top five are therapy and rehab clinics.</p>
                               </div>
                             </header>
                 <div class="w4-two">
                   <div>
+                    <p class="sub">The course compares a node's degree (how many partners) with its strength (how many filings over all its links), and finds the exceptions tell the story.</p>
+                    <div class="notice"><span class="ico">💡</span><span><b>What to notice</b> Degree and strength rank firms almost alike (Spearman 0.91) but clients less so (0.75): the heaviest single ties belong to small rehab clinics, led by Ultimate Therapy with 133 filings from one firm.</span></div>
                     <div class="rx-drawers rx-foot">
-                      <details class="rx-drawer"><summary>Method</summary><div class="rx-drawer-body"><p>The course compares a node's degree (how many partners) with its strength (how many filings over all its links), and finds the exceptions tell the story.</p></div></details>
                       <details class="rx-drawer"><summary>More numbers</summary><div class="rx-drawer-body"><p>In the 2025 firm–client network the two rank firms almost alike (Spearman 0.91) and clients less so (0.75). The clients with the most filings from a single firm are Ultimate Therapy, 133 filings from one firm; Sigma Rehab, 95; Post Rehab Services, 61; and Grady Memorial Hospital, 58.</p></div></details>
                     </div>
                   </div>
