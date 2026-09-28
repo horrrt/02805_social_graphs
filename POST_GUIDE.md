@@ -45,7 +45,7 @@ Use the frontend-design and writing-clearly-and-concisely skills. Before saving 
 
 ## Data treatment
 
-Week 4 set these rules, and every earlier week now follows them. Apply them to each number a post quotes.
+Week 4 set these rules, and weeks 1 to 3 were brought in line on 28 September (#80, #82, #83), except that Week 3 still tests its results on one year. Apply them to each number a post quotes.
 
 - Read every number from a script's JSON. Either the page script loads it, or a test in `tests/` builds the sentence from the JSON and fails when the page disagrees (`tests/week04-prose.test.mjs`). Pin the names and words a sentence attaches to a number as well: "about twice" and "comes close" each rest on a threshold. Six hand-typed Week 4 numbers drifted after a rerun before any test read them (#72).
 - Rerun a script before you change it and confirm it reproduces its committed JSON. On 27 September three Week 3 files no longer did, and the page still quoted them.
