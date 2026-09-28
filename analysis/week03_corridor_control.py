@@ -36,6 +36,8 @@ import time
 import networkx as nx
 from scipy import stats
 
+from check_pages import check
+
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT / "scripts" / "migration"))
 
@@ -511,7 +513,9 @@ def main():
         iso3: values for iso3, values in indicators.items()
         if iso3 in nodes and any(v is not None for v in values.values())
     }
-    (OUT / "week03_corridors.json").write_text(json.dumps(payload, separators=(",", ":")))
+    corridors_path = OUT / "week03_corridors.json"
+    check(corridors_path, payload)
+    corridors_path.write_text(json.dumps(payload, separators=(",", ":")))
 
     # Edge file: one row per corridor, weights for every year, flight routes.
     flight_weight = {(a, b): w for a, b, w in flights.edges(data="weight")}
@@ -540,33 +544,35 @@ def main():
             int(female) if str(female).isdigit() else -1,
             forced.get((a, b), 0),
         ])
-    (OUT / "week03_edges.json").write_text(json.dumps(
-        {
-            "countries": countries,
-            "years": YEARS,
-            # [origin, destination, stock per year, km, women in 2024,
-            #  refugees and asylum seekers in 2024]. Flight routes used to
-            #  ride along here, but only for the 2,583 pairs that also had a
-            #  DESA migration row: 1,748 of 4,331 directed flight pairs,
-            #  including the heaviest, China <-> Taiwan, were silently
-            #  dropped. Flights are their own file now: week03_flights.json.
-            "fields": ["origin", "destination", "stocks", "km", "female", "forced"],
-            "edges": edges,
-        },
-        separators=(",", ":")))
+    edges_payload = {
+        "countries": countries,
+        "years": YEARS,
+        # [origin, destination, stock per year, km, women in 2024,
+        #  refugees and asylum seekers in 2024]. Flight routes used to
+        #  ride along here, but only for the 2,583 pairs that also had a
+        #  DESA migration row: 1,748 of 4,331 directed flight pairs,
+        #  including the heaviest, China <-> Taiwan, were silently
+        #  dropped. Flights are their own file now: week03_flights.json.
+        "fields": ["origin", "destination", "stocks", "km", "female", "forced"],
+        "edges": edges,
+    }
+    edges_path = OUT / "week03_edges.json"
+    check(edges_path, edges_payload)
+    edges_path.write_text(json.dumps(edges_payload, separators=(",", ":")))
 
     # Flight routes, independent of whether a DESA migration row exists for
     # the pair. Same countries list/order as week03_corridors.json, so an
     # index here means the same country there.
     flight_edges = [[index[a], index[b], w] for (a, b), w in flight_weight.items()
                      if a in index and b in index and w > 0]
-    (OUT / "week03_flights.json").write_text(json.dumps(
-        {
-            "countries": countries,
-            "fields": ["origin", "destination", "routes"],
-            "edges": flight_edges,
-        },
-        separators=(",", ":")))
+    flights_payload = {
+        "countries": countries,
+        "fields": ["origin", "destination", "routes"],
+        "edges": flight_edges,
+    }
+    flights_path = OUT / "week03_flights.json"
+    check(flights_path, flights_payload)
+    flights_path.write_text(json.dumps(flights_payload, separators=(",", ":")))
 
     print(f"\nwrote {(OUT / 'week03_corridors.json').relative_to(ROOT)}")
     print(f"wrote {(OUT / 'week03_edges.json').relative_to(ROOT)} ({len(edges)} corridors)")

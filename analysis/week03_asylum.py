@@ -37,6 +37,8 @@ import pathlib
 import time
 import urllib.request
 
+from check_pages import check
+
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 RAW = ROOT / "build" / "raw"
 OUT = ROOT / "docs" / "assets" / "data"
@@ -184,6 +186,7 @@ def main():
 
     OUT.mkdir(parents=True, exist_ok=True)
     path = OUT / "week03_asylum.json"
+    check(path, payload)
     path.write_text(json.dumps(payload, separators=(",", ":")))
     print(f"\nwrote {path.relative_to(ROOT)} "
           f"({len(origins)} origins over {args.floor:,}, {len(months)} months, "

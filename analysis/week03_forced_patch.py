@@ -18,6 +18,7 @@ import sys
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT / "analysis"))
 
+from check_pages import check  # noqa: E402
 from week03_corridor_control import forced_counts  # noqa: E402
 
 EDGES = ROOT / "docs" / "assets" / "data" / "week03_edges.json"
@@ -42,6 +43,7 @@ def main():
             matched += 1
             people += value
 
+    check(EDGES, payload)
     EDGES.write_text(json.dumps(payload, separators=(",", ":")))
     unmatched = len(forced) - matched
     print(f"{matched} corridors carry displacement, {people:,} people")
