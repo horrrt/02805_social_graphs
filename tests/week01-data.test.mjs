@@ -1,9 +1,10 @@
 // Invariants between analysis/week01_packs.py's output and the Week 1 page.
 //
 // The page used to hand-type its pack-collecting numbers, so a rerun of the
-// script could silently drift from what the page says. These pin totalWeight,
-// each card's probability, the histogram's count of 303, and the page's
-// ≈1,945 / ≈382 / 1,944.19–1,944.99 figures to week01_packs.json. See
+// script could silently drift from what the page says. These check totalWeight
+// against the card weights, each card's probability, the histogram against the
+// card count, and pin the page's ≈1,945 / ≈382 / 1,944.19–1,944.99 figures to
+// week01_packs.json. See
 // tests/week01-prose.test.mjs for the rest of the page's numbers (58, 2,087,
 // 106/107 and the others).
 import test from "node:test";
@@ -23,7 +24,6 @@ const html = readFileSync(
 
 test("the totalWeight equals the sum of every card's weight", () => {
   const summed = packs.cards.reduce((total, c) => total + c.weight, 0);
-  assert.equal(packs.totalWeight, 2087);
   assert.equal(summed, packs.totalWeight);
 });
 
@@ -41,9 +41,9 @@ test("every card's probability is weight / totalWeight, and they sum to 1", () =
   );
 });
 
-test("the histogram counts sum to all 303 articles", () => {
+test("the histogram counts every card once", () => {
   const total = packs.histogram.reduce((sum, row) => sum + row.count, 0);
-  assert.equal(total, 303);
+  assert.equal(total, packs.cards.length);
 });
 
 const count = (n) => n.toLocaleString("en-US");
