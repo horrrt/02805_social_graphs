@@ -484,3 +484,98 @@ Slot table extension in use: hero lines (`.w4-hero-text > p.body, p.caution`), o
 
 **Style lint (3.7) on the page text:** no new hits
 
+## RDeep
+
+Slot table extension in use: hero lines (`.w4-hero-text > p.body, p.caution`), opener lines (`header.w4-opener h2, p`) and finding lines (`.w4-finding > div > h3, p`).
+
+No slot changed.
+**Terms added:** none
+
+**Fix-ups applied (3.7):** none
+
+**Cards a script builds (skipped, see 3.3):** none
+
+**Held slots: board number not on the page (stale-number rule):** none
+
+**Numbers the board drops (accepted, list in the PR body):** none
+
+**Numbers in new term definitions (check each is a scale, not a result):** none
+
+**Script-owned text that differs from the board (3.3):** none
+
+**Text that still differs from the board, outside script-owned nodes:** none
+
+**Style lint (3.7) on the page text:** no new hits
+
+## RTopicWhere
+
+Slot table extension in use: hero lines (`.w4-hero-text > p.body, p.caution`), opener lines (`header.w4-opener h2, p`) and finding lines (`.w4-finding > div > h3, p`).
+
+### place-backbone
+- **q-answer#0**
+  - before: Keep every shared-employer link and the map is one blob; keep only the links that are heavy for someone, and it comes apart.
+  - after: With every link it is one blob; keep only links heavy for one of their metros and it comes apart.
+- **para#0**
+  - before: Cities are linked when they share an employer. The control sets the disparity-filter α from Week 4.
+  - after: Cities are linked when they share an employer. The control sets the disparity-filter α from Week 4.
+- **drawers#0**
+  - before: Background Method Two metros are linked when a company files in both; the weight adds up, over those companies, the smaller of its two filing counts. One weight threshold would keep the links among the big hubs and cut a mid-size metro's strongest tie, which is light next to New York and Dallas. The disparity filter keeps a link when it carries an unusually large share of either endpoint's weight at level α, the method the course used for the philosophers backbone. α Edges kept Giant component
+  - after: Method Two metros are linked when a company files in both; the weight adds up, over those companies, the smaller of its two filing counts. One weight threshold would keep the links among the big hubs and cut a mid-size metro's strongest tie, which is light next to New York and Dallas. The disparity filter keeps a link when it carries an unusually large share of either endpoint's weight at level α, the method the course used for the philosophers backbone. α Edges kept Giant component
+
+### place-longhaul
+- **q-answer#0**
+  - before: Mostly not. Big direct employers lead the long links, Amazon above all, and a single company rarely carries one.
+  - after: Mostly not: a single company rarely carries a long link.
+- **para#0**
+  - before: The shortlist is the five firms that place the most filings at client sites: Tata Consultancy Services, Cognizant, Infosys, HCL and Compunnel. The staffing section follows them to their clients.
+  - after: Big direct employers lead the long links, Amazon above all. The shortlist is the five firms that place the most filings at client sites.
+- **drawers#0**
+  - before: More numbers Amazon leads the most long links (30), then Cognizant (17), EY (8) and Deloitte (7). The leading company carries a median 14% of a long link's weight, and only one long link, San Jose to Fayetteville (Walmart), has a company with half of it.
+  - after: Background Tata Consultancy Services, Cognizant, Infosys, HCL and Compunnel. The staffing section follows them to their clients. More numbers Amazon leads the most long links (30), then Cognizant (17), EY (8) and Deloitte (7). The leading company carries a median 14% of a long link's weight, and only one long link, San Jose to Fayetteville (Walmart), has a company with half of it.
+
+### deeper-density
+- **q-answer#0**
+  - before: New York files the most, 65,935, but that is 6.9 per 1,000 jobs; San Jose files 42.9, Trenton 17.2 and Seattle 16.8.
+  - after: San Jose, at 42.9 filings per 1,000 jobs, against New York's 6.9.
+- **drawers#0**
+  - before: Method Section 1 counts filings. Divide each metro's 2025 filings by its jobs in the Bureau of Labor Statistics' May 2025 employment survey (OEWS) and the map shifts: nationally it is 4.5 filings per 1,000 jobs. A filing is a request, not a hire, so a rate can run high. More numbers Among the 203 metros with 100,000 jobs or more, count and density rank alike (Spearman 0.90), yet only 5 of the 10 largest by count stay in the top 10 by density: Dallas, San Jose, San Francisco, Seattle and Austin. For software developers alone the national rate is 139 filings per 1,000 jobs, and Fayetteville, Arkansas, the metro around Bentonville, reaches 896, 6.4 times the national share.
+  - after: Method A filing is a request, not a hire, so a rate can run high. More numbers Among the 203 metros with 100,000 jobs or more, count and density rank alike (Spearman 0.90), yet only 5 of the 10 largest by count stay in the top 10 by density: Dallas, San Jose, San Francisco, Seattle and Austin. For software developers alone the national rate is 139 filings per 1,000 jobs, and Fayetteville, Arkansas, the metro around Bentonville, reaches 896, 6.4 times the national share. New York files the most, 65,935; Trenton files 17.2 and Seattle 16.8 per 1,000 jobs.
+
+**Terms added:** 
+- `w4-term-place-backbone-disparity`
+- `w4-term-place-longhaul-place`
+- `w4-term-deeper-density-spearman`
+
+**Fix-ups applied (3.7):** 
+- The control sets the disparity-filter α (term-wrapped)
+- Colours are section 1's three metro groups.
+
+**Cards a script builds (skipped, see 3.3):** 
+- cut>w4-card: a method tab; the page's panels live in details#cut-methods, so its text moves by hand (Appendix A)
+- cut>w4-card#1: a method tab; the page's panels live in details#cut-methods, so its text moves by hand (Appendix A)
+- cut>w4-card#2: a method tab; the page's panels live in details#cut-methods, so its text moves by hand (Appendix A)
+- cut>w4-card#3: a method tab; the page's panels live in details#cut-methods, so its text moves by hand (Appendix A)
+
+**Held slots: board number not on the page (stale-number rule):** 
+- topic-where>rx-topic-bar topic#0: board numbers ['40'] not in the page slot; board text: The 40 metros, linked by the employers they share.
+- place-backbone q-answer#0: board numbers [] not in the page slot; board text: override used
+
+**Numbers the board drops (accepted, list in the PR body):** 
+- place-longhaul: ['one']
+- deeper-density: ['1', '2025', '2025', '4.5']
+
+**Numbers in new term definitions (check each is a scale, not a result):** none
+
+**Script-owned text that differs from the board (3.3):** 
+- #place-snap-note: board «Below α = 0.1 the giant component drops from 32 metros to 18; at α = 0.05 it keeps 25 links. The largest to fall off: Boston, Los Angeles, Detroit and 11 more.» page «Watch where the giant component snaps as you step α down with the control above.»
+- #place-alpha-choice: board «The map opens at α = 0.2, the smallest α in the sweep that keeps all 40 metros connected, with 180 links. At α = 0.1 it keeps 59 links and 32 connected metros; at α = 0.3, 419 links.» page «»
+
+**Text that still differs from the board, outside script-owned nodes:** 
+- topic-where>rx-topic-bar: page «Section 1's» board «The 40»
+- topic-where>rx-topic-bar: page «» board «7 boxes»
+- place-backbone: page «control sets» board «slider is»
+- place-backbone: page «» board «0.05 0.1 0.2 0.3 0.5»
+- place-backbone: page «section 1's three metro groups.» board «the communities of card C.»
+
+**Style lint (3.7) on the page text:** no new hits
+

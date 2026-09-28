@@ -512,7 +512,18 @@ def clean(board: Tree, slot: Node, page: Tree, pslot: Node | None, pcard: Node, 
         if old in html:
             html = html.replace(old, new)
             log["fixups"].append(new)
+    # The same fix-up when the board wraps "disparity-filter" in a term.
+    html, n = re.subn(r"The slider is the(\s*<span class=\"w4-term\">)", r"The control sets the\1", html)
+    if n:
+        log["fixups"].append("The control sets the disparity-filter α (term-wrapped)")
     return html
+
+
+TOPICS = {"RTopicWhere": "topic-where", "RTopicJobs": "topic-jobs", "RTopicOutsourcing": "topic-outsourcing",
+          "RTopicPaperwork": "topic-paperwork", "RTopicYears": "topic-years", "RData": "evidence"}
+# Board cards the page builds differently; their text moves by hand.
+_METHODS = "a method tab; the page's panels live in details#cut-methods, so its text moves by hand (Appendix A)"
+BY_HAND = {"RTopicWhere": {f"cut>w4-card{s}": _METHODS for s in ("", "#1", "#2", "#3")}}
 
 
 def port(board_name: str, page_src: str, before_cards: dict, overrides: dict) -> tuple[str, dict]:
@@ -524,7 +535,14 @@ def port(board_name: str, page_src: str, before_cards: dict, overrides: dict) ->
     log = {"board": board_name, "cards": [], "js_text": [], "terms": [], "fixups": [], "held": [],
            "pop_numbers": [], "residual": [], "skipped": [], "dropped_numbers": []}
     edits: list[tuple[int, int, str]] = []
+    topic = TOPICS.get(board_name)
+    if topic:  # a topic board has no topic wrapper, so its cards key by #cut
+        bkeys = {n: (k.replace("cut>", f"{topic}>", 1) if k.startswith("cut>rx-topic-bar") else k)
+                 for n, k in bkeys.items()}
     for bcard, key in bkeys.items():
+        if key in BY_HAND.get(board_name, {}):
+            log["skipped"].append(f"{key}: {BY_HAND[board_name][key]}")
+            continue
         if key not in pby:
             raise Stop(f"{board_name}: board card {key} has no page partner")
         pcard = pby[key]
@@ -557,6 +575,11 @@ def port(board_name: str, page_src: str, before_cards: dict, overrides: dict) ->
             new = clean(board, bslot, page, pslot, pcard, host, registry, log, outer=pslot is None)
             if okey in overrides:
                 new = overrides[okey]
+                # An override written for an inserted slot holds the slot's own
+                # tags; once the page has the slot, only its inside is spliced.
+                if pslot is not None and new.lstrip().startswith(f"<{pslot.tag}"):
+                    ot = Tree(new)
+                    new = ot.inner(ot.root.children[0])
                 log["held"].append((key, label, "override used", []))
             old_text = flatten(page.inner(pslot)) if pslot is not None else ""
             # Stale-number rule.
@@ -643,7 +666,9 @@ def drawer_edits(board: Tree, bslot: Node, page: Tree, pslot: Node, pcard: Node,
     def same(a: str, b: str) -> bool:
         def norm(x: str):
             x = x.replace("&#x27;", "'")
-            return flatten(x), [(m.group(1), m.group(2)) for m in TERM_RE.finditer(x)]
+            terms = [(m.group(1), m.group(2)) for m in TERM_RE.finditer(x)]
+            ids = sorted(i for i in re.findall(r'\bid="([^"]+)"', x) if not i.startswith("w4-term-"))
+            return flatten(x), terms, ids
         return norm(a) == norm(b)
 
     bd = [d for d in bslot.children if d.tag == "details"]

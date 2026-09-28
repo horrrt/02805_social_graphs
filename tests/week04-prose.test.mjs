@@ -328,10 +328,15 @@ test("filings per 1,000 jobs", () => {
   has(`nationally it is ${one(m.national_rate_per_1000)} filings per 1,000 jobs`);
   const ny = m.top_by_count[0];
   assert.equal(ny.name, "New York, NY");
-  has(`New York files the most, ${count(ny.filings)}, but that is ${one(ny.rate)} per 1,000 jobs`);
+  has(`while New York, the largest filer, sits at ${one(ny.rate)}`);
+  has(`New York files the most, ${count(ny.filings)};`);
   const [sj, tr, se] = m.top_by_intensity;
   assert.deepEqual([sj.name, tr.name, se.name], ["San Jose, CA", "Trenton, NJ", "Seattle, WA"]);
-  has(`San Jose files ${one(sj.rate)}, Trenton ${one(tr.rate)} and Seattle ${one(se.rate)}`);
+  has(`San Jose, at ${one(sj.rate)} filings per 1,000 jobs, against New York's ${one(ny.rate)}.`);
+  has(`San Jose files ${one(sj.rate)}, nearly ten times that`);
+  const times = sj.rate / m.national_rate_per_1000;
+  assert.ok(times >= 9 && times < 10, `"nearly ten times" needs San Jose's rate 9 to 10 times the national one, not ${times.toFixed(2)}`);
+  has(`Trenton files ${one(tr.rate)} and Seattle ${one(se.rate)} per 1,000 jobs`);
   has(`Among the ${m.metros_at_or_above_floor} metros with ${count(m.intensity_jobs_floor)} jobs`);
   has(`(Spearman ${m.spearman_count_vs_intensity.rho.toFixed(2)})`);
   const stay = m.top10_by_count_still_top10_by_intensity;
