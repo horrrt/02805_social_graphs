@@ -537,6 +537,7 @@ BY_HAND = {
     "RTopicWhere": {f"cut>w4-card{s}": _METHODS for s in ("", "#1", "#2", "#3")},
     "RTopicJobs": {k: _SCRIPT for k in ("cut-skills-direct", "cut-skills-cluster", "cut-skills-radar",
                                         "cut-pagerank-explore", "cut-pagerank-iteration")},
+    "RTopicYears": {"years-card": _SCRIPT},
 }
 
 

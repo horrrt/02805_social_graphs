@@ -883,3 +883,38 @@ Slot table extension in use: hero lines (`.w4-hero-text > p.body, p.caution`), o
 
 **Style lint (3.7) on the page text:** no new hits
 
+## RTopicYears
+
+Slot table extension in use: hero lines (`.w4-hero-text > p.body, p.caution`), opener lines (`header.w4-opener h2, p`) and finding lines (`.w4-finding > div > h3, p`).
+
+### topic-years>w4-card
+- **para#0 (added before the drawers)**
+  - before: (none)
+  - after: We compare each year's client groups with the next year's, on the clients both years share, and with a second run on the same year as the ceiling. Consecutive years agree less than that ceiling, so the groups carry over only in part.
+- **figcaption#0**
+  - before: Consecutive years against the same year NMI of the groups on shared clients. Dots: two consecutive years. Dashed: two runs of the same year.
+  - after: Consecutive years against the same year NMI of the groups on shared clients. Dots: two consecutive years. Dashed: two runs of the same year.
+
+**Terms added:** 
+- `w4-term-topic-years-nmi`
+
+**Fix-ups applied (3.7):** none
+
+**Cards a script builds (skipped, see 3.3):** 
+- years-card: a script builds this card, so its text moves in the script (PORT_PLAN 3.3)
+- roles-card: a script builds this card (PORT_PLAN 3.3)
+
+**Held slots: board number not on the page (stale-number rule):** none
+
+**Numbers the board drops (accepted, list in the PR body):** none
+
+**Numbers in new term definitions (check each is a scale, not a result):** 
+- topic-years>w4-card figcaption#0: ['0', '1'] in «Normalised mutual information: how much two groupings of the same clients agree, from 0 (unrelated) to 1 (identical).»
+
+**Script-owned text that differs from the board (3.3):** none
+
+**Text that still differs from the board, outside script-owned nodes:** 
+- topic-years>rx-topic-bar: page «» board «3 boxes»
+
+**Style lint (3.7) on the page text:** no new hits
+
