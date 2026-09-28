@@ -1064,6 +1064,70 @@ class Years(Model):
         return self
 
 
+# Deep dive · Roles · docs/weeks/week04/data/roles.json, read by week04-roles.js -
+
+class RolesPartial(Model):
+    year: Literal["2026"]
+    months: int = Field(gt=0, le=12)
+    window: str
+
+
+class RoleSeries(Model):
+    name: str
+    code: str | None
+    top_in: list[Literal["FY2022", "FY2023", "FY2024", "FY2025", "FY2026"]]
+    counts: list[int] = Field(min_length=5, max_length=5)
+    oct_jun: list[int] = Field(min_length=5, max_length=5)
+
+
+class RoleFinding(Model):
+    name: str
+    code: str | None
+    share_fy2022_percent: float
+    share_fy2025_percent: float
+    change_pp: float
+    direction: Literal["grew", "shrank"]
+    entered_top: bool
+    left_top: bool
+
+
+class RoleSplit(Model):
+    top_n: int = Field(ge=2)
+    other_name: str
+    series: list[RoleSeries] = Field(min_length=2)
+    finding: RoleFinding
+
+
+class RolesMeta(Model):
+    legacy_codes: int = Field(gt=0)
+    legacy_targets: int = Field(gt=0)
+    crosswalk_codes: int = Field(ge=0)
+
+
+class Roles(Model):
+    generated_by: str
+    years: list[Literal["2022", "2023", "2024", "2025", "2026"]] = Field(min_length=5, max_length=5)
+    partial: RolesPartial
+    totals: dict[Literal["2022", "2023", "2024", "2025", "2026"], int] = Field(min_length=5, max_length=5)
+    oct_jun_totals: dict[Literal["2022", "2023", "2024", "2025", "2026"], int] = Field(min_length=5, max_length=5)
+    splits: dict[Literal["occupations", "groups", "employer", "placement"], RoleSplit]
+    legacy_recoded: dict[str, int]
+    meta: RolesMeta
+    uncoded: dict[str, int]
+
+    @model_validator(mode="after")
+    def checks(self):
+        years = ["2022", "2023", "2024", "2025", "2026"]
+        for name, split in self.splits.items():
+            for i, y in enumerate(years):
+                total = sum(s.counts[i] for s in split.series)
+                assert total == self.totals[y], f"{name} {y}: series counts must sum to the certified total"
+                oj_total = sum(s.oct_jun[i] for s in split.series)
+                assert oj_total == self.oct_jun_totals[y], \
+                    f"{name} {y}: series October-to-June counts must sum to the October-to-June total"
+        return self
+
+
 # Deep dive · Skills · docs/weeks/week04/data/skills.json, read by week04-skills.js -
 
 class SkillsExample(Model):
@@ -1094,6 +1158,56 @@ class Cohiring(Model):
 class Skills(Model):
     meta: dict
     cohiring: Cohiring
+
+
+# Deep dive · Skills radar · docs/weeks/week04/data/skills_radar.json, read by
+# week04-skills-radar.js ----------------------------------------------------
+
+class RadarGroup(Model):
+    label: str
+    ids: list[str] = Field(min_length=1)
+    names: list[str] = Field(min_length=1)
+
+    @model_validator(mode="after")
+    def same_length(self):
+        assert len(self.ids) == len(self.names), "ids and names must list the same descriptors"
+        return self
+
+
+class RadarMeta(Model):
+    generated_by: str
+    scale: str
+    groups: dict[Literal["skills", "knowledge", "work_activities"], RadarGroup]
+
+
+class RadarOccupation(Model):
+    code: str
+    title: str
+    filings: int = Count
+    in_network: bool
+    cluster: int | None
+    ratings: list[float]
+
+    @model_validator(mode="after")
+    def ratings_in_range(self):
+        assert all(1 <= v <= 5 for v in self.ratings), "every rating must be an O*NET Importance value, 1 to 5"
+        return self
+
+
+class SkillsRadar(Model):
+    meta: RadarMeta
+    occupations: list[RadarOccupation] = Field(min_length=1)
+    default: list[str] = Field(min_length=1, max_length=5)
+
+    @model_validator(mode="after")
+    def references(self):
+        total = sum(len(g.ids) for g in self.meta.groups.values())
+        codes = {o.code for o in self.occupations}
+        for o in self.occupations:
+            assert len(o.ratings) == total, f"{o.code}: ratings must list one value per descriptor ({total})"
+        for code in self.default:
+            assert code in codes, f"default code {code} is not in occupations"
+        return self
 
 
 # Deep dive · PageRank · docs/weeks/week04/data/pagerank.json, read by week04-pagerank.js -
@@ -1164,6 +1278,167 @@ class Pagerank(Model):
         return self
 
 
+# Deep dive · More networks · docs/weeks/week04/data/more.json, read by
+# week04-vis-more.js -------------------------------------------------------
+
+class MorePermRow(Model):
+    label: str
+    lca_filings: int = Count
+    ratio: float = Field(ge=0)
+
+
+class MorePerm(Model):
+    median_ratio: float = Field(ge=0)
+    rows: list[MorePermRow] = Field(min_length=6, max_length=6)
+
+
+class MoreCountryRow(Model):
+    country: str
+    share: float = Share
+
+
+class MoreModularityRow(Model):
+    real: float
+    null: float
+    null_sd: float
+    z: float
+
+
+class MoreCountries(Model):
+    top: list[MoreCountryRow] = Field(min_length=8, max_length=8)
+    modularity: dict[Literal["unweighted", "weighted"], MoreModularityRow]
+
+
+class MoreDensityRow(Model):
+    metro: str
+    name: str
+    rate: float = Field(ge=0)
+
+
+class MoreDensity(Model):
+    national_rate: float = Field(ge=0)
+    rows: list[MoreDensityRow] = Field(min_length=10, max_length=10)
+    new_york: MoreDensityRow
+
+
+class MoreStrengthRow(Model):
+    label: str
+    strength: int = Count
+    health_care: bool
+
+
+class MoreStrength(Model):
+    rows: list[MoreStrengthRow] = Field(min_length=5, max_length=5)
+
+
+class MoreLotterySeries(Model):
+    label: str
+    values: list[float] = Field(min_length=2, max_length=2)
+
+
+class MoreLottery(Model):
+    draws: list[str] = Field(min_length=2, max_length=2)
+    series: list[MoreLotterySeries] = Field(min_length=3, max_length=3)
+
+
+class More(Model):
+    generated_by: str
+    perm: MorePerm
+    countries: MoreCountries
+    density: MoreDensity
+    strength: MoreStrength
+    lottery: MoreLottery
+# Deep dive · section 3 first round, law firms, ties and lottery ·
+# docs/weeks/week04/data/staffing_deep.json, read by week04-vis-staffing.js -
+
+class ByKindRate(Model):
+    registrations_per_approval: float = Field(gt=0)
+    selected_that_became_petitions: float = Share
+
+
+class StaffingDeepQ1(Model):
+    client_company_share: float = Share
+    by_kind: dict[Literal["direct", "placing", "small"], ByKindRate]
+
+
+class StaffingDeepQ3(Model):
+    clients: int = Count
+    single_vendor_clients: int = Count
+    single_vendor_filing_share: float = Share
+    big_clients: int = Count
+    big_clients_over_90pct_one_vendor: int = Count
+    big_clients_median_top_vendor_share: float = Share
+
+
+class PercentPair(Model):
+    fy24_to_fy25: float
+    fy25_to_fy26: float
+
+
+class SharePair(Model):
+    before: float = Share
+    after: float = Share
+
+
+class JanJunChange(Model):
+    certified_filings_percent: PercentPair
+    client_company_filings_percent: PercentPair
+    main_vendor_changed_share: SharePair
+
+
+class StaffingDeepQ4(Model):
+    jan_jun_change: JanJunChange
+
+
+class OutsourcingShare(Model):
+    no_firm_share_pooled: float = Share
+    top5_share_pooled: float = Share
+
+
+class StaffingDeepLawyers(Model):
+    outsourcing: dict[Literal["placing", "direct"], OutsourcingShare]
+    top_firms_by_filings: list[tuple[str, int]] = Field(min_length=5, max_length=5)
+
+
+class WeightShuffleNull(Model):
+    mean_rho: float
+    sd_rho: float = Field(gt=0)
+
+
+class WageDistribution(Model):
+    placing: dict[Literal["1", "2", "3", "4"], float]
+    direct: dict[Literal["1", "2", "3", "4"], float]
+
+
+class StaffingDeepTies(Model):
+    spearman_weight_overlap_rho: float
+    weight_shuffle_null: WeightShuffleNull
+    defined_links: int = Count
+    wage_distribution_placing_vs_direct_filings: WageDistribution
+
+
+class LotteryYearShare(Model):
+    high_mates_share: float = Share
+    high_mates_share_shuffled: float = Share
+
+
+class StaffingDeepLottery(LotteryYearShare):
+    ami_median: float
+    ami_min: float
+    ami_max: float
+    previous_year: LotteryYearShare
+
+
+class StaffingDeep(Model):
+    generated_by: str
+    q1: StaffingDeepQ1
+    q3: StaffingDeepQ3
+    q4: StaffingDeepQ4
+    lawyers: StaffingDeepLawyers
+    ties: StaffingDeepTies
+    lottery: StaffingDeepLottery
+
+
 PAGES = {
     "docs/assets/data/week04_place.json": Place,
     "docs/weeks/week04/data/jobs.json": Jobs,
@@ -1172,6 +1447,7 @@ PAGES = {
     "docs/weeks/week04/data/where_who.json": WhereWho,
     "docs/weeks/week04/data/jobs_split.json": JobsSplit,
     "docs/weeks/week04/data/skills.json": Skills,
+    "docs/weeks/week04/data/skills_radar.json": SkillsRadar,
     "docs/weeks/week04/data/pagerank.json": Pagerank,
     "docs/weeks/week04/data/staffing_moves.json": StaffingMoves,
     "docs/weeks/week04/data/beyond.json": Beyond,
@@ -1179,6 +1455,9 @@ PAGES = {
     "docs/weeks/week04/data/footprint_rank.json": FootprintRank,
     "docs/weeks/week04/data/explore.json": Explore,
     "docs/weeks/week04/data/years.json": Years,
+    "docs/weeks/week04/data/roles.json": Roles,
+    "docs/weeks/week04/data/more.json": More,
+    "docs/weeks/week04/data/staffing_deep.json": StaffingDeep,
 }
 
 
