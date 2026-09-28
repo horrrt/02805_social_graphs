@@ -241,9 +241,10 @@ test("section 1: communities against the null, runs, FY2024 and Census", () => {
   const n = json("docs/assets/data/week04_place.json").null_model;
   const o = n.other_year;
   const has = (t) => assert.ok(regions.includes(t), `section 1 should say "${t}"`);
-  has(`modularity is ${n.Q.toFixed(3)} against ${n.Q_null_mean.toFixed(3)}`);
+  has(`Modularity is ${n.Q.toFixed(3)} against ${n.Q_null_mean.toFixed(3)} for rewired networks`);
   has(`(z = ${Math.round(n.z)})`);
-  has(`finds it in ${n.modal_runs} of ${n.seeds} runs; the other ${n.seeds - n.modal_runs} find one other split`);
+  has(`Louvain finds the split shown in ${n.modal_runs} of ${n.seeds} runs; the other ${n.seeds - n.modal_runs} find one other split`);
+  has(`The split is real but weak: Louvain finds it in ${n.modal_runs} of ${n.seeds} runs.`);
   assert.equal(n.partitions_found, 2, '"one other split" needs exactly two partitions');
   assert.equal(o.fy2025_runs_equal_to_other_year, n.seeds - n.modal_runs, "FY2024's split is FY2025's other one");
   has(`${o.year} gives that two-group split in all ${o.runs} runs`);
@@ -252,6 +253,7 @@ test("section 1: communities against the null, runs, FY2024 and Census", () => {
   has(`at NMI ${o.nmi_across_years_median.toFixed(2)}, against ${o.nmi_within_fy2025_median.toFixed(2)} between two 2025 runs`);
   has(`Census regions is ${n.nmi_census_region.toFixed(2)} and with divisions ${n.nmi_census_division.toFixed(2)}`);
   has(`(p = ${n.p_region.toFixed(2)} and ${n.p_division.toFixed(2)})`);
+  assert.ok(Math.min(n.p_region, n.p_division) >= 0.05, '"no better than shuffled labels" needs both p at 0.05 or above');
 });
 
 test("closing: what surprised us", () => {

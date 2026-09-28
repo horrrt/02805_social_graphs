@@ -25,6 +25,8 @@ test("section 1: cities group by who hires, not by region", () => {
   says("place-who", `placed share at ${f2(s.placed_share_tercile.ami)} (p = ${s.placed_share_tercile.p_shuffle.toFixed(3)})`);
   says("place-who", `Census regions reach ${f2(s.census_region.ami)} (p = ${f2(s.census_region.p_shuffle)})`);
   says("place-who", `divisions ${f2(s.census_division.ami)} (p = ${f2(s.census_division.p_shuffle)})`);
+  says("place-who", "Census regions and divisions do no better than chance");
+  assert.ok(Math.min(s.census_region.p_shuffle, s.census_division.p_shuffle) >= 0.05, '"no better than chance" needs both p at 0.05 or above');
   says("place-who", `${f.naics54_dominant_metros} of the 40 metros`);
   assert.ok(Math.min(s.naics54_share_tercile.ami, s.placed_share_tercile.ami) > Math.max(s.census_region.ami, s.census_division.ami));
 });
@@ -44,8 +46,8 @@ test("section 1: the backbone sheds metros, it does not snap", () => {
   says("place-break", `Of the ${f.q2_breaking_links_flagged} links whose removal cuts a metro loose`);
   says("place-break", `lead ${f.q2_breaking_links_led_by_shortlist} (${pct(f.q2_flagged_shortlist_share)})`);
   says("place-break", `(${pct(f.q2_backbone_shortlist_share)}, p = ${f2(f.q2_hypergeom_p)})`);
+  assert.ok(f.q2_hypergeom_p >= 0.05, '"no more of the links than of any others" needs p at 0.05 or above');
   const lead = Object.fromEntries(f.q2_leaders);
-  says("place-break", `Cognizant ${["zero", "one", "two", "three", "four", "five"][lead.Cognizant]}, HCL ${["zero", "one"][lead.HCL]}`);
   says("place-break", `Amazon (${["zero", "one", "two", "three"][lead.Amazon]})`);
   says("place-break", `Table: ${d.breaking_links.length} links that peel metros off`);
 });

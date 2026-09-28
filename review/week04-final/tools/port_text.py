@@ -186,6 +186,13 @@ JS_IDS = {
     "jobs-node-inspector", "jobs-bridge-list", "where-break-links", "jobs-linkcom-table",
     "who-movers-table", "who-overlap-table", "staffing-figure", "methods-status",
 }
+# Term ids the scripts create at run time (PORT_PLAN 3.3, termify); the page
+# must never carry them too.
+JS_TERM_IDS = {f"w4-term-{x}" for x in (
+    "cut-skills-direct-onet", "cut-skills-direct-similarity", "cut-pagerank-explore-pagerank",
+    "cut-pagerank-explore-degree", "cut-pagerank-iteration-pagerank", "years-card-registrations",
+    "roles-card-crosswalk", "w4m-panel-gn-modularity", "w4m-panel-overlap-clique", "place-backbone-giant",
+)}
 JS_PREFIXES = ("place-sel-", "hero-sel-", "chart-", "years-", "roles-", "w4m-", "skills-", "pagerank-")
 
 
@@ -445,7 +452,23 @@ def clean(board: Tree, slot: Node, page: Tree, pslot: Node | None, pcard: Node, 
     lo, hi = (slot.start, slot.end) if outer else (slot.start_end, slot.end_start)
     # Script-owned descendants: the page's own copy goes back verbatim.
     edits = []
+    # Tables are data, not text: the page's own table goes back verbatim,
+    # paired by its tbody id or else by order within the slot.
+    btables = [n for n in slot.walk() if n.tag == "table"]
+    ptables = [m for m in pslot.walk() if m.tag == "table"] if pslot is not None else []
+    for i, t in enumerate(btables):
+        tid = next((d.id for d in t.walk() if d.tag == "tbody" and d.id), None)
+        mine = [m for m in ptables if tid and any(d.id == tid for d in m.walk())] or (
+            [ptables[i]] if not tid and i < len(ptables) else [])
+        if not mine:
+            mine = page.find(lambda m: m.tag == "table" and tid and any(d.id == tid for d in m.walk()), pcard)
+        if not mine:
+            raise Stop(f"board slot holds a table ({tid or i}) the page slot lacks")
+        edits.append((t.start, t.end, page.outer(mine[0])))
+    in_table = {id(d) for t in btables for d in t.walk()}
     for n in slot.walk():
+        if id(n) in in_table:
+            continue
         if n is slot or not is_js_owned(n) or any(is_js_owned(a) for a in n.ancestors() if a is not slot and a.start >= slot.start):
             continue
         key = js_key(n)
@@ -457,7 +480,7 @@ def clean(board: Tree, slot: Node, page: Tree, pslot: Node | None, pcard: Node, 
         edits.append((n.start, n.end, page.outer(mine[0])))
     if pslot is not None:
         for m in pslot.walk():
-            if m is not pslot and is_js_owned(m) and not any(e[2] == page.outer(m) for e in edits):
+            if m is not pslot and is_js_owned(m) and not any(page.outer(m) in e[2] for e in edits):
                 raise Stop(f"page slot holds script-owned {js_key(m)}, which the board slot lacks")
     html = board.src[lo:hi]
     for s, e, rep in sorted(edits, reverse=True):
@@ -497,7 +520,7 @@ def port(board_name: str, page_src: str, before_cards: dict, overrides: dict) ->
     page = Tree(page_src)
     bkeys, pkeys = card_keys(board), card_keys(page)
     pby = {k: n for n, k in pkeys.items()}
-    registry = {n.id for n in page.root.walk() if n.id}
+    registry = {n.id for n in page.root.walk() if n.id} | JS_TERM_IDS
     log = {"board": board_name, "cards": [], "js_text": [], "terms": [], "fixups": [], "held": [],
            "pop_numbers": [], "residual": [], "skipped": [], "dropped_numbers": []}
     edits: list[tuple[int, int, str]] = []
@@ -530,6 +553,7 @@ def port(board_name: str, page_src: str, before_cards: dict, overrides: dict) ->
             pairs[id(bslot)] = pslot
             label = f"{k}#{i}"
             okey = f"{board_name}|{key}|{label}"
+            snap = (set(registry), {k2: list(v) for k2, v in log.items() if isinstance(v, list)})
             new = clean(board, bslot, page, pslot, pcard, host, registry, log, outer=pslot is None)
             if okey in overrides:
                 new = overrides[okey]
@@ -550,7 +574,25 @@ def port(board_name: str, page_src: str, before_cards: dict, overrides: dict) ->
             if pslot is not None:
                 if re.sub(r"\s+", " ", new).strip() == re.sub(r"\s+", " ", page.inner(pslot)).strip():
                     continue
-                edits.append((pslot.start_end, pslot.end_start, reindent(new, page.inner(pslot))))
+                per = None
+                if k == "drawers" and okey not in overrides:
+                    after_row = (set(registry), {k2: list(v) for k2, v in log.items() if isinstance(v, list)})
+                    registry.clear()
+                    registry.update(snap[0])
+                    for k2, v in snap[1].items():
+                        log[k2][:] = v
+                    per = drawer_edits(board, bslot, page, pslot, pcard, host, registry, log)
+                    if per is None:  # back to the whole-row clean's ids and log
+                        registry.clear()
+                        registry.update(after_row[0])
+                        for k2, v in after_row[1].items():
+                            log[k2][:] = v
+                if per is not None:
+                    if not per:
+                        continue
+                    edits.extend(per)
+                else:
+                    edits.append((pslot.start_end, pslot.end_start, reindent(new, page.inner(pslot))))
                 changed.append((label, old_text, flatten(new)))
             else:
                 edits.append(insertion(board, bslot, page, bcard, pcard, new, key))
@@ -581,6 +623,52 @@ def port(board_name: str, page_src: str, before_cards: dict, overrides: dict) ->
             if d:
                 log["residual"].append((key, d))
     return out, log
+
+
+def drawer_edits(board: Tree, bslot: Node, page: Tree, pslot: Node, pcard: Node, host: str,
+                 registry: set[str], log: dict):
+    """Splice a drawer row one <details> at a time, so a drawer whose text the
+    board leaves alone keeps the page's bytes. None when the two rows order
+    their shared drawers differently (the caller then replaces the row)."""
+
+    def name(tree: Tree, d: Node) -> str:
+        s = next((c for c in d.children if c.tag == "summary"), None)
+        return flatten(tree.inner(s)) if s is not None else ""
+
+    def same(a: str, b: str) -> bool:
+        return flatten(a).replace("&#x27;", "'") == flatten(b).replace("&#x27;", "'")
+
+    bd = [d for d in bslot.children if d.tag == "details"]
+    pd = [d for d in pslot.children if d.tag == "details"]
+    if not pd or len(bd) != len(bslot.children) or len(pd) != len(pslot.children):
+        return None
+    bnames = [name(board, d) for d in bd]
+    pmap = {name(page, d): d for d in pd}
+    if len(pmap) != len(pd) or len(set(bnames)) != len(bnames):
+        return None
+    if [n for n in bnames if n in pmap] != [name(page, d) for d in pd if name(page, d) in bnames]:
+        return None
+    line_start = page.src.rfind("\n", 0, pd[0].start) + 1
+    indent = re.match(r"[ \t]*", page.src[line_start:]).group(0)
+    edits, inserts, prev = [], {}, None
+    for d in pd:
+        if name(page, d) not in bnames:
+            ls = page.src.rfind("\n", 0, d.start)
+            edits.append((ls if page.src[ls + 1 : d.start].strip() == "" else d.start, d.end, ""))
+    for d in bd:
+        mine = pmap.get(name(board, d))
+        html = clean(board, d, page, mine, pcard, host, registry, log, outer=True)
+        one = re.sub(r"\s*\n\s*", " ", html.strip())
+        if mine is not None:
+            if not same(html, page.outer(mine)):
+                edits.append((mine.start, mine.end, one))
+            prev = mine
+        elif prev is not None:
+            inserts.setdefault(prev.end, []).append("\n" + indent + one)
+        else:
+            inserts.setdefault(pd[0].start, []).append(one + "\n" + indent)
+    edits += [(at, at, "".join(parts)) for at, parts in inserts.items()]
+    return edits
 
 
 def insertion(board: Tree, bslot: Node, page: Tree, bcard: Node, pcard: Node, html: str, key: str):

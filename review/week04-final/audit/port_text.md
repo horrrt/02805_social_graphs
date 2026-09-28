@@ -76,3 +76,100 @@ Slot table extension in use: hero lines (`.w4-hero-text > p.body, p.caution`), o
 
 **Style lint (3.7) on the page text:** no new hits
 
+## RS1
+
+Slot table extension in use: hero lines (`.w4-hero-text > p.body, p.caution`), opener lines (`header.w4-opener h2, p`) and finding lines (`.w4-finding > div > h3, p`).
+
+### place>opener
+- **opener#1**
+  - before: Cities group by who hires there, not by region, and no single link holds the map together.
+  - after: Cities group by who hires there, and no single link holds the map together.
+
+### place>w4-intro
+- **para#0**
+  - before: The cities are the 40 metro areas with the most filings, 84.5% of the year's total. Louvain splits the 40 metros into three groups: seven large hubs led by New York and Dallas, eight tech hubs led by San Jose and San Francisco, and the other 25. The split is weak but real: modularity 0.049 against 0.013 for rewired networks in which each company keeps its number of metros (z = 29). The two questions below ask what the groups follow and where the network comes apart.
+  - after: The cities are the 40 metro areas with the most filings, 84.5% of the year's total. Louvain splits them into three groups, and the split is weak but real: modularity 0.049 against 0.013 for rewired networks (z = 29).
+- **drawers#0**
+  - before: Method Two metros are linked when the same company files in both; the link weighs, summed over those companies, the smaller of the company's two filing counts.
+  - after: Background Seven large hubs led by New York and Dallas, eight tech hubs led by San Jose and San Francisco, and the other 25. The rewired networks keep each company's number of metros. The two questions below ask what the groups follow and where the network comes apart. Method Two metros are linked when the same company files in both; the link weighs, summed over those companies, the smaller of the company's two filing counts.
+
+### place-start
+- **q-answer#1**
+  - before: Not regional markets. Louvain splits the large hubs into two groups, which cross regions, and leaves the smaller metros as a third.
+  - after: Not regional markets: the two hub groups cross regions.
+- **para#1**
+  - before: Toggle Louvain communities against Census regions on the same map.
+  - after: Louvain splits the large hubs into two groups, which cross regions, and leaves the smaller metros as a third. Toggle Louvain communities against Census regions on the same map.
+- **notice#0**
+  - before: What to notice San Jose's 48,692 filings request 124,265 positions, 2.6 per filing, and Google files one in ten of them. New York files more (65,935) from three times as many employers (12,711), with 1.5 positions per filing, and its largest filer, EY, has under 4%.
+  - after: What to notice San Jose's 48,692 filings request 124,265 positions, and Google files one in ten of them. New York files more (65,935) from three times as many employers (12,711).
+- **notice#1**
+  - before: What to notice One group holds New York, Dallas, Atlanta, Chicago, Houston, Philadelphia and Charlotte. The other holds San Jose, San Francisco, Seattle, Los Angeles, San Diego, Austin, Boston and Washington. The 25 smaller metros form the third. The split is real but weak: modularity is 0.049 against 0.013 for rewired networks that keep each company's number of metros (z = 29), and Louvain finds it in 65 of 100 runs; the other 35 find one other split, into two groups. NMI, normalized mutual information, scores how alike two groupings are, from 0 for unrelated to 1 for the same. 2024 gives that two-group split in all 100 runs, so it matches the split shown here at NMI 0.64, against 1.00 between two 2025 runs. NMI with Census regions is 0.14 and with divisions 0.21, no better than shuffled labels (p = 0.10 and 0.11). Infomap, which follows a random walk between metros instead of counting links, finds no split at all: one module holds all 40.
+  - after: What to notice The split is real but weak: Louvain finds it in 65 of 100 runs. Census regions and divisions match it no better than shuffled labels (p = 0.10 and 0.11).
+- **drawers#0**
+  - before: Background The map shows the partition Louvain finds most often, and every number below is computed on it. The null rewires the company × metro network so each company and each metro keeps its number of partners, deals the filing counts back out at random, and projects it again: Method A filing counts once in each metro it names, with at most the positions it requests. More numbers In Seattle one company, Amazon, files 31%. Positions reward a few firms asking for many seats; employer counts reward a broad market. Maps: groups and Census regions Communities Census regions On the map The 48 contiguous states; none of the 40 metros lies outside them. Bubbles are sized by requested positions; colour and opacity follow the active metric. Each metro sits at its first-named city. Click a bubble to select it. Same cities, two labelings The same map, coloured by the active labelling. Communities are named after their two largest metros. Click a city to select it.
+  - after: Background The map shows the partition Louvain finds most often, and every number below is computed on it. The null rewires the company × metro network so each company and each metro keeps its number of partners, deals the filing counts back out at random, and projects it again: One group holds New York, Dallas, Atlanta, Chicago, Houston, Philadelphia and Charlotte. The other holds San Jose, San Francisco, Seattle, Los Angeles, San Diego, Austin, Boston and Washington. The 25 smaller metros form the third. Modularity is 0.049 against 0.013 for rewired networks that keep each company's number of metros (z = 29). Louvain finds the split shown in 65 of 100 runs; the other 35 find one other split, into two groups. 2024 gives that two-group split in all 100 runs, so it matches the split shown here at NMI 0.64, against 1.00 between two 2025 runs. NMI with Census regions is 0.14 and with divisions 0.21. Infomap, which follows a random walk between metros instead of counting links, finds no split at all: one module holds all 40. Method A filing counts once in each metro it names, with at most the positions it requests. More numbers In Seattle one company, Amazon, files 31%. Positions reward a few firms asking for many seats; employer counts reward a broad market. San Jose averages 2.6 positions per filing, New York 1.5. New York's largest filer, EY, has under 4%. Maps: groups and Census regions Communities Census regions On the map The 48 contiguous states; none of the 40 metros lies outside them. Bubbles are sized by requested positions; colour and opacity follow the active metric. Each metro sits at its first-named city. Click a bubble to select it. Same cities, two labelings The same map, coloured by the active labelling. Communities are named after their two largest metros. Click a city to select it.
+
+### place-who
+- **q-answer#0**
+  - before: By who hires. The groups follow how much of a city's hiring runs through consulting and IT-services firms better than they follow Census regions.
+  - after: By who hires.
+- **para#0**
+  - before: Each bar is the adjusted mutual information (AMI) between the Louvain groups and one labelling: 0 means no better than labels dealt at random, 1 means the same grouping.
+  - after: The groups follow how much of a city's hiring runs through consulting and IT-services firms. Each bar is the AMI between the Louvain groups and one labelling.
+- **notice#0**
+  - before: What to notice The IT-services share matches the groups at AMI 0.17 (p = 0.002) and the placed share at 0.12 (p = 0.012). Census regions reach 0.06 (p = 0.11) and divisions 0.06 (p = 0.08), no better than chance. The match is modest: most of what makes two metros alike stays unexplained.
+  - after: What to notice The IT-services share matches the groups at AMI 0.17 (p = 0.002) and the placed share at 0.12 (p = 0.012); Census regions and divisions do no better than chance. The match is modest: most of what makes two metros alike stays unexplained.
+- **drawers#0**
+  - before: Method We gave each metro four labels: its Census region, its Census division, the third it falls in by the share of its filings that place a worker at a client, and the third it falls in by the share filed by professional and technical services firms (NAICS 54, the sector of IT consultancies). Thirds, because 35 of the 40 metros have that sector as their largest, so "largest sector" says almost nothing. AMI corrects for the number of labels, so four regions and three thirds compare fairly. More numbers Seven of the eight tech-hub metros sit in the lowest third by placed share: there, companies mostly hire for themselves. In the New York–Dallas group the median metro places 27% of its filings at a client and files 60% through IT-services firms.
+  - after: Method We gave each metro four labels: its Census region, its Census division, the third it falls in by the share of its filings that place a worker at a client, and the third it falls in by the share filed by professional and technical services firms (NAICS 54, the sector of IT consultancies). Thirds, because 35 of the 40 metros have that sector as their largest, so "largest sector" says almost nothing. AMI corrects for the number of labels, so four regions and three thirds compare fairly. More numbers Seven of the eight tech-hub metros sit in the lowest third by placed share: there, companies mostly hire for themselves. In the New York–Dallas group the median metro places 27% of its filings at a client and files 60% through IT-services firms. Census regions reach 0.06 (p = 0.11) and divisions 0.06 (p = 0.08), no better than chance.
+
+### place-break
+- **q-answer#0**
+  - before: Nowhere in one place. The map sheds metros one or two at a time, and the big outsourcing firms hold no more of those links than of any others.
+  - after: Nowhere in one place: metros drop off one or two at a time.
+- **para#0**
+  - before: Every pair of the 40 metros shares some employer, so the full network is one hairball of 780 links. Tried at five values, the largest piece of the map fell from 32 metros at α = 0.1 to 18 at α = 0.05, which looks like one snap. So we removed the links one by one, least significant first, and watched the largest piece after each removal.
+  - after: Every pair of the 40 metros shares some employer, so the full network is one hairball of 780 links. We removed the links one by one, least significant first by α, and watched the largest piece after each removal.
+- **notice#0**
+  - before: What to notice The first metro falls off at α = 0.136. No single removal cuts off more than two metros: Dallas–Durham at α = 0.041 takes Durham and Raleigh with it, and New York–Seattle at 0.023 splits the last five metros three and two. The fall from 32 to 18 is 14 separate links, each peeling one metro away. Of the 16 links whose removal cuts a metro loose, the five largest placing firms (Tata Consultancy Services, Cognizant, Infosys, HCL, Compunnel) lead 5 (31%): Cognizant four, HCL one. That is no more than their 70 of the 180 links in the whole backbone at α = 0.2 (38%, p = 0.37).
+  - after: What to notice The big outsourcing firms hold no more of the links that cut metros loose than of any others. Of the 16 links whose removal cuts a metro loose, the five largest placing firms lead 5 (31%), no more than their share of the whole backbone (38%, p = 0.37).
+- **drawers#0**
+  - before: Method The disparity filter keeps a link when it carries an unusually large share of either metro's total weight; α is the test's threshold, and a smaller α keeps fewer links. More numbers The other eleven are led by Amazon (three), Intel, Deloitte, Capital One, JPMorgan Chase, Citigroup, FedEx, Fidelity Investments and the University of Maryland. Table: 14 links that peel metros off Link α Weight Leading company Its share
+  - after: Method Tried at five values, the largest piece of the map fell from 32 metros at α = 0.1 to 18 at α = 0.05, which looks like one snap. The disparity filter keeps a link when it carries an unusually large share of either metro's total weight; α is the test's threshold, and a smaller α keeps fewer links. More numbers The other eleven are led by Amazon (three), Intel, Deloitte, Capital One, JPMorgan Chase, Citigroup, FedEx, Fidelity Investments and the University of Maryland. The first metro falls off at α = 0.136. The fall from 32 to 18 is 14 separate links, each peeling one metro away. That is no more than their 70 of the 180 links in the whole backbone at α = 0.2 (38%, p = 0.37). No single removal cuts off more than two metros: Dallas–Durham at α = 0.041 takes Durham and Raleigh with it, and New York–Seattle at 0.023 splits the last five metros three and two. Table: 14 links that peel metros off Link α Weight Leading company Its share
+
+**Terms added:** 
+- `w4-term-place-start-p`
+- `w4-term-place-start-nmi`
+- `w4-term-place-who-ami`
+- `w4-term-place-who-placed`
+- `w4-term-place-break-placing`
+- `w4-term-place-break-backbone`
+
+**Fix-ups applied (3.7):** none
+
+**Cards a script builds (skipped, see 3.3):** none
+
+**Held slots: board number not on the page (stale-number rule):** 
+- place-start kicker#0: board numbers ['two'] not in the page slot; board text: Two first questions, side by side, before 1A
+- place-start para#1: board numbers [] not in the page slot; board text: override used
+
+**Numbers the board drops (accepted, list in the PR body):** 
+- place>w4-intro: ['40']
+- place-break: ['four', 'one']
+
+**Numbers in new term definitions (check each is a scale, not a result):** none
+
+**Script-owned text that differs from the board (3.3):** 
+- #place-region-legend: board «New York–Dallas San Jose–San Francisco Detroit–Phoenix» page «»
+
+**Text that still differs from the board, outside script-owned nodes:** 
+- place-start: page «The opening» board «Two first»
+- place-start: page «» board «San Jose, Seattle, San Francisco, Austin, Washington, Boston, Los Angeles, San Diego»
+- place-start: page «» board «New York, Dallas, Chicago, Atlanta, Philadelphia, Houston, Charlotte»
+- place-start: page «» board «Raleigh and»
+- place-start: page «» board «down Raleigh, Detroit, Phoenix, Salt Lake City, St. Louis, Miami, Minneapolis, Portland, Tampa, Denver, Columbus, Pittsburgh,»
+- place-start: page «Phoenix down» board «13 more»
+
+**Style lint (3.7) on the page text:** no new hits
+
