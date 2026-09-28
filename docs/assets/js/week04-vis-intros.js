@@ -102,9 +102,12 @@ function twoLines(name) {
   return [words.slice(0, best + 1).join(" "), words.slice(best + 1).join(" ")];
 }
 
+/** A name cut to fit inside the client's circle; the full name stays in the caption and the label. */
+const cut = (s) => (s.length > 13 ? `${s.slice(0, 12)}…` : s);
+
 /** An ego diagram: the firms that staff one client, vendors on the left, the client on the right. */
-function egoDiagram(client, firmNames) {
-  const rows = client.top.map(([i, n]) => [firmNames[i], n]);
+function egoDiagram(client, firmNames, year) {
+  const rows = client.top.slice(0, 8).map(([i, n]) => [firmNames[i], n]);
   const restFirms = client.vendors - rows.length;
   if (restFirms > 0) rows.push([`${num(restFirms)} other firms`, client.rest]);
   const w = 460;
@@ -128,7 +131,7 @@ function egoDiagram(client, firmNames) {
     width: w,
     height: h,
     role: "img",
-    "aria-label": `${client.name} and the ${num(client.vendors)} firms that place H-1B workers there in 2025`,
+    "aria-label": `${client.name} and the ${num(client.vendors)} firms that place H-1B workers there in ${year}`,
     class: "w4-ego",
   });
   rows.forEach(([name, n], i) => {
@@ -155,7 +158,7 @@ function egoDiagram(client, firmNames) {
     svg.append(node("text", { x: xEnd - 8, y: y + 4, "font-size": 12, fill: inkSoft, "font-weight": 600, "text-anchor": "end" }, num(n)));
   });
   svg.append(node("circle", { cx, cy, r: 28, fill: ink }));
-  const [line1, line2] = twoLines(client.name);
+  const [line1, line2] = twoLines(client.name).map(cut);
   svg.append(node("text", { x: cx, y: line2 ? cy - 3 : cy + 4, "font-size": 10.5, fill: card, "font-weight": 700, "text-anchor": "middle" }, line1));
   if (line2) svg.append(node("text", { x: cx, y: cy + 11, "font-size": 10.5, fill: card, "font-weight": 700, "text-anchor": "middle" }, line2));
   svg.append(node("text", { x: cx, y: cy + 48, "font-size": 11.5, fill: ink, "font-weight": 700, "text-anchor": "middle" }, `${num(client.filings)} filings`));
@@ -207,11 +210,146 @@ async function drawWhoIntro() {
       ),
     );
   }
-  if (egoHost) {
-    const shown = clients.years["2025"].shown;
-    const boa = shown.find((c) => c.name === "Bank of America");
-    if (boa) egoHost.replaceChildren(egoDiagram(boa, clients.firms));
+  if (egoHost) egoExplorer(egoHost, clients);
+}
+
+/** The client the board opened on, shown whenever the year has it. */
+const EGO_DEFAULT = "Bank of America";
+
+/**
+ * The ego diagram with its controls: a year toggle built from the JSON's
+ * years and a search over that year's clients. The picked client stays when
+ * the year changes if it is there; otherwise the year's largest client shows.
+ */
+function egoExplorer(host, clients) {
+  const years = Object.keys(clients.years).sort();
+  const partial = (y) => clients.years[y].months < 12;
+  const yearLabel = (y) => (partial(y) ? `${y} · Oct–Jun` : y);
+  const largest = (y) => clients.years[y].shown.reduce((a, b) => (b.filings > a.filings ? b : a));
+  const find = (y, name) => clients.years[y].shown.find((c) => c.name === name);
+  const full = years.filter((y) => !partial(y));
+  let year = full.length ? full[full.length - 1] : years[years.length - 1];
+  let client = find(year, EGO_DEFAULT) || largest(year);
+
+  const ctrl = html("div", { class: "rx-ego-ctrl" });
+  const seg = html("div", { class: "rx-seg", role: "group", "aria-label": "Year" });
+  for (const y of years) {
+    const btn = html("button", { type: "button", "aria-pressed": String(y === year), "data-year": y });
+    btn.textContent = yearLabel(y);
+    btn.addEventListener("click", () => {
+      year = y;
+      client = find(year, client.name) || largest(year);
+      for (const b of seg.querySelectorAll("button")) b.setAttribute("aria-pressed", String(b === btn));
+      update();
+      if (input.value.trim()) listMatches();
+    });
+    seg.append(btn);
   }
+  const label = html("label", { class: "rx-ego-search" });
+  const labelText = html("span");
+  labelText.textContent = "Client";
+  const input = html("input", {
+    type: "search",
+    placeholder: "Type any client, e.g. Apple",
+    "aria-label": "Find a client",
+    "aria-controls": "who-ego-matches",
+    "aria-expanded": "false",
+    autocomplete: "off",
+  });
+  label.append(labelText, input);
+  ctrl.append(seg, label);
+
+  const matches = html("div", { class: "rx-ego-matches", id: "who-ego-matches", role: "group", "aria-label": "Matching clients" });
+  const none = html("p", { class: "rx-ego-none", "aria-live": "polite" });
+  const chart = html("div");
+  host.replaceChildren(ctrl, matches, none, chart);
+  const caption = host.closest("figure")?.querySelector("figcaption span");
+
+  function update() {
+    chart.replaceChildren(egoDiagram(client, clients.firms, year));
+    if (caption) {
+      const when = partial(year) ? `${year} (October to June only)` : year;
+      caption.textContent = `${client.name}'s largest staffing firms by filings in ${when}, ${num(client.vendors)} firms in all; link width is filings placed there. Pick a year or type any client.`;
+    }
+  }
+
+  // The stylesheet gives both boxes a display, which beats the hidden attribute.
+  const show = (el, on) => {
+    el.style.display = on ? "" : "none";
+  };
+
+  function closeMatches() {
+    matches.replaceChildren();
+    show(matches, false);
+    none.textContent = "";
+    show(none, false);
+    input.setAttribute("aria-expanded", "false");
+  }
+
+  function pick(c) {
+    client = c;
+    input.value = "";
+    closeMatches();
+    update();
+    input.focus();
+  }
+
+  function listMatches() {
+    const q = input.value.trim().toLowerCase();
+    if (!q) return closeMatches();
+    const found = clients.years[year].shown
+      .filter((c) => c.name.toLowerCase().includes(q))
+      .sort((a, b) => b.name.toLowerCase().startsWith(q) - a.name.toLowerCase().startsWith(q) || b.filings - a.filings)
+      .slice(0, 6);
+    matches.replaceChildren(
+      ...found.map((c) => {
+        const btn = html("button", { type: "button" });
+        const n = html("span");
+        n.textContent = num(c.filings);
+        btn.append(c.name, n);
+        btn.addEventListener("click", () => pick(c));
+        return btn;
+      }),
+    );
+    show(matches, found.length > 0);
+    input.setAttribute("aria-expanded", String(found.length > 0));
+    show(none, !found.length);
+    none.textContent = found.length ? "" : `No client with ${num(clients.min_filings)} or more placed filings matches in ${yearLabel(year)}.`;
+  }
+
+  input.addEventListener("input", listMatches);
+  input.addEventListener("keydown", (e) => {
+    const first = matches.querySelector("button");
+    if (e.key === "ArrowDown" && first) {
+      e.preventDefault();
+      first.focus();
+    } else if (e.key === "Enter" && first) {
+      e.preventDefault();
+      first.click();
+    } else if (e.key === "Escape") {
+      e.preventDefault();
+      input.value = "";
+      closeMatches();
+    }
+  });
+  matches.addEventListener("keydown", (e) => {
+    const buttons = [...matches.querySelectorAll("button")];
+    const i = buttons.indexOf(document.activeElement);
+    if (i < 0) return;
+    if (e.key === "ArrowDown" || e.key === "ArrowUp") {
+      e.preventDefault();
+      const next = i + (e.key === "ArrowDown" ? 1 : -1);
+      (next < 0 ? input : buttons[Math.min(next, buttons.length - 1)]).focus();
+    } else if (e.key === "Escape") {
+      e.preventDefault();
+      input.value = "";
+      closeMatches();
+      input.focus();
+    }
+  });
+
+  closeMatches();
+  update();
 }
 
 // ---- section 5 · beyond the three networks -----------------------------

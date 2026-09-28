@@ -12,10 +12,10 @@
     <title>Who hires America's foreign workers? · Log–Log Legends</title>
     <link href="../../assets/favicon.svg" rel="icon" type="image/svg+xml" />
     <link href="../../assets/css/corridor.css" rel="stylesheet" />
-    <link href="../../assets/css/week04.css?v=6" rel="stylesheet" />
+    <link href="../../assets/css/week04.css?v=7" rel="stylesheet" />
     <link href="../../assets/css/week04-deep.css?v=3" rel="stylesheet" />
     <link href="../../assets/css/week04-years.css?v=3" rel="stylesheet" />
-    <link href="../../assets/css/week04-roles.css?v=3" rel="stylesheet" />
+    <link href="../../assets/css/week04-roles.css?v=4" rel="stylesheet" />
     <link href="../../assets/css/week04-methods.css?v=3" rel="stylesheet" />
     <link href="../../assets/css/week04-skills.css?v=3" rel="stylesheet" />
     <link href="../../assets/css/week04-skills-radar.css?v=4" rel="stylesheet" />
@@ -63,12 +63,14 @@
               <p class="caution">
                 A shared employer is not a shared labour market.
               </p>
-              <div class="w4-legend">
-                <p class="w4-legend-title">The map · three Louvain groups</p>
-                <div class="w4-legend-row"><i class="w4-dot g0"></i><span><b>New York–Dallas</b> · seven large hubs</span></div>
-                <div class="w4-legend-row"><i class="w4-dot g1"></i><span><b>San Jose–San Francisco</b> · eight tech hubs</span></div>
-                <div class="w4-legend-row"><i class="w4-dot g2"></i><span><b>Detroit–Phoenix</b> · the other 25</span></div>
-                <div class="w4-legend-row"><i class="w4-legend-line"></i><span>Lines: the links the disparity filter keeps at α = 0.2</span></div>
+              <div class="rx-legend">
+                <p class="rx-legend-title">On the map: three Louvain groups</p>
+                <ul>
+                  <li><i class="w4-dot g0"></i><b>New York–Dallas</b><span>seven large hubs</span></li>
+                  <li><i class="w4-dot g1"></i><b>San Jose–San Francisco</b><span>eight tech hubs</span></li>
+                  <li><i class="w4-dot g2"></i><b>Detroit–Phoenix</b><span>the other 25</span></li>
+                  <li><i class="rx-leg-line"></i><b>Links</b><span>kept by the disparity filter at α = 0.2</span></li>
+                </ul>
               </div>
               <div class="w4-hero-stats">
                 <p class="w4-stat"><b>537,796</b><span>certified H-1B filings, 2025</span></p>
@@ -379,6 +381,11 @@
                 Toggle Louvain communities against Census regions on the same
                 map.
               </p>
+                  <div class="rx-groups" id="place-groups">
+                    <div class="rx-group" data-community="1"><div class="rx-group-head"><i style="background: var(--w4-group-1)"></i><b>Eight tech hubs</b><span>led by San Jose and San Francisco</span></div><p></p></div>
+                    <div class="rx-group" data-community="0"><div class="rx-group-head"><i style="background: var(--w4-group-0)"></i><b>Seven large hubs</b><span>led by New York and Dallas</span></div><p></p></div>
+                    <div class="rx-group" data-community="2"><div class="rx-group-head"><i style="background: var(--w4-group-2)"></i><b>The other 25</b><span>from Detroit and Phoenix down</span></div><p></p></div>
+                  </div>
                 </div>
               </div>
               <div class="rx-start-notices">
@@ -628,15 +635,9 @@
                 the number of companies that filed for both, not the number of
                 workers requested. 
               </p>
-              <div class="jobs-grid">
-                <div class="plot">
-                  <h3>Strongest occupation pairings</h3>
-                  <div class="chart-host jobs-pairs" id="chart-job-pairs"></div>
-                </div>
-                <aside class="panel jobs-inspector" id="jobs-inspector">
-                  <h2>Select a pair</h2>
-                  <p>Click a bar to see the two occupations and their filings.</p>
-                </aside>
+              <div class="plot">
+                <h3>The 12 most common job pairs</h3>
+                <div class="w4-figure-body" id="chart-job-pairs"></div>
               </div>
             </div>
 
@@ -662,26 +663,25 @@
                   <span>
                     <b>What to notice</b>
                     The two clusterings agree at NMI 0.42. Random groups
-                    matched on size agree at 0.61 ± 0.04 (z = −4.1), so the
+                    matched on size agree at 0.61 ± 0.04 (z = −4.2), so the
                     outsourcing firms bundle jobs differently from companies
                     like them.
                   </span>
                 </div>
                 <div class="rx-drawers rx-foot">
                   <details class="rx-drawer"><summary>Method</summary><div class="rx-drawer-body"><p>We split the companies in two: the 817 firms that place 20 or more filings at client sites (21% of all filings) and the 58,379 others. Alone, that number means little: splitting companies into a small and a large group changes the clusters even if nobody behaves differently. So the baseline draws 20 random groups that match the outsourcing firms in both respects: the same number of companies of each size, from the one-filing firms to the giants.</p></div></details>
-                  <details class="rx-drawer"><summary>More numbers</summary><div class="rx-drawer-body"><p>The half-matched baselines show why the match matters: random groups with only the same number of companies hold 1.3% of filings and agree at 0.44 ± 0.10, which would have hidden the difference. At the top the two mixes look alike: software developers are 28% of the outsourcing firms' filings and 33% of the direct employers'. Below that they part: "computer occupations, all other" is 22% of the outsourcing firms' filings and 5% of the direct employers', and direct employers file for 283 occupations the outsourcing firms never touch.</p></div></details>
+                  <details class="rx-drawer"><summary>More numbers</summary><div class="rx-drawer-body"><p>The half-matched baselines show why the match matters: random groups with only the same number of companies hold 1.3% of filings and agree at 0.43 ± 0.09, which would have hidden the difference. At the top the two mixes look alike: software developers are 28% of the outsourcing firms' filings and 33% of the direct employers'. Below that they part: "computer occupations, all other" is 22% of the outsourcing firms' filings and 5% of the direct employers', and direct employers file for 276 occupations the outsourcing firms never touch.</p></div></details>
                 </div>
               </div>
               <div class="plot">
-                <h3>Observed agreement against random splits</h3>
+                <h3>Do outsourcers cluster jobs like random firms would?</h3>
                 <p class="axis-note">
-                  NMI between the two groups' clusters. Whiskers span one standard
-                  deviation over 20 random splits. The blue baseline matches the
-                  outsourcing firms on number and size of companies; the grey
-                  ones match only the number of companies or only the number of
-                  filings.
+                  Bars show how alike the two groups' job clusters are. Whiskers
+                  span one standard deviation over 20 random splits. Only the blue
+                  baseline matches the outsourcing firms on both number and size
+                  of companies, so it is the fair comparison.
                 </p>
-                <div class="chart-host short" id="chart-jobs-split-nmi"></div>
+                <div class="w4-figure-body" id="chart-jobs-split-nmi"></div>
               </div>
             </div>
             <div class="rx-fig-row">
@@ -720,9 +720,19 @@
                 clusters.
               </span>
             </div>
+            <div class="w4-two">
+              <figure class="w4-figure">
+                <figcaption><b>Where the links go</b><span>Link communities pour almost every link into one community.</span></figcaption>
+                <div class="w4-figure-body" id="chart-jobs-linkcom-share"></div>
+              </figure>
+              <figure class="w4-figure">
+                <figcaption><b>The 15 jobs with the most communities per link</b><span>Each dot is a job; dashed lines mark equal rates. Rings: the three jobs section 2's first test flagged as bridges.</span></figcaption>
+                <div class="w4-figure-body" id="chart-jobs-linkcom-scatter"></div>
+              </figure>
+            </div>
             <div class="rx-drawers rx-foot">
-              <details class="rx-drawer"><summary>Method</summary><div class="rx-drawer-body"><p>The cut is chosen where partition density D, the average of how close each community is to a complete one, peaks. On the 28,155 links between 501 occupations it peaks at D = 0.57 with one community holding 85% of the links and 121 small ones of three links or more beside it.</p></div></details>
-              <details class="rx-drawer"><summary>More numbers</summary><div class="rx-drawer-body"><p>The top is small occupations such as physical therapist aides (4 communities over 10 links). Only 2 of the 5 occupations that section 2's first test flagged as bridges appear in it: interviewers and electrical power-line installers.</p></div></details>
+              <details class="rx-drawer"><summary>Method</summary><div class="rx-drawer-body"><p>The cut is chosen where partition density D, the average of how close each community is to a complete one, peaks. On the 28,096 links between 494 occupations it peaks at D = 0.57 with one community holding 85% of the links and 117 small ones of three links or more beside it.</p></div></details>
+              <details class="rx-drawer"><summary>More numbers</summary><div class="rx-drawer-body"><p>The top is small occupations such as communications equipment operators and electrical power-line installers (5 communities over 11 links each). Only 3 of the 6 occupations that section 2's first test flagged as bridges appear in it: credit counselors, licensed practical and licensed vocational nurses, and physical therapist aides.</p></div></details>
               <details class="rx-drawer"><summary>Table: 15 jobs in the most communities</summary><div class="rx-drawer-body">
                 <table class="ego">
                   <thead>
@@ -779,7 +789,7 @@
                   <div class="w4-figure-body" data-strip="who-modularity"></div>
                 </figure>
                 <figure class="w4-figure">
-                  <figcaption><b>One client, many vendors</b><span>Bank of America's largest staffing firms by filings in 2025; link width is filings placed there.</span></figcaption>
+                  <figcaption><b>One client, many vendors</b><span>The client's largest staffing firms by filings in the year; link width is filings placed there. Pick a year or type any client.</span></figcaption>
                   <div class="w4-figure-body" data-strip="who-ego"></div>
                 </figure>
               </div>
@@ -1020,8 +1030,8 @@
                   (p = 0.013), against 0.06 for the full network and 0.01 ± 0.03
                   for random cuts, 4.6 standard deviations away. The national
                   employers are what hide the regional pattern. The job clusters
-                  hold at NMI 0.90 and 0.82, but random cuts of the same volume
-                  leave them closer still (0.96 and 0.88, 3.0 and 3.2 standard
+                  hold at NMI 0.90 and 0.81, but random cuts of the same volume
+                  leave them closer still (0.96 and 0.88, 3.1 and 3.9 standard
                   deviations away), so the biggest firms do shape which jobs
                   cluster together.
                 </span>
@@ -1450,7 +1460,7 @@
                     How many metros stay in the largest connected piece as the filter
                     tightens. The dashed line marks where it snaps.
                   </p>
-                  <div class="chart-host short" id="chart-gc"></div>
+                  <div class="w4-figure-body" id="chart-gc"></div>
                 </div>
 
 
@@ -1752,7 +1762,7 @@
                 <div class="jobs-grid jobs-network-grid">
                   <div class="plot">
                     <h3>Occupation network</h3>
-                    <div class="chart-host jobs-network" id="chart-job-network"></div>
+                    <div class="w4-figure-body" id="chart-job-network"></div>
                   </div>
                   <aside class="panel jobs-inspector" id="jobs-node-inspector">
                     <h2>Bridge jobs</h2>
@@ -1781,12 +1791,24 @@
                 </p>
                 <div class="jobs-grid jobs-groups-grid">
                   <div class="plot">
-                    <h3>Cluster × official major group</h3>
-                    <div class="chart-host jobs-groups" id="chart-job-groups"></div>
+                    <h3>What each hiring cluster holds, by official group</h3>
+                    <p class="axis-note">
+                      Every occupation in the four largest clusters, 429 in all,
+                      split by its official major group: the three largest named,
+                      the rest grey. The other two clusters of two or more hold
+                      two occupations each.
+                    </p>
+                    <div class="w4-figure-body" id="chart-job-groups"></div>
                   </div>
                   <div class="plot">
-                    <h3>Observed match versus shuffled labels</h3>
-                    <div class="chart-host jobs-nmi" id="chart-job-nmi"></div>
+                    <h3>How closely the clusters match the official groups</h3>
+                    <p class="axis-note">
+                      Normalized mutual information from 0 (unrelated) to 1 (the
+                      same groups). Orange: the hiring clusters. Ring: Infomap's
+                      clusters. Grey: the official labels shuffled 100 times over
+                      the same clusters, up to their highest score.
+                    </p>
+                    <div class="w4-figure-body" id="chart-job-nmi"></div>
                   </div>
                 </div>
                 <div class="notice">
@@ -1970,10 +1992,9 @@
                   </div>
                   <figcaption>
                     One dot per client company with 20 or more H-1B filings that placed
-                    a worker there in the year. Further right, more filings; higher up,
+                    a worker there in the year: further right, more filings; higher up,
                     more of them from a single outsourcing firm. Click a dot or type a
-                    name to see who supplies that client. Sector labels cover the most
-                    frequent clients only; grey dots have none.
+                    name to see who supplies that client.
                   </figcaption>
                   <div class="rx-table-block">
                     <h4>The 25 largest clients</h4>
@@ -2235,7 +2256,13 @@
                     </div>
                   </div>
                   <figure class="w4-figure">
-                    <figcaption><b>Registrations per approved petition</b><span>Each line joins one kind of employer across the two draws.</span></figcaption>
+                    <figcaption><b>Every draw since 2020</b><span>Eligible registrations per selected registration, from USCIS's published totals, counting every selection round of the year; the figure under each date is the share of registrations for a worker registered more than once. The dashed line marks where USCIS began to draw by person, not by registration.</span></figcaption>
+                    <div class="w4-figure-body" data-more="draws"></div>
+                  </figure>
+                </div>
+                <div class="rx-fig-row">
+                  <figure class="w4-figure">
+                    <figcaption><b>Registrations per approved petition</b><span>Each line joins one kind of employer across the two draws Bloomberg's USCIS files cover.</span></figcaption>
                     <div class="w4-figure-body" data-more="lottery"></div>
                   </figure>
                 </div>
@@ -2386,7 +2413,7 @@
                       </div>
                     </div>
                   </div>
-                  <p class="axis-note">Each band is one series' certified filings, largest total at the bottom and everything else on top. Hover a band or a legend entry to trace one series across years; click a legend entry to hide it. "Oct to Jun only" limits every year to the nine months 2026 covers, the fair way to set it beside a full year.</p>
+                  <p class="axis-note">Each band is one series, largest at the bottom. Hover a band for its numbers; click a legend entry to hide it.</p>
                   <div class="roles-chart-wrap">
                     <div class="chart-host" id="roles-chart"></div>
                     <div class="roles-legend" id="roles-legend"></div>
@@ -2484,6 +2511,11 @@
             not approved, endorsed, or tested these modifications.
           </span>
           <span>
+            Registrations per lottery draw: USCIS,
+            <a href="https://www.uscis.gov/working-in-the-united-states/temporary-workers/h-1b-specialty-occupations/h-1b-electronic-registration-process">H-1B Electronic Registration Process</a>, Historical Data
+            (public domain).
+          </span>
+          <span>
             Who hires America's foreign workers? ·
             <a href="../../">Log–Log Legends</a> · DTU 02805
           </span>
@@ -2493,20 +2525,20 @@
 
     <!-- One ECharts for both sections; week04-place.js skips its own loader when this is present. -->
     <script src="../../assets/vendor/echarts-5.5.1.min.js"></script>
-    <script src="../../assets/js/week04-place.js?v=11" type="module"></script>
+    <script src="../../assets/js/week04-place.js?v=12" type="module"></script>
     <script src="../../assets/js/week04-frame.js?v=5" type="module"></script>
-    <script src="../../assets/js/week04-years.js?v=6" type="module"></script>
-    <script src="../../assets/js/week04-roles.js?v=7" type="module"></script>
+    <script src="../../assets/js/week04-years.js?v=7" type="module"></script>
+    <script src="../../assets/js/week04-roles.js?v=8" type="module"></script>
     <script src="../../assets/js/week04-methods.js?v=5" type="module"></script>
     <script src="../../assets/js/week04-skills.js?v=7" type="module"></script>
-    <script src="../../assets/js/week04-skills-radar.js?v=5" type="module"></script>
-    <script src="../../assets/js/week04-pagerank.js?v=6" type="module"></script>
-    <script src="../../assets/js/week04-jobs.js?v=7" type="module"></script>
-    <script src="../../assets/js/week04-staffing.js?v=1" type="module"></script>
-    <script src="../../assets/js/week04-questions.js?v=9" type="module"></script>
+    <script src="../../assets/js/week04-skills-radar.js?v=6" type="module"></script>
+    <script src="../../assets/js/week04-pagerank.js?v=7" type="module"></script>
+    <script src="../../assets/js/week04-jobs.js?v=8" type="module"></script>
+    <script src="../../assets/js/week04-staffing.js?v=2" type="module"></script>
+    <script src="../../assets/js/week04-questions.js?v=10" type="module"></script>
     <script src="../../assets/js/week04-cut.js?v=4" type="module"></script>
-    <script src="../../assets/js/week04-vis-more.js?v=4" type="module"></script>
-    <script src="../../assets/js/week04-vis-intros.js?v=3" type="module"></script>
+    <script src="../../assets/js/week04-vis-more.js?v=6" type="module"></script>
+    <script src="../../assets/js/week04-vis-intros.js?v=4" type="module"></script>
     <script src="../../assets/js/week04-vis-staffing.js?v=3" type="module"></script>
   </body>
 </html>

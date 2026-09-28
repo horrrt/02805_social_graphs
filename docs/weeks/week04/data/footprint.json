@@ -125,13 +125,13 @@
     "control": false,
     "filings_removed_share": 0.0,
     "Q": 0.2812,
-    "null_mean": 0.0287,
-    "null_sd": 0.0013,
-    "z": 193.4,
+    "null_mean": 0.0284,
+    "null_sd": 0.0015,
+    "z": 173.29,
     "communities": 6,
     "nmi_vs_full": 1.0,
-    "nmi_seeds_median": 0.905,
-    "nmi_soc_major": 0.259
+    "nmi_seeds_median": 0.908,
+    "nmi_soc_major": 0.255
    },
    {
     "id": "drop_shortlist",
@@ -146,13 +146,13 @@
     "control": false,
     "filings_removed_share": 0.0555,
     "Q": 0.2817,
-    "null_mean": 0.0288,
-    "null_sd": 0.0012,
-    "z": 212.35,
+    "null_mean": 0.0289,
+    "null_sd": 0.0013,
+    "z": 195.21,
     "communities": 6,
-    "nmi_vs_full": 0.9,
-    "nmi_seeds_median": 0.889,
-    "nmi_soc_major": 0.271
+    "nmi_vs_full": 0.898,
+    "nmi_seeds_median": 0.922,
+    "nmi_soc_major": 0.268
    },
    {
     "id": "drop_top10_filings",
@@ -171,14 +171,14 @@
     ],
     "control": false,
     "filings_removed_share": 0.1756,
-    "Q": 0.316,
-    "null_mean": 0.0275,
-    "null_sd": 0.0012,
-    "z": 231.24,
+    "Q": 0.3161,
+    "null_mean": 0.0274,
+    "null_sd": 0.0011,
+    "z": 257.75,
     "communities": 5,
-    "nmi_vs_full": 0.822,
-    "nmi_seeds_median": 0.958,
-    "nmi_soc_major": 0.267
+    "nmi_vs_full": 0.806,
+    "nmi_seeds_median": 0.957,
+    "nmi_soc_major": 0.272
    },
    {
     "id": "control_shortlist",
@@ -187,19 +187,19 @@
     "control": true,
     "filings_removed_share": 0.0575,
     "Q": 0.2814,
-    "null_mean": 0.0293,
-    "null_sd": 0.0014,
-    "z": 198.169,
-    "communities": 6.14,
+    "null_mean": 0.0291,
+    "null_sd": 0.0013,
+    "z": 204.2008,
+    "communities": 6.12,
     "nmi_vs_full": 0.9568,
-    "nmi_seeds_median": 0.9265,
-    "nmi_soc_major": 0.2649,
+    "nmi_seeds_median": 0.9245,
+    "nmi_soc_major": 0.2604,
     "draws": 50,
     "Q_sd": 0.0059,
-    "z_sd": 58.6824,
-    "nmi_vs_full_sd": 0.0186,
-    "communities_sd": 0.7749,
-    "nmi_soc_major_sd": 0.0061
+    "z_sd": 54.2482,
+    "nmi_vs_full_sd": 0.0189,
+    "communities_sd": 0.7909,
+    "nmi_soc_major_sd": 0.0066
    },
    {
     "id": "control_top10_filings",
@@ -209,18 +209,18 @@
     "filings_removed_share": 0.1759,
     "Q": 0.2735,
     "null_mean": 0.0311,
-    "null_sd": 0.0015,
-    "z": 180.6484,
+    "null_sd": 0.0014,
+    "z": 182.362,
     "communities": 5.96,
-    "nmi_vs_full": 0.8823,
-    "nmi_seeds_median": 0.946,
-    "nmi_soc_major": 0.2585,
+    "nmi_vs_full": 0.8821,
+    "nmi_seeds_median": 0.9472,
+    "nmi_soc_major": 0.2542,
     "draws": 50,
     "Q_sd": 0.0041,
-    "z_sd": 77.3614,
-    "nmi_vs_full_sd": 0.0188,
+    "z_sd": 53.1618,
+    "nmi_vs_full_sd": 0.0197,
     "communities_sd": 0.8476,
-    "nmi_soc_major_sd": 0.0106
+    "nmi_soc_major_sd": 0.011
    }
   ],
   "structurally_uninformative_on_company_count_weights": true,
@@ -251,20 +251,20 @@
    "answer_no_not_just_their_footprint": false
   },
   "jobs": {
-   "full_z": 193.4,
-   "drop_shortlist_z": 212.35,
-   "drop_top10_z": 231.24,
-   "control_shortlist_z": 198.169,
-   "control_top10_z": 180.6484,
-   "drop_shortlist_nmi_vs_full": 0.9,
-   "drop_top10_nmi_vs_full": 0.822,
+   "full_z": 173.29,
+   "drop_shortlist_z": 195.21,
+   "drop_top10_z": 257.75,
+   "control_shortlist_z": 204.2008,
+   "control_top10_z": 182.362,
+   "drop_shortlist_nmi_vs_full": 0.898,
+   "drop_top10_nmi_vs_full": 0.806,
    "drop_shortlist_vs_control": {
-    "nmi_vs_control_sd": -3.05,
-    "z_vs_control_sd": 0.24
+    "nmi_vs_control_sd": -3.11,
+    "z_vs_control_sd": -0.17
    },
    "drop_top10_vs_control": {
-    "nmi_vs_control_sd": -3.21,
-    "z_vs_control_sd": 0.65
+    "nmi_vs_control_sd": -3.86,
+    "z_vs_control_sd": 1.42
    },
    "answer_no_not_just_their_footprint": false,
    "caveat": "the company-count projection cannot show this at all (see jobs.structurally_uninformative_check); this uses the filings-weighted reprojection instead"

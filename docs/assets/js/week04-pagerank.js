@@ -11,9 +11,17 @@ import { drawer, drawerRow } from "./week04-ui.js";
 const DATA = new URL("../../weeks/week04/data/pagerank.json", import.meta.url);
 const DEFAULT_D = "0.85";
 const BAR_W = 556;
-const LABEL_W = 210;
+const LABEL_W = 300;
 const ROW_H = 24;
 const TOP_SHOWN = 15;
+
+// Display names for the two titles too long for a label column. Every chart
+// keeps the full title in its <title> tooltip.
+const SHORT = {
+  "Software Quality Assurance Analysts and Testers": "Software QA Analysts and Testers",
+  "Medical Scientists, Except Epidemiologists": "Medical Scientists",
+};
+const short = (title) => SHORT[title] ?? title;
 
 async function load() {
   const r = await fetch(DATA);
@@ -38,13 +46,9 @@ function hbars(rows, { max, badgeLabel, aria }) {
   rows.forEach((r, i) => {
     const cy = top + i * ROW_H;
     const w = ((x1 - x0) * r.value) / max;
-    svg.append(
-      node(
-        "text",
-        { x: 0, y: cy + 13, "font-size": 12, fill: token("--ink") },
-        `${r.rank}. ${r.label}`,
-      ),
-    );
+    const label = node("text", { x: 0, y: cy + 13, "font-size": 12, fill: token("--ink") }, `${r.rank}. ${r.label}`);
+    label.append(node("title", {}, r.tip));
+    svg.append(label);
     const bar = node("g");
     bar.append(node("title", {}, r.tip));
     bar.append(node("rect", { x: x0, y: cy + 2, width: Math.max(w, 1), height: 14, rx: 3, fill: token("--w4-accent") }));
@@ -68,7 +72,7 @@ function pagerankRows(list) {
     max,
     rows: list.map((r) => ({
       rank: r.rank,
-      label: r.title,
+      label: short(r.title),
       value: r.pagerank,
       badge: r.degree_rank ?? undefined,
       tip: `${r.title}: PageRank ${r.pagerank.toFixed(4)}, filings ${r.filings.toLocaleString("en-US")}`,
@@ -205,10 +209,124 @@ function stablePoint(steps, keyFn) {
   return stable;
 }
 
+const WORDS = ["no", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten"];
+const word = (n) => WORDS[n] ?? String(n);
+
+/** What the card claims, all read from it.steps: the round from which the
+ * final leader holds first place, the round from which the top 10 holds its
+ * final members, and how many of them still change places after that. */
 function iterationClaims(it) {
+  const codes = (s) => s.rows.map((r) => r.code);
   const leaderStep = stablePoint(it.steps, (s) => s.rows[0].code);
-  const top10Step = stablePoint(it.steps, (s) => [...s.rows.map((r) => r.code)].sort().join(","));
-  return { leaderStep, top10Step, leaderTitle: it.steps.at(-1).rows[0].title };
+  const setStep = stablePoint(it.steps, (s) => [...codes(s)].sort().join(","));
+  const atSet = codes(it.steps.find((s) => s.step === setStep));
+  const finalCodes = codes(it.steps.at(-1));
+  const lateMovers = finalCodes.filter((code, i) => atSet[i] !== code).length;
+  return { leaderStep, setStep, lateMovers, leaderTitle: it.steps.at(-1).rows[0].title };
+}
+
+/** A bump chart: rank after each round for the occupations in the final top
+ * 10. Round 0 is left out (every score is equal there). A dot on the bottom
+ * line means that occupation sat outside the top 10 after that round. */
+function bumpChart(it) {
+  const steps = it.steps.filter((s) => s.step > 0);
+  const final = steps.at(-1).rows;
+  const n = final.length;
+  const W = 620;
+  const LEFT = 34;
+  const NAMES_W = 274;
+  const TOP = 34;
+  const ROW = 25;
+  const out = TOP + n * ROW + 6;
+  const H = out + 10;
+  const xs = steps.map((_, i) => LEFT + (i * (W - LEFT - NAMES_W)) / (steps.length - 1));
+  const y = (rank) => TOP + (rank - 1) * ROW;
+  const roundLabel = (s, i) => (i === steps.length - 1 ? "final" : i === 0 ? `round ${s.step}` : String(s.step));
+  const roundName = (s, i) => (i === steps.length - 1 ? "the final round" : `round ${s.step}`);
+
+  const leader = final[0].code;
+  const firstLeader = steps[0].rows[0].code;
+  const colour = (code) =>
+    code === leader ? token("--w4-accent") : code === firstLeader ? token("--ink") : token("--ink-mute");
+  const highlight = (code) => code === leader || code === firstLeader;
+
+  const svg = node("svg", {
+    viewBox: `0 0 ${W} ${H}`,
+    width: W,
+    height: H,
+    role: "img",
+    "aria-label":
+      `Rank after each round for the ${n} occupations that finish on top: ${final[0].title} first from round ` +
+      `${stablePoint(it.steps, (s) => s.rows[0].code)} on`,
+  });
+  const muted = token("--ink-mute");
+  steps.forEach((s, i) => {
+    svg.append(node("text", { x: xs[i], y: 16, "text-anchor": "middle", "font-size": 11, fill: muted }, roundLabel(s, i)));
+    svg.append(node("line", { x1: xs[i], x2: xs[i], y1: TOP - 8, y2: out + 4, stroke: token("--w4-grid") }));
+  });
+  for (let r = 1; r <= n; r++) {
+    svg.append(node("text", { x: LEFT - 10, y: y(r) + 4, "text-anchor": "end", "font-size": 10.5, fill: muted }, String(r)));
+  }
+  svg.append(
+    node("text", { x: LEFT - 10, y: out + 4, "text-anchor": "end", "font-size": 10.5, fill: muted, opacity: 0.6 }, `${n + 1}+`),
+  );
+
+  // Grey lines first, so the two highlighted ones sit on top.
+  const order = [...final].sort((a, b) => highlight(a.code) - highlight(b.code));
+  for (const occ of order) {
+    const c = colour(occ.code);
+    const strong = highlight(occ.code);
+    const g = node("g");
+    g.append(node("title", {}, `${occ.title}: rank ${final.indexOf(occ) + 1} at the end`));
+    const pts = steps.map((s, i) => {
+      const at = s.rows.findIndex((r) => r.code === occ.code);
+      return { x: xs[i], y: at < 0 ? out : y(at + 1), rank: at < 0 ? null : at + 1, name: roundName(s, i) };
+    });
+    g.append(
+      node("polyline", {
+        points: pts.map((p) => `${p.x.toFixed(1)},${p.y.toFixed(1)}`).join(" "),
+        fill: "none",
+        stroke: c,
+        "stroke-width": strong ? 3 : 1.6,
+        "stroke-opacity": strong ? 1 : 0.5,
+        "stroke-linejoin": "round",
+      }),
+    );
+    for (const p of pts) {
+      const dot = node("circle", {
+        cx: p.x.toFixed(1),
+        cy: p.y.toFixed(1),
+        r: strong ? 3.5 : 2.6,
+        fill: p.rank === null ? token("--card") : c,
+        stroke: c,
+        "stroke-width": 1.5,
+      });
+      dot.append(
+        node(
+          "title",
+          {},
+          p.rank === null
+            ? `${occ.title}: outside the top ${n} after ${p.name}`
+            : `${occ.title}: rank ${p.rank} after ${p.name}`,
+        ),
+      );
+      g.append(dot);
+    }
+    const label = node(
+      "text",
+      {
+        x: xs.at(-1) + 12,
+        y: y(final.indexOf(occ) + 1) + 4,
+        "font-size": 11.5,
+        "font-weight": strong ? 700 : 500,
+        fill: strong ? c : token("--ink-soft"),
+      },
+      short(occ.title),
+    );
+    g.append(label);
+    svg.append(g);
+  }
+  return svg;
 }
 
 function buildIterationCard(data) {
@@ -218,6 +336,10 @@ function buildIterationCard(data) {
 
   const it = data.iteration;
   const claims = iterationClaims(it);
+  const n = it.steps.at(-1).rows.length;
+  const late = claims.lateMovers
+    ? `, though ${word(claims.lateMovers)} of them still swap places after it`
+    : "";
 
   const header = document.createElement("header");
   header.className = "w4-q";
@@ -225,8 +347,8 @@ function buildIterationCard(data) {
     <span class="w4-num">7</span>
     <div>
       <h2>Stepped one round at a time, how fast does the ranking settle?</h2>
-      <p class="w4-answer">Unevenly. ${claims.leaderTitle} leads from step ${claims.leaderStep} on and never gives
-      up first place again, but the rest of the top 10 keeps reshuffling until step ${claims.top10Step}.</p>
+      <p class="w4-answer">${claims.leaderTitle} leads from round ${claims.leaderStep}; the rest of the top ${n} is
+      set by round ${claims.setStep}${late}.</p>
     </div>`;
 
   const two = document.createElement("div");
@@ -234,40 +356,28 @@ function buildIterationCard(data) {
   const left = document.createElement("div");
   left.innerHTML = `
     <p class="sub">
-      Power iteration at d = ${it.alpha} (the same walk PageRank runs to convergence): every occupation starts
-      with an equal score, and each round redistributes it along the network's ties. Step through the rounds below.
+      Every occupation starts with an equal score, and each round passes it along the network's ties: the same walk
+      <span class="w4-term"><button aria-describedby="w4-term-pagerank-iteration" type="button">PageRank</button><span class="w4-pop" id="w4-term-pagerank-iteration" role="tooltip">A score from a random walk along the ties. Here it is computed step by step (power iteration) with damping d = ${it.alpha}, and the walk is stopped after each round.</span></span>
+      repeats until nothing moves. The chart follows the ${word(n)} occupations that finish on top.
     </p>`;
 
-  const stepRow = document.createElement("div");
-  stepRow.className = "w4-step-row";
-  const modes = document.createElement("div");
-  modes.className = "axis-modes";
-  modes.setAttribute("role", "group");
-  modes.setAttribute("aria-label", "Power-iteration step");
-  it.steps.forEach((s, i) => {
-    const btn = document.createElement("button");
-    btn.type = "button";
-    btn.textContent = s.step === it.steps.at(-1).step ? "converged" : `step ${s.step}`;
-    btn.dataset.i = String(i);
-    btn.setAttribute("aria-pressed", i === 0 ? "true" : "false");
-    modes.append(btn);
-  });
-  stepRow.append(modes);
-  left.append(stepRow);
-
-  const note = document.createElement("p");
-  note.className = "w4-step-note";
-  note.textContent = `Checked against nx.pagerank: the largest disagreement at the final step is ${it.max_error_vs_nx_pagerank}.`;
-  left.append(note);
-
-  const howBody = document.createElement("p");
-  howBody.append(
+  const howBody = document.createElement("div");
+  const howCheck = document.createElement("p");
+  howCheck.append(
+    frag(
+      `The rounds use damping d = ${it.alpha}, and the final scores match a standard PageRank calculation within ` +
+        `${it.max_error_vs_nx_pagerank}.`,
+    ),
+  );
+  const howStep = document.createElement("p");
+  howStep.append(
     frag(
       "Each step redistributes (1 - d)/n to every occupation, plus d times the score its ties send it, split by " +
         "each neighbour's total tie weight. No dangling-node correction is needed: every occupation in this " +
         "network has at least one tie, unlike a firm-to-client network where one whole side has none.",
     ),
   );
+  howBody.append(howCheck, howStep);
   const moreBody = document.createElement("p");
   const lastStep = it.steps.at(-1).step;
   moreBody.append(
@@ -281,30 +391,13 @@ function buildIterationCard(data) {
   const plot = document.createElement("div");
   plot.className = "plot";
   plot.innerHTML = `
-    <h3>Top 10 occupations after this many rounds</h3>
-    <p class="axis-note">Same bar chart as box 6, redrawn at each power-iteration step for the top 10 at d = ${it.alpha}.</p>`;
+    <h3>First place settles in ${word(claims.leaderStep)} rounds, the top ${n} in ${word(claims.setStep)}</h3>
+    <p class="axis-note">Rank after each round for the ${word(n)} occupations that finish on top. A hollow dot on the
+    bottom line means outside the top ${n} at that round.</p>`;
   const host = document.createElement("div");
   host.className = "w4-figure-body";
+  host.append(bumpChart(it));
   plot.append(host);
-
-  const drawStep = (i) => {
-    const step = it.steps[i];
-    const max = Math.max(...step.rows.map((r) => r.pagerank));
-    const rows = step.rows.map((r, idx) => ({
-      rank: idx + 1,
-      label: r.title,
-      value: r.pagerank,
-      tip: `${r.title}: PageRank ${r.pagerank.toFixed(4)} after step ${step.step}`,
-    }));
-    host.replaceChildren(hbars(rows, { max, aria: `Top 10 occupations by PageRank after step ${step.step}` }));
-  };
-  drawStep(0);
-  modes.addEventListener("click", (event) => {
-    const btn = event.target.closest("button[data-i]");
-    if (!btn) return;
-    for (const b of modes.querySelectorAll("button")) b.setAttribute("aria-pressed", String(b === btn));
-    drawStep(Number(btn.dataset.i));
-  });
 
   two.append(left, plot);
   article.append(header, two);

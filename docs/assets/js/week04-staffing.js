@@ -12,13 +12,38 @@ const panel = root.querySelector(".staffing-panel");
 const search = root.querySelector(".staffing-search input");
 const css = getComputedStyle(root);
 const token = (name) => css.getPropertyValue(name).trim();
+// Three sectors in navy and slate, the rest in grey drawn beneath them.
 const SECTORS = [
-  ["Finance and insurance", "--series-1", (s) => s === "52"],
-  ["Health care", "--series-2", (s) => s === "62"],
-  ["Other labelled sector", "--series-3", (s) => s !== ""],
-  ["No sector label", "--series-none", () => true],
+  ["Finance and insurance", "--w4-sector-finance", (s) => s === "52"],
+  ["Manufacturing", "--w4-sector-manufacturing", (s) => s === "31-33"],
+  ["Health care", "--w4-sector-health", (s) => s === "62"],
+  ["Other sectors", "--w4-sector-other", (s) => s !== ""],
+  ["Sector unknown", "--w4-sector-unknown", () => true],
 ];
+const GREY = new Set(["Other sectors", "Sector unknown"]);
 const sectorOf = (s) => SECTORS.find(([, , test]) => test(s));
+// NAICS two-digit codes to short names; a code missing here reads "Other sectors".
+const SECTOR_NAMES = {
+  52: "Finance and insurance",
+  "31-33": "Manufacturing",
+  51: "Information and telecoms",
+  62: "Health care",
+  "44-45": "Retail",
+  54: "Professional services",
+  22: "Utilities",
+  "48-49": "Transport",
+  92: "Government",
+  42: "Wholesale",
+  56: "Business support",
+  21: "Mining and energy",
+  72: "Hospitality",
+  53: "Real estate",
+  61: "Education",
+  81: "Other services",
+  23: "Construction",
+  "": "Sector unknown",
+};
+const sectorName = (s) => SECTOR_NAMES[s] ?? "Other sectors";
 const whole = new Intl.NumberFormat("en-US");
 const num = (v) => whole.format(v);
 const pct = (v) => (v > 0 && v < 0.005 ? "<1%" : `${Math.round(v * 100)}%`);
@@ -46,7 +71,7 @@ function show(client) {
   const top = client.top.map(([f, n]) => [data.firms[f], n]);
   panel.innerHTML = `
     <h3>${esc(client.name)}</h3>
-    <p class="meta">${sectorOf(client.sector)[0]} · ${num(client.filings)} placed filings ·
+    <p class="meta">${sectorName(client.sector)} · ${num(client.filings)} placed filings ·
       ${num(client.vendors)} ${client.vendors === 1 ? "vendor" : "vendors"}</p>
     <ol>${top.map(([name, n]) => `
       <li><span class="name" title="${esc(name)}">${esc(name)}</span>
@@ -65,7 +90,8 @@ function draw() {
   const series = SECTORS.map(([name, colour, test]) => ({
     type: "scatter",
     name,
-    symbolSize: 9,
+    symbolSize: GREY.has(name) ? 6 : 8,
+    z: GREY.has(name) ? 1 : 3,
     itemStyle: { color: token(colour), borderColor: token("--surface"), borderWidth: 1.5 },
     emphasis: { scale: 1.4 },
     data: rows.filter((d) => sectorOf(d.sector)[2] === test).map(point),
@@ -76,6 +102,7 @@ function draw() {
     type: "scatter",
     name: "Names",
     symbolSize: 1,
+    z: 10,
     silent: true,
     itemStyle: { color: "transparent" },
     label: {
@@ -109,7 +136,7 @@ function draw() {
     {
       animationDuration: 300,
       textStyle: { fontFamily: token("--sans") },
-      grid: { left: 52, right: 20, top: 36, bottom: 64 },
+      grid: { left: 52, right: 20, top: 36, bottom: 72 },
       legend: {
         bottom: 0,
         left: 0,
@@ -243,7 +270,7 @@ function drawFlows() {
 
 function table(rows) {
   root.querySelector("tbody").innerHTML = rows.slice(0, 25).map((d) => `<tr><td>${esc(d.name)}</td>
-    <td>${sectorOf(d.sector)[0]}</td><td class="num">${num(d.filings)}</td>
+    <td>${sectorName(d.sector)}</td><td class="num">${num(d.filings)}</td>
     <td class="num">${num(d.vendors)}</td><td>${esc(data.firms[d.top[0][0]])}</td>
     <td class="num">${pct(share(d))}</td></tr>`).join("");
 }

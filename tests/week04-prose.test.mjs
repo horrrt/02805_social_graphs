@@ -6,7 +6,7 @@ import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
-import { block, flatten } from "./week04-html.mjs";
+import { block, blockAt, flatten } from "./week04-html.mjs";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const read = (name) => readFileSync(join(ROOT, name), "utf8");
@@ -431,16 +431,43 @@ test("the hero's numbers and map legend follow the analysis", () => {
   has(`${place.cities.length} metro areas with the most filings, ${pct(share, 1)} of the year’s total`);
   const size = (id) => place.cities.filter((c) => c.community === id).length;
   const [hubs, tech, rest] = place.communities.map((c) => c.label);
-  has(`${hubs} · ${WORDS[size(0)]} large hubs`);
-  has(`${tech} · ${WORDS[size(1)]} tech hubs`);
-  has(`${rest} · the other ${size(2)}`);
+  has(`On the map: ${WORDS[place.communities.length]} Louvain groups`);
+  has(`${hubs} ${WORDS[size(0)]} large hubs`);
+  has(`${tech} ${WORDS[size(1)]} tech hubs`);
+  has(`${rest} the other ${size(2)}`);
+});
+
+test("section 1's start card names each group by its two largest metros", () => {
+  // The group heads are static; the metro lists under them come from week04-place.js.
+  const place = json("docs/assets/data/week04_place.json");
+  const start = block(html, "place-groups");
+  const members = (id) => place.cities.filter((c) => c.community === id).sort((a, b) => b.filings - a.filings);
+  const head = (id) => {
+    const at = start.indexOf(`data-community="${id}"`);
+    assert.ok(at >= 0, `#place-groups should hold a group for community ${id}`);
+    return flatten(blockAt(start, start.lastIndexOf("<", at)));
+  };
+  const cap = (w) => w[0].toUpperCase() + w.slice(1);
+  const expect = {
+    0: (m) => `${cap(WORDS[m.length])} large hubs led by ${m[0].name} and ${m[1].name}`,
+    1: (m) => `${cap(WORDS[m.length])} tech hubs led by ${m[0].name} and ${m[1].name}`,
+    2: (m) => `The other ${m.length} from ${m[0].name} and ${m[1].name} down`,
+  };
+  for (const c of place.communities) {
+    const t = expect[c.id](members(c.id));
+    assert.ok(head(c.id).includes(t), `group ${c.id} should say "${t}"`);
+  }
+  // The board's order: tech hubs, then large hubs, then the rest.
+  const order = [...start.matchAll(/data-community="(\d)"/g)].map((m) => Number(m[1]));
+  assert.deepEqual(order, [1, 0, 2]);
 });
 
 test("section 2's first round: Software Developers' pairs follow the analysis", () => {
   // Hand-typed in the deep dive, so a rerun used to leave it behind.
   const together = region("jobs-together");
   const jobs = json("docs/weeks/week04/data/jobs.json");
-  const pairs = jobs.pairs.slice(0, 12);
+  const pairs = [...jobs.pairs].sort((a, b) => b.weight - a.weight).slice(0, 12);
+  assert.ok(together.includes(`The ${pairs.length} most common job pairs`), "the pairs chart names how many pairs it shows");
   const sdPairs = pairs.filter((p) => [p.source, p.target].includes("15-1252")).length;
   assert.ok(
     together.includes(`Software Developers sit in ${sdPairs} of the 12 pairs`),

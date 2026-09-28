@@ -2,8 +2,9 @@
 // each of the five text-only ones. Built from docs/weeks/week04/data/more.json
 // (analysis/week04_more_page.py), which copies its numbers out of
 // week04_perm.json, week04_countries.json, week04_oews.json, week04_ties.json
-// and week04_lottery.json. Nothing here is computed in the browser. Plain
-// SVG, colours read from CSS tokens, like week04-strip.js.
+// and week04_lottery.json, plus USCIS's per-draw totals. The browser computes
+// only the two ratios of the draws chart from those totals. Plain SVG,
+// colours read from CSS tokens, like week04-strip.js.
 
 import { node, token, stripChart } from "./week04-strip.js";
 
@@ -72,22 +73,39 @@ function hbars(rows, { domain, ticks, fmt, width = 556, labelW = 150, valueW = 5
 }
 
 /**
- * Two columns joined by one line per series: the redesign canvas's slope
- * chart, for "before against after" comparisons. series: { label, values:
- * [a, b], colorToken, tip }.
+ * Spread label baselines so no two sit closer than gap, keeping their order;
+ * returns the adjusted y for each input y.
  */
-function slope(series, { domain, labels, fmt, width = 556, height = 210, aria }) {
+function dodge(ys, gap) {
+  const order = ys.map((y, i) => [y, i]).sort((p, q) => p[0] - q[0]);
+  const out = [];
+  let prev = -Infinity;
+  for (const [y, i] of order) {
+    prev = Math.max(y, prev + gap);
+    out[i] = prev;
+  }
+  return out;
+}
+
+/**
+ * Two columns joined by one line per series: the redesign canvas's slope
+ * chart, for "before against after" comparisons. The series name and first
+ * value sit left of the left column, the second value right of the right
+ * one, so no label crosses a line; dodge() keeps each side's labels apart.
+ * series: { label, values: [a, b], colorToken, tip }.
+ */
+function slope(series, { domain, labels, fmt, width = 556, height = 210, xl = 190, xr = 366, aria }) {
   const [d0, d1] = domain;
-  const top = 14;
-  const bottom = height - 30;
-  const xl = 120;
-  const xr = width - 130;
+  const top = 16;
+  const bottom = height - 34;
   const Y = (v) => top + ((d1 - Math.min(Math.max(v, d0), d1)) * (bottom - top)) / (d1 - d0);
   const svg = node("svg", { viewBox: `0 0 ${width} ${height}`, width, height, role: "img", "aria-label": aria });
-  for (const x of [xl, xr]) svg.append(node("line", { x1: x, y1: top - 6, x2: x, y2: bottom, stroke: token("--w4-grid"), "stroke-width": 1 }));
-  svg.append(node("text", { x: xl, y: bottom + 20, "font-size": 12, fill: token("--ink-soft"), "font-weight": 600, "text-anchor": "middle" }, labels[0]));
-  svg.append(node("text", { x: xr, y: bottom + 20, "font-size": 12, fill: token("--ink-soft"), "font-weight": 600, "text-anchor": "middle" }, labels[1]));
-  series.forEach((s) => {
+  for (const x of [xl, xr]) svg.append(node("line", { x1: x, y1: top - 8, x2: x, y2: bottom + 4, stroke: token("--w4-grid"), "stroke-width": 1 }));
+  svg.append(node("text", { x: xl, y: height - 10, "font-size": 12, fill: token("--ink-soft"), "font-weight": 600, "text-anchor": "middle" }, labels[0]));
+  svg.append(node("text", { x: xr, y: height - 10, "font-size": 12, fill: token("--ink-soft"), "font-weight": 600, "text-anchor": "middle" }, labels[1]));
+  const leftY = dodge(series.map((s) => Y(s.values[0]) + 4), 15);
+  const rightY = dodge(series.map((s) => Y(s.values[1]) + 4), 15);
+  series.forEach((s, i) => {
     const [a, b] = s.values;
     const color = token(s.colorToken);
     const g = titled(node("g"), s.tip);
@@ -95,8 +113,8 @@ function slope(series, { domain, labels, fmt, width = 556, height = 210, aria })
     g.append(node("circle", { cx: xl, cy: Y(a), r: 4.5, fill: color }));
     g.append(node("circle", { cx: xr, cy: Y(b), r: 4.5, fill: color }));
     svg.append(g);
-    svg.append(smartText(xl - 10, Y(a) + 4, fmt(a), 0, width, { size: 12, fill: color, weight: 700, anchorOverride: "end" }));
-    svg.append(smartText(xr + 10, Y(b) - 6, `${fmt(b)} ${s.label}`, 0, width, { size: 12, fill: color, weight: 700, anchorOverride: "start" }));
+    svg.append(node("text", { x: xl - 10, y: leftY[i], "font-size": 12, fill: color, "font-weight": 700, "text-anchor": "end" }, `${s.label} ${fmt(a)}`));
+    svg.append(node("text", { x: xr + 10, y: rightY[i], "font-size": 12, fill: color, "font-weight": 700, "text-anchor": "start" }, fmt(b)));
   });
   return svg;
 }
@@ -243,12 +261,92 @@ function drawLottery(data, host) {
   }));
   host.replaceChildren(
     slope(series, {
-      domain: [3, 10],
+      domain: [3.5, 10],
       labels: data.draws,
       fmt: (v) => v.toFixed(1),
       aria: "Registrations per approved petition, by kind of employer, March 2022 against March 2023",
     }),
   );
+}
+
+/**
+ * Every H-1B registration draw since 2020 from USCIS's published totals:
+ * eligible registrations per selected registration as a line, with the share
+ * of registrations for a worker registered more than once under each date.
+ * "selected" counts every selection round of a cap year, not the March round
+ * alone. The two draws the slopegraph splits by employer sit in a band.
+ * Geometry from the redesign's lot.py.
+ */
+function drawDraws(data, host) {
+  // A browser that cached more.json before the per-draw totals existed has no
+  // all_draws; leave the figure empty rather than throw.
+  if (!Array.isArray(data.all_draws) || data.all_draws.length < 2) return;
+  const rows = data.all_draws.map((d) => ({ ...d, per: d.eligible / d.selected, multi: d.multiple / d.eligible }));
+  const hl = new Set(data.draws);
+  const W = 556;
+  const H = 250;
+  const [L, R, T, B] = [44, 20, 30, 56];
+  const X = (i) => L + (i * (W - L - R)) / (rows.length - 1);
+  const ymax = Math.max(4.5, Math.ceil(Math.max(...rows.map((r) => r.per)) + 0.5));
+  const Y = (v) => T + (H - T - B) * (1 - v / ymax);
+  const ink = token("--ink");
+  const fmtN = (n) => n.toLocaleString("en-US");
+  const svg = node("svg", {
+    viewBox: `0 0 ${W} ${H}`,
+    width: W,
+    height: H,
+    role: "img",
+    "aria-label": `Eligible registrations per selected registration, every draw from ${rows[0].label} to ${rows.at(-1).label}`,
+  });
+  const idx = rows.map((r, i) => (hl.has(r.label) ? i : -1)).filter((i) => i >= 0);
+  if (idx.length) {
+    const x0 = X(Math.min(...idx)) - 26;
+    const x1 = X(Math.max(...idx)) + 26;
+    svg.append(node("rect", { x: x0, y: T - 18, width: x1 - x0, height: H - B - T + 18, rx: 8, fill: token("--w4-accent-soft"), "fill-opacity": 0.5 }));
+    svg.append(
+      node("text", { x: (x0 + x1) / 2, y: T - 6, "font-size": 11, "font-weight": 700, fill: token("--w4-accent"), "text-anchor": "middle" }, "The draws this box splits by employer"),
+    );
+  }
+  for (let v = 0; v < ymax; v += 1) {
+    svg.append(node("line", { x1: L, y1: Y(v), x2: W - R, y2: Y(v), stroke: token("--w4-grid"), "stroke-width": 1 }));
+    svg.append(node("text", { x: L - 8, y: Y(v) + 4, "font-size": 10.5, fill: token("--ink-mute"), "text-anchor": "end" }, String(v)));
+  }
+  // USCIS drew by worker, not by registration, from the March 2024 draw.
+  const byWorker = rows.findIndex((r) => r.label === "March 2024");
+  if (byWorker > 0) {
+    const xm = (X(byWorker - 1) + X(byWorker)) / 2;
+    svg.append(node("line", { x1: xm, y1: T, x2: xm, y2: H - B, stroke: token("--ink-mute"), "stroke-width": 1, "stroke-dasharray": "3 3" }));
+    svg.append(node("text", { x: xm + 6, y: H - B - 8, "font-size": 10.5, fill: token("--ink-soft") }, "one entry per worker from here"));
+  }
+  svg.append(
+    node("polyline", {
+      points: rows.map((r, i) => `${X(i)},${Y(r.per)}`).join(" "),
+      fill: "none",
+      stroke: ink,
+      "stroke-width": 2.4,
+      "stroke-linejoin": "round",
+    }),
+  );
+  rows.forEach((r, i) => {
+    const on = hl.has(r.label);
+    const tip =
+      `${r.label}: ${fmtN(r.eligible)} eligible registrations, ${fmtN(r.selected)} selected over all of that year's selection rounds, ` +
+      `${r.per.toFixed(1)} per selected registration; ${pct(r.multi)} for workers registered more than once`;
+    const g = titled(node("g"), tip);
+    g.append(node("circle", { cx: X(i), cy: Y(r.per), r: on ? 5 : 4, fill: on ? ink : token("--card"), stroke: ink, "stroke-width": 2 }));
+    // The first value starts at its point so it clears the y-axis numbers.
+    const first = i === 0;
+    g.append(
+      node("text", { x: first ? X(i) - 4 : X(i), y: Y(r.per) - 10, "font-size": 11.5, "font-weight": 700, fill: ink, "text-anchor": first ? "start" : "middle" }, r.per.toFixed(1)),
+    );
+    const [mon, yr] = r.label.split(" ");
+    g.append(
+      node("text", { x: X(i), y: H - B + 18, "font-size": 11, "font-weight": on ? 700 : 500, fill: on ? ink : token("--ink-soft"), "text-anchor": "middle" }, `${mon.slice(0, 3)} ${yr}`),
+    );
+    g.append(node("text", { x: X(i), y: H - B + 34, "font-size": 10.5, fill: token("--ink-mute"), "text-anchor": "middle" }, `${pct(r.multi)} multi`));
+    svg.append(g);
+  });
+  host.replaceChildren(svg);
 }
 
 const DRAWERS = {
@@ -258,6 +356,7 @@ const DRAWERS = {
   density: drawDensity,
   strength: drawStrength,
   lottery: drawLottery,
+  draws: drawDraws,
 };
 
 async function render() {
@@ -267,7 +366,7 @@ async function render() {
     const data = await load();
     for (const host of hosts) {
       const key = host.dataset.more;
-      const section = key.startsWith("countries") ? "countries" : key;
+      const section = key.startsWith("countries") ? "countries" : key === "draws" ? "lottery" : key;
       const draw = DRAWERS[key];
       if (draw) draw(data[section], host);
     }

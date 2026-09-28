@@ -78,6 +78,9 @@ export async function startPlace(echarts) {
   const token = (name) => css.getPropertyValue(name).trim();
   const GROUP = [0, 1, 2].map((g) => token(`--w4-group-${g}`));
   const GROUP_DARK = [0, 1, 2].map((g) => token(`--w4-group-${g}-dark`));
+  // On the dark hero the third group takes the plain slate, so the two hub
+  // groups stand out against it.
+  const HERO_GROUP = [GROUP_DARK[0], GROUP_DARK[1], GROUP[2]];
   const placedShare = Object.fromEntries(whereWho.rows.map((r) => [r.id, r.placed_share]));
 
   // No top-40 metro lies outside the contiguous states; drawing Alaska, Hawaii
@@ -360,95 +363,102 @@ export async function startPlace(echarts) {
     });
   }
 
+  // The giant component against α, drawn as plain SVG: a flat ink line, open
+  // dots with the selected α filled, a dashed marker where the backbone snaps,
+  // and the links kept printed under each stop.
   function renderGcLine() {
-    const c = chart("chart-gc");
-    if (!c) return;
-    const alphas = data.backbone.alphas;
-    const gc = data.backbone.gc_size;
-    const alpha = Number(state.alpha);
-    const alphaIdx = alphas.findIndex((a) => Number(a) === alpha);
-    const snap = data.backbone.snap_alpha;
+    const host = $("chart-gc");
+    if (!host) return;
+    const { alphas, gc_size: gc, edges_kept: kept, snap_alpha: snap } = data.backbone;
+    const metros = data.cities.length;
+    const ink = token("--ink");
+    const soft = token("--ink-soft");
+    const mute = token("--ink-mute");
+    const card = token("--card");
+    const grid = token("--w4-grid");
 
-    c.setOption({
-      ...BASE,
-      grid: { left: 52, right: 24, top: 36, bottom: 44 },
-      xAxis: {
-        type: "value",
-        name: "←  stricter      α      looser  →",
-        min: 0,
-        max: 0.55,
-        ...AXIS,
-        nameLocation: "middle",
-        nameGap: 28,
-      },
-      yAxis: {
-        type: "value",
-        name: "Cities in giant component",
-        ...AXIS,
-        nameGap: 40,
-        minInterval: 1,
-      },
-      series: [
-        {
-          type: "line",
-          data: alphas.map((a, i) => [a, gc[i]]),
-          smooth: false,
-          symbol: "circle",
-          symbolSize: 10,
-          lineStyle: { color: BLUE, width: 3 },
-          itemStyle: { color: BLUE, borderColor: "#fff", borderWidth: 2 },
-          areaStyle: {
-            color: {
-              type: "linear",
-              x: 0,
-              y: 0,
-              x2: 0,
-              y2: 1,
-              colorStops: [
-                { offset: 0, color: "rgba(31,143,214,0.28)" },
-                { offset: 1, color: "rgba(31,143,214,0.02)" },
-              ],
-            },
-          },
-          markLine: {
-            symbol: "none",
-            label: {
-              formatter: "snap",
-              color: ORANGE,
-              fontWeight: 700,
-              fontSize: 11,
-            },
-            lineStyle: { color: ORANGE, type: "dashed", width: 1.5 },
-            data: [{ xAxis: snap }],
-          },
-        },
-        {
-          type: "scatter",
-          data: alphaIdx >= 0 ? [[alphas[alphaIdx], gc[alphaIdx]]] : [],
-          symbolSize: 18,
-          itemStyle: {
-            color: ORANGE,
-            borderColor: "#fff",
-            borderWidth: 3,
-            shadowBlur: 10,
-            shadowColor: "rgba(242,130,12,0.45)",
-          },
-          z: 5,
-          label: {
-            show: true,
-            formatter: (p) => `${p.value[1]} cities`,
-            position: "top",
-            color: INK,
-            fontWeight: 700,
-            fontSize: 11,
-          },
-        },
-      ],
-      tooltip: {
-        ...BASE.tooltip,
-        formatter: (p) => `α = ${p.value[0]} · giant component = ${p.value[1]} cities`,
-      },
+    const W = 1000;
+    const H = 250;
+    const L = 48;
+    const R = 976;
+    const T = 30;
+    const B = 192;
+    // A round tick step that gives about four gridlines above zero.
+    const gmax = Math.max(...gc, 1);
+    const raw = gmax / 4;
+    const mag = 10 ** Math.floor(Math.log10(raw));
+    const step = [1, 2, 5, 10].map((m) => m * mag).find((s) => s >= raw);
+    const top = Math.ceil(gmax / step) * step;
+    const amax = Math.max(...alphas) * 1.1;
+    const x = (a) => L + (a / amax) * (R - L);
+    const y = (v) => B - (v / top) * (B - T);
+    // Rough text width for a label at 11.5px, to keep labels inside the frame.
+    const width = (s) => s.length * 6.4;
+    const place = (px, s) =>
+      px + 12 + width(s) > W - 8 ? { x: px - 12, anchor: "end" } : { x: px + 12, anchor: "start" };
+
+    const parts = [];
+    for (let v = 0; v <= top; v += step) {
+      parts.push(
+        `<line x1="${L}" x2="${R}" y1="${y(v)}" y2="${y(v)}" stroke="${grid}"/>`,
+        `<text x="${L - 10}" y="${y(v) + 4}" text-anchor="end" font-size="11" fill="${mute}">${fmt(v)}</text>`,
+      );
+    }
+    alphas.forEach((a) => {
+      parts.push(
+        `<text x="${x(a)}" y="212" text-anchor="middle" font-size="11" fill="${soft}" font-weight="600">α ${a}</text>`,
+      );
     });
+    parts.push(
+      `<text x="${(L + R) / 2}" y="242" text-anchor="middle" font-size="11" fill="${mute}">← stricter filter · looser filter →</text>`,
+    );
+
+    const snapIdx = alphas.findIndex((a) => Number(a) === Number(snap));
+    const snapText = snapIdx >= 0 ? `Snaps: only ${gc[snapIdx]} metros stay joined` : "";
+    const snapAt = place(x(snap) - 4, snapText);
+    parts.push(
+      `<line x1="${x(snap)}" x2="${x(snap)}" y1="${T - 8}" y2="${B}" stroke="${mute}" stroke-dasharray="4 3"/>`,
+    );
+    if (snapText) {
+      parts.push(
+        `<text x="${snapAt.x}" y="${T - 12}" text-anchor="${snapAt.anchor}" font-size="11.5" font-weight="700" fill="${soft}">${snapText}</text>`,
+      );
+    }
+    const snapSpan =
+      snapAt.anchor === "start" ? [snapAt.x, snapAt.x + width(snapText)] : [snapAt.x - width(snapText), snapAt.x];
+
+    parts.push(
+      `<polyline points="${alphas.map((a, i) => `${x(a)},${y(gc[i])}`).join(" ")}" fill="none" stroke="${ink}" stroke-width="2.4" stroke-linejoin="round"/>`,
+    );
+
+    const note = "shown on the map above";
+    alphas.forEach((a, i) => {
+      const cx = x(a);
+      const cy = y(gc[i]);
+      const on = String(a) === state.alpha;
+      // Near the top the value label goes under its dot.
+      const atTop = cy - 12 < T + 8;
+      parts.push(
+        `<g><title>α = ${a}: ${gc[i]} of ${metros} metros in the largest connected piece, ${fmt(kept[i])} links kept</title>` +
+          `<circle cx="${cx}" cy="${cy}" r="${on ? 6.5 : 5}" fill="${on ? ink : card}" stroke="${ink}" stroke-width="2"/></g>`,
+        `<text x="${cx}" y="${atTop ? cy + 20 : cy - 12}" text-anchor="middle" font-size="11.5" font-weight="700" fill="${ink}">${gc[i]}</text>`,
+        `<text x="${cx}" y="226" text-anchor="middle" font-size="10.5" fill="${mute}">${fmt(kept[i])} links</text>`,
+      );
+      if (!on) return;
+      const at = place(cx, note);
+      const span = at.anchor === "start" ? [at.x, at.x + width(note)] : [at.x - width(note), at.x];
+      const hitsSnap = snapText && span[0] < snapSpan[1] && snapSpan[0] < span[1];
+      // Above the dot on the top row, unless the snap label is there; below it otherwise.
+      const ny = atTop ? (hitsSnap ? cy + 38 : cy - 10) : cy + 22;
+      parts.push(
+        `<text x="${at.x}" y="${ny}" text-anchor="${at.anchor}" font-size="11.5" fill="${soft}">${note}</text>`,
+      );
+    });
+
+    host.innerHTML =
+      `<svg viewBox="0 0 ${W} ${H}" width="100%" role="img" aria-label="Metros in the largest connected piece at each backbone alpha" style="display:block;height:auto">` +
+      parts.join("") +
+      "</svg>";
   }
 
   function renderBackbone() {
@@ -494,7 +504,7 @@ export async function startPlace(echarts) {
                 opacity: !state.selected || state.selected === a || state.selected === b ? 0.5 : 0.08,
               },
             })),
-            lineStyle: { color: "#5f7896", curveness: 0.18 },
+            lineStyle: { color: "#5f7896", curveness: 0 },
           },
           {
             type: "scatter",
@@ -712,17 +722,13 @@ export async function startPlace(echarts) {
     const pairs = data.longhaul.employer_arcs[state.employer] ?? [];
     const connected = new Set(pairs.flat());
 
-    const lines = pairs.map(([a, b], i) => ({
+    const lines = pairs.map(([a, b]) => ({
       coords: [
         [byId[a].lon, byId[a].lat],
         [byId[b].lon, byId[b].lat],
       ],
       a,
       b,
-      lineStyle: {
-        // Slightly different curve per arc so parallel routes separate.
-        curveness: 0.18 + (i % 3) * 0.06,
-      },
     }));
 
     // Only cities this employer touches — drop the grey clutter.
@@ -776,6 +782,7 @@ export async function startPlace(echarts) {
               color: ORANGE,
               width: 2.2,
               opacity: 0.7,
+              curveness: 0,
             },
             effect: {
               show: true,
@@ -871,6 +878,32 @@ export async function startPlace(echarts) {
       .join("");
   }
 
+  // The start card's three groups: index.html holds each head with its
+  // data-community, and this fills the paragraph under it with the group's
+  // metros, largest first.
+  const GROUP_LIST_MAX = 12;
+  const GROUP_LIST_BY = "filings";
+
+  function renderGroupList() {
+    const host = $("place-groups");
+    if (!host) return;
+    host.querySelectorAll(".rx-group[data-community]").forEach((group) => {
+      const id = Number(group.dataset.community);
+      const names = data.cities
+        .filter((city) => city.community === id)
+        .sort((a, b) => b[GROUP_LIST_BY] - a[GROUP_LIST_BY])
+        .map((city) => city.name);
+      const shown = names.slice(0, GROUP_LIST_MAX).join(", ");
+      const rest = names.length - GROUP_LIST_MAX;
+      let p = group.querySelector(":scope > p");
+      if (!p) {
+        p = document.createElement("p");
+        group.append(p);
+      }
+      p.textContent = rest > 0 ? `${shown}, and ${rest} more` : shown;
+    });
+  }
+
   // ---- the hero: every metro on a dark map, and the inspector beside it.
   // The hero shares the page's selection; with nothing picked it shows the
   // metro with the most filings.
@@ -934,7 +967,7 @@ export async function startPlace(echarts) {
           id: city.id,
           value: [city.lon, city.lat, city.filings],
           symbolSize: 2 * radius(city),
-          itemStyle: { color: GROUP_DARK[city.community], borderColor: token("--deep"), borderWidth: 1.4 },
+          itemStyle: { color: HERO_GROUP[city.community], borderColor: token("--deep"), borderWidth: 1.4 },
           label: {
             show: picked || city.id in HERO_LABELS,
             position: HERO_LABELS[city.id] ?? "top",
@@ -952,7 +985,7 @@ export async function startPlace(echarts) {
           map: "USA",
           roam: false,
           layoutCenter: ["50%", "50%"],
-          layoutSize: "150%",
+          layoutSize: "135%",
           itemStyle: {
             areaColor: token("--w4-hero-state"),
             borderColor: token("--w4-hero-state-edge"),
@@ -1151,6 +1184,7 @@ export async function startPlace(echarts) {
   }
 
   setStatus();
+  renderGroupList();
   renderAll();
 
   const draft = $("place-draft-banner");

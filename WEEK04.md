@@ -235,6 +235,7 @@ All checked on 23 September 2026.
 | [USCIS H-1B Employer Data Hub](https://www.uscis.gov/tools/reports-and-studies/h-1b-employer-data-hub) | Approvals and denials per employer, FY2022 and FY2023 (section 3) | Public |
 | [USCIS hub, Tableau view](https://bigdataanalyticspub-sb.uscis.dhs.gov/views/H1BEmployerDataHub-Final/H1BPublic) | Approvals and denials per employer and petition type, FY2022 to FY2026 Q3 (section 3) | Public; `.csv` export per year |
 | [H-1B lottery registrations, FY2021 to FY2024](https://github.com/BloombergGraphics/2024-h1b-immigration-data) | Registrations, draws, petitions and their LCA case numbers (section 3) | USCIS data obtained by Bloomberg News under FOIA; Apache 2.0. Cite it that way |
+| [USCIS H-1B Electronic Registration Process](https://www.uscis.gov/working-in-the-united-states/temporary-workers/h-1b-specialty-occupations/h-1b-electronic-registration-process), Historical Data table | Eligible registrations, those for workers registered more than once, and selected registrations for each cap year 2021 to 2026, the March 2020 to March 2025 draws (`analysis/week04_more_page.py`, deep dive) | Public domain; `week04_data.py --refs` saves the page. Selected counts every round of a cap year |
 | [SEC company tickers](https://www.sec.gov/files/company_tickers.json) and [submissions API](https://www.sec.gov/search-filings/edgar-application-programming-interfaces) | SIC industry of listed companies (sectors, section 3) | Public; www.sec.gov needs a contact User-Agent, data.sec.gov does not |
 | [BLS OEWS, May 2025, metropolitan areas](https://www.bls.gov/oes/tables.htm) (`oesm25ma.zip`) | Jobs per metro and per occupation: filings per 1,000 jobs (`analysis/week04_oews.py`, for section 1) | Public; bls.gov needs a contact User-Agent (`CONTACT_EMAIL`) |
 | [Wikidata](https://www.wikidata.org/) (wbsearchentities, wbgetentities, SPARQL) | Industry (P452, P3224 NAICS, P3242 SIC) of clients the SEC does not list (`analysis/week04_wikidata.py`, section 3) | CC0; cached in `build/raw/week04/wikidata/` |
@@ -259,6 +260,13 @@ Traps found so far:
   file almost no PERM in FY2025 (thousands in FY2023). The post leaves PERM out.
 - **The law-firm projection holds about 138 links between two spellings of one firm** (Ogletree Deakins,
   a "Lowey" Fragomen). `week04_lawfirms.json` lists the top 20 as candidates for the name tables.
+- **A few filings a year carry a SOC code whose major group does not exist** (12, 14, 20, 24 or 40:
+  2 filings in FY2022, 5 in FY2023, 9 in FY2024, 8 in FY2025, 5 in FY2026). Each is a typo in the first
+  two digits, and its title names a real occupation: 12-1252 "Software Developers", 40-9031 "Sales
+  Engineers", 20-1021 "Computer Science Teachers, Postsecondary". The last four digits alone do not fix
+  them (12-5021 "Data Scientists" is 15-2051). `week04_jobs.recode_soc` gives each the code most filings
+  with the same title carry, and drops one no title resolves (none so far). Before the fix, section 2
+  counted each as its own occupation: FY2025 had 501 occupations instead of 494.
 
 - 19.5% of certified H-1B filings in FY2025 name a client (104,732 of 537,796), counting only
   "Certified", not "Certified - Withdrawn" (30,111 more that year).

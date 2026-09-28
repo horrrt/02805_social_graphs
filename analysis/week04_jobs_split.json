@@ -5,7 +5,7 @@
  "meta": {
   "filings": 537796,
   "companies": 59196,
-  "occupations": 501
+  "occupations": 494
  },
  "q1": {
   "variants": {
@@ -16,25 +16,25 @@
     "direct_filings": 422733,
     "placing_filing_share": 0.214,
     "placing_occupations": 218,
-    "direct_occupations": 500,
+    "direct_occupations": 493,
     "observed": {
      "n": 217,
      "nmi": 0.4249823076080533,
      "ami": 0.41256212939601244
     },
     "placing_modularity": 0.22374220093080605,
-    "direct_modularity": 0.29519169171237053,
+    "direct_modularity": 0.29519226115180325,
     "placing_clusters": 4,
-    "direct_clusters": 69,
+    "direct_clusters": 67,
     "placing_soc_agreement": {
      "nmi": 0.31324932128656213,
      "ami": 0.27354516284025227,
      "occupations": 218
     },
     "direct_soc_agreement": {
-     "nmi": 0.23763258226132492,
-     "ami": 0.1962351538119702,
-     "occupations": 437
+     "nmi": 0.23690999142647395,
+     "ami": 0.19810622359450805,
+     "occupations": 432
     },
     "placing_top_occupations": [
      {
@@ -132,19 +132,19 @@
      {
       "id": "15-1252",
       "title": "Software Developers",
-      "filings": 138519,
+      "filings": 138520,
       "share": 0.3277
      },
      {
       "id": "15-2051",
       "title": "Data Scientists",
-      "filings": 28465,
+      "filings": 28466,
       "share": 0.0673
      },
      {
       "id": "15-1299",
       "title": "Computer Occupations, All Other",
-      "filings": 22051,
+      "filings": 22052,
       "share": 0.0522
      },
      {
@@ -216,7 +216,7 @@
      {
       "id": "13-2011",
       "title": "Accountants and Auditors",
-      "filings": 5179,
+      "filings": 5180,
       "share": 0.0123
      }
     ],
@@ -230,7 +230,7 @@
      ]
     },
     "only_in_direct": {
-     "count": 283,
+     "count": 276,
      "top": [
       {
        "id": "19-1012",
@@ -282,25 +282,25 @@
     "direct_filings": 321587,
     "placing_filing_share": 0.402,
     "placing_occupations": 329,
-    "direct_occupations": 496,
+    "direct_occupations": 489,
     "observed": {
      "n": 311,
      "nmi": 0.4958497313034336,
      "ami": 0.4869275788670567
     },
     "placing_modularity": 0.31692331756513226,
-    "direct_modularity": 0.2857697123599091,
+    "direct_modularity": 0.28577637898938596,
     "placing_clusters": 14,
-    "direct_clusters": 73,
+    "direct_clusters": 71,
     "placing_soc_agreement": {
      "nmi": 0.217955760663569,
      "ami": 0.19185632431267363,
      "occupations": 318
     },
     "direct_soc_agreement": {
-     "nmi": 0.25757133437336766,
-     "ami": 0.20867500225271196,
-     "occupations": 431
+     "nmi": 0.25697701012880136,
+     "ami": 0.21077420263913685,
+     "occupations": 426
     },
     "placing_top_occupations": [
      {
@@ -398,19 +398,19 @@
      {
       "id": "15-1252",
       "title": "Software Developers",
-      "filings": 99110,
+      "filings": 99111,
       "share": 0.3082
      },
      {
       "id": "15-2051",
       "title": "Data Scientists",
-      "filings": 22294,
+      "filings": 22295,
       "share": 0.0693
      },
      {
       "id": "15-1299",
       "title": "Computer Occupations, All Other",
-      "filings": 15776,
+      "filings": 15777,
       "share": 0.0491
      },
      {
@@ -464,7 +464,7 @@
      {
       "id": "13-2011",
       "title": "Accountants and Auditors",
-      "filings": 4685,
+      "filings": 4686,
       "share": 0.0146
      },
      {
@@ -512,7 +512,7 @@
      ]
     },
     "only_in_direct": {
-     "count": 172,
+     "count": 165,
      "top": [
       {
        "id": "13-2052",
@@ -563,32 +563,32 @@
     "runs": 20,
     "matched_on": "count",
     "n_shared_qualifying_median": 179,
-    "nmi_mean": 0.43743704248786697,
-    "nmi_sd": 0.0954657187697905,
+    "nmi_mean": 0.4281572244055292,
+    "nmi_sd": 0.09436445314269847,
     "nmi_min": 0.24737598430650948,
-    "ami_mean": 0.4161549442521726,
+    "ami_mean": 0.40796288705289346,
     "filing_share_of_group_a_mean": 0.0134,
     "filing_share_of_group_a_sd": 0.0059
    },
    "filing_total_matched": {
     "runs": 20,
     "matched_on": "filings",
-    "n_shared_qualifying_median": 331,
-    "nmi_mean": 0.5873710613534928,
-    "nmi_sd": 0.04905613103023356,
-    "nmi_min": 0.5005534778545488,
-    "ami_mean": 0.5774473144527623,
+    "n_shared_qualifying_median": 330,
+    "nmi_mean": 0.5783284754194509,
+    "nmi_sd": 0.04621775357648949,
+    "nmi_min": 0.5107174415885771,
+    "ami_mean": 0.5686553534273143,
     "filing_share_of_group_a_mean": 0.2157,
     "filing_share_of_group_a_sd": 0.0035
    },
    "size_matched": {
     "runs": 20,
     "matched_on": "matched_bins",
-    "n_shared_qualifying_median": 295,
-    "nmi_mean": 0.6068963749399955,
-    "nmi_sd": 0.04431569297674775,
-    "nmi_min": 0.531964305829315,
-    "ami_mean": 0.6019046340561223,
+    "n_shared_qualifying_median": 294,
+    "nmi_mean": 0.6082560662690348,
+    "nmi_sd": 0.043842347290548436,
+    "nmi_min": 0.531340841550824,
+    "ami_mean": 0.6033555894358058,
     "filing_share_of_group_a_mean": 0.2122,
     "filing_share_of_group_a_sd": 0.0039
    }
@@ -599,31 +599,46 @@
    "observed_ami": 0.41256212939601244,
    "observed_n": 217,
    "verdict": "no, consistent with the null",
-   "null_matched_nmi_mean": 0.6068963749399955,
-   "null_matched_nmi_sd": 0.04431569297674775,
+   "null_matched_nmi_mean": 0.6082560662690348,
+   "null_matched_nmi_sd": 0.043842347290548436,
    "null_matched_filing_share": 0.2122,
-   "matched_z": -4.1049582013168955,
+   "matched_z": -4.180290745985944,
    "matched_verdict": "different"
   }
  },
  "q2": {
-  "occupations": 501,
-  "links": 28158,
-  "link_pairs_sharing_a_node": 5725940,
+  "occupations": 494,
+  "links": 28096,
+  "link_pairs_sharing_a_node": 5708182,
   "budget": 30000000,
   "on": "full projection",
-  "D_at_cut": 0.5671460193669146,
-  "cut_similarity": 0.5352941155433655,
-  "merges": 27828,
-  "merges_possible": 28157,
-  "link_clusters": 330,
-  "link_clusters_of_3_or_more": 121,
+  "D_at_cut": 0.5707974915249698,
+  "cut_similarity": 0.5384615659713745,
+  "merges": 27764,
+  "merges_possible": 28095,
+  "link_clusters": 332,
+  "link_clusters_of_3_or_more": 117,
+  "largest_link_community_links": 24012,
   "spearman_communities_vs_degree": {
-   "rho": 0.8393046832337219,
-   "p": 1.823125578330934e-117,
-   "n": 438
+   "rho": 0.8350041159365271,
+   "p": 6.943276697540305e-114,
+   "n": 433
   },
   "top15_by_communities_per_link": [
+   {
+    "id": "43-2099",
+    "title": "Communications Equipment Operators, All Other",
+    "links": 11,
+    "communities": 5,
+    "communities_per_link": 0.455
+   },
+   {
+    "id": "49-9051",
+    "title": "Electrical Power-Line Installers and Repairers",
+    "links": 11,
+    "communities": 5,
+    "communities_per_link": 0.455
+   },
    {
     "id": "31-2022",
     "title": "Physical Therapist Aides",
@@ -646,25 +661,18 @@
     "communities_per_link": 0.364
    },
    {
-    "id": "43-2099",
-    "title": "Communications Equipment Operators, All Other",
-    "links": 11,
-    "communities": 4,
-    "communities_per_link": 0.364
-   },
-   {
-    "id": "49-9051",
-    "title": "Electrical Power-Line Installers and Repairers",
-    "links": 11,
-    "communities": 4,
-    "communities_per_link": 0.364
-   },
-   {
     "id": "25-2057",
     "title": "Special Education Teachers, Middle School",
     "links": 40,
     "communities": 14,
     "communities_per_link": 0.35
+   },
+   {
+    "id": "21-1013",
+    "title": "Marriage and Family Therapists",
+    "links": 18,
+    "communities": 6,
+    "communities_per_link": 0.333
    },
    {
     "id": "29-2061",
@@ -716,13 +724,6 @@
     "communities_per_link": 0.288
    },
    {
-    "id": "21-1013",
-    "title": "Marriage and Family Therapists",
-    "links": 18,
-    "communities": 5,
-    "communities_per_link": 0.278
-   },
-   {
     "id": "13-2071",
     "title": "Credit Counselors",
     "links": 11,
@@ -738,33 +739,39 @@
      "links": 26
     },
     {
+     "id": "13-2071",
+     "title": "Credit Counselors",
+     "links": 11
+    },
+    {
+     "id": "23-1021",
+     "title": "Administrative Law Judges, Adjudicators, and Hearing Officers",
+     "links": 85
+    },
+    {
      "id": "29-1125",
      "title": "Recreational Therapists",
      "links": 94
     },
     {
-     "id": "43-4111",
-     "title": "Interviewers, Except Eligibility and Loan",
-     "links": 19
+     "id": "29-2061",
+     "title": "Licensed Practical and Licensed Vocational Nurses",
+     "links": 15
     },
     {
-     "id": "49-9051",
-     "title": "Electrical Power-Line Installers and Repairers",
-     "links": 11
-    },
-    {
-     "id": "53-2022",
-     "title": "Airfield Operations Specialists",
-     "links": 14
+     "id": "31-2022",
+     "title": "Physical Therapist Aides",
+     "links": 10
     }
    ],
-   "count": 5,
+   "count": 6,
    "in_top15": [
-    "43-4111",
-    "49-9051"
+    "13-2071",
+    "29-2061",
+    "31-2022"
    ],
-   "in_top15_count": 2
+   "in_top15_count": 3
   }
  },
- "seconds": 329
+ "seconds": 299
 }

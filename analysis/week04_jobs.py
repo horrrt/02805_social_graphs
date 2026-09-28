@@ -42,9 +42,16 @@ Method
   of the major-group labels. The same partition for FY2024, compared on the
   occupations both years share.
 - Infomap on the same projection, compared with Louvain and the SOC groups.
+- A few filings a year carry a mistyped code whose first two digits are no
+  2018 SOC major group (12, 14, 20, 24, 40). recode_soc gives each the code
+  that most filings with the same title carry; one with a title no correctly
+  coded filing carries is dropped.
 
 The page shows the 60 occupations with the most filings, each with its three
-strongest links to the others: a display filter, not the backbone.
+strongest links to the others: a display filter, not the backbone. Each shown
+occupation has a fixed position (layout): Kamada-Kawai on the largest piece of
+the drawn network, link length from 1 + log(weight), its core spread out, and each smaller piece as
+a ring in the bottom-right corner, in a 700 x 580 frame scaled to 0-1.
 
 Output: docs/weeks/week04/data/jobs.json (every number the section quotes).
 """
@@ -76,6 +83,11 @@ SHOWN = 60
 LINKS_PER_NODE = 3
 PARTNERS = 5
 SEED = 204
+# The network's drawing frame (px): the page scales x and y (0-1) to its own.
+FRAME_W, FRAME_H = 700, 580
+FRAME_LEFT, FRAME_RIGHT, FRAME_TOP, FRAME_BOTTOM = 20, 20, 40, 74
+RING_RADIUS, RING_STEP = 34, 110
+CORE_SPREAD = 0.55
 NULLS = 20  # rewirings; the brief's own count (one takes about 3 s)
 
 # 2010 computer occupations and the 2018 codes that replaced them (BLS SOC
@@ -110,11 +122,26 @@ def single_targets(path=CROSSWALK):
     return {old: next(iter(new))[:7] for old, new in targets.items() if len(new) == 1}
 
 
+def plain_title(titles):
+    """Titles compared case-blind, with spaces collapsed and a final "s" cut
+    ("Sales Engineer" filed once for "Sales Engineers")."""
+    return titles.astype(str).str.casefold().str.split().str.join(" ").str.removesuffix("s")
+
+
 def recode_soc(lca, crosswalk=None):
     """Adds the recoded 6-digit occupation, whether the recode moved the row
-    off a 2010 code, whether the crosswalk (not LEGACY) did, the 8-digit
-    O*NET-SOC code, and whether its SOC code parsed at all. The crosswalk
-    defaults to single_targets()."""
+    off a 2010 code, whether the crosswalk (not LEGACY) did, whether the code
+    was mistyped, the 8-digit O*NET-SOC code, and whether its SOC code parsed
+    at all. The crosswalk defaults to single_targets().
+
+    Mistyped codes: a handful of filings a year (2 to 9 in 2022-2026) carry a
+    code whose first two digits are no 2018 SOC major group (12, 14, 20, 24,
+    40), such as 12-1252 "Software Developers" or 40-9031 "Sales Engineers".
+    Each one's title names a real occupation, and the digits alone cannot
+    (12-5021 "Data Scientists" is 15-2051), so such a row takes the code
+    that most filings with the same title (plain_title) carry in the same
+    frame. A row whose title no correctly coded filing carries is dropped:
+    its occupation is left empty and soc_valid is False."""
     crosswalk = single_targets() if crosswalk is None else crosswalk
     raw = lca["SOC_CODE"].astype(str).str.strip()
     code = raw.str[:7]
@@ -122,15 +149,28 @@ def recode_soc(lca, crosswalk=None):
     full = raw.str[:10].where(raw.str[:10].str.match(r"^\d{2}-\d{4}\.\d{2}$", na=False))
     walked = full.map(crosswalk)
     occupation = walked.where(valid).fillna(code.where(valid).replace(LEGACY))
-    legacy = valid & (occupation != code)
+    mistyped = valid & ~code.str[:2].isin(MAJOR_GROUPS)
+    if mistyped.any():
+        title = plain_title(lca["SOC_TITLE"]) if "SOC_TITLE" in lca else pd.Series("", index=lca.index)
+        good = pd.DataFrame({"title": title, "occupation": occupation})[valid & ~mistyped]
+        by_title = (good.groupby(["title", "occupation"]).size().reset_index(name="n")
+                    .sort_values(["title", "n", "occupation"], ascending=[True, False, True])
+                    .drop_duplicates("title").set_index("title")["occupation"])
+        occupation = occupation.where(~mistyped, title.map(by_title))
+        valid = valid & occupation.notna()
+    legacy = valid & ~mistyped & (occupation != code)
     by_crosswalk = valid & walked.notna() & (walked != code)
     return lca.assign(occupation=occupation, legacy=legacy, by_crosswalk=by_crosswalk,
-                      onet_code=full, soc_valid=valid)
+                      mistyped=mistyped, onet_code=full, soc_valid=valid)
 
 
 def filtered(year):
     frame = certified(year)
     frame = recode_soc(frame[frame["SOC_CODE"].str.match(r"^\d{2}-\d{4}", na=False)])
+    unresolved = int((~frame["soc_valid"]).sum())
+    if unresolved:
+        print(f"{year}: dropped {unresolved} filings with a mistyped code no title resolves", flush=True)
+    frame = frame[frame["soc_valid"]].copy()
     frame["company"] = frame["employer"]
     return frame
 
@@ -215,6 +255,39 @@ def second_clusters(graph, labels, null_lifts=None):
             passes = best is not None and all(lift > null.get(node, 0.0) for null in null_lifts)
         membership[node] = [labels[node]] + ([best] if passes else [])
     return membership, real
+
+
+def layout(nodes, edges):
+    """{occupation: (x, y)} in 0-1 for the drawn network: Kamada-Kawai on its
+    largest piece with link length from 1 + log(weight), its dense core spread
+    (distance from the centre r becomes r ** CORE_SPREAD), each smaller piece a
+    ring in the frame's bottom-right corner. Deterministic: networkx starts
+    Kamada-Kawai from a circle in node order."""
+    graph = nx.Graph()
+    graph.add_nodes_from(nodes)
+    graph.add_weighted_edges_from((e["source"], e["target"], 1 + np.log(e["weight"])) for e in edges)
+    pieces = sorted(nx.connected_components(graph), key=lambda c: (-len(c), min(c)))
+    main = graph.subgraph(pieces[0]).copy()
+    pos = nx.kamada_kawai_layout(main)
+    # Spread the dense core: each node's distance from the centre becomes r ** CORE_SPREAD.
+    cx, cy = np.mean([p[0] for p in pos.values()]), np.mean([p[1] for p in pos.values()])
+    for k, (x, y) in list(pos.items()):
+        r = np.hypot(x - cx, y - cy)
+        if r > 0:
+            pos[k] = (cx + (x - cx) * r ** CORE_SPREAD / r, cy + (y - cy) * r ** CORE_SPREAD / r)
+    xs, ys = [p[0] for p in pos.values()], [p[1] for p in pos.values()]
+    width = FRAME_W - FRAME_LEFT - FRAME_RIGHT - 150
+    height = FRAME_H - FRAME_TOP - FRAME_BOTTOM
+    px = {k: (FRAME_LEFT + 75 + width * (x - min(xs)) / (max(xs) - min(xs)),
+              FRAME_TOP + height * (y - min(ys)) / (max(ys) - min(ys))) for k, (x, y) in pos.items()}
+    ox, oy = FRAME_W - 60, FRAME_H - FRAME_BOTTOM - 60
+    for piece in pieces[1:]:
+        ring = [n for n in nodes if n in piece]
+        for i, node in enumerate(ring):
+            angle = 2 * np.pi * i / len(ring)
+            px[node] = (ox + RING_RADIUS * np.cos(angle), oy + RING_RADIUS * np.sin(angle))
+        ox -= RING_STEP
+    return {k: (round(float(x) / FRAME_W, 4), round(float(y) / FRAME_H, 4)) for k, (x, y) in px.items()}
 
 
 def giant_of(graph):
@@ -344,11 +417,13 @@ def build(year, checks=False):
                     for a, b in itertools.combinations(shown, 2) if graph.has_edge(a, b)),
                    key=lambda p: (-p["weight"], p["source"], p["target"]))[:20]
 
+    place = layout(shown, edges)
     nodes = []
     for node in shown:
         partners = sorted(graph[node].items(), key=lambda kv: (-kv[1]["weight"], kv[0]))[:PARTNERS]
         nodes.append({
             "id": node, "title": titles[node], "major": node[:2], "filings": filings[node],
+            "x": place[node][0], "y": place[node][1],
             "cluster": labels[node], "clusters": membership[node],
             "bridge": len(membership[node]) > 1,
             "partners": [[o, titles[o], e["weight"]] for o, e in partners],
@@ -358,15 +433,21 @@ def build(year, checks=False):
     clusters = []
     for c in shown_clusters:
         members = sorted((n for n in graph if labels[n] == c), key=lambda n: (-filings[n], n))
+        majors = Counter(n[:2] for n in members)
         clusters.append({"id": c, "label": titles[members[0]], "occupations": size[c],
-                         "top": members[:12]})
+                         "top": members[:12],
+                         "majors": dict(sorted(majors.items(), key=lambda kv: (-kv[1], kv[0])))})
     return {
         "meta": {"year": year, "filings": len(frame), "occupations": graph.number_of_nodes(),
                  "legacy_filings_recoded": int(frame["legacy"].sum()),
+                 "mistyped_filings_recoded": int(frame["mistyped"].sum()),
                  "companies": int(frame["company"].nunique()),
                  "scope": "Certified H-1B filings; a link counts the companies filing for both",
                  "script": "analysis/week04_jobs.py"},
-        "majors": {m: MAJOR_GROUPS.get(m, m) for m in sorted({n[:2] for n in shown})},
+        # Every group a shown node or a cluster's composition names; a code outside
+        # the 2018 major groups fails here rather than reaching the page.
+        "majors": {m: MAJOR_GROUPS[m] for m in sorted({n[:2] for n in shown}
+                                                      | {m for c in clusters for m in c["majors"]})},
         "nodes": nodes,
         "edges": edges,
         "pairs": pairs,
@@ -406,7 +487,8 @@ def main():
     OUT.write_text(json.dumps(current, separators=(",", ":")), encoding="utf-8")
     q = current["quality"]
     print(f"{current['meta']['filings']:,} filings, {current['meta']['occupations']:,} occupations, "
-          f"{current['meta']['legacy_filings_recoded']:,} on 2010 codes recoded")
+          f"{current['meta']['legacy_filings_recoded']:,} on 2010 codes recoded, "
+          f"{current['meta']['mistyped_filings_recoded']:,} mistyped codes recoded by title")
     print(f"{len(current['edges'])} links shown, {q['louvain']['clusters']} clusters "
           f"({q['louvain']['clusters_of_two_or_more']} of two or more) -> {OUT.relative_to(ROOT)}")
     print(f"NMI {q['nmi']:.3f}, AMI {q['ami']:.3f} over {q['occupations']} occupations; "

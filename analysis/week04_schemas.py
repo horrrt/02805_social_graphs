@@ -154,6 +154,8 @@ class JobNode(Model):
     title: str
     major: str = Field(pattern=r"^\d{2}$")
     filings: int = Count
+    x: float = Share  # fixed network position, scaled to the drawing frame
+    y: float = Share
     cluster: int = Count
     clusters: list[int] = Field(min_length=1, max_length=2)
     bridge: bool
@@ -177,6 +179,12 @@ class Cluster(Model):
     id: int = Count
     label: str
     occupations: int = Field(ge=1)
+    majors: dict[str, int]  # SOC major group -> occupations, over every occupation in the cluster
+
+    @model_validator(mode="after")
+    def majors_cover_cluster(self):
+        assert sum(self.majors.values()) == self.occupations, "a cluster's major-group counts must sum to its size"
+        return self
 
 
 class Shuffled(Model):
@@ -264,6 +272,8 @@ class Jobs(Model):
         assert all(e.source in ids and e.target in ids for e in self.edges), "a link joins an unknown node"
         assert all(p.source in ids and p.target in ids for p in self.pairs), "a pair names an unknown node"
         assert {n.major for n in self.nodes} <= set(self.majors), "a major group without a name"
+        assert {m for c in self.clusters for m in c.majors} <= set(self.majors), \
+            "a cluster's major group without a name"
         linked = {e.source for e in self.edges} | {e.target for e in self.edges}
         assert ids <= linked, f"{len(ids - linked)} occupations have no drawn link"
         return self
@@ -535,8 +545,19 @@ class Bridges2(Model):
 
 
 class JobsSplitQ2(Model):
+    links: int = Field(ge=1)  # every link of the projection
+    link_clusters: int | None = Field(default=None, ge=1)  # None when the link clustering did not finish
+    largest_link_community_links: int | None = Field(default=None, ge=1)
     top15_by_communities_per_link: list[LinkComOcc]
     bridges: Bridges2
+
+    @model_validator(mode="after")
+    def largest_fits(self):
+        assert (self.link_clusters is None) == (self.largest_link_community_links is None), \
+            "link_clusters and largest_link_community_links come together"
+        if self.largest_link_community_links is not None:
+            assert self.largest_link_community_links <= self.links, "a link community larger than all links"
+        return self
 
 
 class JobsSplit(Model):
@@ -1336,9 +1357,31 @@ class MoreLotterySeries(Model):
     values: list[float] = Field(min_length=2, max_length=2)
 
 
+class MoreUscisDraw(Model):
+    # One March draw from USCIS's Historical Data table.
+    label: str = Field(pattern=r"^March \d{4}$")
+    eligible: int = Field(ge=1)
+    multiple: int = Count  # eligible registrations for workers registered more than once
+    selected: int = Field(ge=1)
+
+    @model_validator(mode="after")
+    def parts_fit(self):
+        assert self.multiple <= self.eligible, "more multiple registrations than eligible ones"
+        assert self.selected <= self.eligible, "more selected registrations than eligible ones"
+        return self
+
+
 class MoreLottery(Model):
     draws: list[str] = Field(min_length=2, max_length=2)
     series: list[MoreLotterySeries] = Field(min_length=3, max_length=3)
+    all_draws: list[MoreUscisDraw] = Field(min_length=2)  # every draw since 2020, oldest first
+
+    @model_validator(mode="after")
+    def all_draws_in_order(self):
+        years = [int(d.label.split()[1]) for d in self.all_draws]
+        assert years == sorted(set(years)), "all_draws must run oldest first, one per year"
+        assert set(self.draws) <= {d.label for d in self.all_draws}, "a slopegraph draw USCIS does not list"
+        return self
 
 
 class More(Model):

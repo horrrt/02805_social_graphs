@@ -66,6 +66,10 @@ test("section 2: outsourcers bundle jobs differently from companies like them", 
   says("jobs-split", `software developers are ${pct(share(p, "15-1252"))} of the outsourcing firms' filings and ${pct(share(q, "15-1252"))}`);
   says("jobs-split", `is ${pct(share(p, "15-1299"))} of the outsourcing firms' filings and ${pct(share(q, "15-1299"))}`);
   says("jobs-split", `direct employers file for ${d.q1.only_in_direct.count} occupations`);
+  const runs = Object.values(json("analysis/week04_jobs_split.json").q1.null).map((n) => n.runs);
+  assert.ok(runs.every((r) => r === runs[0]), "every baseline draws the same number of random splits");
+  says("jobs-split", `Whiskers span one standard deviation over ${runs[0]} random splits`);
+  says("jobs-split", `the baseline draws ${runs[0]} random groups`);
 });
 
 test("section 2: link communities find no clear two-cluster job", () => {
@@ -75,6 +79,42 @@ test("section 2: link communities find no clear two-cluster job", () => {
   says("jobs-linkcom", `${f.q2_link_clusters_of_3_or_more} small ones`);
   says("jobs-linkcom", `(Spearman ${f2(f.q2_spearman_communities_vs_degree)})`);
   says("jobs-linkcom", `Only ${f.q2_bridges_in_top15_count} of the ${f.q2_bridges_count} occupations`);
+  // The counts, the names and the chart captions, so a rerun that changes who ranks fails here.
+  const d = json("docs/weeks/week04/data/jobs_split.json");
+  const q2 = d.q2;
+  const occupations = json("docs/weeks/week04/data/jobs.json").meta.occupations;
+  assert.equal(json("analysis/week04_jobs_split.json").q2.occupations, occupations);
+  says("jobs-linkcom", `On the ${count(q2.links)} links between ${count(occupations)} occupations it peaks at D = ${f2(f.q2_D_at_cut)} with one community holding ${pct(q2.largest_link_community_links / q2.links)} of the links and ${f.q2_link_clusters_of_3_or_more} small ones`);
+  const plain = (title) => title.toLowerCase().replace(/, all other$/, "").replace(/ and repairers$/, "");
+  const list = (names) => (names.length < 3 ? names.join(" and ") : `${names.slice(0, -1).join(", ")}, and ${names.at(-1)}`);
+  const top = q2.top15_by_communities_per_link;
+  const tied = top.filter((o) => o.links === top[0].links && o.communities === top[0].communities);
+  says("jobs-linkcom", `such as ${list(tied.map((o) => plain(o.title)))} (${top[0].communities} communities over ${top[0].links} links${tied.length > 1 ? " each" : ""})`);
+  const title = Object.fromEntries(q2.bridges.all_occupations.map((o) => [o.id, o.title]));
+  assert.equal(q2.bridges.in_top15.length, f.q2_bridges_in_top15_count);
+  says("jobs-linkcom", `flagged as bridges appear in it: ${list(q2.bridges.in_top15.map((id) => plain(title[id])))}.`);
+  says("jobs-linkcom", `The ${top.length} jobs with the most communities per link`);
+  says("jobs-linkcom", `Rings: the ${["no", "one", "two", "three", "four", "five", "six"][f.q2_bridges_in_top15_count]} jobs section 2's first test flagged as bridges`);
+});
+
+test("section 2's deep dive: the cluster-composition captions follow jobs.json", () => {
+  const jobs = json("docs/weeks/week04/data/jobs.json");
+  const q = jobs.quality;
+  const WORDS = ["no", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten"];
+  const sizes = jobs.clusters.map((c) => Object.values(c.majors).reduce((a, b) => a + b, 0));
+  const shown = sizes.reduce((a, b) => a + b, 0);
+  const others = q.louvain.clusters_of_two_or_more - jobs.clusters.length;
+  // The clusters left off the chart are the smallest possible, two occupations each.
+  assert.equal(q.occupations - shown, 2 * others);
+  assert.ok(Math.min(...sizes) > 2);
+  says("jobs-groups", `Every occupation in the ${WORDS[jobs.clusters.length]} largest clusters, ${count(shown)} in all`);
+  says("jobs-groups", `The other ${WORDS[others]} clusters of two or more hold two occupations each`);
+  says("jobs-groups", `the official labels shuffled ${q.nmi_shuffled.runs} times`);
+});
+
+test("the every-draw chart's caption starts at the first draw", () => {
+  const draws = json("docs/weeks/week04/data/more.json").lottery.all_draws;
+  says("deeper-lottery", `Every draw since ${draws[0].label.split(" ").at(-1)}`);
 });
 
 test("section 3: switches stay in the group, movers and split clients", () => {

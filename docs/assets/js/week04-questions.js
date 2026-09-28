@@ -3,6 +3,8 @@
 // section 3's switching/movers/overlap figures, and the "beyond" section's
 // law-firm, green-card and wage-level figures. Four page JSON files, one
 // fetch each, same conventions as week04-jobs.js.
+import { node, token } from "./week04-strip.js";
+
 const WHERE_WHO_URL = new URL("../../weeks/week04/data/where_who.json", import.meta.url);
 const JOBS_SPLIT_URL = new URL("../../weeks/week04/data/jobs_split.json", import.meta.url);
 const STAFFING_MOVES_URL = new URL("../../weeks/week04/data/staffing_moves.json", import.meta.url);
@@ -16,7 +18,6 @@ const LINE = "#e6edf5";
 const ORANGE = "#f2820c";
 const BLUE = "#1f8fd6";
 const GREY = "#9eb1c7";
-const LIGHT_GREY = "#c6d2df";
 const whole = new Intl.NumberFormat("en-US");
 const num = (value) => whole.format(value);
 const pct = (value, digits = 1) => `${(value * 100).toFixed(digits)}%`;
@@ -181,40 +182,73 @@ function renderWhereBreakLinks(data) {
 
 // Section 2 · A — do outsourcers and direct employers bundle jobs alike -----
 
+// Plain SVG, coloured from the page's tokens: the observed split in the placed
+// colour, the two half-matched baselines in grey, the fair baseline in the
+// direct colour. Each baseline bar carries a ±1 sd whisker over its random
+// splits; the observed split has none.
+const NMI_ROWS = [
+  { lines: ["Outsourcing firms against", "direct employers (actual)"], mean: "q1_observed_nmi", fill: "--people", bold: true },
+  { lines: ["Random firms, same number", "of companies"], mean: "q1_null_count_matched_nmi_mean", sd: "q1_null_count_matched_nmi_sd", fill: "--ink-mute" },
+  { lines: ["Random firms, same share", "of filings"], mean: "q1_null_filings_matched_nmi_mean", sd: "q1_null_filings_matched_nmi_sd", fill: "--w4-band" },
+  { lines: ["Random firms, same number", "and size (fair baseline)"], mean: "q1_null_matched_nmi_mean", sd: "q1_null_matched_nmi_sd", fill: "--access" },
+];
+
 function renderJobsSplitNmi(data) {
-  const c = chart("chart-jobs-split-nmi");
-  charts.push(c);
-  if (!c) return;
+  const host = $("chart-jobs-split-nmi");
+  if (!host) return;
   const f = data.finding;
-  const cats = ["Observed", "Count-matched\nnull mean", "Filing-matched\nnull mean", "Size-matched\nnull mean"];
-  const bars = [
-    { value: f.q1_observed_nmi, itemStyle: { color: ORANGE } },
-    { value: f.q1_null_count_matched_nmi_mean, itemStyle: { color: GREY } },
-    { value: f.q1_null_filings_matched_nmi_mean, itemStyle: { color: LIGHT_GREY } },
-    { value: f.q1_null_matched_nmi_mean, itemStyle: { color: BLUE } },
-  ];
-  const whiskers = [
-    [1, f.q1_null_count_matched_nmi_mean - f.q1_null_count_matched_nmi_sd,
-      f.q1_null_count_matched_nmi_mean + f.q1_null_count_matched_nmi_sd],
-    [2, f.q1_null_filings_matched_nmi_mean - f.q1_null_filings_matched_nmi_sd,
-      f.q1_null_filings_matched_nmi_mean + f.q1_null_filings_matched_nmi_sd],
-    [3, f.q1_null_matched_nmi_mean - f.q1_null_matched_nmi_sd,
-      f.q1_null_matched_nmi_mean + f.q1_null_matched_nmi_sd],
-  ];
-  c.setOption({
-    ...base,
-    grid: { left: 46, right: 18, top: 24, bottom: 46 },
-    xAxis: { ...axis, type: "category", data: cats, axisLabel: { ...axis.axisLabel, lineHeight: 13 } },
-    yAxis: { ...axis, type: "value", min: 0, name: "NMI", nameTextStyle: { color: MUTE } },
-    tooltip: { ...base.tooltip, formatter: (p) => `${esc(p.name.replace("\n", " "))}<br>NMI ${p.value.toFixed(3)}` },
-    series: [
-      {
-        type: "bar", data: bars, barMaxWidth: 42,
-        label: { show: true, position: "top", color: INK, formatter: (p) => p.value.toFixed(2) },
-      },
-      whiskerSeries(whiskers),
-    ],
+  const rows = NMI_ROWS.map((r) => ({
+    ...r, label: r.lines.join(" "), value: f[r.mean], sd: r.sd ? f[r.sd] : null,
+  }));
+  // The axis runs to the next 0.2 past the longest whisker, never past 1.
+  const steps = Math.min(5, Math.ceil(Math.max(...rows.map((r) => r.value + (r.sd ?? 0))) / 0.2 - 1e-9));
+  const d1 = steps * 0.2;
+  const W = 560;
+  const x0 = 200;
+  const x1 = 520;
+  const T = 8;
+  const rowH = 46;
+  const ybot = T + rows.length * rowH;
+  const H = ybot + 34;
+  const X = (v) => x0 + (Math.min(Math.max(v, 0), d1) / d1) * (x1 - x0);
+  const ink = token("--ink");
+  const mute = token("--ink-mute");
+  const svg = node("svg", {
+    viewBox: `0 0 ${W} ${H}`, width: "100%", role: "img",
+    "aria-label": "How much the outsourcing and direct-employer job clusters agree, against three random baselines",
   });
+  for (let i = 0; i <= steps; i += 1) {
+    const v = i * 0.2;
+    svg.append(node("line", { x1: X(v), x2: X(v), y1: T - 2, y2: ybot, stroke: token("--w4-grid") }));
+    svg.append(node("text", { x: X(v), y: ybot + 14, "font-size": 11, fill: mute, "text-anchor": "middle" }, v.toFixed(1)));
+  }
+  svg.append(node("text", { x: (x0 + x1) / 2, y: ybot + 31, "font-size": 11, fill: mute, "text-anchor": "middle" },
+    "Agreement of the two groups' job clusters (NMI: 0 unrelated, 1 identical)"));
+  rows.forEach((r, i) => {
+    const cy = T + i * rowH + rowH / 2;
+    const weight = r.bold ? 700 : 600;
+    svg.append(node("text", { x: 0, y: cy - 3, "font-size": 12, "font-weight": weight, fill: ink }, r.lines[0]));
+    svg.append(node("text", { x: 0, y: cy + 12, "font-size": 12, "font-weight": weight, fill: ink }, r.lines[1]));
+    const tip = r.sd === null
+      ? `${r.label}: NMI ${r.value.toFixed(3)}`
+      : `${r.label}: NMI ${r.value.toFixed(3)} ± ${r.sd.toFixed(3)} (mean ± sd over the random splits)`;
+    const g = node("g");
+    g.append(node("title", {}, tip));
+    g.append(node("rect", { x: x0, y: cy - 9, width: Math.max(X(r.value) - x0, 1), height: 18, rx: 3, fill: token(r.fill) }));
+    let end = X(r.value);
+    if (r.sd !== null) {
+      const lo = X(r.value - r.sd);
+      const hi = X(r.value + r.sd);
+      const whisker = { stroke: ink, "stroke-width": 1.5 };
+      g.append(node("line", { x1: lo, x2: hi, y1: cy, y2: cy, ...whisker }));
+      g.append(node("line", { x1: lo, x2: lo, y1: cy - 6, y2: cy + 6, ...whisker }));
+      g.append(node("line", { x1: hi, x2: hi, y1: cy - 6, y2: cy + 6, ...whisker }));
+      end = Math.max(end, hi);
+    }
+    svg.append(g);
+    svg.append(node("text", { x: end + 7, y: cy + 4, "font-size": 12, "font-weight": 700, fill: ink }, r.value.toFixed(2)));
+  });
+  host.replaceChildren(svg);
 }
 
 function renderJobsSplitMix(data) {
@@ -269,6 +303,161 @@ function renderJobsLinkcomTable(data) {
     <td style="text-align:right">${num(o.communities)}</td>
     <td style="text-align:right">${o.communities_per_link.toFixed(2)}</td>
   </tr>`).join("");
+}
+
+// One bar: the links in the largest link community against the rest.
+function renderLinkShare(data) {
+  const host = $("chart-jobs-linkcom-share");
+  if (!host) return;
+  const q = data.q2;
+  const largest = q.largest_link_community_links;
+  const rest = q.links - largest;
+  const smaller = q.link_clusters - 1;
+  const share = largest / q.links;
+  const W = 520;
+  const H = 146;
+  const by = 46;
+  const bh = 34;
+  const split = W * share;
+  const ink = token("--ink");
+  const soft = token("--ink-soft");
+  const svg = node("svg", {
+    viewBox: `0 0 ${W} ${H}`, width: "100%", role: "img",
+    "aria-label": `Share of the ${num(q.links)} links in the largest link community`,
+  });
+  svg.append(node("text", { x: 0, y: 24, "font-size": 12, fill: soft },
+    `All ${num(q.links)} links between occupations, split by link community`));
+  const big = node("g");
+  big.append(node("title", {}, `Largest link community: ${num(largest)} of ${num(q.links)} links (${pct(share)})`));
+  big.append(node("rect", { x: 0, y: by, width: split - 2, height: bh, rx: 5, fill: ink }));
+  big.append(node("text", { x: 10, y: by + 22, "font-size": 13, "font-weight": 700, fill: token("--card") },
+    `One community: ${pct(share, 0)} of links`));
+  svg.append(big);
+  const small = node("g");
+  small.append(node("title", {}, `The other ${num(smaller)} link communities: ${num(rest)} links (${pct(rest / q.links)})`));
+  small.append(node("rect", { x: split, y: by, width: W - split, height: bh, rx: 5, fill: token("--w4-meter") }));
+  small.append(node("text", { x: split + (W - split) / 2, y: by + 22, "font-size": 12, "font-weight": 700, fill: ink, "text-anchor": "middle" },
+    pct(rest / q.links, 0)));
+  svg.append(small);
+  svg.append(node("text", { x: 0, y: by + bh + 18, "font-size": 12, fill: soft }, `${num(largest)} links`));
+  svg.append(node("text", { x: W, y: by + bh + 18, "font-size": 12, fill: soft, "text-anchor": "end" }, `${num(rest)} links`));
+  svg.append(node("text", { x: W, y: by + bh + 40, "font-size": 12, fill: soft, "text-anchor": "end" },
+    `${num(smaller)} smaller communities share the rest;`));
+  svg.append(node("text", { x: W, y: by + bh + 56, "font-size": 12, fill: soft, "text-anchor": "end" },
+    `${num(data.finding.q2_link_clusters_of_3_or_more)} of all ${num(q.link_clusters)} hold three links or more`));
+  host.replaceChildren(svg);
+}
+
+// Display names for the scatter, keyed by SOC code; the full title stays in
+// each dot's tooltip. A job missing here falls back to its full title.
+const LINK_SHORT = {
+  "11-9032": "School administrators",
+  "11-9031": "Preschool administrators",
+  "43-2099": "Communications operators",
+  "49-9051": "Power-line installers",
+  "25-2057": "Special ed., middle school",
+  "29-2061": "Practical nurses",
+  "43-4111": "Interviewers",
+  "25-2023": "Career teachers, middle school",
+  "25-2058": "Special ed., secondary",
+  "25-2012": "Kindergarten teachers",
+  "25-2021": "Elementary teachers",
+  "21-1013": "Family therapists",
+};
+// The three largest jobs get a label beside the dot; flagged bridges get one
+// on a leader line into the empty lower right, stacked from LEADER.y down.
+const LINK_LABELLED = ["25-2021", "25-2058", "11-9032"];
+const LEADER = { x: 28, y: 5.2, step: 1.8 };
+const RATE_GUIDES = [[0.4, "1 community per 2.5 links"], [1 / 3, "1 per 3"], [0.25, "1 per 4"]];
+
+function renderLinkScatter(data) {
+  const host = $("chart-jobs-linkcom-scatter");
+  if (!host) return;
+  const top = data.q2.top15_by_communities_per_link;
+  const bridges = new Set(data.q2.bridges.in_top15);
+  const name = (o) => LINK_SHORT[o.id] ?? short(o.title);
+  const W = 520;
+  const H = 330;
+  const L = 40;
+  const R = 150;
+  const T = 16;
+  const B = 40;
+  const xmax = Math.ceil(Math.max(...top.map((o) => o.links)) / 10) * 10;
+  const ymax = Math.ceil(Math.max(...top.map((o) => o.communities)) / 5) * 5;
+  const X = (v) => L + ((W - L - R) * v) / xmax;
+  const Y = (v) => T + (H - T - B) * (1 - v / ymax);
+  const ink = token("--ink");
+  const soft = token("--ink-soft");
+  const mute = token("--ink-mute");
+  const halo = { "paint-order": "stroke", stroke: token("--w4-inset"), "stroke-width": 3 };
+  const svg = node("svg", {
+    viewBox: `0 0 ${W} ${H}`, width: "100%", role: "img",
+    "aria-label": `Links against link communities for the ${top.length} jobs with the most communities per link`,
+  });
+  for (let v = 0; v <= ymax; v += 5) {
+    svg.append(node("line", { x1: L, x2: W - R, y1: Y(v), y2: Y(v), stroke: token("--w4-grid") }));
+    svg.append(node("text", { x: L - 8, y: Y(v) + 4, "font-size": 11, fill: mute, "text-anchor": "end" }, String(v)));
+  }
+  for (let v = 0; v <= xmax; v += 10) {
+    svg.append(node("text", { x: X(v), y: H - B + 18, "font-size": 11, fill: mute, "text-anchor": "middle" }, String(v)));
+  }
+  svg.append(node("text", { x: (L + W - R) / 2, y: H - 6, "font-size": 11.5, fill: soft, "text-anchor": "middle" },
+    "links (other occupations it shares employers with)"));
+  svg.append(node("text", { x: L - 30, y: T - 4, "font-size": 11.5, fill: soft }, "communities"));
+  RATE_GUIDES.forEach(([rate, label], i) => {
+    const xe = Math.min(xmax, ymax / rate);
+    svg.append(node("line", {
+      x1: X(0), y1: Y(0), x2: X(xe), y2: Y(rate * xe),
+      stroke: mute, "stroke-opacity": 0.55, "stroke-dasharray": "3 3",
+    }));
+    svg.append(node("text", {
+      x: i === 0 ? X(xe) - 6 : X(xe) + 4, y: Y(rate * xe) + 4, "font-size": 10.5, fill: mute,
+      "text-anchor": i === 0 ? "end" : "start",
+    }, label));
+  });
+  // Jobs on the same (links, communities) share one dot and one tooltip.
+  const groups = new Map();
+  top.forEach((o) => {
+    const key = `${o.links}|${o.communities}`;
+    if (!groups.has(key)) groups.set(key, []);
+    groups.get(key).push(o);
+  });
+  const leaders = top
+    .filter((o) => bridges.has(o.id) && !LINK_LABELLED.includes(o.id))
+    .sort((a, b) => b.communities - a.communities || a.links - b.links);
+  const leaderLines = node("g");
+  const dots = node("g");
+  const labels = node("g");
+  leaders.forEach((o, i) => {
+    const lx = X(LEADER.x);
+    const ly = Y(Math.max(LEADER.y - i * LEADER.step, 0.4));
+    leaderLines.append(node("line", {
+      x1: X(o.links) + 6, y1: Y(o.communities), x2: lx - 4, y2: ly - 4, stroke: mute, "stroke-width": 1,
+    }));
+    labels.append(node("text", { x: lx, y: ly, "font-size": 11, "font-weight": 700, fill: ink, ...halo },
+      `${name(o)} (bridge)`));
+  });
+  groups.forEach((members) => {
+    const [first] = members;
+    const flagged = members.some((o) => bridges.has(o.id));
+    const who = members.map((o) => `${o.title}${bridges.has(o.id) ? " (flagged bridge)" : ""}`).join("\n");
+    const g = node("g");
+    g.append(node("title", {},
+      `${who}\n${first.communities} communities over ${first.links} links (${first.communities_per_link.toFixed(2)} per link)`));
+    g.append(node("circle", {
+      cx: X(first.links), cy: Y(first.communities), r: 5.5,
+      fill: flagged ? token("--card") : ink, stroke: ink, "stroke-width": flagged ? 2.2 : 1,
+    }));
+    dots.append(g);
+  });
+  top.filter((o) => LINK_LABELLED.includes(o.id)).forEach((o) => {
+    labels.append(node("text", {
+      x: X(o.links) + 8, y: Y(o.communities) + 4, "font-size": 11,
+      "font-weight": bridges.has(o.id) ? 700 : 600, fill: ink, ...halo,
+    }, `${name(o)}${bridges.has(o.id) ? " (bridge)" : ""}`));
+  });
+  svg.append(leaderLines, dots, labels);
+  host.replaceChildren(svg);
 }
 
 // Section 3 · A — does a switch stay in the client's group ------------------
@@ -525,8 +714,11 @@ fetch(JOBS_SPLIT_URL).then((response) => {
   renderJobsSplitNmi(data);
   renderJobsSplitMix(data);
   renderJobsLinkcomTable(data);
+  renderLinkShare(data);
+  renderLinkScatter(data);
 }).catch((error) => {
-  errorInto(["chart-jobs-split-nmi", "chart-jobs-split-mix", "jobs-linkcom-table"],
+  errorInto(["chart-jobs-split-nmi", "chart-jobs-split-mix", "jobs-linkcom-table",
+    "chart-jobs-linkcom-share", "chart-jobs-linkcom-scatter"],
     `Jobs-split data failed to load: ${error.message}`);
 });
 
