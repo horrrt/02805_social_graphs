@@ -152,8 +152,10 @@ export async function startPlace(echarts) {
     return GROUP[city.community] ?? MUTE;
   }
 
+  // Counts of positions or employers carry no placed-or-direct meaning, so
+  // they take the neutral ink tone rather than the grammar's orange or blue.
   function metricColour() {
-    return state.metric === "positions" ? ORANGE : BLUE;
+    return token("--ink-soft");
   }
 
   /** Tight bubble scale so hubs do not swallow the map. */
@@ -544,7 +546,8 @@ export async function startPlace(echarts) {
   }
 
 
-  const LABELS = 8;
+  // Five labels fit the crowded corner of the scatter without touching; hover names the rest.
+  const LABELS = 5;
 
   function renderScatter() {
     const c = chart("chart-longhaul");
@@ -656,12 +659,17 @@ export async function startPlace(echarts) {
             textBorderColor: "#fff",
             textBorderWidth: 3,
           },
-          labelLayout: { hideOverlap: true },
-          data: [...labelled].map((e) => ({
-            value: [e.distance_km, e.weight],
-            employer: e.top_employer,
-            symbolSize: edgeSize(e.weight),
-          })),
+          // Neighbouring labels alternate above and below their dots, so two
+          // heavy links at similar distances do not print on top of each other.
+          labelLayout: { moveOverlap: "shiftY" },
+          data: [...labelled]
+            .sort((x, y) => x.distance_km - y.distance_km)
+            .map((e, i) => ({
+              value: [e.distance_km, e.weight],
+              employer: e.top_employer,
+              symbolSize: edgeSize(e.weight),
+              label: { position: i % 2 ? "bottom" : "top" },
+            })),
         },
       ],
       tooltip: {

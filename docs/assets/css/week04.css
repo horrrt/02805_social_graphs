@@ -283,8 +283,20 @@
 }
 
 .corridor .cut-body > .card:first-child,
-.corridor .cut-body > .cut-card:first-child {
+.corridor .cut-body > .cut-card:first-child,
+.corridor .cut-body > .w4-box-intro + .card,
+.corridor .cut-body > .w4-box-intro + .cut-card {
   margin-top: 0;
+}
+
+/* One or two sentences that open a deep-dive box: what it holds and which
+   section it extends. */
+.corridor .cut-body > .w4-box-intro {
+  color: var(--ink-soft);
+  font-size: 15px;
+  line-height: 1.55;
+  margin: 0 0 16px;
+  max-width: 68ch;
 }
 
 .corridor .tag {

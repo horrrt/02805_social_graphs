@@ -14,7 +14,7 @@ const card = (id) => {
   const start = html.indexOf(`id="${id}"`);
   assert.ok(start > 0, `no card ${id}`);
   const end = html.indexOf('<div class="card', start + 1);
-  return html.slice(start, end > 0 ? end : undefined).replace(/<[^>]+>/g, " ").replace(/\s+/g, " ");
+  return html.slice(start, end > 0 ? end : undefined).replace(/<span class="w4-pop" id="w4-term-[^"]*"[^>]*>[^<]*<\/span>/g, " ").replace(/<[^>]+>/g, " ").replace(/\s+/g, " ");
 };
 const says = (id, t) => assert.ok(card(id).includes(t), `${id} should say "${t}"`);
 const pct = (x, digits = 0) => `${(100 * x).toFixed(digits)}%`;
@@ -150,7 +150,7 @@ test("beyond: law firms, green cards and wage levels", () => {
 test("section 4: without the biggest firms", () => {
   const d = json("docs/weeks/week04/data/footprint.json");
   const at = (part, id) => d[part].variants.find((v) => v.id === id);
-  const lead = html.slice(html.indexOf('id="footprint"'), html.indexOf('id="beyond"')).replace(/<[^>]+>/g, " ").replace(/\s+/g, " ");
+  const lead = html.slice(html.indexOf('id="footprint"'), html.indexOf('id="beyond"')).replace(/<span class="w4-pop" id="w4-term-[^"]*"[^>]*>[^<]*<\/span>/g, " ").replace(/<[^>]+>/g, " ").replace(/\s+/g, " ");
   const has = (t) => assert.ok(lead.includes(t), `section 4 should say "${t}"`);
   const [full, short, shortc, top10, top10c] = ["full", "drop_shortlist", "control_shortlist", "drop_top10_filings", "control_top10_filings"].map((id) => at("metros", id));
   const vs = d.finding.metros;
@@ -173,7 +173,7 @@ test("section 4: without the biggest firms", () => {
 test("section 4: which firm hides the regions", () => {
   const d = json("docs/weeks/week04/data/footprint_rank.json");
   const f = d.finding;
-  const part = html.slice(html.indexOf('id="footprint-which"'), html.indexOf('id="beyond"')).replace(/<[^>]+>/g, " ").replace(/\s+/g, " ");
+  const part = html.slice(html.indexOf('id="footprint-which"'), html.indexOf('id="beyond"')).replace(/<span class="w4-pop" id="w4-term-[^"]*"[^>]*>[^<]*<\/span>/g, " ").replace(/<[^>]+>/g, " ").replace(/\s+/g, " ");
   const has = (t) => assert.ok(part.includes(t), `the which-firm part should say "${t}"`);
   const firm = (name) => d.single.find((s) => s.firm === name);
   const amazon = firm("Amazon");

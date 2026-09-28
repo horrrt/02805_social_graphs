@@ -264,7 +264,13 @@ async function render() {
   try {
     const data = await load();
     const c = data.cohiring;
-    body.replaceChildren(card1(c, data.meta.descriptors), card2(c));
+    const intro = document.createElement("p");
+    intro.className = "w4-box-intro";
+    intro.textContent =
+      "Section 2 grouped occupations by which companies file for them together. O*NET, the Department of " +
+      "Labor's database of what each job involves, offers an independent check: S1 and S2 ask whether jobs " +
+      "hired together also need similar skills, and S3 lets you compare any occupations side by side.";
+    body.replaceChildren(intro, card1(c, data.meta.descriptors), card2(c));
   } catch (err) {
     status.textContent = "Could not load the O*NET comparison.";
     console.error("week04-skills", err);

@@ -371,7 +371,13 @@ async function render() {
   const status = document.getElementById("pagerank-status");
   try {
     const data = await load();
-    body.replaceChildren(buildDampingCard(data), buildIterationCard(data));
+    const intro = document.createElement("p");
+    intro.className = "w4-box-intro";
+    intro.textContent =
+      "PageRank scores a node by how often a random walker lands on it: at each step the walker follows a link " +
+      "with probability d, the damping factor, and otherwise jumps to a random node. Here it runs on section 2's " +
+      "occupation network, kept to its strongest ties.";
+    body.replaceChildren(intro, buildDampingCard(data), buildIterationCard(data));
   } catch (err) {
     status.textContent = "Could not load the PageRank explorable.";
     console.error("week04-pagerank", err);

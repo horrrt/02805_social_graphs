@@ -1,0 +1,210 @@
+{
+ "generated_by": "analysis/week04_more_page.py",
+ "perm": {
+  "median_ratio": 13.16,
+  "rows": [
+   {
+    "label": "Oracle",
+    "lca_filings": 1258,
+    "ratio": 94.59
+   },
+   {
+    "label": "Uber",
+    "lca_filings": 829,
+    "ratio": 63.57
+   },
+   {
+    "label": "Salesforce",
+    "lca_filings": 1798,
+    "ratio": 44.99
+   },
+   {
+    "label": "Amazon",
+    "lca_filings": 22509,
+    "ratio": 0.0
+   },
+   {
+    "label": "Cognizant",
+    "lca_filings": 11085,
+    "ratio": 0.0
+   },
+   {
+    "label": "Google",
+    "lca_filings": 8657,
+    "ratio": 0.0
+   }
+  ]
+ },
+ "countries": {
+  "top": [
+   {
+    "country": "India",
+    "share": 0.5222
+   },
+   {
+    "country": "China",
+    "share": 0.1168
+   },
+   {
+    "country": "Mexico",
+    "share": 0.0377
+   },
+   {
+    "country": "Vietnam",
+    "share": 0.0321
+   },
+   {
+    "country": "Philippines",
+    "share": 0.0264
+   },
+   {
+    "country": "Canada",
+    "share": 0.0256
+   },
+   {
+    "country": "Brazil",
+    "share": 0.0248
+   },
+   {
+    "country": "South Korea",
+    "share": 0.021
+   }
+  ],
+  "modularity": {
+   "unweighted": {
+    "real": 0.1033,
+    "real_sd": 0.0048,
+    "null": 0.0613,
+    "null_sd": 0.0044,
+    "z": 9.46,
+    "null_runs_at_or_above_real": 0
+   },
+   "weighted": {
+    "real": 0.2618,
+    "real_sd": 0.0004,
+    "null": 0.403,
+    "null_sd": 0.0189,
+    "z": -7.49,
+    "null_runs_at_or_above_real": 100
+   }
+  }
+ },
+ "density": {
+  "national_rate": 4.493,
+  "rows": [
+   {
+    "metro": "41940",
+    "name": "San Jose, CA",
+    "rate": 42.902
+   },
+   {
+    "metro": "45940",
+    "name": "Trenton, NJ",
+    "rate": 17.161
+   },
+   {
+    "metro": "42660",
+    "name": "Seattle, WA",
+    "rate": 16.817
+   },
+   {
+    "metro": "12420",
+    "name": "Austin, TX",
+    "rate": 15.482
+   },
+   {
+    "metro": "41860",
+    "name": "San Francisco, CA",
+    "rate": 15.017
+   },
+   {
+    "metro": "19100",
+    "name": "Dallas, TX",
+    "rate": 13.508
+   },
+   {
+    "metro": "22220",
+    "name": "Fayetteville, AR",
+    "rate": 12.984
+   },
+   {
+    "metro": "39580",
+    "name": "Raleigh, NC",
+    "rate": 12.548
+   },
+   {
+    "metro": "20500",
+    "name": "Durham, NC",
+    "rate": 10.284
+   },
+   {
+    "metro": "44700",
+    "name": "Stockton, CA",
+    "rate": 8.158
+   }
+  ],
+  "new_york": {
+   "metro": "35620",
+   "name": "New York, NY",
+   "rate": 6.946
+  }
+ },
+ "strength": {
+  "rows": [
+   {
+    "label": "Ultimate Therapy",
+    "strength": 133,
+    "health_care": true
+   },
+   {
+    "label": "Sigma Rehab",
+    "strength": 95,
+    "health_care": true
+   },
+   {
+    "label": "Post Rehab Services",
+    "strength": 61,
+    "health_care": true
+   },
+   {
+    "label": "Grady Memorial Hospital",
+    "strength": 58,
+    "health_care": true
+   },
+   {
+    "label": "Northwestern Mutual Life",
+    "strength": 48,
+    "health_care": false
+   }
+  ]
+ },
+ "lottery": {
+  "draws": [
+   "March 2022",
+   "March 2023"
+  ],
+  "series": [
+   {
+    "label": "All employers",
+    "values": [
+     5.22,
+     8.51
+    ]
+   },
+   {
+    "label": "Placing firms",
+    "values": [
+     6.28,
+     9.12
+    ]
+   },
+   {
+    "label": "Direct employers",
+    "values": [
+     4.28,
+     5.14
+    ]
+   }
+  ]
+ }
+}
