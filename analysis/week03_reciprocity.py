@@ -36,6 +36,7 @@ import pathlib
 import statistics
 
 import networkx as nx
+from scipy import stats
 
 from week03_country_networks import describe, refugee_network, stock_network
 from week04_staffing import tracked
@@ -79,11 +80,21 @@ def reciprocity_null(graph, label, draws=DRAWS, seed=SEED):
         assert dict(shuffled.in_degree()) == in_degree, "a rewire changed a country's in-degree"
         assert dict(shuffled.out_degree()) == out_degree, "a rewire changed a country's out-degree"
         values.append(nx.reciprocity(shuffled))
+    return values, swap_shortfalls
+
+
+def degree_shape(graph):
+    """How in- and out-degree go together, which sets the degree-preserving
+    null's level: where the countries that receive from many origins also
+    send to many, random rewiring alone makes two-way pairs common."""
+    nodes = sorted(graph)
+    k_in = [graph.in_degree(n) for n in nodes]
+    k_out = [graph.out_degree(n) for n in nodes]
+    hosts = sorted(nodes, key=lambda n: (-graph.in_degree(n), n))[:5]
     return {
-        "mean": round(statistics.mean(values), 4),
-        "sd": round(statistics.pstdev(values), 4),
-        "n": len(values),
-        "swap_shortfalls": swap_shortfalls,
+        "in_out_spearman": round(float(stats.spearmanr(k_in, k_out).statistic), 3),
+        "in_out_pearson": round(float(stats.pearsonr(k_in, k_out).statistic), 3),
+        "top_hosts": [{"iso3": n, "in": graph.in_degree(n), "out": graph.out_degree(n)} for n in hosts],
     }
 
 
@@ -94,18 +105,23 @@ def network_result(name, graph, real, draws, seed):
     rebuilt_density = round(nx.density(graph), 4)
     assert rebuilt_reciprocity == real["reciprocity"], (
         f"{name}: rebuilt graph's reciprocity {rebuilt_reciprocity} does not match "
-        f"week03_country_facts.json's {real['reciprocity']} — not the same network"
+        f"week03_country_facts.json's {real['reciprocity']}: not the same network"
     )
     assert rebuilt_density == real["density"], (
         f"{name}: rebuilt graph's density {rebuilt_density} does not match "
-        f"week03_country_facts.json's {real['density']} — not the same network"
+        f"week03_country_facts.json's {real['density']}: not the same network"
     )
-    null = reciprocity_null(graph, f"  {name} reciprocity null", draws, seed)
+    values, shortfalls = reciprocity_null(graph, f"  {name} reciprocity null", draws, seed)
+    mean, sd = statistics.mean(values), statistics.pstdev(values)
     return {
         "reciprocity": real["reciprocity"],
         "density": real["density"],
         "vs_density": round(real["reciprocity"] / real["density"], 3),
-        "null": {**null, "z": zscore(real["reciprocity"], null["mean"], null["sd"])},
+        # z from the unrounded values: rounding the sd to four places first
+        # moved the refugee z from 10.9 to 11.0.
+        "null": {"mean": round(mean, 4), "sd": round(sd, 4), "n": len(values),
+                 "swap_shortfalls": shortfalls, "z": zscore(nx.reciprocity(graph), mean, sd)},
+        "degrees": degree_shape(graph),
     }
 
 
@@ -141,7 +157,7 @@ def main():
         r = report[name]
         null = r["null"]
         print(f"  {name:>9}: reciprocity {r['reciprocity']} vs density {r['density']} "
-              f"({r['vs_density']}x) — degree-preserving null mean {null['mean']} "
+              f"({r['vs_density']}x), degree-preserving null mean {null['mean']} "
               f"sd {null['sd']} z {null['z']}")
 
 
