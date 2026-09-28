@@ -58,3 +58,12 @@ test("every reported similarity stays inside cosine similarity's own range", () 
     for (const ex of g.examples) assert.ok(ex.similarity >= -1 && ex.similarity <= 1);
   }
 });
+
+test('"Both sit close to the random-pair baseline": within half a standard deviation of it', () => {
+  // The skills card's notice (week04-skills.js) says both kinds of pair sit close to the baseline.
+  const a = c.all_pairs;
+  for (const key of ["same_cluster_other_pairs", "different_cluster_pairs"]) {
+    const gap = Math.abs(c[key].mean - a.mean);
+    assert.ok(gap < 0.5 * a.sd, `${key} is ${gap.toFixed(3)} from the baseline, more than half its sd (${a.sd})`);
+  }
+});
