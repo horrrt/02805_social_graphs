@@ -1111,23 +1111,29 @@ export async function startPlace(echarts) {
     });
   });
 
+  // #place-alpha is a segmented control; its buttons are the α stops.
   const alpha = $("place-alpha");
-  const alphaLabel = $("place-alpha-now");
   if (alpha) {
-    const alphas = data.backbone.alphas;
-    alpha.min = 0;
-    alpha.max = alphas.length - 1;
-    alpha.step = 1;
-    alpha.value = String(alphas.indexOf(data.backbone.default_alpha));
-    const sync = () => {
-      state.alpha = String(alphas[Number(alpha.value)]);
-      if (alphaLabel) alphaLabel.textContent = state.alpha;
+    const pick = (a) => {
+      state.alpha = String(a);
+      alpha.querySelectorAll("button").forEach((b) => {
+        b.setAttribute("aria-pressed", String(b.dataset.alpha === state.alpha));
+      });
       renderGcLine();
       renderBackbone();
       renderAlphaTable();
     };
-    alpha.addEventListener("input", sync);
-    sync();
+    alpha.replaceChildren(
+      ...data.backbone.alphas.map((a) => {
+        const btn = document.createElement("button");
+        btn.type = "button";
+        btn.textContent = String(a);
+        btn.dataset.alpha = String(a);
+        btn.addEventListener("click", () => pick(a));
+        return btn;
+      }),
+    );
+    pick(data.backbone.alphas.find((a) => Number(a) === Number(data.backbone.default_alpha)) ?? data.backbone.default_alpha);
   }
 
   const employer = $("place-employer");

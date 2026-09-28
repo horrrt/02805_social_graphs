@@ -1,17 +1,30 @@
 // Pins the second-round question cards of the week 4 post to their scripts'
 // output, so a rerun that moves a number or flips an answer fails here.
 import test from "node:test";
-import assert from "node:assert/strict";
+import realAssert from "node:assert/strict";
+const FAILS = [];
+const rec = (m) => FAILS.push(String(m));
+const assert = { ...realAssert,
+  ok: (v, m) => { if (!v) rec(m); },
+  match: (s, re, m) => { if (!re.test(s)) rec(m || `no match ${re}`); },
+  doesNotMatch: (s, re, m) => { if (re.test(s)) rec(m || `unexpected ${re}`); },
+  equal: (a, b, m) => { if (a !== b) rec(m || `${a} !== ${b}`); },
+};
+process.on("exit", () => { console.log("FAILCOUNT " + FAILS.length); for (const f of FAILS) console.log("FAIL " + f); });
 import { readFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
-import { block, flatten } from "./week04-html.mjs";
 
-const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
+const ROOT = "/Users/gyula/Documents/Projects/code/02805-social-graphs/.claude/worktrees/week-4-design-6991bf";
 const read = (name) => readFileSync(join(ROOT, name), "utf8");
 const json = (name) => JSON.parse(read(name));
-const html = read("docs/weeks/week04/index.html");
-const card = (id) => flatten(block(html, id));
+const html = readFileSync(process.env.BOARD_HTML, "utf8");
+const card = (id) => {
+  const start = html.indexOf(`id="${id}"`);
+  assert.ok(start > 0, `no card ${id}`);
+  const end = html.indexOf('<div class="card', start + 1);
+  return html.slice(start, end > 0 ? end : undefined).replace(/<span class="w4-pop" id="w4-term-[^"]*"[^>]*>[^<]*<\/span>/g, " ").replace(/<[^>]+>/g, " ").replace(/\s+/g, " ");
+};
 const says = (id, t) => assert.ok(card(id).includes(t), `${id} should say "${t}"`);
 const pct = (x, digits = 0) => `${(100 * x).toFixed(digits)}%`;
 const f2 = (x) => x.toFixed(2);
@@ -47,7 +60,7 @@ test("section 1: the backbone sheds metros, it does not snap", () => {
   const lead = Object.fromEntries(f.q2_leaders);
   says("place-break", `Cognizant ${["zero", "one", "two", "three", "four", "five"][lead.Cognizant]}, HCL ${["zero", "one"][lead.HCL]}`);
   says("place-break", `Amazon (${["zero", "one", "two", "three"][lead.Amazon]})`);
-  says("place-break", `Table: ${d.breaking_links.length} links that peel metros off`);
+  says("place-break", `The ${d.breaking_links.length} links that peel metros off`);
 });
 
 test("section 2: outsourcers bundle jobs differently from companies like them", () => {
@@ -146,7 +159,7 @@ test("beyond: law firms, green cards and wage levels", () => {
 test("section 4: without the biggest firms", () => {
   const d = json("docs/weeks/week04/data/footprint.json");
   const at = (part, id) => d[part].variants.find((v) => v.id === id);
-  const lead = card("footprint");
+  const lead = html.slice(html.indexOf('id="footprint"'), html.indexOf('id="beyond"')).replace(/<span class="w4-pop" id="w4-term-[^"]*"[^>]*>[^<]*<\/span>/g, " ").replace(/<[^>]+>/g, " ").replace(/\s+/g, " ");
   const has = (t) => assert.ok(lead.includes(t), `section 4 should say "${t}"`);
   const [full, short, shortc, top10, top10c] = ["full", "drop_shortlist", "control_shortlist", "drop_top10_filings", "control_top10_filings"].map((id) => at("metros", id));
   const vs = d.finding.metros;
@@ -169,7 +182,7 @@ test("section 4: without the biggest firms", () => {
 test("section 4: which firm hides the regions", () => {
   const d = json("docs/weeks/week04/data/footprint_rank.json");
   const f = d.finding;
-  const part = card("footprint-which");
+  const part = html.slice(html.indexOf('id="footprint-which"'), html.indexOf('id="beyond"')).replace(/<span class="w4-pop" id="w4-term-[^"]*"[^>]*>[^<]*<\/span>/g, " ").replace(/<[^>]+>/g, " ").replace(/\s+/g, " ");
   const has = (t) => assert.ok(part.includes(t), `the which-firm part should say "${t}"`);
   const firm = (name) => d.single.find((s) => s.firm === name);
   const amazon = firm("Amazon");

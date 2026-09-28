@@ -189,11 +189,21 @@ large country-employer pairs only.
 
 ## The deep dive
 
-Everything past the closing sits in one section, `#cut` ("Deep dive"): the first round of questions
-for sections 1 to 3 (section 3's in full, in `#who-first-round`), then "More networks" (`#cut-more`:
-green cards, countries, jobs per metro, strength against degree, the lottery a year apart, USCIS
-denials by year), then "Data and methods" (`#evidence`, the target of every "Data and methods" link).
-`tests/week04-prose.test.mjs` pins each box's numbers and fails if a box leaves the deep dive.
+Everything past the closing sits in one section, `#cut` ("Deep dive"). It opens on a catalogue
+(`#cut-catalogue`) with a card for each topic and one for the data, each listing its boxes as links. Five topics follow:
+"Where the hiring is" (`#topic-where`), "Jobs and skills" (`#topic-jobs`), "Outsourcing firms and their
+clients" (`#topic-outsourcing`), "Paperwork, the lottery and green cards" (`#topic-paperwork`) and "Five
+years" (`#topic-years`). Each has a contents list, shows one box at a time and numbers its boxes in
+contents order. "Data and methods" (`#evidence`) comes last, with no contents list, and stays the target
+of every "Data and methods" link. Only one of the six is open at a time. Section 3's first-round
+questions now sit in three boxes: `#who-q2` and `#who-q3` under Outsourcing, `#who-q4` under Five years.
+
+`docs/assets/js/week04-cut.js` opens the right topic and box for any in-page link. Its `ALIAS` table
+keeps the old anchors working: `#cut-place`, `#cut-jobs` and `#cut-who` open their topics,
+`#who-first-round` opens `#who-q2`, `#cut-more` lands on the catalogue and `#place-inspector` on
+`#place-start`. `tests/week04-prose.test.mjs` pins each box's numbers and fails if a box leaves the deep
+dive; `tests/week04-structure.test.mjs` checks the rail, the drawers, the contents links, the box
+numbers and the aliases.
 
 ## Timeline
 

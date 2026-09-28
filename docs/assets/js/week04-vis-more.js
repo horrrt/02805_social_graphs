@@ -1,5 +1,5 @@
-// Week 4 deep dive, "More networks" (#cut-more): a figure for each of the
-// five text-only boxes. Built from docs/weeks/week04/data/more.json
+// Week 4 deep dive, the deeper-* boxes spread over the topics: a figure for
+// each of the five text-only ones. Built from docs/weeks/week04/data/more.json
 // (analysis/week04_more_page.py), which copies its numbers out of
 // week04_perm.json, week04_countries.json, week04_oews.json, week04_ties.json
 // and week04_lottery.json. Nothing here is computed in the browser. Plain

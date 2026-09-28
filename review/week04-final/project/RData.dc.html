@@ -1,0 +1,182 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>Deep dive · data and methods</title>
+<script src="./support.js"></script>
+<link rel="stylesheet" href="/_blob/083d154e9dc323e92523c409d0034822">
+<link rel="stylesheet" href="/_blob/668486f5a3998cc03081dad4d6a53e30">
+<link rel="stylesheet" href="/_blob/084ce7df5637b99030ea35613530acf2">
+<link rel="stylesheet" href="/_blob/e84e8b268623a65fa6a20dcee3ec4adf">
+<link rel="stylesheet" href="/_blob/35af9356d607ea8092bc878cace00255">
+<link rel="stylesheet" href="/_blob/70ffa1ecc89c42fb63ac04cfc271ee6b">
+<link rel="stylesheet" href="/_blob/3e4fe45fa83b8895f69f8d519b7b0fe2">
+<link rel="stylesheet" href="/_blob/ffcc56532445103bef94c333132a4fb7">
+<link rel="stylesheet" href="/_blob/4004501ab78099c34bb198c8287d7d41">
+<link rel="stylesheet" href="/_blob/ab074990511da3308f5deb38e148e8c1">
+<link rel="stylesheet" href="/_blob/961bb1102d81f8f791744cf5c49d5ccf">
+<link rel="stylesheet" href="/_blob/ea7fdb7da398599db40546cc6b3f4606">
+</head>
+<body>
+<x-dc>
+<helmet>
+<style>
+@font-face{font-family:"Condensed";src:url("/_blob/9ad036b9f76606ea91d82e15ebec8da3") format("truetype");font-weight:800;font-style:normal}
+body{margin:0;background:#eef3f9}
+.rx{position:relative}
+/* rec 6: the rail, every name on hover */
+.rx .rx-rail{position:absolute;left:64px;top:96px;width:44px;z-index:30}
+.rx .rx-rail ol{list-style:none;margin:0;padding:6px 0;display:flex;flex-direction:column;align-items:center;gap:16px;background:linear-gradient(#dce5f0,#dce5f0) center/2px 100% no-repeat}
+.rx .rx-rail ol.rx-rail-sub{gap:16px;padding:14px 0 4px;background:none}
+.rx .rx-rail li{display:flex;flex-direction:column;align-items:center;position:relative}
+.rx .rx-sq,.rx .rx-dot{position:relative;display:block;box-sizing:border-box;border-radius:999px;font-size:0;color:transparent;cursor:pointer}
+.rx .rx-sq{width:12px;height:12px;background:#fff;border:2px solid #9fb4cf}
+.rx .rx-sq:hover{border-color:#14618f}
+.rx .rx-sq.is-on{width:18px;height:18px;background:#14618f;border-color:#14618f;box-shadow:0 0 0 4px rgba(20,97,143,.18)}
+.rx .rx-dot{width:8px;height:8px;background:#c9d6e6}
+.rx .rx-dot.is-on{background:#0f2340;box-shadow:0 0 0 3px rgba(15,35,64,.14)}
+.rx .rx-lab{display:none;position:absolute;left:calc(50% + 20px);top:50%;transform:translateY(-50%);white-space:nowrap;border-radius:8px;padding:3px 9px;font-size:12px;line-height:1.4;font-weight:600;background:rgba(255,255,255,.97);color:#0f2340;box-shadow:0 1px 3px rgba(15,35,64,.16)}
+.rx .rx-rail:hover .rx-lab{display:block}
+.rx .rx-rail .rx-sq:hover>.rx-lab,.rx .rx-rail .rx-dot:hover>.rx-lab{background:#0f2340;color:#fff}
+/* rec 1: drawers */
+.rx .rx-drawers{display:flex;flex-direction:column;gap:8px;margin-top:14px}
+.rx details.rx-drawer{border:1px solid #dce5f0;border-radius:10px;background:#f7fafd;margin-top:10px}
+.rx .rx-drawers details.rx-drawer{margin-top:0}
+.rx details.rx-drawer>summary{cursor:pointer;list-style:none;padding:9px 14px;font-size:13px;font-weight:700;color:#14618f;display:flex;align-items:center;gap:8px}
+.rx details.rx-drawer>summary::-webkit-details-marker{display:none}
+.rx details.rx-drawer>summary::before{content:"▸";font-size:11px;transition:transform .15s}
+.rx details.rx-drawer[open]>summary::before{transform:rotate(90deg)}
+.rx .rx-drawer-body{padding:0 16px 14px;font-size:13.5px;line-height:1.62;color:#0f2340;max-width:78ch}
+.rx .rx-drawer-body p{margin:0 0 8px}
+/* rec 4: one segmented control */
+.rx .axis-modes,.rx .rx-seg,.rx .staffing-years{display:inline-flex!important;gap:2px!important;padding:3px!important;border-radius:999px!important;background:#eaf0f7!important;border:none!important;box-shadow:none!important;flex-wrap:wrap}
+.rx .axis-modes button,.rx .rx-seg button,.rx .staffing-years button{border:none!important;border-radius:999px!important;padding:6px 14px!important;font:inherit!important;font-size:12.5px!important;font-weight:600!important;color:#46618a!important;background:transparent!important;box-shadow:none!important;cursor:pointer}
+.rx .axis-modes button[aria-pressed="true"],.rx .rx-seg button[aria-pressed="true"],.rx .staffing-years button[aria-pressed="true"]{background:#fff!important;color:#0f2340!important;font-weight:700!important;box-shadow:0 1px 2px rgba(15,35,64,.12)!important}
+.rx .axis-modes-label,.rx .rx-seg-label{text-transform:none!important;letter-spacing:0!important;font-size:12.5px!important;font-weight:700!important;color:#46618a!important}
+.rx .rx-seg-row{display:flex;align-items:center;gap:12px;margin:10px 0}
+/* rec 7 placeholder */
+.rx .rx-todo{border:1px dashed #b9cadf;background:#fff;color:#7a8fac}
+/* topic boards */
+.rx .rx-topic-head{display:flex;align-items:baseline;gap:14px;flex-wrap:wrap}
+.rx .rx-tabs{display:flex;flex-direction:column;gap:2px;padding:12px;border-right:1px solid #eaf0f7;background:#f7fafd;border-radius:14px 0 0 14px}
+.rx .rx-tab{display:flex;gap:10px;align-items:baseline;width:100%;padding:9px 10px;border:none;border-radius:8px;font:inherit;font-size:13px;line-height:1.4;font-weight:600;text-align:left;color:#0f2340;cursor:pointer;background:transparent}
+.rx .rx-tab:hover{background:#fff}
+
+/* rec 3: section 1 start card */
+.rx .rx-kicker{margin:6px 0 0;font-size:13px;color:#46618a}
+.rx .rx-start-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:36px;align-items:start;margin-top:8px}
+.rx .rx-start-grid header.w4-q{margin-bottom:8px}
+.rx .rx-groups{display:flex;flex-direction:column;margin-top:10px}
+.rx .rx-group{padding:10px 0;border-top:1px solid #eaf0f7}
+.rx .rx-group-head{display:flex;align-items:center;gap:8px;font-size:13.5px}
+.rx .rx-group-head i{width:12px;height:12px;border-radius:50%;display:inline-block}
+.rx .rx-group-head span{font-size:12.5px;color:#46618a}
+.rx .rx-group p{margin:4px 0 0 20px;font-size:12.5px;line-height:1.55;color:#46618a}
+.rx .rx-start-notices{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px;margin-top:14px}
+.rx .rx-drawer-body.rx-wide{max-width:none}
+/* topic boards */
+.rx .rx-topic-bar{display:flex;align-items:center;gap:16px;margin:8px 0 16px}
+.rx .rx-back{font-size:13px;font-weight:700;text-decoration:none;color:#14618f;padding:6px 12px;border:1px solid #dce5f0;border-radius:999px;background:#fff}
+.rx .rx-topic-mark{flex:none;width:40px;height:40px;border-radius:10px;background:#14618f;color:#fff;display:inline-flex;align-items:center;justify-content:center;font-size:17px;font-weight:800}
+.rx .rx-topic-title{margin:0;font-size:24px;font-weight:800}
+.rx .rx-topic-holds{margin:2px 0 0;font-size:13.5px;color:#46618a}
+.rx .rx-topic-count{margin-left:auto;font-size:12.5px;color:#46618a}
+.rx .rx-tab-row{display:flex;flex-wrap:wrap;gap:6px;padding:6px;border-radius:14px;background:#eaf0f7;margin-bottom:18px}
+.rx .rx-tab-pill{border:none;border-radius:999px;padding:7px 14px;font:inherit;font-size:12.5px;font-weight:600;cursor:pointer;text-align:left;line-height:1.35}
+.rx .rx-tab-pill b{color:#14618f;margin-right:4px}
+.rx .rx-panel > .card{margin-top:0}
+/* deep-dive catalogue */
+.rx .rx-cut-intro{max-width:68ch}
+.rx .rx-tgrid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;align-items:start;margin-top:18px}
+.rx .rx-tcard{background:#fff;border:1px solid #dce5f0;border-radius:14px;padding:16px;box-shadow:0 1px 2px rgba(15,35,64,.06),0 8px 24px rgba(15,35,64,.05)}
+.rx .rx-tcard-data{background:#f7fafd;box-shadow:none}
+.rx .rx-tcard-head{display:flex;gap:12px;align-items:flex-start;text-decoration:none;color:#0f2340;padding-bottom:10px}
+.rx .rx-tcard-head span{display:flex;flex-direction:column;gap:3px}
+.rx .rx-tcard-head b{font-size:16px}
+.rx .rx-tcard-head em{font-style:normal;font-size:12.5px;line-height:1.45;color:#46618a}
+.rx .rx-tcard ul{list-style:none;margin:0;padding:0}
+.rx .rx-tcard li a{display:flex;gap:10px;align-items:baseline;padding:8px 4px;border-top:1px solid #eaf0f7;text-decoration:none;color:#0f2340;font-size:13px;font-weight:600;line-height:1.4}
+.rx .rx-tcard li a b{flex:none;min-width:22px;color:#14618f;font-size:11.5px}
+.rx .rx-tcard li a span{flex-grow:1}
+.rx .rx-tcard li a i{font-style:normal;color:#14618f;font-weight:700}
+.rx .rx-tcard li a:hover{background:#d9ecf9}
+.rx .rx-moved{margin:16px 0 0;font-size:12.5px;line-height:1.6;color:#46618a}
+.rx .rx-tile-finding{display:block;margin-top:6px;color:#0f2340}
+/* compact drawers: closed ones sit in one row, an open one takes the full width */
+.rx .rx-drawers{flex-direction:row!important;flex-wrap:wrap;align-items:center;gap:8px!important;margin-top:12px}
+.rx .rx-drawers>details.rx-drawer{flex:0 0 auto;margin:0}
+.rx .rx-drawers>details.rx-drawer[open]{flex:1 1 100%;order:10}
+.rx details.rx-drawer:not([open]){width:fit-content}
+.rx details.rx-drawer>summary{padding:6px 12px}
+.rx .rx-drawers>.w4-tip{margin:0}
+.rx .rx-foot{margin-top:14px}
+.rx .rx-drawer-body>p+p{margin-top:8px}
+</style>
+</helmet>
+<div class="corridor rx" style="width: 1440px; height: 856px; overflow: hidden; background: #eef3f9"><div class="topbar">
+<div class="shell">
+<a class="brand" href="../../">LOG–LOG <b>LEGENDS</b></a>
+<a class="site-link" href="../../#weeks">All posts</a>
+<nav aria-label="Sections of this post" class="topnav">
+<a class="here" href="#opening">Opening</a>
+<a class="" href="#place">Where</a>
+<a href="#jobs">Jobs</a>
+<a href="#who">Staffing</a>
+<a href="#footprint">Giants out</a>
+<a href="#beyond">Beyond</a>
+<a href="#cut">Deep dive</a>
+</nav>
+</div>
+</div><nav class="rx-rail" aria-label="Contents of this post"><ol><li><span class="rx-sq"><span class="rx-lab">0 Opening</span></span></li><li><span class="rx-sq"><span class="rx-lab">1 Where the hiring is</span></span></li><li><span class="rx-sq"><span class="rx-lab">2 Which jobs go together</span></span></li><li><span class="rx-sq"><span class="rx-lab">3 Who staffs whom</span></span></li><li><span class="rx-sq"><span class="rx-lab">4 Without the biggest firms</span></span></li><li><span class="rx-sq"><span class="rx-lab">5 Beyond the three networks</span></span></li><li><span class="rx-sq"><span class="rx-lab">Closing</span></span></li><li><span class="rx-sq is-on"><span class="rx-lab">Deep dive</span></span><ol class="rx-rail-sub"><li><span class="rx-dot"><span class="rx-lab">Where the hiring is</span></span></li><li><span class="rx-dot"><span class="rx-lab">Jobs and skills</span></span></li><li><span class="rx-dot"><span class="rx-lab">Outsourcing firms and their clients</span></span></li><li><span class="rx-dot"><span class="rx-lab">Paperwork, the lottery and green cards</span></span></li><li><span class="rx-dot"><span class="rx-lab">Five years</span></span></li><li><span class="rx-dot is-on"><span class="rx-lab">Data and methods</span></span></li></ol></li></ol></nav><main id="main"><div class="shell"><section class="step" id="cut"><details class="qa cut" id="evidence" open="open">
+<summary>
+<span class="qa-cue">Data and methods</span>
+</summary>
+<div class="qa-body">
+<p class="sub">The numbers on this page come from these public sources.</p>
+<dl class="w4-sources">
+<dt><a href="https://www.dol.gov/agencies/eta/foreign-labor/performance">US Department of Labor, Office of Foreign Labor Certification ↗</a></dt>
+<dd><span class="w4-term"><button aria-describedby="w4-term-x-lca" type="button">LCA</button><span class="w4-pop" id="w4-term-x-lca" role="tooltip">Labor Condition Application: the form an employer files with the Department of Labor before it can sponsor an H-1B worker.</span></span> disclosures and worksites file, public domain</dd>
+<dt><a href="https://www.uscis.gov/tools/reports-and-studies/h-1b-employer-data-hub">USCIS H-1B Employer Data Hub ↗</a></dt>
+<dd>October 2021 to June 2026</dd>
+<dt><a href="https://github.com/BloombergGraphics/2024-h1b-immigration-data">H-1B lottery registrations ↗</a></dt>
+<dd>the March 2021 to March 2023 draws, USCIS data obtained by Bloomberg News under <span class="w4-term"><button aria-describedby="w4-term-x-foia" type="button">FOIA</button><span class="w4-pop" id="w4-term-x-foia" role="tooltip">The Freedom of Information Act, which lets anyone request records from US federal agencies.</span></span></dd>
+<dt><a href="https://www.census.gov/geographies/reference-files/time-series/demo/metro-micro/delineation-files.html">Census CBSA delineations ↗</a></dt>
+<dd>counties to metro areas</dd>
+<dt><a href="https://www.bls.gov/oes/tables.htm">Bureau of Labor Statistics OEWS ↗</a></dt>
+<dd>jobs per metro and occupation, May 2025</dd>
+<dt><a href="https://www.sec.gov/search-filings/edgar-application-programming-interfaces">SEC EDGAR ↗</a></dt>
+<dd>industry codes of listed clients</dd>
+<dt><a href="https://www.wikidata.org/">Wikidata ↗</a></dt>
+<dd>industries of clients the SEC does not list, CC0</dd>
+<dt><a href="https://www.onetcenter.org/database.html">O*NET database ↗</a></dt>
+<dd>skill, knowledge and work-activity ratings per occupation, US Department of Labor, CC BY 4.0</dd>
+</dl>
+</div>
+</details></section></div></main><footer class="foot">
+<div class="shell">
+<span>
+            Sources: US DOL OFLC LCA / worksites (public domain) · Census CBSA
+            delineations · Week 4 methods: communities, weights, backbones
+          </span>
+<span>
+            This page includes information from the O*NET® 31.0 Database and, for two
+            occupations, the O*NET® 25.0 Database by the U.S. Department of Labor,
+            Employment and Training Administration (USDOL/ETA). Used under the
+            <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0 license</a>.
+            Log–Log Legends has modified all or some of this information. USDOL/ETA has
+            not approved, endorsed, or tested these modifications.
+          </span>
+<span>
+            Who hires America's foreign workers? ·
+            <a href="../../">Log–Log Legends</a> · DTU 02805
+          </span>
+</div>
+</footer></div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview": {"width": 1440, "height": 856}}'>
+class Component extends DCLogic {
+renderVals() { return {}; }
+}
+</script>
+</body>
+</html>

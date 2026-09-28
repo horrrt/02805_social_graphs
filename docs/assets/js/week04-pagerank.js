@@ -6,6 +6,7 @@
 // computed in the browser; every number comes from that JSON.
 
 import { node, token } from "./week04-strip.js";
+import { drawer, drawerRow } from "./week04-ui.js";
 
 const DATA = new URL("../../weeks/week04/data/pagerank.json", import.meta.url);
 const DEFAULT_D = "0.85";
@@ -23,26 +24,6 @@ async function load() {
 function frag(text) {
   const span = document.createElement("span");
   span.textContent = text;
-  return span;
-}
-
-function reveal(id, label, bodyEl) {
-  const span = document.createElement("span");
-  span.className = "w4-tip";
-  const btn = document.createElement("button");
-  btn.type = "button";
-  btn.setAttribute("aria-describedby", id);
-  btn.innerHTML =
-    '<svg aria-hidden="true" height="14" viewBox="0 0 24 24" width="14"><circle cx="12" cy="12" fill="none" r="9" stroke="currentColor" stroke-width="2"></circle><path d="M12 11v6M12 7.5v.5" fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="2"></path></svg>' +
-    label;
-  const pop = document.createElement("span");
-  pop.className = "w4-pop";
-  pop.id = id;
-  pop.setAttribute("role", "tooltip");
-  const b = document.createElement("b");
-  b.textContent = label;
-  pop.append(b, bodyEl);
-  span.append(btn, pop);
   return span;
 }
 
@@ -103,7 +84,7 @@ function buildDampingCard(data) {
   const header = document.createElement("header");
   header.className = "w4-q";
   header.innerHTML = `
-    <span class="w4-num">P1</span>
+    <span class="w4-num">6</span>
     <div>
       <h2>Change the damping factor: does the ranking move?</h2>
       <p class="w4-answer">Yes. Raising the damping factor from ${data.damping[0]} to ${data.damping.at(-1)} reshuffles
@@ -158,9 +139,7 @@ function buildDampingCard(data) {
   );
   left.append(notice);
 
-  const revealsRow = document.createElement("div");
-  revealsRow.className = "w4-reveals";
-  const howBody = document.createElement("span");
+  const howBody = document.createElement("p");
   howBody.append(
     frag(
       `The network is section 2's companies x occupations projection, kept to its disparity-filter backbone at ` +
@@ -172,16 +151,14 @@ function buildDampingCard(data) {
         `clients either, whatever value it takes.`,
     ),
   );
-  const moreBody = document.createElement("span");
+  const moreBody = document.createElement("p");
   const movers = data.movers.slice(0, 4);
   moreBody.textContent = movers.length
     ? `Biggest movers between d = 0.5 and d = 0.99: ${movers
         .map((m) => `${m.title} (rank ${m.rank_d0_5} → ${m.rank_d0_99})`)
         .join("; ")}.`
     : "";
-  revealsRow.append(reveal("w4-pop-pagerank-how", "How we tested it", howBody));
-  revealsRow.append(reveal("w4-pop-pagerank-more", "More numbers", moreBody));
-  left.append(revealsRow);
+  left.append(drawerRow(drawer("Method", howBody), drawer("More numbers", moreBody)));
 
   const plot = document.createElement("div");
   plot.className = "plot";
@@ -245,7 +222,7 @@ function buildIterationCard(data) {
   const header = document.createElement("header");
   header.className = "w4-q";
   header.innerHTML = `
-    <span class="w4-num">P2</span>
+    <span class="w4-num">7</span>
     <div>
       <h2>Stepped one round at a time, how fast does the ranking settle?</h2>
       <p class="w4-answer">Unevenly. ${claims.leaderTitle} leads from step ${claims.leaderStep} on and never gives
@@ -283,9 +260,7 @@ function buildIterationCard(data) {
   note.textContent = `Checked against nx.pagerank: the largest disagreement at the final step is ${it.max_error_vs_nx_pagerank}.`;
   left.append(note);
 
-  const revealsRow = document.createElement("div");
-  revealsRow.className = "w4-reveals";
-  const howBody = document.createElement("span");
+  const howBody = document.createElement("p");
   howBody.append(
     frag(
       "Each step redistributes (1 - d)/n to every occupation, plus d times the score its ties send it, split by " +
@@ -293,7 +268,7 @@ function buildIterationCard(data) {
         "network has at least one tie, unlike a firm-to-client network where one whole side has none.",
     ),
   );
-  const moreBody = document.createElement("span");
+  const moreBody = document.createElement("p");
   const lastStep = it.steps.at(-1).step;
   moreBody.append(
     frag(
@@ -301,15 +276,13 @@ function buildIterationCard(data) {
         `${it.max_error_vs_nx_pagerank}: past that point, one more round would not move the bars a visible amount.`,
     ),
   );
-  revealsRow.append(reveal("w4-pop-pagerank-iter-how", "How we tested it", howBody));
-  revealsRow.append(reveal("w4-pop-pagerank-iter-more", "More numbers", moreBody));
-  left.append(revealsRow);
+  left.append(drawerRow(drawer("Method", howBody), drawer("More numbers", moreBody)));
 
   const plot = document.createElement("div");
   plot.className = "plot";
   plot.innerHTML = `
     <h3>Top 10 occupations after this many rounds</h3>
-    <p class="axis-note">Same bar chart as P1, redrawn at each power-iteration step for the top 10 at d = ${it.alpha}.</p>`;
+    <p class="axis-note">Same bar chart as box 6, redrawn at each power-iteration step for the top 10 at d = ${it.alpha}.</p>`;
   const host = document.createElement("div");
   host.className = "w4-figure-body";
   plot.append(host);

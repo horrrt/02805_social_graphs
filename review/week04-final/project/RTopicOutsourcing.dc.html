@@ -1,0 +1,466 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>Deep dive · Outsourcing firms and their clients</title>
+<script src="./support.js"></script>
+<link rel="stylesheet" href="/_blob/083d154e9dc323e92523c409d0034822">
+<link rel="stylesheet" href="/_blob/668486f5a3998cc03081dad4d6a53e30">
+<link rel="stylesheet" href="/_blob/084ce7df5637b99030ea35613530acf2">
+<link rel="stylesheet" href="/_blob/e84e8b268623a65fa6a20dcee3ec4adf">
+<link rel="stylesheet" href="/_blob/35af9356d607ea8092bc878cace00255">
+<link rel="stylesheet" href="/_blob/70ffa1ecc89c42fb63ac04cfc271ee6b">
+<link rel="stylesheet" href="/_blob/3e4fe45fa83b8895f69f8d519b7b0fe2">
+<link rel="stylesheet" href="/_blob/ffcc56532445103bef94c333132a4fb7">
+<link rel="stylesheet" href="/_blob/4004501ab78099c34bb198c8287d7d41">
+<link rel="stylesheet" href="/_blob/ab074990511da3308f5deb38e148e8c1">
+<link rel="stylesheet" href="/_blob/961bb1102d81f8f791744cf5c49d5ccf">
+<link rel="stylesheet" href="/_blob/ea7fdb7da398599db40546cc6b3f4606">
+</head>
+<body>
+<x-dc>
+<helmet>
+<style>
+@font-face{font-family:"Condensed";src:url("/_blob/9ad036b9f76606ea91d82e15ebec8da3") format("truetype");font-weight:800;font-style:normal}
+body{margin:0;background:#eef3f9}
+.rx{position:relative}
+/* rec 6: the rail, every name on hover */
+.rx .rx-rail{position:absolute;left:64px;top:96px;width:44px;z-index:30}
+.rx .rx-rail ol{list-style:none;margin:0;padding:6px 0;display:flex;flex-direction:column;align-items:center;gap:16px;background:linear-gradient(#dce5f0,#dce5f0) center/2px 100% no-repeat}
+.rx .rx-rail ol.rx-rail-sub{gap:16px;padding:14px 0 4px;background:none}
+.rx .rx-rail li{display:flex;flex-direction:column;align-items:center;position:relative}
+.rx .rx-sq,.rx .rx-dot{position:relative;display:block;box-sizing:border-box;border-radius:999px;font-size:0;color:transparent;cursor:pointer}
+.rx .rx-sq{width:12px;height:12px;background:#fff;border:2px solid #9fb4cf}
+.rx .rx-sq:hover{border-color:#14618f}
+.rx .rx-sq.is-on{width:18px;height:18px;background:#14618f;border-color:#14618f;box-shadow:0 0 0 4px rgba(20,97,143,.18)}
+.rx .rx-dot{width:8px;height:8px;background:#c9d6e6}
+.rx .rx-dot.is-on{background:#0f2340;box-shadow:0 0 0 3px rgba(15,35,64,.14)}
+.rx .rx-lab{display:none;position:absolute;left:calc(50% + 20px);top:50%;transform:translateY(-50%);white-space:nowrap;border-radius:8px;padding:3px 9px;font-size:12px;line-height:1.4;font-weight:600;background:rgba(255,255,255,.97);color:#0f2340;box-shadow:0 1px 3px rgba(15,35,64,.16)}
+.rx .rx-rail:hover .rx-lab{display:block}
+.rx .rx-rail .rx-sq:hover>.rx-lab,.rx .rx-rail .rx-dot:hover>.rx-lab{background:#0f2340;color:#fff}
+/* rec 1: drawers */
+.rx .rx-drawers{display:flex;flex-direction:column;gap:8px;margin-top:14px}
+.rx details.rx-drawer{border:1px solid #dce5f0;border-radius:10px;background:#f7fafd;margin-top:10px}
+.rx .rx-drawers details.rx-drawer{margin-top:0}
+.rx details.rx-drawer>summary{cursor:pointer;list-style:none;padding:9px 14px;font-size:13px;font-weight:700;color:#14618f;display:flex;align-items:center;gap:8px}
+.rx details.rx-drawer>summary::-webkit-details-marker{display:none}
+.rx details.rx-drawer>summary::before{content:"▸";font-size:11px;transition:transform .15s}
+.rx details.rx-drawer[open]>summary::before{transform:rotate(90deg)}
+.rx .rx-drawer-body{padding:0 16px 14px;font-size:13.5px;line-height:1.62;color:#0f2340;max-width:78ch}
+.rx .rx-drawer-body p{margin:0 0 8px}
+/* rec 4: one segmented control */
+.rx .axis-modes,.rx .rx-seg,.rx .staffing-years{display:inline-flex!important;gap:2px!important;padding:3px!important;border-radius:999px!important;background:#eaf0f7!important;border:none!important;box-shadow:none!important;flex-wrap:wrap}
+.rx .axis-modes button,.rx .rx-seg button,.rx .staffing-years button{border:none!important;border-radius:999px!important;padding:6px 14px!important;font:inherit!important;font-size:12.5px!important;font-weight:600!important;color:#46618a!important;background:transparent!important;box-shadow:none!important;cursor:pointer}
+.rx .axis-modes button[aria-pressed="true"],.rx .rx-seg button[aria-pressed="true"],.rx .staffing-years button[aria-pressed="true"]{background:#fff!important;color:#0f2340!important;font-weight:700!important;box-shadow:0 1px 2px rgba(15,35,64,.12)!important}
+.rx .axis-modes-label,.rx .rx-seg-label{text-transform:none!important;letter-spacing:0!important;font-size:12.5px!important;font-weight:700!important;color:#46618a!important}
+.rx .rx-seg-row{display:flex;align-items:center;gap:12px;margin:10px 0}
+/* rec 7 placeholder */
+.rx .rx-todo{border:1px dashed #b9cadf;background:#fff;color:#7a8fac}
+/* topic boards */
+.rx .rx-topic-head{display:flex;align-items:baseline;gap:14px;flex-wrap:wrap}
+.rx .rx-tabs{display:flex;flex-direction:column;gap:2px;padding:12px;border-right:1px solid #eaf0f7;background:#f7fafd;border-radius:14px 0 0 14px}
+.rx .rx-tab{display:flex;gap:10px;align-items:baseline;width:100%;padding:9px 10px;border:none;border-radius:8px;font:inherit;font-size:13px;line-height:1.4;font-weight:600;text-align:left;color:#0f2340;cursor:pointer;background:transparent}
+.rx .rx-tab:hover{background:#fff}
+
+/* rec 3: section 1 start card */
+.rx .rx-kicker{margin:6px 0 0;font-size:13px;color:#46618a}
+.rx .rx-start-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:36px;align-items:start;margin-top:8px}
+.rx .rx-start-grid header.w4-q{margin-bottom:8px}
+.rx .rx-groups{display:flex;flex-direction:column;margin-top:10px}
+.rx .rx-group{padding:10px 0;border-top:1px solid #eaf0f7}
+.rx .rx-group-head{display:flex;align-items:center;gap:8px;font-size:13.5px}
+.rx .rx-group-head i{width:12px;height:12px;border-radius:50%;display:inline-block}
+.rx .rx-group-head span{font-size:12.5px;color:#46618a}
+.rx .rx-group p{margin:4px 0 0 20px;font-size:12.5px;line-height:1.55;color:#46618a}
+.rx .rx-start-notices{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px;margin-top:14px}
+.rx .rx-drawer-body.rx-wide{max-width:none}
+/* topic boards */
+.rx .rx-topic-bar{display:flex;align-items:center;gap:16px;margin:8px 0 16px}
+.rx .rx-back{font-size:13px;font-weight:700;text-decoration:none;color:#14618f;padding:6px 12px;border:1px solid #dce5f0;border-radius:999px;background:#fff}
+.rx .rx-topic-mark{flex:none;width:40px;height:40px;border-radius:10px;background:#14618f;color:#fff;display:inline-flex;align-items:center;justify-content:center;font-size:17px;font-weight:800}
+.rx .rx-topic-title{margin:0;font-size:24px;font-weight:800}
+.rx .rx-topic-holds{margin:2px 0 0;font-size:13.5px;color:#46618a}
+.rx .rx-topic-count{margin-left:auto;font-size:12.5px;color:#46618a}
+.rx .rx-tab-row{display:flex;flex-wrap:wrap;gap:6px;padding:6px;border-radius:14px;background:#eaf0f7;margin-bottom:18px}
+.rx .rx-tab-pill{border:none;border-radius:999px;padding:7px 14px;font:inherit;font-size:12.5px;font-weight:600;cursor:pointer;text-align:left;line-height:1.35}
+.rx .rx-tab-pill b{color:#14618f;margin-right:4px}
+.rx .rx-panel > .card{margin-top:0}
+/* deep-dive catalogue */
+.rx .rx-cut-intro{max-width:68ch}
+.rx .rx-tgrid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;align-items:start;margin-top:18px}
+.rx .rx-tcard{background:#fff;border:1px solid #dce5f0;border-radius:14px;padding:16px;box-shadow:0 1px 2px rgba(15,35,64,.06),0 8px 24px rgba(15,35,64,.05)}
+.rx .rx-tcard-data{background:#f7fafd;box-shadow:none}
+.rx .rx-tcard-head{display:flex;gap:12px;align-items:flex-start;text-decoration:none;color:#0f2340;padding-bottom:10px}
+.rx .rx-tcard-head span{display:flex;flex-direction:column;gap:3px}
+.rx .rx-tcard-head b{font-size:16px}
+.rx .rx-tcard-head em{font-style:normal;font-size:12.5px;line-height:1.45;color:#46618a}
+.rx .rx-tcard ul{list-style:none;margin:0;padding:0}
+.rx .rx-tcard li a{display:flex;gap:10px;align-items:baseline;padding:8px 4px;border-top:1px solid #eaf0f7;text-decoration:none;color:#0f2340;font-size:13px;font-weight:600;line-height:1.4}
+.rx .rx-tcard li a b{flex:none;min-width:22px;color:#14618f;font-size:11.5px}
+.rx .rx-tcard li a span{flex-grow:1}
+.rx .rx-tcard li a i{font-style:normal;color:#14618f;font-weight:700}
+.rx .rx-tcard li a:hover{background:#d9ecf9}
+.rx .rx-moved{margin:16px 0 0;font-size:12.5px;line-height:1.6;color:#46618a}
+.rx .rx-tile-finding{display:block;margin-top:6px;color:#0f2340}
+.rx .rx-toc{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:2px 32px;padding:14px 16px;background:#fff;border:1px solid #dce5f0;border-radius:14px;margin-bottom:22px}
+.rx .rx-toc-col{display:flex;flex-direction:column;gap:2px}
+.rx .rx-toc-head{margin:2px 0 6px 15px;font-size:12px;font-weight:700;color:#7a8fac}
+.rx .rx-toc-item{display:block;width:100%;box-sizing:border-box;text-align:left;border:none;border-left:3px solid transparent;border-radius:0 8px 8px 0;padding:8px 12px;font:inherit;font-size:13.5px;line-height:1.4;font-weight:600;cursor:pointer;background:transparent;color:#46618a}
+.rx .rx-toc-item:hover{background:#f7fafd;color:#0f2340}
+.rx .rx-toc-item b{color:#14618f;margin-right:6px;font-weight:700}
+/* tables */
+.rx main table{width:100%;border-collapse:separate;border-spacing:0;font-size:12.5px;line-height:1.4;background:#fff;border:1px solid #dce5f0;border-radius:10px;overflow:hidden;margin-top:6px}
+.rx main table caption{caption-side:top;text-align:left;font-size:13px;font-weight:700;color:#0f2340;padding:0 2px 8px}
+.rx main table th{background:#f7fafd;color:#46618a;font-size:11.5px;font-weight:600;text-align:left;padding:9px 12px;border-bottom:1px solid #dce5f0;white-space:nowrap}
+.rx main table td{padding:8px 12px;border-top:1px solid #eef3f9;color:#0f2340;vertical-align:middle}
+.rx main table tbody tr:first-child td{border-top:none}
+.rx main table tbody tr:hover td{background:#f7fafd}
+.rx main table td:first-child{font-weight:600}
+.rx main table th.num,.rx main table td.num{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
+.rx main table td.soft{color:#46618a}
+.rx .rx-cell{display:flex;align-items:center;justify-content:flex-end;gap:10px}
+.rx .rx-cell>span:last-child{min-width:5.2ch;text-align:right;font-variant-numeric:tabular-nums}
+.rx .rx-bar{flex:none;width:72px;height:6px;border-radius:999px;background:#eef3f9;overflow:hidden;display:flex;justify-content:flex-start}
+.rx .rx-bar i{display:block;height:100%;border-radius:999px;background:#14618f}
+.rx .rx-bar.meter i{background:#7fa9cf}
+.rx .rx-table-block{margin-top:18px}
+.rx .rx-table-block h4{margin:0 0 4px;font-size:13px;font-weight:700;color:#0f2340}
+.rx .rx-table-block p{margin:0 0 6px;font-size:12px;color:#46618a}
+/* compact drawers: closed ones sit in one row, an open one takes the full width */
+.rx .rx-drawers{flex-direction:row!important;flex-wrap:wrap;align-items:center;gap:8px!important;margin-top:12px}
+.rx .rx-drawers>details.rx-drawer{flex:0 0 auto;margin:0}
+.rx .rx-drawers>details.rx-drawer[open]{flex:1 1 100%;order:10}
+.rx details.rx-drawer:not([open]){width:fit-content}
+.rx details.rx-drawer>summary{padding:6px 12px}
+.rx .rx-drawers>.w4-tip{margin:0}
+.rx .rx-foot{margin-top:14px}
+.rx .rx-drawer-body>p+p{margin-top:8px}
+.rx .rx-fig-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(0,1fr));gap:28px;margin-top:22px;align-items:start}
+.rx .rx-fig-row>figure,.rx .rx-fig-row>.plot{margin:0}
+.rx .rx-fig-row>:only-child{max-width:58%}
+</style>
+</helmet>
+<div class="corridor rx" style="width: 1440px; height: 2799px; overflow: hidden; background: #eef3f9"><div class="topbar">
+<div class="shell">
+<a class="brand" href="../../">LOG–LOG <b>LEGENDS</b></a>
+<a class="site-link" href="../../#weeks">All posts</a>
+<nav aria-label="Sections of this post" class="topnav">
+<a class="here" href="#opening">Opening</a>
+<a class="" href="#place">Where</a>
+<a href="#jobs">Jobs</a>
+<a href="#who">Staffing</a>
+<a href="#footprint">Giants out</a>
+<a href="#beyond">Beyond</a>
+<a href="#cut">Deep dive</a>
+</nav>
+</div>
+</div><nav class="rx-rail" aria-label="Contents of this post"><ol><li><span class="rx-sq"><span class="rx-lab">0 Opening</span></span></li><li><span class="rx-sq"><span class="rx-lab">1 Where the hiring is</span></span></li><li><span class="rx-sq"><span class="rx-lab">2 Which jobs go together</span></span></li><li><span class="rx-sq"><span class="rx-lab">3 Who staffs whom</span></span></li><li><span class="rx-sq"><span class="rx-lab">4 Without the biggest firms</span></span></li><li><span class="rx-sq"><span class="rx-lab">5 Beyond the three networks</span></span></li><li><span class="rx-sq"><span class="rx-lab">Closing</span></span></li><li><span class="rx-sq is-on"><span class="rx-lab">Deep dive</span></span><ol class="rx-rail-sub"><li><span class="rx-dot"><span class="rx-lab">Where the hiring is</span></span></li><li><span class="rx-dot"><span class="rx-lab">Jobs and skills</span></span></li><li><span class="rx-dot is-on"><span class="rx-lab">Outsourcing firms and their clients</span></span></li><li><span class="rx-dot"><span class="rx-lab">Paperwork, the lottery and green cards</span></span></li><li><span class="rx-dot"><span class="rx-lab">Five years</span></span></li><li><span class="rx-dot"><span class="rx-lab">Data and methods</span></span></li></ol></li></ol></nav><main id="main"><div class="shell"><section class="step" id="cut">
+<div class="rx-topic-bar"><a class="rx-back" href="RDeep.dc.html">← Deep dive</a><div><h2 class="rx-topic-title">Outsourcing firms and their clients</h2><p class="rx-topic-holds">Who places workers where, and how tightly.</p></div><span class="rx-topic-count">6 boxes</span></div>
+<nav class="rx-toc" aria-label="Boxes in this topic" style="grid-auto-flow: column; grid-template-rows: repeat(3, auto)"><button type="button" class="rx-toc-item" onClick="{{pick0}}" aria-pressed="{{on0}}" style="{{st0}}">Do clients group by industry or by the firm that staffs them?</button><button type="button" class="rx-toc-item" onClick="{{pick1}}" aria-pressed="{{on1}}" style="{{st1}}">Who relies on a single vendor?</button><button type="button" class="rx-toc-item" onClick="{{pick2}}" aria-pressed="{{on2}}" style="{{st2}}">The client network, year by year</button><button type="button" class="rx-toc-item" onClick="{{pick3}}" aria-pressed="{{on3}}" style="{{st3}}">With filing counts or without?</button><button type="button" class="rx-toc-item" onClick="{{pick4}}" aria-pressed="{{on4}}" style="{{st4}}">Strong ties, weak ties and pay</button><button type="button" class="rx-toc-item" onClick="{{pick5}}" aria-pressed="{{on5}}" style="{{st5}}">Strength against degree: where do the heavy links go?</button></nav><div class="rx-panel" style="display: {{d0}}"><div class="card w4-card"><div class="w4-q-block" id="who-q2">
+<header class="w4-q">
+<span class="w4-num">1</span>
+<div>
+<h2>Do clients group by industry or by the firm that staffs them?</h2>
+<p class="w4-answer">By both, weakly, and slightly more by vendor.</p>
+</div>
+</header>
+<div class="w4-two">
+<div>
+<figure class="w4-figure">
+<figcaption><b>Groups against rewired networks</b><span><span class="w4-term"><button aria-describedby="w4-term-x-modularity" type="button">Modularity</button><span class="w4-pop" id="w4-term-x-modularity" role="tooltip">How much more of the link weight falls inside the groups than a random network would put there. Higher means cleaner groups.</span></span> of the real firm–client network, real against <span class="w4-term"><button aria-describedby="w4-term-x-rewired" type="button">rewired networks</button><span class="w4-pop" id="w4-term-x-rewired" role="tooltip">Random copies of the network in which every firm and client keeps its number of partners, but the partners are dealt out again at random.</span></span> that keep everyone's number of partners.</span></figcaption>
+<div class="w4-figure-body" data-strip="who-q2-modularity"><svg aria-label="Modularity of the firm-client network, real against rewired networks" class="w4-strip" height="156" role="img" viewbox="0 0 520 156" width="520"><line stroke="#e6ecf3" stroke-width="1" x1="175" x2="175" y1="6" y2="122"></line><text fill="#7a8fac" font-size="11" text-anchor="middle" x="175" y="138">0.4</text><line stroke="#e6ecf3" stroke-width="1" x1="246.74999999999997" x2="246.74999999999997" y1="6" y2="122"></line><text fill="#7a8fac" font-size="11" text-anchor="middle" x="246.74999999999997" y="138">0.5</text><line stroke="#e6ecf3" stroke-width="1" x1="318.49999999999994" x2="318.49999999999994" y1="6" y2="122"></line><text fill="#7a8fac" font-size="11" text-anchor="middle" x="318.49999999999994" y="138">0.6</text><line stroke="#e6ecf3" stroke-width="1" x1="390.24999999999994" x2="390.24999999999994" y1="6" y2="122"></line><text fill="#7a8fac" font-size="11" text-anchor="middle" x="390.24999999999994" y="138">0.7</text><line stroke="#e6ecf3" stroke-width="1" x1="462" x2="462" y1="6" y2="122"></line><text fill="#7a8fac" font-size="11" text-anchor="middle" x="462" y="138">0.8</text><text fill="#0f2340" font-size="12" font-weight="600" x="0" y="33">Each link counted once</text><text fill="#7a8fac" font-size="11" x="0" y="48">against rewired networks</text><line stroke="#dce5f0" stroke-width="1" x1="175" x2="462" y1="36" y2="36"></line><g><rect fill="rgba(185, 196, 210, 0.62)" height="12" rx="6" width="4" x="262.75924999999995" y="30"></rect><line stroke="#7a8fac" stroke-width="2" x1="264.75924999999995" x2="264.75924999999995" y1="27" y2="45"></line></g><text fill="#46618a" font-size="11" font-weight="400" text-anchor="middle" x="264.75924999999995" y="61">rewired 0.53</text><circle cx="298.48175000000003" cy="36" fill="#0f2340" r="6.5" stroke="#ffffff" stroke-width="2"></circle><text fill="#0f2340" font-size="12" font-weight="700" text-anchor="middle" x="298.48175000000003" y="23">0.57</text><rect fill="#eef3f9" height="20" rx="10" width="52.96" x="467.04" y="26"></rect><text fill="#0f2340" font-size="11" font-weight="700" text-anchor="middle" x="493.52000000000004" y="40">z = 46</text><text fill="#0f2340" font-size="12" font-weight="600" x="0" y="89">Weighted by filings</text><text fill="#7a8fac" font-size="11" x="0" y="104">against rewired networks</text><line stroke="#dce5f0" stroke-width="1" x1="175" x2="462" y1="92" y2="92"></line><g><rect fill="rgba(185, 196, 210, 0.62)" height="12" rx="6" width="4" x="414.5105" y="86"></rect><line stroke="#7a8fac" stroke-width="2" x1="416.5105" x2="416.5105" y1="83" y2="101"></line></g><text fill="#46618a" font-size="11" font-weight="400" text-anchor="middle" x="416.5105" y="117">rewired 0.74</text><circle cx="315.1995" cy="92" fill="#0f2340" r="6.5" stroke="#ffffff" stroke-width="2"></circle><text fill="#0f2340" font-size="12" font-weight="700" text-anchor="middle" x="315.1995" y="79">0.60</text><rect fill="#eef3f9" height="20" rx="10" width="65.28" x="454.72" y="82"></rect><text fill="#0f2340" font-size="11" font-weight="700" text-anchor="middle" x="487.36" y="96">z = -100</text></svg></div>
+</figure>
+</div>
+<div>
+<figure class="w4-figure">
+<figcaption><b>Match with vendor and industry</b><span><span class="w4-term"><button aria-describedby="w4-term-x-ami" type="button">AMI</button><span class="w4-pop" id="w4-term-x-ami" role="tooltip">Adjusted mutual information: how closely two ways of grouping the same clients agree, corrected for the agreement random labels would reach by chance.</span></span> between the groups and each client's main vendor or industry, 0 = labels dealt at random. Filled: the main vendor; hollow: the industry.</span></figcaption>
+<div class="w4-figure-body" data-strip="who-q2-ami"><svg aria-label="How well the groups match each client's main vendor and industry, filled dots the main vendor, hollow the industry" class="w4-strip" height="244" role="img" viewbox="0 0 520 244" width="520"><line stroke="#e6ecf3" stroke-width="1" x1="150" x2="150" y1="6" y2="210"></line><text fill="#7a8fac" font-size="11" text-anchor="middle" x="150" y="226">0.0</text><line stroke="#e6ecf3" stroke-width="1" x1="266.6666666666667" x2="266.6666666666667" y1="6" y2="210"></line><text fill="#7a8fac" font-size="11" text-anchor="middle" x="266.6666666666667" y="226">0.2</text><line stroke="#e6ecf3" stroke-width="1" x1="383.33333333333337" x2="383.33333333333337" y1="6" y2="210"></line><text fill="#7a8fac" font-size="11" text-anchor="middle" x="383.33333333333337" y="226">0.4</text><line stroke="#e6ecf3" stroke-width="1" x1="500" x2="500" y1="6" y2="210"></line><text fill="#7a8fac" font-size="11" text-anchor="middle" x="500" y="226">0.6</text><line stroke="#7a8fac" stroke-width="1" x1="150" x2="150" y1="6" y2="210"></line><text fill="#0f2340" font-size="12" font-weight="600" x="0" y="30">Main vendor</text><text fill="#7a8fac" font-size="11" x="0" y="45">each link counted once</text><line stroke="#dce5f0" stroke-width="1" x1="150" x2="500" y1="33" y2="33"></line><circle cx="213" cy="33" fill="#0f2340" r="6.5" stroke="#ffffff" stroke-width="2"></circle><text fill="#0f2340" font-size="12" font-weight="700" text-anchor="middle" x="213" y="20">0.11</text><text fill="#0f2340" font-size="12" font-weight="600" x="0" y="80">Industry</text><text fill="#7a8fac" font-size="11" x="0" y="95">each link counted once</text><line stroke="#dce5f0" stroke-width="1" x1="150" x2="500" y1="83" y2="83"></line><circle cx="193.75" cy="83" fill="#ffffff" r="6" stroke="#0f2340" stroke-width="2"></circle><text fill="#0f2340" font-size="12" font-weight="700" text-anchor="middle" x="193.75" y="70">0.07</text><line stroke="#dce5f0" stroke-dasharray="2 3" stroke-width="1" x1="0" x2="520" y1="112" y2="112"></line><text fill="#0f2340" font-size="12" font-weight="600" x="0" y="130">Main vendor</text><text fill="#7a8fac" font-size="11" x="0" y="145">weighted by filings</text><line stroke="#dce5f0" stroke-width="1" x1="150" x2="500" y1="133" y2="133"></line><circle cx="430.5833333333333" cy="133" fill="#0f2340" r="6.5" stroke="#ffffff" stroke-width="2"></circle><text fill="#0f2340" font-size="12" font-weight="700" text-anchor="middle" x="430.5833333333333" y="120">0.48</text><text fill="#0f2340" font-size="12" font-weight="600" x="0" y="180">Industry</text><text fill="#7a8fac" font-size="11" x="0" y="195">weighted by filings</text><line stroke="#dce5f0" stroke-width="1" x1="150" x2="500" y1="183" y2="183"></line><circle cx="188.5" cy="183" fill="#ffffff" r="6" stroke="#0f2340" stroke-width="2"></circle><text fill="#0f2340" font-size="12" font-weight="700" text-anchor="middle" x="188.5" y="170">0.07</text></svg></div>
+</figure>
+</div>
+</div>
+</div>
+<div class="rx-drawers rx-foot"><details class="rx-drawer"><summary>More numbers</summary><div class="rx-drawer-body"><p>With every firm–client link counted once, Louvain splits the network into about 65 groups, and the split beats rewired networks that keep everyone's number of partners (modularity 0.57 against 0.53). Among the 1,209 clients with a known industry and two or more firms, the groups match the main vendor at an adjusted mutual information (AMI) of 0.11 and the industry at 0.07; both beat shuffled labels.</p><p>AMI corrects NMI for chance, which matters here: these clients have 478 main vendors but only 17 industries. Counting filings pulls clients to their main vendor (AMI 0.48 against 0.07), but that split scores below rewired networks with the same filing counts (0.60 against 0.74), and the vendor's head start is built in: the vendor is a node in the same network, and 86% of these clients land in its group.</p></div></details></div>
+</div></div><div class="rx-panel" style="display: {{d1}}"><div class="card w4-card"><div class="w4-q-block" id="who-q3">
+<header class="w4-q">
+<span class="w4-num">2</span>
+<div>
+<h2>Who relies on a single vendor?</h2>
+<p class="w4-answer">Small clients.</p>
+</div>
+</header>
+<div class="w4-two">
+<div>
+<p class="sub">14,678 of the 18,900 clients use one firm, but they hold 22% of placed filings. Of the 629 clients with 20 or more filings, 69 get over 90% from one firm, and the median one gets 37% from its largest.</p>
+
+
+<div class="rx-drawers rx-foot"><details class="rx-drawer"><summary>More numbers</summary><div class="rx-drawer-body"><p>Citigroup, the largest client, uses 114 firms, and Tata Consultancy Services supplies a quarter. The eight largest firms supply only 27% of what the 20 largest clients receive.</p></div></details></div>
+</div>
+<div>
+<figure class="w4-figure">
+<figcaption><b>One firm, many clients, few filings</b><span>Clients that use a single firm, as a share of all clients and of all placed filings, 2025.</span></figcaption>
+<div class="w4-figure-body" data-strip="who-q3-concentration"><svg aria-label="Clients that use a single firm: their share of all clients and of all placed filings" height="112" role="img" viewbox="0 0 520 112" width="520"><text fill="#0f2340" font-size="12" font-weight="600" x="0" y="6">Clients</text><rect fill="#0f2340" height="16" width="403.83915343915345" x="0" y="10"><title>one firm: 77.7%</title></rect><text fill="#ffffff" font-size="11" font-weight="700" text-anchor="middle" x="201.91957671957672" y="21">78%</text><rect fill="rgba(185, 196, 210, 0.62)" height="16" width="116.16084656084655" x="403.83915343915345" y="10"><title>two or more firms: 22.3%</title></rect><text fill="#0f2340" font-size="11" font-weight="700" text-anchor="middle" x="461.91957671957675" y="21">22%</text><text fill="#0f2340" font-size="12" font-weight="600" x="0" y="46">Placed filings</text><rect fill="#0f2340" height="16" width="116.428" x="0" y="50"><title>one firm: 22.4%</title></rect><text fill="#ffffff" font-size="11" font-weight="700" text-anchor="middle" x="58.214" y="61">22%</text><rect fill="rgba(185, 196, 210, 0.62)" height="16" width="403.572" x="116.428" y="50"><title>two or more firms: 77.6%</title></rect><text fill="#0f2340" font-size="11" font-weight="700" text-anchor="middle" x="318.214" y="61">78%</text><circle cx="5" cy="96" fill="#0f2340" r="5"></circle><text fill="#7a8fac" font-size="11" x="14" y="100">one firm</text><circle cx="85" cy="96" fill="rgba(185, 196, 210, 0.62)" r="5"></circle><text fill="#7a8fac" font-size="11" x="94" y="100">two or more firms</text></svg></div>
+</figure>
+
+</div>
+</div>
+<div class="rx-fig-row">
+<figure class="w4-figure">
+<figcaption><b>How concentrated the big clients are</b><span>The dot is the median share of a client's filings held by its largest vendor, among clients with 20 or more filings; the dashed line marks 90%.</span></figcaption>
+<div class="w4-figure-body" data-strip="who-q3-topshare"><svg aria-label="Share of a client's filings that come from its largest vendor, among clients with 20 or more filings" height="58" role="img" viewbox="0 0 300 58" width="300"><line stroke="#dce5f0" stroke-width="1" x1="6" x2="294" y1="28" y2="28"></line><line stroke="#46618a" stroke-dasharray="3 2" stroke-width="1.3" x1="265.2" x2="265.2" y1="17" y2="39"></line><text fill="#46618a" font-size="11" font-weight="400" text-anchor="end" x="300" y="52">69 of 629 above 90%</text><circle cx="112.4448" cy="28" fill="#0f2340" r="6.5" stroke="#ffffff" stroke-width="2"><title>median 37%</title></circle><text fill="#0f2340" font-size="12" font-weight="700" text-anchor="middle" x="112.4448" y="15">median 37%</text></svg></div>
+</figure>
+</div>
+</div></div></div><div class="rx-panel" style="display: {{d2}}"><div class="card w4-card"><header class="w4-q"><span class="w4-num">3</span><div><h2>The client network, year by year</h2></div></header><figure class="staffing" id="staffing-figure">
+<div class="staffing-controls">
+<div aria-label="Fiscal year, October to September" class="staffing-years rx-seg" role="group">
+<button aria-pressed="false" data-year="2022" type="button">2022</button><button aria-pressed="false" data-year="2023" type="button">2023</button><button aria-pressed="false" data-year="2024" type="button">2024</button><button aria-pressed="true" data-year="2025" type="button">2025</button><button aria-pressed="false" data-year="2026" type="button">
+                        2026 · Oct–Jun
+                      </button>
+</div>
+<label class="staffing-search">Find a client
+                      <input autocomplete="off" list="staffing-names" placeholder="629 clients · type a name" type="search"/>
+<datalist id="staffing-names"><option value="Citigroup"></option><option value="Verizon"></option><option value="Bank of America"></option><option value="Fidelity Investments"></option><option value="Wells Fargo"></option><option value="American Express"></option><option value="Capital One"></option><option value="JPMorgan Chase"></option><option value="USAA"></option><option value="Apple"></option><option value="T-Mobile"></option><option value="Walmart"></option><option value="AT&amp;T"></option><option value="Renewal Rehab"></option><option value="CVS Health"></option><option value="Charles Schwab"></option><option value="Elevance Health"></option><option value="Freddie Mac"></option><option value="PNC"></option><option value="Johnson &amp; Johnson"></option><option value="Ford"></option><option value="Charter Communications"></option><option value="Morgan Stanley"></option><option value="Toyota"></option><option value="Fiserv"></option><option value="Cisco"></option><option value="Vanguard"></option><option value="Caterpillar"></option><option value="Truist"></option><option value="Deloitte"></option><option value="Cigna"></option><option value="Fannie Mae"></option><option value="Comcast"></option><option value="Google"></option><option value="United Airlines"></option><option value="Northern Trust"></option><option value="BNY Mellon"></option><option value="Humana"></option><option value="U.S. Bank"></option><option value="Goldman Sachs"></option><option value="State Street"></option><option value="American Airlines"></option><option value="Intuit"></option><option value="Delta Air Lines"></option><option value="Travelers"></option><option value="Mastercard"></option><option value="State Farm"></option><option value="Amazon"></option><option value="AbbVie"></option><option value="MetLife"></option><option value="Honda"></option><option value="Eli Lilly"></option><option value="LPL Financial"></option><option value="Kaiser Permanente"></option><option value="Meta"></option><option value="Abbott"></option><option value="Stellantis"></option><option value="Discover Financial"></option><option value="The Hartford"></option><option value="Citizens Bank"></option><option value="Barclays"></option><option value="Microsoft"></option><option value="PepsiCo"></option><option value="Cummins"></option><option value="Home Depot"></option><option value="TD Bank"></option><option value="Southwest Airlines"></option><option value="Pfizer"></option><option value="Merck"></option><option value="UPS"></option><option value="Macy's"></option><option value="Fifth Third Bank"></option><option value="AIG"></option><option value="Nike"></option><option value="UBS"></option><option value="General Motors"></option><option value="Albertsons"></option><option value="Kroger"></option><option value="Chevron"></option><option value="ExxonMobil"></option><option value="UnitedHealth Group"></option><option value="Liberty Mutual"></option><option value="Walgreens"></option><option value="Medtronic"></option><option value="Regeneron"></option><option value="7-Eleven"></option><option value="Capital Group"></option><option value="Marriott"></option><option value="Nationwide"></option><option value="Equifax"></option><option value="Navistar"></option><option value="TIAA"></option><option value="Prudential"></option><option value="Centene"></option><option value="Starbucks"></option><option value="Comerica"></option><option value="World Bank"></option><option value="McKesson"></option><option value="HP"></option><option value="Erie Insurance"></option><option value="PG&amp;E"></option><option value="Ultimate Therapy"></option><option value="State of Michigan"></option><option value="Kpmg"></option><option value="Gilead Sciences"></option><option value="Credit One Bank"></option><option value="Oncor"></option><option value="Florida Power &amp; Light"></option><option value="Genuine Parts"></option><option value="Samsung"></option><option value="SEI"></option><option value="Moody's"></option><option value="Amgen"></option><option value="DTCC"></option><option value="New York Life"></option><option value="Health Care Service Corporation"></option><option value="Fidelity"></option><option value="FedEx"></option><option value="Bristol Myers Squibb"></option><option value="Cognizant"></option><option value="KeyBank"></option><option value="Ally Financial"></option><option value="Southern California Edison"></option><option value="DaVita"></option><option value="DISH Network"></option><option value="Best Buy"></option><option value="Optum"></option><option value="PayPal"></option><option value="CSX"></option><option value="John Deere"></option><option value="McDonald's"></option><option value="NextEra Energy"></option><option value="Sigma Rehab"></option><option value="GE HealthCare"></option><option value="BNSF Railway"></option><option value="Boeing"></option><option value="Farmers Insurance"></option><option value="Froedtert Hospital"></option><option value="Infosys"></option><option value="Intel"></option><option value="Applied Materials"></option><option value="PwC"></option><option value="GE"></option><option value="Quest Diagnostics"></option><option value="Accenture"></option><option value="CenterPoint Energy"></option><option value="Dell"></option><option value="Becton Dickinson"></option><option value="NRG Energy"></option><option value="BP"></option><option value="Vizio"></option><option value="ADP"></option><option value="Deutsche Bank"></option><option value="Independence Blue Cross"></option><option value="First Citizens Bank"></option><option value="Duke Energy"></option><option value="Costco"></option><option value="Lucid Motors"></option><option value="Cox Communications"></option><option value="Disney"></option><option value="Bayer"></option><option value="Baxter"></option><option value="Cardinal Health"></option><option value="Mizuho"></option><option value="M&amp;T Bank"></option><option value="Standard Insurance"></option><option value="Blue Shield of California"></option><option value="Volkswagen"></option><option value="Nissan"></option><option value="Honeywell"></option><option value="Capital"></option><option value="eBay"></option><option value="Ameriprise Financial"></option><option value="Tractor Supply"></option><option value="EY"></option><option value="Archer Daniels Midland"></option><option value="West Virginia University"></option><option value="IBM"></option><option value="Boston Scientific"></option><option value="Waste Management"></option><option value="NBC Universal"></option><option value="Infodat International"></option><option value="Procter &amp; Gamble"></option><option value="Williams-Sonoma"></option><option value="University Health Associates"></option><option value="Stryker"></option><option value="Coca-Cola"></option><option value="Genentech"></option><option value="Zoetis"></option><option value="National Institutes of Health"></option><option value="Swift"></option><option value="Finra"></option><option value="Hewlett Packard Enterprise"></option><option value="Post Rehab Services"></option><option value="State of California"></option><option value="Norfolk Southern"></option><option value="Alaska Airlines"></option><option value="JM Family Enterprises"></option><option value="Navy Federal Credit Union"></option><option value="Nvidia"></option><option value="CareFirst BCBS"></option><option value="Halliburton"></option><option value="HCA Healthcare"></option><option value="Grady Memorial Hospital"></option><option value="Adobe"></option><option value="Lincoln Financial"></option><option value="TJX"></option><option value="Tech Mahindra"></option><option value="Rivian"></option><option value="Meijer"></option><option value="Carrier"></option><option value="Phillips 66"></option><option value="Maryland Department of Human Services"></option><option value="Henry County Schools"></option><option value="Santander"></option><option value="Western Union"></option><option value="Gap"></option><option value="National Grid"></option><option value="Marathon Petroleum"></option><option value="Sherwin-Williams"></option><option value="Great American Insurance"></option><option value="DirecTV"></option><option value="S&amp;P Global"></option><option value="Broadcom"></option><option value="Otis"></option><option value="3M"></option><option value="Thermo Fisher Scientific"></option><option value="Salesforce"></option><option value="Corteva"></option><option value="Northwestern Mutual"></option><option value="Vertex Pharmaceuticals"></option><option value="Novo Nordisk"></option><option value="Northwestern Mutual Life"></option><option value="Western Alliance Bank"></option><option value="Staples"></option><option value="Cbre"></option><option value="Compass"></option><option value="Avis Budget"></option><option value="Sysco"></option><option value="Expedia"></option><option value="Corebridge Financial"></option><option value="Altria Client Services"></option><option value="Rhode Island Hospital"></option><option value="SSM Health Saint Louis University Hospital"></option><option value="First Horizon"></option><option value="T. Rowe Price"></option><option value="Intuitive Surgical"></option><option value="CNH Industrial"></option><option value="State University of NEW York at Buffalo"></option><option value="Johnson Controls"></option><option value="Spirit AeroSystems"></option><option value="Con Edison"></option><option value="Wellmark"></option><option value="Allianz Technology of America"></option><option value="Visa"></option><option value="Dana-Farber Cancer Institute"></option><option value="Union Pacific Railroad"></option><option value="Catalent"></option><option value="NOV"></option><option value="Prime Therapeutics"></option><option value="BCBS Michigan"></option><option value="AmeriHealth Caritas"></option><option value="Eaton"></option><option value="Uline"></option><option value="Edward Jones"></option><option value="New York State Department of Health"></option><option value="Sephora"></option><option value="Boston Children's Hospital"></option><option value="Southern Glazer S Wine and Spirits"></option><option value="Sempra"></option><option value="Formosa Plastics"></option><option value="Blue Cross and Blue Shield of North Carolina"></option><option value="Micron"></option><option value="Trustage"></option><option value="Conocophillips"></option><option value="Allegis"></option><option value="Kenvue"></option><option value="Nestle"></option><option value="Stellantis NV"></option><option value="Lululemon"></option><option value="City of New York"></option><option value="CNA"></option><option value="Webster Bank"></option><option value="AMD"></option><option value="Chubb"></option><option value="Hyundai Capital"></option><option value="Cargill"></option><option value="Xerox"></option><option value="State of New York"></option><option value="Eversource Energy"></option><option value="Flagstar"></option><option value="Biogen"></option><option value="Nist"></option><option value="Fourhub Technologies"></option><option value="Miriam Hospital"></option><option value="Sony Pictures"></option><option value="Amtrak"></option><option value="Collins Aerospace"></option><option value="Experian"></option><option value="Cencora"></option><option value="Jefferies"></option><option value="Quantrion"></option><option value="Depuy Synthes"></option><option value="LexisNexis"></option><option value="Texas Health and Human Services Commission"></option><option value="DTE Energy"></option><option value="Adventhealth Information Technology"></option><option value="First Citizens Bank"></option><option value="Horizon BCBS New Jersey"></option><option value="Assurant"></option><option value="LAM Research"></option><option value="Pacific Life"></option><option value="State of Ohio"></option><option value="NiSource"></option><option value="Huntington Bank"></option><option value="Supreme Court of Virginia"></option><option value="City Storage Systems"></option><option value="Unum"></option><option value="Integrity Marketing"></option><option value="Xcel Energy"></option><option value="Mondelez"></option><option value="State Compensation Insurance Fund"></option><option value="Takeda"></option><option value="US Bank National Association US Bancorp"></option><option value="VA Connecticut Healthcare System"></option><option value="L'Oreal"></option><option value="Fidelity Talent Source Investment"></option><option value="NEW York State Office of Information Technology Services"></option><option value="Automatic Data Processing INC ADP"></option><option value="Molina Healthcare"></option><option value="American Family Insurance"></option><option value="Fidelity National Information Services"></option><option value="Ulta Salon Cosmetics and Fragrance"></option><option value="Daimler Truck"></option><option value="Servicenow"></option><option value="NCR Voyix"></option><option value="Mars"></option><option value="Selective Insurance Company of America"></option><option value="Elmhurst Hospital"></option><option value="Options Clearing"></option><option value="Insulet"></option><option value="Transunion"></option><option value="Safg Technologies"></option><option value="Northwest Mutual Insurance"></option><option value="Lumen"></option><option value="Depository Trust and Clearing Corporation Dtcc"></option><option value="Exelon"></option><option value="O Goken America"></option><option value="PWC"></option><option value="Eastern Maine Medical Center Bangor FKA Emmc Northern Light"></option><option value="Sumitomo Mitsui Banking"></option><option value="HCA Healthcare"></option><option value="Penske Truck Leasing"></option><option value="Zoox"></option><option value="Social Security Administration"></option><option value="National Grid USA Service"></option><option value="Disney"></option><option value="Trustmark Insurance"></option><option value="GE Aerospace"></option><option value="GM Financial"></option><option value="Wabtec"></option><option value="GSK"></option><option value="State University of NEW York Upstate Medical University"></option><option value="Hartford Hospital"></option><option value="Munich Re"></option><option value="Adventhealth Orlando"></option><option value="Adventhealth Tampa"></option><option value="Otsuka America Pharmaceutical"></option><option value="Novartis"></option><option value="Cona Services"></option><option value="GE Vernova International"></option><option value="Hanover Insurance"></option><option value="Reliant Rehabilitation"></option><option value="LOS Angeles Unified School District"></option><option value="Continental Casualty Company CNA"></option><option value="Astrazeneca"></option><option value="Wheels"></option><option value="Sanofi"></option><option value="Volkswagen"></option><option value="Health Care Service Corporation A Mutual Legal Reserve"></option><option value="Delta Dental"></option><option value="Palo Alto Networks"></option><option value="Nasco"></option><option value="National Life"></option><option value="Chevron Phillips Chemical"></option><option value="Global Payments"></option><option value="Fujifilm Diosynth Biotechnologies"></option><option value="Memorial Hermann"></option><option value="PPL"></option><option value="United Service Automobile Association"></option><option value="Parker Hannifin"></option><option value="Qualcomm"></option><option value="Gainwell"></option><option value="Axiom Technology"></option><option value="Zurich American Insurance"></option><option value="Dick S Sporting Goods"></option><option value="Whirlpool"></option><option value="AAA Auto Club"></option><option value="Schneider Electric"></option><option value="Southampton County Public Schools"></option><option value="Excellus Health Plan"></option><option value="BHP Billiton Petroleum Deepwater"></option><option value="Novartis"></option><option value="Amex"></option><option value="EOG Resources"></option><option value="Trane"></option><option value="Asml"></option><option value="Parkwest Medical Center Covenant Health"></option><option value="First National Bank"></option><option value="Calpine"></option><option value="ABM Industries"></option><option value="International Bank for Reconstruction and Development"></option><option value="Freedom Self Storage"></option><option value="Fort Sanders Regional Medical Center Covenant Health"></option><option value="Cox Automotive"></option><option value="Elevance Health Anthem"></option><option value="Plymouth Rock Assurance"></option><option value="Children S Wisconsin"></option><option value="Ochsner LSU Health Shreveport"></option><option value="Credit ONE"></option><option value="Children S of Alabama"></option><option value="Tapestry"></option><option value="Vistra"></option><option value="Levi Strauss"></option><option value="Georgia Department of Labor"></option><option value="Keurig Dr Pepper"></option><option value="Sumitomo Mitsui Banking Corporation Smbc"></option><option value="Juniper Networks"></option><option value="Florida Department of Corrections"></option><option value="Total System Services"></option><option value="CON Edison"></option><option value="Berkshire Hathaway Energy"></option><option value="Kenvue Brands"></option><option value="Maryland Health Benefit Exchange"></option><option value="Yale NEW Haven Hospital"></option><option value="Costco Travel"></option><option value="International Monetary Fund"></option><option value="Markel"></option><option value="Consumers Energy"></option><option value="Kemper"></option><option value="Commonwealth of Kentucky"></option><option value="Petitioner Brains Technology Solutions"></option><option value="Toronto Dominion Bank"></option><option value="Linkedin"></option><option value="Arkansas Children's Hospital"></option><option value="Inland Empire Health Plan"></option><option value="Abercrombie &amp; Fitch"></option><option value="Southern California GAS"></option><option value="Memorial Sloan Kettering"></option><option value="Factory Mutual Insurance"></option><option value="Nasa Ames Research Center"></option><option value="Maryland Department of Human Services"></option><option value="Virginia Department of Transportation"></option><option value="Winmind Health Addiction Geriatric and Palliative Medicine"></option><option value="Florida Cancer Specialist and Research Institute"></option><option value="ACT 1 Group INC Agile 1"></option><option value="Inspire Brands"></option><option value="CRC Insurance"></option><option value="City National Bank"></option><option value="Kaiser"></option><option value="EmblemHealth"></option><option value="Petitioner S Branch Office"></option><option value="State of Texas"></option><option value="State of NEW Jersey"></option><option value="Organon"></option><option value="MUFG"></option><option value="Altria"></option><option value="Volvo Trucks North America"></option><option value="Cambia Health Solutions"></option><option value="American Electric Power"></option><option value="Builders Firstsource"></option><option value="Regal Care Rehabilitation"></option><option value="Tenneco"></option><option value="Delta Dental of Michigan"></option><option value="HF Management Services"></option><option value="Leidos"></option><option value="Metropolitan Transportation Authority MTA"></option><option value="Ross Dress for Less"></option><option value="Regeneron"></option><option value="Medica"></option><option value="Premera Blue Cross"></option><option value="Ingram Micro"></option><option value="Rush University Medical Center"></option><option value="Transamerica"></option><option value="CNO Services"></option><option value="Western and Southern Financial"></option><option value="Wabtec Transportation Systems"></option><option value="Mount Sinai Hospital"></option><option value="Presbyterian Medical Center of the University of Pennsylvania Health System"></option><option value="Blue Cross Blue Shield of Massachusetts"></option><option value="Subway"></option><option value="Frontier Communications"></option><option value="Siemens"></option><option value="Applied Material"></option><option value="BMO Bank National Association"></option><option value="BLUE CROSS BLUE SHIELD ASSOCIATION"></option><option value="Solenis"></option><option value="CHS"></option><option value="Pentagon Federal Credit Union"></option><option value="Brightspeed"></option><option value="Dollar General"></option><option value="Carnival"></option><option value="Newton County Schools"></option><option value="Cleveland Clinic Marymount Hospital"></option><option value="Lowe S Companies"></option><option value="Polaris Industries"></option><option value="Ally Bank"></option><option value="NEW York City Department of Education"></option><option value="Tata Consultancy Services"></option><option value="Westinghouse Electric"></option><option value="QC"></option><option value="Workday"></option><option value="State of Tennessee"></option><option value="Kiewit"></option><option value="Ethicon Endo Surgery"></option><option value="JLG Industries"></option><option value="MGM Transformer"></option><option value="NEW York City Housing Authority"></option><option value="Dun &amp; Bradstreet"></option><option value="Shell"></option><option value="COX Enterprises"></option><option value="American Family Insurance"></option><option value="Biosense Webster"></option><option value="Cleveland Clinic Hillcrest Hospital"></option><option value="Duke Energy Business Services"></option><option value="Arrow Electronics"></option><option value="Mattel"></option><option value="Wolters Kluwer"></option><option value="MR Cooper"></option><option value="CSC"></option><option value="Medtronic Public"></option><option value="Blue Cross Blue Shield (unspecified)"></option><option value="Regional ONE Health"></option><option value="Royal Bank of Canada"></option><option value="Tsmc Arizona"></option><option value="Arizona Office of Economic Opportunity"></option><option value="Prudential"></option><option value="Daimler Truck Financial Services"></option><option value="Mercedes-Benz"></option><option value="Amplify Cell Technologies"></option><option value="Securian Financial"></option><option value="Hilton Grand Vacations"></option><option value="Henry County School District"></option><option value="HCL"></option><option value="Cleveland Clinic Foundation"></option><option value="Conduent"></option><option value="SSM Health Cardinal Glennon Children S Hospital"></option><option value="Komatsu America"></option><option value="Solutions1"></option><option value="Berkshire Hathaway Specialty Insurance"></option><option value="Mercedes-Benz Financial Services"></option><option value="Texas Department of Transportation"></option><option value="Children S Healthcare of Atlanta Arthur M Blank Hospital"></option><option value="Emerson"></option><option value="XL Catlin Services SE"></option><option value="Motiva Enterprises"></option><option value="Bank of NEW York"></option><option value="C&amp;S Wholesale Grocers"></option><option value="Pacific Investment Management"></option><option value="Independence Blue Cross IBC"></option><option value="Premier"></option><option value="Wipro"></option><option value="Pennsylvania Turnpike Commission"></option><option value="Tesla"></option><option value="Northwestern Mutual Life Insurance"></option><option value="FMR"></option><option value="3M Healthcare US Opco"></option><option value="Costco"></option><option value="Anywhere Real Estate"></option><option value="Cleveland Clinic Fairview Hospital"></option><option value="Newrez"></option><option value="Flagstar Bank FSB"></option><option value="NC Department of Health and Human Services"></option><option value="Ulta Beauty"></option><option value="Jacobi NCB"></option><option value="Sabre"></option><option value="Bnym"></option><option value="Best BUY Purchasing"></option><option value="National Life Insurance"></option><option value="Sammons Financial"></option><option value="Westfield Insurance"></option><option value="Evicore Healthcare"></option><option value="Avnet"></option><option value="Discount Tire"></option><option value="Kraft Heinz"></option><option value="Enact Mortgage Insurance"></option><option value="Siemens Healthineers"></option><option value="New York State Department of Labor"></option><option value="Optum Services"></option><option value="Central Arkansas Veterans Healthcare System"></option><option value="Kraft Foods"></option><option value="Broadridge"></option><option value="Talent 101"></option><option value="Hyundai Autoever America"></option><option value="Texas Health and Human Services"></option><option value="Aveva Software"></option><option value="BIO RAD Laboratories"></option><option value="Equitable Financial Life Insurance"></option><option value="Performance Food"></option><option value="Mitchell International"></option><option value="Penske"></option><option value="Conagra"></option><option value="Clean Earth"></option><option value="Equinix"></option><option value="FIS"></option><option value="Ethicon"></option><option value="Ahold Delhaize USA Services"></option><option value="Siriusxm"></option><option value="Samsung Research America"></option><option value="Genworth North America"></option><option value="Cintas"></option><option value="Zimmer Biomet"></option><option value="Avangrid Management"></option><option value="Everbank"></option><option value="Uber Technologies"></option><option value="Clarios"></option><option value="Vertiv"></option><option value="Lucid"></option><option value="Daikin"></option><option value="Warner Bros Discovery"></option><option value="HF Sinclair"></option><option value="Aetos Healthcare"></option><option value="Ascensus"></option><option value="Cleveland Clinic Lutheran Hospital"></option><option value="Alnylam Pharmaceuticals"></option><option value="Horizon Healthcare Services"></option><option value="Paccar"></option><option value="Hertz"></option><option value="Grange Insurance"></option></datalist>
+</label>
+</div>
+<div class="staffing-grid">
+<div class="staffing-chart">
+<div aria-label="Scatter plot of client companies: placed H-1B filings against the share supplied by the client's largest vendor. The table below lists the same data." class="chart-host" role="img" style="user-select: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0); position: relative;"><img alt="Scatter plot of client companies: placed H-1B filings against the share supplied by the client's largest vendor. The table below lists the same data." src="/_blob/d968707166f6f5203ad20273b4adb4b4" style="display:block;width:100%;height:100%;object-fit:contain"/></div>
+</div>
+<div aria-live="polite" class="staffing-panel">
+<h3>Citigroup</h3>
+<p class="meta">Finance and insurance · 2,156 placed filings ·
+      114 vendors</p>
+<ol>
+<li><span class="name" title="Tata Consultancy Services">Tata Consultancy Services</span>
+<span class="share">25%</span>
+<span class="track"><span class="fill" style="width:24.53617810760668%"></span></span></li>
+<li><span class="name" title="LTIMindtree">LTIMindtree</span>
+<span class="share">20%</span>
+<span class="track"><span class="fill" style="width:20.222634508348794%"></span></span></li>
+<li><span class="name" title="Wipro">Wipro</span>
+<span class="share">8%</span>
+<span class="track"><span class="fill" style="width:7.606679035250464%"></span></span></li>
+<li><span class="name" title="Virtusa">Virtusa</span>
+<span class="share">6%</span>
+<span class="track"><span class="fill" style="width:5.8441558441558445%"></span></span></li>
+<li><span class="name" title="Iris Software">Iris Software</span>
+<span class="share">5%</span>
+<span class="track"><span class="fill" style="width:4.777365491651206%"></span></span></li>
+<li><span class="name" title="Infosys">Infosys</span>
+<span class="share">4%</span>
+<span class="track"><span class="fill" style="width:3.896103896103896%"></span></span></li>
+<li><span class="name" title="Virtusa Consulting Services PVT">Virtusa Consulting Services PVT</span>
+<span class="share">4%</span>
+<span class="track"><span class="fill" style="width:3.5250463821892395%"></span></span></li>
+<li><span class="name" title="Capgemini">Capgemini</span>
+<span class="share">3%</span>
+<span class="track"><span class="fill" style="width:3.061224489795918%"></span></span></li>
+</ol>
+<p class="rest">572 more filings from
+      106 other firms</p></div>
+</div>
+<figcaption>One dot per client company with 20 or more H-1B filings that placed a worker there in the year: further right, more filings; higher up, more of them from a single outsourcing firm. Click a dot or type a name to see who supplies that client.</figcaption>
+<div class="rx-table-block"><h4>The 25 largest clients</h4><p>Filings placed at each client in the year, how many outsourcing firms supply it, and its largest supplier's share.</p>
+<table>
+<thead>
+<tr>
+<th>Client</th>
+<th>Sector</th>
+<th class="num">Filings</th>
+<th class="num">Vendors</th>
+<th>Largest vendor</th>
+<th class="num">Its share</th>
+</tr>
+</thead>
+<tbody><tr><td>Citigroup</td>
+<td class="soft">Finance and insurance</td><td class="num"><span class="rx-cell"><span class="rx-bar"><i style="width: 100.0%"></i></span><span>2,156</span></span></td>
+<td class="num">114</td><td class="soft">Tata Consultancy Services</td>
+<td class="num"><span class="rx-cell"><span class="rx-bar meter"><i style="width: 25.0%"></i></span><span>25%</span></span></td></tr><tr><td>Verizon</td>
+<td class="soft">Information and telecoms</td><td class="num"><span class="rx-cell"><span class="rx-bar"><i style="width: 89.3%"></i></span><span>1,925</span></span></td>
+<td class="num">518</td><td class="soft">Cognizant</td>
+<td class="num"><span class="rx-cell"><span class="rx-bar meter"><i style="width: 10.0%"></i></span><span>10%</span></span></td></tr><tr><td>Bank of America</td>
+<td class="soft">Finance and insurance</td><td class="num"><span class="rx-cell"><span class="rx-bar"><i style="width: 84.4%"></i></span><span>1,819</span></span></td>
+<td class="num">45</td><td class="soft">Randstad</td>
+<td class="num"><span class="rx-cell"><span class="rx-bar meter"><i style="width: 19.0%"></i></span><span>19%</span></span></td></tr><tr><td>Fidelity Investments</td>
+<td class="soft">Finance and insurance</td><td class="num"><span class="rx-cell"><span class="rx-bar"><i style="width: 81.4%"></i></span><span>1,756</span></span></td>
+<td class="num">215</td><td class="soft">Compunnel Software</td>
+<td class="num"><span class="rx-cell"><span class="rx-bar meter"><i style="width: 28.0%"></i></span><span>28%</span></span></td></tr><tr><td>Wells Fargo</td>
+<td class="soft">Finance and insurance</td><td class="num"><span class="rx-cell"><span class="rx-bar"><i style="width: 71.8%"></i></span><span>1,547</span></span></td>
+<td class="num">467</td><td class="soft">Mphasis</td>
+<td class="num"><span class="rx-cell"><span class="rx-bar meter"><i style="width: 6.0%"></i></span><span>6%</span></span></td></tr><tr><td>American Express</td>
+<td class="soft">Finance and insurance</td><td class="num"><span class="rx-cell"><span class="rx-bar"><i style="width: 57.1%"></i></span><span>1,230</span></span></td>
+<td class="num">349</td><td class="soft">Tata Consultancy Services</td>
+<td class="num"><span class="rx-cell"><span class="rx-bar meter"><i style="width: 11.0%"></i></span><span>11%</span></span></td></tr><tr><td>Capital One</td>
+<td class="soft">Finance and insurance</td><td class="num"><span class="rx-cell"><span class="rx-bar"><i style="width: 52.7%"></i></span><span>1,136</span></span></td>
+<td class="num">446</td><td class="soft">Compunnel Software</td>
+<td class="num"><span class="rx-cell"><span class="rx-bar meter"><i style="width: 6.0%"></i></span><span>6%</span></span></td></tr><tr><td>JPMorgan Chase</td>
+<td class="soft">Finance and insurance</td><td class="num"><span class="rx-cell"><span class="rx-bar"><i style="width: 52.2%"></i></span><span>1,125</span></span></td>
+<td class="num">371</td><td class="soft">Mphasis</td>
+<td class="num"><span class="rx-cell"><span class="rx-bar meter"><i style="width: 13.0%"></i></span><span>13%</span></span></td></tr><tr><td>USAA</td>
+<td class="soft">Finance and insurance</td><td class="num"><span class="rx-cell"><span class="rx-bar"><i style="width: 50.3%"></i></span><span>1,085</span></span></td>
+<td class="num">235</td><td class="soft">HCL</td>
+<td class="num"><span class="rx-cell"><span class="rx-bar meter"><i style="width: 29.0%"></i></span><span>29%</span></span></td></tr><tr><td>Apple</td>
+<td class="soft">Manufacturing</td><td class="num"><span class="rx-cell"><span class="rx-bar"><i style="width: 47.3%"></i></span><span>1,020</span></span></td>
+<td class="num">301</td><td class="soft">Infosys</td>
+<td class="num"><span class="rx-cell"><span class="rx-bar meter"><i style="width: 13.0%"></i></span><span>13%</span></span></td></tr><tr><td>T-Mobile</td>
+<td class="soft">Information and telecoms</td><td class="num"><span class="rx-cell"><span class="rx-bar"><i style="width: 42.6%"></i></span><span>919</span></span></td>
+<td class="num">339</td><td class="soft">HCL</td>
+<td class="num"><span class="rx-cell"><span class="rx-bar meter"><i style="width: 7.0%"></i></span><span>7%</span></span></td></tr><tr><td>Walmart</td>
+<td class="soft">Retail</td><td class="num"><span class="rx-cell"><span class="rx-bar"><i style="width: 40.4%"></i></span><span>871</span></span></td>
+<td class="num">302</td><td class="soft">Compunnel Software</td>
+<td class="num"><span class="rx-cell"><span class="rx-bar meter"><i style="width: 11.0%"></i></span><span>11%</span></span></td></tr><tr><td>AT&amp;T</td>
+<td class="soft">Information and telecoms</td><td class="num"><span class="rx-cell"><span class="rx-bar"><i style="width: 39.2%"></i></span><span>845</span></span></td>
+<td class="num">302</td><td class="soft">Tech Mahindra</td>
+<td class="num"><span class="rx-cell"><span class="rx-bar meter"><i style="width: 15.0%"></i></span><span>15%</span></span></td></tr><tr><td>Renewal Rehab</td>
+<td class="soft">Health care</td><td class="num"><span class="rx-cell"><span class="rx-bar"><i style="width: 35.3%"></i></span><span>762</span></span></td>
+<td class="num">2</td><td class="soft">Grandison Management</td>
+<td class="num"><span class="rx-cell"><span class="rx-bar meter"><i style="width: 100.0%"></i></span><span>100%</span></span></td></tr><tr><td>CVS Health</td>
+<td class="soft">Retail</td><td class="num"><span class="rx-cell"><span class="rx-bar"><i style="width: 31.9%"></i></span><span>688</span></span></td>
+<td class="num">186</td><td class="soft">Cognizant</td>
+<td class="num"><span class="rx-cell"><span class="rx-bar meter"><i style="width: 22.0%"></i></span><span>22%</span></span></td></tr><tr><td>Charles Schwab</td>
+<td class="soft">Finance and insurance</td><td class="num"><span class="rx-cell"><span class="rx-bar"><i style="width: 31.2%"></i></span><span>673</span></span></td>
+<td class="num">101</td><td class="soft">Mphasis</td>
+<td class="num"><span class="rx-cell"><span class="rx-bar meter"><i style="width: 22.0%"></i></span><span>22%</span></span></td></tr><tr><td>Elevance Health</td>
+<td class="soft">Finance and insurance</td><td class="num"><span class="rx-cell"><span class="rx-bar"><i style="width: 30.5%"></i></span><span>657</span></span></td>
+<td class="num">141</td><td class="soft">UST Global</td>
+<td class="num"><span class="rx-cell"><span class="rx-bar meter"><i style="width: 31.0%"></i></span><span>31%</span></span></td></tr><tr><td>Freddie Mac</td>
+<td class="soft">Finance and insurance</td><td class="num"><span class="rx-cell"><span class="rx-bar"><i style="width: 29.5%"></i></span><span>636</span></span></td>
+<td class="num">306</td><td class="soft">Hexaware Technologies</td>
+<td class="num"><span class="rx-cell"><span class="rx-bar meter"><i style="width: 24.0%"></i></span><span>24%</span></span></td></tr><tr><td>PNC</td>
+<td class="soft">Finance and insurance</td><td class="num"><span class="rx-cell"><span class="rx-bar"><i style="width: 29.5%"></i></span><span>635</span></span></td>
+<td class="num">62</td><td class="soft">CGI Technologies and Solutions</td>
+<td class="num"><span class="rx-cell"><span class="rx-bar meter"><i style="width: 27.0%"></i></span><span>27%</span></span></td></tr><tr><td>Johnson &amp; Johnson</td>
+<td class="soft">Manufacturing</td><td class="num"><span class="rx-cell"><span class="rx-bar"><i style="width: 27.9%"></i></span><span>602</span></span></td>
+<td class="num">140</td><td class="soft">Tata Consultancy Services</td>
+<td class="num"><span class="rx-cell"><span class="rx-bar meter"><i style="width: 21.0%"></i></span><span>21%</span></span></td></tr><tr><td>Ford</td>
+<td class="soft">Manufacturing</td><td class="num"><span class="rx-cell"><span class="rx-bar"><i style="width: 27.2%"></i></span><span>587</span></span></td>
+<td class="num">88</td><td class="soft">Epitec</td>
+<td class="num"><span class="rx-cell"><span class="rx-bar meter"><i style="width: 10.0%"></i></span><span>10%</span></span></td></tr><tr><td>Charter Communications</td>
+<td class="soft">Information and telecoms</td><td class="num"><span class="rx-cell"><span class="rx-bar"><i style="width: 27.2%"></i></span><span>586</span></span></td>
+<td class="num">281</td><td class="soft">Infosys</td>
+<td class="num"><span class="rx-cell"><span class="rx-bar meter"><i style="width: 13.0%"></i></span><span>13%</span></span></td></tr><tr><td>Morgan Stanley</td>
+<td class="soft">Finance and insurance</td><td class="num"><span class="rx-cell"><span class="rx-bar"><i style="width: 27.0%"></i></span><span>582</span></span></td>
+<td class="num">164</td><td class="soft">Synechron</td>
+<td class="num"><span class="rx-cell"><span class="rx-bar meter"><i style="width: 13.0%"></i></span><span>13%</span></span></td></tr><tr><td>Toyota</td>
+<td class="soft">Manufacturing</td><td class="num"><span class="rx-cell"><span class="rx-bar"><i style="width: 26.1%"></i></span><span>563</span></span></td>
+<td class="num">178</td><td class="soft">Infosys</td>
+<td class="num"><span class="rx-cell"><span class="rx-bar meter"><i style="width: 11.0%"></i></span><span>11%</span></span></td></tr><tr><td>Fiserv</td>
+<td class="soft">Finance and insurance</td><td class="num"><span class="rx-cell"><span class="rx-bar"><i style="width: 25.2%"></i></span><span>544</span></span></td>
+<td class="num">169</td><td class="soft">Infinite Computer Solutions</td>
+<td class="num"><span class="rx-cell"><span class="rx-bar meter"><i style="width: 13.0%"></i></span><span>13%</span></span></td></tr></tbody>
+</table>
+</div>
+<div class="staffing-flows">
+<h3>Who supplies the largest clients</h3>
+<div aria-label="Flow chart: the eight outsourcing firms that place the most H-1B filings, plus one source for all other firms, on the left; the twenty clients that receive the most on the right; a band for the filings between each pair." class="chart-host" role="img" style="user-select: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0); position: relative;"><img alt="Flow chart: the eight outsourcing firms that place the most H-1B filings, plus one source for all other firms, on the left; the twenty clients that receive the most on the right; a band for the filings between each pair." src="/_blob/baf31d572e40493e1f83a76dc482c643" style="display:block;width:100%;height:100%;object-fit:contain"/></div>
+<p class="flows-caption">The eight firms that place the most filings, and the 20 clients that receive the most, in the year chosen above. Hover a firm or a client to follow its bands.
+                      <span class="flows-coverage">The 8 largest firms supply 5,918 of the 22,087 filings these 20 clients receive (27%); every other firm together supplies the rest.</span>
+</p>
+</div>
+</figure>
+<div class="rx-drawers rx-foot"><details class="rx-drawer"><summary>Background</summary><div class="rx-drawer-body"><p>Only three sectors get a colour: finance and insurance, manufacturing and health care. Other known sectors are light grey, and the palest dots are clients with no sector on record.</p><p>Band width is the number of placed filings from a firm to a client; the grey source gathers every other firm. Each client sits next to the named firm that supplies it most.</p></div></details></div>
+</div></div><div class="rx-panel" style="display: {{d3}}"><div class="card w4-card" id="staffing-community-stats">
+<header class="w4-q">
+<span class="w4-num">4</span>
+<div>
+<h2>With filing counts or without?</h2>
+<p class="w4-answer">Filing counts change the grouping: the two partitions share an <span class="w4-term"><button aria-describedby="w4-term-x-nmi" type="button">NMI</button><span class="w4-pop" id="w4-term-x-nmi" role="tooltip">Normalised mutual information: how much two groupings of the same clients agree, from unrelated to identical. Unlike AMI, it is not corrected for chance.</span></span> of <b class="cross">0.38</b>, less than two seeds of either kind (<b class="seeds">0.70</b> weighted, <b class="seeds-plain">0.50</b> unweighted).</p>
+</div>
+</header>
+<div class="w4-two">
+<div>
+<p class="sub">We ran <span class="w4-term"><button aria-describedby="w4-term-x-louvain" type="button">Louvain</button><span class="w4-pop" id="w4-term-x-louvain" role="tooltip">A method that finds groups in a network by moving nodes between groups until the links inside groups are as dense as they can get. It starts from a random order, so two runs can differ.</span></span> on the 2025 firm–client network 100 times each way: with links weighted by filings, and with every link counting one. Filing counts pull clients toward vendors: AMI with each client's main vendor rises from <b class="vendor-plain">0.11</b> to <b class="vendor">0.48</b> when filings count, while AMI with industry stays near <b class="industry">0.07</b>.</p>
+<p class="sub">The <span class="w4-term"><button aria-describedby="w4-term-x-null" type="button">null model</button><span class="w4-pop" id="w4-term-x-null" role="tooltip">A random version of the network that keeps some of its features, here each node's number of partners, to show what chance alone would give.</span></span> rewires the network so every firm and client keeps its number of partners. Without weights the real network wins (<b class="mod-plain">0.57</b> against <b class="null-plain">0.53</b>); with weights it loses (<b class="mod">0.60</b> against <b class="null">0.74</b>).</p>
+<table class="ego">
+<thead>
+<tr>
+<th></th>
+<th style="text-align: right" class="num">Weighted</th>
+<th style="text-align: right" class="num">Unweighted</th>
+</tr>
+</thead>
+<tbody><tr><td>Communities (median run)</td><td style="text-align:right" class="num">70</td><td style="text-align:right" class="num">65</td></tr><tr><td>Modularity, real network</td><td style="text-align:right" class="num">0.60</td><td style="text-align:right" class="num">0.57</td></tr><tr><td>Modularity, rewired null (largest piece)</td><td style="text-align:right" class="num">0.74</td><td style="text-align:right" class="num">0.53</td></tr><tr><td>Modularity, filing counts shuffled</td><td style="text-align:right" class="num">0.75</td><td style="text-align:right" class="num">–</td></tr><tr><td>NMI between two seeds</td><td style="text-align:right" class="num">0.70</td><td style="text-align:right" class="num">0.50</td></tr><tr><td>NMI with client industry</td><td style="text-align:right" class="num">0.14</td><td style="text-align:right" class="num">0.16</td></tr><tr><td>NMI with main vendor</td><td style="text-align:right" class="num">0.69</td><td style="text-align:right" class="num">0.49</td></tr><tr><td>AMI with client industry</td><td style="text-align:right" class="num">0.07</td><td style="text-align:right" class="num">0.07</td></tr><tr><td>AMI with main vendor</td><td style="text-align:right" class="num">0.48</td><td style="text-align:right" class="num">0.11</td></tr><tr><td>Clients in their main vendor's group</td><td style="text-align:right" class="num">86%</td><td style="text-align:right" class="num">47%</td></tr></tbody>
+</table>
+<p class="sub" style="margin-top: 12px">Infomap, which follows a random walk instead of counting links, splits the same network into <b class="im-modules">1,725</b> small modules, most of them a firm with its clients. Like weighted Louvain, it follows the vendor far more than the industry (AMI <b class="im-vendor">0.62</b> against <b class="im-industry">0.06</b>).</p>
+
+<div class="rx-drawers rx-foot"><details class="rx-drawer"><summary>Method</summary><div class="rx-drawer-body"><p>Infomap agrees with Louvain at NMI <b class="im-louvain">0.66</b>. Finer partitions raise every NMI; AMI corrects for that, so it is the number to compare across methods.</p></div></details><details class="rx-drawer"><summary>More numbers</summary><div class="rx-drawer-body"><p>The null also deals the filing counts back out at random. Rewiring breaks the network into a median of <b class="pieces">583</b> pieces, each a free community, so we score each rewired network on its largest piece, as we do the real one. The real network also loses when only the filing counts are shuffled on the real links (<b class="null-weights">0.75</b>). The real counts leave <b class="cross-share">35%</b> of filings on links between groups, against <b class="cross-share-null">23%</b> with shuffled counts: clients that use several firms hold <b class="multi-links">73%</b> of the links but <b class="multi-filings">82%</b> of the filings, and only their links can cross, since a client with one firm sits in that firm's group.</p></div></details></div>
+</div>
+<div>
+<figure class="w4-figure">
+<figcaption><b>Modularity with and without filing counts</b><span>Dots: the real network. Grey: rewired networks, or the real links with their filing counts shuffled.</span></figcaption>
+<div class="w4-figure-body" data-strip="staffing-community-modularity"><svg aria-label="Modularity of the firm-client network, real against rewired networks, with and without filing counts" class="w4-strip" height="212" role="img" viewbox="0 0 520 212" width="520"><line stroke="#e6ecf3" stroke-width="1" x1="190" x2="190" y1="6" y2="178"></line><text fill="#7a8fac" font-size="11" text-anchor="middle" x="190" y="194">0.4</text><line stroke="#e6ecf3" stroke-width="1" x1="258" x2="258" y1="6" y2="178"></line><text fill="#7a8fac" font-size="11" text-anchor="middle" x="258" y="194">0.5</text><line stroke="#e6ecf3" stroke-width="1" x1="326" x2="326" y1="6" y2="178"></line><text fill="#7a8fac" font-size="11" text-anchor="middle" x="326" y="194">0.6</text><line stroke="#e6ecf3" stroke-width="1" x1="393.99999999999994" x2="393.99999999999994" y1="6" y2="178"></line><text fill="#7a8fac" font-size="11" text-anchor="middle" x="393.99999999999994" y="194">0.7</text><line stroke="#e6ecf3" stroke-width="1" x1="462" x2="462" y1="6" y2="178"></line><text fill="#7a8fac" font-size="11" text-anchor="middle" x="462" y="194">0.8</text><text fill="#0f2340" font-size="12" font-weight="600" x="0" y="33">Each link counted once</text><text fill="#7a8fac" font-size="11" x="0" y="48">against rewired</text><line stroke="#dce5f0" stroke-width="1" x1="190" x2="462" y1="36" y2="36"></line><g><rect fill="rgba(185, 196, 210, 0.62)" height="12" rx="6" width="4" x="273.068" y="30"></rect><line stroke="#7a8fac" stroke-width="2" x1="275.068" x2="275.068" y1="27" y2="45"></line></g><text fill="#46618a" font-size="11" font-weight="400" text-anchor="middle" x="275.068" y="61">rewired 0.53</text><circle cx="307.028" cy="36" fill="#0f2340" r="6.5" stroke="#ffffff" stroke-width="2"></circle><text fill="#0f2340" font-size="12" font-weight="700" text-anchor="middle" x="307.028" y="23">0.57</text><rect fill="#eef3f9" height="20" rx="10" width="52.96" x="467.04" y="26"></rect><text fill="#0f2340" font-size="11" font-weight="700" text-anchor="middle" x="493.52000000000004" y="40">z = 46</text><line stroke="#dce5f0" stroke-dasharray="2 3" stroke-width="1" x1="0" x2="520" y1="68" y2="68"></line><text fill="#0f2340" font-size="12" font-weight="600" x="0" y="89">Weighted by filings</text><text fill="#7a8fac" font-size="11" x="0" y="104">against rewired</text><line stroke="#dce5f0" stroke-width="1" x1="190" x2="462" y1="92" y2="92"></line><g><rect fill="rgba(185, 196, 210, 0.62)" height="12" rx="6" width="4" x="416.88800000000003" y="86"></rect><line stroke="#7a8fac" stroke-width="2" x1="418.888" x2="418.888" y1="83" y2="101"></line></g><text fill="#46618a" font-size="11" font-weight="400" text-anchor="middle" x="418.888" y="117">rewired 0.74</text><circle cx="322.872" cy="92" fill="#0f2340" r="6.5" stroke="#ffffff" stroke-width="2"></circle><text fill="#0f2340" font-size="12" font-weight="700" text-anchor="middle" x="322.872" y="79">0.60</text><rect fill="#eef3f9" height="20" rx="10" width="65.28" x="454.72" y="82"></rect><text fill="#0f2340" font-size="11" font-weight="700" text-anchor="middle" x="487.36" y="96">z = -100</text><text fill="#0f2340" font-size="12" font-weight="600" x="0" y="145">Weighted by filings</text><text fill="#7a8fac" font-size="11" x="0" y="160">counts shuffled on real links</text><line stroke="#dce5f0" stroke-width="1" x1="190" x2="462" y1="148" y2="148"></line><g><rect fill="rgba(185, 196, 210, 0.62)" height="12" rx="6" width="4" x="427.63199999999995" y="142"></rect><line stroke="#7a8fac" stroke-width="2" x1="429.63199999999995" x2="429.63199999999995" y1="139" y2="157"></line></g><text fill="#46618a" font-size="11" font-weight="400" text-anchor="end" x="462" y="173">shuffled 0.75</text><circle cx="322.872" cy="148" fill="#0f2340" r="6.5" stroke="#ffffff" stroke-width="2"></circle><text fill="#0f2340" font-size="12" font-weight="700" text-anchor="middle" x="322.872" y="135">0.60</text><rect fill="#eef3f9" height="20" rx="10" width="65.28" x="454.72" y="138"></rect><text fill="#0f2340" font-size="11" font-weight="700" text-anchor="middle" x="487.36" y="152">z = -112</text></svg></div>
+</figure>
+</div>
+</div>
+</div></div><div class="rx-panel" style="display: {{d4}}"><div class="card w4-card" id="staffing-ties">
+<header class="w4-q">
+<span class="w4-num">5</span>
+<div>
+<h2>Strong ties, weak ties and pay</h2>
+<p class="w4-answer">Here the pattern runs the other way, faintly.</p>
+</div>
+</header>
+<div class="w4-two">
+<div>
+<p class="sub">Among friends, the strongest ties sit inside tight groups where your close friends also know each other, and weak ties bridge the groups (Granovetter 1973; Onnela and colleagues confirmed it on millions of phone users in 2007).</p>
+
+
+<div class="rx-drawers rx-foot"><details class="rx-drawer"><summary>Background</summary><div class="rx-drawer-body"><p>A link's <b>overlap</b> measures the tightness: of the firm's other clients and the client's other firms, the share that are linked to each other.</p></div></details><details class="rx-drawer"><summary>More numbers</summary><div class="rx-drawer-body"><p>Over the 28,104 links where overlap is defined, filings and overlap correlate at Spearman -0.04; with the filing counts shuffled over the same links the correlation is 0.00 ± 0.01 (z = -6.3; 2024 gives z = -3.7). Links with one filing have a mean overlap of 0.065, links with 21 or more 0.034. Heavy links mostly belong to the largest firms, whose many clients rarely share other firms, so part of this is size. It agrees with the result above: the real filing counts put weight on links between groups. Each filing states one of four wage levels, from entry (I) to fully competent (IV). Averaged per client over the filings that reach it, the groups explain 13% of the variance in wage level; averaged per firm over all its filings, 3%. None of 1,000 shuffles of the group labels reached either. A client's filings come from the vendors that also decide its group, so part of the 13% is built in. Outsourcing firms file 66% of their applications at level II and 5% at level IV; direct employers file 35% and 22%. From January to June 2026, level IV rose to 17.7% of all filings from 13.6% a year earlier, and level I fell to 18.0% from 21.8%.</p></div></details></div>
+</div>
+<div>
+<figure class="w4-figure">
+<figcaption><b>Heavy links, looser neighbourhoods</b><span><span class="w4-term"><button aria-describedby="w4-term-x-spearman" type="button">Spearman correlation</button><span class="w4-pop" id="w4-term-x-spearman" role="tooltip">A measure of whether two quantities rise together, computed on their ranks rather than their values.</span></span> between a link's filings and its <span class="w4-term"><button aria-describedby="w4-term-x-overlap" type="button">overlap</button><span class="w4-pop" id="w4-term-x-overlap" role="tooltip">Of the firm's other clients and the client's other firms, the share that are linked to each other. High overlap means a tight neighbourhood.</span></span>, against 100 shuffles of the filing counts over the same links.</span></figcaption>
+<div class="w4-figure-body" data-strip="staffing-ties-overlap"><svg aria-label="Correlation of a link's filings with its neighbourhood overlap, real against shuffled filing counts" class="w4-strip" height="104" role="img" viewbox="0 0 520 104" width="520"><line stroke="#e6ecf3" stroke-width="1" x1="175" x2="175" y1="6" y2="70"></line><text fill="#7a8fac" font-size="11" text-anchor="middle" x="175" y="86">-0.06</text><line stroke="#e6ecf3" stroke-width="1" x1="240" x2="240" y1="6" y2="70"></line><text fill="#7a8fac" font-size="11" text-anchor="middle" x="240" y="86">-0.04</text><line stroke="#e6ecf3" stroke-width="1" x1="305" x2="305" y1="6" y2="70"></line><text fill="#7a8fac" font-size="11" text-anchor="middle" x="305" y="86">-0.02</text><line stroke="#e6ecf3" stroke-width="1" x1="370" x2="370" y1="6" y2="70"></line><text fill="#7a8fac" font-size="11" text-anchor="middle" x="370" y="86">0.00</text><line stroke="#e6ecf3" stroke-width="1" x1="435" x2="435" y1="6" y2="70"></line><text fill="#7a8fac" font-size="11" text-anchor="middle" x="435" y="86">0.02</text><line stroke="#e6ecf3" stroke-width="1" x1="500" x2="500" y1="6" y2="70"></line><text fill="#7a8fac" font-size="11" text-anchor="middle" x="500" y="86">0.04</text><line stroke="#7a8fac" stroke-width="1" x1="370" x2="370" y1="6" y2="70"></line><text fill="#0f2340" font-size="12" font-weight="600" x="0" y="35">Filings against overlap</text><text fill="#7a8fac" font-size="11" x="0" y="50">Spearman, 28,104 links</text><line stroke="#dce5f0" stroke-width="1" x1="175" x2="500" y1="38" y2="38"></line><g><rect fill="rgba(185, 196, 210, 0.62)" height="12" rx="6" width="40.30000000000007" x="350.17499999999995" y="32"></rect><line stroke="#7a8fac" stroke-width="2" x1="370.325" x2="370.325" y1="29" y2="47"></line></g><text fill="#46618a" font-size="11" font-weight="400" text-anchor="middle" x="370.325" y="63">counts shuffled</text><circle cx="243.25" cy="38" fill="#0f2340" r="6.5" stroke="#ffffff" stroke-width="2"></circle><text fill="#0f2340" font-size="12" font-weight="700" text-anchor="middle" x="243.25" y="25">-0.04</text></svg></div>
+</figure>
+
+</div>
+</div>
+<div class="rx-fig-row">
+<figure class="w4-figure">
+<figcaption><b>Wage levels as filed</b><span>Share of each kind of employer's 2025 filings at each <span class="w4-term"><button aria-describedby="w4-term-x-wagelevel" type="button">prevailing-wage level</button><span class="w4-pop" id="w4-term-x-wagelevel" role="tooltip">A level set by the experience and skills the job asks for, from entry to fully competent. Each level carries a wage floor.</span></span>.</span></figcaption>
+<div class="w4-figure-body" data-strip="staffing-ties-wage"><svg aria-label="Share of each kind of employer's 2025 filings at each prevailing-wage level" height="112" role="img" viewbox="0 0 520 112" width="520"><text fill="#0f2340" font-size="12" font-weight="600" x="0" y="6">Outsourcing firms</text><rect fill="#1f3558" height="16" width="65.468" x="0" y="10"><title>Level I: 12.6%</title></rect><text fill="#ffffff" font-size="11" font-weight="700" text-anchor="middle" x="32.734" y="21">13%</text><rect fill="#7d95b5" height="16" width="345.228" x="65.468" y="10"><title>Level II: 66.4%</title></rect><text fill="#0f2340" font-size="11" font-weight="700" text-anchor="middle" x="238.082" y="21">66%</text><rect fill="#aebfd6" height="16" width="82.316" x="410.696" y="10"><title>Level III: 15.8%</title></rect><text fill="#0f2340" font-size="11" font-weight="700" text-anchor="middle" x="451.85400000000004" y="21">16%</text><rect fill="#d6e0ec" height="16" width="26.988" x="493.01200000000006" y="10"><title>Level IV: 5.2%</title></rect><text fill="#0f2340" font-size="12" font-weight="600" x="0" y="46">Direct employers</text><rect fill="#1f3558" height="16" width="85.436" x="0" y="50"><title>Level I: 16.4%</title></rect><text fill="#ffffff" font-size="11" font-weight="700" text-anchor="middle" x="42.718" y="61">16%</text><rect fill="#7d95b5" height="16" width="184.236" x="85.436" y="50"><title>Level II: 35.4%</title></rect><text fill="#0f2340" font-size="11" font-weight="700" text-anchor="middle" x="177.554" y="61">35%</text><rect fill="#aebfd6" height="16" width="134.42000000000002" x="269.672" y="50"><title>Level III: 25.9%</title></rect><text fill="#0f2340" font-size="11" font-weight="700" text-anchor="middle" x="336.88200000000006" y="61">26%</text><rect fill="#d6e0ec" height="16" width="115.90799999999999" x="404.09200000000004" y="50"><title>Level IV: 22.3%</title></rect><text fill="#0f2340" font-size="11" font-weight="700" text-anchor="middle" x="462.04600000000005" y="61">22%</text><circle cx="5" cy="96" fill="#1f3558" r="5"></circle><text fill="#7a8fac" font-size="11" x="14" y="100">Level I</text><circle cx="79" cy="96" fill="#7d95b5" r="5"></circle><text fill="#7a8fac" font-size="11" x="88" y="100">Level II</text><circle cx="159" cy="96" fill="#aebfd6" r="5"></circle><text fill="#7a8fac" font-size="11" x="168" y="100">Level III</text><circle cx="245" cy="96" fill="#d6e0ec" r="5"></circle><text fill="#7a8fac" font-size="11" x="254" y="100">Level IV</text></svg></div>
+</figure>
+</div>
+</div></div><div class="rx-panel" style="display: {{d5}}"><div class="card w4-card" id="deeper-strength">
+<header class="w4-q">
+<span class="w4-num">6</span>
+<div>
+<h2>Strength against degree: where do the heavy links go?</h2>
+<p class="w4-answer">Three of the top five are therapy and rehab clinics.</p>
+</div>
+</header>
+<div class="w4-two">
+<div>
+<p class="sub">The course compares a node's degree (how many partners) with
+                          its strength (how many filings over all its links), and finds
+                          the exceptions tell the story.</p>
+
+
+<div class="notice"><span class="ico">💡</span><span><b>What to notice</b> Degree and strength rank firms almost alike (Spearman 0.91) but clients less so (0.75): the heaviest single ties belong to small rehab clinics, led by Ultimate Therapy with 133 filings from one firm.</span></div>
+<div class="rx-drawers rx-foot"><details class="rx-drawer"><summary>More numbers</summary><div class="rx-drawer-body"><p>In the 2025 firm–client
+                          network the two rank firms almost alike (Spearman 0.91) and
+                          clients less so (0.75). The clients with the most filings from
+                          a single firm are Ultimate Therapy, 133 filings from one firm;
+                          Sigma Rehab, 95; Post Rehab Services, 61; and Grady Memorial
+                          Hospital, 58.</p></div></details></div>
+</div>
+<figure class="w4-figure">
+<figcaption><b>The heaviest one-to-one ties</b><span>The clients with the most filings from a single firm. Dark bars: health care.</span></figcaption>
+<div class="w4-figure-body" data-more="strength"><svg aria-label="The clients with the most filings from a single firm; dark bars are health care" class="w4-strip" height="188" role="img" viewbox="0 0 556 188" width="556"><line stroke="#e6ecf3" stroke-width="1" x1="190" x2="190" y1="4" y2="158"></line><text fill="#7a8fac" font-size="11" text-anchor="middle" x="190" y="174">0</text><line stroke="#e6ecf3" stroke-width="1" x1="269" x2="269" y1="4" y2="158"></line><text fill="#7a8fac" font-size="11" text-anchor="middle" x="269" y="174">35</text><line stroke="#e6ecf3" stroke-width="1" x1="348" x2="348" y1="4" y2="158"></line><text fill="#7a8fac" font-size="11" text-anchor="middle" x="348" y="174">70</text><line stroke="#e6ecf3" stroke-width="1" x1="427" x2="427" y1="4" y2="158"></line><text fill="#7a8fac" font-size="11" text-anchor="middle" x="427" y="174">105</text><line stroke="#e6ecf3" stroke-width="1" x1="506" x2="506" y1="4" y2="158"></line><text fill="#7a8fac" font-size="11" text-anchor="middle" x="506" y="174">140</text><text fill="#0f2340" font-size="12" font-weight="700" x="0" y="27">Ultimate Therapy</text><line stroke="#dce5f0" stroke-width="1" x1="190" x2="506" y1="23" y2="23"></line><rect fill="#0f2340" height="18" rx="3" width="300.2" x="190" y="14"><title>Ultimate Therapy: 133 filings from a single firm (health care)</title></rect><text fill="#46618a" font-size="11" x="496.2" y="27">133</text><text fill="#0f2340" font-size="12" font-weight="700" x="0" y="57">Sigma Rehab</text><line stroke="#dce5f0" stroke-width="1" x1="190" x2="506" y1="53" y2="53"></line><rect fill="#0f2340" height="18" rx="3" width="214.42857142857144" x="190" y="44"><title>Sigma Rehab: 95 filings from a single firm (health care)</title></rect><text fill="#46618a" font-size="11" x="410.42857142857144" y="57">95</text><text fill="#0f2340" font-size="12" font-weight="700" x="0" y="87">Post Rehab Services</text><line stroke="#dce5f0" stroke-width="1" x1="190" x2="506" y1="83" y2="83"></line><rect fill="#0f2340" height="18" rx="3" width="137.6857142857143" x="190" y="74"><title>Post Rehab Services: 61 filings from a single firm (health care)</title></rect><text fill="#46618a" font-size="11" x="333.6857142857143" y="87">61</text><text fill="#0f2340" font-size="12" font-weight="700" x="0" y="117">Grady Memorial Hospital</text><line stroke="#dce5f0" stroke-width="1" x1="190" x2="506" y1="113" y2="113"></line><rect fill="#0f2340" height="18" rx="3" width="130.9142857142857" x="190" y="104"><title>Grady Memorial Hospital: 58 filings from a single firm (health care)</title></rect><text fill="#46618a" font-size="11" x="326.9142857142857" y="117">58</text><text fill="#0f2340" font-size="12" font-weight="500" x="0" y="147">Northwestern Mutual Life</text><line stroke="#dce5f0" stroke-width="1" x1="190" x2="506" y1="143" y2="143"></line><rect fill="#7a8fac" height="18" rx="3" width="108.34285714285716" x="190" y="134"><title>Northwestern Mutual Life: 48 filings from a single firm</title></rect><text fill="#46618a" font-size="11" x="304.34285714285716" y="147">48</text></svg></div>
+</figure>
+</div>
+</div></div></section></div></main></div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"start": {"editor": null}, "$preview": {"width": 1440, "height": 2799}}'>
+class Component extends DCLogic {
+constructor(props) { super(props); this.state = { i: Math.min(5, Math.max(0, Number(props.start) || 0)) }; }
+renderVals() {
+const n = 6, i = this.state.i, v = {};
+const on = "background: #eef3f9; color: #0f2340; border-left-color: #14618f;";
+const off = "";
+for (let k = 0; k < n; k++) { v["d" + k] = k === i ? "block" : "none"; v["on" + k] = String(k === i); v["st" + k] = k === i ? on : off; v["pick" + k] = () => this.setState({ i: k }); }
+return v;
+}
+}
+</script>
+</body>
+</html>

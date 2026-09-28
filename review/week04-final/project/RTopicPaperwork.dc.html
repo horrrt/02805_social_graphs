@@ -1,0 +1,373 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>Deep dive · Paperwork, the lottery and green cards</title>
+<script src="./support.js"></script>
+<link rel="stylesheet" href="/_blob/083d154e9dc323e92523c409d0034822">
+<link rel="stylesheet" href="/_blob/668486f5a3998cc03081dad4d6a53e30">
+<link rel="stylesheet" href="/_blob/084ce7df5637b99030ea35613530acf2">
+<link rel="stylesheet" href="/_blob/e84e8b268623a65fa6a20dcee3ec4adf">
+<link rel="stylesheet" href="/_blob/35af9356d607ea8092bc878cace00255">
+<link rel="stylesheet" href="/_blob/70ffa1ecc89c42fb63ac04cfc271ee6b">
+<link rel="stylesheet" href="/_blob/3e4fe45fa83b8895f69f8d519b7b0fe2">
+<link rel="stylesheet" href="/_blob/ffcc56532445103bef94c333132a4fb7">
+<link rel="stylesheet" href="/_blob/4004501ab78099c34bb198c8287d7d41">
+<link rel="stylesheet" href="/_blob/ab074990511da3308f5deb38e148e8c1">
+<link rel="stylesheet" href="/_blob/961bb1102d81f8f791744cf5c49d5ccf">
+<link rel="stylesheet" href="/_blob/ea7fdb7da398599db40546cc6b3f4606">
+</head>
+<body>
+<x-dc>
+<helmet>
+<style>
+@font-face{font-family:"Condensed";src:url("/_blob/9ad036b9f76606ea91d82e15ebec8da3") format("truetype");font-weight:800;font-style:normal}
+body{margin:0;background:#eef3f9}
+.rx{position:relative}
+/* rec 6: the rail, every name on hover */
+.rx .rx-rail{position:absolute;left:64px;top:96px;width:44px;z-index:30}
+.rx .rx-rail ol{list-style:none;margin:0;padding:6px 0;display:flex;flex-direction:column;align-items:center;gap:16px;background:linear-gradient(#dce5f0,#dce5f0) center/2px 100% no-repeat}
+.rx .rx-rail ol.rx-rail-sub{gap:16px;padding:14px 0 4px;background:none}
+.rx .rx-rail li{display:flex;flex-direction:column;align-items:center;position:relative}
+.rx .rx-sq,.rx .rx-dot{position:relative;display:block;box-sizing:border-box;border-radius:999px;font-size:0;color:transparent;cursor:pointer}
+.rx .rx-sq{width:12px;height:12px;background:#fff;border:2px solid #9fb4cf}
+.rx .rx-sq:hover{border-color:#14618f}
+.rx .rx-sq.is-on{width:18px;height:18px;background:#14618f;border-color:#14618f;box-shadow:0 0 0 4px rgba(20,97,143,.18)}
+.rx .rx-dot{width:8px;height:8px;background:#c9d6e6}
+.rx .rx-dot.is-on{background:#0f2340;box-shadow:0 0 0 3px rgba(15,35,64,.14)}
+.rx .rx-lab{display:none;position:absolute;left:calc(50% + 20px);top:50%;transform:translateY(-50%);white-space:nowrap;border-radius:8px;padding:3px 9px;font-size:12px;line-height:1.4;font-weight:600;background:rgba(255,255,255,.97);color:#0f2340;box-shadow:0 1px 3px rgba(15,35,64,.16)}
+.rx .rx-rail:hover .rx-lab{display:block}
+.rx .rx-rail .rx-sq:hover>.rx-lab,.rx .rx-rail .rx-dot:hover>.rx-lab{background:#0f2340;color:#fff}
+/* rec 1: drawers */
+.rx .rx-drawers{display:flex;flex-direction:column;gap:8px;margin-top:14px}
+.rx details.rx-drawer{border:1px solid #dce5f0;border-radius:10px;background:#f7fafd;margin-top:10px}
+.rx .rx-drawers details.rx-drawer{margin-top:0}
+.rx details.rx-drawer>summary{cursor:pointer;list-style:none;padding:9px 14px;font-size:13px;font-weight:700;color:#14618f;display:flex;align-items:center;gap:8px}
+.rx details.rx-drawer>summary::-webkit-details-marker{display:none}
+.rx details.rx-drawer>summary::before{content:"▸";font-size:11px;transition:transform .15s}
+.rx details.rx-drawer[open]>summary::before{transform:rotate(90deg)}
+.rx .rx-drawer-body{padding:0 16px 14px;font-size:13.5px;line-height:1.62;color:#0f2340;max-width:78ch}
+.rx .rx-drawer-body p{margin:0 0 8px}
+/* rec 4: one segmented control */
+.rx .axis-modes,.rx .rx-seg,.rx .staffing-years{display:inline-flex!important;gap:2px!important;padding:3px!important;border-radius:999px!important;background:#eaf0f7!important;border:none!important;box-shadow:none!important;flex-wrap:wrap}
+.rx .axis-modes button,.rx .rx-seg button,.rx .staffing-years button{border:none!important;border-radius:999px!important;padding:6px 14px!important;font:inherit!important;font-size:12.5px!important;font-weight:600!important;color:#46618a!important;background:transparent!important;box-shadow:none!important;cursor:pointer}
+.rx .axis-modes button[aria-pressed="true"],.rx .rx-seg button[aria-pressed="true"],.rx .staffing-years button[aria-pressed="true"]{background:#fff!important;color:#0f2340!important;font-weight:700!important;box-shadow:0 1px 2px rgba(15,35,64,.12)!important}
+.rx .axis-modes-label,.rx .rx-seg-label{text-transform:none!important;letter-spacing:0!important;font-size:12.5px!important;font-weight:700!important;color:#46618a!important}
+.rx .rx-seg-row{display:flex;align-items:center;gap:12px;margin:10px 0}
+/* rec 7 placeholder */
+.rx .rx-todo{border:1px dashed #b9cadf;background:#fff;color:#7a8fac}
+/* topic boards */
+.rx .rx-topic-head{display:flex;align-items:baseline;gap:14px;flex-wrap:wrap}
+.rx .rx-tabs{display:flex;flex-direction:column;gap:2px;padding:12px;border-right:1px solid #eaf0f7;background:#f7fafd;border-radius:14px 0 0 14px}
+.rx .rx-tab{display:flex;gap:10px;align-items:baseline;width:100%;padding:9px 10px;border:none;border-radius:8px;font:inherit;font-size:13px;line-height:1.4;font-weight:600;text-align:left;color:#0f2340;cursor:pointer;background:transparent}
+.rx .rx-tab:hover{background:#fff}
+
+/* rec 3: section 1 start card */
+.rx .rx-kicker{margin:6px 0 0;font-size:13px;color:#46618a}
+.rx .rx-start-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:36px;align-items:start;margin-top:8px}
+.rx .rx-start-grid header.w4-q{margin-bottom:8px}
+.rx .rx-groups{display:flex;flex-direction:column;margin-top:10px}
+.rx .rx-group{padding:10px 0;border-top:1px solid #eaf0f7}
+.rx .rx-group-head{display:flex;align-items:center;gap:8px;font-size:13.5px}
+.rx .rx-group-head i{width:12px;height:12px;border-radius:50%;display:inline-block}
+.rx .rx-group-head span{font-size:12.5px;color:#46618a}
+.rx .rx-group p{margin:4px 0 0 20px;font-size:12.5px;line-height:1.55;color:#46618a}
+.rx .rx-start-notices{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px;margin-top:14px}
+.rx .rx-drawer-body.rx-wide{max-width:none}
+/* topic boards */
+.rx .rx-topic-bar{display:flex;align-items:center;gap:16px;margin:8px 0 16px}
+.rx .rx-back{font-size:13px;font-weight:700;text-decoration:none;color:#14618f;padding:6px 12px;border:1px solid #dce5f0;border-radius:999px;background:#fff}
+.rx .rx-topic-mark{flex:none;width:40px;height:40px;border-radius:10px;background:#14618f;color:#fff;display:inline-flex;align-items:center;justify-content:center;font-size:17px;font-weight:800}
+.rx .rx-topic-title{margin:0;font-size:24px;font-weight:800}
+.rx .rx-topic-holds{margin:2px 0 0;font-size:13.5px;color:#46618a}
+.rx .rx-topic-count{margin-left:auto;font-size:12.5px;color:#46618a}
+.rx .rx-tab-row{display:flex;flex-wrap:wrap;gap:6px;padding:6px;border-radius:14px;background:#eaf0f7;margin-bottom:18px}
+.rx .rx-tab-pill{border:none;border-radius:999px;padding:7px 14px;font:inherit;font-size:12.5px;font-weight:600;cursor:pointer;text-align:left;line-height:1.35}
+.rx .rx-tab-pill b{color:#14618f;margin-right:4px}
+.rx .rx-panel > .card{margin-top:0}
+/* deep-dive catalogue */
+.rx .rx-cut-intro{max-width:68ch}
+.rx .rx-tgrid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;align-items:start;margin-top:18px}
+.rx .rx-tcard{background:#fff;border:1px solid #dce5f0;border-radius:14px;padding:16px;box-shadow:0 1px 2px rgba(15,35,64,.06),0 8px 24px rgba(15,35,64,.05)}
+.rx .rx-tcard-data{background:#f7fafd;box-shadow:none}
+.rx .rx-tcard-head{display:flex;gap:12px;align-items:flex-start;text-decoration:none;color:#0f2340;padding-bottom:10px}
+.rx .rx-tcard-head span{display:flex;flex-direction:column;gap:3px}
+.rx .rx-tcard-head b{font-size:16px}
+.rx .rx-tcard-head em{font-style:normal;font-size:12.5px;line-height:1.45;color:#46618a}
+.rx .rx-tcard ul{list-style:none;margin:0;padding:0}
+.rx .rx-tcard li a{display:flex;gap:10px;align-items:baseline;padding:8px 4px;border-top:1px solid #eaf0f7;text-decoration:none;color:#0f2340;font-size:13px;font-weight:600;line-height:1.4}
+.rx .rx-tcard li a b{flex:none;min-width:22px;color:#14618f;font-size:11.5px}
+.rx .rx-tcard li a span{flex-grow:1}
+.rx .rx-tcard li a i{font-style:normal;color:#14618f;font-weight:700}
+.rx .rx-tcard li a:hover{background:#d9ecf9}
+.rx .rx-moved{margin:16px 0 0;font-size:12.5px;line-height:1.6;color:#46618a}
+.rx .rx-tile-finding{display:block;margin-top:6px;color:#0f2340}
+.rx .rx-toc{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:2px 32px;padding:14px 16px;background:#fff;border:1px solid #dce5f0;border-radius:14px;margin-bottom:22px}
+.rx .rx-toc-col{display:flex;flex-direction:column;gap:2px}
+.rx .rx-toc-head{margin:2px 0 6px 15px;font-size:12px;font-weight:700;color:#7a8fac}
+.rx .rx-toc-item{display:block;width:100%;box-sizing:border-box;text-align:left;border:none;border-left:3px solid transparent;border-radius:0 8px 8px 0;padding:8px 12px;font:inherit;font-size:13.5px;line-height:1.4;font-weight:600;cursor:pointer;background:transparent;color:#46618a}
+.rx .rx-toc-item:hover{background:#f7fafd;color:#0f2340}
+.rx .rx-toc-item b{color:#14618f;margin-right:6px;font-weight:700}
+/* tables */
+.rx main table{width:100%;border-collapse:separate;border-spacing:0;font-size:12.5px;line-height:1.4;background:#fff;border:1px solid #dce5f0;border-radius:10px;overflow:hidden;margin-top:6px}
+.rx main table caption{caption-side:top;text-align:left;font-size:13px;font-weight:700;color:#0f2340;padding:0 2px 8px}
+.rx main table th{background:#f7fafd;color:#46618a;font-size:11.5px;font-weight:600;text-align:left;padding:9px 12px;border-bottom:1px solid #dce5f0;white-space:nowrap}
+.rx main table td{padding:8px 12px;border-top:1px solid #eef3f9;color:#0f2340;vertical-align:middle}
+.rx main table tbody tr:first-child td{border-top:none}
+.rx main table tbody tr:hover td{background:#f7fafd}
+.rx main table td:first-child{font-weight:600}
+.rx main table th.num,.rx main table td.num{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
+.rx main table td.soft{color:#46618a}
+.rx .rx-cell{display:flex;align-items:center;justify-content:flex-end;gap:10px}
+.rx .rx-bar{flex:none;width:72px;height:6px;border-radius:999px;background:#eef3f9;overflow:hidden;display:flex;justify-content:flex-start}
+.rx .rx-bar i{display:block;height:100%;border-radius:999px;background:#14618f}
+.rx .rx-bar.meter i{background:#7fa9cf}
+.rx .rx-table-block{margin-top:18px}
+.rx .rx-table-block h4{margin:0 0 4px;font-size:13px;font-weight:700;color:#0f2340}
+.rx .rx-table-block p{margin:0 0 6px;font-size:12px;color:#46618a}
+/* compact drawers: closed ones sit in one row, an open one takes the full width */
+.rx .rx-drawers{flex-direction:row!important;flex-wrap:wrap;align-items:center;gap:8px!important;margin-top:12px}
+.rx .rx-drawers>details.rx-drawer{flex:0 0 auto;margin:0}
+.rx .rx-drawers>details.rx-drawer[open]{flex:1 1 100%;order:10}
+.rx details.rx-drawer:not([open]){width:fit-content}
+.rx details.rx-drawer>summary{padding:6px 12px}
+.rx .rx-drawers>.w4-tip{margin:0}
+.rx .rx-foot{margin-top:14px}
+.rx .rx-drawer-body>p+p{margin-top:8px}
+.rx .rx-fig-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(0,1fr));gap:28px;margin-top:22px;align-items:start}
+.rx .rx-fig-row>figure,.rx .rx-fig-row>.plot{margin:0}
+.rx .rx-fig-row>:only-child{max-width:58%}
+</style>
+</helmet>
+<div class="corridor rx" style="width: 1440px; height: 1161px; overflow: hidden; background: #eef3f9"><div class="topbar">
+<div class="shell">
+<a class="brand" href="../../">LOG–LOG <b>LEGENDS</b></a>
+<a class="site-link" href="../../#weeks">All posts</a>
+<nav aria-label="Sections of this post" class="topnav">
+<a class="here" href="#opening">Opening</a>
+<a class="" href="#place">Where</a>
+<a href="#jobs">Jobs</a>
+<a href="#who">Staffing</a>
+<a href="#footprint">Giants out</a>
+<a href="#beyond">Beyond</a>
+<a href="#cut">Deep dive</a>
+</nav>
+</div>
+</div><nav class="rx-rail" aria-label="Contents of this post"><ol><li><span class="rx-sq"><span class="rx-lab">0 Opening</span></span></li><li><span class="rx-sq"><span class="rx-lab">1 Where the hiring is</span></span></li><li><span class="rx-sq"><span class="rx-lab">2 Which jobs go together</span></span></li><li><span class="rx-sq"><span class="rx-lab">3 Who staffs whom</span></span></li><li><span class="rx-sq"><span class="rx-lab">4 Without the biggest firms</span></span></li><li><span class="rx-sq"><span class="rx-lab">5 Beyond the three networks</span></span></li><li><span class="rx-sq"><span class="rx-lab">Closing</span></span></li><li><span class="rx-sq is-on"><span class="rx-lab">Deep dive</span></span><ol class="rx-rail-sub"><li><span class="rx-dot"><span class="rx-lab">Where the hiring is</span></span></li><li><span class="rx-dot"><span class="rx-lab">Jobs and skills</span></span></li><li><span class="rx-dot"><span class="rx-lab">Outsourcing firms and their clients</span></span></li><li><span class="rx-dot is-on"><span class="rx-lab">Paperwork, the lottery and green cards</span></span></li><li><span class="rx-dot"><span class="rx-lab">Five years</span></span></li><li><span class="rx-dot"><span class="rx-lab">Data and methods</span></span></li></ol></li></ol></nav><main id="main"><div class="shell"><section class="step" id="cut">
+<div class="rx-topic-bar"><a class="rx-back" href="RDeep.dc.html">← Deep dive</a><div><h2 class="rx-topic-title">Paperwork, the lottery and green cards</h2><p class="rx-topic-holds">What happens around a filing: the lawyers, the draw, USCIS and the green card after it.</p></div><span class="rx-topic-count">6 boxes</span></div>
+<nav class="rx-toc" aria-label="Boxes in this topic" style="grid-auto-flow: column; grid-template-rows: repeat(3, auto)"><button type="button" class="rx-toc-item" onClick="{{pick0}}" aria-pressed="{{on0}}" style="{{st0}}">Who files the paperwork?</button><button type="button" class="rx-toc-item" onClick="{{pick1}}" aria-pressed="{{on1}}" style="{{st1}}">Do the firms that register the same workers staff the same clients?</button><button type="button" class="rx-toc-item" onClick="{{pick2}}" aria-pressed="{{on2}}" style="{{st2}}">The lottery a year apart, and who receives the winners</button><button type="button" class="rx-toc-item" onClick="{{pick3}}" aria-pressed="{{on3}}" style="{{st3}}">USCIS denials, year by year</button><button type="button" class="rx-toc-item" onClick="{{pick4}}" aria-pressed="{{on4}}" style="{{st4}}">Who keeps them? Green cards as the strong tie</button><button type="button" class="rx-toc-item" onClick="{{pick5}}" aria-pressed="{{on5}}" style="{{st5}}">Where are they from? A network of countries</button></nav><div class="rx-panel" style="display: {{d0}}"><div class="staffing-prose w4-card" id="staffing-lawyers" style="margin-top: 18px">
+<header class="w4-q">
+<span class="w4-num">1</span>
+<div>
+<h2>Who files the paperwork?</h2>
+<p class="w4-answer">Three filings in four name an outside law firm, and five firms file 40% of those.</p>
+</div>
+</header>
+<div class="w4-two">
+<div>
+
+<div class="rx-drawers rx-foot"><details class="rx-drawer"><summary>Background</summary><div class="rx-drawer-body"><p>Two law firms share filings when the same employer uses both: for each such employer, the smaller of its filings through either. That network has one giant hub, the case the <span class="w4-term"><button aria-describedby="w4-term-x-disparity" type="button">disparity filter</button><span class="w4-pop" id="w4-term-x-disparity" role="tooltip">A way to thin a network: it keeps a link only when its weight is larger than chance would give, judged against each firm's own total. α sets how strict that test is.</span></span> was made for. A weight threshold of four shared filings keeps 771 links and spends 26% of them on the five largest firms. The disparity filter at α = 0.2 keeps 697 and spends 19%. It also keeps 115 small firms the threshold drops, such as one law office whose link to BBI Law Group is 3 of its 5 shared filings and 3 of BBI's 342. The threshold keeps the larger connected core, 395 firms against the filter's 351. Another 144 firms stay only because they form a pair linked to nobody else, where neither end can judge the link.</p><p><span class="w4-term"><button aria-describedby="w4-term-x-louvain" type="button">Louvain</button><span class="w4-pop" id="w4-term-x-louvain" role="tooltip">A method that finds groups in a network by moving nodes between groups until the links inside groups are as dense as they can get.</span></span> finds 34 groups at <span class="w4-term"><button aria-describedby="w4-term-x-modularity" type="button">modularity</button><span class="w4-pop" id="w4-term-x-modularity" role="tooltip">How much more of the link weight falls inside the groups than a random network would put there. Higher means cleaner groups.</span></span> 0.67, against 0.55 for rewired networks that keep each employer's and each law firm's number of partners (z = 12). The groups are barely regional (<span class="w4-term"><button aria-describedby="w4-term-x-nmi" type="button">NMI</button><span class="w4-pop" id="w4-term-x-nmi" role="tooltip">Normalised mutual information: how much two groupings of the same items agree, from 0 (unrelated) to 1 (identical).</span></span> 0.05 with Census regions, though above every shuffle), and the largest gather around shared employers. Google, Apple and Meta share Fragomen, Ogletree Deakins and Berry Appleman &amp; Leiden; Tata Consultancy, LTIMindtree and Salesforce share Usilaw, Goel &amp; Anderson and Chugh; Vialto, once PwC's law firm, serves Doordash and Databricks. The groups move from year to year: 2024 and 2025 agree at NMI 0.30 on the 1,041 law firms in both, against 0.88 between two runs of 2025.</p></div></details><details class="rx-drawer"><summary>More numbers</summary><div class="rx-drawer-body"><p>Fragomen alone files 78,531 for 3,129 employers. Outsourcing firms mostly do without: they file 52% of their applications with no outside firm and send 3% to the five largest, while direct employers send those five 48%. Per employer the averages are 2% and 30%, and none of 1,000 shuffles of which employer is which produced a gap that wide.</p></div></details></div>
+</div>
+<div>
+<figure class="w4-figure">
+<figcaption><b>Who uses an outside law firm</b><span>Pooled over employers with 20 or more filings, 2025. Orange: outsourcing firms; the dashed line marks direct employers.</span></figcaption>
+<div class="w4-figure-body" data-strip="staffing-lawyers-outsourcing"><svg aria-label="Law-firm use: outsourcing firms against direct employers, 2025" class="w4-strip" height="156" role="img" viewbox="0 0 520 156" width="520"><line stroke="#e6ecf3" stroke-width="1" x1="175" x2="175" y1="6" y2="122"></line><text fill="#7a8fac" font-size="11" text-anchor="middle" x="175" y="138">0%</text><line stroke="#e6ecf3" stroke-width="1" x1="283.33333333333337" x2="283.33333333333337" y1="6" y2="122"></line><text fill="#7a8fac" font-size="11" text-anchor="middle" x="283.33333333333337" y="138">20%</text><line stroke="#e6ecf3" stroke-width="1" x1="391.6666666666667" x2="391.6666666666667" y1="6" y2="122"></line><text fill="#7a8fac" font-size="11" text-anchor="middle" x="391.6666666666667" y="138">40%</text><line stroke="#e6ecf3" stroke-width="1" x1="500" x2="500" y1="6" y2="122"></line><text fill="#7a8fac" font-size="11" text-anchor="middle" x="500" y="138">60%</text><text fill="#0f2340" font-size="12" font-weight="600" x="0" y="33">No outside law firm</text><text fill="#7a8fac" font-size="11" x="0" y="48">share of filings</text><line stroke="#dce5f0" stroke-width="1" x1="175" x2="500" y1="36" y2="36"></line><line stroke="#46618a" stroke-dasharray="3 2" stroke-width="1.4" x1="304.56666666666666" x2="304.56666666666666" y1="26" y2="46"></line><text fill="#46618a" font-size="11" font-weight="400" text-anchor="middle" x="304.56666666666666" y="61">direct 24%</text><circle cx="458.7791666666667" cy="36" fill="--w4-vis-client" r="6.5" stroke="#ffffff" stroke-width="2"><title>Outsourcing firms</title></circle><text fill="#0f2340" font-size="12" font-weight="700" text-anchor="middle" x="458.7791666666667" y="23">52%</text><text fill="#0f2340" font-size="12" font-weight="600" x="0" y="89">To the five largest firms</text><text fill="#7a8fac" font-size="11" x="0" y="104">share of filings</text><line stroke="#dce5f0" stroke-width="1" x1="175" x2="500" y1="92" y2="92"></line><line stroke="#46618a" stroke-dasharray="3 2" stroke-width="1.4" x1="434.24166666666673" x2="434.24166666666673" y1="82" y2="102"></line><text fill="#46618a" font-size="11" font-weight="400" text-anchor="middle" x="434.24166666666673" y="117">direct 48%</text><circle cx="192.60416666666666" cy="92" fill="--w4-vis-client" r="6.5" stroke="#ffffff" stroke-width="2"><title>Outsourcing firms</title></circle><text fill="#0f2340" font-size="12" font-weight="700" text-anchor="middle" x="192.60416666666666" y="79">3%</text></svg></div>
+</figure>
+<figure class="w4-figure" style="margin-top: 14px">
+<figcaption><b>The five largest law firms</b><span>Certified H-1B filings each prepared in 2025.</span></figcaption>
+<div class="w4-figure-body" data-strip="staffing-lawyers-top5"><svg aria-label="The five law firms that file the most, 2025" height="182" role="img" viewbox="0 0 520 182" width="520"><text fill="#0f2340" font-size="12" font-weight="600" x="0" y="29">Fragomen</text><line stroke="#dce5f0" stroke-width="1" x1="216" x2="508" y1="25" y2="25"></line><rect fill="#0f2340" height="14" rx="4" width="278.0952380952381" x="216" y="18"><title>78,531 certified filings, 2025</title></rect><text fill="#ffffff" font-size="12" font-weight="700" text-anchor="end" x="488.0952380952381" y="29">78,531</text><text fill="#0f2340" font-size="12" font-weight="600" x="0" y="63">Berry Appleman &amp; Leiden</text><line stroke="#dce5f0" stroke-width="1" x1="216" x2="508" y1="59" y2="59"></line><rect fill="#0f2340" height="14" rx="4" width="135.86583642128585" x="216" y="52"><title>38,367 certified filings, 2025</title></rect><text fill="#ffffff" font-size="12" font-weight="700" text-anchor="end" x="345.86583642128585" y="63">38,367</text><text fill="#0f2340" font-size="12" font-weight="600" x="0" y="97">Ogletree Deakins</text><line stroke="#dce5f0" stroke-width="1" x1="216" x2="508" y1="93" y2="93"></line><rect fill="#0f2340" height="14" rx="4" width="72.09207646843743" x="216" y="86"><title>20,358 certified filings, 2025</title></rect><text fill="#ffffff" font-size="12" font-weight="700" text-anchor="end" x="282.0920764684374" y="97">20,358</text><text fill="#0f2340" font-size="12" font-weight="600" x="0" y="131">EY Law</text><line stroke="#dce5f0" stroke-width="1" x1="216" x2="508" y1="127" y2="127"></line><rect fill="#0f2340" height="14" rx="4" width="49.49911803103538" x="216" y="120"><title>13,978 certified filings, 2025</title></rect><text fill="#ffffff" font-size="12" font-weight="700" text-anchor="end" x="259.4991180310354" y="131">13,978</text><text fill="#0f2340" font-size="12" font-weight="600" x="0" y="165">Corporate Immigration Partners</text><line stroke="#dce5f0" stroke-width="1" x1="216" x2="508" y1="161" y2="161"></line><rect fill="#0f2340" height="14" rx="4" width="42.52646361673368" x="216" y="154"><title>12,009 certified filings, 2025</title></rect><text fill="#ffffff" font-size="12" font-weight="700" text-anchor="end" x="252.52646361673368" y="165">12,009</text></svg></div>
+</figure>
+</div>
+</div>
+</div></div><div class="rx-panel" style="display: {{d1}}"><div class="card w4-card" id="staffing-lottery">
+<header class="w4-q">
+<span class="w4-num">2</span>
+<div>
+<h2>Do the firms that register the same workers staff the same clients?</h2>
+<p class="w4-answer">No. Firms that register the same workers are spread across the staffing groups.</p>
+</div>
+</header>
+<div class="w4-two">
+<div>
+<p class="sub">We took the 2,942 firms in the 2023 staffing network that sent 20 or more registrations to the March 2023 draw, and split them at the median share of workers another employer had also registered (78%).</p>
+
+
+<div class="rx-drawers rx-foot"><details class="rx-drawer"><summary>More numbers</summary><div class="rx-drawer-body"><p>If the high firms clustered, a high firm's Louvain group would be mostly high firms. It is 51.2% high, against 50.0% when the labels are shuffled (p = 0.001 over 1,000 shuffles), and <span class="w4-term"><button aria-describedby="w4-term-x-ami" type="button">AMI</button><span class="w4-pop" id="w4-term-x-ami" role="tooltip">Adjusted mutual information: how closely two ways of grouping the same firms agree. 0 is what chance gives, 1 is a perfect match.</span></span> with the groups is 0.004 over 100 runs. The March 2022 draw against the 2022 network gives 51.9% against 50.0%. The lottery data is USCIS's, obtained by Bloomberg News.</p></div></details></div>
+</div>
+<div>
+<figure class="w4-figure">
+<figcaption><b>Do high firms cluster?</b><span>Share of high firms in a high firm's group. Dashed: the same with the labels shuffled.</span></figcaption>
+<div class="w4-figure-body" data-strip="staffing-lottery-mates"><svg aria-label="Share of high firms in a high firm's group, real against shuffled labels" class="w4-strip" height="104" role="img" viewbox="0 0 520 104" width="520"><line stroke="#e6ecf3" stroke-width="1" x1="175" x2="175" y1="6" y2="70"></line><text fill="#7a8fac" font-size="11" text-anchor="middle" x="175" y="86">45%</text><line stroke="#e6ecf3" stroke-width="1" x1="283.3333333333333" x2="283.3333333333333" y1="6" y2="70"></line><text fill="#7a8fac" font-size="11" text-anchor="middle" x="283.3333333333333" y="86">50%</text><line stroke="#e6ecf3" stroke-width="1" x1="391.6666666666668" x2="391.6666666666668" y1="6" y2="70"></line><text fill="#7a8fac" font-size="11" text-anchor="middle" x="391.6666666666668" y="86">55%</text><line stroke="#e6ecf3" stroke-width="1" x1="500" x2="500" y1="6" y2="70"></line><text fill="#7a8fac" font-size="11" text-anchor="middle" x="500" y="86">60%</text><text fill="#0f2340" font-size="12" font-weight="600" x="0" y="35">High firms' groups</text><text fill="#7a8fac" font-size="11" x="0" y="50">share of high firms</text><line stroke="#dce5f0" stroke-width="1" x1="175" x2="500" y1="38" y2="38"></line><line stroke="#46618a" stroke-dasharray="3 2" stroke-width="1.4" x1="283.1166666666667" x2="283.1166666666667" y1="28" y2="48"></line><text fill="#46618a" font-size="11" font-weight="400" text-anchor="middle" x="283.1166666666667" y="63">shuffled 50.0%</text><circle cx="309.55" cy="38" fill="#0f2340" r="6.5" stroke="#ffffff" stroke-width="2"></circle><text fill="#0f2340" font-size="12" font-weight="700" text-anchor="middle" x="309.55" y="25">51.2%</text></svg></div>
+</figure>
+
+</div>
+</div>
+<div class="rx-fig-row">
+<figure class="w4-figure">
+<figcaption><b>Agreement with the groups</b><span>AMI between the high/low split and the staffing groups; the line spans 100 runs.</span></figcaption>
+<div class="w4-figure-body" data-strip="staffing-lottery-ami"><svg aria-label="AMI between high and low firms' registrations and the staffing groups" class="w4-strip" height="104" role="img" viewbox="0 0 520 104" width="520"><line stroke="#e6ecf3" stroke-width="1" x1="175" x2="175" y1="6" y2="70"></line><text fill="#7a8fac" font-size="11" text-anchor="middle" x="175" y="86">0.000</text><line stroke="#e6ecf3" stroke-width="1" x1="256.25" x2="256.25" y1="6" y2="70"></line><text fill="#7a8fac" font-size="11" text-anchor="middle" x="256.25" y="86">0.025</text><line stroke="#e6ecf3" stroke-width="1" x1="337.5" x2="337.5" y1="6" y2="70"></line><text fill="#7a8fac" font-size="11" text-anchor="middle" x="337.5" y="86">0.050</text><line stroke="#e6ecf3" stroke-width="1" x1="418.75" x2="418.75" y1="6" y2="70"></line><text fill="#7a8fac" font-size="11" text-anchor="middle" x="418.75" y="86">0.075</text><line stroke="#e6ecf3" stroke-width="1" x1="500" x2="500" y1="6" y2="70"></line><text fill="#7a8fac" font-size="11" text-anchor="middle" x="500" y="86">0.100</text><line stroke="#7a8fac" stroke-width="1" x1="175" x2="175" y1="6" y2="70"></line><text fill="#0f2340" font-size="12" font-weight="600" x="0" y="35">AMI with the groups</text><text fill="#7a8fac" font-size="11" x="0" y="50">median of 100 runs</text><line stroke="#dce5f0" stroke-width="1" x1="175" x2="500" y1="38" y2="38"></line><g><line stroke="#0f2340" stroke-width="2" x1="180.85" x2="199.375" y1="38" y2="38"></line><line stroke="#0f2340" stroke-width="2" x1="180.85" x2="180.85" y1="33" y2="43"></line><line stroke="#0f2340" stroke-width="2" x1="199.375" x2="199.375" y1="33" y2="43"></line></g><circle cx="187.025" cy="38" fill="#0f2340" r="6.5" stroke="#ffffff" stroke-width="2"></circle><text fill="#0f2340" font-size="12" font-weight="700" text-anchor="start" x="175" y="25">0.004</text></svg></div>
+</figure>
+</div>
+</div></div><div class="rx-panel" style="display: {{d2}}"><div class="card w4-card" id="deeper-lottery">
+<header class="w4-q">
+<span class="w4-num">3</span>
+<div>
+<h2>The lottery a year apart, and who receives the winners</h2>
+<p class="w4-answer">One approved petition took 5.2 registrations in 2022 and 8.5 in 2023.</p>
+</div>
+</header>
+<div class="w4-two">
+<div>
+<p class="sub">The ratio divides each year's registrations by its approved petitions, using USCIS's lottery files, obtained by Bloomberg News.</p>
+
+
+<div class="notice"><span class="ico">💡</span><span><b>What to notice</b> The two draws this box can split by employer were the most crowded: registrations per selection rose from 2.2 in March 2020 to 4.0 in March 2023, then fell to 2.9 by March 2025 once each worker counted once.</span></div>
+<div class="rx-drawers rx-foot"><details class="rx-drawer"><summary>Method</summary><div class="rx-drawer-body"><p>The every-draw chart divides eligible by selected registrations from the historical table on USCIS's H-1B Electronic Registration Process page; its selections include later rounds, so its ratio is lower than the one per approved petition.</p></div></details><details class="rx-drawer"><summary>More numbers</summary><div class="rx-drawer-body"><p>Between the March 2022 and March 2023 draws, <span class="w4-term"><button aria-describedby="w4-term-x-registrations" type="button">registrations</button><span class="w4-pop" id="w4-term-x-registrations" role="tooltip">Entries in the H-1B lottery. Each spring employers register the workers they want to sponsor, and USCIS draws at random from the entries.</span></span> for
+                          a worker whom another employer had also registered rose from
+                          35% to 54% of the total, and the share of drawn registrations
+                          that became a petition fell from 74% to 49%.  The
+                          order held both years: direct employers needed the fewest (4.3,
+                          then 5.1), placing firms more (6.3, then 9.1). Of the March
+                          2023 petitions, 20% lead to a client company, 66% of those
+                          through placing firms. Citigroup received 342, 94% through
+                          placing firms; Microsoft 150, 95%, with LTIMindtree supplying
+                          47%; AT&amp;T 153, with Tech Mahindra supplying 41%. USCIS also
+                          denied 2.0% of the placing firms' lottery petitions against
+                          1.1% of direct employers'.</p></div></details></div>
+</div>
+<div style="display: flex; flex-direction: column; gap: 22px"><figure class="w4-figure"><figcaption><b>Every draw since 2020</b><span>Eligible registrations per selected registration, from USCIS's published totals; the line under each date is the share of registrations for a worker registered more than once. From March 2024 USCIS drew by person, not by registration.</span></figcaption><div class="w4-figure-body"><svg viewBox="0 0 556 250" width="556" height="250" role="img" aria-label="Eligible registrations per selected registration, every draw from March 2020 to March 2025" style="display:block;max-width:100%"><rect x="214.8" y="12" width="150.4" height="182" rx="8" fill="#eef3f9"/><text x="290.0" y="24" text-anchor="middle" font-size="11" font-weight="700" fill="#14618f">The draws this box splits by employer</text><line x1="44" x2="536" y1="194.0" y2="194.0" stroke="#eaf0f7"/><text x="36" y="198.0" text-anchor="end" font-size="10.5" fill="#7a8fac">0</text><line x1="44" x2="536" y1="157.6" y2="157.6" stroke="#eaf0f7"/><text x="36" y="161.6" text-anchor="end" font-size="10.5" fill="#7a8fac">1</text><line x1="44" x2="536" y1="121.1" y2="121.1" stroke="#eaf0f7"/><text x="36" y="125.1" text-anchor="end" font-size="10.5" fill="#7a8fac">2</text><line x1="44" x2="536" y1="84.7" y2="84.7" stroke="#eaf0f7"/><text x="36" y="88.7" text-anchor="end" font-size="10.5" fill="#7a8fac">3</text><line x1="44" x2="536" y1="48.2" y2="48.2" stroke="#eaf0f7"/><text x="36" y="52.2" text-anchor="end" font-size="10.5" fill="#7a8fac">4</text><polyline points="44.0,115.1 142.4,110.7 240.8,58.5 339.2,47.2 437.6,67.2 536.0,89.7" fill="none" stroke="#0f2340" stroke-width="2.4" stroke-linejoin="round"/><g><title>March 2020: 269,424 eligible registrations, 124,415 selected, 2.2 per selection; 10% for workers registered more than once</title><circle cx="44.0" cy="115.1" r="4" fill="#ffffff" stroke="#0f2340" stroke-width="2"/></g><text x="44.0" y="105.1" text-anchor="middle" font-size="11.5" font-weight="700" fill="#0f2340">2.2</text><text x="44.0" y="212" text-anchor="middle" font-size="11" font-weight="500" fill="#46618a">Mar 2020</text><text x="44.0" y="228" text-anchor="middle" font-size="10.5" fill="#7a8fac">10% multi</text><g><title>March 2021: 301,447 eligible registrations, 131,924 selected, 2.3 per selection; 30% for workers registered more than once</title><circle cx="142.4" cy="110.7" r="4" fill="#ffffff" stroke="#0f2340" stroke-width="2"/></g><text x="142.4" y="100.7" text-anchor="middle" font-size="11.5" font-weight="700" fill="#0f2340">2.3</text><text x="142.4" y="212" text-anchor="middle" font-size="11" font-weight="500" fill="#46618a">Mar 2021</text><text x="142.4" y="228" text-anchor="middle" font-size="10.5" fill="#7a8fac">30% multi</text><g><title>March 2022: 474,421 eligible registrations, 127,600 selected, 3.7 per selection; 35% for workers registered more than once</title><circle cx="240.8" cy="58.5" r="5" fill="#0f2340" stroke="#0f2340" stroke-width="2"/></g><text x="240.8" y="48.5" text-anchor="middle" font-size="11.5" font-weight="700" fill="#0f2340">3.7</text><text x="240.8" y="212" text-anchor="middle" font-size="11" font-weight="700" fill="#0f2340">Mar 2022</text><text x="240.8" y="228" text-anchor="middle" font-size="10.5" fill="#7a8fac">35% multi</text><g><title>March 2023: 758,994 eligible registrations, 188,400 selected, 4.0 per selection; 54% for workers registered more than once</title><circle cx="339.2" cy="47.2" r="5" fill="#0f2340" stroke="#0f2340" stroke-width="2"/></g><text x="339.2" y="37.2" text-anchor="middle" font-size="11.5" font-weight="700" fill="#0f2340">4.0</text><text x="339.2" y="212" text-anchor="middle" font-size="11" font-weight="700" fill="#0f2340">Mar 2023</text><text x="339.2" y="228" text-anchor="middle" font-size="10.5" fill="#7a8fac">54% multi</text><g><title>March 2024: 470,342 eligible registrations, 135,137 selected, 3.5 per selection; 10% for workers registered more than once</title><circle cx="437.6" cy="67.2" r="4" fill="#ffffff" stroke="#0f2340" stroke-width="2"/></g><text x="437.6" y="57.2" text-anchor="middle" font-size="11.5" font-weight="700" fill="#0f2340">3.5</text><text x="437.6" y="212" text-anchor="middle" font-size="11" font-weight="500" fill="#46618a">Mar 2024</text><text x="437.6" y="228" text-anchor="middle" font-size="10.5" fill="#7a8fac">10% multi</text><g><title>March 2025: 343,981 eligible registrations, 120,141 selected, 2.9 per selection; 2% for workers registered more than once</title><circle cx="536.0" cy="89.7" r="4" fill="#ffffff" stroke="#0f2340" stroke-width="2"/></g><text x="536.0" y="79.7" text-anchor="middle" font-size="11.5" font-weight="700" fill="#0f2340">2.9</text><text x="536.0" y="212" text-anchor="middle" font-size="11" font-weight="500" fill="#46618a">Mar 2025</text><text x="536.0" y="228" text-anchor="middle" font-size="10.5" fill="#7a8fac">2% multi</text><line x1="388.4" x2="388.4" y1="30" y2="194" stroke="#7a8fac" stroke-dasharray="3 3"/><text x="394.4" y="186" font-size="10.5" fill="#46618a">one entry per worker from here</text></svg></div></figure></div>
+</div>
+<div class="rx-fig-row">
+<figure class="w4-figure">
+<figcaption><b>Registrations per approved petition</b><span>Each line joins one kind of employer across the two draws Bloomberg's USCIS files cover.</span></figcaption>
+<div class="w4-figure-body" data-more="lottery"><svg viewBox="0 0 556 210" width="556" height="210" role="img" aria-label="Registrations per approved petition by kind of employer, March 2022 against March 2023" style="display:block;max-width:100%"><line x1="190" x2="190" y1="8" y2="180" stroke="#eaf0f7"/><line x1="366" x2="366" y1="8" y2="180" stroke="#eaf0f7"/><text x="190" y="200" text-anchor="middle" font-size="12" font-weight="600" fill="#46618a">March 2022</text><text x="366" y="200" text-anchor="middle" font-size="12" font-weight="600" fill="#46618a">March 2023</text><g><title>All employers: 5.2 registrations per approval in March 2022, 8.5 in March 2023</title><line x1="190" x2="366" y1="133.7" y2="52.7" stroke="#0f2340" stroke-width="2.4"/><circle cx="190" cy="133.7" r="4.5" fill="#0f2340"/><circle cx="366" cy="52.7" r="4.5" fill="#0f2340"/></g><text x="180" y="137.7" text-anchor="end" font-size="12" font-weight="700" fill="#0f2340">All employers 5.2</text><text x="376" y="56.7" font-size="12" font-weight="700" fill="#0f2340">8.5</text><g><title>Placing firms: 6.3 registrations per approval in March 2022, 9.1 in March 2023</title><line x1="190" x2="366" y1="107.6" y2="37.7" stroke="#f2820c" stroke-width="2.4"/><circle cx="190" cy="107.6" r="4.5" fill="#f2820c"/><circle cx="366" cy="37.7" r="4.5" fill="#f2820c"/></g><text x="180" y="111.6" text-anchor="end" font-size="12" font-weight="700" fill="#f2820c">Placing firms 6.3</text><text x="376" y="41.7" font-size="12" font-weight="700" fill="#f2820c">9.1</text><g><title>Direct employers: 4.3 registrations per approval in March 2022, 5.1 in March 2023</title><line x1="190" x2="366" y1="156.8" y2="135.6" stroke="#1f8fd6" stroke-width="2.4"/><circle cx="190" cy="156.8" r="4.5" fill="#1f8fd6"/><circle cx="366" cy="135.6" r="4.5" fill="#1f8fd6"/></g><text x="180" y="160.8" text-anchor="end" font-size="12" font-weight="700" fill="#1f8fd6">Direct employers 4.3</text><text x="376" y="139.6" font-size="12" font-weight="700" fill="#1f8fd6">5.1</text></svg></div>
+</figure>
+</div>
+</div></div><div class="rx-panel" style="display: {{d3}}"><div class="card w4-card" id="deeper-uscis">
+<header class="w4-q">
+<span class="w4-num">4</span>
+<div>
+<h2>USCIS denials, year by year</h2>
+<p class="w4-answer">Share of first-time H-1B petitions USCIS denied, for employers with 20 or more certified filings that year.</p>
+</div>
+</header>
+<p class="sub">
+                       From the <span class="w4-term"><button aria-describedby="w4-term-x-hub" type="button">hub</button><span class="w4-pop" id="w4-term-x-hub" role="tooltip">USCIS's H-1B Employer Data Hub, which publishes approved and denied petitions per employer.</span></span>'s
+                      Tableau export; 2026 runs October to June. Placing firms put half or more of their filings at a client.
+                    </p>
+<table class="ego rx-den">
+<thead>
+<tr>
+<th>Year</th>
+<th class="num">Placing firms denied</th>
+<th class="num">Direct employers denied</th>
+<th class="num">Placing firms counted</th>
+<th class="num">Direct employers counted</th>
+</tr>
+</thead>
+<tbody>
+<tr><td>2022</td><td class="num"><span class="rx-cell"><span class="rx-bar"><i style="width: 67.8%; background: #f2820c"></i></span><span>2.71%</span></span></td><td class="num"><span class="rx-cell"><span class="rx-bar"><i style="width: 30.5%; background: #1f8fd6"></i></span><span>1.22%</span></span></td><td class="num">1,057</td><td class="num">2,288</td></tr>
+<tr><td>2023</td><td class="num"><span class="rx-cell"><span class="rx-bar"><i style="width: 89.2%; background: #f2820c"></i></span><span>3.57%</span></span></td><td class="num"><span class="rx-cell"><span class="rx-bar"><i style="width: 37.0%; background: #1f8fd6"></i></span><span>1.48%</span></span></td><td class="num">873</td><td class="num">2,080</td></tr>
+<tr><td>2024</td><td class="num"><span class="rx-cell"><span class="rx-bar"><i style="width: 66.2%; background: #f2820c"></i></span><span>2.65%</span></span></td><td class="num"><span class="rx-cell"><span class="rx-bar"><i style="width: 32.0%; background: #1f8fd6"></i></span><span>1.28%</span></span></td><td class="num">884</td><td class="num">2,403</td></tr>
+<tr><td>2025</td><td class="num"><span class="rx-cell"><span class="rx-bar"><i style="width: 80.0%; background: #f2820c"></i></span><span>3.20%</span></span></td><td class="num"><span class="rx-cell"><span class="rx-bar"><i style="width: 39.0%; background: #1f8fd6"></i></span><span>1.56%</span></span></td><td class="num">933</td><td class="num">2,466</td></tr>
+<tr><td>2026, Oct–Jun</td><td class="num"><span class="rx-cell"><span class="rx-bar"><i style="width: 83.8%; background: #f2820c"></i></span><span>3.35%</span></span></td><td class="num"><span class="rx-cell"><span class="rx-bar"><i style="width: 49.5%; background: #1f8fd6"></i></span><span>1.98%</span></span></td><td class="num">601</td><td class="num">1,863</td></tr>
+</tbody>
+</table>
+<div class="notice"><span class="ico">💡</span><span><b>What to notice</b> Every year USCIS denied placing firms about twice the share it denied direct employers: 3.20% against 1.56% in 2025.</span></div></div></div><div class="rx-panel" style="display: {{d4}}"><div class="card w4-card" id="deeper-perm">
+<header class="w4-q">
+<span class="w4-num">5</span>
+<div>
+<h2>Who keeps them? Green cards as the strong tie</h2>
+<p class="w4-answer">An H-1B filing is a weak tie between employer and worker; a green-card filing (<span class="w4-term"><button aria-describedby="w4-term-x-perm" type="button">PERM</button><span class="w4-pop" id="w4-term-x-perm" role="tooltip">The Department of Labor's permanent labor certification, the first step of most green cards through work. The employer sponsors the worker to stay.</span></span>) is a strong one.</p>
+</div>
+</header>
+<div class="w4-two">
+<div>
+<p class="sub">Only 65% of
+                          certified green cards come from an employer we can match to an
+                          H-1B filer.</p>
+
+
+<div class="notice"><span class="ico">💡</span><span><b>What to notice</b> The median employer files 13.2 green cards per 100 H-1B filings, yet Oracle files 95 while Amazon, with 22,509 H-1B filings, files almost none.</span></div>
+<div class="rx-drawers rx-foot"><details class="rx-drawer"><summary>More numbers</summary><div class="rx-drawer-body"><p>In 2025 the median
+                          employer with 20 or more H-1B filings filed 13.2 green cards
+                          per 100 of them, and the two counts rank employers only loosely
+                          alike (<span class="w4-term"><button aria-describedby="w4-term-x-spearman" type="button">Spearman</button><span class="w4-pop" id="w4-term-x-spearman" role="tooltip">A rank correlation: 1 means two counts put employers in the same order, 0 means no relation.</span></span> 0.50). As with degree and strength in the
+                          course, the exceptions carry the story: Oracle filed 95 green
+                          cards per 100 H-1B filings, Uber 64 and Salesforce 45, while
+                          Amazon (22,509 H-1B filings), Cognizant (11,085) and Google
+                          (8,657) filed almost none. Whether outsourcing firms sponsor fewer is
+                          <a href="#beyond-perm">section 5B</a>. Clients sponsor their own staff too: Wells Fargo
+                          receives 1,547 H-1B filings from vendors, files 624 of its own
+                          and 167 green cards. Firms with more clients sponsor slightly
+                          more green cards, not fewer (Spearman 0.13).</p></div></details></div>
+</div>
+<figure class="w4-figure">
+<figcaption><b>Green cards per 100 H-1B filings</b><span>The six employers the text names, 2025; not a ranking. Dashed line: the median employer with 20 or more H-1B filings.</span></figcaption>
+<div class="w4-figure-body" data-more="perm"><svg aria-label="Green cards per 100 H-1B filings for six employers named in the text" class="w4-strip" height="318" role="img" viewbox="0 0 556 318" width="556"><line stroke="#e6ecf3" stroke-width="1" x1="150" x2="150" y1="16" y2="284"></line><text fill="#7a8fac" font-size="11" text-anchor="middle" x="150" y="300">0</text><line stroke="#e6ecf3" stroke-width="1" x1="246.5" x2="246.5" y1="16" y2="284"></line><text fill="#7a8fac" font-size="11" text-anchor="middle" x="246.5" y="300">25</text><line stroke="#e6ecf3" stroke-width="1" x1="343" x2="343" y1="16" y2="284"></line><text fill="#7a8fac" font-size="11" text-anchor="middle" x="343" y="300">50</text><line stroke="#e6ecf3" stroke-width="1" x1="439.5" x2="439.5" y1="16" y2="284"></line><text fill="#7a8fac" font-size="11" text-anchor="middle" x="439.5" y="300">75</text><line stroke="#e6ecf3" stroke-width="1" x1="536" x2="536" y1="16" y2="284"></line><text fill="#7a8fac" font-size="11" text-anchor="middle" x="536" y="300">100</text><line stroke="#46618a" stroke-dasharray="3 2" stroke-width="1.4" x1="200.7976" x2="200.7976" y1="16" y2="284"><title>median employer 13.2</title></line><text fill="#46618a" font-size="11" font-weight="400" text-anchor="start" x="150" y="12">median employer 13.2</text><text fill="#0f2340" font-size="12" font-weight="600" x="0" y="37">Oracle</text><text fill="#7a8fac" font-size="11" x="0" y="52">1,258 H-1B filings</text><line stroke="#dce5f0" stroke-width="1" x1="150" x2="536" y1="40" y2="40"></line><circle cx="515.1174" cy="40" fill="#0f2340" r="6.5" stroke="#ffffff" stroke-width="2"></circle><text fill="#0f2340" font-size="12" font-weight="700" text-anchor="middle" x="515.1174" y="27">95</text><text fill="#0f2340" font-size="12" font-weight="600" x="0" y="81">Uber</text><text fill="#7a8fac" font-size="11" x="0" y="96">829 H-1B filings</text><line stroke="#dce5f0" stroke-width="1" x1="150" x2="536" y1="84" y2="84"></line><circle cx="395.3802" cy="84" fill="#0f2340" r="6.5" stroke="#ffffff" stroke-width="2"></circle><text fill="#0f2340" font-size="12" font-weight="700" text-anchor="middle" x="395.3802" y="71">64</text><text fill="#0f2340" font-size="12" font-weight="600" x="0" y="125">Salesforce</text><text fill="#7a8fac" font-size="11" x="0" y="140">1,798 H-1B filings</text><line stroke="#dce5f0" stroke-width="1" x1="150" x2="536" y1="128" y2="128"></line><circle cx="323.66139999999996" cy="128" fill="#0f2340" r="6.5" stroke="#ffffff" stroke-width="2"></circle><text fill="#0f2340" font-size="12" font-weight="700" text-anchor="middle" x="323.66139999999996" y="115">45</text><line stroke="#dce5f0" stroke-dasharray="2 3" stroke-width="1" x1="0" x2="556" y1="154" y2="154"></line><text fill="#0f2340" font-size="12" font-weight="600" x="0" y="169">Amazon</text><text fill="#7a8fac" font-size="11" x="0" y="184">22,509 H-1B filings</text><line stroke="#dce5f0" stroke-width="1" x1="150" x2="536" y1="172" y2="172"></line><circle cx="150" cy="172" fill="#0f2340" r="6.5" stroke="#ffffff" stroke-width="2"></circle><text fill="#0f2340" font-size="12" font-weight="700" text-anchor="start" x="150" y="159">0</text><text fill="#0f2340" font-size="12" font-weight="600" x="0" y="213">Cognizant</text><text fill="#7a8fac" font-size="11" x="0" y="228">11,085 H-1B filings</text><line stroke="#dce5f0" stroke-width="1" x1="150" x2="536" y1="216" y2="216"></line><circle cx="150" cy="216" fill="#0f2340" r="6.5" stroke="#ffffff" stroke-width="2"></circle><text fill="#0f2340" font-size="12" font-weight="700" text-anchor="start" x="150" y="203">0</text><text fill="#0f2340" font-size="12" font-weight="600" x="0" y="257">Google</text><text fill="#7a8fac" font-size="11" x="0" y="272">8,657 H-1B filings</text><line stroke="#dce5f0" stroke-width="1" x1="150" x2="536" y1="260" y2="260"></line><circle cx="150" cy="260" fill="#0f2340" r="6.5" stroke="#ffffff" stroke-width="2"></circle><text fill="#0f2340" font-size="12" font-weight="700" text-anchor="start" x="150" y="247">0</text></svg></div>
+</figure>
+</div>
+</div></div><div class="rx-panel" style="display: {{d5}}"><div class="card w4-card" id="deeper-countries">
+<header class="w4-q">
+<span class="w4-num">6</span>
+<div>
+<h2>Where are they from? A network of countries</h2>
+<p class="w4-answer">Green-card hiring does not sort countries into regional blocs.</p>
+</div>
+</header>
+<div class="w4-two">
+<div>
+<p class="sub">We link two countries when the same employers file green cards for citizens of both, then ask whether those links form regional groups. They barely do: the groups match world regions only weakly.</p>
+
+
+<div class="notice"><span class="ico">💡</span><span><b>What to notice</b> Counted once, the country links group a little more than rewired copies (modularity 0.10 against 0.06); weighted by shared green cards they group less (0.26 against 0.40).</span></div>
+<div class="rx-drawers rx-foot"><details class="rx-drawer"><summary>Method</summary><div class="rx-drawer-body"><p>A worker's citizenship is personal, so we read it only in
+                          memory and keep counts per country and employer, dropping every
+                          count under 10. That drops 96% of the cells and 43% of 2023's
+                          certified green-card filings, and no row about a single person is ever saved.</p></div></details><details class="rx-drawer"><summary>More numbers</summary><div class="rx-drawer-body"><p>India holds 52% of those filings
+                          and China 12%; among lottery registrations, India holds 77% in
+                          the March 2022 draw and 81% in March 2023. Link two countries
+                          by the green cards their citizens receive at the same employers
+                          and 55 countries remain. Louvain splits them into three groups.
+                          Counted once each, the links group a little more than rewired
+                          copies (modularity 0.10 against 0.06); weighted by shared green
+                          cards, they group less (0.26 against 0.40). India and China
+                          share one group with Canada, Belarus and Costa Rica, and India
+                          keeps 79% of its weight inside it.  Among the ten largest sponsors,
+                          Google's green cards are the most varied, 4.7 <span class="w4-term"><button aria-describedby="w4-term-x-effective" type="button">effective
+                          countries</button><span class="w4-pop" id="w4-term-x-effective" role="tooltip">The number of equally sized countries that would give the same spread. More means more varied.</span></span> with India at 30%, against Amazon's 3.0 at 67%. The
+                          third group gathers the Philippines, Kenya, Ghana, Zimbabwe,
+                          Ethiopia, Cameroon and Jamaica. Wayne Farms, a poultry company,
+                          filed 832 green cards in the counted cells, none for Indian
+                          citizens.</p><p>The groups match world regions (AMI 0.10) and Week 3&#x27;s migration communities (0.10) only weakly: green-card hiring does not sort countries into regional blocs.</p></div></details></div>
+</div>
+<div>
+<figure class="w4-figure">
+<figcaption><b>Citizenship of 2023's green cards</b><span>Share of certified green-card filings in the counted cells.</span></figcaption>
+<div class="w4-figure-body" data-more="countries-top"><svg aria-label="Shares of 2023 certified green-card filings by citizenship, in the counted cells" class="w4-strip" height="246" role="img" viewbox="0 0 556 246" width="556"><line stroke="#e6ecf3" stroke-width="1" x1="110" x2="110" y1="4" y2="216"></line><text fill="#7a8fac" font-size="11" text-anchor="middle" x="110" y="232">0%</text><line stroke="#e6ecf3" stroke-width="1" x1="182" x2="182" y1="4" y2="216"></line><text fill="#7a8fac" font-size="11" text-anchor="middle" x="182" y="232">10%</text><line stroke="#e6ecf3" stroke-width="1" x1="254" x2="254" y1="4" y2="216"></line><text fill="#7a8fac" font-size="11" text-anchor="middle" x="254" y="232">20%</text><line stroke="#e6ecf3" stroke-width="1" x1="326" x2="326" y1="4" y2="216"></line><text fill="#7a8fac" font-size="11" text-anchor="middle" x="326" y="232">30%</text><line stroke="#e6ecf3" stroke-width="1" x1="398" x2="398" y1="4" y2="216"></line><text fill="#7a8fac" font-size="11" text-anchor="middle" x="398" y="232">40%</text><line stroke="#e6ecf3" stroke-width="1" x1="470" x2="470" y1="4" y2="216"></line><text fill="#7a8fac" font-size="11" text-anchor="middle" x="470" y="232">50%</text><text fill="#0f2340" font-size="12" font-weight="500" x="0" y="25">India</text><line stroke="#dce5f0" stroke-width="1" x1="110" x2="506" y1="21" y2="21"></line><rect fill="#7a8fac" height="14" rx="3" width="375.984" x="110" y="14"><title>India: 52% of the counted green-card filings</title></rect><text fill="#46618a" font-size="11" x="491.984" y="25">52%</text><text fill="#0f2340" font-size="12" font-weight="500" x="0" y="51">China</text><line stroke="#dce5f0" stroke-width="1" x1="110" x2="506" y1="47" y2="47"></line><rect fill="#7a8fac" height="14" rx="3" width="84.096" x="110" y="40"><title>China: 12% of the counted green-card filings</title></rect><text fill="#46618a" font-size="11" x="200.096" y="51">12%</text><text fill="#0f2340" font-size="12" font-weight="500" x="0" y="77">Mexico</text><line stroke="#dce5f0" stroke-width="1" x1="110" x2="506" y1="73" y2="73"></line><rect fill="#7a8fac" height="14" rx="3" width="27.144000000000005" x="110" y="66"><title>Mexico: 4% of the counted green-card filings</title></rect><text fill="#46618a" font-size="11" x="143.144" y="77">4%</text><text fill="#0f2340" font-size="12" font-weight="500" x="0" y="103">Vietnam</text><line stroke="#dce5f0" stroke-width="1" x1="110" x2="506" y1="99" y2="99"></line><rect fill="#7a8fac" height="14" rx="3" width="23.111999999999995" x="110" y="92"><title>Vietnam: 3% of the counted green-card filings</title></rect><text fill="#46618a" font-size="11" x="139.112" y="103">3%</text><text fill="#0f2340" font-size="12" font-weight="500" x="0" y="129">Philippines</text><line stroke="#dce5f0" stroke-width="1" x1="110" x2="506" y1="125" y2="125"></line><rect fill="#7a8fac" height="14" rx="3" width="19.00800000000001" x="110" y="118"><title>Philippines: 3% of the counted green-card filings</title></rect><text fill="#46618a" font-size="11" x="135.008" y="129">3%</text><text fill="#0f2340" font-size="12" font-weight="500" x="0" y="155">Canada</text><line stroke="#dce5f0" stroke-width="1" x1="110" x2="506" y1="151" y2="151"></line><rect fill="#7a8fac" height="14" rx="3" width="18.431999999999988" x="110" y="144"><title>Canada: 3% of the counted green-card filings</title></rect><text fill="#46618a" font-size="11" x="134.432" y="155">3%</text><text fill="#0f2340" font-size="12" font-weight="500" x="0" y="181">Brazil</text><line stroke="#dce5f0" stroke-width="1" x1="110" x2="506" y1="177" y2="177"></line><rect fill="#7a8fac" height="14" rx="3" width="17.855999999999995" x="110" y="170"><title>Brazil: 2% of the counted green-card filings</title></rect><text fill="#46618a" font-size="11" x="133.856" y="181">2%</text><text fill="#0f2340" font-size="12" font-weight="500" x="0" y="207">South Korea</text><line stroke="#dce5f0" stroke-width="1" x1="110" x2="506" y1="203" y2="203"></line><rect fill="#7a8fac" height="14" rx="3" width="15.120000000000005" x="110" y="196"><title>South Korea: 2% of the counted green-card filings</title></rect><text fill="#46618a" font-size="11" x="131.12" y="207">2%</text></svg></div>
+</figure>
+
+</div>
+</div>
+<div class="rx-fig-row">
+<figure class="w4-figure">
+<figcaption><b>Do countries group?</b><span>Modularity of the country network against rewired copies.</span></figcaption>
+<div class="w4-figure-body" data-more="countries-modularity"><svg aria-label="Modularity of the country network against rewired copies" class="w4-strip" height="164" role="img" viewbox="0 0 556 164" width="556"><line stroke="#e6ecf3" stroke-width="1" x1="170" x2="170" y1="6" y2="130"></line><text fill="#7a8fac" font-size="11" text-anchor="middle" x="170" y="146">0.0</text><line stroke="#e6ecf3" stroke-width="1" x1="232" x2="232" y1="6" y2="130"></line><text fill="#7a8fac" font-size="11" text-anchor="middle" x="232" y="146">0.1</text><line stroke="#e6ecf3" stroke-width="1" x1="294" x2="294" y1="6" y2="130"></line><text fill="#7a8fac" font-size="11" text-anchor="middle" x="294" y="146">0.2</text><line stroke="#e6ecf3" stroke-width="1" x1="356" x2="356" y1="6" y2="130"></line><text fill="#7a8fac" font-size="11" text-anchor="middle" x="356" y="146">0.3</text><line stroke="#e6ecf3" stroke-width="1" x1="418" x2="418" y1="6" y2="130"></line><text fill="#7a8fac" font-size="11" text-anchor="middle" x="418" y="146">0.4</text><line stroke="#e6ecf3" stroke-width="1" x1="480" x2="480" y1="6" y2="130"></line><text fill="#7a8fac" font-size="11" text-anchor="middle" x="480" y="146">0.5</text><text fill="#0f2340" font-size="12" font-weight="600" x="0" y="35">Links counted once</text><text fill="#7a8fac" font-size="11" x="0" y="50">against rewired</text><line stroke="#dce5f0" stroke-width="1" x1="170" x2="480" y1="38" y2="38"></line><g><rect fill="rgba(185, 196, 210, 0.62)" height="12" rx="6" width="5.455999999999989" x="205.278" y="32"></rect><line stroke="#7a8fac" stroke-width="2" x1="208.006" x2="208.006" y1="29" y2="47"></line></g><text fill="#46618a" font-size="11" font-weight="400" text-anchor="middle" x="208.006" y="63">rewired 0.06</text><circle cx="234.046" cy="38" fill="#0f2340" r="6.5" stroke="#ffffff" stroke-width="2"></circle><text fill="#0f2340" font-size="12" font-weight="700" text-anchor="middle" x="234.046" y="25">0.10</text><rect fill="#eef3f9" height="20" rx="10" width="59.120000000000005" x="492" y="28"></rect><text fill="#0f2340" font-size="11" font-weight="700" text-anchor="middle" x="521.56" y="42">z = 9.5</text><text fill="#0f2340" font-size="12" font-weight="600" x="0" y="95">Weighted by green cards</text><text fill="#7a8fac" font-size="11" x="0" y="110">against rewired</text><line stroke="#dce5f0" stroke-width="1" x1="170" x2="480" y1="98" y2="98"></line><g><rect fill="rgba(185, 196, 210, 0.62)" height="12" rx="6" width="23.436000000000035" x="408.142" y="92"></rect><line stroke="#7a8fac" stroke-width="2" x1="419.86" x2="419.86" y1="89" y2="107"></line></g><text fill="#46618a" font-size="11" font-weight="400" text-anchor="middle" x="419.86" y="123">rewired 0.40</text><circle cx="332.316" cy="98" fill="#0f2340" r="6.5" stroke="#ffffff" stroke-width="2"></circle><text fill="#0f2340" font-size="12" font-weight="700" text-anchor="middle" x="332.316" y="85">0.26</text><rect fill="#eef3f9" height="20" rx="10" width="65.28" x="490.72" y="88"></rect><text fill="#0f2340" font-size="11" font-weight="700" text-anchor="middle" x="523.36" y="102">z = −7.5</text></svg></div>
+</figure>
+</div>
+</div></div></section></div></main></div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"start": {"editor": null}, "$preview": {"width": 1440, "height": 1161}}'>
+class Component extends DCLogic {
+constructor(props) { super(props); this.state = { i: Math.min(5, Math.max(0, Number(props.start) || 0)) }; }
+renderVals() {
+const n = 6, i = this.state.i, v = {};
+const on = "background: #eef3f9; color: #0f2340; border-left-color: #14618f;";
+const off = "";
+for (let k = 0; k < n; k++) { v["d" + k] = k === i ? "block" : "none"; v["on" + k] = String(k === i); v["st" + k] = k === i ? on : off; v["pick" + k] = () => this.setState({ i: k }); }
+return v;
+}
+}
+</script>
+</body>
+</html>

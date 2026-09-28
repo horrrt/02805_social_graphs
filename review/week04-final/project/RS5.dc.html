@@ -1,0 +1,274 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>Section 5 · beyond the three networks</title>
+<script src="./support.js"></script>
+<link rel="stylesheet" href="/_blob/083d154e9dc323e92523c409d0034822">
+<link rel="stylesheet" href="/_blob/668486f5a3998cc03081dad4d6a53e30">
+<link rel="stylesheet" href="/_blob/084ce7df5637b99030ea35613530acf2">
+<link rel="stylesheet" href="/_blob/e84e8b268623a65fa6a20dcee3ec4adf">
+<link rel="stylesheet" href="/_blob/35af9356d607ea8092bc878cace00255">
+<link rel="stylesheet" href="/_blob/70ffa1ecc89c42fb63ac04cfc271ee6b">
+<link rel="stylesheet" href="/_blob/3e4fe45fa83b8895f69f8d519b7b0fe2">
+<link rel="stylesheet" href="/_blob/ffcc56532445103bef94c333132a4fb7">
+<link rel="stylesheet" href="/_blob/4004501ab78099c34bb198c8287d7d41">
+<link rel="stylesheet" href="/_blob/ab074990511da3308f5deb38e148e8c1">
+<link rel="stylesheet" href="/_blob/961bb1102d81f8f791744cf5c49d5ccf">
+<link rel="stylesheet" href="/_blob/ea7fdb7da398599db40546cc6b3f4606">
+</head>
+<body>
+<x-dc>
+<helmet>
+<style>
+@font-face{font-family:"Condensed";src:url("/_blob/9ad036b9f76606ea91d82e15ebec8da3") format("truetype");font-weight:800;font-style:normal}
+body{margin:0;background:#eef3f9}
+.rx{position:relative}
+/* rec 6: the rail, every name on hover */
+.rx .rx-rail{position:absolute;left:64px;top:96px;width:44px;z-index:30}
+.rx .rx-rail ol{list-style:none;margin:0;padding:6px 0;display:flex;flex-direction:column;align-items:center;gap:16px;background:linear-gradient(#dce5f0,#dce5f0) center/2px 100% no-repeat}
+.rx .rx-rail ol.rx-rail-sub{gap:16px;padding:14px 0 4px;background:none}
+.rx .rx-rail li{display:flex;flex-direction:column;align-items:center;position:relative}
+.rx .rx-sq,.rx .rx-dot{position:relative;display:block;box-sizing:border-box;border-radius:999px;font-size:0;color:transparent;cursor:pointer}
+.rx .rx-sq{width:12px;height:12px;background:#fff;border:2px solid #9fb4cf}
+.rx .rx-sq:hover{border-color:#14618f}
+.rx .rx-sq.is-on{width:18px;height:18px;background:#14618f;border-color:#14618f;box-shadow:0 0 0 4px rgba(20,97,143,.18)}
+.rx .rx-dot{width:8px;height:8px;background:#c9d6e6}
+.rx .rx-dot.is-on{background:#0f2340;box-shadow:0 0 0 3px rgba(15,35,64,.14)}
+.rx .rx-lab{display:none;position:absolute;left:calc(50% + 20px);top:50%;transform:translateY(-50%);white-space:nowrap;border-radius:8px;padding:3px 9px;font-size:12px;line-height:1.4;font-weight:600;background:rgba(255,255,255,.97);color:#0f2340;box-shadow:0 1px 3px rgba(15,35,64,.16)}
+.rx .rx-rail:hover .rx-lab{display:block}
+.rx .rx-rail .rx-sq:hover>.rx-lab,.rx .rx-rail .rx-dot:hover>.rx-lab{background:#0f2340;color:#fff}
+/* rec 1: drawers */
+.rx .rx-drawers{display:flex;flex-direction:column;gap:8px;margin-top:14px}
+.rx details.rx-drawer{border:1px solid #dce5f0;border-radius:10px;background:#f7fafd;margin-top:10px}
+.rx .rx-drawers details.rx-drawer{margin-top:0}
+.rx details.rx-drawer>summary{cursor:pointer;list-style:none;padding:9px 14px;font-size:13px;font-weight:700;color:#14618f;display:flex;align-items:center;gap:8px}
+.rx details.rx-drawer>summary::-webkit-details-marker{display:none}
+.rx details.rx-drawer>summary::before{content:"▸";font-size:11px;transition:transform .15s}
+.rx details.rx-drawer[open]>summary::before{transform:rotate(90deg)}
+.rx .rx-drawer-body{padding:0 16px 14px;font-size:13.5px;line-height:1.62;color:#0f2340;max-width:78ch}
+.rx .rx-drawer-body p{margin:0 0 8px}
+/* rec 4: one segmented control */
+.rx .axis-modes,.rx .rx-seg,.rx .staffing-years{display:inline-flex!important;gap:2px!important;padding:3px!important;border-radius:999px!important;background:#eaf0f7!important;border:none!important;box-shadow:none!important;flex-wrap:wrap}
+.rx .axis-modes button,.rx .rx-seg button,.rx .staffing-years button{border:none!important;border-radius:999px!important;padding:6px 14px!important;font:inherit!important;font-size:12.5px!important;font-weight:600!important;color:#46618a!important;background:transparent!important;box-shadow:none!important;cursor:pointer}
+.rx .axis-modes button[aria-pressed="true"],.rx .rx-seg button[aria-pressed="true"],.rx .staffing-years button[aria-pressed="true"]{background:#fff!important;color:#0f2340!important;font-weight:700!important;box-shadow:0 1px 2px rgba(15,35,64,.12)!important}
+.rx .axis-modes-label,.rx .rx-seg-label{text-transform:none!important;letter-spacing:0!important;font-size:12.5px!important;font-weight:700!important;color:#46618a!important}
+.rx .rx-seg-row{display:flex;align-items:center;gap:12px;margin:10px 0}
+/* rec 7 placeholder */
+.rx .rx-todo{border:1px dashed #b9cadf;background:#fff;color:#7a8fac}
+/* topic boards */
+.rx .rx-topic-head{display:flex;align-items:baseline;gap:14px;flex-wrap:wrap}
+.rx .rx-tabs{display:flex;flex-direction:column;gap:2px;padding:12px;border-right:1px solid #eaf0f7;background:#f7fafd;border-radius:14px 0 0 14px}
+.rx .rx-tab{display:flex;gap:10px;align-items:baseline;width:100%;padding:9px 10px;border:none;border-radius:8px;font:inherit;font-size:13px;line-height:1.4;font-weight:600;text-align:left;color:#0f2340;cursor:pointer;background:transparent}
+.rx .rx-tab:hover{background:#fff}
+
+/* rec 3: section 1 start card */
+.rx .rx-kicker{margin:6px 0 0;font-size:13px;color:#46618a}
+.rx .rx-start-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:36px;align-items:start;margin-top:8px}
+.rx .rx-start-grid header.w4-q{margin-bottom:8px}
+.rx .rx-groups{display:flex;flex-direction:column;margin-top:10px}
+.rx .rx-group{padding:10px 0;border-top:1px solid #eaf0f7}
+.rx .rx-group-head{display:flex;align-items:center;gap:8px;font-size:13.5px}
+.rx .rx-group-head i{width:12px;height:12px;border-radius:50%;display:inline-block}
+.rx .rx-group-head span{font-size:12.5px;color:#46618a}
+.rx .rx-group p{margin:4px 0 0 20px;font-size:12.5px;line-height:1.55;color:#46618a}
+.rx .rx-start-notices{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px;margin-top:14px}
+.rx .rx-drawer-body.rx-wide{max-width:none}
+/* topic boards */
+.rx .rx-topic-bar{display:flex;align-items:center;gap:16px;margin:8px 0 16px}
+.rx .rx-back{font-size:13px;font-weight:700;text-decoration:none;color:#14618f;padding:6px 12px;border:1px solid #dce5f0;border-radius:999px;background:#fff}
+.rx .rx-topic-mark{flex:none;width:40px;height:40px;border-radius:10px;background:#14618f;color:#fff;display:inline-flex;align-items:center;justify-content:center;font-size:17px;font-weight:800}
+.rx .rx-topic-title{margin:0;font-size:24px;font-weight:800}
+.rx .rx-topic-holds{margin:2px 0 0;font-size:13.5px;color:#46618a}
+.rx .rx-topic-count{margin-left:auto;font-size:12.5px;color:#46618a}
+.rx .rx-tab-row{display:flex;flex-wrap:wrap;gap:6px;padding:6px;border-radius:14px;background:#eaf0f7;margin-bottom:18px}
+.rx .rx-tab-pill{border:none;border-radius:999px;padding:7px 14px;font:inherit;font-size:12.5px;font-weight:600;cursor:pointer;text-align:left;line-height:1.35}
+.rx .rx-tab-pill b{color:#14618f;margin-right:4px}
+.rx .rx-panel > .card{margin-top:0}
+/* deep-dive catalogue */
+.rx .rx-cut-intro{max-width:68ch}
+.rx .rx-tgrid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;align-items:start;margin-top:18px}
+.rx .rx-tcard{background:#fff;border:1px solid #dce5f0;border-radius:14px;padding:16px;box-shadow:0 1px 2px rgba(15,35,64,.06),0 8px 24px rgba(15,35,64,.05)}
+.rx .rx-tcard-data{background:#f7fafd;box-shadow:none}
+.rx .rx-tcard-head{display:flex;gap:12px;align-items:flex-start;text-decoration:none;color:#0f2340;padding-bottom:10px}
+.rx .rx-tcard-head span{display:flex;flex-direction:column;gap:3px}
+.rx .rx-tcard-head b{font-size:16px}
+.rx .rx-tcard-head em{font-style:normal;font-size:12.5px;line-height:1.45;color:#46618a}
+.rx .rx-tcard ul{list-style:none;margin:0;padding:0}
+.rx .rx-tcard li a{display:flex;gap:10px;align-items:baseline;padding:8px 4px;border-top:1px solid #eaf0f7;text-decoration:none;color:#0f2340;font-size:13px;font-weight:600;line-height:1.4}
+.rx .rx-tcard li a b{flex:none;min-width:22px;color:#14618f;font-size:11.5px}
+.rx .rx-tcard li a span{flex-grow:1}
+.rx .rx-tcard li a i{font-style:normal;color:#14618f;font-weight:700}
+.rx .rx-tcard li a:hover{background:#d9ecf9}
+.rx .rx-moved{margin:16px 0 0;font-size:12.5px;line-height:1.6;color:#46618a}
+.rx .rx-tile-finding{display:block;margin-top:6px;color:#0f2340}
+/* compact drawers: closed ones sit in one row, an open one takes the full width */
+.rx .rx-drawers{flex-direction:row!important;flex-wrap:wrap;align-items:center;gap:8px!important;margin-top:12px}
+.rx .rx-drawers>details.rx-drawer{flex:0 0 auto;margin:0}
+.rx .rx-drawers>details.rx-drawer[open]{flex:1 1 100%;order:10}
+.rx details.rx-drawer:not([open]){width:fit-content}
+.rx details.rx-drawer>summary{padding:6px 12px}
+.rx .rx-drawers>.w4-tip{margin:0}
+.rx .rx-foot{margin-top:14px}
+.rx .rx-drawer-body>p+p{margin-top:8px}
+.rx .rx-answers{list-style:none;margin:16px 0 0;padding:0;display:flex;flex-direction:column}
+.rx .rx-answers li{display:flex;gap:12px;align-items:baseline;padding:10px 0;border-top:1px solid #eaf0f7;font-size:14px;line-height:1.5;color:#0f2340}
+.rx .rx-answers li .w4-num{flex:none}
+</style>
+</helmet>
+<div class="corridor rx" style="width: 1440px; height: 2113px; overflow: hidden; background: #eef3f9"><div class="topbar">
+<div class="shell">
+<a class="brand" href="../../">LOG–LOG <b>LEGENDS</b></a>
+<a class="site-link" href="../../#weeks">All posts</a>
+<nav aria-label="Sections of this post" class="topnav">
+<a class="here" href="#opening">Opening</a>
+<a class="" href="#place">Where</a>
+<a href="#jobs">Jobs</a>
+<a href="#who">Staffing</a>
+<a href="#footprint">Giants out</a>
+<a href="#beyond">Beyond</a>
+<a href="#cut">Deep dive</a>
+</nav>
+</div>
+</div><nav class="rx-rail" aria-label="Contents of this post"><ol><li><span class="rx-sq"><span class="rx-lab">0 Opening</span></span></li><li><span class="rx-sq"><span class="rx-lab">1 Where the hiring is</span></span></li><li><span class="rx-sq"><span class="rx-lab">2 Which jobs go together</span></span></li><li><span class="rx-sq"><span class="rx-lab">3 Who staffs whom</span></span></li><li><span class="rx-sq"><span class="rx-lab">4 Without the biggest firms</span></span></li><li><span class="rx-sq is-on"><span class="rx-lab">5 Beyond the three networks</span></span><ol class="rx-rail-sub"><li><span class="rx-dot"><span class="rx-lab">5A Do immigration law firms split companies the way vendors do?</span></span></li><li><span class="rx-dot"><span class="rx-lab">5B Do outsourcing firms sponsor fewer green cards?</span></span></li><li><span class="rx-dot"><span class="rx-lab">5C Do outsourcing firms file at lower wage levels for the same job?</span></span></li></ol></li><li><span class="rx-sq"><span class="rx-lab">Closing</span></span></li><li><span class="rx-sq"><span class="rx-lab">Deep dive</span></span></li></ol></nav><main id="main"><div class="shell"><section class="step" id="beyond">
+<header class="w4-opener">
+<span aria-hidden="true" class="w4-opener-num">5</span>
+<div>
+<h2>Beyond the three networks</h2>
+<p>The section 3 groups barely show in lawyers or green cards; the outsourcing firms stand out in the wage levels they file.</p>
+</div>
+</header>
+<div class="card w4-card">
+<div class="w4-two">
+<div>
+<p class="sub">
+                  The same filings name the law firm that prepared them, and the
+                  Department of Labor's green-card files name the employers that
+                  sponsor permanent residence. Three short questions follow the
+                  section 3 groups into those records.
+                </p>
+<ol class="rx-answers"><li><span class="w4-num">5A</span><span><b>Law firms:</b> barely follow the section 3 groups.</span></li><li><span class="w4-num">5B</span><span><b>Green cards:</b> outsourcing firms sponsor fewer per H-1B filing.</span></li><li><span class="w4-num">5C</span><span><b>Wage levels:</b> a placed filing has 3.6 times the odds of level I or II.</span></li></ol>
+</div>
+<figure class="w4-figure">
+<figcaption><b>Three small answers</b><span>Each real value against its baseline: law firms against rewired networks, green cards against direct employers' interval, wage odds against equal odds.</span></figcaption>
+<div class="w4-figure-body" data-strip="beyond-summary"><div class="w4-mini-stack"><div class="w4-mini-row"><p class="w4-mini-label">5A · Law firms</p><svg aria-label="AMI of the law-firm groups with the section 3 groups, against rewired networks" height="58" role="img" viewbox="0 0 300 58" width="300"><line stroke="#dce5f0" stroke-width="1" x1="6" x2="294" y1="28" y2="28"></line><g><rect fill="rgba(185, 196, 210, 0.62)" height="12" rx="6" width="14.399999999999999" x="6" y="22"><title>rewired 0.000</title></rect><line stroke="#7a8fac" stroke-width="2" x1="6.5760000000000005" x2="6.5760000000000005" y1="19" y2="37"></line></g><text fill="#46618a" font-size="11" font-weight="400" text-anchor="start" x="0" y="52">rewired 0.000</text><circle cx="219.11999999999998" cy="28" fill="#0f2340" r="6.5" stroke="#ffffff" stroke-width="2"><title>0.037</title></circle><text fill="#0f2340" font-size="12" font-weight="700" text-anchor="middle" x="219.11999999999998" y="15">0.037</text></svg><small>AMI against rewired networks · z = 15</small></div><div class="w4-mini-row"><p class="w4-mini-label">5B · Green cards</p><svg aria-label="Green cards per H-1B filing for outsourcing firms, against direct employers' 95% interval" height="58" role="img" viewbox="0 0 300 58" width="300"><line stroke="#dce5f0" stroke-width="1" x1="6" x2="294" y1="28" y2="28"></line><g><title>95% interval: 0.14 to 0.21</title><line stroke="#0f2340" stroke-width="2" x1="171.7728" x2="252.7584" y1="28" y2="28"></line><line stroke="#0f2340" stroke-width="2" x1="171.7728" x2="171.7728" y1="23" y2="33"></line><line stroke="#0f2340" stroke-width="2" x1="252.7584" x2="252.7584" y1="23" y2="33"></line></g><circle cx="130.99200000000002" cy="28" fill="#0f2340" r="6.5" stroke="#ffffff" stroke-width="2"><title>0.11</title></circle><text fill="#0f2340" font-size="12" font-weight="700" text-anchor="middle" x="130.99200000000002" y="15">0.11</text></svg><small>Per H-1B filing · bracket: direct employers' 95% interval, 0.18</small></div><div class="w4-mini-row"><p class="w4-mini-label">5C · Wage levels</p><svg aria-label="Odds of a low wage level, placed against direct filings for the same job" height="58" role="img" viewbox="0 0 300 58" width="300"><line stroke="#dce5f0" stroke-width="1" x1="6" x2="294" y1="28" y2="28"></line><line stroke="#46618a" stroke-dasharray="3 2" stroke-width="1.3" x1="54" x2="54" y1="17" y2="39"></line><text fill="#46618a" font-size="11" font-weight="400" text-anchor="middle" x="54" y="52">1 = same odds</text><g><title>95% interval: 2.87 to 5.04</title><line stroke="#0f2340" stroke-width="2" x1="143.736" x2="247.74239999999998" y1="28" y2="28"></line><line stroke="#0f2340" stroke-width="2" x1="143.736" x2="143.736" y1="23" y2="33"></line><line stroke="#0f2340" stroke-width="2" x1="247.74239999999998" x2="247.74239999999998" y1="23" y2="33"></line></g><circle cx="178.5456" cy="28" fill="#0f2340" r="6.5" stroke="#ffffff" stroke-width="2"><title>3.6×</title></circle><text fill="#0f2340" font-size="12" font-weight="700" text-anchor="middle" x="178.5456" y="15">3.6×</text></svg><small>Odds of wage level I or II, same job · 95% interval</small></div></div></div>
+</figure>
+</div>
+</div>
+<div class="card w4-card" id="beyond-law">
+<header class="w4-q">
+<span class="w4-num">5A</span>
+<div>
+<h2>Do immigration law firms split companies the way vendors do?</h2>
+<p class="w4-answer">Barely. Law firms group the companies along the section 3 lines only slightly more than chance.</p>
+</div>
+</header>
+<div class="w4-two">
+<div>
+<div class="notice">
+<span class="ico">💡</span>
+<span>
+<b>What to notice</b>
+                    <span class="w4-term"><button aria-describedby="w4-term-x-ami" type="button">AMI</button><span class="w4-pop" id="w4-term-x-ami" role="tooltip">Adjusted mutual information: how closely two ways of grouping the same companies agree. 0 is what chance gives, 1 is a perfect match.</span></span> 0.037 against 0.000 ± 0.002 for <span class="w4-term"><button aria-describedby="w4-term-x-rewired" type="button">rewired networks</button><span class="w4-pop" id="w4-term-x-rewired" role="tooltip">Random copies of the network in which every company and law firm keeps its number of partners, but the partners are dealt out again at random.</span></span>: real
+                    (z = 15) and small. <span class="w4-term"><button aria-describedby="w4-term-x-modularity" type="button">Modularity</button><span class="w4-pop" id="w4-term-x-modularity" role="tooltip">How much more of the link weight falls inside the groups than a random network would put there. Higher means cleaner groups.</span></span> would mislead here.
+                  </span>
+</div>
+
+<div class="rx-drawers rx-foot"><details class="rx-drawer"><summary>Method</summary><div class="rx-drawer-body"><p>75.6% of certified filings name a law firm; after name cleaning there are 4,479. We linked each firm that places workers in section 3's network to its law firms, weighted by filings, ran Louvain, and compared the groups with the section 3 groups for the 4,576 firms in both. Most companies use one law firm: 64% of filings come from such companies, which makes the network a set of stars.</p></div></details><details class="rx-drawer"><summary>More numbers</summary><div class="rx-drawer-body"><p>The law-firm network scores 0.90, below the 0.93 of its rewired copies, because stars split into near-perfect groups whatever the wiring. Fragomen files the most (14,087 filings for 131 of these companies); EY Law files 10,274 for eight. The network of law firms themselves, across every employer, is in <a href="#staffing-lawyers">Who files the paperwork?</a> in the deep dive.</p></div></details></div>
+</div>
+<div class="plot">
+<h3>Agreement with the section 3 groups</h3>
+<p class="axis-note">
+                  AMI between the law-firm groups and the staffing groups, against
+                  50 rewired law-firm networks in which every company and law firm
+                  keeps its number of partners.
+                </p>
+<div class="chart-host short" id="chart-beyond-law" style="user-select: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0); position: relative;"><img alt="" src="/_blob/d948b8e40943bc827c24f01249b9eceb" style="display:block;width:100%;height:100%;object-fit:contain"/></div>
+</div>
+</div>
+</div>
+<div class="card w4-card" id="beyond-perm">
+<header class="w4-q">
+<span class="w4-num">5B</span>
+<div>
+<h2>Do outsourcing firms sponsor fewer green cards?</h2>
+<p class="w4-answer">Fewer per H-1B filing, but the staffing groups do not differ beyond chance.</p>
+</div>
+</header>
+<div class="w4-two">
+<div>
+<p class="sub">
+                  A green card through work starts with a <span class="w4-term"><button aria-describedby="w4-term-beyond-perm" type="button">PERM</button><span class="w4-pop" id="w4-term-beyond-perm" role="tooltip">The Department of Labor's permanent labor certification: the employer shows that no qualified US worker is available for the job. Most green cards through work start there.</span></span> filing. Here the
+                  outsourcing firms are the 817 companies that place 20 or more
+                  filings at client sites.
+                </p>
+<div class="notice">
+<span class="ico">💡</span>
+<span>
+<b>What to notice</b>
+                    Outsourcing firms file 0.11 green cards per H-1B filing,
+                    direct employers 0.18. Across the six largest staffing groups
+                    the rate runs from 0.03 to 0.15, a spread that <span class="w4-term"><button aria-describedby="w4-term-x-shuffled" type="button">shuffled group labels</button><span class="w4-pop" id="w4-term-x-shuffled" role="tooltip">We dealt the companies out to the groups again at random, many times, to see how big a spread chance alone produces.</span></span> match 28% of the time.
+                  </span>
+</div>
+
+<div class="rx-drawers rx-foot"><details class="rx-drawer"><summary>Method</summary><div class="rx-drawer-body"><p>For each company with 20 or more H-1B filings we divided its 2025 PERM filings by its H-1B filings, matching companies by name and tax number.</p></div></details><details class="rx-drawer"><summary>More numbers</summary><div class="rx-drawer-body"><p>The gap shrinks to 0.13 against 0.17 when a firm counts as outsourcing only if most of its filings go to clients. Single companies swing these rates more than any group does: counting every case status, filings in the names of Amazon and Google fell from 3,638 and 1,618 in 2024 to 15 and 3 in 2025. Green cards per company and the strongest employer ties are in <a href="#deeper-perm">the deep dive</a>.</p><p>Outsourcing firms file 0.11 green cards per H-1B filing (95% interval 0.08 to 0.15), direct employers 0.18 (0.14 to 0.21). Across the six largest staffing groups the rate runs from 0.03 in Cognizant&#x27;s group, where Cognizant itself filed almost none, to 0.15, a spread that shuffled group labels match 28% of the time (p = 0.28).</p></div></details></div>
+</div>
+<div class="plot">
+<h3>Green-card filings per H-1B filing</h3>
+<p class="axis-note">
+                  Pooled over the companies in each bar, with a 95% bootstrap
+                  interval for the first two. The six on the right are the largest
+                  section 3 groups, named after their largest firm.
+                </p>
+<div class="chart-host short" id="chart-beyond-perm" style="user-select: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0); position: relative;"><img alt="" src="/_blob/5cca2936de350cec8b03321b060396d8" style="display:block;width:100%;height:100%;object-fit:contain"/></div>
+</div>
+</div>
+</div>
+<div class="card w4-card" id="beyond-wage">
+<header class="w4-q">
+<span class="w4-num">5C</span>
+<div>
+<h2>Do outsourcing firms file at lower wage levels for the same job?</h2>
+<p class="w4-answer">Yes. For the same occupation, a filing that places a worker at a client has 3.6 times the odds of sitting at wage level I or II.</p>
+</div>
+</header>
+<div class="w4-two">
+<div>
+<p class="sub">
+                  Every filing states a <span class="w4-term"><button aria-describedby="w4-term-x-wagelevel" type="button">prevailing-wage level</button><span class="w4-pop" id="w4-term-x-wagelevel" role="tooltip">A level set by the experience and skills the job asks for. Each level carries a wage floor.</span></span> from I (entry) to
+                  IV (fully competent). 92% of filings give one.
+                </p>
+<div class="notice">
+<span class="ico">💡</span>
+<span>
+<b>What to notice</b>
+                    Overall, 79% of <span class="w4-term"><button aria-describedby="w4-term-x-placed" type="button">placed</button><span class="w4-pop" id="w4-term-x-placed" role="tooltip">A placed filing sends the worker to a client company's site; a direct filing is for the employer's own site.</span></span> filings sit at level I or II against
+                    58% of direct ones. Within the 83 occupations with 20 or
+                    more filings of each kind, the <span class="w4-term"><button aria-describedby="w4-term-beyond-mh" type="button">Mantel–Haenszel odds ratio</button><span class="w4-pop" id="w4-term-beyond-mh" role="tooltip">An odds ratio pooled over those occupations, so each comparison sets placed against direct filings for the same job. 1 means the same odds.</span></span>
+                    is 3.59, and 69 of the 83 point the same way.
+                  </span>
+</div>
+
+<div class="rx-drawers rx-foot"><details class="rx-drawer"><summary>Method</summary><div class="rx-drawer-body"><p>We compared placed and direct filings within each occupation, so software developers are compared with software developers.</p></div></details><details class="rx-drawer"><summary>More numbers</summary><div class="rx-drawer-body"><p>A few large firms file most placements, so the interval comes from resampling whole employers: 2.87 to 5.04. It is not one firm's doing: without the 5, 10 or 20 largest placing firms the ratio rises to 3.85, 4.28 and 4.94. Software developers: 87% against 52%. Offered wages follow: placed filings offer a median 1.00 times the prevailing wage in the five largest occupations, direct ones 1.00 to 1.08 times.</p></div></details></div>
+</div>
+<div class="plot">
+<h3>Share of filings at level I or II</h3>
+<p class="axis-note">
+                  The five occupations with the most filings. Orange bars are
+                  filings that place the worker at a client, blue bars filings for
+                  the employer's own site.
+                </p>
+<div class="chart-host short" id="chart-beyond-wage" style="user-select: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0); position: relative;"><img alt="" src="/_blob/aeb431ab35e04d0e3c3083f91bc9b8c2" style="display:block;width:100%;height:100%;object-fit:contain"/></div>
+</div>
+</div>
+</div>
+</section></div></main></div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview": {"width": 1440, "height": 2113}}'>
+class Component extends DCLogic {
+renderVals() { return {}; }
+}
+</script>
+</body>
+</html>

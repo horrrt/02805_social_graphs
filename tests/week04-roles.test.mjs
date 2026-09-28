@@ -7,6 +7,7 @@ import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
+import { block } from "./week04-html.mjs";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const json = (rel) => JSON.parse(readFileSync(join(ROOT, rel), "utf8"));
@@ -141,15 +142,15 @@ test("SOC major group titles are the official 2018 SOC wording", () => {
   }
 });
 
-test("index.html has the roles box and its rail entry, after the years entry", () => {
+test("index.html has the roles box in the five-years topic, after the years box", () => {
   const doc = html();
   assert.match(doc, /id="cut-roles"/);
-  assert.match(doc, /data-target="cut-roles"/);
-  const yearsAt = doc.indexOf('data-target="cut-years"');
-  const rolesAt = doc.indexOf('data-target="cut-roles"');
-  const methodsAt = doc.indexOf('data-target="cut-methods"');
-  assert.ok(yearsAt > -1 && rolesAt > yearsAt, "the R rail entry must come after Y");
-  assert.ok(methodsAt === -1 || rolesAt < methodsAt, "the R rail entry must come before the next one");
+  const rail = doc.slice(doc.indexOf('class="w4-rail"'), doc.indexOf("</nav>", doc.indexOf('class="w4-rail"')));
+  assert.match(rail, /data-target="topic-years"/, "the rail needs a five-years entry");
+  const topic = block(doc, "topic-years");
+  const yearsAt = topic.indexOf('id="cut-years"');
+  const rolesAt = topic.indexOf('id="cut-roles"');
+  assert.ok(yearsAt > -1 && rolesAt > yearsAt, "the roles box must follow the years box inside the topic");
   assert.match(doc, /week04-roles\.css/);
   assert.match(doc, /week04-roles\.js/);
 });

@@ -845,6 +845,15 @@ function buildOverlap(echarts, explore, place, ctx) {
 // ================================================================ boot
 
 let built = false;
+let ready = false;
+
+// Press the tab the deep dive asked for (root.dataset.want), once the tabs work.
+function showWanted() {
+  const root = $("w4m-root");
+  const want = root && root.dataset.want;
+  const tab = want && $(`w4m-tab-${want}`);
+  if (ready && tab && tab.getAttribute("aria-pressed") !== "true") tab.click();
+}
 
 async function build() {
   if (built) return;
@@ -899,6 +908,8 @@ async function build() {
     });
 
     $("w4m-root").hidden = false;
+    ready = true;
+    showWanted();
     if (status) status.remove();
     // The maps were set up while their container was hidden; size them now it shows.
     requestAnimationFrame(() => window.dispatchEvent(new Event("resize")));
@@ -906,6 +917,18 @@ async function build() {
     console.error(err);
     if (status) status.textContent = `Community explorables failed to load: ${err.message}`;
   }
+}
+
+// The deep dive's contents link to a method by its panel; the router sends
+// w4m:show with { panel: "gn" | "mod" | "louvain" | "overlap" }.
+const methodsRoot = $("w4m-root");
+if (methodsRoot) {
+  methodsRoot.addEventListener("w4m:show", (event) => {
+    const panel = event.detail && event.detail.panel;
+    if (!panel) return;
+    methodsRoot.dataset.want = panel;
+    showWanted();
+  });
 }
 
 const details = $("cut-methods");

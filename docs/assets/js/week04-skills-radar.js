@@ -6,6 +6,7 @@
 // <details> toggle, so this waits for that card to land instead of racing it.
 
 import { token } from "./week04-strip.js";
+import { drawer, drawerRow } from "./week04-ui.js";
 
 const DATA = new URL("../../weeks/week04/data/skills_radar.json", import.meta.url);
 const MAX_SELECTED = 5;
@@ -33,27 +34,6 @@ async function load() {
 function frag(text) {
   const span = document.createElement("span");
   span.textContent = text;
-  return span;
-}
-
-// Same reveal markup as week04-skills.js's cards, with its own pop id.
-function reveal(id, label, bodyEl) {
-  const span = document.createElement("span");
-  span.className = "w4-tip";
-  const btn = document.createElement("button");
-  btn.type = "button";
-  btn.setAttribute("aria-describedby", id);
-  btn.innerHTML =
-    '<svg aria-hidden="true" height="14" viewBox="0 0 24 24" width="14"><circle cx="12" cy="12" fill="none" r="9" stroke="currentColor" stroke-width="2"></circle><path d="M12 11v6M12 7.5v.5" fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="2"></path></svg>' +
-    label;
-  const pop = document.createElement("span");
-  pop.className = "w4-pop";
-  pop.id = id;
-  pop.setAttribute("role", "tooltip");
-  const b = document.createElement("b");
-  b.textContent = label;
-  pop.append(b, bodyEl);
-  span.append(btn, pop);
   return span;
 }
 
@@ -188,24 +168,30 @@ class Radar {
     chips.setAttribute("role", "list");
     chips.setAttribute("aria-label", "Occupations on the radar");
 
-    const toggle = document.createElement("fieldset");
-    toggle.className = "w4-radar-toggle";
-    const legend = document.createElement("legend");
+    const toggle = document.createElement("div");
+    toggle.className = "rx-seg-row";
+    const legend = document.createElement("span");
+    legend.className = "rx-seg-label";
+    legend.id = "w4-radar-group-label";
     legend.textContent = "Compare by";
-    toggle.append(legend);
+    const seg = document.createElement("div");
+    seg.className = "rx-seg";
+    seg.setAttribute("role", "group");
+    seg.setAttribute("aria-labelledby", legend.id);
     for (const group of GROUP_ORDER) {
-      const id = `w4-radar-group-${group}`;
-      const opt = document.createElement("label");
-      const radio = document.createElement("input");
-      radio.type = "radio";
-      radio.name = "w4-radar-group";
-      radio.id = id;
-      radio.value = group;
-      radio.checked = group === this.group;
-      radio.addEventListener("change", () => this.setGroup(group));
-      opt.append(radio, document.createTextNode(` ${this.data.meta.groups[group].label}`));
-      toggle.append(opt);
+      const btn = document.createElement("button");
+      btn.type = "button";
+      btn.id = `w4-radar-group-${group}`;
+      btn.dataset.group = group;
+      btn.textContent = this.data.meta.groups[group].label;
+      btn.setAttribute("aria-pressed", String(group === this.group));
+      btn.addEventListener("click", () => {
+        for (const b of seg.querySelectorAll("button")) b.setAttribute("aria-pressed", String(b === btn));
+        this.setGroup(group);
+      });
+      seg.append(btn);
     }
+    toggle.append(legend, seg);
 
     wrap.append(searchRow, status, chips, toggle);
     container.append(wrap);
@@ -413,7 +399,7 @@ class Radar {
 }
 
 function howBody() {
-  const body = document.createElement("span");
+  const body = document.createElement("p");
   body.append(
     frag(
       "A SOC code that names more than one detailed O*NET occupation gets the filing-weighted mean of " +
@@ -437,7 +423,7 @@ function card(data) {
   const header = document.createElement("header");
   header.className = "w4-q";
   header.innerHTML = `
-    <span class="w4-num">S3</span>
+    <span class="w4-num">5</span>
     <div>
       <h2>How do two occupations' day-to-day skills actually compare?</h2>
       <p class="w4-answer">Put up to five H-1B occupations on one radar and see where their O*NET profiles pull apart.</p>
@@ -453,10 +439,7 @@ function card(data) {
       own analysts. This radar plots those ratings directly, one spoke per descriptor, so a shape that reaches
       further out on a spoke means that descriptor matters more for that occupation.
     </p>`;
-  const revealsRow = document.createElement("div");
-  revealsRow.className = "w4-reveals";
-  revealsRow.append(reveal("w4-pop-skills-radar-how", "How we tested it", howBody()));
-  left.append(revealsRow);
+  left.append(drawerRow(drawer("Method", howBody())));
 
   const plot = document.createElement("div");
   plot.className = "plot";
