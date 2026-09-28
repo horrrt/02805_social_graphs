@@ -454,7 +454,7 @@ test("the reporting-coverage paragraph matches corridors.json for every year, no
   const dnkFirst = dnkYears[first].in_degree;
   const dnkLast = dnkYears[last].in_degree;
   assert.ok(
-    hasPhrase(`Denmark rises from ${dnkFirst} in ${first} to ${dnkLast} by ${last}`),
+    dnkLast > dnkFirst && hasPhrase(`Denmark rises from ${dnkFirst} in ${first} to ${dnkLast} by ${last}`),
     `page does not quote Denmark's ${first}-${last} in-degree range (${dnkFirst} to ${dnkLast})`,
   );
 });
@@ -487,10 +487,6 @@ test("the in-degree tie count matches tails.json's own n and n_distinct, not a s
 });
 
 test("the 'which countries, and how many' paragraph names nine counts, matching every quantity it lists", () => {
-  assert.ok(
-    hasPhrase("Nine different counts appear on this page"),
-    "the paragraph's own count label no longer says nine",
-  );
   const total = corridors.countries.length;
   const migration = corridors.totals[String(corridors.years.at(-1))].countries;
   const flightCountries = corridors.flight_snapshot.countries;
@@ -502,14 +498,18 @@ test("the 'which countries, and how many' paragraph names nine counts, matching 
   const floor1990 = Object.keys(cart.by_year[String(cart.years[0])]).length;
   const oxford = loadData("week03_closures.json").countries;
   const usPassengers = passengers.countries;
-  for (const [label, n] of [
+  const counts = [
     ["total", total], ["migration", migration], ["flight", flightCountries],
     ["any indicator", anyIndicator], ["income", income],
     ["2024 floor", floor2024], ["1990 floor", floor1990],
     ["Oxford", oxford], ["US passengers", usPassengers],
-  ]) {
+  ];
+  for (const [label, n] of counts) {
     assert.ok(hasPhrase(`<b>${n}</b>`), `page does not quote <b>${n}</b> for the "${label}" count`);
   }
+  const word = NUMBER_WORDS[counts.length];
+  assert.ok(hasPhrase(`${word[0].toUpperCase()}${word.slice(1)} different counts appear on this page`),
+    `the paragraph lists ${counts.length} counts and should say so`);
 });
 
 test("the section-2 histogram callout matches corridors.json's 2020 in-degree distribution", () => {
@@ -543,8 +543,10 @@ test("the reciprocity row and passage quote the density baseline and the degree-
     const r = reciprocity[net];
     assert.equal(r.reciprocity, countryFacts[net].reciprocity, `${net}: reciprocity.json disagrees with country_facts.json`);
     assert.equal(r.density, countryFacts[net].density, `${net}: reciprocity.json disagrees with country_facts.json's density`);
-    assert.equal(r.null.n, 100, `${net}: the page says 100 directed shuffles`);
   }
+  assert.equal(reciprocity.stock.null.n, reciprocity.refugees.null.n);
+  assert.ok(hasPhrase(`the directed network and ${reciprocity.stock.null.n} directed shuffles`),
+    `the table note should say ${reciprocity.stock.null.n} directed shuffles`);
   const zText = (z) => `${z < 0 ? "−" : "+"}${Math.abs(z).toFixed(1)}`;
   const cell = (r) => `${r.reciprocity.toFixed(2)} (null ${r.null.mean.toFixed(2)} ± ${r.null.sd.toFixed(3)}, z = ${zText(r.null.z)})`;
   assert.ok(
@@ -557,15 +559,22 @@ test("the reciprocity row and passage quote the density baseline and the degree-
     `the passage should give migration ${reciprocity.stock.vs_density.toFixed(1)}x the density baseline`);
   assert.ok(hasPhrase(`displacement <strong>${reciprocity.refugees.vs_density.toFixed(1)}×</strong>`),
     `the passage should give displacement ${reciprocity.refugees.vs_density.toFixed(1)}x the density baseline`);
-  assert.ok(hasPhrase(`drops chance reciprocity to ${reciprocity.stock.null.mean.toFixed(2)} and ${reciprocity.refugees.null.mean.toFixed(2)}`),
-    "the passage should quote both degree-preserving null means");
-  // "Both networks clear it" needs both real values above their null, and the sentence
-  // must quote displacement's z; migration's is in the table.
-  for (const net of ["stock", "refugees"]) {
-    assert.ok(reciprocity[net].null.z > 2, `${net} no longer clears its degree-preserving null`);
+  // The degree-preserving bar moves each network the way the passage says, from its density.
+  const moves = (r) => `${r.null.mean > r.density ? "raises" : "lowers"} chance reciprocity from ${r.density.toFixed(2)} to ${r.null.mean.toFixed(2)}`;
+  assert.ok(hasPhrase(`For migration that ${moves(reciprocity.stock)}`), `the passage should say migration's bar ${moves(reciprocity.stock)}`);
+  assert.ok(hasPhrase(`For displacement it ${moves(reciprocity.refugees)}`), `the passage should say displacement's bar ${moves(reciprocity.refugees)}`);
+  // ...and for the reasons it gives: in- and out-degree go together for migration,
+  // while the biggest refugee hosts send refugees to few countries.
+  assert.ok(reciprocity.stock.degrees.in_out_spearman > 0.3, "migration's in- and out-degree no longer go together");
+  for (const h of reciprocity.refugees.degrees.top_hosts) {
+    assert.ok(h.out < h.in / 4, `${h.iso3} hosts refugees from ${h.in} countries but sends them to ${h.out}, not few`);
   }
-  assert.ok(hasPhrase(`displacement at z = +${Math.round(reciprocity.refugees.null.z)}`),
-    `the passage should give displacement z = +${Math.round(reciprocity.refugees.null.z)}`);
+  // "Both networks clear their bar": the excess over the null, which compares across
+  // networks where z does not.
+  const excess = (r) => (r.reciprocity - r.null.mean).toFixed(2);
+  for (const net of ["stock", "refugees"]) assert.ok(reciprocity[net].null.z > 2, `${net} no longer clears its null`);
+  assert.ok(hasPhrase(`Both networks clear their bar, migration by ${excess(reciprocity.stock)} and displacement by ${excess(reciprocity.refugees)}.`),
+    `the passage should give the excess over the null: ${excess(reciprocity.stock)} and ${excess(reciprocity.refugees)}`);
   assert.ok(!hasPhrase("no more two-way than a random graph of its size"),
     "the page again claims displacement is no more two-way than a random graph");
 });
@@ -622,6 +631,9 @@ test("the residual table lists gravity.json's twelve largest ratios, row by row"
   assert.ok(hasPhrase(`${NUMBER_WORDS[russian][0].toUpperCase()}${NUMBER_WORDS[russian].slice(1)} of the top twelve involve Russia`),
     `the notice should count ${russian} corridors involving Russia`);
   assert.ok(Math.min(...top.map((r) => r.ratio)) >= 30, "a top-twelve corridor no longer beats the model by thirty or more");
+  const uncategorised = top.find((r) => r.origin === "PSE");
+  assert.ok(uncategorised && hasPhrase(`${uncategorised.origin_name} to ${uncategorised.destination_name} does not sort`),
+    "the notice should name the one corridor it cannot categorise, as gravity.json names it");
 });
 
 test("the community table names each group's size and first five members from communities.json", () => {
