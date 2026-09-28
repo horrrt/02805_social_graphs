@@ -1,6 +1,7 @@
 """An explicitly schematic transit view; never inferred communities."""
 import json
 from arcade_data import load, OUT, write
+from check_pages import check
 
 
 def build():
@@ -39,6 +40,7 @@ def build():
                "interchanges": [{"id": n, "name": byid[n]["name"], "degree": graph.degree(n)} for n in hubs],
                "closures": resilience["cases"], "coreNodes": resilience["population"]["nodes"],
                "shortestPaths": "BFS on the full 303-article snapshot: directed article links or the explicitly selected undirected collapse. Closed articles are excluded. Only the 277-article core is used for closure/null-model comparisons."}
+    check(OUT / "week02_transit.json", payload)
     write("week02_transit.json", payload)
     print(f"Transit: {len(hubs)} interchange stations, {len(edges)} real segments across {len(lines)} schematic lines.")
 
