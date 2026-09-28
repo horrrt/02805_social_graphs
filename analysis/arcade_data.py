@@ -8,6 +8,8 @@ from pathlib import Path
 
 import networkx as nx
 
+from check_pages import check
+
 ROOT = Path(__file__).resolve().parents[1]
 OUT = ROOT / "docs/assets/data"
 
@@ -43,6 +45,9 @@ def load():
 
 
 def write(name, data):
+    # Every write() caller (this module's build(), week01_packs.py, week02_transit.py)
+    # goes through this one check, so none of them needs its own call.
+    check(OUT / name, data)
     (OUT / name).write_text(json.dumps(data, ensure_ascii=False, separators=(",", ":")) + "\n")
 
 

@@ -35,7 +35,7 @@
  },
  "filled_ratings": 137,
  "coverage": {
-  "h1b_occupations": 562,
+  "h1b_occupations": 561,
   "covered": 479,
   "filings": 1040169,
   "filing_share_covered": 0.9946,
@@ -325,15 +325,7 @@
     "filings": 2
    },
    {
-    "code": "29-1069",
-    "filings": 2
-   },
-   {
     "code": "25-1099",
-    "filings": 1
-   },
-   {
-    "code": "25-2054",
     "filings": 1
    },
    {
@@ -394,6 +386,10 @@
    },
    {
     "code": "20-1021",
+    "filings": 1
+   },
+   {
+    "code": "29-1069",
     "filings": 1
    },
    {
@@ -509,19 +505,19 @@
   },
   "11-3071": {
    "title": "Transportation, Storage, and Distribution Managers",
-   "h1b_filings": 2534,
+   "h1b_filings": 2535,
    "residual_share": 0.002,
    "within_similarity": 0.964,
    "profiles": [
     {
      "code": "11-3071.04",
      "title": "Supply Chain Managers",
-     "share": 0.747
+     "share": 0.746
     },
     {
      "code": "11-3071.00",
      "title": "Transportation, Storage, and Distribution Managers",
-     "share": 0.253
+     "share": 0.254
     }
    ]
   },
@@ -586,7 +582,7 @@
   },
   "11-9199": {
    "title": "Managers, All Other",
-   "h1b_filings": 967,
+   "h1b_filings": 966,
    "residual_share": 0.135,
    "within_similarity": 0.796,
    "profiles": [
@@ -770,19 +766,19 @@
   },
   "15-1243": {
    "title": "Database Architects",
-   "h1b_filings": 8328,
+   "h1b_filings": 8334,
    "residual_share": 0.006,
    "within_similarity": 0.947,
    "profiles": [
     {
      "code": "15-1243.00",
      "title": "Database Architects",
-     "share": 0.767
+     "share": 0.768
     },
     {
      "code": "15-1243.01",
      "title": "Data Warehousing Specialists",
-     "share": 0.233
+     "share": 0.232
     }
    ]
   },
@@ -806,7 +802,7 @@
   },
   "15-1299": {
    "title": "Computer Occupations, All Other",
-   "h1b_filings": 103800,
+   "h1b_filings": 103778,
    "residual_share": 0.03,
    "within_similarity": 0.703,
    "profiles": [
@@ -859,8 +855,8 @@
   },
   "15-2041": {
    "title": "Statisticians",
-   "h1b_filings": 8225,
-   "residual_share": 0.017,
+   "h1b_filings": 8223,
+   "residual_share": 0.016,
    "within_similarity": 0.959,
    "profiles": [
     {
@@ -877,7 +873,7 @@
   },
   "15-2051": {
    "title": "Data Scientists",
-   "h1b_filings": 55150,
+   "h1b_filings": 55165,
    "residual_share": 0.004,
    "within_similarity": 0.895,
    "profiles": [
@@ -977,7 +973,7 @@
   },
   "17-2112": {
    "title": "Industrial Engineers",
-   "h1b_filings": 18371,
+   "h1b_filings": 18377,
    "residual_share": 0.003,
    "within_similarity": 0.76,
    "profiles": [
@@ -1028,8 +1024,8 @@
   },
   "17-2199": {
    "title": "Engineers, All Other",
-   "h1b_filings": 4354,
-   "residual_share": 0.118,
+   "h1b_filings": 4348,
+   "residual_share": 0.117,
    "within_similarity": 0.771,
    "profiles": [
     {
@@ -1391,7 +1387,7 @@
   },
   "29-1229": {
    "title": "Physicians, All Other",
-   "h1b_filings": 10810,
+   "h1b_filings": 10811,
    "residual_share": 0.717,
    "within_similarity": 0.981,
    "profiles": [
@@ -1650,7 +1646,7 @@
   },
   "15-1299": {
    "title": "Computer Occupations, All Other",
-   "filings": 103800,
+   "filings": 103778,
    "nearest": [
     {
      "code": "15-1241",
@@ -1681,7 +1677,7 @@
   },
   "15-2051": {
    "title": "Data Scientists",
-   "filings": 55150,
+   "filings": 55165,
    "nearest": [
     {
      "code": "15-2041",
@@ -1712,7 +1708,7 @@
   },
   "15-1253": {
    "title": "Software Quality Assurance Analysts and Testers",
-   "filings": 35412,
+   "filings": 35415,
    "nearest": [
     {
      "code": "15-1243",
@@ -1867,7 +1863,7 @@
   },
   "17-2112": {
    "title": "Industrial Engineers",
-   "filings": 18371,
+   "filings": 18377,
    "nearest": [
     {
      "code": "17-2131",
@@ -2115,7 +2111,7 @@
   },
   "29-1229": {
    "title": "Physicians, All Other",
-   "filings": 10810,
+   "filings": 10811,
    "nearest": [
     {
      "code": "29-1214",
@@ -2270,7 +2266,7 @@
   },
   "15-1243": {
    "title": "Database Architects",
-   "filings": 8328,
+   "filings": 8334,
    "nearest": [
     {
      "code": "15-1254",
@@ -2301,7 +2297,7 @@
   },
   "15-2041": {
    "title": "Statisticians",
-   "filings": 8225,
+   "filings": 8223,
    "nearest": [
     {
      "code": "15-2051",

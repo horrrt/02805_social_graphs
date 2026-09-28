@@ -14,7 +14,7 @@ const card = (id) => {
   const start = html.indexOf(`id="${id}"`);
   assert.ok(start > 0, `no card ${id}`);
   const end = html.indexOf('<div class="card', start + 1);
-  return html.slice(start, end > 0 ? end : undefined).replace(/<[^>]+>/g, " ").replace(/\s+/g, " ");
+  return html.slice(start, end > 0 ? end : undefined).replace(/<span class="w4-pop" id="w4-term-[^"]*"[^>]*>[^<]*<\/span>/g, " ").replace(/<[^>]+>/g, " ").replace(/\s+/g, " ");
 };
 const says = (id, t) => assert.ok(card(id).includes(t), `${id} should say "${t}"`);
 const pct = (x, digits = 0) => `${(100 * x).toFixed(digits)}%`;
@@ -143,14 +143,14 @@ test("beyond: law firms, green cards and wage levels", () => {
   const [dlo, dhi] = f.q2_direct_pooled_ci95;
   says("beyond-perm", `direct employers ${f2(f.q2_direct_pooled_ratio)} (${f2(dlo)} to ${f2(dhi)})`);
   const named = d.q2_named_perm;
-  says("beyond-perm", `from ${count(named.Amazon.fy2024.all_statuses_name_match)} and ${count(named.Google.fy2024.all_statuses_name_match)} in FY2024 to ${named.Amazon.fy2025.all_statuses_name_match} and ${named.Google.fy2025.all_statuses_name_match} in FY2025`);
+  says("beyond-perm", `from ${count(named.Amazon.fy2024.all_statuses_name_match)} and ${count(named.Google.fy2024.all_statuses_name_match)} in 2024 to ${named.Amazon.fy2025.all_statuses_name_match} and ${named.Google.fy2025.all_statuses_name_match} in 2025`);
   says("beyond-wage", `Within the ${d.q3.strata_kept_20plus_each_side} occupations`);
 });
 
 test("section 4: without the biggest firms", () => {
   const d = json("docs/weeks/week04/data/footprint.json");
   const at = (part, id) => d[part].variants.find((v) => v.id === id);
-  const lead = html.slice(html.indexOf('id="footprint"'), html.indexOf('id="beyond"')).replace(/<[^>]+>/g, " ").replace(/\s+/g, " ");
+  const lead = html.slice(html.indexOf('id="footprint"'), html.indexOf('id="beyond"')).replace(/<span class="w4-pop" id="w4-term-[^"]*"[^>]*>[^<]*<\/span>/g, " ").replace(/<[^>]+>/g, " ").replace(/\s+/g, " ");
   const has = (t) => assert.ok(lead.includes(t), `section 4 should say "${t}"`);
   const [full, short, shortc, top10, top10c] = ["full", "drop_shortlist", "control_shortlist", "drop_top10_filings", "control_top10_filings"].map((id) => at("metros", id));
   const vs = d.finding.metros;
@@ -173,7 +173,7 @@ test("section 4: without the biggest firms", () => {
 test("section 4: which firm hides the regions", () => {
   const d = json("docs/weeks/week04/data/footprint_rank.json");
   const f = d.finding;
-  const part = html.slice(html.indexOf('id="footprint-which"'), html.indexOf('id="beyond"')).replace(/<[^>]+>/g, " ").replace(/\s+/g, " ");
+  const part = html.slice(html.indexOf('id="footprint-which"'), html.indexOf('id="beyond"')).replace(/<span class="w4-pop" id="w4-term-[^"]*"[^>]*>[^<]*<\/span>/g, " ").replace(/<[^>]+>/g, " ").replace(/\s+/g, " ");
   const has = (t) => assert.ok(part.includes(t), `the which-firm part should say "${t}"`);
   const firm = (name) => d.single.find((s) => s.firm === name);
   const amazon = firm("Amazon");

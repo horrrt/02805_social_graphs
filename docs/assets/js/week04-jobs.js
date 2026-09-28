@@ -1,4 +1,7 @@
 // Section 2 figure: certified H-1B occupation co-hiring network.
+import { stripChart } from "./week04-strip.js";
+import { resetButton } from "./week04-map-reset.js";
+
 const DATA_URL = new URL("../../weeks/week04/data/jobs.json", import.meta.url);
 const INK = "#0f2340";
 const MUTE = "#7a8fac";
@@ -62,7 +65,7 @@ function renderPairs(data) {
     $("jobs-inspector").innerHTML = [pair.source, pair.target].map((id) => {
       const node = data.nodes.find((n) => n.id === id);
       return `<h2>${esc(titleOf(data, id))}</h2><p class="jobs-meta">SOC ${esc(id)} · ${num(node.filings)} certified filings</p>`;
-    }).join("") + `<p>${num(pair.weight)} companies filed for both in FY${data.meta.year}.</p>`;
+    }).join("") + `<p>${num(pair.weight)} companies filed for both in ${data.meta.year}.</p>`;
   });
 }
 
@@ -131,8 +134,52 @@ function renderNetwork(data) {
       emphasis: { focus: "adjacency", lineStyle: { width: 3 } },
     }],
   });
-  c.on("click", (event) => inspector(event.data?.node, data));
+  // Reset view: undo any zoom or pan, drop the highlight and bring back the bridge list.
+  const showReset = resetButton($("chart-job-network"), () => {
+    c.dispatchAction({ type: "restore" });
+    bridgeList(data);
+  });
+  c.on("click", (event) => {
+    inspector(event.data?.node, data);
+    if (event.data?.node) showReset(true);
+  });
+  c.on("graphroam", () => showReset(true));
   bridgeList(data);
+}
+
+// The bridges card's main-claim figure: how many occupations pass each rule,
+// real network against its rewired baseline, on the redesign's shared strip form.
+function renderBridgeStrip(data) {
+  const host = $("chart-job-bridge-rule");
+  if (!host) return;
+  const br = data.bridges;
+  host.append(
+    stripChart(
+      [{
+        label: "First rule",
+        sub: "ratio above 1",
+        real: br.lift_above_1,
+        realLabel: num(br.lift_above_1),
+        ref: [br.lift_above_1_by_chance_mean, `rewired ${num(Math.round(br.lift_above_1_by_chance_mean))}`],
+      }],
+      { domain: [0, 500], ticks: [0, 100, 200, 300, 400, 500], fmt: num, labelW: 150, badgeW: 20,
+        aria: "Occupations passing the first rule, real against rewired" },
+    ),
+  );
+  host.append(
+    stripChart(
+      [{
+        label: "Strict rule",
+        sub: "beats every rewired network",
+        bold: true,
+        real: br.all_occupations,
+        realLabel: num(br.all_occupations),
+        ref: [br.expected_false_positives, `by chance ${num(Math.round(br.expected_false_positives))}`],
+      }],
+      { domain: [0, 25], ticks: [0, 5, 10, 15, 20, 25], fmt: num, labelW: 150, badgeW: 20,
+        aria: "Occupations passing the strict rule, against the number expected by chance" },
+    ),
+  );
 }
 
 function renderGroups(data) {
@@ -146,8 +193,9 @@ function renderGroups(data) {
   }));
   c.setOption({
     ...base,
-    grid: { left: 150, right: 18, top: 18, bottom: 96 },
-    xAxis: { ...axis, type: "category", data: majors.map((major) => data.majors[major]), axisLabel: { ...axis.axisLabel, rotate: 35, width: 120, overflow: "truncate", interval: 0 } },
+    // Steep, short column labels: at 35° the official group names ran into each other.
+    grid: { left: 150, right: 18, top: 18, bottom: 150 },
+    xAxis: { ...axis, type: "category", data: majors.map((major) => data.majors[major]), axisLabel: { ...axis.axisLabel, rotate: 60, width: 150, overflow: "truncate", interval: 0 } },
     yAxis: { ...axis, type: "category", inverse: true, data: clusters.map((cluster) => clusterName(data, cluster)), axisLabel: { ...axis.axisLabel, width: 140, overflow: "truncate" } },
     visualMap: { show: false, min: 0, max: Math.max(...values.map((value) => value[2]), 1), inRange: { color: ["#edf5fb", "#1f8fd6"] } },
     tooltip: { ...base.tooltip, formatter: (p) => `<b>${esc(clusterName(data, clusters[p.value[1]]))} cluster × ${esc(data.majors[majors[p.value[0]]])}</b><br>${num(p.value[2])} of the ${data.nodes.length} occupations shown` },
@@ -173,9 +221,10 @@ fetch(DATA_URL).then((response) => {
   return response.json();
 }).then((data) => {
   renderPairs(data);
+  renderBridgeStrip(data);
   renderNetwork(data);
   renderGroups(data);
-  $("jobs-status").textContent = `${num(data.meta.filings)} certified H-1B filings · ${num(data.meta.occupations)} occupations · FY${data.meta.year}`;
+  $("jobs-status").textContent = `${num(data.meta.filings)} certified H-1B filings · ${num(data.meta.occupations)} occupations · ${data.meta.year}`;
   const q = data.quality;
   const fill = {
     occupations: num(data.meta.occupations), nmi: q.nmi.toFixed(2), shuffled: q.nmi_shuffled.mean.toFixed(2),

@@ -1,0 +1,39 @@
+/* Week 4 — Data and methods source list (matches the redesign canvas's DeepMethods board) */
+
+.corridor .w4-sources {
+  /* The canvas board's link blue; the page has no global link token. */
+  --w4-source-link: #14618f;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  margin: 8px 0 0;
+  max-width: 760px;
+}
+
+.corridor .w4-sources dt {
+  border-top: 1px solid var(--line-soft);
+  padding: 9px 0 2px;
+}
+
+.corridor .w4-sources dt:first-child {
+  border-top: none;
+  padding-top: 0;
+}
+
+.corridor .w4-sources dt a {
+  color: var(--w4-source-link);
+  font-size: 13px;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.corridor .w4-sources dt a:hover,
+.corridor .w4-sources dt a:focus-visible {
+  text-decoration: underline;
+}
+
+.corridor .w4-sources dd {
+  color: var(--ink-soft);
+  font-size: 12.5px;
+  margin: 0 0 9px;
+}

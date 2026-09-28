@@ -322,7 +322,7 @@ try {
     closed = null;
     $("#service-state").textContent = "NORMAL SERVICE";
     $("#disruption-headline").textContent =
-      "Service restored. All 277 articles can reach each other again.";
+      `Service restored. All ${transit.coreNodes} articles can reach each other again.`;
     $("#disruption-detail").textContent =
       "The recorded closure comparison remains below. The map and route planner now use the original graph.";
     $("#stranded-list").innerHTML = "";

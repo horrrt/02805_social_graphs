@@ -2,6 +2,8 @@
 // Four questions, one selected city across every panel. Numbers come from
 // docs/assets/data/week04_place.json (placeholder until analysis/week04_where.py).
 
+import { resetButton } from "./week04-map-reset.js";
+
 const DATA_URL = new URL("../data/week04_place.json", import.meta.url);
 const USA_URL = new URL("../data/usa.json", import.meta.url);
 const WHERE_WHO_URL = new URL("../../weeks/week04/data/where_who.json", import.meta.url);
@@ -11,6 +13,9 @@ const MUTE = "#7a8fac";
 const ORANGE = "#f2820c";
 const BLUE = "#1f8fd6";
 const LINE = "#eaf0f7";
+
+// week04_place.json's scope reads "FY2025"; the page writes the plain year.
+const yr = (s) => String(s).replace(/\bFY(\d{4})/g, "$1");
 
 const AXIS = {
   axisLine: { lineStyle: { color: "#c6d4e6" } },
@@ -116,8 +121,8 @@ export async function startPlace(echarts) {
     if (!el) return;
     const draft = data.meta.status === "placeholder";
     el.textContent = draft
-      ? `Scaffold · ${data.meta.scope} · placeholders until ${data.meta.script}`
-      : `${data.meta.scope} · ${data.meta.script}`;
+      ? `Scaffold · ${yr(data.meta.scope)} · placeholders until ${data.meta.script}`
+      : `${yr(data.meta.scope)} · ${data.meta.script}`;
   }
 
   function renderInspector() {
@@ -152,8 +157,10 @@ export async function startPlace(echarts) {
     return GROUP[city.community] ?? MUTE;
   }
 
+  // Counts of positions or employers carry no placed-or-direct meaning, so
+  // they take the neutral ink tone rather than the grammar's orange or blue.
   function metricColour() {
-    return state.metric === "positions" ? ORANGE : BLUE;
+    return token("--ink-soft");
   }
 
   /** Tight bubble scale so hubs do not swallow the map. */
@@ -544,7 +551,8 @@ export async function startPlace(echarts) {
   }
 
 
-  const LABELS = 8;
+  // Five labels fit the crowded corner of the scatter without touching; hover names the rest.
+  const LABELS = 5;
 
   function renderScatter() {
     const c = chart("chart-longhaul");
@@ -656,12 +664,17 @@ export async function startPlace(echarts) {
             textBorderColor: "#fff",
             textBorderWidth: 3,
           },
-          labelLayout: { hideOverlap: true },
-          data: [...labelled].map((e) => ({
-            value: [e.distance_km, e.weight],
-            employer: e.top_employer,
-            symbolSize: edgeSize(e.weight),
-          })),
+          // Neighbouring labels alternate above and below their dots, so two
+          // heavy links at similar distances do not print on top of each other.
+          labelLayout: { moveOverlap: "shiftY" },
+          data: [...labelled]
+            .sort((x, y) => x.distance_km - y.distance_km)
+            .map((e, i) => ({
+              value: [e.distance_km, e.weight],
+              employer: e.top_employer,
+              symbolSize: edgeSize(e.weight),
+              label: { position: i % 2 ? "bottom" : "top" },
+            })),
         },
       ],
       tooltip: {
@@ -996,7 +1009,7 @@ export async function startPlace(echarts) {
     if (!name) return;
     const city = byId[state.selected ?? heroDefault];
     name.textContent = city.name;
-    $("hero-sel-codes").textContent = `${city.state} · FY2025`;
+    $("hero-sel-codes").textContent = `${city.state} · 2025`;
     $("hero-sel-dot").style.background = GROUP[city.community];
     $("hero-sel-group").textContent = `${data.communities[city.community]?.label ?? "–"} group`;
     const share = placedShare[city.id];
@@ -1034,6 +1047,29 @@ export async function startPlace(echarts) {
     );
   }
 
+  // Every map that shares the selected city gets a Reset view button; it
+  // shows while a city is selected and clears it everywhere at once. A button
+  // is added only once its chart exists, because echarts.init empties its host.
+  const MAPS_WITH_RESET = ["chart-hero-map", "chart-citymap", "chart-regions", "chart-backbone", "chart-arcs"];
+  const resets = new Map();
+
+  function syncResets() {
+    for (const id of MAPS_WITH_RESET) {
+      const host = $(id);
+      if (!host || !charts.has(id)) continue;
+      if (!resets.has(id)) {
+        resets.set(
+          id,
+          resetButton(host, () => {
+            state.selected = null;
+            renderAll();
+          }),
+        );
+      }
+      resets.get(id)(state.selected !== null);
+    }
+  }
+
   function renderAll() {
     renderHeroMap();
     renderHeroInspector();
@@ -1049,6 +1085,7 @@ export async function startPlace(echarts) {
     renderNullBits();
     renderAlphaTable();
     renderSnapNote();
+    syncResets();
   }
 
   document.querySelectorAll("[data-place-metric]").forEach((btn) => {
