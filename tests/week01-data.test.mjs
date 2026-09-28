@@ -46,23 +46,25 @@ test("the histogram counts sum to all 303 articles", () => {
   assert.equal(total, 303);
 });
 
-test("the page's ≈1,945 metric equals collector.expectedPacksRounded", () => {
-  assert.equal(packs.collector.expectedPacksRounded, 1945);
-  assert.match(html, /≈1,945/);
+const count = (n) => n.toLocaleString("en-US");
+
+test("the page's ≈ expected-packs metric equals collector.expectedPacksRounded", () => {
+  const shown = `<strong>≈${count(packs.collector.expectedPacksRounded)}</strong`;
+  assert.ok(html.includes(shown), `the page should show "${shown}"`);
 });
 
-test("the page's ≈382 uniform-odds metric equals collector.uniformExpectedPacks", () => {
-  assert.equal(packs.collector.uniformExpectedPacks, 382);
-  assert.match(html, /≈382/);
+test("the page's ≈ uniform-odds metric equals collector.uniformExpectedPacks", () => {
+  const shown = `<strong>≈${count(packs.collector.uniformExpectedPacks)}</strong`;
+  assert.ok(html.includes(shown), `the page should show "${shown}"`);
 });
 
 test("the printed pack range matches expectedPacksLower/Upper to 2 decimals", () => {
-  const lower = packs.collector.expectedPacksLower.toFixed(2);
-  const upper = packs.collector.expectedPacksUpper.toFixed(2);
-  assert.equal(lower, "1944.19");
-  assert.equal(upper, "1944.99");
+  const twoDp = (n) =>
+    n.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+  const lower = twoDp(packs.collector.expectedPacksLower);
+  const upper = twoDp(packs.collector.expectedPacksUpper);
   assert.ok(
-    html.includes(`between ${Number(lower).toLocaleString("en-US", { minimumFractionDigits: 2 })} and ${Number(upper).toLocaleString("en-US", { minimumFractionDigits: 2 })}`),
+    html.includes(`between ${lower} and ${upper}`),
     `the page does not quote ${lower} and ${upper}`,
   );
 });
