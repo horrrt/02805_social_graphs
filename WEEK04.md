@@ -101,8 +101,8 @@ Layout differences the loader already handles:
   match exactly. Merges beyond a tax number are written down: company families in
   `analysis/week04_client_aliases.csv`, misspellings in `analysis/week04_name_merges.csv`. The rule for
   "same company" is at the top of the CSV. Add to those files rather than to your own script.
-- **Run `python analysis/week04_schemas.py` after changing any page data.** It checks each JSON file
-  against the fields and cross-references its page script reads (Pydantic models, one per file).
+- **Run `python analysis/check_pages.py` after changing any page data.** It checks each week's JSON files
+  against the fields and cross-references their page scripts read (Pydantic models, one per file).
 - **Corporate parents come from GLEIF.** `python analysis/week04_gleif.py` matches every company spelling
   with 20+ filings to the US entries of GLEIF's register (Golden Copy, 26 Sep 2026, CC0) by exact
   normalized name and follows each to its ultimate parent. Spellings that share a parent and a brand

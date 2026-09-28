@@ -11,10 +11,12 @@ site code and prose. `AGENTS.md` and `POST_GUIDE.md` hold the group's post-writi
 
 1. Read before you write. Open [POST_GUIDE.md](../POST_GUIDE.md) for any post, [WEEK04.md](../WEEK04.md)
    for week 4, every file you will change, and the script that produces the data a page shows.
-2. For a change that touches more than one file, list the steps first and name the file each step changes.
-3. Make the change. Keep the surrounding style: naming, comment density, formatting.
-4. Run the checks below that match what you changed, and read their output. Fix failures before you report.
-5. Report what changed, which checks you ran with their result, and what you did not check. Never say a
+2. Before you change an analysis script, rerun it and confirm it reproduces its committed JSON. A file that
+   no longer reproduces is stale, and the page that quotes it may already be wrong.
+3. For a change that touches more than one file, list the steps first and name the file each step changes.
+4. Make the change. Keep the surrounding style: naming, comment density, formatting.
+5. Run the checks below that match what you changed, and read their output. Fix failures before you report.
+6. Report what changed, which checks you ran with their result, and what you did not check. Never say a
    check passed without running it in this session.
 
 If the request is ambiguous or a rule below blocks it, stop and ask. Do not guess at data, sources or results.
@@ -27,11 +29,20 @@ If the request is ambiguous or a rule below blocks it, stop and ask. Do not gues
 - Any page data changed: `python analysis/check_pages.py` must print `ok` for every file. It checks every
   week's page JSON against the fields and cross-references its page scripts read (Pydantic models in
   `analysis/week01_schemas.py` to `analysis/week04_schemas.py`).
-- A page quotes a script's output: rerun that script and use its fresh JSON. Section 1 is
-  `analysis/week04_where.py`, section 2 `analysis/week04_jobs.py`, section 3 `analysis/week04_staffing.py`
-  then `analysis/week04_staffing_figure.py`. The staffing script takes about 2 minutes and prints progress.
-- Page changed: serve it with `python -m http.server 8765 --directory docs`, open
-  http://localhost:8765/weeks/week04/, and confirm the browser console shows no errors. Desktop only.
+- A page quotes a script's output: rerun that script and use its fresh JSON. For weeks 1 to 3,
+  `python analysis/run_all.py` reruns every script in parallel (or `week02`, or one script) and lists each
+  committed file that changed. For week 4, section 1 is `analysis/week04_where.py`, section 2
+  `analysis/week04_jobs.py`, section 3 `analysis/week04_staffing.py` then
+  `analysis/week04_staffing_figure.py`, and `python analysis/week04_run_all.py` reruns them all in parallel.
+  The staffing script takes about 2 minutes and prints progress.
+- A number on a page changed or was added: a test in `tests/` builds that sentence from the JSON and fails
+  when the page disagrees. `tests/week04-prose.test.mjs` shows the pattern. Prove a new test bites by
+  changing the number once and watching it fail.
+- An analysis script changed: rerun it with `PYTHONHASHSEED=1` and again with `PYTHONHASHSEED=2`. Both
+  outputs must be identical, and identical to the committed file apart from what you meant to change.
+- Page changed: serve it with `python -m http.server 8765 --directory docs`, open the page you changed
+  (week 4 is http://localhost:8765/weeks/week04/), and confirm the browser console shows no errors.
+  Desktop only.
 - Use the project environment: `.venv-course/bin/python` (Windows: `.venv-course\Scripts\python`), built
   from `requirements-lock.txt` as the README describes.
 
@@ -68,4 +79,5 @@ Why the change was needed, in plain sentences, wrapped at 72 characters.
 - Put an email address, password or token in code. Downloads that need a contact read `CONTACT_EMAIL`
   from the environment.
 - Push straight to `main`. Work on a branch, open a pull request and merge it once its checks pass.
-- Delete or rewrite another member's section without being asked. Section owners are listed in `WEEK04.md`.
+- Delete or rewrite another member's section without being asked. Week 4's section owners are listed in
+  `WEEK04.md`. Weeks 1 to 3 have no owner table, so ask before rewriting their prose.

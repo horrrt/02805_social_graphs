@@ -95,6 +95,11 @@ python analysis/week01_packs.py
 python analysis/week02_transit.py
 ```
 
+`python analysis/run_all.py` runs these and the week 3 scripts in parallel, each as soon as the
+files it reads are ready, in about 16 minutes. `python analysis/run_all.py week02` runs one week. It ends by
+listing every committed file under `analysis/` and `docs/` that changed, so run it before editing a
+script: an empty list means the committed data still reproduces.
+
 The week-2 ensemble takes longer than the other steps. It records 1,000 accepted
 connected degree-preserving rewires for each tested article at 20 successful
 swaps per edge, plus a 200-draw sensitivity check at 50 swaps per edge. Source

@@ -18,6 +18,17 @@ applyTo: "docs/**,tests/**"
 - Build for desktop. Do not add phone layouts.
 - Every chart needs a hover tooltip, a caption that says how to read it, and a table or text alternative.
 - Label a few marks, not all of them. Hide overlapping labels (in ECharts, `labelLayout: { hideOverlap: true }`).
+- Draw every real-against-random result on a page with the same chart, so a reader learns it once. Week 4
+  uses `docs/assets/js/week04-strip.js`: the real value against the random baseline's mean and spread.
+- Give each colour one meaning across the page. If orange means a placed worker, it means nothing else.
+- Leave headings bare: no pill, chip or badge beside a section or question title. Put scope in a caption.
+- Make every disclosure, popover and control work from the keyboard. Escape closes a popover.
+- Version page scripts, stylesheets and fetched data, so one deploy's code never meets another's numbers.
+  Week 3 stamps a content hash with `scripts/stamp_week03.py`; Week 4 appends `?v=` by hand.
+- Ship no draft or placeholder text ("Draft", "The finding goes here", "TODO") on a live page.
+- Credit each data source on the page that uses it, in the form its licence asks for (CC BY names the
+  source and any change you made; ODbL and CC BY-SA also cover what you derive). `tests/credits.test.mjs`
+  checks the footers; add a line there when a page gains a source.
 - Keep existing element IDs, anchors and routes: other sections and tests link to them.
 - When you add a page or change the lobby, update `docs/assets/js/weeks.js` and run
   `node --test 'tests/*.test.mjs'`.

@@ -160,6 +160,29 @@ test("no page or script claims a future week or a preview", () => {
   assert.deepEqual(offenders, []);
 });
 
+// Week 4 went out once with a visible draft banner and once with "The finding goes here"
+// (#46, #56). A banner may stay in the markup as long as it is hidden and no data file
+// still marks itself a placeholder, which is what would unhide it.
+test("no live page ships draft text, a visible draft banner or placeholder data", () => {
+  const forbidden = [/The finding goes here/i, /\bLorem ipsum\b/i, /\bTODO\b/];
+  const offenders = [];
+  for (const path of sitePages()) {
+    const text = readFileSync(path, "utf8");
+    for (const re of forbidden) {
+      const hit = text.match(re);
+      if (hit) offenders.push(`${path.slice(DOCS.length)}: ${hit[0]}`);
+    }
+    for (const tag of text.match(/<[a-z]+\b[^>]*class="[^"]*\bdraft-banner\b[^"]*"[^>]*>/g) ?? []) {
+      if (!/\shidden[\s>=]/.test(tag)) offenders.push(`${path.slice(DOCS.length)}: visible ${tag.replace(/\s+/g, " ")}`);
+    }
+  }
+  for (const path of walk(DOCS).filter((p) => p.endsWith(".json") && !p.includes("/mockups/"))) {
+    const data = JSON.parse(readFileSync(path, "utf8"));
+    if (data?.meta?.status === "placeholder") offenders.push(`${path.slice(DOCS.length)}: meta.status placeholder`);
+  }
+  assert.deepEqual(offenders, []);
+});
+
 test("the lobby names the group and its members", () => {
   const html = read("index.html");
   assert.match(html, /<title>Log–Log Legends · DTU 02805 Social Graphs<\/title>/);
