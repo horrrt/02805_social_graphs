@@ -449,3 +449,38 @@ Slot table extension in use: hero lines (`.w4-hero-text > p.body, p.caution`), o
 
 **Style lint (3.7) on the page text:** no new hits
 
+## RClosing
+
+Slot table extension in use: hero lines (`.w4-hero-text > p.body, p.caution`), opener lines (`header.w4-opener h2, p`) and finding lines (`.w4-finding > div > h3, p`).
+
+### closing>w4-card
+- **notice#0**
+  - before: One important limit A shared employer link means that the same companies file for both occupations or in both places. It does not prove that the jobs are performed together, that one caused the other, or that the network represents workers who were actually hired.
+  - after: One important limit A shared employer link means the same companies file for both occupations or in both places. It does not show that the jobs are done together, that one caused the other, or that the network stands for workers who were hired.
+- **para#0**
+  - before: AI coding assistants helped structure the page, wrote analysis and page code, drafted and revised text, and tested the visual presentation. The numbers come from the public sources listed in Data and methods . Each analysis step writes the numbers its section quotes to a JSON file the page reads. A schema check tests each file against the fields the page uses, a name-matching check tests the company-name rules against tax numbers, and the site tests fail when the numbers in a card or in this closing drift from the analysis output. We checked generated tables, comparisons, source scope, and the page behaviour against the local data before including a claim.
+  - after: AI coding assistants helped structure the page, wrote analysis and page code, drafted and revised text, and tested the visual presentation. The numbers come from the public sources listed in Data and methods .
+- **drawers#0**
+  - before: Background Cities group by who hires there, not by region. Outsourcing firms bundle jobs differently from direct employers of the same size. And when a client drops its main vendor, the new one comes from the same Louvain group nearly eight times as often as a random vendor would, though mostly because clients return to firms they already use. Take out the ten largest filers, most of them national tech and consulting employers, and the metro groups start to follow Census regions; Amazon alone does all of that. Where outsourcing shows most is outside the networks: a filing that places a worker at a client has 3.6 times the odds of a lower wage level for the same occupation. Lawyers and green cards barely follow the staffing groups.
+  - after: Background Cities group by who hires there, not by region. Outsourcing firms bundle jobs differently from direct employers of the same size. And when a client drops its main vendor, the new one comes from the same Louvain group more than eight times as often as a random vendor would, though mostly because clients return to firms they already use. Take out the ten largest filers, most of them national tech and consulting employers, and the metro groups start to follow Census regions; Amazon alone does all of that. Where outsourcing shows most is outside the networks: a filing that places a worker at a client has 3.6 times the odds of a lower wage level for the same occupation. Lawyers and green cards barely follow the staffing groups. Method Each analysis step writes the numbers its section quotes to a JSON file the page reads. A schema check tests each file against the fields the page uses, a name-matching check tests the company-name rules against tax numbers, and the site tests fail when the numbers in a card or in this closing drift from the analysis output. We checked generated tables, comparisons, source scope, and the page behaviour against the local data before including a claim.
+
+**Terms added:** none
+
+**Fix-ups applied (3.7):** none
+
+**Cards a script builds (skipped, see 3.3):** none
+
+**Held slots: board number not on the page (stale-number rule):** 
+- closing>w4-card drawers#0: board numbers [] not in the page slot; board text: override used
+
+**Numbers the board drops (accepted, list in the PR body):** none
+
+**Numbers in new term definitions (check each is a scale, not a result):** none
+
+**Script-owned text that differs from the board (3.3):** none
+
+**Text that still differs from the board, outside script-owned nodes:** 
+- closing>w4-card: page «more than» board «nearly»
+
+**Style lint (3.7) on the page text:** no new hits
+

@@ -259,6 +259,8 @@ test("closing: what surprised us", () => {
   const moves = json("docs/weeks/week04/data/staffing_moves.json").finding;
   const says1 = (t) => assert.ok(closing.includes(t), `closing should say "${t}"`);
   says1(`${pct(moves.q1_pooled_observed_share, 1)} of vendor switches stay inside them, against ${pct(moves.q1_pooled_null_mean, 1)}`);
+  says1("the new one comes from the same Louvain group more than eight times as often as a random vendor would");
+  assert.ok(moves.q1_pooled_lift > 8 && moves.q1_pooled_lift < 9, '"more than eight times" needs the lift between 8 and 9');
   const who = json("docs/weeks/week04/data/where_who.json").finding;
   says1(`no single link cuts off more than ${WORDS[who.q2_max_single_drop]} metros`);
 });
