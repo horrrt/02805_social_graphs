@@ -4,7 +4,8 @@ Week 4 has its own runner, analysis/week04_run_all.py; this one does the same
 for the earlier weeks. Each script starts once the scripts whose output it
 reads have finished (AFTER below), at most one per core, and logs to
 build/logs/<script>.log. week03_country_networks.py is the slowest at about 16
-minutes, so a full run takes about that long instead of about an hour.
+minutes (week03_reciprocity.py about as long), so a full run takes about that
+long instead of about an hour.
 
     python analysis/run_all.py                  # weeks 1 to 3
     python analysis/run_all.py week02           # one week
@@ -19,7 +20,8 @@ week03_corridor_control.py asks Wikidata for country names on every run, and
 Wikidata wants a contact in the User-Agent: set CONTACT_EMAIL first, as the
 week 4 downloads do.
 
-Two scripts stay out. week01_api_check.py queries live Wikipedia, so its output
+Two scripts stay out (tests/run-all.test.mjs fails if any other week 1 to 3
+script is missing from SCRIPTS). week01_api_check.py queries live Wikipedia, so its output
 cannot reproduce; week03_forced_patch.py is a one-off patch that a full
 week03_corridor_control.py run supersedes. scripts/stamp_week03.py runs last
 whenever a week 3 script ran, because the week 3 page's asset stamp hashes its
@@ -55,6 +57,7 @@ SCRIPTS = {
     "week03_passengers": "analysis/week03_passengers.py",
     "week03_country_networks": "analysis/week03_country_networks.py",
     "week03_migration_centrality": "analysis/week03_migration_centrality.py",
+    "week03_reciprocity": "analysis/week03_reciprocity.py",
     "build_world_outline": "scripts/migration/build_world_outline.py",
 }
 WEEK = {name: ("week02" if name == "analyse_week2_models" else
