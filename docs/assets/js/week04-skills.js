@@ -5,6 +5,7 @@
 // random pair of those 60, never of every rated occupation.
 
 import { stripChart } from "./week04-strip.js";
+import { drawer, drawerRow } from "./week04-ui.js";
 
 const DATA = new URL("../../weeks/week04/data/skills.json", import.meta.url);
 const sim = (x) => x.toFixed(2);
@@ -13,32 +14,6 @@ async function load() {
   const r = await fetch(DATA);
   if (!r.ok) throw new Error(`${DATA.pathname} ${r.status}`);
   return r.json();
-}
-
-function reveal(id, label, bodyEl) {
-  const span = document.createElement("span");
-  span.className = "w4-tip";
-  const btn = document.createElement("button");
-  btn.type = "button";
-  btn.setAttribute("aria-describedby", id);
-  btn.innerHTML =
-    '<svg aria-hidden="true" height="14" viewBox="0 0 24 24" width="14"><circle cx="12" cy="12" fill="none" r="9" stroke="currentColor" stroke-width="2"></circle><path d="M12 11v6M12 7.5v.5" fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="2"></path></svg>' +
-    label;
-  const pop = document.createElement("span");
-  pop.className = "w4-pop";
-  pop.id = id;
-  pop.setAttribute("role", "tooltip");
-  pop.appendChild(node2("b", label));
-  pop.appendChild(bodyEl);
-  span.append(btn, pop);
-  return span;
-}
-
-// Plain HTML element helper (week04-strip.js's node() builds SVG elements).
-function node2(tag, text) {
-  const el = document.createElement(tag);
-  if (text !== undefined) el.textContent = text;
-  return el;
 }
 
 function frag(text) {
@@ -62,7 +37,7 @@ function card1(c, descriptors) {
   const header = document.createElement("header");
   header.className = "w4-q";
   header.innerHTML = `
-    <span class="w4-num">S1</span>
+    <span class="w4-num">3</span>
     <div>
       <h2>Do occupations the same companies hire together also need similar skills?</h2>
       <p class="w4-answer">Yes. Two occupations with a direct hiring tie in section 2's network need more
@@ -92,9 +67,7 @@ function card1(c, descriptors) {
   );
   left.append(notice);
 
-  const revealsRow = document.createElement("div");
-  revealsRow.className = "w4-reveals";
-  const howBody = document.createElement("span");
+  const howBody = document.createElement("p");
   howBody.append(
     frag(
       `Every pair here is one of the ${c.occupations} occupations shown in section 2's jobs network. A direct tie is an edge in ` +
@@ -102,16 +75,14 @@ function card1(c, descriptors) {
         "every occupation O*NET rates, so a large or popular field cannot inflate the answer just by being large.",
     ),
   );
-  const moreBody = document.createElement("span");
+  const moreBody = document.createElement("p");
   const list = document.createElement("span");
   const examples = d.examples.slice(0, 3);
   list.textContent = examples.length
     ? `The most alike co-hired pairs: ${examples.map(pairLine).join("; ")}.`
     : "";
   moreBody.append(list);
-  revealsRow.append(reveal("w4-pop-skills-direct-how", "How we tested it", howBody));
-  revealsRow.append(reveal("w4-pop-skills-direct-more", "More numbers", moreBody));
-  left.append(revealsRow);
+  left.append(drawerRow(drawer("Method", howBody), drawer("More numbers", moreBody)));
 
   const plot = document.createElement("div");
   plot.className = "plot";
@@ -164,7 +135,7 @@ function card2(c) {
   const header = document.createElement("header");
   header.className = "w4-q";
   header.innerHTML = `
-    <span class="w4-num">S2</span>
+    <span class="w4-num">4</span>
     <div>
       <h2>Does that agreement hold for whole hiring clusters, not just direct ties?</h2>
       <p class="w4-answer">Mostly. Occupations in the same Louvain cluster as section 2 found it need more
@@ -178,7 +149,7 @@ function card2(c) {
     <p class="sub">
       Section 2 groups the ${c.occupations} occupations into hiring clusters with Louvain, checked there against
       degree-preserving rewirings. This asks whether that grouping also lines up with skills, using pairs
-      that are not already counted in S1 above.
+      that are not already counted in box 3 above.
     </p>`;
   const notice = document.createElement("div");
   notice.className = "notice";
@@ -193,32 +164,28 @@ function card2(c) {
   );
   left.append(notice);
 
-  const revealsRow = document.createElement("div");
-  revealsRow.className = "w4-reveals";
-  const howBody = document.createElement("span");
+  const howBody = document.createElement("p");
   howBody.append(
     frag(
-      "Same-cluster pairs exclude the direct ties S1 already counts, so this box asks a different question: does " +
+      "Same-cluster pairs exclude the direct ties box 3 already counts, so this box asks a different question: does " +
         "the cluster as a whole share skills, beyond the companies that directly link two occupations. Different-" +
         `cluster pairs are every remaining pair across the ${c.occupations} occupations' cluster boundaries.`,
     ),
   );
-  const moreBody = document.createElement("span");
+  const moreBody = document.createElement("p");
   const bestSame = s.examples.slice(0, 2).map(pairLine).join("; ");
   const worstDiff = x.examples.slice(-2).map(pairLine).join("; ");
   moreBody.textContent =
     (bestSame ? `Most alike same-cluster pair without a direct tie: ${bestSame}. ` : "") +
     (worstDiff ? `Least alike pair across clusters: ${worstDiff}.` : "");
-  revealsRow.append(reveal("w4-pop-skills-cluster-how", "How we tested it", howBody));
-  revealsRow.append(reveal("w4-pop-skills-cluster-more", "More numbers", moreBody));
-  left.append(revealsRow);
+  left.append(drawerRow(drawer("Method", howBody), drawer("More numbers", moreBody)));
 
   const plot = document.createElement("div");
   plot.className = "plot";
   plot.innerHTML = `
     <h3>Skill similarity by cluster membership</h3>
     <p class="axis-note">
-      Same row grouping as S1's chart; the dashed reference line is the all-pairs random baseline from that chart.
+      Same row grouping as box 3's chart; the dashed reference line is the all-pairs random baseline from that chart.
     </p>`;
   const host = document.createElement("div");
   host.className = "w4-figure-body";
@@ -268,8 +235,8 @@ async function render() {
     intro.className = "w4-box-intro";
     intro.textContent =
       "Section 2 grouped occupations by which companies file for them together. O*NET, the Department of " +
-      "Labor's database of what each job involves, offers an independent check: S1 and S2 ask whether jobs " +
-      "hired together also need similar skills, and S3 lets you compare any occupations side by side.";
+      "Labor's database of what each job involves, offers an independent check: box 3 and box 4 ask whether jobs " +
+      "hired together also need similar skills, and box 5 lets you compare any occupations side by side.";
     body.replaceChildren(intro, card1(c, data.meta.descriptors), card2(c));
   } catch (err) {
     status.textContent = "Could not load the O*NET comparison.";

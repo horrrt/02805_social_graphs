@@ -1,0 +1,344 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>Section 2 · which jobs go together</title>
+<script src="./support.js"></script>
+<link rel="stylesheet" href="/_blob/083d154e9dc323e92523c409d0034822">
+<link rel="stylesheet" href="/_blob/668486f5a3998cc03081dad4d6a53e30">
+<link rel="stylesheet" href="/_blob/084ce7df5637b99030ea35613530acf2">
+<link rel="stylesheet" href="/_blob/e84e8b268623a65fa6a20dcee3ec4adf">
+<link rel="stylesheet" href="/_blob/35af9356d607ea8092bc878cace00255">
+<link rel="stylesheet" href="/_blob/70ffa1ecc89c42fb63ac04cfc271ee6b">
+<link rel="stylesheet" href="/_blob/3e4fe45fa83b8895f69f8d519b7b0fe2">
+<link rel="stylesheet" href="/_blob/ffcc56532445103bef94c333132a4fb7">
+<link rel="stylesheet" href="/_blob/4004501ab78099c34bb198c8287d7d41">
+<link rel="stylesheet" href="/_blob/ab074990511da3308f5deb38e148e8c1">
+<link rel="stylesheet" href="/_blob/961bb1102d81f8f791744cf5c49d5ccf">
+<link rel="stylesheet" href="/_blob/ea7fdb7da398599db40546cc6b3f4606">
+</head>
+<body>
+<x-dc>
+<helmet>
+<style>
+@font-face{font-family:"Condensed";src:url("/_blob/9ad036b9f76606ea91d82e15ebec8da3") format("truetype");font-weight:800;font-style:normal}
+body{margin:0;background:#eef3f9}
+.rx{position:relative}
+/* rec 6: the rail, every name on hover */
+.rx .rx-rail{position:absolute;left:64px;top:96px;width:44px;z-index:30}
+.rx .rx-rail ol{list-style:none;margin:0;padding:6px 0;display:flex;flex-direction:column;align-items:center;gap:16px;background:linear-gradient(#dce5f0,#dce5f0) center/2px 100% no-repeat}
+.rx .rx-rail ol.rx-rail-sub{gap:16px;padding:14px 0 4px;background:none}
+.rx .rx-rail li{display:flex;flex-direction:column;align-items:center;position:relative}
+.rx .rx-sq,.rx .rx-dot{position:relative;display:block;box-sizing:border-box;border-radius:999px;font-size:0;color:transparent;cursor:pointer}
+.rx .rx-sq{width:12px;height:12px;background:#fff;border:2px solid #9fb4cf}
+.rx .rx-sq:hover{border-color:#14618f}
+.rx .rx-sq.is-on{width:18px;height:18px;background:#14618f;border-color:#14618f;box-shadow:0 0 0 4px rgba(20,97,143,.18)}
+.rx .rx-dot{width:8px;height:8px;background:#c9d6e6}
+.rx .rx-dot.is-on{background:#0f2340;box-shadow:0 0 0 3px rgba(15,35,64,.14)}
+.rx .rx-lab{display:none;position:absolute;left:calc(50% + 20px);top:50%;transform:translateY(-50%);white-space:nowrap;border-radius:8px;padding:3px 9px;font-size:12px;line-height:1.4;font-weight:600;background:rgba(255,255,255,.97);color:#0f2340;box-shadow:0 1px 3px rgba(15,35,64,.16)}
+.rx .rx-rail:hover .rx-lab{display:block}
+.rx .rx-rail .rx-sq:hover>.rx-lab,.rx .rx-rail .rx-dot:hover>.rx-lab{background:#0f2340;color:#fff}
+/* rec 1: drawers */
+.rx .rx-drawers{display:flex;flex-direction:column;gap:8px;margin-top:14px}
+.rx details.rx-drawer{border:1px solid #dce5f0;border-radius:10px;background:#f7fafd;margin-top:10px}
+.rx .rx-drawers details.rx-drawer{margin-top:0}
+.rx details.rx-drawer>summary{cursor:pointer;list-style:none;padding:9px 14px;font-size:13px;font-weight:700;color:#14618f;display:flex;align-items:center;gap:8px}
+.rx details.rx-drawer>summary::-webkit-details-marker{display:none}
+.rx details.rx-drawer>summary::before{content:"▸";font-size:11px;transition:transform .15s}
+.rx details.rx-drawer[open]>summary::before{transform:rotate(90deg)}
+.rx .rx-drawer-body{padding:0 16px 14px;font-size:13.5px;line-height:1.62;color:#0f2340;max-width:78ch}
+.rx .rx-drawer-body p{margin:0 0 8px}
+/* rec 4: one segmented control */
+.rx .axis-modes,.rx .rx-seg,.rx .staffing-years{display:inline-flex!important;gap:2px!important;padding:3px!important;border-radius:999px!important;background:#eaf0f7!important;border:none!important;box-shadow:none!important;flex-wrap:wrap}
+.rx .axis-modes button,.rx .rx-seg button,.rx .staffing-years button{border:none!important;border-radius:999px!important;padding:6px 14px!important;font:inherit!important;font-size:12.5px!important;font-weight:600!important;color:#46618a!important;background:transparent!important;box-shadow:none!important;cursor:pointer}
+.rx .axis-modes button[aria-pressed="true"],.rx .rx-seg button[aria-pressed="true"],.rx .staffing-years button[aria-pressed="true"]{background:#fff!important;color:#0f2340!important;font-weight:700!important;box-shadow:0 1px 2px rgba(15,35,64,.12)!important}
+.rx .axis-modes-label,.rx .rx-seg-label{text-transform:none!important;letter-spacing:0!important;font-size:12.5px!important;font-weight:700!important;color:#46618a!important}
+.rx .rx-seg-row{display:flex;align-items:center;gap:12px;margin:10px 0}
+/* rec 7 placeholder */
+.rx .rx-todo{border:1px dashed #b9cadf;background:#fff;color:#7a8fac}
+/* topic boards */
+.rx .rx-topic-head{display:flex;align-items:baseline;gap:14px;flex-wrap:wrap}
+.rx .rx-tabs{display:flex;flex-direction:column;gap:2px;padding:12px;border-right:1px solid #eaf0f7;background:#f7fafd;border-radius:14px 0 0 14px}
+.rx .rx-tab{display:flex;gap:10px;align-items:baseline;width:100%;padding:9px 10px;border:none;border-radius:8px;font:inherit;font-size:13px;line-height:1.4;font-weight:600;text-align:left;color:#0f2340;cursor:pointer;background:transparent}
+.rx .rx-tab:hover{background:#fff}
+
+/* rec 3: section 1 start card */
+.rx .rx-kicker{margin:6px 0 0;font-size:13px;color:#46618a}
+.rx .rx-start-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:36px;align-items:start;margin-top:8px}
+.rx .rx-start-grid header.w4-q{margin-bottom:8px}
+.rx .rx-groups{display:flex;flex-direction:column;margin-top:10px}
+.rx .rx-group{padding:10px 0;border-top:1px solid #eaf0f7}
+.rx .rx-group-head{display:flex;align-items:center;gap:8px;font-size:13.5px}
+.rx .rx-group-head i{width:12px;height:12px;border-radius:50%;display:inline-block}
+.rx .rx-group-head span{font-size:12.5px;color:#46618a}
+.rx .rx-group p{margin:4px 0 0 20px;font-size:12.5px;line-height:1.55;color:#46618a}
+.rx .rx-start-notices{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px;margin-top:14px}
+.rx .rx-drawer-body.rx-wide{max-width:none}
+/* topic boards */
+.rx .rx-topic-bar{display:flex;align-items:center;gap:16px;margin:8px 0 16px}
+.rx .rx-back{font-size:13px;font-weight:700;text-decoration:none;color:#14618f;padding:6px 12px;border:1px solid #dce5f0;border-radius:999px;background:#fff}
+.rx .rx-topic-mark{flex:none;width:40px;height:40px;border-radius:10px;background:#14618f;color:#fff;display:inline-flex;align-items:center;justify-content:center;font-size:17px;font-weight:800}
+.rx .rx-topic-title{margin:0;font-size:24px;font-weight:800}
+.rx .rx-topic-holds{margin:2px 0 0;font-size:13.5px;color:#46618a}
+.rx .rx-topic-count{margin-left:auto;font-size:12.5px;color:#46618a}
+.rx .rx-tab-row{display:flex;flex-wrap:wrap;gap:6px;padding:6px;border-radius:14px;background:#eaf0f7;margin-bottom:18px}
+.rx .rx-tab-pill{border:none;border-radius:999px;padding:7px 14px;font:inherit;font-size:12.5px;font-weight:600;cursor:pointer;text-align:left;line-height:1.35}
+.rx .rx-tab-pill b{color:#14618f;margin-right:4px}
+.rx .rx-panel > .card{margin-top:0}
+/* deep-dive catalogue */
+.rx .rx-cut-intro{max-width:68ch}
+.rx .rx-tgrid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;align-items:start;margin-top:18px}
+.rx .rx-tcard{background:#fff;border:1px solid #dce5f0;border-radius:14px;padding:16px;box-shadow:0 1px 2px rgba(15,35,64,.06),0 8px 24px rgba(15,35,64,.05)}
+.rx .rx-tcard-data{background:#f7fafd;box-shadow:none}
+.rx .rx-tcard-head{display:flex;gap:12px;align-items:flex-start;text-decoration:none;color:#0f2340;padding-bottom:10px}
+.rx .rx-tcard-head span{display:flex;flex-direction:column;gap:3px}
+.rx .rx-tcard-head b{font-size:16px}
+.rx .rx-tcard-head em{font-style:normal;font-size:12.5px;line-height:1.45;color:#46618a}
+.rx .rx-tcard ul{list-style:none;margin:0;padding:0}
+.rx .rx-tcard li a{display:flex;gap:10px;align-items:baseline;padding:8px 4px;border-top:1px solid #eaf0f7;text-decoration:none;color:#0f2340;font-size:13px;font-weight:600;line-height:1.4}
+.rx .rx-tcard li a b{flex:none;min-width:22px;color:#14618f;font-size:11.5px}
+.rx .rx-tcard li a span{flex-grow:1}
+.rx .rx-tcard li a i{font-style:normal;color:#14618f;font-weight:700}
+.rx .rx-tcard li a:hover{background:#d9ecf9}
+.rx .rx-moved{margin:16px 0 0;font-size:12.5px;line-height:1.6;color:#46618a}
+.rx .rx-tile-finding{display:block;margin-top:6px;color:#0f2340}
+/* tables */
+.rx main table{width:100%;border-collapse:separate;border-spacing:0;font-size:12.5px;line-height:1.4;background:#fff;border:1px solid #dce5f0;border-radius:10px;overflow:hidden;margin-top:6px}
+.rx main table caption{caption-side:top;text-align:left;font-size:13px;font-weight:700;color:#0f2340;padding:0 2px 8px}
+.rx main table th{background:#f7fafd;color:#46618a;font-size:11.5px;font-weight:600;text-align:left;padding:9px 12px;border-bottom:1px solid #dce5f0;white-space:nowrap}
+.rx main table td{padding:8px 12px;border-top:1px solid #eef3f9;color:#0f2340;vertical-align:middle}
+.rx main table tbody tr:first-child td{border-top:none}
+.rx main table tbody tr:hover td{background:#f7fafd}
+.rx main table td:first-child{font-weight:600}
+.rx main table th.num,.rx main table td.num{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
+.rx main table td.soft{color:#46618a}
+.rx .rx-cell{display:flex;align-items:center;justify-content:flex-end;gap:10px}
+.rx .rx-bar{flex:none;width:72px;height:6px;border-radius:999px;background:#eef3f9;overflow:hidden;display:flex;justify-content:flex-start}
+.rx .rx-bar i{display:block;height:100%;border-radius:999px;background:#14618f}
+.rx .rx-bar.meter i{background:#7fa9cf}
+.rx .rx-table-block{margin-top:18px}
+.rx .rx-table-block h4{margin:0 0 4px;font-size:13px;font-weight:700;color:#0f2340}
+.rx .rx-table-block p{margin:0 0 6px;font-size:12px;color:#46618a}
+/* compact drawers: closed ones sit in one row, an open one takes the full width */
+.rx .rx-drawers{flex-direction:row!important;flex-wrap:wrap;align-items:center;gap:8px!important;margin-top:12px}
+.rx .rx-drawers>details.rx-drawer{flex:0 0 auto;margin:0}
+.rx .rx-drawers>details.rx-drawer[open]{flex:1 1 100%;order:10}
+.rx details.rx-drawer:not([open]){width:fit-content}
+.rx details.rx-drawer>summary{padding:6px 12px}
+.rx .rx-drawers>.w4-tip{margin:0}
+.rx .rx-foot{margin-top:14px}
+.rx .rx-drawer-body>p+p{margin-top:8px}
+</style>
+</helmet>
+<div class="corridor rx" style="width: 1440px; height: 2938px; overflow: hidden; background: #eef3f9"><div class="topbar">
+<div class="shell">
+<a class="brand" href="../../">LOG–LOG <b>LEGENDS</b></a>
+<a class="site-link" href="../../#weeks">All posts</a>
+<nav aria-label="Sections of this post" class="topnav">
+<a class="here" href="#opening">Opening</a>
+<a class="" href="#place">Where</a>
+<a href="#jobs">Jobs</a>
+<a href="#who">Staffing</a>
+<a href="#footprint">Giants out</a>
+<a href="#beyond">Beyond</a>
+<a href="#cut">Deep dive</a>
+</nav>
+</div>
+</div><nav class="rx-rail" aria-label="Contents of this post"><ol><li><span class="rx-sq"><span class="rx-lab">0 Opening</span></span></li><li><span class="rx-sq"><span class="rx-lab">1 Where the hiring is</span></span></li><li><span class="rx-sq is-on"><span class="rx-lab">2 Which jobs go together</span></span><ol class="rx-rail-sub"><li><span class="rx-dot"><span class="rx-lab">2A Do outsourcing firms bundle jobs differently from direct employers?</span></span></li><li><span class="rx-dot"><span class="rx-lab">2B Does any job belong to two clusters at once?</span></span></li></ol></li><li><span class="rx-sq"><span class="rx-lab">3 Who staffs whom</span></span></li><li><span class="rx-sq"><span class="rx-lab">4 Without the biggest firms</span></span></li><li><span class="rx-sq"><span class="rx-lab">5 Beyond the three networks</span></span></li><li><span class="rx-sq"><span class="rx-lab">Closing</span></span></li><li><span class="rx-sq"><span class="rx-lab">Deep dive</span></span></li></ol></nav><main id="main"><div class="shell"><section class="step" id="jobs">
+<header class="w4-opener">
+<span aria-hidden="true" class="w4-opener-num">2</span>
+<div>
+<h2>Which jobs go together</h2>
+<p>Employers reveal bundles of work.</p>
+</div>
+</header>
+<div class="card w4-card">
+<div class="w4-two">
+<div>
+<p class="sub">
+                  Two occupations are linked when the same companies file for both.
+                  The clusters across all <span data-jobs="occupations">501</span>
+                  occupations are real: <span class="w4-term"><button aria-describedby="w4-term-x-modularity" type="button">modularity</button><span class="w4-pop" id="w4-term-x-modularity" role="tooltip">A score for how much more a network links inside its clusters than chance would. Higher means cleaner clusters.</span></span>
+                  <span data-jobs="null-real">0.29</span> against
+                  <span data-jobs="null-null">0.03</span> for <span class="w4-term"><button aria-describedby="w4-term-x-rewired" type="button">rewired networks</button><span class="w4-pop" id="w4-term-x-rewired" role="tooltip">Random copies of the network in which every company keeps its number of occupations. They show how much clustering chance alone produces.</span></span>.
+                </p>
+<div class="rx-drawers rx-foot"><details class="rx-drawer"><summary>Background</summary><div class="rx-drawer-body"><p>Software developers sit in almost every company's mix, so most links run through them. The two questions below test the clusters from two sides: do outsourcing firms and direct employers bundle jobs the same way, and does any job belong to two bundles at once?</p></div></details></div>
+</div>
+<figure class="w4-figure">
+<figcaption><b>Real, not noise</b><span>Occupation clusters against rewired networks in which every company keeps its number of occupations.</span></figcaption>
+<div class="w4-figure-body" data-strip="jobs-modularity"><svg aria-label="Modularity of the occupation clusters against rewired networks" class="w4-strip" height="104" role="img" viewBox="0 0 556 104" width="556"><line stroke="#e6ecf3" stroke-width="1" x1="132" x2="132" y1="6" y2="70"></line><text fill="#7a8fac" font-size="11" text-anchor="middle" x="132" y="86">0.0</text><line stroke="#e6ecf3" stroke-width="1" x1="234.2857142857143" x2="234.2857142857143" y1="6" y2="70"></line><text fill="#7a8fac" font-size="11" text-anchor="middle" x="234.2857142857143" y="86">0.1</text><line stroke="#e6ecf3" stroke-width="1" x1="336.5714285714286" x2="336.5714285714286" y1="6" y2="70"></line><text fill="#7a8fac" font-size="11" text-anchor="middle" x="336.5714285714286" y="86">0.2</text><line stroke="#e6ecf3" stroke-width="1" x1="438.85714285714283" x2="438.85714285714283" y1="6" y2="70"></line><text fill="#7a8fac" font-size="11" text-anchor="middle" x="438.85714285714283" y="86">0.3</text><text fill="#0f2340" font-size="12" font-weight="600" x="0" y="35">Modularity</text><text fill="#7a8fac" font-size="11" x="0" y="50">501 occupations, 69 clusters</text><line stroke="#dce5f0" stroke-width="1" x1="132" x2="490" y1="38" y2="38"></line><g><rect fill="rgba(185, 196, 210, 0.62)" height="12" rx="6" width="4" x="157.46066519976176" y="32"><title>Rewired networks: mean 0.03, sd 0.0009</title></rect><line stroke="#7a8fac" stroke-width="2" x1="159.46066519976176" x2="159.46066519976176" y1="29" y2="47"></line></g><text fill="#46618a" font-size="11" font-weight="400" text-anchor="start" x="132" y="63">rewired 0.03</text><circle cx="432.32060663510157" cy="38" fill="#0f2340" r="6.5" stroke="#ffffff" stroke-width="2"><title>The real network: 0.29</title></circle><text fill="#0f2340" font-size="12" font-weight="700" text-anchor="middle" x="432.32060663510157" y="25">0.29</text><rect fill="#eef3f9" height="20" rx="10" width="59.120000000000005" x="496.88" y="28"></rect><text fill="#0f2340" font-size="11" font-weight="700" text-anchor="middle" x="526.44" y="42">z = 285</text></svg></div>
+</figure>
+</div>
+</div>
+
+<div class="card jobs-card w4-card" id="jobs-together">
+<header class="w4-q">
+<span class="w4-num">Start</span>
+<div>
+<h2>Which jobs are hired together?</h2>
+<p class="w4-answer">Software Developers sit in 8 of the 12 pairs because almost every sponsoring company hires them.</p>
+</div>
+</header>
+<p class="sub">Each bar is one pair of jobs that the same companies hire for. Its length counts the companies that filed for both; the dark bars are pairs with Software Developers.</p>
+<div class="plot"><h3>The 12 most common job pairs</h3><div class="w4-figure-body" style="margin-top:8px"><svg viewBox="0 0 860 554" width="100%" role="img" aria-label="The 12 occupation pairs with the most shared employers; 8 include Software Developers" style="display:block;font-family:inherit;max-width:860px"><rect x="0" y="4" width="12" height="12" rx="2" fill="#14618f"/><text x="18" y="14" font-size="12" fill="#0f2340" font-weight="600">Pair includes Software Developers (8 of 12)</text><rect x="300" y="4" width="12" height="12" rx="2" fill="#c3cfdd"/><text x="318" y="14" font-size="12" fill="#46618a" font-weight="600">Other pairs</text><line x1="330.0" x2="330.0" y1="30" y2="514" stroke="#eaf0f7"/><text x="330.0" y="528" font-size="11" fill="#7a8fac" text-anchor="middle">0</text><line x1="424.0" x2="424.0" y1="30" y2="514" stroke="#eaf0f7"/><text x="424.0" y="528" font-size="11" fill="#7a8fac" text-anchor="middle">1,000</text><line x1="518.0" x2="518.0" y1="30" y2="514" stroke="#eaf0f7"/><text x="518.0" y="528" font-size="11" fill="#7a8fac" text-anchor="middle">2,000</text><line x1="612.0" x2="612.0" y1="30" y2="514" stroke="#eaf0f7"/><text x="612.0" y="528" font-size="11" fill="#7a8fac" text-anchor="middle">3,000</text><line x1="706.0" x2="706.0" y1="30" y2="514" stroke="#eaf0f7"/><text x="706.0" y="528" font-size="11" fill="#7a8fac" text-anchor="middle">4,000</text><line x1="800.0" x2="800.0" y1="30" y2="514" stroke="#eaf0f7"/><text x="800.0" y="528" font-size="11" fill="#7a8fac" text-anchor="middle">5,000</text><text x="565.0" y="550" font-size="11" fill="#7a8fac" text-anchor="middle">Companies that filed for both jobs in 2025</text><text x="318" y="51.0" font-size="12" text-anchor="end" fill="#0f2340" font-weight="700">Software Developers</text><text x="318" y="66.0" font-size="12" text-anchor="end" fill="#46618a">+ Data Scientists</text><g><title>Software Developers + Data Scientists: 4,529 companies filed for both</title><rect x="330" y="46.0" width="425.7" height="16" rx="3" fill="#14618f"/></g><text x="761.7" y="58.0" font-size="12" font-weight="700" fill="#0f2340">4,529</text><text x="318" y="91.0" font-size="12" text-anchor="end" fill="#0f2340" font-weight="700">Software Developers</text><text x="318" y="106.0" font-size="12" text-anchor="end" fill="#46618a">+ Computer Occupations, All Other</text><g><title>Software Developers + Computer Occupations, All Other: 4,458 companies filed for both</title><rect x="330" y="86.0" width="419.1" height="16" rx="3" fill="#14618f"/></g><text x="755.1" y="98.0" font-size="12" font-weight="700" fill="#0f2340">4,458</text><text x="318" y="131.0" font-size="12" text-anchor="end" fill="#0f2340" font-weight="700">Software Developers</text><text x="318" y="146.0" font-size="12" text-anchor="end" fill="#46618a">+ Software Quality Assurance Analysts and Testers</text><g><title>Software Developers + Software Quality Assurance Analysts and Testers: 3,313 companies filed for both</title><rect x="330" y="126.0" width="311.4" height="16" rx="3" fill="#14618f"/></g><text x="647.4" y="138.0" font-size="12" font-weight="700" fill="#0f2340">3,313</text><text x="318" y="171.0" font-size="12" text-anchor="end" fill="#0f2340" font-weight="600">Computer Occupations, All Other</text><text x="318" y="186.0" font-size="12" text-anchor="end" fill="#46618a">+ Data Scientists</text><g><title>Computer Occupations, All Other + Data Scientists: 2,668 companies filed for both</title><rect x="330" y="166.0" width="250.8" height="16" rx="3" fill="#c3cfdd"/></g><text x="586.8" y="178.0" font-size="12" font-weight="700" fill="#0f2340">2,668</text><text x="318" y="211.0" font-size="12" text-anchor="end" fill="#0f2340" font-weight="600">Computer Occupations, All Other</text><text x="318" y="226.0" font-size="12" text-anchor="end" fill="#46618a">+ Software Quality Assurance Analysts and Testers</text><g><title>Computer Occupations, All Other + Software Quality Assurance Analysts and Testers: 2,045 companies filed for both</title><rect x="330" y="206.0" width="192.2" height="16" rx="3" fill="#c3cfdd"/></g><text x="528.2" y="218.0" font-size="12" font-weight="700" fill="#0f2340">2,045</text><text x="318" y="251.0" font-size="12" text-anchor="end" fill="#0f2340" font-weight="700">Software Developers</text><text x="318" y="266.0" font-size="12" text-anchor="end" fill="#46618a">+ Computer and Information Systems Managers</text><g><title>Software Developers + Computer and Information Systems Managers: 2,040 companies filed for both</title><rect x="330" y="246.0" width="191.8" height="16" rx="3" fill="#14618f"/></g><text x="527.8" y="258.0" font-size="12" font-weight="700" fill="#0f2340">2,040</text><text x="318" y="291.0" font-size="12" text-anchor="end" fill="#0f2340" font-weight="700">Software Developers</text><text x="318" y="306.0" font-size="12" text-anchor="end" fill="#46618a">+ Computer Systems Analysts</text><g><title>Software Developers + Computer Systems Analysts: 1,988 companies filed for both</title><rect x="330" y="286.0" width="186.9" height="16" rx="3" fill="#14618f"/></g><text x="522.9" y="298.0" font-size="12" font-weight="700" fill="#0f2340">1,988</text><text x="318" y="331.0" font-size="12" text-anchor="end" fill="#0f2340" font-weight="600">Data Scientists</text><text x="318" y="346.0" font-size="12" text-anchor="end" fill="#46618a">+ Software Quality Assurance Analysts and Testers</text><g><title>Data Scientists + Software Quality Assurance Analysts and Testers: 1,883 companies filed for both</title><rect x="330" y="326.0" width="177.0" height="16" rx="3" fill="#c3cfdd"/></g><text x="513.0" y="338.0" font-size="12" font-weight="700" fill="#0f2340">1,883</text><text x="318" y="371.0" font-size="12" text-anchor="end" fill="#0f2340" font-weight="700">Software Developers</text><text x="318" y="386.0" font-size="12" text-anchor="end" fill="#46618a">+ Database Administrators</text><g><title>Software Developers + Database Administrators: 1,579 companies filed for both</title><rect x="330" y="366.0" width="148.4" height="16" rx="3" fill="#14618f"/></g><text x="484.4" y="378.0" font-size="12" font-weight="700" fill="#0f2340">1,579</text><text x="318" y="411.0" font-size="12" text-anchor="end" fill="#0f2340" font-weight="700">Software Developers</text><text x="318" y="426.0" font-size="12" text-anchor="end" fill="#46618a">+ Computer Programmers</text><g><title>Software Developers + Computer Programmers: 1,545 companies filed for both</title><rect x="330" y="406.0" width="145.2" height="16" rx="3" fill="#14618f"/></g><text x="481.2" y="418.0" font-size="12" font-weight="700" fill="#0f2340">1,545</text><text x="318" y="451.0" font-size="12" text-anchor="end" fill="#0f2340" font-weight="700">Software Developers</text><text x="318" y="466.0" font-size="12" text-anchor="end" fill="#46618a">+ Database Architects</text><g><title>Software Developers + Database Architects: 1,388 companies filed for both</title><rect x="330" y="446.0" width="130.5" height="16" rx="3" fill="#14618f"/></g><text x="466.5" y="458.0" font-size="12" font-weight="700" fill="#0f2340">1,388</text><text x="318" y="491.0" font-size="12" text-anchor="end" fill="#0f2340" font-weight="600">Data Scientists</text><text x="318" y="506.0" font-size="12" text-anchor="end" fill="#46618a">+ Computer and Information Systems Managers</text><g><title>Data Scientists + Computer and Information Systems Managers: 1,346 companies filed for both</title><rect x="330" y="486.0" width="126.5" height="16" rx="3" fill="#c3cfdd"/></g><text x="462.5" y="498.0" font-size="12" font-weight="700" fill="#0f2340">1,346</text></svg></div></div>
+</div>
+<div class="card w4-card" id="jobs-split">
+<header class="w4-q">
+<span class="w4-num">2A</span>
+<div>
+<h2>Do outsourcing firms bundle jobs differently from direct employers?</h2>
+<p class="w4-answer">Yes. Their job clusters differ more than those of random groups with the same number of companies and the same share of filings.</p>
+</div>
+</header>
+<div class="w4-two">
+<div>
+<p class="sub">
+                  Each group gets its own occupation network and its own <span class="w4-term"><button aria-describedby="w4-term-x-louvain" type="button">Louvain</button><span class="w4-pop" id="w4-term-x-louvain" role="tooltip">A standard method that splits a network into groups whose members link more to each other than to the rest.</span></span> clusters. <span class="w4-term"><button aria-describedby="w4-term-x-nmi" type="button">NMI</button><span class="w4-pop" id="w4-term-x-nmi" role="tooltip">Normalized mutual information: a score for how alike two groupings are, 1 when they match exactly and 0 when they are unrelated.</span></span> says how alike the two clusterings are.
+                </p>
+<div class="notice">
+<span class="ico">💡</span>
+<span>
+<b>What to notice</b>
+                    The two clusterings agree at NMI 0.42. Random groups
+                    matched on size agree at 0.61 ± 0.04 (z = −4.1), so the
+                    outsourcing firms bundle jobs differently from companies
+                    like them.
+                  </span>
+</div>
+
+<div class="rx-drawers rx-foot"><details class="rx-drawer"><summary>Method</summary><div class="rx-drawer-body"><p>We split the companies in two: the 817 firms that place 20 or more filings at client sites (21% of all filings) and the 58,379 others. Alone, that number means little: splitting companies into a small and a large group changes the clusters even if nobody behaves differently. So the baseline draws 20 random groups that match the outsourcing firms in both respects: the same number of companies of each size, from the one-filing firms to the giants. NMI is measured on the 217 occupations that sit in a cluster of two or more on both sides.</p></div></details><details class="rx-drawer"><summary>More numbers</summary><div class="rx-drawer-body"><p>The half-matched baselines show why the match matters: random groups with only the same number of companies hold 1.3% of filings and agree at 0.44 ± 0.10, which would have hidden the difference. At the top the two mixes look alike: software developers are 28% of the outsourcing firms' filings and 33% of the direct employers'. Below that they part: "computer occupations, all other" is 22% of the outsourcing firms' filings and 5% of the direct employers', and direct employers file for 283 occupations the outsourcing firms never touch.</p></div></details></div>
+</div>
+<div class="plot">
+<h3>Do outsourcers cluster jobs like random firms would?</h3>
+<p class="axis-note">Bars show how alike the two groups' job clusters are. Whiskers span one standard deviation over 20 random splits. Only the blue baseline matches the outsourcing firms on both number and size of companies, so it is the fair comparison.</p>
+<div class="w4-figure-body" style="margin-top:8px"><svg viewBox="0 0 560 226" width="100%" role="img" aria-label="How much the outsourcing and direct-employer job clusters agree, against three random baselines" style="display:block;font-family:inherit"><line x1="200.0" x2="200.0" y1="6" y2="192" stroke="#eaf0f7"/><text x="200.0" y="206" font-size="11" fill="#7a8fac" text-anchor="middle">0.0</text><line x1="280.0" x2="280.0" y1="6" y2="192" stroke="#eaf0f7"/><text x="280.0" y="206" font-size="11" fill="#7a8fac" text-anchor="middle">0.2</text><line x1="360.0" x2="360.0" y1="6" y2="192" stroke="#eaf0f7"/><text x="360.0" y="206" font-size="11" fill="#7a8fac" text-anchor="middle">0.4</text><line x1="440.0" x2="440.0" y1="6" y2="192" stroke="#eaf0f7"/><text x="440.0" y="206" font-size="11" fill="#7a8fac" text-anchor="middle">0.6</text><line x1="520.0" x2="520.0" y1="6" y2="192" stroke="#eaf0f7"/><text x="520.0" y="206" font-size="11" fill="#7a8fac" text-anchor="middle">0.8</text><text x="360.0" y="223" font-size="11" fill="#7a8fac" text-anchor="middle">Agreement of the two groups' job clusters (NMI: 0 unrelated, 1 identical)</text><text x="0" y="28.0" font-size="12" font-weight="700" fill="#0f2340">Outsourcing firms against</text><text x="0" y="43.0" font-size="12" font-weight="700" fill="#0f2340">direct employers (actual)</text><g><title>Outsourcing firms against direct employers (actual): NMI 0.425</title><rect x="200" y="22.0" width="170.0" height="18" rx="3" fill="#f2820c"/></g><text x="377.0" y="35.0" font-size="12" font-weight="700" fill="#0f2340">0.42</text><text x="0" y="74.0" font-size="12" font-weight="600" fill="#0f2340">Random firms, same number</text><text x="0" y="89.0" font-size="12" font-weight="600" fill="#0f2340">of companies</text><g><title>Random firms, same number of companies: NMI 0.437, ± 0.095 over 20 random splits</title><rect x="200" y="68.0" width="175.0" height="18" rx="3" fill="#9fb0c6"/></g><line x1="336.8" x2="413.2" y1="77.0" y2="77.0" stroke="#0f2340" stroke-width="1.5"/><line x1="336.8" x2="336.8" y1="71.0" y2="83.0" stroke="#0f2340" stroke-width="1.5"/><line x1="413.2" x2="413.2" y1="71.0" y2="83.0" stroke="#0f2340" stroke-width="1.5"/><text x="420.2" y="81.0" font-size="12" font-weight="700" fill="#0f2340">0.44</text><text x="0" y="120.0" font-size="12" font-weight="600" fill="#0f2340">Random firms, same share</text><text x="0" y="135.0" font-size="12" font-weight="600" fill="#0f2340">of filings</text><g><title>Random firms, same share of filings: NMI 0.587, ± 0.049 over 20 random splits</title><rect x="200" y="114.0" width="234.9" height="18" rx="3" fill="#c3cfdd"/></g><line x1="415.3" x2="454.6" y1="123.0" y2="123.0" stroke="#0f2340" stroke-width="1.5"/><line x1="415.3" x2="415.3" y1="117.0" y2="129.0" stroke="#0f2340" stroke-width="1.5"/><line x1="454.6" x2="454.6" y1="117.0" y2="129.0" stroke="#0f2340" stroke-width="1.5"/><text x="461.6" y="127.0" font-size="12" font-weight="700" fill="#0f2340">0.59</text><text x="0" y="166.0" font-size="12" font-weight="600" fill="#0f2340">Random firms, same number</text><text x="0" y="181.0" font-size="12" font-weight="600" fill="#0f2340">and size (fair baseline)</text><g><title>Random firms, same number and size (fair baseline): NMI 0.607, ± 0.044 over 20 random splits</title><rect x="200" y="160.0" width="242.8" height="18" rx="3" fill="#1f8fd6"/></g><line x1="425.0" x2="460.5" y1="169.0" y2="169.0" stroke="#0f2340" stroke-width="1.5"/><line x1="425.0" x2="425.0" y1="163.0" y2="175.0" stroke="#0f2340" stroke-width="1.5"/><line x1="460.5" x2="460.5" y1="163.0" y2="175.0" stroke="#0f2340" stroke-width="1.5"/><text x="467.5" y="173.0" font-size="12" font-weight="700" fill="#0f2340">0.61</text></svg></div>
+</div>
+</div>
+<div class="plot">
+<h3>The largest occupations in each group</h3>
+<p class="axis-note">
+                Share of each group's filings, for the eight occupations with
+                the most filings overall.
+              </p>
+<div class="chart-host" id="chart-jobs-split-mix" style="user-select: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0); position: relative;"><img alt="" src="/_blob/fbfc728807b419b694c5202ba0b5cbae" style="display:block;width:100%;height:100%;object-fit:contain"></div>
+</div>
+</div>
+<div class="card w4-card" id="jobs-linkcom">
+<header class="w4-q">
+<span class="w4-num">2B</span>
+<div>
+<h2>Does any job belong to two clusters at once?</h2>
+<p class="w4-answer">Not clearly. On a network this dense, link communities pour almost everything into one cluster.</p>
+</div>
+</header>
+<p class="sub">
+              A Louvain partition puts every job in exactly one cluster. Link
+              communities (Ahn, Bagrow and Lehmann, 2010) group the links
+              instead, so a job belongs to every community its links are in.
+            </p>
+<div class="notice">
+<span class="ico">💡</span>
+<span>
+<b>What to notice</b>
+                Two methods give two different lists of small
+                occupations, so we cannot name a job that clearly sits in two
+                clusters.
+              </span>
+</div>
+<div class="w4-two" style="margin-top: 16px; align-items: start"><figure class="w4-figure"><figcaption><b>Where the links go</b><span>Link communities pour almost every link into one community.</span></figcaption><div class="w4-figure-body"><svg viewBox="0 0 520 150" width="100%" role="img" aria-label="Share of the 28,155 links in the largest link community" style="display:block;height:auto"><rect x="0" y="46" width="440.0" height="34" rx="5" fill="#0f2340"/><rect x="442.0" y="46" width="78.0" height="34" rx="5" fill="#a7c5e0"/><text x="10" y="68" font-size="13" font-weight="700" fill="#ffffff">One community: 85% of links</text><text x="481.0" y="68" text-anchor="middle" font-size="12" font-weight="700" fill="#0f2340">15%</text><text x="0" y="24" font-size="12" fill="#46618a">All 28,155 links between occupations, split by link community</text><text x="520" y="102" text-anchor="end" font-size="12" fill="#46618a">329 smaller communities share the rest;</text><text x="520" y="118" text-anchor="end" font-size="12" fill="#46618a">only 121 hold three links or more</text></svg></div></figure><figure class="w4-figure"><figcaption><b>The 15 jobs with the most communities per link</b><span>Each dot is a job; dashed lines mark equal rates. Rings: the two jobs section 2's first test flagged as bridges.</span></figcaption><div class="w4-figure-body"><svg viewBox="0 0 520 330" width="100%" role="img" aria-label="Links against link communities for the 15 jobs with the most communities per link" style="display:block;height:auto"><line x1="40" x2="370" y1="290.0" y2="290.0" stroke="#eaf0f7"/><text x="32" y="294.0" text-anchor="end" font-size="11" fill="#7a8fac">0</text><line x1="40" x2="370" y1="221.5" y2="221.5" stroke="#eaf0f7"/><text x="32" y="225.5" text-anchor="end" font-size="11" fill="#7a8fac">5</text><line x1="40" x2="370" y1="153.0" y2="153.0" stroke="#eaf0f7"/><text x="32" y="157.0" text-anchor="end" font-size="11" fill="#7a8fac">10</text><line x1="40" x2="370" y1="84.5" y2="84.5" stroke="#eaf0f7"/><text x="32" y="88.5" text-anchor="end" font-size="11" fill="#7a8fac">15</text><line x1="40" x2="370" y1="16.0" y2="16.0" stroke="#eaf0f7"/><text x="32" y="20.0" text-anchor="end" font-size="11" fill="#7a8fac">20</text><text x="40.0" y="308" text-anchor="middle" font-size="11" fill="#7a8fac">0</text><text x="87.1" y="308" text-anchor="middle" font-size="11" fill="#7a8fac">10</text><text x="134.3" y="308" text-anchor="middle" font-size="11" fill="#7a8fac">20</text><text x="181.4" y="308" text-anchor="middle" font-size="11" fill="#7a8fac">30</text><text x="228.6" y="308" text-anchor="middle" font-size="11" fill="#7a8fac">40</text><text x="275.7" y="308" text-anchor="middle" font-size="11" fill="#7a8fac">50</text><text x="322.9" y="308" text-anchor="middle" font-size="11" fill="#7a8fac">60</text><text x="370.0" y="308" text-anchor="middle" font-size="11" fill="#7a8fac">70</text><text x="205.0" y="324" text-anchor="middle" font-size="11.5" fill="#46618a">links (other occupations it shares employers with)</text><text x="10" y="12" font-size="11.5" fill="#46618a">communities</text><line x1="40.0" y1="290.0" x2="275.7" y2="16.0" stroke="#b9cadf" stroke-dasharray="3 3"/><text x="269.7" y="20.0" text-anchor="end" font-size="10.5" fill="#7a8fac">1 community per 2.5 links</text><line x1="40.0" y1="290.0" x2="322.9" y2="16.0" stroke="#b9cadf" stroke-dasharray="3 3"/><text x="326.9" y="20.0" font-size="10.5" fill="#7a8fac">1 per 3</text><line x1="40.0" y1="290.0" x2="370.0" y2="50.2" stroke="#b9cadf" stroke-dasharray="3 3"/><text x="374.0" y="54.2" font-size="10.5" fill="#7a8fac">1 per 4</text><g><title>Physical Therapist Aides: 4 communities over 10 links (0.40 per link)</title><circle cx="87.1" cy="235.2" r="5.5" fill="#0f2340" stroke="#0f2340" stroke-width="1"/></g><line x1="92.1" y1="235.2" x2="177.4" y2="236.7" stroke="#7a8fac" stroke-width="1"/><text x="181.4" y="240.7" font-size="11" font-weight="600" fill="#0f2340">Physical Therapist Aides</text><g><title>Education Administrators, Kindergarten through Secondary: 12 communities over 31 links (0.39 per link)</title><circle cx="186.1" cy="125.6" r="5.5" fill="#0f2340" stroke="#0f2340" stroke-width="1"/></g><text x="194.1" y="129.6" text-anchor="start" font-size="11" font-weight="600" fill="#0f2340" paint-order="stroke" stroke="#ffffff" stroke-width="3">School administrators</text><g><title>Education and Childcare Administrators, Preschool and Daycare: 4 communities over 11 links (0.36 per link)</title><circle cx="91.9" cy="235.2" r="5.5" fill="#0f2340" stroke="#0f2340" stroke-width="1"/></g><g><title>Communications Equipment Operators, All Other: 4 communities over 11 links (0.36 per link)</title><circle cx="91.9" cy="235.2" r="5.5" fill="#0f2340" stroke="#0f2340" stroke-width="1"/></g><g><title>Electrical Power-Line Installers and Repairers: 4 communities over 11 links (0.36 per link) · flagged bridge</title><circle cx="91.9" cy="235.2" r="5.5" fill="#ffffff" stroke="#0f2340" stroke-width="2.2"/></g><line x1="96.9" y1="235.2" x2="177.4" y2="261.3" stroke="#7a8fac" stroke-width="1"/><text x="181.4" y="265.3" font-size="11" font-weight="700" fill="#0f2340">Power-line installers (bridge)</text><g><title>Special Education Teachers, Middle School: 14 communities over 40 links (0.35 per link)</title><circle cx="228.6" cy="98.2" r="5.5" fill="#0f2340" stroke="#0f2340" stroke-width="1"/></g><g><title>Licensed Practical and Licensed Vocational Nurses: 5 communities over 15 links (0.33 per link)</title><circle cx="110.7" cy="221.5" r="5.5" fill="#0f2340" stroke="#0f2340" stroke-width="1"/></g><g><title>Interviewers, Except Eligibility and Loan: 6 communities over 19 links (0.32 per link) · flagged bridge</title><circle cx="129.6" cy="207.8" r="5.5" fill="#ffffff" stroke="#0f2340" stroke-width="2.2"/></g><text x="137.6" y="211.8" text-anchor="start" font-size="11" font-weight="700" fill="#0f2340" paint-order="stroke" stroke="#ffffff" stroke-width="3">Interviewers (bridge)</text><g><title>Career/Technical Education Teachers, Middle School: 4 communities over 13 links (0.31 per link)</title><circle cx="101.3" cy="235.2" r="5.5" fill="#0f2340" stroke="#0f2340" stroke-width="1"/></g><g><title>Special Education Teachers, Secondary School: 15 communities over 49 links (0.31 per link)</title><circle cx="271.0" cy="84.5" r="5.5" fill="#0f2340" stroke="#0f2340" stroke-width="1"/></g><text x="279.0" y="88.5" text-anchor="start" font-size="11" font-weight="600" fill="#0f2340" paint-order="stroke" stroke="#ffffff" stroke-width="3">Special ed., secondary</text><g><title>Kindergarten Teachers, Except Special Education: 13 communities over 43 links (0.30 per link)</title><circle cx="242.7" cy="111.9" r="5.5" fill="#0f2340" stroke="#0f2340" stroke-width="1"/></g><g><title>Chefs and Head Cooks: 5 communities over 17 links (0.29 per link)</title><circle cx="120.1" cy="221.5" r="5.5" fill="#0f2340" stroke="#0f2340" stroke-width="1"/></g><g><title>Elementary School Teachers, Except Special Education: 19 communities over 66 links (0.29 per link)</title><circle cx="351.1" cy="29.7" r="5.5" fill="#0f2340" stroke="#0f2340" stroke-width="1"/></g><text x="359.1" y="33.7" text-anchor="start" font-size="11" font-weight="600" fill="#0f2340" paint-order="stroke" stroke="#ffffff" stroke-width="3">Elementary teachers</text><g><title>Marriage and Family Therapists: 5 communities over 18 links (0.28 per link)</title><circle cx="124.9" cy="221.5" r="5.5" fill="#0f2340" stroke="#0f2340" stroke-width="1"/></g><g><title>Credit Counselors: 3 communities over 11 links (0.27 per link)</title><circle cx="91.9" cy="248.9" r="5.5" fill="#0f2340" stroke="#0f2340" stroke-width="1"/></g></svg></div></figure></div>
+<div class="rx-drawers rx-foot"><details class="rx-drawer"><summary>Method</summary><div class="rx-drawer-body"><p>The cut is chosen where partition density D, the average of how close each community is to a complete one, peaks. On the 28,155 links between 501 occupations it peaks at D = 0.57 with one community holding 85% of the links and 121 small ones of three links or more beside it.</p></div></details><details class="rx-drawer"><summary>More numbers</summary><div class="rx-drawer-body"><p>The top is small occupations such as physical therapist aides (4 communities over 10 links). Only 2 of the 5 occupations that section 2's first test flagged as bridges appear in it: interviewers and electrical power-line installers.</p><p>A job's number of communities mostly counts its links (Spearman 0.84), so the table ranks by communities per link, as the course suggests.</p></div></details><details class="rx-drawer"><summary>Table: 15 jobs in the most communities</summary><div class="rx-drawer-body"><table class="ego">
+<thead>
+<tr>
+<th>Occupation</th>
+<th style="text-align: right" class="num">Links</th>
+<th style="text-align: right" class="num">Communities</th>
+<th style="text-align: right" class="num">Per link</th>
+</tr>
+</thead>
+<tbody id="jobs-linkcom-table"><tr>
+<td>Physical Therapist Aides</td>
+<td style="text-align:right" class="num"><span class="rx-cell"><span class="rx-bar"><i style="width: 15.2%"></i></span><span>10</span></span></td>
+<td style="text-align:right" class="num">4</td>
+<td style="text-align:right" class="num">0.40</td>
+</tr><tr>
+<td>Education Administrators, Kindergarten through Secondary</td>
+<td style="text-align:right" class="num"><span class="rx-cell"><span class="rx-bar"><i style="width: 47.0%"></i></span><span>31</span></span></td>
+<td style="text-align:right" class="num">12</td>
+<td style="text-align:right" class="num">0.39</td>
+</tr><tr>
+<td>Education and Childcare Administrators, Preschool and Daycare</td>
+<td style="text-align:right" class="num"><span class="rx-cell"><span class="rx-bar"><i style="width: 16.7%"></i></span><span>11</span></span></td>
+<td style="text-align:right" class="num">4</td>
+<td style="text-align:right" class="num">0.36</td>
+</tr><tr>
+<td>Communications Equipment Operators, All Other</td>
+<td style="text-align:right" class="num"><span class="rx-cell"><span class="rx-bar"><i style="width: 16.7%"></i></span><span>11</span></span></td>
+<td style="text-align:right" class="num">4</td>
+<td style="text-align:right" class="num">0.36</td>
+</tr><tr>
+<td>Electrical Power-Line Installers and Repairers <span class="tag">flagged bridge</span></td>
+<td style="text-align:right" class="num"><span class="rx-cell"><span class="rx-bar"><i style="width: 16.7%"></i></span><span>11</span></span></td>
+<td style="text-align:right" class="num">4</td>
+<td style="text-align:right" class="num">0.36</td>
+</tr><tr>
+<td>Special Education Teachers, Middle School</td>
+<td style="text-align:right" class="num"><span class="rx-cell"><span class="rx-bar"><i style="width: 60.6%"></i></span><span>40</span></span></td>
+<td style="text-align:right" class="num">14</td>
+<td style="text-align:right" class="num">0.35</td>
+</tr><tr>
+<td>Licensed Practical and Licensed Vocational Nurses</td>
+<td style="text-align:right" class="num"><span class="rx-cell"><span class="rx-bar"><i style="width: 22.7%"></i></span><span>15</span></span></td>
+<td style="text-align:right" class="num">5</td>
+<td style="text-align:right" class="num">0.33</td>
+</tr><tr>
+<td>Interviewers, Except Eligibility and Loan <span class="tag">flagged bridge</span></td>
+<td style="text-align:right" class="num"><span class="rx-cell"><span class="rx-bar"><i style="width: 28.8%"></i></span><span>19</span></span></td>
+<td style="text-align:right" class="num">6</td>
+<td style="text-align:right" class="num">0.32</td>
+</tr><tr>
+<td>Career/Technical Education Teachers, Middle School</td>
+<td style="text-align:right" class="num"><span class="rx-cell"><span class="rx-bar"><i style="width: 19.7%"></i></span><span>13</span></span></td>
+<td style="text-align:right" class="num">4</td>
+<td style="text-align:right" class="num">0.31</td>
+</tr><tr>
+<td>Special Education Teachers, Secondary School</td>
+<td style="text-align:right" class="num"><span class="rx-cell"><span class="rx-bar"><i style="width: 74.2%"></i></span><span>49</span></span></td>
+<td style="text-align:right" class="num">15</td>
+<td style="text-align:right" class="num">0.31</td>
+</tr><tr>
+<td>Kindergarten Teachers, Except Special Education</td>
+<td style="text-align:right" class="num"><span class="rx-cell"><span class="rx-bar"><i style="width: 65.2%"></i></span><span>43</span></span></td>
+<td style="text-align:right" class="num">13</td>
+<td style="text-align:right" class="num">0.30</td>
+</tr><tr>
+<td>Chefs and Head Cooks</td>
+<td style="text-align:right" class="num"><span class="rx-cell"><span class="rx-bar"><i style="width: 25.8%"></i></span><span>17</span></span></td>
+<td style="text-align:right" class="num">5</td>
+<td style="text-align:right" class="num">0.29</td>
+</tr><tr>
+<td>Elementary School Teachers, Except Special Education</td>
+<td style="text-align:right" class="num"><span class="rx-cell"><span class="rx-bar"><i style="width: 100.0%"></i></span><span>66</span></span></td>
+<td style="text-align:right" class="num">19</td>
+<td style="text-align:right" class="num">0.29</td>
+</tr><tr>
+<td>Marriage and Family Therapists</td>
+<td style="text-align:right" class="num"><span class="rx-cell"><span class="rx-bar"><i style="width: 27.3%"></i></span><span>18</span></span></td>
+<td style="text-align:right" class="num">5</td>
+<td style="text-align:right" class="num">0.28</td>
+</tr><tr>
+<td>Credit Counselors</td>
+<td style="text-align:right" class="num"><span class="rx-cell"><span class="rx-bar"><i style="width: 16.7%"></i></span><span>11</span></span></td>
+<td style="text-align:right" class="num">3</td>
+<td style="text-align:right" class="num">0.27</td>
+</tr></tbody>
+</table></div></details></div>
+</div>
+</section></div></main></div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview": {"width": 1440, "height": 2938}}'>
+class Component extends DCLogic {
+renderVals() { return {}; }
+}
+</script>
+</body>
+</html>

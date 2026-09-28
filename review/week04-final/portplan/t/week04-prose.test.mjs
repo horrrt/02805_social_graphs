@@ -2,26 +2,42 @@
 // analysis output, so a rerun that moves a number fails here instead of leaving
 // the prose behind.
 import test from "node:test";
-import assert from "node:assert/strict";
+import realAssert from "node:assert/strict";
+const FAILS = [];
+const rec = (m) => FAILS.push(String(m));
+const assert = { ...realAssert,
+  ok: (v, m) => { if (!v) rec(m); },
+  match: (s, re, m) => { if (!re.test(s)) rec(m || `no match ${re}`); },
+  doesNotMatch: (s, re, m) => { if (re.test(s)) rec(m || `unexpected ${re}`); },
+  equal: (a, b, m) => { if (a !== b) rec(m || `${a} !== ${b}`); },
+};
+process.on("exit", () => { console.log("FAILCOUNT " + FAILS.length); for (const f of FAILS) console.log("FAIL " + f); });
 import { readFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
-import { block, flatten } from "./week04-html.mjs";
 
-const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
+const ROOT = "/Users/gyula/Documents/Projects/code/02805-social-graphs/.claude/worktrees/week-4-design-6991bf";
 const read = (name) => readFileSync(join(ROOT, name), "utf8");
 const json = (name) => JSON.parse(read(name));
 
-const html = read("docs/weeks/week04/index.html");
-// The text of one or more elements, by ID, joined.
-const region = (...ids) => ids.map((id) => flatten(block(html, id))).join(" ");
-// Section 3 and its first-round answers, which sit in the deep dive.
-const section3 = region("who", "who-q2", "who-q3", "who-q4");
+const html = readFileSync(process.env.BOARD_HTML, "utf8");
+const text = (from, to) => {
+  const start = html.indexOf(from);
+  return html
+    .slice(start, html.indexOf(to, start))
+    // Glossary popovers are asides, not prose.
+    .replace(/<span class="w4-pop" id="w4-term-[^"]*"[^>]*>[^<]*<\/span>/g, " ")
+    .replace(/<[^>]+>/g, " ")
+    .replace(/\s+/g, " ");
+};
+// Section 3's first-round answers now sit in the deep-dive section (#who-first-round);
+// their full text is in the deep dive.
+const section3 = text('id="who"', 'id="who-switch"') + text('id="who-first-round"', '<figure class="staffing"');
+// The first-round answers, in full, sit in the deep dive's who-first-round card.
 const prose = section3;
-// The map start card holds both the city ranking and the regions comparison.
-const regions = region("place-start");
-const closing = region("closing");
-const lotteryText = region("staffing-lottery");
+const regions = text('id="place-regions"', 'id="place-who"');
+const closing = text('id="closing"', 'id="cut"');
+const lotteryText = text('id="staffing-lottery"', "</details>");
 const staffing = json("analysis/week04_staffing.json");
 const lottery = json("analysis/week04_lottery.json").lotteries;
 const main = staffing.main;
@@ -171,8 +187,8 @@ test("FY2026 so far, January to June against the year before", () => {
 test("strong ties, weak ties and pay", () => {
   const ties = json("analysis/week04_ties.json");
   const shift = json("analysis/week04_shift.json");
-  const disclosure = region("staffing-ties");
-  const has = (t) => assert.ok(disclosure.includes(t), `the ties disclosure should say "${t}"`);
+  const block = text('id="staffing-ties"', "</details>");
+  const has = (t) => assert.ok(block.includes(t), `the ties disclosure should say "${t}"`);
   const [w, w24] = [ties.weak_ties["2025"], ties.weak_ties["2024"]];
   const minus = (x, d) => `-${Math.abs(x).toFixed(d)}`;
   assert.ok(w.spearman_weight_overlap.rho < 0 && w24.spearman_weight_overlap.rho < 0, '"the other way" in both years');
@@ -200,8 +216,8 @@ test("strong ties, weak ties and pay", () => {
 test("who files the paperwork", () => {
   const law = json("analysis/week04_lawfirms.json");
   const y = law.years["2025"];
-  const lawyers = region("staffing-lawyers");
-  const has = (t) => assert.ok(lawyers.includes(t), `the law-firm text should say "${t}"`);
+  const block = text('id="staffing-lawyers"', 'id="staffing-community-stats"');
+  const has = (t) => assert.ok(block.includes(t), `the law-firm text should say "${t}"`);
   const c = y.concentration;
   assert.ok(Math.abs(c.named_share - 0.75) < 0.02, `"three in four" but the share is ${c.named_share}`);
   has(`five firms file ${pct(c.top5_share_of_named)} of those`);
@@ -263,7 +279,7 @@ test("closing: what surprised us", () => {
 });
 
 // The deep dive's "More networks" boxes: one per extra network, each pinned to its script's JSON.
-const box = (id) => region(id);
+const box = (id) => text(`id="${id}"`, "</details>");
 const inBox = (id) => (s) => assert.ok(box(id).includes(s), `#${id} should say "${s}"`);
 
 test("green cards as the strong tie", () => {
@@ -399,7 +415,7 @@ test("one count of outsourcing firms across the page", () => {
 
 test("one deep dive: the extra networks and the methods sit inside it", () => {
   const cut = html.slice(html.indexOf('id="cut"'));
-  for (const id of ["topic-where", "topic-jobs", "topic-outsourcing", "topic-paperwork", "topic-years", "deeper-perm", "deeper-countries", "deeper-density", "deeper-strength", "deeper-lottery", "deeper-uscis", "evidence"]) {
+  for (const id of ["cut-more", "deeper-perm", "deeper-countries", "deeper-density", "deeper-strength", "deeper-lottery", "deeper-uscis", "evidence"]) {
     assert.ok(cut.includes(`id="${id}"`), `#${id} should sit inside the deep dive`);
   }
   assert.ok(!html.includes("Curious? Go deeper"), "the old Go deeper section is gone");
@@ -409,8 +425,8 @@ test("one deep dive: the extra networks and the methods sit inside it", () => {
 test("section 1's first round: the cities and the long links follow the analysis", () => {
   // Hand-typed in the deep dive, so a rerun used to leave them behind.
   const place = json("docs/assets/data/week04_place.json");
-  const rank = region("place-start");
-  const long = region("place-longhaul");
+  const rank = text('id="place-rank"', 'id="place-regions"');
+  const long = text('id="place-longhaul"', 'id="cut-jobs"');
   const has = (part, t) => assert.ok(part.includes(t), `section 1's first round should say "${t}"`);
   const city = (name) => place.cities.find((c) => c.name === name);
   const [sj, ny] = [city("San Jose"), city("New York")];
@@ -423,7 +439,7 @@ test("section 1's first round: the cities and the long links follow the analysis
 });
 
 test("the hero's numbers and map legend follow the analysis", () => {
-  const hero = region("top");
+  const hero = text('id="top"', 'id="findings"');
   const place = json("docs/assets/data/week04_place.json");
   const share = json("analysis/week04_where.json").coverage.top_metros_filing_share;
   const has = (t) => assert.ok(hero.includes(t), `the hero should say "${t}"`);
@@ -438,7 +454,7 @@ test("the hero's numbers and map legend follow the analysis", () => {
 
 test("section 2's first round: Software Developers' pairs follow the analysis", () => {
   // Hand-typed in the deep dive, so a rerun used to leave it behind.
-  const together = region("jobs-together");
+  const together = text('id="jobs-together"', 'id="jobs-split"');
   const jobs = json("docs/weeks/week04/data/jobs.json");
   const pairs = jobs.pairs.slice(0, 12);
   const sdPairs = pairs.filter((p) => [p.source, p.target].includes("15-1252")).length;

@@ -1,0 +1,191 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>Layout system: how every section and card is built</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<style>
+body{margin:0;background:#eef3f9}
+.ds{width:1440px;height:1880px;box-sizing:border-box;overflow:hidden;background:#eef3f9;color:#0f2340;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Inter,system-ui,sans-serif;padding:56px 64px;display:flex;flex-direction:column;gap:28px;-webkit-font-smoothing:antialiased}
+.ds h1{margin:0;font-size:36px;line-height:1.1;font-weight:800}
+.ds .lede{margin:8px 0 0;max-width:86ch;font-size:15px;line-height:1.6;color:#46618a}
+.ds .panel{background:#fff;border:1px solid #dce5f0;border-radius:14px;padding:22px 26px;box-shadow:0 1px 2px rgba(15,35,64,.06),0 8px 24px rgba(15,35,64,.05)}
+.ds h2{margin:0 0 4px;font-size:19px;font-weight:800}
+.ds h3{margin:0 0 6px;font-size:14px;font-weight:800}
+.ds .sub{margin:0 0 14px;font-size:13px;line-height:1.55;color:#46618a;max-width:90ch}
+.ds .row{display:grid;gap:24px}
+.ds .r2{grid-template-columns:repeat(2,minmax(0,1fr))}
+.ds .r3{grid-template-columns:repeat(3,minmax(0,1fr))}
+.ds ol.rules{margin:0;padding:0;list-style:none;display:flex;flex-direction:column}
+.ds ol.rules li{display:grid;grid-template-columns:26px minmax(0,1fr);gap:10px;padding:9px 0;border-top:1px solid #eaf0f7;font-size:13px;line-height:1.5}
+.ds ol.rules li b{display:block;font-size:13.5px}
+.ds ol.rules li span.n{width:22px;height:22px;border-radius:6px;background:#14618f;color:#fff;font-size:11.5px;font-weight:800;display:flex;align-items:center;justify-content:center}
+.ds ol.rules li em{font-style:normal;color:#46618a}
+/* wireframes */
+.wf{border:1.5px dashed #b9cadf;border-radius:12px;background:#f7fafd;padding:14px;display:flex;flex-direction:column;gap:10px;font-size:11.5px;color:#46618a}
+.wf .z{border-radius:8px;background:#fff;border:1px solid #dce5f0;padding:8px 10px;position:relative}
+.wf .z b{color:#0f2340;font-size:12px}
+.wf .tag{position:absolute;top:-9px;right:-9px;width:20px;height:20px;border-radius:999px;background:#f2820c;color:#fff;font-size:11px;font-weight:800;display:flex;align-items:center;justify-content:center}
+.wf .grid{display:grid;grid-template-columns:5fr 7fr;gap:12px}
+.wf .col{display:flex;flex-direction:column;gap:8px}
+.wf .chart{height:150px;display:flex;align-items:center;justify-content:center;background:repeating-linear-gradient(135deg,#fff,#fff 8px,#f1f5fa 8px,#f1f5fa 16px)}
+.wf .chips{display:flex;gap:6px;flex-wrap:wrap}
+.wf .chip{border:1px solid #dce5f0;border-radius:8px;padding:3px 8px;background:#f7fafd;color:#14618f;font-weight:700;font-size:11px}
+.wf .notice{background:#eef3f9}
+.ok,.no{font-size:11.5px;font-weight:800;border-radius:6px;padding:2px 7px;display:inline-block;margin-bottom:6px}
+.ok{background:#e3f4ec;color:#15896a}.no{background:#fde8e4;color:#b8412b}
+/* swatches */
+.sw{display:grid;grid-template-columns:34px minmax(0,1fr);gap:10px;align-items:center;padding:7px 0;border-top:1px solid #eaf0f7;font-size:12.5px;line-height:1.4}
+.sw i{width:34px;height:20px;border-radius:5px;display:block}
+.sw b{display:block;font-size:13px}
+.sw span{color:#46618a}
+table.fit{width:100%;border-collapse:collapse;font-size:12.5px}
+table.fit th{text-align:left;font-size:11.5px;color:#7a8fac;font-weight:700;padding:6px 8px;border-bottom:1px solid #dce5f0}
+table.fit td{padding:8px;border-top:1px solid #eaf0f7;vertical-align:top;line-height:1.45}
+table.fit td:first-child{font-weight:700;white-space:nowrap}
+.mini{display:flex;align-items:center;gap:8px}
+.mini .bar{height:8px;border-radius:3px;background:#14618f}
+.mini .num{font-variant-numeric:tabular-nums;font-weight:700;min-width:44px;text-align:right}
+</style>
+</helmet>
+<div class="ds">
+<header>
+<h1>Layout system: how every section and card is built</h1>
+<p class="lede">One set of rules for the Week 4 page. Every board on Start here follows them; when a card breaks one, fix the card, not the rule. Each figure earns its place by answering the card's question.</p>
+</header>
+
+<div class="row r2">
+<section class="panel">
+<h2>A section</h2>
+<p class="sub">Read top to bottom: the claim, then the one card that shows it, then the questions that test it.</p>
+<div class="wf">
+<div class="z"><span class="tag">1</span><b>Opener.</b> Big section number, title, one-sentence finding.</div>
+<div class="z"><span class="tag">2</span><b>Intro card.</b> How the network is built, plus the section's headline chart.</div>
+<div class="z"><span class="tag">3</span><b>Start card.</b> The first question a reader asks, answered with one chart.</div>
+<div class="z"><span class="tag">4</span><b>Question cards 1A, 1B…</b> Each tests the finding one way. Same anatomy, same order.</div>
+</div>
+<ol class="rules" style="margin-top:14px">
+<li><span class="n">1</span><div><b>The opener carries the finding.</b><em>A reader who stops here still leaves with the point.</em></div></li>
+<li><span class="n">2</span><div><b>At most one intro card and one start card.</b><em>Anything else is a question card with a letter.</em></div></li>
+<li><span class="n">3</span><div><b>Question cards run in order of doubt.</b><em>Easiest objection first, the method checks last.</em></div></li>
+<li><span class="n">4</span><div><b>Deep-dive topics use the same card.</b><em>Numbered 1, 2, 3 in contents order, no letter codes.</em></div></li>
+</ol>
+</section>
+
+<section class="panel">
+<h2>A card</h2>
+<p class="sub">Two columns: words on the left (5 of 12), the evidence on the right (7 of 12).</p>
+<div class="wf">
+<div class="z"><span class="tag">A</span><b>Header:</b> badge (Start, 1A…), the question, a bold one-line answer.</div>
+<div class="grid">
+<div class="col">
+<div class="z"><span class="tag">B</span><b>Lead.</b> Two sentences: what was measured, what it shows.</div>
+<div class="z notice"><span class="tag">C</span><b>What to notice.</b> One comparison with its number.</div>
+<div class="chips"><span class="chip">▸ Background</span><span class="chip">▸ Method</span><span class="chip">▸ More numbers</span><span class="chip">▸ Table: …</span></div>
+<div style="font-size:10.5px">D · drawer row, always last in this column</div>
+</div>
+<div class="col">
+<div class="z"><span class="tag">E</span><b>Figure title</b> states what to look for, then a one-line note on how to read it.</div>
+<div class="z chart"><span class="tag">F</span>one primary figure</div>
+</div>
+</div>
+<div class="z" style="border-style:dashed"><span class="tag">G</span><b>Figure row.</b> Any further figures sit side by side under both columns, each with its own title.</div>
+</div>
+<ol class="rules" style="margin-top:14px">
+<li><span class="n">A</span><div><b>The answer fits on one line.</b><em>Under about 12 words; the lead explains it.</em></div></li>
+<li><span class="n">F</span><div><b>One primary figure on the right.</b><em>Further figures go in the row G, never stacked in the right column.</em></div></li><li><span class="n">B</span><div><b>No card without a lead.</b><em>A chart never stands alone: the left column always says what was measured and what it shows.</em></div></li>
+<li><span class="n">D</span><div><b>Four drawer names, this order.</b><em>Background, Method, More numbers, then Table: or Maps: named by content. All closed.</em></div></li>
+</ol>
+</section>
+</div>
+
+<div class="row r3">
+<section class="panel">
+<h2>When to add a figure</h2>
+<p class="sub">Ask three questions. If any answer is no, leave the figure out or move it into a drawer.</p>
+<ol class="rules">
+<li><span class="n">1</span><div><b>Does it show the card's answer?</b><em>Not a related fact, the answer itself.</em></div></li>
+<li><span class="n">2</span><div><b>Can a reader find the point in five seconds?</b><em>Highlight what the answer names; everything else grey.</em></div></li>
+<li><span class="n">3</span><div><b>Does it compare with something?</b><em>A baseline, a previous year, the other group. A lone number is a sentence, not a chart.</em></div></li>
+</ol>
+<div style="margin-top:12px"><span class="no">Avoid</span><div style="font-size:12.5px;line-height:1.5;color:#46618a">Decorative infographics, a chart that repeats the text, two charts of the same numbers, legends with more than five entries, categories like "Other labelled".</div></div>
+</section>
+
+<section class="panel">
+<h2>Pick the chart by the question</h2>
+<table class="fit">
+<thead><tr><th>Question</th><th>Chart</th></tr></thead>
+<tbody>
+<tr><td>Real vs chance</td><td>Horizontal bars or dots with whiskers; real in orange or navy, baselines grey, the fair baseline blue.</td></tr>
+<tr><td>Who is largest</td><td>Ranked horizontal bars, names left, values right-aligned at the end.</td></tr>
+<tr><td>Over time</td><td>Line or slope chart, years on x, 2026 dashed (October to June).</td></tr>
+<tr><td>Share of a whole</td><td>One stacked bar or a composition bar, at most five parts plus "Other".</td></tr>
+<tr><td>Where</td><td>Map with the three group colours and direct city labels.</td></tr>
+<tr><td>Who links to whom</td><td>Network with direct labels, straight links, or a flow diagram.</td></tr>
+<tr><td>Look-up detail</td><td>A table in a Table: drawer, not a chart.</td></tr>
+</tbody>
+</table>
+</section>
+
+<section class="panel">
+<h2>Colour means something</h2>
+<div class="sw"><i style="background:#f2820c"></i><div><b>Orange</b><span>Placed at a client, outsourcing firms, the observed value.</span></div></div>
+<div class="sw"><i style="background:#1f8fd6"></i><div><b>Blue</b><span>Direct employers, the fair baseline.</span></div></div>
+<div class="sw"><i style="background:#14618f"></i><div><b>Accent navy</b><span>The thing the answer names, in single-series charts.</span></div></div>
+<div class="sw"><i style="background:#c3cfdd"></i><div><b>Grey</b><span>Baselines, context, everything the answer does not name.</span></div></div>
+<div class="sw"><i style="background:linear-gradient(90deg,#6d4fd6 33%,#15896a 33% 66%,#7a8fac 66%)"></i><div><b>Violet, green, slate</b><span>The three metro groups. Maps and their legends only.</span></div></div>
+<div class="sw"><i style="background:linear-gradient(90deg,#0f2340,#dbe7f2)"></i><div><b>Navy ramp</b><span>Ranked categories by size, largest darkest.</span></div></div>
+</section>
+</div>
+
+<div class="row r3">
+<section class="panel">
+<h2>Labels and numbers</h2>
+<ol class="rules">
+<li><span class="n">1</span><div><b>Never cut a label with "…".</b><em>Wrap to two lines, or shorten the name once and keep it in full on hover.</em></div></li>
+<li><span class="n">2</span><div><b>Values sit beside the mark.</b><em>At the bar end or past the whisker, never under it.</em></div></li>
+<li><span class="n">3</span><div><b>Numbers right-aligned in tabular figures.</b><em>Bars in a table start at one x position.</em></div></li>
+<li><span class="n">4</span><div><b>Axis titles say what is counted, in words.</b><em>"Companies that filed for both jobs in 2025", not "weight".</em></div></li>
+<li><span class="n">5</span><div><b>Years as 2025.</b><em>2026 always carries "October to June".</em></div></li>
+</ol>
+<div style="margin-top:12px"><span class="ok">Right</span>
+<div class="mini"><span style="width:118px;font-size:12px;text-align:right">Software Developers</span><span class="bar" style="width:120px"></span><span class="num">4,529</span></div>
+<div class="mini" style="margin-top:4px"><span style="width:118px;font-size:12px;text-align:right">Data Scientists</span><span class="bar" style="width:70px;background:#c3cfdd"></span><span class="num">2,668</span></div>
+</div>
+</section>
+
+<section class="panel">
+<h2>Words</h2>
+<ol class="rules">
+<li><span class="n">1</span><div><b>Visible paragraphs: two sentences.</b><em>Supporting detail goes in a drawer.</em></div></li>
+<li><span class="n">2</span><div><b>First line says what to expect.</b><em>In drawers, each paragraph opens with a bold one-line point.</em></div></li>
+<li><span class="n">3</span><div><b>Jargon gets a dotted underline.</b><em>Hover explains it in one or two plain sentences, on first use per board.</em></div></li>
+<li><span class="n">4</span><div><b>Figure titles are claims or questions.</b><em>"Do outsourcers cluster jobs like random firms would?", not "NMI".</em></div></li>
+<li><span class="n">5</span><div><b>No code names, file names or internal IDs.</b><em>No .py files, no box codes like M4.</em></div></li>
+</ol>
+</section>
+
+<section class="panel">
+<h2>Space</h2>
+<ol class="rules">
+<li><span class="n">1</span><div><b>Columns end near the same height.</b><em>If one column is twice the other, move a block across or go full width.</em></div></li>
+<li><span class="n">2</span><div><b>Closed drawers take one row.</b><em>An open drawer takes the full width under that row.</em></div></li>
+<li><span class="n">3</span><div><b>Fixed rhythm.</b><em>Card padding 24, column gap 36, 14 between blocks, 18 above a figure.</em></div></li>
+<li><span class="n">4</span><div><b>One control style.</b><em>The segmented control for up to five options; a dropdown beyond.</em></div></li>
+<li><span class="n">5</span><div><b>Every board carries the dot rail.</b><em>Names on hover as "3 Who staffs whom".</em></div></li>
+</ol>
+</section>
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview": {"width": 1440, "height": 1880}}'>
+class Component extends DCLogic {
+renderVals() { return {}; }
+}
+</script>
+</body>
+</html>

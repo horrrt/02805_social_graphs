@@ -1,0 +1,8 @@
+FAIL place-break should say "Cognizant four, HCL one"
+FAIL place-break should say "The 14 links that peel metros off"
+FAIL section 4 should say "file 5.6% of the filings in the 40 metros, and the ten largest filers of any kind 19.1%"
+FAIL section 4 should say "hold at NMI 0.90 and 0.82"
+FAIL section 4 should say "match Census regions at AMI 0.13 (p = 0.013), against 0.06 for the full network and 0.01 ± 0.03"
+FAIL the which-firm part should say "at AMI 0.14 (3.5 standard deviations above its random cuts), more than the 0.13 without all ten"
+FAIL who-switch should say "26.5% of switches stay in the group against 3.2% ± 0.5% for random vendors (z = 47)"
+FAILCOUNT 7

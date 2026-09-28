@@ -1,11 +1,13 @@
-// The Week 4 page frame: the section rail, the reveal buttons and the five
-// findings under the hero. The rail marks the section in view and opens its
-// questions. Reveal buttons open on hover and keyboard focus through CSS, and
-// on click here, for touch and for browsers that do not focus a clicked
-// button. Each finding gets a one-row strip of the real network against its
-// random baseline, drawn as plain SVG from the sections' own data files.
+// The Week 4 page frame: the section rail, glossary terms, segmented controls,
+// table styling and the five findings under the hero. The rail marks the
+// section in view and opens its questions. A glossary term opens on hover and
+// keyboard focus through CSS, and on click here, for touch and for browsers
+// that do not focus a clicked button. Each finding gets a one-row strip of the
+// real network against its random baseline, drawn as plain SVG from the
+// sections' own data files.
 
 import { miniStrip, stripChart } from "./week04-strip.js";
+import { decorateAll } from "./week04-tables.js";
 
 // ---- the rail
 
@@ -22,6 +24,8 @@ function watchRail() {
     const line = window.innerHeight * 0.35;
     let current = null;
     for (const [li, target] of targets) {
+      // A closed topic, or a box inside one, has no place on screen to pass.
+      if (target.closest("details:not([open])")) continue;
       if (target.getBoundingClientRect().top <= line) current = li;
     }
     for (const li of items) {
@@ -40,15 +44,17 @@ function watchRail() {
   };
   document.addEventListener("scroll", queue, { passive: true });
   window.addEventListener("resize", queue);
+  // toggle does not bubble; the capture phase also sees drawers built later.
+  document.addEventListener("toggle", queue, true);
   mark();
 }
 
-// ---- reveal buttons and glossary terms
+// ---- glossary terms
 
 function wireReveals() {
-  const OPEN = ".w4-tip.is-open, .w4-term.is-open";
+  const OPEN = ".w4-term.is-open";
   document.addEventListener("click", (event) => {
-    const button = event.target.closest(".w4-tip > button, .w4-term > button");
+    const button = event.target.closest(".w4-term > button");
     for (const open of document.querySelectorAll(OPEN)) {
       if (!button || open !== button.parentElement) open.classList.remove("is-open");
     }
@@ -57,11 +63,64 @@ function wireReveals() {
   document.addEventListener("keydown", (event) => {
     if (event.key !== "Escape") return;
     for (const open of document.querySelectorAll(OPEN)) open.classList.remove("is-open");
-    // .w4-tip:focus-within > .w4-pop still matches after the class is gone, so
-    // a reveal whose button holds focus stays open unless we move focus off it.
+    // .w4-term:focus-within > .w4-pop still matches after the class is gone, so
+    // a term whose button holds focus stays open unless we move focus off it.
     const active = document.activeElement;
-    if (active && active.closest(".w4-tip, .w4-term")) active.blur();
+    if (active && active.closest(".w4-term")) active.blur();
   });
+}
+
+// ---- segmented controls
+
+// Every segmented control on the page, whichever script owns it. Tab reaches
+// the group once, on its pressed option; the arrow keys, Home and End move to
+// another option and press it. Each owner sets aria-pressed itself, so one
+// observer keeps the tab stops in step.
+const SEGMENTS = ".rx-seg, .axis-modes, .staffing-years";
+
+function segmentButtons(group) {
+  return [...group.querySelectorAll("button")].filter((b) => !b.disabled && !b.hidden);
+}
+
+function syncSegments(root) {
+  for (const group of root.querySelectorAll(SEGMENTS)) {
+    const buttons = segmentButtons(group);
+    const pressed = buttons.find((b) => b.getAttribute("aria-pressed") === "true") || buttons[0];
+    for (const b of buttons) b.tabIndex = b === pressed ? 0 : -1;
+  }
+}
+
+function wireSegments(root) {
+  if (!root) return;
+  const KEYS = new Set(["ArrowLeft", "ArrowRight", "Home", "End"]);
+  root.addEventListener("keydown", (event) => {
+    if (!KEYS.has(event.key)) return;
+    const group = event.target.closest(SEGMENTS);
+    if (!group || event.target.tagName !== "BUTTON") return;
+    const buttons = segmentButtons(group);
+    const i = buttons.indexOf(event.target);
+    if (i < 0 || !buttons.length) return;
+    const n = buttons.length;
+    const next = {
+      ArrowLeft: buttons[(i - 1 + n) % n],
+      ArrowRight: buttons[(i + 1) % n],
+      Home: buttons[0],
+      End: buttons[n - 1],
+    }[event.key];
+    event.preventDefault();
+    next.focus();
+    next.click();
+  });
+  let queued = false;
+  new MutationObserver(() => {
+    if (queued) return;
+    queued = true;
+    requestAnimationFrame(() => {
+      queued = false;
+      syncSegments(root);
+    });
+  }).observe(root, { subtree: true, attributes: true, attributeFilter: ["aria-pressed"], childList: true });
+  syncSegments(root);
 }
 
 // ---- the five findings
@@ -197,7 +256,10 @@ async function drawOpeners() {
   );
 }
 
+const main = document.querySelector("main");
 watchRail();
 wireReveals();
+wireSegments(main);
+decorateAll(main);
 drawFindings().catch((err) => console.error("findings", err));
 drawOpeners().catch((err) => console.error("openers", err));

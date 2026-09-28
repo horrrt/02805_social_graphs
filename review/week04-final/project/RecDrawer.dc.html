@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>Week 4 · recommendation, pop-up to drawer</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<style>
+body{margin:0;background:#eef3f9}
+a{color:#14618f}a:hover{color:#0f2340}
+.t{position:relative;border-bottom:1px dotted #14618f;cursor:help;white-space:nowrap}
+.t .pop{display:none;position:absolute;left:0;top:calc(100% + 6px);z-index:5;width:260px;white-space:normal;background:#0f2340;color:#eaf2fb;border-radius:8px;padding:8px 10px;font-size:12px;line-height:1.45;font-weight:500;box-shadow:0 8px 20px rgba(15,35,64,.18)}
+.t:hover .pop{display:block}
+mark{background:#d9ecf9;color:#0f2340;border-radius:4px;padding:0 3px;font-weight:700}
+.lead{display:block;font-weight:700;color:#0f2340;margin-bottom:2px}
+
+</style>
+</helmet>
+<div style="width: 1440px; height: 1420px; box-sizing: border-box; overflow: hidden; background: #eef3f9; color: #0f2340; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Inter, system-ui, sans-serif; padding: 48px 56px; display: flex; flex-direction: column; gap: 28px; -webkit-font-smoothing: antialiased">
+<header style="display: flex; flex-direction: column; gap: 8px"><h1 style="margin: 0; font-size: 28px; line-height: 1.2; font-weight: 800">Recommendation 1: long pop-ups become drawers</h1><p style="margin: 0; max-width: 92ch; font-size: 14px; line-height: 1.6; color: #46618a">Section 3&#x27;s opening card, whose More numbers pop-up runs to 183 words. The same facts in both columns; the drawer gives them room to be read.</p></header><div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 36px; align-items: start"><div style="display: flex; flex-direction: column; gap: 10px"><h2 style="margin: 0; font-size: 15px; font-weight: 800; color: #46618a">Now: a 183-word pop-up on hover</h2>
+<div style="background: #ffffff; border: 1px solid #dce5f0; border-radius: 14px; box-shadow: 0 1px 2px rgba(15, 35, 64, 0.06), 0 8px 24px rgba(15, 35, 64, 0.05); padding: 22px; display: flex; flex-direction: column; gap: 14px; position: relative; min-height: 780px; box-sizing: border-box">
+<header style="display: flex; gap: 12px; align-items: flex-start"><span style="flex: none; padding: 4px 10px; border-radius: 8px; background: #d9ecf9; color: #14618f; font-size: 12px; font-weight: 800">Start</span><div style="display: flex; flex-direction: column; gap: 6px"><h2 style="margin: 0; font-size: 19px; line-height: 1.3; font-weight: 800">How many workers sit at a client?</h2><p style="margin: 0; font-size: 15px; line-height: 1.45; font-weight: 600">In 2025, 104,732 of the 537,796 certified filings (19.5%) mark a client site.</p></div></header>
+<p style="margin: 0; font-size: 13.5px; line-height: 1.62; color: #46618a">A filing is a request to employ someone, not a hire. Placing firms also fare worse at USCIS: every year from 2022 on, it denied about twice the share of their first-time petitions, 2.7% against 1.2% for direct employers in 2022 and 3.4% against 2.0% from October 2025 to June 2026.</p>
+<div style="display: flex; gap: 8px"><span style="display: inline-flex; align-items: center; gap: 6px; padding: 6px 12px; border: 1px solid #dce5f0; border-radius: 999px; background: #ffffff; font: inherit; font-size: 12.5px; font-weight: 700; color: #14618f">How we tested it</span><span style="display: inline-flex; align-items: center; gap: 6px; padding: 6px 12px; border: 1px solid #dce5f0; border-radius: 999px; background: #ffffff; font: inherit; font-size: 12.5px; font-weight: 700; color: #14618f; background: #d9ecf9">More numbers</span></div>
+<div style="height: 200px; border-radius: 10px; background: #f7fafd; border: 1px dashed #dce5f0; display: flex; align-items: center; justify-content: center; font-size: 12px; color: #7a8fac">[the card's two charts]</div>
+<div role="presentation" style="position: absolute; left: 150px; top: 238px; width: 440px; box-sizing: border-box; background: rgba(11, 31, 58, 0.97); border-radius: 8px; padding: 12px 14px; font-size: 12px; line-height: 1.5; color: #eaf2fb; box-shadow: 0 2px 6px rgba(15, 35, 64, 0.08), 0 12px 28px rgba(15, 35, 64, 0.14)"><b style="display: block; margin-bottom: 4px">More numbers</b>The lottery shows the same split one step earlier. Each new H-1B worker starts as a registration that USCIS draws at random, and USCIS gave Bloomberg News every registration from the March 2023 draw after a FOIA lawsuit. Every petition that followed names its filing, so we can follow a ticket to its client. Direct employers sent 5.1 registrations per approved petition, placing firms 9.1, and firms with fewer than 20 filings 12.2; those small firms sent 53% of the 758,967 registrations. Most of the gap is drawn tickets nobody used. When USCIS drew a direct employer&#x27;s registration, a petition followed 76% of the time; a placing firm&#x27;s, 50%; a small firm&#x27;s, 35%. That step carries 74% of the gap between placing and direct firms, and the draw itself 24%. Much of it comes from workers registered by several employers: 54% of registrations named one, and when USCIS drew one, a petition followed 23% of the time, against 81% for a worker registered once. 18,307 of the petitions lead to a client company. Citigroup received the most, 342 through 38 firms.</div>
+</div>
+<p style="margin: 0; font-size: 12.5px; line-height: 1.5; color: #46618a">Covers the chart while open, closes when the pointer leaves, and cannot be scrolled, selected or printed.</p></div><div style="display: flex; flex-direction: column; gap: 10px"><h2 style="margin: 0; font-size: 15px; font-weight: 800; color: #46618a">Proposed: a drawer under the card</h2>
+<div style="background: #ffffff; border: 1px solid #dce5f0; border-radius: 14px; box-shadow: 0 1px 2px rgba(15, 35, 64, 0.06), 0 8px 24px rgba(15, 35, 64, 0.05); padding: 22px; display: flex; flex-direction: column; gap: 14px; min-height: 780px; box-sizing: border-box">
+<header style="display: flex; gap: 12px; align-items: flex-start"><span style="flex: none; padding: 4px 10px; border-radius: 8px; background: #d9ecf9; color: #14618f; font-size: 12px; font-weight: 800">Start</span><div style="display: flex; flex-direction: column; gap: 6px"><h2 style="margin: 0; font-size: 19px; line-height: 1.3; font-weight: 800">How many workers sit at a client?</h2><p style="margin: 0; font-size: 15px; line-height: 1.45; font-weight: 600">In 2025, 104,732 of the 537,796 certified filings (19.5%) mark a client site.</p></div></header>
+<p style="margin: 0; font-size: 13.5px; line-height: 1.62; color: #46618a">A filing is a request to employ someone, not a hire. Placing firms also fare worse at USCIS: every year from 2022 on, it denied about twice the share of their first-time petitions, 2.7% against 1.2% for direct employers in 2022 and 3.4% against 2.0% from October 2025 to June 2026.</p>
+<div style="height: 200px; border-radius: 10px; background: #f7fafd; border: 1px dashed #dce5f0; display: flex; align-items: center; justify-content: center; font-size: 12px; color: #7a8fac">[the card's two charts]</div>
+<div style="display: flex; gap: 8px; border-top: 1px solid #eaf0f7; padding-top: 12px">
+<button type="button" onClick="{{pickHow}}" aria-expanded="{{howOpen}}" style="{{howStyle}}">How we tested it <span aria-hidden="true">{{howMark}}</span></button>
+<button type="button" onClick="{{pickMore}}" aria-expanded="{{moreOpen}}" style="{{moreStyle}}">More numbers <span aria-hidden="true">{{moreMark}}</span></button>
+</div>
+<sc-if value="{{showHow}}" hint-placeholder-val="{{false}}"><div style="background: #f7fafd; border: 1px solid #eaf0f7; border-radius: 10px; padding: 14px 16px"><p style="margin: 0; max-width: 72ch; font-size: 13.5px; line-height: 1.62">The worksites file lists every client a filing names; we leave out the 16% of client entries that name no company, such as &quot;Home Address&quot;, and the 1,881 where a firm names itself. Counted that way, 101,763 filings (18.9%) name a client company: the worker is employed by one company and works at another, down from 21.9% in 2022.</p></div></sc-if>
+<sc-if value="{{showMore}}" hint-placeholder-val="{{true}}"><div style="background: #f7fafd; border: 1px solid #eaf0f7; border-radius: 10px; padding: 14px 16px; display: flex; flex-direction: column; gap: 12px"><p style="margin: 0; max-width: 72ch; font-size: 13.5px; line-height: 1.62"><span class="lead">The lottery shows the same split, one step earlier.</span>Each new H-1B worker starts as a <span class="t">registration<span class="pop">An employer’s entry of one worker into the H-1B lottery. Only drawn registrations can go on to a petition.</span></span> that <span class="t">USCIS<span class="pop">US Citizenship and Immigration Services, the agency that runs the lottery and decides petitions.</span></span> draws at random. USCIS gave Bloomberg News every registration from the March 2023 draw after a <span class="t">FOIA<span class="pop">The Freedom of Information Act, which lets anyone request records from US federal agencies.</span></span> lawsuit, and every <span class="t">petition<span class="pop">The full H-1B application an employer files for a drawn registration.</span></span> that followed names its filing, so we can follow a ticket to its client.</p><p style="margin: 0; max-width: 72ch; font-size: 13.5px; line-height: 1.62"><span class="lead">Placing firms spend more tickets per worker.</span>Direct employers sent <mark>5.1</mark> registrations per approved petition, <span class="t">placing firms<span class="pop">Companies that hire foreign workers and send them to work at client companies.</span></span> <mark>9.1</mark>, and firms with fewer than 20 filings <mark>12.2</mark>; those small firms sent 53% of the 758,967 registrations.</p><p style="margin: 0; max-width: 72ch; font-size: 13.5px; line-height: 1.62"><span class="lead">Most of the gap is drawn tickets nobody used.</span>When USCIS drew a direct employer&#x27;s registration, a petition followed <mark>76%</mark> of the time; a placing firm&#x27;s, <mark>50%</mark>; a small firm&#x27;s, <mark>35%</mark>. That step carries 74% of the gap between placing and direct firms, and the draw itself 24%.</p><p style="margin: 0; max-width: 72ch; font-size: 13.5px; line-height: 1.62"><span class="lead">Workers registered many times drive it.</span>54% of registrations named a worker registered by several employers, and when USCIS drew one, a petition followed <mark>23%</mark> of the time, against <mark>81%</mark> for a worker registered once.</p><p style="margin: 0; max-width: 72ch; font-size: 13.5px; line-height: 1.62"><span class="lead">Some of those petitions lead to a client.</span>18,307 of the petitions lead to a client company. Citigroup received the most, 342 through 38 firms.</p></div></sc-if>
+</div>
+<p style="margin: 0; font-size: 12.5px; line-height: 1.5; color: #46618a">Opens under the card, pushes the page down, stays open until closed. The same facts, one paragraph per point: a bold first line says what the paragraph shows, key numbers are highlighted, and terms explain themselves on hover. Click the two buttons in Play.</p></div></div><section style="background: #ffffff; border: 1px solid #dce5f0; border-radius: 14px; box-shadow: 0 1px 2px rgba(15, 35, 64, 0.06), 0 8px 24px rgba(15, 35, 64, 0.05); padding: 18px 22px; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 28px">
+<div style="display: flex; flex-direction: column; gap: 6px"><h3 style="margin: 0; font-size: 15px; font-weight: 800">Pop-up</h3><p style="margin: 0; font-size: 13px; line-height: 1.55; color: #46618a">Definitions of a term and a one-line method note. 60 words at most. Opens on hover or focus, closes on Escape.</p></div>
+<div style="display: flex; flex-direction: column; gap: 6px"><h3 style="margin: 0; font-size: 15px; font-weight: 800">Drawer</h3><p style="margin: 0; font-size: 13px; line-height: 1.55; color: #46618a">How we tested it, More numbers, and anything over 60 words. One button per drawer, several may be open, each remembers its state while the reader scrolls.</p></div>
+</section>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview": {"width": 1440, "height": 1420}}'>
+class Component extends DCLogic {
+constructor(props) { super(props); this.state = { how: false, more: true }; }
+renderVals() {
+const on = " background: #d9ecf9; border: 1px solid #14618f;";
+const off = " background: #ffffff; border: 1px solid #dce5f0;";
+const s = this.state;
+return {
+  showHow: s.how, showMore: s.more, howOpen: String(s.how), moreOpen: String(s.more),
+  howMark: s.how ? "▴" : "▾", moreMark: s.more ? "▴" : "▾",
+  howStyle: "display: inline-flex; align-items: center; gap: 6px; padding: 6px 12px; border-radius: 999px; font: inherit; font-size: 12.5px; font-weight: 700; cursor: pointer; color: #14618f;" + (s.how ? on : off), moreStyle: "display: inline-flex; align-items: center; gap: 6px; padding: 6px 12px; border-radius: 999px; font: inherit; font-size: 12.5px; font-weight: 700; cursor: pointer; color: #14618f;" + (s.more ? on : off),
+  pickHow: () => this.setState({ how: !s.how }), pickMore: () => this.setState({ more: !s.more }),
+};
+}
+}
+</script>
+</body>
+</html>

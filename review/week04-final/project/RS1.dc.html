@@ -1,0 +1,469 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>Section 1 · where the hiring is</title>
+<script src="./support.js"></script>
+<link rel="stylesheet" href="/_blob/083d154e9dc323e92523c409d0034822">
+<link rel="stylesheet" href="/_blob/668486f5a3998cc03081dad4d6a53e30">
+<link rel="stylesheet" href="/_blob/084ce7df5637b99030ea35613530acf2">
+<link rel="stylesheet" href="/_blob/e84e8b268623a65fa6a20dcee3ec4adf">
+<link rel="stylesheet" href="/_blob/35af9356d607ea8092bc878cace00255">
+<link rel="stylesheet" href="/_blob/70ffa1ecc89c42fb63ac04cfc271ee6b">
+<link rel="stylesheet" href="/_blob/3e4fe45fa83b8895f69f8d519b7b0fe2">
+<link rel="stylesheet" href="/_blob/ffcc56532445103bef94c333132a4fb7">
+<link rel="stylesheet" href="/_blob/4004501ab78099c34bb198c8287d7d41">
+<link rel="stylesheet" href="/_blob/ab074990511da3308f5deb38e148e8c1">
+<link rel="stylesheet" href="/_blob/961bb1102d81f8f791744cf5c49d5ccf">
+<link rel="stylesheet" href="/_blob/ea7fdb7da398599db40546cc6b3f4606">
+</head>
+<body>
+<x-dc>
+<helmet>
+<style>
+@font-face{font-family:"Condensed";src:url("/_blob/9ad036b9f76606ea91d82e15ebec8da3") format("truetype");font-weight:800;font-style:normal}
+body{margin:0;background:#eef3f9}
+.rx{position:relative}
+/* rec 6: the rail, every name on hover */
+.rx .rx-rail{position:absolute;left:64px;top:96px;width:44px;z-index:30}
+.rx .rx-rail ol{list-style:none;margin:0;padding:6px 0;display:flex;flex-direction:column;align-items:center;gap:16px;background:linear-gradient(#dce5f0,#dce5f0) center/2px 100% no-repeat}
+.rx .rx-rail ol.rx-rail-sub{gap:16px;padding:14px 0 4px;background:none}
+.rx .rx-rail li{display:flex;flex-direction:column;align-items:center;position:relative}
+.rx .rx-sq,.rx .rx-dot{position:relative;display:block;box-sizing:border-box;border-radius:999px;font-size:0;color:transparent;cursor:pointer}
+.rx .rx-sq{width:12px;height:12px;background:#fff;border:2px solid #9fb4cf}
+.rx .rx-sq:hover{border-color:#14618f}
+.rx .rx-sq.is-on{width:18px;height:18px;background:#14618f;border-color:#14618f;box-shadow:0 0 0 4px rgba(20,97,143,.18)}
+.rx .rx-dot{width:8px;height:8px;background:#c9d6e6}
+.rx .rx-dot.is-on{background:#0f2340;box-shadow:0 0 0 3px rgba(15,35,64,.14)}
+.rx .rx-lab{display:none;position:absolute;left:calc(50% + 20px);top:50%;transform:translateY(-50%);white-space:nowrap;border-radius:8px;padding:3px 9px;font-size:12px;line-height:1.4;font-weight:600;background:rgba(255,255,255,.97);color:#0f2340;box-shadow:0 1px 3px rgba(15,35,64,.16)}
+.rx .rx-rail:hover .rx-lab{display:block}
+.rx .rx-rail .rx-sq:hover>.rx-lab,.rx .rx-rail .rx-dot:hover>.rx-lab{background:#0f2340;color:#fff}
+/* rec 1: drawers */
+.rx .rx-drawers{display:flex;flex-direction:column;gap:8px;margin-top:14px}
+.rx details.rx-drawer{border:1px solid #dce5f0;border-radius:10px;background:#f7fafd;margin-top:10px}
+.rx .rx-drawers details.rx-drawer{margin-top:0}
+.rx details.rx-drawer>summary{cursor:pointer;list-style:none;padding:9px 14px;font-size:13px;font-weight:700;color:#14618f;display:flex;align-items:center;gap:8px}
+.rx details.rx-drawer>summary::-webkit-details-marker{display:none}
+.rx details.rx-drawer>summary::before{content:"▸";font-size:11px;transition:transform .15s}
+.rx details.rx-drawer[open]>summary::before{transform:rotate(90deg)}
+.rx .rx-drawer-body{padding:0 16px 14px;font-size:13.5px;line-height:1.62;color:#0f2340;max-width:78ch}
+.rx .rx-drawer-body p{margin:0 0 8px}
+/* rec 4: one segmented control */
+.rx .axis-modes,.rx .rx-seg,.rx .staffing-years{display:inline-flex!important;gap:2px!important;padding:3px!important;border-radius:999px!important;background:#eaf0f7!important;border:none!important;box-shadow:none!important;flex-wrap:wrap}
+.rx .axis-modes button,.rx .rx-seg button,.rx .staffing-years button{border:none!important;border-radius:999px!important;padding:6px 14px!important;font:inherit!important;font-size:12.5px!important;font-weight:600!important;color:#46618a!important;background:transparent!important;box-shadow:none!important;cursor:pointer}
+.rx .axis-modes button[aria-pressed="true"],.rx .rx-seg button[aria-pressed="true"],.rx .staffing-years button[aria-pressed="true"]{background:#fff!important;color:#0f2340!important;font-weight:700!important;box-shadow:0 1px 2px rgba(15,35,64,.12)!important}
+.rx .axis-modes-label,.rx .rx-seg-label{text-transform:none!important;letter-spacing:0!important;font-size:12.5px!important;font-weight:700!important;color:#46618a!important}
+.rx .rx-seg-row{display:flex;align-items:center;gap:12px;margin:10px 0}
+/* rec 7 placeholder */
+.rx .rx-todo{border:1px dashed #b9cadf;background:#fff;color:#7a8fac}
+/* topic boards */
+.rx .rx-topic-head{display:flex;align-items:baseline;gap:14px;flex-wrap:wrap}
+.rx .rx-tabs{display:flex;flex-direction:column;gap:2px;padding:12px;border-right:1px solid #eaf0f7;background:#f7fafd;border-radius:14px 0 0 14px}
+.rx .rx-tab{display:flex;gap:10px;align-items:baseline;width:100%;padding:9px 10px;border:none;border-radius:8px;font:inherit;font-size:13px;line-height:1.4;font-weight:600;text-align:left;color:#0f2340;cursor:pointer;background:transparent}
+.rx .rx-tab:hover{background:#fff}
+
+/* rec 3: section 1 start card */
+.rx .rx-kicker{margin:6px 0 0;font-size:13px;color:#46618a}
+.rx .rx-start-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:36px;align-items:start;margin-top:8px}
+.rx .rx-start-grid header.w4-q{margin-bottom:8px}
+.rx .rx-groups{display:flex;flex-direction:column;margin-top:10px}
+.rx .rx-group{padding:10px 0;border-top:1px solid #eaf0f7}
+.rx .rx-group-head{display:flex;align-items:center;gap:8px;font-size:13.5px}
+.rx .rx-group-head i{width:12px;height:12px;border-radius:50%;display:inline-block}
+.rx .rx-group-head span{font-size:12.5px;color:#46618a}
+.rx .rx-group p{margin:4px 0 0 20px;font-size:12.5px;line-height:1.55;color:#46618a}
+.rx .rx-start-notices{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px;margin-top:14px}
+.rx .rx-drawer-body.rx-wide{max-width:none}
+/* topic boards */
+.rx .rx-topic-bar{display:flex;align-items:center;gap:16px;margin:8px 0 16px}
+.rx .rx-back{font-size:13px;font-weight:700;text-decoration:none;color:#14618f;padding:6px 12px;border:1px solid #dce5f0;border-radius:999px;background:#fff}
+.rx .rx-topic-mark{flex:none;width:40px;height:40px;border-radius:10px;background:#14618f;color:#fff;display:inline-flex;align-items:center;justify-content:center;font-size:17px;font-weight:800}
+.rx .rx-topic-title{margin:0;font-size:24px;font-weight:800}
+.rx .rx-topic-holds{margin:2px 0 0;font-size:13.5px;color:#46618a}
+.rx .rx-topic-count{margin-left:auto;font-size:12.5px;color:#46618a}
+.rx .rx-tab-row{display:flex;flex-wrap:wrap;gap:6px;padding:6px;border-radius:14px;background:#eaf0f7;margin-bottom:18px}
+.rx .rx-tab-pill{border:none;border-radius:999px;padding:7px 14px;font:inherit;font-size:12.5px;font-weight:600;cursor:pointer;text-align:left;line-height:1.35}
+.rx .rx-tab-pill b{color:#14618f;margin-right:4px}
+.rx .rx-panel > .card{margin-top:0}
+/* deep-dive catalogue */
+.rx .rx-cut-intro{max-width:68ch}
+.rx .rx-tgrid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;align-items:start;margin-top:18px}
+.rx .rx-tcard{background:#fff;border:1px solid #dce5f0;border-radius:14px;padding:16px;box-shadow:0 1px 2px rgba(15,35,64,.06),0 8px 24px rgba(15,35,64,.05)}
+.rx .rx-tcard-data{background:#f7fafd;box-shadow:none}
+.rx .rx-tcard-head{display:flex;gap:12px;align-items:flex-start;text-decoration:none;color:#0f2340;padding-bottom:10px}
+.rx .rx-tcard-head span{display:flex;flex-direction:column;gap:3px}
+.rx .rx-tcard-head b{font-size:16px}
+.rx .rx-tcard-head em{font-style:normal;font-size:12.5px;line-height:1.45;color:#46618a}
+.rx .rx-tcard ul{list-style:none;margin:0;padding:0}
+.rx .rx-tcard li a{display:flex;gap:10px;align-items:baseline;padding:8px 4px;border-top:1px solid #eaf0f7;text-decoration:none;color:#0f2340;font-size:13px;font-weight:600;line-height:1.4}
+.rx .rx-tcard li a b{flex:none;min-width:22px;color:#14618f;font-size:11.5px}
+.rx .rx-tcard li a span{flex-grow:1}
+.rx .rx-tcard li a i{font-style:normal;color:#14618f;font-weight:700}
+.rx .rx-tcard li a:hover{background:#d9ecf9}
+.rx .rx-moved{margin:16px 0 0;font-size:12.5px;line-height:1.6;color:#46618a}
+.rx .rx-tile-finding{display:block;margin-top:6px;color:#0f2340}
+/* tables */
+.rx main table{width:100%;border-collapse:separate;border-spacing:0;font-size:12.5px;line-height:1.4;background:#fff;border:1px solid #dce5f0;border-radius:10px;overflow:hidden;margin-top:6px}
+.rx main table caption{caption-side:top;text-align:left;font-size:13px;font-weight:700;color:#0f2340;padding:0 2px 8px}
+.rx main table th{background:#f7fafd;color:#46618a;font-size:11.5px;font-weight:600;text-align:left;padding:9px 12px;border-bottom:1px solid #dce5f0;white-space:nowrap}
+.rx main table td{padding:8px 12px;border-top:1px solid #eef3f9;color:#0f2340;vertical-align:middle}
+.rx main table tbody tr:first-child td{border-top:none}
+.rx main table tbody tr:hover td{background:#f7fafd}
+.rx main table td:first-child{font-weight:600}
+.rx main table th.num,.rx main table td.num{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
+.rx main table td.soft{color:#46618a}
+.rx .rx-cell{display:flex;align-items:center;justify-content:flex-end;gap:10px}
+.rx .rx-bar{flex:none;width:72px;height:6px;border-radius:999px;background:#eef3f9;overflow:hidden;display:flex;justify-content:flex-start}
+.rx .rx-bar i{display:block;height:100%;border-radius:999px;background:#14618f}
+.rx .rx-bar.meter i{background:#7fa9cf}
+.rx .rx-table-block{margin-top:18px}
+.rx .rx-table-block h4{margin:0 0 4px;font-size:13px;font-weight:700;color:#0f2340}
+.rx .rx-table-block p{margin:0 0 6px;font-size:12px;color:#46618a}
+/* compact drawers: closed ones sit in one row, an open one takes the full width */
+.rx .rx-drawers{flex-direction:row!important;flex-wrap:wrap;align-items:center;gap:8px!important;margin-top:12px}
+.rx .rx-drawers>details.rx-drawer{flex:0 0 auto;margin:0}
+.rx .rx-drawers>details.rx-drawer[open]{flex:1 1 100%;order:10}
+.rx details.rx-drawer:not([open]){width:fit-content}
+.rx details.rx-drawer>summary{padding:6px 12px}
+.rx .rx-drawers>.w4-tip{margin:0}
+.rx .rx-foot{margin-top:14px}
+.rx .rx-drawer-body>p+p{margin-top:8px}
+</style>
+</helmet>
+<div class="corridor rx" style="width: 1440px; height: 2446px; overflow: hidden; background: #eef3f9"><div class="topbar">
+<div class="shell">
+<a class="brand" href="../../">LOG–LOG <b>LEGENDS</b></a>
+<a class="site-link" href="../../#weeks">All posts</a>
+<nav aria-label="Sections of this post" class="topnav">
+<a class="here" href="#opening">Opening</a>
+<a class="" href="#place">Where</a>
+<a href="#jobs">Jobs</a>
+<a href="#who">Staffing</a>
+<a href="#footprint">Giants out</a>
+<a href="#beyond">Beyond</a>
+<a href="#cut">Deep dive</a>
+</nav>
+</div>
+</div><nav class="rx-rail" aria-label="Contents of this post"><ol><li><span class="rx-sq"><span class="rx-lab">0 Opening</span></span></li><li><span class="rx-sq is-on"><span class="rx-lab">1 Where the hiring is</span></span><ol class="rx-rail-sub"><li><span class="rx-dot"><span class="rx-lab">1A Do cities group by who hires there instead of by region?</span></span></li><li><span class="rx-dot"><span class="rx-lab">1B Where does the backbone break, and whose links hold it?</span></span></li></ol></li><li><span class="rx-sq"><span class="rx-lab">2 Which jobs go together</span></span></li><li><span class="rx-sq"><span class="rx-lab">3 Who staffs whom</span></span></li><li><span class="rx-sq"><span class="rx-lab">4 Without the biggest firms</span></span></li><li><span class="rx-sq"><span class="rx-lab">5 Beyond the three networks</span></span></li><li><span class="rx-sq"><span class="rx-lab">Closing</span></span></li><li><span class="rx-sq"><span class="rx-lab">Deep dive</span></span></li></ol></nav><main id="main"><div class="shell"><section class="step" id="place">
+<header class="w4-opener">
+<span aria-hidden="true" class="w4-opener-num">1</span>
+<div>
+<h2>Where the hiring is</h2>
+<p>Cities group by who hires there, and no single link holds the map together.</p>
+</div>
+</header>
+<div class="w4-two w4-intro">
+<div>
+<p class="sub">
+                The cities are the 40 metro areas with the most filings, 84.5% of
+                the year's total. <span class="w4-term"><button aria-describedby="w4-term-place-louvain" type="button">Louvain</button><span class="w4-pop" id="w4-term-place-louvain" role="tooltip">A method that finds groups by moving each node into the neighbouring group that raises modularity most, then merging the groups and repeating until no move helps. It starts from a random order, so two runs can differ.</span></span> splits them into three groups, and the split is weak
+                but real: <span class="w4-term"><button aria-describedby="w4-term-place-modularity" type="button">modularity</button><span class="w4-pop" id="w4-term-place-modularity" role="tooltip">How much more of the link weight falls inside the groups than a random network with the same number of links per node would put there. Higher means sharper groups.</span></span> 0.049 against 0.013 for
+                <span class="w4-term"><button aria-describedby="w4-term-place-rewired" type="button">rewired networks</button><span class="w4-pop" id="w4-term-place-rewired" role="tooltip">A random copy of the network in which every node keeps its number of partners, but the partners are dealt out again at random.</span></span> (<span class="w4-term"><button aria-describedby="w4-term-place-z" type="button">z</button><span class="w4-pop" id="w4-term-place-z" role="tooltip">How many standard deviations the real value sits from the random baseline’s mean. Beyond about 2 either way is rare by chance.</span></span> = 29).
+              </p>
+<div class="w4-example">
+<svg aria-hidden="true" height="150" viewbox="0 0 250 150" width="250">
+<line class="w4-ex-edge" stroke-width="2.4" x1="125" x2="52" y1="34" y2="112"></line>
+<line class="w4-ex-edge" stroke-width="1.4" x1="125" x2="198" y1="34" y2="112"></line>
+<path class="w4-ex-link" d="M52 112 Q125 150 198 112" stroke-dasharray="5 4" stroke-width="2.2"></path>
+<rect class="w4-ex-company" height="26" rx="6" width="50" x="100" y="16"></rect>
+<text class="w4-ex-on-ink" x="125" y="33">Company</text>
+<circle class="w4-ex-node" cx="52" cy="112" r="13"></circle>
+<circle class="w4-ex-node" cx="198" cy="112" r="13"></circle>
+<text class="w4-ex-letter" x="52" y="116">A</text>
+<text class="w4-ex-letter" x="198" y="116">B</text>
+<text class="w4-ex-count" text-anchor="end" x="70" y="66">12 filings</text>
+<text class="w4-ex-count" text-anchor="start" x="180" y="66">5 filings</text>
+<text class="w4-ex-gain" x="125" y="146">link A–B gains 5</text>
+</svg>
+<p><b>How two metros get linked</b>An example, not data. A company that files in both metros adds the smaller of its two filing counts to their link.</p>
+</div>
+
+<div class="rx-drawers rx-foot"><details class="rx-drawer"><summary>Background</summary><div class="rx-drawer-body"><p>Seven large hubs led by New York and Dallas, eight tech hubs led by San Jose and San Francisco, and the other 25. The rewired networks keep each company's number of metros. The two questions below ask what the groups follow and where the network comes apart.</p></div></details><details class="rx-drawer"><summary>Method</summary><div class="rx-drawer-body"><p>Two metros are linked when the same company files in both; the link weighs, summed over those companies, the smaller of the company's two filing counts.</p></div></details></div>
+</div>
+<figure class="w4-figure">
+<figcaption><b>Weak but real</b><span>The groups against rewired networks in which each company keeps its number of metros.</span></figcaption>
+<div class="w4-figure-body" data-strip="place-modularity"><svg aria-label="Modularity of the metro groups against rewired networks" class="w4-strip" height="104" role="img" viewbox="0 0 556 104" width="556"><line stroke="#e6ecf3" stroke-width="1" x1="132" x2="132" y1="6" y2="70"></line><text fill="#7a8fac" font-size="11" text-anchor="middle" x="132" y="86">0.00</text><line stroke="#e6ecf3" stroke-width="1" x1="251.33333333333334" x2="251.33333333333334" y1="6" y2="70"></line><text fill="#7a8fac" font-size="11" text-anchor="middle" x="251.33333333333334" y="86">0.02</text><line stroke="#e6ecf3" stroke-width="1" x1="370.6666666666667" x2="370.6666666666667" y1="6" y2="70"></line><text fill="#7a8fac" font-size="11" text-anchor="middle" x="370.6666666666667" y="86">0.04</text><line stroke="#e6ecf3" stroke-width="1" x1="490" x2="490" y1="6" y2="70"></line><text fill="#7a8fac" font-size="11" text-anchor="middle" x="490" y="86">0.06</text><text fill="#0f2340" font-size="12" font-weight="600" x="0" y="35">Modularity</text><text fill="#7a8fac" font-size="11" x="0" y="50">40 metros, 3 groups</text><line stroke="#dce5f0" stroke-width="1" x1="132" x2="490" y1="38" y2="38"></line><g><rect fill="rgba(185, 196, 210, 0.62)" height="12" rx="6" width="14.319999999999993" x="202.40666666666667" y="32"><title>Rewired networks: mean 0.013, sd 0.0012</title></rect><line stroke="#7a8fac" stroke-width="2" x1="209.56666666666666" x2="209.56666666666666" y1="29" y2="47"></line></g><text fill="#46618a" font-size="11" font-weight="400" text-anchor="middle" x="209.56666666666666" y="63">rewired 0.013 ± 0.0012</text><circle cx="424.36666666666673" cy="38" fill="#0f2340" r="6.5" stroke="#ffffff" stroke-width="2"><title>The real network: 0.049</title></circle><text fill="#0f2340" font-size="12" font-weight="700" text-anchor="middle" x="424.36666666666673" y="25">0.049</text><rect fill="#eef3f9" height="20" rx="10" width="52.96" x="502" y="28"></rect><text fill="#0f2340" font-size="11" font-weight="700" text-anchor="middle" x="528.48" y="42">z = 29</text></svg></div>
+</figure>
+</div>
+
+<!-- Start · Which cities hire the most? -------------------------- -->
+<div class="card w4-card" id="place-start">
+<header class="w4-q"><span class="w4-num">Start</span><div><p class="rx-kicker">Two first questions, side by side, before 1A</p></div></header>
+<div class="rx-start-grid">
+<div><header class="w4-q">
+<div>
+<h2>Which cities hire the most?</h2>
+<p class="w4-answer">San Jose asks for the most positions; New York has the most employers.</p>
+</div>
+</header><p class="sub">
+                
+                A position is a seat an employer asks to fill, not a worker who
+                arrived.
+                Toggle the metric; click a bar or a bubble to inspect one city.
+              </p><div aria-label="Rank cities by" class="axis-modes" role="group">
+<button aria-pressed="true" data-place-metric="positions" type="button">
+                  Positions
+                </button>
+<button aria-pressed="false" data-place-metric="employers" type="button">
+                  Employers
+                </button>
+</div><div class="plot">
+<h3>Top cities</h3>
+<p class="axis-note">
+                    Ranked by the active metric. Click a bar to select that city
+                    everywhere on this page.
+                  </p>
+<div class="chart-host tall" id="chart-rank" style="user-select: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0); position: relative;"><img alt="" src="/_blob/338de2206fbd9f52aa9219ea082155fc" style="display:block;width:100%;height:100%;object-fit:contain"/></div>
+</div></div>
+<div><header class="w4-q">
+<div>
+<h2>Is it one national job market or several regional ones?</h2>
+<p class="w4-answer">Not regional markets: the two hub groups cross regions.</p>
+</div>
+</header><p class="sub">
+                
+                Louvain splits the large hubs into two groups, which cross regions, and leaves the smaller metros as a third.
+                Toggle Louvain communities against Census regions on the same
+                map.
+              </p><div class="rx-groups"><div class="rx-group"><div class="rx-group-head"><i style="background: var(--w4-group-1)"></i><b>Eight tech hubs</b><span>led by San Jose and San Francisco</span></div><p>San Jose, Seattle, San Francisco, Austin, Washington, Boston, Los Angeles, San Diego</p></div><div class="rx-group"><div class="rx-group-head"><i style="background: var(--w4-group-0)"></i><b>Seven large hubs</b><span>led by New York and Dallas</span></div><p>New York, Dallas, Chicago, Atlanta, Philadelphia, Houston, Charlotte</p></div><div class="rx-group"><div class="rx-group-head"><i style="background: var(--w4-group-2)"></i><b>The other 25</b><span>from Raleigh and Detroit down</span></div><p>Raleigh, Detroit, Phoenix, Salt Lake City, St. Louis, Miami, Minneapolis, Portland, Tampa, Denver, Columbus, Pittsburgh, and 13 more</p></div></div></div>
+</div>
+<div class="rx-start-notices"><div class="notice">
+<span class="ico">💡</span>
+<span>
+<b>What to notice</b>
+                  San Jose's 48,692 filings request 124,265 positions, and Google files one in ten of them.
+                  New York files more (65,935) from three times as many employers (12,711).
+                </span>
+</div><div class="notice">
+<span class="ico">💡</span>
+<span>
+<b>What to notice</b>
+                  The split is real but weak: Louvain finds it in 65 of 100 runs.
+                  Census regions and divisions match it no better than shuffled labels (<span class="w4-term"><button aria-describedby="w4-term-x-p" type="button">p</button><span class="w4-pop" id="w4-term-x-p" role="tooltip">The share of shuffled labellings that match at least as well as the real one. A small value means the match is unlikely to be chance.</span></span> = 0.10 and 0.11).
+                </span>
+</div></div>
+
+<div class="rx-drawers rx-foot"><details class="rx-drawer"><summary>Background</summary><div class="rx-drawer-body"><p class="sub">
+                    The map shows the partition Louvain finds most often, and
+                    every number below is computed on it. The null rewires the
+                    company × metro network so each company and each metro keeps
+                    its number of partners, deals the filing counts back out at
+                    random, and projects it again:
+                  </p>
+<table class="ego">
+<tbody id="place-null-stats"><tr><td>Partition shown: found in</td><td style="text-align:right" class="soft">65 of 100 Louvain runs</td></tr><tr><td>Distinct partitions found</td><td style="text-align:right" class="soft">2</td></tr><tr><td>Q of the partition shown</td><td style="text-align:right" class="soft">0.049</td></tr><tr><td>Q of rewired networks, mean ± sd</td><td style="text-align:right" class="soft">0.013 ± 0.001</td></tr><tr><td>z</td><td style="text-align:right" class="soft">29.5</td></tr><tr><td>NMI between two runs, median (lowest)</td><td style="text-align:right" class="soft">1.00 (0.64)</td></tr><tr><td>NMI with Census regions (p)</td><td style="text-align:right" class="soft">0.137 (0.099)</td></tr><tr><td>NMI with Census divisions (p)</td><td style="text-align:right" class="soft">0.214 (0.115)</td></tr><tr><td>Infomap modules (random-walk method)</td><td style="text-align:right" class="soft">1: all metros together</td></tr></tbody>
+</table>
+<p class="sub">One group holds New York, Dallas, Atlanta, Chicago, Houston, Philadelphia and Charlotte. The other holds San Jose, San Francisco, Seattle, Los Angeles, San Diego, Austin, Boston and Washington. The 25 smaller metros form the third. Modularity is 0.049 against 0.013 for rewired networks that keep each company's number of metros (z = 29).</p>
+<p class="sub">Louvain finds the split shown in 65 of 100 runs; the other 35 find one other split, into two groups. 2024 gives that two-group split in all 100 runs, so it matches the split shown here at <span class="w4-term"><button aria-describedby="w4-term-x-nmi" type="button">NMI</button><span class="w4-pop" id="w4-term-x-nmi" role="tooltip">Normalized mutual information: how alike two groupings are, from 0 for unrelated to 1 for the same.</span></span> 0.64, against 1.00 between two 2025 runs.</p>
+<p class="sub">NMI with Census regions is 0.14 and with divisions 0.21. Infomap, which follows a random walk between metros instead of counting links, finds no split at all: one module holds all 40.</p></div></details><details class="rx-drawer"><summary>Method</summary><div class="rx-drawer-body"><p>A filing counts once in each metro it names, with at most the positions it requests.</p></div></details><details class="rx-drawer"><summary>More numbers</summary><div class="rx-drawer-body"><p>In Seattle one company, Amazon, files 31%. Positions reward a few firms asking for many seats; employer counts reward a broad market.</p><p>San Jose averages 2.6 positions per filing, New York 1.5. New York's largest filer, EY, has under 4%.</p></div></details><details class="rx-drawer"><summary>Maps: groups and Census regions</summary><div class="rx-drawer-body"><div aria-label="Colour cities by" class="axis-modes" role="group">
+<button aria-pressed="true" data-place-region="communities" type="button">
+                  Communities
+                </button>
+<button aria-pressed="false" data-place-region="census" type="button">
+                  Census regions
+                </button>
+</div><div class="region-legend" id="place-region-legend"><span><i style="background:#6d4fd6"></i>New York–Dallas</span><span><i style="background:#15896a"></i>San Jose–San Francisco</span><span><i style="background:#7a8fac"></i>Detroit–Phoenix</span></div><div class="plot" style="margin-top: 18px">
+<h3>On the map</h3>
+<p class="axis-note">
+                  The 48 contiguous states; none of the 40 metros lies outside
+                  them. Bubbles are sized by requested positions; colour and
+                  opacity follow the active metric. Each metro sits at its
+                  first-named city. Click a bubble to select it.
+                </p>
+<div class="chart-host map w4-has-reset" id="chart-citymap" style="user-select: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0); position: relative;"><img alt="" src="/_blob/96605c7ebcdf841d7510e0d125f78dbc" style="display:block;width:100%;height:100%;object-fit:contain"/></div>
+</div><div class="plot">
+<h3>Same cities, two labelings</h3>
+<p class="axis-note">
+                  The same map, coloured by the active labelling. Communities are
+                  named after their two largest metros. Click a city to select
+                  it.
+                </p>
+<div class="chart-host map w4-has-reset" id="chart-regions" style="user-select: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0); position: relative;"><img alt="" src="/_blob/9c820319993242b24953fa0efb90e544" style="display:block;width:100%;height:100%;object-fit:contain"/></div>
+</div></div></details></div>
+</div>
+<!-- B · Backbone --------------------------------------------- -->
+<!-- Groups · Regions ---------------------------------------------- -->
+
+<!-- A · Who hires, not where --------------------------------- -->
+<div class="card w4-card" id="place-who">
+<header class="w4-q">
+<span class="w4-num">1A</span>
+<div>
+<h2>Do cities group by who hires there instead of by region?</h2>
+<p class="w4-answer">By who hires.</p>
+</div>
+</header>
+<div class="w4-two">
+<div>
+<p class="sub">
+                  The groups follow how much of a city's hiring runs through consulting and IT-services firms.
+                  Each bar is the <span class="w4-term"><button aria-describedby="w4-term-x-ami" type="button">AMI</button><span class="w4-pop" id="w4-term-x-ami" role="tooltip">Adjusted mutual information: how alike two groupings are, corrected for chance. 0 means no better than labels dealt at random, 1 means the same grouping.</span></span> between
+                  the Louvain groups and one labelling.
+                </p>
+<div class="notice">
+<span class="ico">💡</span>
+<span>
+<b>What to notice</b>
+                    The IT-services share matches the groups at AMI 0.17 (p = 0.002)
+                    and the <span class="w4-term"><button aria-describedby="w4-term-x-placed" type="button">placed share</button><span class="w4-pop" id="w4-term-x-placed" role="tooltip">The share of a metro’s filings that put the worker at a client company instead of the employer’s own site.</span></span> at 0.12 (p = 0.012); Census regions and divisions do no better than chance.
+                    The match is modest: most of what makes two metros alike stays
+                    unexplained.
+                  </span>
+</div>
+
+<div class="rx-drawers rx-foot"><details class="rx-drawer"><summary>Method</summary><div class="rx-drawer-body"><p>We gave each metro four labels: its Census region, its Census division, the third it falls in by the share of its filings that place a worker at a client, and the third it falls in by the share filed by professional and technical services firms (NAICS 54, the sector of IT consultancies). Thirds, because 35 of the 40 metros have that sector as their largest, so "largest sector" says almost nothing. AMI corrects for the number of labels, so four regions and three thirds compare fairly.</p></div></details><details class="rx-drawer"><summary>More numbers</summary><div class="rx-drawer-body"><p>Seven of the eight tech-hub metros sit in the lowest third by placed share: there, companies mostly hire for themselves. In the New York–Dallas group the median metro places 27% of its filings at a client and files 60% through IT-services firms.</p><p>Census regions reach 0.06 (p = 0.11) and divisions 0.06 (p = 0.08), no better than chance.</p></div></details></div>
+</div>
+<div class="plot">
+<h3>How well each labelling matches the Louvain groups</h3>
+<p class="axis-note">
+                  AMI for each labelling of the 40 metros; the p-value is the share
+                  of 1,000 shuffles of that labelling that match at least as well.
+                  Orange bars describe who hires, grey bars where the city is.
+                </p>
+<div class="chart-host short" id="chart-where-who" style="user-select: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0); position: relative;"><img alt="" src="/_blob/0b6e8c2b229310ab10574999ca1f9024" style="display:block;width:100%;height:100%;object-fit:contain"/></div>
+</div>
+</div>
+</div>
+<!-- B · Where the backbone breaks ------------------------------- -->
+<div class="card w4-card" id="place-break">
+<header class="w4-q">
+<span class="w4-num">1B</span>
+<div>
+<h2>Where does the backbone break, and whose links hold it?</h2>
+<p class="w4-answer">Nowhere in one place: metros drop off one or two at a time.</p>
+</div>
+</header>
+<div class="w4-two">
+<div>
+<p class="sub">
+                  Every pair of the 40 metros shares some employer, so the full
+                  network is one hairball of 780 links. We removed the links one by one, least significant
+                  first by <span class="w4-term"><button aria-describedby="w4-term-place-alpha" type="button">α</button><span class="w4-pop" id="w4-term-place-alpha" role="tooltip">The disparity filter's threshold. The filter keeps a link only when its weight is larger than chance would give, judged against each metro's own total, and α is the chance it allows. A lower α keeps fewer links. The links that survive form the backbone.</span></span>, and watched the largest piece after each removal.
+                </p>
+<div class="notice">
+<span class="ico">💡</span>
+<span>
+<b>What to notice</b>
+                    The big outsourcing firms hold no more of the links that cut metros loose than of any others.
+                    Of the 16 links whose removal cuts a metro loose, the five largest <span class="w4-term"><button aria-describedby="w4-term-x-placing" type="button">placing firms</button><span class="w4-pop" id="w4-term-x-placing" role="tooltip">Companies that file for workers and then place them at a client company’s site.</span></span> lead 5 (31%), no more than their share of the whole <span class="w4-term"><button aria-describedby="w4-term-x-backbone" type="button">backbone</button><span class="w4-pop" id="w4-term-x-backbone" role="tooltip">The links the disparity filter keeps because they carry more weight than chance would give.</span></span> (38%, p = 0.37).
+                  </span>
+</div>
+
+<div class="rx-drawers rx-foot"><details class="rx-drawer"><summary>Method</summary><div class="rx-drawer-body"><p>Tried at five values, the largest piece of the map fell from 32 metros at α = 0.1 to 18 at α = 0.05, which looks like one snap.</p><p>The disparity filter keeps a link when it carries an unusually large share of either metro's total weight; α is the test's threshold, and a smaller α keeps fewer links.</p></div></details><details class="rx-drawer"><summary>More numbers</summary><div class="rx-drawer-body"><p>The other eleven are led by Amazon (three), Intel, Deloitte, Capital One, JPMorgan Chase, Citigroup, FedEx, Fidelity Investments and the University of Maryland.</p><p>The first metro falls off at α = 0.136. The fall from 32 to 18 is 14 separate links, each peeling one metro away.</p><p>That is no more than their 70 of the 180 links in the whole backbone at α = 0.2 (38%, p = 0.37).</p><p>No single removal cuts off more than two metros: Dallas–Durham at α = 0.041 takes Durham and Raleigh with it, and New York–Seattle at 0.023 splits the last five metros three and two.</p></div></details><details class="rx-drawer"><summary>Table: 14 links that peel metros off</summary><div class="rx-drawer-body"><table class="ego">
+<thead>
+<tr>
+<th>Link</th>
+<th style="text-align: right" class="num">α</th>
+<th style="text-align: right" class="num">Weight</th>
+<th>Leading company</th>
+<th style="text-align: right" class="num">Its share</th>
+</tr>
+</thead>
+<tbody id="where-break-links"><tr>
+<td>Dallas–Orlando</td>
+<td style="text-align:right" class="num">0.098</td>
+<td style="text-align:right" class="num"><span class="rx-cell"><span class="rx-bar"><i style="width: 28.0%"></i></span><span>1,844</span></span></td>
+<td class="soft">Deloitte</td>
+<td style="text-align:right" class="num"><span class="rx-cell"><span class="rx-bar meter"><i style="width: 29.0%"></i></span><span>29%</span></span></td>
+</tr><tr>
+<td>San Jose–Portland</td>
+<td style="text-align:right" class="num">0.098</td>
+<td style="text-align:right" class="num"><span class="rx-cell"><span class="rx-bar"><i style="width: 28.2%"></i></span><span>1,857</span></span></td>
+<td class="soft">Intel</td>
+<td style="text-align:right" class="num"><span class="rx-cell"><span class="rx-bar meter"><i style="width: 24.0%"></i></span><span>24%</span></span></td>
+</tr><tr>
+<td>Dallas–Minneapolis</td>
+<td style="text-align:right" class="num">0.091</td>
+<td style="text-align:right" class="num"><span class="rx-cell"><span class="rx-bar"><i style="width: 44.2%"></i></span><span>2,903</span></span></td>
+<td class="soft">Cognizant <span class="tag">placing firm</span></td>
+<td style="text-align:right" class="num"><span class="rx-cell"><span class="rx-bar meter"><i style="width: 11.0%"></i></span><span>11%</span></span></td>
+</tr><tr>
+<td>Dallas–Richmond</td>
+<td style="text-align:right" class="num">0.091</td>
+<td style="text-align:right" class="num"><span class="rx-cell"><span class="rx-bar"><i style="width: 26.2%"></i></span><span>1,725</span></span></td>
+<td class="soft">Capital One</td>
+<td style="text-align:right" class="num"><span class="rx-cell"><span class="rx-bar meter"><i style="width: 10.0%"></i></span><span>10%</span></span></td>
+</tr><tr>
+<td>Dallas–Detroit</td>
+<td style="text-align:right" class="num">0.089</td>
+<td style="text-align:right" class="num"><span class="rx-cell"><span class="rx-bar"><i style="width: 45.8%"></i></span><span>3,014</span></span></td>
+<td class="soft">Cognizant <span class="tag">placing firm</span></td>
+<td style="text-align:right" class="num"><span class="rx-cell"><span class="rx-bar meter"><i style="width: 7.0%"></i></span><span>7%</span></span></td>
+</tr><tr>
+<td>Dallas–Columbus</td>
+<td style="text-align:right" class="num">0.083</td>
+<td style="text-align:right" class="num"><span class="rx-cell"><span class="rx-bar"><i style="width: 43.0%"></i></span><span>2,828</span></span></td>
+<td class="soft">JPMorgan Chase</td>
+<td style="text-align:right" class="num"><span class="rx-cell"><span class="rx-bar meter"><i style="width: 14.0%"></i></span><span>14%</span></span></td>
+</tr><tr>
+<td>New York–Hartford</td>
+<td style="text-align:right" class="num">0.079</td>
+<td style="text-align:right" class="num"><span class="rx-cell"><span class="rx-bar"><i style="width: 36.1%"></i></span><span>2,376</span></span></td>
+<td class="soft">Cognizant <span class="tag">placing firm</span></td>
+<td style="text-align:right" class="num"><span class="rx-cell"><span class="rx-bar meter"><i style="width: 26.0%"></i></span><span>26%</span></span></td>
+</tr><tr>
+<td>Washington–Baltimore</td>
+<td style="text-align:right" class="num">0.078</td>
+<td style="text-align:right" class="num"><span class="rx-cell"><span class="rx-bar"><i style="width: 23.6%"></i></span><span>1,550</span></span></td>
+<td class="soft">University of Maryland College Park</td>
+<td style="text-align:right" class="num"><span class="rx-cell"><span class="rx-bar meter"><i style="width: 11.0%"></i></span><span>11%</span></span></td>
+</tr><tr>
+<td>Dallas–Phoenix</td>
+<td style="text-align:right" class="num">0.075</td>
+<td style="text-align:right" class="num"><span class="rx-cell"><span class="rx-bar"><i style="width: 68.4%"></i></span><span>4,499</span></span></td>
+<td class="soft">Cognizant <span class="tag">placing firm</span></td>
+<td style="text-align:right" class="num"><span class="rx-cell"><span class="rx-bar meter"><i style="width: 7.0%"></i></span><span>7%</span></span></td>
+</tr><tr>
+<td>Dallas–San Antonio</td>
+<td style="text-align:right" class="num">0.071</td>
+<td style="text-align:right" class="num"><span class="rx-cell"><span class="rx-bar"><i style="width: 29.5%"></i></span><span>1,940</span></span></td>
+<td class="soft">HCL <span class="tag">placing firm</span></td>
+<td style="text-align:right" class="num"><span class="rx-cell"><span class="rx-bar meter"><i style="width: 16.0%"></i></span><span>16%</span></span></td>
+</tr><tr>
+<td>Dallas–Tampa</td>
+<td style="text-align:right" class="num">0.062</td>
+<td style="text-align:right" class="num"><span class="rx-cell"><span class="rx-bar"><i style="width: 53.7%"></i></span><span>3,529</span></span></td>
+<td class="soft">Citigroup</td>
+<td style="text-align:right" class="num"><span class="rx-cell"><span class="rx-bar meter"><i style="width: 9.0%"></i></span><span>9%</span></span></td>
+</tr><tr>
+<td>New York–Los Angeles</td>
+<td style="text-align:right" class="num">0.061</td>
+<td style="text-align:right" class="num"><span class="rx-cell"><span class="rx-bar"><i style="width: 89.7%"></i></span><span>5,899</span></span></td>
+<td class="soft">Amazon</td>
+<td style="text-align:right" class="num"><span class="rx-cell"><span class="rx-bar meter"><i style="width: 10.0%"></i></span><span>10%</span></span></td>
+</tr><tr>
+<td>Dallas–Memphis</td>
+<td style="text-align:right" class="num">0.056</td>
+<td style="text-align:right" class="num"><span class="rx-cell"><span class="rx-bar"><i style="width: 13.3%"></i></span><span>873</span></span></td>
+<td class="soft">FedEx</td>
+<td style="text-align:right" class="num"><span class="rx-cell"><span class="rx-bar meter"><i style="width: 22.0%"></i></span><span>22%</span></span></td>
+</tr><tr>
+<td>New York–Boston</td>
+<td style="text-align:right" class="num">0.050</td>
+<td style="text-align:right" class="num"><span class="rx-cell"><span class="rx-bar"><i style="width: 100.0%"></i></span><span>6,574</span></span></td>
+<td class="soft">Amazon</td>
+<td style="text-align:right" class="num"><span class="rx-cell"><span class="rx-bar meter"><i style="width: 13.0%"></i></span><span>13%</span></span></td>
+</tr></tbody>
+</table></div></details></div>
+</div>
+<div class="plot">
+<h3>Metros in the largest piece as the filter tightens</h3>
+<p class="axis-note">
+                  Each step is one or more links removed. Read right to left: as α
+                  falls, links go and metros drop out of the largest connected
+                  piece. The shaded band is the range from α = 0.1 to 0.05 where the
+                  five-value sweep saw the drop.
+                </p>
+<div class="chart-host short" id="chart-where-break" style="user-select: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0); position: relative;"><img alt="" src="/_blob/c4d0d20b88aa709df001b91699bf0264" style="display:block;width:100%;height:100%;object-fit:contain"/></div>
+</div>
+</div>
+</div>
+</section></div></main></div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview": {"width": 1440, "height": 2446}}'>
+class Component extends DCLogic {
+renderVals() { return {}; }
+}
+</script>
+</body>
+</html>

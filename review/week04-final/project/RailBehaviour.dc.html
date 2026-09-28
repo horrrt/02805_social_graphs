@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>The section rail, how it behaves</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<style>
+body{margin:0;background:#eef3f9}
+.rl-mode-item .rl-item:hover > .rl-lab, .rl-mode-item .rl-item:focus-within > .rl-lab { display: block !important; }
+.rl-mode-rail .rl-rail:hover .rl-lab, .rl-mode-rail .rl-rail:focus-within .rl-lab { display: block !important; white-space: nowrap; max-width: none !important; padding: 3px 9px !important; background: rgba(255, 255, 255, 0.97) !important; color: #0f2340 !important; box-shadow: 0 1px 3px rgba(15, 35, 64, 0.16) !important; }
+.rl-mode-rail .rl-rail .rl-item:hover > .rl-lab, .rl-mode-rail .rl-rail .rl-item:focus-within > .rl-lab { background: #0f2340 !important; color: #ffffff !important; }
+</style>
+</helmet>
+<div class="{{modeClass}}" style="width: 1440px; height: 1180px; box-sizing: border-box; overflow: hidden; background: #eef3f9; color: #0f2340; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Inter, system-ui, sans-serif; padding: 48px 56px; display: flex; flex-direction: column; gap: 28px">
+<header style="display: flex; flex-direction: column; gap: 6px">
+<h1 style="margin: 0; font-size: 28px; font-weight: 800">The section rail: how it behaves</h1>
+<p style="margin: 0; max-width: 90ch; font-size: 14px; line-height: 1.6; color: #46618a">The dots down the left margin of every section board: one per section, the open one larger, with its questions as small dots under it. Play with it on the left: each click stands in for scrolling there. The four states it moves through are in the middle, the rules on the right. Hover anywhere on a rail to see every name at once. Dot sizes, spacing, colour, how the open dot looks, labels and the trigger line are tweaks.</p>
+</header>
+<div style="display: grid; grid-template-columns: 330px 460px minmax(0, 1fr); gap: 36px; align-items: start">
+<section aria-label="Try it" style="display: flex; flex-direction: column; gap: 12px; background: #ffffff; border: 1px solid #dce5f0; border-radius: 14px; padding: 20px; box-shadow: 0 1px 2px rgba(15, 35, 64, 0.06), 0 8px 24px rgba(15, 35, 64, 0.05)">
+<div style="display: flex; align-items: baseline; justify-content: space-between"><h2 style="margin: 0; font-size: 16px; font-weight: 800">Try it</h2><button type="button" onClick="{{toTop}}" style="background: none; border: 1px solid #dce5f0; border-radius: 999px; padding: 4px 10px; font: inherit; font-size: 12px; font-weight: 700; color: #46618a; cursor: pointer">Back to the top</button></div>
+<p style="margin: 0; font-size: 12.5px; line-height: 1.5; color: #46618a">Now: <b style="color: #0f2340">{{nowLabel}}</b></p>
+<div style="display: flex; gap: 14px; align-items: flex-start; padding: 8px 0 8px 12px; min-height: 760px">
+<div style="width: 60px; display: flex; justify-content: center"><ol class="rl-rail" style="{{railStyle}}">
+<sc-for list="{{items}}" as="it" hint-placeholder-count="8">
+<li style="display: flex; flex-direction: column; align-items: center; gap: {{subGap}}px; position: relative">
+<span class="rl-item" style="position: relative; display: inline-flex"><button type="button" aria-label="{{it.label}}" onClick="{{it.pick}}" style="{{it.style}}"></button><span class="rl-lab" aria-hidden="true" style="position: absolute; left: calc(50% + {{labOff}}px); top: 50%; transform: translateY(-50%); z-index: 40; width: max-content; max-width: 260px; box-sizing: border-box; background: rgba(11, 31, 58, 0.97); border-radius: 8px; padding: 6px 10px; font-size: 12px; line-height: 1.4; font-weight: 600; color: #eaf2fb; text-align: left; box-shadow: 0 2px 6px rgba(15, 35, 64, 0.08), 0 12px 28px rgba(15, 35, 64, 0.14); display: {{it.labDisplay}}">{{it.label}}</span></span>
+<sc-if value="{{it.open}}" hint-placeholder-val="{{false}}">
+<ol style="list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; align-items: center; gap: {{subGap}}px">
+<sc-for list="{{it.subs}}" as="sb" hint-placeholder-count="3">
+<li style="position: relative"><span class="rl-item" style="position: relative; display: inline-flex"><button type="button" aria-label="{{sb.label}}" onClick="{{sb.pick}}" style="{{sb.style}}"></button><span class="rl-lab" aria-hidden="true" style="position: absolute; left: calc(50% + {{labOff}}px); top: 50%; transform: translateY(-50%); z-index: 40; width: max-content; max-width: 260px; box-sizing: border-box; background: rgba(11, 31, 58, 0.97); border-radius: 8px; padding: 6px 10px; font-size: 12px; line-height: 1.4; font-weight: 600; color: #eaf2fb; text-align: left; box-shadow: 0 2px 6px rgba(15, 35, 64, 0.08), 0 12px 28px rgba(15, 35, 64, 0.14); display: {{sb.labDisplay}}">{{sb.label}}</span></span></li>
+</sc-for>
+</ol>
+</sc-if>
+</li>
+</sc-for>
+</ol></div>
+</div>
+</section>
+<section aria-label="States" style="display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px">
+<sc-for list="{{states}}" as="st" hint-placeholder-count="4">
+<div style="display: flex; flex-direction: column; gap: 10px; background: #ffffff; border: 1px solid #dce5f0; border-radius: 14px; padding: 14px 8px; align-items: center; min-height: 760px; box-sizing: border-box">
+<span style="font-size: 12px; font-weight: 700; text-align: center; min-height: 32px">{{st.title}}</span>
+<ol class="rl-rail" style="{{railStyle}}">
+<sc-for list="{{st.items}}" as="si" hint-placeholder-count="8">
+<li style="display: flex; flex-direction: column; align-items: center; gap: {{subGap}}px; position: relative">
+<span class="rl-item" style="position: relative; display: inline-flex"><button type="button" aria-label="{{si.label}}" style="{{si.style}}"></button><span class="rl-lab" aria-hidden="true" style="position: absolute; left: calc(50% + {{labOff}}px); top: 50%; transform: translateY(-50%); z-index: 40; width: max-content; max-width: 260px; box-sizing: border-box; background: rgba(11, 31, 58, 0.97); border-radius: 8px; padding: 6px 10px; font-size: 12px; line-height: 1.4; font-weight: 600; color: #eaf2fb; text-align: left; box-shadow: 0 2px 6px rgba(15, 35, 64, 0.08), 0 12px 28px rgba(15, 35, 64, 0.14); display: {{si.labDisplay}}">{{si.label}}</span></span>
+<sc-if value="{{si.open}}" hint-placeholder-val="{{false}}">
+<ol style="list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; align-items: center; gap: {{subGap}}px">
+<sc-for list="{{si.subs}}" as="ss" hint-placeholder-count="3">
+<li style="position: relative"><span class="rl-item" style="position: relative; display: inline-flex"><button type="button" aria-label="{{ss.label}}" style="{{ss.style}}"></button><span class="rl-lab" aria-hidden="true" style="position: absolute; left: calc(50% + {{labOff}}px); top: 50%; transform: translateY(-50%); z-index: 40; width: max-content; max-width: 260px; box-sizing: border-box; background: rgba(11, 31, 58, 0.97); border-radius: 8px; padding: 6px 10px; font-size: 12px; line-height: 1.4; font-weight: 600; color: #eaf2fb; text-align: left; box-shadow: 0 2px 6px rgba(15, 35, 64, 0.08), 0 12px 28px rgba(15, 35, 64, 0.14); display: {{ss.labDisplay}}">{{ss.label}}</span></span></li>
+</sc-for>
+</ol>
+</sc-if>
+</li>
+</sc-for>
+</ol>
+</div>
+</sc-for>
+</section>
+<section aria-label="Rules" style="display: flex; flex-direction: column; gap: 14px">
+<h2 style="margin: 0; font-size: 16px; font-weight: 800">The rules</h2>
+<ol style="list-style: none; margin: 0; padding: 0"><li style="display: grid; grid-template-columns: 22px minmax(0, 1fr); gap: 10px; padding: 10px 0; border-top: 1px solid #eaf0f7"><span style="font-size: 12px; font-weight: 800; color: #14618f; font-variant-numeric: tabular-nums">1</span><span style="display: flex; flex-direction: column; gap: 2px"><b style="font-size: 13.5px">Follows the scroll</b><span style="font-size: 12.5px; line-height: 1.5; color: #46618a">The current item is the last section or question whose top has passed the trigger line, {{triggerPct}}% down the window.</span></span></li><li style="display: grid; grid-template-columns: 22px minmax(0, 1fr); gap: 10px; padding: 10px 0; border-top: 1px solid #eaf0f7"><span style="font-size: 12px; font-weight: 800; color: #14618f; font-variant-numeric: tabular-nums">2</span><span style="display: flex; flex-direction: column; gap: 2px"><b style="font-size: 13.5px">One section open</b><span style="font-size: 12.5px; line-height: 1.5; color: #46618a">Only the current section opens: its dot grows and its questions appear as small dots under it. Every other section is one small hollow dot.</span></span></li><li style="display: grid; grid-template-columns: 22px minmax(0, 1fr); gap: 10px; padding: 10px 0; border-top: 1px solid #eaf0f7"><span style="font-size: 12px; font-weight: 800; color: #14618f; font-variant-numeric: tabular-nums">3</span><span style="display: flex; flex-direction: column; gap: 2px"><b style="font-size: 13.5px">Two levels of current</b><span style="font-size: 12.5px; line-height: 1.5; color: #46618a">The open section is a large accent dot with a soft halo, or a ring if the tweak says so; the current question fills with ink.</span></span></li><li style="display: grid; grid-template-columns: 22px minmax(0, 1fr); gap: 10px; padding: 10px 0; border-top: 1px solid #eaf0f7"><span style="font-size: 12px; font-weight: 800; color: #14618f; font-variant-numeric: tabular-nums">4</span><span style="display: flex; flex-direction: column; gap: 2px"><b style="font-size: 13.5px">Names on hover</b><span style="font-size: 12.5px; line-height: 1.5; color: #46618a">Hovering anywhere on the rail, or focusing it with the keyboard, shows every name at once; the item under the pointer is dark. The labels line up in one column and lie over the page's left edge until the pointer leaves. The names carry the numbers, so the dots need none. A tweak switches back to one name at a time.</span></span></li><li style="display: grid; grid-template-columns: 22px minmax(0, 1fr); gap: 10px; padding: 10px 0; border-top: 1px solid #eaf0f7"><span style="font-size: 12px; font-weight: 800; color: #14618f; font-variant-numeric: tabular-nums">5</span><span style="display: flex; flex-direction: column; gap: 2px"><b style="font-size: 13.5px">Click to jump</b><span style="font-size: 12.5px; line-height: 1.5; color: #46618a">A click scrolls to that section; a deep-dive item also opens its box.</span></span></li><li style="display: grid; grid-template-columns: 22px minmax(0, 1fr); gap: 10px; padding: 10px 0; border-top: 1px solid #eaf0f7"><span style="font-size: 12px; font-weight: 800; color: #14618f; font-variant-numeric: tabular-nums">6</span><span style="display: flex; flex-direction: column; gap: 2px"><b style="font-size: 13.5px">Wide screens only</b><span style="font-size: 12.5px; line-height: 1.5; color: #46618a">The rail hides below a 1,240 px window, where the column has no margin for it.</span></span></li></ol>
+<div style="display: flex; flex-direction: column; gap: 8px; margin-top: 6px">
+<h3 style="margin: 0; font-size: 13.5px; font-weight: 800">Hover</h3>
+<div style="position: relative; display: flex; flex-direction: column; align-items: flex-start; gap: {{gap}}px; padding: 6px 0 6px 12px; width: 300px">
+<span style="position: relative; display: inline-flex; width: {{slot}}px; justify-content: center"><span style="{{hoverDot}}"></span><span aria-hidden="true" style="position: absolute; left: calc(50% + {{labOff}}px); top: 50%; transform: translateY(-50%); white-space: nowrap; border-radius: 8px; padding: 3px 9px; font-size: 12px; line-height: 1.4; font-weight: 600; background: #ffffff; color: #0f2340; box-shadow: 0 1px 3px rgba(15, 35, 64, 0.16)">2 Which jobs go together</span></span>
+<span style="position: relative; display: inline-flex; width: {{slot}}px; justify-content: center"><span style="{{hoverDotOn}}"></span><span aria-hidden="true" style="position: absolute; left: calc(50% + {{labOff}}px); top: 50%; transform: translateY(-50%); white-space: nowrap; border-radius: 8px; padding: 3px 9px; font-size: 12px; line-height: 1.4; font-weight: 600; background: #0f2340; color: #ffffff; box-shadow: 0 1px 3px rgba(15, 35, 64, 0.16)">3 Who staffs whom</span></span>
+<span style="position: relative; display: inline-flex; width: {{slot}}px; justify-content: center"><span style="{{hoverDot}}"></span><span aria-hidden="true" style="position: absolute; left: calc(50% + {{labOff}}px); top: 50%; transform: translateY(-50%); white-space: nowrap; border-radius: 8px; padding: 3px 9px; font-size: 12px; line-height: 1.4; font-weight: 600; background: #ffffff; color: #0f2340; box-shadow: 0 1px 3px rgba(15, 35, 64, 0.16)">4 Without the biggest firms</span></span>
+</div>
+</div>
+<div style="display: flex; flex-direction: column; gap: 8px">
+<h3 style="margin: 0; font-size: 13.5px; font-weight: 800">The trigger line</h3>
+<div style="position: relative; height: 150px; width: 240px; border: 1px solid #dce5f0; border-radius: 10px; background: #ffffff; overflow: hidden">
+<div style="position: absolute; left: 0; right: 0; top: {{triggerPct}}%; border-top: 2px dashed #14618f"></div>
+<span style="position: absolute; right: 8px; top: calc({{triggerPct}}% + 4px); font-size: 11px; font-weight: 700; color: #14618f">{{triggerPct}}% of the window</span>
+<span style="position: absolute; left: 10px; top: 10px; font-size: 11px; color: #7a8fac">Window</span>
+</div>
+</div>
+</section>
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"dot": {"editor": "range", "default": 12, "min": 8, "max": 20, "step": 1, "unit": "px", "section": "Rail"}, "openDot": {"editor": "range", "default": 18, "min": 12, "max": 28, "step": 1, "unit": "px", "section": "Rail"}, "subDot": {"editor": "range", "default": 8, "min": 5, "max": 14, "step": 1, "unit": "px", "section": "Rail"}, "gap": {"editor": "range", "default": 16, "min": 6, "max": 28, "step": 1, "unit": "px", "section": "Rail"}, "openStyle": {"editor": "enum", "options": ["Filled", "Ring"], "default": "Filled", "section": "Rail"}, "accent": {"editor": "color", "default": "#14618f", "options": ["#14618f", "#0f2340", "#46618a"], "section": "Rail"}, "showLabels": {"editor": "boolean", "default": false, "section": "Behaviour"}, "namesOnHover": {"editor": "enum", "options": ["Whole rail", "One item"], "default": "Whole rail", "section": "Behaviour"}, "trigger": {"editor": "range", "default": 35, "min": 10, "max": 70, "step": 5, "unit": "%", "section": "Behaviour"}, "$preview": {"width": 1440, "height": 1180}}'>
+class Component extends DCLogic {
+constructor(props) { super(props); this.state = { sec: "who", sub: "who-movers" }; }
+renderVals() {
+const RAIL = [{"id": "opening", "mark": "0", "label": "0 Opening", "subs": []}, {"id": "place", "mark": "1", "label": "1 Where the hiring is", "subs": [{"id": "place-who", "mark": "A", "label": "1A Do cities group by who hires there instead of by region?"}, {"id": "place-break", "mark": "B", "label": "1B Where does the backbone break, and whose links hold it?"}]}, {"id": "jobs", "mark": "2", "label": "2 Which jobs go together", "subs": [{"id": "jobs-split", "mark": "A", "label": "2A Do outsourcing firms bundle jobs differently from direct employers?"}, {"id": "jobs-linkcom", "mark": "B", "label": "2B Does any job belong to two clusters at once?"}]}, {"id": "who", "mark": "3", "label": "3 Who staffs whom", "subs": [{"id": "who-switch", "mark": "A", "label": "3A When a client changes its main vendor, does it stay in its group?"}, {"id": "who-movers", "mark": "B", "label": "3B Which clients change group when filing counts are ignored?"}, {"id": "who-overlap", "mark": "C", "label": "3C Which clients sit in two groups at once?"}]}, {"id": "footprint", "mark": "4", "label": "4 Without the biggest firms", "subs": [{"id": "footprint-which", "mark": "A", "label": "4A Which firm hides the regions?"}]}, {"id": "beyond", "mark": "5", "label": "5 Beyond the three networks", "subs": [{"id": "beyond-law", "mark": "A", "label": "5A Do immigration law firms split companies the way vendors do?"}, {"id": "beyond-perm", "mark": "B", "label": "5B Do outsourcing firms sponsor fewer green cards?"}, {"id": "beyond-wage", "mark": "C", "label": "5C Do outsourcing firms file at lower wage levels for the same job?"}]}, {"id": "closing", "mark": "✓", "label": "Closing", "subs": []}, {"id": "cut", "mark": "+", "label": "Deep dive", "subs": [{"id": "cut-place", "mark": "1", "label": "First round: where the hiring is"}, {"id": "cut-jobs", "mark": "2", "label": "First round: which jobs go together"}, {"id": "cut-who", "mark": "3", "label": "First round: who staffs whom"}, {"id": "cut-more", "mark": "M", "label": "More networks"}, {"id": "cut-years", "mark": "Y", "label": "Five years of filings"}, {"id": "cut-roles", "mark": "R", "label": "Who filed for which roles"}, {"id": "cut-methods", "mark": "E", "label": "Four community methods, step by step"}, {"id": "cut-skills", "mark": "S", "label": "Skills behind the jobs (O*NET)"}, {"id": "cut-pagerank", "mark": "P", "label": "PageRank, step by step"}, {"id": "evidence", "mark": "D", "label": "Data and methods"}]}];
+const STATES = [{"title": "At the top", "sec": null, "sub": null}, {"title": "In section 1", "sec": "place", "sub": null}, {"title": "On 3B", "sec": "who", "sub": "who-movers"}, {"title": "In the deep dive, on S", "sec": "cut", "sub": "cut-skills"}];
+const p = this.props;
+const dotS = p.dot ?? 12, open = p.openDot ?? 18, sub = p.subDot ?? 8, gap = p.gap ?? 16;
+const accent = p.accent ?? "#14618f", ring = (p.openStyle ?? "Filled") === "Ring", show = p.showLabels ?? false, trig = p.trigger ?? 35;
+const halo = (hex, a) => { const n = parseInt(hex.slice(1), 16); return "rgba(" + (n >> 16) + ", " + ((n >> 8) & 255) + ", " + (n & 255) + ", " + a + ")"; };
+const base = "box-sizing: border-box; border-radius: 999px; display: block; padding: 0; margin: 0; font-size: 0; cursor: pointer; ";
+const sq = (cur) => cur
+  ? base + "width: " + open + "px; height: " + open + "px; border: " + (ring ? 3 : 2) + "px solid " + accent + "; background: " + (ring ? "#ffffff" : accent) + "; box-shadow: 0 0 0 4px " + halo(accent, ring ? 0.12 : 0.18) + ";"
+  : base + "width: " + dotS + "px; height: " + dotS + "px; border: 2px solid #9fb4cf; background: #ffffff;";
+const dot = (cur) => base + "width: " + sub + "px; height: " + sub + "px; border: none; background: " + (cur ? "#0f2340" : "#c9d6e6") + ";" + (cur ? " box-shadow: 0 0 0 3px rgba(15, 35, 64, 0.14);" : "");
+const slot = Math.max(dotS, open);
+const lab = show ? "block" : "none";
+const build = (secId, subId, interactive) => RAIL.map((s) => ({
+  mark: s.mark, label: s.label, open: s.id === secId && s.subs.length > 0, labDisplay: lab,
+  style: sq(s.id === secId),
+  pick: interactive ? () => this.setState({ sec: s.id, sub: null }) : undefined,
+  subs: s.subs.map((u) => ({ mark: u.mark, label: u.label, labDisplay: lab, style: dot(u.id === subId),
+    pick: interactive ? () => this.setState({ sec: s.id, sub: u.id }) : undefined })),
+}));
+const railStyle = "list-style: none; margin: 0; padding: 6px 0; display: flex; flex-direction: column; align-items: center; gap: " + gap + "px; background: linear-gradient(#dce5f0, #dce5f0) center / 2px 100% no-repeat";
+const secObj = RAIL.find((s) => s.id === this.state.sec);
+const subObj = secObj && secObj.subs.find((u) => u.id === this.state.sub);
+const nowLabel = subObj ? subObj.label : secObj ? secObj.label : "the hero, above section 0";
+return {
+  items: build(this.state.sec, this.state.sub, true),
+  states: STATES.map((st) => ({ title: st.title, items: build(st.sec, st.sub, false) })),
+  railStyle, subGap: Math.max(Math.round(gap * 0.6), 24 - sub), nowLabel, triggerPct: trig, gap, slot,
+  labOff: Math.round(slot / 2) + 10, hoverDot: sq(false), hoverDotOn: sq(false).replace("#9fb4cf", accent),
+  modeClass: (p.namesOnHover ?? "Whole rail") === "One item" ? "rl-mode-item" : "rl-mode-rail",
+  toTop: () => this.setState({ sec: null, sub: null }),
+};
+}
+}
+</script>
+</body>
+</html>

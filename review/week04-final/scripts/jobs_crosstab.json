@@ -1,0 +1,101 @@
+{
+ "nmi": 0.23389700427529309,
+ "occupations": 438,
+ "clusters": [
+  {
+   "id": 0,
+   "size": 247,
+   "largest": "Physicians, All Other",
+   "majors": {
+    "43": 6,
+    "27": 13,
+    "19": 38,
+    "29": 64,
+    "13": 3,
+    "25": 48,
+    "53": 4,
+    "31": 6,
+    "11": 9,
+    "21": 16,
+    "17": 18,
+    "15": 13,
+    "39": 2,
+    "49": 2,
+    "51": 2,
+    "20": 1,
+    "35": 1,
+    "23": 1
+   }
+  },
+  {
+   "id": 1,
+   "size": 146,
+   "largest": "Software Developers",
+   "majors": {
+    "49": 8,
+    "17": 16,
+    "27": 9,
+    "15": 19,
+    "11": 20,
+    "13": 26,
+    "43": 14,
+    "35": 1,
+    "41": 9,
+    "51": 5,
+    "23": 5,
+    "19": 3,
+    "12": 3,
+    "33": 1,
+    "40": 1,
+    "29": 2,
+    "25": 1,
+    "37": 1,
+    "47": 1,
+    "39": 1
+   }
+  },
+  {
+   "id": 2,
+   "size": 21,
+   "largest": "Civil Engineers",
+   "majors": {
+    "17": 10,
+    "27": 2,
+    "19": 2,
+    "47": 2,
+    "49": 1,
+    "13": 2,
+    "43": 1,
+    "11": 1
+   }
+  },
+  {
+   "id": 3,
+   "size": 20,
+   "largest": "Elementary School Teachers, Except Special Education",
+   "majors": {
+    "11": 3,
+    "25": 15,
+    "21": 1,
+    "19": 1
+   }
+  },
+  {
+   "id": 4,
+   "size": 2,
+   "largest": "Home Health Aides",
+   "majors": {
+    "31": 2
+   }
+  },
+  {
+   "id": 5,
+   "size": 2,
+   "largest": "First-Line Supervisors of Housekeeping and Janitorial Workers",
+   "majors": {
+    "39": 1,
+    "37": 1
+   }
+  }
+ ]
+}

@@ -1,6 +1,6 @@
 /* Week 4 redesign · S3, the O*NET skills radar (#cut-skills-radar). Card,
-   w4-q, w4-two, notice, plot, w4-reveals, w4-pop and w4-figure-body all live
-   in week04.css and corridor.css; this file only holds what the radar's own
+   w4-q, w4-two, notice, plot, w4-pop and w4-figure-body live in week04.css
+   and corridor.css, the drawers in week04-rx.css; this file only holds what the radar's own
    controls and chart need on top of that, plus its five series colours.
 
    Colour grammar: --people (orange, placed at a client) and --access (blue,
@@ -117,39 +117,6 @@
 .corridor .w4-radar-chip button:disabled {
   color: var(--line);
   cursor: not-allowed;
-}
-
-.corridor .w4-radar-toggle {
-  border: 1px solid var(--line);
-  border-radius: 10px;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 4px 16px;
-  margin: 0;
-  padding: 10px 12px;
-}
-
-.corridor .w4-radar-toggle legend {
-  color: var(--ink-mute);
-  font-size: 10.5px;
-  font-weight: 700;
-  letter-spacing: 0.06em;
-  padding: 0;
-  text-transform: uppercase;
-  width: 100%;
-}
-
-.corridor .w4-radar-toggle label {
-  align-items: center;
-  color: var(--ink-soft);
-  display: inline-flex;
-  font-size: 12.5px;
-  gap: 6px;
-}
-
-.corridor .w4-radar-toggle label:has(input:checked) {
-  color: var(--ink);
-  font-weight: 700;
 }
 
 .corridor .w4-radar-notice-list {

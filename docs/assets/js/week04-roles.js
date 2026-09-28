@@ -6,6 +6,7 @@
 // page already loads (window.echarts), coloured from this page's own CSS
 // tokens, and rendered once the box is first opened.
 import { esc } from "./cabinet.js";
+import { drawer } from "./week04-ui.js";
 
 const echarts = window.echarts;
 const details = document.querySelector("#cut-roles");
@@ -230,28 +231,6 @@ function renderText() {
     `Showing ${label} by ${state.scale === "percent" ? "share" : "filings"}${state.window === "oct_jun" ? ", October to June only" : ""}: ${shown.join(", ")}.`;
 }
 
-function reveal(id, label, bodyText) {
-  const span = document.createElement("span");
-  span.className = "w4-tip";
-  const btn = document.createElement("button");
-  btn.type = "button";
-  btn.setAttribute("aria-describedby", id);
-  btn.innerHTML =
-    '<svg aria-hidden="true" height="14" viewBox="0 0 24 24" width="14"><circle cx="12" cy="12" fill="none" r="9" stroke="currentColor" stroke-width="2"></circle>' +
-    '<path d="M12 11v6M12 7.5v.5" fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="2"></path></svg>' + esc(label);
-  const pop = document.createElement("span");
-  pop.className = "w4-pop";
-  pop.id = id;
-  pop.setAttribute("role", "tooltip");
-  const b = document.createElement("b");
-  b.textContent = label;
-  const body = document.createElement("span");
-  body.textContent = bodyText;
-  pop.append(b, body);
-  span.append(btn, pop);
-  return span;
-}
-
 function renderReveal() {
   if (revealsEl.childElementCount) return;
   const legacy = Object.values(data.legacy_recoded).reduce((a, b) => a + b, 0);
@@ -266,7 +245,10 @@ function renderReveal() {
     `${num(uncoded)} filings whose SOC code does not parse fall into "All other occupations" ` +
     `and "Other groups". ${p.year} covers ${p.window} only, ${p.months} months: "Oct to Jun only" ` +
     "compares it with the same months of earlier years.";
-  revealsEl.appendChild(reveal("w4-pop-roles-how", "How we counted", text));
+  const body = document.createElement("p");
+  body.textContent = text;
+  // #roles-reveals is itself the card's drawer row.
+  revealsEl.appendChild(drawer("Method", body));
 }
 
 // ---------------------------------------------------------------- boot

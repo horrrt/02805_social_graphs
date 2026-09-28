@@ -1,0 +1,243 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>Section 4 · without the biggest firms</title>
+<script src="./support.js"></script>
+<link rel="stylesheet" href="/_blob/083d154e9dc323e92523c409d0034822">
+<link rel="stylesheet" href="/_blob/668486f5a3998cc03081dad4d6a53e30">
+<link rel="stylesheet" href="/_blob/084ce7df5637b99030ea35613530acf2">
+<link rel="stylesheet" href="/_blob/e84e8b268623a65fa6a20dcee3ec4adf">
+<link rel="stylesheet" href="/_blob/35af9356d607ea8092bc878cace00255">
+<link rel="stylesheet" href="/_blob/70ffa1ecc89c42fb63ac04cfc271ee6b">
+<link rel="stylesheet" href="/_blob/3e4fe45fa83b8895f69f8d519b7b0fe2">
+<link rel="stylesheet" href="/_blob/ffcc56532445103bef94c333132a4fb7">
+<link rel="stylesheet" href="/_blob/4004501ab78099c34bb198c8287d7d41">
+<link rel="stylesheet" href="/_blob/ab074990511da3308f5deb38e148e8c1">
+<link rel="stylesheet" href="/_blob/961bb1102d81f8f791744cf5c49d5ccf">
+<link rel="stylesheet" href="/_blob/ea7fdb7da398599db40546cc6b3f4606">
+</head>
+<body>
+<x-dc>
+<helmet>
+<style>
+@font-face{font-family:"Condensed";src:url("/_blob/9ad036b9f76606ea91d82e15ebec8da3") format("truetype");font-weight:800;font-style:normal}
+body{margin:0;background:#eef3f9}
+.rx{position:relative}
+/* rec 6: the rail, every name on hover */
+.rx .rx-rail{position:absolute;left:64px;top:96px;width:44px;z-index:30}
+.rx .rx-rail ol{list-style:none;margin:0;padding:6px 0;display:flex;flex-direction:column;align-items:center;gap:16px;background:linear-gradient(#dce5f0,#dce5f0) center/2px 100% no-repeat}
+.rx .rx-rail ol.rx-rail-sub{gap:16px;padding:14px 0 4px;background:none}
+.rx .rx-rail li{display:flex;flex-direction:column;align-items:center;position:relative}
+.rx .rx-sq,.rx .rx-dot{position:relative;display:block;box-sizing:border-box;border-radius:999px;font-size:0;color:transparent;cursor:pointer}
+.rx .rx-sq{width:12px;height:12px;background:#fff;border:2px solid #9fb4cf}
+.rx .rx-sq:hover{border-color:#14618f}
+.rx .rx-sq.is-on{width:18px;height:18px;background:#14618f;border-color:#14618f;box-shadow:0 0 0 4px rgba(20,97,143,.18)}
+.rx .rx-dot{width:8px;height:8px;background:#c9d6e6}
+.rx .rx-dot.is-on{background:#0f2340;box-shadow:0 0 0 3px rgba(15,35,64,.14)}
+.rx .rx-lab{display:none;position:absolute;left:calc(50% + 20px);top:50%;transform:translateY(-50%);white-space:nowrap;border-radius:8px;padding:3px 9px;font-size:12px;line-height:1.4;font-weight:600;background:rgba(255,255,255,.97);color:#0f2340;box-shadow:0 1px 3px rgba(15,35,64,.16)}
+.rx .rx-rail:hover .rx-lab{display:block}
+.rx .rx-rail .rx-sq:hover>.rx-lab,.rx .rx-rail .rx-dot:hover>.rx-lab{background:#0f2340;color:#fff}
+/* rec 1: drawers */
+.rx .rx-drawers{display:flex;flex-direction:column;gap:8px;margin-top:14px}
+.rx details.rx-drawer{border:1px solid #dce5f0;border-radius:10px;background:#f7fafd;margin-top:10px}
+.rx .rx-drawers details.rx-drawer{margin-top:0}
+.rx details.rx-drawer>summary{cursor:pointer;list-style:none;padding:9px 14px;font-size:13px;font-weight:700;color:#14618f;display:flex;align-items:center;gap:8px}
+.rx details.rx-drawer>summary::-webkit-details-marker{display:none}
+.rx details.rx-drawer>summary::before{content:"▸";font-size:11px;transition:transform .15s}
+.rx details.rx-drawer[open]>summary::before{transform:rotate(90deg)}
+.rx .rx-drawer-body{padding:0 16px 14px;font-size:13.5px;line-height:1.62;color:#0f2340;max-width:78ch}
+.rx .rx-drawer-body p{margin:0 0 8px}
+/* rec 4: one segmented control */
+.rx .axis-modes,.rx .rx-seg,.rx .staffing-years{display:inline-flex!important;gap:2px!important;padding:3px!important;border-radius:999px!important;background:#eaf0f7!important;border:none!important;box-shadow:none!important;flex-wrap:wrap}
+.rx .axis-modes button,.rx .rx-seg button,.rx .staffing-years button{border:none!important;border-radius:999px!important;padding:6px 14px!important;font:inherit!important;font-size:12.5px!important;font-weight:600!important;color:#46618a!important;background:transparent!important;box-shadow:none!important;cursor:pointer}
+.rx .axis-modes button[aria-pressed="true"],.rx .rx-seg button[aria-pressed="true"],.rx .staffing-years button[aria-pressed="true"]{background:#fff!important;color:#0f2340!important;font-weight:700!important;box-shadow:0 1px 2px rgba(15,35,64,.12)!important}
+.rx .axis-modes-label,.rx .rx-seg-label{text-transform:none!important;letter-spacing:0!important;font-size:12.5px!important;font-weight:700!important;color:#46618a!important}
+.rx .rx-seg-row{display:flex;align-items:center;gap:12px;margin:10px 0}
+/* rec 7 placeholder */
+.rx .rx-todo{border:1px dashed #b9cadf;background:#fff;color:#7a8fac}
+/* topic boards */
+.rx .rx-topic-head{display:flex;align-items:baseline;gap:14px;flex-wrap:wrap}
+.rx .rx-tabs{display:flex;flex-direction:column;gap:2px;padding:12px;border-right:1px solid #eaf0f7;background:#f7fafd;border-radius:14px 0 0 14px}
+.rx .rx-tab{display:flex;gap:10px;align-items:baseline;width:100%;padding:9px 10px;border:none;border-radius:8px;font:inherit;font-size:13px;line-height:1.4;font-weight:600;text-align:left;color:#0f2340;cursor:pointer;background:transparent}
+.rx .rx-tab:hover{background:#fff}
+
+/* rec 3: section 1 start card */
+.rx .rx-kicker{margin:6px 0 0;font-size:13px;color:#46618a}
+.rx .rx-start-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:36px;align-items:start;margin-top:8px}
+.rx .rx-start-grid header.w4-q{margin-bottom:8px}
+.rx .rx-groups{display:flex;flex-direction:column;margin-top:10px}
+.rx .rx-group{padding:10px 0;border-top:1px solid #eaf0f7}
+.rx .rx-group-head{display:flex;align-items:center;gap:8px;font-size:13.5px}
+.rx .rx-group-head i{width:12px;height:12px;border-radius:50%;display:inline-block}
+.rx .rx-group-head span{font-size:12.5px;color:#46618a}
+.rx .rx-group p{margin:4px 0 0 20px;font-size:12.5px;line-height:1.55;color:#46618a}
+.rx .rx-start-notices{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px;margin-top:14px}
+.rx .rx-drawer-body.rx-wide{max-width:none}
+/* topic boards */
+.rx .rx-topic-bar{display:flex;align-items:center;gap:16px;margin:8px 0 16px}
+.rx .rx-back{font-size:13px;font-weight:700;text-decoration:none;color:#14618f;padding:6px 12px;border:1px solid #dce5f0;border-radius:999px;background:#fff}
+.rx .rx-topic-mark{flex:none;width:40px;height:40px;border-radius:10px;background:#14618f;color:#fff;display:inline-flex;align-items:center;justify-content:center;font-size:17px;font-weight:800}
+.rx .rx-topic-title{margin:0;font-size:24px;font-weight:800}
+.rx .rx-topic-holds{margin:2px 0 0;font-size:13.5px;color:#46618a}
+.rx .rx-topic-count{margin-left:auto;font-size:12.5px;color:#46618a}
+.rx .rx-tab-row{display:flex;flex-wrap:wrap;gap:6px;padding:6px;border-radius:14px;background:#eaf0f7;margin-bottom:18px}
+.rx .rx-tab-pill{border:none;border-radius:999px;padding:7px 14px;font:inherit;font-size:12.5px;font-weight:600;cursor:pointer;text-align:left;line-height:1.35}
+.rx .rx-tab-pill b{color:#14618f;margin-right:4px}
+.rx .rx-panel > .card{margin-top:0}
+/* deep-dive catalogue */
+.rx .rx-cut-intro{max-width:68ch}
+.rx .rx-tgrid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;align-items:start;margin-top:18px}
+.rx .rx-tcard{background:#fff;border:1px solid #dce5f0;border-radius:14px;padding:16px;box-shadow:0 1px 2px rgba(15,35,64,.06),0 8px 24px rgba(15,35,64,.05)}
+.rx .rx-tcard-data{background:#f7fafd;box-shadow:none}
+.rx .rx-tcard-head{display:flex;gap:12px;align-items:flex-start;text-decoration:none;color:#0f2340;padding-bottom:10px}
+.rx .rx-tcard-head span{display:flex;flex-direction:column;gap:3px}
+.rx .rx-tcard-head b{font-size:16px}
+.rx .rx-tcard-head em{font-style:normal;font-size:12.5px;line-height:1.45;color:#46618a}
+.rx .rx-tcard ul{list-style:none;margin:0;padding:0}
+.rx .rx-tcard li a{display:flex;gap:10px;align-items:baseline;padding:8px 4px;border-top:1px solid #eaf0f7;text-decoration:none;color:#0f2340;font-size:13px;font-weight:600;line-height:1.4}
+.rx .rx-tcard li a b{flex:none;min-width:22px;color:#14618f;font-size:11.5px}
+.rx .rx-tcard li a span{flex-grow:1}
+.rx .rx-tcard li a i{font-style:normal;color:#14618f;font-weight:700}
+.rx .rx-tcard li a:hover{background:#d9ecf9}
+.rx .rx-moved{margin:16px 0 0;font-size:12.5px;line-height:1.6;color:#46618a}
+.rx .rx-tile-finding{display:block;margin-top:6px;color:#0f2340}
+/* compact drawers: closed ones sit in one row, an open one takes the full width */
+.rx .rx-drawers{flex-direction:row!important;flex-wrap:wrap;align-items:center;gap:8px!important;margin-top:12px}
+.rx .rx-drawers>details.rx-drawer{flex:0 0 auto;margin:0}
+.rx .rx-drawers>details.rx-drawer[open]{flex:1 1 100%;order:10}
+.rx details.rx-drawer:not([open]){width:fit-content}
+.rx details.rx-drawer>summary{padding:6px 12px}
+.rx .rx-drawers>.w4-tip{margin:0}
+.rx .rx-foot{margin-top:14px}
+.rx .rx-drawer-body>p+p{margin-top:8px}
+.rx .rx-fig-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(0,1fr));gap:28px;margin-top:22px;align-items:start}
+.rx .rx-fig-row>figure,.rx .rx-fig-row>.plot{margin:0}
+.rx .rx-fig-row>:only-child{max-width:58%}
+</style>
+</helmet>
+<div class="corridor rx" style="width: 1440px; height: 2037px; overflow: hidden; background: #eef3f9"><div class="topbar">
+<div class="shell">
+<a class="brand" href="../../">LOG–LOG <b>LEGENDS</b></a>
+<a class="site-link" href="../../#weeks">All posts</a>
+<nav aria-label="Sections of this post" class="topnav">
+<a class="here" href="#opening">Opening</a>
+<a class="" href="#place">Where</a>
+<a href="#jobs">Jobs</a>
+<a href="#who">Staffing</a>
+<a href="#footprint">Giants out</a>
+<a href="#beyond">Beyond</a>
+<a href="#cut">Deep dive</a>
+</nav>
+</div>
+</div><nav class="rx-rail" aria-label="Contents of this post"><ol><li><span class="rx-sq"><span class="rx-lab">0 Opening</span></span></li><li><span class="rx-sq"><span class="rx-lab">1 Where the hiring is</span></span></li><li><span class="rx-sq"><span class="rx-lab">2 Which jobs go together</span></span></li><li><span class="rx-sq"><span class="rx-lab">3 Who staffs whom</span></span></li><li><span class="rx-sq is-on"><span class="rx-lab">4 Without the biggest firms</span></span><ol class="rx-rail-sub"><li><span class="rx-dot"><span class="rx-lab">4A Which firm hides the regions?</span></span></li></ol></li><li><span class="rx-sq"><span class="rx-lab">5 Beyond the three networks</span></span></li><li><span class="rx-sq"><span class="rx-lab">Closing</span></span></li><li><span class="rx-sq"><span class="rx-lab">Deep dive</span></span></li></ol></nav><main id="main"><div class="shell"><section class="step" id="footprint">
+<header class="w4-opener">
+<span aria-hidden="true" class="w4-opener-num">4</span>
+<div>
+<h2>Without the biggest firms</h2>
+<p>Take out the largest filers, Amazon above all, and the metro groups start to follow Census regions; the job clusters shift but hold.</p>
+</div>
+</header>
+<div class="w4-two w4-intro">
+<div>
+<p class="sub">
+                The ten largest filers file 19.1% of the filings in the 40
+                metros, and the five largest <span class="w4-term"><button aria-describedby="w4-term-x-placing" type="button">placing firms</button><span class="w4-pop" id="w4-term-x-placing" role="tooltip">Companies that hire foreign workers and send them to work at client companies, such as outsourcing and IT staffing firms.</span></span> 5.6%.
+                A company that files everywhere links every pair of metros and jobs, so its footprint could be all the structure there is.
+              </p>
+<div class="notice">
+<span class="ico">💡</span>
+<span>
+<b>What to notice</b>
+                  Without the ten largest filers, the metro groups match Census regions at <span class="w4-term"><button aria-describedby="w4-term-x-ami" type="button">AMI</button><span class="w4-pop" id="w4-term-x-ami" role="tooltip">Adjusted mutual information: how closely two ways of grouping the same items agree. 0 is what chance gives, 1 is a perfect match.</span></span> 0.13, against 0.06 for the full network: the national employers hide the regional pattern.
+                  The job clusters hold (<span class="w4-term"><button aria-describedby="w4-term-x-nmi" type="button">NMI</button><span class="w4-pop" id="w4-term-x-nmi" role="tooltip">Normalised mutual information: how much two groupings of the same items agree, from 0 (unrelated) to 1 (identical).</span></span> 0.90 and 0.82) but shift more than random cuts of the same volume do.
+                </span>
+</div>
+<div class="plot" style="margin-top:18px">
+<h3>How much do the groups change?</h3>
+<p class="axis-note">
+                  NMI between the groups after a removal and the full network's
+                  groups: 1 means unchanged. Metros on the left, jobs on the
+                  right.
+                </p>
+<div class="chart-host jobs-nmi" id="chart-footprint-nmi" style="user-select: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0); position: relative;"><img alt="" src="/_blob/4c536d2a907a9f23087d13ae08aa9291" style="display:block;width:100%;height:100%;object-fit:contain"/></div>
+</div>
+
+<div class="rx-drawers rx-foot"><details class="rx-drawer"><summary>Background</summary><div class="rx-drawer-body"><p>The five largest placing firms are Tata Consultancy Services, Cognizant, Infosys, HCL and Compunnel. The ten largest filers are Amazon, Cognizant, Google, Microsoft, EY, Meta, Deloitte, Apple, Tata Consultancy Services and Infosys.</p></div></details><details class="rx-drawer"><summary>Method</summary><div class="rx-drawer-body"><p>We removed each set, reran 100 <span class="w4-term"><button aria-describedby="w4-term-x-louvain" type="button">Louvain</button><span class="w4-pop" id="w4-term-x-louvain" role="tooltip">A method that finds groups in a network by moving nodes between groups until the links inside groups are as dense as they can get.</span></span> runs on the metro network and on the job network (weighted here by filings, since a count of companies barely moves when ten of 59,196 leave), and compared the groups with the full network's. Removing less data changes the groups too, so each removal sits beside 50 random cuts of companies that remove the same share of filings.</p></div></details><details class="rx-drawer"><summary>More numbers</summary><div class="rx-drawer-body"><p>Removing the five placing firms changes little: the groups stay close to the full network's (NMI 0.92, random cuts 0.85 ± 0.14), and the regional match rises only to 0.09, inside the range of random cuts (0.04 ± 0.05). Without the ten largest filers the clusters also sharpen, modularity rising from 0.28 to 0.32. Every version still beats its own rewired networks by a wide margin (z = 25 or more). Without the ten largest filers the regional match has p = 0.013, against 0.01 ± 0.03 for random cuts, 4.6 standard deviations away. Random cuts leave the job clusters closer to the full network's (0.96 and 0.88, 3.0 and 3.2 standard deviations away), so the biggest firms do shape which jobs cluster together.</p></div></details></div>
+</div>
+<div>
+<div class="plot">
+<h3>Do the metro groups follow Census regions?</h3>
+<p class="axis-note">
+                  AMI between the metro groups and the four Census regions.
+                  Orange bars remove named firms, grey bars random firms with the
+                  same share of filings (mean of 50, whisker one standard
+                  deviation). The dashed line is the full network.
+                </p>
+<div class="chart-host jobs-nmi" id="chart-footprint-region" style="user-select: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0); position: relative;"><img alt="" src="/_blob/ec5c9b07fa0acb2928f23218eab3e19d" style="display:block;width:100%;height:100%;object-fit:contain"/></div>
+</div>
+
+</div>
+</div>
+<!-- A · Which firm hides the regions? --------------------- -->
+<div class="card w4-card" id="footprint-which">
+<header class="w4-q">
+<span class="w4-num">4A</span>
+<div>
+<h2>Which firm hides the regions?</h2>
+<p class="w4-answer">Amazon.</p>
+</div>
+</header>
+<div class="w4-two">
+<div>
+<p class="sub">
+              We removed each of the ten largest filers alone, then the top
+              1, 2, 3 … 20 filers in turn. Each removal sits beside random cuts
+              of companies that remove the same share of filings.
+            </p>
+
+<div class="notice">
+<span class="ico">💡</span>
+<span>
+<b>What to notice</b>
+                    Amazon files 5.1% of the filings in the 40 metros. Without it
+                    alone, the metro groups match Census regions at AMI 0.14,
+                    more than the 0.13 without all ten.
+                  </span>
+</div>
+
+<div class="rx-drawers rx-foot"><details class="rx-drawer"><summary>Method</summary><div class="rx-drawer-body"><p>50 random cuts for a single firm, 20 for each step of the sweep.</p></div></details><details class="rx-drawer"><summary>More numbers</summary><div class="rx-drawer-body"><p>Amazon's 0.14 sits 3.5 standard deviations above its random cuts. No other single firm pushes the match up beyond its random cuts: removing EY, Meta, Deloitte or Apple alone tips Louvain into a two-group split that ignores regions (AMI −0.005). Removed in rank order, the largest filers keep the match above random cuts at every step from one to twenty, but not smoothly: it dips to about 0.07 without the top 17 to 19, where several partitions compete, and peaks at 0.20 without the top 20. 2024 tells the same story more strongly. Its full network shows no regional match (AMI −0.005); without its ten largest filers the match is 0.22 (p = 0.001), against −0.01 ± 0.01 for random cuts.</p></div></details></div>
+</div>
+<div class="plot">
+<h3>The largest filers removed in turn</h3>
+<p class="axis-note">
+                AMI with Census regions after removing the k largest filers
+                (orange) against random cuts of the same volume (grey band, one
+                standard deviation). Hover a point for the firm added at that
+                step.
+              </p>
+<div class="chart-host jobs-nmi" id="chart-footprint-rank" style="user-select: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0); position: relative;"><img alt="" src="/_blob/763e0b10b00b3cc95abe61afd37712e6" style="display:block;width:100%;height:100%;object-fit:contain"/></div>
+</div>
+</div>
+<div class="rx-fig-row">
+<div class="plot">
+<h3>One firm out at a time</h3>
+<p class="axis-note">
+                  AMI between the metro groups and Census regions with one firm
+                  removed (orange) and random cuts of the same volume (grey, mean
+                  and one standard deviation). The dashed line is the full
+                  network.
+                </p>
+<div class="chart-host jobs-nmi" id="chart-footprint-single" style="user-select: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0); position: relative;"><img alt="" src="/_blob/53c9cb33e1b9def68d4e687bf69e4954" style="display:block;width:100%;height:100%;object-fit:contain"/></div>
+</div>
+</div>
+</div>
+</section></div></main></div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview": {"width": 1440, "height": 2037}}'>
+class Component extends DCLogic {
+renderVals() { return {}; }
+}
+</script>
+</body>
+</html>
