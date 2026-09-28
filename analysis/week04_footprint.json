@@ -1,7 +1,7 @@
 {
  "generated_by": "analysis/week04_footprint.py",
  "year": 2025,
- "seconds": 610,
+ "seconds": 832,
  "metros": {
   "year": 2025,
   "top_metros": 40,
@@ -210,9 +210,9 @@
     "nmi_seeds_median": 0.905,
     "nmi_vs_full": 1.0,
     "nmi_soc_major": 0.259,
-    "null_mean": 0.0291,
+    "null_mean": 0.0287,
     "null_sd": 0.0013,
-    "z": 197.41,
+    "z": 193.4,
     "null_runs": 20
    },
    {
@@ -233,8 +233,8 @@
     "nmi_vs_full": 0.9,
     "nmi_soc_major": 0.271,
     "null_mean": 0.0288,
-    "null_sd": 0.0011,
-    "z": 224.9,
+    "null_sd": 0.0012,
+    "z": 212.35,
     "null_runs": 20
    },
    {
@@ -259,9 +259,9 @@
     "nmi_seeds_median": 0.958,
     "nmi_vs_full": 0.822,
     "nmi_soc_major": 0.267,
-    "null_mean": 0.0283,
-    "null_sd": 0.0014,
-    "z": 199.83,
+    "null_mean": 0.0275,
+    "null_sd": 0.0012,
+    "z": 231.24,
     "null_runs": 20
    },
    {
@@ -274,18 +274,18 @@
     "Q_sd": 0.0059,
     "communities": 6.14,
     "communities_sd": 0.7749,
-    "nmi_seeds_median": 0.9266,
-    "nmi_seeds_median_sd": 0.0202,
+    "nmi_seeds_median": 0.9265,
+    "nmi_seeds_median_sd": 0.0203,
     "nmi_vs_full": 0.9568,
     "nmi_vs_full_sd": 0.0186,
     "nmi_soc_major": 0.2649,
     "nmi_soc_major_sd": 0.0061,
-    "null_mean": 0.0292,
-    "null_mean_sd": 0.0008,
-    "null_sd": 0.0013,
+    "null_mean": 0.0293,
+    "null_mean_sd": 0.0007,
+    "null_sd": 0.0014,
     "null_sd_sd": 0.0004,
-    "z": 204.019,
-    "z_sd": 56.8248,
+    "z": 198.169,
+    "z_sd": 58.6824,
     "filings_removed_share": 0.0575,
     "filings_removed_share_sd": 0.0066
    },
@@ -299,18 +299,18 @@
     "Q_sd": 0.0041,
     "communities": 5.96,
     "communities_sd": 0.8476,
-    "nmi_seeds_median": 0.9461,
-    "nmi_seeds_median_sd": 0.0148,
-    "nmi_vs_full": 0.8825,
-    "nmi_vs_full_sd": 0.0187,
-    "nmi_soc_major": 0.2584,
-    "nmi_soc_major_sd": 0.0107,
+    "nmi_seeds_median": 0.946,
+    "nmi_seeds_median_sd": 0.0151,
+    "nmi_vs_full": 0.8823,
+    "nmi_vs_full_sd": 0.0188,
+    "nmi_soc_major": 0.2585,
+    "nmi_soc_major_sd": 0.0106,
     "null_mean": 0.0311,
     "null_mean_sd": 0.0009,
-    "null_sd": 0.0016,
+    "null_sd": 0.0015,
     "null_sd_sd": 0.0004,
-    "z": 171.188,
-    "z_sd": 75.656,
+    "z": 180.6484,
+    "z_sd": 77.3614,
     "filings_removed_share": 0.1759,
     "filings_removed_share_sd": 0.0005
    }
@@ -341,20 +341,20 @@
    "answer_no_not_just_their_footprint": false
   },
   "jobs": {
-   "full_z": 197.41,
-   "drop_shortlist_z": 224.9,
-   "drop_top10_z": 199.83,
-   "control_shortlist_z": 204.019,
-   "control_top10_z": 171.188,
+   "full_z": 193.4,
+   "drop_shortlist_z": 212.35,
+   "drop_top10_z": 231.24,
+   "control_shortlist_z": 198.169,
+   "control_top10_z": 180.6484,
    "drop_shortlist_nmi_vs_full": 0.9,
    "drop_top10_nmi_vs_full": 0.822,
    "drop_shortlist_vs_control": {
     "nmi_vs_control_sd": -3.05,
-    "z_vs_control_sd": 0.37
+    "z_vs_control_sd": 0.24
    },
    "drop_top10_vs_control": {
-    "nmi_vs_control_sd": -3.24,
-    "z_vs_control_sd": 0.38
+    "nmi_vs_control_sd": -3.21,
+    "z_vs_control_sd": 0.65
    },
    "answer_no_not_just_their_footprint": false,
    "caveat": "the company-count projection cannot show this at all (see jobs.structurally_uninformative_check); this uses the filings-weighted reprojection instead"
