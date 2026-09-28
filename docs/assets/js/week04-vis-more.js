@@ -8,7 +8,7 @@
 
 import { node, token, stripChart } from "./week04-strip.js";
 
-const DATA = new URL("../../weeks/week04/data/more.json", import.meta.url);
+const DATA = new URL("../../weeks/week04/data/more.json?v=2", import.meta.url);
 
 async function load() {
   const r = await fetch(DATA);

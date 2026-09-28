@@ -3,7 +3,7 @@
 // native tooltip (<title>).
 import { stripChart, token, node as el } from "./week04-strip.js";
 
-const DATA_URL = new URL("../../weeks/week04/data/jobs.json", import.meta.url);
+const DATA_URL = new URL("../../weeks/week04/data/jobs.json?v=2", import.meta.url);
 const whole = new Intl.NumberFormat("en-US");
 const num = (value) => whole.format(value);
 const short = (title) => title.replace(/\s+\([^)]*\)$/, "").replace(/\s+/g, " ");
@@ -118,7 +118,7 @@ let selectNode = () => {};
 function bridgeList(data) {
   const bridges = data.nodes.filter((node) => node.bridge);
   $("jobs-node-inspector").innerHTML = `<h2>Bridge jobs</h2><p>${bridges.length} of the ${data.nodes.length} occupations shown have more employer ties to a second cluster than any rewired network gives them.${bridges.length ? " Ringed in the network." : ""}</p><div class="jobs-bridge-list" id="jobs-bridge-list"></div>`;
-  $("jobs-bridge-list").innerHTML = bridges.map((node) => `<button type="button" data-job-id="${esc(node.id)}"><span>${esc(short(node.title))}</span><b>${num(node.filings)}</b></button>`).join("") || "<p>No occupation passed the overlap test.</p>";
+  $("jobs-bridge-list").innerHTML = bridges.map((node) => `<button type="button" data-job-id="${esc(node.id)}"><span>${esc(short(node.title))}</span><b>${num(node.filings)}</b></button>`).join("") || `<p>None of the ${data.nodes.length} occupations shown here passes the overlap test; ${num(data.bridges.all_occupations)} ${data.bridges.all_occupations === 1 ? "does" : "do"} across the whole network.</p>`;
   $("jobs-bridge-list").querySelectorAll("button").forEach((button) => button.addEventListener("click", () => {
     const node = data.nodes.find((item) => item.id === button.dataset.jobId);
     inspector(node, data);
@@ -224,7 +224,8 @@ function placeLabels(nodes, P, radius, clusterLabels, { W, legendTop }) {
 // The co-hiring network on its precomputed layout (fractions of a 700 x 580 frame).
 function renderNetwork(data) {
   const host = $("chart-job-network");
-  if (!host) return;
+  // An older cached jobs.json has no layout; skip rather than draw at NaN.
+  if (!host || !data.nodes.every((n) => Number.isFinite(n.x) && Number.isFinite(n.y))) return;
   const W = 700;
   const H = 580;
   const legendTop = H - 74;
@@ -345,7 +346,7 @@ function renderBridgeStrip(data) {
 // group, the three largest named and the rest grey.
 function renderGroups(data) {
   const host = $("chart-job-groups");
-  if (host) {
+  if (host && data.clusters.every((c) => c.majors)) {
     const W = 640;
     const pct = (v, n) => `${Math.round((100 * v) / n)}%`;
     const ramp = [1, 0.6, 0.35];

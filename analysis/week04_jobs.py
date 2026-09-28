@@ -151,7 +151,7 @@ def recode_soc(lca, crosswalk=None):
     occupation = walked.where(valid).fillna(code.where(valid).replace(LEGACY))
     mistyped = valid & ~code.str[:2].isin(MAJOR_GROUPS)
     if mistyped.any():
-        title = plain_title(lca["SOC_TITLE"]) if "SOC_TITLE" in lca else pd.Series("", index=lca.index)
+        title = plain_title(lca["SOC_TITLE"]) if "SOC_TITLE" in lca else pd.Series(pd.NA, index=lca.index, dtype="string")
         good = pd.DataFrame({"title": title, "occupation": occupation})[valid & ~mistyped]
         by_title = (good.groupby(["title", "occupation"]).size().reset_index(name="n")
                     .sort_values(["title", "n", "occupation"], ascending=[True, False, True])

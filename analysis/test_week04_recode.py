@@ -5,8 +5,9 @@ week04_jobs.recode_soc must send 15-1199.08 to 15-2051 (Data Scientists) and
 2010 code with two crosswalk targets falls back to LEGACY, and a 2018 code
 passes through unchanged. A code with no real major group (12-1252) takes the
 code of another filing with the same title, and is dropped when no other
-filing has its title. The fixture copies four rows of the crosswalk CSV,
-so the test needs no build data.
+filing has its title. When correctly coded filings with that title disagree,
+the mistyped row takes the code most of them carry. The fixture copies four
+rows of the crosswalk CSV, so the test needs no build data.
 
     python analysis/test_week04_recode.py
 """
@@ -36,6 +37,10 @@ EXPECTED = {
     "40-9999": None,          # no major group 40, and no other filing has its title: dropped
 }
 TITLES = {"15-1252.00": "Software Developers", "12-1252": "software developers ", "40-9999": "Nobody Else"}
+# One title on two valid codes, two filings on 15-2051 and one on 15-2041: the
+# mistyped 12-5021 must take 15-2051, although 15-2041 sorts first.
+COMPETING = [("15-2051.00", "Data Scientists"), ("15-2051.00", "Data Scientists"),
+             ("15-2041.00", "Data Scientists"), ("12-5021", "Data Scientists")]
 
 
 def main():
@@ -51,10 +56,14 @@ def main():
     legacy = dict(zip(frame["SOC_CODE"], frame["legacy"]))
     if valid["40-9999"] or legacy["12-1252"]:
         failures.append("a dropped code must be invalid, and a mistyped one is not a 2010 code")
+    codes, titles = zip(*COMPETING)
+    competing = recode_soc(pd.DataFrame({"SOC_CODE": codes, "SOC_TITLE": titles}), crosswalk)
+    if competing["occupation"].iloc[-1] != "15-2051":
+        failures.append(f"12-5021 with two competing codes: expected 15-2051, got {competing['occupation'].iloc[-1]}")
     for line in failures:
         print(f"FAILED  {line}")
     if not failures:
-        print(f"ok      {len(EXPECTED)} codes recoded as expected")
+        print(f"ok      {len(EXPECTED)} codes recoded as expected, and the more common of two competing codes wins")
     return 1 if failures else 0
 
 

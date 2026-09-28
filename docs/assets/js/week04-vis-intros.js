@@ -16,13 +16,13 @@ const num = (n) => n.toLocaleString("en-US");
 const pct = (x, digits = 0) => `${(x * 100).toFixed(digits)}%`;
 
 const DATA = {
-  jobs: new URL("../../weeks/week04/data/jobs.json", import.meta.url),
+  jobs: new URL("../../weeks/week04/data/jobs.json?v=2", import.meta.url),
   communities: new URL("../../weeks/week04/data/staffing_communities.json", import.meta.url),
   clients: new URL("../../weeks/week04/data/staffing_clients.json", import.meta.url),
   moves: new URL("../../weeks/week04/data/staffing_moves.json", import.meta.url),
   beyond: new URL("../../weeks/week04/data/beyond.json", import.meta.url),
   place: new URL("../data/week04_place.json", import.meta.url),
-  footprint: new URL("../../weeks/week04/data/footprint.json", import.meta.url),
+  footprint: new URL("../../weeks/week04/data/footprint.json?v=2", import.meta.url),
   whereWho: new URL("../../weeks/week04/data/where_who.json", import.meta.url),
 };
 

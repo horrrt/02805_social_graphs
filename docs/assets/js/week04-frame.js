@@ -127,9 +127,9 @@ function wireSegments(root) {
 
 const DATA = {
   place: new URL("../data/week04_place.json", import.meta.url),
-  jobs: new URL("../../weeks/week04/data/jobs.json", import.meta.url),
+  jobs: new URL("../../weeks/week04/data/jobs.json?v=2", import.meta.url),
   moves: new URL("../../weeks/week04/data/staffing_moves.json", import.meta.url),
-  footprint: new URL("../../weeks/week04/data/footprint.json", import.meta.url),
+  footprint: new URL("../../weeks/week04/data/footprint.json?v=2", import.meta.url),
   beyond: new URL("../../weeks/week04/data/beyond.json", import.meta.url),
 };
 

@@ -76,7 +76,7 @@ test("section 2: link communities find no clear two-cluster job", () => {
   const f = json("docs/weeks/week04/data/jobs_split.json").finding;
   assert.ok(f.q2_D_at_cut >= 0 && f.q2_D_at_cut <= 1, "partition density lies in [0, 1]");
   says("jobs-linkcom", `D = ${f2(f.q2_D_at_cut)}`);
-  says("jobs-linkcom", `${f.q2_link_clusters_of_3_or_more} small ones`);
+  says("jobs-linkcom", `${f.q2_link_clusters_of_3_or_more} communities have three links or more, counting it`);
   says("jobs-linkcom", `(Spearman ${f2(f.q2_spearman_communities_vs_degree)})`);
   says("jobs-linkcom", `Only ${f.q2_bridges_in_top15_count} of the ${f.q2_bridges_count} occupations`);
   // The counts, the names and the chart captions, so a rerun that changes who ranks fails here.
@@ -84,7 +84,7 @@ test("section 2: link communities find no clear two-cluster job", () => {
   const q2 = d.q2;
   const occupations = json("docs/weeks/week04/data/jobs.json").meta.occupations;
   assert.equal(json("analysis/week04_jobs_split.json").q2.occupations, occupations);
-  says("jobs-linkcom", `On the ${count(q2.links)} links between ${count(occupations)} occupations it peaks at D = ${f2(f.q2_D_at_cut)} with one community holding ${pct(q2.largest_link_community_links / q2.links)} of the links and ${f.q2_link_clusters_of_3_or_more} small ones`);
+  says("jobs-linkcom", `On the ${count(q2.links)} links between ${count(occupations)} occupations it peaks at D = ${f2(f.q2_D_at_cut)} with one community holding ${pct(q2.largest_link_community_links / q2.links)} of the links; ${f.q2_link_clusters_of_3_or_more} communities have three links or more, counting it.`);
   const plain = (title) => title.toLowerCase().replace(/, all other$/, "").replace(/ and repairers$/, "");
   const list = (names) => (names.length < 3 ? names.join(" and ") : `${names.slice(0, -1).join(", ")}, and ${names.at(-1)}`);
   const top = q2.top15_by_communities_per_link;

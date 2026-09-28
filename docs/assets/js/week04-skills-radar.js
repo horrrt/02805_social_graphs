@@ -8,7 +8,7 @@
 import { token } from "./week04-strip.js";
 import { drawer, drawerRow } from "./week04-ui.js";
 
-const DATA = new URL("../../weeks/week04/data/skills_radar.json", import.meta.url);
+const DATA = new URL("../../weeks/week04/data/skills_radar.json?v=2", import.meta.url);
 const MAX_SELECTED = 5;
 const SYMBOLS = ["circle", "rect", "triangle", "diamond", "pin"];
 // Spoke names run along their own spoke, so neighbours never overlap however

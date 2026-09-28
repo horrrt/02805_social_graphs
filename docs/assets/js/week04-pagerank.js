@@ -8,7 +8,7 @@
 import { node, token } from "./week04-strip.js";
 import { drawer, drawerRow } from "./week04-ui.js";
 
-const DATA = new URL("../../weeks/week04/data/pagerank.json", import.meta.url);
+const DATA = new URL("../../weeks/week04/data/pagerank.json?v=2", import.meta.url);
 const DEFAULT_D = "0.85";
 const BAR_W = 556;
 const LABEL_W = 300;
@@ -383,7 +383,7 @@ function buildIterationCard(data) {
   moreBody.append(
     frag(
       `Run to step ${lastStep}, where every occupation's score matches nx.pagerank's own fixed point within ` +
-        `${it.max_error_vs_nx_pagerank}: past that point, one more round would not move the bars a visible amount.`,
+        `${it.max_error_vs_nx_pagerank}: past that point, one more round would not change the ranking.`,
     ),
   );
   left.append(drawerRow(drawer("Method", howBody), drawer("More numbers", moreBody)));
@@ -391,7 +391,7 @@ function buildIterationCard(data) {
   const plot = document.createElement("div");
   plot.className = "plot";
   plot.innerHTML = `
-    <h3>First place settles in ${word(claims.leaderStep)} rounds, the top ${n} in ${word(claims.setStep)}</h3>
+    <h3>First place settles by round ${word(claims.leaderStep)}, the top ${n} by round ${word(claims.setStep)}</h3>
     <p class="axis-note">Rank after each round for the ${word(n)} occupations that finish on top. A hollow dot on the
     bottom line means outside the top ${n} at that round.</p>`;
   const host = document.createElement("div");

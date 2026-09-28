@@ -6,10 +6,10 @@
 import { node, token } from "./week04-strip.js";
 
 const WHERE_WHO_URL = new URL("../../weeks/week04/data/where_who.json", import.meta.url);
-const JOBS_SPLIT_URL = new URL("../../weeks/week04/data/jobs_split.json", import.meta.url);
+const JOBS_SPLIT_URL = new URL("../../weeks/week04/data/jobs_split.json?v=2", import.meta.url);
 const STAFFING_MOVES_URL = new URL("../../weeks/week04/data/staffing_moves.json", import.meta.url);
 const BEYOND_URL = new URL("../../weeks/week04/data/beyond.json", import.meta.url);
-const FOOTPRINT_URL = new URL("../../weeks/week04/data/footprint.json", import.meta.url);
+const FOOTPRINT_URL = new URL("../../weeks/week04/data/footprint.json?v=2", import.meta.url);
 const FOOTPRINT_RANK_URL = new URL("../../weeks/week04/data/footprint_rank.json", import.meta.url);
 
 const INK = "#0f2340";

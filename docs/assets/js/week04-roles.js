@@ -307,7 +307,7 @@ let rendered = false;
 function load() {
   if (rendered) return;
   rendered = true;
-  fetch(new URL("../../weeks/week04/data/roles.json", import.meta.url))
+  fetch(new URL("../../weeks/week04/data/roles.json?v=2", import.meta.url))
     .then((r) => r.json())
     .then((json) => {
       data = json;
