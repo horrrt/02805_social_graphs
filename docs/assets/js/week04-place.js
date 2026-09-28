@@ -92,6 +92,11 @@ export async function startPlace(echarts) {
     features: usa.features.filter((f) => !OFF_MAINLAND.has(f.properties.name)),
   });
 
+  // Fit each map inside its box. A layoutSize above 100% zoomed past the
+  // box whenever a full-screen window made the chart taller than it is wide,
+  // and cut off the east coast.
+  const MAP_FIT = { left: 8, right: 8, top: 8, bottom: 8 };
+
   const byId = Object.fromEntries(data.cities.map((c) => [c.id, c]));
   const state = {
     metric: "positions",
@@ -282,8 +287,7 @@ export async function startPlace(echarts) {
         geo: {
           map: "USA",
           roam: false,
-          layoutCenter: ["50%", "50%"],
-          layoutSize: "165%",
+          ...MAP_FIT,
           itemStyle: {
             areaColor: "#eef3f9",
             borderColor: "#c5d3e6",
@@ -483,8 +487,7 @@ export async function startPlace(echarts) {
         geo: {
           map: "USA",
           roam: false,
-          layoutCenter: ["50%", "50%"],
-          layoutSize: "165%",
+          ...MAP_FIT,
           itemStyle: { areaColor: "#eef3f9", borderColor: "#c5d3e6", borderWidth: 0.9 },
           emphasis: { disabled: true },
           select: { disabled: true },
@@ -764,8 +767,7 @@ export async function startPlace(echarts) {
         geo: {
           map: "USA",
           roam: false,
-          layoutCenter: ["50%", "50%"],
-          layoutSize: "165%",
+          ...MAP_FIT,
           itemStyle: {
             areaColor: "#f3f7fb",
             borderColor: "#d0dcec",
