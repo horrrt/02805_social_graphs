@@ -10,7 +10,8 @@ const body = document.querySelector("#years-body");
 const status = document.querySelector("#years-status");
 
 const YEARS = ["2022", "2023", "2024", "2025", "2026"];
-const YL = (y) => `FY${y}`;
+// Data keys read "FY2025"; the page writes the plain year.
+const yr = (s) => String(s).replace(/^FY(\d{4})/, "$1");
 const MONTHS = ["Oct", "Nov", "Dec", "Jan", "Feb", "Mar", "Apr", "May", "Jun"];
 const FOUR_FIRMS = ["Tata Consultancy Services", "Cognizant", "Infosys", "HCL"];
 
@@ -149,7 +150,7 @@ function twoLines(a, b, width, height, fmt, aria, pal, names, colors) {
     out.push(lineEl(pts.at(-2)[0], pts.at(-2)[1], pts.at(-1)[0], pts.at(-1)[1], col, 2, { dash: "4 4" }));
     pts.forEach(([px, py], i) => {
       const last = i === 4;
-      out.push(circleEl(px, py, 4.5, last ? pal.card : col, col, 2, `${YL(YEARS[i])} ${name}: ${fmt(series[i])}`));
+      out.push(circleEl(px, py, 4.5, last ? pal.card : col, col, 2, `${YEARS[i]} ${name}: ${fmt(series[i])}`));
       // The first point sits on the y-axis, so its centred label would land
       // on top of the axis's own tick labels whenever the two are close in
       // height; start-anchor it just to the right of the point instead.
@@ -158,7 +159,7 @@ function twoLines(a, b, width, height, fmt, aria, pal, names, colors) {
     });
     out.push(textEl(pts.at(-1)[0] + 12, pts.at(-1)[1] + 4, name, 12, pal.ink, 700, "start"));
   });
-  YEARS.forEach((y_, i) => out.push(textEl(x(i), height - 10, YL(y_), 11, pal.inkMute, 600, "middle")));
+  YEARS.forEach((y_, i) => out.push(textEl(x(i), height - 10, y_, 11, pal.inkMute, 600, "middle")));
   out.push("</svg>");
   return out.join("\n");
 }
@@ -212,14 +213,14 @@ function seasonChart(rows, key, aria, pal, color, note) {
     out.push(pathEl("M" + pts.map(([px, py]) => `${px.toFixed(1)} ${py.toFixed(1)}`).join(" L"), color, newest ? 2.6 : 2, { op: opacity }));
     rows[yy].forEach((m, i) => {
       const [px, py] = pts[i];
-      out.push(circleEl(px, py, newest ? 3 : 2.2, color, pal.card, 1.2, `${yy}, ${MONTHS[i]}: ${num(m[key])}`) .replace("<circle", `<circle opacity="${opacity}"`));
+      out.push(circleEl(px, py, newest ? 3 : 2.2, color, pal.card, 1.2, `${yr(yy)}, ${MONTHS[i]}: ${num(m[key])}`) .replace("<circle", `<circle opacity="${opacity}"`));
     });
     ends.push(pts.at(-1)[1]);
   });
   spread(ends).forEach((ly, i) => {
     const yy = years[i];
     const newest = i === years.length - 1;
-    out.push(textEl(width - R + 8, ly + 4, yy, 11.5, newest ? pal.ink : pal.inkMute, newest ? 700 : 600, "start"));
+    out.push(textEl(width - R + 8, ly + 4, yr(yy), 11.5, newest ? pal.ink : pal.inkMute, newest ? 700 : 600, "start"));
   });
   if (note) {
     const [i, label] = note;
@@ -268,12 +269,12 @@ function render(data) {
   const pal = palette();
   const ys = data.years;
 
-  const cert = YEARS.map((y) => ({ label: y === "2026" ? "FY2026" : YL(y), v: ys[y].certified_filings }));
+  const cert = YEARS.map((y) => ({ label: y, v: ys[y].certified_filings }));
   const s1 = yearBars(cert, 540, 250, num, "Certified H-1B filings per fiscal year", pal,
     { sub: ["", "", "", "", "Oct–Jun only"] });
 
   const oj = data.oct_jun.totals;
-  const like = ["FY2024", "FY2025", "FY2026"].map((fy) => ({ label: fy, v: oj[fy].certified_filings }));
+  const like = ["FY2024", "FY2025", "FY2026"].map((fy) => ({ label: yr(fy), v: oj[fy].certified_filings }));
   const s1b = yearBars(like, 540, 220, num, "Certified filings from October to June, three years", pal, { partialLast: false });
 
   const rows = { FY2024: data.monthly.FY2024, FY2025: data.monthly.FY2025, FY2026: data.monthly.FY2026 };
@@ -281,13 +282,13 @@ function render(data) {
   const monthlyHtml =
     '<div class="years-split">' +
     `<div><h4>Certified filings</h4>${seasonChart(rows, "certified_filings",
-      "Certified H-1B filings per month, October to June, FY2024 to FY2026", pal, pal.ink,
+      "Certified H-1B filings per month, October to June, 2024 to 2026", pal, pal.ink,
       [0, `Shutdown, October 2025: ${num(oct25.certified_filings)}`])}</div>` +
     `<div><h4>Placed at a client</h4>${seasonChart(rows, "placed_filings",
-      "Certified filings that place the worker at a client, per month, October to June, FY2024 to FY2026", pal, pal.people)}</div>` +
+      "Certified filings that place the worker at a client, per month, October to June, 2024 to 2026", pal, pal.people)}</div>` +
     "</div>";
 
-  const share = YEARS.map((y) => ({ label: YL(y), v: ys[y].placed_share }));
+  const share = YEARS.map((y) => ({ label: y, v: ys[y].placed_share }));
   const s3 = yearLine(share, 540, 230, (v) => pct(v), "Share of certified filings that place a worker at a client", pal, pal.people);
 
   const per = {};
@@ -313,7 +314,7 @@ function render(data) {
   const drawMonth = (capYear) => `March ${Number(capYear) - 1}`;
   const draws = capYears.map((y) => ({ label: drawMonth(y), v: data.lottery_draws[y].registrations }));
   const s6 = yearBars(draws, 540, 230, num, "H-1B lottery registrations per draw", pal,
-    { partialLast: false, sub: capYears.map((y) => `FY${y} cap`) });
+    { partialLast: false, sub: capYears.map((y) => `${y} cap`) });
   const funnelYears = Object.keys(data.lottery_funnels).sort();
   const perApp = funnelYears.map((y) => data.lottery_funnels[y].registrations_per_approval);
 
@@ -324,15 +325,15 @@ function render(data) {
 
   const f = data.finding;
   const lead =
-    `Certified filings fell ${Math.abs(f.fy22_to_fy23_certified_change_percent)}% in FY2023, rose to ` +
-    `${num(f.fy2025_certified_filings)} in FY2025, and fell ${Math.abs(f.fy25_to_fy26_certified_change_percent).toFixed(1)}% in ` +
-    "FY2026 against the same months a year earlier. The share placed at a client fell every year from FY2023: " +
+    `Certified filings fell ${Math.abs(f.fy22_to_fy23_certified_change_percent)}% in 2023, rose to ` +
+    `${num(f.fy2025_certified_filings)} in 2025, and fell ${Math.abs(f.fy25_to_fy26_certified_change_percent).toFixed(1)}% in ` +
+    "2026 against the same months a year earlier. The share placed at a client fell every year from 2023: " +
     `${pct(ys["2023"].placed_share)}, ${pct(ys["2024"].placed_share)}, ${pct(ys["2025"].placed_share)}, and ` +
-    `${pct(ys["2026"].placed_share)} in the first nine months of FY2026.`;
+    `${pct(ys["2026"].placed_share)} from October 2025 to June 2026.`;
   const noticeText =
-    "FY runs October to September. FY2026 covers October 2025 to June 2026 and is drawn hollow. October 2025, the month " +
+    "Each year runs October to September. 2026 covers October 2025 to June 2026 and is drawn hollow. October 2025, the month " +
     `of the federal shutdown, holds ${num(f.oct_2025_certified_filings)} certified filings against ` +
-    `${num(f.oct_2024_certified_filings)} a year earlier, so compare FY2026 with earlier years on matching months.`;
+    `${num(f.oct_2024_certified_filings)} a year earlier, so compare 2026 with earlier years on matching months.`;
 
   const r = (cells) => `<tr>${cells.map((c, i) => `<td${i ? ' style="text-align:right"' : ""}>${c}</td>`).join("")}</tr>`;
   const thead = (cols) => `<thead><tr>${cols.map((c, i) => `<th${i ? ' style="text-align:right"' : ""}>${esc(c)}</th>`).join("")}</tr></thead>`;
@@ -340,31 +341,31 @@ function render(data) {
   const perFyTable = `<table class="ego"><caption>Certified filings, placed share, clients, firms and USCIS denial rates, per fiscal year</caption>` +
     thead(["Year", "Certified filings", "Placed at a client", "Clients", "Firms", "Placing firms’ denials", "Direct employers’ denials"]) +
     "<tbody>" + YEARS.map((y, i) => r([
-      `${YL(y)}${y === "2026" ? ", Oct–Jun" : ""}`, num(ys[y].certified_filings), pct(ys[y].placed_share),
+      `${y}${y === "2026" ? ", Oct–Jun" : ""}`, num(ys[y].certified_filings), pct(ys[y].placed_share),
       num(ys[y].clients), num(ys[y].firms), pct(data.uscis_series[i].placing_initial_denial_rate),
       pct(data.uscis_series[i].direct_initial_denial_rate),
     ])).join("") + "</tbody></table>";
 
   const octJunTable = `<table class="ego"><caption>Certified filings, October to June, three fiscal years</caption>` +
     thead(["Year", "Certified filings"]) + "<tbody>" +
-    ["FY2024", "FY2025", "FY2026"].map((fy) => r([fy, num(oj[fy].certified_filings)])).join("") +
-    `</tbody></table><p>FY2026 against FY2025: ${data.oct_jun.certified_filings_change_fy25_fy26_percent.toFixed(1)}%.</p>`;
+    ["FY2024", "FY2025", "FY2026"].map((fy) => r([yr(fy), num(oj[fy].certified_filings)])).join("") +
+    `</tbody></table><p>2026 against 2025: ${data.oct_jun.certified_filings_change_fy25_fy26_percent.toFixed(1)}%.</p>`;
 
-  const monthlyTable = `<table class="ego"><caption>Certified and placed filings per month, October to June, FY2024 to FY2026</caption>` +
-    thead(["Month", "FY2024 certified", "FY2025 certified", "FY2026 certified", "FY2024 placed", "FY2025 placed", "FY2026 placed"]) +
+  const monthlyTable = `<table class="ego"><caption>Certified and placed filings per month, October to June, 2024 to 2026</caption>` +
+    thead(["Month", "2024 certified", "2025 certified", "2026 certified", "2024 placed", "2025 placed", "2026 placed"]) +
     "<tbody>" + MONTHS.map((mo, i) => r([mo,
       num(rows.FY2024[i].certified_filings), num(rows.FY2025[i].certified_filings), num(rows.FY2026[i].certified_filings),
       num(rows.FY2024[i].placed_filings), num(rows.FY2025[i].placed_filings), num(rows.FY2026[i].placed_filings),
     ])).join("") + "</tbody></table>";
 
   const firmsTable = `<table class="ego"><caption>Placed filings for the four largest placing firms, per fiscal year</caption>` +
-    thead(["Firm", ...YEARS.map((y) => `${YL(y)}${y === "2026" ? " (Oct–Jun)" : ""}`)]) + "<tbody>" +
+    thead(["Firm", ...YEARS.map((y) => `${y}${y === "2026" ? " (Oct–Jun)" : ""}`)]) + "<tbody>" +
     FOUR_FIRMS.map((firm) => r([firm, ...YEARS.map((y) => (per[y][firm] != null ? num(per[y][firm]) : "–"))])).join("") +
     "</tbody></table>";
 
   const lotteryTable = `<table class="ego"><caption>H-1B lottery: registrations per draw and registrations per approval</caption>` +
     thead(["Draw", "Cap year", "Registrations", "Registrations per approval"]) + "<tbody>" +
-    capYears.map((y) => r([drawMonth(y), `FY${y}`, num(data.lottery_draws[y].registrations),
+    capYears.map((y) => r([drawMonth(y), y, num(data.lottery_draws[y].registrations),
       data.lottery_funnels[y] ? data.lottery_funnels[y].registrations_per_approval.toFixed(2) : "–"])).join("") +
     "</tbody></table>";
 
@@ -376,14 +377,14 @@ function render(data) {
     `<div><h2>Five years of filings</h2><p>${esc(lead)}</p></div></header>` +
     `<div class="notice"><span class="ico">!</span><span><b>How to read the years.</b> ${esc(noticeText)}</span></div>` +
     '<div class="years-grid">' +
-    panel("Certified H-1B filings", "Each fiscal year. FY2026 is outlined: nine months, not a year.", s1) +
-    panel("The same months, compared", "October to June of each year: the fair way to set FY2026 beside the two before it.", s1b) +
-    panel("Month by month", "October to June of each fiscal year, the months FY2026 covers.", monthlyHtml, 2) +
+    panel("Certified H-1B filings", "Each fiscal year. 2026 is outlined: nine months, not a year.", s1) +
+    panel("The same months, compared", "October to June of each year: the fair way to set 2026 beside the two before it.", s1b) +
+    panel("Month by month", "October to June of each fiscal year, the months 2026 covers.", monthlyHtml, 2) +
     panel("Placed at a client", "Share of certified filings that put the worker at another company.", s3) +
-    panel("USCIS denials", `Share of first-time petitions denied, employers with ${data.uscis_min_filings} or more certified filings. FY2026 runs October to June.`, s5) +
+    panel("USCIS denials", `Share of first-time petitions denied, employers with ${data.uscis_min_filings} or more certified filings. 2026 runs October to June.`, s5) +
     panel("The four largest placing firms",
-      `Placed filings each firm files per fiscal year, on one scale. Hollow: FY2026, nine months. HCL leaves the top ` +
-      `${ys["2026"].top_firms_by_filings.length} in FY2026.`, firmsHtml, 2) +
+      `Placed filings each firm files per fiscal year, on one scale. Hollow: 2026, nine months. HCL leaves the top ` +
+      `${ys["2026"].top_firms_by_filings.length} in 2026.`, firmsHtml, 2) +
     panel("The lottery",
       `Registrations per draw. One approved petition took ${perApp[0].toFixed(1)} registrations in the ${drawMonth(funnelYears[0])} ` +
       `draw and ${perApp[1].toFixed(1)} in ${drawMonth(funnelYears[1])}; USCIS’s data ends there.`, s6) +

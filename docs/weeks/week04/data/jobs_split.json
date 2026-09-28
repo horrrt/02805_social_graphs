@@ -8,8 +8,8 @@
   "q1_observed_n": 217,
   "q1_null_count_matched_nmi_mean": 0.43743704248786697,
   "q1_null_count_matched_nmi_sd": 0.0954657187697905,
-  "q1_null_filings_matched_nmi_mean": 0.5874955890739443,
-  "q1_null_filings_matched_nmi_sd": 0.05022976387821024,
+  "q1_null_filings_matched_nmi_mean": 0.5873710613534928,
+  "q1_null_filings_matched_nmi_sd": 0.04905613103023356,
   "q1_null_matched_nmi_mean": 0.6068963749399955,
   "q1_null_matched_nmi_sd": 0.04431569297674775,
   "q1_null_matched_filing_share": 0.2122,
@@ -18,8 +18,8 @@
   "q1_placing_companies": 817,
   "q1_direct_companies": 58379,
   "q1_placing_filing_share": 0.214,
-  "q1_placing_modularity": 0.22372421585640684,
-  "q1_direct_modularity": 0.2951930064111792,
+  "q1_placing_modularity": 0.22374220093080605,
+  "q1_direct_modularity": 0.29519169171237053,
   "q2_status": "ok",
   "q2_on": "full projection",
   "q2_D_at_cut": 0.5671460193669146,
@@ -131,13 +131,13 @@
    {
     "id": "15-2051",
     "title": "Data Scientists",
-    "filings": 28463,
+    "filings": 28465,
     "share": 0.0673
    },
    {
     "id": "15-1299",
     "title": "Computer Occupations, All Other",
-    "filings": 22056,
+    "filings": 22051,
     "share": 0.0522
    },
    {
@@ -149,7 +149,7 @@
    {
     "id": "15-1253",
     "title": "Software Quality Assurance Analysts and Testers",
-    "filings": 10219,
+    "filings": 10220,
     "share": 0.0242
    },
    {
@@ -384,30 +384,30 @@
      "links": 26
     },
     {
-     "id": "13-2071",
-     "title": "Credit Counselors",
-     "links": 11
-    },
-    {
-     "id": "27-1019",
-     "title": "Artists and Related Workers, All Other",
-     "links": 30
-    },
-    {
      "id": "29-1125",
      "title": "Recreational Therapists",
      "links": 94
     },
     {
-     "id": "31-2022",
-     "title": "Physical Therapist Aides",
-     "links": 10
+     "id": "43-4111",
+     "title": "Interviewers, Except Eligibility and Loan",
+     "links": 19
+    },
+    {
+     "id": "49-9051",
+     "title": "Electrical Power-Line Installers and Repairers",
+     "links": 11
+    },
+    {
+     "id": "53-2022",
+     "title": "Airfield Operations Specialists",
+     "links": 14
     }
    ],
    "count": 5,
    "in_top15": [
-    "13-2071",
-    "31-2022"
+    "43-4111",
+    "49-9051"
    ],
    "in_top15_count": 2
   }

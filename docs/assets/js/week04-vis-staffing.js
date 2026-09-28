@@ -109,26 +109,26 @@ function drawQ1(deep, years) {
       ["Name a client company", [deep.q1.client_company_share, 1 - deep.q1.client_company_share]],
     ],
     ["yes", "no"], ["--w4-vis-client", "--w4-band"],
-    { aria: `Share of FY2025's ${fy.certified_filings.toLocaleString("en-US")} certified filings that place a worker at a client, and that name a client company`, digits: 1 },
+    { aria: `Share of 2025's ${fy.certified_filings.toLocaleString("en-US")} certified filings that place a worker at a client, and that name a client company`, digits: 1 },
   ));
 
   const series = Object.fromEntries(years.uscis_series.map((e) => [e.year, e]));
   draw("who-q1-denial", stripChart(
     [
-      { label: "FY2022", sub: "first-time petitions", real: series[2022].placing_initial_denial_rate, color: "--w4-vis-client",
+      { label: "2022", sub: "first-time petitions", real: series[2022].placing_initial_denial_rate, color: "--w4-vis-client",
         realLabel: pct(series[2022].placing_initial_denial_rate, 1),
-        realTip: `Placing firms, FY2022: ${pct(series[2022].placing_initial_denial_rate, 1)}`,
+        realTip: `Placing firms, 2022: ${pct(series[2022].placing_initial_denial_rate, 1)}`,
         ref: [series[2022].direct_initial_denial_rate, `direct ${pct(series[2022].direct_initial_denial_rate, 1)}`],
-        refTip: `Direct employers, FY2022: ${pct(series[2022].direct_initial_denial_rate, 1)}` },
-      { label: "FY2026", sub: "Oct-Jun", real: series[2026].placing_initial_denial_rate, color: "--w4-vis-client",
+        refTip: `Direct employers, 2022: ${pct(series[2022].direct_initial_denial_rate, 1)}` },
+      { label: "2026", sub: "Oct-Jun", real: series[2026].placing_initial_denial_rate, color: "--w4-vis-client",
         realLabel: pct(series[2026].placing_initial_denial_rate, 1),
-        realTip: `Placing firms, FY2026 Oct-Jun: ${pct(series[2026].placing_initial_denial_rate, 1)}`,
+        realTip: `Placing firms, 2026 Oct-Jun: ${pct(series[2026].placing_initial_denial_rate, 1)}`,
         ref: [series[2026].direct_initial_denial_rate, `direct ${pct(series[2026].direct_initial_denial_rate, 1)}`],
-        refTip: `Direct employers, FY2026 Oct-Jun: ${pct(series[2026].direct_initial_denial_rate, 1)}` },
+        refTip: `Direct employers, 2026 Oct-Jun: ${pct(series[2026].direct_initial_denial_rate, 1)}` },
     ],
     { domain: [0, 0.04], ticks: [0, 0.01, 0.02, 0.03, 0.04], fmt: (v) => pct(v, 0), width: 520, labelW: 150,
       badgeW: 20, rowH: 56,
-      aria: "USCIS first-time denial rate, placing firms against direct employers, FY2022 and FY2026" },
+      aria: "USCIS first-time denial rate, placing firms against direct employers, 2022 and 2026" },
   ));
 
   const k = deep.q1.by_kind;
@@ -220,7 +220,7 @@ function drawQ3(deep) {
 function drawQ4(comm, deep) {
   draw("who-q4-stability", stripChart(
     comm.stability.map((s) => ({
-      label: `FY${s.from} to FY${s.to}`, sub: `${num(s.shared_clients)} shared clients`,
+      label: `${s.from} to ${s.to}`, sub: `${num(s.shared_clients)} shared clients`,
       real: s.unweighted_nmi, realLabel: s.unweighted_nmi.toFixed(2),
       ref: [s.unweighted_same_year_nmi, `same year ${s.unweighted_same_year_nmi.toFixed(2)}`],
     })),
@@ -239,7 +239,7 @@ function drawQ4(comm, deep) {
         ref: [j.client_company_filings_percent.fy24_to_fy25, `a year earlier ${j.client_company_filings_percent.fy24_to_fy25.toFixed(1)}%`] },
     ],
     { domain: [-20, 12], ticks: [-20, -10, 0, 10], fmt: (v) => `${v}%`, width: 520, labelW: 170, badgeW: 20,
-      rowH: 56, zeroLine: 0, aria: "FY2026 January to June change against a year earlier, certified and client-company filings" },
+      rowH: 56, zeroLine: 0, aria: "2026 January to June change against a year earlier, certified and client-company filings" },
   ));
   draw("who-q4-vendor-changed", miniStrip({
     domain: [0.35, 0.55], real: j.main_vendor_changed_share.after, realLabel: pct(j.main_vendor_changed_share.after),
@@ -262,7 +262,7 @@ function drawLawyers(deep) {
         ref: [o.direct.top5_share_pooled, `direct ${pct(o.direct.top5_share_pooled)}`] },
     ],
     { domain: [0, 0.6], ticks: [0, 0.2, 0.4, 0.6], fmt: (v) => pct(v, 0), width: 520, labelW: 175, badgeW: 20,
-      rowH: 56, aria: "Law-firm use: outsourcing firms against direct employers, FY2025" },
+      rowH: 56, aria: "Law-firm use: outsourcing firms against direct employers, 2025" },
   ));
   const pretty = {
     "Fragomen DEL REY Bernsen and Loewy": "Fragomen",
@@ -274,9 +274,9 @@ function drawLawyers(deep) {
   const top = deep.lawyers.top_firms_by_filings;
   draw("staffing-lawyers-top5", hbars(
     top.map(([name, filings]) => ({
-      label: pretty[name] ?? name, value: filings, valueLabel: num(filings), tip: `${num(filings)} certified filings, FY2025`,
+      label: pretty[name] ?? name, value: filings, valueLabel: num(filings), tip: `${num(filings)} certified filings, 2025`,
     })),
-    { domain: [0, top[0][1] * 1.05], fmt: num, width: 520, labelW: 216, aria: "The five law firms that file the most, FY2025" },
+    { domain: [0, top[0][1] * 1.05], fmt: num, width: 520, labelW: 216, aria: "The five law firms that file the most, 2025" },
   ));
 }
 
@@ -325,7 +325,7 @@ function drawTies(deep) {
     // An ordered scale, so one ink ramp: the metro-group hues and the direct-
     // employer blue each mean something else on this page.
     ["--w4-level-1", "--w4-level-2", "--w4-level-3", "--w4-level-4"],
-    { aria: "Share of each kind of employer's FY2025 filings at each prevailing-wage level" },
+    { aria: "Share of each kind of employer's 2025 filings at each prevailing-wage level" },
   ));
 }
 

@@ -49,15 +49,15 @@ test("how many workers sit at a client", () => {
   says(`the ${pct(now.placeholder_share)} of client entries`);
   says(`the ${count(now.own_company_client_rows)} where a firm names itself`);
   says(`Counted that way, ${count(now.client_company_filings)} filings (${pct(now.client_company_share, 1)}) name a client company`);
-  says(`down from ${pct(fy["2022"].client_company_share, 1)} in FY2022`);
+  says(`down from ${pct(fy["2022"].client_company_share, 1)} in 2022`);
   // The USCIS sentence quotes the hub's Tableau series, one source for every year.
   const series = Object.fromEntries(staffing.uscis_series.map((e) => [e.year, e]));
   for (const e of staffing.uscis_series) {
     const ratio = e.placing.initial_denial_rate / e.direct.initial_denial_rate;
     assert.ok(ratio >= 1.6 && ratio <= 2.5, `"about twice" fails in FY${e.year}: ${ratio.toFixed(2)}`);
   }
-  says("every year from FY2022 on, it denied about twice the share");
-  says(`${pct(series[2022].placing.initial_denial_rate, 1)} against ${pct(series[2022].direct.initial_denial_rate, 1)} for direct employers in FY2022`);
+  says("every year from 2022 on, it denied about twice the share");
+  says(`${pct(series[2022].placing.initial_denial_rate, 1)} against ${pct(series[2022].direct.initial_denial_rate, 1)} for direct employers in 2022`);
   says(`${pct(series[2026].placing.initial_denial_rate, 1)} against ${pct(series[2026].direct.initial_denial_rate, 1)} from October 2025 to June 2026`);
 });
 
@@ -89,11 +89,11 @@ test("registering the same workers does not mark a cluster of firms", () => {
   const has = (t) => assert.ok(lotteryText.includes(t), `the lottery disclosure should say "${t}"`);
   const now = lottery["2024"].community_test;
   const before = lottery["2023"].community_test;
-  has(`We took the ${count(now.firms_tested)} firms in the FY${now.lca_year} staffing network`);
+  has(`We took the ${count(now.firms_tested)} firms in the ${now.lca_year} staffing network`);
   has(`registered (${pct(now.median_multi_share)})`);
   has(`It is ${pct(now.unweighted.high_mates_share, 1)} high, against ${pct(now.unweighted.high_mates_share_shuffled, 1)} when the labels are shuffled (p = ${now.unweighted.p_mates} over 1,000 shuffles)`);
   has(`AMI with the groups is ${now.unweighted.ami_median.toFixed(3)} over 100 runs`);
-  has(`the FY${before.lca_year} network gives ${pct(before.unweighted.high_mates_share, 1)} against ${pct(before.unweighted.high_mates_share_shuffled, 1)}`);
+  has(`the ${before.lca_year} network gives ${pct(before.unweighted.high_mates_share, 1)} against ${pct(before.unweighted.high_mates_share_shuffled, 1)}`);
   assert.ok(now.unweighted.ami_median < 0.02 && before.unweighted.ami_median < 0.02, '"spread across" needs AMI near zero');
 });
 
@@ -187,7 +187,7 @@ test("strong ties, weak ties and pay", () => {
   has(`Spearman ${minus(w.spearman_weight_overlap.rho, 2)}`);
   has(`0.00 ± ${w.weight_shuffle_null.sd_rho.toFixed(2)}`);
   assert.equal(Math.abs(w.weight_shuffle_null.mean_rho).toFixed(2), "0.00");
-  has(`(z = ${minus(w.weight_shuffle_null.z, 1)}; FY2024 gives z = ${minus(w24.weight_shuffle_null.z, 1)})`);
+  has(`(z = ${minus(w.weight_shuffle_null.z, 1)}; 2024 gives z = ${minus(w24.weight_shuffle_null.z, 1)})`);
   const b = w.overlap_by_weight_bucket;
   has(`mean overlap of ${b["1"].mean_overlap.toFixed(3)}, links with 21 or more ${b["21+"].mean_overlap.toFixed(3)}`);
   const wage = ties.wage;
@@ -253,10 +253,10 @@ test("section 1: communities against the null, runs, FY2024 and Census", () => {
   has(`finds it in ${n.modal_runs} of ${n.seeds} runs; the other ${n.seeds - n.modal_runs} find one other split`);
   assert.equal(n.partitions_found, 2, '"one other split" needs exactly two partitions');
   assert.equal(o.fy2025_runs_equal_to_other_year, n.seeds - n.modal_runs, "FY2024's split is FY2025's other one");
-  has(`FY${o.year} gives that two-group split in all ${o.runs} runs`);
+  has(`${o.year} gives that two-group split in all ${o.runs} runs`);
   assert.equal(o.modal_runs, o.runs);
   assert.equal(o.communities, 2);
-  has(`at NMI ${o.nmi_across_years_median.toFixed(2)}, against ${o.nmi_within_fy2025_median.toFixed(2)} between two FY2025 runs`);
+  has(`at NMI ${o.nmi_across_years_median.toFixed(2)}, against ${o.nmi_within_fy2025_median.toFixed(2)} between two 2025 runs`);
   has(`Census regions is ${n.nmi_census_region.toFixed(2)} and with divisions ${n.nmi_census_division.toFixed(2)}`);
   has(`(p = ${n.p_region.toFixed(2)} and ${n.p_division.toFixed(2)})`);
 });
@@ -303,7 +303,7 @@ test("a network of countries", () => {
   const p = c.perm["2023"];
   assert.equal(c.min_cell, 10);
   has(`dropping every count under ${c.min_cell}`);
-  has(`drops ${pct(p.cells_dropped_share)} of the cells and ${pct(p.filings_dropped_share)} of FY2023's`);
+  has(`drops ${pct(p.cells_dropped_share)} of the cells and ${pct(p.filings_dropped_share)} of 2023's`);
   const [india, china] = p.descriptive.top;
   assert.equal(india.country, "INDIA");
   assert.equal(china.country, "CHINA");
@@ -375,7 +375,7 @@ test("the lottery a year apart", () => {
 test("USCIS denials year by year", () => {
   const rows = box("deeper-uscis");
   for (const e of staffing.uscis_series) {
-    const label = e.year === 2026 ? "FY2026, Oct–Jun" : `FY${e.year}`;
+    const label = e.year === 2026 ? "2026, Oct–Jun" : `${e.year}`;
     const row = `${label} ${pct(e.placing.initial_denial_rate, 2)} ${pct(e.direct.initial_denial_rate, 2)} ${count(e.placing.employers)} ${count(e.direct.employers)}`;
     assert.ok(rows.includes(row), `#deeper-uscis should have the row "${row}"`);
   }
@@ -434,7 +434,7 @@ test("the hero's numbers and map legend follow the analysis", () => {
   const place = json("docs/assets/data/week04_place.json");
   const share = json("analysis/week04_where.json").coverage.top_metros_filing_share;
   const has = (t) => assert.ok(hero.includes(t), `the hero should say "${t}"`);
-  has(`${count(fy["2025"].certified_filings)} certified H-1B filings, FY2025`);
+  has(`${count(fy["2025"].certified_filings)} certified H-1B filings, 2025`);
   has(`${place.cities.length} metro areas with the most filings, ${pct(share, 1)} of the year’s total`);
   const size = (id) => place.cities.filter((c) => c.community === id).length;
   const [hubs, tech, rest] = place.communities.map((c) => c.label);
