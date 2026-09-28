@@ -1,5 +1,6 @@
 // Section 2 figure: certified H-1B occupation co-hiring network.
 import { stripChart } from "./week04-strip.js";
+import { resetButton } from "./week04-map-reset.js";
 
 const DATA_URL = new URL("../../weeks/week04/data/jobs.json", import.meta.url);
 const INK = "#0f2340";
@@ -133,7 +134,16 @@ function renderNetwork(data) {
       emphasis: { focus: "adjacency", lineStyle: { width: 3 } },
     }],
   });
-  c.on("click", (event) => inspector(event.data?.node, data));
+  // Reset view: undo any zoom or pan, drop the highlight and bring back the bridge list.
+  const showReset = resetButton($("chart-job-network"), () => {
+    c.dispatchAction({ type: "restore" });
+    bridgeList(data);
+  });
+  c.on("click", (event) => {
+    inspector(event.data?.node, data);
+    if (event.data?.node) showReset(true);
+  });
+  c.on("graphroam", () => showReset(true));
   bridgeList(data);
 }
 

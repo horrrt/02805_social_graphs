@@ -2,6 +2,8 @@
 // Four questions, one selected city across every panel. Numbers come from
 // docs/assets/data/week04_place.json (placeholder until analysis/week04_where.py).
 
+import { resetButton } from "./week04-map-reset.js";
+
 const DATA_URL = new URL("../data/week04_place.json", import.meta.url);
 const USA_URL = new URL("../data/usa.json", import.meta.url);
 const WHERE_WHO_URL = new URL("../../weeks/week04/data/where_who.json", import.meta.url);
@@ -1042,6 +1044,29 @@ export async function startPlace(echarts) {
     );
   }
 
+  // Every map that shares the selected city gets a Reset view button; it
+  // shows while a city is selected and clears it everywhere at once. A button
+  // is added only once its chart exists, because echarts.init empties its host.
+  const MAPS_WITH_RESET = ["chart-hero-map", "chart-citymap", "chart-regions", "chart-backbone", "chart-arcs"];
+  const resets = new Map();
+
+  function syncResets() {
+    for (const id of MAPS_WITH_RESET) {
+      const host = $(id);
+      if (!host || !charts.has(id)) continue;
+      if (!resets.has(id)) {
+        resets.set(
+          id,
+          resetButton(host, () => {
+            state.selected = null;
+            renderAll();
+          }),
+        );
+      }
+      resets.get(id)(state.selected !== null);
+    }
+  }
+
   function renderAll() {
     renderHeroMap();
     renderHeroInspector();
@@ -1057,6 +1082,7 @@ export async function startPlace(echarts) {
     renderNullBits();
     renderAlphaTable();
     renderSnapNote();
+    syncResets();
   }
 
   document.querySelectorAll("[data-place-metric]").forEach((btn) => {
