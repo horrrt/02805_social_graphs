@@ -94,8 +94,9 @@ export async function startPlace(echarts) {
 
   // Fit each map inside its box. A layoutSize above 100% zoomed past the
   // box whenever a full-screen window made the chart taller than it is wide,
-  // and cut off the east coast.
-  const MAP_FIT = { left: 8, right: 8, top: 8, bottom: 8 };
+  // and cut off the east coast. The wider sides and bottom leave room for
+  // the city labels, which sit below their dots.
+  const MAP_FIT = { left: 24, right: 24, top: 10, bottom: 24 };
 
   const byId = Object.fromEntries(data.cities.map((c) => [c.id, c]));
   const state = {
