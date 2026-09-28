@@ -15,6 +15,10 @@ changed. Run it before you change a script: an empty list means the committed
 JSON still reproduces. On 27 September 2026 it was not empty for three week 3
 files, and the page still quoted the stale versions.
 
+week03_corridor_control.py asks Wikidata for country names on every run, and
+Wikidata wants a contact in the User-Agent: set CONTACT_EMAIL first, as the
+week 4 downloads do.
+
 Two scripts stay out. week01_api_check.py queries live Wikipedia, so its output
 cannot reproduce; week03_forced_patch.py is a one-off patch that a full
 week03_corridor_control.py run supersedes. scripts/stamp_week03.py runs last
