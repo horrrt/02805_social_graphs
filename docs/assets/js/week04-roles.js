@@ -256,15 +256,13 @@ function renderReveal() {
   const legacy = Object.values(data.legacy_recoded).reduce((a, b) => a + b, 0);
   const uncoded = Object.values(data.uncoded).reduce((a, b) => a + b, 0);
   const meta = data.meta || {};
-  const codes = meta.legacy_codes ? `the ${num(meta.legacy_codes)} ` : "the ";
-  const crosswalk = meta.crosswalk_codes
-    ? `, ${num(meta.crosswalk_codes)} detailed O*NET codes among them through O*NET's own 2010-to-2019 crosswalk`
-    : "";
+  const table = meta.legacy_codes ? ` the ${num(meta.legacy_codes)} computer-occupation codes it leaves split go through a fixed table` : "";
   const p = data.partial;
   const text =
-    "Counts are certified H-1B filings only. Occupations are 2018 SOC codes; " +
-    `${num(legacy)} filings still on ${codes}2010 computer-occupation codes are moved to their 2018 successors${crosswalk} ` +
-    `before ranking, and ${num(uncoded)} filings whose SOC code does not parse fall into "All other occupations" ` +
+    "Counts are certified H-1B filings only. Occupations are 2018 SOC codes. " +
+    `${num(legacy)} filings still on 2010 codes move to their 2018 successors: a detailed O*NET code follows ` +
+    `O*NET's own 2010-to-2019 crosswalk wherever it names a single successor, and${table || " the rest keep their broader code"}. ` +
+    `${num(uncoded)} filings whose SOC code does not parse fall into "All other occupations" ` +
     `and "Other groups". FY${p.year} covers ${p.window} only, ${p.months} months: "Oct to Jun only" ` +
     "compares it with the same months of earlier years.";
   revealsEl.appendChild(reveal("w4-pop-roles-how", "How we counted", text));
