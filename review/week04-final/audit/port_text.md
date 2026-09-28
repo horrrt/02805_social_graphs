@@ -254,3 +254,85 @@ Slot table extension in use: hero lines (`.w4-hero-text > p.body, p.caution`), o
 
 **Style lint (3.7) on the page text:** no new hits
 
+## RS3
+
+Slot table extension in use: hero lines (`.w4-hero-text > p.body, p.caution`), opener lines (`header.w4-opener h2, p`) and finding lines (`.w4-finding > div > h3, p`).
+
+### who>opener
+- **opener#1**
+  - before: One certified H-1B filing in five names a client company as the worksite. Held to a random baseline, clients group only weakly, and slightly more by the firm that staffs them than by industry. Yet a client that changes vendor stays inside its group far more often than chance.
+  - after: One certified H-1B filing in five names a client company as the worksite. Against a random baseline clients group only weakly, yet a client that changes vendor stays inside its group far more often than chance.
+
+### who>w4-card
+- **para#0**
+  - before: Here the network links an outsourcing firm to each client company where it places workers, and a link weighs the filings between them. Louvain runs on the largest connected piece: 21,759 firms and clients, 41,212 links. Counted once per link, the groups beat rewired networks in which every firm and client keeps its number of partners (modularity 0.57 against 0.53), and they match each client's main vendor (AMI 0.11) a little better than its industry (0.07). The three questions below ask whether the groups behave like markets.
+  - after: Here the network links an outsourcing firm to each client company where it places workers, and a link weighs the filings between them. Counted once per link, the Louvain groups beat rewired networks on modularity (0.57 against 0.53) and match each client's main vendor (AMI 0.11) a little better than its industry (0.07).
+- **drawers#0 (added)**
+  - before: (none)
+  - after: Method Louvain runs on the largest connected piece: 21,759 firms and clients, 41,212 links. The rewired networks keep every firm's and client's number of partners. The three questions below ask whether the groups behave like markets.
+
+### who-q1
+- **para#0**
+  - before: A filing is a request to employ someone, not a hire. Placing firms also fare worse at USCIS: every year from 2022 on, it denied about twice the share of their first-time petitions, 2.7% against 1.2% for direct employers in 2022 and 3.4% against 2.0% from October 2025 to June 2026.
+  - after: A filing is a request to employ someone, not a hire. Every year from 2022 on, USCIS denied placing firms about twice the share of first-time petitions it denied direct employers.
+- **drawers#0**
+  - before: Method The worksites file lists every client a filing names; we leave out the 16% of client entries that name no company, such as "Home Address", and the 1,881 where a firm names itself. Counted that way, 101,763 filings (18.9%) name a client company: the worker is employed by one company and works at another, down from 21.9% in 2022. More numbers The lottery shows the same split one step earlier. Each new H-1B worker starts as a registration that USCIS draws at random, and USCIS gave Bloomberg News every registration from the March 2023 draw after a FOIA lawsuit. Every petition that followed names its filing, so we can follow a ticket to its client. Direct employers sent 5.1 registrations per approved petition, placing firms 9.1, and firms with fewer than 20 filings 12.2; those small firms sent 53% of the 758,967 registrations. Most of the gap is drawn tickets nobody used. When USCIS drew a direct employer's registration, a petition followed 76% of the time; a placing firm's, 50%; a small firm's, 35%. That step carries 74% of the gap between placing and direct firms, and the draw itself 24%. Much of it comes from workers registered by several employers: 54% of registrations named one, and when USCIS drew one, a petition followed 23% of the time, against 81% for a worker registered once. 18,307 of the petitions lead to a client company. Citigroup received the most, 342 through 38 firms.
+  - after: Method The worksites file lists every client a filing names; we leave out the 16% of client entries that name no company, such as "Home Address", and the 1,881 where a firm names itself. Counted that way, 101,763 filings (18.9%) name a client company: the worker is employed by one company and works at another, down from 21.9% in 2022. More numbers USCIS denied 2.7% of placing firms' first-time petitions against 1.2% for direct employers in 2022, and 3.4% against 2.0% from October 2025 to June 2026. The lottery shows the same split one step earlier. Each new H-1B worker starts as a registration that USCIS draws at random, and USCIS gave Bloomberg News every registration from the March 2023 draw after a FOIA lawsuit. Every petition that followed names its filing, so we can follow a ticket to its client. Direct employers sent 5.1 registrations per approved petition, placing firms 9.1, and firms with fewer than 20 filings 12.2; those small firms sent 53% of the 758,967 registrations. Most of the gap is drawn tickets nobody used. When USCIS drew a direct employer's registration, a petition followed 76% of the time; a placing firm's, 50%; a small firm's, 35%. That step carries 74% of the gap between placing and direct firms, and the draw itself 24%. Much of it comes from workers registered by several employers: 54% of registrations named one, and when USCIS drew one, a petition followed 23% of the time, against 81% for a worker registered once. 18,307 of the petitions lead to a client company. Citigroup received the most, 342 through 38 firms.
+
+### who-switch
+- **notice#0**
+  - before: What to notice Pooled over the three pairs of years, 26.5% of switches stay in the group against 3.2% ± 0.5% for random vendors (z = 47). Much of that is familiarity: 62% of new main vendors already placed someone at the client the year before. The groups hold some information about where a client turns next beyond the vendors it already knows.
+  - after: What to notice Pooled over the three pairs of years, 26.5% of switches stay in the group against 3.2% ± 0.5% for random vendors (z = 47). Much of that is familiarity: 62% of new main vendors already placed someone at the client the year before.
+
+### who-movers
+- **q-answer#0**
+  - before: Two in three, but much of that is Louvain's own noise, and the movers are not mainly the clients with several vendors.
+  - after: Two in three, but much of that is Louvain's own noise.
+- **para#0**
+  - before: We ran Louvain with links weighted by filings and with every link counting one, matched each weighted group to the unweighted group it overlaps most, and called a client a mover when its matched group changed. Two runs of the same kind with different seeds set the noise floor.
+  - after: We ran Louvain with links weighted by filings and with every link counting one, and called a client a mover when its group changed. Two runs of the same kind with different seeds set the noise floor.
+- **notice#0**
+  - before: What to notice 64.4% of clients move between the weighted and unweighted partitions. Two runs of the same kind move fewer: a median 33.3% between two weighted seeds and 53.1% between two unweighted ones, over ten pairs of seeds each (ranges 26.8% to 39.3% and 49.4% to 55.9%).
+  - after: What to notice 64.4% of clients move between the weighted and unweighted partitions. Two runs of the same kind move fewer: a median 33.3% between two weighted seeds and 53.1% between two unweighted ones.
+- **drawers#0**
+  - before: More numbers We expected the movers to be clients with several vendors, since only their filing counts can pull them one way or another. They are, but barely: 31.8% of movers have two or more vendors, against 26.8% of all clients. The largest movers are the largest clients: Citigroup sits with Tata Consultancy Services when filings count and with EY when they do not; Bank of America moves from Infosys' group to IBM's. Table: 15 largest movers Client Filings Vendors Group, weighted Group, unweighted A group is named after its largest firm.
+  - after: Method We matched each weighted group to the unweighted group it overlaps most, and called a client a mover when its matched group changed. More numbers The medians come from ten pairs of seeds each (ranges 26.8% to 39.3% and 49.4% to 55.9%). We expected the movers to be clients with several vendors, since only their filing counts can pull them one way or another. They are, but barely: 31.8% of movers have two or more vendors, against 26.8% of all clients. The largest movers are the largest clients: Citigroup sits with Tata Consultancy Services when filings count and with EY when they do not; Bank of America moves from Infosys' group to IBM's. Table: 15 largest movers Client Filings Vendors Group, weighted Group, unweighted A group is named after its largest firm.
+
+### who-overlap
+- **q-answer#0**
+  - before: 1,823 clients get a fifth or more of their filings from a second group, fewer than in rewired networks that keep each client's filing counts.
+  - after: 1,823 clients get a fifth or more of their filings from a second group, fewer than in rewired networks.
+- **notice#0**
+  - before: What to notice The rewired networks give 2,154 ± 20 split clients (z = −16), so real clients draw on fewer groups than the same filing counts spread at random would. Read the count as the groups following clients' main suppliers, not as a separate measure of loyalty.
+  - after: What to notice The rewired networks give 2,154 ± 20 split clients (z = −16): real clients draw on fewer groups than chance. Read the count as the groups following clients' main suppliers, not as a separate measure of loyalty.
+
+**Terms added:** 
+- `w4-term-who-louvain`
+- `w4-term-who-rewired`
+- `w4-term-who-modularity`
+- `w4-term-who-ami`
+- `w4-term-who-switch-z`
+- `w4-term-who-movers-seeds`
+- `w4-term-who-movers-partition`
+
+**Fix-ups applied (3.7):** none
+
+**Cards a script builds (skipped, see 3.3):** none
+
+**Held slots: board number not on the page (stale-number rule):** 
+- who>w4-card figcaption#1: board numbers [] not in the page slot; board text: override used
+
+**Numbers the board drops (accepted, list in the PR body):** none
+
+**Numbers in new term definitions (check each is a scale, not a result):** 
+- who>w4-card para#0: ['two'] in «A method that finds groups in a network by moving nodes between groups until the links inside groups are as dense as they can get. It starts from a random order, so two runs can differ.»
+- who>w4-card para#0: ['two'] in «Adjusted mutual information: how closely two ways of grouping the same clients agree, corrected for the agreement random labels would reach by chance.»
+
+**Script-owned text that differs from the board (3.3):** none
+
+**Text that still differs from the board, outside script-owned nodes:** 
+- who>w4-card: page «The client's» board «{{egoClientName}}'s»
+- who>w4-card: page «the year;» board «{{egoYear}}{{egoMonths}}, {{egoVendors}} firms in all;»
+
+**Style lint (3.7) on the page text:** no new hits
+

@@ -129,12 +129,17 @@ test("section 3: switches stay in the group, movers and split clients", () => {
   says("who-switch", `${pct(f.q1_share_new_vendor_already_linked)} of new main vendors`);
   says("who-switch", `${pct(f.q1_pooled_stricter_observed_share, 1)} against ${pct(f.q1_pooled_stricter_null_mean, 1)} ± ${pct(f.q1_pooled_stricter_null_sd, 1)} (z = ${Math.round(f.q1_pooled_stricter_z)}), a lift of ${f2(f.q1_pooled_stricter_lift)} rather than ${f.q1_pooled_lift.toFixed(1)}`);
   says("who-movers", `${pct(f.q2_share_move, 1)} of clients move`);
+  says("who-movers", "Two in three, but much of that is Louvain's own noise.");
+  assert.ok(Math.abs(f.q2_share_move - 2 / 3) < 0.05, '"Two in three" needs the mover share within 5 points of 2/3');
   says("who-movers", `a median ${pct(f.q2_noise_floor_weighted, 1)} between two weighted seeds and ${pct(f.q2_noise_floor_unweighted, 1)} between two unweighted ones`);
   says("who-movers", `(ranges ${pct(f.q2_noise_floor_weighted_min, 1)} to ${pct(f.q2_noise_floor_weighted_max, 1)} and ${pct(f.q2_noise_floor_unweighted_min, 1)} to ${pct(f.q2_noise_floor_unweighted_max, 1)})`);
   assert.ok(f.q2_share_move > f.q2_noise_floor_unweighted_max, "movers must exceed every seed pair");
-  says("who-movers", `${pct(f.q2_movers_2plus_vendor_share, 1)} of movers have two or more vendors, against ${pct(f.q2_all_clients_2plus_vendor_share, 1)}`);
+  says("who-movers", `They are, but barely: ${pct(f.q2_movers_2plus_vendor_share, 1)} of movers have two or more vendors, against ${pct(f.q2_all_clients_2plus_vendor_share, 1)}`);
+  const lead = f.q2_movers_2plus_vendor_share - f.q2_all_clients_2plus_vendor_share;
+  assert.ok(lead > 0 && lead < 0.1, '"They are, but barely" needs movers ahead by under 10 points');
   says("who-overlap", `${count(f.q3_two_community_clients)} clients get a fifth or more`);
-  says("who-overlap", `give ${count(Math.round(f.q3_null_mean))} ± ${Math.round(f.q3_null_sd)} split clients (z = −${Math.round(-f.q3_z)})`);
+  says("who-overlap", `give ${count(Math.round(f.q3_null_mean))} ± ${Math.round(f.q3_null_sd)} split clients (z = −${Math.round(-f.q3_z)}): real clients draw on fewer groups than chance`);
+  assert.ok(f.q3_z < -2, '"fewer groups than chance" needs z below −2');
 });
 
 test("section 3: the named movers and split clients follow the JSON", () => {

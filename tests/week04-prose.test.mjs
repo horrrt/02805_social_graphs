@@ -49,8 +49,8 @@ test("how many workers sit at a client", () => {
     const ratio = e.placing.initial_denial_rate / e.direct.initial_denial_rate;
     assert.ok(ratio >= 1.6 && ratio <= 2.5, `"about twice" fails in FY${e.year}: ${ratio.toFixed(2)}`);
   }
-  says("every year from 2022 on, it denied about twice the share");
-  says(`${pct(series[2022].placing.initial_denial_rate, 1)} against ${pct(series[2022].direct.initial_denial_rate, 1)} for direct employers in 2022`);
+  says("Every year from 2022 on, USCIS denied placing firms about twice the share of first-time petitions");
+  says(`USCIS denied ${pct(series[2022].placing.initial_denial_rate, 1)} of placing firms' first-time petitions against ${pct(series[2022].direct.initial_denial_rate, 1)} for direct employers in 2022`);
   says(`${pct(series[2026].placing.initial_denial_rate, 1)} against ${pct(series[2026].direct.initial_denial_rate, 1)} from October 2025 to June 2026`);
 });
 
@@ -104,7 +104,6 @@ test("clients group weakly, slightly more by vendor than by industry", () => {
   assert.ok(plain.ami_gap_over_runs.min > 0, '"more by vendor" must hold in every run, not one partition');
   assert.ok(plain.ami_gap_over_runs.max < 0.05, '"slightly" needs the gap under 0.05 in every run');
   assert.ok(plain.ami_community_main_vendor_same_clients > plain.ami_community_industry);
-  says("slightly more by the firm that staffs them than by industry");
   says("By both, weakly, and slightly more by vendor.");
   assert.ok(plain.p_vendor_same_clients < 0.05 && plain.p_industry < 0.05, "both must beat shuffled labels");
   says(`${iv.vendor_labels} main vendors but only ${iv.industry_labels} industries`);
