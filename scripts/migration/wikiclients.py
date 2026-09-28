@@ -9,16 +9,26 @@ so a partial harvest never looks like a complete one.
 from __future__ import annotations
 
 import json
+import os
 import sys
 import time
 import urllib.error
 import urllib.parse
 import urllib.request
 
-USER_AGENT = (
-    "02805-social-graphs-course-project/0.1 "
-    "(https://github.com/horrrt/02805_social_graphs; gyula.kurthy1@gmail.com)"
-)
+
+def user_agent() -> str:
+    """Built lazily, at request time, so importing this module never needs
+    CONTACT_EMAIL and only a script that actually calls the APIs fails on it."""
+    contact = os.environ.get("CONTACT_EMAIL")
+    if not contact:
+        raise SystemExit("CONTACT_EMAIL is unset: set CONTACT_EMAIL=you@example.com and rerun.")
+    return (
+        "02805-social-graphs-course-project/0.1 "
+        f"(https://github.com/horrrt/02805_social_graphs; {contact})"
+    )
+
+
 WIKIPEDIA_API = "https://en.wikipedia.org/w/api.php"
 WIKIDATA_API = "https://www.wikidata.org/w/api.php"
 WDQS = "https://query.wikidata.org/sparql"
@@ -36,7 +46,7 @@ def _throttle():
 
 
 def _request(url, data=None, headers=None, timeout=90, tries=8):
-    head = {"User-Agent": USER_AGENT}
+    head = {"User-Agent": user_agent()}
     head.update(headers or {})
     last = None
     for attempt in range(tries):

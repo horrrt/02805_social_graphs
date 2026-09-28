@@ -1,0 +1,93 @@
+{
+  "generated": "analysis/week03_reciprocity.py",
+  "year": 2024,
+  "shuffles": 100,
+  "seed": 20260917,
+  "note": "vs_density is reciprocity / density, the ratio the page already quotes: 1.0 is what a directed Erdos-Renyi graph at the same density gives for free. null is 100 directed, degree-preserving rewirings of the same graph (three-edge swaps; every country's in- and out-degree held fixed) and z is how many of the null's own standard deviations the real reciprocity sits above its mean, the same kind of baseline week03_country_networks.py already reports for clustering, assortativity, mean path and diameter.",
+  "stock": {
+    "reciprocity": 0.4066,
+    "density": 0.1686,
+    "vs_density": 2.412,
+    "null": {
+      "mean": 0.2617,
+      "sd": 0.004,
+      "n": 100,
+      "swap_shortfalls": 0,
+      "z": 36.205
+    },
+    "degrees": {
+      "in_out_spearman": 0.428,
+      "in_out_pearson": 0.305,
+      "top_hosts": [
+        {
+          "iso3": "NOR",
+          "in": 203,
+          "out": 43
+        },
+        {
+          "iso3": "AUS",
+          "in": 197,
+          "out": 96
+        },
+        {
+          "iso3": "DNK",
+          "in": 192,
+          "out": 55
+        },
+        {
+          "iso3": "HUN",
+          "in": 184,
+          "out": 52
+        },
+        {
+          "iso3": "GRC",
+          "in": 182,
+          "out": 57
+        }
+      ]
+    }
+  },
+  "refugees": {
+    "reciprocity": 0.1073,
+    "density": 0.1157,
+    "vs_density": 0.927,
+    "null": {
+      "mean": 0.0731,
+      "sd": 0.0031,
+      "n": 100,
+      "swap_shortfalls": 0,
+      "z": 10.914
+    },
+    "degrees": {
+      "in_out_spearman": 0.19,
+      "in_out_pearson": -0.121,
+      "top_hosts": [
+        {
+          "iso3": "CAN",
+          "in": 171,
+          "out": 20
+        },
+        {
+          "iso3": "USA",
+          "in": 164,
+          "out": 33
+        },
+        {
+          "iso3": "DEU",
+          "in": 157,
+          "out": 9
+        },
+        {
+          "iso3": "GBR",
+          "in": 141,
+          "out": 19
+        },
+        {
+          "iso3": "FRA",
+          "in": 135,
+          "out": 7
+        }
+      ]
+    }
+  }
+}

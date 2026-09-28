@@ -25,34 +25,34 @@
       "crosses_zero": false
     },
     "log origin GDP per head": {
-      "beta": -0.2679,
+      "beta": -0.2678,
       "ci": [
-        -0.3511,
+        -0.351,
         -0.1847
       ],
       "crosses_zero": false
     },
     "log destination GDP per head": {
-      "beta": 0.8242,
+      "beta": 0.8241,
       "ci": [
-        0.6641,
-        0.9843
+        0.664,
+        0.9842
       ],
       "crosses_zero": false
     },
     "log distance": {
-      "beta": -1.1965,
+      "beta": -1.1963,
       "ci": [
-        -1.4402,
-        -0.9528
+        -1.4398,
+        -0.9527
       ],
       "crosses_zero": false
     },
     "under 1,000 km": {
-      "beta": -0.2958,
+      "beta": -0.2955,
       "ci": [
-        -0.787,
-        0.1954
+        -0.7867,
+        0.1957
       ],
       "crosses_zero": true
     }
@@ -65,8 +65,8 @@
       "log origin population": 0.5014,
       "log destination population": 0.6822,
       "log origin GDP per head": -0.274,
-      "log destination GDP per head": 0.8212,
-      "log distance": -1.1105
+      "log destination GDP per head": 0.8211,
+      "log distance": -1.1104
     }
   },
   "note": "Correlates in one year, so nothing here identifies a cause. A large ratio marks a corridor worth explaining, not an explanation. Contiguity is a distance under 1,000 km between country centres, which is a proxy for sharing a border and not a border table.",
@@ -77,7 +77,7 @@
       "origin_name": "Russia",
       "destination_name": "Ukraine",
       "people": 3375095,
-      "predicted": 21306,
+      "predicted": 21311,
       "ratio": 158.4,
       "km": 3950
     },
@@ -87,7 +87,7 @@
       "origin_name": "United Kingdom",
       "destination_name": "New Zealand",
       "people": 254524,
-      "predicted": 2696,
+      "predicted": 2697,
       "ratio": 94.4,
       "km": 18496
     },
@@ -97,8 +97,8 @@
       "origin_name": "United Kingdom",
       "destination_name": "Australia",
       "people": 1107102,
-      "predicted": 13077,
-      "ratio": 84.7,
+      "predicted": 13082,
+      "ratio": 84.6,
       "km": 15089
     },
     {
@@ -107,7 +107,7 @@
       "origin_name": "Sudan",
       "destination_name": "Chad",
       "people": 1071034,
-      "predicted": 15120,
+      "predicted": 15121,
       "ratio": 70.8,
       "km": 1353
     },
@@ -117,19 +117,19 @@
       "origin_name": "Russia",
       "destination_name": "Tajikistan",
       "people": 235636,
-      "predicted": 3425,
+      "predicted": 3427,
       "ratio": 68.8,
       "km": 3416
     },
     {
       "origin": "PSE",
       "destination": "LBY",
-      "origin_name": "Occupied Palestinian territory",
+      "origin_name": "Palestine",
       "destination_name": "Libya",
       "people": 322909,
-      "predicted": 6018,
-      "ratio": 53.7,
-      "km": 1841
+      "predicted": 5987,
+      "ratio": 53.9,
+      "km": 1849
     },
     {
       "origin": "RUS",
@@ -137,7 +137,7 @@
       "origin_name": "Russia",
       "destination_name": "Belarus",
       "people": 664610,
-      "predicted": 12712,
+      "predicted": 12715,
       "ratio": 52.3,
       "km": 3736
     },
@@ -147,7 +147,7 @@
       "origin_name": "Russia",
       "destination_name": "Uzbekistan",
       "people": 865767,
-      "predicted": 17185,
+      "predicted": 17190,
       "ratio": 50.4,
       "km": 3320
     },
@@ -177,7 +177,7 @@
       "origin_name": "Ukraine",
       "destination_name": "Russia",
       "people": 2872612,
-      "predicted": 82554,
+      "predicted": 82559,
       "ratio": 34.8,
       "km": 3950
     },
@@ -187,7 +187,7 @@
       "origin_name": "New Zealand",
       "destination_name": "Australia",
       "people": 588088,
-      "predicted": 17113,
+      "predicted": 17116,
       "ratio": 34.4,
       "km": 4173
     },
@@ -197,7 +197,7 @@
       "origin_name": "Ireland",
       "destination_name": "Australia",
       "people": 90203,
-      "predicted": 2877,
+      "predicted": 2879,
       "ratio": 31.3,
       "km": 15521
     },
@@ -207,7 +207,7 @@
       "origin_name": "Ivory Coast",
       "destination_name": "Burkina Faso",
       "people": 574409,
-      "predicted": 18441,
+      "predicted": 18445,
       "ratio": 31.1,
       "km": 641
     },
@@ -217,7 +217,7 @@
       "origin_name": "Burkina Faso",
       "destination_name": "Ivory Coast",
       "people": 1820882,
-      "predicted": 59416,
+      "predicted": 59420,
       "ratio": 30.6,
       "km": 641
     },
@@ -237,8 +237,8 @@
       "origin_name": "Hong Kong",
       "destination_name": "Canada",
       "people": 204515,
-      "predicted": 7761,
-      "ratio": 26.4,
+      "predicted": 7764,
+      "ratio": 26.3,
       "km": 10410
     },
     {
@@ -247,7 +247,7 @@
       "origin_name": "Venezuela",
       "destination_name": "Colombia",
       "people": 2904873,
-      "predicted": 111522,
+      "predicted": 111534,
       "ratio": 26.0,
       "km": 822
     },
@@ -257,19 +257,19 @@
       "origin_name": "Democratic Republic of the Congo",
       "destination_name": "Burundi",
       "people": 224091,
-      "predicted": 9122,
+      "predicted": 9125,
       "ratio": 24.6,
       "km": 690
     },
     {
-      "origin": "VEN",
-      "destination": "CHL",
-      "origin_name": "Venezuela",
-      "destination_name": "Chile",
-      "people": 427821,
-      "predicted": 18072,
+      "origin": "PSE",
+      "destination": "JOR",
+      "origin_name": "Palestine",
+      "destination_name": "Jordan",
+      "people": 2379525,
+      "predicted": 100202,
       "ratio": 23.7,
-      "km": 4579
+      "km": 148
     }
   ],
   "under_note": "Read these as reporting, not as absence. DESA's table is ragged: a country whose statistics office files small origins under 'other' reports a zero where people plainly live, so the bottom of this list is a map of who counts carefully rather than of who stayed home.",
@@ -280,7 +280,7 @@
       "origin_name": "Cambodia",
       "destination_name": "Indonesia",
       "people": 0,
-      "predicted": 89391,
+      "predicted": 89389,
       "ratio": 0.0,
       "km": 2159
     },
@@ -290,7 +290,7 @@
       "origin_name": "Vietnam",
       "destination_name": "Malaysia",
       "people": 5,
-      "predicted": 143000,
+      "predicted": 142985,
       "ratio": 0.0,
       "km": 1494
     },
@@ -300,7 +300,7 @@
       "origin_name": "Vietnam",
       "destination_name": "Indonesia",
       "people": 15,
-      "predicted": 171409,
+      "predicted": 171412,
       "ratio": 0.0,
       "km": 2283
     },
@@ -310,7 +310,7 @@
       "origin_name": "Uganda",
       "destination_name": "Ethiopia",
       "people": 18,
-      "predicted": 68242,
+      "predicted": 68238,
       "ratio": 0.0,
       "km": 1203
     },
@@ -320,7 +320,7 @@
       "origin_name": "Bhutan",
       "destination_name": "People's Republic of China",
       "people": 113,
-      "predicted": 168214,
+      "predicted": 168186,
       "ratio": 0.001,
       "km": 1539
     },
@@ -330,7 +330,7 @@
       "origin_name": "Turkey",
       "destination_name": "India",
       "people": 58,
-      "predicted": 84459,
+      "predicted": 84482,
       "ratio": 0.001,
       "km": 4771
     },
@@ -340,7 +340,7 @@
       "origin_name": "Kazakhstan",
       "destination_name": "India",
       "people": 78,
-      "predicted": 71434,
+      "predicted": 71448,
       "ratio": 0.001,
       "km": 3102
     },
@@ -350,7 +350,7 @@
       "origin_name": "Poland",
       "destination_name": "Romania",
       "people": 102,
-      "predicted": 87334,
+      "predicted": 87348,
       "ratio": 0.001,
       "km": 797
     },
@@ -360,7 +360,7 @@
       "origin_name": "Sri Lanka",
       "destination_name": "People's Republic of China",
       "people": 378,
-      "predicted": 283218,
+      "predicted": 283219,
       "ratio": 0.001,
       "km": 3938
     },
@@ -370,7 +370,7 @@
       "origin_name": "Nepal",
       "destination_name": "People's Republic of China",
       "people": 1388,
-      "predicted": 988815,
+      "predicted": 988605,
       "ratio": 0.001,
       "km": 2027
     }

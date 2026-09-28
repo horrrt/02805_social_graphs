@@ -64,6 +64,8 @@ import statistics
 
 import networkx as nx
 
+from check_pages import check
+
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 DATA = ROOT / "docs" / "assets" / "data"
 
@@ -319,6 +321,7 @@ def main() -> None:
                 "network, which is much denser than the ones they were set on.",
     }
     path = DATA / "week03_cartography.json"
+    check(path, payload)
     path.write_text(json.dumps(payload, separators=(",", ":")))
     print(f"\nwrote {path.relative_to(ROOT)} ({path.stat().st_size // 1024} KB), "
           f"{len(below)} countries below the floor in {last}")

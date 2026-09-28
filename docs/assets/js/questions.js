@@ -689,6 +689,7 @@ function answerDistance() {
   const farPeople = far.reduce((sum, d) => sum + d.people, 0);
   const farCorridors = far.reduce((sum, d) => sum + d.corridors, 0);
   const spread = medianInterval(model.rows.map((r) => [r.km, r.people]));
+  const rusUkr = model.rows.find((r) => r.o === "RUS" && r.d === "UKR");
   return (
     `They do not. Half of everyone living outside their country of birth is within ` +
     `<b>${api.format.fmt.format(median)} km</b> of it` +
@@ -704,7 +705,7 @@ function answerDistance() {
     `<i>rare</i> kind of move. Past 4,000 km sit <b>${Math.round(farCorridors)}%</b> of all corridors ` +
     `but only <b>${Math.round(farPeople)}%</b> of all people. ` +
     `Distance here is centre-to-centre between two countries, so it is crude for the large ones: ` +
-    `Russia and Ukraine score 3,950 km apart because Russia's centre is in Siberia.`
+    `Russia and Ukraine score ${api.format.fmt.format(rusUkr.km)} km apart because Russia's centre is in Siberia.`
   );
 }
 
