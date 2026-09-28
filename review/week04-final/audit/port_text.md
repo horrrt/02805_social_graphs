@@ -391,3 +391,61 @@ Slot table extension in use: hero lines (`.w4-hero-text > p.body, p.caution`), o
 
 **Style lint (3.7) on the page text:** no new hits
 
+## RS5
+
+Slot table extension in use: hero lines (`.w4-hero-text > p.body, p.caution`), opener lines (`header.w4-opener h2, p`) and finding lines (`.w4-finding > div > h3, p`).
+
+### beyond>w4-card
+- **answers#0 (added)**
+  - before: (none)
+  - after: 5A Law firms: barely follow the section 3 groups. 5B Green cards: outsourcing firms sponsor fewer per H-1B filing. 5C Wage levels: a placed filing has 3.6 times the odds of level I or II.
+
+### beyond-law
+- **notice#0**
+  - before: What to notice AMI 0.037 against 0.000 ± 0.002 for rewired networks: real (z = 15) and small. Modularity would mislead here.
+  - after: What to notice AMI 0.037 against 0.000 ± 0.002 for rewired networks: real (z = 15) and small. Modularity would mislead here.
+
+### beyond-perm
+- **notice#0**
+  - before: What to notice Outsourcing firms file 0.11 green cards per H-1B filing (95% interval 0.08 to 0.15), direct employers 0.18 (0.14 to 0.21). Across the six largest staffing groups the rate runs from 0.03 in Cognizant's group, where Cognizant itself filed almost none, to 0.15, a spread that shuffled group labels match 28% of the time (p = 0.28).
+  - after: What to notice Outsourcing firms file 0.11 green cards per H-1B filing, direct employers 0.18. Across the six largest staffing groups the rate runs from 0.03 to 0.15, a spread that shuffled group labels match 28% of the time.
+- **drawers#0**
+  - before: Method For each company with 20 or more H-1B filings we divided its 2025 PERM filings by its H-1B filings, matching companies by name and tax number. More numbers The gap shrinks to 0.13 against 0.17 when a firm counts as outsourcing only if most of its filings go to clients. Single companies swing these rates more than any group does: counting every case status, filings in the names of Amazon and Google fell from 3,638 and 1,618 in 2024 to 15 and 3 in 2025. Green cards per company and the strongest employer ties are in the deep dive .
+  - after: Method For each company with 20 or more H-1B filings we divided its 2025 PERM filings by its H-1B filings, matching companies by name and tax number. More numbers The gap shrinks to 0.13 against 0.17 when a firm counts as outsourcing only if most of its filings go to clients. Single companies swing these rates more than any group does: counting every case status, filings in the names of Amazon and Google fell from 3,638 and 1,618 in 2024 to 15 and 3 in 2025. Green cards per company and the strongest employer ties are in the deep dive . Outsourcing firms file 0.11 green cards per H-1B filing (95% interval 0.08 to 0.15), direct employers 0.18 (0.14 to 0.21). Across the six largest staffing groups the rate runs from 0.03 in Cognizant's group, where Cognizant itself filed almost none, to 0.15, a spread that shuffled group labels match 28% of the time (p = 0.28).
+
+### beyond-wage
+- **para#0**
+  - before: Every filing states a prevailing-wage level from I (entry) to IV (fully competent), set by the experience and skills the job asks for; each level carries a wage floor. 92% of filings give one.
+  - after: Every filing states a prevailing-wage level from I (entry) to IV (fully competent). 92% of filings give one.
+- **notice#0**
+  - before: What to notice Overall, 79% of placed filings sit at level I or II against 58% of direct ones. Within the 83 occupations with 20 or more filings of each kind, the Mantel–Haenszel odds ratio is 3.59, and 69 of the 83 point the same way. A level describes the job as filed, not the worker, so this shows cheaper job descriptions, not lower pay for the same person.
+  - after: What to notice Overall, 79% of placed filings sit at level I or II against 58% of direct ones. Within the 83 occupations with 20 or more filings of each kind, the Mantel–Haenszel odds ratio is 3.59, and 69 of the 83 point the same way. A level describes the job as filed, not the worker, so this shows cheaper job descriptions, not lower pay for the same person.
+
+**Terms added:** 
+- `w4-term-beyond-law-ami`
+- `w4-term-beyond-law-rewired`
+- `w4-term-beyond-law-modularity`
+- `w4-term-beyond-perm-shuffled`
+- `w4-term-beyond-wage-wagelevel`
+- `w4-term-beyond-wage-placed`
+
+**Fix-ups applied (3.7):** none
+
+**Cards a script builds (skipped, see 3.3):** none
+
+**Held slots: board number not on the page (stale-number rule):** 
+- beyond>w4-card answers#0: board numbers [] not in the page slot; board text: override used
+- beyond-wage notice#0: board numbers [] not in the page slot; board text: override used
+
+**Numbers the board drops (accepted, list in the PR body):** none
+
+**Numbers in new term definitions (check each is a scale, not a result):** 
+- beyond-law notice#0: ['0', '1', 'two'] in «Adjusted mutual information: how closely two ways of grouping the same companies agree. 0 is what chance gives, 1 is a perfect match.»
+
+**Script-owned text that differs from the board (3.3):** none
+
+**Text that still differs from the board, outside script-owned nodes:** 
+- beyond-wage: page «A level describes the job as filed, not the worker, so this shows cheaper job descriptions, not lower pay for the same person.» board «»
+
+**Style lint (3.7) on the page text:** no new hits
+

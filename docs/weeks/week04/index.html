@@ -1043,6 +1043,7 @@
                   sponsor permanent residence. Three short questions follow the
                   section 3 groups into those records.
                 </p>
+                <ol class="rx-answers"><li><span class="w4-num">5A</span><span><b>Law firms:</b> barely follow the section 3 groups.</span></li><li><span class="w4-num">5B</span><span><b>Green cards:</b> outsourcing firms sponsor fewer per H-1B filing.</span></li><li><span class="w4-num">5C</span><span><b>Wage levels:</b> a placed filing has 3.6 times the odds of level I or II.</span></li></ol>
               </div>
               <figure class="w4-figure">
                 <figcaption><b>Three small answers</b><span>Each real value against its baseline: law firms against rewired networks, green cards against direct employers' interval, wage odds against equal odds.</span></figcaption>
@@ -1065,8 +1066,8 @@
                   <span class="ico">💡</span>
                   <span>
                     <b>What to notice</b>
-                    AMI 0.037 against 0.000 ± 0.002 for rewired networks: real
-                    (z = 15) and small. Modularity would mislead here.
+                    <span class="w4-term"><button aria-describedby="w4-term-beyond-law-ami" type="button">AMI</button><span class="w4-pop" id="w4-term-beyond-law-ami" role="tooltip">Adjusted mutual information: how closely two ways of grouping the same companies agree. 0 is what chance gives, 1 is a perfect match.</span></span> 0.037 against 0.000 ± 0.002 for <span class="w4-term"><button aria-describedby="w4-term-beyond-law-rewired" type="button">rewired networks</button><span class="w4-pop" id="w4-term-beyond-law-rewired" role="tooltip">Random copies of the network in which every company and law firm keeps its number of partners, but the partners are dealt out again at random.</span></span>: real
+                    (z = 15) and small. <span class="w4-term"><button aria-describedby="w4-term-beyond-law-modularity" type="button">Modularity</button><span class="w4-pop" id="w4-term-beyond-law-modularity" role="tooltip">How much more of the link weight falls inside the groups than a random network would put there. Higher means cleaner groups.</span></span> would mislead here.
                   </span>
                 </div>
                 <div class="rx-drawers rx-foot">
@@ -1105,17 +1106,14 @@
                   <span class="ico">💡</span>
                   <span>
                     <b>What to notice</b>
-                    Outsourcing firms file 0.11 green cards per H-1B filing
-                    (95% interval 0.08 to 0.15), direct employers 0.18 (0.14 to
-                    0.21). Across the six largest staffing groups the rate
-                    runs from 0.03 in Cognizant's group, where Cognizant
-                    itself filed almost none, to 0.15, a spread that shuffled
-                    group labels match 28% of the time (p = 0.28).
+                    Outsourcing firms file 0.11 green cards per H-1B filing,
+                    direct employers 0.18. Across the six largest staffing groups
+                    the rate runs from 0.03 to 0.15, a spread that <span class="w4-term"><button aria-describedby="w4-term-beyond-perm-shuffled" type="button">shuffled group labels</button><span class="w4-pop" id="w4-term-beyond-perm-shuffled" role="tooltip">We dealt the companies out to the groups again at random, many times, to see how big a spread chance alone produces.</span></span> match 28% of the time.
                   </span>
                 </div>
                 <div class="rx-drawers rx-foot">
                   <details class="rx-drawer"><summary>Method</summary><div class="rx-drawer-body"><p>For each company with 20 or more H-1B filings we divided its 2025 PERM filings by its H-1B filings, matching companies by name and tax number.</p></div></details>
-                  <details class="rx-drawer"><summary>More numbers</summary><div class="rx-drawer-body"><p>The gap shrinks to 0.13 against 0.17 when a firm counts as outsourcing only if most of its filings go to clients. Single companies swing these rates more than any group does: counting every case status, filings in the names of Amazon and Google fell from 3,638 and 1,618 in 2024 to 15 and 3 in 2025. Green cards per company and the strongest employer ties are in <a href="#deeper-perm">the deep dive</a>.</p></div></details>
+                  <details class="rx-drawer"><summary>More numbers</summary><div class="rx-drawer-body"><p>The gap shrinks to 0.13 against 0.17 when a firm counts as outsourcing only if most of its filings go to clients. Single companies swing these rates more than any group does: counting every case status, filings in the names of Amazon and Google fell from 3,638 and 1,618 in 2024 to 15 and 3 in 2025. Green cards per company and the strongest employer ties are in <a href="#deeper-perm">the deep dive</a>.</p><p>Outsourcing firms file 0.11 green cards per H-1B filing (95% interval 0.08 to 0.15), direct employers 0.18 (0.14 to 0.21). Across the six largest staffing groups the rate runs from 0.03 in Cognizant's group, where Cognizant itself filed almost none, to 0.15, a spread that shuffled group labels match 28% of the time (p = 0.28).</p></div></details>
                 </div>
               </div>
               <div class="plot">
@@ -1141,16 +1139,14 @@
             <div class="w4-two">
               <div>
                 <p class="sub">
-                  Every filing states a prevailing-wage level from I (entry) to
-                  IV (fully competent), set by the experience and skills the
-                  job asks for; each level carries a wage floor. 92% of
-                  filings give one.
+                  Every filing states a <span class="w4-term"><button aria-describedby="w4-term-beyond-wage-wagelevel" type="button">prevailing-wage level</button><span class="w4-pop" id="w4-term-beyond-wage-wagelevel" role="tooltip">A level set by the experience and skills the job asks for. Each level carries a wage floor.</span></span> from I (entry) to
+                  IV (fully competent). 92% of filings give one.
                 </p>
                 <div class="notice">
                   <span class="ico">💡</span>
                   <span>
                     <b>What to notice</b>
-                    Overall, 79% of placed filings sit at level I or II against
+                    Overall, 79% of <span class="w4-term"><button aria-describedby="w4-term-beyond-wage-placed" type="button">placed</button><span class="w4-pop" id="w4-term-beyond-wage-placed" role="tooltip">A placed filing sends the worker to a client company's site; a direct filing is for the employer's own site.</span></span> filings sit at level I or II against
                     58% of direct ones. Within the 83 occupations with 20 or
                     more filings of each kind, the <span class="w4-term"><button aria-describedby="w4-term-beyond-mh" type="button">Mantel–Haenszel odds ratio</button><span class="w4-pop" id="w4-term-beyond-mh" role="tooltip">An odds ratio pooled over those occupations, so each comparison sets placed against direct filings for the same job. 1 means the same odds.</span></span>
                     is 3.59, and 69 of the 83 point the same way. A level

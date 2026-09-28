@@ -188,6 +188,14 @@ test("beyond: law firms, green cards and wage levels", () => {
   const named = d.q2_named_perm;
   says("beyond-perm", `from ${count(named.Amazon.fy2024.all_statuses_name_match)} and ${count(named.Google.fy2024.all_statuses_name_match)} in 2024 to ${named.Amazon.fy2025.all_statuses_name_match} and ${named.Google.fy2025.all_statuses_name_match} in 2025`);
   says("beyond-wage", `Within the ${d.q3.strata_kept_20plus_each_side} occupations`);
+  // Section 5's answer list.
+  const answers = flatten(block(html, "beyond"));
+  const answer = (t) => assert.ok(answers.includes(t), `section 5's answers should say "${t}"`);
+  answer("Law firms: barely follow the section 3 groups.");
+  assert.ok(f.q1_ami < 0.1, '"barely follow" needs the law-firm AMI under 0.1');
+  answer("Green cards: outsourcing firms sponsor fewer per H-1B filing.");
+  assert.ok(hi < f.q2_direct_pooled_ratio, '"sponsor fewer" needs the outsourcing interval below the direct rate');
+  answer(`Wage levels: a placed filing has ${f.q3_odds_ratio.toFixed(1)} times the odds of level I or II.`);
 });
 
 test("section 4: without the biggest firms", () => {
