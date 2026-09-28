@@ -18,11 +18,21 @@ A fourth split needs no ranking: placement, certified filings placed at a
 client against filed by a direct employer (SECONDARY_ENTITY starts with "Y"),
 the same flag week04_staffing.py counts for placed_share.
 
-Occupations are 2018 SOC. Filings still on the twelve 2010 computer codes
-(week04_jobs.LEGACY) are moved to their 2018 successors before ranking, the
-same recoding week04_jobs.py does for its own network; occupations/groups
-below recodes and drops nothing, they route unparseable SOC codes into
-"All other occupations" / "Other groups" and count how many.
+Occupations are 2018 SOC. Filings still on 2010 codes (FY2022 until July
+2022) are moved to their 2018 successors before ranking, in two steps. First
+the full 8-digit O*NET-SOC code goes through every row of O*NET's 2010-to-2019
+crosswalk that has exactly one 2019 target, keeping that target's 6-digit SOC
+code, so 15-1199.08 lands on 15-2051 (Data Scientists) and 15-1199.01 on
+15-1253 (QA testers) rather than on 15-1299. No 2010 code the crosswalk moves
+is also a 2019 code, so every year's rows go through it. Codes without a
+single-target row fall back to week04_jobs.LEGACY, 13 old 7-character codes
+mapped onto 12 new ones (the same map week04_jobs.py uses for its own
+network). meta carries legacy_codes and legacy_targets (LEGACY's size and its
+distinct targets) and crosswalk_codes: the distinct 8-digit codes in the
+filings that the crosswalk moved to a different 6-digit code. A row counts in
+legacy_recoded when either step changed its 6-digit code. occupations/groups
+below drop nothing: they route unparseable SOC codes into "All other
+occupations" / "Other groups" and count how many.
 
 top_in on a named series lists the fiscal years it ranked in that split's top
 N, so the page can say when a role entered or left. The finding on each split
@@ -46,12 +56,14 @@ from pathlib import Path
 import pandas as pd
 
 import week04_staffing as staffing
+from week04_data import RAW
 from week04_jobs import LEGACY, titles_of
 from week04_schemas import check
 from week04_shift import bounds as oct_jun_bounds
 
 ROOT = Path(__file__).resolve().parents[1]
 PAGE = ROOT / "docs/weeks/week04/data/roles.json"
+CROSSWALK = RAW / "onet" / "onet_2010_to_2019_crosswalk.csv"
 YEARS = ["2022", "2023", "2024", "2025", "2026"]
 FY = {y: f"FY{y}" for y in YEARS}
 TOP_N = {"occupations": 10, "groups": 7, "employer": 10}
@@ -88,19 +100,40 @@ MAJOR_GROUP_TITLES = {
 }
 
 
-def recoded(lca):
-    """Adds the recoded 6-digit occupation, its major group, whether the row
-    was on a legacy 2010 code, and whether its SOC code parsed at all."""
-    code = lca["SOC_CODE"].astype(str).str.strip().str[:7]
+def single_targets():
+    """{2010 O*NET-SOC code: its 2019 6-digit SOC code}, from every crosswalk
+    row whose 2010 code has exactly one 2019 target."""
+    if not CROSSWALK.exists():
+        raise SystemExit(f"{CROSSWALK.relative_to(ROOT)} is missing: run python analysis/week04_data.py --refs --no-tables")
+    walk = pd.read_csv(CROSSWALK, dtype=str)
+    targets = walk.groupby("O*NET-SOC 2010 Code")["O*NET-SOC 2019 Code"].agg(set)
+    return {old: next(iter(new))[:7] for old, new in targets.items() if len(new) == 1}
+
+
+def recoded(lca, crosswalk):
+    """Adds the recoded 6-digit occupation, its major group, whether the
+    recode moved the row off a 2010 code, whether the crosswalk (not LEGACY)
+    did, and whether its SOC code parsed at all."""
+    raw = lca["SOC_CODE"].astype(str).str.strip()
+    code = raw.str[:7]
     valid = code.str.match(r"^\d{2}-\d{4}$", na=False)
-    legacy = valid & code.isin(LEGACY)
-    occupation = code.where(valid).replace(LEGACY)
+    full = raw.str[:10].where(raw.str[:10].str.match(r"^\d{2}-\d{4}\.\d{2}$", na=False))
+    walked = full.map(crosswalk)
+    occupation = walked.where(valid).fillna(code.where(valid).replace(LEGACY))
+    legacy = valid & (occupation != code)
+    by_crosswalk = valid & walked.notna() & (walked != code)
     group = occupation.str[:2]
-    return lca.assign(occupation=occupation, group=group, legacy=legacy, soc_valid=valid)
+    return lca.assign(occupation=occupation, group=group, legacy=legacy, by_crosswalk=by_crosswalk,
+                      onet_code=full, soc_valid=valid)
 
 
 def load_years():
-    return {y: recoded(staffing.certified(int(y))) for y in YEARS}
+    crosswalk = single_targets()
+    out = {}
+    for i, y in enumerate(YEARS, 1):
+        out[y] = recoded(staffing.certified(int(y)), crosswalk)
+        print(f"loaded FY{y} ({i}/{len(YEARS)})", flush=True)
+    return out
 
 
 def oct_jun_frames(frames):
@@ -164,10 +197,12 @@ def biggest_mover(series, totals):
     share = lambda s, i: s["counts"][i] / totals[YEARS[i]] if totals[YEARS[i]] else 0.0
     scored = [(s, share(s, 0), share(s, 3)) for s in named]
     s, s22, s25 = max(scored, key=lambda t: abs(t[2] - t[1]))
+    # change_pp from the shares as rounded, so the notice's three numbers agree.
+    r22, r25 = round(s22 * 100, 1), round(s25 * 100, 1)
     return {
         "name": s["name"], "code": s["code"],
-        "share_fy2022_percent": round(s22 * 100, 1), "share_fy2025_percent": round(s25 * 100, 1),
-        "change_pp": round((s25 - s22) * 100, 1), "direction": "grew" if s25 > s22 else "shrank",
+        "share_fy2022_percent": r22, "share_fy2025_percent": r25,
+        "change_pp": round(r25 - r22, 1), "direction": "grew" if s25 > s22 else "shrank",
         "entered_top": "FY2022" not in s["top_in"] and "FY2025" in s["top_in"],
         "left_top": "FY2022" in s["top_in"] and "FY2025" not in s["top_in"],
     }
@@ -209,8 +244,9 @@ def build_placement(frames, oj_frames, totals, oj_totals):
         {"name": "Direct employer", "code": None, "top_in": [], "counts": direct_full, "oct_jun": direct_oj},
     ]
     series.sort(key=lambda s: -sum(s["counts"]))
+    code = {"Placed at a client": "placed", "Direct employer": "direct"}
     return {"top_n": 2, "other_name": "", "series": series,
-            "finding": biggest_mover([{**series[0], "code": "placed"}, {**series[1], "code": "direct"}], totals)}
+            "finding": biggest_mover([{**s, "code": code[s["name"]]} for s in series], totals)}
 
 
 def main():
@@ -256,6 +292,11 @@ def main():
         "oct_jun_totals": oj_totals,
         "splits": splits,
         "legacy_recoded": {y: int(frames[y]["legacy"].sum()) for y in YEARS},
+        "meta": {
+            "legacy_codes": len(LEGACY),
+            "legacy_targets": len(set(LEGACY.values())),
+            "crosswalk_codes": int(pd.concat([f.loc[f["by_crosswalk"], "onet_code"] for f in frames.values()]).nunique()),
+        },
         "uncoded": {y: int((~frames[y]["soc_valid"]).sum()) for y in YEARS},
     }
     check(PAGE, page)
