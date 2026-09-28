@@ -18,6 +18,7 @@ other step is seconds once the downloads are cached.
 from __future__ import annotations
 
 import argparse
+import os
 import pathlib
 import subprocess
 import sys
@@ -25,7 +26,15 @@ import urllib.request
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 RAW = ROOT / "build" / "raw"
-UA = "02805-social-graphs-course-project/0.1 (gyula.kurthy1@gmail.com)"
+
+
+def user_agent() -> str:
+    """Built lazily, at download time, so importing this module never needs
+    CONTACT_EMAIL and a run that never fetches anything never fails on it."""
+    contact = os.environ.get("CONTACT_EMAIL")
+    if not contact:
+        sys.exit("CONTACT_EMAIL is unset: set CONTACT_EMAIL=you@example.com and rerun.")
+    return f"02805-social-graphs-course-project/0.1 ({contact})"
 
 # Everything the build needs that is not in the repository.
 DOWNLOADS = [
@@ -120,7 +129,7 @@ def fetch(url: str, target: pathlib.Path, force: bool) -> None:
         return
     print(f"  fetch   {target.name} … ", end="", flush=True)
     target.parent.mkdir(parents=True, exist_ok=True)
-    request = urllib.request.Request(url, headers={"User-Agent": UA})
+    request = urllib.request.Request(url, headers={"User-Agent": user_agent()})
     with urllib.request.urlopen(request, timeout=600) as response:
         target.write_bytes(response.read())
     print(size(target))

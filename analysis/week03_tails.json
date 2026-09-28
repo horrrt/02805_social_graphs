@@ -24,7 +24,8 @@
           "p": 0.193
         }
       },
-      "verdict": "Ruled out on its own terms: a power law above 33 produces a fit this poor in 0% of its own draws. The lognormal describes the same tail better. The exponential cannot be separated from it either way."
+      "verdict": "Ruled out on its own terms: a power law above 33 produces a fit this poor in 0% of its own draws. The lognormal describes the same tail better. The exponential cannot be separated from it either way.",
+      "n_distinct": 86
     },
     "out_degree": {
       "label": "Destinations per origin (out-degree)",
@@ -44,7 +45,8 @@
           "p": 0.0
         }
       },
-      "verdict": "Ruled out on its own terms: a power law above 33 produces a fit this poor in 3% of its own draws. The lognormal and exponential describe the same tail better."
+      "verdict": "Ruled out on its own terms: a power law above 33 produces a fit this poor in 3% of its own draws. The lognormal and exponential describe the same tail better.",
+      "n_distinct": 89
     },
     "flight_partners": {
       "label": "Flight partners per country",
@@ -64,7 +66,8 @@
           "p": 0.077
         }
       },
-      "verdict": "Not ruled out on its own terms (p = 0.21 over 57 points in the tail), which is a weak thing to be able to say at this size. The lognormal and exponential describe the same tail better."
+      "verdict": "Not ruled out on its own terms (p = 0.21 over 57 points in the tail), which is a weak thing to be able to say at this size. The lognormal and exponential describe the same tail better.",
+      "n_distinct": 59
     },
     "corridor_people": {
       "label": "People on a corridor",
@@ -84,7 +87,8 @@
           "p": 0.004
         }
       },
-      "verdict": "Ruled out on its own terms: a power law above 126665 produces a fit this poor in 1% of its own draws. The lognormal describes the same tail better."
+      "verdict": "Ruled out on its own terms: a power law above 126665 produces a fit this poor in 1% of its own draws. The lognormal describes the same tail better.",
+      "n_distinct": 4192
     }
   }
 }

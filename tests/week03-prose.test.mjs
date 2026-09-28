@@ -38,6 +38,8 @@ const gravity = loadAnalysis("week03_gravity.json");
 const communities = loadAnalysis("week03_communities.json");
 const passengers = loadAnalysis("week03_passengers.json");
 const countryFacts = loadAnalysis("week03_country_facts.json");
+const reciprocity = loadAnalysis("week03_reciprocity.json");
+const questions = readText("docs/assets/js/questions.js");
 const corridorNodes = corridors.nodes;
 
 test("the page's country counts match the corridors file", () => {
@@ -433,4 +435,247 @@ test("section references point at sections that exist (1-8 only)", () => {
   for (const n of numbers) {
     assert.ok(n >= 1 && n <= 8, `"Section ${n}" is referenced but the page only has sections 1-8`);
   }
+});
+
+// -------------------------------------------------------------- data-treatment pass
+
+test("the reporting-coverage paragraph matches corridors.json for every year, not one stale reading", () => {
+  const usaYears = Object.entries(corridors.nodes.USA.years);
+  const usaDegrees = new Set(usaYears.map(([, y]) => y.in_degree));
+  assert.equal(usaDegrees.size, 1, "the USA's in-degree is not constant across years any more");
+  const usaConstant = [...usaDegrees][0];
+  assert.ok(
+    hasPhrase(`United States names ${usaConstant} origins in every year`),
+    `page does not quote the USA's constant in-degree (${usaConstant})`,
+  );
+  const dnkYears = corridors.nodes.DNK.years;
+  const first = String(corridors.years[0]);
+  const last = String(corridors.years.at(-1));
+  const dnkFirst = dnkYears[first].in_degree;
+  const dnkLast = dnkYears[last].in_degree;
+  assert.ok(
+    dnkLast > dnkFirst && hasPhrase(`Denmark rises from ${dnkFirst} in ${first} to ${dnkLast} by ${last}`),
+    `page does not quote Denmark's ${first}-${last} in-degree range (${dnkFirst} to ${dnkLast})`,
+  );
+});
+
+test("the migrant-destinations table is ordered exactly as country_facts.json's stock_rankings", () => {
+  const ranked = countryFacts.stock_rankings.weighted_in_degree.slice(0, 10)
+    .map((iso3) => corridorNodes[iso3].name);
+  const rowMatch = html.match(
+    /Where migrants live[\s\S]*?<\/table>/,
+  );
+  assert.ok(rowMatch, "could not find the migrant-destinations table");
+  const cells = [...rowMatch[0].matchAll(/<td[^>]*>([^<]+)<\/td>/g)].map((m) => m[1]);
+  // Three columns per row (rank, destination, refugee country); the
+  // destination name is the second cell of each row.
+  const tableNames = cells.filter((_, i) => i % 3 === 1);
+  assert.deepEqual(
+    tableNames,
+    ranked,
+    `migrant-destinations table order (${tableNames.join(", ")}) does not match stock_rankings (${ranked.join(", ")})`,
+  );
+});
+
+test("the in-degree tie count matches tails.json's own n and n_distinct, not a stale docstring figure", () => {
+  const fit = tails.fits.in_degree;
+  assert.ok(fit.n_distinct, "week03_tails.json's in_degree fit has no n_distinct field");
+  assert.ok(
+    hasPhrase(`${fit.n} countries share ${fit.n_distinct} distinct in-degrees`),
+    `page does not quote tails.json's in_degree n/n_distinct (${fit.n}/${fit.n_distinct})`,
+  );
+});
+
+test("the 'which countries, and how many' paragraph names nine counts, matching every quantity it lists", () => {
+  const total = corridors.countries.length;
+  const migration = corridors.totals[String(corridors.years.at(-1))].countries;
+  const flightCountries = corridors.flight_snapshot.countries;
+  const anyIndicator = Object.values(corridors.indicators).filter(
+    (v) => Object.values(v).some((x) => x !== null),
+  ).length;
+  const income = Object.values(corridors.indicators).filter((v) => v.gdp !== null).length;
+  const floor2024 = Object.keys(cart.by_year[String(cart.years.at(-1))]).length;
+  const floor1990 = Object.keys(cart.by_year[String(cart.years[0])]).length;
+  const oxford = loadData("week03_closures.json").countries;
+  const usPassengers = passengers.countries;
+  const counts = [
+    ["total", total], ["migration", migration], ["flight", flightCountries],
+    ["any indicator", anyIndicator], ["income", income],
+    ["2024 floor", floor2024], ["1990 floor", floor1990],
+    ["Oxford", oxford], ["US passengers", usPassengers],
+  ];
+  for (const [label, n] of counts) {
+    assert.ok(hasPhrase(`<b>${n}</b>`), `page does not quote <b>${n}</b> for the "${label}" count`);
+  }
+  const word = NUMBER_WORDS[counts.length];
+  assert.ok(hasPhrase(`${word[0].toUpperCase()}${word.slice(1)} different counts appear on this page`),
+    `the paragraph lists ${counts.length} counts and should say so`);
+});
+
+test("the section-2 histogram callout matches corridors.json's 2020 in-degree distribution", () => {
+  const year = String(corridors.null_year);
+  const values = Object.values(corridors.nodes)
+    .map((n) => n.years[year]?.in_degree)
+    .filter((v) => v !== undefined)
+    .sort((a, b) => a - b);
+  const median = values[Math.floor(values.length / 2)];
+  const max = values.at(-1);
+  const mean = values.reduce((a, b) => a + b, 0) / values.length;
+  const belowMean = values.filter((v) => v < mean).length;
+  const shareBelowMean = Math.round((belowMean / values.length) * 10);
+  const shareBelow10 = Math.round((values.filter((v) => v < 10).length / values.length) * 100);
+  assert.ok(
+    hasPhrase(`median country has ${median} origins and the busiest has ${max}`),
+    `page does not quote median ${median} / max ${max} from corridors.json`,
+  );
+  assert.ok(
+    hasPhrase(`${NUMBER_WORDS[shareBelowMean]} countries in ten sit below the mean of ${Math.round(mean)}`),
+    `page does not quote the mean ${Math.round(mean)} and its ${shareBelowMean}-in-ten share`,
+  );
+  assert.ok(
+    hasPhrase(`Only ${shareBelow10}% have fewer than ten`),
+    `page does not quote the ${shareBelow10}% share below ten partners`,
+  );
+});
+
+test("the reciprocity row and passage quote the density baseline and the degree-preserving null", () => {
+  for (const net of ["stock", "refugees"]) {
+    const r = reciprocity[net];
+    assert.equal(r.reciprocity, countryFacts[net].reciprocity, `${net}: reciprocity.json disagrees with country_facts.json`);
+    assert.equal(r.density, countryFacts[net].density, `${net}: reciprocity.json disagrees with country_facts.json's density`);
+  }
+  assert.equal(reciprocity.stock.null.n, reciprocity.refugees.null.n);
+  assert.ok(hasPhrase(`the directed network and ${reciprocity.stock.null.n} directed shuffles`),
+    `the table note should say ${reciprocity.stock.null.n} directed shuffles`);
+  const zText = (z) => `${z < 0 ? "−" : "+"}${Math.abs(z).toFixed(1)}`;
+  const cell = (r) => `${r.reciprocity.toFixed(2)} (null ${r.null.mean.toFixed(2)} ± ${r.null.sd.toFixed(3)}, z = ${zText(r.null.z)})`;
+  assert.ok(
+    hasPhrase(`<tr><td>Reciprocity</td><td style="text-align: right">${cell(reciprocity.stock)}</td><td style="text-align: right">${cell(reciprocity.refugees)}</td></tr>`),
+    `the table's reciprocity row should read ${cell(reciprocity.stock)} and ${cell(reciprocity.refugees)}`,
+  );
+  assert.ok(hasPhrase(`Comparing ${reciprocity.stock.reciprocity.toFixed(2)} against ${reciprocity.refugees.reciprocity.toFixed(2)} the way the table does`),
+    "the passage should open with the two reciprocities");
+  assert.ok(hasPhrase(`<strong>${reciprocity.stock.vs_density.toFixed(1)}×</strong> more than chance`),
+    `the passage should give migration ${reciprocity.stock.vs_density.toFixed(1)}x the density baseline`);
+  assert.ok(hasPhrase(`displacement <strong>${reciprocity.refugees.vs_density.toFixed(1)}×</strong>`),
+    `the passage should give displacement ${reciprocity.refugees.vs_density.toFixed(1)}x the density baseline`);
+  // The degree-preserving bar moves each network the way the passage says, from its density.
+  const moves = (r) => `${r.null.mean > r.density ? "raises" : "lowers"} chance reciprocity from ${r.density.toFixed(2)} to ${r.null.mean.toFixed(2)}`;
+  assert.ok(hasPhrase(`For migration that ${moves(reciprocity.stock)}`), `the passage should say migration's bar ${moves(reciprocity.stock)}`);
+  assert.ok(hasPhrase(`For displacement it ${moves(reciprocity.refugees)}`), `the passage should say displacement's bar ${moves(reciprocity.refugees)}`);
+  // ...and for the reasons it gives: in- and out-degree go together for migration,
+  // while the biggest refugee hosts send refugees to few countries.
+  assert.ok(reciprocity.stock.degrees.in_out_spearman > 0.3, "migration's in- and out-degree no longer go together");
+  for (const h of reciprocity.refugees.degrees.top_hosts) {
+    assert.ok(h.out < h.in / 4, `${h.iso3} hosts refugees from ${h.in} countries but sends them to ${h.out}, not few`);
+  }
+  // "Both networks clear their bar": the excess over the null, which compares across
+  // networks where z does not.
+  const excess = (r) => (r.reciprocity - r.null.mean).toFixed(2);
+  for (const net of ["stock", "refugees"]) assert.ok(reciprocity[net].null.z > 2, `${net} no longer clears its null`);
+  assert.ok(hasPhrase(`Both networks clear their bar, migration by ${excess(reciprocity.stock)} and displacement by ${excess(reciprocity.refugees)}.`),
+    `the passage should give the excess over the null: ${excess(reciprocity.stock)} and ${excess(reciprocity.refugees)}`);
+  assert.ok(!hasPhrase("no more two-way than a random graph of its size"),
+    "the page again claims displacement is no more two-way than a random graph");
+});
+
+test("the Venezuela out-migration figures in corridor.js are read from data, not hand-typed", () => {
+  assert.ok(!/216,183/.test(corridor), "corridor.js still hand-types Venezuela's 1990 out-migration figure");
+  assert.ok(!/8,328,514/.test(corridor), "corridor.js still hand-types Venezuela's 2024 out-migration figure");
+  assert.match(corridor, /metrics\("VEN",\s*first\)/, "corridor.js no longer reads Venezuela's out_strength from metrics()");
+});
+
+test("the Russia-Ukraine distance in questions.js is read from the corridor data, not hand-typed", () => {
+  assert.ok(!/3,950 km/.test(questions), "questions.js still hand-types the Russia-Ukraine distance");
+  assert.match(questions, /r\.o === "RUS" && r\.d === "UKR"/, "questions.js no longer looks up the RUS-UKR row from model.rows");
+});
+
+// ----------------------------------------- gravity, communities, floors and income from the rerun
+
+const nameOf = (iso3) => corridors.nodes[iso3].name;
+const signed = (x) => `${x < 0 ? "−" : "+"}${Math.abs(x).toFixed(2)}`;
+
+test("the gravity coefficient table and its notice match gravity.json", () => {
+  const rows = [
+    ["Distance between the two", "log distance"],
+    ["Destination income per head", "log destination GDP per head"],
+    ["Destination population", "log destination population"],
+    ["Origin population", "log origin population"],
+    ["Origin income per head", "log origin GDP per head"],
+    ["Under 1,000 km apart", "under 1,000 km"],
+  ];
+  for (const [label, key] of rows) {
+    const { beta, ci } = gravity.coefficients[key];
+    const row = flat.match(new RegExp(`<tr><td>${label}</td>(.*?)</tr>`));
+    assert.ok(row, `no coefficient row for ${label}`);
+    assert.ok(row[1].includes(signed(beta)), `${label}: page should show ${signed(beta)}`);
+    assert.ok(row[1].includes(`${signed(ci[0])} to ${signed(ci[1])}`), `${label}: page should show its interval`);
+  }
+  const distance = gravity.coefficients["log distance"].beta;
+  assert.ok(2 ** distance > 0.4 && 2 ** distance < 0.6, `"doubling the distance roughly halves" fails: ${2 ** distance}`);
+  const richer = 2 ** gravity.coefficients["log destination GDP per head"].beta;
+  assert.ok(hasPhrase(`twice as rich holds about ${richer.toFixed(1)} times`), `page should say about ${richer.toFixed(1)} times`);
+  const withoutProxy = gravity.without_contiguity.coefficients["log distance"];
+  assert.ok(hasPhrase(`${signed(distance)} to ${signed(withoutProxy)} and leaves everything else`),
+    `page should say dropping the proxy moves distance from ${signed(distance)} to ${signed(withoutProxy)}`);
+});
+
+test("the residual table lists gravity.json's twelve largest ratios, row by row", () => {
+  const top = gravity.over.slice(0, 12);
+  for (const r of top) {
+    const row = `<td>${r.origin_name} → ${r.destination_name}</td> <td style="text-align: right">${r.people.toLocaleString("en-US")}</td> ` +
+      `<td style="text-align: right">${r.predicted.toLocaleString("en-US")}</td> <td style="text-align: right"><b>×${Math.round(r.ratio)}</b></td>`;
+    assert.ok(hasPhrase(row), `residual table should have the row ${r.origin_name} → ${r.destination_name}`);
+  }
+  const russian = top.filter((r) => r.origin_name === "Russia" || r.destination_name === "Russia").length;
+  assert.ok(hasPhrase(`${NUMBER_WORDS[russian][0].toUpperCase()}${NUMBER_WORDS[russian].slice(1)} of the top twelve involve Russia`),
+    `the notice should count ${russian} corridors involving Russia`);
+  assert.ok(Math.min(...top.map((r) => r.ratio)) >= 30, "a top-twelve corridor no longer beats the model by thirty or more");
+  const uncategorised = top.find((r) => r.origin === "PSE");
+  assert.ok(uncategorised && hasPhrase(`${uncategorised.origin_name} to ${uncategorised.destination_name} does not sort`),
+    "the notice should name the one corridor it cannot categorise, as gravity.json names it");
+});
+
+test("the community table names each group's size and first five members from communities.json", () => {
+  for (const group of communities.communities) {
+    const members = group.names.slice(0, 5).join(", ");
+    assert.ok(
+      hasPhrase(`<td style="text-align: right">${group.size}</td> <td style="text-align: left">${members}</td>`) ||
+        hasPhrase(`<td style="text-align: right">${group.size}</td> <td>${members}</td>`),
+      `community table should show ${group.size} countries led by ${members}`,
+    );
+  }
+});
+
+test("the broker-floor table, its callout and the surprise line agree with the threshold sweep", () => {
+  const sweep = countryFacts.stock_threshold_sweep;
+  const top5 = (row) => row.top_betweenness.slice(0, 5);
+  for (const row of sweep) {
+    const cells = `<td style="text-align: right">${row.threshold.toLocaleString("en-US")}</td> ` +
+      `<td style="text-align: right">${row.arcs.toLocaleString("en-US")}</td> ` +
+      `<td style="text-align: left">${top5(row).map(nameOf).join(", ")}</td>`;
+    assert.ok(hasPhrase(cells), `floor table row for ${row.threshold} should read ${top5(row).map(nameOf).join(", ")}`);
+  }
+  const registers = ["AUS", "NOR", "DNK"];
+  assert.ok(registers.every((iso) => top5(sweep[0]).includes(iso)), "Australia, Norway and Denmark no longer lead at floor zero");
+  const dropsAt = (iso) => sweep.findIndex((row) => row.threshold > 0 && !top5(row).includes(iso));
+  assert.equal(dropsAt("NOR"), 1, "Norway no longer vanishes at the first raised floor");
+  assert.equal(dropsAt("DNK"), 1, "Denmark no longer vanishes at the first raised floor");
+  const longer = NUMBER_WORDS[dropsAt("AUS") - 1];
+  const floor = sweep[dropsAt("AUS")].threshold.toLocaleString("en-US");
+  assert.ok(hasPhrase(`Raise it a little and Norway and Denmark vanish; Australia holds on ${longer} floors longer, dropping out only at ${floor}.`),
+    `the callout should say Australia holds on ${longer} floors longer and drops out at ${floor}`);
+  assert.ok(hasPhrase(`two of the three, Norway and Denmark, vanish immediately; Australia holds on ${longer} floors longer`),
+    "the surprise line should agree with the callout");
+});
+
+test("the refugee-destination income sentence is computed from corridors.json and country_facts.json", () => {
+  const gdp = Object.values(corridors.indicators).map((v) => v.gdp).filter((v) => typeof v === "number");
+  const mean = gdp.reduce((a, b) => a + b, 0) / gdp.length;
+  const top = countryFacts.refugee_rankings.weighted_in_degree.slice(0, 10);
+  const below = top.filter((iso) => typeof corridors.indicators[iso]?.gdp === "number" && corridors.indicators[iso].gdp < mean).length;
+  assert.ok(
+    hasPhrase(`${NUMBER_WORDS[below]} of its ten sit below the unweighted average GDP per head of the ${gdp.length} countries with World Bank figures, $${Math.round(mean).toLocaleString("en-US")}.`),
+    `page should say ${below} of ten sit below $${Math.round(mean).toLocaleString("en-US")} over ${gdp.length} countries`,
+  );
 });
