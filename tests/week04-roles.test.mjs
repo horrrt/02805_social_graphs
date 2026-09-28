@@ -85,7 +85,7 @@ test("a named series's top_in years are exactly the years it ranks in that split
   }
 });
 
-test("the Employer split's placed series matches week04_staffing.json's placed share, within rounding", () => {
+test("the Placement split's placed series matches week04_staffing.json's placed share, within rounding", () => {
   const placed = roles.splits.placement.series.find((s) => s.name === "Placed at a client");
   const direct = roles.splits.placement.series.find((s) => s.name === "Direct employer");
   YEARS.forEach((y, i) => {
@@ -94,6 +94,35 @@ test("the Employer split's placed series matches week04_staffing.json's placed s
     const share = placed.counts[i] / (placed.counts[i] + direct.counts[i]);
     assert.ok(Math.abs(share - years.years[y].placed_share) < 0.001, `FY${y} placed share within rounding`);
   });
+});
+
+test("FY2022's split 2010 codes reach Data Scientists and QA testers through O*NET's crosswalk", () => {
+  // 15-1199.08 -> 15-2051 and 15-1199.01 -> 15-1253; truncating to 15-1199 left
+  // both near zero in FY2022's October-to-June window.
+  const occ = (code) => roles.splits.occupations.series.find((s) => s.code === code);
+  for (const code of ["15-2051", "15-1253"]) {
+    assert.ok(occ(code), `${code} is a named series`);
+    assert.ok(occ(code).oct_jun[0] > 5000, `${code} FY2022 October-to-June: ${occ(code).oct_jun[0]}`);
+  }
+});
+
+test("meta counts the legacy map instead of the page typing it", () => {
+  assert.equal(roles.meta.legacy_codes, 13);
+  assert.equal(roles.meta.legacy_targets, 12);
+  assert.ok(roles.meta.crosswalk_codes > 0);
+});
+
+test("each finding's change_pp is the difference of its rounded shares", () => {
+  for (const [name, split] of Object.entries(roles.splits)) {
+    const f = split.finding;
+    const diff = f.share_fy2025_percent - f.share_fy2022_percent;
+    assert.ok(Math.abs(f.change_pp - diff) < 1e-9, `${name}: ${f.change_pp} vs ${diff}`);
+  }
+});
+
+test("the Placement split's finding is tagged by its own series name", () => {
+  const f = roles.splits.placement.finding;
+  assert.equal(f.code, { "Placed at a client": "placed", "Direct employer": "direct" }[f.name]);
 });
 
 test("employer series are labelled by company, not a raw tax number or resolver key", () => {
