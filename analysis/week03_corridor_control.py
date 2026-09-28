@@ -257,10 +257,16 @@ def main():
     from wikiclients import sparql
     print("country metadata from Wikidata")
     meta_rows = sparql(
-        "SELECT ?iso3 ?iso2 ?label ?coord WHERE { ?c wdt:P298 ?iso3 . "
+        "SELECT ?c ?iso3 ?iso2 ?label ?coord WHERE { ?c wdt:P298 ?iso3 . "
         "OPTIONAL { ?c wdt:P297 ?iso2 } OPTIONAL { ?c wdt:P625 ?coord } "
         "?c rdfs:label ?label FILTER(lang(?label) = 'en') }"
     )
+    # Some codes belong to two items: PSE is both Q219060 (Palestine) and
+    # Q407199 (Occupied Palestinian territory). The first row per code wins
+    # below, and the query service returns rows in no fixed order, so the
+    # name and centroid of Palestine, and every distance from it, flipped
+    # between runs. Take the lowest item number, the same one every time.
+    meta_rows.sort(key=lambda row: (row["iso3"], int(row["c"].rsplit("/Q", 1)[1])))
     names, coords, iso3_by_iso2, iso2_by_iso3 = {}, {}, {}, {}
     for row in meta_rows:
         iso3 = row["iso3"]
