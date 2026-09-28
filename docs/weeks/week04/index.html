@@ -291,7 +291,7 @@
                 <p><b>How two metros get linked</b>An example, not data. A company that files in both metros adds the smaller of its two filing counts to their link.</p>
               </div>
               <div class="rx-drawers rx-foot">
-                <details class="rx-drawer"><summary>Background</summary><div class="rx-drawer-body"><p>Seven large hubs led by New York and Dallas, eight tech hubs led by San Jose and San Francisco, and the other 25. The rewired networks keep each company's number of metros. The two questions below ask what the groups follow and where the network comes apart.</p></div></details>
+                <details class="rx-drawer"><summary>Background</summary><div class="rx-drawer-body"><p>Louvain splits the 40 metros into seven large hubs led by New York and Dallas, eight tech hubs led by San Jose and San Francisco, and the other 25. The rewired networks keep each company's number of metros. The two questions below ask what the groups follow and where the network comes apart.</p></div></details>
                 <details class="rx-drawer"><summary>Method</summary><div class="rx-drawer-body"><p>Two metros are linked when the same company files in both; the link weighs, summed over those companies, the smaller of the company's two filing counts.</p></div></details>
               </div>
             </div>
@@ -387,7 +387,7 @@
                 <span class="ico">💡</span>
                 <span>
                   <b>What to notice</b>
-                  The split is real but weak: Louvain finds it in 65 of 100 runs.
+                  The split is real but weak: modularity 0.049 against 0.013 for rewired networks; Louvain finds it in 65 of 100 runs.
                   Census regions and divisions match it no better than shuffled labels (<span class="w4-term"><button aria-describedby="w4-term-place-start-p" type="button">p</button><span class="w4-pop" id="w4-term-place-start-p" role="tooltip">The share of shuffled labellings that match at least as well as the real one. A small value means the match is unlikely to be chance.</span></span> = 0.10 and 0.11).
                 </span>
               </div>
@@ -505,8 +505,8 @@
                   </span>
                 </div>
                 <div class="rx-drawers rx-foot">
-                  <details class="rx-drawer"><summary>Method</summary><div class="rx-drawer-body"><p>Tried at five values, the largest piece of the map fell from 32 metros at α = 0.1 to 18 at α = 0.05, which looks like one snap.</p><p>The disparity filter keeps a link when it carries an unusually large share of either metro's total weight; α is the test's threshold, and a smaller α keeps fewer links.</p></div></details>
-                  <details class="rx-drawer"><summary>More numbers</summary><div class="rx-drawer-body"><p>The other eleven are led by Amazon (three), Intel, Deloitte, Capital One, JPMorgan Chase, Citigroup, FedEx, Fidelity Investments and the University of Maryland.</p><p>The first metro falls off at α = 0.136. The fall from 32 to 18 is 14 separate links, each peeling one metro away.</p><p>That is no more than their 70 of the 180 links in the whole backbone at α = 0.2 (38%, p = 0.37).</p><p>No single removal cuts off more than two metros: Dallas–Durham at α = 0.041 takes Durham and Raleigh with it, and New York–Seattle at 0.023 splits the last five metros three and two.</p></div></details>
+                  <details class="rx-drawer"><summary>Method</summary><div class="rx-drawer-body"><p>The disparity filter keeps a link when it carries an unusually large share of either metro's total weight; α is the test's threshold, and a smaller α keeps fewer links.</p></div></details>
+                  <details class="rx-drawer"><summary>More numbers</summary><div class="rx-drawer-body"><p>The other eleven are led by Amazon (three), Intel, Deloitte, Capital One, JPMorgan Chase, Citigroup, FedEx, Fidelity Investments and the University of Maryland.</p><p>The first metro falls off at α = 0.136. Tried at five values, the largest piece of the map fell from 32 metros at α = 0.1 to 18 at α = 0.05, which looks like one snap. The fall from 32 to 18 is 14 separate links, each peeling one metro away.</p><p>The five placing firms lead 69 of the 180 links in the whole backbone at α = 0.2 (38%), so their 5 of the 16 links that cut a metro loose is no more than their share (p = 0.37).</p><p>No single removal cuts off more than two metros: Dallas–Durham at α = 0.041 takes Durham and Raleigh with it, and New York–Seattle at 0.023 splits the last five metros three and two.</p></div></details>
                   <details class="rx-drawer"><summary>Table: 14 links that peel metros off</summary><div class="rx-drawer-body">
                 <table class="ego">
                   <thead>
@@ -952,7 +952,7 @@
               <div class="rx-drawers rx-foot">
                 <details class="rx-drawer"><summary>Background</summary><div class="rx-drawer-body"><p>The five largest placing firms are Tata Consultancy Services, Cognizant, Infosys, HCL and Compunnel. The ten largest filers are Amazon, Cognizant, Google, Microsoft, EY, Meta, Deloitte, Apple, Tata Consultancy Services and Infosys.</p></div></details>
                 <details class="rx-drawer"><summary>Method</summary><div class="rx-drawer-body"><p>We removed each set, reran 100 <span class="w4-term"><button aria-describedby="w4-term-footprint-louvain" type="button">Louvain</button><span class="w4-pop" id="w4-term-footprint-louvain" role="tooltip">A method that finds groups in a network by moving nodes between groups until the links inside groups are as dense as they can get.</span></span> runs on the metro network and on the job network (weighted here by filings, since a count of companies barely moves when ten of 59,196 leave), and compared the groups with the full network's. Removing less data changes the groups too, so each removal sits beside 50 random cuts of companies that remove the same share of filings.</p></div></details>
-                <details class="rx-drawer"><summary>More numbers</summary><div class="rx-drawer-body"><p>Removing the five placing firms changes little: the groups stay close to the full network's (NMI 0.92, random cuts 0.85 ± 0.14), and the regional match rises only to 0.09, inside the range of random cuts (0.04 ± 0.05). Without the ten largest filers the clusters also sharpen, modularity rising from 0.28 to 0.32. Every version still beats its own rewired networks by a wide margin (z = 25 or more). Without the ten largest filers the regional match has p = 0.013, against 0.01 ± 0.03 for random cuts, 4.6 standard deviations away. Random cuts leave the job clusters closer to the full network's (0.96 and 0.88, 3.1 and 3.9 standard deviations away), so the biggest firms do shape which jobs cluster together.</p></div></details>
+                <details class="rx-drawer"><summary>More numbers</summary><div class="rx-drawer-body"><p>Removing the five placing firms changes little: the groups stay close to the full network's (NMI 0.92, random cuts 0.85 ± 0.14), and the regional match rises only to 0.09, inside the range of random cuts (0.04 ± 0.05). Without the ten largest filers the clusters also sharpen, modularity rising from 0.28 to 0.32. Every version still beats its own rewired networks by a wide margin (z = 25 or more). Without the ten largest filers the regional match (AMI 0.13, p = 0.013) sits 4.6 standard deviations above random cuts (0.01 ± 0.03). Random cuts leave the job clusters closer to the full network's (0.96 and 0.88, 3.1 and 3.9 standard deviations away), so the biggest firms do shape which jobs cluster together.</p></div></details>
               </div>
             </div>
             <div>
@@ -1043,7 +1043,7 @@
                   sponsor permanent residence. Three short questions follow the
                   section 3 groups into those records.
                 </p>
-                <ol class="rx-answers"><li><span class="w4-num">5A</span><span><b>Law firms:</b> barely follow the section 3 groups.</span></li><li><span class="w4-num">5B</span><span><b>Green cards:</b> outsourcing firms sponsor fewer per H-1B filing.</span></li><li><span class="w4-num">5C</span><span><b>Wage levels:</b> a placed filing has 3.6 times the odds of level I or II.</span></li></ol>
+                <ol class="rx-answers"><li><span class="w4-num">5A</span><span><b>Law firms:</b> barely follow the section 3 groups.</span></li><li><span class="w4-num">5B</span><span><b>Green cards:</b> outsourcing firms sponsor fewer per H-1B filing, though the intervals overlap.</span></li><li><span class="w4-num">5C</span><span><b>Wage levels:</b> a placed filing has 3.6 times the odds of level I or II.</span></li></ol>
               </div>
               <figure class="w4-figure">
                 <figcaption><b>Three small answers</b><span>Each real value against its baseline: law firms against rewired networks, green cards against direct employers' interval, wage odds against equal odds.</span></figcaption>
@@ -1106,8 +1106,9 @@
                   <span class="ico">💡</span>
                   <span>
                     <b>What to notice</b>
-                    Outsourcing firms file 0.11 green cards per H-1B filing,
-                    direct employers 0.18. Across the six largest staffing groups
+                    Outsourcing firms file 0.11 green cards per H-1B filing
+                    (95% interval 0.08 to 0.15), direct employers 0.18 (0.14 to
+                    0.21). Across the six largest staffing groups
                     the rate runs from 0.03 to 0.15, a spread that <span class="w4-term"><button aria-describedby="w4-term-beyond-perm-shuffled" type="button">shuffled group labels</button><span class="w4-pop" id="w4-term-beyond-perm-shuffled" role="tooltip">We dealt the companies out to the groups again at random, many times, to see how big a spread chance alone produces.</span></span> match 28% of the time.
                   </span>
                 </div>
@@ -1213,6 +1214,9 @@
                 <p class="sub">
                   AI coding assistants helped structure the page, wrote analysis and page code, drafted and revised text, and tested the visual presentation. The numbers come from the public sources listed in <a href="#evidence">Data and methods</a>.
                 </p>
+                <p class="sub">
+                  Each analysis step writes the numbers its section quotes to a JSON file the page reads. A schema check tests each file against the fields the page uses, a name-matching check tests the company-name rules against tax numbers, and the site tests fail when the numbers in a card or in this closing drift from the analysis output. We checked generated tables, comparisons, source scope, and the page behaviour against the local data before including a claim.
+                </p>
               </div>
             </details>
             <p class="fineprint">
@@ -1221,7 +1225,6 @@
             </p>
             <div class="rx-drawers rx-foot">
               <details class="rx-drawer"><summary>Background</summary><div class="rx-drawer-body"><p>Cities group by who hires there, not by region. Outsourcing firms bundle jobs differently from direct employers of the same size. And when a client drops its main vendor, the new one comes from the same Louvain group more than eight times as often as a random vendor would, though mostly because clients return to firms they already use. Take out the ten largest filers, most of them national tech and consulting employers, and the metro groups start to follow Census regions; Amazon alone does all of that. Where outsourcing shows most is outside the networks: a filing that places a worker at a client has 3.6 times the odds of a lower wage level for the same occupation. Lawyers and green cards barely follow the staffing groups.</p></div></details>
-              <details class="rx-drawer"><summary>Method</summary><div class="rx-drawer-body"><p>Each analysis step writes the numbers its section quotes to a JSON file the page reads. A schema check tests each file against the fields the page uses, a name-matching check tests the company-name rules against tax numbers, and the site tests fail when the numbers in a card or in this closing drift from the analysis output. We checked generated tables, comparisons, source scope, and the page behaviour against the local data before including a claim.</p></div></details>
             </div>
           </div>
         </section>
@@ -1423,7 +1426,7 @@
                   </span>
                 </div>
                 <div class="rx-drawers rx-foot">
-                  <details class="rx-drawer"><summary>Background</summary><div class="rx-drawer-body"><p>Tata Consultancy Services, Cognizant, Infosys, HCL and Compunnel. The staffing section follows them to their clients.</p></div></details>
+                  <details class="rx-drawer"><summary>Background</summary><div class="rx-drawer-body"><p>The shortlist holds the five largest placing firms: Tata Consultancy Services, Cognizant, Infosys, HCL and Compunnel. The staffing section follows them to their clients.</p></div></details>
                   <details class="rx-drawer"><summary>More numbers</summary><div class="rx-drawer-body"><p>Amazon leads the most long links (30), then Cognizant (17), EY (8) and Deloitte (7). The leading company carries a median 14% of a long link's weight, and only one long link, San Jose to Fayetteville (Walmart), has a company with half of it.</p></div></details>
                 </div>
               </div>
@@ -1598,7 +1601,7 @@
                       </div>
                     </div>
                     <div class="rx-drawers rx-foot">
-                      <details class="rx-drawer"><summary>Method</summary><div class="rx-drawer-body"><p>Link communities group the links, and a metro joins every community its links are in. In clique percolation, a larger k only leaves more of the fringe out.</p></div></details>
+                      <details class="rx-drawer"><summary>Method</summary><div class="rx-drawer-body"><p>Link communities group the links, and a metro joins every community its links are in.<span id="w4m-overlap-fringe"></span></p></div></details>
                     </div>
                   </section>
                 </div>
@@ -1955,7 +1958,7 @@
                 <div class="w4-two">
                   <div>
                     <p class="sub">The course compares a node's degree (how many partners) with its strength (how many filings over all its links), and finds the exceptions tell the story.</p>
-                    <div class="notice"><span class="ico">💡</span><span><b>What to notice</b> Degree and strength rank firms almost alike (Spearman 0.91) but clients less so (0.75): the heaviest single ties belong to small rehab clinics, led by Ultimate Therapy with 133 filings from one firm.</span></div>
+                    <div class="notice"><span class="ico">💡</span><span><b>What to notice</b> Degree and strength rank firms almost alike (Spearman 0.91) but clients less so (0.75): the heaviest single ties go to therapy and rehab clinics, led by Ultimate Therapy with 133 filings from one firm.</span></div>
                     <div class="rx-drawers rx-foot">
                       <details class="rx-drawer"><summary>More numbers</summary><div class="rx-drawer-body"><p>In the 2025 firm–client network the two rank firms almost alike (Spearman 0.91) and clients less so (0.75). The clients with the most filings from a single firm are Ultimate Therapy, 133 filings from one firm; Sigma Rehab, 95; Post Rehab Services, 61; and Grady Memorial Hospital, 58.</p></div></details>
                     </div>
@@ -2125,7 +2128,7 @@
                 <div class="w4-two">
                   <div>
                     <p class="sub">Only 65% of certified green cards come from an employer we can match to an H-1B filer.</p>
-                    <div class="notice"><span class="ico">💡</span><span><b>What to notice</b> The median employer files 13.2 green cards per 100 H-1B filings, yet Oracle files 95 while Amazon, with 22,509 H-1B filings, files almost none.</span></div>
+                    <div class="notice"><span class="ico">💡</span><span><b>What to notice</b> Among employers with 20 or more H-1B filings, the median files 13.2 green cards per 100 H-1B filings, yet Oracle files 95 while Amazon, with 22,509 H-1B filings, files almost none.</span></div>
                     <div class="rx-drawers rx-foot">
                       <details class="rx-drawer"><summary>More numbers</summary><div class="rx-drawer-body"><p>In 2025 the median employer with 20 or more H-1B filings filed 13.2 green cards per 100 of them, and the two counts rank employers only loosely alike (<span class="w4-term"><button aria-describedby="w4-term-deeper-perm-spearman" type="button">Spearman</button><span class="w4-pop" id="w4-term-deeper-perm-spearman" role="tooltip">A rank correlation: 1 means two counts put employers in the same order, 0 means no relation.</span></span> 0.50). As with degree and strength in the course, the exceptions carry the story: Oracle filed 95 green cards per 100 H-1B filings, Uber 64 and Salesforce 45, while Amazon (22,509 H-1B filings), Cognizant (11,085) and Google (8,657) filed almost none. Whether outsourcing firms sponsor fewer is <a href="#beyond-perm">section 5B</a>. Clients sponsor their own staff too: Wells Fargo receives 1,547 H-1B filings from vendors, files 624 of its own and 167 green cards. Firms with more clients sponsor slightly more green cards, not fewer (Spearman 0.13).</p></div></details>
                     </div>
@@ -2150,7 +2153,7 @@
                             </header>
                 <div class="w4-two">
                   <div>
-                    <p class="sub">We link two countries when the same employers file green cards for citizens of both, then ask whether those links form regional groups. They barely do: the groups match world regions only weakly.</p>
+                    <p class="sub">We link two countries when the same employers file green cards for citizens of both, then ask whether those links form regional groups. The groups match world regions only weakly (AMI 0.10).</p>
                     <div class="notice"><span class="ico">💡</span><span><b>What to notice</b> Counted once, the country links group a little more than rewired copies (modularity 0.10 against 0.06); weighted by shared green cards they group less (0.26 against 0.40).</span></div>
                     <div class="rx-drawers rx-foot">
                       <details class="rx-drawer"><summary>Method</summary><div class="rx-drawer-body"><p>A worker's citizenship is personal, so we read it only in memory and keep counts per country and employer, dropping every count under 10. That drops 96% of the cells and 43% of 2023's certified green-card filings, and no row about a single person is ever saved.</p></div></details>
@@ -2341,10 +2344,10 @@
     <script src="../../assets/js/week04-frame.js?v=6" type="module"></script>
     <script src="../../assets/js/week04-years.js?v=8" type="module"></script>
     <script src="../../assets/js/week04-roles.js?v=10" type="module"></script>
-    <script src="../../assets/js/week04-methods.js?v=6" type="module"></script>
-    <script src="../../assets/js/week04-skills.js?v=8" type="module"></script>
+    <script src="../../assets/js/week04-methods.js?v=7" type="module"></script>
+    <script src="../../assets/js/week04-skills.js?v=9" type="module"></script>
     <script src="../../assets/js/week04-skills-radar.js?v=8" type="module"></script>
-    <script src="../../assets/js/week04-pagerank.js?v=9" type="module"></script>
+    <script src="../../assets/js/week04-pagerank.js?v=10" type="module"></script>
     <script src="../../assets/js/week04-jobs.js?v=9" type="module"></script>
     <script src="../../assets/js/week04-staffing.js?v=2" type="module"></script>
     <script src="../../assets/js/week04-questions.js?v=11" type="module"></script>

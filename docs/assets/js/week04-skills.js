@@ -155,8 +155,8 @@ function card2(c) {
     <span class="w4-num">4</span>
     <div>
       <h2>Does that agreement hold for whole hiring clusters, not just direct ties?</h2>
-      <p class="w4-answer">Mostly. Occupations in the same hiring cluster need more alike skills, even without a
-      direct tie.</p>
+      <p class="w4-answer">Mostly. Occupations in the same hiring cluster need more alike skills than pairs in
+      different clusters, even without a direct tie.</p>
     </div>`;
 
   const two = document.createElement("div");

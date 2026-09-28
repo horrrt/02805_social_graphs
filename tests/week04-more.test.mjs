@@ -58,6 +58,25 @@ test("countries: the top eight and both modularity checks match week04_countries
   assert.ok(w.real < w.null, '"weighted ... group less" needs the real value below the rewired mean');
 });
 
+test("countries: the groups match world regions only weakly, and more.json carries the numbers", () => {
+  const lab = countries.labels;
+  assert.deepEqual(more.countries.labels, {
+    ami_region: lab.ami_region,
+    ami_week3: lab.ami_week3_migrant_communities,
+    p_region_shuffled_nmi: lab.p_region,
+    p_week3_shuffled_nmi: lab.p_week3,
+  });
+  const f2 = (x) => x.toFixed(2);
+  const m = more.countries.labels;
+  const page = flatten(block(html, "deeper-countries"));
+  assert.ok(page.includes(`then ask whether those links form regional groups. The groups match world regions only weakly (AMI ${f2(m.ami_region)}).`));
+  assert.ok(page.includes(`The groups match world regions (AMI ${f2(m.ami_region)}) and Week 3's migration communities (${f2(m.ami_week3)}) only weakly`));
+  // "Only weakly": both AMIs under 0.15.
+  assert.ok(Math.max(m.ami_region, m.ami_week3) < 0.15, '"only weakly" needs both AMIs under 0.15');
+  // "Barely" is held to the law-firm threshold (AMI under 0.1); the region match misses it.
+  assert.ok(m.ami_region >= 0.1 ? !/\bbarely\b/.test(page) : true, '"barely" needs the region AMI under 0.1');
+});
+
 test("density: the ten densest metros, New York and the national rate match week04_oews.json", () => {
   const top = oews.top_by_intensity.slice(0, 10);
   assert.equal(more.density.rows.length, top.length);

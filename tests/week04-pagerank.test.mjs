@@ -120,3 +120,48 @@ test("the network is section 2's own occupation projection, filtered to a strict
   assert.ok(d.meta.nodes < d.meta.nodes_before_backbone);
   assert.ok(d.meta.edges < d.meta.edges_before_backbone);
 });
+
+// The iteration card (#cut-pagerank-iteration) writes its answer and notice from
+// iteration.steps. These rebuild the same claims here, check they say something
+// (each settles before the last round), and tie them to the page's template.
+const stable = (steps, key) => {
+  const last = key(steps.at(-1));
+  let at = steps.at(-1).step;
+  for (let i = steps.length - 1; i >= 0 && key(steps[i]) === last; i--) at = steps[i].step;
+  return at;
+};
+const claimsOf = (steps) => {
+  const codes = (s) => s.rows.map((r) => r.code);
+  const first = steps.find((s) => s.step > 0);
+  return {
+    leaderStep: stable(steps, (s) => s.rows[0].code),
+    setStep: stable(steps, (s) => [...codes(s)].sort().join(",")),
+    orderStep: stable(steps, (s) => codes(s).join(",")),
+    leaderTitle: steps.at(-1).rows[0].title,
+    firstStep: first.step,
+    firstLeaderTitle: first.rows[0].title,
+  };
+};
+
+test("the iteration card's claims: first leader, takeover, settle round", () => {
+  const steps = d.iteration.steps;
+  const c = claimsOf(steps);
+  const last = steps.at(-1).step;
+  assert.equal(c.leaderTitle, d.finding.top_occupation_title, "the final leader is the PageRank leader");
+  assert.equal(c.leaderTitle, "Software Developers");
+  assert.ok(c.leaderStep < last, '"leads from round N" needs the leader to settle before the last round');
+  assert.ok(c.orderStep < last, '"settles by round M" and "the grey lines stop crossing" need the order to settle before the last round');
+  assert.ok(c.leaderStep <= c.orderStep && c.setStep <= c.orderStep, "the top list cannot hold its order before its leader or its members");
+  // The notice takes the "after round 1 X lead" branch when the first leader differs.
+  assert.equal(c.firstLeaderTitle !== c.leaderTitle, c.leaderStep > c.firstStep);
+  // A top list that still reorders in the last round would move the settle step to the end.
+  const shaken = structuredClone(steps);
+  const rows = shaken.at(-1).rows;
+  [rows[2], rows[3]] = [rows[3], rows[2]];
+  assert.equal(claimsOf(shaken).orderStep, last, "the settle check must bite when the last round reorders");
+  // The page builds its answer and notice from exactly these claims.
+  const src = readFileSync(join(ROOT, "docs/assets/js/week04-pagerank.js"), "utf8");
+  assert.ok(src.includes("${claims.leaderTitle} leads from round ${claims.leaderStep}; the rest of the top ${n} settles by round ${claims.orderStep}."));
+  assert.ok(src.includes("The grey lines stop crossing by round ${claims.orderStep}"));
+  assert.equal(steps.at(-1).rows.length, 10, "the answer's top ${n} is the final step's ten rows");
+});

@@ -5,7 +5,7 @@ import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
-import { block, flatten } from "./week04-html.mjs";
+import { block, flatten, notices } from "./week04-html.mjs";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const read = (name) => readFileSync(join(ROOT, name), "utf8");
@@ -46,6 +46,10 @@ test("section 1: the backbone sheds metros, it does not snap", () => {
   says("place-break", `Of the ${f.q2_breaking_links_flagged} links whose removal cuts a metro loose`);
   says("place-break", `lead ${f.q2_breaking_links_led_by_shortlist} (${pct(f.q2_flagged_shortlist_share)})`);
   says("place-break", `(${pct(f.q2_backbone_shortlist_share)}, p = ${f2(f.q2_hypergeom_p)})`);
+  const c = json("analysis/week04_where_who.json").q2_backbone_break.part_c;
+  assert.equal(c.backbone_alpha02_shortlist_share, f.q2_backbone_shortlist_share);
+  says("place-break", `The five placing firms lead ${c.backbone_alpha02_shortlist} of the ${c.backbone_alpha02_total} links in the whole backbone at α = 0.2 (${pct(f.q2_backbone_shortlist_share)}), so their ${f.q2_breaking_links_led_by_shortlist} of the ${f.q2_breaking_links_flagged} links that cut a metro loose is no more than their share (p = ${f2(f.q2_hypergeom_p)}).`);
+  says("place-break", `which looks like one snap. The fall from ${f.q2_gc_size_alpha_0_1} to ${f.q2_gc_size_alpha_0_05} is`);
   assert.ok(f.q2_hypergeom_p >= 0.05, '"no more of the links than of any others" needs p at 0.05 or above');
   const lead = Object.fromEntries(f.q2_leaders);
   says("place-break", `Amazon (${["zero", "one", "two", "three"][lead.Amazon]})`);
@@ -199,6 +203,13 @@ test("beyond: law firms, green cards and wage levels", () => {
   says("beyond-law", `(z = ${Math.round(f.q1_ami_z_vs_rewired)})`);
   says("beyond-law", `${pct(d.q1.single_law_firm_filing_share)} of filings come from`);
   const [lo, hi] = d.q2.placing_firms_20plus_placed.pooled_ci95;
+  const [dlo, dhi] = f.q2_direct_pooled_ci95;
+  // The notice itself carries both intervals, not only the drawer.
+  const permNotice = notices(html, "beyond-perm");
+  assert.ok(
+    permNotice.includes(`Outsourcing firms file ${f2(f.q2_placing_pooled_ratio)} green cards per H-1B filing (95% interval ${f2(lo)} to ${f2(hi)}), direct employers ${f2(f.q2_direct_pooled_ratio)} (${f2(dlo)} to ${f2(dhi)}).`),
+    "the 5B notice should give both 95% intervals",
+  );
   says("beyond-perm", `file ${f2(f.q2_placing_pooled_ratio)} green cards per H-1B filing (95% interval ${f2(lo)} to ${f2(hi)})`);
   says("beyond-perm", `direct employers ${f2(f.q2_direct_pooled_ratio)}`);
   says("beyond-perm", `(p = ${f2(f.q2_permutation_p)})`);
@@ -212,7 +223,6 @@ test("beyond: law firms, green cards and wage levels", () => {
   says("beyond-wage", `rises to ${f2(drops.top5.odds_ratio)}, ${f2(drops.top10.odds_ratio)} and ${f2(drops.top20.odds_ratio)}`);
   says("beyond-wage", `placed filings offer a median ${f2(f.q3_wage_ratio_placed_max)} times`);
   says("beyond-wage", `direct ones ${f2(f.q3_wage_ratio_direct_min)} to ${f2(f.q3_wage_ratio_direct_max)} times`);
-  const [dlo, dhi] = f.q2_direct_pooled_ci95;
   says("beyond-perm", `direct employers ${f2(f.q2_direct_pooled_ratio)} (${f2(dlo)} to ${f2(dhi)})`);
   const named = d.q2_named_perm;
   says("beyond-perm", `from ${count(named.Amazon.fy2024.all_statuses_name_match)} and ${count(named.Google.fy2024.all_statuses_name_match)} in 2024 to ${named.Amazon.fy2025.all_statuses_name_match} and ${named.Google.fy2025.all_statuses_name_match} in 2025`);
@@ -222,8 +232,9 @@ test("beyond: law firms, green cards and wage levels", () => {
   const answer = (t) => assert.ok(answers.includes(t), `section 5's answers should say "${t}"`);
   answer("Law firms: barely follow the section 3 groups.");
   assert.ok(f.q1_ami < 0.1, '"barely follow" needs the law-firm AMI under 0.1');
-  answer("Green cards: outsourcing firms sponsor fewer per H-1B filing.");
+  answer("Green cards: outsourcing firms sponsor fewer per H-1B filing, though the intervals overlap.");
   assert.ok(hi < f.q2_direct_pooled_ratio, '"sponsor fewer" needs the outsourcing interval below the direct rate');
+  assert.ok(hi > dlo, '"the intervals overlap" needs the outsourcing interval to reach into the direct one');
   answer(`Wage levels: a placed filing has ${f.q3_odds_ratio.toFixed(1)} times the odds of level I or II.`);
 });
 
@@ -236,8 +247,11 @@ test("section 4: without the biggest firms", () => {
   const vs = d.finding.metros;
   has(`The ten largest filers file ${pct(top10.filings_removed_share, 1)} of the filings in the 40 metros, and the five largest placing firms ${pct(short.filings_removed_share, 1)}`);
   has(`match Census regions at AMI ${f2(top10.ami_region)}, against ${f2(full.ami_region)} for the full network`);
-  has(`the regional match has p = ${top10.p_region.toFixed(3)}, against ${f2(top10c.ami_region)} ± ${f2(top10c.ami_region_sd)} for random cuts`);
-  has(`${vs.drop_top10_vs_control.ami_region_vs_control_sd.toFixed(1)} standard deviations away`);
+  has(
+    `Without the ten largest filers the regional match (AMI ${f2(top10.ami_region)}, p = ${top10.p_region.toFixed(3)}) sits ` +
+      `${vs.drop_top10_vs_control.ami_region_vs_control_sd.toFixed(1)} standard deviations above random cuts ` +
+      `(${f2(top10c.ami_region)} ± ${f2(top10c.ami_region_sd)}).`,
+  );
   assert.ok(vs.drop_top10_vs_control.ami_region_vs_control_sd > 2, "the regional turn must stand clear of random cuts");
   has(`(NMI ${f2(short.nmi_vs_full)}, random cuts ${f2(shortc.nmi_vs_full)} ± ${f2(shortc.nmi_vs_full_sd)})`);
   has(`rises only to ${f2(short.ami_region)}, inside the range of random cuts (${f2(shortc.ami_region)} ± ${f2(shortc.ami_region_sd)})`);

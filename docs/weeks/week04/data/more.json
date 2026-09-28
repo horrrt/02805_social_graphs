@@ -87,6 +87,12 @@
     "z": -7.49,
     "null_runs_at_or_above_real": 100
    }
+  },
+  "labels": {
+   "ami_region": 0.103,
+   "ami_week3": 0.1,
+   "p_region_shuffled_nmi": 0.016,
+   "p_week3_shuffled_nmi": 0.014
   }
  },
  "density": {

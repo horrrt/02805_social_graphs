@@ -697,6 +697,16 @@ function buildOverlap(echarts, explore, place, ctx) {
       `community at every k from ${ks[0]} to ${ks[ks.length - 1]}.`
     : `A partition puts each metro in one group; these two methods let it sit in several. Clique percolation finds a small ` +
       `number of overlapping communities at each k.`;
+  // "A larger k only leaves more of the fringe out": one community at every k,
+  // and each k's left-out metros hold the smaller k's and more.
+  const fringeOk =
+    ksOk &&
+    ks.slice(1).every((k, i) => {
+      const prev = kc[ks[i]].in_none;
+      const next = new Set(kc[k].in_none);
+      return next.size > prev.length && prev.every((id) => next.has(id));
+    });
+  if (fringeOk) $("w4m-overlap-fringe").textContent = " In clique percolation, a larger k only leaves more of the fringe out.";
   termify(
     $("w4m-overlap-lead"),
     "Clique percolation",

@@ -6,7 +6,7 @@ import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
-import { block, blockAt, flatten } from "./week04-html.mjs";
+import { block, blockAt, flatten, notices } from "./week04-html.mjs";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const read = (name) => readFileSync(join(ROOT, name), "utf8");
@@ -243,7 +243,12 @@ test("section 1: communities against the null, runs, FY2024 and Census", () => {
   has(`Modularity is ${n.Q.toFixed(3)} against ${n.Q_null_mean.toFixed(3)} for rewired networks`);
   has(`(z = ${Math.round(n.z)})`);
   has(`Louvain finds the split shown in ${n.modal_runs} of ${n.seeds} runs; the other ${n.seeds - n.modal_runs} find one other split`);
-  has(`The split is real but weak: Louvain finds it in ${n.modal_runs} of ${n.seeds} runs.`);
+  assert.ok(
+    notices(html, "place-start").includes(
+      `The split is real but weak: modularity ${n.Q.toFixed(3)} against ${n.Q_null_mean.toFixed(3)} for rewired networks; Louvain finds it in ${n.modal_runs} of ${n.seeds} runs.`,
+    ),
+    "section 1's notice should carry the modularity evidence",
+  );
   assert.equal(n.partitions_found, 2, '"one other split" needs exactly two partitions');
   assert.equal(o.fy2025_runs_equal_to_other_year, n.seeds - n.modal_runs, "FY2024's split is FY2025's other one");
   has(`${o.year} gives that two-group split in all ${o.runs} runs`);
@@ -290,7 +295,8 @@ test("green cards as the strong tie", () => {
     has(`${name} (${count(low[name].lca_filings)}`);
   }
   has(`Whether outsourcing firms sponsor fewer is section 5B`);
-  has(`The median employer files ${one(now.scored_median_ratio)} green cards per 100 H-1B filings, yet Oracle files ${Math.round(high.Oracle.ratio)} while Amazon, with ${count(low.Amazon.lca_filings)} H-1B filings, files almost none.`);
+  assert.ok(notices(html, "deeper-perm").includes(`Among employers with ${now.min_filings} or more H-1B filings, the median files ${one(now.scored_median_ratio)} green cards per 100 H-1B filings`), "the notice should say which employers the median covers");
+  has(`the median files ${one(now.scored_median_ratio)} green cards per 100 H-1B filings, yet Oracle files ${Math.round(high.Oracle.ratio)} while Amazon, with ${count(low.Amazon.lca_filings)} H-1B filings, files almost none.`);
   has(`Only ${pct(now.perm_employer_key_matches_lca_share)} of certified green cards`);
 });
 
@@ -359,6 +365,11 @@ test("strength against degree", () => {
   has(`${a.label}, ${a.strength} filings from one firm; ${b.label}, ${b.strength}; ${c.label}, ${c.strength}; and ${d.label}, ${d.strength}`);
   has(`Degree and strength rank firms almost alike (Spearman ${s.firms.spearman.rho.toFixed(2)}) but clients less so (${s.clients.spearman.rho.toFixed(2)})`);
   has(`led by ${a.label} with ${a.strength} filings from one firm`);
+  assert.ok(
+    notices(html, "deeper-strength").includes(`the heaviest single ties go to therapy and rehab clinics, led by ${a.label} with ${a.strength} filings from one firm`),
+    "the strength notice should name the clinics",
+  );
+  assert.ok([a, b, c].every((x) => /Therapy|Rehab/.test(x.label)), '"therapy and rehab clinics" needs the three heaviest ties to be therapy or rehab clinics');
   assert.ok(s.firms.spearman.rho >= 0.85 && s.clients.spearman.rho < s.firms.spearman.rho, '"almost alike ... but clients less so" needs firms at 0.85 or above and clients below them');
 });
 
@@ -434,6 +445,8 @@ test("section 1's first round: the cities and the long links follow the analysis
   const lh = json("analysis/week04_where.json").longhaul;
   has(long, `Of the ${lh.long_links} backbone links longer than 1,500 km, the shortlist leads ${lh.long_led_by_shortlist} (${pct(lh.long_led_by_shortlist / lh.long_links)})`);
   has(long, `it leads ${lh.short_led_by_shortlist} of the ${lh.short_links} shorter ones (${pct(lh.short_led_by_shortlist / lh.short_links)})`);
+  const names = json("analysis/week04_where.json").shortlist.map((s) => s.replace(/ Software$/, ""));
+  has(long, `The shortlist holds the ${WORDS[names.length]} largest placing firms: ${names.slice(0, -1).join(", ")} and ${names.at(-1)}.`);
 });
 
 test("the hero's numbers and map legend follow the analysis", () => {
@@ -471,6 +484,10 @@ test("section 1's start card names each group by its two largest metros", () => 
     const t = expect[c.id](members(c.id));
     assert.ok(head(c.id).includes(t), `group ${c.id} should say "${t}"`);
   }
+  // The map card's Background drawer opens with the same groups as a full sentence.
+  const [big, tech, rest] = [0, 1, 2].map(members);
+  const background = `Louvain splits the ${place.cities.length} metros into ${WORDS[big.length]} large hubs led by ${big[0].name} and ${big[1].name}, ${WORDS[tech.length]} tech hubs led by ${tech[0].name} and ${tech[1].name}, and the other ${rest.length}.`;
+  assert.ok(flatten(html).includes(background), `the map card's Background should say "${background}"`);
   // The board's order: tech hubs, then large hubs, then the rest.
   const order = [...start.matchAll(/data-community="(\d)"/g)].map((m) => Number(m[1]));
   assert.deepEqual(order, [1, 0, 2]);
@@ -483,6 +500,10 @@ test("section 2's first round: Software Developers' pairs follow the analysis", 
   const pairs = [...jobs.pairs].sort((a, b) => b.weight - a.weight).slice(0, 12);
   assert.ok(together.includes(`The ${pairs.length} most common job pairs`), "the pairs chart names how many pairs it shows");
   const sdPairs = pairs.filter((p) => [p.source, p.target].includes("15-1252")).length;
+  // The chart darkens pairs with the most-filed occupation; the text names it.
+  const top = jobs.nodes.reduce((best, n) => (n.filings > best.filings ? n : best));
+  assert.equal(top.id, "15-1252");
+  assert.ok(together.includes(`the dark bars are pairs with ${top.title}`), `the pairs text should name ${top.title}, the occupation the chart darkens`);
   assert.ok(
     together.includes(`Software Developers sit in ${sdPairs} of the 12 pairs`),
     `section 2's first round should say "Software Developers sit in ${sdPairs} of the 12 pairs"`,

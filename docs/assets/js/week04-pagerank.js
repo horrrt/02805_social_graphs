@@ -135,15 +135,23 @@ function buildDampingCard(data) {
   const notice = document.createElement("div");
   notice.className = "notice";
   notice.innerHTML = `<span class="ico">💡</span><span><b>What to notice</b></span>`;
-  const overlap5v99 = data.finding.top15_overlap_d0_5_vs_d0_99;
+  // The damping pair the overlap compares, read from its own key
+  // ("top15_overlap_d0_5_vs_d0_99" -> 0.5 and 0.99).
+  const OVERLAP_KEY = "top15_overlap_d0_5_vs_d0_99";
+  const overlap5v99 = data.finding[OVERLAP_KEY];
+  const [overlapLo, overlapHi] = OVERLAP_KEY.match(/_d(\d+_\d+)_vs_d(\d+_\d+)$/)
+    .slice(1)
+    .map((s) => Number(s.replace("_", ".")));
   const overlapDeg = data.finding.pagerank_vs_degree_top15_overlap;
   const overlapStr = data.finding.pagerank_vs_strength_top15_overlap;
   const lo = data.damping[0];
   const hi = data.damping.at(-1);
   notice.querySelector("span:last-child").append(
     frag(
-      `The top ${TOP_SHOWN} at d = ${lo} and at d = ${hi} share only ${overlap5v99} of ${TOP_SHOWN} occupations, so the ` +
-        "damping factor reorders the ranking. Being tied to the right occupations matters as much as how many ties there are.",
+      `The top ${TOP_SHOWN} at d = ${overlapLo} and at d = ${overlapHi} share only ${overlap5v99} of ${TOP_SHOWN} ` +
+        `occupations, so the damping factor reorders the ranking. At d = ${DEFAULT_D} the top ${TOP_SHOWN} shares ` +
+        `${overlapDeg} occupations with the top ${TOP_SHOWN} by degree and ${overlapStr} with the top ${TOP_SHOWN} by ` +
+        "strength: being tied to the right occupations matters as much as how many ties there are.",
     ),
   );
   left.append(notice);
@@ -375,8 +383,7 @@ function buildIterationCard(data) {
     <span class="w4-num">7</span>
     <div>
       <h2>Stepped one round at a time, how fast does the ranking settle?</h2>
-      <p class="w4-answer">${claims.leaderTitle} leads from round ${claims.leaderStep}; the rest settles by round
-      ${claims.orderStep}.</p>
+      <p class="w4-answer">${claims.leaderTitle} leads from round ${claims.leaderStep}; the rest of the top ${n} settles by round ${claims.orderStep}.</p>
     </div>`;
 
   const two = document.createElement("div");
