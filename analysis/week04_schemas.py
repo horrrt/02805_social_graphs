@@ -1098,6 +1098,12 @@ class RoleSplit(Model):
     finding: RoleFinding
 
 
+class RolesMeta(Model):
+    legacy_codes: int = Field(gt=0)
+    legacy_targets: int = Field(gt=0)
+    crosswalk_codes: int = Field(ge=0)
+
+
 class Roles(Model):
     generated_by: str
     years: list[Literal["2022", "2023", "2024", "2025", "2026"]] = Field(min_length=5, max_length=5)
@@ -1106,6 +1112,7 @@ class Roles(Model):
     oct_jun_totals: dict[Literal["2022", "2023", "2024", "2025", "2026"], int] = Field(min_length=5, max_length=5)
     splits: dict[Literal["occupations", "groups", "employer", "placement"], RoleSplit]
     legacy_recoded: dict[str, int]
+    meta: RolesMeta
     uncoded: dict[str, int]
 
     @model_validator(mode="after")
