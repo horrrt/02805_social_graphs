@@ -4,7 +4,7 @@
 // coloured from the page's own CSS tokens, and renders once the box is
 // first opened (or immediately if it is already open, such as a deep link).
 import { esc } from "./cabinet.js";
-import { drawer, drawerRow } from "./week04-ui.js";
+import { drawer, drawerRow, termify } from "./week04-ui.js?v=2";
 
 const box = document.querySelector("#cut-years");
 const body = document.querySelector("#years-body");
@@ -428,6 +428,14 @@ function render(data) {
       `draw and ${perApp[1].toFixed(1)} in ${drawMonth(funnelYears[1])}; USCIS’s data ends there.`, s6) +
     panel("Clients and firms", "Client companies named on a placed filing, and the firms that place workers, per fiscal year.", s7) +
     "</div></div>";
+  const lottery = [...body.querySelectorAll(".years-panel")].find((el) => el.querySelector("h3")?.textContent === "The lottery");
+  termify(
+    lottery?.querySelector("p"),
+    "Registrations",
+    "Entries in the H-1B lottery. Each spring employers register the workers they want to sponsor, and USCIS draws " +
+      "at random from the entries.",
+    "w4-term-years-card-registrations",
+  );
   body.querySelector("#years-card").append(
     drawerRow(drawer("Background", background), drawer("Table: the numbers behind the charts", tables)),
   );

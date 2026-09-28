@@ -73,11 +73,20 @@ def countries_section():
     top = data["perm"]["2023"]["descriptive"]["top"][:8]
     rows = [{"country": c["country"].title(), "share": c["share"]} for c in top]
     mo = data["modularity"]
+    lab = data["labels"]
     return {
         "top": rows,
         "modularity": {
             "unweighted": mo["wiring_only"],
             "weighted": mo["weighted_vs_rewired"],
+        },
+        # How far the Louvain groups match world regions and Week 3's migration
+        # communities. The p values come from shuffling the labels against NMI.
+        "labels": {
+            "ami_region": lab["ami_region"],
+            "ami_week3": lab["ami_week3_migrant_communities"],
+            "p_region_shuffled_nmi": lab["p_region"],
+            "p_week3_shuffled_nmi": lab["p_week3"],
         },
     }
 

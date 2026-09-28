@@ -5,7 +5,7 @@ import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
-import { block, flatten } from "./week04-html.mjs";
+import { block, flatten, notices } from "./week04-html.mjs";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const read = (name) => readFileSync(join(ROOT, name), "utf8");
@@ -25,6 +25,8 @@ test("section 1: cities group by who hires, not by region", () => {
   says("place-who", `placed share at ${f2(s.placed_share_tercile.ami)} (p = ${s.placed_share_tercile.p_shuffle.toFixed(3)})`);
   says("place-who", `Census regions reach ${f2(s.census_region.ami)} (p = ${f2(s.census_region.p_shuffle)})`);
   says("place-who", `divisions ${f2(s.census_division.ami)} (p = ${f2(s.census_division.p_shuffle)})`);
+  says("place-who", "Census regions and divisions do no better than chance");
+  assert.ok(Math.min(s.census_region.p_shuffle, s.census_division.p_shuffle) >= 0.05, '"no better than chance" needs both p at 0.05 or above');
   says("place-who", `${f.naics54_dominant_metros} of the 40 metros`);
   assert.ok(Math.min(s.naics54_share_tercile.ami, s.placed_share_tercile.ami) > Math.max(s.census_region.ami, s.census_division.ami));
 });
@@ -44,8 +46,12 @@ test("section 1: the backbone sheds metros, it does not snap", () => {
   says("place-break", `Of the ${f.q2_breaking_links_flagged} links whose removal cuts a metro loose`);
   says("place-break", `lead ${f.q2_breaking_links_led_by_shortlist} (${pct(f.q2_flagged_shortlist_share)})`);
   says("place-break", `(${pct(f.q2_backbone_shortlist_share)}, p = ${f2(f.q2_hypergeom_p)})`);
+  const c = json("analysis/week04_where_who.json").q2_backbone_break.part_c;
+  assert.equal(c.backbone_alpha02_shortlist_share, f.q2_backbone_shortlist_share);
+  says("place-break", `The five placing firms lead ${c.backbone_alpha02_shortlist} of the ${c.backbone_alpha02_total} links in the whole backbone at α = 0.2 (${pct(f.q2_backbone_shortlist_share)}), so their ${f.q2_breaking_links_led_by_shortlist} of the ${f.q2_breaking_links_flagged} links that cut a metro loose is no more than their share (p = ${f2(f.q2_hypergeom_p)}).`);
+  says("place-break", `which looks like one snap. The fall from ${f.q2_gc_size_alpha_0_1} to ${f.q2_gc_size_alpha_0_05} is`);
+  assert.ok(f.q2_hypergeom_p >= 0.05, '"no more of the links than of any others" needs p at 0.05 or above');
   const lead = Object.fromEntries(f.q2_leaders);
-  says("place-break", `Cognizant ${["zero", "one", "two", "three", "four", "five"][lead.Cognizant]}, HCL ${["zero", "one"][lead.HCL]}`);
   says("place-break", `Amazon (${["zero", "one", "two", "three"][lead.Amazon]})`);
   says("place-break", `Table: ${d.breaking_links.length} links that peel metros off`);
 });
@@ -112,9 +118,38 @@ test("section 2's deep dive: the cluster-composition captions follow jobs.json",
   says("jobs-groups", `the official labels shuffled ${q.nmi_shuffled.runs} times`);
 });
 
-test("the every-draw chart's caption starts at the first draw", () => {
-  const draws = json("docs/weeks/week04/data/more.json").lottery.all_draws;
+test("the every-draw chart's caption, notice and Method drawer follow USCIS's per-draw totals", () => {
+  const lottery = json("docs/weeks/week04/data/more.json").lottery;
+  const draws = lottery.all_draws.map((d) => ({ ...d, per: d.eligible / d.selected, multi: d.multiple / d.eligible }));
+  const f1 = (x) => x.toFixed(1);
   says("deeper-lottery", `Every draw since ${draws[0].label.split(" ").at(-1)}`);
+  // The by-person draw is the one week04-vis-more.js marks with the dashed line.
+  const byPerson = draws.findIndex((d) => d.label === "March 2024");
+  assert.ok(byPerson > 0, "all_draws must hold the March 2024 draw the chart marks");
+  assert.ok(draws[byPerson].multi < draws[byPerson - 1].multi / 2, '"drew by person" needs the multi-registration share to collapse at that draw');
+  says("deeper-lottery", `From ${draws[byPerson].label} USCIS drew by person, not by registration.`);
+  const [first, last] = [draws[0], draws.at(-1)];
+  const peak = draws.reduce((a, b) => (b.per > a.per ? b : a));
+  says(
+    "deeper-lottery",
+    `registrations per selection rose from ${f1(first.per)} in ${first.label} to ${f1(peak.per)} in ${peak.label}, ` +
+      `then fell to ${f1(last.per)} by ${last.label} once each worker counted once.`,
+  );
+  const i = draws.indexOf(peak);
+  assert.ok(draws.slice(0, i + 1).every((d, k) => k === 0 || d.per > draws[k - 1].per), '"rose" needs every draw up to the peak above the one before');
+  assert.ok(draws.slice(i).every((d, k) => k === 0 || d.per < draws[i + k - 1].per), '"fell" needs every draw after the peak below the one before');
+  assert.equal(i, byPerson - 1, '"once each worker counted once" needs the fall to start at the by-person draw');
+  // "The two draws this box can split by employer were the most crowded".
+  const top2 = [...draws].sort((a, b) => b.per - a.per).slice(0, 2).map((d) => d.label).sort();
+  assert.deepEqual(top2, [...lottery.draws].sort(), "the slopegraph's two draws must be the two highest ratios");
+  says("deeper-lottery", "The two draws this box can split by employer were the most crowded");
+  // Method drawer: "its ratio is lower than the one per approved petition".
+  const all = lottery.series.find((s) => s.label === "All employers").values;
+  lottery.draws.forEach((label, k) => {
+    const d = draws.find((x) => x.label === label);
+    assert.ok(d.per < all[k], `${label}: per selection (${f1(d.per)}) must sit below per approved petition (${all[k]})`);
+  });
+  says("deeper-lottery", "its selections include later rounds, so its ratio is lower than the one per approved petition");
 });
 
 test("section 3: switches stay in the group, movers and split clients", () => {
@@ -127,12 +162,17 @@ test("section 3: switches stay in the group, movers and split clients", () => {
   says("who-switch", `${pct(f.q1_share_new_vendor_already_linked)} of new main vendors`);
   says("who-switch", `${pct(f.q1_pooled_stricter_observed_share, 1)} against ${pct(f.q1_pooled_stricter_null_mean, 1)} ± ${pct(f.q1_pooled_stricter_null_sd, 1)} (z = ${Math.round(f.q1_pooled_stricter_z)}), a lift of ${f2(f.q1_pooled_stricter_lift)} rather than ${f.q1_pooled_lift.toFixed(1)}`);
   says("who-movers", `${pct(f.q2_share_move, 1)} of clients move`);
+  says("who-movers", "Two in three, but much of that is Louvain's own noise.");
+  assert.ok(Math.abs(f.q2_share_move - 2 / 3) < 0.05, '"Two in three" needs the mover share within 5 points of 2/3');
   says("who-movers", `a median ${pct(f.q2_noise_floor_weighted, 1)} between two weighted seeds and ${pct(f.q2_noise_floor_unweighted, 1)} between two unweighted ones`);
   says("who-movers", `(ranges ${pct(f.q2_noise_floor_weighted_min, 1)} to ${pct(f.q2_noise_floor_weighted_max, 1)} and ${pct(f.q2_noise_floor_unweighted_min, 1)} to ${pct(f.q2_noise_floor_unweighted_max, 1)})`);
   assert.ok(f.q2_share_move > f.q2_noise_floor_unweighted_max, "movers must exceed every seed pair");
-  says("who-movers", `${pct(f.q2_movers_2plus_vendor_share, 1)} of movers have two or more vendors, against ${pct(f.q2_all_clients_2plus_vendor_share, 1)}`);
+  says("who-movers", `They are, but barely: ${pct(f.q2_movers_2plus_vendor_share, 1)} of movers have two or more vendors, against ${pct(f.q2_all_clients_2plus_vendor_share, 1)}`);
+  const lead = f.q2_movers_2plus_vendor_share - f.q2_all_clients_2plus_vendor_share;
+  assert.ok(lead > 0 && lead < 0.1, '"They are, but barely" needs movers ahead by under 10 points');
   says("who-overlap", `${count(f.q3_two_community_clients)} clients get a fifth or more`);
-  says("who-overlap", `give ${count(Math.round(f.q3_null_mean))} ± ${Math.round(f.q3_null_sd)} split clients (z = −${Math.round(-f.q3_z)})`);
+  says("who-overlap", `give ${count(Math.round(f.q3_null_mean))} ± ${Math.round(f.q3_null_sd)} split clients (z = −${Math.round(-f.q3_z)}): real clients draw on fewer groups than chance`);
+  assert.ok(f.q3_z < -2, '"fewer groups than chance" needs z below −2');
 });
 
 test("section 3: the named movers and split clients follow the JSON", () => {
@@ -163,6 +203,13 @@ test("beyond: law firms, green cards and wage levels", () => {
   says("beyond-law", `(z = ${Math.round(f.q1_ami_z_vs_rewired)})`);
   says("beyond-law", `${pct(d.q1.single_law_firm_filing_share)} of filings come from`);
   const [lo, hi] = d.q2.placing_firms_20plus_placed.pooled_ci95;
+  const [dlo, dhi] = f.q2_direct_pooled_ci95;
+  // The notice itself carries both intervals, not only the drawer.
+  const permNotice = notices(html, "beyond-perm");
+  assert.ok(
+    permNotice.includes(`Outsourcing firms file ${f2(f.q2_placing_pooled_ratio)} green cards per H-1B filing (95% interval ${f2(lo)} to ${f2(hi)}), direct employers ${f2(f.q2_direct_pooled_ratio)} (${f2(dlo)} to ${f2(dhi)}).`),
+    "the 5B notice should give both 95% intervals",
+  );
   says("beyond-perm", `file ${f2(f.q2_placing_pooled_ratio)} green cards per H-1B filing (95% interval ${f2(lo)} to ${f2(hi)})`);
   says("beyond-perm", `direct employers ${f2(f.q2_direct_pooled_ratio)}`);
   says("beyond-perm", `(p = ${f2(f.q2_permutation_p)})`);
@@ -176,11 +223,19 @@ test("beyond: law firms, green cards and wage levels", () => {
   says("beyond-wage", `rises to ${f2(drops.top5.odds_ratio)}, ${f2(drops.top10.odds_ratio)} and ${f2(drops.top20.odds_ratio)}`);
   says("beyond-wage", `placed filings offer a median ${f2(f.q3_wage_ratio_placed_max)} times`);
   says("beyond-wage", `direct ones ${f2(f.q3_wage_ratio_direct_min)} to ${f2(f.q3_wage_ratio_direct_max)} times`);
-  const [dlo, dhi] = f.q2_direct_pooled_ci95;
   says("beyond-perm", `direct employers ${f2(f.q2_direct_pooled_ratio)} (${f2(dlo)} to ${f2(dhi)})`);
   const named = d.q2_named_perm;
   says("beyond-perm", `from ${count(named.Amazon.fy2024.all_statuses_name_match)} and ${count(named.Google.fy2024.all_statuses_name_match)} in 2024 to ${named.Amazon.fy2025.all_statuses_name_match} and ${named.Google.fy2025.all_statuses_name_match} in 2025`);
   says("beyond-wage", `Within the ${d.q3.strata_kept_20plus_each_side} occupations`);
+  // Section 5's answer list.
+  const answers = flatten(block(html, "beyond"));
+  const answer = (t) => assert.ok(answers.includes(t), `section 5's answers should say "${t}"`);
+  answer("Law firms: barely follow the section 3 groups.");
+  assert.ok(f.q1_ami < 0.1, '"barely follow" needs the law-firm AMI under 0.1');
+  answer("Green cards: outsourcing firms sponsor fewer per H-1B filing, though the intervals overlap.");
+  assert.ok(hi < f.q2_direct_pooled_ratio, '"sponsor fewer" needs the outsourcing interval below the direct rate');
+  assert.ok(hi > dlo, '"the intervals overlap" needs the outsourcing interval to reach into the direct one');
+  answer(`Wage levels: a placed filing has ${f.q3_odds_ratio.toFixed(1)} times the odds of level I or II.`);
 });
 
 test("section 4: without the biggest firms", () => {
@@ -190,16 +245,21 @@ test("section 4: without the biggest firms", () => {
   const has = (t) => assert.ok(lead.includes(t), `section 4 should say "${t}"`);
   const [full, short, shortc, top10, top10c] = ["full", "drop_shortlist", "control_shortlist", "drop_top10_filings", "control_top10_filings"].map((id) => at("metros", id));
   const vs = d.finding.metros;
-  has(`file ${pct(short.filings_removed_share, 1)} of the filings in the 40 metros, and the ten largest filers of any kind ${pct(top10.filings_removed_share, 1)}`);
-  has(`match Census regions at AMI ${f2(top10.ami_region)} (p = ${top10.p_region.toFixed(3)}), against ${f2(full.ami_region)} for the full network and ${f2(top10c.ami_region)} ± ${f2(top10c.ami_region_sd)}`);
-  has(`${vs.drop_top10_vs_control.ami_region_vs_control_sd.toFixed(1)} standard deviations away`);
+  has(`The ten largest filers file ${pct(top10.filings_removed_share, 1)} of the filings in the 40 metros, and the five largest placing firms ${pct(short.filings_removed_share, 1)}`);
+  has(`match Census regions at AMI ${f2(top10.ami_region)}, against ${f2(full.ami_region)} for the full network`);
+  has(
+    `Without the ten largest filers the regional match (AMI ${f2(top10.ami_region)}, p = ${top10.p_region.toFixed(3)}) sits ` +
+      `${vs.drop_top10_vs_control.ami_region_vs_control_sd.toFixed(1)} standard deviations above random cuts ` +
+      `(${f2(top10c.ami_region)} ± ${f2(top10c.ami_region_sd)}).`,
+  );
   assert.ok(vs.drop_top10_vs_control.ami_region_vs_control_sd > 2, "the regional turn must stand clear of random cuts");
   has(`(NMI ${f2(short.nmi_vs_full)}, random cuts ${f2(shortc.nmi_vs_full)} ± ${f2(shortc.nmi_vs_full_sd)})`);
   has(`rises only to ${f2(short.ami_region)}, inside the range of random cuts (${f2(shortc.ami_region)} ± ${f2(shortc.ami_region_sd)})`);
   assert.ok(Math.abs(vs.drop_shortlist_vs_control.ami_region_vs_control_sd) < 2 && Math.abs(vs.drop_shortlist_vs_control.nmi_vs_control_sd) < 2);
   const [js, jsc, jt, jtc] = ["drop_shortlist", "control_shortlist", "drop_top10_filings", "control_top10_filings"].map((id) => at("jobs", id));
   const jv = d.finding.jobs;
-  has(`hold at NMI ${f2(js.nmi_vs_full)} and ${f2(jt.nmi_vs_full)}`);
+  has(`The job clusters hold (NMI ${f2(js.nmi_vs_full)} and ${f2(jt.nmi_vs_full)}) but shift more than random cuts of the same volume do`);
+  assert.ok(Math.max(jv.drop_shortlist_vs_control.nmi_vs_control_sd, jv.drop_top10_vs_control.nmi_vs_control_sd) < -2, '"shift more than random cuts" needs both 2 sd below them');
   has(`(${f2(jsc.nmi_vs_full)} and ${f2(jtc.nmi_vs_full)}, ${(-jv.drop_shortlist_vs_control.nmi_vs_control_sd).toFixed(1)} and ${(-jv.drop_top10_vs_control.nmi_vs_control_sd).toFixed(1)} standard deviations away)`);
   has(`from ${f2(at("jobs", "full").Q)} to ${f2(jt.Q)}`);
   const minZ = Math.min(...["metros", "jobs"].flatMap((part) => d[part].variants.filter((v) => !v.control).map((v) => v.z)));
@@ -214,7 +274,8 @@ test("section 4: which firm hides the regions", () => {
   const firm = (name) => d.single.find((s) => s.firm === name);
   const amazon = firm("Amazon");
   has(`Amazon files ${pct(amazon.filings_removed_share, 1)} of the filings`);
-  has(`at AMI ${f2(amazon.ami_region)} (${amazon.ami_vs_control_sd.toFixed(1)} standard deviations above its random cuts), more than the ${f2(f.q_single_firm.all10_ami_region)} without all ten`);
+  has(`match Census regions at AMI ${f2(amazon.ami_region)}, more than the ${f2(f.q_single_firm.all10_ami_region)} without all ten`);
+  has(`Amazon's ${f2(amazon.ami_region)} sits ${amazon.ami_vs_control_sd.toFixed(1)} standard deviations above its random cuts`);
   assert.ok(amazon.ami_region > f.q_single_firm.all10_ami_region, '"more than without all ten" needs Amazon alone above the ten-firm value');
   // Only Amazon pushes the match up beyond its random cuts.
   const up = d.single.filter((s) => s.ami_vs_control_sd >= 2).map((s) => s.firm);
@@ -235,4 +296,19 @@ test("section 4: which firm hides the regions", () => {
   const y = Object.fromEntries(d.fy2024.map((r) => [r.id, r]));
   has(`no regional match (AMI −${Math.abs(y.full.ami_region).toFixed(3)})`);
   has(`the match is ${f2(y.drop_fy2024_top10.ami_region)} (p = ${y.drop_fy2024_top10.p_region.toFixed(3)}), against ${f2(y.drop_fy2024_top10.control_ami_mean).replace("-", "−")} ± ${f2(y.drop_fy2024_top10.control_ami_sd)}`);
+});
+
+test("topic jobs: no occupation clearly bridges two clusters", () => {
+  const b = json("docs/weeks/week04/data/jobs.json").bridges;
+  says("jobs-bridges", "None clearly: only");
+  says("jobs-bridges", "chance alone passes.");
+  assert.ok(b.all_occupations < Math.round(b.expected_false_positives), '"fewer than chance alone passes" needs fewer passes than the expected false positives');
+});
+
+test("topic outsourcing: the client map colours as many sectors as its drawer says", () => {
+  // The count lives in the script's SECTORS list, not in a JSON file.
+  const src = read("docs/assets/js/week04-staffing.js");
+  const coloured = [...src.matchAll(/\["[^"]+", "--w4-sector-(\w+)"/g)].map((m) => m[1]).filter((t) => !["other", "unknown"].includes(t));
+  assert.deepEqual(coloured, ["finance", "manufacturing", "health"]);
+  assert.ok(html.includes(`Only ${["no", "one", "two", "three", "four"][coloured.length]} sectors get a colour: finance and insurance, manufacturing and health care.`));
 });

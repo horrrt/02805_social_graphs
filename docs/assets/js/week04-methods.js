@@ -6,6 +6,8 @@
 // docs/assets/data/week04_place.json, not typed in by hand. Built lazily: the
 // box does nothing until it is first opened.
 
+import { termify } from "./week04-ui.js?v=2";
+
 const EXPLORE_URL = new URL("../../weeks/week04/data/explore.json", import.meta.url);
 const PLACE_URL = new URL("../data/week04_place.json", import.meta.url);
 const USA_URL = new URL("../data/usa.json", import.meta.url);
@@ -225,15 +227,28 @@ function buildGN(echarts, explore, place, ctx) {
     firstOutOk = firstOut.length === 1 && bestLevel === levels[0];
     if (firstOutOk) firstOutName = NAME[firstOut[0]];
   }
+
   const hubOrder = hubsOk ? (NAME[hubs[0]] === "New York" ? hubs : [hubs[1], hubs[0]]) : hubs;
+  const gnBackgroundOk = hubsOk && noPositiveSplit && splitsOk && firstOutOk;
+  if (gnBackgroundOk) {
+    $("w4m-gn-hubs").textContent = `${NAME[hubOrder[0]]} and ${NAME[hubOrder[1]]}`;
+    $("w4m-gn-first").textContent = firstOutName;
+  } else {
+    $("w4m-gn-hubs").closest("details").hidden = true;
+  }
 
   $("w4m-gn-lead").textContent =
-    hubsOk && noPositiveSplit && splitsOk && firstOutOk
+    gnBackgroundOk && splitsOk && firstOutOk
       ? `Cut the link that carries the most shortest paths, recompute, repeat, and keep the level of pieces with the highest ` +
-        `modularity. On the ${backboneEdges.length} backbone links it finds no groups: ${NAME[hubOrder[0]]} and ${NAME[hubOrder[1]]} ` +
-        `link to every other metro, so each split strands a single metro, starting with ${firstOutName}.`
+        `modularity. On the ${backboneEdges.length} backbone links it finds no groups.`
       : `Cut the link that carries the most shortest paths, recompute, repeat, and keep the level of pieces with the highest ` +
         `modularity. On the ${backboneEdges.length} backbone links, no split scores above zero.`;
+  termify(
+    $("w4m-gn-lead"),
+    "modularity",
+    "How much more of the link weight falls inside the groups than chance would put there. Higher means sharper groups.",
+    "w4-term-w4m-panel-gn-modularity",
+  );
   $("w4m-gn-caption").textContent = firstOutOk
     ? `No split scores above zero: the best, which cuts off only ${firstOutName}, scores ${gn.best.Q.toFixed(4)}. The ring marks where you are.`
     : `The best split found scores ${gn.best.Q.toFixed(4)}. The ring marks where you are.`;
@@ -568,11 +583,18 @@ function buildLouvain(echarts, explore, place, ctx) {
   const lvlLast = louvain.levels[louvain.levels.length - 1];
   const assumptionsOk = louvain.final.nmi_with_page === 1 && louvain.levels.length === 2 && lvlLast.moves.length === 0;
   const WORDS = { 2: "two", 3: "three", 4: "four", 5: "five" };
+  if (assumptionsOk) {
+    $("w4m-louvain-seed").textContent = String(louvain.seed);
+    $("w4m-louvain-links").textContent = String(explore.full.edges.length);
+    $("w4m-louvain-q-from").textContent = lv0.Q_start.toFixed(3);
+    $("w4m-louvain-q-to").textContent = louvain.final.Q.toFixed(3);
+  } else {
+    $("w4m-louvain-seed").closest("details").hidden = true;
+  }
   $("w4m-louvain-lead").textContent = assumptionsOk
     ? `Louvain starts with every metro alone and moves one at a time to the neighbouring community that raises modularity most. ` +
-      `In this run (seed ${louvain.seed}, all ${explore.full.edges.length} weighted links), ${lv0.moves.length} moves over ` +
-      `${WORDS[lv0.sweeps] || lv0.sweeps} sweeps lift Q from ${lv0.Q_start.toFixed(3)} to ${louvain.final.Q.toFixed(3)} and land on ` +
-      `the page’s ${WORDS[lv0.communities] || lv0.communities} metro groups; the second level finds nothing to merge.`
+      `In this run, ${lv0.moves.length} moves over ${WORDS[lv0.sweeps] || lv0.sweeps} sweeps land on the page’s ` +
+      `${WORDS[lv0.communities] || lv0.communities} metro groups.`
     : `Louvain starts with every metro alone and moves one at a time to the neighbouring community that raises modularity most, ` +
       `landing on ${louvain.final.Q.toFixed(3)} over ${louvain.levels.length} levels.`;
 
@@ -671,11 +693,27 @@ function buildOverlap(echarts, explore, place, ctx) {
   const ks = ["3", "4", "5", "6"];
   const ksOk = ks.every((k) => kc[k] && kc[k].communities.length === 1);
   $("w4m-overlap-lead").textContent = ksOk
-    ? `A partition puts each metro in one group; these two methods let it sit in several. Link communities group the links, and a ` +
-      `metro joins every community its links are in. Clique percolation finds a single community at every k from ${ks[0]} to ` +
-      `${ks[ks.length - 1]}: a larger k only leaves more of the fringe out.`
-    : `A partition puts each metro in one group; these two methods let it sit in several. Link communities group the links, and a ` +
-      `metro joins every community its links are in. Clique percolation finds a small number of overlapping communities at each k.`;
+    ? `A partition puts each metro in one group; these two methods let it sit in several. Clique percolation finds a single ` +
+      `community at every k from ${ks[0]} to ${ks[ks.length - 1]}.`
+    : `A partition puts each metro in one group; these two methods let it sit in several. Clique percolation finds a small ` +
+      `number of overlapping communities at each k.`;
+  // "A larger k only leaves more of the fringe out": one community at every k,
+  // and each k's left-out metros hold the smaller k's and more.
+  const fringeOk =
+    ksOk &&
+    ks.slice(1).every((k, i) => {
+      const prev = kc[ks[i]].in_none;
+      const next = new Set(kc[k].in_none);
+      return next.size > prev.length && prev.every((id) => next.has(id));
+    });
+  if (fringeOk) $("w4m-overlap-fringe").textContent = " In clique percolation, a larger k only leaves more of the fringe out.";
+  termify(
+    $("w4m-overlap-lead"),
+    "Clique percolation",
+    "Grows groups from cliques: sets of k metros that all link to each other. Cliques that overlap in almost every " +
+      "metro join the same group.",
+    "w4-term-w4m-panel-overlap-clique",
+  );
 
   const views = {};
   for (const k of ks) {

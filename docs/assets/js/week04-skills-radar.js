@@ -6,7 +6,7 @@
 // <details> toggle, so this waits for that card to land instead of racing it.
 
 import { token } from "./week04-strip.js";
-import { drawer, drawerRow } from "./week04-ui.js";
+import { drawer, drawerRow } from "./week04-ui.js?v=2";
 
 const DATA = new URL("../../weeks/week04/data/skills_radar.json?v=2", import.meta.url);
 const MAX_SELECTED = 5;
@@ -417,8 +417,9 @@ function howBody() {
     frag(
       "O*NET 31.0 rates no profile for Financial and Investment Analysts (13-2051) or Financial Risk " +
         "Specialists (13-2054); their ratings come from O*NET 25.0 through O*NET's own 2010-to-2019 crosswalk, " +
-        "the last release that covered them.",
+        "the last release that covered them. ",
     ),
+    frag("The ratings come from surveys of people who hold the job and O*NET's own analysts."),
   );
   return body;
 }
@@ -437,15 +438,14 @@ function card(data) {
       <p class="w4-answer">Put up to five H-1B occupations on one radar and see where their O*NET profiles pull apart.</p>
     </div>`;
 
+  const descriptors = Object.values(data.meta.groups).reduce((n, g) => n + g.ids.length, 0);
   const two = document.createElement("div");
   two.className = "w4-two";
   const left = document.createElement("div");
   left.innerHTML = `
     <p class="sub">
-      O*NET rates every detailed occupation's importance on 109 skills, knowledge areas and work activities,
-      from 1 (not important) to 5 (extremely important), using surveys of people who hold the job and O*NET's
-      own analysts. This radar plots those ratings directly, one spoke per descriptor, so a shape that reaches
-      further out on a spoke means that descriptor matters more for that occupation.
+      O*NET rates how much each of ${descriptors} skills, knowledge areas and work activities matters to an occupation,
+      from 1 (not important) to 5 (extremely important). Each spoke is one of them: further out means it matters more.
     </p>`;
   left.append(drawerRow(drawer("Method", howBody())));
 
@@ -454,9 +454,8 @@ function card(data) {
   plot.innerHTML = `
     <h3>Compare occupations' O*NET profiles</h3>
     <p class="axis-note">
-      Every spoke runs from 1 to 5, O*NET's own Importance scale. Search adds an occupation, up to five at
-      once; the toggle switches which of the three descriptor groups the spokes show. Hover a spoke's label
-      for every chosen occupation's value there.
+      Search adds up to five occupations; the toggle picks skills, knowledge areas or work activities.
+      Hover a spoke's label for each occupation's value there.
     </p>`;
   two.append(left, plot);
 

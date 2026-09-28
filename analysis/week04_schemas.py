@@ -1325,9 +1325,17 @@ class MoreModularityRow(Model):
     z: float
 
 
+class MoreCountryLabels(Model):
+    ami_region: float  # AMI can fall below zero
+    ami_week3: float
+    p_region_shuffled_nmi: float = Share
+    p_week3_shuffled_nmi: float = Share
+
+
 class MoreCountries(Model):
     top: list[MoreCountryRow] = Field(min_length=8, max_length=8)
     modularity: dict[Literal["unweighted", "weighted"], MoreModularityRow]
+    labels: MoreCountryLabels
 
 
 class MoreDensityRow(Model):

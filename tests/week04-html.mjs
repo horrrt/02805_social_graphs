@@ -31,3 +31,14 @@ export const flatten = (fragment) =>
     .replace(/<span class="w4-pop[^"]*"[^>]*>[^<]*<\/span>/g, " ")
     .replace(/<[^>]+>/g, " ")
     .replace(/\s+/g, " ");
+
+// Text of the "What to notice" boxes inside element `id`, joined, so a pin on a
+// notice cannot pass on the same sentence sitting in a drawer.
+export const notices = (html, id) => {
+  const card = block(html, id);
+  const out = [];
+  for (let at = card.indexOf('<div class="notice"'); at >= 0; at = card.indexOf('<div class="notice"', at + 1)) {
+    out.push(flatten(blockAt(card, at)));
+  }
+  return out.join(" ");
+};
