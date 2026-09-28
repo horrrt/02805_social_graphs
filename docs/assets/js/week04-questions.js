@@ -280,7 +280,7 @@ function renderWhoSwitch(data) {
   const f = data.finding;
   const groups = [
     ...data.q1_pairs.map((p) => ({
-      label: `FY${p.from}→FY${p.to}`, observed: p.observed_share_same_community, mean: p.null.mean, sd: p.null.sd,
+      label: `${p.from}→${p.to}`, observed: p.observed_share_same_community, mean: p.null.mean, sd: p.null.sd,
     })),
     { label: "Pooled", observed: f.q1_pooled_observed_share, mean: f.q1_pooled_null_mean, sd: f.q1_pooled_null_sd },
   ];

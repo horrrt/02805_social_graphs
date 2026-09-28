@@ -128,7 +128,7 @@ function egoDiagram(client, firmNames) {
     width: w,
     height: h,
     role: "img",
-    "aria-label": `${client.name} and the ${num(client.vendors)} firms that place H-1B workers there in FY2025`,
+    "aria-label": `${client.name} and the ${num(client.vendors)} firms that place H-1B workers there in 2025`,
     class: "w4-ego",
   });
   rows.forEach(([name, n], i) => {
