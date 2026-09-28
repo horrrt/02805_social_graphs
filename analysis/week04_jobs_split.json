@@ -22,8 +22,8 @@
      "nmi": 0.4249823076080533,
      "ami": 0.41256212939601244
     },
-    "placing_modularity": 0.22372421585640684,
-    "direct_modularity": 0.2951930064111792,
+    "placing_modularity": 0.22374220093080605,
+    "direct_modularity": 0.29519169171237053,
     "placing_clusters": 4,
     "direct_clusters": 69,
     "placing_soc_agreement": {
@@ -138,13 +138,13 @@
      {
       "id": "15-2051",
       "title": "Data Scientists",
-      "filings": 28463,
+      "filings": 28465,
       "share": 0.0673
      },
      {
       "id": "15-1299",
       "title": "Computer Occupations, All Other",
-      "filings": 22056,
+      "filings": 22051,
       "share": 0.0522
      },
      {
@@ -156,7 +156,7 @@
      {
       "id": "15-1253",
       "title": "Software Quality Assurance Analysts and Testers",
-      "filings": 10219,
+      "filings": 10220,
       "share": 0.0242
      },
      {
@@ -288,8 +288,8 @@
      "nmi": 0.4958497313034336,
      "ami": 0.4869275788670567
     },
-    "placing_modularity": 0.3169311386104648,
-    "direct_modularity": 0.2857697821157637,
+    "placing_modularity": 0.31692331756513226,
+    "direct_modularity": 0.2857697123599091,
     "placing_clusters": 14,
     "direct_clusters": 73,
     "placing_soc_agreement": {
@@ -378,7 +378,7 @@
      {
       "id": "17-2112",
       "title": "Industrial Engineers",
-      "filings": 2530,
+      "filings": 2531,
       "share": 0.0117
      },
      {
@@ -404,13 +404,13 @@
      {
       "id": "15-2051",
       "title": "Data Scientists",
-      "filings": 22292,
+      "filings": 22294,
       "share": 0.0693
      },
      {
       "id": "15-1299",
       "title": "Computer Occupations, All Other",
-      "filings": 15781,
+      "filings": 15776,
       "share": 0.0491
      },
      {
@@ -434,7 +434,7 @@
      {
       "id": "15-1253",
       "title": "Software Quality Assurance Analysts and Testers",
-      "filings": 6813,
+      "filings": 6814,
       "share": 0.0212
      },
      {
@@ -574,10 +574,10 @@
     "runs": 20,
     "matched_on": "filings",
     "n_shared_qualifying_median": 331,
-    "nmi_mean": 0.5874955890739443,
-    "nmi_sd": 0.05022976387821024,
+    "nmi_mean": 0.5873710613534928,
+    "nmi_sd": 0.04905613103023356,
     "nmi_min": 0.5005534778545488,
-    "ami_mean": 0.5775729751488774,
+    "ami_mean": 0.5774473144527623,
     "filing_share_of_group_a_mean": 0.2157,
     "filing_share_of_group_a_sd": 0.0035
    },
@@ -738,33 +738,33 @@
      "links": 26
     },
     {
-     "id": "13-2071",
-     "title": "Credit Counselors",
-     "links": 11
-    },
-    {
-     "id": "27-1019",
-     "title": "Artists and Related Workers, All Other",
-     "links": 30
-    },
-    {
      "id": "29-1125",
      "title": "Recreational Therapists",
      "links": 94
     },
     {
-     "id": "31-2022",
-     "title": "Physical Therapist Aides",
-     "links": 10
+     "id": "43-4111",
+     "title": "Interviewers, Except Eligibility and Loan",
+     "links": 19
+    },
+    {
+     "id": "49-9051",
+     "title": "Electrical Power-Line Installers and Repairers",
+     "links": 11
+    },
+    {
+     "id": "53-2022",
+     "title": "Airfield Operations Specialists",
+     "links": 14
     }
    ],
    "count": 5,
    "in_top15": [
-    "13-2071",
-    "31-2022"
+    "43-4111",
+    "49-9051"
    ],
    "in_top15_count": 2
   }
  },
- "seconds": 459
+ "seconds": 329
 }

@@ -19,16 +19,16 @@ client against filed by a direct employer (SECONDARY_ENTITY starts with "Y"),
 the same flag week04_staffing.py counts for placed_share.
 
 Occupations are 2018 SOC. Filings still on 2010 codes (FY2022 until July
-2022) are moved to their 2018 successors before ranking, in two steps. First
-the full 8-digit O*NET-SOC code goes through every row of O*NET's 2010-to-2019
-crosswalk that has exactly one 2019 target, keeping that target's 6-digit SOC
-code, so 15-1199.08 lands on 15-2051 (Data Scientists) and 15-1199.01 on
-15-1253 (QA testers) rather than on 15-1299. No 2010 code the crosswalk moves
-is also a 2019 code, so every year's rows go through it. Codes without a
-single-target row fall back to week04_jobs.LEGACY, 13 old 7-character codes
-mapped onto 12 new ones (the same map week04_jobs.py uses for its own
-network). meta carries legacy_codes and legacy_targets (LEGACY's size and its
-distinct targets) and crosswalk_codes: the distinct 8-digit codes in the
+2022) are moved to their 2018 successors before ranking by
+week04_jobs.recode_soc, the recode section 2's network uses too, in two steps.
+First the full 8-digit O*NET-SOC code goes through every row of O*NET's
+2010-to-2019 crosswalk that has exactly one 2019 target, keeping that target's
+6-digit SOC code, so 15-1199.08 lands on 15-2051 (Data Scientists) and
+15-1199.01 on 15-1253 (QA testers) rather than on 15-1299. No 2010 code the
+crosswalk moves is also a 2019 code, so every year's rows go through it. Codes
+without a single-target row fall back to week04_jobs.LEGACY, 13 old
+7-character codes mapped onto 12 new ones. meta carries legacy_codes and
+legacy_targets (LEGACY's size and its distinct targets) and crosswalk_codes: the distinct 8-digit codes in the
 filings that the crosswalk moved to a different 6-digit code. A row counts in
 legacy_recoded when either step changed its 6-digit code. occupations/groups
 below drop nothing: they route unparseable SOC codes into "All other
@@ -56,14 +56,12 @@ from pathlib import Path
 import pandas as pd
 
 import week04_staffing as staffing
-from week04_data import RAW
-from week04_jobs import LEGACY, titles_of
+from week04_jobs import LEGACY, recode_soc, single_targets, titles_of
 from week04_schemas import check
 from week04_shift import bounds as oct_jun_bounds
 
 ROOT = Path(__file__).resolve().parents[1]
 PAGE = ROOT / "docs/weeks/week04/data/roles.json"
-CROSSWALK = RAW / "onet" / "onet_2010_to_2019_crosswalk.csv"
 YEARS = ["2022", "2023", "2024", "2025", "2026"]
 FY = {y: f"FY{y}" for y in YEARS}
 TOP_N = {"occupations": 10, "groups": 7, "employer": 10}
@@ -100,31 +98,10 @@ MAJOR_GROUP_TITLES = {
 }
 
 
-def single_targets():
-    """{2010 O*NET-SOC code: its 2019 6-digit SOC code}, from every crosswalk
-    row whose 2010 code has exactly one 2019 target."""
-    if not CROSSWALK.exists():
-        raise SystemExit(f"{CROSSWALK.relative_to(ROOT)} is missing: run python analysis/week04_data.py --refs --no-tables")
-    walk = pd.read_csv(CROSSWALK, dtype=str)
-    targets = walk.groupby("O*NET-SOC 2010 Code")["O*NET-SOC 2019 Code"].agg(set)
-    return {old: next(iter(new))[:7] for old, new in targets.items() if len(new) == 1}
-
-
 def recoded(lca, crosswalk):
-    """Adds the recoded 6-digit occupation, its major group, whether the
-    recode moved the row off a 2010 code, whether the crosswalk (not LEGACY)
-    did, and whether its SOC code parsed at all."""
-    raw = lca["SOC_CODE"].astype(str).str.strip()
-    code = raw.str[:7]
-    valid = code.str.match(r"^\d{2}-\d{4}$", na=False)
-    full = raw.str[:10].where(raw.str[:10].str.match(r"^\d{2}-\d{4}\.\d{2}$", na=False))
-    walked = full.map(crosswalk)
-    occupation = walked.where(valid).fillna(code.where(valid).replace(LEGACY))
-    legacy = valid & (occupation != code)
-    by_crosswalk = valid & walked.notna() & (walked != code)
-    group = occupation.str[:2]
-    return lca.assign(occupation=occupation, group=group, legacy=legacy, by_crosswalk=by_crosswalk,
-                      onet_code=full, soc_valid=valid)
+    """week04_jobs.recode_soc's columns plus the recoded occupation's major group."""
+    out = recode_soc(lca, crosswalk)
+    return out.assign(group=out["occupation"].str[:2])
 
 
 def load_years():

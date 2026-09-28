@@ -12,9 +12,14 @@ Questions
 Method
 - Certified H-1B filings (week04_staffing.certified), companies keyed by
   week04_staffing.resolver(): a tax number, or a family in the alias table.
-- Occupations are 2018 SOC codes. The few filings still on 2010 computer codes
-  are moved to their 2018 successors (LEGACY). Each code takes its title from
-  its base ".00" rows, not from an O*NET sub-title.
+- Occupations are 2018 SOC codes. The few filings still on 2010 codes are moved
+  to their 2018 successors by recode_soc, in two steps: the full 8-digit
+  O*NET-SOC code goes through every row of O*NET's 2010-to-2019 crosswalk with
+  exactly one 2019 target (so 15-1199.08 lands on 15-2051, Data Scientists,
+  and 15-1199.01 on 15-1253, QA testers), and codes without such a row fall
+  back to LEGACY's 7-character map. week04_roles.py uses the same function.
+  Each code takes its title from its base ".00" rows, not from an O*NET
+  sub-title.
 - Louvain (igraph's multilevel) on the full projection, 100 seeds, the best
   modularity run kept; the median NMI over all pairs of the 100 runs says how
   stable the split is.
@@ -49,6 +54,7 @@ import json
 import random
 import sys
 from collections import Counter, defaultdict
+from functools import lru_cache
 from pathlib import Path
 
 import networkx as nx
@@ -56,13 +62,16 @@ from sklearn.metrics import adjusted_mutual_info_score as ami
 from sklearn.metrics import normalized_mutual_info_score as nmi
 
 import numpy as np
+import pandas as pd
 
+from week04_data import RAW
 from week04_schemas import check
 from week04_staffing import certified, infomap, louvain, rewire, tracked
 from week04_where import DEFAULT_ALPHA, disparity
 
 ROOT = Path(__file__).resolve().parents[1]
 OUT = ROOT / "docs" / "weeks" / "week04" / "data" / "jobs.json"
+CROSSWALK = RAW / "onet" / "onet_2010_to_2019_crosswalk.csv"
 SHOWN = 60
 LINKS_PER_NODE = 3
 PARTNERS = 5
@@ -90,12 +99,38 @@ MAJOR_GROUPS = {
 }
 
 
+@lru_cache
+def single_targets(path=CROSSWALK):
+    """{2010 O*NET-SOC code: its 2019 6-digit SOC code}, from every crosswalk
+    row whose 2010 code has exactly one 2019 target."""
+    if not path.exists():
+        raise SystemExit(f"{path} is missing: run python analysis/week04_data.py --refs --no-tables")
+    walk = pd.read_csv(path, dtype=str)
+    targets = walk.groupby("O*NET-SOC 2010 Code")["O*NET-SOC 2019 Code"].agg(set)
+    return {old: next(iter(new))[:7] for old, new in targets.items() if len(new) == 1}
+
+
+def recode_soc(lca, crosswalk=None):
+    """Adds the recoded 6-digit occupation, whether the recode moved the row
+    off a 2010 code, whether the crosswalk (not LEGACY) did, the 8-digit
+    O*NET-SOC code, and whether its SOC code parsed at all. The crosswalk
+    defaults to single_targets()."""
+    crosswalk = single_targets() if crosswalk is None else crosswalk
+    raw = lca["SOC_CODE"].astype(str).str.strip()
+    code = raw.str[:7]
+    valid = code.str.match(r"^\d{2}-\d{4}$", na=False)
+    full = raw.str[:10].where(raw.str[:10].str.match(r"^\d{2}-\d{4}\.\d{2}$", na=False))
+    walked = full.map(crosswalk)
+    occupation = walked.where(valid).fillna(code.where(valid).replace(LEGACY))
+    legacy = valid & (occupation != code)
+    by_crosswalk = valid & walked.notna() & (walked != code)
+    return lca.assign(occupation=occupation, legacy=legacy, by_crosswalk=by_crosswalk,
+                      onet_code=full, soc_valid=valid)
+
+
 def filtered(year):
     frame = certified(year)
-    frame = frame[frame["SOC_CODE"].str.match(r"^\d{2}-\d{4}", na=False)].copy()
-    code = frame["SOC_CODE"].str.strip().str[:7]
-    frame["legacy"] = code.isin(LEGACY)
-    frame["occupation"] = code.replace(LEGACY)
+    frame = recode_soc(frame[frame["SOC_CODE"].str.match(r"^\d{2}-\d{4}", na=False)])
     frame["company"] = frame["employer"]
     return frame
 

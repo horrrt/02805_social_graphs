@@ -2,7 +2,7 @@
  "meta": {
   "generated_by": "analysis/week04_pagerank.py",
   "year": 2025,
-  "seconds": 9.5,
+  "seconds": 19.9,
   "network": "Companies x occupations projection (week04_jobs.py), disparity-filter backbone at alpha = 0.05, giant component",
   "alpha_filter": 0.05,
   "section2_alpha_filter": 0.2,
@@ -23,7 +23,7 @@
     "title": "Software Developers",
     "filings": 170440,
     "degree": 164,
-    "strength": 44112,
+    "strength": 44110,
     "degree_rank": 2,
     "pagerank": 0.03397,
     "rank": 1
@@ -31,9 +31,9 @@
    {
     "code": "15-2051",
     "title": "Data Scientists",
-    "filings": 31465,
+    "filings": 31467,
     "degree": 203,
-    "strength": 35725,
+    "strength": 35723,
     "degree_rank": 1,
     "pagerank": 0.03379,
     "rank": 2
@@ -41,11 +41,11 @@
    {
     "code": "15-1299",
     "title": "Computer Occupations, All Other",
-    "filings": 47464,
+    "filings": 47459,
     "degree": 115,
-    "strength": 29393,
+    "strength": 29385,
     "degree_rank": 4,
-    "pagerank": 0.02169,
+    "pagerank": 0.02168,
     "rank": 3
    },
    {
@@ -91,9 +91,9 @@
    {
     "code": "15-1253",
     "title": "Software Quality Assurance Analysts and Testers",
-    "filings": 18600,
+    "filings": 18601,
     "degree": 65,
-    "strength": 20491,
+    "strength": 20489,
     "degree_rank": 18,
     "pagerank": 0.01137,
     "rank": 8
@@ -123,7 +123,7 @@
     "title": "Computer and Information Systems Managers",
     "filings": 12585,
     "degree": 71,
-    "strength": 16035,
+    "strength": 16034,
     "degree_rank": 17,
     "pagerank": 0.01031,
     "rank": 11
@@ -133,7 +133,7 @@
     "title": "Mechanical Engineers",
     "filings": 10134,
     "degree": 72,
-    "strength": 9935,
+    "strength": 9934,
     "degree_rank": 15,
     "pagerank": 0.00998,
     "rank": 12
@@ -141,9 +141,9 @@
    {
     "code": "17-2112",
     "title": "Industrial Engineers",
-    "filings": 10017,
+    "filings": 10018,
     "degree": 72,
-    "strength": 12366,
+    "strength": 12365,
     "degree_rank": 16,
     "pagerank": 0.00991,
     "rank": 13
@@ -203,7 +203,7 @@
     "title": "Operations Research Analysts",
     "filings": 7475,
     "degree": 79,
-    "strength": 10779,
+    "strength": 10778,
     "degree_rank": 11,
     "pagerank": 0.0085,
     "rank": 19
@@ -225,7 +225,7 @@
     "title": "Software Developers",
     "filings": 170440,
     "degree": 164,
-    "strength": 44112,
+    "strength": 44110,
     "degree_rank": 2,
     "pagerank": 0.05836,
     "rank": 1
@@ -233,9 +233,9 @@
    {
     "code": "15-2051",
     "title": "Data Scientists",
-    "filings": 31465,
+    "filings": 31467,
     "degree": 203,
-    "strength": 35725,
+    "strength": 35723,
     "degree_rank": 1,
     "pagerank": 0.05243,
     "rank": 2
@@ -243,19 +243,19 @@
    {
     "code": "15-1299",
     "title": "Computer Occupations, All Other",
-    "filings": 47464,
+    "filings": 47459,
     "degree": 115,
-    "strength": 29393,
+    "strength": 29385,
     "degree_rank": 4,
-    "pagerank": 0.03766,
+    "pagerank": 0.03765,
     "rank": 3
    },
    {
     "code": "15-1253",
     "title": "Software Quality Assurance Analysts and Testers",
-    "filings": 18600,
+    "filings": 18601,
     "degree": 65,
-    "strength": 20491,
+    "strength": 20489,
     "degree_rank": 18,
     "pagerank": 0.02372,
     "rank": 4
@@ -265,7 +265,7 @@
     "title": "Computer and Information Systems Managers",
     "filings": 12585,
     "degree": 71,
-    "strength": 16035,
+    "strength": 16034,
     "degree_rank": 17,
     "pagerank": 0.01928,
     "rank": 5
@@ -273,9 +273,9 @@
    {
     "code": "17-2112",
     "title": "Industrial Engineers",
-    "filings": 10017,
+    "filings": 10018,
     "degree": 72,
-    "strength": 12366,
+    "strength": 12365,
     "degree_rank": 16,
     "pagerank": 0.01607,
     "rank": 6
@@ -315,7 +315,7 @@
     "title": "Database Administrators",
     "filings": 6926,
     "degree": 56,
-    "strength": 12024,
+    "strength": 12023,
     "degree_rank": 28,
     "pagerank": 0.01402,
     "rank": 10
@@ -325,7 +325,7 @@
     "title": "Operations Research Analysts",
     "filings": 7475,
     "degree": 79,
-    "strength": 10779,
+    "strength": 10778,
     "degree_rank": 11,
     "pagerank": 0.01392,
     "rank": 11
@@ -335,7 +335,7 @@
     "title": "Mechanical Engineers",
     "filings": 10134,
     "degree": 72,
-    "strength": 9935,
+    "strength": 9934,
     "degree_rank": 15,
     "pagerank": 0.0139,
     "rank": 12
@@ -363,7 +363,7 @@
    {
     "code": "15-1243",
     "title": "Database Architects",
-    "filings": 4733,
+    "filings": 4735,
     "degree": 54,
     "strength": 10944,
     "degree_rank": 30,
@@ -415,7 +415,7 @@
     "title": "Network and Computer Systems Administrators",
     "filings": 5303,
     "degree": 44,
-    "strength": 9914,
+    "strength": 9913,
     "degree_rank": 37,
     "pagerank": 0.01144,
     "rank": 20
@@ -427,17 +427,17 @@
     "title": "Software Developers",
     "filings": 170440,
     "degree": 164,
-    "strength": 44112,
+    "strength": 44110,
     "degree_rank": 2,
-    "pagerank": 0.07908,
+    "pagerank": 0.07909,
     "rank": 1
    },
    {
     "code": "15-2051",
     "title": "Data Scientists",
-    "filings": 31465,
+    "filings": 31467,
     "degree": 203,
-    "strength": 35725,
+    "strength": 35723,
     "degree_rank": 1,
     "pagerank": 0.06472,
     "rank": 2
@@ -445,19 +445,19 @@
    {
     "code": "15-1299",
     "title": "Computer Occupations, All Other",
-    "filings": 47464,
+    "filings": 47459,
     "degree": 115,
-    "strength": 29393,
+    "strength": 29385,
     "degree_rank": 4,
-    "pagerank": 0.05252,
+    "pagerank": 0.05251,
     "rank": 3
    },
    {
     "code": "15-1253",
     "title": "Software Quality Assurance Analysts and Testers",
-    "filings": 18600,
+    "filings": 18601,
     "degree": 65,
-    "strength": 20491,
+    "strength": 20489,
     "degree_rank": 18,
     "pagerank": 0.03635,
     "rank": 4
@@ -467,7 +467,7 @@
     "title": "Computer and Information Systems Managers",
     "filings": 12585,
     "degree": 71,
-    "strength": 16035,
+    "strength": 16034,
     "degree_rank": 17,
     "pagerank": 0.02851,
     "rank": 5
@@ -485,9 +485,9 @@
    {
     "code": "17-2112",
     "title": "Industrial Engineers",
-    "filings": 10017,
+    "filings": 10018,
     "degree": 72,
-    "strength": 12366,
+    "strength": 12365,
     "degree_rank": 16,
     "pagerank": 0.02211,
     "rank": 7
@@ -497,19 +497,19 @@
     "title": "Database Administrators",
     "filings": 6926,
     "degree": 56,
-    "strength": 12024,
+    "strength": 12023,
     "degree_rank": 28,
-    "pagerank": 0.02134,
+    "pagerank": 0.02133,
     "rank": 8
    },
    {
     "code": "15-1243",
     "title": "Database Architects",
-    "filings": 4733,
+    "filings": 4735,
     "degree": 54,
     "strength": 10944,
     "degree_rank": 30,
-    "pagerank": 0.01943,
+    "pagerank": 0.01944,
     "rank": 9
    },
    {
@@ -517,7 +517,7 @@
     "title": "Operations Research Analysts",
     "filings": 7475,
     "degree": 79,
-    "strength": 10779,
+    "strength": 10778,
     "degree_rank": 11,
     "pagerank": 0.01927,
     "rank": 10
@@ -527,7 +527,7 @@
     "title": "Mechanical Engineers",
     "filings": 10134,
     "degree": 72,
-    "strength": 9935,
+    "strength": 9934,
     "degree_rank": 15,
     "pagerank": 0.01783,
     "rank": 11
@@ -537,7 +537,7 @@
     "title": "Network and Computer Systems Administrators",
     "filings": 5303,
     "degree": 44,
-    "strength": 9914,
+    "strength": 9913,
     "degree_rank": 37,
     "pagerank": 0.01758,
     "rank": 12
@@ -569,7 +569,7 @@
     "degree": 51,
     "strength": 8621,
     "degree_rank": 33,
-    "pagerank": 0.0153,
+    "pagerank": 0.01531,
     "rank": 15
    },
    {
@@ -599,7 +599,7 @@
     "degree": 61,
     "strength": 7668,
     "degree_rank": 23,
-    "pagerank": 0.01375,
+    "pagerank": 0.01376,
     "rank": 18
    },
    {
@@ -743,7 +743,7 @@
      {
       "code": "15-1252",
       "title": "Software Developers",
-      "pagerank": 0.04948
+      "pagerank": 0.04949
      },
      {
       "code": "15-2051",
@@ -753,7 +753,7 @@
      {
       "code": "15-1299",
       "title": "Computer Occupations, All Other",
-      "pagerank": 0.03148
+      "pagerank": 0.03147
      },
      {
       "code": "15-1253",
@@ -808,7 +808,7 @@
      {
       "code": "15-1299",
       "title": "Computer Occupations, All Other",
-      "pagerank": 0.03384
+      "pagerank": 0.03383
      },
      {
       "code": "15-1253",
@@ -863,12 +863,12 @@
      {
       "code": "15-1299",
       "title": "Computer Occupations, All Other",
-      "pagerank": 0.03565
+      "pagerank": 0.03564
      },
      {
       "code": "15-1253",
       "title": "Software Quality Assurance Analysts and Testers",
-      "pagerank": 0.0221
+      "pagerank": 0.02209
      },
      {
       "code": "11-3021",
@@ -918,7 +918,7 @@
      {
       "code": "15-1299",
       "title": "Computer Occupations, All Other",
-      "pagerank": 0.03724
+      "pagerank": 0.03723
      },
      {
       "code": "15-1253",
@@ -973,7 +973,7 @@
      {
       "code": "15-1299",
       "title": "Computer Occupations, All Other",
-      "pagerank": 0.03766
+      "pagerank": 0.03765
      },
      {
       "code": "15-1253",
@@ -1060,7 +1060,7 @@
    "rank_shift": 26,
    "degree_rank": 37,
    "degree": 44,
-   "strength": 9914,
+   "strength": 9913,
    "pagerank_d0_5": 0.00588,
    "pagerank_d0_99": 0.01758
   },
@@ -1074,7 +1074,7 @@
    "degree": 51,
    "strength": 8621,
    "pagerank_d0_5": 0.00577,
-   "pagerank_d0_99": 0.0153
+   "pagerank_d0_99": 0.01531
   },
   {
    "code": "13-1111",
@@ -1110,7 +1110,7 @@
    "degree": 54,
    "strength": 10944,
    "pagerank_d0_5": 0.00678,
-   "pagerank_d0_99": 0.01943
+   "pagerank_d0_99": 0.01944
   }
  ],
  "finding": {
