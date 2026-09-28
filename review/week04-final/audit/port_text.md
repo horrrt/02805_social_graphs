@@ -918,3 +918,28 @@ Slot table extension in use: hero lines (`.w4-hero-text > p.body, p.caution`), o
 
 **Style lint (3.7) on the page text:** no new hits
 
+## RData
+
+Slot table extension in use: hero lines (`.w4-hero-text > p.body, p.caution`), opener lines (`header.w4-opener h2, p`) and finding lines (`.w4-finding > div > h3, p`).
+
+No slot changed.
+**Terms added:** none
+
+**Fix-ups applied (3.7):** none
+
+**Cards a script builds (skipped, see 3.3):** none
+
+**Held slots: board number not on the page (stale-number rule):** none
+
+**Numbers the board drops (accepted, list in the PR body):** none
+
+**Numbers in new term definitions (check each is a scale, not a result):** none
+
+**Script-owned text that differs from the board (3.3):** none
+
+**Text that still differs from the board, outside script-owned nodes:** none
+
+**Style lint (3.7) on the page text:** no new hits
+
+RData by hand: the board has no cards, only the #evidence source list. Its one change, hover terms on "LCA" and "FOIA" in two `dd` items, went in by hand as `w4-term-evidence-lca` and `w4-term-evidence-foia`.
+
