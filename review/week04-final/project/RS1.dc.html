@@ -130,7 +130,7 @@ body{margin:0;background:#eef3f9}
 .rx .rx-drawer-body>p+p{margin-top:8px}
 </style>
 </helmet>
-<div class="corridor rx" style="width: 1440px; height: 2446px; overflow: hidden; background: #eef3f9"><div class="topbar">
+<div class="corridor rx" style="width: 1440px; height: 2447px; overflow: hidden; background: #eef3f9"><div class="topbar">
 <div class="shell">
 <a class="brand" href="../../">LOG–LOG <b>LEGENDS</b></a>
 <a class="site-link" href="../../#weeks">All posts</a>
@@ -178,7 +178,10 @@ body{margin:0;background:#eef3f9}
 <p><b>How two metros get linked</b>An example, not data. A company that files in both metros adds the smaller of its two filing counts to their link.</p>
 </div>
 
-<div class="rx-drawers rx-foot"><details class="rx-drawer"><summary>Background</summary><div class="rx-drawer-body"><p>Seven large hubs led by New York and Dallas, eight tech hubs led by San Jose and San Francisco, and the other 25. The rewired networks keep each company's number of metros. The two questions below ask what the groups follow and where the network comes apart.</p></div></details><details class="rx-drawer"><summary>Method</summary><div class="rx-drawer-body"><p>Two metros are linked when the same company files in both; the link weighs, summed over those companies, the smaller of the company's two filing counts.</p></div></details></div>
+<div class="rx-drawers rx-foot">
+                <details class="rx-drawer"><summary>Background</summary><div class="rx-drawer-body"><p>Louvain splits the 40 metros into seven large hubs led by New York and Dallas, eight tech hubs led by San Jose and San Francisco, and the other 25. The rewired networks keep each company's number of metros. The two questions below ask what the groups follow and where the network comes apart.</p></div></details>
+                <details class="rx-drawer"><summary>Method</summary><div class="rx-drawer-body"><p>Two metros are linked when the same company files in both; the link weighs, summed over those companies, the smaller of the company's two filing counts.</p></div></details>
+              </div>
 </div>
 <figure class="w4-figure">
 <figcaption><b>Weak but real</b><span>The groups against rewired networks in which each company keeps its number of metros.</span></figcaption>
@@ -188,7 +191,7 @@ body{margin:0;background:#eef3f9}
 
 <!-- Start · Which cities hire the most? -------------------------- -->
 <div class="card w4-card" id="place-start">
-<header class="w4-q"><span class="w4-num">Start</span><div><p class="rx-kicker">Two first questions, side by side, before 1A</p></div></header>
+<header class="w4-q"><span class="w4-num">Start</span><div><p class="rx-kicker">The opening questions, side by side, before 1A</p></div></header>
 <div class="rx-start-grid">
 <div><header class="w4-q">
 <div>
@@ -225,7 +228,7 @@ body{margin:0;background:#eef3f9}
                 Louvain splits the large hubs into two groups, which cross regions, and leaves the smaller metros as a third.
                 Toggle Louvain communities against Census regions on the same
                 map.
-              </p><div class="rx-groups"><div class="rx-group"><div class="rx-group-head"><i style="background: var(--w4-group-1)"></i><b>Eight tech hubs</b><span>led by San Jose and San Francisco</span></div><p>San Jose, Seattle, San Francisco, Austin, Washington, Boston, Los Angeles, San Diego</p></div><div class="rx-group"><div class="rx-group-head"><i style="background: var(--w4-group-0)"></i><b>Seven large hubs</b><span>led by New York and Dallas</span></div><p>New York, Dallas, Chicago, Atlanta, Philadelphia, Houston, Charlotte</p></div><div class="rx-group"><div class="rx-group-head"><i style="background: var(--w4-group-2)"></i><b>The other 25</b><span>from Raleigh and Detroit down</span></div><p>Raleigh, Detroit, Phoenix, Salt Lake City, St. Louis, Miami, Minneapolis, Portland, Tampa, Denver, Columbus, Pittsburgh, and 13 more</p></div></div></div>
+              </p><div class="rx-groups"><div class="rx-group"><div class="rx-group-head"><i style="background: var(--w4-group-1)"></i><b>Eight tech hubs</b><span>led by San Jose and San Francisco</span></div><p>San Jose, San Francisco, Seattle, Austin, Boston, Washington, Los Angeles, San Diego</p></div><div class="rx-group"><div class="rx-group-head"><i style="background: var(--w4-group-0)"></i><b>Seven large hubs</b><span>led by New York and Dallas</span></div><p>New York, Dallas, Atlanta, Chicago, Houston, Philadelphia, Charlotte</p></div><div class="rx-group"><div class="rx-group-head"><i style="background: var(--w4-group-2)"></i><b>The other 25</b><span>from Detroit and Phoenix down</span></div><p>Detroit, Phoenix, Raleigh, Miami, Minneapolis, Tampa, Columbus, St. Louis, Denver, Portland, Trenton, Pittsburgh, and 13 more</p></div></div></div>
 </div>
 <div class="rx-start-notices"><div class="notice">
 <span class="ico">💡</span>
@@ -237,8 +240,8 @@ body{margin:0;background:#eef3f9}
 </div><div class="notice">
 <span class="ico">💡</span>
 <span>
-<b>What to notice</b>
-                  The split is real but weak: Louvain finds it in 65 of 100 runs.
+                  <b>What to notice</b>
+                  The split is real but weak: modularity 0.049 against 0.013 for rewired networks; Louvain finds it in 65 of 100 runs.
                   Census regions and divisions match it no better than shuffled labels (<span class="w4-term"><button aria-describedby="w4-term-x-p" type="button">p</button><span class="w4-pop" id="w4-term-x-p" role="tooltip">The share of shuffled labellings that match at least as well as the real one. A small value means the match is unlikely to be chance.</span></span> = 0.10 and 0.11).
                 </span>
 </div></div>
@@ -349,7 +352,11 @@ body{margin:0;background:#eef3f9}
                   </span>
 </div>
 
-<div class="rx-drawers rx-foot"><details class="rx-drawer"><summary>Method</summary><div class="rx-drawer-body"><p>Tried at five values, the largest piece of the map fell from 32 metros at α = 0.1 to 18 at α = 0.05, which looks like one snap.</p><p>The disparity filter keeps a link when it carries an unusually large share of either metro's total weight; α is the test's threshold, and a smaller α keeps fewer links.</p></div></details><details class="rx-drawer"><summary>More numbers</summary><div class="rx-drawer-body"><p>The other eleven are led by Amazon (three), Intel, Deloitte, Capital One, JPMorgan Chase, Citigroup, FedEx, Fidelity Investments and the University of Maryland.</p><p>The first metro falls off at α = 0.136. The fall from 32 to 18 is 14 separate links, each peeling one metro away.</p><p>That is no more than their 70 of the 180 links in the whole backbone at α = 0.2 (38%, p = 0.37).</p><p>No single removal cuts off more than two metros: Dallas–Durham at α = 0.041 takes Durham and Raleigh with it, and New York–Seattle at 0.023 splits the last five metros three and two.</p></div></details><details class="rx-drawer"><summary>Table: 14 links that peel metros off</summary><div class="rx-drawer-body"><table class="ego">
+<div class="rx-drawers rx-foot">
+                  <details class="rx-drawer"><summary>Method</summary><div class="rx-drawer-body"><p>The disparity filter keeps a link when it carries an unusually large share of either metro's total weight; α is the test's threshold, and a smaller α keeps fewer links.</p></div></details>
+                  <details class="rx-drawer"><summary>More numbers</summary><div class="rx-drawer-body"><p>The other eleven are led by Amazon (three), Intel, Deloitte, Capital One, JPMorgan Chase, Citigroup, FedEx, Fidelity Investments and the University of Maryland.</p><p>The first metro falls off at α = 0.136. Tried at five values, the largest piece of the map fell from 32 metros at α = 0.1 to 18 at α = 0.05, which looks like one snap. The fall from 32 to 18 is 14 separate links, each peeling one metro away.</p><p>The five placing firms lead 69 of the 180 links in the whole backbone at α = 0.2 (38%), so their 5 of the 16 links that cut a metro loose is no more than their share (p = 0.37).</p><p>No single removal cuts off more than two metros: Dallas–Durham at α = 0.041 takes Durham and Raleigh with it, and New York–Seattle at 0.023 splits the last five metros three and two.</p></div></details>
+                  <details class="rx-drawer"><summary>Table: 14 links that peel metros off</summary><div class="rx-drawer-body">
+                <table class="ego">
 <thead>
 <tr>
 <th>Link</th>
@@ -444,7 +451,10 @@ body{margin:0;background:#eef3f9}
 <td class="soft">Amazon</td>
 <td style="text-align:right" class="num"><span class="rx-cell"><span class="rx-bar meter"><i style="width: 13.0%"></i></span><span>13%</span></span></td>
 </tr></tbody>
-</table></div></details></div>
+</table>
+              
+                  </div></details>
+                </div>
 </div>
 <div class="plot">
 <h3>Metros in the largest piece as the filter tightens</h3>
@@ -460,7 +470,7 @@ body{margin:0;background:#eef3f9}
 </div>
 </section></div></main></div>
 </x-dc>
-<script type="text/x-dc" data-dc-script data-props='{"$preview": {"width": 1440, "height": 2446}}'>
+<script type="text/x-dc" data-dc-script data-props='{"$preview": {"width": 1440, "height": 2447}}'>
 class Component extends DCLogic {
 renderVals() { return {}; }
 }
