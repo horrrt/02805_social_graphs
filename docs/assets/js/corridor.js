@@ -2657,12 +2657,14 @@ function renderTypology() {
       .slice(0, 3)
       .map((m) => `${m.name}, ${m.from} to ${m.to}`)
       .join("; ");
+    const venStart = metrics("VEN", first)?.out_strength;
+    const venEnd = metrics("VEN", last)?.out_strength;
     note.innerHTML =
       `<b>${moved.length} countries changed role between ${first} and ${last}</b>` +
       `Counting only the ones whose role was agreed by ${Math.round(CONFIDENT() * 100)}% of runs at ` +
       `both ends, because an unstable label moving is Louvain moving and not the world. ` +
       `The three that climbed furthest are ${named}. Venezuela's outward stock went from ` +
-      `216,183 to 8,328,514 over that span and almost all of it went to Colombia, Peru and ` +
+      `${fmt.format(venStart)} to ${fmt.format(venEnd)} over that span and almost all of it went to Colombia, Peru and ` +
       `Chile, which is what a provincial hub is: enormous inside one community, absent from ` +
       `the others. Of the ${inNetwork} countries with migration figures in ${y}, ${below} have ` +
       `no corridor above the ${fmt.format(state.cart.threshold)}-person floor and so carry no ` +

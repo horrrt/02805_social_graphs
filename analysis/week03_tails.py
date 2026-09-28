@@ -33,8 +33,11 @@ The bug, kept here because the numbers on the page moved when it was fixed.
 Our Kolmogorov-Smirnov distance walked the sorted tail one observation at a
 time, so a value repeated ten times produced ten steps in the empirical CDF
 against one flat stretch of the model, and the gap between them counted as
-distance. Degree sequences are nothing but ties: the in-degree tail has 227
-observations over 88 distinct values. The exponent was never affected, because
+distance. Degree sequences are nothing but ties: the in-degree tail has far
+fewer distinct values than observations (see fits.in_degree.n and
+.n_distinct in the written JSON, which is where the exact counts now live
+so they cannot drift from what is on the page). The exponent was never
+affected, because
 the likelihood does not care about order, and on corridor weights, which are
 continuous and essentially tie-free, the old code agreed with `powerlaw` to
 the digit. But the inflated distance moved the x_min that minimises it, and
@@ -297,6 +300,7 @@ def main():
             "p": round(gof, 3),
             "vs": rivals,
             "verdict": line,
+            "n_distinct": int(np.unique(values).size),
         }
 
     path = OUT / "week03_tails.json"
