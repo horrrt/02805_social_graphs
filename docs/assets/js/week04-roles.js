@@ -18,7 +18,8 @@ const revealsEl = document.querySelector("#roles-reveals");
 const chartHost = document.querySelector("#roles-chart");
 
 const YEARS = ["2022", "2023", "2024", "2025", "2026"];
-const FY = YEARS.map((y) => `FY${y}`);
+// roles.json's top_in lists read "FY2025"; the page writes the plain year.
+const yr = (s) => String(s).replace(/^FY(\d{4})/, "$1");
 const SPLIT_LABEL = {
   occupations: "Roles", groups: "Occupation groups", employer: "Employer", placement: "Placed or direct",
 };
@@ -77,7 +78,7 @@ function partialYearSeries(xLabels) {
     markArea: {
       silent: true,
       itemStyle: { color: token("--w4-band"), opacity: 0.5 },
-      label: { show: true, position: "insideTopRight", formatter: `FY${data.partial.year}: ${data.partial.window} only`, color: token("--ink-mute"), fontSize: 10.5 },
+      label: { show: true, position: "insideTopRight", formatter: `${data.partial.year}: ${data.partial.window} only`, color: token("--ink-mute"), fontSize: 10.5 },
       data: [[{ xAxis: xLabels[3] }, { xAxis: xLabels[4] }]],
     },
     z: 0,
@@ -108,7 +109,7 @@ function buildSeries(xLabels) {
 function render() {
   const series = seriesOf(state.split);
   const names = series.map((s) => s.name);
-  const xLabels = FY.map((f, i) => (state.window === "full" && i === 4 ? "FY2026 (Oct–Jun)" : f));
+  const xLabels = YEARS.map((y, i) => (state.window === "full" && i === 4 ? "2026 (Oct–Jun)" : y));
 
   chart.setOption(
     {
@@ -159,11 +160,11 @@ function tooltipHtml(points) {
     .map((p) => {
       const s = series.find((row) => row.name === p.seriesName);
       const v = valuesFor(s)[yi];
-      const top = s && s.top_in && s.top_in.length ? ` <i>(top ${data.splits[state.split].top_n} in ${s.top_in.join(", ")})</i>` : "";
+      const top = s && s.top_in && s.top_in.length ? ` <i>(top ${data.splits[state.split].top_n} in ${s.top_in.map(yr).join(", ")})</i>` : "";
       return { html: `${p.marker}${esc(p.seriesName)}: <b>${num(v)}</b> (${pct(v / total)})${top}`, v };
     })
     .sort((a, b) => b.v - a.v);
-  return `<div style="font-weight:700;margin-bottom:4px">${esc(FY[yi])}${state.window === "oct_jun" ? ", Oct–Jun" : ""}</div>${rows.map((r) => r.html).join("<br/>")}`;
+  return `<div style="font-weight:700;margin-bottom:4px">${esc(YEARS[yi])}${state.window === "oct_jun" ? ", Oct–Jun" : ""}</div>${rows.map((r) => r.html).join("<br/>")}`;
 }
 
 // ---------------------------------------------------------------- legend
@@ -207,19 +208,19 @@ function renderText() {
   if (state.split === "placement") {
     answerEl.textContent =
       `${pct(data.splits.placement.series.find((s) => s.name === "Placed at a client").counts[3] / data.totals["2025"])} ` +
-      "of FY2025's certified filings placed the worker at a client, not their own employer.";
+      "of 2025's certified filings placed the worker at a client, not their own employer.";
   } else {
     const top = split.series.find((s) => s.code !== null) || split.series[0];
     const noun = state.split === "occupations" ? "role" : state.split === "groups" ? "occupation group" : "employer";
     answerEl.textContent =
-      `${top.name} is the largest ${noun} over the five years, with ${num(top.counts[3])} certified filings in FY2025.`;
+      `${top.name} is the largest ${noun} over the five years, with ${num(top.counts[3])} certified filings in 2025.`;
   }
 
   if (f) {
-    const entered = f.entered_top ? " It entered the top between FY2022 and FY2025." : "";
-    const left = f.left_top ? " It left the top between FY2022 and FY2025." : "";
+    const entered = f.entered_top ? " It entered the top between 2022 and 2025." : "";
+    const left = f.left_top ? " It left the top between 2022 and 2025." : "";
     noticeText.textContent =
-      `${f.name} ${f.direction} the most as a share of certified filings from FY2022 to FY2025: ` +
+      `${f.name} ${f.direction} the most as a share of certified filings from 2022 to 2025: ` +
       `${pct(f.share_fy2022_percent / 100)} to ${pct(f.share_fy2025_percent / 100)}` +
       `, ${Math.abs(f.change_pp).toFixed(1)} percentage points.${entered}${left}`;
   }
@@ -263,7 +264,7 @@ function renderReveal() {
     `${num(legacy)} filings still on 2010 codes move to their 2018 successors: a detailed O*NET code follows ` +
     `O*NET's own 2010-to-2019 crosswalk wherever it names a single successor, and${table || " the rest keep their broader code"}. ` +
     `${num(uncoded)} filings whose SOC code does not parse fall into "All other occupations" ` +
-    `and "Other groups". FY${p.year} covers ${p.window} only, ${p.months} months: "Oct to Jun only" ` +
+    `and "Other groups". ${p.year} covers ${p.window} only, ${p.months} months: "Oct to Jun only" ` +
     "compares it with the same months of earlier years.";
   revealsEl.appendChild(reveal("w4-pop-roles-how", "How we counted", text));
 }

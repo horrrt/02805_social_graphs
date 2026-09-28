@@ -143,7 +143,7 @@ test("beyond: law firms, green cards and wage levels", () => {
   const [dlo, dhi] = f.q2_direct_pooled_ci95;
   says("beyond-perm", `direct employers ${f2(f.q2_direct_pooled_ratio)} (${f2(dlo)} to ${f2(dhi)})`);
   const named = d.q2_named_perm;
-  says("beyond-perm", `from ${count(named.Amazon.fy2024.all_statuses_name_match)} and ${count(named.Google.fy2024.all_statuses_name_match)} in FY2024 to ${named.Amazon.fy2025.all_statuses_name_match} and ${named.Google.fy2025.all_statuses_name_match} in FY2025`);
+  says("beyond-perm", `from ${count(named.Amazon.fy2024.all_statuses_name_match)} and ${count(named.Google.fy2024.all_statuses_name_match)} in 2024 to ${named.Amazon.fy2025.all_statuses_name_match} and ${named.Google.fy2025.all_statuses_name_match} in 2025`);
   says("beyond-wage", `Within the ${d.q3.strata_kept_20plus_each_side} occupations`);
 });
 

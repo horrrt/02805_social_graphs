@@ -139,7 +139,7 @@ function drawCountriesTop(data, host) {
       labelW: 110,
       valueW: 50,
       rowH: 26,
-      aria: "Shares of FY2023 certified green-card filings by citizenship, in the counted cells",
+      aria: "Shares of 2023 certified green-card filings by citizenship, in the counted cells",
     }),
   );
 }

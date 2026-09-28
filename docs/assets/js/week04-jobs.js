@@ -65,7 +65,7 @@ function renderPairs(data) {
     $("jobs-inspector").innerHTML = [pair.source, pair.target].map((id) => {
       const node = data.nodes.find((n) => n.id === id);
       return `<h2>${esc(titleOf(data, id))}</h2><p class="jobs-meta">SOC ${esc(id)} · ${num(node.filings)} certified filings</p>`;
-    }).join("") + `<p>${num(pair.weight)} companies filed for both in FY${data.meta.year}.</p>`;
+    }).join("") + `<p>${num(pair.weight)} companies filed for both in ${data.meta.year}.</p>`;
   });
 }
 
@@ -224,7 +224,7 @@ fetch(DATA_URL).then((response) => {
   renderBridgeStrip(data);
   renderNetwork(data);
   renderGroups(data);
-  $("jobs-status").textContent = `${num(data.meta.filings)} certified H-1B filings · ${num(data.meta.occupations)} occupations · FY${data.meta.year}`;
+  $("jobs-status").textContent = `${num(data.meta.filings)} certified H-1B filings · ${num(data.meta.occupations)} occupations · ${data.meta.year}`;
   const q = data.quality;
   const fill = {
     occupations: num(data.meta.occupations), nmi: q.nmi.toFixed(2), shuffled: q.nmi_shuffled.mean.toFixed(2),

@@ -14,6 +14,9 @@ const ORANGE = "#f2820c";
 const BLUE = "#1f8fd6";
 const LINE = "#eaf0f7";
 
+// week04_place.json's scope reads "FY2025"; the page writes the plain year.
+const yr = (s) => String(s).replace(/\bFY(\d{4})/g, "$1");
+
 const AXIS = {
   axisLine: { lineStyle: { color: "#c6d4e6" } },
   axisLabel: { color: MUTE, fontSize: 11 },
@@ -118,8 +121,8 @@ export async function startPlace(echarts) {
     if (!el) return;
     const draft = data.meta.status === "placeholder";
     el.textContent = draft
-      ? `Scaffold · ${data.meta.scope} · placeholders until ${data.meta.script}`
-      : `${data.meta.scope} · ${data.meta.script}`;
+      ? `Scaffold · ${yr(data.meta.scope)} · placeholders until ${data.meta.script}`
+      : `${yr(data.meta.scope)} · ${data.meta.script}`;
   }
 
   function renderInspector() {
@@ -1006,7 +1009,7 @@ export async function startPlace(echarts) {
     if (!name) return;
     const city = byId[state.selected ?? heroDefault];
     name.textContent = city.name;
-    $("hero-sel-codes").textContent = `${city.state} · FY2025`;
+    $("hero-sel-codes").textContent = `${city.state} · 2025`;
     $("hero-sel-dot").style.background = GROUP[city.community];
     $("hero-sel-group").textContent = `${data.communities[city.community]?.label ?? "–"} group`;
     const share = placedShare[city.id];
