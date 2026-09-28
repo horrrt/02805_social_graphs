@@ -6,7 +6,7 @@
 // page already loads (window.echarts), coloured from this page's own CSS
 // tokens, and rendered once the box is first opened.
 import { esc } from "./cabinet.js";
-import { drawer } from "./week04-ui.js";
+import { drawer, termify } from "./week04-ui.js?v=2";
 
 const echarts = window.echarts;
 const details = document.querySelector("#cut-roles");
@@ -29,6 +29,8 @@ const token = (name) => css.getPropertyValue(name).trim() || "currentColor";
 const whole = new Intl.NumberFormat("en-US");
 const num = (v) => whole.format(Math.round(v));
 const pct = (v, d = 1) => `${(v * 100).toFixed(d)}%`;
+const WORDS = ["zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten", "eleven", "twelve"];
+const word = (n) => WORDS[n] ?? String(n);
 
 let data;
 let chart;
@@ -281,8 +283,16 @@ function renderReveal() {
     "compares it with the same months of earlier years.";
   const body = document.createElement("p");
   body.textContent = text;
+  termify(body, "crosswalk", "A published table that maps each old occupation code to its new code or codes.",
+    "w4-term-roles-card-crosswalk");
+  const background = document.createElement("p");
+  background.textContent =
+    "Each band is one series' certified filings, largest total at the bottom and everything else on top. Hover a " +
+    "band to see its share of that year, its filings and the change on the year before; hover a legend entry to " +
+    `trace it. "Oct to Jun only" limits every year to the ${word(p.months)} months ${p.year} covers, the fair way ` +
+    "to set it beside a full year.";
   // #roles-reveals is itself the card's drawer row.
-  revealsEl.appendChild(drawer("Method", body));
+  revealsEl.append(drawer("Background", background), drawer("Method", body));
 }
 
 // ---------------------------------------------------------------- boot

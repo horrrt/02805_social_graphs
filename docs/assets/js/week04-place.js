@@ -3,6 +3,7 @@
 // docs/assets/data/week04_place.json (placeholder until analysis/week04_where.py).
 
 import { resetButton } from "./week04-map-reset.js";
+import { termify } from "./week04-ui.js?v=2";
 
 const DATA_URL = new URL("../data/week04_place.json", import.meta.url);
 const USA_URL = new URL("../data/usa.json", import.meta.url);
@@ -124,8 +125,8 @@ export async function startPlace(echarts) {
     if (!el) return;
     const draft = data.meta.status === "placeholder";
     el.textContent = draft
-      ? `Scaffold · ${yr(data.meta.scope)} · placeholders until ${data.meta.script}`
-      : `${yr(data.meta.scope)} · ${data.meta.script}`;
+      ? `Scaffold · ${yr(data.meta.scope)} · placeholder data`
+      : yr(data.meta.scope);
   }
 
   function renderInspector() {
@@ -858,7 +859,15 @@ export async function startPlace(echarts) {
 
   function renderSnapNote() {
     const el = $("place-snap-note");
-    if (el) el.textContent = data.backbone.snap_note;
+    if (el) {
+      el.textContent = data.backbone.snap_note;
+      termify(
+        el,
+        "giant component",
+        "The largest piece of the map in which every metro can reach every other along kept links.",
+        "w4-term-place-backbone-giant",
+      );
+    }
     const choice = $("place-alpha-choice");
     if (choice) choice.textContent = data.backbone.choice_note || "";
   }

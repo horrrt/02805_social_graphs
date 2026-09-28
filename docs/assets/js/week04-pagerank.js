@@ -6,7 +6,7 @@
 // computed in the browser; every number comes from that JSON.
 
 import { node, token } from "./week04-strip.js";
-import { drawer, drawerRow } from "./week04-ui.js";
+import { drawer, drawerRow, termify } from "./week04-ui.js?v=2";
 
 const DATA = new URL("../../weeks/week04/data/pagerank.json?v=2", import.meta.url);
 const DEFAULT_D = "0.85";
@@ -91,8 +91,8 @@ function buildDampingCard(data) {
     <span class="w4-num">6</span>
     <div>
       <h2>Change the damping factor: does the ranking move?</h2>
-      <p class="w4-answer">Yes. Raising the damping factor from ${data.damping[0]} to ${data.damping.at(-1)} reshuffles
-      the ranking and pulls it away from a plain count of ties, toward occupations linked to the network's biggest hubs.</p>
+      <p class="w4-answer">Yes. Raising it from ${data.damping[0]} to ${data.damping.at(-1)} moves the ranking away from
+      plain tie counts, toward occupations linked to the biggest hubs.</p>
     </div>`;
 
   const two = document.createElement("div");
@@ -100,10 +100,16 @@ function buildDampingCard(data) {
   const left = document.createElement("div");
   left.innerHTML = `
     <p class="sub">
-      PageRank on ${data.meta.network.toLowerCase()}. Every step, a walker follows a tie with probability
-      d (the damping factor) and otherwise jumps to a random occupation; d = 0 ignores the network entirely,
-      d close to 1 lets ties fully decide the order. Pick a value below.
+      Each step, a PageRank walker follows a tie with probability d, the damping factor, or jumps to a random
+      occupation. At d = 0 the ties do not matter; near 1 they decide the order. Pick a value below.
     </p>`;
+  termify(
+    left.querySelector(".sub"),
+    "PageRank",
+    "A score from a random walk along the ties: occupations the walk visits often, because well-linked occupations " +
+      "tie to them, score high.",
+    "w4-term-cut-pagerank-explore-pagerank",
+  );
 
   const toggle = document.createElement("div");
   toggle.className = "axis-modes";
@@ -132,13 +138,12 @@ function buildDampingCard(data) {
   const overlap5v99 = data.finding.top15_overlap_d0_5_vs_d0_99;
   const overlapDeg = data.finding.pagerank_vs_degree_top15_overlap;
   const overlapStr = data.finding.pagerank_vs_strength_top15_overlap;
+  const lo = data.damping[0];
+  const hi = data.damping.at(-1);
   notice.querySelector("span:last-child").append(
     frag(
-      `The top 15 at d = 0.5 and at d = 0.99 share only ${overlap5v99} of 15 occupations: raising the damping ` +
-        `factor really does reorder the ranking, not just rescale it. At d = 0.85, PageRank's top 15 shares ` +
-        `${overlapDeg} of 15 with plain unweighted-degree's top 15, and ${overlapStr} of 15 with weighted ` +
-        `strength's (the projection's own edge weight, shared companies): being tied to the right occupations ` +
-        `matters as much as how many ties there are.`,
+      `The top ${TOP_SHOWN} at d = ${lo} and at d = ${hi} share only ${overlap5v99} of ${TOP_SHOWN} occupations, so the ` +
+        "damping factor reorders the ranking. Being tied to the right occupations matters as much as how many ties there are.",
     ),
   );
   left.append(notice);
@@ -152,16 +157,24 @@ function buildDampingCard(data) {
         `${data.meta.nodes_before_backbone} occupations, ${data.meta.edges} of its ${data.meta.edges_before_backbone} ` +
         `ties. A firm-to-client staffing network was tried first and rejected: with no incoming ties for a firm and ` +
         `no outgoing ones for a client, every firm gets the same score and the damping factor cannot reorder the ` +
-        `clients either, whatever value it takes.`,
+        `clients either, whatever value it takes. PageRank runs on the occupation network from section 2, trimmed by ` +
+        `the disparity filter at α = ${data.meta.alpha_filter} to its largest connected piece.`,
     ),
   );
-  const moreBody = document.createElement("p");
+  const moreBody = document.createElement("div");
+  const moreMovers = document.createElement("p");
   const movers = data.movers.slice(0, 4);
-  moreBody.textContent = movers.length
-    ? `Biggest movers between d = 0.5 and d = 0.99: ${movers
+  moreMovers.textContent = movers.length
+    ? `Biggest movers between d = ${lo} and d = ${hi}: ${movers
         .map((m) => `${m.title} (rank ${m.rank_d0_5} → ${m.rank_d0_99})`)
         .join("; ")}.`
     : "";
+  const moreOverlap = document.createElement("p");
+  moreOverlap.textContent =
+    `At d = ${DEFAULT_D}, PageRank's top ${TOP_SHOWN} shares ${overlapDeg} of ${TOP_SHOWN} with plain unweighted-degree's ` +
+    `top ${TOP_SHOWN}, and ${overlapStr} of ${TOP_SHOWN} with weighted strength's (the projection's own edge weight, ` +
+    "shared companies).";
+  moreBody.append(moreMovers, moreOverlap);
   left.append(drawerRow(drawer("Method", howBody), drawer("More numbers", moreBody)));
 
   const plot = document.createElement("div");
@@ -172,6 +185,12 @@ function buildDampingCard(data) {
       Bar length is PageRank at the chosen damping factor; the badge on the right is that occupation's rank by
       plain unweighted degree, so a short bar with a small badge number is well connected but not well placed.
     </p>`;
+  termify(
+    plot.querySelector(".axis-note"),
+    "degree",
+    "The number of ties an occupation has, each counted once however many companies share it.",
+    "w4-term-cut-pagerank-explore-degree",
+  );
   const host = document.createElement("div");
   host.className = "w4-figure-body";
   plot.append(host);
@@ -214,15 +233,22 @@ const word = (n) => WORDS[n] ?? String(n);
 
 /** What the card claims, all read from it.steps: the round from which the
  * final leader holds first place, the round from which the top 10 holds its
- * final members, and how many of them still change places after that. */
+ * final members, the round from which it holds its final order, and who led
+ * after the first round. */
 function iterationClaims(it) {
   const codes = (s) => s.rows.map((r) => r.code);
   const leaderStep = stablePoint(it.steps, (s) => s.rows[0].code);
   const setStep = stablePoint(it.steps, (s) => [...codes(s)].sort().join(","));
-  const atSet = codes(it.steps.find((s) => s.step === setStep));
-  const finalCodes = codes(it.steps.at(-1));
-  const lateMovers = finalCodes.filter((code, i) => atSet[i] !== code).length;
-  return { leaderStep, setStep, lateMovers, leaderTitle: it.steps.at(-1).rows[0].title };
+  const orderStep = stablePoint(it.steps, (s) => codes(s).join(","));
+  const first = it.steps.find((s) => s.step > 0);
+  return {
+    leaderStep,
+    setStep,
+    orderStep,
+    leaderTitle: it.steps.at(-1).rows[0].title,
+    firstStep: first.step,
+    firstLeaderTitle: first.rows[0].title,
+  };
 }
 
 /** A bump chart: rank after each round for the occupations in the final top
@@ -337,9 +363,11 @@ function buildIterationCard(data) {
   const it = data.iteration;
   const claims = iterationClaims(it);
   const n = it.steps.at(-1).rows.length;
-  const late = claims.lateMovers
-    ? `, though ${word(claims.lateMovers)} of them still swap places after it`
-    : "";
+  const firstLead =
+    claims.firstLeaderTitle === claims.leaderTitle
+      ? `${claims.leaderTitle} lead from round ${claims.leaderStep} and hold first place for good.`
+      : `After round ${claims.firstStep} ${claims.firstLeaderTitle} lead; from round ${claims.leaderStep} ` +
+        `${claims.leaderTitle} hold first place for good.`;
 
   const header = document.createElement("header");
   header.className = "w4-q";
@@ -347,8 +375,8 @@ function buildIterationCard(data) {
     <span class="w4-num">7</span>
     <div>
       <h2>Stepped one round at a time, how fast does the ranking settle?</h2>
-      <p class="w4-answer">${claims.leaderTitle} leads from round ${claims.leaderStep}; the rest of the top ${n} is
-      set by round ${claims.setStep}${late}.</p>
+      <p class="w4-answer">${claims.leaderTitle} leads from round ${claims.leaderStep}; the rest settles by round
+      ${claims.orderStep}.</p>
     </div>`;
 
   const two = document.createElement("div");
@@ -357,9 +385,27 @@ function buildIterationCard(data) {
   left.innerHTML = `
     <p class="sub">
       Every occupation starts with an equal score, and each round passes it along the network's ties: the same walk
-      <span class="w4-term"><button aria-describedby="w4-term-pagerank-iteration" type="button">PageRank</button><span class="w4-pop" id="w4-term-pagerank-iteration" role="tooltip">A score from a random walk along the ties. Here it is computed step by step (power iteration) with damping d = ${it.alpha}, and the walk is stopped after each round.</span></span>
-      repeats until nothing moves. The chart follows the ${word(n)} occupations that finish on top.
+      PageRank repeats until nothing moves. The chart follows the ${word(n)} occupations that finish on top.
     </p>`;
+  termify(
+    left.querySelector(".sub"),
+    "PageRank",
+    "A score from a random walk along the ties. Here it is computed step by step (power iteration) with damping " +
+      `d = ${it.alpha}, and the walk is stopped after each round.`,
+    "w4-term-cut-pagerank-iteration-pagerank",
+  );
+
+  const notice = document.createElement("div");
+  notice.className = "notice";
+  notice.innerHTML = `<span class="ico">💡</span><span><b>What to notice</b></span>`;
+  notice.querySelector("span:last-child").append(
+    frag(
+      `${firstLead} The grey lines stop crossing by round ${claims.orderStep}` +
+        (claims.orderStep > claims.setStep ? `, after the top ${n} has its final members at round ${claims.setStep}` : "") +
+        ".",
+    ),
+  );
+  left.append(notice);
 
   const howBody = document.createElement("div");
   const howCheck = document.createElement("p");
@@ -382,8 +428,9 @@ function buildIterationCard(data) {
   const lastStep = it.steps.at(-1).step;
   moreBody.append(
     frag(
-      `Run to step ${lastStep}, where every occupation's score matches nx.pagerank's own fixed point within ` +
-        `${it.max_error_vs_nx_pagerank}: past that point, one more round would not change the ranking.`,
+      `Run to step ${lastStep}, where every occupation's score matches the standard PageRank routine's fixed point ` +
+        `within ${it.max_error_vs_nx_pagerank}: past that point, one more round would not change the ranking. At round 0 ` +
+        `every occupation holds the same score, 1/${data.meta.nodes}, so the chart starts at round ${claims.firstStep}.`,
     ),
   );
   left.append(drawerRow(drawer("Method", howBody), drawer("More numbers", moreBody)));

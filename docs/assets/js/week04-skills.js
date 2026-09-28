@@ -5,7 +5,7 @@
 // random pair of those 60, never of every rated occupation.
 
 import { stripChart } from "./week04-strip.js";
-import { drawer, drawerRow } from "./week04-ui.js";
+import { drawer, drawerRow, termify } from "./week04-ui.js?v=2";
 
 const DATA = new URL("../../weeks/week04/data/skills.json", import.meta.url);
 const sim = (x) => x.toFixed(2);
@@ -40,8 +40,8 @@ function card1(c, descriptors) {
     <span class="w4-num">3</span>
     <div>
       <h2>Do occupations the same companies hire together also need similar skills?</h2>
-      <p class="w4-answer">Yes. Two occupations with a direct hiring tie in section 2's network need more
-      alike skills, by O*NET's own ratings, than a random pair of the same ${c.occupations} occupations.</p>
+      <p class="w4-answer">Yes. Directly co-hired occupations need more alike skills than a random pair of the
+      same ${c.occupations}.</p>
     </div>`;
 
   const two = document.createElement("div");
@@ -49,21 +49,29 @@ function card1(c, descriptors) {
   const left = document.createElement("div");
   left.innerHTML = `
     <p class="sub">
-      O*NET rates every detailed occupation on ${descriptors} skills, knowledge areas and work activities;
-      profile similarity is the cosine of those ratings, from -1 to 1. It never looks at which
-      companies file for an occupation, so it checks section 2's story with independent data.
+      O*NET rates every detailed occupation on ${descriptors} skills, knowledge areas and work activities.
+      It never looks at which companies file for an occupation, so it checks section 2 with independent data.
     </p>`;
+  termify(
+    left.querySelector(".sub"),
+    "O*NET",
+    "The US Department of Labor's database of what each occupation involves, rated from surveys of workers and analysts.",
+    "w4-term-cut-skills-direct-onet",
+  );
   const notice = document.createElement("div");
   notice.className = "notice";
   notice.innerHTML = `<span class="ico">💡</span><span><b>What to notice</b></span>`;
   notice.querySelector("span:last-child").append(
     frag(
-      `Directly co-hired pairs average ${sim(d.mean)} similarity (n = ${d.n}), ${diff >= 0 ? "above" : "below"} the ` +
-        `${sim(a.mean)} a random pair of the same ${c.occupations} occupations gets (n = ${a.n}), a gap of ${sim(Math.abs(diff))}. `,
+      `Directly co-hired pairs average ${sim(d.mean)} similarity, ${diff >= 0 ? "above" : "below"} the ` +
+        `${sim(a.mean)} of a random pair from the same ${c.occupations} occupations.`,
     ),
-    frag(
-      `"All Other" codes blend more than one O*NET profile, which can flatten a single pair's similarity toward the average.`,
-    ),
+  );
+  termify(
+    notice,
+    "similarity",
+    "The cosine of two occupations' O*NET ratings, from -1 to 1. Higher means more alike skills.",
+    "w4-term-cut-skills-direct-similarity",
   );
   left.append(notice);
 
@@ -82,7 +90,16 @@ function card1(c, descriptors) {
     ? `The most alike co-hired pairs: ${examples.map(pairLine).join("; ")}.`
     : "";
   moreBody.append(list);
-  left.append(drawerRow(drawer("Method", howBody), drawer("More numbers", moreBody)));
+  const moreCounts = document.createElement("p");
+  moreCounts.append(
+    frag(
+      `The averages cover ${d.n} co-hired pairs and ${a.n} random pairs, a gap of ${sim(Math.abs(diff))}. ` +
+        `"All Other" codes blend more than one O*NET profile, which can flatten a single pair's similarity toward the average.`,
+    ),
+  );
+  const moreNumbers = document.createElement("div");
+  moreNumbers.append(moreBody, moreCounts);
+  left.append(drawerRow(drawer("Method", howBody), drawer("More numbers", moreNumbers)));
 
   const plot = document.createElement("div");
   plot.className = "plot";
@@ -138,8 +155,8 @@ function card2(c) {
     <span class="w4-num">4</span>
     <div>
       <h2>Does that agreement hold for whole hiring clusters, not just direct ties?</h2>
-      <p class="w4-answer">Mostly. Occupations in the same Louvain cluster as section 2 found it need more
-      alike skills than occupations in different clusters, even when they share no direct hiring tie of their own.</p>
+      <p class="w4-answer">Mostly. Occupations in the same hiring cluster need more alike skills, even without a
+      direct tie.</p>
     </div>`;
 
   const two = document.createElement("div");
@@ -147,31 +164,37 @@ function card2(c) {
   const left = document.createElement("div");
   left.innerHTML = `
     <p class="sub">
-      Section 2 groups the ${c.occupations} occupations into hiring clusters with Louvain, checked there against
-      degree-preserving rewirings. This asks whether that grouping also lines up with skills, using pairs
-      that are not already counted in box 3 above.
+      Section 2 groups the ${c.occupations} occupations into hiring clusters with Louvain. This box asks whether
+      those clusters also share skills, leaving out the pairs box 3 already counts.
     </p>`;
   const notice = document.createElement("div");
   notice.className = "notice";
   notice.innerHTML = `<span class="ico">💡</span><span><b>What to notice</b></span>`;
   notice.querySelector("span:last-child").append(
     frag(
-      `Same-cluster pairs without a direct tie still average ${sim(s.mean)} similarity (n = ${s.n}), above ` +
-        `${sim(x.mean)} for pairs in different clusters (n = ${x.n}) and above the ${sim(a.mean)} random-pair ` +
-        `baseline. Both cluster groups sit on either side of that baseline, not far from it: a hiring cluster ` +
-        `tracks skills, but loosely.`,
+      `Same-cluster pairs without a direct tie average ${sim(s.mean)} similarity, against ${sim(x.mean)} across ` +
+        `clusters. Both sit close to the ${sim(a.mean)} random-pair baseline: a hiring cluster tracks skills, but loosely.`,
     ),
   );
   left.append(notice);
 
-  const howBody = document.createElement("p");
-  howBody.append(
+  const howBody = document.createElement("div");
+  const howWhat = document.createElement("p");
+  howWhat.append(
     frag(
       "Same-cluster pairs exclude the direct ties box 3 already counts, so this box asks a different question: does " +
         "the cluster as a whole share skills, beyond the companies that directly link two occupations. Different-" +
         `cluster pairs are every remaining pair across the ${c.occupations} occupations' cluster boundaries.`,
     ),
   );
+  const howCounts = document.createElement("p");
+  howCounts.append(
+    frag(
+      `The averages cover ${s.n} same-cluster pairs and ${x.n} pairs in different clusters. Section 2 checked its ` +
+        "clusters against degree-preserving rewirings.",
+    ),
+  );
+  howBody.append(howWhat, howCounts);
   const moreBody = document.createElement("p");
   const bestSame = s.examples.slice(0, 2).map(pairLine).join("; ");
   const worstDiff = x.examples.slice(-2).map(pairLine).join("; ");
