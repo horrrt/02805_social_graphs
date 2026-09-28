@@ -90,7 +90,7 @@ def figure_map():
     pos.update({n: p + np.array([1.60, 0.52]) for n, p in zip(Gi, IP)})
 
     for i, n in enumerate(isolates):                       # tidy grid, 6 wide
-        pos[n] = np.array([1.36 + 0.115 * (i % 6), -0.46 - 0.115 * (i // 6)])
+        pos[n] = np.array([1.42 + 0.115 * (i % 6), -0.46 - 0.115 * (i // 6)])
 
     fig, ax = plt.subplots(figsize=(6.6, 3.8))
     for u, v in D.to_undirected().edges():
