@@ -1,0 +1,127 @@
+{
+ "taken": "2026-09-28T18:56:11.968Z",
+ "cards": {
+  "RTop:top": {
+   "board": "RTop",
+   "key": "top",
+   "text": "Week 4 · Communities & backbones · Go nuts Who hires America's foreign workers? Where the hiring is , which occupations travel together, which firms staff the seats, what changes without the biggest firms, and what the filings show beyond the networks, all from the same Department of Labor disclosures. Years are US fiscal years . A shared employer is not a shared labour market. On the map: three Louvain groups New York–Dallas seven large hubs San Jose–San Francisco eight tech hubs Detroit–Phoenix the other 25 Links kept by the disparity filter at α = 0.2 537,796 certified H-1B filings, 2025 40 metro areas with the most filings, 84.5% of the year’s total Click any metro to inspect it. Selected metro Strongest links",
+   "js": "New York NY · 2025 New York–Dallas group Filings 65,935 Companies 12,711 Largest filer EY, 3.7% Placed at a client 17% Census region Northeast Dallas 19,364 San Francisco 11,857 San Jose 11,280",
+   "pop": "The US government's year runs October to September: 2025 runs from October 2024 to September 2025.",
+   "n_text": [
+    "4",
+    "25",
+    "0.2",
+    "537,796",
+    "1",
+    "2025",
+    "40",
+    "84.5%",
+    "three",
+    "seven",
+    "eight"
+   ],
+   "n_js": [
+    "2025",
+    "65,935",
+    "12,711",
+    "3.7%",
+    "17%",
+    "19,364",
+    "11,857",
+    "11,280"
+   ],
+   "n_pop": [
+    "2025",
+    "2024",
+    "2025"
+   ]
+  },
+  "RTop:findings": {
+   "board": "RTop",
+   "key": "findings",
+   "text": "Five sections, five findings the real network random baseline, mean ± 1 sd 1 Where the hiring is Cities group by who hires there, not by region, and no single link holds the map together. Section 1 → 2 Which jobs go together Employers reveal bundles of work. Section 2 → 3 Who staffs whom One certified H-1B filing in five names a client company as the worksite. Yet a client that changes vendor stays inside its group far more often than chance. Section 3 → 4 Without the biggest firms Take out the largest filers, Amazon above all, and the metro groups start to follow Census regions; the job clusters shift but hold. Section 4 → 5 Beyond the three networks The section 3 groups barely show in lawyers or green cards; the outsourcing firms stand out in the wage levels they file. Section 5 →",
+   "js": "Modularity against rewired networks · z = 29 Modularity against rewired networks · z = 285 Vendor switches that stay in the group · z = 47 Match with Census regions without the ten largest filers · dashed: all firms, 0.06 Odds of wage level I or II, placed against direct, same job · 95% interval",
+   "pop": "An outsourcing firm that files the H-1B and places the worker at another company, its client. Elsewhere the page also calls it a placing firm.",
+   "n_text": [
+    "1",
+    "1",
+    "1",
+    "2",
+    "2",
+    "3",
+    "1",
+    "3",
+    "4",
+    "4",
+    "5",
+    "3",
+    "5",
+    "five",
+    "five",
+    "one",
+    "five",
+    "three"
+   ],
+   "n_js": [
+    "29",
+    "285",
+    "47",
+    "0.06",
+    "95%",
+    "ten"
+   ],
+   "n_pop": [
+    "1"
+   ]
+  },
+  "ROpening:(rest)": {
+   "board": "ROpening",
+   "key": "(rest)",
+   "text": "",
+   "js": "",
+   "pop": "",
+   "n_text": [],
+   "n_js": [],
+   "n_pop": []
+  },
+  "ROpening:opening>opener": {
+   "board": "ROpening",
+   "key": "opening>opener",
+   "text": "0 Opening An H-1B filing is an employer’s request to hire a non-US worker in a specialty occupation .",
+   "js": "",
+   "pop": "A job that needs at least a bachelor’s degree in a specific field, such as engineering or accounting.",
+   "n_text": [
+    "0",
+    "1"
+   ],
+   "n_js": [],
+   "n_pop": []
+  },
+  "ROpening:opening>w4-card": {
+   "board": "ROpening",
+   "key": "opening>w4-card",
+   "text": "It names the job, the worksite, the wage and the company asking to employ the worker. The Department of Labor records the filing even when the worker never arrives, changes employer or is not hired. Why start with companies? The employer is the thread linking the three networks in this story. ! Read the scope carefully These are visa-sponsored filings, not all hiring in America. Unless stated otherwise, the figures below use certified H-1B filings in 2025. One filing is a request, not a guaranteed job. Background A job title tells us what work is requested; a company tells us which jobs, places, and clients are connected by the same hiring system. The links mean shared filings. They say nothing about friendships between workers or companies. The filings leave out workers without H-1B sponsorship, employers that never file, rejected or withdrawn applications, and the wider conditions that shape who gets hired. What one filing names Each section builds its network from one of these fields. Employer The company asking to hire Links all three networks Worksite A city, grouped into its metro area 1 · Where Occupation The job, as an official occupation code 2 · Jobs Client The company the worker is placed at, when it is not the employer 3 · Staffing Wage level I (entry) to IV (fully competent) 5 · Beyond Law firm Who prepared the filing 5 · Beyond How to read the charts The real network What the filings show. Random baseline Mean and one standard deviation over rewired networks or random draws. Placed at a client Filings that put the worker at another company. Direct employer Filings for the employer’s own site. Reference The full network, or equal odds. Metro groups Violet, green and slate mark the three Louvain groups, on maps only.",
+   "js": "",
+   "pop": "The Department of Labor accepted the filing. Only then can the employer take it forward.",
+   "n_text": [
+    "1",
+    "2025",
+    "1",
+    "1",
+    "2",
+    "3",
+    "5",
+    "5",
+    "three",
+    "one",
+    "one",
+    "one",
+    "three",
+    "one",
+    "three"
+   ],
+   "n_js": [],
+   "n_pop": []
+  }
+ }
+}
