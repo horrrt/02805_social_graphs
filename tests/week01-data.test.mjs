@@ -1,8 +1,12 @@
 // Invariants between analysis/week01_packs.py's output and the Week 1 page.
 //
-// The page used to hand-type 1,945, 303, 58 and 106/107 into packs.js and the
-// prose, so a rerun of the script could silently drift from what the page
-// says. These pin the page's numbers to the JSON the script writes.
+// The page used to hand-type its pack-collecting numbers, so a rerun of the
+// script could silently drift from what the page says. These check totalWeight
+// against the card weights, each card's probability, the histogram against the
+// card count, and pin the page's ≈1,945 / ≈382 / 1,944.19–1,944.99 figures to
+// week01_packs.json. See
+// tests/week01-prose.test.mjs for the rest of the page's numbers (58, 2,087,
+// 106/107 and the others).
 import test from "node:test";
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
@@ -20,7 +24,6 @@ const html = readFileSync(
 
 test("the totalWeight equals the sum of every card's weight", () => {
   const summed = packs.cards.reduce((total, c) => total + c.weight, 0);
-  assert.equal(packs.totalWeight, 2087);
   assert.equal(summed, packs.totalWeight);
 });
 
@@ -38,28 +41,30 @@ test("every card's probability is weight / totalWeight, and they sum to 1", () =
   );
 });
 
-test("the histogram counts sum to all 303 articles", () => {
+test("the histogram counts every card once", () => {
   const total = packs.histogram.reduce((sum, row) => sum + row.count, 0);
-  assert.equal(total, 303);
+  assert.equal(total, packs.cards.length);
 });
 
-test("the page's ≈1,945 metric equals collector.expectedPacksRounded", () => {
-  assert.equal(packs.collector.expectedPacksRounded, 1945);
-  assert.match(html, /≈1,945/);
+const count = (n) => n.toLocaleString("en-US");
+
+test("the page's ≈ expected-packs metric equals collector.expectedPacksRounded", () => {
+  const shown = `<strong>≈${count(packs.collector.expectedPacksRounded)}</strong`;
+  assert.ok(html.includes(shown), `the page should show "${shown}"`);
 });
 
-test("the page's ≈382 uniform-odds metric equals collector.uniformExpectedPacks", () => {
-  assert.equal(packs.collector.uniformExpectedPacks, 382);
-  assert.match(html, /≈382/);
+test("the page's ≈ uniform-odds metric equals collector.uniformExpectedPacks", () => {
+  const shown = `<strong>≈${count(packs.collector.uniformExpectedPacks)}</strong`;
+  assert.ok(html.includes(shown), `the page should show "${shown}"`);
 });
 
 test("the printed pack range matches expectedPacksLower/Upper to 2 decimals", () => {
-  const lower = packs.collector.expectedPacksLower.toFixed(2);
-  const upper = packs.collector.expectedPacksUpper.toFixed(2);
-  assert.equal(lower, "1944.19");
-  assert.equal(upper, "1944.99");
+  const twoDp = (n) =>
+    n.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+  const lower = twoDp(packs.collector.expectedPacksLower);
+  const upper = twoDp(packs.collector.expectedPacksUpper);
   assert.ok(
-    html.includes(`between ${Number(lower).toLocaleString("en-US", { minimumFractionDigits: 2 })} and ${Number(upper).toLocaleString("en-US", { minimumFractionDigits: 2 })}`),
+    html.includes(`between ${lower} and ${upper}`),
     `the page does not quote ${lower} and ${upper}`,
   );
 });

@@ -14,6 +14,14 @@ from matplotlib.colors import LinearSegmentedColormap
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from arcade_data import DISPLAY_NAME_OVERRIDES
 
+ONES = ["zero", "one", "two", "three", "four", "five", "six", "seven", "eight",
+        "nine", "ten", "eleven", "twelve", "thirteen", "fourteen", "fifteen",
+        "sixteen", "seventeen", "eighteen", "nineteen", "twenty"]
+
+def spell(n):
+    """Word form for small counts, so prose reads 'nine characters', not '9'."""
+    return ONES[n] if 0 <= n < len(ONES) else str(n)
+
 BLUE, ORANGE, GREEN = "#2a78d6", "#eb6834", "#1baf7a"
 INK, MUTED, GRID, PAPER = "#1c1c1c", "#7a7a7a", "#e4e4e4", "#ffffff"
 plt.rcParams.update({
@@ -33,6 +41,18 @@ name.update({k: v for k, v in DISPLAY_NAME_OVERRIDES.items() if k in name})
 url = dict(zip(nodes.node_id, nodes.url))
 N = D.number_of_nodes()
 kin, kout = dict(D.in_degree()), dict(D.out_degree())
+
+
+def induced(members):
+    """D restricted to members, in the roster's node order. D.subgraph() walks
+    the member set itself when it is small, so the island's node order, and
+    with it every seeded layout below, changed with PYTHONHASHSEED."""
+    keep = set(members)
+    S = nx.DiGraph()
+    S.add_nodes_from(n for n in D if n in keep)
+    S.add_edges_from((u, v) for u, v in D.edges() if u in keep and v in keep)
+    return S
+
 
 wcc = sorted(nx.weakly_connected_components(D), key=len, reverse=True)
 giant, island = wcc[0], wcc[1]
@@ -54,7 +74,7 @@ def halo(t):
 
 # ---------------------------------------------------------------- 1. the map
 def figure_map():
-    Gg = D.subgraph(giant).to_undirected()
+    Gg = induced(giant).to_undirected()
     pos = nx.spring_layout(Gg, k=0.55, iterations=600, seed=7)
     P = np.array([pos[n] for n in Gg])
     P = P - P.mean(0)
@@ -63,14 +83,14 @@ def figure_map():
     P = P * (r ** 0.62) / np.where(r == 0, 1, r)          # push r -> r^0.62
     pos = {n: p for n, p in zip(Gg, P)}
 
-    Gi = D.subgraph(island).to_undirected()
+    Gi = induced(island).to_undirected()
     ip = nx.spring_layout(Gi, k=1.0, iterations=400, seed=3)
     IP = np.array([ip[n] for n in Gi])
     IP = (IP - IP.mean(0)) / np.abs(IP - IP.mean(0)).max() * 0.30
     pos.update({n: p + np.array([1.60, 0.52]) for n, p in zip(Gi, IP)})
 
     for i, n in enumerate(isolates):                       # tidy grid, 6 wide
-        pos[n] = np.array([1.36 + 0.115 * (i % 6), -0.46 - 0.115 * (i // 6)])
+        pos[n] = np.array([1.42 + 0.115 * (i % 6), -0.46 - 0.115 * (i // 6)])
 
     fig, ax = plt.subplots(figsize=(6.6, 3.8))
     for u, v in D.to_undirected().edges():
@@ -80,7 +100,7 @@ def figure_map():
 
     cmap = LinearSegmentedColormap.from_list("b", ["#d3e2f4", "#2a78d6", "#0e2f57"])
     for group, colour in [(giant, None), (island, ORANGE), (set(isolates), GREEN)]:
-        ns = list(group)
+        ns = [n for n in D if n in group]                    # roster order, not set order
         xy = np.array([pos[n] for n in ns])
         sz = np.array([22 + 13 * np.sqrt(kin[n] + kout[n]) for n in ns])
         c = cmap(np.array([kin[n] for n in ns]) ** 0.45 / 106 ** 0.45) if colour is None else colour
@@ -103,9 +123,9 @@ def figure_map():
 
     halo(ax.text(1.60, 0.94, "Strikeforce: Morituri", fontsize=10, color=ORANGE,
                  ha="center", weight="bold", zorder=4))
-    halo(ax.text(1.60, 0.86, "nine characters, sealed off from the rest",
+    halo(ax.text(1.60, 0.86, f"{spell(len(island))} characters, sealed off from the rest",
                  fontsize=8.4, color=MUTED, ha="center", zorder=4))
-    halo(ax.text(1.70, -0.26, "The 17 isolates", fontsize=10, color=GREEN,
+    halo(ax.text(1.70, -0.26, f"The {len(isolates)} isolates", fontsize=10, color=GREEN,
                  ha="center", weight="bold", zorder=4))
     halo(ax.text(1.70, -0.34, "no link in either direction", fontsize=8.4,
                  color=MUTED, ha="center", zorder=4))
@@ -173,7 +193,7 @@ def figure_scatter():
 # ------------------------------------------------------------- 4. the island
 def figure_island():
     fig, ax = plt.subplots(figsize=(6.6, 4.4))
-    S = D.subgraph(island)
+    S = induced(island)
     pos = nx.spring_layout(S.to_undirected(), k=1.1, iterations=500, seed=11)
     for u, v in S.edges():
         x0, y0 = pos[u]; x1, y1 = pos[v]
@@ -189,8 +209,8 @@ def figure_island():
         halo(ax.text(pos[n][0], pos[n][1] - .155, name[n].split(" (")[0],
                      fontsize=8.6, color=INK, ha="center", zorder=4))
     ax.axis("off")
-    ax.set_title("The only island: nine characters from Strikeforce: Morituri (1986)\n"
-                 "22 arcs among themselves, zero to the other 294",
+    ax.set_title(f"The only island: {spell(len(island))} characters from Strikeforce: Morituri (1986–1989)\n"
+                 f"{S.number_of_edges()} arcs among themselves, zero to the other {N - len(island)}",
                  fontsize=10.5, color=INK, loc="left", pad=14)
     ax.margins(.16)
     fig.tight_layout()

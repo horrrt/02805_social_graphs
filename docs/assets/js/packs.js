@@ -19,6 +19,8 @@ try {
   $("#app-status").hidden = true;
   const N = data.nodes.length;
   const maxDegree = Math.max(...packs.histogram.map((row) => row.degree));
+  const weightById = new Map(packs.cards.map((c) => [c.id, c.weight]));
+  const minWeight = Math.min(...packs.cards.map((c) => c.weight));
   prediction($("#prediction"), {
     id: "w1-packs",
     week: 1,
@@ -35,7 +37,7 @@ try {
     comparison.disabled = false;
     const updateComparison = () => {
       const packCount = Number(comparison.value),
-        draws = packCount * 5;
+        draws = packCount * packs.packSize;
       const weighted = expectedDistinct(
         packs.cards.map((c) => c.probability),
         draws,
@@ -108,7 +110,7 @@ try {
         (filter === "all" ||
           (filter === "owned" && counts[n.id]) ||
           (filter === "missing" && !counts[n.id]) ||
-          (filter === "rare" && n.kin === 0)),
+          (filter === "rare" && weightById.get(n.id) === minWeight)),
     );
     $("#collection-grid").innerHTML =
       all
@@ -146,18 +148,18 @@ try {
     $("#unique-count").textContent = `${Object.keys(counts).length} / ${N}`;
     $("#pull-count").textContent = pulls.toLocaleString();
     $("#rare-count").textContent =
-      `${data.nodes.filter((n) => n.kin === 0 && counts[n.id]).length} / ${packs.collector.minimumRateCards}`;
+      `${data.nodes.filter((n) => weightById.get(n.id) === minWeight && counts[n.id]).length} / ${packs.collector.minimumRateCards}`;
     collection();
   }
   $("#open-pack").disabled = false;
   $("#open-pack").addEventListener("click", () => {
     if (!$("#pack-seed").reportValidity()) return;
     const draws = [];
-    for (let i = 0; i < 5; i++) {
+    for (let i = 0; i < packs.packSize; i++) {
       let ticket = random() * packs.totalWeight;
       let n = data.nodes.at(-1);
       for (const item of data.nodes) {
-        ticket -= item.kin + 1;
+        ticket -= weightById.get(item.id);
         if (ticket < 0) {
           n = item;
           break;
@@ -174,7 +176,7 @@ try {
       )
       .join("");
     $("#pack-status").textContent =
-      `Pack ${Math.floor(pulls / 5)}: ${draws.filter((d) => d.fresh).length} new cards. ${draws.map((d) => d.n.name).join(", ")}.`;
+      `Pack ${Math.floor(pulls / packs.packSize)}: ${draws.filter((d) => d.fresh).length} new cards. ${draws.map((d) => d.n.name).join(", ")}.`;
     save();
     metrics();
     drawChart();
@@ -325,10 +327,12 @@ try {
     for (let i = 0; i < 7; i++) {
       const x = 35 + i * bw,
         height = ((h - 55) * guess[i]) / 160;
-      c.fillStyle = tone("--cv-packs-bar", "#14618f");
+      // Blue means the real snapshot and orange means a reader's own input in
+      // the degree chart above; match that here instead of reversing it.
+      c.fillStyle = tone("--cv-packs-bar-actual", "#f2820c");
       c.fillRect(x, h - 35 - height, bw * 0.38, height);
       if (compare) {
-        c.fillStyle = tone("--cv-packs-bar-actual", "#f2820c");
+        c.fillStyle = tone("--cv-packs-bar", "#14618f");
         const ah = ((h - 55) * actual[i]) / 160;
         c.fillRect(x + bw * 0.4, h - 35 - ah, bw * 0.38, ah);
       }
@@ -388,7 +392,7 @@ try {
     compare = true;
     drawSketch();
     $("#sketch-feedback").textContent =
-      `Blue = your sketch; orange = snapshot. Actual counts from left to right: ${actual.join(", ")}. The distribution is uneven; this alone does not prove a power law.`;
+      `Orange = your sketch; blue = snapshot. Actual counts from left to right: ${actual.join(", ")}. The distribution is uneven; this alone does not prove a power law.`;
   });
   metrics();
 } catch (error) {

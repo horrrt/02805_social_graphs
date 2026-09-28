@@ -3,6 +3,7 @@ import json
 import numpy as np
 import pandas as pd
 import networkx as nx
+from scipy import stats
 
 from arcade_data import DISPLAY_NAME_OVERRIDES
 
@@ -78,9 +79,11 @@ f["top10_overlap"] = sorted({r["id"] for r in f["top_in"]} &
 a = np.array([kin[n_] for n_ in D])
 b = np.array([kout[n_] for n_ in D])
 f["pearson_in_out"] = round(float(np.corrcoef(a, b)[0, 1]), 3)
+f["pearson_in_out_p"] = float(stats.pearsonr(a, b).pvalue)
 live = (a + b) > 0
 f["pearson_in_out_nonisolate"] = round(float(np.corrcoef(a[live], b[live])[0, 1]), 3)
 f["spearman_in_out"] = round(float(pd.Series(a).corr(pd.Series(b), method="spearman")), 3)
+f["spearman_in_out_p"] = float(stats.spearmanr(a, b).pvalue)
 f["max_in"], f["max_out"] = int(a.max()), int(b.max())
 f["zero_in"], f["zero_out"] = int((a == 0).sum()), int((b == 0).sum())
 

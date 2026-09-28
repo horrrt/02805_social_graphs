@@ -255,8 +255,10 @@
   "Wolverine_(character)"
  ],
  "pearson_in_out": 0.496,
+ "pearson_in_out_p": 2.925003621752238e-20,
  "pearson_in_out_nonisolate": 0.48,
  "spearman_in_out": 0.702,
+ "spearman_in_out_p": 2.418926922033949e-46,
  "max_in": 106,
  "max_out": 28,
  "zero_in": 58,

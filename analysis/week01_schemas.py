@@ -85,6 +85,7 @@ class Collector(Model):
 
 
 class Packs(Model):
+    packSize: int = Field(ge=1)
     totalWeight: int = Field(ge=1)
     cards: list[Card] = Field(min_length=NODES, max_length=NODES)
     histogram: list[Bin] = Field(min_length=1)

@@ -15,6 +15,7 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "analysis"))
 
 from arcade_data import DISPLAY_NAME_OVERRIDES  # noqa: E402
+from check_pages import check  # noqa: E402
 
 
 def build():
@@ -83,6 +84,7 @@ def build():
             assert degree(row["id"]) == row["k"]
 
     output = ROOT / "docs/assets/data/marvel_story.json"
+    check(output, payload)
     output.write_text(json.dumps(payload, separators=(",", ":")) + "\n")
     print(f"Verified {len(graph)} characters, {graph.number_of_edges()} links, components 277 / 9 / 17 singletons.")
     print(f"Wrote {output.relative_to(ROOT)}")
