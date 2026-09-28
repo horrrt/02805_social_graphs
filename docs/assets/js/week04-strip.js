@@ -58,6 +58,7 @@ function interval(X, cy, lo, hi, tip) {
 }
 
 function dot(X, cy, value, { color, hollow, tip }) {
+  if (color?.startsWith("--")) color = token(color);
   const fill = hollow ? token("--card") : color ?? token("--ink");
   const stroke = hollow ? color ?? token("--ink") : token("--card");
   return titled(node("circle", { cx: X(value), cy, r: hollow ? 6 : 6.5, fill, stroke, "stroke-width": 2 }), tip);
