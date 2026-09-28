@@ -1,30 +1,28 @@
 /* Week 4 redesign · who filed for which roles, #cut-roles (week04-roles.js).
-   Categorical tokens for the stacked-area series, on the same base/-dark
-   pattern as --w4-group-0/1/2 in week04.css: the base for the card's light
-   surface, -dark for the dark tooltip background (--w4-tip-bg). Fourteen
-   colours cover the largest split (occupations); splits with fewer series
-   use the first few. Orange (--people), blue (--access) and the metro-group
-   violet/green/slate stay reserved for their own meanings, so this palette
-   avoids those hues; "All other …" always takes the neutral grey. Layout
+   Tokens for the stacked-area series: a navy ramp from dark to light, so
+   the first series sits darkest at the baseline. Fourteen steps
+   cover the largest split (occupations); splits with fewer series use the
+   first few. "All other …" always takes the neutral grey. The -dark set
+   below is not read by week04-roles.js. Layout
    below is only what the box needs beyond .chart-host, .axis-modes and
    table.ego in week04.css and corridor.css. */
 
 .corridor {
-  --w4-area-1: #b5348c;
-  --w4-area-2: #c9a227;
-  --w4-area-3: #2f9c95;
-  --w4-area-4: #a8412a;
-  --w4-area-5: #5b4b8a;
-  --w4-area-6: #7c8c33;
-  --w4-area-7: #d9789e;
-  --w4-area-8: #8c5e33;
-  --w4-area-9: #4a7a6d;
-  --w4-area-10: #a8632f;
-  --w4-area-11: #6d3b7a;
-  --w4-area-12: #8a7a2e;
-  --w4-area-13: #7a2e3a;
-  --w4-area-14: #4a5a8a;
-  --w4-area-other: #8a94a3;
+  --w4-area-1: #0f2340;
+  --w4-area-2: #14618f;
+  --w4-area-3: #3d7fb0;
+  --w4-area-4: #5b95c2;
+  --w4-area-5: #739fc4;
+  --w4-area-6: #86aecf;
+  --w4-area-7: #97badb;
+  --w4-area-8: #a7c5e0;
+  --w4-area-9: #b3cde5;
+  --w4-area-10: #bfd5e9;
+  --w4-area-11: #c9dcec;
+  --w4-area-12: #d2e2ef;
+  --w4-area-13: #dbe7f2;
+  --w4-area-14: #e3ecf5;
+  --w4-area-other: #d3d9e1;
   --w4-area-1-dark: #e08fc4;
   --w4-area-2-dark: #e8cf6b;
   --w4-area-3-dark: #7fd6d0;

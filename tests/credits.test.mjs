@@ -54,3 +54,13 @@ test("week 4 credits O*NET in USDOL/ETA's prescribed wording", () => {
     assert.ok(text.includes(credit), `week 4 footer should include ${credit}`);
   }
 });
+
+test("week 4 credits USCIS for the registrations per lottery draw", () => {
+  const text = footer("docs/weeks/week04/index.html");
+  for (const credit of [
+    "Registrations per lottery draw: USCIS",
+    'href="https://www.uscis.gov/working-in-the-united-states/temporary-workers/h-1b-specialty-occupations/h-1b-electronic-registration-process"',
+  ]) {
+    assert.ok(text.includes(credit), `week 4 footer should include ${credit}`);
+  }
+});

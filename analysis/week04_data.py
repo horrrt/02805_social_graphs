@@ -44,6 +44,7 @@ Two more tables come from outside DOL:
 Sources (public domain, US government):
 https://www.dol.gov/agencies/eta/foreign-labor/performance
 https://www.uscis.gov/tools/reports-and-studies/h-1b-employer-data-hub
+https://www.uscis.gov/working-in-the-united-states/temporary-workers/h-1b-specialty-occupations/h-1b-electronic-registration-process
 https://github.com/BloombergGraphics/2024-h1b-immigration-data (Apache 2.0)
 """
 
@@ -196,6 +197,10 @@ REFS = {
     # by the fiscal year of the decision. Published to FY2023 as files.
     "uscis_fy2022.csv": "https://www.uscis.gov/sites/default/files/document/data/h1b_datahubexport-2022.csv",
     "uscis_fy2023.csv": "https://www.uscis.gov/sites/default/files/document/data/h1b_datahubexport-2023.csv",
+    # USCIS "H-1B Electronic Registration Process" page: its Historical Data
+    # table gives each March draw's eligible, multiple and selected registrations.
+    "uscis_registration.html": "https://www.uscis.gov/working-in-the-united-states/temporary-workers/"
+    "h-1b-specialty-occupations/h-1b-electronic-registration-process",
     # BLS 2018 SOC structure: occupation code -> major and minor group.
     "soc_structure_2018.xlsx": "https://www.bls.gov/soc/2018/soc_structure_2018.xlsx",
     # BLS OEWS, May 2025, metropolitan area file: jobs per metro and occupation,
@@ -440,6 +445,7 @@ def main():
         download(REFS["place_gazetteer_2023.zip"], RAW / "place_gazetteer_2023.zip")
         for year in (2022, 2023):
             uscis(year, args.local)
+        download(REFS["uscis_registration.html"], RAW / "uscis_registration.html")
         # BLS answers 403 unless the User-Agent names a contact.
         contact = os.environ.get("CONTACT_EMAIL")
         if contact:

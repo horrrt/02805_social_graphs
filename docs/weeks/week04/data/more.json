@@ -205,6 +205,44 @@
      5.14
     ]
    }
+  ],
+  "all_draws": [
+   {
+    "label": "March 2020",
+    "eligible": 269424,
+    "multiple": 28125,
+    "selected": 124415
+   },
+   {
+    "label": "March 2021",
+    "eligible": 301447,
+    "multiple": 90143,
+    "selected": 131924
+   },
+   {
+    "label": "March 2022",
+    "eligible": 474421,
+    "multiple": 165180,
+    "selected": 127600
+   },
+   {
+    "label": "March 2023",
+    "eligible": 758994,
+    "multiple": 408891,
+    "selected": 188400
+   },
+   {
+    "label": "March 2024",
+    "eligible": 470342,
+    "multiple": 47314,
+    "selected": 135137
+   },
+   {
+    "label": "March 2025",
+    "eligible": 343981,
+    "multiple": 7828,
+    "selected": 120141
+   }
   ]
  }
 }

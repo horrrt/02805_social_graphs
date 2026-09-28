@@ -8,15 +8,23 @@
 import { token } from "./week04-strip.js";
 import { drawer, drawerRow } from "./week04-ui.js";
 
-const DATA = new URL("../../weeks/week04/data/skills_radar.json", import.meta.url);
+const DATA = new URL("../../weeks/week04/data/skills_radar.json?v=2", import.meta.url);
 const MAX_SELECTED = 5;
 const SYMBOLS = ["circle", "rect", "triangle", "diamond", "pin"];
 // Spoke names run along their own spoke, so neighbours never overlap however
-// many spokes a group has. Past LABEL_CHARS a name ends in an ellipsis; the
-// hover tip on the name gives it in full with every occupation's value.
+// many spokes a group has. Past LABEL_CHARS a name splits into two lines at
+// the word break nearest its middle; the hover tip on the name gives it with
+// every occupation's value.
 const LABEL_CHARS = 26;
 const LABEL_SPACE = 164;
-const shorten = (name) => (name.length > LABEL_CHARS ? `${name.slice(0, LABEL_CHARS - 1).trimEnd()}…` : name);
+const shorten = (name) => {
+  if (name.length <= LABEL_CHARS) return name;
+  let cut = -1;
+  for (let i = name.indexOf(" "); i !== -1; i = name.indexOf(" ", i + 1)) {
+    if (cut === -1 || Math.abs(i - name.length / 2) < Math.abs(cut - name.length / 2)) cut = i;
+  }
+  return cut === -1 ? name : `${name.slice(0, cut)}\n${name.slice(cut + 1)}`;
+};
 
 const GROUP_ORDER = ["skills", "knowledge", "work_activities"];
 const fmt2 = (v) => v.toFixed(2);
@@ -313,7 +321,7 @@ class Radar {
           y: cy - (r + 8) * Math.sin(angle),
           // Upright on both sides: the left half reads inward-to-outward from the right end.
           rotation: right ? Math.atan2(Math.sin(angle), Math.cos(angle)) : Math.atan2(Math.sin(angle), Math.cos(angle)) - Math.PI,
-          style: { text: shorten(name), fill: softInk, font: "10px -apple-system, BlinkMacSystemFont, system-ui, sans-serif", align: right ? "left" : "right", verticalAlign: "middle" },
+          style: { text: shorten(name), fill: softInk, font: "10.5px -apple-system, BlinkMacSystemFont, system-ui, sans-serif", lineHeight: 12, align: right ? "left" : "right", verticalAlign: "middle" },
           onmouseover: (e) => this.showTip(e.event, i),
           onmouseout: () => this.hideTip(),
         };

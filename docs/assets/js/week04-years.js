@@ -4,6 +4,7 @@
 // coloured from the page's own CSS tokens, and renders once the box is
 // first opened (or immediately if it is already open, such as a deep link).
 import { esc } from "./cabinet.js";
+import { drawer, drawerRow } from "./week04-ui.js";
 
 const box = document.querySelector("#cut-years");
 const body = document.querySelector("#years-body");
@@ -18,6 +19,9 @@ const FOUR_FIRMS = ["Tata Consultancy Services", "Cognizant", "Infosys", "HCL"];
 const whole = new Intl.NumberFormat("en-US");
 const num = (v) => whole.format(Math.round(v));
 const pct = (v, d = 1) => `${(v * 100).toFixed(d)}%`;
+// A signed change in percent, with a true minus sign, for chart annotations.
+const signed = (p, d = 1) => `${p < 0 ? "−" : "+"}${Math.abs(p).toFixed(d)}%`;
+const change = (a, b) => 100 * (b / a - 1);
 
 function tok(name) {
   const v = getComputedStyle(document.body).getPropertyValue(name).trim();
@@ -132,8 +136,9 @@ function yearLine(series, width, height, fmt, aria, pal, color, full = true) {
 
 // Two series over the five fiscal years, labelled at their ends. Ported
 // from extra.py:two_lines.
-function twoLines(a, b, width, height, fmt, aria, pal, names, colors) {
-  const L = 56, R = 110, T = 18, Bm = 30;
+function twoLines(a, b, width, height, fmt, aria, pal, names, colors, note = null) {
+  // R holds the end names ("client companies" is about 102 wide at 12px).
+  const L = 56, R = 124, T = 18, Bm = 30;
   const { step, top } = niceAxis(Math.max(...a, ...b));
   const yMax = top;
   const x = (i) => L + (i * (width - L - R)) / 4;
@@ -160,12 +165,14 @@ function twoLines(a, b, width, height, fmt, aria, pal, names, colors) {
     out.push(textEl(pts.at(-1)[0] + 12, pts.at(-1)[1] + 4, name, 12, pal.ink, 700, "start"));
   });
   YEARS.forEach((y_, i) => out.push(textEl(x(i), height - 10, y_, 11, pal.inkMute, 600, "middle")));
+  // The panel's finding, in the empty band just above the zero line.
+  if (note) out.push(textEl(L + 8, y(0) - 8, note, 11.5, pal.ink, 700, "start"));
   out.push("</svg>");
   return out.join("\n");
 }
 
 // Ported from extra.py:year_bars.
-function yearBars(series, width, height, fmt, aria, pal, { partialLast = true, sub = null } = {}) {
+function yearBars(series, width, height, fmt, aria, pal, { partialLast = true, sub = null, note = null } = {}) {
   const L = 12, R = 12, T = 26, Bm = 44;
   const n = series.length;
   const cw = (width - L - R) / n;
@@ -181,6 +188,8 @@ function yearBars(series, width, height, fmt, aria, pal, { partialLast = true, s
     out.push(textEl(x + w / 2, base - h - 7, fmt(s.v), 11.5, pal.ink, 700, "middle"));
     out.push(textEl(x + w / 2, base + 16, s.label, 11, pal.inkSoft, 600, "middle"));
     if (sub && sub[i]) out.push(textEl(x + w / 2, base + 30, sub[i], 10.5, pal.inkMute, 400, "middle"));
+    // The panel's finding, over the bar it is about.
+    if (note && note[0] === i) out.push(textEl(x + w / 2, base - h - 23, note[1], 11.5, pal.inkSoft, 700, "middle"));
   });
   out.push(lineEl(L, base, width - R, base, pal.line, 1));
   out.push("</svg>");
@@ -217,7 +226,8 @@ function seasonChart(rows, key, aria, pal, color, note) {
     });
     ends.push(pts.at(-1)[1]);
   });
-  spread(ends).forEach((ly, i) => {
+  // 15 apart, so the 11.5px end labels clear each other's glyph boxes.
+  spread(ends, 15).forEach((ly, i) => {
     const yy = years[i];
     const newest = i === years.length - 1;
     out.push(textEl(width - R + 8, ly + 4, yr(yy), 11.5, newest ? pal.ink : pal.inkMute, newest ? 700 : 600, "start"));
@@ -236,9 +246,11 @@ function seasonChart(rows, key, aria, pal, color, note) {
 // A small multiple per firm: filings per fiscal year, dashed and hollow at
 // the end when the firm ran the full five years. Ported from
 // extra.py:mini_years.
-function miniYears(series, ymax, pal) {
+function miniYears(series, ymax, pal, note = null) {
   const width = 262, height = 150;
-  const L = 8, R = 8, T = 20, Bm = 24;
+  // Side margins of half a four-digit label, so the first and last values
+  // (centred on their points) stay inside the SVG.
+  const L = 22, R = 22, T = 20, Bm = 24;
   const full = series.length === 5;
   const x = (i) => L + (i * (width - L - R)) / 4;
   const y = (v) => T + ((ymax - v) * (height - T - Bm)) / ymax;
@@ -255,12 +267,15 @@ function miniYears(series, ymax, pal) {
     out.push(textEl(px, py - 8, num(s.v), 10.5, pal.ink, 700, "middle"));
     out.push(textEl(px, height - 6, s.label, 10.5, pal.inkMute, 400, "middle"));
   });
+  // The firm's finding, top right, where a short run leaves the chart empty.
+  if (note) out.push(textEl(width - R, 12, note, 10.5, pal.inkSoft, 700, "end"));
   out.push("</svg>");
   return out.join("\n");
 }
 
-function panel(title, caption, svg, span = 1) {
-  return `<div class="years-panel"${span > 1 ? ' data-span="2"' : ""}><h3>${esc(title)}</h3><p>${esc(caption)}</p>${svg}</div>`;
+function panel(title, caption, svg, span = 1, finding = "") {
+  const b = finding ? ` <b class="rx-tile-finding">${esc(finding)}</b>` : "";
+  return `<div class="years-panel"${span > 1 ? ' data-span="2"' : ""}><h3>${esc(title)}</h3><p>${esc(caption)}${b}</p>${svg}</div>`;
 }
 
 // ---------------------------------------------------------------- the box
@@ -269,13 +284,26 @@ function render(data) {
   const pal = palette();
   const ys = data.years;
 
+  // The card's answer and the first two panels' findings, all from years.json:
+  // the 2023 change on 2022, the 2025 total, and 2026 against the same
+  // October-to-June months of 2025 (2026 has no other months yet).
+  const oj = data.oct_jun.totals;
+  const fell23 = change(ys["2022"].certified_filings, ys["2023"].certified_filings);
+  const rose25 = ys["2025"].certified_filings > ys["2024"].certified_filings;
+  const fell26 = change(oj.FY2025.certified_filings, oj.FY2026.certified_filings);
+  const verb = (p) => (p < 0 ? "fell" : "rose");
+  const answer =
+    `Certified filings ${verb(fell23)} ${Math.abs(fell23).toFixed(0)}% in 2023, ${rose25 ? "rose" : "fell"} to ` +
+    `${num(ys["2025"].certified_filings)} in 2025, and ${verb(fell26)} ${Math.abs(fell26).toFixed(1)}% in 2026 ` +
+    "against the same months a year earlier.";
+
   const cert = YEARS.map((y) => ({ label: y, v: ys[y].certified_filings }));
   const s1 = yearBars(cert, 540, 250, num, "Certified H-1B filings per fiscal year", pal,
-    { sub: ["", "", "", "", "Oct–Jun only"] });
+    { sub: ["", "", "", "", "Oct–Jun only"], note: [1, `${signed(fell23, 0)} on 2022`] });
 
-  const oj = data.oct_jun.totals;
   const like = ["FY2024", "FY2025", "FY2026"].map((fy) => ({ label: yr(fy), v: oj[fy].certified_filings }));
-  const s1b = yearBars(like, 540, 220, num, "Certified filings from October to June, three years", pal, { partialLast: false });
+  const s1b = yearBars(like, 540, 220, num, "Certified filings from October to June, three years", pal,
+    { partialLast: false, note: [2, `${signed(fell26)} on 2025`] });
 
   const rows = { FY2024: data.monthly.FY2024, FY2025: data.monthly.FY2025, FY2026: data.monthly.FY2026 };
   const oct25 = rows.FY2026[0];
@@ -296,44 +324,54 @@ function render(data) {
     per[y] = Object.fromEntries(ys[y].top_firms_by_filings);
   });
   const ymaxF = Math.max(...FOUR_FIRMS.flatMap((f) => YEARS.map((y) => per[y][f] || 0))) * 1.18;
+  const topN = ys["2026"].top_firms_by_filings.length;
   const firmsHtml = '<div class="years-firms">' + FOUR_FIRMS.map((f) => {
     const full = YEARS.map((y) => ({ label: y.replace("20", "’"), v: per[y][f] }));
     const have = full.filter((s) => s.v != null);
     const series = have.length < 5 ? have : full;
-    return `<div class="years-firm"><span>${esc(f)}</span>${miniYears(series, ymaxF, pal)}</div>`;
+    const note = per["2026"][f] == null ? `Not in 2026’s top ${topN}` : null;
+    return `<div class="years-firm"><span>${esc(f)}</span>${miniYears(series, ymaxF, pal, note)}</div>`;
   }).join("") + "</div>";
 
   const denialA = data.uscis_series.map((r) => r.placing_initial_denial_rate);
   const denialB = data.uscis_series.map((r) => r.direct_initial_denial_rate);
+  const ratios = denialA.map((v, i) => v / denialB[i]);
   const s5 = twoLines(denialA, denialB, 540, 240, (v) => pct(v),
     "USCIS denials of first-time petitions, placing firms against direct employers", pal,
-    ["placing firms", "direct employers"], [pal.people, pal.access]);
+    ["placing firms", "direct employers"], [pal.people, pal.access],
+    `Placing firms: ${Math.min(...ratios).toFixed(1)}× to ${Math.max(...ratios).toFixed(1)}× the direct rate`);
 
   // Each draw is held the March before the cap year it fills.
   const capYears = Object.keys(data.lottery_draws).sort();
   const drawMonth = (capYear) => `March ${Number(capYear) - 1}`;
   const draws = capYears.map((y) => ({ label: drawMonth(y), v: data.lottery_draws[y].registrations }));
+  const drawGrowth = draws.at(-1).v / draws[0].v;
   const s6 = yearBars(draws, 540, 230, num, "H-1B lottery registrations per draw", pal,
-    { partialLast: false, sub: capYears.map((y) => `${y} cap`) });
+    { partialLast: false, sub: capYears.map((y) => `${y} cap`),
+      note: [draws.length - 1, `${drawGrowth.toFixed(1)}× the ${draws[0].label} draw`] });
   const funnelYears = Object.keys(data.lottery_funnels).sort();
   const perApp = funnelYears.map((y) => data.lottery_funnels[y].registrations_per_approval);
 
   const clients = YEARS.map((y) => ys[y].clients);
   const firms = YEARS.map((y) => ys[y].firms);
+  // 2025 is the last full year, so the clients-and-firms finding stops there.
   const s7 = twoLines(clients, firms, 540, 240, num, "Client companies and placing firms per year", pal,
-    ["client companies", "firms that place"], [pal.ink, pal.people]);
+    ["client companies", "firms that place"], [pal.ink, pal.people],
+    `2022 to 2025: clients ${signed(change(clients[0], clients[3]))}, firms ${signed(change(firms[0], firms[3]))}`);
 
-  const f = data.finding;
-  const lead =
-    `Certified filings fell ${Math.abs(f.fy22_to_fy23_certified_change_percent)}% in 2023, rose to ` +
-    `${num(f.fy2025_certified_filings)} in 2025, and fell ${Math.abs(f.fy25_to_fy26_certified_change_percent).toFixed(1)}% in ` +
-    "2026 against the same months a year earlier. The share placed at a client fell every year from 2023: " +
-    `${pct(ys["2023"].placed_share)}, ${pct(ys["2024"].placed_share)}, ${pct(ys["2025"].placed_share)}, and ` +
-    `${pct(ys["2026"].placed_share)} from October 2025 to June 2026.`;
+  const placedFalls = ["2024", "2025", "2026"].every((y, i) => ys[y].placed_share < ys[YEARS[i + 1]].placed_share);
+  const placedFinding = placedFalls
+    ? "The share placed at a client fell every year from 2023: " +
+      `${pct(ys["2023"].placed_share)}, ${pct(ys["2024"].placed_share)}, ${pct(ys["2025"].placed_share)}, and ` +
+      `${pct(ys["2026"].placed_share)} from October 2025 to June 2026.`
+    : "";
+
   const noticeText =
-    "Each year runs October to September. 2026 covers October 2025 to June 2026 and is drawn hollow. October 2025, the month " +
-    `of the federal shutdown, holds ${num(f.oct_2025_certified_filings)} certified filings against ` +
-    `${num(f.oct_2024_certified_filings)} a year earlier, so compare 2026 with earlier years on matching months.`;
+    "Each year runs October to September; 2026 covers October 2025 to June 2026 and is drawn hollow. " +
+    "Compare 2026 with earlier years on matching months.";
+  const background =
+    `<p>October 2025, the month of the federal shutdown, holds ${num(oct25.certified_filings)} certified filings ` +
+    `against ${num(rows.FY2025[0].certified_filings)} a year earlier.</p>`;
 
   const r = (cells) => `<tr>${cells.map((c, i) => `<td${i ? ' style="text-align:right"' : ""}>${c}</td>`).join("")}</tr>`;
   const thead = (cols) => `<thead><tr>${cols.map((c, i) => `<th${i ? ' style="text-align:right"' : ""}>${esc(c)}</th>`).join("")}</tr></thead>`;
@@ -369,18 +407,18 @@ function render(data) {
       data.lottery_funnels[y] ? data.lottery_funnels[y].registrations_per_approval.toFixed(2) : "–"])).join("") +
     "</tbody></table>";
 
-  const alt = '<details class="years-alt"><summary>The numbers behind these charts</summary>' +
-    perFyTable + octJunTable + monthlyTable + firmsTable + lotteryTable + "</details>";
+  const tables = perFyTable + octJunTable + monthlyTable + firmsTable + lotteryTable;
 
   body.innerHTML =
-    `<header class="w4-opener"><span aria-hidden="true" class="w4-opener-num">↗</span>` +
-    `<div><h2>Five years of filings</h2><p>${esc(lead)}</p></div></header>` +
+    '<div class="card w4-card" id="years-card">' +
+    `<header class="w4-q"><span class="w4-num">1</span>` +
+    `<div><h2>Five years of filings</h2><p class="w4-answer">${esc(answer)}</p></div></header>` +
     `<div class="notice"><span class="ico">!</span><span><b>How to read the years.</b> ${esc(noticeText)}</span></div>` +
     '<div class="years-grid">' +
     panel("Certified H-1B filings", "Each fiscal year. 2026 is outlined: nine months, not a year.", s1) +
     panel("The same months, compared", "October to June of each year: the fair way to set 2026 beside the two before it.", s1b) +
     panel("Month by month", "October to June of each fiscal year, the months 2026 covers.", monthlyHtml, 2) +
-    panel("Placed at a client", "Share of certified filings that put the worker at another company.", s3) +
+    panel("Placed at a client", "Share of certified filings that put the worker at another company.", s3, 1, placedFinding) +
     panel("USCIS denials", `Share of first-time petitions denied, employers with ${data.uscis_min_filings} or more certified filings. 2026 runs October to June.`, s5) +
     panel("The four largest placing firms",
       `Placed filings each firm files per fiscal year, on one scale. Hollow: 2026, nine months. HCL leaves the top ` +
@@ -389,7 +427,10 @@ function render(data) {
       `Registrations per draw. One approved petition took ${perApp[0].toFixed(1)} registrations in the ${drawMonth(funnelYears[0])} ` +
       `draw and ${perApp[1].toFixed(1)} in ${drawMonth(funnelYears[1])}; USCIS’s data ends there.`, s6) +
     panel("Clients and firms", "Client companies named on a placed filing, and the firms that place workers, per fiscal year.", s7) +
-    "</div>" + alt;
+    "</div></div>";
+  body.querySelector("#years-card").append(
+    drawerRow(drawer("Background", background), drawer("Table: the numbers behind the charts", tables)),
+  );
 }
 
 let rendered = false;

@@ -93,3 +93,27 @@ test("the lottery draws and funnels match week04_countries.json and week04_lotte
     );
   }
 });
+
+test("the Five years card's answer is the sentence years.json supports", () => {
+  // week04-years.js writes the answer at run time; run its own lines on years.json.
+  const src = readFileSync(join(ROOT, "docs/assets/js/week04-years.js"), "utf8");
+  const start = src.indexOf("const oj = data.oct_jun.totals;");
+  const end = src.indexOf('"against the same months a year earlier.";', start);
+  assert.ok(start >= 0 && end > start, "week04-years.js should build the answer from data.oct_jun.totals");
+  const whole = new Intl.NumberFormat("en-US");
+  const num = (v) => whole.format(Math.round(v));
+  const change = (a, b) => 100 * (b / a - 1);
+  const code = src.slice(start, end + '"against the same months a year earlier.";'.length);
+  const answer = new Function("data", "num", "change", `const ys = data.years;\n${code}\nreturn answer;`)(years, num, change);
+
+  // The same sentence, built from the finding fields the analysis wrote.
+  const f = years.finding;
+  const verb = (p) => (p < 0 ? "fell" : "rose");
+  const rose25 = years.years["2025"].certified_filings > years.years["2024"].certified_filings;
+  const expected =
+    `Certified filings ${verb(f.fy22_to_fy23_certified_change_percent)} ${Math.abs(f.fy22_to_fy23_certified_change_percent)}% in 2023, ` +
+    `${rose25 ? "rose" : "fell"} to ${num(f.fy2025_certified_filings)} in 2025, and ` +
+    `${verb(f.fy25_to_fy26_certified_change_percent)} ${Math.abs(f.fy25_to_fy26_certified_change_percent).toFixed(1)}% in 2026 ` +
+    "against the same months a year earlier.";
+  assert.equal(answer, expected);
+});

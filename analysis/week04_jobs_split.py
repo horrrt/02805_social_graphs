@@ -514,6 +514,7 @@ def q2(frame, titles):
         "D_at_cut": cut["D"], "cut_similarity": cut["cut_similarity"],
         "merges": cut["merges"], "merges_possible": cut["merges_possible"],
         "link_clusters": len(cluster_size), "link_clusters_of_3_or_more": len(big),
+        "largest_link_community_links": max(cluster_size.values()),
         "spearman_communities_vs_degree": {"rho": float(rho), "p": float(rho_p), "n": len(with_links)},
         "top15_by_communities_per_link": [
             {"id": n, "title": titles.get(n, n), "links": per_occ[n]["links"],
@@ -586,6 +587,9 @@ def main():
             "only_in_direct": variant["only_in_direct"],
         },
         "q2": {
+            "links": q2_result["links"],
+            "link_clusters": q2_result.get("link_clusters"),
+            "largest_link_community_links": q2_result.get("largest_link_community_links"),
             "top15_by_communities_per_link": q2_result.get("top15_by_communities_per_link", []),
             "bridges": q2_result.get("bridges", {}),
         },

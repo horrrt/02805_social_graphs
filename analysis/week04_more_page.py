@@ -6,12 +6,21 @@ week04_lottery.json) into one page file the new figures read. It computes
 nothing; every value here is already checked and printed by the script that
 produced it.
 
+One source is read here directly: the Historical Data table on USCIS's "H-1B
+Electronic Registration Process" page (fetched by week04_data.py --refs into
+build/raw/week04/uscis_registration.html), for every draw since 2020. USCIS
+lists each cap fiscal year; its registrations were drawn in March of the year
+before, so cap year 2021 is labelled "March 2020". Selected registrations count
+every selection round of that cap year, not only the March one.
+
 Output: docs/weeks/week04/data/more.json (every number the five figures draw).
 """
 
 import json
+from html.parser import HTMLParser
 from pathlib import Path
 
+from week04_data import RAW
 from week04_schemas import check
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -22,6 +31,11 @@ COUNTRIES = ROOT / "analysis/week04_countries.json"
 OEWS = ROOT / "analysis/week04_oews.json"
 TIES = ROOT / "analysis/week04_ties.json"
 LOTTERY = ROOT / "analysis/week04_lottery.json"
+REGISTRATION = RAW / "uscis_registration.html"
+# The table's columns, by the start of their header text.
+DRAW_COLUMNS = {"year": "Cap Fiscal Year", "eligible": "Eligible Registrations*",
+                "multiple": "Eligible Registrations for Beneficiaries with Multiple",
+                "selected": "Selected Registrations"}
 
 # The employers named in the deeper-perm box's prose, in the order it names
 # them; "highlight" marks the two the box calls out as splitting the pack.
@@ -86,6 +100,51 @@ def strength_section():
     return {"rows": rows}
 
 
+class Tables(HTMLParser):
+    """Every <table> on a page as a list of rows of cell texts."""
+
+    def __init__(self):
+        super().__init__()
+        self.tables, self.cell = [], None
+
+    def handle_starttag(self, tag, attrs):
+        if tag == "table":
+            self.tables.append([])
+        elif tag == "tr" and self.tables:
+            self.tables[-1].append([])
+        elif tag in ("td", "th") and self.tables:
+            self.cell = []
+
+    def handle_endtag(self, tag):
+        if tag in ("td", "th") and self.cell is not None:
+            self.tables[-1][-1].append(" ".join("".join(self.cell).split()))
+            self.cell = None
+
+    def handle_data(self, data):
+        if self.cell is not None:
+            self.cell.append(data)
+
+
+def uscis_draws():
+    """Each draw's eligible registrations, those for workers registered more
+    than once, and selected registrations, oldest first."""
+    if not REGISTRATION.exists():
+        raise SystemExit(f"{REGISTRATION} is missing: run python analysis/week04_data.py --refs --no-tables")
+    parser = Tables()
+    parser.feed(REGISTRATION.read_text(encoding="utf-8"))
+    table = next((t for t in parser.tables if t and t[0] and t[0][0] == DRAW_COLUMNS["year"]), None)
+    if table is None:
+        raise SystemExit(f"{REGISTRATION.name}: no table headed {DRAW_COLUMNS['year']!r}")
+    header = table[0]
+    at = {key: next(i for i, h in enumerate(header) if h.startswith(start)) for key, start in DRAW_COLUMNS.items()}
+    draws = []
+    for row in table[1:]:
+        cap = int(row[at["year"]])
+        number = {key: int(row[at[key]].replace(",", "")) for key in ("eligible", "multiple", "selected")}
+        draws.append({"label": f"March {cap - 1}", **number})
+    return sorted(draws, key=lambda d: int(d["label"].split()[1]))
+
+
 def lottery_section():
     lot = load(LOTTERY)["lotteries"]
     a23, a24 = lot["2023"], lot["2024"]
@@ -98,7 +157,8 @@ def lottery_section():
         {"label": "Placing firms", "values": pair(lambda a: a["by_kind"]["placing"]["registrations_per_approval"])},
         {"label": "Direct employers", "values": pair(lambda a: a["by_kind"]["direct"]["registrations_per_approval"])},
     ]
-    return {"draws": ["March 2022", "March 2023"], "series": series}
+    # all_draws, not draws: the slopegraph reads draws as its two labels.
+    return {"draws": ["March 2022", "March 2023"], "series": series, "all_draws": uscis_draws()}
 
 
 def main():

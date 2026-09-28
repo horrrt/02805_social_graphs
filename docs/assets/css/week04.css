@@ -517,7 +517,9 @@
    two-column cards and reveal buttons. Colour grammar: dark ink is the real
    network, the grey band the random baseline, orange a worker placed at a
    client, blue a direct employer. Violet, green and slate mark the three
-   metro groups, on maps only. Scripts read these tokens with getComputedStyle. */
+   metro groups, on maps only. Four navies, dark to pale, mark the hiring
+   clusters of the occupation network. Scripts read these tokens with
+   getComputedStyle. */
 
 .corridor {
   --w4-accent: #14618f;
@@ -534,6 +536,10 @@
   --w4-group-0-dark: #b69cff;
   --w4-group-1-dark: #4fd1a5;
   --w4-group-2-dark: #c3cfdd;
+  --w4-cluster-0: #1f3f6e;
+  --w4-cluster-1: #3f6fa8;
+  --w4-cluster-2: #6f8aa3;
+  --w4-cluster-3: #a7b8cc;
   --w4-hero-ink: #eaf2fb;
   --w4-hero-lede: #b9cde4;
   --w4-hero-body: #93aecd;
@@ -544,6 +550,13 @@
   --w4-map-edge: #c3d0e0;
   --w4-tip-bg: rgba(11, 31, 58, 0.97);
   --w4-tip-ink: #cfe0f2;
+  /* Client sectors in the section 3 scatter: navy and slate only, since
+     orange and blue mean placed and direct on this page. */
+  --w4-sector-finance: #1b3a63;
+  --w4-sector-manufacturing: #4a6f9c;
+  --w4-sector-health: #8a9cb3;
+  --w4-sector-other: #d2dae4;
+  --w4-sector-unknown: #e9eef4;
 }
 
 /* ---- hero: the text, the map, the inspector */
@@ -623,7 +636,7 @@
 
 .corridor .w4-dot.g0 { background: var(--w4-group-0-dark); }
 .corridor .w4-dot.g1 { background: var(--w4-group-1-dark); }
-.corridor .w4-dot.g2 { background: var(--w4-group-2-dark); }
+.corridor .w4-dot.g2 { background: var(--w4-group-2); }
 
 .corridor .w4-legend-line {
   background: var(--w4-hero-lede);

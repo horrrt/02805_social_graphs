@@ -6,27 +6,27 @@
   "q1_observed_nmi": 0.4249823076080533,
   "q1_observed_ami": 0.41256212939601244,
   "q1_observed_n": 217,
-  "q1_null_count_matched_nmi_mean": 0.43743704248786697,
-  "q1_null_count_matched_nmi_sd": 0.0954657187697905,
-  "q1_null_filings_matched_nmi_mean": 0.5873710613534928,
-  "q1_null_filings_matched_nmi_sd": 0.04905613103023356,
-  "q1_null_matched_nmi_mean": 0.6068963749399955,
-  "q1_null_matched_nmi_sd": 0.04431569297674775,
+  "q1_null_count_matched_nmi_mean": 0.4281572244055292,
+  "q1_null_count_matched_nmi_sd": 0.09436445314269847,
+  "q1_null_filings_matched_nmi_mean": 0.5783284754194509,
+  "q1_null_filings_matched_nmi_sd": 0.04621775357648949,
+  "q1_null_matched_nmi_mean": 0.6082560662690348,
+  "q1_null_matched_nmi_sd": 0.043842347290548436,
   "q1_null_matched_filing_share": 0.2122,
-  "q1_matched_z": -4.1049582013168955,
+  "q1_matched_z": -4.180290745985944,
   "q1_matched_verdict": "different",
   "q1_placing_companies": 817,
   "q1_direct_companies": 58379,
   "q1_placing_filing_share": 0.214,
   "q1_placing_modularity": 0.22374220093080605,
-  "q1_direct_modularity": 0.29519169171237053,
+  "q1_direct_modularity": 0.29519226115180325,
   "q2_status": "ok",
   "q2_on": "full projection",
-  "q2_D_at_cut": 0.5671460193669146,
-  "q2_link_clusters_of_3_or_more": 121,
-  "q2_spearman_communities_vs_degree": 0.8393046832337219,
-  "q2_bridges_count": 5,
-  "q2_bridges_in_top15_count": 2
+  "q2_D_at_cut": 0.5707974915249698,
+  "q2_link_clusters_of_3_or_more": 117,
+  "q2_spearman_communities_vs_degree": 0.8350041159365271,
+  "q2_bridges_count": 6,
+  "q2_bridges_in_top15_count": 3
  },
  "q1": {
   "placing_top_occupations": [
@@ -125,19 +125,19 @@
    {
     "id": "15-1252",
     "title": "Software Developers",
-    "filings": 138519,
+    "filings": 138520,
     "share": 0.3277
    },
    {
     "id": "15-2051",
     "title": "Data Scientists",
-    "filings": 28465,
+    "filings": 28466,
     "share": 0.0673
    },
    {
     "id": "15-1299",
     "title": "Computer Occupations, All Other",
-    "filings": 22051,
+    "filings": 22052,
     "share": 0.0522
    },
    {
@@ -209,7 +209,7 @@
    {
     "id": "13-2011",
     "title": "Accountants and Auditors",
-    "filings": 5179,
+    "filings": 5180,
     "share": 0.0123
    }
   ],
@@ -223,7 +223,7 @@
    ]
   },
   "only_in_direct": {
-   "count": 283,
+   "count": 276,
    "top": [
     {
      "id": "19-1012",
@@ -269,7 +269,24 @@
   }
  },
  "q2": {
+  "links": 28096,
+  "link_clusters": 332,
+  "largest_link_community_links": 24012,
   "top15_by_communities_per_link": [
+   {
+    "id": "43-2099",
+    "title": "Communications Equipment Operators, All Other",
+    "links": 11,
+    "communities": 5,
+    "communities_per_link": 0.455
+   },
+   {
+    "id": "49-9051",
+    "title": "Electrical Power-Line Installers and Repairers",
+    "links": 11,
+    "communities": 5,
+    "communities_per_link": 0.455
+   },
    {
     "id": "31-2022",
     "title": "Physical Therapist Aides",
@@ -292,25 +309,18 @@
     "communities_per_link": 0.364
    },
    {
-    "id": "43-2099",
-    "title": "Communications Equipment Operators, All Other",
-    "links": 11,
-    "communities": 4,
-    "communities_per_link": 0.364
-   },
-   {
-    "id": "49-9051",
-    "title": "Electrical Power-Line Installers and Repairers",
-    "links": 11,
-    "communities": 4,
-    "communities_per_link": 0.364
-   },
-   {
     "id": "25-2057",
     "title": "Special Education Teachers, Middle School",
     "links": 40,
     "communities": 14,
     "communities_per_link": 0.35
+   },
+   {
+    "id": "21-1013",
+    "title": "Marriage and Family Therapists",
+    "links": 18,
+    "communities": 6,
+    "communities_per_link": 0.333
    },
    {
     "id": "29-2061",
@@ -362,13 +372,6 @@
     "communities_per_link": 0.288
    },
    {
-    "id": "21-1013",
-    "title": "Marriage and Family Therapists",
-    "links": 18,
-    "communities": 5,
-    "communities_per_link": 0.278
-   },
-   {
     "id": "13-2071",
     "title": "Credit Counselors",
     "links": 11,
@@ -384,32 +387,38 @@
      "links": 26
     },
     {
+     "id": "13-2071",
+     "title": "Credit Counselors",
+     "links": 11
+    },
+    {
+     "id": "23-1021",
+     "title": "Administrative Law Judges, Adjudicators, and Hearing Officers",
+     "links": 85
+    },
+    {
      "id": "29-1125",
      "title": "Recreational Therapists",
      "links": 94
     },
     {
-     "id": "43-4111",
-     "title": "Interviewers, Except Eligibility and Loan",
-     "links": 19
+     "id": "29-2061",
+     "title": "Licensed Practical and Licensed Vocational Nurses",
+     "links": 15
     },
     {
-     "id": "49-9051",
-     "title": "Electrical Power-Line Installers and Repairers",
-     "links": 11
-    },
-    {
-     "id": "53-2022",
-     "title": "Airfield Operations Specialists",
-     "links": 14
+     "id": "31-2022",
+     "title": "Physical Therapist Aides",
+     "links": 10
     }
    ],
-   "count": 5,
+   "count": 6,
    "in_top15": [
-    "43-4111",
-    "49-9051"
+    "13-2071",
+    "29-2061",
+    "31-2022"
    ],
-   "in_top15_count": 2
+   "in_top15_count": 3
   }
  }
 }

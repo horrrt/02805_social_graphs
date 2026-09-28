@@ -35,7 +35,7 @@
  },
  "filled_ratings": 137,
  "coverage": {
-  "h1b_occupations": 561,
+  "h1b_occupations": 551,
   "covered": 479,
   "filings": 1040169,
   "filing_share_covered": 0.9946,
@@ -305,31 +305,11 @@
     "filings": 5
    },
    {
-    "code": "24-1124",
-    "filings": 3
-   },
-   {
     "code": "15-1298",
     "filings": 3
    },
    {
-    "code": "12-2051",
-    "filings": 3
-   },
-   {
-    "code": "40-9031",
-    "filings": 3
-   },
-   {
-    "code": "12-1252",
-    "filings": 2
-   },
-   {
     "code": "25-1099",
-    "filings": 1
-   },
-   {
-    "code": "12-1229",
     "filings": 1
    },
    {
@@ -361,10 +341,6 @@
     "filings": 1
    },
    {
-    "code": "20-1011",
-    "filings": 1
-   },
-   {
     "code": "17-2711",
     "filings": 1
    },
@@ -377,27 +353,11 @@
     "filings": 1
    },
    {
-    "code": "12-1051",
-    "filings": 1
-   },
-   {
-    "code": "12-1299",
-    "filings": 1
-   },
-   {
-    "code": "20-1021",
-    "filings": 1
-   },
-   {
     "code": "29-1069",
     "filings": 1
    },
    {
     "code": "17-1252",
-    "filings": 1
-   },
-   {
-    "code": "12-2011",
     "filings": 1
    },
    {
@@ -802,7 +762,7 @@
   },
   "15-1299": {
    "title": "Computer Occupations, All Other",
-   "h1b_filings": 103778,
+   "h1b_filings": 103779,
    "residual_share": 0.03,
    "within_similarity": 0.703,
    "profiles": [
@@ -873,7 +833,7 @@
   },
   "15-2051": {
    "title": "Data Scientists",
-   "h1b_filings": 55165,
+   "h1b_filings": 55168,
    "residual_share": 0.004,
    "within_similarity": 0.895,
    "profiles": [
@@ -1387,7 +1347,7 @@
   },
   "29-1229": {
    "title": "Physicians, All Other",
-   "h1b_filings": 10811,
+   "h1b_filings": 10812,
    "residual_share": 0.717,
    "within_similarity": 0.981,
    "profiles": [
@@ -1615,7 +1575,7 @@
  "neighbours": {
   "15-1252": {
    "title": "Software Developers",
-   "filings": 334566,
+   "filings": 334568,
    "nearest": [
     {
      "code": "15-1254",
@@ -1646,7 +1606,7 @@
   },
   "15-1299": {
    "title": "Computer Occupations, All Other",
-   "filings": 103778,
+   "filings": 103779,
    "nearest": [
     {
      "code": "15-1241",
@@ -1677,7 +1637,7 @@
   },
   "15-2051": {
    "title": "Data Scientists",
-   "filings": 55165,
+   "filings": 55168,
    "nearest": [
     {
      "code": "15-2041",
@@ -1894,7 +1854,7 @@
   },
   "13-2011": {
    "title": "Accountants and Auditors",
-   "filings": 18035,
+   "filings": 18036,
    "nearest": [
     {
      "code": "13-2031",
@@ -2111,7 +2071,7 @@
   },
   "29-1229": {
    "title": "Physicians, All Other",
-   "filings": 10811,
+   "filings": 10812,
    "nearest": [
     {
      "code": "29-1214",

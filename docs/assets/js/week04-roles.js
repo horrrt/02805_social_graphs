@@ -19,8 +19,6 @@ const revealsEl = document.querySelector("#roles-reveals");
 const chartHost = document.querySelector("#roles-chart");
 
 const YEARS = ["2022", "2023", "2024", "2025", "2026"];
-// roles.json's top_in lists read "FY2025"; the page writes the plain year.
-const yr = (s) => String(s).replace(/^FY(\d{4})/, "$1");
 const SPLIT_LABEL = {
   occupations: "Roles", groups: "Occupation groups", employer: "Employer", placement: "Placed or direct",
 };
@@ -34,6 +32,9 @@ const pct = (v, d = 1) => `${(v * 100).toFixed(d)}%`;
 
 let data;
 let chart;
+// The band under the pointer, from the chart's own mouseover/mouseout; null
+// between bands. The tooltip shows that band alone when it is set.
+let hovered = null;
 const state = { split: "occupations", scale: "count", window: "full" };
 // Series hidden from the legend, per split. The ten named employers file about
 // a fifth of all filings, so the Employer split starts with its catch-all band
@@ -99,6 +100,9 @@ function buildSeries(xLabels) {
     areaStyle: { opacity: 0.86 },
     lineStyle: { width: 0.5 },
     emphasis: { focus: "series" },
+    blur: { areaStyle: { opacity: 0.35 } },
+    // Lets the area itself fire mouseover, so the tooltip knows the band.
+    triggerLineEvent: true,
     itemStyle: { color: colourOf(state.split, s, i) },
     data: valuesFor(s).map((v, yi) => {
       const t = totals[YEARS[yi]];
@@ -143,29 +147,59 @@ function render() {
         confine: true,
         backgroundColor: token("--w4-tip-bg"),
         borderWidth: 0,
-        padding: [10, 12],
+        padding: [8, 10],
+        extraCssText: "border-radius:8px;box-shadow:0 4px 14px rgba(11,31,58,.18);max-width:240px;white-space:normal;",
+        axisPointer: { type: "line", lineStyle: { color: token("--ink-mute"), width: 1 } },
         textStyle: { color: token("--w4-tip-ink"), fontSize: 12 },
-        formatter: (points) => tooltipHtml(points),
+        formatter: (points) => compactTip(points),
       },
     },
     { notMerge: true },
   );
 }
 
-function tooltipHtml(points) {
+// One band when the pointer is on it: its share of the year, its filings and
+// the change on the year before. Between bands: the year's total and its
+// three largest named series, with a prompt to hover a band.
+function compactTip(points) {
   const yi = points[0]?.dataIndex ?? 0;
-  const totals = totalsFor();
-  const total = totals[YEARS[yi]] || 1;
+  const total = totalsFor()[YEARS[yi]] || 1;
   const series = seriesOf(state.split);
-  const rows = points
-    .map((p) => {
-      const s = series.find((row) => row.name === p.seriesName);
-      const v = valuesFor(s)[yi];
-      const top = s && s.top_in && s.top_in.length ? ` <i>(top ${data.splits[state.split].top_n} in ${s.top_in.map(yr).join(", ")})</i>` : "";
-      return { html: `${p.marker}${esc(p.seriesName)}: <b>${num(v)}</b> (${pct(v / total)})${top}`, v };
-    })
-    .sort((a, b) => b.v - a.v);
-  return `<div style="font-weight:700;margin-bottom:4px">${esc(YEARS[yi])}${state.window === "oct_jun" ? ", Oct–Jun" : ""}</div>${rows.map((r) => r.html).join("<br/>")}`;
+  const partial = state.window === "full" && yi === 4;
+  const head =
+    `<div style="font-size:11px;opacity:.75">${esc(YEARS[yi])}${state.window === "oct_jun" || partial ? ", Oct–Jun" : ""}` +
+    ` · ${num(total)} filings</div>`;
+
+  const line = (s, big) => {
+    const i = series.indexOf(s);
+    const v = valuesFor(s)[yi];
+    const swatch =
+      `<span style="display:inline-block;flex:none;width:9px;height:9px;border-radius:2px;` +
+      `background:${colourOf(state.split, s, i)};box-shadow:0 0 0 1px ${token("--w4-tip-ink")}"></span>`;
+    const row =
+      `<div style="display:flex;gap:6px;align-items:baseline;margin-top:${big ? 4 : 2}px">${swatch}` +
+      `<span style="flex:1${big ? ";font-weight:700" : ""}">${esc(s.name)}</span><b>${pct(v / total)}</b></div>`;
+    if (!big) return row;
+    const prev = yi > 0 ? valuesFor(s)[yi - 1] : null;
+    // Nine months against twelve is not a change on the year, so the partial
+    // year in the full-year window says so instead.
+    const change = partial
+      ? `, ${esc(data.partial.window)} only`
+      : prev
+        ? `, ${v >= prev ? "+" : "−"}${Math.abs(Math.round((100 * (v - prev)) / prev))}% on ${YEARS[yi - 1]}`
+        : "";
+    return `${row}<div style="margin-left:15px;font-size:11px;opacity:.8">${num(v)} filings${change}</div>`;
+  };
+
+  const shown = new Set(points.map((p) => p.seriesName));
+  const band = hovered && shown.has(hovered) && series.find((s) => s.name === hovered);
+  if (band) return head + line(band, true);
+  const top = series
+    .filter((s) => shown.has(s.name) && (s.code !== null || state.split === "placement"))
+    .sort((a, b) => valuesFor(b)[yi] - valuesFor(a)[yi])
+    .slice(0, 3);
+  return `${head}${top.map((s) => line(s, false)).join("")}` +
+    `<div style="margin-top:4px;font-size:11px;opacity:.7">Hover a band for its numbers</div>`;
 }
 
 // ---------------------------------------------------------------- legend
@@ -273,11 +307,14 @@ let rendered = false;
 function load() {
   if (rendered) return;
   rendered = true;
-  fetch(new URL("../../weeks/week04/data/roles.json", import.meta.url))
+  fetch(new URL("../../weeks/week04/data/roles.json?v=2", import.meta.url))
     .then((r) => r.json())
     .then((json) => {
       data = json;
       chart = echarts.init(chartHost, null, { renderer: "canvas" });
+      chart.on("mouseover", { seriesType: "line" }, (p) => { hovered = p.seriesName; });
+      chart.on("mouseout", { seriesType: "line" }, () => { hovered = null; });
+      chart.on("globalout", () => { hovered = null; });
       bindToggles("split", "split", renderAll);
       bindToggles("scale", "scale", renderAll);
       bindToggles("window", "window", renderAll);
