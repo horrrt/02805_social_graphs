@@ -1,7 +1,8 @@
 // Each page credits the data sources whose licences ask for it: CC BY 4.0
 // (UNHCR, World Bank, Eurostat, OxCGRT), CC BY-SA 4.0 (Wikipedia text in
 // arcade_graph.json), ODbL (OpenFlights, share-alike on our route counts) and
-// NASA Visible Earth (a link back for the globe imagery).
+// NASA Visible Earth (a link back for the globe imagery), and O*NET (CC BY 4.0
+// with USDOL/ETA's prescribed wording, on week 4).
 import test from "node:test";
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
@@ -38,5 +39,18 @@ test("week 3 credits every source its licence asks for", () => {
     'href="https://creativecommons.org/licenses/by/4.0/"',
   ]) {
     assert.ok(text.includes(credit), `week 3 footer should include ${credit}`);
+  }
+});
+
+test("week 4 credits O*NET in USDOL/ETA's prescribed wording", () => {
+  const text = footer("docs/weeks/week04/index.html");
+  for (const credit of [
+    "This page includes information from the O*NET® 31.0 Database",
+    "O*NET® 25.0 Database",
+    "by the U.S. Department of Labor, Employment and Training Administration (USDOL/ETA)",
+    'href="https://creativecommons.org/licenses/by/4.0/"',
+    "has modified all or some of this information. USDOL/ETA has not approved, endorsed, or tested these modifications.",
+  ]) {
+    assert.ok(text.includes(credit), `week 4 footer should include ${credit}`);
   }
 });
