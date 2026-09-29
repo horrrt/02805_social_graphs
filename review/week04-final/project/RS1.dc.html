@@ -136,7 +136,7 @@ body{margin:0;background:#eef3f9}
 .rx .rx-drawer-body>p+p{margin-top:8px}
 </style>
 </helmet>
-<div class="corridor rx" style="width: 1440px; height: 2447px; overflow: hidden; background: #eef3f9"><div class="topbar">
+<div class="corridor rx" style="width: 1440px; height: 2375px; overflow: hidden; background: #eef3f9"><div class="topbar">
 <div class="shell">
 <a class="brand" href="../../">LOG–LOG <b>LEGENDS</b></a>
 <a class="site-link" href="../../#weeks">All posts</a>
@@ -205,9 +205,6 @@ body{margin:0;background:#eef3f9}
 <p class="w4-answer">San Jose asks for the most positions; New York has the most employers.</p>
 </div>
 </header><p class="sub">
-                
-                A position is a seat an employer asks to fill, not a worker who
-                arrived.
                 Toggle the metric; click a bar or a bubble to inspect one city.
               </p><div aria-label="Rank cities by" class="axis-modes" role="group">
 <button aria-pressed="true" data-place-metric="positions" type="button">
@@ -229,12 +226,7 @@ body{margin:0;background:#eef3f9}
 <h2>Is it one national job market or several regional ones?</h2>
 <p class="w4-answer">Not regional markets: the two hub groups cross regions.</p>
 </div>
-</header><p class="sub">
-                
-                Louvain splits the large hubs into two groups, which cross regions, and leaves the smaller metros as a third.
-                Toggle Louvain communities against Census regions on the same
-                map.
-              </p><div class="rx-groups"><div class="rx-group"><div class="rx-group-head"><i style="background: var(--w4-group-1)"></i><b>Eight tech hubs</b><span>led by San Jose and San Francisco</span></div><p>San Jose, San Francisco, Seattle, Austin, Boston, Washington, Los Angeles, San Diego</p></div><div class="rx-group"><div class="rx-group-head"><i style="background: var(--w4-group-0)"></i><b>Seven large hubs</b><span>led by New York and Dallas</span></div><p>New York, Dallas, Atlanta, Chicago, Houston, Philadelphia, Charlotte</p></div><div class="rx-group"><div class="rx-group-head"><i style="background: var(--w4-group-2)"></i><b>The other 25</b><span>from Detroit and Phoenix down</span></div><p>Detroit, Phoenix, Raleigh, Miami, Minneapolis, Tampa, Columbus, St. Louis, Denver, Portland, Trenton, Pittsburgh, and 13 more</p></div></div></div>
+</header><div class="rx-groups"><div class="rx-group"><div class="rx-group-head"><i style="background: var(--w4-group-1)"></i><b>Eight tech hubs</b><span>led by San Jose and San Francisco</span></div><p>San Jose, San Francisco, Seattle, Austin, Boston, Washington, Los Angeles, San Diego</p></div><div class="rx-group"><div class="rx-group-head"><i style="background: var(--w4-group-0)"></i><b>Seven large hubs</b><span>led by New York and Dallas</span></div><p>New York, Dallas, Atlanta, Chicago, Houston, Philadelphia, Charlotte</p></div><div class="rx-group"><div class="rx-group-head"><i style="background: var(--w4-group-2)"></i><b>The other 25</b><span>from Detroit and Phoenix down</span></div><p>Detroit, Phoenix, Raleigh, Miami, Minneapolis, Tampa, Columbus, St. Louis, Denver, Portland, Trenton, Pittsburgh, and 13 more</p></div></div></div>
 </div>
 <div class="rx-start-notices"><div class="notice">
 <span class="ico">💡</span>
@@ -248,11 +240,10 @@ body{margin:0;background:#eef3f9}
 <span>
                   <b>What to notice</b>
                   The split is real but weak: modularity 0.049 against 0.013 for rewired networks; Louvain finds it in 65 of 100 runs.
-                  Census regions and divisions match it no better than shuffled labels (<span class="w4-term"><button aria-describedby="w4-term-x-p" type="button">p</button><span class="w4-pop" id="w4-term-x-p" role="tooltip">The share of shuffled labellings that match at least as well as the real one. A small value means the match is unlikely to be chance.</span></span> = 0.10 and 0.11).
                 </span>
 </div></div>
 
-<div class="rx-drawers rx-foot"><details class="rx-drawer"><summary>Background</summary><div class="rx-drawer-body"><p class="sub">
+<div class="rx-drawers rx-foot"><details class="rx-drawer"><summary>Background</summary><div class="rx-drawer-body"><p class="sub">A position is a seat an employer asks to fill, not a worker who arrived.</p> <p class="sub">Louvain splits the large hubs into two groups, which cross regions, and leaves the smaller metros as a third.</p><p class="sub">
                     The map shows the partition Louvain finds most often, and
                     every number below is computed on it. The null rewires the
                     company × metro network so each company and each metro keeps
@@ -264,7 +255,8 @@ body{margin:0;background:#eef3f9}
 </table>
 <p class="sub">One group holds New York, Dallas, Atlanta, Chicago, Houston, Philadelphia and Charlotte. The other holds San Jose, San Francisco, Seattle, Los Angeles, San Diego, Austin, Boston and Washington. The 25 smaller metros form the third. Modularity is 0.049 against 0.013 for rewired networks that keep each company's number of metros (z = 29).</p>
 <p class="sub">Louvain finds the split shown in 65 of 100 runs; the other 35 find one other split, into two groups. 2024 gives that two-group split in all 100 runs, so it matches the split shown here at <span class="w4-term"><button aria-describedby="w4-term-x-nmi" type="button">NMI</button><span class="w4-pop" id="w4-term-x-nmi" role="tooltip">Normalized mutual information: how alike two groupings are, from 0 for unrelated to 1 for the same.</span></span> 0.64, against 1.00 between two 2025 runs.</p>
-<p class="sub">NMI with Census regions is 0.14 and with divisions 0.21. Infomap, which follows a random walk between metros instead of counting links, finds no split at all: one module holds all 40.</p></div></details><details class="rx-drawer"><summary>Method</summary><div class="rx-drawer-body"><p>A filing counts once in each metro it names, with at most the positions it requests.</p></div></details><details class="rx-drawer"><summary>More numbers</summary><div class="rx-drawer-body"><p>In Seattle one company, Amazon, files 31%. Positions reward a few firms asking for many seats; employer counts reward a broad market.</p><p>San Jose averages 2.6 positions per filing, New York 1.5. New York's largest filer, EY, has under 4%.</p></div></details><details class="rx-drawer"><summary>Maps: groups and Census regions</summary><div class="rx-drawer-body"><div aria-label="Colour cities by" class="axis-modes" role="group">
+<p class="sub">NMI with Census regions is 0.14 and with divisions 0.21. Infomap, which follows a random walk between metros instead of counting links, finds no split at all: one module holds all 40.</p></div></details><details class="rx-drawer"><summary>Method</summary><div class="rx-drawer-body"><p>A filing counts once in each metro it names, with at most the positions it requests.</p></div></details><details class="rx-drawer"><summary>More numbers</summary><div class="rx-drawer-body"><p>Census regions and divisions match it no better than shuffled labels (<span class="w4-term"><button aria-describedby="w4-term-x-p" type="button">p</button><span class="w4-pop" id="w4-term-x-p" role="tooltip">The share of shuffled labellings that match at least as well as the real one. A small value means the match is unlikely to be chance.</span></span> = 0.10 and 0.11).</p><p>In Seattle one company, Amazon, files 31%. Positions reward a few firms asking for many seats; employer counts reward a broad market.</p><p>San Jose averages 2.6 positions per filing, New York 1.5. New York's largest filer, EY, has under 4%.</p></div></details><details class="rx-drawer"><summary>Maps: groups and Census regions</summary><div class="rx-drawer-body">
+                  <p class="sub">Toggle Louvain communities against Census regions on the same map.</p><div aria-label="Colour cities by" class="axis-modes" role="group">
 <button aria-pressed="true" data-place-region="communities" type="button">
                   Communities
                 </button>
@@ -306,8 +298,6 @@ body{margin:0;background:#eef3f9}
 <div>
 <p class="sub">
                   The groups follow how much of a city's hiring runs through consulting and IT-services firms.
-                  Each bar is the <span class="w4-term"><button aria-describedby="w4-term-x-ami" type="button">AMI</button><span class="w4-pop" id="w4-term-x-ami" role="tooltip">Adjusted mutual information: how alike two groupings are, corrected for chance. 0 means no better than labels dealt at random, 1 means the same grouping.</span></span> between
-                  the Louvain groups and one labelling.
                 </p>
 <div class="notice">
 <span class="ico">💡</span>
@@ -315,18 +305,16 @@ body{margin:0;background:#eef3f9}
 <b>What to notice</b>
                     The IT-services share matches the groups at AMI 0.17 (p = 0.002)
                     and the <span class="w4-term"><button aria-describedby="w4-term-x-placed" type="button">placed share</button><span class="w4-pop" id="w4-term-x-placed" role="tooltip">The share of a metro’s filings that put the worker at a client company instead of the employer’s own site.</span></span> at 0.12 (p = 0.012); Census regions and divisions do no better than chance.
-                    The match is modest: most of what makes two metros alike stays
-                    unexplained.
                   </span>
 </div>
 
-<div class="rx-drawers rx-foot"><details class="rx-drawer"><summary>Method</summary><div class="rx-drawer-body"><p>We gave each metro four labels: its Census region, its Census division, the third it falls in by the share of its filings that place a worker at a client, and the third it falls in by the share filed by professional and technical services firms (NAICS 54, the sector of IT consultancies). Thirds, because 35 of the 40 metros have that sector as their largest, so "largest sector" says almost nothing. AMI corrects for the number of labels, so four regions and three thirds compare fairly.</p></div></details><details class="rx-drawer"><summary>More numbers</summary><div class="rx-drawer-body"><p>Seven of the eight tech-hub metros sit in the lowest third by placed share: there, companies mostly hire for themselves. In the New York–Dallas group the median metro places 27% of its filings at a client and files 60% through IT-services firms.</p><p>Census regions reach 0.06 (p = 0.11) and divisions 0.06 (p = 0.08), no better than chance.</p></div></details></div>
+<div class="rx-drawers rx-foot"><details class="rx-drawer"><summary>Method</summary><div class="rx-drawer-body"><p>We gave each metro four labels: its Census region, its Census division, the third it falls in by the share of its filings that place a worker at a client, and the third it falls in by the share filed by professional and technical services firms (NAICS 54, the sector of IT consultancies). Thirds, because 35 of the 40 metros have that sector as their largest, so "largest sector" says almost nothing. AMI corrects for the number of labels, so four regions and three thirds compare fairly.</p><p>AMI for each labelling of the 40 metros; the p-value is the share of 1,000 shuffles of that labelling that match at least as well.</p></div></details><details class="rx-drawer"><summary>More numbers</summary><div class="rx-drawer-body"><p>The match is modest: most of what makes two metros alike stays unexplained.</p><p>Seven of the eight tech-hub metros sit in the lowest third by placed share: there, companies mostly hire for themselves. In the New York–Dallas group the median metro places 27% of its filings at a client and files 60% through IT-services firms.</p><p>Census regions reach 0.06 (p = 0.11) and divisions 0.06 (p = 0.08), no better than chance.</p></div></details></div>
 </div>
 <div class="plot">
 <h3>How well each labelling matches the Louvain groups</h3>
 <p class="axis-note">
-                  AMI for each labelling of the 40 metros; the p-value is the share
-                  of 1,000 shuffles of that labelling that match at least as well.
+                  Each bar is the <span class="w4-term"><button aria-describedby="w4-term-x-ami" type="button">AMI</button><span class="w4-pop" id="w4-term-x-ami" role="tooltip">Adjusted mutual information: how alike two groupings are, corrected for chance. 0 means no better than labels dealt at random, 1 means the same grouping.</span></span> between
+                  the Louvain groups and one labelling.
                   Orange bars describe who hires, grey bars where the city is.
                 </p>
 <div class="chart-host short" id="chart-where-who" style="user-select: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0); position: relative;"><img alt="" src="/_blob/0b6e8c2b229310ab10574999ca1f9024" style="display:block;width:100%;height:100%;object-fit:contain"/></div>
@@ -344,23 +332,21 @@ body{margin:0;background:#eef3f9}
 </header>
 <div class="w4-two">
 <div>
-<p class="sub">
-                  Every pair of the 40 metros shares some employer, so the full
-                  network is one hairball of 780 links. We removed the links one by one, least significant
+<p class="sub"> We removed the links one by one, least significant
                   first by <span class="w4-term"><button aria-describedby="w4-term-place-alpha" type="button">α</button><span class="w4-pop" id="w4-term-place-alpha" role="tooltip">The disparity filter's threshold. The filter keeps a link only when its weight is larger than chance would give, judged against each metro's own total, and α is the chance it allows. A lower α keeps fewer links. The links that survive form the backbone.</span></span>, and watched the largest piece after each removal.
                 </p>
 <div class="notice">
 <span class="ico">💡</span>
 <span>
 <b>What to notice</b>
-                    The big outsourcing firms hold no more of the links that cut metros loose than of any others.
                     Of the 16 links whose removal cuts a metro loose, the five largest <span class="w4-term"><button aria-describedby="w4-term-x-placing" type="button">placing firms</button><span class="w4-pop" id="w4-term-x-placing" role="tooltip">Companies that file for workers and then place them at a client company’s site.</span></span> lead 5 (31%), no more than their share of the whole <span class="w4-term"><button aria-describedby="w4-term-x-backbone" type="button">backbone</button><span class="w4-pop" id="w4-term-x-backbone" role="tooltip">The links the disparity filter keeps because they carry more weight than chance would give.</span></span> (38%, p = 0.37).
                   </span>
 </div>
 
 <div class="rx-drawers rx-foot">
-                  <details class="rx-drawer"><summary>Method</summary><div class="rx-drawer-body"><p>The disparity filter keeps a link when it carries an unusually large share of either metro's total weight; α is the test's threshold, and a smaller α keeps fewer links.</p></div></details>
-                  <details class="rx-drawer"><summary>More numbers</summary><div class="rx-drawer-body"><p>The other eleven are led by Amazon (three), Intel, Deloitte, Capital One, JPMorgan Chase, Citigroup, FedEx, Fidelity Investments and the University of Maryland.</p><p>The first metro falls off at α = 0.136. Tried at five values, the largest piece of the map fell from 32 metros at α = 0.1 to 18 at α = 0.05, which looks like one snap. The fall from 32 to 18 is 14 separate links, each peeling one metro away.</p><p>The five placing firms lead 69 of the 180 links in the whole backbone at α = 0.2 (38%), so their 5 of the 16 links that cut a metro loose is no more than their share (p = 0.37).</p><p>No single removal cuts off more than two metros: Dallas–Durham at α = 0.041 takes Durham and Raleigh with it, and New York–Seattle at 0.023 splits the last five metros three and two.</p></div></details>
+                  <details class="rx-drawer"><summary>Background</summary><div class="rx-drawer-body"><p>Every pair of the 40 metros shares some employer, so the full network is one hairball of 780 links.</p></div></details>
+                  <details class="rx-drawer"><summary>Method</summary><div class="rx-drawer-body"><p>The disparity filter keeps a link when it carries an unusually large share of either metro's total weight; α is the test's threshold, and a smaller α keeps fewer links.</p><p>Each step is one or more links removed. The shaded band is the range from α = 0.1 to 0.05 where the five-value sweep saw the drop.</p></div></details>
+                  <details class="rx-drawer"><summary>More numbers</summary><div class="rx-drawer-body"><p>The big outsourcing firms hold no more of the links that cut metros loose than of any others.</p><p>The other eleven are led by Amazon (three), Intel, Deloitte, Capital One, JPMorgan Chase, Citigroup, FedEx, Fidelity Investments and the University of Maryland.</p><p>The first metro falls off at α = 0.136. Tried at five values, the largest piece of the map fell from 32 metros at α = 0.1 to 18 at α = 0.05, which looks like one snap. The fall from 32 to 18 is 14 separate links, each peeling one metro away.</p><p>The five placing firms lead 69 of the 180 links in the whole backbone at α = 0.2 (38%), so their 5 of the 16 links that cut a metro loose is no more than their share (p = 0.37).</p><p>No single removal cuts off more than two metros: Dallas–Durham at α = 0.041 takes Durham and Raleigh with it, and New York–Seattle at 0.023 splits the last five metros three and two.</p></div></details>
                   <details class="rx-drawer"><summary>Table: 14 links that peel metros off</summary><div class="rx-drawer-body">
                 <table class="ego">
 <thead>
@@ -464,11 +450,9 @@ body{margin:0;background:#eef3f9}
 </div>
 <div class="plot">
 <h3>Metros in the largest piece as the filter tightens</h3>
-<p class="axis-note">
-                  Each step is one or more links removed. Read right to left: as α
+<p class="axis-note"> Read right to left: as α
                   falls, links go and metros drop out of the largest connected
-                  piece. The shaded band is the range from α = 0.1 to 0.05 where the
-                  five-value sweep saw the drop.
+                  piece.
                 </p>
 <div class="chart-host short" id="chart-where-break" style="user-select: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0); position: relative;"><img alt="" src="/_blob/c4d0d20b88aa709df001b91699bf0264" style="display:block;width:100%;height:100%;object-fit:contain"/></div>
 </div>
@@ -476,7 +460,7 @@ body{margin:0;background:#eef3f9}
 </div>
 </section></div></main></div>
 </x-dc>
-<script type="text/x-dc" data-dc-script data-props='{"$preview": {"width": 1440, "height": 2447}}'>
+<script type="text/x-dc" data-dc-script data-props='{"$preview": {"width": 1440, "height": 2375}}'>
 class Component extends DCLogic {
 renderVals() { return {}; }
 }

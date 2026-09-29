@@ -172,12 +172,10 @@ body{margin:0;background:#eef3f9}
 <span class="w4-num">1</span>
 <div>
 <h2>Once the small links go, what's left of the map?</h2>
-<p class="w4-answer">With every link it is one blob; keep only links heavy for one of their metros and it comes apart.</p>
+<p class="w4-answer">Keep only links heavy for one of their metros and the map comes apart.</p>
 </div>
 </header>
-<p class="sub">
-
-                  Cities are linked when they share an employer. The control sets the
+<p class="sub"> The control sets the
                   <span class="w4-term"><button aria-describedby="w4-term-x-disparity" type="button">disparity-filter</button><span class="w4-pop" id="w4-term-x-disparity" role="tooltip">A filter that keeps a link only when it carries an unusually large share of either metro’s total weight.</span></span> α from Week 4.
                 </p>
 <div class="rx-seg-row"><span class="rx-seg-label">Backbone α</span><div aria-label="Backbone α" class="rx-seg" role="group"><button aria-pressed="false" type="button">0.05</button><button aria-pressed="false" type="button">0.1</button><button aria-pressed="true" type="button">0.2</button><button aria-pressed="false" type="button">0.3</button><button aria-pressed="false" type="button">0.5</button></div></div>
@@ -185,9 +183,7 @@ body{margin:0;background:#eef3f9}
 <h3>Backbone at this α</h3>
 <p class="axis-note">
                     Each line is a link the filter keeps at the α set above, thicker
-                    when more filings share it. Metros in grey have fallen out of the
-                    largest connected piece. Colours are section 1's three metro groups.
-                    Click a metro to select it.
+                    when more filings share it.
                   </p>
 <div class="chart-host map w4-has-reset" id="chart-backbone" style="user-select: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0); position: relative;"><img alt="" src="/_blob/ba4fbc5ac783a587c42340192f61bb19" style="display:block;width:100%;height:100%;object-fit:contain"/></div>
 </div>
@@ -207,7 +203,8 @@ body{margin:0;background:#eef3f9}
 </span>
 </div>
 
-<div class="rx-drawers rx-foot"><details class="rx-drawer"><summary>Method</summary><div class="rx-drawer-body"><p class="sub">
+<div class="rx-drawers rx-foot">
+                  <details class="rx-drawer"><summary>Background</summary><div class="rx-drawer-body"><p>With every link the map is one blob. Cities are linked when they share an employer.</p><p>Metros in grey have fallen out of the largest connected piece. Colours are section 1's three metro groups. Click a metro to select it.</p></div></details><details class="rx-drawer"><summary>Method</summary><div class="rx-drawer-body"><p class="sub">
                     Two metros are linked when a company files in both; the
                     weight adds up, over those companies, the smaller of its two
                     filing counts. One weight threshold would keep the links among
@@ -236,8 +233,6 @@ body{margin:0;background:#eef3f9}
 </div>
 </header>
 <p class="sub">
-                
-                Big direct employers lead the long links, Amazon above all.
                 The shortlist is the five firms that <span class="w4-term"><button aria-describedby="w4-term-x-place" type="button">place</button><span class="w4-pop" id="w4-term-x-place" role="tooltip">The firm files for the worker, then sends them to work at a client company’s site.</span></span> the most filings at
                 client sites.
               </p>
@@ -246,11 +241,7 @@ body{margin:0;background:#eef3f9}
 <h3>Distance vs weight</h3>
 <p class="axis-note">
                     Each point is a link in the backbone at α = 0.2, the default
-                    above; size grows with its weight. A label names a company on
-                    its heaviest link over 1,500 km, for the five heaviest; hover
-                    any point for its own. The legend separates links led by the
-                    shortlist from links led by any other company; click a point
-                    to select a city.
+                    above; size grows with its weight.
                   </p>
 <div class="chart-host" id="chart-longhaul" style="user-select: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0); position: relative;"><img alt="" src="/_blob/14ebe0c7e50a223a59b14009ce5d56ce" style="display:block;width:100%;height:100%;object-fit:contain"/></div>
 </div>
@@ -259,9 +250,7 @@ body{margin:0;background:#eef3f9}
 <p class="axis-note">
                     The backbone links (α = 0.2) this company leads: of all the
                     companies filing in both cities, it adds the most to the
-                    link's weight. The list
-                    holds the six companies that lead the most links. Click a
-                    city to select it.
+                    link's weight.
                   </p>
 <div class="select-row">
 <label for="place-employer">Employer</label>
@@ -276,13 +265,13 @@ body{margin:0;background:#eef3f9}
 <b>What to notice</b>
                   Of the 83 backbone links longer than 1,500 km, the shortlist
                   leads 22 (27%); it leads 47 of the 97 shorter ones (48%).
-                  Distant metros are tied by many companies filing in both.
                 </span>
 </div>
 
 <div class="rx-drawers rx-foot">
                   <details class="rx-drawer"><summary>Background</summary><div class="rx-drawer-body"><p>The shortlist holds the five largest placing firms: Tata Consultancy Services, Cognizant, Infosys, HCL and Compunnel. The staffing section follows them to their clients.</p></div></details>
-                  <details class="rx-drawer"><summary>More numbers</summary><div class="rx-drawer-body"><p>Amazon leads the most long links (30), then Cognizant (17), EY (8) and Deloitte (7). The leading company carries a median 14% of a long link's weight, and only one long link, San Jose to Fayetteville (Walmart), has a company with half of it.</p></div></details>
+                  <details class="rx-drawer"><summary>Method</summary><div class="rx-drawer-body"><p>In the distance chart, a label names a company on its heaviest link over 1,500 km, for the five heaviest; hover any point for its own. The legend separates links led by the shortlist from links led by any other company; click a point to select a city.</p><p>In the employer map, the list holds the six companies that lead the most links. Click a city to select it.</p></div></details>
+                  <details class="rx-drawer"><summary>More numbers</summary><div class="rx-drawer-body"><p>Big direct employers lead the long links, Amazon above all. Distant metros are tied by many companies filing in both.</p><p>Amazon leads the most long links (30), then Cognizant (17), EY (8) and Deloitte (7). The leading company carries a median 14% of a long link's weight, and only one long link, San Jose to Fayetteville (Walmart), has a company with half of it.</p></div></details>
                 </div>
 </div></div><div class="rx-panel" style="display: {{d2}}"><div class="card w4-card" id="deeper-density">
 <header class="w4-q">
@@ -294,14 +283,11 @@ body{margin:0;background:#eef3f9}
 </header>
 <div class="w4-two">
 <div>
-<p class="sub">Section 1 counts filings. Divide each metro's 2025 filings by
-                          its jobs in the Bureau of Labor Statistics' May 2025
-                          employment survey (OEWS) and the map shifts: nationally it is
-                          4.5 filings per 1,000 jobs.</p>
+<p class="sub">Section 1 counts filings.</p>
 
 
 <div class="notice"><span class="ico">💡</span><span><b>What to notice</b> Nationally there are 4.5 filings per 1,000 jobs; San Jose files 42.9, nearly ten times that, while New York, the largest filer, sits at 6.9.</span></div>
-<div class="rx-drawers rx-foot"><details class="rx-drawer"><summary>Method</summary><div class="rx-drawer-body"><p>A filing is a request, not a hire, so a rate can run high.</p></div></details><details class="rx-drawer"><summary>More numbers</summary><div class="rx-drawer-body"><p>Among the 203 metros with 100,000 jobs
+<div class="rx-drawers rx-foot"><details class="rx-drawer"><summary>Method</summary><div class="rx-drawer-body"><p>Divide each metro's 2025 filings by its jobs in the Bureau of Labor Statistics' May 2025 employment survey (OEWS) and the map shifts: nationally it is 4.5 filings per 1,000 jobs.</p><p>A filing is a request, not a hire, so a rate can run high.</p></div></details><details class="rx-drawer"><summary>More numbers</summary><div class="rx-drawer-body"><p>Among the 203 metros with 100,000 jobs
                           or more, count and density rank alike (<span class="w4-term"><button aria-describedby="w4-term-x-spearman" type="button">Spearman</button><span class="w4-pop" id="w4-term-x-spearman" role="tooltip">A rank correlation: how closely two orderings agree. Higher means closer.</span></span> 0.90), yet
                           only 5 of the 10 largest by count stay in the top 10 by
                           density: Dallas, San Jose, San Francisco, Seattle and Austin.
