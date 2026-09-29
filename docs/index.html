@@ -22,7 +22,7 @@
         <nav class="topnav" aria-label="Sections of this page">
           <a class="here" href="#weeks">Posts</a>
           <a href="#about">About</a>
-          <a href="#sources">Sources</a>
+          <a href="#sources">AI use</a>
         </nav>
       </div>
     </div>
@@ -131,37 +131,16 @@
           </div>
         </section>
 
-        <section aria-labelledby="sources-title" class="home-section" id="sources">
-          <div class="home-section-head">
-            <h2 id="sources-title">Sources and methods</h2>
-          </div>
-          <div class="home-drawers">
-            <details class="qa">
-              <summary><span class="qa-cue">Methods and reproducibility</span></summary>
-              <div class="qa-body">
-                <p>
-                  Every number on the site comes from a script in
-                  <a href="https://github.com/horrrt/02805_social_graphs/tree/main/analysis">analysis/</a>
-                  and reaches the page as JSON, so a rerun reproduces the post.
-                  Structural claims are held to a null model that keeps what
-                  the claim does not test, and stochastic methods run with
-                  fixed seeds, many times. Interactive parts run in your
-                  browser; the data is never edited.
-                </p>
-              </div>
-            </details>
-            <details class="qa">
-              <summary><span class="qa-cue">AI use and authorship</span></summary>
-              <div class="qa-body">
-                <p>
-                  Built with AI assistance for interface design, programming,
-                  explanation drafts and test construction. Metrics come from
-                  the source data and reproducible analysis; the games and
-                  metaphors are our presentation choices. Numerical checks
-                  compare independent Python and browser implementations.
-                </p>
-              </div>
-            </details>
+        <section aria-label="AI use and authorship" class="home-section home-about" id="sources">
+          <div class="card">
+            <p class="home-caps">AI use and authorship</p>
+            <p>
+              Built with AI assistance for interface design, programming,
+              explanation drafts and test construction. Metrics come from
+              the source data and reproducible analysis; the games and
+              metaphors are our presentation choices. Numerical checks
+              compare independent Python and browser implementations.
+            </p>
           </div>
         </section>
       </div>
