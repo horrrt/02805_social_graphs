@@ -92,7 +92,7 @@ function buildDampingCard(data) {
     <div>
       <h2>Change the damping factor: does the ranking move?</h2>
       <p class="w4-answer">Yes. Raising it from ${data.damping[0]} to ${data.damping.at(-1)} moves the ranking away from
-      plain tie counts, toward occupations linked to the biggest hubs.</p>
+      plain tie counts.</p>
     </div>`;
 
   const two = document.createElement("div");
@@ -100,11 +100,16 @@ function buildDampingCard(data) {
   const left = document.createElement("div");
   left.innerHTML = `
     <p class="sub">
-      Each step, a PageRank walker follows a tie with probability d, the damping factor, or jumps to a random
-      occupation. At d = 0 the ties do not matter; near 1 they decide the order. Pick a value below.
+      Pick a value below.
     </p>`;
+  // How the walk works and how to read the badges sit in the Background drawer.
+  const background = document.createElement("div");
+  background.innerHTML = `
+    <p>Each step, a PageRank walker follows a tie with probability d, the damping factor, or jumps to a random
+    occupation. At d = 0 the ties do not matter; near 1 they decide the order.</p>
+    <p>In the chart, a short bar with a small badge number is well connected but not well placed.</p>`;
   termify(
-    left.querySelector(".sub"),
+    background,
     "PageRank",
     "A score from a random walk along the ties: occupations the walk visits often, because well-linked occupations " +
       "tie to them, score high.",
@@ -149,9 +154,7 @@ function buildDampingCard(data) {
   notice.querySelector("span:last-child").append(
     frag(
       `The top ${TOP_SHOWN} at d = ${overlapLo} and at d = ${overlapHi} share only ${overlap5v99} of ${TOP_SHOWN} ` +
-        `occupations, so the damping factor reorders the ranking. At d = ${DEFAULT_D} the top ${TOP_SHOWN} shares ` +
-        `${overlapDeg} occupations with the top ${TOP_SHOWN} by degree and ${overlapStr} with the top ${TOP_SHOWN} by ` +
-        "strength: being tied to the right occupations matters as much as how many ties there are.",
+        "occupations, so the damping factor reorders the ranking.",
     ),
   );
   left.append(notice);
@@ -181,9 +184,10 @@ function buildDampingCard(data) {
   moreOverlap.textContent =
     `At d = ${DEFAULT_D}, PageRank's top ${TOP_SHOWN} shares ${overlapDeg} of ${TOP_SHOWN} with plain unweighted-degree's ` +
     `top ${TOP_SHOWN}, and ${overlapStr} of ${TOP_SHOWN} with weighted strength's (the projection's own edge weight, ` +
-    "shared companies).";
+    "shared companies). Being tied to the right occupations matters as much as how many ties there are. " +
+    "Raising the damping factor moves the ranking toward occupations linked to the biggest hubs.";
   moreBody.append(moreMovers, moreOverlap);
-  left.append(drawerRow(drawer("Method", howBody), drawer("More numbers", moreBody)));
+  left.append(drawerRow(drawer("Background", background), drawer("Method", howBody), drawer("More numbers", moreBody)));
 
   const plot = document.createElement("div");
   plot.className = "plot";
@@ -191,7 +195,7 @@ function buildDampingCard(data) {
     <h3>Top ${TOP_SHOWN} occupations by PageRank</h3>
     <p class="axis-note">
       Bar length is PageRank at the chosen damping factor; the badge on the right is that occupation's rank by
-      plain unweighted degree, so a short bar with a small badge number is well connected but not well placed.
+      plain unweighted degree.
     </p>`;
   termify(
     plot.querySelector(".axis-note"),

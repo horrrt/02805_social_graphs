@@ -47,13 +47,16 @@ function card1(c, descriptors) {
   const two = document.createElement("div");
   two.className = "w4-two";
   const left = document.createElement("div");
-  left.innerHTML = `
-    <p class="sub">
-      O*NET rates every detailed occupation on ${descriptors} skills, knowledge areas and work activities.
-      It never looks at which companies file for an occupation, so it checks section 2 with independent data.
-    </p>`;
+  // One sentence of lead stays visible; why O*NET is independent goes in Background.
+  const lead = document.createElement("p");
+  lead.className = "sub";
+  lead.textContent = `O*NET rates every detailed occupation on ${descriptors} skills, knowledge areas and work activities.`;
+  left.append(lead);
+  const background = document.createElement("p");
+  background.textContent =
+    "It never looks at which companies file for an occupation, so it checks section 2 with independent data.";
   termify(
-    left.querySelector(".sub"),
+    lead,
     "O*NET",
     "The US Department of Labor's database of what each occupation involves, rated from surveys of workers and analysts.",
     "w4-term-cut-skills-direct-onet",
@@ -99,15 +102,15 @@ function card1(c, descriptors) {
   );
   const moreNumbers = document.createElement("div");
   moreNumbers.append(moreBody, moreCounts);
-  left.append(drawerRow(drawer("Method", howBody), drawer("More numbers", moreNumbers)));
+  left.append(drawerRow(drawer("Background", background), drawer("Method", howBody), drawer("More numbers", moreNumbers)));
 
   const plot = document.createElement("div");
   plot.className = "plot";
   plot.innerHTML = `
     <h3>Skill similarity by hiring tie</h3>
     <p class="axis-note">
-      Each row is the mean O*NET similarity over a group of occupation pairs among the ${c.occupations} shown in
-      section 2's jobs network; the band is one standard deviation, not a null model.
+      Each row is the mean O*NET similarity over a group of occupation pairs; the band is one standard deviation,
+      not a null model.
     </p>`;
   const host = document.createElement("div");
   host.className = "w4-figure-body";
