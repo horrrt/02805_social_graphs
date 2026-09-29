@@ -1,0 +1,535 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>Deep dive · Where the hiring is, with the three additions</title>
+<script src="./support.js"></script>
+<link rel="stylesheet" href="/_blob/a8b55e0770da9418a2f5ffb4cab631b7">
+<link rel="stylesheet" href="/_blob/b9d3af828667918c0fe07be60c6aec89">
+<link rel="stylesheet" href="/_blob/0b9a7c47e1350e0dffcea5a9b54b4572">
+<link rel="stylesheet" href="/_blob/97d66203c00ace3bbf90e935b5ed45e1">
+<link rel="stylesheet" href="/_blob/94054bb472c9bb561fb6500c796bc7ef">
+<link rel="stylesheet" href="/_blob/81bc858cf62ad205d9adaaea74b42c73">
+<link rel="stylesheet" href="/_blob/d09bedaa7230bae661e51acddd444fed">
+<link rel="stylesheet" href="/_blob/a86452c89a12d8478efd86eb2d9b31b3">
+<link rel="stylesheet" href="/_blob/99372c9f53a87aa53514fce1dc1d11af">
+<link rel="stylesheet" href="/_blob/1d4921daf15eaaa604354f831f8c94be">
+<link rel="stylesheet" href="/_blob/bb046391e9975dbba9317d692ee805fb">
+<link rel="stylesheet" href="/_blob/b88ec2cf6cd06a2f8d6a54d0b8b586e7">
+<link rel="stylesheet" href="/_blob/d499d5aed42057365f4f1c435e636bb6">
+</head>
+<body>
+<x-dc>
+<helmet>
+<style>
+@font-face{font-family:"Condensed";src:url("/_blob/9ad036b9f76606ea91d82e15ebec8da3") format("truetype");font-weight:800;font-style:normal}
+body{margin:0;background:#eef3f9}
+.rx{position:relative}
+/* rec 6: the rail, every name on hover */
+.rx .rx-rail{position:absolute;left:64px;top:96px;width:44px;z-index:30}
+.rx .rx-rail ol{list-style:none;margin:0;padding:6px 0;display:flex;flex-direction:column;align-items:center;gap:16px;background:linear-gradient(#dce5f0,#dce5f0) center/2px 100% no-repeat}
+.rx .rx-rail ol.rx-rail-sub{gap:16px;padding:14px 0 4px;background:none}
+.rx .rx-rail li{display:flex;flex-direction:column;align-items:center;position:relative}
+.rx .rx-sq,.rx .rx-dot{position:relative;display:block;box-sizing:border-box;border-radius:999px;font-size:0;color:transparent;cursor:pointer}
+.rx .rx-sq{width:12px;height:12px;background:#fff;border:2px solid #9fb4cf}
+.rx .rx-sq:hover{border-color:#14618f}
+.rx .rx-sq.is-on{width:18px;height:18px;background:#14618f;border-color:#14618f;box-shadow:0 0 0 4px rgba(20,97,143,.18)}
+.rx .rx-dot{width:8px;height:8px;background:#c9d6e6}
+.rx .rx-dot.is-on{background:#0f2340;box-shadow:0 0 0 3px rgba(15,35,64,.14)}
+/* on hover the rail opens as one contents panel: a card behind the dots, names in one column, questions indented */
+.rx .rx-rail::before{content:"";display:none;position:absolute;left:-12px;top:-14px;bottom:-14px;width:var(--rx-rail-w,340px);background:#fff;border-radius:14px;box-shadow:0 1px 2px rgba(15,35,64,.08),0 12px 32px rgba(15,35,64,.14);z-index:-1}
+.rx .rx-rail:hover::before{display:block}
+.rx .rx-lab{display:none;position:absolute;left:24px;top:50%;transform:translateY(-50%);white-space:nowrap;border-radius:6px;padding:3px 8px;font-size:var(--fs-small);line-height:1.35;font-weight:600;color:#0f2340}
+.rx .rx-sq.is-on>.rx-lab{left:27px;color:#14618f;font-weight:700}
+.rx .rx-dot>.rx-lab{left:34px;font-size:var(--fs-small);font-weight:500;color:#46618a}
+.rx .rx-dot.is-on>.rx-lab{color:#0f2340;font-weight:700}
+.rx .rx-rail:hover .rx-lab{display:block}
+.rx .rx-rail .rx-sq:hover>.rx-lab,.rx .rx-rail .rx-dot:hover>.rx-lab{background:#f7fafd;color:#14618f}
+/* rec 1: drawers */
+.rx .rx-drawers{display:flex;flex-direction:column;gap:8px;margin-top:14px}
+.rx details.rx-drawer{border:1px solid #dce5f0;border-radius:10px;background:#f7fafd;margin-top:10px}
+.rx .rx-drawers details.rx-drawer{margin-top:0}
+.rx details.rx-drawer>summary{cursor:pointer;list-style:none;padding:9px 14px;font-size:var(--fs-small);font-weight:700;color:#14618f;display:flex;align-items:center;gap:8px}
+.rx details.rx-drawer>summary::-webkit-details-marker{display:none}
+.rx details.rx-drawer>summary::before{content:"▸";font-size:var(--fs-caption);transition:transform .15s}
+.rx details.rx-drawer[open]>summary::before{transform:rotate(90deg)}
+.rx .rx-drawer-body{padding:0 16px 14px;font-size:var(--fs-body);line-height:1.62;color:#0f2340;max-width:78ch}
+.rx .rx-drawer-body p{margin:0 0 8px}
+/* rec 4: one segmented control */
+.rx .axis-modes,.rx .rx-seg,.rx .staffing-years{display:inline-flex!important;gap:2px!important;padding:3px!important;border-radius:999px!important;background:#eaf0f7!important;border:none!important;box-shadow:none!important;flex-wrap:wrap}
+.rx .axis-modes button,.rx .rx-seg button,.rx .staffing-years button{border:none!important;border-radius:999px!important;padding:6px 14px!important;font:inherit!important;font-size:var(--fs-small)!important;font-weight:600!important;color:#46618a!important;background:transparent!important;box-shadow:none!important;cursor:pointer}
+.rx .axis-modes button[aria-pressed="true"],.rx .rx-seg button[aria-pressed="true"],.rx .staffing-years button[aria-pressed="true"]{background:#fff!important;color:#0f2340!important;font-weight:700!important;box-shadow:0 1px 2px rgba(15,35,64,.12)!important}
+.rx .axis-modes-label,.rx .rx-seg-label{text-transform:none!important;letter-spacing:0!important;font-size:var(--fs-small)!important;font-weight:700!important;color:#46618a!important}
+.rx .rx-seg-row{display:flex;align-items:center;gap:12px;margin:10px 0}
+/* rec 7 placeholder */
+.rx .rx-todo{border:1px dashed #b9cadf;background:#fff;color:#7a8fac}
+/* topic boards */
+.rx .rx-topic-head{display:flex;align-items:baseline;gap:14px;flex-wrap:wrap}
+.rx .rx-tabs{display:flex;flex-direction:column;gap:2px;padding:12px;border-right:1px solid #eaf0f7;background:#f7fafd;border-radius:14px 0 0 14px}
+.rx .rx-tab{display:flex;gap:10px;align-items:baseline;width:100%;padding:9px 10px;border:none;border-radius:8px;font:inherit;font-size:var(--fs-small);line-height:1.4;font-weight:600;text-align:left;color:#0f2340;cursor:pointer;background:transparent}
+.rx .rx-tab:hover{background:#fff}
+
+/* rec 3: section 1 start card */
+.rx .rx-kicker{margin:6px 0 0;font-size:var(--fs-small);color:#46618a}
+.rx .rx-start-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:36px;align-items:start;margin-top:8px}
+.rx .rx-start-grid header.w4-q{margin-bottom:8px}
+.rx .rx-groups{display:flex;flex-direction:column;margin-top:10px}
+.rx .rx-group{padding:10px 0;border-top:1px solid #eaf0f7}
+.rx .rx-group-head{display:flex;align-items:center;gap:8px;font-size:var(--fs-body)}
+.rx .rx-group-head i{width:12px;height:12px;border-radius:50%;display:inline-block}
+.rx .rx-group-head span{font-size:var(--fs-small);color:#46618a}
+.rx .rx-group p{margin:4px 0 0 20px;font-size:var(--fs-small);line-height:1.55;color:#46618a}
+.rx .rx-start-notices{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px;margin-top:14px}
+.rx .rx-drawer-body.rx-wide{max-width:none}
+/* topic boards */
+.rx .rx-topic-bar{display:flex;align-items:center;gap:16px;margin:8px 0 16px}
+.rx .rx-back{font-size:var(--fs-small);font-weight:700;text-decoration:none;color:#14618f;padding:6px 12px;border:1px solid #dce5f0;border-radius:999px;background:#fff}
+.rx .rx-topic-mark{flex:none;width:40px;height:40px;border-radius:10px;background:#14618f;color:#fff;display:inline-flex;align-items:center;justify-content:center;font-size:var(--fs-strong);font-weight:800}
+.rx .rx-topic-title{margin:0;font-size:var(--fs-h3);font-weight:800}
+.rx .rx-topic-holds{margin:2px 0 0;font-size:var(--fs-body);color:#46618a}
+.rx .rx-topic-count{margin-left:auto;font-size:var(--fs-small);color:#46618a}
+.rx .rx-tab-row{display:flex;flex-wrap:wrap;gap:6px;padding:6px;border-radius:14px;background:#eaf0f7;margin-bottom:18px}
+.rx .rx-tab-pill{border:none;border-radius:999px;padding:7px 14px;font:inherit;font-size:var(--fs-small);font-weight:600;cursor:pointer;text-align:left;line-height:1.35}
+.rx .rx-tab-pill b{color:#14618f;margin-right:4px}
+.rx .rx-panel > .card{margin-top:0}
+/* deep-dive catalogue */
+.rx .rx-cut-intro{max-width:68ch}
+.rx .rx-tgrid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;align-items:start;margin-top:18px}
+.rx .rx-tcard{background:#fff;border:1px solid #dce5f0;border-radius:14px;padding:16px;box-shadow:0 1px 2px rgba(15,35,64,.06),0 8px 24px rgba(15,35,64,.05)}
+.rx .rx-tcard-data{background:#f7fafd;box-shadow:none}
+.rx .rx-tcard-head{display:flex;gap:12px;align-items:flex-start;text-decoration:none;color:#0f2340;padding-bottom:10px}
+.rx .rx-tcard-head span{display:flex;flex-direction:column;gap:3px}
+.rx .rx-tcard-head b{font-size:var(--fs-strong)}
+.rx .rx-tcard-head em{font-style:normal;font-size:var(--fs-small);line-height:1.45;color:#46618a}
+.rx .rx-tcard ul{list-style:none;margin:0;padding:0}
+.rx .rx-tcard li a{display:flex;gap:10px;align-items:baseline;padding:8px 4px;border-top:1px solid #eaf0f7;text-decoration:none;color:#0f2340;font-size:var(--fs-small);font-weight:600;line-height:1.4}
+.rx .rx-tcard li a b{flex:none;min-width:22px;color:#14618f;font-size:var(--fs-caption)}
+.rx .rx-tcard li a span{flex-grow:1}
+.rx .rx-tcard li a i{font-style:normal;color:#14618f;font-weight:700}
+.rx .rx-tcard li a:hover{background:#d9ecf9}
+.rx .rx-moved{margin:16px 0 0;font-size:var(--fs-small);line-height:1.6;color:#46618a}
+.rx .rx-tile-finding{display:block;margin-top:6px;color:#0f2340}
+.rx .rx-tcard li.rx-uses-li>a{border-top:1px solid #eaf0f7}
+.rx .rx-uses{list-style:none;margin:0 0 4px 6px;padding:0 0 0 12px;border-left:2px solid #dce5f0}
+.rx .rx-tcard .rx-uses li a{flex-direction:column;align-items:flex-start;gap:2px;border-top:none;padding:6px 4px;font-weight:600}
+.rx .rx-tcard .rx-uses li a b{min-width:0;font-size:var(--fs-caption);color:#14618f}
+.rx .rx-tcard .rx-uses li a em{font-style:normal;font-weight:500;font-size:var(--fs-small);line-height:1.45;color:#46618a}
+.rx .rx-tab-group{flex-basis:100%;padding:8px 8px 2px;font-size:var(--fs-small);font-weight:700;color:#46618a}
+.rx .rx-toc{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:2px 32px;padding:14px 16px;background:#fff;border:1px solid #dce5f0;border-radius:14px;margin-bottom:22px}
+.rx .rx-toc-col{display:flex;flex-direction:column;gap:2px}
+.rx .rx-toc-head{margin:2px 0 6px 15px;font-size:var(--fs-small);font-weight:700;color:#7a8fac}
+.rx .rx-toc-item{display:block;width:100%;box-sizing:border-box;text-align:left;border:none;border-left:3px solid transparent;border-radius:0 8px 8px 0;padding:8px 12px;font:inherit;font-size:var(--fs-body);line-height:1.4;font-weight:600;cursor:pointer;background:transparent;color:#46618a}
+.rx .rx-toc-item:hover{background:#f7fafd;color:#0f2340}
+.rx .rx-toc-item b{color:#14618f;margin-right:6px;font-weight:700}
+/* tables */
+.rx main table{width:100%;border-collapse:separate;border-spacing:0;font-size:var(--fs-small);line-height:1.4;background:#fff;border:1px solid #dce5f0;border-radius:10px;overflow:hidden;margin-top:6px}
+.rx main table caption{caption-side:top;text-align:left;font-size:var(--fs-small);font-weight:700;color:#0f2340;padding:0 2px 8px}
+.rx main table th{background:#f7fafd;color:#46618a;font-size:var(--fs-caption);font-weight:600;text-align:left;padding:9px 12px;border-bottom:1px solid #dce5f0;white-space:nowrap}
+.rx main table td{padding:8px 12px;border-top:1px solid #eef3f9;color:#0f2340;vertical-align:middle}
+.rx main table tbody tr:first-child td{border-top:none}
+.rx main table tbody tr:hover td{background:#f7fafd}
+.rx main table td:first-child{font-weight:600}
+.rx main table th.num,.rx main table td.num{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
+.rx main table td.soft{color:#46618a}
+.rx .rx-cell{display:flex;align-items:center;justify-content:flex-end;gap:10px}
+.rx .rx-bar{flex:none;width:72px;height:6px;border-radius:999px;background:#eef3f9;overflow:hidden;display:flex;justify-content:flex-start}
+.rx .rx-bar i{display:block;height:100%;border-radius:999px;background:#14618f}
+.rx .rx-bar.meter i{background:#7fa9cf}
+.rx .rx-table-block{margin-top:18px}
+.rx .rx-table-block h4{margin:0 0 4px;font-size:var(--fs-small);font-weight:700;color:#0f2340}
+.rx .rx-table-block p{margin:0 0 6px;font-size:var(--fs-small);color:#46618a}
+/* compact drawers: closed ones sit in one row, an open one takes the full width */
+.rx .rx-drawers{flex-direction:row!important;flex-wrap:wrap;align-items:center;gap:8px!important;margin-top:12px}
+.rx .rx-drawers>details.rx-drawer{flex:0 0 auto;margin:0}
+.rx .rx-drawers>details.rx-drawer[open]{flex:1 1 100%;order:10}
+.rx details.rx-drawer:not([open]){width:fit-content}
+.rx details.rx-drawer>summary{padding:6px 12px}
+.rx .rx-drawers>.w4-tip{margin:0}
+.rx .rx-foot{margin-top:14px}
+.rx .rx-drawer-body>p+p{margin-top:8px}
+.rx .rx-fig-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(0,1fr));gap:28px;margin-top:22px;align-items:start}
+.rx .rx-fig-row>figure,.rx .rx-fig-row>.plot{margin:0}
+.rx .rx-fig-row>:only-child{max-width:58%}
+</style>
+</helmet>
+<div class="corridor rx" style="width: 1440px; height: 1860px; overflow: hidden; background: #eef3f9"><div class="topbar">
+<div class="shell">
+<a class="brand" href="../../">LOG–LOG <b>LEGENDS</b></a>
+<a class="site-link" href="../../#weeks">All posts</a>
+<nav aria-label="Sections of this post" class="topnav">
+<a class="here" href="#opening">Opening</a>
+<a class="" href="#place">Where</a>
+<a href="#jobs">Jobs</a>
+<a href="#who">Staffing</a>
+<a href="#footprint">Giants out</a>
+<a href="#beyond">Beyond</a>
+<a href="#cut">Deep dive</a>
+</nav>
+</div>
+</div><nav class="rx-rail" style="--rx-rail-w:350px" aria-label="Contents of this post"><ol><li><span class="rx-sq"><span class="rx-lab">Opening</span></span></li><li><span class="rx-sq"><span class="rx-lab">Where the hiring is</span></span></li><li><span class="rx-sq"><span class="rx-lab">Which jobs go together</span></span></li><li><span class="rx-sq"><span class="rx-lab">Who staffs whom</span></span></li><li><span class="rx-sq"><span class="rx-lab">Without the biggest firms</span></span></li><li><span class="rx-sq"><span class="rx-lab">Beyond the three networks</span></span></li><li><span class="rx-sq"><span class="rx-lab">Closing</span></span></li><li><span class="rx-sq is-on"><span class="rx-lab">Deep dive</span></span><ol class="rx-rail-sub"><li><span class="rx-dot is-on"><span class="rx-lab">Where the hiring is</span></span></li><li><span class="rx-dot"><span class="rx-lab">Jobs and skills</span></span></li><li><span class="rx-dot"><span class="rx-lab">Outsourcing firms and their clients</span></span></li><li><span class="rx-dot"><span class="rx-lab">Paperwork, the lottery and green cards</span></span></li><li><span class="rx-dot"><span class="rx-lab">Five years</span></span></li><li><span class="rx-dot"><span class="rx-lab">Data and methods</span></span></li></ol></li></ol></nav><main id="main"><div class="shell"><section class="step" id="cut">
+<div class="rx-topic-bar"><a class="rx-back" href="RDeep.dc.html">← Deep dive</a><div><h2 class="rx-topic-title">Where the hiring is</h2><p class="rx-topic-holds">Section 1's metros, linked by the employers they share.</p></div><span class="rx-topic-count">9 boxes</span></div>
+<nav class="rx-toc" aria-label="Boxes in this topic"><div class="rx-toc-col"><p class="rx-toc-head">Questions</p><button type="button" class="rx-toc-item" onClick="{{pick0}}" aria-pressed="{{on0}}" style="{{st0}}">Once the small links go, what&#x27;s left of the map?</button><button type="button" class="rx-toc-item" onClick="{{pick1}}" aria-pressed="{{on1}}" style="{{st1}}">Do the same employers tie distant cities together?</button><button type="button" class="rx-toc-item" onClick="{{pick2}}" aria-pressed="{{on2}}" style="{{st2}}">Where is the hiring densest? Filings per 1,000 jobs</button><button type="button" class="rx-toc-item" onClick="{{pick7}}" aria-pressed="{{on7}}" style="{{st7}}">Which way do the strongest ties run?</button></div><div class="rx-toc-col"><p class="rx-toc-head">The course&#x27;s community methods, tried on the 40 metros</p><button type="button" class="rx-toc-item" onClick="{{pick3}}" aria-pressed="{{on3}}" style="{{st3}}">Does cutting the busiest links split the country?</button><button type="button" class="rx-toc-item" onClick="{{pick4}}" aria-pressed="{{on4}}" style="{{st4}}">Are the three metro groups more than chance?</button><button type="button" class="rx-toc-item" onClick="{{pick8}}" aria-pressed="{{on8}}" style="{{st8}}">Does merging from the bottom up find the same groups?</button><button type="button" class="rx-toc-item" onClick="{{pick5}}" aria-pressed="{{on5}}" style="{{st5}}">Where do the three metro groups come from?</button><button type="button" class="rx-toc-item" onClick="{{pick6}}" aria-pressed="{{on6}}" style="{{st6}}">Which metros belong to more than one group?</button></div></nav><div class="rx-panel" style="display: {{d0}}"><div class="card w4-card" id="place-backbone">
+<header class="w4-q">
+<span class="w4-num">1</span>
+<div>
+<h2>Once the small links go, what's left of the map?</h2>
+<p class="w4-answer">Keep only links heavy for one of their metros and the map comes apart.</p>
+</div>
+</header>
+<p class="sub"> The control sets the
+                  <span class="w4-term"><button aria-describedby="w4-term-x-disparity" type="button">disparity-filter</button><span class="w4-pop" id="w4-term-x-disparity" role="tooltip">A filter that keeps a link only when it carries an unusually large share of either metro’s total weight.</span></span> α from Week 4.
+                </p>
+<div class="rx-seg-row"><span class="rx-seg-label">Backbone α</span><div aria-label="Backbone α" class="rx-seg" role="group"><button aria-pressed="false" type="button">0.05</button><button aria-pressed="false" type="button">0.1</button><button aria-pressed="true" type="button">0.2</button><button aria-pressed="false" type="button">0.3</button><button aria-pressed="false" type="button">0.5</button></div></div>
+<div class="plot">
+<h3>Backbone at this α</h3>
+<p class="axis-note">
+                    Each line is a link the filter keeps at the α set above, thicker
+                    when more filings share it.
+                  </p>
+<div class="chart-host map w4-has-reset" id="chart-backbone" style="user-select: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0); position: relative;"><img alt="" src="/_blob/c14c7b232dc41b2523711d5dfe62327e" style="display:block;width:100%;height:100%;object-fit:contain"/></div>
+</div>
+<div class="plot" style="margin-top: 18px">
+<h3>Giant component vs α</h3>
+<p class="axis-note">
+                  How many metros stay in the largest connected piece as the filter
+                  tightens. The dashed line marks where it snaps.
+                </p>
+<div class="w4-figure-body" id="chart-gc"><svg viewBox="0 0 1044 250" width="1044" height="250" role="img" aria-label="Metros in the largest connected piece at each backbone alpha" style="display:block"><line x1="48" x2="1020" y1="192" y2="192" stroke="#e6ecf3"></line><text x="38" y="196" text-anchor="end" font-size="11.5" fill="#7a8fac">0</text><line x1="48" x2="1020" y1="151.5" y2="151.5" stroke="#e6ecf3"></line><text x="38" y="155.5" text-anchor="end" font-size="11.5" fill="#7a8fac">10</text><line x1="48" x2="1020" y1="111" y2="111" stroke="#e6ecf3"></line><text x="38" y="115" text-anchor="end" font-size="11.5" fill="#7a8fac">20</text><line x1="48" x2="1020" y1="70.5" y2="70.5" stroke="#e6ecf3"></line><text x="38" y="74.5" text-anchor="end" font-size="11.5" fill="#7a8fac">30</text><line x1="48" x2="1020" y1="30" y2="30" stroke="#e6ecf3"></line><text x="38" y="34" text-anchor="end" font-size="11.5" fill="#7a8fac">40</text><text x="136.36363636363637" y="212" text-anchor="middle" font-size="11.5" fill="#46618a">α 0.05</text><text x="224.72727272727272" y="212" text-anchor="middle" font-size="11.5" fill="#46618a">α 0.1</text><text x="401.45454545454544" y="212" text-anchor="middle" font-size="11.5" fill="#46618a">α 0.2</text><text x="578.1818181818181" y="212" text-anchor="middle" font-size="11.5" fill="#46618a">α 0.3</text><text x="931.6363636363636" y="212" text-anchor="middle" font-size="11.5" fill="#46618a">α 0.5</text><text x="534" y="242" text-anchor="middle" font-size="11.5" fill="#7a8fac">← stricter filter · looser filter →</text><line x1="136.36363636363637" x2="136.36363636363637" y1="22" y2="192" stroke="#7a8fac" stroke-dasharray="4 3"></line><text x="144.36363636363637" y="18" text-anchor="start" font-size="11.5" fill="#46618a">Snaps: only 18 metros stay joined</text><polyline points="136.36363636363637,119.1 224.72727272727272,62.400000000000006 401.45454545454544,30 578.1818181818181,30 931.6363636363636,30" fill="none" stroke="#0f2340" stroke-width="2.4" stroke-linejoin="round"></polyline><g><title>α = 0.05: 18 of 40 metros in the largest connected piece, 25 links kept</title><circle cx="136.36363636363637" cy="119.1" r="5" fill="#ffffff" stroke="#0f2340" stroke-width="2"></circle></g><text x="136.36363636363637" y="107.1" text-anchor="middle" font-size="12.5" font-weight="700" fill="#0f2340">18</text><text x="136.36363636363637" y="226" text-anchor="middle" font-size="11.5" fill="#7a8fac">25 links</text><g><title>α = 0.1: 32 of 40 metros in the largest connected piece, 59 links kept</title><circle cx="224.72727272727272" cy="62.400000000000006" r="5" fill="#ffffff" stroke="#0f2340" stroke-width="2"></circle></g><text x="224.72727272727272" y="50.400000000000006" text-anchor="middle" font-size="12.5" font-weight="700" fill="#0f2340">32</text><text x="224.72727272727272" y="226" text-anchor="middle" font-size="11.5" fill="#7a8fac">59 links</text><g><title>α = 0.2: 40 of 40 metros in the largest connected piece, 180 links kept</title><circle cx="401.45454545454544" cy="30" r="6.5" fill="#0f2340" stroke="#0f2340" stroke-width="2"></circle></g><text x="401.45454545454544" y="50" text-anchor="middle" font-size="12.5" font-weight="700" fill="#0f2340">40</text><text x="401.45454545454544" y="226" text-anchor="middle" font-size="11.5" fill="#7a8fac">180 links</text><text x="413.45454545454544" y="20" text-anchor="start" font-size="11.5" fill="#46618a">shown on the map above</text><g><title>α = 0.3: 40 of 40 metros in the largest connected piece, 419 links kept</title><circle cx="578.1818181818181" cy="30" r="5" fill="#ffffff" stroke="#0f2340" stroke-width="2"></circle></g><text x="578.1818181818181" y="50" text-anchor="middle" font-size="12.5" font-weight="700" fill="#0f2340">40</text><text x="578.1818181818181" y="226" text-anchor="middle" font-size="11.5" fill="#7a8fac">419 links</text><g><title>α = 0.5: 40 of 40 metros in the largest connected piece, 668 links kept</title><circle cx="931.6363636363636" cy="30" r="5" fill="#ffffff" stroke="#0f2340" stroke-width="2"></circle></g><text x="931.6363636363636" y="50" text-anchor="middle" font-size="12.5" font-weight="700" fill="#0f2340">40</text><text x="931.6363636363636" y="226" text-anchor="middle" font-size="11.5" fill="#7a8fac">668 links</text></svg></div>
+</div>
+<div class="notice">
+<span class="ico">💡</span>
+<span>
+<b>What to notice</b>
+<span id="place-snap-note">Below α = 0.1 the <span class="w4-term"><button aria-describedby="w4-term-x-giant" type="button">giant component</button><span class="w4-pop" id="w4-term-x-giant" role="tooltip">The largest piece of the map in which every metro can reach every other along kept links.</span></span> drops from 32 metros to 18; at α = 0.05 it keeps 25 links. The largest to fall off: Boston, Los Angeles, Detroit and 11 more.</span>
+</span>
+</div>
+
+<div class="rx-drawers rx-foot">
+                  <details class="rx-drawer"><summary>Background</summary><div class="rx-drawer-body"><p>With every link the map is one blob. Cities are linked when they share an employer.</p><p>Metros in grey have fallen out of the largest connected piece. Colours are section 1's three metro groups. Click a metro to select it.</p></div></details><details class="rx-drawer"><summary>Method</summary><div class="rx-drawer-body"><p class="sub">
+                    Two metros are linked when a company files in both; the
+                    weight adds up, over those companies, the smaller of its two
+                    filing counts. One weight threshold would keep the links among
+                    the big hubs and cut a mid-size metro's strongest tie, which
+                    is light next to New York and Dallas. The disparity filter
+                    keeps a link when it carries an unusually large share of
+                    either endpoint's weight at level α, the method the course
+                    used for the philosophers backbone.
+                  </p>
+<table class="ego">
+<thead>
+<tr>
+<th>α</th>
+<th style="text-align: right" class="num">Edges kept</th>
+<th style="text-align: right" class="num">Giant component</th>
+</tr>
+</thead>
+<tbody id="place-alpha-table"><tr><td>0.05</td><td style="text-align:right" class="num"><span class="rx-cell"><span class="rx-bar"><i style="width: 3.7%"></i></span><span>25</span></span></td><td style="text-align:right" class="num">18</td></tr><tr><td>0.1</td><td style="text-align:right" class="num"><span class="rx-cell"><span class="rx-bar"><i style="width: 8.8%"></i></span><span>59</span></span></td><td style="text-align:right" class="num">32</td></tr><tr style="font-weight:700;background:#f7fafd"><td>0.2</td><td style="text-align:right" class="num"><span class="rx-cell"><span class="rx-bar"><i style="width: 26.9%"></i></span><span>180</span></span></td><td style="text-align:right" class="num">40</td></tr><tr><td>0.3</td><td style="text-align:right" class="num"><span class="rx-cell"><span class="rx-bar"><i style="width: 62.7%"></i></span><span>419</span></span></td><td style="text-align:right" class="num">40</td></tr><tr><td>0.5</td><td style="text-align:right" class="num"><span class="rx-cell"><span class="rx-bar"><i style="width: 100.0%"></i></span><span>668</span></span></td><td style="text-align:right" class="num">40</td></tr></tbody>
+</table><p><span id="place-alpha-choice">The map opens at α = 0.2, the smallest α in the sweep that keeps all 40 metros connected, with 180 links. At α = 0.1 it keeps 59 links and 32 connected metros; at α = 0.3, 419 links.</span></p></div></details></div>
+</div></div><div class="rx-panel" style="display: {{d1}}"><div class="card w4-card" id="place-longhaul">
+<header class="w4-q">
+<span class="w4-num">2</span>
+<div>
+<h2>Do the same employers tie distant cities together?</h2>
+<p class="w4-answer">Mostly not: a single company rarely carries a long link.</p>
+</div>
+</header>
+<p class="sub">
+                The shortlist is the five firms that <span class="w4-term"><button aria-describedby="w4-term-x-place" type="button">place</button><span class="w4-pop" id="w4-term-x-place" role="tooltip">The firm files for the worker, then sends them to work at a client company’s site.</span></span> the most filings at
+                client sites.
+              </p>
+<div class="longhaul-stack">
+<div class="plot">
+<h3>Distance vs weight</h3>
+<p class="axis-note">
+                    Each point is a link in the backbone at α = 0.2, the default
+                    above; size grows with its weight.
+                  </p>
+<div class="chart-host" id="chart-longhaul" style="user-select: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0); position: relative;"><img alt="" src="/_blob/b23c251c71caa4f74a086a7313b1256e" style="display:block;width:100%;height:100%;object-fit:contain"/></div>
+</div>
+<div class="plot">
+<h3>One employer’s map</h3>
+<p class="axis-note">
+                    The backbone links (α = 0.2) this company leads: of all the
+                    companies filing in both cities, it adds the most to the
+                    link's weight.
+                  </p>
+<div class="select-row">
+<label for="place-employer">Employer</label>
+<select id="place-employer"><option value="Cognizant">Cognizant · 49 links</option><option value="Amazon">Amazon · 47 links</option><option value="EY">EY · 17 links</option><option value="Tata Consultancy Services">Tata Consultancy Services · 13 links</option><option value="Deloitte">Deloitte · 12 links</option><option value="Intel">Intel · 6 links</option></select>
+</div>
+<div class="chart-host map w4-has-reset" id="chart-arcs" style="user-select: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0); position: relative;"><img alt="" src="/_blob/c010cc5bc85fb0b440b49c28d96e5a36" style="display:block;width:100%;height:100%;object-fit:contain"/></div>
+</div>
+</div>
+<div class="notice">
+<span class="ico">💡</span>
+<span>
+<b>What to notice</b>
+                  Of the 83 backbone links longer than 1,500 km, the shortlist
+                  leads 22 (27%); it leads 47 of the 97 shorter ones (48%).
+                </span>
+</div>
+
+<div class="rx-drawers rx-foot">
+                  <details class="rx-drawer"><summary>Background</summary><div class="rx-drawer-body"><p>The shortlist holds the five largest placing firms: Tata Consultancy Services, Cognizant, Infosys, HCL and Compunnel. The staffing section follows them to their clients.</p></div></details>
+                  <details class="rx-drawer"><summary>Method</summary><div class="rx-drawer-body"><p>In the distance chart, a label names a company on its heaviest link over 1,500 km, for the five heaviest; hover any point for its own. The legend separates links led by the shortlist from links led by any other company; click a point to select a city.</p><p>In the employer map, the list holds the six companies that lead the most links. Click a city to select it.</p></div></details>
+                  <details class="rx-drawer"><summary>More numbers</summary><div class="rx-drawer-body"><p>Big direct employers lead the long links, Amazon above all. Distant metros are tied by many companies filing in both.</p><p>Amazon leads the most long links (30), then Cognizant (17), EY (8) and Deloitte (7). The leading company carries a median 14% of a long link's weight, and only one long link, San Jose to Fayetteville (Walmart), has a company with half of it.</p></div></details>
+                </div>
+</div></div><div class="rx-panel" style="display: {{d2}}"><div class="card w4-card" id="deeper-density">
+<header class="w4-q">
+<span class="w4-num">3</span>
+<div>
+<h2>Where is the hiring densest? Filings per 1,000 jobs</h2>
+<p class="w4-answer">San Jose, at 42.9 filings per 1,000 jobs, against New York's 6.9.</p>
+</div>
+</header>
+<div class="w4-two">
+<div>
+<p class="sub">Section 1 counts filings.</p>
+
+
+<div class="notice"><span class="ico">💡</span><span><b>What to notice</b> Nationally there are 4.5 filings per 1,000 jobs; San Jose files 42.9, nearly ten times that, while New York, the largest filer, sits at 6.9.</span></div>
+<div class="rx-drawers rx-foot"><details class="rx-drawer"><summary>Method</summary><div class="rx-drawer-body"><p>Divide each metro's 2025 filings by its jobs in the Bureau of Labor Statistics' May 2025 employment survey (OEWS) and the map shifts: nationally it is 4.5 filings per 1,000 jobs.</p><p>A filing is a request, not a hire, so a rate can run high.</p></div></details><details class="rx-drawer"><summary>More numbers</summary><div class="rx-drawer-body"><p>Among the 203 metros with 100,000 jobs
+                          or more, count and density rank alike (<span class="w4-term"><button aria-describedby="w4-term-x-spearman" type="button">Spearman</button><span class="w4-pop" id="w4-term-x-spearman" role="tooltip">A rank correlation: how closely two orderings agree. Higher means closer.</span></span> 0.90), yet
+                          only 5 of the 10 largest by count stay in the top 10 by
+                          density: Dallas, San Jose, San Francisco, Seattle and Austin.
+                          For software developers alone the national rate is 139
+                          filings per 1,000 jobs, and Fayetteville, Arkansas, the metro
+                          around Bentonville, reaches 896, 6.4 times the national share. New York files the most, 65,935; Trenton files 17.2 and Seattle 16.8 per 1,000 jobs.</p></div></details></div>
+</div>
+<figure class="w4-figure">
+<figcaption><b>Filings per 1,000 jobs</b><span>The ten densest metros with 100,000 jobs or more, and New York (outlined), which files the most. Dashed: the national rate.</span></figcaption>
+<div class="w4-figure-body" data-more="density"><svg viewBox="0 0 504 360" width="504" height="360" role="img" aria-label="Certified H-1B filings per 1,000 jobs by metro" class="w4-strip"><line x1="98" y1="4" x2="98" y2="316" stroke="#e6ecf3" stroke-width="1"></line><text x="98" y="332" font-size="11.5" fill="#7a8fac" text-anchor="middle">0</text><line x1="177.11111111111111" y1="4" x2="177.11111111111111" y2="316" stroke="#e6ecf3" stroke-width="1"></line><text x="177.11111111111111" y="332" font-size="11.5" fill="#7a8fac" text-anchor="middle">10</text><line x1="256.22222222222223" y1="4" x2="256.22222222222223" y2="316" stroke="#e6ecf3" stroke-width="1"></line><text x="256.22222222222223" y="332" font-size="11.5" fill="#7a8fac" text-anchor="middle">20</text><line x1="335.33333333333337" y1="4" x2="335.33333333333337" y2="316" stroke="#e6ecf3" stroke-width="1"></line><text x="335.33333333333337" y="332" font-size="11.5" fill="#7a8fac" text-anchor="middle">30</text><line x1="414.44444444444446" y1="4" x2="414.44444444444446" y2="316" stroke="#e6ecf3" stroke-width="1"></line><text x="414.44444444444446" y="332" font-size="11.5" fill="#7a8fac" text-anchor="middle">40</text><line x1="133.54462222222222" y1="4" x2="133.54462222222222" y2="316" stroke="#46618a" stroke-width="1.4" stroke-dasharray="3 2"></line><text x="133.54462222222222" y="346" font-size="11.5" fill="#46618a" font-weight="400" text-anchor="middle">national 4.5</text><text x="0" y="26.5" font-size="12.5" fill="#0f2340" font-weight="700">San Jose</text><line x1="98" y1="22" x2="454" y2="22" stroke="#dce5f0" stroke-width="1"></line><rect x="98" y="14" width="339.4024888888889" height="16" rx="3" fill="#0f2340"><title>San Jose, CA: 42.9 certified filings per 1,000 jobs</title></rect><text x="443.4024888888889" y="26.5" font-size="12.5" font-weight="700" fill="#0f2340">42.9</text><text x="0" y="54.5" font-size="12.5" fill="#0f2340" font-weight="600">Trenton</text><line x1="98" y1="50" x2="454" y2="50" stroke="#dce5f0" stroke-width="1"></line><rect x="98" y="42" width="135.7625777777778" height="16" rx="3" fill="#7a8fac"><title>Trenton, NJ: 17.2 certified filings per 1,000 jobs</title></rect><text x="239.7625777777778" y="54.5" font-size="12.5" font-weight="700" fill="#0f2340">17.2</text><text x="0" y="82.5" font-size="12.5" fill="#0f2340" font-weight="600">Seattle</text><line x1="98" y1="78" x2="454" y2="78" stroke="#dce5f0" stroke-width="1"></line><rect x="98" y="70" width="133.04115555555555" height="16" rx="3" fill="#7a8fac"><title>Seattle, WA: 16.8 certified filings per 1,000 jobs</title></rect><text x="237.04115555555555" y="82.5" font-size="12.5" font-weight="700" fill="#0f2340">16.8</text><text x="0" y="110.5" font-size="12.5" fill="#0f2340" font-weight="600">Austin</text><line x1="98" y1="106" x2="454" y2="106" stroke="#dce5f0" stroke-width="1"></line><rect x="98" y="98" width="122.4798222222222" height="16" rx="3" fill="#7a8fac"><title>Austin, TX: 15.5 certified filings per 1,000 jobs</title></rect><text x="226.4798222222222" y="110.5" font-size="12.5" font-weight="700" fill="#0f2340">15.5</text><text x="0" y="138.5" font-size="12.5" fill="#0f2340" font-weight="600">San Francisco</text><line x1="98" y1="134" x2="454" y2="134" stroke="#dce5f0" stroke-width="1"></line><rect x="98" y="126" width="118.80115555555557" height="16" rx="3" fill="#7a8fac"><title>San Francisco, CA: 15.0 certified filings per 1,000 jobs</title></rect><text x="222.80115555555557" y="138.5" font-size="12.5" font-weight="700" fill="#0f2340">15.0</text><text x="0" y="166.5" font-size="12.5" fill="#0f2340" font-weight="600">Dallas</text><line x1="98" y1="162" x2="454" y2="162" stroke="#dce5f0" stroke-width="1"></line><rect x="98" y="154" width="106.86328888888889" height="16" rx="3" fill="#7a8fac"><title>Dallas, TX: 13.5 certified filings per 1,000 jobs</title></rect><text x="210.8632888888889" y="166.5" font-size="12.5" font-weight="700" fill="#0f2340">13.5</text><text x="0" y="194.5" font-size="12.5" fill="#0f2340" font-weight="600">Fayetteville</text><line x1="98" y1="190" x2="454" y2="190" stroke="#dce5f0" stroke-width="1"></line><rect x="98" y="182" width="102.71786666666668" height="16" rx="3" fill="#7a8fac"><title>Fayetteville, AR: 13.0 certified filings per 1,000 jobs</title></rect><text x="206.71786666666668" y="194.5" font-size="12.5" font-weight="700" fill="#0f2340">13.0</text><text x="0" y="222.5" font-size="12.5" fill="#0f2340" font-weight="600">Raleigh</text><line x1="98" y1="218" x2="454" y2="218" stroke="#dce5f0" stroke-width="1"></line><rect x="98" y="210" width="99.26862222222223" height="16" rx="3" fill="#7a8fac"><title>Raleigh, NC: 12.5 certified filings per 1,000 jobs</title></rect><text x="203.26862222222223" y="222.5" font-size="12.5" font-weight="700" fill="#0f2340">12.5</text><text x="0" y="250.5" font-size="12.5" fill="#0f2340" font-weight="600">Durham</text><line x1="98" y1="246" x2="454" y2="246" stroke="#dce5f0" stroke-width="1"></line><rect x="98" y="238" width="81.35786666666667" height="16" rx="3" fill="#7a8fac"><title>Durham, NC: 10.3 certified filings per 1,000 jobs</title></rect><text x="185.35786666666667" y="250.5" font-size="12.5" font-weight="700" fill="#0f2340">10.3</text><text x="0" y="278.5" font-size="12.5" fill="#0f2340" font-weight="600">Stockton</text><line x1="98" y1="274" x2="454" y2="274" stroke="#dce5f0" stroke-width="1"></line><rect x="98" y="266" width="64.53884444444444" height="16" rx="3" fill="#7a8fac"><title>Stockton, CA: 8.2 certified filings per 1,000 jobs</title></rect><text x="168.53884444444444" y="278.5" font-size="12.5" font-weight="700" fill="#0f2340">8.2</text><text x="0" y="306.5" font-size="12.5" fill="#0f2340" font-weight="600">New York</text><line x1="98" y1="302" x2="454" y2="302" stroke="#dce5f0" stroke-width="1"></line><rect x="98" y="294" width="54.95057777777777" height="16" rx="3" fill="none" stroke="#0f2340" stroke-width="1.6"><title>New York, NY: 6.9 certified filings per 1,000 jobs, files the most in the count</title></rect><text x="158.95057777777777" y="306.5" font-size="12.5" font-weight="700" fill="#0f2340">6.9</text></svg></div>
+</figure>
+</div>
+</div></div><div class="rx-panel" style="display: {{d3}}"><div class="card w4-card"><p class="w4-box-intro">The course's week 4 community methods, run on section 1's 40 metros. Each tab steps through one method, so you can watch where its groups come from and set them against <span class="w4-term"><button aria-describedby="w4-term-x-louvain" type="button">Louvain's</button><span class="w4-pop" id="w4-term-x-louvain" role="tooltip">A method that finds groups by moving each metro to the neighbouring group that raises modularity most, then merging the groups and repeating.</span></span>.</p><div class="w4m" id="w4m-root">
+<div class="w4m-tabs"><button aria-pressed="true" class="w4m-tab" data-panel="gn" type="button" onClick="{{pick3}}">Girvan–Newman</button><button aria-pressed="false" class="w4m-tab" data-panel="mod" type="button" onClick="{{pick4}}">Modularity</button><button aria-pressed="false" class="w4m-tab" data-panel="greedy" type="button" onClick="{{pick8}}">Greedy</button><button aria-pressed="false" class="w4m-tab" data-panel="louvain" type="button" onClick="{{pick5}}">Louvain</button><button aria-pressed="false" class="w4m-tab" data-panel="overlap" type="button" onClick="{{pick6}}">Overlap</button></div>
+<section aria-labelledby="w4m-tab-gn" class="w4m-panel" data-panel="gn" id="w4m-panel-gn">
+<p class="w4m-eyebrow">Explore · after the course's week 4</p>
+<h3 class="w4m-title" id="w4m-gn-title">Girvan–Newman, one cut at a time</h3>
+<p class="w4m-lead" id="w4m-gn-lead">Cut the link that carries the most shortest paths, recompute, repeat, and keep the level of pieces with the highest <span class="w4-term"><button aria-describedby="w4-term-x-modularity" type="button">modularity</button><span class="w4-pop" id="w4-term-x-modularity" role="tooltip">How much more of the link weight falls inside the groups than chance would put there. Higher means sharper groups.</span></span>. On the 180 backbone links it finds no groups.</p>
+<div aria-label="Girvan–Newman controls" class="w4m-controls" role="group">
+<button class="w4m-btn primary" data-act="step" type="button">Step</button>
+<button class="w4m-btn" data-act="split" type="button">Next split</button>
+<button class="w4m-btn" data-act="back" type="button">Back</button>
+<button class="w4m-btn" data-act="reset" type="button">Reset</button>
+</div>
+<div class="w4m-grid">
+<div class="w4m-map" id="w4m-gn-map" style="user-select: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0); position: relative;"><img alt="" src="/_blob/8c0b57aa7801fe9c343be3159ae4f279" style="display:block;width:100%;height:100%;object-fit:contain"/></div>
+<div aria-live="polite" class="w4m-side">
+<div class="w4m-stats">
+<div class="w4m-stat"><b id="w4m-gn-step">0 of 180</b><span>links removed</span></div>
+<div class="w4m-stat"><b id="w4m-gn-comps">1</b><span>pieces, largest first: <span id="w4m-gn-sizes">40</span></span></div>
+</div>
+<div class="w4m-rows">
+<div class="w4m-row"><span>Next to go</span><b id="w4m-gn-next">New York–Salt Lake City</b></div>
+<div class="w4m-row"><span>Its edge betweenness</span><b id="w4m-gn-bet">19.5</b></div>
+<div class="w4m-row"><span>Modularity of these pieces</span><b id="w4m-gn-q">0.0000</b></div>
+</div>
+<p class="w4m-note">Thick line: the next link to go, the one carrying the most shortest paths. Dashed: links already cut. Hollow dots: metros cut off on their own.</p>
+</div>
+</div>
+<figure class="w4m-figure">
+<figcaption>
+<span class="w4m-fig-title">Modularity after each split</span>
+<span class="w4m-fig-caption" id="w4m-gn-caption">No split scores above zero: the best, which cuts off only Salt Lake City, scores -0.0001. The ring marks where you are.</span>
+</figcaption>
+<svg class="w4m-chart" id="w4m-gn-chart" role="img" viewBox="0 0 1094 198" preserveAspectRatio="none"><title>Modularity of the pieces after each split</title>
+<line x1="56" y1="162.0" x2="1074" y2="162.0" stroke="#dce5f0" stroke-width="1"></line>
+<text x="48" y="166.0" font-size="11.5" fill="#7a8fac" text-anchor="end">-0.14</text>
+<line x1="56" y1="125.5" x2="1074" y2="125.5" stroke="#dce5f0" stroke-width="1"></line>
+<text x="48" y="129.5" font-size="11.5" fill="#7a8fac" text-anchor="end">-0.11</text>
+<line x1="56" y1="89.0" x2="1074" y2="89.0" stroke="#dce5f0" stroke-width="1"></line>
+<text x="48" y="93.0" font-size="11.5" fill="#7a8fac" text-anchor="end">-0.07</text>
+<line x1="56" y1="52.5" x2="1074" y2="52.5" stroke="#dce5f0" stroke-width="1"></line>
+<text x="48" y="56.5" font-size="11.5" fill="#7a8fac" text-anchor="end">-0.03</text>
+<line x1="56" y1="16.0" x2="1074" y2="16.0" stroke="#dce5f0" stroke-width="1"></line>
+<text x="48" y="20.0" font-size="11.5" fill="#7a8fac" text-anchor="end">0.01</text>
+<line x1="56" y1="28.2" x2="1074" y2="28.2" stroke="#7a8fac" stroke-width="1.4" stroke-dasharray="5 4"></line>
+<text x="1074" y="22.2" font-size="11.5" fill="#46618a" text-anchor="end">0: the backbone as one piece</text>
+<path d="M56.0 28.2 L82.1 28.3 L108.2 28.4 L134.3 28.5 L160.4 28.9 L186.5 29.4 L212.6 30.3 L238.7 31.5 L264.8 32.4 L290.9 33.5 L317.0 34.8 L343.1 36.7 L369.2 38.8 L395.3 41.7 L421.4 45.2 L447.5 48.0 L473.6 52.0 L499.7 57.4 L525.8 64.2 L551.9 69.1 L578.1 75.0 L604.2 81.3 L630.3 87.9 L656.4 94.9 L682.5 102.3 L708.6 109.9 L734.7 118.0 L760.8 124.8 L786.9 129.1 L813.0 129.3 L839.1 140.6 L865.2 141.3 L891.3 149.8 L917.4 146.1 L943.5 101.9 L969.6 108.1 L995.7 81.3 L1021.8 77.6 L1047.9 79.5 L1074.0 74.6" fill="none" stroke="#0f2340" stroke-width="2"></path>
+<text x="1074" y="192" font-size="11.5" fill="#7a8fac" text-anchor="end">split →</text>
+<line class="w4m-marker-line" x1="56.0" y1="12" x2="56.0" y2="162" stroke="#14618f" stroke-width="1.4"></line>
+<circle class="w4m-marker-dot" cx="56.0" cy="28.2" r="5.5" fill="#ffffff" stroke="#14618f" stroke-width="2"></circle></svg>
+</figure>
+</section>
+
+
+
+</div>
+<div class="rx-drawers rx-foot"><details class="rx-drawer"><summary>Background</summary><div class="rx-drawer-body"><p>New York and Dallas link to every other metro, so each split strands a single metro, starting with Salt Lake City.</p></div></details></div>
+</div></div><div class="rx-panel" style="display: {{d4}}"><div class="card w4-card"><div class="w4m" id="w4m-root">
+<div class="w4m-tabs"><button aria-pressed="false" class="w4m-tab" data-panel="gn" type="button" onClick="{{pick3}}">Girvan–Newman</button><button aria-pressed="true" class="w4m-tab" data-panel="mod" type="button" onClick="{{pick4}}">Modularity</button><button aria-pressed="false" class="w4m-tab" data-panel="greedy" type="button" onClick="{{pick8}}">Greedy</button><button aria-pressed="false" class="w4m-tab" data-panel="louvain" type="button" onClick="{{pick5}}">Louvain</button><button aria-pressed="false" class="w4m-tab" data-panel="overlap" type="button" onClick="{{pick6}}">Overlap</button></div>
+
+<section aria-labelledby="w4m-tab-mod" class="w4m-panel" data-panel="mod" id="w4m-panel-mod">
+<p class="w4m-eyebrow">Explore · after the course's week 4</p>
+<h3 class="w4m-title">Move a metro, watch modularity</h3>
+<p class="w4m-lead" id="w4m-mod-lead">Click a metro to move it to the next group and watch modularity, the share of link weight inside the groups minus what chance would put there. Louvain’s three groups score 0.049; shuffled labels, or one big group, score about zero. Census regions, the grouping a reader might call right, score only 0.002: modularity says how grouped a split is, not whether it is the right one.</p>
+<div aria-label="Modularity controls" class="w4m-controls" role="group">
+<button class="w4m-btn primary" data-act="reset" type="button">Louvain's groups</button>
+<button class="w4m-btn" data-act="shuffle" type="button">Shuffle the labels</button>
+<button class="w4m-btn" data-act="one" type="button">Everyone in one group</button>
+<button class="w4m-btn" data-act="census" type="button">Census regions</button>
+</div>
+<div class="w4m-grid">
+<div class="w4m-map" id="w4m-mod-map" style="user-select: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0); position: relative;"><img alt="" src="/_blob/80b8daae1bf00e4b17bdd30b5679fbce" style="display:block;width:100%;height:100%;object-fit:contain"/></div>
+<div aria-live="polite" class="w4m-side">
+<div class="w4m-stats">
+<div class="w4m-stat"><b id="w4m-mod-q">0.049</b><span id="w4m-mod-q-label">modularity of your three groups, on all 780 weighted links</span></div>
+</div>
+<svg class="w4m-strip" id="w4m-mod-strip" role="img" viewBox="0 0 432 70" preserveAspectRatio="none"><title>Your modularity against the rewired networks and Louvain’s</title>
+<line x1="12" y1="30" x2="420" y2="30" stroke="#dce5f0" stroke-width="1"></line>
+<rect x="156.2" y="24" width="10.9" height="12" rx="6" fill="rgba(185, 196, 210, 0.62)"></rect>
+<line x1="161.6" y1="21" x2="161.6" y2="39" stroke="#7a8fac" stroke-width="2"></line>
+<text x="161.6" y="54" font-size="11.5" fill="#46618a" text-anchor="middle">rewired 0.013</text>
+<line x1="324.8" y1="16" x2="324.8" y2="44" stroke="#46618a" stroke-width="1.3" stroke-dasharray="3 2"></line>
+<text x="324.8" y="12" font-size="11.5" fill="#46618a" text-anchor="middle">Louvain 0.049</text>
+<text x="12.0" y="68" font-size="11.5" fill="#7a8fac" text-anchor="middle">-0.02</text>
+<text x="102.7" y="68" font-size="11.5" fill="#7a8fac" text-anchor="middle">0.00</text>
+<text x="193.3" y="68" font-size="11.5" fill="#7a8fac" text-anchor="middle">0.02</text>
+<text x="284.0" y="68" font-size="11.5" fill="#7a8fac" text-anchor="middle">0.04</text>
+<text x="374.7" y="68" font-size="11.5" fill="#7a8fac" text-anchor="middle">0.06</text>
+<line x1="112.2" y1="18" x2="112.2" y2="42" stroke="#14618f" stroke-width="2"></line><text x="112.2" y="12" font-size="11.5" fill="#14618f" text-anchor="middle">Census 0.002</text><circle class="w4m-strip-mk" cx="324.9" cy="30" r="7" fill="#0f2340" stroke="#ffffff" stroke-width="2"></circle></svg>
+<div class="w4m-rows">
+<div class="w4m-row"><span>Metros per group</span><b id="w4m-mod-sizes">7 · 8 · 25</b></div>
+<div class="w4m-row"><span>Last move</span><b id="w4m-mod-last">none yet</b></div>
+</div>
+<p class="w4m-note">Grey band: rewired networks in which each company keeps its number of metros, Louvain's best on each, mean and one standard deviation.</p>
+</div>
+</div>
+<figure class="w4m-figure"><figcaption><span class="w4m-fig-title">The formula</span><span class="w4m-fig-caption">For each group c: the share of all link weight that falls inside it, minus the share a network with the same metro totals would put there by chance. New York–Dallas adds 0.006, San Jose–San Francisco adds 0.019, Detroit–Phoenix adds 0.024, 0.049 in all.</span></figcaption><p style="margin:4px 0 0;font-size:var(--fs-strong);color:#0f2340">Q = Σ<sub>c</sub> [ w<sub>c</sub> / W − ( s<sub>c</sub> / 2W )² ]<span style="margin-left:16px;font-size:var(--fs-small);color:#46618a">w<sub>c</sub>: filing weight inside c · s<sub>c</sub>: the summed strength of its metros · W: all 780 links, 1,234,499</span></p></figure></section>
+</div></div></div><div class="rx-panel" style="display: {{d5}}"><div class="card w4-card"><div class="w4m" id="w4m-root">
+<div class="w4m-tabs"><button aria-pressed="false" class="w4m-tab" data-panel="gn" type="button" onClick="{{pick3}}">Girvan–Newman</button><button aria-pressed="false" class="w4m-tab" data-panel="mod" type="button" onClick="{{pick4}}">Modularity</button><button aria-pressed="false" class="w4m-tab" data-panel="greedy" type="button" onClick="{{pick8}}">Greedy</button><button aria-pressed="true" class="w4m-tab" data-panel="louvain" type="button" onClick="{{pick5}}">Louvain</button><button aria-pressed="false" class="w4m-tab" data-panel="overlap" type="button" onClick="{{pick6}}">Overlap</button></div>
+
+
+<section aria-labelledby="w4m-tab-louvain" class="w4m-panel" data-panel="louvain" id="w4m-panel-louvain">
+<p class="w4m-eyebrow">Explore · after the course's week 4</p>
+<h3 class="w4m-title">Louvain, move by move</h3>
+<p class="w4m-lead" id="w4m-louvain-lead">Louvain starts with every metro alone and moves one at a time to the neighbouring community that raises modularity most. In this run, 43 moves over four sweeps land on the page’s three metro groups.</p>
+<div aria-label="Louvain controls" class="w4m-controls" role="group">
+<button class="w4m-btn primary" data-act="step" type="button">Step</button>
+<button class="w4m-btn" data-act="level" type="button">Finish this level</button>
+<button class="w4m-btn" data-act="back" type="button">Back</button>
+<button class="w4m-btn" data-act="reset" type="button">Reset</button>
+</div>
+<div class="w4m-grid">
+<div class="w4m-map" id="w4m-louvain-map" style="user-select: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0); position: relative;"><img alt="" src="/_blob/ac4a2345488eff7537d7025949b9fd32" style="display:block;width:100%;height:100%;object-fit:contain"/></div>
+<div aria-live="polite" class="w4m-side">
+<div class="w4m-stats">
+<div class="w4m-stat"><b id="w4m-louvain-q">-0.036</b><span>modularity after this move</span></div>
+<div class="w4m-stat"><b id="w4m-louvain-n">40</b><span>communities</span></div>
+</div>
+<div class="w4m-rows">
+<div class="w4m-row"><span>Move</span><b id="w4m-louvain-step">0 of 43</b></div>
+<div class="w4m-row"><span>Level</span><b id="w4m-louvain-level">1</b></div>
+<div class="w4m-row"><span>Moved</span><b id="w4m-louvain-moved">none yet</b></div>
+<div class="w4m-row"><span>Gain in modularity</span><b id="w4m-louvain-gain">–</b></div>
+</div>
+<p class="w4m-note">Hollow dots are alone in their community. A community of two or more takes the colour of the metro group most of its members end in.</p>
+</div>
+</div>
+<figure class="w4m-figure">
+<figcaption>
+<span class="w4m-fig-title">Modularity after each move</span>
+<span class="w4m-fig-caption">The dashed line is where Louvain lands on rewired networks. The ring marks the current move.</span>
+</figcaption>
+<svg class="w4m-chart" id="w4m-louvain-chart" role="img" viewBox="0 0 1094 198" preserveAspectRatio="none"><title>Modularity after each move</title>
+<line x1="56" y1="162.0" x2="1074" y2="162.0" stroke="#dce5f0" stroke-width="1"></line>
+<text x="48" y="166.0" font-size="11.5" fill="#7a8fac" text-anchor="end">-0.04</text>
+<line x1="56" y1="125.5" x2="1074" y2="125.5" stroke="#dce5f0" stroke-width="1"></line>
+<text x="48" y="129.5" font-size="11.5" fill="#7a8fac" text-anchor="end">-0.02</text>
+<line x1="56" y1="89.0" x2="1074" y2="89.0" stroke="#dce5f0" stroke-width="1"></line>
+<text x="48" y="93.0" font-size="11.5" fill="#7a8fac" text-anchor="end">0.01</text>
+<line x1="56" y1="52.5" x2="1074" y2="52.5" stroke="#dce5f0" stroke-width="1"></line>
+<text x="48" y="56.5" font-size="11.5" fill="#7a8fac" text-anchor="end">0.03</text>
+<line x1="56" y1="16.0" x2="1074" y2="16.0" stroke="#dce5f0" stroke-width="1"></line>
+<text x="48" y="20.0" font-size="11.5" fill="#7a8fac" text-anchor="end">0.06</text>
+<line x1="56" y1="79.7" x2="1074" y2="79.7" stroke="#7a8fac" stroke-width="1.4" stroke-dasharray="5 4"></line>
+<text x="1074" y="73.7" font-size="11.5" fill="#46618a" text-anchor="end">rewired networks 0.013</text>
+<path d="M56.0 149.8 L79.7 146.4 L103.3 144.7 L127.0 144.0 L150.7 132.7 L174.4 132.0 L198.0 131.7 L221.7 131.3 L245.4 119.7 L269.1 113.8 L292.7 113.4 L316.4 112.5 L340.1 106.0 L363.8 105.2 L387.4 103.8 L411.1 102.5 L434.8 101.7 L458.5 98.7 L482.1 95.4 L505.8 94.8 L529.5 92.2 L553.2 90.3 L576.8 89.1 L600.5 84.4 L624.2 67.2 L647.9 65.0 L671.5 63.3 L695.2 61.1 L718.9 58.0 L742.6 54.9 L766.2 52.1 L789.9 51.0 L813.6 49.1 L837.3 45.6 L860.9 43.3 L884.6 42.5 L908.3 39.8 L932.0 38.9 L955.6 36.3 L979.3 33.5 L1003.0 30.7 L1026.7 28.9 L1050.3 28.4 L1074.0 28.2" fill="none" stroke="#0f2340" stroke-width="2"></path>
+<text x="1074" y="192" font-size="11.5" fill="#7a8fac" text-anchor="end">move →</text>
+<line class="w4m-marker-line" x1="56.0" y1="12" x2="56.0" y2="162" stroke="#14618f" stroke-width="1.4"></line>
+<circle class="w4m-marker-dot" cx="56.0" cy="149.8" r="5.5" fill="#ffffff" stroke="#14618f" stroke-width="2"></circle></svg>
+</figure>
+</section>
+
+</div>
+<div class="rx-drawers rx-foot"><details class="rx-drawer"><summary>Method</summary><div class="rx-drawer-body"><p>The run uses seed 0 and all 780 weighted links. The moves lift <span class="w4-term"><button aria-describedby="w4-term-x-q" type="button">Q</button><span class="w4-pop" id="w4-term-x-q" role="tooltip">The usual symbol for modularity.</span></span> from -0.036 to 0.049; the second level finds nothing to merge.</p></div></details></div>
+</div></div><div class="rx-panel" style="display: {{d6}}"><div class="card w4-card"><div class="w4m" id="w4m-root">
+<div class="w4m-tabs"><button aria-pressed="false" class="w4m-tab" data-panel="gn" type="button" onClick="{{pick3}}">Girvan–Newman</button><button aria-pressed="false" class="w4m-tab" data-panel="mod" type="button" onClick="{{pick4}}">Modularity</button><button aria-pressed="false" class="w4m-tab" data-panel="greedy" type="button" onClick="{{pick8}}">Greedy</button><button aria-pressed="false" class="w4m-tab" data-panel="louvain" type="button" onClick="{{pick5}}">Louvain</button><button aria-pressed="true" class="w4m-tab" data-panel="overlap" type="button" onClick="{{pick6}}">Overlap</button></div>
+
+
+
+<section aria-labelledby="w4m-tab-overlap" class="w4m-panel" data-panel="overlap" id="w4m-panel-overlap">
+<p class="w4m-eyebrow">Explore · after the course's week 4</p>
+<h3 class="w4m-title">Overlap: k-cliques and link communities</h3>
+<p class="w4m-lead" id="w4m-overlap-lead">A partition puts each metro in one group; these two methods let it sit in several. <span class="w4-term"><button aria-describedby="w4-term-x-clique" type="button">Clique percolation</button><span class="w4-pop" id="w4-term-x-clique" role="tooltip">Grows groups from cliques: sets of k metros that all link to each other. Cliques that overlap in almost every metro join the same group.</span></span> finds a single community at every k from 3 to 6.</p>
+<div aria-label="Overlap controls" class="w4m-controls" id="w4m-overlap-modes" role="group">
+<button aria-pressed="true" class="w4m-btn segment" data-mode="link" type="button">Link communities</button>
+<button aria-pressed="false" class="w4m-btn segment" data-mode="k3" type="button">k = 3</button>
+<button aria-pressed="false" class="w4m-btn segment" data-mode="k4" type="button">k = 4</button>
+<button aria-pressed="false" class="w4m-btn segment" data-mode="k5" type="button">k = 5</button>
+<button aria-pressed="false" class="w4m-btn segment" data-mode="k6" type="button">k = 6</button>
+<button class="w4m-btn primary" data-act="next" type="button">Next community</button>
+</div>
+<div class="w4m-grid">
+<div class="w4m-map" id="w4m-overlap-map" style="user-select: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0); position: relative;"><img alt="" src="/_blob/9e5fed0b6b6179b2b84dd2d54c54fab5" style="display:block;width:100%;height:100%;object-fit:contain"/></div>
+<div aria-live="polite" class="w4m-side">
+<div class="w4m-stats">
+<div class="w4m-stat"><b id="w4m-overlap-count">16</b><span>communities · <span id="w4m-overlap-title">link communities</span></span></div>
+</div>
+<p class="w4m-extra" id="w4m-overlap-extra">8 metros sit in two or more: New York and Dallas in 15 each.</p>
+<div class="w4m-rows">
+<div class="w4m-row"><span>Showing</span><b id="w4m-overlap-which">1 of 16</b></div>
+</div>
+<p class="w4m-names" id="w4m-overlap-names">New York, Dallas, Atlanta, Austin, St. Louis</p>
+<p class="w4m-note">Dark links and filled dots: the community shown. Rings: metros that belong to two or more communities at this setting.</p>
+</div>
+</div>
+</section>
+</div>
+<div class="rx-drawers rx-foot"><details class="rx-drawer"><summary>Method</summary><div class="rx-drawer-body"><p>Link communities group the links, and a metro joins every community its links are in. In clique percolation, a larger k only leaves more of the fringe out.</p></div></details></div>
+</div></div><div class="rx-panel" style="display: {{d7}}"><div class="card w4-card"><header class="w4-q"><span class="w4-num">4</span><div><h2>Which way do the strongest ties run?</h2><p class="w4-answer">Through Dallas. When a heavy link counts as short, 85% of metro pairs are closer by a detour than by their own link, and 534 of the 663 detours pass through Dallas.</p></div></header><p class="sub">Every pair of the 40 metros shares an employer, so without weights every metro is one hop from every other. The brief measures a weighted link's length as 1/w, so a heavy link is short, and finds the shortest route with Dijkstra's algorithm.</p><div class="notice"><span class="ico">💡</span><span><b>What to notice</b> <span>Only four metros ever sit in the middle of a route: Dallas, New York, San Jose and Washington. 117 pairs keep their direct link, 567 go through one other metro and 96 through two. Memphis and San Diego share 187 in link weight, but the route through Dallas and San Jose is shorter.</span></span></div><div class="rx-fig-row"><figure class="w4-figure"><figcaption><b>Where the detours run</b><span>How many of the 663 indirect shortest routes pass through each metro. Colours: the page's three groups.</span></figcaption><div class="w4-figure-body"><svg viewBox="0 0 508 156" width="508" height="156" role="img" aria-label="Metros that sit in the middle of the strongest routes" style="display:block"><line x1="110.0" y1="6" x2="110.0" y2="130" stroke="#e6ecf3"></line><text x="110.0" y="146.0" font-size="11.5" fill="#7a8fac" text-anchor="middle">0</text><line x1="222.7" y1="6" x2="222.7" y2="130" stroke="#e6ecf3"></line><text x="222.7" y="146.0" font-size="11.5" fill="#7a8fac" text-anchor="middle">200</text><line x1="335.3" y1="6" x2="335.3" y2="130" stroke="#e6ecf3"></line><text x="335.3" y="146.0" font-size="11.5" fill="#7a8fac" text-anchor="middle">400</text><line x1="448.0" y1="6" x2="448.0" y2="130" stroke="#e6ecf3"></line><text x="448.0" y="146.0" font-size="11.5" fill="#7a8fac" text-anchor="middle">600</text><text x="0.0" y="25.0" font-size="12.5" fill="#0f2340" text-anchor="start" font-weight="700">Dallas</text><rect x="110.0" y="12.0" width="300.8" height="18" rx="3" fill="#6d4fd6"><title>Dallas: 534</title></rect><text x="416.8" y="25.0" font-size="11.5" fill="#46618a" text-anchor="start">534</text><text x="0.0" y="55.0" font-size="12.5" fill="#0f2340" text-anchor="start" font-weight="700">New York</text><rect x="110.0" y="42.0" width="54.6" height="18" rx="3" fill="#6d4fd6"><title>New York: 97</title></rect><text x="170.6" y="55.0" font-size="11.5" fill="#46618a" text-anchor="start">97</text><text x="0.0" y="85.0" font-size="12.5" fill="#0f2340" text-anchor="start" font-weight="700">San Jose</text><rect x="110.0" y="72.0" width="50.7" height="18" rx="3" fill="#15896a"><title>San Jose: 90</title></rect><text x="166.7" y="85.0" font-size="11.5" fill="#46618a" text-anchor="start">90</text><text x="0.0" y="115.0" font-size="12.5" fill="#0f2340" text-anchor="start" font-weight="700">Washington</text><rect x="110.0" y="102.0" width="21.4" height="18" rx="3" fill="#15896a"><title>Washington: 38</title></rect><text x="137.4" y="115.0" font-size="11.5" fill="#46618a" text-anchor="start">38</text></svg></div></figure><figure class="w4-figure"><figcaption><b>One route: Memphis to San Diego</b><span>Line width and label: the link's weight. The dashed curve is the direct link.</span></figcaption><div class="w4-figure-body"><svg viewBox="0 0 508 200" width="508" height="200" role="img" aria-label="The strongest route from Memphis to San Diego" style="display:block"><path d="M30.0,86 Q254.0,206 478.0,86" fill="none" stroke="#7a8fac" stroke-width="1.2" stroke-dasharray="4 3"></path><text x="254.0" y="160.0" font-size="11.5" fill="#46618a" text-anchor="middle">direct link: 187, length 1/187</text><line x1="30.0" y1="86" x2="179.3" y2="86" stroke="#0f2340" stroke-width="2.0"></line><text x="104.7" y="72.0" font-size="12.5" fill="#0f2340" text-anchor="middle" font-weight="700">873</text><line x1="179.3" y1="86" x2="328.7" y2="86" stroke="#0f2340" stroke-width="6.5"></line><text x="254.0" y="72.0" font-size="12.5" fill="#0f2340" text-anchor="middle" font-weight="700">8,434</text><line x1="328.7" y1="86" x2="478.0" y2="86" stroke="#0f2340" stroke-width="3.1"></line><text x="403.3" y="72.0" font-size="12.5" fill="#0f2340" text-anchor="middle" font-weight="700">2,738</text><circle cx="30.0" cy="86" r="9" fill="#7a8fac" stroke="#fff" stroke-width="2"></circle><text x="30.0" y="114.0" font-size="12.5" fill="#0f2340" text-anchor="middle" font-weight="600">Memphis</text><circle cx="179.3" cy="86" r="9" fill="#6d4fd6" stroke="#fff" stroke-width="2"></circle><text x="179.3" y="114.0" font-size="12.5" fill="#0f2340" text-anchor="middle" font-weight="600">Dallas</text><circle cx="328.7" cy="86" r="9" fill="#15896a" stroke="#fff" stroke-width="2"></circle><text x="328.7" y="114.0" font-size="12.5" fill="#0f2340" text-anchor="middle" font-weight="600">San Jose</text><circle cx="478.0" cy="86" r="9" fill="#15896a" stroke="#fff" stroke-width="2"></circle><text x="478.0" y="114.0" font-size="12.5" fill="#0f2340" text-anchor="middle" font-weight="600">San Diego</text><text x="254.0" y="22.0" font-size="11.5" fill="#46618a" text-anchor="middle">route length 0.0016  ·  direct length 0.0053</text></svg></div></figure></div><div class="rx-drawers rx-foot"><details class="rx-drawer"><summary>Method</summary><div class="rx-drawer-body"><p>Each link's length is 1 divided by its weight, the smaller-count overlap section 1 uses. networkx's Dijkstra finds the shortest route for all 780 pairs; weighted betweenness uses the same lengths.</p></div></details><details class="rx-drawer"><summary>More numbers</summary><div class="rx-drawer-body"><p>Weighted betweenness ranks the same four metros: Dallas 534, New York 97, San Jose 90 and Washington 38; every other metro scores 0. Dallas also has the largest strength. Washington is only 9th by strength but 4th by betweenness: all 38 of its routes start or end in Baltimore, whose strongest link runs to Washington.</p></div></details></div></div></div><div class="rx-panel" style="display: {{d8}}"><div class="card w4-card"><div class="w4m">
+<div class="w4m-tabs"><button aria-pressed="false" class="w4m-tab" data-panel="gn" type="button" onClick="{{pick3}}">Girvan–Newman</button><button aria-pressed="false" class="w4m-tab" data-panel="mod" type="button" onClick="{{pick4}}">Modularity</button><button aria-pressed="true" class="w4m-tab" data-panel="greedy" type="button" onClick="{{pick8}}">Greedy</button><button aria-pressed="false" class="w4m-tab" data-panel="louvain" type="button" onClick="{{pick5}}">Louvain</button><button aria-pressed="false" class="w4m-tab" data-panel="overlap" type="button" onClick="{{pick6}}">Overlap</button></div>
+<section class="w4m-panel" data-panel="greedy">
+<p class="w4m-eyebrow">Explore · after the course's week 4</p>
+<h3 class="w4m-title">Greedy merging, from the bottom up</h3>
+<p class="w4m-lead">Start with every metro alone, join the two groups whose merger raises modularity most, and repeat until one group is left; then keep the level with the highest modularity. A merge is never undone. It peaks at two groups, Q = 0.057: the 12 largest hubs against the other 28 metros. Louvain finds the same two groups in 35 of its 100 runs; the page shows the three it finds in the other 65, which score 0.049.</p>
+<div class="w4m-grid">
+<div class="w4m-map" style="position: relative"><svg viewBox="0 0 620 420" width="620" height="420" role="img" aria-label="Greedy merging on all 780 weighted links, bottom up" style="display:block;width:100%;height:100%"><line x1="575.6" y1="320.0" x2="575.6" y2="312.5" stroke="#0f2340" stroke-width="1.2"></line><line x1="590.8" y1="320.0" x2="590.8" y2="312.5" stroke="#0f2340" stroke-width="1.2"></line><line x1="575.6" y1="312.5" x2="590.8" y2="312.5" stroke="#0f2340" stroke-width="1.2"></line><line x1="560.5" y1="320.0" x2="560.5" y2="304.9" stroke="#0f2340" stroke-width="1.2"></line><line x1="583.2" y1="312.5" x2="583.2" y2="304.9" stroke="#0f2340" stroke-width="1.2"></line><line x1="560.5" y1="304.9" x2="583.2" y2="304.9" stroke="#0f2340" stroke-width="1.2"></line><line x1="545.3" y1="320.0" x2="545.3" y2="297.4" stroke="#0f2340" stroke-width="1.2"></line><line x1="571.8" y1="304.9" x2="571.8" y2="297.4" stroke="#0f2340" stroke-width="1.2"></line><line x1="545.3" y1="297.4" x2="571.8" y2="297.4" stroke="#0f2340" stroke-width="1.2"></line><line x1="530.1" y1="320.0" x2="530.1" y2="289.8" stroke="#0f2340" stroke-width="1.2"></line><line x1="558.6" y1="297.4" x2="558.6" y2="289.8" stroke="#0f2340" stroke-width="1.2"></line><line x1="530.1" y1="289.8" x2="558.6" y2="289.8" stroke="#0f2340" stroke-width="1.2"></line><line x1="514.9" y1="320.0" x2="514.9" y2="282.3" stroke="#0f2340" stroke-width="1.2"></line><line x1="544.3" y1="289.8" x2="544.3" y2="282.3" stroke="#0f2340" stroke-width="1.2"></line><line x1="514.9" y1="282.3" x2="544.3" y2="282.3" stroke="#0f2340" stroke-width="1.2"></line><line x1="499.7" y1="320.0" x2="499.7" y2="274.8" stroke="#0f2340" stroke-width="1.2"></line><line x1="529.6" y1="282.3" x2="529.6" y2="274.8" stroke="#0f2340" stroke-width="1.2"></line><line x1="499.7" y1="274.8" x2="529.6" y2="274.8" stroke="#0f2340" stroke-width="1.2"></line><line x1="484.6" y1="320.0" x2="484.6" y2="267.2" stroke="#0f2340" stroke-width="1.2"></line><line x1="514.7" y1="274.8" x2="514.7" y2="267.2" stroke="#0f2340" stroke-width="1.2"></line><line x1="484.6" y1="267.2" x2="514.7" y2="267.2" stroke="#0f2340" stroke-width="1.2"></line><line x1="469.4" y1="320.0" x2="469.4" y2="259.7" stroke="#0f2340" stroke-width="1.2"></line><line x1="499.6" y1="267.2" x2="499.6" y2="259.7" stroke="#0f2340" stroke-width="1.2"></line><line x1="469.4" y1="259.7" x2="499.6" y2="259.7" stroke="#0f2340" stroke-width="1.2"></line><line x1="454.2" y1="320.0" x2="454.2" y2="252.2" stroke="#0f2340" stroke-width="1.2"></line><line x1="484.5" y1="259.7" x2="484.5" y2="252.2" stroke="#0f2340" stroke-width="1.2"></line><line x1="454.2" y1="252.2" x2="484.5" y2="252.2" stroke="#0f2340" stroke-width="1.2"></line><line x1="439.0" y1="320.0" x2="439.0" y2="244.6" stroke="#0f2340" stroke-width="1.2"></line><line x1="469.4" y1="252.2" x2="469.4" y2="244.6" stroke="#0f2340" stroke-width="1.2"></line><line x1="439.0" y1="244.6" x2="469.4" y2="244.6" stroke="#0f2340" stroke-width="1.2"></line><line x1="287.2" y1="320.0" x2="287.2" y2="237.1" stroke="#0f2340" stroke-width="1.2"></line><line x1="302.4" y1="320.0" x2="302.4" y2="237.1" stroke="#0f2340" stroke-width="1.2"></line><line x1="287.2" y1="237.1" x2="302.4" y2="237.1" stroke="#0f2340" stroke-width="1.2"></line><line x1="454.2" y1="244.6" x2="454.2" y2="229.5" stroke="#0f2340" stroke-width="1.2"></line><line x1="606.0" y1="320.0" x2="606.0" y2="229.5" stroke="#0f2340" stroke-width="1.2"></line><line x1="454.2" y1="229.5" x2="606.0" y2="229.5" stroke="#0f2340" stroke-width="1.2"></line><line x1="317.6" y1="320.0" x2="317.6" y2="222.0" stroke="#0f2340" stroke-width="1.2"></line><line x1="332.8" y1="320.0" x2="332.8" y2="222.0" stroke="#0f2340" stroke-width="1.2"></line><line x1="317.6" y1="222.0" x2="332.8" y2="222.0" stroke="#0f2340" stroke-width="1.2"></line><line x1="294.8" y1="237.1" x2="294.8" y2="214.5" stroke="#0f2340" stroke-width="1.2"></line><line x1="325.2" y1="222.0" x2="325.2" y2="214.5" stroke="#0f2340" stroke-width="1.2"></line><line x1="294.8" y1="214.5" x2="325.2" y2="214.5" stroke="#0f2340" stroke-width="1.2"></line><line x1="272.1" y1="320.0" x2="272.1" y2="206.9" stroke="#0f2340" stroke-width="1.2"></line><line x1="310.0" y1="214.5" x2="310.0" y2="206.9" stroke="#0f2340" stroke-width="1.2"></line><line x1="272.1" y1="206.9" x2="310.0" y2="206.9" stroke="#0f2340" stroke-width="1.2"></line><line x1="256.9" y1="320.0" x2="256.9" y2="199.4" stroke="#0f2340" stroke-width="1.2"></line><line x1="291.0" y1="206.9" x2="291.0" y2="199.4" stroke="#0f2340" stroke-width="1.2"></line><line x1="256.9" y1="199.4" x2="291.0" y2="199.4" stroke="#0f2340" stroke-width="1.2"></line><line x1="241.7" y1="320.0" x2="241.7" y2="191.8" stroke="#0f2340" stroke-width="1.2"></line><line x1="273.9" y1="199.4" x2="273.9" y2="191.8" stroke="#0f2340" stroke-width="1.2"></line><line x1="241.7" y1="191.8" x2="273.9" y2="191.8" stroke="#0f2340" stroke-width="1.2"></line><line x1="226.5" y1="320.0" x2="226.5" y2="184.3" stroke="#0f2340" stroke-width="1.2"></line><line x1="257.8" y1="191.8" x2="257.8" y2="184.3" stroke="#0f2340" stroke-width="1.2"></line><line x1="226.5" y1="184.3" x2="257.8" y2="184.3" stroke="#0f2340" stroke-width="1.2"></line><line x1="211.3" y1="320.0" x2="211.3" y2="176.8" stroke="#0f2340" stroke-width="1.2"></line><line x1="242.2" y1="184.3" x2="242.2" y2="176.8" stroke="#0f2340" stroke-width="1.2"></line><line x1="211.3" y1="176.8" x2="242.2" y2="176.8" stroke="#0f2340" stroke-width="1.2"></line><line x1="196.2" y1="320.0" x2="196.2" y2="169.2" stroke="#0f2340" stroke-width="1.2"></line><line x1="226.8" y1="176.8" x2="226.8" y2="169.2" stroke="#0f2340" stroke-width="1.2"></line><line x1="196.2" y1="169.2" x2="226.8" y2="169.2" stroke="#0f2340" stroke-width="1.2"></line><line x1="181.0" y1="320.0" x2="181.0" y2="161.7" stroke="#0f2340" stroke-width="1.2"></line><line x1="211.5" y1="169.2" x2="211.5" y2="161.7" stroke="#0f2340" stroke-width="1.2"></line><line x1="181.0" y1="161.7" x2="211.5" y2="161.7" stroke="#0f2340" stroke-width="1.2"></line><line x1="165.8" y1="320.0" x2="165.8" y2="154.2" stroke="#0f2340" stroke-width="1.2"></line><line x1="196.2" y1="161.7" x2="196.2" y2="154.2" stroke="#0f2340" stroke-width="1.2"></line><line x1="165.8" y1="154.2" x2="196.2" y2="154.2" stroke="#0f2340" stroke-width="1.2"></line><line x1="150.6" y1="320.0" x2="150.6" y2="146.6" stroke="#0f2340" stroke-width="1.2"></line><line x1="181.0" y1="154.2" x2="181.0" y2="146.6" stroke="#0f2340" stroke-width="1.2"></line><line x1="150.6" y1="146.6" x2="181.0" y2="146.6" stroke="#0f2340" stroke-width="1.2"></line><line x1="135.4" y1="320.0" x2="135.4" y2="139.1" stroke="#0f2340" stroke-width="1.2"></line><line x1="165.8" y1="146.6" x2="165.8" y2="139.1" stroke="#0f2340" stroke-width="1.2"></line><line x1="135.4" y1="139.1" x2="165.8" y2="139.1" stroke="#0f2340" stroke-width="1.2"></line><line x1="120.3" y1="320.0" x2="120.3" y2="131.5" stroke="#0f2340" stroke-width="1.2"></line><line x1="150.6" y1="139.1" x2="150.6" y2="131.5" stroke="#0f2340" stroke-width="1.2"></line><line x1="120.3" y1="131.5" x2="150.6" y2="131.5" stroke="#0f2340" stroke-width="1.2"></line><line x1="105.1" y1="320.0" x2="105.1" y2="124.0" stroke="#0f2340" stroke-width="1.2"></line><line x1="135.4" y1="131.5" x2="135.4" y2="124.0" stroke="#0f2340" stroke-width="1.2"></line><line x1="105.1" y1="124.0" x2="135.4" y2="124.0" stroke="#0f2340" stroke-width="1.2"></line><line x1="89.9" y1="320.0" x2="89.9" y2="116.5" stroke="#0f2340" stroke-width="1.2"></line><line x1="120.3" y1="124.0" x2="120.3" y2="116.5" stroke="#0f2340" stroke-width="1.2"></line><line x1="89.9" y1="116.5" x2="120.3" y2="116.5" stroke="#0f2340" stroke-width="1.2"></line><line x1="105.1" y1="116.5" x2="105.1" y2="108.9" stroke="#0f2340" stroke-width="1.2"></line><line x1="347.9" y1="320.0" x2="347.9" y2="108.9" stroke="#0f2340" stroke-width="1.2"></line><line x1="105.1" y1="108.9" x2="347.9" y2="108.9" stroke="#0f2340" stroke-width="1.2"></line><line x1="74.7" y1="320.0" x2="74.7" y2="101.4" stroke="#0f2340" stroke-width="1.2"></line><line x1="226.5" y1="108.9" x2="226.5" y2="101.4" stroke="#0f2340" stroke-width="1.2"></line><line x1="74.7" y1="101.4" x2="226.5" y2="101.4" stroke="#0f2340" stroke-width="1.2"></line><line x1="59.5" y1="320.0" x2="59.5" y2="93.8" stroke="#0f2340" stroke-width="1.2"></line><line x1="150.6" y1="101.4" x2="150.6" y2="93.8" stroke="#0f2340" stroke-width="1.2"></line><line x1="59.5" y1="93.8" x2="150.6" y2="93.8" stroke="#0f2340" stroke-width="1.2"></line><line x1="105.1" y1="93.8" x2="105.1" y2="86.3" stroke="#0f2340" stroke-width="1.2"></line><line x1="363.1" y1="320.0" x2="363.1" y2="86.3" stroke="#0f2340" stroke-width="1.2"></line><line x1="105.1" y1="86.3" x2="363.1" y2="86.3" stroke="#0f2340" stroke-width="1.2"></line><line x1="234.1" y1="86.3" x2="234.1" y2="78.8" stroke="#0f2340" stroke-width="1.2"></line><line x1="378.3" y1="320.0" x2="378.3" y2="78.8" stroke="#0f2340" stroke-width="1.2"></line><line x1="234.1" y1="78.8" x2="378.3" y2="78.8" stroke="#0f2340" stroke-width="1.2"></line><line x1="306.2" y1="78.8" x2="306.2" y2="71.2" stroke="#0f2340" stroke-width="1.2"></line><line x1="393.5" y1="320.0" x2="393.5" y2="71.2" stroke="#0f2340" stroke-width="1.2"></line><line x1="306.2" y1="71.2" x2="393.5" y2="71.2" stroke="#0f2340" stroke-width="1.2"></line><line x1="44.4" y1="320.0" x2="44.4" y2="63.7" stroke="#0f2340" stroke-width="1.2"></line><line x1="349.8" y1="71.2" x2="349.8" y2="63.7" stroke="#0f2340" stroke-width="1.2"></line><line x1="44.4" y1="63.7" x2="349.8" y2="63.7" stroke="#0f2340" stroke-width="1.2"></line><line x1="29.2" y1="320.0" x2="29.2" y2="56.2" stroke="#0f2340" stroke-width="1.2"></line><line x1="197.1" y1="63.7" x2="197.1" y2="56.2" stroke="#0f2340" stroke-width="1.2"></line><line x1="29.2" y1="56.2" x2="197.1" y2="56.2" stroke="#0f2340" stroke-width="1.2"></line><line x1="113.1" y1="56.2" x2="113.1" y2="48.6" stroke="#0f2340" stroke-width="1.2"></line><line x1="408.7" y1="320.0" x2="408.7" y2="48.6" stroke="#0f2340" stroke-width="1.2"></line><line x1="113.1" y1="48.6" x2="408.7" y2="48.6" stroke="#0f2340" stroke-width="1.2"></line><line x1="260.9" y1="48.6" x2="260.9" y2="41.1" stroke="#0f2340" stroke-width="1.2"></line><line x1="423.8" y1="320.0" x2="423.8" y2="41.1" stroke="#0f2340" stroke-width="1.2"></line><line x1="260.9" y1="41.1" x2="423.8" y2="41.1" stroke="#0f2340" stroke-width="1.2"></line><line x1="14.0" y1="320.0" x2="14.0" y2="33.5" stroke="#0f2340" stroke-width="1.2"></line><line x1="342.4" y1="41.1" x2="342.4" y2="33.5" stroke="#0f2340" stroke-width="1.2"></line><line x1="14.0" y1="33.5" x2="342.4" y2="33.5" stroke="#0f2340" stroke-width="1.2"></line><line x1="178.2" y1="33.5" x2="178.2" y2="26.0" stroke="#0f2340" stroke-width="1.2"></line><line x1="530.1" y1="229.5" x2="530.1" y2="26.0" stroke="#0f2340" stroke-width="1.2"></line><line x1="178.2" y1="26.0" x2="530.1" y2="26.0" stroke="#0f2340" stroke-width="1.2"></line><line x1="8" y1="29.8" x2="612" y2="29.8" stroke="#14618f" stroke-dasharray="5 4" stroke-width="1.5"></line><circle cx="14.0" cy="320.0" r="4" fill="#7a8fac"><title>Salt Lake City: Detroit–Phoenix</title></circle><text x="10.0" y="330.0" font-size="11.5" fill="#46618a" transform="rotate(90 10.0 330.0)">Salt Lake City</text><circle cx="29.2" cy="320.0" r="4" fill="#7a8fac"><title>Sacramento: Detroit–Phoenix</title></circle><text x="25.2" y="330.0" font-size="11.5" fill="#46618a" transform="rotate(90 25.2 330.0)">Sacramento</text><circle cx="44.4" cy="320.0" r="4" fill="#7a8fac"><title>Portland: Detroit–Phoenix</title></circle><text x="40.4" y="330.0" font-size="11.5" fill="#46618a" transform="rotate(90 40.4 330.0)">Portland</text><circle cx="59.5" cy="320.0" r="4" fill="#7a8fac"><title>Trenton: Detroit–Phoenix</title></circle><text x="55.5" y="330.0" font-size="11.5" fill="#46618a" transform="rotate(90 55.5 330.0)">Trenton</text><circle cx="74.7" cy="320.0" r="4" fill="#7a8fac"><title>Pittsburgh: Detroit–Phoenix</title></circle><text x="70.7" y="330.0" font-size="11.5" fill="#46618a" transform="rotate(90 70.7 330.0)">Pittsburgh</text><circle cx="89.9" cy="320.0" r="4" fill="#7a8fac"><title>Richmond: Detroit–Phoenix</title></circle><text x="85.9" y="330.0" font-size="11.5" fill="#46618a" transform="rotate(90 85.9 330.0)">Richmond</text><circle cx="105.1" cy="320.0" r="4" fill="#7a8fac"><title>Indianapolis: Detroit–Phoenix</title></circle><text x="101.1" y="330.0" font-size="11.5" fill="#46618a" transform="rotate(90 101.1 330.0)">Indianapolis</text><circle cx="120.3" cy="320.0" r="4" fill="#7a8fac"><title>Miami: Detroit–Phoenix</title></circle><text x="116.3" y="330.0" font-size="11.5" fill="#46618a" transform="rotate(90 116.3 330.0)">Miami</text><circle cx="135.4" cy="320.0" r="4" fill="#7a8fac"><title>Denver: Detroit–Phoenix</title></circle><text x="131.4" y="330.0" font-size="11.5" fill="#46618a" transform="rotate(90 131.4 330.0)">Denver</text><circle cx="150.6" cy="320.0" r="4" fill="#7a8fac"><title>St. Louis: Detroit–Phoenix</title></circle><text x="146.6" y="330.0" font-size="11.5" fill="#46618a" transform="rotate(90 146.6 330.0)">St. Louis</text><circle cx="165.8" cy="320.0" r="4" fill="#6d4fd6"><title>Houston: New York–Dallas</title></circle><text x="161.8" y="330.0" font-size="11.5" fill="#46618a" transform="rotate(90 161.8 330.0)">Houston</text><circle cx="181.0" cy="320.0" r="4" fill="#7a8fac"><title>Tampa: Detroit–Phoenix</title></circle><text x="177.0" y="330.0" font-size="11.5" fill="#46618a" transform="rotate(90 177.0 330.0)">Tampa</text><circle cx="196.2" cy="320.0" r="4" fill="#7a8fac"><title>Cincinnati: Detroit–Phoenix</title></circle><text x="192.2" y="330.0" font-size="11.5" fill="#46618a" transform="rotate(90 192.2 330.0)">Cincinnati</text><circle cx="211.3" cy="320.0" r="4" fill="#7a8fac"><title>Detroit: Detroit–Phoenix</title></circle><text x="207.3" y="330.0" font-size="11.5" fill="#46618a" transform="rotate(90 207.3 330.0)">Detroit</text><circle cx="226.5" cy="320.0" r="4" fill="#7a8fac"><title>Columbus: Detroit–Phoenix</title></circle><text x="222.5" y="330.0" font-size="11.5" fill="#46618a" transform="rotate(90 222.5 330.0)">Columbus</text><circle cx="241.7" cy="320.0" r="4" fill="#7a8fac"><title>Minneapolis: Detroit–Phoenix</title></circle><text x="237.7" y="330.0" font-size="11.5" fill="#46618a" transform="rotate(90 237.7 330.0)">Minneapolis</text><circle cx="256.9" cy="320.0" r="4" fill="#7a8fac"><title>Hartford: Detroit–Phoenix</title></circle><text x="252.9" y="330.0" font-size="11.5" fill="#46618a" transform="rotate(90 252.9 330.0)">Hartford</text><circle cx="272.1" cy="320.0" r="4" fill="#7a8fac"><title>Phoenix: Detroit–Phoenix</title></circle><text x="268.1" y="330.0" font-size="11.5" fill="#46618a" transform="rotate(90 268.1 330.0)">Phoenix</text><circle cx="287.2" cy="320.0" r="4" fill="#7a8fac"><title>Durham: Detroit–Phoenix</title></circle><text x="283.2" y="330.0" font-size="11.5" fill="#46618a" transform="rotate(90 283.2 330.0)">Durham</text><circle cx="302.4" cy="320.0" r="4" fill="#7a8fac"><title>Raleigh: Detroit–Phoenix</title></circle><text x="298.4" y="330.0" font-size="11.5" fill="#46618a" transform="rotate(90 298.4 330.0)">Raleigh</text><circle cx="317.6" cy="320.0" r="4" fill="#6d4fd6"><title>Charlotte: New York–Dallas</title></circle><text x="313.6" y="330.0" font-size="11.5" fill="#46618a" transform="rotate(90 313.6 330.0)">Charlotte</text><circle cx="332.8" cy="320.0" r="4" fill="#6d4fd6"><title>Philadelphia: New York–Dallas</title></circle><text x="328.8" y="330.0" font-size="11.5" fill="#46618a" transform="rotate(90 328.8 330.0)">Philadelphia</text><circle cx="347.9" cy="320.0" r="4" fill="#7a8fac"><title>Nashville: Detroit–Phoenix</title></circle><text x="343.9" y="330.0" font-size="11.5" fill="#46618a" transform="rotate(90 343.9 330.0)">Nashville</text><circle cx="363.1" cy="320.0" r="4" fill="#7a8fac"><title>San Antonio: Detroit–Phoenix</title></circle><text x="359.1" y="330.0" font-size="11.5" fill="#46618a" transform="rotate(90 359.1 330.0)">San Antonio</text><circle cx="378.3" cy="320.0" r="4" fill="#7a8fac"><title>Baltimore: Detroit–Phoenix</title></circle><text x="374.3" y="330.0" font-size="11.5" fill="#46618a" transform="rotate(90 374.3 330.0)">Baltimore</text><circle cx="393.5" cy="320.0" r="4" fill="#7a8fac"><title>Orlando: Detroit–Phoenix</title></circle><text x="389.5" y="330.0" font-size="11.5" fill="#46618a" transform="rotate(90 389.5 330.0)">Orlando</text><circle cx="408.7" cy="320.0" r="4" fill="#7a8fac"><title>Memphis: Detroit–Phoenix</title></circle><text x="404.7" y="330.0" font-size="11.5" fill="#46618a" transform="rotate(90 404.7 330.0)">Memphis</text><circle cx="423.8" cy="320.0" r="4" fill="#7a8fac"><title>Fayetteville: Detroit–Phoenix</title></circle><text x="419.8" y="330.0" font-size="11.5" fill="#46618a" transform="rotate(90 419.8 330.0)">Fayetteville</text><circle cx="439.0" cy="320.0" r="4" fill="#6d4fd6"><title>Chicago: New York–Dallas</title></circle><text x="435.0" y="330.0" font-size="11.5" fill="#46618a" transform="rotate(90 435.0 330.0)">Chicago</text><circle cx="454.2" cy="320.0" r="4" fill="#6d4fd6"><title>Atlanta: New York–Dallas</title></circle><text x="450.2" y="330.0" font-size="11.5" fill="#46618a" transform="rotate(90 450.2 330.0)">Atlanta</text><circle cx="469.4" cy="320.0" r="4" fill="#15896a"><title>Los Angeles: San Jose–San Francisco</title></circle><text x="465.4" y="330.0" font-size="11.5" fill="#46618a" transform="rotate(90 465.4 330.0)">Los Angeles</text><circle cx="484.6" cy="320.0" r="4" fill="#15896a"><title>Boston: San Jose–San Francisco</title></circle><text x="480.6" y="330.0" font-size="11.5" fill="#46618a" transform="rotate(90 480.6 330.0)">Boston</text><circle cx="499.7" cy="320.0" r="4" fill="#15896a"><title>Washington: San Jose–San Francisco</title></circle><text x="495.7" y="330.0" font-size="11.5" fill="#46618a" transform="rotate(90 495.7 330.0)">Washington</text><circle cx="514.9" cy="320.0" r="4" fill="#6d4fd6"><title>Dallas: New York–Dallas</title></circle><text x="510.9" y="330.0" font-size="11.5" fill="#46618a" transform="rotate(90 510.9 330.0)">Dallas</text><circle cx="530.1" cy="320.0" r="4" fill="#15896a"><title>Austin: San Jose–San Francisco</title></circle><text x="526.1" y="330.0" font-size="11.5" fill="#46618a" transform="rotate(90 526.1 330.0)">Austin</text><circle cx="545.3" cy="320.0" r="4" fill="#6d4fd6"><title>New York: New York–Dallas</title></circle><text x="541.3" y="330.0" font-size="11.5" fill="#46618a" transform="rotate(90 541.3 330.0)">New York</text><circle cx="560.5" cy="320.0" r="4" fill="#15896a"><title>Seattle: San Jose–San Francisco</title></circle><text x="556.5" y="330.0" font-size="11.5" fill="#46618a" transform="rotate(90 556.5 330.0)">Seattle</text><circle cx="575.6" cy="320.0" r="4" fill="#15896a"><title>San Jose: San Jose–San Francisco</title></circle><text x="571.6" y="330.0" font-size="11.5" fill="#46618a" transform="rotate(90 571.6 330.0)">San Jose</text><circle cx="590.8" cy="320.0" r="4" fill="#15896a"><title>San Francisco: San Jose–San Francisco</title></circle><text x="586.8" y="330.0" font-size="11.5" fill="#46618a" transform="rotate(90 586.8 330.0)">San Francisco</text><circle cx="606.0" cy="320.0" r="4" fill="#15896a"><title>San Diego: San Jose–San Francisco</title></circle><text x="602.0" y="330.0" font-size="11.5" fill="#46618a" transform="rotate(90 602.0 330.0)">San Diego</text></svg></div>
+<div aria-live="polite" class="w4m-side">
+<div class="w4m-stats">
+<div class="w4m-stat"><b>2 groups</b><span>at the best level, Q = 0.057</span></div>
+</div>
+<div class="w4m-rows">
+<div class="w4m-row"><span>The page's three groups</span><b>0.049</b></div>
+<div class="w4m-row"><span>Greedy's own three-group level</span><b>0.056</b></div>
+<div class="w4m-row"><span>Louvain runs that find these two groups</span><b>35 of 100</b></div>
+<div class="w4m-row"><span>Agreement with the page's groups</span><b>NMI 0.64</b></div>
+</div>
+<p class="w4m-note">The dendrogram reads bottom up: each horizontal line is one merge. Dashed: the cut at the best level. Dots: the page's three groups. Like Louvain, greedy merging uses all 780 weighted links; the Girvan–Newman tab runs on the backbone.</p>
+</div>
+</div>
+<figure class="w4m-figure">
+<figcaption>
+<span class="w4m-fig-title">Modularity after each merge</span>
+<span class="w4m-fig-caption">Read right to left: 40 metros alone, then one merge at a time. The filled dot is the best level; the ring is the page's three groups.</span>
+</figcaption>
+<svg viewBox="0 0 1044 230" width="1044" height="230" role="img" aria-label="Modularity after each greedy merge, by the number of groups left" style="display:block"><line x1="48" x2="1028" y1="186.0" y2="186.0" stroke="#e6ecf3"></line><text x="40.0" y="190.0" font-size="11.5" fill="#7a8fac" text-anchor="end">−0.04</text><line x1="48" x2="1028" y1="154.4" y2="154.4" stroke="#e6ecf3"></line><text x="40.0" y="158.4" font-size="11.5" fill="#7a8fac" text-anchor="end">−0.02</text><line x1="48" x2="1028" y1="122.8" y2="122.8" stroke="#e6ecf3"></line><text x="40.0" y="126.8" font-size="11.5" fill="#7a8fac" text-anchor="end">0.00</text><line x1="48" x2="1028" y1="91.1" y2="91.1" stroke="#e6ecf3"></line><text x="40.0" y="95.1" font-size="11.5" fill="#7a8fac" text-anchor="end">0.02</text><line x1="48" x2="1028" y1="59.5" y2="59.5" stroke="#e6ecf3"></line><text x="40.0" y="63.5" font-size="11.5" fill="#7a8fac" text-anchor="end">0.04</text><line x1="48" x2="1028" y1="27.9" y2="27.9" stroke="#e6ecf3"></line><text x="40.0" y="31.9" font-size="11.5" fill="#7a8fac" text-anchor="end">0.06</text><text x="48.0" y="202.0" font-size="11.5" fill="#46618a" text-anchor="middle">1</text><text x="232.1" y="202.0" font-size="11.5" fill="#46618a" text-anchor="middle">2</text><text x="339.9" y="202.0" font-size="11.5" fill="#46618a" text-anchor="middle">3</text><text x="475.6" y="202.0" font-size="11.5" fill="#46618a" text-anchor="middle">5</text><text x="659.7" y="202.0" font-size="11.5" fill="#46618a" text-anchor="middle">10</text><text x="843.9" y="202.0" font-size="11.5" fill="#46618a" text-anchor="middle">20</text><text x="1028.0" y="202.0" font-size="11.5" fill="#46618a" text-anchor="middle">40</text><text x="538.0" y="222.0" font-size="11.5" fill="#7a8fac" text-anchor="middle">groups left after each merge, log scale (40 = every metro alone)</text><polyline points="1028.0,179.6 1021.3,166.8 1014.4,150.2 1007.3,138.7 1000.0,128.4 992.5,116.8 984.8,111.8 976.9,107.8 968.7,103.0 960.3,98.3 951.6,93.0 942.6,91.1 933.2,90.3 923.6,89.4 913.6,88.3 903.1,87.0 892.3,85.4 881.0,83.7 869.2,81.6 856.8,79.5 843.9,77.0 830.2,74.3 815.9,71.7 800.7,69.2 784.6,66.6 767.4,64.0 749.1,61.4 729.4,58.6 708.1,55.9 685.0,53.0 659.7,50.0 631.7,47.1 600.4,44.6 565.0,42.1 524.0,40.2 475.6,37.7 416.3,35.8 339.9,34.2 232.1,32.6 48.0,122.8" fill="none" stroke="#0f2340" stroke-width="2.2" stroke-linejoin="round"></polyline><circle cx="232.1" cy="32.6" r="6" fill="#0f2340"><title>Greedy merging peaks at 2 groups, Q = 0.057</title></circle><text x="242.1" y="24.6" font-size="12.5" fill="#0f2340" text-anchor="start" font-weight="700">Peak: 2 groups, Q = 0.057</text><circle cx="339.9" cy="45.3" r="6" fill="#fff" stroke="#6d4fd6" stroke-width="2.2"><title>The page: Louvain's three groups, Q = 0.049</title></circle><text x="351.9" y="61.3" font-size="12.5" fill="#46618a" text-anchor="start">The page: Louvain&#x27;s 3 groups, Q = 0.049</text></svg>
+</figure>
+</section>
+</div></div></div></section></div></main></div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"start": {"editor": null}, "$preview": {"width": 1440, "height": 1860}}'>
+class Component extends DCLogic {
+constructor(props) { super(props); this.state = { i: Math.min(8, Math.max(0, props.start == null ? 7 : Number(props.start) || 0)) }; }
+renderVals() {
+const n = 9, i = this.state.i, v = {};
+const on = "background: #eef3f9; color: #0f2340; border-left-color: #14618f;";
+const off = "";
+for (let k = 0; k < n; k++) { v["d" + k] = k === i ? "block" : "none"; v["on" + k] = String(k === i); v["st" + k] = k === i ? on : off; v["pick" + k] = () => this.setState({ i: k }); }
+return v;
+}
+}
+</script>
+</body>
+</html>
