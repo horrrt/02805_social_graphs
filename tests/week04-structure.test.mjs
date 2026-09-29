@@ -118,8 +118,9 @@ test("the rail: labels, targets and accessible names", () => {
     assert.ok(hasId(target), `rail data-target ${target} needs a target`);
     assert.ok(attr(`<a${a}>`, "aria-label"), `rail link to ${target} needs an aria-label`);
     assert.ok(!label.includes(" · "), `rail label "${label}" uses no " · "`);
-    const ok = /^(\d[A-C]? |Closing$|Deep dive$)/.test(label) || topicTitles.get(target) === label;
-    assert.ok(ok, `rail label "${label}" should be a section number, Closing, Deep dive or a topic title`);
+    assert.ok(label.trim(), `rail link to ${target} needs a label`);
+    assert.ok(!/^\d[A-C]? /.test(label), `rail label "${label}" carries no section number`);
+    if (topicTitles.has(target)) assert.equal(label, topicTitles.get(target), `rail label for ${target} is its topic title`);
   }
   for (const id of [...TOPICS, "evidence"]) assert.ok(items.some(([, t]) => t === id), `the rail lists #${id}`);
 });
