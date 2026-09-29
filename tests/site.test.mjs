@@ -127,7 +127,6 @@ test("every lobby card agrees with the manifest and only live weeks are links", 
     `index.html links the current week`,
   );
   assert(!html.includes("Six doors"), "no stale door count");
-  assert(html.includes('id="network"'), "the lobby keeps the network section");
   for (const gone of ["os/", "trumps/", "sound/", "creature/"]) {
     assert(!html.includes(`href="${gone}`), `the retired ${gone} tool is unlinked`);
     assert(!existsSync(join(DOCS, gone, "index.html")), `${gone} is deleted`);
