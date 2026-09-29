@@ -117,12 +117,13 @@ body{margin:0;background:#eef3f9}
 .rx .rx-drawers>.w4-tip{margin:0}
 .rx .rx-foot{margin-top:14px}
 .rx .rx-drawer-body>p+p{margin-top:8px}
-.rx .rx-fig-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(0,1fr));gap:28px;margin-top:22px;align-items:start}
-.rx .rx-fig-row>figure,.rx .rx-fig-row>.plot{margin:0}
-.rx .rx-fig-row>:only-child{max-width:58%}
+/* two charts: one row under the text, equal widths, titles, notes and charts level through subgrid */
+.rx .rx-fig-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(0,1fr));grid-template-rows:auto auto 1fr;column-gap:28px;row-gap:0;margin-top:22px;align-items:start}
+.rx .rx-fig-row>figure,.rx .rx-fig-row>.plot{display:grid;grid-row:span 3;grid-template-rows:subgrid;margin:0}
+.rx .rx-fig-row>figure>figcaption{grid-row:span 2}
 </style>
 </helmet>
-<div class="corridor rx" style="width: 1440px; height: 2037px; overflow: hidden; background: #eef3f9"><div class="topbar">
+<div class="corridor rx" style="width: 1440px; height: 1564px; overflow: hidden; background: #eef3f9"><div class="topbar">
 <div class="shell">
 <a class="brand" href="../../">LOG–LOG <b>LEGENDS</b></a>
 <a class="site-link" href="../../#weeks">All posts</a>
@@ -151,6 +152,8 @@ body{margin:0;background:#eef3f9}
                 metros, and the five largest <span class="w4-term"><button aria-describedby="w4-term-x-placing" type="button">placing firms</button><span class="w4-pop" id="w4-term-x-placing" role="tooltip">Companies that hire foreign workers and send them to work at client companies, such as outsourcing and IT staffing firms.</span></span> 5.6%.
                 A company that files everywhere links every pair of metros and jobs, so its footprint could be all the structure there is.
               </p>
+</div>
+<div>
 <div class="notice">
 <span class="ico">💡</span>
 <span>
@@ -159,7 +162,10 @@ body{margin:0;background:#eef3f9}
                   The job clusters hold (<span class="w4-term"><button aria-describedby="w4-term-x-nmi" type="button">NMI</button><span class="w4-pop" id="w4-term-x-nmi" role="tooltip">Normalised mutual information: how much two groupings of the same items agree, from 0 (unrelated) to 1 (identical).</span></span> 0.90 and 0.81) but shift more than random cuts of the same volume do.
                 </span>
 </div>
-<div class="plot" style="margin-top:18px">
+</div>
+</div>
+<div class="rx-fig-row">
+<div class="plot">
 <h3>How much do the groups change?</h3>
 <p class="axis-note">
                   NMI between the groups after a removal and the full network's
@@ -168,14 +174,6 @@ body{margin:0;background:#eef3f9}
                 </p>
 <div class="chart-host jobs-nmi" id="chart-footprint-nmi" style="user-select: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0); position: relative;"><img alt="" src="/_blob/9778f0bdf6750a25988b1752b1b393b2" style="display:block;width:100%;height:100%;object-fit:contain"/></div>
 </div>
-
-<div class="rx-drawers rx-foot">
-                <details class="rx-drawer"><summary>Background</summary><div class="rx-drawer-body"><p>The five largest placing firms are Tata Consultancy Services, Cognizant, Infosys, HCL and Compunnel. The ten largest filers are Amazon, Cognizant, Google, Microsoft, EY, Meta, Deloitte, Apple, Tata Consultancy Services and Infosys.</p></div></details>
-                <details class="rx-drawer"><summary>Method</summary><div class="rx-drawer-body"><p>We removed each set, reran 100 <span class="w4-term"><button aria-describedby="w4-term-x-louvain" type="button">Louvain</button><span class="w4-pop" id="w4-term-x-louvain" role="tooltip">A method that finds groups in a network by moving nodes between groups until the links inside groups are as dense as they can get.</span></span> runs on the metro network and on the job network (weighted here by filings, since a count of companies barely moves when ten of 59,196 leave), and compared the groups with the full network's. Removing less data changes the groups too, so each removal sits beside 50 random cuts of companies that remove the same share of filings.</p></div></details>
-                <details class="rx-drawer"><summary>More numbers</summary><div class="rx-drawer-body"><p>Removing the five placing firms changes little: the groups stay close to the full network's (NMI 0.92, random cuts 0.85 ± 0.14), and the regional match rises only to 0.09, inside the range of random cuts (0.04 ± 0.05). Without the ten largest filers the clusters also sharpen, modularity rising from 0.28 to 0.32. Every version still beats its own rewired networks by a wide margin (z = 25 or more). Without the ten largest filers the regional match (AMI 0.13, p = 0.013) sits 4.6 standard deviations above random cuts (0.01 ± 0.03). Random cuts leave the job clusters closer to the full network's (0.96 and 0.88, 3.1 and 3.9 standard deviations away), so the biggest firms do shape which jobs cluster together.</p></div></details>
-              </div>
-</div>
-<div>
 <div class="plot">
 <h3>Do the metro groups follow Census regions?</h3>
 <p class="axis-note">
@@ -186,9 +184,12 @@ body{margin:0;background:#eef3f9}
                 </p>
 <div class="chart-host jobs-nmi" id="chart-footprint-region" style="user-select: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0); position: relative;"><img alt="" src="/_blob/ec5c9b07fa0acb2928f23218eab3e19d" style="display:block;width:100%;height:100%;object-fit:contain"/></div>
 </div>
-
 </div>
-</div>
+<div class="rx-drawers rx-foot">
+                <details class="rx-drawer"><summary>Background</summary><div class="rx-drawer-body"><p>The five largest placing firms are Tata Consultancy Services, Cognizant, Infosys, HCL and Compunnel. The ten largest filers are Amazon, Cognizant, Google, Microsoft, EY, Meta, Deloitte, Apple, Tata Consultancy Services and Infosys.</p></div></details>
+                <details class="rx-drawer"><summary>Method</summary><div class="rx-drawer-body"><p>We removed each set, reran 100 <span class="w4-term"><button aria-describedby="w4-term-x-louvain" type="button">Louvain</button><span class="w4-pop" id="w4-term-x-louvain" role="tooltip">A method that finds groups in a network by moving nodes between groups until the links inside groups are as dense as they can get.</span></span> runs on the metro network and on the job network (weighted here by filings, since a count of companies barely moves when ten of 59,196 leave), and compared the groups with the full network's. Removing less data changes the groups too, so each removal sits beside 50 random cuts of companies that remove the same share of filings.</p></div></details>
+                <details class="rx-drawer"><summary>More numbers</summary><div class="rx-drawer-body"><p>Removing the five placing firms changes little: the groups stay close to the full network's (NMI 0.92, random cuts 0.85 ± 0.14), and the regional match rises only to 0.09, inside the range of random cuts (0.04 ± 0.05). Without the ten largest filers the clusters also sharpen, modularity rising from 0.28 to 0.32. Every version still beats its own rewired networks by a wide margin (z = 25 or more). Without the ten largest filers the regional match (AMI 0.13, p = 0.013) sits 4.6 standard deviations above random cuts (0.01 ± 0.03). Random cuts leave the job clusters closer to the full network's (0.96 and 0.88, 3.1 and 3.9 standard deviations away), so the biggest firms do shape which jobs cluster together.</p></div></details>
+              </div>
 <!-- A · Which firm hides the regions? --------------------- -->
 <div class="card w4-card" id="footprint-which">
 <header class="w4-q">
@@ -205,7 +206,8 @@ body{margin:0;background:#eef3f9}
               1, 2, 3 … 20 filers in turn. Each removal sits beside random cuts
               of companies that remove the same share of filings.
             </p>
-
+</div>
+<div>
 <div class="notice">
 <span class="ico">💡</span>
 <span>
@@ -215,9 +217,9 @@ body{margin:0;background:#eef3f9}
                     more than the 0.13 without all ten.
                   </span>
 </div>
-
-<div class="rx-drawers rx-foot"><details class="rx-drawer"><summary>Method</summary><div class="rx-drawer-body"><p>50 random cuts for a single firm, 20 for each step of the sweep.</p></div></details><details class="rx-drawer"><summary>More numbers</summary><div class="rx-drawer-body"><p>Amazon's 0.14 sits 3.5 standard deviations above its random cuts. No other single firm pushes the match up beyond its random cuts: removing EY, Meta, Deloitte or Apple alone tips Louvain into a two-group split that ignores regions (AMI −0.005). Removed in rank order, the largest filers keep the match above random cuts at every step from one to twenty, but not smoothly: it dips to about 0.07 without the top 17 to 19, where several partitions compete, and peaks at 0.20 without the top 20. 2024 tells the same story more strongly. Its full network shows no regional match (AMI −0.005); without its ten largest filers the match is 0.22 (p = 0.001), against −0.01 ± 0.01 for random cuts.</p></div></details></div>
 </div>
+</div>
+<div class="rx-fig-row">
 <div class="plot">
 <h3>The largest filers removed in turn</h3>
 <p class="axis-note">
@@ -228,8 +230,6 @@ body{margin:0;background:#eef3f9}
               </p>
 <div class="chart-host jobs-nmi" id="chart-footprint-rank" style="user-select: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0); position: relative;"><img alt="" src="/_blob/763e0b10b00b3cc95abe61afd37712e6" style="display:block;width:100%;height:100%;object-fit:contain"/></div>
 </div>
-</div>
-<div class="rx-fig-row">
 <div class="plot">
 <h3>One firm out at a time</h3>
 <p class="axis-note">
@@ -241,10 +241,11 @@ body{margin:0;background:#eef3f9}
 <div class="chart-host jobs-nmi" id="chart-footprint-single" style="user-select: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0); position: relative;"><img alt="" src="/_blob/53c9cb33e1b9def68d4e687bf69e4954" style="display:block;width:100%;height:100%;object-fit:contain"/></div>
 </div>
 </div>
+<div class="rx-drawers rx-foot"><details class="rx-drawer"><summary>Method</summary><div class="rx-drawer-body"><p>50 random cuts for a single firm, 20 for each step of the sweep.</p></div></details><details class="rx-drawer"><summary>More numbers</summary><div class="rx-drawer-body"><p>Amazon's 0.14 sits 3.5 standard deviations above its random cuts. No other single firm pushes the match up beyond its random cuts: removing EY, Meta, Deloitte or Apple alone tips Louvain into a two-group split that ignores regions (AMI −0.005). Removed in rank order, the largest filers keep the match above random cuts at every step from one to twenty, but not smoothly: it dips to about 0.07 without the top 17 to 19, where several partitions compete, and peaks at 0.20 without the top 20. 2024 tells the same story more strongly. Its full network shows no regional match (AMI −0.005); without its ten largest filers the match is 0.22 (p = 0.001), against −0.01 ± 0.01 for random cuts.</p></div></details></div>
 </div>
 </section></div></main></div>
 </x-dc>
-<script type="text/x-dc" data-dc-script data-props='{"$preview": {"width": 1440, "height": 2037}}'>
+<script type="text/x-dc" data-dc-script data-props='{"$preview": {"width": 1440, "height": 1564}}'>
 class Component extends DCLogic {
 renderVals() { return {}; }
 }

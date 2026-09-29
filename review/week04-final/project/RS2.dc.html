@@ -134,9 +134,13 @@ body{margin:0;background:#eef3f9}
 .rx .rx-drawers>.w4-tip{margin:0}
 .rx .rx-foot{margin-top:14px}
 .rx .rx-drawer-body>p+p{margin-top:8px}
+/* two charts: one row under the text, equal widths, titles, notes and charts level through subgrid */
+.rx .rx-fig-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(0,1fr));grid-template-rows:auto auto 1fr;column-gap:28px;row-gap:0;margin-top:22px;align-items:start}
+.rx .rx-fig-row>figure,.rx .rx-fig-row>.plot{display:grid;grid-row:span 3;grid-template-rows:subgrid;margin:0}
+.rx .rx-fig-row>figure>figcaption{grid-row:span 2}
 </style>
 </helmet>
-<div class="corridor rx" style="width: 1440px; height: 2938px; overflow: hidden; background: #eef3f9"><div class="topbar">
+<div class="corridor rx" style="width: 1440px; height: 2812px; overflow: hidden; background: #eef3f9"><div class="topbar">
 <div class="shell">
 <a class="brand" href="../../">LOG–LOG <b>LEGENDS</b></a>
 <a class="site-link" href="../../#weeks">All posts</a>
@@ -201,6 +205,8 @@ body{margin:0;background:#eef3f9}
 <p class="sub">
                   Each group gets its own occupation network and its own <span class="w4-term"><button aria-describedby="w4-term-x-louvain" type="button">Louvain</button><span class="w4-pop" id="w4-term-x-louvain" role="tooltip">A standard method that splits a network into groups whose members link more to each other than to the rest.</span></span> clusters. <span class="w4-term"><button aria-describedby="w4-term-x-nmi" type="button">NMI</button><span class="w4-pop" id="w4-term-x-nmi" role="tooltip">Normalized mutual information: a score for how alike two groupings are, 1 when they match exactly and 0 when they are unrelated.</span></span> says how alike the two clusterings are.
                 </p>
+</div>
+<div>
 <div class="notice">
 <span class="ico">💡</span>
 <span>
@@ -211,17 +217,13 @@ body{margin:0;background:#eef3f9}
                     like them.
                   </span>
 </div>
-
-<div class="rx-drawers rx-foot">
-                  <details class="rx-drawer"><summary>Method</summary><div class="rx-drawer-body"><p>We split the companies in two: the 817 firms that place 20 or more filings at client sites (21% of all filings) and the 58,379 others. Alone, that number means little: splitting companies into a small and a large group changes the clusters even if nobody behaves differently. So the baseline draws 20 random groups that match the outsourcing firms in both respects: the same number of companies of each size, from the one-filing firms to the giants. NMI is measured on the 217 occupations that sit in a cluster of two or more on both sides.</p></div></details>
-                  <details class="rx-drawer"><summary>More numbers</summary><div class="rx-drawer-body"><p>The half-matched baselines show why the match matters: random groups with only the same number of companies hold 1.3% of filings and agree at 0.43 ± 0.09, which would have hidden the difference. At the top the two mixes look alike: software developers are 28% of the outsourcing firms' filings and 33% of the direct employers'. Below that they part: "computer occupations, all other" is 22% of the outsourcing firms' filings and 5% of the direct employers', and direct employers file for 276 occupations the outsourcing firms never touch.</p></div></details>
-                </div>
 </div>
+</div>
+<div class="rx-fig-row">
 <div class="plot">
 <h3>Do outsourcers cluster jobs like random firms would?</h3>
 <p class="axis-note">Bars show how alike the two groups' job clusters are. Whiskers span one standard deviation over 20 random splits. Only the blue baseline matches the outsourcing firms on both number and size of companies, so it is the fair comparison.</p>
 <div class="w4-figure-body" style="margin-top:8px"><svg viewBox="0 0 560 226" width="100%" role="img" aria-label="How much the outsourcing and direct-employer job clusters agree, against three random baselines"><line x1="200" x2="200" y1="6" y2="192" stroke="#e6ecf3"></line><text x="200" y="206" font-size="11" fill="#7a8fac" text-anchor="middle">0.0</text><line x1="280" x2="280" y1="6" y2="192" stroke="#e6ecf3"></line><text x="280" y="206" font-size="11" fill="#7a8fac" text-anchor="middle">0.2</text><line x1="360" x2="360" y1="6" y2="192" stroke="#e6ecf3"></line><text x="360" y="206" font-size="11" fill="#7a8fac" text-anchor="middle">0.4</text><line x1="440" x2="440" y1="6" y2="192" stroke="#e6ecf3"></line><text x="440" y="206" font-size="11" fill="#7a8fac" text-anchor="middle">0.6</text><line x1="520" x2="520" y1="6" y2="192" stroke="#e6ecf3"></line><text x="520" y="206" font-size="11" fill="#7a8fac" text-anchor="middle">0.8</text><text x="360" y="223" font-size="11" fill="#7a8fac" text-anchor="middle">Agreement of the two groups' job clusters (NMI: 0 unrelated, 1 identical)</text><text x="0" y="28" font-size="12" font-weight="700" fill="#0f2340">Outsourcing firms against</text><text x="0" y="43" font-size="12" font-weight="700" fill="#0f2340">direct employers (actual)</text><g><title>Outsourcing firms against direct employers (actual): NMI 0.425</title><rect x="200" y="22" width="169.99292304322125" height="18" rx="3" fill="#f2820c"></rect></g><text x="376.99292304322125" y="35" font-size="12" font-weight="700" fill="#0f2340">0.42</text><text x="0" y="74" font-size="12" font-weight="600" fill="#0f2340">Random firms, same number</text><text x="0" y="89" font-size="12" font-weight="600" fill="#0f2340">of companies</text><g><title>Random firms, same number of companies: NMI 0.428 ± 0.094 (mean ± sd over the random splits)</title><rect x="200" y="68" width="171.26288976221167" height="18" rx="3" fill="#7a8fac"></rect><line x1="333.5171085051323" x2="409.00867101929106" y1="77" y2="77" stroke="#0f2340" stroke-width="1.5"></line><line x1="333.5171085051323" x2="333.5171085051323" y1="71" y2="83" stroke="#0f2340" stroke-width="1.5"></line><line x1="409.00867101929106" x2="409.00867101929106" y1="71" y2="83" stroke="#0f2340" stroke-width="1.5"></line></g><text x="416.00867101929106" y="81" font-size="12" font-weight="700" fill="#0f2340">0.43</text><text x="0" y="120" font-size="12" font-weight="600" fill="#0f2340">Random firms, same share</text><text x="0" y="135" font-size="12" font-weight="600" fill="#0f2340">of filings</text><g><title>Random firms, same share of filings: NMI 0.578 ± 0.046 (mean ± sd over the random splits)</title><rect x="200" y="114" width="231.33139016778034" height="18" rx="3" fill="rgba(185, 196, 210, 0.62)"></rect><line x1="412.84428873718457" x2="449.8184915983761" y1="123" y2="123" stroke="#0f2340" stroke-width="1.5"></line><line x1="412.84428873718457" x2="412.84428873718457" y1="117" y2="129" stroke="#0f2340" stroke-width="1.5"></line><line x1="449.8184915983761" x2="449.8184915983761" y1="117" y2="129" stroke="#0f2340" stroke-width="1.5"></line></g><text x="456.8184915983761" y="127" font-size="12" font-weight="700" fill="#0f2340">0.58</text><text x="0" y="166" font-size="12" font-weight="600" fill="#0f2340">Random firms, same number</text><text x="0" y="181" font-size="12" font-weight="600" fill="#0f2340">and size (fair baseline)</text><g><title>Random firms, same number and size (fair baseline): NMI 0.608 ± 0.044 (mean ± sd over the random splits)</title><rect x="200" y="160" width="243.30242650761392" height="18" rx="3" fill="#1f8fd6"></rect><line x1="425.7654875913945" x2="460.8393654238333" y1="169" y2="169" stroke="#0f2340" stroke-width="1.5"></line><line x1="425.7654875913945" x2="425.7654875913945" y1="163" y2="175" stroke="#0f2340" stroke-width="1.5"></line><line x1="460.8393654238333" x2="460.8393654238333" y1="163" y2="175" stroke="#0f2340" stroke-width="1.5"></line></g><text x="467.8393654238333" y="173" font-size="12" font-weight="700" fill="#0f2340">0.61</text></svg></div>
-</div>
 </div>
 <div class="plot">
 <h3>The largest occupations in each group</h3>
@@ -231,6 +233,11 @@ body{margin:0;background:#eef3f9}
               </p>
 <div class="chart-host" id="chart-jobs-split-mix" style="user-select: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0); position: relative;"><img alt="" src="/_blob/fbfc728807b419b694c5202ba0b5cbae" style="display:block;width:100%;height:100%;object-fit:contain"></div>
 </div>
+</div>
+<div class="rx-drawers rx-foot">
+                  <details class="rx-drawer"><summary>Method</summary><div class="rx-drawer-body"><p>We split the companies in two: the 817 firms that place 20 or more filings at client sites (21% of all filings) and the 58,379 others. Alone, that number means little: splitting companies into a small and a large group changes the clusters even if nobody behaves differently. So the baseline draws 20 random groups that match the outsourcing firms in both respects: the same number of companies of each size, from the one-filing firms to the giants. NMI is measured on the 217 occupations that sit in a cluster of two or more on both sides.</p></div></details>
+                  <details class="rx-drawer"><summary>More numbers</summary><div class="rx-drawer-body"><p>The half-matched baselines show why the match matters: random groups with only the same number of companies hold 1.3% of filings and agree at 0.43 ± 0.09, which would have hidden the difference. At the top the two mixes look alike: software developers are 28% of the outsourcing firms' filings and 33% of the direct employers'. Below that they part: "computer occupations, all other" is 22% of the outsourcing firms' filings and 5% of the direct employers', and direct employers file for 276 occupations the outsourcing firms never touch.</p></div></details>
+                </div>
 </div>
 <div class="card w4-card" id="jobs-linkcom">
 <header class="w4-q">
@@ -366,7 +373,7 @@ Electrical Power-Line Installers and Repairers
 </div>
 </section></div></main></div>
 </x-dc>
-<script type="text/x-dc" data-dc-script data-props='{"$preview": {"width": 1440, "height": 2938}}'>
+<script type="text/x-dc" data-dc-script data-props='{"$preview": {"width": 1440, "height": 2812}}'>
 class Component extends DCLogic {
 renderVals() { return {}; }
 }

@@ -141,9 +141,10 @@ body{margin:0;background:#eef3f9}
 .rx .rx-drawers>.w4-tip{margin:0}
 .rx .rx-foot{margin-top:14px}
 .rx .rx-drawer-body>p+p{margin-top:8px}
-.rx .rx-fig-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(0,1fr));gap:28px;margin-top:22px;align-items:start}
-.rx .rx-fig-row>figure,.rx .rx-fig-row>.plot{margin:0}
-.rx .rx-fig-row>:only-child{max-width:58%}
+/* two charts: one row under the text, equal widths, titles, notes and charts level through subgrid */
+.rx .rx-fig-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(0,1fr));grid-template-rows:auto auto 1fr;column-gap:28px;row-gap:0;margin-top:22px;align-items:start}
+.rx .rx-fig-row>figure,.rx .rx-fig-row>.plot{display:grid;grid-row:span 3;grid-template-rows:subgrid;margin:0}
+.rx .rx-fig-row>figure>figcaption{grid-row:span 2}
 </style>
 </helmet>
 <div class="corridor rx" style="width: 1440px; height: 2230px; overflow: hidden; background: #eef3f9"><div class="topbar">
@@ -565,22 +566,12 @@ body{margin:0;background:#eef3f9}
 <p class="w4-answer">Only in part.</p>
 </div>
 </header>
-<div class="w4-two">
-<div>
 <p class="sub">We compare each year's client groups with the next year's, on the clients both years share, and with a second run on the same year as the ceiling. Consecutive years agree less than that ceiling, so the groups carry over only in part.</p>
-
-
-<div class="rx-drawers rx-foot"><details class="rx-drawer"><summary>Background</summary><div class="rx-drawer-body"><p>We compared vendor and industry on 2025 only.</p></div></details><details class="rx-drawer"><summary>More numbers</summary><div class="rx-drawer-body"><p>On the clients present in both years, consecutive years agree at NMI 0.21 to 0.27, about half the 0.48 to 0.50 between two runs of the same year on the same clients.</p><p>2026 breaks the pattern at the top. We compare January to June of each year, because October 2025, the month of the federal shutdown, holds 1,306 certified filings against 35,258 a year earlier. From January to June, certified filings fell 5.8% after rising 9.5% the year before, and filings that name a client company fell 16.5% after holding flat (-0.1%). Tata Consultancy Services filed 2,079, down from 5,256. Of the 349 clients it supplied most from January to June 2025, 223 still appear, and 111 of those now get most of their workers from another firm, most often Infosys. Across clients with five or more filings in both years, 47% changed their main vendor, against 44% a year earlier. These are applications, so they show what employers asked for, not why.</p></div></details></div>
-</div>
-<div>
+<div class="rx-fig-row">
 <figure class="w4-figure">
 <figcaption><b>Consecutive years against the same year</b><span><span class="w4-term"><button aria-describedby="w4-term-x-nmi" type="button">NMI</button><span class="w4-pop" id="w4-term-x-nmi" role="tooltip">Normalised mutual information: how much two groupings of the same clients agree, from 0 (unrelated) to 1 (identical).</span></span> of the groups on shared clients. Dots: two consecutive years. Dashed: two runs of the same year.</span></figcaption>
 <div class="w4-figure-body" data-strip="who-q4-stability"><svg aria-label="Agreement of consecutive years' groups, against two runs of the same year" class="w4-strip" height="212" role="img" viewbox="0 0 520 212" width="520"><line stroke="#e6ecf3" stroke-width="1" x1="155" x2="155" y1="6" y2="178"></line><text fill="#7a8fac" font-size="11" text-anchor="middle" x="155" y="194">0.0</text><line stroke="#e6ecf3" stroke-width="1" x1="270" x2="270" y1="6" y2="178"></line><text fill="#7a8fac" font-size="11" text-anchor="middle" x="270" y="194">0.2</text><line stroke="#e6ecf3" stroke-width="1" x1="385" x2="385" y1="6" y2="178"></line><text fill="#7a8fac" font-size="11" text-anchor="middle" x="385" y="194">0.4</text><line stroke="#e6ecf3" stroke-width="1" x1="500" x2="500" y1="6" y2="178"></line><text fill="#7a8fac" font-size="11" text-anchor="middle" x="500" y="194">0.6</text><text fill="#0f2340" font-size="12" font-weight="600" x="0" y="33">2022 to 2023</text><text fill="#7a8fac" font-size="11" x="0" y="48">6,870 shared clients</text><line stroke="#dce5f0" stroke-width="1" x1="155" x2="500" y1="36" y2="36"></line><line stroke="#46618a" stroke-dasharray="3 2" stroke-width="1.4" x1="430.425" x2="430.425" y1="26" y2="46"></line><text fill="#46618a" font-size="11" font-weight="400" text-anchor="middle" x="430.425" y="61">same year 0.48</text><circle cx="274.6" cy="36" fill="#0f2340" r="6.5" stroke="#ffffff" stroke-width="2"></circle><text fill="#0f2340" font-size="12" font-weight="700" text-anchor="middle" x="274.6" y="23">0.21</text><text fill="#0f2340" font-size="12" font-weight="600" x="0" y="89">2023 to 2024</text><text fill="#7a8fac" font-size="11" x="0" y="104">6,464 shared clients</text><line stroke="#dce5f0" stroke-width="1" x1="155" x2="500" y1="92" y2="92"></line><line stroke="#46618a" stroke-dasharray="3 2" stroke-width="1.4" x1="443.65000000000003" x2="443.65000000000003" y1="82" y2="102"></line><text fill="#46618a" font-size="11" font-weight="400" text-anchor="middle" x="443.65000000000003" y="117">same year 0.50</text><circle cx="288.975" cy="92" fill="#0f2340" r="6.5" stroke="#ffffff" stroke-width="2"></circle><text fill="#0f2340" font-size="12" font-weight="700" text-anchor="middle" x="288.975" y="79">0.23</text><text fill="#0f2340" font-size="12" font-weight="600" x="0" y="145">2024 to 2025</text><text fill="#7a8fac" font-size="11" x="0" y="160">6,198 shared clients</text><line stroke="#dce5f0" stroke-width="1" x1="155" x2="500" y1="148" y2="148"></line><line stroke="#46618a" stroke-dasharray="3 2" stroke-width="1.4" x1="443.65000000000003" x2="443.65000000000003" y1="138" y2="158"></line><text fill="#46618a" font-size="11" font-weight="400" text-anchor="middle" x="443.65000000000003" y="173">same year 0.50</text><circle cx="311.4" cy="148" fill="#0f2340" r="6.5" stroke="#ffffff" stroke-width="2"></circle><text fill="#0f2340" font-size="12" font-weight="700" text-anchor="middle" x="311.4" y="135">0.27</text></svg></div>
 </figure>
-
-</div>
-</div>
-<div class="rx-fig-row">
 <figure class="w4-figure">
 <figcaption><b>2026 so far, against a year earlier</b><span>January–June change in certified and client-company filings, and the share of clients that changed their main vendor.</span></figcaption>
 <div class="w4-vis-stack">
@@ -589,6 +580,7 @@ body{margin:0;background:#eef3f9}
 </div>
 </figure>
 </div>
+<div class="rx-drawers rx-foot"><details class="rx-drawer"><summary>Background</summary><div class="rx-drawer-body"><p>We compared vendor and industry on 2025 only.</p></div></details><details class="rx-drawer"><summary>More numbers</summary><div class="rx-drawer-body"><p>On the clients present in both years, consecutive years agree at NMI 0.21 to 0.27, about half the 0.48 to 0.50 between two runs of the same year on the same clients.</p><p>2026 breaks the pattern at the top. We compare January to June of each year, because October 2025, the month of the federal shutdown, holds 1,306 certified filings against 35,258 a year earlier. From January to June, certified filings fell 5.8% after rising 9.5% the year before, and filings that name a client company fell 16.5% after holding flat (-0.1%). Tata Consultancy Services filed 2,079, down from 5,256. Of the 349 clients it supplied most from January to June 2025, 223 still appear, and 111 of those now get most of their workers from another firm, most often Infosys. Across clients with five or more filings in both years, 47% changed their main vendor, against 44% a year earlier. These are applications, so they show what employers asked for, not why.</p></div></details></div>
 </div></div></div></section></div></main></div>
 </x-dc>
 <script type="text/x-dc" data-dc-script data-props='{"start": {"editor": null}, "$preview": {"width": 1440, "height": 2230}}'>
