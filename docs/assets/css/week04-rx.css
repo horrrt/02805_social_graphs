@@ -613,6 +613,24 @@
   display: none;
 }
 
+/* Data and methods is still a .qa card underneath. As a topic it drops that
+   frame, so its header sits on the page like the other five topics and its
+   content takes the card below. */
+
+.corridor details.qa.rx-topic {
+  background: none;
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+}
+
+.corridor details.qa.rx-topic > .qa-body {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 20px 24px;
+}
+
 /* The skills and PageRank boxes each hold several cards that scripts build;
    the router's data-show picks the one to show. Scoped to the whole box,
    because the radar lands at the end of the box when it cannot find the
