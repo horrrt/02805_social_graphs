@@ -268,7 +268,7 @@ a.week-card:hover {
 }
 
 .home .home-data h3,
-.home .home-about h2 {
+.home .home-about .card h2 {
   font-size: 17px;
   letter-spacing: -0.01em;
   margin: 0 0 8px;
