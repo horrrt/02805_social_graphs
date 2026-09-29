@@ -38,11 +38,12 @@ LOGS = HERE.parent / "build" / "logs"
 SCRIPTS = ["week04_where", "week04_where_who", "week04_jobs", "week04_jobs_split", "week04_staffing",
            "week04_staffing_figure", "week04_staffing_moves", "week04_lottery", "week04_perm", "week04_countries",
            "week04_ties", "week04_shift", "week04_lawfirms", "week04_oews", "week04_beyond", "week04_footprint",
-           "week04_explore", "week04_years", "week04_roles", "week04_pagerank", "week04_skills", "week04_skills_radar",
+           "week04_explore", "week04_footprint_rank", "week04_years", "week04_roles", "week04_pagerank", "week04_skills", "week04_skills_radar",
            "week04_more_page", "week04_staffing_deep_page"]
 # script -> the scripts whose output it reads (the moves and where_who scripts check theirs reproduces).
 AFTER = {"week04_staffing_figure": ("week04_staffing",), "week04_staffing_moves": ("week04_staffing",),
          "week04_where_who": ("week04_where",), "week04_explore": ("week04_where",),
+         "week04_footprint_rank": ("week04_footprint",),
          "week04_years": ("week04_staffing", "week04_shift", "week04_countries", "week04_lottery",
                            "week04_staffing_figure"),
          "week04_roles": ("week04_years", "week04_staffing"),
@@ -52,6 +53,11 @@ AFTER = {"week04_staffing_figure": ("week04_staffing",), "week04_staffing_moves"
                                        "week04_ties")}
 # One process per core: each loads a few hundred MB of filings.
 MAX_PARALLEL = os.cpu_count() or 4
+# Scripts that rewire run their nulls in a pool (week04_staffing.pooled); with
+# ten scripts starting at once, each pool gets a few workers, not every core.
+# The memory budget is split the same way.
+CHILD_ENV = {"W4_WORKERS": os.environ.get("W4_WORKERS", str(max(2, MAX_PARALLEL // 3))),
+             "W4_MEMORY_GB": os.environ.get("W4_MEMORY_GB", "4")}
 
 
 def span(seconds):
@@ -70,7 +76,8 @@ def main():
     def launch(name):
         log = open(LOGS / f"{name}.log", "w")
         running[name] = (subprocess.Popen([sys.executable, str(HERE / f"{name}.py")], stdout=log,
-                                          stderr=subprocess.STDOUT, cwd=HERE.parent), log)
+                                          stderr=subprocess.STDOUT, cwd=HERE.parent,
+                                          env={**os.environ, **CHILD_ENV}), log)
 
     print(f"running {len(wanted)} scripts in parallel; logs in {LOGS.relative_to(HERE.parent)}/", flush=True)
     done = set()

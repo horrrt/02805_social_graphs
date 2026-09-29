@@ -18,13 +18,13 @@ Questions
 
 Method
 - The full network is rebuilt by importing week04_where and calling its own
-  metros(), worksite_metros() and project(): the four lines that build
+  metros(), worksite_metros() and metro_graph(): the four lines that build
   per_case/pairs/filings/top in week04_where.main() are copied verbatim below
   (see build_full()) rather than re-derived, so the node set and its order
   match docs/assets/data/week04_place.json exactly. That is checked directly:
   the rebuilt top-40 list must equal the page's city order, and the rebuilt
   graph's disparity-filter backbone at alpha 0.2 must equal the page's
-  backbone edges (same 180 pairs, same weights).
+  backbone edges (same pairs, same weights).
 - Girvan-Newman runs on that backbone, UNWEIGHTED (no "weight" attribute on
   the graph passed to betweenness or modularity, since
   networkx.community.modularity defaults to weight="weight" and would
@@ -61,7 +61,7 @@ Checks
   week04_place.json's backbone edges exactly (same pairs and weights).
 - Q of the page's 3-community partition on the full weighted network, rounded
   to 3 decimals, equals week04_place.json's null_model.Q (0.049).
-- The backbone graph from the JSON has 180 links and 40 nodes.
+- The backbone graph from the JSON has the page's links and nodes.
 - Every recorded Louvain move's incremental gain matches a fresh
   Q_after - Q_before to within 1e-9 (asserted for every move of the kept
   seed); the final Q matches networkx.community.modularity within 1e-9.
@@ -108,7 +108,7 @@ def build_full():
     pairs = per_case.groupby(["employer", "metro"]).size().rename("filings").reset_index()
     filings = per_case.groupby("metro").size().sort_values(ascending=False)
     top = list(filings.head(where.TOP).index)
-    g_full = where.project(pairs, top)
+    g_full = where.metro_graph(pairs, top)
     return top, g_full
 
 
@@ -132,7 +132,7 @@ def girvan_newman(backbone):
                      "components": new_components, "split": split})
         if split:
             comps = sorted(nx.connected_components(g), key=lambda c: (-len(c), min(c)))
-            partition = {m: i for i, c in enumerate(comps) for m in c}
+            partition = {m: i for i, c in enumerate(comps) for m in sorted(c)}
             q = nx.community.modularity(backbone, comps, weight=None)
             levels.append({"step": step, "components": new_components,
                             "partition": partition, "Q": round(q, 4)})
@@ -238,13 +238,14 @@ def run_louvain(g_full, seed, m, record=False):
         comm, sweeps, moves_raw = phase1(graph, seed, m, start_label)
         n_communities = len(set(comm.values()))
         if record:
-            partition_start = {mm: start_label[n] for n in nodes for mm in members[n]}
+            partition_start = {mm: start_label[n] for n in nodes for mm in sorted(members[n])}
             level_members = {n: sorted(members[n]) for n in nodes}
             # Replay the moves in order to get the exact Q after each one,
             # mapping the running per-node comm back to the original metros.
             comm_replay = dict(start_label)
+            # The previous level's exact Q, not its rounded copy in `levels`.
             running_q = nx.community.modularity(
-                g_full, [{mm} for mm in g_full.nodes()], weight="weight") if level == 0 else levels[-1]["Q"]
+                g_full, [{mm} for mm in g_full.nodes()], weight="weight") if level == 0 else q_level
             q_start = running_q
             moves = []
             for node, home, to, gain in moves_raw:
@@ -274,7 +275,8 @@ def run_louvain(g_full, seed, m, record=False):
         final_parts.setdefault(c, set()).update(members[n])
     renumber = {old: new for new, old in enumerate(
         sorted(final_parts, key=lambda c: (-len(final_parts[c]), min(final_parts[c]))))}
-    final_partition = {mm: renumber[c] for c, mms in final_parts.items() for mm in mms}
+    final_partition = {mm: renumber[c] for c, mms in sorted(final_parts.items(), key=lambda kv: renumber[kv[0]])
+                       for mm in sorted(mms)}
     final_q = nx.community.modularity(g_full, list(final_parts.values()), weight="weight")
     return final_partition, final_q, levels
 
@@ -289,7 +291,7 @@ def main():
     top, g_full = build_full()
     assert top == page_ids_order, "the rebuilt top-40 metro list and order must match week04_place.json"
     assert len(top) == 40, f"expected 40 metros, got {len(top)}"
-    full_edges = [(u, v, int(w)) for u, v, w in g_full.edges(data="weight")]
+    full_edges = [(u, v, round(float(w), 6)) for u, v, w in g_full.edges(data="weight")]
     print(f"full network: {len(full_edges)} links on {g_full.number_of_nodes()} metros (expect 780 = C(40,2))")
     assert len(full_edges) == 780, f"expected 780 links (every pair shares an employer), got {len(full_edges)}"
 
@@ -297,9 +299,10 @@ def main():
     # the page's committed backbone: same graph, rebuilt correctly.
     p = where.disparity(g_full)
     rebuilt_backbone = sorted(
-        (tuple(sorted((u, v))), int(g_full[u][v]["weight"])) for (u, v), pv in p.items() if pv < where.DEFAULT_ALPHA)
+        (tuple(sorted((u, v))), round(float(g_full[u][v]["weight"]), 3))
+        for (u, v), pv in p.items() if pv < where.DEFAULT_ALPHA)
     page_backbone_edges = sorted(
-        (tuple(sorted((u, v))), int(w)) for u, v, w in place["backbone"]["graphs"]["0.2"]["edges"])
+        (tuple(sorted((u, v))), w) for u, v, w in place["backbone"]["graphs"]["0.2"]["edges"])
     assert rebuilt_backbone == page_backbone_edges, \
         "the rebuilt alpha-0.2 backbone does not match week04_place.json's backbone"
 
@@ -316,9 +319,9 @@ def main():
     backbone = nx.Graph()
     backbone.add_nodes_from(backbone_nodes)
     backbone.add_edges_from((u, v) for u, v, _ in place["backbone"]["graphs"]["0.2"]["edges"])
-    assert backbone.number_of_nodes() == 40 and backbone.number_of_edges() == 180, \
-        f"expected the alpha-0.2 backbone to have 40 nodes and 180 edges, got " \
-        f"{backbone.number_of_nodes()} and {backbone.number_of_edges()}"
+    assert backbone.number_of_nodes() == len(backbone_nodes) and \
+        backbone.number_of_edges() == len(place["backbone"]["graphs"]["0.2"]["edges"]), \
+        "the alpha-0.2 backbone must have the page's nodes and links"
 
     gn = girvan_newman(backbone)
     print(f"Girvan-Newman best level: step {gn['best']['step']}, "
@@ -336,7 +339,7 @@ def main():
             parts_by_label.setdefault(c, set()).add(node)
         frozen = frozenset(frozenset(v) for v in parts_by_label.values())
         if frozen == page_frozen:
-            chosen_seed, chosen_reason = s, "matches the page's 3 communities exactly"
+            chosen_seed, chosen_reason = s, f"matches the page's {len(page_communities)} communities exactly"
             break
         if q > best_q:
             best_q, best_seed = q, s
@@ -383,7 +386,7 @@ def main():
     # week04_jobs_split.q2().
     nodes, idx, edges, pairs_i, pairs_j, sims = link_similarities(backbone)
     cut = partition_density_cut(idx, edges, pairs_i, pairs_j, sims, time.time())
-    assert cut is not None, "link-community cut did not finish (unexpected on 180 links)"
+    assert cut is not None, "link-community cut did not finish"
     link_cluster = cut["link_cluster"]
     sizes = Counter(link_cluster)
     kept_clusters = sorted(c for c, n in sizes.items() if n >= 2)

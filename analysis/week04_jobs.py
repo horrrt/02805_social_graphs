@@ -73,7 +73,7 @@ import pandas as pd
 
 from week04_data import RAW
 from week04_schemas import check
-from week04_staffing import certified, infomap, louvain, rewire, tracked
+from week04_staffing import MOVES_UNWEIGHTED, certified, infomap, louvain, matrix_bytes, pooled, rewire
 from week04_where import DEFAULT_ALPHA, disparity
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -320,15 +320,16 @@ def null_check(frame, graph, labels):
         bipartite.add_edge(("F", company), ("C", job), weight=1)
     giant = giant_of(graph)
     real = np.array([louvain(giant, seed)[1] for seed in range(100)])
-    rng = random.Random(SEED)
-    null_q, null_lifts, null_sizes = [], [], []
-    for i in tracked("Jobs nulls", NULLS):
-        h = reproject(rewire(bipartite, rng), list(graph))
+    def null(i):
+        h = reproject(rewire(bipartite, random.Random(SEED + i), MOVES_UNWEIGHTED), list(graph))
         hg = giant_of(h)
-        null_sizes.append(hg.number_of_nodes())
-        null_q.append(louvain(hg, SEED + i)[1])
-        null_lifts.append({n: lift for n, (_, lift) in best_other_lift(h, labels).items()})
-    null_q = np.array(null_q)
+        return (hg.number_of_nodes(), louvain(hg, SEED + i)[1],
+                {n: lift for n, (_, lift) in best_other_lift(h, labels).items()})
+
+    runs = pooled("Jobs nulls", NULLS, null, matrix_bytes(bipartite))
+    null_sizes = [size for size, _, _ in runs]
+    null_q = np.array([q for _, q, _ in runs])
+    null_lifts = [lifts for _, _, lifts in runs]
     stats = {"runs": NULLS, "scored_on": "the giant component of each network",
              "real_giant_occupations": giant.number_of_nodes(),
              "null_giant_occupations_median": int(np.median(null_sizes)),

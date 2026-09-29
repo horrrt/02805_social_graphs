@@ -95,7 +95,7 @@ def _variant_task(payload):
     pairs, keep, regions = _G["pairs"], _G["keep"], _G["regions"]
     full_member = _G["full_member"]
     pv = pairs[~pairs["employer"].isin(dropped)] if dropped else pairs
-    g = fp.project_sparse(pv, keep)
+    g = fp.project_sparse(pv, keep, fp.RULES["metro"])
     seeds_run = [fp.seed_for(part, variant_key, None, "louvain_run", r) for r in range(RUNS)]
     best, member, _, parts_list = fp.modal_partition(g, seeds_run, RUNS)
     found = Counter(frozenset(frozenset(c) for c in p) for p in parts_list)
@@ -126,7 +126,7 @@ def compute_full(pairs, keep, regions, part, variant_key="full"):
     drop and control draw in the same (pairs, keep, part) is compared to.
     Returns (result dict, member dict) -- `member` becomes `full_member` for
     every later _variant_task call on this network."""
-    g = fp.project_sparse(pairs, keep)
+    g = fp.project_sparse(pairs, keep, fp.RULES["metro"])
     seeds_run = [fp.seed_for(part, variant_key, None, "louvain_run", r) for r in range(RUNS)]
     best, member, _, parts_list = fp.modal_partition(g, seeds_run, RUNS)
     found = Counter(frozenset(frozenset(c) for c in p) for p in parts_list)

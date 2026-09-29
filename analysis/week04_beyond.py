@@ -29,7 +29,8 @@ Method
   employers on the staffing giant's "F" side; 100 Louvain runs on its giant
   component; NMI and AMI of the best partition against the staffing partition,
   on firms present in both; a 1,000-shuffle p for each; a 50-rewiring
-  degree-preserving null of the same law-firm graph, Louvain once per
+  degree- and strength-preserving null (week04_staffing.rewire) of the same
+  law-firm graph, Louvain once per
   rewiring, AMI against the staffing partition each time (mean, sd), and Q
   (mean of 100 real runs) against the null Qs (z).
 - Q2: PERM FY2025, CASE_STATUS in ("Certified", "Certified - Expired"),
@@ -89,9 +90,10 @@ from statsmodels.stats.contingency_tables import StratifiedTable
 import week04_names as names
 from week04_data import load
 from week04_schemas import check
+from week04_staffing import pooled as staffing_pool  # this script's own pooled() pools PERM ratios
 from week04_staffing import (
-    SEED, MIN_FILINGS, certified, check_rewire, giant_of, graph, intermediaries,
-    labels, louvain, placements, resolver, rewire, tracked,
+    SEED, MIN_FILINGS, MOVES_SHORT, certified, check_rewire, giant_of, graph, intermediaries,
+    labels, louvain, matrix_bytes, placements, resolver, rewire, tracked,
 )
 
 OUT = Path(__file__).with_suffix(".json")
@@ -184,29 +186,28 @@ def question1(rng, lca, staffing_giant, staffing_member, out):
     nmi_obs, nmi_p = shuffled_stat(a, b, nmi, rng, SHUFFLES, "Q1: NMI shuffle")
     ami_obs, ami_p = shuffled_stat(a, b, ami, rng, SHUFFLES, "Q1: AMI shuffle")
 
-    null_ami, null_giant_qs, null_node_share = [], [], []
-    for i in tracked("Q1: rewired null", NULLS):
-        h = rewire(giant, rng)
-        if i == 0:
-            check_rewire(giant, h)
+    def null(i):
+        h = rewire(giant, random.Random(SEED + i), MOVES_SHORT)
+        check_rewire(giant, h)
         # Louvain on the whole rewiring (not only its giant component), so
         # every common firm keeps a community label, matching the real AMI's
         # firm set exactly.
         parts_h, _ = louvain(h, SEED + i)
         member_h = labels(parts_h)
         common_h = [e for e in common if ("F", e) in member_h]
-        if len(common_h) >= 2:
-            null_ami.append(ami([member_h[("F", e)] for e in common_h], [staffing_member[("F", e)] for e in common_h]))
+        a_h = (ami([member_h[("F", e)] for e in common_h], [staffing_member[("F", e)] for e in common_h])
+               if len(common_h) >= 2 else None)
         # Q's null is scored on the rewiring's own giant component, as section
         # 3 scores its wiring null: a rewiring of a giant component splits into
         # many free pieces, each an easy community, which can outscore the real
         # (connected) network even when the real split is the more meaningful one.
         hg = giant_of(h)
-        null_node_share.append(hg.number_of_nodes() / h.number_of_nodes())
-        _, q_hg = louvain(hg, SEED + i)
-        null_giant_qs.append(q_hg)
-    null_ami = np.array(null_ami)
-    null_giant_qs = np.array(null_giant_qs)
+        return a_h, hg.number_of_nodes() / h.number_of_nodes(), louvain(hg, SEED + i)[1]
+
+    nulls = staffing_pool("Q1: rewired null", NULLS, null, matrix_bytes(giant))
+    null_ami = np.array([a for a, _, _ in nulls if a is not None])
+    null_node_share = [s for _, s, _ in nulls]
+    null_giant_qs = np.array([q for _, _, q in nulls])
     z_q = float((qs.mean() - null_giant_qs.mean()) / null_giant_qs.std())
     z_ami = float((ami_obs - null_ami.mean()) / null_ami.std())
 

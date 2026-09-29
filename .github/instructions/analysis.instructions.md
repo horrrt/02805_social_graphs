@@ -9,7 +9,8 @@ applyTo: "analysis/**"
 - Run scripts from the repository root with the project environment (`.venv-course`).
 - Before you change a script, rerun it and confirm it reproduces its committed JSON.
 - Every claim needs a baseline that keeps what the claim does not test. Report modularity against the
-  degree-preserving rewiring (`rewire()` in `analysis/week04_staffing.py`), and NMI against shuffled labels
+  degree-preserving rewiring (`rewire()` in `analysis/week04_staffing.py`, which also keeps every node's
+  total weight on a weighted graph; pass a move count checked on your graph), and NMI against shuffled labels
   (`shuffled_nmi()`), with the p-value. When a claim fails its baseline, change the claim.
 - Run Louvain through `louvain(graph, seed)` in `analysis/week04_staffing.py` (igraph, about 25 times faster
   than networkx), many times with fixed seeds (`SEED + i`), not once. Report the partition found most often

@@ -160,7 +160,8 @@ Layout differences the loader already handles:
 
 1. An edge list from its script.
 2. Its main number against a shuffled baseline (a network that keeps everyone's number of links, or
-   shuffled labels for NMI).
+   shuffled labels for NMI). For a weighted network the baseline also keeps every node's total weight:
+   `rewire()` in `analysis/week04_staffing.py` (BiWES, see the traps below).
 3. 100 Louvain runs instead of one, and the same analysis on another year (FY2022 to FY2025 are
    complete years; FY2026 is nine months).
 4. One figure and one finding that could have come out the other way.
@@ -249,6 +250,25 @@ San Jose files 42.9 per 1,000 jobs against 4.5 nationally, and New York, Atlanta
 Washington leave the top 10 (5 of the top 10 by count stay).
 
 Traps found so far:
+
+- **A weighted null must keep every node's total weight** (29 September 2026). `rewire()` used to deal
+  the filing counts back out across the whole network after its swaps, so TCS's filings landed on
+  small firms and the null had no big vendors or big clients. Against that null section 3's weighted
+  modularity lost (0.596 against 0.737); against one that keeps every firm's and client's filings it
+  wins. `rewire()` now runs BiWES (Glaviano and Micciche, Phys. Rev. E 114, 014312, 2026; the `biwes`
+  package), which keeps every node's number of partners and total filings exactly. `shuffle_weights()`
+  moves filings only around four-cycles, and on the staffing network (mostly one-firm stars) that
+  moves 8% of them, too little to carry a claim.
+- **BiWES mixes slowly on big weights.** Its authors suggest 50 to 70 moves per link. On the staffing
+  network the null modularity kept falling to about 1,000 (0.563 at 50, 0.521 at 1,600). On section
+  1's filing-volume projection it kept rising past 4,000 (0.037 at 200, 0.055 at 4,000, the real
+  split 0.049): that projection shows no groups against a matched null, which is why section 1 moved
+  to Newman weighting. Unweighted graphs settle within 20 swaps per link. Every call passes its own
+  move count, and each is checked in `week04_staffing.py`'s comments.
+- **Section 1 links metros by Newman's weight** (`week04_where.WEIGHTING`): each company adds
+  1/(k-1) to every pair of the k metros it files in. The old rule, the smaller filing count summed over
+  companies, let the national outsourcing firms tie every metro to every other. Set `WEIGHTING =
+  "minsum"` to go back; the page's section 1 text would need rewriting again.
 
 - **The FY2026 worksites file misses 22% of placed filings** (15,718 of January to June's placed filings
   have no row there; FY2022 to FY2025 miss none). `week04_staffing.placements()` falls back to the client

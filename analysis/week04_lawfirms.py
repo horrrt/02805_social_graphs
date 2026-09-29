@@ -52,8 +52,8 @@ Checks
   two names look like one firm under two spellings (rapidfuzz
   token_sort_ratio >= DUP_RATIO) — those are counted and listed separately,
   as merge candidates for week04_name_merges.csv, not applied here.
-- Communities: Louvain on the giant component (100 runs) against 100
-  degree-preserving rewirings of the employer x law-firm bipartite graph,
+- Communities: Louvain on the giant component (100 runs) against 20 degree-
+  and strength-preserving rewirings of the employer x law-firm bipartite graph,
   re-projected and scored on each rewiring's own giant component. NMI and
   AMI of the best partition against employer region and sector, each
   against 1,000 shuffled-label runs.
@@ -78,8 +78,8 @@ from rapidfuzz import fuzz
 from sklearn.metrics import adjusted_mutual_info_score as ami
 from sklearn.metrics import normalized_mutual_info_score as nmi
 
-from week04_staffing import (MIN_FILINGS, certified, giant_of, labels, louvain,
-                              resolver, rewire, shuffled_nmi, span, tracked)
+from week04_staffing import (MIN_FILINGS, MOVES_SHORT, certified, giant_of, labels, louvain,
+                              matrix_bytes, pooled, resolver, rewire, shuffled_nmi, span, tracked)
 from week04_where import REGION, disparity, project
 
 OUT = Path(__file__).with_suffix(".json")
@@ -88,6 +88,11 @@ MAIN = 2025
 OTHER = 2024
 RUNS = 100
 SEED = 2805
+# Rewirings for the projection's null: 20, not 100, at 200 moves per link
+# each (week04_staffing.MOVES_SHORT). The null kept falling with longer chains
+# (0.490 at 200, 0.438 at 1,000), so the real score's lead over it is a lower
+# bound.
+NULLS = 20
 ALPHAS = [0.05, 0.1, 0.2, 0.3, 0.5]
 DEFAULT_ALPHA = 0.2
 TOP_N = 10       # firms shown by filings and by employers served
@@ -300,24 +305,27 @@ def region_and_sector(named):
     return region_of, majority_sector, unmapped
 
 
-def null_modularity(pairs, keep, rng):
-    """100 degree-preserving rewirings of the employer x law-firm bipartite
-    graph, re-projected and scored on each rewiring's own giant component:
-    the like-for-like null for the real projection's giant component."""
+def null_modularity(pairs, keep):
+    """NULLS degree- and strength-preserving rewirings of the employer x law-firm
+    bipartite graph (week04_staffing.rewire: every employer and law firm keeps
+    its partners' count and its filings), re-projected and scored on each
+    rewiring's own giant component: the like-for-like null for the real
+    projection's giant component."""
     bip = nx.Graph()
     for (e, f), w in pairs.set_index(["employer", "lawfirm"])["filings"].items():
         bip.add_edge(("F", e), ("C", f), weight=int(w))
-    null_qs = []
-    for i in tracked("Nulls, law-firm projection", RUNS):
-        h = rewire(bip, rng)
+
+    def null(i):
+        h = rewire(bip, random.Random(SEED + i), MOVES_SHORT)
         rows = [(u[1], v[1], d["weight"]) if u[0] == "F" else (v[1], u[1], d["weight"])
                 for u, v, d in h.edges(data=True)]
         hp = project(pd.DataFrame(rows, columns=["employer", "metro", "filings"]), keep)
         if hp.number_of_edges() == 0:
-            continue
-        hg = giant_of(hp)
-        null_qs.append(louvain(hg, SEED + i)[1])
-    return np.array(null_qs)
+            return None
+        return louvain(giant_of(hp), SEED + i)[1]
+
+    runs = pooled("Nulls, law-firm projection", NULLS, null, matrix_bytes(bip))
+    return np.array([q for q in runs if q is not None])
 
 
 def communities(g, named, rng, full=True):
@@ -434,7 +442,7 @@ def main():
     check_projection()
 
     out = {"generated_by": "analysis/week04_lawfirms.py", "weight": "filings",
-           "runs": RUNS, "min_filings": MIN_FILINGS, "years": {}}
+           "runs": RUNS, "nulls": NULLS, "moves_per_link": MOVES_SHORT, "min_filings": MIN_FILINGS, "years": {}}
 
     lca_year, named_year, graphs = {}, {}, {}
     for year in YEARS:
@@ -484,7 +492,7 @@ def main():
     }
 
     comm, member, giant, best_parts = communities(g, named_year[MAIN], rng, full=True)
-    null_qs = null_modularity(pairs, keep, rng)
+    null_qs = null_modularity(pairs, keep)
     comm["vs_null"] = compare(comm.pop("qs"), null_qs)
     out["years"][MAIN]["communities"] = comm
 
@@ -495,7 +503,7 @@ def main():
     table_o, _, _, _ = backbone_sweep(g_o)
     out["years"][OTHER]["backbone"] = table_o
     comm_o, member_o, giant_o, _ = communities(g_o, named_year[OTHER], rng, full=False)
-    null_qs_o = null_modularity(pairs_o, keep_o, rng)
+    null_qs_o = null_modularity(pairs_o, keep_o)
     comm_o["vs_null"] = compare(comm_o.pop("qs"), null_qs_o)
     out["years"][OTHER]["communities"] = comm_o
 

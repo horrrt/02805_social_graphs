@@ -25,10 +25,10 @@ many addresses there it lists.
 
 Checks
 - Louvain, 100 runs. The page shows the partition found most often and
-  reports how often; its modularity is compared with 100 degree-preserving
-  rewirings of the company x metro graph, re-projected (each company and each
-  metro keeps its number of partners; filing counts are dealt back out at
-  random), one Louvain run each.
+  reports how often; its modularity is compared with 100 degree- and
+  strength-preserving rewirings of the company x metro graph, re-projected
+  (week04_staffing.rewire: each company and each metro keeps its number of
+  partners and its total filings), one Louvain run each.
 - NMI of the communities with Census regions and divisions, against 1,000
   shuffles of the labels.
 - Infomap on the same projection, compared with Louvain and Census regions.
@@ -56,12 +56,13 @@ from pathlib import Path
 import networkx as nx
 import numpy as np
 import pandas as pd
+from scipy import sparse
 from sklearn.metrics import normalized_mutual_info_score as nmi
 
 import week04_names as names
 from week04_schemas import check
 from week04_data import RAW, load
-from week04_staffing import infomap, louvain, resolver, rewire, tracked
+from week04_staffing import MOVES_UNWEIGHTED, infomap, louvain, matrix_bytes, pooled, resolver, rewire
 
 ROOT = Path(__file__).resolve().parents[1]
 OUT = Path(__file__).with_suffix(".json")
@@ -75,6 +76,21 @@ OTHER_YEAR = 2024  # a complete fiscal year, for the community step
 SHORTLIST = 5  # largest placing firms, as in section 3
 LONG_KM = 1500
 SEED = 2805
+# How a company ties two metros. "newman": every company files in some number k
+# of the 40 metros and adds 1/(k-1) to each pair of them (Newman 2001's
+# co-authorship weight), so a link counts the employers two metros share and a
+# firm filing in all 40 counts no more than one filing in two. "minsum": the
+# smaller of the company's two filing counts, summed over companies, so a link
+# counts shared filing volume, which the national outsourcing firms dominate.
+# Against the matched null (each company and metro keeps its partners and its
+# filings) the minsum split's modularity, 0.049, sat below the null's 0.055
+# after 4,000 moves per link, and that null was still rising: minsum shows no
+# groups. Newman's null needs only the wiring: plain degree-preserving swaps,
+# settled by 20 per link (week04_staffing.MOVES_UNWEIGHTED). Switching back to
+# minsum needs a null that had not settled at 4,000 moves per link, and the
+# page's section 1 prose rewritten again.
+WEIGHTING = "newman"
+MOVES_MINSUM = 4000
 
 STATE_NAMES = {
     "AL": "Alabama", "AK": "Alaska", "AZ": "Arizona", "AR": "Arkansas", "CA": "California",
@@ -229,6 +245,42 @@ def project(pairs, keep):
     return g
 
 
+def project_newman(pairs, keep):
+    """Metro -- metro graph: each company adds 1/(k-1) to every pair of the k
+    kept metros it files in (Newman 2001), filing counts ignored. One sparse
+    product, W = B^T diag(1/(k-1)) B, over the binary company x metro matrix B."""
+    keep = list(keep)
+    sub = pairs[pairs["metro"].isin(keep)]
+    col = {m: j for j, m in enumerate(keep)}
+    firms = sorted(sub["employer"].unique())
+    row = {e: i for i, e in enumerate(firms)}
+    b = sparse.csr_matrix((np.ones(len(sub)), ([row[e] for e in sub["employer"]], [col[m] for m in sub["metro"]])),
+                          shape=(len(firms), len(keep)))
+    k = np.asarray(b.sum(axis=1)).ravel()
+    share = np.divide(1.0, k - 1, out=np.zeros_like(k), where=k > 1)
+    w = (b.T @ sparse.diags(share) @ b).toarray()
+    g = nx.Graph()
+    g.add_nodes_from(keep)
+    for a, c in zip(*np.triu_indices(len(keep), 1)):
+        if w[a, c] > 0:
+            g.add_edge(keep[a], keep[c], weight=float(w[a, c]))
+    return g
+
+
+def metro_graph(pairs, keep, weighting=WEIGHTING):
+    """Section 1's metro network under WEIGHTING."""
+    return project_newman(pairs, keep) if weighting == "newman" else project(pairs, keep)
+
+
+def check_newman():
+    """E1 files in A, B and C (1/2 to each pair), E2 in A and B (1), E3 only in A."""
+    toy = pd.DataFrame([("E1", "A", 9), ("E1", "B", 1), ("E1", "C", 4), ("E2", "A", 2), ("E2", "B", 7),
+                        ("E3", "A", 5)], columns=["employer", "metro", "filings"])
+    g = project_newman(toy, ["A", "B", "C"])
+    assert {tuple(sorted((u, v))): w for u, v, w in g.edges(data="weight")} == {
+        ("A", "B"): 1.5, ("A", "C"): 0.5, ("B", "C"): 0.5}, "Newman projection is wrong"
+
+
 def disparity(g):
     """p-value of every edge under the disparity filter: the smaller of the two
     endpoints' (1 - w/s)^(k-1). An endpoint with one link cannot judge it."""
@@ -272,6 +324,7 @@ def label(key):
 
 def main():
     check_disparity()
+    check_newman()
     rng = random.Random(SEED)
     lookup, town_lookup, gaz = metros()
     places = gazetteer("place_gazetteer_2023.zip")
@@ -333,7 +386,7 @@ def main():
     }
 
     # B · backbone.
-    g = project(pairs, top)
+    g = metro_graph(pairs, top)
     p = disparity(g)
     graphs, gc_size, edges_kept = {}, [], []
     for alpha in ALPHAS:
@@ -345,7 +398,7 @@ def main():
         edges_kept.append(len(kept))
         graphs[str(alpha)] = {
             "nodes": sorted(giant, key=lambda m: -filings[m]),
-            "edges": [[u, v, int(w)] for u, v, w in kept if u in giant and v in giant],
+            "edges": [[u, v, round(float(w), 3)] for u, v, w in kept if u in giant and v in giant],
         }
     drops = [gc_size[i + 1] - gc_size[i] for i in range(len(ALPHAS) - 1)]
     i = int(np.argmax(drops))
@@ -385,23 +438,30 @@ def main():
     member = {m: i for i, part in enumerate(best) for m in part}
     run_labels = [{m: i for i, part in enumerate(c) for m in part} for c in runs]
     seeds_nmi = [nmi([a[m] for m in top], [b[m] for m in top]) for a, b in combinations(run_labels, 2)]
+    # The null rewires the company x metro graph, each company and each metro
+    # keeping its number of partners (and, for minsum, its filings), and
+    # re-projects it the same way. Newman ignores filing counts, so its null
+    # rewires the unweighted graph.
+    newman = WEIGHTING == "newman"
+    moves = MOVES_UNWEIGHTED if newman else MOVES_MINSUM
     bip = nx.Graph()
     for e, m, f in pairs[pairs["metro"].isin(top)].itertuples(index=False):
-        bip.add_edge(("F", e), ("C", m), weight=int(f))
-    null_q = []
-    for r in tracked("Rewired nulls", RUNS):
-        h = rewire(bip, rng)
+        bip.add_edge(("F", e), ("C", m), weight=1 if newman else int(f))
+
+    def null(r):
+        h = rewire(bip, random.Random(SEED + r), moves)
         rows = [(u[1], v[1], d["weight"]) if u[0] == "F" else (v[1], u[1], d["weight"])
                 for u, v, d in h.edges(data=True)]
-        hp = project(pd.DataFrame(rows, columns=["employer", "metro", "filings"]), top)
-        null_q.append(louvain(hp, SEED + r)[1])
-    null_q = np.array(null_q)
+        hp = metro_graph(pd.DataFrame(rows, columns=["employer", "metro", "filings"]), top)
+        return louvain(hp, SEED + r)[1]
+
+    null_q = np.array(pooled("Rewired nulls", RUNS, null, matrix_bytes(bip)))
 
     # The same step on another complete year, on the same metros.
     sites_b, _, _ = worksite_metros(lookup, town_lookup, OTHER_YEAR)
     pairs_b = (sites_b.drop_duplicates(["CASE_NUMBER", "metro"]).groupby(["employer", "metro"]).size()
                .rename("filings").reset_index())
-    g_b = project(pairs_b, top)
+    g_b = metro_graph(pairs_b, top)
     runs_b = [louvain(g_b, SEED + r)[0] for r in range(RUNS)]
     labels_b = [{m: i for i, part in enumerate(c) for m in part} for c in runs_b]
     found_b = Counter(frozenset(frozenset(c) for c in part) for part in runs_b)
@@ -451,7 +511,10 @@ def main():
         "nmi_census_region": round(float(nmi(info, [by_id[m]["census"] for m in top])), 3),
     }
 
-    # D · long links on the backbone, and whose they are.
+    # D · long links on the backbone, and whose filings they carry. Which links
+    # exist comes from the backbone; who leads a link is a question of filing
+    # volume: of the filings the two metros share (for each company, the smaller
+    # of its two counts), the company holding the most.
     kept = [(u, v) for (u, v), pv in p.items() if pv < DEFAULT_ALPHA]
     grouped = pairs[pairs["metro"].isin(top)].set_index(["employer", "metro"])["filings"]
     per_employer = {e: grp.droplevel(0).to_dict() for e, grp in grouped.groupby(level=0)}
@@ -463,9 +526,10 @@ def main():
             "a": u, "b": v,
             "distance_km": round(haversine((by_id[u]["lat"], by_id[u]["lon"]),
                                            (by_id[v]["lat"], by_id[v]["lon"]))),
-            "weight": int(g[u][v]["weight"]),
+            "weight": round(float(g[u][v]["weight"]), 3),
+            "shared_filings": int(sum(share.values())),
             "top_employer": label(who),
-            "top_share": round(share[who] / g[u][v]["weight"], 3),
+            "top_share": round(share[who] / sum(share.values()), 3),
             "staffing": who in shortlist,
         })
     long = [e for e in edges if e["distance_km"] >= LONG_KM]
@@ -494,13 +558,16 @@ def main():
         "nmi_census_region": round(region_nmi, 3), "p_region": round(region_p, 4),
         "nmi_census_division": round(division_nmi, 3), "p_division": round(division_p, 4),
         "seeds": RUNS, "communities": len(best),
+        "weighting": WEIGHTING, "moves_per_link": moves,
         "other_year": other_year,
     }
     page = {
         "meta": {
             "status": "live",
             "note": f"Certified H-1B filings, FY{YEAR}; the {TOP} metro areas with the most filings. "
-                    "Metros are linked by the companies that file in both; weights count filings.",
+                    + ("Metros are linked by the companies that file in both; each company splits one unit "
+                     "over the pairs of metros it files in." if newman else
+                     "Metros are linked by the companies that file in both; weights count filings."),
             "scope": f"Certified H-1B · FY{YEAR} · top {TOP} metro areas by filings",
             "script": "analysis/week04_where.py",
         },

@@ -20,18 +20,22 @@ reviewed alias table; a client by name, taking an employer's tax number when
 the names match. week04_names_check.py tests the rules against tax numbers.
 
 Checks
-- Modularity of 100 Louvain runs against 100 degree-preserving bipartite
-  rewirings (each firm and each client keeps its number of partners; filing
-  counts are dealt back out at random, as in Week 3). Two more nulls separate
-  the wiring from the weights: unweighted real against unweighted rewired, and
-  the real wiring with its filing counts shuffled. Louvain runs on the giant
-  component of the real network, and a rewiring splits that component into
-  hundreds of pieces, each a free community; so each rewired network is scored
-  on its own giant component too (the like-for-like null), with the score over
-  all its pieces kept beside it.
-- Why shuffled filing counts score higher: modularity split into its two terms
-  (the share of filings inside communities, and the penalty for large
-  communities), for the real counts and for the shuffled ones.
+- Modularity of 100 Louvain runs against 100 degree- and strength-preserving
+  bipartite rewirings (rewire(): BiWES, Glaviano and Micciche 2026; each firm
+  and each client keeps its number of partners and its total filings, so the
+  null has the same big vendors and big clients). Two more nulls separate the
+  wiring from the weights: unweighted real against the unweighted network
+  rewired keeping degrees, and the real wiring with its filings moved around
+  four-cycles only (shuffle_weights(), every node's total kept; in a network
+  of one-firm stars few filings can move, and the JSON says how many). The
+  rewirings run in parallel (pooled()), each seeded from its own number.
+  Louvain runs on the giant component of the real network, and a rewiring
+  splits that component into pieces, each a free community; so each rewired
+  network is scored on its own giant component too (the like-for-like null),
+  with the score over all its pieces kept beside it.
+- Modularity split into its two terms (the share of filings inside
+  communities, and the penalty for large communities), for the real counts and
+  for the reshuffled ones.
 - NMI and AMI (chance-corrected) of communities with client industry and with
   the client's main vendor, each against shuffled labels, over clients with
   two or more vendors. A client's main vendor is its heaviest neighbour in the
@@ -52,6 +56,8 @@ docs/weeks/week04/data/staffing_communities.json
 """
 
 import json
+import multiprocessing as mp
+import os
 import random
 import time
 from collections import Counter
@@ -60,6 +66,9 @@ from pathlib import Path
 
 import igraph as ig
 import networkx as nx
+from biwes import BiWES2, pre_compute
+from biwes.moves import simple_edge_swap, weight_shuffling
+from numba import njit
 from rapidfuzz import fuzz
 import numpy as np
 import pandas as pd
@@ -77,6 +86,28 @@ MAIN = 2025
 RUNS = 100
 SEED = 2805
 MIN_FILINGS = 20  # clients this large or larger get a concentration score
+# BiWES moves per link in each rewiring: every caller passes its own, checked
+# on its own graph (null modularity, five draws each). The authors suggest 50
+# to 70. On the FY2025 staffing network with filing weights (mostly one-firm
+# stars, so most moves find nothing to swap) the null kept falling past that:
+# 0.563 at 50, 0.547 at 100, 0.537 at 200, 0.526 at 400, 0.523 at 800, 0.521
+# at 1,600 (spread about 0.003); 1,000 sits on the plateau. A null that falls
+# with longer chains errs towards the real network, so a real score above an
+# unsettled null is a conservative claim.
+MOVES_PER_LINK = 1000
+# The secondary nulls on staffing-like weighted graphs (week04_shift,
+# week04_beyond, week04_lawfirms) stop at 200 moves per link, five times
+# faster. The null is still falling there (0.537 at 200 against 0.521 at
+# 1,600 on the staffing network), so it overstates the null and understates
+# the real network's lead over it: sound for "the real network beats it", not
+# for quoting the null's own value as settled.
+MOVES_SHORT = 200
+# Unweighted graphs get plain degree-preserving swaps (rewire_matrix), and
+# their nulls settle within 20 swaps per link: at 5, 10, 20 and 50, the
+# unweighted staffing network 0.5244, 0.5247, 0.5251, 0.5250; section 2's jobs
+# network 0.0260, 0.0265, 0.0268, 0.0268; section 1's Newman metro network
+# 0.0050, 0.0056, 0.0058, 0.0055 (spread 0.0003 to 0.0012).
+MOVES_UNWEIGHTED = 20
 
 
 @lru_cache(maxsize=None)
@@ -239,31 +270,90 @@ def graph(rows):
     return g
 
 
-def rewire(g, rng):
-    """Degree-preserving bipartite rewiring; filing counts dealt back out at random."""
-    edges = [(u, v) if u[0] == "F" else (v, u) for u, v in g.edges()]
-    present = set(edges)
-    weights = [g[u][v]["weight"] for u, v in edges]
-    for _ in range(10 * len(edges)):
-        i, j = rng.randrange(len(edges)), rng.randrange(len(edges))
-        (f1, c1), (f2, c2) = edges[i], edges[j]
-        if f1 == f2 or c1 == c2 or (f1, c2) in present or (f2, c1) in present:
-            continue
-        present -= {(f1, c1), (f2, c2)}
-        present |= {(f1, c2), (f2, c1)}
-        edges[i], edges[j] = (f1, c2), (f2, c1)
-    rng.shuffle(weights)
+@njit(cache=True)
+def _seed_numba(seed):
+    """biwes draws from numba's own generator, which Python's random never touches."""
+    np.random.seed(seed)
+
+
+@njit(cache=True)
+def _weight_moves(a, wd, wd2, uw, uw2, al, al2, moves):
+    for _ in range(moves):
+        a, wd, wd2, uw, uw2 = weight_shuffling(a, wd, wd2, uw, uw2, al, al2)
+    return a
+
+
+@njit(cache=True)
+def _swap_moves(a, wd, wd2, uw, uw2, al, al2, moves):
+    for _ in range(moves):
+        a, al, al2, wd, wd2, uw, uw2 = simple_edge_swap(a, al, al2, wd, wd2, uw, uw2)
+    return a
+
+
+def rewire_matrix(a, seed, moves):
+    """One BiWES randomization of a firm x client matrix of whole-number
+    weights (0 = no link), `moves` moves long, seeded. With every weight 1, the
+    four-cycle and bridge moves can change nothing, so only BiWES's equal-weight
+    swap runs: the plain degree-preserving swap, three times as many per move
+    budget."""
+    _seed_numba(seed)
+    b, wd, wd2, al, al2, uw, uw2 = pre_compute(a)
+    if a.max() <= 1:
+        return _swap_moves(b, wd, wd2, uw, uw2, al, al2, moves)
+    return BiWES2(b, wd, wd2, uw, uw2, al, al2, moves)
+
+
+def _matrix(g):
+    """The bipartite graph as a firm x client matrix of filing counts, rows and
+    columns in sorted key order so a seed always meets the same matrix."""
+    firms = sorted(n for n in g if n[0] == "F")
+    clients = sorted(n for n in g if n[0] == "C")
+    row = {n: i for i, n in enumerate(firms)}
+    col = {n: j for j, n in enumerate(clients)}
+    a = np.zeros((len(firms), len(clients)), dtype=np.int32)
+    for u, v, w in g.edges(data="weight"):
+        f, c = (u, v) if u[0] == "F" else (v, u)
+        assert w is not None and w >= 1 and w == int(w), "biwes needs whole-number weights of 1 or more"
+        a[row[f], col[c]] = w
+    return a, firms, clients
+
+
+def _graph(a, firms, clients):
     h = nx.Graph()
-    h.add_weighted_edges_from((u, v, w) for (u, v), w in zip(edges, weights))
+    h.add_nodes_from(firms)
+    h.add_nodes_from(clients)
+    i, j = np.nonzero(a)
+    h.add_weighted_edges_from((firms[x], clients[y], int(a[x, y])) for x, y in zip(i, j))
     return h
 
 
+def matrix_bytes(g):
+    """Memory one rewiring holds: biwes keeps the matrix and a working copy."""
+    firms = sum(1 for n in g if n[0] == "F")
+    return 2 * 4 * firms * (g.number_of_nodes() - firms)
+
+
+def rewire(g, rng, moves_per_link):
+    """Degree- and strength-preserving bipartite randomization: BiWES
+    (Glaviano and Micciche, Phys. Rev. E 114, 014312, 2026) through its biwes
+    package. Every firm and every client keeps its number of partners and its
+    total filings exactly; which partners, and how the filings split across
+    them, is random. Three moves, one third of the time each: swap two links of
+    equal weight, shift filings around a four-cycle, and a bridge swap that
+    moves a link of one weight onto another. Weights must be whole numbers of 1
+    or more; an unweighted graph (every weight 1) gets only the equal-weight
+    swap, which is the plain degree-preserving swap. rng seeds numba's
+    generator, so a seed gives the same network."""
+    a, firms, clients = _matrix(g)
+    return _graph(rewire_matrix(a, rng.randrange(2**31), moves_per_link * g.number_of_edges()), firms, clients)
+
+
 def check_rewire(g, h):
-    """The null keeps every node's number of partners and never links two firms or two clients."""
+    """The null keeps every node's number of partners and its total filings, and
+    never links two firms or two clients."""
     assert dict(g.degree()) == dict(h.degree()), "rewiring changed a degree"
+    assert dict(g.degree(weight="weight")) == dict(h.degree(weight="weight")), "rewiring changed a strength"
     assert all(u[0] != v[0] for u, v in h.edges()), "rewiring linked two nodes of one side"
-    assert sorted(d["weight"] for *_, d in g.edges(data=True)) == sorted(
-        d["weight"] for *_, d in h.edges(data=True)), "rewiring changed the weights"
 
 
 def unweighted(g):
@@ -272,14 +362,64 @@ def unweighted(g):
     return h
 
 
-def shuffle_weights(g, rng):
-    """The same wiring, with the filing counts dealt out at random."""
-    h = g.copy()
-    weights = [d["weight"] for *_, d in h.edges(data=True)]
-    rng.shuffle(weights)
-    for (u, v), w in zip(list(h.edges()), weights):
-        h[u][v]["weight"] = w
-    return h
+def shuffle_weights(g, rng, moves_per_link):
+    """The same wiring with the filings reshuffled under the same constraint:
+    only BiWES's four-cycle move, which shifts filings around a firm-client-
+    firm-client cycle, so every link stays and every node keeps its total. Most
+    of this network is one-firm stars without four-cycles, and there nothing
+    can move: moved_share() says how much did."""
+    a, firms, clients = _matrix(g)
+    _seed_numba(rng.randrange(2**31))
+    b, wd, wd2, al, al2, uw, uw2 = pre_compute(a)
+    b = _weight_moves(b, wd, wd2, uw, uw2, al, al2, moves_per_link * g.number_of_edges())
+    return _graph(b, firms, clients)
+
+
+def moved_share(g, h):
+    """Share of g's filings that sit on a different link, or in a different
+    amount on the same link, in h: half the summed absolute difference."""
+    diff = sum(abs(w - (h[u][v]["weight"] if h.has_edge(u, v) else 0)) for u, v, w in g.edges(data="weight"))
+    diff += sum(w for u, v, w in h.edges(data="weight") if not g.has_edge(u, v))
+    return diff / 2 / g.size("weight")
+
+
+_TASK = None
+
+
+def _run_task(i):
+    return _TASK(i)
+
+
+def pooled(label, total, task, bytes_per_task=0):
+    """[task(i) for i in range(total)] in forked worker processes, in order, with
+    tracked()'s progress lines. Each task seeds itself from i, so the result does
+    not depend on which worker ran it. Workers: W4_WORKERS (default: every core
+    but one; week04_run_all.py sets fewer), capped so bytes_per_task times the
+    workers stays under W4_MEMORY_GB (default 8)."""
+    global _TASK
+    workers = int(os.environ.get("W4_WORKERS", max(1, (os.cpu_count() or 2) - 1)))
+    if bytes_per_task:
+        budget = float(os.environ.get("W4_MEMORY_GB", 8)) * 2**30
+        workers = max(1, min(workers, int(budget // bytes_per_task)))
+    workers = min(workers, total)
+    # Compile biwes's numba code once here, so forked workers inherit it.
+    for w in (1, 2):
+        tiny = nx.Graph([(("F", 0), ("C", 0), {"weight": w}), (("F", 1), ("C", 1), {"weight": 1})])
+        rewire(tiny, random.Random(0), 1)
+        shuffle_weights(tiny, random.Random(0), 1)
+    _TASK = task
+    results = []
+    started = time.time()
+    step = max(1, total // 10)
+    with mp.get_context("fork").Pool(processes=workers) as pool:
+        for done, result in enumerate(pool.imap(_run_task, range(total)), 1):
+            results.append(result)
+            if done % step == 0 or done == total:
+                elapsed = time.time() - started
+                print(f"{label}: {done}/{total} ({done / total:.0%}), {span(elapsed)} elapsed, "
+                      f"about {span(elapsed / done * (total - done))} left, {workers} workers", flush=True)
+    _TASK = None
+    return results
 
 
 def giant_of(g):
@@ -469,27 +609,33 @@ def main():
     plain = unweighted(giant)
     runs_plain = [louvain(plain, SEED + i) for i in tracked("Louvain, unweighted", RUNS)]
     qs_plain = np.array([q for _, q in runs_plain])
-    null_qs, null_plain, null_weights, pieces = [], [], [], []
-    null_all, null_plain_all, null_share, null_weight_share, shuffled_terms = [], [], [], [], []
-    for i in tracked("Nulls, five Louvain runs each", RUNS):
-        h = rewire(giant, rng)
-        if i == 0:
-            check_rewire(giant, h)
-        pieces.append(nx.number_connected_components(h))
+    plain_ones = nx.Graph((u, v, {"weight": 1}) for u, v in giant.edges())
+
+    def null(i):
+        # Each draw seeds itself, so the pool's workers can run them in any order.
+        draw = random.Random(SEED + i)
+        h = rewire(giant, draw, MOVES_PER_LINK)
+        check_rewire(giant, h)
         # Scored like the real network, on its giant component; and over all its pieces.
         hg = giant_of(h)
-        null_share.append(hg.number_of_nodes() / h.number_of_nodes())
-        null_weight_share.append(hg.size("weight") / h.size("weight"))
-        null_qs.append(louvain(hg, SEED + i)[1])
-        null_all.append(louvain(h, SEED + i)[1])
-        null_plain.append(louvain(unweighted(hg), SEED + i)[1])
-        null_plain_all.append(louvain(unweighted(h), SEED + i)[1])
-        shuffled = shuffle_weights(giant, rng)
+        # The wiring alone: the unweighted network, rewired keeping degrees.
+        p = rewire(plain_ones, draw, MOVES_UNWEIGHTED)
+        pg = giant_of(p)
+        shuffled = shuffle_weights(giant, draw, MOVES_PER_LINK)
         parts_w, q_w = louvain(shuffled, SEED + i)
-        null_weights.append(q_w)
-        shuffled_terms.append(q_terms(shuffled, parts_w))
-    null_qs, null_plain, null_weights, null_all, null_plain_all = map(
-        np.array, (null_qs, null_plain, null_weights, null_all, null_plain_all))
+        return {"pieces": nx.number_connected_components(h),
+                "node_share": hg.number_of_nodes() / h.number_of_nodes(),
+                "weight_share": hg.size("weight") / h.size("weight"),
+                "q": louvain(hg, SEED + i)[1], "q_all": louvain(h, SEED + i)[1],
+                "q_plain": louvain(unweighted(pg), SEED + i)[1], "q_plain_all": louvain(unweighted(p), SEED + i)[1],
+                "q_weights": q_w, "terms": q_terms(shuffled, parts_w), "moved": moved_share(giant, shuffled)}
+
+    nulls = pooled("Nulls, five Louvain runs each", RUNS, null, 2 * matrix_bytes(giant))
+    take = lambda k: np.array([r[k] for r in nulls])
+    null_qs, null_all, null_plain, null_plain_all, null_weights = map(
+        take, ("q", "q_all", "q_plain", "q_plain_all", "q_weights"))
+    pieces, null_share, null_weight_share = take("pieces"), take("node_share"), take("weight_share")
+    shuffled_terms, weights_moved = [r["terms"] for r in nulls], take("moved")
     best_parts = max(runs, key=lambda r: r[1])[0]
     member = labels(best_parts)
     nodes = list(giant)
@@ -510,7 +656,7 @@ def main():
                 "z": round(float((real.mean() - null.mean()) / null.std()), 2),
                 "null_runs_at_or_above_real": int((null >= real.mean()).sum())}
 
-    # Why shuffled filing counts score higher: Q's two terms, real against shuffled.
+    # Q's two terms, real counts against counts reshuffled around four-cycles.
     real_terms = np.array([q_terms(giant, p) for p, _ in runs])
     shuffled_terms = np.array(shuffled_terms)
     w_sorted = np.sort([w for *_, w in giant.edges(data="weight")])[::-1]
@@ -527,6 +673,10 @@ def main():
         "nmi_between_seeds_median": round(float(np.median(pairs)), 3),
         "rewired_components_median": int(np.median(pieces)),
         "null_scored_on": "the giant component of each rewired network, as the real network is",
+        "null_method": "BiWES (Glaviano and Micciche 2026): every firm and client keeps its partners' count and its filings",
+        "moves_per_link": MOVES_PER_LINK, "moves_per_link_unweighted": MOVES_UNWEIGHTED,
+        # The weights-only null can move filings only around four-cycles, which this network rarely has.
+        "weights_only_moved_share_median": round(float(np.median(weights_moved)), 4),
         "rewired_giant_node_share_median": round(float(np.median(null_share)), 4),
         "rewired_giant_filing_share_median": round(float(np.median(null_weight_share)), 4),
         "weighted_vs_rewired": compare(qs, null_qs),

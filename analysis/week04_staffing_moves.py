@@ -48,10 +48,11 @@ Method
   edges are swapped, so a client's filings stay split the same way across
   its (now different) vendors, and each firm keeps its degree -- scored on
   the rewiring's own giant component, and counts the same thing there. (An
-  earlier version of this null, week04_staffing.rewire(), also dealt every
-  filing weight out at random across the whole network; that loses each
-  client's own weight concentration along with the wiring, so its z score
-  was measuring the loss of that concentration, not of community structure.)
+  earlier week04_staffing.rewire() dealt every filing weight out at random
+  across the whole network, which loses each client's own weight
+  concentration along with the wiring; it now keeps every node's total
+  filings, but a client's split across its vendors still changes there, and
+  that split is what Q3 counts, so Q3 keeps this stricter null.)
   A second, simpler control checks the counting method itself: real wiring,
   real partition, only a client's own weights reshuffled among its own
   vendors -- if that barely changes the count, the metric doesn't hinge on
@@ -449,13 +450,12 @@ def rewire_keep_client_weights(g, rng):
     travels with its CLIENT end: only the firm endpoints of two edges are
     swapped. Each client keeps its own multiset of weights (its filing
     concentration across vendors is untouched); each firm keeps its degree
-    (how many clients it serves), just not the same ones. This is the null
-    week04_staffing.rewire() should have been: that one also shuffles every
-    weight across the whole network, so a client's real concentration on one
-    or two vendors is destroyed along with the community structure, and the
-    resulting null answers a different question (does weight concentration
-    in general produce split clients) than the one Q3 asks (do these
-    specific communities)."""
+    (how many clients it serves), just not the same ones. Q3 counts how a
+    client's filings split across its vendors' communities, so its null must
+    keep that split; week04_staffing.rewire() keeps each client's total
+    filings but lets the split change, and would answer a different question
+    (does weight concentration in general produce split clients) than the one
+    Q3 asks (do these specific communities)."""
     firms, clients, weights = [], [], []
     for u, v in g.edges():
         f, c = (u, v) if u[0] == "F" else (v, u)

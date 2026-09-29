@@ -73,7 +73,7 @@ Checks
   filtered down from their full fiscal years for both windows, and rows lost
   to unparseable dates are counted and reported.
 - Modularity of 100 Louvain runs (FY2026 and FY2025 graphs, in each window)
-  against 100 degree-preserving bipartite rewirings, each scored on its own
+  against 100 degree- and strength-preserving bipartite rewirings, each scored on its own
   giant component, exactly as week04_staffing.py's section 3 (staffing.rewire,
   staffing.louvain, staffing.giant_of; that file is not edited, only called).
 - Stability exactly as staffing.main's year-to-year block: two seeds per
@@ -149,18 +149,18 @@ def compare(real, null):
 
 
 def modularity_vs_rewiring(giant, rng, label):
-    """100 Louvain runs against 100 degree-preserving rewirings, each scored on
-    its own giant component, as in week04_staffing.py's section 3."""
+    """100 Louvain runs against 100 degree- and strength-preserving rewirings,
+    each scored on its own giant component, as in week04_staffing.py's section 3."""
     runs = [staffing.louvain(giant, SEED + i) for i in staffing.tracked(f"Louvain, {label}", RUNS)]
     qs = np.array([q for _, q in runs])
-    null_qs, pieces = [], []
-    for i in staffing.tracked(f"Rewiring nulls, {label}", RUNS):
-        h = staffing.rewire(giant, rng)
-        if i == 0:
-            staffing.check_rewire(giant, h)
-        pieces.append(nx.number_connected_components(h))
-        null_qs.append(staffing.louvain(staffing.giant_of(h), SEED + i)[1])
-    null_qs = np.array(null_qs)
+    def null(i):
+        h = staffing.rewire(giant, random.Random(SEED + i), staffing.MOVES_SHORT)
+        staffing.check_rewire(giant, h)
+        return nx.number_connected_components(h), staffing.louvain(staffing.giant_of(h), SEED + i)[1]
+
+    nulls = staffing.pooled(f"Rewiring nulls, {label}", RUNS, null, staffing.matrix_bytes(giant))
+    pieces = [n for n, _ in nulls]
+    null_qs = np.array([q for _, q in nulls])
     return {"communities_median": int(np.median([len(p) for p, _ in runs])),
             "giant_nodes": giant.number_of_nodes(), "giant_edges": giant.number_of_edges(),
             "rewired_components_median": int(np.median(pieces)),

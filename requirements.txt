@@ -13,3 +13,4 @@ polars>=1.44
 pydantic>=2.13
 python-igraph>=1.0
 pyarrow>=25.0
+biwes==0.1.1

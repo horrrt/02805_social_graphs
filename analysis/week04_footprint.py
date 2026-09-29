@@ -5,7 +5,9 @@ map (section 1) or the job clusters (section 2) survive, or do they fall
 apart because a handful of staffing giants were holding them together?
 
 Network, part 1 (reuses analysis/week04_where.py): companies x metro areas,
-projected onto the same 40 metros section 1 uses, fixed from the FULL FY2025
+projected with section 1's own rule (week04_where.WEIGHTING: Newman, each
+company splitting one unit over the pairs of metros it files in) onto the same
+40 metros section 1 uses, fixed from the FULL FY2025
 data so every variant is compared on the same nodes. Variants: the full
 network; the network with the SHORTLIST (the 5 largest placing firms) taken
 out; the network with the top 10 employers by all certified filings in those
@@ -16,13 +18,14 @@ employers totalling the same filings, so a real drop can be told apart from
 just removing that much network at random.
 
 Network, part 2 (reuses analysis/week04_jobs.py): companies x occupations,
-projected onto occupations. Section 2's own projection weights a link by the
-NUMBER of companies filing for both occupations, so pulling 5 to 10 companies
-out of about 59,000 cannot move a weight by more than 5 or 10; that check is
-reported and then set aside. The real test here reprojects with the same
-filings-weighted rule section 1 uses (weight = the smaller of each shared
-company's filing counts in the two occupations), under the same drops and
-matched controls.
+projected onto occupations with section 2's own rule: a link counts the
+companies filing for both occupations. Pulling 5 to 10 companies out of about
+59,000 can move a weight by at most 5 or 10, which the JSON says; the
+volume-matched controls show whether that is more than any such cut does.
+(An earlier version projected both parts by filing volume, the smaller of each
+shared company's counts. A null that keeps each company's filings did not
+settle within 4,000 moves per link on that projection, so both parts now
+follow their own section.)
 
 Checks
 - Louvain, 100 seeded runs per variant. Part 1 reports the modal partition (as
@@ -30,8 +33,8 @@ Checks
   does).
 - Modularity Q of that partition against a null: degree-preserving rewirings
   of THAT VARIANT's own company x metro (or company x occupation) bipartite
-  graph, re-projected with the SAME filings-weighted rule as the observed
-  partition (never the company-count projection), one Louvain run per
+  graph (week04_staffing.rewire_matrix, 20 swaps per link), re-projected with
+  the same rule as the observed partition, one Louvain run per
   rewiring, scored on the same node set the observed partition uses (no
   giant-component restriction unless the observed one has it). 50 nulls for
   the full metro network and its two named drops; 20 for the full job network
@@ -53,19 +56,13 @@ Checks
   just their footprint" only when every available metric survives for both
   named drops; "yes" (mixed) otherwise.
 
-Speed: both networks are projected by project_sparse, an exact sparse
-reformulation of week04_where.project's rule (min(a, b) over t = sum_t
-[a >= t][b >= t], done as one sparse matrix product B^T B over the binary
-employer x node matrices B_t) instead of week04_where.project's per-employer
-Python loop or a dense employer x node numpy matrix; all three give identical
-edge weights (checked once, at startup, with an assertion, on the full metro
-pairs and the full job pairs). Rewiring uses rewire_fast, the same
-degree-preserving bipartite double-edge swap as week04_staffing.rewire (same
-10 x |E| attempts, same rejection rule, same weight permutation), on
-integer-coded arrays instead of a networkx graph and its edge tuples; a null
-task rewires and reprojects straight from those arrays, with no intermediate
-bipartite graph. The independent work -- nulls within a named variant, and the
-50 draws of a control -- runs in a forked process pool. Every task's random
+Speed: both networks are projected by project_sparse, one sparse matrix
+product over the binary employer x node matrix (checked once, at startup,
+against the section's own projection function). A null task rewires the
+employer x node matrix straight from integer-coded arrays with
+week04_staffing.rewire_matrix, with no intermediate bipartite graph. The
+independent work -- nulls within a named variant, and the 50 draws of a
+control -- runs in a forked process pool. Every task's random
 state is seeded from a stable hash of (SEED, part, variant id, draw index,
 purpose, sub-index), never from a shared generator or from arithmetic offsets
 on a shared base -- offsets used to collide (e.g. one control draw's seeds
@@ -100,7 +97,7 @@ from sklearn.metrics import normalized_mutual_info_score as nmi
 import week04_jobs as jobs
 import week04_where as where
 from week04_schemas import check
-from week04_staffing import check_rewire, louvain, resolver
+from week04_staffing import MOVES_UNWEIGHTED, louvain, resolver, rewire_matrix
 
 ROOT = Path(__file__).resolve().parents[1]
 OUT = Path(__file__).with_suffix(".json")
@@ -114,7 +111,12 @@ NULLS_JOBS = 20     # nulls for the full job network and its two named drops (pr
 NULLS_CONTROL = 10  # nulls per matched-control draw (metros and jobs alike)
 DRAWS = 50          # volume-matched control draws per named drop
 TOP10 = 10          # employers dropped for variant c
-WORKERS = 8         # forked worker processes (machine has 10 cores)
+# Forked worker processes: W4_WORKERS, as week04_staffing.pooled reads it.
+WORKERS = int(os.environ.get("W4_WORKERS", max(1, (os.cpu_count() or 2) - 1)))
+# Each part is projected with its own section's rule: part 1 with section 1's
+# (week04_where.WEIGHTING), part 2 with section 2's, a count of the companies
+# filing for both occupations.
+RULES = {"metro": where.WEIGHTING, "jobs": "count"}
 
 
 def seed_for(part, variant_id, draw_idx, purpose, i=0):
@@ -169,8 +171,11 @@ def factorize_pairs(pairs, keep):
     return emp_codes.astype(np.int64), node_codes.astype(np.int64), filings.astype(np.int64), len(keep)
 
 
-def project_sparse_core(emp_codes, node_codes, filings, n_nodes):
-    """The exact metro/occupation projection (weight = sum over shared
+def project_sparse_core(emp_codes, node_codes, filings, n_nodes, rule="minsum"):
+    """rule "newman": each employer adds 1/(k-1) to every pair of its k nodes
+    (week04_where.project_newman); "count": 1 per shared employer (week04_jobs's
+    projection); both one product W = B^T diag(d) B over the binary employer x
+    node matrix B, filing counts ignored. rule "minsum", the exact metro/occupation projection (weight = sum over shared
     employers of the smaller of the two filing counts) as one sparse matrix
     product: min(a, b) = sum over t >= 1 of [a >= t][b >= t], so
     W = sum_t B_t^T B_t with B_t the binary employer x node matrix of
@@ -187,6 +192,17 @@ def project_sparse_core(emp_codes, node_codes, filings, n_nodes):
         empty = np.empty(0, dtype=np.int64)
         return empty, empty, empty
     n_emp = int(emp_codes.max()) + 1
+    if rule in ("newman", "count"):
+        B = sparse.csr_matrix((np.ones(len(emp_codes)), (emp_codes, node_codes)), shape=(n_emp, n_nodes))
+        k = np.asarray(B.sum(axis=1)).ravel()
+        d = np.divide(1.0, k - 1, out=np.zeros_like(k), where=k > 1) if rule == "newman" else np.ones_like(k)
+        W = (B.T @ sparse.diags(d) @ B).tocoo()
+        upper = (W.row < W.col) & (W.data != 0)
+        rows, cols, w = W.row[upper], W.col[upper], W.data[upper]
+        if rule == "count":
+            w = np.rint(w).astype(np.int64)
+        order = np.lexsort((cols, rows))
+        return rows[order], cols[order], w[order]
     # Each employer's stacked rows start right after the previous employer's,
     # sized to that employer's OWN largest filing count -- not a shared max --
     # so the total row count stays proportional to total filings, not to
@@ -220,129 +236,54 @@ def graph_from_sparse(rows, cols, w, node_list):
     g = nx.Graph()
     g.add_nodes_from(node_list)
     for r, c, wt in zip(rows.tolist(), cols.tolist(), w.tolist()):
-        g.add_edge(node_list[r], node_list[c], weight=int(wt))
+        g.add_edge(node_list[r], node_list[c], weight=wt)
     return g
 
 
-def project_sparse(pairs, keep):
+def project_sparse(pairs, keep, rule):
     """project_sparse_core wrapped up to the same (pairs, keep) -> nx.Graph
     interface as week04_where.project and the old project_vectorized.
     Verified equal to week04_where.project once, at startup, on both the full
     metro pairs and the full job pairs."""
     keep = list(keep)
     emp_codes, node_codes, filings, n_nodes = factorize_pairs(pairs, keep)
-    rows, cols, w = project_sparse_core(emp_codes, node_codes, filings, n_nodes)
+    rows, cols, w = project_sparse_core(emp_codes, node_codes, filings, n_nodes, rule)
     return graph_from_sparse(rows, cols, w, keep)
 
 
-def check_project_sparse(pairs, keep):
-    """project_sparse must give the identical graph (node set, edge set and
-    every weight) to week04_where.project."""
-    g1 = where.project(pairs, keep)
-    g2 = project_sparse(pairs, keep)
+def check_project_sparse(pairs, keep, rule):
+    """project_sparse must give the same graph (node set, edge set and every
+    weight) as the section's own projection: week04_where.project (minsum),
+    week04_where.project_newman (newman) or week04_jobs.reproject (count)."""
+    if rule == "count":
+        sub = pairs[pairs["metro"].isin(keep)]
+        g1 = jobs.reproject(nx.Graph((("F", e), ("C", m)) for e, m in zip(sub["employer"], sub["metro"])), list(keep))
+    else:
+        g1 = where.metro_graph(pairs, keep, rule)
+    g2 = project_sparse(pairs, keep, rule)
     assert set(g1.nodes()) == set(g2.nodes()), "sparse projection changed the node set"
-    assert set(g1.edges()) == set(g2.edges()), "sparse projection changed the edge set"
+    assert set(map(frozenset, g1.edges())) == set(map(frozenset, g2.edges())), "sparse projection changed the edge set"
     for u, v in g1.edges():
-        assert g1[u][v]["weight"] == g2[u][v]["weight"], f"sparse projection changed weight({u},{v})"
+        assert abs(g1[u][v]["weight"] - g2[u][v]["weight"]) < 1e-9, f"sparse projection changed weight({u},{v})"
 
 
 # --- rewiring ----------------------------------------------------------------
 
-def rewire_fast_core(firm_codes, node_codes, rng):
-    """The same Markov chain as week04_staffing.rewire (degree-preserving
-    bipartite double-edge swap, 10 * |E| attempts, reject a swap that would
-    duplicate an edge or touch the same firm or the same node twice; the
-    weights are then permuted independently of the wiring), on integer-coded
-    arrays instead of a networkx graph and its edge tuples: a swap only ever
-    exchanges the two edges' NODE ends, so firm_codes never changes, and only
-    a `node_codes` copy is mutated. `rng` is a numpy Generator; every random
-    draw comes from it, batched (candidate index pairs drawn many at a time)
-    but the accept/reject walk itself stays strictly sequential, since whether
-    a swap is legal depends on the wiring the previous swaps left behind.
-    Returns (new_node_codes, accepted, attempts)."""
-    n = len(firm_codes)
-    firms = firm_codes.tolist()          # never mutated -- a swap keeps each firm in its slot
-    nodes = node_codes.tolist()          # mutated in place as swaps are accepted
-    present = set(zip(firms, nodes))
-    attempts = 10 * n
-    batch = 1 << 16
-    pos = batch
-    idx_i = idx_j = None
-    accepted = 0
-    for _ in range(attempts):
-        if pos >= batch:
-            idx_i = rng.integers(0, n, size=batch).tolist()
-            idx_j = rng.integers(0, n, size=batch).tolist()
-            pos = 0
-        i, j = idx_i[pos], idx_j[pos]
-        pos += 1
-        f1, f2 = firms[i], firms[j]
-        c1, c2 = nodes[i], nodes[j]
-        if f1 == f2 or c1 == c2 or (f1, c2) in present or (f2, c1) in present:
-            continue
-        present.discard((f1, c1))
-        present.discard((f2, c2))
-        present.add((f1, c2))
-        present.add((f2, c1))
-        nodes[i], nodes[j] = c2, c1
-        accepted += 1
-    return np.array(nodes, dtype=node_codes.dtype), accepted, attempts
-
-
-def rewire_project_sparse(firm_codes, node_codes, weights, n_nodes, seed):
-    """One rewired-and-reprojected result, straight from arrays: rewire_fast_
-    core's degree-preserving swap, then the SAME weight permutation week04_
-    staffing.rewire applies (independent of the wiring), then project_sparse_
-    core -- no intermediate networkx bipartite graph or DataFrame round trip,
-    the hot path every null (about 1,000 rewirings plus, for jobs, as many
-    re-projections) goes through. Returns (rows, cols, weights) as
-    project_sparse_core does."""
-    rng = np.random.default_rng(seed)
-    new_node_codes, _, _ = rewire_fast_core(firm_codes, node_codes, rng)
-    new_weights = rng.permutation(weights)
-    return project_sparse_core(firm_codes, new_node_codes, new_weights, n_nodes)
-
-
-def rewire_fast(g, rng):
-    """rewire_fast_core wrapped up to the same (bipartite nx.Graph, rng) ->
-    nx.Graph interface as week04_staffing.rewire, for the one-off structural
-    check below (production null tasks call rewire_fast_core on arrays
-    directly, skipping this nx.Graph round trip). `rng` is a random.Random,
-    matching week04_staffing.rewire's signature; it seeds the numpy Generator
-    rewire_fast_core and the weight permutation draw from."""
-    edges = [(u, v) if u[0] == "F" else (v, u) for u, v in g.edges()]
-    firms = sorted({f for f, _ in edges})
-    nodes = sorted({c for _, c in edges})
-    fidx = {f: i for i, f in enumerate(firms)}
-    nidx = {c: i for i, c in enumerate(nodes)}
-    firm_codes = np.array([fidx[f] for f, _ in edges], dtype=np.int64)
-    node_codes = np.array([nidx[c] for _, c in edges], dtype=np.int64)
-    weights = np.array([g[u][v]["weight"] for u, v in edges], dtype=np.int64)
-    npy_rng = np.random.default_rng(rng.randrange(2 ** 63))
-    new_node_codes, _, _ = rewire_fast_core(firm_codes, node_codes, npy_rng)
-    new_weights = npy_rng.permutation(weights)
-    h = nx.Graph()
-    h.add_weighted_edges_from(
-        (firms[firm_codes[i]], nodes[new_node_codes[i]], int(new_weights[i])) for i in range(len(firm_codes)))
-    return h
-
-
-def check_rewire_fast():
-    """rewire_fast must satisfy the same invariants as week04_staffing.rewire
-    (reused check_rewire): degrees preserved, bipartite, weight multiset
-    preserved. A small synthetic bipartite graph, not the (slow to load) real
-    data -- the empirical comparison of accepted-swap rate and mean resulting
-    Q against week04_staffing.rewire, over 20 rewirings of the full metro
-    network, was run once by hand (see the script's docstring) and is not
-    repeated on every run."""
-    rng = random.Random(2805)
-    g = nx.Graph()
-    for i in range(8):
-        for j in range(5):
-            if (i + j) % 2 == 0:
-                g.add_edge(("F", i), ("C", j), weight=i + j + 1)
-    h = rewire_fast(g, rng)
-    check_rewire(g, h)
+def rewire_project_sparse(firm_codes, node_codes, weights, n_nodes, seed, rule):
+    """One rewired-and-reprojected result, straight from arrays: the
+    employer x node matrix rewired by week04_staffing.rewire_matrix (every
+    employer and node keeps its number of partners; for minsum, also its
+    filings, through BiWES), then projected with the same rule as the observed
+    graph. Newman and count ignore filings, so their null rewires the
+    unweighted matrix with plain degree-preserving swaps. Returns (rows, cols,
+    weights) as project_sparse_core does."""
+    n_emp = int(firm_codes.max()) + 1
+    a = np.zeros((n_emp, n_nodes), dtype=np.int32)
+    a[firm_codes, node_codes] = weights if rule == "minsum" else 1
+    per_link = where.MOVES_MINSUM if rule == "minsum" else MOVES_UNWEIGHTED
+    b = rewire_matrix(a, seed, per_link * len(firm_codes))
+    f2, n2 = np.nonzero(b)
+    return project_sparse_core(f2.astype(np.int64), n2.astype(np.int64), b[f2, n2].astype(np.int64), n_nodes, rule)
 
 
 # --- shared partition/NMI helpers ------------------------------------------
@@ -431,7 +372,8 @@ def matched_draws_deterministic(pairs, keep, exclude, target_total, n_draws, par
 # --- metro workers (run in forked child processes) -------------------------
 
 def _metro_null_task(seed):
-    rows, cols, w = rewire_project_sparse(_G["firm_codes"], _G["node_codes"], _G["weights"], _G["n_nodes"], seed)
+    rows, cols, w = rewire_project_sparse(_G["firm_codes"], _G["node_codes"], _G["weights"], _G["n_nodes"], seed,
+                                          RULES["metro"])
     hp = graph_from_sparse(rows, cols, w, _G["keep"])
     return louvain(hp, seed)[1]
 
@@ -443,7 +385,7 @@ def run_metro_nulls_parallel(pairs, keep, seeds, label_text):
     started = time.time()
     qs = []
     with mp.get_context("fork").Pool(processes=WORKERS) as pool:
-        for done, q in enumerate(pool.imap_unordered(_metro_null_task, seeds), 1):
+        for done, q in enumerate(pool.imap(_metro_null_task, seeds), 1):
             qs.append(q)
             progress(label_text, done, n_nulls, started)
     return np.array(qs)
@@ -457,7 +399,7 @@ def _metro_draw_task(payload):
     total_in_top = _G["total_in_top"]
     pv = _G["pairs"][~_G["pairs"]["employer"].isin(dropped)]
     firm_codes, node_codes, weights, n_nodes = factorize_pairs(pv, keep)  # once; reused for the observed graph and every null below
-    rows, cols, w = project_sparse_core(firm_codes, node_codes, weights, n_nodes)
+    rows, cols, w = project_sparse_core(firm_codes, node_codes, weights, n_nodes, RULES["metro"])
     g = graph_from_sparse(rows, cols, w, keep)
     seeds_run = [seed_for("metro", control_name, draw_idx, "louvain_run", r) for r in range(RUNS)]
     best, member, q, parts_list = modal_partition(g, seeds_run, RUNS)
@@ -474,7 +416,7 @@ def _metro_draw_task(payload):
     qs = []
     for i in range(NULLS_CONTROL):
         rewire_seed = seed_for("metro", control_name, draw_idx, "control_rewire", i)
-        r2, c2, w2 = rewire_project_sparse(firm_codes, node_codes, weights, n_nodes, rewire_seed)
+        r2, c2, w2 = rewire_project_sparse(firm_codes, node_codes, weights, n_nodes, rewire_seed, RULES["metro"])
         hp = graph_from_sparse(r2, c2, w2, keep)
         louvain_seed = seed_for("metro", control_name, draw_idx, "control_louvain", i)
         qs.append(louvain(hp, louvain_seed)[1])
@@ -512,12 +454,12 @@ def run_metro_draws_parallel(pairs, keep, full_member, full_labels, regions, tot
 # --- job workers (run in forked child processes) ----------------------------
 
 def _jobs_null_task(seed):
-    """Rewire the (filings-weighted) company x occupation bipartite graph and
-    re-project it with the SAME filings-min rule the observed partition uses
-    (project_sparse, not jobs.reproject's company-count rule), scored on the
+    """Rewire the company x occupation bipartite graph and re-project it with
+    the same rule the observed partition uses (RULES["jobs"]), scored on the
     full occupation node set the observed partition uses (no giant-component
     restriction -- the observed one has none either)."""
-    rows, cols, w = rewire_project_sparse(_G["firm_codes"], _G["node_codes"], _G["weights"], _G["n_nodes"], seed)
+    rows, cols, w = rewire_project_sparse(_G["firm_codes"], _G["node_codes"], _G["weights"], _G["n_nodes"], seed,
+                                          RULES["jobs"])
     hp = graph_from_sparse(rows, cols, w, _G["occupations"])
     return louvain(hp, seed)[1]
 
@@ -530,7 +472,7 @@ def run_jobs_nulls_parallel(pairs, occupations, seeds, label_text):
     started = time.time()
     qs = []
     with mp.get_context("fork").Pool(processes=WORKERS) as pool:
-        for done, q in enumerate(pool.imap_unordered(_jobs_null_task, seeds), 1):
+        for done, q in enumerate(pool.imap(_jobs_null_task, seeds), 1):
             qs.append(q)
             progress(label_text, done, n_nulls, started)
     return np.array(qs)
@@ -545,7 +487,7 @@ def _jobs_draw_task(payload):
     total_filings = _G["total_filings"]
     pv = _G["pairs"][~_G["pairs"]["employer"].isin(dropped)]
     firm_codes, node_codes, weights, n_nodes = factorize_pairs(pv, occupations)  # once; reused for the observed graph and every null below
-    rows, cols, w = project_sparse_core(firm_codes, node_codes, weights, n_nodes)
+    rows, cols, w = project_sparse_core(firm_codes, node_codes, weights, n_nodes, RULES["jobs"])
     g = graph_from_sparse(rows, cols, w, occupations)
     seeds_run = [seed_for("jobs", control_name, draw_idx, "louvain_run", r) for r in range(RUNS)]
     best, member, q, parts_list = best_q_partition(g, seeds_run, RUNS)
@@ -561,7 +503,7 @@ def _jobs_draw_task(payload):
     qs = []
     for i in range(NULLS_CONTROL):
         rewire_seed = seed_for("jobs", control_name, draw_idx, "control_rewire", i)
-        r2, c2, w2 = rewire_project_sparse(firm_codes, node_codes, weights, n_nodes, rewire_seed)
+        r2, c2, w2 = rewire_project_sparse(firm_codes, node_codes, weights, n_nodes, rewire_seed, RULES["jobs"])
         hp = graph_from_sparse(r2, c2, w2, occupations)
         louvain_seed = seed_for("jobs", control_name, draw_idx, "control_louvain", i)
         qs.append(louvain(hp, louvain_seed)[1])
@@ -609,7 +551,7 @@ def run_jobs_draws_parallel(pairs, occupations, major, full_member, total_filing
 # --- part 1: metros ----------------------------------------------------------
 
 def named_metro_variant(pairs, keep, variant_id, full_member, full_labels, regions, n_nulls, label_text):
-    g = project_sparse(pairs, keep)
+    g = project_sparse(pairs, keep, RULES["metro"])
     seeds_run = [seed_for("metro", variant_id, None, "louvain_run", r) for r in range(RUNS)]
     best, member, q, parts_list = modal_partition(g, seeds_run, RUNS)
     nodes = sorted(keep)
@@ -646,8 +588,8 @@ def run_metros():
     top = list(filings.head(where.TOP).index)  # the same 40 metros where.py uses, fixed in every variant
     regions = {m: where.REGION[where.first_state(gaz.loc[m, "NAME"])] for m in top}
 
-    check_project_sparse(pairs, top)
-    print("checked: sparse metro projection matches week04_where.project", flush=True)
+    check_project_sparse(pairs, top, RULES["metro"])
+    print(f"checked: sparse metro projection matches section 1's ({RULES['metro']})", flush=True)
 
     placed = lca[lca["SECONDARY_ENTITY"].str.upper().str.startswith("Y")]
     shortlist = list(placed["employer"].value_counts().head(where.SHORTLIST).index)
@@ -713,7 +655,7 @@ def jobs_pairs(frame):
 
 
 def named_jobs_variant(pairs, occupations, major, variant_id, full_member, n_nulls, label_text):
-    g = project_sparse(pairs, occupations)
+    g = project_sparse(pairs, occupations, RULES["jobs"])
     seeds_run = [seed_for("jobs", variant_id, None, "louvain_run", r) for r in range(RUNS)]
     best, member, q, parts_list = best_q_partition(g, seeds_run, RUNS)
     nmi_seeds, labels_list = seed_nmi(parts_list, occupations)
@@ -766,8 +708,8 @@ def run_jobs():
 
     pairs = jobs_pairs(frame)
 
-    check_project_sparse(pairs, occupations)
-    print("checked: sparse job projection matches week04_where.project", flush=True)
+    check_project_sparse(pairs, occupations, RULES["jobs"])
+    print("checked: sparse job projection matches section 2's (count)", flush=True)
 
     variants = []
     full_res, full_member, _ = named_jobs_variant(pairs, occupations, major, "full", None, NULLS_JOBS,
@@ -915,15 +857,11 @@ def page_variant(v, region_key=False, soc_key=False):
 
 def main():
     started = time.time()
-    check_rewire_fast()
-    print("checked: rewire_fast satisfies week04_staffing.check_rewire's invariants", flush=True)
-    print(f"Expected runtime with {WORKERS} parallel workers: benchmarked per-null cost is about 0.7s for a "
-          f"metro null (was about 2s) and 0.9s for a jobs null (was about 3.8s), with DRAWS raised {20} -> "
-          f"{DRAWS}; roughly 10-16 minutes total "
-          f"(metro nulls: {NULLS_MAIN} x 3 named variants + {NULLS_CONTROL} x {DRAWS} x 2 control sets; "
-          f"jobs nulls: {NULLS_JOBS} x 3 named variants + {NULLS_CONTROL} x {DRAWS} x 2 control sets; "
-          f"nulls and draws run in a forked process pool; loading FY2025 data ~20s).",
-          flush=True)
+    # Compile the numba rewiring once here, so forked workers inherit it.
+    for top_weight in (1, 2):
+        rewire_matrix(np.array([[top_weight, 0], [0, 1]], dtype=np.int32), 0, 1)
+    print(f"{WORKERS} workers; metro nulls: {NULLS_MAIN} x 3 named variants + {NULLS_CONTROL} x {DRAWS} x 2 "
+          f"control sets; jobs nulls: {NULLS_JOBS} x 3 + {NULLS_CONTROL} x {DRAWS} x 2; rules {RULES}", flush=True)
 
     metros_res = run_metros()
     jobs_res = run_jobs()
@@ -937,6 +875,8 @@ def main():
     seconds = round(time.time() - started)
     out = {
         "generated_by": "analysis/week04_footprint.py", "year": YEAR, "seconds": seconds,
+        "rules": RULES, "moves_per_link": {part: where.MOVES_MINSUM if rule == "minsum" else MOVES_UNWEIGHTED
+                                           for part, rule in RULES.items()},
         "metros": metros_res, "jobs": jobs_res, "finding": verdict,
     }
     OUT.write_text(json.dumps(out, indent=1, ensure_ascii=False, default=str) + "\n")

@@ -1,7 +1,8 @@
 """Week 4, section 1 follow-up: two questions posed against week04_where.py.
 
 Network: the same company x metro projection as analysis/week04_where.py
-(FY2025, certified H-1B, the TOP = 40 metros by filings, project(pairs, top)),
+(FY2025, certified H-1B, the TOP = 40 metros by filings, metro_graph(pairs, top)
+under where.WEIGHTING),
 and the same modal Louvain partition over 100 runs, reproduced here rather than
 re-imported so this script stands alone; it is asserted against
 analysis/week04_where.json and docs/assets/data/week04_place.json before
@@ -43,26 +44,24 @@ Method, Q2
   that p and keeps every smaller one).
 - (a) the alpha where the giant component first drops below 40 metros.
 - (b) the single step with the largest drop in giant component size (ties
-  reported); this can be far smaller than the coarse ALPHAS sweep's 32 -> 19
-  collapse between alpha 0.1 and 0.05, because that collapse can be a cascade
-  of many single-metro peels rather than one snapping link, which is exactly
-  what turns out to be the case here.
+  reported); this can be far smaller than the coarse ALPHAS sweep's collapse
+  between alpha 0.1 and 0.05, because that collapse can be a cascade of many
+  single-metro peels rather than one snapping link.
 - (c) a link lost between alpha 0.1 and 0.05 only counts as breaking if its
   own removal step drops the giant component (drop > 0): a link that touches
   a metro which falls off at some other step, without itself cutting anything
   loose, is not a break. A tied step (several links removed together at the
   same alpha) counts once as a step, though every one of its links is still
   recorded. The flagged set is these in-window breaking steps plus the step
-  found in (b); each link's leading employer (largest share of the link's
-  weight, where.py's longhaul method) and whether that employer is in
-  SHORTLIST. A hypergeom test compares the share of flagged links led by a
-  shortlist firm against the alpha-0.2 backbone's own share (70 of 180, from
-  week04_where.json's longhaul: 22 of 83 long links, 48 of 97 short links).
+  found in (b); each link's leading employer (the largest share of the filings
+  the two metros share, where.py's longhaul method) and whether that employer
+  is in SHORTLIST. A hypergeom test compares the share of flagged links led by
+  a shortlist firm against the alpha-0.2 backbone's own share (from
+  week04_where.json's longhaul).
 
 Checks
-- The reproduced modal partition must have 3 communities and Q rounding to
-  0.049, and match analysis/week04_where.json's null_model exactly (Q,
-  modal_runs, partitions_found); the per-metro community must also match
+- The reproduced modal partition must match analysis/week04_where.json's
+  null_model exactly (communities, Q, modal_runs, partitions_found); the per-metro community must also match
   docs/assets/data/week04_place.json's cities[].community. Any mismatch stops
   the script rather than silently reporting on a different partition.
 - Almost every metro has NAICS 54 (professional/technical/scientific
@@ -119,15 +118,15 @@ def shuffled_ami(a, b, rng, times=SHUFFLES):
 
 
 def rebuild_network():
-    """Exactly where.py's main() up to project(pairs, top): same metros, same
-    filings, same top-40 list, same weighted projection."""
+    """Exactly where.py's main() up to metro_graph(pairs, top): same metros,
+    same filings, same top-40 list, same weighted projection."""
     lookup, town_lookup, gaz = where.metros()
     sites, lca, stats = where.worksite_metros(lookup, town_lookup)
     per_case = sites.drop_duplicates(["CASE_NUMBER", "metro"])
     pairs = per_case.groupby(["employer", "metro"]).size().rename("filings").reset_index()
     filings = per_case.groupby("metro").size().sort_values(ascending=False)
     top = list(filings.head(where.TOP).index)
-    g = where.project(pairs, top)
+    g = where.metro_graph(pairs, top)
     return dict(gaz=gaz, lca=lca, per_case=per_case, pairs=pairs, filings=filings, top=top, g=g)
 
 
@@ -158,10 +157,10 @@ def check_reproduction(recon):
     place = json.loads(PLACE_JSON.read_text())
     page_comm = {c["id"]: c["community"] for c in place["cities"]}
     problems = []
-    if recon["communities"] != 3:
-        problems.append(f"communities: got {recon['communities']}, expected 3")
-    if round(recon["q_modal"], 3) != 0.049:
-        problems.append(f"Q: got {round(recon['q_modal'], 3)}, expected 0.049")
+    if recon["communities"] != published["communities"]:
+        problems.append(f"communities: got {recon['communities']}, expected {published['communities']}")
+    if round(recon["q_modal"], 3) != published["Q"]:
+        problems.append(f"Q: got {round(recon['q_modal'], 3)}, expected {published['Q']}")
     if recon["modal_runs"] != published["modal_runs"]:
         problems.append(f"modal_runs: got {recon['modal_runs']}, expected {published['modal_runs']}")
     if recon["partitions_found"] != published["partitions_found"]:
@@ -245,12 +244,22 @@ def kept_graph(g, p, top, alpha):
     return h, giant
 
 
-def leader_of(u, v, per_employer, weight):
-    """where.py's longhaul rule: the employer with the largest share of a
-    link's weight (min of its filings at each end), and that share."""
+def leader_of(u, v, per_employer):
+    """where.py's longhaul rule: of the filings two metros share (each
+    employer's smaller count), the employer holding the most, and its share."""
     share = {e: min(f[u], f[v]) for e, f in per_employer.items() if u in f and v in f}
     who = max(share, key=share.get)
-    return who, share[who] / weight
+    return who, share[who] / sum(share.values())
+
+
+def _break_note(top_steps, g, p, top):
+    """Where the largest single drop sits against the coarse BREAK_LO-BREAK_HI
+    window, in words, from the numbers themselves."""
+    hi, lo = len(kept_graph(g, p, top, BREAK_HI)[1]), len(kept_graph(g, p, top, BREAK_LO)[1])
+    inside = any(BREAK_LO <= s["alpha"] < BREAK_HI for s in top_steps)
+    return (f"This is the largest single-link drop found anywhere in the sweep; it "
+            f"{'falls' if inside else 'does not fall'} in the coarse {BREAK_HI}-{BREAK_LO} window, "
+            f"where the giant component goes from {hi} metros to {lo}.")
 
 
 def q2_backbone_break(net, by_name):
@@ -299,11 +308,11 @@ def q2_backbone_break(net, by_name):
     }
 
     def link_row(u, v):
-        who, share = leader_of(u, v, per_employer, g[u][v]["weight"])
+        who, share = leader_of(u, v, per_employer)
         return {
             "a": u, "b": v, "a_name": by_name[u], "b_name": by_name[v],
             "alpha": p.get((u, v), p.get((v, u))),
-            "weight": int(g[u][v]["weight"]),
+            "weight": round(float(g[u][v]["weight"]), 3),
             "top_employer": where.label(who), "top_share": round(share, 3),
             "shortlist": who in shortlist,
         }
@@ -315,14 +324,12 @@ def q2_backbone_break(net, by_name):
         "drop": max_drop, "tied_steps": len(top_steps),
         "steps": [{
             "alpha": s["alpha"], "edges": [[u, v] for u, v in s["edges"]],
-            "weight": [int(g[u][v]["weight"]) for u, v in s["edges"]],
+            "weight": [round(float(g[u][v]["weight"]), 3) for u, v in s["edges"]],
             "links": [link_row(u, v) for u, v in s["edges"]],
             "gc_before": s["before"], "gc_after": s["after"],
             "fallen_metros": [by_name[m] for m in s["fallen"]],
         } for s in top_steps],
-        "note": ("This is the largest single-link drop found anywhere in the sweep; it does not "
-                 "fall in the coarse 0.1-0.05 window that shows the 32 -> 19 collapse, because that "
-                 "collapse turns out to be a cascade of many one-metro peels rather than one break."),
+        "note": _break_note(top_steps, g, p, top),
     }
 
     # (c) the coarse 0.1 / 0.05 window: a breaking link is a removal step

@@ -103,6 +103,7 @@ class LinkEdge(Model):
     b: str
     distance_km: float = Count
     weight: float = Count
+    shared_filings: int = Count
     top_employer: str
     top_share: float = Share
     staffing: bool
@@ -443,7 +444,7 @@ class SweepPoint(Model):
 class BreakStep(Model):
     alpha: float = Count
     edges: list[tuple[str, str]]
-    weight: list[int]
+    weight: list[float]
     gc_before: int = Count
     gc_after: int = Count
 
@@ -454,7 +455,7 @@ class BreakingLink(Model):
     a_name: str
     b_name: str
     alpha: float = Count
-    weight: int = Count
+    weight: float = Count
     top_employer: str
     top_share: float = Share
     shortlist: bool
@@ -807,7 +808,7 @@ class ExploreMetro(Model):
 
 
 class ExploreFull(Model):
-    edges: list[tuple[str, str, int]] = Field(min_length=1)
+    edges: list[tuple[str, str, float]] = Field(min_length=1)
     total_weight: float = Count
     Q_page_partition: float
 

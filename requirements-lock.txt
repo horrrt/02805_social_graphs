@@ -124,3 +124,10 @@ python-igraph==1.0.0
 igraph==1.0.0
 texttable==1.7.0
 pyarrow==25.0.1
+biwes==0.1.1
+numba==0.67.0
+llvmlite==0.49.0
+ortools==9.15.6755
+protobuf==6.33.6
+absl-py==2.5.0
+immutabledict==4.3.1
