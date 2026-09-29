@@ -19,8 +19,8 @@ to September 2025.
 The raw files carry names, emails and phone numbers of employer contacts,
 lawyers and preparers, the worker's country of citizenship, and worksite
 street addresses that are sometimes a worker's home. None of those columns is
-on an allow-list, and check_columns() refuses to read one if it ever is. Never
-commit anything under build/.
+on a DOL allow-list, and check_columns() refuses to read one if it ever is.
+Never commit anything under build/.
 
     python analysis/week04_data.py                    # download and trim everything
     python analysis/week04_data.py --years 2025       # one fiscal year
@@ -37,9 +37,15 @@ Two more tables come from outside DOL:
                                       FY2026 stops at June 2026.
     lottery_fy2022 ... _fy2024        every H-1B lottery registration and the petition
                                       that followed a win: USCIS data obtained by
-                                      Bloomberg News under FOIA. Workers' country,
-                                      birth year, gender and education, and agents'
-                                      names and addresses, are not on its allow-list.
+                                      Bloomberg News under FOIA. Unlike the DOL
+                                      tables it keeps some personal columns on
+                                      purpose (LOTTERY_PERSONAL): the worker's
+                                      country, birth year, gender, education, pay
+                                      and worksite, and the filing agent's name.
+                                      Only counts of them may leave build/. It
+                                      leaves out the redacted IDs and birth dates,
+                                      the employer's addresses and the columns that
+                                      repeat others or never vary.
 
 Sources (public domain, US government):
 https://www.dol.gov/agencies/eta/foreign-labor/performance
@@ -254,19 +260,54 @@ LOTTERY_COLUMNS = [
     "DOL_ETA_CASE_NUMBER",  # the LCA behind the petition
     "S1Q1A",                # H-1B dependent employer
     "S4Q1",                 # the worker will be assigned to an off-site location
+    # Petition columns, filled only after a win (Form I-129 and its H-1B supplement).
+    "S3Q1",                 # cap: B bachelor's, M US master's, E exempt
+    "REQUESTED_ACTION",     # A the worker is abroad (consulate), B change of status inside the US
+    "NUM_OF_EMP_IN_US",     # the employer's US staff; 67-78% zero in FY2021/22, usable from FY2023
+    "BEN_CURRENT_CLASS",    # the worker's status if in the US (F1, H4, L1B); UU/UN sit on consular petitions
+    "BEN_EDUCATION_CODE",   # A-I; blank on about a third of FY2023/24 petitions
+    "ED_LEVEL_DEFINITION",
+    "BEN_PFIELD_OF_STUDY",  # free text
+    "BEN_COMP_PAID",        # annual pay as filed, never verified; hourly rates typed in sit under $10,000
+    "WAGE_AMT",             # blank for FY2021/22
+    "WAGE_UNIT",
+    "FULL_TIME_IND",        # blank for FY2021/22
+    "valid_from",           # dates of intended employment
+    "valid_to",
+    "WORKSITE_STREET",
+    "WORKSITE_CITY",
+    "WORKSITE_STATE",
+    "WORKSITE_ZIP",
+    # Registration columns, on every row.
+    "country_of_birth",
+    "country_of_nationality",
+    "ben_year_of_birth",
+    "gender",
+    "agent_first_name",     # the attorney or representative who filed the registration
+    "agent_last_name",
 ]
+# Lottery columns that describe a worker or name a person. Kept on 29 September
+# 2026 by Gyula's decision: they stay in build/ (gitignored), and only counts
+# may leave it. Anything written to a JSON, a page or a commit is aggregated.
+LOTTERY_PERSONAL = {
+    "country_of_birth", "country_of_nationality", "ben_year_of_birth", "gender", "BEN_CURRENT_CLASS",
+    "BEN_EDUCATION_CODE", "ED_LEVEL_DEFINITION", "BEN_PFIELD_OF_STUDY", "BEN_COMP_PAID", "WAGE_AMT",
+    "WORKSITE_STREET", "WORKSITE_ZIP", "agent_first_name", "agent_last_name",
+}
 
 PERSONAL = re.compile(
     r"POC|CONTACT|ATTORNEY|ATTY|PREPARER|EMAIL|PHONE|ADDRESS|ADDR|POSTAL|PROVINCE"
-    r"|CITIZENSHIP|BIRTH|CLASS_OF_ADMISSION"
+    r"|CITIZENSHIP|BIRTH|CLASS_OF_ADMISSION|FIRST_NAME|LAST_NAME|STREET|GENDER|\bSEX|NATIONALITY",
+    re.IGNORECASE,  # the lottery release writes its registration columns in lower case
 )
 # Business names that contain a flagged word but name a firm, not a person.
 FIRM_COLUMNS = {"ATTY_AG_LAW_FIRM_NAME", "AGENT_ATTORNEY_FIRM_NAME", "EMPLOYER_STATE_PROVINCE"}
 
 
-def check_columns(columns):
-    """Refuse any column that names, locates or describes a person."""
-    bad = [c for c in columns if PERSONAL.search(c) and c not in FIRM_COLUMNS]
+def check_columns(columns, allowed=frozenset()):
+    """Refuse any column that names, locates or describes a person, unless it is
+    one of the columns a table keeps on purpose (allowed)."""
+    bad = [c for c in columns if PERSONAL.search(c) and c not in FIRM_COLUMNS | allowed]
     if bad:
         raise SystemExit(f"refusing personal columns: {bad}")
 
@@ -383,7 +424,7 @@ def lottery(year, local=()):
     """H-1B lottery registrations for one fiscal year, as build/week04/lottery_fy<year>.csv.gz,
     with only the LOTTERY_COLUMNS: who registered, whether the draw picked the
     registration, and the petition and LCA that followed."""
-    check_columns(LOTTERY_COLUMNS)
+    check_columns(LOTTERY_COLUMNS, LOTTERY_PERSONAL)
     parts = [find(n, LOTTERY + n, local) for n in LOTTERY_FILES[year]]
     frames = []
     if parts[0].name.endswith(".001"):
