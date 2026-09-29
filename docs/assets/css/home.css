@@ -370,11 +370,15 @@ a.week-card:hover {
   max-width: 68ch;
 }
 
-.home .home-github {
+.home footer.foot .shell {
+  align-items: center;
+}
+
+.home footer.foot .home-github {
   color: var(--ink);
   display: inline-flex;
 }
 
-.home .home-github:hover {
+.home footer.foot .home-github:hover {
   color: var(--accent);
 }
