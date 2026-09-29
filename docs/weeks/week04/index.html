@@ -594,11 +594,13 @@
               </div>
             </header>
             <div class="w4-two">
-              <div>
-                <p class="sub">
+<div>
+<p class="sub">
                   Each group gets its own occupation network and its own <span class="w4-term"><button aria-describedby="w4-term-jobs-split-louvain" type="button">Louvain</button><span class="w4-pop" id="w4-term-jobs-split-louvain" role="tooltip">A standard method that splits a network into groups whose members link more to each other than to the rest.</span></span> clusters. <span class="w4-term"><button aria-describedby="w4-term-jobs-split-nmi" type="button">NMI</button><span class="w4-pop" id="w4-term-jobs-split-nmi" role="tooltip">Normalized mutual information: a score for how alike two groupings are, 1 when they match exactly and 0 when they are unrelated.</span></span> says how alike the two clusterings are.
                 </p>
-                <div class="notice">
+</div>
+<div>
+<div class="notice">
                   <span class="ico">💡</span>
                   <span>
                     <b>What to notice</b>
@@ -608,12 +610,10 @@
                     like them.
                   </span>
                 </div>
-                <div class="rx-drawers rx-foot">
-                  <details class="rx-drawer"><summary>Method</summary><div class="rx-drawer-body"><p>We split the companies in two: the 817 firms that place 20 or more filings at client sites (21% of all filings) and the 58,379 others. Alone, that number means little: splitting companies into a small and a large group changes the clusters even if nobody behaves differently. So the baseline draws 20 random groups that match the outsourcing firms in both respects: the same number of companies of each size, from the one-filing firms to the giants. NMI is measured on the 217 occupations that sit in a cluster of two or more on both sides.</p></div></details>
-                  <details class="rx-drawer"><summary>More numbers</summary><div class="rx-drawer-body"><p>The half-matched baselines show why the match matters: random groups with only the same number of companies hold 1.3% of filings and agree at 0.43 ± 0.09, which would have hidden the difference. At the top the two mixes look alike: software developers are 28% of the outsourcing firms' filings and 33% of the direct employers'. Below that they part: "computer occupations, all other" is 22% of the outsourcing firms' filings and 5% of the direct employers', and direct employers file for 276 occupations the outsourcing firms never touch.</p></div></details>
-                </div>
-              </div>
-              <div class="plot">
+</div>
+</div>
+<div class="rx-fig-row">
+<div class="plot">
                 <h3>Do outsourcers cluster jobs like random firms would?</h3>
                 <p class="axis-note">
                   Bars show how alike the two groups' job clusters are. Whiskers
@@ -623,9 +623,7 @@
                 </p>
                 <div class="w4-figure-body" id="chart-jobs-split-nmi"></div>
               </div>
-            </div>
-            <div class="rx-fig-row">
-            <div class="plot">
+<div class="plot">
                 <h3>The largest occupations in each group</h3>
                 <p class="axis-note">
                   Share of each group's filings, for the eight occupations with
@@ -633,7 +631,11 @@
                 </p>
                 <div class="chart-host" id="chart-jobs-split-mix"></div>
               </div>
-            </div>
+</div>
+<div class="rx-drawers rx-foot">
+                  <details class="rx-drawer"><summary>Method</summary><div class="rx-drawer-body"><p>We split the companies in two: the 817 firms that place 20 or more filings at client sites (21% of all filings) and the 58,379 others. Alone, that number means little: splitting companies into a small and a large group changes the clusters even if nobody behaves differently. So the baseline draws 20 random groups that match the outsourcing firms in both respects: the same number of companies of each size, from the one-filing firms to the giants. NMI is measured on the 217 occupations that sit in a cluster of two or more on both sides.</p></div></details>
+                  <details class="rx-drawer"><summary>More numbers</summary><div class="rx-drawer-body"><p>The half-matched baselines show why the match matters: random groups with only the same number of companies hold 1.3% of filings and agree at 0.43 ± 0.09, which would have hidden the difference. At the top the two mixes look alike: software developers are 28% of the outsourcing firms' filings and 33% of the direct employers'. Below that they part: "computer occupations, all other" is 22% of the outsourcing firms' filings and 5% of the direct employers', and direct employers file for 276 occupations the outsourcing firms never touch.</p></div></details>
+                </div>
           </div>
 
           <div class="card w4-card" id="jobs-linkcom">
@@ -700,11 +702,13 @@
           </header>
           <div class="card w4-card">
             <div class="w4-two">
-              <div>
-                <p class="sub">
+<div>
+<p class="sub">
                   Here the network links an outsourcing firm to each client company where it places workers, and a link weighs the filings between them. Counted once per link, the <span class="w4-term"><button aria-describedby="w4-term-who-louvain" type="button">Louvain</button><span class="w4-pop" id="w4-term-who-louvain" role="tooltip">A method that finds groups in a network by moving nodes between groups until the links inside groups are as dense as they can get. It starts from a random order, so two runs can differ.</span></span> groups beat <span class="w4-term"><button aria-describedby="w4-term-who-rewired" type="button">rewired networks</button><span class="w4-pop" id="w4-term-who-rewired" role="tooltip">Random copies of the network in which every firm and client keeps its number of partners, but the partners are dealt out again at random.</span></span> on <span class="w4-term"><button aria-describedby="w4-term-who-modularity" type="button">modularity</button><span class="w4-pop" id="w4-term-who-modularity" role="tooltip">How much more of the link weight falls inside the groups than a random network would put there. Higher means cleaner groups.</span></span> (0.57 against 0.53) and match each client's main vendor (<span class="w4-term"><button aria-describedby="w4-term-who-ami" type="button">AMI</button><span class="w4-pop" id="w4-term-who-ami" role="tooltip">Adjusted mutual information: how closely two ways of grouping the same clients agree, corrected for the agreement random labels would reach by chance.</span></span> 0.11) a little better than its industry (0.07).
                 </p>
-                <div class="w4-anatomy w4-anatomy--pair">
+</div>
+<div>
+<div class="w4-anatomy w4-anatomy--pair">
                   <h3>Words in this section</h3>
                   <dl>
                     <div><dt>Vendor</dt><dd>An outsourcing firm that files the H-1B and places the worker at another company, its client. Elsewhere the page also calls it a placing firm.</dd></div>
@@ -712,19 +716,19 @@
                     <div><dt>Switch</dt><dd>A year in which a client's main vendor changes, counted for clients with five or more filings in both years.</dd></div>
                   </dl>
                 </div>
-                <div class="rx-drawers rx-foot"><details class="rx-drawer"><summary>Method</summary><div class="rx-drawer-body"><p>Louvain runs on the largest connected piece: 21,759 firms and clients, 41,212 links. The rewired networks keep every firm's and client's number of partners. The three questions below ask whether the groups behave like markets.</p></div></details></div>
-              </div>
-              <div>
-                <figure class="w4-figure">
+</div>
+</div>
+<div class="rx-fig-row">
+<figure class="w4-figure">
                   <figcaption><b>Weak groups, beyond chance</b><span>Modularity against rewired networks that keep each firm's and client's number of partners; AMI with each client's main vendor and its industry.</span></figcaption>
                   <div class="w4-figure-body" data-strip="who-modularity"></div>
                 </figure>
-                <figure class="w4-figure">
+<figure class="w4-figure">
                   <figcaption><b>One client, many vendors</b><span>The client's largest staffing firms by filings in the year; link width is filings placed there. Pick a year or type any client.</span></figcaption>
                   <div class="w4-figure-body" data-strip="who-ego"></div>
                 </figure>
-              </div>
-            </div>
+</div>
+<div class="rx-drawers rx-foot"><details class="rx-drawer"><summary>Method</summary><div class="rx-drawer-body"><p>Louvain runs on the largest connected piece: 21,759 firms and clients, 41,212 links. The rewired networks keep every firm's and client's number of partners. The three questions below ask whether the groups behave like markets.</p></div></details></div>
           </div>
 
           <div class="card w4-card" id="who-q1">
@@ -735,31 +739,27 @@
                 <p class="w4-answer">In 2025, 104,732 of the 537,796 certified filings (19.5%) mark a client site.</p>
               </div>
             </header>
-            <div class="w4-two">
-              <div>
-                <p class="sub">A filing is a request to employ someone, not a hire. Every year from 2022 on, USCIS denied placing firms about twice the share of first-time petitions it denied direct employers.</p>
-                <figure class="w4-figure" style="margin-top: 14px">
+            <p class="sub">A filing is a request to employ someone, not a hire. Every year from 2022 on, USCIS denied placing firms about twice the share of first-time petitions it denied direct employers.</p>
+<div class="rx-fig-row">
+<figure class="w4-figure">
                   <figcaption><b>The lottery funnel</b><span>The March 2023 draw: registrations spent per approved petition, and the share of drawn tickets that became a petition, by kind of employer.</span></figcaption>
                   <div class="w4-vis-stack">
                     <div class="w4-figure-body" data-strip="who-q1-funnel-registrations"></div>
                     <div class="w4-figure-body" data-strip="who-q1-funnel-petitions"></div>
                   </div>
                 </figure>
-                <div class="rx-drawers rx-foot">
-                  <details class="rx-drawer"><summary>Method</summary><div class="rx-drawer-body"><p>The worksites file lists every client a filing names; we leave out the 16% of client entries that name no company, such as "Home Address", and the 1,881 where a firm names itself. Counted that way, 101,763 filings (18.9%) name a client company: the worker is employed by one company and works at another, down from 21.9% in 2022.</p></div></details>
-                  <details class="rx-drawer"><summary>More numbers</summary><div class="rx-drawer-body"><p>USCIS denied 2.7% of placing firms' first-time petitions against 1.2% for direct employers in 2022, and 3.4% against 2.0% from October 2025 to June 2026. The lottery shows the same split one step earlier. Each new H-1B worker starts as a registration that USCIS draws at random, and USCIS gave Bloomberg News every registration from the March 2023 draw after a FOIA lawsuit. Every petition that followed names its filing, so we can follow a ticket to its client. Direct employers sent 5.1 registrations per approved petition, placing firms 9.1, and firms with fewer than 20 filings 12.2; those small firms sent 53% of the 758,967 registrations. Most of the gap is drawn tickets nobody used. When USCIS drew a direct employer's registration, a petition followed 76% of the time; a placing firm's, 50%; a small firm's, 35%. That step carries 74% of the gap between placing and direct firms, and the draw itself 24%. Much of it comes from workers registered by several employers: 54% of registrations named one, and when USCIS drew one, a petition followed 23% of the time, against 81% for a worker registered once. 18,307 of the petitions lead to a client company. Citigroup received the most, 342 through 38 firms.</p></div></details>
-                </div>
-              </div>
-              <div>
-                <figure class="w4-figure">
+<figure class="w4-figure">
                   <figcaption><b>A filing, a client, a denial</b><span>The orange bar is the share involving a client company; the dot is placing firms' USCIS denial rate, the dashed line direct employers'.</span></figcaption>
                   <div class="w4-vis-stack">
                     <div class="w4-figure-body" data-strip="who-q1-split"></div>
                     <div class="w4-figure-body" data-strip="who-q1-denial"></div>
                   </div>
                 </figure>
-              </div>
-            </div>
+</div>
+<div class="rx-drawers rx-foot">
+                  <details class="rx-drawer"><summary>Method</summary><div class="rx-drawer-body"><p>The worksites file lists every client a filing names; we leave out the 16% of client entries that name no company, such as "Home Address", and the 1,881 where a firm names itself. Counted that way, 101,763 filings (18.9%) name a client company: the worker is employed by one company and works at another, down from 21.9% in 2022.</p></div></details>
+                  <details class="rx-drawer"><summary>More numbers</summary><div class="rx-drawer-body"><p>USCIS denied 2.7% of placing firms' first-time petitions against 1.2% for direct employers in 2022, and 3.4% against 2.0% from October 2025 to June 2026. The lottery shows the same split one step earlier. Each new H-1B worker starts as a registration that USCIS draws at random, and USCIS gave Bloomberg News every registration from the March 2023 draw after a FOIA lawsuit. Every petition that followed names its filing, so we can follow a ticket to its client. Direct employers sent 5.1 registrations per approved petition, placing firms 9.1, and firms with fewer than 20 filings 12.2; those small firms sent 53% of the 758,967 registrations. Most of the gap is drawn tickets nobody used. When USCIS drew a direct employer's registration, a petition followed 76% of the time; a placing firm's, 50%; a small firm's, 35%. That step carries 74% of the gap between placing and direct firms, and the draw itself 24%. Much of it comes from workers registered by several employers: 54% of registrations named one, and when USCIS drew one, a petition followed 23% of the time, against 81% for a worker registered once. 18,307 of the petitions lead to a client company. Citigroup received the most, 342 through 38 firms.</p></div></details>
+                </div>
           </div>
 
           <!-- A · Does a client stay in its group? ------------------- -->
@@ -926,13 +926,15 @@
             </div>
           </header>
           <div class="w4-two w4-intro">
-            <div>
-              <p class="sub">
+<div>
+<p class="sub">
                 The ten largest filers file 19.1% of the filings in the 40
                 metros, and the five largest <span class="w4-term"><button aria-describedby="w4-term-footprint-placing" type="button">placing firms</button><span class="w4-pop" id="w4-term-footprint-placing" role="tooltip">Companies that hire foreign workers and send them to work at client companies, such as outsourcing and IT staffing firms.</span></span> 5.6%.
                 A company that files everywhere links every pair of metros and jobs, so its footprint could be all the structure there is.
               </p>
-              <div class="notice">
+</div>
+<div>
+<div class="notice">
                 <span class="ico">💡</span>
                 <span>
                   <b>What to notice</b>
@@ -940,7 +942,10 @@
                   The job clusters hold (<span class="w4-term"><button aria-describedby="w4-term-footprint-nmi" type="button">NMI</button><span class="w4-pop" id="w4-term-footprint-nmi" role="tooltip">Normalised mutual information: how much two groupings of the same items agree, from 0 (unrelated) to 1 (identical).</span></span> 0.90 and 0.81) but shift more than random cuts of the same volume do.
                 </span>
               </div>
-              <div class="plot">
+</div>
+</div>
+<div class="rx-fig-row">
+<div class="plot">
                 <h3>How much do the groups change?</h3>
                 <p class="axis-note">
                   NMI between the groups after a removal and the full network's
@@ -949,14 +954,7 @@
                 </p>
                 <div class="chart-host jobs-nmi" id="chart-footprint-nmi"></div>
               </div>
-              <div class="rx-drawers rx-foot">
-                <details class="rx-drawer"><summary>Background</summary><div class="rx-drawer-body"><p>The five largest placing firms are Tata Consultancy Services, Cognizant, Infosys, HCL and Compunnel. The ten largest filers are Amazon, Cognizant, Google, Microsoft, EY, Meta, Deloitte, Apple, Tata Consultancy Services and Infosys.</p></div></details>
-                <details class="rx-drawer"><summary>Method</summary><div class="rx-drawer-body"><p>We removed each set, reran 100 <span class="w4-term"><button aria-describedby="w4-term-footprint-louvain" type="button">Louvain</button><span class="w4-pop" id="w4-term-footprint-louvain" role="tooltip">A method that finds groups in a network by moving nodes between groups until the links inside groups are as dense as they can get.</span></span> runs on the metro network and on the job network (weighted here by filings, since a count of companies barely moves when ten of 59,196 leave), and compared the groups with the full network's. Removing less data changes the groups too, so each removal sits beside 50 random cuts of companies that remove the same share of filings.</p></div></details>
-                <details class="rx-drawer"><summary>More numbers</summary><div class="rx-drawer-body"><p>Removing the five placing firms changes little: the groups stay close to the full network's (NMI 0.92, random cuts 0.85 ± 0.14), and the regional match rises only to 0.09, inside the range of random cuts (0.04 ± 0.05). Without the ten largest filers the clusters also sharpen, modularity rising from 0.28 to 0.32. Every version still beats its own rewired networks by a wide margin (z = 25 or more). Without the ten largest filers the regional match (AMI 0.13, p = 0.013) sits 4.6 standard deviations above random cuts (0.01 ± 0.03). Random cuts leave the job clusters closer to the full network's (0.96 and 0.88, 3.1 and 3.9 standard deviations away), so the biggest firms do shape which jobs cluster together.</p></div></details>
-              </div>
-            </div>
-            <div>
-              <div class="plot">
+<div class="plot">
                 <h3>Do the metro groups follow Census regions?</h3>
                 <p class="axis-note">
                   AMI between the metro groups and the four Census regions.
@@ -966,8 +964,12 @@
                 </p>
                 <div class="chart-host jobs-nmi" id="chart-footprint-region"></div>
               </div>
-            </div>
-          </div>
+</div>
+<div class="rx-drawers rx-foot">
+                <details class="rx-drawer"><summary>Background</summary><div class="rx-drawer-body"><p>The five largest placing firms are Tata Consultancy Services, Cognizant, Infosys, HCL and Compunnel. The ten largest filers are Amazon, Cognizant, Google, Microsoft, EY, Meta, Deloitte, Apple, Tata Consultancy Services and Infosys.</p></div></details>
+                <details class="rx-drawer"><summary>Method</summary><div class="rx-drawer-body"><p>We removed each set, reran 100 <span class="w4-term"><button aria-describedby="w4-term-footprint-louvain" type="button">Louvain</button><span class="w4-pop" id="w4-term-footprint-louvain" role="tooltip">A method that finds groups in a network by moving nodes between groups until the links inside groups are as dense as they can get.</span></span> runs on the metro network and on the job network (weighted here by filings, since a count of companies barely moves when ten of 59,196 leave), and compared the groups with the full network's. Removing less data changes the groups too, so each removal sits beside 50 random cuts of companies that remove the same share of filings.</p></div></details>
+                <details class="rx-drawer"><summary>More numbers</summary><div class="rx-drawer-body"><p>Removing the five placing firms changes little: the groups stay close to the full network's (NMI 0.92, random cuts 0.85 ± 0.14), and the regional match rises only to 0.09, inside the range of random cuts (0.04 ± 0.05). Without the ten largest filers the clusters also sharpen, modularity rising from 0.28 to 0.32. Every version still beats its own rewired networks by a wide margin (z = 25 or more). Without the ten largest filers the regional match (AMI 0.13, p = 0.013) sits 4.6 standard deviations above random cuts (0.01 ± 0.03). Random cuts leave the job clusters closer to the full network's (0.96 and 0.88, 3.1 and 3.9 standard deviations away), so the biggest firms do shape which jobs cluster together.</p></div></details>
+              </div>
 
           <!-- A · Which firm hides the regions? --------------------- -->
           <div class="card w4-card" id="footprint-which">
@@ -979,13 +981,15 @@
               </div>
             </header>
             <div class="w4-two">
-              <div>
-              <p class="sub">
+<div>
+<p class="sub">
                 We removed each of the ten largest filers alone, then the top
                 1, 2, 3 … 20 filers in turn. Each removal sits beside random cuts
                 of companies that remove the same share of filings.
               </p>
-                <div class="notice">
+</div>
+<div>
+<div class="notice">
                   <span class="ico">💡</span>
                   <span>
                     <b>What to notice</b>
@@ -994,12 +998,10 @@
                     more than the 0.13 without all ten.
                   </span>
                 </div>
-                <div class="rx-drawers rx-foot">
-                  <details class="rx-drawer"><summary>Method</summary><div class="rx-drawer-body"><p>50 random cuts for a single firm, 20 for each step of the sweep.</p></div></details>
-                  <details class="rx-drawer"><summary>More numbers</summary><div class="rx-drawer-body"><p>Amazon's 0.14 sits 3.5 standard deviations above its random cuts. No other single firm pushes the match up beyond its random cuts: removing EY, Meta, Deloitte or Apple alone tips Louvain into a two-group split that ignores regions (AMI −0.005). Removed in rank order, the largest filers keep the match above random cuts at every step from one to twenty, but not smoothly: it dips to about 0.07 without the top 17 to 19, where several partitions compete, and peaks at 0.20 without the top 20. 2024 tells the same story more strongly. Its full network shows no regional match (AMI −0.005); without its ten largest filers the match is 0.22 (p = 0.001), against −0.01 ± 0.01 for random cuts.</p></div></details>
-                </div>
-              </div>
-              <div class="plot">
+</div>
+</div>
+<div class="rx-fig-row">
+<div class="plot">
                 <h3>The largest filers removed in turn</h3>
                 <p class="axis-note">
                   AMI with Census regions after removing the k largest filers
@@ -1009,9 +1011,7 @@
                 </p>
                 <div class="chart-host jobs-nmi" id="chart-footprint-rank"></div>
               </div>
-            </div>
-            <div class="rx-fig-row">
-              <div class="plot">
+<div class="plot">
                 <h3>One firm out at a time</h3>
                 <p class="axis-note">
                   AMI between the metro groups and Census regions with one firm
@@ -1021,7 +1021,11 @@
                 </p>
                 <div class="chart-host jobs-nmi" id="chart-footprint-single"></div>
               </div>
-            </div>
+</div>
+<div class="rx-drawers rx-foot">
+                  <details class="rx-drawer"><summary>Method</summary><div class="rx-drawer-body"><p>50 random cuts for a single firm, 20 for each step of the sweep.</p></div></details>
+                  <details class="rx-drawer"><summary>More numbers</summary><div class="rx-drawer-body"><p>Amazon's 0.14 sits 3.5 standard deviations above its random cuts. No other single firm pushes the match up beyond its random cuts: removing EY, Meta, Deloitte or Apple alone tips Louvain into a two-group split that ignores regions (AMI −0.005). Removed in rank order, the largest filers keep the match above random cuts at every step from one to twenty, but not smoothly: it dips to about 0.07 without the top 17 to 19, where several partitions compete, and peaks at 0.20 without the top 20. 2024 tells the same story more strongly. Its full network shows no regional match (AMI −0.005); without its ten largest filers the match is 0.22 (p = 0.001), against −0.01 ± 0.01 for random cuts.</p></div></details>
+                </div>
           </div>
         </section>
 
@@ -1765,26 +1769,20 @@
                       <p class="w4-answer">Small clients.</p>
                     </div>
                   </header>
-                  <div class="w4-two">
-                    <div>
-                      <p class="sub">14,678 of the 18,900 clients use one firm, but they hold 22% of placed filings. Of the 629 clients with 20 or more filings, 69 get over 90% from one firm, and the median one gets 37% from its largest.</p>
-                      <div class="rx-drawers rx-foot">
-                        <details class="rx-drawer"><summary>More numbers</summary><div class="rx-drawer-body"><p>Citigroup, the largest client, uses 114 firms, and Tata Consultancy Services supplies a quarter. The eight largest firms supply only 27% of what the 20 largest clients receive.</p></div></details>
-                      </div>
-                    </div>
-                    <div>
-                      <figure class="w4-figure">
+                  <p class="sub">14,678 of the 18,900 clients use one firm, but they hold 22% of placed filings. Of the 629 clients with 20 or more filings, 69 get over 90% from one firm, and the median one gets 37% from its largest.</p>
+<div class="rx-fig-row">
+<figure class="w4-figure">
                         <figcaption><b>One firm, many clients, few filings</b><span>Clients that use a single firm, as a share of all clients and of all placed filings, 2025.</span></figcaption>
                         <div class="w4-figure-body" data-strip="who-q3-concentration"></div>
                       </figure>
-                    </div>
-                  </div>
-                  <div class="rx-fig-row">
-                    <figure class="w4-figure">
+<figure class="w4-figure">
                       <figcaption><b>How concentrated the big clients are</b><span>The dot is the median share of a client's filings held by its largest vendor, among clients with 20 or more filings; the dashed line marks 90%.</span></figcaption>
                       <div class="w4-figure-body" data-strip="who-q3-topshare"></div>
                     </figure>
-                  </div>
+</div>
+<div class="rx-drawers rx-foot">
+                        <details class="rx-drawer"><summary>More numbers</summary><div class="rx-drawer-body"><p>Citigroup, the largest client, uses 114 firms, and Tata Consultancy Services supplies a quarter. The eight largest firms supply only 27% of what the 20 largest clients receive.</p></div></details>
+                      </div>
                 </div>
               </div>
             </details>
@@ -1921,27 +1919,21 @@
                                 <p class="w4-answer">Here the pattern runs the other way, faintly.</p>
                               </div>
                             </header>
-                <div class="w4-two">
-                  <div>
-                    <p class="sub">Among friends, the strongest ties sit inside tight groups where your close friends also know each other, and weak ties bridge the groups (Granovetter 1973; Onnela and colleagues confirmed it on millions of phone users in 2007).</p>
-                    <div class="rx-drawers rx-foot">
-                      <details class="rx-drawer"><summary>Background</summary><div class="rx-drawer-body"><p>A link's <b>overlap</b> measures the tightness: of the firm's other clients and the client's other firms, the share that are linked to each other.</p></div></details>
-                      <details class="rx-drawer"><summary>More numbers</summary><div class="rx-drawer-body"><p>Over the 28,104 links where overlap is defined, filings and overlap correlate at Spearman -0.04; with the filing counts shuffled over the same links the correlation is 0.00 ± 0.01 (z = -6.3; 2024 gives z = -3.7). Links with one filing have a mean overlap of 0.065, links with 21 or more 0.034. Heavy links mostly belong to the largest firms, whose many clients rarely share other firms, so part of this is size. It agrees with the result above: the real filing counts put weight on links between groups. Each filing states one of four wage levels, from entry (I) to fully competent (IV). Averaged per client over the filings that reach it, the groups explain 13% of the variance in wage level; averaged per firm over all its filings, 3%. None of 1,000 shuffles of the group labels reached either. A client's filings come from the vendors that also decide its group, so part of the 13% is built in. Outsourcing firms file 66% of their applications at level II and 5% at level IV; direct employers file 35% and 22%. From January to June 2026, level IV rose to 17.7% of all filings from 13.6% a year earlier, and level I fell to 18.0% from 21.8%.</p></div></details>
-                    </div>
-                  </div>
-                  <div>
-                    <figure class="w4-figure">
+                <p class="sub">Among friends, the strongest ties sit inside tight groups where your close friends also know each other, and weak ties bridge the groups (Granovetter 1973; Onnela and colleagues confirmed it on millions of phone users in 2007).</p>
+<div class="rx-fig-row">
+<figure class="w4-figure">
                       <figcaption><b>Heavy links, looser neighbourhoods</b><span><span class="w4-term"><button aria-describedby="w4-term-staffing-ties-spearman" type="button">Spearman correlation</button><span class="w4-pop" id="w4-term-staffing-ties-spearman" role="tooltip">A measure of whether two quantities rise together, computed on their ranks rather than their values.</span></span> between a link's filings and its <span class="w4-term"><button aria-describedby="w4-term-staffing-ties-overlap" type="button">overlap</button><span class="w4-pop" id="w4-term-staffing-ties-overlap" role="tooltip">Of the firm's other clients and the client's other firms, the share that are linked to each other. High overlap means a tight neighbourhood.</span></span>, against 100 shuffles of the filing counts over the same links.</span></figcaption>
                       <div class="w4-figure-body" data-strip="staffing-ties-overlap"></div>
                     </figure>
-                  </div>
-                </div>
-                <div class="rx-fig-row">
-                  <figure class="w4-figure">
+<figure class="w4-figure">
                     <figcaption><b>Wage levels as filed</b><span>Share of each kind of employer's 2025 filings at each <span class="w4-term"><button aria-describedby="w4-term-staffing-ties-wagelevel" type="button">prevailing-wage level</button><span class="w4-pop" id="w4-term-staffing-ties-wagelevel" role="tooltip">A level set by the experience and skills the job asks for, from entry to fully competent. Each level carries a wage floor.</span></span>.</span></figcaption>
                     <div class="w4-figure-body" data-strip="staffing-ties-wage"></div>
                   </figure>
-                </div>
+</div>
+<div class="rx-drawers rx-foot">
+                      <details class="rx-drawer"><summary>Background</summary><div class="rx-drawer-body"><p>A link's <b>overlap</b> measures the tightness: of the firm's other clients and the client's other firms, the share that are linked to each other.</p></div></details>
+                      <details class="rx-drawer"><summary>More numbers</summary><div class="rx-drawer-body"><p>Over the 28,104 links where overlap is defined, filings and overlap correlate at Spearman -0.04; with the filing counts shuffled over the same links the correlation is 0.00 ± 0.01 (z = -6.3; 2024 gives z = -3.7). Links with one filing have a mean overlap of 0.065, links with 21 or more 0.034. Heavy links mostly belong to the largest firms, whose many clients rarely share other firms, so part of this is size. It agrees with the result above: the real filing counts put weight on links between groups. Each filing states one of four wage levels, from entry (I) to fully competent (IV). Averaged per client over the filings that reach it, the groups explain 13% of the variance in wage level; averaged per firm over all its filings, 3%. None of 1,000 shuffles of the group labels reached either. A client's filings come from the vendors that also decide its group, so part of the 13% is built in. Outsourcing firms file 66% of their applications at level II and 5% at level IV; direct employers file 35% and 22%. From January to June 2026, level IV rose to 17.7% of all filings from 13.6% a year earlier, and level I fell to 18.0% from 21.8%.</p></div></details>
+                    </div>
               </div>
             </details>
             <details class="rx-panel" name="w4-panel-outsourcing" data-box="deeper-strength">
@@ -2019,26 +2011,20 @@
                                 <p class="w4-answer">No. Firms that register the same workers are spread across the staffing groups.</p>
                               </div>
                             </header>
-                <div class="w4-two">
-                  <div>
-                    <p class="sub">We took the 2,942 firms in the 2023 staffing network that sent 20 or more registrations to the March 2023 draw, and split them at the median share of workers another employer had also registered (78%).</p>
-                    <div class="rx-drawers rx-foot">
-                      <details class="rx-drawer"><summary>More numbers</summary><div class="rx-drawer-body"><p>If the high firms clustered, a high firm's Louvain group would be mostly high firms. It is 51.2% high, against 50.0% when the labels are shuffled (p = 0.001 over 1,000 shuffles), and <span class="w4-term"><button aria-describedby="w4-term-staffing-lottery-ami" type="button">AMI</button><span class="w4-pop" id="w4-term-staffing-lottery-ami" role="tooltip">Adjusted mutual information: how closely two ways of grouping the same firms agree. 0 is what chance gives, 1 is a perfect match.</span></span> with the groups is 0.004 over 100 runs. The March 2022 draw against the 2022 network gives 51.9% against 50.0%. The lottery data is USCIS's, obtained by Bloomberg News.</p></div></details>
-                    </div>
-                  </div>
-                  <div>
-                    <figure class="w4-figure">
+                <p class="sub">We took the 2,942 firms in the 2023 staffing network that sent 20 or more registrations to the March 2023 draw, and split them at the median share of workers another employer had also registered (78%).</p>
+<div class="rx-fig-row">
+<figure class="w4-figure">
                       <figcaption><b>Do high firms cluster?</b><span>Share of high firms in a high firm's group. Dashed: the same with the labels shuffled.</span></figcaption>
                       <div class="w4-figure-body" data-strip="staffing-lottery-mates"></div>
                     </figure>
-                  </div>
-                </div>
-                <div class="rx-fig-row">
-                  <figure class="w4-figure">
+<figure class="w4-figure">
                     <figcaption><b>Agreement with the groups</b><span>AMI between the high/low split and the staffing groups; the line spans 100 runs.</span></figcaption>
                     <div class="w4-figure-body" data-strip="staffing-lottery-ami"></div>
                   </figure>
-                </div>
+</div>
+<div class="rx-drawers rx-foot">
+                      <details class="rx-drawer"><summary>More numbers</summary><div class="rx-drawer-body"><p>If the high firms clustered, a high firm's Louvain group would be mostly high firms. It is 51.2% high, against 50.0% when the labels are shuffled (p = 0.001 over 1,000 shuffles), and <span class="w4-term"><button aria-describedby="w4-term-staffing-lottery-ami" type="button">AMI</button><span class="w4-pop" id="w4-term-staffing-lottery-ami" role="tooltip">Adjusted mutual information: how closely two ways of grouping the same firms agree. 0 is what chance gives, 1 is a perfect match.</span></span> with the groups is 0.004 over 100 runs. The March 2022 draw against the 2022 network gives 51.9% against 50.0%. The lottery data is USCIS's, obtained by Bloomberg News.</p></div></details>
+                    </div>
               </div>
             </details>
             <details class="rx-panel" name="w4-panel-paperwork" data-box="deeper-lottery">
@@ -2053,25 +2039,27 @@
                               </div>
                             </header>
                 <div class="w4-two">
-                  <div>
-                    <p class="sub">The ratio divides each year's registrations by its approved petitions, using USCIS's lottery files, obtained by Bloomberg News.</p>
-                    <div class="notice"><span class="ico">💡</span><span><b>What to notice</b> The two draws this box can split by employer were the most crowded: registrations per selection rose from 2.2 in March 2020 to 4.0 in March 2023, then fell to 2.9 by March 2025 once each worker counted once.</span></div>
-                    <div class="rx-drawers rx-foot">
-                      <details class="rx-drawer"><summary>Method</summary><div class="rx-drawer-body"><p>The every-draw chart divides eligible by selected registrations from the historical table on USCIS's H-1B Electronic Registration Process page; its selections include later rounds, so its ratio is lower than the one per approved petition.</p></div></details>
-                      <details class="rx-drawer"><summary>More numbers</summary><div class="rx-drawer-body"><p>Between the March 2022 and March 2023 draws, <span class="w4-term"><button aria-describedby="w4-term-deeper-lottery-registrations" type="button">registrations</button><span class="w4-pop" id="w4-term-deeper-lottery-registrations" role="tooltip">Entries in the H-1B lottery. Each spring employers register the workers they want to sponsor, and USCIS draws at random from the entries.</span></span> for a worker whom another employer had also registered rose from 35% to 54% of the total, and the share of drawn registrations that became a petition fell from 74% to 49%. The order held both years: direct employers needed the fewest (4.3, then 5.1), placing firms more (6.3, then 9.1). Of the March 2023 petitions, 20% lead to a client company, 66% of those through placing firms. Citigroup received 342, 94% through placing firms; Microsoft 150, 95%, with LTIMindtree supplying 47%; AT&amp;T 153, with Tech Mahindra supplying 41%. USCIS also denied 2.0% of the placing firms' lottery petitions against 1.1% of direct employers'.</p></div></details>
-                    </div>
-                  </div>
-                  <figure class="w4-figure">
+<div>
+<p class="sub">The ratio divides each year's registrations by its approved petitions, using USCIS's lottery files, obtained by Bloomberg News.</p>
+</div>
+<div>
+<div class="notice"><span class="ico">💡</span><span><b>What to notice</b> The two draws this box can split by employer were the most crowded: registrations per selection rose from 2.2 in March 2020 to 4.0 in March 2023, then fell to 2.9 by March 2025 once each worker counted once.</span></div>
+</div>
+</div>
+<div class="rx-fig-row">
+<figure class="w4-figure">
                     <figcaption><b>Every draw since 2020</b><span>Eligible registrations per selected registration, from USCIS's published totals, counting every selection round of the year; the figure under each date is the share of registrations for a worker registered more than once. From March 2024 USCIS drew by person, not by registration.</span></figcaption>
                     <div class="w4-figure-body" data-more="draws"></div>
                   </figure>
-                </div>
-                <div class="rx-fig-row">
-                  <figure class="w4-figure">
+<figure class="w4-figure">
                     <figcaption><b>Registrations per approved petition</b><span>Each line joins one kind of employer across the two draws Bloomberg's USCIS files cover.</span></figcaption>
                     <div class="w4-figure-body" data-more="lottery"></div>
                   </figure>
-                </div>
+</div>
+<div class="rx-drawers rx-foot">
+                      <details class="rx-drawer"><summary>Method</summary><div class="rx-drawer-body"><p>The every-draw chart divides eligible by selected registrations from the historical table on USCIS's H-1B Electronic Registration Process page; its selections include later rounds, so its ratio is lower than the one per approved petition.</p></div></details>
+                      <details class="rx-drawer"><summary>More numbers</summary><div class="rx-drawer-body"><p>Between the March 2022 and March 2023 draws, <span class="w4-term"><button aria-describedby="w4-term-deeper-lottery-registrations" type="button">registrations</button><span class="w4-pop" id="w4-term-deeper-lottery-registrations" role="tooltip">Entries in the H-1B lottery. Each spring employers register the workers they want to sponsor, and USCIS draws at random from the entries.</span></span> for a worker whom another employer had also registered rose from 35% to 54% of the total, and the share of drawn registrations that became a petition fell from 74% to 49%. The order held both years: direct employers needed the fewest (4.3, then 5.1), placing firms more (6.3, then 9.1). Of the March 2023 petitions, 20% lead to a client company, 66% of those through placing firms. Citigroup received 342, 94% through placing firms; Microsoft 150, 95%, with LTIMindtree supplying 47%; AT&amp;T 153, with Tech Mahindra supplying 41%. USCIS also denied 2.0% of the placing firms' lottery petitions against 1.1% of direct employers'.</p></div></details>
+                    </div>
               </div>
             </details>
             <details class="rx-panel" name="w4-panel-paperwork" data-box="deeper-uscis">
@@ -2148,27 +2136,27 @@
                               </div>
                             </header>
                 <div class="w4-two">
-                  <div>
-                    <p class="sub">We link two countries when the same employers file green cards for citizens of both, then ask whether those links form regional groups. The groups match world regions only weakly (AMI 0.10).</p>
-                    <div class="notice"><span class="ico">💡</span><span><b>What to notice</b> Counted once, the country links group a little more than rewired copies (modularity 0.10 against 0.06); weighted by shared green cards they group less (0.26 against 0.40).</span></div>
-                    <div class="rx-drawers rx-foot">
-                      <details class="rx-drawer"><summary>Method</summary><div class="rx-drawer-body"><p>A worker's citizenship is personal, so we read it only in memory and keep counts per country and employer, dropping every count under 10. That drops 96% of the cells and 43% of 2023's certified green-card filings, and no row about a single person is ever saved.</p></div></details>
-                      <details class="rx-drawer"><summary>More numbers</summary><div class="rx-drawer-body"><p>India holds 52% of those filings and China 12%; among lottery registrations, India holds 77% in the March 2022 draw and 81% in March 2023. Link two countries by the green cards their citizens receive at the same employers and 55 countries remain. Louvain splits them into three groups. Counted once each, the links group a little more than rewired copies (modularity 0.10 against 0.06); weighted by shared green cards, they group less (0.26 against 0.40). India and China share one group with Canada, Belarus and Costa Rica, and India keeps 79% of its weight inside it.  Among the ten largest sponsors, Google's green cards are the most varied, 4.7 <span class="w4-term"><button aria-describedby="w4-term-deeper-countries-effective" type="button">effective countries</button><span class="w4-pop" id="w4-term-deeper-countries-effective" role="tooltip">The number of equally sized countries that would give the same spread. More means more varied.</span></span> with India at 30%, against Amazon's 3.0 at 67%. The third group gathers the Philippines, Kenya, Ghana, Zimbabwe, Ethiopia, Cameroon and Jamaica. Wayne Farms, a poultry company, filed 832 green cards in the counted cells, none for Indian citizens.</p><p>The groups match world regions (AMI 0.10) and Week 3's migration communities (0.10) only weakly: green-card hiring does not sort countries into regional blocs.</p></div></details>
-                    </div>
-                  </div>
-                  <div>
-                    <figure class="w4-figure">
+<div>
+<p class="sub">We link two countries when the same employers file green cards for citizens of both, then ask whether those links form regional groups. The groups match world regions only weakly (AMI 0.10).</p>
+</div>
+<div>
+<div class="notice"><span class="ico">💡</span><span><b>What to notice</b> Counted once, the country links group a little more than rewired copies (modularity 0.10 against 0.06); weighted by shared green cards they group less (0.26 against 0.40).</span></div>
+</div>
+</div>
+<div class="rx-fig-row">
+<figure class="w4-figure">
                       <figcaption><b>Citizenship of 2023's green cards</b><span>Share of certified green-card filings in the counted cells.</span></figcaption>
                       <div class="w4-figure-body" data-more="countries-top"></div>
                     </figure>
-                  </div>
-                </div>
-                <div class="rx-fig-row">
-                  <figure class="w4-figure">
+<figure class="w4-figure">
                     <figcaption><b>Do countries group?</b><span>Modularity of the country network against rewired copies.</span></figcaption>
                     <div class="w4-figure-body" data-more="countries-modularity"></div>
                   </figure>
-                </div>
+</div>
+<div class="rx-drawers rx-foot">
+                      <details class="rx-drawer"><summary>Method</summary><div class="rx-drawer-body"><p>A worker's citizenship is personal, so we read it only in memory and keep counts per country and employer, dropping every count under 10. That drops 96% of the cells and 43% of 2023's certified green-card filings, and no row about a single person is ever saved.</p></div></details>
+                      <details class="rx-drawer"><summary>More numbers</summary><div class="rx-drawer-body"><p>India holds 52% of those filings and China 12%; among lottery registrations, India holds 77% in the March 2022 draw and 81% in March 2023. Link two countries by the green cards their citizens receive at the same employers and 55 countries remain. Louvain splits them into three groups. Counted once each, the links group a little more than rewired copies (modularity 0.10 against 0.06); weighted by shared green cards, they group less (0.26 against 0.40). India and China share one group with Canada, Belarus and Costa Rica, and India keeps 79% of its weight inside it.  Among the ten largest sponsors, Google's green cards are the most varied, 4.7 <span class="w4-term"><button aria-describedby="w4-term-deeper-countries-effective" type="button">effective countries</button><span class="w4-pop" id="w4-term-deeper-countries-effective" role="tooltip">The number of equally sized countries that would give the same spread. More means more varied.</span></span> with India at 30%, against Amazon's 3.0 at 67%. The third group gathers the Philippines, Kenya, Ghana, Zimbabwe, Ethiopia, Cameroon and Jamaica. Wayne Farms, a poultry company, filed 832 green cards in the counted cells, none for Indian citizens.</p><p>The groups match world regions (AMI 0.10) and Week 3's migration communities (0.10) only weakly: green-card hiring does not sort countries into regional blocs.</p></div></details>
+                    </div>
               </div>
             </details>
           </details>
@@ -2248,30 +2236,24 @@
                       <p class="w4-answer">Only in part.</p>
                     </div>
                   </header>
-                  <div class="w4-two">
-                    <div>
-                      <p class="sub">We compare each year's client groups with the next year's, on the clients both years share, and with a second run on the same year as the ceiling. Consecutive years agree less than that ceiling, so the groups carry over only in part.</p>
-                      <div class="rx-drawers rx-foot">
-                        <details class="rx-drawer"><summary>Background</summary><div class="rx-drawer-body"><p>We compared vendor and industry on 2025 only.</p></div></details>
-                        <details class="rx-drawer"><summary>More numbers</summary><div class="rx-drawer-body"><p>On the clients present in both years, consecutive years agree at NMI 0.21 to 0.27, about half the 0.48 to 0.50 between two runs of the same year on the same clients.</p><p>2026 breaks the pattern at the top. We compare January to June of each year, because October 2025, the month of the federal shutdown, holds 1,306 certified filings against 35,258 a year earlier. From January to June, certified filings fell 5.8% after rising 9.5% the year before, and filings that name a client company fell 16.5% after holding flat (-0.1%). Tata Consultancy Services filed 2,079, down from 5,256. Of the 349 clients it supplied most from January to June 2025, 223 still appear, and 111 of those now get most of their workers from another firm, most often Infosys. Across clients with five or more filings in both years, 47% changed their main vendor, against 44% a year earlier. These are applications, so they show what employers asked for, not why.</p></div></details>
-                      </div>
-                    </div>
-                    <div>
-                      <figure class="w4-figure">
+                  <p class="sub">We compare each year's client groups with the next year's, on the clients both years share, and with a second run on the same year as the ceiling. Consecutive years agree less than that ceiling, so the groups carry over only in part.</p>
+<div class="rx-fig-row">
+<figure class="w4-figure">
                         <figcaption><b>Consecutive years against the same year</b><span><span class="w4-term"><button aria-describedby="w4-term-topic-years-nmi" type="button">NMI</button><span class="w4-pop" id="w4-term-topic-years-nmi" role="tooltip">Normalised mutual information: how much two groupings of the same clients agree, from 0 (unrelated) to 1 (identical).</span></span> of the groups on shared clients. Dots: two consecutive years. Dashed: two runs of the same year.</span></figcaption>
                         <div class="w4-figure-body" data-strip="who-q4-stability"></div>
                       </figure>
-                    </div>
-                  </div>
-                  <div class="rx-fig-row">
-                    <figure class="w4-figure">
+<figure class="w4-figure">
                       <figcaption><b>2026 so far, against a year earlier</b><span>January–June change in certified and client-company filings, and the share of clients that changed their main vendor.</span></figcaption>
                       <div class="w4-vis-stack">
                         <div class="w4-figure-body" data-strip="who-q4-shift"></div>
                         <div class="w4-figure-body" data-strip="who-q4-vendor-changed"></div>
                       </div>
                     </figure>
-                  </div>
+</div>
+<div class="rx-drawers rx-foot">
+                        <details class="rx-drawer"><summary>Background</summary><div class="rx-drawer-body"><p>We compared vendor and industry on 2025 only.</p></div></details>
+                        <details class="rx-drawer"><summary>More numbers</summary><div class="rx-drawer-body"><p>On the clients present in both years, consecutive years agree at NMI 0.21 to 0.27, about half the 0.48 to 0.50 between two runs of the same year on the same clients.</p><p>2026 breaks the pattern at the top. We compare January to June of each year, because October 2025, the month of the federal shutdown, holds 1,306 certified filings against 35,258 a year earlier. From January to June, certified filings fell 5.8% after rising 9.5% the year before, and filings that name a client company fell 16.5% after holding flat (-0.1%). Tata Consultancy Services filed 2,079, down from 5,256. Of the 349 clients it supplied most from January to June 2025, 223 still appear, and 111 of those now get most of their workers from another firm, most often Infosys. Across clients with five or more filings in both years, 47% changed their main vendor, against 44% a year earlier. These are applications, so they show what employers asked for, not why.</p></div></details>
+                      </div>
                 </div>
               </div>
             </details>

@@ -89,19 +89,32 @@
   max-width: none;
 }
 
-/* ---- card anatomy: figures after the card's two columns */
+/* ---- card anatomy. One chart sits beside the text. Two or more go in a
+   figure row under the text, side by side at equal width, and the drawers
+   follow the row. Each figure in a row shares three grid rows with its
+   neighbours (title, note, chart), so the charts start at the same height
+   however long the captions run. */
 
 .corridor .rx-fig-row {
   align-items: start;
+  column-gap: 28px;
   display: grid;
-  gap: 28px;
   grid-template-columns: repeat(auto-fit, minmax(0, 1fr));
+  grid-template-rows: auto auto 1fr;
   margin-top: 22px;
+  row-gap: 0;
 }
 
 .corridor .rx-fig-row > figure,
 .corridor .rx-fig-row > .plot {
+  display: grid;
+  grid-row: span 3;
+  grid-template-rows: subgrid;
   margin: 0;
+}
+
+.corridor .rx-fig-row > figure > figcaption {
+  grid-row: span 2;
 }
 
 .corridor .rx-fig-row > :only-child {
