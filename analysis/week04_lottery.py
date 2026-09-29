@@ -46,8 +46,19 @@ Checks
   high firm's community mates that are also high, against shuffled labels.
   Unweighted (each firm-client link once) and weighted by filings.
 
-Nothing about a worker is kept: the loader drops country, birth, gender and
-education before the table reaches build/.
+The table in build/ keeps some columns about the worker and the filing agent
+(week04_data.LOTTERY_PERSONAL); this script reads none of them and writes only
+counts and rates.
+
+Two refinements (29 September 2026):
+- Undecided petitions. USCIS queried the data in May 2024, when 1,249 FY2024
+  lottery petitions had no decision. gap() splits their step off ("pending"),
+  so they no longer count as unapproved; the other shares keep their values.
+- Workers registered once. When several employers register one worker, a draw
+  can pick more than one of them and only one petition follows, so part of the
+  petition step comes from multiple registration itself. gap_to_direct_single
+  repeats the decomposition on workers registered once, and by_kind splits the
+  petition rate by single and multiple registration.
 
 Output: analysis/week04_lottery.json
 """
@@ -186,7 +197,11 @@ def by_kind(t):
             "selection_rate": rate(len(sel), len(g)),
             "selected_that_became_petitions": rate(sel["petition"].sum(), len(sel)),
             "approved": int(g["approved"].sum()),
+            "selected_that_became_petitions_single": rate(sel.loc[~sel["multi"], "petition"].sum(), (~sel["multi"]).sum()),
+            "selected_that_became_petitions_multi": rate(sel.loc[sel["multi"], "petition"].sum(), sel["multi"].sum()),
             "approved_per_petition": rate(g["approved"].sum(), g["petition"].sum()),
+            "undecided_petitions": int((g["petition"] & ~g["approved"] & ~g["denied"]).sum()),
+            "approved_per_decision": rate(g["approved"].sum(), g["approved"].sum() + g["denied"].sum()),
             "registrations_per_approval": round(len(g) / g["approved"].sum(), 2),
             "denial_rate": rate(g["denied"].sum(), g["approved"].sum() + g["denied"].sum()),
         }
@@ -197,11 +212,15 @@ def gap(t, kind, base="direct"):
     """Why a kind needs more registrations per approval than the base kind.
 
     Registrations per approval = (registrations / selected) x (selected /
-    petitions) x (petitions / approved), exactly. The log of the ratio between
-    two kinds splits into the three steps; each step's share of the log gap."""
+    petitions) x (petitions / decided) x (decided / approved), exactly. The log
+    of the ratio between two kinds splits into the four steps; each step's share
+    of the log gap. "pending" is the petitions still undecided when USCIS
+    queried the data, so "approval" compares approvals with decisions only."""
     def steps(g):
         n, s, p, a = len(g), g["selected"].sum(), g["petition"].sum(), g["approved"].sum()
-        return {"draw": np.log(n / s), "petition": np.log(s / p), "approval": np.log(p / a)}
+        d = a + g["denied"].sum()
+        return {"draw": np.log(n / s), "petition": np.log(s / p), "pending": np.log(p / d),
+                "approval": np.log(d / a)}
     k, b = steps(t[t["kind"] == kind]), steps(t[t["kind"] == base])
     diff = {step: k[step] - b[step] for step in k}
     total = sum(diff.values())
@@ -300,6 +319,7 @@ def main():
         entry["funnel"] = funnel(t, case_year, clients)
         entry["by_kind"] = by_kind(t)
         entry["gap_to_direct"] = {kind: gap(t, kind) for kind in ("placing", "small")}
+        entry["gap_to_direct_single"] = {kind: gap(t[~t["multi"]], kind) for kind in ("placing", "small")}
         entry["clients"] = to_clients(t, clients)
         entry["community_test"] = community_test(t, lca_year, rng)
         print(f"FY{year} lottery:", json.dumps({k: entry[k] for k in ("funnel", "by_kind")}), flush=True)

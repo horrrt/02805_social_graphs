@@ -139,8 +139,13 @@ Layout differences the loader already handles:
   without them it silently returns FY2026. FY2026 is nine months, so compare rates, not counts.
 - **Lottery registrations come from a FOIA release.** USCIS gave Bloomberg News every H-1B lottery
   registration, selection and petition for the FY2021 to FY2024 lotteries; `week04_data.py --lottery`
-  keeps FY2022 to FY2024 in `build/week04/lottery_fy{year}.csv.gz`, with an explicit allow-list that
-  leaves out the worker's country, birth year, gender and education and the agent's name and address.
+  keeps FY2022 to FY2024 in `build/week04/lottery_fy{year}.csv.gz`, with an explicit allow-list of 34
+  columns. Since 29 September 2026 it keeps the petition's cap type (`S3Q1`), whether the worker was
+  abroad (`REQUESTED_ACTION`) and the employer's US staff (`NUM_OF_EMP_IN_US`, usable from FY2023), and
+  some personal columns on purpose (`LOTTERY_PERSONAL`): the worker's country of birth and nationality,
+  birth year, gender, current status, education, field of study, pay, worksite and dates, and the filing
+  agent's name. They stay in `build/`; only counts may reach a JSON, a page or a commit. It still leaves
+  out the redacted IDs and birth dates, the employer's addresses and the columns that never vary.
   A lottery is named by the fiscal year the visa starts, so the FY2024 lottery ran in March 2023 and its
   petitions cite LCAs from FY2023. The petition's `DOL_ETA_CASE_NUMBER` is our `CASE_NUMBER` without
   dashes. `analysis/week04_lottery.py` follows each registration to its client.
@@ -183,8 +188,9 @@ The DOL loader still refuses citizenship and country of birth. `analysis/week04_
 them on its own, in memory only: `COUNTRY_OF_CITIZENSHIP` from the old-form green-card workbooks
 (FY2022 to FY2024; the new form dropped it) and `country_of_birth` from the lottery release. It keeps
 counts per (country, employer), drops every count under 10 before anything else uses them, and writes
-only aggregates to `analysis/week04_countries.json`. No row about a person reaches `build/` or the
-repository. The suppression drops 43% of FY2023's certified green cards, so the network covers the
+only aggregates to `analysis/week04_countries.json`. No row about a person reaches the repository. The
+lottery tables in `build/` carry the worker's country since 29 September 2026 (see above), but
+`week04_countries.py` still reads the release itself. The suppression drops 43% of FY2023's certified green cards, so the network covers the
 large country-employer pairs only.
 
 ## The deep dive
