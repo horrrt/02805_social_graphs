@@ -6,7 +6,7 @@
 // only the two ratios of the draws chart from those totals. Plain SVG,
 // colours read from CSS tokens, like week04-strip.js.
 
-import { node, token, stripChart } from "./week04-strip.js";
+import { node, token, stripChart, fitted, fs, textWidth } from "./week04-strip.js?v=2";
 
 const DATA = new URL("../../weeks/week04/data/more.json?v=2", import.meta.url);
 
@@ -26,8 +26,9 @@ function pct(v) {
 }
 
 /** A label centred on x but kept inside [lo, hi], as in week04-strip.js. */
-function smartText(x, y, text, lo, hi, { size = 11, fill, weight = 400, anchorOverride } = {}) {
-  const half = (text.length * size * (weight >= 600 ? 0.56 : 0.52)) / 2;
+function smartText(x, y, text, lo, hi, { role = "caption", fill, weight = 400, anchorOverride } = {}) {
+  const size = fs(role);
+  const half = textWidth(text, role, weight) / 2;
   const anchor = anchorOverride ?? (x - half < lo ? "start" : x + half > hi ? "end" : "middle");
   const at = anchor === "start" ? lo : anchor === "end" ? hi : x;
   return node("text", { x: at, y, "font-size": size, fill: fill ?? token("--ink-soft"), "font-weight": weight, "text-anchor": anchor }, text);
@@ -36,19 +37,26 @@ function smartText(x, y, text, lo, hi, { size = 11, fill, weight = 400, anchorOv
 /**
  * A horizontal bar per row on a shared axis, real values only (no baseline
  * band): the form the redesign canvas's deep.py uses for a plain ranking.
- * rows: { label, sub, value, valueLabel, tip, bold, outline }.
+ * rows: { label, sub, value, valueLabel, tip, bold, outline }. Drawn at the
+ * host's width (see fitted in week04-strip.js).
  */
-function hbars(rows, { domain, ticks, fmt, width = 556, labelW = 150, valueW = 54, rowH = 32, ref, refLabel, aria, top = 8 }) {
+function hbars(rows, opts) {
+  return fitted((width) => drawHbars(rows, { ...opts, width }), opts.width ?? 556);
+}
+
+function drawHbars(rows, { domain, ticks, fmt, width = 556, valueW = 54, rowH = 32, ref, refLabel, aria, top = 8 }) {
   const [d0, d1] = domain;
-  const x0 = labelW;
-  const x1 = width - valueW;
+  const small = fs("small");
+  const caption = fs("caption");
+  const x0 = Math.ceil(Math.max(...rows.map((r) => textWidth(r.label, "small", r.bold ? 700 : 600)))) + 12;
+  const x1 = width - Math.max(valueW, Math.ceil(Math.max(...rows.map((r) => textWidth(r.valueLabel ?? fmt(r.value), "small", 700)))) + 12);
   const X = (v) => x0 + ((Math.min(Math.max(v, d0), d1) - d0) * (x1 - x0)) / (d1 - d0);
   const ybot = top + rows.length * rowH;
   const h = ybot + 30 + (refLabel ? 14 : 0);
   const svg = node("svg", { viewBox: `0 0 ${width} ${h}`, width, height: h, role: "img", "aria-label": aria, class: "w4-strip" });
   for (const tv of ticks) {
     svg.append(node("line", { x1: X(tv), y1: top - 4, x2: X(tv), y2: ybot, stroke: token("--w4-grid"), "stroke-width": 1 }));
-    svg.append(node("text", { x: X(tv), y: ybot + 16, "font-size": 11, fill: token("--ink-mute"), "text-anchor": "middle" }, fmt(tv)));
+    svg.append(node("text", { x: X(tv), y: ybot + 16, "font-size": caption, fill: token("--ink-mute"), "text-anchor": "middle" }, fmt(tv)));
   }
   if (ref !== undefined) {
     svg.append(
@@ -59,7 +67,7 @@ function hbars(rows, { domain, ticks, fmt, width = 556, labelW = 150, valueW = 5
   rows.forEach((r, i) => {
     const cy = top + i * rowH + rowH / 2;
     const bh = rowH - 12;
-    svg.append(node("text", { x: 0, y: cy + 4, "font-size": 12, fill: token("--ink"), "font-weight": r.bold ? 700 : 500 }, r.label));
+    svg.append(node("text", { x: 0, y: cy + 4.5, "font-size": small, fill: token("--ink"), "font-weight": r.bold ? 700 : 600 }, r.label));
     svg.append(node("line", { x1: x0, y1: cy, x2: x1, y2: cy, stroke: token("--line"), "stroke-width": 1 }));
     const bw = Math.max(X(r.value) - x0, 1);
     if (r.outline) {
@@ -67,7 +75,7 @@ function hbars(rows, { domain, ticks, fmt, width = 556, labelW = 150, valueW = 5
     } else {
       svg.append(titled(node("rect", { x: x0, y: cy - bh / 2, width: bw, height: bh, rx: 3, fill: r.bold ? token("--ink") : token("--ink-mute") }), r.tip));
     }
-    svg.append(node("text", { x: X(r.value) + 6, y: cy + 4, "font-size": 11, fill: token("--ink-soft") }, r.valueLabel ?? fmt(r.value)));
+    svg.append(node("text", { x: X(r.value) + 6, y: cy + 4.5, "font-size": small, "font-weight": 700, fill: token("--ink") }, r.valueLabel ?? fmt(r.value)));
   });
   return svg;
 }
@@ -92,17 +100,27 @@ function dodge(ys, gap) {
  * chart, for "before against after" comparisons. The series name and first
  * value sit left of the left column, the second value right of the right
  * one, so no label crosses a line; dodge() keeps each side's labels apart.
- * series: { label, values: [a, b], colorToken, tip }.
+ * series: { label, values: [a, b], colorToken, tip }. Drawn at the host's
+ * width; the columns sit just clear of the widest labels on each side.
  */
-function slope(series, { domain, labels, fmt, width = 556, height = 210, xl = 190, xr = 366, aria }) {
+function slope(series, opts) {
+  return fitted((width) => drawSlope(series, { ...opts, width }), opts.width ?? 556);
+}
+
+function drawSlope(series, { domain, labels, fmt, width = 556, height = 210, aria }) {
   const [d0, d1] = domain;
+  const small = fs("small");
+  const leftNeed = Math.max(...series.map((s) => textWidth(`${s.label} ${fmt(s.values[0])}`, "small", 700)));
+  const rightNeed = Math.max(...series.map((s) => textWidth(fmt(s.values[1]), "small", 700)));
+  const xl = Math.ceil(leftNeed) + 16;
+  const xr = Math.min(width - Math.ceil(rightNeed) - 16, xl + 240);
   const top = 16;
   const bottom = height - 34;
   const Y = (v) => top + ((d1 - Math.min(Math.max(v, d0), d1)) * (bottom - top)) / (d1 - d0);
   const svg = node("svg", { viewBox: `0 0 ${width} ${height}`, width, height, role: "img", "aria-label": aria });
   for (const x of [xl, xr]) svg.append(node("line", { x1: x, y1: top - 8, x2: x, y2: bottom + 4, stroke: token("--w4-grid"), "stroke-width": 1 }));
-  svg.append(node("text", { x: xl, y: height - 10, "font-size": 12, fill: token("--ink-soft"), "font-weight": 600, "text-anchor": "middle" }, labels[0]));
-  svg.append(node("text", { x: xr, y: height - 10, "font-size": 12, fill: token("--ink-soft"), "font-weight": 600, "text-anchor": "middle" }, labels[1]));
+  svg.append(node("text", { x: xl, y: height - 10, "font-size": small, fill: token("--ink-soft"), "font-weight": 600, "text-anchor": "middle" }, labels[0]));
+  svg.append(node("text", { x: xr, y: height - 10, "font-size": small, fill: token("--ink-soft"), "font-weight": 600, "text-anchor": "middle" }, labels[1]));
   const leftY = dodge(series.map((s) => Y(s.values[0]) + 4), 15);
   const rightY = dodge(series.map((s) => Y(s.values[1]) + 4), 15);
   series.forEach((s, i) => {
@@ -113,8 +131,8 @@ function slope(series, { domain, labels, fmt, width = 556, height = 210, xl = 19
     g.append(node("circle", { cx: xl, cy: Y(a), r: 4.5, fill: color }));
     g.append(node("circle", { cx: xr, cy: Y(b), r: 4.5, fill: color }));
     svg.append(g);
-    svg.append(node("text", { x: xl - 10, y: leftY[i], "font-size": 12, fill: color, "font-weight": 700, "text-anchor": "end" }, `${s.label} ${fmt(a)}`));
-    svg.append(node("text", { x: xr + 10, y: rightY[i], "font-size": 12, fill: color, "font-weight": 700, "text-anchor": "start" }, fmt(b)));
+    svg.append(node("text", { x: xl - 10, y: leftY[i], "font-size": small, fill: color, "font-weight": 700, "text-anchor": "end" }, `${s.label} ${fmt(a)}`));
+    svg.append(node("text", { x: xr + 10, y: rightY[i], "font-size": small, fill: color, "font-weight": 700, "text-anchor": "start" }, fmt(b)));
   });
   return svg;
 }
@@ -283,9 +301,16 @@ function drawDraws(data, host) {
   if (!Array.isArray(data.all_draws) || data.all_draws.length < 2) return;
   const rows = data.all_draws.map((d) => ({ ...d, per: d.eligible / d.selected, multi: d.multiple / d.eligible }));
   const hl = new Set(data.draws);
-  const W = 556;
+  host.replaceChildren(fitted((W) => drawsChart(rows, hl, W), 556));
+}
+
+function drawsChart(rows, hl, W) {
   const H = 250;
-  const [L, R, T, B] = [44, 20, 30, 56];
+  const caption = fs("caption");
+  const small = fs("small");
+  // The end columns' labels are centred on their points: keep them inside.
+  const edge = Math.max(...rows.map((r) => textWidth(`${r.label.split(" ")[0].slice(0, 3)} ${r.label.split(" ")[1]}`, "caption", 700))) / 2 + 2;
+  const [L, R, T, B] = [Math.max(44, edge), Math.max(20, edge), 30, 56];
   const X = (i) => L + (i * (W - L - R)) / (rows.length - 1);
   const ymax = Math.max(4.5, Math.ceil(Math.max(...rows.map((r) => r.per)) + 0.5));
   const Y = (v) => T + (H - T - B) * (1 - v / ymax);
@@ -304,19 +329,21 @@ function drawDraws(data, host) {
     const x1 = X(Math.max(...idx)) + 26;
     svg.append(node("rect", { x: x0, y: T - 18, width: x1 - x0, height: H - B - T + 18, rx: 8, fill: token("--w4-accent-soft"), "fill-opacity": 0.5 }));
     svg.append(
-      node("text", { x: (x0 + x1) / 2, y: T - 6, "font-size": 11, "font-weight": 700, fill: token("--w4-accent"), "text-anchor": "middle" }, "The draws this box splits by employer"),
+      node("text", { x: (x0 + x1) / 2, y: T - 6, "font-size": caption, fill: token("--w4-accent"), "text-anchor": "middle" }, "The draws this box splits by employer"),
     );
   }
   for (let v = 0; v < ymax; v += 1) {
     svg.append(node("line", { x1: L, y1: Y(v), x2: W - R, y2: Y(v), stroke: token("--w4-grid"), "stroke-width": 1 }));
-    svg.append(node("text", { x: L - 8, y: Y(v) + 4, "font-size": 10.5, fill: token("--ink-mute"), "text-anchor": "end" }, String(v)));
+    svg.append(node("text", { x: L - 8, y: Y(v) + 4, "font-size": caption, fill: token("--ink-mute"), "text-anchor": "end" }, String(v)));
   }
   // USCIS drew by worker, not by registration, from the March 2024 draw.
   const byWorker = rows.findIndex((r) => r.label === "March 2024");
   if (byWorker > 0) {
     const xm = (X(byWorker - 1) + X(byWorker)) / 2;
     svg.append(node("line", { x1: xm, y1: T, x2: xm, y2: H - B, stroke: token("--ink-mute"), "stroke-width": 1, "stroke-dasharray": "3 3" }));
-    svg.append(node("text", { x: xm + 6, y: H - B - 8, "font-size": 10.5, fill: token("--ink-soft") }, "one entry per worker from here"));
+    const note = "one entry per worker from here";
+    const fits = xm + 6 + textWidth(note, "caption") <= W;
+    svg.append(node("text", { x: fits ? xm + 6 : xm - 6, y: H - B - 8, "font-size": caption, fill: token("--ink-soft"), "text-anchor": fits ? "start" : "end" }, note));
   }
   svg.append(
     node("polyline", {
@@ -337,16 +364,16 @@ function drawDraws(data, host) {
     // The first value starts at its point so it clears the y-axis numbers.
     const first = i === 0;
     g.append(
-      node("text", { x: first ? X(i) - 4 : X(i), y: Y(r.per) - 10, "font-size": 11.5, "font-weight": 700, fill: ink, "text-anchor": first ? "start" : "middle" }, r.per.toFixed(1)),
+      node("text", { x: first ? X(i) - 4 : X(i), y: Y(r.per) - 10, "font-size": small, "font-weight": 700, fill: ink, "text-anchor": first ? "start" : "middle" }, r.per.toFixed(1)),
     );
     const [mon, yr] = r.label.split(" ");
     g.append(
-      node("text", { x: X(i), y: H - B + 18, "font-size": 11, "font-weight": on ? 700 : 500, fill: on ? ink : token("--ink-soft"), "text-anchor": "middle" }, `${mon.slice(0, 3)} ${yr}`),
+      node("text", { x: X(i), y: H - B + 18, "font-size": caption, "font-weight": on ? 700 : 400, fill: on ? ink : token("--ink-soft"), "text-anchor": "middle" }, `${mon.slice(0, 3)} ${yr}`),
     );
-    g.append(node("text", { x: X(i), y: H - B + 34, "font-size": 10.5, fill: token("--ink-mute"), "text-anchor": "middle" }, `${pct(r.multi)} multi`));
+    g.append(node("text", { x: X(i), y: H - B + 34, "font-size": caption, fill: token("--ink-mute"), "text-anchor": "middle" }, `${pct(r.multi)} multi`));
     svg.append(g);
   });
-  host.replaceChildren(svg);
+  return svg;
 }
 
 const DRAWERS = {

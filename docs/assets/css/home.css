@@ -19,7 +19,7 @@
 }
 
 .home .home-hero h1 {
-  font-size: clamp(38px, 4.4vw, 52px);
+  font-size: var(--fs-display);
   max-width: 16ch;
 }
 
@@ -38,7 +38,7 @@
   background: var(--access);
   border-radius: 999px;
   color: #ffffff;
-  font-size: 14px;
+  font-size: var(--fs-body);
   font-weight: 700;
   padding: 11px 20px;
   text-decoration: none;
@@ -50,7 +50,7 @@
 
 .home .home-textlink {
   color: #b9cde4;
-  font-size: 14px;
+  font-size: var(--fs-body);
   font-weight: 600;
 }
 
@@ -82,7 +82,7 @@
   border-radius: 8px;
   color: #7f9bbd;
   display: flex;
-  font-size: 13.5px;
+  font-size: var(--fs-body);
   gap: 12px;
   padding: 6px 8px;
 }
@@ -90,7 +90,7 @@
 .home .home-track li span {
   border: 1px solid rgba(255, 255, 255, 0.18);
   border-radius: 6px;
-  font-size: 11px;
+  font-size: var(--fs-caption);
   font-variant-numeric: tabular-nums;
   font-weight: 800;
   letter-spacing: 0.04em;
@@ -123,7 +123,7 @@
 
 .home .home-caps {
   color: var(--ink-mute);
-  font-size: 11px;
+  font-size: var(--fs-caption);
   font-weight: 800;
   letter-spacing: 0.1em;
   margin: 0 0 10px;
@@ -144,14 +144,14 @@
 }
 
 .home .home-section-head h2 {
-  font-size: 22px;
+  font-size: var(--fs-h3);
   letter-spacing: -0.01em;
   margin: 0;
 }
 
 .home .home-section-head p {
   color: var(--ink-soft);
-  font-size: 13.5px;
+  font-size: var(--fs-body);
   margin: 0;
 }
 
@@ -198,7 +198,7 @@ a.week-card:hover {
 
 .home .week-tag {
   color: var(--accent);
-  font-size: 11px;
+  font-size: var(--fs-caption);
   font-variant-numeric: tabular-nums;
   font-weight: 800;
   letter-spacing: 0.07em;
@@ -207,20 +207,20 @@ a.week-card:hover {
 
 .home .week-course {
   color: var(--ink-mute);
-  font-size: 12.5px;
+  font-size: var(--fs-small);
   font-weight: 600;
   margin-top: 4px;
 }
 
 .home .week-card h3 {
-  font-size: 19px;
+  font-size: var(--fs-h3);
   letter-spacing: -0.01em;
   margin: 10px 0 6px;
 }
 
 .home .week-q {
   color: var(--ink-soft);
-  font-size: 13.5px;
+  font-size: var(--fs-body);
   line-height: 1.5;
   margin: 0 0 14px;
 }
@@ -230,7 +230,7 @@ a.week-card:hover {
 
 .home .week-go {
   color: var(--accent);
-  font-size: 13.5px;
+  font-size: var(--fs-body);
   font-weight: 700;
   margin-top: auto;
 }
@@ -247,7 +247,7 @@ a.week-card:hover {
 
 .home .week-card.coming h3 {
   color: var(--ink-soft);
-  font-size: 16px;
+  font-size: var(--fs-strong);
 }
 
 .home .week-card.coming .week-q {
@@ -269,7 +269,7 @@ a.week-card:hover {
 
 .home .home-data h3,
 .home .home-about .card h2 {
-  font-size: 17px;
+  font-size: var(--fs-strong);
   letter-spacing: -0.01em;
   margin: 0 0 8px;
 }
@@ -277,7 +277,7 @@ a.week-card:hover {
 .home .home-data p,
 .home .home-about p {
   color: var(--ink-soft);
-  font-size: 13.5px;
+  font-size: var(--fs-body);
   line-height: 1.62;
   margin: 0 0 14px;
 }
@@ -286,7 +286,7 @@ a.week-card:hover {
 .home .home-about a,
 .home .qa-body a {
   color: var(--accent);
-  font-size: 13.5px;
+  font-size: var(--fs-body);
   font-weight: 600;
 }
 
@@ -316,7 +316,7 @@ a.week-card:hover {
   color: var(--accent);
   display: flex;
   flex: none;
-  font-size: 13px;
+  font-size: var(--fs-small);
   font-weight: 800;
   height: 26px;
   justify-content: center;
@@ -324,12 +324,12 @@ a.week-card:hover {
 }
 
 .home .home-steps b {
-  font-size: 14px;
+  font-size: var(--fs-body);
 }
 
 .home .home-steps p {
   color: var(--ink-soft);
-  font-size: 13px;
+  font-size: var(--fs-body);
   line-height: 1.5;
   margin: 4px 0 0;
 }
@@ -349,7 +349,7 @@ a.week-card:hover {
   background: var(--access-soft);
   border-radius: 999px;
   color: var(--accent);
-  font-size: 13px;
+  font-size: var(--fs-small);
   font-weight: 700;
   padding: 5px 12px;
 }
@@ -365,7 +365,7 @@ a.week-card:hover {
 
 .home .qa-body p {
   color: var(--ink-soft);
-  font-size: 13.5px;
+  font-size: var(--fs-body);
   line-height: 1.62;
   max-width: 68ch;
 }
@@ -395,7 +395,7 @@ a.week-card:hover {
   color: var(--ink);
   display: flex;
   flex-direction: column;
-  font-size: 13.5px;
+  font-size: var(--fs-body);
   font-weight: 700;
   gap: 10px;
   padding: 0;

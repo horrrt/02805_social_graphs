@@ -6,6 +6,7 @@
 // page already loads (window.echarts), coloured from this page's own CSS
 // tokens, and rendered once the box is first opened.
 import { esc } from "./cabinet.js";
+import { fs, family } from "./type-scale.mjs";
 import { drawer, termify } from "./week04-ui.js?v=2";
 
 const echarts = window.echarts;
@@ -82,7 +83,7 @@ function partialYearSeries(xLabels) {
     markArea: {
       silent: true,
       itemStyle: { color: token("--w4-band"), opacity: 0.5 },
-      label: { show: true, position: "insideTopRight", formatter: `${data.partial.year}: ${data.partial.window} only`, color: token("--ink-mute"), fontSize: 10.5 },
+      label: { show: true, position: "insideTopRight", formatter: `${data.partial.year}: ${data.partial.window} only`, color: token("--ink-mute"), fontSize: fs("caption") },
       data: [[{ xAxis: xLabels[3] }, { xAxis: xLabels[4] }]],
     },
     z: 0,
@@ -121,14 +122,14 @@ function render() {
   chart.setOption(
     {
       animationDuration: 280,
-      textStyle: { fontFamily: "-apple-system, BlinkMacSystemFont, system-ui, sans-serif" },
+      textStyle: { fontFamily: family("sans"), fontSize: fs("caption") },
       grid: { left: 56, right: 20, top: 20, bottom: 40 },
       legend: { show: false, data: names, selected: Object.fromEntries([...hidden[state.split]].map((n) => [n, false])) },
       xAxis: {
         type: "category",
         data: xLabels,
         axisLine: { lineStyle: { color: token("--line") } },
-        axisLabel: { color: token("--ink-mute"), fontSize: 11 },
+        axisLabel: { color: token("--ink-mute"), fontSize: fs("caption") },
         axisTick: { show: false },
       },
       yAxis: {
@@ -138,7 +139,7 @@ function render() {
         // axis fits what is left, still as a share of all filings.
         max: state.scale === "percent" && hidden[state.split].size === 0 ? 100 : null,
         axisLabel: {
-          color: token("--ink-mute"), fontSize: 11,
+          color: token("--ink-mute"), fontSize: fs("caption"),
           formatter: (v) => (state.scale === "percent" ? `${v}%` : num(v)),
         },
         splitLine: { lineStyle: { color: token("--w4-grid") } },
@@ -152,7 +153,7 @@ function render() {
         padding: [8, 10],
         extraCssText: "border-radius:8px;box-shadow:0 4px 14px rgba(11,31,58,.18);max-width:240px;white-space:normal;",
         axisPointer: { type: "line", lineStyle: { color: token("--ink-mute"), width: 1 } },
-        textStyle: { color: token("--w4-tip-ink"), fontSize: 12 },
+        textStyle: { color: token("--w4-tip-ink"), fontSize: fs("small") },
         formatter: (points) => compactTip(points),
       },
     },
@@ -169,7 +170,7 @@ function compactTip(points) {
   const series = seriesOf(state.split);
   const partial = state.window === "full" && yi === 4;
   const head =
-    `<div style="font-size:11px;opacity:.75">${esc(YEARS[yi])}${state.window === "oct_jun" || partial ? ", Oct–Jun" : ""}` +
+    `<div style="font-size:${fs("small")}px;opacity:.75">${esc(YEARS[yi])}${state.window === "oct_jun" || partial ? ", Oct–Jun" : ""}` +
     ` · ${num(total)} filings</div>`;
 
   const line = (s, big) => {
@@ -190,7 +191,7 @@ function compactTip(points) {
       : prev
         ? `, ${v >= prev ? "+" : "−"}${Math.abs(Math.round((100 * (v - prev)) / prev))}% on ${YEARS[yi - 1]}`
         : "";
-    return `${row}<div style="margin-left:15px;font-size:11px;opacity:.8">${num(v)} filings${change}</div>`;
+    return `${row}<div style="margin-left:15px;font-size:${fs("small")}px;opacity:.8">${num(v)} filings${change}</div>`;
   };
 
   const shown = new Set(points.map((p) => p.seriesName));
@@ -201,7 +202,7 @@ function compactTip(points) {
     .sort((a, b) => valuesFor(b)[yi] - valuesFor(a)[yi])
     .slice(0, 3);
   return `${head}${top.map((s) => line(s, false)).join("")}` +
-    `<div style="margin-top:4px;font-size:11px;opacity:.7">Hover a band for its numbers</div>`;
+    `<div style="margin-top:4px;font-size:${fs("small")}px;opacity:.7">Hover a band for its numbers</div>`;
 }
 
 // ---------------------------------------------------------------- legend

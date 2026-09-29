@@ -15,25 +15,25 @@
   border-bottom: 1px solid var(--line);
 }
 .visual-design .arcade-wordmark {
-  font-size: 20px;
+  font-size: var(--fs-h4);
   letter-spacing: -0.025em;
 }
 .visual-design .arcade-wordmark::before {
   content: "✳";
-  font-size: 28px;
+  font-size: var(--fs-h2);
   margin-right: 10px;
   color: var(--accent);
   vertical-align: middle;
 }
 .visual-design .chrome nav {
   gap: 28px;
-  font-size: 15px;
+  font-size: var(--fs-body);
 }
 .visual-design .chrome nav a {
   opacity: 1;
 }
 .visual-design .chrome nav button {
-  font-size: 12px;
+  font-size: var(--fs-small);
   min-height: 36px;
   padding: 6px 14px;
   background: transparent;
@@ -59,15 +59,15 @@
   min-width: 0;
 }
 .visual-design .eyebrow {
-  font-size: 12px;
+  font-size: var(--fs-caption);
   font-weight: 600;
   letter-spacing: 0.12em;
   text-transform: uppercase;
   color: var(--muted);
 }
 .visual-design.guided-lobby .hero h1 {
-  font-family: var(--sans);
-  font-size: clamp(52px, 6.5vw, 88px);
+  font-family: var(--font-sans);
+  font-size: var(--fs-display);
   font-weight: 700;
   line-height: 0.99;
   letter-spacing: -0.035em;
@@ -78,7 +78,7 @@
   color: var(--accent);
 }
 .visual-design.guided-lobby .hero .intro {
-  font-size: 21px;
+  font-size: var(--fs-strong);
   line-height: 1.5;
   max-width: 37ch;
   margin: 24px 0;
@@ -97,7 +97,7 @@
   min-height: 46px;
 }
 .visual-design .hero-actions .button {
-  font-size: 16px;
+  font-size: var(--fs-strong);
   padding: 14px 18px;
   gap: 22px;
   background: var(--accent);
@@ -105,11 +105,11 @@
   border: 0;
 }
 .visual-design .text-link {
-  font-size: 15px;
+  font-size: var(--fs-body);
   text-decoration: underline;
 }
 .visual-design .hero-note {
-  font-size: 13px;
+  font-size: var(--fs-small);
   line-height: 1.5;
   color: var(--muted);
   margin: 0;
@@ -148,7 +148,7 @@
 }
 .visual-design.guided-lobby #weeks h2,
 .visual-design.guided-lobby #network h2 {
-  font-size: 32px;
+  font-size: var(--fs-h2);
   letter-spacing: -0.03em;
   line-height: 1.15;
 }
@@ -195,22 +195,22 @@
   border: 0;
   border-radius: 0;
   background: none;
-  font-size: 12px;
+  font-size: var(--fs-caption);
   color: var(--muted);
   line-height: 1.4;
 }
 .visual-design.guided-lobby .post-copy .course {
   display: block;
   margin: 10px 0 6px;
-  font-size: 13px;
+  font-size: var(--fs-small);
   color: var(--muted);
 }
 .visual-design.guided-lobby #weeks .post-copy h2 {
-  font-size: 32px;
+  font-size: var(--fs-h3);
   margin: 4px 0 8px;
 }
 .visual-design .post-copy > p:last-of-type {
-  font-size: 18px;
+  font-size: var(--fs-strong);
   line-height: 1.4;
   max-width: 38ch;
   color: var(--muted);
@@ -221,12 +221,12 @@
   justify-content: space-between;
   align-items: center;
   margin-top: 26px;
-  font-size: 15px;
+  font-size: var(--fs-body);
   font-weight: 600;
   color: var(--accent);
 }
 .visual-design .post-action > span {
-  font-size: 24px;
+  font-size: var(--fs-h3);
   line-height: 1;
 }
 .visual-design.guided-lobby .upcoming-weeks {
@@ -235,7 +235,7 @@
   border-bottom: 1px solid var(--line);
 }
 .visual-design.guided-lobby .upcoming-weeks summary {
-  font-size: 14px;
+  font-size: var(--fs-body);
   font-weight: 400;
   color: var(--muted);
   padding: 15px 0;
@@ -244,7 +244,7 @@
   padding: 20px;
 }
 .visual-design.guided-lobby .upcoming-weeks .cabinet-link h2 {
-  font-size: 22px;
+  font-size: var(--fs-h3);
 }
 .visual-design.guided-lobby #network {
   padding: 60px 0 40px;
@@ -264,12 +264,12 @@
   gap: 24px;
 }
 .visual-design #about h2 {
-  font-size: 22px;
+  font-size: var(--fs-h3);
   margin-top: 6px;
 }
 .visual-design #about p,
 .visual-design #about a {
-  font-size: 14px;
+  font-size: var(--fs-body);
 }
 .visual-design #about .members {
   gap: 8px;
@@ -278,7 +278,7 @@
   padding: 0;
   background: none;
   border: 0;
-  font-size: 15px;
+  font-size: var(--fs-body);
 }
 .visual-design #about .members li + li::before {
   content: "·";
@@ -289,16 +289,16 @@
   padding: 20px 0;
 }
 .visual-design .site-reference h2 {
-  font-size: 18px;
+  font-size: var(--fs-h4);
 }
 .visual-design .site-reference summary {
-  font-size: 14px;
+  font-size: var(--fs-body);
   font-weight: 400;
 }
 .visual-design .footer {
   margin-top: 24px;
   padding: 24px 0;
-  font-size: 12px;
+  font-size: var(--fs-caption);
 }
 /* Posts open on a text-only introduction; the illustrations were removed. */
 .visual-design.guided-post .story-hero {
@@ -309,8 +309,8 @@
   padding: 40px 0 48px;
 }
 .visual-design.guided-post .hero h1 {
-  font-family: var(--sans);
-  font-size: clamp(38px, 4.4vw, 58px);
+  font-family: var(--font-sans);
+  font-size: var(--fs-display);
   font-weight: 700;
   line-height: 1.04;
   letter-spacing: -0.03em;
@@ -318,7 +318,7 @@
   margin: 18px 0;
 }
 .visual-design.guided-post .hero .intro {
-  font-size: 19px;
+  font-size: var(--fs-strong);
   line-height: 1.5;
   max-width: 45ch;
   margin: 18px 0;
@@ -340,7 +340,7 @@
   border: 1px solid var(--line);
   border-radius: 30px;
   text-decoration: none;
-  font-size: 13px;
+  font-size: var(--fs-body);
   padding: 0 16px;
   min-height: 38px;
 }
@@ -349,7 +349,7 @@
   color: var(--accent);
 }
 .visual-design.guided-post .story-scope {
-  font-size: 12px;
+  font-size: var(--fs-small);
   max-width: 52ch;
   margin-top: 18px;
 }
@@ -361,7 +361,7 @@
   margin-bottom: 48px;
 }
 .visual-design.guided-post .interaction-panel h2 {
-  font-size: 28px;
+  font-size: var(--fs-h3);
 }
 .visual-design .interaction-panel > .section-head {
   margin-bottom: 16px;
@@ -370,7 +370,7 @@
   background: none;
   border: 0;
   color: var(--muted);
-  font-size: 12px;
+  font-size: var(--fs-caption);
 }
 .visual-design .interaction-panel .pack-tray {
   min-height: 150px;
@@ -399,10 +399,10 @@
   border: 0;
 }
 .visual-design.guided-post .interaction-panel .metric strong {
-  font-size: 24px;
+  font-size: var(--fs-h3);
 }
 .visual-design .interaction-panel .metric span {
-  font-size: 12px;
+  font-size: var(--fs-small);
   color: var(--muted);
 }
 .visual-design.guided-post .prediction {
@@ -412,7 +412,7 @@
   border-radius: 14px;
 }
 .visual-design.guided-post .prediction h2 {
-  font-size: 25px;
+  font-size: var(--fs-h3);
   max-width: 34ch;
 }
 .visual-design.guided-post #post,
@@ -435,13 +435,13 @@
 .visual-design.guided-post #post > p,
 .visual-design.guided-post .story-copy p,
 .visual-design.guided-post #results > p {
-  font-size: 19px;
+  font-size: var(--fs-body);
   line-height: 1.6;
 }
 .visual-design.guided-post #post h2,
 .visual-design.guided-post #results h2 {
-  font-family: var(--sans);
-  font-size: 36px;
+  font-family: var(--font-sans);
+  font-size: var(--fs-h2);
   font-weight: 700;
   letter-spacing: -0.03em;
   max-width: 27ch;
@@ -463,7 +463,7 @@
   border: 0;
 }
 .visual-design.guided-post #evidence > h2 {
-  font-size: 24px;
+  font-size: var(--fs-h3);
 }
 .visual-design .evidence-menu {
   border: 1px solid var(--line);
@@ -471,7 +471,7 @@
   padding: 0 20px;
 }
 .visual-design .evidence-menu > summary {
-  font-size: 15px;
+  font-size: var(--fs-body);
 }
 .visual-design .evidence-menu[open] > details {
   margin-top: 12px;
@@ -506,7 +506,7 @@
 /* A short comparison connects each interaction to its teaching point. */
 .visual-design .collection-insight {
   max-width: none;
-  font-size: 16px;
+  font-size: var(--fs-strong);
   padding: 16px 0 0;
   border-top: 1px solid var(--line);
 }
@@ -520,15 +520,17 @@
 }
 .visual-design .learning-comparison h3,
 .visual-design .null-insight h3 {
-  font:
-    600 24px/1.2 var(--sans);
+  font-weight: 600;
+  font-size: var(--fs-h3);
+  line-height: 1.2;
+  font-family: var(--font-sans);
   letter-spacing: -0.025em;
   margin: 0 0 12px;
 }
 .visual-design .learning-comparison label {
   display: inline;
   margin-right: 12px;
-  font-size: 14px;
+  font-size: var(--fs-body);
 }
 .visual-design .learning-comparison select {
   width: auto;
@@ -545,7 +547,7 @@
   gap: 16px;
   align-items: center;
   margin: 14px 0;
-  font-size: 15px;
+  font-size: var(--fs-body);
 }
 .visual-design .odds-row strong {
   text-align: right;
@@ -584,13 +586,13 @@
   padding: 24px;
 }
 .visual-design .closure-comparison-grid p {
-  font-size: 16px;
+  font-size: var(--fs-strong);
 }
 .visual-design .closure-comparison-grid .fine {
-  font-size: 12px;
+  font-size: var(--fs-small);
 }
 .visual-design .closure-comparison-grid .eyebrow {
-  font-size: 11px;
+  font-size: var(--fs-caption);
 }
 .visual-design .companion-callout {
   padding: 24px;
@@ -600,8 +602,10 @@
   background: var(--surface);
 }
 .visual-design .companion-callout h3 {
-  font:
-    600 22px/1.2 var(--sans);
+  font-weight: 600;
+  font-size: var(--fs-h3);
+  line-height: 1.2;
+  font-family: var(--font-sans);
   letter-spacing: -0.025em;
   margin: 0 0 10px;
 }
@@ -615,11 +619,11 @@
 .visual-design .post-primer {
   margin-top: 12px;
   max-width: 52ch;
-  font-size: 14px;
+  font-size: var(--fs-body);
   line-height: 1.55;
 }
 .visual-design .post-primer summary {
-  font-size: 13px;
+  font-size: var(--fs-small);
 }
 .visual-design .post-primer dt {
   font-weight: 600;
@@ -648,28 +652,32 @@
   border-bottom: 2px dashed var(--line);
 }
 .visual-design .ride-ticket h3 {
-  font:
-    600 28px/1.2 var(--sans);
+  font-weight: 600;
+  font-size: var(--fs-h3);
+  line-height: 1.2;
+  font-family: var(--font-sans);
   letter-spacing: -0.03em;
   margin: 8px 0;
 }
 .visual-design .ride-ticket p {
   margin: 6px 0;
-  font-size: 14px;
+  font-size: var(--fs-body);
 }
 .visual-design .ride-ticket .eyebrow {
-  font-size: 11px;
+  font-size: var(--fs-caption);
 }
 .visual-design .ride-ticket select {
   max-width: 310px;
-  font-size: 14px;
+  font-size: var(--fs-small);
 }
 .visual-design .ride-route {
   padding: 18px 0;
 }
 .visual-design .ride-route h4 {
-  font:
-    600 13px var(--sans);
+  font-weight: 600;
+  font-size: var(--fs-small);
+  line-height: normal;
+  font-family: var(--font-sans);
   color: var(--muted);
   margin: 0 0 8px;
 }
@@ -702,8 +710,10 @@
   background: transparent;
   box-shadow: none;
   color: var(--paper);
-  font:
-    600 15px/1.25 var(--sans);
+  font-weight: 600;
+  font-size: var(--fs-body);
+  line-height: 1.25;
+  font-family: var(--font-sans);
   border-radius: 8px;
   padding: 44px 8px 10px;
   min-height: 76px;
@@ -735,7 +745,7 @@
 }
 .visual-design .closed-stop .ride-stop::before {
   content: "×";
-  font-size: 22px;
+  font-size: var(--fs-h3);
   line-height: 18px;
   border: 0;
   background: #be533c;
@@ -749,7 +759,7 @@
   height: 0;
 }
 .visual-design .ride-result {
-  font-size: 19px;
+  font-size: var(--fs-lead);
   font-weight: 600;
   max-width: none;
   padding-top: 16px;
@@ -763,7 +773,7 @@
   min-height: 38px;
 }
 .visual-design #numeric-guess > summary {
-  font-size: 14px;
+  font-size: var(--fs-body);
 }
 
 /* Every hero sits on Week 3's navy band. The band runs the full width of the

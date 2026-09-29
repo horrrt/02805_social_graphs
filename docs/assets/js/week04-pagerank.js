@@ -5,13 +5,12 @@
 // from-scratch power iteration checked against nx.pagerank. Nothing here is
 // computed in the browser; every number comes from that JSON.
 
-import { node, token } from "./week04-strip.js";
+import { node, token, fitted, fs, textWidth } from "./week04-strip.js?v=2";
 import { drawer, drawerRow, termify } from "./week04-ui.js?v=2";
 
 const DATA = new URL("../../weeks/week04/data/pagerank.json?v=2", import.meta.url);
 const DEFAULT_D = "0.85";
 const BAR_W = 556;
-const LABEL_W = 300;
 const ROW_H = 24;
 const TOP_SHOWN = 15;
 
@@ -37,16 +36,23 @@ function frag(text) {
 
 /** A horizontal bar per row, value 0..max, with a small numeral badge (e.g. a
  * degree rank) so the chart doubles as the "PageRank vs degree" comparison. */
-function hbars(rows, { max, badgeLabel, aria }) {
+function hbars(rows, opts) {
+  return fitted((width) => drawHbars(rows, opts, width), BAR_W);
+}
+
+function drawHbars(rows, { max, badgeLabel, aria }, width) {
   const top = 4;
   const h = top + rows.length * ROW_H + 8;
-  const svg = node("svg", { viewBox: `0 0 ${BAR_W} ${h}`, width: BAR_W, height: h, role: "img", "aria-label": aria });
-  const x0 = LABEL_W;
-  const x1 = BAR_W - 54;
+  const svg = node("svg", { viewBox: `0 0 ${width} ${h}`, width, height: h, role: "img", "aria-label": aria });
+  const x0 = Math.ceil(Math.max(...rows.map((r) => textWidth(`${r.rank}. ${r.label}`, "small", 600)))) + 12;
+  const badgeW = rows.some((r) => r.badge !== undefined)
+    ? Math.ceil(Math.max(...rows.map((r) => textWidth(`${badgeLabel} #${r.badge}`, "caption")))) + 12
+    : 0;
+  const x1 = width - badgeW;
   rows.forEach((r, i) => {
     const cy = top + i * ROW_H;
     const w = ((x1 - x0) * r.value) / max;
-    const label = node("text", { x: 0, y: cy + 13, "font-size": 12, fill: token("--ink") }, `${r.rank}. ${r.label}`);
+    const label = node("text", { x: 0, y: cy + 13.5, "font-size": fs("small"), "font-weight": 600, fill: token("--ink") }, `${r.rank}. ${r.label}`);
     label.append(node("title", {}, r.tip));
     svg.append(label);
     const bar = node("g");
@@ -57,7 +63,7 @@ function hbars(rows, { max, badgeLabel, aria }) {
       svg.append(
         node(
           "text",
-          { x: BAR_W, y: cy + 13, "font-size": 11, fill: token("--ink-mute"), "text-anchor": "end" },
+          { x: width, y: cy + 13, "font-size": fs("caption"), fill: token("--ink-mute"), "text-anchor": "end" },
           `${badgeLabel} #${r.badge}`,
         ),
       );
@@ -267,12 +273,16 @@ function iterationClaims(it) {
  * 10. Round 0 is left out (every score is equal there). A dot on the bottom
  * line means that occupation sat outside the top 10 after that round. */
 function bumpChart(it) {
+  return fitted((W) => drawBump(it, W), 620);
+}
+
+function drawBump(it, W) {
   const steps = it.steps.filter((s) => s.step > 0);
   const final = steps.at(-1).rows;
   const n = final.length;
-  const W = 620;
+  const caption = fs("caption");
   const LEFT = 34;
-  const NAMES_W = 274;
+  const NAMES_W = Math.ceil(Math.max(...final.map((occ) => textWidth(short(occ.title), "small", 700)))) + 20;
   const TOP = 34;
   const ROW = 25;
   const out = TOP + n * ROW + 6;
@@ -299,14 +309,14 @@ function bumpChart(it) {
   });
   const muted = token("--ink-mute");
   steps.forEach((s, i) => {
-    svg.append(node("text", { x: xs[i], y: 16, "text-anchor": "middle", "font-size": 11, fill: muted }, roundLabel(s, i)));
+    svg.append(node("text", { x: xs[i], y: 16, "text-anchor": "middle", "font-size": caption, fill: muted }, roundLabel(s, i)));
     svg.append(node("line", { x1: xs[i], x2: xs[i], y1: TOP - 8, y2: out + 4, stroke: token("--w4-grid") }));
   });
   for (let r = 1; r <= n; r++) {
-    svg.append(node("text", { x: LEFT - 10, y: y(r) + 4, "text-anchor": "end", "font-size": 10.5, fill: muted }, String(r)));
+    svg.append(node("text", { x: LEFT - 10, y: y(r) + 4, "text-anchor": "end", "font-size": caption, fill: muted }, String(r)));
   }
   svg.append(
-    node("text", { x: LEFT - 10, y: out + 4, "text-anchor": "end", "font-size": 10.5, fill: muted, opacity: 0.6 }, `${n + 1}+`),
+    node("text", { x: LEFT - 10, y: out + 4, "text-anchor": "end", "font-size": caption, fill: muted, opacity: 0.6 }, `${n + 1}+`),
   );
 
   // Grey lines first, so the two highlighted ones sit on top.
@@ -355,8 +365,8 @@ function bumpChart(it) {
       {
         x: xs.at(-1) + 12,
         y: y(final.indexOf(occ) + 1) + 4,
-        "font-size": 11.5,
-        "font-weight": strong ? 700 : 500,
+        "font-size": fs("small"),
+        "font-weight": strong ? 700 : 600,
         fill: strong ? c : token("--ink-soft"),
       },
       short(occ.title),

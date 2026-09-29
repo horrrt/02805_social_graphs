@@ -8,8 +8,8 @@ import {
   canvasStage,
   tone,
   errorMessage,
-  SANS,
 } from "./cabinet.js";
+import { font } from "./type-scale.mjs";
 import { expectedDistinct } from "./collection-model.mjs";
 import { rng } from "./arcade-core.mjs";
 import { card } from "./cards.js";
@@ -223,7 +223,8 @@ try {
       W = w - left - right,
       H = h - top - bottom;
     c.clearRect(0, 0, w, h);
-    c.font = `12px ${SANS}`;
+    // Ticks and axis names only, so the whole chart is caption type.
+    c.font = font("caption");
     c.fillStyle = tone("--cv-packs-text", "#46618a");
     c.strokeStyle = tone("--cv-packs-grid", "#dce5f0");
     const drawn = new Map();
@@ -337,10 +338,11 @@ try {
         c.fillRect(x + bw * 0.4, h - 35 - ah, bw * 0.38, ah);
       }
       c.fillStyle = tone("--cv-packs-text", "#46618a");
-      c.font = `12px ${SANS}`;
+      c.font = font("small", 700);
       c.fillText(String(guess[i]), x, h - 40 - height);
     }
     c.fillStyle = tone("--cv-packs-text", "#46618a");
+    c.font = font("caption");
     c.fillText(
       "Height = articles, 0–160. Horizontal bins are labelled below.",
       20,

@@ -22,7 +22,7 @@
 
 .corridor .w4-sources dt a {
   color: var(--w4-source-link);
-  font-size: 13px;
+  font-size: var(--fs-small);
   font-weight: 700;
   text-decoration: none;
 }
@@ -34,6 +34,6 @@
 
 .corridor .w4-sources dd {
   color: var(--ink-soft);
-  font-size: 12.5px;
+  font-size: var(--fs-small);
   margin: 0 0 9px;
 }

@@ -6,6 +6,7 @@
 // docs/assets/data/week04_place.json, not typed in by hand. Built lazily: the
 // box does nothing until it is first opened.
 
+import { fs, family } from "./type-scale.mjs";
 import { termify } from "./week04-ui.js?v=2";
 
 const EXPLORE_URL = new URL("../../weeks/week04/data/explore.json", import.meta.url);
@@ -40,14 +41,14 @@ function baseOption(token) {
   return {
     animationDuration: 320,
     animationEasing: "cubicOut",
-    textStyle: { fontFamily: "-apple-system, BlinkMacSystemFont, system-ui, sans-serif" },
+    textStyle: { fontFamily: family("sans"), fontSize: fs("caption") },
     tooltip: {
       trigger: "item",
       confine: true,
       backgroundColor: token("--w4-tip-bg"),
       borderWidth: 0,
       padding: [10, 12],
-      textStyle: { color: token("--w4-tip-ink"), fontSize: 12 },
+      textStyle: { color: token("--w4-tip-ink"), fontSize: fs("small") },
     },
   };
 }
@@ -85,11 +86,39 @@ function chartFor(echarts, hostId) {
   return chart;
 }
 
+/** Draw into an SVG whose box CSS sizes, at that box's size in px, so one
+ * unit is one pixel and the type renders at its token size. draw(W, H)
+ * returns { move }; a change of box size draws again and puts the marker
+ * back where the visitor left it. */
+function fitBox(svg, draw, [fw, fh]) {
+  const size = () => [Math.floor(svg.clientWidth), Math.floor(svg.clientHeight)];
+  let [W, H] = size();
+  if (!W || !H) [W, H] = [fw, fh];
+  let api = draw(W, H);
+  let last = null;
+  new ResizeObserver(() => {
+    const [w, h] = size();
+    if (!w || !h || (w === W && h === H)) return;
+    [W, H] = [w, h];
+    api = draw(W, H);
+    if (last) api.move(...last);
+  }).observe(svg);
+  return {
+    move(...args) {
+      last = args;
+      api.move(...args);
+    },
+  };
+}
+
 /** A static-domain line chart: axis, ticks, reference line and the whole
  * series drawn once; only a marker moves as the visitor steps through. */
-function buildLineChart(svg, ys, { ref, refLabel, xLabel, fmtY, title, token }) {
-  const W = 1000;
-  const H = 200;
+function buildLineChart(svg, ys, opts) {
+  return fitBox(svg, (W, H) => drawLineChart(svg, ys, opts, W, H), [1000, 200]);
+}
+
+function drawLineChart(svg, ys, { ref, refLabel, xLabel, fmtY, title, token }, W, H) {
+  const caption = fs("caption");
   const L = 56;
   const R = 20;
   const T = 16;
@@ -116,20 +145,20 @@ function buildLineChart(svg, ys, { ref, refLabel, xLabel, fmtY, title, token }) 
     const v = y0 + ((y1 - y0) * k) / 4;
     const y = Y(v).toFixed(1);
     parts.push(`<line x1="${L}" y1="${y}" x2="${W - R}" y2="${y}" stroke="${line}" stroke-width="1"></line>`);
-    parts.push(`<text x="${L - 8}" y="${(Y(v) + 4).toFixed(1)}" font-size="11" fill="${inkMute}" text-anchor="end">${esc(fmtY(v))}</text>`);
+    parts.push(`<text x="${L - 8}" y="${(Y(v) + 4).toFixed(1)}" font-size="${caption}" fill="${inkMute}" text-anchor="end">${esc(fmtY(v))}</text>`);
   }
   if (ref != null) {
     const y = Y(ref).toFixed(1);
     parts.push(`<line x1="${L}" y1="${y}" x2="${W - R}" y2="${y}" stroke="${inkMute}" stroke-width="1.4" stroke-dasharray="5 4"></line>`);
     if (refLabel) {
       parts.push(
-        `<text x="${W - R}" y="${(Y(ref) - 6).toFixed(1)}" font-size="11" fill="${inkSoft}" text-anchor="end" font-weight="600">${esc(refLabel)}</text>`,
+        `<text x="${W - R}" y="${(Y(ref) - 6).toFixed(1)}" font-size="${caption}" fill="${inkSoft}" text-anchor="end">${esc(refLabel)}</text>`,
       );
     }
   }
   const d = `M${ys.map((v, i) => `${X(i).toFixed(1)} ${Y(v).toFixed(1)}`).join(" L")}`;
   parts.push(`<path d="${d}" fill="none" stroke="${ink}" stroke-width="2"></path>`);
-  if (xLabel) parts.push(`<text x="${W - R}" y="${H - 6}" font-size="11" fill="${inkMute}" text-anchor="end">${esc(xLabel)}</text>`);
+  if (xLabel) parts.push(`<text x="${W - R}" y="${H - 6}" font-size="${caption}" fill="${inkMute}" text-anchor="end">${esc(xLabel)}</text>`);
   parts.push(`<line class="w4m-marker-line" x1="0" y1="${T - 4}" x2="0" y2="${H - Bm}" stroke="${accent}" stroke-width="1.4"></line>`);
   parts.push(`<circle class="w4m-marker-dot" cx="0" cy="0" r="5.5" fill="${card}" stroke="${accent}" stroke-width="2"></circle>`);
   svg.innerHTML = parts.join("\n");
@@ -148,9 +177,12 @@ function buildLineChart(svg, ys, { ref, refLabel, xLabel, fmtY, title, token }) 
 
 /** The modularity strip: a band for the rewired baseline, a reference tick
  * for Louvain's score, and a marker for the visitor's current groups. */
-function buildStrip(svg, { loQ, hiQ, band, meanQ, refQ, token }) {
-  const W = 440;
-  const H = 70;
+function buildStrip(svg, opts) {
+  return fitBox(svg, (W, H) => drawStrip(svg, opts, W, H), [440, 70]);
+}
+
+function drawStrip(svg, { loQ, hiQ, band, meanQ, refQ, token }, W, H) {
+  const caption = fs("caption");
   const Lm = 12;
   const Rm = 12;
   svg.setAttribute("viewBox", `0 0 ${W} ${H}`);
@@ -169,12 +201,12 @@ function buildStrip(svg, { loQ, hiQ, band, meanQ, refQ, token }) {
     `<line x1="${Lm}" y1="30" x2="${W - Rm}" y2="30" stroke="${line}" stroke-width="1"></line>`,
     `<rect x="${bx0.toFixed(1)}" y="24" width="${(bx1 - bx0).toFixed(1)}" height="12" rx="6" fill="${bandColor}"></rect>`,
     `<line x1="${SX(meanQ).toFixed(1)}" y1="21" x2="${SX(meanQ).toFixed(1)}" y2="39" stroke="${inkMute}" stroke-width="2"></line>`,
-    `<text x="${SX(meanQ).toFixed(1)}" y="54" font-size="11" fill="${inkSoft}" text-anchor="middle">rewired ${meanQ.toFixed(3)}</text>`,
+    `<text x="${SX(meanQ).toFixed(1)}" y="54" font-size="${caption}" fill="${inkSoft}" text-anchor="middle">rewired ${meanQ.toFixed(3)}</text>`,
     `<line x1="${SX(refQ).toFixed(1)}" y1="16" x2="${SX(refQ).toFixed(1)}" y2="44" stroke="${inkSoft}" stroke-width="1.3" stroke-dasharray="3 2"></line>`,
-    `<text x="${SX(refQ).toFixed(1)}" y="12" font-size="11" fill="${inkSoft}" text-anchor="middle" font-weight="600">Louvain ${refQ.toFixed(3)}</text>`,
+    `<text x="${SX(refQ).toFixed(1)}" y="12" font-size="${caption}" fill="${inkSoft}" text-anchor="middle">Louvain ${refQ.toFixed(3)}</text>`,
   ];
   for (const v of [-0.02, 0, 0.02, 0.04, 0.06]) {
-    parts.push(`<text x="${SX(v).toFixed(1)}" y="68" font-size="10.5" fill="${inkMute}" text-anchor="middle">${v.toFixed(2)}</text>`);
+    parts.push(`<text x="${SX(v).toFixed(1)}" y="68" font-size="${caption}" fill="${inkMute}" text-anchor="middle">${v.toFixed(2)}</text>`);
   }
   parts.push(`<circle class="w4m-strip-mk" cx="${SX(0).toFixed(1)}" cy="30" r="7" fill="${ink}" stroke="${card}" stroke-width="2"></circle>`);
   svg.innerHTML = parts.join("\n");

@@ -26,14 +26,14 @@
 
 .corridor .w4-mini-label {
   color: var(--ink);
-  font-size: 12.5px;
+  font-size: var(--fs-small);
   font-weight: 600;
   margin: 0;
 }
 
 .corridor .w4-mini-row small {
   color: var(--ink-mute);
-  font-size: 11px;
+  font-size: var(--fs-caption);
 }
 
 /* section 3's word list: like .w4-anatomy, but no tag chip, so two columns */
@@ -50,7 +50,7 @@
 
 .corridor .w4-surprises h3 {
   color: var(--ink);
-  font-size: 15px;
+  font-size: var(--fs-body);
   margin: 0;
 }
 
@@ -69,13 +69,13 @@
 
 .corridor .w4-surprise-before {
   color: var(--ink-soft);
-  font-size: 12.5px;
+  font-size: var(--fs-small);
   line-height: 1.5;
 }
 
 .corridor .w4-surprise-after {
   color: var(--ink);
-  font-size: 14px;
+  font-size: var(--fs-body);
   font-weight: 600;
   line-height: 1.45;
 }

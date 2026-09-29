@@ -53,7 +53,7 @@
   border-radius: 8px;
   color: var(--ink);
   font: inherit;
-  font-size: 13px;
+  font-size: var(--fs-small);
   padding: 8px 12px;
   width: 100%;
 }
@@ -65,7 +65,7 @@
 
 .corridor .w4-radar-search-status {
   color: var(--ink-soft);
-  font-size: 11.5px;
+  font-size: var(--fs-caption);
   margin: 0;
   min-height: 14px;
 }
@@ -95,7 +95,7 @@
 
 .corridor .w4-radar-chip span {
   color: var(--ink);
-  font-size: 12.5px;
+  font-size: var(--fs-small);
   font-weight: 600;
   max-width: 220px;
   overflow: hidden;
@@ -109,7 +109,7 @@
   border-radius: 999px;
   color: var(--ink-soft);
   cursor: pointer;
-  font-size: 14px;
+  font-size: var(--fs-body);
   line-height: 1;
   padding: 2px 6px;
 }
@@ -127,7 +127,7 @@
 
 .corridor .w4-radar-notice-list li {
   color: var(--ink-soft);
-  font-size: 12.5px;
+  font-size: var(--fs-small);
   line-height: 1.5;
   padding: 2px 0;
 }
@@ -149,7 +149,7 @@
   background: var(--w4-tip-bg);
   border-radius: 8px;
   color: var(--w4-tip-ink);
-  font-size: 12px;
+  font-size: var(--fs-small);
   line-height: 1.5;
   max-width: 260px;
   padding: 8px 10px;

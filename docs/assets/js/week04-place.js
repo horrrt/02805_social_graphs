@@ -3,6 +3,7 @@
 // docs/assets/data/week04_place.json (placeholder until analysis/week04_where.py).
 
 import { resetButton } from "./week04-map-reset.js";
+import { fs, family, textWidth } from "./week04-strip.js?v=2";
 import { termify } from "./week04-ui.js?v=2";
 
 const DATA_URL = new URL("../data/week04_place.json", import.meta.url);
@@ -20,22 +21,22 @@ const yr = (s) => String(s).replace(/\bFY(\d{4})/g, "$1");
 
 const AXIS = {
   axisLine: { lineStyle: { color: "#c6d4e6" } },
-  axisLabel: { color: MUTE, fontSize: 11 },
+  axisLabel: { color: MUTE, fontSize: fs("caption") },
   splitLine: { lineStyle: { color: LINE, type: "dashed" } },
-  nameTextStyle: { color: MUTE, fontSize: 11 },
+  nameTextStyle: { color: MUTE, fontSize: fs("caption") },
 };
 
 const BASE = {
   animationDuration: 420,
   animationEasing: "cubicOut",
-  textStyle: { fontFamily: "-apple-system, BlinkMacSystemFont, system-ui, sans-serif" },
+  textStyle: { fontFamily: family("sans"), fontSize: fs("caption") },
   tooltip: {
     trigger: "item",
     confine: true,
     backgroundColor: "rgba(15,35,64,0.92)",
     borderWidth: 0,
     padding: [10, 12],
-    textStyle: { color: "#eaf2fb", fontSize: 12 },
+    textStyle: { color: "#eaf2fb", fontSize: fs("small") },
   },
 };
 
@@ -204,7 +205,7 @@ export async function startPlace(echarts) {
         data: names,
         axisTick: { show: false },
         axisLine: { show: false },
-        axisLabel: { color: INK, fontSize: 12, fontWeight: 600 },
+        axisLabel: { color: INK, fontSize: fs("small"), fontWeight: 600 },
       },
       series: [
         {
@@ -225,9 +226,9 @@ export async function startPlace(echarts) {
           label: {
             show: true,
             position: "right",
-            color: MUTE,
-            fontSize: 11,
-            fontWeight: 600,
+            color: INK,
+            fontSize: fs("small"),
+            fontWeight: 700,
             formatter: (p) => fmt(p.value),
           },
           emphasis: { focus: "self" },
@@ -336,7 +337,7 @@ export async function startPlace(echarts) {
                     formatter: sel.name,
                     position: "right",
                     color: INK,
-                    fontSize: 12,
+                    fontSize: fs("small"),
                     fontWeight: 700,
                     distance: 8,
                   },
@@ -372,6 +373,8 @@ export async function startPlace(echarts) {
   // The giant component against α, drawn as plain SVG: a flat ink line, open
   // dots with the selected α filled, a dashed marker where the backbone snaps,
   // and the links kept printed under each stop.
+  let gcWidth = 0;
+  let gcWatch = null;
   function renderGcLine() {
     const host = $("chart-gc");
     if (!host) return;
@@ -383,10 +386,23 @@ export async function startPlace(echarts) {
     const card = token("--card");
     const grid = token("--w4-grid");
 
-    const W = 1000;
+    // Drawn at the host's width, one unit to a pixel; redrawn when it changes.
+    const cs = getComputedStyle(host);
+    const W = Math.floor(host.clientWidth - parseFloat(cs.paddingLeft) - parseFloat(cs.paddingRight)) || 1000;
+    gcWidth = W;
+    if (!gcWatch) {
+      gcWatch = new ResizeObserver(() => {
+        const s = getComputedStyle(host);
+        const w = Math.floor(host.clientWidth - parseFloat(s.paddingLeft) - parseFloat(s.paddingRight));
+        if (w > 0 && w !== gcWidth) renderGcLine();
+      });
+      gcWatch.observe(host);
+    }
+    const caption = fs("caption");
+    const small = fs("small");
     const H = 250;
     const L = 48;
-    const R = 976;
+    const R = W - 24;
     const T = 30;
     const B = 192;
     // A round tick step that gives about four gridlines above zero.
@@ -398,8 +414,8 @@ export async function startPlace(echarts) {
     const amax = Math.max(...alphas) * 1.1;
     const x = (a) => L + (a / amax) * (R - L);
     const y = (v) => B - (v / top) * (B - T);
-    // Rough text width for a label at 11.5px, to keep labels inside the frame.
-    const width = (s) => s.length * 6.4;
+    // Text width at the caption size, to keep labels inside the frame.
+    const width = (s) => textWidth(s, "caption");
     const place = (px, s) =>
       px + 12 + width(s) > W - 8 ? { x: px - 12, anchor: "end" } : { x: px + 12, anchor: "start" };
 
@@ -407,16 +423,16 @@ export async function startPlace(echarts) {
     for (let v = 0; v <= top; v += step) {
       parts.push(
         `<line x1="${L}" x2="${R}" y1="${y(v)}" y2="${y(v)}" stroke="${grid}"/>`,
-        `<text x="${L - 10}" y="${y(v) + 4}" text-anchor="end" font-size="11" fill="${mute}">${fmt(v)}</text>`,
+        `<text x="${L - 10}" y="${y(v) + 4}" text-anchor="end" font-size="${caption}" fill="${mute}">${fmt(v)}</text>`,
       );
     }
     alphas.forEach((a) => {
       parts.push(
-        `<text x="${x(a)}" y="212" text-anchor="middle" font-size="11" fill="${soft}" font-weight="600">α ${a}</text>`,
+        `<text x="${x(a)}" y="212" text-anchor="middle" font-size="${caption}" fill="${soft}">α ${a}</text>`,
       );
     });
     parts.push(
-      `<text x="${(L + R) / 2}" y="242" text-anchor="middle" font-size="11" fill="${mute}">← stricter filter · looser filter →</text>`,
+      `<text x="${(L + R) / 2}" y="242" text-anchor="middle" font-size="${caption}" fill="${mute}">← stricter filter · looser filter →</text>`,
     );
 
     const snapIdx = alphas.findIndex((a) => Number(a) === Number(snap));
@@ -427,7 +443,7 @@ export async function startPlace(echarts) {
     );
     if (snapText) {
       parts.push(
-        `<text x="${snapAt.x}" y="${T - 12}" text-anchor="${snapAt.anchor}" font-size="11.5" font-weight="700" fill="${soft}">${snapText}</text>`,
+        `<text x="${snapAt.x}" y="${T - 12}" text-anchor="${snapAt.anchor}" font-size="${caption}" fill="${soft}">${snapText}</text>`,
       );
     }
     const snapSpan =
@@ -447,8 +463,8 @@ export async function startPlace(echarts) {
       parts.push(
         `<g><title>α = ${a}: ${gc[i]} of ${metros} metros in the largest connected piece, ${fmt(kept[i])} links kept</title>` +
           `<circle cx="${cx}" cy="${cy}" r="${on ? 6.5 : 5}" fill="${on ? ink : card}" stroke="${ink}" stroke-width="2"/></g>`,
-        `<text x="${cx}" y="${atTop ? cy + 20 : cy - 12}" text-anchor="middle" font-size="11.5" font-weight="700" fill="${ink}">${gc[i]}</text>`,
-        `<text x="${cx}" y="226" text-anchor="middle" font-size="10.5" fill="${mute}">${fmt(kept[i])} links</text>`,
+        `<text x="${cx}" y="${atTop ? cy + 20 : cy - 12}" text-anchor="middle" font-size="${small}" font-weight="700" fill="${ink}">${gc[i]}</text>`,
+        `<text x="${cx}" y="226" text-anchor="middle" font-size="${caption}" fill="${mute}">${fmt(kept[i])} links</text>`,
       );
       if (!on) return;
       const at = place(cx, note);
@@ -457,12 +473,12 @@ export async function startPlace(echarts) {
       // Above the dot on the top row, unless the snap label is there; below it otherwise.
       const ny = atTop ? (hitsSnap ? cy + 38 : cy - 10) : cy + 22;
       parts.push(
-        `<text x="${at.x}" y="${ny}" text-anchor="${at.anchor}" font-size="11.5" fill="${soft}">${note}</text>`,
+        `<text x="${at.x}" y="${ny}" text-anchor="${at.anchor}" font-size="${caption}" fill="${soft}">${note}</text>`,
       );
     });
 
     host.innerHTML =
-      `<svg viewBox="0 0 ${W} ${H}" width="100%" role="img" aria-label="Metros in the largest connected piece at each backbone alpha" style="display:block;height:auto">` +
+      `<svg viewBox="0 0 ${W} ${H}" width="${W}" height="${H}" role="img" aria-label="Metros in the largest connected piece at each backbone alpha" style="display:block">` +
       parts.join("") +
       "</svg>";
   }
@@ -530,7 +546,7 @@ export async function startPlace(echarts) {
                 formatter: city.name,
                 position: "right",
                 color: INK,
-                fontSize: 11,
+                fontSize: fs("small"),
                 fontWeight: 600,
                 textBorderColor: "#fff",
                 textBorderWidth: 2,
@@ -626,7 +642,7 @@ export async function startPlace(echarts) {
         icon: "circle",
         itemWidth: 8,
         itemHeight: 8,
-        textStyle: { color: MUTE, fontSize: 11, fontWeight: 600 },
+        textStyle: { color: MUTE, fontSize: fs("caption") },
         data: [
           { name: "Staffing shortlist", itemStyle: { color: ORANGE } },
           { name: "Other lead employer", itemStyle: { color: BLUE } },
@@ -673,7 +689,7 @@ export async function startPlace(echarts) {
             formatter: (p) => p.data.employer,
             position: "top",
             color: MUTE,
-            fontSize: 10,
+            fontSize: fs("small"),
             fontWeight: 600,
             distance: 4,
             textBorderColor: "#fff",
@@ -756,7 +772,7 @@ export async function startPlace(echarts) {
           formatter: city.name,
           position: "bottom",
           color: INK,
-          fontSize: 11,
+          fontSize: fs("small"),
           fontWeight: 600,
           distance: 6,
         },
@@ -985,7 +1001,7 @@ export async function startPlace(echarts) {
             position: HERO_LABELS[city.id] ?? "top",
             formatter: city.name,
             color: picked ? token("--w4-hero-ink") : token("--w4-hero-lede"),
-            fontSize: picked ? 11 : 10.5,
+            fontSize: fs("small"),
             fontWeight: picked ? 700 : 600,
           },
         };

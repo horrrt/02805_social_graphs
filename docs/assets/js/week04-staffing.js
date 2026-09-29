@@ -4,6 +4,7 @@
 // vendored ECharts build that the page loads before its modules, the same
 // library as section 1.
 import { esc } from "./cabinet.js";
+import { fs, family } from "./type-scale.mjs";
 
 const echarts = window.echarts;
 const root = document.querySelector("#staffing-figure");
@@ -111,7 +112,7 @@ function draw() {
       distance: 8,
       color: token("--paper"),
       fontWeight: 600,
-      fontSize: 12,
+      fontSize: fs("small"),
       textBorderColor: token("--surface"),
       textBorderWidth: 3,
       formatter: (p) => p.data.name,
@@ -135,7 +136,7 @@ function draw() {
   chart.setOption(
     {
       animationDuration: 300,
-      textStyle: { fontFamily: token("--sans") },
+      textStyle: { fontFamily: family("sans"), fontSize: fs("caption") },
       grid: { left: 52, right: 20, top: 36, bottom: 72 },
       legend: {
         bottom: 0,
@@ -143,7 +144,7 @@ function draw() {
         icon: "circle",
         itemWidth: 10,
         itemHeight: 10,
-        textStyle: { color: token("--muted"), fontSize: 13 },
+        textStyle: { color: token("--muted"), fontSize: fs("caption") },
         data: SECTORS.map(([name]) => name),
       },
       tooltip: {
@@ -151,7 +152,7 @@ function draw() {
         confine: true,
         backgroundColor: token("--surface"),
         borderColor: token("--line"),
-        textStyle: { color: token("--paper"), fontSize: 13 },
+        textStyle: { color: token("--paper"), fontSize: fs("small") },
         formatter: (p) => {
           const d = p.data.client;
           return `<strong>${esc(d.name)}</strong><br />${num(d.filings)} filings · ${num(d.vendors)} vendors<br />
@@ -167,10 +168,10 @@ function draw() {
         name: "Placed filings in the year (log scale) →",
         nameLocation: "end",
         nameGap: 0,
-        nameTextStyle: { color: token("--muted"), align: "right", verticalAlign: "top", padding: [28, 0, 0, 0] },
+        nameTextStyle: { color: token("--muted"), fontSize: fs("caption"), align: "right", verticalAlign: "top", padding: [28, 0, 0, 0] },
         axisLine: { show: false },
         axisTick: { show: false },
-        axisLabel: { color: token("--muted"), formatter: (v) => (v >= 1000 ? `${v / 1000}k` : `${v}`) },
+        axisLabel: { color: token("--muted"), fontSize: fs("caption"), formatter: (v) => (v >= 1000 ? `${v / 1000}k` : `${v}`) },
         splitLine: { lineStyle: { color: token("--grid") } },
       },
       yAxis: {
@@ -179,8 +180,8 @@ function draw() {
         max: 1,
         interval: 0.2,
         name: "↑ Share from the largest vendor",
-        nameTextStyle: { color: token("--muted"), align: "left", padding: [0, 0, 6, -44] },
-        axisLabel: { color: token("--muted"), formatter: (v) => `${Math.round(v * 100)}%` },
+        nameTextStyle: { color: token("--muted"), fontSize: fs("caption"), align: "left", padding: [0, 0, 6, -44] },
+        axisLabel: { color: token("--muted"), fontSize: fs("caption"), formatter: (v) => `${Math.round(v * 100)}%` },
         splitLine: { lineStyle: { color: token("--grid") } },
       },
       series,
@@ -217,13 +218,13 @@ function drawFlows() {
   flowsChart.setOption(
     {
       animationDuration: 300,
-      textStyle: { fontFamily: token("--sans") },
+      textStyle: { fontFamily: family("sans"), fontSize: fs("caption") },
       tooltip: {
         trigger: "item",
         confine: true,
         backgroundColor: token("--surface"),
         borderColor: token("--line"),
-        textStyle: { color: token("--paper"), fontSize: 13 },
+        textStyle: { color: token("--paper"), fontSize: fs("small") },
         formatter: (p) => {
           if (p.dataType === "edge") {
             const client = f.clients.find((d) => d.name === side(p.data.target));
@@ -250,7 +251,7 @@ function drawFlows() {
           emphasis: { focus: "adjacency" },
           itemStyle: { color: token("--paper"), borderWidth: 0 },
           lineStyle: { color: token("--series-none"), opacity: 0.55, curveness: 0.5 },
-          label: { color: token("--paper"), fontSize: 12, formatter: (p) => side(p.name) },
+          label: { color: token("--paper"), fontSize: fs("small"), fontWeight: 600, formatter: (p) => side(p.name) },
           data: nodes,
           links: f.links.map(([vi, ci, n]) => ({
             source: v(vi),

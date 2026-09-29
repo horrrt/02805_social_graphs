@@ -9,7 +9,8 @@
     />
     <title>Style guide · Corridor Control · Log–Log Legends</title>
     <link href="../assets/favicon.svg" rel="icon" type="image/svg+xml" />
-    <link href="../assets/css/corridor.css?v=b7002503b1" rel="stylesheet" />
+    <link href="../assets/css/type.css?v=2" rel="stylesheet" />
+    <link href="../assets/css/corridor.css?v=f664d7a065" rel="stylesheet" />
     <style>
       /* Only what the guide itself needs: scoped specimens and swatches.
          Everything a reader sees inside a specimen comes from corridor.css. */
@@ -18,16 +19,16 @@
       .sg-specimens.four { grid-template-columns: repeat(4, minmax(0, 1fr)); }
       .sg-scope { border-radius: 10px; padding: 14px; }
       .sg-scope .card { padding: 14px; }
-      .sg-name { font-size: 11px; font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase; margin: 0 0 10px; opacity: 0.7; }
+      .sg-name { font-size: var(--fs-caption); font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase; margin: 0 0 10px; opacity: 0.7; }
       .sg-swatches { display: grid; gap: 12px; grid-template-columns: repeat(6, minmax(0, 1fr)); }
       .sg-swatch i { display: block; height: 44px; border-radius: 10px; border: 1px solid var(--line); }
-      .sg-swatch code { display: block; font-size: 11px; margin-top: 6px; }
+      .sg-swatch code { display: block; font-size: var(--fs-caption); margin-top: 6px; }
       .sg-row { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; }
       .sg-stack { display: flex; flex-direction: column; gap: 12px; }
-      .sg-label { font-size: 11px; color: var(--ink-mute); margin: 0 0 6px; }
-      .sg-label code { font-size: 11px; }
+      .sg-label { font-size: var(--fs-caption); color: var(--ink-mute); margin: 0 0 6px; }
+      .sg-label code { font-size: var(--fs-caption); }
       .sg-ramp { display: flex; align-items: baseline; gap: 14px; border-bottom: 1px solid var(--line-soft); padding: 6px 0; }
-      .sg-ramp small { font-size: 11px; color: var(--ink-mute); }
+      .sg-ramp small { font-size: var(--fs-caption); color: var(--ink-mute); }
       .sg-tip { position: static; display: inline-flex; }
       .sg-hero .shell { grid-template-columns: minmax(0, 1fr) 320px; }
     </style>
@@ -210,13 +211,13 @@
             <div class="grid2" style="margin-top: 18px">
               <div>
                 <p class="sg-label">Type ramp · system sans on the clean skin, tabular numerals everywhere</p>
-                <div class="sg-ramp"><span style="font-size: 30px; font-weight: 800; letter-spacing: -0.03em">30/800</span><small>hero headline and figure</small></div>
-                <div class="sg-ramp"><span style="font-size: 21px; font-weight: 800; letter-spacing: -0.02em">21/800</span><small>panel title</small></div>
-                <div class="sg-ramp"><span style="font-size: 17px; font-weight: 700">17/700</span><small>section heading</small></div>
-                <div class="sg-ramp"><span style="font-size: 13.5px; color: var(--ink-soft)">13.5/400</span><small>body</small></div>
-                <div class="sg-ramp"><span style="font-size: 12.5px; color: var(--ink-soft)">12.5/400</span><small>notices, status, fineprint</small></div>
-                <div class="sg-ramp"><span style="font-size: 11px; font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase">11/800 caps</span><small>labels, chips, eyebrows</small></div>
-                <div class="sg-ramp"><span style="font-size: 10px; color: var(--ink-mute)">10/400</span><small>axis ticks, drawn on canvas</small></div>
+                <div class="sg-ramp"><span style="font-size: var(--fs-display); font-weight: 800; letter-spacing: -0.03em">54/800</span><small>hero headline</small></div>
+                <div class="sg-ramp"><span style="font-size: var(--fs-h2); font-weight: 700">30/700</span><small>section heading</small></div>
+                <div class="sg-ramp"><span style="font-size: var(--fs-h3); font-weight: 800; letter-spacing: -0.02em">22/800</span><small>panel title</small></div>
+                <div class="sg-ramp"><span style="font-size: var(--fs-body); color: var(--ink-soft)">13.5/400</span><small>body</small></div>
+                <div class="sg-ramp"><span style="font-size: var(--fs-small); color: var(--ink-soft)">12.5/400</span><small>notices, status, fineprint</small></div>
+                <div class="sg-ramp"><span style="font-size: var(--fs-caption); font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase">11.5/800 caps</span><small>labels, chips, eyebrows</small></div>
+                <div class="sg-ramp"><span style="font-size: var(--fs-caption); color: var(--ink-mute)">11.5/400</span><small>axis ticks and chart notes</small></div>
               </div>
               <div>
                 <p class="sg-label">Surface · <code>--radius</code> on cards, 10px inside them, 999px on pills, one two-layer shadow</p>

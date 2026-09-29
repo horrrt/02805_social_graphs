@@ -27,14 +27,14 @@
 
 .corridor .years-panel h3 {
   color: var(--ink);
-  font-size: 15px;
+  font-size: var(--fs-body);
   font-weight: 700;
   margin: 0;
 }
 
 .corridor .years-panel p {
   color: var(--ink-soft);
-  font-size: 12px;
+  font-size: var(--fs-small);
   line-height: 1.45;
   margin: 0;
 }
@@ -58,7 +58,7 @@
 
 .corridor .years-split h4 {
   color: var(--ink);
-  font-size: 13px;
+  font-size: var(--fs-small);
   font-weight: 700;
   margin: 0;
 }
@@ -77,7 +77,7 @@
 
 .corridor .years-firm span {
   color: var(--ink);
-  font-size: 12.5px;
+  font-size: var(--fs-small);
   font-weight: 700;
 }
 
@@ -88,6 +88,6 @@
 .corridor .years-alt summary {
   color: var(--ink-soft);
   cursor: pointer;
-  font-size: 12.5px;
+  font-size: var(--fs-small);
   font-weight: 600;
 }

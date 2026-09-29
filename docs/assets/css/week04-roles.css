@@ -55,7 +55,7 @@
 
 .corridor .roles-toolbar .axis-modes-label {
   color: var(--ink-mute);
-  font-size: 11px;
+  font-size: var(--fs-caption);
   font-weight: 700;
 }
 
@@ -73,14 +73,14 @@
 /* Under the chart, in as many columns as fit: every series visible, no scroll. */
 .corridor .roles-legend {
   display: grid;
-  font-size: 12px;
+  font-size: var(--fs-small);
   gap: 2px 12px;
   grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
 }
 
 #cut-roles .axis-note {
   color: var(--ink-mute);
-  font-size: 12px;
+  font-size: var(--fs-small);
   line-height: 1.5;
   margin: 12px 0 0;
 }
@@ -93,6 +93,7 @@
   color: var(--ink-soft);
   cursor: pointer;
   display: flex;
+  font-size: var(--fs-small);
   gap: 8px;
   line-height: 1.3;
   padding: 3px 6px;
@@ -119,7 +120,7 @@
 
 .corridor .roles-alt-line {
   color: var(--ink-mute);
-  font-size: 12px;
+  font-size: var(--fs-small);
   margin: 6px 0 0;
 }
 

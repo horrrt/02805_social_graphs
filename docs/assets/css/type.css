@@ -1,0 +1,65 @@
+/* The site's type scale. Every page loads this first; every stylesheet and
+   every chart takes its font sizes and families from these tokens and from
+   nowhere else. The scale comes from the sizes Week 4 and the home page used.
+   The design is the "Type scale" board on the Week 4 design canvas. */
+
+@font-face {
+  font-family: Condensed;
+  src: url("../fonts/barlow-condensed-800.ttf");
+  font-weight: 800;
+}
+
+:root {
+  --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Inter, system-ui, sans-serif;
+  --font-display: Condensed, "Barlow Condensed", "Arial Narrow", Impact, sans-serif;
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+
+  /* size, then the line height and weight that travel with it */
+  --fs-jumbo: 96px;     /* Play's scoreboard only */
+  --fs-numeral: 64px;   /* section numbers */
+  --fs-display: 54px;   /* page and home title */
+  --fs-h2: 30px;        /* section title */
+  --fs-h3: 22px;        /* topic title, home card title */
+  --fs-h4: 20px;        /* card question */
+  --fs-lead: 18px;      /* the finding under a section title */
+  --fs-strong: 16px;    /* card answer, hero lede, catalogue titles */
+  --fs-body: 13.5px;    /* lead, drawer text, nav; chart titles at 700 */
+  --fs-small: 12.5px;   /* notices, buttons, table cells, chart labels and values */
+  --fs-caption: 11.5px; /* chart notes, ticks, legends, table headers, footer */
+
+  --lh-display: 0.98;
+  --lh-title: 1.2;
+  --lh-lead: 1.45;
+  --lh-body: 1.6;
+  --lh-small: 1.5;
+  --lh-caption: 1.45;
+}
+
+body {
+  font-family: var(--font-sans);
+  font-size: var(--fs-body);
+}
+
+/* Form controls do not inherit type by default and fell back to Arial. */
+button,
+input,
+select,
+textarea {
+  font-family: inherit;
+}
+
+/* The browser shrinks sup and sub to "smaller" and gives code its own
+   monospace stack; both fall off the scale without these. */
+sup,
+sub {
+  font-size: var(--fs-caption);
+  line-height: 0;
+}
+
+code,
+kbd,
+samp,
+pre {
+  font-family: var(--font-mono);
+  font-size: 1em;
+}

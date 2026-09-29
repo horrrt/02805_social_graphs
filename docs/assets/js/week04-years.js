@@ -5,6 +5,7 @@
 // first opened (or immediately if it is already open, such as a deep link).
 import { esc } from "./cabinet.js";
 import { drawer, drawerRow, termify } from "./week04-ui.js?v=2";
+import { fitted, fs, textWidth } from "./week04-strip.js?v=2";
 
 const box = document.querySelector("#cut-years");
 const body = document.querySelector("#years-body");
@@ -46,7 +47,7 @@ function palette() {
 // ---------------------------------------------------------------- SVG marks
 
 const svgOpen = (w, h, aria) =>
-  `<svg aria-label="${esc(aria)}" role="img" viewBox="0 0 ${w} ${h}" xmlns="http://www.w3.org/2000/svg">`;
+  `<svg aria-label="${esc(aria)}" role="img" viewBox="0 0 ${w} ${h}" width="${w}" height="${h}" xmlns="http://www.w3.org/2000/svg">`;
 const lineEl = (x1, y1, x2, y2, stroke, sw = 1, opts = {}) =>
   `<line x1="${x1.toFixed(1)}" y1="${y1.toFixed(1)}" x2="${x2.toFixed(1)}" y2="${y2.toFixed(1)}" stroke="${stroke}" ` +
   `stroke-width="${sw}"${opts.dash ? ` stroke-dasharray="${opts.dash}"` : ""}${opts.op != null ? ` stroke-opacity="${opts.op}"` : ""} ` +
@@ -57,12 +58,33 @@ const rectEl = (x, y, w, h, fill, rx = 0, stroke, sw = 1, title = "") =>
 const circleEl = (cx, cy, r, fill, stroke, sw = 1.5, title = "") =>
   `<circle cx="${cx.toFixed(1)}" cy="${cy.toFixed(1)}" r="${r}" fill="${fill}"${stroke ? ` stroke="${stroke}" stroke-width="${sw}"` : ""}>` +
   `${title ? `<title>${esc(title)}</title>` : ""}</circle>`;
-const textEl = (x, y, s, size = 11, fill = "", weight = 400, anchor = "start") =>
+const textEl = (x, y, s, size = fs("caption"), fill = "", weight = 400, anchor = "start") =>
   `<text x="${x.toFixed(1)}" y="${y.toFixed(1)}" font-size="${size}" fill="${fill}" font-weight="${weight}" text-anchor="${anchor}" ` +
   `font-variant-numeric="tabular-nums">${esc(s)}</text>`;
 const pathEl = (d, stroke, sw = 1, opts = {}) =>
   `<path d="${d}" fill="none" stroke="${stroke}" stroke-width="${sw}"${opts.dash ? ` stroke-dasharray="${opts.dash}"` : ""}` +
   `${opts.op != null ? ` stroke-opacity="${opts.op}"` : ""} stroke-linejoin="round" stroke-linecap="round"></path>`;
+
+// Each chart is written as a slot and drawn into it once the box is laid out,
+// at the slot's width so one SVG unit is one pixel (see fitted in
+// week04-strip.js); build(width) returns the chart's markup.
+let slots = [];
+const slot = (build, fallback) => {
+  slots.push([build, fallback]);
+  return `<div data-years-chart="${slots.length - 1}"></div>`;
+};
+function toSvg(markup) {
+  const t = document.createElement("template");
+  t.innerHTML = markup.trim();
+  return t.content.firstElementChild;
+}
+function fillSlots(root) {
+  for (const el of root.querySelectorAll("[data-years-chart]")) {
+    const [build, fallback] = slots[Number(el.dataset.yearsChart)];
+    el.replaceChildren(fitted((width) => toSvg(build(width)), fallback));
+  }
+  slots = [];
+}
 
 // A zero-based axis: the lowest round top tick that holds vmax in three to
 // six steps. Ported from review/week04-redesign/generator/extra.py:nice_axis.
@@ -117,7 +139,7 @@ function yearLine(series, width, height, fmt, aria, pal, color, full = true) {
   for (let k = 0; k < 4; k++) {
     const v = yMin + ((yMax - yMin) * k) / 3;
     out.push(lineEl(L, y(v), width - R, y(v), pal.grid, 1));
-    out.push(textEl(L - 8, y(v) + 4, fmt(v), 11, pal.inkMute, 400, "end"));
+    out.push(textEl(L - 8, y(v) + 4, fmt(v), fs("caption"), pal.inkMute, 400, "end"));
   }
   const pts = series.map((s, i) => [x(i), y(s.v)]);
   const solid = full ? pts.slice(0, -1) : pts;
@@ -127,8 +149,8 @@ function yearLine(series, width, height, fmt, aria, pal, color, full = true) {
     const [px, py] = pts[i];
     const last = full && i === series.length - 1;
     out.push(circleEl(px, py, 5, last ? pal.card : color, color, 2, `${s.label}: ${fmt(s.v)}`));
-    out.push(textEl(px, py - 11, fmt(s.v), 11.5, pal.ink, 700, "middle"));
-    out.push(textEl(px, height - 10, s.label, 11, pal.inkMute, last ? 400 : 600, "middle"));
+    out.push(textEl(px, py - 11, fmt(s.v), fs("small"), pal.ink, 700, "middle"));
+    out.push(textEl(px, height - 10, s.label, fs("caption"), pal.inkMute, 400, "middle"));
   });
   out.push("</svg>");
   return out.join("\n");
@@ -137,8 +159,9 @@ function yearLine(series, width, height, fmt, aria, pal, color, full = true) {
 // Two series over the five fiscal years, labelled at their ends. Ported
 // from extra.py:two_lines.
 function twoLines(a, b, width, height, fmt, aria, pal, names, colors, note = null) {
-  // R holds the end names ("client companies" is about 102 wide at 12px).
-  const L = 56, R = 124, T = 18, Bm = 30;
+  // R holds the end names.
+  const L = 56, T = 18, Bm = 30;
+  const R = Math.ceil(Math.max(...names.map((name) => textWidth(name, "small", 700)))) + 20;
   const { step, top } = niceAxis(Math.max(...a, ...b));
   const yMax = top;
   const x = (i) => L + (i * (width - L - R)) / 4;
@@ -147,7 +170,7 @@ function twoLines(a, b, width, height, fmt, aria, pal, names, colors, note = nul
   for (let k = 0; k <= Math.round(top / step); k++) {
     const v = k * step;
     out.push(lineEl(L, y(v), width - R, y(v), v === 0 ? pal.line : pal.grid, 1));
-    out.push(textEl(L - 8, y(v) + 4, fmt(v), 11, pal.inkMute, 400, "end"));
+    out.push(textEl(L - 8, y(v) + 4, fmt(v), fs("caption"), pal.inkMute, 400, "end"));
   }
   [[a, colors[0], names[0]], [b, colors[1], names[1]]].forEach(([series, col, name]) => {
     const pts = series.map((v, i) => [x(i), y(v)]);
@@ -160,13 +183,13 @@ function twoLines(a, b, width, height, fmt, aria, pal, names, colors, note = nul
       // on top of the axis's own tick labels whenever the two are close in
       // height; start-anchor it just to the right of the point instead.
       const first = i === 0;
-      out.push(textEl(first ? px + 6 : px, py - 10, fmt(series[i]), 11, pal.ink, 700, first ? "start" : "middle"));
+      out.push(textEl(first ? px + 6 : px, py - 10, fmt(series[i]), fs("small"), pal.ink, 700, first ? "start" : "middle"));
     });
-    out.push(textEl(pts.at(-1)[0] + 12, pts.at(-1)[1] + 4, name, 12, pal.ink, 700, "start"));
+    out.push(textEl(pts.at(-1)[0] + 12, pts.at(-1)[1] + 4, name, fs("small"), pal.ink, 700, "start"));
   });
-  YEARS.forEach((y_, i) => out.push(textEl(x(i), height - 10, y_, 11, pal.inkMute, 600, "middle")));
+  YEARS.forEach((y_, i) => out.push(textEl(x(i), height - 10, y_, fs("caption"), pal.inkMute, 400, "middle")));
   // The panel's finding, in the empty band just above the zero line.
-  if (note) out.push(textEl(L + 8, y(0) - 8, note, 11.5, pal.ink, 700, "start"));
+  if (note) out.push(textEl(L + 8, y(0) - 8, note, fs("caption"), pal.ink, 400, "start"));
   out.push("</svg>");
   return out.join("\n");
 }
@@ -185,11 +208,11 @@ function yearBars(series, width, height, fmt, aria, pal, { partialLast = true, s
     const h = ((base - T) * s.v) / vmax;
     const last = partialLast && i === n - 1;
     out.push(rectEl(x, base - h, w, h, last ? pal.card : pal.ink, 3, last ? pal.ink : null, 1.6, `${s.label}: ${fmt(s.v)}`));
-    out.push(textEl(x + w / 2, base - h - 7, fmt(s.v), 11.5, pal.ink, 700, "middle"));
-    out.push(textEl(x + w / 2, base + 16, s.label, 11, pal.inkSoft, 600, "middle"));
-    if (sub && sub[i]) out.push(textEl(x + w / 2, base + 30, sub[i], 10.5, pal.inkMute, 400, "middle"));
+    out.push(textEl(x + w / 2, base - h - 7, fmt(s.v), fs("small"), pal.ink, 700, "middle"));
+    out.push(textEl(x + w / 2, base + 17, s.label, fs("small"), pal.inkSoft, 600, "middle"));
+    if (sub && sub[i]) out.push(textEl(x + w / 2, base + 32, sub[i], fs("caption"), pal.inkMute, 400, "middle"));
     // The panel's finding, over the bar it is about.
-    if (note && note[0] === i) out.push(textEl(x + w / 2, base - h - 23, note[1], 11.5, pal.inkSoft, 700, "middle"));
+    if (note && note[0] === i) out.push(textEl(x + w / 2, base - h - 24, note[1], fs("caption"), pal.inkSoft, 400, "middle"));
   });
   out.push(lineEl(L, base, width - R, base, pal.line, 1));
   out.push("</svg>");
@@ -200,8 +223,8 @@ function yearBars(series, width, height, fmt, aria, pal, { partialLast = true, s
 // its June end and every month marked with a hoverable point. Ported from
 // extra.py:season_chart; older years fade by opacity instead of a second
 // hue, since the tokens available are --ink and --people, not a ramp.
-function seasonChart(rows, key, aria, pal, color, note) {
-  const width = 552, height = 280;
+function seasonChart(rows, key, aria, pal, color, note, width) {
+  const height = 280;
   const L = 56, R = 62, T = 16, Bm = 30;
   const years = Object.keys(rows);
   const { step, top } = niceAxis(Math.max(...years.flatMap((y) => rows[y].map((m) => m[key]))));
@@ -211,9 +234,9 @@ function seasonChart(rows, key, aria, pal, color, note) {
   for (let k = 0; k <= Math.round(top / step); k++) {
     const v = k * step;
     out.push(lineEl(L, y(v), width - R, y(v), v === 0 ? pal.line : pal.grid, 1));
-    out.push(textEl(L - 8, y(v) + 4, num(v), 11, pal.inkMute, 400, "end"));
+    out.push(textEl(L - 8, y(v) + 4, num(v), fs("caption"), pal.inkMute, 400, "end"));
   }
-  MONTHS.forEach((mo, i) => out.push(textEl(x(i), height - 10, mo, 11, pal.inkMute, 400, "middle")));
+  MONTHS.forEach((mo, i) => out.push(textEl(x(i), height - 10, mo, fs("caption"), pal.inkMute, 400, "middle")));
   const ends = [];
   years.forEach((yy, yi) => {
     const newest = yi === years.length - 1;
@@ -226,18 +249,18 @@ function seasonChart(rows, key, aria, pal, color, note) {
     });
     ends.push(pts.at(-1)[1]);
   });
-  // 15 apart, so the 11.5px end labels clear each other's glyph boxes.
+  // 15 apart, so the end labels clear each other's glyph boxes.
   spread(ends, 15).forEach((ly, i) => {
     const yy = years[i];
     const newest = i === years.length - 1;
-    out.push(textEl(width - R + 8, ly + 4, yr(yy), 11.5, newest ? pal.ink : pal.inkMute, newest ? 700 : 600, "start"));
+    out.push(textEl(width - R + 8, ly + 4, yr(yy), fs("small"), newest ? pal.ink : pal.inkMute, newest ? 700 : 600, "start"));
   });
   if (note) {
     const [i, label] = note;
     const yy = years.at(-1);
     const m = rows[yy][i];
     out.push(circleEl(x(i), y(m[key]), 4.5, pal.card, color, 2, label));
-    out.push(textEl(x(i) + 12, y(m[key]) - 6, label, 11.5, pal.ink, 700, "start"));
+    out.push(textEl(x(i) + 12, y(m[key]) - 6, label, fs("caption"), pal.ink, 400, "start"));
   }
   out.push("</svg>");
   return out.join("\n");
@@ -246,11 +269,12 @@ function seasonChart(rows, key, aria, pal, color, note) {
 // A small multiple per firm: filings per fiscal year, dashed and hollow at
 // the end when the firm ran the full five years. Ported from
 // extra.py:mini_years.
-function miniYears(series, ymax, pal, note = null) {
-  const width = 262, height = 150;
-  // Side margins of half a four-digit label, so the first and last values
+function miniYears(series, ymax, pal, note, width) {
+  const height = 150;
+  // Side margins of half the widest value label, so the first and last values
   // (centred on their points) stay inside the SVG.
-  const L = 22, R = 22, T = 20, Bm = 24;
+  const L = Math.ceil(Math.max(...series.map((s) => textWidth(num(s.v), "small", 700))) / 2) + 2;
+  const R = L, T = 20, Bm = 24;
   const full = series.length === 5;
   const x = (i) => L + (i * (width - L - R)) / 4;
   const y = (v) => T + ((ymax - v) * (height - T - Bm)) / ymax;
@@ -264,11 +288,11 @@ function miniYears(series, ymax, pal, note = null) {
     const [px, py] = pts[i];
     const last = full && i === series.length - 1;
     out.push(circleEl(px, py, 4, last ? pal.card : pal.ink, pal.ink, 1.6, `${s.label}: ${num(s.v)}`));
-    out.push(textEl(px, py - 8, num(s.v), 10.5, pal.ink, 700, "middle"));
-    out.push(textEl(px, height - 6, s.label, 10.5, pal.inkMute, 400, "middle"));
+    out.push(textEl(px, py - 8, num(s.v), fs("small"), pal.ink, 700, "middle"));
+    out.push(textEl(px, height - 6, s.label, fs("caption"), pal.inkMute, 400, "middle"));
   });
   // The firm's finding, top right, where a short run leaves the chart empty.
-  if (note) out.push(textEl(width - R, 12, note, 10.5, pal.inkSoft, 700, "end"));
+  if (note) out.push(textEl(width - R, 12, note, fs("caption"), pal.inkSoft, 400, "end"));
   out.push("</svg>");
   return out.join("\n");
 }
@@ -298,26 +322,26 @@ function render(data) {
     "against the same months a year earlier.";
 
   const cert = YEARS.map((y) => ({ label: y, v: ys[y].certified_filings }));
-  const s1 = yearBars(cert, 540, 250, num, "Certified H-1B filings per fiscal year", pal,
-    { sub: ["", "", "", "", "Oct–Jun only"], note: [1, `${signed(fell23, 0)} on 2022`] });
+  const s1 = slot((w) => yearBars(cert, w, 250, num, "Certified H-1B filings per fiscal year", pal,
+    { sub: ["", "", "", "", "Oct–Jun only"], note: [1, `${signed(fell23, 0)} on 2022`] }), 540);
 
   const like = ["FY2024", "FY2025", "FY2026"].map((fy) => ({ label: yr(fy), v: oj[fy].certified_filings }));
-  const s1b = yearBars(like, 540, 220, num, "Certified filings from October to June, three years", pal,
-    { partialLast: false, note: [2, `${signed(fell26)} on 2025`] });
+  const s1b = slot((w) => yearBars(like, w, 220, num, "Certified filings from October to June, three years", pal,
+    { partialLast: false, note: [2, `${signed(fell26)} on 2025`] }), 540);
 
   const rows = { FY2024: data.monthly.FY2024, FY2025: data.monthly.FY2025, FY2026: data.monthly.FY2026 };
   const oct25 = rows.FY2026[0];
   const monthlyHtml =
     '<div class="years-split">' +
-    `<div><h4>Certified filings</h4>${seasonChart(rows, "certified_filings",
+    `<div><h4>Certified filings</h4>${slot((w) => seasonChart(rows, "certified_filings",
       "Certified H-1B filings per month, October to June, 2024 to 2026", pal, pal.ink,
-      [0, `Shutdown, October 2025: ${num(oct25.certified_filings)}`])}</div>` +
-    `<div><h4>Placed at a client</h4>${seasonChart(rows, "placed_filings",
-      "Certified filings that place the worker at a client, per month, October to June, 2024 to 2026", pal, pal.people)}</div>` +
+      [0, `Shutdown, October 2025: ${num(oct25.certified_filings)}`], w), 552)}</div>` +
+    `<div><h4>Placed at a client</h4>${slot((w) => seasonChart(rows, "placed_filings",
+      "Certified filings that place the worker at a client, per month, October to June, 2024 to 2026", pal, pal.people, null, w), 552)}</div>` +
     "</div>";
 
   const share = YEARS.map((y) => ({ label: y, v: ys[y].placed_share }));
-  const s3 = yearLine(share, 540, 230, (v) => pct(v), "Share of certified filings that place a worker at a client", pal, pal.people);
+  const s3 = slot((w) => yearLine(share, w, 230, (v) => pct(v), "Share of certified filings that place a worker at a client", pal, pal.people), 540);
 
   const per = {};
   YEARS.forEach((y) => {
@@ -330,34 +354,34 @@ function render(data) {
     const have = full.filter((s) => s.v != null);
     const series = have.length < 5 ? have : full;
     const note = per["2026"][f] == null ? `Not in 2026’s top ${topN}` : null;
-    return `<div class="years-firm"><span>${esc(f)}</span>${miniYears(series, ymaxF, pal, note)}</div>`;
+    return `<div class="years-firm"><span>${esc(f)}</span>${slot((w) => miniYears(series, ymaxF, pal, note, w), 262)}</div>`;
   }).join("") + "</div>";
 
   const denialA = data.uscis_series.map((r) => r.placing_initial_denial_rate);
   const denialB = data.uscis_series.map((r) => r.direct_initial_denial_rate);
   const ratios = denialA.map((v, i) => v / denialB[i]);
-  const s5 = twoLines(denialA, denialB, 540, 240, (v) => pct(v),
+  const s5 = slot((w) => twoLines(denialA, denialB, w, 240, (v) => pct(v),
     "USCIS denials of first-time petitions, placing firms against direct employers", pal,
     ["placing firms", "direct employers"], [pal.people, pal.access],
-    `Placing firms: ${Math.min(...ratios).toFixed(1)}× to ${Math.max(...ratios).toFixed(1)}× the direct rate`);
+    `Placing firms: ${Math.min(...ratios).toFixed(1)}× to ${Math.max(...ratios).toFixed(1)}× the direct rate`), 540);
 
   // Each draw is held the March before the cap year it fills.
   const capYears = Object.keys(data.lottery_draws).sort();
   const drawMonth = (capYear) => `March ${Number(capYear) - 1}`;
   const draws = capYears.map((y) => ({ label: drawMonth(y), v: data.lottery_draws[y].registrations }));
   const drawGrowth = draws.at(-1).v / draws[0].v;
-  const s6 = yearBars(draws, 540, 230, num, "H-1B lottery registrations per draw", pal,
+  const s6 = slot((w) => yearBars(draws, w, 230, num, "H-1B lottery registrations per draw", pal,
     { partialLast: false, sub: capYears.map((y) => `${y} cap`),
-      note: [draws.length - 1, `${drawGrowth.toFixed(1)}× the ${draws[0].label} draw`] });
+      note: [draws.length - 1, `${drawGrowth.toFixed(1)}× the ${draws[0].label} draw`] }), 540);
   const funnelYears = Object.keys(data.lottery_funnels).sort();
   const perApp = funnelYears.map((y) => data.lottery_funnels[y].registrations_per_approval);
 
   const clients = YEARS.map((y) => ys[y].clients);
   const firms = YEARS.map((y) => ys[y].firms);
   // 2025 is the last full year, so the clients-and-firms finding stops there.
-  const s7 = twoLines(clients, firms, 540, 240, num, "Client companies and placing firms per year", pal,
+  const s7 = slot((w) => twoLines(clients, firms, w, 240, num, "Client companies and placing firms per year", pal,
     ["client companies", "firms that place"], [pal.ink, pal.people],
-    `2022 to 2025: clients ${signed(change(clients[0], clients[3]))}, firms ${signed(change(firms[0], firms[3]))}`);
+    `2022 to 2025: clients ${signed(change(clients[0], clients[3]))}, firms ${signed(change(firms[0], firms[3]))}`), 540);
 
   const placedFalls = ["2024", "2025", "2026"].every((y, i) => ys[y].placed_share < ys[YEARS[i + 1]].placed_share);
   const placedFinding = placedFalls
@@ -428,6 +452,7 @@ function render(data) {
       `draw and ${perApp[1].toFixed(1)} in ${drawMonth(funnelYears[1])}; USCIS’s data ends there.`, s6) +
     panel("Clients and firms", "Client companies named on a placed filing, and the firms that place workers, per fiscal year.", s7) +
     "</div></div>";
+  fillSlots(body);
   const lottery = [...body.querySelectorAll(".years-panel")].find((el) => el.querySelector("h3")?.textContent === "The lottery");
   termify(
     lottery?.querySelector("p"),
