@@ -7,6 +7,8 @@
 //
 // Every number is computed from the same two files the rest of the page reads.
 
+import { fs, family } from "./type-scale.mjs";
+
 const $ = (id) => document.getElementById(id);
 
 // The build stamp that week03-boot.js put on this module's own URL. new URL()
@@ -40,10 +42,13 @@ function chart(id) {
   return charts.get(id);
 }
 
-const BASE = {
+// Sizes and the family come from the type scale in type.css. ECharts' own
+// default is 12px, so text an option leaves unsized still lands on "small".
+// Read when a chart is drawn, not when this module loads.
+const base = () => ({
   animationDuration: 320,
-  textStyle: { fontFamily: "-apple-system, system-ui, sans-serif" },
-};
+  textStyle: { fontFamily: family("sans"), fontSize: fs("small") },
+});
 
 // ECharts draws its own tooltip here rather than borrowing the page's, because
 // both of these charts want a tooltip that follows a moving node. The colours
@@ -58,7 +63,7 @@ const tip = (formatter) => ({
   backgroundColor: `rgba(${api.rgb(api.colours.INK)},0.96)`,
   borderWidth: 0,
   padding: [8, 10],
-  textStyle: { color: paper(), fontSize: 12 },
+  textStyle: { color: paper(), fontSize: fs("small") },
   formatter,
 });
 
@@ -147,7 +152,7 @@ function drawGraph() {
 
   instance.setOption(
     {
-      ...BASE,
+      ...base(),
       tooltip: tip((p) => {
         if (p.dataType === "edge")
           return `<b>${name(p.data.source)} → ${name(p.data.target)}</b><br>${fmt(p.data.people)} people`;
@@ -167,7 +172,7 @@ function drawGraph() {
           links,
           edgeSymbol: ["none", "arrow"],
           edgeSymbolSize: 5,
-          label: { position: "right", color: INK, fontSize: 11, fontWeight: 600 },
+          label: { position: "right", color: INK, fontSize: fs("small"), fontWeight: 600 },
           emphasis: { focus: "adjacency", label: { show: true } },
           force: {
             repulsion: 320,
@@ -332,7 +337,7 @@ function drawArea() {
 
   instance.setOption(
     {
-      ...BASE,
+      ...base(),
       tooltip: {
         ...tip(),
         trigger: "axis",
@@ -351,7 +356,8 @@ function drawArea() {
       legend: {
         type: "scroll",
         bottom: 0,
-        textStyle: { color: MUTE, fontSize: 11 },
+        textStyle: { color: MUTE, fontSize: fs("caption") },
+        selectorLabel: { fontSize: fs("caption") },
         itemWidth: 12,
         itemHeight: 8,
       },
@@ -361,14 +367,14 @@ function drawArea() {
         boundaryGap: false,
         data: years,
         axisLine: { lineStyle: { color: GRID } },
-        axisLabel: { color: MUTE, fontSize: 11 },
+        axisLabel: { color: MUTE, fontSize: fs("caption") },
       },
       yAxis: {
         type: "value",
-        axisLabel: { color: MUTE, fontSize: 10, formatter: (v) => compact(v) },
+        axisLabel: { color: MUTE, fontSize: fs("caption"), formatter: (v) => compact(v) },
         splitLine: { lineStyle: { color: GRID } },
       },
-      textStyle: { ...BASE.textStyle, color: INK },
+      textStyle: { ...base().textStyle, color: INK },
       series: bands,
     },
     true,
@@ -485,7 +491,7 @@ function drawAsylum() {
 
   instance.setOption(
     {
-      ...BASE,
+      ...base(),
       tooltip: tip((p) => {
         const [, , value, month] = p.data;
         return (
@@ -503,7 +509,7 @@ function drawAsylum() {
         itemWidth: 12,
         itemHeight: 12,
         itemGap: 6,
-        textStyle: { color: MUTE, fontSize: 10 },
+        textStyle: { color: MUTE, fontSize: fs("caption") },
         // Fixed to this origin's own maximum, so the grid is a story about
         // one country's months rather than a comparison with Syria.
         splitNumber: 5,
@@ -519,7 +525,7 @@ function drawAsylum() {
         splitArea: { show: false },
         axisLine: { show: false },
         axisTick: { show: false },
-        axisLabel: { color: MUTE, fontSize: 10 },
+        axisLabel: { color: MUTE, fontSize: fs("caption") },
       },
       yAxis: {
         type: "category",
@@ -528,7 +534,7 @@ function drawAsylum() {
         splitArea: { show: false },
         axisLine: { show: false },
         axisTick: { show: false },
-        axisLabel: { color: INK, fontSize: 11, fontWeight: 600 },
+        axisLabel: { color: INK, fontSize: fs("small"), fontWeight: 600 },
       },
       series: [
         {
@@ -642,14 +648,14 @@ function drawClosures() {
     range: year,
     splitLine: { show: false },
     itemStyle: { color: "transparent", borderColor: GRID, borderWidth: 1 },
-    yearLabel: { show: true, color: INK, fontSize: 13, fontWeight: 700, margin: 34 },
-    monthLabel: { show: i === 0, color: MUTE, fontSize: 10 },
-    dayLabel: { show: true, firstDay: 1, nameMap: ["S", "M", "T", "W", "T", "F", "S"], color: MUTE, fontSize: 9 },
+    yearLabel: { show: true, color: INK, fontSize: fs("small"), fontWeight: 700, margin: 34 },
+    monthLabel: { show: i === 0, color: MUTE, fontSize: fs("caption") },
+    dayLabel: { show: true, firstDay: 1, nameMap: ["S", "M", "T", "W", "T", "F", "S"], color: MUTE, fontSize: fs("caption") },
   }));
 
   instance.setOption(
     {
-      ...BASE,
+      ...base(),
       tooltip: tip((p) => {
         const [, shut] = p.value;
         const counts = p.data.counts;
@@ -670,7 +676,7 @@ function drawClosures() {
         itemWidth: 12,
         itemHeight: 12,
         itemGap: 6,
-        textStyle: { color: MUTE, fontSize: 10 },
+        textStyle: { color: MUTE, fontSize: fs("caption") },
         pieces: [
           { min: 0, max: 0, label: "none closed", color: `rgba(${api.rgb(MUTE)},0.12)` },
           { min: 1, max: 9, label: "1–9", color: `rgba(${api.rgb(ACCESS)},0.25)` },

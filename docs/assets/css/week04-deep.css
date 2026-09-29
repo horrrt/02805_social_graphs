@@ -20,5 +20,5 @@
 }
 
 .corridor .w4-q-block .w4-q h2 {
-  font-size: 18px;
+  font-size: var(--fs-h4);
 }

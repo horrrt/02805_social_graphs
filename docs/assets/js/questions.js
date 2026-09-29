@@ -8,8 +8,18 @@
 // The year is fixed at 2024, the most recent DESA revision, so a reader moving
 // the year slider upstairs does not silently change the answers down here.
 
+import { font, fs } from "./type-scale.mjs";
+
 const YEAR = 2024;
 const $ = (id) => document.getElementById(id);
+
+// Chart text takes its size from the type scale in type.css, read at draw time.
+// Ticks, axis titles and notes are captions; country names are small at 600;
+// numbers printed on a mark are small at 700; a chart's own title is body 700.
+const NOTE = (weight = 400) => font("caption", weight);
+const NAME = (weight = 600) => font("small", weight);
+const VALUE = () => font("small", 700);
+const TITLE = () => font("body", 700);
 
 let api = null;
 let model = null;
@@ -148,6 +158,21 @@ function fitText(ctx, text, maxWidth) {
   return `${text.slice(0, cut).trimEnd()}…`;
 }
 const one = (value) => value.toFixed(1);
+
+// A note that no longer fits on one line at caption size, broken at spaces.
+function wrapText(ctx, text, maxWidth) {
+  const lines = [];
+  let line = "";
+  for (const word of text.split(" ")) {
+    const next = line ? `${line} ${word}` : word;
+    if (line && ctx.measureText(next).width > maxWidth) {
+      lines.push(line);
+      line = word;
+    } else line = next;
+  }
+  if (line) lines.push(line);
+  return lines;
+}
 
 /* ------------------------------------------------------------------ picking
 
@@ -332,7 +357,7 @@ function drawRing() {
 
   // Segments on top, so the ring reads as a rim the ribbons hang from.
   const room = Math.min(104, width / 2 - radius - 26);
-  ctx.font = "600 11px -apple-system, system-ui, sans-serif";
+  ctx.font = NAME();
   for (let i = 0; i < keep.length; i += 1) {
     const span = spans[i];
     const outEnd = span.outArcs.at(-1)[1];
@@ -347,8 +372,12 @@ function drawRing() {
       ctx.strokeStyle = colour;
       ctx.stroke();
     }
-    const [lx, ly] = at(span.mid, radius + 20);
+    const [lx, baseY] = at(span.mid, radius + 20);
     const right = Math.cos(span.mid) > -0.02;
+    // On the top of the ring the total under a name would sit on the rim, so
+    // the pair moves up by one line there.
+    const gap = Math.ceil(fs("small")) + 1;
+    const ly = room > 70 && Math.sin(span.mid) < -0.3 ? baseY - gap : baseY;
     ctx.fillStyle = INK;
     ctx.textAlign = right ? "left" : "right";
     ctx.textBaseline = "middle";
@@ -356,9 +385,9 @@ function drawRing() {
     // The total only fits while the ring is wide enough to leave a margin.
     if (room > 70) {
       ctx.fillStyle = MUTE;
-      ctx.font = "10px -apple-system, system-ui, sans-serif";
-      ctx.fillText(api.format.compact.format(out[i] + into[i]), lx, ly + 12);
-      ctx.font = "600 11px -apple-system, system-ui, sans-serif";
+      ctx.font = NOTE();
+      ctx.fillText(api.format.compact.format(out[i] + into[i]), lx, ly + gap);
+      ctx.font = NAME();
     }
     list.push({
       box: right ? [lx - 4, ly - 10, lx + room, ly + 18] : [lx - room, ly - 10, lx + 4, ly + 18],
@@ -371,7 +400,7 @@ function drawRing() {
   }
 
   ctx.fillStyle = MUTE;
-  ctx.font = "10px -apple-system, system-ui, sans-serif";
+  ctx.font = NOTE();
   ctx.textAlign = "center";
   ctx.textBaseline = "top";
   ctx.fillText(
@@ -474,7 +503,7 @@ function drawHosts() {
     ...rows.map((iso3) => Math.max(model.hosts.get(iso3) ?? 0, model.abroad.get(iso3) ?? 0)),
   );
 
-  ctx.font = "10px -apple-system, system-ui, sans-serif";
+  ctx.font = NOTE();
   ctx.textBaseline = "middle";
   ctx.fillStyle = OUTBOUND;
   ctx.textAlign = "right";
@@ -502,10 +531,10 @@ function drawHosts() {
     ctx.fillRect(mid + gutter / 2, y - bar / 2, right, bar);
 
     ctx.fillStyle = INK;
-    ctx.font = "600 11px -apple-system, system-ui, sans-serif";
+    ctx.font = NAME();
     ctx.textAlign = "center";
     ctx.fillText(fitText(ctx, model.name(iso3), gutter - 8), mid, y);
-    ctx.font = "10px -apple-system, system-ui, sans-serif";
+    ctx.font = VALUE();
     ctx.fillStyle = MUTE;
     ctx.textAlign = "right";
     ctx.fillText(api.format.compact.format(model.abroad.get(iso3) ?? 0), mid - gutter / 2 - left - 4, y);
@@ -617,7 +646,7 @@ function drawDistance() {
       });
     }
     ctx.fillStyle = MUTE;
-    ctx.font = "10px -apple-system, system-ui, sans-serif";
+    ctx.font = NOTE();
     ctx.textAlign = "center";
     ctx.textBaseline = "top";
     ctx.fillText(d.label, x + slot / 2, box.bottom + 6);
@@ -643,7 +672,7 @@ function drawDistance() {
     ctx.lineTo(x, box.bottom);
     ctx.stroke();
     ctx.fillStyle = INK;
-    ctx.font = "600 10px -apple-system, system-ui, sans-serif";
+    ctx.font = NOTE(600);
     ctx.textAlign = x > box.right - 150 ? "right" : "left";
     ctx.textBaseline = "top";
     ctx.fillText(
@@ -837,14 +866,23 @@ function drawWealthScatter(ctx, box, rows, list) {
     ...byResidual.slice(-1),
     [...rows].sort((a, b) => b.pop - a.pop)[0],
   ]);
-  ctx.font = "600 10px -apple-system, system-ui, sans-serif";
+  ctx.font = NAME();
   ctx.textBaseline = "middle";
+  const step = Math.ceil(fs("small")) + 1;
   for (const d of notable) {
     if (!d) continue;
     const right = d.px < (box.left + box.right) / 2;
     let y = d.py;
-    // Two labels on one pixel row read as one long wrong label.
-    while (placed.some((other) => Math.abs(other - y) < 11)) y -= 11;
+    // Two labels on one pixel row read as one long wrong label. Pushed up past
+    // the top of the plot they would run into the title, so they go down.
+    let dir = -1;
+    while (placed.some((other) => Math.abs(other - y) < step)) {
+      y += dir * step;
+      if (dir < 0 && y < box.top + step / 2) {
+        dir = 1;
+        y = d.py + step;
+      }
+    }
     placed.push(y);
     ctx.textAlign = right ? "left" : "right";
     ctx.fillStyle = MUTE;
@@ -881,15 +919,15 @@ function drawReach(ctx, box, list) {
     ctx.fill();
 
     ctx.fillStyle = MUTE;
-    ctx.font = "600 10px -apple-system, system-ui, sans-serif";
+    ctx.font = NAME();
     ctx.textAlign = "right";
     ctx.textBaseline = "middle";
-    ctx.fillText(band.label, box.left - 8, y - 6);
-    ctx.font = "10px -apple-system, system-ui, sans-serif";
-    ctx.fillText(`${api.format.compact.format(band.people)} people`, box.left - 8, y + 7);
+    ctx.fillText(band.label, box.left - 8, y - 7);
+    ctx.font = NOTE();
+    ctx.fillText(`${api.format.compact.format(band.people)} people`, box.left - 8, y + 8);
 
     ctx.fillStyle = INK;
-    ctx.font = "600 11px -apple-system, system-ui, sans-serif";
+    ctx.font = VALUE();
     ctx.textAlign = "left";
     ctx.fillText(`${api.format.fmt.format(band.median)} km`, x75 + 9, y);
 
@@ -914,7 +952,8 @@ function drawWealth() {
 
   const gapX = 52;
   const panelWidth = (width - gapX) / 2;
-  const foot = 18;
+  // Two lines of caption for the note under both panels.
+  const foot = Math.ceil(fs("caption") * 1.45) * 2 + 4;
 
   const scatter = api.frame(panelWidth, height - foot, { l: 46, r: 12, t: 34, b: 44 });
   drawWealthScatter(ctx, scatter, data, list);
@@ -932,12 +971,12 @@ function drawWealth() {
   ];
   for (const [box, title, stat] of titles) {
     ctx.fillStyle = INK;
-    ctx.font = "600 11px -apple-system, system-ui, sans-serif";
+    ctx.font = TITLE();
     ctx.textAlign = "left";
     ctx.textBaseline = "alphabetic";
     ctx.fillText(title, box.left - (box === reach ? 70 : 0), box.top - 12);
     ctx.fillStyle = MUTE;
-    ctx.font = "10px -apple-system, system-ui, sans-serif";
+    ctx.font = NOTE();
     ctx.textAlign = "right";
     ctx.fillText(stat, box.right + (box === reach ? 70 : 0), box.top - 12);
   }
@@ -950,16 +989,18 @@ function drawWealth() {
     growing.map((d) => Math.log10(Math.max(d.share, 0.02))),
   );
   ctx.fillStyle = MUTE;
-  ctx.font = "10px -apple-system, system-ui, sans-serif";
+  ctx.font = NOTE();
   ctx.textAlign = "left";
   ctx.textBaseline = "bottom";
-  ctx.fillText(
+  const note = wrapText(
+    ctx,
     `Dashed line: least squares through the cloud. Dot area is population. ` +
       `Against 2024 GDP growth instead of income, the same ${growing.length} countries give ` +
       `r = ${speed.toFixed(2)}: no relationship, so that panel is a sentence rather than a chart.`,
-    0,
-    height - 2,
+    width,
   );
+  const lead = Math.ceil(fs("caption") * 1.45);
+  note.forEach((text, i) => ctx.fillText(text, 0, height - 2 - (note.length - 1 - i) * lead));
   const bands = reachData();
   api.chartTable(
     "q-wealth",
@@ -1073,7 +1114,7 @@ function drawIncome() {
   // One bar draws a set of slices that add to 100%, in the order given.
   function stack(parts, colour, y, title) {
     ctx.fillStyle = INK;
-    ctx.font = "600 12px -apple-system, system-ui, sans-serif";
+    ctx.font = TITLE();
     ctx.textAlign = "left";
     ctx.textBaseline = "alphabetic";
     ctx.fillText(title, left, y - 12);
@@ -1087,13 +1128,13 @@ function drawIncome() {
       ctx.fillRect(x, y, Math.max(w - 1.5, 0), tall);
       if (w > 52) {
         ctx.fillStyle = shade > 0.62 ? paper() : INK;
-        ctx.font = "600 12px -apple-system, system-ui, sans-serif";
+        ctx.font = VALUE();
         ctx.textAlign = "center";
         ctx.textBaseline = "middle";
         ctx.fillText(`${one(part.share)}%`, x + w / 2, y + tall / 2);
       }
       ctx.fillStyle = MUTE;
-      ctx.font = "10px -apple-system, system-ui, sans-serif";
+      ctx.font = NOTE();
       ctx.textAlign = w > 52 ? "center" : "left";
       ctx.textBaseline = "top";
       ctx.fillText(part.label, w > 52 ? x + w / 2 : x, y + tall + 6);
@@ -1121,7 +1162,7 @@ function drawIncome() {
   const top = 142;
   const deep = 58;
   ctx.fillStyle = INK;
-  ctx.font = "600 12px -apple-system, system-ui, sans-serif";
+  ctx.font = TITLE();
   ctx.textAlign = "left";
   ctx.textBaseline = "alphabetic";
   ctx.fillText("How many of them fled", left, top - 14);
@@ -1138,7 +1179,7 @@ function drawIncome() {
     ctx.fillStyle = `rgba(${api.rgb(INK)},0.68)`;
     ctx.fillRect(x, top, Math.max(w - 1.5, 0), drop);
     ctx.fillStyle = INK;
-    ctx.font = "600 11px -apple-system, system-ui, sans-serif";
+    ctx.font = VALUE();
     ctx.textAlign = w > 52 ? "center" : "left";
     ctx.textBaseline = "top";
     ctx.fillText(`${one(part.forcedShare)}%`, w > 52 ? x + w / 2 : x, top + drop + 5);
@@ -1152,7 +1193,7 @@ function drawIncome() {
     });
   });
   ctx.fillStyle = MUTE;
-  ctx.font = "10px -apple-system, system-ui, sans-serif";
+  ctx.font = NOTE();
   ctx.textAlign = "right";
   ctx.textBaseline = "alphabetic";
   ctx.fillText(
@@ -1162,17 +1203,19 @@ function drawIncome() {
     top - 14,
   );
 
-  stack(steps, ACCESS, 260, "The destination against their own country of birth");
+  const birthY = 260;
+  stack(steps, ACCESS, birthY, "The destination against their own country of birth");
 
   ctx.fillStyle = MUTE;
-  ctx.font = "10px -apple-system, system-ui, sans-serif";
+  ctx.font = NOTE();
   ctx.textAlign = "left";
   ctx.textBaseline = "top";
   ctx.fillText(
     "Fled: refugees and asylum seekers, UNHCR end-2024, capped at the corridor's stock. " +
       "Income tier is the destination's GDP per head, a proxy for selection, not a measure of anybody's skill.",
     left,
-    324,
+    // Under the slice labels, which hang tall + 6 below the bar.
+    birthY + tall + 10 + Math.ceil(fs("caption") * 1.45),
   );
   api.chartTable(
     "q-income",
@@ -1245,7 +1288,7 @@ function drawSex() {
   const domain = [10, 80];
   const x = (value) => left + ((value - domain[0]) / (domain[1] - domain[0])) * (right - left);
 
-  ctx.font = "10px -apple-system, system-ui, sans-serif";
+  ctx.font = NOTE();
   ctx.textBaseline = "top";
   ctx.fillStyle = MUTE;
   for (const tick of [20, 30, 40, 50, 60, 70]) {
@@ -1272,12 +1315,12 @@ function drawSex() {
     ctx.fillRect(from, y - bar / 2, to - from, bar);
 
     ctx.fillStyle = INK;
-    ctx.font = "11px -apple-system, system-ui, sans-serif";
+    ctx.font = NAME();
     ctx.textAlign = "right";
     ctx.textBaseline = "middle";
     ctx.fillText(fitText(ctx, model.name(row.iso3), left - 16), left - 8, y);
     ctx.fillStyle = MUTE;
-    ctx.font = "10px -apple-system, system-ui, sans-serif";
+    ctx.font = VALUE();
     ctx.textAlign = "left";
     ctx.fillText(`${one(row.share)}%`, right + 6, y);
 
@@ -1301,7 +1344,7 @@ function drawSex() {
   ctx.stroke();
   ctx.setLineDash([]);
   ctx.fillStyle = MUTE;
-  ctx.font = "10px -apple-system, system-ui, sans-serif";
+  ctx.font = NOTE();
   ctx.textAlign = "center";
   ctx.textBaseline = "middle";
   ctx.fillText(`${rows.length - 16} destinations between these two ends`, width / 2, gy);

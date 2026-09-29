@@ -46,7 +46,7 @@
   border: 1px solid #f5d5a6;
   border-radius: 10px;
   color: #8a5a12;
-  font-size: 13px;
+  font-size: var(--fs-small);
   line-height: 1.45;
   margin: 0 0 18px;
   padding: 12px 14px;
@@ -66,7 +66,7 @@
 
 .corridor .stub-note {
   color: var(--ink-mute);
-  font-size: 13px;
+  font-size: var(--fs-small);
   margin: 0;
 }
 
@@ -84,7 +84,7 @@
 
 .corridor .select-row label {
   color: var(--ink-soft);
-  font-size: 12.5px;
+  font-size: var(--fs-small);
   font-weight: 600;
 }
 
@@ -94,7 +94,7 @@
   border-radius: 8px;
   color: var(--ink);
   font: inherit;
-  font-size: 13px;
+  font-size: var(--fs-small);
   padding: 6px 10px;
 }
 
@@ -117,7 +117,7 @@
   align-items: center;
   color: var(--ink-soft);
   display: inline-flex;
-  font-size: 11.5px;
+  font-size: var(--fs-caption);
   font-weight: 600;
   gap: 6px;
 }
@@ -174,19 +174,19 @@
   height: 360px;
 }
 .corridor .jobs-inspector h2 {
-  font-size: 20px;
+  font-size: var(--fs-h4);
   margin: 0 0 5px;
 }
 .corridor .jobs-inspector h3 {
   color: var(--ink-soft);
-  font-size: 12px;
+  font-size: var(--fs-small);
   letter-spacing: 0.04em;
   margin: 18px 0 8px;
   text-transform: uppercase;
 }
 .corridor .jobs-meta {
   color: var(--ink-mute);
-  font-size: 12px;
+  font-size: var(--fs-small);
   margin: 0 0 10px;
 }
 .corridor .jobs-partners {
@@ -197,7 +197,7 @@
 .corridor .jobs-partners li {
   border-bottom: 1px solid var(--line-soft);
   display: flex;
-  font-size: 13px;
+  font-size: var(--fs-small);
   gap: 8px;
   justify-content: space-between;
   padding: 7px 0;
@@ -220,7 +220,7 @@
   cursor: pointer;
   display: flex;
   font: inherit;
-  font-size: 12px;
+  font-size: var(--fs-small);
   gap: 8px;
   justify-content: space-between;
   padding: 8px 10px;
@@ -236,7 +236,7 @@
   background: none;
   color: var(--ink-soft);
   font: inherit;
-  font-size: 13px;
+  font-size: var(--fs-small);
   text-decoration: underline;
   cursor: pointer;
   padding: 0;
@@ -293,7 +293,7 @@
    section it extends. */
 .corridor .cut-body > .w4-box-intro {
   color: var(--ink-soft);
-  font-size: 15px;
+  font-size: var(--fs-body);
   line-height: 1.55;
   margin: 0 0 16px;
   max-width: 68ch;
@@ -304,7 +304,7 @@
   border-radius: 999px;
   color: var(--ink-soft);
   display: inline-block;
-  font-size: 10.5px;
+  font-size: var(--fs-caption);
   font-weight: 700;
   line-height: 1;
   padding: 3px 8px;
@@ -325,7 +325,7 @@
   --muted: var(--ink-soft);
   --band: var(--line-soft);
   --accent: #14618f;
-  --sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Inter, system-ui, sans-serif;
+  --sans: var(--font-sans);
   --series-1: #2a78d6; /* finance and insurance */
   --series-2: #eb6834; /* health care */
   --series-3: #1baf7a; /* other labelled sectors */
@@ -363,7 +363,7 @@
   color: var(--ink-soft);
   cursor: pointer;
   font: inherit;
-  font-size: 12.5px;
+  font-size: var(--fs-small);
   font-weight: 600;
   padding: 6px 14px;
 }
@@ -381,7 +381,7 @@
   display: flex;
   align-items: center;
   gap: 8px;
-  font-size: 13px;
+  font-size: var(--fs-small);
   color: var(--muted);
 }
 .staffing-search input {
@@ -389,7 +389,10 @@
   padding: 7px 10px;
   border: 1px solid var(--line);
   border-radius: 8px;
-  font: 14px var(--sans);
+  font-weight: 400;
+  font-size: var(--fs-body);
+  line-height: normal;
+  font-family: var(--font-sans);
   color: var(--paper);
   background: var(--surface);
 }
@@ -408,7 +411,7 @@
 }
 .staffing-prose h3 {
   margin: 18px 0 4px;
-  font-size: 15px;
+  font-size: var(--fs-body);
 }
 .staffing-prose p {
   margin: 0;
@@ -422,14 +425,14 @@
 }
 .staffing-flows h3 {
   margin: 0 0 6px;
-  font-size: 15px;
+  font-size: var(--fs-body);
 }
 .staffing-flows .chart-host {
   height: 640px;
 }
 .staffing-flows .flows-caption {
   color: var(--muted);
-  font-size: 13px;
+  font-size: var(--fs-small);
   margin: 8px 0 0;
 }
 .staffing-chart .chart-host {
@@ -438,12 +441,12 @@
 }
 .staffing-panel h3 {
   margin: 0 0 2px;
-  font-size: 20px;
+  font-size: var(--fs-h4);
   letter-spacing: -0.02em;
 }
 .staffing-panel .meta {
   margin: 0 0 14px;
-  font-size: 13px;
+  font-size: var(--fs-small);
   color: var(--muted);
 }
 .staffing-panel ol {
@@ -456,7 +459,7 @@
   grid-template-columns: minmax(0, 1fr) 44px;
   gap: 2px 10px;
   margin-bottom: 9px;
-  font-size: 13px;
+  font-size: var(--fs-small);
 }
 .staffing-panel li .name {
   overflow: hidden;
@@ -481,12 +484,12 @@
 }
 .staffing-panel .rest {
   margin: 12px 0 0;
-  font-size: 13px;
+  font-size: var(--fs-small);
   color: var(--muted);
 }
 .staffing figcaption {
   margin-top: 12px;
-  font-size: 14px;
+  font-size: var(--fs-body);
   line-height: 1.5;
   color: var(--muted);
 }
@@ -497,7 +500,7 @@
   width: 100%;
   margin-top: 10px;
   border-collapse: collapse;
-  font-size: 13px;
+  font-size: var(--fs-small);
 }
 .staffing th,
 .staffing td {
@@ -569,7 +572,7 @@
 }
 
 .corridor .w4-hero h1 {
-  font-size: 54px;
+  font-size: var(--fs-display);
   margin: 0;
 }
 
@@ -594,7 +597,7 @@
 
 .corridor .w4-hero-text p.body {
   color: var(--w4-hero-body);
-  font-size: 14px;
+  font-size: var(--fs-body);
   line-height: 1.6;
 }
 
@@ -606,7 +609,7 @@
 
 .corridor .w4-legend-title {
   color: var(--w4-hero-label);
-  font-size: 10.5px;
+  font-size: var(--fs-caption);
   font-weight: 700;
   letter-spacing: 0.12em;
   margin: 0;
@@ -617,7 +620,7 @@
   align-items: center;
   color: var(--w4-hero-lede);
   display: flex;
-  font-size: 12.5px;
+  font-size: var(--fs-small);
   gap: 10px;
   line-height: 1.4;
 }
@@ -656,7 +659,7 @@
 .corridor .w4-stat b {
   color: var(--w4-hero-ink);
   display: block;
-  font-size: 26px;
+  font-size: var(--fs-h3);
   font-variant-numeric: tabular-nums;
   font-weight: 700;
   letter-spacing: -0.02em;
@@ -666,7 +669,7 @@
 .corridor .w4-stat span {
   color: var(--w4-hero-body);
   display: block;
-  font-size: 12px;
+  font-size: var(--fs-small);
   line-height: 1.4;
   margin-top: 4px;
 }
@@ -689,7 +692,7 @@
   border: 1px solid rgba(255, 255, 255, 0.12);
   border-radius: 999px;
   color: #cfe0f2;
-  font-size: 12px;
+  font-size: var(--fs-small);
   margin: 0;
   padding: 6px 12px;
 }
@@ -709,7 +712,7 @@
 
 .corridor .w4-caps {
   color: var(--ink-mute);
-  font-size: 11px;
+  font-size: var(--fs-caption);
   font-weight: 700;
   letter-spacing: 0.1em;
   margin: 0;
@@ -723,13 +726,13 @@
 }
 
 .corridor .w4-inspector-name b {
-  font-size: 18px;
+  font-size: var(--fs-lead);
   font-weight: 700;
 }
 
 .corridor .w4-inspector-name span {
   color: var(--ink-mute);
-  font-size: 12px;
+  font-size: var(--fs-small);
 }
 
 .corridor .w4-chip {
@@ -739,7 +742,7 @@
   border: 1px solid var(--line);
   border-radius: 999px;
   display: inline-flex;
-  font-size: 11.5px;
+  font-size: var(--fs-caption);
   font-weight: 600;
   gap: 7px;
   padding: 4px 10px;
@@ -765,11 +768,11 @@
 
 .corridor .w4-inspector dt {
   color: var(--ink-soft);
-  font-size: 12px;
+  font-size: var(--fs-small);
 }
 
 .corridor .w4-inspector dd {
-  font-size: 12px;
+  font-size: var(--fs-small);
   font-variant-numeric: tabular-nums;
   font-weight: 700;
   margin: 0;
@@ -792,7 +795,7 @@
 
 .corridor .w4-links li {
   display: flex;
-  font-size: 12px;
+  font-size: var(--fs-small);
   justify-content: space-between;
   padding: 3px 0;
 }
@@ -824,7 +827,7 @@
   align-items: center;
   color: var(--ink-soft);
   display: flex;
-  font-size: 12px;
+  font-size: var(--fs-small);
   gap: 18px;
 }
 
@@ -866,7 +869,7 @@
   border-radius: 8px;
   color: var(--w4-accent);
   display: flex;
-  font-size: 13px;
+  font-size: var(--fs-small);
   font-variant-numeric: tabular-nums;
   font-weight: 800;
   height: 30px;
@@ -876,13 +879,13 @@
 }
 
 .corridor .w4-finding h3 {
-  font-size: 15px;
+  font-size: var(--fs-body);
   margin: 0 0 4px;
 }
 
 .corridor .w4-finding p {
   color: var(--ink-soft);
-  font-size: 13.5px;
+  font-size: var(--fs-body);
   line-height: 1.55;
   margin: 0;
 }
@@ -902,13 +905,13 @@
 
 .corridor .w4-mini small {
   color: var(--ink-mute);
-  font-size: 11px;
+  font-size: var(--fs-caption);
   line-height: 1.35;
 }
 
 .corridor .w4-finding > a {
   color: var(--w4-accent);
-  font-size: 13px;
+  font-size: var(--fs-small);
   font-weight: 600;
   justify-self: end;
   text-decoration: none;
@@ -1035,7 +1038,7 @@
   border-radius: 6px;
   color: var(--ink);
   display: none;
-  font-size: 13px;
+  font-size: var(--fs-small);
   font-weight: 600;
   /* Offsets from each dot's own edge, so every name starts at x = 40px on
      the rail and every question at x = 52px, whatever the dot's size. */
@@ -1051,7 +1054,7 @@
 
 .corridor .w4-rail ol ol .w4-rail-label {
   color: var(--ink-soft);
-  font-size: 12px;
+  font-size: var(--fs-small);
   font-weight: 500;
   left: 34px;
 }
@@ -1091,7 +1094,7 @@
 .corridor .w4-opener-num {
   color: var(--w4-accent);
   flex: none;
-  font-size: 64px;
+  font-size: var(--fs-numeral);
   font-variant-numeric: tabular-nums;
   font-weight: 800;
   letter-spacing: -0.04em;
@@ -1100,7 +1103,7 @@
 }
 
 .corridor .w4-opener h2 {
-  font-size: 30px;
+  font-size: var(--fs-h2);
   letter-spacing: -0.02em;
   line-height: 1.1;
   margin: 0 0 10px;
@@ -1108,7 +1111,7 @@
 
 .corridor .w4-opener p {
   color: var(--ink);
-  font-size: 18px;
+  font-size: var(--fs-lead);
   font-weight: 600;
   letter-spacing: -0.005em;
   line-height: 1.45;
@@ -1137,7 +1140,7 @@
 }
 
 .corridor .w4-q h2 {
-  font-size: 20px;
+  font-size: var(--fs-h4);
   letter-spacing: -0.01em;
   line-height: 1.25;
   margin: 0 0 8px;
@@ -1145,7 +1148,7 @@
 
 .corridor .w4-answer {
   color: var(--ink);
-  font-size: 16px;
+  font-size: var(--fs-strong);
   font-weight: 600;
   line-height: 1.45;
   margin: 0;
@@ -1170,7 +1173,7 @@
 .corridor .w4-card p.sub,
 .corridor .w4-two p {
   color: var(--ink-soft);
-  font-size: 13.5px;
+  font-size: var(--fs-body);
   line-height: 1.62;
   margin: 0;
   max-width: 68ch;
@@ -1186,12 +1189,12 @@
 }
 
 .corridor .w4-card .plot h3 {
-  font-size: 13.5px;
+  font-size: var(--fs-body);
   margin: 0 0 3px;
 }
 
 .corridor .w4-card .plot p.axis-note {
-  font-size: 11.5px;
+  font-size: var(--fs-caption);
   line-height: 1.45;
   margin: 0 0 8px;
 }
@@ -1205,7 +1208,7 @@
   box-shadow: 0 2px 6px rgba(15, 35, 64, 0.08), 0 18px 44px rgba(15, 35, 64, 0.16);
   color: var(--w4-tip-ink);
   display: none;
-  font-size: 12.5px;
+  font-size: var(--fs-small);
   font-style: normal;
   font-weight: 400;
   left: 0;
@@ -1275,12 +1278,12 @@
 
 .corridor .w4-figure figcaption b {
   color: var(--ink);
-  font-size: 13.5px;
+  font-size: var(--fs-body);
 }
 
 .corridor .w4-figure figcaption span {
   color: var(--ink-soft);
-  font-size: 11.5px;
+  font-size: var(--fs-caption);
   line-height: 1.45;
 }
 
@@ -1316,7 +1319,7 @@
 
 .corridor .w4-example p {
   color: var(--ink-soft);
-  font-size: 12px;
+  font-size: var(--fs-small);
   line-height: 1.5;
   margin: 0;
 }
@@ -1324,7 +1327,7 @@
 .corridor .w4-example p b {
   color: var(--ink);
   display: block;
-  font-size: 13px;
+  font-size: var(--fs-small);
   margin-bottom: 4px;
 }
 
@@ -1332,10 +1335,10 @@
 .corridor .w4-ex-link { fill: none; stroke: var(--ink); }
 .corridor .w4-ex-company { fill: var(--ink); }
 .corridor .w4-ex-node { fill: var(--card); stroke: var(--ink); stroke-width: 2; }
-.corridor .w4-ex-on-ink { fill: var(--card); font-size: 10.5px; font-weight: 700; text-anchor: middle; }
-.corridor .w4-ex-letter { fill: var(--ink); font-size: 11px; font-weight: 800; text-anchor: middle; }
-.corridor .w4-ex-count { fill: var(--ink-soft); font-size: 11px; font-weight: 600; }
-.corridor .w4-ex-gain { fill: var(--ink); font-size: 11px; font-weight: 700; text-anchor: middle; }
+.corridor .w4-ex-on-ink { fill: var(--card); font-size:var(--fs-caption); font-weight: 700; text-anchor: middle; }
+.corridor .w4-ex-letter { fill: var(--ink); font-size:var(--fs-caption); font-weight: 800; text-anchor: middle; }
+.corridor .w4-ex-count { fill: var(--ink-soft); font-size:var(--fs-caption); font-weight: 600; }
+.corridor .w4-ex-gain { fill: var(--ink); font-size:var(--fs-caption); font-weight: 700; text-anchor: middle; }
 
 /* ---- the opening: what one filing names, and how to read the charts */
 
@@ -1360,13 +1363,13 @@
 
 .corridor .w4-anatomy h3,
 .corridor .w4-howto h3 {
-  font-size: 13.5px;
+  font-size: var(--fs-body);
   margin: 0;
 }
 
 .corridor .w4-anatomy > p {
   color: var(--ink-soft);
-  font-size: 11.5px;
+  font-size: var(--fs-caption);
   margin: 0;
   padding-bottom: 6px;
 }
@@ -1389,14 +1392,14 @@
 
 .corridor .w4-anatomy dt {
   color: var(--ink-soft);
-  font-size: 11px;
+  font-size: var(--fs-caption);
   font-weight: 700;
   letter-spacing: 0.1em;
   text-transform: uppercase;
 }
 
 .corridor .w4-anatomy dd {
-  font-size: 13px;
+  font-size: var(--fs-small);
   line-height: 1.4;
   margin: 0;
 }
@@ -1406,7 +1409,7 @@
   border: 1px solid var(--line);
   border-radius: 999px;
   color: var(--ink-soft);
-  font-size: 11.5px;
+  font-size: var(--fs-caption);
   font-weight: 600;
   padding: 3px 9px;
   white-space: nowrap;
@@ -1421,7 +1424,7 @@
 .corridor .w4-howto > div {
   align-items: center;
   display: grid;
-  font-size: 12px;
+  font-size: var(--fs-small);
   gap: 10px;
   grid-template-columns: 30px 128px minmax(0, 1fr);
 }
@@ -1453,7 +1456,7 @@
 .corridor .w4-scope-note {
   border-top: 1px solid var(--line-soft);
   color: var(--ink);
-  font-size: 14px;
+  font-size: var(--fs-body);
   font-weight: 600;
   line-height: 1.5;
   margin: 0;
@@ -1485,7 +1488,7 @@
   cursor: pointer;
   display: inline-flex;
   font: inherit;
-  font-size: 11.5px;
+  font-size: var(--fs-caption);
   font-weight: 600;
   gap: 5px;
   padding: 4px 10px 4px 8px;

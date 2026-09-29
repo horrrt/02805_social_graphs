@@ -5,7 +5,7 @@
 // cards in #skills-body, which week04-skills.js also fills on the same
 // <details> toggle, so this waits for that card to land instead of racing it.
 
-import { token } from "./week04-strip.js";
+import { token, fs, family, font } from "./week04-strip.js?v=2";
 import { drawer, drawerRow } from "./week04-ui.js?v=2";
 
 const DATA = new URL("../../weeks/week04/data/skills_radar.json?v=2", import.meta.url);
@@ -298,7 +298,7 @@ class Radar {
     const softInk = token("--ink-soft");
     return {
       animationDuration: 260,
-      textStyle: { fontFamily: "-apple-system, BlinkMacSystemFont, system-ui, sans-serif" },
+      textStyle: { fontFamily: family("sans"), fontSize: fs("caption") },
       tooltip: { show: false },
       legend: { show: false },
       radar: {
@@ -321,7 +321,7 @@ class Radar {
           y: cy - (r + 8) * Math.sin(angle),
           // Upright on both sides: the left half reads inward-to-outward from the right end.
           rotation: right ? Math.atan2(Math.sin(angle), Math.cos(angle)) : Math.atan2(Math.sin(angle), Math.cos(angle)) - Math.PI,
-          style: { text: shorten(name), fill: softInk, font: "10.5px -apple-system, BlinkMacSystemFont, system-ui, sans-serif", lineHeight: 12, align: right ? "left" : "right", verticalAlign: "middle" },
+          style: { text: shorten(name), fill: softInk, font: font("caption"), lineHeight: 14, align: right ? "left" : "right", verticalAlign: "middle" },
           onmouseover: (e) => this.showTip(e.event, i),
           onmouseout: () => this.hideTip(),
         };

@@ -5,7 +5,7 @@
 // beside a caption that says how to read it. Colours come from CSS custom
 // properties (week04.css, week04-vis-staffing.css) through token(), never
 // as hex literals here.
-import { node, token, stripChart, miniStrip } from "./week04-strip.js";
+import { node, token, stripChart, miniStrip, fitted, fs, textWidth } from "./week04-strip.js?v=2";
 
 const COMMUNITIES_URL = new URL("../../weeks/week04/data/staffing_communities.json", import.meta.url);
 const DEEP_URL = new URL("../../weeks/week04/data/staffing_deep.json", import.meta.url);
@@ -24,19 +24,34 @@ function fetchJSON(url) {
 }
 
 /** Horizontal bars, one value per row, no shared baseline. Rows: {label, sub,
- * value, valueLabel, color, tip}. */
-function hbars(rows, { domain, width = 520, labelW = 190, rowH = 34, fmt, aria }) {
+ * value, valueLabel, color, tip}. Drawn at the host's width (see fitted). */
+function hbars(rows, opts) {
+  return fitted((width) => drawHbars(rows, { ...opts, width }), opts.width ?? 520);
+}
+
+function drawHbars(rows, { domain, width = 520, rowH = 34, fmt, aria }) {
   const [d0, d1] = domain;
-  const x0 = labelW;
+  const small = fs("small");
+  const caption = fs("caption");
+  const labelNeed = Math.ceil(Math.max(0, ...rows.map((r) => Math.max(textWidth(r.label, "small", 600), r.sub ? textWidth(r.sub, "caption") : 0)))) + 14;
+  // Too narrow for a label column: each label goes on a line above its bar.
+  const above = width - labelNeed - 12 < 160;
+  const lift = above ? 18 : 0;
+  const x0 = above ? 0 : labelNeed;
   const x1 = width - 12;
   const X = (v) => x0 + ((Math.min(Math.max(v, d0), d1) - d0) * (x1 - x0)) / (d1 - d0);
   const top = 8;
-  const h = top + rows.length * rowH + 4;
+  const step = rowH + lift;
+  const h = top + rows.length * step + 4;
   const svg = node("svg", { viewBox: `0 0 ${width} ${h}`, width, height: h, role: "img", "aria-label": aria });
   rows.forEach((r, i) => {
-    const cy = top + i * rowH + rowH / 2;
-    svg.append(node("text", { x: 0, y: cy - (r.sub ? 3 : -4), "font-size": 12, fill: token("--ink"), "font-weight": 600 }, r.label));
-    if (r.sub) svg.append(node("text", { x: 0, y: cy + 11, "font-size": 10.5, fill: token("--ink-mute") }, r.sub));
+    const cy = top + i * step + lift + rowH / 2;
+    if (above) {
+      svg.append(node("text", { x: 0, y: cy - 13, "font-size": small, fill: token("--ink"), "font-weight": 600 }, r.label));
+    } else {
+      svg.append(node("text", { x: 0, y: cy - (r.sub ? 3 : -4), "font-size": small, fill: token("--ink"), "font-weight": 600 }, r.label));
+      if (r.sub) svg.append(node("text", { x: 0, y: cy + 12, "font-size": caption, fill: token("--ink-mute") }, r.sub));
+    }
     svg.append(node("line", { x1: x0, y1: cy, x2: x1, y2: cy, stroke: token("--line"), "stroke-width": 1 }));
     const bx = X(r.value);
     const bar = node("rect", {
@@ -46,9 +61,9 @@ function hbars(rows, { domain, width = 520, labelW = 190, rowH = 34, fmt, aria }
     if (r.tip) bar.append(node("title", {}, r.tip));
     svg.append(bar);
     const label = r.valueLabel ?? fmt(r.value);
-    const inside = bx - x0 > 34;
+    const inside = bx - x0 > textWidth(label, "small", 700) + 12;
     svg.append(node("text", {
-      x: inside ? bx - 6 : bx + 6, y: cy + 4, "font-size": 12, "font-weight": 700,
+      x: inside ? bx - 6 : bx + 6, y: cy + 4.5, "font-size": small, "font-weight": 700,
       fill: inside ? token("--card") : token("--ink"), "text-anchor": inside ? "end" : "start",
     }, label));
   });
@@ -56,27 +71,34 @@ function hbars(rows, { domain, width = 520, labelW = 190, rowH = 34, fmt, aria }
 }
 
 /** Stacked proportion rows. Groups: [label, shares[]] with a shared list of
- * segment names and tints (CSS token names, ink-first). */
-function stackedRows(groups, names, tints, { width = 520, rowH = 40, aria, digits = 0 }) {
+ * segment names and tints (CSS token names, ink-first). Drawn at the host's width. */
+function stackedRows(groups, names, tints, opts) {
+  return fitted((width) => drawStacked(groups, names, tints, { ...opts, width }), opts.width ?? 520);
+}
+
+function drawStacked(groups, names, tints, { width = 520, rowH = 42, aria, digits = 0 }) {
   const x0 = 0;
   const x1 = width;
-  const top = 10;
+  const top = 12;
+  const small = fs("small");
+  const caption = fs("caption");
   const h = top + groups.length * rowH + 22;
   const svg = node("svg", { viewBox: `0 0 ${width} ${h}`, width, height: h, role: "img", "aria-label": aria });
   groups.forEach(([label, shares], i) => {
     const cy = top + i * rowH;
-    svg.append(node("text", { x: 0, y: cy - 4, "font-size": 12, fill: token("--ink"), "font-weight": 600 }, label));
+    svg.append(node("text", { x: 0, y: cy - 4, "font-size": small, fill: token("--ink"), "font-weight": 600 }, label));
     let x = x0;
     shares.forEach((share, j) => {
       const w = share * (x1 - x0);
-      const bar = node("rect", { x, y: cy, width: Math.max(0, w), height: 16, fill: token(tints[j]) });
+      const bar = node("rect", { x, y: cy, width: Math.max(0, w), height: 18, fill: token(tints[j]) });
       bar.append(node("title", {}, `${names[j]}: ${pct(share, 1)}`));
       svg.append(bar);
-      if (w > 46) {
+      const text = pct(share, digits);
+      if (w > textWidth(text, "small", 700) + 10) {
         svg.append(node("text", {
-          x: x + w / 2, y: cy + 11, "font-size": 11, "font-weight": 700, "text-anchor": "middle",
+          x: x + w / 2, y: cy + 13.5, "font-size": small, "font-weight": 700, "text-anchor": "middle",
           fill: j === 0 ? token("--card") : token("--ink"),
-        }, pct(share, digits)));
+        }, text));
       }
       x += w;
     });
@@ -85,9 +107,9 @@ function stackedRows(groups, names, tints, { width = 520, rowH = 40, aria, digit
   let lx = 0;
   names.forEach((name, j) => {
     svg.append(node("circle", { cx: lx + 5, cy: ly, r: 5, fill: token(tints[j]) }));
-    const t = node("text", { x: lx + 14, y: ly + 4, "font-size": 11, fill: token("--ink-mute") }, name);
+    const t = node("text", { x: lx + 14, y: ly + 4, "font-size": caption, fill: token("--ink-mute") }, name);
     svg.append(t);
-    lx += 14 + name.length * 6 + 18;
+    lx += 14 + textWidth(name, "caption") + 16;
   });
   return svg;
 }

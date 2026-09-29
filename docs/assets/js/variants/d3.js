@@ -6,7 +6,11 @@
 // rate goes. What you gain over canvas is selectable text, crisp type at any
 // zoom, and axes that D3 maintains instead of the hand-rolled tick code.
 
-const FONT = "-apple-system, system-ui, sans-serif";
+import { fs, family } from "../type-scale.mjs";
+
+// Type comes from the scale in type.css, read when a chart is drawn: ticks and
+// axis titles are captions, country names are small at 600.
+const FONT = () => family("sans");
 
 export function install(api, d3) {
   const { state, node, metrics, withMetrics, degreeCounts, ccdf, select, colours, $ } =
@@ -26,9 +30,16 @@ export function install(api, d3) {
   function svgFor(id, pad = { l: 52, r: 16, t: 14, b: 38 }) {
     const canvas = $(id);
     if (!canvas) return null;
-    const width = canvas.clientWidth || 600;
-    const height = Math.round(width * (canvas.height / canvas.width));
     let host = document.getElementById(`${id}-d3`);
+    // Once the canvas is hidden it measures 0 wide, and a fixed fallback width
+    // scaled the SVG, and its text, down to fit. Measure the box it fills.
+    const width = Math.round(
+      host?.getBoundingClientRect().width ||
+        canvas.clientWidth ||
+        canvas.parentElement?.clientWidth ||
+        600,
+    );
+    const height = Math.round(width * (canvas.height / canvas.width));
     if (!host) {
       host = document.createElementNS("http://www.w3.org/2000/svg", "svg");
       host.id = `${id}-d3`;
@@ -54,7 +65,7 @@ export function install(api, d3) {
       .call(d3.axisBottom(x).ticks(xTicks, "~s").tickSize(-(box.bottom - box.top)))
       .call((s) => s.selectAll(".tick line").attr("stroke", "#eaf0f7"))
       .call((s) => s.select(".domain").attr("stroke", "#c6d4e6"))
-      .call((s) => s.selectAll("text").attr("fill", "#7a8fac").attr("font-size", 10));
+      .call((s) => s.selectAll("text").attr("fill", "#7a8fac").attr("font-family", FONT()).attr("font-size", fs("caption")));
     g.append("g")
       .attr("transform", `translate(${box.left},0)`)
       .call(
@@ -65,14 +76,14 @@ export function install(api, d3) {
       )
       .call((s) => s.selectAll(".tick line").attr("stroke", "#eaf0f7"))
       .call((s) => s.select(".domain").attr("stroke", "#c6d4e6"))
-      .call((s) => s.selectAll("text").attr("fill", "#7a8fac").attr("font-size", 10));
+      .call((s) => s.selectAll("text").attr("fill", "#7a8fac").attr("font-family", FONT()).attr("font-size", fs("caption")));
     const label = (text, tx, ty, rotate) =>
       g
         .append("text")
         .attr("transform", `translate(${tx},${ty})${rotate ? " rotate(-90)" : ""}`)
         .attr("fill", "#7a8fac")
-        .attr("font-family", FONT)
-        .attr("font-size", 10)
+        .attr("font-family", FONT())
+        .attr("font-size", fs("caption"))
         .attr("text-anchor", "middle")
         .text(text);
     if (xLabel) label(xLabel, (box.left + box.right) / 2, box.bottom + 30, false);
@@ -116,14 +127,19 @@ export function install(api, d3) {
       .attr("fill", "none")
       .attr("stroke", colours.INK)
       .attr("stroke-width", 1.8);
-    g.append("text")
+    const label = g
+      .append("text")
       .attr("x", x(point.x) + 9)
       .attr("y", y(point.y) + 3)
       .attr("fill", colours.INK)
-      .attr("font-family", FONT)
-      .attr("font-size", 10)
+      .attr("font-family", FONT())
+      .attr("font-size", fs("small"))
       .attr("font-weight", 600)
       .text(name);
+    // A point at the right edge takes its name on the left, inside the plot.
+    if (x(point.x) + 9 + label.node().getComputedTextLength() > x.range()[1]) {
+      label.attr("x", x(point.x) - 9).attr("text-anchor", "end");
+    }
   }
 
   // Rebuilt per draw, so the palette dropdown reaches the SVG charts too.
@@ -267,7 +283,8 @@ export function install(api, d3) {
       .attr("text-anchor", "end")
       .attr("dominant-baseline", "middle")
       .attr("fill", "#7a8fac")
-      .attr("font-size", 10)
+      .attr("font-family", FONT())
+      .attr("font-size", fs("caption"))
       .text("0");
     const onRow = (rowsIn) =>
       rowsIn.map((d) => (d.y > 0 ? d : { ...d, y: zeroRow }));
@@ -550,8 +567,8 @@ export function install(api, d3) {
           .attr("y", point[1] - 12)
           .attr("text-anchor", "middle")
           .attr("fill", "#eaf2fb")
-          .attr("font-family", FONT)
-          .attr("font-size", 12)
+          .attr("font-family", FONT())
+          .attr("font-size", fs("small"))
           .attr("font-weight", 600)
           .text(node(iso3).name);
       }

@@ -6,6 +6,8 @@
 // by analysis/week03_corridor_control.py. No number is computed in this file
 // that is not a ratio or a rank of something already in that data.
 
+import { font, fs } from "./type-scale.mjs";
+
 // Not constants: the palette dropdown rewrites these from CSS custom
 // properties, so one definition in corridor.css drives the stylesheet, the SVG
 // variants and the 2D canvas at once.
@@ -219,10 +221,19 @@ function surface(canvas) {
   return { ctx, width, height };
 }
 
+// Chart text takes its size from the type scale in type.css, read at draw time
+// so every chart on the page shares one set of sizes. Ticks, axis titles,
+// legends and notes are captions; names on the plot are small at 600; values
+// printed on a mark are small at 700; a panel's own title is body at 700.
+const NOTE = (weight = 400) => font("caption", weight);
+const NAME = (weight = 600) => font("small", weight);
+const VALUE = () => font("small", 700);
+const TITLE = () => font("body", 700);
+
 function axes(ctx, box, { xTicks, yTicks, xLabel, yLabel }) {
   ctx.strokeStyle = GRID;
   ctx.fillStyle = MUTE;
-  ctx.font = "10px -apple-system, system-ui, sans-serif";
+  ctx.font = NOTE();
   ctx.lineWidth = 1;
   for (const tick of yTicks) {
     const y = Math.round(box.y(tick.value)) + 0.5;
@@ -245,7 +256,7 @@ function axes(ctx, box, { xTicks, yTicks, xLabel, yLabel }) {
     ctx.fillText(tick.label, x, box.bottom + 6);
   }
   ctx.fillStyle = MUTE;
-  ctx.font = "10px -apple-system, system-ui, sans-serif";
+  ctx.font = NOTE();
   if (xLabel) {
     ctx.textAlign = "center";
     ctx.fillText(xLabel, (box.left + box.right) / 2, box.bottom + 22);
@@ -1137,15 +1148,16 @@ function netNote() {
 
 function netLegend(ctx, width, height) {
   const labels = ["under 10k", "10k", "100k", "1m", "10m+"];
-  const box = 17;
+  // Wide enough that the centre label clears "gained 10m+" at caption size.
+  const box = 22;
   const left = 14;
   const top = height - 46;
   const cells = NET_BANDS.length + 1;
-  const wide = cells * 2 * box + 96;
+  const wide = cells * 2 * box + 108;
 
   ctx.fillStyle = "rgba(8,26,49,0.78)";
-  ctx.fillRect(left - 8, top - 22, wide, 48);
-  ctx.font = "600 10px -apple-system, system-ui, sans-serif";
+  ctx.fillRect(left - 8, top - 22, wide, 52);
+  ctx.font = NOTE(600);
   ctx.textBaseline = "top";
   ctx.textAlign = "left";
   ctx.fillStyle = "#cfe0f2";
@@ -1162,7 +1174,7 @@ function netLegend(ctx, width, height) {
     ctx.fillRect(mid + (cells - 1 - i) * box, top, box - 1, 11);
   }
   ctx.fillStyle = "#9fbcdb";
-  ctx.font = "9px -apple-system, system-ui, sans-serif";
+  ctx.font = NOTE();
   ctx.fillText(`lost ${labels.at(-1)}`, left, top + 14);
   ctx.textAlign = "center";
   ctx.fillText(labels[0], mid, top + 14);
@@ -1458,7 +1470,7 @@ function drawGlobe() {
       ctx.arc(p.x, p.y, 6, 0, Math.PI * 2);
       ctx.stroke();
       const name = node(state.selected).name;
-      ctx.font = "600 12px -apple-system, system-ui, sans-serif";
+      ctx.font = NAME();
       const w = ctx.measureText(name).width;
       ctx.fillStyle = "rgba(255,255,255,0.94)";
       ctx.fillRect(p.x - w / 2 - 8, p.y - 30, w + 16, 20);
@@ -1946,7 +1958,7 @@ function markSelected(ctx, box, pick, opts = {}) {
   // on whatever the country happened to sit next to, which for a tail country
   // is the axis and the densest part of the chart.
   const text = `${n.name}${opts.note ? ` · ${opts.note}` : ` · k = ${m.in_degree}`}`;
-  ctx.font = "600 10px -apple-system, system-ui, sans-serif";
+  ctx.font = NAME();
   const wide = ctx.measureText(text).width;
   const right = x + wide + 8 > box.right;
   ctx.fillStyle = INK;
@@ -2038,7 +2050,8 @@ function drawBetweenness() {
   // Label only the brokers a reader should look up, and only where the label
   // will not sit on top of one already placed.
   const notable = brokers(y).slice(0, 6);
-  ctx.font = "600 10px -apple-system, system-ui, sans-serif";
+  ctx.font = NAME();
+  const lineGap = Math.ceil(fs("small")) + 2;
   ctx.fillStyle = INK;
   ctx.textAlign = "left";
   const placed = [];
@@ -2047,7 +2060,7 @@ function drawBetweenness() {
     if (r.iso3 === state.selected) continue;
     const x = Math.min(box.x(r.m.in_degree) + 6, box.right - 120);
     const py = box.y(r.m.betweenness) - 5;
-    if (placed.some((p) => Math.abs(p.x - x) < 110 && Math.abs(p.y - py) < 12)) continue;
+    if (placed.some((p) => Math.abs(p.x - x) < 110 && Math.abs(p.y - py) < lineGap)) continue;
     placed.push({ x, y: py });
     ctx.fillText(`${r.n.name} (+${r.excess.toFixed(2)})`, x, py);
   }
@@ -2120,7 +2133,7 @@ function drawPrestige() {
   const rightX = Math.round(width * 0.64);
   const at = (order, iso3) => top + order.findIndex((r) => r.iso3 === iso3) * step;
 
-  ctx.font = "600 11px -apple-system, system-ui, sans-serif";
+  ctx.font = NOTE(600);
   ctx.fillStyle = MUTE;
   ctx.textAlign = "right";
   ctx.fillText("By people", leftX, 18);
@@ -2145,7 +2158,7 @@ function drawPrestige() {
       ctx.arc(x, py, chosen ? 4 : 3, 0, Math.PI * 2);
       ctx.fill();
     }
-    ctx.font = `${chosen ? 700 : 500} 11px -apple-system, system-ui, sans-serif`;
+    ctx.font = NAME(chosen ? 700 : 600);
     ctx.fillStyle = chosen ? INK : "#46618a";
     ctx.textAlign = "right";
     ctx.fillText(`${r.n.name}  #${r.m.in_strength_rank}`, leftX - 8, y1 + 4);
@@ -2372,7 +2385,7 @@ function markSelectedPoint(ctx, box, pick, y, place) {
   ctx.arc(x, py, 5, 0, Math.PI * 2);
   ctx.stroke();
   ctx.fillStyle = INK;
-  ctx.font = "600 10px -apple-system, system-ui, sans-serif";
+  ctx.font = NAME();
   ctx.textAlign = "left";
   ctx.fillText(node(state.selected).name, Math.min(x + 8, box.right - 70), py + 3);
 }
@@ -2424,7 +2437,7 @@ function drawCartography() {
   }
   ctx.restore();
   ctx.fillStyle = MUTE;
-  ctx.font = "10px -apple-system, system-ui, sans-serif";
+  ctx.font = NOTE();
   // At the right end of the line, where the plot is empty. On the left it sat
   // on top of the y-axis ticks and the countries just under the hub line.
   ctx.textAlign = "right";
@@ -2476,8 +2489,9 @@ function drawCartography() {
   // each other most years, and three labels at the same height are one
   // smear. Each label is pushed down until it clears the ones already
   // placed, which is enough at this count and cheaper than a solver.
-  ctx.font = "600 10px -apple-system, system-ui, sans-serif";
+  ctx.font = NAME();
   ctx.fillStyle = INK;
+  const step = Math.ceil(fs("small")) + 1;
   const hubs = rows
     .filter(([, r]) => r.z >= state.cart.hub_z)
     .sort((a, b) => b[1].z - a[1].z);
@@ -2497,9 +2511,9 @@ function drawCartography() {
     const [x0, x1] = right ? [x - width, x] : [x, x + width];
     let ty = box.y(r.z) + 3;
     while (
-      placed.some((q) => Math.abs(q.ty - ty) < 11 && x0 < q.x1 + 4 && x1 > q.x0 - 4)
+      placed.some((q) => Math.abs(q.ty - ty) < step && x0 < q.x1 + 4 && x1 > q.x0 - 4)
     ) {
-      ty += 11;
+      ty += step;
     }
     placed.push({ x0, x1, ty });
     ctx.textAlign = right ? "right" : "left";
@@ -2525,7 +2539,7 @@ function drawCartography() {
     ctx.arc(box.x(picked.p), box.y(picked.z), 7, 0, Math.PI * 2);
     ctx.stroke();
     if (picked.z < state.cart.hub_z) {
-      ctx.font = "600 10px -apple-system, system-ui, sans-serif";
+      ctx.font = NAME();
       ctx.fillStyle = INK;
       ctx.textAlign = box.x(picked.p) > box.right - 70 ? "right" : "left";
       ctx.fillText(
@@ -3014,7 +3028,7 @@ function drawDenmark() {
     const gap = 30;
     // The first panel's name is drawn above its own top edge, so the stack
     // starts one line down from the frame.
-    const head = 12;
+    const head = Math.ceil(fs("body")) + 2;
     const tall =
       (box.bottom - box.top - head - gap * (panels.length - 1)) / panels.length;
     const slot = (box.right - box.left) / items.length;
@@ -3025,7 +3039,9 @@ function drawDenmark() {
       const values = items.map(panel.value);
       const high = Math.max(...values, panel.signed ? 0.5 : 1);
       const low = panel.signed ? Math.min(...values, -0.5) : 0;
-      const y = (v) => bottom - ((v - low) / (high - low || 1)) * tall;
+      // A line of headroom at the top for the value printed over the tallest bar.
+      const room = Math.ceil(fs("small")) + 4;
+      const y = (v) => bottom - ((v - low) / (high - low || 1)) * (tall - room);
       const base = y(panel.signed ? 0 : 0);
 
       ctx.strokeStyle = GRID;
@@ -3036,7 +3052,7 @@ function drawDenmark() {
       ctx.stroke();
 
       ctx.fillStyle = MUTE;
-      ctx.font = "600 10px -apple-system, system-ui, sans-serif";
+      ctx.font = TITLE();
       ctx.textAlign = "left";
       ctx.textBaseline = "bottom";
       ctx.fillText(panel.name, box.left, top - 4);
@@ -3049,7 +3065,7 @@ function drawDenmark() {
         ctx.fillStyle = panel.colour;
         ctx.fillRect(x, Math.min(yv, base), w, Math.max(1.5, Math.abs(base - yv)));
         ctx.fillStyle = INK;
-        ctx.font = "9px -apple-system, system-ui, sans-serif";
+        ctx.font = VALUE();
         ctx.textAlign = "center";
         ctx.textBaseline = yv <= base ? "bottom" : "top";
         ctx.fillText(panel.format(value), x + w / 2, yv + (yv <= base ? -2 : 2));
@@ -3065,7 +3081,7 @@ function drawDenmark() {
       // Country codes under the last panel only; the columns line up.
       if (pi === panels.length - 1) {
         ctx.fillStyle = MUTE;
-        ctx.font = "10px -apple-system, system-ui, sans-serif";
+        ctx.font = NOTE();
         ctx.textAlign = "center";
         ctx.textBaseline = "top";
         items.forEach((item, idx) => {
@@ -3074,7 +3090,7 @@ function drawDenmark() {
         ctx.fillText(
           `${focus.name} and its four nearest neighbours`,
           (box.left + box.right) / 2,
-          bottom + 20,
+          bottom + 8 + Math.ceil(fs("caption") * 1.45),
         );
       }
     });
@@ -3091,7 +3107,8 @@ function small(canvas, draw) {
   if (!canvas) return;
   const { ctx, width, height } = surface(canvas);
   // Room on the left for a rotated axis title and at the bottom for its pair.
-  const box = frame(width, height, { l: 52, r: 16, t: 10, b: 38 });
+  // At caption size a tick like "833.7k" needs the extra width to clear the title.
+  const box = frame(width, height, { l: 70, r: 16, t: 10, b: 38 });
   draw(ctx, box);
 }
 
@@ -3102,7 +3119,7 @@ function dot(ctx, x, y, colour, name, r = 4, right = Infinity) {
   ctx.fill();
   if (!name) return;
   ctx.fillStyle = INK;
-  ctx.font = "600 9px -apple-system, system-ui, sans-serif";
+  ctx.font = NAME();
   // Denmark and its neighbours sit at the far right of these charts, where a
   // label to the right of the point runs off the plot. Flip it when it would.
   const width = ctx.measureText(name).width;

@@ -3,7 +3,7 @@
 // section 3's switching/movers/overlap figures, and the "beyond" section's
 // law-firm, green-card and wage-level figures. Four page JSON files, one
 // fetch each, same conventions as week04-jobs.js.
-import { node, token } from "./week04-strip.js";
+import { node, token, fitted, fs, family, textWidth } from "./week04-strip.js?v=2";
 
 const WHERE_WHO_URL = new URL("../../weeks/week04/data/where_who.json", import.meta.url);
 const JOBS_SPLIT_URL = new URL("../../weeks/week04/data/jobs_split.json?v=2", import.meta.url);
@@ -33,19 +33,23 @@ const esc = (value) => String(value).replace(/[&<>"']/g, (character) => ({
 
 const base = {
   animationDuration: 360,
-  textStyle: { fontFamily: "-apple-system, BlinkMacSystemFont, system-ui, sans-serif" },
+  textStyle: { fontFamily: family("sans"), fontSize: fs("caption") },
   tooltip: {
     confine: true,
     backgroundColor: "rgba(15,35,64,0.94)",
     borderWidth: 0,
-    textStyle: { color: "#eaf2fb", fontSize: 12 },
+    textStyle: { color: "#eaf2fb", fontSize: fs("small") },
   },
 };
 const axis = {
   axisLine: { lineStyle: { color: "#c6d4e6" } },
-  axisLabel: { color: MUTE, fontSize: 11 },
+  axisLabel: { color: MUTE, fontSize: fs("caption") },
   splitLine: { lineStyle: { color: LINE, type: "dashed" } },
 };
+// Row labels on a category y-axis: the names a reader looks up.
+const rowLabel = { color: INK, fontSize: fs("small"), fontWeight: 600 };
+// The value printed at a bar's end.
+const valueLabel = { color: INK, fontSize: fs("small"), fontWeight: 700 };
 
 function chart(id) {
   const host = $(id);
@@ -63,7 +67,7 @@ function errorInto(ids, message) {
     if (el.tagName === "TBODY") {
       el.innerHTML = `<tr><td colspan="8" style="color:var(--ink-mute)">${esc(message)}</td></tr>`;
     } else {
-      el.innerHTML = `<p style="color:var(--ink-mute);font-size:13px;margin:0;padding:14px 2px;">${esc(message)}</p>`;
+      el.innerHTML = `<p style="color:var(--ink-mute);font-size:${fs("small")}px;margin:0;padding:14px 2px;">${esc(message)}</p>`;
     }
   });
 }
@@ -115,7 +119,7 @@ function renderWhereWho(data) {
     xAxis: { ...axis, type: "value", min: 0, name: "AMI →", nameLocation: "middle", nameGap: 26 },
     yAxis: {
       ...axis, type: "category", inverse: true, data: rows.map((r) => r.label),
-      axisLabel: { ...axis.axisLabel, lineHeight: 13 },
+      axisLabel: { ...axis.axisLabel, ...rowLabel, lineHeight: 15 },
     },
     tooltip: {
       ...base.tooltip, trigger: "item",
@@ -128,7 +132,7 @@ function renderWhereWho(data) {
       type: "bar", barMaxWidth: 26,
       data: rows.map((r) => ({ value: r.score.ami, itemStyle: { color: r.who ? ORANGE : GREY } })),
       label: {
-        show: true, position: "right", color: INK, fontSize: 11,
+        show: true, position: "right", ...valueLabel,
         formatter: (p) => `AMI ${rows[p.dataIndex].score.ami.toFixed(2)} · p = ${rows[p.dataIndex].score.p_shuffle.toFixed(3)}`,
       },
     }],
@@ -203,9 +207,14 @@ function renderJobsSplitNmi(data) {
   // The axis runs to the next 0.2 past the longest whisker, never past 1.
   const steps = Math.min(5, Math.ceil(Math.max(...rows.map((r) => r.value + (r.sd ?? 0))) / 0.2 - 1e-9));
   const d1 = steps * 0.2;
-  const W = 560;
-  const x0 = 200;
-  const x1 = 520;
+  host.replaceChildren(fitted((W) => drawSplitNmi(rows, steps, d1, W), 560));
+}
+
+function drawSplitNmi(rows, steps, d1, W) {
+  const small = fs("small");
+  const caption = fs("caption");
+  const x0 = Math.ceil(Math.max(...rows.flatMap((r) => r.lines.map((line) => textWidth(line, "small", r.bold ? 700 : 600))))) + 14;
+  const x1 = W - 40;
   const T = 8;
   const rowH = 46;
   const ybot = T + rows.length * rowH;
@@ -214,21 +223,23 @@ function renderJobsSplitNmi(data) {
   const ink = token("--ink");
   const mute = token("--ink-mute");
   const svg = node("svg", {
-    viewBox: `0 0 ${W} ${H}`, width: "100%", role: "img",
+    viewBox: `0 0 ${W} ${H}`, width: W, height: H, role: "img",
     "aria-label": "How much the outsourcing and direct-employer job clusters agree, against three random baselines",
   });
   for (let i = 0; i <= steps; i += 1) {
     const v = i * 0.2;
     svg.append(node("line", { x1: X(v), x2: X(v), y1: T - 2, y2: ybot, stroke: token("--w4-grid") }));
-    svg.append(node("text", { x: X(v), y: ybot + 14, "font-size": 11, fill: mute, "text-anchor": "middle" }, v.toFixed(1)));
+    svg.append(node("text", { x: X(v), y: ybot + 14, "font-size": caption, fill: mute, "text-anchor": "middle" }, v.toFixed(1)));
   }
-  svg.append(node("text", { x: (x0 + x1) / 2, y: ybot + 31, "font-size": 11, fill: mute, "text-anchor": "middle" },
-    "Agreement of the two groups' job clusters (NMI: 0 unrelated, 1 identical)"));
+  const axisName = "Agreement of the two groups' job clusters (NMI: 0 unrelated, 1 identical)";
+  const half = textWidth(axisName, "caption") / 2;
+  svg.append(node("text", { x: Math.max(half, Math.min((x0 + x1) / 2, W - half)), y: ybot + 31, "font-size": caption, fill: mute, "text-anchor": "middle" },
+    axisName));
   rows.forEach((r, i) => {
     const cy = T + i * rowH + rowH / 2;
     const weight = r.bold ? 700 : 600;
-    svg.append(node("text", { x: 0, y: cy - 3, "font-size": 12, "font-weight": weight, fill: ink }, r.lines[0]));
-    svg.append(node("text", { x: 0, y: cy + 12, "font-size": 12, "font-weight": weight, fill: ink }, r.lines[1]));
+    svg.append(node("text", { x: 0, y: cy - 3, "font-size": small, "font-weight": weight, fill: ink }, r.lines[0]));
+    svg.append(node("text", { x: 0, y: cy + 12.5, "font-size": small, "font-weight": weight, fill: ink }, r.lines[1]));
     const tip = r.sd === null
       ? `${r.label}: NMI ${r.value.toFixed(3)}`
       : `${r.label}: NMI ${r.value.toFixed(3)} ± ${r.sd.toFixed(3)} (mean ± sd over the random splits)`;
@@ -246,9 +257,9 @@ function renderJobsSplitNmi(data) {
       end = Math.max(end, hi);
     }
     svg.append(g);
-    svg.append(node("text", { x: end + 7, y: cy + 4, "font-size": 12, "font-weight": 700, fill: ink }, r.value.toFixed(2)));
+    svg.append(node("text", { x: end + 7, y: cy + 4.5, "font-size": small, "font-weight": 700, fill: ink }, r.value.toFixed(2)));
   });
-  host.replaceChildren(svg);
+  return svg;
 }
 
 function renderJobsSplitMix(data) {
@@ -270,15 +281,15 @@ function renderJobsSplitMix(data) {
   }).sort((a, b) => b.combined - a.combined).slice(0, 8).reverse();
   c.setOption({
     ...base,
-    grid: { left: 210, right: 24, top: 34, bottom: 40 },
-    legend: { top: 0, right: 0, textStyle: { color: MUTE, fontSize: 11 } },
+    grid: { left: 244, right: 24, top: 34, bottom: 40 },
+    legend: { top: 0, right: 0, textStyle: { color: MUTE, fontSize: fs("caption") } },
     xAxis: {
       ...axis, type: "value", name: "share of group's filings →", nameLocation: "middle", nameGap: 26, splitNumber: 4,
       axisLabel: { ...axis.axisLabel, formatter: (v) => `${Math.round(v * 100)}%` },
     },
     yAxis: {
       ...axis, type: "category", data: rows.map((r) => r.title),
-      axisLabel: { ...axis.axisLabel, width: 196, overflow: "truncate" },
+      axisLabel: { ...axis.axisLabel, ...rowLabel, width: 230, overflow: "truncate" },
     },
     tooltip: {
       ...base.tooltip, trigger: "axis",
@@ -309,12 +320,17 @@ function renderJobsLinkcomTable(data) {
 function renderLinkShare(data) {
   const host = $("chart-jobs-linkcom-share");
   if (!host) return;
+  host.replaceChildren(fitted((W) => drawLinkShare(data, W), 520));
+}
+
+function drawLinkShare(data, W) {
   const q = data.q2;
   const largest = q.largest_link_community_links;
   const rest = q.links - largest;
   const smaller = q.link_clusters - 1;
   const share = largest / q.links;
-  const W = 520;
+  const caption = fs("caption");
+  const smallSize = fs("small");
   const H = 146;
   const by = 46;
   const bh = 34;
@@ -322,30 +338,30 @@ function renderLinkShare(data) {
   const ink = token("--ink");
   const soft = token("--ink-soft");
   const svg = node("svg", {
-    viewBox: `0 0 ${W} ${H}`, width: "100%", role: "img",
+    viewBox: `0 0 ${W} ${H}`, width: W, height: H, role: "img",
     "aria-label": `Share of the ${num(q.links)} links in the largest link community`,
   });
-  svg.append(node("text", { x: 0, y: 24, "font-size": 12, fill: soft },
+  svg.append(node("text", { x: 0, y: 24, "font-size": caption, fill: soft },
     `All ${num(q.links)} links between occupations, split by link community`));
   const big = node("g");
   big.append(node("title", {}, `Largest link community: ${num(largest)} of ${num(q.links)} links (${pct(share)})`));
   big.append(node("rect", { x: 0, y: by, width: split - 2, height: bh, rx: 5, fill: ink }));
-  big.append(node("text", { x: 10, y: by + 22, "font-size": 13, "font-weight": 700, fill: token("--card") },
+  big.append(node("text", { x: 10, y: by + 21.5, "font-size": smallSize, "font-weight": 700, fill: token("--card") },
     `One community: ${pct(share, 0)} of links`));
   svg.append(big);
   const small = node("g");
   small.append(node("title", {}, `The other ${num(smaller)} link communities: ${num(rest)} links (${pct(rest / q.links)})`));
   small.append(node("rect", { x: split, y: by, width: W - split, height: bh, rx: 5, fill: token("--w4-meter") }));
-  small.append(node("text", { x: split + (W - split) / 2, y: by + 22, "font-size": 12, "font-weight": 700, fill: ink, "text-anchor": "middle" },
+  small.append(node("text", { x: split + (W - split) / 2, y: by + 21.5, "font-size": smallSize, "font-weight": 700, fill: ink, "text-anchor": "middle" },
     pct(rest / q.links, 0)));
   svg.append(small);
-  svg.append(node("text", { x: 0, y: by + bh + 18, "font-size": 12, fill: soft }, `${num(largest)} links`));
-  svg.append(node("text", { x: W, y: by + bh + 18, "font-size": 12, fill: soft, "text-anchor": "end" }, `${num(rest)} links`));
-  svg.append(node("text", { x: W, y: by + bh + 40, "font-size": 12, fill: soft, "text-anchor": "end" },
+  svg.append(node("text", { x: 0, y: by + bh + 18, "font-size": caption, fill: soft }, `${num(largest)} links`));
+  svg.append(node("text", { x: W, y: by + bh + 18, "font-size": caption, fill: soft, "text-anchor": "end" }, `${num(rest)} links`));
+  svg.append(node("text", { x: W, y: by + bh + 40, "font-size": caption, fill: soft, "text-anchor": "end" },
     `${num(smaller)} smaller communities share the rest;`));
-  svg.append(node("text", { x: W, y: by + bh + 56, "font-size": 12, fill: soft, "text-anchor": "end" },
+  svg.append(node("text", { x: W, y: by + bh + 56, "font-size": caption, fill: soft, "text-anchor": "end" },
     `${num(data.finding.q2_link_clusters_of_3_or_more)} of all ${num(q.link_clusters)} hold three links or more`));
-  host.replaceChildren(svg);
+  return svg;
 }
 
 // Display names for the scatter, keyed by SOC code; the full title stays in
@@ -375,12 +391,17 @@ function renderLinkScatter(data) {
   if (!host) return;
   const top = data.q2.top15_by_communities_per_link;
   const bridges = new Set(data.q2.bridges.in_top15);
+  host.replaceChildren(fitted((W) => drawLinkScatter(data, top, bridges, W), 520));
+}
+
+function drawLinkScatter(data, top, bridges, W) {
   const name = (o) => LINK_SHORT[o.id] ?? short(o.title);
-  const W = 520;
-  const H = 330;
+  const caption = fs("caption");
+  const small = fs("small");
+  const H = 336;
   const L = 40;
   const R = 150;
-  const T = 16;
+  const T = 24;
   const B = 40;
   const xmax = Math.ceil(Math.max(...top.map((o) => o.links)) / 10) * 10;
   const ymax = Math.ceil(Math.max(...top.map((o) => o.communities)) / 5) * 5;
@@ -391,19 +412,19 @@ function renderLinkScatter(data) {
   const mute = token("--ink-mute");
   const halo = { "paint-order": "stroke", stroke: token("--w4-inset"), "stroke-width": 3 };
   const svg = node("svg", {
-    viewBox: `0 0 ${W} ${H}`, width: "100%", role: "img",
+    viewBox: `0 0 ${W} ${H}`, width: W, height: H, role: "img",
     "aria-label": `Links against link communities for the ${top.length} jobs with the most communities per link`,
   });
   for (let v = 0; v <= ymax; v += 5) {
     svg.append(node("line", { x1: L, x2: W - R, y1: Y(v), y2: Y(v), stroke: token("--w4-grid") }));
-    svg.append(node("text", { x: L - 8, y: Y(v) + 4, "font-size": 11, fill: mute, "text-anchor": "end" }, String(v)));
+    svg.append(node("text", { x: L - 8, y: Y(v) + 4, "font-size": caption, fill: mute, "text-anchor": "end" }, String(v)));
   }
   for (let v = 0; v <= xmax; v += 10) {
-    svg.append(node("text", { x: X(v), y: H - B + 18, "font-size": 11, fill: mute, "text-anchor": "middle" }, String(v)));
+    svg.append(node("text", { x: X(v), y: H - B + 18, "font-size": caption, fill: mute, "text-anchor": "middle" }, String(v)));
   }
-  svg.append(node("text", { x: (L + W - R) / 2, y: H - 6, "font-size": 11.5, fill: soft, "text-anchor": "middle" },
+  svg.append(node("text", { x: (L + W - R) / 2, y: H - 6, "font-size": caption, fill: soft, "text-anchor": "middle" },
     "links (other occupations it shares employers with)"));
-  svg.append(node("text", { x: L - 30, y: T - 4, "font-size": 11.5, fill: soft }, "communities"));
+  svg.append(node("text", { x: L - 30, y: T - 12, "font-size": caption, fill: soft }, "communities"));
   RATE_GUIDES.forEach(([rate, label], i) => {
     const xe = Math.min(xmax, ymax / rate);
     svg.append(node("line", {
@@ -411,7 +432,7 @@ function renderLinkScatter(data) {
       stroke: mute, "stroke-opacity": 0.55, "stroke-dasharray": "3 3",
     }));
     svg.append(node("text", {
-      x: i === 0 ? X(xe) - 6 : X(xe) + 4, y: Y(rate * xe) + 4, "font-size": 10.5, fill: mute,
+      x: i === 0 ? X(xe) - 6 : X(xe) + 4, y: Y(rate * xe) + 4, "font-size": caption, fill: mute,
       "text-anchor": i === 0 ? "end" : "start",
     }, label));
   });
@@ -434,7 +455,7 @@ function renderLinkScatter(data) {
     leaderLines.append(node("line", {
       x1: X(o.links) + 6, y1: Y(o.communities), x2: lx - 4, y2: ly - 4, stroke: mute, "stroke-width": 1,
     }));
-    labels.append(node("text", { x: lx, y: ly, "font-size": 11, "font-weight": 700, fill: ink, ...halo },
+    labels.append(node("text", { x: lx, y: ly, "font-size": small, "font-weight": 700, fill: ink, ...halo },
       `${name(o)} (bridge)`));
   });
   groups.forEach((members) => {
@@ -452,12 +473,12 @@ function renderLinkScatter(data) {
   });
   top.filter((o) => LINK_LABELLED.includes(o.id)).forEach((o) => {
     labels.append(node("text", {
-      x: X(o.links) + 8, y: Y(o.communities) + 4, "font-size": 11,
+      x: X(o.links) + 8, y: Y(o.communities) + 4, "font-size": small,
       "font-weight": bridges.has(o.id) ? 700 : 600, fill: ink, ...halo,
     }, `${name(o)}${bridges.has(o.id) ? " (bridge)" : ""}`));
   });
   svg.append(leaderLines, dots, labels);
-  host.replaceChildren(svg);
+  return svg;
 }
 
 // Section 3 · A — does a switch stay in the client's group ------------------
@@ -494,7 +515,7 @@ function renderWhoSwitch(data) {
       // the "observed" tick keeps the pair readable without the two labels
       // bleeding into each other. The full name still reaches the tooltip.
       axisLabel: {
-        ...axis.axisLabel, interval: 0, fontSize: 10, lineHeight: 12,
+        ...axis.axisLabel, interval: 0, fontSize: fs("caption"), lineHeight: 14,
         formatter: (value, index) => (index % 2 === 1 ? value.split("\n")[1] : value),
       },
     },
@@ -529,7 +550,7 @@ function renderWhoMovers(data) {
       {
         type: "bar", barMaxWidth: 42,
         data: bars.map((b) => ({ value: b.value, itemStyle: { color: b.color } })),
-        label: { show: true, position: "top", color: INK, formatter: (p) => pct(p.value, 1) },
+        label: { show: true, position: "top", ...valueLabel, formatter: (p) => pct(p.value, 1) },
       },
       // Medians over 10 disjoint seed pairs; the whisker is that range's min/max, not a sd.
       whiskerSeries([
@@ -573,7 +594,7 @@ function renderWhoOverlap(data) {
           { value: f.q3_two_community_clients, itemStyle: { color: ORANGE } },
           { value: f.q3_null_mean, itemStyle: { color: GREY } },
         ],
-        label: { show: true, position: "top", color: INK, formatter: (p) => num(Math.round(p.value)) },
+        label: { show: true, position: "top", ...valueLabel, formatter: (p) => num(Math.round(p.value)) },
       },
       whiskerSeries([[1, f.q3_null_mean - f.q3_null_sd, f.q3_null_mean + f.q3_null_sd]]),
     ],
@@ -613,7 +634,7 @@ function renderBeyondLaw(data) {
           { value: f.q1_ami, itemStyle: { color: ORANGE } },
           { value: f.q1_ami_rewired_mean, itemStyle: { color: GREY } },
         ],
-        label: { show: true, position: "top", color: INK, formatter: (p) => p.value.toFixed(3) },
+        label: { show: true, position: "top", ...valueLabel, formatter: (p) => p.value.toFixed(3) },
       },
       whiskerSeries([[1, f.q1_ami_rewired_mean - f.q1_ami_rewired_sd, f.q1_ami_rewired_mean + f.q1_ami_rewired_sd]]),
     ],
@@ -649,7 +670,7 @@ function renderBeyondPerm(data) {
       // A long company name is wider than its bar's slot, so it bleeds into
       // its neighbours; truncate it to fit and leave the full name to the
       // tooltip.
-      axisLabel: { ...axis.axisLabel, fontSize: 10, lineHeight: 12, interval: 0, width: 54, overflow: "truncate" },
+      axisLabel: { ...axis.axisLabel, fontSize: fs("caption"), lineHeight: 14, interval: 0, width: 54, overflow: "truncate" },
     },
     yAxis: { ...axis, type: "value", min: 0, name: "PERM per H-1B filing", nameTextStyle: { color: MUTE } },
     tooltip: { ...base.tooltip, formatter: (p) => `${esc(p.name.replace("\n", " "))}<br>${p.value.toFixed(3)}` },
@@ -673,13 +694,13 @@ function renderBeyondWage(data) {
     // sitting at the bottom collides with them, so it moves to the top like
     // the section's other charts.
     grid: { left: 54, right: 18, top: 34, bottom: 76 },
-    legend: { top: 0, right: 0, textStyle: { color: MUTE, fontSize: 11 } },
+    legend: { top: 0, right: 0, textStyle: { color: MUTE, fontSize: fs("caption") } },
     xAxis: {
       ...axis, type: "category", data: rows.map((r) => short(r.title)),
       // At 24°, a truncated 120px label is wider than its own category slot
       // and its rotated box lands on the neighbour's; a steeper angle and a
       // shorter truncation width keep each label inside its own slot.
-      axisLabel: { ...axis.axisLabel, rotate: 32, fontSize: 10, width: 95, overflow: "truncate", interval: 0 },
+      axisLabel: { ...axis.axisLabel, rotate: 32, fontSize: fs("caption"), width: 95, overflow: "truncate", interval: 0 },
     },
     yAxis: { ...axis, type: "value", min: 0, max: 1, axisLabel: { ...axis.axisLabel, formatter: (v) => `${Math.round(v * 100)}%` } },
     tooltip: {
@@ -786,7 +807,7 @@ function renderFootprintRegion(data) {
     series: [
       {
         type: "bar", data: bars, barMaxWidth: 42,
-        label: { show: true, position: "top", color: INK, formatter: (p) => p.value.toFixed(2) },
+        label: { show: true, position: "top", ...valueLabel, formatter: (p) => p.value.toFixed(2) },
         markLine: {
           silent: true, symbol: "none", lineStyle: { color: MUTE, type: "dashed" },
           label: { color: MUTE, formatter: `all firms ${full.ami_region.toFixed(2)}`, position: "insideEndTop" },
@@ -814,13 +835,13 @@ function renderFootprintNmi(data) {
   c.setOption({
     ...base,
     grid: { left: 46, right: 18, top: 28, bottom: 46 },
-    xAxis: { ...axis, type: "category", data: cats, axisLabel: { ...axis.axisLabel, interval: 0, lineHeight: 12, fontSize: 10, formatter: shortOf } },
+    xAxis: { ...axis, type: "category", data: cats, axisLabel: { ...axis.axisLabel, interval: 0, lineHeight: 14, fontSize: fs("caption"), formatter: shortOf } },
     yAxis: { ...axis, type: "value", min: 0, max: 1.1, interval: 0.2, name: "NMI with the full network's groups", nameTextStyle: { color: MUTE, align: "left" }, axisLabel: { ...axis.axisLabel, formatter: (v) => (v <= 1 ? v.toFixed(1) : "") } },
     tooltip: { ...base.tooltip, formatter: (p) => `${p.dataIndex < 4 ? "Metros" : "Jobs"} · ${esc(labelOf(p.name).replace("\n", " "))}<br>NMI ${p.value.toFixed(2)}` },
     series: [
       {
         type: "bar", data: [...metros.bars, ...jobs.bars], barMaxWidth: 34,
-        label: { show: true, position: "top", color: INK, formatter: (p) => p.value.toFixed(2) },
+        label: { show: true, position: "top", ...valueLabel, formatter: (p) => p.value.toFixed(2) },
         markArea: {
           silent: true, itemStyle: { color: "rgba(31,143,214,0.05)" },
           label: { color: MUTE, position: "insideTop" },
@@ -878,10 +899,10 @@ function renderFootprintSingle(data) {
   c.setOption({
     ...base,
     grid: { left: 46, right: 18, top: 40, bottom: 40 },
-    legend: { top: 0, right: 0, textStyle: { color: MUTE, fontSize: 11 }, data: ["One firm out", "Random cut, same volume"] },
+    legend: { top: 0, right: 0, textStyle: { color: MUTE, fontSize: fs("caption") }, data: ["One firm out", "Random cut, same volume"] },
     xAxis: {
       ...axis, type: "category", data: rows.map((r) => label(r.firm)),
-      axisLabel: { ...axis.axisLabel, interval: 0, fontSize: 10, rotate: 30 },
+      axisLabel: { ...axis.axisLabel, interval: 0, fontSize: fs("caption"), rotate: 30 },
     },
     yAxis: { ...axis, type: "value", name: "AMI with Census regions", nameTextStyle: { color: MUTE, align: "left" } },
     tooltip: {

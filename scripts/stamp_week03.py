@@ -55,6 +55,7 @@ ASSETS = {
         "docs/assets/js/corridor.js",
         "docs/assets/js/questions.js",
         "docs/assets/js/echarts-views.js",
+        "docs/assets/js/type-scale.mjs",
         "docs/assets/js/variants/d3.js",
         "docs/assets/js/variants/echarts.js",
         "docs/assets/js/variants/globe.js",

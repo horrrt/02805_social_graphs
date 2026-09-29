@@ -11,18 +11,18 @@
   margin-left: 0;
 }
 .guided-post .story-hero h1 {
-  font-size: clamp(36px, 5.4vw, 68px);
+  font-size: var(--fs-display);
   line-height: 1.04;
   letter-spacing: -0.035em;
   max-width: 18ch;
 }
 .guided-post .story-hero .intro {
-  font-size: clamp(18px, 2vw, 22px);
+  font-size: var(--fs-strong);
   max-width: 58ch;
   line-height: 1.5;
 }
 .guided-post .story-scope {
-  font-size: 13px;
+  font-size: var(--fs-small);
   line-height: 1.5;
   color: var(--muted);
   max-width: 66ch;
@@ -38,7 +38,7 @@
   display: inline-flex;
   align-items: center;
   min-height: 44px;
-  font-size: 15px;
+  font-size: var(--fs-body);
   text-decoration-thickness: 1px;
 }
 .guided-post .section {
@@ -47,7 +47,7 @@
   border-top: 1px solid var(--line);
 }
 .guided-post .section h2 {
-  font-size: clamp(27px, 3.5vw, 38px);
+  font-size: var(--fs-h2);
   line-height: 1.15;
   letter-spacing: -0.02em;
   max-width: 30ch;
@@ -71,11 +71,11 @@
   padding: 24px;
 }
 .guided-post .prediction h2 {
-  font-size: 24px;
+  font-size: var(--fs-h3);
   max-width: 30ch;
 }
 .guided-post .prediction-label {
-  font-size: 12px;
+  font-size: var(--fs-caption);
   letter-spacing: 0.04em;
 }
 .guided-post .metrics {
@@ -91,7 +91,7 @@
   border: 0;
 }
 .guided-post .metric strong {
-  font-size: clamp(28px, 4vw, 42px);
+  font-size: var(--fs-h2);
 }
 .guided-post .post figure {
   max-width: 740px;
@@ -103,7 +103,7 @@
   height: auto;
 }
 .guided-post figcaption {
-  font-size: 14px;
+  font-size: var(--fs-caption);
   line-height: 1.5;
   color: var(--muted);
   margin-top: 12px;
@@ -125,7 +125,7 @@
 .upcoming-weeks > summary {
   min-height: 56px;
   padding: 17px 0;
-  font-size: 17px;
+  font-size: var(--fs-strong);
   line-height: 1.4;
   font-weight: 600;
   cursor: pointer;
@@ -141,10 +141,10 @@
   grid-template-columns: 1fr;
 }
 .evidence-item .section h2 {
-  font-size: 27px;
+  font-size: var(--fs-h2);
 }
 .evidence-item .section h3 {
-  font-size: 21px;
+  font-size: var(--fs-h3);
 }
 .guided-post .pack-options {
   margin: 0;
@@ -153,7 +153,7 @@
 }
 .pack-options > summary {
   padding: 12px;
-  font-size: 14px;
+  font-size: var(--fs-body);
   cursor: pointer;
 }
 .pack-options .control-row {
@@ -169,7 +169,7 @@
   align-items: center;
   gap: 16px;
   margin-top: 14px;
-  font-size: 15px;
+  font-size: var(--fs-body);
 }
 .baseline meter {
   width: 100%;
@@ -197,10 +197,10 @@
   padding: 48px 0 24px;
 }
 .guided-lobby .hero h1 {
-  font-size: clamp(42px, 6vw, 76px);
+  font-size: var(--fs-display);
 }
 .guided-lobby .hero .intro {
-  font-size: 20px;
+  font-size: var(--fs-strong);
   max-width: 55ch;
 }
 .guided-lobby #weeks {
@@ -210,7 +210,7 @@
 }
 .guided-lobby #weeks > h2,
 .guided-lobby #weeks .section-head h2 {
-  font-size: 28px;
+  font-size: var(--fs-h2);
 }
 .guided-lobby #weeks > .cabinet-list {
   display: grid;
@@ -223,10 +223,10 @@
   box-shadow: none;
 }
 .guided-lobby .cabinet-link h2 {
-  font-size: 32px;
+  font-size: var(--fs-h3);
 }
 .guided-lobby .cabinet-link .tag {
-  font-size: 12px;
+  font-size: var(--fs-caption);
 }
 .guided-lobby .upcoming-weeks {
   margin-top: 24px;
@@ -238,14 +238,14 @@
   padding: 16px;
 }
 .guided-lobby .upcoming-weeks h2 {
-  font-size: 22px;
+  font-size: var(--fs-h3);
 }
 .guided-lobby #network {
   margin: 0;
   padding: 36px 0;
 }
 .guided-lobby #network h2 {
-  font-size: 30px;
+  font-size: var(--fs-h2);
 }
 .guided-post :focus-visible,
 .guided-lobby :focus-visible {
@@ -320,7 +320,7 @@
   .baseline > div {
     grid-template-columns: 115px 1fr 44px;
     gap: 8px;
-    font-size: 13px;
+    font-size: var(--fs-body);
   }
   .guided-lobby #weeks > .cabinet-list,
   .guided-lobby .upcoming-weeks .cabinet-list {
@@ -360,13 +360,13 @@
   padding: 32px 0;
 }
 .guided-lobby #about h2 {
-  font-size: 28px;
+  font-size: var(--fs-h2);
 }
 .guided-lobby .closing {
   padding: 28px 0;
 }
 .guided-lobby .closing h2 {
-  font-size: 24px;
+  font-size: var(--fs-h2);
 }
 .guided-lobby .closing > details > summary {
   min-height: 48px;
@@ -389,7 +389,7 @@
 }
 .try-help {
   color: var(--muted);
-  font-size: 16px;
+  font-size: var(--fs-strong);
 }
 .skip-prediction {
   margin-top: 16px;

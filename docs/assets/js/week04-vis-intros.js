@@ -4,7 +4,7 @@
 // network, the grey band a random baseline, orange a worker placed at a
 // client, blue a direct employer. Plain SVG, coloured from CSS tokens.
 
-import { miniStrip, stripChart, node, token } from "./week04-strip.js";
+import { miniStrip, stripChart, node, token, fitted, fs, textWidth } from "./week04-strip.js?v=2";
 
 const load = (url) =>
   fetch(url).then((r) => {
@@ -103,24 +103,36 @@ function twoLines(name) {
 }
 
 /** A name cut to fit inside the client's circle; the full name stays in the caption and the label. */
-const cut = (s) => (s.length > 13 ? `${s.slice(0, 12)}…` : s);
+function cut(s, room) {
+  if (textWidth(s, "caption", 700) <= room) return s;
+  let n = s.length - 1;
+  while (n > 1 && textWidth(`${s.slice(0, n)}…`, "caption", 700) > room) n -= 1;
+  return `${s.slice(0, n)}…`;
+}
 
-/** An ego diagram: the firms that staff one client, vendors on the left, the client on the right. */
+/** An ego diagram: the firms that staff one client, vendors on the left, the
+ * client on the right. Drawn at its host's width (see fitted). */
 function egoDiagram(client, firmNames, year) {
+  return fitted((w) => drawEgo(client, firmNames, year, w), 460);
+}
+
+function drawEgo(client, firmNames, year, w) {
   const rows = client.top.slice(0, 8).map(([i, n]) => [firmNames[i], n]);
   const restFirms = client.vendors - rows.length;
   if (restFirms > 0) rows.push([`${num(restFirms)} other firms`, client.rest]);
-  const w = 460;
   const h = 220;
   const top = 14;
   const gap = rows.length > 1 ? (h - 2 * top) / (rows.length - 1) : 0;
-  const cx = w - 62;
+  const r = 32;
+  const cx = w - 66;
   const cy = h / 2;
-  const xEnd = 200;
+  const small = fs("small");
+  const caption = fs("caption");
+  const countW = Math.ceil(Math.max(...rows.map(([, n]) => textWidth(num(n), "small", 700))));
+  const xEnd = Math.round(Math.min(Math.max(210, w * 0.45), cx - 150));
   // A long firm name and its filing count must never touch: compress the name
   // to fit the space left of the count's column when it would run into it.
-  const maxNameWidth = xEnd - 8 - 44;
-  const estCharW = 12 * 0.56;
+  const maxNameWidth = xEnd - 8 - countW - 12;
   const vmax = Math.max(...rows.map(([, n]) => n));
   const placed = token("--w4-placed");
   const ink = token("--ink");
@@ -139,7 +151,7 @@ function egoDiagram(client, firmNames, year) {
     const other = i === rows.length - 1 && restFirms > 0;
     const sw = 1 + 9 * (n / vmax);
     const path = node("path", {
-      d: `M${xEnd} ${y.toFixed(1)} C${xEnd + 90} ${y.toFixed(1)} ${cx - 90} ${cy.toFixed(1)} ${cx - 28} ${cy.toFixed(1)}`,
+      d: `M${xEnd} ${y.toFixed(1)} C${xEnd + 90} ${y.toFixed(1)} ${cx - 90} ${cy.toFixed(1)} ${cx - r} ${cy.toFixed(1)}`,
       fill: "none",
       stroke: placed,
       "stroke-width": sw.toFixed(1),
@@ -147,21 +159,21 @@ function egoDiagram(client, firmNames, year) {
     });
     path.append(node("title", {}, `${name}: ${num(n)} filings`));
     svg.append(path);
-    const nameAttrs = { x: 0, y: y + 4, "font-size": 12, fill: other ? inkSoft : ink, "font-weight": other ? 400 : 600 };
-    if (name.length * estCharW > maxNameWidth) {
+    const nameAttrs = { x: 0, y: y + 4, "font-size": small, fill: other ? inkSoft : ink, "font-weight": other ? 400 : 600 };
+    if (textWidth(name, "small", other ? 400 : 600) > maxNameWidth) {
       nameAttrs.textLength = maxNameWidth;
       nameAttrs.lengthAdjust = "spacingAndGlyphs";
     }
     const nameText = node("text", nameAttrs, name);
     nameText.append(node("title", {}, name));
     svg.append(nameText);
-    svg.append(node("text", { x: xEnd - 8, y: y + 4, "font-size": 12, fill: inkSoft, "font-weight": 600, "text-anchor": "end" }, num(n)));
+    svg.append(node("text", { x: xEnd - 8, y: y + 4, "font-size": small, fill: inkSoft, "font-weight": 700, "text-anchor": "end" }, num(n)));
   });
-  svg.append(node("circle", { cx, cy, r: 28, fill: ink }));
-  const [line1, line2] = twoLines(client.name).map(cut);
-  svg.append(node("text", { x: cx, y: line2 ? cy - 3 : cy + 4, "font-size": 10.5, fill: card, "font-weight": 700, "text-anchor": "middle" }, line1));
-  if (line2) svg.append(node("text", { x: cx, y: cy + 11, "font-size": 10.5, fill: card, "font-weight": 700, "text-anchor": "middle" }, line2));
-  svg.append(node("text", { x: cx, y: cy + 48, "font-size": 11.5, fill: ink, "font-weight": 700, "text-anchor": "middle" }, `${num(client.filings)} filings`));
+  svg.append(node("circle", { cx, cy, r, fill: ink }));
+  const [line1, line2] = twoLines(client.name).map((s) => cut(s, 2 * r - 8));
+  svg.append(node("text", { x: cx, y: line2 ? cy - 3 : cy + 4, "font-size": caption, fill: card, "font-weight": 700, "text-anchor": "middle" }, line1));
+  if (line2) svg.append(node("text", { x: cx, y: cy + 11, "font-size": caption, fill: card, "font-weight": 700, "text-anchor": "middle" }, line2));
+  svg.append(node("text", { x: cx, y: cy + r + 20, "font-size": small, fill: ink, "font-weight": 700, "text-anchor": "middle" }, `${num(client.filings)} filings`));
   return svg;
 }
 
@@ -409,9 +421,13 @@ async function drawBeyondIntro() {
 // Two statements, each with its evidence: vendor switches against a random
 // vendor, and the backbone losing metros one or two at a time as α tightens.
 
-function backboneSteps(sweep, { lo, hi }) {
-  const W = 470;
+function backboneSteps(sweep, range) {
+  return fitted((W) => drawBackbone(sweep, range, W), 470);
+}
+
+function drawBackbone(sweep, { lo, hi }, W) {
   const H = 150;
+  const caption = fs("caption");
   const L = 34;
   const R = 10;
   const T = 14;
@@ -435,7 +451,7 @@ function backboneSteps(sweep, { lo, hi }) {
   svg.append(node("rect", { x: X(lo), y: T, width: X(hi) - X(lo), height: H - T - B, fill: band }));
   for (const v of [0, 20, 40]) {
     svg.append(node("line", { x1: L, x2: W - R, y1: Y(v), y2: Y(v), stroke: grid, "stroke-width": 1 }));
-    svg.append(node("text", { x: L - 8, y: Y(v) + 4, "text-anchor": "end", "font-size": 11, fill: mute }, String(v)));
+    svg.append(node("text", { x: L - 8, y: Y(v) + 4, "text-anchor": "end", "font-size": caption, fill: mute }, String(v)));
   }
   const pts = sweep.map((p) => [Math.max(p.alpha, 0.004), p.gc_size]).sort((a, b) => b[0] - a[0]);
   let d = `M${X(pts[0][0]).toFixed(1)} ${Y(pts[0][1]).toFixed(1)}`;
@@ -448,11 +464,11 @@ function backboneSteps(sweep, { lo, hi }) {
   line.append(node("title", {}, "Metros still connected at each α; every step is one link removed"));
   svg.append(line);
   for (const [a, label] of [[0.01, "0.01"], [0.1, "0.1"], [1, "1"]]) {
-    svg.append(node("text", { x: X(a), y: H - B + 16, "text-anchor": "middle", "font-size": 11, fill: mute }, label));
+    svg.append(node("text", { x: X(a), y: H - B + 16, "text-anchor": "middle", "font-size": caption, fill: mute }, label));
   }
-  svg.append(node("text", { x: W - R, y: H - 4, "text-anchor": "end", "font-size": 11, fill: mute }, "α, disparity filter →"));
-  svg.append(node("text", { x: (X(lo) + X(hi)) / 2, y: T + 12, "text-anchor": "middle", "font-size": 10.5, "font-weight": 700, fill: soft }, `α ${lo}–${hi}`));
-  svg.append(node("text", { x: L, y: T - 3, "font-size": 10.5, fill: mute }, "metros connected"));
+  svg.append(node("text", { x: W - R, y: H - 4, "text-anchor": "end", "font-size": caption, fill: mute }, "α, disparity filter →"));
+  svg.append(node("text", { x: (X(lo) + X(hi)) / 2, y: T + 12, "text-anchor": "middle", "font-size": caption, fill: soft }, `α ${lo}–${hi}`));
+  svg.append(node("text", { x: L, y: T - 3, "font-size": caption, fill: mute }, "metros connected"));
   return svg;
 }
 

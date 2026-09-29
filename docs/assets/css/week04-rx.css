@@ -48,7 +48,7 @@
   color: var(--w4-accent);
   cursor: pointer;
   display: flex;
-  font-size: 13px;
+  font-size: var(--fs-small);
   font-weight: 700;
   gap: 8px;
   list-style: none;
@@ -61,7 +61,7 @@
 
 .corridor details.rx-drawer > summary::before {
   content: "\25B8";
-  font-size: 11px;
+  font-size: var(--fs-caption);
   transition: transform 0.15s;
 }
 
@@ -71,7 +71,7 @@
 
 .corridor .rx-drawer-body {
   color: var(--ink);
-  font-size: 13.5px;
+  font-size: var(--fs-body);
   line-height: 1.62;
   max-width: 78ch;
   padding: 0 16px 14px;
@@ -136,7 +136,7 @@
 .corridor .roles-toolbar .axis-modes-label,
 .corridor .axis-modes-label {
   color: var(--ink-soft);
-  font-size: 12.5px;
+  font-size: var(--fs-small);
   font-weight: 700;
   letter-spacing: 0;
   text-transform: none;
@@ -155,7 +155,7 @@
 
 .corridor .rx-legend-title {
   color: var(--w4-hero-lede);
-  font-size: 12.5px;
+  font-size: var(--fs-small);
   font-weight: 700;
   letter-spacing: 0;
   margin: 0 0 10px;
@@ -196,14 +196,14 @@
 
 .corridor .rx-legend b {
   color: var(--w4-hero-ink);
-  font-size: 13.5px;
+  font-size: var(--fs-body);
   font-weight: 700;
   grid-column: 2;
 }
 
 .corridor .rx-legend span {
   color: var(--w4-hero-lede);
-  font-size: 12.5px;
+  font-size: var(--fs-small);
   grid-column: 2;
   line-height: 1.4;
 }
@@ -212,7 +212,7 @@
 
 .corridor .rx-kicker {
   color: var(--ink-soft);
-  font-size: 13px;
+  font-size: var(--fs-small);
   margin: 6px 0 0;
 }
 
@@ -249,7 +249,7 @@
 .corridor .rx-group-head {
   align-items: center;
   display: flex;
-  font-size: 13.5px;
+  font-size: var(--fs-body);
   gap: 8px;
 }
 
@@ -262,12 +262,12 @@
 
 .corridor .rx-group-head span {
   color: var(--ink-soft);
-  font-size: 12.5px;
+  font-size: var(--fs-small);
 }
 
 .corridor .rx-group p {
   color: var(--ink-soft);
-  font-size: 12.5px;
+  font-size: var(--fs-small);
   line-height: 1.55;
   margin: 4px 0 0 20px;
 }
@@ -286,7 +286,7 @@
   align-items: center;
   color: var(--ink-soft);
   display: flex;
-  font-size: 12.5px;
+  font-size: var(--fs-small);
   font-weight: 700;
   gap: 8px;
 }
@@ -297,7 +297,7 @@
   border-radius: 999px;
   color: var(--ink);
   font: inherit;
-  font-size: 13px;
+  font-size: var(--fs-small);
   font-weight: 500;
   padding: 6px 12px;
   width: 210px;
@@ -324,7 +324,7 @@
   cursor: pointer;
   display: inline-flex;
   font: inherit;
-  font-size: 12.5px;
+  font-size: var(--fs-small);
   font-weight: 600;
   gap: 6px;
   padding: 5px 11px;
@@ -337,13 +337,13 @@
 
 .corridor .rx-ego-matches button span {
   color: var(--ink-mute);
-  font-size: 11.5px;
+  font-size: var(--fs-caption);
   font-weight: 500;
 }
 
 .corridor .rx-ego-none {
   color: var(--ink-mute);
-  font-size: 12.5px;
+  font-size: var(--fs-small);
   margin: 0 0 10px;
 }
 
@@ -362,7 +362,7 @@
   border-top: 1px solid var(--line-soft);
   color: var(--ink);
   display: flex;
-  font-size: 14px;
+  font-size: var(--fs-body);
   gap: 12px;
   line-height: 1.5;
   padding: 10px 0;
@@ -415,12 +415,12 @@
 }
 
 .corridor .rx-tcard-head b {
-  font-size: 16px;
+  font-size: var(--fs-strong);
 }
 
 .corridor .rx-tcard-head em {
   color: var(--ink-soft);
-  font-size: 12.5px;
+  font-size: var(--fs-small);
   font-style: normal;
   line-height: 1.45;
 }
@@ -436,7 +436,7 @@
   border-top: 1px solid var(--line-soft);
   color: var(--ink);
   display: flex;
-  font-size: 13px;
+  font-size: var(--fs-small);
   font-weight: 600;
   gap: 10px;
   line-height: 1.4;
@@ -447,7 +447,7 @@
 .corridor .rx-tcard li a b {
   color: var(--w4-accent);
   flex: none;
-  font-size: 11.5px;
+  font-size: var(--fs-caption);
   min-width: 22px;
 }
 
@@ -487,13 +487,13 @@
 
 .corridor .rx-tcard .rx-uses li a b {
   color: var(--w4-accent);
-  font-size: 11.5px;
+  font-size: var(--fs-caption);
   min-width: 0;
 }
 
 .corridor .rx-tcard .rx-uses li a em {
   color: var(--ink-soft);
-  font-size: 12.5px;
+  font-size: var(--fs-small);
   font-style: normal;
   font-weight: 500;
   line-height: 1.45;
@@ -501,7 +501,7 @@
 
 .corridor .rx-moved {
   color: var(--ink-soft);
-  font-size: 12.5px;
+  font-size: var(--fs-small);
   line-height: 1.6;
   margin: 16px 0 0;
 }
@@ -526,27 +526,27 @@
   border: 1px solid var(--line);
   border-radius: 999px;
   color: var(--w4-accent);
-  font-size: 13px;
+  font-size: var(--fs-small);
   font-weight: 700;
   padding: 6px 12px;
   text-decoration: none;
 }
 
 .corridor .rx-topic-title {
-  font-size: 24px;
+  font-size: var(--fs-h3);
   font-weight: 800;
   margin: 0;
 }
 
 .corridor .rx-topic-holds {
   color: var(--ink-soft);
-  font-size: 13.5px;
+  font-size: var(--fs-body);
   margin: 2px 0 0;
 }
 
 .corridor .rx-topic-count {
   color: var(--ink-soft);
-  font-size: 12.5px;
+  font-size: var(--fs-small);
   margin-left: auto;
 }
 
@@ -569,7 +569,7 @@
 
 .corridor .rx-toc-head {
   color: var(--ink-mute);
-  font-size: 12px;
+  font-size: var(--fs-small);
   font-weight: 700;
   margin: 2px 0 6px 15px;
 }
@@ -584,7 +584,7 @@
   cursor: pointer;
   display: block;
   font: inherit;
-  font-size: 13.5px;
+  font-size: var(--fs-body);
   font-weight: 600;
   line-height: 1.4;
   padding: 8px 12px;
@@ -666,7 +666,7 @@
   border-collapse: separate;
   border-radius: 10px;
   border-spacing: 0;
-  font-size: 12.5px;
+  font-size: var(--fs-small);
   line-height: 1.4;
   margin-top: 6px;
   overflow: hidden;
@@ -676,7 +676,7 @@
 .corridor main table caption {
   caption-side: top;
   color: var(--ink);
-  font-size: 13px;
+  font-size: var(--fs-small);
   font-weight: 700;
   padding: 0 2px 8px;
   text-align: left;
@@ -686,7 +686,7 @@
   background: var(--w4-inset);
   border-bottom: 1px solid var(--line);
   color: var(--ink-soft);
-  font-size: 11.5px;
+  font-size: var(--fs-caption);
   font-weight: 600;
   padding: 9px 12px;
   text-align: left;
@@ -774,13 +774,13 @@
 
 .corridor .rx-table-block h4 {
   color: var(--ink);
-  font-size: 13px;
+  font-size: var(--fs-small);
   font-weight: 700;
   margin: 0 0 4px;
 }
 
 .corridor .rx-table-block p {
   color: var(--ink-soft);
-  font-size: 12px;
+  font-size: var(--fs-small);
   margin: 0 0 6px;
 }

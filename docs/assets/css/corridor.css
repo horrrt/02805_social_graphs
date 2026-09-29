@@ -21,8 +21,7 @@
 
   background: var(--ground);
   color: var(--ink);
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Inter, system-ui,
-    sans-serif;
+  font-family: var(--font-sans);
   margin: 0;
   -webkit-font-smoothing: antialiased;
 }
@@ -76,8 +75,8 @@
 
 .corridor .brand {
   color: var(--bar-text);
-  font-family: Condensed, Impact, sans-serif;
-  font-size: 20px;
+  font-family: var(--font-display);
+  font-size: var(--fs-h4);
   font-weight: 800;
   letter-spacing: 0.01em;
   text-decoration: none;
@@ -87,7 +86,7 @@
 .corridor .brand::before {
   color: var(--bar-accent);
   content: "✳";
-  font-size: 24px;
+  font-size: var(--fs-h3);
   margin-right: 8px;
   vertical-align: -2px;
 }
@@ -99,7 +98,7 @@
 
 .corridor .site-link {
   color: var(--bar-muted);
-  font-size: 13.5px;
+  font-size: var(--fs-body);
   font-weight: 600;
   text-decoration: none;
   white-space: nowrap;
@@ -118,7 +117,7 @@
 .corridor .topnav a {
   border-radius: 999px;
   color: var(--bar-muted);
-  font-size: 13.5px;
+  font-size: var(--fs-body);
   font-weight: 600;
   padding: 7px 13px;
   text-decoration: none;
@@ -168,7 +167,7 @@
 
 .corridor .eyebrow {
   color: #ffb768;
-  font-size: 11.5px;
+  font-size: var(--fs-caption);
   font-weight: 800;
   letter-spacing: 0.14em;
   margin: 0 0 10px;
@@ -176,7 +175,7 @@
 }
 
 .corridor .hero h1 {
-  font-size: clamp(38px, 4.4vw, 56px);
+  font-size: var(--fs-display);
   font-weight: 700;
   letter-spacing: -0.03em;
   line-height: 0.98;
@@ -185,14 +184,14 @@
 
 .corridor .hero .lede {
   color: #b9cde4;
-  font-size: 15px;
+  font-size: var(--fs-strong);
   font-weight: 600;
   margin: 0 0 16px;
 }
 
 .corridor .hero p.body {
   color: #93aecd;
-  font-size: 13.5px;
+  font-size: var(--fs-body);
   line-height: 1.55;
   margin: 0 0 14px;
 }
@@ -200,7 +199,7 @@
 .corridor .caution {
   border-left: 2px solid #ffb768;
   color: #ffd6a8;
-  font-size: 13px;
+  font-size: var(--fs-small);
   font-style: italic;
   font-weight: 600;
   margin: 0 0 18px;
@@ -218,7 +217,7 @@
   align-items: center;
   color: #b9cde4;
   display: flex;
-  font-size: 12.5px;
+  font-size: var(--fs-small);
   gap: 9px;
 }
 
@@ -240,7 +239,7 @@
 .corridor .yearline label {
   color: #7f9bbd;
   display: block;
-  font-size: 11px;
+  font-size: var(--fs-caption);
   font-weight: 700;
   letter-spacing: 0.08em;
   margin-top: 8px;
@@ -250,7 +249,7 @@
 .corridor .yearline .ends {
   color: #b9cde4;
   display: flex;
-  font-size: 12px;
+  font-size: var(--fs-small);
   font-weight: 700;
   justify-content: space-between;
 }
@@ -289,7 +288,7 @@
   border-radius: 999px;
   bottom: 6px;
   color: #cfe0f2;
-  font-size: 11.5px;
+  font-size: var(--fs-caption);
   left: 50%;
   padding: 5px 12px;
   position: absolute;
@@ -309,7 +308,7 @@
 
 .corridor .panel h2 {
   color: var(--ink-mute);
-  font-size: 11px;
+  font-size: var(--fs-caption);
   letter-spacing: 0.1em;
   margin: 0 0 10px;
   text-transform: uppercase;
@@ -323,18 +322,18 @@
 }
 
 .corridor .who .flag {
-  font-size: 21px;
+  font-size: var(--fs-h4);
   line-height: 1;
 }
 
 .corridor .who strong {
-  font-size: 17px;
+  font-size: var(--fs-strong);
   letter-spacing: -0.01em;
 }
 
 .corridor .who .codes {
   color: var(--ink-mute);
-  font-size: 11.5px;
+  font-size: var(--fs-caption);
   font-weight: 600;
 }
 
@@ -346,7 +345,7 @@
 .corridor dl.stats > div {
   border-bottom: 1px solid var(--line-soft);
   display: flex;
-  font-size: 12.5px;
+  font-size: var(--fs-small);
   justify-content: space-between;
   padding: 6px 0;
 }
@@ -366,7 +365,7 @@
   border-radius: 999px;
   color: #9a5205;
   display: inline-block;
-  font-size: 11px;
+  font-size: var(--fs-caption);
   font-weight: 800;
   letter-spacing: 0.04em;
   padding: 3px 10px;
@@ -381,7 +380,7 @@
   align-items: center;
   color: var(--ink-soft);
   display: flex;
-  font-size: 11.5px;
+  font-size: var(--fs-caption);
   gap: 6px;
   margin: 0 0 6px;
 }
@@ -394,7 +393,7 @@
 
 .corridor .corridor-list li {
   display: flex;
-  font-size: 12px;
+  font-size: var(--fs-small);
   gap: 8px;
   justify-content: space-between;
   padding: 3px 0;
@@ -411,7 +410,7 @@
 .corridor .panel .fineprint {
   border-top: 1px solid var(--line-soft);
   color: var(--ink-mute);
-  font-size: 11px;
+  font-size: var(--fs-caption);
   line-height: 1.45;
   margin: 12px 0 0;
   padding-top: 10px;
@@ -452,7 +451,7 @@
   border-radius: 8px;
   color: #14618f;
   display: flex;
-  font-size: 13px;
+  font-size: var(--fs-small);
   font-weight: 800;
   height: 26px;
   justify-content: center;
@@ -460,21 +459,30 @@
 }
 
 .corridor .step-head h2 {
-  font-size: 17px;
+  font-size: var(--fs-h2);
   letter-spacing: -0.01em;
   margin: 0;
 }
 
 .corridor .step-head .year-tag {
   color: var(--ink-mute);
-  font-size: 12.5px;
+  font-size: var(--fs-small);
   font-weight: 600;
 }
 
 .corridor .card > p.sub {
   color: var(--ink-soft);
-  font-size: 13.5px;
+  font-size: var(--fs-body);
   margin: 6px 0 16px;
+}
+
+/* Headings inside a step's card, below the step title. */
+.corridor .card > h2 {
+  font-size: var(--fs-h4);
+}
+
+.corridor .card > h3 {
+  font-size: var(--fs-strong);
 }
 
 .corridor .grid2 {
@@ -529,13 +537,13 @@
 }
 
 .corridor .plot h3 {
-  font-size: 13px;
+  font-size: var(--fs-body);
   margin: 0 0 2px;
 }
 
 .corridor .plot p.axis-note {
   color: var(--ink-mute);
-  font-size: 11.5px;
+  font-size: var(--fs-caption);
   margin: 0 0 8px;
 }
 
@@ -555,7 +563,7 @@
   align-items: center;
   color: var(--ink-soft);
   display: flex;
-  font-size: 11.5px;
+  font-size: var(--fs-caption);
   font-weight: 600;
   gap: 6px;
 }
@@ -572,7 +580,7 @@
   border-radius: 10px;
   color: var(--ink-soft);
   display: flex;
-  font-size: 12.5px;
+  font-size: var(--fs-small);
   gap: 9px;
   line-height: 1.5;
   margin-top: 12px;
@@ -582,12 +590,12 @@
 .corridor .notice b {
   color: var(--ink);
   display: block;
-  font-size: 12px;
+  font-size: var(--fs-small);
 }
 
 .corridor .notice .ico {
   flex: none;
-  font-size: 14px;
+  font-size: var(--fs-body);
   line-height: 1.3;
 }
 
@@ -604,7 +612,7 @@
   border-radius: 10px;
   color: var(--ink);
   flex: 1;
-  font-size: 14px;
+  font-size: var(--fs-body);
   padding: 11px 13px;
 }
 
@@ -619,7 +627,7 @@
   border-radius: 10px;
   color: #fff;
   cursor: pointer;
-  font-size: 15px;
+  font-size: var(--fs-body);
   font-weight: 700;
   padding: 0 16px;
 }
@@ -638,19 +646,19 @@
 }
 
 .corridor .reveal h4 {
-  font-size: 12px;
+  font-size: var(--fs-small);
   margin: 0 0 2px;
 }
 
 .corridor .reveal p.what {
   color: var(--ink-mute);
-  font-size: 11px;
+  font-size: var(--fs-caption);
   margin: 0 0 8px;
 }
 
 .corridor .reveal ol {
   color: var(--ink-soft);
-  font-size: 12.5px;
+  font-size: var(--fs-small);
   margin: 0;
   padding-left: 18px;
 }
@@ -665,7 +673,7 @@
 
 .corridor .verdict {
   border-radius: 10px;
-  font-size: 13px;
+  font-size: var(--fs-small);
   font-weight: 600;
   margin-top: 12px;
   padding: 11px 13px;
@@ -701,7 +709,7 @@
   align-items: center;
   border-radius: 9px;
   display: flex;
-  font-size: 15px;
+  font-size: var(--fs-body);
   height: 30px;
   justify-content: center;
   margin-bottom: 9px;
@@ -709,13 +717,13 @@
 }
 
 .corridor .type h3 {
-  font-size: 13.5px;
+  font-size: var(--fs-body);
   margin: 0 0 7px;
 }
 
 .corridor .type p {
   color: var(--ink-soft);
-  font-size: 11.5px;
+  font-size: var(--fs-caption);
   line-height: 1.5;
   margin: 0 0 9px;
 }
@@ -723,7 +731,7 @@
 .corridor .type .eg {
   border-top: 1px solid var(--line-soft);
   color: var(--ink-mute);
-  font-size: 11.5px;
+  font-size: var(--fs-caption);
   padding-top: 8px;
 }
 
@@ -746,7 +754,7 @@
   border: 1px solid var(--line);
   border-radius: 9px;
   color: var(--ink);
-  font-size: 13.5px;
+  font-size: var(--fs-body);
   padding: 8px 11px;
 }
 
@@ -765,11 +773,11 @@
 
 .corridor .fact dt {
   color: var(--ink-mute);
-  font-size: 11.5px;
+  font-size: var(--fs-caption);
 }
 
 .corridor .fact dd {
-  font-size: 16px;
+  font-size: var(--fs-strong);
   font-variant-numeric: tabular-nums;
   font-weight: 700;
   margin: 2px 0 0;
@@ -790,7 +798,7 @@
   border-radius: 999px;
   color: var(--ink-soft);
   cursor: pointer;
-  font-size: 12.5px;
+  font-size: var(--fs-small);
   font-weight: 700;
   padding: 6px 14px;
 }
@@ -858,25 +866,25 @@
 
 .corridor .dk-head .metric span {
   color: var(--ink-mute);
-  font-size: 10.5px;
+  font-size: var(--fs-caption);
   letter-spacing: 0.04em;
   text-transform: uppercase;
 }
 
 .corridor .dk-head .metric b {
-  font-size: 14px;
+  font-size: var(--fs-body);
   font-variant-numeric: tabular-nums;
 }
 
 .corridor table.ego {
   border-collapse: collapse;
-  font-size: 12px;
+  font-size: var(--fs-small);
   width: 100%;
 }
 
 .corridor table.ego caption {
   color: var(--ink-soft);
-  font-size: 12px;
+  font-size: var(--fs-small);
   font-weight: 700;
   padding-bottom: 6px;
   text-align: left;
@@ -884,7 +892,7 @@
 
 .corridor table.ego th {
   color: var(--ink-mute);
-  font-size: 11px;
+  font-size: var(--fs-caption);
   font-weight: 600;
   padding: 4px 6px 6px;
   text-align: left;
@@ -905,7 +913,7 @@
 .corridor footer.foot {
   border-top: 1px solid var(--line);
   color: var(--ink-mute);
-  font-size: 12px;
+  font-size: var(--fs-caption);
   margin-top: 34px;
   padding: 18px 0 40px;
 }
@@ -923,7 +931,7 @@
 
 .corridor .status-line {
   color: var(--ink-mute);
-  font-size: 12.5px;
+  font-size: var(--fs-small);
   padding: 10px 0;
 }
 
@@ -997,13 +1005,13 @@
 }
 
 .corridor .variants .variant b {
-  font-size: 12px;
+  font-size: var(--fs-small);
   font-weight: 700;
 }
 
 .corridor .variants .variant span {
   color: var(--ink-mute);
-  font-size: 9.5px;
+  font-size: var(--fs-caption);
   font-variant-numeric: tabular-nums;
 }
 
@@ -1025,7 +1033,7 @@
   border-left: 3px solid var(--access);
   border-radius: 10px;
   color: var(--ink-soft);
-  font-size: 12.5px;
+  font-size: var(--fs-small);
   line-height: 1.55;
   margin: 0 0 6px;
   padding: 10px 13px;
@@ -1144,12 +1152,12 @@
 
 .corridor[data-tables="compact"] dl.stats > div,
 .corridor[data-tables="compact"] .corridor-list li {
-  font-size: 11.5px;
+  font-size: var(--fs-caption);
   padding-block: 3px;
 }
 
 .corridor[data-tables="compact"] table.ego {
-  font-size: 11px;
+  font-size: var(--fs-small);
 }
 
 .corridor[data-tables="compact"] table.ego td {
@@ -1174,7 +1182,7 @@
   color: var(--ink-soft);
   cursor: pointer;
   display: flex;
-  font-size: 12.5px;
+  font-size: var(--fs-small);
   font-weight: 700;
   gap: 6px;
   padding: 6px 12px;
@@ -1213,7 +1221,7 @@
 
 .corridor .style-group-label {
   color: var(--ink-mute);
-  font-size: 10px;
+  font-size: var(--fs-caption);
   font-weight: 700;
   letter-spacing: 0.07em;
   text-transform: uppercase;
@@ -1231,7 +1239,7 @@
   border-radius: 999px;
   color: var(--ink-soft);
   cursor: pointer;
-  font-size: 12px;
+  font-size: var(--fs-small);
   font-weight: 700;
   padding: 6px 11px;
 }
@@ -1268,7 +1276,7 @@
 .corridor .style-more > summary {
   color: var(--ink-soft);
   cursor: pointer;
-  font-size: 12.5px;
+  font-size: var(--fs-small);
   font-weight: 700;
   list-style: none;
   padding: 4px 0;
@@ -1281,7 +1289,7 @@
 .corridor .style-more > summary::after {
   color: var(--ink-mute);
   content: " ▾";
-  font-size: 11px;
+  font-size: var(--fs-caption);
 }
 
 .corridor .style-more[open] > summary::after {
@@ -1302,7 +1310,7 @@
 
 .corridor .style-field label {
   color: var(--ink-mute);
-  font-size: 10px;
+  font-size: var(--fs-caption);
   font-weight: 700;
   letter-spacing: 0.07em;
   text-transform: uppercase;
@@ -1316,7 +1324,7 @@
 .corridor .style-bar .style-note {
   border-top: 1px solid var(--line-soft);
   color: var(--ink-soft);
-  font-size: 11.5px;
+  font-size: var(--fs-caption);
   line-height: 1.5;
   margin: 0;
   padding-top: 11px;
@@ -1337,7 +1345,7 @@
 }
 .corridor .qa-controls label {
   color: var(--ink-soft);
-  font-size: 11px;
+  font-size: var(--fs-caption);
   font-weight: 700;
 }
 .corridor .qa-controls .axis-modes {
@@ -1357,7 +1365,7 @@
   border-radius: 999px;
   color: var(--ink-soft);
   cursor: pointer;
-  font-size: 11px;
+  font-size: var(--fs-small);
   font-weight: 700;
   padding: 4px 10px;
 }
@@ -1379,14 +1387,14 @@
 .corridor .qa-slider .ends {
   color: var(--ink-mute);
   display: flex;
-  font-size: 10px;
+  font-size: var(--fs-caption);
   font-weight: 700;
   justify-content: space-between;
 }
 
 .corridor .qa-slider-now {
   color: var(--ink);
-  font-size: 13px;
+  font-size: var(--fs-small);
   font-variant-numeric: tabular-nums;
   font-weight: 800;
 }
@@ -1400,9 +1408,8 @@ body > .chart-tip {
   border: 1px solid rgba(255, 255, 255, 0.12);
   border-radius: 9px;
   color: #eaf2fb;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Inter, system-ui,
-    sans-serif;
-  font-size: 11.5px;
+  font-family: var(--font-sans);
+  font-size: var(--fs-caption);
   line-height: 1.45;
   max-width: 260px;
   padding: 8px 11px;
@@ -1413,7 +1420,7 @@ body > .chart-tip {
 
 body > .chart-tip b {
   display: block;
-  font-size: 12.5px;
+  font-size: var(--fs-small);
   margin-bottom: 2px;
 }
 
@@ -1433,7 +1440,7 @@ body > .chart-tip[hidden] {
   color: var(--ink);
   cursor: pointer;
   font-family: inherit;
-  font-size: 11px;
+  font-size: var(--fs-caption);
   font-weight: 700;
   margin-right: 3px;
   padding: 2px 6px;
@@ -1450,7 +1457,7 @@ body > .chart-tip[hidden] {
   color: var(--access);
   cursor: pointer;
   font-family: inherit;
-  font-size: 11px;
+  font-size: var(--fs-caption);
   font-weight: 700;
   margin-top: 8px;
   padding: 0;
@@ -1479,13 +1486,13 @@ body > .chart-tip[hidden] {
 }
 
 .corridor .drawer-head h3 {
-  font-size: 15px;
+  font-size: var(--fs-body);
   margin: 8px 0 4px;
 }
 
 .corridor .drawer-head p {
   color: var(--ink-soft);
-  font-size: 12px;
+  font-size: var(--fs-small);
   margin: 0;
   max-width: 62ch;
 }
@@ -1496,7 +1503,7 @@ body > .chart-tip[hidden] {
   border-radius: 8px;
   color: var(--ink-soft);
   cursor: pointer;
-  font-size: 17px;
+  font-size: var(--fs-strong);
   height: 28px;
   line-height: 1;
   width: 28px;
@@ -1504,20 +1511,20 @@ body > .chart-tip[hidden] {
 
 .corridor .drawer-note {
   color: var(--ink-mute);
-  font-size: 11.5px;
+  font-size: var(--fs-caption);
   margin: 12px 0 8px;
 }
 
 .corridor .drawer-table {
   border-collapse: collapse;
-  font-size: 12px;
+  font-size: var(--fs-small);
   width: 100%;
 }
 
 .corridor .drawer-table th {
   border-bottom: 1px solid var(--line);
   color: var(--ink-mute);
-  font-size: 10.5px;
+  font-size: var(--fs-caption);
   font-weight: 700;
   letter-spacing: 0.05em;
   padding: 6px 8px;
@@ -1549,7 +1556,7 @@ body > .chart-tip[hidden] {
 
 .corridor .step-head #dk-country {
   border-radius: 8px;
-  font-size: 12.5px;
+  font-size: var(--fs-small);
   font-weight: 600;
   margin-left: auto;
   max-width: 230px;
@@ -1585,7 +1592,7 @@ body > .chart-tip[hidden] {
 
 .corridor .qa-cue {
   color: var(--ink);
-  font-size: 13.5px;
+  font-size: var(--fs-body);
   font-weight: 700;
 }
 
@@ -1616,14 +1623,14 @@ body > .chart-tip[hidden] {
 }
 
 .corridor .qa-item h3 {
-  font-size: 15px;
+  font-size: var(--fs-body);
   letter-spacing: -0.01em;
   margin: 0 0 12px;
 }
 
 .corridor .qa-answer {
   color: var(--ink-soft);
-  font-size: 13.5px;
+  font-size: var(--fs-body);
   line-height: 1.62;
   margin: 12px auto 4px;
   max-width: 68ch;
@@ -1668,7 +1675,7 @@ body > .chart-tip[hidden] {
 }
 
 .corridor[data-skin="editorial"] .step-head h2 {
-  font-size: 26px;
+  font-size: var(--fs-h3);
   font-weight: 400;
   letter-spacing: -0.01em;
 }
@@ -1684,14 +1691,14 @@ body > .chart-tip[hidden] {
   background: none;
   color: var(--ink-mute);
   font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
-  font-size: 20px;
+  font-size: var(--fs-h4);
   height: auto;
   width: auto;
 }
 
 .corridor[data-skin="editorial"] .card > p.sub,
 .corridor[data-skin="editorial"] .notice span:last-child {
-  font-size: 15px;
+  font-size: var(--fs-body);
   line-height: 1.62;
   max-width: 68ch;
 }
@@ -1746,7 +1753,7 @@ body > .chart-tip[hidden] {
 }
 
 .corridor[data-skin="terminal"] .step-head h2 {
-  font-size: 15px;
+  font-size: var(--fs-body);
   letter-spacing: 0.02em;
   text-transform: uppercase;
 }
@@ -1818,7 +1825,7 @@ body > .chart-tip[hidden] {
 }
 
 .corridor[data-skin="poster"] .step-head h2 {
-  font-size: 30px;
+  font-size: var(--fs-h2);
   font-weight: 800;
   letter-spacing: -0.035em;
   text-transform: uppercase;
@@ -1828,13 +1835,13 @@ body > .chart-tip[hidden] {
   background: var(--people);
   border-radius: 0;
   color: #fff;
-  font-size: 16px;
+  font-size: var(--fs-strong);
   height: 34px;
   width: 34px;
 }
 
 .corridor[data-skin="poster"] .hero h1 {
-  font-size: clamp(44px, 5.6vw, 76px);
+  font-size: var(--fs-display);
   font-weight: 800;
   letter-spacing: -0.045em;
   line-height: 0.88;
@@ -1929,7 +1936,7 @@ body > .chart-tip[hidden] {
 .corridor .chart-table > summary {
   color: var(--ink-soft);
   cursor: pointer;
-  font-size: 11px;
+  font-size: var(--fs-caption);
   font-weight: 700;
   list-style: none;
   padding: 7px 2px;
@@ -1954,7 +1961,7 @@ body > .chart-tip[hidden] {
 
 .corridor .chart-table table {
   border-collapse: collapse;
-  font-size: 12px;
+  font-size: var(--fs-small);
   width: 100%;
 }
 
@@ -1968,7 +1975,7 @@ body > .chart-tip[hidden] {
 .corridor .chart-table thead th {
   background: var(--card);
   color: var(--ink-mute);
-  font-size: 10.5px;
+  font-size: var(--fs-caption);
   letter-spacing: 0.04em;
   position: sticky;
   text-transform: uppercase;
@@ -1992,7 +1999,7 @@ body > .chart-tip[hidden] {
 
 .corridor .type-slice {
   border-radius: 4px;
-  font-size: 11px;
+  font-size: var(--fs-caption);
   font-weight: 700;
   overflow: hidden;
   padding: 7px 6px;

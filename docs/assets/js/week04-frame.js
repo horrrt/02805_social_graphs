@@ -6,7 +6,7 @@
 // real network against its random baseline, drawn as plain SVG from the
 // sections' own data files.
 
-import { miniStrip, stripChart } from "./week04-strip.js";
+import { miniStrip, stripChart } from "./week04-strip.js?v=2";
 import { decorateAll } from "./week04-tables.js";
 
 // ---- the rail

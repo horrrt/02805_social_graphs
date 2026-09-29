@@ -6,20 +6,27 @@
 // get over the hand-rolled version is tooltips on every point, a zoomable
 // axis, and log scales maintained by the library instead of by hand.
 
-const AXIS = {
-  axisLine: { lineStyle: { color: "#c6d4e6" } },
-  axisLabel: { color: "#7a8fac", fontSize: 10 },
-  splitLine: { lineStyle: { color: "#eaf0f7" } },
-  nameTextStyle: { color: "#7a8fac", fontSize: 10 },
-};
+import { fs, family } from "../type-scale.mjs";
 
-const BASE = {
+// Type comes from the scale in type.css: ticks, axis names and legends are
+// captions, point names are small at 600. Built on install, once the page's
+// stylesheets are in.
+const axis = () => ({
+  axisLine: { lineStyle: { color: "#c6d4e6" } },
+  axisLabel: { color: "#7a8fac", fontSize: fs("caption") },
+  splitLine: { lineStyle: { color: "#eaf0f7" } },
+  nameTextStyle: { color: "#7a8fac", fontSize: fs("caption") },
+});
+
+const base = () => ({
   animationDuration: 320,
-  textStyle: { fontFamily: "-apple-system, system-ui, sans-serif" },
-  tooltip: { trigger: "item", confine: true },
-};
+  textStyle: { fontFamily: family("sans"), fontSize: fs("small") },
+  tooltip: { trigger: "item", confine: true, textStyle: { fontSize: fs("small") } },
+});
 
 export function install(api, echarts) {
+  const AXIS = axis();
+  const BASE = base();
   const {
     state, node, metrics, withMetrics, degreeCounts, ccdf, select, $, colours,
     showTip, hideTip, modeFlags, spotlight, format,
@@ -92,11 +99,11 @@ export function install(api, echarts) {
           position: "right",
           formatter: node(iso3).name,
           color: colour,
-          fontSize: 10,
+          fontSize: fs("small"),
           fontWeight: 600,
         },
         data: [point(x, y, iso3, node(iso3).name)],
-        tooltip: { show: false },
+        tooltip: { ...BASE.tooltip, show: false },
         z: 10,
       },
     ];
@@ -125,13 +132,13 @@ export function install(api, echarts) {
     instance.setOption(
       {
         ...BASE,
-        legend: { top: 0, textStyle: { color: "#46618a", fontSize: 11 } },
+        legend: { top: 0, textStyle: { color: "#46618a", fontSize: fs("caption") }, selectorLabel: { fontSize: fs("caption") } },
         grid: { left: 54, right: 16, top: 30, bottom: 44 },
         xAxis: { ...AXIS, type: modeFlags("hist").x ? "log" : "value", name: "Partners", nameLocation: "middle", nameGap: 26 },
         yAxis: { ...AXIS, type: modeFlags("hist").y ? "log" : "value", name: "Countries", nameLocation: "middle", nameGap: 36 },
         // The page has one tooltip design; disabling ECharts' own keeps the
         // mouseover handler below as the only one that fires.
-        tooltip: { show: false },
+        tooltip: { ...BASE.tooltip, show: false },
         series,
       },
       true,
@@ -161,11 +168,11 @@ export function install(api, echarts) {
     instance.setOption(
       {
         ...BASE,
-        legend: { top: 0, textStyle: { color: "#46618a", fontSize: 11 } },
+        legend: { top: 0, textStyle: { color: "#46618a", fontSize: fs("caption") }, selectorLabel: { fontSize: fs("caption") } },
         grid: { left: 54, right: 16, top: 30, bottom: 44 },
         xAxis: { ...AXIS, type: modeFlags("ccdf").x ? "log" : "value", name: "Partners", nameLocation: "middle", nameGap: 26 },
         yAxis: { ...AXIS, type: modeFlags("ccdf").y ? "log" : "value", name: "P(K ≥ k)", nameLocation: "middle", nameGap: 40 },
-        tooltip: { show: false },
+        tooltip: { ...BASE.tooltip, show: false },
         series,
       },
       true,
@@ -217,7 +224,7 @@ export function install(api, echarts) {
     instance.setOption(
       {
         ...BASE,
-        legend: { top: 0, textStyle: { color: "#46618a", fontSize: 11 } },
+        legend: { top: 0, textStyle: { color: "#46618a", fontSize: fs("caption") }, selectorLabel: { fontSize: fs("caption") } },
         grid: { left: 62, right: 18, top: 30, bottom: 46 },
         xAxis: { ...AXIS, type: "log", name: "In-degree", nameLocation: "middle", nameGap: 26 },
         yAxis: {
@@ -232,7 +239,7 @@ export function install(api, echarts) {
           nameLocation: "middle",
           nameGap: 44,
         },
-        tooltip: { show: false },
+        tooltip: { ...BASE.tooltip, show: false },
         series: [
           scatterSeries("Migration", migration, colours.PEOPLE, 9),
           scatterSeries("Flights", flights, colours.ACCESS, 8),
@@ -267,11 +274,11 @@ export function install(api, echarts) {
     instance.setOption(
       {
         ...BASE,
-        legend: { top: 0, textStyle: { color: "#46618a", fontSize: 11 } },
+        legend: { top: 0, textStyle: { color: "#46618a", fontSize: fs("caption") }, selectorLabel: { fontSize: fs("caption") } },
         grid: { left: 58, right: 18, top: 30, bottom: 46 },
         xAxis: { ...AXIS, type: "log", name: "In-degree", nameLocation: "middle", nameGap: 26 },
         yAxis: { ...AXIS, type: "value", name: "z-score", nameLocation: "middle", nameGap: 38 },
-        tooltip: { show: false },
+        tooltip: { ...BASE.tooltip, show: false },
         series: [
           scatterSeries("Surprising (z ≥ 2)", above, colours.PEOPLE, 10),
           scatterSeries("Explained by degree", rest, colours.ACCESS, 8),
@@ -314,7 +321,7 @@ export function install(api, echarts) {
       grid: { left: 54, right: 12, top: 14, bottom: 30 },
       xAxis: { ...AXIS, type: "category", data: focus.series.map((s) => s.year) },
       yAxis: { ...AXIS, type: "value" },
-      tooltip: { show: false },
+      tooltip: { ...BASE.tooltip, show: false },
       series: [
         {
           name: "In-strength",
@@ -342,7 +349,7 @@ export function install(api, echarts) {
       grid: { left: 44, right: 12, top: 14, bottom: 30 },
       xAxis: { ...AXIS, type: "category", data: focus.series.map((s) => s.year) },
       yAxis: { ...AXIS, type: "value", inverse: true, axisLabel: { ...AXIS.axisLabel, formatter: "#{value}" } },
-      tooltip: { show: false },
+      tooltip: { ...BASE.tooltip, show: false },
       series: [
         {
           type: "line",
@@ -367,11 +374,11 @@ export function install(api, echarts) {
       `<span>betweenness rank #${i.betweenness_rank}</span>` +
       `<span>${i.km ? `${format.fmt.format(i.km)} km away` : "the country in question"}</span>`;
     small("dk-nordic", {
-      legend: { top: 0, textStyle: { color: "#46618a", fontSize: 10 } },
+      legend: { top: 0, textStyle: { color: "#46618a", fontSize: fs("caption") }, selectorLabel: { fontSize: fs("caption") } },
       grid: { left: 40, right: 12, top: 26, bottom: 30 },
       xAxis: { ...AXIS, type: "category", data: focus.peers.map((i) => i.iso3) },
-      yAxis: { ...AXIS, type: "value", max: 1, axisLabel: { show: false } },
-      tooltip: { show: false },
+      yAxis: { ...AXIS, type: "value", max: 1, axisLabel: { ...AXIS.axisLabel, show: false } },
+      tooltip: { ...BASE.tooltip, show: false },
       series: [
         ["In-degree", (i) => i.in_degree, (i) => i.in_degree, colours.PEOPLE],
         ["z-score", (i) => Math.abs(i.z ?? 0), (i) => (i.z ?? 0).toFixed(2), colours.INK],

@@ -6,8 +6,8 @@ import {
   drawNetwork,
   tone,
   errorMessage,
-  SANS,
 } from "./cabinet.js";
+import { family } from "./type-scale.mjs";
 import { WEEKS, shortDate } from "./weeks.js";
 setupChrome();
 document.body.classList.add("unlocked");
@@ -98,7 +98,7 @@ function arcadeScene() {
       c.fillStyle = live
         ? tone("--cv-lobby-marquee-text-live", "#ffffff")
         : tone("--cv-lobby-marquee-text", "#0f2340");
-      c.font = `bold ${Math.max(6, cw * 0.087)}px ${SANS}`;
+      c.font = `bold ${Math.max(6, cw * 0.087)}px ${family("sans")}`;
       c.textAlign = "center";
       c.fillText(
         live ? wk.cabinet.marquee || wk.cabinet.name.toUpperCase() : wk.short,
@@ -111,7 +111,7 @@ function arcadeScene() {
       c.strokeStyle = live
         ? tone("--cv-lobby-number-stroke-live", "#1f8fd6")
         : tone("--cv-lobby-number-stroke", "#b9c7d8");
-      c.font = `bold ${cw * 0.4}px ${SANS}`;
+      c.font = `bold ${cw * 0.4}px ${family("sans")}`;
       c.fillStyle = live
         ? tone("--cv-lobby-number-live", "#1f8fd6")
         : tone("--cv-lobby-number", "#7a8fac");
@@ -129,7 +129,7 @@ function arcadeScene() {
       c.fillStyle = live
         ? tone("--cv-lobby-status-live", "#1f8fd6")
         : tone("--cv-lobby-status", "#7a8fac");
-      c.font = `${Math.max(6, cw * 0.075)}px ${SANS}`;
+      c.font = `${Math.max(6, cw * 0.075)}px ${family("sans")}`;
       c.fillText(
         live ? "READY TO PLAY" : `COMING ${shortDate(wk.date)}`,
         x + cw / 2,

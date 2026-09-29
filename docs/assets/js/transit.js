@@ -10,8 +10,8 @@ import {
   canvasStage,
   tone,
   errorMessage,
-  SANS,
 } from "./cabinet.js";
+import { font, fs } from "./type-scale.mjs";
 import { mountRide } from "./ride.mjs";
 import { graph, bfs, outcome } from "./arcade-core.mjs";
 setupChrome();
@@ -137,7 +137,9 @@ try {
         c.lineTo(x + 5, y + 5);
         c.stroke();
       }
-      c.font = `${active ? "600 " : ""}${w < 550 ? 10 : 13}px ${SANS}`;
+      // Station names are small type; the stations on the chosen route are
+      // heavier, and colour carries the same difference.
+      c.font = font("small", active ? 700 : 600);
       c.textAlign = "center";
       const words = name(station.id).split(" "),
         lines = [];
@@ -150,11 +152,13 @@ try {
         } else line += (line ? " " : "") + word;
       }
       if (line) lines.push(line);
+      const size = fs("small"),
+        step = Math.ceil(size * 1.25);
       lines.forEach((text, i) => {
-        const yy = y + 20 + i * 14;
+        const yy = y + 20 + i * step;
         const width = c.measureText(text).width;
         c.fillStyle = tone("--cv-transit-label-bg", "#ffffffee");
-        c.fillRect(x - width / 2 - 3, yy - 11, width + 6, 14);
+        c.fillRect(x - width / 2 - 3, yy - Math.ceil(size), width + 6, step);
         c.fillStyle = active
           ? tone("--cv-transit-label-active", "#0f2340")
           : tone("--cv-transit-label-inactive", "#46618a");
@@ -163,7 +167,7 @@ try {
     }
     c.textAlign = "left";
     c.fillStyle = tone("--cv-transit-caption", "#46618a");
-    c.font = `11px ${SANS}`;
+    c.font = font("caption");
     c.fillText(
       "Circles = stations. Unmarked crossings are not connections.",
       12,

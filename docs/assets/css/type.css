@@ -48,3 +48,19 @@ select,
 textarea {
   font-family: inherit;
 }
+
+/* The browser shrinks sup and sub to "smaller" and gives code its own
+   monospace stack; both fall off the scale without these. */
+sup,
+sub {
+  font-size: var(--fs-caption);
+  line-height: 0;
+}
+
+code,
+kbd,
+samp,
+pre {
+  font-family: var(--font-mono);
+  font-size: 1em;
+}

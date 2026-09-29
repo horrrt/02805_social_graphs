@@ -9,7 +9,7 @@
   color: var(--ink-soft);
   display: flex;
   flex-wrap: wrap;
-  font-size: 12px;
+  font-size: var(--fs-small);
   gap: 14px;
   margin: 6px 0 2px;
 }
@@ -48,7 +48,7 @@
 
 .corridor .w4-step-note {
   color: var(--ink-mute);
-  font-size: 12px;
+  font-size: var(--fs-small);
 }
 
 .corridor .w4-rank-shift {

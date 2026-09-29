@@ -4,6 +4,10 @@
 // chart as a whole an aria-label; the notice beside each chart says what to
 // read from it.
 
+import { fs, family, font } from "./type-scale.mjs";
+
+export { fs, family, font };
+
 const SVG = "http://www.w3.org/2000/svg";
 
 export function token(name) {
@@ -17,14 +21,78 @@ export function node(name, attrs = {}, text = null) {
   return el;
 }
 
+let measurer;
+
+/** Rendered width in px of a line of text at a type role and weight. */
+export function textWidth(text, role = "small", weight = 400) {
+  measurer ??= document.createElement("canvas").getContext("2d");
+  measurer.font = font(role, weight);
+  return measurer.measureText(String(text)).width;
+}
+
+/** The width a chart may take inside its parent: the content box, in whole
+ * px. 0 when the parent is hidden or lays its children out in a row, where
+ * the parent's width is not the chart's. */
+export function roomFor(el) {
+  const parent = el?.parentElement;
+  if (!parent) return 0;
+  const cs = getComputedStyle(parent);
+  if (cs.display.includes("flex") && cs.flexDirection.startsWith("row")) return 0;
+  return Math.floor(parent.clientWidth - parseFloat(cs.paddingLeft) - parseFloat(cs.paddingRight));
+}
+
+/**
+ * Draw a chart at its parent's width so one SVG unit is one CSS pixel and the
+ * type renders at the sizes the tokens set. build(width) returns the chart;
+ * it is drawn at the fallback width first (the parent may still be hidden in
+ * a closed drawer) and drawn again whenever the parent's width changes,
+ * including when a closed <details> opens. A redraw only follows a change of
+ * width, so the new chart's height cannot set off another.
+ */
+export function fitted(build, fallback) {
+  let chart = build(fallback);
+  let drawn = fallback;
+  let queued = false;
+  let observer = null;
+  const redraw = () => {
+    queued = false;
+    if (!chart.isConnected) {
+      observer?.disconnect();
+      return;
+    }
+    const width = roomFor(chart);
+    if (width <= 0 || width === drawn) return;
+    drawn = width;
+    const next = build(width);
+    chart.replaceWith(next);
+    chart = next;
+  };
+  const watch = (tries) => {
+    const parent = chart.parentElement;
+    if (!parent) {
+      if (tries > 0) requestAnimationFrame(() => watch(tries - 1));
+      return;
+    }
+    observer = new ResizeObserver(() => {
+      if (queued) return;
+      queued = true;
+      requestAnimationFrame(redraw);
+    });
+    observer.observe(parent);
+  };
+  queueMicrotask(() => watch(20));
+  return chart;
+}
+
 function titled(el, tip) {
   if (tip) el.append(node("title", {}, tip));
   return el;
 }
 
 /** A label centred on x but kept inside [lo, hi]. */
-function smartText(x, y, text, lo, hi, { size = 11, fill, weight = 400 } = {}) {
-  const half = (text.length * size * (weight >= 600 ? 0.56 : 0.52)) / 2;
+function smartText(x, y, text, lo, hi, { role = "caption", fill, weight = 400 } = {}) {
+  const size = fs(role);
+  const half = textWidth(text, role, weight) / 2;
   const anchor = x - half < lo ? "start" : x + half > hi ? "end" : "middle";
   const at = anchor === "start" ? lo : anchor === "end" ? hi : x;
   return node(
@@ -68,24 +136,43 @@ function dot(X, cy, value, { color, hollow, tip }) {
  * Rows of "real network against its random baseline" on one shared axis.
  * Each row: { label, sub, real, realLabel, realTip, hollow, color, base: [mean, sd],
  * baseLabel, baseTip, ci: [lo, hi], ciTip, ref: [value, label], badge, divider, bold }.
+ * Drawn at its parent's width (see fitted); `width` is the width while hidden.
  */
-export function stripChart(rows, { domain, ticks, fmt, width = 556, labelW = 170, rowH = 60, badgeW = 70, axisTitle, aria, zeroLine, ref, top = 10 }) {
+export function stripChart(rows, opts) {
+  return fitted((width) => drawStrip(rows, { ...opts, width }), opts.width ?? 556);
+}
+
+function drawStrip(rows, { domain, ticks, fmt, width = 556, labelW = 170, rowH = 60, badgeW = 70, axisTitle, aria, zeroLine, ref, top = 10 }) {
   const [d0, d1] = domain;
-  const x0 = labelW;
-  const x1 = width - badgeW;
+  // The label column fits the longest label at the rendered size. When that
+  // leaves the plot too little room, each label moves onto a line above its row.
+  const labelNeed = Math.ceil(
+    Math.max(0, ...rows.map((r) => Math.max(textWidth(r.label, "small", r.bold ? 700 : 600), r.sub ? textWidth(r.sub, "caption") : 0))),
+  ) + 16;
+  const badgeNeed = Math.max(0, ...rows.map((r) => (r.badge ? textWidth(r.badge, "small", 700) + 16 : 0)));
+  const badgeRoom = badgeNeed ? Math.max(badgeW, badgeNeed + 12) : badgeW;
+  const above = width - Math.max(labelW, labelNeed) - badgeRoom < 180;
+  const lift = above ? 20 : 0;
+  // The end ticks' labels are centred on them: keep half of each inside.
+  const tickHalf = (tv) => textWidth(fmt(tv), "caption") / 2 + 1;
+  const x0 = above ? Math.max(4, tickHalf(ticks[0])) : Math.max(labelW, labelNeed);
+  const x1 = width - Math.max(badgeRoom, tickHalf(ticks.at(-1)));
   const X = (v) => x0 + ((Math.min(Math.max(v, d0), d1) - d0) * (x1 - x0)) / (d1 - d0);
-  const ybot = top + rows.length * rowH;
-  const h = ybot + 34 + (axisTitle ? 14 : 0);
+  const step = rowH + lift;
+  const ybot = top + rows.length * step;
+  const h = ybot + 34 + (axisTitle ? 16 : 0);
+  const caption = fs("caption");
+  const small = fs("small");
   const svg = node("svg", { viewBox: `0 0 ${width} ${h}`, width, height: h, role: "img", "aria-label": aria, class: "w4-strip" });
   for (const tv of ticks) {
     svg.append(node("line", { x1: X(tv), y1: top - 4, x2: X(tv), y2: ybot, stroke: token("--w4-grid"), "stroke-width": 1 }));
-    svg.append(node("text", { x: X(tv), y: ybot + 16, "font-size": 11, fill: token("--ink-mute"), "text-anchor": "middle" }, fmt(tv)));
+    svg.append(node("text", { x: X(tv), y: ybot + 16, "font-size": caption, fill: token("--ink-mute"), "text-anchor": "middle" }, fmt(tv)));
   }
   if (zeroLine !== undefined) {
     svg.append(node("line", { x1: X(zeroLine), y1: top - 4, x2: X(zeroLine), y2: ybot, stroke: token("--ink-mute"), "stroke-width": 1 }));
   }
   if (axisTitle) {
-    svg.append(node("text", { x: x1, y: ybot + 32, "font-size": 11, fill: token("--ink-mute"), "text-anchor": "end" }, axisTitle));
+    svg.append(node("text", { x: x1, y: ybot + 33, "font-size": caption, fill: token("--ink-mute"), "text-anchor": "end" }, axisTitle));
   }
   // A reference across every row, [value, label]: the label sits above the first row.
   if (ref) {
@@ -96,31 +183,35 @@ export function stripChart(rows, { domain, ticks, fmt, width = 556, labelW = 170
         lab,
       ),
     );
-    if (lab) svg.append(smartText(X(v), Math.max(10, top - 8), lab, x0, x1, { size: 11, fill: token("--ink-soft") }));
+    if (lab) svg.append(smartText(X(v), Math.max(10, top - 8), lab, x0, x1, { fill: token("--ink-soft") }));
   }
   rows.forEach((r, i) => {
-    const cy = top + i * rowH + rowH / 2 - 2;
+    const rowTop = top + i * step;
+    const cy = rowTop + lift + rowH / 2 - 2;
     if (r.divider) {
       svg.append(
         node("line", {
           x1: 0,
-          y1: top + i * rowH + 2,
+          y1: rowTop + 2,
           x2: width,
-          y2: top + i * rowH + 2,
+          y2: rowTop + 2,
           stroke: token("--line"),
           "stroke-width": 1,
           "stroke-dasharray": "2 3",
         }),
       );
     }
-    svg.append(
-      node(
-        "text",
-        { x: 0, y: cy - (r.sub ? 3 : -4), "font-size": 12, fill: token("--ink"), "font-weight": r.bold ? 700 : 600 },
-        r.label,
-      ),
-    );
-    if (r.sub) svg.append(node("text", { x: 0, y: cy + 12, "font-size": 11, fill: token("--ink-mute") }, r.sub));
+    const weight = r.bold ? 700 : 600;
+    if (above) {
+      svg.append(node("text", { x: 0, y: rowTop + 14, "font-size": small, fill: token("--ink"), "font-weight": weight }, r.label));
+      if (r.sub) {
+        const sx = textWidth(r.label, "small", weight) + 8;
+        svg.append(node("text", { x: sx, y: rowTop + 14, "font-size": caption, fill: token("--ink-mute") }, r.sub));
+      }
+    } else {
+      svg.append(node("text", { x: 0, y: cy - (r.sub ? 3 : -4), "font-size": small, fill: token("--ink"), "font-weight": weight }, r.label));
+      if (r.sub) svg.append(node("text", { x: 0, y: cy + 13, "font-size": caption, fill: token("--ink-mute") }, r.sub));
+    }
     svg.append(node("line", { x1: x0, y1: cy, x2: x1, y2: cy, stroke: token("--line"), "stroke-width": 1 }));
     if (r.base) {
       svg.append(band(X, cy, r.base[0], r.base[1], r.baseTip));
@@ -145,17 +236,17 @@ export function stripChart(rows, { domain, ticks, fmt, width = 556, labelW = 170
     if (r.real !== undefined && r.real !== null) {
       svg.append(dot(X, cy, r.real, { color: r.color, hollow: r.hollow, tip: r.realTip }));
       if (r.realLabel) {
-        svg.append(smartText(X(r.real), cy - 13, r.realLabel, x0, x1, { size: 12, fill: token("--ink"), weight: 700 }));
+        svg.append(smartText(X(r.real), cy - 13, r.realLabel, x0, x1, { role: "small", fill: token("--ink"), weight: 700 }));
       }
     }
     if (r.badge) {
-      const bw = Math.max(r.badge.length * 11 * 0.56 + 16, 44);
+      const bw = Math.max(textWidth(r.badge, "small", 700) + 16, 44);
       const bx = Math.min(x1 + 12, width - bw);
-      svg.append(node("rect", { x: bx, y: cy - 10, width: bw, height: 20, rx: 10, fill: token("--ground") }));
+      svg.append(node("rect", { x: bx, y: cy - 11, width: bw, height: 22, rx: 11, fill: token("--ground") }));
       svg.append(
         node(
           "text",
-          { x: bx + bw / 2, y: cy + 4, "font-size": 11, fill: token("--ink"), "font-weight": 700, "text-anchor": "middle" },
+          { x: bx + bw / 2, y: cy + 4.5, "font-size": small, fill: token("--ink"), "font-weight": 700, "text-anchor": "middle" },
           r.badge,
         ),
       );
@@ -164,8 +255,13 @@ export function stripChart(rows, { domain, ticks, fmt, width = 556, labelW = 170
   return svg;
 }
 
-/** One row without an axis, for summaries: the real value as a dot, the baseline as a band. */
-export function miniStrip({ domain, real, realLabel, base, baseLabel, ref, refLabel, ci, aria, width = 300 }) {
+/** One row without an axis, for summaries: the real value as a dot, the baseline
+ * as a band. Drawn at its parent's width, or at `width` inside a row of items. */
+export function miniStrip(spec) {
+  return fitted((width) => drawMini({ ...spec, width }), spec.width ?? 300);
+}
+
+function drawMini({ domain, real, realLabel, base, baseLabel, ref, refLabel, ci, aria, width = 300 }) {
   const w = width;
   const h = 58;
   const x0 = 6;
@@ -195,6 +291,6 @@ export function miniStrip({ domain, real, realLabel, base, baseLabel, ref, refLa
   }
   if (ci) svg.append(interval(X, cy, ci[0], ci[1], `95% interval: ${ci[0].toFixed(2)} to ${ci[1].toFixed(2)}`));
   svg.append(dot(X, cy, real, { tip: realLabel }));
-  svg.append(smartText(X(real), cy - 13, realLabel, 0, w, { size: 12, fill: token("--ink"), weight: 700 }));
+  svg.append(smartText(X(real), cy - 13, realLabel, 0, w, { role: "small", fill: token("--ink"), weight: 700 }));
   return svg;
 }

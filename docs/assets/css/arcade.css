@@ -6,8 +6,7 @@
 :root {
   color-scheme: light;
   /* Week 3's type: the platform's own sans, as on the corridor post. */
-  --sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Inter, system-ui,
-    sans-serif;
+  --sans: var(--font-sans);
   /* Week 3's palette, now the whole site's: white cards on a cool ground,
      navy ink, dark blue for actions and orange for what is at stake. */
   --bg: #eef3f9;
@@ -57,8 +56,8 @@ body {
   margin: 0;
   background: var(--bg);
   color: var(--paper);
-  font-family: var(--sans);
-  font-size: 18px;
+  font-family: var(--font-sans);
+  font-size: var(--fs-body);
   line-height: 1.55;
   -webkit-font-smoothing: antialiased;
 }
@@ -123,7 +122,7 @@ input[type="checkbox"] {
 }
 label {
   display: block;
-  font-size: 0.9rem;
+  font-size: var(--fs-body);
   font-weight: 600;
 }
 label input,
@@ -151,25 +150,25 @@ h3 {
   line-height: 1.05;
 }
 h1 {
-  font-size: clamp(4rem, 10vw, 9.4rem);
+  font-size: var(--fs-display);
   font-weight: 700;
   letter-spacing: -0.03em;
   margin-bottom: 24px;
 }
 h2 {
-  font-size: clamp(1.8rem, 3vw, 2.7rem);
+  font-size: var(--fs-h2);
   font-weight: 600;
   letter-spacing: -0.025em;
 }
 h3 {
-  font-size: 1.35rem;
+  font-size: var(--fs-h3);
 }
 p {
   max-width: 72ch;
 }
 small,
 .fine {
-  font-size: 0.88rem;
+  font-size: var(--fs-small);
   color: var(--muted);
 }
 strong {
@@ -177,16 +176,18 @@ strong {
 }
 .eyebrow,
 .tag {
-  font: 800 11.5px/1.5 var(--sans);
+  font-weight: 800;
+  font-size: var(--fs-caption);
+  line-height: 1.5;
+  font-family: var(--font-sans);
   letter-spacing: 0.14em;
   text-transform: uppercase;
 }
 .mono {
-  font:
-    12px/1.5 ui-monospace,
-    SFMono-Regular,
-    Consolas,
-    monospace;
+  font-weight: 400;
+  font-size: var(--fs-small);
+  line-height: 1.5;
+  font-family: var(--font-mono);
   letter-spacing: 0.1em;
   text-transform: uppercase;
 }
@@ -224,8 +225,8 @@ strong {
   background: var(--bg);
 }
 .arcade-wordmark {
-  font-family: Condensed, sans-serif;
-  font-size: 23px;
+  font-family: var(--font-display);
+  font-size: var(--fs-h3);
   letter-spacing: 0.035em;
   text-decoration: none;
   white-space: nowrap;
@@ -237,7 +238,7 @@ strong {
   display: flex;
   gap: 22px;
   align-items: center;
-  font-size: 13px;
+  font-size: var(--fs-body);
   font-weight: 600;
 }
 .chrome nav a {
@@ -246,7 +247,7 @@ strong {
 .chrome nav button {
   min-height: 36px;
   padding: 6px 10px;
-  font-size: 12px;
+  font-size: var(--fs-small);
 }
 .wrap {
   width: min(1280px, calc(100% - 64px));
@@ -256,7 +257,7 @@ strong {
   padding: 72px 0 48px;
 }
 .hero .intro {
-  font-size: clamp(1.15rem, 2vw, 1.5rem);
+  font-size: var(--fs-strong);
   max-width: 660px;
   color: var(--muted);
 }
@@ -274,10 +275,10 @@ strong {
   padding-left: 30px;
 }
 .hero-aside .big {
-  font-family: var(--sans);
+  font-family: var(--font-sans);
   font-weight: 700;
   letter-spacing: -0.03em;
-  font-size: 8rem;
+  font-size: var(--fs-numeral);
   line-height: 1;
   color: var(--accent);
 }
@@ -344,7 +345,7 @@ strong {
 .status {
   min-height: 1.5em;
   margin: 16px 0;
-  font-size: 0.95rem;
+  font-size: var(--fs-small);
   color: var(--accent);
 }
 .status[role="alert"] {
@@ -375,7 +376,10 @@ strong {
   margin-bottom: 32px;
 }
 .prediction-label {
-  font: 800 11.5px var(--sans);
+  font-weight: 800;
+  font-size: var(--fs-caption);
+  line-height: normal;
+  font-family: var(--font-sans);
   letter-spacing: 0.14em;
   color: var(--accent);
   display: flex;
@@ -384,7 +388,7 @@ strong {
   margin-bottom: 18px;
 }
 .prediction h2 {
-  font-size: clamp(1.5rem, 2.8vw, 2.3rem);
+  font-size: var(--fs-h2);
   max-width: 780px;
 }
 .guess-form label span {
@@ -416,15 +420,15 @@ strong {
 }
 .metric strong {
   display: block;
-  font-family: var(--sans);
+  font-family: var(--font-sans);
   font-weight: 700;
   letter-spacing: -0.03em;
-  font-size: clamp(2.5rem, 5vw, 4.8rem);
+  font-size: var(--fs-numeral);
   line-height: 1.1;
   color: var(--accent);
 }
 .metric span {
-  font-size: 0.9rem;
+  font-size: var(--fs-small);
 }
 .stage {
   width: 100%;
@@ -442,7 +446,7 @@ strong {
 table {
   width: 100%;
   border-collapse: collapse;
-  font-size: 0.92rem;
+  font-size: var(--fs-small);
 }
 th,
 td {
@@ -483,7 +487,7 @@ details p {
   padding: 52px 0 72px;
 }
 .closing h2 {
-  font-size: 2rem;
+  font-size: var(--fs-h2);
 }
 .closing-grid {
   display: grid;
@@ -491,11 +495,11 @@ details p {
   gap: 40px;
 }
 .closing h3 {
-  font-size: 1.1rem;
+  font-size: var(--fs-h4);
   margin-bottom: 12px;
 }
 .closing p {
-  font-size: 0.95rem;
+  font-size: var(--fs-body);
   color: var(--muted);
 }
 .footer {
@@ -504,7 +508,7 @@ details p {
   display: flex;
   justify-content: space-between;
   gap: 24px;
-  font-size: 0.85rem;
+  font-size: var(--fs-caption);
   color: var(--muted);
 }
 dialog {
@@ -541,7 +545,10 @@ dialog::backdrop {
   padding: 14px;
 }
 .score-list span {
-  font: 700 12px var(--sans);
+  font-weight: 700;
+  font-size: var(--fs-small);
+  line-height: normal;
+  font-family: var(--font-sans);
   color: var(--accent);
 }
 .score-list strong {
@@ -557,7 +564,7 @@ dialog::backdrop {
   padding-bottom: 12px;
 }
 .lobby-hero h1 {
-  font-size: clamp(5rem, 13vw, 12rem);
+  font-size: var(--fs-display);
 }
 .lobby-hero .intro {
   max-width: 680px;
@@ -587,23 +594,23 @@ a.cabinet-link:hover {
   transform: translateY(-4px);
 }
 .cabinet-link h2 {
-  font-family: var(--sans);
+  font-family: var(--font-sans);
   font-weight: 700;
   letter-spacing: -0.03em;
-  font-size: 2rem;
+  font-size: var(--fs-h3);
   margin: 9px 0;
 }
 .cabinet-link p {
-  font-size: 0.94rem;
+  font-size: var(--fs-body);
   color: var(--muted);
   margin: 0;
 }
 .cabinet-link .tag {
-  font-size: 10px;
+  font-size: var(--fs-caption);
 }
 .cabinet-link .course {
   margin: 6px 0 0;
-  font-size: 0.95rem;
+  font-size: var(--fs-small);
   color: var(--paper);
 }
 .cabinet-link.current {
@@ -629,7 +636,7 @@ a.cabinet-link:hover {
   border: 1px solid var(--accent);
   border-radius: 999px;
   padding: 4px 14px;
-  font-size: 0.9rem;
+  font-size: var(--fs-body);
 }
 .post figure {
   margin: 24px 0 0;
@@ -644,7 +651,7 @@ a.cabinet-link:hover {
 }
 .post figcaption {
   margin-top: 8px;
-  font-size: 0.9rem;
+  font-size: var(--fs-caption);
   color: var(--muted);
 }
 .room-sign {
@@ -654,7 +661,7 @@ a.cabinet-link:hover {
   border-block: 1px solid var(--line);
   padding: 12px 0;
   color: var(--muted);
-  font-size: 13px;
+  font-size: var(--fs-small);
 }
 /* Hero Packs uses cards, not a dashboard shell. */
 .theme-packs {
@@ -681,10 +688,10 @@ a.cabinet-link:hover {
   position: relative;
 }
 .hero-card .card-monogram {
-  font-family: var(--sans);
+  font-family: var(--font-sans);
   font-weight: 700;
   letter-spacing: -0.03em;
-  font-size: 3.7rem;
+  font-size: var(--fs-numeral);
   line-height: 1;
   color: var(--accent);
   padding: 22px 0;
@@ -697,16 +704,19 @@ a.cabinet-link:hover {
   margin: 12px 0;
 }
 .hero-card h3 {
-  font-family: var(--sans);
+  font-family: var(--font-sans);
   font-weight: 700;
   letter-spacing: -0.03em;
   text-transform: uppercase;
-  font-size: 1.65rem;
+  font-size: var(--fs-h3);
   margin: 12px 0;
   min-height: 2em;
 }
 .hero-card .card-id {
-  font: 700 10px var(--sans);
+  font-weight: 700;
+  font-size: var(--fs-caption);
+  line-height: normal;
+  font-family: var(--font-sans);
   letter-spacing: 0.07em;
   color: var(--muted);
 }
@@ -715,7 +725,7 @@ a.cabinet-link:hover {
   justify-content: space-between;
   border-top: 1px solid var(--line);
   padding: 7px 0;
-  font-size: 0.85rem;
+  font-size: var(--fs-body);
   gap: 8px;
 }
 .hero-card .new-stamp {
@@ -725,7 +735,10 @@ a.cabinet-link:hover {
   background: var(--accent);
   color: var(--ink);
   padding: 1px 5px;
-  font: 700 10px var(--sans);
+  font-weight: 700;
+  font-size: var(--fs-caption);
+  line-height: normal;
+  font-family: var(--font-sans);
 }
 .collection-grid {
   display: grid;
@@ -737,7 +750,7 @@ a.cabinet-link:hover {
   min-height: 160px;
 }
 .collection-grid .hero-card h3 {
-  font-size: 1.3rem;
+  font-size: var(--fs-h3);
   min-height: 0;
 }
 .collection-grid .card-monogram {
@@ -755,7 +768,10 @@ a.cabinet-link:hover {
 }
 .card-battle .versus {
   text-align: center;
-  font: 700 2rem var(--sans);
+  font-weight: 700;
+  font-size: var(--fs-h2);
+  line-height: normal;
+  font-family: var(--font-sans);
   color: var(--accent);
 }
 .draft-slots {
@@ -768,7 +784,7 @@ a.cabinet-link:hover {
   background: var(--surface);
   color: var(--paper);
   border-color: var(--line);
-  font-size: 0.9rem;
+  font-size: var(--fs-small);
 }
 .draft-slots .vacant {
   border: 1px dashed var(--line);
@@ -781,7 +797,7 @@ a.cabinet-link:hover {
   gap: 10px;
 }
 .sketch-grid label {
-  font-size: 12px;
+  font-size: var(--fs-small);
   text-align: center;
 }
 .sketch-grid input {
@@ -790,7 +806,7 @@ a.cabinet-link:hover {
 .chart-key {
   display: flex;
   gap: 20px;
-  font-size: 13px;
+  font-size: var(--fs-caption);
   color: var(--muted);
   flex-wrap: wrap;
 }
@@ -833,10 +849,13 @@ a.cabinet-link:hover {
   padding: 30px;
   margin-top: 30px;
   border-radius: 5px;
-  font-family: ui-monospace, monospace;
+  font-family: var(--font-mono);
 }
 .departure-board h2 {
-  font: 12px monospace;
+  font-weight: 400;
+  font-size: var(--fs-small);
+  line-height: normal;
+  font-family: var(--font-mono);
   letter-spacing: 0.15em;
   color: #a8bdbe;
 }
@@ -846,7 +865,7 @@ a.cabinet-link:hover {
   gap: 20px;
   padding: 14px 0;
   border-bottom: 1px dashed #526367;
-  font-size: clamp(0.8rem, 1.4vw, 1.1rem);
+  font-size: var(--fs-strong);
 }
 .departure-line strong {
   color: #ffe273;
@@ -869,7 +888,7 @@ a.cabinet-link:hover {
   max-width: 170px;
   flex: 1;
   padding: 30px 12px 8px;
-  font-size: 14px;
+  font-size: var(--fs-body);
   border-top: 4px solid var(--accent);
 }
 .route-strip li:before {
@@ -900,7 +919,7 @@ a.cabinet-link:hover {
   grid-template-columns: 100px 1fr 60px;
   gap: 12px;
   align-items: center;
-  font-size: 13px;
+  font-size: var(--fs-small);
 }
 .hist-bar {
   height: 24px;
@@ -919,7 +938,7 @@ a.cabinet-link:hover {
 }
 .line-chips button {
   min-height: 40px;
-  font-size: 12px;
+  font-size: var(--fs-small);
   padding: 8px 13px;
 }
 .line-chips button[aria-pressed="true"] {
@@ -965,7 +984,7 @@ a.cabinet-link:hover {
 }
 @media (max-width: 680px) {
   body {
-    font-size: 16px;
+    font-size: var(--fs-body);
   }
   .wrap {
     width: calc(100% - 32px);
@@ -981,13 +1000,13 @@ a.cabinet-link:hover {
     display: none;
   }
   .chrome nav > a {
-    font-size: 10px;
+    font-size: var(--fs-body);
   }
   .arcade-wordmark {
-    font-size: 18px;
+    font-size: var(--fs-h3);
   }
   .chrome nav button {
-    font-size: 10px;
+    font-size: var(--fs-small);
     padding: 6px;
   }
   .hero {
@@ -1000,13 +1019,13 @@ a.cabinet-link:hover {
     display: none;
   }
   .hero h1 {
-    font-size: 4.4rem;
+    font-size: var(--fs-numeral);
   }
   .hero .intro {
-    font-size: 1.15rem;
+    font-size: var(--fs-strong);
   }
   .lobby-hero h1 {
-    font-size: 6rem;
+    font-size: var(--fs-display);
   }
   .section {
     padding: 35px 0;
@@ -1036,10 +1055,10 @@ a.cabinet-link:hover {
     gap: 12px;
   }
   .metric span {
-    font-size: 0.8rem;
+    font-size: var(--fs-small);
   }
   .metric strong {
-    font-size: 2.8rem;
+    font-size: var(--fs-numeral);
   }
   .pack-tray,
   .collection-grid {
@@ -1050,10 +1069,10 @@ a.cabinet-link:hover {
     padding: 13px;
   }
   .hero-card h3 {
-    font-size: 1.4rem;
+    font-size: var(--fs-h3);
   }
   .hero-card .card-monogram {
-    font-size: 3rem;
+    font-size: var(--fs-numeral);
   }
   .cabinet-list {
     grid-template-columns: 1fr 1fr;
@@ -1066,7 +1085,7 @@ a.cabinet-link:hover {
   }
   .departure-line {
     gap: 10px;
-    font-size: 0.75rem;
+    font-size: var(--fs-strong);
   }
   .departure-line span:last-child {
     max-width: 80px;
@@ -1083,7 +1102,7 @@ a.cabinet-link:hover {
     gap: 8px;
   }
   .card-battle .versus {
-    font-size: 1.1rem;
+    font-size: var(--fs-h2);
   }
   .score-list {
     grid-template-columns: repeat(2, 1fr);
@@ -1093,7 +1112,7 @@ a.cabinet-link:hover {
   }
   .sketch-grid input {
     padding: 6px;
-    font-size: 13px;
+    font-size: var(--fs-small);
   }
   .footer {
     flex-direction: column;
@@ -1107,7 +1126,7 @@ a.cabinet-link:hover {
     gap: 8px;
   }
   .dialog-top h2 {
-    font-size: 1.7rem;
+    font-size: var(--fs-h2);
   }
 }
 @media (prefers-reduced-motion: reduce) {
@@ -1179,13 +1198,13 @@ html:not(.js) #os-boot {
   .lobby-hero h1 {
     grid-column: 1;
     grid-row: 2/4;
-    font-size: clamp(6rem, 10vw, 9rem);
+    font-size: var(--fs-display);
     margin: 0;
   }
   .lobby-hero .intro {
     grid-column: 2;
     grid-row: 2;
-    font-size: 1.35rem;
+    font-size: var(--fs-strong);
     margin-bottom: 24px;
   }
   .lobby-hero .actions {
@@ -1197,10 +1216,10 @@ html:not(.js) #os-boot {
 
 @media (max-width: 680px) {
   .lobby-hero h1 {
-    font-size: clamp(3.2rem, 14.2vw, 5.5rem);
+    font-size: var(--fs-display);
   }
   .lobby-hero .intro {
-    font-size: 1.08rem;
+    font-size: var(--fs-strong);
   }
   .lobby-hero {
     padding-top: 28px;

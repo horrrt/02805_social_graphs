@@ -1,7 +1,7 @@
 // Section 2 figures: certified H-1B occupation co-hiring network.
 // Plain SVG, coloured from the page's CSS tokens; every mark carries a
 // native tooltip (<title>).
-import { stripChart, token, node as el } from "./week04-strip.js";
+import { stripChart, token, node as el, fitted, fs, textWidth } from "./week04-strip.js?v=2";
 
 const DATA_URL = new URL("../../weeks/week04/data/jobs.json?v=2", import.meta.url);
 const whole = new Intl.NumberFormat("en-US");
@@ -16,14 +16,13 @@ const esc = (value) => String(value).replace(/[&<>"']/g, (character) => ({
   "'": "&#39;",
 }[character]));
 
-// A rough text width for label boxes; the SVG font is the page's system sans.
-const textWidth = (text, size) => text.length * size * 0.56;
 const tip = (element, text) => {
   element.append(el("title", {}, text));
   return element;
 };
+// Every chart here is drawn at its host's width (see fitted), one unit to a pixel.
 const svgRoot = (width, height, label, role = "img") =>
-  el("svg", { viewBox: `0 0 ${width} ${height}`, width: "100%", role, "aria-label": label, style: "display:block;height:auto;font-family:inherit" });
+  el("svg", { viewBox: `0 0 ${width} ${height}`, width, height, role, "aria-label": label, style: "display:block;font-family:inherit" });
 
 // The start card: the most common job pairs, with pairs that include the
 // most-filed occupation dark and the rest grey.
@@ -41,11 +40,16 @@ function renderPairs(data) {
     return [byId.get(first)?.title || first, byId.get(second)?.title || second];
   });
 
-  const W = 860;
+  host.replaceChildren(fitted((W) => drawPairs(data, rows, names, top, withTop, hasTop, W), 860));
+}
+
+function drawPairs(data, rows, names, top, withTop, hasTop, W) {
   const rowH = 40;
   const y0 = 46;
-  const longest = Math.max(...names.flat().map((name) => name.length + 2));
-  const labelRight = Math.max(318, Math.ceil(longest * 6.2));
+  const small = fs("small");
+  const caption = fs("caption");
+  const longest = Math.max(...names.map(([first, second]) => Math.max(textWidth(first, "small", 700), textWidth(`+ ${second}`, "small"))));
+  const labelRight = Math.ceil(longest) + 4;
   const x0 = labelRight + 12;
   const x1 = W - 60;
   const maxWeight = Math.max(...rows.map((p) => p.weight));
@@ -60,33 +64,32 @@ function renderPairs(data) {
   const grey = token("--w4-map-edge");
 
   const svg = svgRoot(W, H, `The ${rows.length} occupation pairs with the most shared employers; ${withTop} include ${top.title}`);
-  svg.style.maxWidth = `${W}px`;
   const keyText = `Pair includes ${top.title} (${withTop} of ${rows.length})`;
   svg.append(el("rect", { x: 0, y: 4, width: 12, height: 12, rx: 2, fill: dark }));
-  svg.append(el("text", { x: 18, y: 14, "font-size": 12, fill: token("--ink"), "font-weight": 600 }, keyText));
-  const otherX = 18 + textWidth(keyText, 12) + 24;
+  svg.append(el("text", { x: 18, y: 14, "font-size": caption, fill: token("--ink"), "font-weight": 600 }, keyText));
+  const otherX = 18 + textWidth(keyText, "caption", 600) + 24;
   svg.append(el("rect", { x: otherX, y: 4, width: 12, height: 12, rx: 2, fill: grey }));
-  svg.append(el("text", { x: otherX + 18, y: 14, "font-size": 12, fill: token("--ink-soft"), "font-weight": 600 }, "Other pairs"));
+  svg.append(el("text", { x: otherX + 18, y: 14, "font-size": caption, fill: token("--ink-soft"), "font-weight": 600 }, "Other pairs"));
 
   for (let v = 0; v <= domain; v += step) {
     svg.append(el("line", { x1: X(v), x2: X(v), y1: 30, y2: bottom, stroke: token("--line-soft") }));
-    svg.append(el("text", { x: X(v), y: bottom + 14, "font-size": 11, fill: token("--ink-mute"), "text-anchor": "middle" }, num(v)));
+    svg.append(el("text", { x: X(v), y: bottom + 14, "font-size": caption, fill: token("--ink-mute"), "text-anchor": "middle" }, num(v)));
   }
-  svg.append(el("text", { x: (x0 + x1) / 2, y: bottom + 36, "font-size": 11, fill: token("--ink-mute"), "text-anchor": "middle" },
+  svg.append(el("text", { x: (x0 + x1) / 2, y: bottom + 36, "font-size": caption, fill: token("--ink-mute"), "text-anchor": "middle" },
     `Companies that filed for both jobs in ${data.meta.year}`));
 
   rows.forEach((p, i) => {
     const y = y0 + i * rowH;
     const [first, second] = names[i];
     const mark = hasTop(p);
-    svg.append(el("text", { x: labelRight, y: y + 5, "font-size": 12, "text-anchor": "end", fill: token("--ink"), "font-weight": mark ? 700 : 600 }, first));
-    svg.append(el("text", { x: labelRight, y: y + 20, "font-size": 12, "text-anchor": "end", fill: token("--ink-soft") }, `+ ${second}`));
+    svg.append(el("text", { x: labelRight, y: y + 5, "font-size": small, "text-anchor": "end", fill: token("--ink"), "font-weight": mark ? 700 : 600 }, first));
+    svg.append(el("text", { x: labelRight, y: y + 21, "font-size": small, "text-anchor": "end", fill: token("--ink-soft") }, `+ ${second}`));
     const g = tip(el("g"), `${first} + ${second}: ${num(p.weight)} companies filed for both`);
     g.append(el("rect", { x: x0, y, width: X(p.weight) - x0, height: 16, rx: 3, fill: mark ? dark : grey }));
     svg.append(g);
-    svg.append(el("text", { x: X(p.weight) + 6, y: y + 12, "font-size": 12, "font-weight": 700, fill: token("--ink") }, num(p.weight)));
+    svg.append(el("text", { x: X(p.weight) + 6, y: y + 12.5, "font-size": small, "font-weight": 700, fill: token("--ink") }, num(p.weight)));
   });
-  host.replaceChildren(svg);
+  return svg;
 }
 
 function inspector(node, data) {
@@ -191,8 +194,8 @@ function placeLabels(nodes, P, radius, clusterLabels, { W, legendTop }) {
     const r = radius(n.filings);
     const big = n.filings >= 30000;
     const text = shortName(n.title);
-    const size = big ? 12 : 10.5;
-    const tw = textWidth(text, size);
+    const size = fs("small");
+    const tw = textWidth(text, "small", big ? 700 : 600);
     const th = size + 2;
     for (const [dx, dy, anchor] of offsets(r, th)) {
       const { yb, b } = box(x + dx, y + dy, dy, anchor, tw, th);
@@ -226,7 +229,14 @@ function renderNetwork(data) {
   const host = $("chart-job-network");
   // An older cached jobs.json has no layout; skip rather than draw at NaN.
   if (!host || !data.nodes.every((n) => Number.isFinite(n.x) && Number.isFinite(n.y))) return;
-  const W = 700;
+  host.replaceChildren(fitted((W) => drawNetwork(data, W), 700));
+  bridgeList(data);
+}
+
+// The occupation ringed in the network, kept across redraws.
+let selectedJob = null;
+
+function drawNetwork(data, W) {
   const H = 580;
   const legendTop = H - 74;
   const P = new Map(data.nodes.map((n) => [n.id, [n.x * W, n.y * H]]));
@@ -245,6 +255,7 @@ function renderNetwork(data) {
 
   const ring = el("circle", { r: 0, fill: "none", stroke: token("--ink"), "stroke-width": 1.5, visibility: "hidden", "pointer-events": "none" });
   selectNode = (id) => {
+    selectedJob = id;
     const at = id && P.get(id);
     if (!at) {
       ring.setAttribute("visibility", "hidden");
@@ -296,15 +307,15 @@ function renderNetwork(data) {
   for (const c of data.clusters) {
     const text = `${shortName(c.label)} cluster (${num(c.occupations)})`;
     svg.append(el("circle", { cx: lx + 6, cy: ly - 4, r: 5, fill: colour(c.id) }));
-    svg.append(el("text", { x: lx + 16, y: ly, "font-size": 11.5, fill: token("--ink-soft") }, text));
-    lx += 16 + text.length * 6.3 + 18;
+    svg.append(el("text", { x: lx + 16, y: ly, "font-size": fs("caption"), fill: token("--ink-soft") }, text));
+    lx += 16 + textWidth(text, "caption") + 18;
     if (lx > W - 150) {
       lx = 0;
       ly += 18;
     }
   }
-  host.replaceChildren(svg);
-  bridgeList(data);
+  selectNode(selectedJob);
+  return svg;
 }
 
 // The bridges card's main-claim figure: how many occupations pass each rule,
@@ -346,58 +357,67 @@ function renderBridgeStrip(data) {
 // group, the three largest named and the rest grey.
 function renderGroups(data) {
   const host = $("chart-job-groups");
-  if (host && data.clusters.every((c) => c.majors)) {
-    const W = 640;
-    const pct = (v, n) => `${Math.round((100 * v) / n)}%`;
-    const ramp = [1, 0.6, 0.35];
-    const accent = token("--w4-accent");
-    const rest = token("--line");
-    const parts = [];
-    let y = 0;
-    for (const c of data.clusters) {
-      const items = Object.entries(c.majors).sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]));
-      const n = items.reduce((sum, [, v]) => sum + v, 0);
-      const others = items.slice(3).reduce((sum, [, v]) => sum + v, 0);
-      const segs = items.slice(0, 3).map(([code, v], j) => ({ label: data.majors[code] || `SOC ${code}`, v, fill: accent, opacity: ramp[j], light: j < 2 }));
-      if (others) segs.push({ label: "All other groups", v: others, fill: rest, opacity: 1, light: false });
-      const head = el("text", { x: 0, y: y + 14, "font-size": 13, "font-weight": 700, fill: token("--ink") }, `${c.label} `);
-      head.append(el("tspan", { "font-weight": 400, fill: token("--ink-soft") }, `cluster, ${num(n)} occupations`));
-      parts.push(head);
-      let x = 0;
-      for (const s of segs) {
-        const w = (W * s.v) / n;
-        const g = tip(el("g"), `${s.label}: ${num(s.v)} of ${num(n)} occupations (${pct(s.v, n)})`);
-        g.append(el("rect", { x: x.toFixed(1), y: y + 22, width: Math.max(w - 2, 1).toFixed(1), height: 24, rx: 4, fill: s.fill, "fill-opacity": s.opacity }));
-        parts.push(g);
-        if (w >= 40) {
-          parts.push(el("text", { x: (x + w / 2 - 1).toFixed(1), y: y + 38, "text-anchor": "middle", "font-size": 11.5, "font-weight": 700,
-            fill: s.light ? token("--card") : token("--ink"), "pointer-events": "none" }, pct(s.v, n)));
-        }
-        x += w;
-      }
-      let lx = 0;
-      let ly = y + 64;
-      for (const s of segs) {
-        const piece = `${s.label} ${num(s.v)}`;
-        const wide = 14 + piece.length * 6.4;
-        if (lx + wide > W) {
-          lx = 0;
-          ly += 18;
-        }
-        parts.push(el("rect", { x: lx, y: ly - 9, width: 10, height: 10, rx: 2, fill: s.fill, "fill-opacity": s.opacity }));
-        parts.push(el("text", { x: lx + 14, y: ly, "font-size": 11.5, fill: token("--ink-soft") }, piece));
-        lx += wide + 16;
-      }
-      y = ly + 28;
-    }
-    const svg = svgRoot(W, y - 8, "Official major groups inside each hiring cluster");
-    svg.append(...parts);
-    host.replaceChildren(svg);
-  }
+  if (host && data.clusters.every((c) => c.majors)) host.replaceChildren(fitted((W) => drawGroups(data, W), 640));
+  renderNmi(data);
+}
 
-  // How closely the clusters match the official groups, on NMI's 0 to 1 scale.
+function drawGroups(data, W) {
+  const pct = (v, n) => `${Math.round((100 * v) / n)}%`;
+  const ramp = [1, 0.6, 0.35];
+  const accent = token("--w4-accent");
+  const rest = token("--line");
+  const parts = [];
+  let y = 0;
+  for (const c of data.clusters) {
+    const items = Object.entries(c.majors).sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]));
+    const n = items.reduce((sum, [, v]) => sum + v, 0);
+    const others = items.slice(3).reduce((sum, [, v]) => sum + v, 0);
+    const segs = items.slice(0, 3).map(([code, v], j) => ({ label: data.majors[code] || `SOC ${code}`, v, fill: accent, opacity: ramp[j], light: j < 2 }));
+    if (others) segs.push({ label: "All other groups", v: others, fill: rest, opacity: 1, light: false });
+    const head = el("text", { x: 0, y: y + 14, "font-size": fs("small"), "font-weight": 700, fill: token("--ink") }, `${c.label} `);
+    head.append(el("tspan", { "font-weight": 400, fill: token("--ink-soft") }, `cluster, ${num(n)} occupations`));
+    parts.push(head);
+    let x = 0;
+    for (const s of segs) {
+      const w = (W * s.v) / n;
+      const g = tip(el("g"), `${s.label}: ${num(s.v)} of ${num(n)} occupations (${pct(s.v, n)})`);
+      g.append(el("rect", { x: x.toFixed(1), y: y + 22, width: Math.max(w - 2, 1).toFixed(1), height: 24, rx: 4, fill: s.fill, "fill-opacity": s.opacity }));
+      parts.push(g);
+      if (w >= textWidth(pct(s.v, n), "small", 700) + 10) {
+        parts.push(el("text", { x: (x + w / 2 - 1).toFixed(1), y: y + 38.5, "text-anchor": "middle", "font-size": fs("small"), "font-weight": 700,
+          fill: s.light ? token("--card") : token("--ink"), "pointer-events": "none" }, pct(s.v, n)));
+      }
+      x += w;
+    }
+    let lx = 0;
+    let ly = y + 64;
+    for (const s of segs) {
+      const piece = `${s.label} ${num(s.v)}`;
+      const wide = 14 + textWidth(piece, "caption");
+      if (lx + wide > W) {
+        lx = 0;
+        ly += 18;
+      }
+      parts.push(el("rect", { x: lx, y: ly - 9, width: 10, height: 10, rx: 2, fill: s.fill, "fill-opacity": s.opacity }));
+      parts.push(el("text", { x: lx + 14, y: ly, "font-size": fs("caption"), fill: token("--ink-soft") }, piece));
+      lx += wide + 16;
+    }
+    y = ly + 28;
+  }
+  const svg = svgRoot(W, y - 8, "Official major groups inside each hiring cluster");
+  svg.append(...parts);
+  return svg;
+}
+
+// How closely the clusters match the official groups, on NMI's 0 to 1 scale.
+function renderNmi(data) {
   const scaleHost = $("chart-job-nmi");
   if (!scaleHost) return;
+  scaleHost.replaceChildren(fitted((W) => drawNmi(data, W), 410));
+}
+
+function drawNmi(data, W) {
+  const caption = fs("caption");
   const q = data.quality;
   const nmi = q.nmi;
   const sm = q.nmi_shuffled.mean;
@@ -405,34 +425,34 @@ function renderGroups(data) {
   const info = q.infomap.nmi_with_soc;
   const f2 = (v) => v.toFixed(2);
   const a = 14;
-  const b = 396;
+  const b = W - 14;
   const xv = (v) => a + (b - a) * v;
   const axy = 96;
-  const svg = svgRoot(410, 170, "Match between hiring clusters and official major groups, from 0 to 1");
+  const svg = svgRoot(W, 170, "Match between hiring clusters and official major groups, from 0 to 1");
   const halo = { "paint-order": "stroke", stroke: token("--card"), "stroke-width": 3, "stroke-linejoin": "round" };
   svg.append(el("line", { x1: a, x2: b, y1: axy, y2: axy, stroke: token("--line"), "stroke-width": 6, "stroke-linecap": "round" }));
   for (let i = 0; i <= 4; i += 1) {
     const v = i / 4;
     svg.append(el("line", { x1: xv(v), x2: xv(v), y1: axy + 6, y2: axy + 12, stroke: token("--w4-rail-ring") }));
-    svg.append(el("text", { x: xv(v), y: axy + 26, "text-anchor": "middle", "font-size": 11, fill: token("--ink-mute") }, String(v)));
+    svg.append(el("text", { x: xv(v), y: axy + 26, "text-anchor": "middle", "font-size": caption, fill: token("--ink-mute") }, String(v)));
   }
-  svg.append(el("text", { x: a, y: axy + 46, "font-size": 11, fill: token("--ink-mute") }, "unrelated"));
-  svg.append(el("text", { x: b, y: axy + 46, "text-anchor": "end", "font-size": 11, fill: token("--ink-mute") }, "the same groups"));
+  svg.append(el("text", { x: a, y: axy + 46, "font-size": caption, fill: token("--ink-mute") }, "unrelated"));
+  svg.append(el("text", { x: b, y: axy + 46, "text-anchor": "end", "font-size": caption, fill: token("--ink-mute") }, "the same groups"));
   const band = tip(el("g"), `Shuffled official labels: mean ${f2(sm)}, highest of ${num(q.nmi_shuffled.runs)} shuffles ${f2(sx)}`);
   band.append(el("rect", { x: xv(0), y: axy - 8, width: xv(sx) - xv(0), height: 16, rx: 8, fill: token("--w4-band") }));
   svg.append(band);
   svg.append(el("line", { x1: xv(sm), x2: xv(sm), y1: axy - 8, y2: axy - 30, stroke: token("--w4-rail-ring") }));
-  svg.append(el("text", { x: xv(sm) + 6, y: axy - 34, "font-size": 11.5, fill: token("--ink-soft"), ...halo }, `Shuffled labels ${f2(sm)}`));
+  svg.append(el("text", { x: xv(sm) + 6, y: axy - 34, "font-size": caption, fill: token("--ink-soft"), ...halo }, `Shuffled labels ${f2(sm)}`));
   svg.append(el("line", { x1: xv(nmi), x2: xv(nmi), y1: axy - 9, y2: axy - 62, stroke: token("--people") }));
-  svg.append(el("text", { x: xv(nmi) - 4, y: axy - 66, "font-size": 12.5, "font-weight": 700, fill: token("--ink"), ...halo }, `Hiring clusters ${f2(nmi)}`));
+  svg.append(el("text", { x: xv(nmi) - 4, y: axy - 66, "font-size": fs("small"), "font-weight": 700, fill: token("--ink"), ...halo }, `Hiring clusters ${f2(nmi)}`));
   svg.append(el("line", { x1: xv(info), x2: xv(info), y1: axy - 8, y2: axy - 20, stroke: token("--ink") }));
-  svg.append(el("text", { x: xv(info) + 8, y: axy - 22, "font-size": 11.5, fill: token("--ink"), ...halo }, `Infomap ${f2(info)}`));
+  svg.append(el("text", { x: xv(info) + 8, y: axy - 22, "font-size": caption, fill: token("--ink"), ...halo }, `Infomap ${f2(info)}`));
   const infoDot = tip(el("g"), `Infomap clusters against official groups: NMI ${f2(info)}`);
   infoDot.append(el("circle", { cx: xv(info), cy: axy, r: 6, fill: token("--card"), stroke: token("--ink"), "stroke-width": 2 }));
   const louvainDot = tip(el("g"), `Louvain hiring clusters against official groups: NMI ${f2(nmi)}`);
   louvainDot.append(el("circle", { cx: xv(nmi), cy: axy, r: 7.5, fill: token("--people") }));
   svg.append(infoDot, louvainDot);
-  scaleHost.replaceChildren(svg);
+  return svg;
 }
 
 fetch(DATA_URL).then((response) => {

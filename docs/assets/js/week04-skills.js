@@ -4,7 +4,7 @@
 // comparison here stays inside that same population: a random pair means a
 // random pair of those 60, never of every rated occupation.
 
-import { stripChart } from "./week04-strip.js";
+import { stripChart } from "./week04-strip.js?v=2";
 import { drawer, drawerRow, termify } from "./week04-ui.js?v=2";
 
 const DATA = new URL("../../weeks/week04/data/skills.json", import.meta.url);

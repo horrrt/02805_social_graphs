@@ -82,6 +82,25 @@
     map.append(svg('text', {x: 360, y: 34, class: 'scene-label'}, 'THE ORIGINAL GROUP / 277 ARTICLES'));
     map.append(svg('text', {x: 355, y: 602, class: 'scene-label'}, '16 OTHER ISOLATES'));
     map.append(svg('text', {x: 735, y: 622, class: 'scene-label'}, 'THE ISLAND / 9'));
+    fitSceneType();
+    new ResizeObserver(fitSceneType).observe(map);
+  }
+  /* The map is laid out in a 1000-wide viewBox and scaled to its box, which
+     scales its text too. Each label takes its size from the type scale in
+     type.css, divided by that scale, so it renders at the token's px. */
+  const sceneType = {'scene-label': ['caption', 'mono'], 'baymax-label': ['h3', 'display'], 'spider-label': ['small', 'sans']};
+  function fitSceneType() {
+    const width = map.getBoundingClientRect().width;
+    if (!width) return;
+    const unit = map.viewBox.baseVal.width / width;
+    const root = getComputedStyle(document.documentElement);
+    for (const [cls, [role, family]] of Object.entries(sceneType)) {
+      const size = parseFloat(root.getPropertyValue('--fs-' + role));
+      for (const text of map.querySelectorAll('text.' + cls)) {
+        text.style.fontSize = size * unit + 'px';
+        text.style.fontFamily = root.getPropertyValue('--font-' + family).trim();
+      }
+    }
   }
   function feedback(kicker, copy, success = false) {
     const container = $('#mission-feedback'); container.classList.toggle('success', success);
