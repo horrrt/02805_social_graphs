@@ -10,7 +10,7 @@
 <helmet>
 <style>
 body{margin:0;background:#eef3f9}
-.ds{width:1440px;height:1880px;box-sizing:border-box;overflow:hidden;background:#eef3f9;color:#0f2340;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Inter,system-ui,sans-serif;padding:56px 64px;display:flex;flex-direction:column;gap:28px;-webkit-font-smoothing:antialiased}
+.ds{width:1440px;height:2020px;box-sizing:border-box;overflow:hidden;background:#eef3f9;color:#0f2340;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Inter,system-ui,sans-serif;padding:56px 64px;display:flex;flex-direction:column;gap:28px;-webkit-font-smoothing:antialiased}
 .ds h1{margin:0;font-size:36px;line-height:1.1;font-weight:800}
 .ds .lede{margin:8px 0 0;max-width:86ch;font-size:15px;line-height:1.6;color:#46618a}
 .ds .panel{background:#fff;border:1px solid #dce5f0;border-radius:14px;padding:22px 26px;box-shadow:0 1px 2px rgba(15,35,64,.06),0 8px 24px rgba(15,35,64,.05)}
@@ -78,7 +78,7 @@ table.fit td:first-child{font-weight:700;white-space:nowrap}
 
 <section class="panel">
 <h2>A card</h2>
-<p class="sub">Two columns: words on the left (5 of 12), the evidence on the right (7 of 12).</p>
+<p class="sub">One chart: words on the left (5 of 12), the chart on the right (7 of 12). Two charts: the lead beside the notice, both charts in one row under them.</p>
 <div class="wf">
 <div class="z"><span class="tag">A</span><b>Header:</b> badge (Start, 1A…), the question, a bold one-line answer.</div>
 <div class="grid">
@@ -93,11 +93,11 @@ table.fit td:first-child{font-weight:700;white-space:nowrap}
 <div class="z chart"><span class="tag">F</span>one primary figure</div>
 </div>
 </div>
-<div class="z" style="border-style:dashed"><span class="tag">G</span><b>Figure row.</b> Any further figures sit side by side under both columns, each with its own title.</div>
+<div class="z" style="border-style:dashed"><span class="tag">G</span><b>Two charts.</b> The lead and the notice share the top row; both charts sit side by side under them at equal width, titles and charts level; the drawers follow the row.</div>
 </div>
 <ol class="rules" style="margin-top:14px">
 <li><span class="n">A</span><div><b>The answer fits on one line.</b><em>Under about 12 words; the lead explains it.</em></div></li>
-<li><span class="n">F</span><div><b>One primary figure on the right.</b><em>Further figures go in the row G, never stacked in the right column.</em></div></li><li><span class="n">B</span><div><b>No card without a lead.</b><em>A chart never stands alone: the left column always says what was measured and what it shows.</em></div></li>
+<li><span class="n">F</span><div><b>One chart beside the words, two in a row.</b><em>Never a chart inside the text column, never a chart alone in a half-empty row.</em></div></li><li><span class="n">B</span><div><b>No card without a lead.</b><em>A chart never stands alone: the left column always says what was measured and what it shows.</em></div></li>
 <li><span class="n">D</span><div><b>Four drawer names, this order.</b><em>Background, Method, More numbers, then Table: or Maps: named by content. All closed.</em></div></li>
 </ol>
 </section>
@@ -176,13 +176,13 @@ table.fit td:first-child{font-weight:700;white-space:nowrap}
 <li><span class="n">2</span><div><b>Closed drawers take one row.</b><em>An open drawer takes the full width under that row.</em></div></li>
 <li><span class="n">3</span><div><b>Fixed rhythm.</b><em>Card padding 24, column gap 36, 14 between blocks, 18 above a figure.</em></div></li>
 <li><span class="n">4</span><div><b>One control style.</b><em>The segmented control for up to five options; a dropdown beyond.</em></div></li>
-<li><span class="n">5</span><div><b>Every board carries the dot rail.</b><em>Names on hover as "3 Who staffs whom".</em></div></li>
+<li><span class="n">5</span><div><b>Every board carries the dot rail.</b><em>Hover opens one contents panel with plain names.</em></div></li>
 </ol>
 </section>
 </div>
 </div>
 </x-dc>
-<script type="text/x-dc" data-dc-script data-props='{"$preview": {"width": 1440, "height": 1880}}'>
+<script type="text/x-dc" data-dc-script data-props='{"$preview": {"width": 1440, "height": 2020}}'>
 class Component extends DCLogic {
 renderVals() { return {}; }
 }
