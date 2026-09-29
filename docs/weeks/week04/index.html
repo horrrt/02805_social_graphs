@@ -326,9 +326,6 @@
                     </div>
                   </header>
                   <p class="sub">
-                
-                A position is a seat an employer asks to fill, not a worker who
-                arrived.
                 Toggle the metric; click a bar or a bubble to inspect one city.
               </p>
                   <div class="axis-modes" role="group" aria-label="Rank cities by">
@@ -363,10 +360,6 @@
                 <p class="w4-answer">Not regional markets: the two hub groups cross regions.</p>
                     </div>
                   </header>
-                  <p class="sub">
-                
-                Louvain splits the large hubs into two groups, which cross regions, and leaves the smaller metros as a third. Toggle Louvain communities against Census regions on the same map.
-              </p>
                   <div class="rx-groups" id="place-groups">
                     <div class="rx-group" data-community="1"><div class="rx-group-head"><i style="background: var(--w4-group-1)"></i><b>Eight tech hubs</b><span>led by San Jose and San Francisco</span></div><p></p></div>
                     <div class="rx-group" data-community="0"><div class="rx-group-head"><i style="background: var(--w4-group-0)"></i><b>Seven large hubs</b><span>led by New York and Dallas</span></div><p></p></div>
@@ -388,15 +381,15 @@
                 <span>
                   <b>What to notice</b>
                   The split is real but weak: modularity 0.049 against 0.013 for rewired networks; Louvain finds it in 65 of 100 runs.
-                  Census regions and divisions match it no better than shuffled labels (<span class="w4-term"><button aria-describedby="w4-term-place-start-p" type="button">p</button><span class="w4-pop" id="w4-term-place-start-p" role="tooltip">The share of shuffled labellings that match at least as well as the real one. A small value means the match is unlikely to be chance.</span></span> = 0.10 and 0.11).
                 </span>
               </div>
               </div>
               <div class="rx-drawers rx-foot">
-                <details class="rx-drawer"><summary>Background</summary><div class="rx-drawer-body"><p class="sub"> The map shows the partition Louvain finds most often, and every number below is computed on it. The null rewires the company × metro network so each company and each metro keeps its number of partners, deals the filing counts back out at random, and projects it again: </p> <table class="ego"> <tbody id="place-null-stats"></tbody> </table> <p class="sub">One group holds New York, Dallas, Atlanta, Chicago, Houston, Philadelphia and Charlotte. The other holds San Jose, San Francisco, Seattle, Los Angeles, San Diego, Austin, Boston and Washington. The 25 smaller metros form the third. Modularity is 0.049 against 0.013 for rewired networks that keep each company's number of metros (z = 29).</p> <p class="sub">Louvain finds the split shown in 65 of 100 runs; the other 35 find one other split, into two groups. 2024 gives that two-group split in all 100 runs, so it matches the split shown here at <span class="w4-term"><button aria-describedby="w4-term-place-start-nmi" type="button">NMI</button><span class="w4-pop" id="w4-term-place-start-nmi" role="tooltip">Normalized mutual information: how alike two groupings are, from 0 for unrelated to 1 for the same.</span></span> 0.64, against 1.00 between two 2025 runs.</p> <p class="sub">NMI with Census regions is 0.14 and with divisions 0.21. Infomap, which follows a random walk between metros instead of counting links, finds no split at all: one module holds all 40.</p></div></details>
+                <details class="rx-drawer"><summary>Background</summary><div class="rx-drawer-body"><p class="sub">A position is a seat an employer asks to fill, not a worker who arrived.</p> <p class="sub">Louvain splits the large hubs into two groups, which cross regions, and leaves the smaller metros as a third.</p> <p class="sub"> The map shows the partition Louvain finds most often, and every number below is computed on it. The null rewires the company × metro network so each company and each metro keeps its number of partners, deals the filing counts back out at random, and projects it again: </p> <table class="ego"> <tbody id="place-null-stats"></tbody> </table> <p class="sub">One group holds New York, Dallas, Atlanta, Chicago, Houston, Philadelphia and Charlotte. The other holds San Jose, San Francisco, Seattle, Los Angeles, San Diego, Austin, Boston and Washington. The 25 smaller metros form the third. Modularity is 0.049 against 0.013 for rewired networks that keep each company's number of metros (z = 29).</p> <p class="sub">Louvain finds the split shown in 65 of 100 runs; the other 35 find one other split, into two groups. 2024 gives that two-group split in all 100 runs, so it matches the split shown here at <span class="w4-term"><button aria-describedby="w4-term-place-start-nmi" type="button">NMI</button><span class="w4-pop" id="w4-term-place-start-nmi" role="tooltip">Normalized mutual information: how alike two groupings are, from 0 for unrelated to 1 for the same.</span></span> 0.64, against 1.00 between two 2025 runs.</p> <p class="sub">NMI with Census regions is 0.14 and with divisions 0.21. Infomap, which follows a random walk between metros instead of counting links, finds no split at all: one module holds all 40.</p></div></details>
                 <details class="rx-drawer"><summary>Method</summary><div class="rx-drawer-body"><p>A filing counts once in each metro it names, with at most the positions it requests.</p></div></details>
-                <details class="rx-drawer"><summary>More numbers</summary><div class="rx-drawer-body"><p>In Seattle one company, Amazon, files 31%. Positions reward a few firms asking for many seats; employer counts reward a broad market.</p><p>San Jose averages 2.6 positions per filing, New York 1.5. New York's largest filer, EY, has under 4%.</p></div></details>
+                <details class="rx-drawer"><summary>More numbers</summary><div class="rx-drawer-body"><p>Census regions and divisions match it no better than shuffled labels (<span class="w4-term"><button aria-describedby="w4-term-place-start-p" type="button">p</button><span class="w4-pop" id="w4-term-place-start-p" role="tooltip">The share of shuffled labellings that match at least as well as the real one. A small value means the match is unlikely to be chance.</span></span> = 0.10 and 0.11).</p><p>In Seattle one company, Amazon, files 31%. Positions reward a few firms asking for many seats; employer counts reward a broad market.</p><p>San Jose averages 2.6 positions per filing, New York 1.5. New York's largest filer, EY, has under 4%.</p></div></details>
                 <details class="rx-drawer"><summary>Maps: groups and Census regions</summary><div class="rx-drawer-body">
+                  <p class="sub">Toggle Louvain communities against Census regions on the same map.</p>
                   <div class="axis-modes" role="group" aria-label="Colour cities by">
                 <button
                   aria-pressed="true"
@@ -450,8 +443,6 @@
               <div>
                 <p class="sub">
                   The groups follow how much of a city's hiring runs through consulting and IT-services firms.
-                  Each bar is the <span class="w4-term"><button aria-describedby="w4-term-place-who-ami" type="button">AMI</button><span class="w4-pop" id="w4-term-place-who-ami" role="tooltip">Adjusted mutual information: how alike two groupings are, corrected for chance. 0 means no better than labels dealt at random, 1 means the same grouping.</span></span> between
-                  the Louvain groups and one labelling.
                 </p>
                 <div class="notice">
                   <span class="ico">💡</span>
@@ -459,20 +450,18 @@
                     <b>What to notice</b>
                     The IT-services share matches the groups at AMI 0.17 (p = 0.002)
                     and the <span class="w4-term"><button aria-describedby="w4-term-place-who-placed" type="button">placed share</button><span class="w4-pop" id="w4-term-place-who-placed" role="tooltip">The share of a metro’s filings that put the worker at a client company instead of the employer’s own site.</span></span> at 0.12 (p = 0.012); Census regions and divisions do no better than chance.
-                    The match is modest: most of what makes two metros alike stays
-                    unexplained.
                   </span>
                 </div>
                 <div class="rx-drawers rx-foot">
-                  <details class="rx-drawer"><summary>Method</summary><div class="rx-drawer-body"><p>We gave each metro four labels: its Census region, its Census division, the third it falls in by the share of its filings that place a worker at a client, and the third it falls in by the share filed by professional and technical services firms (NAICS 54, the sector of IT consultancies). Thirds, because 35 of the 40 metros have that sector as their largest, so "largest sector" says almost nothing. AMI corrects for the number of labels, so four regions and three thirds compare fairly.</p></div></details>
-                  <details class="rx-drawer"><summary>More numbers</summary><div class="rx-drawer-body"><p>Seven of the eight tech-hub metros sit in the lowest third by placed share: there, companies mostly hire for themselves. In the New York–Dallas group the median metro places 27% of its filings at a client and files 60% through IT-services firms.</p><p>Census regions reach 0.06 (p = 0.11) and divisions 0.06 (p = 0.08), no better than chance.</p></div></details>
+                  <details class="rx-drawer"><summary>Method</summary><div class="rx-drawer-body"><p>We gave each metro four labels: its Census region, its Census division, the third it falls in by the share of its filings that place a worker at a client, and the third it falls in by the share filed by professional and technical services firms (NAICS 54, the sector of IT consultancies). Thirds, because 35 of the 40 metros have that sector as their largest, so "largest sector" says almost nothing. AMI corrects for the number of labels, so four regions and three thirds compare fairly.</p><p>AMI for each labelling of the 40 metros; the p-value is the share of 1,000 shuffles of that labelling that match at least as well.</p></div></details>
+                  <details class="rx-drawer"><summary>More numbers</summary><div class="rx-drawer-body"><p>The match is modest: most of what makes two metros alike stays unexplained.</p><p>Seven of the eight tech-hub metros sit in the lowest third by placed share: there, companies mostly hire for themselves. In the New York–Dallas group the median metro places 27% of its filings at a client and files 60% through IT-services firms.</p><p>Census regions reach 0.06 (p = 0.11) and divisions 0.06 (p = 0.08), no better than chance.</p></div></details>
                 </div>
               </div>
               <div class="plot">
                 <h3>How well each labelling matches the Louvain groups</h3>
                 <p class="axis-note">
-                  AMI for each labelling of the 40 metros; the p-value is the share
-                  of 1,000 shuffles of that labelling that match at least as well.
+                  Each bar is the <span class="w4-term"><button aria-describedby="w4-term-place-who-ami" type="button">AMI</button><span class="w4-pop" id="w4-term-place-who-ami" role="tooltip">Adjusted mutual information: how alike two groupings are, corrected for chance. 0 means no better than labels dealt at random, 1 means the same grouping.</span></span> between
+                  the Louvain groups and one labelling.
                   Orange bars describe who hires, grey bars where the city is.
                 </p>
                 <div class="chart-host short" id="chart-where-who"></div>
@@ -492,21 +481,20 @@
             <div class="w4-two">
               <div>
                 <p class="sub">
-                  Every pair of the 40 metros shares some employer, so the full
-                  network is one hairball of 780 links. We removed the links one by one, least significant
+                  We removed the links one by one, least significant
                   first by <span class="w4-term"><button aria-describedby="w4-term-place-alpha" type="button">α</button><span class="w4-pop" id="w4-term-place-alpha" role="tooltip">The disparity filter's threshold. The filter keeps a link only when its weight is larger than chance would give, judged against each metro's own total, and α is the chance it allows. A lower α keeps fewer links. The links that survive form the backbone.</span></span>, and watched the largest piece after each removal.
                 </p>
                 <div class="notice">
                   <span class="ico">💡</span>
                   <span>
                     <b>What to notice</b>
-                    The big outsourcing firms hold no more of the links that cut metros loose than of any others.
                     Of the 16 links whose removal cuts a metro loose, the five largest <span class="w4-term"><button aria-describedby="w4-term-place-break-placing" type="button">placing firms</button><span class="w4-pop" id="w4-term-place-break-placing" role="tooltip">Companies that file for workers and then place them at a client company’s site.</span></span> lead 5 (31%), no more than their share of the whole <span class="w4-term"><button aria-describedby="w4-term-place-break-backbone" type="button">backbone</button><span class="w4-pop" id="w4-term-place-break-backbone" role="tooltip">The links the disparity filter keeps because they carry more weight than chance would give.</span></span> (38%, p = 0.37).
                   </span>
                 </div>
                 <div class="rx-drawers rx-foot">
-                  <details class="rx-drawer"><summary>Method</summary><div class="rx-drawer-body"><p>The disparity filter keeps a link when it carries an unusually large share of either metro's total weight; α is the test's threshold, and a smaller α keeps fewer links.</p></div></details>
-                  <details class="rx-drawer"><summary>More numbers</summary><div class="rx-drawer-body"><p>The other eleven are led by Amazon (three), Intel, Deloitte, Capital One, JPMorgan Chase, Citigroup, FedEx, Fidelity Investments and the University of Maryland.</p><p>The first metro falls off at α = 0.136. Tried at five values, the largest piece of the map fell from 32 metros at α = 0.1 to 18 at α = 0.05, which looks like one snap. The fall from 32 to 18 is 14 separate links, each peeling one metro away.</p><p>The five placing firms lead 69 of the 180 links in the whole backbone at α = 0.2 (38%), so their 5 of the 16 links that cut a metro loose is no more than their share (p = 0.37).</p><p>No single removal cuts off more than two metros: Dallas–Durham at α = 0.041 takes Durham and Raleigh with it, and New York–Seattle at 0.023 splits the last five metros three and two.</p></div></details>
+                  <details class="rx-drawer"><summary>Background</summary><div class="rx-drawer-body"><p>Every pair of the 40 metros shares some employer, so the full network is one hairball of 780 links.</p></div></details>
+                  <details class="rx-drawer"><summary>Method</summary><div class="rx-drawer-body"><p>The disparity filter keeps a link when it carries an unusually large share of either metro's total weight; α is the test's threshold, and a smaller α keeps fewer links.</p><p>Each step is one or more links removed. The shaded band is the range from α = 0.1 to 0.05 where the five-value sweep saw the drop.</p></div></details>
+                  <details class="rx-drawer"><summary>More numbers</summary><div class="rx-drawer-body"><p>The big outsourcing firms hold no more of the links that cut metros loose than of any others.</p><p>The other eleven are led by Amazon (three), Intel, Deloitte, Capital One, JPMorgan Chase, Citigroup, FedEx, Fidelity Investments and the University of Maryland.</p><p>The first metro falls off at α = 0.136. Tried at five values, the largest piece of the map fell from 32 metros at α = 0.1 to 18 at α = 0.05, which looks like one snap. The fall from 32 to 18 is 14 separate links, each peeling one metro away.</p><p>The five placing firms lead 69 of the 180 links in the whole backbone at α = 0.2 (38%), so their 5 of the 16 links that cut a metro loose is no more than their share (p = 0.37).</p><p>No single removal cuts off more than two metros: Dallas–Durham at α = 0.041 takes Durham and Raleigh with it, and New York–Seattle at 0.023 splits the last five metros three and two.</p></div></details>
                   <details class="rx-drawer"><summary>Table: 14 links that peel metros off</summary><div class="rx-drawer-body">
                 <table class="ego">
                   <thead>
@@ -527,10 +515,9 @@
               <div class="plot">
                 <h3>Metros in the largest piece as the filter tightens</h3>
                 <p class="axis-note">
-                  Each step is one or more links removed. Read right to left: as α
+                  Read right to left: as α
                   falls, links go and metros drop out of the largest connected
-                  piece. The shaded band is the range from α = 0.1 to 0.05 where the
-                  five-value sweep saw the drop.
+                  piece.
                 </p>
                 <div class="chart-host short" id="chart-where-break"></div>
               </div>
@@ -590,7 +577,7 @@
               <span class="w4-num">2A</span>
               <div>
                 <h2>Do outsourcing firms bundle jobs differently from direct employers?</h2>
-                <p class="w4-answer">Yes. Their job clusters differ more than those of random groups with the same number of companies and the same share of filings.</p>
+                <p class="w4-answer">Yes. Their job clusters differ more than those of random groups matched on size.</p>
               </div>
             </header>
             <div class="w4-two">
@@ -605,9 +592,7 @@
                   <span>
                     <b>What to notice</b>
                     The two clusterings agree at NMI 0.42. Random groups
-                    matched on size agree at 0.61 ± 0.04 (z = −4.2), so the
-                    outsourcing firms bundle jobs differently from companies
-                    like them.
+                    matched on size agree at 0.61 ± 0.04 (z = −4.2).
                   </span>
                 </div>
 </div>
@@ -617,9 +602,7 @@
                 <h3>Do outsourcers cluster jobs like random firms would?</h3>
                 <p class="axis-note">
                   Bars show how alike the two groups' job clusters are. Whiskers
-                  span one standard deviation over 20 random splits. Only the blue
-                  baseline matches the outsourcing firms on both number and size
-                  of companies, so it is the fair comparison.
+                  span one standard deviation.
                 </p>
                 <div class="w4-figure-body" id="chart-jobs-split-nmi"></div>
               </div>
@@ -633,7 +616,7 @@
               </div>
 </div>
 <div class="rx-drawers rx-foot">
-                  <details class="rx-drawer"><summary>Method</summary><div class="rx-drawer-body"><p>We split the companies in two: the 817 firms that place 20 or more filings at client sites (21% of all filings) and the 58,379 others. Alone, that number means little: splitting companies into a small and a large group changes the clusters even if nobody behaves differently. So the baseline draws 20 random groups that match the outsourcing firms in both respects: the same number of companies of each size, from the one-filing firms to the giants. NMI is measured on the 217 occupations that sit in a cluster of two or more on both sides.</p></div></details>
+                  <details class="rx-drawer"><summary>Method</summary><div class="rx-drawer-body"><p>We split the companies in two: the 817 firms that place 20 or more filings at client sites (21% of all filings) and the 58,379 others. Alone, that number means little: splitting companies into a small and a large group changes the clusters even if nobody behaves differently. So the baseline draws 20 random groups that match the outsourcing firms in both respects: the same number of companies of each size, from the one-filing firms to the giants. NMI is measured on the 217 occupations that sit in a cluster of two or more on both sides.</p><p>The random groups have the same number of companies and the same share of filings as the outsourcing firms. Whiskers span one standard deviation over 20 random splits. Only the blue baseline matches the outsourcing firms on both number and size of companies, so it is the fair comparison.</p></div></details>
                   <details class="rx-drawer"><summary>More numbers</summary><div class="rx-drawer-body"><p>The half-matched baselines show why the match matters: random groups with only the same number of companies hold 1.3% of filings and agree at 0.43 ± 0.09, which would have hidden the difference. At the top the two mixes look alike: software developers are 28% of the outsourcing firms' filings and 33% of the direct employers'. Below that they part: "computer occupations, all other" is 22% of the outsourcing firms' filings and 5% of the direct employers', and direct employers file for 276 occupations the outsourcing firms never touch.</p></div></details>
                 </div>
           </div>
@@ -647,7 +630,7 @@
               </div>
             </header>
             <p class="sub">
-              A Louvain partition puts every job in exactly one cluster. Link
+              Link
               communities (Ahn, Bagrow and Lehmann, 2010) group the links
               instead, so a job belongs to every community its links are in.
             </p>
@@ -671,6 +654,7 @@
               </figure>
             </div>
             <div class="rx-drawers rx-foot">
+              <details class="rx-drawer"><summary>Background</summary><div class="rx-drawer-body"><p>A Louvain partition puts every job in exactly one cluster.</p></div></details>
               <details class="rx-drawer"><summary>Method</summary><div class="rx-drawer-body"><p>The cut is chosen where partition density D, the average of how close each community is to a complete one, peaks. On the 28,096 links between 494 occupations it peaks at D = 0.57 with one community holding 85% of the links; 117 communities have three links or more, counting it.</p></div></details>
               <details class="rx-drawer"><summary>More numbers</summary><div class="rx-drawer-body"><p>The top is small occupations such as communications equipment operators and electrical power-line installers (5 communities over 11 links each). Only 3 of the 6 occupations that section 2's first test flagged as bridges appear in it: credit counselors, licensed practical and licensed vocational nurses, and physical therapist aides.</p><p>A job's number of communities mostly counts its links (Spearman 0.84), so the table ranks by communities per link, as the course suggests.</p></div></details>
               <details class="rx-drawer"><summary>Table: 15 jobs in the most communities</summary><div class="rx-drawer-body">
@@ -704,7 +688,7 @@
             <div class="w4-two">
 <div>
 <p class="sub">
-                  Here the network links an outsourcing firm to each client company where it places workers, and a link weighs the filings between them. Counted once per link, the <span class="w4-term"><button aria-describedby="w4-term-who-louvain" type="button">Louvain</button><span class="w4-pop" id="w4-term-who-louvain" role="tooltip">A method that finds groups in a network by moving nodes between groups until the links inside groups are as dense as they can get. It starts from a random order, so two runs can differ.</span></span> groups beat <span class="w4-term"><button aria-describedby="w4-term-who-rewired" type="button">rewired networks</button><span class="w4-pop" id="w4-term-who-rewired" role="tooltip">Random copies of the network in which every firm and client keeps its number of partners, but the partners are dealt out again at random.</span></span> on <span class="w4-term"><button aria-describedby="w4-term-who-modularity" type="button">modularity</button><span class="w4-pop" id="w4-term-who-modularity" role="tooltip">How much more of the link weight falls inside the groups than a random network would put there. Higher means cleaner groups.</span></span> (0.57 against 0.53) and match each client's main vendor (<span class="w4-term"><button aria-describedby="w4-term-who-ami" type="button">AMI</button><span class="w4-pop" id="w4-term-who-ami" role="tooltip">Adjusted mutual information: how closely two ways of grouping the same clients agree, corrected for the agreement random labels would reach by chance.</span></span> 0.11) a little better than its industry (0.07).
+                  Counted once per link, the <span class="w4-term"><button aria-describedby="w4-term-who-louvain" type="button">Louvain</button><span class="w4-pop" id="w4-term-who-louvain" role="tooltip">A method that finds groups in a network by moving nodes between groups until the links inside groups are as dense as they can get. It starts from a random order, so two runs can differ.</span></span> groups beat <span class="w4-term"><button aria-describedby="w4-term-who-rewired" type="button">rewired networks</button><span class="w4-pop" id="w4-term-who-rewired" role="tooltip">Random copies of the network in which every firm and client keeps its number of partners, but the partners are dealt out again at random.</span></span> on <span class="w4-term"><button aria-describedby="w4-term-who-modularity" type="button">modularity</button><span class="w4-pop" id="w4-term-who-modularity" role="tooltip">How much more of the link weight falls inside the groups than a random network would put there. Higher means cleaner groups.</span></span> (0.57 against 0.53) and match each client's main vendor (<span class="w4-term"><button aria-describedby="w4-term-who-ami" type="button">AMI</button><span class="w4-pop" id="w4-term-who-ami" role="tooltip">Adjusted mutual information: how closely two ways of grouping the same clients agree, corrected for the agreement random labels would reach by chance.</span></span> 0.11) a little better than its industry (0.07).
                 </p>
 </div>
 <div>
@@ -728,7 +712,7 @@
                   <div class="w4-figure-body" data-strip="who-ego"></div>
                 </figure>
 </div>
-<div class="rx-drawers rx-foot"><details class="rx-drawer"><summary>Method</summary><div class="rx-drawer-body"><p>Louvain runs on the largest connected piece: 21,759 firms and clients, 41,212 links. The rewired networks keep every firm's and client's number of partners. The three questions below ask whether the groups behave like markets.</p></div></details></div>
+<div class="rx-drawers rx-foot"><details class="rx-drawer"><summary>Background</summary><div class="rx-drawer-body"><p>Here the network links an outsourcing firm to each client company where it places workers, and a link weighs the filings between them.</p></div></details><details class="rx-drawer"><summary>Method</summary><div class="rx-drawer-body"><p>Louvain runs on the largest connected piece: 21,759 firms and clients, 41,212 links. The rewired networks keep every firm's and client's number of partners. The three questions below ask whether the groups behave like markets.</p></div></details></div>
           </div>
 
           <div class="card w4-card" id="who-q1">
@@ -763,156 +747,13 @@
           </div>
 
           <!-- A · Does a client stay in its group? ------------------- -->
-          <div class="card w4-card" id="who-switch">
-            <header class="w4-q">
-              <span class="w4-num">3A</span>
-              <div>
-                <h2>When a client changes its main vendor, does it stay in its group?</h2>
-                <p class="w4-answer">Yes, nearly eight times as often as for a random vendor: one switch in four stays inside the client's group.</p>
-              </div>
-            </header>
-            <div class="w4-two">
-              <div>
-                <p class="sub">
-                  A client's main vendor is the firm that files most placements there in a year. A switch is a year in which that firm changes.
-                </p>
-                <p class="sub">
-                  We followed the clients with five or more filings in two
-                  consecutive years and found 1,261 switches of main vendor
-                  between 2022 and 2025. For each, we asked whether the new
-                  vendor sat in the client's Louvain group of the earlier year.
-                </p>
-                <div class="notice">
-                  <span class="ico">💡</span>
-                  <span>
-                    <b>What to notice</b>
-                    Pooled over the three pairs of years, 26.5% of switches stay in the group against 3.2% ± 0.5% for random vendors (<span class="w4-term"><button aria-describedby="w4-term-who-switch-z" type="button">z</button><span class="w4-pop" id="w4-term-who-switch-z" role="tooltip">How many standard deviations the real value sits from the random baseline’s mean.</span></span> = 47). Much of that is familiarity: 62% of new main vendors already placed someone at the client the year before.
-                  </span>
-                </div>
-                <div class="rx-drawers rx-foot">
-                  <details class="rx-drawer"><summary>Method</summary><div class="rx-drawer-body"><p>The baseline draws a new vendor at random, a large firm as often as its filings make it likely.</p></div></details>
-                  <details class="rx-drawer"><summary>More numbers</summary><div class="rx-drawer-body"><p>A stricter baseline that draws only among the firms already at the client narrows the gap to 26.8% against 20.8% ± 0.7% (z = 9), a lift of 1.29 rather than 8.3.</p></div></details>
-                </div>
-              </div>
-              <div class="plot">
-                <h3>Switches that stay inside the client's group</h3>
-                <p class="axis-note">
-                  Share of switches whose new main vendor is in the client's group
-                  of the earlier year, for each pair of years. Grey bars are the
-                  baseline's mean over 1,000 draws; whiskers span one standard
-                  deviation.
-                </p>
-                <div class="chart-host short" id="chart-who-switch"></div>
-              </div>
-            </div>
-          </div>
+          <div class="card w4-card" id="who-switch"> <header class="w4-q"> <span class="w4-num">3A</span> <div> <h2>When a client changes its main vendor, does it stay in its group?</h2> <p class="w4-answer">Yes, nearly eight times as often as for a random vendor.</p> </div> </header> <div class="w4-two"> <div> <p class="sub">A client's main vendor is the firm that files most placements there in a year.</p> <div class="notice"> <span class="ico">💡</span> <span> <b>What to notice</b> Pooled over the three pairs of years, 26.5% of switches stay in the group against 3.2% ± 0.5% for random vendors (<span class="w4-term"><button aria-describedby="w4-term-who-switch-z" type="button">z</button><span class="w4-pop" id="w4-term-who-switch-z" role="tooltip">How many standard deviations the real value sits from the random baseline’s mean.</span></span> = 47). </span> </div> <div class="rx-drawers rx-foot"> <details class="rx-drawer"><summary>Background</summary><div class="rx-drawer-body"><p>A switch is a year in which that firm changes.</p></div></details> <details class="rx-drawer"><summary>Method</summary><div class="rx-drawer-body"><p>We followed the clients with five or more filings in two consecutive years and found 1,261 switches of main vendor between 2022 and 2025. For each, we asked whether the new vendor sat in the client's Louvain group of the earlier year.</p><p>The baseline draws a new vendor at random, a large firm as often as its filings make it likely. The chart's grey bars are the baseline's mean over 1,000 draws.</p></div></details> <details class="rx-drawer"><summary>More numbers</summary><div class="rx-drawer-body"><p>One switch in four stays inside the client's group. Much of that is familiarity: 62% of new main vendors already placed someone at the client the year before.</p><p>A stricter baseline that draws only among the firms already at the client narrows the gap to 26.8% against 20.8% ± 0.7% (z = 9), a lift of 1.29 rather than 8.3.</p></div></details> </div> </div> <div class="plot"> <h3>Switches that stay inside the client's group</h3> <p class="axis-note"> Share of switches whose new main vendor is in the client's group of the earlier year, for each pair of years. Grey bars are the baseline; whiskers span one standard deviation. </p> <div class="chart-host short" id="chart-who-switch"></div> </div> </div> </div>
 
           <!-- B · Movers when weights are ignored ---------------------- -->
-          <div class="card w4-card" id="who-movers">
-            <header class="w4-q">
-              <span class="w4-num">3B</span>
-              <div>
-                <h2>Which clients change group when filing counts are ignored?</h2>
-                <p class="w4-answer">Two in three, but much of that is Louvain's own noise.</p>
-              </div>
-            </header>
-            <div class="w4-two">
-              <div>
-                <p class="sub">
-                  We ran Louvain with links weighted by filings and with every link counting one, and called a client a mover when its group changed. Two runs of the same kind with different <span class="w4-term"><button aria-describedby="w4-term-who-movers-seeds" type="button">seeds</button><span class="w4-pop" id="w4-term-who-movers-seeds" role="tooltip">The random starting point of a Louvain run. Different seeds can give different groups.</span></span> set the noise floor.
-                </p>
-                <div class="notice">
-                  <span class="ico">💡</span>
-                  <span>
-                    <b>What to notice</b>
-                    64.4% of clients move between the weighted and unweighted <span class="w4-term"><button aria-describedby="w4-term-who-movers-partition" type="button">partitions</button><span class="w4-pop" id="w4-term-who-movers-partition" role="tooltip">One split of every firm and client into groups, as a single Louvain run gives it.</span></span>. Two runs of the same kind move fewer: a median 33.3% between two weighted seeds and 53.1% between two unweighted ones.
-                  </span>
-                </div>
-                <div class="rx-drawers rx-foot">
-                  <details class="rx-drawer"><summary>Method</summary><div class="rx-drawer-body"><p>We matched each weighted group to the unweighted group it overlaps most, and called a client a mover when its matched group changed.</p></div></details>
-                  <details class="rx-drawer"><summary>More numbers</summary><div class="rx-drawer-body"><p>The medians come from ten pairs of seeds each (ranges 26.8% to 39.3% and 49.4% to 55.9%). We expected the movers to be clients with several vendors, since only their filing counts can pull them one way or another. They are, but barely: 31.8% of movers have two or more vendors, against 26.8% of all clients. The largest movers are the largest clients: Citigroup sits with Tata Consultancy Services when filings count and with EY when they do not; Bank of America moves from Infosys' group to IBM's.</p></div></details>
-                  <details class="rx-drawer"><summary>Table: 15 largest movers</summary><div class="rx-drawer-body">
-                <table class="ego">
-                  <thead>
-                    <tr>
-                      <th>Client</th>
-                      <th style="text-align: right">Filings</th>
-                      <th style="text-align: right">Vendors</th>
-                      <th>Group, weighted</th>
-                      <th>Group, unweighted</th>
-                    </tr>
-                  </thead>
-                  <tbody id="who-movers-table"></tbody>
-                </table>
-                <p class="fineprint">A group is named after its largest firm.</p>
-              
-                  </div></details>
-                </div>
-              </div>
-              <div class="plot">
-                <h3>Share of clients that change group</h3>
-                <p class="axis-note">
-                  The first two bars compare two seeds of the same kind; the third
-                  compares the weighted partition with the unweighted one. All three
-                  use the same matching of groups.
-                </p>
-                <div class="chart-host short" id="chart-who-movers"></div>
-              </div>
-            </div>
-          </div>
+          <div class="card w4-card" id="who-movers"> <header class="w4-q"> <span class="w4-num">3B</span> <div> <h2>Which clients change group when filing counts are ignored?</h2> <p class="w4-answer">Two in three, but much of that is Louvain's own noise.</p> </div> </header> <div class="w4-two"> <div> <p class="sub">We ran Louvain with links weighted by filings and with every link counting one, and called a client a mover when its group changed.</p> <div class="notice"> <span class="ico">💡</span> <span> <b>What to notice</b> 64.4% of clients move between the weighted and unweighted <span class="w4-term"><button aria-describedby="w4-term-who-movers-partition" type="button">partitions</button><span class="w4-pop" id="w4-term-who-movers-partition" role="tooltip">One split of every firm and client into groups, as a single Louvain run gives it.</span></span>. Two runs of the same kind move fewer: a median 33.3% between two weighted seeds and 53.1% between two unweighted ones. </span> </div> <div class="rx-drawers rx-foot"> <details class="rx-drawer"><summary>Method</summary><div class="rx-drawer-body"><p>Two runs of the same kind with different <span class="w4-term"><button aria-describedby="w4-term-who-movers-seeds" type="button">seeds</button><span class="w4-pop" id="w4-term-who-movers-seeds" role="tooltip">The random starting point of a Louvain run. Different seeds can give different groups.</span></span> set the noise floor.</p><p>We matched each weighted group to the unweighted group it overlaps most, and called a client a mover when its matched group changed. All three bars use the same matching of groups.</p></div></details> <details class="rx-drawer"><summary>More numbers</summary><div class="rx-drawer-body"><p>The medians come from ten pairs of seeds each (ranges 26.8% to 39.3% and 49.4% to 55.9%). We expected the movers to be clients with several vendors, since only their filing counts can pull them one way or another. They are, but barely: 31.8% of movers have two or more vendors, against 26.8% of all clients. The largest movers are the largest clients: Citigroup sits with Tata Consultancy Services when filings count and with EY when they do not; Bank of America moves from Infosys' group to IBM's.</p></div></details> <details class="rx-drawer"><summary>Table: 15 largest movers</summary><div class="rx-drawer-body"> <table class="ego"> <thead> <tr> <th>Client</th> <th style="text-align: right">Filings</th> <th style="text-align: right">Vendors</th> <th>Group, weighted</th> <th>Group, unweighted</th> </tr> </thead> <tbody id="who-movers-table"></tbody> </table> <p class="fineprint">A group is named after its largest firm.</p> </div></details> </div> </div> <div class="plot"> <h3>Share of clients that change group</h3> <p class="axis-note"> The first two bars compare two seeds of the same kind; the third compares the weighted partition with the unweighted one. </p> <div class="chart-host short" id="chart-who-movers"></div> </div> </div> </div>
 
           <!-- C · Split loyalties ------------------------------------- -->
-          <div class="card w4-card" id="who-overlap">
-            <header class="w4-q">
-              <span class="w4-num">3C</span>
-              <div>
-                <h2>Which clients sit in two groups at once?</h2>
-                <p class="w4-answer">1,823 clients get a fifth or more of their filings from a second group, fewer than in rewired networks.</p>
-              </div>
-            </header>
-            <div class="w4-two">
-              <div>
-                <p class="sub">
-                  A Louvain partition gives each client one group, but a client
-                  with several vendors can draw on firms from different groups.
-                </p>
-                <div class="notice">
-                  <span class="ico">💡</span>
-                  <span>
-                    <b>What to notice</b>
-                    The rewired networks give 2,154 ± 20 split clients (z = −16): real clients draw on fewer groups than chance. Read the count as the groups following clients' main suppliers, not as a separate measure of loyalty.
-                  </span>
-                </div>
-                <div class="rx-drawers rx-foot">
-                  <details class="rx-drawer"><summary>Method</summary><div class="rx-drawer-body"><p>We counted clients whose second group supplies at least 20% of their filings, and did the same on 100 rewired networks in which every firm keeps its number of clients and every client keeps its filing counts, only attached to different firms. Louvain builds the groups from these filing counts, so it already tends to put a client with its heaviest vendors; and rewired networks split into different groups from the real one.</p></div></details>
-                  <details class="rx-drawer"><summary>More numbers</summary><div class="rx-drawer-body"><p>The largest split clients are banks, insurers and manufacturers. USAA gets 44% of its filings from HCL's group and 26% from Tata Consultancy Services'; Stellantis 46% from L&amp;T Technology Services' group and 34% from Tata Consultancy Services'.</p></div></details>
-                  <details class="rx-drawer"><summary>Table: 15 largest split clients</summary><div class="rx-drawer-body">
-                <table class="ego">
-                  <thead>
-                    <tr>
-                      <th>Client</th>
-                      <th style="text-align: right">Filings</th>
-                      <th>First group</th>
-                      <th>Second group</th>
-                      <th>Main vendor</th>
-                    </tr>
-                  </thead>
-                  <tbody id="who-overlap-table"></tbody>
-                </table>
-              
-                  </div></details>
-                </div>
-              </div>
-              <div class="plot">
-                <h3>Clients split between two groups</h3>
-                <p class="axis-note">
-                  The count for the real network against the mean of 100 rewired
-                  networks; the whisker spans one standard deviation.
-                </p>
-                <div class="chart-host short" id="chart-who-overlap"></div>
-              </div>
-            </div>
-          </div>
+          <div class="card w4-card" id="who-overlap"> <header class="w4-q"> <span class="w4-num">3C</span> <div> <h2>Which clients sit in two groups at once?</h2> <p class="w4-answer">1,823 clients get a fifth or more of their filings from a second group, fewer than in rewired networks.</p> </div> </header> <div class="w4-two"> <div> <p class="sub">A Louvain partition gives each client one group, but a client with several vendors can draw on firms from different groups.</p> <div class="notice"> <span class="ico">💡</span> <span> <b>What to notice</b> The rewired networks give 2,154 ± 20 split clients (z = −16): real clients draw on fewer groups than chance. </span> </div> <div class="rx-drawers rx-foot"> <details class="rx-drawer"><summary>Background</summary><div class="rx-drawer-body"></div></details> <details class="rx-drawer"><summary>Method</summary><div class="rx-drawer-body"><p>We counted clients whose second group supplies at least 20% of their filings, and did the same on 100 rewired networks in which every firm keeps its number of clients and every client keeps its filing counts, only attached to different firms. Louvain builds the groups from these filing counts, so it already tends to put a client with its heaviest vendors; and rewired networks split into different groups from the real one. Read the count as the groups following clients' main suppliers, not as a separate measure of loyalty.</p></div></details> <details class="rx-drawer"><summary>More numbers</summary><div class="rx-drawer-body"><p>The largest split clients are banks, insurers and manufacturers. USAA gets 44% of its filings from HCL's group and 26% from Tata Consultancy Services'; Stellantis 46% from L&amp;T Technology Services' group and 34% from Tata Consultancy Services'.</p></div></details> <details class="rx-drawer"><summary>Table: 15 largest split clients</summary><div class="rx-drawer-body"> <table class="ego"> <thead> <tr> <th>Client</th> <th style="text-align: right">Filings</th> <th>First group</th> <th>Second group</th> <th>Main vendor</th> </tr> </thead> <tbody id="who-overlap-table"></tbody> </table> </div></details> </div> </div> <div class="plot"> <h3>Clients split between two groups</h3> <p class="axis-note"> The count for the real network against the mean of 100 rewired networks; the whisker spans one standard deviation. </p> <div class="chart-host short" id="chart-who-overlap"></div> </div> </div> </div>
         </section>
 
         <!-- Closing ----------------------------------------------------- -->
@@ -930,7 +771,6 @@
 <p class="sub">
                 The ten largest filers file 19.1% of the filings in the 40
                 metros, and the five largest <span class="w4-term"><button aria-describedby="w4-term-footprint-placing" type="button">placing firms</button><span class="w4-pop" id="w4-term-footprint-placing" role="tooltip">Companies that hire foreign workers and send them to work at client companies, such as outsourcing and IT staffing firms.</span></span> 5.6%.
-                A company that files everywhere links every pair of metros and jobs, so its footprint could be all the structure there is.
               </p>
 </div>
 <div>
@@ -939,7 +779,6 @@
                 <span>
                   <b>What to notice</b>
                   Without the ten largest filers, the metro groups match Census regions at <span class="w4-term"><button aria-describedby="w4-term-footprint-ami" type="button">AMI</button><span class="w4-pop" id="w4-term-footprint-ami" role="tooltip">Adjusted mutual information: how closely two ways of grouping the same items agree. 0 is what chance gives, 1 is a perfect match.</span></span> 0.13, against 0.06 for the full network: the national employers hide the regional pattern.
-                  The job clusters hold (<span class="w4-term"><button aria-describedby="w4-term-footprint-nmi" type="button">NMI</button><span class="w4-pop" id="w4-term-footprint-nmi" role="tooltip">Normalised mutual information: how much two groupings of the same items agree, from 0 (unrelated) to 1 (identical).</span></span> 0.90 and 0.81) but shift more than random cuts of the same volume do.
                 </span>
               </div>
 </div>
@@ -966,9 +805,9 @@
               </div>
 </div>
 <div class="rx-drawers rx-foot">
-                <details class="rx-drawer"><summary>Background</summary><div class="rx-drawer-body"><p>The five largest placing firms are Tata Consultancy Services, Cognizant, Infosys, HCL and Compunnel. The ten largest filers are Amazon, Cognizant, Google, Microsoft, EY, Meta, Deloitte, Apple, Tata Consultancy Services and Infosys.</p></div></details>
+                <details class="rx-drawer"><summary>Background</summary><div class="rx-drawer-body"><p>A company that files everywhere links every pair of metros and jobs, so its footprint could be all the structure there is.</p><p>The five largest placing firms are Tata Consultancy Services, Cognizant, Infosys, HCL and Compunnel. The ten largest filers are Amazon, Cognizant, Google, Microsoft, EY, Meta, Deloitte, Apple, Tata Consultancy Services and Infosys.</p></div></details>
                 <details class="rx-drawer"><summary>Method</summary><div class="rx-drawer-body"><p>We removed each set, reran 100 <span class="w4-term"><button aria-describedby="w4-term-footprint-louvain" type="button">Louvain</button><span class="w4-pop" id="w4-term-footprint-louvain" role="tooltip">A method that finds groups in a network by moving nodes between groups until the links inside groups are as dense as they can get.</span></span> runs on the metro network and on the job network (weighted here by filings, since a count of companies barely moves when ten of 59,196 leave), and compared the groups with the full network's. Removing less data changes the groups too, so each removal sits beside 50 random cuts of companies that remove the same share of filings.</p></div></details>
-                <details class="rx-drawer"><summary>More numbers</summary><div class="rx-drawer-body"><p>Removing the five placing firms changes little: the groups stay close to the full network's (NMI 0.92, random cuts 0.85 ± 0.14), and the regional match rises only to 0.09, inside the range of random cuts (0.04 ± 0.05). Without the ten largest filers the clusters also sharpen, modularity rising from 0.28 to 0.32. Every version still beats its own rewired networks by a wide margin (z = 25 or more). Without the ten largest filers the regional match (AMI 0.13, p = 0.013) sits 4.6 standard deviations above random cuts (0.01 ± 0.03). Random cuts leave the job clusters closer to the full network's (0.96 and 0.88, 3.1 and 3.9 standard deviations away), so the biggest firms do shape which jobs cluster together.</p></div></details>
+                <details class="rx-drawer"><summary>More numbers</summary><div class="rx-drawer-body"><p>The job clusters hold (<span class="w4-term"><button aria-describedby="w4-term-footprint-nmi" type="button">NMI</button><span class="w4-pop" id="w4-term-footprint-nmi" role="tooltip">Normalised mutual information: how much two groupings of the same items agree, from 0 (unrelated) to 1 (identical).</span></span> 0.90 and 0.81) but shift more than random cuts of the same volume do.</p><p>Removing the five placing firms changes little: the groups stay close to the full network's (NMI 0.92, random cuts 0.85 ± 0.14), and the regional match rises only to 0.09, inside the range of random cuts (0.04 ± 0.05). Without the ten largest filers the clusters also sharpen, modularity rising from 0.28 to 0.32. Every version still beats its own rewired networks by a wide margin (z = 25 or more). Without the ten largest filers the regional match (AMI 0.13, p = 0.013) sits 4.6 standard deviations above random cuts (0.01 ± 0.03). Random cuts leave the job clusters closer to the full network's (0.96 and 0.88, 3.1 and 3.9 standard deviations away), so the biggest firms do shape which jobs cluster together.</p></div></details>
               </div>
 
           <!-- A · Which firm hides the regions? --------------------- -->
@@ -982,11 +821,7 @@
             </header>
             <div class="w4-two">
 <div>
-<p class="sub">
-                We removed each of the ten largest filers alone, then the top
-                1, 2, 3 … 20 filers in turn. Each removal sits beside random cuts
-                of companies that remove the same share of filings.
-              </p>
+<p class="sub">We removed each of the ten largest filers alone, then the top 1, 2, 3 … 20 filers in turn.</p>
 </div>
 <div>
 <div class="notice">
@@ -1000,30 +835,25 @@
                 </div>
 </div>
 </div>
+
 <div class="rx-fig-row">
 <div class="plot">
                 <h3>The largest filers removed in turn</h3>
                 <p class="axis-note">
-                  AMI with Census regions after removing the k largest filers
-                  (orange) against random cuts of the same volume (grey band, one
-                  standard deviation). Hover a point for the firm added at that
-                  step.
+                  Orange: the metro groups’ match with Census regions as the largest filers leave. Grey band: random cuts of the same size. Hover a point for the firm.
                 </p>
                 <div class="chart-host jobs-nmi" id="chart-footprint-rank"></div>
               </div>
 <div class="plot">
                 <h3>One firm out at a time</h3>
                 <p class="axis-note">
-                  AMI between the metro groups and Census regions with one firm
-                  removed (orange) and random cuts of the same volume (grey, mean
-                  and one standard deviation). The dashed line is the full
-                  network.
+                  Orange: the match with one firm removed. Grey: random cuts of the same size. Dashed line: the full network.
                 </p>
                 <div class="chart-host jobs-nmi" id="chart-footprint-single"></div>
               </div>
 </div>
 <div class="rx-drawers rx-foot">
-                  <details class="rx-drawer"><summary>Method</summary><div class="rx-drawer-body"><p>50 random cuts for a single firm, 20 for each step of the sweep.</p></div></details>
+                  <details class="rx-drawer"><summary>Method</summary><div class="rx-drawer-body"><p>Each removal sits beside random cuts of companies that remove the same share of filings.</p><p>50 random cuts for a single firm, 20 for each step of the sweep.</p></div></details>
                   <details class="rx-drawer"><summary>More numbers</summary><div class="rx-drawer-body"><p>Amazon's 0.14 sits 3.5 standard deviations above its random cuts. No other single firm pushes the match up beyond its random cuts: removing EY, Meta, Deloitte or Apple alone tips Louvain into a two-group split that ignores regions (AMI −0.005). Removed in rank order, the largest filers keep the match above random cuts at every step from one to twenty, but not smoothly: it dips to about 0.07 without the top 17 to 19, where several partitions compete, and peaks at 0.20 without the top 20. 2024 tells the same story more strongly. Its full network shows no regional match (AMI −0.005); without its ten largest filers the match is 0.22 (p = 0.001), against −0.01 ± 0.01 for random cuts.</p></div></details>
                 </div>
           </div>
@@ -1102,7 +932,7 @@
             <div class="w4-two">
               <div>
                 <p class="sub">
-                  A green card through work starts with a <span class="w4-term"><button aria-describedby="w4-term-beyond-perm" type="button">PERM</button><span class="w4-pop" id="w4-term-beyond-perm" role="tooltip">The Department of Labor's permanent labor certification: the employer shows that no qualified US worker is available for the job. Most green cards through work start there.</span></span> filing. Here the
+                  Here the
                   outsourcing firms are the 817 companies that place 20 or more
                   filings at client sites.
                 </p>
@@ -1112,20 +942,19 @@
                     <b>What to notice</b>
                     Outsourcing firms file 0.11 green cards per H-1B filing
                     (95% interval 0.08 to 0.15), direct employers 0.18 (0.14 to
-                    0.21). Across the six largest staffing groups
-                    the rate runs from 0.03 to 0.15, a spread that <span class="w4-term"><button aria-describedby="w4-term-beyond-perm-shuffled" type="button">shuffled group labels</button><span class="w4-pop" id="w4-term-beyond-perm-shuffled" role="tooltip">We dealt the companies out to the groups again at random, many times, to see how big a spread chance alone produces.</span></span> match 28% of the time.
+                    0.21).
                   </span>
                 </div>
                 <div class="rx-drawers rx-foot">
-                  <details class="rx-drawer"><summary>Method</summary><div class="rx-drawer-body"><p>For each company with 20 or more H-1B filings we divided its 2025 PERM filings by its H-1B filings, matching companies by name and tax number.</p></div></details>
-                  <details class="rx-drawer"><summary>More numbers</summary><div class="rx-drawer-body"><p>The gap shrinks to 0.13 against 0.17 when a firm counts as outsourcing only if most of its filings go to clients. Single companies swing these rates more than any group does: counting every case status, filings in the names of Amazon and Google fell from 3,638 and 1,618 in 2024 to 15 and 3 in 2025. Green cards per company and the strongest employer ties are in <a href="#deeper-perm">the deep dive</a>.</p><p>Outsourcing firms file 0.11 green cards per H-1B filing (95% interval 0.08 to 0.15), direct employers 0.18 (0.14 to 0.21). Across the six largest staffing groups the rate runs from 0.03 in Cognizant's group, where Cognizant itself filed almost none, to 0.15, a spread that shuffled group labels match 28% of the time (p = 0.28).</p></div></details>
+                  <details class="rx-drawer"><summary>Background</summary><div class="rx-drawer-body"><p>A green card through work starts with a <span class="w4-term"><button aria-describedby="w4-term-beyond-perm" type="button">PERM</button><span class="w4-pop" id="w4-term-beyond-perm" role="tooltip">The Department of Labor's permanent labor certification: the employer shows that no qualified US worker is available for the job. Most green cards through work start there.</span></span> filing.</p></div></details>
+                  <details class="rx-drawer"><summary>Method</summary><div class="rx-drawer-body"><p>For each company with 20 or more H-1B filings we divided its 2025 PERM filings by its H-1B filings, matching companies by name and tax number.</p><p>Pooled over the companies in each bar, with a 95% bootstrap interval for the first two.</p></div></details>
+                  <details class="rx-drawer"><summary>More numbers</summary><div class="rx-drawer-body"><p>The gap shrinks to 0.13 against 0.17 when a firm counts as outsourcing only if most of its filings go to clients. Single companies swing these rates more than any group does: counting every case status, filings in the names of Amazon and Google fell from 3,638 and 1,618 in 2024 to 15 and 3 in 2025. Green cards per company and the strongest employer ties are in <a href="#deeper-perm">the deep dive</a>.</p><p>Outsourcing firms file 0.11 green cards per H-1B filing (95% interval 0.08 to 0.15), direct employers 0.18 (0.14 to 0.21). Across the six largest staffing groups the rate runs from 0.03 in Cognizant's group, where Cognizant itself filed almost none, to 0.15, a spread that <span class="w4-term"><button aria-describedby="w4-term-beyond-perm-shuffled" type="button">shuffled group labels</button><span class="w4-pop" id="w4-term-beyond-perm-shuffled" role="tooltip">We dealt the companies out to the groups again at random, many times, to see how big a spread chance alone produces.</span></span> match 28% of the time (p = 0.28).</p></div></details>
                 </div>
               </div>
               <div class="plot">
                 <h3>Green-card filings per H-1B filing</h3>
                 <p class="axis-note">
-                  Pooled over the companies in each bar, with a 95% bootstrap
-                  interval for the first two. The six on the right are the largest
+                  The six on the right are the largest
                   section 3 groups, named after their largest firm.
                 </p>
                 <div class="chart-host short" id="chart-beyond-perm"></div>
@@ -1133,49 +962,7 @@
             </div>
           </div>
 
-          <div class="card w4-card" id="beyond-wage">
-            <header class="w4-q">
-              <span class="w4-num">5C</span>
-              <div>
-                <h2>Do outsourcing firms file at lower wage levels for the same job?</h2>
-                <p class="w4-answer">Yes. For the same occupation, a filing that places a worker at a client has 3.6 times the odds of sitting at wage level I or II.</p>
-              </div>
-            </header>
-            <div class="w4-two">
-              <div>
-                <p class="sub">
-                  Every filing states a <span class="w4-term"><button aria-describedby="w4-term-beyond-wage-wagelevel" type="button">prevailing-wage level</button><span class="w4-pop" id="w4-term-beyond-wage-wagelevel" role="tooltip">A level set by the experience and skills the job asks for. Each level carries a wage floor.</span></span> from I (entry) to
-                  IV (fully competent). 92% of filings give one.
-                </p>
-                <div class="notice">
-                  <span class="ico">💡</span>
-                  <span>
-                    <b>What to notice</b>
-                    Overall, 79% of <span class="w4-term"><button aria-describedby="w4-term-beyond-wage-placed" type="button">placed</button><span class="w4-pop" id="w4-term-beyond-wage-placed" role="tooltip">A placed filing sends the worker to a client company's site; a direct filing is for the employer's own site.</span></span> filings sit at level I or II against
-                    58% of direct ones. Within the 83 occupations with 20 or
-                    more filings of each kind, the <span class="w4-term"><button aria-describedby="w4-term-beyond-mh" type="button">Mantel–Haenszel odds ratio</button><span class="w4-pop" id="w4-term-beyond-mh" role="tooltip">An odds ratio pooled over those occupations, so each comparison sets placed against direct filings for the same job. 1 means the same odds.</span></span>
-                    is 3.59, and 69 of the 83 point the same way. A level
-                    describes the job as filed, not the worker, so this shows
-                    cheaper job descriptions, not lower pay for the same
-                    person.
-                  </span>
-                </div>
-                <div class="rx-drawers rx-foot">
-                  <details class="rx-drawer"><summary>Method</summary><div class="rx-drawer-body"><p>We compared placed and direct filings within each occupation, so software developers are compared with software developers.</p></div></details>
-                  <details class="rx-drawer"><summary>More numbers</summary><div class="rx-drawer-body"><p>A few large firms file most placements, so the interval comes from resampling whole employers: 2.87 to 5.04. It is not one firm's doing: without the 5, 10 or 20 largest placing firms the ratio rises to 3.85, 4.28 and 4.94. Software developers: 87% against 52%. Offered wages follow: placed filings offer a median 1.00 times the prevailing wage in the five largest occupations, direct ones 1.00 to 1.08 times.</p></div></details>
-                </div>
-              </div>
-              <div class="plot">
-                <h3>Share of filings at level I or II</h3>
-                <p class="axis-note">
-                  The five occupations with the most filings. Orange bars are
-                  filings that place the worker at a client, blue bars filings for
-                  the employer's own site.
-                </p>
-                <div class="chart-host short" id="chart-beyond-wage"></div>
-              </div>
-            </div>
-          </div>
+          <div class="card w4-card" id="beyond-wage"> <header class="w4-q"> <span class="w4-num">5C</span> <div> <h2>Do outsourcing firms file at lower wage levels for the same job?</h2> <p class="w4-answer">Yes. For the same occupation, a placed filing has 3.6 times the odds of wage level I or II.</p> </div> </header> <div class="w4-two"> <div> <p class="sub">Every filing states a <span class="w4-term"><button aria-describedby="w4-term-beyond-wage-wagelevel" type="button">prevailing-wage level</button><span class="w4-pop" id="w4-term-beyond-wage-wagelevel" role="tooltip">A level set by the experience and skills the job asks for. Each level carries a wage floor.</span></span> from I (entry) to IV (fully competent).</p> <div class="notice"> <span class="ico">💡</span> <span> <b>What to notice</b> Within the 83 occupations with 20 or more filings of each kind, the <span class="w4-term"><button aria-describedby="w4-term-beyond-mh" type="button">Mantel–Haenszel odds ratio</button><span class="w4-pop" id="w4-term-beyond-mh" role="tooltip">An odds ratio pooled over those occupations, so each comparison sets placed against direct filings for the same job. 1 means the same odds.</span></span> is 3.59, and 69 of the 83 point the same way. </span> </div> <div class="rx-drawers rx-foot"> <details class="rx-drawer"><summary>Background</summary><div class="rx-drawer-body"><p>92% of filings give one.</p><p>A level describes the job as filed, not the worker, so this shows cheaper job descriptions, not lower pay for the same person.</p></div></details> <details class="rx-drawer"><summary>Method</summary><div class="rx-drawer-body"><p>We compared placed and direct filings within each occupation, so software developers are compared with software developers.</p></div></details> <details class="rx-drawer"><summary>More numbers</summary><div class="rx-drawer-body"><p>Overall, 79% of <span class="w4-term"><button aria-describedby="w4-term-beyond-wage-placed" type="button">placed</button><span class="w4-pop" id="w4-term-beyond-wage-placed" role="tooltip">A placed filing sends the worker to a client company's site; a direct filing is for the employer's own site.</span></span> filings sit at level I or II against 58% of direct ones.</p><p>A few large firms file most placements, so the interval comes from resampling whole employers: 2.87 to 5.04. It is not one firm's doing: without the 5, 10 or 20 largest placing firms the ratio rises to 3.85, 4.28 and 4.94. Software developers: 87% against 52%. Offered wages follow: placed filings offer a median 1.00 times the prevailing wage in the five largest occupations, direct ones 1.00 to 1.08 times.</p></div></details> </div> </div> <div class="plot"> <h3>Share of filings at level I or II</h3> <p class="axis-note"> The five occupations with the most filings. Orange bars are filings that place the worker at a client, blue bars filings for the employer's own site. </p> <div class="chart-host short" id="chart-beyond-wage"></div> </div> </div> </div>
         </section>
 
         <section class="step" id="closing">
@@ -1326,12 +1113,12 @@
                 <span class="w4-num">1</span>
                 <div>
                   <h2>Once the small links go, what's left of the map?</h2>
-                  <p class="w4-answer">With every link it is one blob; keep only links heavy for one of their metros and it comes apart.</p>
+                  <p class="w4-answer">Keep only links heavy for one of their metros and the map comes apart.</p>
                 </div>
               </header>
               <p class="sub">
 
-                  Cities are linked when they share an employer. The control sets the
+                  The control sets the
                   <span class="w4-term"><button aria-describedby="w4-term-place-backbone-disparity" type="button">disparity-filter</button><span class="w4-pop" id="w4-term-place-backbone-disparity" role="tooltip">A filter that keeps a link only when it carries an unusually large share of either metro’s total weight.</span></span> α from Week 4.
                 </p>
 
@@ -1342,9 +1129,7 @@
                   <h3>Backbone at this α</h3>
                   <p class="axis-note">
                     Each line is a link the filter keeps at the α set above, thicker
-                    when more filings share it. Metros in grey have fallen out of the
-                    largest connected piece. Colours are section 1's three metro groups.
-                    Click a metro to select it.
+                    when more filings share it.
                   </p>
                   <div class="chart-host map" id="chart-backbone"></div>
                 </div>
@@ -1369,6 +1154,7 @@
                   </span>
                 </div>
                 <div class="rx-drawers rx-foot">
+                  <details class="rx-drawer"><summary>Background</summary><div class="rx-drawer-body"><p>With every link the map is one blob. Cities are linked when they share an employer.</p><p>Metros in grey have fallen out of the largest connected piece. Colours are section 1's three metro groups. Click a metro to select it.</p></div></details>
                   <details class="rx-drawer"><summary>Method</summary><div class="rx-drawer-body"><p class="sub"> Two metros are linked when a company files in both; the weight adds up, over those companies, the smaller of its two filing counts. One weight threshold would keep the links among the big hubs and cut a mid-size metro's strongest tie, which is light next to New York and Dallas. The disparity filter keeps a link when it carries an unusually large share of either endpoint's weight at level α, the method the course used for the philosophers backbone. </p> <table class="ego"> <thead> <tr> <th>α</th> <th style="text-align: right">Edges kept</th> <th style="text-align: right">Giant component</th> </tr> </thead> <tbody id="place-alpha-table"></tbody> </table><p><span id="place-alpha-choice"></span></p></div></details>
                 </div>
               </div>
@@ -1385,7 +1171,6 @@
               </header>
               <p class="sub">
 
-                  Big direct employers lead the long links, Amazon above all.
                   The shortlist is the five firms that <span class="w4-term"><button aria-describedby="w4-term-place-longhaul-place" type="button">place</button><span class="w4-pop" id="w4-term-place-longhaul-place" role="tooltip">The firm files for the worker, then sends them to work at a client company’s site.</span></span> the most filings at
                   client sites.
                 </p>
@@ -1395,11 +1180,7 @@
                     <h3>Distance vs weight</h3>
                     <p class="axis-note">
                       Each point is a link in the backbone at α = 0.2, the default
-                      above; size grows with its weight. A label names a company on
-                      its heaviest link over 1,500 km, for the five heaviest; hover
-                      any point for its own. The legend separates links led by the
-                      shortlist from links led by any other company; click a point
-                      to select a city.
+                      above; size grows with its weight.
                     </p>
                     <div class="chart-host" id="chart-longhaul"></div>
                   </div>
@@ -1408,9 +1189,7 @@
                     <p class="axis-note">
                       The backbone links (α = 0.2) this company leads: of all the
                       companies filing in both cities, it adds the most to the
-                      link's weight. The list
-                      holds the six companies that lead the most links. Click a
-                      city to select it.
+                      link's weight.
                     </p>
                     <div class="select-row">
                       <label for="place-employer">Employer</label>
@@ -1426,44 +1205,18 @@
                     <b>What to notice</b>
                     Of the 83 backbone links longer than 1,500 km, the shortlist
                     leads 22 (27%); it leads 47 of the 97 shorter ones (48%).
-                    Distant metros are tied by many companies filing in both.
                   </span>
                 </div>
                 <div class="rx-drawers rx-foot">
                   <details class="rx-drawer"><summary>Background</summary><div class="rx-drawer-body"><p>The shortlist holds the five largest placing firms: Tata Consultancy Services, Cognizant, Infosys, HCL and Compunnel. The staffing section follows them to their clients.</p></div></details>
-                  <details class="rx-drawer"><summary>More numbers</summary><div class="rx-drawer-body"><p>Amazon leads the most long links (30), then Cognizant (17), EY (8) and Deloitte (7). The leading company carries a median 14% of a long link's weight, and only one long link, San Jose to Fayetteville (Walmart), has a company with half of it.</p></div></details>
+                  <details class="rx-drawer"><summary>Method</summary><div class="rx-drawer-body"><p>In the distance chart, a label names a company on its heaviest link over 1,500 km, for the five heaviest; hover any point for its own. The legend separates links led by the shortlist from links led by any other company; click a point to select a city.</p><p>In the employer map, the list holds the six companies that lead the most links. Click a city to select it.</p></div></details>
+                  <details class="rx-drawer"><summary>More numbers</summary><div class="rx-drawer-body"><p>Big direct employers lead the long links, Amazon above all. Distant metros are tied by many companies filing in both.</p><p>Amazon leads the most long links (30), then Cognizant (17), EY (8) and Deloitte (7). The leading company carries a median 14% of a long link's weight, and only one long link, San Jose to Fayetteville (Walmart), has a company with half of it.</p></div></details>
                 </div>
               </div>
             </details>
             <details class="rx-panel" name="w4-panel-where" data-box="deeper-density">
               <summary>Where is the hiring densest? Filings per 1,000 jobs</summary>
-              <div class="card w4-card" id="deeper-density">
-
-                            <header class="w4-q">
-                              <span class="w4-num">3</span>
-                              <div>
-                                <h2>Where is the hiring densest? Filings per 1,000 jobs</h2>
-                                <p class="w4-answer">San Jose, at 42.9 filings per 1,000 jobs, against New York's 6.9.</p>
-                              </div>
-                            </header>
-                <div class="w4-two">
-                  <div>
-                    <p class="sub">Section 1 counts filings. Divide each metro's 2025 filings by
-                      its jobs in the Bureau of Labor Statistics' May 2025
-                      employment survey (OEWS) and the map shifts: nationally it is
-                      4.5 filings per 1,000 jobs.</p>
-                    <div class="notice"><span class="ico">💡</span><span><b>What to notice</b> Nationally there are 4.5 filings per 1,000 jobs; San Jose files 42.9, nearly ten times that, while New York, the largest filer, sits at 6.9.</span></div>
-                    <div class="rx-drawers rx-foot">
-                      <details class="rx-drawer"><summary>Method</summary><div class="rx-drawer-body"><p>A filing is a request, not a hire, so a rate can run high.</p></div></details>
-                      <details class="rx-drawer"><summary>More numbers</summary><div class="rx-drawer-body"><p>Among the 203 metros with 100,000 jobs or more, count and density rank alike (<span class="w4-term"><button aria-describedby="w4-term-deeper-density-spearman" type="button">Spearman</button><span class="w4-pop" id="w4-term-deeper-density-spearman" role="tooltip">A rank correlation: how closely two orderings agree. Higher means closer.</span></span> 0.90), yet only 5 of the 10 largest by count stay in the top 10 by density: Dallas, San Jose, San Francisco, Seattle and Austin. For software developers alone the national rate is 139 filings per 1,000 jobs, and Fayetteville, Arkansas, the metro around Bentonville, reaches 896, 6.4 times the national share. New York files the most, 65,935; Trenton files 17.2 and Seattle 16.8 per 1,000 jobs.</p></div></details>
-                    </div>
-                  </div>
-                  <figure class="w4-figure">
-                    <figcaption><b>Filings per 1,000 jobs</b><span>The ten densest metros with 100,000 jobs or more, and New York (outlined), which files the most. Dashed: the national rate.</span></figcaption>
-                    <div class="w4-figure-body" data-more="density"></div>
-                  </figure>
-                </div>
-              </div>
+              <div class="card w4-card" id="deeper-density"> <header class="w4-q"> <span class="w4-num">3</span> <div> <h2>Where is the hiring densest? Filings per 1,000 jobs</h2> <p class="w4-answer">San Jose, at 42.9 filings per 1,000 jobs, against New York's 6.9.</p> </div> </header> <div class="w4-two"> <div> <p class="sub">Section 1 counts filings.</p> <div class="notice"><span class="ico">💡</span><span><b>What to notice</b> Nationally there are 4.5 filings per 1,000 jobs; San Jose files 42.9, nearly ten times that, while New York, the largest filer, sits at 6.9.</span></div> <div class="rx-drawers rx-foot"> <details class="rx-drawer"><summary>Method</summary><div class="rx-drawer-body"><p>Divide each metro's 2025 filings by its jobs in the Bureau of Labor Statistics' May 2025 employment survey (OEWS) and the map shifts: nationally it is 4.5 filings per 1,000 jobs.</p><p>A filing is a request, not a hire, so a rate can run high.</p></div></details> <details class="rx-drawer"><summary>More numbers</summary><div class="rx-drawer-body"><p>Among the 203 metros with 100,000 jobs or more, count and density rank alike (<span class="w4-term"><button aria-describedby="w4-term-deeper-density-spearman" type="button">Spearman</button><span class="w4-pop" id="w4-term-deeper-density-spearman" role="tooltip">A rank correlation: how closely two orderings agree. Higher means closer.</span></span> 0.90), yet only 5 of the 10 largest by count stay in the top 10 by density: Dallas, San Jose, San Francisco, Seattle and Austin. For software developers alone the national rate is 139 filings per 1,000 jobs, and Fayetteville, Arkansas, the metro around Bentonville, reaches 896, 6.4 times the national share. New York files the most, 65,935; Trenton files 17.2 and Seattle 16.8 per 1,000 jobs.</p></div></details> </div> </div> <figure class="w4-figure"> <figcaption><b>Filings per 1,000 jobs</b><span>The ten densest metros with 100,000 jobs or more, and New York (outlined), which files the most. Dashed: the national rate.</span></figcaption> <div class="w4-figure-body" data-more="density"></div> </figure> </div> </div>
             </details>
             <details class="qa cut rx-panel" data-box="cut-methods" id="cut-methods" name="w4-panel-where">
               <summary><span class="qa-cue">The course's four community methods, step by step on the 40 metros</span></summary>
@@ -1635,8 +1388,7 @@
                 </div>
               </header>
               <p class="sub">
-                  Colours are <span class="w4-term"><button aria-describedby="w4-term-jobs-bridges-louvain" type="button">Louvain</button><span class="w4-pop" id="w4-term-jobs-bridges-louvain" role="tooltip">A standard method that splits a network into groups whose members link more to each other than to the rest.</span></span> clusters in the full co-hiring
-                  network, named after their largest occupation. A ringed node would mark an occupation with more employer ties to a second cluster than any <span class="w4-term"><button aria-describedby="w4-term-jobs-bridges-rewired" type="button">rewired network</button><span class="w4-pop" id="w4-term-jobs-bridges-rewired" role="tooltip">A random copy of the network that keeps each company's number of occupations and each occupation's number of companies. It shows what chance alone produces.</span></span> gives it; click a node to inspect it.
+                  A ringed node would mark an occupation with more employer ties to a second cluster than any <span class="w4-term"><button aria-describedby="w4-term-jobs-bridges-rewired" type="button">rewired network</button><span class="w4-pop" id="w4-term-jobs-bridges-rewired" role="tooltip">A random copy of the network that keeps each company's number of occupations and each occupation's number of companies. It shows what chance alone produces.</span></span> gives it; click a node to inspect it.
                 </p>
                 <figure class="w4-figure">
                   <figcaption><b>Occupations passing each rule</b><span>Dot: the real network's count. Dashed mark: the mean over 100 rewired networks with the same cluster labels.</span></figcaption>
@@ -1653,6 +1405,9 @@
                     <div class="jobs-bridge-list" id="jobs-bridge-list"></div>
                   </aside>
                 </div>
+                <div class="rx-drawers rx-foot">
+                  <details class="rx-drawer"><summary>Background</summary><div class="rx-drawer-body"><p>Colours are <span class="w4-term"><button aria-describedby="w4-term-jobs-bridges-louvain" type="button">Louvain</button><span class="w4-pop" id="w4-term-jobs-bridges-louvain" role="tooltip">A standard method that splits a network into groups whose members link more to each other than to the rest.</span></span> clusters in the full co-hiring network, named after their largest occupation.</p></div></details>
+                </div>
               </div>
             </details>
             <details class="rx-panel" name="w4-panel-jobs" data-box="jobs-groups">
@@ -1667,9 +1422,8 @@
               </header>
 
                 <p class="sub">
-                  The government groups occupations by their first two <span class="w4-term"><button aria-describedby="w4-term-jobs-soc" type="button">SOC</button><span class="w4-pop" id="w4-term-jobs-soc" role="tooltip">The Standard Occupational Classification, the federal list of occupation codes. Its first two digits name a major group, such as 15 for computer and mathematical occupations.</span></span> digits.
-                  We compare those labels with the clusters found from hiring
-                  patterns. The shuffled labels keep the clusters fixed and scramble only the official groups.
+                  We compare the official groups with the clusters found from hiring
+                  patterns.
                 </p>
                 <div class="jobs-grid jobs-groups-grid">
                   <div class="plot">
@@ -1677,15 +1431,14 @@
                     <p class="axis-note">
                       Every occupation in the four largest clusters, 429 in all,
                       split by its official major group: the three largest named,
-                      the rest grey. The other two clusters of two or more hold
-                      two occupations each.
+                      the rest grey.
                     </p>
                     <div class="w4-figure-body" id="chart-job-groups"></div>
                   </div>
                   <div class="plot">
                     <h3>How closely the clusters match the official groups</h3>
                     <p class="axis-note">
-                      Normalised mutual information from 0 (unrelated) to 1 (the same groups). Orange: the hiring clusters. Ring: Infomap's clusters. Grey: the official labels shuffled 100 times over the same clusters, up to their highest score.
+                      Orange: the hiring clusters. Ring: Infomap's clusters. Grey: the official labels shuffled 100 times over the same clusters, up to their highest score.
                     </p>
                     <div class="w4-figure-body" id="chart-job-nmi"></div>
                   </div>
@@ -1699,7 +1452,9 @@
                   </span>
                 </div>
                 <div class="rx-drawers rx-foot">
+                  <details class="rx-drawer"><summary>Background</summary><div class="rx-drawer-body"><p>The government groups occupations by their first two <span class="w4-term"><button aria-describedby="w4-term-jobs-soc" type="button">SOC</button><span class="w4-pop" id="w4-term-jobs-soc" role="tooltip">The Standard Occupational Classification, the federal list of occupation codes. Its first two digits name a major group, such as 15 for computer and mathematical occupations.</span></span> digits.</p><p>Normalised mutual information runs from 0 (unrelated) to 1 (the same groups).</p></div></details>
                   <details class="rx-drawer"><summary>Method</summary><div class="rx-drawer-body"><p class="sub"> We keep certified H-1B filings and identify companies by tax number, as in the other sections. A link counts the companies that filed for both occupations. Filings still on 2010 codes (<span data-jobs="legacy">…</span>) move to their 2018 successors through O*NET's 2010-to-2019 crosswalk. Louvain runs 100 times on the full projection and the best modularity run is kept; the runs agree at a median NMI of <span data-jobs="runs-nmi">…</span>. The null rewires the company × occupation network <span data-jobs="null-runs">…</span> times, keeping each company's number of occupations and each occupation's number of companies, and projects it again; real and rewired networks are scored on their largest connected piece (z = <span data-jobs="null-z">…</span>). An occupation's second cluster is the one its employer ties exceed most over the expectation modularity uses (its strength times the cluster's, over twice the total weight). A ratio above 1, our first rule, marks <span data-jobs="lift1">…</span> occupations, but the rewired networks mark <span data-jobs="lift1-chance">…</span> on average with the same cluster labels. So an occupation now counts only when its ratio beats its own ratio in every rewired network. The disparity filter at α = <span data-jobs="bb-alpha">…</span>, as in the place section, keeps <span data-jobs="bb-links">…</span> of <span data-jobs="bb-total">…</span> links and <span data-jobs="bb-occ">…</span> occupations. Louvain on that backbone finds <span data-jobs="bb-clusters">…</span> clusters, which match the full network's at NMI <span data-jobs="bb-nmi">…</span>, against <span data-jobs="bb-base">…</span> between two runs on the full network: the clusters only partly survive the filter. NMI and AMI leave out occupations alone in a cluster and are compared with 100 shuffles of the major-group labels. The same method on 2024 gives clusters that match 2025 at NMI <span data-jobs="years">…</span> on the <span data-jobs="shared">…</span> occupations both years share. Infomap, the random-walk method, finds <span data-jobs="infomap">…</span> clusters of two or more occupations; they agree with Louvain's at NMI <span data-jobs="infomap-louvain">…</span> and match the official groups at <span data-jobs="infomap-soc">…</span>. </p> <p class="sub">The shuffled bars keep the clusters fixed and scramble only the official labels. AMI, a version of NMI adjusted for chance agreement, is <strong data-jobs="ami">…</strong>. Both scores cover the <span data-jobs="scored">…</span> occupations in clusters of two or more.</p></div></details>
+                  <details class="rx-drawer"><summary>More numbers</summary><div class="rx-drawer-body"><p>The other two clusters of two or more hold two occupations each.</p></div></details>
                 </div>
               </div>
             </details>
@@ -1769,7 +1524,7 @@
                       <p class="w4-answer">Small clients.</p>
                     </div>
                   </header>
-                  <p class="sub">14,678 of the 18,900 clients use one firm, but they hold 22% of placed filings. Of the 629 clients with 20 or more filings, 69 get over 90% from one firm, and the median one gets 37% from its largest.</p>
+                  <p class="sub">14,678 of the 18,900 clients use one firm, but they hold 22% of placed filings.</p>
 <div class="rx-fig-row">
 <figure class="w4-figure">
                         <figcaption><b>One firm, many clients, few filings</b><span>Clients that use a single firm, as a share of all clients and of all placed filings, 2025.</span></figcaption>
@@ -1781,7 +1536,7 @@
                     </figure>
 </div>
 <div class="rx-drawers rx-foot">
-                        <details class="rx-drawer"><summary>More numbers</summary><div class="rx-drawer-body"><p>Citigroup, the largest client, uses 114 firms, and Tata Consultancy Services supplies a quarter. The eight largest firms supply only 27% of what the 20 largest clients receive.</p></div></details>
+                        <details class="rx-drawer"><summary>More numbers</summary><div class="rx-drawer-body"><p>Of the 629 clients with 20 or more filings, 69 get over 90% from one firm, and the median one gets 37% from its largest.</p><p>Citigroup, the largest client, uses 114 firms, and Tata Consultancy Services supplies a quarter. The eight largest firms supply only 27% of what the 20 largest clients receive.</p></div></details>
                       </div>
                 </div>
               </div>
@@ -1879,10 +1634,10 @@
                 <div class="w4-two">
                   <div>
                 <p class="sub">
-                  We ran <span class="w4-term"><button aria-describedby="w4-term-staffing-community-stats-louvain" type="button">Louvain</button><span class="w4-pop" id="w4-term-staffing-community-stats-louvain" role="tooltip">A method that finds groups in a network by moving nodes between groups until the links inside groups are as dense as they can get. It starts from a random order, so two runs can differ.</span></span> on the 2025 firm–client network 100 times each way: with links weighted by filings, and with every link counting one. Filing counts pull clients toward vendors: AMI with each client's main vendor rises from <b class="vendor-plain">…</b> to <b class="vendor">…</b> when filings count, while AMI with industry stays near <b class="industry">…</b>.
+                  Filing counts pull clients toward vendors: AMI with each client's main vendor rises from <b class="vendor-plain">…</b> to <b class="vendor">…</b> when filings count, while AMI with industry stays near <b class="industry">…</b>.
                 </p>
                 <p class="sub">
-                  The <span class="w4-term"><button aria-describedby="w4-term-staffing-community-stats-null" type="button">null model</button><span class="w4-pop" id="w4-term-staffing-community-stats-null" role="tooltip">A random version of the network that keeps some of its features, here each node's number of partners, to show what chance alone would give.</span></span> rewires the network so every firm and client keeps its number of partners. Without weights the real network wins (<b class="mod-plain">…</b> against <b class="null-plain">…</b>); with weights it loses (<b class="mod">…</b> against <b class="null">…</b>).
+                  Against rewired networks, without weights the real network wins (<b class="mod-plain">…</b> against <b class="null-plain">…</b>); with weights it loses (<b class="mod">…</b> against <b class="null">…</b>).
                 </p>
                 <table class="ego">
                   <thead>
@@ -1894,10 +1649,7 @@
                   </thead>
                   <tbody></tbody>
                 </table>
-                <p class="sub" style="margin-top: 12px">
-                  Infomap, which follows a random walk instead of counting links, splits the same network into <b class="im-modules">…</b> small modules, most of them a firm with its clients. Like weighted Louvain, it follows the vendor far more than the industry (AMI <b class="im-vendor">…</b> against <b class="im-industry">…</b>).
-                </p>
-                <div class="rx-drawers rx-foot"><details class="rx-drawer"><summary>Method</summary><div class="rx-drawer-body"><p>Infomap agrees with Louvain at NMI <b class="im-louvain">…</b>. Finer partitions raise every NMI; AMI corrects for that, so it is the number to compare across methods.</p></div></details><details class="rx-drawer"><summary>More numbers</summary><div class="rx-drawer-body"><p>The null also deals the filing counts back out at random. Rewiring breaks the network into a median of <b class="pieces">…</b> pieces, each a free community, so we score each rewired network on its largest piece, as we do the real one. The real network also loses when only the filing counts are shuffled on the real links (<b class="null-weights">…</b>). The real counts leave <b class="cross-share">…</b> of filings on links between groups, against <b class="cross-share-null">…</b> with shuffled counts: clients that use several firms hold <b class="multi-links">…</b> of the links but <b class="multi-filings">…</b> of the filings, and only their links can cross, since a client with one firm sits in that firm's group.</p></div></details></div>
+                <div class="rx-drawers rx-foot"><details class="rx-drawer"><summary>Method</summary><div class="rx-drawer-body"><p>We ran <span class="w4-term"><button aria-describedby="w4-term-staffing-community-stats-louvain" type="button">Louvain</button><span class="w4-pop" id="w4-term-staffing-community-stats-louvain" role="tooltip">A method that finds groups in a network by moving nodes between groups until the links inside groups are as dense as they can get. It starts from a random order, so two runs can differ.</span></span> on the 2025 firm–client network 100 times each way: with links weighted by filings, and with every link counting one.</p><p>The <span class="w4-term"><button aria-describedby="w4-term-staffing-community-stats-null" type="button">null model</button><span class="w4-pop" id="w4-term-staffing-community-stats-null" role="tooltip">A random version of the network that keeps some of its features, here each node's number of partners, to show what chance alone would give.</span></span> rewires the network so every firm and client keeps its number of partners.</p><p>Infomap agrees with Louvain at NMI <b class="im-louvain">…</b>. Finer partitions raise every NMI; AMI corrects for that, so it is the number to compare across methods.</p></div></details><details class="rx-drawer"><summary>More numbers</summary><div class="rx-drawer-body"><p>Infomap, which follows a random walk instead of counting links, splits the same network into <b class="im-modules">…</b> small modules, most of them a firm with its clients. Like weighted Louvain, it follows the vendor far more than the industry (AMI <b class="im-vendor">…</b> against <b class="im-industry">…</b>).</p><p>The null also deals the filing counts back out at random. Rewiring breaks the network into a median of <b class="pieces">…</b> pieces, each a free community, so we score each rewired network on its largest piece, as we do the real one. The real network also loses when only the filing counts are shuffled on the real links (<b class="null-weights">…</b>). The real counts leave <b class="cross-share">…</b> of filings on links between groups, against <b class="cross-share-null">…</b> with shuffled counts: clients that use several firms hold <b class="multi-links">…</b> of the links but <b class="multi-filings">…</b> of the filings, and only their links can cross, since a client with one firm sits in that firm's group.</p></div></details></div>
                   </div>
                   <div>
                     <figure class="w4-figure">
@@ -1938,29 +1690,7 @@
             </details>
             <details class="rx-panel" name="w4-panel-outsourcing" data-box="deeper-strength">
               <summary>Strength against degree: where do the heavy links go?</summary>
-              <div class="card w4-card" id="deeper-strength">
-
-                            <header class="w4-q">
-                              <span class="w4-num">6</span>
-                              <div>
-                                <h2>Strength against degree: where do the heavy links go?</h2>
-                                <p class="w4-answer">Three of the top five are therapy and rehab clinics.</p>
-                              </div>
-                            </header>
-                <div class="w4-two">
-                  <div>
-                    <p class="sub">The course compares a node's degree (how many partners) with its strength (how many filings over all its links), and finds the exceptions tell the story.</p>
-                    <div class="notice"><span class="ico">💡</span><span><b>What to notice</b> Degree and strength rank firms almost alike (Spearman 0.91) but clients less so (0.75): the heaviest single ties go to therapy and rehab clinics, led by Ultimate Therapy with 133 filings from one firm.</span></div>
-                    <div class="rx-drawers rx-foot">
-                      <details class="rx-drawer"><summary>More numbers</summary><div class="rx-drawer-body"><p>In the 2025 firm–client network the two rank firms almost alike (Spearman 0.91) and clients less so (0.75). The clients with the most filings from a single firm are Ultimate Therapy, 133 filings from one firm; Sigma Rehab, 95; Post Rehab Services, 61; and Grady Memorial Hospital, 58.</p></div></details>
-                    </div>
-                  </div>
-                  <figure class="w4-figure">
-                    <figcaption><b>The heaviest one-to-one ties</b><span>The clients with the most filings from a single firm. Dark bars: health care.</span></figcaption>
-                    <div class="w4-figure-body" data-more="strength"></div>
-                  </figure>
-                </div>
-              </div>
+              <div class="card w4-card" id="deeper-strength"> <header class="w4-q"> <span class="w4-num">6</span> <div> <h2>Strength against degree: where do the heavy links go?</h2> <p class="w4-answer">Three of the top five are therapy and rehab clinics.</p> </div> </header> <div class="w4-two"> <div> <p class="sub">The course compares a node's degree (how many partners) with its strength (how many filings over all its links), and finds the exceptions tell the story.</p> <div class="notice"><span class="ico">💡</span><span><b>What to notice</b> Degree and strength rank firms almost alike (Spearman 0.91) but clients less so (0.75): the heaviest single ties go to therapy and rehab clinics, led by Ultimate Therapy with 133 filings from one firm.</span></div> <div class="rx-drawers rx-foot"> <details class="rx-drawer"><summary>Background</summary><div class="rx-drawer-body"></div></details> <details class="rx-drawer"><summary>More numbers</summary><div class="rx-drawer-body"><p>In the 2025 firm–client network the two rank firms almost alike (Spearman 0.91) and clients less so (0.75). The clients with the most filings from a single firm are Ultimate Therapy, 133 filings from one firm; Sigma Rehab, 95; Post Rehab Services, 61; and Grady Memorial Hospital, 58.</p></div></details> </div> </div> <figure class="w4-figure"> <figcaption><b>The heaviest one-to-one ties</b><span>The clients with the most filings from a single firm. Dark bars: health care.</span></figcaption> <div class="w4-figure-body" data-more="strength"></div> </figure> </div> </div>
             </details>
           </details>
           <details class="rx-topic" id="topic-paperwork" name="w4-topic">
@@ -2048,7 +1778,7 @@
 </div>
 <div class="rx-fig-row">
 <figure class="w4-figure">
-                    <figcaption><b>Every draw since 2020</b><span>Eligible registrations per selected registration, from USCIS's published totals, counting every selection round of the year; the figure under each date is the share of registrations for a worker registered more than once. From March 2024 USCIS drew by person, not by registration.</span></figcaption>
+                    <figcaption><b>Every draw since 2020</b><span>Eligible registrations per selected registration; the figure under each date is the share of registrations for a worker registered more than once.</span></figcaption>
                     <div class="w4-figure-body" data-more="draws"></div>
                   </figure>
 <figure class="w4-figure">
@@ -2057,7 +1787,7 @@
                   </figure>
 </div>
 <div class="rx-drawers rx-foot">
-                      <details class="rx-drawer"><summary>Method</summary><div class="rx-drawer-body"><p>The every-draw chart divides eligible by selected registrations from the historical table on USCIS's H-1B Electronic Registration Process page; its selections include later rounds, so its ratio is lower than the one per approved petition.</p></div></details>
+                      <details class="rx-drawer"><summary>Method</summary><div class="rx-drawer-body"><p>From March 2024 USCIS drew by person, not by registration.</p><p>The every-draw chart divides eligible by selected registrations from the historical table on USCIS's H-1B Electronic Registration Process page; its selections include later rounds, so its ratio is lower than the one per approved petition.</p></div></details>
                       <details class="rx-drawer"><summary>More numbers</summary><div class="rx-drawer-body"><p>Between the March 2022 and March 2023 draws, <span class="w4-term"><button aria-describedby="w4-term-deeper-lottery-registrations" type="button">registrations</button><span class="w4-pop" id="w4-term-deeper-lottery-registrations" role="tooltip">Entries in the H-1B lottery. Each spring employers register the workers they want to sponsor, and USCIS draws at random from the entries.</span></span> for a worker whom another employer had also registered rose from 35% to 54% of the total, and the share of drawn registrations that became a petition fell from 74% to 49%. The order held both years: direct employers needed the fewest (4.3, then 5.1), placing firms more (6.3, then 9.1). Of the March 2023 petitions, 20% lead to a client company, 66% of those through placing firms. Citigroup received 342, 94% through placing firms; Microsoft 150, 95%, with LTIMindtree supplying 47%; AT&amp;T 153, with Tech Mahindra supplying 41%. USCIS also denied 2.0% of the placing firms' lottery petitions against 1.1% of direct employers'.</p></div></details>
                     </div>
               </div>
@@ -2100,29 +1830,7 @@
             </details>
             <details class="rx-panel" name="w4-panel-paperwork" data-box="deeper-perm">
               <summary>Who keeps them? Green cards as the strong tie</summary>
-              <div class="card w4-card" id="deeper-perm">
-
-                            <header class="w4-q">
-                              <span class="w4-num">5</span>
-                              <div>
-                                <h2>Who keeps them? Green cards as the strong tie</h2>
-                                <p class="w4-answer">An H-1B filing is a weak tie between employer and worker; a green-card filing (<span class="w4-term"><button aria-describedby="w4-term-deeper-perm-perm" type="button">PERM</button><span class="w4-pop" id="w4-term-deeper-perm-perm" role="tooltip">The Department of Labor's permanent labor certification, the first step of most green cards through work. The employer sponsors the worker to stay.</span></span>) is a strong one.</p>
-                              </div>
-                            </header>
-                <div class="w4-two">
-                  <div>
-                    <p class="sub">Only 65% of certified green cards come from an employer we can match to an H-1B filer.</p>
-                    <div class="notice"><span class="ico">💡</span><span><b>What to notice</b> Among employers with 20 or more H-1B filings, the median files 13.2 green cards per 100 H-1B filings, yet Oracle files 95 while Amazon, with 22,509 H-1B filings, files almost none.</span></div>
-                    <div class="rx-drawers rx-foot">
-                      <details class="rx-drawer"><summary>More numbers</summary><div class="rx-drawer-body"><p>In 2025 the median employer with 20 or more H-1B filings filed 13.2 green cards per 100 of them, and the two counts rank employers only loosely alike (<span class="w4-term"><button aria-describedby="w4-term-deeper-perm-spearman" type="button">Spearman</button><span class="w4-pop" id="w4-term-deeper-perm-spearman" role="tooltip">A rank correlation: 1 means two counts put employers in the same order, 0 means no relation.</span></span> 0.50). As with degree and strength in the course, the exceptions carry the story: Oracle filed 95 green cards per 100 H-1B filings, Uber 64 and Salesforce 45, while Amazon (22,509 H-1B filings), Cognizant (11,085) and Google (8,657) filed almost none. Whether outsourcing firms sponsor fewer is <a href="#beyond-perm">section 5B</a>. Clients sponsor their own staff too: Wells Fargo receives 1,547 H-1B filings from vendors, files 624 of its own and 167 green cards. Firms with more clients sponsor slightly more green cards, not fewer (Spearman 0.13).</p></div></details>
-                    </div>
-                  </div>
-                  <figure class="w4-figure">
-                    <figcaption><b>Green cards per 100 H-1B filings</b><span>The six employers the text names, 2025; not a ranking. Dashed line: the median employer with 20 or more H-1B filings.</span></figcaption>
-                    <div class="w4-figure-body" data-more="perm"></div>
-                  </figure>
-                </div>
-              </div>
+              <div class="card w4-card" id="deeper-perm"> <header class="w4-q"> <span class="w4-num">5</span> <div> <h2>Who keeps them? Green cards as the strong tie</h2> <p class="w4-answer">An H-1B filing is a weak tie between employer and worker; a green-card filing (<span class="w4-term"><button aria-describedby="w4-term-deeper-perm-perm" type="button">PERM</button><span class="w4-pop" id="w4-term-deeper-perm-perm" role="tooltip">The Department of Labor's permanent labor certification, the first step of most green cards through work. The employer sponsors the worker to stay.</span></span>) is a strong one.</p> </div> </header> <div class="w4-two"> <div> <p class="sub">Only 65% of certified green cards come from an employer we can match to an H-1B filer.</p> <div class="notice"><span class="ico">💡</span><span><b>What to notice</b> Among employers with 20 or more H-1B filings, the median files 13.2 green cards per 100 H-1B filings, yet Oracle files 95 while Amazon, with 22,509 H-1B filings, files almost none.</span></div> <div class="rx-drawers rx-foot"> <details class="rx-drawer"><summary>Method</summary><div class="rx-drawer-body"></div></details> <details class="rx-drawer"><summary>More numbers</summary><div class="rx-drawer-body"><p>In 2025 the median employer with 20 or more H-1B filings filed 13.2 green cards per 100 of them, and the two counts rank employers only loosely alike (<span class="w4-term"><button aria-describedby="w4-term-deeper-perm-spearman" type="button">Spearman</button><span class="w4-pop" id="w4-term-deeper-perm-spearman" role="tooltip">A rank correlation: 1 means two counts put employers in the same order, 0 means no relation.</span></span> 0.50). As with degree and strength in the course, the exceptions carry the story: Oracle filed 95 green cards per 100 H-1B filings, Uber 64 and Salesforce 45, while Amazon (22,509 H-1B filings), Cognizant (11,085) and Google (8,657) filed almost none. Whether outsourcing firms sponsor fewer is <a href="#beyond-perm">section 5B</a>. Clients sponsor their own staff too: Wells Fargo receives 1,547 H-1B filings from vendors, files 624 of its own and 167 green cards. Firms with more clients sponsor slightly more green cards, not fewer (Spearman 0.13).</p></div></details> </div> </div> <figure class="w4-figure"> <figcaption><b>Green cards per 100 H-1B filings</b><span>The six employers the text names, 2025; not a ranking. Dashed line: the median employer with 20 or more H-1B filings.</span></figcaption> <div class="w4-figure-body" data-more="perm"></div> </figure> </div> </div>
             </details>
             <details class="rx-panel" name="w4-panel-paperwork" data-box="deeper-countries">
               <summary>Where are they from? A network of countries</summary>
@@ -2236,7 +1944,7 @@
                       <p class="w4-answer">Only in part.</p>
                     </div>
                   </header>
-                  <p class="sub">We compare each year's client groups with the next year's, on the clients both years share, and with a second run on the same year as the ceiling. Consecutive years agree less than that ceiling, so the groups carry over only in part.</p>
+                  <p class="sub">Consecutive years agree less than two runs of the same year, so the groups carry over only in part.</p>
 <div class="rx-fig-row">
 <figure class="w4-figure">
                         <figcaption><b>Consecutive years against the same year</b><span><span class="w4-term"><button aria-describedby="w4-term-topic-years-nmi" type="button">NMI</button><span class="w4-pop" id="w4-term-topic-years-nmi" role="tooltip">Normalised mutual information: how much two groupings of the same clients agree, from 0 (unrelated) to 1 (identical).</span></span> of the groups on shared clients. Dots: two consecutive years. Dashed: two runs of the same year.</span></figcaption>
@@ -2252,6 +1960,7 @@
 </div>
 <div class="rx-drawers rx-foot">
                         <details class="rx-drawer"><summary>Background</summary><div class="rx-drawer-body"><p>We compared vendor and industry on 2025 only.</p></div></details>
+                        <details class="rx-drawer"><summary>Method</summary><div class="rx-drawer-body"><p>We compare each year's client groups with the next year's, on the clients both years share, and with a second run on the same year as the ceiling.</p></div></details>
                         <details class="rx-drawer"><summary>More numbers</summary><div class="rx-drawer-body"><p>On the clients present in both years, consecutive years agree at NMI 0.21 to 0.27, about half the 0.48 to 0.50 between two runs of the same year on the same clients.</p><p>2026 breaks the pattern at the top. We compare January to June of each year, because October 2025, the month of the federal shutdown, holds 1,306 certified filings against 35,258 a year earlier. From January to June, certified filings fell 5.8% after rising 9.5% the year before, and filings that name a client company fell 16.5% after holding flat (-0.1%). Tata Consultancy Services filed 2,079, down from 5,256. Of the 349 clients it supplied most from January to June 2025, 223 still appear, and 111 of those now get most of their workers from another firm, most often Infosys. Across clients with five or more filings in both years, 47% changed their main vendor, against 44% a year earlier. These are applications, so they show what employers asked for, not why.</p></div></details>
                       </div>
                 </div>
@@ -2323,9 +2032,9 @@
     <script src="../../assets/js/week04-years.js?v=8" type="module"></script>
     <script src="../../assets/js/week04-roles.js?v=10" type="module"></script>
     <script src="../../assets/js/week04-methods.js?v=7" type="module"></script>
-    <script src="../../assets/js/week04-skills.js?v=9" type="module"></script>
+    <script src="../../assets/js/week04-skills.js?v=10" type="module"></script>
     <script src="../../assets/js/week04-skills-radar.js?v=8" type="module"></script>
-    <script src="../../assets/js/week04-pagerank.js?v=10" type="module"></script>
+    <script src="../../assets/js/week04-pagerank.js?v=11" type="module"></script>
     <script src="../../assets/js/week04-jobs.js?v=9" type="module"></script>
     <script src="../../assets/js/week04-staffing.js?v=2" type="module"></script>
     <script src="../../assets/js/week04-questions.js?v=11" type="module"></script>
