@@ -827,6 +827,30 @@
       "x": 1520,
       "y": 3626
     },
+    "RTopicWherePlus-greedy.dc.html": {
+      "h": 1860,
+      "page": "gaps",
+      "title": "Proposed · the new Greedy tab in the community methods",
+      "w": 1440,
+      "x": 1520,
+      "y": 1800
+    },
+    "RTopicWherePlus-modularity.dc.html": {
+      "h": 1860,
+      "page": "gaps",
+      "title": "Proposed · the Modularity tab with the formula and Census regions",
+      "w": 1440,
+      "x": 3040,
+      "y": 1800
+    },
+    "RTopicWherePlus.dc.html": {
+      "h": 1860,
+      "page": "gaps",
+      "title": "Proposed · Where the hiring is, opened at the new box: Which way do the strongest ties run?",
+      "w": 1440,
+      "x": 0,
+      "y": 1800
+    },
     "RTopicYears-box2.dc.html": {
       "h": 2332,
       "is_interactive": true,
@@ -1536,6 +1560,15 @@
       "x": 0,
       "y": -300
     },
+    "gaps2": {
+      "kind": "title1",
+      "maxW": 4480,
+      "page": "gaps",
+      "text": "Proposed: the three additions in place, in the Where the hiring is deep dive",
+      "w": 240,
+      "x": 0,
+      "y": 1500
+    },
     "rec1": {
       "kind": "title1",
       "maxW": 8000,
@@ -1843,7 +1876,10 @@
     "GapPaths.dc.html",
     "GapEigen.dc.html",
     "GapResolution.dc.html",
-    "GapDrawing.dc.html"
+    "GapDrawing.dc.html",
+    "RTopicWherePlus.dc.html",
+    "RTopicWherePlus-greedy.dc.html",
+    "RTopicWherePlus-modularity.dc.html"
   ],
   "pages": [
     {
