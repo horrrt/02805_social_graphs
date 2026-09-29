@@ -25,8 +25,8 @@
   "occupations_without_a_profile": 0,
   "direct_ties": {
    "n": 158,
-   "mean": 0.414,
-   "sd": 0.247,
+   "mean": 0.411,
+   "sd": 0.248,
    "examples": [
     {
      "a": "25-2021",
@@ -73,7 +73,7 @@
    ]
   },
   "same_cluster_other_pairs": {
-   "n": 734,
+   "n": 735,
    "mean": 0.336,
    "sd": 0.22,
    "examples": [
@@ -122,7 +122,7 @@
    ]
   },
   "different_cluster_pairs": {
-   "n": 878,
+   "n": 877,
    "mean": 0.22,
    "sd": 0.222,
    "examples": [

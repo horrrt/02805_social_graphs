@@ -35,10 +35,10 @@
  },
  "filled_ratings": 137,
  "coverage": {
-  "h1b_occupations": 551,
+  "h1b_occupations": 517,
   "covered": 479,
   "filings": 1040169,
-  "filing_share_covered": 0.9946,
+  "filing_share_covered": 0.9968,
   "unrated": [
    {
     "code": "29-1212",
@@ -48,12 +48,12 @@
    {
     "code": "29-1249",
     "title": "Surgeons, All Other",
-    "filings": 812
+    "filings": 813
    },
    {
     "code": "25-1199",
     "title": "Postsecondary Teachers, All Other",
-    "filings": 340
+    "filings": 341
    },
    {
     "code": "25-3099",
@@ -231,144 +231,7 @@
     "filings": 1
    }
   ],
-  "not_in_onet": [
-   {
-    "code": "15-1295",
-    "filings": 708
-   },
-   {
-    "code": "17-2144",
-    "filings": 408
-   },
-   {
-    "code": "17-2074",
-    "filings": 368
-   },
-   {
-    "code": "15-1296",
-    "filings": 206
-   },
-   {
-    "code": "15-1217",
-    "filings": 150
-   },
-   {
-    "code": "17-2053",
-    "filings": 149
-   },
-   {
-    "code": "17-2076",
-    "filings": 55
-   },
-   {
-    "code": "17-2143",
-    "filings": 42
-   },
-   {
-    "code": "15-1297",
-    "filings": 39
-   },
-   {
-    "code": "15-1218",
-    "filings": 36
-   },
-   {
-    "code": "15-1293",
-    "filings": 30
-   },
-   {
-    "code": "17-2073",
-    "filings": 24
-   },
-   {
-    "code": "15-1247",
-    "filings": 17
-   },
-   {
-    "code": "15-1294",
-    "filings": 16
-   },
-   {
-    "code": "17-2052",
-    "filings": 15
-   },
-   {
-    "code": "17-2075",
-    "filings": 8
-   },
-   {
-    "code": "15-1248",
-    "filings": 6
-   },
-   {
-    "code": "17-2063",
-    "filings": 5
-   },
-   {
-    "code": "15-1298",
-    "filings": 3
-   },
-   {
-    "code": "25-1099",
-    "filings": 1
-   },
-   {
-    "code": "15-1051",
-    "filings": 1
-   },
-   {
-    "code": "15-2071",
-    "filings": 1
-   },
-   {
-    "code": "29-1992",
-    "filings": 1
-   },
-   {
-    "code": "15-1263",
-    "filings": 1
-   },
-   {
-    "code": "15-2052",
-    "filings": 1
-   },
-   {
-    "code": "15-1521",
-    "filings": 1
-   },
-   {
-    "code": "29-1067",
-    "filings": 1
-   },
-   {
-    "code": "17-2711",
-    "filings": 1
-   },
-   {
-    "code": "17-1299",
-    "filings": 1
-   },
-   {
-    "code": "15-2141",
-    "filings": 1
-   },
-   {
-    "code": "29-1069",
-    "filings": 1
-   },
-   {
-    "code": "17-1252",
-    "filings": 1
-   },
-   {
-    "code": "15-1031",
-    "filings": 1
-   },
-   {
-    "code": "37-3043",
-    "filings": 1
-   }
-  ]
+  "not_in_onet": []
  },
  "mixed": {
   "11-1011": {
@@ -690,8 +553,8 @@
   },
   "15-1211": {
    "title": "Computer Systems Analysts",
-   "h1b_filings": 29223,
-   "residual_share": 0.079,
+   "h1b_filings": 29409,
+   "residual_share": 0.084,
    "within_similarity": 0.992,
    "profiles": [
     {
@@ -708,8 +571,8 @@
   },
   "15-1241": {
    "title": "Computer Network Architects",
-   "h1b_filings": 3853,
-   "residual_share": 0.007,
+   "h1b_filings": 3877,
+   "residual_share": 0.013,
    "within_similarity": 0.994,
    "profiles": [
     {
@@ -874,19 +737,19 @@
   },
   "17-2051": {
    "title": "Civil Engineers",
-   "h1b_filings": 10355,
-   "residual_share": 0.015,
+   "h1b_filings": 10519,
+   "residual_share": 0.031,
    "within_similarity": 0.978,
    "profiles": [
     {
      "code": "17-2051.00",
      "title": "Civil Engineers",
-     "share": 0.91
+     "share": 0.911
     },
     {
      "code": "17-2051.01",
      "title": "Transportation Engineers",
-     "share": 0.06
+     "share": 0.059
     },
     {
      "code": "17-2051.02",
@@ -897,8 +760,8 @@
   },
   "17-2072": {
    "title": "Electronics Engineers, Except Computer",
-   "h1b_filings": 14897,
-   "residual_share": 0.007,
+   "h1b_filings": 14960,
+   "residual_share": 0.011,
    "within_similarity": 0.999,
    "profiles": [
     {
@@ -961,30 +824,30 @@
   },
   "17-2141": {
    "title": "Mechanical Engineers",
-   "h1b_filings": 19094,
-   "residual_share": 0.007,
-   "within_similarity": 0.955,
+   "h1b_filings": 19544,
+   "residual_share": 0.03,
+   "within_similarity": 0.956,
    "profiles": [
     {
      "code": "17-2141.00",
      "title": "Mechanical Engineers",
-     "share": 0.908
+     "share": 0.911
     },
     {
      "code": "17-2141.02",
      "title": "Automotive Engineers",
-     "share": 0.088
+     "share": 0.086
     },
     {
      "code": "17-2141.01",
      "title": "Fuel Cell Engineers",
-     "share": 0.004
+     "share": 0.003
     }
    ]
   },
   "17-2199": {
    "title": "Engineers, All Other",
-   "h1b_filings": 4348,
+   "h1b_filings": 4349,
    "residual_share": 0.117,
    "within_similarity": 0.771,
    "profiles": [
@@ -1260,19 +1123,19 @@
   },
   "27-3043": {
    "title": "Writers and Authors",
-   "h1b_filings": 74,
-   "residual_share": 0.0,
-   "within_similarity": 0.994,
+   "h1b_filings": 75,
+   "residual_share": 0.013,
+   "within_similarity": 0.995,
    "profiles": [
     {
      "code": "27-3043.00",
      "title": "Writers and Authors",
-     "share": 0.986
+     "share": 0.987
     },
     {
      "code": "27-3043.05",
      "title": "Poets, Lyricists and Creative Writers",
-     "share": 0.014
+     "share": 0.013
     }
    ]
   },
@@ -1347,7 +1210,7 @@
   },
   "29-1229": {
    "title": "Physicians, All Other",
-   "h1b_filings": 10812,
+   "h1b_filings": 10814,
    "residual_share": 0.717,
    "within_similarity": 0.981,
    "profiles": [
@@ -1575,7 +1438,7 @@
  "neighbours": {
   "15-1252": {
    "title": "Software Developers",
-   "filings": 334568,
+   "filings": 335484,
    "nearest": [
     {
      "code": "15-1254",
@@ -1668,7 +1531,7 @@
   },
   "15-1253": {
    "title": "Software Quality Assurance Analysts and Testers",
-   "filings": 35415,
+   "filings": 35458,
    "nearest": [
     {
      "code": "15-1243",
@@ -1699,7 +1562,7 @@
   },
   "15-1211": {
    "title": "Computer Systems Analysts",
-   "filings": 29223,
+   "filings": 29409,
    "nearest": [
     {
      "code": "15-1244",
@@ -1730,7 +1593,7 @@
   },
   "15-1251": {
    "title": "Computer Programmers",
-   "filings": 25992,
+   "filings": 26039,
    "nearest": [
     {
      "code": "15-1254",
@@ -1792,12 +1655,12 @@
   },
   "17-2141": {
    "title": "Mechanical Engineers",
-   "filings": 19094,
+   "filings": 19544,
    "nearest": [
     {
      "code": "17-2011",
      "title": "Aerospace Engineers",
-     "similarity": 0.761
+     "similarity": 0.76
     },
     {
      "code": "17-2121",
@@ -1885,7 +1748,7 @@
   },
   "15-2031": {
    "title": "Operations Research Analysts",
-   "filings": 15716,
+   "filings": 15717,
    "nearest": [
     {
      "code": "15-2041",
@@ -1916,7 +1779,7 @@
   },
   "17-2072": {
    "title": "Electronics Engineers, Except Computer",
-   "filings": 14897,
+   "filings": 14960,
    "nearest": [
     {
      "code": "17-2061",
@@ -1936,7 +1799,7 @@
     {
      "code": "17-2141",
      "title": "Mechanical Engineers",
-     "similarity": 0.75
+     "similarity": 0.751
     },
     {
      "code": "17-2031",
@@ -1976,6 +1839,37 @@
     }
    ]
   },
+  "17-2071": {
+   "title": "Electrical Engineers",
+   "filings": 13277,
+   "nearest": [
+    {
+     "code": "17-2061",
+     "title": "Computer Hardware Engineers",
+     "similarity": 0.801
+    },
+    {
+     "code": "17-2011",
+     "title": "Aerospace Engineers",
+     "similarity": 0.745
+    },
+    {
+     "code": "17-2021",
+     "title": "Agricultural Engineers",
+     "similarity": 0.741
+    },
+    {
+     "code": "17-2141",
+     "title": "Mechanical Engineers",
+     "similarity": 0.73
+    },
+    {
+     "code": "17-2031",
+     "title": "Bioengineers and Biomedical Engineers",
+     "similarity": 0.714
+    }
+   ]
+  },
   "15-1242": {
    "title": "Database Administrators",
    "filings": 12989,
@@ -2004,37 +1898,6 @@
      "code": "15-1211",
      "title": "Computer Systems Analysts",
      "similarity": 0.701
-    }
-   ]
-  },
-  "17-2071": {
-   "title": "Electrical Engineers",
-   "filings": 12883,
-   "nearest": [
-    {
-     "code": "17-2061",
-     "title": "Computer Hardware Engineers",
-     "similarity": 0.801
-    },
-    {
-     "code": "17-2011",
-     "title": "Aerospace Engineers",
-     "similarity": 0.745
-    },
-    {
-     "code": "17-2021",
-     "title": "Agricultural Engineers",
-     "similarity": 0.741
-    },
-    {
-     "code": "17-2141",
-     "title": "Mechanical Engineers",
-     "similarity": 0.73
-    },
-    {
-     "code": "17-2031",
-     "title": "Bioengineers and Biomedical Engineers",
-     "similarity": 0.714
     }
    ]
   },
@@ -2071,7 +1934,7 @@
   },
   "29-1229": {
    "title": "Physicians, All Other",
-   "filings": 10812,
+   "filings": 10814,
    "nearest": [
     {
      "code": "29-1214",
@@ -2102,7 +1965,7 @@
   },
   "17-2051": {
    "title": "Civil Engineers",
-   "filings": 10355,
+   "filings": 10519,
    "nearest": [
     {
      "code": "11-9041",
@@ -2117,7 +1980,7 @@
     {
      "code": "17-2151",
      "title": "Mining and Geological Engineers, Including Mining Safety Engineers",
-     "similarity": 0.754
+     "similarity": 0.753
     },
     {
      "code": "17-1011",
