@@ -49,6 +49,11 @@ export function roomFor(el) {
  * including when a closed <details> opens. A redraw only follows a change of
  * width, so the new chart's height cannot set off another.
  */
+// Observers by parent. A chart drawn into the same host again (a damping
+// click, a new client pick) retires the observers of charts no longer on the
+// page; a host holding two live charts keeps both.
+const observers = new WeakMap();
+
 export function fitted(build, fallback) {
   let chart = build(fallback);
   let drawn = fallback;
@@ -73,11 +78,13 @@ export function fitted(build, fallback) {
       if (tries > 0) requestAnimationFrame(() => watch(tries - 1));
       return;
     }
+    const live = (observers.get(parent) || []).filter(([seen, isLive]) => isLive() || void seen.disconnect());
     observer = new ResizeObserver(() => {
       if (queued) return;
       queued = true;
       requestAnimationFrame(redraw);
     });
+    observers.set(parent, [...live, [observer, () => chart.isConnected]]);
     observer.observe(parent);
   };
   queueMicrotask(() => watch(20));

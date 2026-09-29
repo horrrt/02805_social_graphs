@@ -38,7 +38,6 @@
 body {
   font-family: var(--font-sans);
   font-size: var(--fs-body);
-  line-height: var(--lh-body);
 }
 
 /* Form controls do not inherit type by default and fell back to Arial. */

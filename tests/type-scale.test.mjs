@@ -93,7 +93,17 @@ test("week 4 chart code takes every font size from the type scale", () => {
   // Numeric sizes in SVG attributes, ECharts options or inline styles must come
   // from fs()/font() in docs/assets/js/type-scale.mjs instead.
   const JS = join(DOCS, "assets/js");
-  const literal = [/fontSize:\s*\d/, /"font-size":\s*\d/, /font-size="\d/, /font-size:\s*\d/, /\bfont:\s*"\d/];
+  const literal = [
+    /fontSize:\s*\d/,
+    /"font-size":\s*\d/,
+    /font-size="\d/,
+    /font-size:\s*\d/,
+    /\bfont:\s*"\d/,
+    // setAttribute("font-size", 11) and .style("font-size", "11px")
+    /["']font-size["']\s*,\s*["']?\d/,
+    // a canvas font with a typed size
+    /\.font\s*=\s*["'`][^"'`$]*\d+(\.\d+)?px/,
+  ];
   const found = [];
   for (const file of readdirSync(JS).filter((f) => /^week04-.*\.js$/.test(f))) {
     readFileSync(join(JS, file), "utf8").split("\n").forEach((line, i) => {
