@@ -92,16 +92,18 @@ test("exactly weeks 1 to 4 are live, each with a cabinet on disk", () => {
 });
 
 // The lobby is pinned to the manifest.
-test("every lobby card agrees with the manifest and only live weeks are links", () => {
+test("every lobby card agrees with the manifest and links a live week", () => {
   const html = read("index.html");
   // Cards must put data-week first; coming cards must not nest a <div>.
   const cards = [
     ...html.matchAll(/<(a|div)\s+data-week="(\d)"([^>]*)>([\s\S]*?)<\/\1\s*>/g),
   ];
-  assert.equal(cards.length, WEEKS.length, `index.html: one card per course week`);
+  // Since #94 the lobby shows a card for each live week only; the hero lists the rest.
+  const shown = liveWeeks();
+  assert.equal(cards.length, shown.length, `index.html: one card per live week`);
   cards.forEach((m, i) => {
     const [, tag, n, attrs, body] = m,
-      w = WEEKS[i];
+      w = shown[i];
     assert.equal(Number(n), w.n, "cards run in course order");
     assert(
       decode(body).includes(w.courseTitle),
