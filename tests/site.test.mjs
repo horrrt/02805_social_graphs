@@ -109,10 +109,7 @@ test("every lobby card agrees with the manifest and links a live week", () => {
       decode(body).includes(w.courseTitle),
       `card ${w.n} names "${w.courseTitle}"`,
     );
-    assert(
-      body.toLowerCase().includes(shortDate(w.date).toLowerCase()),
-      `card ${w.n} shows its date`,
-    );
+    // The cards show the week and its topic only; dates live in the manifest.
     if (w.status === "live") {
       assert.equal(tag, "a", `week ${w.n} is a link`);
       assert(attrs.includes(`href="${w.cabinet.href}"`), attrs);

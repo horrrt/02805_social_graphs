@@ -459,3 +459,10 @@ a.week-card:hover {
 .home .members a:hover img {
   box-shadow: 0 0 0 2px var(--access), var(--shadow);
 }
+
+/* The tag holds week and topic; two lines for every card keeps the titles level. */
+.home .week-tag {
+  display: block;
+  line-height: 1.4;
+  min-height: 2.8em;
+}
