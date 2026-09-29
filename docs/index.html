@@ -5,328 +5,316 @@
     <meta charset="utf-8" />
     <meta content="width=device-width,initial-scale=1" name="viewport" />
     <meta
-      content="Log–Log Legends: weekly interactive posts by Àngela, Gyula and Niklas (DTU 02805), first on 303 Marvel Wikipedia articles, then on global migration."
+      content="Log–Log Legends: one interactive post per week of DTU 02805 Social Graphs and Interactions, by Àngela, Gyula and Niklas. Marvel articles, migration corridors and H-1B hiring so far; the language half follows."
       name="description"
     />
     <title>Log–Log Legends · DTU 02805 Social Graphs</title>
-    <link href="assets/css/arcade.css" rel="stylesheet" />
     <link href="assets/favicon.svg" rel="icon" type="image/svg+xml" />
-    <script>
-      document.documentElement.classList.add("js");
-    </script>
-    <link href="assets/css/story.css" rel="stylesheet" />
-    <link rel="stylesheet" href="assets/css/design.css" />
+    <link href="assets/css/corridor.css" rel="stylesheet" />
+    <link href="assets/css/home.css" rel="stylesheet" />
   </head>
-  <body class="guided-lobby visual-design">
+  <body class="corridor home">
     <a class="skip" href="#main">Skip to content</a>
-    <header class="chrome" id="arcade-chrome">
-      <a class="arcade-wordmark" href="./">LOG–LOG ARCADE</a
-      ><a href="#weeks">This week’s post</a>
-    </header>
-    <main class="wrap" id="main">
-      <p class="status" id="app-status" role="status">
-        Loading the frozen snapshot…
-      </p>
-      <noscript
-        ><p class="note">
-          The interactive cabinets need JavaScript. The main findings and
-          methods are available below.
-        </p></noscript
-      >
-      <section class="hero lobby-hero">
-        <div class="hero-copy">
-          <p class="eyebrow">Log–Log Legends / DTU 02805</p>
-          <h1>Marvel to<br /><em>migration.</em></h1>
-          <p class="intro">
-            Open a pack. Close a station. Trace where 272 million migrants
-            live. One interactive post per course week, first on 303 Marvel
-            Wikipedia articles, then on the corridors between countries.
-          </p>
-          <div class="hero-actions">
-            <a class="button" href="weeks/week01/"
-              >Start with Hero Packs <span aria-hidden="true">↗</span></a
-            ><a class="text-link" href="#weeks">Browse the posts</a>
+
+    <div class="topbar">
+      <div class="shell">
+        <a class="brand" href="./">LOG–LOG <b>LEGENDS</b></a>
+        <nav class="topnav" aria-label="Sections of this page">
+          <a class="here" href="#weeks">Posts</a>
+          <a href="#network">Data</a>
+          <a href="#how">How a post works</a>
+          <a href="#about">About</a>
+          <a href="#sources">Sources</a>
+        </nav>
+      </div>
+    </div>
+
+    <main id="main">
+      <section class="hero home-hero" id="top">
+        <div class="shell">
+          <div class="home-hero-text">
+            <p class="eyebrow">DTU 02805 · Social graphs and interactions · Fall 2026</p>
+            <h1>One network question a week</h1>
+            <p class="lede">
+              Eight course weeks. Four on network structure, four on language.
+            </p>
+            <p class="body">
+              Each post asks one question about a real network, gives you one
+              thing to try, then shows the result and the evidence behind it.
+              We started on 303 Marvel Wikipedia articles, moved to migration
+              between countries, and then to the firms that file for H-1B
+              workers in the United States. No network-science background
+              needed: every post explains its data and terms on its own.
+            </p>
+            <p class="caution">
+              A link is whatever the data says it is: a hyperlink, a migrant,
+              a shared employer. Never a friendship.
+            </p>
+            <div class="home-hero-actions">
+              <a class="home-button" href="weeks/week04/">Read the latest post →</a>
+              <a class="home-textlink" href="weeks/week01/">Start from Week 1</a>
+            </div>
           </div>
-          <p class="hero-note">
-            Interactive stories. No network-science background needed.
-          </p>
+          <aside aria-label="The course so far" class="home-progress">
+            <p class="home-caps">The course so far</p>
+            <ol class="home-track">
+              <li class="live"><span>W1</span>Networks</li>
+              <li class="live"><span>W2</span>Models &amp; null models</li>
+              <li class="live"><span>W3</span>Who matters, and why</li>
+              <li class="live current"><span>W4</span>Communities &amp; backbones</li>
+              <li><span>W5</span>NLP I</li>
+              <li><span>W6</span>NLP II</li>
+              <li><span>W7</span>NLP III</li>
+              <li><span>W8</span>Networks × language</li>
+            </ol>
+            <p class="home-progress-note">
+              4 of 8 posts out. The next opens after the 30 September session.
+            </p>
+          </aside>
         </div>
-        <figure class="hero-art">
-          <img
-            alt="The actual Marvel article network, with Spider-Man, Hulk and the isolated Baymax labelled. Lines represent article references, not friendships."
-            height="660"
-            src="assets/images/marvel-network.svg"
-            width="960"
-          />
-        </figure>
-      </section>
-      <section aria-label="One cabinet per course week" id="weeks">
-        <h2>Weekly posts</h2>
-        <ol class="cabinet-list">
-          <li>
-            <a data-week="1" class="cabinet-link" href="weeks/week01/"
-              ><div class="post-cover cover-packs">
-                <img
-                  alt=""
-                  height="440"
-                  loading="lazy"
-                  src="assets/images/hero-packs.svg"
-                  width="640"
-                />
-              </div>
-              <div class="post-copy">
-                <span class="tag">Week 1 · 2 September</span>
-                <p class="course">Networks</p>
-                <h2>Hero Packs</h2>
-                <p>Why do you keep drawing the same heroes?</p>
-                <span class="post-action"
-                  >Open the story <span aria-hidden="true">↗</span></span
-                >
-              </div></a
-            >
-          </li>
-          <li>
-            <a data-week="2" class="cabinet-link" href="weeks/week02/"
-              ><div class="post-cover cover-transit">
-                <img
-                  alt=""
-                  height="440"
-                  loading="lazy"
-                  src="assets/images/transit-map.svg"
-                  width="640"
-                />
-              </div>
-              <div class="post-copy">
-                <span class="tag">Week 2 · 9 September</span>
-                <p class="course">Models &amp; null models</p>
-                <h2>Transit Authority</h2>
-                <p>Which connections can the network live without?</p>
-                <span class="post-action"
-                  >Open the story <span aria-hidden="true">↗</span></span
-                >
-              </div></a
-            >
-          </li>
-          <li>
-            <a data-week="3" class="cabinet-link" href="weeks/week03/"
-              ><div class="post-cover cover-corridor">
-                <img
-                  alt=""
-                  height="440"
-                  loading="lazy"
-                  src="assets/images/corridor-globe.svg"
-                  width="640"
-                />
-              </div>
-              <div class="post-copy">
-                <span class="tag">Week 3 · 16 September</span>
-                <p class="course">Who matters, and why</p>
-                <h2>Corridor Control</h2>
-                <p>Two networks, one world. Which country is the bridge?</p>
-                <span class="post-action"
-                  >Open the story <span aria-hidden="true">↗</span></span
-                >
-              </div></a
-            >
-          </li>
-          <li>
-            <a data-week="4" class="cabinet-link current" href="weeks/week04/"
-              ><div class="post-cover cover-corridor">
-                <img
-                  alt=""
-                  height="440"
-                  loading="lazy"
-                  src="assets/images/corridor-globe.svg"
-                  width="640"
-                />
-              </div>
-              <div class="post-copy">
-                <span class="tag">Week 4 · 23 September · latest</span>
-                <p class="course">Communities &amp; backbones</p>
-                <h2>Who Hires</h2>
-                <p>Where does America's H-1B hiring happen?</p>
-                <span class="post-action"
-                  >Open the story <span aria-hidden="true">↗</span></span
-                >
-              </div></a
-            >
-          </li>
-        </ol>
-        <details class="upcoming-weeks">
-          <summary>Upcoming weeks</summary>
-          <ol class="cabinet-list">
-            <li>
-              <div
-                data-week="5"
-                aria-disabled="true"
-                class="cabinet-link coming"
-              >
-                <span class="tag">Week 5 · 30 Sep · coming</span>
-                <h2>The language half · NLP I</h2>
-                <p>Opens after the course session.</p>
-              </div>
-            </li>
-            <li>
-              <div
-                data-week="6"
-                aria-disabled="true"
-                class="cabinet-link coming"
-              >
-                <span class="tag">Week 6 · 7 Oct · coming</span>
-                <h2>NLP II</h2>
-                <p>Opens after the course session.</p>
-              </div>
-            </li>
-            <li>
-              <div
-                data-week="7"
-                aria-disabled="true"
-                class="cabinet-link coming"
-              >
-                <span class="tag">Week 7 · 21 Oct · coming</span>
-                <h2>NLP III</h2>
-                <p>Opens after the course session.</p>
-              </div>
-            </li>
-            <li>
-              <div
-                data-week="8"
-                aria-disabled="true"
-                class="cabinet-link coming"
-              >
-                <span class="tag">Week 8 · 28 Oct · coming</span>
-                <h2>Networks × language</h2>
-                <p>Opens after the course session.</p>
-              </div>
-            </li>
-          </ol>
-        </details>
       </section>
 
-      <section class="section" id="network">
-        <div class="section-head">
-          <h2>Behind the posts.</h2>
-          <span class="fine">Two datasets so far.</span>
-        </div>
-        <section class="section" data-gated="" id="results">
-          <p class="eyebrow">THE TAKEAWAY</p>
-          <h2>The networks in numbers</h2>
-          <p>
-            <strong>Weeks 1 and 2: Marvel.</strong> The course’s frozen graph
-            contains 303 Wikipedia articles in 19 weakly connected components:
-            a 277-article core, a nine-article island, and 17 isolates. Follow
-            the cabinets to discover how direction, choice of metric and
-            comparison model change the answer.
-          </p>
-          <p>
-            <strong>Week 3: migration.</strong> The UN count of where people
-            born in one country now live: 228 countries and 8,795 corridors in
-            2024, set beside a network of international flight routes. A link
-            carries people, not article references. The post’s own methods
-            section lists every source and limit.
-          </p>
+      <div class="shell">
+        <section aria-labelledby="weeks-title" class="home-section" id="weeks">
+          <div class="home-section-head">
+            <h2 id="weeks-title">Weekly posts</h2>
+            <p>One post per course week, in course order.</p>
+          </div>
+
+          <div class="home-half">
+            <p class="home-caps">Weeks 1–4 · Network structure</p>
+            <ol class="week-grid">
+              <li>
+                <a data-week="1" class="week-card" href="weeks/week01/"
+                  ><span class="week-tag">Week 1 · 2 September</span>
+                  <span class="week-course">Networks</span>
+                  <h3>Hero Packs</h3>
+                  <p class="week-q">Why do you keep drawing the same heroes?</p>
+                  <dl class="week-meta">
+                    <dt>Data</dt><dd>303 Marvel Wikipedia articles</dd>
+                    <dt>Try</dt><dd>Open card packs, then compare equal odds</dd>
+                    <dt>Ideas</dt><dd>Degree, in and out links, heavy tails</dd>
+                  </dl>
+                  <span class="week-go">Read the post →</span></a
+                >
+              </li>
+              <li>
+                <a data-week="2" class="week-card" href="weeks/week02/"
+                  ><span class="week-tag">Week 2 · 9 September</span>
+                  <span class="week-course">Models &amp; null models</span>
+                  <h3>Transit Authority</h3>
+                  <p class="week-q">Which connections can the network live without?</p>
+                  <dl class="week-meta">
+                    <dt>Data</dt><dd>303 Marvel Wikipedia articles</dd>
+                    <dt>Try</dt><dd>Close a station and watch journeys fail</dd>
+                    <dt>Ideas</dt><dd>Random networks, rewiring nulls, robustness</dd>
+                  </dl>
+                  <span class="week-go">Read the post →</span></a
+                >
+              </li>
+              <li>
+                <a data-week="3" class="week-card" href="weeks/week03/"
+                  ><span class="week-tag">Week 3 · 16 September</span>
+                  <span class="week-course">Who matters, and why</span>
+                  <h3>Corridor Control</h3>
+                  <p class="week-q">Two networks, one world. Which country is the bridge?</p>
+                  <dl class="week-meta">
+                    <dt>Data</dt><dd>UN migrant stocks and flight routes</dd>
+                    <dt>Try</dt><dd>Spin the globe and inspect a country</dd>
+                    <dt>Ideas</dt><dd>Centrality, brokerage, reciprocity</dd>
+                  </dl>
+                  <span class="week-go">Read the post →</span></a
+                >
+              </li>
+              <li>
+                <a data-week="4" class="week-card current" href="weeks/week04/"
+                  ><span class="week-tag">Week 4 · 23 September · latest</span>
+                  <span class="week-course">Communities &amp; backbones</span>
+                  <h3>Who Hires</h3>
+                  <p class="week-q">Where does America's H-1B hiring happen?</p>
+                  <dl class="week-meta">
+                    <dt>Data</dt><dd>US Department of Labor H-1B filings</dd>
+                    <dt>Try</dt><dd>Click a metro on the hiring map</dd>
+                    <dt>Ideas</dt><dd>Louvain, modularity, disparity backbones</dd>
+                  </dl>
+                  <span class="week-go">Read the post →</span></a
+                >
+              </li>
+            </ol>
+          </div>
+
+          <div class="home-half">
+            <p class="home-caps">Weeks 5–8 · Language</p>
+            <ol class="week-grid">
+              <li>
+                <div data-week="5" aria-disabled="true" class="week-card coming">
+                  <span class="week-tag">Week 5 · 30 Sep · coming</span>
+                  <h3>The language half · NLP I</h3>
+                  <p class="week-q">Opens after the course session.</p>
+                </div>
+              </li>
+              <li>
+                <div data-week="6" aria-disabled="true" class="week-card coming">
+                  <span class="week-tag">Week 6 · 7 Oct · coming</span>
+                  <h3>NLP II</h3>
+                  <p class="week-q">Opens after the course session.</p>
+                </div>
+              </li>
+              <li>
+                <div data-week="7" aria-disabled="true" class="week-card coming">
+                  <span class="week-tag">Week 7 · 21 Oct · coming</span>
+                  <h3>NLP III</h3>
+                  <p class="week-q">Opens after the course session.</p>
+                </div>
+              </li>
+              <li>
+                <div data-week="8" aria-disabled="true" class="week-card coming">
+                  <span class="week-tag">Week 8 · 28 Oct · coming</span>
+                  <h3>Networks × language</h3>
+                  <p class="week-q">Opens after the course session.</p>
+                </div>
+              </li>
+            </ol>
+          </div>
         </section>
-        <details class="evidence-item" id="lobby-scene">
-          <summary>See the arcade</summary>
-          <canvas
-            aria-label="An arcade room with eight cabinets, one per course week. Weeks 1 to 4 are switched on; the remaining weeks wait under dust sheets until their course date. The same list follows as text."
-            class="lobby-stage stage"
-            id="lobby-canvas"
-          ></canvas>
-          <div class="room-sign">
-            <span>NO ACCOUNT · NO UPLOAD</span
-            ><span>SNAPSHOT 26.08.2026</span>
+
+        <section aria-labelledby="network-title" class="home-section" id="network">
+          <div class="home-section-head">
+            <h2 id="network-title">The data behind the posts</h2>
+            <p>Three datasets so far. Each post explains its own again.</p>
           </div>
-        </details>
-      </section>
-      <section aria-labelledby="about-title" class="team-strip" id="about">
-        <div class="two-col">
-          <div>
-            <h2 id="about-title">Made by Log–Log Legends</h2>
+          <div class="home-data" id="results">
+            <article class="card">
+              <p class="home-caps">Weeks 1 and 2</p>
+              <h3>Marvel Wikipedia articles</h3>
+              <p>
+                The course’s frozen snapshot of 26 August 2026: 303 articles
+                about Marvel superheroes and 1,784 directed links between them.
+                A link means one article links to another. It does not measure
+                friendship, strength or fame.
+              </p>
+              <a download="" href="assets/data/arcade_graph.json"
+                >Download the snapshot and metrics (JSON)</a
+              >
+            </article>
+            <article class="card">
+              <p class="home-caps">Week 3</p>
+              <h3>Migration and flights</h3>
+              <p>
+                The UN count of where people born in one country now live,
+                1990 to 2024, set beside a network of international flight
+                routes aggregated from airports to countries. A link carries
+                people or seats, not article references.
+              </p>
+              <a href="weeks/week03/">Sources and limits in the post →</a>
+            </article>
+            <article class="card">
+              <p class="home-caps">Week 4</p>
+              <h3>H-1B hiring filings</h3>
+              <p>
+                US Department of Labor disclosures, 2022 to 2026: which
+                employers file for which jobs in which metro areas, and which
+                clients the staffing firms serve. A shared employer is not a
+                shared labour market.
+              </p>
+              <a href="weeks/week04/#closing">Sources and limits in the post →</a>
+            </article>
           </div>
-          <div>
-            <p>Social Graphs and Interactions · DTU · Fall 2026</p>
+        </section>
+
+        <section aria-labelledby="how-title" class="home-section" id="how">
+          <div class="home-section-head">
+            <h2 id="how-title">How a post works</h2>
+            <p>The same reading order every week.</p>
+          </div>
+          <ol class="home-steps card">
+            <li>
+              <span class="num">1</span>
+              <div><b>A question</b><p>Asked in words you can answer by the end, with a concrete example.</p></div>
+            </li>
+            <li>
+              <span class="num">2</span>
+              <div><b>One thing to try</b><p>A single control that exposes the mechanism. A guess is optional.</p></div>
+            </li>
+            <li>
+              <span class="num">3</span>
+              <div><b>The result and its baseline</b><p>Every number sits beside the comparison that gives it meaning.</p></div>
+            </li>
+            <li>
+              <span class="num">4</span>
+              <div><b>Evidence one level down</b><p>Methods, full tables and extra metrics open on demand.</p></div>
+            </li>
+          </ol>
+        </section>
+
+        <section aria-labelledby="about-title" class="home-section home-about" id="about">
+          <div class="card">
+            <p class="home-caps">Made by</p>
+            <h2 id="about-title">Log–Log Legends</h2>
             <ul class="members">
               <li>Àngela Buxó</li>
               <li>Gyula Kürthy</li>
               <li>Niklas Johansen</li>
             </ul>
+            <p>Social Graphs and Interactions · DTU · Fall 2026</p>
             <a href="https://github.com/horrrt/02805_social_graphs"
-              >Source code &amp; notebooks ↗</a
+              >Source code and notebooks on GitHub ↗</a
             >
           </div>
-        </div>
-      </section>
-      <section aria-labelledby="closing-title" class="closing site-reference">
-        <h2 id="closing-title">Sources &amp; methods</h2>
-        <details>
-          <summary>Snapshot &amp; limitations</summary>
-          <div class="closing-grid">
-            <div>
-              <h3>What the data means</h3>
-              <p>
-                303 article entries and 1,784 directed links from the course’s
-                frozen 26 August 2026 snapshot. A link means one article links
-                to another within this roster. It does not measure friendship,
-                hero strength, popularity or the whole Marvel universe.
-              </p>
-              <a download="" href="assets/data/arcade_graph.json"
-                >Download the snapshot and metrics (JSON)</a
-              >
-            </div>
-            <div>
-              <h3>Limits of the experiment</h3>
-              <p>
-                The arcade is an educational interpretation of a bounded article
-                network. Free-play experiments are exploratory tools, not posts
-                or hand-ins.
-              </p>
-            </div>
+        </section>
+
+        <section aria-labelledby="sources-title" class="home-section" id="sources">
+          <div class="home-section-head">
+            <h2 id="sources-title">Sources and methods</h2>
           </div>
-        </details>
-        <details>
-          <summary>Methods and reproducibility</summary>
-          <p>
-            Native browser modules compute paths, removals, connected rewiring,
-            random walks and text search. NetworkX 3.6.1 supplies independent
-            metrics and checks. Five-card pack probabilities are a deliberately
-            designed game rule. Prediction scores are 100 × (1 − absolute error
-            / displayed guess range), clamped to 0–100.
-          </p>
-          <p>
-            <a
-              href="https://github.com/horrrt/02805_social_graphs/tree/main/analysis"
-              >Analysis and source code on GitHub</a
-            >. All experiments run locally in your browser; the frozen data is
-            never edited.
-          </p>
-        </details>
-        <details>
-          <summary>AI use and authorship</summary>
-          <p>
-            Built with AI assistance for interface design, programming,
-            explanation drafts and test construction. Metrics come from the
-            provided snapshot and reproducible analysis; the games and metaphors
-            are authored presentation choices. Numerical checks compare
-            independent Python and browser implementations.
-          </p>
-        </details>
-      </section>
+          <div class="home-drawers">
+            <details class="qa">
+              <summary><span class="qa-cue">Methods and reproducibility</span></summary>
+              <div class="qa-body">
+                <p>
+                  Every number on the site comes from a script in
+                  <a href="https://github.com/horrrt/02805_social_graphs/tree/main/analysis">analysis/</a>
+                  and reaches the page as JSON, so a rerun reproduces the post.
+                  Structural claims are held to a null model that keeps what
+                  the claim does not test, and stochastic methods run with
+                  fixed seeds, many times. Interactive parts run in your
+                  browser; the data is never edited.
+                </p>
+              </div>
+            </details>
+            <details class="qa">
+              <summary><span class="qa-cue">AI use and authorship</span></summary>
+              <div class="qa-body">
+                <p>
+                  Built with AI assistance for interface design, programming,
+                  explanation drafts and test construction. Metrics come from
+                  the source data and reproducible analysis; the games and
+                  metaphors are our presentation choices. Numerical checks
+                  compare independent Python and browser implementations.
+                </p>
+              </div>
+            </details>
+          </div>
+        </section>
+      </div>
+
+      <footer class="foot">
+        <div class="shell">
+          <span
+            >Log–Log Legends · 02805 Social graphs and interactions · Fall
+            2026 · Article names, links and text excerpts from English
+            Wikipedia,
+            <a href="https://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA 4.0</a></span
+          >
+          <span
+            ><a href="weeks/week01/">Week 1</a> ·
+            <a href="weeks/week02/">Week 2</a> ·
+            <a href="weeks/week03/">Week 3</a> ·
+            <a href="weeks/week04/">Week 4</a> ·
+            <a href="mockups/">Design archive</a></span
+          >
+        </div>
+      </footer>
     </main>
-    <footer class="wrap footer">
-      <span
-        >Log–Log Legends · 02805 Social graphs and interactions · Fall
-        2026 · Article names, links and text excerpts from English Wikipedia,
-        <a href="https://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA 4.0</a></span
-      ><span
-        ><a href="./">Legends</a> /
-        <a href="mockups/">Design archive</a> /
-        <a href="weeks/week01/">Week 1</a> /
-        <a href="weeks/week02/">Week 2</a> /
-        <a href="weeks/week03/">Week 3</a> /
-        <a href="weeks/week04/">Week 4</a></span
-      >
-    </footer>
-    <script src="assets/js/lobby.js" type="module"></script>
   </body>
 </html>

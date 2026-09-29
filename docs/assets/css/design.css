@@ -300,10 +300,10 @@
   padding: 24px 0;
   font-size: 12px;
 }
-/* Posts pair a short introduction with a visual of the experiment. */
+/* Posts open on a text-only introduction; the illustrations were removed. */
 .visual-design.guided-post .story-hero {
   display: grid;
-  grid-template-columns: 1.15fr 1fr;
+  grid-template-columns: minmax(0, 1fr);
   align-items: center;
   gap: 48px;
   padding: 40px 0 48px;
