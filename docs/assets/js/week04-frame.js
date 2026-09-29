@@ -18,6 +18,17 @@ function watchRail() {
   const targets = items
     .map((li) => [li, document.getElementById(li.dataset.target)])
     .filter(([, target]) => target);
+  // Size the contents panel to the widest label. Which questions are listed
+  // depends on the section in view, so the panel is refitted whenever that
+  // changes, as well as when it opens.
+  const fit = () => {
+    const left = rail.getBoundingClientRect().left;
+    let right = 0;
+    for (const label of rail.querySelectorAll(".w4-rail-label")) {
+      if (label.offsetParent) right = Math.max(right, label.getBoundingClientRect().right);
+    }
+    if (right) rail.style.setProperty("--w4-rail-panel", `${Math.ceil(right - left) + 40}px`);
+  };
   let queued = false;
   const mark = () => {
     queued = false;
@@ -36,21 +47,12 @@ function watchRail() {
       li.classList.add("is-current");
       li.querySelector(":scope > a").setAttribute("aria-current", "true");
     }
+    if (rail.matches(":hover, :focus-within")) fit();
   };
   const queue = () => {
     if (queued) return;
     queued = true;
     requestAnimationFrame(mark);
-  };
-  // Size the contents panel to the widest label on show; which questions are
-  // listed depends on the section in view.
-  const fit = () => {
-    const left = rail.getBoundingClientRect().left;
-    let right = 0;
-    for (const label of rail.querySelectorAll(".w4-rail-label")) {
-      if (label.offsetParent) right = Math.max(right, label.getBoundingClientRect().right);
-    }
-    if (right) rail.style.setProperty("--w4-rail-panel", `${Math.ceil(right - left) + 26}px`);
   };
   rail.addEventListener("mouseenter", () => requestAnimationFrame(fit));
   rail.addEventListener("focusin", () => requestAnimationFrame(fit));
