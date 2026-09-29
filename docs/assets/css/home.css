@@ -440,3 +440,22 @@ a.week-card:hover {
 .home .home-track li a:hover i {
   color: #eaf2fb;
 }
+
+/* Each portrait and name links to that person's LinkedIn profile. */
+.home .members a {
+  align-items: center;
+  color: inherit;
+  display: flex;
+  flex-direction: column;
+  font-weight: inherit;
+  gap: 10px;
+  text-decoration: none;
+}
+
+.home .members a:hover {
+  color: var(--accent);
+}
+
+.home .members a:hover img {
+  box-shadow: 0 0 0 2px var(--access), var(--shadow);
+}
