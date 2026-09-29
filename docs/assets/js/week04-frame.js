@@ -42,6 +42,18 @@ function watchRail() {
     queued = true;
     requestAnimationFrame(mark);
   };
+  // Size the contents panel to the widest label on show; which questions are
+  // listed depends on the section in view.
+  const fit = () => {
+    const left = rail.getBoundingClientRect().left;
+    let right = 0;
+    for (const label of rail.querySelectorAll(".w4-rail-label")) {
+      if (label.offsetParent) right = Math.max(right, label.getBoundingClientRect().right);
+    }
+    if (right) rail.style.setProperty("--w4-rail-panel", `${Math.ceil(right - left) + 26}px`);
+  };
+  rail.addEventListener("mouseenter", () => requestAnimationFrame(fit));
+  rail.addEventListener("focusin", () => requestAnimationFrame(fit));
   document.addEventListener("scroll", queue, { passive: true });
   window.addEventListener("resize", queue);
   // toggle does not bubble; the capture phase also sees drawers built later.
