@@ -369,3 +369,12 @@ a.week-card:hover {
   line-height: 1.62;
   max-width: 68ch;
 }
+
+.home .home-github {
+  color: var(--ink);
+  display: inline-flex;
+}
+
+.home .home-github:hover {
+  color: var(--accent);
+}
