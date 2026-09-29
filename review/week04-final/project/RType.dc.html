@@ -1,0 +1,182 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>Type scale: one set of sizes for the whole site</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<style>
+body{margin:0;background:#eef3f9}
+.ts{width:1440px;height:2420px;box-sizing:border-box;overflow:hidden;background:#eef3f9;color:#0f2340;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Inter,system-ui,sans-serif;padding:56px 64px;display:flex;flex-direction:column;gap:28px;-webkit-font-smoothing:antialiased}
+.ts h1{margin:0;font-size:36px;line-height:1.1;font-weight:800}
+.ts .lede{margin:8px 0 0;max-width:92ch;font-size:15px;line-height:1.6;color:#46618a}
+.ts .panel{background:#fff;border:1px solid #dce5f0;border-radius:14px;padding:22px 26px;box-shadow:0 1px 2px rgba(15,35,64,.06),0 8px 24px rgba(15,35,64,.05)}
+.ts h2{margin:0 0 4px;font-size:19px;font-weight:800}
+.ts .sub{margin:0 0 14px;font-size:13px;line-height:1.55;color:#46618a;max-width:96ch}
+.ts .row{display:grid;gap:24px}
+.ts .r2{grid-template-columns:repeat(2,minmax(0,1fr))}
+.ts .r3{grid-template-columns:repeat(3,minmax(0,1fr))}
+/* the scale table */
+.scale{width:100%;border-collapse:collapse}
+.scale th{text-align:left;font-size:11.5px;font-weight:700;color:#7a8fac;padding:6px 10px;border-bottom:1px solid #dce5f0}
+.scale td{padding:12px 10px;border-top:1px solid #eaf0f7;vertical-align:baseline;font-size:12.5px;line-height:1.45;color:#46618a}
+.scale td.tok{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:12px;color:#14618f;white-space:nowrap}
+.scale td.px{font-variant-numeric:tabular-nums;color:#0f2340;font-weight:700;white-space:nowrap}
+.scale td.spec{white-space:nowrap}
+.scale td.sample{color:#0f2340;max-width:520px;overflow:hidden;white-space:nowrap;text-overflow:clip}
+.cond{font-family:"Barlow Condensed","Arial Narrow",Impact,sans-serif}
+/* families */
+.fam{display:grid;grid-template-columns:150px minmax(0,1fr);gap:14px;padding:12px 0;border-top:1px solid #eaf0f7;align-items:baseline}
+.fam b{font-size:13.5px}
+.fam span{font-size:12.5px;color:#46618a;line-height:1.5}
+.fam .spec{font-size:22px;color:#0f2340}
+/* rules */
+ol.rules{margin:0;padding:0;list-style:none}
+ol.rules li{display:grid;grid-template-columns:26px minmax(0,1fr);gap:10px;padding:9px 0;border-top:1px solid #eaf0f7;font-size:13px;line-height:1.5}
+ol.rules li b{display:block;font-size:13.5px}
+ol.rules li em{font-style:normal;color:#46618a}
+ol.rules li span.n{width:22px;height:22px;border-radius:6px;background:#14618f;color:#fff;font-size:11.5px;font-weight:800;display:flex;align-items:center;justify-content:center}
+/* chart anatomy */
+.chart{border:1px solid #dce5f0;border-radius:12px;background:#f7fafd;padding:14px 16px}
+.chart svg{display:block;width:100%;height:auto}
+.tag{display:inline-block;font-size:11.5px;font-weight:800;border-radius:6px;padding:2px 7px;margin-bottom:8px}
+.no{background:#fde8e4;color:#b8412b}.ok{background:#e3f4ec;color:#15896a}
+.callout{font-size:11.5px;fill:#b8412b;font-weight:700}
+/* counts */
+table.fit{width:100%;border-collapse:collapse;font-size:12.5px}
+table.fit th{text-align:left;font-size:11.5px;color:#7a8fac;font-weight:700;padding:6px 8px;border-bottom:1px solid #dce5f0}
+table.fit td{padding:8px;border-top:1px solid #eaf0f7;line-height:1.45;font-variant-numeric:tabular-nums}
+table.fit td:first-child{font-weight:700}
+table.fit td.n{text-align:right}
+</style>
+</helmet>
+<div class="ts">
+<header>
+<h1>Type scale: one set of sizes for the whole site</h1>
+<p class="lede">Built from the sizes Week 4 and the home page already use. Every page, every chart and every canvas board takes its type from these ten tokens and three families. Charts draw at their real width, so a label set at 12.5 is 12.5 on screen.</p>
+</header>
+
+<section class="panel">
+<h2>The scale</h2>
+<p class="sub">Ten sizes. Pick by role, never by look. Line height and weight travel with the size.</p>
+<table class="scale">
+<thead><tr><th>Token</th><th>Size</th><th>Weight · line</th><th>Roles</th><th>Sample</th></tr></thead>
+<tbody>
+<tr><td class="tok">--fs-numeral</td><td class="px">64</td><td class="spec">800 · 0.86</td><td>Section numbers 0 to 5</td><td class="sample"><span style="font-size:64px;font-weight:800;line-height:.86;color:#14618f">4</span></td></tr>
+<tr><td class="tok">--fs-display</td><td class="px">54</td><td class="spec">700 · 0.98</td><td>Page title, home title</td><td class="sample"><span style="font-size:54px;font-weight:700;line-height:.98;letter-spacing:-.01em">Who hires?</span></td></tr>
+<tr><td class="tok">--fs-h2</td><td class="px">30</td><td class="spec">700 · 1.1</td><td>Section title</td><td class="sample"><span style="font-size:30px;font-weight:700;line-height:1.1">Without the biggest firms</span></td></tr>
+<tr><td class="tok">--fs-h3</td><td class="px">22</td><td class="spec">700 · 1.25</td><td>Topic title, home card title</td><td class="sample"><span style="font-size:22px;font-weight:700">Paperwork, the lottery and green cards</span></td></tr>
+<tr><td class="tok">--fs-h4</td><td class="px">20</td><td class="spec">700 · 1.25</td><td>Card question</td><td class="sample"><span style="font-size:20px;font-weight:700">Who files the paperwork?</span></td></tr>
+<tr><td class="tok">--fs-lead</td><td class="px">18</td><td class="spec">600 · 1.45</td><td>Finding under a section title</td><td class="sample"><span style="font-size:18px;font-weight:600">Take out the largest filers and the groups follow regions.</span></td></tr>
+<tr><td class="tok">--fs-strong</td><td class="px">16</td><td class="spec">600 · 1.45</td><td>Card answer, hero lede, catalogue titles</td><td class="sample"><span style="font-size:16px;font-weight:600">Three filings in four name an outside law firm.</span></td></tr>
+<tr><td class="tok">--fs-body</td><td class="px">13.5</td><td class="spec">400 · 1.6</td><td>Lead, drawer text, nav, contents; chart titles at 700</td><td class="sample"><span style="font-size:13.5px;line-height:1.6">Each group gets its own occupation network and its own Louvain clusters.</span></td></tr>
+<tr><td class="tok">--fs-small</td><td class="px">12.5</td><td class="spec">400 · 1.5</td><td>What to notice, hover terms, drawer names, buttons, table cells, chart category labels and values</td><td class="sample"><span style="font-size:12.5px">Amazon files 5.1% of the filings in the 40 metros.</span></td></tr>
+<tr><td class="tok">--fs-caption</td><td class="px">11.5</td><td class="spec">400 · 1.45</td><td>Chart notes, axis ticks, legends, table headers, footer; eyebrows at 700</td><td class="sample"><span style="font-size:11.5px;color:#7a8fac">Orange: the match with one firm removed. Grey: random cuts of the same size.</span></td></tr>
+</tbody>
+</table>
+</section>
+
+<div class="row r2">
+<section class="panel">
+<h2>Three families</h2>
+<p class="sub">Everything, form controls included, inherits the sans. The display face is for the wordmark and the section numbers only.</p>
+<div class="fam"><div><b>--font-sans</b><br><span>-apple-system, Segoe UI, Inter, system-ui</span></div><div class="spec">Text, charts, buttons, inputs, tooltips</div></div>
+<div class="fam"><div><b>--font-display</b><br><span>Barlow Condensed 800</span></div><div class="spec cond" style="font-weight:800;font-size:28px">LOG–LOG LEGENDS</div></div>
+<div class="fam"><div><b>--font-mono</b><br><span>ui-monospace, SF Mono, Menlo</span></div><div class="spec" style="font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:16px">code, ids, the Play scoreboard</div></div>
+<p class="sub" style="margin:14px 0 0">Gone: Arial in buttons and inputs, Barlow as a body face on Play, and the extra stacks in chart code. The styleguide's opt-in skins (editorial serif, poster) keep their own families but use these sizes.</p>
+</section>
+
+<section class="panel">
+<h2>Rules</h2>
+<ol class="rules">
+<li><span class="n">1</span><div><b>Only tokens.</b><em>No font-size in px, rem or em outside the token file; chart code reads the same tokens.</em></div></li>
+<li><span class="n">2</span><div><b>Charts draw 1:1.</b><em>An SVG chart takes its box's width, it is never scaled down; text stays at its token size.</em></div></li>
+<li><span class="n">3</span><div><b>Nothing below 11.5.</b><em>Not in charts, tables, legends or footers.</em></div></li>
+<li><span class="n">4</span><div><b>Weight makes hierarchy inside a size.</b><em>A chart title is body at 700, an eyebrow is caption at 700; no new size for emphasis.</em></div></li>
+<li><span class="n">5</span><div><b>Play keeps one jumbo size.</b><em>--fs-jumbo 96, for the arcade scoreboard only.</em></div></li>
+</ol>
+</section>
+</div>
+
+<section class="panel">
+<h2>Text inside charts</h2>
+<p class="sub">The same six roles in every chart library: plain SVG, ECharts and the canvas renderers of weeks 1 to 3.</p>
+<div class="row r2">
+<div>
+<span class="tag no">Before: drawn at 520 wide, shown at 350</span>
+<div class="chart">
+<svg viewBox="0 0 520 156" style="width:350px">
+<g font-family="-apple-system,system-ui,sans-serif">
+<line x1="175" x2="175" y1="6" y2="122" stroke="#e6ecf3"/><line x1="283" x2="283" y1="6" y2="122" stroke="#e6ecf3"/><line x1="392" x2="392" y1="6" y2="122" stroke="#e6ecf3"/><line x1="500" x2="500" y1="6" y2="122" stroke="#e6ecf3"/>
+<text x="175" y="138" font-size="11" fill="#7a8fac" text-anchor="middle">0%</text><text x="283" y="138" font-size="11" fill="#7a8fac" text-anchor="middle">20%</text><text x="392" y="138" font-size="11" fill="#7a8fac" text-anchor="middle">40%</text><text x="500" y="138" font-size="11" fill="#7a8fac" text-anchor="middle">60%</text>
+<text x="0" y="33" font-size="12" font-weight="600" fill="#0f2340">No outside law firm</text><text x="0" y="48" font-size="11" fill="#7a8fac">share of filings</text>
+<line x1="175" x2="500" y1="36" y2="36" stroke="#dce5f0"/><line x1="305" x2="305" y1="26" y2="46" stroke="#46618a" stroke-dasharray="3 2"/><text x="305" y="61" font-size="11" fill="#46618a" text-anchor="middle">direct 24%</text>
+<circle cx="459" cy="36" r="6.5" fill="#b4610f" stroke="#fff" stroke-width="2"/><text x="459" y="23" font-size="12" font-weight="700" fill="#0f2340" text-anchor="middle">52%</text>
+<text x="0" y="89" font-size="12" font-weight="600" fill="#0f2340">To the five largest firms</text><text x="0" y="104" font-size="11" fill="#7a8fac">share of filings</text>
+<line x1="175" x2="500" y1="92" y2="92" stroke="#dce5f0"/><line x1="434" x2="434" y1="82" y2="102" stroke="#46618a" stroke-dasharray="3 2"/><text x="434" y="117" font-size="11" fill="#46618a" text-anchor="middle">direct 48%</text>
+<circle cx="193" cy="92" r="6.5" fill="#b4610f" stroke="#fff" stroke-width="2"/><text x="193" y="79" font-size="12" font-weight="700" fill="#0f2340" text-anchor="middle">3%</text>
+</g>
+</svg>
+</div>
+<p class="sub" style="margin:8px 0 0">Labels set at 11 and 12 render at 7.4 and 8.1. Week 4 had 26 different rendered chart sizes, from 6.7 to 12.4.</p>
+</div>
+<div>
+<span class="tag ok">After: drawn at its box width</span>
+<div class="chart">
+<svg viewBox="0 0 560 150" style="width:560px;max-width:100%">
+<g font-family="-apple-system,system-ui,sans-serif">
+<line x1="190" x2="190" y1="8" y2="116" stroke="#e6ecf3"/><line x1="310" x2="310" y1="8" y2="116" stroke="#e6ecf3"/><line x1="430" x2="430" y1="8" y2="116" stroke="#e6ecf3"/><line x1="550" x2="550" y1="8" y2="116" stroke="#e6ecf3"/>
+<text x="190" y="134" font-size="11.5" fill="#7a8fac" text-anchor="middle">0%</text><text x="310" y="134" font-size="11.5" fill="#7a8fac" text-anchor="middle">20%</text><text x="430" y="134" font-size="11.5" fill="#7a8fac" text-anchor="middle">40%</text><text x="550" y="134" font-size="11.5" fill="#7a8fac" text-anchor="middle">60%</text>
+<text x="0" y="34" font-size="12.5" font-weight="600" fill="#0f2340">No outside law firm</text><text x="0" y="50" font-size="11.5" fill="#7a8fac">share of filings</text>
+<line x1="190" x2="550" y1="36" y2="36" stroke="#dce5f0"/><line x1="334" x2="334" y1="25" y2="47" stroke="#46618a" stroke-dasharray="3 2"/><text x="334" y="63" font-size="11.5" fill="#46618a" text-anchor="middle">direct 24%</text>
+<circle cx="502" cy="36" r="7" fill="#b4610f" stroke="#fff" stroke-width="2"/><text x="502" y="22" font-size="12.5" font-weight="700" fill="#0f2340" text-anchor="middle">52%</text>
+<text x="0" y="90" font-size="12.5" font-weight="600" fill="#0f2340">To the five largest firms</text><text x="0" y="106" font-size="11.5" fill="#7a8fac">share of filings</text>
+<line x1="190" x2="550" y1="92" y2="92" stroke="#dce5f0"/><line x1="478" x2="478" y1="81" y2="103" stroke="#46618a" stroke-dasharray="3 2"/><text x="478" y="119" font-size="11.5" fill="#46618a" text-anchor="middle">direct 48%</text>
+<circle cx="208" cy="92" r="7" fill="#b4610f" stroke="#fff" stroke-width="2"/><text x="208" y="78" font-size="12.5" font-weight="700" fill="#0f2340" text-anchor="middle">3%</text>
+</g>
+</svg>
+</div>
+<p class="sub" style="margin:8px 0 0">Row labels 12.5 at 600, values 12.5 at 700, ticks and notes 11.5: the same on every chart.</p>
+</div>
+</div>
+<table class="fit" style="margin-top:16px">
+<thead><tr><th>Chart text</th><th>Token</th><th>Weight</th><th>Colour</th></tr></thead>
+<tbody>
+<tr><td>Chart title (above the chart)</td><td>--fs-body</td><td>700</td><td>ink</td></tr>
+<tr><td>Chart note (how to read it)</td><td>--fs-caption</td><td>400</td><td>ink-mute</td></tr>
+<tr><td>Category and row labels, city names</td><td>--fs-small</td><td>600</td><td>ink</td></tr>
+<tr><td>Values at bar ends, on dots</td><td>--fs-small</td><td>700</td><td>ink</td></tr>
+<tr><td>Axis ticks, axis names, reference labels, legends</td><td>--fs-caption</td><td>400</td><td>ink-mute</td></tr>
+<tr><td>Tooltips</td><td>--fs-small</td><td>400, name at 700</td><td>on navy</td></tr>
+</tbody>
+</table>
+</section>
+
+<section class="panel">
+<h2>What changes, page by page</h2>
+<p class="sub">Measured on the live site at 1512 wide, every drawer open. Sizes count distinct rendered font sizes of page text; chart sizes count rendered SVG text.</p>
+<table class="fit">
+<thead><tr><th>Page</th><th class="n">Text sizes now</th><th class="n">Chart sizes now</th><th class="n">Families now</th><th>Main fix</th></tr></thead>
+<tbody>
+<tr><td>Home</td><td class="n">10</td><td class="n">0</td><td class="n">2</td><td>Snap 11, 19 and 52 to the scale</td></tr>
+<tr><td>Week 1</td><td class="n">24</td><td class="n">canvas</td><td class="n">3</td><td>rem sizes (13.6, 14.08, 14.72) to tokens; canvas fonts to tokens</td></tr>
+<tr><td>Week 2</td><td class="n">27</td><td class="n">canvas</td><td class="n">4</td><td>Same as week 1</td></tr>
+<tr><td>Week 3</td><td class="n">19</td><td class="n">ECharts 9 to 13</td><td class="n">4</td><td>Chart text from tokens, no 9 or 10; Arial out of controls</td></tr>
+<tr><td>Week 4</td><td class="n">19</td><td class="n">26 (6.7 to 12.4)</td><td class="n">3</td><td>SVG charts at box width; ECharts from tokens</td></tr>
+<tr><td>Play</td><td class="n">19</td><td class="n">3</td><td class="n">5</td><td>Barlow body to sans; display face kept; scoreboard at --fs-jumbo</td></tr>
+<tr><td>Styleguide</td><td class="n">17</td><td class="n">canvas</td><td class="n">7</td><td>Documents this scale; skins keep their families</td></tr>
+</tbody>
+</table>
+</section>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview": {"width": 1440, "height": 2420}}'>
+class Component extends DCLogic {
+renderVals() { return {}; }
+}
+</script>
+</body>
+</html>

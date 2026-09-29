@@ -4,18 +4,19 @@
 <meta charset="utf-8" />
 <title>Section 1 · where the hiring is</title>
 <script src="./support.js"></script>
-<link rel="stylesheet" href="/_blob/083d154e9dc323e92523c409d0034822">
-<link rel="stylesheet" href="/_blob/668486f5a3998cc03081dad4d6a53e30">
-<link rel="stylesheet" href="/_blob/084ce7df5637b99030ea35613530acf2">
-<link rel="stylesheet" href="/_blob/e84e8b268623a65fa6a20dcee3ec4adf">
-<link rel="stylesheet" href="/_blob/35af9356d607ea8092bc878cace00255">
-<link rel="stylesheet" href="/_blob/70ffa1ecc89c42fb63ac04cfc271ee6b">
-<link rel="stylesheet" href="/_blob/3e4fe45fa83b8895f69f8d519b7b0fe2">
-<link rel="stylesheet" href="/_blob/ffcc56532445103bef94c333132a4fb7">
-<link rel="stylesheet" href="/_blob/4004501ab78099c34bb198c8287d7d41">
-<link rel="stylesheet" href="/_blob/ab074990511da3308f5deb38e148e8c1">
-<link rel="stylesheet" href="/_blob/961bb1102d81f8f791744cf5c49d5ccf">
-<link rel="stylesheet" href="/_blob/ea7fdb7da398599db40546cc6b3f4606">
+<link rel="stylesheet" href="/_blob/a8b55e0770da9418a2f5ffb4cab631b7">
+<link rel="stylesheet" href="/_blob/b9d3af828667918c0fe07be60c6aec89">
+<link rel="stylesheet" href="/_blob/0b9a7c47e1350e0dffcea5a9b54b4572">
+<link rel="stylesheet" href="/_blob/97d66203c00ace3bbf90e935b5ed45e1">
+<link rel="stylesheet" href="/_blob/94054bb472c9bb561fb6500c796bc7ef">
+<link rel="stylesheet" href="/_blob/81bc858cf62ad205d9adaaea74b42c73">
+<link rel="stylesheet" href="/_blob/d09bedaa7230bae661e51acddd444fed">
+<link rel="stylesheet" href="/_blob/a86452c89a12d8478efd86eb2d9b31b3">
+<link rel="stylesheet" href="/_blob/99372c9f53a87aa53514fce1dc1d11af">
+<link rel="stylesheet" href="/_blob/1d4921daf15eaaa604354f831f8c94be">
+<link rel="stylesheet" href="/_blob/bb046391e9975dbba9317d692ee805fb">
+<link rel="stylesheet" href="/_blob/b88ec2cf6cd06a2f8d6a54d0b8b586e7">
+<link rel="stylesheet" href="/_blob/d499d5aed42057365f4f1c435e636bb6">
 </head>
 <body>
 <x-dc>
@@ -38,9 +39,9 @@ body{margin:0;background:#eef3f9}
 /* on hover the rail opens as one contents panel: a card behind the dots, names in one column, questions indented */
 .rx .rx-rail::before{content:"";display:none;position:absolute;left:-12px;top:-14px;bottom:-14px;width:var(--rx-rail-w,340px);background:#fff;border-radius:14px;box-shadow:0 1px 2px rgba(15,35,64,.08),0 12px 32px rgba(15,35,64,.14);z-index:-1}
 .rx .rx-rail:hover::before{display:block}
-.rx .rx-lab{display:none;position:absolute;left:24px;top:50%;transform:translateY(-50%);white-space:nowrap;border-radius:6px;padding:3px 8px;font-size:13px;line-height:1.35;font-weight:600;color:#0f2340}
+.rx .rx-lab{display:none;position:absolute;left:24px;top:50%;transform:translateY(-50%);white-space:nowrap;border-radius:6px;padding:3px 8px;font-size:var(--fs-small);line-height:1.35;font-weight:600;color:#0f2340}
 .rx .rx-sq.is-on>.rx-lab{left:27px;color:#14618f;font-weight:700}
-.rx .rx-dot>.rx-lab{left:34px;font-size:12px;font-weight:500;color:#46618a}
+.rx .rx-dot>.rx-lab{left:34px;font-size:var(--fs-small);font-weight:500;color:#46618a}
 .rx .rx-dot.is-on>.rx-lab{color:#0f2340;font-weight:700}
 .rx .rx-rail:hover .rx-lab{display:block}
 .rx .rx-rail .rx-sq:hover>.rx-lab,.rx .rx-rail .rx-dot:hover>.rx-lab{background:#f7fafd;color:#14618f}
@@ -48,47 +49,47 @@ body{margin:0;background:#eef3f9}
 .rx .rx-drawers{display:flex;flex-direction:column;gap:8px;margin-top:14px}
 .rx details.rx-drawer{border:1px solid #dce5f0;border-radius:10px;background:#f7fafd;margin-top:10px}
 .rx .rx-drawers details.rx-drawer{margin-top:0}
-.rx details.rx-drawer>summary{cursor:pointer;list-style:none;padding:9px 14px;font-size:13px;font-weight:700;color:#14618f;display:flex;align-items:center;gap:8px}
+.rx details.rx-drawer>summary{cursor:pointer;list-style:none;padding:9px 14px;font-size:var(--fs-small);font-weight:700;color:#14618f;display:flex;align-items:center;gap:8px}
 .rx details.rx-drawer>summary::-webkit-details-marker{display:none}
-.rx details.rx-drawer>summary::before{content:"▸";font-size:11px;transition:transform .15s}
+.rx details.rx-drawer>summary::before{content:"▸";font-size:var(--fs-caption);transition:transform .15s}
 .rx details.rx-drawer[open]>summary::before{transform:rotate(90deg)}
-.rx .rx-drawer-body{padding:0 16px 14px;font-size:13.5px;line-height:1.62;color:#0f2340;max-width:78ch}
+.rx .rx-drawer-body{padding:0 16px 14px;font-size:var(--fs-body);line-height:1.62;color:#0f2340;max-width:78ch}
 .rx .rx-drawer-body p{margin:0 0 8px}
 /* rec 4: one segmented control */
 .rx .axis-modes,.rx .rx-seg,.rx .staffing-years{display:inline-flex!important;gap:2px!important;padding:3px!important;border-radius:999px!important;background:#eaf0f7!important;border:none!important;box-shadow:none!important;flex-wrap:wrap}
-.rx .axis-modes button,.rx .rx-seg button,.rx .staffing-years button{border:none!important;border-radius:999px!important;padding:6px 14px!important;font:inherit!important;font-size:12.5px!important;font-weight:600!important;color:#46618a!important;background:transparent!important;box-shadow:none!important;cursor:pointer}
+.rx .axis-modes button,.rx .rx-seg button,.rx .staffing-years button{border:none!important;border-radius:999px!important;padding:6px 14px!important;font:inherit!important;font-size:var(--fs-small)!important;font-weight:600!important;color:#46618a!important;background:transparent!important;box-shadow:none!important;cursor:pointer}
 .rx .axis-modes button[aria-pressed="true"],.rx .rx-seg button[aria-pressed="true"],.rx .staffing-years button[aria-pressed="true"]{background:#fff!important;color:#0f2340!important;font-weight:700!important;box-shadow:0 1px 2px rgba(15,35,64,.12)!important}
-.rx .axis-modes-label,.rx .rx-seg-label{text-transform:none!important;letter-spacing:0!important;font-size:12.5px!important;font-weight:700!important;color:#46618a!important}
+.rx .axis-modes-label,.rx .rx-seg-label{text-transform:none!important;letter-spacing:0!important;font-size:var(--fs-small)!important;font-weight:700!important;color:#46618a!important}
 .rx .rx-seg-row{display:flex;align-items:center;gap:12px;margin:10px 0}
 /* rec 7 placeholder */
 .rx .rx-todo{border:1px dashed #b9cadf;background:#fff;color:#7a8fac}
 /* topic boards */
 .rx .rx-topic-head{display:flex;align-items:baseline;gap:14px;flex-wrap:wrap}
 .rx .rx-tabs{display:flex;flex-direction:column;gap:2px;padding:12px;border-right:1px solid #eaf0f7;background:#f7fafd;border-radius:14px 0 0 14px}
-.rx .rx-tab{display:flex;gap:10px;align-items:baseline;width:100%;padding:9px 10px;border:none;border-radius:8px;font:inherit;font-size:13px;line-height:1.4;font-weight:600;text-align:left;color:#0f2340;cursor:pointer;background:transparent}
+.rx .rx-tab{display:flex;gap:10px;align-items:baseline;width:100%;padding:9px 10px;border:none;border-radius:8px;font:inherit;font-size:var(--fs-small);line-height:1.4;font-weight:600;text-align:left;color:#0f2340;cursor:pointer;background:transparent}
 .rx .rx-tab:hover{background:#fff}
 
 /* rec 3: section 1 start card */
-.rx .rx-kicker{margin:6px 0 0;font-size:13px;color:#46618a}
+.rx .rx-kicker{margin:6px 0 0;font-size:var(--fs-small);color:#46618a}
 .rx .rx-start-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:36px;align-items:start;margin-top:8px}
 .rx .rx-start-grid header.w4-q{margin-bottom:8px}
 .rx .rx-groups{display:flex;flex-direction:column;margin-top:10px}
 .rx .rx-group{padding:10px 0;border-top:1px solid #eaf0f7}
-.rx .rx-group-head{display:flex;align-items:center;gap:8px;font-size:13.5px}
+.rx .rx-group-head{display:flex;align-items:center;gap:8px;font-size:var(--fs-body)}
 .rx .rx-group-head i{width:12px;height:12px;border-radius:50%;display:inline-block}
-.rx .rx-group-head span{font-size:12.5px;color:#46618a}
-.rx .rx-group p{margin:4px 0 0 20px;font-size:12.5px;line-height:1.55;color:#46618a}
+.rx .rx-group-head span{font-size:var(--fs-small);color:#46618a}
+.rx .rx-group p{margin:4px 0 0 20px;font-size:var(--fs-small);line-height:1.55;color:#46618a}
 .rx .rx-start-notices{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px;margin-top:14px}
 .rx .rx-drawer-body.rx-wide{max-width:none}
 /* topic boards */
 .rx .rx-topic-bar{display:flex;align-items:center;gap:16px;margin:8px 0 16px}
-.rx .rx-back{font-size:13px;font-weight:700;text-decoration:none;color:#14618f;padding:6px 12px;border:1px solid #dce5f0;border-radius:999px;background:#fff}
-.rx .rx-topic-mark{flex:none;width:40px;height:40px;border-radius:10px;background:#14618f;color:#fff;display:inline-flex;align-items:center;justify-content:center;font-size:17px;font-weight:800}
-.rx .rx-topic-title{margin:0;font-size:24px;font-weight:800}
-.rx .rx-topic-holds{margin:2px 0 0;font-size:13.5px;color:#46618a}
-.rx .rx-topic-count{margin-left:auto;font-size:12.5px;color:#46618a}
+.rx .rx-back{font-size:var(--fs-small);font-weight:700;text-decoration:none;color:#14618f;padding:6px 12px;border:1px solid #dce5f0;border-radius:999px;background:#fff}
+.rx .rx-topic-mark{flex:none;width:40px;height:40px;border-radius:10px;background:#14618f;color:#fff;display:inline-flex;align-items:center;justify-content:center;font-size:var(--fs-strong);font-weight:800}
+.rx .rx-topic-title{margin:0;font-size:var(--fs-h3);font-weight:800}
+.rx .rx-topic-holds{margin:2px 0 0;font-size:var(--fs-body);color:#46618a}
+.rx .rx-topic-count{margin-left:auto;font-size:var(--fs-small);color:#46618a}
 .rx .rx-tab-row{display:flex;flex-wrap:wrap;gap:6px;padding:6px;border-radius:14px;background:#eaf0f7;margin-bottom:18px}
-.rx .rx-tab-pill{border:none;border-radius:999px;padding:7px 14px;font:inherit;font-size:12.5px;font-weight:600;cursor:pointer;text-align:left;line-height:1.35}
+.rx .rx-tab-pill{border:none;border-radius:999px;padding:7px 14px;font:inherit;font-size:var(--fs-small);font-weight:600;cursor:pointer;text-align:left;line-height:1.35}
 .rx .rx-tab-pill b{color:#14618f;margin-right:4px}
 .rx .rx-panel > .card{margin-top:0}
 /* deep-dive catalogue */
@@ -98,20 +99,20 @@ body{margin:0;background:#eef3f9}
 .rx .rx-tcard-data{background:#f7fafd;box-shadow:none}
 .rx .rx-tcard-head{display:flex;gap:12px;align-items:flex-start;text-decoration:none;color:#0f2340;padding-bottom:10px}
 .rx .rx-tcard-head span{display:flex;flex-direction:column;gap:3px}
-.rx .rx-tcard-head b{font-size:16px}
-.rx .rx-tcard-head em{font-style:normal;font-size:12.5px;line-height:1.45;color:#46618a}
+.rx .rx-tcard-head b{font-size:var(--fs-strong)}
+.rx .rx-tcard-head em{font-style:normal;font-size:var(--fs-small);line-height:1.45;color:#46618a}
 .rx .rx-tcard ul{list-style:none;margin:0;padding:0}
-.rx .rx-tcard li a{display:flex;gap:10px;align-items:baseline;padding:8px 4px;border-top:1px solid #eaf0f7;text-decoration:none;color:#0f2340;font-size:13px;font-weight:600;line-height:1.4}
-.rx .rx-tcard li a b{flex:none;min-width:22px;color:#14618f;font-size:11.5px}
+.rx .rx-tcard li a{display:flex;gap:10px;align-items:baseline;padding:8px 4px;border-top:1px solid #eaf0f7;text-decoration:none;color:#0f2340;font-size:var(--fs-small);font-weight:600;line-height:1.4}
+.rx .rx-tcard li a b{flex:none;min-width:22px;color:#14618f;font-size:var(--fs-caption)}
 .rx .rx-tcard li a span{flex-grow:1}
 .rx .rx-tcard li a i{font-style:normal;color:#14618f;font-weight:700}
 .rx .rx-tcard li a:hover{background:#d9ecf9}
-.rx .rx-moved{margin:16px 0 0;font-size:12.5px;line-height:1.6;color:#46618a}
+.rx .rx-moved{margin:16px 0 0;font-size:var(--fs-small);line-height:1.6;color:#46618a}
 .rx .rx-tile-finding{display:block;margin-top:6px;color:#0f2340}
 /* tables */
-.rx main table{width:100%;border-collapse:separate;border-spacing:0;font-size:12.5px;line-height:1.4;background:#fff;border:1px solid #dce5f0;border-radius:10px;overflow:hidden;margin-top:6px}
-.rx main table caption{caption-side:top;text-align:left;font-size:13px;font-weight:700;color:#0f2340;padding:0 2px 8px}
-.rx main table th{background:#f7fafd;color:#46618a;font-size:11.5px;font-weight:600;text-align:left;padding:9px 12px;border-bottom:1px solid #dce5f0;white-space:nowrap}
+.rx main table{width:100%;border-collapse:separate;border-spacing:0;font-size:var(--fs-small);line-height:1.4;background:#fff;border:1px solid #dce5f0;border-radius:10px;overflow:hidden;margin-top:6px}
+.rx main table caption{caption-side:top;text-align:left;font-size:var(--fs-small);font-weight:700;color:#0f2340;padding:0 2px 8px}
+.rx main table th{background:#f7fafd;color:#46618a;font-size:var(--fs-caption);font-weight:600;text-align:left;padding:9px 12px;border-bottom:1px solid #dce5f0;white-space:nowrap}
 .rx main table td{padding:8px 12px;border-top:1px solid #eef3f9;color:#0f2340;vertical-align:middle}
 .rx main table tbody tr:first-child td{border-top:none}
 .rx main table tbody tr:hover td{background:#f7fafd}
@@ -123,8 +124,8 @@ body{margin:0;background:#eef3f9}
 .rx .rx-bar i{display:block;height:100%;border-radius:999px;background:#14618f}
 .rx .rx-bar.meter i{background:#7fa9cf}
 .rx .rx-table-block{margin-top:18px}
-.rx .rx-table-block h4{margin:0 0 4px;font-size:13px;font-weight:700;color:#0f2340}
-.rx .rx-table-block p{margin:0 0 6px;font-size:12px;color:#46618a}
+.rx .rx-table-block h4{margin:0 0 4px;font-size:var(--fs-small);font-weight:700;color:#0f2340}
+.rx .rx-table-block p{margin:0 0 6px;font-size:var(--fs-small);color:#46618a}
 /* compact drawers: closed ones sit in one row, an open one takes the full width */
 .rx .rx-drawers{flex-direction:row!important;flex-wrap:wrap;align-items:center;gap:8px!important;margin-top:12px}
 .rx .rx-drawers>details.rx-drawer{flex:0 0 auto;margin:0}
@@ -167,20 +168,20 @@ body{margin:0;background:#eef3f9}
                 <span class="w4-term"><button aria-describedby="w4-term-place-rewired" type="button">rewired networks</button><span class="w4-pop" id="w4-term-place-rewired" role="tooltip">A random copy of the network in which every node keeps its number of partners, but the partners are dealt out again at random.</span></span> (<span class="w4-term"><button aria-describedby="w4-term-place-z" type="button">z</button><span class="w4-pop" id="w4-term-place-z" role="tooltip">How many standard deviations the real value sits from the random baseline’s mean. Beyond about 2 either way is rare by chance.</span></span> = 29).
               </p>
 <div class="w4-example">
-<svg aria-hidden="true" height="150" viewbox="0 0 250 150" width="250">
-<line class="w4-ex-edge" stroke-width="2.4" x1="125" x2="52" y1="34" y2="112"></line>
-<line class="w4-ex-edge" stroke-width="1.4" x1="125" x2="198" y1="34" y2="112"></line>
-<path class="w4-ex-link" d="M52 112 Q125 150 198 112" stroke-dasharray="5 4" stroke-width="2.2"></path>
-<rect class="w4-ex-company" height="26" rx="6" width="50" x="100" y="16"></rect>
-<text class="w4-ex-on-ink" x="125" y="33">Company</text>
-<circle class="w4-ex-node" cx="52" cy="112" r="13"></circle>
-<circle class="w4-ex-node" cx="198" cy="112" r="13"></circle>
-<text class="w4-ex-letter" x="52" y="116">A</text>
-<text class="w4-ex-letter" x="198" y="116">B</text>
-<text class="w4-ex-count" text-anchor="end" x="70" y="66">12 filings</text>
-<text class="w4-ex-count" text-anchor="start" x="180" y="66">5 filings</text>
-<text class="w4-ex-gain" x="125" y="146">link A–B gains 5</text>
-</svg>
+<svg aria-hidden="true" height="150" viewBox="0 0 250 150" width="250">
+                  <line class="w4-ex-edge" stroke-width="2.4" x1="125" x2="52" y1="34" y2="112"></line>
+                  <line class="w4-ex-edge" stroke-width="1.4" x1="125" x2="198" y1="34" y2="112"></line>
+                  <path class="w4-ex-link" d="M52 112 Q125 150 198 112" stroke-dasharray="5 4" stroke-width="2.2"></path>
+                  <rect class="w4-ex-company" height="26" rx="6" width="50" x="100" y="16"></rect>
+                  <text class="w4-ex-on-ink" x="125" y="33">Company</text>
+                  <circle class="w4-ex-node" cx="52" cy="112" r="13"></circle>
+                  <circle class="w4-ex-node" cx="198" cy="112" r="13"></circle>
+                  <text class="w4-ex-letter" x="52" y="116">A</text>
+                  <text class="w4-ex-letter" x="198" y="116">B</text>
+                  <text class="w4-ex-count" text-anchor="end" x="70" y="66">12 filings</text>
+                  <text class="w4-ex-count" text-anchor="start" x="180" y="66">5 filings</text>
+                  <text class="w4-ex-gain" x="125" y="146">link A–B gains 5</text>
+                </svg>
 <p><b>How two metros get linked</b>An example, not data. A company that files in both metros adds the smaller of its two filing counts to their link.</p>
 </div>
 
@@ -191,7 +192,7 @@ body{margin:0;background:#eef3f9}
 </div>
 <figure class="w4-figure">
 <figcaption><b>Weak but real</b><span>The groups against rewired networks in which each company keeps its number of metros.</span></figcaption>
-<div class="w4-figure-body" data-strip="place-modularity"><svg aria-label="Modularity of the metro groups against rewired networks" class="w4-strip" height="104" role="img" viewbox="0 0 556 104" width="556"><line stroke="#e6ecf3" stroke-width="1" x1="132" x2="132" y1="6" y2="70"></line><text fill="#7a8fac" font-size="11" text-anchor="middle" x="132" y="86">0.00</text><line stroke="#e6ecf3" stroke-width="1" x1="251.33333333333334" x2="251.33333333333334" y1="6" y2="70"></line><text fill="#7a8fac" font-size="11" text-anchor="middle" x="251.33333333333334" y="86">0.02</text><line stroke="#e6ecf3" stroke-width="1" x1="370.6666666666667" x2="370.6666666666667" y1="6" y2="70"></line><text fill="#7a8fac" font-size="11" text-anchor="middle" x="370.6666666666667" y="86">0.04</text><line stroke="#e6ecf3" stroke-width="1" x1="490" x2="490" y1="6" y2="70"></line><text fill="#7a8fac" font-size="11" text-anchor="middle" x="490" y="86">0.06</text><text fill="#0f2340" font-size="12" font-weight="600" x="0" y="35">Modularity</text><text fill="#7a8fac" font-size="11" x="0" y="50">40 metros, 3 groups</text><line stroke="#dce5f0" stroke-width="1" x1="132" x2="490" y1="38" y2="38"></line><g><rect fill="rgba(185, 196, 210, 0.62)" height="12" rx="6" width="14.319999999999993" x="202.40666666666667" y="32"><title>Rewired networks: mean 0.013, sd 0.0012</title></rect><line stroke="#7a8fac" stroke-width="2" x1="209.56666666666666" x2="209.56666666666666" y1="29" y2="47"></line></g><text fill="#46618a" font-size="11" font-weight="400" text-anchor="middle" x="209.56666666666666" y="63">rewired 0.013 ± 0.0012</text><circle cx="424.36666666666673" cy="38" fill="#0f2340" r="6.5" stroke="#ffffff" stroke-width="2"><title>The real network: 0.049</title></circle><text fill="#0f2340" font-size="12" font-weight="700" text-anchor="middle" x="424.36666666666673" y="25">0.049</text><rect fill="#eef3f9" height="20" rx="10" width="52.96" x="502" y="28"></rect><text fill="#0f2340" font-size="11" font-weight="700" text-anchor="middle" x="528.48" y="42">z = 29</text></svg></div>
+<div class="w4-figure-body" data-strip="place-modularity"><svg viewBox="0 0 562 104" width="562" height="104" role="img" aria-label="Modularity of the metro groups against rewired networks" class="w4-strip"><line x1="132" y1="6" x2="132" y2="70" stroke="#e6ecf3" stroke-width="1"></line><text x="132" y="86" font-size="11.5" fill="#7a8fac" text-anchor="middle">0.00</text><line x1="253.23958333333334" y1="6" x2="253.23958333333334" y2="70" stroke="#e6ecf3" stroke-width="1"></line><text x="253.23958333333334" y="86" font-size="11.5" fill="#7a8fac" text-anchor="middle">0.02</text><line x1="374.4791666666667" y1="6" x2="374.4791666666667" y2="70" stroke="#e6ecf3" stroke-width="1"></line><text x="374.4791666666667" y="86" font-size="11.5" fill="#7a8fac" text-anchor="middle">0.04</text><line x1="495.71874999999994" y1="6" x2="495.71874999999994" y2="70" stroke="#e6ecf3" stroke-width="1"></line><text x="495.71874999999994" y="86" font-size="11.5" fill="#7a8fac" text-anchor="middle">0.06</text><text x="0" y="35" font-size="12.5" fill="#0f2340" font-weight="600">Modularity</text><text x="0" y="51" font-size="11.5" fill="#7a8fac">40 metros, 3 groups</text><line x1="132" y1="38" x2="495.71875" y2="38" stroke="#dce5f0" stroke-width="1"></line><g><rect x="203.5313541666667" y="32" width="14.548749999999984" height="12" rx="6" fill="rgba(185, 196, 210, 0.62)"><title>Rewired networks: mean 0.013, sd 0.0012</title></rect><line x1="210.80572916666665" y1="29" x2="210.80572916666665" y2="47" stroke="#7a8fac" stroke-width="2"></line></g><text x="210.80572916666665" y="63" font-size="11.5" fill="#46618a" font-weight="400" text-anchor="middle">rewired 0.013 ± 0.0012</text><circle cx="429.0369791666667" cy="38" r="6.5" fill="#0f2340" stroke="#ffffff" stroke-width="2"><title>The real network: 0.049</title></circle><text x="429.0369791666667" y="25" font-size="12.5" fill="#0f2340" font-weight="700" text-anchor="middle">0.049</text><rect x="507.71875" y="27" width="54.28125" height="22" rx="11" fill="#eef3f9"></rect><text x="534.859375" y="42.5" font-size="12.5" fill="#0f2340" font-weight="700" text-anchor="middle">z = 29</text></svg></div>
 </figure>
 </div>
 
@@ -219,7 +220,7 @@ body{margin:0;background:#eef3f9}
                     Ranked by the active metric. Click a bar to select that city
                     everywhere on this page.
                   </p>
-<div class="chart-host tall" id="chart-rank" style="user-select: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0); position: relative;"><img alt="" src="/_blob/338de2206fbd9f52aa9219ea082155fc" style="display:block;width:100%;height:100%;object-fit:contain"/></div>
+<div class="chart-host tall" id="chart-rank" style="user-select: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0); position: relative;"><img alt="" src="/_blob/815f46cb4dec7ff81ba93e426e3c3abc" style="display:block;width:100%;height:100%;object-fit:contain"/></div>
 </div></div>
 <div><header class="w4-q">
 <div>
@@ -271,7 +272,7 @@ body{margin:0;background:#eef3f9}
                   opacity follow the active metric. Each metro sits at its
                   first-named city. Click a bubble to select it.
                 </p>
-<div class="chart-host map w4-has-reset" id="chart-citymap" style="user-select: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0); position: relative;"><img alt="" src="/_blob/c861275c0ca06484894568af9f45be16" style="display:block;width:100%;height:100%;object-fit:contain"/></div>
+<div class="chart-host map w4-has-reset" id="chart-citymap" style="user-select: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0); position: relative;"><img alt="" src="/_blob/13d4b0040f5fcdf7f9afa2ba1b589465" style="display:block;width:100%;height:100%;object-fit:contain"/></div>
 </div><div class="plot">
 <h3>Same cities, two labelings</h3>
 <p class="axis-note">
@@ -279,7 +280,7 @@ body{margin:0;background:#eef3f9}
                   named after their two largest metros. Click a city to select
                   it.
                 </p>
-<div class="chart-host map w4-has-reset" id="chart-regions" style="user-select: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0); position: relative;"><img alt="" src="/_blob/a9325b8353839599370458a46def493e" style="display:block;width:100%;height:100%;object-fit:contain"/></div>
+<div class="chart-host map w4-has-reset" id="chart-regions" style="user-select: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0); position: relative;"><img alt="" src="/_blob/a12bd702cd0983497f0fc95cc0048a35" style="display:block;width:100%;height:100%;object-fit:contain"/></div>
 </div></div></details></div>
 </div>
 <!-- B · Backbone --------------------------------------------- -->
@@ -317,7 +318,7 @@ body{margin:0;background:#eef3f9}
                   the Louvain groups and one labelling.
                   Orange bars describe who hires, grey bars where the city is.
                 </p>
-<div class="chart-host short" id="chart-where-who" style="user-select: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0); position: relative;"><img alt="" src="/_blob/0b6e8c2b229310ab10574999ca1f9024" style="display:block;width:100%;height:100%;object-fit:contain"/></div>
+<div class="chart-host short" id="chart-where-who" style="user-select: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0); position: relative;"><img alt="" src="/_blob/bb93b4054e27d52a405b913c87d377ea" style="display:block;width:100%;height:100%;object-fit:contain"/></div>
 </div>
 </div>
 </div>
@@ -454,7 +455,7 @@ body{margin:0;background:#eef3f9}
                   falls, links go and metros drop out of the largest connected
                   piece.
                 </p>
-<div class="chart-host short" id="chart-where-break" style="user-select: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0); position: relative;"><img alt="" src="/_blob/c4d0d20b88aa709df001b91699bf0264" style="display:block;width:100%;height:100%;object-fit:contain"/></div>
+<div class="chart-host short" id="chart-where-break" style="user-select: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0); position: relative;"><img alt="" src="/_blob/47d5d223ab36481ecf9dcdbfee66561b" style="display:block;width:100%;height:100%;object-fit:contain"/></div>
 </div>
 </div>
 </div>
