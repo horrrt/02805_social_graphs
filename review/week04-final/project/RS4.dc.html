@@ -123,7 +123,7 @@ body{margin:0;background:#eef3f9}
 .rx .rx-fig-row>figure>figcaption{grid-row:span 2}
 </style>
 </helmet>
-<div class="corridor rx" style="width: 1440px; height: 1564px; overflow: hidden; background: #eef3f9"><div class="topbar">
+<div class="corridor rx" style="width: 1440px; height: 1547px; overflow: hidden; background: #eef3f9"><div class="topbar">
 <div class="shell">
 <a class="brand" href="../../">LOG–LOG <b>LEGENDS</b></a>
 <a class="site-link" href="../../#weeks">All posts</a>
@@ -203,8 +203,7 @@ body{margin:0;background:#eef3f9}
 <div>
 <p class="sub">
               We removed each of the ten largest filers alone, then the top
-              1, 2, 3 … 20 filers in turn. Each removal sits beside random cuts
-              of companies that remove the same share of filings.
+              1, 2, 3 … 20 filers in turn.
             </p>
 </div>
 <div>
@@ -223,29 +222,26 @@ body{margin:0;background:#eef3f9}
 <div class="plot">
 <h3>The largest filers removed in turn</h3>
 <p class="axis-note">
-                AMI with Census regions after removing the k largest filers
-                (orange) against random cuts of the same volume (grey band, one
-                standard deviation). Hover a point for the firm added at that
-                step.
+                Orange: the metro groups’ match with Census regions as the largest filers
+                leave. Grey band: random cuts of the same size. Hover a point for the firm.
               </p>
 <div class="chart-host jobs-nmi" id="chart-footprint-rank" style="user-select: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0); position: relative;"><img alt="" src="/_blob/763e0b10b00b3cc95abe61afd37712e6" style="display:block;width:100%;height:100%;object-fit:contain"/></div>
 </div>
 <div class="plot">
 <h3>One firm out at a time</h3>
 <p class="axis-note">
-                  AMI between the metro groups and Census regions with one firm
-                  removed (orange) and random cuts of the same volume (grey, mean
-                  and one standard deviation). The dashed line is the full
+                  Orange: the match with one firm
+                  removed. Grey: random cuts of the same size. Dashed line: the full
                   network.
                 </p>
 <div class="chart-host jobs-nmi" id="chart-footprint-single" style="user-select: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0); position: relative;"><img alt="" src="/_blob/53c9cb33e1b9def68d4e687bf69e4954" style="display:block;width:100%;height:100%;object-fit:contain"/></div>
 </div>
 </div>
-<div class="rx-drawers rx-foot"><details class="rx-drawer"><summary>Method</summary><div class="rx-drawer-body"><p>50 random cuts for a single firm, 20 for each step of the sweep.</p></div></details><details class="rx-drawer"><summary>More numbers</summary><div class="rx-drawer-body"><p>Amazon's 0.14 sits 3.5 standard deviations above its random cuts. No other single firm pushes the match up beyond its random cuts: removing EY, Meta, Deloitte or Apple alone tips Louvain into a two-group split that ignores regions (AMI −0.005). Removed in rank order, the largest filers keep the match above random cuts at every step from one to twenty, but not smoothly: it dips to about 0.07 without the top 17 to 19, where several partitions compete, and peaks at 0.20 without the top 20. 2024 tells the same story more strongly. Its full network shows no regional match (AMI −0.005); without its ten largest filers the match is 0.22 (p = 0.001), against −0.01 ± 0.01 for random cuts.</p></div></details></div>
+<div class="rx-drawers rx-foot"><details class="rx-drawer"><summary>Method</summary><div class="rx-drawer-body"><p>Each removal sits beside random cuts of companies that remove the same share of filings.</p><p>50 random cuts for a single firm, 20 for each step of the sweep.</p></div></details><details class="rx-drawer"><summary>More numbers</summary><div class="rx-drawer-body"><p>Amazon's 0.14 sits 3.5 standard deviations above its random cuts. No other single firm pushes the match up beyond its random cuts: removing EY, Meta, Deloitte or Apple alone tips Louvain into a two-group split that ignores regions (AMI −0.005). Removed in rank order, the largest filers keep the match above random cuts at every step from one to twenty, but not smoothly: it dips to about 0.07 without the top 17 to 19, where several partitions compete, and peaks at 0.20 without the top 20. 2024 tells the same story more strongly. Its full network shows no regional match (AMI −0.005); without its ten largest filers the match is 0.22 (p = 0.001), against −0.01 ± 0.01 for random cuts.</p></div></details></div>
 </div>
 </section></div></main></div>
 </x-dc>
-<script type="text/x-dc" data-dc-script data-props='{"$preview": {"width": 1440, "height": 1564}}'>
+<script type="text/x-dc" data-dc-script data-props='{"$preview": {"width": 1440, "height": 1547}}'>
 class Component extends DCLogic {
 renderVals() { return {}; }
 }
