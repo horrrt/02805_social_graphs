@@ -218,6 +218,240 @@
      "similarity": -0.371
     }
    ]
+  },
+  "strength": {
+   "year": 2025,
+   "measure": "lift: companies filing for both over k_i * k_j / 2m",
+   "pairs": 1770,
+   "pairs_with_cohiring": 1669,
+   "pairs_same_major": 245,
+   "majors": 10,
+   "perms": 5000,
+   "seed": 2805,
+   "spearman": {
+    "real": 0.448,
+    "null_free_mean": 0.0,
+    "p_free": 0.0002,
+    "null_within_major_mean": 0.331,
+    "p_within_major": 0.0002
+   },
+   "quarters": [
+    {
+     "quarter": 1,
+     "lift_from": 0.0,
+     "lift_to": 0.37,
+     "n": 443,
+     "mean": 0.169,
+     "sd": 0.197,
+     "examples": [
+      {
+       "a": "17-2061",
+       "a_title": "Computer Hardware Engineers",
+       "b": "19-1021",
+       "b_title": "Biochemists and Biophysicists",
+       "similarity": 0.638
+      },
+      {
+       "a": "13-1111",
+       "a_title": "Management Analysts",
+       "b": "25-1021",
+       "b_title": "Computer Science Teachers, Postsecondary",
+       "similarity": 0.635
+      },
+      {
+       "a": "25-1011",
+       "a_title": "Business Teachers, Postsecondary",
+       "b": "25-2021",
+       "b_title": "Elementary School Teachers, Except Special Education",
+       "similarity": 0.628
+      },
+      {
+       "a": "17-2072",
+       "a_title": "Electronics Engineers, Except Computer",
+       "b": "25-2021",
+       "b_title": "Elementary School Teachers, Except Special Education",
+       "similarity": -0.237
+      },
+      {
+       "a": "13-1161",
+       "a_title": "Market Research Analysts and Marketing Specialists",
+       "b": "29-2011",
+       "b_title": "Medical and Clinical Laboratory Technologists",
+       "similarity": -0.267
+      },
+      {
+       "a": "27-1024",
+       "a_title": "Graphic Designers",
+       "b": "29-2011",
+       "b_title": "Medical and Clinical Laboratory Technologists",
+       "similarity": -0.371
+      }
+     ]
+    },
+    {
+     "quarter": 2,
+     "lift_from": 0.37,
+     "lift_to": 0.87,
+     "n": 442,
+     "mean": 0.226,
+     "sd": 0.213,
+     "examples": [
+      {
+       "a": "17-2031",
+       "a_title": "Bioengineers and Biomedical Engineers",
+       "b": "17-2061",
+       "b_title": "Computer Hardware Engineers",
+       "similarity": 0.803
+      },
+      {
+       "a": "17-2031",
+       "a_title": "Bioengineers and Biomedical Engineers",
+       "b": "17-2072",
+       "b_title": "Electronics Engineers, Except Computer",
+       "similarity": 0.75
+      },
+      {
+       "a": "15-1221",
+       "a_title": "Computer and Information Research Scientists",
+       "b": "15-1251",
+       "b_title": "Computer Programmers",
+       "similarity": 0.744
+      },
+      {
+       "a": "11-9021",
+       "a_title": "Construction Managers",
+       "b": "15-2051",
+       "b_title": "Data Scientists",
+       "similarity": -0.262
+      },
+      {
+       "a": "11-9021",
+       "a_title": "Construction Managers",
+       "b": "15-1255",
+       "b_title": "Web and Digital Interface Designers",
+       "similarity": -0.297
+      },
+      {
+       "a": "19-2031",
+       "a_title": "Chemists",
+       "b": "27-1024",
+       "b_title": "Graphic Designers",
+       "similarity": -0.308
+      }
+     ]
+    },
+    {
+     "quarter": 3,
+     "lift_from": 0.87,
+     "lift_to": 1.41,
+     "n": 442,
+     "mean": 0.297,
+     "sd": 0.209,
+     "examples": [
+      {
+       "a": "15-2041",
+       "a_title": "Statisticians",
+       "b": "15-2051",
+       "b_title": "Data Scientists",
+       "similarity": 0.812
+      },
+      {
+       "a": "11-3051",
+       "a_title": "Industrial Production Managers",
+       "b": "11-9021",
+       "b_title": "Construction Managers",
+       "similarity": 0.783
+      },
+      {
+       "a": "15-2031",
+       "a_title": "Operations Research Analysts",
+       "b": "15-2041",
+       "b_title": "Statisticians",
+       "similarity": 0.777
+      },
+      {
+       "a": "11-3051",
+       "a_title": "Industrial Production Managers",
+       "b": "13-2051",
+       "b_title": "Financial and Investment Analysts",
+       "similarity": -0.165
+      },
+      {
+       "a": "11-3051",
+       "a_title": "Industrial Production Managers",
+       "b": "15-2051",
+       "b_title": "Data Scientists",
+       "similarity": -0.172
+      },
+      {
+       "a": "13-2051",
+       "a_title": "Financial and Investment Analysts",
+       "b": "29-1141",
+       "b_title": "Registered Nurses",
+       "similarity": -0.2
+      }
+     ]
+    },
+    {
+     "quarter": 4,
+     "lift_from": 1.41,
+     "lift_to": 182.92,
+     "n": 443,
+     "mean": 0.451,
+     "sd": 0.213,
+     "examples": [
+      {
+       "a": "25-2021",
+       "a_title": "Elementary School Teachers, Except Special Education",
+       "b": "25-2031",
+       "b_title": "Secondary School Teachers, Except Special and Career/Technical Education",
+       "similarity": 0.869
+      },
+      {
+       "a": "11-1021",
+       "a_title": "General and Operations Managers",
+       "b": "11-3071",
+       "b_title": "Transportation, Storage, and Distribution Managers",
+       "similarity": 0.819
+      },
+      {
+       "a": "29-1216",
+       "a_title": "General Internal Medicine Physicians",
+       "b": "29-1229",
+       "b_title": "Physicians, All Other",
+       "similarity": 0.81
+      },
+      {
+       "a": "13-1111",
+       "a_title": "Management Analysts",
+       "b": "15-1244",
+       "b_title": "Network and Computer Systems Administrators",
+       "similarity": -0.031
+      },
+      {
+       "a": "11-1021",
+       "a_title": "General and Operations Managers",
+       "b": "15-1255",
+       "b_title": "Web and Digital Interface Designers",
+       "similarity": -0.072
+      },
+      {
+       "a": "19-2031",
+       "a_title": "Chemists",
+       "b": "25-1011",
+       "b_title": "Business Teachers, Postsecondary",
+       "similarity": -0.115
+      }
+     ]
+    }
+   ]
+  },
+  "cluster_gap": {
+   "real": 0.116,
+   "null_free_mean": 0.0,
+   "p_free": 0.0002,
+   "null_within_major_mean": 0.098,
+   "p_within_major": 0.0324
   }
  }
 }
