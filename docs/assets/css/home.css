@@ -410,3 +410,33 @@ a.week-card:hover {
   object-fit: cover;
   width: 96px;
 }
+
+/* The live weeks in the hero's course list link to their posts. */
+.home .home-track li.live {
+  padding: 0;
+}
+
+.home .home-track li a {
+  align-items: center;
+  border-radius: 8px;
+  color: inherit;
+  display: flex;
+  flex: 1;
+  gap: 12px;
+  padding: 6px 8px;
+  text-decoration: none;
+}
+
+.home .home-track li a:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.home .home-track li a i {
+  color: #93aecd;
+  font-style: normal;
+  margin-left: auto;
+}
+
+.home .home-track li a:hover i {
+  color: #eaf2fb;
+}
