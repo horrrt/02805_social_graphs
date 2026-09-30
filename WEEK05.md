@@ -31,8 +31,8 @@ doing all seven openers, so pick one for the top of the page once the results ar
 | --- | --- | --- | --- | --- | --- |
 | 1 | Turn links into relationships | `#relations` | | `analysis/week05_relations.py` | pages, graph, weighted (communities) |
 | 2 | Catch Wikipedia copying itself | `#copying` | | `analysis/week05_copying.py` | pages |
-| 3 | A Marvel search engine in 20 lines | `#search` | | `analysis/week05_search.py` | pages |
-| 4 | Community autocomplete | `#autocomplete` | | `analysis/week05_autocomplete.py` | pages, weighted (communities) |
+| 3 | A Marvel search engine in 20 lines | `#search` | Àngela | `analysis/week05_search.py` | pages |
+| 4 | Community autocomplete | `#autocomplete` | Àngela | `analysis/week05_autocomplete.py` | pages, weighted (communities) |
 | 5 | Heaps' law of the Marvel universe | `#heaps` | | `analysis/week05_heaps.py` | pages, graph (in-degree) |
 | 6 | Does network fame buy you more words? | `#fame` | | `analysis/week05_fame.py` | pages, graph |
 | 7 | Who has the weirdest Wikipedia page? | `#weird` | | `analysis/week05_weird.py` | pages |
