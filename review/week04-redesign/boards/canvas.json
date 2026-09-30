@@ -1406,7 +1406,7 @@
       "y": 0
     },
     "TplFirst.dc.html": {
-      "h": 855,
+      "h": 645,
       "page": "template",
       "title": "Template · Standard section card",
       "w": 1440,
@@ -1414,7 +1414,7 @@
       "y": 0
     },
     "TplOpening.dc.html": {
-      "h": 698,
+      "h": 642,
       "page": "template",
       "title": "Template · Opening",
       "w": 1440,
@@ -1422,7 +1422,7 @@
       "y": 0
     },
     "TplSecond.dc.html": {
-      "h": 1055,
+      "h": 963,
       "page": "template",
       "title": "Template · Wide section card",
       "w": 1440,
@@ -1438,7 +1438,7 @@
       "y": 0
     },
     "W5Autocomplete.dc.html": {
-      "h": 1845,
+      "h": 1216,
       "page": "week05",
       "title": "4 · Community autocomplete",
       "w": 1440,
@@ -1454,7 +1454,7 @@
       "y": 0
     },
     "W5Copying.dc.html": {
-      "h": 1889,
+      "h": 1030,
       "page": "week05",
       "title": "2 · Catch Wikipedia copying itself",
       "w": 1440,
@@ -1462,23 +1462,23 @@
       "y": 2063
     },
     "W5Fame.dc.html": {
-      "h": 2516,
+      "h": 978,
       "page": "week05",
       "title": "6 · Does network fame buy you more words?",
       "w": 1440,
       "x": 1520,
-      "y": 5068
+      "y": 4638
     },
     "W5Heaps.dc.html": {
-      "h": 1914,
+      "h": 1100,
       "page": "week05",
       "title": "5 · Heaps' law of the Marvel universe",
       "w": 1440,
       "x": 0,
-      "y": 5068
+      "y": 4638
     },
     "W5Opening.dc.html": {
-      "h": 698,
+      "h": 625,
       "page": "week05",
       "title": "Week 5 · Opening",
       "w": 1440,
@@ -1486,7 +1486,7 @@
       "y": 0
     },
     "W5Relations.dc.html": {
-      "h": 2105,
+      "h": 1129,
       "page": "week05",
       "title": "1 · Turn links into relationships",
       "w": 1440,
@@ -1494,7 +1494,7 @@
       "y": 2063
     },
     "W5Search.dc.html": {
-      "h": 2585,
+      "h": 2155,
       "page": "week05",
       "title": "3 · A Marvel search engine in 20 lines",
       "w": 1440,
@@ -1510,12 +1510,12 @@
       "y": 0
     },
     "W5Weird.dc.html": {
-      "h": 2294,
+      "h": 1007,
       "page": "week05",
       "title": "7 · Who has the weirdest Wikipedia page?",
       "w": 1440,
       "x": 3040,
-      "y": 5068
+      "y": 4638
     }
   },
   "createdOnFiles": {
@@ -1884,7 +1884,7 @@
       "text": "Sections 5 to 7",
       "w": 240,
       "x": 0,
-      "y": 4768
+      "y": 4338
     }
   },
   "order": [
