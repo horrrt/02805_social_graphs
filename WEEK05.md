@@ -84,7 +84,7 @@ the brief suggests for its section.
 python -m pip install -r requirements-lock.txt   # adds spaCy, NLTK, tiktoken and en_core_web_sm
 export NLTK_DATA=build/nltk_data TIKTOKEN_CACHE_DIR=build/tiktoken
 python analysis/week05_text.py                   # 303 pages, 1784 arcs, 1434 weighted edges
-python analysis/week05_heaps.py                  # each section script; all stubs for now
+python analysis/week05_heaps.py                  # vocabulary growth by network order
 ```
 
 Read the data only through `analysis/week05_text.py`: `pages()`, `graph()`, `weighted()` and `nodes()`.
@@ -120,6 +120,8 @@ import { slot, figure, echart, stripChart, concordance, passage, table, loadData
   `Mark_Hazzard:_Merc`. `pages()` unquotes them.
 - 17 characters have no links. Building a graph from the edge list alone gives 286 nodes. `graph()` and
   `weighted()` add all 303 first.
+- The committed graph currently gives 58 of the 303 pages zero in-degree, although the exercise note says
+  17. The scripts report the observed graph value and do not call in-degree fame without this qualification.
 - `data/week4_edges_weighted.tsv` has no header row after its `#` comments. Read it with explicit column
   names or the first edge becomes the header.
 - Page lengths run from 1,244 to 87,256 characters, a 70× spread (course data page). Normalise by length

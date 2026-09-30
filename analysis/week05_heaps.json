@@ -1,0 +1,115 @@
+{
+  "corpus": {
+    "pages": 303,
+    "arcs": 1784,
+    "zero_indegree_pages": 58,
+    "token_rule": "lowercase ASCII words, allowing internal apostrophes and hyphens"
+  },
+  "text_checks": [
+    {
+      "node": "Helix_(Marvel_Comics)",
+      "quote": "The Jackal experiments on Rafael, mutating him further."
+    },
+    {
+      "node": "Spider-Man",
+      "quote": "Spider-Man is a superhero appearing in American comic books published by Marvel Comics."
+    }
+  ],
+  "orders": {
+    "most_linked_first": [
+      {
+        "pages": 10,
+        "tokens": 84832,
+        "types": 9800
+      },
+      {
+        "pages": 50,
+        "tokens": 317940,
+        "types": 19447
+      },
+      {
+        "pages": 100,
+        "tokens": 468528,
+        "types": 23457
+      },
+      {
+        "pages": 200,
+        "tokens": 619332,
+        "types": 26983
+      },
+      {
+        "pages": 303,
+        "tokens": 713801,
+        "types": 29407
+      }
+    ],
+    "least_linked_first": [
+      {
+        "pages": 10,
+        "tokens": 6641,
+        "types": 1963
+      },
+      {
+        "pages": 50,
+        "tokens": 38182,
+        "types": 6656
+      },
+      {
+        "pages": 100,
+        "tokens": 90150,
+        "types": 10926
+      },
+      {
+        "pages": 200,
+        "tokens": 242669,
+        "types": 17981
+      },
+      {
+        "pages": 303,
+        "tokens": 713801,
+        "types": 29407
+      }
+    ]
+  },
+  "random_baseline": {
+    "seed": 505,
+    "runs": 200,
+    "vocabulary": [
+      {
+        "pages": 10,
+        "mean": 4404,
+        "sd": 975.778354435537,
+        "min": 2115,
+        "max": 7337
+      },
+      {
+        "pages": 50,
+        "mean": 11923.725,
+        "sd": 915.2548753265645,
+        "min": 9661,
+        "max": 14514
+      },
+      {
+        "pages": 100,
+        "mean": 17194.755,
+        "sd": 730.7563198288806,
+        "min": 15403,
+        "max": 19340
+      },
+      {
+        "pages": 200,
+        "mean": 24216.72,
+        "sd": 538.797620614549,
+        "min": 23085,
+        "max": 25497
+      },
+      {
+        "pages": 303,
+        "mean": 29407,
+        "sd": 0.0,
+        "min": 29407,
+        "max": 29407
+      }
+    ]
+  }
+}

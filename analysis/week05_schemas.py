@@ -138,9 +138,19 @@ class CommunitiesPage(Model):
     membership: dict[str, int]
 
 
+class Week05Payload(Model):
+    corpus: dict
+
+
 PAGES = {
     "docs/weeks/week05/data/search.json": SearchPage,
     "docs/weeks/week05/data/search_live.json": SearchLivePage,
     "docs/weeks/week05/data/autocomplete.json": AutocompletePage,
     "docs/weeks/week05/data/communities.json": CommunitiesPage,
+    "analysis/week05_heaps.json": Week05Payload,
+    "analysis/week05_fame.json": Week05Payload,
+    "analysis/week05_weird.json": Week05Payload,
+    "docs/weeks/week05/data/heaps.json": Week05Payload,
+    "docs/weeks/week05/data/fame.json": Week05Payload,
+    "docs/weeks/week05/data/weird.json": Week05Payload,
 }
