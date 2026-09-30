@@ -1,0 +1,133 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>4 · Community autocomplete</title>
+<script src="./support.js"></script>
+<link rel="stylesheet" href="/_blob/bdbcfe09e54e57045ac6bae8752c2a81">
+<link rel="stylesheet" href="/_blob/4ffd6c535951a1e34a0c3882e96ae51c">
+<link rel="stylesheet" href="/_blob/231c3b9ded5bc685edc4752941113998">
+</head>
+<body>
+<x-dc>
+<helmet>
+<style>
+@font-face{font-family:"Condensed";src:url("/_blob/9ad036b9f76606ea91d82e15ebec8da3") format("truetype");font-weight:800;font-style:normal}
+body{margin:0;background:#eef3f9}
+</style>
+</helmet>
+<div class="corridor" style="width: 1440px; height: 1693px; overflow: hidden; background: #eef3f9"><div class="topbar">
+      <div class="shell">
+        <a class="brand" href="../../">LOG–LOG <b>LEGENDS</b></a>
+        <a class="site-link" href="../../#weeks">All posts</a>
+        <nav class="topnav" aria-label="Sections of this post">
+          <a href="#opening">Opening</a>
+          <a href="#relations">1</a>
+          <a href="#copying">2</a>
+          <a href="#search">3</a>
+          <a href="#autocomplete">4</a>
+          <a href="#heaps">5</a>
+          <a href="#fame">6</a>
+          <a href="#weird">7</a>
+          <a href="#closing">Closing</a>
+        </nav>
+      </div>
+    </div><main id="main"><div class="shell"><section class="step" data-owner="Àngela" id="autocomplete">
+          <header class="w4-opener">
+            <span aria-hidden="true" class="w4-opener-num">4</span>
+            <div>
+              <h2>Community autocomplete</h2>
+              <p>Trained on one community's pages, a trigram generator copies: every fake page repeats a run of 8 to 17 words straight from its community's text.</p>
+            </div>
+          </header>
+          <div class="w5-slots card w4-card w5-card w5-card-wide">
+            <div class="w5-slot" data-slot="asked" id="autocomplete-asked">
+              <h3>What we asked</h3>
+              <div data-body="">
+                <p class="w5-question">Can someone who has not seen the pages tell which community a fake page came from?</p>
+                <p class="w4-answer">We do not know yet: no other group has guessed. What the fakes already show is copying, because 81% to 86% of two-word contexts in a community's pages have only one next word.</p>
+              </div>
+            </div>
+            <div class="w5-slot" data-slot="did" id="autocomplete-did">
+              <h3>What we did</h3>
+              <div data-body="">
+                <p>First the communities. <span class="w4-term"><button type="button" aria-describedby="w5-term-autocomplete-louvain">Louvain</button><span class="w4-pop" id="w5-term-autocomplete-louvain" role="tooltip">A method that finds groups in a network by moving pages between groups until the links inside groups are as dense as they can get. Two runs can differ, so we ran it 100 times.</span></span> ran 100 times on the giant component of the link network, the 277 of 303 pages joined to each other by links. The runs disagree: they found 89 different partitions, the most common one in only 4 runs, and 77 runs found 8 groups. Two runs agree with a median <span class="w4-term"><button type="button" aria-describedby="w5-term-autocomplete-nmi">normalised mutual information</button><span class="w4-pop" id="w5-term-autocomplete-nmi" role="tooltip">How much two ways of splitting the same pages into groups agree: 1 when they are identical, near 0 when they are unrelated.</span></span> of 0.90. So we kept a consensus: two pages share a group when at least half the runs put them together, which gives 8 groups, the same for all 100 seeds we tried on it. The 9 Strikeforce: Morituri pages link only to each other and form a ninth group; the 17 pages with no links have none.</p>
+                <p>Each group of at least 8 pages gets its own <span class="w4-term"><button type="button" aria-describedby="w5-term-autocomplete-trigram">trigram model</button><span class="w4-pop" id="w5-term-autocomplete-trigram" role="tooltip">A table of how often each word follows each pair of words. It predicts the next word from the two before it.</span></span>: the probability of the next word given the two before it, P(w3 | w1, w2), counted from the group's pages. That is next-token prediction, what a large language model does, with a two-word window and a table of counts in place of a neural network. Each fake page opens with one sentence we wrote by hand ("Aetherion is a character appearing in American comic books published by Marvel Comics.") and continues with 5 sentences the model samples word by word.</p>
+                <p>Before training we replace every character's name, the page title and the real name its description gives, by [name], so a guess cannot rest on spotting a member. The quiz shows these masked fakes.</p>
+                <p>No other group has guessed yet. We will post the 9 masked fakes in the week 5 Teams channel and report the correct guesses out of all guesses, against the 1 in 9 (11%) a random guess gets right.</p>
+                <div class="rx-drawers rx-foot">
+                  <details class="rx-drawer"><summary>Method</summary><div class="rx-drawer-body">
+                    <p>Tokeniser: each page splits into paragraphs at its line breaks and into sentences with spaCy's rule-based sentencizer, which knows that "Dr." does not end a sentence. Heading lines are dropped, and so is every sentence under References, External links, Notes, See also and Further reading. A word is a run of letters in any alphabet, with an apostrophe or hyphen inside it kept, lowercased and with a possessive 's removed; digits and punctuation are dropped.</p>
+                    <p>Each sentence is padded with two start markers and one end marker before counting. The model has no smoothing and no backoff: sampling starts from the start markers and only ever reaches two-word contexts that occur in the pages. A sentence that reaches 40 words without ending is thrown away and drawn again, never cut; that happened to 5 sentences. Names are matched as whole words with their capitals, so "Storm" becomes [name] and "storm" stays.</p>
+                  </div></details>
+                  <details class="rx-drawer"><summary>More numbers</summary><div class="rx-drawer-body">
+                    <p>The groups, named after their page with the most link weight: Hulk, 40 pages; Wolverine, 40; Spider-Man, 38; Scarlet Witch, 38; Quasar, 35; Doctor Strange, 34; Iron Fist, 30; Black Widow (Natasha Romanova), 22; Radian (Morituri), 9.</p>
+                    <p>The links hold these groups together far more tightly than chance. Louvain's modularity averages 0.503 over the 100 runs, against 0.347 ± 0.004 on 100 rewired copies of the network (z = 36.6). The consensus groups score 0.506. The rewiring swaps the ends of two links of equal weight, 50 swaps per link, so every page keeps its number of partners and its total link weight.</p>
+                  </div></details>
+                </div>
+              </div>
+            </div>
+            <div class="w5-slot" data-slot="figure" id="autocomplete-figure">
+              <h3>Figure</h3>
+              <div data-body="">
+                <div class="w5-two">
+                  <div class="plot">
+                    <h3>Guess the community</h3>
+                    <p class="axis-note">One masked fake page per group. Pick a group and press Lock and reveal; the answer appears only then, and a locked guess stays locked. Your score stays in this browser and is not part of our results.</p>
+                    <p aria-live="polite" class="w5-scoreboard" id="ac-scoreboard">Your score in this browser: no guesses yet. A random guess gets 1 in 9 right.</p>
+                    <p class="w5-caption" id="ac-progress">Fake page 1 of 9</p>
+                    <div class="w5-fake">
+                      <p class="w5-char" id="ac-char">Cobalt Warden</p>
+                      <p id="ac-text">Cobalt Warden is a character appearing in American comic books published by Marvel Comics. He intended [name] to fight [name] is of the most powerful members of the team for the remainder of the sword to drain her of her causes her village to burn the world for mutants with unlimited potential. This version is a character appearing in american comic books a superpowered black woman. The quiet council krakoa provisional government. [name] defeats emma and her parents causing a car crash with her daughter claire from her injuries blindfold predicts that [name] was paired with sabretooth in team x. [name] first appeared in the face similar to the service of canada avengers list.</p>
+                    </div>
+                    <div class="w5-guess">
+                      <div>
+                        <label for="ac-select">Which group's pages trained this fake?</label>
+                        <select id="ac-select"><option value="">Pick a group…</option><option value="0">Hulk (40 pages): Hulk, She-Hulk</option><option value="1">Wolverine (40 pages): Wolverine (character), Jean Grey</option><option value="2">Spider-Man (38 pages): Spider-Man, Venom (character)</option><option value="3">Scarlet Witch (38 pages): Scarlet Witch, Human Torch (android)</option><option value="4">Quasar (35 pages): Quasar (character), Nova (Richard Rider)</option><option value="5">Doctor Strange (34 pages): Doctor Strange, Deadpool</option><option value="6">Iron Fist (30 pages): Iron Fist (character), Black Panther (character)</option><option value="7">Black Widow (Natasha Romanova) (22 pages): Black Widow (Natasha Romanova), Mockingbird (Marvel Comics)</option><option value="8">Radian (Morituri) (9 pages): Radian (Morituri), Scaredycat</option></select>
+                      </div>
+                      <button id="ac-submit" type="button">Lock and reveal</button>
+                    </div>
+                    <div class="w5-quiz-nav">
+                      <button data-kind="ghost" id="ac-prev" type="button">Previous</button>
+                      <button data-kind="ghost" id="ac-next" type="button">Next fake</button>
+                    </div>
+                    <div aria-live="polite" class="w5-reveal" hidden="" id="ac-reveal"></div>
+                  </div>
+                  <div class="plot">
+                    <h3>Modularity of the groups against rewired networks</h3>
+                    <p class="axis-note">Dot: Louvain's modularity on the real network, the mean of 100 runs. Band: the same on 100 rewired networks that keep every page's partners and link weight, mean and one standard deviation either side. Higher means more link weight inside groups than chance.</p>
+                    <div id="chart-autocomplete-modularity"><svg viewBox="0 0 476 120" width="476" height="120" role="img" aria-label="Modularity of the Louvain groups on the real network against rewired networks" class="w4-strip"><line x1="170" y1="6" x2="170" y2="70" stroke="#e6ecf3" stroke-width="1"></line><text x="170" y="86" font-size="11.5" fill="#7a8fac" text-anchor="middle">0.30</text><line x1="217.2" y1="6" x2="217.2" y2="70" stroke="#e6ecf3" stroke-width="1"></line><text x="217.2" y="86" font-size="11.5" fill="#7a8fac" text-anchor="middle">0.35</text><line x1="264.40000000000003" y1="6" x2="264.40000000000003" y2="70" stroke="#e6ecf3" stroke-width="1"></line><text x="264.40000000000003" y="86" font-size="11.5" fill="#7a8fac" text-anchor="middle">0.40</text><line x1="311.6" y1="6" x2="311.6" y2="70" stroke="#e6ecf3" stroke-width="1"></line><text x="311.6" y="86" font-size="11.5" fill="#7a8fac" text-anchor="middle">0.45</text><line x1="358.79999999999995" y1="6" x2="358.79999999999995" y2="70" stroke="#e6ecf3" stroke-width="1"></line><text x="358.79999999999995" y="86" font-size="11.5" fill="#7a8fac" text-anchor="middle">0.50</text><line x1="406" y1="6" x2="406" y2="70" stroke="#e6ecf3" stroke-width="1"></line><text x="406" y="86" font-size="11.5" fill="#7a8fac" text-anchor="middle">0.55</text><text x="406" y="103" font-size="11.5" fill="#7a8fac" text-anchor="end">modularity</text><text x="0" y="35" font-size="12.5" fill="#0f2340" font-weight="700">Louvain</text><text x="0" y="51" font-size="11.5" fill="#7a8fac">mean of 100 runs</text><line x1="170" y1="38" x2="406" y2="38" stroke="#dce5f0" stroke-width="1"></line><g><rect x="210.4032" y="32" width="8.118400000000037" height="12" rx="6" fill="rgba(185, 196, 210, 0.62)"><title>100 rewired networks: 0.347 ± 0.004</title></rect><line x1="214.46240000000003" y1="29" x2="214.46240000000003" y2="47" stroke="#7a8fac" stroke-width="2"></line></g><circle cx="361.63199999999995" cy="38" r="6.5" fill="#0f2340" stroke="#ffffff" stroke-width="2"><title>Real network: modularity 0.503 ± 0.003 over 100 runs</title></circle><text x="361.63199999999995" y="25" font-size="12.5" fill="#0f2340" font-weight="700" text-anchor="middle">0.503</text><rect x="418" y="27" width="54.751220703125" height="22" rx="11" fill="#eef3f9"></rect><text x="445.3756103515625" y="42.5" font-size="12.5" fill="#0f2340" font-weight="700" text-anchor="middle">z 36.6</text></svg></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="w5-slot" data-slot="surprise" id="autocomplete-surprise">
+              <h3>What surprised us</h3>
+              <div data-body="">
+                <div class="notice"><span class="ico">💡</span><span><b>What to notice</b> In each group's pages, 81% to 86% of two-word contexts (a pair of words in a row) have only one next word, against 50% to 63% of one-word contexts. More context means sparser counts, so the model often has no choice: 42% of the words the model drew for the quiz fakes had a single candidate, and every fake repeats a run of 8 to 17 words from its group's pages, 8 of the 9 runs from a single page.</span></div>
+                <p>Without the mask, 7 of the 9 fakes name a member of their own group.</p>
+              </div>
+            </div>
+            <div class="w5-slot" data-slot="limit" id="autocomplete-limit">
+              <h3>Limitation</h3>
+              <div data-body="">
+                <p>The mask covers only the 303 characters' own names. Other characters, surnames on their own and team names stay, and all 9 masked fakes keep some, such as mephisto, khonshu and krakoa, so a guess can still rest on a name. The groups also shift from run to run, as the median normalised mutual information of 0.90 shows; the consensus keeps the pairs most runs agree on. The 17 pages with no links belong to no group and trained no generator.</p>
+              </div>
+            </div>
+            <div class="w5-slot" data-slot="checked" id="autocomplete-checked">
+              <h3>What we checked in the text</h3>
+              <div data-body="">
+                <p>For every fake we searched its group's sentences for the longest run of words it repeats verbatim. The runs are 8 to 17 words long, and 8 of the 9 come from a single page. Opening the example below gives away which group one of the quiz fakes came from.</p>
+                <details class="rx-drawer"><summary>Show one fake's copied run beside its source sentence</summary><div class="rx-drawer-body"><div id="autocomplete-run"><p>Fake 4 (Hollow Lark) came from the Radian (Morituri) group. It repeats 17 words in a row from this sentence (digits and punctuation dropped): "a jokester and quick to mask his insecurities and fears behind jokes in armanetti volunteered for the".</p><blockquote class="kit-passage"><p><mark>A jokester and quick to mask his insecurities and fears behind jokes, in 2073, Armanetti volunteered for the</mark> Morituri process, a revolutionary scientific progress which gifts ordinary people with superhuman abilities.</p><cite><a href="https://en.wikipedia.org/wiki/Radian_(Morituri)">Radian (Morituri)</a></cite></blockquote></div></div></details>
+              </div>
+            </div>
+          </div>
+        </section></div></main></div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview": {"width": 1440, "height": 1693}}'>
+class Component extends DCLogic {
+renderVals() { return {}; }
+}
+</script>
+</body>
+</html>
