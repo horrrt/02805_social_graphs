@@ -63,6 +63,11 @@
   text-transform: uppercase;
 }
 .corridor .w5-card [data-body] { display: flex; flex-direction: column; gap: 12px; }
+/* Two panels side by side inside a card shrink to the card: a wide table wraps
+   its cells instead of pushing past the card's edge. */
+.corridor .w5-card .w5-two { grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr); }
+.corridor .w5-card .w5-two > * { min-width: 0; }
+.corridor .w5-card .w5-two table { max-width: 100%; }
 /* A chart drawn at a fallback width must not hold its column open. */
 .corridor .w5-card [data-body] > *, .corridor .w5-card .plot > * { min-width: 0; }
 .corridor .w5-card [data-body] > p { color: var(--ink-soft); font-size: var(--fs-body); line-height: 1.62; margin: 0; max-width: 68ch; }
