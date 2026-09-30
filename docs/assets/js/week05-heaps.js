@@ -7,7 +7,7 @@
 // #heaps-passages).
 // Data: docs/weeks/week05/data/heaps.json, written by analysis/week05_heaps.py.
 
-import { drawer, drawerRow, fitted, fs, loadData, node, passage, stripChart, table, termify, token } from "./kit.js?v=1";
+import { drawer, drawerRow, fitted, fs, loadData, node, passage, showFirst, stripChart, table, termify, token } from "./kit.js?v=2";
 
 const count = (v) => Math.round(v).toLocaleString("en-GB");
 const short = (v) => (v >= 1000 ? `${v / 1000}k` : `${v}`);
@@ -160,15 +160,18 @@ if (samples) {
 }
 const box = document.getElementById("heaps-passages");
 if (box) {
-  for (const s of data.passages) {
+  const groups = data.passages.map((s) => {
     const p = document.createElement("p");
     p.className = "fineprint";
     p.textContent = `A new ${s.kind === "name" ? "likely name" : "other word"}, “${s.surface}”, on a page linked from ${s.in_degree} ${s.in_degree === 1 ? "page" : "pages"}, which adds ${s.page_new_types} new types`;
-    box.append(p, passage({ page: s.page, text: s.sentence, highlight: s.surface }));
-  }
+    return [p, passage({ page: s.page, text: s.sentence, highlight: s.surface })];
+  });
+  showFirst(box, groups, { label: groups.length === 2 ? "The other passage" : `The other ${groups.length - 1} passages` });
 }
 
 // ---- glossary terms
 const did = document.getElementById("heaps-did");
 termify(did, "Heaps' law", "An empirical rule for text: the number of distinct words grows with the number of words read as a power below 1, so it keeps rising but ever more slowly.", "w5-term-heaps-law");
+termify(did, "tokens", "Words as they occur on the page: \"the Hulk smashes the tank\" has 5 tokens.", "w5-term-heaps-tokens");
+termify(document.getElementById("heaps-surprise"), "types", "Distinct words: \"the Hulk smashes the tank\" has 4 types, since \"the\" comes twice.", "w5-term-heaps-types");
 termify(did, "random orders", "The same 303 pages shuffled into a random order, 500 times with fixed seeds. Their spread shows how much the count moves by chance.", "w5-term-heaps-random");

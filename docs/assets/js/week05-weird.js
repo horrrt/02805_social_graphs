@@ -5,7 +5,7 @@
 // the top and bottom five as read (#weird-table), and the sentences we quote.
 // Data: docs/weeks/week05/data/weird.json, written by analysis/week05_weird.py.
 
-import { drawer, drawerRow, fitted, fs, loadData, node, passage, table, termify, textWidth, token } from "./kit.js?v=1";
+import { drawer, drawerRow, fitted, fs, loadData, node, passage, showFirst, table, termify, textWidth, token } from "./kit.js?v=2";
 
 const data = await loadData(new URL("../../weeks/week05/data/weird.json", import.meta.url));
 const pct = (v) => `${(v * 100).toFixed(1)}%`;
@@ -124,13 +124,14 @@ document.getElementById("weird-table")?.append(
 // ---- what we checked: a sentence past the lead of each top-three page, and the bottom page
 const box = document.getElementById("weird-passages");
 if (box) {
-  for (const q of data.quotes) {
+  const groups = data.quotes.map((q) => {
     const p = document.createElement("p");
     p.className = "fineprint";
     const row = [...data.top, ...data.bottom].find((r) => r.node === q.node);
     p.textContent = `Rank ${q.rank} of ${P} · ${q.name} · ${row.read}`;
-    box.append(p, passage({ page: q.node, text: q.text }));
-  }
+    return [p, passage({ page: q.node, text: q.text })];
+  });
+  showFirst(box, groups, { label: `The other ${groups.length - 1} passages` });
 }
 
 // ---- glossary terms

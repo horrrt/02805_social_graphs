@@ -1,7 +1,7 @@
 // The components a section script needs, from one import. Week 5's section
 // scripts start here:
 //
-//   import { slot, figure, echart, concordance, passage, loadData } from "./kit.js?v=1";
+//   import { slot, figure, echart, concordance, passage, loadData } from "./kit.js?v=2";
 //
 // The chart helpers, tables, drawers and glossary terms are Week 4's, re-exported
 // at the same URLs Week 4 imports them from, so the browser loads one copy. The
@@ -189,6 +189,20 @@ export function passage({ page, text, highlight }) {
   cite.append(wikiLink(page));
   q.append(p, cite);
   return q;
+}
+
+/**
+ * A list of passages with one in view and the rest one click away, so "what we
+ * checked" quotes a passage without filling the card (POST_GUIDE.md, "Keep the
+ * card short"). groups: arrays of nodes, one array per passage and its heading.
+ */
+export function showFirst(box, groups, { show = 1, label }) {
+  for (const g of groups.slice(0, show)) box.append(...g);
+  const rest = groups.slice(show);
+  if (!rest.length) return;
+  const body = document.createElement("div");
+  for (const g of rest) body.append(...g);
+  box.append(drawer(label, body));
 }
 
 /** A link to a node's English Wikipedia article, labelled with its title. */

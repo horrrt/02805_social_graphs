@@ -7,8 +7,8 @@
 // Data: docs/weeks/week05/data/relations.json, written by analysis/week05_relations.py,
 // and the shared map in network.json (week05-map.js).
 
-import { concordance, loadData, stripChart, termify } from "./kit.js?v=1";
-import { loadNetwork, marvelMap } from "./week05-map.js?v=1";
+import { concordance, loadData, stripChart, termify } from "./kit.js?v=2";
+import { loadNetwork, marvelMap } from "./week05-map.js?v=2";
 
 const LABEL = { killed: "Killed", family: "Family", enemy: "Enemy", ally: "Ally", teammate: "Teammate" };
 const pct = (v) => `${Math.round(v * 100)}%`;

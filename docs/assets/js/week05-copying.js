@@ -5,7 +5,7 @@
 // the cluster table and the passages we checked.
 // Data: docs/weeks/week05/data/copying.json, written by analysis/week05_copying.py.
 
-import { loadData, networkView, passage, stripChart, table, termify } from "./kit.js?v=1";
+import { loadData, networkView, passage, showFirst, stripChart, table, termify } from "./kit.js?v=2";
 
 const pct = (v) => (v < 0.1 ? `${(v * 100).toFixed(1)}%` : `${Math.round(v * 100)}%`);
 const count = (v) => v.toLocaleString("en-GB");
@@ -112,12 +112,13 @@ if (box) {
       text: g.quote,
     });
   }
-  for (const s of shown) {
+  const groups = shown.map((s) => {
     const p = document.createElement("p");
     p.className = "fineprint";
     p.textContent = s.head;
-    box.append(p, passage({ page: s.page, text: s.text }));
-  }
+    return [p, passage({ page: s.page, text: s.text })];
+  });
+  showFirst(box, groups, { label: `The other ${groups.length - 1} passages` });
 }
 
 // ---- glossary terms

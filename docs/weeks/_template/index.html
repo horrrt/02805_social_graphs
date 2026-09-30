@@ -16,6 +16,10 @@
            page; nothing marked toy may stay in a published post.
         4. Point the script at the bottom at docs/assets/js/weekNN-<section>.js files.
         5. Keep noindex and the week "coming" in docs/assets/js/weeks.js until it is done.
+        6. Keep every card to Week 4's density: the answer, its baseline, the main limit and one
+           quoted passage in view; method, extra numbers and other passages in drawers, and a
+           term's definition in a pop-up. tests/text-budget.test.mjs fails a card that shows
+           more than 350 words before a click; showFirst() in kit.js keeps one passage in view.
       Stylesheets: type.css, corridor.css, post.css and nothing else (tests/stylesheets.test.mjs).
       Rules for the writing and the numbers: POST_GUIDE.md.
     -->
@@ -162,10 +166,10 @@
             <div class="w5-slot" data-slot="did" id="first-did">
               <h3>What we did</h3>
               <div data-body>
-                <p>What was counted, on which data, and the baseline that gives the number meaning: what the null keeps and what it changes.</p>
-                <p>The one rule a reader needs to follow the figure, introduced with an example before any technical word.</p>
+                <p>One paragraph: what was counted, on which data, and the baseline that gives the number meaning. Everything else goes in the drawers.</p>
                 <div class="rx-drawers rx-foot">
                   <details class="rx-drawer"><summary>Method</summary><div class="rx-drawer-body">
+                    <p>The rules a reader needs only to reproduce the count: what the null keeps and what it changes, with an example before any technical word.</p>
                     <p>Seeds, runs, the tokeniser or the layout, word for word as the script does it.</p>
                   </div></details>
                   <details class="rx-drawer"><summary>More numbers</summary><div class="rx-drawer-body">
@@ -308,6 +312,6 @@
       </div>
     </footer>
     <!-- Replace with one script per section: docs/assets/js/weekNN-<section>.js. -->
-    <script src="../../assets/js/week-template.js?v=1" type="module"></script>
+    <script src="../../assets/js/week-template.js?v=2" type="module"></script>
   </body>
 </html>
