@@ -1,7 +1,7 @@
 // Keeps the component kit usable: every export of docs/assets/js/kit.js is
 // documented in docs/assets/js/README.md and nothing documented is missing,
-// and the week 5 page loads one script per section with the six slots each
-// section script draws into. Reads the files as text, so it needs no DOM.
+// and the week 5 page loads one script per section and keeps the ids of the
+// brief's six parts, which scripts and anchors use. Reads the files as text, so it needs no DOM.
 import test from "node:test";
 import assert from "node:assert/strict";
 import { existsSync, readFileSync } from "node:fs";
@@ -33,14 +33,13 @@ test("README.md documents exactly the exports of kit.js", () => {
   assert.deepEqual(documented(read("assets/js/README.md")), exportsOf(read("assets/js/kit.js")));
 });
 
-test("the week 5 page loads each section's script and has its six slots", () => {
+test("the week 5 page loads each section's script and keeps the six parts' ids", () => {
   const html = read("weeks/week05/index.html");
   for (const s of SECTIONS) {
     assert.ok(html.includes(`id="${s}"`), `#${s} section`);
     assert.ok(html.includes(`src="../../assets/js/week05-${s}.js?v=`), `week05-${s}.js is loaded`);
     assert.ok(existsSync(join(DOCS, `assets/js/week05-${s}.js`)), `week05-${s}.js exists`);
-    for (const p of PARTS)
-      assert.match(html, new RegExp(`id="${s}-${p}">\\s*<h3>[^<]+</h3>\\s*<div data-body>`), `#${s}-${p} has a heading and a body`);
+    for (const p of PARTS) assert.ok(html.includes(`id="${s}-${p}"`), `#${s}-${p} is still on the page`);
   }
   assert.ok(html.includes('href="../../assets/css/post.css'), "post.css is linked");
 });

@@ -5,7 +5,7 @@
 // the top and bottom five as read (#weird-table), and the sentences we quote.
 // Data: docs/weeks/week05/data/weird.json, written by analysis/week05_weird.py.
 
-import { drawer, drawerRow, fitted, fs, loadData, node, passage, showFirst, table, termify, textWidth, token } from "./kit.js?v=2";
+import { drawer, drawerRow, fitted, fs, loadData, node, passage, table, termify, textWidth, token } from "./kit.js?v=3";
 
 const data = await loadData(new URL("../../weeks/week05/data/weird.json", import.meta.url));
 const pct = (v) => `${(v * 100).toFixed(1)}%`;
@@ -131,7 +131,7 @@ if (box) {
     p.textContent = `Rank ${q.rank} of ${P} · ${q.name} · ${row.read}`;
     return [p, passage({ page: q.node, text: q.text })];
   });
-  showFirst(box, groups, { label: `The other ${groups.length - 1} passages` });
+  for (const g of groups) box.append(...g);
 }
 
 // ---- glossary terms

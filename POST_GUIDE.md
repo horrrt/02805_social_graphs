@@ -37,22 +37,11 @@ Avoid making visitors click through many trials to discover the point. A simulat
 
 ## Keep the card short
 
-Week 4 learned this in its redesign, and Week 5 shipped without it: its cards showed 415 to 702 words before any click, against Week 4's 41 to 230, because the lesson lived in one sentence at the end of this guide and no test measured it. A rule here now has a test beside it, as the data rules do.
+Every post from Week 4 on uses Week 4's card: a `w4-q` header with the question and a short answer, a `w4-two` row with one paragraph of what we did beside "What to notice", the figure, then the drawers. No slot labels, and no open limitation or passage blocks. Week 5 shipped six labelled blocks per card, 415 to 702 words before any click against Week 4's 41 to 230, and was rebuilt in Week 4's form.
 
-Before any click, a card shows:
+In view: the question, the answer told once, one paragraph of what we did, "What to notice" with the number against its baseline, and the figure. In the drawers, word for word: Method (with the limitation), More numbers, tables, and "What we read in the pages" for the passages the brief asks us to check. Do not add limitations, caveats or extra blocks the card does not need. Give a technical term a pop-up definition (`termify()`), and keep charts out of closed drawers unless they redraw when opened.
 
-- the question and its answer, told once. The opener's one-line finding, the answer, the notice and the findings strip each say something the others do not.
-- one paragraph of what we did: what was counted and against which baseline.
-- the figure, with a title and a note on how to read it.
-- "What to notice": the number against its baseline.
-- the main limitation, in a sentence or two.
-- one quoted passage.
-
-Everything else sits one click away, moved word for word: method, the word rule, extra numbers, robustness checks, the other passages, full tables. Give a technical term a pop-up definition (`termify()`) where it first appears in view, and keep charts out of closed drawers unless the chart redraws when the drawer opens.
-
-`tests/text-budget.test.mjs` fails any card in Week 4 onward, or in the template, that shows more than 350 words of its HTML before a click, and any "What we did" with more than one paragraph in view. Week 4's longest card is 230 words; the limitation and quote the Week 5 brief adds cost about 40 words each. Aim near 300.
-
-The test reads HTML, so it misses what a page script draws. Draw lists of passages with `showFirst()` from `kit.js`, and check the rendered page in the browser console before review:
+`tests/text-budget.test.mjs` fails any card that shows more than 350 words of its HTML before a click. It reads HTML only; for text a script draws, run this in the browser console and expect at most about 450 words per section:
 
 ```js
 [...document.querySelectorAll("section.step[id]")].map((s) => {
@@ -63,8 +52,6 @@ The test reads HTML, so it misses what a page script draws. Draw lists of passag
   return [s.id, n];
 });
 ```
-
-A section, rendered, should show at most about 450 words, or a little more when its figure is an interactive table. Week 4's sections show 280 to 645, and Week 5's 219 to 653 after the fix.
 
 ## Scientific and editorial quality
 
@@ -107,4 +94,4 @@ Week 3: the first country join dropped the Netherlands, Palestine and Taiwan, be
 
 Week 4: hand-typed numbers drifted until tests built each sentence from the JSON, and like-for-like nulls reversed three conclusions. The long page needed one deep dive at the end. Keep the answer, its baseline and its main limit in view, and move method notes one click away, word for word ("Keep the card short").
 
-Week 5: the data rules carried over because tests enforce them; the layout rules did not, because only prose recorded them. The brief's six parts (asked, did, figure, surprise, checked, limitation) became six open blocks, the answer was told three times per section, and the checked slots listed every passage read. A brief's list of parts says what a post must contain, not what must be open on load.
+Week 5: the data rules carried over because tests enforce them; the layout did not, because only prose recorded it. The brief's six parts say what a post contains, not six open blocks: the rebuilt cards use Week 4's form, with the limitation and the passages we read in drawers.

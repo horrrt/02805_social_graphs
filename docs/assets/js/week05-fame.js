@@ -6,7 +6,7 @@
 // passage behind each outlier's reason (#fame-passages).
 // Data: docs/weeks/week05/data/fame.json, written by analysis/week05_fame.py.
 
-import { echart, loadData, passage, showFirst, table, termify, token } from "./kit.js?v=2";
+import { echart, loadData, passage, table, termify, token } from "./kit.js?v=3";
 
 const count = (v) => v.toLocaleString("en-GB");
 const times = (r) => `×${r >= 1 ? r.toFixed(1) : r.toFixed(2)}`;
@@ -106,7 +106,7 @@ if (box) {
     head.append(Object.assign(document.createElement("b"), { textContent: `${short(o.name)}, ${times(o.ratio)} predicted. ` }), o.reason + from);
     return [head, passage({ page: o.quote.page, text: o.quote.text, highlight: o.quote.highlight })];
   });
-  showFirst(box, groups, { label: `The other ${groups.length - 1} pages` });
+  for (const g of groups) box.append(...g);
 }
 
 // ---- glossary terms

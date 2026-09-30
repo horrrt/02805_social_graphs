@@ -7,7 +7,7 @@
 // #heaps-passages).
 // Data: docs/weeks/week05/data/heaps.json, written by analysis/week05_heaps.py.
 
-import { drawer, drawerRow, fitted, fs, loadData, node, passage, showFirst, stripChart, table, termify, token } from "./kit.js?v=2";
+import { drawer, drawerRow, fitted, fs, loadData, node, passage, stripChart, table, termify, token } from "./kit.js?v=3";
 
 const count = (v) => Math.round(v).toLocaleString("en-GB");
 const short = (v) => (v >= 1000 ? `${v / 1000}k` : `${v}`);
@@ -166,7 +166,7 @@ if (box) {
     p.textContent = `A new ${s.kind === "name" ? "likely name" : "other word"}, “${s.surface}”, on a page linked from ${s.in_degree} ${s.in_degree === 1 ? "page" : "pages"}, which adds ${s.page_new_types} new types`;
     return [p, passage({ page: s.page, text: s.sentence, highlight: s.surface })];
   });
-  showFirst(box, groups, { label: groups.length === 2 ? "The other passage" : `The other ${groups.length - 1} passages` });
+  for (const g of groups) box.append(...g);
 }
 
 // ---- glossary terms

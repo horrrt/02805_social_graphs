@@ -3,7 +3,7 @@
 Every component a section script needs comes from one import, `kit.js`:
 
 ```js
-import { slot, figure, echart, concordance, passage, loadData } from "./kit.js?v=2";
+import { slot, figure, echart, concordance, passage, loadData } from "./kit.js?v=3";
 ```
 
 Link three stylesheets, in this order: `type.css`, `corridor.css`, `post.css`.
@@ -127,16 +127,6 @@ Key word in context: one row per hit, the hit centred and marked, the page linke
 
 A quoted passage from one page, with every occurrence of `highlight` marked and a link to the article. Use it
 in the "What we checked in the text" slot.
-
-### showFirst(box, groups, { show, label })
-
-Appends the first `show` passages (default 1) to `box` and puts the rest in a drawer labelled `label`. Each group
-is an array of nodes, such as a heading and its `passage()`. A card keeps one quote in view and the rest one
-click away.
-
-```js
-showFirst(slot("fame", "checked"), outliers.map((o) => [heading(o), passage(o.quote)]), { label: "The other nine pages" });
-```
 
 ### wikiLink(page)
 

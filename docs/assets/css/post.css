@@ -2351,7 +2351,7 @@
    did, what surprised us and the limitation in the text column; the figure
    beside them; the passages we checked across the bottom. The slot headings
    become Week 4's small labels. */
-.corridor .w5-card.w4-card {
+.corridor .w5-slots.w5-card.w4-card {
   align-items: start;
   column-gap: 40px;
   display: grid;
@@ -2365,7 +2365,7 @@
    row under the text): add w5-card-wide. What we did takes the text column,
    what surprised us and the limitation sit beside it, and the figure runs the
    full width under both. */
-.corridor .w5-card.w5-card-wide.w4-card {
+.corridor .w5-slots.w5-card.w5-card-wide.w4-card {
   grid-template-areas: "asked asked" "did surprise" "did limit" "figure figure" "checked checked";
   grid-template-columns: 500px minmax(0, 1fr);
   grid-template-rows: auto auto 1fr auto auto;
@@ -2397,6 +2397,9 @@
 .corridor .w5-card [data-body] > p.w5-question { color: var(--ink); font-size: var(--fs-h4); font-weight: 700; letter-spacing: -0.01em; line-height: 1.25; }
 .corridor .w5-card [data-body] > p.w4-answer { color: var(--ink); font-size: var(--fs-strong); font-weight: 600; }
 .corridor .w5-card .notice { margin-top: 0; }
+/* Week 5's cards in Week 4's form: the figure row under the text and notice. */
+.corridor .w5-card > .w5-fig { margin-top: 22px; min-width: 0; }
+.corridor .w5-card > .w4-two { margin-top: 18px; }
 .corridor .w5-chips { display: flex; flex-wrap: wrap; gap: 6px; }
 .corridor .w5-chips button { background: var(--card); border: 1px solid var(--line); border-radius: 999px; color: var(--ink-soft); cursor: pointer; font: inherit; font-size: var(--fs-small); padding: 3px 11px; }
 .corridor .w5-chips button[aria-pressed="true"] { background: var(--ink); border-color: var(--ink); color: var(--card); }
