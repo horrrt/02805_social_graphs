@@ -10,7 +10,7 @@
     <link href="../../assets/favicon.svg" rel="icon" type="image/svg+xml" />
     <link href="../../assets/css/type.css?v=2" rel="stylesheet" />
     <link href="../../assets/css/corridor.css?v=ts1" rel="stylesheet" />
-    <link href="../../assets/css/post.css?v=3" rel="stylesheet" />
+    <link href="../../assets/css/post.css?v=4" rel="stylesheet" />
   </head>
   <body class="corridor">
     <a class="skip" href="#main">Skip to content</a>
@@ -192,7 +192,7 @@
               <p>Links written in fight words reach across the network's communities, and links written in family words stay inside them.</p>
             </div>
           </header>
-          <div class="w5-slots card w4-card w5-card">
+          <div class="w5-slots card w4-card w5-card w5-card-wide">
             <div class="w5-slot" data-slot="asked" id="relations-asked">
               <h3>What we asked</h3>
               <div data-body>
@@ -221,10 +221,21 @@
             <div class="w5-slot" data-slot="figure" id="relations-figure">
               <h3>Figure</h3>
               <div data-body>
-                <div class="plot">
-                  <h3>Links that join two communities, by label</h3>
-                  <p class="axis-note">Dot: how often that label's links join two different communities, averaged over 100 Louvain runs. Band: the same share when the labels are shuffled, mean and one standard deviation either side.</p>
-                  <div id="chart-relations-crossing"></div>
+                <div class="w5-two">
+                  <div class="plot">
+                    <h3>Links that join two communities, by label</h3>
+                    <p class="axis-note">Dot: how often that label's links join two different communities, averaged over 100 Louvain runs. Band: the same share when the labels are shuffled, mean and one standard deviation either side.</p>
+                    <div id="chart-relations-crossing"></div>
+                  </div>
+                  <div class="plot">
+                    <h3>Where the fight and family links run</h3>
+                    <p class="axis-note">Each dot is a page, coloured by its community in section 4's consensus; grey pages have none. Dark lines: the pairs whose linking sentence uses the chosen kind of word, over the rest of the network. A pair whose two links use different words shows under both.</p>
+                    <div aria-label="Which links to draw" class="w5-chips" id="relations-map-kind" role="group">
+                      <button aria-pressed="true" data-kind="enemy" type="button">Fight words</button>
+                      <button aria-pressed="false" data-kind="family" type="button">Family words</button>
+                    </div>
+                    <div id="chart-relations-map"></div>
+                  </div>
                 </div>
               </div>
             </div>
@@ -427,6 +438,11 @@
                   <details class="rx-drawer"><summary>More numbers</summary><div class="rx-drawer-body">
                     <p>The groups, named after their page with the most link weight: Hulk, 40 pages; Wolverine, 40; Spider-Man, 38; Scarlet Witch, 38; Quasar, 35; Doctor Strange, 34; Iron Fist, 30; Black Widow (Natasha Romanova), 22; Radian (Morituri), 9.</p>
                     <p>The links hold these groups together far more tightly than chance. Louvain's modularity averages 0.503 over the 100 runs, against 0.347 ± 0.004 on 100 rewired copies of the network (z = 36.6). The consensus groups score 0.506. The rewiring swaps the ends of two links of equal weight, 50 swaps per link, so every page keeps its number of partners and its total link weight.</p>
+                    <div class="plot">
+                      <h3>Modularity of the groups against rewired networks</h3>
+                      <p class="axis-note">Dot: Louvain's modularity on the real network, the mean of 100 runs. Band: the same on 100 rewired networks that keep every page's partners and link weight, mean and one standard deviation either side. Higher means more link weight inside groups than chance.</p>
+                      <div id="chart-autocomplete-modularity"></div>
+                    </div>
                   </div></details>
                 </div>
               </div>
@@ -458,9 +474,9 @@
                     <div aria-live="polite" class="w5-reveal" hidden id="ac-reveal"></div>
                   </div>
                   <div class="plot">
-                    <h3>Modularity of the groups against rewired networks</h3>
-                    <p class="axis-note">Dot: Louvain's modularity on the real network, the mean of 100 runs. Band: the same on 100 rewired networks that keep every page's partners and link weight, mean and one standard deviation either side. Higher means more link weight inside groups than chance.</p>
-                    <div id="chart-autocomplete-modularity"></div>
+                    <h3>The eight groups the generators learn from</h3>
+                    <p class="axis-note">Each dot is a page, coloured by its consensus group. Grey pages are outside the giant component: the 9 Strikeforce: Morituri pages and the 17 with no links. A link takes its group's colour when both pages are in it. Each group is named after its page with the most link weight, as in the quiz.</p>
+                    <div id="chart-autocomplete-map"></div>
                   </div>
                 </div>
               </div>
@@ -777,10 +793,10 @@
         </span>
       </div>
     </footer>
-    <script src="../../assets/js/week05-relations.js?v=2" type="module"></script>
+    <script src="../../assets/js/week05-relations.js?v=3" type="module"></script>
     <script src="../../assets/js/week05-copying.js?v=2" type="module"></script>
     <script src="../../assets/js/week05-search.js?v=3" type="module"></script>
-    <script src="../../assets/js/week05-autocomplete.js?v=3" type="module"></script>
+    <script src="../../assets/js/week05-autocomplete.js?v=4" type="module"></script>
     <script src="../../assets/js/week05-heaps.js?v=2" type="module"></script>
     <script src="../../assets/js/week05-fame.js?v=2" type="module"></script>
     <script src="../../assets/js/week05-weird.js?v=2" type="module"></script>

@@ -1,13 +1,15 @@
 // Week 5 · section 4 · Community autocomplete. Owner: Àngela.
 //
 // Draws into this section's slots on docs/weeks/week05/index.html: the visitor
-// quiz over the masked fake pages, the modularity strip chart
+// quiz over the masked fake pages, the map of the groups (#chart-autocomplete-map,
+// through week05-map.js), the modularity strip chart in More numbers
 // (#chart-autocomplete-modularity) and one fake's copied run beside its source
 // sentence (#autocomplete-run). The quiz is a game for visitors; its clicks
 // stay in the browser and are never reported as results.
 // Data: docs/weeks/week05/data/autocomplete.json, written by analysis/week05_autocomplete.py.
 
 import { loadData, passage, stripChart, termify } from "./kit.js?v=1";
+import { loadNetwork, marvelMap } from "./week05-map.js?v=1";
 
 const data = await loadData(new URL("../../weeks/week05/data/autocomplete.json", import.meta.url));
 const $ = (id) => document.getElementById(id);
@@ -20,7 +22,22 @@ const el = (tag, text, className) => {
 const option = new Map(data.options.map((o) => [o.community_index, o]));
 const groupName = (o) => `${o.label} (${o.size} pages)`;
 
-// ---- the figure, right: the groups' modularity against rewired networks
+// ---- the figure, right: the groups on the link network. Hubs only are named,
+// and they are the quiz's options, so the map gives no member away.
+const mapHost = $("chart-autocomplete-map");
+if (mapHost) {
+  // Not awaited: the quiz below must not wait for the map.
+  loadNetwork()
+    .then((net) => marvelMap(mapHost, net, {
+      colorLinks: true,
+      legend: true,
+      noneLabel: "Morituri and the pages with no links",
+      aria: "The Marvel link network coloured by its eight consensus groups, each named after its hub",
+    }))
+    .catch((err) => console.error("week05 map failed", err));
+}
+
+// ---- More numbers: the groups' modularity against rewired networks
 const p = data.partition;
 $("chart-autocomplete-modularity")?.append(
   stripChart(

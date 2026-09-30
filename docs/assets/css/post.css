@@ -2895,6 +2895,7 @@
 .corridor .gv .g6 { fill: var(--group-6); } .corridor .gv .gv-link.g6 { stroke: var(--group-6); stroke-opacity: 0.85; }
 .corridor .gv .g7 { fill: var(--group-7); } .corridor .gv .gv-link.g7 { stroke: var(--group-7); stroke-opacity: 0.85; }
 .corridor .gv .gv-link.gv-on { stroke: var(--graph-accent); stroke-opacity: 1; }
+.corridor .gv .gv-link.gv-mark { stroke: var(--graph-ink); stroke-opacity: 0.75; }
 .corridor .gv .gv-leader { stroke: var(--graph-ink); stroke-opacity: 0.6; stroke-width: 1; }
 .corridor .gv .gv-outline { fill: none; stroke: var(--graph-ground); stroke-width: 1.5; }
 .corridor .gv .gv-ring { fill: none; stroke-width: 2.5; }

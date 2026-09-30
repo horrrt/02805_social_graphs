@@ -14,6 +14,8 @@
 //   theme: "dark"            the dark surface of the course explorables
 //   colorNodes: false        every node grey (links carry the groups)
 //   colorLinks: true         a link in its group's colour; fade: true dims the rest
+//   mark on a link           mark: true draws it in ink above the others; fade: true dims the rest
+//   titles: "hubs"           a tooltip on the hubs only ("none": on no node); default: every node
 //   hubs: [ids]              a ring and a name pill on these nodes
 //   labels: "inside"         each node's label written inside it (small networks)
 //   badges: true             a numbered badge with the node's group
@@ -21,6 +23,7 @@
 //   weights: true            hover a link to see its weight; highlight: {source, target} starts one on
 //   movable: true            click or press Enter on a node to move it to the next group
 //   legend: true             a line above with each group's colour, name and size
+//   unit: ["page", "pages"]  what the legend counts (default members)
 //   note: "…"                a line above the legend (the toy-example label, say)
 //   ratio: 0.75              the layout's height over its width: y runs from 0 to ratio
 //   onChange(nodes)          called after a move
@@ -58,7 +61,8 @@ export function networkView(host, spec) {
     for (let g = 0; g < k; g++) {
       const size = state.filter((n) => n.group === g || n.groups?.includes(g)).length;
       const item = HTML("span");
-      item.append(HTML("i", gclass(g)), document.createTextNode(`${opts.groups[g]} (${size} ${size === 1 ? "member" : "members"})`));
+      const [one, many] = opts.unit ?? ["member", "members"];
+      item.append(HTML("i", gclass(g)), document.createTextNode(`${opts.groups[g]} (${size} ${size === 1 ? one : many})`));
       legend.append(item);
     }
     const none = state.filter((n) => (n.group === null || n.group === undefined) && !n.groups?.length).length;
@@ -84,11 +88,14 @@ export function networkView(host, spec) {
     const lines = node("g");
     const links = opts.links.map((l) => ({ ...l, key: `${l.source}|${l.target}`, a: byId.get(l.source), b: byId.get(l.target) }));
     const coloured = (l) => opts.colorLinks && l.group !== null && l.group !== undefined;
-    links.sort((p, q) => Number(coloured(p)) - Number(coloured(q)));
+    const lifted = (l) => Number(coloured(l)) + 2 * Number(Boolean(l.mark));
+    links.sort((p, q) => lifted(p) - lifted(q));
+    const marking = links.some((l) => l.mark);
     const maxW = Math.max(1, ...links.map((l) => l.weight ?? 1));
     for (const l of links) {
-      const cls = ["gv-link", coloured(l) ? gclass(l.group) : opts.fade && opts.colorLinks ? "gv-faint" : "", l.key === focus ? "gv-on" : ""];
-      const w = l.key === focus ? 5 : opts.weights ? 0.8 + 3 * Math.sqrt((l.weight ?? 1) / maxW) : state.length > 150 ? 0.7 : 1.4;
+      const faint = opts.fade && (marking ? !l.mark : opts.colorLinks && !coloured(l));
+      const cls = ["gv-link", coloured(l) && !(marking && !l.mark) ? gclass(l.group) : "", l.mark ? "gv-mark" : "", faint ? "gv-faint" : "", l.key === focus ? "gv-on" : ""];
+      const w = l.key === focus ? 5 : l.mark ? 1.5 : opts.weights ? 0.8 + 3 * Math.sqrt((l.weight ?? 1) / maxW) : state.length > 150 ? 0.7 : 1.4;
       const at = { x1: X(l.a.x), y1: Y(l.a.y), x2: X(l.b.x), y2: Y(l.b.y) };
       lines.append(node("line", { ...at, class: cls.join(" ").trim(), "stroke-width": w }));
       if (opts.weights) {
@@ -130,7 +137,8 @@ export function networkView(host, spec) {
         b.append(node("text", { x: bx, y: by + fs("caption") * 0.34, "font-size": fs("caption") - 1.5, "text-anchor": "middle" }, String((one ?? 0) + 1)));
         g.append(b);
       }
-      g.append(node("title", {}, `${n.label ?? n.id}${two ? `: ${opts.groups?.[n.groups[0]]} and ${opts.groups?.[n.groups[1]]}` : !empty && opts.groups ? `: ${opts.groups[one]}` : ""}`));
+      const titled = opts.titles === "none" ? false : opts.titles === "hubs" ? opts.hubs?.includes(n.id) : true;
+      if (titled) g.append(node("title", {}, `${n.label ?? n.id}${two ? `: ${opts.groups?.[n.groups[0]]} and ${opts.groups?.[n.groups[1]]}` : !empty && opts.groups ? `: ${opts.groups[one]}` : ""}`));
       if (opts.movable && !two) {
         g.dataset.movable = "";
         g.setAttribute("tabindex", "0");
