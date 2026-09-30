@@ -1,0 +1,1207 @@
+import PageScripts from "@/components/PageScripts";
+
+export default function Page() {
+  return (
+    <>
+      <a className="skip" href="#main">Skip to content</a>
+      <div className="topbar">
+        <div className="shell">
+          <a className="brand" href="../../">
+            LOG–LOG
+            {" "}
+            <b>LEGENDS</b>
+          </a>
+          {" "}
+          <a className="site-link" href="../../#weeks">All posts</a>
+          <nav className="topnav" aria-label="Sections of this post">
+            <a href="#opening">Opening</a>
+            {" "}
+            <a href="#relations">1</a>
+            {" "}
+            <a href="#copying">2</a>
+            {" "}
+            <a href="#search">3</a>
+            {" "}
+            <a href="#autocomplete">4</a>
+            {" "}
+            <a href="#heaps">5</a>
+            {" "}
+            <a href="#fame">6</a>
+            {" "}
+            <a href="#weird">7</a>
+            {" "}
+            <a href="#closing">Closing</a>
+          </nav>
+        </div>
+      </div>
+      <main id="main">
+        <section className="hero w4-hero" id="top">
+          <div className="shell">
+            <p className="eyebrow">Week 5 · The language half · NLP I · Go nuts</p>
+            <h1>The Marvel network gets language</h1>
+            <div className="w4-hero-grid w5-hero-grid">
+              <div className="w4-hero-text">
+                <p className="body">
+                  <b>Does a character's place in the link network show in the words of its page?</b>
+                  {" "}
+                  We read the 303 Marvel Wikipedia pages as text, with this week's tools: tokens,
+                  counts, n-grams, concordances and the document-term matrix, and asked seven
+                  questions where the words meet the links.
+                </p>
+                <p className="caution">A link is an editor's choice to point to a page, not a friendship in the comics.</p>
+                <div className="w4-hero-stats">
+                  <p className="w4-stat">
+                    <b>713,617</b>
+                    <span>words on 303 pages</span>
+                  </p>
+                  <p className="w4-stat">
+                    <b>1,784</b>
+                    <span>links between the pages</span>
+                  </p>
+                </div>
+              </div>
+              <figure className="w4-hero-stage w5-hero-stage">
+                <div aria-label="Scatter plot of the 303 pages: words on the page against 1 plus the number of pages linking to it, both on log scales, with the fitted line." className="w5-hero-plot" id="chart-hero-fame" role="img"></div>
+                <figcaption className="w5-hero-caption">
+                  Each dot is a page; both axes are logarithmic. Pages with more incoming links are longer:
+                  Pearson r = 0.77 on the logs, against 0.00 ± 0.06 when in-degree is shuffled over the pages.
+                  {" "}
+                  <a href="#fame">Section 6</a>
+                  {" "}
+                  reads the pages furthest from the line.
+                </figcaption>
+              </figure>
+            </div>
+          </div>
+        </section>
+        <div className="shell">
+          <section aria-label="Seven findings" className="w4-findings" id="findings">
+            <div className="w4-findings-head">
+              <p className="w4-caps">Seven sections, seven findings</p>
+              <div className="w4-key">
+                <span>
+                  <i className="w4-key-real"></i>
+                  the real pages
+                </span>
+                <span>
+                  <i className="w4-key-band"></i>
+                  random baseline, mean ± 1 sd
+                </span>
+              </div>
+            </div>
+            <div className="w4-finding">
+              <span className="w4-num">1</span>
+              <div>
+                <h3>Turn links into relationships</h3>
+                <p>
+                  54% of links written in fight words join two communities, against 42% when the labels are shuffled; family links cross only 23% of the time.
+                </p>
+              </div>
+              <div className="w4-mini" data-finding="1"></div>
+              <a href="#relations">Section 1 →</a>
+            </div>
+            <div className="w4-finding">
+              <span className="w4-num">2</span>
+              <div>
+                <h3>Catch Wikipedia copying itself</h3>
+                <p>
+                  20 of the 22 pairs of pages that share a copied passage already link to each other, against 3.1% of all pairs.
+                </p>
+              </div>
+              <div className="w4-mini" data-finding="2"></div>
+              <a href="#copying">Section 2 →</a>
+            </div>
+            <div className="w4-finding">
+              <span className="w4-num">3</span>
+              <div>
+                <h3>A Marvel search engine in 20 lines</h3>
+                <p>
+                  Raw word counts put the right page in the top five for 6 of 11 queries, but first for only 1: short pages win most misses.
+                </p>
+              </div>
+              <div className="w4-mini" data-finding="3"></div>
+              <a href="#search">Section 3 →</a>
+            </div>
+            <div className="w4-finding">
+              <span className="w4-num">4</span>
+              <div>
+                <h3>Community autocomplete</h3>
+                <p>
+                  Every fake page repeats a run of 8 to 17 words from its community's pages. No other group has guessed yet.
+                </p>
+              </div>
+              <div className="w4-mini" data-finding="4"></div>
+              <a href="#autocomplete">Section 4 →</a>
+            </div>
+            <div className="w4-finding">
+              <span className="w4-num">5</span>
+              <div>
+                <h3>Heaps' law of the Marvel universe</h3>
+                <p>
+                  Read least-linked first, the first 100,000 words hold 11,079 different words, against 10,570 ± 207 in random orders: minor characters bring new words.
+                </p>
+              </div>
+              <div className="w4-mini" data-finding="5"></div>
+              <a href="#heaps">Section 5 →</a>
+            </div>
+            <div className="w4-finding">
+              <span className="w4-num">6</span>
+              <div>
+                <h3>Does network fame buy you more words?</h3>
+                <p>
+                  Yes: page length follows in-degree at Pearson 0.77, and pages for a codename several characters share sit below the trend.
+                </p>
+              </div>
+              <div className="w4-mini" data-finding="6"></div>
+              <a href="#fame">Section 6 →</a>
+            </div>
+            <div className="w4-finding">
+              <span className="w4-num">7</span>
+              <div>
+                <h3>Who has the weirdest Wikipedia page?</h3>
+                <p>
+                  10 of the 30 most repetitive pages are about several characters who share one name, where 4.6 would be expected.
+                </p>
+              </div>
+              <div className="w4-mini" data-finding="7"></div>
+              <a href="#weird">Section 7 →</a>
+            </div>
+          </section>
+        </div>
+        <div className="shell">
+          <section className="step" data-owner="" id="opening">
+            <header className="w4-opener">
+              <span aria-hidden="true" className="w4-opener-num">0</span>
+              <div>
+                <h2>Opening</h2>
+                <p>303 Wikipedia pages about Marvel characters, read once as a network and once as text.</p>
+              </div>
+            </header>
+            <div className="card w4-card">
+              <div className="w4-two">
+                <div>
+                  <p className="sub">
+                    The pages are the English Wikipedia articles in Category:Marvel Comics superheroes, as the
+                    course froze them on 26 August 2026. Each is plain text, from 193 to 14,037 words long,
+                    1,218 at the median.
+                  </p>
+                  <p className="sub">
+                    <b>What a link means.</b>
+                    {" "}
+                    A link runs from page A to page B when A's text links to B's
+                    article. The pages hold 1,784 such links, joining 1,434 pairs of pages. 58 pages receive
+                    no link at all, and 17 of those also link to no page. A link records an editor's choice
+                    to point there, not a friendship or a fight in the comics.
+                  </p>
+                  <div className="rx-drawers rx-foot">
+                    <details className="rx-drawer">
+                      <summary>What counts as a word</summary>
+                      <div className="rx-drawer-body">
+                        <p className="sub">
+                          <b>What a word is.</b>
+                          {" "}
+                          A tokenizer decides where one word ends and the next begins.
+                          Unless a section says otherwise, a word is a run of letters, lowercased, with an
+                          apostrophe or hyphen inside it kept and a possessive 's removed: "Spider-Man's first
+                          appearance in 1962" gives spider-man, first, appearance, in. The pages then hold
+                          713,617 tokens, word occurrences, of 27,754 types, different words.
+                        </p>
+                        <div className="notice">
+                          <span className="ico">!</span>
+                          {" "}
+                          <span>
+                            <b>Preprocessing changes the counts</b>
+                            {" "}
+                            Sections 2 and 3 keep digits and split words at hyphens, so the same sentence gives
+                            spider, man's, first, appearance, in, 1962, and the pages hold about 740,000 tokens,
+                            4% more. Each section states its rule.
+                          </span>
+                        </div>
+                      </div>
+                    </details>
+                  </div>
+                </div>
+                <div>
+                  <div className="w4-anatomy">
+                    <h3>How each section reads</h3>
+                    <p>Every section answers one question on one card.</p>
+                    <dl>
+                      <div>
+                        <dt>Question</dt>
+                        <dd>What we asked, and the short answer</dd>
+                      </div>
+                      <div>
+                        <dt>Did</dt>
+                        <dd>What we did, beside what to notice</dd>
+                      </div>
+                      <div>
+                        <dt>Figure</dt>
+                        <dd>The chart or table that answers it</dd>
+                      </div>
+                      <div>
+                        <dt>Drawers</dt>
+                        <dd>Method and its limits, more numbers, and the passages we read</dd>
+                      </div>
+                    </dl>
+                  </div>
+                  <div className="w4-howto">
+                    <h3>How to read the charts</h3>
+                    <div>
+                      <i className="w4-sw-real"></i>
+                      <b>The real pages</b>
+                      <span>What the pages and links show.</span>
+                    </div>
+                    <div>
+                      <i className="w4-sw-band"></i>
+                      <b>Random baseline</b>
+                      <span>Mean and one standard deviation over shuffles, rewired networks or random orders.</span>
+                    </div>
+                    <div>
+                      <i className="w4-sw-ref"></i>
+                      <b>Reference</b>
+                      <span>What chance alone would give.</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+          <section className="step" data-owner="Gyula" id="relations">
+            <header className="w4-opener">
+              <span aria-hidden="true" className="w4-opener-num">1</span>
+              <div>
+                <h2>Turn links into relationships</h2>
+                <p>
+                  Links written in fight words reach across the network's communities, and links written in family words stay inside them.
+                </p>
+              </div>
+            </header>
+            <div className="card w4-card w5-card">
+              <header className="w4-q" id="relations-asked">
+                <span className="w4-num">1A</span>
+                <div>
+                  <h2>Do enemies sit in different communities from allies and family?</h2>
+                  <p className="w4-answer">Mostly yes, as a tendency: about half of the word list's labels are right.</p>
+                </div>
+              </header>
+              <div className="w4-two">
+                <div id="relations-did">
+                  <p className="sub">
+                    We labelled each link from page A to page B by the sentence on A's page that names B, using a small word list that gives each sentence one of five labels: killed, family, enemy, ally, teammate. Then we counted how often each label's links join two communities, against the labels shuffled.
+                  </p>
+                </div>
+                <div id="relations-surprise">
+                  <div className="notice">
+                    <span className="ico">💡</span>
+                    <span>
+                      <b>What to notice</b>
+                      {" "}
+                      54% of enemy links join two communities, against 42% when the labels are shuffled (z = 4.3). Family links cross only 23% of the time (z = −4.6). Allies cross 31%, still within chance; teammate and killed links look like shuffled ones.
+                    </span>
+                  </div>
+                </div>
+              </div>
+              <div className="w5-fig" id="relations-figure">
+                <div className="w5-two">
+                  <div className="plot">
+                    <h3>Links that join two communities, by label</h3>
+                    <p className="axis-note">
+                      Dot: the share of that label's links that join two communities, over 100 Louvain runs. Band: the same share with the labels shuffled, mean ± one standard deviation.
+                    </p>
+                    <div id="chart-relations-crossing"></div>
+                  </div>
+                  <div className="plot">
+                    <h3>Where the fight and family links run</h3>
+                    <p className="axis-note">
+                      Each dot is a page, coloured by its community in section 4's consensus; grey pages have none. Dark lines join the pairs whose linking sentence uses the chosen kind of word.
+                    </p>
+                    <div aria-label="Which links to draw" className="w5-chips" id="relations-map-kind" role="group">
+                      <button aria-pressed="true" data-kind="enemy" type="button">Fight words</button>
+                      {" "}
+                      <button aria-pressed="false" data-kind="family" type="button">Family words</button>
+                    </div>
+                    <div id="chart-relations-map"></div>
+                  </div>
+                </div>
+              </div>
+              <div className="rx-drawers rx-foot">
+                <details className="rx-drawer">
+                  <summary>Method</summary>
+                  <div className="rx-drawer-body">
+                    <p>
+                      A link from A to B means A's Wikipedia page links to B's. For each of the 1,784 links we took the first sentence on A's page that names B, and found one for 1,513 (85%). Most of the rest come from infoboxes and navigation boxes, which our copy of the text has lost; 33 point at one of 7 alternate versions, such as the film Jean Grey, whose name belongs to the main character.
+                    </p>
+                    <p>
+                      A small word list labels each sentence: killed, family, enemy, ally or teammate. It matches lower-case words only, so a name such as Doctor Nemesis supplies no label. 836 of the sentences (55%) match no word at all.
+                    </p>
+                    <p>
+                      The communities come from 100 Louvain runs on the link network. For each label we counted how often its links join two different communities, averaged over the runs, and compared it with 1,000 shuffles of the labels over the 677 labelled links.
+                    </p>
+                    <p>
+                      Each page splits into paragraphs at its line breaks and into sentences with spaCy's rule-based sentencizer. Sentences under References, External links, Notes, See also and Further reading are dropped. A character is found by its page title without the disambiguation ("Storm (Marvel Comics)" is "Storm") and by the real name its description gives in brackets ("Emil Blonsky" for the Abomination), as a whole word. A name several pages go by belongs to the main page: "Spider-Man" is the main Spider-Man, not the Mangaverse one.
+                    </p>
+                    <p>
+                      A sentence that matches several labels takes the first of killed, family, enemy, ally, teammate. Negation is not handled. Louvain runs on the weighted, undirected link network with seeds 2805 to 2904. The runs disagree with each other, so the test uses how often each link crosses over all 100 runs, for the real labels and the shuffled ones alike.
+                    </p>
+                    <p id="relations-limit">
+                      The word list reads the sentence, not the pair: a long sentence that names B often tells of a third character. "Phyla then goes with Nova and Star-Lord to lead a final battle against Annihilus" makes Star-Lord her enemy.
+                    </p>
+                  </div>
+                </details>
+                <details className="rx-drawer">
+                  <summary>More numbers</summary>
+                  <div className="rx-drawer-body">
+                    <p>
+                      A stricter shuffle only swaps labels between links that leave the same page, so a page written in hostile words throughout cannot carry the result. Enemies still cross more than it predicts (46%, z = 3.6) and family less (33%, z = −3.7). A pair of characters who link both ways counts twice above; counting each pair once gives z = 3.6 for enemies and −4.0 for family.
+                    </p>
+                    <p>
+                      The labelled links: 217 teammate, 202 enemy, 116 family, 84 killed and 58 ally. 113 sentences match more than one label.
+                    </p>
+                  </div>
+                </details>
+                <details className="rx-drawer">
+                  <summary>What we read in the pages</summary>
+                  <div className="rx-drawer-body" id="relations-checked">
+                    <p>
+                      We read 60 sentences, 12 per label, drawn at random: 32 of the labels describe how A and B relate. Ally labels hold up best (9 of 12), enemy and killed worst (5 of 12 each), family in between (6 of 12).
+                    </p>
+                    <p>
+                      ✓ means the label describes how A and B relate; ✗ says what the sentence is about instead.
+                    </p>
+                    <div aria-label="Show the sentences for one label" className="w5-chips" id="relations-chips" role="group"></div>
+                    <div id="relations-lines"></div>
+                  </div>
+                </details>
+              </div>
+            </div>
+          </section>
+          <section className="step" data-owner="Gyula" id="copying">
+            <header className="w4-opener">
+              <span aria-hidden="true" className="w4-opener-num">2</span>
+              <div>
+                <h2>Catch Wikipedia copying itself</h2>
+                <p>
+                  Pages copy each other when their characters share a codename or a team, and what they copy is mostly publication history and lists of films and games, rarely the character's story.
+                </p>
+              </div>
+            </header>
+            <div className="card w4-card w5-card">
+              <header className="w4-q" id="copying-asked">
+                <span className="w4-num">2A</span>
+                <div>
+                  <h2>Which Marvel pages copy text from each other?</h2>
+                  <p className="w4-answer">
+                    22 pairs of pages, in 12 clusters, nearly all about characters who already link to each other.
+                  </p>
+                </div>
+              </header>
+              <div className="w4-two">
+                <div>
+                  <div id="copying-did">
+                    <p className="sub">
+                      We collected every run of eight words in a row on each page, set aside runs found on more than 10 pages as house style, and linked two pages when they share a passage of 30 words or more.
+                    </p>
+                  </div>
+                  <div id="copying-surprise">
+                    <div className="notice">
+                      <span className="ico">💡</span>
+                      <span>
+                        <b>What to notice</b>
+                        {" "}
+                        20 of the 22 copying pairs link to each other, against 3.1% of all pairs of pages and 16% of pairs that share only a phrase. Counted on both pages of each pair, 35% of the copied words sit under Publication history and 24% under In other media, the lists of films and games, and only 5% in the character's biography.
+                      </span>
+                    </div>
+                    <div id="chart-copying-linked"></div>
+                  </div>
+                </div>
+                <div id="copying-figure">
+                  <div className="plot">
+                    <h3>The copying network</h3>
+                    <p className="axis-note">
+                      Each dot is a page, sized by the words it shares. A line joins two pages that share a passage of 30 words or more, thicker for more shared words; a dashed line means the two pages do not link to each other. Hover a line for the passage.
+                    </p>
+                    <div id="chart-copying-network"></div>
+                  </div>
+                </div>
+              </div>
+              <div className="rx-drawers rx-foot">
+                <details className="rx-drawer">
+                  <summary>Method</summary>
+                  <div className="rx-drawer-body">
+                    <p>
+                      We split every page into lower-case words, 740,282 in all, and collected every run of eight words in a row, an 8-gram. A run found on many pages is house style, not copying: "in American comic books published by Marvel Comics" is on 282 of the 303 pages. So 8-grams on more than 10 pages are set aside.
+                    </p>
+                    <p>
+                      The remaining 8-grams merge into passages, overlapping runs counting once. Two pages copy each other when they share a passage of 30 words or more. The copying network links those pages, and its connected pieces are the clusters.
+                    </p>
+                    <p>
+                      A word is a run of letters and digits, with an apostrophe inside a word kept ("jean's"); punctuation and line breaks are dropped. Each word keeps its place on the page, so every shared passage is quoted from the page itself, and a passage copied twice on a page counts twice. A passage is labelled with the section heading above it on each of the two pages. What ties each cluster's characters was read from their pages.
+                    </p>
+                    <p>
+                      The check: a pair that copies is compared with all 45,753 pairs of pages and with the 2,830 pairs that share only a phrase, an 8-gram run shorter than 30 words. A link counts in either direction.
+                    </p>
+                    <p id="copying-limit">
+                      The text has no edit history, so we cannot tell who copied whom. The passage length matters: at 20 words, 80 pairs copy and 46 of them link; at 50 words, 11 copy and all of them link.
+                    </p>
+                  </div>
+                </details>
+                <details className="rx-drawer">
+                  <summary>More numbers</summary>
+                  <div className="rx-drawer-body">
+                    <p>
+                      The two pairs that do not link are Wild Child's: his page shares a stock sentence about Krakoa with Storm's and Rachel Summers's. Five clusters share a codename (Venom and Eddie Brock), six a team (Rocket Raccoon and Star-Lord) and one a family.
+                    </p>
+                    <p>
+                      The house-style cutoff barely matters: any cutoff from 3 to 20 pages gives the same 22 pairs. And runs of 12 words add 16 pairs from a templated lead that 8-word runs split, on eight Strikeforce: Morituri pages whose leads come in two versions.
+                    </p>
+                  </div>
+                </details>
+                <details className="rx-drawer">
+                  <summary>Table: the 12 clusters</summary>
+                  <div className="rx-drawer-body">
+                    <div id="copying-clusters"></div>
+                  </div>
+                </details>
+                <details className="rx-drawer">
+                  <summary>What we read in the pages</summary>
+                  <div className="rx-drawer-body" id="copying-checked">
+                    <p>
+                      The longest passage of the largest copying pair, quoted from its first page. The next two pairs, and a templated lead that only runs of 12 words find, are one click away.
+                    </p>
+                    <div id="copying-passages"></div>
+                  </div>
+                </details>
+              </div>
+            </div>
+          </section>
+          <p aria-live="polite" className="status-line" id="w5-boot-status" hidden></p>
+          <section className="step" data-owner="Àngela" id="search">
+            <header className="w4-opener">
+              <span aria-hidden="true" className="w4-opener-num">3</span>
+              <div>
+                <h2>A Marvel search engine in 20 lines</h2>
+                <p>
+                  Counting shared words beats chance, but it loves short pages: a 255-word page beats Storm's 9,831 words for "weather-controlling mutant from Kenya".
+                </p>
+              </div>
+            </header>
+            <div className="card w4-card w5-card">
+              <header className="w4-q" id="search-asked">
+                <span className="w4-num">3A</span>
+                <div>
+                  <h2>Can a Bag-of-Words search find the right Marvel page from a short description?</h2>
+                  <p className="w4-answer">
+                    Rarely first: the right page comes first for 1 of 11 queries and in the top five for 6. Short pages win most misses.
+                  </p>
+                </div>
+              </header>
+              <div className="w4-two">
+                <div id="search-did">
+                  <p className="sub">
+                    We turned every page and every query into a Bag of Words: a count of each word, with the order thrown away. We wrote 12 queries, 11 with a target page, ranked all 303 pages by cosine similarity to each, and looked where the target came: once with every word, once with stopwords removed, spaCy's list of 306 words.
+                  </p>
+                </div>
+                <div id="search-surprise">
+                  <div className="notice">
+                    <span className="ico">💡</span>
+                    <span>
+                      <b>What to notice</b>
+                      {" "}
+                      Even one first place beats chance (p = 0.036 against the 1 in 303 of a random ranking). Removing stopwords lifts the hits to 2 first and 10 in the top five, so stopwords cost real hits. Page length costs most of the rest: without stopwords, 7 of the 9 misses still lose to a page at most a third as long as the target, because cosine divides by the length of the count vector.
+                    </span>
+                  </div>
+                </div>
+              </div>
+              <div className="w5-fig" id="search-figure">
+                <div id="search-stats" className="w5-statrow"></div>
+                <div className="w5-two">
+                  <div className="w5-panel">
+                    <h4>Try the search (stopwords removed)</h4>
+                    <div aria-label="Example queries" className="w5-chips" id="search-chips" role="group"></div>
+                    <div className="w5-search-box">
+                      <label className="visually-hidden" htmlFor="search-input">Query</label>
+                      {" "}
+                      <input autoComplete="off" id="search-input" placeholder="king of Wakanda" type="search" />
+                      {" "}
+                      <button id="search-run" type="button">Rank pages</button>
+                    </div>
+                    <ol aria-live="polite" className="w5-rank" id="search-live-ranks"></ol>
+                    <p className="w5-caption">The eight pages with the highest cosine for the query; (target) marks the page we meant.</p>
+                  </div>
+                  <div className="w5-panel">
+                    <h4>The 12 queries</h4>
+                    <div className="w5-table-wrap">
+                      <table className="w5-table">
+                        <thead>
+                          <tr>
+                            <th>Query</th>
+                            <th>Target</th>
+                            <th>Raw rank</th>
+                            <th>No stopwords</th>
+                            <th>Raw top hit</th>
+                          </tr>
+                        </thead>
+                        <tbody id="search-tbody"></tbody>
+                      </table>
+                    </div>
+                    <div aria-live="polite" className="w5-detail" id="search-detail"></div>
+                    <p className="w5-caption">Click a query to see the words it shares with the winning page and with its target.</p>
+                  </div>
+                </div>
+              </div>
+              <div className="rx-drawers rx-foot">
+                <details className="rx-drawer">
+                  <summary>Method</summary>
+                  <div className="rx-drawer-body">
+                    <p>
+                      A word is a run of letters and digits in any alphabet, lowercased, and a hyphen splits words, so Spider-Man counts as spider and man. The 303 pages and their 28,062 different words form a document-term matrix that is 97.2% empty. The most common word, the, makes up 6.1% of all 740,340 words: a handful of words dominate every page, as Zipf's law says.
+                    </p>
+                    <p>
+                      The brief's own example, "Norse god of thunder", has no target: the snapshot holds no page for Thor, so it stays out of the hit rates.
+                    </p>
+                    <p>
+                      Pages with equal cosine rank in node order, in the script and in the search box. A random ranking puts the target first with probability 1 in 303 and in the top five with 5 in 303; a binomial test gives each hit count its p-value.
+                    </p>
+                    <p>
+                      With raw counts, 8 of the 10 misses are won by a page shorter than the median page of 1,258 words.
+                    </p>
+                    <p>
+                      A miss is labelled from the data, for each model: a short-page win when the winning page has at most a third of the target's words, a missing word when the target shares no content word with the query, and otherwise a win by a page that is not short. The search box runs the stopword-free model on the same vocabulary as the table.
+                    </p>
+                    <p id="search-limit">
+                      We chose the 12 queries and their targets ourselves, so the hit rate says how the search does on our questions, and the single first-place hit, Moon Knight, carries the raw headline.
+                    </p>
+                  </div>
+                </details>
+                <details className="rx-drawer">
+                  <summary>What we read in the pages</summary>
+                  <div className="rx-drawer-body" id="search-checked">
+                    <p>
+                      Redneck's page wins "weather-controlling mutant from Kenya" while sharing one word with the query besides stopwords, mutant, in its first sentence:
+                    </p>
+                    <div id="search-passage"></div>
+                  </div>
+                </details>
+              </div>
+            </div>
+          </section>
+          <section className="step" data-owner="Àngela" id="autocomplete">
+            <header className="w4-opener">
+              <span aria-hidden="true" className="w4-opener-num">4</span>
+              <div>
+                <h2>Community autocomplete</h2>
+                <p>
+                  Trained on one community's pages, a trigram generator copies: every fake page repeats a run of 8 to 17 words straight from its community's text.
+                </p>
+              </div>
+            </header>
+            <div className="card w4-card w5-card">
+              <header className="w4-q" id="autocomplete-asked">
+                <span className="w4-num">4A</span>
+                <div>
+                  <h2>Can someone who has not seen the pages tell which community a fake page came from?</h2>
+                  <p className="w4-answer">We do not know yet: no other group has guessed. What the fakes already show is copying.</p>
+                </div>
+              </header>
+              <div className="w4-two">
+                <div id="autocomplete-did">
+                  <p className="sub">
+                    Each group of at least 8 pages gets its own trigram model: the probability of the next word given the two before it, P(w3 | w1, w2), counted from the group's pages. We will post the 9 fake pages, one per group with names masked, in the week 5 Teams channel and report the correct guesses out of all guesses, against the 1 in 9 (11%) a random guess gets right.
+                  </p>
+                </div>
+                <div id="autocomplete-surprise">
+                  <div className="notice">
+                    <span className="ico">💡</span>
+                    <span>
+                      <b>What to notice</b>
+                      {" "}
+                      In each group's pages, 81% to 86% of two-word contexts have only one next word, against 50% to 63% of one-word contexts. More context means sparser counts, so the model often has no choice: 42% of the words the model drew for the quiz fakes had a single candidate.
+                    </span>
+                  </div>
+                </div>
+              </div>
+              <div className="w5-fig" id="autocomplete-figure">
+                <div className="w5-two">
+                  <div className="plot">
+                    <h3>Guess the community</h3>
+                    <p className="axis-note">
+                      A locked guess stays locked. Your score stays in this browser and is not part of our results.
+                    </p>
+                    <p aria-live="polite" className="w5-scoreboard" id="ac-scoreboard"></p>
+                    <p className="w5-caption" id="ac-progress"></p>
+                    <div className="w5-fake">
+                      <p className="w5-char" id="ac-char"></p>
+                      <p id="ac-text"></p>
+                    </div>
+                    <div className="w5-guess">
+                      <div>
+                        <label htmlFor="ac-select">Which group's pages trained this fake?</label>
+                        {" "}
+                        <select id="ac-select"></select>
+                      </div>
+                      <button id="ac-submit" type="button">Lock and reveal</button>
+                    </div>
+                    <div className="w5-quiz-nav">
+                      <button data-kind="ghost" id="ac-prev" type="button">Previous</button>
+                      {" "}
+                      <button data-kind="ghost" id="ac-next" type="button">Next fake</button>
+                    </div>
+                    <div aria-live="polite" className="w5-reveal" id="ac-reveal" hidden></div>
+                  </div>
+                  <div className="plot">
+                    <h3>The eight groups the generators learn from</h3>
+                    <p className="axis-note">
+                      Each dot is a page, coloured by its consensus group. Grey pages are outside the giant component: the 9 Strikeforce: Morituri pages and the 17 with no links. A link takes its group's colour when both pages are in it.
+                    </p>
+                    <div id="chart-autocomplete-map"></div>
+                  </div>
+                </div>
+              </div>
+              <div className="rx-drawers rx-foot">
+                <details className="rx-drawer">
+                  <summary>Method</summary>
+                  <div className="rx-drawer-body">
+                    <p>
+                      First the communities. Louvain ran 100 times on the giant component of the link network, the 277 of 303 pages joined to each other by links. The runs disagree: they found 89 different partitions, the most common one in only 4 runs, and 77 runs found 8 groups. Two runs agree with a median normalised mutual information of 0.90. So we kept a consensus: two pages share a group when at least half the runs put them together, which gives 8 groups, the same for all 100 seeds we tried on it. The 9 Strikeforce: Morituri pages link only to each other and form a ninth group; the 17 pages with no links have none.
+                    </p>
+                    <p>
+                      A trigram model is next-token prediction, what a large language model does, with a two-word window and a table of counts in place of a neural network. Each fake page opens with one sentence we wrote by hand ("Aetherion is a character appearing in American comic books published by Marvel Comics.") and continues with 5 sentences the model samples word by word.
+                    </p>
+                    <p>
+                      Before training we replace every character's name, the page title and the real name its description gives, by [name], so a guess cannot rest on spotting a member. The quiz shows these masked fakes.
+                    </p>
+                    <p>
+                      Tokeniser: each page splits into paragraphs at its line breaks and into sentences with spaCy's rule-based sentencizer, which knows that "Dr." does not end a sentence. Heading lines are dropped, and so is every sentence under References, External links, Notes, See also and Further reading. A word is a run of letters in any alphabet, with an apostrophe or hyphen inside it kept, lowercased and with a possessive 's removed; digits and punctuation are dropped.
+                    </p>
+                    <p>
+                      Each sentence is padded with two start markers and one end marker before counting. The model has no smoothing and no backoff: sampling starts from the start markers and only ever reaches two-word contexts that occur in the pages. A sentence that reaches 40 words without ending is thrown away and drawn again, never cut; that happened to 5 sentences. Names are matched as whole words with their capitals, so "Storm" becomes [name] and "storm" stays.
+                    </p>
+                    <p id="autocomplete-limit">
+                      The mask covers only the 303 characters' own names. Other characters, surnames on their own and team names stay, and all 9 masked fakes keep some, such as mephisto, khonshu and krakoa, so a guess can still rest on a name.
+                    </p>
+                  </div>
+                </details>
+                <details className="rx-drawer">
+                  <summary>More numbers</summary>
+                  <div className="rx-drawer-body">
+                    <p>
+                      The groups, named after their page with the most link weight: Hulk, 40 pages; Wolverine, 40; Spider-Man, 38; Scarlet Witch, 38; Quasar, 35; Doctor Strange, 34; Iron Fist, 30; Black Widow (Natasha Romanova), 22; Radian (Morituri), 9.
+                    </p>
+                    <p>
+                      The groups shift from run to run, as the median normalised mutual information of 0.90 shows; the consensus keeps the pairs most runs agree on.
+                    </p>
+                    <p>Without the mask, 7 of the 9 fakes name a member of their own group.</p>
+                    <p>
+                      The links hold these groups together far more tightly than chance. Louvain's modularity averages 0.503 over the 100 runs, against 0.347 ± 0.004 on 100 rewired copies of the network (z = 36.6). The consensus groups score 0.506. The rewiring swaps the ends of two links of equal weight, 50 swaps per link, so every page keeps its number of partners and its total link weight.
+                    </p>
+                    <div className="plot">
+                      <h3>Modularity of the groups against rewired networks</h3>
+                      <p className="axis-note">
+                        Dot: Louvain's modularity on the real network, the mean of 100 runs. Band: the same on 100 rewired networks that keep every page's partners and link weight, mean and one standard deviation either side. Higher means more link weight inside groups than chance.
+                      </p>
+                      <div id="chart-autocomplete-modularity"></div>
+                    </div>
+                  </div>
+                </details>
+                <details className="rx-drawer">
+                  <summary>What we read in the pages</summary>
+                  <div className="rx-drawer-body" id="autocomplete-checked">
+                    <p>
+                      For every fake we searched its group's sentences for the longest run of words it repeats verbatim. The runs are 8 to 17 words long, and 8 of the 9 come from a single page. Opening the example gives away one quiz answer.
+                    </p>
+                    <details className="rx-drawer">
+                      <summary>Show one fake's copied run beside its source sentence</summary>
+                      <div className="rx-drawer-body">
+                        <div id="autocomplete-run"></div>
+                      </div>
+                    </details>
+                  </div>
+                </details>
+              </div>
+            </div>
+          </section>
+          <section className="step" data-owner="Niklas" id="heaps">
+            <header className="w4-opener">
+              <span aria-hidden="true" className="w4-opener-num">5</span>
+              <div>
+                <h2>Heaps' law of the Marvel universe</h2>
+                <p>
+                  Word for word, the least-linked characters' pages bring more new vocabulary than random pages, and the most-linked pages bring less.
+                </p>
+              </div>
+            </header>
+            <div className="card w4-card w5-card">
+              <header className="w4-q" id="heaps-asked">
+                <span className="w4-num">5A</span>
+                <div>
+                  <h2>Do minor characters bring new words, or mostly repeat the famous ones?</h2>
+                  <p className="w4-answer">They bring new words.</p>
+                </div>
+              </header>
+              <div className="w4-two">
+                <div id="heaps-did">
+                  <p className="sub">
+                    We read the pages in three kinds of order: most-linked first, by the number of other pages that link to a page; least-linked first; and 500 random orders as the baseline. The ten most-linked pages hold 84,807 tokens and the ten least-linked only 6,636, so we compare the orders after the same number of tokens, not the same number of pages.
+                  </p>
+                </div>
+                <div id="heaps-surprise">
+                  <div className="notice">
+                    <span className="ico">💡</span>
+                    <span>
+                      <b>What to notice</b>
+                      {" "}
+                      After 100,000 tokens the least-linked order has met 11,079 types, 509 more than the random mean of 10,570 ± 207 (z = 2.5). After 400,000 tokens the most-linked order has met 20,613, 661 fewer than random (z = −3.5).
+                    </span>
+                  </div>
+                </div>
+              </div>
+              <div className="w5-fig" id="heaps-figure">
+                <div className="rx-start-grid">
+                  <div className="plot">
+                    <h3>Types seen against tokens read</h3>
+                    <p className="axis-note">
+                      Both axes are logarithmic. Band: the middle 90% of 500 random page orders. Dashed: Heaps' law fitted to their mean. The two ordered lines stay within 11% of the random mean at every point, too close to tell apart at this scale; the right chart shows the gaps.
+                    </p>
+                    <div id="chart-heaps-curve"></div>
+                  </div>
+                  <div className="plot">
+                    <h3>Each order against random, at two points</h3>
+                    <p className="axis-note">
+                      Dot: how many more (right) or fewer (left) types an order has than the random mean after the same number of tokens. Band: one standard deviation of the random orders either side of zero. The badge is z.
+                    </p>
+                    <div id="chart-heaps-gap"></div>
+                  </div>
+                </div>
+                <div id="heaps-table"></div>
+              </div>
+              <div className="rx-drawers rx-foot">
+                <details className="rx-drawer">
+                  <summary>Method</summary>
+                  <div className="rx-drawer-body">
+                    <p>
+                      A token is one word as it occurs, a type one distinct word: "the Hulk smashes the tank" has 5 tokens and 4 types, since "the" comes twice. We read the 303 pages one after another, 713,617 tokens in all, and counted after every token how many types had appeared so far. The whole corpus holds 27,754 types.
+                    </p>
+                    <p>
+                      Heaps' law says that count grows as a power of the tokens read, V = K n
+                      <sup>β</sup>
+                      , with β below 1: the more you have read, the more often a word is one you have met before. On Marvel β = 0.56, so reading 4 times as many words turns up about 2.2 times as many types.
+                    </p>
+                    <p>
+                      A word is a run of letters in any alphabet with an inner apostrophe or hyphen kept, lowercased, with a possessive 's removed; digits and punctuation are dropped. So "Spider-Man's" and "Spider-Man" are one type and "Pérez" stays whole. Ties in link count are broken by the page's id. Every curve is read off on 41 token counts spaced evenly on a log scale from 1,000 tokens to the whole corpus.
+                    </p>
+                    <p>
+                      The gap of an ordered curve to random is given in types and in z, the number of standard deviations of the 500 random orders. Every order ends on the same 27,754 types, so the random spread shrinks to nothing near the end; the two token counts we quote stay well short of it.
+                    </p>
+                    <p>
+                      The fit is a straight line through log V against log n on the random orders' mean, over the 26 grid points from 11,750 to 713,617 tokens: K = 16.7, β = 0.56. Fitted to each random order alone, β runs from 0.54 to 0.57 (5th to 95th percentile).
+                    </p>
+                    <p id="heaps-limit">
+                      Pages differ in length, and the most-linked pages are the long ones. Shuffling in-degree only among pages of similar length, in fifths by word count, 500 times, leaves both gaps standing (z = 3.2 for least-linked first at 100,000 tokens, z = −2.8 for most-linked first at 400,000), but fifths hold length only roughly.
+                    </p>
+                  </div>
+                </details>
+                <details className="rx-drawer">
+                  <summary>More numbers</summary>
+                  <div className="rx-drawer-body">
+                    <p>
+                      The gaps hold across the grid, not only at 100,000 and 400,000 tokens. The least-linked order stays 1.6 to 2.9 standard deviations above random from 11,750 to 266,346 tokens, and the most-linked order 2.0 to 3.9 below from 313,893 to 605,520 tokens. Each order leads or lags only while it reads its own end of the list: by 400,000 tokens the least-linked order has begun 253 pages, reached pages linked from 10 others, and sits at random (z = 0.2).
+                    </p>
+                    <p>
+                      Every count rests on one word rule; keeping digits or splitting hyphens would move them. And the link count only covers links among these 303 pages, not a character's fame in the comics: 58 of the pages get no link at all.
+                    </p>
+                  </div>
+                </details>
+                <details className="rx-drawer">
+                  <summary>Does the curve flatten?</summary>
+                  <div className="rx-drawer-body">
+                    <p>
+                      It bends but never flattens out. The slope on log-log axes is 0.63 below 91,570 tokens and 0.49 above, so new words come more slowly as the corpus grows. In the last tenth of the corpus the random orders still meet 18 new types per 1,000 tokens.
+                    </p>
+                  </div>
+                </details>
+                <details className="rx-drawer">
+                  <summary>What we read in the pages</summary>
+                  <div className="rx-drawer-body" id="heaps-checked">
+                    <p>
+                      The last 100 pages in most-linked order, each linked from 2 pages or fewer, hold 90,907 tokens and add 2,144 types no earlier page used. 1,055 of them (49%) look like names, words that only ever occur with a capital letter, against 41% ± 1.6% for the last 100 pages of the random orders.
+                    </p>
+                    <div id="heaps-passages"></div>
+                    <p>
+                      The split is a rough proxy: 53 of those names are capitalised only where they open a sentence or a line.
+                    </p>
+                    <div id="heaps-samples"></div>
+                  </div>
+                </details>
+              </div>
+            </div>
+          </section>
+          <section className="step" data-owner="Niklas" id="fame">
+            <header className="w4-opener">
+              <span aria-hidden="true" className="w4-opener-num">6</span>
+              <div>
+                <h2>Does network fame buy you more words?</h2>
+                <p>
+                  Pages that more characters link to are longer. Pages for a codename several characters share sit below that trend, and so do minor characters whose every linking page names the same team or place.
+                </p>
+              </div>
+            </header>
+            <div className="card w4-card w5-card">
+              <header className="w4-q" id="fame-asked">
+                <span className="w4-num">6A</span>
+                <div>
+                  <h2>Do characters that more pages link to get longer Wikipedia pages?</h2>
+                  <p className="w4-answer">Yes, and strongly (Pearson 0.77, Spearman 0.75).</p>
+                </div>
+              </header>
+              <div className="w4-two">
+                <div>
+                  <div id="fame-did">
+                    <p className="sub">
+                      The correlation of 0.77 is far from chance: in 1,000 shuffles of in-degree over the pages it averaged 0.00 ± 0.06 and never passed 0.19. For the five pages furthest above the line and the five furthest below we measured what could explain the gap, then read each page and the pages that name it.
+                    </p>
+                  </div>
+                  <div id="fame-surprise">
+                    <div className="notice">
+                      <span className="ico">💡</span>
+                      <span>
+                        <b>What to notice</b>
+                        {" "}
+                        Of two likely explanations, one holds across all 303 pages: the 46 hub pages sit 0.25 below the rest (×0.78, p = 0.008). Being named on other pages without a link barely goes with a longer page (Spearman 0.07, p = 0.202).
+                      </span>
+                    </div>
+                  </div>
+                </div>
+                <div id="fame-figure">
+                  <div className="plot">
+                    <h3>Page length against incoming links</h3>
+                    <p className="axis-note">
+                      Each dot is one of the 303 pages, on log scales; hollow dots are the 17 isolates. The line is the fit. The ten named pages sit furthest from it, coloured by side as the key shows, each marked with its length over the predicted length. Pages with the same in-degree are spread slightly sideways so they do not hide each other; hover a dot for its numbers.
+                    </p>
+                    <div id="chart-fame-scatter"></div>
+                  </div>
+                </div>
+              </div>
+              <div className="rx-drawers rx-foot">
+                <details className="rx-drawer">
+                  <summary>Method</summary>
+                  <div className="rx-drawer-body">
+                    <p>
+                      A character's in-degree is the number of the other pages that link to its page. We counted the words on each of the 303 pages by the rule sections 5 to 7 share: runs of letters in any alphabet, an inner apostrophe or hyphen kept, lowercased, a possessive 's removed; digits and punctuation dropped.
+                    </p>
+                    <p>
+                      We fitted a straight line to ln(words) against ln(1 + in-degree) by ordinary least squares over all 303 pages. The 1 + keeps the 58 pages nobody links to, 17 of them isolates with no links at all. The slope is 0.72: each doubling of 1 + in-degree multiplies the predicted length by 1.65, starting from 546 words at zero in-degree. A page's residual is its distance from the line in natural-log units, so exp(residual) is its length over the predicted length: ×2 means twice as long as the line predicts.
+                    </p>
+                    <p>
+                      What we measured for each of the ten: whether the page is an isolate; how many other pages name the character and how many of those link to it, where a name is its title without the disambiguation plus the real name its node description gives in brackets, as in section 1; whether the page is for a codename several characters share, which we call a hub page (its first sentence says several characters share its title, the rule section 7 uses); and its section headings before the references.
+                    </p>
+                    <p>
+                      Reading added two things the rules miss: a codename other pages use instead of the title, which we counted with series titles and the Captain Britain Corps set aside, and a team that every page linking to a character mentions. Each shuffle test uses 1,000 shuffles with seed 2805.
+                    </p>
+                    <p id="fame-limit">
+                      In-degree counts only links among these 303 pages. A character famous from British comics or television, like Miracleman or Isaiah Bradley, gets nothing for it. The trend is a correlation: links do not write words, and both could share a cause we did not measure.
+                    </p>
+                  </div>
+                </details>
+                <details className="rx-drawer">
+                  <summary>More numbers</summary>
+                  <div className="rx-drawer-body">
+                    <p>
+                      Out-degree, the links a page makes, tracks length even more closely (Spearman 0.78), but a longer page has more room for links, so it partly measures length itself. PageRank, which counts a link from a much-linked page for more, gives 0.71.
+                    </p>
+                    <p>
+                      The names we counted come from the text alone, which lost its infoboxes, so a page can link to a character without naming it in our copy.
+                    </p>
+                    <p>
+                      Pages named without a link: Spearman 0.07 with the residual, against 0.00 ± 0.06 in shuffles (p = 0.202). The 46 hub pages: mean residual −0.21, against 0.04 for the other pages (p = 0.008).
+                    </p>
+                    <p>
+                      Each of the two explanations, hub pages and names without a link, shows at its extreme in one outlier: Brian Braddock's codename, Captain Britain, is on 14 other pages but linked from 1, and Quasar is a page for a name four characters share, with 24 incoming links.
+                    </p>
+                  </div>
+                </details>
+                <details className="rx-drawer">
+                  <summary>Table: the ten pages furthest from the line</summary>
+                  <div className="rx-drawer-body">
+                    <div id="fame-outliers"></div>
+                  </div>
+                </details>
+                <details className="rx-drawer">
+                  <summary>What we read in the pages</summary>
+                  <div className="rx-drawer-body" id="fame-checked">
+                    <p>
+                      The ten pages furthest from the line, above it first. For each, the reason we found by measuring and reading, and a passage that supports it, from the page itself or a page that names it. Four of the five below the line are minor characters whose every linking page names the same team or place.
+                    </p>
+                    <div id="fame-passages"></div>
+                  </div>
+                </details>
+              </div>
+            </div>
+          </section>
+          <section className="step" data-owner="Niklas" id="weird">
+            <header className="w4-opener">
+              <span aria-hidden="true" className="w4-opener-num">7</span>
+              <div>
+                <h2>Who has the weirdest Wikipedia page?</h2>
+                <p>
+                  The pages with the most varied words hold lists and an interview, and 10 of the 30 most repetitive pages are about several characters who share one name.
+                </p>
+              </div>
+            </header>
+            <div className="card w4-card w5-card">
+              <header className="w4-q" id="weird-asked">
+                <span className="w4-num">7A</span>
+                <div>
+                  <h2>
+                    Which Marvel page uses the most varied words for its length, and is that real or boilerplate?
+                  </h2>
+                  <p className="w4-answer">
+                    Real text: Coldblood, Super Rabbit and Ravage 2099 win with a list of cyborg parts, a Golden Age publication record and an interview.
+                  </p>
+                </div>
+              </header>
+              <div className="w4-two">
+                <div>
+                  <div id="weird-did">
+                    <p className="sub">
+                      Weird, for us, means varied words. We slide a window of 100 words along each page one word at a time, count the different words in each window and average them: the moving-average type-token ratio, MATTR. The fixed window lets the shortest page, 193 words, meet the longest, 14,037 words, since the share of different words in a whole page falls as the page grows.
+                    </p>
+                  </div>
+                  <div id="weird-surprise">
+                    <div className="notice">
+                      <span className="ico">💡</span>
+                      <span>
+                        <b>What to notice</b>
+                        {" "}
+                        The winners are real writing: 4 of the top 5 carry less house phrasing than their length neighbours, and 4 use more rare words. The losers are partly paperwork: 10 of the 30 lowest pages are about several characters sharing one name, against 4.6 expected by chance (p = 0.0071), and 4 of the bottom 5 carry more house phrasing than their neighbours. Ms. Marvel comes last (z = −4.15). Across all 303 pages, more house phrasing goes with a lower score (rank correlation −0.28, p &lt; 0.001).
+                      </span>
+                    </div>
+                  </div>
+                </div>
+                <div id="weird-figure">
+                  <div className="plot">
+                    <h3>Varied words against page length</h3>
+                    <p className="axis-note">
+                      Each dot is a page: its MATTR against its length in words, on a log scale. The shaded band holds random stretches of the whole corpus of the same length (mean ± 2 standard deviations; the dashed line is the mean). The solid line is the mean of each page's 30 length neighbours, which the ranking measures against. The five highest and five lowest scores against pages of similar length are named. Hover a dot for its numbers.
+                    </p>
+                    <div id="chart-weird-scatter"></div>
+                  </div>
+                </div>
+              </div>
+              <div className="rx-drawers rx-foot">
+                <details className="rx-drawer">
+                  <summary>Method</summary>
+                  <div className="rx-drawer-body">
+                    <p>
+                      We split each page into words: runs of letters in any alphabet, an inner apostrophe or hyphen kept, lowercased, a possessive 's removed; digits and punctuation dropped. We keep stopwords and do not lemmatise. The 303 pages hold 713,617 words.
+                    </p>
+                    <p>
+                      MATTR has no trend with length, but short pages spread more because they have fewer windows to average: a standard deviation of 0.031 in the shortest quarter of pages against 0.021 in the longest. So each page gets a z-score against the 30 pages nearest to it in length. Then we read the five highest and the five lowest.
+                    </p>
+                    <p>
+                      The score passes its length checks. Its rank correlation with page length is 0.02, its z-scores spread 1.11 in the shortest quarter and 1.00 in the longest, and 6 of the top 10 pages are shorter than the median page of 1,218 words. With a 50-word window instead of 100, 7 of the top 10 and 8 of the bottom 10 stay in their ten (rank correlation 0.945 over all pages).
+                    </p>
+                    <p>
+                      Real or boilerplate: a rare word is one found on at most 2 of the 303 pages. House phrasing is any run of 8 words found on more than 10 pages, section 2's cutoff applied to our word rule. It finds 113 such runs, led by "in american comic books published by marvel comics" on 282 pages. Both shares move with length (rank correlation 0.55 for rare words and −0.54 for house phrasing), since the house lead is a bigger slice of a short page, so each page we show is compared with the median of its 30 length neighbours. We leave out the share of a page's words used once (the hapax share): it falls as a page grows, so it cannot compare pages of different length.
+                    </p>
+                    <p>
+                      Long pages also stray from random text more often: 6.6% of pages longer than the median fall outside the corpus band, against 2.0% of shorter pages. That is why each page is ranked against pages of its own length and not against the band.
+                    </p>
+                    <p>
+                      The band: 2,000 random stretches of the whole corpus, every page joined in order, at each of 40 lengths (seed 2805), scored the same way. Sentences come from spaCy's rule-based sentencizer, so "Ms." and "U.S." do not end one. A page is about several characters when its first sentence says so ("Hawkeye is the name of several fictional characters"): 46 pages do. Section 6 calls them hub pages.
+                    </p>
+                    <p id="weird-limit">
+                      MATTR counts repeats, not strangeness: Coldblood wins by naming each cyborg part once, and only reading tells a list from an odd story.
+                    </p>
+                  </div>
+                </details>
+                <details className="rx-drawer">
+                  <summary>What we read in the pages</summary>
+                  <div className="rx-drawer-body" id="weird-checked">
+                    <p>
+                      A sentence past the lead of each of the top three pages, and one from the last page, quoted from the page.
+                    </p>
+                    <div id="weird-passages"></div>
+                    <div className="plot">
+                      <h3>The top and bottom five, read</h3>
+                      <p className="axis-note">
+                        Rank of 303 by z-score. Rare words: the share of the page's different words found on at most 2 pages. House phrasing: the share of its words inside runs of 8 found on more than 10 pages. In brackets, the median of the page's 30 length neighbours.
+                      </p>
+                      <div id="weird-table"></div>
+                    </div>
+                  </div>
+                </details>
+              </div>
+            </div>
+          </section>
+          <section className="step" data-owner="" id="closing">
+            <header className="w4-opener">
+              <span aria-hidden="true" className="w4-opener-num">✓</span>
+              <div>
+                <h2>Closing</h2>
+                <p>Counting words finds the network in the text, and shows where counting stops.</p>
+              </div>
+            </header>
+            <div className="card w4-card w5-stack">
+              <p className="sub">
+                Where the words meet the links, the links show through. Page length follows in-degree at
+                Pearson 0.77, 20 of the 22 copied pairs already link to each other, and 54% of enemy links
+                cross communities against 42% for shuffled labels. Raw counts rank and read less well:
+                they put the right page first for 1 of 11 queries, because cosine favours a short page over a
+                long one with the same words, and a trigram model trained on one community copies its pages word for word.
+              </p>
+              <div className="notice">
+                <span className="ico">!</span>
+                {" "}
+                <span>
+                  <b>One important limit</b>
+                  {" "}
+                  Wikipedia editors write both the words and the links. A long,
+                  well-linked page may measure how much editors care about a character more than the character's
+                  place in the comics, and nothing on this page separates the two.
+                </span>
+              </div>
+              <p className="sub">
+                <b>Next step.</b>
+                {" "}
+                Next week's TF-IDF weighs a word by how few pages use it. Rerunning the
+                section 3 queries with it tests whether the short-page misses are a counting problem, and the
+                words TF-IDF finds for each community can tell the section 4 groups apart without a guesser.
+              </p>
+              <details className="qa" id="methods">
+                <summary>
+                  <span className="qa-cue">Methods, data and AI use</span>
+                </summary>
+                <div className="qa-body">
+                  <p className="sub">
+                    Data: the course's snapshot of the 303 pages, their node table and their links, frozen on
+                    26 August 2026 and checked against a SHA-256 hash on every load
+                    (
+                    <a href="https://github.com/horrrt/02805_social_graphs/blob/main/analysis/week05_text.py">week05_text.py</a>
+                    ). Every random step has a fixed seed.
+                  </p>
+                  <ul className="w5-methods">
+                    <li>
+                      <b>
+                        1 ·
+                        {" "}
+                        <a href="https://github.com/horrrt/02805_social_graphs/blob/main/analysis/week05_relations.py">week05_relations.py</a>
+                      </b>
+                      {" "}
+                      Concordance of the sentence behind each link, a word list of five labels, Louvain run 100 times; 1,000 label shuffles, and 1,000 more within each page.
+                    </li>
+                    <li>
+                      <b>
+                        2 ·
+                        {" "}
+                        <a href="https://github.com/horrrt/02805_social_graphs/blob/main/analysis/week05_copying.py">week05_copying.py</a>
+                      </b>
+                      {" "}
+                      Shared 8-word n-grams, n-grams on more than 10 pages set aside as template; the link rate of all pairs as the baseline.
+                    </li>
+                    <li>
+                      <b>
+                        3 ·
+                        {" "}
+                        <a href="https://github.com/horrrt/02805_social_graphs/blob/main/analysis/week05_search.py">week05_search.py</a>
+                      </b>
+                      {" "}
+                      Bag of Words and cosine similarity on the document-term matrix, with and without spaCy's stopwords; a random ranking as the baseline.
+                    </li>
+                    <li>
+                      <b>
+                        4 ·
+                        {" "}
+                        <a href="https://github.com/horrrt/02805_social_graphs/blob/main/analysis/week05_communities.py">week05_communities.py</a>
+                        ,
+                        {" "}
+                        <a href="https://github.com/horrrt/02805_social_graphs/blob/main/analysis/week05_autocomplete.py">week05_autocomplete.py</a>
+                      </b>
+                      {" "}
+                      A consensus of 100 Louvain runs against 100 rewired networks that keep each page's partners and link weight; one trigram model per community.
+                    </li>
+                    <li>
+                      <b>
+                        5 ·
+                        {" "}
+                        <a href="https://github.com/horrrt/02805_social_graphs/blob/main/analysis/week05_heaps.py">week05_heaps.py</a>
+                      </b>
+                      {" "}
+                      Vocabulary growth in link order against 500 random orders and 500 orders that keep page length, and Heaps' law V = K·n
+                      <sup>β</sup>
+                      {" "}
+                      fitted to their mean.
+                    </li>
+                    <li>
+                      <b>
+                        6 ·
+                        {" "}
+                        <a href="https://github.com/horrrt/02805_social_graphs/blob/main/analysis/week05_fame.py">week05_fame.py</a>
+                      </b>
+                      {" "}
+                      Log length against log in-degree, against 1,000 shuffles of in-degree.
+                    </li>
+                    <li>
+                      <b>
+                        7 ·
+                        {" "}
+                        <a href="https://github.com/horrrt/02805_social_graphs/blob/main/analysis/week05_weird.py">week05_weird.py</a>
+                      </b>
+                      {" "}
+                      Moving-average type-token ratio over a 100-word window, scored against the 30 pages nearest in length; 2,000 random stretches of the corpus draw the figure's band.
+                    </li>
+                  </ul>
+                </div>
+              </details>
+              <details className="qa" id="closing-ai">
+                <summary>
+                  <span className="qa-cue">AI use and how we checked it</span>
+                </summary>
+                <div className="qa-body">
+                  <p className="sub">
+                    AI coding assistants helped write the analysis and page code, drafted and revised text, and
+                    tested the page in a browser. The numbers come from the course data and the scripts above.
+                  </p>
+                  <p className="sub">
+                    Each script writes the numbers its section quotes to a JSON file the page reads. A schema
+                    check tests each file against the fields the page uses, and the site tests fail when a
+                    number or a word such as "barely" in the text drifts from that file. We reran the scripts
+                    under two hash seeds and got identical files, and we read the passages behind the counts:
+                    12 sentences per relation label, the copied runs, the search misses, the ten outliers of
+                    section 6 and the top pages of section 7.
+                  </p>
+                </div>
+              </details>
+            </div>
+          </section>
+        </div>
+      </main>
+      <footer className="foot">
+        <div className="shell">
+          <span>
+            Page text, article names and links from English Wikipedia,
+            {" "}
+            <a href="https://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA 4.0</a>
+            ,
+            through the 02805 course snapshot of 26 August 2026.
+          </span>
+          {" "}
+          <span>
+            The Marvel network gets language ·
+            {" "}
+            <a href="../../">Log–Log Legends</a>
+            {" "}
+            · DTU 02805
+          </span>
+        </div>
+      </footer>
+      {" "}
+      {" "}
+      {" "}
+      {" "}
+      {" "}
+      {" "}
+      {" "}
+      <PageScripts scripts={[{"src":"../../assets/js/week05-relations.js?v=9","module":true},{"src":"../../assets/js/week05-copying.js?v=7","module":true},{"src":"../../assets/js/week05-search.js?v=7","module":true},{"src":"../../assets/js/week05-autocomplete.js?v=9","module":true},{"src":"../../assets/js/week05-heaps.js?v=7","module":true},{"src":"../../assets/js/week05-fame.js?v=6","module":true},{"src":"../../assets/js/week05-weird.js?v=6","module":true},{"src":"../../assets/js/week05-frame.js?v=5","module":true}]} />
+    </>
+  );
+}

@@ -1,0 +1,392 @@
+import PageScripts from "@/components/PageScripts";
+
+export default function Page() {
+  return (
+    <>
+      <a className="skip" href="#main">Skip to content</a>
+      <div className="topbar">
+        <div className="shell">
+          <a className="brand" href="../../">
+            LOG–LOG
+            {" "}
+            <b>LEGENDS</b>
+          </a>
+          {" "}
+          <a className="site-link" href="../../#weeks">All posts</a>
+          <nav className="topnav" aria-label="Sections of this post">
+            <a href="#opening">Opening</a>
+            {" "}
+            <a href="#first">1</a>
+            {" "}
+            <a href="#second">2</a>
+            {" "}
+            <a href="#closing">Closing</a>
+          </nav>
+        </div>
+      </div>
+      <main id="main">
+        {/* Hero: the post's one question, a short answer, the scope caution, two numbers and one figure. */}
+        <section className="hero w4-hero" id="top">
+          <div className="shell">
+            <p className="eyebrow">Week N · Course topic</p>
+            <h1>A title that states the question</h1>
+            <div className="w4-hero-grid w5-hero-grid">
+              <div className="w4-hero-text">
+                <p className="body">
+                  <b>The one question the whole post answers, in words a visitor can answer after reading?</b>
+                  {" "}
+                  One or two sentences on the data and on what the sections below ask.
+                </p>
+                <p className="caution">The scope caution: what a link or a count in this data does not mean.</p>
+                <div className="w4-hero-stats">
+                  <p className="w4-stat">
+                    <b>000,000</b>
+                    <span>the first number that sets the scale</span>
+                  </p>
+                  <p className="w4-stat">
+                    <b>0,000</b>
+                    <span>the second number</span>
+                  </p>
+                </div>
+              </div>
+              <figure className="w4-hero-stage w5-hero-stage">
+                <div aria-label="Toy figure: replace with the one figure that answers the question" className="w5-hero-plot" id="chart-hero" role="img"></div>
+                <figcaption className="w5-hero-caption">
+                  How to read the figure and the one thing to notice, with the number against its baseline.
+                  Toy figure: Zachary's karate club stands in for your data.
+                  {" "}
+                  <a href="#first">Section 1</a>
+                  {" "}
+                  has the detail.
+                </figcaption>
+              </figure>
+            </div>
+          </div>
+        </section>
+        {/* Findings: one row per section, each with its answer against the baseline. */}
+        <div className="shell">
+          <section aria-label="Findings" className="w4-findings" id="findings">
+            <div className="w4-findings-head">
+              <p className="w4-caps">Two sections, two findings</p>
+              <div className="w4-key">
+                <span>
+                  <i className="w4-key-real"></i>
+                  the real data
+                </span>
+                <span>
+                  <i className="w4-key-band"></i>
+                  random baseline, mean ± 1 sd
+                </span>
+              </div>
+            </div>
+            <div className="w4-finding">
+              <span className="w4-num">1</span>
+              <div>
+                <h3>First section's title</h3>
+                <p>The first section's answer in one sentence, with its number and its baseline.</p>
+              </div>
+              <div className="w4-mini" data-finding="1"></div>
+              <a href="#first">Section 1 →</a>
+            </div>
+            <div className="w4-finding">
+              <span className="w4-num">2</span>
+              <div>
+                <h3>Second section's title</h3>
+                <p>The second section's answer in one sentence, with its number and its baseline.</p>
+              </div>
+              <div className="w4-mini" data-finding="2"></div>
+              <a href="#second">Section 2 →</a>
+            </div>
+          </section>
+        </div>
+        <div className="shell">
+          {/* Opening: self-contained. The data, what a link means, the terms, how to read the sections. */}
+          <section className="step" data-owner="" id="opening">
+            <header className="w4-opener">
+              <span aria-hidden="true" className="w4-opener-num">0</span>
+              <div>
+                <h2>Opening</h2>
+                <p>What the data is, in one line.</p>
+              </div>
+            </header>
+            <div className="card w4-card">
+              <div className="w4-two">
+                <div>
+                  <p className="sub">Where the data comes from, when it was frozen, and how many items it holds.</p>
+                  <p className="sub">
+                    <b>What a link means.</b>
+                    {" "}
+                    One concrete sentence on what joins two nodes, then what a link
+                    does not mean. Readers may arrive here first: define every term the sections use.
+                  </p>
+                  <div className="notice">
+                    <span className="ico">!</span>
+                    {" "}
+                    <span>
+                      <b>Read the scope carefully</b>
+                      {" "}
+                      The one caveat that changes how every number reads.
+                    </span>
+                  </div>
+                </div>
+                <div>
+                  <div className="w4-anatomy">
+                    <h3>How each section reads</h3>
+                    <p>Every section answers one question on one card.</p>
+                    <dl>
+                      <div>
+                        <dt>Question</dt>
+                        <dd>What we asked, and the short answer</dd>
+                      </div>
+                      <div>
+                        <dt>Did</dt>
+                        <dd>What we did, beside what to notice</dd>
+                      </div>
+                      <div>
+                        <dt>Figure</dt>
+                        <dd>The chart or table that answers it</dd>
+                      </div>
+                      <div>
+                        <dt>Drawers</dt>
+                        <dd>Method and its limits, more numbers, and what we read in the data</dd>
+                      </div>
+                    </dl>
+                  </div>
+                  <div className="w4-howto">
+                    <h3>How to read the charts</h3>
+                    <div>
+                      <i className="w4-sw-real"></i>
+                      <b>The real data</b>
+                      <span>What the data shows.</span>
+                    </div>
+                    <div>
+                      <i className="w4-sw-band"></i>
+                      <b>Random baseline</b>
+                      <span>Mean and one standard deviation over shuffles or rewired networks.</span>
+                    </div>
+                    <div>
+                      <i className="w4-sw-ref"></i>
+                      <b>Reference</b>
+                      <span>What chance alone would give.</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+          {/* Section 1: the standard card. Question and answer on top, text column with the figure beside it,
+             checked passages below. Copy this whole <section> for each further section. */}
+          <section className="step" data-owner="" id="first">
+            <header className="w4-opener">
+              <span aria-hidden="true" className="w4-opener-num">1</span>
+              <div>
+                <h2>First section's title</h2>
+                <p>The finding in one sentence: what a reader should remember from this section.</p>
+              </div>
+            </header>
+            <div className="card w4-card w5-card">
+              <header className="w4-q" id="first-asked">
+                <span className="w4-num">1A</span>
+                <div>
+                  <h2>The question, answerable after reading this card?</h2>
+                  <p className="w4-answer">The short answer, with its number and what it is compared against.</p>
+                </div>
+              </header>
+              <div className="w4-two">
+                <div>
+                  <div id="first-did">
+                    <p className="sub">
+                      One paragraph: what was counted, on which data, and the baseline that gives the number meaning. Everything else goes in the drawers.
+                    </p>
+                  </div>
+                  <div id="first-surprise">
+                    <div className="notice">
+                      <span className="ico">💡</span>
+                      <span>
+                        <b>What to notice</b>
+                        {" "}
+                        The result we did not expect, with its number and its baseline.
+                      </span>
+                    </div>
+                  </div>
+                </div>
+                <div id="first-figure">
+                  <div className="plot">
+                    <h3>The figure's title: what it compares</h3>
+                    <p className="axis-note">
+                      Dot: the real value. Band: the baseline, mean and one standard deviation either side. Toy numbers.
+                    </p>
+                    <div id="chart-first"></div>
+                  </div>
+                </div>
+              </div>
+              <div className="rx-drawers rx-foot">
+                <details className="rx-drawer">
+                  <summary>Method</summary>
+                  <div className="rx-drawer-body">
+                    <p>
+                      The rules a reader needs only to reproduce the count: what the null keeps and what it changes, with an example before any technical word.
+                    </p>
+                    <p>Seeds, runs, the tokeniser or the layout, word for word as the script does it.</p>
+                    <p id="first-limit">The main limitation, in one sentence. Add no others.</p>
+                  </div>
+                </details>
+                <details className="rx-drawer">
+                  <summary>More numbers</summary>
+                  <div className="rx-drawer-body">
+                    <p>Secondary results, a second sample, the robustness checks.</p>
+                  </div>
+                </details>
+                <details className="rx-drawer">
+                  <summary>What we read in the data</summary>
+                  <div className="rx-drawer-body" id="first-checked">
+                    <p>What we read by hand to test the counts, and what it showed.</p>
+                    <div id="first-passage"></div>
+                  </div>
+                </details>
+              </div>
+            </div>
+          </section>
+          {/* Section 2: two panels in a row under the text, for a figure with two charts. */}
+          <section className="step" data-owner="" id="second">
+            <header className="w4-opener">
+              <span aria-hidden="true" className="w4-opener-num">2</span>
+              <div>
+                <h2>Second section's title</h2>
+                <p>The finding in one sentence.</p>
+              </div>
+            </header>
+            <div className="card w4-card w5-card">
+              <header className="w4-q" id="second-asked">
+                <span className="w4-num">2A</span>
+                <div>
+                  <h2>The second question?</h2>
+                  <p className="w4-answer">The short answer, with its number and its baseline.</p>
+                </div>
+              </header>
+              <div className="w4-two">
+                <div id="second-did">
+                  <p className="sub">The method and the baseline. A term gets a definition on hover the first time it appears.</p>
+                </div>
+                <div id="second-surprise">
+                  <div className="notice">
+                    <span className="ico">💡</span>
+                    <span>
+                      <b>What to notice</b>
+                      {" "}
+                      The unexpected result.
+                    </span>
+                  </div>
+                </div>
+              </div>
+              <div className="w5-fig" id="second-figure">
+                <div className="w5-two">
+                  <div className="plot">
+                    <h3>Left panel: the network</h3>
+                    <p className="axis-note">Toy network: Zachary's karate club, coloured by the club each member joined.</p>
+                    <div id="chart-second-left"></div>
+                  </div>
+                  <div className="plot">
+                    <h3>Right panel: the numbers behind it</h3>
+                    <p className="axis-note">Toy numbers.</p>
+                    <div id="chart-second-right"></div>
+                  </div>
+                </div>
+              </div>
+              <div className="rx-drawers rx-foot">
+                <details className="rx-drawer">
+                  <summary>Method</summary>
+                  <div className="rx-drawer-body">
+                    <p id="second-limit">The limitation.</p>
+                  </div>
+                </details>
+                <details className="rx-drawer">
+                  <summary>What we read in the data</summary>
+                  <div className="rx-drawer-body" id="second-checked">
+                    <p>What we read, and a concordance or passage from the data.</p>
+                  </div>
+                </details>
+              </div>
+            </div>
+          </section>
+          {/* Closing: the takeaway, one limit, one next step; methods and the AI-use note one click away. */}
+          <section className="step" data-owner="" id="closing">
+            <header className="w4-opener">
+              <span aria-hidden="true" className="w4-opener-num">✓</span>
+              <div>
+                <h2>Closing</h2>
+                <p>The takeaway in one line.</p>
+              </div>
+            </header>
+            <div className="card w4-card w5-stack">
+              <p className="sub">The takeaway with the sections' key numbers, each against its baseline.</p>
+              <div className="notice">
+                <span className="ico">!</span>
+                {" "}
+                <span>
+                  <b>One important limit</b>
+                  {" "}
+                  The limit that applies to the whole post.
+                </span>
+              </div>
+              <p className="sub">
+                <b>Next step.</b>
+                {" "}
+                One meaningful next step, such as next week's method applied to this data.
+              </p>
+              <details className="qa" id="methods">
+                <summary>
+                  <span className="qa-cue">Methods, data and AI use</span>
+                </summary>
+                <div className="qa-body">
+                  <p className="sub">
+                    Data: the source, its licence and the date it was frozen. Every random step has a fixed seed.
+                  </p>
+                  <ul className="w5-methods">
+                    <li>
+                      <b>1 · analysis/weekNN_first.py</b>
+                      {" "}
+                      The method and its baseline, in one line.
+                    </li>
+                    <li>
+                      <b>2 · analysis/weekNN_second.py</b>
+                      {" "}
+                      The method and its baseline, in one line.
+                    </li>
+                  </ul>
+                </div>
+              </details>
+              <details className="qa" id="closing-ai">
+                <summary>
+                  <span className="qa-cue">AI use and how we checked it</span>
+                </summary>
+                <div className="qa-body">
+                  <p className="sub">What AI assistants did: code, drafts, revisions, browser tests.</p>
+                  <p className="sub">
+                    How we checked it: each script writes the numbers its section quotes to a JSON file, a schema check tests the file, the site tests fail when the page and the file disagree, and the scripts rerun identically under two hash seeds.
+                  </p>
+                </div>
+              </details>
+            </div>
+          </section>
+        </div>
+      </main>
+      <footer className="foot">
+        <div className="shell">
+          <span>Credit each data source here, in the form its licence asks for.</span>
+          {" "}
+          <span>
+            Post template ·
+            {" "}
+            <a href="../../">Log–Log Legends</a>
+            {" "}
+            · DTU 02805
+          </span>
+        </div>
+      </footer>
+      {/* Replace with one script per section: docs/assets/js/weekNN-<section>.js. */}
+      {" "}
+      <PageScripts scripts={[{"src":"../../assets/js/week-template.js?v=6","module":true}]} />
+    </>
+  );
+}
