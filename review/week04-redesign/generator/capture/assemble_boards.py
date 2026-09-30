@@ -14,7 +14,7 @@ CAPTURE = Path(__file__).resolve().parents[4] / "build/canvas-capture"
 # upload it again (Artifact publish with asset: true) and put its new /_blob/ url here.
 CSS = ["/_blob/bdbcfe09e54e57045ac6bae8752c2a81",   # type.css
        "/_blob/4ffd6c535951a1e34a0c3882e96ae51c",   # corridor.css
-       "/_blob/231c3b9ded5bc685edc4752941113998"]   # post.css
+       "/_blob/c940868585d8637469fe44ff0a94bd6d"]   # post.css, with the map styles
 FONT = "/_blob/9ad036b9f76606ea91d82e15ebec8da3"      # Barlow Condensed 800, as the other boards use it
 W, GAP_X, TITLE = 1440, 80, 420
 
