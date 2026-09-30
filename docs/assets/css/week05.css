@@ -318,3 +318,43 @@
     grid-template-columns: 1fr;
   }
 }
+
+/* The hero: the text column and one scatter, Week 4's grid without the inspector. */
+.corridor .w4-hero-grid.w5-hero-grid {
+  grid-template-columns: 340px minmax(0, 1fr);
+}
+.corridor .w5-hero-stage {
+  align-items: stretch;
+}
+.corridor .w5-hero-plot {
+  min-width: 0;
+  width: 100%;
+}
+.corridor .w5-hero-caption {
+  color: var(--w4-hero-body);
+  font-size: var(--fs-small);
+  line-height: 1.5;
+  margin: 0;
+  max-width: 68ch;
+}
+.corridor .w5-hero-caption a {
+  color: var(--w4-hero-ink);
+}
+
+/* The methods list in the closing. */
+.corridor .w5-methods {
+  color: var(--ink-soft);
+  display: flex;
+  flex-direction: column;
+  font-size: var(--fs-body);
+  gap: 8px;
+  line-height: 1.55;
+  margin: 0;
+  padding-left: 18px;
+}
+
+/* A card of stacked paragraphs, notices and drawers, evenly spaced. */
+.corridor .w5-stack { display: flex; flex-direction: column; gap: 14px; }
+.corridor .w5-stack > * { margin: 0; }
+.corridor .w5-stack .qa-body { display: flex; flex-direction: column; gap: 10px; }
+.corridor .w5-stack .qa-body > * { margin: 0; }

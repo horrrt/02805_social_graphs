@@ -1,4 +1,6 @@
-// Week 5 prose pins: numbers on #search and #autocomplete must match JSON.
+// Week 5 page wiring: owners, stylesheets and a clean merge. The numbers are
+// pinned per section (tests/week05-*.test.mjs) and for the frame
+// (tests/week05-frame.test.mjs).
 
 import assert from "node:assert/strict";
 import fs from "node:fs";
@@ -9,15 +11,14 @@ import { fileURLToPath } from "node:url";
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const html = fs.readFileSync(path.join(ROOT, "docs/weeks/week05/index.html"), "utf8");
 
-test("week05 search and autocomplete sections are owned and wired", () => {
+test("week 5 sections are owned and the page loads its stylesheets", () => {
   assert.match(html, /id="search"/);
   assert.match(html, /data-owner="Àngela"/);
-  assert.match(html, /week05\.css\?v=1/);
+  assert.match(html, /week05\.css\?v=\d+/);
+  assert.match(html, /kit\.css\?v=\d+/);
 });
 
-test("sections 5 to 7 quote their generated data", () => {
-});
-
-test("week 5 page has no unresolved merge markers", () => {
+test("week 5 page has no unresolved merge markers or placeholder hints", () => {
   assert.doesNotMatch(html, /<<<<<<<|=======|>>>>>>>/);
+  assert.doesNotMatch(html, /class="w5-hint"/);
 });
