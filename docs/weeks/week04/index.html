@@ -23,6 +23,7 @@
     <link href="../../assets/css/week04-vis-more.css?v=ts1" rel="stylesheet" />
     <link href="../../assets/css/week04-vis-intros.css?v=ts1" rel="stylesheet" />
     <link href="../../assets/css/week04-vis-staffing.css?v=ts1" rel="stylesheet" />
+    <link href="../../assets/css/week04-entities.css?v=3" rel="stylesheet" />
     <link href="../../assets/css/week04-sources.css?v=ts1" rel="stylesheet" />
   </head>
   <body class="corridor">
@@ -1059,6 +1060,7 @@
                   <li><a href="#staffing-community-stats"><span>With filing counts or without?</span><i aria-hidden="true">→</i></a></li>
                   <li><a href="#staffing-ties"><span>Strong ties, weak ties and pay</span><i aria-hidden="true">→</i></a></li>
                   <li><a href="#deeper-strength"><span>Strength against degree: where do the heavy links go?</span><i aria-hidden="true">→</i></a></li>
+                  <li><a href="#entity-communities"><span>Every worker and company, grouped by what they do</span><i aria-hidden="true">→</i></a></li>
                 </ul>
               </div>
               <div class="rx-tcard"><a class="rx-tcard-head" href="#topic-paperwork"><span><b>Paperwork, the lottery and green cards</b><em>What happens around a filing: the lawyers, the draw, USCIS and the green card after it.</em></span></a>
@@ -1481,6 +1483,7 @@
               <a class="rx-toc-item" href="#staffing-community-stats">With filing counts or without?</a>
               <a class="rx-toc-item" href="#staffing-ties">Strong ties, weak ties and pay</a>
               <a class="rx-toc-item" href="#deeper-strength">Strength against degree: where do the heavy links go?</a>
+              <a class="rx-toc-item" href="#entity-communities">Every worker and company, grouped by what they do</a>
             </nav>
             <details class="rx-panel" name="w4-panel-outsourcing" data-box="who-q2">
               <summary>Do clients group by industry or by the firm that staffs them?</summary>
@@ -1691,6 +1694,83 @@
             <details class="rx-panel" name="w4-panel-outsourcing" data-box="deeper-strength">
               <summary>Strength against degree: where do the heavy links go?</summary>
               <div class="card w4-card" id="deeper-strength"> <header class="w4-q"> <span class="w4-num">6</span> <div> <h2>Strength against degree: where do the heavy links go?</h2> <p class="w4-answer">Three of the top five are therapy and rehab clinics.</p> </div> </header> <div class="w4-two"> <div> <p class="sub">The course compares a node's degree (how many partners) with its strength (how many filings over all its links), and finds the exceptions tell the story.</p> <div class="notice"><span class="ico">💡</span><span><b>What to notice</b> Degree and strength rank firms almost alike (Spearman 0.91) but clients less so (0.75): the heaviest single ties go to therapy and rehab clinics, led by Ultimate Therapy with 133 filings from one firm.</span></div> <div class="rx-drawers rx-foot"> <details class="rx-drawer"><summary>Background</summary><div class="rx-drawer-body"></div></details> <details class="rx-drawer"><summary>More numbers</summary><div class="rx-drawer-body"><p>In the 2025 firm–client network the two rank firms almost alike (Spearman 0.91) and clients less so (0.75). The clients with the most filings from a single firm are Ultimate Therapy, 133 filings from one firm; Sigma Rehab, 95; Post Rehab Services, 61; and Grady Memorial Hospital, 58.</p></div></details> </div> </div> <figure class="w4-figure"> <figcaption><b>The heaviest one-to-one ties</b><span>The clients with the most filings from a single firm. Dark bars: health care.</span></figcaption> <div class="w4-figure-body" data-more="strength"></div> </figure> </div> </div>
+            </details>
+            <details class="rx-panel" name="w4-panel-outsourcing" data-box="entity-communities">
+              <summary>Every worker and company, grouped by what they do</summary>
+              <div class="card w4-card">
+                <header class="w4-q">
+                  <span class="w4-num">7</span>
+                  <div>
+                    <h2>Do workers group by job and pay, or by who files for them?</h2>
+                    <p class="w4-answer" data-entities="answer">Loading the filings…</p>
+                  </div>
+                </header>
+                <figure class="w4-entities" id="entity-communities">
+                  <div class="w4-entities-controls">
+                    <div aria-label="What each dot is" class="w4-entities-switch" role="group">
+                      <button aria-pressed="true" data-entity="workers" type="button">Workers</button
+                      ><button aria-pressed="false" data-entity="companies" type="button">Companies</button>
+                    </div>
+                    <label class="w4-entities-colour"
+                      >Colour by
+                      <select>
+                        <option value="community">Community</option>
+                        <option value="sector">Sector</option>
+                        <option value="level">Wage level</option>
+                        <option value="pagerank">PageRank</option>
+                      </select>
+                    </label>
+                  </div>
+                  <div class="w4-entities-stage">
+                    <button class="w4-entities-reset" type="button">Reset view</button>
+                    <div
+                      aria-label="Every worker or company in the 2025 filings as a dot, coloured by its community. The table below lists the same groups."
+                      class="w4-entities-map"
+                      role="img"
+                      tabindex="0"
+                    ></div>
+                  </div>
+                  <ul aria-label="Legend: click a group to highlight it" class="w4-entities-legend"></ul>
+                  <figcaption data-entities="caption"></figcaption>
+                  <div class="w4-entities-facts">
+                    <div>
+                      <h4>What the groups follow</h4>
+                      <p class="axis-note">NMI between the groups and each label, weighted by workers. Hollow dots were never part of the network. Bands: the same label shuffled, the level a label with that many values reaches by chance. Dashed: two Louvain seeds against each other.</p>
+                      <div data-entities="labels"></div>
+                    </div>
+                    <div>
+                      <h4>The network against random ones</h4>
+                      <p class="axis-note">Dots: the real network. Bands: rewired networks that keep every degree, or shuffled kinds.</p>
+                      <div data-entities="strips"></div>
+                    </div>
+                  </div>
+                  <div class="w4-entities-facts">
+                    <div>
+                      <h4>How many links?</h4>
+                      <p class="axis-note">Share of occupations, metros, levels and sectors with at least a given number of links or workers, log-log.</p>
+                      <div data-entities="ccdf"></div>
+                    </div>
+                    <div class="w4-entities-weeks" data-entities="weeks"></div>
+                  </div>
+                  <div class="rx-table-block" data-entities="table">
+                    <h4>The largest groups</h4>
+                    <table>
+                      <thead>
+                        <tr>
+                          <th>#</th>
+                          <th>Group</th>
+                          <th class="num">Workers</th>
+                          <th class="num">H-1B</th>
+                          <th class="num">PERM</th>
+                          <th>Main occupation</th>
+                          <th>Largest employers</th>
+                        </tr>
+                      </thead>
+                      <tbody></tbody>
+                    </table>
+                  </div>
+                </figure>
+              </div>
             </details>
           </details>
           <details class="rx-topic" id="topic-paperwork" name="w4-topic">
@@ -2042,5 +2122,6 @@
     <script src="../../assets/js/week04-vis-more.js?v=8" type="module"></script>
     <script src="../../assets/js/week04-vis-intros.js?v=6" type="module"></script>
     <script src="../../assets/js/week04-vis-staffing.js?v=4" type="module"></script>
+    <script src="../../assets/js/week04-entities.js?v=4" type="module"></script>
   </body>
 </html>
