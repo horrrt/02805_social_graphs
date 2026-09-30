@@ -5,7 +5,7 @@
    first few. "All other …" always takes the neutral grey. The -dark set
    below is not read by week04-roles.js. Layout
    below is only what the box needs beyond .chart-host, .axis-modes and
-   table.ego in week04.css and corridor.css. */
+   table.ego in post.css and corridor.css. */
 
 .corridor {
   --w4-area-1: #0f2340;

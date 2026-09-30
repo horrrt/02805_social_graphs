@@ -1,3 +1,20 @@
+/* post.css: the one stylesheet every post and the post template load, after
+   type.css (the type tokens) and corridor.css (the site's base and colours).
+
+   Class prefixes are historical: w4-* and rx-* were built for week 4, w5-* and
+   kit-* for week 5. Every post may use all of them; a new post adds its rules
+   here rather than in a file of its own. Only a figure no other post will use
+   gets its own sheet (week 4's week04-*.css).
+
+   Parts, in cascade order:
+   1. The post: hero, findings strip, openers, cards, notices, terms, rail (from week04.css)
+   2. Drawers, reveals and the card grid of the redesign (from week04-rx.css)
+   3. The component kit and the six-part section card, w5-card (from kit.css)
+   4. Search, quiz, stat rows and panels first built for week 5 (from week05.css)
+   5. Slots and the visually-hidden helper (from week 5's inline style) */
+
+/* ==== 1. The post: hero, findings strip, openers, cards, notices, terms, rail (from week04.css) ==== */
+
 /* Week 4 — Where the hiring is (extras on corridor.css) */
 
 .corridor .hero .shell {
@@ -1504,4 +1521,1268 @@
 .corridor .w4-hero-map .w4-map-reset:hover,
 .corridor .w4-hero-map .w4-map-reset:focus-visible {
   color: var(--w4-hero-ink);
+}
+
+
+/* ==== 2. Drawers, reveals and the card grid of the redesign (from week04-rx.css) ==== */
+
+/* Week 4 · the 28 September 2026 redesign. The rx- prefix marks a class that
+   came from the design boards (review/week04-final/project/R*.dc.html), so any
+   class here greps straight back to its board. This file holds the union of
+   the boards' rx- rules, with ".rx X" rewritten as ".corridor X" and every
+   colour taken from the page tokens (corridor.css, week04.css). Linked last in
+   the page head. The section rail and the segmented control live in
+   week04.css, on the selectors the page already uses. */
+
+/* ---- drawers: closed ones sit in one row, an open one takes the full width.
+   Labels in order: Background, Method, More numbers, then Table: or Maps:. */
+
+.corridor .rx-drawers {
+  align-items: center;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.corridor .rx-foot {
+  margin-top: 14px;
+}
+
+.corridor details.rx-drawer {
+  background: var(--w4-inset);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  margin-top: 10px;
+}
+
+.corridor details.rx-drawer:not([open]) {
+  width: fit-content;
+}
+
+.corridor .rx-drawers > details.rx-drawer {
+  flex: 0 0 auto;
+  margin: 0;
+}
+
+.corridor .rx-drawers > details.rx-drawer[open] {
+  flex: 1 1 100%;
+  order: 10;
+}
+
+.corridor details.rx-drawer > summary {
+  align-items: center;
+  color: var(--w4-accent);
+  cursor: pointer;
+  display: flex;
+  font-size: var(--fs-small);
+  font-weight: 700;
+  gap: 8px;
+  list-style: none;
+  padding: 6px 12px;
+}
+
+.corridor details.rx-drawer > summary::-webkit-details-marker {
+  display: none;
+}
+
+.corridor details.rx-drawer > summary::before {
+  content: "\25B8";
+  font-size: var(--fs-caption);
+  transition: transform 0.15s;
+}
+
+.corridor details.rx-drawer[open] > summary::before {
+  transform: rotate(90deg);
+}
+
+.corridor .rx-drawer-body {
+  color: var(--ink);
+  font-size: var(--fs-body);
+  line-height: 1.62;
+  max-width: 78ch;
+  padding: 0 16px 14px;
+}
+
+.corridor .rx-drawer-body p {
+  margin: 0 0 8px;
+}
+
+.corridor .rx-drawer-body > p + p {
+  margin-top: 8px;
+}
+
+.corridor .rx-drawer-body.rx-wide {
+  max-width: none;
+}
+
+/* ---- card anatomy. One chart sits beside the text. Two or more go in a
+   figure row under the text, side by side at equal width, and the drawers
+   follow the row. Each figure in a row shares three grid rows with its
+   neighbours (title, note, chart), so the charts start at the same height
+   however long the captions run. */
+
+.corridor .rx-fig-row {
+  align-items: start;
+  column-gap: 28px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(0, 1fr));
+  grid-template-rows: auto auto 1fr;
+  margin-top: 22px;
+  row-gap: 0;
+}
+
+.corridor .rx-fig-row > figure,
+.corridor .rx-fig-row > .plot {
+  display: grid;
+  grid-row: span 3;
+  grid-template-rows: subgrid;
+  margin: 0;
+}
+
+.corridor .rx-fig-row > figure > figcaption {
+  grid-row: span 2;
+}
+
+.corridor .rx-fig-row > :only-child {
+  max-width: 58%;
+}
+
+/* ---- segmented control: its row and label. The group and its buttons are
+   one rule in week04.css. The label matches the specificity of the roles
+   toolbar rule in week04-roles.css, so it drops that rule's capitals. */
+
+.corridor .rx-seg-row {
+  align-items: center;
+  display: flex;
+  gap: 12px;
+  margin: 10px 0;
+}
+
+.corridor .rx-seg-label,
+.corridor .roles-toolbar .axis-modes-label,
+.corridor .axis-modes-label {
+  color: var(--ink-soft);
+  font-size: var(--fs-small);
+  font-weight: 700;
+  letter-spacing: 0;
+  text-transform: none;
+}
+
+/* ---- the hero legend (board RTop), on the dark hero */
+
+.corridor .rx-legend {
+  background: var(--w4-hero-state);
+  border: 1px solid var(--w4-hero-state-edge);
+  border-radius: 12px;
+  margin: 22px 0 4px;
+  padding: 14px 16px;
+  text-align: left;
+}
+
+.corridor .rx-legend-title {
+  color: var(--w4-hero-lede);
+  font-size: var(--fs-small);
+  font-weight: 700;
+  letter-spacing: 0;
+  margin: 0 0 10px;
+  text-transform: none;
+}
+
+.corridor .rx-legend ul {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.corridor .rx-legend li {
+  align-items: center;
+  column-gap: 10px;
+  display: grid;
+  grid-template-columns: 14px minmax(0, 1fr);
+  row-gap: 1px;
+}
+
+.corridor .rx-legend i {
+  border-radius: 50%;
+  display: block;
+  grid-row: 1;
+  height: 12px;
+  width: 12px;
+}
+
+.corridor .rx-legend i.rx-leg-line {
+  border-radius: 0;
+  border-top: 2px solid var(--w4-hero-lede);
+  height: 0;
+  width: 14px;
+}
+
+.corridor .rx-legend b {
+  color: var(--w4-hero-ink);
+  font-size: var(--fs-body);
+  font-weight: 700;
+  grid-column: 2;
+}
+
+.corridor .rx-legend span {
+  color: var(--w4-hero-lede);
+  font-size: var(--fs-small);
+  grid-column: 2;
+  line-height: 1.4;
+}
+
+/* ---- section 1 start card (board RS1) */
+
+.corridor .rx-kicker {
+  color: var(--ink-soft);
+  font-size: var(--fs-small);
+  margin: 6px 0 0;
+}
+
+.corridor .rx-start-grid {
+  align-items: start;
+  display: grid;
+  gap: 36px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  margin-top: 8px;
+}
+
+.corridor .rx-start-grid header.w4-q {
+  margin-bottom: 8px;
+}
+
+.corridor .rx-start-notices {
+  display: grid;
+  gap: 18px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  margin-top: 14px;
+}
+
+.corridor .rx-groups {
+  display: flex;
+  flex-direction: column;
+  margin-top: 10px;
+}
+
+.corridor .rx-group {
+  border-top: 1px solid var(--line-soft);
+  padding: 10px 0;
+}
+
+.corridor .rx-group-head {
+  align-items: center;
+  display: flex;
+  font-size: var(--fs-body);
+  gap: 8px;
+}
+
+.corridor .rx-group-head i {
+  border-radius: 50%;
+  display: inline-block;
+  height: 12px;
+  width: 12px;
+}
+
+.corridor .rx-group-head span {
+  color: var(--ink-soft);
+  font-size: var(--fs-small);
+}
+
+.corridor .rx-group p {
+  color: var(--ink-soft);
+  font-size: var(--fs-small);
+  line-height: 1.55;
+  margin: 4px 0 0 20px;
+}
+
+/* ---- an employer's network: search and matches (board RS3) */
+
+.corridor .rx-ego-ctrl {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px 14px;
+  margin: 2px 0 10px;
+}
+
+.corridor .rx-ego-search {
+  align-items: center;
+  color: var(--ink-soft);
+  display: flex;
+  font-size: var(--fs-small);
+  font-weight: 700;
+  gap: 8px;
+}
+
+.corridor .rx-ego-search input {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  color: var(--ink);
+  font: inherit;
+  font-size: var(--fs-small);
+  font-weight: 500;
+  padding: 6px 12px;
+  width: 210px;
+}
+
+.corridor .rx-ego-search input:focus {
+  outline: 2px solid var(--w4-accent);
+  outline-offset: 1px;
+}
+
+.corridor .rx-ego-matches {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin: 0 0 10px;
+}
+
+.corridor .rx-ego-matches button {
+  align-items: baseline;
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  color: var(--ink);
+  cursor: pointer;
+  display: inline-flex;
+  font: inherit;
+  font-size: var(--fs-small);
+  font-weight: 600;
+  gap: 6px;
+  padding: 5px 11px;
+}
+
+.corridor .rx-ego-matches button:hover {
+  background: var(--w4-accent-soft);
+  border-color: var(--w4-accent);
+}
+
+.corridor .rx-ego-matches button span {
+  color: var(--ink-mute);
+  font-size: var(--fs-caption);
+  font-weight: 500;
+}
+
+.corridor .rx-ego-none {
+  color: var(--ink-mute);
+  font-size: var(--fs-small);
+  margin: 0 0 10px;
+}
+
+/* ---- section 5's three answers (board RS5) */
+
+.corridor .rx-answers {
+  display: flex;
+  flex-direction: column;
+  list-style: none;
+  margin: 16px 0 0;
+  padding: 0;
+}
+
+.corridor .rx-answers li {
+  align-items: baseline;
+  border-top: 1px solid var(--line-soft);
+  color: var(--ink);
+  display: flex;
+  font-size: var(--fs-body);
+  gap: 12px;
+  line-height: 1.5;
+  padding: 10px 0;
+}
+
+.corridor .rx-answers li .w4-num {
+  flex: none;
+}
+
+/* ---- the deep-dive catalogue (board RDeep): six topic cards */
+
+.corridor .rx-cut-intro {
+  max-width: 68ch;
+}
+
+.corridor .rx-tgrid {
+  align-items: start;
+  display: grid;
+  gap: 16px;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  margin-top: 18px;
+}
+
+.corridor .rx-tcard {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  box-shadow: var(--shadow);
+  padding: 16px;
+}
+
+.corridor .rx-tcard-data {
+  background: var(--w4-inset);
+  box-shadow: none;
+}
+
+.corridor .rx-tcard-head {
+  align-items: flex-start;
+  color: var(--ink);
+  display: flex;
+  gap: 12px;
+  padding-bottom: 10px;
+  text-decoration: none;
+}
+
+.corridor .rx-tcard-head span {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.corridor .rx-tcard-head b {
+  font-size: var(--fs-strong);
+}
+
+.corridor .rx-tcard-head em {
+  color: var(--ink-soft);
+  font-size: var(--fs-small);
+  font-style: normal;
+  line-height: 1.45;
+}
+
+.corridor .rx-tcard ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.corridor .rx-tcard li a {
+  align-items: baseline;
+  border-top: 1px solid var(--line-soft);
+  color: var(--ink);
+  display: flex;
+  font-size: var(--fs-small);
+  font-weight: 600;
+  gap: 10px;
+  line-height: 1.4;
+  padding: 8px 4px;
+  text-decoration: none;
+}
+
+.corridor .rx-tcard li a b {
+  color: var(--w4-accent);
+  flex: none;
+  font-size: var(--fs-caption);
+  min-width: 22px;
+}
+
+.corridor .rx-tcard li a span {
+  flex-grow: 1;
+}
+
+.corridor .rx-tcard li a i {
+  color: var(--w4-accent);
+  font-style: normal;
+  font-weight: 700;
+}
+
+.corridor .rx-tcard li a:hover {
+  background: var(--w4-accent-soft);
+}
+
+.corridor .rx-tcard li.rx-uses-li > a {
+  border-top: 1px solid var(--line-soft);
+}
+
+.corridor .rx-uses {
+  border-left: 2px solid var(--line);
+  list-style: none;
+  margin: 0 0 4px 6px;
+  padding: 0 0 0 12px;
+}
+
+.corridor .rx-tcard .rx-uses li a {
+  align-items: flex-start;
+  border-top: none;
+  flex-direction: column;
+  font-weight: 600;
+  gap: 2px;
+  padding: 6px 4px;
+}
+
+.corridor .rx-tcard .rx-uses li a b {
+  color: var(--w4-accent);
+  font-size: var(--fs-caption);
+  min-width: 0;
+}
+
+.corridor .rx-tcard .rx-uses li a em {
+  color: var(--ink-soft);
+  font-size: var(--fs-small);
+  font-style: normal;
+  font-weight: 500;
+  line-height: 1.45;
+}
+
+.corridor .rx-moved {
+  color: var(--ink-soft);
+  font-size: var(--fs-small);
+  line-height: 1.6;
+  margin: 16px 0 0;
+}
+
+.corridor .rx-tile-finding {
+  color: var(--ink);
+  display: block;
+  margin-top: 6px;
+}
+
+/* ---- a topic: its bar, its contents and one box at a time (topic boards) */
+
+.corridor .rx-topic-bar {
+  align-items: center;
+  display: flex;
+  gap: 16px;
+  margin: 8px 0 16px;
+}
+
+.corridor .rx-back {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  color: var(--w4-accent);
+  font-size: var(--fs-small);
+  font-weight: 700;
+  padding: 6px 12px;
+  text-decoration: none;
+}
+
+.corridor .rx-topic-title {
+  font-size: var(--fs-h3);
+  font-weight: 800;
+  margin: 0;
+}
+
+.corridor .rx-topic-holds {
+  color: var(--ink-soft);
+  font-size: var(--fs-body);
+  margin: 2px 0 0;
+}
+
+.corridor .rx-topic-count {
+  color: var(--ink-soft);
+  font-size: var(--fs-small);
+  margin-left: auto;
+}
+
+.corridor .rx-toc {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  display: grid;
+  gap: 2px 32px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  margin-bottom: 22px;
+  padding: 14px 16px;
+}
+
+.corridor .rx-toc-col {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.corridor .rx-toc-head {
+  color: var(--ink-mute);
+  font-size: var(--fs-small);
+  font-weight: 700;
+  margin: 2px 0 6px 15px;
+}
+
+.corridor .rx-toc-item {
+  background: transparent;
+  border: none;
+  border-left: 3px solid transparent;
+  border-radius: 0 8px 8px 0;
+  box-sizing: border-box;
+  color: var(--ink-soft);
+  cursor: pointer;
+  display: block;
+  font: inherit;
+  font-size: var(--fs-body);
+  font-weight: 600;
+  line-height: 1.4;
+  padding: 8px 12px;
+  text-align: left;
+  text-decoration: none;
+  width: 100%;
+}
+
+.corridor .rx-toc-item:hover {
+  background: var(--w4-inset);
+  color: var(--ink);
+}
+
+.corridor .rx-toc-item[aria-current="true"] {
+  background: var(--ground);
+  border-left-color: var(--w4-accent);
+  color: var(--ink);
+}
+
+.corridor .rx-toc-item b {
+  color: var(--w4-accent);
+  font-weight: 700;
+  margin-right: 6px;
+}
+
+.corridor .rx-panel > .card {
+  margin-top: 0;
+}
+
+/* The port's own rules. A topic and a box are <details> whose summaries stay
+   hidden: the catalogue and the contents list are the controls. */
+
+.corridor details.rx-topic > summary,
+.corridor details.rx-panel > summary {
+  display: none;
+}
+
+#cut:has(> details.rx-topic[open]) > .rx-catalogue {
+  display: none;
+}
+
+/* Data and methods is still a .qa card underneath. As a topic it drops that
+   frame, so its header sits on the page like the other five topics and its
+   content takes the card below. */
+
+.corridor details.qa.rx-topic {
+  background: none;
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+}
+
+.corridor details.qa.rx-topic > .qa-body {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 20px 24px;
+}
+
+/* The skills and PageRank boxes each hold several cards that scripts build;
+   the router's data-show picks the one to show. Scoped to the whole box,
+   because the radar lands at the end of the box when it cannot find the
+   cluster card. */
+
+#cut-skills[data-show="direct"] .w4-card:not(#cut-skills-direct),
+#cut-skills[data-show="cluster"] .w4-card:not(#cut-skills-cluster),
+#cut-skills[data-show="radar"] .w4-card:not(#cut-skills-radar),
+#cut-pagerank[data-show="explore"] .w4-card:not(#cut-pagerank-explore),
+#cut-pagerank[data-show="iteration"] .w4-card:not(#cut-pagerank-iteration) {
+  display: none;
+}
+
+/* ---- tables: one style for every table in the post, with bars and meters
+   that week04-tables.js adds to the numeric columns */
+
+.corridor main table {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-collapse: separate;
+  border-radius: 10px;
+  border-spacing: 0;
+  font-size: var(--fs-small);
+  line-height: 1.4;
+  margin-top: 6px;
+  overflow: hidden;
+  width: 100%;
+}
+
+.corridor main table caption {
+  caption-side: top;
+  color: var(--ink);
+  font-size: var(--fs-small);
+  font-weight: 700;
+  padding: 0 2px 8px;
+  text-align: left;
+}
+
+.corridor main table th {
+  background: var(--w4-inset);
+  border-bottom: 1px solid var(--line);
+  color: var(--ink-soft);
+  font-size: var(--fs-caption);
+  font-weight: 600;
+  padding: 9px 12px;
+  text-align: left;
+  white-space: nowrap;
+}
+
+.corridor main table td {
+  border-top: 1px solid var(--ground);
+  color: var(--ink);
+  padding: 8px 12px;
+  vertical-align: middle;
+}
+
+.corridor main table tbody tr:first-child td {
+  border-top: none;
+}
+
+.corridor main table tbody tr:hover td {
+  background: var(--w4-inset);
+}
+
+.corridor main table td:first-child {
+  font-weight: 600;
+}
+
+.corridor main table th.num,
+.corridor main table td.num {
+  font-variant-numeric: tabular-nums;
+  text-align: right;
+  white-space: nowrap;
+}
+
+.corridor main table td.soft {
+  color: var(--ink-soft);
+}
+
+.corridor .rx-cell {
+  align-items: center;
+  display: flex;
+  gap: 10px;
+  justify-content: flex-end;
+}
+
+.corridor .rx-cell > span:last-child {
+  font-variant-numeric: tabular-nums;
+  min-width: 5.2ch;
+  text-align: right;
+}
+
+.corridor .rx-bar {
+  background: var(--ground);
+  border-radius: 999px;
+  display: flex;
+  flex: none;
+  height: 6px;
+  justify-content: flex-start;
+  overflow: hidden;
+  width: 72px;
+}
+
+.corridor .rx-bar i {
+  background: var(--w4-accent);
+  border-radius: 999px;
+  display: block;
+  height: 100%;
+}
+
+.corridor .rx-bar.meter i {
+  background: var(--w4-meter);
+}
+
+/* USCIS denial rates: orange for firms that place workers, blue for direct
+   employers, the page's two fixed colours. */
+.corridor .rx-bar.placing i {
+  background: var(--people);
+}
+
+.corridor .rx-bar.direct i {
+  background: var(--access);
+}
+
+.corridor .rx-table-block {
+  margin-top: 18px;
+}
+
+.corridor .rx-table-block h4 {
+  color: var(--ink);
+  font-size: var(--fs-small);
+  font-weight: 700;
+  margin: 0 0 4px;
+}
+
+.corridor .rx-table-block p {
+  color: var(--ink-soft);
+  font-size: var(--fs-small);
+  margin: 0 0 6px;
+}
+
+
+/* ==== 3. The component kit and the six-part section card, w5-card (from kit.css) ==== */
+
+/* Styles for the components in docs/assets/js/kit.js, and the empty-slot
+   hints on the week 5 page. Colours and sizes come from the page's tokens. */
+
+.kit-figure { margin: 0; }
+.kit-figure figcaption { color: var(--ink-soft); font-size: var(--fs-caption); margin-top: 0.5rem; }
+.kit-echart { width: 100%; }
+
+.kit-kwic { border-collapse: collapse; width: 100%; font-size: var(--fs-small); }
+.kit-kwic td { padding: 0.2rem 0.4rem; border-bottom: 1px solid var(--line-soft); white-space: nowrap; }
+.kit-kwic-page { color: var(--ink-mute); font-size: var(--fs-caption); }
+.kit-kwic-left { text-align: right; overflow: hidden; max-width: 22rem; direction: rtl; }
+.kit-kwic-right { overflow: hidden; max-width: 22rem; }
+.kit-kwic mark, .kit-passage mark { background: var(--access-soft); color: var(--ink); padding: 0 0.15em; border-radius: 3px; }
+
+.kit-passage { margin: 0.75rem 0; padding: 0.5rem 1rem; border-left: 3px solid var(--access); background: var(--card); }
+.kit-passage p { margin: 0 0 0.35rem; }
+.kit-passage cite { color: var(--ink-mute); font-size: var(--fs-caption); font-style: normal; }
+
+/* Empty slots on an unwritten page. A section script replaces the slot's
+   contents, so the hint disappears as soon as something is drawn. */
+.w5-hint { font-style: italic; opacity: 0.7; }
+.w5-slots { display: grid; gap: 1rem; margin-top: 1rem; }
+.w5-slot { border: 1px dashed var(--line); border-radius: 8px; padding: 0.75rem 1rem; }
+
+/* Week 4's card for a week 5 section. Give the slots container the card's
+   classes, <div class="w5-slots card w4-card w5-card">, and the six slots
+   fall into Week 4's layout: the question and answer across the top; what we
+   did, what surprised us and the limitation in the text column; the figure
+   beside them; the passages we checked across the bottom. The slot headings
+   become Week 4's small labels. */
+.corridor .w5-card.w4-card {
+  align-items: start;
+  column-gap: 40px;
+  display: grid;
+  grid-template-areas: "asked asked" "did figure" "surprise figure" "limit figure" "checked checked";
+  grid-template-columns: 500px minmax(0, 1fr);
+  grid-template-rows: auto auto auto 1fr auto;
+  margin-top: 0;
+  row-gap: 16px;
+}
+/* The wide card, for a figure that holds two panels (Week 4's two charts in a
+   row under the text): add w5-card-wide. What we did takes the text column,
+   what surprised us and the limitation sit beside it, and the figure runs the
+   full width under both. */
+.corridor .w5-card.w5-card-wide.w4-card {
+  grid-template-areas: "asked asked" "did surprise" "did limit" "figure figure" "checked checked";
+  grid-template-columns: 500px minmax(0, 1fr);
+  grid-template-rows: auto auto 1fr auto auto;
+}
+.corridor .w5-card > .w5-slot { border: 0; border-radius: 0; min-width: 0; padding: 0; }
+.corridor .w5-card > [data-slot="asked"] { grid-area: asked; }
+.corridor .w5-card > [data-slot="did"] { grid-area: did; }
+.corridor .w5-card > [data-slot="figure"] { grid-area: figure; }
+.corridor .w5-card > [data-slot="surprise"] { grid-area: surprise; }
+.corridor .w5-card > [data-slot="limit"] { grid-area: limit; }
+.corridor .w5-card > [data-slot="checked"] { border-top: 1px solid var(--line-soft); grid-area: checked; padding-top: 16px; }
+.corridor .w5-card > .w5-slot > h3 {
+  color: var(--ink-mute);
+  font-size: var(--fs-caption);
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  margin: 0 0 6px;
+  text-transform: uppercase;
+}
+.corridor .w5-card [data-body] { display: flex; flex-direction: column; gap: 12px; }
+/* Two panels side by side inside a card shrink to the card: a wide table wraps
+   its cells instead of pushing past the card's edge. */
+.corridor .w5-card .w5-two { grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr); }
+.corridor .w5-card .w5-two > * { min-width: 0; }
+.corridor .w5-card .w5-two table { max-width: 100%; }
+/* A chart drawn at a fallback width must not hold its column open. */
+.corridor .w5-card [data-body] > *, .corridor .w5-card .plot > * { min-width: 0; }
+.corridor .w5-card [data-body] > p { color: var(--ink-soft); font-size: var(--fs-body); line-height: 1.62; margin: 0; max-width: 68ch; }
+.corridor .w5-card [data-body] > p.w5-question { color: var(--ink); font-size: var(--fs-h4); font-weight: 700; letter-spacing: -0.01em; line-height: 1.25; }
+.corridor .w5-card [data-body] > p.w4-answer { color: var(--ink); font-size: var(--fs-strong); font-weight: 600; }
+.corridor .w5-card .notice { margin-top: 0; }
+.corridor .w5-chips { display: flex; flex-wrap: wrap; gap: 6px; }
+.corridor .w5-chips button { background: var(--card); border: 1px solid var(--line); border-radius: 999px; color: var(--ink-soft); cursor: pointer; font: inherit; font-size: var(--fs-small); padding: 3px 11px; }
+.corridor .w5-chips button[aria-pressed="true"] { background: var(--ink); border-color: var(--ink); color: var(--card); }
+.corridor .w5-card .kit-kwic { table-layout: fixed; }
+.corridor .w5-card .kit-kwic td { overflow: hidden; text-overflow: ellipsis; }
+.corridor .w5-card .kit-kwic td.kit-kwic-page { width: 11rem; }
+.corridor .w5-card .kit-kwic td.kit-kwic-left { width: 26%; }
+.corridor .w5-card .kit-kwic td.kit-kwic-right { width: 22%; }
+.corridor .w5-card .kit-kwic td:nth-child(3) { width: 9rem; }
+.corridor .kit-kwic td.w5-mark { width: 1.5rem; }
+.corridor .kit-kwic td.w5-verdict { color: var(--ink-mute); font-size: var(--fs-caption); white-space: normal; width: 17rem; }
+.corridor .kit-kwic td.w5-mark { font-weight: 800; }
+
+
+/* ==== 4. Search, quiz, stat rows and panels first built for week 5 (from week05.css) ==== */
+
+/* Week 5 · search + autocomplete sections */
+
+.corridor .w5-filled {
+  border-style: solid;
+  opacity: 1;
+}
+
+.corridor .w5-lead {
+  color: var(--ink);
+  font-size: var(--fs-body);
+  line-height: 1.55;
+  margin: 0 0 0.75rem;
+  max-width: 62rem;
+  text-wrap: pretty;
+}
+
+.corridor .w5-lead b {
+  font-weight: 700;
+}
+
+.corridor .w5-statrow {
+  display: grid;
+  gap: 12px;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  margin: 0.75rem 0 1.25rem;
+}
+
+.corridor .w5-stat {
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 12px 14px;
+}
+
+.corridor .w5-stat b {
+  color: var(--ink);
+  display: block;
+  font-size: var(--fs-h2);
+  font-variant-numeric: tabular-nums;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  line-height: 1.05;
+}
+
+.corridor .w5-stat span {
+  color: var(--ink-soft);
+  display: block;
+  font-size: var(--fs-caption);
+  line-height: 1.35;
+  margin-top: 4px;
+}
+
+.corridor .w5-panel {
+  background: linear-gradient(180deg, #ffffff 0%, #f7fafd 100%);
+  border: 1px solid var(--line-soft);
+  border-radius: 12px;
+  padding: 16px 18px;
+}
+
+.corridor .w5-panel h4 {
+  font-size: var(--fs-small);
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  margin: 0 0 10px;
+  text-transform: uppercase;
+}
+
+.corridor .w5-search-box {
+  display: grid;
+  gap: 10px;
+  grid-template-columns: 1fr auto;
+  margin-bottom: 12px;
+}
+
+.corridor .w5-search-box input {
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  color: var(--ink);
+  font: inherit;
+  padding: 10px 12px;
+}
+
+.corridor .w5-search-box button,
+.corridor .w5-chip,
+.corridor .w5-guess button,
+.corridor .w5-quiz-nav button {
+  background: var(--ink);
+  border: 0;
+  border-radius: 8px;
+  color: #fff;
+  cursor: pointer;
+  font: inherit;
+  font-size: var(--fs-small);
+  font-weight: 650;
+  padding: 10px 14px;
+}
+
+.corridor .w5-chip {
+  background: #fff;
+  border: 1px solid var(--line);
+  color: var(--ink);
+  padding: 6px 10px;
+}
+
+.corridor .w5-chip[aria-pressed="true"] {
+  background: var(--ink);
+  border-color: var(--ink);
+  color: #fff;
+}
+
+.corridor .w5-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 0 0 14px;
+}
+
+.corridor .w5-rank {
+  display: grid;
+  gap: 8px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.corridor .w5-rank li {
+  align-items: baseline;
+  background: #fff;
+  border: 1px solid var(--line-soft);
+  border-radius: 8px;
+  display: grid;
+  gap: 8px 12px;
+  grid-template-columns: 2rem 1fr auto;
+  padding: 8px 12px;
+}
+
+.corridor .w5-rank .w5-pos {
+  color: var(--ink-mute);
+  font-variant-numeric: tabular-nums;
+  font-weight: 700;
+}
+
+.corridor .w5-rank .w5-name {
+  color: var(--ink);
+  font-weight: 650;
+}
+
+.corridor .w5-rank .w5-score {
+  color: var(--ink-soft);
+  font-size: var(--fs-caption);
+  font-variant-numeric: tabular-nums;
+}
+
+.corridor .w5-rank .w5-terms {
+  color: var(--ink-mute);
+  font-size: var(--fs-caption);
+  grid-column: 2 / -1;
+}
+
+.corridor .w5-rank li.w5-hit {
+  border-color: #7eb6a0;
+  box-shadow: inset 3px 0 0 #2f8f6b;
+}
+
+.corridor .w5-table-wrap {
+  overflow-x: auto;
+}
+
+.corridor .w5-table {
+  border-collapse: collapse;
+  font-size: var(--fs-small);
+  width: 100%;
+}
+
+.corridor .w5-table th,
+.corridor .w5-table td {
+  border-bottom: 1px solid var(--line-soft);
+  padding: 8px 10px;
+  text-align: left;
+  vertical-align: top;
+}
+
+.corridor .w5-table th {
+  color: var(--ink-soft);
+  font-weight: 650;
+}
+
+.corridor .w5-table tr[data-selected="true"] {
+  background: #eef5ff;
+}
+
+.corridor .w5-table button.linkish {
+  all: unset;
+  color: var(--ink);
+  cursor: pointer;
+  font-weight: 650;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.corridor .w5-ok {
+  color: #1f7a55;
+  font-weight: 700;
+}
+
+.corridor .w5-fail {
+  color: #a33b2d;
+  font-weight: 700;
+}
+
+.corridor .w5-detail {
+  margin-top: 14px;
+}
+
+.corridor .w5-detail blockquote,
+.corridor .w5-quote {
+  border-left: 3px solid var(--line);
+  color: var(--ink-soft);
+  font-style: italic;
+  margin: 10px 0 0;
+  padding: 2px 0 2px 12px;
+}
+
+.corridor .w5-caption {
+  color: var(--ink-mute);
+  font-size: var(--fs-caption);
+  line-height: 1.4;
+  margin: 8px 0 0;
+}
+
+.corridor .w5-fake {
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 14px 16px;
+}
+
+.corridor .w5-fake .w5-char {
+  color: var(--ink);
+  font-size: var(--fs-lead);
+  font-weight: 750;
+  margin: 0 0 8px;
+}
+
+.corridor .w5-fake p {
+  color: var(--ink);
+  line-height: 1.55;
+  margin: 0;
+  text-wrap: pretty;
+}
+
+.corridor .w5-guess {
+  align-items: end;
+  display: grid;
+  gap: 10px;
+  grid-template-columns: 1fr auto;
+  margin-top: 12px;
+}
+
+.corridor .w5-guess select {
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  color: var(--ink);
+  font: inherit;
+  padding: 10px 12px;
+  width: 100%;
+}
+
+.corridor .w5-quiz-nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.corridor .w5-quiz-nav button[data-kind="ghost"] {
+  background: #fff;
+  border: 1px solid var(--line);
+  color: var(--ink);
+}
+
+.corridor .w5-scoreboard {
+  color: var(--ink-soft);
+  font-size: var(--fs-small);
+  margin: 0 0 10px;
+}
+
+.corridor .w5-reveal {
+  background: #f3faf6;
+  border: 1px solid #cfe6d9;
+  border-radius: 8px;
+  margin-top: 12px;
+  padding: 12px 14px;
+}
+
+.corridor .w5-reveal[hidden] {
+  display: none;
+}
+
+.corridor .w5-hubs {
+  color: var(--ink-mute);
+  font-size: var(--fs-caption);
+  margin: 6px 0 0;
+}
+
+.corridor .w5-two {
+  display: grid;
+  gap: 16px;
+  grid-template-columns: 1.1fr 0.9fr;
+  margin-top: 8px;
+}
+
+@media (max-width: 900px) {
+  .corridor .w5-statrow,
+  .corridor .w5-two {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* The hero: the text column and one scatter, Week 4's grid without the inspector. */
+.corridor .w4-hero-grid.w5-hero-grid {
+  grid-template-columns: 340px minmax(0, 1fr);
+}
+.corridor .w5-hero-stage {
+  align-items: stretch;
+}
+.corridor .w5-hero-plot {
+  min-width: 0;
+  width: 100%;
+}
+.corridor .w5-hero-caption {
+  color: var(--w4-hero-body);
+  font-size: var(--fs-small);
+  line-height: 1.5;
+  margin: 0;
+  max-width: 68ch;
+}
+.corridor .w5-hero-caption a {
+  color: var(--w4-hero-ink);
+}
+
+/* The methods list in the closing. */
+.corridor .w5-methods {
+  color: var(--ink-soft);
+  display: flex;
+  flex-direction: column;
+  font-size: var(--fs-body);
+  gap: 8px;
+  line-height: 1.55;
+  margin: 0;
+  padding-left: 18px;
+}
+
+/* A card of stacked paragraphs, notices and drawers, evenly spaced. */
+.corridor .w5-stack { display: flex; flex-direction: column; gap: 14px; }
+.corridor .w5-stack > * { margin: 0; }
+.corridor .w5-stack .qa-body { display: flex; flex-direction: column; gap: 10px; }
+.corridor .w5-stack .qa-body > * { margin: 0; }
+
+
+/* ==== 5. Slots and the visually-hidden helper (from week 5's inline style) ==== */
+
+.w5-hint { font-style: italic; opacity: 0.7; }
+.w5-slots { display: grid; gap: 1rem; margin-top: 1rem; }
+.w5-slot { border: 1px dashed currentColor; border-radius: 8px; padding: 0.75rem 1rem; opacity: 0.85; }
+.w5-slot.w5-filled { border-style: solid; opacity: 1; }
+.visually-hidden {
+  border: 0;
+  clip: rect(0 0 0 0);
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+  padding: 0;
+  position: absolute;
+  width: 1px;
 }

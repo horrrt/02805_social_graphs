@@ -3,7 +3,7 @@
 // modularity chart, strong/weak ties and the lottery. Plain SVG, drawn once
 // the page's own JSON loads; every chart carries a hover <title> and sits
 // beside a caption that says how to read it. Colours come from CSS custom
-// properties (week04.css, week04-vis-staffing.css) through token(), never
+// properties (post.css, week04-vis-staffing.css) through token(), never
 // as hex literals here.
 import { node, token, stripChart, miniStrip, fitted, fs, textWidth } from "./week04-strip.js?v=2";
 

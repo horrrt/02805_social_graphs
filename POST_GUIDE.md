@@ -6,7 +6,7 @@ Use this guide before creating or revising a post. It records the user's prefere
 
 - Make every post self-contained. Readers may arrive directly without reading the homepage or any earlier post. Explain the dataset, what links mean, the local experiment rules and essential terms in that post. Links to other posts are optional next steps, never prerequisites.
 - Build for readers with no network-science background. Introduce terms through an example before using technical vocabulary.
-- Keep the approved visual direction: illustrated introductions, clear primary actions, readable spacing, and the arcade look of weeks 1 and 2. Use `docs/assets/css/design.css` and the existing post markup.
+- Keep the approved visual direction: illustrated introductions, clear primary actions and readable spacing. Weeks 1 and 2 keep their arcade sheets (`design.css`). Every later post links `type.css`, `corridor.css` and `post.css`, in that order, and nothing else; a rule another post could use goes into `post.css` (`tests/stylesheets.test.mjs`).
 - Focus on desktop. The user explicitly removed mobile layout work from scope.
 - Keep deeper analysis available through descriptive disclosures and direct links. Do not hide the evidence needed to understand the main conclusion.
 - Preserve the group's personality and AI-use disclosure. Remove generic introductions, inflated claims, repeated explanations and forced phrasing.

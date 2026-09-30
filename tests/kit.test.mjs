@@ -42,5 +42,5 @@ test("the week 5 page loads each section's script and has its six slots", () => 
     for (const p of PARTS)
       assert.match(html, new RegExp(`id="${s}-${p}">\\s*<h3>[^<]+</h3>\\s*<div data-body>`), `#${s}-${p} has a heading and a body`);
   }
-  assert.ok(html.includes('href="../../assets/css/kit.css'), "kit.css is linked");
+  assert.ok(html.includes('href="../../assets/css/post.css'), "post.css is linked");
 });
