@@ -1,0 +1,61 @@
+source,target,label,verdict,note
+Cyclops_(Marvel_Comics),Xorn,killed,wrong,Xorn kills Jean; nothing between Cyclops and Xorn
+Iron_Lad,Wolverine_(character),killed,wrong,Iron Lad stops Wolverine killing Wanda
+Puck_(Marvel_Comics),Vindicator_(comics),killed,wrong,both killed by the Collective
+Jean_Grey,Xorn,killed,right,Jean is killed by Xorn
+Guardsman_(character),Luke_Cage,killed,wrong,a Guardsman kills Cinder and frames Luke Cage
+Xorn,Emma_Frost,killed,wrong,"""not to kill himself"""
+Deadpool,She-Hulk,killed,right,Deadpool murders a version of She-Hulk
+Whizzer_(Robert_Frank),Deadpool,killed,right,a clone of Whizzer is killed by Deadpool
+Werewolf_by_Night,Deadpool,killed,wrong,the team kills Men-Fish while searching for Deadpool
+Betsy_Braddock,Doctor_Nemesis,killed,wrong,"""addicted to killing""; Doctor Nemesis is a teammate"
+Blue_Eagle_(character),Black_Widow_(Natasha_Romanova),killed,right,Black Widow kills Blue Eagle
+Xorn,Jean_Grey,killed,right,"Xorn, posing as Magneto, kills Jean Grey"
+Black_Panther_(character),Shuri_(character),family,right,Shuri is T'Challa's sister
+Rikki_Barnes,Nomad_(Marvel_Comics),family,wrong,"""grandfather"" is about her grandfather; Nomad is an identity she takes"
+Gwenpool,Blade_(character),family,wrong,"""brother"" is Gwen's brother Teddy; Blade is a team-up"
+Shatterstar,Hrimhari,family,wrong,Hrimhari is the father of another character's child
+Human_Torch,Franklin_Richards_(character),family,right,Franklin is Johnny Storm's nephew
+Cable_(character),Jean_Grey,family,right,Cable's mother is Jean Grey's clone
+Man-Thing,Mockingbird_(Marvel_Comics),family,wrong,"""husband"" is Hawkeye; nothing between Man-Thing and Mockingbird"
+Misty_Knight,Blade_(character),family,wrong,"""his son"" is Joe Robertson's son; Blade is in a list of characters"
+Cable_(character),Rachel_Summers,family,right,Cable is Rachel's half-brother
+Black_Bolt,Karnak_(character),family,wrong,"""cousin"" and ""brother"" name Medusa and Maximus, not Karnak"
+Gladiator_(Kallark),Vulcan_(Marvel_Comics),family,wrong,"""his mother"" is Vulcan's mother; Gladiator is sent against Vulcan"
+Vulcan_(Marvel_Comics),Cyclops_(Marvel_Comics),family,right,Vulcan is Cyclops's younger brother
+Mockingbird_(Marvel_Comics),Doctor_Strange,enemy,wrong,Doctor Strange recruits her to defeat someone else
+Phyla-Vell,Star-Lord,enemy,wrong,Phyla and Star-Lord fight Annihilus together
+Crane_Mother,Iron_Fist_(character),enemy,right,"""an enemy of Iron Fist"""
+Phoenix_Force,Vulcan_(Marvel_Comics),enemy,right,the Phoenix's hosts battle Vulcan's guard
+Gwenpool,Fin_Fang_Foom,enemy,right,Gwenpool's group fights Fin Fang Foom
+Hercules_(Marvel_Comics),Firelord_(character),enemy,right,Thor and Hercules battle Firelord
+Hulkling,Cloak_and_Dagger_(characters),enemy,wrong,an assassin has powers like Cloak and Dagger's
+Adam_Warlock,Emma_Frost,enemy,wrong,"they meet; ""defeat"" is about Devondra"
+Iron_Fist_(character),Phoenix_Force,enemy,right,Iron Fist trains Hope to defeat the Phoenix-possessed X-Men
+Rusty_Collins,Cable_(character),enemy,right,Cable attacks Rusty's group
+Puck_(Marvel_Comics),Hulk,enemy,right,Puck battles the Hulk
+Captain_Universe,Starhawk_(character),enemy,wrong,Starhawk attacks L'Matto on Captain Universe's side
+Rocket_Raccoon,Vulcan_(Marvel_Comics),ally,wrong,"""old friend"" is Ch'od; Vulcan is the enemy whose flagship they raid"
+Eddie_Brock,Black_Cat_(Marvel_Comics),ally,right,Venom and Black Cat confront Carnage together
+Cloak_and_Dagger_(characters),Black_Cat_(Marvel_Comics),ally,right,they team up against Carnage
+Kismet_(Marvel_Comics),Star_Brand,ally,wrong,the Star Brand's bearer beats Kismet
+Ghost_Rider_(Johnny_Blaze),Caretaker_(comics),ally,right,Caretaker is their mentor
+Cloak_and_Dagger_(characters),Nightwatch_(character),ally,right,they team up against Carnage
+Human_Torch_(android),Bucky_(Marvel_Comics),ally,right,the Torch joins Captain America and Bucky
+Anole_(character),Hellion_(character),ally,right,Anole and Julian Keller are close friends
+Jack_Monroe_(character),William_Burnside_(character),ally,right,Jack Monroe is William Burnside's partner
+Ghost_Rider,Caretaker_(comics),ally,right,Caretaker is an ally to Ketch
+Jack_Monroe_(character),Nomad_(Marvel_Comics),ally,wrong,Nomad is an identity Jack Monroe takes
+Morbius,Blade_(character),ally,right,Morbius is a regular ally of Blade
+Werewolf_by_Night,Ghost_Rider_(Johnny_Blaze),teammate,right,the Werewolf joins Ghost Rider
+Blade_(character),Ronin_(Marvel_Comics),teammate,wrong,Ronin is an identity Blade takes
+White_Tiger_(Heroes_for_Hire),Iron_Fist_(character),teammate,right,she joins Iron Fist's team
+Robbie_Baldwin,Steel_Spider,teammate,wrong,the team's mission is to capture Steel Spider
+Power_Man_(Victor_Alvarez),Luke_Cage,teammate,wrong,"""member"" is Luke Cage in the Avengers"
+Adam_Warlock,Spider-Man,teammate,wrong,Spider-Man is part of an amalgam character in a list
+Deathlok,Abomination_(character),teammate,wrong,Abomination is an incarnation of Deathlok
+Noh-Varr,Moondragon,teammate,right,Marvel Boy and Moondragon are on the same Guardians team
+She-Hulk,Man-Thing,teammate,wrong,She-Hulk's team forms to stop the Man-Thing
+Box_(comics),Guardian_(Marvel_Comics),teammate,right,Guardian recruits Box into Gamma Flight
+Vulcan_(Marvel_Comics),Ch'od,teammate,wrong,Ch'od's team forms to defeat Vulcan
+Emma_Frost,Spider-Man,teammate,wrong,"""member"" is Emma in the Brotherhood, in a Spider-Man comic"
