@@ -17,6 +17,7 @@ const POSTS = {
   "docs/weeks/week04/index.html": /^week04-[\w-]+\.css$/,
   "docs/weeks/week05/index.html": null,
   "docs/styleguide/kit.html": null,
+  "docs/weeks/_template/index.html": null,
 };
 
 test("each post loads type.css, corridor.css and post.css first, in that order", () => {
