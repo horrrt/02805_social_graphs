@@ -1,6 +1,6 @@
 /* Week 4 redesign · five years of filings, FY2022 to FY2026 (review/week04-redesign/, board FiveYears).
    Only the layout the box needs beyond the shared .w4-opener, .notice and
-   table.ego rules in week04.css and corridor.css: the panel grid, the panel
+   table.ego rules in post.css and corridor.css: the panel grid, the panel
    card itself, and the two split layouts (month-by-month, the four firms). */
 
 .corridor .years-grid {

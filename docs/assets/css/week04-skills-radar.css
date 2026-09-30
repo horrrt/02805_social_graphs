@@ -1,6 +1,6 @@
 /* Week 4 redesign · S3, the O*NET skills radar (#cut-skills-radar). Card,
-   w4-q, w4-two, notice, plot, w4-pop and w4-figure-body live in week04.css
-   and corridor.css, the drawers in week04-rx.css; this file only holds what the radar's own
+   w4-q, w4-two, notice, plot, w4-pop and w4-figure-body live in post.css
+   and corridor.css, the drawers in post.css; this file only holds what the radar's own
    controls and chart need on top of that, plus its five series colours.
 
    Colour grammar: --people (orange, placed at a client) and --access (blue,

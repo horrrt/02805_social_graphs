@@ -1,7 +1,7 @@
 /* Section 3 deep dive: figures for the first-round questions (who-q1 to
    who-q4), who files the paperwork, the community-stats modularity chart,
    strong/weak ties and the lottery. Reuses .w4-figure / .w4-figure-body from
-   week04.css; this file only adds what those figures need beyond that. */
+   post.css; this file only adds what those figures need beyond that. */
 
 .corridor .w4-vis-stack {
   display: flex;

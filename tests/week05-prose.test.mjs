@@ -1,4 +1,4 @@
-// Week 5 page wiring: owners, stylesheets and a clean merge. The numbers are
+// Week 5 page wiring: owners and a clean merge. Stylesheets: tests/stylesheets.test.mjs. The numbers are
 // pinned per section (tests/week05-*.test.mjs) and for the frame
 // (tests/week05-frame.test.mjs).
 
@@ -11,11 +11,9 @@ import { fileURLToPath } from "node:url";
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const html = fs.readFileSync(path.join(ROOT, "docs/weeks/week05/index.html"), "utf8");
 
-test("week 5 sections are owned and the page loads its stylesheets", () => {
+test("week 5 sections are owned", () => {
   assert.match(html, /id="search"/);
   assert.match(html, /data-owner="Àngela"/);
-  assert.match(html, /week05\.css\?v=\d+/);
-  assert.match(html, /kit\.css\?v=\d+/);
 });
 
 test("week 5 page has no unresolved merge markers or placeholder hints", () => {

@@ -8,7 +8,7 @@
 // rest is new: a figure with its caption and table in one call, a themed
 // ECharts wrapper, and the concordance and quoted passage a text claim needs.
 // docs/assets/js/README.md lists every export with an example; a test keeps
-// that list and this file in step. Style: docs/assets/css/kit.css.
+// that list and this file in step. Style: docs/assets/css/post.css.
 
 import { family, fs } from "./type-scale.mjs";
 import { token } from "./week04-strip.js?v=2";

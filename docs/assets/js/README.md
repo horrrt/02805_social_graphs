@@ -6,7 +6,7 @@ Every component a section script needs comes from one import, `kit.js`:
 import { slot, figure, echart, concordance, passage, loadData } from "./kit.js?v=1";
 ```
 
-Link the page's stylesheets in this order: `type.css`, `corridor.css`, `week04.css`, `week04-rx.css`, `kit.css`.
+Link three stylesheets, in this order: `type.css`, `corridor.css`, `post.css`.
 The Week 5 page already does. See every component drawn with toy data at
 [`docs/styleguide/kit.html`](../../styleguide/kit.html) (served at `/styleguide/kit.html`).
 
@@ -29,7 +29,7 @@ heading.
 
 The Week 4 card layout is a class, not a function: `<div class="w5-slots card w4-card w5-card">` puts the six
 slots in Week 4's arrangement (question and answer on top, text column with the figure beside it, checked
-passages below), styled in `kit.css`. Sections 1 and 2 of the week 5 page show the markup.
+passages below), styled in `post.css`. Sections 1 and 2 of the week 5 page show the markup.
 
 ## Figures and tables
 
