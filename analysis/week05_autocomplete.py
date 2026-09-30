@@ -5,7 +5,9 @@ Question: Does each Marvel community write in its own voice?
 Owner: (unassigned, put your name here and in WEEK05.md)
 
 Page section: docs/weeks/week05/index.html#autocomplete
-Output: analysis/week05_autocomplete.json, every number the section quotes.
+Output: docs/weeks/week05/data/autocomplete.json, every number the section quotes.
+Validate it with check(path, data) from check_pages.py before writing, after
+adding its model to week05_schemas.py.
 
 Steps, following the course's suggestion (exercise 5.9):
 1. Find communities of weighted() with Louvain over many seeds (the same partition the relations section uses).

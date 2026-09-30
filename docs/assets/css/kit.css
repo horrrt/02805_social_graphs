@@ -1,0 +1,23 @@
+/* Styles for the components in docs/assets/js/kit.js, and the empty-slot
+   hints on the week 5 page. Colours and sizes come from the page's tokens. */
+
+.kit-figure { margin: 0; }
+.kit-figure figcaption { color: var(--ink-soft); font-size: var(--fs-caption); margin-top: 0.5rem; }
+.kit-echart { width: 100%; }
+
+.kit-kwic { border-collapse: collapse; width: 100%; font-size: var(--fs-small); }
+.kit-kwic td { padding: 0.2rem 0.4rem; border-bottom: 1px solid var(--line-soft); white-space: nowrap; }
+.kit-kwic-page { color: var(--ink-mute); font-size: var(--fs-caption); }
+.kit-kwic-left { text-align: right; overflow: hidden; max-width: 22rem; direction: rtl; }
+.kit-kwic-right { overflow: hidden; max-width: 22rem; }
+.kit-kwic mark, .kit-passage mark { background: var(--access-soft); color: var(--ink); padding: 0 0.15em; border-radius: 3px; }
+
+.kit-passage { margin: 0.75rem 0; padding: 0.5rem 1rem; border-left: 3px solid var(--access); background: var(--card); }
+.kit-passage p { margin: 0 0 0.35rem; }
+.kit-passage cite { color: var(--ink-mute); font-size: var(--fs-caption); font-style: normal; }
+
+/* Empty slots on an unwritten page. A section script replaces the slot's
+   contents, so the hint disappears as soon as something is drawn. */
+.w5-hint { font-style: italic; opacity: 0.7; }
+.w5-slots { display: grid; gap: 1rem; margin-top: 1rem; }
+.w5-slot { border: 1px dashed var(--line); border-radius: 8px; padding: 0.75rem 1rem; }

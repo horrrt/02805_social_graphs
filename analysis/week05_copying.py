@@ -5,7 +5,9 @@ Question: Which Marvel pages copy text from each other?
 Owner: (unassigned, put your name here and in WEEK05.md)
 
 Page section: docs/weeks/week05/index.html#copying
-Output: analysis/week05_copying.json, every number the section quotes.
+Output: docs/weeks/week05/data/copying.json, every number the section quotes.
+Validate it with check(path, data) from check_pages.py before writing, after
+adding its model to week05_schemas.py.
 
 Steps, following the course's suggestion (exercise 5.9):
 1. Tokenise every page with one stated rule and collect all 8-grams (try 8 and one other length).

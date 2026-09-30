@@ -5,7 +5,9 @@ Question: Can bag-of-words find the right Marvel page from a description?
 Owner: (unassigned, put your name here and in WEEK05.md)
 
 Page section: docs/weeks/week05/index.html#search
-Output: analysis/week05_search.json, every number the section quotes.
+Output: docs/weeks/week05/data/search.json, every number the section quotes.
+Validate it with check(path, data) from check_pages.py before writing, after
+adding its model to week05_schemas.py.
 
 Steps, following the course's suggestion (exercise 5.9):
 1. Build a CountVectorizer document-term matrix over the 303 pages.

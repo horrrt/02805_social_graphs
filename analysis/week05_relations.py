@@ -5,7 +5,9 @@ Question: Who are the friends, foes and family in the Marvel network?
 Owner: (unassigned, put your name here and in WEEK05.md)
 
 Page section: docs/weeks/week05/index.html#relations
-Output: analysis/week05_relations.json, every number the section quotes.
+Output: docs/weeks/week05/data/relations.json, every number the section quotes.
+Validate it with check(path, data) from check_pages.py before writing, after
+adding its model to week05_schemas.py.
 
 Steps, following the course's suggestion (exercise 5.9):
 1. For every arc A -> B in graph(), pull the sentence on A's page that mentions B: a concordance with one line per edge.

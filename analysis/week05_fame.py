@@ -5,7 +5,9 @@ Question: Do more-linked characters get longer pages?
 Owner: (unassigned, put your name here and in WEEK05.md)
 
 Page section: docs/weeks/week05/index.html#fame
-Output: analysis/week05_fame.json, every number the section quotes.
+Output: docs/weeks/week05/data/fame.json, every number the section quotes.
+Validate it with check(path, data) from check_pages.py before writing, after
+adding its model to week05_schemas.py.
 
 Steps, following the course's suggestion (exercise 5.9):
 1. Compute page length (tokens) and in-degree (or another network measure) for all 303 nodes, isolates included.
