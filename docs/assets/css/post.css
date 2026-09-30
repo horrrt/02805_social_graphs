@@ -528,6 +528,11 @@
 
 .corridor {
   --w4-accent: #14618f;
+  /* Right and wrong: a hit in a ranking, a correct guess, a failed query. */
+  --good: #1f7a55;
+  --good-line: #7eb6a0;
+  --good-soft: #f3faf6;
+  --bad: #a33b2d;
   --w4-accent-soft: #d9ecf9;
   --w4-rail-ring: #9fb4cf;
   --w4-rail-dot: #c9d6e6;
@@ -2436,7 +2441,7 @@
 }
 
 .corridor .w5-stat {
-  background: #fff;
+  background: var(--card);
   border: 1px solid var(--line);
   border-radius: 10px;
   padding: 12px 14px;
@@ -2461,7 +2466,7 @@
 }
 
 .corridor .w5-panel {
-  background: linear-gradient(180deg, #ffffff 0%, #f7fafd 100%);
+  background: linear-gradient(180deg, var(--card) 0%, var(--w4-inset) 100%);
   border: 1px solid var(--line-soft);
   border-radius: 12px;
   padding: 16px 18px;
@@ -2483,7 +2488,7 @@
 }
 
 .corridor .w5-search-box input {
-  background: #fff;
+  background: var(--card);
   border: 1px solid var(--line);
   border-radius: 8px;
   color: var(--ink);
@@ -2498,7 +2503,7 @@
   background: var(--ink);
   border: 0;
   border-radius: 8px;
-  color: #fff;
+  color: var(--card);
   cursor: pointer;
   font: inherit;
   font-size: var(--fs-small);
@@ -2507,7 +2512,7 @@
 }
 
 .corridor .w5-chip {
-  background: #fff;
+  background: var(--card);
   border: 1px solid var(--line);
   color: var(--ink);
   padding: 6px 10px;
@@ -2516,7 +2521,7 @@
 .corridor .w5-chip[aria-pressed="true"] {
   background: var(--ink);
   border-color: var(--ink);
-  color: #fff;
+  color: var(--card);
 }
 
 .corridor .w5-chips {
@@ -2536,7 +2541,7 @@
 
 .corridor .w5-rank li {
   align-items: baseline;
-  background: #fff;
+  background: var(--card);
   border: 1px solid var(--line-soft);
   border-radius: 8px;
   display: grid;
@@ -2569,8 +2574,8 @@
 }
 
 .corridor .w5-rank li.w5-hit {
-  border-color: #7eb6a0;
-  box-shadow: inset 3px 0 0 #2f8f6b;
+  border-color: var(--good-line);
+  box-shadow: inset 3px 0 0 var(--good);
 }
 
 .corridor .w5-table-wrap {
@@ -2597,7 +2602,7 @@
 }
 
 .corridor .w5-table tr[data-selected="true"] {
-  background: #eef5ff;
+  background: var(--access-soft);
 }
 
 .corridor .w5-table button.linkish {
@@ -2610,12 +2615,12 @@
 }
 
 .corridor .w5-ok {
-  color: #1f7a55;
+  color: var(--good);
   font-weight: 700;
 }
 
 .corridor .w5-fail {
-  color: #a33b2d;
+  color: var(--bad);
   font-weight: 700;
 }
 
@@ -2640,7 +2645,7 @@
 }
 
 .corridor .w5-fake {
-  background: #fff;
+  background: var(--card);
   border: 1px solid var(--line);
   border-radius: 10px;
   padding: 14px 16px;
@@ -2669,7 +2674,7 @@
 }
 
 .corridor .w5-guess select {
-  background: #fff;
+  background: var(--card);
   border: 1px solid var(--line);
   border-radius: 8px;
   color: var(--ink);
@@ -2686,7 +2691,7 @@
 }
 
 .corridor .w5-quiz-nav button[data-kind="ghost"] {
-  background: #fff;
+  background: var(--card);
   border: 1px solid var(--line);
   color: var(--ink);
 }
@@ -2698,8 +2703,8 @@
 }
 
 .corridor .w5-reveal {
-  background: #f3faf6;
-  border: 1px solid #cfe6d9;
+  background: var(--good-soft);
+  border: 1px solid var(--good-line);
   border-radius: 8px;
   margin-top: 12px;
   padding: 12px 14px;
