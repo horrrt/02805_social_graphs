@@ -1490,6 +1490,79 @@ class StaffingDeep(Model):
     lottery: StaffingDeepLottery
 
 
+# Deep dive · docs/weeks/week04/data/entities_<name>.json, read by week04-entities.js --
+
+class EntityLookups(Model):
+    occupation: list[tuple[str, str]] = Field(min_length=1)
+    place: list[tuple[str, str]] = Field(min_length=1)
+    sector: list[tuple[str, str]] = Field(min_length=1)
+    level: list[str] = Field(min_length=4, max_length=4)
+
+
+class EntityProfiles(Model):
+    community: list[int] = Field(min_length=1)
+    occupation: list[int]
+    place: list[int]
+    sector: list[int]
+    level: list[int]
+    h1b: list[int]
+    perm: list[int]
+    pagerank_rank: list[int]
+
+
+class EntityCommunity(Model):
+    id: int = Count
+    name: str
+    profiles: int = Field(ge=1)
+    workers: int = Field(ge=1)
+    h1b: int = Count
+    perm: int = Count
+    top_employers: list[tuple[str, int]]
+    fields: dict[str, list[tuple[str, float]]]
+    x: float = Field(ge=0, le=1000)  # the community's disc
+    y: float = Field(ge=0, le=1000)
+    r: float = Field(gt=0)
+
+
+class EntityItems(Model):
+    profile: list[int]
+    workers: list[int]
+    name: list[str]
+
+
+class EntityPage(Model):
+    generated_by: str
+    entity: str
+    unit: str
+    year: int
+    dots: Literal["workers", "items"]
+    top: int = Field(ge=1)
+    spacing: float = Field(gt=0)  # a disc's radius is spacing * sqrt(workers)
+    lookups: EntityLookups
+    profiles: EntityProfiles
+    communities: list[EntityCommunity] = Field(min_length=1)
+    summary: dict
+    facts: dict
+    items: EntityItems | None = None
+
+    @model_validator(mode="after")
+    def indexes_resolve(self):
+        p, n = self.profiles, len(self.profiles.community)
+        for name in ("community", "occupation", "place", "sector", "level", "h1b", "perm", "pagerank_rank"):
+            assert len(getattr(p, name)) == n, f"profiles.{name} has a length other than community"
+        assert all(-1 <= c < len(self.communities) for c in p.community), "a community outside the list"
+        assert [c.id for c in self.communities] == list(range(len(self.communities))), "community ids out of order"
+        for name in ("occupation", "place", "sector"):
+            size = len(getattr(self.lookups, name))
+            assert all(0 <= i < size for i in getattr(p, name)), f"a {name} index outside its lookup"
+        assert all(0 <= v < 4 for v in p.level), "a wage level outside I to IV"
+        if self.dots == "items":
+            assert self.items is not None, "dots per item need the items"
+            assert len(self.items.profile) == len(self.items.workers) == len(self.items.name)
+            assert all(0 <= i < n for i in self.items.profile), "an item on a missing profile"
+        return self
+
+
 PAGES = {
     "docs/assets/data/week04_place.json": Place,
     "docs/weeks/week04/data/jobs.json": Jobs,
@@ -1509,6 +1582,8 @@ PAGES = {
     "docs/weeks/week04/data/roles.json": Roles,
     "docs/weeks/week04/data/more.json": More,
     "docs/weeks/week04/data/staffing_deep.json": StaffingDeep,
+    "docs/weeks/week04/data/entities_workers.json": EntityPage,
+    "docs/weeks/week04/data/entities_companies.json": EntityPage,
 }
 
 

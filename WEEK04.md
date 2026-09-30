@@ -193,6 +193,37 @@ lottery tables in `build/` carry the worker's country since 29 September 2026 (s
 `week04_countries.py` still reads the release itself. The suppression drops 43% of FY2023's certified green cards, so the network covers the
 large country-employer pairs only.
 
+## Entity networks: every worker and company as a dot
+
+`analysis/week04_entities.py` (Gyula, 29 to 30 September 2026) draws every 2025 worker and every filing
+company as a dot, coloured by its Louvain community, in the deep-dive box `#entity-communities`. It uses only
+the course's tools, the way the Week 4 brief treats the philosophers: Louvain, best Q of 100 seeds, against
+20 degree-preserving rewirings, NMI between seeds, and NMI against labels, with each label's shuffled NMI as
+its chance level. It also runs the Week 1 to 4 toolkit (degree distributions, random baselines, the
+friendship paradox, centralities, assortativity, cores, greedy merging and Infomap, the disparity filter,
+k-clique communities).
+
+- A worker is a requested H-1B position in a certified filing or a certified PERM case: 1,011,687 in 2025.
+  Workers with the same occupation, metro, wage level and sector form one profile (91,322).
+- The network is bipartite, like section 3's staffing network: profiles (or companies) on one side,
+  occupations, metros, wage levels and sectors on the other (1,705), each linked with weight = workers. No
+  similarity measure: two workers connect only through something they share. A first version linked profiles
+  to their k nearest neighbours; Gyula dropped it on 30 September because kNN is not in the course.
+- The employer and the placement flag are not in the network; their NMI with the groups is the test.
+- Paths, clustering, centrality and the backbone run on the projection onto the attributes (week04_jobs
+  builds its occupation network the same way): a bipartite network has no triangles.
+- Traps: the 2025 PERM form has no wage level, so PERM workers take the most common H-1B level of the same
+  occupation and metro. PERM counties are all blank; they borrow the usual county of the city from the H-1B
+  worksites. As in section 3, the weighted rewired networks score a higher modularity than the real one (a
+  few heavy links let them split around those links), so the page shows the wiring-only null beside it. NMI
+  rises with a label's number of values, so the employer is read against its shuffled NMI. The backbones
+  hold over 20,000 maximal cliques, and networkx compares cliques pairwise, so k-clique percolation is
+  skipped. DrL on the whole bipartite network took 25 minutes, so the layout runs DrL on the projection and
+  puts each profile at the weighted average of its attributes.
+- The loader (`week04_data.py`) keeps 20 more LCA columns, 6 more worksite columns and 22 more PERM
+  columns since 29 September, none personal; adding them changed no committed number.
+- Adding an entity (staffing firms, law firms, O*NET occupations) means one function in its `REGISTRY`.
+
 ## The deep dive
 
 Everything past the closing sits in one section, `#cut` ("Deep dive"). It opens on a catalogue

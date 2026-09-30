@@ -175,22 +175,18 @@ def first_city(title, places):
     return float(best["INTPTLAT"]), float(best["INTPTLONG"])
 
 
-def worksite_metros(lookup, town_lookup, year=YEAR):
-    """One row per worksite of a year's certified H-1B filings, with its metro and employer."""
-    lca = load(f"lca_fy{year}")
-    lca = lca[(lca["CASE_STATUS"] == "Certified") & (lca["VISA_CLASS"] == "H-1B")]
-    lca = lca.assign(employer=[resolver().employer(n, f) for n, f in zip(lca["EMPLOYER_NAME"], lca["EMPLOYER_FEIN"])])
-    sites = load(f"worksites_fy{year}")
-    sites = sites[sites["CASE_NUMBER"].isin(lca["CASE_NUMBER"])].copy()
-    sites["workers"] = pd.to_numeric(sites["WORKSITE_WORKERS"], errors="coerce").fillna(1)
+def locate(sites, lookup, town_lookup, usual=None):
+    """Each row's metro (CBSA code, or None) from its WORKSITE_STATE (spelled
+    out), WORKSITE_COUNTY and WORKSITE_CITY, and the lookup's counts. Adds the
+    columns state and county. A blank county borrows the county most often
+    recorded for the same city, in usual (a (city, state) -> county Series)
+    or, by default, in sites itself."""
     sites["state"] = sites["WORKSITE_STATE"].str.upper().str.strip()
-    sites["county"] = sites["WORKSITE_COUNTY"].map(county_key)
-    # A blank county borrows the county most often recorded for the same city.
-    known = sites[sites["county"] != ""]
-    usual = known.groupby([known["WORKSITE_CITY"].str.upper(), "state"])["county"].agg(
-        lambda s: s.value_counts().index[0])
+    sites["county"] = sites["WORKSITE_COUNTY"].fillna("").map(county_key)
+    if usual is None:
+        usual = usual_counties(sites)
     blank = sites["county"] == ""
-    sites.loc[blank, "county"] = [usual.get((c.upper(), s), "") for c, s in
+    sites.loc[blank, "county"] = [usual.get((str(c).upper(), s), "") for c, s in
                                   zip(sites.loc[blank, "WORKSITE_CITY"], sites.loc[blank, "state"])]
     sites["metro"] = [lookup.get(k) for k in zip(sites["state"], sites["county"])]
     # New England filings often name a town as the county: look the town up,
@@ -202,13 +198,31 @@ def worksite_metros(lookup, town_lookup, year=YEAR):
         town_lookup.get((st, town_key(c))) or town_lookup.get((st, town_key(ci)))
         for st, c, ci in zip(sites.loc[town, "state"].map(abbr), sites.loc[town, "WORKSITE_COUNTY"].fillna(""),
                              sites.loc[town, "WORKSITE_CITY"].fillna(""))]
-    stats = {
+    return {
         "worksite_rows": len(sites),
         "blank_county_rows": int(blank.sum()),
         "blank_county_resolved": int((blank & (sites["county"] != "")).sum()),
         "new_england_rows_by_town": int((town & sites["metro"].notna()).sum()),
         "rows_in_a_metro": int(sites["metro"].notna().sum()),
     }
+
+
+def usual_counties(sites):
+    """(city, state) -> the county most often recorded with it, from rows that name one."""
+    known = sites[sites["county"] != ""]
+    return known.groupby([known["WORKSITE_CITY"].str.upper(), "state"])["county"].agg(
+        lambda s: s.value_counts().index[0])
+
+
+def worksite_metros(lookup, town_lookup, year=YEAR):
+    """One row per worksite of a year's certified H-1B filings, with its metro and employer."""
+    lca = load(f"lca_fy{year}")
+    lca = lca[(lca["CASE_STATUS"] == "Certified") & (lca["VISA_CLASS"] == "H-1B")]
+    lca = lca.assign(employer=[resolver().employer(n, f) for n, f in zip(lca["EMPLOYER_NAME"], lca["EMPLOYER_FEIN"])])
+    sites = load(f"worksites_fy{year}")
+    sites = sites[sites["CASE_NUMBER"].isin(lca["CASE_NUMBER"])].copy()
+    sites["workers"] = pd.to_numeric(sites["WORKSITE_WORKERS"], errors="coerce").fillna(1)
+    stats = locate(sites, lookup, town_lookup)
     lca = lca.assign(total=pd.to_numeric(lca["TOTAL_WORKER_POSITIONS"], errors="coerce").fillna(1))
     sites = sites.merge(lca[["CASE_NUMBER", "employer", "total"]], on="CASE_NUMBER")
     return sites.dropna(subset=["metro"]), lca, stats
