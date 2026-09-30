@@ -247,3 +247,42 @@
   margin-right: 6px;
   width: 9px;
 }
+
+.corridor .w4-entities-net {
+  align-items: center;
+  color: var(--ink-soft);
+  display: inline-flex;
+  font-size: var(--fs-small);
+  gap: 12px;
+}
+
+.corridor .w4-entities-net[hidden],
+.corridor .w4-entities-colour[hidden] {
+  display: none;
+}
+
+.corridor .w4-entities-net select {
+  font: inherit;
+  font-size: var(--fs-small);
+  margin-left: 6px;
+  padding: 4px 8px;
+}
+
+.corridor .w4-entities-stat {
+  border-top: 1px solid var(--line);
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 8px 0;
+}
+
+.corridor .w4-entities-stat span {
+  color: var(--ink-mute);
+  font-size: var(--fs-caption);
+}
+
+.corridor .w4-entities-stat b {
+  color: var(--ink);
+  font-size: var(--fs-h3);
+  font-variant-numeric: tabular-nums;
+}

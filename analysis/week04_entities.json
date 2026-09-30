@@ -5844,5 +5844,707 @@
   "nmi": 0.3958,
   "ami": 0.3957,
   "workers": 1011687
+ },
+ "network_staffing": {
+  "all_links": 6362,
+  "at": {
+   "0.01": {
+    "links": 420,
+    "nodes_with_a_link": 369,
+    "giant": 285
+   },
+   "0.02": {
+    "links": 510,
+    "nodes_with_a_link": 442,
+    "giant": 346
+   },
+   "0.05": {
+    "links": 687,
+    "nodes_with_a_link": 555,
+    "giant": 451
+   },
+   "0.1": {
+    "links": 937,
+    "nodes_with_a_link": 683,
+    "giant": 591
+   },
+   "0.2": {
+    "links": 1423,
+    "nodes_with_a_link": 849,
+    "giant": 775
+   }
+  },
+  "louvain": {
+   "runs": 100,
+   "Q_best": 0.5973,
+   "Q_mean": 0.5954,
+   "communities": 69,
+   "nmi_between_seeds_median": 0.696
+  },
+  "null": {
+   "draws": 20,
+   "kind": "bipartite rewiring, filing counts dealt back out (section 3)",
+   "Q_mean": 0.7364,
+   "Q_sd": 0.0014
+  },
+  "notes": {
+   "network_nodes": 21731,
+   "network_links": 41164,
+   "drawn": 1000,
+   "drawn_filing_share": 0.6396,
+   "weight": "placed H-1B filings, 2025"
+  },
+  "communities": [
+   {
+    "id": 0,
+    "label": "Tata Consultancy Services & co.",
+    "nodes": 88,
+    "strength": 16409,
+    "top": [
+     "Tata Consultancy Services",
+     "Citigroup",
+     "LTIMindtree",
+     "PNC",
+     "Johnson & Johnson"
+    ]
+   },
+   {
+    "id": 1,
+    "label": "Infosys & co.",
+    "nodes": 82,
+    "strength": 12628,
+    "top": [
+     "Infosys",
+     "Bank of America",
+     "Wells Fargo",
+     "Randstad",
+     "Morgan Stanley"
+    ]
+   },
+   {
+    "id": 2,
+    "label": "Cognizant & co.",
+    "nodes": 57,
+    "strength": 8102,
+    "top": [
+     "Cognizant",
+     "CVS Health",
+     "Travelers",
+     "Northern Trust",
+     "BNY Mellon"
+    ]
+   },
+   {
+    "id": 3,
+    "label": "Fidelity Investments & co.",
+    "nodes": 54,
+    "strength": 6713,
+    "top": [
+     "Fidelity Investments",
+     "Compunnel Software",
+     "Kforce",
+     "Walmart",
+     "Mastech Digital Technologies"
+    ]
+   },
+   {
+    "id": 4,
+    "label": "Wipro & co.",
+    "nodes": 50,
+    "strength": 6063,
+    "top": [
+     "Wipro",
+     "JPMorgan Chase",
+     "Mphasis",
+     "Charles Schwab",
+     "Virtusa"
+    ]
+   },
+   {
+    "id": 5,
+    "label": "HCL & co.",
+    "nodes": 38,
+    "strength": 3930,
+    "top": [
+     "HCL",
+     "USAA",
+     "Google",
+     "Abbott",
+     "Merck"
+    ]
+   },
+   {
+    "id": 6,
+    "label": "Ford & co.",
+    "nodes": 57,
+    "strength": 3888,
+    "top": [
+     "Ford",
+     "L&T Technology Services",
+     "Caterpillar",
+     "Amazon",
+     "Honda"
+    ]
+   },
+   {
+    "id": 7,
+    "label": "IBM & co.",
+    "nodes": 32,
+    "strength": 3693,
+    "top": [
+     "IBM",
+     "American Express",
+     "Atos Syntel",
+     "Pfizer",
+     "UPS"
+    ]
+   },
+   {
+    "id": 8,
+    "label": "Verizon & co.",
+    "nodes": 38,
+    "strength": 3405,
+    "top": [
+     "Verizon",
+     "Fiserv",
+     "Skilltune Technologies",
+     "Infinite Computer Solutions",
+     "Globallogic"
+    ]
+   },
+   {
+    "id": 9,
+    "label": "Capgemini & co.",
+    "nodes": 31,
+    "strength": 3334,
+    "top": [
+     "Capgemini",
+     "Comcast",
+     "State Farm",
+     "Discover Financial",
+     "LPL Financial"
+    ]
+   },
+   {
+    "id": 10,
+    "label": "Accenture & co.",
+    "nodes": 50,
+    "strength": 2817,
+    "top": [
+     "Accenture",
+     "Medtronic",
+     "TIAA",
+     "Regeneron",
+     "Bristol Myers Squibb"
+    ]
+   },
+   {
+    "id": 11,
+    "label": "T-Mobile & co.",
+    "nodes": 34,
+    "strength": 2610,
+    "top": [
+     "T-Mobile",
+     "Elevance Health",
+     "UST Global",
+     "Deloitte",
+     "Intel"
+    ]
+   },
+   {
+    "id": 12,
+    "label": "Tech Mahindra & co.",
+    "nodes": 33,
+    "strength": 2320,
+    "top": [
+     "Tech Mahindra",
+     "AT&T",
+     "Navistar",
+     "GE",
+     "Genpact"
+    ]
+   },
+   {
+    "id": 13,
+    "label": "Capital One & co.",
+    "nodes": 48,
+    "strength": 2164,
+    "top": [
+     "Capital One",
+     "Vanguard",
+     "Ascendion INC Formerly Known AS Collabera",
+     "Vista Applied Solutions",
+     "MSR Technology"
+    ]
+   },
+   {
+    "id": 14,
+    "label": "Grandison Management & co.",
+    "nodes": 6,
+    "strength": 2160,
+    "top": [
+     "Grandison Management",
+     "Renewal Rehab",
+     "Ultimate Therapy",
+     "Sigma Rehab",
+     "Post Rehab Services"
+    ]
+   },
+   {
+    "id": 15,
+    "label": "Hexaware Technologies & co.",
+    "nodes": 22,
+    "strength": 1596,
+    "top": [
+     "Hexaware Technologies",
+     "Freddie Mac",
+     "Fannie Mae",
+     "Kpmg",
+     "Orion Systems Integrators"
+    ]
+   },
+   {
+    "id": 16,
+    "label": "Apple & co.",
+    "nodes": 25,
+    "strength": 1495,
+    "top": [
+     "Apple",
+     "Charter Communications",
+     "Quest Global Services",
+     "DGN Technologies",
+     "Inteli Platforms"
+    ]
+   },
+   {
+    "id": 17,
+    "label": "EY & co.",
+    "nodes": 17,
+    "strength": 1334,
+    "top": [
+     "EY",
+     "SLK America",
+     "ExxonMobil",
+     "Fifth Third Bank",
+     "M&T Bank"
+    ]
+   },
+   {
+    "id": 18,
+    "label": "United Airlines & co.",
+    "nodes": 20,
+    "strength": 867,
+    "top": [
+     "United Airlines",
+     "Natsoft",
+     "Erie Insurance",
+     "Satin Solutions",
+     "Valuemomentum"
+    ]
+   },
+   {
+    "id": 19,
+    "label": "Coforge & co.",
+    "nodes": 14,
+    "strength": 687,
+    "top": [
+     "Coforge",
+     "American Airlines",
+     "SEI",
+     "Southwest Airlines",
+     "IBS Software Americas INC FKA IBS Software Services Americas"
+    ]
+   }
+  ]
+ },
+ "network_lawfirms": {
+  "all_links": 78389,
+  "at": {
+   "0.01": {
+    "links": 558,
+    "nodes_with_a_link": 387,
+    "giant": 83
+   },
+   "0.02": {
+    "links": 878,
+    "nodes_with_a_link": 483,
+    "giant": 109
+   },
+   "0.05": {
+    "links": 1711,
+    "nodes_with_a_link": 616,
+    "giant": 166
+   },
+   "0.1": {
+    "links": 3457,
+    "nodes_with_a_link": 774,
+    "giant": 382
+   },
+   "0.2": {
+    "links": 9162,
+    "nodes_with_a_link": 1035,
+    "giant": 660
+   }
+  },
+  "louvain": {
+   "runs": 100,
+   "Q_best": 0.4256,
+   "Q_mean": 0.4256,
+   "communities": 179,
+   "nmi_between_seeds_median": 0.9719
+  },
+  "null": {
+   "draws": 20,
+   "kind": "degree-preserving rewiring, weights dealt back out",
+   "Q_mean": 0.1209,
+   "Q_sd": 0.0008
+  },
+  "notes": {
+   "employers": 1500,
+   "links": 78389,
+   "blank_law_firm_filings": 131194,
+   "in_house_filings": 1750,
+   "weight": "filings through shared law firms, the smaller count per firm"
+  },
+  "communities": [
+   {
+    "id": 0,
+    "label": "Genpact & co. \u00b7 Fragomen DEL REY Bernsen and Loewy",
+    "nodes": 279,
+    "strength": 4152706,
+    "top": [
+     "Genpact",
+     "Sandisk Technologies",
+     "Rivian and VW Group Technology",
+     "DB Global Technology",
+     "ASM America"
+    ],
+    "law_firm": [
+     "Fragomen DEL REY Bernsen and Loewy",
+     0.821
+    ]
+   },
+   {
+    "id": 1,
+    "label": "Amazon & co. \u00b7 Fragomen DEL REY Bernsen and Loewy",
+    "nodes": 48,
+    "strength": 1859762,
+    "top": [
+     "Amazon",
+     "Apple",
+     "Meta",
+     "Walmart",
+     "Intel"
+    ],
+    "law_firm": [
+     "Fragomen DEL REY Bernsen and Loewy",
+     0.828
+    ]
+   },
+   {
+    "id": 2,
+    "label": "DFS Corporate Services & co. \u00b7 Berry Appleman and Leiden",
+    "nodes": 96,
+    "strength": 838692,
+    "top": [
+     "DFS Corporate Services",
+     "Google",
+     "Deloitte",
+     "Fidelity Investments",
+     "Oracle America"
+    ],
+    "law_firm": [
+     "Berry Appleman and Leiden",
+     0.991
+    ]
+   },
+   {
+    "id": 3,
+    "label": "Samsung Austin Semiconductor & co. \u00b7 Ogletree Deakins Nash Smoak and Stewart PC",
+    "nodes": 122,
+    "strength": 507518,
+    "top": [
+     "Samsung Austin Semiconductor",
+     "JPMorgan Chase",
+     "Morgan Stanley",
+     "AMD",
+     "Wells Fargo"
+    ],
+    "law_firm": [
+     "Ogletree Deakins Nash Smoak and Stewart PC",
+     0.724
+    ]
+   },
+   {
+    "id": 4,
+    "label": "Thornton Tomasetti & co. \u00b7 Corporate Immigration Partners PC",
+    "nodes": 130,
+    "strength": 443896,
+    "top": [
+     "Thornton Tomasetti",
+     "Credit One Bank",
+     "KLA",
+     "Humana",
+     "Roblox"
+    ],
+    "law_firm": [
+     "Corporate Immigration Partners PC",
+     0.623
+    ]
+   },
+   {
+    "id": 5,
+    "label": "LTIMindtree & co. \u00b7 Chugh",
+    "nodes": 227,
+    "strength": 150545,
+    "top": [
+     "LTIMindtree",
+     "Transcend IT Solutions",
+     "Latentview Analytics",
+     "UST Global",
+     "Beaconfire Staffing Solutions"
+    ],
+    "law_firm": [
+     "Chugh",
+     0.136
+    ]
+   },
+   {
+    "id": 6,
+    "label": "Tesla & co. \u00b7 EY LAW",
+    "nodes": 77,
+    "strength": 59740,
+    "top": [
+     "Tesla",
+     "EY",
+     "Pricewaterhousecoopers Advisory Services",
+     "Doordash",
+     "Bristol Myers Squibb"
+    ],
+    "law_firm": [
+     "EY LAW",
+     0.618
+    ]
+   },
+   {
+    "id": 7,
+    "label": "Salesforce & co. \u00b7 Erickson Immigration",
+    "nodes": 28,
+    "strength": 42483,
+    "top": [
+     "Salesforce",
+     "PayPal",
+     "eBay",
+     "Pinterest",
+     "Yahoo"
+    ],
+    "law_firm": [
+     "Erickson Immigration",
+     0.859
+    ]
+   },
+   {
+    "id": 8,
+    "label": "Torc Robotics & co. \u00b7 Greenberg Traurig",
+    "nodes": 53,
+    "strength": 38225,
+    "top": [
+     "Torc Robotics",
+     "Schlumberger Technology",
+     "Coforge",
+     "Zoom Communications",
+     "Novartis Pharmaceuticals"
+    ],
+    "law_firm": [
+     "Greenberg Traurig",
+     0.364
+    ]
+   },
+   {
+    "id": 9,
+    "label": "Fanatics Retail Group Fulfillment & co. \u00b7 Jackson Lewis PC",
+    "nodes": 52,
+    "strength": 25974,
+    "top": [
+     "Fanatics Retail Group Fulfillment",
+     "State University of NEW York at Buffalo",
+     "Hughes Network Systems",
+     "Dish Wireless",
+     "Cardinal Health"
+    ],
+    "law_firm": [
+     "Jackson Lewis PC",
+     0.272
+    ]
+   },
+   {
+    "id": 10,
+    "label": "Charter Communications & co. \u00b7 Klasko Immigration LAW Partners",
+    "nodes": 24,
+    "strength": 9542,
+    "top": [
+     "Charter Communications",
+     "Comcast Cable Communications",
+     "American Express",
+     "Vanderbilt University Medical Center",
+     "Remitly"
+    ],
+    "law_firm": [
+     "Klasko Immigration LAW Partners",
+     0.65
+    ]
+   },
+   {
+    "id": 11,
+    "label": "Avco Consulting & co. \u00b7 International Legal and Business Services",
+    "nodes": 32,
+    "strength": 8315,
+    "top": [
+     "Avco Consulting",
+     "Collaborate Solutions",
+     "Ventois",
+     "Technumen",
+     "Dataquad"
+    ],
+    "law_firm": [
+     "International Legal and Business Services",
+     0.324
+    ]
+   },
+   {
+    "id": 12,
+    "label": "SAP America & co. \u00b7 Mehlman Jacobs",
+    "nodes": 11,
+    "strength": 6036,
+    "top": [
+     "SAP America",
+     "Schneider Electric",
+     "SAP Labs",
+     "Ariba",
+     "Milwaukee Electric Tool"
+    ],
+    "law_firm": [
+     "Mehlman Jacobs",
+     1.0
+    ]
+   },
+   {
+    "id": 13,
+    "label": "Genentech & co. \u00b7 Gibney Anthony and Flaherty",
+    "nodes": 25,
+    "strength": 4751,
+    "top": [
+     "Genentech",
+     "Citigroup",
+     "Citizens Financial",
+     "Modernatx",
+     "Squarepoint Services"
+    ],
+    "law_firm": [
+     "Gibney Anthony and Flaherty",
+     0.624
+    ]
+   },
+   {
+    "id": 14,
+    "label": "Intuitive Surgical & co. \u00b7 Graham Adair",
+    "nodes": 9,
+    "strength": 3944,
+    "top": [
+     "Intuitive Surgical",
+     "Microchip Technology",
+     "Illumina",
+     "Semiconductor Components Industries",
+     "DaVita"
+    ],
+    "law_firm": [
+     "Graham Adair",
+     0.978
+    ]
+   },
+   {
+    "id": 15,
+    "label": "Diaspark & co. \u00b7 LAW Offices of Keshab RAJ Seadie PC",
+    "nodes": 8,
+    "strength": 3032,
+    "top": [
+     "Diaspark",
+     "Artech",
+     "Palayekar Companies",
+     "Yash Technologies",
+     "ANA Data Consulting"
+    ],
+    "law_firm": [
+     "LAW Offices of Keshab RAJ Seadie PC",
+     0.953
+    ]
+   },
+   {
+    "id": 16,
+    "label": "Bytedance & co. \u00b7 Farrell",
+    "nodes": 3,
+    "strength": 2922,
+    "top": [
+     "Bytedance",
+     "TikTok",
+     "Tiktok US Data Security"
+    ],
+    "law_firm": [
+     "Farrell",
+     0.695
+    ]
+   },
+   {
+    "id": 17,
+    "label": "Henry Ford Health System & co. \u00b7 Ellis Porter",
+    "nodes": 15,
+    "strength": 2766,
+    "top": [
+     "Henry Ford Health System",
+     "Epitec",
+     "Management Health Systems",
+     "Avant Healthcare Professionals",
+     "Genesis"
+    ],
+    "law_firm": [
+     "Ellis Porter",
+     0.326
+    ]
+   },
+   {
+    "id": 18,
+    "label": "Iqvia & co. \u00b7 Garfinkel Immigration LAW Firm",
+    "nodes": 6,
+    "strength": 1205,
+    "top": [
+     "Iqvia",
+     "Iqvia RDS",
+     "Compass",
+     "Wake Forest University Baptist Medical Center",
+     "Wake Forest University Health Sciences"
+    ],
+    "law_firm": [
+     "Garfinkel Immigration LAW Firm",
+     0.995
+    ]
+   },
+   {
+    "id": 19,
+    "label": "Juniper Networks & co. \u00b7 Immigration LAW",
+    "nodes": 6,
+    "strength": 1180,
+    "top": [
+     "Juniper Networks",
+     "Juniper Networks",
+     "Activehours",
+     "Tenstorrent",
+     "Guardant Health"
+    ],
+    "law_firm": [
+     "Immigration LAW",
+     0.977
+    ]
+   }
+  ]
  }
 }

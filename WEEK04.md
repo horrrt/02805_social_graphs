@@ -223,6 +223,14 @@ k-clique communities).
 - The loader (`week04_data.py`) keeps 20 more LCA columns, 6 more worksite columns and 22 more PERM
   columns since 29 September, none personal; adding them changed no committed number.
 - Adding an entity (staffing firms, law firms, O*NET occupations) means one function in its `REGISTRY`.
+- Two node-link views sit beside the dots, drawn as the course draws the philosophers (exercise 4.11: the
+  disparity backbone with an alpha control, dropped links faint or hidden, nodes sized by strength and
+  coloured by Louvain group, the largest member named, the alpha curve): section 3's staffing network (the
+  1,000 firms and clients with the most placed filings, coloured by section 3's own partition), and employers
+  linked by a shared law firm (1,500 employers, a group's label names its main law firm). Tried and dropped on
+  30 September: companies linked by a shared occupation and metro (density 0.49, a hairball at every alpha),
+  occupations x metros (a star around Software Developers and New York, Q 0.22), and the two projections of the
+  staffing network (density about 0.3, Q under 0.2).
 
 ## The deep dive
 
