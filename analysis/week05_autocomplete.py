@@ -35,12 +35,13 @@ from __future__ import annotations
 import csv
 import json
 import random
+import re
 import sys
 from collections import Counter, defaultdict
 from pathlib import Path
 
 from check_pages import check
-from week05_relations import DROP_SECTIONS, is_heading, variants
+from week05_relations import DROP_SECTIONS, candidates, is_heading
 from week05_text import WORD, WORD_RULE, nodes, pages, sentences, words
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -89,13 +90,28 @@ def spans(sentence: str) -> list[tuple[str, str, int, int]]:
     return out
 
 
+def mask_names(row) -> set[str]:
+    """Every name to hide for a page: section 1's names (candidates()) plus each
+    capitalised part of the description's brackets, one word or more. Section 1
+    needs two words to find a character without false hits; a mask errs the
+    other way, so "Logan" goes too."""
+    names = set(candidates(row))
+    real = re.match(r"^(?:The )?[^()]*\(([^)]*)\)", str(row["description"]))
+    if real:
+        for part in re.split(r",|;| alias | also known as | or ", real.group(1)):
+            part = part.strip().strip('"').removeprefix("alias ").strip()
+            if len(part) >= 4 and part[0].isupper():
+                names.add(part)
+    return names
+
+
 def name_index() -> dict[str, list[tuple[str, ...]]]:
     """Every node's names (title without disambiguation, and the real names in
     its description), as case-kept word tuples keyed by their first word,
     longest first."""
     index = defaultdict(set)
     for _, row in nodes().iterrows():
-        for name in variants(row):
+        for name in mask_names(row):
             toks = tuple(raw for _, raw, _, _ in spans(name))
             if toks:
                 index[toks[0]].add(toks)
@@ -285,7 +301,7 @@ def names_in(fake: list[list[str]], members: list[str], table) -> list[str]:
     text = " " + " ".join(" ".join(t) for t in fake) + " "
     found = []
     for _, row in table[table.node_id.isin(members)].iterrows():
-        for name in variants(row):
+        for name in mask_names(row):
             low = " ".join(words(name))
             if low and f" {low} " in text:
                 found.append(name)

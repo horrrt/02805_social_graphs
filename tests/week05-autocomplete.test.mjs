@@ -123,13 +123,13 @@ test("the fakes are masked, and the page says what the mask leaves", () => {
     assert.ok(f.typical_phrases.every((ph) => !/<\/?s>|\[name\]/.test(ph)), "no sentence markers in the phrases");
   }
   assert.equal(sm.own_names_masked, 0);
-  has(`Without the mask, all ${sm.own_names_unmasked} fakes name a member of their own group`);
-  assert.equal(sm.own_names_unmasked, k, '"all" must be every fake');
+  const unmasked = sm.own_names_unmasked === k ? `all ${k}` : `${sm.own_names_unmasked} of the ${k}`;
+  has(`Without the mask, ${unmasked} fakes name a member of their own group`);
   // The examples the limitation quotes are words left in the masked fakes.
-  for (const w of ["rick", "thanos", "krakoa"]) {
+  for (const w of ["mephisto", "khonshu", "krakoa"]) {
     assert.ok(a.fakes.some((f) => f.name_like.includes(w) && f.text.toLowerCase().includes(w)), `"${w}" is in no masked fake`);
   }
-  has(`all ${sm.name_like_fakes} masked fakes keep some, such as rick, thanos and krakoa`);
+  has(`all ${sm.name_like_fakes} masked fakes keep some, such as mephisto, khonshu and krakoa`);
   assert.equal(sm.name_like_fakes, k);
   has(`The mask covers only the ${p.nodes} characters' own names`);
   has(`as the median normalised mutual information of ${p.nmi_median.toFixed(2)} shows`);

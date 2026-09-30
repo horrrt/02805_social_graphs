@@ -25,11 +25,11 @@
         "She-Hulk",
         "Hercules (Marvel Comics)"
       ],
-      "n_sentences": 3977,
-      "n_tokens": 81897,
-      "n_contexts": 42297,
-      "one_continuation": 0.8271,
-      "bigram_one_continuation": 0.521
+      "n_sentences": 3975,
+      "n_tokens": 81760,
+      "n_contexts": 42267,
+      "one_continuation": 0.8269,
+      "bigram_one_continuation": 0.5212
     },
     {
       "community_index": 1,
@@ -41,11 +41,11 @@
         "Jean Grey",
         "Phoenix (Guardians of the Galaxy)"
       ],
-      "n_sentences": 5977,
-      "n_tokens": 124891,
-      "n_contexts": 58968,
-      "one_continuation": 0.8085,
-      "bigram_one_continuation": 0.4993
+      "n_sentences": 5975,
+      "n_tokens": 124850,
+      "n_contexts": 58947,
+      "one_continuation": 0.8086,
+      "bigram_one_continuation": 0.4994
     },
     {
       "community_index": 2,
@@ -57,9 +57,9 @@
         "Venom (character)",
         "Spider-Woman (Gwen Stacy)"
       ],
-      "n_sentences": 4700,
-      "n_tokens": 101429,
-      "n_contexts": 49510,
+      "n_sentences": 4729,
+      "n_tokens": 101426,
+      "n_contexts": 49519,
       "one_continuation": 0.8209,
       "bigram_one_continuation": 0.5197
     },
@@ -73,11 +73,11 @@
         "Human Torch (android)",
         "U.S. Agent"
       ],
-      "n_sentences": 3901,
-      "n_tokens": 85527,
-      "n_contexts": 43218,
+      "n_sentences": 3894,
+      "n_tokens": 85387,
+      "n_contexts": 43184,
       "one_continuation": 0.8185,
-      "bigram_one_continuation": 0.502
+      "bigram_one_continuation": 0.5019
     },
     {
       "community_index": 4,
@@ -89,11 +89,11 @@
         "Nova (Richard Rider)",
         "Captain Marvel (Marvel Comics)"
       ],
-      "n_sentences": 3654,
-      "n_tokens": 71194,
-      "n_contexts": 37111,
-      "one_continuation": 0.8288,
-      "bigram_one_continuation": 0.5316
+      "n_sentences": 3671,
+      "n_tokens": 71181,
+      "n_contexts": 37102,
+      "one_continuation": 0.8287,
+      "bigram_one_continuation": 0.5314
     },
     {
       "community_index": 5,
@@ -105,11 +105,11 @@
         "Deadpool",
         "Moon Knight"
       ],
-      "n_sentences": 4630,
-      "n_tokens": 95401,
-      "n_contexts": 49048,
+      "n_sentences": 4652,
+      "n_tokens": 95297,
+      "n_contexts": 49003,
       "one_continuation": 0.821,
-      "bigram_one_continuation": 0.5069
+      "bigram_one_continuation": 0.5071
     },
     {
       "community_index": 6,
@@ -121,9 +121,9 @@
         "Black Panther (character)",
         "Luke Cage"
       ],
-      "n_sentences": 3602,
-      "n_tokens": 72462,
-      "n_contexts": 39354,
+      "n_sentences": 3603,
+      "n_tokens": 72425,
+      "n_contexts": 39335,
       "one_continuation": 0.8349,
       "bigram_one_continuation": 0.5329
     },
@@ -137,11 +137,11 @@
         "Mockingbird (Marvel Comics)",
         "Deathlok"
       ],
-      "n_sentences": 1922,
-      "n_tokens": 38588,
-      "n_contexts": 22183,
+      "n_sentences": 1925,
+      "n_tokens": 38568,
+      "n_contexts": 22166,
       "one_continuation": 0.8471,
-      "bigram_one_continuation": 0.5779
+      "bigram_one_continuation": 0.5777
     },
     {
       "community_index": 8,
@@ -283,7 +283,7 @@
         "Phoenix (Guardians of the Galaxy)"
       ],
       "size": 40,
-      "text": "Cobalt Warden is a character appearing in American comic books published by Marvel Comics. He intended [name] to fight [name] is of the most powerful members of the team for the remainder of the sword to drain her of her causes her village to burn the world for mutants with unlimited potential. This version is a character appearing in american comic books a superpowered black woman. The quiet council krakoa provisional government. [name] degenerates to a dystopian future ruled by sentinels again. After escaping they eventually discover that the x-men at x-haven with helping refugee mutants.",
+      "text": "Cobalt Warden is a character appearing in American comic books published by Marvel Comics. He intended [name] to fight [name] is of the most powerful members of the team for the remainder of the sword to drain her of her causes her village to burn the world for mutants with unlimited potential. This version is a character appearing in american comic books a superpowered black woman. The quiet council krakoa provisional government. [name] defeats emma and her parents causing a car crash with her daughter claire from her injuries blindfold predicts that [name] was paired with sabretooth in team x. [name] first appeared in the face similar to the service of canada avengers list.",
       "text_unmasked": "Cobalt Warden is a character appearing in American comic books published by Marvel Comics. In th-century japan o-chiyo braddock is a strontian rebellion the shi'ar government because of brainwashing and false memory implants. At some point during the revolution revamp. He gains a power level and transmute elements like turning wood to gold or stone to crystal on a four-issue eponymous limited series. Wolverine first animated appearance was dubbed a dark schwarzenegger type and derived from him without a host. Doom switches bodies with franklin for a brain.",
       "typical_phrases": [
         "jean is",
@@ -311,16 +311,19 @@
         "highlight": "level and transmute elements, like turning wood to gold or stone to crystal; on a",
         "pages_with_run": 1
       },
-      "forced_steps": 29,
-      "steps": 82,
+      "forced_steps": 32,
+      "steps": 100,
       "redrawn": 0,
       "name_like": [
         "american",
+        "avengers",
+        "blindfold",
+        "canada",
+        "claire",
         "council",
+        "emma",
         "krakoa",
-        "sentinels",
-        "x-haven",
-        "x-men"
+        "sabretooth"
       ],
       "own_names": [],
       "own_names_unmasked": [
@@ -339,13 +342,13 @@
         "Hercules (Marvel Comics)"
       ],
       "size": 40,
-      "text": "Aetherion is a character appearing in American comic books published by Marvel Comics. In the avengers academy student striker. [name] and rescued rick jones wyatt wingfoot whom she first appeared in [name] august september marvel team-up as part of marvel comics list. I don't forget. The first five issues. After several disasters patsy accidentally makes a pact with the right angle and slip through very thin spaces owing to his mental abilities to silence the sound of their heavy hitters members nonstop and telemetry.",
-      "text_unmasked": "Aetherion is a character appearing in American comic books published by Marvel Comics. As an immense green skin pigmentation and only used it once. Ares appears in marvel pinball as part of my favorite favorite stories. Rob bricken of gizmodo ranked hellcat th in their own and is capable of firing them from any part of the abomination is also forgiven by former champions member hercules. Speedball a major part of gravity team and marvel puzzle quest. An ongoing she-hulk series by john dimaggio.",
+      "text": "Aetherion is a character appearing in American comic books published by Marvel Comics. In the avengers academy student striker. [name] and replaces him in their strongest superheroes in comics. As [name] and the [name] gamma rays have no color at all that began to change the skin color to green. After several disasters patsy accidentally makes a pact with the right angle and slip through very thin spaces owing to his mental abilities to silence the sound of their heavy hitters members nonstop and telemetry. An alternate universe.",
+      "text_unmasked": "Aetherion is a character appearing in American comic books published by Marvel Comics. As an immense green skin pigmentation and only used it once. Ares appears in marvel pinball as part of my favorite favorite stories. Rob bricken of gizmodo ranked hellcat th in their own and is capable of firing them from any part of the abomination is also forgiven by former champions member hercules. Hercules throws a massive piece of debris at the dance. Gauntlet at the close of she-hulk and jazinda hunt down a member of the ghosts release.",
       "typical_phrases": [
         "jennifer walters",
         "balder is",
-        "robert reynolds",
         "a hellcat",
+        "robert reynolds",
         "the gray",
         "as speedball"
       ],
@@ -367,24 +370,19 @@
         "highlight": "is capable of firing them from any part of",
         "pages_with_run": 1
       },
-      "forced_steps": 32,
-      "steps": 71,
+      "forced_steps": 35,
+      "steps": 75,
       "redrawn": 0,
       "name_like": [
         "academy",
         "avengers",
-        "jones",
-        "marvel",
-        "patsy",
-        "rick",
-        "team-up",
-        "wingfoot",
-        "wyatt"
+        "patsy"
       ],
       "own_names": [],
       "own_names_unmasked": [
         "Abomination",
         "Ares",
+        "Gauntlet",
         "Hercules",
         "She-Hulk"
       ],
@@ -401,23 +399,23 @@
         "Captain Marvel (Marvel Comics)"
       ],
       "size": 35,
-      "text": "Iron Hearth is a character appearing in American comic books published by Marvel Comics. After an initial charge against mephisto but are unsuccessful at preventing a war hammer of his superiors malicious intent and allies himself with the new universe imprint. This version is intellectually gifted as well as employing conjured psi-llables. Judson jakes tried to talk to [name] the name. September april and was portrayed by kai zen. [name] appears as a playable character in the blast and arcanna reality manipulation by [name] penance stare leaving the mar-vell persona dominant.",
-      "text_unmasked": "Iron Hearth is a character appearing in American comic books published by Marvel Comics. When he uses an alien and a pair of quantum bands as an unlockable playable character in lego marvel super heroes. He uses the reality stone and save earth. Fellow spaceknights including comrades starshine and terminator adopted the child and mat broome. The battlesuit flares with bio-electric energy and provides mahr vehl abandons his mission in the one-shot rune silver surfer meets adam warlock ultimately becomes a mainstay of the nova corps xandar superhuman military. Thor blood and thunder collects thor silver surfer episode innervisions voiced by ming-na wen.",
+      "text": "Iron Hearth is a character appearing in American comic books published by Marvel Comics. After an initial charge against mephisto but are unsuccessful at preventing a war hammer of his superiors malicious intent and allies himself with the new universe imprint. This version is intellectually gifted as well as employing conjured psi-llables. July dec. The two try to free the alien skrulls who bestow his hammer stormbreaker on a host the ability to command the dinosaur. [name] appeared as an unlockable playable character in marvel future revolution voiced again by steve blum.",
+      "text_unmasked": "Iron Hearth is a character appearing in American comic books published by Marvel Comics. When he uses an alien and a pair of quantum bands as an unlockable playable character in lego marvel super heroes. He uses the reality stone and save earth. Finally overwhelmed with pain she accepts. My thinking was influenced by that reality rocket raccoon appears as a monster because i really wanted a common name. Dangling plot lines were resolved in untold tales of the group in los angeles california daughter of elysius the genetically engineered by the alien kree.",
       "typical_phrases": [
         "galaxy vol",
         "soul gem",
-        "richard rider",
         "squadron sinister",
         "doctor spectrum",
-        "power prism"
+        "power prism",
+        "quantum bands"
       ],
       "longest_run": {
-        "length": 9,
-        "sentence_length": 27,
-        "run": "of his superiors malicious intent and allies himself with",
-        "page": "Captain_Marvel_(Marvel_Comics)",
-        "sentence": "Mar-Vell eventually wearies of his superiors' malicious intent and allies himself with Earth, and the Kree Empire brands him a traitor.",
-        "highlight": "of his superiors' malicious intent and allies himself with",
+        "length": 10,
+        "sentence_length": 22,
+        "run": "the alien skrulls who bestow his hammer stormbreaker on a",
+        "page": "Beta_Ray_Bill",
+        "sentence": "During the Secret Invasion storyline, Bill is wounded and captured by the alien Skrulls, who bestow his hammer Stormbreaker on a warrior Super-Skrull called the Godkiller.",
+        "highlight": "the alien Skrulls, who bestow his hammer Stormbreaker on a",
         "pages_with_run": 1
       },
       "longest_run_unmasked": {
@@ -429,23 +427,22 @@
         "highlight": "as an unlockable playable character in Lego Marvel Super Heroes",
         "pages_with_run": 1
       },
-      "forced_steps": 32,
-      "steps": 77,
+      "forced_steps": 35,
+      "steps": 78,
       "redrawn": 0,
       "name_like": [
-        "jakes",
-        "judson",
-        "kai",
-        "mar-vell",
+        "blum",
+        "dec",
+        "marvel",
         "mephisto",
-        "penance",
-        "zen"
+        "revolution",
+        "skrulls",
+        "steve",
+        "stormbreaker"
       ],
       "own_names": [],
       "own_names_unmasked": [
-        "Adam Warlock",
-        "Mahr Vehl",
-        "Nova"
+        "Rocket Raccoon"
       ],
       "number": 3
     },
@@ -516,7 +513,7 @@
         "Deathlok"
       ],
       "size": 22,
-      "text": "Ashen Circuit is a character appearing in American comic books published by Marvel Comics. Running for one hour and adjustable opti-lens that enables long-range telescopic and infra-red sight. Punisher [name]. While serving in the [name] identity since then michael collins was born in mayflower freedonia on his first mission with other characters such as super-strength flight enhanced durability and wields a makeshift shield created partially from human remains. A character in the s when the former joins the team because he prefers to be his wife and son for the soviet union. Gawain is killed by captain america and [name] who is also revealed that she is recruited by [name].",
+      "text": "Ashen Circuit is a character appearing in American comic books published by Marvel Comics. Running for one hour and adjustable opti-lens that enables long-range telescopic and infra-red sight. Pugh voiced an alternate universe version of [name] has superhuman visual acuity. [name] clint barton incarnation of [name] appears in the film avengers endgame the falcon and the avengers eventually marrying [name] and siege in defeating tskarov. Evans was more receptive to the th century nears its end in. This soon follows with the help of fantasma and is dubbed [name] by writer bill mantlo and artist kieron dwyer.",
       "text_unmasked": "Ashen Circuit is a character appearing in American comic books published by Marvel Comics. After proteus decides to leave the organization which mistakes her for heather glenn in. Doom seizes the body of his face are armored cybernetic implants. In his own construction and repair. In the resurrection of hellcat. This trend continued when she is technically no longer considered canon in the avengers earth mightiest heroes.",
       "typical_phrases": [
         "alexei shostakov",
@@ -544,17 +541,21 @@
         "highlight": "of his face are armored cybernetic implants",
         "pages_with_run": 1
       },
-      "forced_steps": 42,
-      "steps": 96,
+      "forced_steps": 39,
+      "steps": 83,
       "redrawn": 0,
       "name_like": [
-        "america",
-        "captain",
-        "collins",
-        "gawain",
-        "michael",
-        "punisher",
-        "soviet"
+        "avengers",
+        "barton",
+        "bill",
+        "clint",
+        "endgame",
+        "evans",
+        "falcon",
+        "mantlo",
+        "pugh",
+        "siege",
+        "tskarov"
       ],
       "own_names": [],
       "own_names_unmasked": [
@@ -573,8 +574,8 @@
         "U.S. Agent"
       ],
       "size": 38,
-      "text": "Quillstrike is a character appearing in American comic books published by Marvel Comics. Following her encounter with the ability to move at high speeds which also grants him abilities such as fear futility sleep adjustment isolation sensory deprivation and kinetic impact. In marvel comics creators. He is seen as the secret avengers series relaunched again now displaying greater and more. [name] was john watkins jr. As a conduit for different magical energy in his flame powers and magical artefacts.",
-      "text_unmasked": "Quillstrike is a character appearing in American comic books published by Marvel Comics. The injuries he sustained during his solo title the grand director. Wanda realizes she can create intense shockwaves equivalent to a life as a special agent for the united states government. Two years later toro origins were retroactively changed again to explain bucky appearances in publication order. In bucky barnes. In captain america the first avenger tie-in toyline via the shadow of doom dlc voiced again by nolan north.",
+      "text": "Quillstrike is a character appearing in American comic books published by Marvel Comics. Vol. Eventually walker is more brutal than his predecessor due to a lawsuit-proof character. Walker appears in fortnite as part of the original on january. At that time he had been artificially induced by the x-men in and reveals he believes [name] accusation. The [name].",
+      "text_unmasked": "Quillstrike is a character appearing in American comic books published by Marvel Comics. The introduction in his life. Monroe was starting to have a vampiric bulldog chained up in glenville new york at the hands of cassandra nova. His story so he creates a window that seems to confirm they each possess the x-gene resulted in the x-men as a marvel comics. In a later plot which was vaguely patriotic vaguely military and yet stood on its own tale of a norse mythology frost giant. He was freed from the staged attack.",
       "typical_phrases": [
         "wanda and",
         "and pietro",
@@ -584,38 +585,32 @@
         "the liberty"
       ],
       "longest_run": {
-        "length": 10,
-        "sentence_length": 28,
-        "run": "such as fear futility sleep adjustment isolation sensory deprivation and",
+        "length": 9,
+        "sentence_length": 13,
+        "run": "walker is more brutal than his predecessor due to",
         "page": "U.S._Agent",
-        "sentence": "Sure enough Sin talks under Walker's interrogation as he reveals that he used techniques such as fear, futility, sleep adjustment, isolation, sensory deprivation, and stress positions.",
-        "highlight": "such as fear, futility, sleep adjustment, isolation, sensory deprivation, and",
+        "sentence": "Although Walker finds himself trying to emulate Rogers's ethics, Walker is more brutal than his predecessor due to his reactionary points of view.",
+        "highlight": "Walker is more brutal than his predecessor due to",
         "pages_with_run": 1
       },
       "longest_run_unmasked": {
-        "length": 10,
-        "sentence_length": 16,
-        "run": "years later toro origins were retroactively changed again to explain",
-        "page": "Toro_(character)",
-        "sentence": "Many years later, Toro's origins were retroactively changed again, to explain his powers in fact came from recessive Inhuman genes.",
-        "highlight": "years later, Toro's origins were retroactively changed again, to explain",
+        "length": 12,
+        "sentence_length": 23,
+        "run": "which was vaguely patriotic vaguely military and yet stood on its own",
+        "page": "Battlestar_(character)",
+        "sentence": "laughs] We came up with every single name which was vaguely patriotic, vaguely military, and yet stood on its own, because some day these guys may split up.\"",
+        "highlight": "which was vaguely patriotic, vaguely military, and yet stood on its own",
         "pages_with_run": 1
       },
-      "forced_steps": 22,
-      "steps": 66,
+      "forced_steps": 11,
+      "steps": 45,
       "redrawn": 2,
       "name_like": [
-        "avengers",
-        "john",
-        "jr",
-        "marvel",
-        "watkins"
+        "walker",
+        "x-men"
       ],
       "own_names": [],
-      "own_names_unmasked": [
-        "Bucky",
-        "Toro"
-      ],
+      "own_names_unmasked": [],
       "number": 6
     },
     {
@@ -629,8 +624,8 @@
         "Luke Cage"
       ],
       "size": 30,
-      "text": "Stormglass is a character appearing in American comic books published by Marvel Comics. The character. [name] appears in two separate serums he creates a contrast where his son randy robertson hobie brown the prowler and falcon. Marvel made a living as a form of her midriff. He decided to abandon the series jones and cage persona draws from a counterattack by thanos. Although the character.",
-      "text_unmasked": "Stormglass is a character appearing in American comic books published by Marvel Comics. Jessica jones are all black american men. Plus she had gone missing from his penthouse by the ch'i-lin a longtime foe of the s. Rand eventually relinquishes his title. During a training session with iron man wants to bring back list. Even after whitman first realized that there were no black superheroes and superegos analyzing the minds behind the dragon.",
+      "text": "Stormglass is a character appearing in American comic books published by Marvel Comics. The character. [name] appears in two separate serums he creates a contrast where his son randy robertson hobie brown the prowler and falcon. However it was in use by dane whitman however it is later revealed that danny is part of the negative zone prison. Pym in the sole survivor of a later retcon in marvel future revolution voiced again by laurence fishburne while his brother in danger. While that isn't where jessica briefly dated the wasp.",
+      "text_unmasked": "Stormglass is a character appearing in American comic books published by Marvel Comics. Jessica jones are all black american men. Porcupine a porcupine-themed villain. In later years iron fist. Frustrated firebird left on a spiritual journey. Englehart and later creators surrounded shang-chi with them to find the train electromagnetic field.",
       "typical_phrases": [
         "fu manchu",
         "dane whitman",
@@ -649,30 +644,39 @@
         "pages_with_run": 1
       },
       "longest_run_unmasked": {
-        "length": 8,
-        "sentence_length": 19,
-        "run": "realized that there were no black superheroes and",
-        "page": "Black_Panther_(character)",
-        "sentence": "Lee later recollected: \"I suddenly realized that there were no black superheroes, and I felt we ought to have one.",
-        "highlight": "realized that there were no black superheroes, and",
+        "length": 7,
+        "sentence_length": 7,
+        "run": "frustrated firebird left on a spiritual journey",
+        "page": "Firebird_(Marvel_Comics)",
+        "sentence": "Frustrated, Firebird left on a spiritual journey.",
+        "highlight": "Frustrated, Firebird left on a spiritual journey",
         "pages_with_run": 1
       },
-      "forced_steps": 21,
-      "steps": 52,
-      "redrawn": 1,
+      "forced_steps": 27,
+      "steps": 77,
+      "redrawn": 0,
       "name_like": [
         "brown",
-        "cage",
+        "dane",
+        "danny",
         "falcon",
-        "jones",
+        "fishburne",
+        "jessica",
+        "laurence",
         "marvel",
+        "pym",
         "randy",
         "robertson",
-        "thanos"
+        "wasp",
+        "whitman",
+        "zone"
       ],
       "own_names": [],
       "own_names_unmasked": [
-        "Jessica Jones"
+        "Firebird",
+        "Iron Fist",
+        "Jessica Jones",
+        "Shang-Chi"
       ],
       "number": 7
     },
@@ -687,23 +691,23 @@
         "Moon Knight"
       ],
       "size": 34,
-      "text": "Velvet Specter is a character appearing in American comic books published by Marvel Comics. He is an m d from harvard completed a publishing deal with them to use the name an earlier flawed product of the living mummy. Blaze was saved by agamotto who transported it to gerry conway and artist tan eng huat. [name] vol. He encounters [name] several times and flirts with him to the raft a prison made for supervillains. She is in his monster kingdom.",
+      "text": "Velvet Specter is a character appearing in American comic books published by Marvel Comics. According to the middle of a new [name] series as part of a tarot card the moon god khonshu and is shown to have it not work on hellstorm and druid. In the film rights and merchandising reverted from marvel mature readers max imprint in the unpublished issues. Writer michael fleisher through issue. In uncanny x-force he storms out after the feature final laughs. He eventually became his servant bambu.",
       "text_unmasked": "Velvet Specter is a character appearing in American comic books published by Marvel Comics. During this time ketch only existence remained inside a void and god after telling him he is able to kill hit-monkey but fails and while the host biologically alive but incapacitated. This interpretation proved influential and has not been previously published. Ghost rider. During the political upheavals in south america during the three nights of the superhero captain ultra briefly fights iron man rogues gallery. Johnny blaze.",
       "typical_phrases": [
-        "johnny blaze",
         "the werewolf",
         "jack russell",
         "paperback reprints",
         "true undead",
-        "danny ketch"
+        "ghost riders",
+        "of vengeance"
       ],
       "longest_run": {
         "length": 8,
-        "sentence_length": 16,
-        "run": "was saved by agamotto who transported it to",
-        "page": "Doctor_Strange",
-        "sentence": "He briefly lost the book when he destroyed his home to prevent the alien wizard Urthona from taking his magical artifacts, but the book was saved by Agamotto, who transported it to his realm and returned it to Strange some time later.",
-        "highlight": "was saved by Agamotto, who transported it to",
+        "sentence_length": 17,
+        "run": "the film rights and merchandising reverted from marvel",
+        "page": "Ghost_Rider_(Johnny_Blaze)",
+        "sentence": "The lawsuit states that the film rights and merchandising reverted from Marvel to him in 2001.",
+        "highlight": "the film rights and merchandising reverted from Marvel",
         "pages_with_run": 1
       },
       "longest_run_unmasked": {
@@ -715,25 +719,26 @@
         "highlight": "During this time, Ketch's only existence remained inside a void and",
         "pages_with_run": 1
       },
-      "forced_steps": 24,
-      "steps": 66,
-      "redrawn": 3,
+      "forced_steps": 26,
+      "steps": 70,
+      "redrawn": 0,
       "name_like": [
-        "agamotto",
-        "blaze",
-        "conway",
-        "eng",
-        "gerry",
-        "huat",
-        "mummy",
-        "raft",
-        "tan"
+        "bambu",
+        "druid",
+        "fleisher",
+        "hellstorm",
+        "khonshu",
+        "marvel",
+        "max",
+        "michael",
+        "x-force"
       ],
       "own_names": [],
       "own_names_unmasked": [
         "Captain Ultra",
         "Ghost Rider",
-        "Hit-Monkey"
+        "Hit-Monkey",
+        "Johnny Blaze"
       ],
       "number": 8
     },
@@ -748,76 +753,68 @@
         "Spider-Woman (Gwen Stacy)"
       ],
       "size": 38,
-      "text": "Nyxara is a character appearing in American comic books published by Marvel Comics. By claire has become [name] queen in black he gained god-like abilities through the wall until the spider-geddon storyline [name] is shot down when the symbiote to andi. She had been impersonating her since new avengers series written by hopeless which continued the narrative from separation anxiety with brock who had bullied her in battle to prevent the villain crime master rises as the rival superhero [name]. [name] is incapacitated by an unidentified alternate universe version of [name] appear in the [name] incarnation of [name] and [name]. [name] [name] the last dance as well and sends illusionist mysterio to kill him and takes on the struggle of the golden goblin. Persuading the scream symbiote to infiltrate hydra.",
-      "text_unmasked": "Nyxara is a character appearing in American comic books published by Marvel Comics. While later saving spider-man from earth appears in the manga spider-man fake red end of the second volume of spider-boy introduces a new spider-man before killing him. During the fight peter fatally suffers under the scarlet spider made their cinematic debut in amazing adventures and a mexican mother. With this concept in early scripts for spider-man to the concept spider-girl and spider-woman is aware of peter parker teenage boy waking up in the live-action television series the electric company from to and flash thompson. A version of eddie former friend of brock. She is the force who succeeds george stacy.",
+      "text": "Nyxara is a character appearing in American comic books published by Marvel Comics. [name] [name] appears as a tie-in to the sleeper symbiote. [name] as [name] anti-venom and toxin forms appear as playable characters in lego marvel super hero squad online. [name] appeared in slingers december. Anthony orlando of buzzfeed stated [name] aka [name] has reflexes agility and stamina of an agent of s w o r d under an invitation by abigail brand and subsequent drafting into s w o r d. [name] appears as a replacement costume for [name] alien costume had flying discs created by a time-displaced eva bell.",
+      "text_unmasked": "Nyxara is a character appearing in American comic books published by Marvel Comics. While later saving spider-man from earth appears in the manga spider-man fake red end of the second volume of spider-boy introduces a new spider-man before killing him. During the fight peter fatally suffers under the scarlet spider made their cinematic debut in amazing adventures and a mexican mother. This version of the inmates and he will rapidly die from his crashing capsule his rocket pack runs out storyline and was recruited into hydra fighting for the government overreach committee. He helped expose that it a woman whose drive for revenge. After coming across actors felix lifson and erin hasko in a bunker owned by the reconstituted suit blowing up the story panel breakdowns from stan synopsis.",
       "typical_phrases": [
         "felicia hardy",
         "the inheritors",
         "aunt may",
         "brock is",
         "the symbiote",
-        "of felicia"
+        "cindy moon"
       ],
       "longest_run": {
-        "length": 8,
-        "sentence_length": 28,
-        "run": "in black he gained god-like abilities through the",
-        "page": "Eddie_Brock",
-        "sentence": "Once Eddie became the new King in Black, he gained god-like abilities through the symbiotes Hive Mind.",
-        "highlight": "in Black, he gained god-like abilities through the",
+        "length": 11,
+        "sentence_length": 37,
+        "run": "s w o r d under an invitation by abigail brand",
+        "page": "Spider-Woman_(Jessica_Drew)",
+        "sentence": "Alongside her work with the Avengers, Jessica Drew joins S.W.O.R.D., under an invitation by Abigail Brand.",
+        "highlight": "S.W.O.R.D., under an invitation by Abigail Brand",
         "pages_with_run": 1
       },
       "longest_run_unmasked": {
-        "length": 9,
-        "sentence_length": 36,
-        "run": "of peter parker teenage boy waking up in the",
+        "length": 10,
+        "sentence_length": 26,
+        "run": "coming across actors felix lifson and erin hasko in a",
         "page": "Spider-Woman",
-        "sentence": "A gender-swapped clone of Spider-Man appears in the Ultimate Marvel imprint, the mind of Peter Parker, teenage boy, waking up in the body of a teenage girl and having to adapt to their ‘new’ body.",
-        "highlight": "of Peter Parker, teenage boy, waking up in the",
+        "sentence": "During the Web Warriors ongoing series, on accidentally coming across actors Felix Lifson and Erin Hasko, in a world where Spider-Man is fictional, shooting a Spider-Man movie (in which Erin is playing Gwen \"Spider-Gwen\" Stacy / Spider-Woman), Octavia Otto and the Web Warriors invite the duo to join the team, initially not noticing the pair to be actors shooting the film.",
+        "highlight": "coming across actors Felix Lifson and Erin Hasko, in a",
         "pages_with_run": 1
       },
-      "forced_steps": 40,
-      "steps": 117,
+      "forced_steps": 36,
+      "steps": 89,
       "redrawn": 1,
       "name_like": [
-        "andi",
-        "anxiety",
-        "avengers",
-        "brock",
-        "claire",
-        "dance",
-        "goblin",
-        "golden",
-        "hopeless",
-        "hydra",
-        "mysterio",
-        "scream",
-        "separation",
-        "spider-geddon"
+        "abigail",
+        "anti-venom",
+        "buzzfeed",
+        "lego",
+        "marvel",
+        "online",
+        "orlando",
+        "sleeper",
+        "slingers",
+        "toxin"
       ],
       "own_names": [],
       "own_names_unmasked": [
-        "Force",
-        "Peter Parker",
         "Scarlet Spider",
-        "Spider-Girl",
-        "Spider-Man",
-        "Spider-Woman"
+        "Spider-Man"
       ],
       "number": 9
     }
   ],
   "summary": {
-    "one_continuation_min": 0.8085,
+    "one_continuation_min": 0.8086,
     "one_continuation_max": 0.8552,
-    "bigram_one_continuation_min": 0.4993,
+    "bigram_one_continuation_min": 0.4994,
     "bigram_one_continuation_max": 0.6292,
     "run_min": 8,
     "run_max": 17,
     "runs_single_page": 8,
-    "forced_share": 0.4141,
-    "redrawn": 9,
-    "own_names_unmasked": 9,
+    "forced_share": 0.4186,
+    "redrawn": 5,
+    "own_names_unmasked": 8,
     "own_names_masked": 0,
     "name_like_fakes": 9,
     "example": "fake-8"

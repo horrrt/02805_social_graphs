@@ -7,7 +7,7 @@
     "network": "in-degree among the 303 pages (week05_text.graph()); links from outside them do not count",
     "fit": "ordinary least squares of ln(words) on ln(1 + in-degree), all 303 pages",
     "residual": "ln(words) minus the fitted value; exp(residual) is the page's length over the predicted length",
-    "name_rule": "its title without the disambiguation, plus the real name its node description gives in brackets, as a whole word",
+    "name_rule": "its title without the disambiguation, plus the real name its node description gives in brackets, as a whole word; a name several pages go by counts for the main page only",
     "hub_rule": "the first paragraph says the page is \"the name of\" several characters",
     "heading_rule": "a line under 45 characters, of at most six words, not ending in a full stop, before the reference sections",
     "seed": 2805,
@@ -47,10 +47,10 @@
   ],
   "patterns": {
     "mentions": {
-      "rho": 0.10626313320628289,
-      "null_mean": 0.0026915763658395203,
-      "null_sd": 0.058503595449537676,
-      "p": 0.06793206793206794,
+      "rho": 0.07419103710660098,
+      "null_mean": 0.000250868374275067,
+      "null_sd": 0.05920047636164017,
+      "p": 0.2017982017982018,
       "above_with_mention_only": 3
     },
     "hubs": {

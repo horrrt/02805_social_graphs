@@ -26,7 +26,7 @@ Method
   - isolate: no link in or out;
   - mentions against links: how many other pages name it (its title without
     the disambiguation and the real name in its node description, the name
-    rule of section 1, week05_relations.variants()) and how many of those link
+    rule of section 1, week05_relations.name_table()) and how many of those link
     to it;
   - hub page: the lead calls it the name of several characters (HUB), a page
     for a shared codename, short by design;
@@ -57,7 +57,7 @@ import numpy as np
 from scipy import stats
 
 from check_pages import check
-from week05_relations import is_heading, variants
+from week05_relations import is_heading, name_table
 from week05_text import WORD_RULE, graph, nodes, pages, words
 
 OUT = Path(__file__).with_suffix(".json")
@@ -67,7 +67,7 @@ SHUFFLES = 1000
 TOP = 5
 REFERENCE_HEADINGS = {"References", "External links", "Notes", "See also", "Further reading"}
 HUB = re.compile(r"\bis the name of\b|\bname of (?:several|two|three|four|multiple|various)\b")
-NAME_RULE = "its title without the disambiguation, plus the real name its node description gives in brackets, as a whole word"
+NAME_RULE = "its title without the disambiguation, plus the real name its node description gives in brackets, as a whole word; a name several pages go by counts for the main page only"
 HUB_RULE = 'the first paragraph says the page is "the name of" several characters'
 HEADING_RULE = "a line under 45 characters, of at most six words, not ending in a full stop, before the reference sections"
 
@@ -210,11 +210,10 @@ def main():
     null = np.array([pearson(rng.permutation(x), y) for _ in range(SHUFFLES)])
 
     # Mentions against links, for every page, under section 1's name rule.
-    finder = {}
-    for n in ids:
-        row = table.loc[n].to_dict()
-        finder[n] = re.compile(r"(?<![\w-])(?:" + "|".join(map(re.escape, variants(row))) + r")(?![\w-])")
-    naming = {n: {m for m in ids if m != n and finder[n].search(text[m])} for n in ids}
+    names = name_table(nodes())
+    finder = {n: re.compile(r"(?<![\w-])(?:" + "|".join(map(re.escape, names[n])) + r")(?![\w-])")
+              for n in ids if names[n]}
+    naming = {n: {m for m in ids if m != n and n in finder and finder[n].search(text[m])} for n in ids}
     linking = {n: set(network.predecessors(n)) for n in ids}
     mention_only = np.array([len(naming[n] - linking[n]) for n in ids])
     rho_mentions = float(stats.spearmanr(residual, mention_only)[0])

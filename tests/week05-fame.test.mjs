@@ -79,9 +79,9 @@ test("section 6 states the pattern tests and names the outliers from fame.json",
   assert.ok(Math.abs(m.null_mean) < 0.005);
   has(`Pages named without a link: Spearman ${m.rho.toFixed(2)} with the residual, against 0.00 ± ${m.null_sd.toFixed(2)} in shuffles (p = ${m.p.toFixed(3)}).`);
   has(`The ${h.pages} hub pages: mean residual ${two(h.mean_residual)}, against ${two(h.rest_mean_residual)} for the other pages (p = ${h.p.toFixed(3)}).`);
-  // "Only weakly": a rank correlation under 0.2.
-  assert.ok(m.rho > 0 && m.rho < 0.2, '"only weakly" needs a small positive rho');
-  has(`goes only weakly with a longer page (Spearman ${m.rho.toFixed(2)}, p = ${m.p.toFixed(3)})`);
+  // "Barely": a rank correlation under 0.2 that shuffles match often.
+  assert.ok(m.rho > 0 && m.rho < 0.2 && m.p > 0.05, '"barely" needs a small positive rho and p above 0.05');
+  has(`barely goes with a longer page (Spearman ${m.rho.toFixed(2)}, p = ${m.p.toFixed(3)})`);
   assert.ok(h.gap < 0);
   has(`the ${h.pages} hub pages sit only ${Math.abs(h.gap).toFixed(2)} below the rest (×${Math.exp(h.gap).toFixed(2)}, p = ${h.p.toFixed(3)})`);
 

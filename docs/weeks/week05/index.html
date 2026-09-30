@@ -305,7 +305,7 @@
                 <div class="rx-drawers rx-foot">
                   <details class="rx-drawer"><summary>Method</summary><div class="rx-drawer-body">
                     <p>Tokeniser: each page splits into paragraphs at its line breaks and into sentences with spaCy's rule-based sentencizer, which knows that "Dr." does not end a sentence. Heading lines are dropped, and so is every sentence under References, External links, Notes, See also and Further reading. A word is a run of letters in any alphabet, with an apostrophe or hyphen inside it kept, lowercased and with a possessive 's removed; digits and punctuation are dropped.</p>
-                    <p>Each sentence is padded with two start markers and one end marker before counting. The model has no smoothing and no backoff: sampling starts from the start markers and only ever reaches two-word contexts that occur in the pages. A sentence that reaches 40 words without ending is thrown away and drawn again, never cut; that happened to 9 sentences. Names are matched as whole words with their capitals, so "Storm" becomes [name] and "storm" stays.</p>
+                    <p>Each sentence is padded with two start markers and one end marker before counting. The model has no smoothing and no backoff: sampling starts from the start markers and only ever reaches two-word contexts that occur in the pages. A sentence that reaches 40 words without ending is thrown away and drawn again, never cut; that happened to 5 sentences. Names are matched as whole words with their capitals, so "Storm" becomes [name] and "storm" stays.</p>
                   </div></details>
                   <details class="rx-drawer"><summary>More numbers</summary><div class="rx-drawer-body">
                     <p>The groups, named after their page with the most link weight: Hulk, 40 pages; Wolverine, 40; Spider-Man, 38; Scarlet Witch, 38; Quasar, 35; Doctor Strange, 34; Iron Fist, 30; Black Widow (Natasha Romanova), 22; Radian (Morituri), 9.</p>
@@ -351,14 +351,14 @@
             <div class="w5-slot" data-slot="surprise" id="autocomplete-surprise">
               <h3>What surprised us</h3>
               <div data-body>
-                <div class="notice"><span class="ico">💡</span><span><b>What to notice</b> In each group's pages, 81% to 86% of two-word contexts (a pair of words in a row) have only one next word, against 50% to 63% of one-word contexts. More context means sparser counts, so the model often has no choice: 41% of the words the model drew for the quiz fakes had a single candidate, and every fake repeats a run of 8 to 17 words from its group's pages, 8 of the 9 runs from a single page.</span></div>
-                <p>Without the mask, all 9 fakes name a member of their own group.</p>
+                <div class="notice"><span class="ico">💡</span><span><b>What to notice</b> In each group's pages, 81% to 86% of two-word contexts (a pair of words in a row) have only one next word, against 50% to 63% of one-word contexts. More context means sparser counts, so the model often has no choice: 42% of the words the model drew for the quiz fakes had a single candidate, and every fake repeats a run of 8 to 17 words from its group's pages, 8 of the 9 runs from a single page.</span></div>
+                <p>Without the mask, 8 of the 9 fakes name a member of their own group.</p>
               </div>
             </div>
             <div class="w5-slot" data-slot="limit" id="autocomplete-limit">
               <h3>Limitation</h3>
               <div data-body>
-                <p>The mask covers only the 303 characters' own names. Other characters, surnames on their own and team names stay, and all 9 masked fakes keep some, such as rick, thanos and krakoa, so a guess can still rest on a name. The groups also shift from run to run, as the median normalised mutual information of 0.90 shows; the consensus keeps the pairs most runs agree on. The 17 pages with no links belong to no group and trained no generator.</p>
+                <p>The mask covers only the 303 characters' own names. Other characters, surnames on their own and team names stay, and all 9 masked fakes keep some, such as mephisto, khonshu and krakoa, so a guess can still rest on a name. The groups also shift from run to run, as the median normalised mutual information of 0.90 shows; the consensus keeps the pairs most runs agree on. The 17 pages with no links belong to no group and trained no generator.</p>
               </div>
             </div>
             <div class="w5-slot" data-slot="checked" id="autocomplete-checked">
@@ -474,7 +474,7 @@
                   </div></details>
                   <details class="rx-drawer"><summary>More numbers</summary><div class="rx-drawer-body">
                     <p>Out-degree, the links a page makes, tracks length even more closely (Spearman 0.78), but a longer page has more room for links, so it partly measures length itself. PageRank, which counts a link from a much-linked page for more, gives 0.71.</p>
-                    <p>Pages named without a link: Spearman 0.11 with the residual, against 0.00 ± 0.06 in shuffles (p = 0.068). The 35 hub pages: mean residual −0.16, against 0.02 for the other pages (p = 0.075).</p>
+                    <p>Pages named without a link: Spearman 0.07 with the residual, against 0.00 ± 0.06 in shuffles (p = 0.202). The 35 hub pages: mean residual −0.16, against 0.02 for the other pages (p = 0.075).</p>
                   </div></details>
                   <details class="rx-drawer"><summary>Table: the ten pages furthest from the line</summary><div class="rx-drawer-body"><div id="fame-outliers"></div></div></details>
                 </div>
@@ -493,7 +493,7 @@
             <div class="w5-slot" data-slot="surprise" id="fame-surprise">
               <h3>What surprised us</h3>
               <div data-body>
-                <div class="notice"><span class="ico">💡</span><span><b>What to notice</b> Two explanations looked likely and neither holds across all 303 pages. Being named on other pages without a link goes only weakly with a longer page (Spearman 0.11, p = 0.068), and the 35 hub pages sit only 0.18 below the rest (×0.83, p = 0.075). Each explains one outlier: Brian Braddock's codename, Captain Britain, is on 14 other pages but linked from 1, and Quasar is a page for a name four characters share, with 24 incoming links.</span></div>
+                <div class="notice"><span class="ico">💡</span><span><b>What to notice</b> Two explanations looked likely and neither holds across all 303 pages. Being named on other pages without a link barely goes with a longer page (Spearman 0.07, p = 0.202), and the 35 hub pages sit only 0.18 below the rest (×0.83, p = 0.075). Each explains one outlier: Brian Braddock's codename, Captain Britain, is on 14 other pages but linked from 1, and Quasar is a page for a name four characters share, with 24 incoming links.</span></div>
               </div>
             </div>
             <div class="w5-slot" data-slot="limit" id="fame-limit">
