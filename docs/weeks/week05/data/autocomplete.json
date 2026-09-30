@@ -1,0 +1,377 @@
+{
+  "generated_by": "analysis/week05_autocomplete.py",
+  "owner": "\u00c0ngela",
+  "seed": 2805,
+  "tokenisation": {
+    "method": "regex words + sentence-final .!?, lowercased",
+    "model": "trigram: P(w3 | w1, w2) estimated by counts inside each community",
+    "generation": "ancestral sampling from the community's trigram table, 5 sentences",
+    "min_community_size": 8
+  },
+  "communities_used": [
+    {
+      "community_index": 0,
+      "label": "Hulk",
+      "size": 52,
+      "hubs": [
+        "Hulk",
+        "She-Hulk",
+        "Hercules (Marvel Comics)"
+      ],
+      "n_pages_used": 52,
+      "n_trigram_observations": 110788,
+      "n_contexts": 54864
+    },
+    {
+      "community_index": 1,
+      "label": "Doctor Strange",
+      "size": 42,
+      "hubs": [
+        "Doctor Strange",
+        "Deadpool",
+        "Moon Knight"
+      ],
+      "n_pages_used": 42,
+      "n_trigram_observations": 127195,
+      "n_contexts": 61713
+    },
+    {
+      "community_index": 2,
+      "label": "Wolverine (character)",
+      "size": 40,
+      "hubs": [
+        "Wolverine (character)",
+        "Jean Grey",
+        "Phoenix (Guardians of the Galaxy)"
+      ],
+      "n_pages_used": 40,
+      "n_trigram_observations": 137915,
+      "n_contexts": 63762
+    },
+    {
+      "community_index": 3,
+      "label": "Quasar (character)",
+      "size": 38,
+      "hubs": [
+        "Quasar (character)",
+        "Nova (Richard Rider)",
+        "Captain Marvel (Marvel Comics)"
+      ],
+      "n_pages_used": 38,
+      "n_trigram_observations": 83048,
+      "n_contexts": 41653
+    },
+    {
+      "community_index": 4,
+      "label": "Spider-Man",
+      "size": 38,
+      "hubs": [
+        "Spider-Man",
+        "Venom (character)",
+        "Spider-Woman (Gwen Stacy)"
+      ],
+      "n_pages_used": 38,
+      "n_trigram_observations": 114341,
+      "n_contexts": 53318
+    },
+    {
+      "community_index": 5,
+      "label": "Scarlet Witch",
+      "size": 37,
+      "hubs": [
+        "Scarlet Witch",
+        "Human Torch (android)",
+        "U.S. Agent"
+      ],
+      "n_pages_used": 37,
+      "n_trigram_observations": 93489,
+      "n_contexts": 46151
+    },
+    {
+      "community_index": 6,
+      "label": "Iron Fist (character)",
+      "size": 30,
+      "hubs": [
+        "Iron Fist (character)",
+        "Black Panther (character)",
+        "Luke Cage"
+      ],
+      "n_pages_used": 30,
+      "n_trigram_observations": 81715,
+      "n_contexts": 42586
+    }
+  ],
+  "n_fakes": 7,
+  "chance_rate": 0.1429,
+  "guessing": {
+    "status": "awaiting_other_groups",
+    "n_responses": 0,
+    "n_correct": 0,
+    "hit_rate": null,
+    "chance_rate": 0.1429,
+    "note": "Leave empty until other course groups submit guesses. The page quiz lets visitors try; that score is not the hand-in number."
+  },
+  "options": [
+    {
+      "community_index": 0,
+      "label": "Hulk",
+      "hubs": [
+        "Hulk",
+        "She-Hulk",
+        "Hercules (Marvel Comics)"
+      ],
+      "size": 52
+    },
+    {
+      "community_index": 1,
+      "label": "Doctor Strange",
+      "hubs": [
+        "Doctor Strange",
+        "Deadpool",
+        "Moon Knight"
+      ],
+      "size": 42
+    },
+    {
+      "community_index": 2,
+      "label": "Wolverine (character)",
+      "hubs": [
+        "Wolverine (character)",
+        "Jean Grey",
+        "Phoenix (Guardians of the Galaxy)"
+      ],
+      "size": 40
+    },
+    {
+      "community_index": 3,
+      "label": "Quasar (character)",
+      "hubs": [
+        "Quasar (character)",
+        "Nova (Richard Rider)",
+        "Captain Marvel (Marvel Comics)"
+      ],
+      "size": 38
+    },
+    {
+      "community_index": 4,
+      "label": "Spider-Man",
+      "hubs": [
+        "Spider-Man",
+        "Venom (character)",
+        "Spider-Woman (Gwen Stacy)"
+      ],
+      "size": 38
+    },
+    {
+      "community_index": 5,
+      "label": "Scarlet Witch",
+      "hubs": [
+        "Scarlet Witch",
+        "Human Torch (android)",
+        "U.S. Agent"
+      ],
+      "size": 37
+    },
+    {
+      "community_index": 6,
+      "label": "Iron Fist (character)",
+      "hubs": [
+        "Iron Fist (character)",
+        "Black Panther (character)",
+        "Luke Cage"
+      ],
+      "size": 30
+    }
+  ],
+  "fakes": [
+    {
+      "id": "fake-5",
+      "character": "Velvet Specter",
+      "community_index": 5,
+      "community_label": "Scarlet Witch",
+      "hubs": [
+        "Scarlet Witch",
+        "Human Torch (android)",
+        "U.S. Agent"
+      ],
+      "size": 37,
+      "text": "Velvet Specter is a character appearing in American comic books published by Marvel Comics. An explosion. As the character prominently battling communism and a. The son of m universe johnny is found and saved but cassie is killed by deadpool. However without the need of the young mutant hope summers and are soon overwhelmed by the fact that hawkeye kate bishop and david aja on the. Killpower julius mullarkey by his newspaper to cover the second nomad was edward ferbel a short leash and make sure they play nice so that he.",
+      "voice_cues": [
+        "torch appears",
+        "<s> wanda",
+        "the union",
+        "wanda and",
+        "citizen v",
+        "<s> karnak"
+      ],
+      "real_quote": {
+        "node_id": "Scarlet_Witch",
+        "name": "Scarlet Witch",
+        "text": "Scarlet Witch (Wanda Django Maximoff) is a character appearing in American comic books published by Marvel Comics. Created by writer Stan Lee and artist Jack Kirby, the character first appeared in The X-Men #4 (March 196\u2026"
+      }
+    },
+    {
+      "id": "fake-0",
+      "character": "Aetherion",
+      "community_index": 0,
+      "community_label": "Hulk",
+      "hubs": [
+        "Hulk",
+        "She-Hulk",
+        "Hercules (Marvel Comics)"
+      ],
+      "size": 52,
+      "text": "Aetherion is a character appearing in American comic books published by Marvel Comics. His relationship with her old foe titania although they pursue him. War machine on marvel database. And we decided that they have been raised to the gaza israel conflict. Flatman becomes deputy leader. Concept and creation co creator steve ditko in the vault vance takes the new avengers.",
+      "voice_cues": [
+        "the abomination",
+        "<s> hercules",
+        "red wolf",
+        "frog man",
+        "detroit steel",
+        "emil blonsky"
+      ],
+      "real_quote": {
+        "node_id": "Hulk",
+        "name": "Hulk",
+        "text": "The Hulk is a superhero appearing in American comic books published by Marvel Comics. Created by writer Stan Lee and artist Jack Kirby, the character first appeared in the debut issue of The Incredible Hulk (May 1962). I\u2026"
+      }
+    },
+    {
+      "id": "fake-6",
+      "character": "Stormglass",
+      "community_index": 6,
+      "community_label": "Iron Fist (character)",
+      "hubs": [
+        "Iron Fist (character)",
+        "Black Panther (character)",
+        "Luke Cage"
+      ],
+      "size": 30,
+      "text": "Stormglass is a character appearing in American comic books published by Marvel Comics. Rosie knight of nerdist described the character's reins and take her back in time incidentally crossing to earth temporarily incapacitating him. Elizabeth cappuccino as a major shift in the battleworld domain of the 50 states initiative program. Created by ultron 12 who takes over the course of the series until the final extended arc completed by gulacy as regular artist he departed the. Jacks chopra is dane whitman's previously unknown younger sister zheng shi hua is outraged that their criminal personas will remain loyal to him. An embittered garrett then devises an arsenal of medieval weapons that employ modern technology and manifold's bending of reality around him.",
+      "voice_cues": [
+        "<s> shang",
+        "<s> shuri",
+        "<s> t'challa",
+        "bill foster",
+        "fu manchu",
+        "<s> misty"
+      ],
+      "real_quote": {
+        "node_id": "Iron_Fist_(character)",
+        "name": "Iron Fist (character)",
+        "text": "Iron Fist (Daniel Thomas \"Danny\" Rand-K'ai) is a superhero appearing in American comic books published by Marvel Comics. Created by Roy Thomas and Gil Kane and inspired by kung fu films, Iron Fist first appeared in Marve\u2026"
+      }
+    },
+    {
+      "id": "fake-4",
+      "character": "Iron Hearth",
+      "community_index": 4,
+      "community_label": "Spider-Man",
+      "hubs": [
+        "Spider-Man",
+        "Venom (character)",
+        "Spider-Woman (Gwen Stacy)"
+      ],
+      "size": 38,
+      "text": "Iron Hearth is a character appearing in American comic books published by Marvel Comics. Adopting the alias of cindy moon the billionaire head of the venom symbiote crashes into k'un l'un allowing it to glide through the window and grabbing. Like other goblin gliders it is unclear if he could fully transform retaining his human personality or intelligence while in his twenties almost twice his actual. Hobgoblin roderick kingsley an old foe delilah in searching for information about the future that came to fruition. The character would remain unseen and inactive until amazing spider girl of may's schoolmates. In 1943 the black marvel had introduced power man.",
+      "voice_cues": [
+        "venom appears",
+        "felicia hardy",
+        "<s> eddie",
+        "man noir",
+        "the inheritors",
+        "eddie brock"
+      ],
+      "real_quote": {
+        "node_id": "Spider-Man",
+        "name": "Spider-Man",
+        "text": "Spider-Man is a superhero in American comic books published by Marvel Comics. Created by writer-editor Stan Lee and artist Steve Ditko, he first appeared in the anthology comic book Amazing Fantasy #15 (August 1962) in t\u2026"
+      }
+    },
+    {
+      "id": "fake-3",
+      "character": "Quillstrike",
+      "community_index": 3,
+      "community_label": "Quasar (character)",
+      "hubs": [
+        "Quasar (character)",
+        "Nova (Richard Rider)",
+        "Captain Marvel (Marvel Comics)"
+      ],
+      "size": 38,
+      "text": "Quillstrike is a character appearing in American comic books published by Marvel Comics. The quantum bands they overloaded and he later revealed that almost all of the galaxy voiced by chris pratt. In other media the michiko musashi incarnation of powerhouse attacking the past by the nova force from the original title was dropped. In other media television star lord voiced by moira quirk. This version is a superhero savior was still hurt that chase bid farewell before leaving adam warns doctor strange has the ability to teleport to new. Doctor spectrum and was the 115th best selling comic book db archived from the darkforce.",
+      "voice_cues": [
+        "marvel appears",
+        "phyla vell",
+        "genis vell",
+        "<s> star",
+        "danvers captain",
+        "lord appears"
+      ],
+      "real_quote": {
+        "node_id": "Quasar_(character)",
+        "name": "Quasar (character)",
+        "text": "Quasar is the name of several superheroes appearing in American comic books published by Marvel Comics. They are noted for having worn the Quantum Bands, advanced ancient alien technology that grants the wearer manipulat\u2026"
+      }
+    },
+    {
+      "id": "fake-2",
+      "character": "Nyxara",
+      "community_index": 2,
+      "community_label": "Wolverine (character)",
+      "hubs": [
+        "Wolverine (character)",
+        "Jean Grey",
+        "Phoenix (Guardians of the Galaxy)"
+      ],
+      "size": 40,
+      "text": "Nyxara is a character appearing in American comic books published by Marvel Comics. Vulcan remained on krakoa. When wolverine is primarily presented as part of their fears when fighting them in hand to hand combatant capable of smashing objects and individuals in the. Alexandra moroca of cbr. However marvel's editors decided that he is a united states is unknown if she is a superhero team the x society are blamed for the sake. When he learns the truth.",
+      "voice_cues": [
+        "betsy braddock",
+        "rachel summers",
+        "<s> betsy",
+        "<s> jubilee",
+        "<s> cyclops",
+        "cyclops and"
+      ],
+      "real_quote": {
+        "node_id": "Wolverine_(character)",
+        "name": "Wolverine (character)",
+        "text": "Wolverine is a superhero appearing in American comic books published by Marvel Comics. The character first appeared in the comic book The Incredible Hulk #180 (1974) and is best known as a member of the superhero team th\u2026"
+      }
+    },
+    {
+      "id": "fake-1",
+      "character": "Cobalt Warden",
+      "community_index": 1,
+      "community_label": "Doctor Strange",
+      "hubs": [
+        "Doctor Strange",
+        "Deadpool",
+        "Moon Knight"
+      ],
+      "size": 42,
+      "text": "Cobalt Warden is a character appearing in American comic books published by Marvel Comics. Fictional character biography abdul faoul was created by schultz and vecchio. Incarnation is also being pursued by a rogue faction of the purple dimension. Blackheart the son of satan who exorcised blade from the egyptian moon god khonshu was real and believed marc spector moon knight from earth 3470 appears. Thanks to the modern day earth. Black widow was introduced as a hero again in another dimension which ulluxy'l did specifically to keep his disease while acting as the superhuman registration act.",
+      "voice_cues": [
+        "johnny blaze",
+        "<s> blade",
+        "<s> morbius",
+        "rider vol",
+        "werewolf by",
+        "strange appears"
+      ],
+      "real_quote": {
+        "node_id": "Doctor_Strange",
+        "name": "Doctor Strange",
+        "text": "Dr. Stephen Vincent Strange is a superhero appearing in American comic books published by Marvel Comics. Created by artist Steve Ditko with scripting by Stan Lee, the character first appeared in Strange Tales #110 (cover\u2026"
+      }
+    }
+  ],
+  "communities_source": "docs/weeks/week05/data/communities.json",
+  "partition": {
+    "modularity": 0.5055,
+    "mode_share": 0.04,
+    "null_z": 26.23,
+    "communities_in_giant": 7
+  }
+}
