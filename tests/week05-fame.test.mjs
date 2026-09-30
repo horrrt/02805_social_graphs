@@ -22,7 +22,7 @@ const short = (name) => name.replace(/ \((character|Marvel Comics|comics)\)$/, "
 
 test("section 6 is Niklas's and loads its script", () => {
   assert.match(html, /<section class="step" data-owner="Niklas" id="fame">/);
-  assert.match(html, /week05-fame\.js\?v=4"/);
+  assert.match(html, /week05-fame\.js\?v=5"/);
   assert.match(read("analysis/week05_fame.py"), /Owner: Niklas/);
   assert.equal(d.meta.owner, "Niklas");
   // The table and the passages come from the JSON; none is typed into the page.

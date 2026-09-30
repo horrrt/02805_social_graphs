@@ -5,7 +5,7 @@
 // the cluster table and the passages we checked.
 // Data: docs/weeks/week05/data/copying.json, written by analysis/week05_copying.py.
 
-import { loadData, networkView, passage, stripChart, table, termify } from "./kit.js?v=3";
+import { loadData, networkView, passage, stripChart, table, termify } from "./kit.js?v=4";
 
 const pct = (v) => (v < 0.1 ? `${(v * 100).toFixed(1)}%` : `${Math.round(v * 100)}%`);
 const count = (v) => v.toLocaleString("en-GB");

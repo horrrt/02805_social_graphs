@@ -8,8 +8,8 @@
 // stay in the browser and are never reported as results.
 // Data: docs/weeks/week05/data/autocomplete.json, written by analysis/week05_autocomplete.py.
 
-import { loadData, passage, stripChart, termify } from "./kit.js?v=3";
-import { loadNetwork, marvelMap } from "./week05-map.js?v=3";
+import { loadData, passage, stripChart, termify } from "./kit.js?v=4";
+import { loadNetwork, marvelMap } from "./week05-map.js?v=4";
 
 const data = await loadData(new URL("../../weeks/week05/data/autocomplete.json", import.meta.url));
 const $ = (id) => document.getElementById(id);

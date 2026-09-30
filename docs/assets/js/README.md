@@ -3,7 +3,7 @@
 Every component a section script needs comes from one import, `kit.js`:
 
 ```js
-import { slot, figure, echart, concordance, passage, loadData } from "./kit.js?v=3";
+import { slot, figure, echart, concordance, passage, loadData } from "./kit.js?v=4";
 ```
 
 Link three stylesheets, in this order: `type.css`, `corridor.css`, `post.css`.
@@ -103,7 +103,9 @@ nodes out in the analysis script with a seeded layout and pass `x` and `y` betwe
 | Every page named, sized by a value, links by width and dash | `labels: "beside"`, `r` and `title` on a node, `width`, `dashed` and `title` on a link, `tone: "accent", strongLinks: true` |
 
 `titles: "hubs"` gives tooltips to the hubs only (`"none"`: to no node); Week 5 uses it while section 4 collects
-guesses. `unit: ["page", "pages"]` sets what the legend counts.
+guesses. `explore: true` lets a reader hover or click a node to light its links and neighbours, click a hub or a
+legend entry to light its group, and zoom and pan (buttons, Ctrl or ⌘ with the wheel, or a pinch; d3 loads on
+demand). Its tooltip comes from `describe(node, { degree, marked, group })`; Week 5's maps name only the hubs. `unit: ["page", "pages"]` sets what the legend counts.
 
 Add `theme: "dark"` for the dark surface. Returns `{ nodes, redraw }`; `nodes` holds the groups after moves.
 `docs/styleguide/kit.html` draws all six with real data, and the overlap one with a labelled toy.

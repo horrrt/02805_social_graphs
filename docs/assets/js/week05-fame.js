@@ -6,7 +6,7 @@
 // passage behind each outlier's reason (#fame-passages).
 // Data: docs/weeks/week05/data/fame.json, written by analysis/week05_fame.py.
 
-import { echart, loadData, passage, table, termify, token } from "./kit.js?v=3";
+import { echart, loadData, passage, table, termify, token } from "./kit.js?v=4";
 
 const count = (v) => v.toLocaleString("en-GB");
 const times = (r) => `×${r >= 1 ? r.toFixed(1) : r.toFixed(2)}`;

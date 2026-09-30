@@ -25,7 +25,7 @@ test("section 5 is Niklas's card and loads its script", () => {
   assert.match(section, /class="card w4-card w5-card"/);
   assert.equal(h.meta.owner, "Niklas");
   assert.match(read("analysis/week05_heaps.py"), /\nOwner: Niklas\n/);
-  assert.match(html, /week05-heaps\.js\?v=4/);
+  assert.match(html, /week05-heaps\.js\?v=5/);
   for (const id of ["chart-heaps-curve", "chart-heaps-gap", "heaps-table", "heaps-samples", "heaps-passages"]) {
     assert.ok(section.includes(`id="${id}"`), `section 5 needs #${id}`);
   }
