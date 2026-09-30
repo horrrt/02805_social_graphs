@@ -881,6 +881,55 @@ class Week05Payload(Model):
     corpus: dict
 
 
+# Sections 1 and 4 · docs/weeks/week05/data/network.json, read by week05-relations.js and
+# week05-autocomplete.js through networkView() --------------------------------------------
+
+
+class NetGroup(Model):
+    label: str
+    size: int = Field(ge=1)
+
+
+class NetHub(Model):
+    node: int = Count
+    label: str
+    group: int = Field(ge=0, le=7)
+
+
+class NetNode(Model):
+    x: float = Field(ge=0, le=1)
+    y: float = Count
+    group: Optional[int] = Field(default=None, ge=0, le=7)
+
+
+class NetRelation(Model):
+    arcs: int = Count
+    pairs: list[list[int]]
+
+
+class NetworkPage(Model):
+    ratio: float = Field(gt=0)
+    groups: list[NetGroup] = Field(min_length=1, max_length=8)
+    hubs: list[NetHub]
+    nodes: list[NetNode]
+    links: list[list[Optional[int]]]
+    relations: dict[str, NetRelation]
+
+    @model_validator(mode="after")
+    def drawable(self):
+        n = len(self.nodes)
+        for i, j, w, g in self.links:
+            if not (0 <= i < n and 0 <= j < n and w >= 1):
+                raise ValueError(f"link {i}-{j} points outside the nodes")
+        for node in self.nodes:
+            if node.y > self.ratio + 1e-9:
+                raise ValueError("a node lies below the view: y must stay within ratio")
+        for rel in self.relations.values():
+            if any(not (0 <= i < n and 0 <= j < n) for i, j in rel.pairs):
+                raise ValueError("a relation pair points outside the nodes")
+        return self
+
+
 PAGES = {
     "docs/weeks/week05/data/copying.json": Copying,
     "docs/weeks/week05/data/relations.json": Relations,
@@ -888,6 +937,7 @@ PAGES = {
     "docs/weeks/week05/data/search_live.json": SearchLivePage,
     "docs/weeks/week05/data/autocomplete.json": AutocompletePage,
     "docs/weeks/week05/data/communities.json": CommunitiesPage,
+    "docs/weeks/week05/data/network.json": NetworkPage,
     "analysis/week05_heaps.json": Heaps,
     "analysis/week05_fame.json": Fame,
     "analysis/week05_weird.json": Weird,

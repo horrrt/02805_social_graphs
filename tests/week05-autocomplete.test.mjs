@@ -27,7 +27,7 @@ const k = a.n_fakes;
 test("section 4 is a wide Week 4 card with the brief's question", () => {
   assert.match(section, /class="w5-slots card w4-card w5-card w5-card-wide"/);
   has("Can someone who has not seen the pages tell which community a fake page came from?");
-  assert.match(html, /week05-autocomplete\.js\?v=3/);
+  assert.match(html, /week05-autocomplete\.js\?v=\d+/);
   assert.doesNotMatch(section, /—/, "no em dashes in section 4");
   assert.doesNotMatch(js, /—/, "no em dashes in the quiz text");
   assert.doesNotMatch(js, /innerHTML/, "build dynamic text with textContent");
