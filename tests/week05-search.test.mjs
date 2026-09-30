@@ -37,7 +37,9 @@ test("section 3 quotes search.json", () => {
   // The answer and the finding, with the words that describe them.
   has(`the right page comes first for ${sum.hits_at_1} of ${sum.n_scored} queries and in the top five for ${sum.hits_at_5}`);
   has(`(p = ${Number(sum.p_at_1.toPrecision(2))} against the 1 in ${t.n_pages} of a random ranking)`);
-  has(`Removing stopwords lifts that to ${sum.hits_at_1_nostop} and ${sum.hits_at_5_nostop}`);
+  has(`Removing stopwords lifts the hits to ${sum.hits_at_1_nostop} first and ${sum.hits_at_5_nostop} in the top five`);
+  assert.equal(sum.hits_at_1, 1, '"Even one first place" needs exactly one hit');
+  has("Even one first place beats chance");
   assert.ok(sum.hits_at_1_nostop > sum.hits_at_1 && sum.hits_at_5_nostop > sum.hits_at_5, '"lifts" and "cost real hits" need both to rise');
   const ns = sum.miss_kinds_nostop;
   has(`without stopwords, ${ns.short_page} of the ${sum.n_misses_nostop} misses still lose to a page at most a third as long as the target`);
@@ -56,7 +58,8 @@ test("section 3 quotes search.json", () => {
   assert.equal(win.name, "Redneck (comics)");
   assert.equal(c.winner_name, win.name);
   has(`a ${count(win.n_tokens)}-word page beats Storm's ${count(storm.expected_tokens)} words`);
-  has(`Its ${count(c.winner_tokens)} words make that one mutant count for more than all of Storm's ${count(c.expected_tokens)} words`);
+  assert.equal(c.winner_tokens, win.n_tokens, "the opener's page length is the checked page's");
+  assert.equal(c.expected_tokens, storm.expected_tokens);
   assert.deepEqual(c.terms, ["mutant"], "Redneck shares one word besides stopwords");
   assert.ok(c.quote.includes("mutant"));
 });

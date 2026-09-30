@@ -58,7 +58,7 @@ test("the partition numbers come from communities.json", () => {
   assert.ok(a.options.every((o) => o.size >= a.tokenisation.min_community_size));
   has(`Each group of at least ${a.tokenisation.min_community_size} pages gets its own trigram model`);
   assert.equal(a.left_out.largest, 1, "only pages with no links are left without a generator");
-  has(`The ${a.left_out.pages} pages with no links belong to no group and trained no generator`);
+  has(`the ${a.left_out.pages} pages with no links have none`);
 });
 
 test("the method states the tokeniser, the template and the cap", () => {
@@ -90,7 +90,7 @@ test("guessing stays honest: no hit rate without real answers", () => {
     assert.equal(g.p_value, null);
     assert.equal(g.collected_on, null);
     assert.equal(g.status, "awaiting_other_groups");
-    has("No other group has guessed yet");
+    has("We do not know yet: no other group has guessed");
     has(`We will post the ${k} masked fakes in the week 5 Teams channel and report the correct guesses out of all guesses, against the 1 in ${k} (${pct(a.chance_rate)}) a random guess gets right`);
     assert.doesNotMatch(s, /hit rate/i, "no hit rate on the page before anyone has guessed");
     assert.doesNotMatch(js, /hit_rate/, "the page script never shows a hit rate");
@@ -139,14 +139,12 @@ test("sparsity and copying are measured, and the example is real text", () => {
   const one = [pct(sm.one_continuation_min), pct(sm.one_continuation_max)];
   const two = [pct(sm.bigram_one_continuation_min), pct(sm.bigram_one_continuation_max)];
   assert.ok(sm.bigram_one_continuation_max < sm.one_continuation_min, "two-word contexts must be sparser than one-word ones");
-  has(`${one[0]} to ${one[1]} of two-word contexts in a community's pages have only one next word`);
-  has(`In each group's pages, ${one[0]} to ${one[1]} of two-word contexts (a pair of words in a row) have only one next word, against ${two[0]} to ${two[1]} of one-word contexts`);
+  has(`In each group's pages, ${one[0]} to ${one[1]} of two-word contexts have only one next word, against ${two[0]} to ${two[1]} of one-word contexts`);
   has(`${pct(sm.forced_share)} of the words the model drew for the quiz fakes had a single candidate`);
   const runs = a.fakes.map((f) => f.longest_run.length);
   assert.equal(sm.run_min, Math.min(...runs));
   assert.equal(sm.run_max, Math.max(...runs));
   has(`every fake page repeats a run of ${sm.run_min} to ${sm.run_max} words straight from its community's text`);
-  has(`every fake repeats a run of ${sm.run_min} to ${sm.run_max} words from its group's pages, ${sm.runs_single_page} of the ${k} runs from a single page`);
   has(`The runs are ${sm.run_min} to ${sm.run_max} words long, and ${sm.runs_single_page} of the ${k} come from a single page`);
   assert.equal(sm.runs_single_page, a.fakes.filter((f) => f.longest_run.pages_with_run === 1).length);
   const ex = a.fakes.find((f) => f.id === sm.example).longest_run;

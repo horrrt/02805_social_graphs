@@ -25,7 +25,7 @@ test("section 5 is Niklas's card and loads its script", () => {
   assert.match(section, /class="w5-slots card w4-card w5-card w5-card-wide"/);
   assert.equal(h.meta.owner, "Niklas");
   assert.match(read("analysis/week05_heaps.py"), /\nOwner: Niklas\n/);
-  assert.match(html, /week05-heaps\.js\?v=2/);
+  assert.match(html, /week05-heaps\.js\?v=3/);
   for (const id of ["chart-heaps-curve", "chart-heaps-gap", "heaps-table", "heaps-samples", "heaps-passages"]) {
     assert.ok(section.includes(`id="${id}"`), `section 5 needs #${id}`);
   }
@@ -87,7 +87,7 @@ test("section 5 compares orders at equal tokens, with the random baseline", () =
   has(`by 400,000 tokens the least-linked order has begun ${late.pages_least_linked} pages, reached pages linked from ${late.in_degree_least_linked} others, and sits at random (z = ${z(late.z_least_linked)})`);
   has("the least-linked characters' pages bring more new vocabulary than random pages, and the most-linked pages bring less");
   // The answer's two directions rest on the same two numbers.
-  has("Per word read, the least-linked pages add more new words than random pages do, and the most-linked pages add fewer");
+  has("They bring new words.");
 
   // "within 11% of the random mean at every point" in the figure caption.
   const worst = Math.max(...h.grid.map((p) => Math.max(Math.abs(p.most_linked - p.random_mean), Math.abs(p.least_linked - p.random_mean)) / p.random_mean));

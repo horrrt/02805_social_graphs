@@ -5,7 +5,7 @@
 // Section 4 is still collecting other groups' guesses about the communities, so
 // only the eight hubs, the quiz's options, are named; no other node has a tooltip.
 
-import { loadData, networkView } from "./kit.js?v=1";
+import { loadData, networkView } from "./kit.js?v=2";
 
 let loading;
 

@@ -22,6 +22,10 @@ Every section carries the same six parts, in this order:
 5. What we checked in the underlying text: quote the passage.
 6. One limitation.
 
+The six parts say what each section must contain, not what must be open on load. Each card keeps the
+answer, one paragraph of what we did, the figure, the notice, the main limitation and one quoted passage in
+view, and moves the rest into drawers (POST_GUIDE.md, "Keep the card short").
+
 The brief says one good question with one convincing figure beats five methods thrown together. We did
 all seven openers; the hero asks whether a character's place in the link network shows in the words of its
 page, and answers with section 6's scatter of page length against in-degree. A findings strip under the

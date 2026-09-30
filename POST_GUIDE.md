@@ -35,6 +35,37 @@ Use this reading order:
 
 Avoid making visitors click through many trials to discover the point. A simulation result must be labelled as one run; an expectation must be labelled as an average. Explain what remains fixed when comparing alternatives. Keep exploratory controls separate from saved progress unless changing that progress is the explicit action.
 
+## Keep the card short
+
+Week 4 learned this in its redesign, and Week 5 shipped without it: its cards showed 415 to 702 words before any click, against Week 4's 41 to 230, because the lesson lived in one sentence at the end of this guide and no test measured it. A rule here now has a test beside it, as the data rules do.
+
+Before any click, a card shows:
+
+- the question and its answer, told once. The opener's one-line finding, the answer, the notice and the findings strip each say something the others do not.
+- one paragraph of what we did: what was counted and against which baseline.
+- the figure, with a title and a note on how to read it.
+- "What to notice": the number against its baseline.
+- the main limitation, in a sentence or two.
+- one quoted passage.
+
+Everything else sits one click away, moved word for word: method, the word rule, extra numbers, robustness checks, the other passages, full tables. Give a technical term a pop-up definition (`termify()`) where it first appears in view, and keep charts out of closed drawers unless the chart redraws when the drawer opens.
+
+`tests/text-budget.test.mjs` fails any card in Week 4 onward, or in the template, that shows more than 350 words of its HTML before a click, and any "What we did" with more than one paragraph in view. Week 4's longest card is 230 words; the limitation and quote the Week 5 brief adds cost about 40 words each. Aim near 300.
+
+The test reads HTML, so it misses what a page script draws. Draw lists of passages with `showFirst()` from `kit.js`, and check the rendered page in the browser console before review:
+
+```js
+[...document.querySelectorAll("section.step[id]")].map((s) => {
+  const w = document.createTreeWalker(s, NodeFilter.SHOW_TEXT);
+  let n = 0;
+  for (let t; (t = w.nextNode()); )
+    if (!t.parentElement.closest("svg") && t.parentElement.checkVisibility()) n += t.data.split(/\s+/).filter(Boolean).length;
+  return [s.id, n];
+});
+```
+
+A section, rendered, should show at most about 450 words, or a little more when its figure is an interactive table. Week 4's sections show 280 to 645, and Week 5's 219 to 653 after the fix.
+
 ## Scientific and editorial quality
 
 Distinguish a finding about the data from a consequence of an invented game rule. Show the baseline that gives a number meaning. For a null-model story, the main reading path must explain what the null preserves, what it changes and how the observed result compares; formulas and full distributions may be optional.
@@ -74,4 +105,6 @@ Week 2: removal results are a good entry point, but the null model is the week's
 
 Week 3: the first country join dropped the Netherlands, Palestine and Taiwan, because UN DESA writes M49 codes without leading zeros. Join on a pinned code table and fail on any code it cannot map. Betweenness on the raw DESA matrix ranked reporting systems instead of countries, since register countries list hundreds of one-person origins; threshold small corridors before you compute it. Two Wikidata items share the code PSE, and the live query returns rows in no fixed order, so Palestine's name and 60 distances flipped from one run to the next until the script picked one item by rule. Holding reciprocity to a degree-preserving null reversed a claim: the refugee network is more two-way than chance once each country's number of partners is kept.
 
-Week 4: hand-typed numbers drifted until tests built each sentence from the JSON, and like-for-like nulls reversed three conclusions. The long page needed one deep dive at the end. Keep the answer, its baseline and its main limit in view, and move method notes one click away, word for word.
+Week 4: hand-typed numbers drifted until tests built each sentence from the JSON, and like-for-like nulls reversed three conclusions. The long page needed one deep dive at the end. Keep the answer, its baseline and its main limit in view, and move method notes one click away, word for word ("Keep the card short").
+
+Week 5: the data rules carried over because tests enforce them; the layout rules did not, because only prose recorded them. The brief's six parts (asked, did, figure, surprise, checked, limitation) became six open blocks, the answer was told three times per section, and the checked slots listed every passage read. A brief's list of parts says what a post must contain, not what must be open on load.

@@ -6,7 +6,7 @@
 // passage behind each outlier's reason (#fame-passages).
 // Data: docs/weeks/week05/data/fame.json, written by analysis/week05_fame.py.
 
-import { echart, loadData, passage, table, termify, token } from "./kit.js?v=1";
+import { echart, loadData, passage, showFirst, table, termify, token } from "./kit.js?v=2";
 
 const count = (v) => v.toLocaleString("en-GB");
 const times = (r) => `×${r >= 1 ? r.toFixed(1) : r.toFixed(2)}`;
@@ -99,13 +99,14 @@ document.getElementById("fame-outliers")?.append(
 // ---- what we checked: one reason and one passage per outlier
 const box = document.getElementById("fame-passages");
 if (box) {
-  for (const o of data.outliers) {
+  const groups = data.outliers.map((o) => {
     const head = document.createElement("p");
     head.className = "fineprint";
     const from = o.quote.links === false ? ` The passage is from ${o.quote.page.replaceAll("_", " ")}, which names ${short(o.name)} without linking to the page.` : "";
     head.append(Object.assign(document.createElement("b"), { textContent: `${short(o.name)}, ${times(o.ratio)} predicted. ` }), o.reason + from);
-    box.append(head, passage({ page: o.quote.page, text: o.quote.text, highlight: o.quote.highlight }));
-  }
+    return [head, passage({ page: o.quote.page, text: o.quote.text, highlight: o.quote.highlight })];
+  });
+  showFirst(box, groups, { label: `The other ${groups.length - 1} pages` });
 }
 
 // ---- glossary terms

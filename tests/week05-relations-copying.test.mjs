@@ -58,7 +58,9 @@ test("section 1 quotes relations.json", () => {
   // The limitation: hand-read precision, with "best", "worst" and "in between" held to the numbers.
   const read = Object.values(prec).reduce((sum, p) => sum + p.read, 0);
   const right = Object.values(prec).reduce((sum, p) => sum + p.right, 0);
-  has(`Of the ${read} labels we read, ${right} describe how A and B relate`);
+  has(`We read ${read} sentences, ${r.meta.sample} per label, drawn at random: ${right} of the labels describe how A and B relate`);
+  assert.ok(right / read >= 0.4 && right / read <= 0.6, '"about half the links correctly" needs 40% to 60% right');
+  has("the word list labels about half the links correctly");
   has(`Ally labels hold up best (${prec.ally.right} of ${prec.ally.read})`);
   has(`enemy and killed worst (${prec.enemy.right} of ${prec.enemy.read} each)`);
   has(`family in between (${prec.family.right} of ${prec.family.read})`);
@@ -68,7 +70,6 @@ test("section 1 quotes relations.json", () => {
   assert.ok(prec.family.right > prec.enemy.right && prec.family.right < prec.ally.right, '"in between" for family');
   assert.ok(r.concordance.some((l) => l.label === "enemy" && l.verdict === "wrong" && l.page === "Phyla-Vell"),
     "the quoted fight-word sentence must be a wrong enemy label in the sample");
-  has(`The ${read} sentences we read, ${r.meta.sample} per label`);
 });
 
 test("section 2 quotes copying.json", () => {
@@ -81,7 +82,8 @@ test("section 2 quotes copying.json", () => {
   const section = Object.fromEntries(c.sections.map((x) => [x.section, x.tokens]));
   const share = (name) => pct(section[name] / h.section_tokens);
 
-  has(`${h.pairs} pairs in ${h.clusters} clusters, and ${h.copy_linked} of those pairs already link to each other`);
+  has(`${h.pairs} pairs of pages, in ${h.clusters} clusters, nearly all about characters who already link to each other`);
+  assert.ok(h.copy_linked / h.pairs >= 0.85, '"nearly all" needs at least 85% of the pairs linked');
   has(`${count(c.meta.tokens)} in all`);
   has(`is on ${lead.pages} of the ${c.meta.pages} pages`);
   has(`8-grams on more than ${c.meta.template_pages} pages are set aside`);
@@ -94,7 +96,7 @@ test("section 2 quotes copying.json", () => {
   assert.equal(h.pairs - h.copy_linked, unlinked.length);
   assert.ok(unlinked.every((l) => l.a === "Wild_Child_(character)" || l.b === "Wild_Child_(character)"), "the unlinked pairs must be Wild Child's");
   assert.ok(unlinked.every((l) => l.quote.includes("Krakoa")), "and share the Krakoa sentence");
-  has(`The ${WORDS[unlinked.length]} that do not are Wild Child's`);
+  has(`The ${WORDS[unlinked.length]} pairs that do not link are Wild Child's`);
 
   // What ties the clusters, read by hand into the ties table.
   const ties = Object.fromEntries(["mantle", "team", "family"].map((t) => [t, c.clusters.filter((x) => x.tie === t).length]));
