@@ -5,7 +5,7 @@
 // the cluster table and the passages we checked.
 // Data: docs/weeks/week05/data/copying.json, written by analysis/week05_copying.py.
 
-import { fitted, fs, loadData, node, passage, stripChart, table, termify, textWidth, token } from "./kit.js?v=1";
+import { loadData, networkView, passage, stripChart, table, termify } from "./kit.js?v=1";
 
 const pct = (v) => (v < 0.1 ? `${(v * 100).toFixed(1)}%` : `${Math.round(v * 100)}%`);
 const count = (v) => v.toLocaleString("en-GB");
@@ -14,8 +14,9 @@ const short = (name) => name.replace(/ \((character|Marvel Comics|comics|charact
 const data = await loadData(new URL("../../weeks/week05/data/copying.json", import.meta.url));
 const name = Object.fromEntries(data.nodes.map((n) => [n.id, short(n.name)]));
 
-// ---- the figure: the copying network, at the positions the script fixed, in
-// plain SVG so every dot and line sits exactly where the layout puts it
+// ---- the figure: the copying network, at the positions the script fixed, drawn
+// with networkView(): dot size and line width by shared words, a dashed line for
+// a pair that does not link, every page named beside its dot
 const host = document.getElementById("chart-copying-network");
 if (host) {
   const maxTokens = Math.max(...data.nodes.map((n) => n.copied_tokens));
@@ -23,8 +24,9 @@ if (host) {
   const clusterSize = Object.fromEntries(data.clusters.map((c) => [c.id, c.pages.length]));
   const at = Object.fromEntries(data.nodes.map((n) => [n.id, n]));
   // A pair is named once, "A · B", to the left of its first page; every other
-  // page is named to its left.
+  // page is named beside its own dot.
   const label = {};
+  const side = {};
   for (const n of data.nodes) label[n.id] = name[n.id];
   for (const l of data.links) {
     if (clusterSize[at[l.a].cluster] !== 2) continue;
@@ -32,53 +34,29 @@ if (host) {
     // "Ghost Rider · Ghost Rider (Johnny Blaze)" reads as "Ghost Rider · Johnny Blaze".
     const tail = name[second].startsWith(`${name[first]} (`) ? name[second].slice(name[first].length + 2, -1) : name[second];
     label[first] = `${name[first]} · ${tail}`;
+    side[first] = "left";
     label[second] = "";
   }
-  const titled = (el, text) => (el.append(node("title", {}, text)), el);
-  const draw = (width) => {
-    const height = Math.round(width * 0.95);
-    const [left, right, top, bottom] = [8, 12, 10, 10];
-    const X = (x) => left + x * (width - left - right);
-    const Y = (y) => top + y * (height - top - bottom);
-    const svg = node("svg", { viewBox: `0 0 ${width} ${height}`, width, height, role: "img",
-      "aria-label": `Copying network: ${data.nodes.length} pages in ${data.clusters.length} clusters` });
-    for (const l of data.links) {
-      const [a, b] = [at[l.a], at[l.b]];
-      const line = node("line", { x1: X(a.x), y1: Y(a.y), x2: X(b.x), y2: Y(b.y), stroke: token("--ink-mute"),
-        "stroke-width": (1 + 5 * Math.sqrt(l.tokens / maxLink)).toFixed(2), "stroke-linecap": "round",
-        "stroke-dasharray": l.linked ? "none" : "5 4", opacity: 0.85 });
-      svg.append(titled(line, `${name[l.a]} and ${name[l.b]}: ${count(l.tokens)} shared words, under ${l.section_a}` +
-        `${l.linked ? "" : ". The two pages do not link to each other"}.\n“${l.quote.slice(0, 200)}${l.quote.length > 200 ? " …" : ""}”`));
-    }
-    const radius = (n) => 3 + 8 * Math.sqrt(n.copied_tokens / maxTokens);
-    for (const n of data.nodes) {
-      svg.append(titled(node("circle", { cx: X(n.x), cy: Y(n.y), r: radius(n).toFixed(2), fill: token("--access"),
-        stroke: token("--card"), "stroke-width": 1.5 }),
-        `${name[n.id]}: ${count(n.copied_tokens)} shared words, in a cluster of ${clusterSize[n.cluster]} pages`));
-    }
-    // Names: the pairs' first, then each cluster page's in the first free spot of
-    // left, right, above-left and below-right of its dot.
-    const placed = [];
-    const clear = (b) => placed.every((p) => b.x1 < p.x0 || b.x0 > p.x1 || b.y1 < p.y0 || b.y0 > p.y1);
-    const order = [...data.nodes].sort((a, b) => (clusterSize[a.cluster] === 2 ? 0 : 1) - (clusterSize[b.cluster] === 2 ? 0 : 1));
-    for (const n of order) {
-      if (!label[n.id]) continue;
-      const w = textWidth(label[n.id], "caption");
-      const [cx, cy, r] = [X(n.x), Y(n.y), radius(n)];
-      const spot = (side, dy) => {
-        const x = side === "end" ? cx - r - 5 : cx + r + 5;
-        const y = cy + 4 + dy;
-        return { x, y, anchor: side, x0: side === "end" ? x - w : x, x1: side === "end" ? x : x + w, y0: y - 10, y1: y + 3 };
-      };
-      const spots = clusterSize[n.cluster] === 2 ? [spot("end", 0)] : [spot("end", 0), spot("start", 0), spot("end", -12), spot("start", 12)];
-      const s = spots.find(clear) ?? spots[0];
-      placed.push(s);
-      svg.append(node("text", { x: s.x, y: s.y, "font-size": fs("caption"), fill: token("--ink-soft"),
-        "text-anchor": s.anchor }, label[n.id]));
-    }
-    return svg;
-  };
-  host.append(fitted(draw, 520));
+  // The layout fills a frame 0.95 as tall as it is wide.
+  const TALL = 0.95;
+  networkView(host, {
+    ratio: TALL,
+    width: 520,
+    tone: "accent",
+    strongLinks: true,
+    labels: "beside",
+    nodes: data.nodes.map((n) => ({
+      id: n.id, x: n.x, y: n.y * TALL, label: label[n.id], labelSide: side[n.id],
+      r: 3 + 8 * Math.sqrt(n.copied_tokens / maxTokens),
+      title: `${name[n.id]}: ${count(n.copied_tokens)} shared words, in a cluster of ${clusterSize[n.cluster]} pages`,
+    })),
+    links: data.links.map((l) => ({
+      source: l.a, target: l.b, dashed: !l.linked, width: 1 + 5 * Math.sqrt(l.tokens / maxLink),
+      title: `${name[l.a]} and ${name[l.b]}: ${count(l.tokens)} shared words, under ${l.section_a}` +
+        `${l.linked ? "" : ". The two pages do not link to each other"}.\n“${l.quote.slice(0, 200)}${l.quote.length > 200 ? " …" : ""}”`,
+    })),
+    aria: `Copying network: ${data.nodes.length} pages in ${data.clusters.length} clusters`,
+  });
 }
 
 // ---- beside the finding: how often copying pairs link, against two baselines

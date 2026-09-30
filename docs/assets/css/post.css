@@ -2896,6 +2896,12 @@
 .corridor .gv .g7 { fill: var(--group-7); } .corridor .gv .gv-link.g7 { stroke: var(--group-7); stroke-opacity: 0.85; }
 .corridor .gv .gv-link.gv-on { stroke: var(--graph-accent); stroke-opacity: 1; }
 .corridor .gv .gv-link.gv-mark { stroke: var(--graph-ink); stroke-opacity: 0.75; }
+.corridor .gv .gv-link.gv-strong { stroke: var(--ink-mute); stroke-opacity: 0.85; }
+.corridor .gv.gv-dark .gv-link.gv-strong { stroke: var(--graph-edge); }
+.corridor .gv .gv-link.gv-dashed { stroke-dasharray: 5 4; }
+.corridor .gv .gv-node.gv-tone { fill: var(--access); }
+.corridor .gv .gv-side text { fill: var(--ink-soft); }
+.corridor .gv.gv-dark .gv-side text { fill: var(--graph-ink); opacity: 0.8; }
 .corridor .gv .gv-leader { stroke: var(--graph-ink); stroke-opacity: 0.6; stroke-width: 1; }
 .corridor .gv .gv-outline { fill: none; stroke: var(--graph-ground); stroke-width: 1.5; }
 .corridor .gv .gv-ring { fill: none; stroke-width: 2.5; }

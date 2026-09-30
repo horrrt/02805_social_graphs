@@ -100,6 +100,11 @@ nodes out in the analysis script with a seeded layout and pass `x` and `y` betwe
 | A link's weight on hover | `weights: true, highlight: { source, target }` |
 | Two groups you can edit, with badges | `labels: "inside", badges: true, movable: true, legend: true, onChange` |
 | Overlapping groups and a node in none | `groups: [a, b]` on a node, `hollow: true, colorLinks: true` |
+| Some links drawn over the faded rest | `mark: true` on those links, `fade: true` |
+| Every page named, sized by a value, links by width and dash | `labels: "beside"`, `r` and `title` on a node, `width`, `dashed` and `title` on a link, `tone: "accent", strongLinks: true` |
+
+`titles: "hubs"` gives tooltips to the hubs only (`"none"`: to no node); Week 5 uses it while section 4 collects
+guesses. `unit: ["page", "pages"]` sets what the legend counts.
 
 Add `theme: "dark"` for the dark surface. Returns `{ nodes, redraw }`; `nodes` holds the groups after moves.
 `docs/styleguide/kit.html` draws all six with real data, and the overlap one with a labelled toy.
