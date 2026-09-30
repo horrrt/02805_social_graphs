@@ -1,0 +1,334 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width,initial-scale=1" name="viewport" />
+    <meta content="The Marvel network gets language: seven questions about the 303 Marvel Wikipedia pages. Week 5, Log–Log Legends." name="description" />
+    <!-- Unpublished frame: keep noindex, and week 5 "coming" in weeks.js, until the sections are written. See WEEK05.md. -->
+    <meta content="noindex" name="robots" />
+    <title>The Marvel network gets language · Log–Log Legends</title>
+    <link href="../../assets/favicon.svg" rel="icon" type="image/svg+xml" />
+    <link href="../../assets/css/type.css?v=2" rel="stylesheet" />
+    <link href="../../assets/css/corridor.css?v=ts1" rel="stylesheet" />
+    <link href="../../assets/css/week04.css?v=ts2" rel="stylesheet" />
+    <style>
+      .w5-hint { font-style: italic; opacity: 0.7; }
+      .w5-slots { display: grid; gap: 1rem; margin-top: 1rem; }
+      .w5-slot { border: 1px dashed currentColor; border-radius: 8px; padding: 0.75rem 1rem; opacity: 0.85; }
+    </style>
+  </head>
+  <body class="corridor">
+    <a class="skip" href="#main">Skip to content</a>
+
+    <div class="topbar">
+      <div class="shell">
+        <a class="brand" href="../../">LOG–LOG <b>LEGENDS</b></a>
+        <a class="site-link" href="../../#weeks">All posts</a>
+        <nav class="topnav" aria-label="Sections of this post">
+          <a href="#opening">Opening</a>
+          <a href="#relations">1</a>
+          <a href="#copying">2</a>
+          <a href="#search">3</a>
+          <a href="#autocomplete">4</a>
+          <a href="#heaps">5</a>
+          <a href="#fame">6</a>
+          <a href="#weird">7</a>
+          <a href="#closing">Closing</a>
+        </nav>
+      </div>
+    </div>
+
+    <main id="main">
+      <section class="hero w4-hero" id="top">
+        <div class="shell">
+          <p class="eyebrow">Week 5 · The language half · NLP I · Go nuts</p>
+          <h1>The Marvel network gets language</h1>
+          <p class="w5-hint">Headline question and the one figure that answers it. Pick the strongest of the seven sections once the results are in.</p>
+        </div>
+      </section>
+
+      <div class="shell">
+        <section class="step" data-owner="" id="opening">
+          <h2>Opening</h2>
+          <p class="w5-hint">What the data is: 303 English Wikipedia pages from Category:Marvel Comics superheroes, frozen 26 August 2026, and the links between them. What a link means, what a token is, and which question the post answers. Self-contained: no earlier post needed.</p>
+        </section>
+
+        <section class="step" data-owner="" id="relations">
+          <header class="w4-opener">
+            <span aria-hidden="true" class="w4-opener-num">1</span>
+            <div>
+              <h2>Turn links into relationships</h2>
+              <p>Who are the friends, foes and family in the Marvel network?</p>
+            </div>
+          </header>
+          <p class="w5-hint">Course suggestion: For each link from A to B, the sentence on A&#x27;s page that mentions B, labelled from a small word list (enemy, ally, married, teammate, killed). Do enemies sit in different communities? Script: <code>analysis/week05_relations.py</code>. Owner: not assigned yet.</p>
+          <div class="w5-slots">
+            <div class="w5-slot" data-slot="asked" id="relations-asked">
+              <h3>What we asked</h3>
+              <p class="w5-hint">The question in words a visitor can answer after reading.</p>
+            </div>
+            <div class="w5-slot" data-slot="did" id="relations-did">
+              <h3>What we did</h3>
+              <p class="w5-hint">Data, tokenisation and preprocessing, method, and the baseline the result is compared with.</p>
+            </div>
+            <div class="w5-slot" data-slot="figure" id="relations-figure">
+              <h3>Figure</h3>
+              <p class="w5-hint">One strong figure or table, with a caption that says how to read it.</p>
+            </div>
+            <div class="w5-slot" data-slot="surprise" id="relations-surprise">
+              <h3>What surprised us</h3>
+              <p class="w5-hint">The finding, with the number and what it is compared against.</p>
+            </div>
+            <div class="w5-slot" data-slot="checked" id="relations-checked">
+              <h3>What we checked in the text</h3>
+              <p class="w5-hint">The passages we read to confirm the claim, quoted.</p>
+            </div>
+            <div class="w5-slot" data-slot="limit" id="relations-limit">
+              <h3>Limitation</h3>
+              <p class="w5-hint">One limitation, next to the claim it limits.</p>
+            </div>
+          </div>
+        </section>
+        <section class="step" data-owner="" id="copying">
+          <header class="w4-opener">
+            <span aria-hidden="true" class="w4-opener-num">2</span>
+            <div>
+              <h2>Catch Wikipedia copying itself</h2>
+              <p>Which Marvel pages copy text from each other?</p>
+            </div>
+          </header>
+          <p class="w5-hint">Course suggestion: Page pairs that share n-grams of eight tokens or more, drawn as a copying network of their own, with the biggest clusters read by hand. Script: <code>analysis/week05_copying.py</code>. Owner: not assigned yet.</p>
+          <div class="w5-slots">
+            <div class="w5-slot" data-slot="asked" id="copying-asked">
+              <h3>What we asked</h3>
+              <p class="w5-hint">The question in words a visitor can answer after reading.</p>
+            </div>
+            <div class="w5-slot" data-slot="did" id="copying-did">
+              <h3>What we did</h3>
+              <p class="w5-hint">Data, tokenisation and preprocessing, method, and the baseline the result is compared with.</p>
+            </div>
+            <div class="w5-slot" data-slot="figure" id="copying-figure">
+              <h3>Figure</h3>
+              <p class="w5-hint">One strong figure or table, with a caption that says how to read it.</p>
+            </div>
+            <div class="w5-slot" data-slot="surprise" id="copying-surprise">
+              <h3>What surprised us</h3>
+              <p class="w5-hint">The finding, with the number and what it is compared against.</p>
+            </div>
+            <div class="w5-slot" data-slot="checked" id="copying-checked">
+              <h3>What we checked in the text</h3>
+              <p class="w5-hint">The passages we read to confirm the claim, quoted.</p>
+            </div>
+            <div class="w5-slot" data-slot="limit" id="copying-limit">
+              <h3>Limitation</h3>
+              <p class="w5-hint">One limitation, next to the claim it limits.</p>
+            </div>
+          </div>
+        </section>
+        <section class="step" data-owner="" id="search">
+          <header class="w4-opener">
+            <span aria-hidden="true" class="w4-opener-num">3</span>
+            <div>
+              <h2>A Marvel search engine in 20 lines</h2>
+              <p>Can bag-of-words find the right page from a description?</p>
+            </div>
+          </header>
+          <p class="w5-hint">Course suggestion: Queries such as “Norse god of thunder” as tiny documents, the 303 pages ranked by cosine similarity, and the queries where it fails. Script: <code>analysis/week05_search.py</code>. Owner: not assigned yet.</p>
+          <div class="w5-slots">
+            <div class="w5-slot" data-slot="asked" id="search-asked">
+              <h3>What we asked</h3>
+              <p class="w5-hint">The question in words a visitor can answer after reading.</p>
+            </div>
+            <div class="w5-slot" data-slot="did" id="search-did">
+              <h3>What we did</h3>
+              <p class="w5-hint">Data, tokenisation and preprocessing, method, and the baseline the result is compared with.</p>
+            </div>
+            <div class="w5-slot" data-slot="figure" id="search-figure">
+              <h3>Figure</h3>
+              <p class="w5-hint">One strong figure or table, with a caption that says how to read it.</p>
+            </div>
+            <div class="w5-slot" data-slot="surprise" id="search-surprise">
+              <h3>What surprised us</h3>
+              <p class="w5-hint">The finding, with the number and what it is compared against.</p>
+            </div>
+            <div class="w5-slot" data-slot="checked" id="search-checked">
+              <h3>What we checked in the text</h3>
+              <p class="w5-hint">The passages we read to confirm the claim, quoted.</p>
+            </div>
+            <div class="w5-slot" data-slot="limit" id="search-limit">
+              <h3>Limitation</h3>
+              <p class="w5-hint">One limitation, next to the claim it limits.</p>
+            </div>
+          </div>
+        </section>
+        <section class="step" data-owner="" id="autocomplete">
+          <header class="w4-opener">
+            <span aria-hidden="true" class="w4-opener-num">4</span>
+            <div>
+              <h2>Community autocomplete</h2>
+              <p>Does each Marvel community write in its own voice?</p>
+            </div>
+          </header>
+          <p class="w5-hint">Course suggestion: One trigram generator per network community, one fake page for a new character in each, and how often other groups guess the community. Script: <code>analysis/week05_autocomplete.py</code>. Owner: not assigned yet.</p>
+          <div class="w5-slots">
+            <div class="w5-slot" data-slot="asked" id="autocomplete-asked">
+              <h3>What we asked</h3>
+              <p class="w5-hint">The question in words a visitor can answer after reading.</p>
+            </div>
+            <div class="w5-slot" data-slot="did" id="autocomplete-did">
+              <h3>What we did</h3>
+              <p class="w5-hint">Data, tokenisation and preprocessing, method, and the baseline the result is compared with.</p>
+            </div>
+            <div class="w5-slot" data-slot="figure" id="autocomplete-figure">
+              <h3>Figure</h3>
+              <p class="w5-hint">One strong figure or table, with a caption that says how to read it.</p>
+            </div>
+            <div class="w5-slot" data-slot="surprise" id="autocomplete-surprise">
+              <h3>What surprised us</h3>
+              <p class="w5-hint">The finding, with the number and what it is compared against.</p>
+            </div>
+            <div class="w5-slot" data-slot="checked" id="autocomplete-checked">
+              <h3>What we checked in the text</h3>
+              <p class="w5-hint">The passages we read to confirm the claim, quoted.</p>
+            </div>
+            <div class="w5-slot" data-slot="limit" id="autocomplete-limit">
+              <h3>Limitation</h3>
+              <p class="w5-hint">One limitation, next to the claim it limits.</p>
+            </div>
+          </div>
+        </section>
+        <section class="step" data-owner="" id="heaps">
+          <header class="w4-opener">
+            <span aria-hidden="true" class="w4-opener-num">5</span>
+            <div>
+              <h2>Heaps&#x27; law of the Marvel universe</h2>
+              <p>Do minor characters bring new words, or repeat the famous ones?</p>
+            </div>
+          </header>
+          <p class="w5-hint">Course suggestion: Pages added one at a time, most-linked first, with vocabulary growth plotted, then the opposite order. Script: <code>analysis/week05_heaps.py</code>. Owner: not assigned yet.</p>
+          <div class="w5-slots">
+            <div class="w5-slot" data-slot="asked" id="heaps-asked">
+              <h3>What we asked</h3>
+              <p class="w5-hint">The question in words a visitor can answer after reading.</p>
+            </div>
+            <div class="w5-slot" data-slot="did" id="heaps-did">
+              <h3>What we did</h3>
+              <p class="w5-hint">Data, tokenisation and preprocessing, method, and the baseline the result is compared with.</p>
+            </div>
+            <div class="w5-slot" data-slot="figure" id="heaps-figure">
+              <h3>Figure</h3>
+              <p class="w5-hint">One strong figure or table, with a caption that says how to read it.</p>
+            </div>
+            <div class="w5-slot" data-slot="surprise" id="heaps-surprise">
+              <h3>What surprised us</h3>
+              <p class="w5-hint">The finding, with the number and what it is compared against.</p>
+            </div>
+            <div class="w5-slot" data-slot="checked" id="heaps-checked">
+              <h3>What we checked in the text</h3>
+              <p class="w5-hint">The passages we read to confirm the claim, quoted.</p>
+            </div>
+            <div class="w5-slot" data-slot="limit" id="heaps-limit">
+              <h3>Limitation</h3>
+              <p class="w5-hint">One limitation, next to the claim it limits.</p>
+            </div>
+          </div>
+        </section>
+        <section class="step" data-owner="" id="fame">
+          <header class="w4-opener">
+            <span aria-hidden="true" class="w4-opener-num">6</span>
+            <div>
+              <h2>Does network fame buy you more words?</h2>
+              <p>Do more-linked characters get longer pages?</p>
+            </div>
+          </header>
+          <p class="w5-hint">Course suggestion: Page length against in-degree, the characters far above and below the relationship, and a reading of their pages. Script: <code>analysis/week05_fame.py</code>. Owner: not assigned yet.</p>
+          <div class="w5-slots">
+            <div class="w5-slot" data-slot="asked" id="fame-asked">
+              <h3>What we asked</h3>
+              <p class="w5-hint">The question in words a visitor can answer after reading.</p>
+            </div>
+            <div class="w5-slot" data-slot="did" id="fame-did">
+              <h3>What we did</h3>
+              <p class="w5-hint">Data, tokenisation and preprocessing, method, and the baseline the result is compared with.</p>
+            </div>
+            <div class="w5-slot" data-slot="figure" id="fame-figure">
+              <h3>Figure</h3>
+              <p class="w5-hint">One strong figure or table, with a caption that says how to read it.</p>
+            </div>
+            <div class="w5-slot" data-slot="surprise" id="fame-surprise">
+              <h3>What surprised us</h3>
+              <p class="w5-hint">The finding, with the number and what it is compared against.</p>
+            </div>
+            <div class="w5-slot" data-slot="checked" id="fame-checked">
+              <h3>What we checked in the text</h3>
+              <p class="w5-hint">The passages we read to confirm the claim, quoted.</p>
+            </div>
+            <div class="w5-slot" data-slot="limit" id="fame-limit">
+              <h3>Limitation</h3>
+              <p class="w5-hint">One limitation, next to the claim it limits.</p>
+            </div>
+          </div>
+        </section>
+        <section class="step" data-owner="" id="weird">
+          <header class="w4-opener">
+            <span aria-hidden="true" class="w4-opener-num">7</span>
+            <div>
+              <h2>Who has the weirdest Wikipedia page?</h2>
+              <p>Which Marvel page is the weirdest, and is it really?</p>
+            </div>
+          </header>
+          <p class="w5-hint">Course suggestion: A definition of weird built from this week&#x27;s tools, a ranking of the 303 pages, and a check of the winners against formatting and boilerplate. Script: <code>analysis/week05_weird.py</code>. Owner: not assigned yet.</p>
+          <div class="w5-slots">
+            <div class="w5-slot" data-slot="asked" id="weird-asked">
+              <h3>What we asked</h3>
+              <p class="w5-hint">The question in words a visitor can answer after reading.</p>
+            </div>
+            <div class="w5-slot" data-slot="did" id="weird-did">
+              <h3>What we did</h3>
+              <p class="w5-hint">Data, tokenisation and preprocessing, method, and the baseline the result is compared with.</p>
+            </div>
+            <div class="w5-slot" data-slot="figure" id="weird-figure">
+              <h3>Figure</h3>
+              <p class="w5-hint">One strong figure or table, with a caption that says how to read it.</p>
+            </div>
+            <div class="w5-slot" data-slot="surprise" id="weird-surprise">
+              <h3>What surprised us</h3>
+              <p class="w5-hint">The finding, with the number and what it is compared against.</p>
+            </div>
+            <div class="w5-slot" data-slot="checked" id="weird-checked">
+              <h3>What we checked in the text</h3>
+              <p class="w5-hint">The passages we read to confirm the claim, quoted.</p>
+            </div>
+            <div class="w5-slot" data-slot="limit" id="weird-limit">
+              <h3>Limitation</h3>
+              <p class="w5-hint">One limitation, next to the claim it limits.</p>
+            </div>
+          </div>
+        </section>
+
+        <section class="step" data-owner="" id="closing">
+          <h2>Closing</h2>
+          <p class="w5-hint">One takeaway, one limitation, one next step.</p>
+          <details id="methods">
+            <summary>Methods, data and AI use</summary>
+            <p class="w5-hint">Tokeniser and preprocessing, seeds and baselines, links to the scripts, and the group's AI-use note.</p>
+          </details>
+        </section>
+      </div>
+    </main>
+
+    <footer class="foot">
+      <div class="shell">
+        <span>
+          Page text, article names and links from English Wikipedia,
+          <a href="https://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA 4.0</a>,
+          through the 02805 course snapshot of 26 August 2026.
+        </span>
+        <span>
+          The Marvel network gets language ·
+          <a href="../../">Log–Log Legends</a> · DTU 02805
+        </span>
+      </div>
+    </footer>
+  </body>
+</html>
