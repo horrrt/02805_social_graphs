@@ -23,6 +23,7 @@ the repository by pointing both caches into build/:
 """
 
 import hashlib
+import re
 import urllib.parse
 import zipfile
 from pathlib import Path
@@ -86,6 +87,48 @@ def weighted():
         else:
             g.add_edge(s, t, weight=w)
     return g
+
+
+# One word rule for the sections that count words (5, 6 and 7): a word is a run
+# of letters, any alphabet ("Pérez" stays whole), with an apostrophe or hyphen
+# inside it kept ("spider-man", "t'challa"); digits and punctuation are dropped;
+# everything is lowercased and a possessive 's is taken off, so "Spider-Man's"
+# and "Spider-Man" are one word.
+WORD = re.compile(r"[^\W\d_]+(?:['’-][^\W\d_]+)*")
+WORD_RULE = ("runs of letters in any alphabet, an inner apostrophe or hyphen kept, lowercased, "
+             "a possessive 's removed; digits and punctuation dropped")
+
+
+def words(text):
+    """The words of a text under WORD_RULE."""
+    out = []
+    for w in WORD.findall(text.lower()):
+        for tail in ("'s", "’s"):
+            if w.endswith(tail) and len(w) > len(tail):
+                w = w[: -len(tail)]
+        out.append(w)
+    return out
+
+
+_NLP = None
+
+
+def sentences(text):
+    """The sentences of a page: paragraphs at line breaks, then spaCy's
+    rule-based sentencizer, which knows "Dr." and "U.S." do not end a sentence.
+    Heading lines come back as their own short "sentences"; drop them if needed."""
+    global _NLP
+    if _NLP is None:
+        import spacy
+
+        _NLP = spacy.blank("en")
+        _NLP.add_pipe("sentencizer")
+    out = []
+    for para in text.split("\n"):
+        para = para.strip()
+        if para:
+            out.extend(s.text.strip() for s in _NLP(para).sents if s.text.strip())
+    return out
 
 
 if __name__ == "__main__":

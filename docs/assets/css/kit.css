@@ -38,6 +38,15 @@
   margin-top: 0;
   row-gap: 16px;
 }
+/* The wide card, for a figure that holds two panels (Week 4's two charts in a
+   row under the text): add w5-card-wide. What we did takes the text column,
+   what surprised us and the limitation sit beside it, and the figure runs the
+   full width under both. */
+.corridor .w5-card.w5-card-wide.w4-card {
+  grid-template-areas: "asked asked" "did surprise" "did limit" "figure figure" "checked checked";
+  grid-template-columns: 500px minmax(0, 1fr);
+  grid-template-rows: auto auto 1fr auto auto;
+}
 .corridor .w5-card > .w5-slot { border: 0; border-radius: 0; min-width: 0; padding: 0; }
 .corridor .w5-card > [data-slot="asked"] { grid-area: asked; }
 .corridor .w5-card > [data-slot="did"] { grid-area: did; }
