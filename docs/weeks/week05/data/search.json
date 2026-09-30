@@ -1,48 +1,102 @@
 {
   "generated_by": "analysis/week05_search.py",
-  "owner": "\u00c0ngela",
+  "owner": "Àngela",
   "tokenisation": {
-    "method": "regex [a-z0-9]+(?:'[a-z]+)?, lowercased",
-    "vectorizer": "sklearn.feature_extraction.text.CountVectorizer",
-    "similarity": "cosine on raw term counts (Bag of Words)",
-    "stopwords": "kept for the main ranking; a stopword-free rerun is reported beside it",
+    "method": "runs of letters and digits in any alphabet, an inner apostrophe kept, lowercased; hyphens and other punctuation split words",
+    "stoplist": "spaCy English stop words (306)",
+    "vectorizer": "sklearn CountVectorizer",
+    "similarity": "cosine on raw counts",
     "n_pages": 303,
-    "n_terms": 28008,
-    "n_terms_nostop": 27709,
-    "sparsity": 0.9715
+    "n_terms": 28062,
+    "n_terms_nostop": 27771,
+    "n_tokens": 740340,
+    "median_page_tokens": 1258.0,
+    "sparsity": 0.9716,
+    "most_common": [
+      {
+        "term": "the",
+        "count": 45479,
+        "share": 0.0614
+      },
+      {
+        "term": "and",
+        "count": 21939,
+        "share": 0.0296
+      },
+      {
+        "term": "of",
+        "count": 20012,
+        "share": 0.027
+      },
+      {
+        "term": "to",
+        "count": 19291,
+        "share": 0.0261
+      },
+      {
+        "term": "in",
+        "count": 17885,
+        "share": 0.0242
+      }
+    ]
   },
   "summary": {
     "n_queries": 12,
+    "n_scored": 11,
     "hits_at_1": 1,
     "hits_at_5": 6,
-    "hit_rate_at_1": 0.0833,
-    "hit_rate_at_5": 0.5,
     "hits_at_1_nostop": 2,
     "hits_at_5_nostop": 10,
-    "hit_rate_at_1_nostop": 0.1667,
-    "hit_rate_at_5_nostop": 0.8333,
     "chance_at_1": 0.0033,
-    "n_failures": 11
+    "chance_at_5": 0.0165,
+    "p_at_1": 0.0357,
+    "p_at_5": 8.69e-09,
+    "p_at_1_nostop": 0.000587,
+    "p_at_5_nostop": 1.62e-17,
+    "n_misses": 10,
+    "miss_kinds": {
+      "no_shared_word": 0,
+      "short_page": 9,
+      "rival": 1
+    },
+    "n_misses_nostop": 9,
+    "miss_kinds_nostop": {
+      "no_shared_word": 0,
+      "short_page": 7,
+      "rival": 2
+    },
+    "misses_won_by_shorter_than_median": 8,
+    "misses_with_long_target": 10,
+    "random_mean_rank": 152.0
+  },
+  "checked": {
+    "query_id": "storm",
+    "query": "weather-controlling mutant from Kenya",
+    "winner": "Redneck_(comics)",
+    "winner_name": "Redneck (comics)",
+    "winner_tokens": 255,
+    "expected": "Storm_(Marvel_Comics)",
+    "expected_name": "Storm (Marvel Comics)",
+    "expected_tokens": 9831,
+    "terms": [
+      "mutant"
+    ],
+    "quote": "Vincent Stewart, codenamed Redneck and later Skybolt is a fictional mutant character appearing in American comic books published by Marvel Comics."
   },
   "queries": [
     {
       "id": "thunder",
       "query": "Norse god of thunder",
-      "expected": "Thor_Girl",
-      "expected_name": "Thor Girl",
-      "why_expected": "The course's own example. Thor himself is not in this category snapshot, so the closest in-roster page is Thor Girl.",
-      "rank": 231,
-      "rank_nostop": 113,
-      "cosine_expected": 0.1063,
-      "hit_at_1": false,
-      "hit_at_5": false,
-      "hit_at_1_nostop": false,
-      "hit_at_5_nostop": false,
+      "expected": null,
+      "expected_name": null,
+      "why_expected": "The brief's own example. The snapshot has no page for Thor, so no page is right.",
+      "scored": false,
       "top5": [
         {
           "node_id": "Starr_the_Slayer",
           "name": "Starr the Slayer",
           "cosine": 0.2144,
+          "n_tokens": 574,
           "overlap_terms": [
             {
               "term": "of",
@@ -57,6 +111,7 @@
           "node_id": "Fabio_Medina",
           "name": "Fabio Medina",
           "cosine": 0.2102,
+          "n_tokens": 897,
           "overlap_terms": [
             {
               "term": "of",
@@ -71,6 +126,7 @@
           "node_id": "Doom_2099",
           "name": "Doom 2099",
           "cosine": 0.2,
+          "n_tokens": 1662,
           "overlap_terms": [
             {
               "term": "of",
@@ -85,6 +141,7 @@
           "node_id": "Balder_the_Brave",
           "name": "Balder the Brave",
           "cosine": 0.1909,
+          "n_tokens": 1825,
           "overlap_terms": [
             {
               "term": "of",
@@ -120,6 +177,7 @@
           "node_id": "Xorn",
           "name": "Xorn",
           "cosine": 0.1898,
+          "n_tokens": 1746,
           "overlap_terms": [
             {
               "term": "of",
@@ -135,7 +193,8 @@
         {
           "node_id": "Starhawk_(character)",
           "name": "Starhawk (character)",
-          "cosine": 0.0776,
+          "cosine": 0.0775,
+          "n_tokens": 1959,
           "overlap_terms": [
             {
               "term": "god",
@@ -157,6 +216,7 @@
           "node_id": "Hercules_(Marvel_Comics)",
           "name": "Hercules (Marvel Comics)",
           "cosine": 0.0659,
+          "n_tokens": 8784,
           "overlap_terms": [
             {
               "term": "god",
@@ -185,6 +245,7 @@
           "node_id": "Ares_(Marvel_Comics)",
           "name": "Ares (Marvel Comics)",
           "cosine": 0.0608,
+          "n_tokens": 2954,
           "overlap_terms": [
             {
               "term": "god",
@@ -196,37 +257,10 @@
           ]
         },
         {
-          "node_id": "Beta_Ray_Bill",
-          "name": "Beta Ray Bill",
-          "cosine": 0.0566,
-          "overlap_terms": [
-            {
-              "term": "god",
-              "query": 1,
-              "page": 5,
-              "product": 5,
-              "is_stop": false
-            },
-            {
-              "term": "norse",
-              "query": 1,
-              "page": 5,
-              "product": 5,
-              "is_stop": false
-            },
-            {
-              "term": "thunder",
-              "query": 1,
-              "page": 2,
-              "product": 2,
-              "is_stop": false
-            }
-          ]
-        },
-        {
           "node_id": "Balder_the_Brave",
           "name": "Balder the Brave",
           "cosine": 0.0468,
+          "n_tokens": 1825,
           "overlap_terms": [
             {
               "term": "god",
@@ -250,22 +284,36 @@
               "is_stop": false
             }
           ]
-        }
-      ],
-      "expected_overlap": [
+        },
         {
-          "term": "of",
-          "query": 1,
-          "page": 20,
-          "product": 20,
-          "is_stop": true
+          "node_id": "Ajak",
+          "name": "Ajak",
+          "cosine": 0.0397,
+          "n_tokens": 637,
+          "overlap_terms": [
+            {
+              "term": "god",
+              "query": 1,
+              "page": 3,
+              "product": 3,
+              "is_stop": false
+            }
+          ]
         }
       ],
-      "failure_reason": "The strongest shared tokens with the top hit are stopwords [of]. Cosine on raw counts lets of/with/a steer the ranking; the expected page still shares content words [none] but sits at rank 231. Dropping stopwords \u2014 or next week's TF-IDF \u2014 fixes many of these.",
+      "rank": null,
+      "rank_nostop": null,
+      "hit_at_1": false,
+      "hit_at_5": false,
+      "hit_at_1_nostop": false,
+      "hit_at_5_nostop": false,
+      "expected_overlap": [],
+      "failure_kind": "no_target",
+      "failure_reason": "No page in the snapshot is right. Starr the Slayer wins on of.",
       "quote": {
         "node_id": "Starr_the_Slayer",
         "name": "Starr the Slayer",
-        "text": "\u2026el Comics. He first appeared in Chamber of Darkness #4, (April 1970), and was created by Roy Thomas and Barry Windsor-Smith. In 2007, writer Warren Ellis introduced a new version of Starr in the Marvel series newuniversa\u2026"
+        "text": null
       }
     },
     {
@@ -273,19 +321,14 @@
       "query": "alien champion who wields Mjolnir",
       "expected": "Beta_Ray_Bill",
       "expected_name": "Beta Ray Bill",
-      "why_expected": "Beta Ray Bill is the Korbinite who lifts Thor's hammer.",
-      "rank": 5,
-      "rank_nostop": 2,
-      "cosine_expected": 0.0483,
-      "hit_at_1": false,
-      "hit_at_5": true,
-      "hit_at_1_nostop": false,
-      "hit_at_5_nostop": true,
+      "why_expected": "Beta Ray Bill is the alien who lifts Thor's hammer.",
+      "scored": true,
       "top5": [
         {
           "node_id": "Dargo_Ktor",
           "name": "Dargo Ktor",
           "cosine": 0.0989,
+          "n_tokens": 454,
           "overlap_terms": [
             {
               "term": "mjolnir",
@@ -314,6 +357,7 @@
           "node_id": "Solarman",
           "name": "Solarman",
           "cosine": 0.0726,
+          "n_tokens": 764,
           "overlap_terms": [
             {
               "term": "who",
@@ -335,6 +379,7 @@
           "node_id": "NFL_SuperPro",
           "name": "Phil Grayfield",
           "cosine": 0.0532,
+          "n_tokens": 711,
           "overlap_terms": [
             {
               "term": "who",
@@ -349,6 +394,7 @@
           "node_id": "Stingray_(Marvel_Comics)",
           "name": "Stingray (Marvel Comics)",
           "cosine": 0.0486,
+          "n_tokens": 1258,
           "overlap_terms": [
             {
               "term": "who",
@@ -370,6 +416,7 @@
           "node_id": "Beta_Ray_Bill",
           "name": "Beta Ray Bill",
           "cosine": 0.0483,
+          "n_tokens": 3871,
           "overlap_terms": [
             {
               "term": "mjolnir",
@@ -413,7 +460,8 @@
         {
           "node_id": "Dargo_Ktor",
           "name": "Dargo Ktor",
-          "cosine": 0.1653,
+          "cosine": 0.1652,
+          "n_tokens": 454,
           "overlap_terms": [
             {
               "term": "mjolnir",
@@ -434,7 +482,8 @@
         {
           "node_id": "Beta_Ray_Bill",
           "name": "Beta Ray Bill",
-          "cosine": 0.1184,
+          "cosine": 0.0822,
+          "n_tokens": 3871,
           "overlap_terms": [
             {
               "term": "mjolnir",
@@ -470,6 +519,7 @@
           "node_id": "Crane_Mother",
           "name": "Crane Mother",
           "cosine": 0.0506,
+          "n_tokens": 635,
           "overlap_terms": [
             {
               "term": "champion",
@@ -483,7 +533,8 @@
         {
           "node_id": "Solarman",
           "name": "Solarman",
-          "cosine": 0.0495,
+          "cosine": 0.0494,
+          "n_tokens": 764,
           "overlap_terms": [
             {
               "term": "alien",
@@ -498,6 +549,7 @@
           "node_id": "Doctor_Spectrum",
           "name": "Alice Nugent",
           "cosine": 0.0438,
+          "n_tokens": 1576,
           "overlap_terms": [
             {
               "term": "mjolnir",
@@ -516,6 +568,15 @@
           ]
         }
       ],
+      "rank": 5,
+      "rank_nostop": 2,
+      "cosine_expected": 0.0483,
+      "expected_tokens": 3871,
+      "expected_length_percentile": 0.812,
+      "hit_at_1": false,
+      "hit_at_5": true,
+      "hit_at_1_nostop": false,
+      "hit_at_5_nostop": true,
       "expected_overlap": [
         {
           "term": "mjolnir",
@@ -553,11 +614,13 @@
           "is_stop": false
         }
       ],
-      "failure_reason": "A near-miss: the top hit shares [mjolnir, champion], while Beta_Ray_Bill shares [mjolnir, alien, wields, champion] and lands at rank 5. Raw BoW cannot tell which content word matters more; TF-IDF will.",
+      "failure_kind": "short_page",
+      "failure_reason": "Dargo Ktor (454 words) beats Beta Ray Bill (3,871 words): cosine divides by the vector's length, so a short page with the same words scores higher.",
+      "failure_kind_nostop": "short_page",
       "quote": {
         "node_id": "Dargo_Ktor",
         "name": "Dargo Ktor",
-        "text": "\u2026ter realising that he is worthy to lift Mjolnir. The character first appeared in The Mighty Thor #384 and was created by Tom Defalco and Ron Frenz.   Fictional character biography Dargo Ktor lived in an alternate earth i\u2026"
+        "text": "He becomes the Thor of that future after realising that he is worthy to lift Mjolnir."
       }
     },
     {
@@ -565,19 +628,14 @@
       "query": "Canadian mutant with adamantium claws",
       "expected": "Wolverine_(character)",
       "expected_name": "Wolverine (character)",
-      "why_expected": "Claws and adamantium are Wolverine's signature words.",
-      "rank": 5,
-      "rank_nostop": 2,
-      "cosine_expected": 0.0935,
-      "hit_at_1": false,
-      "hit_at_5": true,
-      "hit_at_1_nostop": false,
-      "hit_at_5_nostop": true,
+      "why_expected": "Adamantium claws belong to Wolverine.",
+      "scored": true,
       "top5": [
         {
           "node_id": "Outlaw_(Marvel_Comics)",
           "name": "Outlaw (Marvel Comics)",
           "cosine": 0.1304,
+          "n_tokens": 872,
           "overlap_terms": [
             {
               "term": "with",
@@ -599,6 +657,7 @@
           "node_id": "Rusty_Collins",
           "name": "Rusty Collins",
           "cosine": 0.111,
+          "n_tokens": 979,
           "overlap_terms": [
             {
               "term": "with",
@@ -620,6 +679,7 @@
           "node_id": "Redneck_(comics)",
           "name": "Redneck (comics)",
           "cosine": 0.1029,
+          "n_tokens": 255,
           "overlap_terms": [
             {
               "term": "mutant",
@@ -641,6 +701,7 @@
           "node_id": "Powerhouse_(Marvel_Comics)",
           "name": "Powerhouse (Marvel Comics)",
           "cosine": 0.0976,
+          "n_tokens": 562,
           "overlap_terms": [
             {
               "term": "with",
@@ -662,6 +723,7 @@
           "node_id": "Wolverine_(character)",
           "name": "Wolverine (character)",
           "cosine": 0.0935,
+          "n_tokens": 7513,
           "overlap_terms": [
             {
               "term": "with",
@@ -705,7 +767,8 @@
         {
           "node_id": "Redneck_(comics)",
           "name": "Redneck (comics)",
-          "cosine": 0.1519,
+          "cosine": 0.1521,
+          "n_tokens": 255,
           "overlap_terms": [
             {
               "term": "mutant",
@@ -720,6 +783,7 @@
           "node_id": "Wolverine_(character)",
           "name": "Wolverine (character)",
           "cosine": 0.1088,
+          "n_tokens": 7513,
           "overlap_terms": [
             {
               "term": "adamantium",
@@ -754,7 +818,8 @@
         {
           "node_id": "Rusty_Collins",
           "name": "Rusty Collins",
-          "cosine": 0.1044,
+          "cosine": 0.1043,
+          "n_tokens": 979,
           "overlap_terms": [
             {
               "term": "mutant",
@@ -768,7 +833,8 @@
         {
           "node_id": "Fabio_Medina",
           "name": "Fabio Medina",
-          "cosine": 0.1019,
+          "cosine": 0.1023,
+          "n_tokens": 897,
           "overlap_terms": [
             {
               "term": "mutant",
@@ -783,6 +849,7 @@
           "node_id": "Wolverine_(Ultimate_Marvel_character)",
           "name": "Wolverine (Ultimate Marvel character)",
           "cosine": 0.084,
+          "n_tokens": 3080,
           "overlap_terms": [
             {
               "term": "mutant",
@@ -808,6 +875,15 @@
           ]
         }
       ],
+      "rank": 5,
+      "rank_nostop": 2,
+      "cosine_expected": 0.0935,
+      "expected_tokens": 7513,
+      "expected_length_percentile": 0.924,
+      "hit_at_1": false,
+      "hit_at_5": true,
+      "hit_at_1_nostop": false,
+      "hit_at_5_nostop": true,
       "expected_overlap": [
         {
           "term": "with",
@@ -845,11 +921,13 @@
           "is_stop": false
         }
       ],
-      "failure_reason": "The strongest shared tokens with the top hit are stopwords [with]. Cosine on raw counts lets of/with/a steer the ranking; the expected page still shares content words [adamantium, canadian, claws] but sits at rank 5. Dropping stopwords \u2014 or next week's TF-IDF \u2014 fixes many of these.",
+      "failure_kind": "short_page",
+      "failure_reason": "Outlaw (Marvel Comics) (872 words) beats Wolverine (character) (7,513 words): cosine divides by the vector's length, so a short page with the same words scores higher.",
+      "failure_kind_nostop": "short_page",
       "quote": {
         "node_id": "Outlaw_(Marvel_Comics)",
         "name": "Outlaw (Marvel Comics)",
-        "text": "\u2026e series Deadpool and Agent X. She is a mutant with the ability of superhuman strength and an uncanny aptitude with firearms.   Fictional character biography   Nigel Higgins  Nigel Higgins is a man living in England who\u2026"
+        "text": "She is a mutant with the ability of superhuman strength and an uncanny aptitude with firearms."
       }
     },
     {
@@ -857,19 +935,14 @@
       "query": "bitten by a radioactive spider",
       "expected": "Spider-Man",
       "expected_name": "Spider-Man",
-      "why_expected": "The origin sentence almost every reader knows.",
-      "rank": 9,
-      "rank_nostop": 5,
-      "cosine_expected": 0.2928,
-      "hit_at_1": false,
-      "hit_at_5": false,
-      "hit_at_1_nostop": false,
-      "hit_at_5_nostop": true,
+      "why_expected": "The origin story most readers know.",
+      "scored": true,
       "top5": [
         {
           "node_id": "Steel_Spider",
           "name": "Steel Spider",
           "cosine": 0.4005,
+          "n_tokens": 673,
           "overlap_terms": [
             {
               "term": "spider",
@@ -897,7 +970,8 @@
         {
           "node_id": "Spider-Girl",
           "name": "Spider-Girl",
-          "cosine": 0.3818,
+          "cosine": 0.3777,
+          "n_tokens": 2211,
           "overlap_terms": [
             {
               "term": "spider",
@@ -909,8 +983,8 @@
             {
               "term": "a",
               "query": 1,
-              "page": 58,
-              "product": 58,
+              "page": 55,
+              "product": 55,
               "is_stop": true
             },
             {
@@ -921,14 +995,14 @@
               "is_stop": true
             },
             {
-              "term": "radioactive",
+              "term": "bitten",
               "query": 1,
               "page": 4,
               "product": 4,
               "is_stop": false
             },
             {
-              "term": "bitten",
+              "term": "radioactive",
               "query": 1,
               "page": 4,
               "product": 4,
@@ -940,6 +1014,7 @@
           "node_id": "Spider-UK",
           "name": "Spider-UK",
           "cosine": 0.3722,
+          "n_tokens": 1426,
           "overlap_terms": [
             {
               "term": "spider",
@@ -968,6 +1043,7 @@
           "node_id": "Spider-Man_Noir",
           "name": "Spider-Man Noir",
           "cosine": 0.3258,
+          "n_tokens": 3446,
           "overlap_terms": [
             {
               "term": "spider",
@@ -1003,6 +1079,7 @@
           "node_id": "Spider-Woman_(Gwen_Stacy)",
           "name": "Spider-Woman (Gwen Stacy)",
           "cosine": 0.3257,
+          "n_tokens": 5652,
           "overlap_terms": [
             {
               "term": "spider",
@@ -1046,7 +1123,8 @@
         {
           "node_id": "Spider-Girl",
           "name": "Spider-Girl",
-          "cosine": 0.4965,
+          "cosine": 0.4966,
+          "n_tokens": 2211,
           "overlap_terms": [
             {
               "term": "spider",
@@ -1075,6 +1153,7 @@
           "node_id": "Spider-UK",
           "name": "Spider-UK",
           "cosine": 0.4934,
+          "n_tokens": 1426,
           "overlap_terms": [
             {
               "term": "spider",
@@ -1089,6 +1168,7 @@
           "node_id": "Spider-Bitch_(Ashley_Barton)",
           "name": "Spider-Bitch (Ashley Barton)",
           "cosine": 0.4543,
+          "n_tokens": 3536,
           "overlap_terms": [
             {
               "term": "spider",
@@ -1110,6 +1190,7 @@
           "node_id": "Scarlet_Spider",
           "name": "Scarlet Spider",
           "cosine": 0.4193,
+          "n_tokens": 950,
           "overlap_terms": [
             {
               "term": "spider",
@@ -1123,7 +1204,8 @@
         {
           "node_id": "Spider-Man",
           "name": "Spider-Man",
-          "cosine": 0.4164,
+          "cosine": 0.4165,
+          "n_tokens": 10525,
           "overlap_terms": [
             {
               "term": "spider",
@@ -1149,6 +1231,15 @@
           ]
         }
       ],
+      "rank": 8,
+      "rank_nostop": 5,
+      "cosine_expected": 0.2924,
+      "expected_tokens": 10525,
+      "expected_length_percentile": 0.977,
+      "hit_at_1": false,
+      "hit_at_5": false,
+      "hit_at_1_nostop": false,
+      "hit_at_5_nostop": true,
       "expected_overlap": [
         {
           "term": "spider",
@@ -1160,8 +1251,8 @@
         {
           "term": "a",
           "query": 1,
-          "page": 258,
-          "product": 258,
+          "page": 257,
+          "product": 257,
           "is_stop": true
         },
         {
@@ -1186,11 +1277,13 @@
           "is_stop": false
         }
       ],
-      "failure_reason": "A near-miss: the top hit shares [spider], while Spider-Man shares [spider, bitten, radioactive] and lands at rank 9. Raw BoW cannot tell which content word matters more; TF-IDF will.",
+      "failure_kind": "short_page",
+      "failure_reason": "Steel Spider (673 words) beats Spider-Man (10,525 words): cosine divides by the vector's length, so a short page with the same words scores higher.",
+      "failure_kind_nostop": "short_page",
       "quote": {
         "node_id": "Steel_Spider",
         "name": "Steel Spider",
-        "text": "Steel Spider (Oliver \"Ollie\" Osnick) is a superhero appearing in American comic books published by Marvel Comics. Oliver Osnnick started out as a teenager who idolized Doctor Octopus unt\u2026"
+        "text": "Steel Spider (Oliver \"Ollie\" Osnick) is a superhero appearing in American comic books published by Marvel Comics."
       }
     },
     {
@@ -1198,19 +1291,14 @@
       "query": "sorcerer supreme of Earth",
       "expected": "Doctor_Strange",
       "expected_name": "Doctor Strange",
-      "why_expected": "The title Sorcerer Supreme points at Doctor Strange.",
-      "rank": 8,
-      "rank_nostop": 5,
-      "cosine_expected": 0.2033,
-      "hit_at_1": false,
-      "hit_at_5": false,
-      "hit_at_1_nostop": false,
-      "hit_at_5_nostop": true,
+      "why_expected": "Sorcerer Supreme is Doctor Strange's title.",
+      "scored": true,
       "top5": [
         {
           "node_id": "Hyperion_(character)",
           "name": "Hyperion (character)",
           "cosine": 0.254,
+          "n_tokens": 1964,
           "overlap_terms": [
             {
               "term": "of",
@@ -1239,6 +1327,7 @@
           "node_id": "Starr_the_Slayer",
           "name": "Starr the Slayer",
           "cosine": 0.2374,
+          "n_tokens": 574,
           "overlap_terms": [
             {
               "term": "of",
@@ -1260,6 +1349,7 @@
           "node_id": "Doom_2099",
           "name": "Doom 2099",
           "cosine": 0.2258,
+          "n_tokens": 1662,
           "overlap_terms": [
             {
               "term": "of",
@@ -1295,6 +1385,7 @@
           "node_id": "Spider-UK",
           "name": "Spider-UK",
           "cosine": 0.2253,
+          "n_tokens": 1426,
           "overlap_terms": [
             {
               "term": "of",
@@ -1316,6 +1407,7 @@
           "node_id": "Fabio_Medina",
           "name": "Fabio Medina",
           "cosine": 0.2156,
+          "n_tokens": 897,
           "overlap_terms": [
             {
               "term": "of",
@@ -1339,6 +1431,7 @@
           "node_id": "Doctor_Spectrum",
           "name": "Alice Nugent",
           "cosine": 0.3037,
+          "n_tokens": 1576,
           "overlap_terms": [
             {
               "term": "earth",
@@ -1359,7 +1452,8 @@
         {
           "node_id": "Hyperion_(character)",
           "name": "Hyperion (character)",
-          "cosine": 0.2555,
+          "cosine": 0.2556,
+          "n_tokens": 1964,
           "overlap_terms": [
             {
               "term": "supreme",
@@ -1381,6 +1475,7 @@
           "node_id": "Moonglow_(comics)",
           "name": "Moonglow (comics)",
           "cosine": 0.2389,
+          "n_tokens": 345,
           "overlap_terms": [
             {
               "term": "supreme",
@@ -1408,7 +1503,8 @@
         {
           "node_id": "Blue_Eagle_(character)",
           "name": "Blue Eagle (character)",
-          "cosine": 0.1788,
+          "cosine": 0.1792,
+          "n_tokens": 589,
           "overlap_terms": [
             {
               "term": "supreme",
@@ -1429,7 +1525,8 @@
         {
           "node_id": "Doctor_Strange",
           "name": "Doctor Strange",
-          "cosine": 0.1454,
+          "cosine": 0.1455,
+          "n_tokens": 7015,
           "overlap_terms": [
             {
               "term": "sorcerer",
@@ -1455,6 +1552,15 @@
           ]
         }
       ],
+      "rank": 8,
+      "rank_nostop": 5,
+      "cosine_expected": 0.2033,
+      "expected_tokens": 7015,
+      "expected_length_percentile": 0.911,
+      "hit_at_1": false,
+      "hit_at_5": false,
+      "hit_at_1_nostop": false,
+      "hit_at_5_nostop": true,
       "expected_overlap": [
         {
           "term": "of",
@@ -1485,11 +1591,13 @@
           "is_stop": false
         }
       ],
-      "failure_reason": "The strongest shared tokens with the top hit are stopwords [of]. Cosine on raw counts lets of/with/a steer the ranking; the expected page still shares content words [sorcerer, supreme, earth] but sits at rank 8. Dropping stopwords \u2014 or next week's TF-IDF \u2014 fixes many of these.",
+      "failure_kind": "short_page",
+      "failure_reason": "Hyperion (character) (1,964 words) beats Doctor Strange (7,015 words): cosine divides by the vector's length, so a short page with the same words scores higher.",
+      "failure_kind_nostop": "short_page",
       "quote": {
         "node_id": "Hyperion_(character)",
         "name": "Hyperion (character)",
-        "text": "\u2026mbers of the alternate-reality Squadron Supreme. This incarnation of the character was a major character in the 1985 series Squadron Supreme, which fleshed out the characterization of Hyperion and the other Squadron Supr\u2026"
+        "text": "Two years after the character's first appearance, a heroic version appeared as one of the founding members of the alternate-reality Squadron Supreme."
       }
     },
     {
@@ -1497,19 +1605,14 @@
       "query": "mercenary who breaks the fourth wall",
       "expected": "Deadpool",
       "expected_name": "Deadpool",
-      "why_expected": "Fourth-wall humour is Deadpool's trademark.",
-      "rank": 53,
-      "rank_nostop": 7,
-      "cosine_expected": 0.2839,
-      "hit_at_1": false,
-      "hit_at_5": false,
-      "hit_at_1_nostop": false,
-      "hit_at_5_nostop": false,
+      "why_expected": "Breaking the fourth wall is Deadpool's trademark.",
+      "scored": true,
       "top5": [
         {
           "node_id": "Scarlet_Scarab",
           "name": "Scarlet Scarab",
           "cosine": 0.3391,
+          "n_tokens": 1149,
           "overlap_terms": [
             {
               "term": "the",
@@ -1538,6 +1641,7 @@
           "node_id": "Human_Torch_(android)",
           "name": "Human Torch (android)",
           "cosine": 0.3288,
+          "n_tokens": 3992,
           "overlap_terms": [
             {
               "term": "the",
@@ -1554,14 +1658,14 @@
               "is_stop": true
             },
             {
-              "term": "mercenary",
+              "term": "breaks",
               "query": 1,
               "page": 1,
               "product": 1,
               "is_stop": false
             },
             {
-              "term": "breaks",
+              "term": "mercenary",
               "query": 1,
               "page": 1,
               "product": 1,
@@ -1573,6 +1677,7 @@
           "node_id": "Black_Rider_(character)",
           "name": "Black Rider (character)",
           "cosine": 0.3227,
+          "n_tokens": 1072,
           "overlap_terms": [
             {
               "term": "the",
@@ -1600,7 +1705,8 @@
         {
           "node_id": "Werewolf_by_Night",
           "name": "Werewolf by Night",
-          "cosine": 0.3191,
+          "cosine": 0.3194,
+          "n_tokens": 3882,
           "overlap_terms": [
             {
               "term": "the",
@@ -1629,6 +1735,7 @@
           "node_id": "Delroy_Garrett",
           "name": "Delroy Garrett",
           "cosine": 0.3177,
+          "n_tokens": 1759,
           "overlap_terms": [
             {
               "term": "the",
@@ -1658,17 +1765,18 @@
         {
           "node_id": "Hellfire_(J._T._Slade)",
           "name": "Hellfire (J. T. Slade)",
-          "cosine": 0.0607,
+          "cosine": 0.0609,
+          "n_tokens": 210,
           "overlap_terms": [
             {
-              "term": "mercenary",
+              "term": "fourth",
               "query": 1,
               "page": 1,
               "product": 1,
               "is_stop": false
             },
             {
-              "term": "fourth",
+              "term": "mercenary",
               "query": 1,
               "page": 1,
               "product": 1,
@@ -1679,7 +1787,8 @@
         {
           "node_id": "Gwenpool",
           "name": "Gwenpool",
-          "cosine": 0.0558,
+          "cosine": 0.0559,
+          "n_tokens": 7966,
           "overlap_terms": [
             {
               "term": "wall",
@@ -1714,7 +1823,8 @@
         {
           "node_id": "Cammi_(character)",
           "name": "Cammi (character)",
-          "cosine": 0.047,
+          "cosine": 0.0471,
+          "n_tokens": 533,
           "overlap_terms": [
             {
               "term": "breaks",
@@ -1735,7 +1845,8 @@
         {
           "node_id": "Crippler_(character)",
           "name": "Crippler (character)",
-          "cosine": 0.0446,
+          "cosine": 0.0447,
+          "n_tokens": 349,
           "overlap_terms": [
             {
               "term": "mercenary",
@@ -1750,6 +1861,7 @@
           "node_id": "Mark_Hazzard:_Merc",
           "name": "Mark Hazzard: Merc",
           "cosine": 0.0396,
+          "n_tokens": 820,
           "overlap_terms": [
             {
               "term": "mercenary",
@@ -1761,6 +1873,15 @@
           ]
         }
       ],
+      "rank": 53,
+      "rank_nostop": 7,
+      "cosine_expected": 0.2839,
+      "expected_tokens": 9285,
+      "expected_length_percentile": 0.957,
+      "hit_at_1": false,
+      "hit_at_5": false,
+      "hit_at_1_nostop": false,
+      "hit_at_5_nostop": false,
       "expected_overlap": [
         {
           "term": "the",
@@ -1784,14 +1905,14 @@
           "is_stop": false
         },
         {
-          "term": "wall",
+          "term": "fourth",
           "query": 1,
           "page": 4,
           "product": 4,
           "is_stop": false
         },
         {
-          "term": "fourth",
+          "term": "wall",
           "query": 1,
           "page": 4,
           "product": 4,
@@ -1805,11 +1926,13 @@
           "is_stop": false
         }
       ],
-      "failure_reason": "The strongest shared tokens with the top hit are stopwords [the, who]. Cosine on raw counts lets of/with/a steer the ranking; the expected page still shares content words [mercenary, wall, fourth] but sits at rank 53. Dropping stopwords \u2014 or next week's TF-IDF \u2014 fixes many of these.",
+      "failure_kind": "short_page",
+      "failure_reason": "Scarlet Scarab (1,149 words) beats Deadpool (9,285 words): cosine divides by the vector's length, so a short page with the same words scores higher.",
+      "failure_kind_nostop": "short_page",
       "quote": {
         "node_id": "Scarlet_Scarab",
         "name": "Scarlet Scarab",
-        "text": "\u2026famous scholar who grew up and became a mercenary who made numerous criminal connections. She joined the Karnak Cowboys consisting of Marc Spector, Jean-Paul Duchamp, and Dr. Robert Plesko. Layla and Marc would fall in l\u2026"
+        "text": "Layla was the daughter of a famous scholar who grew up and became a mercenary who made numerous criminal connections."
       }
     },
     {
@@ -1817,19 +1940,14 @@
       "query": "king of Wakanda",
       "expected": "Black_Panther_(character)",
       "expected_name": "Black Panther (character)",
-      "why_expected": "Wakanda and its king are Black Panther.",
-      "rank": 4,
-      "rank_nostop": 2,
-      "cosine_expected": 0.2402,
-      "hit_at_1": false,
-      "hit_at_5": true,
-      "hit_at_1_nostop": false,
-      "hit_at_5_nostop": true,
+      "why_expected": "Black Panther is the king of Wakanda.",
+      "scored": true,
       "top5": [
         {
           "node_id": "Starr_the_Slayer",
           "name": "Starr the Slayer",
           "cosine": 0.2564,
+          "n_tokens": 574,
           "overlap_terms": [
             {
               "term": "of",
@@ -1851,6 +1969,7 @@
           "node_id": "Shuri_(character)",
           "name": "Shuri (character)",
           "cosine": 0.2448,
+          "n_tokens": 2926,
           "overlap_terms": [
             {
               "term": "of",
@@ -1879,6 +1998,7 @@
           "node_id": "Fabio_Medina",
           "name": "Fabio Medina",
           "cosine": 0.2427,
+          "n_tokens": 897,
           "overlap_terms": [
             {
               "term": "of",
@@ -1893,6 +2013,7 @@
           "node_id": "Black_Panther_(character)",
           "name": "Black Panther (character)",
           "cosine": 0.2402,
+          "n_tokens": 8321,
           "overlap_terms": [
             {
               "term": "of",
@@ -1921,6 +2042,7 @@
           "node_id": "Doom_2099",
           "name": "Doom 2099",
           "cosine": 0.2376,
+          "n_tokens": 1662,
           "overlap_terms": [
             {
               "term": "of",
@@ -1944,6 +2066,7 @@
           "node_id": "Shuri_(character)",
           "name": "Shuri (character)",
           "cosine": 0.1659,
+          "n_tokens": 2926,
           "overlap_terms": [
             {
               "term": "wakanda",
@@ -1965,6 +2088,7 @@
           "node_id": "Black_Panther_(character)",
           "name": "Black Panther (character)",
           "cosine": 0.1603,
+          "n_tokens": 8321,
           "overlap_terms": [
             {
               "term": "wakanda",
@@ -1986,6 +2110,7 @@
           "node_id": "Storm_(Marvel_Comics)",
           "name": "Storm (Marvel Comics)",
           "cosine": 0.0432,
+          "n_tokens": 9831,
           "overlap_terms": [
             {
               "term": "king",
@@ -2007,6 +2132,7 @@
           "node_id": "The_Union_(Marvel)",
           "name": "The Union (Marvel)",
           "cosine": 0.0399,
+          "n_tokens": 1109,
           "overlap_terms": [
             {
               "term": "king",
@@ -2021,6 +2147,7 @@
           "node_id": "Blade_(character)",
           "name": "Blade (character)",
           "cosine": 0.0386,
+          "n_tokens": 6389,
           "overlap_terms": [
             {
               "term": "king",
@@ -2032,6 +2159,15 @@
           ]
         }
       ],
+      "rank": 4,
+      "rank_nostop": 2,
+      "cosine_expected": 0.2402,
+      "expected_tokens": 8321,
+      "expected_length_percentile": 0.941,
+      "hit_at_1": false,
+      "hit_at_5": true,
+      "hit_at_1_nostop": false,
+      "hit_at_5_nostop": true,
       "expected_overlap": [
         {
           "term": "of",
@@ -2055,11 +2191,13 @@
           "is_stop": false
         }
       ],
-      "failure_reason": "The strongest shared tokens with the top hit are stopwords [of]. Cosine on raw counts lets of/with/a steer the ranking; the expected page still shares content words [wakanda, king] but sits at rank 4. Dropping stopwords \u2014 or next week's TF-IDF \u2014 fixes many of these.",
+      "failure_kind": "short_page",
+      "failure_reason": "Starr the Slayer (574 words) beats Black Panther (character) (8,321 words): cosine divides by the vector's length, so a short page with the same words scores higher.",
+      "failure_kind_nostop": "rival",
       "quote": {
         "node_id": "Starr_the_Slayer",
         "name": "Starr the Slayer",
-        "text": "\u2026Chamber of Darkness #4, was a barbarian king defending his kingdom. A 20th century writer, Len Carson, dreamed of Starr's adventures. When he was about to turn in a manuscript that would kill off Starr, Starr mysteriousl\u2026"
+        "text": "The initial version of Starr, appearing on Chamber of Darkness #4, was a barbarian king defending his kingdom."
       }
     },
     {
@@ -2067,19 +2205,14 @@
       "query": "scientist who turns into a green giant when angry",
       "expected": "Hulk",
       "expected_name": "Hulk",
-      "why_expected": "Bruce Banner / Hulk: green, giant, anger.",
-      "rank": 150,
-      "rank_nostop": 5,
-      "cosine_expected": 0.1035,
-      "hit_at_1": false,
-      "hit_at_5": false,
-      "hit_at_1_nostop": false,
-      "hit_at_5_nostop": true,
+      "why_expected": "Bruce Banner turns into the Hulk when angry.",
+      "scored": true,
       "top5": [
         {
           "node_id": "NFL_SuperPro",
           "name": "Phil Grayfield",
           "cosine": 0.1783,
+          "n_tokens": 711,
           "overlap_terms": [
             {
               "term": "a",
@@ -2103,14 +2236,14 @@
               "is_stop": false
             },
             {
-              "term": "when",
+              "term": "into",
               "query": 1,
               "page": 1,
               "product": 1,
               "is_stop": true
             },
             {
-              "term": "into",
+              "term": "when",
               "query": 1,
               "page": 1,
               "product": 1,
@@ -2122,6 +2255,7 @@
           "node_id": "Captain_Midlands",
           "name": "Captain Midlands",
           "cosine": 0.1706,
+          "n_tokens": 640,
           "overlap_terms": [
             {
               "term": "a",
@@ -2157,6 +2291,7 @@
           "node_id": "Paladin_(comics)",
           "name": "Paladin (comics)",
           "cosine": 0.1644,
+          "n_tokens": 1240,
           "overlap_terms": [
             {
               "term": "a",
@@ -2187,14 +2322,14 @@
               "is_stop": true
             },
             {
-              "term": "turns",
+              "term": "scientist",
               "query": 1,
               "page": 1,
               "product": 1,
               "is_stop": false
             },
             {
-              "term": "scientist",
+              "term": "turns",
               "query": 1,
               "page": 1,
               "product": 1,
@@ -2206,6 +2341,7 @@
           "node_id": "Phil_Urich",
           "name": "Phil Urich",
           "cosine": 0.1567,
+          "n_tokens": 985,
           "overlap_terms": [
             {
               "term": "a",
@@ -2255,6 +2391,7 @@
           "node_id": "Force_(comics)",
           "name": "Force (comics)",
           "cosine": 0.1538,
+          "n_tokens": 497,
           "overlap_terms": [
             {
               "term": "a",
@@ -2292,6 +2429,7 @@
           "node_id": "Phil_Urich",
           "name": "Phil Urich",
           "cosine": 0.083,
+          "n_tokens": 985,
           "overlap_terms": [
             {
               "term": "green",
@@ -2312,7 +2450,8 @@
         {
           "node_id": "Bill_Foster_(character)",
           "name": "Bill Foster (character)",
-          "cosine": 0.0716,
+          "cosine": 0.0686,
+          "n_tokens": 1829,
           "overlap_terms": [
             {
               "term": "giant",
@@ -2327,6 +2466,7 @@
           "node_id": "Hank_Pym",
           "name": "Hank Pym",
           "cosine": 0.0641,
+          "n_tokens": 5510,
           "overlap_terms": [
             {
               "term": "giant",
@@ -2355,6 +2495,7 @@
           "node_id": "Gauntlet_(Joseph_Green)",
           "name": "Gauntlet (Joseph Green)",
           "cosine": 0.0572,
+          "n_tokens": 576,
           "overlap_terms": [
             {
               "term": "green",
@@ -2369,6 +2510,7 @@
           "node_id": "Hulk",
           "name": "Hulk",
           "cosine": 0.0401,
+          "n_tokens": 7722,
           "overlap_terms": [
             {
               "term": "green",
@@ -2385,14 +2527,14 @@
               "is_stop": false
             },
             {
-              "term": "turns",
+              "term": "scientist",
               "query": 1,
               "page": 1,
               "product": 1,
               "is_stop": false
             },
             {
-              "term": "scientist",
+              "term": "turns",
               "query": 1,
               "page": 1,
               "product": 1,
@@ -2401,6 +2543,15 @@
           ]
         }
       ],
+      "rank": 149,
+      "rank_nostop": 5,
+      "cosine_expected": 0.1035,
+      "expected_tokens": 7722,
+      "expected_length_percentile": 0.927,
+      "hit_at_1": false,
+      "hit_at_5": false,
+      "hit_at_1_nostop": false,
+      "hit_at_5_nostop": true,
       "expected_overlap": [
         {
           "term": "a",
@@ -2459,11 +2610,13 @@
           "is_stop": false
         }
       ],
-      "failure_reason": "The strongest shared tokens with the top hit are stopwords [a, who, when]. Cosine on raw counts lets of/with/a steer the ranking; the expected page still shares content words [green, angry, scientist] but sits at rank 150. Dropping stopwords \u2014 or next week's TF-IDF \u2014 fixes many of these.",
+      "failure_kind": "short_page",
+      "failure_reason": "Phil Grayfield (711 words) beats Hulk (7,722 words): cosine divides by the vector's length, so a short page with the same words scores higher.",
+      "failure_kind_nostop": "short_page",
       "quote": {
         "node_id": "NFL_SuperPro",
         "name": "Phil Grayfield",
-        "text": "\u2026all superfan, who also happened to be a scientist. This scientist designed a new, almost indestructible football uniform, which has to be molded on an individual basis and costs five million dollars to construct \u2014 so it\u2026"
+        "text": "He became a sports reporter and interviewed an eccentric football superfan, who also happened to be a scientist."
       }
     },
     {
@@ -2471,19 +2624,14 @@
       "query": "weather-controlling mutant from Kenya",
       "expected": "Storm_(Marvel_Comics)",
       "expected_name": "Storm (Marvel Comics)",
-      "why_expected": "Storm controls weather; her page mentions her Kenyan origin.",
-      "rank": 27,
-      "rank_nostop": 5,
-      "cosine_expected": 0.0384,
-      "hit_at_1": false,
-      "hit_at_5": false,
-      "hit_at_1_nostop": false,
-      "hit_at_5_nostop": true,
+      "why_expected": "Storm controls the weather and grew up in Kenya.",
+      "scored": true,
       "top5": [
         {
           "node_id": "Redneck_(comics)",
           "name": "Redneck (comics)",
           "cosine": 0.1323,
+          "n_tokens": 255,
           "overlap_terms": [
             {
               "term": "mutant",
@@ -2505,6 +2653,7 @@
           "node_id": "Rusty_Collins",
           "name": "Rusty Collins",
           "cosine": 0.071,
+          "n_tokens": 979,
           "overlap_terms": [
             {
               "term": "mutant",
@@ -2533,6 +2682,7 @@
           "node_id": "Surge_(Marvel_Comics)",
           "name": "Surge (Marvel Comics)",
           "cosine": 0.0643,
+          "n_tokens": 976,
           "overlap_terms": [
             {
               "term": "from",
@@ -2554,6 +2704,7 @@
           "node_id": "Silhouette_(comics)",
           "name": "Silhouette (comics)",
           "cosine": 0.0537,
+          "n_tokens": 835,
           "overlap_terms": [
             {
               "term": "from",
@@ -2568,6 +2719,7 @@
           "node_id": "Fabio_Medina",
           "name": "Fabio Medina",
           "cosine": 0.053,
+          "n_tokens": 897,
           "overlap_terms": [
             {
               "term": "mutant",
@@ -2590,7 +2742,8 @@
         {
           "node_id": "Redneck_(comics)",
           "name": "Redneck (comics)",
-          "cosine": 0.1519,
+          "cosine": 0.1521,
+          "n_tokens": 255,
           "overlap_terms": [
             {
               "term": "mutant",
@@ -2604,7 +2757,8 @@
         {
           "node_id": "Rusty_Collins",
           "name": "Rusty Collins",
-          "cosine": 0.1149,
+          "cosine": 0.1147,
+          "n_tokens": 979,
           "overlap_terms": [
             {
               "term": "mutant",
@@ -2625,7 +2779,8 @@
         {
           "node_id": "Fabio_Medina",
           "name": "Fabio Medina",
-          "cosine": 0.1019,
+          "cosine": 0.1023,
+          "n_tokens": 897,
           "overlap_terms": [
             {
               "term": "mutant",
@@ -2639,7 +2794,8 @@
         {
           "node_id": "Powerhouse_(Marvel_Comics)",
           "name": "Powerhouse (Marvel Comics)",
-          "cosine": 0.0772,
+          "cosine": 0.0774,
+          "n_tokens": 562,
           "overlap_terms": [
             {
               "term": "mutant",
@@ -2654,6 +2810,7 @@
           "node_id": "Storm_(Marvel_Comics)",
           "name": "Storm (Marvel Comics)",
           "cosine": 0.0611,
+          "n_tokens": 9831,
           "overlap_terms": [
             {
               "term": "mutant",
@@ -2679,6 +2836,15 @@
           ]
         }
       ],
+      "rank": 27,
+      "rank_nostop": 5,
+      "cosine_expected": 0.0384,
+      "expected_tokens": 9831,
+      "expected_length_percentile": 0.967,
+      "hit_at_1": false,
+      "hit_at_5": false,
+      "hit_at_1_nostop": false,
+      "hit_at_5_nostop": true,
       "expected_overlap": [
         {
           "term": "from",
@@ -2709,11 +2875,13 @@
           "is_stop": false
         }
       ],
-      "failure_reason": "A near-miss: the top hit shares [mutant], while Storm_(Marvel_Comics) shares [mutant, weather, kenya] and lands at rank 27. Raw BoW cannot tell which content word matters more; TF-IDF will.",
+      "failure_kind": "short_page",
+      "failure_reason": "Redneck (comics) (255 words) beats Storm (Marvel Comics) (9,831 words): cosine divides by the vector's length, so a short page with the same words scores higher.",
+      "failure_kind_nostop": "short_page",
       "quote": {
         "node_id": "Redneck_(comics)",
         "name": "Redneck (comics)",
-        "text": "\u2026edneck and later Skybolt is a fictional mutant character appearing in American comic books published by Marvel Comics.   Publication history His first appearance was in New X-Men #126 by Grant Morrison and Frank Quitely.\u2026"
+        "text": "Vincent Stewart, codenamed Redneck and later Skybolt is a fictional mutant character appearing in American comic books published by Marvel Comics."
       }
     },
     {
@@ -2721,19 +2889,14 @@
       "query": "chaos magic reality warping mutant twin",
       "expected": "Scarlet_Witch",
       "expected_name": "Scarlet Witch",
-      "why_expected": "Chaos magic and reality warping are Scarlet Witch's brief.",
-      "rank": 2,
-      "rank_nostop": 1,
-      "cosine_expected": 0.0448,
-      "hit_at_1": false,
-      "hit_at_5": true,
-      "hit_at_1_nostop": true,
-      "hit_at_5_nostop": true,
+      "why_expected": "Chaos magic and reality warping are Scarlet Witch's powers; Quicksilver is her twin.",
+      "scored": true,
       "top5": [
         {
           "node_id": "Redneck_(comics)",
           "name": "Redneck (comics)",
           "cosine": 0.0671,
+          "n_tokens": 255,
           "overlap_terms": [
             {
               "term": "mutant",
@@ -2748,6 +2911,7 @@
           "node_id": "Scarlet_Witch",
           "name": "Scarlet Witch",
           "cosine": 0.0448,
+          "n_tokens": 14292,
           "overlap_terms": [
             {
               "term": "magic",
@@ -2797,6 +2961,7 @@
           "node_id": "Rusty_Collins",
           "name": "Rusty Collins",
           "cosine": 0.0446,
+          "n_tokens": 979,
           "overlap_terms": [
             {
               "term": "mutant",
@@ -2818,6 +2983,7 @@
           "node_id": "Powerhouse_(Marvel_Comics)",
           "name": "Powerhouse (Marvel Comics)",
           "cosine": 0.0343,
+          "n_tokens": 562,
           "overlap_terms": [
             {
               "term": "mutant",
@@ -2832,6 +2998,7 @@
           "node_id": "Fabio_Medina",
           "name": "Fabio Medina",
           "cosine": 0.0308,
+          "n_tokens": 897,
           "overlap_terms": [
             {
               "term": "mutant",
@@ -2847,7 +3014,8 @@
         {
           "node_id": "Scarlet_Witch",
           "name": "Scarlet Witch",
-          "cosine": 0.1488,
+          "cosine": 0.1491,
+          "n_tokens": 14292,
           "overlap_terms": [
             {
               "term": "magic",
@@ -2896,7 +3064,8 @@
         {
           "node_id": "Redneck_(comics)",
           "name": "Redneck (comics)",
-          "cosine": 0.124,
+          "cosine": 0.1242,
+          "n_tokens": 255,
           "overlap_terms": [
             {
               "term": "mutant",
@@ -2910,7 +3079,8 @@
         {
           "node_id": "Rusty_Collins",
           "name": "Rusty Collins",
-          "cosine": 0.0938,
+          "cosine": 0.0937,
+          "n_tokens": 979,
           "overlap_terms": [
             {
               "term": "mutant",
@@ -2931,7 +3101,8 @@
         {
           "node_id": "Fabio_Medina",
           "name": "Fabio Medina",
-          "cosine": 0.0832,
+          "cosine": 0.0835,
+          "n_tokens": 897,
           "overlap_terms": [
             {
               "term": "mutant",
@@ -2945,7 +3116,8 @@
         {
           "node_id": "Speed_(character)",
           "name": "Speed (character)",
-          "cosine": 0.0809,
+          "cosine": 0.0811,
+          "n_tokens": 3146,
           "overlap_terms": [
             {
               "term": "twin",
@@ -2992,6 +3164,15 @@
           ]
         }
       ],
+      "rank": 2,
+      "rank_nostop": 1,
+      "cosine_expected": 0.0448,
+      "expected_tokens": 14292,
+      "expected_length_percentile": 0.997,
+      "hit_at_1": false,
+      "hit_at_5": true,
+      "hit_at_1_nostop": true,
+      "hit_at_5_nostop": true,
       "expected_overlap": [
         {
           "term": "magic",
@@ -3036,11 +3217,13 @@
           "is_stop": false
         }
       ],
-      "failure_reason": "A near-miss: the top hit shares [mutant], while Scarlet_Witch shares [magic, mutant, reality, chaos] and lands at rank 2. Raw BoW cannot tell which content word matters more; TF-IDF will.",
+      "failure_kind": "short_page",
+      "failure_reason": "Redneck (comics) (255 words) beats Scarlet Witch (14,292 words): cosine divides by the vector's length, so a short page with the same words scores higher.",
+      "failure_kind_nostop": null,
       "quote": {
         "node_id": "Redneck_(comics)",
         "name": "Redneck (comics)",
-        "text": "\u2026edneck and later Skybolt is a fictional mutant character appearing in American comic books published by Marvel Comics.   Publication history His first appearance was in New X-Men #126 by Grant Morrison and Frank Quitely.\u2026"
+        "text": "Vincent Stewart, codenamed Redneck and later Skybolt is a fictional mutant character appearing in American comic books published by Marvel Comics."
       }
     },
     {
@@ -3048,19 +3231,14 @@
       "query": "alien symbiote that bonds with Eddie Brock",
       "expected": "Venom_(character)",
       "expected_name": "Venom (character)",
-      "why_expected": "Symbiote + Eddie Brock = Venom.",
-      "rank": 3,
-      "rank_nostop": 2,
-      "cosine_expected": 0.1824,
-      "hit_at_1": false,
-      "hit_at_5": true,
-      "hit_at_1_nostop": false,
-      "hit_at_5_nostop": true,
+      "why_expected": "Venom is the symbiote that bonds with Eddie Brock.",
+      "scored": true,
       "top5": [
         {
           "node_id": "Eddie_Brock",
           "name": "Eddie Brock",
           "cosine": 0.2542,
+          "n_tokens": 10661,
           "overlap_terms": [
             {
               "term": "brock",
@@ -3098,14 +3276,14 @@
               "is_stop": true
             },
             {
-              "term": "bonds",
+              "term": "alien",
               "query": 1,
               "page": 10,
               "product": 10,
               "is_stop": false
             },
             {
-              "term": "alien",
+              "term": "bonds",
               "query": 1,
               "page": 10,
               "product": 10,
@@ -3117,6 +3295,7 @@
           "node_id": "Anne_Weying",
           "name": "She-Venom (Patricia Robertson)",
           "cosine": 0.1932,
+          "n_tokens": 749,
           "overlap_terms": [
             {
               "term": "brock",
@@ -3166,6 +3345,7 @@
           "node_id": "Venom_(character)",
           "name": "Venom (character)",
           "cosine": 0.1824,
+          "n_tokens": 10704,
           "overlap_terms": [
             {
               "term": "symbiote",
@@ -3222,6 +3402,7 @@
           "node_id": "Mania_(character)",
           "name": "Mania (character)",
           "cosine": 0.1681,
+          "n_tokens": 2708,
           "overlap_terms": [
             {
               "term": "symbiote",
@@ -3259,14 +3440,14 @@
               "is_stop": false
             },
             {
-              "term": "bonds",
+              "term": "alien",
               "query": 1,
               "page": 1,
               "product": 1,
               "is_stop": false
             },
             {
-              "term": "alien",
+              "term": "bonds",
               "query": 1,
               "page": 1,
               "product": 1,
@@ -3278,6 +3459,7 @@
           "node_id": "Hornet_(comics)",
           "name": "Hornet (comics)",
           "cosine": 0.1295,
+          "n_tokens": 970,
           "overlap_terms": [
             {
               "term": "that",
@@ -3314,7 +3496,8 @@
         {
           "node_id": "Eddie_Brock",
           "name": "Eddie Brock",
-          "cosine": 0.4858,
+          "cosine": 0.4861,
+          "n_tokens": 10661,
           "overlap_terms": [
             {
               "term": "brock",
@@ -3338,14 +3521,14 @@
               "is_stop": false
             },
             {
-              "term": "bonds",
+              "term": "alien",
               "query": 1,
               "page": 10,
               "product": 10,
               "is_stop": false
             },
             {
-              "term": "alien",
+              "term": "bonds",
               "query": 1,
               "page": 10,
               "product": 10,
@@ -3356,7 +3539,8 @@
         {
           "node_id": "Venom_(character)",
           "name": "Venom (character)",
-          "cosine": 0.3183,
+          "cosine": 0.3184,
+          "n_tokens": 10704,
           "overlap_terms": [
             {
               "term": "symbiote",
@@ -3398,7 +3582,8 @@
         {
           "node_id": "Mania_(character)",
           "name": "Mania (character)",
-          "cosine": 0.306,
+          "cosine": 0.3062,
+          "n_tokens": 2708,
           "overlap_terms": [
             {
               "term": "symbiote",
@@ -3422,14 +3607,14 @@
               "is_stop": false
             },
             {
-              "term": "bonds",
+              "term": "alien",
               "query": 1,
               "page": 1,
               "product": 1,
               "is_stop": false
             },
             {
-              "term": "alien",
+              "term": "bonds",
               "query": 1,
               "page": 1,
               "product": 1,
@@ -3441,6 +3626,7 @@
           "node_id": "Anne_Weying",
           "name": "She-Venom (Patricia Robertson)",
           "cosine": 0.2177,
+          "n_tokens": 749,
           "overlap_terms": [
             {
               "term": "brock",
@@ -3450,14 +3636,14 @@
               "is_stop": false
             },
             {
-              "term": "symbiote",
+              "term": "eddie",
               "query": 1,
               "page": 5,
               "product": 5,
               "is_stop": false
             },
             {
-              "term": "eddie",
+              "term": "symbiote",
               "query": 1,
               "page": 5,
               "product": 5,
@@ -3475,7 +3661,8 @@
         {
           "node_id": "Hybrid_(Scott_Washington)",
           "name": "Hybrid (Scott Washington)",
-          "cosine": 0.1354,
+          "cosine": 0.1355,
+          "n_tokens": 724,
           "overlap_terms": [
             {
               "term": "symbiote",
@@ -3485,14 +3672,14 @@
               "is_stop": false
             },
             {
-              "term": "eddie",
+              "term": "brock",
               "query": 1,
               "page": 1,
               "product": 1,
               "is_stop": false
             },
             {
-              "term": "brock",
+              "term": "eddie",
               "query": 1,
               "page": 1,
               "product": 1,
@@ -3501,6 +3688,15 @@
           ]
         }
       ],
+      "rank": 3,
+      "rank_nostop": 2,
+      "cosine_expected": 0.1824,
+      "expected_tokens": 10704,
+      "expected_length_percentile": 0.983,
+      "hit_at_1": false,
+      "hit_at_5": true,
+      "hit_at_1_nostop": false,
+      "hit_at_5_nostop": true,
       "expected_overlap": [
         {
           "term": "symbiote",
@@ -3552,11 +3748,13 @@
           "is_stop": false
         }
       ],
-      "failure_reason": "A near-miss: the top hit shares [brock, symbiote, eddie, bonds], while Venom_(character) shares [symbiote, brock, eddie, bonds] and lands at rank 3. Raw BoW cannot tell which content word matters more; TF-IDF will.",
+      "failure_kind": "rival",
+      "failure_reason": "Eddie Brock (10,661 words) is not a short page, and it scores higher than Venom (character) on brock, symbiote, eddie.",
+      "failure_kind_nostop": "rival",
       "quote": {
         "node_id": "Eddie_Brock",
         "name": "Eddie Brock",
-        "text": "Edward Charles Allan Brock is a character appearing in American comic books published by Marvel Comics. The character was created by David Michelinie and Todd McFarlane, making a cameo appearance in We\u2026"
+        "text": "Edward Charles Allan Brock is a character appearing in American comic books published by Marvel Comics."
       }
     },
     {
@@ -3565,18 +3763,13 @@
       "expected": "Moon_Knight",
       "expected_name": "Moon Knight",
       "why_expected": "Moon Knight is the moon-themed vigilante.",
-      "rank": 1,
-      "rank_nostop": 1,
-      "cosine_expected": 0.2537,
-      "hit_at_1": true,
-      "hit_at_5": true,
-      "hit_at_1_nostop": true,
-      "hit_at_5_nostop": true,
+      "scored": true,
       "top5": [
         {
           "node_id": "Moon_Knight",
           "name": "Moon Knight",
           "cosine": 0.2537,
+          "n_tokens": 7260,
           "overlap_terms": [
             {
               "term": "moon",
@@ -3633,6 +3826,7 @@
           "node_id": "NFL_SuperPro",
           "name": "Phil Grayfield",
           "cosine": 0.1853,
+          "n_tokens": 711,
           "overlap_terms": [
             {
               "term": "a",
@@ -3661,6 +3855,7 @@
           "node_id": "Crippler_(character)",
           "name": "Crippler (character)",
           "cosine": 0.1622,
+          "n_tokens": 349,
           "overlap_terms": [
             {
               "term": "a",
@@ -3696,6 +3891,7 @@
           "node_id": "Solarman",
           "name": "Solarman",
           "cosine": 0.1558,
+          "n_tokens": 764,
           "overlap_terms": [
             {
               "term": "a",
@@ -3724,6 +3920,7 @@
           "node_id": "Devil_Dinosaur",
           "name": "Devil Dinosaur",
           "cosine": 0.1556,
+          "n_tokens": 3240,
           "overlap_terms": [
             {
               "term": "a",
@@ -3753,7 +3950,8 @@
         {
           "node_id": "Moon_Knight",
           "name": "Moon Knight",
-          "cosine": 0.3482,
+          "cosine": 0.3483,
+          "n_tokens": 7260,
           "overlap_terms": [
             {
               "term": "moon",
@@ -3789,6 +3987,7 @@
           "node_id": "Devil_Dinosaur",
           "name": "Devil Dinosaur",
           "cosine": 0.1698,
+          "n_tokens": 3240,
           "overlap_terms": [
             {
               "term": "moon",
@@ -3803,6 +4002,7 @@
           "node_id": "Silk_(character)",
           "name": "Silk (character)",
           "cosine": 0.1246,
+          "n_tokens": 1999,
           "overlap_terms": [
             {
               "term": "moon",
@@ -3823,17 +4023,18 @@
         {
           "node_id": "Crippler_(character)",
           "name": "Crippler (character)",
-          "cosine": 0.0893,
+          "cosine": 0.0894,
+          "n_tokens": 349,
           "overlap_terms": [
             {
-              "term": "vigilante",
+              "term": "mercenary",
               "query": 1,
               "page": 2,
               "product": 2,
               "is_stop": false
             },
             {
-              "term": "mercenary",
+              "term": "vigilante",
               "query": 1,
               "page": 2,
               "product": 2,
@@ -3844,7 +4045,8 @@
         {
           "node_id": "Werewolf_by_Night",
           "name": "Werewolf by Night",
-          "cosine": 0.0702,
+          "cosine": 0.0703,
+          "n_tokens": 3882,
           "overlap_terms": [
             {
               "term": "moon",
@@ -3863,6 +4065,15 @@
           ]
         }
       ],
+      "rank": 1,
+      "rank_nostop": 1,
+      "cosine_expected": 0.2537,
+      "expected_tokens": 7260,
+      "expected_length_percentile": 0.917,
+      "hit_at_1": true,
+      "hit_at_5": true,
+      "hit_at_1_nostop": true,
+      "hit_at_5_nostop": true,
       "expected_overlap": [
         {
           "term": "moon",
@@ -3914,14 +4125,14 @@
           "is_stop": false
         }
       ],
+      "failure_kind": null,
       "failure_reason": null,
+      "failure_kind_nostop": null,
       "quote": {
         "node_id": "Moon_Knight",
         "name": "Moon Knight",
-        "text": "Moon Knight is a superhero appearing in American comic books published by Marvel Comics. Created by writer Doug Moench and artist Don Perlin, the character first appeared in Werewo\u2026"
+        "text": "Moon Knight is a superhero appearing in American comic books published by Marvel Comics."
       }
     }
-  ],
-  "baseline": "Uniform chance of picking the right page among 303 is 0.33%.",
-  "corpus_note": "Category:Marvel Comics superheroes (303 pages) omits several household names such as Thor, Loki, Iron Man and Captain America; probes use in-roster pages."
+  ]
 }

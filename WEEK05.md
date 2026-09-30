@@ -22,8 +22,10 @@ Every section carries the same six parts, in this order:
 5. What we checked in the underlying text: quote the passage.
 6. One limitation.
 
-The brief says one good question with one convincing figure beats five methods thrown together. We are
-doing all seven openers, so pick one for the top of the page once the results are in.
+The brief says one good question with one convincing figure beats five methods thrown together. We did
+all seven openers; the hero asks whether a character's place in the link network shows in the words of its
+page, and answers with section 6's scatter of page length against in-degree. A findings strip under the
+hero gives each section's answer against its baseline, in Week 4's form.
 
 ## Sections
 
@@ -33,10 +35,10 @@ doing all seven openers, so pick one for the top of the page once the results ar
 | 2 | Catch Wikipedia copying itself | `#copying` | Gyula | `analysis/week05_copying.py` | pages |
 | 3 | A Marvel search engine in 20 lines | `#search` | Àngela | `analysis/week05_search.py` | pages |
 | 4 | Community autocomplete | `#autocomplete` | Àngela | `analysis/week05_autocomplete.py` | pages, weighted (communities) |
-| 5 | Heaps' law of the Marvel universe | `#heaps` | | `analysis/week05_heaps.py` | pages, graph (in-degree) |
-| 6 | Does network fame buy you more words? | `#fame` | | `analysis/week05_fame.py` | pages, graph |
-| 7 | Who has the weirdest Wikipedia page? | `#weird` | | `analysis/week05_weird.py` | pages |
-| | Opening, closing, AI-use note | `#opening`, `#closing` | | | |
+| 5 | Heaps' law of the Marvel universe | `#heaps` | Niklas | `analysis/week05_heaps.py` | pages, graph (in-degree) |
+| 6 | Does network fame buy you more words? | `#fame` | Niklas | `analysis/week05_fame.py` | pages, graph |
+| 7 | Who has the weirdest Wikipedia page? | `#weird` | Niklas | `analysis/week05_weird.py` | pages |
+| | Hero, findings, opening, closing, AI-use note | `#top`, `#findings`, `#opening`, `#closing` | Gyula | the section JSON files | `docs/assets/js/week05-frame.js` |
 
 Put your name in the Owner column and in your script's docstring. Each script's docstring lists the steps
 the brief suggests for its section.
@@ -112,14 +114,22 @@ beside them, and the checked passages across the bottom. Sections 1 and 2 use it
 `p.w5-question` and a `p.w4-answer` in the asked slot, a `div.notice` in the surprise slot, `rx-drawers`
 under what we did). Nothing else changes: the slot IDs, `slot()` and the kit test stay as they are.
 
-## Shared decisions still open
+## Shared decisions
 
-- One tokeniser and preprocessing rule for the whole post, or one per section stated in its JSON.
-- Communities for sections 1 and 4. Our Week 4 post used H-1B filings, so no Marvel partition exists yet.
-  Compute one from `weighted()` with `louvain()` from `analysis/week04_staffing.py` over seeds `SEED + i`,
-  report the most frequent partition, how often it recurs and modularity against `rewire()`. Write it once
-  and have both sections read it.
-- Which section leads the page.
+- One word rule, `WORD_RULE` and `words()` in `analysis/week05_text.py`, for sections 4 to 7: 713,617
+  tokens of 27,754 types. Sections 2 and 3 keep digits and split at hyphens (about 740,000 tokens) and state
+  their rule in their JSON; the opening says why the totals differ.
+- One name rule, `candidates()` and `name_table()` in `analysis/week05_relations.py`: section 1 finds the
+  sentence behind a link with it and section 6 counts mentions with it. Section 4 masks those names plus
+  every capitalised part of a description's brackets, so a one-word real name ("Logan") is hidden too.
+- One rule for pages about several characters who share a name, `shared_name()` in
+  `analysis/week05_text.py`, read from the first sentence: 46 pages. Section 6 calls them hub pages and
+  section 7 counts them among the most repetitive pages. Two rules had given 35 and 27 pages that shared
+  only 19.
+- Communities: `analysis/week05_communities.py` writes the consensus of 100 Louvain runs that section 4
+  reads. Section 1 averages its crossing shares over its own 100 runs on the same weighted network; its
+  median of 26 communities is the same 8 groups, the Morituri group and the 17 isolates.
+- The hero and the findings strip lead with section 6 (see above).
 
 ## Data traps
 
@@ -127,8 +137,17 @@ under what we did). Nothing else changes: the slot IDs, `slot()` and the kit tes
   `Mark_Hazzard:_Merc`. `pages()` unquotes them.
 - 17 characters have no links. Building a graph from the edge list alone gives 286 nodes. `graph()` and
   `weighted()` add all 303 first.
-- The committed graph currently gives 58 of the 303 pages zero in-degree, although the exercise note says
-  17. The scripts report the observed graph value and do not call in-degree fame without this qualification.
+- 58 pages have zero in-degree and 17 have no link at all; the exercise note's 17 counts only the isolates.
+  Both numbers are right, so say which one you mean. The opening states both.
+- Louvain on this network rarely repeats itself: 100 runs found 89 different partitions, the most common one
+  in only 4. Report the consensus and the NMI between runs, never one run's partition.
+- The node table's `name` is not always the page title: five pages are named after one holder or one
+  version (`Doctor_Spectrum` is "Alice Nugent", `NFL_SuperPro` is "Phil Grayfield", `Anne_Weying` is
+  "She-Venom (Patricia Robertson)", `Phoenix_Force` and `Red_Raven_(Marvel_Comics)` likewise). Sections 6
+  and 7 show the page title. Section 1's `candidates()` still starts from `name`, so it looks for "Alice
+  Nugent" on other pages rather than "Doctor Spectrum"; fixing that moves section 1's numbers.
+- `words()` lowercases before it matches, and "İ" lowercases to two characters, so "İzmir" splits in two on
+  the one page that has it. Section 4 asserts its tokens equal `words()` everywhere else.
 - `data/week4_edges_weighted.tsv` has no header row after its `#` comments. Read it with explicit column
   names or the first edge becomes the header.
 - Page lengths run from 1,244 to 87,256 characters, a 70× spread (course data page). Normalise by length
@@ -139,7 +158,8 @@ under what we did). Nothing else changes: the slot IDs, `slot()` and the kit tes
 
 ## Page
 
-`docs/weeks/week05/index.html` is a blank frame with one section per opener and the six parts in each.
-It is `noindex` and unlinked: week 5 stays `coming` in `docs/assets/js/weeks.js`. To publish it, set week 5
+`docs/weeks/week05/index.html` holds the hero, the findings strip, the opening, seven Week 4 cards and
+the closing. `tests/week05-frame.test.mjs` pins the frame's numbers to the section JSON files, and each
+section has its own test. The page is `noindex` and unlinked: week 5 stays `coming` in `docs/assets/js/weeks.js`. To publish it, set week 5
 to `live` with a cabinet, add its lobby card, and change the "exactly weeks 1 to 4 are live" assertion in
 `tests/site.test.mjs`.

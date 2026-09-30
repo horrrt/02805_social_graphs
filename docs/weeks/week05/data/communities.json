@@ -2,43 +2,63 @@
   "generated_by": "analysis/week05_communities.py",
   "seed": 2805,
   "runs": 100,
-  "null_runs": 50,
+  "null_runs": 100,
   "network": {
     "nodes": 303,
     "edges": 1434,
     "giant_nodes": 277,
     "giant_edges": 1421,
-    "outside_giant": 26
+    "other_components": 1,
+    "other_component_nodes": 9,
+    "isolates": 17
   },
   "louvain": {
-    "modularity": 0.5055,
     "modularity_mean": 0.503,
     "modularity_sd": 0.0027,
-    "communities_in_giant": 7,
-    "communities_total": 33,
     "mode_count": 4,
-    "mode_share": 0.04,
     "distinct_partitions": 89,
+    "communities_per_run": {
+      "7": 15,
+      "8": 77,
+      "9": 8
+    },
+    "common_k": 8,
+    "common_k_runs": 77,
+    "nmi_median": 0.8981,
+    "nmi_p05": 0.8408,
+    "nmi_p95": 0.9652
+  },
+  "consensus": {
+    "rule": "two pages share a group when at least 50% of the 100 runs put them together; Louvain on that co-assignment graph, weighted by the share",
+    "threshold": 0.5,
+    "communities": 8,
     "sizes": [
-      52,
-      42,
+      40,
       40,
       38,
       38,
-      37,
-      30
-    ]
+      35,
+      34,
+      30,
+      22
+    ],
+    "modularity": 0.5059,
+    "seeds_agreeing": 100,
+    "nmi_to_runs_median": 0.916
   },
   "null": {
-    "modularity_mean": 0.3753,
-    "modularity_sd": 0.005,
-    "z": 26.23,
+    "method": "degree- and strength-preserving: double edge swaps between edges of equal weight",
+    "swaps_per_edge": 50,
+    "modularity_mean": 0.3471,
+    "modularity_sd": 0.0043,
+    "z": 36.6,
     "null_runs_at_or_above_real": 0
   },
   "communities": [
     {
       "label": "Hulk",
-      "size": 52,
+      "size": 40,
+      "where": "giant",
       "hubs": [
         {
           "node_id": "Hulk",
@@ -56,34 +76,28 @@
           "strength": 47
         },
         {
-          "node_id": "Deathlok",
-          "name": "Deathlok",
-          "strength": 25
+          "node_id": "Patsy_Walker",
+          "name": "Patsy Walker",
+          "strength": 22
         },
         {
-          "node_id": "Machine_Man",
-          "name": "Machine Man",
-          "strength": 22
+          "node_id": "Robbie_Baldwin",
+          "name": "Robbie Baldwin",
+          "strength": 21
         }
       ],
       "members": [
         "Abomination_(character)",
+        "Ajak",
         "Arabian_Knight_(character)",
         "Ares_(Marvel_Comics)",
         "Balder_the_Brave",
         "Black_Rider_(character)",
-        "Coldblood",
-        "Crippler_(character)",
-        "Deathlok",
         "Debrii",
         "Delroy_Garrett",
-        "Detroit_Steel",
         "Devil_Hulk",
-        "Digitek_(character)",
-        "Doom_2099",
         "Dragon_Lord_(character)",
         "Fandral",
-        "Fin_Fang_Foom",
         "Firelord_(character)",
         "Flatman_(character)",
         "Frog-Man",
@@ -92,113 +106,33 @@
         "Gremlin_(comics)",
         "Hercules_(Marvel_Comics)",
         "Hulk",
-        "Hulk_2099",
-        "Iron_Man_(Ultimate_Marvel_character)",
-        "Iron_Man_2020",
+        "Ikaris",
         "Kid_Colt",
         "Kristoff_Vernard",
         "Living_Lightning",
-        "Machine_Man",
         "Nightwatch_(character)",
         "Patsy_Walker",
-        "Ravage_2099",
         "Red_Wolf_(comics)",
         "Robbie_Baldwin",
         "Sabra_(character)",
         "Sentry_(Robert_Reynolds)",
-        "Shamrock_(comics)",
         "She-Hulk",
         "She-Hulk_(Lyra)",
         "Silencer_(comics)",
         "Solo_(Marvel_Comics)",
         "Steel_Spider",
+        "Thena",
         "Thor_Girl",
         "Timeslip_(comics)",
         "Two-Gun_Kid",
         "Typeface_(character)",
-        "Ursa_Major_(character)",
-        "Vance_Astrovik",
-        "War_Machine"
+        "Vance_Astrovik"
       ]
     },
     {
-      "label": "Doctor Strange",
-      "size": 42,
-      "hubs": [
-        {
-          "node_id": "Doctor_Strange",
-          "name": "Doctor Strange",
-          "strength": 101
-        },
-        {
-          "node_id": "Deadpool",
-          "name": "Deadpool",
-          "strength": 92
-        },
-        {
-          "node_id": "Moon_Knight",
-          "name": "Moon Knight",
-          "strength": 50
-        },
-        {
-          "node_id": "Ghost_Rider",
-          "name": "Ghost Rider",
-          "strength": 44
-        },
-        {
-          "node_id": "Blade_(character)",
-          "name": "Blade (character)",
-          "strength": 43
-        }
-      ],
-      "members": [
-        "Agent_X_(Marvel_Comics)",
-        "Black_Widow_(Natasha_Romanova)",
-        "Blade_(character)",
-        "Blue_Eagle_(character)",
-        "Bob,_Agent_of_Hydra",
-        "Captain_Ultra",
-        "Caretaker_(comics)",
-        "Deadpool",
-        "Devil_Dinosaur",
-        "Doctor_Druid",
-        "Doctor_Strange",
-        "Dogpool",
-        "Elsa_Bloodstone",
-        "Emrys_Killebrew",
-        "Frankenstein's_Monster_(Marvel_Comics)",
-        "Ghost_Rider",
-        "Ghost_Rider_(Danny_Ketch)",
-        "Ghost_Rider_(Johnny_Blaze)",
-        "Gwenpool",
-        "Hawkeye_(comics)",
-        "Hit-Monkey",
-        "Hrimhari",
-        "Jericho_Drumm",
-        "Man-Thing",
-        "Mockingbird_(Marvel_Comics)",
-        "Moon_Knight",
-        "Moonglow_(comics)",
-        "Morbius",
-        "Outlaw_(Marvel_Comics)",
-        "Red_Guardian",
-        "Rockman_(character)",
-        "Ronin_(Marvel_Comics)",
-        "Satana_(Marvel_Comics)",
-        "Scarlet_Scarab",
-        "Solomon_Kane_(comics)",
-        "Straw_Man_(comics)",
-        "Tarantula_(Marvel_Comics)",
-        "The_Witness_(character)",
-        "Ulysses_Bloodstone",
-        "Werewolf_by_Night",
-        "Yelena_Belova",
-        "Zombie_(comics)"
-      ]
-    },
-    {
-      "label": "Wolverine (character)",
+      "label": "Wolverine",
       "size": 40,
+      "where": "giant",
       "hubs": [
         {
           "node_id": "Wolverine_(character)",
@@ -270,79 +204,9 @@
       ]
     },
     {
-      "label": "Quasar (character)",
-      "size": 38,
-      "hubs": [
-        {
-          "node_id": "Quasar_(character)",
-          "name": "Quasar (character)",
-          "strength": 51
-        },
-        {
-          "node_id": "Nova_(Richard_Rider)",
-          "name": "Nova (Richard Rider)",
-          "strength": 45
-        },
-        {
-          "node_id": "Captain_Marvel_(Marvel_Comics)",
-          "name": "Captain Marvel (Marvel Comics)",
-          "strength": 35
-        },
-        {
-          "node_id": "Adam_Warlock",
-          "name": "Adam Warlock",
-          "strength": 33
-        },
-        {
-          "node_id": "Phyla-Vell",
-          "name": "Phyla-Vell",
-          "strength": 32
-        }
-      ],
-      "members": [
-        "Adam_Warlock",
-        "Ajak",
-        "Beta_Ray_Bill",
-        "Blue_Marvel",
-        "Bug_(Marvel_Comics)",
-        "Cammi_(character)",
-        "Captain_Marvel_(Khn'nr)",
-        "Captain_Marvel_(Marvel_Comics)",
-        "Chase_Stein",
-        "Dargo_Ktor",
-        "Darkhawk",
-        "Doctor_Spectrum",
-        "Genis-Vell",
-        "Hyperion_(character)",
-        "Ikaris",
-        "Justice_(New_Universe)",
-        "Kismet_(Marvel_Comics)",
-        "Mahr_Vehl",
-        "Makkari_(character)",
-        "Mark_Hazzard:_Merc",
-        "Marvel_Boy_(Robert_Grayson)",
-        "Moondragon",
-        "Ms._Marvel",
-        "Nightmask",
-        "Noh-Varr",
-        "Nova_(Richard_Rider)",
-        "Phyla-Vell",
-        "Powerhouse_(Marvel_Comics)",
-        "Quasar_(character)",
-        "Redneck_(comics)",
-        "Rocket_Raccoon",
-        "Rom_the_Space_Knight",
-        "Star-Lord",
-        "Star_Brand",
-        "Starhawk_(character)",
-        "Starr_the_Slayer",
-        "Thena",
-        "Turbo_(comics)"
-      ]
-    },
-    {
       "label": "Spider-Man",
       "size": 38,
+      "where": "giant",
       "hubs": [
         {
           "node_id": "Spider-Man",
@@ -413,7 +277,8 @@
     },
     {
       "label": "Scarlet Witch",
-      "size": 37,
+      "size": 38,
+      "where": "giant",
       "hubs": [
         {
           "node_id": "Scarlet_Witch",
@@ -466,6 +331,7 @@
         "Red_Raven_(Marvel_Comics)",
         "Rikki_Barnes",
         "Scarlet_Witch",
+        "Shamrock_(comics)",
         "Skull_the_Slayer",
         "Speed_(character)",
         "Spitfire_(character)",
@@ -482,8 +348,146 @@
       ]
     },
     {
-      "label": "Iron Fist (character)",
+      "label": "Quasar",
+      "size": 35,
+      "where": "giant",
+      "hubs": [
+        {
+          "node_id": "Quasar_(character)",
+          "name": "Quasar (character)",
+          "strength": 51
+        },
+        {
+          "node_id": "Nova_(Richard_Rider)",
+          "name": "Nova (Richard Rider)",
+          "strength": 45
+        },
+        {
+          "node_id": "Captain_Marvel_(Marvel_Comics)",
+          "name": "Captain Marvel (Marvel Comics)",
+          "strength": 35
+        },
+        {
+          "node_id": "Adam_Warlock",
+          "name": "Adam Warlock",
+          "strength": 33
+        },
+        {
+          "node_id": "Phyla-Vell",
+          "name": "Phyla-Vell",
+          "strength": 32
+        }
+      ],
+      "members": [
+        "Adam_Warlock",
+        "Beta_Ray_Bill",
+        "Blue_Marvel",
+        "Bug_(Marvel_Comics)",
+        "Cammi_(character)",
+        "Captain_Marvel_(Khn'nr)",
+        "Captain_Marvel_(Marvel_Comics)",
+        "Chase_Stein",
+        "Dargo_Ktor",
+        "Darkhawk",
+        "Doctor_Spectrum",
+        "Genis-Vell",
+        "Hyperion_(character)",
+        "Justice_(New_Universe)",
+        "Kismet_(Marvel_Comics)",
+        "Mahr_Vehl",
+        "Makkari_(character)",
+        "Mark_Hazzard:_Merc",
+        "Marvel_Boy_(Robert_Grayson)",
+        "Moondragon",
+        "Ms._Marvel",
+        "Nightmask",
+        "Noh-Varr",
+        "Nova_(Richard_Rider)",
+        "Phyla-Vell",
+        "Powerhouse_(Marvel_Comics)",
+        "Quasar_(character)",
+        "Redneck_(comics)",
+        "Rocket_Raccoon",
+        "Rom_the_Space_Knight",
+        "Star-Lord",
+        "Star_Brand",
+        "Starhawk_(character)",
+        "Starr_the_Slayer",
+        "Turbo_(comics)"
+      ]
+    },
+    {
+      "label": "Doctor Strange",
+      "size": 34,
+      "where": "giant",
+      "hubs": [
+        {
+          "node_id": "Doctor_Strange",
+          "name": "Doctor Strange",
+          "strength": 101
+        },
+        {
+          "node_id": "Deadpool",
+          "name": "Deadpool",
+          "strength": 92
+        },
+        {
+          "node_id": "Moon_Knight",
+          "name": "Moon Knight",
+          "strength": 50
+        },
+        {
+          "node_id": "Ghost_Rider",
+          "name": "Ghost Rider",
+          "strength": 44
+        },
+        {
+          "node_id": "Blade_(character)",
+          "name": "Blade (character)",
+          "strength": 43
+        }
+      ],
+      "members": [
+        "Agent_X_(Marvel_Comics)",
+        "Blade_(character)",
+        "Bob,_Agent_of_Hydra",
+        "Captain_Ultra",
+        "Caretaker_(comics)",
+        "Deadpool",
+        "Devil_Dinosaur",
+        "Doctor_Druid",
+        "Doctor_Strange",
+        "Dogpool",
+        "Elsa_Bloodstone",
+        "Emrys_Killebrew",
+        "Fin_Fang_Foom",
+        "Frankenstein's_Monster_(Marvel_Comics)",
+        "Ghost_Rider",
+        "Ghost_Rider_(Danny_Ketch)",
+        "Ghost_Rider_(Johnny_Blaze)",
+        "Gwenpool",
+        "Hit-Monkey",
+        "Hrimhari",
+        "Jericho_Drumm",
+        "Man-Thing",
+        "Moon_Knight",
+        "Moonglow_(comics)",
+        "Morbius",
+        "Outlaw_(Marvel_Comics)",
+        "Satana_(Marvel_Comics)",
+        "Scarlet_Scarab",
+        "Solomon_Kane_(comics)",
+        "Straw_Man_(comics)",
+        "Tarantula_(Marvel_Comics)",
+        "Ulysses_Bloodstone",
+        "Werewolf_by_Night",
+        "Zombie_(comics)"
+      ]
+    },
+    {
+      "label": "Iron Fist",
       "size": 30,
+      "where": "giant",
       "hubs": [
         {
           "node_id": "Iron_Fist_(character)",
@@ -545,23 +549,108 @@
       ]
     },
     {
-      "label": "Backhand (character)",
-      "size": 1,
+      "label": "Black Widow (Natasha Romanova)",
+      "size": 22,
+      "where": "giant",
       "hubs": [
         {
-          "node_id": "Backhand_(character)",
-          "name": "Backhand (character)",
-          "strength": 0
+          "node_id": "Black_Widow_(Natasha_Romanova)",
+          "name": "Black Widow (Natasha Romanova)",
+          "strength": 38
+        },
+        {
+          "node_id": "Mockingbird_(Marvel_Comics)",
+          "name": "Mockingbird (Marvel Comics)",
+          "strength": 30
+        },
+        {
+          "node_id": "Deathlok",
+          "name": "Deathlok",
+          "strength": 25
+        },
+        {
+          "node_id": "Machine_Man",
+          "name": "Machine Man",
+          "strength": 22
+        },
+        {
+          "node_id": "War_Machine",
+          "name": "War Machine",
+          "strength": 18
         }
       ],
       "members": [
-        "Backhand_(character)"
+        "Black_Widow_(Natasha_Romanova)",
+        "Blue_Eagle_(character)",
+        "Coldblood",
+        "Crippler_(character)",
+        "Deathlok",
+        "Detroit_Steel",
+        "Digitek_(character)",
+        "Doom_2099",
+        "Hawkeye_(comics)",
+        "Hulk_2099",
+        "Iron_Man_(Ultimate_Marvel_character)",
+        "Iron_Man_2020",
+        "Machine_Man",
+        "Mockingbird_(Marvel_Comics)",
+        "Ravage_2099",
+        "Red_Guardian",
+        "Rockman_(character)",
+        "Ronin_(Marvel_Comics)",
+        "The_Witness_(character)",
+        "Ursa_Major_(character)",
+        "War_Machine",
+        "Yelena_Belova"
+      ]
+    },
+    {
+      "label": "Radian (Morituri)",
+      "size": 9,
+      "where": "component",
+      "hubs": [
+        {
+          "node_id": "Radian_(Morituri)",
+          "name": "Radian (Morituri)",
+          "strength": 10
+        },
+        {
+          "node_id": "Scaredycat",
+          "name": "Scaredycat",
+          "strength": 7
+        },
+        {
+          "node_id": "Scatterbrain_(Morituri)",
+          "name": "Scatterbrain (Morituri)",
+          "strength": 5
+        },
+        {
+          "node_id": "Snapdragon_(Morituri)",
+          "name": "Snapdragon (Morituri)",
+          "strength": 5
+        },
+        {
+          "node_id": "Toxyn",
+          "name": "Toxyn",
+          "strength": 5
+        }
       ],
-      "outside_giant": true
+      "members": [
+        "Backhand_(character)",
+        "Blackthorn_(character)",
+        "Radian_(Morituri)",
+        "Scaredycat",
+        "Scatterbrain_(Morituri)",
+        "Shear_(character)",
+        "Snapdragon_(Morituri)",
+        "Toxyn",
+        "Vyking"
+      ]
     },
     {
       "label": "Baymax",
       "size": 1,
+      "where": "isolate",
       "hubs": [
         {
           "node_id": "Baymax",
@@ -571,12 +660,12 @@
       ],
       "members": [
         "Baymax"
-      ],
-      "outside_giant": true
+      ]
     },
     {
-      "label": "Bird-Brain (Marvel Comics)",
+      "label": "Bird-Brain",
       "size": 1,
+      "where": "isolate",
       "hubs": [
         {
           "node_id": "Bird-Brain_(Marvel_Comics)",
@@ -586,12 +675,12 @@
       ],
       "members": [
         "Bird-Brain_(Marvel_Comics)"
-      ],
-      "outside_giant": true
+      ]
     },
     {
       "label": "Black Fox (Robert Paine)",
       "size": 1,
+      "where": "isolate",
       "hubs": [
         {
           "node_id": "Black_Fox_(Robert_Paine)",
@@ -601,27 +690,12 @@
       ],
       "members": [
         "Black_Fox_(Robert_Paine)"
-      ],
-      "outside_giant": true
+      ]
     },
     {
-      "label": "Blackthorn (character)",
+      "label": "Brain Drain",
       "size": 1,
-      "hubs": [
-        {
-          "node_id": "Blackthorn_(character)",
-          "name": "Blackthorn (character)",
-          "strength": 0
-        }
-      ],
-      "members": [
-        "Blackthorn_(character)"
-      ],
-      "outside_giant": true
-    },
-    {
-      "label": "Brain Drain (character)",
-      "size": 1,
+      "where": "isolate",
       "hubs": [
         {
           "node_id": "Brain_Drain_(character)",
@@ -631,12 +705,12 @@
       ],
       "members": [
         "Brain_Drain_(character)"
-      ],
-      "outside_giant": true
+      ]
     },
     {
       "label": "Breeze Barton",
       "size": 1,
+      "where": "isolate",
       "hubs": [
         {
           "node_id": "Breeze_Barton",
@@ -646,12 +720,12 @@
       ],
       "members": [
         "Breeze_Barton"
-      ],
-      "outside_giant": true
+      ]
     },
     {
       "label": "Captain Midlands",
       "size": 1,
+      "where": "isolate",
       "hubs": [
         {
           "node_id": "Captain_Midlands",
@@ -661,12 +735,12 @@
       ],
       "members": [
         "Captain_Midlands"
-      ],
-      "outside_giant": true
+      ]
     },
     {
       "label": "Charcoal (comics)",
       "size": 1,
+      "where": "isolate",
       "hubs": [
         {
           "node_id": "Charcoal_(comics)",
@@ -676,12 +750,12 @@
       ],
       "members": [
         "Charcoal_(comics)"
-      ],
-      "outside_giant": true
+      ]
     },
     {
-      "label": "Father Time (Marvel Comics)",
+      "label": "Father Time",
       "size": 1,
+      "where": "isolate",
       "hubs": [
         {
           "node_id": "Father_Time_(Marvel_Comics)",
@@ -691,12 +765,12 @@
       ],
       "members": [
         "Father_Time_(Marvel_Comics)"
-      ],
-      "outside_giant": true
+      ]
     },
     {
       "label": "Happy Sam Sawyer",
       "size": 1,
+      "where": "isolate",
       "hubs": [
         {
           "node_id": "Happy_Sam_Sawyer",
@@ -706,12 +780,12 @@
       ],
       "members": [
         "Happy_Sam_Sawyer"
-      ],
-      "outside_giant": true
+      ]
     },
     {
       "label": "Hellfire (J. T. Slade)",
       "size": 1,
+      "where": "isolate",
       "hubs": [
         {
           "node_id": "Hellfire_(J._T._Slade)",
@@ -721,12 +795,12 @@
       ],
       "members": [
         "Hellfire_(J._T._Slade)"
-      ],
-      "outside_giant": true
+      ]
     },
     {
-      "label": "Illuminator (Marvel Comics)",
+      "label": "Illuminator",
       "size": 1,
+      "where": "isolate",
       "hubs": [
         {
           "node_id": "Illuminator_(Marvel_Comics)",
@@ -736,12 +810,12 @@
       ],
       "members": [
         "Illuminator_(Marvel_Comics)"
-      ],
-      "outside_giant": true
+      ]
     },
     {
-      "label": "Miracleman (character)",
+      "label": "Miracleman",
       "size": 1,
+      "where": "isolate",
       "hubs": [
         {
           "node_id": "Miracleman_(character)",
@@ -751,12 +825,12 @@
       ],
       "members": [
         "Miracleman_(character)"
-      ],
-      "outside_giant": true
+      ]
     },
     {
-      "label": "Ogre (Marvel Comics)",
+      "label": "Ogre",
       "size": 1,
+      "where": "isolate",
       "hubs": [
         {
           "node_id": "Ogre_(Marvel_Comics)",
@@ -766,57 +840,12 @@
       ],
       "members": [
         "Ogre_(Marvel_Comics)"
-      ],
-      "outside_giant": true
-    },
-    {
-      "label": "Radian (Morituri)",
-      "size": 1,
-      "hubs": [
-        {
-          "node_id": "Radian_(Morituri)",
-          "name": "Radian (Morituri)",
-          "strength": 0
-        }
-      ],
-      "members": [
-        "Radian_(Morituri)"
-      ],
-      "outside_giant": true
-    },
-    {
-      "label": "Scaredycat",
-      "size": 1,
-      "hubs": [
-        {
-          "node_id": "Scaredycat",
-          "name": "Scaredycat",
-          "strength": 0
-        }
-      ],
-      "members": [
-        "Scaredycat"
-      ],
-      "outside_giant": true
-    },
-    {
-      "label": "Scatterbrain (Morituri)",
-      "size": 1,
-      "hubs": [
-        {
-          "node_id": "Scatterbrain_(Morituri)",
-          "name": "Scatterbrain (Morituri)",
-          "strength": 0
-        }
-      ],
-      "members": [
-        "Scatterbrain_(Morituri)"
-      ],
-      "outside_giant": true
+      ]
     },
     {
       "label": "Sean and Chris",
       "size": 1,
+      "where": "isolate",
       "hubs": [
         {
           "node_id": "Sean_and_Chris",
@@ -826,42 +855,12 @@
       ],
       "members": [
         "Sean_and_Chris"
-      ],
-      "outside_giant": true
-    },
-    {
-      "label": "Shear (character)",
-      "size": 1,
-      "hubs": [
-        {
-          "node_id": "Shear_(character)",
-          "name": "Shear (character)",
-          "strength": 0
-        }
-      ],
-      "members": [
-        "Shear_(character)"
-      ],
-      "outside_giant": true
-    },
-    {
-      "label": "Snapdragon (Morituri)",
-      "size": 1,
-      "hubs": [
-        {
-          "node_id": "Snapdragon_(Morituri)",
-          "name": "Snapdragon (Morituri)",
-          "strength": 0
-        }
-      ],
-      "members": [
-        "Snapdragon_(Morituri)"
-      ],
-      "outside_giant": true
+      ]
     },
     {
       "label": "Solarman",
       "size": 1,
+      "where": "isolate",
       "hubs": [
         {
           "node_id": "Solarman",
@@ -871,12 +870,12 @@
       ],
       "members": [
         "Solarman"
-      ],
-      "outside_giant": true
+      ]
     },
     {
       "label": "Super Rabbit",
       "size": 1,
+      "where": "isolate",
       "hubs": [
         {
           "node_id": "Super_Rabbit",
@@ -886,42 +885,12 @@
       ],
       "members": [
         "Super_Rabbit"
-      ],
-      "outside_giant": true
-    },
-    {
-      "label": "Toxyn",
-      "size": 1,
-      "hubs": [
-        {
-          "node_id": "Toxyn",
-          "name": "Toxyn",
-          "strength": 0
-        }
-      ],
-      "members": [
-        "Toxyn"
-      ],
-      "outside_giant": true
-    },
-    {
-      "label": "Vyking",
-      "size": 1,
-      "hubs": [
-        {
-          "node_id": "Vyking",
-          "name": "Vyking",
-          "strength": 0
-        }
-      ],
-      "members": [
-        "Vyking"
-      ],
-      "outside_giant": true
+      ]
     },
     {
       "label": "Yo-Yo Rodriguez",
       "size": 1,
+      "where": "isolate",
       "hubs": [
         {
           "node_id": "Yo-Yo_Rodriguez",
@@ -931,28 +900,21 @@
       ],
       "members": [
         "Yo-Yo_Rodriguez"
-      ],
-      "outside_giant": true
+      ]
     }
   ],
   "membership": {
     "Abomination_(character)": 0,
+    "Ajak": 0,
     "Arabian_Knight_(character)": 0,
     "Ares_(Marvel_Comics)": 0,
     "Balder_the_Brave": 0,
     "Black_Rider_(character)": 0,
-    "Coldblood": 0,
-    "Crippler_(character)": 0,
-    "Deathlok": 0,
     "Debrii": 0,
     "Delroy_Garrett": 0,
-    "Detroit_Steel": 0,
     "Devil_Hulk": 0,
-    "Digitek_(character)": 0,
-    "Doom_2099": 0,
     "Dragon_Lord_(character)": 0,
     "Fandral": 0,
-    "Fin_Fang_Foom": 0,
     "Firelord_(character)": 0,
     "Flatman_(character)": 0,
     "Frog-Man": 0,
@@ -961,228 +923,212 @@
     "Gremlin_(comics)": 0,
     "Hercules_(Marvel_Comics)": 0,
     "Hulk": 0,
-    "Hulk_2099": 0,
-    "Iron_Man_(Ultimate_Marvel_character)": 0,
-    "Iron_Man_2020": 0,
+    "Ikaris": 0,
     "Kid_Colt": 0,
     "Kristoff_Vernard": 0,
     "Living_Lightning": 0,
-    "Machine_Man": 0,
     "Nightwatch_(character)": 0,
     "Patsy_Walker": 0,
-    "Ravage_2099": 0,
     "Red_Wolf_(comics)": 0,
     "Robbie_Baldwin": 0,
     "Sabra_(character)": 0,
     "Sentry_(Robert_Reynolds)": 0,
-    "Shamrock_(comics)": 0,
     "She-Hulk": 0,
     "She-Hulk_(Lyra)": 0,
     "Silencer_(comics)": 0,
     "Solo_(Marvel_Comics)": 0,
     "Steel_Spider": 0,
+    "Thena": 0,
     "Thor_Girl": 0,
     "Timeslip_(comics)": 0,
     "Two-Gun_Kid": 0,
     "Typeface_(character)": 0,
-    "Ursa_Major_(character)": 0,
     "Vance_Astrovik": 0,
-    "War_Machine": 0,
-    "Agent_X_(Marvel_Comics)": 1,
-    "Black_Widow_(Natasha_Romanova)": 1,
-    "Blade_(character)": 1,
-    "Blue_Eagle_(character)": 1,
-    "Bob,_Agent_of_Hydra": 1,
-    "Captain_Ultra": 1,
-    "Caretaker_(comics)": 1,
-    "Deadpool": 1,
-    "Devil_Dinosaur": 1,
-    "Doctor_Druid": 1,
-    "Doctor_Strange": 1,
-    "Dogpool": 1,
-    "Elsa_Bloodstone": 1,
-    "Emrys_Killebrew": 1,
-    "Frankenstein's_Monster_(Marvel_Comics)": 1,
-    "Ghost_Rider": 1,
-    "Ghost_Rider_(Danny_Ketch)": 1,
-    "Ghost_Rider_(Johnny_Blaze)": 1,
-    "Gwenpool": 1,
-    "Hawkeye_(comics)": 1,
-    "Hit-Monkey": 1,
-    "Hrimhari": 1,
-    "Jericho_Drumm": 1,
-    "Man-Thing": 1,
-    "Mockingbird_(Marvel_Comics)": 1,
-    "Moon_Knight": 1,
-    "Moonglow_(comics)": 1,
-    "Morbius": 1,
-    "Outlaw_(Marvel_Comics)": 1,
-    "Red_Guardian": 1,
-    "Rockman_(character)": 1,
-    "Ronin_(Marvel_Comics)": 1,
-    "Satana_(Marvel_Comics)": 1,
-    "Scarlet_Scarab": 1,
-    "Solomon_Kane_(comics)": 1,
-    "Straw_Man_(comics)": 1,
-    "Tarantula_(Marvel_Comics)": 1,
-    "The_Witness_(character)": 1,
-    "Ulysses_Bloodstone": 1,
-    "Werewolf_by_Night": 1,
-    "Yelena_Belova": 1,
-    "Zombie_(comics)": 1,
-    "Anole_(character)": 2,
-    "Betsy_Braddock": 2,
-    "Box_(comics)": 2,
-    "Brian_Braddock": 2,
-    "Cable_(character)": 2,
-    "Ch'od": 2,
-    "Cyclops_(Marvel_Comics)": 2,
-    "Emma_Frost": 2,
-    "Empath_(character)": 2,
-    "Fabio_Medina": 2,
-    "Franklin_Richards_(character)": 2,
-    "G._W._Bridge": 2,
-    "Garrison_Kane": 2,
-    "Gladiator_(Kallark)": 2,
-    "Guardian_(Marvel_Comics)": 2,
-    "Hellion_(character)": 2,
-    "Jean_Grey": 2,
-    "Jean_Grey_(X-Men_film_series)": 2,
-    "Jubilee_(character)": 2,
-    "Junior_Juniper": 2,
-    "Korvus": 2,
-    "Leech_(character)": 2,
-    "Northstar_(character)": 2,
-    "Oya_(comics)": 2,
-    "Phoenix_Force": 2,
-    "Puck_(Marvel_Comics)": 2,
-    "Rachel_Summers": 2,
-    "Raza_Longknife": 2,
-    "Rockslide_(character)": 2,
-    "Ruby_Summers": 2,
-    "Rusty_Collins": 2,
-    "Shatterstar": 2,
-    "Storm_(Marvel_Comics)": 2,
-    "Surge_(Marvel_Comics)": 2,
-    "Vindicator_(comics)": 2,
-    "Vulcan_(Marvel_Comics)": 2,
-    "Wild_Child_(character)": 2,
-    "Wolverine_(Ultimate_Marvel_character)": 2,
-    "Wolverine_(character)": 2,
-    "Xorn": 2,
-    "Adam_Warlock": 3,
-    "Ajak": 3,
-    "Beta_Ray_Bill": 3,
-    "Blue_Marvel": 3,
-    "Bug_(Marvel_Comics)": 3,
-    "Cammi_(character)": 3,
-    "Captain_Marvel_(Khn'nr)": 3,
-    "Captain_Marvel_(Marvel_Comics)": 3,
-    "Chase_Stein": 3,
-    "Dargo_Ktor": 3,
-    "Darkhawk": 3,
-    "Doctor_Spectrum": 3,
-    "Genis-Vell": 3,
-    "Hyperion_(character)": 3,
-    "Ikaris": 3,
-    "Justice_(New_Universe)": 3,
-    "Kismet_(Marvel_Comics)": 3,
-    "Mahr_Vehl": 3,
-    "Makkari_(character)": 3,
-    "Mark_Hazzard:_Merc": 3,
-    "Marvel_Boy_(Robert_Grayson)": 3,
-    "Moondragon": 3,
-    "Ms._Marvel": 3,
-    "Nightmask": 3,
-    "Noh-Varr": 3,
-    "Nova_(Richard_Rider)": 3,
-    "Phyla-Vell": 3,
-    "Powerhouse_(Marvel_Comics)": 3,
-    "Quasar_(character)": 3,
-    "Redneck_(comics)": 3,
-    "Rocket_Raccoon": 3,
-    "Rom_the_Space_Knight": 3,
-    "Star-Lord": 3,
-    "Star_Brand": 3,
-    "Starhawk_(character)": 3,
-    "Starr_the_Slayer": 3,
-    "Thena": 3,
-    "Turbo_(comics)": 3,
-    "Anne_Weying": 4,
-    "Anya_Corazon": 4,
-    "Black_Cat_(Marvel_Comics)": 4,
-    "Black_Marvel": 4,
-    "Captain_Universe": 4,
-    "Darkdevil": 4,
-    "Dusk_(comics)": 4,
-    "Eddie_Brock": 4,
-    "Enigma_(Marvel_Comics)": 4,
-    "Ethan_Edwards": 4,
-    "Force_(comics)": 4,
-    "Guardsman_(character)": 4,
-    "Helix_(Marvel_Comics)": 4,
-    "Hornet_(comics)": 4,
-    "Human_Fly_(character)": 4,
-    "Hybrid_(Scott_Washington)": 4,
-    "John_Jameson_(character)": 4,
-    "Killraven": 4,
-    "Mania_(character)": 4,
-    "Mayday_Parker": 4,
-    "NFL_SuperPro": 4,
-    "Phil_Urich": 4,
-    "Ricochet_(comics)": 4,
-    "Scarlet_Spider": 4,
-    "Scorpio_(Marvel_Comics)": 4,
-    "Silk_(character)": 4,
-    "Spider-Bitch_(Ashley_Barton)": 4,
-    "Spider-Girl": 4,
-    "Spider-Man": 4,
-    "Spider-Man_(Marvel_Mangaverse)": 4,
-    "Spider-Man_Noir": 4,
-    "Spider-UK": 4,
-    "Spider-Woman": 4,
-    "Spider-Woman_(Gwen_Stacy)": 4,
-    "Spider-Woman_(Jessica_Drew)": 4,
-    "Thunderclap_(comics)": 4,
-    "Venom_(character)": 4,
-    "Will_o'_the_Wisp_(comics)": 4,
-    "Battlestar_(character)": 5,
-    "Black_Bolt": 5,
-    "Blazing_Skull": 5,
-    "Blue_Diamond_(character)": 5,
-    "Bucky_(Marvel_Comics)": 5,
-    "Citizen_V": 5,
-    "Gorgon_(Inhuman)": 5,
-    "Hulkling": 5,
-    "Human_Torch": 5,
-    "Human_Torch_(android)": 5,
-    "Inferno_(Dante_Pertuz)": 5,
-    "Iron_Lad": 5,
-    "Jack_Frost_(Marvel_Comics)": 5,
-    "Jack_Monroe_(character)": 5,
-    "Jeffrey_Mace": 5,
-    "Karnak_(character)": 5,
-    "Killpower": 5,
-    "Motormouth_(comics)": 5,
-    "Nomad_(Marvel_Comics)": 5,
-    "Peggy_Carter": 5,
-    "Quicksilver_(Marvel_Comics)": 5,
-    "Red_Raven_(Marvel_Comics)": 5,
-    "Rikki_Barnes": 5,
-    "Scarlet_Witch": 5,
-    "Skull_the_Slayer": 5,
-    "Speed_(character)": 5,
-    "Spitfire_(character)": 5,
-    "Stingray_(Marvel_Comics)": 5,
-    "Synapse_(character)": 5,
-    "The_Union_(Marvel)": 5,
-    "Thin_Man_(character)": 5,
-    "Toro_(character)": 5,
-    "U.S._Agent": 5,
-    "Union_Jack_(Joseph_Chapman)": 5,
-    "Union_Jack_(Marvel_Comics)": 5,
-    "Whizzer_(Robert_Frank)": 5,
-    "William_Burnside_(character)": 5,
+    "Anole_(character)": 1,
+    "Betsy_Braddock": 1,
+    "Box_(comics)": 1,
+    "Brian_Braddock": 1,
+    "Cable_(character)": 1,
+    "Ch'od": 1,
+    "Cyclops_(Marvel_Comics)": 1,
+    "Emma_Frost": 1,
+    "Empath_(character)": 1,
+    "Fabio_Medina": 1,
+    "Franklin_Richards_(character)": 1,
+    "G._W._Bridge": 1,
+    "Garrison_Kane": 1,
+    "Gladiator_(Kallark)": 1,
+    "Guardian_(Marvel_Comics)": 1,
+    "Hellion_(character)": 1,
+    "Jean_Grey": 1,
+    "Jean_Grey_(X-Men_film_series)": 1,
+    "Jubilee_(character)": 1,
+    "Junior_Juniper": 1,
+    "Korvus": 1,
+    "Leech_(character)": 1,
+    "Northstar_(character)": 1,
+    "Oya_(comics)": 1,
+    "Phoenix_Force": 1,
+    "Puck_(Marvel_Comics)": 1,
+    "Rachel_Summers": 1,
+    "Raza_Longknife": 1,
+    "Rockslide_(character)": 1,
+    "Ruby_Summers": 1,
+    "Rusty_Collins": 1,
+    "Shatterstar": 1,
+    "Storm_(Marvel_Comics)": 1,
+    "Surge_(Marvel_Comics)": 1,
+    "Vindicator_(comics)": 1,
+    "Vulcan_(Marvel_Comics)": 1,
+    "Wild_Child_(character)": 1,
+    "Wolverine_(Ultimate_Marvel_character)": 1,
+    "Wolverine_(character)": 1,
+    "Xorn": 1,
+    "Anne_Weying": 2,
+    "Anya_Corazon": 2,
+    "Black_Cat_(Marvel_Comics)": 2,
+    "Black_Marvel": 2,
+    "Captain_Universe": 2,
+    "Darkdevil": 2,
+    "Dusk_(comics)": 2,
+    "Eddie_Brock": 2,
+    "Enigma_(Marvel_Comics)": 2,
+    "Ethan_Edwards": 2,
+    "Force_(comics)": 2,
+    "Guardsman_(character)": 2,
+    "Helix_(Marvel_Comics)": 2,
+    "Hornet_(comics)": 2,
+    "Human_Fly_(character)": 2,
+    "Hybrid_(Scott_Washington)": 2,
+    "John_Jameson_(character)": 2,
+    "Killraven": 2,
+    "Mania_(character)": 2,
+    "Mayday_Parker": 2,
+    "NFL_SuperPro": 2,
+    "Phil_Urich": 2,
+    "Ricochet_(comics)": 2,
+    "Scarlet_Spider": 2,
+    "Scorpio_(Marvel_Comics)": 2,
+    "Silk_(character)": 2,
+    "Spider-Bitch_(Ashley_Barton)": 2,
+    "Spider-Girl": 2,
+    "Spider-Man": 2,
+    "Spider-Man_(Marvel_Mangaverse)": 2,
+    "Spider-Man_Noir": 2,
+    "Spider-UK": 2,
+    "Spider-Woman": 2,
+    "Spider-Woman_(Gwen_Stacy)": 2,
+    "Spider-Woman_(Jessica_Drew)": 2,
+    "Thunderclap_(comics)": 2,
+    "Venom_(character)": 2,
+    "Will_o'_the_Wisp_(comics)": 2,
+    "Battlestar_(character)": 3,
+    "Black_Bolt": 3,
+    "Blazing_Skull": 3,
+    "Blue_Diamond_(character)": 3,
+    "Bucky_(Marvel_Comics)": 3,
+    "Citizen_V": 3,
+    "Gorgon_(Inhuman)": 3,
+    "Hulkling": 3,
+    "Human_Torch": 3,
+    "Human_Torch_(android)": 3,
+    "Inferno_(Dante_Pertuz)": 3,
+    "Iron_Lad": 3,
+    "Jack_Frost_(Marvel_Comics)": 3,
+    "Jack_Monroe_(character)": 3,
+    "Jeffrey_Mace": 3,
+    "Karnak_(character)": 3,
+    "Killpower": 3,
+    "Motormouth_(comics)": 3,
+    "Nomad_(Marvel_Comics)": 3,
+    "Peggy_Carter": 3,
+    "Quicksilver_(Marvel_Comics)": 3,
+    "Red_Raven_(Marvel_Comics)": 3,
+    "Rikki_Barnes": 3,
+    "Scarlet_Witch": 3,
+    "Shamrock_(comics)": 3,
+    "Skull_the_Slayer": 3,
+    "Speed_(character)": 3,
+    "Spitfire_(character)": 3,
+    "Stingray_(Marvel_Comics)": 3,
+    "Synapse_(character)": 3,
+    "The_Union_(Marvel)": 3,
+    "Thin_Man_(character)": 3,
+    "Toro_(character)": 3,
+    "U.S._Agent": 3,
+    "Union_Jack_(Joseph_Chapman)": 3,
+    "Union_Jack_(Marvel_Comics)": 3,
+    "Whizzer_(Robert_Frank)": 3,
+    "William_Burnside_(character)": 3,
+    "Adam_Warlock": 4,
+    "Beta_Ray_Bill": 4,
+    "Blue_Marvel": 4,
+    "Bug_(Marvel_Comics)": 4,
+    "Cammi_(character)": 4,
+    "Captain_Marvel_(Khn'nr)": 4,
+    "Captain_Marvel_(Marvel_Comics)": 4,
+    "Chase_Stein": 4,
+    "Dargo_Ktor": 4,
+    "Darkhawk": 4,
+    "Doctor_Spectrum": 4,
+    "Genis-Vell": 4,
+    "Hyperion_(character)": 4,
+    "Justice_(New_Universe)": 4,
+    "Kismet_(Marvel_Comics)": 4,
+    "Mahr_Vehl": 4,
+    "Makkari_(character)": 4,
+    "Mark_Hazzard:_Merc": 4,
+    "Marvel_Boy_(Robert_Grayson)": 4,
+    "Moondragon": 4,
+    "Ms._Marvel": 4,
+    "Nightmask": 4,
+    "Noh-Varr": 4,
+    "Nova_(Richard_Rider)": 4,
+    "Phyla-Vell": 4,
+    "Powerhouse_(Marvel_Comics)": 4,
+    "Quasar_(character)": 4,
+    "Redneck_(comics)": 4,
+    "Rocket_Raccoon": 4,
+    "Rom_the_Space_Knight": 4,
+    "Star-Lord": 4,
+    "Star_Brand": 4,
+    "Starhawk_(character)": 4,
+    "Starr_the_Slayer": 4,
+    "Turbo_(comics)": 4,
+    "Agent_X_(Marvel_Comics)": 5,
+    "Blade_(character)": 5,
+    "Bob,_Agent_of_Hydra": 5,
+    "Captain_Ultra": 5,
+    "Caretaker_(comics)": 5,
+    "Deadpool": 5,
+    "Devil_Dinosaur": 5,
+    "Doctor_Druid": 5,
+    "Doctor_Strange": 5,
+    "Dogpool": 5,
+    "Elsa_Bloodstone": 5,
+    "Emrys_Killebrew": 5,
+    "Fin_Fang_Foom": 5,
+    "Frankenstein's_Monster_(Marvel_Comics)": 5,
+    "Ghost_Rider": 5,
+    "Ghost_Rider_(Danny_Ketch)": 5,
+    "Ghost_Rider_(Johnny_Blaze)": 5,
+    "Gwenpool": 5,
+    "Hit-Monkey": 5,
+    "Hrimhari": 5,
+    "Jericho_Drumm": 5,
+    "Man-Thing": 5,
+    "Moon_Knight": 5,
+    "Moonglow_(comics)": 5,
+    "Morbius": 5,
+    "Outlaw_(Marvel_Comics)": 5,
+    "Satana_(Marvel_Comics)": 5,
+    "Scarlet_Scarab": 5,
+    "Solomon_Kane_(comics)": 5,
+    "Straw_Man_(comics)": 5,
+    "Tarantula_(Marvel_Comics)": 5,
+    "Ulysses_Bloodstone": 5,
+    "Werewolf_by_Night": 5,
+    "Zombie_(comics)": 5,
     "Alex_Wilder": 6,
     "Bill_Foster_(character)": 6,
     "Black_Jack_Tarr": 6,
@@ -1213,11 +1159,40 @@
     "Thunderbolt_(Marvel_Comics)": 6,
     "White_Tiger_(Heroes_for_Hire)": 6,
     "White_Tiger_(comics)": 6,
-    "Backhand_(character)": 7,
-    "Baymax": 8,
-    "Bird-Brain_(Marvel_Comics)": 9,
-    "Black_Fox_(Robert_Paine)": 10,
-    "Blackthorn_(character)": 11,
+    "Black_Widow_(Natasha_Romanova)": 7,
+    "Blue_Eagle_(character)": 7,
+    "Coldblood": 7,
+    "Crippler_(character)": 7,
+    "Deathlok": 7,
+    "Detroit_Steel": 7,
+    "Digitek_(character)": 7,
+    "Doom_2099": 7,
+    "Hawkeye_(comics)": 7,
+    "Hulk_2099": 7,
+    "Iron_Man_(Ultimate_Marvel_character)": 7,
+    "Iron_Man_2020": 7,
+    "Machine_Man": 7,
+    "Mockingbird_(Marvel_Comics)": 7,
+    "Ravage_2099": 7,
+    "Red_Guardian": 7,
+    "Rockman_(character)": 7,
+    "Ronin_(Marvel_Comics)": 7,
+    "The_Witness_(character)": 7,
+    "Ursa_Major_(character)": 7,
+    "War_Machine": 7,
+    "Yelena_Belova": 7,
+    "Backhand_(character)": 8,
+    "Blackthorn_(character)": 8,
+    "Radian_(Morituri)": 8,
+    "Scaredycat": 8,
+    "Scatterbrain_(Morituri)": 8,
+    "Shear_(character)": 8,
+    "Snapdragon_(Morituri)": 8,
+    "Toxyn": 8,
+    "Vyking": 8,
+    "Baymax": 9,
+    "Bird-Brain_(Marvel_Comics)": 10,
+    "Black_Fox_(Robert_Paine)": 11,
     "Brain_Drain_(character)": 12,
     "Breeze_Barton": 13,
     "Captain_Midlands": 14,
@@ -1228,16 +1203,9 @@
     "Illuminator_(Marvel_Comics)": 19,
     "Miracleman_(character)": 20,
     "Ogre_(Marvel_Comics)": 21,
-    "Radian_(Morituri)": 22,
-    "Scaredycat": 23,
-    "Scatterbrain_(Morituri)": 24,
-    "Sean_and_Chris": 25,
-    "Shear_(character)": 26,
-    "Snapdragon_(Morituri)": 27,
-    "Solarman": 28,
-    "Super_Rabbit": 29,
-    "Toxyn": 30,
-    "Vyking": 31,
-    "Yo-Yo_Rodriguez": 32
+    "Sean_and_Chris": 22,
+    "Solarman": 23,
+    "Super_Rabbit": 24,
+    "Yo-Yo_Rodriguez": 25
   }
 }

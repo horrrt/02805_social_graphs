@@ -1,241 +1,172 @@
-// Week 5 · #search — bag-of-words cosine search over the 303 Marvel pages.
+// Week 5 · section 3 · A Marvel search engine in 20 lines. Owner: Àngela.
+//
+// Draws into #search on docs/weeks/week05/index.html: the stat row, the search
+// box (the stopword-free model, same vocabulary and tie rule as the script), the
+// table of queries with the detail of the selected one, and the passage checked.
+// Data: docs/weeks/week05/data/search.json and search_live.json, written by
+// analysis/week05_search.py.
 
-const SEARCH_URL = new URL("../../weeks/week05/data/search.json", import.meta.url);
-const LIVE_URL = new URL("../../weeks/week05/data/search_live.json", import.meta.url);
+import { loadData, passage, termify } from "./kit.js?v=1";
 
-async function loadJson(url) {
-  const r = await fetch(url);
-  if (!r.ok) throw new Error(`${url.pathname} ${r.status}`);
-  return r.json();
+const VERSION = "2";
+const SEARCH_URL = new URL(`../../weeks/week05/data/search.json?v=${VERSION}`, import.meta.url);
+const LIVE_URL = new URL(`../../weeks/week05/data/search_live.json?v=${VERSION}`, import.meta.url);
+
+// The script's token rule: letters and digits in any alphabet, an inner apostrophe kept.
+const TOKEN = /[\p{L}\p{M}\p{N}]+(?:['’][\p{L}\p{M}\p{N}]+)?/gu;
+const tokenize = (text) => (text.toLowerCase().match(TOKEN) || []).map((t) => t.replace("’", "'"));
+const pct = (v, digits = 1) => `${(100 * v).toFixed(digits)}%`;
+const el = (tag, text, cls) => {
+  const e = document.createElement(tag);
+  if (text !== undefined) e.textContent = text;
+  if (cls) e.className = cls;
+  return e;
+};
+
+function model(live) {
+  const index = new Map(live.vocab.map((t, i) => [t, i]));
+  const stop = new Set(live.stopwords);
+  const norms = live.pages.map((p) => Math.sqrt(p.val.reduce((s, v) => s + v * v, 0)));
+  const rows = live.pages.map((p) => new Map(p.idx.map((i, k) => [i, p.val[k]])));
+  return (query) => {
+    const counts = new Map();
+    for (const t of tokenize(query)) {
+      if (stop.has(t) || !index.has(t)) continue;
+      counts.set(index.get(t), (counts.get(index.get(t)) || 0) + 1);
+    }
+    if (!counts.size) return null;
+    const qn = Math.sqrt([...counts.values()].reduce((s, v) => s + v * v, 0));
+    const scored = live.pages.map((p, i) => {
+      let dot = 0;
+      for (const [k, v] of counts) dot += v * (rows[i].get(k) || 0);
+      return { id: p.id, name: p.name, cosine: norms[i] ? dot / (qn * norms[i]) : 0 };
+    });
+    // Ties break on node_id, as in analysis/week05_search.py.
+    scored.sort((a, b) => b.cosine - a.cosine || (a.id < b.id ? -1 : 1));
+    return scored.slice(0, live.top);
+  };
 }
 
-function tokenize(text) {
-  return (text.toLowerCase().match(/[a-z0-9]+(?:'[a-z]+)?/g) || []);
-}
-
-function cosineSparse(qIdx, qVal, pIdx, pVal) {
-  // Prefer a map so unsorted page index lists still score correctly.
-  const page = new Map();
-  for (let i = 0; i < pIdx.length; i += 1) page.set(pIdx[i], pVal[i]);
-  let dot = 0;
-  let qn = 0;
-  let pn = 0;
-  for (const v of qVal) qn += v * v;
-  for (const v of pVal) pn += v * v;
-  if (!qn || !pn) return 0;
-  for (let i = 0; i < qIdx.length; i += 1) {
-    const pv = page.get(qIdx[i]);
-    if (pv) dot += qVal[i] * pv;
+function renderStats(s, host) {
+  host.replaceChildren();
+  for (const [value, label] of [
+    [`${s.hits_at_1}/${s.n_scored}`, "right page first, raw counts"],
+    [`${s.hits_at_5}/${s.n_scored}`, "in the top 5, raw counts"],
+    [`${s.hits_at_1_nostop}/${s.n_scored}`, "first, stopwords removed"],
+    [`${s.hits_at_5_nostop}/${s.n_scored}`, "in the top 5, stopwords removed"],
+  ]) {
+    const d = el("div", undefined, "w5-stat");
+    d.append(el("b", value), el("span", label));
+    host.append(d);
   }
-  return dot / (Math.sqrt(qn) * Math.sqrt(pn));
 }
 
-function vectorizeQuery(query, vocabIndex) {
-  const counts = new Map();
-  for (const t of tokenize(query)) {
-    const idx = vocabIndex.get(t);
-    if (idx === undefined) continue;
-    counts.set(idx, (counts.get(idx) || 0) + 1);
+function renderRanks(rows, host, target) {
+  host.replaceChildren();
+  if (!rows) {
+    const li = el("li");
+    li.append(el("span", "No page shares a word with this query once stopwords are removed.", "w5-name"));
+    host.append(li);
+    return;
   }
-  const idx = [...counts.keys()].sort((a, b) => a - b);
-  const val = idx.map((i) => counts.get(i));
-  return { idx, val };
-}
-
-function rankLive(query, live) {
-  const vocabIndex = new Map(live.vocab.map((t, i) => [t, i]));
-  const q = vectorizeQuery(query, vocabIndex);
-  if (!q.idx.length) return { empty: true, rows: [] };
-  const scored = live.pages.map((p) => ({
-    id: p.id,
-    name: p.name,
-    cosine: cosineSparse(q.idx, q.val, p.idx, p.val),
-  }));
-  scored.sort((a, b) => b.cosine - a.cosine || a.name.localeCompare(b.name));
-  return { empty: false, rows: scored.slice(0, 8) };
-}
-
-function fmt(n) {
-  return (Math.round(n * 1000) / 10).toFixed(n < 0.1 ? 1 : 0) + "%";
-}
-
-function overlapText(terms) {
-  if (!terms?.length) return "no shared tokens";
-  return terms
-    .slice(0, 5)
-    .map((t) => (t.is_stop ? `${t.term}*` : t.term))
-    .join(", ");
-}
-
-function renderStats(summary, host) {
-  host.innerHTML = "";
-  const cells = [
-    [summary.hits_at_1 + "/" + summary.n_queries, "raw BoW hits at rank 1"],
-    [summary.hits_at_5 + "/" + summary.n_queries, "raw BoW hits in top 5"],
-    [summary.hits_at_1_nostop + "/" + summary.n_queries, "without stopwords @1"],
-    [summary.hits_at_5_nostop + "/" + summary.n_queries, "without stopwords @5"],
-  ];
-  for (const [value, label] of cells) {
-    const d = document.createElement("div");
-    d.className = "w5-stat";
-    d.innerHTML = `<b>${value}</b><span>${label}</span>`;
-    host.appendChild(d);
-  }
+  rows.forEach((row, i) => {
+    const li = el("li");
+    const hit = target && row.id === target;
+    if (hit) li.classList.add("w5-hit");
+    li.append(el("span", String(i + 1), "w5-pos"), el("span", hit ? `${row.name} (target)` : row.name, "w5-name"),
+      el("span", row.cosine.toFixed(3), "w5-score"));
+    host.append(li);
+  });
 }
 
 function renderTable(data, tbody, onPick) {
-  tbody.innerHTML = "";
+  tbody.replaceChildren();
   for (const q of data.queries) {
-    const tr = document.createElement("tr");
+    const tr = el("tr");
     tr.dataset.id = q.id;
-    const ok = q.hit_at_1;
-    tr.innerHTML = `
-      <td><button class="linkish" type="button"></button></td>
-      <td></td>
-      <td class="${ok ? "w5-ok" : "w5-fail"}"></td>
-      <td></td>
-      <td></td>`;
-    tr.querySelector("button").textContent = q.query;
-    tr.children[1].textContent = q.expected_name;
-    tr.children[2].textContent = ok ? `#1` : `#${q.rank}`;
-    tr.children[3].textContent = `#${q.rank_nostop}`;
-    tr.children[4].textContent = q.top5[0]?.name || "—";
-    tr.querySelector("button").addEventListener("click", () => onPick(q.id));
-    tbody.appendChild(tr);
+    const button = el("button", q.query, "linkish");
+    button.type = "button";
+    button.addEventListener("click", () => onPick(q.id));
+    const cell = (text, cls) => {
+      const td = el("td", text, cls);
+      tr.append(td);
+      return td;
+    };
+    tr.append(el("td"));
+    tr.firstChild.append(button);
+    cell(q.expected_name ?? "none in the snapshot");
+    cell(q.rank ? `#${q.rank}` : "none", q.hit_at_1 ? "w5-ok" : "w5-fail");
+    cell(q.rank_nostop ? `#${q.rank_nostop}` : "none");
+    cell(q.top5[0].name);
+    tbody.append(tr);
   }
 }
 
-function renderDetail(q, host) {
-  if (!q) {
-    host.innerHTML = `<p class="w5-caption">Pick a query in the table to see why it landed where it did.</p>`;
-    return;
-  }
-  const status = q.hit_at_1
-    ? `<span class="w5-ok">Hit at rank 1</span>`
-    : `<span class="w5-fail">Miss — expected page at rank ${q.rank}</span>`;
-  const topTerms = overlapText(q.top5[0]?.overlap_terms);
-  const expTerms = overlapText(q.expected_overlap);
-  host.innerHTML = `
-    <p class="w5-lead">${status}. Without stopwords it sits at <b>#${q.rank_nostop}</b>
-    (chance of a random hit at #1 is ${fmt(1 / 303)}).</p>
-    <p class="w5-lead"><b>Top raw hit:</b> ${q.top5[0].name}
-    (cosine ${q.top5[0].cosine}). Shared tokens: ${topTerms}.
-    Asterisks mark stopwords.</p>
-    <p class="w5-lead"><b>Expected page:</b> ${q.expected_name}
-    shares ${expTerms}.</p>
-    ${q.failure_reason ? `<p class="w5-lead">${q.failure_reason}</p>` : ""}
-    <blockquote class="w5-quote">“${q.quote.text}”
-      <span class="w5-caption"> — ${q.quote.name}</span></blockquote>`;
+function renderDetail(q, s, host) {
+  host.replaceChildren();
+  const status = q.hit_at_1 ? "Right page first." : q.scored ? `The target sits at #${q.rank}.` : "No page is right.";
+  host.append(el("p", `${status} ${q.why_expected}`));
+  const words = (terms) => (terms?.length ? terms.slice(0, 5).map((t) => (t.is_stop ? `${t.term} (stopword)` : t.term)).join(", ") : "none");
+  host.append(el("p", `Top raw hit: ${q.top5[0].name}, ${q.top5[0].n_tokens.toLocaleString("en-GB")} words, shares ${words(q.top5[0].overlap_terms)}.`));
+  if (q.scored) host.append(el("p", `${q.expected_name} shares ${words(q.expected_overlap)}.`));
+  if (q.failure_reason) host.append(el("p", q.failure_reason));
+  host.append(el("p", `A random ranking puts the target first ${pct(s.chance_at_1)} of the time.`, "w5-caption"));
 }
 
-function renderLiveRanks(result, host, expectedName) {
-  host.innerHTML = "";
-  if (result.empty) {
-    host.innerHTML = `<li><span class="w5-name">No vocabulary overlap</span>
-      <span class="w5-terms">Try content words that actually appear on the pages
-      (stopwords are already stripped in this live box).</span></li>`;
-    return;
-  }
-  if (result.rows.length && result.rows[0].cosine === 0) {
-    host.innerHTML = `<li><span class="w5-name">No shared content words</span>
-      <span class="w5-terms">Every page scored 0 against this query after stopword removal.
-      Try a more specific phrase, or pick a chip below.</span></li>`;
-    return;
-  }
-  result.rows.forEach((row, i) => {
-    const li = document.createElement("li");
-    if (expectedName && row.name === expectedName) li.classList.add("w5-hit");
-    li.innerHTML = `
-      <span class="w5-pos">${i + 1}</span>
-      <span class="w5-name"></span>
-      <span class="w5-score"></span>`;
-    li.querySelector(".w5-name").textContent = row.name;
-    li.querySelector(".w5-score").textContent = row.cosine.toFixed(3);
-    host.appendChild(li);
-  });
-}
-
-export async function bootSearch(root = document) {
-  const section = root.querySelector("#search");
-  if (!section || section.dataset.booted) return;
-  section.dataset.booted = "1";
-
-  const [data, live] = await Promise.all([loadJson(SEARCH_URL), loadJson(LIVE_URL)]);
+async function boot() {
+  const section = document.getElementById("search");
+  if (!section) return;
+  const [data, live] = await Promise.all([loadData(SEARCH_URL), loadData(LIVE_URL)]);
+  const search = model(live);
   const byId = Object.fromEntries(data.queries.map((q) => [q.id, q]));
+  const s = data.summary;
+  renderStats(s, document.getElementById("search-stats"));
 
-  renderStats(data.summary, section.querySelector("#search-stats"));
-  section.querySelector("#search-baseline").textContent = data.baseline;
-  section.querySelector("#search-corpus-note").textContent = data.corpus_note;
-
-  const tbody = section.querySelector("#search-tbody");
-  const detail = section.querySelector("#search-detail");
-  const input = section.querySelector("#search-input");
-  const liveList = section.querySelector("#search-live-ranks");
-  const chips = section.querySelector("#search-chips");
-
-  let selected = data.queries[0]?.id;
+  const tbody = document.getElementById("search-tbody");
+  const detail = document.getElementById("search-detail");
+  const input = document.getElementById("search-input");
+  const ranks = document.getElementById("search-live-ranks");
+  const chips = document.getElementById("search-chips");
+  let selected = null;
 
   const pick = (id) => {
-    selected = id;
-    for (const tr of tbody.querySelectorAll("tr")) {
-      tr.dataset.selected = tr.dataset.id === id ? "true" : "false";
-    }
-    const q = byId[id];
-    renderDetail(q, detail);
-    if (q && input) {
-      input.value = q.query;
-      const ranked = rankLive(q.query, live);
-      renderLiveRanks(ranked, liveList, q.expected_name);
-    }
+    selected = byId[id];
+    for (const tr of tbody.querySelectorAll("tr")) tr.setAttribute("aria-selected", String(tr.dataset.id === id));
+    for (const b of chips.querySelectorAll("button")) b.setAttribute("aria-pressed", String(b.dataset.id === id));
+    renderDetail(selected, s, detail);
+    input.value = selected.query;
+    renderRanks(search(selected.query), ranks, selected.expected);
   };
-
   renderTable(data, tbody, pick);
-
-  chips.innerHTML = "";
   for (const q of data.queries.slice(0, 6)) {
-    const b = document.createElement("button");
+    const b = el("button", q.query, "w5-chip");
     b.type = "button";
-    b.className = "w5-chip";
-    b.textContent = q.query;
+    b.dataset.id = q.id;
     b.addEventListener("click", () => pick(q.id));
-    chips.appendChild(b);
+    chips.append(b);
   }
-
-  const runLive = () => {
-    const ranked = rankLive(input.value.trim(), live);
-    const expected = byId[selected]?.expected_name;
-    renderLiveRanks(ranked, liveList, expected);
+  const run = () => {
+    // A typed query has no target unless it is the selected query word for word.
+    const target = selected && input.value.trim() === selected.query ? selected.expected : null;
+    renderRanks(search(input.value.trim()), ranks, target);
   };
-
-  section.querySelector("#search-run").addEventListener("click", runLive);
+  document.getElementById("search-run").addEventListener("click", run);
   input.addEventListener("keydown", (e) => {
     if (e.key === "Enter") {
       e.preventDefault();
-      runLive();
+      run();
     }
   });
+  pick(data.queries.find((q) => q.id === "storm")?.id ?? data.queries[0].id);
 
-  pick(selected);
+  const c = data.checked;
+  if (c) document.getElementById("search-passage").append(passage({ page: c.winner, text: c.quote, highlight: c.terms[0] }));
 
-  section.querySelector("#search-surprise-num").textContent =
-    `${data.summary.hits_at_1} of ${data.summary.n_queries}`;
-  section.querySelector("#search-surprise-ns").textContent =
-    `${data.summary.hits_at_5_nostop} of ${data.summary.n_queries}`;
-  section.querySelector("#search-fail-count").textContent = String(data.summary.n_failures);
-
-  const fail = data.queries.find((q) => !q.hit_at_1);
-  if (fail) {
-    section.querySelector("#search-checked-quote").textContent = `“${fail.quote.text}”`;
-    section.querySelector("#search-checked-who").textContent = fail.quote.name;
-    section.querySelector("#search-checked-why").textContent = fail.failure_reason || "";
-  }
+  const did = document.getElementById("search-did");
+  termify(did, "Bag of Words", "A page or a query as a list of word counts, with the word order thrown away.", "w5-term-search-bow");
+  termify(did, "cosine similarity", "How close two count vectors point: their dot product divided by both their lengths, from 0 (no shared word) to 1 (the same proportions).", "w5-term-search-cosine");
+  termify(did, "document-term matrix", "A table with one row per page, one column per word and the counts inside.", "w5-term-search-dtm");
+  termify(did, "stopwords", "Very common words such as the, of and with, dropped before counting.", "w5-term-search-stop");
 }
 
-bootSearch().catch((err) => {
-  console.error("week05 search boot failed", err);
-  const status = document.querySelector("#w5-boot-status");
-  if (status) {
-    status.hidden = false;
-    status.textContent = "Could not load the search interactive data.";
-  }
-});
+boot().catch((err) => console.error("week05 search failed", err));

@@ -1,15 +1,34 @@
 """Week 5 · A Marvel search engine in 20 lines.
 
-Question: Can bag-of-words find the right Marvel page from a description?
+Question: Can a Bag-of-Words search find the right Marvel page from a description?
 
 Owner: Àngela
 Page section: docs/weeks/week05/index.html#search
-Output: docs/weeks/week05/data/search.json
-         docs/weeks/week05/data/search_live.json
+Output: docs/weeks/week05/data/search.json (the scored queries)
+        docs/weeks/week05/data/search_live.json (the same model, for the search box)
 
-Treat each query as a tiny document, vectorise it with the same vocabulary as
-the 303 pages, and rank by cosine similarity. Failures are explained from the
-words behind the match; TF-IDF (next week) will fix some of them.
+Method
+- Tokens: runs of letters and digits in any alphabet ("Araña" stays whole), an
+  inner apostrophe kept ("t'challa"), lowercased; hyphens split words, so
+  "Spider-Man" is "spider" and "man".
+- Bag of Words: every page and every query becomes a vector of token counts over
+  the corpus vocabulary; the 303 page vectors are the rows of the document-term
+  matrix.
+- Cosine similarity ranks the pages for a query: the dot product of the two
+  count vectors divided by both their lengths. Ties break on the node_id, the
+  same rule the page's search box uses.
+- Two runs: raw counts, and counts with spaCy's English stoplist removed (326
+  words; sklearn's list would drop "bill" from "Beta Ray Bill"). The search box
+  on the page runs the second model on the same vocabulary.
+- Twelve queries with a target page each, chosen by us. The brief's own example,
+  "Norse god of thunder", has no target in this snapshot: the category holds no
+  page for Thor, so it is reported but left out of the hit rates.
+- Baselines: a random ranking puts the target first with probability 1/303 and
+  in the top five with 5/303; a binomial test gives each hit count a p-value.
+- Why a query misses, from the data: the target shares no content word with
+  the query; or a page much shorter than the target wins, because dividing by
+  the vector's length favours short pages; or another page shares the query's
+  words as often (a rival).
 
     python analysis/week05_search.py
 """
@@ -22,380 +41,260 @@ import sys
 from pathlib import Path
 
 import numpy as np
-from sklearn.feature_extraction.text import ENGLISH_STOP_WORDS, CountVectorizer
+from scipy.stats import binomtest
+from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
+from spacy.lang.en.stop_words import STOP_WORDS
 
+from check_pages import check
 from week05_text import nodes, pages
 
 ROOT = Path(__file__).resolve().parents[1]
 OUT = ROOT / "docs" / "weeks" / "week05" / "data" / "search.json"
 LIVE_OUT = ROOT / "docs" / "weeks" / "week05" / "data" / "search_live.json"
+TOP = 5
+LIVE_TOP = 8           # rows the search box lists
+SHORT_RATIO = 3        # a top hit this many times shorter than the target is a short-page win
 
-STOP = set(ENGLISH_STOP_WORDS)
-
-# Expected node_ids must exist in Category:Marvel Comics superheroes (the
-# course snapshot). Several household names — Thor, Loki, Iron Man, Captain
-# America, Magneto — are absent from that category, so probes use pages that
-# are actually in the zip.
+# The queries and the page each one should find. Thor, Loki and the main Iron
+# Man page are not in the category snapshot, so the brief's example has none.
 QUERIES = [
-    {
-        "id": "thunder",
-        "query": "Norse god of thunder",
-        "expected": "Thor_Girl",
-        "why_expected": (
-            "The course's own example. Thor himself is not in this category snapshot, "
-            "so the closest in-roster page is Thor Girl."
-        ),
-    },
-    {
-        "id": "bill",
-        "query": "alien champion who wields Mjolnir",
-        "expected": "Beta_Ray_Bill",
-        "why_expected": "Beta Ray Bill is the Korbinite who lifts Thor's hammer.",
-    },
-    {
-        "id": "wolverine",
-        "query": "Canadian mutant with adamantium claws",
-        "expected": "Wolverine_(character)",
-        "why_expected": "Claws and adamantium are Wolverine's signature words.",
-    },
-    {
-        "id": "spider",
-        "query": "bitten by a radioactive spider",
-        "expected": "Spider-Man",
-        "why_expected": "The origin sentence almost every reader knows.",
-    },
-    {
-        "id": "strange",
-        "query": "sorcerer supreme of Earth",
-        "expected": "Doctor_Strange",
-        "why_expected": "The title Sorcerer Supreme points at Doctor Strange.",
-    },
-    {
-        "id": "deadpool",
-        "query": "mercenary who breaks the fourth wall",
-        "expected": "Deadpool",
-        "why_expected": "Fourth-wall humour is Deadpool's trademark.",
-    },
-    {
-        "id": "blackpanther",
-        "query": "king of Wakanda",
-        "expected": "Black_Panther_(character)",
-        "why_expected": "Wakanda and its king are Black Panther.",
-    },
-    {
-        "id": "hulk",
-        "query": "scientist who turns into a green giant when angry",
-        "expected": "Hulk",
-        "why_expected": "Bruce Banner / Hulk: green, giant, anger.",
-    },
-    {
-        "id": "storm",
-        "query": "weather-controlling mutant from Kenya",
-        "expected": "Storm_(Marvel_Comics)",
-        "why_expected": "Storm controls weather; her page mentions her Kenyan origin.",
-    },
-    {
-        "id": "witch",
-        "query": "chaos magic reality warping mutant twin",
-        "expected": "Scarlet_Witch",
-        "why_expected": "Chaos magic and reality warping are Scarlet Witch's brief.",
-    },
-    {
-        "id": "venom",
-        "query": "alien symbiote that bonds with Eddie Brock",
-        "expected": "Venom_(character)",
-        "why_expected": "Symbiote + Eddie Brock = Venom.",
-    },
-    {
-        "id": "moon",
-        "query": "mercenary who becomes a moon-themed vigilante",
-        "expected": "Moon_Knight",
-        "why_expected": "Moon Knight is the moon-themed vigilante.",
-    },
+    {"id": "thunder", "query": "Norse god of thunder", "expected": None,
+     "why_expected": "The brief's own example. The snapshot has no page for Thor, so no page is right."},
+    {"id": "bill", "query": "alien champion who wields Mjolnir", "expected": "Beta_Ray_Bill",
+     "why_expected": "Beta Ray Bill is the alien who lifts Thor's hammer."},
+    {"id": "wolverine", "query": "Canadian mutant with adamantium claws", "expected": "Wolverine_(character)",
+     "why_expected": "Adamantium claws belong to Wolverine."},
+    {"id": "spider", "query": "bitten by a radioactive spider", "expected": "Spider-Man",
+     "why_expected": "The origin story most readers know."},
+    {"id": "strange", "query": "sorcerer supreme of Earth", "expected": "Doctor_Strange",
+     "why_expected": "Sorcerer Supreme is Doctor Strange's title."},
+    {"id": "deadpool", "query": "mercenary who breaks the fourth wall", "expected": "Deadpool",
+     "why_expected": "Breaking the fourth wall is Deadpool's trademark."},
+    {"id": "blackpanther", "query": "king of Wakanda", "expected": "Black_Panther_(character)",
+     "why_expected": "Black Panther is the king of Wakanda."},
+    {"id": "hulk", "query": "scientist who turns into a green giant when angry", "expected": "Hulk",
+     "why_expected": "Bruce Banner turns into the Hulk when angry."},
+    {"id": "storm", "query": "weather-controlling mutant from Kenya", "expected": "Storm_(Marvel_Comics)",
+     "why_expected": "Storm controls the weather and grew up in Kenya."},
+    {"id": "witch", "query": "chaos magic reality warping mutant twin", "expected": "Scarlet_Witch",
+     "why_expected": "Chaos magic and reality warping are Scarlet Witch's powers; Quicksilver is her twin."},
+    {"id": "venom", "query": "alien symbiote that bonds with Eddie Brock", "expected": "Venom_(character)",
+     "why_expected": "Venom is the symbiote that bonds with Eddie Brock."},
+    {"id": "moon", "query": "mercenary who becomes a moon-themed vigilante", "expected": "Moon_Knight",
+     "why_expected": "Moon Knight is the moon-themed vigilante."},
 ]
 
-
-TOKEN_RE = re.compile(r"[a-z0-9]+(?:'[a-z]+)?", re.I)
+TOKEN_RE = re.compile(r"[^\W_]+(?:['’][^\W_]+)?")
+TOKEN_RULE = ("runs of letters and digits in any alphabet, an inner apostrophe kept, lowercased; "
+              "hyphens and other punctuation split words")
 
 
 def tokenize(text: str) -> list[str]:
-    """Lowercase alphanumeric tokens; keeps contractions as one piece."""
-    return TOKEN_RE.findall(text.lower())
+    return [t.replace("’", "'") for t in TOKEN_RE.findall(text.lower())]
 
 
-def display_name(node_id: str, names: dict[str, str]) -> str:
-    return names.get(node_id, node_id.replace("_", " "))
+# spaCy's stoplist, keeping the words this tokeniser can produce ("n't" and "'d" cannot).
+STOP = frozenset(w for w in (s.lower() for s in STOP_WORDS) if tokenize(w) == [w])
 
 
-def make_vectorizer(*, stop_words=None, min_df: int = 1) -> CountVectorizer:
-    return CountVectorizer(
-        tokenizer=tokenize,
-        preprocessor=None,
-        token_pattern=None,
-        lowercase=False,
-        stop_words=stop_words,
-        min_df=min_df,
-    )
+def vectorizer(stop: bool) -> CountVectorizer:
+    return CountVectorizer(tokenizer=tokenize, preprocessor=None, token_pattern=None, lowercase=False,
+                           stop_words=sorted(STOP) if stop else None)
 
 
-def top_overlap_terms(query_vec, page_vec, vocab: list[str], k: int = 8) -> list[dict]:
-    """Words that contribute most to the dot product (shared raw counts)."""
-    q = query_vec.toarray().ravel()
-    p = page_vec.toarray().ravel()
+def ranked(sims: np.ndarray) -> np.ndarray:
+    """Page indices, best first; ties (equal cosine) in node_id order."""
+    return np.lexsort((np.arange(len(sims)), -sims))
+
+
+def overlap(q_vec, page_vec, vocab: list[str], k: int = 8) -> list[dict]:
+    """The words a query and a page share, largest contribution to the dot product first."""
+    q, p = q_vec.toarray().ravel(), page_vec.toarray().ravel()
     contrib = q * p
-    idxs = np.argsort(-contrib)
     out = []
-    for i in idxs:
-        if contrib[i] <= 0:
+    for i in np.lexsort((np.arange(len(contrib)), -contrib)):
+        if contrib[i] <= 0 or len(out) == k:
             break
-        term = vocab[i]
-        out.append(
-            {
-                "term": term,
-                "query": int(q[i]),
-                "page": int(p[i]),
-                "product": int(contrib[i]),
-                "is_stop": term in STOP,
-            }
-        )
-        if len(out) >= k:
-            break
+        out.append({"term": vocab[i], "query": int(q[i]), "page": int(p[i]), "product": int(contrib[i]),
+                    "is_stop": vocab[i] in STOP})
     return out
 
 
-def rank_query(q_vec, matrix, node_ids, vocab, names, k=5):
+def rank_query(q_vec, matrix, ids, vocab, names, length, k=TOP):
     sims = cosine_similarity(q_vec, matrix).ravel()
-    order = np.argsort(-sims)
-    rank_of = {node_ids[i]: int(r + 1) for r, i in enumerate(order)}
-    top = []
-    for i in order[:k]:
-        nid = node_ids[i]
-        top.append(
-            {
-                "node_id": nid,
-                "name": display_name(nid, names),
-                "cosine": round(float(sims[i]), 4),
-                "overlap_terms": top_overlap_terms(q_vec, matrix.getrow(i), vocab),
-            }
-        )
+    order = ranked(sims)
+    rank_of = {ids[i]: int(r + 1) for r, i in enumerate(order)}
+    top = [{"node_id": ids[i], "name": names[ids[i]], "cosine": round(float(sims[i]), 4),
+            "n_tokens": int(length[ids[i]]), "overlap_terms": overlap(q_vec, matrix.getrow(i), vocab)}
+           for i in order[:k]]
     return sims, rank_of, top
 
 
-def explain_failure(query: str, expected: str, top: dict, expected_overlap: list[dict], rank: int) -> str:
-    """One short reason the right page lost, grounded in shared words."""
-    overlap = top["overlap_terms"]
-    stop_hits = [o["term"] for o in overlap if o["is_stop"]]
-    content_hits = [o["term"] for o in overlap if not o["is_stop"]]
-    expected_content = [o["term"] for o in expected_overlap if not o["is_stop"]]
-
-    if stop_hits and (not content_hits or overlap[0]["is_stop"]):
-        return (
-            f"The strongest shared tokens with the top hit are stopwords "
-            f"[{', '.join(stop_hits[:3])}]. Cosine on raw counts lets of/with/a "
-            f"steer the ranking; the expected page still shares content words "
-            f"[{', '.join(expected_content[:3]) or 'none'}] but sits at rank {rank}. "
-            f"Dropping stopwords — or next week's TF-IDF — fixes many of these."
-        )
-    if content_hits and expected_content:
-        return (
-            f"A near-miss: the top hit shares [{', '.join(content_hits[:4])}], while "
-            f"{display_name(expected, {expected: expected})} shares "
-            f"[{', '.join(expected_content[:4])}] and lands at rank {rank}. "
-            f"Raw BoW cannot tell which content word matters more; TF-IDF will."
-        )
-    return (
-        f"BoW only matches exact tokens. Query {query!r} barely overlaps the expected "
-        f"page's distinctive words, so a different page wins on whatever scraps match."
-    )
+def reason(expected, top, expected_overlap, length, names):
+    """Why the target lost, from the data: (kind, sentence)."""
+    content = [o["term"] for o in expected_overlap if not o["is_stop"]]
+    winner = top[0]
+    if expected is None:
+        return "no_target", (f"No page in the snapshot is right. {winner['name']} wins on "
+                             f"{', '.join(o['term'] for o in winner['overlap_terms'][:3])}.")
+    if not content:
+        return "no_shared_word", (f"{names[expected]}'s page uses none of the query's content words, "
+                                  f"so no count-based search can find it.")
+    if length[expected] >= SHORT_RATIO * winner["n_tokens"]:
+        return "short_page", (f"{winner['name']} ({winner['n_tokens']:,} words) beats {names[expected]} "
+                              f"({length[expected]:,} words): cosine divides by the vector's length, so a "
+                              f"short page with the same words scores higher.")
+    shared = [o["term"] for o in winner["overlap_terms"] if not o["is_stop"]][:3]
+    return "rival", (f"{winner['name']} ({winner['n_tokens']:,} words) is not a short page, and it scores "
+                     f"higher than {names[expected]} on {', '.join(shared) or 'stopwords alone'}.")
 
 
-def pick_quote(page: str, terms: list[str], window: int = 180) -> str:
-    """First window that contains one of the terms, else the lead."""
-    lower = page.lower()
+def passage(text: str, terms: list[str], width: int = 260) -> str:
+    """A sentence-bounded passage around the first whole-word match of a term."""
     for term in terms:
-        i = lower.find(term.lower())
-        if i >= 0:
-            start = max(0, i - 40)
-            end = min(len(page), i + window)
-            chunk = page[start:end].replace("\n", " ").strip()
-            if start > 0:
-                chunk = "…" + chunk
-            if end < len(page):
-                chunk = chunk + "…"
-            return chunk
-    lead = page[:window].replace("\n", " ").strip()
-    return lead + ("…" if len(page) > window else "")
+        m = re.search(rf"(?<![^\W_]){re.escape(term)}(?![^\W_])", text, re.I)
+        if m:
+            # The sentence around the match: from the last full stop or line break before
+            # it to the next one after it.
+            stop, line = text.rfind(". ", 0, m.start()), text.rfind("\n", 0, m.start())
+            start = max(stop + 2 if stop >= 0 else 0, line + 1 if line >= 0 else 0)
+            ends = [i for i in (text.find(". ", m.end()), text.find("\n", m.end())) if i >= 0]
+            end = min(ends) + 1 if ends else len(text)
+            chunk = " ".join(text[start:min(end, start + width)].split())
+            assert chunk and chunk in " ".join(text.split()), "quote must come from the page"
+            return chunk + ("" if end <= start + width else " …")
+    raise SystemExit(f"no passage for {terms}")
 
 
-def build_live_bundle(node_ids: list[str], names: dict[str, str]) -> dict:
-    """Compact sparse vectors for the in-browser search box."""
-    texts = pages()
-    docs = [texts[n] for n in node_ids]
-    live = make_vectorizer(stop_words=list(ENGLISH_STOP_WORDS), min_df=2)
-    live_matrix = live.fit_transform(docs)
-    vocab = list(live.get_feature_names_out())
-    pages_sparse = []
-    for i, node_id in enumerate(node_ids):
-        row = live_matrix.getrow(i)
-        # CSR rows are usually sorted; sort explicitly so the browser can
-        # merge-walk query and page indices.
+def live_bundle(ids, names, matrix_ns, vocab_ns) -> dict:
+    """The stopword-free model, as sparse rows, for the search box."""
+    rows = []
+    for i, node_id in enumerate(ids):
+        row = matrix_ns.getrow(i)
         pairs = sorted(zip(row.indices.tolist(), row.data.astype(int).tolist()))
-        pages_sparse.append(
-            {
-                "id": node_id,
-                "name": names[node_id],
-                "idx": [p[0] for p in pairs],
-                "val": [p[1] for p in pairs],
-            }
-        )
-    return {
-        "generated_by": "analysis/week05_search.py",
-        "mode": "bag_of_words_counts_stopwords_removed_min_df_2",
-        "vocab": vocab,
-        "pages": pages_sparse,
-        "n_pages": len(pages_sparse),
-        "n_terms": len(vocab),
-    }
+        rows.append({"id": node_id, "name": names[node_id], "idx": [p[0] for p in pairs], "val": [p[1] for p in pairs]})
+    return {"generated_by": "analysis/week05_search.py", "mode": "bag_of_words_counts_spacy_stoplist",
+            "token_rule": TOKEN_RULE, "stopwords": sorted(STOP), "top": LIVE_TOP,
+            "vocab": vocab_ns, "pages": rows, "n_pages": len(rows), "n_terms": len(vocab_ns)}
 
 
 def main() -> int:
     text = pages()
-    table = nodes()
-    names = dict(zip(table.node_id, table.name))
-    node_ids = sorted(text)
-    docs = [text[n] for n in node_ids]
+    names = dict(zip(nodes().node_id, nodes().name))
+    ids = sorted(text)
+    docs = [text[n] for n in ids]
+    length = {n: len(tokenize(text[n])) for n in ids}
+    median_len = float(np.median(list(length.values())))
+    rank_len = {n: float((np.array(list(length.values())) < length[n]).mean()) for n in ids}
 
-    raw = make_vectorizer()
-    matrix = raw.fit_transform(docs)
-    vocab = list(raw.get_feature_names_out())
-
-    nostop = make_vectorizer(stop_words=list(ENGLISH_STOP_WORDS))
-    matrix_ns = nostop.fit_transform(docs)
-    vocab_ns = list(nostop.get_feature_names_out())
+    raw, ns = vectorizer(False), vectorizer(True)
+    matrix, matrix_ns = raw.fit_transform(docs), ns.fit_transform(docs)
+    vocab, vocab_ns = list(raw.get_feature_names_out()), list(ns.get_feature_names_out())
+    totals = np.asarray(matrix.sum(axis=0)).ravel()
+    common = [{"term": vocab[i], "count": int(totals[i]), "share": round(float(totals[i] / totals.sum()), 4)}
+              for i in np.lexsort((np.arange(len(totals)), -totals))[:5]]
 
     results = []
-    hits_at_1 = hits_at_5 = 0
-    hits_ns_1 = hits_ns_5 = 0
-
     for item in QUERIES:
         expected = item["expected"]
-        if expected not in text:
+        if expected is not None and expected not in text:
             raise SystemExit(f"expected page missing from corpus: {expected}")
+        q_raw, q_ns = raw.transform([item["query"]]), ns.transform([item["query"]])
+        sims, rank_of, top = rank_query(q_raw, matrix, ids, vocab, names, length)
+        sims_ns, rank_ns_of, top_ns = rank_query(q_ns, matrix_ns, ids, vocab_ns, names, length)
+        row = {"id": item["id"], "query": item["query"], "expected": expected,
+               "expected_name": names[expected] if expected else None, "why_expected": item["why_expected"],
+               "scored": expected is not None, "top5": top, "top5_nostop": top_ns}
+        if expected is None:
+            kind, why = reason(None, top, [], length, names)
+            row |= {"rank": None, "rank_nostop": None, "hit_at_1": False, "hit_at_5": False,
+                    "hit_at_1_nostop": False, "hit_at_5_nostop": False, "expected_overlap": [],
+                    "failure_kind": kind, "failure_reason": why}
+        else:
+            e = ids.index(expected)
+            exp_overlap = overlap(q_raw, matrix.getrow(e), vocab)
+            no_word_ns = sims_ns[e] == 0
+            row |= {"rank": rank_of[expected], "rank_nostop": None if no_word_ns else rank_ns_of[expected],
+                    "cosine_expected": round(float(sims[e]), 4), "expected_tokens": length[expected],
+                    "expected_length_percentile": round(rank_len[expected], 3),
+                    "hit_at_1": rank_of[expected] == 1, "hit_at_5": rank_of[expected] <= TOP,
+                    "hit_at_1_nostop": rank_ns_of[expected] == 1 and not no_word_ns,
+                    "hit_at_5_nostop": rank_ns_of[expected] <= TOP and not no_word_ns,
+                    "expected_overlap": exp_overlap}
+            if row["hit_at_1"]:
+                row |= {"failure_kind": None, "failure_reason": None}
+            else:
+                kind, why = reason(expected, top, exp_overlap, length, names)
+                row |= {"failure_kind": kind, "failure_reason": why}
+            # The same label on the stopword-free model, so a stopword win is not read as a length win.
+            row["failure_kind_nostop"] = (None if row["hit_at_1_nostop"] else
+                                          reason(expected, top_ns, overlap(q_ns, matrix_ns.getrow(e), vocab_ns),
+                                                 length, names)[0])
+        results.append(row)
 
-        q_raw = raw.transform([item["query"]])
-        sims, rank_of, top5 = rank_query(q_raw, matrix, node_ids, vocab, names)
-        rank = rank_of[expected]
-        expected_idx = node_ids.index(expected)
-        expected_overlap = top_overlap_terms(q_raw, matrix.getrow(expected_idx), vocab)
+    scored = [r for r in results if r["scored"]]
+    n = len(scored)
+    count = lambda key: sum(r[key] for r in scored)
+    chance1, chance5 = 1 / len(ids), TOP / len(ids)
+    p = lambda k, c: float(f"{binomtest(k, n, c, alternative='greater').pvalue:.3g}")
+    misses = [r for r in scored if not r["hit_at_1"]]
+    kinds = {k: sum(r["failure_kind"] == k for r in misses) for k in ("no_shared_word", "short_page", "rival")}
+    misses_ns = [r for r in scored if not r["hit_at_1_nostop"]]
+    kinds_ns = {k: sum(r["failure_kind_nostop"] == k for r in misses_ns) for k in ("no_shared_word", "short_page", "rival")}
+    shorter = sum(r["top5"][0]["n_tokens"] < median_len for r in misses)
+    long_targets = sum(r["expected_length_percentile"] >= 0.8 for r in misses)
 
-        q_ns = nostop.transform([item["query"]])
-        _, rank_ns_of, top5_ns = rank_query(q_ns, matrix_ns, node_ids, vocab_ns, names)
-        rank_ns = rank_ns_of[expected]
+    # What we checked: the short-page miss whose winner is shortest, quoted from the winner's page.
+    short = sorted((r for r in misses if r["failure_kind"] == "short_page"), key=lambda r: (r["top5"][0]["n_tokens"], r["id"]))
+    checked = None
+    if short:
+        r = short[0]
+        win = r["top5"][0]
+        terms = [o["term"] for o in win["overlap_terms"] if not o["is_stop"]]
+        checked = {"query_id": r["id"], "query": r["query"], "winner": win["node_id"], "winner_name": win["name"],
+                   "winner_tokens": win["n_tokens"], "expected": r["expected"], "expected_name": r["expected_name"],
+                   "expected_tokens": r["expected_tokens"], "terms": terms[:3],
+                   "quote": passage(text[win["node_id"]], terms)}
+    for r in results:
+        if r["failure_kind"] in ("no_target", "short_page", "rival") or r["hit_at_1"]:
+            src = r["top5"][0]
+            terms = [o["term"] for o in src["overlap_terms"] if not o["is_stop"]]
+            r["quote"] = {"node_id": src["node_id"], "name": src["name"],
+                          "text": passage(text[src["node_id"]], terms) if terms else None}
+        else:
+            r["quote"] = None
 
-        ok = rank == 1
-        ok5 = rank <= 5
-        hits_at_1 += int(ok)
-        hits_at_5 += int(ok5)
-        hits_ns_1 += int(rank_ns == 1)
-        hits_ns_5 += int(rank_ns <= 5)
-
-        failure_reason = None if ok else explain_failure(
-            item["query"], expected, top5[0], expected_overlap, rank
-        )
-
-        page_for_quote = expected if ok else top5[0]["node_id"]
-        quote_terms = [
-            t["term"]
-            for t in (expected_overlap if ok else top5[0]["overlap_terms"])
-            if not t["is_stop"]
-        ][:3] or tokenize(item["query"])[:3]
-        quote = pick_quote(text[page_for_quote], quote_terms)
-
-        results.append(
-            {
-                "id": item["id"],
-                "query": item["query"],
-                "expected": expected,
-                "expected_name": display_name(expected, names),
-                "why_expected": item["why_expected"],
-                "rank": rank,
-                "rank_nostop": rank_ns,
-                "cosine_expected": round(float(sims[expected_idx]), 4),
-                "hit_at_1": ok,
-                "hit_at_5": ok5,
-                "hit_at_1_nostop": rank_ns == 1,
-                "hit_at_5_nostop": rank_ns <= 5,
-                "top5": top5,
-                "top5_nostop": top5_ns,
-                "expected_overlap": expected_overlap,
-                "failure_reason": failure_reason,
-                "quote": {
-                    "node_id": page_for_quote,
-                    "name": display_name(page_for_quote, names),
-                    "text": quote,
-                },
-            }
-        )
-
-    failures = [r for r in results if not r["hit_at_1"]]
     payload = {
-        "generated_by": "analysis/week05_search.py",
-        "owner": "Àngela",
-        "tokenisation": {
-            "method": "regex [a-z0-9]+(?:'[a-z]+)?, lowercased",
-            "vectorizer": "sklearn.feature_extraction.text.CountVectorizer",
-            "similarity": "cosine on raw term counts (Bag of Words)",
-            "stopwords": "kept for the main ranking; a stopword-free rerun is reported beside it",
-            "n_pages": len(node_ids),
-            "n_terms": len(vocab),
-            "n_terms_nostop": len(vocab_ns),
-            "sparsity": round(1.0 - (matrix.nnz / (matrix.shape[0] * matrix.shape[1])), 4),
-        },
-        "summary": {
-            "n_queries": len(results),
-            "hits_at_1": hits_at_1,
-            "hits_at_5": hits_at_5,
-            "hit_rate_at_1": round(hits_at_1 / len(results), 4),
-            "hit_rate_at_5": round(hits_at_5 / len(results), 4),
-            "hits_at_1_nostop": hits_ns_1,
-            "hits_at_5_nostop": hits_ns_5,
-            "hit_rate_at_1_nostop": round(hits_ns_1 / len(results), 4),
-            "hit_rate_at_5_nostop": round(hits_ns_5 / len(results), 4),
-            "chance_at_1": round(1 / len(node_ids), 4),
-            "n_failures": len(failures),
-        },
-        "queries": results,
-        "baseline": (
-            f"Uniform chance of picking the right page among {len(node_ids)} is "
-            f"{100 / len(node_ids):.2f}%."
-        ),
-        "corpus_note": (
-            "Category:Marvel Comics superheroes (303 pages) omits several household names "
-            "such as Thor, Loki, Iron Man and Captain America; probes use in-roster pages."
-        ),
+        "generated_by": "analysis/week05_search.py", "owner": "Àngela",
+        "tokenisation": {"method": TOKEN_RULE, "stoplist": f"spaCy English stop words ({len(STOP)})",
+                         "vectorizer": "sklearn CountVectorizer", "similarity": "cosine on raw counts",
+                         "n_pages": len(ids), "n_terms": len(vocab), "n_terms_nostop": len(vocab_ns),
+                         "n_tokens": int(totals.sum()), "median_page_tokens": median_len,
+                         "sparsity": round(1.0 - matrix.nnz / (matrix.shape[0] * matrix.shape[1]), 4),
+                         "most_common": common},
+        "summary": {"n_queries": len(results), "n_scored": n, "hits_at_1": count("hit_at_1"),
+                    "hits_at_5": count("hit_at_5"), "hits_at_1_nostop": count("hit_at_1_nostop"),
+                    "hits_at_5_nostop": count("hit_at_5_nostop"),
+                    "chance_at_1": round(chance1, 4), "chance_at_5": round(chance5, 4),
+                    "p_at_1": p(count("hit_at_1"), chance1), "p_at_5": p(count("hit_at_5"), chance5),
+                    "p_at_1_nostop": p(count("hit_at_1_nostop"), chance1),
+                    "p_at_5_nostop": p(count("hit_at_5_nostop"), chance5),
+                    "n_misses": len(misses), "miss_kinds": kinds,
+                    "n_misses_nostop": len(misses_ns), "miss_kinds_nostop": kinds_ns,
+                    "misses_won_by_shorter_than_median": shorter, "misses_with_long_target": long_targets,
+                    "random_mean_rank": (len(ids) + 1) / 2},
+        "checked": checked, "queries": results,
     }
-
-    live = build_live_bundle(node_ids, names)
-
-    OUT.parent.mkdir(parents=True, exist_ok=True)
-    try:
-        from check_pages import check
-
-        check(OUT, payload)
-        check(LIVE_OUT, live)
-    except SystemExit as err:
-        if "has no model" not in str(err):
-            raise
-
-    OUT.write_text(json.dumps(payload, indent=2) + "\n", encoding="utf-8")
-    LIVE_OUT.write_text(json.dumps(live, separators=(",", ":")), encoding="utf-8")
-    print(
-        f"wrote {OUT.relative_to(ROOT)}: "
-        f"raw {hits_at_1}/{len(results)} @1, {hits_at_5}/{len(results)} @5; "
-        f"nostop {hits_ns_1}/{len(results)} @1, {hits_ns_5}/{len(results)} @5; "
-        f"live vocab {live['n_terms']} terms"
-    )
+    live = live_bundle(ids, names, matrix_ns, vocab_ns)
+    check(OUT, payload)
+    check(LIVE_OUT, live)
+    OUT.write_text(json.dumps(payload, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
+    LIVE_OUT.write_text(json.dumps(live, separators=(",", ":"), ensure_ascii=False), encoding="utf-8")
+    s = payload["summary"]
+    print(f"raw {s['hits_at_1']}/{n} @1 (p {s['p_at_1']}), {s['hits_at_5']}/{n} @5; nostop {s['hits_at_1_nostop']}/{n} @1, "
+          f"{s['hits_at_5_nostop']}/{n} @5; misses {kinds}; shorter winners {shorter}/{len(misses)}; "
+          f"live {LIVE_OUT.stat().st_size / 1e6:.1f} MB")
     return 0
 
 
