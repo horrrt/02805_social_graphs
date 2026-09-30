@@ -168,6 +168,5 @@ under what we did). Nothing else changes: the slot IDs, `slot()` and the kit tes
 
 `docs/weeks/week05/index.html` holds the hero, the findings strip, the opening, seven Week 4 cards and
 the closing. `tests/week05-frame.test.mjs` pins the frame's numbers to the section JSON files, and each
-section has its own test. The page is `noindex` and unlinked: week 5 stays `coming` in `docs/assets/js/weeks.js`. To publish it, set week 5
-to `live` with a cabinet, add its lobby card, and change the "exactly weeks 1 to 4 are live" assertion in
-`tests/site.test.mjs`.
+section has its own test. The page is live since 30 September 2026: week 5 is `live` in
+`docs/assets/js/weeks.js` with the cabinet "Marvel in Words", and the home page links it.
