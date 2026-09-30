@@ -23,7 +23,9 @@ If the request is ambiguous or a rule below blocks it, stop and ask. Do not gues
 
 ## Checks
 
-- Site or tests changed: `node --test 'tests/*.test.mjs'` must end with `fail 0`.
+- Site or tests changed: `node --test 'tests/*.test.mjs'` must end with `fail 0`. It includes
+  `tests/text-budget.test.mjs`, which holds every post from Week 4 on to Week 4's density; for text a page
+  script draws, run the console check in POST_GUIDE.md, "Keep the card short".
 - `analysis/week04_names.py`, `analysis/week04_client_aliases.csv` or `analysis/week04_name_merges.csv`
   changed: `python analysis/week04_names_check.py` must exit 0 and print `"failures": []`.
 - Any page data changed: `python analysis/check_pages.py` must print `ok` for every file. It checks every

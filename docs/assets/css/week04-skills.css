@@ -1,7 +1,7 @@
 /* Week 4 redesign · the deep dive's O*NET skills box (#cut-skills) and its
    PageRank explorable (#cut-pagerank). Everything shared with the rest of the
    deep dive (card, w4-q, w4-two, notice, plot, w4-reveals, axis-modes,
-   yearline, table.ego) lives in week04.css and corridor.css; this file only
+   yearline, table.ego) lives in post.css and corridor.css; this file only
    holds what those two boxes need on top of it. */
 
 .corridor .w4-legend {

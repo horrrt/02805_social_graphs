@@ -158,11 +158,11 @@ test("deep-dive card numbers follow each topic's contents", () => {
 });
 
 test("each box the router can pick in a shared panel has a CSS rule that hides the other cards", () => {
-  const css = read("docs/assets/css/week04-rx.css");
+  const css = read("docs/assets/css/post.css");
   for (const [id, [panel, show]] of Object.entries(SUB)) {
     // The scripts build these cards as div.card.w4-card, so the selector must
     // not name an element: `article.w4-card` would never match.
     const rule = `#${panel}[data-show="${show}"] .w4-card:not(#${id})`;
-    assert.ok(css.includes(rule), `week04-rx.css should hide the other cards when ${panel} shows ${show}: ${rule}`);
+    assert.ok(css.includes(rule), `post.css should hide the other cards when ${panel} shows ${show}: ${rule}`);
   }
 });

@@ -70,13 +70,13 @@ test("the manifest mirrors the course index week for week", () => {
   assert.equal(shortDate("2026-10-07"), "7 OCT");
 });
 
-test("exactly weeks 1 to 4 are live, each with a cabinet on disk", () => {
+test("exactly weeks 1 to 5 are live, each with a cabinet on disk", () => {
   // Update this line deliberately each time a weekly post ships.
   assert.deepEqual(
     liveWeeks().map((w) => w.n),
-    [1, 2, 3, 4],
+    [1, 2, 3, 4, 5],
   );
-  assert.equal(currentWeek().n, 4);
+  assert.equal(currentWeek().n, 5);
   for (const w of WEEKS) {
     if (w.status === "live") {
       assert(w.cabinet?.name && w.cabinet?.href, `week ${w.n} cabinet`);
@@ -141,9 +141,9 @@ test("every lobby card agrees with the manifest and links a live week", () => {
 
 test("no page or script claims a future week or a preview", () => {
   const forbidden = [
-    /\bW0[5-8]\b/,
-    /CABINET 0[5-8]\b/,
-    /\bweek-[5-8]\b/i,
+    /\bW0[6-8]\b/,
+    /CABINET 0[6-8]\b/,
+    /\bweek-[6-8]\b/i,
     /\bpreviews?\b/i,
     /future[- ]week/i,
   ];
