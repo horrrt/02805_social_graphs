@@ -103,12 +103,12 @@ its page data goes in `public/weeks/week05/data/<section>.json` (only `public/` 
 need from `src/scripts/kit.js`:
 
 ```js
-import { slot, figure, echart, stripChart, concordance, passage, table, loadData } from "./kit.js?v=1";
+import { slot, figure, echart, stripChart, concordance, passage, table, loadData } from "./kit.js";
 ```
 
 `slot("heaps", "figure")` is where section 5's figure goes; the parts are `asked`, `did`, `figure`,
 `surprise`, `checked` and `limit`. `src/scripts/README.md` lists every component with an example, and
-`/styleguide/kit.html` draws each one with toy data. Use `stripChart` for any result against a null,
+`/styleguide/kit/` draws each one with toy data. Use `stripChart` for any result against a null,
 `concordance` or `passage` for the text you checked.
 
 To make a section look like a Week 4 card, add `card w4-card w5-card` to its slots container:

@@ -3,12 +3,12 @@
 Every component a section script needs comes from one import, `kit.js`:
 
 ```js
-import { slot, figure, echart, concordance, passage, loadData } from "./kit.js?v=5";
+import { slot, figure, echart, concordance, passage, loadData } from "./kit.js";
 ```
 
-Link three stylesheets, in this order: `type.css`, `corridor.css`, `post.css`.
-The Week 5 page already does. See every component drawn with toy data at
-[`src/app/(kit)/styleguide/kit/page.tsx`](../../styleguide/kit.html) (served at `/styleguide/kit.html`).
+Import three stylesheets in the page's layout, in this order: `type.css`, `corridor.css`, `post.css`.
+The Week 5 layout already does. See every component drawn with toy data at
+[`src/app/(kit)/styleguide/kit/page.tsx`](../app/(kit)/styleguide/kit/page.tsx) (served at `/styleguide/kit/`).
 
 Week 5 has one script per section, `week05-<section>.js`, already loaded by the page. Each draws into its
 section's slots and reads its data from `public/weeks/week05/data/<section>.json`. `tests/kit.test.mjs` fails
@@ -18,8 +18,8 @@ when this list and the exports of `kit.js` disagree.
 
 ### loadData(url)
 
-Fetches a JSON file. Build the URL with `new URL("../../weeks/week05/data/heaps.json", import.meta.url)` so it
-works locally and on GitHub Pages. Only files under `public/` are published.
+Fetches a JSON file. Build the URL with `asset("weeks/week05/data/heaps.json")` from `site.js`, so it works
+locally and on GitHub Pages and carries the deploy's commit. Only files under `public/` are published.
 
 ### slot(section, part)
 
@@ -28,7 +28,7 @@ The element to draw into. `part` is one of `asked`, `did`, `figure`, `surprise`,
 
 A section is Week 4's card, `<div class="card w4-card w5-card">`: a `w4-q` header with the question and answer,
 a `w4-two` row with what we did beside "What to notice", the figure, and `rx-drawers` at the foot (Method with
-the limitation, More numbers, what we read). The six parts keep their ids. public/weeks/_template/ shows the markup.
+the limitation, More numbers, what we read). The six parts keep their ids. src/app/(template)/ shows the markup.
 
 ## Figures and tables
 

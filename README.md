@@ -2,7 +2,7 @@
 
 A playable anthology built from the course’s frozen Marvel article graph.
 Published at **https://horrrt.github.io/02805_social_graphs/**: a Next.js static
-export that `.github/workflows/deploy.yml` builds and publishes on every push to
+export that `.github/workflows/site.yml` builds and publishes on every push to
 `main`. No API keys, accounts or live Wikipedia calls are needed, and nothing is
 fetched from a third-party domain at runtime: the week 3 render variants load
 their charting libraries from `public/assets/vendor/`, which are vendored in the
