@@ -1,5 +1,5 @@
 // Week 4 redesign · the deep dive's PageRank explorable, #cut-pagerank. Built
-// from docs/weeks/week04/data/pagerank.json (analysis/week04_pagerank.py):
+// from public/weeks/week04/data/pagerank.json (analysis/week04_pagerank.py):
 // PageRank on section 2's occupation network, kept to its strongest ties (the
 // disparity-filter backbone, alpha = 0.05), at three damping factors, plus a
 // from-scratch power iteration checked against nx.pagerank. Nothing here is

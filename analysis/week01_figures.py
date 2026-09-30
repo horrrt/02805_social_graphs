@@ -28,7 +28,7 @@ plt.rcParams.update({
     "font.family": ["Helvetica Neue", "Helvetica", "Arial", "DejaVu Sans"],
     "figure.facecolor": PAPER, "axes.facecolor": PAPER, "savefig.facecolor": PAPER,
 })
-OUT = "docs/weeks/week01/figures"
+OUT = "public/weeks/week01/figures"
 
 nodes = pd.read_csv("data/week1_nodes.tsv", sep="\t", comment="#")
 edges = pd.read_csv("data/week1_edges.tsv", sep="\t", comment="#",

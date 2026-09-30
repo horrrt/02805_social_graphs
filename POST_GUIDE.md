@@ -14,7 +14,7 @@ Use this guide before creating or revising a post. It records the user's prefere
 
 ## Start with the brief
 
-Start a new post by copying the template: `cp -r docs/weeks/_template docs/weeks/weekNN`. It has every part a post needs (hero, findings strip, opening, the standard and wide section cards, closing, methods and AI-use note), drawn with labelled toy charts; its first comment lists what to replace.
+Start a new post by copying the template: `cp -r public/weeks/_template public/weeks/weekNN`. It has every part a post needs (hero, findings strip, opening, the standard and wide section cards, closing, methods and AI-use note), drawn with labelled toy charts; its first comment lists what to replace.
 
 Read the current official weekly brief before choosing a story. Separate the weekly public-post requirements from classroom exercises and optional suggestions; a free-form post need not reproduce every exercise.
 

@@ -2,8 +2,8 @@
 // modularity, Louvain, overlapping communities) on the 40 metros, in the deep
 // dive's #cut-methods box. Ported from
 // review/week04-redesign/generator/explore4.py: every number here is computed
-// at runtime from docs/weeks/week04/data/explore.json and
-// docs/assets/data/week04_place.json, not typed in by hand. Built lazily: the
+// at runtime from public/weeks/week04/data/explore.json and
+// public/assets/data/week04_place.json, not typed in by hand. Built lazily: the
 // box does nothing until it is first opened.
 
 import { asset } from "./site.js";

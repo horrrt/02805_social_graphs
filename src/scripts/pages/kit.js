@@ -1,5 +1,6 @@
-// Page script for /styleguide/, moved out of the page's inline <script type="module">.
+// Page script for /styleguide/kit/ (from styleguide/kit.html), moved out of the page's inline <script type="module">.
 import { concordance, drawer, drawerRow, echart, figure, loadData, networkView, passage, stripChart, table, termify } from "../kit.js";
+import { asset } from "../site.js";
 
 const at = (name) => document.querySelector(`[data-demo="${name}"]`);
 const toy = [
@@ -57,8 +58,8 @@ const term = at("term");
 termify(term.querySelector("p"), "hapax", "A type observed exactly once in the corpus.", "kit-term-hapax");
 term.append(drawerRow(drawer("Method", "<p>Toy drawer body.</p>"), drawer("More numbers", "<p>Another toy drawer.</p>")));
 
-// Network views, from docs/styleguide/data/graphs.json.
-const g = await loadData(new URL("../data/graphs.json?v=1", location.href));
+// Network views, from public/styleguide/data/graphs.json.
+const g = await loadData(asset("styleguide/data/graphs.json"));
 const m = g.marvel;
 const dark = { theme: "dark" };
 networkView(at("net-hubs"), { ...dark, ratio: m.ratio, nodes: m.nodes, links: m.links, groups: m.groups, hubs: m.hubs, legend: true,

@@ -42,7 +42,7 @@ Checks
   worked example.
 
 Outputs: analysis/week04_where.json (every number, with the checks) and
-docs/assets/data/week04_place.json (the shape week04-place.js draws).
+public/assets/data/week04_place.json (the shape week04-place.js draws).
 """
 
 import json
@@ -65,7 +65,7 @@ from week04_staffing import infomap, louvain, resolver, rewire, tracked
 
 ROOT = Path(__file__).resolve().parents[1]
 OUT = Path(__file__).with_suffix(".json")
-PAGE = ROOT / "docs/assets/data/week04_place.json"
+PAGE = ROOT / "public/assets/data/week04_place.json"
 YEAR = 2025
 TOP = 40  # metros on the page, by filings
 ALPHAS = [0.05, 0.1, 0.2, 0.3, 0.5]

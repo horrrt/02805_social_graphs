@@ -4,7 +4,10 @@
     {
       "name": "site",
       "runtimeExecutable": "sh",
-      "runtimeArgs": ["-c", "exec python3 -m http.server \"${PORT:-8765}\" --directory docs"],
+      "runtimeArgs": [
+        "-c",
+        "exec npx next dev -p \"${PORT:-8765}\""
+      ],
       "port": 8765,
       "autoPort": true
     }

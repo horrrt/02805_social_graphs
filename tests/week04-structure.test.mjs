@@ -8,11 +8,12 @@ import { readFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { block, blockAt } from "./week04-html.mjs";
+import { builtPage } from "./built-page.mjs";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const read = (name) => readFileSync(join(ROOT, name), "utf8");
-const html = read("docs/weeks/week04/index.html");
-const cut = read("docs/assets/js/week04-cut.js");
+const html = builtPage("out/weeks/week04/index.html");
+const cut = read("src/scripts/week04-cut.js");
 
 // The keys and values of one `const NAME = { … };` table in week04-cut.js.
 const table = (name) => {
@@ -158,7 +159,7 @@ test("deep-dive card numbers follow each topic's contents", () => {
 });
 
 test("each box the router can pick in a shared panel has a CSS rule that hides the other cards", () => {
-  const css = read("docs/assets/css/post.css");
+  const css = read("src/styles/post.css");
   for (const [id, [panel, show]] of Object.entries(SUB)) {
     // The scripts build these cards as div.card.w4-card, so the selector must
     // not name an element: `article.w4-card` would never match.

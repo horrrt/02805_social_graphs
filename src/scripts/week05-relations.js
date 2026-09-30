@@ -1,10 +1,10 @@
 // Week 5 · section 1 · Turn links into relationships. Owner: Gyula.
 //
-// Draws into this section's slots on docs/weeks/week05/index.html: the strip
+// Draws into this section's slots on src/app/(week05)/weeks/week05/page.tsx: the strip
 // chart of links that join two communities (#chart-relations-crossing), the map of
 // where fight and family links run (#chart-relations-map), and the sentences read
 // by hand, one label at a time (#relations-lines).
-// Data: docs/weeks/week05/data/relations.json, written by analysis/week05_relations.py,
+// Data: public/weeks/week05/data/relations.json, written by analysis/week05_relations.py,
 // and the shared map in network.json (week05-map.js).
 
 import { asset } from "./site.js";

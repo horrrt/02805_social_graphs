@@ -47,7 +47,7 @@ function status(text) {
   box.hidden = !text;
 }
 
-// Vendored, not fetched from a CDN (docs/assets/vendor/README.md).
+// Vendored, not fetched from a CDN (public/assets/vendor/README.md).
 function loadVendor(file) {
   const src = asset(`assets/vendor/${file}`).href;
   const existing = document.querySelector(`script[src="${src}"]`);

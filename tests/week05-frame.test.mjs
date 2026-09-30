@@ -7,11 +7,12 @@ import { existsSync, readFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { block, flatten } from "./week04-html.mjs";
+import { builtPage, pageScripts } from "./built-page.mjs";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const read = (name) => readFileSync(join(ROOT, name), "utf8");
-const json = (name) => JSON.parse(read(`docs/weeks/week05/data/${name}.json`));
-const html = read("docs/weeks/week05/index.html");
+const json = (name) => JSON.parse(read(`public/weeks/week05/data/${name}.json`));
+const html = builtPage("out/weeks/week05/index.html");
 const [relations, copying, search, communities, autocomplete, heaps, fame, weird] = [
   "relations", "copying", "search", "communities", "autocomplete", "heaps", "fame", "weird",
 ].map(json);
@@ -51,7 +52,7 @@ test("the hero asks the question and quotes its figure", () => {
   has(`Pearson r = ${fame.fit.pearson.toFixed(2)} on the logs, against 0.00 ± ${fame.fit.null_sd.toFixed(2)} when in-degree is shuffled`);
   assert.ok(fame.outliers.some((o) => o.side === "above" && o.place === 1));
   assert.ok(fame.outliers.some((o) => o.side === "below" && o.place === 1));
-  assert.match(html, /week05-frame\.js\?v=\d+/);
+  assert.ok(pageScripts("week05").includes("week05-frame.js"), "the page runs week05-frame.js");
 });
 
 test("the findings strip quotes each section's JSON", () => {

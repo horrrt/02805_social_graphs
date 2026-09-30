@@ -16,11 +16,11 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 def arcade():
-    graph = json.loads((ROOT / "docs/assets/data/arcade_graph.json").read_text())
+    graph = json.loads((ROOT / "public/assets/data/arcade_graph.json").read_text())
     return {n["id"]: n for n in graph["nodes"]}, {frozenset(link) for link in graph["links"]}
 
 
-# docs/assets/data/week02_transit.json: transit.js ---------------------------------
+# public/assets/data/week02_transit.json: transit.js ---------------------------------
 
 class Station(Model):
     id: str
@@ -77,7 +77,7 @@ class Transit(Model):
         return self
 
 
-# docs/assets/data/week02_screentest.json: prototypes/screen-test ----------------
+# public/assets/data/week02_screentest.json: prototypes/screen-test ----------------
 
 class Meta(Model):
     n: int = Field(ge=1)
@@ -151,6 +151,6 @@ class ScreenTest(Model):
 
 
 PAGES = {
-    "docs/assets/data/week02_transit.json": Transit,
-    "docs/assets/data/week02_screentest.json": ScreenTest,
+    "public/assets/data/week02_transit.json": Transit,
+    "public/assets/data/week02_screentest.json": ScreenTest,
 }

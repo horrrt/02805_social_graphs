@@ -1,9 +1,9 @@
 // Week 5 · section 7 · Who has the weirdest Wikipedia page? Owner: Niklas.
 //
-// Draws into this section's slots on docs/weeks/week05/index.html: the score
+// Draws into this section's slots on src/app/(week05)/weeks/week05/page.tsx: the score
 // against page length with the corpus band (#chart-weird-scatter), the table of
 // the top and bottom five as read (#weird-table), and the sentences we quote.
-// Data: docs/weeks/week05/data/weird.json, written by analysis/week05_weird.py.
+// Data: public/weeks/week05/data/weird.json, written by analysis/week05_weird.py.
 
 import { asset } from "./site.js";
 import { drawer, drawerRow, fitted, fs, loadData, node, passage, table, termify, textWidth, token } from "./kit.js";

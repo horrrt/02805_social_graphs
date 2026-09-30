@@ -12,9 +12,6 @@ export const metadata: Metadata = {
 export default function Layout({ children }: { children: ReactNode }) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <head>
-        <link href="assets/favicon.svg?v=2" rel="icon" type="image/svg+xml" />
-      </head>
       <body className="corridor home">{children}</body>
     </html>
   );

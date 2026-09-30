@@ -1,7 +1,7 @@
-// The post template's toy charts (docs/weeks/_template/). Each one is drawn by
+// The post template's toy charts (public/weeks/_template/). Each one is drawn by
 // the kit component a real section would use, with toy numbers, so a copied
 // template shows the finished look. Replace this file with one script per
-// section, docs/assets/js/weekNN-<section>.js, reading its script's JSON.
+// section, src/scripts/weekNN-<section>.js, reading its script's JSON.
 
 import { asset } from "./site.js";
 import { loadData, miniStrip, networkView, passage, stripChart, table, termify } from "./kit.js";

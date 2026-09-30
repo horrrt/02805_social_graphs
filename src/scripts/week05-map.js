@@ -1,5 +1,5 @@
 // Week 5 · the Marvel map that sections 1 and 4 share: one layout and one
-// colour per consensus community (section 4), from docs/weeks/week05/data/network.json,
+// colour per consensus community (section 4), from public/weeks/week05/data/network.json,
 // written by analysis/week05_network.py and drawn with networkView().
 //
 // Hovering any page names it and gives its group and links; the eight hubs, the

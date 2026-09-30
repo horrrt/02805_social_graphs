@@ -2321,7 +2321,7 @@
 
 /* ==== 3. The component kit and the section card, w5-card (from kit.css) ==== */
 
-/* Styles for the components in docs/assets/js/kit.js, and the empty-slot
+/* Styles for the components in src/scripts/kit.js, and the empty-slot
    hints on the week 5 page. Colours and sizes come from the page's tokens. */
 
 .kit-figure { margin: 0; }

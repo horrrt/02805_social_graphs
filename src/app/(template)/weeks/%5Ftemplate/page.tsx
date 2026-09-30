@@ -384,7 +384,7 @@ export default function Page() {
           </span>
         </div>
       </footer>
-      {/* Replace with one script per section: docs/assets/js/weekNN-<section>.js. */}
+      {/* Replace with one script per section: src/scripts/weekNN-<section>.js. */}
       {" "}
       <PageScripts page="template" />
     </>

@@ -75,7 +75,7 @@ Checks
   the null already carries it.
 
 Outputs: analysis/week04_staffing_moves.json (every number, with the checks)
-and docs/weeks/week04/data/staffing_moves.json (the small page figure).
+and public/weeks/week04/data/staffing_moves.json (the small page figure).
 """
 
 import json
@@ -95,7 +95,7 @@ import week04_staffing as st
 from week04_schemas import check
 
 OUT = Path(__file__).with_suffix(".json")
-PAGE = Path(__file__).resolve().parents[1] / "docs/weeks/week04/data/staffing_moves.json"
+PAGE = Path(__file__).resolve().parents[1] / "public/weeks/week04/data/staffing_moves.json"
 YEARS = [2022, 2023, 2024, 2025]
 MAIN = 2025
 RUNS = 100

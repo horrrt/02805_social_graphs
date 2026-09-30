@@ -1,12 +1,12 @@
 // Week 5 · section 4 · Community autocomplete. Owner: Àngela.
 //
-// Draws into this section's slots on docs/weeks/week05/index.html: the visitor
+// Draws into this section's slots on src/app/(week05)/weeks/week05/page.tsx: the visitor
 // quiz over the masked fake pages, the map of the groups (#chart-autocomplete-map,
 // through week05-map.js), the modularity strip chart in More numbers
 // (#chart-autocomplete-modularity) and one fake's copied run beside its source
 // sentence (#autocomplete-run). The quiz is a game for visitors; its clicks
 // stay in the browser and are never reported as results.
-// Data: docs/weeks/week05/data/autocomplete.json, written by analysis/week05_autocomplete.py.
+// Data: public/weeks/week05/data/autocomplete.json, written by analysis/week05_autocomplete.py.
 
 import { asset } from "./site.js";
 import { loadData, passage, stripChart, termify } from "./kit.js";

@@ -1,6 +1,6 @@
 // Week 4 redesign · five years of filings, FY2022 to FY2026, in the deep
 // dive's #cut-years box. Draws eight panels of plain SVG from
-// docs/weeks/week04/data/years.json (written by analysis/week04_years.py),
+// public/weeks/week04/data/years.json (written by analysis/week04_years.py),
 // coloured from the page's own CSS tokens, and renders once the box is
 // first opened (or immediately if it is already open, such as a deep link).
 import { asset } from "./site.js";

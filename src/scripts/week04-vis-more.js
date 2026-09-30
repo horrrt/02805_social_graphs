@@ -1,5 +1,5 @@
 // Week 4 deep dive, the deeper-* boxes spread over the topics: a figure for
-// each of the five text-only ones. Built from docs/weeks/week04/data/more.json
+// each of the five text-only ones. Built from public/weeks/week04/data/more.json
 // (analysis/week04_more_page.py), which copies its numbers out of
 // week04_perm.json, week04_countries.json, week04_oews.json, week04_ties.json
 // and week04_lottery.json, plus USCIS's per-draw totals. The browser computes

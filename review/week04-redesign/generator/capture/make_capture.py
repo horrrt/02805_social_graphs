@@ -18,11 +18,11 @@ window.ResizeObserver = class {
 };
 </script>"""
 PAGES = {
-    "week05": ("docs/weeks/week05/index.html", "/weeks/week05/"),
-    "template": ("docs/weeks/_template/index.html", "/weeks/_template/"),
-    "kit": ("docs/styleguide/kit.html", "/styleguide/"),
+    "week05": ("out/weeks/week05/index.html", "/weeks/week05/"),
+    "template": ("out/weeks/_template/index.html", "/weeks/_template/"),
+    "kit": ("out/styleguide/kit/index.html", "/styleguide/"),
 }
-out = Path("docs/_snap")
+out = Path("public/_snap")
 out.mkdir(exist_ok=True)
 shutil.copy(Path(__file__).with_name("capture.js"), out / "capture.js")
 for name, (src, base) in PAGES.items():

@@ -7,8 +7,8 @@
 // at the same URLs Week 4 imports them from, so the browser loads one copy. The
 // rest is new: a figure with its caption and table in one call, a themed
 // ECharts wrapper, and the concordance and quoted passage a text claim needs.
-// docs/assets/js/README.md lists every export with an example; a test keeps
-// that list and this file in step. Style: docs/assets/css/post.css.
+// src/scripts/README.md lists every export with an example; a test keeps
+// that list and this file in step. Style: src/styles/post.css.
 
 import { asset } from "./site.js";
 import { family, fs } from "./type-scale.mjs";

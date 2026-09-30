@@ -14,9 +14,6 @@ export const viewport: Viewport = { themeColor: "#141614" };
 export default function Layout({ children }: { children: ReactNode }) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <head>
-        <link rel="icon" href="../assets/favicon.svg?v=2" type="image/svg+xml" />
-      </head>
       <body className="signal-story" data-signal-src="../assets/data/marvel_story.json">{children}</body>
     </html>
   );

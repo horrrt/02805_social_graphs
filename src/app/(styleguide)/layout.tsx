@@ -12,7 +12,6 @@ export default function Layout({ children }: { children: ReactNode }) {
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
-        <link href="../assets/favicon.svg?v=2" rel="icon" type="image/svg+xml" />
         <style>{`
               /* Only what the guide itself needs: scoped specimens and swatches.
                  Everything a reader sees inside a specimen comes from corridor.css. */

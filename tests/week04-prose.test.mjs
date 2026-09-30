@@ -7,12 +7,13 @@ import { readFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { block, blockAt, flatten, notices } from "./week04-html.mjs";
+import { builtPage } from "./built-page.mjs";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const read = (name) => readFileSync(join(ROOT, name), "utf8");
 const json = (name) => JSON.parse(read(name));
 
-const html = read("docs/weeks/week04/index.html");
+const html = builtPage("out/weeks/week04/index.html");
 // The text of one or more elements, by ID, joined.
 const region = (...ids) => ids.map((id) => flatten(block(html, id))).join(" ");
 // Section 3 and its first-round answers, which sit in the deep dive.
@@ -26,7 +27,7 @@ const staffing = json("analysis/week04_staffing.json");
 const lottery = json("analysis/week04_lottery.json").lotteries;
 const main = staffing.main;
 const fy = staffing.years;
-const flows = json("docs/weeks/week04/data/staffing_clients.json").years["2025"].flows;
+const flows = json("public/weeks/week04/data/staffing_clients.json").years["2025"].flows;
 
 const count = (n) => n.toLocaleString("en-US");
 const pct = (x, digits = 0) => `${(100 * x).toFixed(digits)}%`;
@@ -116,7 +117,7 @@ test("clients group weakly, slightly more by vendor than by industry", () => {
   says(`main vendor (AMI ${iv.ami_community_main_vendor_same_clients.toFixed(2)} against ${iv.ami_community_industry.toFixed(2)})`);
   says(`(${m.weighted_vs_rewired.real.toFixed(2)} against ${m.weighted_vs_rewired.null.toFixed(2)})`);
   says(`${pct(iv.share_with_own_main_vendor)} of these clients land in its group`);
-  const weights = json("docs/weeks/week04/data/staffing_communities.json").modularity.weights_check;
+  const weights = json("public/weeks/week04/data/staffing_communities.json").modularity.weights_check;
   assert.ok(weights.single_vendor_clients_with_their_firm > 0.99, "a one-firm client sits in its firm's group");
   assert.ok(weights.real_inside_share < weights.shuffled_inside_share, "real counts must leave more filings between groups");
   assert.ok(weights.filings_to_multi_vendor_clients_share > weights.links_to_multi_vendor_clients_share);
@@ -237,7 +238,7 @@ test("who files the paperwork", () => {
 });
 
 test("section 1: communities against the null, runs, FY2024 and Census", () => {
-  const n = json("docs/assets/data/week04_place.json").null_model;
+  const n = json("public/assets/data/week04_place.json").null_model;
   const o = n.other_year;
   const has = (t) => assert.ok(regions.includes(t), `section 1 should say "${t}"`);
   has(`Modularity is ${n.Q.toFixed(3)} against ${n.Q_null_mean.toFixed(3)} for rewired networks`);
@@ -261,12 +262,12 @@ test("section 1: communities against the null, runs, FY2024 and Census", () => {
 });
 
 test("closing: what surprised us", () => {
-  const moves = json("docs/weeks/week04/data/staffing_moves.json").finding;
+  const moves = json("public/weeks/week04/data/staffing_moves.json").finding;
   const says1 = (t) => assert.ok(closing.includes(t), `closing should say "${t}"`);
   says1(`${pct(moves.q1_pooled_observed_share, 1)} of vendor switches stay inside them, against ${pct(moves.q1_pooled_null_mean, 1)}`);
   says1("the new one comes from the same Louvain group more than eight times as often as a random vendor would");
   assert.ok(moves.q1_pooled_lift > 8 && moves.q1_pooled_lift < 9, '"more than eight times" needs the lift between 8 and 9');
-  const who = json("docs/weeks/week04/data/where_who.json").finding;
+  const who = json("public/weeks/week04/data/where_who.json").finding;
   says1(`no single link cuts off more than ${WORDS[who.q2_max_single_drop]} metros`);
 });
 
@@ -433,7 +434,7 @@ test("one deep dive: the extra networks and the methods sit inside it", () => {
 
 test("section 1's first round: the cities and the long links follow the analysis", () => {
   // Hand-typed in the deep dive, so a rerun used to leave them behind.
-  const place = json("docs/assets/data/week04_place.json");
+  const place = json("public/assets/data/week04_place.json");
   const rank = region("place-start");
   const long = region("place-longhaul");
   const has = (part, t) => assert.ok(part.includes(t), `section 1's first round should say "${t}"`);
@@ -451,7 +452,7 @@ test("section 1's first round: the cities and the long links follow the analysis
 
 test("the hero's numbers and map legend follow the analysis", () => {
   const hero = region("top");
-  const place = json("docs/assets/data/week04_place.json");
+  const place = json("public/assets/data/week04_place.json");
   const share = json("analysis/week04_where.json").coverage.top_metros_filing_share;
   const has = (t) => assert.ok(hero.includes(t), `the hero should say "${t}"`);
   has(`${count(fy["2025"].certified_filings)} certified H-1B filings, 2025`);
@@ -466,7 +467,7 @@ test("the hero's numbers and map legend follow the analysis", () => {
 
 test("section 1's start card names each group by its two largest metros", () => {
   // The group heads are static; the metro lists under them come from week04-place.js.
-  const place = json("docs/assets/data/week04_place.json");
+  const place = json("public/assets/data/week04_place.json");
   const start = block(html, "place-groups");
   const members = (id) => place.cities.filter((c) => c.community === id).sort((a, b) => b.filings - a.filings);
   const head = (id) => {
@@ -496,7 +497,7 @@ test("section 1's start card names each group by its two largest metros", () => 
 test("section 2's first round: Software Developers' pairs follow the analysis", () => {
   // Hand-typed in the deep dive, so a rerun used to leave it behind.
   const together = region("jobs-together");
-  const jobs = json("docs/weeks/week04/data/jobs.json");
+  const jobs = json("public/weeks/week04/data/jobs.json");
   const pairs = [...jobs.pairs].sort((a, b) => b.weight - a.weight).slice(0, 12);
   assert.ok(together.includes(`The ${pairs.length} most common job pairs`), "the pairs chart names how many pairs it shows");
   const sdPairs = pairs.filter((p) => [p.source, p.target].includes("15-1252")).length;

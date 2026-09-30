@@ -1,5 +1,5 @@
 // Week 4 redesign · who filed for which roles, #cut-roles. Stacked-area
-// chart from docs/weeks/week04/data/roles.json (analysis/week04_roles.py):
+// chart from public/weeks/week04/data/roles.json (analysis/week04_roles.py):
 // certified H-1B filings split by detailed occupation, SOC major group,
 // employer, or placed-at-a-client against direct employer, over the same
 // five fiscal years as #cut-years. Drawn with the vendored ECharts build the

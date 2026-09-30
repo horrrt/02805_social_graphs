@@ -7,7 +7,7 @@
    direct employer) mean one thing each elsewhere on the page; --w4-group-0/1/2
    mark the metro map's three groups. None of the five apply to occupations
    on a skills radar, so the series below use five colours of their own,
-   docs/assets/js/week04-skills-radar.js reads with getComputedStyle. Series 1
+   src/scripts/week04-skills-radar.js reads with getComputedStyle. Series 1
    is --ink; the rest sit outside the excluded hues and each carries its own
    symbol shape in the chart, so no pair depends on hue alone. */
 

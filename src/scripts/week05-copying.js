@@ -1,9 +1,9 @@
 // Week 5 · section 2 · Catch Wikipedia copying itself. Owner: Gyula.
 //
-// Draws into this section's slots on docs/weeks/week05/index.html: the copying
+// Draws into this section's slots on src/app/(week05)/weeks/week05/page.tsx: the copying
 // network (#chart-copying-network), the linked-share strip (#chart-copying-linked),
 // the cluster table and the passages we checked.
-// Data: docs/weeks/week05/data/copying.json, written by analysis/week05_copying.py.
+// Data: public/weeks/week05/data/copying.json, written by analysis/week05_copying.py.
 
 import { asset } from "./site.js";
 import { loadData, networkView, passage, stripChart, table, termify } from "./kit.js";

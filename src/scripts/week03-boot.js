@@ -166,7 +166,7 @@ function styleURL(chosen) {
 }
 
 // Vendored, not fetched from a CDN: the site works offline and pulls no
-// third-party JavaScript at runtime. See docs/assets/vendor/README.md.
+// third-party JavaScript at runtime. See public/assets/vendor/README.md.
 function loadVendor(file) {
   const src = asset(`assets/vendor/${file}`).href;
   const existing = document.querySelector(`script[src="${src}"]`);

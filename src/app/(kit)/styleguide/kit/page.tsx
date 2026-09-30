@@ -6,9 +6,9 @@ export default function Page() {
       <main className="shell" id="main">
         <h1>Components</h1>
         <p className="w5-hint">
-          Every component in docs/assets/js/kit.js, drawn with made-up toy numbers so you can see what each looks
+          Every component in src/scripts/kit.js, drawn with made-up toy numbers so you can see what each looks
           like. None of these numbers is a result. The code for each is in this page's source and in
-          docs/assets/js/README.md.
+          src/scripts/README.md.
         </p>
         <section className="step" id="demo-figure">
           <h2>figure() with echart()</h2>

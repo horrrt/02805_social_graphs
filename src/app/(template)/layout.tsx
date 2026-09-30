@@ -17,7 +17,7 @@ export default function Layout({ children }: { children: ReactNode }) {
         {/*
               THE POST TEMPLATE. Start a new week by copying this folder:
         
-                cp -r docs/weeks/_template docs/weeks/week06
+                cp -r public/weeks/_template public/weeks/week06
         
               Then, in the copy:
                 1. Title, description, eyebrow and h1: the week's question, not its method.
@@ -25,16 +25,15 @@ export default function Layout({ children }: { children: ReactNode }) {
                    each slot id is <section>-<part>, which is what slot("first", "figure") finds.
                 3. Replace every placeholder sentence and toy chart. Toy numbers say "toy" on the
                    page; nothing marked toy may stay in a published post.
-                4. Point the script at the bottom at docs/assets/js/weekNN-<section>.js files.
-                5. Keep noindex and the week "coming" in docs/assets/js/weeks.js until it is done.
-                6. Keep the cards as they are: Week 4's form, as docs/weeks/week05/ uses it. Question and
+                4. Point the script at the bottom at src/scripts/weekNN-<section>.js files.
+                5. Keep noindex and the week "coming" in src/scripts/weeks.js until it is done.
+                6. Keep the cards as they are: Week 4's form, as public/weeks/week05/ uses it. Question and
                    answer, one paragraph beside "What to notice", the figure, then drawers; the limitation
                    goes in Method. tests/text-budget.test.mjs fails a card that shows more than 350 words
                    before a click (POST_GUIDE.md, "Keep the card short").
               Stylesheets: type.css, corridor.css, post.css and nothing else (tests/stylesheets.test.mjs).
               Rules for the writing and the numbers: POST_GUIDE.md.
             */}
-        <link href="../../assets/favicon.svg?v=2" rel="icon" type="image/svg+xml" />
       </head>
       <body className="corridor">{children}</body>
     </html>

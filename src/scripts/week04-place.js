@@ -1,6 +1,6 @@
 // Where the hiring is · Week 4 post (companies × cities → metro projection).
 // Four questions, one selected city across every panel. Numbers come from
-// docs/assets/data/week04_place.json (placeholder until analysis/week04_where.py).
+// public/assets/data/week04_place.json (placeholder until analysis/week04_where.py).
 
 import { asset } from "./site.js";
 import { resetButton } from "./week04-map-reset.js";

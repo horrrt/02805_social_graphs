@@ -19,4 +19,4 @@ To add one: download the minified build to `<name>-<version>.min.js`
 (and any stylesheet it ships to `<name>-<version>.min.css`), add a row to the table, and load it with a `<script>` tag or the page's loader.
 
 To update one: download the new version to a new filename, change the `src` in
-`docs/assets/js/variants/<name>.js`, and delete the old file.
+`src/scripts/variants/<name>.js`, and delete the old file.

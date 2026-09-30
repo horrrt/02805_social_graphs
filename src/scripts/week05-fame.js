@@ -1,10 +1,10 @@
 // Week 5 · section 6 · Does network fame buy you more words?. Owner: Niklas.
 //
-// Draws into this section's slots on docs/weeks/week05/index.html: the log-log
+// Draws into this section's slots on src/app/(week05)/weeks/week05/page.tsx: the log-log
 // scatter of page length against in-degree with the fitted line
 // (#chart-fame-scatter), the table of the ten outliers (#fame-outliers) and the
 // passage behind each outlier's reason (#fame-passages).
-// Data: docs/weeks/week05/data/fame.json, written by analysis/week05_fame.py.
+// Data: public/weeks/week05/data/fame.json, written by analysis/week05_fame.py.
 
 import { asset } from "./site.js";
 import { echart, loadData, passage, table, termify, token } from "./kit.js";

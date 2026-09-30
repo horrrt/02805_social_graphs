@@ -1,9 +1,9 @@
 // Week 5 · section 3 · A Marvel search engine in 20 lines. Owner: Àngela.
 //
-// Draws into #search on docs/weeks/week05/index.html: the stat row, the search
+// Draws into #search on src/app/(week05)/weeks/week05/page.tsx: the stat row, the search
 // box (the stopword-free model, same vocabulary and tie rule as the script), the
 // table of queries with the detail of the selected one, and the passage checked.
-// Data: docs/weeks/week05/data/search.json and search_live.json, written by
+// Data: public/weeks/week05/data/search.json and search_live.json, written by
 // analysis/week05_search.py.
 
 import { asset } from "./site.js";

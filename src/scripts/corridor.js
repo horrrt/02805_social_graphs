@@ -2,7 +2,7 @@
 //
 // Draws two country networks over the same world: migration from the UN
 // migrant stock, flights from OpenFlights. Everything here is a view of
-// docs/assets/data/week03_corridors.json and week03_edges.json, both written
+// public/assets/data/week03_corridors.json and week03_edges.json, both written
 // by analysis/week03_corridor_control.py. No number is computed in this file
 // that is not a ratio or a rank of something already in that data.
 

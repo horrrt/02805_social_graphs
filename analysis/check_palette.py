@@ -1,4 +1,4 @@
-"""Check the community colours in docs/assets/css/post.css.
+"""Check the community colours in src/styles/post.css.
 
 The network views colour up to eight groups with --group-0 to --group-7 and
 leave the rest grey (--group-none), on a light card and on the dark surface
@@ -28,7 +28,7 @@ from pathlib import Path
 import numpy as np
 from colorspacious import cspace_convert
 
-CSS = Path(__file__).resolve().parents[1] / "docs/assets/css/post.css"
+CSS = Path(__file__).resolve().parents[1] / "src/styles/post.css"
 # Eight colours cannot all sit far apart: Tol's muted palette, built for colour
 # blindness, has its closest normal-vision pair (rose and wine) near 13.
 FLOORS = {"normal": 12.0, "deuteranopia": 6.0, "protanopia": 6.0}

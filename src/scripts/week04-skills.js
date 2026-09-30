@@ -1,5 +1,5 @@
 // Week 4 redesign · the deep dive's O*NET skills box, #cut-skills. Built from
-// docs/weeks/week04/data/skills.json (analysis/week04_skills.py), which reuses
+// public/weeks/week04/data/skills.json (analysis/week04_skills.py), which reuses
 // section 2's own 60-occupation network and clusters (jobs.json) so every
 // comparison here stays inside that same population: a random pair means a
 // random pair of those 60, never of every rated occupation.

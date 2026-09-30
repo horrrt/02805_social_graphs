@@ -1,11 +1,11 @@
 // Week 5 · section 5 · Heaps' law of the Marvel universe. Owner: Niklas.
 //
-// Draws into this section's slots on docs/weeks/week05/index.html: types seen
+// Draws into this section's slots on src/app/(week05)/weeks/week05/page.tsx: types seen
 // against tokens read on log-log axes (#chart-heaps-curve), each order's gap to
 // the random orders at two token counts (#chart-heaps-gap), the numbers behind
 // both (#heaps-table), and the new words of the late pages (#heaps-samples,
 // #heaps-passages).
-// Data: docs/weeks/week05/data/heaps.json, written by analysis/week05_heaps.py.
+// Data: public/weeks/week05/data/heaps.json, written by analysis/week05_heaps.py.
 
 import { asset } from "./site.js";
 import { drawer, drawerRow, fitted, fs, loadData, node, passage, stripChart, table, termify, tipBox, token } from "./kit.js";

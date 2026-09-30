@@ -1,5 +1,5 @@
 // Week 4 redesign · S3, the deep dive's O*NET skills radar (#cut-skills-radar).
-// Built from docs/weeks/week04/data/skills_radar.json (analysis/week04_skills_radar.py):
+// Built from public/weeks/week04/data/skills_radar.json (analysis/week04_skills_radar.py):
 // every H-1B occupation's own raw O*NET Importance ratings (1 to 5), grouped
 // into skills, knowledge areas and work activities. Appends after S1 and S2's
 // cards in #skills-body, which week04-skills.js also fills on the same

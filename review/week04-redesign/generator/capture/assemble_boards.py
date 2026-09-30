@@ -37,7 +37,7 @@ LAYOUT = {
         ("Network views: networkView() in six styles, real data", [("GraphKit", "networkView() · six styles, dark and light")]),
     ],
     "template": [
-        ("The post template: copy docs/weeks/_template to start a week", [
+        ("The post template: copy public/weeks/_template to start a week", [
             ("TplTop", "Template · Hero and findings"), ("TplOpening", "Template · Opening"),
             ("TplFirst", "Template · Standard section card"), ("TplSecond", "Template · Wide section card"),
             ("TplClosing", "Template · Closing")]),

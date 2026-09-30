@@ -7,9 +7,10 @@ import fs from "node:fs";
 import path from "node:path";
 import test from "node:test";
 import { fileURLToPath } from "node:url";
+import { builtPage } from "./built-page.mjs";
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
-const html = fs.readFileSync(path.join(ROOT, "docs/weeks/week05/index.html"), "utf8");
+const html = builtPage("out/weeks/week05/index.html");
 
 test("week 5 sections are owned", () => {
   assert.match(html, /id="search"/);

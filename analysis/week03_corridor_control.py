@@ -15,7 +15,7 @@ brokers come out as Australia, Norway and Denmark, which ranks statistical
 reporting systems rather than countries (see week03_country_networks.py). The
 z-score against a degree-preserving null is what makes any of it interpretable.
 
-Writes docs/assets/data/week03_corridors.json and week03_edges.json.
+Writes public/assets/data/week03_corridors.json and week03_edges.json.
 
     python analysis/week03_corridor_control.py [--shuffles 100] [--null-year 2020]
 """
@@ -42,7 +42,7 @@ ROOT = pathlib.Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT / "scripts" / "migration"))
 
 RAW = ROOT / "build" / "raw"
-OUT = ROOT / "docs" / "assets" / "data"
+OUT = ROOT / "public" / "assets" / "data"
 YEARS = [1990, 1995, 2000, 2005, 2010, 2015, 2020, 2024]
 FOCUS = "DNK"
 

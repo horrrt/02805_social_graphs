@@ -8,10 +8,10 @@ import { slot, figure, echart, concordance, passage, loadData } from "./kit.js?v
 
 Link three stylesheets, in this order: `type.css`, `corridor.css`, `post.css`.
 The Week 5 page already does. See every component drawn with toy data at
-[`docs/styleguide/kit.html`](../../styleguide/kit.html) (served at `/styleguide/kit.html`).
+[`src/app/(kit)/styleguide/kit/page.tsx`](../../styleguide/kit.html) (served at `/styleguide/kit.html`).
 
 Week 5 has one script per section, `week05-<section>.js`, already loaded by the page. Each draws into its
-section's slots and reads its data from `docs/weeks/week05/data/<section>.json`. `tests/kit.test.mjs` fails
+section's slots and reads its data from `public/weeks/week05/data/<section>.json`. `tests/kit.test.mjs` fails
 when this list and the exports of `kit.js` disagree.
 
 ## Page and data
@@ -19,7 +19,7 @@ when this list and the exports of `kit.js` disagree.
 ### loadData(url)
 
 Fetches a JSON file. Build the URL with `new URL("../../weeks/week05/data/heaps.json", import.meta.url)` so it
-works locally and on GitHub Pages. Only files under `docs/` are published.
+works locally and on GitHub Pages. Only files under `public/` are published.
 
 ### slot(section, part)
 
@@ -28,7 +28,7 @@ The element to draw into. `part` is one of `asked`, `did`, `figure`, `surprise`,
 
 A section is Week 4's card, `<div class="card w4-card w5-card">`: a `w4-q` header with the question and answer,
 a `w4-two` row with what we did beside "What to notice", the figure, and `rx-drawers` at the foot (Method with
-the limitation, More numbers, what we read). The six parts keep their ids. docs/weeks/_template/ shows the markup.
+the limitation, More numbers, what we read). The six parts keep their ids. public/weeks/_template/ shows the markup.
 
 ## Figures and tables
 
@@ -59,7 +59,7 @@ item tooltip, hides overlapping labels and resizes with the page. Resolves to th
 
 ### loadECharts()
 
-Loads `docs/assets/vendor/echarts-5.5.1.min.js` once and resolves to `window.echarts`, for a chart
+Loads `public/assets/vendor/echarts-5.5.1.min.js` once and resolves to `window.echarts`, for a chart
 `echart()` does not cover.
 
 ### palette()
@@ -107,7 +107,7 @@ legend entry to light its group, and zoom and pan (buttons, Ctrl or ⌘ with the
 demand). Its tooltip comes from `describe(node, { degree, marked, group })`. `unit: ["page", "pages"]` sets what the legend counts.
 
 Add `theme: "dark"` for the dark surface. Returns `{ nodes, redraw }`; `nodes` holds the groups after moves.
-`docs/styleguide/kit.html` draws all six with real data, and the overlap one with a labelled toy.
+`src/app/(kit)/styleguide/kit/page.tsx` draws all six with real data, and the overlap one with a labelled toy.
 
 ```js
 networkView(slot("autocomplete", "figure"), {

@@ -1230,7 +1230,7 @@ export default function Page() {
               <a href="../weeks/week03/">Corridor Control</a>
               . One stylesheet,
               {" "}
-              <code>docs/assets/css/corridor.css</code>
+              <code>src/styles/corridor.css</code>
               ; a test asserts every class the post uses appears on this page.
             </span>
             {" "}

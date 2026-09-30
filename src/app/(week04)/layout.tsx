@@ -26,7 +26,6 @@ export default function Layout({ children }: { children: ReactNode }) {
     <html lang="en" suppressHydrationWarning>
       <head>
         {/* Draft: keep noindex until the whole post is final. */}
-        <link href="../../assets/favicon.svg?v=2" rel="icon" type="image/svg+xml" />
       </head>
       <body className="corridor">{children}</body>
     </html>

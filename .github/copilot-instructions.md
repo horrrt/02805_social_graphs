@@ -1,6 +1,6 @@
 # Log–Log Legends: how to work in this repository
 
-DTU 02805 Social Graphs and Interactions, group Log-Log Legends (Àngela, Gyula, Niklas). `docs/` is the
+DTU 02805 Social Graphs and Interactions, group Log-Log Legends (Àngela, Gyula, Niklas). `public/` is the
 course website, published to GitHub Pages from `main`. `analysis/` holds the Python scripts behind every
 number on it. `tests/` checks the site with Node's built-in test runner.
 
@@ -23,7 +23,8 @@ If the request is ambiguous or a rule below blocks it, stop and ask. Do not gues
 
 ## Checks
 
-- Site or tests changed: `node --test 'tests/*.test.mjs'` must end with `fail 0`. It includes
+- Site or tests changed: `npm test` (it builds the site, then runs `node --test 'tests/*.test.mjs'`) must
+  end with `fail 0`. It includes
   `tests/text-budget.test.mjs`, which holds every post from Week 4 on to Week 4's density; for text a page
   script draws, run the console check in POST_GUIDE.md, "Keep the card short".
 - `analysis/week04_names.py`, `analysis/week04_client_aliases.csv` or `analysis/week04_name_merges.csv`
@@ -42,8 +43,8 @@ If the request is ambiguous or a rule below blocks it, stop and ask. Do not gues
   changing the number once and watching it fail.
 - An analysis script changed: rerun it with `PYTHONHASHSEED=1` and again with `PYTHONHASHSEED=2`. Both
   outputs must be identical, and identical to the committed file apart from what you meant to change.
-- Page changed: serve it with `python -m http.server 8765 --directory docs`, open the page you changed
-  (week 4 is http://localhost:8765/weeks/week04/), and confirm the browser console shows no errors.
+- Page changed: run `npm run dev`, open the page you changed (week 4 is
+  http://localhost:8765/weeks/week04/), and confirm the browser console shows no errors.
   Desktop only.
 - Use the project environment: `.venv-course/bin/python` (Windows: `.venv-course\Scripts\python`), built
   from `requirements-lock.txt` as the README describes.
@@ -75,8 +76,8 @@ Why the change was needed, in plain sentences, wrapped at 72 characters.
   contact and lawyer names, emails, phone numbers, addresses, citizenship.
 - Type a number into a page by hand. Change the script, rerun it, and read the number from its JSON.
 - Invent a result, a source, a group reaction or a completed submission.
-- Load a script, font or stylesheet from a CDN at runtime. Use the copies in `docs/assets/vendor/`.
-- Remove the `noindex` meta tag from `docs/weeks/week04/index.html`, rename a route, element ID, storage key
+- Load a script, font or stylesheet from a CDN at runtime. Use the copies in `public/assets/vendor/`.
+- Remove the `noindex` meta tag from `src/app/(week04)/weeks/week04/page.tsx`, rename a route, element ID, storage key
   or data file that other code reads.
 - Put an email address, password or token in code. Downloads that need a contact read `CONTACT_EMAIL`
   from the environment.

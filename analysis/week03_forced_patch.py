@@ -2,7 +2,7 @@
 
 week03_corridor_control.py writes this column on a full run, but a full run
 reshuffles the degree-preserving null and rewrites every z-score in the post.
-This pass adds the column to docs/assets/data/week03_edges.json on its own and
+This pass adds the column to public/assets/data/week03_edges.json on its own and
 leaves week03_corridors.json alone, so the null story does not move for a
 reason that has nothing to do with it.
 
@@ -21,7 +21,7 @@ sys.path.insert(0, str(ROOT / "analysis"))
 from check_pages import check  # noqa: E402
 from week03_corridor_control import forced_counts  # noqa: E402
 
-EDGES = ROOT / "docs" / "assets" / "data" / "week03_edges.json"
+EDGES = ROOT / "public" / "assets" / "data" / "week03_edges.json"
 
 
 def main():

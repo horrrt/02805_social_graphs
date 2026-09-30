@@ -4,8 +4,8 @@ Question: Do minor characters bring new words, or repeat the famous ones?
 
 Owner: Niklas
 
-Page section: docs/weeks/week05/index.html#heaps
-Output: docs/weeks/week05/data/heaps.json (and a copy in analysis/), every
+Page section: src/app/(week05)/weeks/week05/page.tsx#heaps
+Output: public/weeks/week05/data/heaps.json (and a copy in analysis/), every
 number the section quotes.
 
 Method
@@ -65,7 +65,7 @@ from check_pages import check
 from week05_text import WORD, WORD_RULE, graph, pages, sentences, words
 
 OUT = Path(__file__).with_suffix(".json")
-PAGE_OUT = Path(__file__).resolve().parents[1] / "docs/weeks/week05/data/heaps.json"
+PAGE_OUT = Path(__file__).resolve().parents[1] / "public/weeks/week05/data/heaps.json"
 SEED = 505
 RUNS = 500
 GRID_POINTS = 41

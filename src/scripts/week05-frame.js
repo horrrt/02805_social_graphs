@@ -4,7 +4,7 @@
 // Draws into #chart-hero-fame (words against 1 + in-degree, both on log
 // scales, with the fitted line) and into each [data-finding] host (the real
 // pages against their baseline, Week 4's mini strip). Data: the section JSON
-// files in docs/weeks/week05/data/, written by analysis/week05_*.py.
+// files in public/weeks/week05/data/, written by analysis/week05_*.py.
 
 import { asset } from "./site.js";
 import { hoverTips, loadData } from "./kit.js";

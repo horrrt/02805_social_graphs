@@ -3,7 +3,8 @@ import type { NextConfig } from "next";
 
 // The site is a static export served by GitHub Pages from a project path.
 // trailingSlash keeps the old URLs: /weeks/week05/ is out/weeks/week05/index.html.
-const basePath = "/02805_social_graphs";
+// `next dev` serves from the root so the preview opens on a page, not a 404.
+const basePath = process.env.NODE_ENV === "production" ? "/02805_social_graphs" : "";
 
 // Files under public/ keep fixed names, so their URLs carry the commit instead
 // (src/scripts/site.js). Next hashes everything it bundles on its own.

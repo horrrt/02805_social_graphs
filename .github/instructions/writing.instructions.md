@@ -1,7 +1,7 @@
 ---
 name: Writing
 description: House style for page prose, captions, Markdown notes, commit messages and PR descriptions.
-applyTo: "docs/**/*.html,**/*.md"
+applyTo: "public/**/*.html,**/*.md"
 ---
 
 # Writing
