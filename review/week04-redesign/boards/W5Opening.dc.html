@@ -6,7 +6,7 @@
 <script src="./support.js"></script>
 <link rel="stylesheet" href="/_blob/bdbcfe09e54e57045ac6bae8752c2a81">
 <link rel="stylesheet" href="/_blob/4ffd6c535951a1e34a0c3882e96ae51c">
-<link rel="stylesheet" href="/_blob/231c3b9ded5bc685edc4752941113998">
+<link rel="stylesheet" href="/_blob/5b0af5961bb5a81a4a5c5ab494e11fb9">
 </head>
 <body>
 <x-dc>
@@ -16,7 +16,7 @@
 body{margin:0;background:#eef3f9}
 </style>
 </helmet>
-<div class="corridor" style="width: 1440px; height: 698px; overflow: hidden; background: #eef3f9"><div class="topbar">
+<div class="corridor" style="width: 1440px; height: 625px; overflow: hidden; background: #eef3f9"><div class="topbar">
       <div class="shell">
         <a class="brand" href="../../">LOG–LOG <b>LEGENDS</b></a>
         <a class="site-link" href="../../#weeks">All posts</a>
@@ -54,34 +54,36 @@ body{margin:0;background:#eef3f9}
                   no link at all, and 17 of those also link to no page. A link records an editor's choice
                   to point there, not a friendship or a fight in the comics.
                 </p>
-                <p class="sub">
-                  <b>What a word is.</b> A tokenizer decides where one word ends and the next begins.
-                  Unless a section says otherwise, a word is a run of letters, lowercased, with an
-                  apostrophe or hyphen inside it kept and a possessive 's removed: "Spider-Man's first
-                  appearance in 1962" gives spider-man, first, appearance, in. The pages then hold
-                  713,617 tokens, word occurrences, of 27,754 types, different words.
-                </p>
-                <div class="notice">
-                  <span class="ico">!</span>
-                  <span>
-                    <b>Preprocessing changes the counts</b>
-                    Sections 2 and 3 keep digits and split words at hyphens, so the same sentence gives
-                    spider, man's, first, appearance, in, 1962, and the pages hold about 740,000 tokens,
-                    4% more. Each section states its rule.
-                  </span>
+                <div class="rx-drawers rx-foot">
+                  <details class="rx-drawer"><summary>What counts as a word</summary><div class="rx-drawer-body">
+                    <p class="sub">
+                      <b>What a word is.</b> A tokenizer decides where one word ends and the next begins.
+                      Unless a section says otherwise, a word is a run of letters, lowercased, with an
+                      apostrophe or hyphen inside it kept and a possessive 's removed: "Spider-Man's first
+                      appearance in 1962" gives spider-man, first, appearance, in. The pages then hold
+                      713,617 tokens, word occurrences, of 27,754 types, different words.
+                    </p>
+                    <div class="notice">
+                      <span class="ico">!</span>
+                      <span>
+                        <b>Preprocessing changes the counts</b>
+                        Sections 2 and 3 keep digits and split words at hyphens, so the same sentence gives
+                        spider, man's, first, appearance, in, 1962, and the pages hold about 740,000 tokens,
+                        4% more. Each section states its rule.
+                      </span>
+                    </div>
+                  </div></details>
                 </div>
               </div>
               <div>
                 <div class="w4-anatomy">
                   <h3>How each section reads</h3>
-                  <p>Every section answers one question in the same six parts.</p>
+                  <p>Every section answers one question on one card.</p>
                   <dl>
-                    <div><dt>Asked</dt><dd>What we asked, and the short answer</dd></div>
-                    <div><dt>Did</dt><dd>The method, the baseline and the word rule</dd></div>
-                    <div><dt>Figure</dt><dd>The one chart or table that answers it</dd></div>
-                    <div><dt>Surprise</dt><dd>What surprised us</dd></div>
-                    <div><dt>Limit</dt><dd>What the answer cannot tell</dd></div>
-                    <div><dt>Checked</dt><dd>Passages we read in the pages to test the counts</dd></div>
+                    <div><dt>Question</dt><dd>What we asked, and the short answer</dd></div>
+                    <div><dt>Did</dt><dd>What we did, beside what to notice</dd></div>
+                    <div><dt>Figure</dt><dd>The chart or table that answers it</dd></div>
+                    <div><dt>Drawers</dt><dd>Method and its limits, more numbers, and the passages we read</dd></div>
                   </dl>
                 </div>
                 <div class="w4-howto">
@@ -95,7 +97,7 @@ body{margin:0;background:#eef3f9}
           </div>
         </section></div></main></div>
 </x-dc>
-<script type="text/x-dc" data-dc-script data-props='{"$preview": {"width": 1440, "height": 698}}'>
+<script type="text/x-dc" data-dc-script data-props='{"$preview": {"width": 1440, "height": 625}}'>
 class Component extends DCLogic {
 renderVals() { return {}; }
 }

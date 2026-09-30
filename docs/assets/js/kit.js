@@ -37,7 +37,7 @@ export async function loadData(url) {
 export function slot(section, part) {
   const el = document.getElementById(`${section}-${part}`);
   if (!el) throw new Error(`no #${section}-${part} on this page`);
-  return el.querySelector("[data-body]") ?? el;
+  return el;
 }
 
 // ---- tables and figures

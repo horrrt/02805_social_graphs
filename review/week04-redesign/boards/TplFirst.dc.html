@@ -6,7 +6,7 @@
 <script src="./support.js"></script>
 <link rel="stylesheet" href="/_blob/bdbcfe09e54e57045ac6bae8752c2a81">
 <link rel="stylesheet" href="/_blob/4ffd6c535951a1e34a0c3882e96ae51c">
-<link rel="stylesheet" href="/_blob/231c3b9ded5bc685edc4752941113998">
+<link rel="stylesheet" href="/_blob/5b0af5961bb5a81a4a5c5ab494e11fb9">
 </head>
 <body>
 <x-dc>
@@ -16,7 +16,7 @@
 body{margin:0;background:#eef3f9}
 </style>
 </helmet>
-<div class="corridor" style="width: 1440px; height: 855px; overflow: hidden; background: #eef3f9"><div class="topbar">
+<div class="corridor" style="width: 1440px; height: 645px; overflow: hidden; background: #eef3f9"><div class="topbar">
       <div class="shell">
         <a class="brand" href="../../">LOG–LOG <b>LEGENDS</b></a>
         <a class="site-link" href="../../#weeks">All posts</a>
@@ -35,32 +35,24 @@ body{margin:0;background:#eef3f9}
               <p>The finding in one sentence: what a reader should remember from this section.</p>
             </div>
           </header>
-          <div class="w5-slots card w4-card w5-card">
-            <div class="w5-slot" data-slot="asked" id="first-asked">
-              <h3>What we asked</h3>
-              <div data-body="">
-                <p class="w5-question">The question, answerable after reading this card?</p>
+          <div class="card w4-card w5-card">
+            <header class="w4-q" id="first-asked">
+              <span class="w4-num">1A</span>
+              <div>
+                <h2>The question, answerable after reading this card?</h2>
                 <p class="w4-answer">The short answer, with its number and what it is compared against.</p>
               </div>
-            </div>
-            <div class="w5-slot" data-slot="did" id="first-did">
-              <h3>What we did</h3>
-              <div data-body="">
-                <p>What was counted, on which data, and the baseline that gives the number meaning: what the null keeps and what it changes.</p>
-                <p>The one rule a reader needs to follow the figure, introduced with an example before any technical word.</p>
-                <div class="rx-drawers rx-foot">
-                  <details class="rx-drawer"><summary>Method</summary><div class="rx-drawer-body">
-                    <p>Seeds, runs, the tokeniser or the layout, word for word as the script does it.</p>
-                  </div></details>
-                  <details class="rx-drawer"><summary>More numbers</summary><div class="rx-drawer-body">
-                    <p>Secondary results, a second sample, the robustness checks.</p>
-                  </div></details>
+            </header>
+            <div class="w4-two">
+              <div>
+                <div id="first-did">
+                  <p class="sub">One paragraph: what was counted, on which data, and the baseline that gives the number meaning. Everything else goes in the drawers.</p>
+                </div>
+                <div id="first-surprise">
+                  <div class="notice"><span class="ico">💡</span><span><b>What to notice</b> The result we did not expect, with its number and its baseline.</span></div>
                 </div>
               </div>
-            </div>
-            <div class="w5-slot" data-slot="figure" id="first-figure">
-              <h3>Figure</h3>
-              <div data-body="">
+              <div id="first-figure">
                 <div class="plot">
                   <h3>The figure's title: what it compares</h3>
                   <p class="axis-note">Dot: the real value. Band: the baseline, mean and one standard deviation either side. Toy numbers.</p>
@@ -68,29 +60,24 @@ body{margin:0;background:#eef3f9}
                 </div>
               </div>
             </div>
-            <div class="w5-slot" data-slot="surprise" id="first-surprise">
-              <h3>What surprised us</h3>
-              <div data-body="">
-                <div class="notice"><span class="ico">💡</span><span><b>What to notice</b> The result we did not expect, with its number and its baseline.</span></div>
-              </div>
-            </div>
-            <div class="w5-slot" data-slot="limit" id="first-limit">
-              <h3>Limitation</h3>
-              <div data-body="">
-                <p>One limitation that changes how the answer reads, next to the claim it qualifies.</p>
-              </div>
-            </div>
-            <div class="w5-slot" data-slot="checked" id="first-checked">
-              <h3>What we checked in the data</h3>
-              <div data-body="">
+            <div class="rx-drawers rx-foot">
+              <details class="rx-drawer"><summary>Method</summary><div class="rx-drawer-body">
+                <p>The rules a reader needs only to reproduce the count: what the null keeps and what it changes, with an example before any technical word.</p>
+                <p>Seeds, runs, the tokeniser or the layout, word for word as the script does it.</p>
+                <p id="first-limit">The main limitation, in one sentence. Add no others.</p>
+              </div></details>
+              <details class="rx-drawer"><summary>More numbers</summary><div class="rx-drawer-body">
+                <p>Secondary results, a second sample, the robustness checks.</p>
+              </div></details>
+              <details class="rx-drawer"><summary>What we read in the data</summary><div class="rx-drawer-body" id="first-checked">
                 <p>What we read by hand to test the counts, and what it showed.</p>
                 <div id="first-passage"><blockquote class="kit-passage"><p>A toy sentence from the data, with the word that carries the claim <mark>marked</mark>.</p><cite><a href="https://en.wikipedia.org/wiki/Toy_page">Toy page</a></cite></blockquote></div>
-              </div>
+              </div></details>
             </div>
           </div>
         </section></div></main></div>
 </x-dc>
-<script type="text/x-dc" data-dc-script data-props='{"$preview": {"width": 1440, "height": 855}}'>
+<script type="text/x-dc" data-dc-script data-props='{"$preview": {"width": 1440, "height": 645}}'>
 class Component extends DCLogic {
 renderVals() { return {}; }
 }
