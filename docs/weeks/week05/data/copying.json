@@ -1,0 +1,1210 @@
+{
+ "meta": {
+  "script": "analysis/week05_copying.py",
+  "owner": "Gyula",
+  "tokeniser": "letters and digits, apostrophes inside a word kept, lowercased; punctuation dropped",
+  "n": 8,
+  "n_alt": 12,
+  "template_pages": 10,
+  "min_passage": 30,
+  "pages": 303,
+  "tokens": 740282
+ },
+ "template": {
+  "top": [
+   {
+    "ngram": "in american comic books published by marvel comics",
+    "pages": 282
+   },
+   {
+    "ngram": "appearing in american comic books published by marvel",
+    "pages": 281
+   },
+   {
+    "ngram": "character appearing in american comic books published by",
+    "pages": 127
+   },
+   {
+    "ngram": "american comic books published by marvel comics created",
+    "pages": 91
+   },
+   {
+    "ngram": "comic books published by marvel comics created by",
+    "pages": 91
+   },
+   {
+    "ngram": "superhero appearing in american comic books published by",
+    "pages": 90
+   }
+  ],
+  "ngrams_over_cutoff": 123
+ },
+ "headline": {
+  "pairs": 22,
+  "pages": 31,
+  "clusters": 12,
+  "largest": 6,
+  "linked_share": 0.9091,
+  "phrase_pairs": 2830,
+  "phrase_linked_share": 0.1633,
+  "copy_linked": 20,
+  "all_pairs": 45753,
+  "all_linked": 1434,
+  "all_linked_share": 0.0313,
+  "binomial_p": 1.82e-28,
+  "copied_tokens": 5128,
+  "section_tokens": 10261
+ },
+ "sections": [
+  {
+   "section": "Publication history",
+   "tokens": 3547
+  },
+  {
+   "section": "In other media",
+   "tokens": 2484
+  },
+  {
+   "section": "Collected editions",
+   "tokens": 1066
+  },
+  {
+   "section": "Other versions",
+   "tokens": 902
+  },
+  {
+   "section": "Lead",
+   "tokens": 877
+  },
+  {
+   "section": "Fictional character biography",
+   "tokens": 547
+  },
+  {
+   "section": "Powers and abilities",
+   "tokens": 534
+  },
+  {
+   "section": "Bibliography",
+   "tokens": 86
+  },
+  {
+   "section": "External links",
+   "tokens": 69
+  },
+  {
+   "section": "Reception",
+   "tokens": 68
+  },
+  {
+   "section": "Creation",
+   "tokens": 46
+  },
+  {
+   "section": "Supporting characters",
+   "tokens": 35
+  }
+ ],
+ "nodes": [
+  {
+   "id": "Battlestar_(character)",
+   "name": "Battlestar (character)",
+   "cluster": 3,
+   "x": 0.9,
+   "y": 0.03,
+   "copied_tokens": 122
+  },
+  {
+   "id": "Black_Panther_(character)",
+   "name": "Black Panther (character)",
+   "cluster": 0,
+   "x": 0.541,
+   "y": 0.1248,
+   "copied_tokens": 52
+  },
+  {
+   "id": "Black_Rider_(character)",
+   "name": "Black Rider (character)",
+   "cluster": 4,
+   "x": 0.9,
+   "y": 0.1475,
+   "copied_tokens": 49
+  },
+  {
+   "id": "Blue_Diamond_(character)",
+   "name": "Blue Diamond (character)",
+   "cluster": 5,
+   "x": 0.9,
+   "y": 0.265,
+   "copied_tokens": 177
+  },
+  {
+   "id": "Bucky_(Marvel_Comics)",
+   "name": "Bucky (Marvel Comics)",
+   "cluster": 6,
+   "x": 0.9,
+   "y": 0.3825,
+   "copied_tokens": 93
+  },
+  {
+   "id": "Ch'od",
+   "name": "Ch'od",
+   "cluster": 7,
+   "x": 0.9,
+   "y": 0.5,
+   "copied_tokens": 149
+  },
+  {
+   "id": "Cyclops_(Marvel_Comics)",
+   "name": "Cyclops (Marvel Comics)",
+   "cluster": 0,
+   "x": 0.4225,
+   "y": 0.2171,
+   "copied_tokens": 762
+  },
+  {
+   "id": "Eddie_Brock",
+   "name": "Eddie Brock",
+   "cluster": 8,
+   "x": 0.9,
+   "y": 0.6175,
+   "copied_tokens": 1023
+  },
+  {
+   "id": "Ghost_Rider",
+   "name": "Ghost Rider",
+   "cluster": 9,
+   "x": 0.9,
+   "y": 0.735,
+   "copied_tokens": 444
+  },
+  {
+   "id": "Ghost_Rider_(Johnny_Blaze)",
+   "name": "Ghost Rider (Johnny Blaze)",
+   "cluster": 9,
+   "x": 0.96,
+   "y": 0.735,
+   "copied_tokens": 444
+  },
+  {
+   "id": "Jack_Frost_(Marvel_Comics)",
+   "name": "Jack Frost (Marvel Comics)",
+   "cluster": 5,
+   "x": 0.96,
+   "y": 0.265,
+   "copied_tokens": 177
+  },
+  {
+   "id": "Jean_Grey",
+   "name": "Jean Grey",
+   "cluster": 0,
+   "x": 0.3989,
+   "y": 0.3,
+   "copied_tokens": 690
+  },
+  {
+   "id": "Mayday_Parker",
+   "name": "Mayday Parker",
+   "cluster": 1,
+   "x": 0.5174,
+   "y": 0.6798,
+   "copied_tokens": 420
+  },
+  {
+   "id": "Mockingbird_(Marvel_Comics)",
+   "name": "Mockingbird (Marvel Comics)",
+   "cluster": 10,
+   "x": 0.9,
+   "y": 0.8525,
+   "copied_tokens": 59
+  },
+  {
+   "id": "Quicksilver_(Marvel_Comics)",
+   "name": "Quicksilver (Marvel Comics)",
+   "cluster": 10,
+   "x": 0.96,
+   "y": 0.8525,
+   "copied_tokens": 59
+  },
+  {
+   "id": "Rachel_Summers",
+   "name": "Rachel Summers",
+   "cluster": 0,
+   "x": 0.37,
+   "y": 0.0797,
+   "copied_tokens": 114
+  },
+  {
+   "id": "Raza_Longknife",
+   "name": "Raza Longknife",
+   "cluster": 7,
+   "x": 0.96,
+   "y": 0.5,
+   "copied_tokens": 149
+  },
+  {
+   "id": "Rikki_Barnes",
+   "name": "Rikki Barnes",
+   "cluster": 6,
+   "x": 0.96,
+   "y": 0.3825,
+   "copied_tokens": 93
+  },
+  {
+   "id": "Rocket_Raccoon",
+   "name": "Rocket Raccoon",
+   "cluster": 11,
+   "x": 0.9,
+   "y": 0.97,
+   "copied_tokens": 201
+  },
+  {
+   "id": "Spider-Girl",
+   "name": "Spider-Girl",
+   "cluster": 1,
+   "x": 0.4107,
+   "y": 0.7292,
+   "copied_tokens": 416
+  },
+  {
+   "id": "Spider-Woman",
+   "name": "Spider-Woman",
+   "cluster": 1,
+   "x": 0.4205,
+   "y": 0.6105,
+   "copied_tokens": 695
+  },
+  {
+   "id": "Spider-Woman_(Jessica_Drew)",
+   "name": "Spider-Woman (Jessica Drew)",
+   "cluster": 1,
+   "x": 0.37,
+   "y": 0.5015,
+   "copied_tokens": 259
+  },
+  {
+   "id": "Spitfire_(character)",
+   "name": "Spitfire (character)",
+   "cluster": 2,
+   "x": 0.5006,
+   "y": 0.8846,
+   "copied_tokens": 704
+  },
+  {
+   "id": "Star-Lord",
+   "name": "Star-Lord",
+   "cluster": 11,
+   "x": 0.96,
+   "y": 0.97,
+   "copied_tokens": 201
+  },
+  {
+   "id": "Storm_(Marvel_Comics)",
+   "name": "Storm (Marvel Comics)",
+   "cluster": 0,
+   "x": 0.4473,
+   "y": 0.1287,
+   "copied_tokens": 229
+  },
+  {
+   "id": "Two-Gun_Kid",
+   "name": "Two-Gun Kid",
+   "cluster": 4,
+   "x": 0.96,
+   "y": 0.1475,
+   "copied_tokens": 49
+  },
+  {
+   "id": "U.S._Agent",
+   "name": "U.S. Agent",
+   "cluster": 3,
+   "x": 0.96,
+   "y": 0.03,
+   "copied_tokens": 122
+  },
+  {
+   "id": "Union_Jack_(Joseph_Chapman)",
+   "name": "Union Jack (Joseph Chapman)",
+   "cluster": 2,
+   "x": 0.37,
+   "y": 0.96,
+   "copied_tokens": 572
+  },
+  {
+   "id": "Union_Jack_(Marvel_Comics)",
+   "name": "Union Jack (Marvel Comics)",
+   "cluster": 2,
+   "x": 0.37,
+   "y": 0.8092,
+   "copied_tokens": 632
+  },
+  {
+   "id": "Venom_(character)",
+   "name": "Venom (character)",
+   "cluster": 8,
+   "x": 0.96,
+   "y": 0.6175,
+   "copied_tokens": 1023
+  },
+  {
+   "id": "Wild_Child_(character)",
+   "name": "Wild Child (character)",
+   "cluster": 0,
+   "x": 0.4359,
+   "y": 0.04,
+   "copied_tokens": 77
+  }
+ ],
+ "links": [
+  {
+   "a": "Eddie_Brock",
+   "b": "Venom_(character)",
+   "tokens": 1023,
+   "passages": 64,
+   "linked": true,
+   "longest": 57,
+   "section_a": "Publication history",
+   "section_b": "Lead",
+   "quote": "explaining that he ended up not using the idea on that title, but that Roger Stern later asked him if he could use the idea for Spider-Man's alien costume. Stern in turn plotted the issue in which the costume first appeared but then left the title. It was writer Tom DeFalco and artist Ron Frenz who"
+  },
+  {
+   "a": "Cyclops_(Marvel_Comics)",
+   "b": "Jean_Grey",
+   "tokens": 690,
+   "passages": 28,
+   "linked": true,
+   "longest": 104,
+   "section_a": "Publication history",
+   "section_b": "Publication history",
+   "quote": "Cyclops leaves his wife and child behind to lead the reunited original X-Men, under the X-Factor name. Claremont expressed dismay that Jean's resurrection ultimately resulted in Cyclops abandoning his wife and child, tarnishing his written persona as a hero and \"decent human being\". For X-Factor, writer Bob Layton was partly inspired by the film Ghostbusters; the X …"
+  },
+  {
+   "a": "Ghost_Rider",
+   "b": "Ghost_Rider_(Johnny_Blaze)",
+   "tokens": 444,
+   "passages": 30,
+   "linked": true,
+   "longest": 62,
+   "section_a": "Powers and abilities",
+   "section_b": "Fictional character biography",
+   "quote": "Seven riders show their flaming heads for the first time in this story arc by writer Jason Aaron and artist Tan Eng Huat. Daniel Ketch returns with a new mission: to collect the powers of all the Ghost Riders for the angel Zadkiel to prevent the corruption of the powers with their human hosts. Zadkiel has other motives he keeps …"
+  },
+  {
+   "a": "Spitfire_(character)",
+   "b": "Union_Jack_(Marvel_Comics)",
+   "tokens": 382,
+   "passages": 18,
+   "linked": true,
+   "longest": 85,
+   "section_a": "Collected editions",
+   "section_b": "Collected editions",
+   "quote": "December 1998 - February 1999, TPB, 96 pages, April 2002, ISBN 0-7851-0934-X) New Invaders: To End All Wars (written by Allan Jacobsen, with art by Jorge Lucas and C. P. Smith, TPB collects New Invaders #1-9, October 2004 - June 2005, 216 pages, July 2005, ISBN 0-7851-1449-1) Captain America: Red Menace Volume 2 (written by …"
+  },
+  {
+   "a": "Spitfire_(character)",
+   "b": "Union_Jack_(Joseph_Chapman)",
+   "tokens": 322,
+   "passages": 12,
+   "linked": true,
+   "longest": 140,
+   "section_a": "Collected editions",
+   "section_b": "Collected editions",
+   "quote": "Captain America: War and Remembrance (by John Byrne and Roger Stern, with pencils by John Byrne and inks by Josef Rubinstein, TPB includes Captain America #253-254, 1981, 208 pages, July 2007, ISBN 0-7851-2693-7) Union Jack (written by John Cassaday and Ben Raab, with art by John Cassaday, 3-issue mini-series, December 1998 - February 1999, TPB …"
+  },
+  {
+   "a": "Spider-Woman",
+   "b": "Spider-Woman_(Jessica_Drew)",
+   "tokens": 259,
+   "passages": 11,
+   "linked": true,
+   "longest": 129,
+   "section_a": "Publication history",
+   "section_b": "Lead",
+   "quote": "the character originated because, I suddenly realized that some other company may quickly put out a book like that and claim they have the right to use the name, and I thought we'd better do it real fast to copyright the name. So we just batted one quickly, and that's exactly what happened. I wanted to protect the name, because …"
+  },
+  {
+   "a": "Union_Jack_(Joseph_Chapman)",
+   "b": "Union_Jack_(Marvel_Comics)",
+   "tokens": 250,
+   "passages": 10,
+   "linked": true,
+   "longest": 103,
+   "section_a": "Collected editions",
+   "section_b": "Collected editions",
+   "quote": "December 1998 - February 1999, tpb, 96 pages, April 2002, ISBN 0-7851-0934-X) New Invaders: To End All Wars (written by Allan Jacobsen, with art by Jorge Lucas and C. P. Smith, tpb collects New Invaders #1-9, October 2004 - June 2005, 216 pages, July 2005, ISBN 0-7851-1449-1) Captain America: Red Menace Volume 2 (written by …"
+  },
+  {
+   "a": "Mayday_Parker",
+   "b": "Spider-Woman",
+   "tokens": 220,
+   "passages": 4,
+   "linked": true,
+   "longest": 168,
+   "section_a": "Other versions",
+   "section_b": "Other versions",
+   "quote": "For the first ten years of their lives, the two were solely raised by Mary Jane in Portland, Oregon after she left Peter following a traumatic incident. In 1995, Peter lets Ben Reilly take over his life as Spider-Man and CEO of Parker Industries so he could return to his family. In the mid-2000s, Claire convinces Peter to …"
+  },
+  {
+   "a": "Spider-Girl",
+   "b": "Spider-Woman",
+   "tokens": 216,
+   "passages": 6,
+   "linked": true,
+   "longest": 154,
+   "section_a": "Other versions",
+   "section_b": "Other versions",
+   "quote": "is the daughter of Tonya Parker and Hawkeye who did not like the way that Kingpin was running Hammer Falls. She becomes \"Spider-Bitch\", allying herself with a new Punisher and Daredevil, and plans to take back Hammer Falls, only for the group to be captured and Daredevil and Punisher to be fed to the carnivorous dinosaurs. Hawkeye breaks his …"
+  },
+  {
+   "a": "Rocket_Raccoon",
+   "b": "Star-Lord",
+   "tokens": 201,
+   "passages": 16,
+   "linked": true,
+   "longest": 46,
+   "section_a": "Lead",
+   "section_b": "Lead",
+   "quote": "in the Marvel Cinematic Universe films Guardians of the Galaxy (2014), Guardians of the Galaxy Vol. 2 (2017), Avengers: Infinity War (2018), Avengers: Endgame (2019), Thor: Love and Thunder, The Guardians of the Galaxy Holiday Special (both 2022), and Guardians of the Galaxy Vol. 3 (2023"
+  },
+  {
+   "a": "Mayday_Parker",
+   "b": "Spider-Girl",
+   "tokens": 200,
+   "passages": 11,
+   "linked": true,
+   "longest": 50,
+   "section_a": "Publication history",
+   "section_b": "Publication history",
+   "quote": "On November 8, 2008, Marvel EIC Joe Quesada confirmed that Spider-Girl would become a feature in the monthly anthology magazine Amazing Spider-Man Family. The series would replace the feature Mr. and Mrs. Spider-Man, written by DeFalco, which served as a prequel series to the Spider-Girl universe"
+  },
+  {
+   "a": "Blue_Diamond_(character)",
+   "b": "Jack_Frost_(Marvel_Comics)",
+   "tokens": 177,
+   "passages": 5,
+   "linked": true,
+   "longest": 88,
+   "section_a": "Publication history",
+   "section_b": "Publication history",
+   "quote": "five stories in 1976. The team was introduced in Marvel Premiere #29 and 30 (April and May 1976), as well as an issue of The Invaders and two issues of Marvel Two-in-One. The Liberty Legion returned for another four issues of The Invaders in 1978–1979, and then the team disappeared from the canvas. Thomas said that there …"
+  },
+  {
+   "a": "Ch'od",
+   "b": "Raza_Longknife",
+   "tokens": 149,
+   "passages": 8,
+   "linked": true,
+   "longest": 48,
+   "section_a": "Publication history",
+   "section_b": "Publication history",
+   "quote": "Publication history Dave Cockrum created the Starjammers with the intent of having them star in their own series. However, when he submitted the concept for Marvel's two try-out series, Marvel Spotlight and Marvel Premiere, he was repeatedly informed that these series were booked for two years solid"
+  },
+  {
+   "a": "Battlestar_(character)",
+   "b": "U.S._Agent",
+   "tokens": 122,
+   "passages": 9,
+   "linked": true,
+   "longest": 30,
+   "section_a": "Powers and abilities",
+   "section_b": "Powers and abilities",
+   "quote": "has superhuman strength (capable of lifting 10 tons under maximum exertion), agility, reflexes and endurance. His speed, dexterity, coordination, and balance are of the order of a superior Olympic athlete"
+  },
+  {
+   "a": "Bucky_(Marvel_Comics)",
+   "b": "Rikki_Barnes",
+   "tokens": 93,
+   "passages": 2,
+   "linked": true,
+   "longest": 49,
+   "section_a": "Powers and abilities",
+   "section_b": "Powers and abilities",
+   "quote": "As Bucky she wore a bulletproof costume modeled after the original Bucky. She also made use of a vibranium-photonic energy shield along with vibranium soled boots that allowed her to run up walls, move silently, leap greater distances and land from great heights. She also wielded a pistol"
+  },
+  {
+   "a": "Cyclops_(Marvel_Comics)",
+   "b": "Storm_(Marvel_Comics)",
+   "tokens": 72,
+   "passages": 5,
+   "linked": true,
+   "longest": 39,
+   "section_a": "Bibliography",
+   "section_b": "Bibliography",
+   "quote": "Cebulski, C.B., ed. (2024). Marvel Encyclopedia: New Edition. DK. ISBN 978-0-5938-4611-7. Deman, J. Andrew (2023). The Claremont Run: Subverting Gender in the X-Men. University of Texas Press. ISBN 978-1-4773-3075-3"
+  },
+  {
+   "a": "Rachel_Summers",
+   "b": "Storm_(Marvel_Comics)",
+   "tokens": 71,
+   "passages": 4,
+   "linked": true,
+   "longest": 34,
+   "section_a": "Fictional character biography",
+   "section_b": "Fictional character biography",
+   "quote": "In the new status quo for mutants post House of X and Powers of X, Professor X and Magneto invite all mutants to live on Krakoa and welcome even former enemies into their fold"
+  },
+  {
+   "a": "Mockingbird_(Marvel_Comics)",
+   "b": "Quicksilver_(Marvel_Comics)",
+   "tokens": 59,
+   "passages": 3,
+   "linked": true,
+   "longest": 39,
+   "section_a": "Fictional character biography",
+   "section_b": "Fictional character biography",
+   "quote": "fight with the Cotati near Navojoa. When Quicksilver is hit by special spheres fired by the Cotati magicians, Mockingbird and Wonder Man come to his aid and help the Kree and the Skrull turn the tide against the Cotati"
+  },
+  {
+   "a": "Black_Panther_(character)",
+   "b": "Storm_(Marvel_Comics)",
+   "tokens": 52,
+   "passages": 3,
+   "linked": true,
+   "longest": 35,
+   "section_a": "Publication history",
+   "section_b": "Supporting characters",
+   "quote": "and she appeared as a prominent supporting character in many subsequent storylines. Readers and critics compared the wedding to the relationship of Jay-Z and Beyoncé, although they did not marry until two years later"
+  },
+  {
+   "a": "Black_Rider_(character)",
+   "b": "Two-Gun_Kid",
+   "tokens": 49,
+   "passages": 2,
+   "linked": true,
+   "longest": 36,
+   "section_a": "Other versions",
+   "section_b": "Other versions",
+   "quote": "March 2012), by writer Andy Diggle and artist Davide Gianfelice, and also starring the extant female mercenary Tarantula and new contemporary versions of the Marvel Old West heroes Tex Dawson a.k.a. the Western Kid"
+  },
+  {
+   "a": "Rachel_Summers",
+   "b": "Wild_Child_(character)",
+   "tokens": 43,
+   "passages": 2,
+   "linked": false,
+   "longest": 34,
+   "section_a": "Fictional character biography",
+   "section_b": "Fictional character biography",
+   "quote": "In the new status quo for mutants post House of X and Powers of X, Professor X and Magneto invite all mutants to live on Krakoa and welcome even former enemies into their fold"
+  },
+  {
+   "a": "Storm_(Marvel_Comics)",
+   "b": "Wild_Child_(character)",
+   "tokens": 34,
+   "passages": 1,
+   "linked": false,
+   "longest": 34,
+   "section_a": "Fictional character biography",
+   "section_b": "Fictional character biography",
+   "quote": "In the new status quo for mutants post House of X and Powers of X, Professor X and Magneto invite all mutants to live on Krakoa and welcome even former enemies into their fold"
+  }
+ ],
+ "clusters": [
+  {
+   "id": 0,
+   "pages": [
+    "Black_Panther_(character)",
+    "Cyclops_(Marvel_Comics)",
+    "Jean_Grey",
+    "Rachel_Summers",
+    "Storm_(Marvel_Comics)",
+    "Wild_Child_(character)"
+   ],
+   "names": [
+    "Black Panther (character)",
+    "Cyclops (Marvel Comics)",
+    "Jean Grey",
+    "Rachel Summers",
+    "Storm (Marvel Comics)",
+    "Wild Child (character)"
+   ],
+   "tokens": 962,
+   "pairs": 6,
+   "top_pair": [
+    "Cyclops_(Marvel_Comics)",
+    "Jean_Grey"
+   ],
+   "top_section": "Publication history",
+   "tie": "family",
+   "tie_note": "Cyclops and Jean Grey are married and Rachel Summers is their daughter; Storm and Black Panther are married"
+  },
+  {
+   "id": 1,
+   "pages": [
+    "Mayday_Parker",
+    "Spider-Girl",
+    "Spider-Woman",
+    "Spider-Woman_(Jessica_Drew)"
+   ],
+   "names": [
+    "Mayday Parker",
+    "Spider-Girl",
+    "Spider-Woman",
+    "Spider-Woman (Jessica Drew)"
+   ],
+   "tokens": 895,
+   "pairs": 4,
+   "top_pair": [
+    "Spider-Woman",
+    "Spider-Woman_(Jessica_Drew)"
+   ],
+   "top_section": "Publication history",
+   "tie": "mantle",
+   "tie_note": "the Spider-Woman and Spider-Girl codenames and their bearers"
+  },
+  {
+   "id": 2,
+   "pages": [
+    "Spitfire_(character)",
+    "Union_Jack_(Joseph_Chapman)",
+    "Union_Jack_(Marvel_Comics)"
+   ],
+   "names": [
+    "Spitfire (character)",
+    "Union Jack (Joseph Chapman)",
+    "Union Jack (Marvel Comics)"
+   ],
+   "tokens": 954,
+   "pairs": 3,
+   "top_pair": [
+    "Spitfire_(character)",
+    "Union_Jack_(Marvel_Comics)"
+   ],
+   "top_section": "Collected editions",
+   "tie": "mantle",
+   "tie_note": "two bearers of the Union Jack codename and Spitfire of the same wartime team"
+  },
+  {
+   "id": 3,
+   "pages": [
+    "Battlestar_(character)",
+    "U.S._Agent"
+   ],
+   "names": [
+    "Battlestar (character)",
+    "U.S. Agent"
+   ],
+   "tokens": 122,
+   "pairs": 1,
+   "top_pair": [
+    "Battlestar_(character)",
+    "U.S._Agent"
+   ],
+   "top_section": "Powers and abilities",
+   "tie": "team",
+   "tie_note": "partners as Bucky and Captain America's replacement"
+  },
+  {
+   "id": 4,
+   "pages": [
+    "Black_Rider_(character)",
+    "Two-Gun_Kid"
+   ],
+   "names": [
+    "Black Rider (character)",
+    "Two-Gun Kid"
+   ],
+   "tokens": 49,
+   "pairs": 1,
+   "top_pair": [
+    "Black_Rider_(character)",
+    "Two-Gun_Kid"
+   ],
+   "top_section": "Other versions",
+   "tie": "team",
+   "tie_note": "Marvel's Old West heroes who appear together"
+  },
+  {
+   "id": 5,
+   "pages": [
+    "Blue_Diamond_(character)",
+    "Jack_Frost_(Marvel_Comics)"
+   ],
+   "names": [
+    "Blue Diamond (character)",
+    "Jack Frost (Marvel Comics)"
+   ],
+   "tokens": 177,
+   "pairs": 1,
+   "top_pair": [
+    "Blue_Diamond_(character)",
+    "Jack_Frost_(Marvel_Comics)"
+   ],
+   "top_section": "Publication history",
+   "tie": "team",
+   "tie_note": "members of the Liberty Legion"
+  },
+  {
+   "id": 6,
+   "pages": [
+    "Bucky_(Marvel_Comics)",
+    "Rikki_Barnes"
+   ],
+   "names": [
+    "Bucky (Marvel Comics)",
+    "Rikki Barnes"
+   ],
+   "tokens": 93,
+   "pairs": 1,
+   "top_pair": [
+    "Bucky_(Marvel_Comics)",
+    "Rikki_Barnes"
+   ],
+   "top_section": "Powers and abilities",
+   "tie": "mantle",
+   "tie_note": "two bearers of the Bucky codename"
+  },
+  {
+   "id": 7,
+   "pages": [
+    "Ch'od",
+    "Raza_Longknife"
+   ],
+   "names": [
+    "Ch'od",
+    "Raza Longknife"
+   ],
+   "tokens": 149,
+   "pairs": 1,
+   "top_pair": [
+    "Ch'od",
+    "Raza_Longknife"
+   ],
+   "top_section": "Publication history",
+   "tie": "team",
+   "tie_note": "members of the Starjammers"
+  },
+  {
+   "id": 8,
+   "pages": [
+    "Eddie_Brock",
+    "Venom_(character)"
+   ],
+   "names": [
+    "Eddie Brock",
+    "Venom (character)"
+   ],
+   "tokens": 1023,
+   "pairs": 1,
+   "top_pair": [
+    "Eddie_Brock",
+    "Venom_(character)"
+   ],
+   "top_section": "Publication history",
+   "tie": "mantle",
+   "tie_note": "the Venom symbiote and its best-known host"
+  },
+  {
+   "id": 9,
+   "pages": [
+    "Ghost_Rider",
+    "Ghost_Rider_(Johnny_Blaze)"
+   ],
+   "names": [
+    "Ghost Rider",
+    "Ghost Rider (Johnny Blaze)"
+   ],
+   "tokens": 444,
+   "pairs": 1,
+   "top_pair": [
+    "Ghost_Rider",
+    "Ghost_Rider_(Johnny_Blaze)"
+   ],
+   "top_section": "Powers and abilities",
+   "tie": "mantle",
+   "tie_note": "the Ghost Rider codename and its first bearer"
+  },
+  {
+   "id": 10,
+   "pages": [
+    "Mockingbird_(Marvel_Comics)",
+    "Quicksilver_(Marvel_Comics)"
+   ],
+   "names": [
+    "Mockingbird (Marvel Comics)",
+    "Quicksilver (Marvel Comics)"
+   ],
+   "tokens": 59,
+   "pairs": 1,
+   "top_pair": [
+    "Mockingbird_(Marvel_Comics)",
+    "Quicksilver_(Marvel_Comics)"
+   ],
+   "top_section": "Fictional character biography",
+   "tie": "team",
+   "tie_note": "members of the Avengers West Coast"
+  },
+  {
+   "id": 11,
+   "pages": [
+    "Rocket_Raccoon",
+    "Star-Lord"
+   ],
+   "names": [
+    "Rocket Raccoon",
+    "Star-Lord"
+   ],
+   "tokens": 201,
+   "pairs": 1,
+   "top_pair": [
+    "Rocket_Raccoon",
+    "Star-Lord"
+   ],
+   "top_section": "Lead",
+   "tie": "team",
+   "tie_note": "members of the Guardians of the Galaxy"
+  }
+ ],
+ "alt_extra": {
+  "n": 12,
+  "pairs": 16,
+  "groups": [
+   {
+    "pages": [
+     "Radian_(Morituri)",
+     "Scaredycat",
+     "Scatterbrain_(Morituri)",
+     "Snapdragon_(Morituri)",
+     "Toxyn",
+     "Vyking"
+    ],
+    "names": [
+     "Radian (Morituri)",
+     "Scaredycat",
+     "Scatterbrain (Morituri)",
+     "Snapdragon (Morituri)",
+     "Toxyn",
+     "Vyking"
+    ],
+    "pairs": 15,
+    "linked": 8,
+    "section": "Lead",
+    "example": [
+     "Radian_(Morituri)",
+     "Scaredycat"
+    ],
+    "quote": "in American comic books published by Marvel Comics. The character is depicted as a member of the Strikeforce: Morituri. The character was created by Peter B. Gillis and Brent Anderson. Publication history"
+   },
+   {
+    "pages": [
+     "Backhand_(character)",
+     "Blackthorn_(character)"
+    ],
+    "names": [
+     "Backhand (character)",
+     "Blackthorn (character)"
+    ],
+    "pairs": 1,
+    "linked": 0,
+    "section": "Lead",
+    "example": [
+     "Backhand_(character)",
+     "Blackthorn_(character)"
+    ],
+    "quote": "in American comic books published by Marvel Comics. The character is usually depicted as a member of the Strikeforce: Morituri. The character was created by Peter B. Gillis and Brent Anderson. Publication history"
+   }
+  ]
+ },
+ "sweep": [
+  {
+   "n": 8,
+   "template_pages": 3,
+   "min_passage": 20,
+   "pairs": 45,
+   "pages": 65,
+   "clusters": 24,
+   "largest": 11,
+   "linked_share": 0.7556
+  },
+  {
+   "n": 8,
+   "template_pages": 3,
+   "min_passage": 30,
+   "pairs": 22,
+   "pages": 31,
+   "clusters": 12,
+   "largest": 6,
+   "linked_share": 0.9091
+  },
+  {
+   "n": 8,
+   "template_pages": 3,
+   "min_passage": 50,
+   "pairs": 11,
+   "pages": 15,
+   "clusters": 6,
+   "largest": 4,
+   "linked_share": 1.0
+  },
+  {
+   "n": 8,
+   "template_pages": 5,
+   "min_passage": 20,
+   "pairs": 47,
+   "pages": 67,
+   "clusters": 24,
+   "largest": 11,
+   "linked_share": 0.7447
+  },
+  {
+   "n": 8,
+   "template_pages": 5,
+   "min_passage": 30,
+   "pairs": 22,
+   "pages": 31,
+   "clusters": 12,
+   "largest": 6,
+   "linked_share": 0.9091
+  },
+  {
+   "n": 8,
+   "template_pages": 5,
+   "min_passage": 50,
+   "pairs": 11,
+   "pages": 15,
+   "clusters": 6,
+   "largest": 4,
+   "linked_share": 1.0
+  },
+  {
+   "n": 8,
+   "template_pages": 10,
+   "min_passage": 20,
+   "pairs": 80,
+   "pages": 78,
+   "clusters": 24,
+   "largest": 11,
+   "linked_share": 0.575
+  },
+  {
+   "n": 8,
+   "template_pages": 10,
+   "min_passage": 30,
+   "pairs": 22,
+   "pages": 31,
+   "clusters": 12,
+   "largest": 6,
+   "linked_share": 0.9091
+  },
+  {
+   "n": 8,
+   "template_pages": 10,
+   "min_passage": 50,
+   "pairs": 11,
+   "pages": 15,
+   "clusters": 6,
+   "largest": 4,
+   "linked_share": 1.0
+  },
+  {
+   "n": 8,
+   "template_pages": 20,
+   "min_passage": 20,
+   "pairs": 81,
+   "pages": 80,
+   "clusters": 25,
+   "largest": 11,
+   "linked_share": 0.5802
+  },
+  {
+   "n": 8,
+   "template_pages": 20,
+   "min_passage": 30,
+   "pairs": 22,
+   "pages": 31,
+   "clusters": 12,
+   "largest": 6,
+   "linked_share": 0.9091
+  },
+  {
+   "n": 8,
+   "template_pages": 20,
+   "min_passage": 50,
+   "pairs": 11,
+   "pages": 15,
+   "clusters": 6,
+   "largest": 4,
+   "linked_share": 1.0
+  },
+  {
+   "n": 8,
+   "template_pages": 50,
+   "min_passage": 20,
+   "pairs": 83,
+   "pages": 83,
+   "clusters": 26,
+   "largest": 12,
+   "linked_share": 0.5663
+  },
+  {
+   "n": 8,
+   "template_pages": 50,
+   "min_passage": 30,
+   "pairs": 23,
+   "pages": 33,
+   "clusters": 13,
+   "largest": 6,
+   "linked_share": 0.8696
+  },
+  {
+   "n": 8,
+   "template_pages": 50,
+   "min_passage": 50,
+   "pairs": 11,
+   "pages": 15,
+   "clusters": 6,
+   "largest": 4,
+   "linked_share": 1.0
+  },
+  {
+   "n": 12,
+   "template_pages": 3,
+   "min_passage": 20,
+   "pairs": 51,
+   "pages": 72,
+   "clusters": 25,
+   "largest": 11,
+   "linked_share": 0.7255
+  },
+  {
+   "n": 12,
+   "template_pages": 3,
+   "min_passage": 30,
+   "pairs": 22,
+   "pages": 31,
+   "clusters": 12,
+   "largest": 6,
+   "linked_share": 0.9091
+  },
+  {
+   "n": 12,
+   "template_pages": 3,
+   "min_passage": 50,
+   "pairs": 11,
+   "pages": 15,
+   "clusters": 6,
+   "largest": 4,
+   "linked_share": 1.0
+  },
+  {
+   "n": 12,
+   "template_pages": 5,
+   "min_passage": 20,
+   "pairs": 52,
+   "pages": 74,
+   "clusters": 26,
+   "largest": 11,
+   "linked_share": 0.7115
+  },
+  {
+   "n": 12,
+   "template_pages": 5,
+   "min_passage": 30,
+   "pairs": 22,
+   "pages": 31,
+   "clusters": 12,
+   "largest": 6,
+   "linked_share": 0.9091
+  },
+  {
+   "n": 12,
+   "template_pages": 5,
+   "min_passage": 50,
+   "pairs": 11,
+   "pages": 15,
+   "clusters": 6,
+   "largest": 4,
+   "linked_share": 1.0
+  },
+  {
+   "n": 12,
+   "template_pages": 10,
+   "min_passage": 20,
+   "pairs": 87,
+   "pages": 86,
+   "clusters": 26,
+   "largest": 12,
+   "linked_share": 0.5517
+  },
+  {
+   "n": 12,
+   "template_pages": 10,
+   "min_passage": 30,
+   "pairs": 38,
+   "pages": 39,
+   "clusters": 14,
+   "largest": 6,
+   "linked_share": 0.7368
+  },
+  {
+   "n": 12,
+   "template_pages": 10,
+   "min_passage": 50,
+   "pairs": 11,
+   "pages": 15,
+   "clusters": 6,
+   "largest": 4,
+   "linked_share": 1.0
+  },
+  {
+   "n": 12,
+   "template_pages": 20,
+   "min_passage": 20,
+   "pairs": 87,
+   "pages": 86,
+   "clusters": 26,
+   "largest": 12,
+   "linked_share": 0.5517
+  },
+  {
+   "n": 12,
+   "template_pages": 20,
+   "min_passage": 30,
+   "pairs": 38,
+   "pages": 39,
+   "clusters": 14,
+   "largest": 6,
+   "linked_share": 0.7368
+  },
+  {
+   "n": 12,
+   "template_pages": 20,
+   "min_passage": 50,
+   "pairs": 11,
+   "pages": 15,
+   "clusters": 6,
+   "largest": 4,
+   "linked_share": 1.0
+  },
+  {
+   "n": 12,
+   "template_pages": 50,
+   "min_passage": 20,
+   "pairs": 93,
+   "pages": 87,
+   "clusters": 26,
+   "largest": 12,
+   "linked_share": 0.5269
+  },
+  {
+   "n": 12,
+   "template_pages": 50,
+   "min_passage": 30,
+   "pairs": 38,
+   "pages": 39,
+   "clusters": 14,
+   "largest": 6,
+   "linked_share": 0.7368
+  },
+  {
+   "n": 12,
+   "template_pages": 50,
+   "min_passage": 50,
+   "pairs": 11,
+   "pages": 15,
+   "clusters": 6,
+   "largest": 4,
+   "linked_share": 1.0
+  }
+ ]
+}

@@ -21,3 +21,54 @@
 .w5-hint { font-style: italic; opacity: 0.7; }
 .w5-slots { display: grid; gap: 1rem; margin-top: 1rem; }
 .w5-slot { border: 1px dashed var(--line); border-radius: 8px; padding: 0.75rem 1rem; }
+
+/* Week 4's card for a week 5 section. Give the slots container the card's
+   classes, <div class="w5-slots card w4-card w5-card">, and the six slots
+   fall into Week 4's layout: the question and answer across the top; what we
+   did, what surprised us and the limitation in the text column; the figure
+   beside them; the passages we checked across the bottom. The slot headings
+   become Week 4's small labels. */
+.corridor .w5-card.w4-card {
+  align-items: start;
+  column-gap: 40px;
+  display: grid;
+  grid-template-areas: "asked asked" "did figure" "surprise figure" "limit figure" "checked checked";
+  grid-template-columns: 500px minmax(0, 1fr);
+  grid-template-rows: auto auto auto 1fr auto;
+  margin-top: 0;
+  row-gap: 16px;
+}
+.corridor .w5-card > .w5-slot { border: 0; border-radius: 0; min-width: 0; padding: 0; }
+.corridor .w5-card > [data-slot="asked"] { grid-area: asked; }
+.corridor .w5-card > [data-slot="did"] { grid-area: did; }
+.corridor .w5-card > [data-slot="figure"] { grid-area: figure; }
+.corridor .w5-card > [data-slot="surprise"] { grid-area: surprise; }
+.corridor .w5-card > [data-slot="limit"] { grid-area: limit; }
+.corridor .w5-card > [data-slot="checked"] { border-top: 1px solid var(--line-soft); grid-area: checked; padding-top: 16px; }
+.corridor .w5-card > .w5-slot > h3 {
+  color: var(--ink-mute);
+  font-size: var(--fs-caption);
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  margin: 0 0 6px;
+  text-transform: uppercase;
+}
+.corridor .w5-card [data-body] { display: flex; flex-direction: column; gap: 12px; }
+/* A chart drawn at a fallback width must not hold its column open. */
+.corridor .w5-card [data-body] > *, .corridor .w5-card .plot > * { min-width: 0; }
+.corridor .w5-card [data-body] > p { color: var(--ink-soft); font-size: var(--fs-body); line-height: 1.62; margin: 0; max-width: 68ch; }
+.corridor .w5-card [data-body] > p.w5-question { color: var(--ink); font-size: var(--fs-h4); font-weight: 700; letter-spacing: -0.01em; line-height: 1.25; }
+.corridor .w5-card [data-body] > p.w4-answer { color: var(--ink); font-size: var(--fs-strong); font-weight: 600; }
+.corridor .w5-card .notice { margin-top: 0; }
+.corridor .w5-chips { display: flex; flex-wrap: wrap; gap: 6px; }
+.corridor .w5-chips button { background: var(--card); border: 1px solid var(--line); border-radius: 999px; color: var(--ink-soft); cursor: pointer; font: inherit; font-size: var(--fs-small); padding: 3px 11px; }
+.corridor .w5-chips button[aria-pressed="true"] { background: var(--ink); border-color: var(--ink); color: var(--card); }
+.corridor .w5-card .kit-kwic { table-layout: fixed; }
+.corridor .w5-card .kit-kwic td { overflow: hidden; text-overflow: ellipsis; }
+.corridor .w5-card .kit-kwic td.kit-kwic-page { width: 11rem; }
+.corridor .w5-card .kit-kwic td.kit-kwic-left { width: 26%; }
+.corridor .w5-card .kit-kwic td.kit-kwic-right { width: 22%; }
+.corridor .w5-card .kit-kwic td:nth-child(3) { width: 9rem; }
+.corridor .kit-kwic td.w5-mark { width: 1.5rem; }
+.corridor .kit-kwic td.w5-verdict { color: var(--ink-mute); font-size: var(--fs-caption); white-space: normal; width: 17rem; }
+.corridor .kit-kwic td.w5-mark { font-weight: 800; }

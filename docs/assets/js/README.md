@@ -27,6 +27,10 @@ The element to draw into. `part` is one of `asked`, `did`, `figure`, `surprise`,
 `slot("heaps", "figure")` is the body of `#heaps-figure`. Drawing into it replaces the hint and keeps the
 heading.
 
+The Week 4 card layout is a class, not a function: `<div class="w5-slots card w4-card w5-card">` puts the six
+slots in Week 4's arrangement (question and answer on top, text column with the figure beside it, checked
+passages below), styled in `kit.css`. Sections 1 and 2 of the week 5 page show the markup.
+
 ## Figures and tables
 
 ### figure(host, { chart, caption, data, label })
