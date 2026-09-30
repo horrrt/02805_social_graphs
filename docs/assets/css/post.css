@@ -2895,13 +2895,20 @@
 .corridor .gv .gv-lit .gv-link.gv-hi { stroke: var(--graph-ink); stroke-opacity: 0.8; }
 .corridor .gv .gv-hub { outline: none; }
 .corridor .gv .gv-hub:focus-visible .gv-pill { stroke: var(--graph-accent); stroke-width: 2; }
+.corridor .kit-tip-host { position: relative; }
+.corridor .kit-tip,
 .corridor .gv-tip {
   background: var(--w4-tip-bg); border-radius: 9px; box-shadow: 0 12px 32px rgba(15, 35, 64, 0.18);
   color: var(--w4-tip-ink); display: flex; flex-direction: column; font-size: var(--fs-small); gap: 2px;
   line-height: 1.45; max-width: 240px; padding: 8px 11px; pointer-events: none; position: absolute; z-index: 30;
 }
-.corridor .gv-tip[hidden] { display: none; }
-.corridor .gv-tip b { color: var(--w4-hero-ink); }
+.corridor .gv-tip[hidden], .corridor .kit-tip[hidden] { display: none; }
+.corridor .gv-tip b, .corridor .kit-tip b { color: var(--w4-hero-ink); }
+.corridor [data-tip] { cursor: default; }
+.corridor circle.kit-hot, .corridor rect.kit-hot { stroke: var(--ink); stroke-width: 2px; }
+.corridor path.kit-hot, .corridor polyline.kit-hot, .corridor line.kit-hot { stroke-width: 3.5px; }
+.corridor polygon.kit-hot { opacity: 0.8; }
+.corridor .kit-guide { stroke: var(--ink-mute); stroke-dasharray: 3 3; pointer-events: none; }
 .corridor .gv-tools { display: flex; gap: 4px; position: absolute; right: 0; top: 0; z-index: 20; }
 .corridor .gv-tools button {
   background: var(--card); border: 1px solid var(--line); border-radius: 6px; color: var(--ink-soft);

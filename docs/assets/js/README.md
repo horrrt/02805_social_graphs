@@ -3,7 +3,7 @@
 Every component a section script needs comes from one import, `kit.js`:
 
 ```js
-import { slot, figure, echart, concordance, passage, loadData } from "./kit.js?v=4";
+import { slot, figure, echart, concordance, passage, loadData } from "./kit.js?v=5";
 ```
 
 Link three stylesheets, in this order: `type.css`, `corridor.css`, `post.css`.
@@ -114,6 +114,17 @@ networkView(slot("autocomplete", "figure"), {
   nodes, links, groups: data.groups, hubs: data.hubs, colorLinks: true, legend: true,
   aria: "The Marvel link network, coloured by community",
 });
+```
+
+### hoverTips(host), tipBox(host)
+
+`hoverTips(host)` shows each SVG mark's `<title>` in host as a tooltip at once, in the page's style, and
+highlights the mark under the pointer. It also picks up charts drawn or redrawn into host later. `tipBox(host)`
+is the tooltip alone, for a chart that writes its own: `show(lines, clientX, clientY)` and `hide()`, with the
+first line bold.
+
+```js
+hoverTips(document.getElementById("chart-weird-scatter"));
 ```
 
 ## Text evidence

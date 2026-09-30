@@ -6,7 +6,7 @@
 // passage behind each outlier's reason (#fame-passages).
 // Data: docs/weeks/week05/data/fame.json, written by analysis/week05_fame.py.
 
-import { echart, loadData, passage, table, termify, token } from "./kit.js?v=4";
+import { echart, loadData, passage, table, termify, token } from "./kit.js?v=5";
 
 const count = (v) => v.toLocaleString("en-GB");
 const times = (r) => `×${r >= 1 ? r.toFixed(1) : r.toFixed(2)}`;
@@ -32,6 +32,7 @@ if (host) {
     type: "scatter",
     symbolSize: labelled ? 9 : 6,
     itemStyle: { color, opacity: labelled ? 1 : 0.6 },
+    emphasis: { scale: 1.8, itemStyle: { opacity: 1, borderColor: token("--ink"), borderWidth: 1.5 } },
     data: points,
     label: labelled
       ? { show: true, position: "right", color: token("--ink-soft"), formatter: (d) => `${short(d.data.point.name)} ${times(d.data.point.ratio)}` }
@@ -46,6 +47,12 @@ if (host) {
     host,
     {
       grid: { left: 64, right: 120, top: 40, bottom: 48 },
+      // Ctrl or ⌘ with the wheel, or a pinch, zooms; drag to pan; the ↺ button resets.
+      dataZoom: [
+        { type: "inside", xAxisIndex: 0, zoomOnMouseWheel: "ctrl", moveOnMouseWheel: false, moveOnMouseMove: true },
+        { type: "inside", yAxisIndex: 0, zoomOnMouseWheel: "ctrl", moveOnMouseWheel: false, moveOnMouseMove: true },
+      ],
+      toolbox: { right: 8, top: 0, feature: { restore: { title: "Reset the zoom" } } },
       legend: { top: 0, data: ["Longer than predicted", "Shorter than predicted", "Other pages"], selectedMode: false },
       tooltip: {
         formatter: (d) => {

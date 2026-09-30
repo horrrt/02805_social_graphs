@@ -5,7 +5,7 @@
 // the top and bottom five as read (#weird-table), and the sentences we quote.
 // Data: docs/weeks/week05/data/weird.json, written by analysis/week05_weird.py.
 
-import { drawer, drawerRow, fitted, fs, loadData, node, passage, table, termify, textWidth, token } from "./kit.js?v=4";
+import { drawer, drawerRow, fitted, fs, loadData, node, passage, table, termify, textWidth, token } from "./kit.js?v=5";
 
 const data = await loadData(new URL("../../weeks/week05/data/weird.json", import.meta.url));
 const pct = (v) => `${(v * 100).toFixed(1)}%`;

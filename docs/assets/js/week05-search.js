@@ -6,7 +6,7 @@
 // Data: docs/weeks/week05/data/search.json and search_live.json, written by
 // analysis/week05_search.py.
 
-import { loadData, passage, termify } from "./kit.js?v=4";
+import { loadData, passage, termify } from "./kit.js?v=5";
 
 const VERSION = "2";
 const SEARCH_URL = new URL(`../../weeks/week05/data/search.json?v=${VERSION}`, import.meta.url);

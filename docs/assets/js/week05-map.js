@@ -5,7 +5,7 @@
 // Hovering any page names it and gives its group and links; the eight hubs, the
 // quiz's options, also carry a name on the map.
 
-import { loadData, networkView } from "./kit.js?v=4";
+import { loadData, networkView } from "./kit.js?v=5";
 
 let loading;
 

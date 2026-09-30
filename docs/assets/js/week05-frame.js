@@ -6,7 +6,7 @@
 // pages against their baseline, Week 4's mini strip). Data: the section JSON
 // files in docs/weeks/week05/data/, written by analysis/week05_*.py.
 
-import { loadData } from "./kit.js?v=4";
+import { hoverTips, loadData } from "./kit.js?v=5";
 import { fitted, fs, miniStrip, node, token } from "./week04-strip.js?v=2";
 
 const VERSION = "2";
@@ -178,3 +178,7 @@ async function boot() {
 }
 
 boot().catch((err) => console.error("week05 frame failed", err));
+
+// ---- every chart's marks show their numbers at once on hover (tips.js); the
+// maps and the ECharts scatter carry their own tooltips
+for (const host of document.querySelectorAll('[id^="chart-"]')) hoverTips(host);
