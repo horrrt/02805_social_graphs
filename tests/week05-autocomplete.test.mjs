@@ -74,7 +74,7 @@ test("the method states the tokeniser, the template and the cap", () => {
   has(`continues with ${t.sentences_per_fake} sentences the model samples word by word`);
   has(`A sentence that reaches ${t.cap} words without ending is thrown away and drawn again, never cut; that happened to ${sm.redrawn} sentences`);
   has("P(w3 | w1, w2)");
-  has("That is next-token prediction");
+  has("A trigram model is next-token prediction");
 });
 
 test("guessing stays honest: no hit rate without real answers", () => {
@@ -91,7 +91,7 @@ test("guessing stays honest: no hit rate without real answers", () => {
     assert.equal(g.collected_on, null);
     assert.equal(g.status, "awaiting_other_groups");
     has("We do not know yet: no other group has guessed");
-    has(`We will post the ${k} masked fakes in the week 5 Teams channel and report the correct guesses out of all guesses, against the 1 in ${k} (${pct(a.chance_rate)}) a random guess gets right`);
+    has(`We will post the ${k} fake pages, one per group with names masked, in the week 5 Teams channel and report the correct guesses out of all guesses, against the 1 in ${k} (${pct(a.chance_rate)}) a random guess gets right`);
     assert.doesNotMatch(s, /hit rate/i, "no hit rate on the page before anyone has guessed");
     assert.doesNotMatch(js, /hit_rate/, "the page script never shows a hit rate");
   }

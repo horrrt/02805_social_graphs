@@ -86,8 +86,6 @@ test("section 5 compares orders at equal tokens, with the random baseline", () =
   assert.ok(Math.abs(late.z_least_linked) < 1, '"sits at random" needs |z| < 1');
   has(`by 400,000 tokens the least-linked order has begun ${late.pages_least_linked} pages, reached pages linked from ${late.in_degree_least_linked} others, and sits at random (z = ${z(late.z_least_linked)})`);
   has("the least-linked characters' pages bring more new vocabulary than random pages, and the most-linked pages bring less");
-  // The answer's two directions rest on the same two numbers.
-  has("They bring new words.");
 
   // "within 11% of the random mean at every point" in the figure caption.
   const worst = Math.max(...h.grid.map((p) => Math.max(Math.abs(p.most_linked - p.random_mean), Math.abs(p.least_linked - p.random_mean)) / p.random_mean));

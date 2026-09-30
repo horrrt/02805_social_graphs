@@ -24,7 +24,7 @@ export function visible(html) {
   let out = html.replace(/<(script|style|svg|template)\b[\s\S]*?<\/\1>/g, " ");
   for (let prev; prev !== out; ) {
     prev = out;
-    out = out.replace(/<details\b[^>]*>\s*<summary\b[^>]*>([\s\S]*?)<\/summary>((?:(?!<details\b)[\s\S])*?)<\/details>/g, " $1 ");
+    out = out.replace(/<details\b[^>]*>\s*<summary\b[^>]*>((?:(?!<\/summary>|<details\b)[\s\S])*?)<\/summary>((?:(?!<details\b)[\s\S])*?)<\/details>/g, " $1 ");
   }
   return out.replace(/<span class="w4-pop"[^>]*>[\s\S]*?<\/span>/g, " ");
 }

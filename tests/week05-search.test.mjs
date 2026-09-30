@@ -39,6 +39,8 @@ test("section 3 quotes search.json", () => {
   has(`(p = ${Number(sum.p_at_1.toPrecision(2))} against the 1 in ${t.n_pages} of a random ranking)`);
   has(`Removing stopwords lifts the hits to ${sum.hits_at_1_nostop} first and ${sum.hits_at_5_nostop} in the top five`);
   assert.equal(sum.hits_at_1, 1, '"Even one first place" needs exactly one hit');
+  assert.ok(sum.p_at_1 < 0.05, '"beats chance" needs p below 0.05');
+  has(`We wrote ${sum.n_queries} queries, ${sum.n_scored} with a target page`);
   has("Even one first place beats chance");
   assert.ok(sum.hits_at_1_nostop > sum.hits_at_1 && sum.hits_at_5_nostop > sum.hits_at_5, '"lifts" and "cost real hits" need both to rise');
   const ns = sum.miss_kinds_nostop;

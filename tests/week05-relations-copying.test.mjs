@@ -59,8 +59,8 @@ test("section 1 quotes relations.json", () => {
   const read = Object.values(prec).reduce((sum, p) => sum + p.read, 0);
   const right = Object.values(prec).reduce((sum, p) => sum + p.right, 0);
   has(`We read ${read} sentences, ${r.meta.sample} per label, drawn at random: ${right} of the labels describe how A and B relate`);
-  assert.ok(right / read >= 0.4 && right / read <= 0.6, '"about half the links correctly" needs 40% to 60% right');
-  has("the word list labels about half the links correctly");
+  assert.ok(right / read >= 0.4 && right / read <= 0.6, '"about half of the labels are right" needs 40% to 60% right');
+  has("about half of the word list's labels are right");
   has(`Ally labels hold up best (${prec.ally.right} of ${prec.ally.read})`);
   has(`enemy and killed worst (${prec.enemy.right} of ${prec.enemy.read} each)`);
   has(`family in between (${prec.family.right} of ${prec.family.read})`);
@@ -68,7 +68,7 @@ test("section 1 quotes relations.json", () => {
   assert.equal(prec.ally.right, Math.max(...scores), '"best" must be ally');
   assert.ok(prec.enemy.right === Math.min(...scores) && prec.killed.right === Math.min(...scores), '"worst" must be enemy and killed');
   assert.ok(prec.family.right > prec.enemy.right && prec.family.right < prec.ally.right, '"in between" for family');
-  assert.ok(r.concordance.some((l) => l.label === "enemy" && l.verdict === "wrong" && l.page === "Phyla-Vell"),
+  assert.ok(r.concordance.some((l) => l.label === "enemy" && l.verdict === "wrong" && l.page === "Phyla-Vell" && l.target === "Star-Lord"),
     "the quoted fight-word sentence must be a wrong enemy label in the sample");
 });
 

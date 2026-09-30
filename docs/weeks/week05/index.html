@@ -201,13 +201,13 @@
               <h3>What we asked</h3>
               <div data-body>
                 <p class="w5-question">Do enemies sit in different communities from allies and family?</p>
-                <p class="w4-answer">Mostly yes, as a tendency: the word list labels about half the links correctly.</p>
+                <p class="w4-answer">Mostly yes, as a tendency: about half of the word list's labels are right.</p>
               </div>
             </div>
             <div class="w5-slot" data-slot="did" id="relations-did">
               <h3>What we did</h3>
               <div data-body>
-                <p>We labelled each link from page A to page B by the sentence on A's page that names B, using five words: killed, family, enemy, ally, teammate. Then we counted how often each label's links join two communities, against the labels shuffled.</p>
+                <p>We labelled each link from page A to page B by the sentence on A's page that names B, using a small word list that gives each sentence one of five labels: killed, family, enemy, ally, teammate. Then we counted how often each label's links join two communities, against the labels shuffled.</p>
                 <div class="rx-drawers rx-foot">
                   <details class="rx-drawer"><summary>Method</summary><div class="rx-drawer-body">
                     <p>A link from A to B means A's Wikipedia page links to B's. For each of the 1,784 links we took the first sentence on A's page that names B, and found one for 1,513 (85%). Most of the rest come from infoboxes and navigation boxes, which our copy of the text has lost; 33 point at one of 7 alternate versions, such as the film Jean Grey, whose name belongs to the main character.</p>
@@ -330,7 +330,7 @@
             <div class="w5-slot" data-slot="checked" id="copying-checked">
               <h3>What we checked in the text</h3>
               <div data-body>
-                <p>The longest passage of the largest copying pair, quoted from its first page. The next two pairs and the templated lead the 12-word runs find are one click away.</p>
+                <p>The longest passage of the largest copying pair, quoted from its first page. The next two pairs, and a templated lead that only runs of 12 words find, are one click away.</p>
                 <div id="copying-passages"></div>
               </div>
             </div>
@@ -356,7 +356,7 @@
             <div class="w5-slot" data-slot="did" id="search-did">
               <h3>What we did</h3>
               <div data-body>
-                <p>We turned every page and every query into a Bag of Words: a count of each word, with the order thrown away. We wrote 12 queries, each with a target page, ranked all 303 pages by cosine similarity to each, and looked where the target came: once with every word, once with stopwords removed, spaCy's list of 306 words.</p>
+                <p>We turned every page and every query into a Bag of Words: a count of each word, with the order thrown away. We wrote 12 queries, 11 with a target page, ranked all 303 pages by cosine similarity to each, and looked where the target came: once with every word, once with stopwords removed, spaCy's list of 306 words.</p>
                 <div class="rx-drawers rx-foot">
                   <details class="rx-drawer"><summary>Method</summary><div class="rx-drawer-body">
                     <p>A word is a run of letters and digits in any alphabet, lowercased, and a hyphen splits words, so Spider-Man counts as spider and man. The 303 pages and their 28,062 different words form a document-term matrix that is 97.2% empty. The most common word, the, makes up 6.1% of all 740,340 words: a handful of words dominate every page, as Zipf's law says.</p>
@@ -440,11 +440,11 @@
             <div class="w5-slot" data-slot="did" id="autocomplete-did">
               <h3>What we did</h3>
               <div data-body>
-                <p>Each group of at least 8 pages gets its own trigram model: the probability of the next word given the two before it, P(w3 | w1, w2), counted from the group's pages. We will post the 9 masked fakes in the week 5 Teams channel and report the correct guesses out of all guesses, against the 1 in 9 (11%) a random guess gets right.</p>
+                <p>Each group of at least 8 pages gets its own trigram model: the probability of the next word given the two before it, P(w3 | w1, w2), counted from the group's pages. We will post the 9 fake pages, one per group with names masked, in the week 5 Teams channel and report the correct guesses out of all guesses, against the 1 in 9 (11%) a random guess gets right.</p>
                 <div class="rx-drawers rx-foot">
                   <details class="rx-drawer"><summary>Method</summary><div class="rx-drawer-body">
-                    <p>That is next-token prediction, what a large language model does, with a two-word window and a table of counts in place of a neural network. Each fake page opens with one sentence we wrote by hand ("Aetherion is a character appearing in American comic books published by Marvel Comics.") and continues with 5 sentences the model samples word by word.</p>
                     <p>First the communities. Louvain ran 100 times on the giant component of the link network, the 277 of 303 pages joined to each other by links. The runs disagree: they found 89 different partitions, the most common one in only 4 runs, and 77 runs found 8 groups. Two runs agree with a median normalised mutual information of 0.90. So we kept a consensus: two pages share a group when at least half the runs put them together, which gives 8 groups, the same for all 100 seeds we tried on it. The 9 Strikeforce: Morituri pages link only to each other and form a ninth group; the 17 pages with no links have none.</p>
+                    <p>A trigram model is next-token prediction, what a large language model does, with a two-word window and a table of counts in place of a neural network. Each fake page opens with one sentence we wrote by hand ("Aetherion is a character appearing in American comic books published by Marvel Comics.") and continues with 5 sentences the model samples word by word.</p>
                     <p>Before training we replace every character's name, the page title and the real name its description gives, by [name], so a guess cannot rest on spotting a member. The quiz shows these masked fakes.</p>
                     <p>Tokeniser: each page splits into paragraphs at its line breaks and into sentences with spaCy's rule-based sentencizer, which knows that "Dr." does not end a sentence. Heading lines are dropped, and so is every sentence under References, External links, Notes, See also and Further reading. A word is a run of letters in any alphabet, with an apostrophe or hyphen inside it kept, lowercased and with a possessive 's removed; digits and punctuation are dropped.</p>
                     <p>Each sentence is padded with two start markers and one end marker before counting. The model has no smoothing and no backoff: sampling starts from the start markers and only ever reaches two-word contexts that occur in the pages. A sentence that reaches 40 words without ending is thrown away and drawn again, never cut; that happened to 5 sentences. Names are matched as whole words with their capitals, so "Storm" becomes [name] and "storm" stays.</p>
@@ -469,7 +469,7 @@
                 <div class="w5-two">
                   <div class="plot">
                     <h3>Guess the community</h3>
-                    <p class="axis-note">One masked fake page per group. A locked guess stays locked. Your score stays in this browser and is not part of our results.</p>
+                    <p class="axis-note">A locked guess stays locked. Your score stays in this browser and is not part of our results.</p>
                     <p aria-live="polite" class="w5-scoreboard" id="ac-scoreboard"></p>
                     <p class="w5-caption" id="ac-progress"></p>
                     <div class="w5-fake">
@@ -547,8 +547,8 @@
                     <p>The fit is a straight line through log V against log n on the random orders' mean, over the 26 grid points from 11,750 to 713,617 tokens: K = 16.7, β = 0.56. Fitted to each random order alone, β runs from 0.54 to 0.57 (5th to 95th percentile).</p>
                   </div></details>
                   <details class="rx-drawer"><summary>More numbers</summary><div class="rx-drawer-body">
-                    <p>The gaps hold across the grid, not only at these two points. The least-linked order stays 1.6 to 2.9 standard deviations above random from 11,750 to 266,346 tokens, and the most-linked order 2.0 to 3.9 below from 313,893 to 605,520 tokens. Each order leads or lags only while it reads its own end of the list: by 400,000 tokens the least-linked order has begun 253 pages, reached pages linked from 10 others, and sits at random (z = 0.2).</p>
-                    <p>Every count also rests on one word rule; keeping digits or splitting hyphens would move them. And the link count only covers links among these 303 pages, not a character's fame in the comics: 58 of the pages get no link at all.</p>
+                    <p>The gaps hold across the grid, not only at 100,000 and 400,000 tokens. The least-linked order stays 1.6 to 2.9 standard deviations above random from 11,750 to 266,346 tokens, and the most-linked order 2.0 to 3.9 below from 313,893 to 605,520 tokens. Each order leads or lags only while it reads its own end of the list: by 400,000 tokens the least-linked order has begun 253 pages, reached pages linked from 10 others, and sits at random (z = 0.2).</p>
+                    <p>Every count rests on one word rule; keeping digits or splitting hyphens would move them. And the link count only covers links among these 303 pages, not a character's fame in the comics: 58 of the pages get no link at all.</p>
                   </div></details>
                   <details class="rx-drawer"><summary>Does the curve flatten?</summary><div class="rx-drawer-body">
                     <p>It bends but never flattens out. The slope on log-log axes is 0.63 below 91,570 tokens and 0.49 above, so new words come more slowly as the corpus grows. In the last tenth of the corpus the random orders still meet 18 new types per 1,000 tokens.</p>
@@ -626,8 +626,8 @@
                   <details class="rx-drawer"><summary>More numbers</summary><div class="rx-drawer-body">
                     <p>Out-degree, the links a page makes, tracks length even more closely (Spearman 0.78), but a longer page has more room for links, so it partly measures length itself. PageRank, which counts a link from a much-linked page for more, gives 0.71.</p>
                     <p>The names we counted come from the text alone, which lost its infoboxes, so a page can link to a character without naming it in our copy.</p>
-                    <p>Each explanation shows at its extreme in one outlier: Brian Braddock's codename, Captain Britain, is on 14 other pages but linked from 1, and Quasar is a page for a name four characters share, with 24 incoming links.</p>
                     <p>Pages named without a link: Spearman 0.07 with the residual, against 0.00 ± 0.06 in shuffles (p = 0.202). The 46 hub pages: mean residual −0.21, against 0.04 for the other pages (p = 0.008).</p>
+                    <p>Each of the two explanations, hub pages and names without a link, shows at its extreme in one outlier: Brian Braddock's codename, Captain Britain, is on 14 other pages but linked from 1, and Quasar is a page for a name four characters share, with 24 incoming links.</p>
                   </div></details>
                   <details class="rx-drawer"><summary>Table: the ten pages furthest from the line</summary><div class="rx-drawer-body"><div id="fame-outliers"></div></div></details>
                 </div>
@@ -658,7 +658,7 @@
             <div class="w5-slot" data-slot="checked" id="fame-checked">
               <h3>What we checked in the text</h3>
               <div data-body>
-                <p>The ten pages furthest from the line, above it first. For each, the reason we found by measuring and reading, and a passage that supports it, from the page itself or a page that names it. Four of the five below it are minor characters whose every linking page names the same team or place.</p>
+                <p>The ten pages furthest from the line, above it first. For each, the reason we found by measuring and reading, and a passage that supports it, from the page itself or a page that names it. Four of the five below the line are minor characters whose every linking page names the same team or place.</p>
                 <div id="fame-passages"></div>
               </div>
             </div>
