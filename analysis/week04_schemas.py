@@ -1563,6 +1563,61 @@ class EntityPage(Model):
         return self
 
 
+class NetNodes(Model):
+    name: list[str] = Field(min_length=2)
+    kind: list[Literal["firm", "client", "employer"]]
+    strength: list[int]
+    community: list[int]
+    x: list[float]
+    y: list[float]
+
+
+class NetLinks(Model):
+    source: list[int]
+    target: list[int]
+    weight: list[int]
+    p: list[float]
+
+
+class NetCommunity(Model):
+    id: int = Count
+    label: str
+    nodes: int = Field(ge=1)
+    strength: int = Count
+    head: int = Count
+    top: list[str]
+
+
+class EntityNetwork(Model):
+    generated_by: str
+    network: str
+    title: str
+    top: int = Field(ge=1)
+    alphas: list[float] = Field(min_length=1)
+    alpha: float
+    nodes: NetNodes
+    links: NetLinks
+    all_links: int = Count
+    curve: list[tuple[float, int, int, int]] = Field(min_length=2)
+    at: dict[str, dict[str, int]]
+    communities: list[NetCommunity] = Field(min_length=1)
+    louvain: dict
+    null: dict
+
+    @model_validator(mode="after")
+    def indexes_resolve(self):
+        n = len(self.nodes.name)
+        for name in ("kind", "strength", "community", "x", "y"):
+            assert len(getattr(self.nodes, name)) == n, f"nodes.{name} has a length other than name"
+        m = len(self.links.source)
+        assert len(self.links.target) == len(self.links.weight) == len(self.links.p) == m
+        assert all(0 <= v < n for v in self.links.source + self.links.target), "a link to a missing node"
+        assert all(0 <= c < len(self.communities) for c in self.nodes.community), "a community outside the list"
+        assert all(0 <= c.head < n for c in self.communities), "a community head outside the nodes"
+        assert self.alpha in self.alphas and set(self.at) == {str(a) for a in self.alphas}
+        return self
+
+
 PAGES = {
     "docs/assets/data/week04_place.json": Place,
     "docs/weeks/week04/data/jobs.json": Jobs,
@@ -1584,6 +1639,8 @@ PAGES = {
     "docs/weeks/week04/data/staffing_deep.json": StaffingDeep,
     "docs/weeks/week04/data/entities_workers.json": EntityPage,
     "docs/weeks/week04/data/entities_companies.json": EntityPage,
+    "docs/weeks/week04/data/entities_network_staffing.json": EntityNetwork,
+    "docs/weeks/week04/data/entities_network_lawfirms.json": EntityNetwork,
 }
 
 

@@ -894,6 +894,246 @@ def page_file(ent, result, member, pagerank):
     return data
 
 
+# --- Node-link networks, drawn the way the course draws the philosophers --------
+#
+# Two networks with named nodes, each a real relation in the filings: section
+# 3's placing firms and the clients they place workers at, and employers linked
+# by the law firm that files for them. Each is drawn as exercise 4.11 asks: the
+# disparity-filter backbone, nodes sized by strength and coloured by Louvain
+# community, the largest member of each community named, and a curve of how
+# much of the network survives the filter at each alpha.
+
+NET_ALPHAS = [0.01, 0.02, 0.05, 0.1, 0.2]  # the page offers these; links above 0.2 are not stored
+NET_ALPHA = 0.2  # the course's default cut, and section 1's
+NET_CURVE = np.geomspace(0.005, 1.0, 30)
+STAFFING_NODES = 1000  # the firms and clients with the most placed filings
+LAWFIRM_EMPLOYERS = 1500  # the employers with the most filings through a law firm
+
+
+@dataclass
+class Network:
+    name: str
+    title: str
+    graph: ig.Graph  # the drawn nodes, weighted
+    names: list
+    kinds: list  # "firm" / "client" / "employer"
+    member: np.ndarray  # community of each drawn node
+    louvain: dict
+    null: dict
+    notes: dict = field(default_factory=dict)
+    extra: dict = field(default_factory=dict)  # per community: extra lines for the legend
+
+
+def _best_partition(g, runs, label, weighted=True):
+    found = louvain_runs(g, runs, label, weighted=weighted)
+    qs = np.array([q for _, q in found])
+    best = int(np.argmax(qs))
+    mbs = [np.array(m) for m, _ in found]
+    seeds = [nmi(mbs[i], mbs[i + 1]) for i in range(0, min(runs, 20) - 1, 2)]
+    return mbs[best], {"runs": runs, "Q_best": round(float(qs[best]), 4), "Q_mean": round(float(qs.mean()), 4),
+                       "communities": int(len(set(mbs[best]))),
+                       "nmi_between_seeds_median": round(float(np.median(seeds)), 4)}
+
+
+def staffing_network():
+    """Section 3's network, firm -> client weighted by placed filings, 2025: the
+    best of RUNS Louvain runs on its giant component (the page's own partition),
+    against section 3's bipartite rewiring; the STAFFING_NODES firms and clients
+    with the most filings are drawn."""
+    lca = filtered(YEAR)
+    rows, _, _ = placements(YEAR, lca)
+    giant = giant_of(staffing_graph(rows))
+    nodes = list(giant)
+    index = {n: i for i, n in enumerate(nodes)}
+    g = ig.Graph(n=len(nodes), edges=[(index[u], index[v]) for u, v in giant.edges()])
+    g.es["weight"] = [float(d["weight"]) for *_, d in giant.edges(data=True)]
+    member, lv = _best_partition(g, RUNS, "staffing network")
+    started = time.time()
+    null_q = []
+    for i in tracked("Staffing nulls", NULLS):
+        h = rewire(giant, random.Random(SEED + i))
+        hg = giant_of(h)
+        null_q.append(nx_louvain(hg, SEED + i)[1])
+    stamp("staffing nulls", started)
+    null_q = np.array(null_q)
+    strength = np.array(g.strength(weights="weight"))
+    keep = np.argsort(-strength, kind="stable")[:STAFFING_NODES]
+    sub = g.subgraph(sorted(keep.tolist()))
+    kept = sorted(keep.tolist())
+    names = [resolver().label(nodes[i][1]) for i in kept]
+    kinds = ["firm" if nodes[i][0] == "F" else "client" for i in kept]
+    return Network(
+        name="staffing", title="Placing firms and their clients", graph=sub, names=names, kinds=kinds,
+        member=member[kept], louvain=lv,
+        null={"draws": NULLS, "kind": "bipartite rewiring, filing counts dealt back out (section 3)",
+              "Q_mean": round(float(null_q.mean()), 4), "Q_sd": round(float(null_q.std()), 4)},
+        notes={"network_nodes": g.vcount(), "network_links": g.ecount(), "drawn": len(kept),
+               "drawn_filing_share": round(float(strength[kept].sum() / strength.sum()), 4),
+               "weight": "placed H-1B filings, 2025"})
+
+
+def lawfirm_network():
+    """Employers linked by the law firms that file for them: the LAWFIRM_EMPLOYERS
+    employers with the most filings through an outside law firm, two linked with
+    weight = the smaller of their filings, summed over the law firms they share
+    (the projection rule of section 1). In-house counsel and blank law-firm
+    fields are left out, as week04_lawfirms does. Louvain runs on this network,
+    against NULLS degree-preserving rewirings with the weights dealt back out."""
+    from week04_lawfirms import named_filings, with_lawfirm
+    lca = with_lawfirm(filtered(YEAR))
+    named, blank, inhouse = named_filings(lca)
+    pairs = named.groupby(["employer", "lawfirm"]).size().rename("w").reset_index()
+    top = pairs.groupby("employer")["w"].sum().sort_values(ascending=False, kind="stable").head(LAWFIRM_EMPLOYERS)
+    sub = pairs[pairs["employer"].isin(top.index)]
+    index = {e: i for i, e in enumerate(top.index)}
+    weights = {}
+    for _, grp in sub.groupby("lawfirm", sort=True):
+        es = grp["employer"].map(index).values
+        ws = grp["w"].values
+        order = np.argsort(es, kind="stable")
+        es, ws = es[order], ws[order]
+        for a, b in itertools.combinations(range(len(es)), 2):
+            key = (int(es[a]), int(es[b]))
+            weights[key] = weights.get(key, 0) + int(min(ws[a], ws[b]))
+    keys = sorted(weights)
+    g = ig.Graph(n=len(top), edges=keys)
+    g.es["weight"] = [float(weights[k]) for k in keys]
+    member, lv = _best_partition(g, RUNS, "law-firm network")
+    null_q = []
+    started = time.time()
+    for i in tracked("Law-firm nulls", NULLS):
+        ig.set_random_number_generator(random.Random(SEED + i))
+        h = g.copy()
+        h.rewire(n=10 * h.ecount(), allowed_edge_types="simple")
+        w = list(g.es["weight"])
+        random.Random(SEED + i).shuffle(w)
+        h.es["weight"] = w
+        ig.set_random_number_generator(random.Random(SEED + i))
+        null_q.append(h.community_multilevel(weights="weight").modularity)
+    stamp("law-firm nulls", started)
+    null_q = np.array(null_q)
+    # Each community's main law firm: the one filing most for its members.
+    firm_of = {}
+    for c in sorted(set(member)):
+        mine = set(top.index[member == c])
+        counts = sub[sub["employer"].isin(mine)].groupby("lawfirm")["w"].sum()
+        if len(counts):
+            best = counts.sort_values(ascending=False, kind="stable")
+            firm_of[int(c)] = [resolver().label(best.index[0]), round(float(best.iloc[0] / counts.sum()), 3)]
+    return Network(
+        name="lawfirms", title="Employers by shared law firm", graph=g, names=[resolver().label(e) for e in top.index],
+        kinds=["employer"] * len(top), member=member, louvain=lv,
+        null={"draws": NULLS, "kind": "degree-preserving rewiring, weights dealt back out",
+              "Q_mean": round(float(null_q.mean()), 4), "Q_sd": round(float(null_q.std()), 4)},
+        notes={"employers": len(top), "links": g.ecount(), "blank_law_firm_filings": blank,
+               "in_house_filings": inhouse, "weight": "filings through shared law firms, the smaller count per firm"},
+        extra={"law_firm": firm_of})
+
+
+NETWORKS = {"staffing": staffing_network, "lawfirms": lawfirm_network}
+
+
+def net_layout(g, p):
+    """Fruchterman-Reingold (the course's spring layout; seeded, weights
+    log-scaled) on the giant component of the backbone at NET_ALPHA. Every other
+    node sits at the weighted mean of its already placed neighbours (over all
+    links), placed in rounds outwards from the giant. Scaled so the giant spans
+    about 0..1000; the rest stays near it. A layout of the whole backbone flings its
+    small pieces far out and squeezes the giant into the middle."""
+    bb = g.subgraph_edges(np.flatnonzero(p < NET_ALPHA).tolist(), delete_vertices=False)
+    giant = max(bb.connected_components(), key=len)
+    core = bb.subgraph(giant)
+    ig.set_random_number_generator(random.Random(SEED))
+    at = np.array(core.layout_fruchterman_reingold(weights=np.log1p(core.es["weight"]).tolist(), niter=3000).coords)
+    n = g.vcount()
+    xy = np.zeros((n, 2))
+    placed = np.zeros(n, dtype=bool)
+    xy[giant] = at
+    placed[giant] = True
+    e = np.array(g.get_edgelist())
+    w = np.array(g.es["weight"])
+    for _ in range(10):
+        todo = np.flatnonzero(~placed)
+        if not len(todo):
+            break
+        new = {}
+        for v in todo:
+            mask = (e[:, 0] == v) | (e[:, 1] == v)
+            others = np.where(e[mask, 0] == v, e[mask, 1], e[mask, 0])
+            ok = placed[others]
+            if ok.any():
+                new[v] = np.average(xy[others[ok]], axis=0, weights=w[mask][ok])
+        if not new:
+            break
+        for v, pos in new.items():
+            xy[v], placed[v] = pos, True
+    # Scaled by the giant's central 96% (2nd to 98th percentile), so a few long
+    # chains of one-link clients do not squeeze the rest into the middle.
+    lo, hi = np.percentile(at, 2, axis=0), np.percentile(at, 98, axis=0)
+    xy[~placed] = (lo + hi) / 2
+    # A node placed on a neighbour's spot moves a little along a fixed spiral.
+    golden = np.pi * (3 - np.sqrt(5))
+    span_ = (hi - lo).max()
+    outside = np.flatnonzero(~np.isin(np.arange(n), giant))
+    for k, v in enumerate(outside):
+        r = 0.01 * span_ * np.sqrt(k % 50 + 1)
+        xy[v] += r * np.array([np.cos(k * golden), np.sin(k * golden)])
+    return np.clip((xy - lo) / span_ * 1000, -150, 1150)
+
+
+def net_run(net):
+    started = time.time()
+    g = net.graph
+    p = disparity_p(g)
+    strength = np.array(g.strength(weights="weight"))
+    # Communities ranked by the strength they hold among the drawn nodes.
+    totals = pd.Series(strength).groupby(net.member).sum().sort_values(ascending=False, kind="stable")
+    rank = {c: r for r, c in enumerate(totals.index)}
+    member = np.array([rank[c] for c in net.member])
+    curve = []
+    for a in NET_CURVE:
+        bb = g.subgraph_edges(np.flatnonzero(p < a).tolist(), delete_vertices=False)
+        deg = np.array(bb.degree())
+        comps = bb.connected_components()
+        curve.append([round(float(a), 5), int(bb.ecount()), int((deg > 0).sum()), int(max(len(c) for c in comps))])
+    at = {}
+    for a in NET_ALPHAS:
+        bb = g.subgraph_edges(np.flatnonzero(p < a).tolist(), delete_vertices=False)
+        at[str(a)] = {"links": int(bb.ecount()), "nodes_with_a_link": int((np.array(bb.degree()) > 0).sum()),
+                      "giant": int(max(len(c) for c in bb.connected_components()))}
+    xy = net_layout(g, p)
+    communities = []
+    for c in range(int(member.max()) + 1):
+        idx = np.flatnonzero(member == c)
+        head = idx[np.argmax(strength[idx])]
+        top = idx[np.argsort(-strength[idx], kind="stable")[:5]]
+        original = int(totals.index[c])
+        firm = net.extra.get("law_firm", {}).get(original)
+        communities.append({"id": c, "label": f"{net.names[head]} & co." + (f" · {firm[0]}" if firm else ""),
+                            "nodes": int(len(idx)),
+                            "strength": int(strength[idx].sum()), "head": int(head),
+                            "top": [net.names[i] for i in top],
+                            **({"law_firm": net.extra["law_firm"][original]}
+                               if original in net.extra.get("law_firm", {}) else {})})
+    # Links: every one the widest alpha keeps; wider cuts are faint on the page.
+    keep = np.flatnonzero(p < max(NET_ALPHAS))
+    e = np.array(g.get_edgelist())[keep]
+    data = {
+        "generated_by": "analysis/week04_entities.py", "network": net.name, "title": net.title, "year": YEAR,
+        "top": TOP, "alphas": NET_ALPHAS, "alpha": NET_ALPHA,
+        "nodes": {"name": list(net.names), "kind": list(net.kinds), "strength": [int(s) for s in strength],
+                  "community": [int(c) for c in member],
+                  "x": [round(float(v), 1) for v in xy[:, 0]], "y": [round(float(v), 1) for v in xy[:, 1]]},
+        "links": {"source": [int(v) for v in e[:, 0]], "target": [int(v) for v in e[:, 1]],
+                  "weight": [int(round(w)) for w in np.array(g.es["weight"])[keep]],
+                  "p": [round(float(v), 5) for v in p[keep]]},
+        "all_links": g.ecount(), "curve": curve, "at": at, "communities": communities,
+        "louvain": net.louvain, "null": net.null, "notes": net.notes,
+    }
+    stamp(f"network {net.name}", started)
+    return data
+
+
 def cross_check(worker, company):
     """Do a company's workers sit in the company's group? NMI between each
     worker's own community and its employer's community, weighted by workers."""
@@ -909,7 +1149,8 @@ def cross_check(worker, company):
 def main():
     global RUNS, NULLS, SHUFFLES, OUT, PAGE
     parser = argparse.ArgumentParser(description=__doc__.split("\n")[0])
-    parser.add_argument("--entity", choices=sorted(REGISTRY), nargs="+", default=list(REGISTRY))
+    parser.add_argument("--entity", choices=sorted(REGISTRY), nargs="*", default=list(REGISTRY))
+    parser.add_argument("--network", choices=sorted(NETWORKS), nargs="*", default=list(NETWORKS))
     parser.add_argument("--quick", action="store_true",
                         help="a smoke test: few Louvain runs, nulls and shuffles (needs --out)")
     parser.add_argument("--out", type=Path, help="write the files here instead")
@@ -938,6 +1179,14 @@ def main():
         kept[name] = {"entity": ent, "member": member}
     if {"workers", "companies"} <= set(kept):
         out["workers_vs_their_company"] = cross_check(kept["workers"], kept["companies"])
+    for name in args.network:
+        data = net_run(NETWORKS[name]())
+        path = PAGE / f"entities_network_{name}.json"
+        check(ROOT / "docs/weeks/week04/data" / path.name, data)
+        path.write_text(json.dumps(data, separators=(",", ":")) + "\n")
+        print(f"wrote {path} ({path.stat().st_size / 1e6:.1f} MB)", flush=True)
+        out[f"network_{name}"] = {k: data[k] for k in ("all_links", "at", "louvain", "null", "notes")} | {
+            "communities": [{k: c[k] for k in c if k != "head"} for c in data["communities"][:20]]}
     OUT.write_text(json.dumps(out, indent=1) + "\n")
     stamp("week04_entities", started)
 

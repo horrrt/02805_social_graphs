@@ -12,6 +12,8 @@ const root = document.querySelector("#entity-communities");
 const DATA = {
   workers: new URL("../../weeks/week04/data/entities_workers.json?v=3", import.meta.url),
   companies: new URL("../../weeks/week04/data/entities_companies.json?v=3", import.meta.url),
+  staffing: new URL("../../weeks/week04/data/entities_network_staffing.json?v=3", import.meta.url),
+  lawfirms: new URL("../../weeks/week04/data/entities_network_lawfirms.json?v=3", import.meta.url),
 };
 const GOLDEN = Math.PI * (3 - Math.sqrt(5));
 const LABELS = {
@@ -219,7 +221,7 @@ async function main() {
   status("Loading the filings…");
   await loadVendor("deck.gl-9.0.30.min.js");
   const deck = window.deck;
-  const state = { entity: "workers", by: "community", focus: null };
+  const state = { entity: "workers", by: "community", focus: null, alpha: null, dropped: "faint" };
   const host = $(".w4-entities-map");
   let instance = null;
   let current = null;
@@ -287,7 +289,190 @@ async function main() {
     return { target: [500, 500, 0], zoom: Math.log2(Math.min(width, height) / 1060) };
   }
 
+  // Node-link networks (staffing firms and clients, employers by law firm),
+  // drawn as exercise 4.11 asks: the backbone at the chosen alpha, dropped links
+  // faint or hidden, nodes sized by strength and coloured by community, the
+  // largest member of each large community named.
+  function communityColours(d) {
+    const colours = Array.from({ length: d.top }, (_, i) => rgb(`--w4-community-${i + 1}`));
+    const tints = colours.map((c) => mix(c, rgb("--card"), 0.5));
+    return (c) => (c < d.top ? colours[c] : tints[c % d.top]);
+  }
+
+  function drawNetwork() {
+    const d = current.data;
+    const n = d.nodes;
+    const a = state.alpha ?? d.alpha;
+    const colourOf = communityColours(d);
+    const focus = state.focus;
+    const inFocus = (c) => focus === null || (focus === "other" ? c >= d.top : c === focus);
+    const visible = new Uint8Array(n.name.length);
+    const kept = [];
+    const dropped = [];
+    const L = d.links;
+    for (let k = 0; k < L.source.length; k++) {
+      const o = { s: L.source[k], t: L.target[k], w: L.weight[k] };
+      if (L.p[k] < a) {
+        kept.push(o);
+        visible[o.s] = 1;
+        visible[o.t] = 1;
+      } else if (state.dropped === "faint") dropped.push(o);
+    }
+    let smax = 1;
+    for (const v of n.strength) smax = Math.max(smax, v);
+    const nodes = [];
+    for (let i = 0; i < n.name.length; i++) if (visible[i]) nodes.push(i);
+    const grey = rgb("--w4-grid");
+    const faint = rgb("--line");
+    const pos = (i) => [n.x[i], n.y[i]];
+    const wmax = Math.max(1, ...kept.map((o) => o.w));
+    const layers = [
+      new deck.LineLayer({
+        id: `dropped-${state.entity}`,
+        data: dropped,
+        getSourcePosition: (o) => pos(o.s),
+        getTargetPosition: (o) => pos(o.t),
+        getColor: [...faint, 70],
+        getWidth: 0.6,
+        widthUnits: "pixels",
+      }),
+      new deck.LineLayer({
+        id: `kept-${state.entity}`,
+        data: kept,
+        getSourcePosition: (o) => pos(o.s),
+        getTargetPosition: (o) => pos(o.t),
+        getColor: (o) => {
+          const cs = n.community[o.s];
+          const same = cs === n.community[o.t];
+          const on = inFocus(cs) || inFocus(n.community[o.t]);
+          return same ? [...colourOf(cs), on ? 130 : 20] : [...grey, on ? 170 : 30];
+        },
+        getWidth: (o) => 0.5 + 2.5 * Math.sqrt(o.w / wmax),
+        widthUnits: "pixels",
+        updateTriggers: { getColor: [focus] },
+      }),
+      new deck.ScatterplotLayer({
+        id: `nodes-${state.entity}`,
+        data: nodes,
+        getPosition: (i) => pos(i),
+        getRadius: (i) => 2 + 11 * Math.sqrt(n.strength[i] / smax),
+        radiusUnits: "pixels",
+        getFillColor: (i) => [...colourOf(n.community[i]), inFocus(n.community[i]) ? 235 : 35],
+        getLineColor: [...rgb("--card"), 220],
+        lineWidthMinPixels: 0.6,
+        stroked: true,
+        pickable: true,
+        updateTriggers: { getFillColor: [focus] },
+      }),
+      new deck.TextLayer({
+        id: `names-${state.entity}`,
+        data: d.communities.slice(0, 10).filter((c) => visible[c.head] && inFocus(c.id)),
+        getPosition: (c) => pos(c.head),
+        getText: (c) => n.name[c.head],
+        getSize: fs("caption"),
+        fontFamily: family("sans"),
+        fontWeight: 700,
+        characterSet: "auto",
+        getColor: rgb("--ink"),
+        getPixelOffset: [0, -14],
+        background: true,
+        getBackgroundColor: [...rgb("--card"), 225],
+        backgroundPadding: [4, 2],
+        updateTriggers: { data: [focus, a] },
+      }),
+    ];
+    const tip = ({ object }) => {
+      if (object === undefined || object === null || typeof object !== "number") return null;
+      const i = object;
+      const c = d.communities[n.community[i]];
+      const kind = { firm: "Placing firm", client: "Client company", employer: "Employer" }[n.kind[i]];
+      const unit = d.network === "staffing" ? "placed filings" : "filings through a law firm";
+      return {
+        html: `<b>${esc(n.name[i])}</b>${kind} · ${fmt(n.strength[i])} ${unit} in the drawn network<br>Group ${c.id + 1}: ${esc(c.label)}`,
+        style: tipStyle(),
+      };
+    };
+    setDeck(layers, tip);
+    drawNetLegend(d, colourOf);
+    drawNetStats(d, a, nodes.length, kept.length);
+  }
+
+  function tipStyle() {
+    return {
+      background: token("--w4-tip-bg"),
+      color: token("--w4-tip-ink"),
+      padding: "8px 10px",
+      borderRadius: "8px",
+      maxWidth: "320px",
+      fontSize: `${fs("caption")}px`,
+      lineHeight: "1.45",
+    };
+  }
+
+  function setDeck(layers, getTooltip) {
+    const props = { layers, getTooltip };
+    if (!instance) {
+      instance = new deck.Deck({
+        parent: host,
+        views: [new deck.OrthographicView({ id: "map" })],
+        initialViewState: fit(),
+        controller: { scrollZoom: { smooth: true }, doubleClickZoom: true, keyboard: true },
+        parameters: { clearColor: [0, 0, 0, 0] },
+        ...props,
+      });
+    } else {
+      instance.setProps(props);
+    }
+  }
+
+  function drawNetLegend(d, colourOf) {
+    const list = $(".w4-entities-legend");
+    list.replaceChildren();
+    const items = d.communities.slice(0, d.top).map((c) => ({ key: c.id, label: `${c.id + 1} · ${c.label} (${fmt(c.nodes)})`, colour: colourOf(c.id) }));
+    if (d.communities.length > d.top) items.push({ key: "other", label: `${d.communities.length - d.top} smaller groups, in lighter tints`, colour: colourOf(d.top) });
+    for (const item of items) {
+      const li = document.createElement("li");
+      const b = document.createElement("button");
+      b.type = "button";
+      b.setAttribute("aria-pressed", String(state.focus === item.key));
+      const sw = document.createElement("i");
+      sw.style.background = `rgb(${item.colour.join(",")})`;
+      b.append(sw, document.createTextNode(item.label));
+      b.addEventListener("click", () => {
+        state.focus = state.focus === item.key ? null : item.key;
+        draw();
+      });
+      li.append(b);
+      list.append(li);
+    }
+  }
+
+  function drawNetStats(d, a, nodes, links) {
+    const at = d.at[String(a)] ?? { giant: 0 };
+    $("[data-entities='labels']").replaceChildren(
+      ...[
+        ["Links kept", `${fmt(links)} of ${fmt(d.all_links)} · ${Math.round((100 * links) / d.all_links)}%`],
+        ["Nodes with a link", `${fmt(nodes)} of ${fmt(d.nodes.name.length)}`],
+        ["Giant component", fmt(at.giant)],
+      ].map(([k, v]) => {
+        const div = document.createElement("div");
+        div.className = "w4-entities-stat";
+        const small = document.createElement("span");
+        small.textContent = k;
+        const big = document.createElement("b");
+        big.textContent = v;
+        div.append(small, big);
+        return div;
+      }),
+    );
+    drawCurve(d, a);
+  }
+
   function draw() {
+    if (current.data.network) {
+      drawNetwork();
+      return;
+    }
     const d = current.data;
     const dots = current.dots;
     const pal = palette(d, state.by);
@@ -326,22 +511,7 @@ async function main() {
         }),
       );
     }
-    const props = {
-      layers,
-      getTooltip: ({ index }) => tooltip(d, dots, index),
-    };
-    if (!instance) {
-      instance = new deck.Deck({
-        parent: host,
-        views: [new deck.OrthographicView({ id: "map" })],
-        initialViewState: fit(),
-        controller: { scrollZoom: { smooth: true }, doubleClickZoom: true, keyboard: true },
-        parameters: { clearColor: [0, 0, 0, 0] },
-        ...props,
-      });
-    } else {
-      instance.setProps(props);
-    }
+    setDeck(layers, ({ index }) => tooltip(d, dots, index));
     drawLegend(pal);
   }
 
@@ -371,12 +541,21 @@ async function main() {
     state.focus = null;
     status("Loading the filings…");
     const data = await load(entity);
-    current = { data, dots: layoutDots(data) };
+    const net = Boolean(data.network);
+    current = { data, dots: net ? null : layoutDots(data) };
+    state.alpha = net ? data.alpha : null;
     status("");
     for (const b of root.querySelectorAll("[data-entity]")) b.setAttribute("aria-pressed", String(b.dataset.entity === entity));
+    $(".w4-entities-colour").hidden = net;
+    $(".w4-entities-net").hidden = !net;
+    if (net) {
+      const select = $(".w4-entities-net select");
+      select.replaceChildren(...data.alphas.map((a) => new Option(`α = ${a}`, String(a), false, a === data.alpha)));
+    }
     if (instance) instance.setProps({ initialViewState: { ...fit(), transitionDuration: 0 } });
+    if (net) describeNetwork(data);
     draw();
-    describe(data, current.dots);
+    if (!net) describe(data, current.dots);
   }
 
   for (const b of root.querySelectorAll("[data-entity]")) b.addEventListener("click", () => show(b.dataset.entity));
@@ -385,6 +564,17 @@ async function main() {
     state.focus = null;
     draw();
   });
+  $(".w4-entities-net select").addEventListener("change", (e) => {
+    state.alpha = Number(e.target.value);
+    draw();
+  });
+  for (const b of root.querySelectorAll("[data-dropped]")) {
+    b.addEventListener("click", () => {
+      state.dropped = b.dataset.dropped;
+      for (const x of root.querySelectorAll("[data-dropped]")) x.setAttribute("aria-pressed", String(x === b));
+      draw();
+    });
+  }
   $(".w4-entities-reset").addEventListener("click", () => instance?.setProps({ initialViewState: { ...fit(), transitionDuration: 300 } }));
   root.addEventListener("keydown", (e) => {
     if (e.key === "Escape" && state.focus !== null) {
@@ -395,8 +585,147 @@ async function main() {
   await show("workers");
 }
 
+// Headings of the chart slots, which the network views rename.
+const SLOT_TEXT = {};
+function slots(mode) {
+  for (const el of root.closest(".w4-card").querySelectorAll("[data-entities-text]")) {
+    const key = el.dataset.entitiesText;
+    SLOT_TEXT[key] ??= el.textContent;
+    el.textContent = mode === "network" ? NET_TEXT[key] ?? SLOT_TEXT[key] : SLOT_TEXT[key];
+  }
+  $("[data-entities='weeks']").hidden = mode === "network";
+}
+const NET_TEXT = {
+  "labels-head": "What survives the filter",
+  "labels-note": "The disparity filter keeps a link when it carries more of a node's weight than chance would give it. Pick the cut above the map.",
+  "ccdf-head": "How much is left, across the whole range",
+  "ccdf-note": "Share of the drawn network the filter keeps at each α, log scale. The dot marks the cut on the map.",
+};
+
+function describeNetwork(d) {
+  slots("network");
+  const l = d.louvain;
+  const who = d.network === "staffing" ? "placing firms and client companies" : "employers";
+  $("[data-entities='answer']").textContent =
+    `The ${fmt(d.nodes.name.length)} largest ${who} fall into ${fmt(l.communities)} groups (modularity ${l.Q_best.toFixed(2)}, ` +
+    `against ${d.null.Q_mean.toFixed(2)} for rewired networks` +
+    (d.null.Q_mean > l.Q_best ? ", which split around a few heavy links once their filing counts are shuffled, as section 3 shows" : "") +
+    `). The largest: ${d.communities.slice(0, 3).map((c) => c.label).join("; ").replace(/\.$/, "")}.`;
+  $("figcaption[data-entities='caption']").textContent =
+    d.network === "staffing"
+      ? `Section 3's network: a placing firm links to each client it places H-1B workers at in 2025, weighted by filings. ` +
+        `The ${fmt(d.nodes.name.length)} firms and clients with the most filings are drawn (${Math.round(d.notes.drawn_filing_share * 100)}% of the weight), ` +
+        `coloured by section 3's Louvain groups, found on the whole network of ${fmt(d.notes.network_nodes)} nodes (best of ${l.runs} seeds). `
+      : `Two employers link when the same law firm files their H-1B applications, weighted by the smaller of their filings through it, summed over the firms they share (in-house counsel left out). ` +
+        `The ${fmt(d.nodes.name.length)} employers with the most such filings are drawn, coloured by Louvain group (best of ${l.runs} seeds); a group's label names its main law firm. `;
+  $("figcaption[data-entities='caption']").textContent +=
+    `Only the links the disparity filter keeps are drawn in colour; nodes are sized by filings and placed by a force layout of the backbone at α = ${d.alpha}. ` +
+    `Hover a node for its name, click a legend entry to highlight a group, scroll to zoom and drag to pan.`;
+  drawNullStrip(d);
+  drawNetTable(d);
+}
+
+function drawNullStrip(d) {
+  const rows = [
+    {
+      label: "Modularity",
+      sub: `Louvain, best of ${d.louvain.runs} seeds`,
+      real: d.louvain.Q_best,
+      realLabel: d.louvain.Q_best.toFixed(2),
+      realTip: `Real network: ${d.louvain.Q_best}`,
+      base: [d.null.Q_mean, Math.max(d.null.Q_sd, 0.002)],
+      baseLabel: `rewired ${d.null.Q_mean.toFixed(2)}`,
+      baseTip: `${d.null.draws} rewired networks (${d.null.kind}): ${d.null.Q_mean} ± ${d.null.Q_sd}`,
+    },
+    {
+      label: "Seed agreement",
+      sub: "NMI between two Louvain seeds",
+      real: d.louvain.nmi_between_seeds_median,
+      realLabel: d.louvain.nmi_between_seeds_median.toFixed(2),
+      realTip: `Median NMI between pairs of seeds: ${d.louvain.nmi_between_seeds_median}`,
+    },
+  ];
+  $("[data-entities='strips']").replaceChildren(
+    stripChart(rows, {
+      domain: [0, 1],
+      ticks: [0, 0.25, 0.5, 0.75, 1],
+      fmt: (v) => v.toFixed(2),
+      aria: "Modularity of the real network against rewired networks, and the agreement between Louvain seeds.",
+      rowH: 52,
+    }),
+  );
+}
+
+function drawCurve(d, alpha) {
+  const total = [d.all_links, d.nodes.name.length, d.nodes.name.length];
+  const series = [
+    [1, "links kept", "--w4-community-5"],
+    [2, "nodes with a link", "--w4-community-2"],
+    [3, "giant component", "--ink-mute"],
+  ];
+  const build = (width) => {
+    const h = 240;
+    const m = { l: 44, r: 12, t: 12, b: 36 };
+    const lx = (a) => Math.log10(a);
+    const a0 = lx(d.curve[0][0]);
+    const a1 = lx(d.curve.at(-1)[0]);
+    const X = (a) => m.l + ((lx(a) - a0) / (a1 - a0)) * (width - m.l - m.r);
+    const Y = (v) => m.t + (1 - v) * (h - m.t - m.b);
+    const svg = el("svg", { viewBox: `0 0 ${width} ${h}`, width, height: h, role: "img", "aria-label": "Share of links, nodes with a link and giant component kept at each alpha." });
+    for (const v of [0, 0.25, 0.5, 0.75, 1]) {
+      svg.append(el("line", { x1: m.l, x2: width - m.r, y1: Y(v), y2: Y(v), stroke: token("--w4-grid") }));
+      svg.append(el("text", { x: m.l - 6, y: Y(v) + 4, "text-anchor": "end", "font-size": fs("caption"), fill: token("--ink-mute") }, `${Math.round(v * 100)}%`));
+    }
+    for (const a of [0.01, 0.02, 0.05, 0.1, 0.2, 0.5, 1]) {
+      if (a < d.curve[0][0] || a > d.curve.at(-1)[0]) continue;
+      svg.append(el("text", { x: X(a), y: h - m.b + 16, "text-anchor": "middle", "font-size": fs("caption"), fill: token("--ink-mute") }, String(a)));
+    }
+    svg.append(el("text", { x: width - m.r, y: h - 4, "text-anchor": "end", "font-size": fs("caption"), fill: token("--ink-mute") }, "disparity filter α (log scale)"));
+    svg.append(el("line", { x1: X(alpha), x2: X(alpha), y1: m.t, y2: h - m.b, stroke: token("--ink-soft"), "stroke-dasharray": "3 3" }));
+    series.forEach(([col, label, colour], si) => {
+      const pts = d.curve.map((row) => [X(row[0]), Y(row[col] / total[col - 1])]);
+      svg.append(el("polyline", { points: pts.map((p) => p.join(",")).join(" "), fill: "none", stroke: token(colour), "stroke-width": 2, "stroke-dasharray": si === 2 ? "5 3" : "none" }));
+      const at = d.at[String(alpha)];
+      if (at) {
+        const v = [at.links / d.all_links, at.nodes_with_a_link / total[1], at.giant / total[2]][si];
+        const c = el("circle", { cx: X(alpha), cy: Y(v), r: 4.5, fill: token(colour) });
+        c.append(el("title", {}, `${label} at α = ${alpha}: ${Math.round(v * 100)}%`));
+        svg.append(c);
+      }
+      svg.append(el("text", { x: m.l + 8, y: m.t + 14 + si * 15, "font-size": fs("caption"), fill: token(colour), "font-weight": 600 }, label));
+    });
+    return svg;
+  };
+  $("[data-entities='ccdf']").replaceChildren(fitted(build, 420));
+}
+
+function drawNetTable(d) {
+  const table = $("[data-entities='table'] table");
+  table.querySelector("thead").innerHTML =
+    `<tr><th>#</th><th>Group</th><th class="num">Nodes</th><th class="num">Filings</th><th>Largest members</th></tr>`;
+  const top = d.communities.slice(0, 25);
+  table.querySelector("tbody").replaceChildren(
+    ...top.map((c, i) => {
+      const tr = document.createElement("tr");
+      const hue = `var(--w4-community-${(i % d.top) + 1})`;
+      const colour = i < d.top ? hue : `color-mix(in srgb, ${hue} 50%, var(--card))`;
+      tr.innerHTML =
+        `<td><span class="swatch" style="background:${colour}"></span>${c.id + 1}</td>` +
+        `<td>${esc(c.label)}</td><td class="num">${fmt(c.nodes)}</td><td class="num">${fmt(c.strength)}</td>` +
+        `<td>${c.top.map(esc).join(", ")}</td>`;
+      return tr;
+    }),
+  );
+  $("[data-entities='table'] h4").textContent = `The ${top.length} largest of ${d.communities.length} groups`;
+}
+
+const ENTITY_HEAD =
+  `<tr><th>#</th><th>Group</th><th class="num">Workers</th><th class="num">H-1B</th><th class="num">PERM</th><th>Main occupation</th><th>Largest employers</th></tr>`;
+
 // Text, strips, the degree plot, the course facts and the table for one entity.
 function describe(d, dots) {
+  slots("entity");
+  $("[data-entities='table'] table thead").innerHTML = ENTITY_HEAD;
   const s = d.summary;
   const tests = Object.entries(s.labels).sort((a, b) => b[1].nmi - a[1].nmi);
   const [first, second] = tests;

@@ -23,7 +23,7 @@
     <link href="../../assets/css/week04-vis-more.css?v=ts1" rel="stylesheet" />
     <link href="../../assets/css/week04-vis-intros.css?v=ts1" rel="stylesheet" />
     <link href="../../assets/css/week04-vis-staffing.css?v=ts1" rel="stylesheet" />
-    <link href="../../assets/css/week04-entities.css?v=3" rel="stylesheet" />
+    <link href="../../assets/css/week04-entities.css?v=4" rel="stylesheet" />
     <link href="../../assets/css/week04-sources.css?v=ts1" rel="stylesheet" />
   </head>
   <body class="corridor">
@@ -1709,7 +1709,19 @@
                   <div class="w4-entities-controls">
                     <div aria-label="What each dot is" class="w4-entities-switch" role="group">
                       <button aria-pressed="true" data-entity="workers" type="button">Workers</button
-                      ><button aria-pressed="false" data-entity="companies" type="button">Companies</button>
+                      ><button aria-pressed="false" data-entity="companies" type="button">Companies</button
+                      ><button aria-pressed="false" data-entity="staffing" type="button">Staffing network</button
+                      ><button aria-pressed="false" data-entity="lawfirms" type="button">Law-firm network</button>
+                    </div>
+                    <div class="w4-entities-net" hidden>
+                      <label
+                        >Backbone
+                        <select aria-label="Disparity filter cut"></select>
+                      </label>
+                      <div aria-label="Links the filter drops" class="w4-entities-switch" role="group">
+                        <button aria-pressed="true" data-dropped="faint" type="button">Dropped faint</button
+                        ><button aria-pressed="false" data-dropped="hidden" type="button">Hidden</button>
+                      </div>
                     </div>
                     <label class="w4-entities-colour"
                       >Colour by
@@ -1734,8 +1746,8 @@
                   <figcaption data-entities="caption"></figcaption>
                   <div class="w4-entities-facts">
                     <div>
-                      <h4>What the groups follow</h4>
-                      <p class="axis-note">NMI between the groups and each label, weighted by workers. Hollow dots were never part of the network. Bands: the same label shuffled, the level a label with that many values reaches by chance. Dashed: two Louvain seeds against each other.</p>
+                      <h4 data-entities-text="labels-head">What the groups follow</h4>
+                      <p class="axis-note" data-entities-text="labels-note">NMI between the groups and each label, weighted by workers. Hollow dots were never part of the network. Bands: the same label shuffled, the level a label with that many values reaches by chance. Dashed: two Louvain seeds against each other.</p>
                       <div data-entities="labels"></div>
                     </div>
                     <div>
@@ -1746,8 +1758,8 @@
                   </div>
                   <div class="w4-entities-facts">
                     <div>
-                      <h4>How many links?</h4>
-                      <p class="axis-note">Share of occupations, metros, levels and sectors with at least a given number of links or workers, log-log.</p>
+                      <h4 data-entities-text="ccdf-head">How many links?</h4>
+                      <p class="axis-note" data-entities-text="ccdf-note">Share of occupations, metros, levels and sectors with at least a given number of links or workers, log-log.</p>
                       <div data-entities="ccdf"></div>
                     </div>
                     <div class="w4-entities-weeks" data-entities="weeks"></div>
@@ -2122,6 +2134,6 @@
     <script src="../../assets/js/week04-vis-more.js?v=8" type="module"></script>
     <script src="../../assets/js/week04-vis-intros.js?v=6" type="module"></script>
     <script src="../../assets/js/week04-vis-staffing.js?v=4" type="module"></script>
-    <script src="../../assets/js/week04-entities.js?v=4" type="module"></script>
+    <script src="../../assets/js/week04-entities.js?v=9" type="module"></script>
   </body>
 </html>
