@@ -1,0 +1,99 @@
+{
+  "corpus": {
+    "pages": 303,
+    "arcs": 1784,
+    "zero_indegree_pages": 58,
+    "token_rule": "lowercase ASCII words, allowing internal apostrophes and hyphens"
+  },
+  "relationship": {
+    "x": "log1p(in_degree)",
+    "y": "log(token_count)",
+    "pearson_r": 0.7676149353989743,
+    "slope": 0.7211830250711753,
+    "intercept": 6.302084338027544
+  },
+  "above": [
+    {
+      "node": "Brian_Braddock",
+      "name": "Brian Braddock",
+      "in_degree": 1,
+      "tokens": 7226,
+      "log_length_residual": 2.0834705931842628,
+      "excerpt": "Brian Braddock is a superhero appearing in British and American comic books published by Marvel Comics."
+    },
+    {
+      "node": "Miracleman_(character)",
+      "name": "Miracleman (character)",
+      "in_degree": 0,
+      "tokens": 4329,
+      "log_length_residual": 2.071007509414436,
+      "excerpt": "Miracleman (originally known as Marvelman), whose civilian name is Michael \"Mike\" Moran, is a British Golden Age comic book superhero appearing in comic books first published by L."
+    },
+    {
+      "node": "Betsy_Braddock",
+      "name": "Betsy Braddock",
+      "in_degree": 7,
+      "tokens": 12802,
+      "log_length_residual": 1.6556144081870725,
+      "excerpt": "Elizabeth \"Betsy\" Braddock is a character appearing in American comic books published by Marvel Comics, commonly in association with the X-Men."
+    },
+    {
+      "node": "U.S._Agent",
+      "name": "U.S. Agent",
+      "in_degree": 6,
+      "tokens": 9620,
+      "log_length_residual": 1.4661578378197957,
+      "excerpt": "U.S."
+    },
+    {
+      "node": "Isaiah_Bradley",
+      "name": "Isaiah Bradley",
+      "in_degree": 0,
+      "tokens": 2030,
+      "log_length_residual": 1.3137067340082886,
+      "excerpt": "Isaiah Bradley is one of the superheroes to hold the title of Captain America, appearing in American comic books published by Marvel Comics."
+    }
+  ],
+  "below": [
+    {
+      "node": "Quasar_(character)",
+      "name": "Quasar (character)",
+      "in_degree": 24,
+      "tokens": 1018,
+      "log_length_residual": -1.6978877456239996,
+      "excerpt": "Quasar is the name of several superheroes appearing in American comic books published by Marvel Comics."
+    },
+    {
+      "node": "Blue_Bullet",
+      "name": "Blue Bullet",
+      "in_degree": 2,
+      "tokens": 330,
+      "log_length_residual": -1.2952922172890533,
+      "excerpt": "Blue Bullet is a fictional character appearing in American comic books published by Marvel Comics Creation The character was created as an homage to the Fawcett comics character Bullet Man."
+    },
+    {
+      "node": "Ch'od",
+      "name": "Ch'od",
+      "in_degree": 4,
+      "tokens": 495,
+      "log_length_residual": -1.2582258778123157,
+      "excerpt": "Ch'od is a fictional character appearing in American comic books published by Marvel Comics."
+    },
+    {
+      "node": "Lei_Kung_(character)",
+      "name": "Lei Kung (character)",
+      "in_degree": 3,
+      "tokens": 435,
+      "log_length_residual": -1.226510267930415,
+      "excerpt": "Lei Kung the Thunderer is a fictional character appearing in American comic books published by Marvel Comics."
+    },
+    {
+      "node": "Toxyn",
+      "name": "Toxyn",
+      "in_degree": 3,
+      "tokens": 468,
+      "log_length_residual": -1.153388003101452,
+      "excerpt": "Toxyn (Ruth Mastorakis) is a superhero appearing in American comic books published by Marvel Comics."
+    }
+  ]
+}

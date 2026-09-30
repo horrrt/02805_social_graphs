@@ -13,6 +13,23 @@
     <link href="../../assets/css/week04.css?v=ts2" rel="stylesheet" />
     <link href="../../assets/css/week04-rx.css?v=ts1" rel="stylesheet" />
     <link href="../../assets/css/kit.css?v=2" rel="stylesheet" />
+    <link href="../../assets/css/week05.css?v=1" rel="stylesheet" />
+    <style>
+      .w5-hint { font-style: italic; opacity: 0.7; }
+      .w5-slots { display: grid; gap: 1rem; margin-top: 1rem; }
+      .w5-slot { border: 1px dashed currentColor; border-radius: 8px; padding: 0.75rem 1rem; opacity: 0.85; }
+      .w5-slot.w5-filled { border-style: solid; opacity: 1; }
+      .visually-hidden {
+        border: 0;
+        clip: rect(0 0 0 0);
+        height: 1px;
+        margin: -1px;
+        overflow: hidden;
+        padding: 0;
+        position: absolute;
+        width: 1px;
+      }
+    </style>
   </head>
   <body class="corridor">
     <a class="skip" href="#main">Skip to content</a>
@@ -178,7 +195,8 @@
             </div>
           </div>
         </section>
-        <section class="step" data-owner="" id="search">
+        <p aria-live="polite" class="status-line" hidden id="w5-boot-status"></p>
+        <section class="step" data-owner="Àngela" id="search">
           <header class="w4-opener">
             <span aria-hidden="true" class="w4-opener-num">3</span>
             <div>
@@ -186,35 +204,119 @@
               <p>Can bag-of-words find the right page from a description?</p>
             </div>
           </header>
-          <p class="w5-hint">Course suggestion: Queries such as “Norse god of thunder” as tiny documents, the 303 pages ranked by cosine similarity, and the queries where it fails. Script: <code>analysis/week05_search.py</code>. Owner: not assigned yet.</p>
           <div class="w5-slots">
-            <div class="w5-slot" data-slot="asked" id="search-asked">
+            <div class="w5-slot w5-filled" data-slot="asked" id="search-asked">
               <h3>What we asked</h3>
-              <div data-body><p class="w5-hint">The question in words a visitor can answer after reading.</p></div>
+              <div data-body>
+                <p class="w5-lead">
+                  If we treat a short description such as
+                  <b>“Norse god of thunder”</b> as a tiny document, turn every
+                  Wikipedia page into a Bag-of-Words vector, and rank the 303
+                  pages by cosine similarity — how often does the right character
+                  come first?
+                </p>
+              </div>
             </div>
-            <div class="w5-slot" data-slot="did" id="search-did">
+            <div class="w5-slot w5-filled" data-slot="did" id="search-did">
               <h3>What we did</h3>
-              <div data-body><p class="w5-hint">Data, tokenisation and preprocessing, method, and the baseline the result is compared with.</p></div>
+              <div data-body>
+                <p class="w5-lead">
+                  Lowercased alphanumeric tokens, <code>CountVectorizer</code> over
+                  all 303 pages, cosine similarity on raw counts. Twelve fixed
+                  queries with a target page each. Baseline: a uniform guess among
+                  303 pages (~0.33%). We also reran the same queries with English
+                  stopwords removed, to see how much of/with/a were steering the
+                  ranking. Script: <code>analysis/week05_search.py</code>.
+                </p>
+                <p class="w5-caption" id="search-corpus-note"></p>
+                <p class="w5-caption" id="search-baseline"></p>
+              </div>
             </div>
-            <div class="w5-slot" data-slot="figure" id="search-figure">
-              <h3>Figure</h3>
-              <div data-body><p class="w5-hint">One strong figure or table, with a caption that says how to read it.</p></div>
+            <div class="w5-slot w5-filled" data-slot="figure" id="search-figure">
+              <h3>Figure · try the search, then read the scoreboard</h3>
+              <div data-body>
+                <div id="search-stats" class="w5-statrow" aria-live="polite"></div>
+                <div class="w5-two">
+                  <div class="w5-panel">
+                    <h4>Live search (stopwords stripped)</h4>
+                    <div class="w5-chips" id="search-chips" aria-label="Example queries"></div>
+                    <div class="w5-search-box">
+                      <label class="visually-hidden" for="search-input">Query</label>
+                      <input id="search-input" type="search" placeholder="e.g. king of Wakanda" autocomplete="off" />
+                      <button id="search-run" type="button">Rank pages</button>
+                    </div>
+                    <ol class="w5-rank" id="search-live-ranks"></ol>
+                    <p class="w5-caption">
+                      Cosine on Bag-of-Words counts with English stopwords removed
+                      and terms that appear on only one page dropped. Green edge =
+                      the page we hoped for, when it appears in the top eight.
+                    </p>
+                  </div>
+                  <div class="w5-panel">
+                    <h4>Fixed probe set</h4>
+                    <div class="w5-table-wrap">
+                      <table class="w5-table">
+                        <thead>
+                          <tr>
+                            <th>Query</th>
+                            <th>Expected</th>
+                            <th>Raw rank</th>
+                            <th>No-stop</th>
+                            <th>Raw top hit</th>
+                          </tr>
+                        </thead>
+                        <tbody id="search-tbody"></tbody>
+                      </table>
+                    </div>
+                    <div class="w5-detail" id="search-detail"></div>
+                    <p class="w5-caption">
+                      Click a query to inspect shared tokens. Asterisks in the
+                      detail mark stopwords that dominated the raw match.
+                    </p>
+                  </div>
+                </div>
+              </div>
             </div>
-            <div class="w5-slot" data-slot="surprise" id="search-surprise">
+            <div class="w5-slot w5-filled" data-slot="surprise" id="search-surprise">
               <h3>What surprised us</h3>
-              <div data-body><p class="w5-hint">The finding, with the number and what it is compared against.</p></div>
+              <div data-body>
+                <p class="w5-lead">
+                  Raw Bag-of-Words puts the right page first in only
+                  <b id="search-surprise-num">…</b> queries.
+                  Dropping stopwords lifts top-5 hits to
+                  <b id="search-surprise-ns">…</b> — still far from perfect, but
+                  already better than chance (~0.33% at rank 1). The
+                  <span id="search-fail-count">…</span> raw failures are the point:
+                  common words drown the signal that TF-IDF will reweight next week.
+                </p>
+              </div>
             </div>
-            <div class="w5-slot" data-slot="checked" id="search-checked">
+            <div class="w5-slot w5-filled" data-slot="checked" id="search-checked">
               <h3>What we checked in the text</h3>
-              <div data-body><p class="w5-hint">The passages we read to confirm the claim, quoted.</p></div>
+              <div data-body>
+                <p class="w5-lead" id="search-checked-why"></p>
+                <blockquote class="w5-quote">
+                  <span id="search-checked-quote"></span>
+                  <span class="w5-caption"> — <span id="search-checked-who"></span></span>
+                </blockquote>
+              </div>
             </div>
-            <div class="w5-slot" data-slot="limit" id="search-limit">
+            <div class="w5-slot w5-filled" data-slot="limit" id="search-limit">
               <h3>Limitation</h3>
-              <div data-body><p class="w5-hint">One limitation, next to the claim it limits.</p></div>
+              <div data-body>
+                <p class="w5-lead">
+                  Cosine on raw counts treats every token equally, so
+                  <b>of</b> and <b>with</b> compete with <b>adamantium</b>.
+                  The method also needs the target page to exist: Thor, Loki and
+                  Iron Man are missing from this category snapshot, so even a
+                  perfect ranker cannot return them.
+                </p>
+              </div>
             </div>
           </div>
         </section>
-        <section class="step" data-owner="" id="autocomplete">
+
+        <section class="step" data-owner="Àngela" id="autocomplete">
           <header class="w4-opener">
             <span aria-hidden="true" class="w4-opener-num">4</span>
             <div>
@@ -222,31 +324,102 @@
               <p>Does each Marvel community write in its own voice?</p>
             </div>
           </header>
-          <p class="w5-hint">Course suggestion: One trigram generator per network community, one fake page for a new character in each, and how often other groups guess the community. Script: <code>analysis/week05_autocomplete.py</code>. Owner: not assigned yet.</p>
           <div class="w5-slots">
-            <div class="w5-slot" data-slot="asked" id="autocomplete-asked">
+            <div class="w5-slot w5-filled" data-slot="asked" id="autocomplete-asked">
               <h3>What we asked</h3>
-              <div data-body><p class="w5-hint">The question in words a visitor can answer after reading.</p></div>
+              <div data-body>
+                <p class="w5-lead">
+                  If we train one trigram generator per Louvain community and ask
+                  it to invent a new character’s Wikipedia lead — can a reader
+                  tell which community wrote which page?
+                </p>
+              </div>
             </div>
-            <div class="w5-slot" data-slot="did" id="autocomplete-did">
+            <div class="w5-slot w5-filled" data-slot="did" id="autocomplete-did">
               <h3>What we did</h3>
-              <div data-body><p class="w5-hint">Data, tokenisation and preprocessing, method, and the baseline the result is compared with.</p></div>
+              <div data-body>
+                <p class="w5-lead">
+                  Louvain on the undirected weighted Marvel network (100 seeds;
+                  modularity <b id="ac-modularity">…</b>,
+                  most-frequent partition in <b id="ac-mode-share">…</b> of runs,
+                  null z = <b id="ac-null-z">…</b>).
+                  Communities with at least eight pages each get a trigram model
+                  (<code>P(w₃ | w₁, w₂)</code> from their article text). One fake
+                  lead per community. Chance baseline:
+                  <b id="ac-chance">…</b> with
+                  <span id="ac-n-fakes">…</span> pages.
+                  Script: <code>analysis/week05_autocomplete.py</code>.
+                </p>
+                <ul id="ac-comm-list"></ul>
+                <p class="w5-caption" id="ac-guess-status"></p>
+              </div>
             </div>
-            <div class="w5-slot" data-slot="figure" id="autocomplete-figure">
-              <h3>Figure</h3>
-              <div data-body><p class="w5-hint">One strong figure or table, with a caption that says how to read it.</p></div>
+            <div class="w5-slot w5-filled" data-slot="figure" id="autocomplete-figure">
+              <h3>Figure · guess the community</h3>
+              <div data-body>
+                <p class="w5-scoreboard" id="ac-scoreboard"></p>
+                <p class="w5-caption" id="ac-progress"></p>
+                <div class="w5-fake">
+                  <p class="w5-char" id="ac-char">…</p>
+                  <p id="ac-text">Loading fake pages…</p>
+                </div>
+                <div class="w5-guess">
+                  <div>
+                    <label for="ac-select">Which community wrote this?</label>
+                    <select id="ac-select"></select>
+                  </div>
+                  <button id="ac-submit" type="button">Lock guess</button>
+                </div>
+                <div class="w5-quiz-nav">
+                  <button data-kind="ghost" id="ac-prev" type="button">Previous</button>
+                  <button data-kind="ghost" id="ac-next" type="button">Next fake</button>
+                  <button data-kind="ghost" id="ac-reveal-btn" type="button">Reveal answer</button>
+                </div>
+                <div class="w5-reveal" hidden id="ac-reveal"></div>
+                <p class="w5-caption">
+                  Read the nonsense carefully: names, teams and repeated bigrams
+                  often leak the community even when the sentences do not parse.
+                </p>
+              </div>
             </div>
-            <div class="w5-slot" data-slot="surprise" id="autocomplete-surprise">
+            <div class="w5-slot w5-filled" data-slot="surprise" id="autocomplete-surprise">
               <h3>What surprised us</h3>
-              <div data-body><p class="w5-hint">The finding, with the number and what it is compared against.</p></div>
+              <div data-body>
+                <p class="w5-lead">
+                  The fake pages are locally fluent and globally broken — classic
+                  trigram behaviour — yet each one still smells like its community
+                  (X-Men claws, street-level kung fu, symbiotes, mystic orders).
+                  Whether that smell is strong enough for other groups is the
+                  number we still owe; until then, try the quiz above against the
+                  <span id="ac-chance-inline">1-in-k</span> chance line.
+                </p>
+              </div>
             </div>
-            <div class="w5-slot" data-slot="checked" id="autocomplete-checked">
+            <div class="w5-slot w5-filled" data-slot="checked" id="autocomplete-checked">
               <h3>What we checked in the text</h3>
-              <div data-body><p class="w5-hint">The passages we read to confirm the claim, quoted.</p></div>
+              <div data-body>
+                <p class="w5-lead">
+                  Beside each fake we keep a real lead from a community hub, so a
+                  guess can be checked against Wikipedia phrasing rather than
+                  vibes. Example for <b id="ac-checked-fake">…</b>:
+                </p>
+                <blockquote class="w5-quote">
+                  <span id="ac-checked-quote"></span>
+                  <span class="w5-caption"> — <span id="ac-checked-who"></span></span>
+                </blockquote>
+              </div>
             </div>
-            <div class="w5-slot" data-slot="limit" id="autocomplete-limit">
+            <div class="w5-slot w5-filled" data-slot="limit" id="autocomplete-limit">
               <h3>Limitation</h3>
-              <div data-body><p class="w5-hint">One limitation, next to the claim it limits.</p></div>
+              <div data-body>
+                <p class="w5-lead">
+                  Trigrams copy local Wikipedia habits (infobox leftovers,
+                  “created by…”, earth-number fragments) as eagerly as character
+                  voice. A correct guess may mean “this community’s boilerplate”,
+                  not a deeper narrative style. Tiny communities were excluded
+                  (size &lt; 8), so the quiz only covers the large clusters.
+                </p>
+              </div>
             </div>
           </div>
         </section>
@@ -258,31 +431,33 @@
               <p>Do minor characters bring new words, or repeat the famous ones?</p>
             </div>
           </header>
-          <p class="w5-hint">Course suggestion: Pages added one at a time, most-linked first, with vocabulary growth plotted, then the opposite order. Script: <code>analysis/week05_heaps.py</code>. Owner: not assigned yet.</p>
+          <p>Heaps&#x27; law describes a familiar pattern in text: as we read more words, the number of different words keeps rising, but usually more slowly. Here the reading order comes from the network, so we can ask whether the Marvel pages that receive the most incoming links introduce the vocabulary that shapes the corpus.</p>
           <div class="w5-slots">
             <div class="w5-slot" data-slot="asked" id="heaps-asked">
               <h3>What we asked</h3>
-              <div data-body><p class="w5-hint">The question in words a visitor can answer after reading.</p></div>
+              <div data-body><p class="w5-lead">When pages are added from highest in-degree to lowest, does the vocabulary grow differently than it does in the opposite order? Do less-linked pages add genuinely new words, or mostly more names and repeated Marvel language?</p></div>
             </div>
             <div class="w5-slot" data-slot="did" id="heaps-did">
               <h3>What we did</h3>
-              <div data-body><p class="w5-hint">Data, tokenisation and preprocessing, method, and the baseline the result is compared with.</p></div>
+              <div data-body><p class="w5-lead">We lowercased words, kept internal apostrophes and hyphens, and counted tokens and distinct word types as pages entered the corpus. We compared the most-linked-first curve with the reverse order and 200 random page orders. The pages and text stayed fixed; only the order changed.</p></div>
             </div>
             <div class="w5-slot" data-slot="figure" id="heaps-figure">
               <h3>Figure</h3>
-              <div data-body><p class="w5-hint">One strong figure or table, with a caption that says how to read it.</p></div>
+              <div data-body>
+                <div class="w5-table-wrap"><table class="w5-table"><caption>Distinct word types after each number of pages. Random is the mean plus or minus one standard deviation over 200 orders.</caption><thead><tr><th scope="col">Pages</th><th scope="col">Most-linked first</th><th scope="col">Least-linked first</th><th scope="col">Random</th></tr></thead><tbody><tr><th scope="row">10</th><td>9,800</td><td>1,963</td><td>4,404 &plusmn; 976</td></tr><tr><th scope="row">50</th><td>19,447</td><td>6,656</td><td>11,924 &plusmn; 915</td></tr><tr><th scope="row">100</th><td>23,457</td><td>10,926</td><td>17,195 &plusmn; 731</td></tr><tr><th scope="row">200</th><td>26,983</td><td>17,981</td><td>24,217 &plusmn; 539</td></tr><tr><th scope="row">303</th><td>29,407</td><td>29,407</td><td>29,407 &plusmn; 0</td></tr></tbody></table></div>
+              </div>
             </div>
             <div class="w5-slot" data-slot="surprise" id="heaps-surprise">
               <h3>What surprised us</h3>
-              <div data-body><p class="w5-hint">The finding, with the number and what it is compared against.</p></div>
+              <div data-body><p class="w5-lead">After 10 pages, the most-linked order has 9,800 distinct types, against 1,963 in the reverse order and 4,404 &plusmn; 976 in random orders. By page 303 every order converges to the same 29,407 types. The network changes which vocabulary arrives first, not the final vocabulary.</p></div>
             </div>
             <div class="w5-slot" data-slot="checked" id="heaps-checked">
               <h3>What we checked in the text</h3>
-              <div data-body><p class="w5-hint">The passages we read to confirm the claim, quoted.</p></div>
+              <div data-body><p class="w5-lead">One low-in-degree page, Helix, adds a specialised plot sentence: “The Jackal experiments on Rafael, mutating him further.” It also carries names and recurring article language, so a new type is not automatically a new idea.</p></div>
             </div>
             <div class="w5-slot" data-slot="limit" id="heaps-limit">
               <h3>Limitation</h3>
-              <div data-body><p class="w5-hint">One limitation, next to the claim it limits.</p></div>
+              <div data-body><p class="w5-lead">Incoming links measure connections in this Wikipedia snapshot, not importance in every Marvel story. The most-linked order also starts with much more text, so its early vocabulary lead mixes page order with page length.</p></div>
             </div>
           </div>
         </section>
@@ -294,31 +469,31 @@
               <p>Do more-linked characters get longer pages?</p>
             </div>
           </header>
-          <p class="w5-hint">Course suggestion: Page length against in-degree, the characters far above and below the relationship, and a reading of their pages. Script: <code>analysis/week05_fame.py</code>. Owner: not assigned yet.</p>
+          <p>A page can be famous in the network and still have little to say in the snapshot, or be long because its biography has accumulated many details. This section separates the number of incoming links from the amount of text attached to a character.</p>
           <div class="w5-slots">
             <div class="w5-slot" data-slot="asked" id="fame-asked">
               <h3>What we asked</h3>
-              <div data-body><p class="w5-hint">The question in words a visitor can answer after reading.</p></div>
+              <div data-body><p class="w5-lead">Do characters with more incoming links have longer Wikipedia pages? Which pages sit far above or below the overall relationship, and what does reading those pages tell us about the gap?</p></div>
             </div>
             <div class="w5-slot" data-slot="did" id="fame-did">
               <h3>What we did</h3>
-              <div data-body><p class="w5-hint">Data, tokenisation and preprocessing, method, and the baseline the result is compared with.</p></div>
+              <div data-body><p class="w5-lead">For all 303 pages, including the 58 pages with zero in-degree in this snapshot, we compare token count with in-degree. A log-scaled comparison makes short and long pages visible together. We inspect pages furthest above or below the fitted relationship.</p></div>
             </div>
             <div class="w5-slot" data-slot="figure" id="fame-figure">
               <h3>Figure</h3>
-              <div data-body><p class="w5-hint">One strong figure or table, with a caption that says how to read it.</p></div>
+              <div data-body><div class="w5-table-wrap"><table class="w5-table"><caption>Outliers from log(tokens) predicted by log1p(in-degree). Positive residuals are longer than predicted.</caption><thead><tr><th scope="col">Page</th><th scope="col">In-degree</th><th scope="col">Tokens</th><th scope="col">Residual</th></tr></thead><tbody><tr><th scope="row">Brian Braddock</th><td>1</td><td>7,226</td><td>+2.08</td></tr><tr><th scope="row">Miracleman (character)</th><td>0</td><td>4,329</td><td>+2.07</td></tr><tr><th scope="row">Betsy Braddock</th><td>7</td><td>12,802</td><td>+1.66</td></tr><tr><th scope="row">Quasar (character)</th><td>24</td><td>1,018</td><td>-1.70</td></tr><tr><th scope="row">Blue Bullet</th><td>2</td><td>330</td><td>-1.30</td></tr></tbody></table></div></div>
             </div>
             <div class="w5-slot" data-slot="surprise" id="fame-surprise">
               <h3>What surprised us</h3>
-              <div data-body><p class="w5-hint">The finding, with the number and what it is compared against.</p></div>
+              <div data-body><p class="w5-lead">Connection and page length travel together: Pearson correlation is 0.77 between log1p(in-degree) and log(token count). But Quasar has 24 incoming links and only 1,018 tokens, while Brian Braddock has one incoming link and 7,226 tokens.</p></div>
             </div>
             <div class="w5-slot" data-slot="checked" id="fame-checked">
               <h3>What we checked in the text</h3>
-              <div data-body><p class="w5-hint">The passages we read to confirm the claim, quoted.</p></div>
+              <div data-body><p class="w5-lead">Brian Braddock’s opening calls him “the champion of the British Isles and its peoples” and follows several publication histories. Quasar’s page opens with several heroes sharing the name and then starts Wendell Vaughn’s biography.</p></div>
             </div>
             <div class="w5-slot" data-slot="limit" id="fame-limit">
               <h3>Limitation</h3>
-              <div data-body><p class="w5-hint">One limitation, next to the claim it limits.</p></div>
+              <div data-body><p class="w5-lead">In-degree is a property of this link network, not a direct measure of cultural fame. Page length reflects editing history, plot detail, and article conventions, so the correlation describes this snapshot rather than proving that fame causes more words.</p></div>
             </div>
           </div>
         </section>
@@ -330,31 +505,31 @@
               <p>Which Marvel page is the weirdest, and is it really?</p>
             </div>
           </header>
-          <p class="w5-hint">Course suggestion: A definition of weird built from this week&#x27;s tools, a ranking of the 303 pages, and a check of the winners against formatting and boilerplate. Script: <code>analysis/week05_weird.py</code>. Owner: not assigned yet.</p>
+          <p>“Weird” needs a rule before it can become a ranking. A page may look unusual because its character is unusual, or because the text contains a template, a list of names, or a formatting habit that the corpus happens to preserve.</p>
           <div class="w5-slots">
             <div class="w5-slot" data-slot="asked" id="weird-asked">
               <h3>What we asked</h3>
-              <div data-body><p class="w5-hint">The question in words a visitor can answer after reading.</p></div>
+              <div data-body><p class="w5-lead">Which of the 303 Marvel pages is most unusual under a definition built from this week’s language tools, and does reading the page show genuinely strange content or only strange-looking formatting and boilerplate?</p></div>
             </div>
             <div class="w5-slot" data-slot="did" id="weird-did">
               <h3>What we did</h3>
-              <div data-body><p class="w5-hint">Data, tokenisation and preprocessing, method, and the baseline the result is compared with.</p></div>
+              <div data-body><p class="w5-lead">We define weirdness as the residual from a linear fit of type-token ratio against log page length. A positive score means a page has more distinct word types than pages of similar length. We rank the pages, then read the highest-ranked articles by hand.</p></div>
             </div>
             <div class="w5-slot" data-slot="figure" id="weird-figure">
               <h3>Figure</h3>
-              <div data-body><p class="w5-hint">One strong figure or table, with a caption that says how to read it.</p></div>
+              <div data-body><div class="w5-table-wrap"><table class="w5-table"><caption>Top length-adjusted lexical-diversity scores. Types count distinct tokens after the shared word rule.</caption><thead><tr><th scope="col">Page</th><th scope="col">Tokens</th><th scope="col">Types</th><th scope="col">Score</th></tr></thead><tbody><tr><th scope="row">Coldblood</th><td>667</td><td>381</td><td>+0.093</td></tr><tr><th scope="row">Ravage 2099</th><td>975</td><td>492</td><td>+0.060</td></tr><tr><th scope="row">Super Rabbit</th><td>462</td><td>263</td><td>+0.059</td></tr><tr><th scope="row">Nightwatch (character)</th><td>747</td><td>388</td><td>+0.052</td></tr><tr><th scope="row">NFL SuperPro</th><td>686</td><td>361</td><td>+0.051</td></tr></tbody></table></div></div>
             </div>
             <div class="w5-slot" data-slot="surprise" id="weird-surprise">
               <h3>What surprised us</h3>
-              <div data-body><p class="w5-hint">The finding, with the number and what it is compared against.</p></div>
+              <div data-body><p class="w5-lead">The top page is Coldblood, with 381 types in 667 tokens and a score of +0.093. The ranking is a prompt for inspection rather than a verdict: it finds unusually varied vocabulary, not characters with objectively strange lives.</p></div>
             </div>
             <div class="w5-slot" data-slot="checked" id="weird-checked">
               <h3>What we checked in the text</h3>
-              <div data-body><p class="w5-hint">The passages we read to confirm the claim, quoted.</p></div>
+              <div data-body><p class="w5-lead">The winner begins, “Coldblood-7 (Eric Savin) is a fictional character appearing in American comic books published by Marvel Comics.” The score can come from proper names and a compact biography, so it found lexical variety rather than an objective kind of weirdness.</p></div>
             </div>
             <div class="w5-slot" data-slot="limit" id="weird-limit">
               <h3>Limitation</h3>
-              <div data-body><p class="w5-hint">One limitation, next to the claim it limits.</p></div>
+              <div data-body><p class="w5-lead">There is no objective universal score for a weird Wikipedia page. Rare language can reflect a proper name, a niche story, or a copy-editing artifact, and a length correction cannot remove every effect of article structure.</p></div>
             </div>
           </div>
         </section>
@@ -385,8 +560,8 @@
     </footer>
     <script src="../../assets/js/week05-relations.js?v=2" type="module"></script>
     <script src="../../assets/js/week05-copying.js?v=2" type="module"></script>
-    <script src="../../assets/js/week05-search.js?v=1" type="module"></script>
-    <script src="../../assets/js/week05-autocomplete.js?v=1" type="module"></script>
+    <script src="../../assets/js/week05-search.js?v=2" type="module"></script>
+    <script src="../../assets/js/week05-autocomplete.js?v=2" type="module"></script>
     <script src="../../assets/js/week05-heaps.js?v=1" type="module"></script>
     <script src="../../assets/js/week05-fame.js?v=1" type="module"></script>
     <script src="../../assets/js/week05-weird.js?v=1" type="module"></script>

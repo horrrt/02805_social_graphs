@@ -1,0 +1,216 @@
+{
+  "corpus": {
+    "pages": 303,
+    "token_rule": "lowercase ASCII words, allowing internal apostrophes and hyphens"
+  },
+  "definition": {
+    "score": "type-token ratio residual after a linear fit against log(token_count)",
+    "fit_slope": -0.08858908450455044,
+    "fit_intercept": 1.05401466383405,
+    "interpretation": "positive values have more distinct word types than pages of similar length"
+  },
+  "top": [
+    {
+      "node": "Coldblood",
+      "name": "Coldblood",
+      "tokens": 667,
+      "types": 381,
+      "type_token_ratio": 0.5712143928035982,
+      "hapax_share": 0.7926509186351706,
+      "length_adjusted_score": 0.09327594586251686,
+      "excerpt": "Coldblood-7 (Eric Savin) is a fictional character appearing in American comic books published by Marvel Comics."
+    },
+    {
+      "node": "Ravage_2099",
+      "name": "Ravage 2099",
+      "tokens": 975,
+      "types": 492,
+      "type_token_ratio": 0.5046153846153846,
+      "hapax_share": 0.7357723577235772,
+      "length_adjusted_score": 0.060309555496847356,
+      "excerpt": "Ravage 2099 (Paul-Phillip Ravage) is a superhero appearing in American comic books published by Marvel Comics."
+    },
+    {
+      "node": "Super_Rabbit",
+      "name": "Super Rabbit",
+      "tokens": 462,
+      "types": 263,
+      "type_token_ratio": 0.5692640692640693,
+      "hapax_share": 0.7604562737642585,
+      "length_adjusted_score": 0.05879348204921231,
+      "excerpt": "Super Rabbit is a talking animal superhero in american comic books published by Timely Comics, a predecessor of Marvel Comics, during the 1930s and 1940s period fans and historians call the Golden Age of comic books."
+    },
+    {
+      "node": "Nightwatch_(character)",
+      "name": "Nightwatch (character)",
+      "tokens": 747,
+      "types": 388,
+      "type_token_ratio": 0.5194109772423026,
+      "hapax_share": 0.770618556701031,
+      "length_adjusted_score": 0.05150747118159793,
+      "excerpt": "Nightwatch, also known as Nighteater, is a fictional character appearing in American comic books published by Marvel Comics."
+    },
+    {
+      "node": "NFL_SuperPro",
+      "name": "Phil Grayfield",
+      "tokens": 686,
+      "types": 361,
+      "type_token_ratio": 0.5262390670553936,
+      "hapax_share": 0.7313019390581718,
+      "length_adjusted_score": 0.05078887327282999,
+      "excerpt": "NFL SuperPro is a comic book series published by Marvel Comics, centered on Phillip \"Phil\" Grayfield, an ex-National Football League (NFL) player who survives a freak accident and wears a near-indestructible football uniform."
+    },
+    {
+      "node": "Captain_Midlands",
+      "name": "Captain Midlands",
+      "tokens": 623,
+      "types": 330,
+      "type_token_ratio": 0.5296950240770465,
+      "hapax_share": 0.7515151515151515,
+      "length_adjusted_score": 0.04571094554431909,
+      "excerpt": "Captain Midlands (Sid Ridley) is a fictional character appearing in American comic books published by Marvel Comics."
+    },
+    {
+      "node": "Cammi_(character)",
+      "name": "Cammi (character)",
+      "tokens": 524,
+      "types": 285,
+      "type_token_ratio": 0.5438931297709924,
+      "hapax_share": 0.7403508771929824,
+      "length_adjusted_score": 0.04457828188379909,
+      "excerpt": "Cammi (Camille Benally) is a character appearing in American comic books published by Marvel Comics."
+    },
+    {
+      "node": "Helix_(Marvel_Comics)",
+      "name": "Helix (Marvel Comics)",
+      "tokens": 193,
+      "types": 122,
+      "type_token_ratio": 0.6321243523316062,
+      "hapax_share": 0.8032786885245902,
+      "length_adjusted_score": 0.04432659436371966,
+      "excerpt": "Helix (Rafael Carago) is a superhero appearing in American comic books published by Marvel Comics."
+    },
+    {
+      "node": "Killraven",
+      "name": "Killraven",
+      "tokens": 1687,
+      "types": 742,
+      "type_token_ratio": 0.43983402489626555,
+      "hapax_share": 0.7142857142857143,
+      "length_adjusted_score": 0.04409889872644179,
+      "excerpt": "Killraven (Jonathan Raven) is a character appearing in American comic books published by Marvel Comics."
+    },
+    {
+      "node": "Guardsman_(character)",
+      "name": "Guardsman (character)",
+      "tokens": 1747,
+      "types": 761,
+      "type_token_ratio": 0.4356038923869491,
+      "hapax_share": 0.7227332457293035,
+      "length_adjusted_score": 0.0429647977042108,
+      "excerpt": "The Guardsman is the name of several characters appearing in American comic books published by Marvel Comics."
+    }
+  ],
+  "bottom": [
+    {
+      "node": "Solomon_Kane_(comics)",
+      "name": "Solomon Kane (comics)",
+      "tokens": 904,
+      "types": 333,
+      "type_token_ratio": 0.36836283185840707,
+      "hapax_share": 0.6156156156156156,
+      "length_adjusted_score": -0.08264105055980536,
+      "excerpt": "Solomon Kane is a fictional character featured in several comics published by Marvel Comics between 1973 and 1994."
+    },
+    {
+      "node": "Dragon_Lord_(character)",
+      "name": "Dragon Lord (character)",
+      "tokens": 661,
+      "types": 268,
+      "type_token_ratio": 0.405446293494705,
+      "hapax_share": 0.6492537313432836,
+      "length_adjusted_score": -0.073292662668975,
+      "excerpt": "Dragon Lord is the name of several unrelated fictional characters appearing in American comic books published by Marvel Comics."
+    },
+    {
+      "node": "Peggy_Carter",
+      "name": "Peggy Carter",
+      "tokens": 1078,
+      "types": 393,
+      "type_token_ratio": 0.3645640074211503,
+      "hapax_share": 0.6208651399491094,
+      "length_adjusted_score": -0.0708452380393399,
+      "excerpt": "Margaret Elizabeth \"Peggy\" Carter is a fictional character appearing in American comic books published by Marvel Comics."
+    },
+    {
+      "node": "Scarlet_Spider",
+      "name": "Scarlet Spider",
+      "tokens": 899,
+      "types": 343,
+      "type_token_ratio": 0.38153503893214685,
+      "hapax_share": 0.6822157434402333,
+      "length_adjusted_score": -0.06996018742173155,
+      "excerpt": "The Scarlet Spider is an alias used by several fictional characters appearing in American comic books published by Marvel Comics, most notably Ben Reilly and Kaine Parker, both of whom are genetic clones of Peter Parker, the superhero Spider-Man."
+    },
+    {
+      "node": "Ms._Marvel",
+      "name": "Ms. Marvel",
+      "tokens": 1753,
+      "types": 570,
+      "type_token_ratio": 0.32515687393040504,
+      "hapax_share": 0.6649122807017543,
+      "length_adjusted_score": -0.06717848645078173,
+      "excerpt": "Ms."
+    },
+    {
+      "node": "Citizen_V",
+      "name": "Citizen V",
+      "tokens": 748,
+      "types": 304,
+      "type_token_ratio": 0.40641711229946526,
+      "hapax_share": 0.7171052631578947,
+      "length_adjusted_score": -0.06136787991813991,
+      "excerpt": "Citizen V is the codename of several superheroes appearing in American comic books published by Marvel Comics."
+    },
+    {
+      "node": "Crane_Mother",
+      "name": "Crane Mother",
+      "tokens": 621,
+      "types": 263,
+      "type_token_ratio": 0.42351046698872785,
+      "hapax_share": 0.7262357414448669,
+      "length_adjusted_score": -0.06075846415117536,
+      "excerpt": "Crane Mother is a fictional character appearing in American comic books published by Marvel Comics."
+    },
+    {
+      "node": "Bird-Brain_(Marvel_Comics)",
+      "name": "Bird-Brain (Marvel Comics)",
+      "tokens": 350,
+      "types": 167,
+      "type_token_ratio": 0.47714285714285715,
+      "hapax_share": 0.7485029940119761,
+      "length_adjusted_score": -0.057922871446649926,
+      "excerpt": "Bird-Brain is a character appearing in American comic books published by Marvel Comics, primarily in association with the New Mutants."
+    },
+    {
+      "node": "Spider-Man_(Marvel_Mangaverse)",
+      "name": "Spider-Man (Marvel Mangaverse)",
+      "tokens": 1143,
+      "types": 432,
+      "type_token_ratio": 0.3779527559055118,
+      "hapax_share": 0.6666666666666666,
+      "length_adjusted_score": -0.052269695013292594,
+      "excerpt": "Spider-Man (Peter Parker) from the Marvel Mangaverse is an alternate version of Spider-Man created by Kaare Andrews and the protagonist of Marvel Mangaverse: Spider-Man."
+    },
+    {
+      "node": "Union_Jack_(Marvel_Comics)",
+      "name": "Union Jack (Marvel Comics)",
+      "tokens": 2452,
+      "types": 761,
+      "type_token_ratio": 0.3103588907014682,
+      "hapax_share": 0.6110381077529566,
+      "length_adjusted_score": -0.05224815113645348,
+      "excerpt": "Union Jack is the name of three superheroes appearing in American comic books published by Marvel Comics."
+    }
+  ]
+}
