@@ -132,6 +132,8 @@ function drawEgo(client, firmNames, year, w) {
   const xEnd = Math.round(Math.min(Math.max(210, w * 0.45), cx - 150));
   // A long firm name and its filing count must never touch: compress the name
   // to fit the space left of the count's column when it would run into it.
+  // A narrow host (a hidden pane, a closed drawer) leaves no room at all; the
+  // names then keep their natural width until fitted() redraws at full width.
   const maxNameWidth = xEnd - 8 - countW - 12;
   const vmax = Math.max(...rows.map(([, n]) => n));
   const placed = token("--w4-placed");
@@ -160,7 +162,7 @@ function drawEgo(client, firmNames, year, w) {
     path.append(node("title", {}, `${name}: ${num(n)} filings`));
     svg.append(path);
     const nameAttrs = { x: 0, y: y + 4, "font-size": small, fill: other ? inkSoft : ink, "font-weight": other ? 400 : 600 };
-    if (textWidth(name, "small", other ? 400 : 600) > maxNameWidth) {
+    if (maxNameWidth > 0 && textWidth(name, "small", other ? 400 : 600) > maxNameWidth) {
       nameAttrs.textLength = maxNameWidth;
       nameAttrs.lengthAdjust = "spacingAndGlyphs";
     }
