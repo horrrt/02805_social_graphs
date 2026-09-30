@@ -16,11 +16,8 @@ week05-autocomplete.js through networkView() (docs/assets/js/graph.js).
 - Relations: for each of section 1's labels, the pairs of pages whose linking
   sentence carries it (week05_relations.arcs()). A pair whose two arcs carry
   different labels is in both lists.
-- Section 4 is still collecting other groups' guesses about the communities, so
-  the maps name only the eight hubs, the quiz's options: nodes are numbered here
-  and the page draws no tooltip or label for any other node. This keeps the
-  picture from being a lookup beside the quiz; it hides nothing from someone who
-  reads the data files (communities.json lists every page's group).
+- Names: every node carries its page title, which the maps show on hover; the
+  eight hubs also get a pill on the map.
 
     python analysis/week05_network.py
 """
@@ -70,7 +67,7 @@ def main():
         "groups": [{"label": comm["communities"][k]["label"], "size": sum(group[n] == k for n in ids)} for k in range(GROUPS)],
         "no_group": sum(group[n] is None for n in ids),
         "hubs": [{"node": at[n], "label": title[n], "group": group[n]} for n in hubs],
-        "nodes": [{"x": pos[n][0], "y": pos[n][1], "group": group[n]} for n in ids],
+        "nodes": [{"x": pos[n][0], "y": pos[n][1], "group": group[n], "name": n.replace("_", " ")} for n in ids],
         "links": [[at[a], at[b], int(d["weight"]), group[a] if group[a] is not None and group[a] == group[b] else None]
                   for a, b, d in edges(g)],
         "relations": relations,

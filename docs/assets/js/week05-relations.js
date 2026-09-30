@@ -8,7 +8,7 @@
 // and the shared map in network.json (week05-map.js).
 
 import { concordance, loadData, stripChart, termify } from "./kit.js?v=4";
-import { loadNetwork, marvelMap } from "./week05-map.js?v=4";
+import { loadNetwork, marvelMap } from "./week05-map.js?v=5";
 
 const LABEL = { killed: "Killed", family: "Family", enemy: "Enemy", ally: "Ally", teammate: "Teammate" };
 const pct = (v) => `${Math.round(v * 100)}%`;

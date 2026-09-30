@@ -133,9 +133,8 @@ under what we did). Nothing else changes: the slot IDs, `slot()` and the kit tes
 - One map: `analysis/week05_network.py` writes `network.json`, the Marvel network laid out once
   (`analysis/layout.py`, seeded) and coloured by section 4's consensus groups, and `week05-map.js` draws it
   with `networkView()`. Section 1 shows where fight and family links run on it; section 4 shows its groups
-  beside the quiz. While section 4 collects other groups' guesses, the map names only the eight hubs, the
-  quiz's options: no other node has a tooltip or label on the page (`tests/week05-network.test.mjs`).
-  Once guessing closes, `titles` can go back to every node. The data files are another matter:
+  beside the quiz. Hovering any page names it (Gyula's call, 30 September, while guesses were still
+  open); the eight hubs, the quiz's options, also carry a pill on the map. The data files go further:
   `communities.json` lists every page's group and `autocomplete.json` holds each fake's answer and unmasked
   text, so a guesser who opens them can look everything up.
 - Communities: `analysis/week05_communities.py` writes the consensus of 100 Louvain runs that section 4
