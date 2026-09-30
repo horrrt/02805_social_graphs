@@ -29,9 +29,10 @@ export function marvelMap(host, net, { mark, ...opts } = {}) {
     links: net.links.map(([i, j, weight, group]) => ({ source: String(i), target: String(j), weight, group, mark: marked.has(`${i}|${j}`) })),
     groups: net.groups.map((g) => g.label),
     hubs: net.hubs.map((h) => String(h.node)),
-    titles: "hubs",
     unit: ["page", "pages"],
     fade: Boolean(mark),
     ...opts,
+    // Last, so no caller can name the other nodes while section 4 collects guesses.
+    titles: "hubs",
   });
 }

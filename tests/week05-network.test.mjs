@@ -35,10 +35,16 @@ test("the map holds the pages, links and groups the sections count", () => {
   });
 });
 
-test("only the hubs are named, on the map and in its data", () => {
+test("the maps name only the hubs", () => {
   for (const n of net.nodes) assert.deepEqual(Object.keys(n).sort(), ["group", "x", "y"], "a node carries no name");
-  assert.match(map, /titles: "hubs"/, "the map gives tooltips to hubs only");
-  assert.doesNotMatch(map, /titles: "all"/);
+  // titles: "hubs" comes after the callers' options, so no caller can override it.
+  const call = map.slice(map.indexOf("return networkView("));
+  assert.ok(call.indexOf("...opts") >= 0 && call.indexOf('titles: "hubs"') > call.indexOf("...opts"), "titles is set after ...opts");
+  for (const file of ["week05-relations.js", "week05-autocomplete.js"]) {
+    const src = read(`docs/assets/js/${file}`);
+    const opts = src.slice(src.indexOf("marvelMap("), src.indexOf("marvelMap(") + 600);
+    assert.doesNotMatch(opts, /\b(labels|weights|movable|title):/, `${file} passes no option that could print a node`);
+  }
 });
 
 test("section 1 draws the map beside its chart, with a two-button switch", () => {

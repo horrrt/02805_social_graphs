@@ -17,8 +17,10 @@ week05-autocomplete.js through networkView() (docs/assets/js/graph.js).
   sentence carries it (week05_relations.arcs()). A pair whose two arcs carry
   different labels is in both lists.
 - Section 4 is still collecting other groups' guesses about the communities, so
-  nodes are numbered, not named: only the eight hubs, the quiz's options, carry a
-  name. The page draws no tooltip for any other node.
+  the maps name only the eight hubs, the quiz's options: nodes are numbered here
+  and the page draws no tooltip or label for any other node. This keeps the
+  picture from being a lookup beside the quiz; it hides nothing from someone who
+  reads the data files (communities.json lists every page's group).
 
     python analysis/week05_network.py
 """

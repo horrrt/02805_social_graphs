@@ -84,7 +84,7 @@ termify(did, "communities", "Groups of characters linked more among themselves t
 const mapHost = document.getElementById("chart-relations-map");
 const kinds = document.getElementById("relations-map-kind");
 if (mapHost && kinds) {
-  const net = await loadNetwork();
+  const net = await loadNetwork().catch((err) => console.error("week05 map failed", err));
   const show = (kind) => {
     for (const b of kinds.querySelectorAll("button")) b.setAttribute("aria-pressed", String(b.dataset.kind === kind));
     marvelMap(mapHost, net, {
@@ -92,7 +92,9 @@ if (mapHost && kinds) {
       aria: `The Marvel link network coloured by community, with the links whose sentence uses ${kind === "enemy" ? "a fight word" : "a family word"} drawn dark`,
     });
   };
-  for (const b of kinds.querySelectorAll("button")) b.addEventListener("click", () => show(b.dataset.kind));
-  show("enemy");
+  if (net) {
+    for (const b of kinds.querySelectorAll("button")) b.addEventListener("click", () => show(b.dataset.kind));
+    show("enemy");
+  }
 }
 
