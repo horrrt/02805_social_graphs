@@ -5,7 +5,7 @@
 // the cluster table and the passages we checked.
 // Data: docs/weeks/week05/data/copying.json, written by analysis/week05_copying.py.
 
-import { loadData, networkView, passage, stripChart, table, termify } from "./kit.js?v=4";
+import { loadData, networkView, passage, stripChart, table, termify } from "./kit.js?v=5";
 
 const pct = (v) => (v < 0.1 ? `${(v * 100).toFixed(1)}%` : `${Math.round(v * 100)}%`);
 const count = (v) => v.toLocaleString("en-GB");
@@ -48,7 +48,7 @@ if (host) {
     nodes: data.nodes.map((n) => ({
       id: n.id, x: n.x, y: n.y * TALL, label: label[n.id], labelSide: side[n.id],
       r: 3 + 8 * Math.sqrt(n.copied_tokens / maxTokens),
-      title: `${name[n.id]}: ${count(n.copied_tokens)} shared words, in a cluster of ${clusterSize[n.cluster]} pages`,
+      page: name[n.id], copied: n.copied_tokens, cluster: clusterSize[n.cluster],
     })),
     links: data.links.map((l) => ({
       source: l.a, target: l.b, dashed: !l.linked, width: 1 + 5 * Math.sqrt(l.tokens / maxLink),
@@ -56,6 +56,8 @@ if (host) {
         `${l.linked ? "" : ". The two pages do not link to each other"}.\n“${l.quote.slice(0, 200)}${l.quote.length > 200 ? " …" : ""}”`,
     })),
     aria: `Copying network: ${data.nodes.length} pages in ${data.clusters.length} clusters`,
+    explore: true,
+    describe: (n, { degree }) => [n.page, `${count(n.copied)} shared words · copies with ${degree} ${degree === 1 ? "page" : "pages"} · a cluster of ${n.cluster}`],
   });
 }
 

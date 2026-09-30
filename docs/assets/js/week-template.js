@@ -3,7 +3,7 @@
 // template shows the finished look. Replace this file with one script per
 // section, docs/assets/js/weekNN-<section>.js, reading its script's JSON.
 
-import { loadData, miniStrip, networkView, passage, stripChart, table, termify } from "./kit.js?v=4";
+import { loadData, miniStrip, networkView, passage, stripChart, table, termify } from "./kit.js?v=5";
 
 const TOY = new URL("../../styleguide/data/graphs.json?v=1", import.meta.url);
 

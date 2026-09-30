@@ -7,7 +7,7 @@
 // #heaps-passages).
 // Data: docs/weeks/week05/data/heaps.json, written by analysis/week05_heaps.py.
 
-import { drawer, drawerRow, fitted, fs, loadData, node, passage, stripChart, table, termify, token } from "./kit.js?v=4";
+import { drawer, drawerRow, fitted, fs, loadData, node, passage, stripChart, table, termify, tipBox, token } from "./kit.js?v=5";
 
 const count = (v) => Math.round(v).toLocaleString("en-GB");
 const short = (v) => (v >= 1000 ? `${v / 1000}k` : `${v}`);
@@ -24,7 +24,7 @@ const ORDER = {
 // ---- the figure: types against tokens, log-log, with the random band and the fit
 const curve = document.getElementById("chart-heaps-curve");
 if (curve) {
-  const titled = (el, text) => (el.append(node("title", {}, text)), el);
+  const tip = tipBox(curve);
   const [n0, n1] = [grid[0].tokens, grid.at(-1).tokens];
   const [v0, v1] = [Math.min(...grid.map((p) => Math.min(p.random_p5, p.most_linked, p.least_linked))), grid.at(-1).random_mean];
   const xTicks = [1e3, 1e4, 1e5].filter((t) => t >= n0 && t <= n1);
@@ -51,23 +51,45 @@ if (curve) {
     const path = (pts) => pts.map(([n, v], i) => `${i ? "L" : "M"}${X(n).toFixed(1)},${Y(v).toFixed(1)}`).join("");
     // The random band, 5th to 95th percentile, and its mean.
     const band = [...grid.map((p) => [p.tokens, p.random_p95]), ...[...grid].reverse().map((p) => [p.tokens, p.random_p5])];
-    svg.append(titled(node("path", { d: `${path(band)}Z`, fill: token("--w4-band"), stroke: "none" }),
-      `Middle 90% of ${data.meta.runs} random page orders`));
-    svg.append(titled(node("path", { d: path(grid.map((p) => [p.tokens, p.random_mean])), fill: "none", stroke: token("--ink-mute"), "stroke-width": 1.5 }),
-      `Mean of ${data.meta.runs} random page orders`));
+    svg.append(node("path", { d: `${path(band)}Z`, fill: token("--w4-band"), stroke: "none" }));
+    svg.append(node("path", { d: path(grid.map((p) => [p.tokens, p.random_mean])), fill: "none", stroke: token("--ink-mute"), "stroke-width": 1.5 }));
     // Heaps' law fitted to the random mean, over the fit range.
     const fitLine = grid.filter((p) => p.tokens >= fit.fit_from).map((p) => [p.tokens, fit.k * p.tokens ** fit.beta]);
-    svg.append(titled(node("path", { d: path(fitLine), fill: "none", stroke: token("--ink"), "stroke-width": 1.5, "stroke-dasharray": "5 4" }),
-      `Heaps' law fitted to the random mean: V = ${fit.k.toFixed(1)} n^${fit.beta.toFixed(2)}, from ${count(fit.fit_from)} tokens`));
+    svg.append(node("path", { d: path(fitLine), fill: "none", stroke: token("--ink"), "stroke-width": 1.5, "stroke-dasharray": "5 4" }));
     for (const o of Object.values(ORDER)) {
-      svg.append(titled(node("path", { d: path(grid.map((p) => [p.tokens, p[o.key]])), fill: "none", stroke: token(o.colour), "stroke-width": 2 }), o.label));
+      svg.append(node("path", { d: path(grid.map((p) => [p.tokens, p[o.key]])), fill: "none", stroke: token(o.colour), "stroke-width": 2 }));
     }
-    // Hover points: every grid point's numbers.
-    for (const p of grid) {
-      const tip = `${count(p.tokens)} tokens read\nMost-linked first: ${count(p.most_linked)} types\nLeast-linked first: ${count(p.least_linked)} types\n` +
-        `Random: ${count(p.random_mean)} ± ${count(p.random_sd)}`;
-      svg.append(titled(node("circle", { cx: X(p.tokens), cy: Y(p.random_mean), r: 6, fill: "transparent", stroke: "none" }), tip));
-    }
+    // Hover: a guide at the nearest grid point, a dot on each line and the numbers there.
+    const guide = node("g", { visibility: "hidden" });
+    const rule = node("line", { y1: top, y2: height - bottom, class: "kit-guide" });
+    const marks = [["random_mean", "--ink-mute"], ["most_linked", ORDER.most.colour], ["least_linked", ORDER.least.colour]]
+      .map(([key, colour]) => [key, node("circle", { r: 4.5, fill: token(colour), stroke: token("--card"), "stroke-width": 1.5 })]);
+    guide.append(rule, ...marks.map(([, c]) => c));
+    svg.append(guide);
+    const gap = (p, key, z) => `${count(p[key])} types (${signed(p[key] - p.random_mean)}${z === null ? "" : `, ${zText(z)}`})`;
+    const overlay = node("rect", { x: left, y: top, width: width - left - right, height: height - top - bottom, fill: "transparent" });
+    overlay.addEventListener("pointermove", (e) => {
+      const at = new DOMPoint(e.clientX, e.clientY).matrixTransform(svg.getScreenCTM().inverse()).x;
+      const p = grid.reduce((a, b) => (Math.abs(X(b.tokens) - at) < Math.abs(X(a.tokens) - at) ? b : a));
+      rule.setAttribute("x1", X(p.tokens));
+      rule.setAttribute("x2", X(p.tokens));
+      for (const [key, c] of marks) {
+        c.setAttribute("cx", X(p.tokens));
+        c.setAttribute("cy", Y(p[key]));
+      }
+      guide.setAttribute("visibility", "visible");
+      tip.show([
+        `${count(p.tokens)} tokens read`,
+        `Least-linked first: ${gap(p, "least_linked", p.z_least_linked)}`,
+        `Most-linked first: ${gap(p, "most_linked", p.z_most_linked)}`,
+        `Random orders: ${count(p.random_mean)} ± ${count(p.random_sd)}`,
+      ], e.clientX, e.clientY);
+    });
+    overlay.addEventListener("pointerleave", () => {
+      guide.setAttribute("visibility", "hidden");
+      tip.hide();
+    });
+    svg.append(overlay);
     // A legend in the empty top-left corner.
     const legend = [["Most-linked first", "--access"], ["Least-linked first", "--people"], ["Random orders", "--ink-mute"], ["Heaps' law fit", "--ink"]];
     legend.forEach(([label, colour], i) => {
