@@ -71,8 +71,9 @@ test("the findings strip quotes each section's JSON", () => {
   has("No other group has guessed yet");
   has(`the first ${count(at100k.tokens)} words hold ${count(at100k.least_linked)} different words, against ${count(at100k.random_mean)} ± ${Math.round(at100k.random_sd)} in random orders: minor characters bring new words`);
   assert.ok(at100k.z_least_linked > 2, '"bring new words" needs the least-linked order two sd above random');
-  has(`page length follows in-degree at Pearson ${fame.fit.pearson.toFixed(2)}, and each of the ten furthest pages`);
-  assert.equal(fame.outliers.length, 10);
+  has(`page length follows in-degree at Pearson ${fame.fit.pearson.toFixed(2)}, and pages for a codename several characters share sit below the trend`);
+  assert.ok(fame.patterns.hubs.gap < 0 && fame.patterns.hubs.p < 0.05, '"sit below" needs a significant negative gap');
+  assert.equal(fame.patterns.hubs.pages, weird.several.pages, "sections 6 and 7 count the same shared-name pages");
   has(`${weird.several.in_bottom_decile} of the ${weird.several.bottom_decile} most repetitive pages are about several characters who share one name, where ${weird.several.expected.toFixed(1)} would be expected`);
 });
 
@@ -104,9 +105,9 @@ test("the closing quotes the sections and its methods match the scripts", () => 
   has(`Louvain run ${relations.meta.runs} times; ${count(relations.meta.shuffles)} label shuffles`);
   has(`Shared ${copying.meta.n}-word n-grams, n-grams on more than ${copying.meta.template_pages} pages set aside as template`);
   has(`A consensus of ${communities.runs} Louvain runs against ${communities.null_runs} rewired networks`);
-  has(`against ${heaps.meta.runs} random orders`);
+  has(`against ${heaps.meta.runs} random orders and ${heaps.meta.length_runs} orders that keep page length`);
   has(`against ${count(fame.meta.shuffles)} shuffles of in-degree`);
-  has(`over a ${weird.meta.window}-word window, scored against the ${weird.meta.neighbours} pages nearest in length and ${count(weird.meta.draws)} random stretches`);
+  has(`over a ${weird.meta.window}-word window, scored against the ${weird.meta.neighbours} pages nearest in length; ${count(weird.meta.draws)} random stretches of the corpus draw the figure's band`);
   has(`${relations.meta.sample} sentences per relation label`);
   has("the ten outliers of section 6");
   assert.ok(html.includes('id="methods"') && html.includes('id="closing-ai"'));

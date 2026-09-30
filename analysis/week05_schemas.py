@@ -273,6 +273,8 @@ class SearchSummary(Model):
     p_at_5_nostop: float = Share
     n_misses: int = Count
     miss_kinds: dict[str, int]
+    n_misses_nostop: int = Count
+    miss_kinds_nostop: dict[str, int]
     misses_won_by_shorter_than_median: int = Count
     misses_with_long_target: int = Count
     random_mean_rank: float = Count
@@ -313,6 +315,7 @@ class SearchQuery(Model):
     top5: list[SearchHit] = Field(min_length=1)
     expected_overlap: list[SearchOverlap]
     failure_kind: Optional[str] = None
+    failure_kind_nostop: Optional[str] = None
     failure_reason: Optional[str] = None
     quote: Optional[SearchQuote] = None
 
@@ -490,6 +493,9 @@ class HeapsMeta(Model):
     order_rule: str
     seed: int
     runs: int = Field(ge=200)
+    length_bins: int = Field(ge=2)
+    length_runs: int = Field(ge=200)
+    length_seed: int
     grid_points: int = Field(ge=2)
 
 
@@ -516,6 +522,12 @@ class HeapsCheckpoint(HeapsPoint):
     pages_least_linked: int = Field(ge=1)
     in_degree_most_linked: int = Count
     in_degree_least_linked: int = Count
+    length_held_mean_most_linked: float = Count
+    length_held_sd_most_linked: float = Count
+    z_length_held_most_linked: float | None
+    length_held_mean_least_linked: float = Count
+    length_held_sd_least_linked: float = Count
+    z_length_held_least_linked: float | None
 
 
 class HeapsSpan(Model):
@@ -645,6 +657,7 @@ class WeirdStability(Model):
 
 
 class WeirdSeveral(Model):
+    rule: str
     pages: int = Count
     bottom_decile: int = Field(ge=1)
     in_bottom_decile: int = Count

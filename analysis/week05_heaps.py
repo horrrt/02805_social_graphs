@@ -27,6 +27,11 @@ Method
   Each checkpoint also records how many pages each order has begun. So the
   checkpoints are not picked by hand, the JSON also gives, per order, the
   longest run of grid points with z beyond SPAN_Z in its direction.
+- A second baseline keeps page length: LENGTH_RUNS times, in-degree is
+  shuffled among the pages of each length fifth (LENGTH_BINS bins by words,
+  seed LENGTH_SEED + i) and the pages are read in that shuffled link order.
+  Long pages still come early in most-linked order, so a gap that survives
+  this baseline is not page length.
 - Heaps' law V = K n^beta: least squares of log V on log n over the grid
   points from FIT_FROM tokens to the end, on the random-order mean, and on
   each random order for the spread of beta. The slope on the lower and upper
@@ -73,6 +78,9 @@ SAMPLE = 12
 TAIL = 0.9
 MAX_WORDS = 40
 SPAN_Z = 1.5
+LENGTH_BINS = 5
+LENGTH_RUNS = 500
+LENGTH_SEED = 5050
 
 
 def raw_words(text):
@@ -166,6 +174,25 @@ def main():
         late_rate.append(1000 * len(new) / late_tokens)
     runs = np.array(runs)
     mean, sd = runs.mean(axis=0), runs.std(axis=0, ddof=1)
+
+    # The length-matched baseline: in-degree shuffled within each length fifth.
+    length = np.array([len(ids[n]) for n in nodes])
+    edges = np.quantile(length, np.linspace(0, 1, LENGTH_BINS + 1)[1:-1])
+    fifth = np.searchsorted(edges, length, side="right")
+    indeg = np.array([network.in_degree(n) for n in nodes])
+    pos = {n: j for j, n in enumerate(nodes)}
+    held_most, held_least = [], []
+    for i in range(LENGTH_RUNS):
+        rng = random.Random(LENGTH_SEED + i)
+        fake = indeg.copy()
+        for b in range(LENGTH_BINS):
+            where = [j for j in range(len(nodes)) if fifth[j] == b]
+            values = [int(indeg[j]) for j in where]
+            rng.shuffle(values)
+            fake[where] = values
+        held_most.append(types_at(first_seen(sorted(nodes, key=lambda n: (-fake[pos[n]], n)), ids)[0]))
+        held_least.append(types_at(first_seen(sorted(nodes, key=lambda n: (fake[pos[n]], n)), ids)[0]))
+    held_most, held_least = np.array(held_most), np.array(held_least)
     p5, p95 = np.percentile(runs, [5, 95], axis=0)
     at = {int(p): k for k, p in enumerate(points)}
 
@@ -238,8 +265,15 @@ def main():
         begun = min(int(np.searchsorted(ends, n, side="left")) + 1, len(order))
         return begun, network.in_degree(order[begun - 1])
 
+    def held(curve, runs_, k):
+        m, v = float(runs_[:, k].mean()), float(runs_[:, k].std(ddof=1))
+        return m, v, (float((curve[k] - m) / v) if v > 0 else None)
+
     def checkpoint(k):
         row = cut(k)
+        for key, curve, runs_ in (("most_linked", curve_most, held_most), ("least_linked", curve_least, held_least)):
+            m, v, zz = held(curve, runs_, k)
+            row[f"length_held_mean_{key}"], row[f"length_held_sd_{key}"], row[f"z_length_held_{key}"] = m, v, zz
         for key, order in (("most_linked", most), ("least_linked", least)):
             row[f"pages_{key}"], row[f"in_degree_{key}"] = reading(order, int(points[k]))
         return row
@@ -283,6 +317,9 @@ def main():
             "order_rule": "in-degree in the directed link network among the 303 pages, ties broken by node id",
             "seed": SEED,
             "runs": RUNS,
+            "length_bins": LENGTH_BINS,
+            "length_runs": LENGTH_RUNS,
+            "length_seed": LENGTH_SEED,
             "grid_points": len(grid),
             "grid_from": GRID_FROM,
         },

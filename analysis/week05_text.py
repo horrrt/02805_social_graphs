@@ -131,6 +131,26 @@ def sentences(text):
     return out
 
 
+
+# A page about several characters who share one name ("Quasar is the name of
+# several superheroes"): its first sentence calls the title the name, alias,
+# codename, title, identity or mantle of several, or two, three..., characters,
+# or a name used by them. Sections 6 and 7 both use it.
+_COUNT = r"(?:several|multiple|various|two|three|four|five|six)"
+SHARED_NAME = re.compile(
+    r"\b(?:name|names|alias|codename|title|identity|mantle)\b[^.]{0,40}?\b" + _COUNT + r"\b"
+    r"|\bused by " + _COUNT + r"\b"
+    r"|\bname of a number of (?:\w+ )?characters\b"
+)
+SHARED_NAME_RULE = ("its first sentence calls the title the name, alias, codename, title, identity or "
+                    "mantle of several (or two, three...) characters, or a name used by them")
+
+
+def shared_name(text):
+    """Whether a page is about several characters who share its title."""
+    first = sentences(text)
+    return bool(first) and bool(SHARED_NAME.search(first[0]))
+
 if __name__ == "__main__":
     text, g, gw = pages(), graph(), weighted()
     print(f"{len(text)} pages, {sum(map(len, text.values())):,} characters")

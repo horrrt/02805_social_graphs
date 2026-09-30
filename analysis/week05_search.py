@@ -146,8 +146,8 @@ def reason(expected, top, expected_overlap, length, names):
                               f"({length[expected]:,} words): cosine divides by the vector's length, so a "
                               f"short page with the same words scores higher.")
     shared = [o["term"] for o in winner["overlap_terms"] if not o["is_stop"]][:3]
-    return "rival", (f"{winner['name']} uses {', '.join(shared) or 'the same words'} as often as "
-                     f"{names[expected]} does, so counts cannot tell them apart.")
+    return "rival", (f"{winner['name']} ({winner['n_tokens']:,} words) is not a short page, and it scores "
+                     f"higher than {names[expected]} on {', '.join(shared) or 'stopwords alone'}.")
 
 
 def passage(text: str, terms: list[str], width: int = 260) -> str:
@@ -227,6 +227,10 @@ def main() -> int:
             else:
                 kind, why = reason(expected, top, exp_overlap, length, names)
                 row |= {"failure_kind": kind, "failure_reason": why}
+            # The same label on the stopword-free model, so a stopword win is not read as a length win.
+            row["failure_kind_nostop"] = (None if row["hit_at_1_nostop"] else
+                                          reason(expected, top_ns, overlap(q_ns, matrix_ns.getrow(e), vocab_ns),
+                                                 length, names)[0])
         results.append(row)
 
     scored = [r for r in results if r["scored"]]
@@ -236,6 +240,8 @@ def main() -> int:
     p = lambda k, c: float(f"{binomtest(k, n, c, alternative='greater').pvalue:.3g}")
     misses = [r for r in scored if not r["hit_at_1"]]
     kinds = {k: sum(r["failure_kind"] == k for r in misses) for k in ("no_shared_word", "short_page", "rival")}
+    misses_ns = [r for r in scored if not r["hit_at_1_nostop"]]
+    kinds_ns = {k: sum(r["failure_kind_nostop"] == k for r in misses_ns) for k in ("no_shared_word", "short_page", "rival")}
     shorter = sum(r["top5"][0]["n_tokens"] < median_len for r in misses)
     long_targets = sum(r["expected_length_percentile"] >= 0.8 for r in misses)
 
@@ -275,6 +281,7 @@ def main() -> int:
                     "p_at_1_nostop": p(count("hit_at_1_nostop"), chance1),
                     "p_at_5_nostop": p(count("hit_at_5_nostop"), chance5),
                     "n_misses": len(misses), "miss_kinds": kinds,
+                    "n_misses_nostop": len(misses_ns), "miss_kinds_nostop": kinds_ns,
                     "misses_won_by_shorter_than_median": shorter, "misses_with_long_target": long_targets,
                     "random_mean_rank": (len(ids) + 1) / 2},
         "checked": checked, "queries": results,

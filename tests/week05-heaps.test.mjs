@@ -114,7 +114,7 @@ test("section 5 splits the late pages' new words and quotes them", () => {
   has(`The last ${l.pages} pages in most-linked order, each linked from ${l.max_in_degree} pages or fewer, hold ${count(l.tokens)} tokens and add ${count(l.new_types)} types no earlier page used`);
   has(`${count(l.names)} of them (${pct(l.name_share)}) look like names`);
   has(`against ${pct(l.random_name_share_mean)} ± ${pct(l.random_name_share_sd, 1)} for the last ${l.pages} pages of the random orders`);
-  has(`${l.names_initial_only} of those names are capitalised only because they open a sentence or a line`);
+  has(`${l.names_initial_only} of those names are capitalised only where they open a sentence or a line`);
   assert.equal(l.names + l.others, l.new_types);
   // Each checked sentence holds its new word, once, and comes from a late page.
   for (const p of h.passages) {
@@ -129,8 +129,19 @@ test("section 5 names its real limits", () => {
   has("Pages differ in length");
   // "the most-linked pages are the long ones"
   assert.ok(h.first_pages.most_linked_tokens > 5 * h.first_pages.least_linked_tokens);
-  has("the most-linked pages are the long ones, so page length may explain part of both gaps");
+  has("and the most-linked pages are the long ones. Shuffling in-degree only among pages of similar length");
   has("one word rule");
   has(`the link count only covers links among these ${h.meta.pages} pages`);
   has(`${h.meta.zero_indegree_pages} of the pages get no link at all`);
 });
+
+test("section 5's gaps survive a baseline that keeps page length", () => {
+  const m = h.meta;
+  const [first, second] = h.checkpoints;
+  const z1 = first.z_length_held_least_linked;
+  const z2 = second.z_length_held_most_linked;
+  assert.ok(z1 > 2 && z2 < -2, '"leaves both gaps standing" needs both beyond two sd');
+  has(`in fifths by word count, ${m.length_runs} times, leaves both gaps standing (z = ${z(z1)} for least-linked first at ${count(first.tokens)} tokens, z = ${z(z2)} for most-linked first at ${count(second.tokens)})`);
+  assert.equal(m.length_bins, 5, '"fifths" needs five length bins');
+});
+

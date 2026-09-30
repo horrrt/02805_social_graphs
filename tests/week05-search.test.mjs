@@ -38,9 +38,12 @@ test("section 3 quotes search.json", () => {
   has(`the right page comes first for ${sum.hits_at_1} of ${sum.n_scored} queries and in the top five for ${sum.hits_at_5}`);
   has(`(p = ${Number(sum.p_at_1.toPrecision(2))} against the 1 in ${t.n_pages} of a random ranking)`);
   has(`Removing stopwords lifts that to ${sum.hits_at_1_nostop} and ${sum.hits_at_5_nostop}`);
-  assert.ok(sum.hits_at_1_nostop >= sum.hits_at_1 && sum.hits_at_5_nostop >= sum.hits_at_5, '"lifts" needs both to rise');
-  has(`${sum.miss_kinds.short_page} of the ${sum.n_misses} misses lose to a page at most a third as long as the target`);
-  has(`${sum.misses_won_by_shorter_than_median} of the ${sum.n_misses} winning pages are shorter than the median page of ${count(t.median_page_tokens)} words`);
+  assert.ok(sum.hits_at_1_nostop > sum.hits_at_1 && sum.hits_at_5_nostop > sum.hits_at_5, '"lifts" and "cost real hits" need both to rise');
+  const ns = sum.miss_kinds_nostop;
+  has(`without stopwords, ${ns.short_page} of the ${sum.n_misses_nostop} misses still lose to a page at most a third as long as the target`);
+  assert.ok(ns.short_page > sum.n_misses_nostop / 2, '"most of the rest" needs a majority of short-page wins without stopwords');
+  assert.equal(d.queries.filter((x) => x.scored && !x.hit_at_1_nostop && x.failure_kind_nostop === "short_page").length, ns.short_page);
+  has(`With raw counts, ${sum.misses_won_by_shorter_than_median} of the ${sum.n_misses} misses are won by a page shorter than the median page of ${count(t.median_page_tokens)} words`);
   assert.ok(sum.miss_kinds.short_page > sum.n_misses / 2, '"most misses" needs a majority of short-page wins');
   has("Short pages win most misses");
   // "Rarely first": at most a quarter of queries.

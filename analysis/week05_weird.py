@@ -40,7 +40,8 @@ Method
   Hapax share is left out: it falls as a page grows, so it cannot compare
   pages of different length.
 - Pages about several characters sharing one name ("the name of several
-  superheroes") are found from their first sentence and counted in the bottom
+  superheroes") are found from their first sentence by week05_text.shared_name(),
+  the rule section 6 uses for its hub pages, and counted in the bottom
   tenth against what chance would put there (hypergeometric test).
 - Reading: the top and bottom pages were read by hand; READ holds what the
   reading found and QUOTES a sentence past the lead that shows it. The script
@@ -62,7 +63,7 @@ import numpy as np
 from scipy.stats import hypergeom, spearmanr
 
 from check_pages import check
-from week05_text import WORD_RULE, nodes, pages, sentences, words
+from week05_text import SHARED_NAME_RULE, WORD_RULE, nodes, pages, sentences, shared_name, words
 
 ROOT = Path(__file__).resolve().parents[1]
 OUT = Path(__file__).with_suffix(".json")
@@ -78,7 +79,6 @@ TEMPLATE_PAGES = 10   # ... on more than this many pages (section 2's rule)
 RARE_PAGES = 2        # a rare word type is on at most this many pages
 SHOW = 5              # pages shown at each end
 STABLE = 10           # pages checked at each end for the stability count
-SEVERAL = re.compile(r"\b(?:name|names|alias|codename|title|identity|mantle)\b[^.]{0,40}?\b(?:several|multiple|various)\b")
 
 # What reading each page found. Keys must be exactly the top and bottom SHOW.
 READ = {
@@ -162,7 +162,8 @@ def corpus_stretches(corpus, w, length, rng, cumsum):
 def main():
     text = pages()
     ids = sorted(text)
-    names = dict(zip(nodes().node_id, nodes().name))
+    # The page title: the node table names five pages after one holder (Doctor_Spectrum is "Alice Nugent").
+    names = {p: p.replace("_", " ") for p in nodes().node_id}
     toks = {p: words(text[p]) for p in ids}
     lengths = {p: len(toks[p]) for p in ids}
 
@@ -235,7 +236,7 @@ def main():
 
     # pages about several characters sharing one name, from their first sentence
     first = {p: sentences(text[p])[0] for p in ids}
-    several = sorted(p for p in ids if SEVERAL.search(first[p]))
+    several = sorted(p for p in ids if shared_name(text[p]))
     decile = len(ids) // 10
     in_bottom = [p for p in ranked[-decile:] if p in several]
     expected = decile * len(several) / len(ids)
@@ -325,10 +326,11 @@ def main():
             "spearman": round(float(spearmanr([z[p] for p in ids], [z_alt[p] for p in ids])[0]), 3),
         },
         "several": {
+            "rule": SHARED_NAME_RULE,
             "pages": len(several),
             "bottom_decile": decile,
             "in_bottom_decile": len(in_bottom),
-            "expected": round(expected, 2),
+            "expected": round(expected, 3),
             "p": p_value,
             "names": [names[p] for p in in_bottom],
         },

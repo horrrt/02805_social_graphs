@@ -59,6 +59,12 @@
       "short_page": 9,
       "rival": 1
     },
+    "n_misses_nostop": 9,
+    "miss_kinds_nostop": {
+      "no_shared_word": 0,
+      "short_page": 7,
+      "rival": 2
+    },
     "misses_won_by_shorter_than_median": 8,
     "misses_with_long_target": 10,
     "random_mean_rank": 152.0
@@ -610,6 +616,7 @@
       ],
       "failure_kind": "short_page",
       "failure_reason": "Dargo Ktor (454 words) beats Beta Ray Bill (3,871 words): cosine divides by the vector's length, so a short page with the same words scores higher.",
+      "failure_kind_nostop": "short_page",
       "quote": {
         "node_id": "Dargo_Ktor",
         "name": "Dargo Ktor",
@@ -916,6 +923,7 @@
       ],
       "failure_kind": "short_page",
       "failure_reason": "Outlaw (Marvel Comics) (872 words) beats Wolverine (character) (7,513 words): cosine divides by the vector's length, so a short page with the same words scores higher.",
+      "failure_kind_nostop": "short_page",
       "quote": {
         "node_id": "Outlaw_(Marvel_Comics)",
         "name": "Outlaw (Marvel Comics)",
@@ -1271,6 +1279,7 @@
       ],
       "failure_kind": "short_page",
       "failure_reason": "Steel Spider (673 words) beats Spider-Man (10,525 words): cosine divides by the vector's length, so a short page with the same words scores higher.",
+      "failure_kind_nostop": "short_page",
       "quote": {
         "node_id": "Steel_Spider",
         "name": "Steel Spider",
@@ -1584,6 +1593,7 @@
       ],
       "failure_kind": "short_page",
       "failure_reason": "Hyperion (character) (1,964 words) beats Doctor Strange (7,015 words): cosine divides by the vector's length, so a short page with the same words scores higher.",
+      "failure_kind_nostop": "short_page",
       "quote": {
         "node_id": "Hyperion_(character)",
         "name": "Hyperion (character)",
@@ -1918,6 +1928,7 @@
       ],
       "failure_kind": "short_page",
       "failure_reason": "Scarlet Scarab (1,149 words) beats Deadpool (9,285 words): cosine divides by the vector's length, so a short page with the same words scores higher.",
+      "failure_kind_nostop": "short_page",
       "quote": {
         "node_id": "Scarlet_Scarab",
         "name": "Scarlet Scarab",
@@ -2182,6 +2193,7 @@
       ],
       "failure_kind": "short_page",
       "failure_reason": "Starr the Slayer (574 words) beats Black Panther (character) (8,321 words): cosine divides by the vector's length, so a short page with the same words scores higher.",
+      "failure_kind_nostop": "rival",
       "quote": {
         "node_id": "Starr_the_Slayer",
         "name": "Starr the Slayer",
@@ -2600,6 +2612,7 @@
       ],
       "failure_kind": "short_page",
       "failure_reason": "Phil Grayfield (711 words) beats Hulk (7,722 words): cosine divides by the vector's length, so a short page with the same words scores higher.",
+      "failure_kind_nostop": "short_page",
       "quote": {
         "node_id": "NFL_SuperPro",
         "name": "Phil Grayfield",
@@ -2864,6 +2877,7 @@
       ],
       "failure_kind": "short_page",
       "failure_reason": "Redneck (comics) (255 words) beats Storm (Marvel Comics) (9,831 words): cosine divides by the vector's length, so a short page with the same words scores higher.",
+      "failure_kind_nostop": "short_page",
       "quote": {
         "node_id": "Redneck_(comics)",
         "name": "Redneck (comics)",
@@ -3205,6 +3219,7 @@
       ],
       "failure_kind": "short_page",
       "failure_reason": "Redneck (comics) (255 words) beats Scarlet Witch (14,292 words): cosine divides by the vector's length, so a short page with the same words scores higher.",
+      "failure_kind_nostop": null,
       "quote": {
         "node_id": "Redneck_(comics)",
         "name": "Redneck (comics)",
@@ -3734,7 +3749,8 @@
         }
       ],
       "failure_kind": "rival",
-      "failure_reason": "Eddie Brock uses brock, symbiote, eddie as often as Venom (character) does, so counts cannot tell them apart.",
+      "failure_reason": "Eddie Brock (10,661 words) is not a short page, and it scores higher than Venom (character) on brock, symbiote, eddie.",
+      "failure_kind_nostop": "rival",
       "quote": {
         "node_id": "Eddie_Brock",
         "name": "Eddie Brock",
@@ -4111,6 +4127,7 @@
       ],
       "failure_kind": null,
       "failure_reason": null,
+      "failure_kind_nostop": null,
       "quote": {
         "node_id": "Moon_Knight",
         "name": "Moon Knight",

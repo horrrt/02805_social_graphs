@@ -558,9 +558,7 @@
         "tskarov"
       ],
       "own_names": [],
-      "own_names_unmasked": [
-        "Doom 2099"
-      ],
+      "own_names_unmasked": [],
       "number": 5
     },
     {
@@ -814,7 +812,7 @@
     "runs_single_page": 8,
     "forced_share": 0.4186,
     "redrawn": 5,
-    "own_names_unmasked": 8,
+    "own_names_unmasked": 7,
     "own_names_masked": 0,
     "name_like_fakes": 9,
     "example": "fake-8"

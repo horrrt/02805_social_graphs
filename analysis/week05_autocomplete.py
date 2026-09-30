@@ -303,7 +303,8 @@ def names_in(fake: list[list[str]], members: list[str], table) -> list[str]:
     for _, row in table[table.node_id.isin(members)].iterrows():
         for name in mask_names(row):
             low = " ".join(words(name))
-            if low and f" {low} " in text:
+            # Only a name the word rule keeps whole: "Doom 2099" would shrink to "doom".
+            if low and len(words(name)) == len(name.split()) and f" {low} " in text:
                 found.append(name)
     return sorted(set(found))
 

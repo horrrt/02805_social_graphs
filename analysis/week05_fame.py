@@ -28,7 +28,8 @@ Method
     the disambiguation and the real name in its node description, the name
     rule of section 1, week05_relations.name_table()) and how many of those link
     to it;
-  - hub page: the lead calls it the name of several characters (HUB), a page
+  - hub page: its first sentence says several characters share its title
+    (week05_text.shared_name(), as in section 7), a page
     for a shared codename, short by design;
   - headings: its section headings before the reference sections, against
     the median page;
@@ -58,7 +59,7 @@ from scipy import stats
 
 from check_pages import check
 from week05_relations import is_heading, name_table
-from week05_text import WORD_RULE, graph, nodes, pages, words
+from week05_text import SHARED_NAME_RULE, WORD_RULE, graph, nodes, pages, shared_name, words
 
 OUT = Path(__file__).with_suffix(".json")
 PAGE_OUT = Path(__file__).resolve().parents[1] / "docs/weeks/week05/data/fame.json"
@@ -66,9 +67,7 @@ SEED = 2805
 SHUFFLES = 1000
 TOP = 5
 REFERENCE_HEADINGS = {"References", "External links", "Notes", "See also", "Further reading"}
-HUB = re.compile(r"\bis the name of\b|\bname of (?:several|two|three|four|multiple|various)\b")
 NAME_RULE = "its title without the disambiguation, plus the real name its node description gives in brackets, as a whole word; a name several pages go by counts for the main page only"
-HUB_RULE = 'the first paragraph says the page is "the name of" several characters'
 HEADING_RULE = "a line under 45 characters, of at most six words, not ending in a full stop, before the reference sections"
 
 # What reading each outlier's page found. `codename` is a name the name rule
@@ -220,8 +219,7 @@ def main():
     null_mentions = np.array([stats.spearmanr(residual, rng.permutation(mention_only))[0] for _ in range(SHUFFLES)])
 
     # Hub pages for a shared codename.
-    lead = {n: next(line for line in text[n].split("\n") if line.strip()) for n in ids}
-    hub = np.array([bool(HUB.search(lead[n])) for n in ids])
+    hub = np.array([shared_name(text[n]) for n in ids])
     gap = float(residual[hub].mean() - residual[~hub].mean())
     null_gap = []
     for _ in range(SHUFFLES):
@@ -274,7 +272,7 @@ def main():
             }
             outliers.append({
                 "id": n,
-                "name": table.loc[n, "name"],
+                "name": n.replace("_", " "),
                 "side": side,
                 "place": place,
                 "in_degree": int(indeg[i]),
@@ -308,7 +306,7 @@ def main():
             "fit": "ordinary least squares of ln(words) on ln(1 + in-degree), all 303 pages",
             "residual": "ln(words) minus the fitted value; exp(residual) is the page's length over the predicted length",
             "name_rule": NAME_RULE,
-            "hub_rule": HUB_RULE,
+            "hub_rule": SHARED_NAME_RULE,
             "heading_rule": HEADING_RULE,
             "seed": SEED,
             "shuffles": SHUFFLES,
@@ -361,7 +359,7 @@ def main():
         "points": [
             {
                 "id": n,
-                "name": table.loc[n, "name"],
+                "name": n.replace("_", " "),
                 "in_degree": int(indeg[at[n]]),
                 "out_degree": int(outdeg[at[n]]),
                 "tokens": int(tokens[at[n]]),

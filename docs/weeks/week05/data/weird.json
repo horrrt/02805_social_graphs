@@ -50,14 +50,16 @@
   "spearman": 0.945
  },
  "several": {
-  "pages": 27,
+  "rule": "its first sentence calls the title the name, alias, codename, title, identity or mantle of several (or two, three...) characters, or a name used by them",
+  "pages": 46,
   "bottom_decile": 30,
-  "in_bottom_decile": 9,
-  "expected": 2.67,
-  "p": 0.0003758584292338285,
+  "in_bottom_decile": 10,
+  "expected": 4.554,
+  "p": 0.007078990305494213,
   "names": [
    "Dragon Lord (character)",
-   "Alice Nugent",
+   "Scarlet Scarab",
+   "Doctor Spectrum",
    "Citizen V",
    "Scarlet Spider",
    "Ronin (Marvel Comics)",
@@ -578,7 +580,7 @@
   },
   {
    "node": "NFL_SuperPro",
-   "name": "Phil Grayfield",
+   "name": "NFL SuperPro",
    "tokens": 686,
    "mattr": 0.7442,
    "near_mattr": 0.697,
@@ -2171,7 +2173,7 @@
   },
   {
    "node": "Anne_Weying",
-   "name": "She-Venom (Patricia Robertson)",
+   "name": "Anne Weying",
    "tokens": 714,
    "mattr": 0.6902,
    "near_mattr": 0.6954,
@@ -2585,7 +2587,7 @@
   },
   {
    "node": "Red_Raven_(Marvel_Comics)",
-   "name": "Red Raven (Dania)",
+   "name": "Red Raven (Marvel Comics)",
    "tokens": 1468,
    "mattr": 0.6841,
    "near_mattr": 0.6968,
@@ -3044,7 +3046,7 @@
   },
   {
    "node": "Doctor_Spectrum",
-   "name": "Alice Nugent",
+   "name": "Doctor Spectrum",
    "tokens": 1539,
    "mattr": 0.6523,
    "near_mattr": 0.6947,
@@ -3080,7 +3082,7 @@
   },
   {
    "node": "Phoenix_Force",
-   "name": "Phoenix (Guardians of the Galaxy)",
+   "name": "Phoenix Force",
    "tokens": 5369,
    "mattr": 0.6478,
    "near_mattr": 0.6958,

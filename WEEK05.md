@@ -122,6 +122,10 @@ under what we did). Nothing else changes: the slot IDs, `slot()` and the kit tes
 - One name rule, `candidates()` and `name_table()` in `analysis/week05_relations.py`: section 1 finds the
   sentence behind a link with it and section 6 counts mentions with it. Section 4 masks those names plus
   every capitalised part of a description's brackets, so a one-word real name ("Logan") is hidden too.
+- One rule for pages about several characters who share a name, `shared_name()` in
+  `analysis/week05_text.py`, read from the first sentence: 46 pages. Section 6 calls them hub pages and
+  section 7 counts them among the most repetitive pages. Two rules had given 35 and 27 pages that shared
+  only 19.
 - Communities: `analysis/week05_communities.py` writes the consensus of 100 Louvain runs that section 4
   reads. Section 1 averages its crossing shares over its own 100 runs on the same weighted network; its
   median of 26 communities is the same 8 groups, the Morituri group and the 17 isolates.
@@ -137,6 +141,11 @@ under what we did). Nothing else changes: the slot IDs, `slot()` and the kit tes
   Both numbers are right, so say which one you mean. The opening states both.
 - Louvain on this network rarely repeats itself: 100 runs found 89 different partitions, the most common one
   in only 4. Report the consensus and the NMI between runs, never one run's partition.
+- The node table's `name` is not always the page title: five pages are named after one holder or one
+  version (`Doctor_Spectrum` is "Alice Nugent", `NFL_SuperPro` is "Phil Grayfield", `Anne_Weying` is
+  "She-Venom (Patricia Robertson)", `Phoenix_Force` and `Red_Raven_(Marvel_Comics)` likewise). Sections 6
+  and 7 show the page title. Section 1's `candidates()` still starts from `name`, so it looks for "Alice
+  Nugent" on other pages rather than "Doctor Spectrum"; fixing that moves section 1's numbers.
 - `words()` lowercases before it matches, and "İ" lowercases to two characters, so "İzmir" splits in two on
   the one page that has it. Section 4 asserts its tokens equal `words()` everywhere else.
 - `data/week4_edges_weighted.tsv` has no header row after its `#` comments. Read it with explicit column

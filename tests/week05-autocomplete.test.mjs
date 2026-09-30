@@ -152,7 +152,7 @@ test("sparsity and copying are measured, and the example is real text", () => {
   const ex = a.fakes.find((f) => f.id === sm.example).longest_run;
   assert.equal(ex.pages_with_run, 1);
   assert.ok(ex.sentence.includes(ex.highlight));
-  const words = ex.highlight.toLowerCase().match(/[^\W\d_]+(?:['’-][^\W\d_]+)*/gu);
+  const words = ex.highlight.toLowerCase().match(/[\p{L}\p{M}]+(?:['’-][\p{L}\p{M}]+)*/gu);
   assert.equal(words.length, ex.length, "the highlight holds exactly the copied words");
   const fake = a.fakes.find((f) => f.id === sm.example);
   assert.ok(fake.text.toLowerCase().includes(ex.run), "the run is in the quiz fake");

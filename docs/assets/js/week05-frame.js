@@ -13,6 +13,12 @@ const VERSION = "2";
 const data = (name) => loadData(new URL(`../../weeks/week05/data/${name}.json?v=${VERSION}`, import.meta.url));
 const pct = (x) => `${Math.round(x * 100)}%`;
 const count = (n) => Math.round(n).toLocaleString("en-US");
+// An axis around some values with a tenth of their range spare on each side.
+const span = (values) => {
+  const lo = Math.min(...values);
+  const hi = Math.max(...values);
+  return [lo - (hi - lo) / 10, hi + (hi - lo) / 10];
+};
 
 // ---- the hero: page length against in-degree -------------------------------
 
@@ -116,7 +122,7 @@ function strips({ relations, copying, search, heaps, fame, weird }) {
     ],
     5: [
       {
-        domain: [9800, 11400],
+        domain: span([at100k.least_linked, at100k.random_mean - 2 * at100k.random_sd, at100k.random_mean + 2 * at100k.random_sd]),
         real: at100k.least_linked,
         realLabel: count(at100k.least_linked),
         base: [at100k.random_mean, at100k.random_sd],

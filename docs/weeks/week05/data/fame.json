@@ -8,7 +8,7 @@
     "fit": "ordinary least squares of ln(words) on ln(1 + in-degree), all 303 pages",
     "residual": "ln(words) minus the fitted value; exp(residual) is the page's length over the predicted length",
     "name_rule": "its title without the disambiguation, plus the real name its node description gives in brackets, as a whole word; a name several pages go by counts for the main page only",
-    "hub_rule": "the first paragraph says the page is \"the name of\" several characters",
+    "hub_rule": "its first sentence calls the title the name, alias, codename, title, identity or mantle of several (or two, three...) characters, or a name used by them",
     "heading_rule": "a line under 45 characters, of at most six words, not ending in a full stop, before the reference sections",
     "seed": 2805,
     "shuffles": 1000
@@ -20,7 +20,7 @@
     "isolates": 17,
     "median_tokens": 1218,
     "median_headings": 10,
-    "hubs": 35
+    "hubs": 46
   },
   "fit": {
     "slope": 0.7211783933999241,
@@ -54,12 +54,12 @@
       "above_with_mention_only": 3
     },
     "hubs": {
-      "pages": 35,
-      "mean_residual": -0.1617386631697193,
-      "rest_mean_residual": 0.02112258660798748,
-      "gap": -0.1828612497777068,
-      "null_sd": 0.10647034700506397,
-      "p": 0.07492507492507493,
+      "pages": 46,
+      "mean_residual": -0.21337061592414377,
+      "rest_mean_residual": 0.03819084954284467,
+      "gap": -0.25156146546698843,
+      "null_sd": 0.09576789695999949,
+      "p": 0.007992007992007992,
       "below": 1
     }
   },
@@ -126,7 +126,7 @@
     },
     {
       "id": "Anne_Weying",
-      "name": "She-Venom (Patricia Robertson)",
+      "name": "Anne Weying",
       "in_degree": 3,
       "out_degree": 4,
       "tokens": 714,
@@ -170,7 +170,7 @@
       "residual": -0.9541,
       "ratio": 0.3851,
       "isolate": false,
-      "hub": false
+      "hub": true
     },
     {
       "id": "Ares_(Marvel_Comics)",
@@ -338,7 +338,7 @@
       "residual": 0.4437,
       "ratio": 1.5584,
       "isolate": false,
-      "hub": false
+      "hub": true
     },
     {
       "id": "Black_Marvel",
@@ -554,7 +554,7 @@
       "residual": -0.0169,
       "ratio": 0.9833,
       "isolate": false,
-      "hub": false
+      "hub": true
     },
     {
       "id": "Bug_(Marvel_Comics)",
@@ -710,7 +710,7 @@
       "residual": -0.4767,
       "ratio": 0.6208,
       "isolate": false,
-      "hub": false
+      "hub": true
     },
     {
       "id": "Cloak_and_Dagger_(characters)",
@@ -930,7 +930,7 @@
     },
     {
       "id": "Doctor_Spectrum",
-      "name": "Alice Nugent",
+      "name": "Doctor Spectrum",
       "in_degree": 2,
       "out_degree": 6,
       "tokens": 1539,
@@ -1238,7 +1238,7 @@
       "residual": -0.5174,
       "ratio": 0.5961,
       "isolate": false,
-      "hub": false
+      "hub": true
     },
     {
       "id": "Garrison_Kane",
@@ -1502,7 +1502,7 @@
       "residual": -0.6241,
       "ratio": 0.5357,
       "isolate": false,
-      "hub": false
+      "hub": true
     },
     {
       "id": "Hrimhari",
@@ -2202,7 +2202,7 @@
     },
     {
       "id": "NFL_SuperPro",
-      "name": "Phil Grayfield",
+      "name": "NFL SuperPro",
       "in_degree": 0,
       "out_degree": 1,
       "tokens": 686,
@@ -2370,7 +2370,7 @@
     },
     {
       "id": "Phoenix_Force",
-      "name": "Phoenix (Guardians of the Galaxy)",
+      "name": "Phoenix Force",
       "in_degree": 24,
       "out_degree": 17,
       "tokens": 5369,
@@ -2414,7 +2414,7 @@
       "residual": -0.5195,
       "ratio": 0.5948,
       "isolate": false,
-      "hub": false
+      "hub": true
     },
     {
       "id": "Puck_(Marvel_Comics)",
@@ -2526,7 +2526,7 @@
     },
     {
       "id": "Red_Raven_(Marvel_Comics)",
-      "name": "Red Raven (Dania)",
+      "name": "Red Raven (Marvel Comics)",
       "in_degree": 2,
       "out_degree": 3,
       "tokens": 1468,
@@ -2546,7 +2546,7 @@
       "residual": 0.8949,
       "ratio": 2.4472,
       "isolate": false,
-      "hub": false
+      "hub": true
     },
     {
       "id": "Redneck_(comics)",
@@ -2654,7 +2654,7 @@
       "residual": -0.5389,
       "ratio": 0.5834,
       "isolate": false,
-      "hub": false
+      "hub": true
     },
     {
       "id": "Ruby_Summers",
@@ -2738,7 +2738,7 @@
       "residual": -1.0851,
       "ratio": 0.3379,
       "isolate": false,
-      "hub": false
+      "hub": true
     },
     {
       "id": "Scarlet_Witch",
@@ -3134,7 +3134,7 @@
       "residual": 0.3521,
       "ratio": 1.4221,
       "isolate": false,
-      "hub": true
+      "hub": false
     },
     {
       "id": "Starhawk_(character)",
@@ -3254,7 +3254,7 @@
       "residual": -0.3767,
       "ratio": 0.6861,
       "isolate": false,
-      "hub": false
+      "hub": true
     },
     {
       "id": "The_Union_(Marvel)",
@@ -3662,7 +3662,7 @@
       "residual": -0.0312,
       "ratio": 0.9693,
       "isolate": false,
-      "hub": false
+      "hub": true
     },
     {
       "id": "Yelena_Belova",

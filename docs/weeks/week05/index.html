@@ -126,13 +126,13 @@
           </div>
           <div class="w4-finding">
             <span class="w4-num">6</span>
-            <div><h3>Does network fame buy you more words?</h3><p>Yes: page length follows in-degree at Pearson 0.77, and each of the ten furthest pages breaks the trend for a reason of its own.</p></div>
+            <div><h3>Does network fame buy you more words?</h3><p>Yes: page length follows in-degree at Pearson 0.77, and pages for a codename several characters share sit below the trend.</p></div>
             <div class="w4-mini" data-finding="6"></div>
             <a href="#fame">Section 6 →</a>
           </div>
           <div class="w4-finding">
             <span class="w4-num">7</span>
-            <div><h3>Who has the weirdest Wikipedia page?</h3><p>9 of the 30 most repetitive pages are about several characters who share one name, where 2.7 would be expected.</p></div>
+            <div><h3>Who has the weirdest Wikipedia page?</h3><p>10 of the 30 most repetitive pages are about several characters who share one name, where 4.6 would be expected.</p></div>
             <div class="w4-mini" data-finding="7"></div>
             <a href="#weird">Section 7 →</a>
           </div>
@@ -356,7 +356,7 @@
                 <div class="rx-drawers rx-foot">
                   <details class="rx-drawer"><summary>Method</summary><div class="rx-drawer-body">
                     <p>Pages with equal cosine rank in node order, in the script and in the search box. A random ranking puts the target first with probability 1 in 303 and in the top five with 5 in 303; a binomial test gives each hit count its p-value.</p>
-                    <p>A miss is labelled from the data: a short-page win when the winning page has at most a third of the target's words, otherwise a rival page that uses the query's words as often. The search box runs the stopword-free model on the same vocabulary as the table.</p>
+                    <p>A miss is labelled from the data, for each model: a short-page win when the winning page has at most a third of the target's words, a missing word when the target shares no content word with the query, and otherwise a win by a page that is not short. The search box runs the stopword-free model on the same vocabulary as the table.</p>
                   </div></details>
                 </div>
               </div>
@@ -396,7 +396,7 @@
             <div class="w5-slot" data-slot="surprise" id="search-surprise">
               <h3>What surprised us</h3>
               <div data-body>
-                <div class="notice"><span class="ico">💡</span><span><b>What to notice</b> The right page comes first for 1 of 11 queries (p = 0.036 against the 1 in 303 of a random ranking) and in the top five for 6. Removing stopwords lifts that to 2 and 10. Stopwords were not the main problem: 9 of the 10 misses lose to a page at most a third as long as the target, because cosine divides by the length of the count vector. 8 of the 10 winning pages are shorter than the median page of 1,258 words.</span></div>
+                <div class="notice"><span class="ico">💡</span><span><b>What to notice</b> The right page comes first for 1 of 11 queries (p = 0.036 against the 1 in 303 of a random ranking) and in the top five for 6. Removing stopwords lifts that to 2 and 10, so stopwords cost real hits. Page length costs most of the rest: without stopwords, 7 of the 9 misses still lose to a page at most a third as long as the target, because cosine divides by the length of the count vector. With raw counts, 8 of the 10 misses are won by a page shorter than the median page of 1,258 words.</span></div>
               </div>
             </div>
             <div class="w5-slot" data-slot="limit" id="search-limit">
@@ -488,7 +488,7 @@
               <h3>What surprised us</h3>
               <div data-body>
                 <div class="notice"><span class="ico">💡</span><span><b>What to notice</b> In each group's pages, 81% to 86% of two-word contexts (a pair of words in a row) have only one next word, against 50% to 63% of one-word contexts. More context means sparser counts, so the model often has no choice: 42% of the words the model drew for the quiz fakes had a single candidate, and every fake repeats a run of 8 to 17 words from its group's pages, 8 of the 9 runs from a single page.</span></div>
-                <p>Without the mask, 8 of the 9 fakes name a member of their own group.</p>
+                <p>Without the mask, 7 of the 9 fakes name a member of their own group.</p>
               </div>
             </div>
             <div class="w5-slot" data-slot="limit" id="autocomplete-limit">
@@ -568,13 +568,13 @@
             <div class="w5-slot" data-slot="limit" id="heaps-limit">
               <h3>Limitation</h3>
               <div data-body>
-                <p>Pages differ in length. A long page repeats its own words more than a short one, and the most-linked pages are the long ones, so page length may explain part of both gaps rather than whom a page describes. Every count also rests on one word rule; keeping digits or splitting hyphens would move them. And the link count only covers links among these 303 pages, not a character's fame in the comics: 58 of the pages get no link at all.</p>
+                <p>Pages differ in length, and the most-linked pages are the long ones. Shuffling in-degree only among pages of similar length, in fifths by word count, 500 times, leaves both gaps standing (z = 3.2 for least-linked first at 100,000 tokens, z = −2.8 for most-linked first at 400,000), but fifths hold length only roughly. Every count also rests on one word rule; keeping digits or splitting hyphens would move them. And the link count only covers links among these 303 pages, not a character's fame in the comics: 58 of the pages get no link at all.</p>
               </div>
             </div>
             <div class="w5-slot" data-slot="checked" id="heaps-checked">
               <h3>What we checked in the text</h3>
               <div data-body>
-                <p>The last 100 pages in most-linked order, each linked from 2 pages or fewer, hold 90,907 tokens and add 2,144 types no earlier page used. 1,055 of them (49%) look like names, words that only ever occur with a capital letter, against 41% ± 1.6% for the last 100 pages of the random orders. The split is a rough proxy: 53 of those names are capitalised only because they open a sentence or a line.</p>
+                <p>The last 100 pages in most-linked order, each linked from 2 pages or fewer, hold 90,907 tokens and add 2,144 types no earlier page used. 1,055 of them (49%) look like names, words that only ever occur with a capital letter, against 41% ± 1.6% for the last 100 pages of the random orders. The split is a rough proxy: 53 of those names are capitalised only where they open a sentence or a line.</p>
                 <div id="heaps-samples"></div>
                 <div id="heaps-passages"></div>
               </div>
@@ -586,7 +586,7 @@
             <span aria-hidden="true" class="w4-opener-num">6</span>
             <div>
               <h2>Does network fame buy you more words?</h2>
-              <p>Pages that more characters link to are longer, and the ten pages furthest from that trend each have a reason of their own.</p>
+              <p>Pages that more characters link to are longer. Pages for a codename several characters share sit below that trend, and so do minor characters whose every linking page names the same team or place.</p>
             </div>
           </header>
           <div class="w5-slots card w4-card w5-card">
@@ -594,7 +594,7 @@
               <h3>What we asked</h3>
               <div data-body>
                 <p class="w5-question">Do characters that more pages link to get longer Wikipedia pages?</p>
-                <p class="w4-answer">Yes, and strongly (Pearson 0.77, Spearman 0.75), and the ten pages furthest from the trend each break it for a reason of their own.</p>
+                <p class="w4-answer">Yes, and strongly (Pearson 0.77, Spearman 0.75). Of the ten pages furthest from the trend, four of the five below it are minor characters whose every linking page names the same team or place.</p>
               </div>
             </div>
             <div class="w5-slot" data-slot="did" id="fame-did">
@@ -605,12 +605,12 @@
                 <p>The correlation of 0.77 is far from chance: in 1,000 shuffles of in-degree over the pages it averaged 0.00 ± 0.06 and never passed 0.19. For the five pages furthest above the line and the five furthest below we measured what could explain the gap, then read each page and the pages that name it.</p>
                 <div class="rx-drawers rx-foot">
                   <details class="rx-drawer"><summary>Method</summary><div class="rx-drawer-body">
-                    <p>What we measured for each of the ten: whether the page is an isolate; how many other pages name the character and how many of those link to it, where a name is its title without the disambiguation plus the real name its node description gives in brackets, as in section 1; whether the page is for a codename several characters share, which we call a hub page (its first paragraph says it is "the name of" several characters); and its section headings before the references.</p>
+                    <p>What we measured for each of the ten: whether the page is an isolate; how many other pages name the character and how many of those link to it, where a name is its title without the disambiguation plus the real name its node description gives in brackets, as in section 1; whether the page is for a codename several characters share, which we call a hub page (its first sentence says several characters share its title, the rule section 7 uses); and its section headings before the references.</p>
                     <p>Reading added two things the rules miss: a codename other pages use instead of the title, which we counted with series titles and the Captain Britain Corps set aside, and a team that every page linking to a character mentions. Each shuffle test uses 1,000 shuffles with seed 2805.</p>
                   </div></details>
                   <details class="rx-drawer"><summary>More numbers</summary><div class="rx-drawer-body">
                     <p>Out-degree, the links a page makes, tracks length even more closely (Spearman 0.78), but a longer page has more room for links, so it partly measures length itself. PageRank, which counts a link from a much-linked page for more, gives 0.71.</p>
-                    <p>Pages named without a link: Spearman 0.07 with the residual, against 0.00 ± 0.06 in shuffles (p = 0.202). The 35 hub pages: mean residual −0.16, against 0.02 for the other pages (p = 0.075).</p>
+                    <p>Pages named without a link: Spearman 0.07 with the residual, against 0.00 ± 0.06 in shuffles (p = 0.202). The 46 hub pages: mean residual −0.21, against 0.04 for the other pages (p = 0.008).</p>
                   </div></details>
                   <details class="rx-drawer"><summary>Table: the ten pages furthest from the line</summary><div class="rx-drawer-body"><div id="fame-outliers"></div></div></details>
                 </div>
@@ -629,7 +629,7 @@
             <div class="w5-slot" data-slot="surprise" id="fame-surprise">
               <h3>What surprised us</h3>
               <div data-body>
-                <div class="notice"><span class="ico">💡</span><span><b>What to notice</b> Two explanations looked likely and neither holds across all 303 pages. Being named on other pages without a link barely goes with a longer page (Spearman 0.07, p = 0.202), and the 35 hub pages sit only 0.18 below the rest (×0.83, p = 0.075). Each explains one outlier: Brian Braddock's codename, Captain Britain, is on 14 other pages but linked from 1, and Quasar is a page for a name four characters share, with 24 incoming links.</span></div>
+                <div class="notice"><span class="ico">💡</span><span><b>What to notice</b> Of two likely explanations, one holds across all 303 pages: the 46 hub pages sit 0.25 below the rest (×0.78, p = 0.008). Being named on other pages without a link barely goes with a longer page (Spearman 0.07, p = 0.202). Each shows at its extreme in one outlier: Brian Braddock's codename, Captain Britain, is on 14 other pages but linked from 1, and Quasar is a page for a name four characters share, with 24 incoming links.</span></div>
               </div>
             </div>
             <div class="w5-slot" data-slot="limit" id="fame-limit">
@@ -652,7 +652,7 @@
             <span aria-hidden="true" class="w4-opener-num">7</span>
             <div>
               <h2>Who has the weirdest Wikipedia page?</h2>
-              <p>The pages with the most varied words hold lists and an interview, and 9 of the 30 most repetitive pages are about several characters who share one name.</p>
+              <p>The pages with the most varied words hold lists and an interview, and 10 of the 30 most repetitive pages are about several characters who share one name.</p>
             </div>
           </header>
           <div class="w5-slots card w4-card w5-card">
@@ -673,7 +673,7 @@
                   <details class="rx-drawer"><summary>Method</summary><div class="rx-drawer-body">
                     <p>The score passes its length checks. Its rank correlation with page length is 0.02, its z-scores spread 1.11 in the shortest quarter and 1.00 in the longest, and 6 of the top 10 pages are shorter than the median page of 1,218 words. With a 50-word window instead of 100, 7 of the top 10 and 8 of the bottom 10 stay in their ten (rank correlation 0.945 over all pages).</p>
                     <p>Real or boilerplate: a rare word is one found on at most 2 of the 303 pages. House phrasing is any run of 8 words found on more than 10 pages, section 2's cutoff applied to our word rule. It finds 113 such runs, led by "in american comic books published by marvel comics" on 282 pages. Both shares move with length (rank correlation 0.55 for rare words and −0.54 for house phrasing), since the house lead is a bigger slice of a short page, so each page we show is compared with the median of its 30 length neighbours. We leave out the share of a page's words used once (the hapax share): it falls as a page grows, so it cannot compare pages of different length.</p>
-                    <p>The band: 2,000 random stretches of the whole corpus, every page joined in order, at each of 40 lengths (seed 2805), scored the same way. Sentences come from spaCy's rule-based sentencizer, so "Ms." and "U.S." do not end one. A page is about several characters when its first sentence says so ("Hawkeye is the name of several fictional characters"): 27 pages do.</p>
+                    <p>The band: 2,000 random stretches of the whole corpus, every page joined in order, at each of 40 lengths (seed 2805), scored the same way. Sentences come from spaCy's rule-based sentencizer, so "Ms." and "U.S." do not end one. A page is about several characters when its first sentence says so ("Hawkeye is the name of several fictional characters"): 46 pages do. Section 6 calls them hub pages.</p>
                   </div></details>
                 </div>
               </div>
@@ -691,7 +691,7 @@
             <div class="w5-slot" data-slot="surprise" id="weird-surprise">
               <h3>What surprised us</h3>
               <div data-body>
-                <div class="notice"><span class="ico">💡</span><span><b>What to notice</b> The winners are real writing: 4 of the top 5 carry less house phrasing than their length neighbours, and 4 use more rare words. The losers are partly paperwork: 9 of the 30 lowest pages are about several characters sharing one name, against 2.7 expected by chance (p = 0.0004), and 4 of the bottom 5 carry more house phrasing than their neighbours. Ms. Marvel comes last (z = −4.15). Across all 303 pages, more house phrasing goes with a lower score (rank correlation −0.28, p &lt; 0.001).</span></div>
+                <div class="notice"><span class="ico">💡</span><span><b>What to notice</b> The winners are real writing: 4 of the top 5 carry less house phrasing than their length neighbours, and 4 use more rare words. The losers are partly paperwork: 10 of the 30 lowest pages are about several characters sharing one name, against 4.6 expected by chance (p = 0.0071), and 4 of the bottom 5 carry more house phrasing than their neighbours. Ms. Marvel comes last (z = −4.15). Across all 303 pages, more house phrasing goes with a lower score (rank correlation −0.28, p &lt; 0.001).</span></div>
               </div>
             </div>
             <div class="w5-slot" data-slot="limit" id="weird-limit">
@@ -728,8 +728,8 @@
               Where the words meet the links, the links show through. Page length follows in-degree at
               Pearson 0.77, 20 of the 22 copied pairs already link to each other, and 54% of enemy links
               cross communities against 42% for shuffled labels. Raw counts rank and read less well:
-              they put the right page first for 1 of 11 queries, because a short page that shares one word
-              beats a long one, and a trigram model trained on one community copies its pages word for word.
+              they put the right page first for 1 of 11 queries, because cosine favours a short page over a
+              long one with the same words, and a trigram model trained on one community copies its pages word for word.
             </p>
             <div class="notice">
               <span class="ico">!</span>
@@ -755,9 +755,9 @@
                   <li><b>2 · <a href="https://github.com/horrrt/02805_social_graphs/blob/main/analysis/week05_copying.py">week05_copying.py</a></b> Shared 8-word n-grams, n-grams on more than 10 pages set aside as template; the link rate of all pairs as the baseline.</li>
                   <li><b>3 · <a href="https://github.com/horrrt/02805_social_graphs/blob/main/analysis/week05_search.py">week05_search.py</a></b> Bag of Words and cosine similarity on the document-term matrix, with and without spaCy's stopwords; a random ranking as the baseline.</li>
                   <li><b>4 · <a href="https://github.com/horrrt/02805_social_graphs/blob/main/analysis/week05_communities.py">week05_communities.py</a>, <a href="https://github.com/horrrt/02805_social_graphs/blob/main/analysis/week05_autocomplete.py">week05_autocomplete.py</a></b> A consensus of 100 Louvain runs against 100 rewired networks that keep each page's partners and link weight; one trigram model per community.</li>
-                  <li><b>5 · <a href="https://github.com/horrrt/02805_social_graphs/blob/main/analysis/week05_heaps.py">week05_heaps.py</a></b> Vocabulary growth in link order against 500 random orders, and Heaps' law V = K·n<sup>β</sup> fitted to their mean.</li>
+                  <li><b>5 · <a href="https://github.com/horrrt/02805_social_graphs/blob/main/analysis/week05_heaps.py">week05_heaps.py</a></b> Vocabulary growth in link order against 500 random orders and 500 orders that keep page length, and Heaps' law V = K·n<sup>β</sup> fitted to their mean.</li>
                   <li><b>6 · <a href="https://github.com/horrrt/02805_social_graphs/blob/main/analysis/week05_fame.py">week05_fame.py</a></b> Log length against log in-degree, against 1,000 shuffles of in-degree.</li>
-                  <li><b>7 · <a href="https://github.com/horrrt/02805_social_graphs/blob/main/analysis/week05_weird.py">week05_weird.py</a></b> Moving-average type-token ratio over a 100-word window, scored against the 30 pages nearest in length and 2,000 random stretches of the corpus.</li>
+                  <li><b>7 · <a href="https://github.com/horrrt/02805_social_graphs/blob/main/analysis/week05_weird.py">week05_weird.py</a></b> Moving-average type-token ratio over a 100-word window, scored against the 30 pages nearest in length; 2,000 random stretches of the corpus draw the figure's band.</li>
                 </ul>
               </div>
             </details>
