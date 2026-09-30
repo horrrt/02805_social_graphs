@@ -5,7 +5,9 @@ Question: Do minor characters bring new words, or repeat the famous ones?
 Owner: (unassigned, put your name here and in WEEK05.md)
 
 Page section: docs/weeks/week05/index.html#heaps
-Output: analysis/week05_heaps.json, every number the section quotes.
+Output: docs/weeks/week05/data/heaps.json, every number the section quotes.
+Validate it with check(path, data) from check_pages.py before writing, after
+adding its model to week05_schemas.py.
 
 Steps, following the course's suggestion (exercise 5.9):
 1. Order the pages by in-degree in graph(), most-linked first, and add them one at a time.

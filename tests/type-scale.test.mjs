@@ -18,6 +18,7 @@ const PAGES = [
   "weeks/week02/index.html",
   "weeks/week03/index.html",
   "weeks/week04/index.html",
+  "weeks/week05/index.html",
   "play/index.html",
   "styleguide/index.html",
 ];
