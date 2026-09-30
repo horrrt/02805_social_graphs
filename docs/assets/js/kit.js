@@ -18,6 +18,7 @@ import { drawer, drawerRow, termify } from "./week04-ui.js?v=2";
 export { family, font, fs } from "./type-scale.mjs";
 export { fitted, miniStrip, node, roomFor, stripChart, textWidth, token } from "./week04-strip.js?v=2";
 export { decorate, decorateAll, drawer, drawerRow, termify };
+export { networkView } from "./graph.js";
 
 // ---- data and page slots
 

@@ -82,6 +82,35 @@ stripChart([{ label: "Enemy links across communities", real: 0.62, realLabel: "0
 
 One row of `stripChart` without an axis: `{ domain, real, realLabel, base, baseLabel, aria }`.
 
+## Networks
+
+### networkView(host, spec)
+
+Nodes and links as one SVG, in the styles of the course's explorables, coloured from the `--group-*` tokens in
+`post.css` (eight groups and a grey; `analysis/check_palette.py` checks them for colour blindness). Lay the
+nodes out in the analysis script with a seeded layout and pass `x` and `y` between 0 and 1;
+`analysis/styleguide_graphs.py` shows how. A node is `{ id, x, y, label, group }`, with `group` 0 to 7 or
+`null`, or `groups: [a, b]` for a node in two groups. A link is `{ source, target, weight, group }`.
+
+| Style | Options |
+| --- | --- |
+| Communities with named hubs | `legend: true, hubs: [ids]` |
+| Links in their community's colour over a faded network | `colorNodes: false, colorLinks: true, fade: true` |
+| Community links and named hubs | `colorLinks: true, hubs: [ids]` |
+| A link's weight on hover | `weights: true, highlight: { source, target }` |
+| Two groups you can edit, with badges | `labels: "inside", badges: true, movable: true, legend: true, onChange` |
+| Overlapping groups and a node in none | `groups: [a, b]` on a node, `hollow: true, colorLinks: true` |
+
+Add `theme: "dark"` for the dark surface. Returns `{ nodes, redraw }`; `nodes` holds the groups after moves.
+`docs/styleguide/kit.html` draws all six with real data, and the overlap one with a labelled toy.
+
+```js
+networkView(slot("autocomplete", "figure"), {
+  nodes, links, groups: data.groups, hubs: data.hubs, colorLinks: true, legend: true,
+  aria: "The Marvel link network, coloured by community",
+});
+```
+
 ## Text evidence
 
 ### concordance(rows, { caption })

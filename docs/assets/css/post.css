@@ -2791,3 +2791,135 @@
   position: absolute;
   width: 1px;
 }
+
+
+/* ==== 6. Network views (networkView() in graph.js) ==== */
+
+/* Eight community colours and a grey for nodes in no group, on a light card
+   (.gv) and on the dark surface (.gv-dark): Paul Tol's muted palette, built to
+   stay apart under colour blindness, with purple for his olive and each colour
+   moved in lightness only until it has 3:1 contrast with its ground. A group
+   number keeps its hue in both themes. analysis/check_palette.py checks
+   that they stay apart for normal vision and simulated colour blindness and
+   stand out from the ground; rerun it after changing one. */
+.corridor .gv {
+  --group-0: #332288;
+  --group-1: #a09043;
+  --group-2: #117733;
+  --group-3: #cc6677;
+  --group-4: #5398b9;
+  --group-5: #882255;
+  --group-6: #38a08f;
+  --group-7: #aa4499;
+  --group-none: #aab6c5;
+  /* Label ink on each group colour: white or navy, whichever gives at least 4.5:1. */
+  --on-group-0: #ffffff;
+  --on-group-1: #0b1830;
+  --on-group-2: #ffffff;
+  --on-group-3: #0b1830;
+  --on-group-4: #0b1830;
+  --on-group-5: #ffffff;
+  --on-group-6: #0b1830;
+  --on-group-7: #ffffff;
+  --on-group-none: #0b1830;
+  --graph-ground: #ffffff;
+  --graph-edge: #8c9aad;
+  --graph-ink: #0f2340;
+  --graph-accent: #6d4fd6;
+  --graph-label: rgba(255, 255, 255, 0.92);
+  display: block;
+  position: relative;
+}
+.corridor .gv.gv-dark {
+  --group-0: #6460c0;
+  --group-1: #ddcc77;
+  --group-2: #167a35;
+  --group-3: #cc6677;
+  --group-4: #88ccee;
+  --group-5: #b04476;
+  --group-6: #44aa99;
+  --group-7: #c77dd0;
+  --group-none: #5f6b7a;
+  --on-group-0: #ffffff;
+  --on-group-1: #0b1830;
+  --on-group-2: #ffffff;
+  --on-group-3: #0b1830;
+  --on-group-4: #0b1830;
+  --on-group-5: #ffffff;
+  --on-group-6: #0b1830;
+  --on-group-7: #0b1830;
+  --on-group-none: #ffffff;
+  --graph-ground: #1b1d21;
+  --graph-edge: #8d939b;
+  --graph-ink: #eef2f7;
+  --graph-accent: #9a8cf2;
+  --graph-label: rgba(20, 22, 26, 0.86);
+  background: var(--graph-ground);
+  border-radius: var(--radius);
+  color: var(--graph-ink);
+  padding: 12px 14px;
+}
+.corridor .gv svg { display: block; overflow: visible; }
+
+/* Links: plain, in their community's colour, or faded behind the coloured ones. */
+.corridor .gv .gv-link { stroke: var(--graph-edge); stroke-linecap: round; stroke-opacity: 0.45; }
+.corridor .gv .gv-link.gv-faint { stroke-opacity: 0.1; }
+.corridor .gv .gv-hit { cursor: pointer; stroke: transparent; stroke-width: 10; }
+
+/* Nodes: a group colour, grey for no group, hollow for unassigned, two halves for two groups. */
+.corridor .gv .gv-node { fill: var(--group-none); stroke: var(--graph-ground); stroke-width: 1.5; }
+.corridor .gv .gv-node.gv-hollow { fill: var(--graph-ground); stroke: var(--group-none); stroke-width: 2.5; }
+.corridor .gv .gv-dim { opacity: 0.35; }
+.corridor .gv .gv-inside { fill: var(--on-group-none); font-weight: 700; pointer-events: none; }
+.corridor .gv .gv-inside.g0 { fill: var(--on-group-0); }
+.corridor .gv .gv-inside.g1 { fill: var(--on-group-1); }
+.corridor .gv .gv-inside.g2 { fill: var(--on-group-2); }
+.corridor .gv .gv-inside.g3 { fill: var(--on-group-3); }
+.corridor .gv .gv-inside.g4 { fill: var(--on-group-4); }
+.corridor .gv .gv-inside.g5 { fill: var(--on-group-5); }
+.corridor .gv .gv-inside.g6 { fill: var(--on-group-6); }
+.corridor .gv .gv-inside.g7 { fill: var(--on-group-7); }
+.corridor .gv .gv-inside.gv-on-hollow, .corridor .gv .gv-inside.gv-split {
+  fill: var(--graph-ink); paint-order: stroke; stroke: var(--graph-ground); stroke-width: 3px;
+}
+.corridor .gv [data-movable] { cursor: pointer; }
+.corridor .gv [data-movable]:focus-visible { outline: 2px solid var(--graph-accent); outline-offset: 2px; }
+
+/* Group colours for nodes (fill), links (stroke) and legend dots (background). */
+.corridor .gv .g0 { fill: var(--group-0); } .corridor .gv .gv-link.g0 { stroke: var(--group-0); stroke-opacity: 0.85; }
+.corridor .gv .g1 { fill: var(--group-1); } .corridor .gv .gv-link.g1 { stroke: var(--group-1); stroke-opacity: 0.85; }
+.corridor .gv .g2 { fill: var(--group-2); } .corridor .gv .gv-link.g2 { stroke: var(--group-2); stroke-opacity: 0.85; }
+.corridor .gv .g3 { fill: var(--group-3); } .corridor .gv .gv-link.g3 { stroke: var(--group-3); stroke-opacity: 0.85; }
+.corridor .gv .g4 { fill: var(--group-4); } .corridor .gv .gv-link.g4 { stroke: var(--group-4); stroke-opacity: 0.85; }
+.corridor .gv .g5 { fill: var(--group-5); } .corridor .gv .gv-link.g5 { stroke: var(--group-5); stroke-opacity: 0.85; }
+.corridor .gv .g6 { fill: var(--group-6); } .corridor .gv .gv-link.g6 { stroke: var(--group-6); stroke-opacity: 0.85; }
+.corridor .gv .g7 { fill: var(--group-7); } .corridor .gv .gv-link.g7 { stroke: var(--group-7); stroke-opacity: 0.85; }
+.corridor .gv .gv-link.gv-on { stroke: var(--graph-accent); stroke-opacity: 1; }
+.corridor .gv .gv-leader { stroke: var(--graph-ink); stroke-opacity: 0.6; stroke-width: 1; }
+.corridor .gv .gv-outline { fill: none; stroke: var(--graph-ground); stroke-width: 1.5; }
+.corridor .gv .gv-ring { fill: none; stroke-width: 2.5; }
+.corridor .gv .gv-ring.g0 { stroke: var(--group-0); } .corridor .gv .gv-ring.g1 { stroke: var(--group-1); }
+.corridor .gv .gv-ring.g2 { stroke: var(--group-2); } .corridor .gv .gv-ring.g3 { stroke: var(--group-3); }
+.corridor .gv .gv-ring.g4 { stroke: var(--group-4); } .corridor .gv .gv-ring.g5 { stroke: var(--group-5); }
+.corridor .gv .gv-ring.g6 { stroke: var(--group-6); } .corridor .gv .gv-ring.g7 { stroke: var(--group-7); }
+.corridor .gv .gv-ring.gnone { stroke: var(--group-none); }
+
+/* Labels: a hub's name on a pill, a group badge, a link's weight. */
+.corridor .gv .gv-pill { fill: var(--graph-label); }
+.corridor .gv .gv-name { fill: var(--graph-ink); font-weight: 700; }
+.corridor .gv .gv-badge circle { fill: var(--graph-ground); stroke: var(--graph-ink); stroke-width: 1.2; }
+.corridor .gv .gv-badge text { fill: var(--graph-ink); font-weight: 700; }
+.corridor .gv .gv-weight rect { fill: var(--graph-ground); stroke: var(--graph-accent); stroke-width: 1.5; }
+.corridor .gv .gv-weight text { fill: var(--graph-ink); font-weight: 800; }
+
+/* The legend above a view: a dot per group, with its name and size. */
+.corridor .gv-legend { display: flex; flex-wrap: wrap; font-size: var(--fs-small); gap: 6px 18px; margin: 0 0 8px; }
+.corridor .gv-legend span { align-items: center; display: inline-flex; gap: 7px; }
+.corridor .gv-legend i { border-radius: 999px; display: inline-block; height: 11px; width: 11px; background: var(--group-none); }
+.corridor .gv-legend i.g0 { background: var(--group-0); } .corridor .gv-legend i.g1 { background: var(--group-1); }
+.corridor .gv-legend i.g2 { background: var(--group-2); } .corridor .gv-legend i.g3 { background: var(--group-3); }
+.corridor .gv-legend i.g4 { background: var(--group-4); } .corridor .gv-legend i.g5 { background: var(--group-5); }
+.corridor .gv-legend i.g6 { background: var(--group-6); } .corridor .gv-legend i.g7 { background: var(--group-7); }
+.corridor .gv-legend i.gv-hollow-dot { background: transparent; border: 2px solid var(--group-none); }
+.corridor .gv .gv-legend { color: var(--graph-ink); }
+.corridor .gv .gv-note { color: var(--graph-ink); font-size: var(--fs-small); margin: 0 0 6px; opacity: 0.8; }

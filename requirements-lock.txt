@@ -150,3 +150,4 @@ shellingham==1.5.4
 nltk==3.10.3
 regex==2026.9.29
 tiktoken==0.14.0
+colorspacious==1.1.2
