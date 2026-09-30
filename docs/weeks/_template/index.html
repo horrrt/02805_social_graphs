@@ -16,10 +16,10 @@
            page; nothing marked toy may stay in a published post.
         4. Point the script at the bottom at docs/assets/js/weekNN-<section>.js files.
         5. Keep noindex and the week "coming" in docs/assets/js/weeks.js until it is done.
-        6. Build the cards in Week 4's form, as docs/weeks/week05/ does: question and answer,
-           one paragraph beside "What to notice", the figure, then drawers. The six slots below
-           are ids for scripts, not six open blocks. tests/text-budget.test.mjs fails a card that
-           shows more than 350 words before a click (POST_GUIDE.md, "Keep the card short").
+        6. Keep the cards as they are: Week 4's form, as docs/weeks/week05/ uses it. Question and
+           answer, one paragraph beside "What to notice", the figure, then drawers; the limitation
+           goes in Method. tests/text-budget.test.mjs fails a card that shows more than 350 words
+           before a click (POST_GUIDE.md, "Keep the card short").
       Stylesheets: type.css, corridor.css, post.css and nothing else (tests/stylesheets.test.mjs).
       Rules for the writing and the numbers: POST_GUIDE.md.
     -->
@@ -29,7 +29,7 @@
     <link href="../../assets/favicon.svg" rel="icon" type="image/svg+xml" />
     <link href="../../assets/css/type.css?v=2" rel="stylesheet" />
     <link href="../../assets/css/corridor.css?v=ts1" rel="stylesheet" />
-    <link href="../../assets/css/post.css?v=4" rel="stylesheet" />
+    <link href="../../assets/css/post.css?v=6" rel="stylesheet" />
   </head>
   <body class="corridor">
     <a class="skip" href="#main">Skip to content</a>
@@ -124,14 +124,12 @@
               <div>
                 <div class="w4-anatomy">
                   <h3>How each section reads</h3>
-                  <p>Every section answers one question in the same six parts.</p>
+                  <p>Every section answers one question on one card.</p>
                   <dl>
-                    <div><dt>Asked</dt><dd>What we asked, and the short answer</dd></div>
-                    <div><dt>Did</dt><dd>The method, the baseline and the rules</dd></div>
-                    <div><dt>Figure</dt><dd>The one chart or table that answers it</dd></div>
-                    <div><dt>Surprise</dt><dd>What surprised us</dd></div>
-                    <div><dt>Limit</dt><dd>What the answer cannot tell</dd></div>
-                    <div><dt>Checked</dt><dd>What we read in the data to test the numbers</dd></div>
+                    <div><dt>Question</dt><dd>What we asked, and the short answer</dd></div>
+                    <div><dt>Did</dt><dd>What we did, beside what to notice</dd></div>
+                    <div><dt>Figure</dt><dd>The chart or table that answers it</dd></div>
+                    <div><dt>Drawers</dt><dd>Method and its limits, more numbers, and what we read in the data</dd></div>
                   </dl>
                 </div>
                 <div class="w4-howto">
@@ -155,32 +153,24 @@
               <p>The finding in one sentence: what a reader should remember from this section.</p>
             </div>
           </header>
-          <div class="w5-slots card w4-card w5-card">
-            <div class="w5-slot" data-slot="asked" id="first-asked">
-              <h3>What we asked</h3>
-              <div data-body>
-                <p class="w5-question">The question, answerable after reading this card?</p>
+          <div class="card w4-card w5-card">
+            <header class="w4-q" id="first-asked">
+              <span class="w4-num">1A</span>
+              <div>
+                <h2>The question, answerable after reading this card?</h2>
                 <p class="w4-answer">The short answer, with its number and what it is compared against.</p>
               </div>
-            </div>
-            <div class="w5-slot" data-slot="did" id="first-did">
-              <h3>What we did</h3>
-              <div data-body>
-                <p>One paragraph: what was counted, on which data, and the baseline that gives the number meaning. Everything else goes in the drawers.</p>
-                <div class="rx-drawers rx-foot">
-                  <details class="rx-drawer"><summary>Method</summary><div class="rx-drawer-body">
-                    <p>The rules a reader needs only to reproduce the count: what the null keeps and what it changes, with an example before any technical word.</p>
-                    <p>Seeds, runs, the tokeniser or the layout, word for word as the script does it.</p>
-                  </div></details>
-                  <details class="rx-drawer"><summary>More numbers</summary><div class="rx-drawer-body">
-                    <p>Secondary results, a second sample, the robustness checks.</p>
-                  </div></details>
+            </header>
+            <div class="w4-two">
+              <div>
+                <div id="first-did">
+                  <p class="sub">One paragraph: what was counted, on which data, and the baseline that gives the number meaning. Everything else goes in the drawers.</p>
+                </div>
+                <div id="first-surprise">
+                  <div class="notice"><span class="ico">💡</span><span><b>What to notice</b> The result we did not expect, with its number and its baseline.</span></div>
                 </div>
               </div>
-            </div>
-            <div class="w5-slot" data-slot="figure" id="first-figure">
-              <h3>Figure</h3>
-              <div data-body>
+              <div id="first-figure">
                 <div class="plot">
                   <h3>The figure's title: what it compares</h3>
                   <p class="axis-note">Dot: the real value. Band: the baseline, mean and one standard deviation either side. Toy numbers.</p>
@@ -188,29 +178,24 @@
                 </div>
               </div>
             </div>
-            <div class="w5-slot" data-slot="surprise" id="first-surprise">
-              <h3>What surprised us</h3>
-              <div data-body>
-                <div class="notice"><span class="ico">💡</span><span><b>What to notice</b> The result we did not expect, with its number and its baseline.</span></div>
-              </div>
-            </div>
-            <div class="w5-slot" data-slot="limit" id="first-limit">
-              <h3>Limitation</h3>
-              <div data-body>
-                <p>One limitation that changes how the answer reads, next to the claim it qualifies.</p>
-              </div>
-            </div>
-            <div class="w5-slot" data-slot="checked" id="first-checked">
-              <h3>What we checked in the data</h3>
-              <div data-body>
+            <div class="rx-drawers rx-foot">
+              <details class="rx-drawer"><summary>Method</summary><div class="rx-drawer-body">
+                <p>The rules a reader needs only to reproduce the count: what the null keeps and what it changes, with an example before any technical word.</p>
+                <p>Seeds, runs, the tokeniser or the layout, word for word as the script does it.</p>
+                <p id="first-limit">The main limitation, in one sentence. Add no others.</p>
+              </div></details>
+              <details class="rx-drawer"><summary>More numbers</summary><div class="rx-drawer-body">
+                <p>Secondary results, a second sample, the robustness checks.</p>
+              </div></details>
+              <details class="rx-drawer"><summary>What we read in the data</summary><div class="rx-drawer-body" id="first-checked">
                 <p>What we read by hand to test the counts, and what it showed.</p>
                 <div id="first-passage"></div>
-              </div>
+              </div></details>
             </div>
           </div>
         </section>
 
-        <!-- Section 2: the wide card (w5-card-wide), for a figure with two panels side by side. -->
+        <!-- Section 2: two panels in a row under the text, for a figure with two charts. -->
         <section class="step" data-owner="" id="second">
           <header class="w4-opener">
             <span aria-hidden="true" class="w4-opener-num">2</span>
@@ -219,50 +204,43 @@
               <p>The finding in one sentence.</p>
             </div>
           </header>
-          <div class="w5-slots card w4-card w5-card w5-card-wide">
-            <div class="w5-slot" data-slot="asked" id="second-asked">
-              <h3>What we asked</h3>
-              <div data-body>
-                <p class="w5-question">The second question?</p>
+          <div class="card w4-card w5-card">
+            <header class="w4-q" id="second-asked">
+              <span class="w4-num">2A</span>
+              <div>
+                <h2>The second question?</h2>
                 <p class="w4-answer">The short answer, with its number and its baseline.</p>
               </div>
-            </div>
-            <div class="w5-slot" data-slot="did" id="second-did">
-              <h3>What we did</h3>
-              <div data-body>
-                <p>The method and the baseline. A term gets a definition on hover the first time it appears.</p>
+            </header>
+            <div class="w4-two">
+              <div id="second-did">
+                <p class="sub">The method and the baseline. A term gets a definition on hover the first time it appears.</p>
               </div>
-            </div>
-            <div class="w5-slot" data-slot="figure" id="second-figure">
-              <h3>Figure</h3>
-              <div data-body>
-                <div class="w5-two">
-                  <div class="plot">
-                    <h3>Left panel: the network</h3>
-                    <p class="axis-note">Toy network: Zachary's karate club, coloured by the club each member joined.</p>
-                    <div id="chart-second-left"></div>
-                  </div>
-                  <div class="plot">
-                    <h3>Right panel: the numbers behind it</h3>
-                    <p class="axis-note">Toy numbers.</p>
-                    <div id="chart-second-right"></div>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="w5-slot" data-slot="surprise" id="second-surprise">
-              <h3>What surprised us</h3>
-              <div data-body>
+              <div id="second-surprise">
                 <div class="notice"><span class="ico">💡</span><span><b>What to notice</b> The unexpected result.</span></div>
               </div>
             </div>
-            <div class="w5-slot" data-slot="limit" id="second-limit">
-              <h3>Limitation</h3>
-              <div data-body><p>The limitation.</p></div>
+            <div class="w5-fig" id="second-figure">
+              <div class="w5-two">
+                <div class="plot">
+                  <h3>Left panel: the network</h3>
+                  <p class="axis-note">Toy network: Zachary's karate club, coloured by the club each member joined.</p>
+                  <div id="chart-second-left"></div>
+                </div>
+                <div class="plot">
+                  <h3>Right panel: the numbers behind it</h3>
+                  <p class="axis-note">Toy numbers.</p>
+                  <div id="chart-second-right"></div>
+                </div>
+              </div>
             </div>
-            <div class="w5-slot" data-slot="checked" id="second-checked">
-              <h3>What we checked in the data</h3>
-              <div data-body><p>What we read, and a concordance or passage from the data.</p></div>
+            <div class="rx-drawers rx-foot">
+              <details class="rx-drawer"><summary>Method</summary><div class="rx-drawer-body">
+                <p id="second-limit">The limitation.</p>
+              </div></details>
+              <details class="rx-drawer"><summary>What we read in the data</summary><div class="rx-drawer-body" id="second-checked">
+                <p>What we read, and a concordance or passage from the data.</p>
+              </div></details>
             </div>
           </div>
         </section>
@@ -312,6 +290,6 @@
       </div>
     </footer>
     <!-- Replace with one script per section: docs/assets/js/weekNN-<section>.js. -->
-    <script src="../../assets/js/week-template.js?v=3" type="module"></script>
+    <script src="../../assets/js/week-template.js?v=4" type="module"></script>
   </body>
 </html>

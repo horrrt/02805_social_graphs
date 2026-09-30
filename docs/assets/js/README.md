@@ -24,12 +24,11 @@ works locally and on GitHub Pages. Only files under `docs/` are published.
 ### slot(section, part)
 
 The element to draw into. `part` is one of `asked`, `did`, `figure`, `surprise`, `checked`, `limit`:
-`slot("heaps", "figure")` is the body of `#heaps-figure`. Drawing into it replaces the hint and keeps the
-heading.
+`slot("heaps", "figure")` is `#heaps-figure`.
 
-The Week 4 card layout is a class, not a function: `<div class="w5-slots card w4-card w5-card">` puts the six
-slots in Week 4's arrangement (question and answer on top, text column with the figure beside it, checked
-passages below), styled in `post.css`. Sections 1 and 2 of the week 5 page show the markup.
+A section is Week 4's card, `<div class="card w4-card w5-card">`: a `w4-q` header with the question and answer,
+a `w4-two` row with what we did beside "What to notice", the figure, and `rx-drawers` at the foot (Method with
+the limitation, More numbers, what we read). The six parts keep their ids. docs/weeks/_template/ shows the markup.
 
 ## Figures and tables
 
