@@ -102,10 +102,9 @@ nodes out in the analysis script with a seeded layout and pass `x` and `y` betwe
 | Some links drawn over the faded rest | `mark: true` on those links, `fade: true` |
 | Every page named, sized by a value, links by width and dash | `labels: "beside"`, `r` and `title` on a node, `width`, `dashed` and `title` on a link, `tone: "accent", strongLinks: true` |
 
-`titles: "hubs"` gives tooltips to the hubs only (`"none"`: to no node); Week 5 uses it while section 4 collects
-guesses. `explore: true` lets a reader hover or click a node to light its links and neighbours, click a hub or a
+`titles: "hubs"` gives tooltips to the hubs only (`"none"`: to no node). `explore: true` lets a reader hover or click a node to light its links and neighbours, click a hub or a
 legend entry to light its group, and zoom and pan (buttons, Ctrl or ⌘ with the wheel, or a pinch; d3 loads on
-demand). Its tooltip comes from `describe(node, { degree, marked, group })`; Week 5's maps name only the hubs. `unit: ["page", "pages"]` sets what the legend counts.
+demand). Its tooltip comes from `describe(node, { degree, marked, group })`. `unit: ["page", "pages"]` sets what the legend counts.
 
 Add `theme: "dark"` for the dark surface. Returns `{ nodes, redraw }`; `nodes` holds the groups after moves.
 `docs/styleguide/kit.html` draws all six with real data, and the overlap one with a labelled toy.
