@@ -3,9 +3,10 @@
 // written by analysis/week05_network.py and drawn with networkView().
 //
 // Section 4 is still collecting other groups' guesses about the communities, so
-// only the eight hubs, the quiz's options, are named; no other node has a tooltip.
+// only the eight hubs, the quiz's options, are named: hovering any other node
+// tells its community and links, never its name.
 
-import { loadData, networkView } from "./kit.js?v=3";
+import { loadData, networkView } from "./kit.js?v=4";
 
 let loading;
 
@@ -20,8 +21,14 @@ export function loadNetwork() {
  * "family", ...): its pairs draw in ink over the faded rest. Other options pass
  * through to networkView().
  */
+const WORDS = { enemy: "fight words", family: "family words", ally: "ally words", teammate: "teammate words", killed: "killing words" };
+
 export function marvelMap(host, net, { mark, ...opts } = {}) {
   const hub = new Map(net.hubs.map((h) => [String(h.node), h.label]));
+  const describe = (n, { degree, marked, group }) => [
+    n.label ?? (group ? `A page in the ${group} group` : "A page in no group"),
+    `${degree} ${degree === 1 ? "link" : "links"}${mark ? `, ${marked} in ${WORDS[mark]}` : ""}`,
+  ];
   const marked = new Set((mark ? net.relations[mark].pairs : []).map(([i, j]) => `${i}|${j}`));
   return networkView(host, {
     ratio: net.ratio,
@@ -31,8 +38,10 @@ export function marvelMap(host, net, { mark, ...opts } = {}) {
     hubs: net.hubs.map((h) => String(h.node)),
     unit: ["page", "pages"],
     fade: Boolean(mark),
+    explore: true,
     ...opts,
     // Last, so no caller can name the other nodes while section 4 collects guesses.
     titles: "hubs",
+    describe,
   });
 }

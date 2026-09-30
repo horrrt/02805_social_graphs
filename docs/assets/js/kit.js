@@ -1,7 +1,7 @@
 // The components a section script needs, from one import. Week 5's section
 // scripts start here:
 //
-//   import { slot, figure, echart, concordance, passage, loadData } from "./kit.js?v=3";
+//   import { slot, figure, echart, concordance, passage, loadData } from "./kit.js?v=4";
 //
 // The chart helpers, tables, drawers and glossary terms are Week 4's, re-exported
 // at the same URLs Week 4 imports them from, so the browser loads one copy. The
@@ -18,7 +18,7 @@ import { drawer, drawerRow, termify } from "./week04-ui.js?v=2";
 export { family, font, fs } from "./type-scale.mjs";
 export { fitted, miniStrip, node, roomFor, stripChart, textWidth, token } from "./week04-strip.js?v=2";
 export { decorate, decorateAll, drawer, drawerRow, termify };
-export { networkView } from "./graph.js";
+export { networkView } from "./graph.js?v=2";
 
 // ---- data and page slots
 

@@ -7,7 +7,7 @@
 // #heaps-passages).
 // Data: docs/weeks/week05/data/heaps.json, written by analysis/week05_heaps.py.
 
-import { drawer, drawerRow, fitted, fs, loadData, node, passage, stripChart, table, termify, token } from "./kit.js?v=3";
+import { drawer, drawerRow, fitted, fs, loadData, node, passage, stripChart, table, termify, token } from "./kit.js?v=4";
 
 const count = (v) => Math.round(v).toLocaleString("en-GB");
 const short = (v) => (v >= 1000 ? `${v / 1000}k` : `${v}`);
