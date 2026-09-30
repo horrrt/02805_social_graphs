@@ -349,51 +349,33 @@
  "concordance": [
   {
    "label": "killed",
-   "page": "Robbie_Baldwin",
+   "page": "Cyclops_(Marvel_Comics)",
+   "target": "Xorn",
+   "left": "Jean discovers it, forces a confrontation, and is killed shortly after in battle with ",
+   "hit": "Xorn",
+   "right": ".",
+   "verdict": "wrong",
+   "note": "Xorn kills Jean; nothing between Cyclops and Xorn"
+  },
+  {
+   "label": "killed",
+   "page": "Iron_Lad",
    "target": "Wolverine_(character)",
-   "left": "Baldwin eludes them, and with ",
+   "left": "Iron Lad appears in the series Avengers: The Children's Crusade, in which he prevents ",
    "hit": "Wolverine",
-   "right": "'s help, he travels to Latveria to retrieve Nitro to stand trial for mass murder."
+   "right": " from killing an amnesiac and de-powered Wanda Maximoff.",
+   "verdict": "wrong",
+   "note": "Iron Lad stops Wolverine killing Wanda"
   },
   {
    "label": "killed",
-   "page": "Northstar_(character)",
-   "target": "Storm_(Marvel_Comics)",
-   "left": "Northstar is seen in a panel of Marvel Zombies: Dead Days attacking the X-Man ",
-   "hit": "Storm",
-   "right": " alongside his sister Aurora, only to be killed by Magneto."
-  },
-  {
-   "label": "killed",
-   "page": "Silencer_(comics)",
-   "target": "Mockingbird_(Marvel_Comics)",
-   "left": "Silencer is an assassin who Crossfire hires Silencer to kill Hawkeye after Hawkeye and ",
-   "hit": "Mockingbird",
-   "right": " learn of the illegal doings of Cross Technological Enterprises."
-  },
-  {
-   "label": "killed",
-   "page": "Quicksilver_(Marvel_Comics)",
-   "target": "Northstar_(character)",
-   "left": "When the Scarlet Witch is apparently murdered at the Hellfire Gala, Pietro arrives at Krakoa and attacks Magneto in a rage, coming close to killing him before being restrained by ",
-   "hit": "Northstar",
-   "right": "."
-  },
-  {
-   "label": "killed",
-   "page": "She-Hulk_(Lyra)",
-   "target": "Sentry_(Robert_Reynolds)",
-   "left": "Due to many of the warring tribes of men having taken former heroes such as Wolverine and ",
-   "hit": "Sentry",
-   "right": " as symbols of worship to continue their war on the Femizons, Lyra hopes that by killing the greatest hero, the men will have nothing to worship and many Femizons will be spared."
-  },
-  {
-   "label": "killed",
-   "page": "Vulcan_(Marvel_Comics)",
-   "target": "Rachel_Summers",
-   "left": "Reawakened in modern times by the mutant energy released during M-Day, Vulcan returns to Earth to seek revenge against Charles Xavier, killing Banshee in the process and kidnapping ",
-   "hit": "Rachel Summers",
-   "right": " and Cyclops."
+   "page": "Puck_(Marvel_Comics)",
+   "target": "Vindicator_(comics)",
+   "left": "Along with Major Mapleleaf, Puck (Zuzha Yu), ",
+   "hit": "Vindicator",
+   "right": ", and Shaman, Puck is among the Alpha Flight members apparently killed by the Collective.",
+   "verdict": "wrong",
+   "note": "both killed by the Collective"
   },
   {
    "label": "killed",
@@ -401,103 +383,249 @@
    "target": "Xorn",
    "left": "In a final confrontation with a traitor at the institute (the X-Men's teammate ",
    "hit": "Xorn",
-   "right": ", posing as Magneto) Jean fully realizes and assumes complete control of the powers of the Phoenix Force, but is killed in a last-ditch lethal attack by Xorn."
+   "right": ", posing as Magneto) Jean fully realizes and assumes complete control of the powers of the Phoenix Force, but is killed in a last-ditch lethal attack by Xorn.",
+   "verdict": "right",
+   "note": "Jean is killed by Xorn"
   },
   {
    "label": "killed",
-   "page": "Guardian_(Marvel_Comics)",
-   "target": "Puck_(Marvel_Comics)",
-   "left": "In New Avengers, Alpha Flight is attacked by the Collective, who kills Guardian, Vindicator, Shaman, and ",
-   "hit": "Puck",
-   "right": "."
+   "page": "Guardsman_(character)",
+   "target": "Luke_Cage",
+   "left": "Pascal Tyler - killed Cinder, framing ",
+   "hit": "Luke Cage",
+   "right": " and Rhino",
+   "verdict": "wrong",
+   "note": "a Guardsman kills Cinder and frames Luke Cage"
   },
   {
-   "label": "family",
-   "page": "Whizzer_(Robert_Frank)",
-   "target": "Quicksilver_(Marvel_Comics)",
-   "left": "At the end of this adventure, the Whizzer erroneously believes himself to be the father of ",
-   "hit": "Quicksilver",
-   "right": " and Scarlet Witch."
-  },
-  {
-   "label": "family",
-   "page": "Hulk",
-   "target": "Devil_Hulk",
-   "left": "Commonly portrayed as a raging savage, the Hulk has been represented with other alter egos like a gangster (Joe Fixit), a merged personality (Professor Hulk), a brilliant warrior (Green Scar), Banner's inner child (Big Guy), Big Guy's self-hating father figure (",
-   "hit": "Devil Hulk",
-   "right": "), a genius scientist in his own right (Doc Green), and several minor alter egos."
-  },
-  {
-   "label": "family",
-   "page": "Jessica_Jones",
-   "target": "Blue_Marvel",
-   "left": "While moving in, Jessica spoke to the ",
-   "hit": "Blue Marvel",
-   "right": " about what it is like to raise a child of superheroes and expressed both her support and annoyance at her husband's choice to start another team of Avengers."
-  },
-  {
-   "label": "family",
-   "page": "Scarlet_Spider",
-   "target": "Black_Cat_(Marvel_Comics)",
-   "left": "In the MC2 continuity, Felicity Hardy (daughter of Felicia Hardy/",
-   "hit": "Black Cat",
-   "right": ") becomes the new Scarlet Spider."
-  },
-  {
-   "label": "family",
-   "page": "Ruby_Summers",
+   "label": "killed",
+   "page": "Xorn",
    "target": "Emma_Frost",
-   "left": "Ruby is the daughter of Scott Summers and ",
+   "left": "Cyclops and ",
    "hit": "Emma Frost",
-   "right": " from the dystopian alternate future Earth-1191."
+   "right": " establish contact with Xorn, convincing him not to kill himself, and offer him a position among the X-Men.",
+   "verdict": "wrong",
+   "note": "\"not to kill himself\""
+  },
+  {
+   "label": "killed",
+   "page": "Deadpool",
+   "target": "She-Hulk",
+   "left": "In each book, he hunts down and murders characters such as the Headless Horseman (who inspired the Green Goblin and Ghost Rider), the characters of Little Women (Black Widow, ",
+   "hit": "She-Hulk",
+   "right": ", Elektra), Captain Ahab (Thunderbolt Ross), the Little Mermaid (Namor), Mowgli (Ka-Zar), Count Dracula (Dracula, Morbius, and Blade) and more.",
+   "verdict": "right",
+   "note": "Deadpool murders a version of She-Hulk"
+  },
+  {
+   "label": "killed",
+   "page": "Whizzer_(Robert_Frank)",
+   "target": "Deadpool",
+   "left": "Arnim Zola later creates a clone of Whizzer who is killed by ",
+   "hit": "Deadpool",
+   "right": ".",
+   "verdict": "right",
+   "note": "a clone of Whizzer is killed by Deadpool"
+  },
+  {
+   "label": "killed",
+   "page": "Werewolf_by_Night",
+   "target": "Deadpool",
+   "left": "In their search for the missing zombie ",
+   "hit": "Deadpool",
+   "right": ", the team battles and kills zombie Men-Fish and their leader, the Piranha.",
+   "verdict": "wrong",
+   "note": "the team kills Men-Fish while searching for Deadpool"
+  },
+  {
+   "label": "killed",
+   "page": "Betsy_Braddock",
+   "target": "Doctor_Nemesis",
+   "left": "While Cable recruited Fantomex, Marrow and ",
+   "hit": "Doctor Nemesis",
+   "right": " as his teammates, Betsy actually sought Cable because she couldn't bear staying away from X-Force as she admitted she was addicted to killing.",
+   "verdict": "wrong",
+   "note": "\"addicted to killing\"; Doctor Nemesis is a teammate"
+  },
+  {
+   "label": "killed",
+   "page": "Blue_Eagle_(character)",
+   "target": "Black_Widow_(Natasha_Romanova)",
+   "left": "",
+   "hit": "Black Widow",
+   "right": " and Hawkeye later kill Blue Eagle and take his wings.",
+   "verdict": "right",
+   "note": "Black Widow kills Blue Eagle"
+  },
+  {
+   "label": "killed",
+   "page": "Xorn",
+   "target": "Jean_Grey",
+   "left": "Magneto kills ",
+   "hit": "Jean Grey",
+   "right": " and is killed by Wolverine in response.",
+   "verdict": "right",
+   "note": "Xorn, posing as Magneto, kills Jean Grey"
   },
   {
    "label": "family",
-   "page": "Rachel_Summers",
-   "target": "Phoenix_Force",
-   "left": "The character is a mutant with similar abilities to her mother, including telepathy, telekinesis, and a connection to the ",
-   "hit": "Phoenix",
-   "right": " Force."
+   "page": "Black_Panther_(character)",
+   "target": "Shuri_(character)",
+   "left": "In Hudlin's era, the role of Black Panther and leadership of Wakanda was also temporarily given to T'Challa's sister ",
+   "hit": "Shuri",
+   "right": " while he was briefly in a coma.",
+   "verdict": "right",
+   "note": "Shuri is T'Challa's sister"
   },
   {
    "label": "family",
-   "page": "She-Hulk",
-   "target": "Hulk",
-   "left": "Walters is a lawyer who, after an assassination attempt, received an emergency blood transfusion from her cousin, Bruce Banner, and acquired a milder version of his ",
-   "hit": "Hulk",
-   "right": " condition: Walters becomes a large, powerful, green-hued version of herself."
+   "page": "Rikki_Barnes",
+   "target": "Nomad_(Marvel_Comics)",
+   "left": "Rikki crossed over to Earth-616 in the 2008 Onslaught Reborn miniseries, in which she operated as ",
+   "hit": "Nomad",
+   "right": " for a time, later joining the Exiles in another reality after being repeatedly reincarnated in her grandfather's place, and then the Future Foundation in the mainstream Marvel universe.",
+   "verdict": "wrong",
+   "note": "\"grandfather\" is about her grandfather; Nomad is an identity she takes"
   },
   {
    "label": "family",
-   "page": "She-Hulk",
-   "target": "John_Jameson_(character)",
-   "left": "She-Hulk was married to ",
-   "hit": "John Jameson",
-   "right": ", whom she first met while he was the Man-Wolf in a Microverse adventure in The Savage She-Hulk."
+   "page": "Gwenpool",
+   "target": "Blade_(character)",
+   "left": "After short team-ups with the Champions, ",
+   "hit": "Blade",
+   "right": ", Deadpool, and the duo of Ghost Rider and Kate Bishop, Gwen meets her brother Teddy, who drags her back to her world (or a close facsimile).",
+   "verdict": "wrong",
+   "note": "\"brother\" is Gwen's brother Teddy; Blade is a team-up"
+  },
+  {
+   "label": "family",
+   "page": "Shatterstar",
+   "target": "Hrimhari",
+   "left": "On mission, he encounters the child's real father, ",
+   "hit": "Hrimhari",
+   "right": ", which he is able to report back to Rictor.",
+   "verdict": "wrong",
+   "note": "Hrimhari is the father of another character's child"
+  },
+  {
+   "label": "family",
+   "page": "Human_Torch",
+   "target": "Franklin_Richards_(character)",
+   "left": "Storm briefly joined his nephew ",
+   "hit": "Franklin Richards",
+   "right": "' Fantastic Force team, where he battled his otherdimensional counterpart, Vangaard (formerly Gaard).",
+   "verdict": "right",
+   "note": "Franklin is Johnny Storm's nephew"
+  },
+  {
+   "label": "family",
+   "page": "Cable_(character)",
+   "target": "Jean_Grey",
+   "left": "Nathan Summers is the son of the X-Men member Cyclops (Scott Summers) and his first wife Madelyne Pryor (",
+   "hit": "Jean Grey",
+   "right": "'s clone), as well as the \"half\"-brother of Rachel Summers from the \"Days of Future Past\" timeline and Nate Grey from the timeline of the \"Age of Apocalypse\" storyline, the genetic template of the mutant terrorist Stryfe (one of his deadliest enemies), and the adoptive father of Hope Summers.",
+   "verdict": "right",
+   "note": "Cable's mother is Jean Grey's clone"
+  },
+  {
+   "label": "family",
+   "page": "Man-Thing",
+   "target": "Mockingbird_(Marvel_Comics)",
+   "left": "Morse became the costumed hero ",
+   "hit": "Mockingbird",
+   "right": " in Marvel Team-Up #95 and went on to become a prominent member of Avengers West Coast, eventually sacrificing her life to save her husband, Clint \"Hawkeye\" Barton, from Mephisto.",
+   "verdict": "wrong",
+   "note": "\"husband\" is Hawkeye; nothing between Man-Thing and Mockingbird"
+  },
+  {
+   "label": "family",
+   "page": "Misty_Knight",
+   "target": "Blade_(character)",
+   "left": "In Marvel Comics, preceding characters were Gabe Jones (debuted in 1963), Black Panther (1966), Bill Foster (1966), Spider-Man supporting characters Joe Robertson (1967), his son Randy Robertson (1968), Hobie Brown (the Prowler) and Falcon (both 1969), Luke Cage (1972), ",
+   "hit": "Blade",
+   "right": " (1973), and Abe Brown (1974).",
+   "verdict": "wrong",
+   "note": "\"his son\" is Joe Robertson's son; Blade is in a list of characters"
+  },
+  {
+   "label": "family",
+   "page": "Cable_(character)",
+   "target": "Rachel_Summers",
+   "left": "Nathan Summers is the son of the X-Men member Cyclops (Scott Summers) and his first wife Madelyne Pryor (Jean Grey's clone), as well as the \"half\"-brother of ",
+   "hit": "Rachel Summers",
+   "right": " from the \"Days of Future Past\" timeline and Nate Grey from the timeline of the \"Age of Apocalypse\" storyline, the genetic template of the mutant terrorist Stryfe (one of his deadliest enemies), and the adoptive father of Hope Summers.",
+   "verdict": "right",
+   "note": "Cable is Rachel's half-brother"
+  },
+  {
+   "label": "family",
+   "page": "Black_Bolt",
+   "target": "Karnak_(character)",
+   "left": "Black Bolt reappears in a story focusing on his cousin Medusa, drives off the Hulk after he defeats the entire Inhuman Royal Family (Medusa, Gorgon, ",
+   "hit": "Karnak",
+   "right": ", Triton, and Crystal), and with the Fantastic Four, battles his brother Maximus and his own group of rogue Inhumans.",
+   "verdict": "wrong",
+   "note": "\"cousin\" and \"brother\" name Medusa and Maximus, not Karnak"
+  },
+  {
+   "label": "family",
+   "page": "Gladiator_(Kallark)",
+   "target": "Vulcan_(Marvel_Comics)",
+   "left": "Gladiator is commanded to stop the conqueror ",
+   "hit": "Vulcan",
+   "right": ", who is determined to destroy the Shi'ar empire as revenge for the death of his mother.",
+   "verdict": "wrong",
+   "note": "\"his mother\" is Vulcan's mother; Gladiator is sent against Vulcan"
+  },
+  {
+   "label": "family",
+   "page": "Vulcan_(Marvel_Comics)",
+   "target": "Cyclops_(Marvel_Comics)",
+   "left": "He is the third Summers brother to be revealed, the younger brother of X-Men characters ",
+   "hit": "Cyclops",
+   "right": " and Havok.",
+   "verdict": "right",
+   "note": "Vulcan is Cyclops's younger brother"
   },
   {
    "label": "enemy",
-   "page": "Iron_Fist_(character)",
-   "target": "Star_Brand",
-   "left": "Fan Fei later banded together with Agamotto, Lady Phoenix, Odin, and Stone Age versions of Black Panther, Ghost Rider, and ",
-   "hit": "Star Brand",
-   "right": " to fight off a Celestial named the Fallen."
+   "page": "Mockingbird_(Marvel_Comics)",
+   "target": "Doctor_Strange",
+   "left": "She is recruited by ",
+   "hit": "Doctor Strange",
+   "right": " and Dead Girl to help defeat Mr. Pitiful and his group of resurrected supervillains.",
+   "verdict": "wrong",
+   "note": "Doctor Strange recruits her to defeat someone else"
   },
   {
    "label": "enemy",
-   "page": "Doctor_Nemesis",
-   "target": "Spider-Man",
-   "left": "Ant-Man and ",
-   "hit": "Spider-Man",
-   "right": " battle Tete's gang until Tete injects the two with a virus to gain their cooperation."
+   "page": "Phyla-Vell",
+   "target": "Star-Lord",
+   "left": "Phyla then goes with Nova and ",
+   "hit": "Star-Lord",
+   "right": " to lead a final battle against Annihilus, being saved at the last second by a massive energy wave caused by the just freed Galactus, which left only the three heroes and Annihilus as survivors.",
+   "verdict": "wrong",
+   "note": "Phyla and Star-Lord fight Annihilus together"
   },
   {
    "label": "enemy",
-   "page": "Quicksilver_(Marvel_Comics)",
-   "target": "Black_Bolt",
-   "left": "The ceremony itself was depicted in Fantastic Four #150 by writer Gerry Conway and penciler Rich Buckler, where a threat engineered by the Inhuman Maximus the Mad working alongside Omega (revealed to be Ultron-7) was resolved when Franklin Richards awoke from a long coma and defeated the conspirators, after which the wedding took place with ",
-   "hit": "Black Bolt",
-   "right": " walking Crystal down the aisle."
+   "page": "Crane_Mother",
+   "target": "Iron_Fist_(character)",
+   "left": "She is the ruler of the mythical city K'un-Zi and is an enemy of ",
+   "hit": "Iron Fist",
+   "right": ".",
+   "verdict": "right",
+   "note": "\"an enemy of Iron Fist\""
+  },
+  {
+   "label": "enemy",
+   "page": "Phoenix_Force",
+   "target": "Vulcan_(Marvel_Comics)",
+   "left": "In the last issue of Kingbreaker, the Phoenix abandons Rachel and Korvus during battle with ",
+   "hit": "Vulcan",
+   "right": "'s new guard, leaving them both without its power.",
+   "verdict": "right",
+   "note": "the Phoenix's hosts battle Vulcan's guard"
   },
   {
    "label": "enemy",
@@ -505,31 +633,69 @@
    "target": "Fin_Fang_Foom",
    "left": "While planning to have MegaTony work to restore her body by her next appearance, Gwenpool and the group then proceed to fight ",
    "hit": "Fin Fang Foom",
-   "right": "."
+   "right": ".",
+   "verdict": "right",
+   "note": "Gwenpool's group fights Fin Fang Foom"
   },
   {
    "label": "enemy",
-   "page": "Deadpool",
-   "target": "Wolverine_(character)",
-   "left": "Originally conceived as a parody of the DC Comics villain Deathstroke, Deadpool was further shaped by Liefeld's admiration for Spider-Man and ",
-   "hit": "Wolverine",
-   "right": ", characters he sought to evoke with his own creations."
+   "page": "Hercules_(Marvel_Comics)",
+   "target": "Firelord_(character)",
+   "left": "Thor mistakenly battles Hercules when trying to rescue an Asgardian goddess from the underworld, but together they defeat instigators Ares and Pluto who are trying to take over Olympus; battle the Destroyer and then Herald of Galactus ",
+   "hit": "Firelord",
+   "right": " before a confrontation with Ego the Living Planet on Galactus's behalf, as Galactus has been defeated by Ego.",
+   "verdict": "right",
+   "note": "Thor and Hercules battle Firelord"
   },
   {
    "label": "enemy",
-   "page": "Lei_Kung_(character)",
-   "target": "Cyclops_(Marvel_Comics)",
-   "left": "When the Phoenix Force-powered ",
-   "hit": "Cyclops",
-   "right": " attacks K'un-L'un, Kung meets with Hope outside the Cave of Shou-Lao, telling her that it is time for her final lesson."
+   "page": "Hulkling",
+   "target": "Cloak_and_Dagger_(characters)",
+   "left": "With the aid of Xavin, Speed and Wiccan, Hulkling survives an attack by X'iv, a Skrull assassin working for Chrell with the powers of Daredevil, Elektra, and ",
+   "hit": "Cloak and Dagger",
+   "right": ".",
+   "verdict": "wrong",
+   "note": "an assassin has powers like Cloak and Dagger's"
   },
   {
    "label": "enemy",
    "page": "Adam_Warlock",
-   "target": "Genis-Vell",
-   "left": "He is defeated by ",
-   "hit": "Genis-Vell",
-   "right": " and reverts to an ethereal entity."
+   "target": "Emma_Frost",
+   "left": "As Loki, ",
+   "hit": "Emma Frost",
+   "right": ", Hulk, Ant-Man, Ms. Marvel, and Kang the Conqueror gather together, they find Adam and suggest they exit the Soulworld only for Adam to declare that they need to defeat Devondra first.",
+   "verdict": "wrong",
+   "note": "they meet; \"defeat\" is about Devondra"
+  },
+  {
+   "label": "enemy",
+   "page": "Iron_Fist_(character)",
+   "target": "Phoenix_Force",
+   "left": "During the \"Avengers vs. X-Men\" storyline, Iron Fist and Lei Kung bring Hope Summers to K'un-Lun to train as an Iron Fist, in order to defeat the ",
+   "hit": "Phoenix",
+   "right": " Force-possessed X-Men.",
+   "verdict": "right",
+   "note": "Iron Fist trains Hope to defeat the Phoenix-possessed X-Men"
+  },
+  {
+   "label": "enemy",
+   "page": "Rusty_Collins",
+   "target": "Cable_(character)",
+   "left": "",
+   "hit": "Cable",
+   "right": ", who took over the New Mutants soon after Rusty left, attacks the group.",
+   "verdict": "right",
+   "note": "Cable attacks Rusty's group"
+  },
+  {
+   "label": "enemy",
+   "page": "Puck_(Marvel_Comics)",
+   "target": "Hulk",
+   "left": "Puck encounters the Beyonder, and battles the ",
+   "hit": "Hulk",
+   "right": " during the events of Secret Wars II.",
+   "verdict": "right",
+   "note": "Puck battles the Hulk"
   },
   {
    "label": "enemy",
@@ -537,199 +703,249 @@
    "target": "Starhawk_(character)",
    "left": "Despite this, it was not until Aleta (who had become the new ",
    "hit": "Starhawk",
-   "right": ") arrived and attacked alongside Doctor Strange that L'Matto was finally defeated, enabling Strange to exorcise the Uni-Power which L'Matto had abused and return it to Earth."
+   "right": ") arrived and attacked alongside Doctor Strange that L'Matto was finally defeated, enabling Strange to exorcise the Uni-Power which L'Matto had abused and return it to Earth.",
+   "verdict": "wrong",
+   "note": "Starhawk attacks L'Matto on Captain Universe's side"
   },
   {
    "label": "ally",
-   "page": "Frankenstein's_Monster_(Marvel_Comics)",
-   "target": "Ulysses_Bloodstone",
-   "left": "",
-   "hit": "Ulysses Bloodstone",
-   "right": " later befriended the Monster, who came to occasionally stay at his mansion, eventually acting as its caretaker."
+   "page": "Rocket_Raccoon",
+   "target": "Vulcan_(Marvel_Comics)",
+   "left": "They are unable to teleport into Emperor ",
+   "hit": "Vulcan",
+   "right": "'s flagship and have to be rescued by the Starjammers and Rocket's old friend Ch'od.",
+   "verdict": "wrong",
+   "note": "\"old friend\" is Ch'od; Vulcan is the enemy whose flagship they raid"
   },
   {
    "label": "ally",
-   "page": "Hank_Pym",
-   "target": "Hyperion_(character)",
-   "left": "In the 2021 Heroes Reborn reality, Hank Pym is a scientist and a devoted Christian who is a former friend and sidekick of ",
-   "hit": "Hyperion",
-   "right": "."
-  },
-  {
-   "label": "ally",
-   "page": "Rusty_Collins",
-   "target": "Leech_(character)",
-   "left": "Rusty himself had gone back into custody at the Navy but willingly goes with the group when he realizes his younger friends, ",
-   "hit": "Leech",
-   "right": " and Artie Maddicks have been captured."
+   "page": "Eddie_Brock",
+   "target": "Black_Cat_(Marvel_Comics)",
+   "left": "Venom, accompanied by ",
+   "hit": "Black Cat",
+   "right": ", Cloak, Morbius, and Spider-Man, repeatedly confront Carnage and his allies.",
+   "verdict": "right",
+   "note": "Venom and Black Cat confront Carnage together"
   },
   {
    "label": "ally",
    "page": "Cloak_and_Dagger_(characters)",
-   "target": "Iron_Fist_(character)",
-   "left": "During the 1993 \"Maximum Carnage\" event, Cloak and Dagger teamed up with Spider-Man, Captain America, Black Cat, Nightwatch, ",
-   "hit": "Iron Fist",
-   "right": ", Deathlok, Morbius, Venom, and Firestar to halt Carnage and his allies' murderous rampage across New York City."
+   "target": "Black_Cat_(Marvel_Comics)",
+   "left": "During the 1993 \"Maximum Carnage\" event, Cloak and Dagger teamed up with Spider-Man, Captain America, ",
+   "hit": "Black Cat",
+   "right": ", Nightwatch, Iron Fist, Deathlok, Morbius, Venom, and Firestar to halt Carnage and his allies' murderous rampage across New York City.",
+   "verdict": "right",
+   "note": "they team up against Carnage"
   },
   {
    "label": "ally",
-   "page": "Rachel_Summers",
-   "target": "Wolverine_(character)",
-   "left": "There, she befriends the surviving mutant rebels, including ",
-   "hit": "Wolverine",
-   "right": ", Magneto, Colossus, Storm, Kate Pryde, and Franklin Richards."
+   "page": "Kismet_(Marvel_Comics)",
+   "target": "Star_Brand",
+   "left": "As Quasar is the only one who did not destroy his pod, Her turns her attentions to him for a time, until Quasar's girlfriend Kayla Ballantine (in possession of the ",
+   "hit": "Star Brand",
+   "right": ") severely beats her and forces her to return to cocoon form to heal.",
+   "verdict": "wrong",
+   "note": "the Star Brand's bearer beats Kismet"
   },
   {
    "label": "ally",
-   "page": "Killpower",
-   "target": "Motormouth_(comics)",
-   "left": "He is the partner of ",
-   "hit": "Motormouth",
-   "right": " and first appeared in Motormouth #1 (June 1992)."
+   "page": "Ghost_Rider_(Johnny_Blaze)",
+   "target": "Caretaker_(comics)",
+   "left": "Their mentor ",
+   "hit": "Caretaker",
+   "right": " would later reveal that Blaze and Ketch were brothers.",
+   "verdict": "right",
+   "note": "Caretaker is their mentor"
   },
   {
    "label": "ally",
-   "page": "Betsy_Braddock",
-   "target": "Anole_(character)",
-   "left": "During this time, Betsy started focusing her powers into different weapons of psychic energy such as a bow and arrow, a crossbow and a grappling line and a flail, mentored a small group of students consisted of Hellion, ",
-   "hit": "Anole",
-   "right": ", Broo, and Rockslide and kept a relationship with a virtual boyfriend created in the Danger Room."
+   "page": "Cloak_and_Dagger_(characters)",
+   "target": "Nightwatch_(character)",
+   "left": "During the 1993 \"Maximum Carnage\" event, Cloak and Dagger teamed up with Spider-Man, Captain America, Black Cat, ",
+   "hit": "Nightwatch",
+   "right": ", Iron Fist, Deathlok, Morbius, Venom, and Firestar to halt Carnage and his allies' murderous rampage across New York City.",
+   "verdict": "right",
+   "note": "they team up against Carnage"
   },
   {
    "label": "ally",
-   "page": "Rikki_Barnes",
-   "target": "Peggy_Carter",
-   "left": "In one universe, Rikki becomes the sidekick of ",
-   "hit": "Peggy Carter",
-   "right": ", who took Steve Rogers' place in the Super Soldier Program following his death."
+   "page": "Human_Torch_(android)",
+   "target": "Bucky_(Marvel_Comics)",
+   "left": "Both the Torch and the Sub-Mariner joined with Captain America and his partner ",
+   "hit": "Bucky",
+   "right": " as the core of the superhero team the Invaders, fighting Nazis during World War II (in retcon stories that premiered in 1970s comics).",
+   "verdict": "right",
+   "note": "the Torch joins Captain America and Bucky"
   },
   {
-   "label": "teammate",
-   "page": "Morbius",
-   "target": "Man-Thing",
-   "left": "He also meets other monsters, such as the Werewolf (Jack Russell), Ghost Rider (Johnny Blaze), and ",
-   "hit": "Man-Thing",
-   "right": " (Ted Sallis), and superhuman adventurers such as Blade, the original X-Men, and the Human Torch and the Thing, the last two both being members of the Fantastic Four."
-  },
-  {
-   "label": "teammate",
-   "page": "Noh-Varr",
-   "target": "Hercules_(Marvel_Comics)",
-   "left": "In 2020, Marvel Boy was featured as a member of a new Guardians of the Galaxy team alongside Star-Lord, Rocket Raccoon, Moondragon, Phyla-Vell, ",
-   "hit": "Hercules",
-   "right": " and Nova."
-  },
-  {
-   "label": "teammate",
-   "page": "Sentry_(Robert_Reynolds)",
-   "target": "Emma_Frost",
-   "left": "",
-   "hit": "Emma Frost",
-   "right": " frees Reynolds from the virus and restore his memories, and the Sentry joins the Avengers."
-  },
-  {
-   "label": "teammate",
-   "page": "Bug_(Marvel_Comics)",
-   "target": "Rocket_Raccoon",
-   "left": "Although Bug was not a founding member of the \"modern\" Guardians team, ",
-   "hit": "Rocket Raccoon",
-   "right": " asked him to join when the original group disbanded after some internal misunderstandings."
-  },
-  {
-   "label": "teammate",
+   "label": "ally",
    "page": "Anole_(character)",
-   "target": "Emma_Frost",
-   "left": "Shortly afterward, ",
-   "hit": "Emma Frost",
-   "right": " sets up an all-out brawl amongst the remaining students to determine who will become the new team of X-Men trainees (dubbed the New X-Men); Victor is not selected for the squad, but remains at the school."
+   "target": "Hellion_(character)",
+   "left": "At first, he is depicted as close friends with fellow student ",
+   "hit": "Julian Keller",
+   "right": " and the other students in the Hellions, but he later becomes closer to his teammates.",
+   "verdict": "right",
+   "note": "Anole and Julian Keller are close friends"
+  },
+  {
+   "label": "ally",
+   "page": "Jack_Monroe_(character)",
+   "target": "William_Burnside_(character)",
+   "left": "He became an adventurer and the partner of ",
+   "hit": "William Burnside",
+   "right": " who had assumed the identity of Steve Rogers in the 1950s.",
+   "verdict": "right",
+   "note": "Jack Monroe is William Burnside's partner"
+  },
+  {
+   "label": "ally",
+   "page": "Ghost_Rider",
+   "target": "Caretaker_(comics)",
+   "left": "",
+   "hit": "Caretaker",
+   "right": ": An immortal man and ally to Ketch, member of the Blood.",
+   "verdict": "right",
+   "note": "Caretaker is an ally to Ketch"
+  },
+  {
+   "label": "ally",
+   "page": "Jack_Monroe_(character)",
+   "target": "Nomad_(Marvel_Comics)",
+   "left": "The character was originally introduced as the third sidekick under the Bucky identity, initially treated as the original Bucky Barnes before being retconned as a separate character, and later the most well-known incarnation of ",
+   "hit": "Nomad",
+   "right": ".",
+   "verdict": "wrong",
+   "note": "Nomad is an identity Jack Monroe takes"
+  },
+  {
+   "label": "ally",
+   "page": "Morbius",
+   "target": "Blade_(character)",
+   "left": "In contrast to the comics, the cartoon depicted Morbius both as a regular ally of the character ",
+   "hit": "Blade",
+   "right": " and as a being who feeds on human plasma through his hands rather than with his fangs.",
+   "verdict": "right",
+   "note": "Morbius is a regular ally of Blade"
+  },
+  {
+   "label": "teammate",
+   "page": "Werewolf_by_Night",
+   "target": "Ghost_Rider_(Johnny_Blaze)",
+   "left": "The Werewolf then joined the ",
+   "hit": "Ghost Rider",
+   "right": ", the Man-Thing, and Morbius in unwittingly slaying the benevolent alien Starseed, who had intended to cure them all.",
+   "verdict": "right",
+   "note": "the Werewolf joins Ghost Rider"
   },
   {
    "label": "teammate",
    "page": "Blade_(character)",
-   "target": "Spitfire_(character)",
-   "left": "He soon afterwards stakes his new teammate, the vampire hero ",
-   "hit": "Spitfire",
-   "right": "."
+   "target": "Ronin_(Marvel_Comics)",
+   "left": "Blade was later revealed to have been the character (whose identity is kept from the reader) on the Mighty Avengers team who dons the Halloween-type Spider Hero alias during the Infinity storyline, and the ",
+   "hit": "Ronin",
+   "right": " identity from a \"big box of Clint Barton's old stuff\" during the Inhumanity storyline; his true identity was eventually revealed.",
+   "verdict": "wrong",
+   "note": "Ronin is an identity Blade takes"
   },
   {
    "label": "teammate",
-   "page": "U.S._Agent",
-   "target": "Union_Jack_(Joseph_Chapman)",
-   "left": "Walker eventually became a member of the New Invaders, wearing a Captain America-like costume, serving alongside the likes of the original Human Torch, ",
-   "hit": "Union Jack",
-   "right": " (Joseph Chapman), and the Blazing Skull, until the team disbanded."
+   "page": "White_Tiger_(Heroes_for_Hire)",
+   "target": "Iron_Fist_(character)",
+   "left": "She eventually encounters ",
+   "hit": "Iron Fist",
+   "right": " and joins his team, Heroes for Hire.",
+   "verdict": "right",
+   "note": "she joins Iron Fist's team"
   },
   {
    "label": "teammate",
-   "page": "Shamrock_(comics)",
-   "target": "Sabra_(character)",
-   "left": "Shamrock was chosen for Death's team, fighting alongside fellow heroes Peregrine, Iron Man, Vanguard, Iron Fist, Storm, Arabian Knight, ",
-   "hit": "Sabra",
-   "right": ", Invisible Woman, Angel, Black Panther, Sunfire, and the Collective Man."
+   "page": "Robbie_Baldwin",
+   "target": "Steel_Spider",
+   "left": "During the team's mission to capture ",
+   "hit": "Steel Spider",
+   "right": ", Penance suffers a mental breakdown.",
+   "verdict": "wrong",
+   "note": "the team's mission is to capture Steel Spider"
   },
   {
-   "label": "unlabelled",
-   "page": "Nomad_(Marvel_Comics)",
-   "target": "Bucky_(Marvel_Comics)",
-   "left": "The third and best known Nomad is Jack Monroe, who was formerly known as the third ",
-   "hit": "Bucky",
-   "right": "."
+   "label": "teammate",
+   "page": "Power_Man_(Victor_Alvarez)",
+   "target": "Luke_Cage",
+   "left": "Victor's activities eventually drew the attention of ",
+   "hit": "Luke Cage",
+   "right": ", a member of the Avengers who had once used the Power Man name.",
+   "verdict": "wrong",
+   "note": "\"member\" is Luke Cage in the Avengers"
   },
   {
-   "label": "unlabelled",
-   "page": "Black_Rider_(character)",
-   "target": "Kid_Colt",
-   "left": "Other company characters, like ",
-   "hit": "Kid Colt",
-   "right": " and Arrowhead also made appearances."
-  },
-  {
-   "label": "unlabelled",
-   "page": "Living_Lightning",
-   "target": "Quasar_(character)",
-   "left": "In 1992, as an Avenger, he appeared in other titles of the crossover Operation: Galactic Storm with The Avengers #345, #347, Captain America #401, ",
-   "hit": "Quasar",
-   "right": " #33, Thor #445–446 and Wonder Man vol.2 #8–9."
-  },
-  {
-   "label": "unlabelled",
-   "page": "Moon_Knight",
-   "target": "Phoenix_Force",
-   "left": "He acquired these with the intent of assimilating those of the Star Brand, the ",
-   "hit": "Phoenix",
-   "right": " Force and the Odin-Force-imbued Mjolnir belonging to All-Father Thor as well."
-  },
-  {
-   "label": "unlabelled",
-   "page": "Typeface_(character)",
+   "label": "teammate",
+   "page": "Adam_Warlock",
    "target": "Spider-Man",
-   "left": "He first appeared in Peter Parker: ",
+   "left": "This causes them to round up Arachknight (a combination of ",
    "hit": "Spider-Man",
-   "right": " vol."
+   "right": " and Moon Knight), Ghost Panther (a combination of Ghost Rider and Black Panther), Green Widow (a combination of Black Widow and She-Hulk), Iron Hammer (a combination of Iron Man and Thor), Man-Thing-Thang-Thoom (a combination of Man-Thing and Fin Fang Foom), Moon Squirrel (a combination of Moon Girl and Squirrel Girl) and Tippysaurus (a combination of Tippy-Toe and Devil Dinosaur), Soldier Supreme (a combination of Captain America and Doctor Strange), Weapon Hex (a combination of Scarlet Witch and X-23), and Fantastic Two members Mister Invisible (a combination of Mister Fantastic and Invisible Woman) and Hot Rocks (a combination of Human Torch and Thing) as well as a saxophone-playing version of Drax the Destroyer.",
+   "verdict": "wrong",
+   "note": "Spider-Man is part of an amalgam character in a list"
   },
   {
-   "label": "unlabelled",
-   "page": "Rom_the_Space_Knight",
-   "target": "Captain_Marvel_(Marvel_Comics)",
-   "left": "In the ",
-   "hit": "Captain Marvel",
-   "right": " series featuring Genis-Vell, Rick Jones was shown to own a toaster in the shape of Rom's helmet."
+   "label": "teammate",
+   "page": "Deathlok",
+   "target": "Abomination_(character)",
+   "left": "An original incarnation of Deathlok, ",
+   "hit": "Emil Blonsky",
+   "right": " / Abomination, from Earth-11045 appears in Uncanny Avengers as a member of Kang the Conqueror's Chronos Corps.",
+   "verdict": "wrong",
+   "note": "Abomination is an incarnation of Deathlok"
   },
   {
-   "label": "unlabelled",
-   "page": "Kismet_(Marvel_Comics)",
-   "target": "Captain_Marvel_(Marvel_Comics)",
-   "left": "In the limited series Fantastic Four: The End, Ayesha has taken over the ",
-   "hit": "Captain Marvel",
-   "right": " mantle in the near future."
+   "label": "teammate",
+   "page": "Noh-Varr",
+   "target": "Moondragon",
+   "left": "In 2020, Marvel Boy was featured as a member of a new Guardians of the Galaxy team alongside Star-Lord, Rocket Raccoon, ",
+   "hit": "Moondragon",
+   "right": ", Phyla-Vell, Hercules and Nova.",
+   "verdict": "right",
+   "note": "Marvel Boy and Moondragon are on the same Guardians team"
   },
   {
-   "label": "unlabelled",
-   "page": "Doctor_Strange",
-   "target": "Black_Widow_(Natasha_Romanova)",
-   "left": "When ",
-   "hit": "Black Widow",
-   "right": "'s clone arrives seeking out Doctor Strange where she wants to dispose of the Space Stone, he does not want to take it as he knows what would happen if they are in proximity."
+   "label": "teammate",
+   "page": "She-Hulk",
+   "target": "Man-Thing",
+   "left": "During the Fear Itself storyline, She-Hulk joins with Howard the Duck, Nighthawk and the Frankenstein Monster to form a four-person team called the Fearsome Four to stop the ",
+   "hit": "Man-Thing",
+   "right": " from its destructive path.",
+   "verdict": "wrong",
+   "note": "She-Hulk's team forms to stop the Man-Thing"
+  },
+  {
+   "label": "teammate",
+   "page": "Box_(comics)",
+   "target": "Guardian_(Marvel_Comics)",
+   "left": "",
+   "hit": "James Hudson",
+   "right": ", seeing Bochs' potential, helped him construct Box and recruited him into Gamma Flight, a training program for the Canadian superhero group Alpha Flight, which was led by Hudson as Guardian.",
+   "verdict": "right",
+   "note": "Guardian recruits Box into Gamma Flight"
+  },
+  {
+   "label": "teammate",
+   "page": "Vulcan_(Marvel_Comics)",
+   "target": "Ch'od",
+   "left": "Meanwhile, Havok, Marvel Girl, Polaris, ",
+   "hit": "Ch'od",
+   "right": ", Raza, and Korvus form a new team of Starjammers bent on defeating Vulcan and salvaging the remains of the Shi'ar empire.",
+   "verdict": "wrong",
+   "note": "Ch'od's team forms to defeat Vulcan"
+  },
+  {
+   "label": "teammate",
+   "page": "Emma_Frost",
+   "target": "Spider-Man",
+   "left": "An alternate version of Emma Frost appears in Amazing ",
+   "hit": "Spider-Man",
+   "right": ": Renew Your Vows as a member of the Brotherhood of Mutants.",
+   "verdict": "wrong",
+   "note": "\"member\" is Emma in the Brotherhood, in a Spider-Man comic"
   }
  ]
 }

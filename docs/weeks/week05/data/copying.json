@@ -101,104 +101,104 @@
    "id": "Battlestar_(character)",
    "name": "Battlestar (character)",
    "cluster": 3,
-   "x": 0.6161,
-   "y": 0.0,
+   "x": 0.9,
+   "y": 0.03,
    "copied_tokens": 121
   },
   {
    "id": "Black_Panther_(character)",
    "name": "Black Panther (character)",
    "cluster": 0,
-   "x": 0.0358,
-   "y": 0.0,
+   "x": 0.541,
+   "y": 0.1248,
    "copied_tokens": 52
   },
   {
    "id": "Black_Rider_(character)",
    "name": "Black Rider (character)",
    "cluster": 4,
-   "x": 0.7961,
-   "y": 0.0,
+   "x": 0.9,
+   "y": 0.1475,
    "copied_tokens": 49
   },
   {
    "id": "Blue_Diamond_(character)",
    "name": "Blue Diamond (character)",
    "cluster": 5,
-   "x": 0.0,
-   "y": 0.32,
+   "x": 0.9,
+   "y": 0.265,
    "copied_tokens": 177
   },
   {
    "id": "Bucky_(Marvel_Comics)",
    "name": "Bucky (Marvel Comics)",
    "cluster": 6,
-   "x": 0.18,
-   "y": 0.32,
+   "x": 0.9,
+   "y": 0.3825,
    "copied_tokens": 93
   },
   {
    "id": "Ch'od",
    "name": "Ch'od",
    "cluster": 7,
-   "x": 0.36,
-   "y": 0.32,
+   "x": 0.9,
+   "y": 0.5,
    "copied_tokens": 149
   },
   {
    "id": "Cyclops_(Marvel_Comics)",
    "name": "Cyclops (Marvel Comics)",
    "cluster": 0,
-   "x": 0.031,
-   "y": 0.0352,
+   "x": 0.4225,
+   "y": 0.2171,
    "copied_tokens": 762
   },
   {
    "id": "Eddie_Brock",
    "name": "Eddie Brock",
    "cluster": 8,
-   "x": 0.54,
-   "y": 0.32,
+   "x": 0.9,
+   "y": 0.6175,
    "copied_tokens": 967
   },
   {
    "id": "Ghost_Rider",
    "name": "Ghost Rider",
    "cluster": 9,
-   "x": 0.72,
-   "y": 0.32,
+   "x": 0.9,
+   "y": 0.735,
    "copied_tokens": 371
   },
   {
    "id": "Ghost_Rider_(Johnny_Blaze)",
    "name": "Ghost Rider (Johnny Blaze)",
    "cluster": 9,
-   "x": 0.82,
-   "y": 0.32,
+   "x": 0.96,
+   "y": 0.735,
    "copied_tokens": 371
   },
   {
    "id": "Jack_Frost_(Marvel_Comics)",
    "name": "Jack Frost (Marvel Comics)",
    "cluster": 5,
-   "x": 0.1,
-   "y": 0.32,
+   "x": 0.96,
+   "y": 0.265,
    "copied_tokens": 177
   },
   {
    "id": "Jean_Grey",
    "name": "Jean Grey",
    "cluster": 0,
-   "x": 0.1042,
-   "y": 0.24,
+   "x": 0.3989,
+   "y": 0.3,
    "copied_tokens": 690
   },
   {
    "id": "Mayday_Parker",
    "name": "Mayday Parker",
    "cluster": 1,
-   "x": 0.2861,
-   "y": 0.1738,
+   "x": 0.5174,
+   "y": 0.6798,
    "copied_tokens": 420
   },
   {
@@ -206,143 +206,143 @@
    "name": "Mockingbird (Marvel Comics)",
    "cluster": 10,
    "x": 0.9,
-   "y": 0.32,
+   "y": 0.8525,
    "copied_tokens": 59
   },
   {
    "id": "Quicksilver_(Marvel_Comics)",
    "name": "Quicksilver (Marvel Comics)",
    "cluster": 10,
-   "x": 1.0,
-   "y": 0.32,
+   "x": 0.96,
+   "y": 0.8525,
    "copied_tokens": 59
   },
   {
    "id": "Rachel_Summers",
    "name": "Rachel Summers",
    "cluster": 0,
-   "x": 0.0,
-   "y": 0.0057,
+   "x": 0.37,
+   "y": 0.0797,
    "copied_tokens": 114
   },
   {
    "id": "Raza_Longknife",
    "name": "Raza Longknife",
    "cluster": 7,
-   "x": 0.46,
-   "y": 0.32,
+   "x": 0.96,
+   "y": 0.5,
    "copied_tokens": 149
   },
   {
    "id": "Rikki_Barnes",
    "name": "Rikki Barnes",
    "cluster": 6,
-   "x": 0.28,
-   "y": 0.32,
+   "x": 0.96,
+   "y": 0.3825,
    "copied_tokens": 93
   },
   {
    "id": "Rocket_Raccoon",
    "name": "Rocket Raccoon",
    "cluster": 11,
-   "x": 0.0,
-   "y": 0.4,
+   "x": 0.9,
+   "y": 0.97,
    "copied_tokens": 200
   },
   {
    "id": "Spider-Girl",
    "name": "Spider-Girl",
    "cluster": 1,
-   "x": 0.202,
-   "y": 0.199,
+   "x": 0.4107,
+   "y": 0.7292,
    "copied_tokens": 416
   },
   {
    "id": "Spider-Woman",
    "name": "Spider-Woman",
    "cluster": 1,
-   "x": 0.2175,
-   "y": 0.1046,
+   "x": 0.4205,
+   "y": 0.6105,
    "copied_tokens": 682
   },
   {
    "id": "Spider-Woman_(Jessica_Drew)",
    "name": "Spider-Woman (Jessica Drew)",
    "cluster": 1,
-   "x": 0.1842,
-   "y": 0.0,
+   "x": 0.37,
+   "y": 0.5015,
    "copied_tokens": 246
   },
   {
    "id": "Spitfire_(character)",
    "name": "Spitfire (character)",
    "cluster": 2,
-   "x": 0.5361,
-   "y": 0.0747,
+   "x": 0.5006,
+   "y": 0.8846,
    "copied_tokens": 702
   },
   {
    "id": "Star-Lord",
    "name": "Star-Lord",
    "cluster": 11,
-   "x": 0.1,
-   "y": 0.4,
+   "x": 0.96,
+   "y": 0.97,
    "copied_tokens": 200
   },
   {
    "id": "Storm_(Marvel_Comics)",
    "name": "Storm (Marvel Comics)",
    "cluster": 0,
-   "x": 0.023,
-   "y": 0.0119,
+   "x": 0.4473,
+   "y": 0.1287,
    "copied_tokens": 229
   },
   {
    "id": "Two-Gun_Kid",
    "name": "Two-Gun Kid",
    "cluster": 4,
-   "x": 0.8961,
-   "y": 0.0,
+   "x": 0.96,
+   "y": 0.1475,
    "copied_tokens": 49
   },
   {
    "id": "U.S._Agent",
    "name": "U.S. Agent",
    "cluster": 3,
-   "x": 0.7161,
-   "y": 0.0,
+   "x": 0.96,
+   "y": 0.03,
    "copied_tokens": 121
   },
   {
    "id": "Union_Jack_(Joseph_Chapman)",
    "name": "Union Jack (Joseph Chapman)",
    "cluster": 2,
-   "x": 0.3879,
-   "y": 0.1221,
+   "x": 0.37,
+   "y": 0.96,
    "copied_tokens": 575
   },
   {
    "id": "Union_Jack_(Marvel_Comics)",
    "name": "Union Jack (Marvel Comics)",
    "cluster": 2,
-   "x": 0.3661,
-   "y": 0.0,
+   "x": 0.37,
+   "y": 0.8092,
    "copied_tokens": 637
   },
   {
    "id": "Venom_(character)",
    "name": "Venom (character)",
    "cluster": 8,
-   "x": 0.64,
-   "y": 0.32,
+   "x": 0.96,
+   "y": 0.6175,
    "copied_tokens": 967
   },
   {
    "id": "Wild_Child_(character)",
    "name": "Wild Child (character)",
    "cluster": 0,
-   "x": 0.0124,
-   "y": 0.0102,
+   "x": 0.4359,
+   "y": 0.04,
    "copied_tokens": 77
   }
  ],

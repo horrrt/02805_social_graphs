@@ -29,8 +29,8 @@ doing all seven openers, so pick one for the top of the page once the results ar
 
 | # | Section | Anchor | Owner | Script | Uses |
 | --- | --- | --- | --- | --- | --- |
-| 1 | Turn links into relationships | `#relations` | | `analysis/week05_relations.py` | pages, graph, weighted (communities) |
-| 2 | Catch Wikipedia copying itself | `#copying` | | `analysis/week05_copying.py` | pages |
+| 1 | Turn links into relationships | `#relations` | Gyula | `analysis/week05_relations.py` | pages, graph, weighted (communities) |
+| 2 | Catch Wikipedia copying itself | `#copying` | Gyula | `analysis/week05_copying.py` | pages |
 | 3 | A Marvel search engine in 20 lines | `#search` | | `analysis/week05_search.py` | pages |
 | 4 | Community autocomplete | `#autocomplete` | | `analysis/week05_autocomplete.py` | pages, weighted (communities) |
 | 5 | Heaps' law of the Marvel universe | `#heaps` | | `analysis/week05_heaps.py` | pages, graph (in-degree) |
@@ -104,6 +104,13 @@ import { slot, figure, echart, stripChart, concordance, passage, table, loadData
 `surprise`, `checked` and `limit`. `docs/assets/js/README.md` lists every component with an example, and
 `/styleguide/kit.html` draws each one with toy data. Use `stripChart` for any result against a null,
 `concordance` or `passage` for the text you checked.
+
+To make a section look like a Week 4 card, add `card w4-card w5-card` to its slots container:
+`<div class="w5-slots card w4-card w5-card">`. The six slots then take Week 4's layout: the question and
+answer across the top, what we did, what surprised us and the limitation in the text column, the figure
+beside them, and the checked passages across the bottom. Sections 1 and 2 use it; copy their markup (a
+`p.w5-question` and a `p.w4-answer` in the asked slot, a `div.notice` in the surprise slot, `rx-drawers`
+under what we did). Nothing else changes: the slot IDs, `slot()` and the kit test stay as they are.
 
 ## Shared decisions still open
 

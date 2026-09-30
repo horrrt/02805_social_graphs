@@ -65,7 +65,6 @@ SEED = 2805
 RUNS = 100
 SHUFFLES = 1000
 SAMPLE = 12          # sentences read per label
-CONCORDANCE = 8      # lines per label on the page
 DROP_SECTIONS = {"References", "External links", "Notes", "See also", "Further reading"}
 PRIORITY = ["killed", "family", "enemy", "ally", "teammate"]
 LEXICON = {
@@ -167,7 +166,7 @@ def precision(picked):
     with CHECKED.open(newline="", encoding="utf-8") as fh:
         for row in csv.DictReader(fh):
             verdicts[(row["source"], row["target"], row["label"])] = row
-    out = {}
+    out, lines = {}, []
     for label, rows in picked.items():
         read = [verdicts.get((r["source"], r["target"], label)) for r in rows]
         missing = [(r["source"], r["target"]) for r, v in zip(rows, read) if v is None]
@@ -177,7 +176,12 @@ def precision(picked):
         out[label] = {"read": len(read), "right": right, "share": round(right / len(read), 3),
                       "wrong_examples": [{"source": v["source"], "target": v["target"], "note": v["note"]}
                                          for v in read if v["verdict"] != "right"][:3]}
-    return out
+        for r, v in zip(rows, read):
+            s = r["sentence"]
+            lines.append({"label": label, "page": r["source"], "target": r["target"], "left": s[:r["start"]],
+                          "hit": s[r["start"]:r["end"]], "right": s[r["end"]:], "verdict": v["verdict"],
+                          "note": v["note"]})
+    return out, lines
 
 
 def crossing(arc_pairs, labels, member):
@@ -195,7 +199,7 @@ def main():
             for r in chosen:
                 print(f"{r['source']} -> {r['target']} [{r['name']}] {r['sentence']}")
         return 0
-    checked = precision(picked)
+    checked, lines = precision(picked)
 
     labelled = [r for r in rows if r.get("label") not in (None, "unlabelled")]
     arc_pairs = [(r["source"], r["target"]) for r in labelled]
@@ -238,13 +242,6 @@ def main():
 
     counts = Counter(r.get("label") for r in rows if r["found"])
     found = sum(r["found"] for r in rows)
-    concordance = []
-    for label in PRIORITY + ["unlabelled"]:
-        pool = sorted((r for r in rows if r.get("label") == label), key=lambda r: (r["source"], r["target"]))
-        for r in random.Random(f"{SEED}-{label}").sample(pool, min(CONCORDANCE, len(pool))):
-            s = r["sentence"]
-            concordance.append({"label": label, "page": r["source"], "target": r["target"],
-                                "left": s[:r["start"]], "hit": s[r["start"]:r["end"]], "right": s[r["end"]:]})
     q = [parts for parts, _ in partitions]
     out = {
         "meta": {"script": "analysis/week05_relations.py", "owner": "Gyula",
@@ -261,7 +258,8 @@ def main():
         "communities": {"runs": RUNS, "median_count": int(np.median([len(p) for p in q])),
                         "modularity_mean": round(float(np.mean([m for _, m in partitions])), 4)},
         "crossing": [compare(label) for label in PRIORITY],
-        "concordance": concordance,
+        # The sentences read by hand for the precision check, with the verdicts.
+        "concordance": lines,
     }
     check(PAGE, out)
     PAGE.parent.mkdir(parents=True, exist_ok=True)

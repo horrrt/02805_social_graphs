@@ -203,6 +203,8 @@ class Line(Model):
     left: str
     hit: str = Field(min_length=1)
     right: str
+    verdict: str
+    note: str
 
 
 class Communities(Model):

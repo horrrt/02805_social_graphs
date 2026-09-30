@@ -145,31 +145,35 @@ def summary(pairs, min_passage, g):
 
 
 def layout(net):
-    """Fixed positions in a 0-1 frame: each cluster laid out on its own
-    (Kamada-Kawai, a line for a pair) and the clusters packed in rows, largest first."""
+    """Fixed positions in a square 0-1 frame, for a figure beside the text:
+    clusters of three or more stacked in the middle (Kamada-Kawai each,
+    unweighted, in a box sized by its page count), their names to the left; the
+    pairs down the right edge, one row each, named once to the left of the pair."""
     clusters = sorted(nx.connected_components(net), key=lambda c: (-len(c), sorted(c)))
-    pos, x, y, row_h, gap = {}, 0.0, 0.0, 0.0, 0.08
-    for c in clusters:
+    big = [c for c in clusters if len(c) > 2]
+    pairs = [sorted(c) for c in clusters if len(c) == 2]
+    pos, top, pages = {}, 0.0, sum(len(c) for c in big)
+    for c in big:
         # A subgraph view can iterate its node set in hash order, and Kamada-Kawai
         # starts from that order: build the cluster with its nodes and links sorted.
         sub = nx.Graph()
         sub.add_nodes_from(sorted(c))
         sub.add_weighted_edges_from(sorted((min(u, v), max(u, v), w) for u, v, w in net.edges(c, data="weight")))
-        size = 0.10 + 0.07 * (len(c) - 2) ** 0.5 if len(c) > 2 else 0.10
-        local = nx.kamada_kawai_layout(sub) if len(c) > 2 else {n: (i, 0.0) for i, n in enumerate(sorted(c))}
+        # Unweighted: Kamada-Kawai reads a weight as a distance, which would push
+        # the pages that share the most words furthest apart.
+        local = nx.kamada_kawai_layout(sub, weight=None)
+        box = len(c) / pages
         xs = [p[0] for p in local.values()]
         ys = [p[1] for p in local.values()]
         span = max(max(xs) - min(xs), max(ys) - min(ys)) or 1
-        w = size * (max(xs) - min(xs)) / span
-        h = size * (max(ys) - min(ys)) / span
-        if x + w > 1 and x > 0:
-            x, y, row_h = 0.0, y + row_h + gap, 0.0
+        side = min(0.26, box - 0.08)
         for n, (px, py) in local.items():
-            pos[n] = (x + size * (px - min(xs)) / span, y + size * (py - min(ys)) / span)
-        x += w + gap
-        row_h = max(row_h, h)
-    height = max(p[1] for p in pos.values()) or 1
-    return {n: (round(px, 4), round(py / height if height > 1 else py, 4)) for n, (px, py) in pos.items()}
+            pos[n] = (0.37 + side * (px - min(xs)) / span, top + 0.04 + side * (py - min(ys)) / span)
+        top += box
+    for i, (a, b) in enumerate(pairs):
+        y = 0.03 + 0.94 * i / max(1, len(pairs) - 1)
+        pos[a], pos[b] = (0.90, y), (0.96, y)
+    return {n: (round(px, 4), round(py, 4)) for n, (px, py) in pos.items()}
 
 
 def quote(text, toks, s, e, limit=QUOTE_TOKENS):
