@@ -259,7 +259,7 @@ export default function Page() {
           </p>
         </footer>
       </div>
-      <PageScripts scripts={[{"src":"../../assets/js/pages/screen-test.js","module":true}]} />
+      <PageScripts page="screen-test" />
     </>
   );
 }

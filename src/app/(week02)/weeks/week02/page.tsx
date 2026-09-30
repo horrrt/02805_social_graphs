@@ -906,7 +906,7 @@ export default function Page() {
           <a href="../../weeks/week02/">Week 2</a>
         </span>
       </footer>
-      <PageScripts scripts={[{"src":"../../assets/js/transit.js?v=ts1","module":true}]} />
+      <PageScripts page="week02" />
     </>
   );
 }

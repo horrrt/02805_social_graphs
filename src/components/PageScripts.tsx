@@ -3,26 +3,29 @@
 // Runs a page's chart scripts once React has hydrated the page. The scripts
 // draw into the server-rendered markup, so they must not start before
 // hydration: React would find nodes it did not render and throw them away.
-// Each script is inserted with async = false, which keeps document order the
-// way the <script> tags at the bottom of the old static pages did.
+// Each page has one entry module (src/scripts/entries/) that imports its
+// scripts in the order the old static page ran them.
 import { useEffect } from "react";
 
-export type PageScript = { src: string; module?: boolean };
+const ENTRIES = {
+  "kit": () => import("@/scripts/entries/kit.js"),
+  "mockups": () => import("@/scripts/entries/mockups.js"),
+  "play": () => import("@/scripts/entries/play.js"),
+  "screen-test": () => import("@/scripts/entries/screen-test.js"),
+  "styleguide": () => import("@/scripts/entries/styleguide.js"),
+  "template": () => import("@/scripts/entries/template.js"),
+  "week01": () => import("@/scripts/entries/week01.js"),
+  "week02": () => import("@/scripts/entries/week02.js"),
+  "week03": () => import("@/scripts/entries/week03.js"),
+  "week04": () => import("@/scripts/entries/week04.js"),
+  "week05": () => import("@/scripts/entries/week05.js"),
+};
 
-const started = new Set<string>();
+export type PageName = keyof typeof ENTRIES;
 
-export default function PageScripts({ scripts }: { scripts: PageScript[] }) {
+export default function PageScripts({ page }: { page: PageName }) {
   useEffect(() => {
-    for (const { src, module } of scripts) {
-      const url = new URL(src, document.baseURI).href;
-      if (started.has(url)) continue;
-      started.add(url);
-      const el = document.createElement("script");
-      if (module) el.type = "module";
-      el.src = url;
-      el.async = false;
-      document.body.appendChild(el);
-    }
-  }, [scripts]);
+    ENTRIES[page]().catch((error: unknown) => console.error(`${page} scripts failed`, error));
+  }, [page]);
   return null;
 }

@@ -278,7 +278,7 @@ export default function Page() {
           The three verified findings above work without JavaScript. Turn JavaScript on to try the imagined edits.
         </p>
       </noscript>
-      <PageScripts scripts={[{"src":"../assets/js/signal.js?v=ts1","module":false}]} />
+      <PageScripts page="play" />
     </>
   );
 }

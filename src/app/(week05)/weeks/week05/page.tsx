@@ -1201,7 +1201,7 @@ export default function Page() {
       {" "}
       {" "}
       {" "}
-      <PageScripts scripts={[{"src":"../../assets/js/week05-relations.js?v=9","module":true},{"src":"../../assets/js/week05-copying.js?v=7","module":true},{"src":"../../assets/js/week05-search.js?v=7","module":true},{"src":"../../assets/js/week05-autocomplete.js?v=9","module":true},{"src":"../../assets/js/week05-heaps.js?v=7","module":true},{"src":"../../assets/js/week05-fame.js?v=6","module":true},{"src":"../../assets/js/week05-weird.js?v=6","module":true},{"src":"../../assets/js/week05-frame.js?v=5","module":true}]} />
+      <PageScripts page="week05" />
     </>
   );
 }

@@ -1,5 +1,8 @@
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
+import "@/styles/type.css";
+import "@/styles/corridor.css";
+import "@/styles/post.css";
 
 export const metadata: Metadata = {
   title: "Post template · Log–Log Legends",
@@ -32,9 +35,6 @@ export default function Layout({ children }: { children: ReactNode }) {
               Rules for the writing and the numbers: POST_GUIDE.md.
             */}
         <link href="../../assets/favicon.svg?v=2" rel="icon" type="image/svg+xml" />
-        <link href="../../assets/css/type.css?v=2" rel="stylesheet" />
-        <link href="../../assets/css/corridor.css?v=ts1" rel="stylesheet" />
-        <link href="../../assets/css/post.css?v=10" rel="stylesheet" />
       </head>
       <body className="corridor">{children}</body>
     </html>

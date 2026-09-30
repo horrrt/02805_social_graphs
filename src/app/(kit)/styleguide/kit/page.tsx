@@ -97,7 +97,7 @@ export default function Page() {
           </span>
         </div>
       </footer>
-      <PageScripts scripts={[{"src":"../../assets/js/pages/kit.js","module":true}]} />
+      <PageScripts page="kit" />
     </>
   );
 }

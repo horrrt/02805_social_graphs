@@ -1,5 +1,19 @@
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
+import "@/styles/type.css";
+import "@/styles/corridor.css";
+import "@/styles/post.css";
+import "@/styles/week04-deep.css";
+import "@/styles/week04-years.css";
+import "@/styles/week04-roles.css";
+import "@/styles/week04-methods.css";
+import "@/styles/week04-skills.css";
+import "@/styles/week04-skills-radar.css";
+import "@/styles/week04-vis-more.css";
+import "@/styles/week04-vis-intros.css";
+import "@/styles/week04-vis-staffing.css";
+import "@/styles/week04-entities.css";
+import "@/styles/week04-sources.css";
 
 export const metadata: Metadata = {
   title: "Who hires America's foreign workers? · Log–Log Legends",
@@ -13,20 +27,6 @@ export default function Layout({ children }: { children: ReactNode }) {
       <head>
         {/* Draft: keep noindex until the whole post is final. */}
         <link href="../../assets/favicon.svg?v=2" rel="icon" type="image/svg+xml" />
-        <link href="../../assets/css/type.css?v=2" rel="stylesheet" />
-        <link href="../../assets/css/corridor.css?v=ts1" rel="stylesheet" />
-        <link href="../../assets/css/post.css?v=4" rel="stylesheet" />
-        <link href="../../assets/css/week04-deep.css?v=ts1" rel="stylesheet" />
-        <link href="../../assets/css/week04-years.css?v=ts1" rel="stylesheet" />
-        <link href="../../assets/css/week04-roles.css?v=ts1" rel="stylesheet" />
-        <link href="../../assets/css/week04-methods.css?v=ts1" rel="stylesheet" />
-        <link href="../../assets/css/week04-skills.css?v=ts1" rel="stylesheet" />
-        <link href="../../assets/css/week04-skills-radar.css?v=ts1" rel="stylesheet" />
-        <link href="../../assets/css/week04-vis-more.css?v=ts1" rel="stylesheet" />
-        <link href="../../assets/css/week04-vis-intros.css?v=ts1" rel="stylesheet" />
-        <link href="../../assets/css/week04-vis-staffing.css?v=ts1" rel="stylesheet" />
-        <link href="../../assets/css/week04-entities.css?v=4" rel="stylesheet" />
-        <link href="../../assets/css/week04-sources.css?v=ts1" rel="stylesheet" />
       </head>
       <body className="corridor">{children}</body>
     </html>

@@ -1,0 +1,3479 @@
+// Corridor Control, week 3.
+//
+// Draws two country networks over the same world: migration from the UN
+// migrant stock, flights from OpenFlights. Everything here is a view of
+// docs/assets/data/week03_corridors.json and week03_edges.json, both written
+// by analysis/week03_corridor_control.py. No number is computed in this file
+// that is not a ratio or a rank of something already in that data.
+
+import { asset } from "./site.js";
+import { font, fs } from "./type-scale.mjs";
+
+// Not constants: the palette dropdown rewrites these from CSS custom
+// properties, so one definition in corridor.css drives the stylesheet, the SVG
+// variants and the 2D canvas at once.
+let PEOPLE = "#f2820c";
+let ACCESS = "#1f8fd6";
+let INK = "#0f2340";
+let MUTE = "#7a8fac";
+let GRID = "#e4ebf4";
+// The net layer's diverging pair. Green and red are what a reader expects for
+// gained and lost, and they are also the pairing red-green colourblindness
+// collapses, so the two steps are chosen rather than picked: under simulated
+// deuteranopia these sit 9.1 apart in OKLab ΔE, where the obvious
+// #2f9e63/#d1495b sits at 2.0 and reads as one colour.
+// The third series on the two heavy-tail charts. It used to be the page's
+// text ink, which fails a categorical palette on both lightness and chroma:
+// a near-black bar reads as axis furniture rather than as data. This violet
+// sits 11.6 apart from the blue under simulated deuteranopia, where the ink
+// and the blue sat close enough to merge in the dense middle of the chart.
+let OUTBOUND = "#6b4fbb";
+let GAIN = "#00875a";
+let LOSS = "#cc3311";
+
+export function rgb(hex) {
+  const value = (hex || "").trim().replace("#", "");
+  const full = value.length === 3 ? [...value].map((c) => c + c).join("") : value;
+  const n = Number.parseInt(full, 16);
+  return Number.isNaN(n) ? "128,128,128" : `${(n >> 16) & 255},${(n >> 8) & 255},${n & 255}`;
+}
+
+export function refreshPalette() {
+  const styles = getComputedStyle(document.body);
+  const read = (name, fallback) =>
+    (styles.getPropertyValue(name) || "").trim() || fallback;
+  PEOPLE = read("--people", "#f2820c");
+  ACCESS = read("--access", "#1f8fd6");
+  INK = read("--ink", "#0f2340");
+  MUTE = read("--ink-mute", "#7a8fac");
+  GRID = read("--line-soft", "#e4ebf4");
+  OUTBOUND = read("--outbound", "#6b4fbb");
+  GAIN = read("--gain", "#00875a");
+  LOSS = read("--loss", "#cc3311");
+  if (typeof SERIES !== "undefined") {
+    SERIES[0].colour = PEOPLE;
+    SERIES[1].colour = OUTBOUND;
+    SERIES[2].colour = ACCESS;
+  }
+  if (api) {
+    api.colours.PEOPLE = PEOPLE;
+    api.colours.ACCESS = ACCESS;
+    api.colours.INK = INK;
+    api.colours.MUTE = MUTE;
+    api.colours.GRID = GRID;
+    api.colours.OUTBOUND = OUTBOUND;
+    api.colours.GAIN = GAIN;
+    api.colours.LOSS = LOSS;
+  }
+  return { PEOPLE, ACCESS, INK, MUTE, GRID, OUTBOUND, GAIN, LOSS };
+}
+
+// How a corridor is drawn between two countries. Each renderer reads the same
+// spec and expresses it in its own terms, so "tapered" means the same idea on
+// a 2D canvas, an SVG path and a WebGL arc.
+export const ARC_STYLES = {
+  curve: { curvature: 0.16, altitude: 0.42, dashed: false, taper: false },
+  straight: { curvature: 0, altitude: 0, dashed: false, taper: false },
+  flow: { curvature: 0.16, altitude: 0.42, dashed: true, taper: false },
+  taper: { curvature: 0.16, altitude: 0.42, dashed: false, taper: true },
+};
+
+export function arcSpec() {
+  return ARC_STYLES[state.arcs] ?? ARC_STYLES.curve;
+}
+
+// How a link's weight becomes something you can see. Width is the honest
+// default: a doubling of people is a doubling of ink. Colour frees the width
+// for something else, at the cost of being read less accurately.
+export const LINK_ENCODINGS = {
+  width: { width: true, ramp: false },
+  colour: { width: false, ramp: true },
+  both: { width: true, ramp: true },
+  uniform: { width: false, ramp: false },
+};
+
+export const THICKNESS = { thin: 0.55, normal: 1, thick: 1.9 };
+
+// How much of its panel the globe fills. A number, not a pixel count, so a
+// 2D canvas, an SVG orthographic and two WebGL cameras can each express the
+// same choice in their own units.
+export const EARTH_SIZES = { small: 0.78, medium: 1, large: 1.12, huge: 1.22 };
+
+export function earthScale() {
+  return EARTH_SIZES[state.earth] ?? 1;
+}
+
+// The canvas globe's radius, shared by the drawing and the hit test so a
+// click always lands where the sphere was painted. Cap so the full sphere
+// always fits inside the panel (with a small margin for atmosphere/arcs).
+export function globeRadius(width, height) {
+  const room = Math.min(width, height) * 0.48;
+  return Math.min(room, Math.min(width, height) * 0.42 * earthScale());
+}
+
+export function linkSpec() {
+  return LINK_ENCODINGS[state.links] ?? LINK_ENCODINGS.width;
+}
+
+// A red-to-green ramp over the weight share. Kept perceptually ordered rather
+// than pretty: light green is the heaviest link, deep red the lightest.
+export function rampColour(share) {
+  const stops = [
+    [0.0, [190, 60, 48]],
+    [0.35, [214, 132, 52]],
+    [0.65, [196, 188, 66]],
+    [1.0, [70, 168, 92]],
+  ];
+  let lo = stops[0];
+  let hi = stops.at(-1);
+  for (let i = 0; i < stops.length - 1; i += 1) {
+    if (share >= stops[i][0] && share <= stops[i + 1][0]) {
+      lo = stops[i];
+      hi = stops[i + 1];
+      break;
+    }
+  }
+  const t = hi[0] === lo[0] ? 0 : (share - lo[0]) / (hi[0] - lo[0]);
+  return lo[1].map((c, i) => Math.round(c + (hi[1][i] - c) * t)).join(",");
+}
+
+// With a country selected, the other links can stay, fade, or go. Fading keeps
+// the shape of the whole network as context; hiding makes one country's
+// position unmistakable.
+export function linkAlpha(edge) {
+  if (state.focus === "all" || !state.selected) return 1;
+  const a = state.edges.countries[edge.oi];
+  const b = state.edges.countries[edge.di];
+  if (a === state.selected || b === state.selected) return 1;
+  // Every arc already carries its own alpha for weight, and on the twin map
+  // the lightest of those is 0.1. Multiplying that by a tenth leaves nothing
+  // on screen, so the faded state has to stay high enough to survive it: at
+  // 0.32 the rest of the world is still there and the selection is four times
+  // brighter than its neighbours.
+  return state.focus === "only" ? 0 : 0.32;
+}
+
+const $ = (id) => document.getElementById(id);
+
+// Data files sit in public/assets/data; asset() adds the deploy's build id.
+function dataUrl(name) {
+  return asset(`assets/data/${name}`);
+}
+
+const fmt = new Intl.NumberFormat("en-GB");
+const compact = new Intl.NumberFormat("en-GB", {
+  notation: "compact",
+  maximumFractionDigits: 1,
+});
+
+// The active renderer. Every drawing call on this page goes through it, so a
+// variant module can replace one visual (say the globe) and leave the rest of
+// the page exactly as it is. `installRenderer` merges, it does not swap.
+export const R = {};
+
+export function installRenderer(overrides) {
+  Object.assign(R, overrides);
+}
+
+const state = {
+  data: null,
+  edges: null,
+  flights: null,
+  cart: null,
+  world: null,
+  year: 2020,
+  selected: null,
+  layer: "both",
+  arcs: "curve",
+  links: "width",
+  thickness: "normal",
+  focus: "all",
+  dots: "on",
+  basemap: "photo",
+  earth: "large",
+  hover: null,
+  axisMode: { hist: "loglog", ccdf: "loglog" },
+  dash: 0,
+  rotation: -10,
+  dragging: false,
+};
+
+/* ------------------------------------------------------------------ canvas */
+
+// Canvases are sized in CSS and backed at device resolution, so text stays
+// crisp without every call site knowing about devicePixelRatio.
+function surface(canvas) {
+  const ratio = Math.min(window.devicePixelRatio || 1, 2);
+  const width = canvas.clientWidth || canvas.width;
+  const height = Math.round(width * (canvas.height / canvas.width));
+  canvas.style.height = `${height}px`;
+  canvas.width = Math.round(width * ratio);
+  canvas.height = Math.round(height * ratio);
+  const ctx = canvas.getContext("2d");
+  ctx.setTransform(ratio, 0, 0, ratio, 0, 0);
+  ctx.clearRect(0, 0, width, height);
+  return { ctx, width, height };
+}
+
+// Chart text takes its size from the type scale in type.css, read at draw time
+// so every chart on the page shares one set of sizes. Ticks, axis titles,
+// legends and notes are captions; names on the plot are small at 600; values
+// printed on a mark are small at 700; a panel's own title is body at 700.
+const NOTE = (weight = 400) => font("caption", weight);
+const NAME = (weight = 600) => font("small", weight);
+const VALUE = () => font("small", 700);
+const TITLE = () => font("body", 700);
+
+function axes(ctx, box, { xTicks, yTicks, xLabel, yLabel }) {
+  ctx.strokeStyle = GRID;
+  ctx.fillStyle = MUTE;
+  ctx.font = NOTE();
+  ctx.lineWidth = 1;
+  for (const tick of yTicks) {
+    const y = Math.round(box.y(tick.value)) + 0.5;
+    ctx.beginPath();
+    ctx.moveTo(box.left, y);
+    ctx.lineTo(box.right, y);
+    ctx.stroke();
+    ctx.textAlign = "right";
+    ctx.textBaseline = "middle";
+    ctx.fillText(tick.label, box.left - 6, y);
+  }
+  for (const tick of xTicks) {
+    const x = Math.round(box.x(tick.value)) + 0.5;
+    ctx.beginPath();
+    ctx.moveTo(x, box.top);
+    ctx.lineTo(x, box.bottom);
+    ctx.stroke();
+    ctx.textAlign = "center";
+    ctx.textBaseline = "top";
+    ctx.fillText(tick.label, x, box.bottom + 6);
+  }
+  ctx.fillStyle = MUTE;
+  ctx.font = NOTE();
+  if (xLabel) {
+    ctx.textAlign = "center";
+    ctx.fillText(xLabel, (box.left + box.right) / 2, box.bottom + 22);
+  }
+  if (yLabel) {
+    ctx.save();
+    ctx.translate(12, (box.top + box.bottom) / 2);
+    ctx.rotate(-Math.PI / 2);
+    ctx.textAlign = "center";
+    ctx.textBaseline = "top";
+    ctx.fillText(yLabel, 0, 0);
+    ctx.restore();
+  }
+}
+
+function logTicks(min, max) {
+  const out = [];
+  for (let e = Math.floor(Math.log10(Math.max(min, 1e-9))); e <= Math.ceil(Math.log10(max)); e += 1) {
+    const value = 10 ** e;
+    if (value < min * 0.9 || value > max * 1.1) continue;
+    out.push({ value, label: e >= 0 && e <= 4 ? fmt.format(value) : `10${sup(e)}` });
+  }
+  return out.length > 1 ? out : [{ value: min, label: fmt.format(min) }, { value: max, label: fmt.format(max) }];
+}
+
+function sup(exponent) {
+  const glyphs = { "-": "⁻", 0: "⁰", 1: "¹", 2: "²", 3: "³", 4: "⁴", 5: "⁵", 6: "⁶", 7: "⁷", 8: "⁸", 9: "⁹" };
+  return String(exponent)
+    .split("")
+    .map((c) => glyphs[c] ?? c)
+    .join("");
+}
+
+function frame(width, height, pad = { l: 46, r: 14, t: 12, b: 34 }) {
+  return { left: pad.l, right: width - pad.r, top: pad.t, bottom: height - pad.b };
+}
+
+// The two heavy-tail charts can be read on three scales. Log-log is the one
+// that makes a power law straight; linear is the one that shows how lopsided
+// the distribution really is; log-linear sits between them.
+function scaleFor(box, domain, axis, logged) {
+  return logged ? logScale(box, domain, axis) : linearScale(box, [0, domain[1]], axis);
+}
+
+function axisMode(chart) {
+  return state.axisMode[chart] ?? "loglog";
+}
+
+function modeFlags(chart) {
+  const mode = axisMode(chart);
+  return { x: mode === "loglog", y: mode !== "linear" };
+}
+
+function ticksFor(domain, logged, count = 5) {
+  if (logged) return logTicks(domain[0], domain[1]);
+  const out = [];
+  for (let i = 0; i <= count; i += 1) {
+    const value = (domain[1] / count) * i;
+    out.push({ value, label: value >= 1000 ? compact.format(value) : String(Math.round(value * 100) / 100) });
+  }
+  return out;
+}
+
+function logScale(box, domain, axis) {
+  const [lo, hi] = domain.map((v) => Math.log10(Math.max(v, 1e-9)));
+  const [a, b] = axis === "x" ? [box.left, box.right] : [box.bottom, box.top];
+  return (value) => a + ((Math.log10(Math.max(value, 1e-9)) - lo) / (hi - lo || 1)) * (b - a);
+}
+
+function linearScale(box, domain, axis) {
+  const [lo, hi] = domain;
+  const [a, b] = axis === "x" ? [box.left, box.right] : [box.bottom, box.top];
+  return (value) => a + ((value - lo) / (hi - lo || 1)) * (b - a);
+}
+
+/* -------------------------------------------------------------------- data */
+
+function year() {
+  return String(state.year);
+}
+
+function metrics(iso3, y = year()) {
+  return state.data.nodes[iso3]?.years?.[y] ?? null;
+}
+
+function node(iso3) {
+  return state.data.nodes[iso3];
+}
+
+function withMetrics(y = year()) {
+  return state.data.countries
+    .map((iso3) => ({ iso3, n: node(iso3), m: metrics(iso3, y) }))
+    .filter((row) => row.m);
+}
+
+// How much brokerage a country carries beyond what its partner count alone
+// would give it, in the units of betweenness itself. The z-score asks the same
+// question in units of the null spread, and for a country whose shuffled
+// betweenness is zero in most draws that spread collapses and the z inflates:
+// Palau clears z = 6 on a betweenness of 0.009, thirty times under Germany's.
+// This number does not have that failure mode, so it is what the broker list
+// is ranked by, with z kept as the significance test.
+function excessBetweenness(iso3, m) {
+  const stats = state.data.null_summary?.[iso3];
+  if (!stats || !m || m.betweenness === undefined) return null;
+  return m.betweenness - stats.null_mean;
+}
+
+// Countries whose betweenness is more than their number of partners predicts
+// when the corridor sizes are dealt out at random, strongest first. Section 3
+// labels the top of this list and section 4 lists it.
+function brokers(y) {
+  return withMetrics(y)
+    .filter((r) => (r.m.z ?? 0) >= 2)
+    .map((r) => ({ ...r, excess: excessBetweenness(r.iso3, r.m) ?? 0 }))
+    .sort((a, b) => b.excess - a.excess);
+}
+
+// Section 8 analyses one country, and that country is whatever is selected on
+// the page. Everything it needs is already per-country in the payload, so the
+// section works for any of the 238 without shipping a block for each.
+function spotlight() {
+  const iso3 = state.selected && node(state.selected)
+    ? state.selected
+    : state.data.focus.iso3;
+  const n = node(iso3);
+  const series = state.data.years
+    .map((year) => ({ year, ...(n.years[String(year)] ?? {}) }))
+    .filter((point) => point.in_strength !== undefined);
+  return { iso3, name: n.name, series, peers: peersOf(iso3) };
+}
+
+function haversine(a, b) {
+  const rad = Math.PI / 180;
+  const [lat1, lon1, lat2, lon2] = [a[0] * rad, a[1] * rad, b[0] * rad, b[1] * rad];
+  const h = Math.sin((lat2 - lat1) / 2) ** 2
+    + Math.cos(lat1) * Math.cos(lat2) * Math.sin((lon2 - lon1) / 2) ** 2;
+  return 2 * 6371 * Math.asin(Math.min(1, Math.sqrt(h)));
+}
+
+// The four countries closest to it on the ground, itself first. For Denmark
+// that is the Nordics and their neighbours; every other country gets the same
+// comparison without a hand-written list of peers.
+function peersOf(iso3) {
+  const y = String(state.data.null_year);
+  const home = node(iso3)?.coord;
+  const self = metrics(iso3, y);
+  if (!home || !self) return [];
+  const rows = withMetrics(y)
+    .filter((r) => r.iso3 !== iso3 && r.n.coord)
+    .map((r) => ({ ...r, km: haversine(home, r.n.coord) }))
+    .sort((a, b) => a.km - b.km)
+    .slice(0, 4);
+  return [{ iso3, n: node(iso3), m: self, km: 0 }, ...rows].map((r) => ({
+    iso3: r.iso3,
+    name: r.n.name,
+    km: Math.round(r.km),
+    in_degree: r.m.in_degree,
+    z: r.m.z,
+    flight_partners: r.n.flight_partners,
+    betweenness_rank: r.m.betweenness_rank,
+  }));
+}
+
+function flag(iso2) {
+  if (!iso2 || iso2.length !== 2) return "🌍";
+  return String.fromCodePoint(
+    ...[...iso2.toUpperCase()].map((c) => 0x1f1e6 + c.charCodeAt(0) - 65),
+  );
+}
+
+/* --------------------------------------------------------------- inspector */
+
+// What each measure means, in a sentence, on hover. A panel full of numbers
+// is only readable if the labels explain themselves.
+export const GLOSSARY = {
+  "Incoming migrants (stock)":
+    "People living here who were born somewhere else, counted as a stock. It is who is here now, not who arrived this year.",
+  "Outgoing migrants (stock)":
+    "People born here who live somewhere else. The mirror of incoming, counted the same way.",
+  "Origins represented":
+    "How many different countries send people here, counted as partners rather than people. In-degree. Beware: a country whose statistics office reports a coarse 'other' category will look like it has fewer origins than it really does.",
+  "Destinations sent to":
+    "How many different countries people from here have moved to. Out-degree.",
+  Betweenness:
+    "How often this country sits on the shortest path between two others. A heavy corridor counts as a short step, so it measures brokerage in a weighted sense. High betweenness means traffic between other countries passes through here.",
+  "Betweenness z-score":
+    "How surprising that betweenness is once the country's number of partners is held fixed and its corridor sizes are dealt out at random, measured against 100 degree-preserving shuffles. Above +2 is more brokering than the fixed partner count predicts, though a country with large corridors can still land there partly because of their size. A zero is ambiguous: it means the real value matches the shuffles, and for the half of the world that brokers nothing both are zero, so there is nothing to be surprised by.",
+  "Flight partners":
+    "How many other countries have a direct air route to or from here, counted once each way. Access, not people.",
+  "Flight routes":
+    "How many distinct airport-to-airport routes connect here to somewhere abroad. A route existing says nothing about seats or frequency.",
+  PageRank:
+    "A weighted random walk over the corridors, asking not how many people you draw but whether you draw them from countries that are themselves well-connected.",
+  Role:
+    "Where a country sits inside the communities of section 8, on two coordinates: z, how large it is among the other members of its own community, and P, how evenly its corridors are spread across all the communities. The seven names and the cut-offs between them are Guimer\u00e0 and Amaral's (Nature 433, 2005). Section 5 draws both coordinates.",
+  "k (in)": "In-degree: the number of countries that send people here.",
+  Rank: "Position among all countries on this measure, 1 being the highest.",
+  "z-score":
+    "Distance from the degree-preserving null, in standard deviations. Above +2 is more of a bridge than its partner count explains.",
+  "Migration links": "Country pairs with at least one person on them, in this year.",
+  "People counted": "Everyone on every link, added up. People with two migrations appear once, at their current residence.",
+  "Flight links": "Directed origin-destination pairs with at least one direct air route: A to B and B to A count separately, so a two-way route counts twice.",
+  "Countries with flights": "How many countries appear anywhere in the route data.",
+  "People on this link (stock)": "People born in the origin who live in the destination.",
+  "Share of the origin's emigrants": "What fraction of everyone who left the origin is on this one link.",
+  "Share of the destination's immigrants": "What fraction of everyone who arrived in the destination came along this link.",
+  "Rank among all links": "Where this corridor sits among every corridor in the world, by size.",
+  "Flight routes ": "Direct airport-to-airport routes between these two countries.",
+};
+
+function row(term, value, override) {
+  const note = override ?? GLOSSARY[term];
+  const attr = note ? ` class="explains" data-explain="${note.replace(/"/g, "&quot;")}"` : "";
+  return `<div><dt${attr}>${term}</dt><dd>${value}</dd></div>`;
+}
+
+let glossaryWired = false;
+function wireGlossary() {
+  if (glossaryWired) return;
+  glossaryWired = true;
+  document.addEventListener("pointermove", (event) => {
+    const target = event.target.closest?.("[data-explain]");
+    if (target) showTip(event, `<b>${target.textContent.trim()}</b><span>${target.dataset.explain}</span>`);
+    // Canvas renderers own their tooltip through a pointermove on the canvas
+    // itself; the d3 variant's charts are real SVG marks doing the same job,
+    // so both are exempt from this fallback or it undoes their showTip on
+    // every move.
+    else if (!event.target.closest?.("canvas, svg")) hideTip();
+  });
+}
+
+function renderInspector() {
+  const iso3 = state.selected;
+  if (!iso3) return;
+  const n = node(iso3);
+  const m = metrics(iso3);
+  $("sel-flag").textContent = flag(n.iso2);
+  $("sel-name").textContent = n.name;
+  $("sel-codes").textContent = `${iso3} · ${state.year}`;
+
+  const z = m?.z;
+  $("sel-stats").innerHTML = m
+    ? [
+        row("Incoming migrants (stock)", fmt.format(m.in_strength)),
+        row("Outgoing migrants (stock)", fmt.format(m.out_strength)),
+        row("Origins represented", `${m.in_degree} <span style="color:#7a8fac">(#${m.in_degree_rank})</span>`),
+        row("Destinations sent to", `${m.out_degree} <span style="color:#7a8fac">(#${m.out_degree_rank})</span>`),
+        row("Betweenness", `${m.betweenness.toFixed(5)} <span style="color:#7a8fac">(#${m.betweenness_rank})</span>`),
+        row("Betweenness z-score", z === undefined ? "— (2020 only)" : z.toFixed(2)),
+        row("PageRank", `${m.pagerank.toFixed(5)} <span style="color:#7a8fac">(#${m.pagerank_rank})</span>`),
+        row("Flight partners", fmt.format(n.flight_partners)),
+        row("Flight routes", fmt.format(n.flight_strength)),
+        roleRow(),
+      ].join("")
+    : `<div><dt>No migration data for ${state.year}</dt><dd>—</dd></div>`;
+
+  // Only the other end. The selected country was on both sides of every row,
+  // which pushed the long names onto a second line to say nothing: the
+  // heading already carries the direction, and section 8's tables read the
+  // same way.
+  const list = (items) =>
+    items.length
+      ? items
+          .map(
+            (c, i) =>
+              `<li><span>${i + 1}. ${node(c.other)?.name ?? c.other}</span>` +
+              `<b>${compact.format(c.weight)}</b></li>`,
+          )
+          .join("")
+      : "<li><span>None recorded</span><b>—</b></li>";
+  $("sel-in").innerHTML = list(n.top_in ?? []);
+  $("sel-out").innerHTML = list(n.top_out ?? []);
+
+  // Section 4's small panel tracks the same selection.
+  $("sc-flag").textContent = flag(n.iso2);
+  $("sc-name").textContent = n.name;
+  $("sc-codes").textContent = `${iso3} · ${state.data.null_year}`;
+  const nm = metrics(iso3, String(state.data.null_year));
+  $("sc-stats").innerHTML = nm
+    ? [
+        row("k (in)", nm.in_degree),
+        row("Betweenness", nm.betweenness.toFixed(5)),
+        row("Rank", `#${nm.betweenness_rank}`),
+        row("z-score", nm.z === undefined ? "—" : nm.z.toFixed(2)),
+      ].join("")
+    : "";
+  renderPrestigePanel(iso3);
+  // Every chart carries a marker for the selected country, so all of them
+  // redraw together and the selection reads the same everywhere on the page.
+  R.hist();
+  R.ccdf();
+  R.scatters();
+  R.prestige();
+  renderDenmarkPanels();
+  R.denmark();
+}
+
+function select(iso3) {
+  if (!iso3 || !node(iso3)) return;
+  state.selected = iso3;
+  // renderInspector redraws every chart that carries a marker, section 8
+  // included, so the whole page follows one selection.
+  renderInspector();
+  R.globe();
+  R.map();
+}
+
+/* ------------------------------------------------------------- picking
+
+   Every chart records the country behind each mark it draws, in CSS pixels
+   relative to its own canvas. One shared handler then turns a click anywhere
+   on any chart into a selection, and the whole page follows. Selecting never
+   scrolls: the reader stays where they were looking. */
+
+const pickable = new Map();
+
+// Every chart carries the same tooltip: what the mark is and what it is worth
+// on that chart's own axes.
+let tipEl = null;
+function tip() {
+  if (!tipEl) {
+    tipEl = document.createElement("div");
+    tipEl.className = "chart-tip";
+    tipEl.hidden = true;
+    document.body.appendChild(tipEl);
+  }
+  return tipEl;
+}
+
+function showTip(event, html) {
+  const el = tip();
+  el.innerHTML = html;
+  el.hidden = false;
+  const pad = 14;
+  const width = el.offsetWidth;
+  const left = Math.min(event.clientX + pad, window.innerWidth - width - 8);
+  const top = Math.max(event.clientY - el.offsetHeight - pad, 8);
+  el.style.left = `${left}px`;
+  el.style.top = `${top}px`;
+}
+
+function hideTip() {
+  if (tipEl) tipEl.hidden = true;
+}
+
+function collect(id) {
+  const marks = [];
+  pickable.set(id, marks);
+  return marks;
+}
+
+function nearestMark(canvas, event, radius = 22) {
+  const marks = pickable.get(canvas.id) ?? [];
+  const rect = canvas.getBoundingClientRect();
+  const x = event.clientX - rect.left;
+  const y = event.clientY - rect.top;
+  let best = null;
+  for (const mark of marks) {
+    // Bars (hist) expose a vertical hit strip; boxed marks (the Denmark
+    // panels) a rectangle; everything else a circular target around x/y.
+    let d;
+    if (mark.kind === "bar") {
+      const half = mark.half ?? 6;
+      const inX = Math.abs(mark.x - x) <= half;
+      const inY = y >= mark.y - 4 && y <= mark.bottom + 4;
+      if (!inX || !inY) continue;
+      d = Math.abs(mark.x - x);
+    } else if (mark.box) {
+      const [x0, y0, x1, y1] = mark.box;
+      if (x < x0 || x > x1 || y < y0 || y > y1) continue;
+      d = 0;
+    } else {
+      d = Math.hypot(mark.x - x, mark.y - y);
+      if (d > radius) continue;
+    }
+    if (!best || d < best.d) best = { mark, d };
+  }
+  return best?.mark ?? null;
+}
+
+function enablePicking(id) {
+  const canvas = $(id);
+  if (!canvas || canvas.dataset.picking) return;
+  canvas.dataset.picking = "on";
+  canvas.title = "Click a point to select that country";
+  canvas.addEventListener("pointermove", (event) => {
+    const mark = nearestMark(canvas, event);
+    canvas.style.cursor = mark ? "pointer" : "default";
+    if (mark?.label) showTip(event, mark.label);
+    else hideTip();
+    // The mark under the cursor grows, which makes a 2px dot a real target.
+    const iso3 = mark?.iso3 ?? null;
+    if (state.hover !== iso3) {
+      state.hover = iso3;
+      R.scatters();
+      R.prestige();
+      R.denmark();
+      R.hist();
+      R.ccdf();
+    }
+  });
+  canvas.addEventListener("pointerleave", () => {
+    hideTip();
+    if (state.hover) {
+      state.hover = null;
+      R.scatters();
+      R.prestige();
+      R.denmark();
+      R.hist();
+      R.ccdf();
+    }
+  });
+  canvas.addEventListener("click", (event) => {
+    const mark = nearestMark(canvas, event);
+    if (mark?.iso3) select(mark.iso3);
+  });
+}
+
+// Six labels from one cascade of rank tests, first match wins. "Top" means the
+// top tenth of all countries on that measure; "bottom half" means outside the
+// median. The rule itself lives in analysis/week03_corridor_control.py; these
+// strings say what it did, in the order it did it.
+// Guimer\u00e0 and Amaral's seven roles (Nature 433, 2005), in order from the
+// edge of a community to its centre. The old six labels were ours, and three
+// of them compared a 2020 migration rank against a flight snapshot from about
+// 2014; these come from one dated network and one published table.
+//
+// Colour runs cool for the non-hubs and warm for the hubs, deepening with the
+// participation coefficient inside each family, because the roles are cuts of
+// a continuum rather than seven separate kinds of country. The scatter is
+// where a reader should read the position; the tint only says which side of
+// the hub line a card is on.
+const TYPES = {
+  "ultra-peripheral": {
+    title: "Ultra-peripheral",
+    icon: "\u00b7",
+    tint: "#eef3f9",
+    fg: "#6b7f99",
+    what: "Below the hub line, with a participation coefficient of 0.05 or less: effectively everyone it exchanges moves inside a single community.",
+  },
+  peripheral: {
+    title: "Peripheral",
+    icon: "\u25cb",
+    tint: "#e4edf7",
+    fg: "#46618a",
+    what: "Below the hub line, participation up to 0.62. Mostly one community, with a few corridors reaching outside it. The largest group, and the one the thresholds were least made for.",
+  },
+  connector: {
+    title: "Connector",
+    icon: "\u21c4",
+    tint: "#dbe9f6",
+    fg: "#14618f",
+    what: "Below the hub line, participation above 0.62. Ordinary in size and spread across several communities at once.",
+  },
+  kinless: {
+    title: "Kinless",
+    icon: "\u2733",
+    tint: "#d3e6f7",
+    fg: "#0b4470",
+    what: "Below the hub line, participation above 0.80. Its corridors are split so evenly that no community is its home.",
+  },
+  "provincial hub": {
+    title: "Provincial hub",
+    icon: "\u25b2",
+    tint: "#fdeeda",
+    fg: "#9a5205",
+    what: "Above the hub line at z \u2265 2.5, participation 0.30 or less. Large where it lives and barely present anywhere else.",
+  },
+  "connector hub": {
+    title: "Connector hub",
+    icon: "\u2726",
+    tint: "#fbddc9",
+    fg: "#b4430b",
+    what: "Above the hub line, participation between 0.30 and 0.75. Large inside its own community and well spread across the rest.",
+  },
+  "kinless hub": {
+    title: "Kinless hub",
+    icon: "\u273a",
+    tint: "#f6dcf0",
+    fg: "#8d2b76",
+    what: "Above the hub line, participation above 0.75. Large, and anchored in no community at all.",
+  },
+};
+
+const ROLE_ORDER = [
+  "ultra-peripheral",
+  "peripheral",
+  "connector",
+  "kinless",
+  "provincial hub",
+  "connector hub",
+  "kinless hub",
+];
+
+// A country's row in the cartography, for the year on the slider. Missing
+// means it has no corridor above the 10,000-person floor that year, which is
+// a fact about the country and not a gap in the file.
+function cartRow(iso3, y = year()) {
+  return state.cart?.by_year?.[String(y)]?.[iso3] ?? null;
+}
+
+// Below this share of Louvain runs agreeing, the role is the algorithm's
+// randomness rather than the country's position, and the page draws it hollow.
+const CONFIDENT = () => state.cart?.confident ?? 0.9;
+
+function label(key) {
+  return TYPES[key]?.title ?? key ?? "—";
+}
+
+// The Role row explains the role it is showing, not the idea of roles.
+function typologyNote(key) {
+  const type = TYPES[key];
+  return type ? `${type.title}: ${type.what} ${GLOSSARY.Role}` : GLOSSARY.Role;
+}
+
+// The inspector's Role row. A country below the floor has no role rather than
+// a default one, and an unstable role says so where it is read, not only in
+// the methods.
+function roleRow() {
+  const r = cartRow(state.selected);
+  if (!r) {
+    return row(
+      "Role",
+      `<span class="chip">none</span>`,
+      `No corridor above ${fmt.format(state.cart?.threshold ?? 10000)} people in ${state.year}, ` +
+        `so this country is not in the graph the roles are measured on. ${GLOSSARY.Role}`,
+    );
+  }
+  const shaky = r.stability < CONFIDENT();
+  return row(
+    "Role",
+    `<span class="chip">${label(r.role)}</span>` +
+      `<span style="color:#7a8fac"> z ${r.z.toFixed(2)} \u00b7 P ${r.p.toFixed(2)}</span>` +
+      (shaky ? `<span style="color:#7a8fac"> \u00b7 ${Math.round(r.stability * 100)}% agreed</span>` : ""),
+    (shaky
+      ? `Only ${Math.round(r.stability * 100)}% of the Louvain runs gave this role, so it sits on a ` +
+        `threshold and the name is not reliable. `
+      : "") + typologyNote(r.role),
+  );
+}
+
+/* ------------------------------------------------------------------- globe */
+
+function project(lat, lon, radius, cx, cy, rotation) {
+  const phi = (lat * Math.PI) / 180;
+  const lambda = ((lon + rotation) * Math.PI) / 180;
+  const cosPhi = Math.cos(phi);
+  const x = cosPhi * Math.sin(lambda);
+  const y = Math.sin(phi);
+  const z = cosPhi * Math.cos(lambda);
+  return { x: cx + x * radius, y: cy - y * radius, visible: z > 0, z };
+}
+
+// Country outlines, so a corridor lands somewhere recognisable instead of on a
+// blank sphere. `project` returns visibility, so the globe hides the far side
+// by breaking each ring into runs of visible points.
+// Clicking a country means clicking its territory, not the dot at its
+// centroid. Both maps turn a click into a longitude and latitude and then ask
+// which polygon contains it, so Russia is as easy to hit as Luxembourg.
+function pointInRing(lon, lat, ring) {
+  let inside = false;
+  for (let i = 0, j = ring.length - 1; i < ring.length; j = i, i += 1) {
+    const [xi, yi] = ring[i];
+    const [xj, yj] = ring[j];
+    if (yi > lat !== yj > lat && lon < ((xj - xi) * (lat - yi)) / (yj - yi) + xi) {
+      inside = !inside;
+    }
+  }
+  return inside;
+}
+
+function countryAt(lon, lat) {
+  if (!state.world) return null;
+  for (const feature of state.world.features) {
+    const iso3 = feature.properties.iso3;
+    if (!iso3 || !metrics(iso3)) continue;
+    const geometry = feature.geometry;
+    const polygons =
+      geometry.type === "Polygon" ? [geometry.coordinates] : geometry.coordinates;
+    for (const polygon of polygons) {
+      // First ring is the outline, the rest are holes.
+      if (!pointInRing(lon, lat, polygon[0])) continue;
+      const inHole = polygon.slice(1).some((ring) => pointInRing(lon, lat, ring));
+      if (!inHole) return iso3;
+    }
+  }
+  return null;
+}
+
+// Screen point back to a longitude and latitude, one per projection.
+function unprojectMap(x, y, width, height) {
+  return [(x / width) * 360 - 180, 90 - (y / height) * 180];
+}
+
+function unprojectGlobe(x, y, radius, cx, cy, rotation) {
+  const dx = (x - cx) / radius;
+  const dy = (cy - y) / radius;
+  const rho = Math.hypot(dx, dy);
+  if (rho > 1) return null;
+  const c = Math.asin(rho);
+  const lat = rho === 0 ? 0 : Math.asin((dy * Math.sin(c)) / rho);
+  const lon = Math.atan2(dx * Math.sin(c), rho * Math.cos(c));
+  return [((lon * 180) / Math.PI) - rotation, (lat * 180) / Math.PI];
+}
+
+function eachRing(feature, visit) {
+  const geometry = feature.geometry;
+  const polygons =
+    geometry.type === "Polygon" ? [geometry.coordinates] : geometry.coordinates;
+  for (const polygon of polygons) for (const ring of polygon) visit(ring);
+}
+
+// The selected country is filled in the migration colour and outlined in
+// white; whatever the cursor is over gets a lighter fill.
+/* ------------------------------------------------------------- the basemap
+
+   How the world itself is drawn, independently of which library draws the
+   corridors. Outlines are the default because a boundary is what makes a
+   corridor placeable; the photograph is what the planet actually looks like.
+   Any canvas renderer calls these, and the WebGL ones map the same choice onto
+   their own texture settings. */
+
+const TEXTURE_URL = asset("assets/textures/earth-day-2048.jpg").href;
+let texture = null;
+let texturePending = false;
+
+export function earthTexture(onReady) {
+  if (texture || texturePending) return texture;
+  texturePending = true;
+  const image = new Image();
+  image.onload = () => {
+    texture = image;
+    texturePending = false;
+    onReady?.();
+  };
+  image.onerror = () => {
+    texturePending = false;
+  };
+  image.src = TEXTURE_URL;
+  return null;
+}
+
+export function textureURL() {
+  return TEXTURE_URL;
+}
+
+// An equirectangular photograph sampled through the orthographic projection.
+// Done at half resolution into an offscreen canvas and scaled up, because the
+// globe redraws on every drag frame and nobody can see the difference.
+const sphereCache = { key: "", canvas: null };
+
+// The texture is decoded once. Re-reading a 2048x1024 image on every rotation
+// cost 74ms a frame, which is thirteen frames a second while dragging.
+const decoded = { image: null, pixels: null, width: 0, height: 0 };
+
+function texturePixels(image) {
+  if (decoded.image === image) return decoded;
+  const source = document.createElement("canvas");
+  source.width = image.width;
+  source.height = image.height;
+  const sctx = source.getContext("2d", { willReadFrequently: true });
+  sctx.drawImage(image, 0, 0);
+  decoded.image = image;
+  decoded.pixels = sctx.getImageData(0, 0, image.width, image.height).data;
+  decoded.width = image.width;
+  decoded.height = image.height;
+  return decoded;
+}
+
+export function paintPhotoGlobe(ctx, radius, cx, cy) {
+  const image = earthTexture(() => {
+    R.globe();
+  });
+  if (!image) return false;
+
+  // Sampled at roughly two thirds of the drawn size and scaled up. The globe
+  // is a few hundred pixels across and the softening is invisible next to the
+  // frame rate it buys.
+  const size = Math.max(48, Math.round(radius * 0.62));
+  // Two degrees of rotation is under a pixel of movement at this size, so the
+  // key is snapped: a drag reuses one sphere for several frames.
+  const key = `${size}:${Math.round(state.rotation / 2)}`;
+  if (sphereCache.key !== key) {
+    const off = document.createElement("canvas");
+    off.width = size * 2;
+    off.height = size * 2;
+    off.getContext("2d").imageSmoothingQuality = "high";
+    const octx = off.getContext("2d");
+
+    const { pixels, width: tw, height: th } = texturePixels(image);
+    const out = octx.createImageData(off.width, off.height);
+    for (let y = 0; y < off.height; y += 1) {
+      for (let x = 0; x < off.width; x += 1) {
+        const dx = (x - size) / size;
+        const dy = (size - y) / size;
+        const rho = Math.hypot(dx, dy);
+        const target = (y * off.width + x) * 4;
+        if (rho > 1) continue;
+        const c = Math.asin(rho);
+        const lat = rho === 0 ? 0 : Math.asin((dy * Math.sin(c)) / rho);
+        const lon = Math.atan2(dx * Math.sin(c), rho * Math.cos(c));
+        const lonDeg = ((lon * 180) / Math.PI) - state.rotation;
+        const sx = Math.floor((((lonDeg + 180) % 360 + 360) % 360) / 360 * tw);
+        const sy = Math.floor(((90 - (lat * 180) / Math.PI) / 180) * th);
+        const from = (sy * tw + sx) * 4;
+        out.data[target] = pixels[from];
+        out.data[target + 1] = pixels[from + 1];
+        out.data[target + 2] = pixels[from + 2];
+        out.data[target + 3] = 255;
+      }
+    }
+    octx.putImageData(out, 0, 0);
+    sphereCache.key = key;
+    sphereCache.canvas = off;
+  }
+  ctx.drawImage(sphereCache.canvas, cx - radius, cy - radius, radius * 2, radius * 2);
+  return true;
+}
+
+function landFill(iso3, base) {
+  if (iso3 && iso3 === state.selected) return PEOPLE;
+  if (iso3 && iso3 === state.hover) return "#3f86c4";
+  return base;
+}
+
+function drawLandGlobe(ctx, radius, cx, cy) {
+  if (!state.world) return;
+  ctx.lineWidth = 0.6;
+  for (const feature of state.world.features) {
+    const iso3 = feature.properties.iso3;
+    ctx.fillStyle = landFill(iso3, "#245f92");
+    ctx.strokeStyle =
+      iso3 === state.selected ? "#ffffff" : "rgba(178,215,248,0.55)";
+    eachRing(feature, (ring) => {
+      let open = false;
+      ctx.beginPath();
+      for (const [lon, lat] of ring) {
+        const p = project(lat, lon, radius, cx, cy, state.rotation);
+        if (!p.visible) {
+          open = false;
+          continue;
+        }
+        if (open) ctx.lineTo(p.x, p.y);
+        else {
+          ctx.moveTo(p.x, p.y);
+          open = true;
+        }
+      }
+      ctx.fill();
+      ctx.stroke();
+    });
+  }
+}
+
+function drawLandMap(ctx, width, height) {
+  if (!state.world) return;
+  ctx.lineWidth = 0.6;
+  for (const feature of state.world.features) {
+    const iso3 = feature.properties.iso3;
+    ctx.fillStyle = landFill(iso3, "#16416c");
+    ctx.strokeStyle =
+      iso3 === state.selected ? "#ffffff" : "rgba(150,196,240,0.45)";
+    eachRing(feature, (ring) => {
+      ctx.beginPath();
+      ring.forEach(([lon, lat], i) => {
+        const p = mapPoint([lat, lon], width, height);
+        if (i) ctx.lineTo(p.x, p.y);
+        else ctx.moveTo(p.x, p.y);
+      });
+      ctx.closePath();
+      ctx.fill();
+      ctx.stroke();
+    });
+  }
+}
+
+/* ------------------------------------------------------------ the net layer
+
+   Arcs answer "who goes where". This answers a question they hide: after all
+   of it, is a country up or down? Green is a country with more foreign-born
+   residents than it has people living abroad, red the other way. Both sides
+   are stocks out of the same DESA table the rest of the page runs on, so the
+   number is a standing balance and not a flow in the slider's year. */
+
+function netBalance(iso3, y = year()) {
+  const m = metrics(iso3, y);
+  if (!m) return null;
+  return (m.in_strength ?? 0) - (m.out_strength ?? 0);
+}
+
+// Bands rather than a ramp. The balances run from Russia at minus ten million
+// to the United States at plus fifty, and any continuous scale over that range
+// either flattens the middle or saturates it: on a signed log, a hundred
+// thousand people is already two thirds of the way to the top. Five classes a
+// side, each roughly ten times the last, and the legend can then say what a
+// colour means instead of gesturing at more and less.
+const NET_BANDS = [10000, 100000, 1000000, 10000000];
+
+function netBand(net) {
+  if (net === null) return null;
+  const size = Math.abs(net);
+  let step = 0;
+  while (step < NET_BANDS.length && size >= NET_BANDS[step]) step += 1;
+  return { step, sign: Math.sign(net) };
+}
+
+function netFill(net) {
+  const band = netBand(net);
+  if (!band) return "rgba(120,140,165,0.30)";
+  const [r, g, b] = rgb(band.sign >= 0 ? GAIN : LOSS).split(",").map(Number);
+  // The flattest band keeps a wash of its own colour, so "roughly even" reads
+  // as a class rather than as missing data.
+  const alpha = 0.22 + (band.step / NET_BANDS.length) * 0.74;
+  return `rgba(${r},${g},${b},${alpha.toFixed(3)})`;
+}
+
+// The same band, in the units each renderer wants: a CSS colour for the two
+// canvas maps and a byte array for deck.gl. One definition, so the layer means
+// the same thing whichever library is drawing it.
+function netColour(iso3, y = year()) {
+  const net = netBalance(iso3, y);
+  const band = netBand(net);
+  if (!band) return { css: "rgba(120,140,165,0.30)", rgba: [120, 140, 165, 76], net };
+  const [r, g, b] = rgb(band.sign >= 0 ? GAIN : LOSS).split(",").map(Number);
+  const alpha = 0.22 + (band.step / NET_BANDS.length) * 0.74;
+  return {
+    css: `rgba(${r},${g},${b},${alpha.toFixed(3)})`,
+    rgba: [r, g, b, Math.round(alpha * 255)],
+    net,
+  };
+}
+
+function drawNetMap(ctx, width, height) {
+  if (!state.world) return;
+  ctx.lineWidth = 0.6;
+  for (const feature of state.world.features) {
+    const iso3 = feature.properties.iso3;
+    const net = netBalance(iso3);
+    ctx.fillStyle = iso3 === state.selected ? PEOPLE : netFill(net);
+    ctx.strokeStyle =
+      iso3 === state.selected || iso3 === state.hover
+        ? "#ffffff"
+        : "rgba(150,196,240,0.35)";
+    ctx.lineWidth = iso3 === state.hover ? 1.4 : 0.6;
+    eachRing(feature, (ring) => {
+      ctx.beginPath();
+      ring.forEach(([lon, lat], i) => {
+        const p = mapPoint([lat, lon], width, height);
+        if (i) ctx.lineTo(p.x, p.y);
+        else ctx.moveTo(p.x, p.y);
+      });
+      ctx.closePath();
+      ctx.fill();
+      ctx.stroke();
+    });
+  }
+  netLegend(ctx, width, height);
+  netNote();
+}
+
+// The panel beside the map counts links and people, neither of which changes
+// when the layer does. This line does, and it moves with the year slider.
+function netNote() {
+  const host = $("net-note");
+  if (!host) return;
+  let up = 0;
+  let down = 0;
+  let best = null;
+  let worst = null;
+  for (const iso3 of state.data.countries) {
+    const net = netBalance(iso3);
+    if (net === null) continue;
+    if (net >= 0) up += 1;
+    else down += 1;
+    if (!best || net > best.net) best = { iso3, net };
+    if (!worst || net < worst.net) worst = { iso3, net };
+  }
+  if (!best) return;
+  host.innerHTML =
+    `In ${year()}, <b>${up}</b> countries hold more foreign-born residents ` +
+    `than they have people living abroad and <b>${down}</b> hold fewer. ` +
+    `The largest surplus is ${node(best.iso3).name}, up ` +
+    `${compact.format(best.net)}; the largest deficit is ` +
+    `${node(worst.iso3).name}, down ${compact.format(-worst.net)}. ` +
+    `Both sides are stocks from the same table, so this is a standing balance ` +
+    `and not a count of anybody who moved this year.`;
+}
+
+function netLegend(ctx, width, height) {
+  const labels = ["under 10k", "10k", "100k", "1m", "10m+"];
+  // Wide enough that the centre label clears "gained 10m+" at caption size.
+  const box = 22;
+  const left = 14;
+  const top = height - 46;
+  const cells = NET_BANDS.length + 1;
+  const wide = cells * 2 * box + 108;
+
+  ctx.fillStyle = "rgba(8,26,49,0.78)";
+  ctx.fillRect(left - 8, top - 22, wide, 52);
+  ctx.font = NOTE(600);
+  ctx.textBaseline = "top";
+  ctx.textAlign = "left";
+  ctx.fillStyle = "#cfe0f2";
+  ctx.fillText("Net balance of people", left, top - 18);
+
+  // Losses run outward to the left of centre, gains outward to the right, so
+  // the two ramps meet where a country is level.
+  const mid = left + cells * box;
+  for (let step = NET_BANDS.length; step >= 0; step -= 1) {
+    const i = NET_BANDS.length - step;
+    ctx.fillStyle = netFill(-(NET_BANDS[step - 1] ?? 1));
+    ctx.fillRect(left + i * box, top, box - 1, 11);
+    ctx.fillStyle = netFill(NET_BANDS[step - 1] ?? 1);
+    ctx.fillRect(mid + (cells - 1 - i) * box, top, box - 1, 11);
+  }
+  ctx.fillStyle = "#9fbcdb";
+  ctx.font = NOTE();
+  ctx.fillText(`lost ${labels.at(-1)}`, left, top + 14);
+  ctx.textAlign = "center";
+  ctx.fillText(labels[0], mid, top + 14);
+  ctx.textAlign = "right";
+  ctx.fillText(`gained ${labels.at(-1)}`, mid + cells * box - 1, top + 14);
+  ctx.textAlign = "left";
+  ctx.fillText("grey: no figure", mid + cells * box + 10, top + 1);
+}
+
+function controlPoint(a, b, lift) {
+  const mx = (a.x + b.x) / 2;
+  const my = (a.y + b.y) / 2;
+  const dx = b.x - a.x;
+  const dy = b.y - a.y;
+  const len = Math.hypot(dx, dy) || 1;
+  return { x: mx - (dy / len) * len * lift, y: my + (dx / len) * len * lift };
+}
+
+function bezier(a, c, b, t) {
+  const u = 1 - t;
+  return {
+    x: u * u * a.x + 2 * u * t * c.x + t * t * b.x,
+    y: u * u * a.y + 2 * u * t * c.y + t * t * b.y,
+  };
+}
+
+// The photograph has no borders, so the selection still needs an outline.
+function outlineSelected(ctx, radius, cx, cy) {
+  const feature = state.world?.features.find(
+    (f) => f.properties.iso3 === state.selected,
+  );
+  if (!feature) return;
+  ctx.strokeStyle = "#ffffff";
+  ctx.fillStyle = `${PEOPLE}66`;
+  ctx.lineWidth = 1.4;
+  eachRing(feature, (ring) => {
+    let open = false;
+    ctx.beginPath();
+    for (const [lon, lat] of ring) {
+      const p = project(lat, lon, radius, cx, cy, state.rotation);
+      if (!p.visible) {
+        open = false;
+        continue;
+      }
+      if (open) ctx.lineTo(p.x, p.y);
+      else {
+        ctx.moveTo(p.x, p.y);
+        open = true;
+      }
+    }
+    ctx.fill();
+    ctx.stroke();
+  });
+}
+
+function outlineSelectedMap(ctx, width, height) {
+  const feature = state.world?.features.find(
+    (f) => f.properties.iso3 === state.selected,
+  );
+  if (!feature) return;
+  ctx.strokeStyle = "#ffffff";
+  ctx.fillStyle = `${PEOPLE}66`;
+  ctx.lineWidth = 1.4;
+  eachRing(feature, (ring) => {
+    ctx.beginPath();
+    ring.forEach(([lon, lat], i) => {
+      const p = mapPoint([lat, lon], width, height);
+      if (i) ctx.lineTo(p.x, p.y);
+      else ctx.moveTo(p.x, p.y);
+    });
+    ctx.closePath();
+    ctx.fill();
+    ctx.stroke();
+  });
+}
+
+function arc(ctx, a, b, lift) {
+  const spec = arcSpec();
+  const bend = spec.curvature === 0 ? 0 : lift;
+  const c = controlPoint(a, b, bend);
+
+  if (spec.taper) {
+    // Width carries direction: heavy where people leave, thin where they land.
+    const width = ctx.lineWidth;
+    const steps = 14;
+    let previous = a;
+    for (let i = 1; i <= steps; i += 1) {
+      const point = bezier(a, c, b, i / steps);
+      ctx.lineWidth = width * (1.25 - (i / steps) * 1.05);
+      ctx.beginPath();
+      ctx.moveTo(previous.x, previous.y);
+      ctx.lineTo(point.x, point.y);
+      ctx.stroke();
+      previous = point;
+    }
+    ctx.lineWidth = width;
+    return;
+  }
+
+  if (spec.dashed) {
+    ctx.save();
+    ctx.setLineDash([6, 7]);
+    ctx.lineDashOffset = -state.dash;
+  }
+  ctx.beginPath();
+  ctx.moveTo(a.x, a.y);
+  if (bend === 0) ctx.lineTo(b.x, b.y);
+  else ctx.quadraticCurveTo(c.x, c.y, b.x, b.y);
+  ctx.stroke();
+  if (spec.dashed) ctx.restore();
+}
+
+// A corridor whose shorter way round crosses the date line (Philippines to
+// the US, say) used to be dropped outright once it stretched more than 0.6
+// of the map's width, because a straight arc across the whole canvas reads
+// as noise, not a route. Wrapping it is closer to true: draw it twice, each
+// half shifted a full map width so it approaches from the near edge instead
+// of stretching across the middle. Only one half falls inside the canvas;
+// the other draws off-screen and is clipped for free.
+function wrappedArc(ctx, a, b, lift, width) {
+  const dx = b.x - a.x;
+  if (Math.abs(dx) <= width / 2) {
+    arc(ctx, a, b, lift);
+    return;
+  }
+  const shift = dx > 0 ? -width : width;
+  arc(ctx, a, { x: b.x + shift, y: b.y }, lift);
+  arc(ctx, { x: a.x - shift, y: a.y }, b, lift);
+}
+
+// Only the flowing style animates, and only when the reader has not asked for
+// less motion. Twenty frames a second is plenty for a dash offset.
+let flowTimer = null;
+function syncFlow() {
+  const wants =
+    arcSpec().dashed &&
+    !window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  if (wants && !flowTimer) {
+    flowTimer = setInterval(() => {
+      state.dash = (state.dash + 1.6) % 13;
+      R.globe();
+      R.map();
+    }, 50);
+  } else if (!wants && flowTimer) {
+    clearInterval(flowTimer);
+    flowTimer = null;
+    state.dash = 0;
+  }
+}
+
+// The globe and the flat map share one edge budget: the heaviest corridors
+// only. Drawing all 9,095 would be a solid orange disc.
+// The heaviest corridors of the year, plus every corridor of the selected
+// country. Without that second half, selecting a small country while the rest
+// of the network is faded leaves the globe blank: Denmark's biggest corridor
+// is 42,000 people and the cut for the top 500 is several times that, so
+// there would be nothing bright left to look at.
+const SELECTED_EDGES = 60;
+
+function topEdges(limit) {
+  const y = state.data.years.indexOf(state.year);
+  const list = [];
+  const mine = [];
+  const selected = state.focus === "all" ? null : state.selected;
+  for (const [oi, di, series] of state.edges.edges) {
+    const weight = series[y] ?? 0;
+    if (weight <= 0) continue;
+    const edge = { oi, di, weight };
+    list.push(edge);
+    if (
+      selected &&
+      (state.edges.countries[oi] === selected || state.edges.countries[di] === selected)
+    )
+      mine.push(edge);
+  }
+  list.sort((a, b) => b.weight - a.weight);
+  const kept = list.slice(0, limit);
+  if (!mine.length) return kept;
+  mine.sort((a, b) => b.weight - a.weight);
+  const seen = new Set(kept.map((e) => `${e.oi}-${e.di}`));
+  for (const edge of mine.slice(0, SELECTED_EDGES))
+    if (!seen.has(`${edge.oi}-${edge.di}`)) kept.push(edge);
+  return kept;
+}
+
+function flightEdges(limit) {
+  // Own file, independent of whether the pair also has a DESA migration row
+  // (see main()): week03_flights.json carries every directed pair with a
+  // route, all 4,331 of them, not just the 2,583 that also moved people.
+  const list = (state.flights?.edges ?? []).map(([oi, di, routes]) => ({ oi, di, routes }));
+  list.sort((a, b) => b.routes - a.routes);
+  return list.slice(0, limit);
+}
+
+function drawGlobe() {
+  refreshPalette();
+  const canvas = $("globe-canvas");
+  if (!canvas || !state.data) return;
+  const { ctx, width, height } = surface(canvas);
+  const radius = globeRadius(width, height);
+  const cx = width / 2;
+  const cy = height / 2;
+
+  const sphere = ctx.createRadialGradient(
+    cx - radius * 0.3,
+    cy - radius * 0.35,
+    radius * 0.1,
+    cx,
+    cy,
+    radius,
+  );
+  sphere.addColorStop(0, "#14406e");
+  sphere.addColorStop(0.7, "#0d2b4c");
+  sphere.addColorStop(1, "#071d36");
+  ctx.fillStyle = sphere;
+  ctx.beginPath();
+  ctx.arc(cx, cy, radius, 0, Math.PI * 2);
+  ctx.fill();
+  if (state.basemap === "photo") {
+    if (!paintPhotoGlobe(ctx, radius, cx, cy)) drawLandGlobe(ctx, radius, cx, cy);
+    if (state.selected) outlineSelected(ctx, radius, cx, cy);
+  } else if (state.basemap !== "none") {
+    drawLandGlobe(ctx, radius, cx, cy);
+  }
+
+  ctx.strokeStyle = "rgba(160,200,240,0.18)";
+  ctx.lineWidth = 1;
+  for (let lat = -60; lat <= 60; lat += 30) {
+    ctx.beginPath();
+    for (let lon = -180; lon <= 180; lon += 3) {
+      const p = project(lat, lon, radius, cx, cy, state.rotation);
+      if (!p.visible) continue;
+      ctx.lineTo(p.x, p.y);
+    }
+    ctx.stroke();
+  }
+  for (let lon = -180; lon < 180; lon += 30) {
+    ctx.beginPath();
+    for (let lat = -90; lat <= 90; lat += 3) {
+      const p = project(lat, lon, radius, cx, cy, state.rotation);
+      if (!p.visible) continue;
+      ctx.lineTo(p.x, p.y);
+    }
+    ctx.stroke();
+  }
+
+  const points = new Map();
+  state.edges.countries.forEach((iso3, i) => {
+    const coord = node(iso3)?.coord;
+    if (coord) points.set(i, project(coord[0], coord[1], radius, cx, cy, state.rotation));
+  });
+
+  const edges = topEdges(500);
+  const heaviest = edges[0]?.weight ?? 1;
+  const link = linkSpec();
+  const scale = THICKNESS[state.thickness] ?? 1;
+  const base = rgb(PEOPLE);
+  ctx.lineCap = "round";
+  for (const edge of edges) {
+    const a = points.get(edge.oi);
+    const b = points.get(edge.di);
+    if (!a || !b || !a.visible || !b.visible) continue;
+    const alpha = linkAlpha(edge);
+    if (alpha === 0) continue;
+    const share = Math.sqrt(edge.weight / heaviest);
+    const tint = link.ramp ? rampColour(share) : base;
+    ctx.strokeStyle = `rgba(${tint},${(0.24 + share * 0.66) * alpha})`;
+    ctx.lineWidth = (link.width ? 0.6 + share * 3.4 : 1.5) * scale;
+    arc(ctx, a, b, 0.16);
+  }
+
+  // With the territories filled and highlighted, the dots are often redundant,
+  // so they can be turned off entirely.
+  ctx.fillStyle = "rgba(196,222,248,0.62)";
+  for (const [i, p] of state.dots === "off" ? [] : points) {
+    if (!p.visible) continue;
+    const iso3 = state.edges.countries[i];
+    const m = metrics(iso3);
+    if (!m) continue;
+    const size = 0.6 + Math.sqrt(m.in_degree) * 0.14;
+    ctx.beginPath();
+    ctx.arc(p.x, p.y, size, 0, Math.PI * 2);
+    ctx.fill();
+  }
+
+  if (state.selected) {
+    const i = state.edges.countries.indexOf(state.selected);
+    const p = points.get(i);
+    if (p && p.visible) {
+      ctx.strokeStyle = "#fff";
+      ctx.lineWidth = 1.5;
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, 6, 0, Math.PI * 2);
+      ctx.stroke();
+      const name = node(state.selected).name;
+      ctx.font = NAME();
+      const w = ctx.measureText(name).width;
+      ctx.fillStyle = "rgba(255,255,255,0.94)";
+      ctx.fillRect(p.x - w / 2 - 8, p.y - 30, w + 16, 20);
+      ctx.fillStyle = INK;
+      ctx.textAlign = "center";
+      ctx.textBaseline = "middle";
+      ctx.fillText(name, p.x, p.y - 20);
+    }
+  }
+}
+
+function globeHit(event) {
+  const canvas = $("globe-canvas");
+  const rect = canvas.getBoundingClientRect();
+  const x = event.clientX - rect.left;
+  const y = event.clientY - rect.top;
+  const radius = globeRadius(rect.width, rect.height);
+  const cx = rect.width / 2;
+  const cy = rect.height / 2;
+  const geo = unprojectGlobe(x, y, radius, cx, cy, state.rotation);
+  if (geo) {
+    const territory = countryAt(geo[0], geo[1]);
+    if (territory) return territory;
+  }
+  let best = null;
+  for (const iso3 of state.data.countries) {
+    const coord = node(iso3)?.coord;
+    if (!coord || !metrics(iso3)) continue;
+    const p = project(coord[0], coord[1], radius, cx, cy, state.rotation);
+    if (!p.visible) continue;
+    const d = Math.hypot(p.x - x, p.y - y);
+    if (d < 12 && (!best || d < best.d)) best = { iso3, d };
+  }
+  return best?.iso3 ?? null;
+}
+
+/* --------------------------------------------------------------- flat map */
+
+function mapPoint(coord, width, height) {
+  return {
+    x: ((coord[1] + 180) / 360) * width,
+    y: ((90 - coord[0]) / 180) * height,
+  };
+}
+
+function drawMap() {
+  refreshPalette();
+  const canvas = $("map-canvas");
+  if (!canvas || !state.data) return;
+  const { ctx, width, height } = surface(canvas);
+  ctx.fillStyle = "#081a31";
+  ctx.fillRect(0, 0, width, height);
+  if (state.layer === "net") {
+    // The choropleth is the basemap here: a photograph under it would fight
+    // the fill it is meant to carry.
+    drawNetMap(ctx, width, height);
+    if (state.selected) {
+      const coord = node(state.selected)?.coord;
+      if (coord) {
+        const p = mapPoint(coord, width, height);
+        ctx.strokeStyle = "#fff";
+        ctx.lineWidth = 1.5;
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, 6, 0, Math.PI * 2);
+        ctx.stroke();
+      }
+    }
+    return;
+  }
+  if (state.basemap === "photo") {
+    const image = earthTexture(() => R.map());
+    if (image) {
+      ctx.globalAlpha = 0.88;
+      ctx.drawImage(image, 0, 0, width, height);
+      ctx.globalAlpha = 1;
+      ctx.fillStyle = "rgba(6,20,38,0.4)";
+      ctx.fillRect(0, 0, width, height);
+      if (state.selected) outlineSelectedMap(ctx, width, height);
+    } else {
+      drawLandMap(ctx, width, height);
+    }
+  } else if (state.basemap !== "none") {
+    drawLandMap(ctx, width, height);
+  }
+  ctx.strokeStyle = "rgba(160,200,240,0.09)";
+  for (let lon = -180; lon <= 180; lon += 30) {
+    const x = ((lon + 180) / 360) * width;
+    ctx.beginPath();
+    ctx.moveTo(x, 0);
+    ctx.lineTo(x, height);
+    ctx.stroke();
+  }
+  for (let lat = -60; lat <= 60; lat += 30) {
+    const y = ((90 - lat) / 180) * height;
+    ctx.beginPath();
+    ctx.moveTo(0, y);
+    ctx.lineTo(width, y);
+    ctx.stroke();
+  }
+
+  const points = new Map();
+  state.edges.countries.forEach((iso3, i) => {
+    const coord = node(iso3)?.coord;
+    if (coord) points.set(i, mapPoint(coord, width, height));
+  });
+
+  ctx.lineCap = "round";
+  const link = linkSpec();
+  const scale = THICKNESS[state.thickness] ?? 1;
+  if (state.layer !== "flights") {
+    const edges = topEdges(420);
+    const heaviest = edges[0]?.weight ?? 1;
+    const base = rgb(PEOPLE);
+    for (const edge of edges) {
+      const a = points.get(edge.oi);
+      const b = points.get(edge.di);
+      if (!a || !b) continue;
+      const alpha = linkAlpha(edge);
+      if (alpha === 0) continue;
+      const share = Math.sqrt(edge.weight / heaviest);
+      const tint = link.ramp ? rampColour(share) : base;
+      ctx.strokeStyle = `rgba(${tint},${(0.1 + share * 0.5) * alpha})`;
+      ctx.lineWidth = (link.width ? 0.3 + share * 2.4 : 1.2) * scale;
+      wrappedArc(ctx, a, b, 0.13, width);
+    }
+  }
+  if (state.layer !== "migration") {
+    const edges = flightEdges(420);
+    const heaviest = edges[0]?.routes ?? 1;
+    const base = rgb(ACCESS);
+    for (const edge of edges) {
+      const a = points.get(edge.oi);
+      const b = points.get(edge.di);
+      if (!a || !b) continue;
+      const alpha = linkAlpha(edge);
+      if (alpha === 0) continue;
+      const share = Math.sqrt(edge.routes / heaviest);
+      const tint = link.ramp ? rampColour(share) : base;
+      ctx.strokeStyle = `rgba(${tint},${(0.08 + share * 0.45) * alpha})`;
+      ctx.lineWidth = (link.width ? 0.3 + share * 2 : 1) * scale;
+      wrappedArc(ctx, a, b, -0.13, width);
+    }
+  }
+
+  ctx.fillStyle = "rgba(214,234,252,0.8)";
+  for (const [i, p] of state.dots === "off" ? [] : points) {
+    const iso3 = state.edges.countries[i];
+    if (!metrics(iso3)) continue;
+    ctx.beginPath();
+    ctx.arc(p.x, p.y, 1.5, 0, Math.PI * 2);
+    ctx.fill();
+  }
+  if (state.selected) {
+    const coord = node(state.selected)?.coord;
+    if (coord) {
+      const p = mapPoint(coord, width, height);
+      ctx.strokeStyle = "#fff";
+      ctx.lineWidth = 1.5;
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, 6, 0, Math.PI * 2);
+      ctx.stroke();
+    }
+  }
+}
+
+/* ---------------------------------------------------------------- section 2 */
+
+// Partner counts, binned by doubling. One bar per distinct value put a
+// hundred and fifty spikes on the panel, most of them one country tall, in
+// three colours: a picket fence in which the heavy tail the section is about
+// was invisible. Bins that double keep the shape of a power law straight on
+// a log axis and leave something to look at.
+const DEGREE_BINS = (() => {
+  const edges = [1, 2, 3, 5, 9, 17, 33, 65, 129, Infinity];
+  return edges.slice(0, -1).map((lo, i) => ({
+    lo,
+    hi: edges[i + 1],
+    // The geometric centre, so a bin sits in the middle of its own span on a
+    // log axis rather than at its left edge.
+    at: Number.isFinite(edges[i + 1]) ? Math.sqrt(lo * (edges[i + 1] - 1)) : lo * 1.6,
+    label: Number.isFinite(edges[i + 1])
+      ? lo === edges[i + 1] - 1
+        ? String(lo)
+        : `${lo}–${edges[i + 1] - 1}`
+      : `${lo}+`,
+  }));
+})();
+
+// Each bucket carries the countries in it, so a click on a bar can land on a
+// real country rather than on an anonymous count. The representative is the
+// largest by in-strength, which is the one a reader is most likely to mean.
+function degreeCounts(pick) {
+  const buckets = new Map();
+  for (const row of withMetrics()) {
+    const value = pick(row.n, row.m);
+    if (value > 0) {
+      if (!buckets.has(value)) buckets.set(value, []);
+      buckets.get(value).push(row);
+    }
+  }
+  return [...buckets.entries()]
+    .map(([k, rows]) => ({
+      k,
+      c: rows.length,
+      iso3: rows.slice().sort((a, b) => b.m.in_strength - a.m.in_strength)[0].iso3,
+    }))
+    .sort((a, b) => a.k - b.k);
+}
+
+function ccdf(entries) {
+  const sorted = entries.filter((e) => e.k > 0).sort((a, b) => a.k - b.k);
+  const n = sorted.length;
+  const out = [];
+  for (let i = 0; i < n; i += 1) {
+    if (i && sorted[i].k === sorted[i - 1].k) continue;
+    out.push({ k: sorted[i].k, p: (n - i) / n, iso3: sorted[i].iso3 });
+  }
+  return out;
+}
+
+const SERIES = [
+  { key: "in", label: "In-degree", colour: PEOPLE, pick: (n, m) => m.in_degree },
+  { key: "out", label: "Out-degree", colour: OUTBOUND, pick: (n, m) => m.out_degree },
+  { key: "flight", label: "Flight partners", colour: ACCESS, pick: (n) => n.flight_partners },
+];
+
+// Equal-width bins covering 1..maxK, for the log-linear and linear modes.
+// DEGREE_BINS doubles in width on purpose (see above); on an x axis that is
+// not log, a doubling bin draws the same picture as a log-x one would, which
+// is exactly what made log-log and log-linear indistinguishable.
+function linearBins(maxK, count = DEGREE_BINS.length) {
+  const width = Math.max(1, Math.ceil(maxK / count));
+  return Array.from({ length: count }, (_, i) => {
+    const lo = 1 + i * width;
+    const hi = i === count - 1 ? Infinity : lo + width;
+    return {
+      lo,
+      hi,
+      at: Number.isFinite(hi) ? (lo + hi - 1) / 2 : lo + width / 2,
+      label: Number.isFinite(hi) ? (width === 1 ? String(lo) : `${lo}–${hi - 1}`) : `${lo}+`,
+    };
+  });
+}
+
+function binnedDegrees(pick, bins) {
+  const exact = degreeCounts(pick);
+  const maxK = Math.max(...exact.map((d) => d.k), 1);
+  return bins.map((bin) => {
+    const inside = exact.filter((d) => d.k >= bin.lo && d.k < bin.hi);
+    const countries = inside.reduce((sum, d) => sum + d.c, 0);
+    // The representative for a click is the biggest country in the bin, which
+    // is the one a reader pointing at the tail is most likely to mean.
+    const pick3 = inside.sort((a, b) => b.k - a.k)[0];
+    // Height is countries per partner value, not the raw count. A bin twice
+    // as wide catches roughly twice as many countries for no reason but its
+    // width, and on raw counts that alone makes the wide bins in the middle
+    // the tallest, which would show a hump where the data has a tail.
+    const width = Number.isFinite(bin.hi) ? bin.hi - bin.lo : Math.max(1, maxK - bin.lo + 1);
+    return { ...bin, c: countries, density: countries / width, iso3: pick3?.iso3, span: inside.length };
+  }).filter((bin) => bin.c > 0);
+}
+
+function drawHistogram() {
+  refreshPalette();
+  const canvas = $("hist");
+  if (!canvas) return;
+  const { ctx, width, height } = surface(canvas);
+  const box = frame(width, height);
+  const mode = modeFlags("hist");
+  // loglog bins the x axis by doubling, which is what makes a power law
+  // straight on a log axis; log-linear and linear use equal-width bins, or
+  // the two modes drew the same picture (a doubling bin looks log-x however
+  // the axis itself is drawn).
+  const overallMax = Math.max(
+    ...SERIES.map((s) => Math.max(...degreeCounts(s.pick).map((d) => d.k), 1)),
+  );
+  const bins = mode.x ? DEGREE_BINS : linearBins(overallMax);
+  const all = SERIES.map((s) => binnedDegrees(s.pick, bins));
+  const maxC = Math.max(...all.flat().map((d) => d.density), 1);
+  const minC = Math.min(...all.flat().map((d) => d.density));
+  box.x = linearScale(box, [0, bins.length], "x");
+  box.y = mode.y
+    ? logScale(box, [minC * 0.7, maxC], "y")
+    : linearScale(box, [0, maxC], "y");
+  axes(ctx, box, {
+    xTicks: bins.map((bin, i) => ({ value: i + 0.5, label: bin.label })),
+    yTicks: mode.y
+      ? logTicks(minC * 0.7, maxC)
+      : ticksFor([0, maxC], false),
+    xLabel: "Partners",
+    yLabel: "Countries per partner value",
+  });
+  const marks = collect("hist");
+  const slot = (box.right - box.left) / bins.length;
+  const barW = Math.max(3, (slot * 0.66) / SERIES.length);
+  all.forEach((points, i) => {
+    for (const d of points) {
+      const index = bins.findIndex((bin) => bin.lo === d.lo);
+      const x = box.left + slot * (index + 0.5) + (i - 1) * (barW + 1.5);
+      const y = box.y(d.density);
+      const hovered = d.iso3 === state.hover;
+      ctx.fillStyle = SERIES[i].colour + (hovered ? "ff" : "cc");
+      ctx.fillRect(x - barW / 2, y, barW, box.bottom - y);
+      marks.push({
+        kind: "bar",
+        x,
+        y,
+        bottom: box.bottom,
+        half: Math.max(9, barW / 2 + 4),
+        iso3: d.iso3,
+        label: `<b>${d.label} ${SERIES[i].key === "flight" ? "flight partners" : "partners"}</b>` +
+          `<span>${d.c} ${d.c === 1 ? "country" : "countries"} in this bin</span>` +
+          `<span>largest: ${node(d.iso3).name}</span>`,
+      });
+    }
+  });
+  // The x-axis is bins now, so the marker is placed by which bin the country
+  // falls in rather than by its raw degree.
+  chartTable(
+    "hist",
+    "countries by partner count",
+    ["Partners", ...SERIES.map((s) => s.label)],
+    bins.map((bin) => [
+      bin.label,
+      ...all.map((points) => {
+        const hit = points.find((d) => d.lo === bin.lo);
+        return hit ? fmt.format(hit.c) : "0";
+      }),
+    ]),
+  );
+
+  markSelected(ctx, box, (n, m) => {
+    const index = bins.findIndex((bin) => m.in_degree >= bin.lo && m.in_degree < bin.hi);
+    const bin = all[0].find((d) => d.lo === bins[index]?.lo);
+    return [box.left + slot * (Math.max(index, 0) + 0.5), bin?.density ?? 1];
+  }, { raw: true, note: `k = ${metrics(state.selected)?.in_degree ?? "—"}` });
+}
+
+function drawCcdf() {
+  refreshPalette();
+  const canvas = $("ccdf");
+  if (!canvas) return;
+  const { ctx, width, height } = surface(canvas);
+  const box = frame(width, height);
+  const rows = withMetrics();
+  const series = SERIES.map((s) =>
+    ccdf(rows.map(({ iso3, n, m }) => ({ k: s.pick(n, m), iso3 }))),
+  );
+  const maxK = Math.max(...series.flat().map((d) => d.k), 10);
+  // The smallest share any series reaches, which is one country out of the
+  // sample. Flooring this at 0.001 spent the bottom third of the panel on a
+  // decade the data never enters.
+  const minP = Math.min(...series.flat().map((d) => d.p)) * 0.85;
+  const mode = modeFlags("ccdf");
+  box.x = scaleFor(box, [1, maxK], "x", mode.x);
+  box.y = mode.y ? logScale(box, [minP, 1], "y") : linearScale(box, [0, 1], "y");
+  axes(ctx, box, {
+    xTicks: ticksFor([1, maxK], mode.x),
+    yTicks: mode.y
+      ? [1, 0.1, 0.01, 0.001]
+          .filter((v) => v >= minP * 0.9)
+          .map((v) => ({ value: v, label: `10${sup(Math.log10(v))}` }))
+      : [0, 0.25, 0.5, 0.75, 1].map((v) => ({ value: v, label: `${v * 100}%` })),
+    xLabel: "Partners",
+    yLabel: "P(K ≥ k)",
+  });
+  const marks = collect("ccdf");
+  series.forEach((points, i) => {
+    // Draw the polyline first so points sit on top of it.
+    ctx.strokeStyle = SERIES[i].colour + "aa";
+    ctx.lineWidth = 2.2;
+    ctx.lineJoin = "round";
+    ctx.beginPath();
+    points.forEach((d, j) => {
+      const x = box.x(d.k);
+      const y = box.y(d.p);
+      if (j === 0) ctx.moveTo(x, y);
+      else ctx.lineTo(x, y);
+    });
+    ctx.stroke();
+
+    for (const d of points) {
+      const x = box.x(d.k);
+      const y = box.y(d.p);
+      const hovered = d.iso3 === state.hover;
+      const r = hovered ? 7 : 3.5;
+      if (hovered) {
+        ctx.fillStyle = "rgba(15,35,64,0.14)";
+        ctx.beginPath();
+        ctx.arc(x, y, r * 2.2, 0, Math.PI * 2);
+        ctx.fill();
+      }
+      ctx.fillStyle = SERIES[i].colour;
+      ctx.beginPath();
+      ctx.arc(x, y, r, 0, Math.PI * 2);
+      ctx.fill();
+      marks.push({
+        x, y, iso3: d.iso3,
+        label: `<b>at least ${d.k} partners</b>` +
+          `<span>${(d.p * 100).toFixed(1)}% of countries</span>` +
+          `<span>e.g. ${node(d.iso3).name}</span>`,
+      });
+    }
+  });
+  // One row per distinct k across all three series, capped to the largest
+  // values so the table does not run to hundreds of rows.
+  const allK = [...new Set(series.flatMap((points) => points.map((d) => d.k)))].sort(
+    (a, b) => a - b,
+  );
+  const CAP = 40;
+  const shownK = allK.length > CAP ? allK.slice(-CAP) : allK;
+  chartTable(
+    "ccdf",
+    allK.length > CAP
+      ? `share of countries with at least k partners, capped to the ${CAP} largest k`
+      : "share of countries with at least k partners",
+    ["Partners", ...SERIES.map((s) => s.label)],
+    shownK.map((k) => [
+      k,
+      ...series.map((points) => {
+        const hit = points.find((d) => d.k === k);
+        return hit ? `${(hit.p * 100).toFixed(1)}%` : "—";
+      }),
+    ]),
+  );
+  markSelected(ctx, box, (n, m) => {
+    const point = series[0].find((d) => d.k === m.in_degree);
+    return [m.in_degree, point?.p ?? 1];
+  });
+}
+
+// Every chart on this page is a canvas, which means a screen reader and a
+// keyboard reach exactly nothing in it and a tooltip is the only way to read
+// a number. This puts the same numbers under each chart as a real table,
+// closed by default so it costs a reader nothing until they want it.
+//
+// The table is built from the arrays the draw function already has, so it
+// cannot drift from the picture above it.
+function chartTable(hostId, caption, headers, rows) {
+  const host = $(hostId);
+  if (!host || !rows.length) return;
+  const id = `${hostId}-table`;
+  let box = document.getElementById(id);
+  if (!box) {
+    box = document.createElement("details");
+    box.className = "chart-table";
+    box.id = id;
+    host.after(box);
+  }
+  const open = box.open;
+  box.innerHTML =
+    `<summary>Table${caption ? `: ${caption}` : ""}</summary>` +
+    "<div class=\"chart-table-scroll\"><table>" +
+    `<thead><tr>${headers
+      .map((h, i) => `<th${i ? ' scope="col" class="num"' : ' scope="col"'}>${h}</th>`)
+      .join("")}</tr></thead><tbody>` +
+    rows
+      .map(
+        (row) =>
+          `<tr>${row
+            .map((cell, i) => (i ? `<td class="num">${cell}</td>` : `<th scope="row">${cell}</th>`))
+            .join("")}</tr>`,
+      )
+      .join("") +
+    "</tbody></table></div>";
+  box.open = open;
+}
+
+function markSelected(ctx, box, pick, opts = {}) {
+  if (!state.selected) return;
+  const n = node(state.selected);
+  const m = metrics(state.selected);
+  if (!m) return;
+  const [vx, vy] = pick(n, m);
+  const x = opts.raw ? vx : box.x(vx);
+  ctx.strokeStyle = INK;
+  ctx.setLineDash([3, 3]);
+  ctx.lineWidth = 1;
+  ctx.beginPath();
+  ctx.moveTo(x, box.top);
+  ctx.lineTo(x, box.bottom);
+  ctx.stroke();
+  ctx.setLineDash([]);
+  // Above the plot rather than beside the point. At the data point it landed
+  // on whatever the country happened to sit next to, which for a tail country
+  // is the axis and the densest part of the chart.
+  const text = `${n.name}${opts.note ? ` · ${opts.note}` : ` · k = ${m.in_degree}`}`;
+  ctx.font = NAME();
+  const wide = ctx.measureText(text).width;
+  const right = x + wide + 8 > box.right;
+  ctx.fillStyle = INK;
+  ctx.textAlign = right ? "right" : "left";
+  ctx.textBaseline = "bottom";
+  ctx.fillText(text, x + (right ? -5 : 5), box.top - 3);
+}
+
+/* ---------------------------------------------------------- sections 4 & 5 */
+
+function drawScatters() {
+  R.scatterBetween();
+  R.scatterZ();
+}
+
+function drawBetweenness() {
+  refreshPalette();
+  const canvas = $("scatter-between");
+  if (!canvas) return;
+  const { ctx, width, height } = surface(canvas);
+  const box = frame(width, height, { l: 56, r: 16, t: 14, b: 38 });
+  const y = String(state.data.null_year);
+  // Half the world sits on no shortest path at all, and a log axis cannot draw
+  // a zero. Dropping those countries would turn "popular is not a bridge" into
+  // a claim about the countries that already are bridges, so they go on a
+  // baseline row under the axis break instead.
+  const rows = withMetrics(y).filter((r) => r.m.in_degree > 0);
+  // Both series carry the same two quantities, computed the same way on their
+  // own network: in-degree, and betweenness with distance = 1 / weight.
+  const flights = state.data.countries
+    .map((iso3) => ({ iso3, n: node(iso3) }))
+    .filter((r) => r.n.flight_in_degree > 0);
+  const maxK = Math.max(
+    ...rows.map((r) => r.m.in_degree),
+    ...flights.map((r) => r.n.flight_in_degree),
+  );
+  const positive = [
+    ...rows.map((r) => r.m.betweenness),
+    ...flights.map((r) => r.n.flight_betweenness),
+  ].filter((value) => value > 0);
+  const minB = Math.min(...positive);
+  const maxB = Math.max(...positive);
+  const zeroRow = minB / 4;
+  const axisBreak = minB / 2;
+  box.x = logScale(box, [1, maxK], "x");
+  box.y = logScale(box, [minB / 8, maxB], "y");
+  axes(ctx, box, {
+    xTicks: logTicks(1, maxK),
+    yTicks: [{ value: zeroRow, label: "0" }, ...logTicks(minB, maxB)],
+    xLabel: "Origins (in-degree)",
+    yLabel: "Betweenness",
+  });
+  // The break. Everything below this line is an exact zero, not a small number.
+  ctx.strokeStyle = "#c2d0e2";
+  ctx.setLineDash([3, 4]);
+  ctx.beginPath();
+  const cut = Math.round(box.y(axisBreak)) + 0.5;
+  ctx.moveTo(box.left, cut);
+  ctx.lineTo(box.right, cut);
+  ctx.stroke();
+  ctx.setLineDash([]);
+  // Zeros would pile onto one pixel row, so each country is nudged by a fixed
+  // amount derived from its code: the same country lands in the same place on
+  // every redraw.
+  const nudge = (iso3) => (((iso3.charCodeAt(0) * 7 + iso3.charCodeAt(2) * 3) % 9) - 4);
+  const place = (value, iso3) => (value > 0 ? box.y(value) : box.y(zeroRow) + nudge(iso3));
+  const marks = collect("scatter-between");
+  const zeroNote = (kind) =>
+    `<span>betweenness 0 · on no shortest path between two other ${kind}</span>`;
+  plotDots(ctx, marks, flights.map((r) => ({
+    x: box.x(r.n.flight_in_degree),
+    y: place(r.n.flight_betweenness, r.iso3),
+    iso3: r.iso3,
+    label: `<b>${r.n.name}</b><span>Flight network</span>` +
+      `<span>${r.n.flight_in_degree} flight partners</span>` +
+      (r.n.flight_betweenness > 0
+        ? `<span>betweenness ${r.n.flight_betweenness.toExponential(2)} · #${r.n.flight_betweenness_rank}</span>`
+        : zeroNote("countries")),
+  })), ACCESS + "88", 2);
+  plotDots(ctx, marks, rows.map((r) => ({
+    x: box.x(r.m.in_degree), y: place(r.m.betweenness, r.iso3), iso3: r.iso3,
+    label: `<b>${r.n.name}</b><span>Migration network</span>` +
+      `<span>${r.m.in_degree} origins · #${r.m.in_degree_rank}</span>` +
+      (r.m.betweenness > 0
+        ? `<span>betweenness ${r.m.betweenness.toExponential(2)} · #${r.m.betweenness_rank}</span>`
+        : zeroNote("countries")) +
+      (r.m.z === undefined ? "" : `<span>z = ${r.m.z.toFixed(2)} against the null</span>`),
+  })), PEOPLE + "cc", 2.4);
+  // Label only the brokers a reader should look up, and only where the label
+  // will not sit on top of one already placed.
+  const notable = brokers(y).slice(0, 6);
+  ctx.font = NAME();
+  const lineGap = Math.ceil(fs("small")) + 2;
+  ctx.fillStyle = INK;
+  ctx.textAlign = "left";
+  const placed = [];
+  for (const r of notable) {
+    // The selected country gets its own marker label; two would collide.
+    if (r.iso3 === state.selected) continue;
+    const x = Math.min(box.x(r.m.in_degree) + 6, box.right - 120);
+    const py = box.y(r.m.betweenness) - 5;
+    if (placed.some((p) => Math.abs(p.x - x) < 110 && Math.abs(p.y - py) < lineGap)) continue;
+    placed.push({ x, y: py });
+    ctx.fillText(`${r.n.name} (+${r.excess.toFixed(2)})`, x, py);
+  }
+  chartTable(
+    "scatter-between",
+    "the twenty biggest brokers",
+    ["Country", "Origins (in-degree)", "Betweenness", "Rank"],
+    [...rows]
+      .sort((a, b) => b.m.betweenness - a.m.betweenness)
+      .slice(0, 20)
+      .map((r) => [
+        r.n.name,
+        fmt.format(r.m.in_degree),
+        r.m.betweenness > 0 ? r.m.betweenness.toExponential(2) : "0",
+        `#${r.m.betweenness_rank}`,
+      ]),
+  );
+  markSelectedPoint(ctx, box, (m) => [m.in_degree, m.betweenness], y, place);
+}
+
+// The caption says how many countries are on the baseline, because a reader who
+// cannot see that number cannot tell a sparse cloud from a truncated one. It is
+// written from the data rather than by a renderer, so every skin says the same.
+function writeBetweennessNote() {
+  const target = $("between-note");
+  if (!target) return;
+  const y = String(state.data.null_year);
+  const rows = withMetrics(y).filter((r) => r.m.in_degree > 0);
+  const flights = state.data.countries
+    .map((iso3) => ({ iso3, n: node(iso3) }))
+    .filter((r) => r.n.flight_in_degree > 0);
+  const zeroMigration = rows.filter((r) => r.m.betweenness === 0).length;
+  const zeroFlights = flights.filter((r) => r.n.flight_betweenness === 0).length;
+  target.textContent =
+    `Every country is here. ${zeroMigration} of ${rows.length} broker nothing in the ` +
+    `migration network and ${zeroFlights} of ${flights.length} broker nothing in the ` +
+    "flight network: they sit on no shortest path between two others, so they are " +
+    "drawn on the baseline row marked 0, under the dashed break. A log axis cannot " +
+    "place a zero anywhere else.";
+}
+
+// PageRank runs on the same weighted graph as everything else on this page, so
+// a country's score follows people rather than partner counts. That makes the
+// agreement with the people ranking unsurprising and the disagreement the
+// story: the walk hands a country a share of each sender's outflow weighted by
+// how important the sender is, so drawing twelve million people from countries
+// that are themselves not drawn to earns less than drawing seven million from
+// Australia and the United States.
+function drawPrestige() {
+  refreshPalette();
+  const canvas = $("prestige");
+  if (!canvas) return;
+  const { ctx, width, height } = surface(canvas);
+  const y = String(state.data.null_year);
+  const rows = withMetrics(y).filter((r) => r.m.in_strength > 0);
+  if (!rows.length) return;
+  const TOP = 12;
+  const byPeople = [...rows].sort((a, b) => b.m.in_strength - a.m.in_strength).slice(0, TOP);
+  const byRank = [...rows].sort((a, b) => b.m.pagerank - a.m.pagerank).slice(0, TOP);
+  const shown = [...new Set([...byPeople, ...byRank].map((r) => r.iso3))].map((iso3) =>
+    rows.find((r) => r.iso3 === iso3),
+  );
+  // Rows are placed by their order inside this set and labelled with the rank
+  // they hold in the whole world, which is the number a reader wants to read.
+  const leftOrder = [...shown].sort((a, b) => a.m.in_strength_rank - b.m.in_strength_rank);
+  const rightOrder = [...shown].sort((a, b) => a.m.pagerank_rank - b.m.pagerank_rank);
+  const top = 34;
+  const step = (height - top - 18) / Math.max(shown.length - 1, 1);
+  const leftX = Math.round(width * 0.36);
+  const rightX = Math.round(width * 0.64);
+  const at = (order, iso3) => top + order.findIndex((r) => r.iso3 === iso3) * step;
+
+  ctx.font = NOTE(600);
+  ctx.fillStyle = MUTE;
+  ctx.textAlign = "right";
+  ctx.fillText("By people", leftX, 18);
+  ctx.textAlign = "left";
+  ctx.fillText("By PageRank", rightX, 18);
+
+  const marks = collect("prestige");
+  for (const r of shown) {
+    const y1 = at(leftOrder, r.iso3);
+    const y2 = at(rightOrder, r.iso3);
+    const rises = r.m.pagerank_rank < r.m.in_strength_rank;
+    const chosen = r.iso3 === state.selected;
+    ctx.strokeStyle = chosen ? INK : (rises ? PEOPLE : ACCESS) + "aa";
+    ctx.lineWidth = chosen ? 2.4 : 1.4;
+    ctx.beginPath();
+    ctx.moveTo(leftX, y1);
+    ctx.lineTo(rightX, y2);
+    ctx.stroke();
+    for (const [x, py] of [[leftX, y1], [rightX, y2]]) {
+      ctx.fillStyle = chosen ? INK : rises ? PEOPLE : ACCESS;
+      ctx.beginPath();
+      ctx.arc(x, py, chosen ? 4 : 3, 0, Math.PI * 2);
+      ctx.fill();
+    }
+    ctx.font = NAME(chosen ? 700 : 600);
+    ctx.fillStyle = chosen ? INK : "#46618a";
+    ctx.textAlign = "right";
+    ctx.fillText(`${r.n.name}  #${r.m.in_strength_rank}`, leftX - 8, y1 + 4);
+    ctx.textAlign = "left";
+    ctx.fillText(`#${r.m.pagerank_rank}  ${r.n.name}`, rightX + 8, y2 + 4);
+    const label =
+      `<b>${r.n.name}</b>` +
+      `<span>${compact.format(r.m.in_strength)} foreign-born residents · #${r.m.in_strength_rank}</span>` +
+      `<span>PageRank ${r.m.pagerank.toFixed(4)} · #${r.m.pagerank_rank}</span>`;
+    marks.push({ x: leftX, y: y1, iso3: r.iso3, label });
+    marks.push({ x: rightX, y: y2, iso3: r.iso3, label });
+  }
+  writePrestigeNote(rows, shown);
+  chartTable(
+    "prestige",
+    "rank by people against rank by PageRank",
+    ["Country", "By people", "By PageRank", "Move"],
+    leftOrder.map((r) => {
+      const move = r.m.in_strength_rank - r.m.pagerank_rank;
+      // A country that holds the same rank on both sides has not moved, and
+      // "+0" reads like a rise of nothing rather than no rise.
+      const shift = move === 0 ? "—" : `${move > 0 ? "+" : "−"}${Math.abs(move)}`;
+      return [r.n.name, `#${r.m.in_strength_rank}`, `#${r.m.pagerank_rank}`, shift];
+    }),
+  );
+}
+
+// Spearman's rank correlation, which is the honest way to say how much two
+// rankings of the same countries agree.
+function rankCorrelation(values) {
+  const n = values.length;
+  if (n < 3) return 0;
+  const ranksOf = (pick) => {
+    const order = [...values].sort((a, b) => pick(a) - pick(b));
+    const out = new Map();
+    order.forEach((row, i) => out.set(row, i));
+    return out;
+  };
+  const ra = ranksOf((v) => v.a);
+  const rb = ranksOf((v) => v.b);
+  const mean = (n - 1) / 2;
+  let num = 0;
+  let da = 0;
+  let db = 0;
+  for (const v of values) {
+    const x = ra.get(v) - mean;
+    const z = rb.get(v) - mean;
+    num += x * z;
+    da += x * x;
+    db += z * z;
+  }
+  return num / Math.sqrt(da * db);
+}
+
+function writePrestigeNote(rows, shown) {
+  writeMovers(shown);
+  const target = $("prestige-note");
+  if (!target) return;
+  const people = rankCorrelation(rows.map((r) => ({ a: r.m.pagerank, b: r.m.in_strength })));
+  const partners = rankCorrelation(rows.map((r) => ({ a: r.m.pagerank, b: r.m.in_degree })));
+  target.textContent =
+    "Every country in either top twelve, with the rank it holds in the world on " +
+    "each side. PageRank runs on the same weighted graph as the rest of the page " +
+    "with the standard damping factor, 0.85, so a link is people: it tracks the " +
+    "people ranking closely " +
+    `(ρ = ${people.toFixed(2)}) and the partner count loosely (ρ = ${partners.toFixed(2)}). ` +
+    "The lines that cross are the point. Click a country to see which senders " +
+    "give it its score.";
+}
+
+// Country names that take a definite article inside a sentence. The payload
+// stores the plain form, and "because United States" reads like a typo.
+const ARTICLE = /^(United |Netherlands|Philippines|Maldives|Bahamas|Gambia|Comoros|.* Islands$|.* Republic$|Republic of |Democratic Republic|People's Republic|Isle of )/;
+
+function withArticle(name, startsSentence = false) {
+  if (!ARTICLE.test(name)) return name;
+  return `${startsSentence ? "The" : "the"} ${name}`;
+}
+
+// The two ends of the chart, named and explained, for a reader who does not
+// click. Both are read from the data rather than written down, so regenerating
+// the payload cannot leave the sentence claiming something it no longer shows.
+function writeMovers(shown) {
+  const target = $("prestige-movers");
+  if (!target) return;
+  const move = (r) => r.m.pagerank_rank - r.m.in_strength_rank;
+  const ordered = [...shown].sort((a, b) => move(b) - move(a));
+  const faller = ordered[0];
+  const riser = ordered[ordered.length - 1];
+  const source = (r) => (r.n.pagerank_sources ?? [])[0];
+  if (!faller || !riser || !source(faller) || !source(riser)) {
+    target.textContent = "";
+    return;
+  }
+  const senderName = (r) => node(source(r).other)?.name ?? source(r).other;
+  const givesPct = (r) => Math.round((source(r).gives / r.m.pagerank) * 100);
+  target.textContent =
+    `${withArticle(faller.n.name, true)} is #${faller.m.in_strength_rank} in the world by foreign-born ` +
+    `residents and #${faller.m.pagerank_rank} here: the sender that gives it most of ` +
+    `its score, ${withArticle(senderName(faller))}, ranks #${source(faller).sender_rank} itself. ` +
+    `${withArticle(riser.n.name, true)} is #${riser.m.in_strength_rank} by residents and ` +
+    `#${riser.m.pagerank_rank} here, because ${withArticle(senderName(riser))}, ranked ` +
+    `#${source(riser).sender_rank}, hands it ${givesPct(riser)}% of its score.`;
+}
+
+// The aside beside the slope chart: not how many people a country draws, but
+// which senders the walk arrives from.
+function renderPrestigePanel(iso3) {
+  const n = node(iso3);
+  const m = metrics(iso3, String(state.data.null_year));
+  if (!n || !$("pr-name")) return;
+  $("pr-flag").textContent = flag(n.iso2);
+  $("pr-name").textContent = n.name;
+  $("pr-codes").textContent = `${iso3} · ${state.data.null_year}`;
+  $("pr-stats").innerHTML = m
+    ? [
+        row("PageRank", `${m.pagerank.toFixed(5)} <span style="color:#7a8fac">(#${m.pagerank_rank})</span>`),
+        row("Incoming migrants (stock)", `${compact.format(m.in_strength)} <span style="color:#7a8fac">(#${m.in_strength_rank})</span>`),
+        row("Origins represented", `${m.in_degree} <span style="color:#7a8fac">(#${m.in_degree_rank})</span>`),
+      ].join("")
+    : "";
+  const sources = n.pagerank_sources ?? [];
+  $("pr-sources").innerHTML = sources.length && m
+    ? sources
+        .map(
+          (source) =>
+            `<li><span>${node(source.other)?.name ?? source.other} ` +
+            `<span style="color:#7a8fac">#${source.sender_rank}, sends ` +
+            `${Math.round(source.share * 100)}% of its people here</span></span>` +
+            `<b>${Math.round((source.gives / m.pagerank) * 100)}%</b></li>`,
+        )
+        .join("")
+    : "<li><span>No incoming corridors recorded</span><b>—</b></li>";
+  $("pr-note").textContent = sources.length
+    ? "Each share is how much of this country's PageRank that sender hands over: " +
+      "0.85 times the sender's own score, times the fraction of its people who " +
+      "came here. A big sender that ranks low gives little."
+    : "";
+}
+
+function drawZ() {
+  refreshPalette();
+  const canvas = $("scatter-z");
+  if (!canvas) return;
+  const { ctx, width, height } = surface(canvas);
+  const box = frame(width, height, { l: 56, r: 16, t: 14, b: 38 });
+  const y = String(state.data.null_year);
+  const rows = withMetrics(y).filter((r) => r.m.z !== undefined && r.m.in_degree > 0);
+  if (!rows.length) return;
+  const maxK = Math.max(...rows.map((r) => r.m.in_degree));
+  const zs = rows.map((r) => r.m.z);
+  const lo = Math.min(-2, Math.floor(Math.min(...zs)));
+  const hi = Math.max(2, Math.ceil(Math.max(...zs)));
+  box.x = logScale(box, [1, maxK], "x");
+  box.y = linearScale(box, [lo, hi], "y");
+  const step = Math.max(1, Math.round((hi - lo) / 6));
+  const yTicks = [];
+  for (let v = lo; v <= hi; v += step) yTicks.push({ value: v, label: String(v) });
+  axes(ctx, box, { xTicks: logTicks(1, maxK), yTicks, xLabel: "Origins (in-degree)", yLabel: "z-score" });
+  ctx.strokeStyle = "#c2d0e2";
+  ctx.setLineDash([4, 4]);
+  ctx.beginPath();
+  ctx.moveTo(box.left, box.y(0));
+  ctx.lineTo(box.right, box.y(0));
+  ctx.stroke();
+  ctx.setLineDash([]);
+  const marks = collect("scatter-z");
+  const zLabel = (r) =>
+    `<b>${r.n.name}</b>` +
+    `<span>z = ${r.m.z.toFixed(2)}${r.m.z >= 2 ? " · more of a bridge than its partners explain" : " · explained by its partner count"}</span>` +
+    `<span>${r.m.in_degree} origins · betweenness #${r.m.betweenness_rank}</span>`;
+  plotDots(ctx, marks, rows.filter((r) => r.m.z < 2).map((r) => ({
+    x: box.x(r.m.in_degree), y: box.y(r.m.z), iso3: r.iso3, label: zLabel(r),
+  })), ACCESS + "99", 2.4);
+  plotDots(ctx, marks, rows.filter((r) => r.m.z >= 2).map((r) => ({
+    x: box.x(r.m.in_degree), y: box.y(r.m.z), iso3: r.iso3, label: zLabel(r),
+  })), PEOPLE, 2.4);
+  chartTable(
+    "scatter-z",
+    "the twenty highest z-scores",
+    ["Country", "Origins (in-degree)", "z-score", "Betweenness rank"],
+    [...rows]
+      .sort((a, b) => b.m.z - a.m.z)
+      .slice(0, 20)
+      .map((r) => [r.n.name, fmt.format(r.m.in_degree), r.m.z.toFixed(2), `#${r.m.betweenness_rank}`]),
+  );
+  markSelectedPoint(ctx, box, (m) => [m.in_degree, m.z ?? 0], y);
+}
+
+// Points are drawn here so hover and selection are handled once. The hovered
+// country swells to three times its radius with a halo; the selected one keeps
+// its ring.
+function plotDots(ctx, marks, points, colour, radius) {
+  // Points arrive with a label; the tooltip is the only place it is read.
+  for (const point of points) {
+    const hovered = point.iso3 === state.hover;
+    if (hovered) {
+      ctx.fillStyle = "rgba(15,35,64,0.16)";
+      ctx.beginPath();
+      ctx.arc(point.x, point.y, radius * 4.5, 0, Math.PI * 2);
+      ctx.fill();
+    }
+    ctx.fillStyle = colour;
+    ctx.beginPath();
+    ctx.arc(point.x, point.y, hovered ? radius * 3 : radius, 0, Math.PI * 2);
+    ctx.fill();
+    marks.push({ x: point.x, y: point.y, iso3: point.iso3, label: point.label });
+  }
+}
+
+// `place` lets a chart put a value somewhere other than its log position, which
+// is how the selected country still gets a ring when its betweenness is zero.
+function markSelectedPoint(ctx, box, pick, y, place) {
+  if (!state.selected) return;
+  const m = metrics(state.selected, y);
+  if (!m) return;
+  const [vx, vy] = pick(m);
+  if (vy === undefined) return;
+  const x = box.x(vx);
+  const py = place ? place(vy, state.selected) : box.y(vy);
+  ctx.strokeStyle = INK;
+  ctx.lineWidth = 1.5;
+  ctx.beginPath();
+  ctx.arc(x, py, 5, 0, Math.PI * 2);
+  ctx.stroke();
+  ctx.fillStyle = INK;
+  ctx.font = NAME();
+  ctx.textAlign = "left";
+  ctx.fillText(node(state.selected).name, Math.min(x + 8, box.right - 70), py + 3);
+}
+
+/* ---------------------------------------------------------------- section 6 */
+
+// The cartographic map itself: participation across, within-community
+// strength up. Guimer\u00e0 and Amaral's cut-offs are drawn as lines rather than
+// applied silently, so a reader can see how far a country is from the name it
+// was given. Every country has a position here; only the boxes are discrete.
+function drawCartography() {
+  refreshPalette();
+  const canvas = $("cartography");
+  if (!canvas || !state.cart) return;
+  const { ctx, width, height } = surface(canvas);
+  const box = frame(width, height, { l: 52, r: 16, t: 14, b: 40 });
+  const rows = Object.entries(state.cart.by_year[String(state.year)] ?? {});
+  if (!rows.length) return;
+  const hi = Math.max(3, Math.ceil(Math.max(...rows.map(([, r]) => r.z))));
+  const lo = Math.min(-1, Math.floor(Math.min(...rows.map(([, r]) => r.z))));
+  box.x = linearScale(box, [0, 1], "x");
+  box.y = linearScale(box, [lo, hi], "y");
+  const yTicks = [];
+  for (let v = lo; v <= hi; v += 1) yTicks.push({ value: v, label: String(v) });
+  axes(ctx, box, {
+    xTicks: [0, 0.25, 0.5, 0.75, 1].map((v) => ({ value: v, label: v.toFixed(2) })),
+    yTicks,
+    xLabel: "Participation coefficient P \u2192 spread across communities",
+    yLabel: "z, size inside its own community",
+  });
+
+  // The boundaries. The hub line runs the width of the plot; each family's
+  // participation cuts only run on its own side of it, because that is how
+  // the rule works and a full-height line would say otherwise.
+  const hub = box.y(state.cart.hub_z);
+  ctx.save();
+  ctx.setLineDash([4, 4]);
+  ctx.strokeStyle = MUTE;
+  ctx.beginPath();
+  ctx.moveTo(box.left, hub);
+  ctx.lineTo(box.right, hub);
+  ctx.stroke();
+  ctx.strokeStyle = GRID;
+  for (const [p, above] of [[0.05, false], [0.62, false], [0.8, false], [0.3, true], [0.75, true]]) {
+    ctx.beginPath();
+    ctx.moveTo(box.x(p), above ? box.top : hub);
+    ctx.lineTo(box.x(p), above ? hub : box.bottom);
+    ctx.stroke();
+  }
+  ctx.restore();
+  ctx.fillStyle = MUTE;
+  ctx.font = NOTE();
+  // At the right end of the line, where the plot is empty. On the left it sat
+  // on top of the y-axis ticks and the countries just under the hub line.
+  ctx.textAlign = "right";
+  ctx.fillText(`hubs \u00b7 z \u2265 ${state.cart.hub_z}`, box.right - 4, hub - 5);
+
+  const marks = collect("cartography");
+  const floor = CONFIDENT();
+  // Unconfident countries first, so the reliable ones are never hidden under
+  // a point the page is telling you not to trust.
+  const order = rows.slice().sort((a, b) => a[1].stability - b[1].stability);
+  for (const [iso3, r] of order) {
+    const meta = TYPES[r.role];
+    const x = box.x(r.p);
+    const py = box.y(r.z);
+    const hovered = iso3 === state.hover;
+    const sure = r.stability >= floor;
+    if (hovered) {
+      ctx.fillStyle = "rgba(15,35,64,0.16)";
+      ctx.beginPath();
+      ctx.arc(x, py, 12, 0, Math.PI * 2);
+      ctx.fill();
+    }
+    ctx.beginPath();
+    ctx.arc(x, py, hovered ? 6.5 : r.z >= state.cart.hub_z ? 3.6 : 2.6, 0, Math.PI * 2);
+    if (sure) {
+      ctx.fillStyle = meta.fg;
+      ctx.fill();
+    } else {
+      // A hollow ring is the only mark on the page that means "the method
+      // could not decide", and it is used here and nowhere else.
+      ctx.strokeStyle = meta.fg;
+      ctx.lineWidth = 1.2;
+      ctx.stroke();
+    }
+    marks.push({
+      x,
+      y: py,
+      iso3,
+      label:
+        `<b>${node(iso3).name}</b><span>${meta.title}</span>` +
+        `<span>z ${r.z.toFixed(2)} \u00b7 P ${r.p.toFixed(2)}</span>` +
+        `<span>${Math.round(r.stability * 100)}% of ${state.cart.seeds} runs agreed</span>`,
+    });
+  }
+
+  // The hubs are the countries the section is about and there are never more
+  // than a dozen, so they are named on the plot instead of in a legend. They
+  // also cluster: France, Germany and the United Kingdom sit within a z of
+  // each other most years, and three labels at the same height are one
+  // smear. Each label is pushed down until it clears the ones already
+  // placed, which is enough at this count and cheaper than a solver.
+  ctx.font = NAME();
+  ctx.fillStyle = INK;
+  const step = Math.ceil(fs("small")) + 1;
+  const hubs = rows
+    .filter(([, r]) => r.z >= state.cart.hub_z)
+    .sort((a, b) => b[1].z - a[1].z);
+  // Every hub's own dot is an obstacle before any label is placed. Without
+  // this, France's label ran straight through Germany's point: the two
+  // labels never overlapped each other, so a label-only test saw nothing.
+  const placed = hubs.map(([, r]) => ({
+    x0: box.x(r.p) - 5,
+    x1: box.x(r.p) + 5,
+    ty: box.y(r.z) + 3,
+  }));
+  for (const [iso3, r] of hubs) {
+    const name = node(iso3).name;
+    const right = box.x(r.p) > box.right - 80;
+    const x = box.x(r.p) + (right ? -7 : 7);
+    const width = ctx.measureText(name).width;
+    const [x0, x1] = right ? [x - width, x] : [x, x + width];
+    let ty = box.y(r.z) + 3;
+    while (
+      placed.some((q) => Math.abs(q.ty - ty) < step && x0 < q.x1 + 4 && x1 > q.x0 - 4)
+    ) {
+      ty += step;
+    }
+    placed.push({ x0, x1, ty });
+    ctx.textAlign = right ? "right" : "left";
+    ctx.fillText(name, x, ty);
+    // Once a label has been pushed off its own point, a leader line is the
+    // only thing that still says which point it belongs to.
+    if (ty > box.y(r.z) + 4) {
+      ctx.strokeStyle = MUTE;
+      ctx.lineWidth = 0.75;
+      ctx.beginPath();
+      ctx.moveTo(box.x(r.p) + (right ? -3 : 3), box.y(r.z) + 2);
+      ctx.lineTo(x + (right ? 1 : -1), ty - 3);
+      ctx.stroke();
+    }
+  }
+  // The selected country keeps a ring wherever it is, including in the crowd
+  // at the bottom left where a name would be unreadable.
+  const picked = state.selected ? cartRow(state.selected) : null;
+  if (picked) {
+    ctx.strokeStyle = INK;
+    ctx.lineWidth = 1.5;
+    ctx.beginPath();
+    ctx.arc(box.x(picked.p), box.y(picked.z), 7, 0, Math.PI * 2);
+    ctx.stroke();
+    if (picked.z < state.cart.hub_z) {
+      ctx.font = NAME();
+      ctx.fillStyle = INK;
+      ctx.textAlign = box.x(picked.p) > box.right - 70 ? "right" : "left";
+      ctx.fillText(
+        node(state.selected).name,
+        box.x(picked.p) + (ctx.textAlign === "right" ? -10 : 10),
+        box.y(picked.z) + 3,
+      );
+    }
+  }
+
+  chartTable(
+    "cartography",
+    `every country above the ${fmt.format(state.cart.threshold)}-person floor in ${state.year}`,
+    ["Country", "Role", "z", "P", "Runs agreeing"],
+    rows
+      .slice()
+      .sort((a, b) => b[1].z - a[1].z)
+      .map(([iso3, r]) => [
+        node(iso3).name,
+        TYPES[r.role].title,
+        r.z.toFixed(2),
+        r.p.toFixed(2),
+        `${Math.round(r.stability * 100)}%`,
+      ]),
+  );
+}
+
+function renderTypology() {
+  if (!state.cart) return;
+  const y = String(state.year);
+  const rows = state.cart.by_year[y] ?? {};
+  const buckets = new Map(ROLE_ORDER.map((k) => [k, []]));
+  for (const [iso3, r] of Object.entries(rows)) {
+    if (buckets.has(r.role)) buckets.get(r.role).push({ iso3, r });
+  }
+  const total = ROLE_ORDER.reduce((sum, key) => sum + buckets.get(key).length, 0);
+  // Against the countries that are in the migration network this year, not
+  // against the whole payload: the six territories with no migration figures
+  // at all were never candidates for a role and counting them as missing one
+  // would overstate what the floor costs.
+  const inNetwork = withMetrics(y).length;
+  const below = inNetwork - total;
+  // Computed rather than described. "A few thousand" was true and would have
+  // stopped being true the first time DESA revised, and calling them islands
+  // was wrong about Gibraltar, San Marino and the Vatican.
+  const missing = new Set(withMetrics(y).map((r) => r.iso3).filter((iso3) => !rows[iso3]));
+  const yi = state.edges.years.indexOf(Number(y));
+  let widestBelow = 0;
+  for (const edge of state.edges.edges) {
+    const people = edge[2][yi];
+    if (!people || people <= widestBelow) continue;
+    if (missing.has(state.edges.countries[edge[0]]) || missing.has(state.edges.countries[edge[1]]))
+      widestBelow = people;
+  }
+
+  const tag = $("typology-tag");
+  if (tag) {
+    const sure = Object.values(rows).filter((r) => r.stability >= CONFIDENT()).length;
+    tag.textContent =
+      `(${y} \u00b7 follows the slider \u00b7 ${sure} of ${total} roles agreed by ` +
+      `${Math.round(CONFIDENT() * 100)}% of ${state.cart.seeds} runs)`;
+  }
+
+  drawCartography();
+
+  // Seven cards of equal size say seven labels of equal weight, and they are
+  // not: peripheral alone holds more than half the world. One proportional
+  // strip says that before the cards say anything else.
+  const strip = $("typology-strip");
+  if (strip && total) {
+    strip.innerHTML = ROLE_ORDER.map((key) => {
+      const meta = TYPES[key];
+      const count = buckets.get(key).length;
+      if (!count) return "";
+      const share = (count / total) * 100;
+      return (
+        `<span class="type-slice" data-type="${key}"` +
+        ` aria-label="${meta.title}: ${count} of ${total} countries"` +
+        ` title="${meta.title}: ${count} of ${total}"` +
+        ` style="width:${share}%;background:${meta.fg}29;color:${meta.fg}">` +
+        `${share > 9 ? `${meta.title} ${count}` : share > 3 ? count : ""}</span>`
+      );
+    }).join("");
+  }
+
+  $("typology-cards").innerHTML = ROLE_ORDER.map((key) => {
+    const meta = TYPES[key];
+    const members = buckets.get(key);
+    // Examples are the countries that define the bucket, so each is ranked by
+    // whatever put it there: hubs by how large they are inside their own
+    // community, the rest by how far they reach outside it.
+    const sorter =
+      key.endsWith("hub")
+        ? (a, b) => b.r.z - a.r.z
+        : key === "ultra-peripheral"
+          ? (a, b) => a.r.p - b.r.p
+          : (a, b) => b.r.p - a.r.p;
+    const chips = members
+      .slice()
+      .sort(sorter)
+      .slice(0, 3)
+      .map((m) => `<button class="eg-chip" data-iso3="${m.iso3}" type="button">${m.iso3}</button>`)
+      .join("");
+    return `<article class="type" data-type="${key}">
+        <div class="badge" style="background:${meta.tint};color:${meta.fg}">${meta.icon}</div>
+        <h3 style="color:${meta.fg}">${meta.title}</h3>
+        <p>${meta.what}</p>
+        <p class="eg">${members.length} ${members.length === 1 ? "country" : "countries"}${
+          members.length ? `<br />Examples: ${chips}` : " in this year"
+        }</p>${
+          // An empty role keeps its card, because a reader still needs the
+          // word to read the chart, but a button that opens nothing goes.
+          members.length
+            ? `<button class="eg-all" data-type="${key}" type="button">See all ${members.length} \u2192</button>`
+            : ""
+        }
+      </article>`;
+  }).join("");
+
+  const note = $("typology-note");
+  if (note) {
+    const moved = state.cart.moved;
+    const first = state.cart.years[0];
+    const last = state.cart.years.at(-1);
+    // Semicolons between the three, because each item has a comma inside it.
+    // No bold on the names: .notice b is the block headline of a notice, so an
+    // inline one puts every country on a line of its own.
+    const named = moved
+      .slice(0, 3)
+      .map((m) => `${m.name}, ${m.from} to ${m.to}`)
+      .join("; ");
+    const venStart = metrics("VEN", first)?.out_strength;
+    const venEnd = metrics("VEN", last)?.out_strength;
+    note.innerHTML =
+      `<b>${moved.length} countries changed role between ${first} and ${last}</b>` +
+      `Counting only the ones whose role was agreed by ${Math.round(CONFIDENT() * 100)}% of runs at ` +
+      `both ends, because an unstable label moving is Louvain moving and not the world. ` +
+      `The three that climbed furthest are ${named}. Venezuela's outward stock went from ` +
+      `${fmt.format(venStart)} to ${fmt.format(venEnd)} over that span and almost all of it went to Colombia, Peru and ` +
+      `Chile, which is what a provincial hub is: enormous inside one community, absent from ` +
+      `the others. Of the ${inNetwork} countries with migration figures in ${y}, ${below} have ` +
+      `no corridor above the ${fmt.format(state.cart.threshold)}-person floor and so carry no ` +
+      `role. They are the microstates and small territories, and the biggest corridor any of ` +
+      `them has is ${fmt.format(widestBelow)} people.`;
+  }
+
+  const host = $("typology-cards");
+  if (host.dataset.wired) return;
+  host.dataset.wired = "on";
+  host.addEventListener("pointermove", (event) => {
+    const chip = event.target.closest(".eg-chip");
+    if (!chip) {
+      hideTip();
+      return;
+    }
+    const iso3 = chip.dataset.iso3;
+    const r = cartRow(iso3);
+    if (!r) return;
+    showTip(
+      event,
+      `<b>${node(iso3).name}</b><span>${TYPES[r.role].title}</span>` +
+        `<span>z ${r.z.toFixed(2)} \u00b7 P ${r.p.toFixed(2)}</span>` +
+        `<span>${Math.round(r.stability * 100)}% of ${state.cart.seeds} runs agreed</span>`,
+    );
+  });
+  host.addEventListener("pointerleave", hideTip);
+  host.addEventListener("click", (event) => {
+    const chip = event.target.closest(".eg-chip");
+    if (chip) {
+      select(chip.dataset.iso3);
+      return;
+    }
+    const all = event.target.closest(".eg-all");
+    if (all) openTypologyDrawer(all.dataset.type);
+  });
+}
+
+// The full membership of one role, with the numbers that put each country in
+// it, in a drawer rather than five expanding cards.
+function openTypologyDrawer(key) {
+  const meta = TYPES[key];
+  const drawer = $("type-drawer");
+  if (!drawer || !state.cart) return;
+  const y = String(state.year);
+  const members = Object.entries(state.cart.by_year[y] ?? {}).filter(([, r]) => r.role === key);
+  const floor = CONFIDENT();
+  const rows = members
+    .slice()
+    .sort((a, b) => b[1].z - a[1].z)
+    .map(([iso3, r]) => {
+      const m = metrics(iso3, y);
+      return `<tr data-iso3="${iso3}">
+        <td>${node(iso3).name}</td>
+        <td>${r.z.toFixed(2)}</td>
+        <td>${r.p.toFixed(2)}</td>
+        <td>${Math.round(r.stability * 100)}%${r.stability < floor ? " \u26a0" : ""}</td>
+        <td>${m ? fmt.format(m.in_strength) : "\u2014"}</td>
+      </tr>`;
+    })
+    .join("");
+  const shaky = members.filter(([, r]) => r.stability < floor).length;
+  drawer.innerHTML = `
+    <div class="drawer-head">
+      <div>
+        <span class="badge" style="background:${meta.tint};color:${meta.fg}">${meta.icon}</span>
+        <h3 style="color:${meta.fg}">${meta.title}</h3>
+        <p>${meta.what}</p>
+      </div>
+      <button class="drawer-close" type="button" aria-label="Close">\u00d7</button>
+    </div>
+    <p class="drawer-note">${members.length} countries in ${y}${
+      shaky
+        ? `, of which ${shaky} ${shaky === 1 ? "sits" : "sit"} close enough to a threshold ` +
+          `that fewer than ${Math.round(floor * 100)}% of the runs agreed; ` +
+          `${shaky === 1 ? "it is" : "they are"} marked \u26a0`
+        : ", all of them agreed by every run that matters"
+    }. Click a row to select it.</p>
+    <table class="drawer-table">
+      <thead><tr>
+        <th>Country</th><th>z</th><th>P</th><th>Runs agreeing</th><th>Incoming</th>
+      </tr></thead>
+      <tbody>${rows}</tbody>
+    </table>`;
+  drawer.hidden = false;
+  drawer.querySelector(".drawer-close").addEventListener("click", () => {
+    drawer.hidden = true;
+  });
+  drawer.querySelectorAll("tbody tr").forEach((tr) => {
+    tr.addEventListener("click", () => select(tr.dataset.iso3));
+  });
+}
+
+/* ---------------------------------------------------------------- section 7 */
+
+function edgeLookup(origin, dest) {
+  const oi = state.edges.countries.indexOf(origin);
+  const di = state.edges.countries.indexOf(dest);
+  return state.edges.edges.find((e) => e[0] === oi && e[1] === di) ?? null;
+}
+
+// Flights are indexed separately (see main()), so a route can exist here
+// with no migration edge at all: UK -> Germany's 73 routes, or China <->
+// Taiwan, which never had a DESA row to ride along on.
+function flightLookup(origin, dest) {
+  const oi = state.edges.countries.indexOf(origin);
+  const di = state.edges.countries.indexOf(dest);
+  const edge = (state.flights?.edges ?? []).find((e) => e[0] === oi && e[1] === di);
+  return edge ? edge[2] : 0;
+}
+
+function renderEdge() {
+  const origin = $("edge-origin").value;
+  const dest = $("edge-dest").value;
+  if (!origin || !dest || origin === dest) {
+    $("edge-facts").innerHTML = "";
+    $("edge-kind").textContent = "—";
+    $("edge-note").querySelector("span:last-child").textContent =
+      "Pick two different countries.";
+    return;
+  }
+  const yi = state.data.years.indexOf(state.year);
+  const edge = edgeLookup(origin, dest);
+  const reverse = edgeLookup(dest, origin);
+  const weight = edge ? edge[2][yi] : 0;
+  const routes = flightLookup(origin, dest);
+  const om = metrics(origin);
+  const dm = metrics(dest);
+
+  const ranked = state.edges.edges
+    .map((e) => e[2][yi] ?? 0)
+    .filter((w) => w > 0)
+    .sort((a, b) => b - a);
+  const rank = weight > 0 ? ranked.findIndex((w) => w <= weight) + 1 : null;
+
+  $("edge-kind").textContent =
+    weight > 0 && routes > 0 ? "People + flights" : weight > 0 ? "People only" : routes > 0 ? "Flights only" : "No corridor";
+
+  const facts = [
+    ["People on this link (stock)", weight ? fmt.format(weight) : "—"],
+    ["Share of the origin's emigrants", om?.out_strength ? `${((weight / om.out_strength) * 100).toFixed(1)}%` : "—"],
+    ["Share of the destination's immigrants", dm?.in_strength ? `${((weight / dm.in_strength) * 100).toFixed(1)}%` : "—"],
+    ["Rank among all links", rank ? `${fmt.format(rank)} / ${fmt.format(ranked.length)}` : "—"],
+    [`Reciprocal (${node(dest).name} → ${node(origin).name})`, reverse?.[2][yi] ? fmt.format(reverse[2][yi]) : "—"],
+    ["Flight routes", routes ? fmt.format(routes) : "0"],
+  ];
+  $("edge-facts").innerHTML = facts
+    .map(([term, value]) => {
+      const note = GLOSSARY[term];
+      const attr = note ? ` class="explains" data-explain="${note.replace(/"/g, "&quot;")}"` : "";
+      return `<div class="fact"${attr}><dt>${term}</dt><dd>${value}</dd></div>`;
+    })
+    .join("");
+  $("edge-note").querySelector("span:last-child").innerHTML =
+    weight > 0 && routes > 0
+      ? "<b>People and access agree here.</b> A human corridor with a direct air link."
+      : weight > 0
+        ? "<b>People without a direct link.</b> The corridor exists in the population but not in the route map, so the journey connects somewhere else."
+        : routes > 0
+          ? "<b>Access without people.</b> You can fly it, but almost nobody has settled at the other end."
+          : "<b>Neither network connects these two.</b>";
+}
+
+/* ---------------------------------------------------------------- section 8 */
+
+function renderDenmarkPanels() {
+  const focus = spotlight();
+  const iso3 = focus.iso3;
+  const y = String(state.data.null_year);
+  const m = metrics(iso3, y);
+  const n = node(iso3);
+  if (!m) return;
+
+  $("dk-head").innerHTML =
+    `<div class="who"><span class="flag">${flag(n.iso2)}</span><span><strong>${n.name}</strong><br /><span class="codes">${iso3} · ${y}</span></span></div>` +
+    [
+      ["Incoming", fmt.format(m.in_strength)],
+      ["Outgoing", fmt.format(m.out_strength)],
+      ["Origins", `${m.in_degree} (#${m.in_degree_rank})`],
+      ["Destinations", `${m.out_degree} (#${m.out_degree_rank})`],
+      ["Betweenness", `#${m.betweenness_rank}`],
+      ["z-score", m.z === undefined ? "—" : m.z.toFixed(2)],
+      ["Flight partners", fmt.format(n.flight_partners)],
+      ["Role", cartRow(iso3, y) ? label(cartRow(iso3, y).role) : "none"],
+    ]
+      .map(([k, v]) => {
+        const note = k === "Role"
+          ? typologyNote(cartRow(iso3, y)?.role)
+          : GLOSSARY[{
+            Incoming: "Incoming migrants (stock)",
+            Outgoing: "Outgoing migrants (stock)",
+            Origins: "Origins represented",
+            Destinations: "Destinations sent to",
+          }[k] ?? k];
+        const attr = note ? ` class="explains" data-explain="${note.replace(/"/g, "&quot;")}"` : "";
+        return `<div class="metric"${attr}><span>${k}</span><b>${v}</b></div>`;
+      })
+      .join("");
+
+
+  const egoRow = (c) =>
+    `<tr><td>${node(c.other)?.name ?? c.other}</td><td>${fmt.format(c.weight)}</td></tr>`;
+  $("dk-in").innerHTML =
+    `<caption>Top links into ${n.name}</caption><tr><th>Origin</th><th style="text-align:right">People</th></tr>` +
+    (n.top_in ?? []).map(egoRow).join("");
+  $("dk-out").innerHTML =
+    `<caption>Top links out of ${n.name}</caption><tr><th>Destination</th><th style="text-align:right">People</th></tr>` +
+    (n.top_out ?? []).map(egoRow).join("");
+
+  for (const slot of document.querySelectorAll(".dk-name")) slot.textContent = n.name;
+  const picker = $("dk-country");
+  if (picker && picker.value !== iso3) picker.value = iso3;
+
+  const rank = m.betweenness_rank;
+  const strengthRank = m.in_strength_rank;
+  const total = state.data.countries.length;
+  $("dk-verdict").querySelector("span:last-child").innerHTML =
+    `<b>${n.name}, in one line.</b> It ranks #${strengthRank} of ${total} by the number of ` +
+    `foreign-born residents and #${rank} as a bridge, with a z-score of ` +
+    `${m.z === undefined ? "—" : m.z.toFixed(2)} against the degree-preserving null. ` +
+    `Its ${m.in_degree} recorded origins are as much a fact about the statistics office as ` +
+    `about the country: a population register names every origin, while a survey-based country ` +
+    `files most of them under "other", so origin counts are only comparable between countries ` +
+    `that count the same way.`;
+}
+
+// The country picker is the section's control and the page's selection at the
+// same time, so choosing here moves the maps and choosing on a map moves here.
+function setupSpotlightPicker() {
+  const picker = $("dk-country");
+  if (!picker) return;
+  picker.innerHTML = state.data.countries
+    .slice()
+    .sort((a, b) => node(a).name.localeCompare(node(b).name))
+    .map((iso3) => `<option value="${iso3}">${node(iso3).name}</option>`)
+    .join("");
+  picker.value = spotlight().iso3;
+  picker.addEventListener("change", () => select(picker.value));
+}
+
+function drawDenmark() {
+  refreshPalette();
+  const focus = spotlight();
+  const iso3 = focus.iso3;
+  const y = String(state.data.null_year);
+  const m = metrics(iso3, y);
+  const n = node(iso3);
+  if (!m) return;
+
+  small($("dk-time"), (ctx, box) => {
+    const years = focus.series.map((s) => s.year);
+    const maxV = Math.max(...focus.series.map((s) => Math.max(s.in_strength, s.out_strength)));
+    box.x = linearScale(box, [years[0], years.at(-1)], "x");
+    box.y = linearScale(box, [0, maxV], "y");
+    axes(ctx, box, {
+      xTicks: [years[0], years[Math.floor(years.length / 2)], years.at(-1)].map((v) => ({ value: v, label: String(v) })),
+      yTicks: [0, maxV / 2, maxV].map((v) => ({ value: v, label: compact.format(v) })),
+      xLabel: "Year",
+      yLabel: "People (stock)",
+    });
+    line(ctx, box, focus.series, (s) => s.year, (s) => s.in_strength, PEOPLE);
+    line(ctx, box, focus.series, (s) => s.year, (s) => s.out_strength, OUTBOUND);
+    const timeMarks = collect("dk-time");
+    for (const point of focus.series) {
+      timeMarks.push({
+        x: box.x(point.year), y: box.y(point.in_strength), iso3: focus.iso3,
+        label: `<b>${focus.name}, ${point.year}</b>` +
+          `<span>${fmt.format(point.in_strength)} incoming</span>` +
+          `<span>${fmt.format(point.out_strength)} outgoing</span>`,
+      });
+    }
+    chartTable(
+      "dk-time",
+      "people in and out, by year",
+      ["Year", "Incoming", "Outgoing"],
+      focus.series.map((s) => [s.year, fmt.format(s.in_strength), fmt.format(s.out_strength)]),
+    );
+  });
+
+  small($("dk-rank"), (ctx, box) => {
+    const years = focus.series.map((s) => s.year);
+    const ranks = focus.series.map((s) => s.betweenness_rank);
+    // Fitted to the ranks this country actually held, not anchored at #1.
+    // Denmark ran between #18 and #36, and an axis that started at the top
+    // spent two thirds of the panel on positions it never occupied.
+    const pad = Math.max(1, Math.round((Math.max(...ranks) - Math.min(...ranks)) * 0.12));
+    const hi = Math.max(1, Math.min(...ranks) - pad);
+    const lo = Math.max(...ranks) + pad;
+    box.x = linearScale(box, [years[0], years.at(-1)], "x");
+    box.y = linearScale(box, [lo, hi], "y");
+    axes(ctx, box, {
+      xTicks: [years[0], years.at(-1)].map((v) => ({ value: v, label: String(v) })),
+      yTicks: [hi, Math.round((hi + lo) / 2), lo].map((v) => ({ value: v, label: `#${v}` })),
+      xLabel: "Year",
+      yLabel: "Bridge rank",
+    });
+    line(ctx, box, focus.series, (s) => s.year, (s) => s.betweenness_rank, INK);
+    const rankMarks = collect("dk-rank");
+    for (const point of focus.series) {
+      rankMarks.push({
+        x: box.x(point.year), y: box.y(point.betweenness_rank), iso3: focus.iso3,
+        label: `<b>${focus.name}, ${point.year}</b>` +
+          `<span>bridge rank #${point.betweenness_rank}</span>` +
+          `<span>${point.in_degree} origins</span>`,
+      });
+    }
+    chartTable(
+      "dk-rank",
+      "bridge rank by year",
+      ["Year", "Bridge rank"],
+      focus.series.map((s) => [s.year, `#${s.betweenness_rank}`]),
+    );
+  });
+
+  small($("dk-nordic"), (ctx, box) => {
+    const items = focus.peers;
+    // Three measures in three panels rather than three bars on one axis. The
+    // old chart divided each measure by its own maximum and called the result
+    // "share of the largest", which put a count of origins, a count of flight
+    // partners and a z-score on one scale where none of them belong, and it
+    // took the absolute value of the z, so Denmark's −1.23 drew as a bar
+    // pointing the same way as a broker's +5.
+    const panels = [
+      {
+        name: "Origins",
+        value: (i) => i.in_degree,
+        format: (v) => fmt.format(v),
+        colour: PEOPLE,
+      },
+      {
+        name: "Bridge z-score",
+        value: (i) => i.z ?? 0,
+        format: (v) => v.toFixed(2),
+        colour: INK,
+        signed: true,
+      },
+      {
+        name: "Flight partners",
+        value: (i) => i.flight_partners,
+        format: (v) => fmt.format(v),
+        colour: ACCESS,
+      },
+    ];
+    const marks = collect("dk-nordic");
+    // Enough room between panels that a negative bar and the next panel's
+    // name are never in the same pixels.
+    const gap = 30;
+    // The first panel's name is drawn above its own top edge, so the stack
+    // starts one line down from the frame.
+    const head = Math.ceil(fs("body")) + 2;
+    const tall =
+      (box.bottom - box.top - head - gap * (panels.length - 1)) / panels.length;
+    const slot = (box.right - box.left) / items.length;
+
+    panels.forEach((panel, pi) => {
+      const top = box.top + head + pi * (tall + gap);
+      const bottom = top + tall;
+      const values = items.map(panel.value);
+      const high = Math.max(...values, panel.signed ? 0.5 : 1);
+      const low = panel.signed ? Math.min(...values, -0.5) : 0;
+      // A line of headroom at the top for the value printed over the tallest bar.
+      const room = Math.ceil(fs("small")) + 4;
+      const y = (v) => bottom - ((v - low) / (high - low || 1)) * (tall - room);
+      const base = y(panel.signed ? 0 : 0);
+
+      ctx.strokeStyle = GRID;
+      ctx.lineWidth = 1;
+      ctx.beginPath();
+      ctx.moveTo(box.left, Math.round(base) + 0.5);
+      ctx.lineTo(box.right, Math.round(base) + 0.5);
+      ctx.stroke();
+
+      ctx.fillStyle = MUTE;
+      ctx.font = TITLE();
+      ctx.textAlign = "left";
+      ctx.textBaseline = "bottom";
+      ctx.fillText(panel.name, box.left, top - 4);
+
+      items.forEach((item, idx) => {
+        const value = panel.value(item);
+        const x = box.left + slot * idx + slot * 0.22;
+        const w = slot * 0.56;
+        const yv = y(value);
+        ctx.fillStyle = panel.colour;
+        ctx.fillRect(x, Math.min(yv, base), w, Math.max(1.5, Math.abs(base - yv)));
+        ctx.fillStyle = INK;
+        ctx.font = VALUE();
+        ctx.textAlign = "center";
+        ctx.textBaseline = yv <= base ? "bottom" : "top";
+        ctx.fillText(panel.format(value), x + w / 2, yv + (yv <= base ? -2 : 2));
+        marks.push({
+          box: [x - 2, Math.min(yv, base) - 10, x + w + 2, Math.max(yv, base) + 10],
+          iso3: item.iso3,
+          label: `<b>${item.name}</b><span>${panel.name}: ${panel.format(value)}</span>` +
+            `<span>betweenness rank #${item.betweenness_rank}</span>` +
+            `<span>${item.km ? `${fmt.format(item.km)} km away` : "the country in question"}</span>`,
+        });
+      });
+
+      // Country codes under the last panel only; the columns line up.
+      if (pi === panels.length - 1) {
+        ctx.fillStyle = MUTE;
+        ctx.font = NOTE();
+        ctx.textAlign = "center";
+        ctx.textBaseline = "top";
+        items.forEach((item, idx) => {
+          ctx.fillText(item.iso3, box.left + slot * (idx + 0.5), bottom + 6);
+        });
+        ctx.fillText(
+          `${focus.name} and its four nearest neighbours`,
+          (box.left + box.right) / 2,
+          bottom + 8 + Math.ceil(fs("caption") * 1.45),
+        );
+      }
+    });
+    chartTable(
+      "dk-nordic",
+      "the country and its four nearest neighbours",
+      ["Country", "Origins", "Bridge z-score", "Flight partners"],
+      items.map((i) => [i.name, fmt.format(i.in_degree), (i.z ?? 0).toFixed(2), fmt.format(i.flight_partners)]),
+    );
+  });
+}
+
+function small(canvas, draw) {
+  if (!canvas) return;
+  const { ctx, width, height } = surface(canvas);
+  // Room on the left for a rotated axis title and at the bottom for its pair.
+  // At caption size a tick like "833.7k" needs the extra width to clear the title.
+  const box = frame(width, height, { l: 70, r: 16, t: 10, b: 38 });
+  draw(ctx, box);
+}
+
+function dot(ctx, x, y, colour, name, r = 4, right = Infinity) {
+  ctx.fillStyle = colour;
+  ctx.beginPath();
+  ctx.arc(x, y, r, 0, Math.PI * 2);
+  ctx.fill();
+  if (!name) return;
+  ctx.fillStyle = INK;
+  ctx.font = NAME();
+  // Denmark and its neighbours sit at the far right of these charts, where a
+  // label to the right of the point runs off the plot. Flip it when it would.
+  const width = ctx.measureText(name).width;
+  const flip = x + 6 + width > right;
+  ctx.textAlign = flip ? "right" : "left";
+  ctx.fillText(name, flip ? x - 6 : x + 6, y - 4);
+  ctx.textAlign = "left";
+}
+
+function line(ctx, box, rows, getX, getY, colour) {
+  ctx.strokeStyle = colour;
+  ctx.lineWidth = 2;
+  ctx.beginPath();
+  rows.forEach((r, i) => {
+    const x = box.x(getX(r));
+    const y = box.y(getY(r));
+    if (i) ctx.lineTo(x, y);
+    else ctx.moveTo(x, y);
+  });
+  ctx.stroke();
+  ctx.fillStyle = colour;
+  for (const r of rows) {
+    ctx.beginPath();
+    ctx.arc(box.x(getX(r)), box.y(getY(r)), 2.5, 0, Math.PI * 2);
+    ctx.fill();
+  }
+}
+
+/* -------------------------------------------------------------------- wire */
+
+function setYear(value) {
+  state.year = state.data.years[value];
+  $("year-now").textContent = String(state.year);
+  // Section 2 redraws with the slider, so its tag cannot be a fixed year.
+  const tag = $("tails-tag");
+  if (tag) tag.textContent = `(${state.year} · follows the slider)`;
+  R.globe();
+  R.map();
+  R.hist();
+  R.ccdf();
+  // The roles move with the year now that nothing in them is a 2014 snapshot,
+  // which is the whole reason the flight axis came out of them.
+  renderTypology();
+  renderInspector();
+  renderEdge();
+}
+
+function setupEdgeInspector() {
+  const options = state.data.countries
+    .filter((iso3) => metrics(iso3, String(state.data.null_year)))
+    .map((iso3) => ({ iso3, name: node(iso3).name }))
+    .sort((a, b) => a.name.localeCompare(b.name));
+  const html = options.map((o) => `<option value="${o.iso3}">${o.name}</option>`).join("");
+  $("edge-origin").innerHTML = html;
+  $("edge-dest").innerHTML = html;
+  $("edge-origin").value = options.some((o) => o.iso3 === "ESP") ? "ESP" : options[0].iso3;
+  $("edge-dest").value = options.some((o) => o.iso3 === "COL") ? "COL" : options[1].iso3;
+  $("edge-origin").addEventListener("change", renderEdge);
+  $("edge-dest").addEventListener("change", renderEdge);
+  renderEdge();
+}
+
+function setupGlobe() {
+  const canvas = $("globe-canvas");
+  let moved = false;
+  let lastX = 0;
+  canvas.addEventListener("pointerdown", (event) => {
+    state.dragging = true;
+    moved = false;
+    lastX = event.clientX;
+    try {
+      canvas.setPointerCapture(event.pointerId);
+    } catch {
+      // No active pointer: the drag still tracks through pointermove.
+    }
+  });
+  canvas.addEventListener("pointermove", (event) => {
+    if (!state.dragging) return;
+    const dx = event.clientX - lastX;
+    if (Math.abs(dx) > 2) moved = true;
+    state.rotation += dx * 0.4;
+    lastX = event.clientX;
+    R.globe();
+  });
+  canvas.addEventListener("pointerup", (event) => {
+    state.dragging = false;
+    try {
+      canvas.releasePointerCapture(event.pointerId);
+    } catch {
+      // Already released.
+    }
+    if (!moved) {
+      const hit = globeHit(event);
+      if (hit) select(hit);
+    }
+  });
+}
+
+function setupMap() {
+  const toggle = $("map-toggle");
+  toggle.addEventListener("click", (event) => {
+    const button = event.target.closest("button[data-layer]");
+    if (!button) return;
+    state.layer = button.dataset.layer;
+    for (const b of toggle.querySelectorAll("button")) {
+      b.setAttribute("aria-pressed", String(b === button));
+    }
+    if (state.layer !== "net") {
+      const note = $("net-note");
+      if (note) note.textContent = "";
+    }
+    R.map();
+  });
+  $("map-canvas").addEventListener("click", (event) => {
+    const rect = event.currentTarget.getBoundingClientRect();
+    const x = event.clientX - rect.left;
+    const y = event.clientY - rect.top;
+    const [lon, lat] = unprojectMap(x, y, rect.width, rect.height);
+    const territory = countryAt(lon, lat);
+    if (territory) {
+      select(territory);
+      return;
+    }
+    let best = null;
+    for (const iso3 of state.data.countries) {
+      const coord = node(iso3)?.coord;
+      if (!coord || !metrics(iso3)) continue;
+      const p = mapPoint(coord, rect.width, rect.height);
+      const d = Math.hypot(p.x - x, p.y - y);
+      if (d < 14 && (!best || d < best.d)) best = { iso3, d };
+    }
+    // Selecting never scrolls. The reader chose where to look.
+    if (best) select(best.iso3);
+  });
+  $("map-canvas").addEventListener("pointerleave", () => hideTip());
+  $("map-canvas").addEventListener("pointermove", (event) => {
+    const rect = event.currentTarget.getBoundingClientRect();
+    const x = event.clientX - rect.left;
+    const y = event.clientY - rect.top;
+    const [lon, lat] = unprojectMap(x, y, rect.width, rect.height);
+    const over =
+      countryAt(lon, lat) ??
+      state.data.countries.find((iso3) => {
+        const coord = node(iso3)?.coord;
+        if (!coord || !metrics(iso3)) return false;
+        const p = mapPoint(coord, rect.width, rect.height);
+        return Math.hypot(p.x - x, p.y - y) < 14;
+      }) ??
+      null;
+    event.currentTarget.style.cursor = over ? "pointer" : "default";
+    // The choropleth carries a number no arc has to: how far up or down a
+    // country is. Reading it off a colour band is guesswork, so hovering says
+    // it outright.
+    if (state.layer === "net" && over) {
+      const net = netBalance(over);
+      showTip(
+        event,
+        `<b>${node(over)?.name ?? over}</b><br>` +
+          (net === null
+            ? "no figure for this year"
+            : `${net >= 0 ? "Up" : "Down"} ${fmt.format(Math.abs(net))} people in ${year()}<br>` +
+              `<span style="opacity:.75">${fmt.format(metrics(over).in_strength)} living here, ` +
+              `${fmt.format(metrics(over).out_strength)} living abroad</span>`),
+      );
+    } else {
+      hideTip();
+    }
+    if (state.hover !== over) {
+      state.hover = over;
+      R.map();
+    }
+  });
+}
+
+function renderTwinStats() {
+  const y = String(state.data.null_year);
+  const totals = state.data.totals[y] ?? state.data.totals[state.data.null_year];
+  const snap = state.data.flight_snapshot;
+  $("twin-stats").innerHTML = [
+    row("Migration links", fmt.format(totals.corridors)),
+    row("People counted", compact.format(totals.people)),
+    row("Flight links", fmt.format(snap.country_pairs)),  // directed pairs, see the glossary
+    row("Countries with flights", fmt.format(snap.countries)),
+  ].join("");
+  $("flight-caveat").textContent = snap.note;
+  $("null-method").textContent =
+    `Null: ${state.data.shuffles} degree-preserving shuffles of the ${state.data.null_year} network. ` +
+    "Each shuffle keeps every country's in- and out-degree and deals the observed corridor weights back out at random. " +
+    // The z-scores on this page are read as though they were significance,
+    // and a hundred draws cannot support that: the smallest empirical p this
+    // resolution can express is one in a hundred, whatever the z says.
+    `With ${state.data.shuffles} draws the finest p this null can express is ` +
+    `1 in ${state.data.shuffles}, so a z above about 2.5 is a floor rather than a measurement.`;
+  $("null-tag").textContent = `(null model · ${state.data.null_year} · ${state.data.shuffles} shuffles)`;
+  $("twin-tag").textContent = `(migration ${state.data.null_year} · flights undated)`;
+
+  // A country whose shuffled betweenness is zero in most of the hundred draws
+  // gets a null spread near zero, and its z-score inflates without its
+  // brokerage going anywhere. Ranking by how much betweenness the degree
+  // sequence leaves unexplained keeps the same question and drops that
+  // artifact; z stays as the test for getting on the list at all.
+  const ranked = brokers(y);
+  $("z-top").innerHTML = ranked
+    .slice(0, 6)
+    .map(
+      (r) =>
+        `<li><span>${r.n.name} <span style="color:#7a8fac">z = ${r.m.z.toFixed(1)}</span></span>` +
+        `<b>+${r.excess.toFixed(3)}</b></li>`,
+    )
+    .join("");
+  const tail = ranked.slice(6);
+  // The countries the old ranking put at the top: a z built on a null spread
+  // that has collapsed, over an amount of brokerage that rounds to nothing.
+  const fragile = tail.filter((r) => r.excess < ranked[0].excess / 20);
+  const named = fragile.slice(0, 3).map((r) => r.n.name).join(", ");
+  const rest = fragile.length > 3 ? ` and ${fragile.length - 3} more` : "";
+  $("z-floor").textContent = tail.length
+    ? `Ranked by betweenness beyond the null's average, not by z. ${tail.length} more ` +
+      `countries clear z = 2. ${fragile.length} of them (${named}${rest}) broker under a ` +
+      "twentieth of what the top of this list does, and still score up to " +
+      `z = ${Math.max(...fragile.map((r) => r.m.z)).toFixed(1)}: their betweenness is zero ` +
+      `in most shuffles, so the null spread collapses and the z inflates.`
+    : "";
+}
+
+// The canvas renderer, and the default for every visual. A variant module
+// replaces the entries it wants and inherits the rest.
+const CANVAS_RENDERER = {
+  name: "canvas",
+  globe: drawGlobe, map: drawMap, hist: drawHistogram, ccdf: drawCcdf,
+  scatters: drawScatters, scatterBetween: drawBetweenness, scatterZ: drawZ,
+  prestige: drawPrestige,
+  denmark: drawDenmark, setupGlobe, setupMap,
+};
+
+// What a variant module is handed: everything a renderer needs to read the
+// data and report a click, and nothing that would let it change a number.
+export const api = {
+  state, R, node, metrics, withMetrics, select, topEdges, flightEdges,
+  degreeCounts, ccdf, collect, enablePicking, label,
+  refreshPalette, arcSpec, syncFlow, rgb, countryAt, unprojectMap,
+  showTip, hideTip, axisMode, modeFlags, ticksFor,
+  linkSpec, rampColour, linkAlpha, THICKNESS, earthTexture, textureURL,
+  paintPhotoGlobe,
+  // Chart furniture, so the questions section draws on the same axes as the
+  // rest of the post instead of inventing its own.
+  surface, frame, axes, logTicks, logScale, linearScale, flag, chartTable,
+  // The net layer, so a renderer that draws its own map can draw this one too.
+  netBalance, netColour, netNote, drawNet: drawNetMap,
+  spotlight, earthScale, globeRadius, EARTH_SIZES, typologyNote,
+  colours: { PEOPLE, ACCESS, INK, MUTE, GRID, OUTBOUND, GAIN, LOSS },
+  format: { fmt, compact },
+  $,
+};
+
+// Called by the style bar when a dropdown changes: re-read the palette, restart
+// or stop the flow animation, and repaint everything.
+export function restyle() {
+  refreshPalette();
+  syncFlow();
+  R.globe();
+  R.map();
+  R.hist();
+  R.ccdf();
+  R.scatters();
+  R.prestige();
+  R.denmark();
+  // The questions drawer draws on canvas in every renderer, so it repaints on
+  // the same signal rather than being reached into from here.
+  window.dispatchEvent(new CustomEvent("week03:restyle"));
+}
+
+export async function start() {
+  // Canvas fills the gaps rather than overwriting, so a variant installed
+  // before start() keeps whichever visuals it replaced.
+  for (const [key, value] of Object.entries(CANVAS_RENDERER)) {
+    if (!(key in R)) R[key] = value;
+  }
+  return main();
+}
+
+async function main() {
+  try {
+    // Resolved against this module, not the page, so the post loads the same
+    // files whatever depth it is served from, and stamped so a deploy cannot
+    // serve one reader this week's code against last week's numbers.
+    const data = dataUrl;
+    const [corridors, edges, flights, cart, world] = await Promise.all([
+      fetch(data("week03_corridors.json")).then((r) => r.json()),
+      fetch(data("week03_edges.json")).then((r) => r.json()),
+      // Flight routes used to ride along inside week03_edges.json, only for
+      // pairs that also had a DESA migration row, which dropped 1,748 of
+      // 4,331 directed flight pairs (China <-> Taiwan among them). They are
+      // their own file now, independent of whether people move on the pair.
+      fetch(data("week03_flights.json")).then((r) => r.json()),
+      // Section 6 is the only reader, and a page that still works without its
+      // role cartography is better than one that fails to open without it.
+      fetch(data("week03_cartography.json"))
+        .then((r) => r.json())
+        .catch(() => null),
+      // Land is decoration for the argument but essential for reading a map,
+      // so a failure to load it must not stop the post.
+      fetch(data("world_outline.geo.json"))
+        .then((r) => r.json())
+        .catch(() => null),
+    ]);
+    state.data = corridors;
+    state.edges = edges;
+    state.flights = flights;
+    state.cart = cart;
+    state.world = world;
+    state.year = corridors.null_year;
+    $("year-slider").max = String(corridors.years.length - 1);
+    $("year-slider").value = String(corridors.years.indexOf(corridors.null_year));
+    $("year-now").textContent = String(state.year);
+    $("status").textContent =
+      `${fmt.format(corridors.countries.length)} countries · ` +
+      `${fmt.format(corridors.corridor_count)} migration links · ` +
+      `${fmt.format(corridors.flight_snapshot.country_pairs)} directed flight links · ` +
+      `null model: ${corridors.shuffles} shuffles of ${corridors.null_year}`;
+
+    R.setupGlobe();
+    R.setupMap();
+    for (const id of [
+      "hist",
+      "ccdf",
+      "scatter-between",
+      "scatter-z",
+      "cartography",
+      "prestige",
+      "dk-time",
+      "dk-rank",
+      "dk-nordic",
+    ])
+      enablePicking(id);
+    refreshPalette();
+    syncFlow();
+    wireGlossary();
+    setupEdgeInspector();
+    setupSpotlightPicker();
+    renderTwinStats();
+    writeBetweennessNote();
+    renderTypology();
+    // The page opens on the country section 8 is built around, so the default
+    // selection and the default analysis are the same country.
+    select(corridors.focus.iso3);
+    setYear(Number($("year-slider").value));
+    $("year-slider").addEventListener("input", (event) => setYear(Number(event.target.value)));
+    window.addEventListener("resize", () => {
+      R.globe();
+      R.map();
+      R.hist();
+      R.ccdf();
+      R.scatters();
+      R.prestige();
+      R.denmark();
+    });
+  } catch (error) {
+    $("status").textContent = `Could not load the corridor data: ${error.message}`;
+    throw error;
+  }
+}
+

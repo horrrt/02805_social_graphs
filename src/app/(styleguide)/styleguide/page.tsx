@@ -1238,7 +1238,7 @@ export default function Page() {
           </div>
         </footer>
       </main>
-      <PageScripts scripts={[{"src":"../assets/js/pages/styleguide.js","module":true}]} />
+      <PageScripts page="styleguide" />
     </>
   );
 }

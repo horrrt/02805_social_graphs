@@ -2151,7 +2151,7 @@ export default function Page() {
           </div>
         </footer>
       </main>
-      <PageScripts scripts={[{"src":"../../assets/js/week03-boot.js?v=69e9666242","module":true}]} />
+      <PageScripts page="week03" />
     </>
   );
 }

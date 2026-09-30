@@ -4717,7 +4717,7 @@ export default function Page() {
       {" "}
       {" "}
       {" "}
-      <PageScripts scripts={[{"src":"../../assets/vendor/echarts-5.5.1.min.js","module":false},{"src":"../../assets/js/week04-place.js?v=14","module":true},{"src":"../../assets/js/week04-frame.js?v=7","module":true},{"src":"../../assets/js/week04-years.js?v=9","module":true},{"src":"../../assets/js/week04-roles.js?v=11","module":true},{"src":"../../assets/js/week04-methods.js?v=8","module":true},{"src":"../../assets/js/week04-skills.js?v=11","module":true},{"src":"../../assets/js/week04-skills-radar.js?v=9","module":true},{"src":"../../assets/js/week04-pagerank.js?v=12","module":true},{"src":"../../assets/js/week04-jobs.js?v=10","module":true},{"src":"../../assets/js/week04-staffing.js?v=3","module":true},{"src":"../../assets/js/week04-questions.js?v=12","module":true},{"src":"../../assets/js/week04-cut.js?v=4","module":true},{"src":"../../assets/js/week04-vis-more.js?v=8","module":true},{"src":"../../assets/js/week04-vis-intros.js?v=7","module":true},{"src":"../../assets/js/week04-vis-staffing.js?v=4","module":true},{"src":"../../assets/js/week04-entities.js?v=9","module":true}]} />
+      <PageScripts page="week04" />
     </>
   );
 }

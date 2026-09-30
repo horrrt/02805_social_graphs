@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
+import "@/styles/type.css";
+import "@/styles/corridor.css";
 
 export const metadata: Metadata = {
   title: "Style guide · Corridor Control · Log–Log Legends",
@@ -11,8 +13,6 @@ export default function Layout({ children }: { children: ReactNode }) {
     <html lang="en" suppressHydrationWarning>
       <head>
         <link href="../assets/favicon.svg?v=2" rel="icon" type="image/svg+xml" />
-        <link href="../assets/css/type.css?v=2" rel="stylesheet" />
-        <link href="../assets/css/corridor.css?v=f664d7a065" rel="stylesheet" />
         <style>{`
               /* Only what the guide itself needs: scoped specimens and swatches.
                  Everything a reader sees inside a specimen comes from corridor.css. */

@@ -386,7 +386,7 @@ export default function Page() {
       </footer>
       {/* Replace with one script per section: docs/assets/js/weekNN-<section>.js. */}
       {" "}
-      <PageScripts scripts={[{"src":"../../assets/js/week-template.js?v=6","module":true}]} />
+      <PageScripts page="template" />
     </>
   );
 }

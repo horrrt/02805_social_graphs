@@ -1,5 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import type { ReactNode } from "react";
+import "@/styles/site.css";
+import "@/styles/mockups.css";
 
 export const metadata: Metadata = {
   title: "48 visual concepts — Log-Log Legends",
@@ -14,8 +16,6 @@ export default function Layout({ children }: { children: ReactNode }) {
     <html lang="en" suppressHydrationWarning>
       <head>
         <link rel="icon" href="../assets/favicon.svg?v=2" type="image/svg+xml" />
-        <link rel="stylesheet" href="../assets/css/site.css?v=20260909-3" />
-        <link rel="stylesheet" href="../assets/css/mockups.css?v=20260910-1" />
       </head>
       <body className="mockups">{children}</body>
     </html>
