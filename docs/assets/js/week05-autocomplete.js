@@ -141,3 +141,12 @@ export async function bootAutocomplete(root = document) {
 
   show(0);
 }
+
+bootAutocomplete().catch((err) => {
+  console.error("week05 autocomplete boot failed", err);
+  const status = document.querySelector("#w5-boot-status");
+  if (status) {
+    status.hidden = false;
+    status.textContent = "Could not load the autocomplete interactive data.";
+  }
+});

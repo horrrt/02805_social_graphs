@@ -11,6 +11,8 @@
     <link href="../../assets/css/type.css?v=2" rel="stylesheet" />
     <link href="../../assets/css/corridor.css?v=ts1" rel="stylesheet" />
     <link href="../../assets/css/week04.css?v=ts2" rel="stylesheet" />
+    <link href="../../assets/css/week04-rx.css?v=ts1" rel="stylesheet" />
+    <link href="../../assets/css/kit.css?v=1" rel="stylesheet" />
     <link href="../../assets/css/week05.css?v=1" rel="stylesheet" />
     <style>
       .w5-hint { font-style: italic; opacity: 0.7; }
@@ -77,27 +79,27 @@
           <div class="w5-slots">
             <div class="w5-slot" data-slot="asked" id="relations-asked">
               <h3>What we asked</h3>
-              <p class="w5-hint">The question in words a visitor can answer after reading.</p>
+              <div data-body><p class="w5-hint">The question in words a visitor can answer after reading.</p></div>
             </div>
             <div class="w5-slot" data-slot="did" id="relations-did">
               <h3>What we did</h3>
-              <p class="w5-hint">Data, tokenisation and preprocessing, method, and the baseline the result is compared with.</p>
+              <div data-body><p class="w5-hint">Data, tokenisation and preprocessing, method, and the baseline the result is compared with.</p></div>
             </div>
             <div class="w5-slot" data-slot="figure" id="relations-figure">
               <h3>Figure</h3>
-              <p class="w5-hint">One strong figure or table, with a caption that says how to read it.</p>
+              <div data-body><p class="w5-hint">One strong figure or table, with a caption that says how to read it.</p></div>
             </div>
             <div class="w5-slot" data-slot="surprise" id="relations-surprise">
               <h3>What surprised us</h3>
-              <p class="w5-hint">The finding, with the number and what it is compared against.</p>
+              <div data-body><p class="w5-hint">The finding, with the number and what it is compared against.</p></div>
             </div>
             <div class="w5-slot" data-slot="checked" id="relations-checked">
               <h3>What we checked in the text</h3>
-              <p class="w5-hint">The passages we read to confirm the claim, quoted.</p>
+              <div data-body><p class="w5-hint">The passages we read to confirm the claim, quoted.</p></div>
             </div>
             <div class="w5-slot" data-slot="limit" id="relations-limit">
               <h3>Limitation</h3>
-              <p class="w5-hint">One limitation, next to the claim it limits.</p>
+              <div data-body><p class="w5-hint">One limitation, next to the claim it limits.</p></div>
             </div>
           </div>
         </section>
@@ -113,32 +115,31 @@
           <div class="w5-slots">
             <div class="w5-slot" data-slot="asked" id="copying-asked">
               <h3>What we asked</h3>
-              <p class="w5-hint">The question in words a visitor can answer after reading.</p>
+              <div data-body><p class="w5-hint">The question in words a visitor can answer after reading.</p></div>
             </div>
             <div class="w5-slot" data-slot="did" id="copying-did">
               <h3>What we did</h3>
-              <p class="w5-hint">Data, tokenisation and preprocessing, method, and the baseline the result is compared with.</p>
+              <div data-body><p class="w5-hint">Data, tokenisation and preprocessing, method, and the baseline the result is compared with.</p></div>
             </div>
             <div class="w5-slot" data-slot="figure" id="copying-figure">
               <h3>Figure</h3>
-              <p class="w5-hint">One strong figure or table, with a caption that says how to read it.</p>
+              <div data-body><p class="w5-hint">One strong figure or table, with a caption that says how to read it.</p></div>
             </div>
             <div class="w5-slot" data-slot="surprise" id="copying-surprise">
               <h3>What surprised us</h3>
-              <p class="w5-hint">The finding, with the number and what it is compared against.</p>
+              <div data-body><p class="w5-hint">The finding, with the number and what it is compared against.</p></div>
             </div>
             <div class="w5-slot" data-slot="checked" id="copying-checked">
               <h3>What we checked in the text</h3>
-              <p class="w5-hint">The passages we read to confirm the claim, quoted.</p>
+              <div data-body><p class="w5-hint">The passages we read to confirm the claim, quoted.</p></div>
             </div>
             <div class="w5-slot" data-slot="limit" id="copying-limit">
               <h3>Limitation</h3>
-              <p class="w5-hint">One limitation, next to the claim it limits.</p>
+              <div data-body><p class="w5-hint">One limitation, next to the claim it limits.</p></div>
             </div>
           </div>
         </section>
         <p aria-live="polite" class="status-line" hidden id="w5-boot-status"></p>
-
         <section class="step" data-owner="Àngela" id="search">
           <header class="w4-opener">
             <span aria-hidden="true" class="w4-opener-num">3</span>
@@ -150,99 +151,111 @@
           <div class="w5-slots">
             <div class="w5-slot w5-filled" data-slot="asked" id="search-asked">
               <h3>What we asked</h3>
-              <p class="w5-lead">
-                If we treat a short description such as
-                <b>“Norse god of thunder”</b> as a tiny document, turn every
-                Wikipedia page into a Bag-of-Words vector, and rank the 303
-                pages by cosine similarity — how often does the right character
-                come first?
-              </p>
+              <div data-body>
+                <p class="w5-lead">
+                  If we treat a short description such as
+                  <b>“Norse god of thunder”</b> as a tiny document, turn every
+                  Wikipedia page into a Bag-of-Words vector, and rank the 303
+                  pages by cosine similarity — how often does the right character
+                  come first?
+                </p>
+              </div>
             </div>
             <div class="w5-slot w5-filled" data-slot="did" id="search-did">
               <h3>What we did</h3>
-              <p class="w5-lead">
-                Lowercased alphanumeric tokens, <code>CountVectorizer</code> over
-                all 303 pages, cosine similarity on raw counts. Twelve fixed
-                queries with a target page each. Baseline: a uniform guess among
-                303 pages (~0.33%). We also reran the same queries with English
-                stopwords removed, to see how much of/with/a were steering the
-                ranking. Script: <code>analysis/week05_search.py</code>.
-              </p>
-              <p class="w5-caption" id="search-corpus-note"></p>
-              <p class="w5-caption" id="search-baseline"></p>
+              <div data-body>
+                <p class="w5-lead">
+                  Lowercased alphanumeric tokens, <code>CountVectorizer</code> over
+                  all 303 pages, cosine similarity on raw counts. Twelve fixed
+                  queries with a target page each. Baseline: a uniform guess among
+                  303 pages (~0.33%). We also reran the same queries with English
+                  stopwords removed, to see how much of/with/a were steering the
+                  ranking. Script: <code>analysis/week05_search.py</code>.
+                </p>
+                <p class="w5-caption" id="search-corpus-note"></p>
+                <p class="w5-caption" id="search-baseline"></p>
+              </div>
             </div>
             <div class="w5-slot w5-filled" data-slot="figure" id="search-figure">
               <h3>Figure · try the search, then read the scoreboard</h3>
-              <div id="search-stats" class="w5-statrow" aria-live="polite"></div>
-              <div class="w5-two">
-                <div class="w5-panel">
-                  <h4>Live search (stopwords stripped)</h4>
-                  <div class="w5-chips" id="search-chips" aria-label="Example queries"></div>
-                  <div class="w5-search-box">
-                    <label class="visually-hidden" for="search-input">Query</label>
-                    <input id="search-input" type="search" placeholder="e.g. king of Wakanda" autocomplete="off" />
-                    <button id="search-run" type="button">Rank pages</button>
+              <div data-body>
+                <div id="search-stats" class="w5-statrow" aria-live="polite"></div>
+                <div class="w5-two">
+                  <div class="w5-panel">
+                    <h4>Live search (stopwords stripped)</h4>
+                    <div class="w5-chips" id="search-chips" aria-label="Example queries"></div>
+                    <div class="w5-search-box">
+                      <label class="visually-hidden" for="search-input">Query</label>
+                      <input id="search-input" type="search" placeholder="e.g. king of Wakanda" autocomplete="off" />
+                      <button id="search-run" type="button">Rank pages</button>
+                    </div>
+                    <ol class="w5-rank" id="search-live-ranks"></ol>
+                    <p class="w5-caption">
+                      Cosine on Bag-of-Words counts with English stopwords removed
+                      and terms that appear on only one page dropped. Green edge =
+                      the page we hoped for, when it appears in the top eight.
+                    </p>
                   </div>
-                  <ol class="w5-rank" id="search-live-ranks"></ol>
-                  <p class="w5-caption">
-                    Cosine on Bag-of-Words counts with English stopwords removed
-                    and terms that appear on only one page dropped. Green edge =
-                    the page we hoped for, when it appears in the top eight.
-                  </p>
-                </div>
-                <div class="w5-panel">
-                  <h4>Fixed probe set</h4>
-                  <div class="w5-table-wrap">
-                    <table class="w5-table">
-                      <thead>
-                        <tr>
-                          <th>Query</th>
-                          <th>Expected</th>
-                          <th>Raw rank</th>
-                          <th>No-stop</th>
-                          <th>Raw top hit</th>
-                        </tr>
-                      </thead>
-                      <tbody id="search-tbody"></tbody>
-                    </table>
+                  <div class="w5-panel">
+                    <h4>Fixed probe set</h4>
+                    <div class="w5-table-wrap">
+                      <table class="w5-table">
+                        <thead>
+                          <tr>
+                            <th>Query</th>
+                            <th>Expected</th>
+                            <th>Raw rank</th>
+                            <th>No-stop</th>
+                            <th>Raw top hit</th>
+                          </tr>
+                        </thead>
+                        <tbody id="search-tbody"></tbody>
+                      </table>
+                    </div>
+                    <div class="w5-detail" id="search-detail"></div>
+                    <p class="w5-caption">
+                      Click a query to inspect shared tokens. Asterisks in the
+                      detail mark stopwords that dominated the raw match.
+                    </p>
                   </div>
-                  <div class="w5-detail" id="search-detail"></div>
-                  <p class="w5-caption">
-                    Click a query to inspect shared tokens. Asterisks in the
-                    detail mark stopwords that dominated the raw match.
-                  </p>
                 </div>
               </div>
             </div>
             <div class="w5-slot w5-filled" data-slot="surprise" id="search-surprise">
               <h3>What surprised us</h3>
-              <p class="w5-lead">
-                Raw Bag-of-Words puts the right page first in only
-                <b id="search-surprise-num">…</b> queries.
-                Dropping stopwords lifts top-5 hits to
-                <b id="search-surprise-ns">…</b> — still far from perfect, but
-                already better than chance (~0.33% at rank 1). The
-                <span id="search-fail-count">…</span> raw failures are the point:
-                common words drown the signal that TF-IDF will reweight next week.
-              </p>
+              <div data-body>
+                <p class="w5-lead">
+                  Raw Bag-of-Words puts the right page first in only
+                  <b id="search-surprise-num">…</b> queries.
+                  Dropping stopwords lifts top-5 hits to
+                  <b id="search-surprise-ns">…</b> — still far from perfect, but
+                  already better than chance (~0.33% at rank 1). The
+                  <span id="search-fail-count">…</span> raw failures are the point:
+                  common words drown the signal that TF-IDF will reweight next week.
+                </p>
+              </div>
             </div>
             <div class="w5-slot w5-filled" data-slot="checked" id="search-checked">
               <h3>What we checked in the text</h3>
-              <p class="w5-lead" id="search-checked-why"></p>
-              <blockquote class="w5-quote">
-                <span id="search-checked-quote"></span>
-                <span class="w5-caption"> — <span id="search-checked-who"></span></span>
-              </blockquote>
+              <div data-body>
+                <p class="w5-lead" id="search-checked-why"></p>
+                <blockquote class="w5-quote">
+                  <span id="search-checked-quote"></span>
+                  <span class="w5-caption"> — <span id="search-checked-who"></span></span>
+                </blockquote>
+              </div>
             </div>
             <div class="w5-slot w5-filled" data-slot="limit" id="search-limit">
               <h3>Limitation</h3>
-              <p class="w5-lead">
-                Cosine on raw counts treats every token equally, so
-                <b>of</b> and <b>with</b> compete with <b>adamantium</b>.
-                The method also needs the target page to exist: Thor, Loki and
-                Iron Man are missing from this category snapshot, so even a
-                perfect ranker cannot return them.
-              </p>
+              <div data-body>
+                <p class="w5-lead">
+                  Cosine on raw counts treats every token equally, so
+                  <b>of</b> and <b>with</b> compete with <b>adamantium</b>.
+                  The method also needs the target page to exist: Thor, Loki and
+                  Iron Man are missing from this category snapshot, so even a
+                  perfect ranker cannot return them.
+                </p>
+              </div>
             </div>
           </div>
         </section>
@@ -258,87 +271,99 @@
           <div class="w5-slots">
             <div class="w5-slot w5-filled" data-slot="asked" id="autocomplete-asked">
               <h3>What we asked</h3>
-              <p class="w5-lead">
-                If we train one trigram generator per Louvain community and ask
-                it to invent a new character’s Wikipedia lead — can a reader
-                tell which community wrote which page?
-              </p>
+              <div data-body>
+                <p class="w5-lead">
+                  If we train one trigram generator per Louvain community and ask
+                  it to invent a new character’s Wikipedia lead — can a reader
+                  tell which community wrote which page?
+                </p>
+              </div>
             </div>
             <div class="w5-slot w5-filled" data-slot="did" id="autocomplete-did">
               <h3>What we did</h3>
-              <p class="w5-lead">
-                Louvain on the undirected weighted Marvel network (100 seeds;
-                modularity <b id="ac-modularity">…</b>,
-                most-frequent partition in <b id="ac-mode-share">…</b> of runs,
-                null z = <b id="ac-null-z">…</b>).
-                Communities with at least eight pages each get a trigram model
-                (<code>P(w₃ | w₁, w₂)</code> from their article text). One fake
-                lead per community. Chance baseline:
-                <b id="ac-chance">…</b> with
-                <span id="ac-n-fakes">…</span> pages.
-                Script: <code>analysis/week05_autocomplete.py</code>.
-              </p>
-              <ul id="ac-comm-list"></ul>
-              <p class="w5-caption" id="ac-guess-status"></p>
+              <div data-body>
+                <p class="w5-lead">
+                  Louvain on the undirected weighted Marvel network (100 seeds;
+                  modularity <b id="ac-modularity">…</b>,
+                  most-frequent partition in <b id="ac-mode-share">…</b> of runs,
+                  null z = <b id="ac-null-z">…</b>).
+                  Communities with at least eight pages each get a trigram model
+                  (<code>P(w₃ | w₁, w₂)</code> from their article text). One fake
+                  lead per community. Chance baseline:
+                  <b id="ac-chance">…</b> with
+                  <span id="ac-n-fakes">…</span> pages.
+                  Script: <code>analysis/week05_autocomplete.py</code>.
+                </p>
+                <ul id="ac-comm-list"></ul>
+                <p class="w5-caption" id="ac-guess-status"></p>
+              </div>
             </div>
             <div class="w5-slot w5-filled" data-slot="figure" id="autocomplete-figure">
               <h3>Figure · guess the community</h3>
-              <p class="w5-scoreboard" id="ac-scoreboard"></p>
-              <p class="w5-caption" id="ac-progress"></p>
-              <div class="w5-fake">
-                <p class="w5-char" id="ac-char">…</p>
-                <p id="ac-text">Loading fake pages…</p>
-              </div>
-              <div class="w5-guess">
-                <div>
-                  <label for="ac-select">Which community wrote this?</label>
-                  <select id="ac-select"></select>
+              <div data-body>
+                <p class="w5-scoreboard" id="ac-scoreboard"></p>
+                <p class="w5-caption" id="ac-progress"></p>
+                <div class="w5-fake">
+                  <p class="w5-char" id="ac-char">…</p>
+                  <p id="ac-text">Loading fake pages…</p>
                 </div>
-                <button id="ac-submit" type="button">Lock guess</button>
+                <div class="w5-guess">
+                  <div>
+                    <label for="ac-select">Which community wrote this?</label>
+                    <select id="ac-select"></select>
+                  </div>
+                  <button id="ac-submit" type="button">Lock guess</button>
+                </div>
+                <div class="w5-quiz-nav">
+                  <button data-kind="ghost" id="ac-prev" type="button">Previous</button>
+                  <button data-kind="ghost" id="ac-next" type="button">Next fake</button>
+                  <button data-kind="ghost" id="ac-reveal-btn" type="button">Reveal answer</button>
+                </div>
+                <div class="w5-reveal" hidden id="ac-reveal"></div>
+                <p class="w5-caption">
+                  Read the nonsense carefully: names, teams and repeated bigrams
+                  often leak the community even when the sentences do not parse.
+                </p>
               </div>
-              <div class="w5-quiz-nav">
-                <button data-kind="ghost" id="ac-prev" type="button">Previous</button>
-                <button data-kind="ghost" id="ac-next" type="button">Next fake</button>
-                <button data-kind="ghost" id="ac-reveal-btn" type="button">Reveal answer</button>
-              </div>
-              <div class="w5-reveal" hidden id="ac-reveal"></div>
-              <p class="w5-caption">
-                Read the nonsense carefully: names, teams and repeated bigrams
-                often leak the community even when the sentences do not parse.
-              </p>
             </div>
             <div class="w5-slot w5-filled" data-slot="surprise" id="autocomplete-surprise">
               <h3>What surprised us</h3>
-              <p class="w5-lead">
-                The fake pages are locally fluent and globally broken — classic
-                trigram behaviour — yet each one still smells like its community
-                (X-Men claws, street-level kung fu, symbiotes, mystic orders).
-                Whether that smell is strong enough for other groups is the
-                number we still owe; until then, try the quiz above against the
-                <span id="ac-chance-inline">1-in-k</span> chance line.
-              </p>
+              <div data-body>
+                <p class="w5-lead">
+                  The fake pages are locally fluent and globally broken — classic
+                  trigram behaviour — yet each one still smells like its community
+                  (X-Men claws, street-level kung fu, symbiotes, mystic orders).
+                  Whether that smell is strong enough for other groups is the
+                  number we still owe; until then, try the quiz above against the
+                  <span id="ac-chance-inline">1-in-k</span> chance line.
+                </p>
+              </div>
             </div>
             <div class="w5-slot w5-filled" data-slot="checked" id="autocomplete-checked">
               <h3>What we checked in the text</h3>
-              <p class="w5-lead">
-                Beside each fake we keep a real lead from a community hub, so a
-                guess can be checked against Wikipedia phrasing rather than
-                vibes. Example for <b id="ac-checked-fake">…</b>:
-              </p>
-              <blockquote class="w5-quote">
-                <span id="ac-checked-quote"></span>
-                <span class="w5-caption"> — <span id="ac-checked-who"></span></span>
-              </blockquote>
+              <div data-body>
+                <p class="w5-lead">
+                  Beside each fake we keep a real lead from a community hub, so a
+                  guess can be checked against Wikipedia phrasing rather than
+                  vibes. Example for <b id="ac-checked-fake">…</b>:
+                </p>
+                <blockquote class="w5-quote">
+                  <span id="ac-checked-quote"></span>
+                  <span class="w5-caption"> — <span id="ac-checked-who"></span></span>
+                </blockquote>
+              </div>
             </div>
             <div class="w5-slot w5-filled" data-slot="limit" id="autocomplete-limit">
               <h3>Limitation</h3>
-              <p class="w5-lead">
-                Trigrams copy local Wikipedia habits (infobox leftovers,
-                “created by…”, earth-number fragments) as eagerly as character
-                voice. A correct guess may mean “this community’s boilerplate”,
-                not a deeper narrative style. Tiny communities were excluded
-                (size &lt; 8), so the quiz only covers the large clusters.
-              </p>
+              <div data-body>
+                <p class="w5-lead">
+                  Trigrams copy local Wikipedia habits (infobox leftovers,
+                  “created by…”, earth-number fragments) as eagerly as character
+                  voice. A correct guess may mean “this community’s boilerplate”,
+                  not a deeper narrative style. Tiny communities were excluded
+                  (size &lt; 8), so the quiz only covers the large clusters.
+                </p>
+              </div>
             </div>
           </div>
         </section>
@@ -354,27 +379,27 @@
           <div class="w5-slots">
             <div class="w5-slot" data-slot="asked" id="heaps-asked">
               <h3>What we asked</h3>
-              <p class="w5-hint">The question in words a visitor can answer after reading.</p>
+              <div data-body><p class="w5-hint">The question in words a visitor can answer after reading.</p></div>
             </div>
             <div class="w5-slot" data-slot="did" id="heaps-did">
               <h3>What we did</h3>
-              <p class="w5-hint">Data, tokenisation and preprocessing, method, and the baseline the result is compared with.</p>
+              <div data-body><p class="w5-hint">Data, tokenisation and preprocessing, method, and the baseline the result is compared with.</p></div>
             </div>
             <div class="w5-slot" data-slot="figure" id="heaps-figure">
               <h3>Figure</h3>
-              <p class="w5-hint">One strong figure or table, with a caption that says how to read it.</p>
+              <div data-body><p class="w5-hint">One strong figure or table, with a caption that says how to read it.</p></div>
             </div>
             <div class="w5-slot" data-slot="surprise" id="heaps-surprise">
               <h3>What surprised us</h3>
-              <p class="w5-hint">The finding, with the number and what it is compared against.</p>
+              <div data-body><p class="w5-hint">The finding, with the number and what it is compared against.</p></div>
             </div>
             <div class="w5-slot" data-slot="checked" id="heaps-checked">
               <h3>What we checked in the text</h3>
-              <p class="w5-hint">The passages we read to confirm the claim, quoted.</p>
+              <div data-body><p class="w5-hint">The passages we read to confirm the claim, quoted.</p></div>
             </div>
             <div class="w5-slot" data-slot="limit" id="heaps-limit">
               <h3>Limitation</h3>
-              <p class="w5-hint">One limitation, next to the claim it limits.</p>
+              <div data-body><p class="w5-hint">One limitation, next to the claim it limits.</p></div>
             </div>
           </div>
         </section>
@@ -390,27 +415,27 @@
           <div class="w5-slots">
             <div class="w5-slot" data-slot="asked" id="fame-asked">
               <h3>What we asked</h3>
-              <p class="w5-hint">The question in words a visitor can answer after reading.</p>
+              <div data-body><p class="w5-hint">The question in words a visitor can answer after reading.</p></div>
             </div>
             <div class="w5-slot" data-slot="did" id="fame-did">
               <h3>What we did</h3>
-              <p class="w5-hint">Data, tokenisation and preprocessing, method, and the baseline the result is compared with.</p>
+              <div data-body><p class="w5-hint">Data, tokenisation and preprocessing, method, and the baseline the result is compared with.</p></div>
             </div>
             <div class="w5-slot" data-slot="figure" id="fame-figure">
               <h3>Figure</h3>
-              <p class="w5-hint">One strong figure or table, with a caption that says how to read it.</p>
+              <div data-body><p class="w5-hint">One strong figure or table, with a caption that says how to read it.</p></div>
             </div>
             <div class="w5-slot" data-slot="surprise" id="fame-surprise">
               <h3>What surprised us</h3>
-              <p class="w5-hint">The finding, with the number and what it is compared against.</p>
+              <div data-body><p class="w5-hint">The finding, with the number and what it is compared against.</p></div>
             </div>
             <div class="w5-slot" data-slot="checked" id="fame-checked">
               <h3>What we checked in the text</h3>
-              <p class="w5-hint">The passages we read to confirm the claim, quoted.</p>
+              <div data-body><p class="w5-hint">The passages we read to confirm the claim, quoted.</p></div>
             </div>
             <div class="w5-slot" data-slot="limit" id="fame-limit">
               <h3>Limitation</h3>
-              <p class="w5-hint">One limitation, next to the claim it limits.</p>
+              <div data-body><p class="w5-hint">One limitation, next to the claim it limits.</p></div>
             </div>
           </div>
         </section>
@@ -426,27 +451,27 @@
           <div class="w5-slots">
             <div class="w5-slot" data-slot="asked" id="weird-asked">
               <h3>What we asked</h3>
-              <p class="w5-hint">The question in words a visitor can answer after reading.</p>
+              <div data-body><p class="w5-hint">The question in words a visitor can answer after reading.</p></div>
             </div>
             <div class="w5-slot" data-slot="did" id="weird-did">
               <h3>What we did</h3>
-              <p class="w5-hint">Data, tokenisation and preprocessing, method, and the baseline the result is compared with.</p>
+              <div data-body><p class="w5-hint">Data, tokenisation and preprocessing, method, and the baseline the result is compared with.</p></div>
             </div>
             <div class="w5-slot" data-slot="figure" id="weird-figure">
               <h3>Figure</h3>
-              <p class="w5-hint">One strong figure or table, with a caption that says how to read it.</p>
+              <div data-body><p class="w5-hint">One strong figure or table, with a caption that says how to read it.</p></div>
             </div>
             <div class="w5-slot" data-slot="surprise" id="weird-surprise">
               <h3>What surprised us</h3>
-              <p class="w5-hint">The finding, with the number and what it is compared against.</p>
+              <div data-body><p class="w5-hint">The finding, with the number and what it is compared against.</p></div>
             </div>
             <div class="w5-slot" data-slot="checked" id="weird-checked">
               <h3>What we checked in the text</h3>
-              <p class="w5-hint">The passages we read to confirm the claim, quoted.</p>
+              <div data-body><p class="w5-hint">The passages we read to confirm the claim, quoted.</p></div>
             </div>
             <div class="w5-slot" data-slot="limit" id="weird-limit">
               <h3>Limitation</h3>
-              <p class="w5-hint">One limitation, next to the claim it limits.</p>
+              <div data-body><p class="w5-hint">One limitation, next to the claim it limits.</p></div>
             </div>
           </div>
         </section>
@@ -475,6 +500,12 @@
         </span>
       </div>
     </footer>
-    <script type="module" src="../../assets/js/week05.js?v=2"></script>
+    <script src="../../assets/js/week05-relations.js?v=1" type="module"></script>
+    <script src="../../assets/js/week05-copying.js?v=1" type="module"></script>
+    <script src="../../assets/js/week05-search.js?v=2" type="module"></script>
+    <script src="../../assets/js/week05-autocomplete.js?v=2" type="module"></script>
+    <script src="../../assets/js/week05-heaps.js?v=1" type="module"></script>
+    <script src="../../assets/js/week05-fame.js?v=1" type="module"></script>
+    <script src="../../assets/js/week05-weird.js?v=1" type="module"></script>
   </body>
 </html>

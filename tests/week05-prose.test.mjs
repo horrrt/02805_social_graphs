@@ -19,7 +19,8 @@ test("week05 search and autocomplete sections are owned and wired", () => {
   assert.match(html, /id="search"/);
   assert.match(html, /id="autocomplete"/);
   assert.match(html, /data-owner="Àngela"/);
-  assert.match(html, /week05\.js\?v=2/);
+  assert.match(html, /week05-search\.js\?v=2/);
+  assert.match(html, /week05-autocomplete\.js\?v=2/);
   assert.match(html, /week05\.css\?v=1/);
 });
 

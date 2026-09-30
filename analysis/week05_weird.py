@@ -5,7 +5,9 @@ Question: Which Marvel page is the weirdest, and is it really?
 Owner: (unassigned, put your name here and in WEEK05.md)
 
 Page section: docs/weeks/week05/index.html#weird
-Output: analysis/week05_weird.json, every number the section quotes.
+Output: docs/weeks/week05/data/weird.json, every number the section quotes.
+Validate it with check(path, data) from check_pages.py before writing, after
+adding its model to week05_schemas.py.
 
 Steps, following the course's suggestion (exercise 5.9):
 1. Define 'weird' using only this week's tools (hapax share, type-token ratio, unusual n-grams, distance from the corpus word distribution, ...).

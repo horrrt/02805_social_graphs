@@ -230,3 +230,12 @@ export async function bootSearch(root = document) {
     section.querySelector("#search-checked-why").textContent = fail.failure_reason || "";
   }
 }
+
+bootSearch().catch((err) => {
+  console.error("week05 search boot failed", err);
+  const status = document.querySelector("#w5-boot-status");
+  if (status) {
+    status.hidden = false;
+    status.textContent = "Could not load the search interactive data.";
+  }
+});

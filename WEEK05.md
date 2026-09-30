@@ -90,6 +90,21 @@ python analysis/week05_heaps.py                  # each section script; all stub
 Read the data only through `analysis/week05_text.py`: `pages()`, `graph()`, `weighted()` and `nodes()`.
 It checks the files against the course snapshot and fails if the pages and nodes disagree.
 
+## Components
+
+Each section has its own page script, `docs/assets/js/week05-<section>.js`, already loaded by the page, and
+its page data goes in `docs/weeks/week05/data/<section>.json` (only `docs/` is published). Import what you
+need from `docs/assets/js/kit.js`:
+
+```js
+import { slot, figure, echart, stripChart, concordance, passage, table, loadData } from "./kit.js?v=1";
+```
+
+`slot("heaps", "figure")` is where section 5's figure goes; the parts are `asked`, `did`, `figure`,
+`surprise`, `checked` and `limit`. `docs/assets/js/README.md` lists every component with an example, and
+`/styleguide/kit.html` draws each one with toy data. Use `stripChart` for any result against a null,
+`concordance` or `passage` for the text you checked.
+
 ## Shared decisions still open
 
 - One tokeniser and preprocessing rule for the whole post, or one per section stated in its JSON.
