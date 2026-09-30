@@ -1,146 +1,948 @@
 {
-  "v": 3,
   "attachments": {},
   "boards": {
+    "ArchiveGuide.dc.html": {
+      "h": 1000,
+      "is_interactive": true,
+      "page": "redesign",
+      "title": "Guide: earlier drafts",
+      "w": 1440,
+      "x": 0,
+      "y": 0
+    },
+    "BuiltGuide.dc.html": {
+      "h": 1510,
+      "is_interactive": true,
+      "page": "built",
+      "title": "Guide: the page as built",
+      "w": 1440,
+      "x": 0,
+      "y": 0
+    },
     "ChartKit.dc.html": {
       "h": 3400,
       "is_interactive": true,
+      "page": "redesign",
       "title": "Chart kit: one colour key, one strip, before and after",
       "w": 1440,
-      "x": 0,
+      "x": 1520,
       "y": 4040
     },
     "Closing.dc.html": {
       "h": 1950,
       "is_interactive": true,
+      "page": "redesign",
       "title": "Closing and the deep dive",
       "w": 1440,
-      "x": 4560,
+      "x": 6080,
       "y": 0
     },
     "Deep1.dc.html": {
       "h": 3260,
       "is_interactive": true,
+      "page": "redesign",
       "title": "Deep dive · first round, section 1",
       "w": 1440,
-      "x": 6080,
+      "x": 7600,
       "y": 0
     },
     "Deep2.dc.html": {
       "h": 3140,
       "is_interactive": true,
+      "page": "redesign",
       "title": "Deep dive · first round, section 2",
       "w": 1440,
-      "x": 7600,
+      "x": 9120,
       "y": 0
     },
     "Deep3a.dc.html": {
       "h": 3180,
       "is_interactive": true,
+      "page": "redesign",
       "title": "Deep dive · first round, section 3",
       "w": 1440,
-      "x": 9120,
+      "x": 10640,
       "y": 0
     },
     "Deep3b.dc.html": {
       "h": 3620,
       "is_interactive": true,
+      "page": "redesign",
       "title": "Deep dive · section 3, law firms, weights, lottery",
       "w": 1440,
-      "x": 10640,
+      "x": 12160,
       "y": 0
+    },
+    "DeepIndex.dc.html": {
+      "h": 1240,
+      "is_interactive": true,
+      "page": "redesign",
+      "title": "Deep dive, proposed: one catalogue by topic",
+      "w": 1440,
+      "x": 2900,
+      "y": 7860
+    },
+    "DeepLive.dc.html": {
+      "h": 2200,
+      "page": "redesign",
+      "title": "Deep dive today: an index, then ten bars",
+      "w": 1300,
+      "x": 1520,
+      "y": 7860
     },
     "DeepMethods.dc.html": {
       "h": 1620,
       "is_interactive": true,
+      "page": "redesign",
       "title": "Deep dive · data and methods",
       "w": 1440,
-      "x": 15229,
+      "x": 16749,
       "y": 0
     },
     "DeepMoreA.dc.html": {
       "h": 2960,
       "is_interactive": true,
+      "page": "redesign",
       "title": "Deep dive · more networks, 1 to 3",
       "w": 1440,
-      "x": 12160,
+      "x": 13680,
       "y": 0
     },
     "DeepMoreB.dc.html": {
       "h": 2400,
       "is_interactive": true,
+      "page": "redesign",
       "title": "Deep dive · more networks, 4 to 6",
       "w": 1440,
-      "x": 13680,
+      "x": 15200,
       "y": 0
+    },
+    "DeepOpen.dc.html": {
+      "h": 1220,
+      "is_interactive": true,
+      "page": "redesign",
+      "title": "Deep dive, proposed: a topic opened in place",
+      "w": 1440,
+      "x": 4420,
+      "y": 7860
     },
     "ExploreBackbone.dc.html": {
       "h": 1500,
       "is_interactive": true,
+      "page": "redesign",
       "title": "Explore · strip the hairball",
       "w": 1440,
-      "x": 5360,
+      "x": 6880,
       "y": 4040
     },
     "ExploreClients.dc.html": {
       "h": 1320,
       "is_interactive": true,
+      "page": "redesign",
       "title": "Explore · clients by size and loyalty, five years",
       "w": 1440,
-      "x": 6880,
+      "x": 8400,
       "y": 4040
     },
     "ExploreGN.dc.html": {
       "h": 1480,
       "is_interactive": true,
+      "page": "redesign",
       "title": "Explore · Girvan–Newman, one cut at a time",
       "w": 1440,
-      "x": 8400,
+      "x": 9920,
       "y": 4040
     },
     "ExploreLouvain.dc.html": {
       "h": 1500,
       "is_interactive": true,
+      "page": "redesign",
       "title": "Explore · Louvain, move by move",
       "w": 1440,
-      "x": 11440,
+      "x": 12960,
       "y": 4040
     },
     "ExploreMetros.dc.html": {
       "h": 1460,
       "is_interactive": true,
+      "page": "redesign",
       "title": "Explore · the 40 metros, one at a time",
       "w": 1440,
-      "x": 3840,
+      "x": 5360,
       "y": 4040
     },
     "ExploreModularity.dc.html": {
       "h": 1180,
       "is_interactive": true,
+      "page": "redesign",
       "title": "Explore · move a metro, watch modularity",
       "w": 1440,
-      "x": 9920,
+      "x": 11440,
       "y": 4040
     },
     "ExploreOverlap.dc.html": {
       "h": 1160,
       "is_interactive": true,
+      "page": "redesign",
       "title": "Explore · k-cliques and link communities",
       "w": 1440,
-      "x": 12960,
+      "x": 14480,
       "y": 4040
     },
     "FiveYears.dc.html": {
       "h": 2640,
+      "page": "redesign",
       "title": "Five years of filings, FY2022 to FY2026",
       "w": 1440,
-      "x": 2320,
+      "x": 3840,
       "y": 4040
+    },
+    "GapDrawing.dc.html": {
+      "h": 970,
+      "page": "gaps",
+      "title": "G6 · The five drawing rules and the colour check",
+      "w": 1440,
+      "x": 9120,
+      "y": 0
+    },
+    "GapEigen.dc.html": {
+      "h": 860,
+      "page": "gaps",
+      "title": "G4 · Eigenvector centrality against PageRank",
+      "w": 1440,
+      "x": 6080,
+      "y": 0
+    },
+    "GapGreedy.dc.html": {
+      "h": 1160,
+      "page": "gaps",
+      "title": "G2 · Greedy merging and the two dendrograms",
+      "w": 1440,
+      "x": 3040,
+      "y": 0
+    },
+    "GapGuide.dc.html": {
+      "h": 920,
+      "page": "gaps",
+      "title": "Brief gaps: guide and what to decide",
+      "w": 1440,
+      "x": 0,
+      "y": 0
+    },
+    "GapModularity.dc.html": {
+      "h": 920,
+      "page": "gaps",
+      "title": "G1 · Modularity by hand, and grouped against right",
+      "w": 1440,
+      "x": 1520,
+      "y": 0
+    },
+    "GapPaths.dc.html": {
+      "h": 930,
+      "page": "gaps",
+      "title": "G3 · Weighted paths: the strong ties run through Dallas",
+      "w": 1440,
+      "x": 4560,
+      "y": 0
+    },
+    "GapResolution.dc.html": {
+      "h": 1230,
+      "page": "gaps",
+      "title": "G5 · Resolution γ, Leiden and block models",
+      "w": 1440,
+      "x": 7600,
+      "y": 0
+    },
+    "GraphKit.dc.html": {
+      "h": 2720,
+      "page": "graphkit",
+      "title": "networkView() · six styles, dark and light",
+      "w": 1440,
+      "x": 0,
+      "y": 0
+    },
+    "LiveBoxData.dc.html": {
+      "h": 900,
+      "page": "built",
+      "title": "Deep dive · data and methods, and the page footer",
+      "w": 1440,
+      "x": 9120,
+      "y": 12437
+    },
+    "LiveBoxFiveYears.dc.html": {
+      "h": 2113,
+      "page": "built",
+      "title": "Deep dive · five years of filings",
+      "w": 1440,
+      "x": 1520,
+      "y": 12437
+    },
+    "LiveBoxJobs.dc.html": {
+      "h": 2601,
+      "page": "built",
+      "title": "Deep dive · which jobs go together, two earlier questions",
+      "w": 1440,
+      "x": 4560,
+      "y": 5467
+    },
+    "LiveBoxMethods.dc.html": {
+      "h": 1226,
+      "page": "built",
+      "title": "Deep dive · the four community methods, Girvan–Newman tab",
+      "w": 1440,
+      "x": 4560,
+      "y": 12437
+    },
+    "LiveBoxMore.dc.html": {
+      "h": 514,
+      "page": "built",
+      "title": "Deep dive · more networks, closed",
+      "w": 1440,
+      "x": 7600,
+      "y": 5467
+    },
+    "LiveBoxPageRank.dc.html": {
+      "h": 1596,
+      "page": "built",
+      "title": "Deep dive · PageRank, step by step",
+      "w": 1440,
+      "x": 7600,
+      "y": 12437
+    },
+    "LiveBoxRoles.dc.html": {
+      "h": 1215,
+      "page": "built",
+      "title": "Deep dive · who filed for which roles",
+      "w": 1440,
+      "x": 3040,
+      "y": 12437
+    },
+    "LiveBoxSkills.dc.html": {
+      "h": 2577,
+      "page": "built",
+      "title": "Deep dive · skills behind the jobs, O*NET",
+      "w": 1440,
+      "x": 6080,
+      "y": 12437
+    },
+    "LiveBoxStaffing.dc.html": {
+      "h": 6550,
+      "page": "built",
+      "title": "Deep dive · who staffs whom, earlier questions, law firms, lottery",
+      "w": 1440,
+      "x": 6080,
+      "y": 5467
+    },
+    "LiveBoxWhere.dc.html": {
+      "h": 3410,
+      "page": "built",
+      "title": "Deep dive · where the hiring is, two earlier questions",
+      "w": 1440,
+      "x": 3040,
+      "y": 5467
+    },
+    "LiveClosing.dc.html": {
+      "h": 1368,
+      "page": "built",
+      "title": "Closing",
+      "w": 1440,
+      "x": 12160,
+      "y": 0
+    },
+    "LiveDeepDive.dc.html": {
+      "h": 1595,
+      "page": "built",
+      "title": "Deep dive · the section, every box closed",
+      "w": 1440,
+      "x": 1520,
+      "y": 5467
+    },
+    "LiveMethodsLouvain.dc.html": {
+      "h": 1226,
+      "page": "built",
+      "title": "Deep dive · community methods, Louvain tab",
+      "w": 1440,
+      "x": 4560,
+      "y": 14770
+    },
+    "LiveMethodsModularity.dc.html": {
+      "h": 947,
+      "page": "built",
+      "title": "Deep dive · community methods, Modularity tab",
+      "w": 1440,
+      "x": 4560,
+      "y": 13743
+    },
+    "LiveMethodsOverlap.dc.html": {
+      "h": 969,
+      "page": "built",
+      "title": "Deep dive · community methods, Overlap tab",
+      "w": 1440,
+      "x": 4560,
+      "y": 16076
+    },
+    "LiveMoreCountries.dc.html": {
+      "h": 848,
+      "page": "built",
+      "title": "More networks · a network of countries",
+      "w": 1440,
+      "x": 7600,
+      "y": 6840
+    },
+    "LiveMoreDensity.dc.html": {
+      "h": 713,
+      "page": "built",
+      "title": "More networks · filings per 1,000 jobs",
+      "w": 1440,
+      "x": 7600,
+      "y": 7768
+    },
+    "LiveMoreGreenCards.dc.html": {
+      "h": 699,
+      "page": "built",
+      "title": "More networks · green cards as the strong tie",
+      "w": 1440,
+      "x": 7600,
+      "y": 6061
+    },
+    "LiveMoreLottery.dc.html": {
+      "h": 564,
+      "page": "built",
+      "title": "More networks · the lottery a year apart",
+      "w": 1440,
+      "x": 7600,
+      "y": 9185
+    },
+    "LiveMoreStrength.dc.html": {
+      "h": 544,
+      "page": "built",
+      "title": "More networks · strength against degree",
+      "w": 1440,
+      "x": 7600,
+      "y": 8561
+    },
+    "LiveMoreUscis.dc.html": {
+      "h": 525,
+      "page": "built",
+      "title": "More networks · USCIS denials",
+      "w": 1440,
+      "x": 7600,
+      "y": 9829
+    },
+    "LiveOpening.dc.html": {
+      "h": 807,
+      "page": "built",
+      "title": "Opening",
+      "w": 1440,
+      "x": 3040,
+      "y": 0
+    },
+    "LiveS1Where.dc.html": {
+      "h": 5047,
+      "page": "built",
+      "title": "Section 1 · where the hiring is",
+      "w": 1440,
+      "x": 4560,
+      "y": 0
+    },
+    "LiveS2Jobs.dc.html": {
+      "h": 2948,
+      "page": "built",
+      "title": "Section 2 · which jobs go together",
+      "w": 1440,
+      "x": 6080,
+      "y": 0
+    },
+    "LiveS3Staffing.dc.html": {
+      "h": 4244,
+      "page": "built",
+      "title": "Section 3 · who staffs whom",
+      "w": 1440,
+      "x": 7600,
+      "y": 0
+    },
+    "LiveS4Biggest.dc.html": {
+      "h": 2227,
+      "page": "built",
+      "title": "Section 4 · without the biggest firms",
+      "w": 1440,
+      "x": 9120,
+      "y": 0
+    },
+    "LiveS5Beyond.dc.html": {
+      "h": 2129,
+      "page": "built",
+      "title": "Section 5 · beyond the three networks",
+      "w": 1440,
+      "x": 10640,
+      "y": 0
+    },
+    "LiveTop.dc.html": {
+      "h": 1475,
+      "page": "built",
+      "title": "Top of the page: hero and the five findings",
+      "w": 1440,
+      "x": 1520,
+      "y": 0
     },
     "Main.dc.html": {
       "h": 3500,
       "is_interactive": true,
+      "page": "redesign",
       "title": "Top of the page: hero, findings, opening, section 1",
+      "w": 1440,
+      "x": 1520,
+      "y": 0
+    },
+    "RClosing.dc.html": {
+      "h": 1393,
+      "is_interactive": true,
+      "page": "recommended",
+      "title": "Closing",
+      "w": 1440,
+      "x": 12160,
+      "y": 0
+    },
+    "RData.dc.html": {
+      "h": 895,
+      "is_interactive": true,
+      "page": "recommended",
+      "title": "Deep dive · Data and methods",
+      "w": 1440,
+      "x": 9120,
+      "y": 3626
+    },
+    "RDeep.dc.html": {
+      "h": 1107,
+      "is_interactive": true,
+      "page": "recommended",
+      "title": "+ · Deep dive, by topic",
+      "w": 1440,
+      "x": 0,
+      "y": 3626
+    },
+    "RGuide.dc.html": {
+      "h": 1100,
+      "is_interactive": true,
+      "page": "recommended",
+      "title": "Start here: how this canvas is organised",
+      "w": 1440,
+      "x": 0,
+      "y": 0
+    },
+    "ROpening.dc.html": {
+      "h": 798,
+      "is_interactive": true,
+      "page": "recommended",
+      "title": "0 · Opening",
+      "w": 1440,
+      "x": 3040,
+      "y": 0
+    },
+    "RS1.dc.html": {
+      "h": 2375,
+      "is_interactive": true,
+      "page": "recommended",
+      "title": "1 · Where the hiring is, with the start card",
+      "w": 1440,
+      "x": 4560,
+      "y": 0
+    },
+    "RS2.dc.html": {
+      "h": 2762,
+      "is_interactive": true,
+      "page": "recommended",
+      "title": "2 · Which jobs go together",
+      "w": 1440,
+      "x": 6080,
+      "y": 0
+    },
+    "RS3.dc.html": {
+      "h": 3165,
+      "is_interactive": true,
+      "page": "recommended",
+      "title": "3 · Who staffs whom",
+      "w": 1440,
+      "x": 7600,
+      "y": 0
+    },
+    "RS4.dc.html": {
+      "h": 1547,
+      "is_interactive": true,
+      "page": "recommended",
+      "title": "4 · Without the biggest firms",
+      "w": 1440,
+      "x": 9120,
+      "y": 0
+    },
+    "RS5.dc.html": {
+      "h": 2074,
+      "is_interactive": true,
+      "page": "recommended",
+      "title": "5 · Beyond the three networks",
+      "w": 1440,
+      "x": 10640,
+      "y": 0
+    },
+    "RSystem.dc.html": {
+      "h": 2020,
+      "page": "recommended",
+      "title": "Layout system: how every section and card is built",
+      "w": 1440,
+      "x": 0,
+      "y": 1220
+    },
+    "RTop.dc.html": {
+      "h": 1512,
+      "is_interactive": true,
+      "page": "recommended",
+      "title": "Hero and the five findings",
+      "w": 1440,
+      "x": 1520,
+      "y": 0
+    },
+    "RTopicJobs-box2.dc.html": {
+      "h": 1765,
+      "is_interactive": true,
+      "page": "recommended",
+      "title": "Deep dive · Jobs and skills, opened at: Do the clusters follow official job groups?",
+      "w": 1440,
+      "x": 3040,
+      "y": 6897
+    },
+    "RTopicJobs-box3.dc.html": {
+      "h": 1765,
+      "is_interactive": true,
+      "page": "recommended",
+      "title": "Deep dive · Jobs and skills, opened at: Do occupations the same companies hire together also need similar skills?",
+      "w": 1440,
+      "x": 3040,
+      "y": 8782
+    },
+    "RTopicJobs-box4.dc.html": {
+      "h": 1765,
+      "is_interactive": true,
+      "page": "recommended",
+      "title": "Deep dive · Jobs and skills, opened at: Does that agreement hold for whole hiring clusters, not just direct ties?",
+      "w": 1440,
+      "x": 3040,
+      "y": 10667
+    },
+    "RTopicJobs-box5.dc.html": {
+      "h": 1765,
+      "is_interactive": true,
+      "page": "recommended",
+      "title": "Deep dive · Jobs and skills, opened at: How do two occupations' day-to-day skills actually compare?",
+      "w": 1440,
+      "x": 3040,
+      "y": 12552
+    },
+    "RTopicJobs-box6.dc.html": {
+      "h": 1765,
+      "is_interactive": true,
+      "page": "recommended",
+      "title": "Deep dive · Jobs and skills, opened at: Change the damping factor: does the ranking move?",
+      "w": 1440,
+      "x": 3040,
+      "y": 14437
+    },
+    "RTopicJobs-box7.dc.html": {
+      "h": 1765,
+      "is_interactive": true,
+      "page": "recommended",
+      "title": "Deep dive · Jobs and skills, opened at: Stepped one round at a time, how fast does the ranking settle?",
+      "w": 1440,
+      "x": 3040,
+      "y": 16322
+    },
+    "RTopicJobs.dc.html": {
+      "h": 1765,
+      "is_interactive": true,
+      "page": "recommended",
+      "title": "Deep dive · Jobs and skills",
+      "w": 1440,
+      "x": 3040,
+      "y": 3626
+    },
+    "RTopicOutsourcing-box2.dc.html": {
+      "h": 2799,
+      "is_interactive": true,
+      "page": "recommended",
+      "title": "Deep dive · Outsourcing firms and their clients, opened at: Who relies on a single vendor?",
+      "w": 1440,
+      "x": 4560,
+      "y": 6897
+    },
+    "RTopicOutsourcing-box3.dc.html": {
+      "h": 2799,
+      "is_interactive": true,
+      "page": "recommended",
+      "title": "Deep dive · Outsourcing firms and their clients, opened at: The client network, year by year",
+      "w": 1440,
+      "x": 4560,
+      "y": 9816
+    },
+    "RTopicOutsourcing-box4.dc.html": {
+      "h": 2799,
+      "is_interactive": true,
+      "page": "recommended",
+      "title": "Deep dive · Outsourcing firms and their clients, opened at: With filing counts or without?",
+      "w": 1440,
+      "x": 4560,
+      "y": 12735
+    },
+    "RTopicOutsourcing-box5.dc.html": {
+      "h": 2799,
+      "is_interactive": true,
+      "page": "recommended",
+      "title": "Deep dive · Outsourcing firms and their clients, opened at: Strong ties, weak ties and pay",
+      "w": 1440,
+      "x": 4560,
+      "y": 15654
+    },
+    "RTopicOutsourcing-box6.dc.html": {
+      "h": 2799,
+      "is_interactive": true,
+      "page": "recommended",
+      "title": "Deep dive · Outsourcing firms and their clients, opened at: Strength against degree: where do the heavy links go?",
+      "w": 1440,
+      "x": 4560,
+      "y": 18573
+    },
+    "RTopicOutsourcing.dc.html": {
+      "h": 2799,
+      "is_interactive": true,
+      "page": "recommended",
+      "title": "Deep dive · Outsourcing firms and their clients",
+      "w": 1440,
+      "x": 4560,
+      "y": 3626
+    },
+    "RTopicPaperwork-box2.dc.html": {
+      "h": 1161,
+      "is_interactive": true,
+      "page": "recommended",
+      "title": "Deep dive · Paperwork, the lottery and green cards, opened at: Do the firms that register the same workers staff the sam",
+      "w": 1440,
+      "x": 6080,
+      "y": 6897
+    },
+    "RTopicPaperwork-box3.dc.html": {
+      "h": 1161,
+      "is_interactive": true,
+      "page": "recommended",
+      "title": "Deep dive · Paperwork, the lottery and green cards, opened at: The lottery a year apart, and who receives the winners",
+      "w": 1440,
+      "x": 6080,
+      "y": 8178
+    },
+    "RTopicPaperwork-box4.dc.html": {
+      "h": 1161,
+      "is_interactive": true,
+      "page": "recommended",
+      "title": "Deep dive · Paperwork, the lottery and green cards, opened at: USCIS denials, year by year",
+      "w": 1440,
+      "x": 6080,
+      "y": 9459
+    },
+    "RTopicPaperwork-box5.dc.html": {
+      "h": 1161,
+      "is_interactive": true,
+      "page": "recommended",
+      "title": "Deep dive · Paperwork, the lottery and green cards, opened at: Who keeps them? Green cards as the strong tie",
+      "w": 1440,
+      "x": 6080,
+      "y": 10740
+    },
+    "RTopicPaperwork-box6.dc.html": {
+      "h": 1161,
+      "is_interactive": true,
+      "page": "recommended",
+      "title": "Deep dive · Paperwork, the lottery and green cards, opened at: Where are they from? A network of countries",
+      "w": 1440,
+      "x": 6080,
+      "y": 12021
+    },
+    "RTopicPaperwork.dc.html": {
+      "h": 1161,
+      "is_interactive": true,
+      "page": "recommended",
+      "title": "Deep dive · Paperwork, the lottery and green cards",
+      "w": 1440,
+      "x": 6080,
+      "y": 3626
+    },
+    "RTopicWhere-box2.dc.html": {
+      "h": 1860,
+      "is_interactive": true,
+      "page": "recommended",
+      "title": "Deep dive · Where the hiring is, opened at: Do the same employers tie distant cities together?",
+      "w": 1440,
+      "x": 1520,
+      "y": 6897
+    },
+    "RTopicWhere-box3.dc.html": {
+      "h": 1860,
+      "is_interactive": true,
+      "page": "recommended",
+      "title": "Deep dive · Where the hiring is, opened at: Where is the hiring densest? Filings per 1,000 jobs",
+      "w": 1440,
+      "x": 1520,
+      "y": 8877
+    },
+    "RTopicWhere-box4.dc.html": {
+      "h": 1860,
+      "is_interactive": true,
+      "page": "recommended",
+      "title": "Deep dive · Where the hiring is, opened at: Girvan–Newman Does cutting the busiest links split the country?",
+      "w": 1440,
+      "x": 1520,
+      "y": 10857
+    },
+    "RTopicWhere-box5.dc.html": {
+      "h": 1860,
+      "is_interactive": true,
+      "page": "recommended",
+      "title": "Deep dive · Where the hiring is, opened at: Modularity Are the three metro groups more than chance?",
+      "w": 1440,
+      "x": 1520,
+      "y": 12837
+    },
+    "RTopicWhere-box6.dc.html": {
+      "h": 1860,
+      "is_interactive": true,
+      "page": "recommended",
+      "title": "Deep dive · Where the hiring is, opened at: Louvain Where do the three metro groups come from?",
+      "w": 1440,
+      "x": 1520,
+      "y": 14817
+    },
+    "RTopicWhere-box7.dc.html": {
+      "h": 1860,
+      "is_interactive": true,
+      "page": "recommended",
+      "title": "Deep dive · Where the hiring is, opened at: Overlap Which metros belong to more than one group?",
+      "w": 1440,
+      "x": 1520,
+      "y": 16797
+    },
+    "RTopicWhere.dc.html": {
+      "h": 1860,
+      "is_interactive": true,
+      "page": "recommended",
+      "title": "Deep dive · Where the hiring is",
+      "w": 1440,
+      "x": 1520,
+      "y": 3626
+    },
+    "RTopicWherePlus-greedy.dc.html": {
+      "h": 1860,
+      "page": "gaps",
+      "title": "Proposed · the new Greedy tab in the community methods",
+      "w": 1440,
+      "x": 1520,
+      "y": 1800
+    },
+    "RTopicWherePlus-modularity.dc.html": {
+      "h": 1860,
+      "page": "gaps",
+      "title": "Proposed · the Modularity tab with the formula and Census regions",
+      "w": 1440,
+      "x": 3040,
+      "y": 1800
+    },
+    "RTopicWherePlus.dc.html": {
+      "h": 1860,
+      "page": "gaps",
+      "title": "Proposed · Where the hiring is, opened at the new box: Which way do the strongest ties run?",
+      "w": 1440,
+      "x": 0,
+      "y": 1800
+    },
+    "RTopicYears-box2.dc.html": {
+      "h": 2332,
+      "is_interactive": true,
+      "page": "recommended",
+      "title": "Deep dive · Five years, opened at: Who filed, and for which roles?",
+      "w": 1440,
+      "x": 7600,
+      "y": 6897
+    },
+    "RTopicYears-box3.dc.html": {
+      "h": 2332,
+      "is_interactive": true,
+      "page": "recommended",
+      "title": "Deep dive · Five years, opened at: Does it hold from year to year?",
+      "w": 1440,
+      "x": 7600,
+      "y": 9247
+    },
+    "RTopicYears.dc.html": {
+      "h": 2332,
+      "is_interactive": true,
+      "page": "recommended",
+      "title": "Deep dive · Five years",
+      "w": 1440,
+      "x": 7600,
+      "y": 3626
+    },
+    "RType.dc.html": {
+      "h": 2420,
+      "page": "recommended",
+      "title": "Type scale: one set of sizes for the whole site",
+      "w": 1440,
+      "x": 3040,
+      "y": 880
+    },
+    "RailBehaviour.dc.html": {
+      "h": 1180,
+      "is_interactive": true,
+      "page": "recs",
+      "title": "The section rail: states, rules and tweaks",
+      "w": 1440,
+      "x": 7600,
+      "y": 0
+    },
+    "RecControls.dc.html": {
+      "h": 1120,
+      "is_interactive": true,
+      "page": "recs",
+      "title": "Recommendation 4: one control for every switch",
+      "w": 1440,
+      "x": 6080,
+      "y": 0
+    },
+    "RecDrawer.dc.html": {
+      "h": 1420,
+      "is_interactive": true,
+      "page": "recs",
+      "title": "Recommendation 1: long pop-ups become drawers",
+      "w": 1440,
+      "x": 3040,
+      "y": 0
+    },
+    "RecOverview.dc.html": {
+      "h": 1640,
+      "page": "recs",
+      "title": "Week 4: what to change next, measured",
+      "w": 1440,
+      "x": 1520,
+      "y": 0
+    },
+    "RecSection1.dc.html": {
+      "h": 880,
+      "is_interactive": true,
+      "page": "recs",
+      "title": "Recommendation 3: start section 1 with one card",
+      "w": 1440,
+      "x": 4560,
+      "y": 0
+    },
+    "RecsGuide.dc.html": {
+      "h": 810,
+      "is_interactive": true,
+      "page": "recs",
+      "title": "Guide: why the design changed",
       "w": 1440,
       "x": 0,
       "y": 0
@@ -148,25 +950,572 @@
     "Section3.dc.html": {
       "h": 3200,
       "is_interactive": true,
+      "page": "redesign",
       "title": "Section 3 · who staffs whom",
       "w": 1440,
-      "x": 1520,
+      "x": 3040,
       "y": 0
     },
     "Section4.dc.html": {
       "h": 2600,
       "is_interactive": true,
+      "page": "redesign",
       "title": "Section 4 · the one interaction",
+      "w": 1440,
+      "x": 4560,
+      "y": 0
+    },
+    "StateBackbone01.dc.html": {
+      "h": 1501,
+      "page": "built",
+      "title": "Where the hiring is · backbone at α = 0.05",
+      "w": 1440,
+      "x": 3040,
+      "y": 18065
+    },
+    "StateBackbone02.dc.html": {
+      "h": 1501,
+      "page": "built",
+      "title": "Where the hiring is · backbone at α = 0.1",
+      "w": 1440,
+      "x": 3040,
+      "y": 19646
+    },
+    "StateBackbone03.dc.html": {
+      "h": 1501,
+      "page": "built",
+      "title": "Where the hiring is · backbone at α = 0.3",
+      "w": 1440,
+      "x": 3040,
+      "y": 21227
+    },
+    "StateBackbone04.dc.html": {
+      "h": 1501,
+      "page": "built",
+      "title": "Where the hiring is · backbone at α = 0.5",
+      "w": 1440,
+      "x": 3040,
+      "y": 22808
+    },
+    "StateBackbone05.dc.html": {
+      "h": 1586,
+      "page": "built",
+      "title": "Where the hiring is · long-haul links of Amazon",
+      "w": 1440,
+      "x": 3040,
+      "y": 24389
+    },
+    "StateBackbone06.dc.html": {
+      "h": 1586,
+      "page": "built",
+      "title": "Where the hiring is · long-haul links of EY",
+      "w": 1440,
+      "x": 3040,
+      "y": 26055
+    },
+    "StateBackbone07.dc.html": {
+      "h": 1586,
+      "page": "built",
+      "title": "Where the hiring is · long-haul links of Tata Consultancy Services",
+      "w": 1440,
+      "x": 3040,
+      "y": 27721
+    },
+    "StateBackbone08.dc.html": {
+      "h": 1586,
+      "page": "built",
+      "title": "Where the hiring is · long-haul links of Deloitte",
+      "w": 1440,
+      "x": 3040,
+      "y": 29387
+    },
+    "StateBackbone09.dc.html": {
+      "h": 1586,
+      "page": "built",
+      "title": "Where the hiring is · long-haul links of Intel",
+      "w": 1440,
+      "x": 3040,
+      "y": 31053
+    },
+    "StateMethods01.dc.html": {
+      "h": 1001,
+      "page": "built",
+      "title": "Community methods · Girvan–Newman after 1 split",
+      "w": 1440,
+      "x": 10640,
+      "y": 18065
+    },
+    "StateMethods02.dc.html": {
+      "h": 1001,
+      "page": "built",
+      "title": "Community methods · Girvan–Newman after 2 splits",
+      "w": 1440,
+      "x": 10640,
+      "y": 19146
+    },
+    "StateMethods03.dc.html": {
+      "h": 1001,
+      "page": "built",
+      "title": "Community methods · Girvan–Newman after 3 splits",
+      "w": 1440,
+      "x": 10640,
+      "y": 20227
+    },
+    "StateMethods04.dc.html": {
+      "h": 721,
+      "page": "built",
+      "title": "Community methods · modularity, labels shuffled",
+      "w": 1440,
+      "x": 10640,
+      "y": 21308
+    },
+    "StateMethods05.dc.html": {
+      "h": 721,
+      "page": "built",
+      "title": "Community methods · modularity, everyone in one group",
+      "w": 1440,
+      "x": 10640,
+      "y": 22109
+    },
+    "StateMethods06.dc.html": {
+      "h": 1001,
+      "page": "built",
+      "title": "Community methods · Louvain after five moves",
+      "w": 1440,
+      "x": 10640,
+      "y": 22910
+    },
+    "StateMethods07.dc.html": {
+      "h": 1001,
+      "page": "built",
+      "title": "Community methods · Louvain, first level finished",
+      "w": 1440,
+      "x": 10640,
+      "y": 23991
+    },
+    "StateMethods08.dc.html": {
+      "h": 1001,
+      "page": "built",
+      "title": "Community methods · Louvain, second level finished",
+      "w": 1440,
+      "x": 10640,
+      "y": 25072
+    },
+    "StateMethods09.dc.html": {
+      "h": 743,
+      "page": "built",
+      "title": "Community methods · k-cliques, k = 3",
+      "w": 1440,
+      "x": 10640,
+      "y": 26153
+    },
+    "StateMethods10.dc.html": {
+      "h": 743,
+      "page": "built",
+      "title": "Community methods · k-cliques, k = 4",
+      "w": 1440,
+      "x": 10640,
+      "y": 26976
+    },
+    "StateMethods11.dc.html": {
+      "h": 743,
+      "page": "built",
+      "title": "Community methods · k-cliques, k = 5",
+      "w": 1440,
+      "x": 10640,
+      "y": 27799
+    },
+    "StateMethods12.dc.html": {
+      "h": 743,
+      "page": "built",
+      "title": "Community methods · k-cliques, k = 6",
+      "w": 1440,
+      "x": 10640,
+      "y": 28622
+    },
+    "StateMethods13.dc.html": {
+      "h": 743,
+      "page": "built",
+      "title": "Community methods · link communities, community 2",
+      "w": 1440,
+      "x": 10640,
+      "y": 29445
+    },
+    "StateMethods14.dc.html": {
+      "h": 743,
+      "page": "built",
+      "title": "Community methods · link communities, community 3",
+      "w": 1440,
+      "x": 10640,
+      "y": 30268
+    },
+    "StatePageRank01.dc.html": {
+      "h": 703,
+      "page": "built",
+      "title": "PageRank · damping d = 0.5",
+      "w": 1440,
+      "x": 7600,
+      "y": 18065
+    },
+    "StatePageRank02.dc.html": {
+      "h": 703,
+      "page": "built",
+      "title": "PageRank · damping d = 0.99",
+      "w": 1440,
+      "x": 7600,
+      "y": 18848
+    },
+    "StatePageRank03.dc.html": {
+      "h": 821,
+      "page": "built",
+      "title": "PageRank · the ranking at step 1",
+      "w": 1440,
+      "x": 7600,
+      "y": 19631
+    },
+    "StatePageRank04.dc.html": {
+      "h": 821,
+      "page": "built",
+      "title": "PageRank · the ranking at step 2",
+      "w": 1440,
+      "x": 7600,
+      "y": 20532
+    },
+    "StatePageRank05.dc.html": {
+      "h": 821,
+      "page": "built",
+      "title": "PageRank · the ranking at step 3",
+      "w": 1440,
+      "x": 7600,
+      "y": 21433
+    },
+    "StatePageRank06.dc.html": {
+      "h": 821,
+      "page": "built",
+      "title": "PageRank · the ranking at step 5",
+      "w": 1440,
+      "x": 7600,
+      "y": 22334
+    },
+    "StatePageRank07.dc.html": {
+      "h": 821,
+      "page": "built",
+      "title": "PageRank · the ranking at step 10",
+      "w": 1440,
+      "x": 7600,
+      "y": 23235
+    },
+    "StatePageRank08.dc.html": {
+      "h": 821,
+      "page": "built",
+      "title": "PageRank · the ranking at converged",
+      "w": 1440,
+      "x": 7600,
+      "y": 24136
+    },
+    "StateRadar01.dc.html": {
+      "h": 1543,
+      "page": "built",
+      "title": "Skills radar · knowledge areas",
+      "w": 1440,
+      "x": 9120,
+      "y": 18065
+    },
+    "StateRadar02.dc.html": {
+      "h": 1561,
+      "page": "built",
+      "title": "Skills radar · work activities",
+      "w": 1440,
+      "x": 9120,
+      "y": 19688
+    },
+    "StateRadar03.dc.html": {
+      "h": 1747,
+      "page": "built",
+      "title": "Skills radar · five occupations compared",
+      "w": 1440,
+      "x": 9120,
+      "y": 21329
+    },
+    "StateRoles01.dc.html": {
+      "h": 1051,
+      "page": "built",
+      "title": "Who filed for which roles · Roles, 100%",
+      "w": 1440,
+      "x": 6080,
+      "y": 18065
+    },
+    "StateRoles02.dc.html": {
+      "h": 1023,
+      "page": "built",
+      "title": "Who filed for which roles · Occupation groups, filings",
+      "w": 1440,
+      "x": 6080,
+      "y": 19196
+    },
+    "StateRoles03.dc.html": {
+      "h": 1023,
+      "page": "built",
+      "title": "Who filed for which roles · Occupation groups, 100%",
+      "w": 1440,
+      "x": 6080,
+      "y": 20299
+    },
+    "StateRoles04.dc.html": {
+      "h": 991,
+      "page": "built",
+      "title": "Who filed for which roles · Employer, filings",
+      "w": 1440,
+      "x": 6080,
+      "y": 21402
+    },
+    "StateRoles05.dc.html": {
+      "h": 991,
+      "page": "built",
+      "title": "Who filed for which roles · Employer, 100%",
+      "w": 1440,
+      "x": 6080,
+      "y": 22473
+    },
+    "StateRoles06.dc.html": {
+      "h": 940,
+      "page": "built",
+      "title": "Who filed for which roles · Placed or direct, filings",
+      "w": 1440,
+      "x": 6080,
+      "y": 23544
+    },
+    "StateRoles07.dc.html": {
+      "h": 940,
+      "page": "built",
+      "title": "Who filed for which roles · Placed or direct, 100%",
+      "w": 1440,
+      "x": 6080,
+      "y": 24564
+    },
+    "StateRoles08.dc.html": {
+      "h": 1051,
+      "page": "built",
+      "title": "Who filed for which roles · October to June only",
+      "w": 1440,
+      "x": 6080,
+      "y": 25584
+    },
+    "StateSelected01.dc.html": {
+      "h": 769,
+      "page": "built",
+      "title": "Hero with Seattle picked: inspector, ring and its backbone links",
+      "w": 1440,
+      "x": 1520,
+      "y": 20895
+    },
+    "StateSelected02.dc.html": {
+      "h": 1530,
+      "page": "built",
+      "title": "Section 1 with Seattle picked: the ranking, inspector and map",
+      "w": 1440,
+      "x": 1520,
+      "y": 21744
+    },
+    "StateSelected03.dc.html": {
+      "h": 1140,
+      "page": "built",
+      "title": "Section 1 with Seattle picked: the regions map",
+      "w": 1440,
+      "x": 1520,
+      "y": 23354
+    },
+    "StateSelected04.dc.html": {
+      "h": 1215,
+      "page": "built",
+      "title": "Section 2 deep dive · the job network with Software Developers clicked",
+      "w": 1440,
+      "x": 1520,
+      "y": 24574
+    },
+    "StateStaffing01.dc.html": {
+      "h": 1483,
+      "page": "built",
+      "title": "Who staffs whom · the client network in 2022",
+      "w": 1440,
+      "x": 4560,
+      "y": 18065
+    },
+    "StateStaffing02.dc.html": {
+      "h": 1483,
+      "page": "built",
+      "title": "Who staffs whom · the client network in 2023",
+      "w": 1440,
+      "x": 4560,
+      "y": 19628
+    },
+    "StateStaffing03.dc.html": {
+      "h": 1483,
+      "page": "built",
+      "title": "Who staffs whom · the client network in 2024",
+      "w": 1440,
+      "x": 4560,
+      "y": 21191
+    },
+    "StateStaffing04.dc.html": {
+      "h": 1483,
+      "page": "built",
+      "title": "Who staffs whom · the client network in 2026 · Oct–Jun",
+      "w": 1440,
+      "x": 4560,
+      "y": 22754
+    },
+    "StateTooltips01.dc.html": {
+      "h": 3446,
+      "page": "built",
+      "title": "Chart tooltips, part 1",
+      "w": 1440,
+      "x": 12160,
+      "y": 18065
+    },
+    "StateTooltips02.dc.html": {
+      "h": 3891,
+      "page": "built",
+      "title": "Chart tooltips, part 2",
+      "w": 1440,
+      "x": 12160,
+      "y": 21591
+    },
+    "StateWhere01.dc.html": {
+      "h": 1530,
+      "page": "built",
+      "title": "Section 1 · the city ranking by employers",
+      "w": 1440,
+      "x": 1520,
+      "y": 18065
+    },
+    "StateWhere02.dc.html": {
+      "h": 1140,
+      "page": "built",
+      "title": "Section 1 · the regions map, Census regions",
+      "w": 1440,
+      "x": 1520,
+      "y": 19675
+    },
+    "TplClosing.dc.html": {
+      "h": 752,
+      "page": "template",
+      "title": "Template · Closing",
+      "w": 1440,
+      "x": 6080,
+      "y": 0
+    },
+    "TplFirst.dc.html": {
+      "h": 855,
+      "page": "template",
+      "title": "Template · Standard section card",
       "w": 1440,
       "x": 3040,
       "y": 0
     },
-    "Today.dc.html": {
-      "h": 5135,
-      "title": "Week 4 today, for comparison",
-      "w": 720,
+    "TplOpening.dc.html": {
+      "h": 698,
+      "page": "template",
+      "title": "Template · Opening",
+      "w": 1440,
       "x": 1520,
-      "y": 4040
+      "y": 0
+    },
+    "TplSecond.dc.html": {
+      "h": 1055,
+      "page": "template",
+      "title": "Template · Wide section card",
+      "w": 1440,
+      "x": 4560,
+      "y": 0
+    },
+    "TplTop.dc.html": {
+      "h": 1112,
+      "page": "template",
+      "title": "Template · Hero and findings",
+      "w": 1440,
+      "x": 0,
+      "y": 0
+    },
+    "W5Autocomplete.dc.html": {
+      "h": 1693,
+      "page": "week05",
+      "title": "4 · Community autocomplete",
+      "w": 1440,
+      "x": 4560,
+      "y": 2063
+    },
+    "W5Closing.dc.html": {
+      "h": 1327,
+      "page": "week05",
+      "title": "Week 5 · Closing, methods and AI use",
+      "w": 1440,
+      "x": 3040,
+      "y": 0
+    },
+    "W5Copying.dc.html": {
+      "h": 1889,
+      "page": "week05",
+      "title": "2 · Catch Wikipedia copying itself",
+      "w": 1440,
+      "x": 1520,
+      "y": 2063
+    },
+    "W5Fame.dc.html": {
+      "h": 2516,
+      "page": "week05",
+      "title": "6 · Does network fame buy you more words?",
+      "w": 1440,
+      "x": 1520,
+      "y": 5068
+    },
+    "W5Heaps.dc.html": {
+      "h": 1914,
+      "page": "week05",
+      "title": "5 · Heaps' law of the Marvel universe",
+      "w": 1440,
+      "x": 0,
+      "y": 5068
+    },
+    "W5Opening.dc.html": {
+      "h": 698,
+      "page": "week05",
+      "title": "Week 5 · Opening",
+      "w": 1440,
+      "x": 1520,
+      "y": 0
+    },
+    "W5Relations.dc.html": {
+      "h": 1848,
+      "page": "week05",
+      "title": "1 · Turn links into relationships",
+      "w": 1440,
+      "x": 0,
+      "y": 2063
+    },
+    "W5Search.dc.html": {
+      "h": 2585,
+      "page": "week05",
+      "title": "3 · A Marvel search engine in 20 lines",
+      "w": 1440,
+      "x": 3040,
+      "y": 2063
+    },
+    "W5Top.dc.html": {
+      "h": 1643,
+      "page": "week05",
+      "title": "Week 5 · Hero and findings",
+      "w": 1440,
+      "x": 0,
+      "y": 0
+    },
+    "W5Weird.dc.html": {
+      "h": 2294,
+      "page": "week05",
+      "title": "7 · Who has the weirdest Wikipedia page?",
+      "w": 1440,
+      "x": 3040,
+      "y": 5068
     }
   },
   "createdOnFiles": {
@@ -183,40 +1532,359 @@
     }
   ],
   "launch": {
+    "page": "recommended",
     "view": "canvas"
   },
   "notes": {
+    "arch3": {
+      "kind": "title1",
+      "maxW": 8000,
+      "page": "redesign",
+      "text": "Deep-dive proposals, 28 September: replaced by the deep dive on Start here",
+      "w": 240,
+      "x": 1520,
+      "y": 7560
+    },
+    "bcol0": {
+      "kind": "title1",
+      "maxW": 1440,
+      "page": "built",
+      "size": 40,
+      "text": "Picked items",
+      "w": 240,
+      "x": 1520,
+      "y": 17865
+    },
+    "bcol1": {
+      "kind": "title1",
+      "maxW": 1440,
+      "page": "built",
+      "size": 40,
+      "text": "Backbone",
+      "w": 240,
+      "x": 3040,
+      "y": 17865
+    },
+    "bcol2": {
+      "kind": "title1",
+      "maxW": 1440,
+      "page": "built",
+      "size": 40,
+      "text": "Client network by year",
+      "w": 240,
+      "x": 4560,
+      "y": 17865
+    },
+    "bcol3": {
+      "kind": "title1",
+      "maxW": 1440,
+      "page": "built",
+      "size": 40,
+      "text": "Who filed for which roles",
+      "w": 240,
+      "x": 6080,
+      "y": 17865
+    },
+    "bcol4": {
+      "kind": "title1",
+      "maxW": 1440,
+      "page": "built",
+      "size": 40,
+      "text": "PageRank",
+      "w": 240,
+      "x": 7600,
+      "y": 17865
+    },
+    "bcol5": {
+      "kind": "title1",
+      "maxW": 1440,
+      "page": "built",
+      "size": 40,
+      "text": "Skills radar",
+      "w": 240,
+      "x": 9120,
+      "y": 17865
+    },
+    "bcol6": {
+      "kind": "title1",
+      "maxW": 1440,
+      "page": "built",
+      "size": 40,
+      "text": "Community methods",
+      "w": 240,
+      "x": 10640,
+      "y": 17865
+    },
+    "bcol7": {
+      "kind": "title1",
+      "maxW": 1440,
+      "page": "built",
+      "size": 40,
+      "text": "Chart tooltips",
+      "w": 240,
+      "x": 12160,
+      "y": 17865
+    },
+    "built1": {
+      "kind": "title1",
+      "maxW": 8000,
+      "page": "built",
+      "text": "Week 4 as built: the page, section by section, every box open",
+      "w": 240,
+      "x": 1520,
+      "y": -300
+    },
+    "built2": {
+      "kind": "title1",
+      "maxW": 7500,
+      "page": "built",
+      "text": "Deep dive: the section, the first-round boxes and More networks, each opened",
+      "w": 240,
+      "x": 1520,
+      "y": 5167
+    },
+    "built3": {
+      "kind": "title1",
+      "maxW": 8000,
+      "page": "built",
+      "text": "Deep dive: five years, roles, the course's methods, O*NET skills, PageRank, sources",
+      "w": 240,
+      "x": 1520,
+      "y": 12137
+    },
+    "built4": {
+      "kind": "title1",
+      "maxW": 8000,
+      "page": "built",
+      "text": "Every state behind the controls: toggles, sliders, pickers, steps, a picked city and every chart tooltip",
+      "w": 240,
+      "x": 1520,
+      "y": 17505
+    },
     "course4": {
       "kind": "title1",
       "maxW": 6000,
+      "page": "redesign",
       "text": "The course’s four community explorables, on the 40 metros",
       "w": 240,
-      "x": 8400,
+      "x": 9920,
       "y": 3740
     },
     "extras": {
       "kind": "title1",
       "maxW": 6000,
+      "page": "redesign",
       "text": "Five years, and three explorables in the course’s style",
       "w": 240,
-      "x": 2320,
+      "x": 3840,
       "y": 3740
     },
-    "row1": {
+    "gaps1": {
       "kind": "title1",
       "maxW": 8000,
-      "text": "Week 4, redesigned: the page from top to bottom, then the deep dive opened",
+      "page": "gaps",
+      "text": "Brief gaps: the Week 4 concepts the page does not show yet, on our own networks",
       "w": 240,
       "x": 0,
       "y": -300
     },
-    "row2": {
+    "gaps2": {
       "kind": "title1",
-      "maxW": 2240,
-      "text": "The chart kit, and the page as it is today",
+      "maxW": 4480,
+      "page": "gaps",
+      "text": "Proposed: the three additions in place, in the Where the hiring is deep dive",
       "w": 240,
       "x": 0,
+      "y": 1500
+    },
+    "graphkit1": {
+      "kind": "title1",
+      "maxW": 1440,
+      "page": "graphkit",
+      "text": "Network views: networkView() in six styles, real data",
+      "w": 240,
+      "x": 0,
+      "y": -300
+    },
+    "rec1": {
+      "kind": "title1",
+      "maxW": 8000,
+      "page": "recommended",
+      "text": "Week 4, recommended: the story from the hero to the closing",
+      "w": 240,
+      "x": 0,
+      "y": -420
+    },
+    "rec2": {
+      "kind": "title1",
+      "maxW": 8000,
+      "page": "recommended",
+      "text": "The deep dive, by topic: pick a topic, then a box",
+      "w": 240,
+      "x": 0,
+      "y": 3286
+    },
+    "rec3": {
+      "kind": "title1",
+      "maxW": 8000,
+      "page": "recommended",
+      "text": "Every other box, opened: under each topic board, its boxes in order",
+      "w": 240,
+      "x": 1520,
+      "y": 6597
+    },
+    "recsA": {
+      "kind": "title1",
+      "maxW": 7500,
+      "page": "recs",
+      "text": "Why: the audit, the seven changes, the boards that test them, and the rail",
+      "w": 240,
+      "x": 1520,
+      "y": -300
+    },
+    "row1": {
+      "kind": "title1",
+      "maxW": 8000,
+      "page": "redesign",
+      "text": "First redesign, 27 September: the page from top to bottom, then the deep dive",
+      "w": 240,
+      "x": 1520,
+      "y": -300
+    },
+    "row2": {
+      "kind": "title1",
+      "maxW": 1440,
+      "page": "redesign",
+      "text": "Chart kit",
+      "w": 240,
+      "x": 1520,
       "y": 3740
+    },
+    "s_RDeep": {
+      "fill": "blue",
+      "maxH": 110,
+      "page": "recommended",
+      "text": "Rec 2: five topics replace the index card and ten bars. Rec 6: the rail's dots are the topics.",
+      "w": 520,
+      "x": 0,
+      "y": 3476
+    },
+    "s_RS1": {
+      "fill": "green",
+      "maxH": 110,
+      "page": "recommended",
+      "text": "Rec 3: one start card replaces the ranking and regions cards. Rec 1: their pop-ups and both maps are drawers.",
+      "w": 520,
+      "x": 4560,
+      "y": -150
+    },
+    "s_RS2": {
+      "fill": "green",
+      "maxH": 110,
+      "page": "recommended",
+      "text": "Rec 1: How the comparison works and More numbers are drawers.",
+      "w": 520,
+      "x": 6080,
+      "y": -150
+    },
+    "s_RS3": {
+      "fill": "green",
+      "maxH": 110,
+      "page": "recommended",
+      "text": "Rec 1: the 183-word More numbers is now a drawer under its card.",
+      "w": 520,
+      "x": 7600,
+      "y": -150
+    },
+    "s_RTop": {
+      "fill": "blue",
+      "maxH": 110,
+      "page": "recommended",
+      "text": "Rec 6 on every board: the rail, with every name on hover.",
+      "w": 520,
+      "x": 1520,
+      "y": -150
+    },
+    "s_RTopicJobs": {
+      "fill": "orange",
+      "maxH": 110,
+      "page": "recommended",
+      "text": "Rec 4: the radar compares by the one control.",
+      "w": 520,
+      "x": 3040,
+      "y": 3476
+    },
+    "s_RTopicOutsourcing": {
+      "fill": "orange",
+      "maxH": 110,
+      "page": "recommended",
+      "text": "Rec 4: the year buttons use the one control. Rec 7 applies to M4.",
+      "w": 520,
+      "x": 4560,
+      "y": 3476
+    },
+    "s_RTopicPaperwork": {
+      "fill": "orange",
+      "maxH": 110,
+      "page": "recommended",
+      "text": "Rec 7: More networks boxes are cards; the dashed What to notice slots are still to write.",
+      "w": 520,
+      "x": 6080,
+      "y": 3476
+    },
+    "s_RTopicWhere": {
+      "fill": "orange",
+      "maxH": 110,
+      "page": "recommended",
+      "text": "Rec 4: the backbone slider is five stops on the one control. Each method has its own tab.",
+      "w": 520,
+      "x": 1520,
+      "y": 3476
+    },
+    "s_RTopicYears": {
+      "fill": "orange",
+      "maxH": 110,
+      "page": "recommended",
+      "text": "Rec 5: the lead's findings sit on their charts; tables in a closed drawer. Rec 4: one control.",
+      "w": 520,
+      "x": 7600,
+      "y": 3476
+    },
+    "template1": {
+      "kind": "title1",
+      "maxW": 7520,
+      "page": "template",
+      "text": "The post template: copy docs/weeks/_template to start a week",
+      "w": 240,
+      "x": 0,
+      "y": -300
+    },
+    "week051": {
+      "kind": "title1",
+      "maxW": 4480,
+      "page": "week05",
+      "text": "Week 5 as built: the frame",
+      "w": 240,
+      "x": 0,
+      "y": -300
+    },
+    "week052": {
+      "kind": "title1",
+      "maxW": 6000,
+      "page": "week05",
+      "text": "Sections 1 to 4",
+      "w": 240,
+      "x": 0,
+      "y": 1763
+    },
+    "week053": {
+      "kind": "title1",
+      "maxW": 4480,
+      "page": "week05",
+      "text": "Sections 5 to 7",
+      "w": 240,
+      "x": 0,
+      "y": 4768
     }
   },
   "order": [
@@ -225,7 +1893,6 @@
     "Section4.dc.html",
     "Closing.dc.html",
     "ChartKit.dc.html",
-    "Today.dc.html",
     "Deep1.dc.html",
     "Deep2.dc.html",
     "Deep3a.dc.html",
@@ -240,8 +1907,203 @@
     "ExploreGN.dc.html",
     "ExploreModularity.dc.html",
     "ExploreLouvain.dc.html",
-    "ExploreOverlap.dc.html"
+    "ExploreOverlap.dc.html",
+    "DeepLive.dc.html",
+    "DeepIndex.dc.html",
+    "DeepOpen.dc.html",
+    "LiveTop.dc.html",
+    "LiveOpening.dc.html",
+    "LiveS1Where.dc.html",
+    "LiveS2Jobs.dc.html",
+    "LiveS3Staffing.dc.html",
+    "LiveS4Biggest.dc.html",
+    "LiveS5Beyond.dc.html",
+    "LiveClosing.dc.html",
+    "LiveDeepDive.dc.html",
+    "LiveBoxWhere.dc.html",
+    "LiveBoxJobs.dc.html",
+    "LiveBoxStaffing.dc.html",
+    "LiveBoxMore.dc.html",
+    "LiveMoreGreenCards.dc.html",
+    "LiveMoreCountries.dc.html",
+    "LiveMoreDensity.dc.html",
+    "LiveMoreStrength.dc.html",
+    "LiveMoreLottery.dc.html",
+    "LiveMoreUscis.dc.html",
+    "LiveBoxFiveYears.dc.html",
+    "LiveBoxRoles.dc.html",
+    "LiveBoxMethods.dc.html",
+    "LiveBoxSkills.dc.html",
+    "LiveBoxPageRank.dc.html",
+    "LiveBoxData.dc.html",
+    "LiveMethodsModularity.dc.html",
+    "LiveMethodsLouvain.dc.html",
+    "LiveMethodsOverlap.dc.html",
+    "RailBehaviour.dc.html",
+    "StateWhere01.dc.html",
+    "StateWhere02.dc.html",
+    "StateSelected01.dc.html",
+    "StateSelected02.dc.html",
+    "StateSelected03.dc.html",
+    "StateSelected04.dc.html",
+    "StateBackbone01.dc.html",
+    "StateBackbone02.dc.html",
+    "StateBackbone03.dc.html",
+    "StateBackbone04.dc.html",
+    "StateBackbone05.dc.html",
+    "StateBackbone06.dc.html",
+    "StateBackbone07.dc.html",
+    "StateBackbone08.dc.html",
+    "StateBackbone09.dc.html",
+    "StateStaffing01.dc.html",
+    "StateStaffing02.dc.html",
+    "StateStaffing03.dc.html",
+    "StateStaffing04.dc.html",
+    "StateRoles01.dc.html",
+    "StateRoles02.dc.html",
+    "StateRoles03.dc.html",
+    "StateRoles04.dc.html",
+    "StateRoles05.dc.html",
+    "StateRoles06.dc.html",
+    "StateRoles07.dc.html",
+    "StateRoles08.dc.html",
+    "StatePageRank01.dc.html",
+    "StatePageRank02.dc.html",
+    "StatePageRank03.dc.html",
+    "StatePageRank04.dc.html",
+    "StatePageRank05.dc.html",
+    "StatePageRank06.dc.html",
+    "StatePageRank07.dc.html",
+    "StatePageRank08.dc.html",
+    "StateRadar01.dc.html",
+    "StateRadar02.dc.html",
+    "StateRadar03.dc.html",
+    "StateMethods01.dc.html",
+    "StateMethods02.dc.html",
+    "StateMethods03.dc.html",
+    "StateMethods04.dc.html",
+    "StateMethods05.dc.html",
+    "StateMethods06.dc.html",
+    "StateMethods07.dc.html",
+    "StateMethods08.dc.html",
+    "StateMethods09.dc.html",
+    "StateMethods10.dc.html",
+    "StateMethods11.dc.html",
+    "StateMethods12.dc.html",
+    "StateMethods13.dc.html",
+    "StateMethods14.dc.html",
+    "StateTooltips01.dc.html",
+    "StateTooltips02.dc.html",
+    "RecOverview.dc.html",
+    "RecDrawer.dc.html",
+    "RecSection1.dc.html",
+    "RecControls.dc.html",
+    "BuiltGuide.dc.html",
+    "RecsGuide.dc.html",
+    "ArchiveGuide.dc.html",
+    "RGuide.dc.html",
+    "RTop.dc.html",
+    "ROpening.dc.html",
+    "RS1.dc.html",
+    "RS2.dc.html",
+    "RS3.dc.html",
+    "RS4.dc.html",
+    "RS5.dc.html",
+    "RClosing.dc.html",
+    "RDeep.dc.html",
+    "RTopicWhere.dc.html",
+    "RTopicJobs.dc.html",
+    "RTopicOutsourcing.dc.html",
+    "RTopicPaperwork.dc.html",
+    "RTopicYears.dc.html",
+    "RData.dc.html",
+    "RTopicWhere-box2.dc.html",
+    "RTopicWhere-box3.dc.html",
+    "RTopicWhere-box4.dc.html",
+    "RTopicWhere-box5.dc.html",
+    "RTopicWhere-box6.dc.html",
+    "RTopicWhere-box7.dc.html",
+    "RTopicJobs-box2.dc.html",
+    "RTopicJobs-box3.dc.html",
+    "RTopicJobs-box4.dc.html",
+    "RTopicJobs-box5.dc.html",
+    "RTopicJobs-box6.dc.html",
+    "RTopicJobs-box7.dc.html",
+    "RTopicOutsourcing-box2.dc.html",
+    "RTopicOutsourcing-box3.dc.html",
+    "RTopicOutsourcing-box4.dc.html",
+    "RTopicOutsourcing-box5.dc.html",
+    "RTopicOutsourcing-box6.dc.html",
+    "RTopicPaperwork-box2.dc.html",
+    "RTopicPaperwork-box3.dc.html",
+    "RTopicPaperwork-box4.dc.html",
+    "RTopicPaperwork-box5.dc.html",
+    "RTopicPaperwork-box6.dc.html",
+    "RTopicYears-box2.dc.html",
+    "RTopicYears-box3.dc.html",
+    "RSystem.dc.html",
+    "RType.dc.html",
+    "GapGuide.dc.html",
+    "GapModularity.dc.html",
+    "GapGreedy.dc.html",
+    "GapPaths.dc.html",
+    "GapEigen.dc.html",
+    "GapResolution.dc.html",
+    "GapDrawing.dc.html",
+    "RTopicWherePlus.dc.html",
+    "RTopicWherePlus-greedy.dc.html",
+    "RTopicWherePlus-modularity.dc.html",
+    "W5Top.dc.html",
+    "W5Opening.dc.html",
+    "W5Closing.dc.html",
+    "W5Relations.dc.html",
+    "W5Copying.dc.html",
+    "W5Search.dc.html",
+    "W5Autocomplete.dc.html",
+    "W5Heaps.dc.html",
+    "W5Fame.dc.html",
+    "W5Weird.dc.html",
+    "GraphKit.dc.html",
+    "TplTop.dc.html",
+    "TplOpening.dc.html",
+    "TplFirst.dc.html",
+    "TplSecond.dc.html",
+    "TplClosing.dc.html"
   ],
-  "pages": [],
-  "title": "Week 4 redesign"
+  "pages": [
+    {
+      "id": "recommended",
+      "name": "Start here: the recommended design"
+    },
+    {
+      "id": "recs",
+      "name": "Why: the seven changes"
+    },
+    {
+      "id": "built",
+      "name": "Reference: the page as built"
+    },
+    {
+      "id": "redesign",
+      "name": "Archive: earlier drafts"
+    },
+    {
+      "id": "gaps",
+      "name": "Brief gaps: concepts to decide on"
+    },
+    {
+      "id": "week05",
+      "name": "Week 5: the page as built"
+    },
+    {
+      "id": "graphkit",
+      "name": "Components: network views"
+    },
+    {
+      "id": "template",
+      "name": "Template: start a new week here"
+    }
+  ],
+  "title": "Week 4 redesign",
+  "v": 3
 }
