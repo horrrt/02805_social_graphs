@@ -73,7 +73,7 @@ for (const page of pages) {
   });
 
   test(`${name}: "What we did" shows one paragraph, the rest sits in a drawer`, () => {
-    for (const slot of elements(html, /<div\b[^>]*data-slot="did"[^>]*>/g, "div")) {
+    for (const slot of elements(html, /<div\b[^>]*\bid="[a-z]+-did"[^>]*>/g, "div")) {
       const id = slot.tag.match(/\bid="([^"]+)"/)[1];
       const paragraphs = slot.body.match(/<p\b/g) ?? [];
       assert.ok(paragraphs.length <= 1, `#${id} shows ${paragraphs.length} paragraphs`);

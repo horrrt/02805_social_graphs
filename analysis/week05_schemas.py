@@ -900,6 +900,7 @@ class NetNode(Model):
     x: float = Field(ge=0, le=1)
     y: float = Count
     group: Optional[int] = Field(default=None, ge=0, le=7)
+    name: str = Field(min_length=1)
 
 
 class NetRelation(Model):

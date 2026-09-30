@@ -3,7 +3,7 @@
 Every component a section script needs comes from one import, `kit.js`:
 
 ```js
-import { slot, figure, echart, concordance, passage, loadData } from "./kit.js?v=2";
+import { slot, figure, echart, concordance, passage, loadData } from "./kit.js?v=4";
 ```
 
 Link three stylesheets, in this order: `type.css`, `corridor.css`, `post.css`.
@@ -24,12 +24,11 @@ works locally and on GitHub Pages. Only files under `docs/` are published.
 ### slot(section, part)
 
 The element to draw into. `part` is one of `asked`, `did`, `figure`, `surprise`, `checked`, `limit`:
-`slot("heaps", "figure")` is the body of `#heaps-figure`. Drawing into it replaces the hint and keeps the
-heading.
+`slot("heaps", "figure")` is `#heaps-figure`.
 
-The Week 4 card layout is a class, not a function: `<div class="w5-slots card w4-card w5-card">` puts the six
-slots in Week 4's arrangement (question and answer on top, text column with the figure beside it, checked
-passages below), styled in `post.css`. Sections 1 and 2 of the week 5 page show the markup.
+A section is Week 4's card, `<div class="card w4-card w5-card">`: a `w4-q` header with the question and answer,
+a `w4-two` row with what we did beside "What to notice", the figure, and `rx-drawers` at the foot (Method with
+the limitation, More numbers, what we read). The six parts keep their ids. docs/weeks/_template/ shows the markup.
 
 ## Figures and tables
 
@@ -103,8 +102,9 @@ nodes out in the analysis script with a seeded layout and pass `x` and `y` betwe
 | Some links drawn over the faded rest | `mark: true` on those links, `fade: true` |
 | Every page named, sized by a value, links by width and dash | `labels: "beside"`, `r` and `title` on a node, `width`, `dashed` and `title` on a link, `tone: "accent", strongLinks: true` |
 
-`titles: "hubs"` gives tooltips to the hubs only (`"none"`: to no node); Week 5 uses it while section 4 collects
-guesses. `unit: ["page", "pages"]` sets what the legend counts.
+`titles: "hubs"` gives tooltips to the hubs only (`"none"`: to no node). `explore: true` lets a reader hover or click a node to light its links and neighbours, click a hub or a
+legend entry to light its group, and zoom and pan (buttons, Ctrl or ⌘ with the wheel, or a pinch; d3 loads on
+demand). Its tooltip comes from `describe(node, { degree, marked, group })`. `unit: ["page", "pages"]` sets what the legend counts.
 
 Add `theme: "dark"` for the dark surface. Returns `{ nodes, redraw }`; `nodes` holds the groups after moves.
 `docs/styleguide/kit.html` draws all six with real data, and the overlap one with a labelled toy.
@@ -127,16 +127,6 @@ Key word in context: one row per hit, the hit centred and marked, the page linke
 
 A quoted passage from one page, with every occurrence of `highlight` marked and a link to the article. Use it
 in the "What we checked in the text" slot.
-
-### showFirst(box, groups, { show, label })
-
-Appends the first `show` passages (default 1) to `box` and puts the rest in a drawer labelled `label`. Each group
-is an array of nodes, such as a heading and its `passage()`. A card keeps one quote in view and the rest one
-click away.
-
-```js
-showFirst(slot("fame", "checked"), outliers.map((o) => [heading(o), passage(o.quote)]), { label: "The other nine pages" });
-```
 
 ### wikiLink(page)
 

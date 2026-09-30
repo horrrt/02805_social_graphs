@@ -2,16 +2,16 @@
 // colour per consensus community (section 4), from docs/weeks/week05/data/network.json,
 // written by analysis/week05_network.py and drawn with networkView().
 //
-// Section 4 is still collecting other groups' guesses about the communities, so
-// only the eight hubs, the quiz's options, are named; no other node has a tooltip.
+// Hovering any page names it and gives its group and links; the eight hubs, the
+// quiz's options, also carry a name on the map.
 
-import { loadData, networkView } from "./kit.js?v=2";
+import { loadData, networkView } from "./kit.js?v=4";
 
 let loading;
 
 /** network.json, fetched once for both sections. */
 export function loadNetwork() {
-  loading ??= loadData(new URL("../../weeks/week05/data/network.json?v=1", import.meta.url));
+  loading ??= loadData(new URL("../../weeks/week05/data/network.json?v=2", import.meta.url));
   return loading;
 }
 
@@ -20,19 +20,25 @@ export function loadNetwork() {
  * "family", ...): its pairs draw in ink over the faded rest. Other options pass
  * through to networkView().
  */
+const WORDS = { enemy: "fight words", family: "family words", ally: "ally words", teammate: "teammate words", killed: "killing words" };
+
 export function marvelMap(host, net, { mark, ...opts } = {}) {
   const hub = new Map(net.hubs.map((h) => [String(h.node), h.label]));
+  const describe = (n, { degree, marked, group }) => [
+    n.name,
+    `${group ? `${group} group` : "No group"} · ${degree} ${degree === 1 ? "link" : "links"}${mark ? `, ${marked} in ${WORDS[mark]}` : ""}`,
+  ];
   const marked = new Set((mark ? net.relations[mark].pairs : []).map(([i, j]) => `${i}|${j}`));
   return networkView(host, {
     ratio: net.ratio,
-    nodes: net.nodes.map((n, i) => ({ id: String(i), x: n.x, y: n.y, group: n.group, label: hub.get(String(i)) })),
+    nodes: net.nodes.map((n, i) => ({ id: String(i), x: n.x, y: n.y, group: n.group, name: n.name, label: hub.get(String(i)) })),
     links: net.links.map(([i, j, weight, group]) => ({ source: String(i), target: String(j), weight, group, mark: marked.has(`${i}|${j}`) })),
     groups: net.groups.map((g) => g.label),
     hubs: net.hubs.map((h) => String(h.node)),
     unit: ["page", "pages"],
     fade: Boolean(mark),
+    explore: true,
     ...opts,
-    // Last, so no caller can name the other nodes while section 4 collects guesses.
-    titles: "hubs",
+    describe,
   });
 }

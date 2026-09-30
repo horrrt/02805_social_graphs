@@ -3,7 +3,7 @@
 // template shows the finished look. Replace this file with one script per
 // section, docs/assets/js/weekNN-<section>.js, reading its script's JSON.
 
-import { loadData, miniStrip, networkView, passage, stripChart, table, termify } from "./kit.js?v=2";
+import { loadData, miniStrip, networkView, passage, stripChart, table, termify } from "./kit.js?v=4";
 
 const TOY = new URL("../../styleguide/data/graphs.json?v=1", import.meta.url);
 
@@ -56,7 +56,7 @@ async function boot() {
       rows: [{ group: "Toy group A", size: 17, links: 35 }, { group: "Toy group B", size: 17, links: 33 }],
     }),
   );
-  termify(document.querySelector("#second-did [data-body] p"), "term", "A toy definition: one plain sentence, with an example.", "tpl-term");
+  termify(document.querySelector("#second-did p"), "term", "A toy definition: one plain sentence, with an example.", "tpl-term");
 }
 
 boot().catch((err) => console.error("post template failed", err));
