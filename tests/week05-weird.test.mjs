@@ -22,8 +22,8 @@ const text = (id) => flatten(block(html, id));
 
 test("section 7 is Niklas's, drawn by its script, and its two data files agree", () => {
   assert.match(html, /<section class="step" data-owner="Niklas" id="weird">/);
-  assert.match(html, /week05-weird\.js\?v=3/);
-  assert.match(block(html, "weird"), /class="w5-slots card w4-card w5-card"/);
+  assert.match(html, /week05-weird\.js\?v=4/);
+  assert.match(block(html, "weird"), /class="card w4-card w5-card"/);
   assert.deepEqual(copy, w, "analysis/week05_weird.json and the page copy must match");
   assert.equal(w.meta.owner, "Niklas");
   // The figure and the table are drawn from the JSON, never typed into the page.

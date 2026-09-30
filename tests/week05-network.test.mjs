@@ -49,7 +49,7 @@ test("the maps name only the hubs", () => {
 
 test("section 1 draws the map beside its chart, with a two-button switch", () => {
   const s = block(html, "relations");
-  assert.match(s, /class="w5-slots card w4-card w5-card w5-card-wide"/);
+  assert.match(s, /class="card w4-card w5-card"/);
   assert.match(s, /id="chart-relations-crossing"/);
   assert.match(s, /id="chart-relations-map"/);
   assert.match(s, /aria-pressed="true" data-kind="enemy"/);
@@ -64,7 +64,7 @@ test("section 4 shows its groups beside the quiz and keeps the modularity chart"
   const figure = block(html, "autocomplete-figure");
   assert.match(figure, /id="chart-autocomplete-map"/);
   assert.doesNotMatch(figure, /id="chart-autocomplete-modularity"/, "the modularity chart moved into More numbers");
-  assert.match(block(html, "autocomplete-did"), /id="chart-autocomplete-modularity"/);
+  assert.match(s, /<summary>More numbers<\/summary>[\s\S]*id="chart-autocomplete-modularity"/);
   const t = flatten(s);
   assert.ok(t.includes(`the ${comm.network.other_component_nodes} Strikeforce: Morituri pages and the ${comm.network.isolates} with no links`));
   assert.ok(t.includes(`The ${net.groups.length === 8 ? "eight" : net.groups.length} groups the generators learn from`));

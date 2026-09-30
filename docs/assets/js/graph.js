@@ -2,7 +2,7 @@
 // explorables use. Colours come from post.css (.gv, the --group-* tokens); this
 // file only assigns classes, so a theme or a new palette needs no change here.
 //
-//   import { networkView } from "./kit.js?v=2";
+//   import { networkView } from "./kit.js?v=3";
 //   networkView(host, { nodes, links, groups: ["Hulk", "Wolverine"], colorLinks: true, hubs: ["Hulk"] });
 //
 // A node is { id, x, y, label?, group?, groups? }: x and y run from 0 to 1 (lay

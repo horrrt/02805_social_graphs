@@ -22,9 +22,10 @@ applyTo: "docs/**,tests/**"
   uses `docs/assets/js/week04-strip.js`: the real value against the random baseline's mean and spread.
 - Give each colour one meaning across the page. If orange means a placed worker, it means nothing else.
 - Leave headings bare: no pill, chip or badge beside a section or question title. Put scope in a caption.
-- Keep a card to Week 4's density: the answer, its baseline, the main limit and one quoted passage in view;
-  method, extra numbers and other passages in drawers, word for word. `tests/text-budget.test.mjs` fails a card
-  over 350 words before a click. Draw passage lists with `showFirst()` (POST_GUIDE.md, "Keep the card short").
+- Build every post's cards in Week 4's form: question and answer, one paragraph beside "What to notice", the
+  figure, then drawers (Method with the limitation, More numbers, What we read in the pages). No slot labels or
+  open limitation blocks. `tests/text-budget.test.mjs` fails a card over 350 words before a click
+  (POST_GUIDE.md, "Keep the card short").
 - Make every disclosure, popover and control work from the keyboard. Escape closes a popover.
 - Version page scripts, stylesheets and fetched data, so one deploy's code never meets another's numbers.
   Week 3 stamps a content hash with `scripts/stamp_week03.py`; Week 4 appends `?v=` by hand.

@@ -22,9 +22,9 @@ Every section carries the same six parts, in this order:
 5. What we checked in the underlying text: quote the passage.
 6. One limitation.
 
-The six parts say what each section must contain, not what must be open on load. Each card keeps the
-answer, one paragraph of what we did, the figure, the notice, the main limitation and one quoted passage in
-view, and moves the rest into drawers (POST_GUIDE.md, "Keep the card short").
+The six parts say what each section must contain, not what must be open on load. Each card is a Week 4
+card: the question and answer, what we did beside "What to notice", the figure, and drawers holding the
+method with the limitation, more numbers and the passages we read (POST_GUIDE.md, "Keep the card short").
 
 The brief says one good question with one convincing figure beats five methods thrown together. We did
 all seven openers; the hero asks whether a character's place in the link network shows in the words of its
