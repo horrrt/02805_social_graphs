@@ -12,6 +12,8 @@ export const SITE = new URL(`${BASE}/`, globalThis.location?.origin ?? "http://l
 /** A URL for a file under public/, e.g. asset("weeks/week05/data/heaps.json"). */
 export function asset(path) {
   const url = new URL(path, SITE);
-  if (BUILD) url.searchParams.set("v", BUILD);
+  // Vendored libraries carry their version in the file name, so a deploy
+  // need not make every reader download them again.
+  if (BUILD && !path.startsWith("assets/vendor/")) url.searchParams.set("v", BUILD);
   return url;
 }

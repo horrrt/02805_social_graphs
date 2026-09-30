@@ -1,7 +1,10 @@
 import type { Metadata } from "next";
+import "@/styles/type.css";
+import "@/styles/corridor.css";
 
 // GitHub Pages serves out/404.html for any unknown path, so every URL in it
-// is absolute and carries the base path.
+// is absolute and carries the base path. It has no layout, so it imports its
+// own stylesheets.
 const BASE = process.env.NEXT_PUBLIC_BASE_PATH ?? "";
 
 export const metadata: Metadata = {
@@ -12,10 +15,6 @@ export const metadata: Metadata = {
 export default function GlobalNotFound() {
   return (
     <html lang="en" suppressHydrationWarning>
-      <head>
-        <link href={`${BASE}/assets/css/type.css`} rel="stylesheet" />
-        <link href={`${BASE}/assets/css/corridor.css`} rel="stylesheet" />
-      </head>
       <body className="corridor">
         <main id="main" className="shell" style={{ padding: "96px 24px" }}>
           <p className="eyebrow">404</p>

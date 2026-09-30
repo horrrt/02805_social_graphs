@@ -152,11 +152,10 @@ test("every render variant names a vendored library that exists", () => {
       `${file} is ${bytes} bytes and the registry says otherwise`,
     );
   }
-  for (const [, module] of renderers.matchAll(/module: "\.\/([^"]+)"/g)) {
-    assert.ok(
-      existsSync(join(ROOT, "public/assets/js", module)),
-      `missing variant module: ${module}`,
-    );
+  const modules = [...renderers.matchAll(/module: \(\) => import\("\.\/([^"]+)"\)/g)].map((m) => m[1]);
+  assert.equal(modules.length, 5, "every library renderer names its variant module");
+  for (const module of modules) {
+    assert.ok(existsSync(join(ROOT, "src/scripts", module)), `missing variant module: ${module}`);
   }
 });
 

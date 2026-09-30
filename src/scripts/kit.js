@@ -24,7 +24,7 @@ export { hoverTips, tipBox } from "./tips.js";
 
 // ---- data and page slots
 
-/** Fetch a JSON file. Pass new URL("…", import.meta.url) so the path works locally and on Pages. */
+/** Fetch a JSON file. Pass asset("weeks/…/data/x.json") from site.js so the path works locally and on Pages. */
 export async function loadData(url) {
   const res = await fetch(url);
   if (!res.ok) throw new Error(`${url}: ${res.status}`);

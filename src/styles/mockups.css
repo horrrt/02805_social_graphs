@@ -26,7 +26,8 @@ body.mockups { background: #f5f6f3; color: #20231e; color-scheme: light; }
 .mockup-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 32px 24px; padding-bottom: 48px; }
 .mockup-card { min-width: 0; scroll-margin-top: 180px; }
 .card-topline { display: flex; align-items: center; justify-content: space-between; gap: 12px; min-height: 40px; margin-bottom: 9px; }
-.mockup-number { font: 600 18px/1 Barlow, Arial, sans-serif; font-variant-numeric: tabular-nums; }
+/* Longhands, not the font shorthand: the CSS minifier moves font-variant-numeric ahead of a shorthand, which then resets it. */
+.mockup-number { font-family: Barlow, Arial, sans-serif; font-size: 18px; font-weight: 600; line-height: 1; font-variant-numeric: tabular-nums; }
 .mockup-origin { color: #626a5c; font-size: 12px; text-align: right; }
 .preview-link { display: flex; align-items: center; justify-content: center; height: 420px; padding: 12px; background: #e5e8e0; border: 1px solid #d6dbcd; border-radius: 6px; overflow: hidden; }
 .preview-link img { width: 100%; height: 100%; object-fit: contain; object-position: center; background: white; filter: drop-shadow(0 2px 3px #17200d24); }
