@@ -52,48 +52,57 @@
   "all_linked": 1434,
   "all_linked_share": 0.0313,
   "binomial_p": 1.82e-28,
-  "copied_tokens": 4987
+  "copied_tokens": 5128,
+  "section_tokens": 10261
  },
  "sections": [
   {
    "section": "Publication history",
-   "tokens": 1953
+   "tokens": 3547
   },
   {
    "section": "In other media",
-   "tokens": 1135
+   "tokens": 2484
   },
   {
    "section": "Collected editions",
-   "tokens": 533
+   "tokens": 1066
   },
   {
    "section": "Other versions",
-   "tokens": 451
-  },
-  {
-   "section": "Powers and abilities",
-   "tokens": 311
+   "tokens": 902
   },
   {
    "section": "Lead",
-   "tokens": 260
+   "tokens": 877
   },
   {
    "section": "Fictional character biography",
-   "tokens": 247
+   "tokens": 547
+  },
+  {
+   "section": "Powers and abilities",
+   "tokens": 534
   },
   {
    "section": "Bibliography",
-   "tokens": 39
+   "tokens": 86
   },
   {
    "section": "External links",
-   "tokens": 39
+   "tokens": 69
   },
   {
    "section": "Reception",
-   "tokens": 19
+   "tokens": 68
+  },
+  {
+   "section": "Creation",
+   "tokens": 46
+  },
+  {
+   "section": "Supporting characters",
+   "tokens": 35
   }
  ],
  "nodes": [
@@ -103,7 +112,7 @@
    "cluster": 3,
    "x": 0.9,
    "y": 0.03,
-   "copied_tokens": 121
+   "copied_tokens": 122
   },
   {
    "id": "Black_Panther_(character)",
@@ -159,7 +168,7 @@
    "cluster": 8,
    "x": 0.9,
    "y": 0.6175,
-   "copied_tokens": 967
+   "copied_tokens": 1023
   },
   {
    "id": "Ghost_Rider",
@@ -167,7 +176,7 @@
    "cluster": 9,
    "x": 0.9,
    "y": 0.735,
-   "copied_tokens": 371
+   "copied_tokens": 444
   },
   {
    "id": "Ghost_Rider_(Johnny_Blaze)",
@@ -175,7 +184,7 @@
    "cluster": 9,
    "x": 0.96,
    "y": 0.735,
-   "copied_tokens": 371
+   "copied_tokens": 444
   },
   {
    "id": "Jack_Frost_(Marvel_Comics)",
@@ -247,7 +256,7 @@
    "cluster": 11,
    "x": 0.9,
    "y": 0.97,
-   "copied_tokens": 200
+   "copied_tokens": 201
   },
   {
    "id": "Spider-Girl",
@@ -263,7 +272,7 @@
    "cluster": 1,
    "x": 0.4205,
    "y": 0.6105,
-   "copied_tokens": 682
+   "copied_tokens": 695
   },
   {
    "id": "Spider-Woman_(Jessica_Drew)",
@@ -271,7 +280,7 @@
    "cluster": 1,
    "x": 0.37,
    "y": 0.5015,
-   "copied_tokens": 246
+   "copied_tokens": 259
   },
   {
    "id": "Spitfire_(character)",
@@ -279,7 +288,7 @@
    "cluster": 2,
    "x": 0.5006,
    "y": 0.8846,
-   "copied_tokens": 702
+   "copied_tokens": 704
   },
   {
    "id": "Star-Lord",
@@ -287,7 +296,7 @@
    "cluster": 11,
    "x": 0.96,
    "y": 0.97,
-   "copied_tokens": 200
+   "copied_tokens": 201
   },
   {
    "id": "Storm_(Marvel_Comics)",
@@ -311,7 +320,7 @@
    "cluster": 3,
    "x": 0.96,
    "y": 0.03,
-   "copied_tokens": 121
+   "copied_tokens": 122
   },
   {
    "id": "Union_Jack_(Joseph_Chapman)",
@@ -319,7 +328,7 @@
    "cluster": 2,
    "x": 0.37,
    "y": 0.96,
-   "copied_tokens": 575
+   "copied_tokens": 572
   },
   {
    "id": "Union_Jack_(Marvel_Comics)",
@@ -327,7 +336,7 @@
    "cluster": 2,
    "x": 0.37,
    "y": 0.8092,
-   "copied_tokens": 637
+   "copied_tokens": 632
   },
   {
    "id": "Venom_(character)",
@@ -335,7 +344,7 @@
    "cluster": 8,
    "x": 0.96,
    "y": 0.6175,
-   "copied_tokens": 967
+   "copied_tokens": 1023
   },
   {
    "id": "Wild_Child_(character)",
@@ -350,8 +359,8 @@
   {
    "a": "Eddie_Brock",
    "b": "Venom_(character)",
-   "tokens": 967,
-   "passages": 66,
+   "tokens": 1023,
+   "passages": 64,
    "linked": true,
    "longest": 57,
    "section_a": "Publication history",
@@ -370,6 +379,17 @@
    "quote": "Cyclops leaves his wife and child behind to lead the reunited original X-Men, under the X-Factor name. Claremont expressed dismay that Jean's resurrection ultimately resulted in Cyclops abandoning his wife and child, tarnishing his written persona as a hero and \"decent human being\". For X-Factor, writer Bob Layton was partly inspired by the film Ghostbusters; the X …"
   },
   {
+   "a": "Ghost_Rider",
+   "b": "Ghost_Rider_(Johnny_Blaze)",
+   "tokens": 444,
+   "passages": 30,
+   "linked": true,
+   "longest": 62,
+   "section_a": "Powers and abilities",
+   "section_b": "Fictional character biography",
+   "quote": "Seven riders show their flaming heads for the first time in this story arc by writer Jason Aaron and artist Tan Eng Huat. Daniel Ketch returns with a new mission: to collect the powers of all the Ghost Riders for the angel Zadkiel to prevent the corruption of the powers with their human hosts. Zadkiel has other motives he keeps …"
+  },
+  {
    "a": "Spitfire_(character)",
    "b": "Union_Jack_(Marvel_Comics)",
    "tokens": 382,
@@ -381,20 +401,9 @@
    "quote": "December 1998 - February 1999, TPB, 96 pages, April 2002, ISBN 0-7851-0934-X) New Invaders: To End All Wars (written by Allan Jacobsen, with art by Jorge Lucas and C. P. Smith, TPB collects New Invaders #1-9, October 2004 - June 2005, 216 pages, July 2005, ISBN 0-7851-1449-1) Captain America: Red Menace Volume 2 (written by …"
   },
   {
-   "a": "Ghost_Rider",
-   "b": "Ghost_Rider_(Johnny_Blaze)",
-   "tokens": 371,
-   "passages": 25,
-   "linked": true,
-   "longest": 62,
-   "section_a": "Powers and abilities",
-   "section_b": "Fictional character biography",
-   "quote": "Seven riders show their flaming heads for the first time in this story arc by writer Jason Aaron and artist Tan Eng Huat. Daniel Ketch returns with a new mission: to collect the powers of all the Ghost Riders for the angel Zadkiel to prevent the corruption of the powers with their human hosts. Zadkiel has other motives he keeps …"
-  },
-  {
    "a": "Spitfire_(character)",
    "b": "Union_Jack_(Joseph_Chapman)",
-   "tokens": 320,
+   "tokens": 322,
    "passages": 12,
    "linked": true,
    "longest": 140,
@@ -403,26 +412,26 @@
    "quote": "Captain America: War and Remembrance (by John Byrne and Roger Stern, with pencils by John Byrne and inks by Josef Rubinstein, TPB includes Captain America #253-254, 1981, 208 pages, July 2007, ISBN 0-7851-2693-7) Union Jack (written by John Cassaday and Ben Raab, with art by John Cassaday, 3-issue mini-series, December 1998 - February 1999, TPB …"
   },
   {
-   "a": "Union_Jack_(Joseph_Chapman)",
-   "b": "Union_Jack_(Marvel_Comics)",
-   "tokens": 255,
-   "passages": 11,
-   "linked": true,
-   "longest": 103,
-   "section_a": "Collected editions",
-   "section_b": "Collected editions",
-   "quote": "December 1998 - February 1999, tpb, 96 pages, April 2002, ISBN 0-7851-0934-X) New Invaders: To End All Wars (written by Allan Jacobsen, with art by Jorge Lucas and C. P. Smith, tpb collects New Invaders #1-9, October 2004 - June 2005, 216 pages, July 2005, ISBN 0-7851-1449-1) Captain America: Red Menace Volume 2 (written by …"
-  },
-  {
    "a": "Spider-Woman",
    "b": "Spider-Woman_(Jessica_Drew)",
-   "tokens": 246,
-   "passages": 10,
+   "tokens": 259,
+   "passages": 11,
    "linked": true,
    "longest": 129,
    "section_a": "Publication history",
    "section_b": "Lead",
    "quote": "the character originated because, I suddenly realized that some other company may quickly put out a book like that and claim they have the right to use the name, and I thought we'd better do it real fast to copyright the name. So we just batted one quickly, and that's exactly what happened. I wanted to protect the name, because …"
+  },
+  {
+   "a": "Union_Jack_(Joseph_Chapman)",
+   "b": "Union_Jack_(Marvel_Comics)",
+   "tokens": 250,
+   "passages": 10,
+   "linked": true,
+   "longest": 103,
+   "section_a": "Collected editions",
+   "section_b": "Collected editions",
+   "quote": "December 1998 - February 1999, tpb, 96 pages, April 2002, ISBN 0-7851-0934-X) New Invaders: To End All Wars (written by Allan Jacobsen, with art by Jorge Lucas and C. P. Smith, tpb collects New Invaders #1-9, October 2004 - June 2005, 216 pages, July 2005, ISBN 0-7851-1449-1) Captain America: Red Menace Volume 2 (written by …"
   },
   {
    "a": "Mayday_Parker",
@@ -447,6 +456,17 @@
    "quote": "is the daughter of Tonya Parker and Hawkeye who did not like the way that Kingpin was running Hammer Falls. She becomes \"Spider-Bitch\", allying herself with a new Punisher and Daredevil, and plans to take back Hammer Falls, only for the group to be captured and Daredevil and Punisher to be fed to the carnivorous dinosaurs. Hawkeye breaks his …"
   },
   {
+   "a": "Rocket_Raccoon",
+   "b": "Star-Lord",
+   "tokens": 201,
+   "passages": 16,
+   "linked": true,
+   "longest": 46,
+   "section_a": "Lead",
+   "section_b": "Lead",
+   "quote": "in the Marvel Cinematic Universe films Guardians of the Galaxy (2014), Guardians of the Galaxy Vol. 2 (2017), Avengers: Infinity War (2018), Avengers: Endgame (2019), Thor: Love and Thunder, The Guardians of the Galaxy Holiday Special (both 2022), and Guardians of the Galaxy Vol. 3 (2023"
+  },
+  {
    "a": "Mayday_Parker",
    "b": "Spider-Girl",
    "tokens": 200,
@@ -456,17 +476,6 @@
    "section_a": "Publication history",
    "section_b": "Publication history",
    "quote": "On November 8, 2008, Marvel EIC Joe Quesada confirmed that Spider-Girl would become a feature in the monthly anthology magazine Amazing Spider-Man Family. The series would replace the feature Mr. and Mrs. Spider-Man, written by DeFalco, which served as a prequel series to the Spider-Girl universe"
-  },
-  {
-   "a": "Rocket_Raccoon",
-   "b": "Star-Lord",
-   "tokens": 200,
-   "passages": 16,
-   "linked": true,
-   "longest": 46,
-   "section_a": "Lead",
-   "section_b": "Lead",
-   "quote": "in the Marvel Cinematic Universe films Guardians of the Galaxy (2014), Guardians of the Galaxy Vol. 2 (2017), Avengers: Infinity War (2018), Avengers: Endgame (2019), Thor: Love and Thunder, The Guardians of the Galaxy Holiday Special (both 2022), and Guardians of the Galaxy Vol. 3 (2023"
   },
   {
    "a": "Blue_Diamond_(character)",
@@ -493,7 +502,7 @@
   {
    "a": "Battlestar_(character)",
    "b": "U.S._Agent",
-   "tokens": 121,
+   "tokens": 122,
    "passages": 9,
    "linked": true,
    "longest": 30,
@@ -615,7 +624,9 @@
     "Cyclops_(Marvel_Comics)",
     "Jean_Grey"
    ],
-   "top_section": "Publication history"
+   "top_section": "Publication history",
+   "tie": "family",
+   "tie_note": "Cyclops and Jean Grey are married and Rachel Summers is their daughter; Storm and Black Panther are married"
   },
   {
    "id": 1,
@@ -631,13 +642,15 @@
     "Spider-Woman",
     "Spider-Woman (Jessica Drew)"
    ],
-   "tokens": 882,
+   "tokens": 895,
    "pairs": 4,
    "top_pair": [
     "Spider-Woman",
     "Spider-Woman_(Jessica_Drew)"
    ],
-   "top_section": "Publication history"
+   "top_section": "Publication history",
+   "tie": "mantle",
+   "tie_note": "the Spider-Woman and Spider-Girl codenames and their bearers"
   },
   {
    "id": 2,
@@ -651,13 +664,15 @@
     "Union Jack (Joseph Chapman)",
     "Union Jack (Marvel Comics)"
    ],
-   "tokens": 957,
+   "tokens": 954,
    "pairs": 3,
    "top_pair": [
     "Spitfire_(character)",
     "Union_Jack_(Marvel_Comics)"
    ],
-   "top_section": "Collected editions"
+   "top_section": "Collected editions",
+   "tie": "mantle",
+   "tie_note": "two bearers of the Union Jack codename and Spitfire of the same wartime team"
   },
   {
    "id": 3,
@@ -669,13 +684,15 @@
     "Battlestar (character)",
     "U.S. Agent"
    ],
-   "tokens": 121,
+   "tokens": 122,
    "pairs": 1,
    "top_pair": [
     "Battlestar_(character)",
     "U.S._Agent"
    ],
-   "top_section": "Powers and abilities"
+   "top_section": "Powers and abilities",
+   "tie": "team",
+   "tie_note": "partners as Bucky and Captain America's replacement"
   },
   {
    "id": 4,
@@ -693,7 +710,9 @@
     "Black_Rider_(character)",
     "Two-Gun_Kid"
    ],
-   "top_section": "Other versions"
+   "top_section": "Other versions",
+   "tie": "team",
+   "tie_note": "Marvel's Old West heroes who appear together"
   },
   {
    "id": 5,
@@ -711,7 +730,9 @@
     "Blue_Diamond_(character)",
     "Jack_Frost_(Marvel_Comics)"
    ],
-   "top_section": "Publication history"
+   "top_section": "Publication history",
+   "tie": "team",
+   "tie_note": "members of the Liberty Legion"
   },
   {
    "id": 6,
@@ -729,7 +750,9 @@
     "Bucky_(Marvel_Comics)",
     "Rikki_Barnes"
    ],
-   "top_section": "Powers and abilities"
+   "top_section": "Powers and abilities",
+   "tie": "mantle",
+   "tie_note": "two bearers of the Bucky codename"
   },
   {
    "id": 7,
@@ -747,7 +770,9 @@
     "Ch'od",
     "Raza_Longknife"
    ],
-   "top_section": "Publication history"
+   "top_section": "Publication history",
+   "tie": "team",
+   "tie_note": "members of the Starjammers"
   },
   {
    "id": 8,
@@ -759,13 +784,15 @@
     "Eddie Brock",
     "Venom (character)"
    ],
-   "tokens": 967,
+   "tokens": 1023,
    "pairs": 1,
    "top_pair": [
     "Eddie_Brock",
     "Venom_(character)"
    ],
-   "top_section": "Publication history"
+   "top_section": "Publication history",
+   "tie": "mantle",
+   "tie_note": "the Venom symbiote and its best-known host"
   },
   {
    "id": 9,
@@ -777,13 +804,15 @@
     "Ghost Rider",
     "Ghost Rider (Johnny Blaze)"
    ],
-   "tokens": 371,
+   "tokens": 444,
    "pairs": 1,
    "top_pair": [
     "Ghost_Rider",
     "Ghost_Rider_(Johnny_Blaze)"
    ],
-   "top_section": "Powers and abilities"
+   "top_section": "Powers and abilities",
+   "tie": "mantle",
+   "tie_note": "the Ghost Rider codename and its first bearer"
   },
   {
    "id": 10,
@@ -801,7 +830,9 @@
     "Mockingbird_(Marvel_Comics)",
     "Quicksilver_(Marvel_Comics)"
    ],
-   "top_section": "Fictional character biography"
+   "top_section": "Fictional character biography",
+   "tie": "team",
+   "tie_note": "members of the Avengers West Coast"
   },
   {
    "id": 11,
@@ -813,13 +844,15 @@
     "Rocket Raccoon",
     "Star-Lord"
    ],
-   "tokens": 200,
+   "tokens": 201,
    "pairs": 1,
    "top_pair": [
     "Rocket_Raccoon",
     "Star-Lord"
    ],
-   "top_section": "Lead"
+   "top_section": "Lead",
+   "tie": "team",
+   "tie_note": "members of the Guardians of the Galaxy"
   }
  ],
  "alt_extra": {
@@ -877,11 +910,11 @@
    "n": 8,
    "template_pages": 3,
    "min_passage": 20,
-   "pairs": 40,
-   "pages": 59,
-   "clusters": 22,
+   "pairs": 45,
+   "pages": 65,
+   "clusters": 24,
    "largest": 11,
-   "linked_share": 0.825
+   "linked_share": 0.7556
   },
   {
    "n": 8,
@@ -907,11 +940,11 @@
    "n": 8,
    "template_pages": 5,
    "min_passage": 20,
-   "pairs": 45,
-   "pages": 63,
-   "clusters": 22,
+   "pairs": 47,
+   "pages": 67,
+   "clusters": 24,
    "largest": 11,
-   "linked_share": 0.7556
+   "linked_share": 0.7447
   },
   {
    "n": 8,
@@ -937,11 +970,11 @@
    "n": 8,
    "template_pages": 10,
    "min_passage": 20,
-   "pairs": 78,
-   "pages": 75,
-   "clusters": 23,
+   "pairs": 80,
+   "pages": 78,
+   "clusters": 24,
    "largest": 11,
-   "linked_share": 0.5769
+   "linked_share": 0.575
   },
   {
    "n": 8,
@@ -967,11 +1000,11 @@
    "n": 8,
    "template_pages": 20,
    "min_passage": 20,
-   "pairs": 80,
-   "pages": 79,
+   "pairs": 81,
+   "pages": 80,
    "clusters": 25,
    "largest": 11,
-   "linked_share": 0.5875
+   "linked_share": 0.5802
   },
   {
    "n": 8,
@@ -997,11 +1030,11 @@
    "n": 8,
    "template_pages": 50,
    "min_passage": 20,
-   "pairs": 82,
-   "pages": 82,
+   "pairs": 83,
+   "pages": 83,
    "clusters": 26,
    "largest": 12,
-   "linked_share": 0.5732
+   "linked_share": 0.5663
   },
   {
    "n": 8,

@@ -27,7 +27,10 @@ Method
   connected pieces are the clusters.
 - Each passage is labelled with the section heading above it on each page
   (Publication history, Powers and abilities...), read from the heading lines
-  the rendered text keeps.
+  the rendered text keeps; the section shares count both pages of a pair.
+- What ties each cluster's characters (a mantle, a team or a family) is read
+  by hand and kept in analysis/week05_copying_ties.csv; the script stops on a
+  cluster with no row.
 - Check: are copying pairs linked in the link network (either direction) more
   often than any two pages are, and more often than pairs that share only a
   phrase? Binomial test against the share of all 45,753 page pairs.
@@ -42,6 +45,7 @@ Read the corpus and the network only through week05_text.
     python analysis/week05_copying.py
 """
 
+import csv
 import itertools
 import json
 import re
@@ -57,6 +61,9 @@ from week05_text import graph, nodes, pages
 
 ROOT = Path(__file__).resolve().parents[1]
 PAGE = ROOT / "docs/weeks/week05/data/copying.json"
+# What ties each cluster's characters, read by hand from their pages: they share
+# a mantle (one codename, several bearers), a team, or a family.
+TIES = Path(__file__).with_name("week05_copying_ties.csv")
 N = 8
 N_ALT = 12
 TEMPLATE_PAGES = 10   # an n-gram on more pages than this is house phrasing
@@ -106,12 +113,14 @@ def gram_index(toks, n):
 
 
 def runs(starts, n):
-    """Merge n-gram start positions into [start, end) token passages."""
+    """Merge n-gram start positions into [start, end) token passages: two
+    n-grams belong to one passage when they overlap, so a template n-gram
+    missing from the middle of a copied paragraph does not split it."""
     out = []
     starts = sorted(set(starts))
     first = prev = starts[0]
     for p in starts[1:]:
-        if p > prev + 1:
+        if p >= prev + n:
             out.append((first, prev + n))
             first = p
         prev = p
@@ -125,8 +134,9 @@ def shared_passages(index, n, template):
     for where in index.values():
         if 2 <= len(where) <= template:
             for a, b in itertools.combinations(sorted(where), 2):
-                on_a[(a, b)].append(where[a][0])
-                on_b[(a, b)].append(where[b][0])
+                # Every occurrence: a passage copied twice on a page counts twice.
+                on_a[(a, b)].extend(where[a])
+                on_b[(a, b)].extend(where[b])
     return {pair: (runs(on_a[pair], n), runs(on_b[pair], n)) for pair in on_a}
 
 
@@ -208,8 +218,11 @@ def main():
         covered = sum(e - s for s, e in pa)
         longest = max(range(len(pa)), key=lambda i: pa[i][1] - pa[i][0])
         (sa, ea), (sb, eb) = pa[longest], max(pb, key=lambda r: r[1] - r[0])
-        for s, e in pa:
-            by_section[section_at(heads[a], toks[a][s][1])] += e - s
+        # Sections on both pages of the pair: the same passage can sit under
+        # Publication history on one and Fictional character biography on the other.
+        for page, spans in ((a, pa), (b, pb)):
+            for s, e in spans:
+                by_section[section_at(heads[page], toks[page][s][1])] += e - s
         links.append({
             "a": a, "b": b, "tokens": covered, "passages": len(pa), "linked": linked(g, a, b),
             "longest": ea - sa,
@@ -224,13 +237,21 @@ def main():
     cluster_of = {p: i for i, c in enumerate(clusters) for p in c}
     page_nodes = [{"id": p, "name": names[p], "cluster": cluster_of[p], "x": pos[p][0], "y": pos[p][1],
                    "copied_tokens": int(net.degree(p, weight="weight"))} for p in sorted(net)]
+    ties = {}
+    with TIES.open(newline="", encoding="utf-8") as fh:
+        for row in csv.DictReader(fh):
+            ties[frozenset(row["pages"].split(";"))] = row
     cluster_rows = []
     for i, c in enumerate(clusters):
         inside = [r for r in links if r["a"] in c]
         top = inside[0]
+        tie = ties.get(frozenset(c))
+        if tie is None:
+            raise SystemExit(f"{TIES.name} has no row for the cluster {sorted(c)}; read its pages and add one")
         cluster_rows.append({"id": i, "pages": sorted(c), "names": [names[p] for p in sorted(c)],
                              "tokens": sum(r["tokens"] for r in inside), "pairs": len(inside),
-                             "top_pair": [top["a"], top["b"]], "top_section": top["section_a"]})
+                             "top_pair": [top["a"], top["b"]], "top_section": top["section_a"],
+                             "tie": tie["tie"], "tie_note": tie["note"]})
 
     # What the longer n-gram adds: passages that 8-grams split, because a
     # site-wide phrase inside them counts as template, but 12-grams bridge.
@@ -271,7 +292,8 @@ def main():
                      "copy_linked": copy_linked,
                      "all_pairs": all_pairs, "all_linked": linked_pairs, "all_linked_share": round(base_share, 4),
                      "binomial_p": float(f"{test.pvalue:.3g}"),
-                     "copied_tokens": sum(r["tokens"] for r in links)},
+                     "copied_tokens": sum(r["tokens"] for r in links),
+                     "section_tokens": sum(by_section.values())},
         "sections": [{"section": s, "tokens": t} for s, t in by_section.most_common()],
         "nodes": page_nodes, "links": links, "clusters": cluster_rows,
         "alt_extra": {"n": N_ALT, "pairs": len(extra), "groups": extra_rows},

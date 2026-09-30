@@ -189,7 +189,6 @@ class Crossing(Model):
     label: str
     arcs: int = Count
     crossing: float = Share
-    crossing_sd_runs: float = Count
     null_mean: float = Share
     null_sd: float = Count
     z: float
@@ -217,6 +216,11 @@ class Communities(Model):
     modularity_mean: float
 
 
+class OnePerPair(Model):
+    arcs: int = Field(ge=1)
+    crossing: list[Crossing] = Field(min_length=1)
+
+
 class Relations(Model):
     meta: RelMeta
     coverage: Coverage
@@ -224,6 +228,7 @@ class Relations(Model):
     precision: dict[str, Precision]
     communities: Communities
     crossing: list[Crossing] = Field(min_length=1)
+    one_per_pair: OnePerPair
     concordance: list[Line] = Field(min_length=1)
 
     @model_validator(mode="after")
