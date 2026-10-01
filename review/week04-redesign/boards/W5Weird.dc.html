@@ -6,7 +6,7 @@
 <script src="./support.js"></script>
 <link rel="stylesheet" href="/_blob/bdbcfe09e54e57045ac6bae8752c2a81">
 <link rel="stylesheet" href="/_blob/4ffd6c535951a1e34a0c3882e96ae51c">
-<link rel="stylesheet" href="/_blob/231c3b9ded5bc685edc4752941113998">
+<link rel="stylesheet" href="/_blob/5b0af5961bb5a81a4a5c5ab494e11fb9">
 </head>
 <body>
 <x-dc>
@@ -16,7 +16,7 @@
 body{margin:0;background:#eef3f9}
 </style>
 </helmet>
-<div class="corridor" style="width: 1440px; height: 2294px; overflow: hidden; background: #eef3f9"><div class="topbar">
+<div class="corridor" style="width: 1440px; height: 1007px; overflow: hidden; background: #eef3f9"><div class="topbar">
       <div class="shell">
         <a class="brand" href="../../">LOG–LOG <b>LEGENDS</b></a>
         <a class="site-link" href="../../#weeks">All posts</a>
@@ -40,32 +40,24 @@ body{margin:0;background:#eef3f9}
               <p>The pages with the most varied words hold lists and an interview, and 10 of the 30 most repetitive pages are about several characters who share one name.</p>
             </div>
           </header>
-          <div class="w5-slots card w4-card w5-card">
-            <div class="w5-slot" data-slot="asked" id="weird-asked">
-              <h3>What we asked</h3>
-              <div data-body="">
-                <p class="w5-question">Which Marvel page uses the most varied words for its length, and is that real or boilerplate?</p>
+          <div class="card w4-card w5-card">
+            <header class="w4-q" id="weird-asked">
+              <span class="w4-num">7A</span>
+              <div>
+                <h2>Which Marvel page uses the most varied words for its length, and is that real or boilerplate?</h2>
                 <p class="w4-answer">Real text: Coldblood, Super Rabbit and Ravage 2099 win with a list of cyborg parts, a Golden Age publication record and an interview.</p>
               </div>
-            </div>
-            <div class="w5-slot" data-slot="did" id="weird-did">
-              <h3>What we did</h3>
-              <div data-body="">
-                <p>We split each page into words: runs of letters in any alphabet, an inner apostrophe or hyphen kept, lowercased, a possessive 's removed; digits and punctuation dropped. We keep stopwords and do not lemmatise. The 303 pages hold 713,617 words.</p>
-                <p>Weird, for us, means varied words. We slide a window of 100 words along each page one word at a time, count the different words in each window and average them: the moving-average type-token ratio, <span class="w4-term"><button type="button" aria-describedby="w5-term-weird-mattr">MATTR</button><span class="w4-pop" id="w5-term-weird-mattr" role="tooltip">Moving-average type-token ratio: the share of different words in each 100-word window of a page, averaged over every window.</span></span>. The fixed window lets the shortest page, 193 words, meet the longest, 14,037 words, since the share of different words in a whole page falls as the page grows.</p>
-                <p>MATTR has no trend with length, but short pages spread more because they have fewer windows to average: a standard deviation of 0.031 in the shortest quarter of pages against 0.021 in the longest. So each page gets a <span class="w4-term"><button type="button" aria-describedby="w5-term-weird-z">z-score</button><span class="w4-pop" id="w5-term-weird-z" role="tooltip">How many standard deviations a value sits above (+) or below (−) the mean of the group it is compared with.</span></span> against the 30 pages nearest to it in length. Then we read the five highest and the five lowest.</p>
-                <div class="rx-drawers rx-foot">
-                  <details class="rx-drawer"><summary>Method</summary><div class="rx-drawer-body">
-                    <p>The score passes its length checks. Its rank correlation with page length is 0.02, its z-scores spread 1.11 in the shortest quarter and 1.00 in the longest, and 6 of the top 10 pages are shorter than the median page of 1,218 words. With a 50-word window instead of 100, 7 of the top 10 and 8 of the bottom 10 stay in their ten (rank correlation 0.945 over all pages).</p>
-                    <p>Real or boilerplate: a rare word is one found on at most 2 of the 303 pages. <span class="w4-term"><button type="button" aria-describedby="w5-term-weird-house">House phrasing</button><span class="w4-pop" id="w5-term-weird-house" role="tooltip">Wording Wikipedia editors repeat on page after page, such as the first sentence of almost every character's article.</span></span> is any run of 8 words found on more than 10 pages, section 2's cutoff applied to our word rule. It finds 113 such runs, led by "in american comic books published by marvel comics" on 282 pages. Both shares move with length (rank correlation 0.55 for rare words and −0.54 for house phrasing), since the house lead is a bigger slice of a short page, so each page we show is compared with the median of its 30 length neighbours. We leave out the share of a page's words used once (the hapax share): it falls as a page grows, so it cannot compare pages of different length.</p>
-                    <p>The band: 2,000 random stretches of the whole corpus, every page joined in order, at each of 40 lengths (seed 2805), scored the same way. Sentences come from spaCy's rule-based sentencizer, so "Ms." and "U.S." do not end one. A page is about several characters when its first sentence says so ("Hawkeye is the name of several fictional characters"): 46 pages do. Section 6 calls them hub pages.</p>
-                  </div></details>
+            </header>
+            <div class="w4-two">
+              <div>
+                <div id="weird-did">
+                  <p class="sub">Weird, for us, means varied words. We slide a window of 100 words along each page one word at a time, count the different words in each window and average them: the moving-average type-token ratio, <span class="w4-term"><button type="button" aria-describedby="w5-term-weird-mattr">MATTR</button><span class="w4-pop" id="w5-term-weird-mattr" role="tooltip">Moving-average type-token ratio: the share of different words in each 100-word window of a page, averaged over every window.</span></span>. The fixed window lets the shortest page, 193 words, meet the longest, 14,037 words, since the share of different words in a whole page falls as the page grows.</p>
+                </div>
+                <div id="weird-surprise">
+                  <div class="notice"><span class="ico">💡</span><span><b>What to notice</b> The winners are real writing: 4 of the top 5 carry less house phrasing than their length neighbours, and 4 use more rare words. The losers are partly paperwork: 10 of the 30 lowest pages are about several characters sharing one name, against 4.6 expected by chance (p = 0.0071), and 4 of the bottom 5 carry more house phrasing than their neighbours. Ms. Marvel comes last (z = −4.15). Across all 303 pages, more house phrasing goes with a lower score (rank correlation −0.28, p &lt; 0.001).</span></div>
                 </div>
               </div>
-            </div>
-            <div class="w5-slot" data-slot="figure" id="weird-figure">
-              <h3>Figure</h3>
-              <div data-body="">
+              <div id="weird-figure">
                 <div class="plot">
                     <h3>Varied words against page length</h3>
                     <p class="axis-note">Each dot is a page: its MATTR against its length in words, on a log scale. The shaded band holds random stretches of the whole corpus of the same length (mean ± 2 standard deviations; the dashed line is the mean). The solid line is the mean of each page's 30 length neighbours, which the ranking measures against. The five highest and five lowest scores against pages of similar length are named. Hover a dot for its numbers.</p>
@@ -73,34 +65,30 @@ body{margin:0;background:#eef3f9}
                   </div>
               </div>
             </div>
-            <div class="w5-slot" data-slot="surprise" id="weird-surprise">
-              <h3>What surprised us</h3>
-              <div data-body="">
-                <div class="notice"><span class="ico">💡</span><span><b>What to notice</b> The winners are real writing: 4 of the top 5 carry less house phrasing than their length neighbours, and 4 use more rare words. The losers are partly paperwork: 10 of the 30 lowest pages are about several characters sharing one name, against 4.6 expected by chance (p = 0.0071), and 4 of the bottom 5 carry more house phrasing than their neighbours. Ms. Marvel comes last (z = −4.15). Across all 303 pages, more house phrasing goes with a lower score (rank correlation −0.28, p &lt; 0.001).</span></div>
-              </div>
-            </div>
-            <div class="w5-slot" data-slot="limit" id="weird-limit">
-              <h3>Limitation</h3>
-              <div data-body="">
-                <p>MATTR counts repeats, not strangeness: Coldblood wins by naming each cyborg part once, and only reading tells a list from an odd story. Long pages also stray from random text more often: 6.6% of pages longer than the median fall outside the corpus band, against 2.0% of shorter pages. That is why each page is ranked against pages of its own length and not against the band.</p>
-              </div>
-            </div>
-            <div class="w5-slot" data-slot="checked" id="weird-checked">
-              <h3>What we checked in the text</h3>
-              <div data-body="">
+            <div class="rx-drawers rx-foot">
+              <details class="rx-drawer"><summary>Method</summary><div class="rx-drawer-body">
+                <p>We split each page into words: runs of letters in any alphabet, an inner apostrophe or hyphen kept, lowercased, a possessive 's removed; digits and punctuation dropped. We keep stopwords and do not lemmatise. The 303 pages hold 713,617 words.</p>
+                <p>MATTR has no trend with length, but short pages spread more because they have fewer windows to average: a standard deviation of 0.031 in the shortest quarter of pages against 0.021 in the longest. So each page gets a z-score against the 30 pages nearest to it in length. Then we read the five highest and the five lowest.</p>
+                <p>The score passes its length checks. Its rank correlation with page length is 0.02, its z-scores spread 1.11 in the shortest quarter and 1.00 in the longest, and 6 of the top 10 pages are shorter than the median page of 1,218 words. With a 50-word window instead of 100, 7 of the top 10 and 8 of the bottom 10 stay in their ten (rank correlation 0.945 over all pages).</p>
+                <p>Real or boilerplate: a rare word is one found on at most 2 of the 303 pages. House phrasing is any run of 8 words found on more than 10 pages, section 2's cutoff applied to our word rule. It finds 113 such runs, led by "in american comic books published by marvel comics" on 282 pages. Both shares move with length (rank correlation 0.55 for rare words and −0.54 for house phrasing), since the house lead is a bigger slice of a short page, so each page we show is compared with the median of its 30 length neighbours. We leave out the share of a page's words used once (the hapax share): it falls as a page grows, so it cannot compare pages of different length.</p>
+                <p>Long pages also stray from random text more often: 6.6% of pages longer than the median fall outside the corpus band, against 2.0% of shorter pages. That is why each page is ranked against pages of its own length and not against the band.</p>
+                <p>The band: 2,000 random stretches of the whole corpus, every page joined in order, at each of 40 lengths (seed 2805), scored the same way. Sentences come from spaCy's rule-based sentencizer, so "Ms." and "U.S." do not end one. A page is about several characters when its first sentence says so ("Hawkeye is the name of several fictional characters"): 46 pages do. Section 6 calls them hub pages.</p>
+                <p id="weird-limit">MATTR counts repeats, not strangeness: Coldblood wins by naming each cyborg part once, and only reading tells a list from an odd story.</p>
+              </div></details>
+              <details class="rx-drawer"><summary>What we read in the pages</summary><div class="rx-drawer-body" id="weird-checked">
+                <p>A sentence past the lead of each of the top three pages, and one from the last page, quoted from the page.</p>
+                <div id="weird-passages"><p class="fineprint">Rank 1 of 303 · Coldblood · A short cyborg page whose powers section lists body parts and abilities, each named once, in ordinary words.</p><blockquote class="kit-passage"><p>He has a wetware-grafted computer grafted to his organic brain, a plasti-steel-reinforced skeleton, an artificial heart, synthetic hemoglobin, and artificial right eye.</p><cite><a href="https://en.wikipedia.org/wiki/Coldblood">Coldblood</a></cite></blockquote><p class="fineprint">Rank 2 of 303 · Super Rabbit · A funny-animal hero from Timely, Marvel's predecessor, so the house lead is missing. The text runs through comic titles, dates and artists.</p><blockquote class="kit-passage"><p>Aside from creator Ernie Hart, other artists who contributed to his adventures included Mike Sekowsky, Al Jaffee, and inker Violet Barclay.</p><cite><a href="https://en.wikipedia.org/wiki/Super_Rabbit">Super Rabbit</a></cite></blockquote><p class="fineprint">Rank 3 of 303 · Ravage 2099 · Long interview quotes from the artist and the editor, in spoken English the encyclopedia pages do not use.</p><blockquote class="kit-passage"><p>The guys started to shake hands, then gave each other a big hug.</p><cite><a href="https://en.wikipedia.org/wiki/Ravage_2099">Ravage 2099</a></cite></blockquote><p class="fineprint">Rank 303 of 303 · Ms. Marvel · The name of four heroines. Each part repeats the codename in the same sentence frame, then sales rankings repeat another.</p><blockquote class="kit-passage"><p>Kamala Khan is the fourth character to use the codename of Ms. Marvel.</p><cite><a href="https://en.wikipedia.org/wiki/Ms._Marvel">Ms. Marvel</a></cite></blockquote></div>
                   <div class="plot">
                     <h3>The top and bottom five, read</h3>
                     <p class="axis-note">Rank of 303 by z-score. Rare words: the share of the page's different words found on at most 2 pages. House phrasing: the share of its words inside runs of 8 found on more than 10 pages. In brackets, the median of the page's 30 length neighbours.</p>
                     <div id="weird-table"><table><thead><tr><th scope="col">Rank</th><th scope="col">Page</th><th scope="col" class="num">Words</th><th scope="col" class="num">z</th><th scope="col">Rare words</th><th scope="col">House phrasing</th><th scope="col">What reading found</th></tr></thead><tbody><tr data-rx=""><td>1</td><td class="soft">Coldblood</td><td class="num">667</td><td class="num">+2.91</td><td class="soft">6.3% (5.3%)</td><td class="soft">3.9% (2.5%)</td><td class="soft">A short cyborg page whose powers section lists body parts and abilities, each named once, in ordinary words.</td></tr><tr data-rx=""><td>2</td><td class="soft">Super Rabbit</td><td class="num">462</td><td class="num">+2.55</td><td class="soft">13.4% (6.2%)</td><td class="soft">0.0% (3.4%)</td><td class="soft">A funny-animal hero from Timely, Marvel's predecessor, so the house lead is missing. The text runs through comic titles, dates and artists.</td></tr><tr data-rx=""><td>3</td><td class="soft">Ravage 2099</td><td class="num">975</td><td class="num">+2.50</td><td class="soft">9.6% (6.4%)</td><td class="soft">1.4% (2.5%)</td><td class="soft">Long interview quotes from the artist and the editor, in spoken English the encyclopedia pages do not use.</td></tr><tr data-rx=""><td>4</td><td class="soft">Paladin (comics)</td><td class="num">1,202</td><td class="num">+2.33</td><td class="soft">6.0% (7.3%)</td><td class="soft">1.3% (1.8%)</td><td class="soft">A mercenary's record that moves from one team-up to the next, each with a new cast.</td></tr><tr data-rx=""><td>5</td><td class="soft">Sabra (character)</td><td class="num">2,675</td><td class="num">+2.26</td><td class="soft">15.3% (7.4%)</td><td class="soft">0.6% (1.8%)</td><td class="soft">Hebrew names, Israeli places and the story of the character's creation, in words few other pages use.</td></tr><tr data-rx=""><td>303</td><td class="soft">Ms. Marvel</td><td class="num">1,753</td><td class="num">−4.15</td><td class="soft">8.7% (7.7%)</td><td class="soft">10.2% (1.9%)</td><td class="soft">The name of four heroines. Each part repeats the codename in the same sentence frame, then sales rankings repeat another.</td></tr><tr data-rx=""><td>302</td><td class="soft">Gorgon (Inhuman)</td><td class="num">798</td><td class="num">−3.44</td><td class="soft">7.4% (5.5%)</td><td class="soft">12.4% (2.5%)</td><td class="soft">A media list, line after line of "Gorgon appears in …, voiced by …", much of it house phrasing.</td></tr><tr data-rx=""><td>301</td><td class="soft">Hawkeye (comics)</td><td class="num">349</td><td class="num">−3.38</td><td class="soft">5.4% (5.2%)</td><td class="soft">3.1% (3.8%)</td><td class="soft">A short page about several Hawkeyes that repeats the name in nearly every sentence.</td></tr><tr data-rx=""><td>300</td><td class="soft">Abomination (character)</td><td class="num">3,930</td><td class="num">−2.95</td><td class="soft">8.3% (8.6%)</td><td class="soft">1.8% (1.2%)</td><td class="soft">One long record of fights with the Hulk: "the Abomination" and "the Hulk" return in almost every sentence.</td></tr><tr data-rx=""><td>299</td><td class="soft">Captain Marvel (Marvel Comics)</td><td class="num">2,640</td><td class="num">−2.87</td><td class="soft">5.8% (7.8%)</td><td class="soft">7.2% (1.7%)</td><td class="soft">The name of several heroes. Each version opens with the same frame, "The second Captain Marvel is …".</td></tr></tbody></table></div>
                   </div>
-                <p>A sentence past the lead of each of the top three pages, and one from the last page, quoted from the page.</p>
-                <div id="weird-passages"><p class="fineprint">Rank 1 of 303 · Coldblood · A short cyborg page whose powers section lists body parts and abilities, each named once, in ordinary words.</p><blockquote class="kit-passage"><p>He has a wetware-grafted computer grafted to his organic brain, a plasti-steel-reinforced skeleton, an artificial heart, synthetic hemoglobin, and artificial right eye.</p><cite><a href="https://en.wikipedia.org/wiki/Coldblood">Coldblood</a></cite></blockquote><p class="fineprint">Rank 2 of 303 · Super Rabbit · A funny-animal hero from Timely, Marvel's predecessor, so the house lead is missing. The text runs through comic titles, dates and artists.</p><blockquote class="kit-passage"><p>Aside from creator Ernie Hart, other artists who contributed to his adventures included Mike Sekowsky, Al Jaffee, and inker Violet Barclay.</p><cite><a href="https://en.wikipedia.org/wiki/Super_Rabbit">Super Rabbit</a></cite></blockquote><p class="fineprint">Rank 3 of 303 · Ravage 2099 · Long interview quotes from the artist and the editor, in spoken English the encyclopedia pages do not use.</p><blockquote class="kit-passage"><p>The guys started to shake hands, then gave each other a big hug.</p><cite><a href="https://en.wikipedia.org/wiki/Ravage_2099">Ravage 2099</a></cite></blockquote><p class="fineprint">Rank 303 of 303 · Ms. Marvel · The name of four heroines. Each part repeats the codename in the same sentence frame, then sales rankings repeat another.</p><blockquote class="kit-passage"><p>Kamala Khan is the fourth character to use the codename of Ms. Marvel.</p><cite><a href="https://en.wikipedia.org/wiki/Ms._Marvel">Ms. Marvel</a></cite></blockquote></div>
-              </div>
+              </div></details>
             </div>
           </div>
         </section></div></main></div>
 </x-dc>
-<script type="text/x-dc" data-dc-script data-props='{"$preview": {"width": 1440, "height": 2294}}'>
+<script type="text/x-dc" data-dc-script data-props='{"$preview": {"width": 1440, "height": 1007}}'>
 class Component extends DCLogic {
 renderVals() { return {}; }
 }

@@ -14,8 +14,8 @@ import matplotlib.pyplot as plt
 from matplotlib.patches import FancyBboxPatch
 
 ROOT = Path(__file__).resolve().parents[1]
-DATA = ROOT / "docs/assets/data"
-OUT = ROOT / "docs/mockups/data-figures"
+DATA = ROOT / "public/assets/data"
+OUT = ROOT / "public/mockups/data-figures"
 OUT.mkdir(exist_ok=True)
 D = json.loads((DATA / "week02_resilience.json").read_text())
 ROWS = list(csv.DictReader((DATA / "week02_all_removals.csv").open()))

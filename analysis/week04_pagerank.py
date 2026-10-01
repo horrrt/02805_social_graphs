@@ -40,7 +40,7 @@ Method
   unweighted degree rank, so the reveal can name a concrete case of the
   network-position effect instead of asserting it.
 
-Output: docs/weeks/week04/data/pagerank.json (every number the box quotes).
+Output: public/weeks/week04/data/pagerank.json (every number the box quotes).
 """
 
 import json
@@ -55,7 +55,7 @@ from week04_jobs import filtered, giant_of, projection, titles_of
 from week04_schemas import check
 
 ROOT = Path(__file__).resolve().parents[1]
-PAGE = ROOT / "docs/weeks/week04/data/pagerank.json"
+PAGE = ROOT / "public/weeks/week04/data/pagerank.json"
 YEAR = 2025
 ALPHA = 0.05  # stricter than section 2's own alpha = 0.2 backbone; see the docstring
 DAMPING = (0.5, 0.85, 0.99)

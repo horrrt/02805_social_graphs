@@ -73,7 +73,7 @@ landing exactly on the next draw's), which the hash keys rule out by
 construction.
 
 Outputs: analysis/week04_footprint.json (every number) and
-docs/weeks/week04/data/footprint.json (the shape a page figure would draw).
+public/weeks/week04/data/footprint.json (the shape a page figure would draw).
 A crash while assembling the final summary must not discard the (expensive)
 per-variant results, so they are dumped to
 analysis/week04_footprint.partial.json as soon as each half finishes, and that
@@ -105,7 +105,7 @@ from week04_staffing import check_rewire, louvain, resolver
 ROOT = Path(__file__).resolve().parents[1]
 OUT = Path(__file__).with_suffix(".json")
 PARTIAL = Path(__file__).resolve().parent / "week04_footprint.partial.json"
-PAGE = ROOT / "docs/weeks/week04/data/footprint.json"
+PAGE = ROOT / "public/weeks/week04/data/footprint.json"
 YEAR = 2025
 SEED = 2805
 RUNS = 100

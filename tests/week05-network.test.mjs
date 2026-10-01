@@ -7,15 +7,16 @@ import { readFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { block, flatten } from "./week04-html.mjs";
+import { builtPage } from "./built-page.mjs";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const read = (name) => readFileSync(join(ROOT, name), "utf8");
-const json = (name) => JSON.parse(read(`docs/weeks/week05/data/${name}.json`));
+const json = (name) => JSON.parse(read(`public/weeks/week05/data/${name}.json`));
 const net = json("network");
 const comm = json("communities");
 const rel = json("relations");
-const html = read("docs/weeks/week05/index.html");
-const map = read("docs/assets/js/week05-map.js");
+const html = builtPage("out/weeks/week05/index.html");
+const map = read("src/scripts/week05-map.js");
 
 test("the map holds the pages, links and groups the sections count", () => {
   assert.equal(net.nodes.length, comm.network.nodes);
@@ -35,21 +36,15 @@ test("the map holds the pages, links and groups the sections count", () => {
   });
 });
 
-test("the maps name only the hubs", () => {
-  for (const n of net.nodes) assert.deepEqual(Object.keys(n).sort(), ["group", "x", "y"], "a node carries no name");
-  // titles: "hubs" comes after the callers' options, so no caller can override it.
-  const call = map.slice(map.indexOf("return networkView("));
-  assert.ok(call.indexOf("...opts") >= 0 && call.indexOf('titles: "hubs"') > call.indexOf("...opts"), "titles is set after ...opts");
-  for (const file of ["week05-relations.js", "week05-autocomplete.js"]) {
-    const src = read(`docs/assets/js/${file}`);
-    const opts = src.slice(src.indexOf("marvelMap("), src.indexOf("marvelMap(") + 600);
-    assert.doesNotMatch(opts, /\b(labels|weights|movable|title):/, `${file} passes no option that could print a node`);
-  }
+test("every page on the maps carries its name for the tooltip", () => {
+  for (const n of net.nodes) assert.ok(typeof n.name === "string" && n.name.length > 0, "a node without a name");
+  assert.equal(new Set(net.nodes.map((n) => n.name)).size, net.nodes.length, "names are unique");
+  assert.match(map, /n\.name,/, "the tooltip leads with the page's name");
 });
 
 test("section 1 draws the map beside its chart, with a two-button switch", () => {
   const s = block(html, "relations");
-  assert.match(s, /class="w5-slots card w4-card w5-card w5-card-wide"/);
+  assert.match(s, /class="card w4-card w5-card"/);
   assert.match(s, /id="chart-relations-crossing"/);
   assert.match(s, /id="chart-relations-map"/);
   assert.match(s, /aria-pressed="true" data-kind="enemy"/);
@@ -64,7 +59,7 @@ test("section 4 shows its groups beside the quiz and keeps the modularity chart"
   const figure = block(html, "autocomplete-figure");
   assert.match(figure, /id="chart-autocomplete-map"/);
   assert.doesNotMatch(figure, /id="chart-autocomplete-modularity"/, "the modularity chart moved into More numbers");
-  assert.match(block(html, "autocomplete-did"), /id="chart-autocomplete-modularity"/);
+  assert.match(s, /<summary>More numbers<\/summary>[\s\S]*id="chart-autocomplete-modularity"/);
   const t = flatten(s);
   assert.ok(t.includes(`the ${comm.network.other_component_nodes} Strikeforce: Morituri pages and the ${comm.network.isolates} with no links`));
   assert.ok(t.includes(`The ${net.groups.length === 8 ? "eight" : net.groups.length} groups the generators learn from`));

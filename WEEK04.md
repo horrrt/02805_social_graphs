@@ -1,7 +1,7 @@
 # Week 4 · Who hires America's foreign workers?
 
 The plan for the Week 4 post (communities and backbones), proposed 23 September 2026. The post goes in
-[docs/weeks/week04/index.html](docs/weeks/week04/index.html); every number comes from a script in
+[src/app/(week04)/weeks/week04/page.tsx](src/app/(week04)/weeks/week04/page.tsx); every number comes from a script in
 `analysis/`.
 
 ## The story
@@ -175,7 +175,7 @@ Layout differences the loader already handles:
 
 | Job | Owner |
 | --- | --- |
-| Put the page live: lobby card, `docs/assets/js/weeks.js`, the site test, remove `noindex` | Àngela |
+| Put the page live: lobby card, `src/scripts/weeks.js`, the site test, remove `noindex` | Àngela |
 | Opening and closing sections, AI-use note | Niklas |
 | Teams post, feedback on another group, final read against the brief | Gyula |
 
@@ -193,6 +193,45 @@ lottery tables in `build/` carry the worker's country since 29 September 2026 (s
 `week04_countries.py` still reads the release itself. The suppression drops 43% of FY2023's certified green cards, so the network covers the
 large country-employer pairs only.
 
+## Entity networks: every worker and company as a dot
+
+`analysis/week04_entities.py` (Gyula, 29 to 30 September 2026) draws every 2025 worker and every filing
+company as a dot, coloured by its Louvain community, in the deep-dive box `#entity-communities`. It uses only
+the course's tools, the way the Week 4 brief treats the philosophers: Louvain, best Q of 100 seeds, against
+20 degree-preserving rewirings, NMI between seeds, and NMI against labels, with each label's shuffled NMI as
+its chance level. It also runs the Week 1 to 4 toolkit (degree distributions, random baselines, the
+friendship paradox, centralities, assortativity, cores, greedy merging and Infomap, the disparity filter,
+k-clique communities).
+
+- A worker is a requested H-1B position in a certified filing or a certified PERM case: 1,011,687 in 2025.
+  Workers with the same occupation, metro, wage level and sector form one profile (91,322).
+- The network is bipartite, like section 3's staffing network: profiles (or companies) on one side,
+  occupations, metros, wage levels and sectors on the other (1,705), each linked with weight = workers. No
+  similarity measure: two workers connect only through something they share. A first version linked profiles
+  to their k nearest neighbours; Gyula dropped it on 30 September because kNN is not in the course.
+- The employer and the placement flag are not in the network; their NMI with the groups is the test.
+- Paths, clustering, centrality and the backbone run on the projection onto the attributes (week04_jobs
+  builds its occupation network the same way): a bipartite network has no triangles.
+- Traps: the 2025 PERM form has no wage level, so PERM workers take the most common H-1B level of the same
+  occupation and metro. PERM counties are all blank; they borrow the usual county of the city from the H-1B
+  worksites. As in section 3, the weighted rewired networks score a higher modularity than the real one (a
+  few heavy links let them split around those links), so the page shows the wiring-only null beside it. NMI
+  rises with a label's number of values, so the employer is read against its shuffled NMI. The backbones
+  hold over 20,000 maximal cliques, and networkx compares cliques pairwise, so k-clique percolation is
+  skipped. DrL on the whole bipartite network took 25 minutes, so the layout runs DrL on the projection and
+  puts each profile at the weighted average of its attributes.
+- The loader (`week04_data.py`) keeps 20 more LCA columns, 6 more worksite columns and 22 more PERM
+  columns since 29 September, none personal; adding them changed no committed number.
+- Adding an entity (staffing firms, law firms, O*NET occupations) means one function in its `REGISTRY`.
+- Two node-link views sit beside the dots, drawn as the course draws the philosophers (exercise 4.11: the
+  disparity backbone with an alpha control, dropped links faint or hidden, nodes sized by strength and
+  coloured by Louvain group, the largest member named, the alpha curve): section 3's staffing network (the
+  1,000 firms and clients with the most placed filings, coloured by section 3's own partition), and employers
+  linked by a shared law firm (1,500 employers, a group's label names its main law firm). Tried and dropped on
+  30 September: companies linked by a shared occupation and metro (density 0.49, a hairball at every alpha),
+  occupations x metros (a star around Software Developers and New York, Q 0.22), and the two projections of the
+  staffing network (density about 0.3, Q under 0.2).
+
 ## The deep dive
 
 Everything past the closing sits in one section, `#cut` ("Deep dive"). It opens on a catalogue
@@ -204,7 +243,7 @@ contents order. "Data and methods" (`#evidence`) comes last, with no contents li
 of every "Data and methods" link. Only one of the six is open at a time. Section 3's first-round
 questions now sit in three boxes: `#who-q2` and `#who-q3` under Outsourcing, `#who-q4` under Five years.
 
-`docs/assets/js/week04-cut.js` opens the right topic and box for any in-page link. Its `ALIAS` table
+`src/scripts/week04-cut.js` opens the right topic and box for any in-page link. Its `ALIAS` table
 keeps the old anchors working: `#cut-place`, `#cut-jobs` and `#cut-who` open their topics,
 `#who-first-round` opens `#who-q2`, `#cut-more` lands on the catalogue and `#place-inspector` on
 `#place-start`. `tests/week04-prose.test.mjs` pins each box's numbers and fails if a box leaves the deep

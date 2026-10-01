@@ -1,5 +1,5 @@
 // Pins the published site to the course schedule. The schedule itself lives in
-// docs/assets/js/weeks.js; these tests fail when any page drifts from it.
+// src/scripts/weeks.js; these tests fail when any page drifts from it.
 import test from "node:test";
 import assert from "node:assert/strict";
 import { existsSync, readFileSync, readdirSync } from "node:fs";
@@ -13,11 +13,21 @@ import {
   currentWeek,
   weekLabel,
   shortDate,
-} from "../docs/assets/js/weeks.js";
-import { summarise, migrate } from "../docs/assets/js/cabinet.js";
+} from "../src/scripts/weeks.js";
+import { summarise, migrate } from "../src/scripts/cabinet.js";
+import { builtPage } from "./built-page.mjs";
 
-const DOCS = fileURLToPath(new URL("../docs/", import.meta.url));
-const read = (rel) => readFileSync(join(DOCS, rel), "utf8");
+// The published site is Next's static export in out/ (npm run build); its
+// pages are checked there, and the scripts in src/scripts before bundling.
+const DOCS = fileURLToPath(new URL("../out/", import.meta.url));
+const SCRIPTS = fileURLToPath(new URL("../src/scripts/", import.meta.url));
+const BASE = "/02805_social_graphs/";
+const read = (rel) => (rel.endsWith(".html") ? builtPage(join("out", rel)) : readFileSync(join(DOCS, rel), "utf8"));
+const readAny = (path) =>
+  path.startsWith(DOCS) && path.endsWith(".html") ? read(path.slice(DOCS.length)) : readFileSync(path, "utf8");
+// A link on a built page, as a file under out/: absolute ones carry the base path.
+const resolve = (page, target) =>
+  target.startsWith(BASE) ? join(DOCS, target.slice(BASE.length)) : join(dirname(join(DOCS, page)), target);
 const decode = (s) => s.replaceAll("&amp;", "&");
 const walk = (dir, out = []) => {
   for (const entry of readdirSync(dir, { withFileTypes: true })) {
@@ -30,13 +40,15 @@ const walk = (dir, out = []) => {
 // The 49-concept design archive is a frozen record of earlier alternatives,
 // and assets/vendor holds third-party minified bundles we do not author.
 const sitePages = () =>
-  walk(DOCS).filter(
+  [...walk(DOCS), ...walk(SCRIPTS)].filter(
     (p) =>
       /\.(html|js|mjs)$/.test(p) &&
+      !p.includes("/_next/") &&
       !p.includes("/mockups/") &&
       !p.includes("/vendor/") &&
       !p.endsWith("mockups.js"),
   );
+const label = (path) => (path.startsWith(DOCS) ? path.slice(DOCS.length) : "src/scripts/" + path.slice(SCRIPTS.length));
 
 // https://sunelehmann.com/socialgraphs2026-web/index.html, autumn 2026.
 const COURSE = [
@@ -149,10 +161,10 @@ test("no page or script claims a future week or a preview", () => {
   ];
   const offenders = [];
   for (const path of sitePages()) {
-    const text = readFileSync(path, "utf8");
+    const text = readAny(path);
     for (const re of forbidden) {
       const hit = text.match(re);
-      if (hit) offenders.push(`${path.slice(DOCS.length)}: ${hit[0]}`);
+      if (hit) offenders.push(`${label(path)}: ${hit[0]}`);
     }
   }
   assert.deepEqual(offenders, []);
@@ -165,16 +177,16 @@ test("no live page ships draft text, a visible draft banner or placeholder data"
   const forbidden = [/The finding goes here/i, /\bLorem ipsum\b/i, /\bTODO\b/];
   const offenders = [];
   for (const path of sitePages()) {
-    const text = readFileSync(path, "utf8");
+    const text = readAny(path);
     for (const re of forbidden) {
       const hit = text.match(re);
-      if (hit) offenders.push(`${path.slice(DOCS.length)}: ${hit[0]}`);
+      if (hit) offenders.push(`${label(path)}: ${hit[0]}`);
     }
     for (const tag of text.match(/<[a-z]+\b[^>]*class="[^"]*\bdraft-banner\b[^"]*"[^>]*>/g) ?? []) {
-      if (!/\shidden[\s>=]/.test(tag)) offenders.push(`${path.slice(DOCS.length)}: visible ${tag.replace(/\s+/g, " ")}`);
+      if (!/\shidden[\s>=]/.test(tag)) offenders.push(`${label(path)}: visible ${tag.replace(/\s+/g, " ")}`);
     }
   }
-  for (const path of walk(DOCS).filter((p) => p.endsWith(".json") && !p.includes("/mockups/"))) {
+  for (const path of walk(DOCS).filter((p) => p.endsWith(".json") && !p.includes("/mockups/") && !p.includes("/_next/"))) {
     const data = JSON.parse(readFileSync(path, "utf8"));
     if (data?.meta?.status === "placeholder") offenders.push(`${path.slice(DOCS.length)}: meta.status placeholder`);
   }
@@ -226,18 +238,16 @@ test("guesses saved under invented weeks move to free play without losing ids", 
 
 test("every fragment link points at an id that exists", () => {
   const broken = [];
-  for (const path of walk(DOCS).filter((p) => p.endsWith(".html"))) {
-    const html = readFileSync(path, "utf8");
+  for (const path of walk(DOCS).filter((p) => p.endsWith(".html") && !p.includes("/_next/"))) {
+    const page = path.slice(DOCS.length);
+    const html = read(page);
     for (const [, target, frag] of html.matchAll(/href="([^"#]*)#([^"]+)"/g)) {
       const clean = target.split("?")[0];
       if (/^https?:/.test(clean)) continue;
-      const file = clean
-        ? join(dirname(path), clean.endsWith("/") ? clean + "index.html" : clean)
-        : path;
-      const label = `${path.slice(DOCS.length)} → ${target}#${frag}`;
+      const file = clean ? resolve(page, clean.endsWith("/") ? clean + "index.html" : clean) : path;
+      const label = `${page} → ${target}#${frag}`;
       if (!existsSync(file)) broken.push(`${label} (no such page)`);
-      else if (!readFileSync(file, "utf8").includes(`id="${frag}"`))
-        broken.push(label);
+      else if (!readAny(file).includes(`id="${frag}"`)) broken.push(label);
     }
   }
   assert.deepEqual(broken, []);
@@ -267,10 +277,12 @@ test("the README serves the site on the same port as the launch config", () => {
     readFileSync(new URL("../.claude/launch.json", import.meta.url), "utf8"),
   );
   const port = launch.configurations.find((c) => c.name === "site").port;
+  const pkg = JSON.parse(readFileSync(new URL("../package.json", import.meta.url), "utf8"));
   const readme = readFileSync(new URL("../README.md", import.meta.url), "utf8");
-  assert(readme.includes(`http.server ${port} `), `README uses port ${port}`);
+  assert(pkg.scripts.dev.includes(`-p ${port}`), `npm run dev uses port ${port}`);
+  assert(readme.includes("npm run dev"), "README starts the dev server");
   assert(readme.includes(`127.0.0.1:${port}/`), `README opens port ${port}`);
-  assert(readme.includes("node --test 'tests/*.test.mjs'"));
+  assert(readme.includes("npm test"));
 });
 
 test("every local asset an arcade page references exists", () => {
@@ -284,8 +296,7 @@ test("every local asset an arcade page references exists", () => {
       /(?:src|href)="([^"#?]+\.(?:js|css|svg|png|json|csv))(?:[?#][^"]*)?"/g,
     )) {
       if (/^https?:/.test(target)) continue;
-      if (!existsSync(join(dirname(join(DOCS, page)), target)))
-        problems.push(`${page} → ${target}`);
+      if (!existsSync(resolve(page, target))) problems.push(`${page} → ${target}`);
     }
   }
   assert.deepEqual(problems, []);

@@ -1,4 +1,4 @@
-// Pins docs/weeks/week04/data/more.json (the "More networks" figures' data)
+// Pins public/weeks/week04/data/more.json (the "More networks" figures' data)
 // to the five analysis files it is copied from, so a rerun that moves a
 // number fails here instead of leaving a stale figure on the page.
 import test from "node:test";
@@ -7,12 +7,13 @@ import { readFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { block, flatten } from "./week04-html.mjs";
+import { builtPage } from "./built-page.mjs";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const json = (name) => JSON.parse(readFileSync(join(ROOT, name), "utf8"));
-const html = readFileSync(join(ROOT, "docs/weeks/week04/index.html"), "utf8");
+const html = builtPage("out/weeks/week04/index.html");
 
-const more = json("docs/weeks/week04/data/more.json");
+const more = json("public/weeks/week04/data/more.json");
 const perm = json("analysis/week04_perm.json").years["2025"];
 const countries = json("analysis/week04_countries.json");
 const oews = json("analysis/week04_oews.json").metro_rates;

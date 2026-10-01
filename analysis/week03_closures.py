@@ -15,7 +15,7 @@ travellers:
     4  ban on all regions, or a total border closure
 
 This bins it into one row per day: how many countries reported, and how many
-of them sat at each level. Writes docs/assets/data/week03_closures.json.
+of them sat at each level. Writes public/assets/data/week03_closures.json.
 
     python analysis/week03_closures.py [--force]
 
@@ -38,7 +38,7 @@ from check_pages import check
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 RAW = ROOT / "build" / "raw"
-OUT = ROOT / "docs" / "assets" / "data"
+OUT = ROOT / "public" / "assets" / "data"
 
 SOURCE = (
     "https://raw.githubusercontent.com/OxCGRT/covid-policy-dataset/main/data"

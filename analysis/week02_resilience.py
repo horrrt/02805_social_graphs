@@ -18,7 +18,7 @@ from arcade_data import DISPLAY_NAME_OVERRIDES
 from week04_staffing import tracked
 
 ROOT = Path(__file__).resolve().parents[1]
-OUT = ROOT / "docs/assets/data"
+OUT = ROOT / "public/assets/data"
 SEED = 2026090900
 N_DRAWS = 1000
 CASES = ["Spider-Man", "Hulk", "Black_Widow_(Natasha_Romanova)", "Doctor_Strange"]

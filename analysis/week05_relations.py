@@ -4,8 +4,8 @@ Question: Who are the friends, foes and family in the Marvel network?
 
 Owner: Gyula
 
-Page section: docs/weeks/week05/index.html#relations
-Output: docs/weeks/week05/data/relations.json, every number the section quotes.
+Page section: src/app/(week05)/weeks/week05/page.tsx#relations
+Output: public/weeks/week05/data/relations.json, every number the section quotes.
 
 Method
 - Sentences: each page split into paragraphs at line breaks, each paragraph into
@@ -62,7 +62,7 @@ from week04_staffing import louvain
 from week05_text import graph, nodes, pages, weighted
 
 ROOT = Path(__file__).resolve().parents[1]
-PAGE = ROOT / "docs/weeks/week05/data/relations.json"
+PAGE = ROOT / "public/weeks/week05/data/relations.json"
 CHECKED = Path(__file__).with_name("week05_relations_checked.csv")
 SEED = 2805
 RUNS = 100

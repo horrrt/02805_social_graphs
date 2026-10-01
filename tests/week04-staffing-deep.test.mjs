@@ -1,4 +1,4 @@
-// Pins docs/weeks/week04/data/staffing_deep.json (the who-q1 to who-q4,
+// Pins public/weeks/week04/data/staffing_deep.json (the who-q1 to who-q4,
 // law-firm, ties and lottery figures) to the analysis JSON it copies from,
 // so a rerun that moves a number fails here instead of silently going stale
 // on the page.
@@ -11,7 +11,7 @@ import { fileURLToPath } from "node:url";
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const json = (rel) => JSON.parse(readFileSync(join(ROOT, rel), "utf8"));
 
-const page = json("docs/weeks/week04/data/staffing_deep.json");
+const page = json("public/weeks/week04/data/staffing_deep.json");
 const staffing = json("analysis/week04_staffing.json");
 const lottery = json("analysis/week04_lottery.json").lotteries;
 const shift = json("analysis/week04_shift.json");

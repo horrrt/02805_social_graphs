@@ -4,8 +4,8 @@ Question: Which Marvel pages copy text from each other?
 
 Owner: Gyula
 
-Page section: docs/weeks/week05/index.html#copying
-Output: docs/weeks/week05/data/copying.json, every number the section quotes.
+Page section: src/app/(week05)/weeks/week05/page.tsx#copying
+Output: public/weeks/week05/data/copying.json, every number the section quotes.
 
 Method
 - Tokens: runs of letters and digits in the rendered page text, apostrophes kept
@@ -60,7 +60,7 @@ from check_pages import check
 from week05_text import graph, nodes, pages
 
 ROOT = Path(__file__).resolve().parents[1]
-PAGE = ROOT / "docs/weeks/week05/data/copying.json"
+PAGE = ROOT / "public/weeks/week05/data/copying.json"
 # What ties each cluster's characters, read by hand from their pages: they share
 # a mantle (one codename, several bearers), a team, or a family.
 TIES = Path(__file__).with_name("week05_copying_ties.csv")

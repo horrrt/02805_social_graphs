@@ -7,11 +7,12 @@ import { readFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { block, flatten, notices } from "./week04-html.mjs";
+import { builtPage, pageScripts } from "./built-page.mjs";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const read = (name) => readFileSync(join(ROOT, name), "utf8");
-const html = read("docs/weeks/week05/index.html");
-const w = JSON.parse(read("docs/weeks/week05/data/weird.json"));
+const html = builtPage("out/weeks/week05/index.html");
+const w = JSON.parse(read("public/weeks/week05/data/weird.json"));
 const copy = JSON.parse(read("analysis/week05_weird.json"));
 
 const count = (n) => n.toLocaleString("en-US");
@@ -22,13 +23,13 @@ const text = (id) => flatten(block(html, id));
 
 test("section 7 is Niklas's, drawn by its script, and its two data files agree", () => {
   assert.match(html, /<section class="step" data-owner="Niklas" id="weird">/);
-  assert.match(html, /week05-weird\.js\?v=2/);
-  assert.match(block(html, "weird"), /class="w5-slots card w4-card w5-card"/);
+  assert.ok(pageScripts("week05").includes("week05-weird.js"), "the page runs week05-weird.js");
+  assert.match(block(html, "weird"), /class="card w4-card w5-card"/);
   assert.deepEqual(copy, w, "analysis/week05_weird.json and the page copy must match");
   assert.equal(w.meta.owner, "Niklas");
   // The figure and the table are drawn from the JSON, never typed into the page.
   assert.doesNotMatch(block(html, "weird"), /<table/);
-  const js = read("docs/assets/js/week05-weird.js");
+  const js = read("src/scripts/week05-weird.js");
   for (const id of ["chart-weird-scatter", "weird-table", "weird-passages"]) {
     assert.ok(html.includes(`id="${id}"`), `#${id} on the page`);
     assert.ok(js.includes(`"${id}"`), `week05-weird.js draws #${id}`);

@@ -1,7 +1,7 @@
 # Week 5 · The Marvel network gets language
 
 The plan for the Week 5 post (NLP I, "From language to numbers"), set up 30 September 2026. The post goes
-in [docs/weeks/week05/index.html](docs/weeks/week05/index.html); every number comes from a script in
+in [src/app/(week05)/weeks/week05/page.tsx](src/app/(week05)/weeks/week05/page.tsx); every number comes from a script in
 `analysis/`. We use the course's Marvel data and follow the seven openers in exercise 5.9 as the brief
 words them.
 
@@ -22,6 +22,10 @@ Every section carries the same six parts, in this order:
 5. What we checked in the underlying text: quote the passage.
 6. One limitation.
 
+The six parts say what each section must contain, not what must be open on load. Each card is a Week 4
+card: the question and answer, what we did beside "What to notice", the figure, and drawers holding the
+method with the limitation, more numbers and the passages we read (POST_GUIDE.md, "Keep the card short").
+
 The brief says one good question with one convincing figure beats five methods thrown together. We did
 all seven openers; the hero asks whether a character's place in the link network shows in the words of its
 page, and answers with section 6's scatter of page length against in-degree. A findings strip under the
@@ -38,7 +42,7 @@ hero gives each section's answer against its baseline, in Week 4's form.
 | 5 | Heaps' law of the Marvel universe | `#heaps` | Niklas | `analysis/week05_heaps.py` | pages, graph (in-degree) |
 | 6 | Does network fame buy you more words? | `#fame` | Niklas | `analysis/week05_fame.py` | pages, graph |
 | 7 | Who has the weirdest Wikipedia page? | `#weird` | Niklas | `analysis/week05_weird.py` | pages |
-| | Hero, findings, opening, closing, AI-use note | `#top`, `#findings`, `#opening`, `#closing` | Gyula | the section JSON files | `docs/assets/js/week05-frame.js` |
+| | Hero, findings, opening, closing, AI-use note | `#top`, `#findings`, `#opening`, `#closing` | Gyula | the section JSON files | `src/scripts/week05-frame.js` |
 
 Put your name in the Owner column and in your script's docstring. Each script's docstring lists the steps
 the brief suggests for its section.
@@ -94,17 +98,17 @@ It checks the files against the course snapshot and fails if the pages and nodes
 
 ## Components
 
-Each section has its own page script, `docs/assets/js/week05-<section>.js`, already loaded by the page, and
-its page data goes in `docs/weeks/week05/data/<section>.json` (only `docs/` is published). Import what you
-need from `docs/assets/js/kit.js`:
+Each section has its own page script, `src/scripts/week05-<section>.js`, already loaded by the page, and
+its page data goes in `public/weeks/week05/data/<section>.json` (only `public/` is published). Import what you
+need from `src/scripts/kit.js`:
 
 ```js
-import { slot, figure, echart, stripChart, concordance, passage, table, loadData } from "./kit.js?v=1";
+import { slot, figure, echart, stripChart, concordance, passage, table, loadData } from "./kit.js";
 ```
 
 `slot("heaps", "figure")` is where section 5's figure goes; the parts are `asked`, `did`, `figure`,
-`surprise`, `checked` and `limit`. `docs/assets/js/README.md` lists every component with an example, and
-`/styleguide/kit.html` draws each one with toy data. Use `stripChart` for any result against a null,
+`surprise`, `checked` and `limit`. `src/scripts/README.md` lists every component with an example, and
+`/styleguide/kit/` draws each one with toy data. Use `stripChart` for any result against a null,
 `concordance` or `passage` for the text you checked.
 
 To make a section look like a Week 4 card, add `card w4-card w5-card` to its slots container:
@@ -129,9 +133,8 @@ under what we did). Nothing else changes: the slot IDs, `slot()` and the kit tes
 - One map: `analysis/week05_network.py` writes `network.json`, the Marvel network laid out once
   (`analysis/layout.py`, seeded) and coloured by section 4's consensus groups, and `week05-map.js` draws it
   with `networkView()`. Section 1 shows where fight and family links run on it; section 4 shows its groups
-  beside the quiz. While section 4 collects other groups' guesses, the map names only the eight hubs, the
-  quiz's options: no other node has a tooltip or label on the page (`tests/week05-network.test.mjs`).
-  Once guessing closes, `titles` can go back to every node. The data files are another matter:
+  beside the quiz. Hovering any page names it (Gyula's call, 30 September, while guesses were still
+  open); the eight hubs, the quiz's options, also carry a pill on the map. The data files go further:
   `communities.json` lists every page's group and `autocomplete.json` holds each fake's answer and unmasked
   text, so a guesser who opens them can look everything up.
 - Communities: `analysis/week05_communities.py` writes the consensus of 100 Louvain runs that section 4
@@ -166,7 +169,7 @@ under what we did). Nothing else changes: the slot IDs, `slot()` and the kit tes
 
 ## Page
 
-`docs/weeks/week05/index.html` holds the hero, the findings strip, the opening, seven Week 4 cards and
+`src/app/(week05)/weeks/week05/page.tsx` holds the hero, the findings strip, the opening, seven Week 4 cards and
 the closing. `tests/week05-frame.test.mjs` pins the frame's numbers to the section JSON files, and each
 section has its own test. The page is live since 30 September 2026: week 5 is `live` in
-`docs/assets/js/weeks.js` with the cabinet "Marvel in Words", and the home page links it.
+`src/scripts/weeks.js` with the cabinet "Marvel in Words", and the home page links it.

@@ -1,4 +1,4 @@
-"""Data for the network views on docs/styleguide/kit.html.
+"""Data for the network views on src/app/(kit)/styleguide/kit/page.tsx.
 
 Four real networks and one toy, each with node positions laid out here so the
 page draws the same picture every time:
@@ -6,7 +6,7 @@ page draws the same picture every time:
 - karate: Zachary's karate club (Zachary 1977, via networkx), 34 members and 78
   friendships, split into the two clubs it broke into.
 - marvel: the course's 303 Marvel pages and their weighted links, coloured by the
-  consensus communities of week 5 section 4 (docs/weeks/week05/data/communities.json);
+  consensus communities of week 5 section 4 (public/weeks/week05/data/communities.json);
   the Morituri component and the 17 isolates have no colour. One hub per group,
   the page with the most link weight.
 - pair: the two Marvel groups joined by the most link weight, with the heaviest
@@ -29,8 +29,8 @@ from layout import SEED, edges, layout, ordered, spread
 from week05_text import nodes, weighted
 
 ROOT = Path(__file__).resolve().parents[1]
-OUT = ROOT / "docs/styleguide/data/graphs.json"
-COMMUNITIES = ROOT / "docs/weeks/week05/data/communities.json"
+OUT = ROOT / "public/styleguide/data/graphs.json"
+COMMUNITIES = ROOT / "public/weeks/week05/data/communities.json"
 GROUPS = 8
 
 

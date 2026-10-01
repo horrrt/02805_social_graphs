@@ -7,7 +7,7 @@ since 2013, which is the finest grain any bilateral migration series reaches.
 DESA, the spine of this page, is eight five-year snapshots and cannot see a
 month, a war or a policy change.
 
-Writes docs/assets/data/week03_asylum.json: per origin, the Europe-wide
+Writes public/assets/data/week03_asylum.json: per origin, the Europe-wide
 monthly series and its main destinations, plus the month totals.
 
     python analysis/week03_asylum.py [--from 2013] [--min 3000] [--force]
@@ -41,7 +41,7 @@ from check_pages import check
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 RAW = ROOT / "build" / "raw"
-OUT = ROOT / "docs" / "assets" / "data"
+OUT = ROOT / "public" / "assets" / "data"
 
 API = "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/migr_asyappctzm"
 QUERY = "format=JSON&lang=EN&sex=T&age=TOTAL&unit=PER&applicant=FRST"

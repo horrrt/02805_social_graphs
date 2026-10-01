@@ -5,8 +5,8 @@ that a real property of the page or formatting and boilerplate?
 
 Owner: Niklas
 
-Page section: docs/weeks/week05/index.html#weird
-Output: docs/weeks/week05/data/weird.json (and a copy in analysis/), every
+Page section: src/app/(week05)/weeks/week05/page.tsx#weird
+Output: public/weeks/week05/data/weird.json (and a copy in analysis/), every
 number the section quotes, validated with check(path, data) against the Weird
 model in week05_schemas.py.
 
@@ -67,7 +67,7 @@ from week05_text import SHARED_NAME_RULE, WORD_RULE, nodes, pages, sentences, sh
 
 ROOT = Path(__file__).resolve().parents[1]
 OUT = Path(__file__).with_suffix(".json")
-PAGE = ROOT / "docs/weeks/week05/data/weird.json"
+PAGE = ROOT / "public/weeks/week05/data/weird.json"
 WINDOW = 100          # tokens per MATTR window; the shortest page has 193
 WINDOW_ALT = 50       # the second window, for the stability check
 NEIGHBOURS = 30       # pages nearest in length that a page is scored against

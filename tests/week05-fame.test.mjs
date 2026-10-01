@@ -7,11 +7,12 @@ import { readFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { block, flatten } from "./week04-html.mjs";
+import { builtPage, pageScripts } from "./built-page.mjs";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const read = (name) => readFileSync(join(ROOT, name), "utf8");
-const html = read("docs/weeks/week05/index.html");
-const d = JSON.parse(read("docs/weeks/week05/data/fame.json"));
+const html = builtPage("out/weeks/week05/index.html");
+const d = JSON.parse(read("public/weeks/week05/data/fame.json"));
 const s = flatten(block(html, "fame"));
 const has = (t) => assert.ok(s.includes(t), `section 6 should say "${t}"`);
 
@@ -22,7 +23,7 @@ const short = (name) => name.replace(/ \((character|Marvel Comics|comics)\)$/, "
 
 test("section 6 is Niklas's and loads its script", () => {
   assert.match(html, /<section class="step" data-owner="Niklas" id="fame">/);
-  assert.match(html, /week05-fame\.js\?v=2"/);
+  assert.ok(pageScripts("week05").includes("week05-fame.js"), "the page runs week05-fame.js");
   assert.match(read("analysis/week05_fame.py"), /Owner: Niklas/);
   assert.equal(d.meta.owner, "Niklas");
   // The table and the passages come from the JSON; none is typed into the page.
@@ -54,10 +55,10 @@ test("section 6 states the fit and its baseline from fame.json", () => {
   // "Yes, and strongly": far above every shuffle.
   assert.ok(f.pearson > 0.5 && f.pearson > f.null_max, '"strongly" needs r above 0.5 and every shuffle');
   has(`Yes, and strongly (Pearson ${f.pearson.toFixed(2)}, Spearman ${f.spearman.toFixed(2)})`);
-  has(`the ${WORDS[d.outliers.length]} pages furthest from the trend`);
   // "Four of the five below it": minor characters every linking page of which names one team or place.
   const teamed = d.outliers.filter((o) => o.side === "below" && o.cast && o.cast.with_word === o.cast.linkers);
-  has(`${WORDS[teamed.length]} of the ${WORDS[d.outliers.length / 2]} below it are minor characters whose every linking page names the same team or place`);
+  const cap = (w) => w[0].toUpperCase() + w.slice(1);
+  has(`${cap(WORDS[teamed.length])} of the ${WORDS[d.outliers.length / 2]} below the line are minor characters whose every linking page names the same team or place`);
   has(`We counted the words on each of the ${c.pages} pages by the rule sections 5 to 7 share: ${d.meta.word_rule}.`);
   has(`The 1 + keeps the ${c.zero_in_degree} pages nobody links to, ${c.isolates} of them isolates with no links at all.`);
   has(`The slope is ${f.slope.toFixed(2)}: each doubling of 1 + in-degree multiplies the predicted length by ${f.per_doubling.toFixed(2)}, starting from ${count(Math.round(f.base_tokens))} words at zero in-degree.`);
@@ -98,7 +99,7 @@ test("section 6 states the pattern tests and names the outliers from fame.json",
   assert.deepEqual(coded.map((o) => o.id), [above[0].id]);
   const b = above[0];
   const q = below[0];
-  has(`Each shows at its extreme in one outlier: ${b.name}'s codename, ${b.codename.name}, is on ${b.codename.pages} other pages but linked from ${b.codename.linked}, and ${short(q.name)} is a page for a name ${WORDS[q.holders.length]} characters share, with ${q.in_degree} incoming links.`);
+  has(`Each of the two explanations, hub pages and names without a link, shows at its extreme in one outlier: ${b.name}'s codename, ${b.codename.name}, is on ${b.codename.pages} other pages but linked from ${b.codename.linked}, and ${short(q.name)} is a page for a name ${WORDS[q.holders.length]} characters share, with ${q.in_degree} incoming links.`);
   assert.equal(b.codename.page_ids.length, b.codename.pages);
 
   // The limitation names two characters from outside the link set: both above the line, no links in.

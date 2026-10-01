@@ -1,8 +1,8 @@
 """The Marvel link network as the week 5 page draws it: one map, shared by
 sections 1 and 4, so a group colour means the same community everywhere.
 
-Output: docs/weeks/week05/data/network.json, read by week05-relations.js and
-week05-autocomplete.js through networkView() (docs/assets/js/graph.js).
+Output: public/weeks/week05/data/network.json, read by week05-relations.js and
+week05-autocomplete.js through networkView() (src/scripts/graph.js).
 
 - Positions: layout.spread() on the weighted network (week05_text.weighted()),
   seed layout.SEED: ForceAtlas2 in LinLog mode on the giant component, the
@@ -16,11 +16,8 @@ week05-autocomplete.js through networkView() (docs/assets/js/graph.js).
 - Relations: for each of section 1's labels, the pairs of pages whose linking
   sentence carries it (week05_relations.arcs()). A pair whose two arcs carry
   different labels is in both lists.
-- Section 4 is still collecting other groups' guesses about the communities, so
-  the maps name only the eight hubs, the quiz's options: nodes are numbered here
-  and the page draws no tooltip or label for any other node. This keeps the
-  picture from being a lookup beside the quiz; it hides nothing from someone who
-  reads the data files (communities.json lists every page's group).
+- Names: every node carries its page title, which the maps show on hover; the
+  eight hubs also get a pill on the map.
 
     python analysis/week05_network.py
 """
@@ -34,9 +31,9 @@ from week05_relations import PRIORITY, arcs
 from week05_text import weighted
 
 ROOT = Path(__file__).resolve().parents[1]
-OUT = ROOT / "docs/weeks/week05/data/network.json"
-COMMUNITIES = ROOT / "docs/weeks/week05/data/communities.json"
-RELATIONS = ROOT / "docs/weeks/week05/data/relations.json"
+OUT = ROOT / "public/weeks/week05/data/network.json"
+COMMUNITIES = ROOT / "public/weeks/week05/data/communities.json"
+RELATIONS = ROOT / "public/weeks/week05/data/relations.json"
 GROUPS = 8
 
 
@@ -70,7 +67,7 @@ def main():
         "groups": [{"label": comm["communities"][k]["label"], "size": sum(group[n] == k for n in ids)} for k in range(GROUPS)],
         "no_group": sum(group[n] is None for n in ids),
         "hubs": [{"node": at[n], "label": title[n], "group": group[n]} for n in hubs],
-        "nodes": [{"x": pos[n][0], "y": pos[n][1], "group": group[n]} for n in ids],
+        "nodes": [{"x": pos[n][0], "y": pos[n][1], "group": group[n], "name": n.replace("_", " ")} for n in ids],
         "links": [[at[a], at[b], int(d["weight"]), group[a] if group[a] is not None and group[a] == group[b] else None]
                   for a, b, d in edges(g)],
         "relations": relations,

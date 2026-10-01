@@ -17,7 +17,7 @@ number of partners and its total link weight.
 
     python analysis/week05_communities.py
 
-Output: docs/weeks/week05/data/communities.json
+Output: public/weeks/week05/data/communities.json
 """
 
 from __future__ import annotations
@@ -38,7 +38,7 @@ from week04_staffing import giant_of, louvain, tracked
 from week05_text import nodes, weighted
 
 ROOT = Path(__file__).resolve().parents[1]
-OUT = ROOT / "docs" / "weeks" / "week05" / "data" / "communities.json"
+OUT = ROOT / "public" / "weeks" / "week05" / "data" / "communities.json"
 SEED = 2805
 RUNS = 100
 NULL_RUNS = 100

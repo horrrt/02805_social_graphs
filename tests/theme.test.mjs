@@ -6,10 +6,12 @@ import assert from "node:assert/strict";
 import { existsSync, readFileSync, readdirSync } from "node:fs";
 import { join } from "node:path";
 import { fileURLToPath } from "node:url";
-import { SITE, url, tone, drawNetwork } from "../docs/assets/js/cabinet.js";
+import { SITE, url, tone, drawNetwork } from "../src/scripts/cabinet.js";
+import { builtPage } from "./built-page.mjs";
 
-const DOCS = fileURLToPath(new URL("../docs/", import.meta.url));
-const JS = join(DOCS, "assets/js");
+const PUBLIC = fileURLToPath(new URL("../public/", import.meta.url));
+const JS = fileURLToPath(new URL("../src/scripts/", import.meta.url));
+const CSS = fileURLToPath(new URL("../src/styles/", import.meta.url));
 // These scripts drive pages that ship their own stylesheet and palette, so the
 // shared --cv-* token contract does not apply to them: mockups.js and signal.js
 // are legacy, corridor.js is the week 3 post with its own palette in
@@ -21,13 +23,14 @@ const scripts = () =>
     .filter((f) => f.endsWith(".js") && !LEGACY.includes(f))
     .map((f) => [f, readFileSync(join(JS, f), "utf8")]);
 const css = ["arcade.css"]
-  .map((f) => readFileSync(join(DOCS, "assets/css", f), "utf8"))
+  .map((f) => readFileSync(join(CSS, f), "utf8"))
   .join("\n");
 
-test("links and data both resolve against docs/", () => {
-  assert(SITE.href.endsWith("/docs/"), SITE.href);
+test("links and data both resolve against the site root", () => {
+  // Under node --test there is no base path; Next inlines it into the build.
+  assert.equal(SITE.pathname, "/", SITE.href);
   assert.equal(url("weeks/week01/"), new URL("weeks/week01/", SITE).href);
-  assert(existsSync(fileURLToPath(url("assets/data/arcade_graph.json"))));
+  assert(existsSync(join(PUBLIC, new URL(url("assets/data/arcade_graph.json")).pathname)));
 });
 
 test("tone returns the fallback when there is no document", () => {
@@ -120,7 +123,7 @@ test("the lobby paints the plain graph only when its canvas asks for the network
   assert.match(src, /dataset\.scene === "network"/);
   assert.match(src, /drawNetwork\(c, w, h, data, \{ active, hollow \}\)/);
   assert(
-    !readFileSync(join(DOCS, "index.html"), "utf8").includes("data-scene"),
+    !builtPage("out/index.html").includes("data-scene"),
     "the classic lobby keeps the arcade room",
   );
 });

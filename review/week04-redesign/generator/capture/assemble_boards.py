@@ -14,7 +14,7 @@ CAPTURE = Path(__file__).resolve().parents[4] / "build/canvas-capture"
 # upload it again (Artifact publish with asset: true) and put its new /_blob/ url here.
 CSS = ["/_blob/bdbcfe09e54e57045ac6bae8752c2a81",   # type.css
        "/_blob/4ffd6c535951a1e34a0c3882e96ae51c",   # corridor.css
-       "/_blob/c940868585d8637469fe44ff0a94bd6d"]   # post.css, with the map styles
+       "/_blob/5b0af5961bb5a81a4a5c5ab494e11fb9"]   # post.css, Week 4 cards for week 5 and the template
 FONT = "/_blob/9ad036b9f76606ea91d82e15ebec8da3"      # Barlow Condensed 800, as the other boards use it
 W, GAP_X, TITLE = 1440, 80, 420
 
@@ -37,7 +37,7 @@ LAYOUT = {
         ("Network views: networkView() in six styles, real data", [("GraphKit", "networkView() · six styles, dark and light")]),
     ],
     "template": [
-        ("The post template: copy docs/weeks/_template to start a week", [
+        ("The post template: copy src/app/(template) to start a week", [
             ("TplTop", "Template · Hero and findings"), ("TplOpening", "Template · Opening"),
             ("TplFirst", "Template · Standard section card"), ("TplSecond", "Template · Wide section card"),
             ("TplClosing", "Template · Closing")]),

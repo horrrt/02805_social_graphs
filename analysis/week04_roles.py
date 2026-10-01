@@ -47,7 +47,7 @@ own window) matches years.json's oct_jun totals for FY2024 to FY2026. check()
 runs before the file is written, so a rerun that breaks one of these stops
 here instead of on the page.
 
-Output: docs/weeks/week04/data/roles.json.
+Output: public/weeks/week04/data/roles.json.
 """
 
 import json
@@ -61,7 +61,7 @@ from week04_schemas import check
 from week04_shift import bounds as oct_jun_bounds
 
 ROOT = Path(__file__).resolve().parents[1]
-PAGE = ROOT / "docs/weeks/week04/data/roles.json"
+PAGE = ROOT / "public/weeks/week04/data/roles.json"
 YEARS = ["2022", "2023", "2024", "2025", "2026"]
 FY = {y: f"FY{y}" for y in YEARS}
 TOP_N = {"occupations": 10, "groups": 7, "employer": 10}
@@ -227,7 +227,7 @@ def build_placement(frames, oj_frames, totals, oj_totals):
 
 
 def main():
-    years_page = json.loads((ROOT / "docs/weeks/week04/data/years.json").read_text())
+    years_page = json.loads((ROOT / "public/weeks/week04/data/years.json").read_text())
     frames = load_years()
     oj = oct_jun_frames(frames)
     totals = {y: len(frames[y]) for y in YEARS}

@@ -5,8 +5,8 @@ from that relationship sit where they do?
 
 Owner: Niklas
 
-Page section: docs/weeks/week05/index.html#fame
-Output: docs/weeks/week05/data/fame.json (and the same file beside this script),
+Page section: src/app/(week05)/weeks/week05/page.tsx#fame
+Output: public/weeks/week05/data/fame.json (and the same file beside this script),
 every number the section quotes, validated with check() before it is written.
 
 Method
@@ -62,7 +62,7 @@ from week05_relations import is_heading, name_table
 from week05_text import SHARED_NAME_RULE, WORD_RULE, graph, nodes, pages, shared_name, words
 
 OUT = Path(__file__).with_suffix(".json")
-PAGE_OUT = Path(__file__).resolve().parents[1] / "docs/weeks/week05/data/fame.json"
+PAGE_OUT = Path(__file__).resolve().parents[1] / "public/weeks/week05/data/fame.json"
 SEED = 2805
 SHUFFLES = 1000
 TOP = 5

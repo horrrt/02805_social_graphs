@@ -20,7 +20,7 @@ Share = Field(ge=0, le=1)
 Count = Field(ge=0)
 
 
-# Section 2 · docs/weeks/week05/data/copying.json, read by week05-copying.js ---------
+# Section 2 · public/weeks/week05/data/copying.json, read by week05-copying.js ---------
 
 class CopyMeta(Model):
     script: str
@@ -142,7 +142,7 @@ class Copying(Model):
         return self
 
 
-# Section 1 · docs/weeks/week05/data/relations.json, read by week05-relations.js -----
+# Section 1 · public/weeks/week05/data/relations.json, read by week05-relations.js -----
 
 LABELS = ("killed", "family", "enemy", "ally", "teammate")
 
@@ -358,7 +358,7 @@ class SearchLivePage(Model):
     n_terms: int = Field(ge=1)
 
 
-# Section 4 · docs/weeks/week05/data/autocomplete.json, read by week05-autocomplete.js --
+# Section 4 · public/weeks/week05/data/autocomplete.json, read by week05-autocomplete.js --
 
 
 class AutocompleteGuessing(Model):
@@ -481,7 +481,7 @@ class CommunitiesPage(Model):
     membership: dict[str, int]
 
 
-# Section 5 · docs/weeks/week05/data/heaps.json, read by week05-heaps.js ------------
+# Section 5 · public/weeks/week05/data/heaps.json, read by week05-heaps.js ------------
 
 class HeapsMeta(Model):
     script: str
@@ -601,7 +601,7 @@ class Heaps(Model):
         return self
 
 
-# Section 7 · docs/weeks/week05/data/weird.json, read by week05-weird.js -------------
+# Section 7 · public/weeks/week05/data/weird.json, read by week05-weird.js -------------
 
 class WeirdMeta(Model):
     script: str
@@ -739,7 +739,7 @@ class Weird(Model):
         return self
 
 
-# Section 6 · docs/weeks/week05/data/fame.json, read by week05-fame.js (owner Niklas)
+# Section 6 · public/weeks/week05/data/fame.json, read by week05-fame.js (owner Niklas)
 
 class FameMeta(Model):
     script: str
@@ -881,7 +881,7 @@ class Week05Payload(Model):
     corpus: dict
 
 
-# Sections 1 and 4 · docs/weeks/week05/data/network.json, read by week05-relations.js and
+# Sections 1 and 4 · public/weeks/week05/data/network.json, read by week05-relations.js and
 # week05-autocomplete.js through networkView() --------------------------------------------
 
 
@@ -900,6 +900,7 @@ class NetNode(Model):
     x: float = Field(ge=0, le=1)
     y: float = Count
     group: Optional[int] = Field(default=None, ge=0, le=7)
+    name: str = Field(min_length=1)
 
 
 class NetRelation(Model):
@@ -931,17 +932,17 @@ class NetworkPage(Model):
 
 
 PAGES = {
-    "docs/weeks/week05/data/copying.json": Copying,
-    "docs/weeks/week05/data/relations.json": Relations,
-    "docs/weeks/week05/data/search.json": SearchPage,
-    "docs/weeks/week05/data/search_live.json": SearchLivePage,
-    "docs/weeks/week05/data/autocomplete.json": AutocompletePage,
-    "docs/weeks/week05/data/communities.json": CommunitiesPage,
-    "docs/weeks/week05/data/network.json": NetworkPage,
+    "public/weeks/week05/data/copying.json": Copying,
+    "public/weeks/week05/data/relations.json": Relations,
+    "public/weeks/week05/data/search.json": SearchPage,
+    "public/weeks/week05/data/search_live.json": SearchLivePage,
+    "public/weeks/week05/data/autocomplete.json": AutocompletePage,
+    "public/weeks/week05/data/communities.json": CommunitiesPage,
+    "public/weeks/week05/data/network.json": NetworkPage,
     "analysis/week05_heaps.json": Heaps,
     "analysis/week05_fame.json": Fame,
     "analysis/week05_weird.json": Weird,
-    "docs/weeks/week05/data/heaps.json": Heaps,
-    "docs/weeks/week05/data/fame.json": Fame,
-    "docs/weeks/week05/data/weird.json": Weird,
+    "public/weeks/week05/data/heaps.json": Heaps,
+    "public/weeks/week05/data/fame.json": Fame,
+    "public/weeks/week05/data/weird.json": Weird,
 }

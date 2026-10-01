@@ -7,14 +7,15 @@ import { readFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { block, flatten } from "./week04-html.mjs";
+import { builtPage, pageScripts } from "./built-page.mjs";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const read = (name) => readFileSync(join(ROOT, name), "utf8");
 const json = (name) => JSON.parse(read(name));
-const html = read("docs/weeks/week05/index.html");
-const a = json("docs/weeks/week05/data/autocomplete.json");
-const c = json("docs/weeks/week05/data/communities.json");
-const js = read("docs/assets/js/week05-autocomplete.js");
+const html = builtPage("out/weeks/week05/index.html");
+const a = json("public/weeks/week05/data/autocomplete.json");
+const c = json("public/weeks/week05/data/communities.json");
+const js = read("src/scripts/week05-autocomplete.js");
 const section = block(html, "autocomplete");
 const s = flatten(section);
 const has = (t, where = s) => assert.ok(where.includes(t), `section 4 should say "${t}"`);
@@ -25,9 +26,9 @@ const sm = a.summary;
 const k = a.n_fakes;
 
 test("section 4 is a wide Week 4 card with the brief's question", () => {
-  assert.match(section, /class="w5-slots card w4-card w5-card w5-card-wide"/);
+  assert.match(section, /class="card w4-card w5-card"/);
   has("Can someone who has not seen the pages tell which community a fake page came from?");
-  assert.match(html, /week05-autocomplete\.js\?v=\d+/);
+  assert.ok(pageScripts("week05").includes("week05-autocomplete.js"), "the page runs week05-autocomplete.js");
   assert.doesNotMatch(section, /—/, "no em dashes in section 4");
   assert.doesNotMatch(js, /—/, "no em dashes in the quiz text");
   assert.doesNotMatch(js, /innerHTML/, "build dynamic text with textContent");
@@ -58,7 +59,7 @@ test("the partition numbers come from communities.json", () => {
   assert.ok(a.options.every((o) => o.size >= a.tokenisation.min_community_size));
   has(`Each group of at least ${a.tokenisation.min_community_size} pages gets its own trigram model`);
   assert.equal(a.left_out.largest, 1, "only pages with no links are left without a generator");
-  has(`The ${a.left_out.pages} pages with no links belong to no group and trained no generator`);
+  has(`the ${a.left_out.pages} pages with no links have none`);
 });
 
 test("the method states the tokeniser, the template and the cap", () => {
@@ -74,7 +75,7 @@ test("the method states the tokeniser, the template and the cap", () => {
   has(`continues with ${t.sentences_per_fake} sentences the model samples word by word`);
   has(`A sentence that reaches ${t.cap} words without ending is thrown away and drawn again, never cut; that happened to ${sm.redrawn} sentences`);
   has("P(w3 | w1, w2)");
-  has("That is next-token prediction");
+  has("A trigram model is next-token prediction");
 });
 
 test("guessing stays honest: no hit rate without real answers", () => {
@@ -90,8 +91,8 @@ test("guessing stays honest: no hit rate without real answers", () => {
     assert.equal(g.p_value, null);
     assert.equal(g.collected_on, null);
     assert.equal(g.status, "awaiting_other_groups");
-    has("No other group has guessed yet");
-    has(`We will post the ${k} masked fakes in the week 5 Teams channel and report the correct guesses out of all guesses, against the 1 in ${k} (${pct(a.chance_rate)}) a random guess gets right`);
+    has("We do not know yet: no other group has guessed");
+    has(`We will post the ${k} fake pages, one per group with names masked, in the week 5 Teams channel and report the correct guesses out of all guesses, against the 1 in ${k} (${pct(a.chance_rate)}) a random guess gets right`);
     assert.doesNotMatch(s, /hit rate/i, "no hit rate on the page before anyone has guessed");
     assert.doesNotMatch(js, /hit_rate/, "the page script never shows a hit rate");
   }
@@ -105,7 +106,7 @@ test("the quiz spoils nothing and keeps visitor clicks apart", () => {
   // Only the template's example name appears in the static text, and it says nothing of its group.
   for (const f of a.fakes.filter((f) => f.id !== "fake-0")) assert.ok(!s.includes(f.character), `the static text names ${f.character}`);
   assert.match(section, /aria-live="polite" class="w5-scoreboard"/);
-  assert.match(section, /aria-live="polite" class="w5-reveal" hidden/);
+  assert.match(section, /aria-live="polite" class="w5-reveal"[^>]*\shidden/);
   assert.match(section, /id="ac-submit" type="button">Lock and reveal</);
   assert.doesNotMatch(section, /ac-reveal-btn|Lock guess/);
   has("Your score stays in this browser and is not part of our results");
@@ -139,14 +140,12 @@ test("sparsity and copying are measured, and the example is real text", () => {
   const one = [pct(sm.one_continuation_min), pct(sm.one_continuation_max)];
   const two = [pct(sm.bigram_one_continuation_min), pct(sm.bigram_one_continuation_max)];
   assert.ok(sm.bigram_one_continuation_max < sm.one_continuation_min, "two-word contexts must be sparser than one-word ones");
-  has(`${one[0]} to ${one[1]} of two-word contexts in a community's pages have only one next word`);
-  has(`In each group's pages, ${one[0]} to ${one[1]} of two-word contexts (a pair of words in a row) have only one next word, against ${two[0]} to ${two[1]} of one-word contexts`);
+  has(`In each group's pages, ${one[0]} to ${one[1]} of two-word contexts have only one next word, against ${two[0]} to ${two[1]} of one-word contexts`);
   has(`${pct(sm.forced_share)} of the words the model drew for the quiz fakes had a single candidate`);
   const runs = a.fakes.map((f) => f.longest_run.length);
   assert.equal(sm.run_min, Math.min(...runs));
   assert.equal(sm.run_max, Math.max(...runs));
   has(`every fake page repeats a run of ${sm.run_min} to ${sm.run_max} words straight from its community's text`);
-  has(`every fake repeats a run of ${sm.run_min} to ${sm.run_max} words from its group's pages, ${sm.runs_single_page} of the ${k} runs from a single page`);
   has(`The runs are ${sm.run_min} to ${sm.run_max} words long, and ${sm.runs_single_page} of the ${k} come from a single page`);
   assert.equal(sm.runs_single_page, a.fakes.filter((f) => f.longest_run.pages_with_run === 1).length);
   const ex = a.fakes.find((f) => f.id === sm.example).longest_run;

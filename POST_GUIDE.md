@@ -14,7 +14,7 @@ Use this guide before creating or revising a post. It records the user's prefere
 
 ## Start with the brief
 
-Start a new post by copying the template: `cp -r docs/weeks/_template docs/weeks/weekNN`. It has every part a post needs (hero, findings strip, opening, the standard and wide section cards, closing, methods and AI-use note), drawn with labelled toy charts; its first comment lists what to replace.
+Start a new post by copying the template route group, `src/app/(template)/`, as the comment at the top of its `layout.tsx` describes. It has every part a post needs (hero, findings strip, opening, the standard and wide section cards, closing, methods and AI-use note), drawn with labelled toy charts; that comment lists what to replace.
 
 Read the current official weekly brief before choosing a story. Separate the weekly public-post requirements from classroom exercises and optional suggestions; a free-form post need not reproduce every exercise.
 
@@ -34,6 +34,24 @@ Use this reading order:
 6. Optional methods, full tables, secondary analyses, source data, code and AI disclosure.
 
 Avoid making visitors click through many trials to discover the point. A simulation result must be labelled as one run; an expectation must be labelled as an average. Explain what remains fixed when comparing alternatives. Keep exploratory controls separate from saved progress unless changing that progress is the explicit action.
+
+## Keep the card short
+
+Every post from Week 4 on uses Week 4's card: a `w4-q` header with the question and a short answer, a `w4-two` row with one paragraph of what we did beside "What to notice", the figure, then the drawers. No slot labels, and no open limitation or passage blocks. Week 5 shipped six labelled blocks per card, 415 to 702 words before any click against Week 4's 41 to 230, and was rebuilt in Week 4's form.
+
+In view: the question, the answer told once, one paragraph of what we did, "What to notice" with the number against its baseline, and the figure. In the drawers, word for word: Method (with the limitation), More numbers, tables, and "What we read in the pages" for the passages the brief asks us to check. Do not add limitations, caveats or extra blocks the card does not need. Give a technical term a pop-up definition (`termify()`), and keep charts out of closed drawers unless they redraw when opened.
+
+`tests/text-budget.test.mjs` fails any card that shows more than 350 words of its HTML before a click. It reads HTML only; for text a script draws, run this in the browser console and expect at most about 450 words per section:
+
+```js
+[...document.querySelectorAll("section.step[id]")].map((s) => {
+  const w = document.createTreeWalker(s, NodeFilter.SHOW_TEXT);
+  let n = 0;
+  for (let t; (t = w.nextNode()); )
+    if (!t.parentElement.closest("svg") && t.parentElement.checkVisibility()) n += t.data.split(/\s+/).filter(Boolean).length;
+  return [s.id, n];
+});
+```
 
 ## Scientific and editorial quality
 
@@ -74,4 +92,6 @@ Week 2: removal results are a good entry point, but the null model is the week's
 
 Week 3: the first country join dropped the Netherlands, Palestine and Taiwan, because UN DESA writes M49 codes without leading zeros. Join on a pinned code table and fail on any code it cannot map. Betweenness on the raw DESA matrix ranked reporting systems instead of countries, since register countries list hundreds of one-person origins; threshold small corridors before you compute it. Two Wikidata items share the code PSE, and the live query returns rows in no fixed order, so Palestine's name and 60 distances flipped from one run to the next until the script picked one item by rule. Holding reciprocity to a degree-preserving null reversed a claim: the refugee network is more two-way than chance once each country's number of partners is kept.
 
-Week 4: hand-typed numbers drifted until tests built each sentence from the JSON, and like-for-like nulls reversed three conclusions. The long page needed one deep dive at the end. Keep the answer, its baseline and its main limit in view, and move method notes one click away, word for word.
+Week 4: hand-typed numbers drifted until tests built each sentence from the JSON, and like-for-like nulls reversed three conclusions. The long page needed one deep dive at the end. Keep the answer, its baseline and its main limit in view, and move method notes one click away, word for word ("Keep the card short").
+
+Week 5: the data rules carried over because tests enforce them; the layout did not, because only prose recorded it. The brief's six parts say what a post contains, not six open blocks: the rebuilt cards use Week 4's form, with the limitation and the passages we read in drawers.

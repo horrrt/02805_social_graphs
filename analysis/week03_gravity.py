@@ -55,7 +55,7 @@ import numpy as np
 import statsmodels.api as sm
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
-DATA = ROOT / "docs" / "assets" / "data"
+DATA = ROOT / "public" / "assets" / "data"
 OUT = ROOT / "analysis"
 
 TERMS = [
