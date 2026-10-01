@@ -12,18 +12,23 @@ export const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 
 const cache = new Map();
 
-/** The HTML of a built page, e.g. builtPage("out/weeks/week05/index.html"). */
-export function builtPage(path) {
-  if (cache.has(path)) return cache.get(path);
-  const file = join(ROOT, path);
-  if (!existsSync(file)) throw new Error(`${path} is missing: run \`npm run build\` before the tests`);
-  const html = readFileSync(file, "utf8")
+/** Built HTML with Next's scripts, preload links and text markers dropped. */
+export function normalise(html) {
+  return html
     .replace(/<script\b[^>]*>[\s\S]*?<\/script>/g, (tag) =>
       /src="[^"]*\/_next\//.test(tag) || /__next|\$RC|\$RS/.test(tag) ? "" : tag,
     )
     .replace(/<link rel="(?:preload|preconnect)"[^>]*\/>/g, "")
     .replace(/<!-- -->/g, "")
     .replace(/>([^<]*)</g, (_, text) => `>${text.replace(/&#x27;/g, "'").replace(/&quot;/g, '"')}<`);
+}
+
+/** The HTML of a built page, e.g. builtPage("out/weeks/week05/index.html"). */
+export function builtPage(path) {
+  if (cache.has(path)) return cache.get(path);
+  const file = join(ROOT, path);
+  if (!existsSync(file)) throw new Error(`${path} is missing: run \`npm run build\` before the tests`);
+  const html = normalise(readFileSync(file, "utf8"));
   cache.set(path, html);
   return html;
 }

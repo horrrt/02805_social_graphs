@@ -1,12 +1,13 @@
 // Serves the static export in out/ under the base path GitHub Pages uses, so
 // the production build can be checked locally: npm run build && npm run preview,
 // then open http://127.0.0.1:8767/02805_social_graphs/. No dependencies.
+// OUT names another export directory (scripts/parity serves two side by side).
 import { createServer } from "node:http";
 import { createReadStream, existsSync, statSync } from "node:fs";
-import { extname, join, normalize } from "node:path";
+import { extname, join, normalize, resolve, sep } from "node:path";
 import { fileURLToPath } from "node:url";
 
-const OUT = fileURLToPath(new URL("../out/", import.meta.url));
+const OUT = process.env.OUT ? resolve(process.env.OUT) + sep : fileURLToPath(new URL("../out/", import.meta.url));
 const BASE = "/02805_social_graphs/";
 const PORT = Number(process.env.PORT ?? 8767);
 const TYPES = {
