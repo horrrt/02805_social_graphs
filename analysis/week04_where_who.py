@@ -4,7 +4,7 @@ Network: the same company x metro projection as analysis/week04_where.py
 (FY2025, certified H-1B, the TOP = 40 metros by filings, project(pairs, top)),
 and the same modal Louvain partition over 100 runs, reproduced here rather than
 re-imported so this script stands alone; it is asserted against
-analysis/week04_where.json and docs/assets/data/week04_place.json before
+analysis/week04_where.json and public/assets/data/week04_place.json before
 anything else runs.
 
 Questions
@@ -63,7 +63,7 @@ Checks
 - The reproduced modal partition must have 3 communities and Q rounding to
   0.049, and match analysis/week04_where.json's null_model exactly (Q,
   modal_runs, partitions_found); the per-metro community must also match
-  docs/assets/data/week04_place.json's cities[].community. Any mismatch stops
+  public/assets/data/week04_place.json's cities[].community. Any mismatch stops
   the script rather than silently reporting on a different partition.
 - Almost every metro has NAICS 54 (professional/technical/scientific
   services) as its single most common 2-digit code (naics54_dominant_metros
@@ -76,7 +76,7 @@ Checks
   the break is not concentrated in a handful of staffing firms.
 
 Outputs: analysis/week04_where_who.json (every number, with the checks) and
-docs/weeks/week04/data/where_who.json (the page's numbers, name "where_who").
+public/weeks/week04/data/where_who.json (the page's numbers, name "where_who").
 """
 
 import json
@@ -97,9 +97,9 @@ from week04_schemas import check
 
 ROOT = Path(__file__).resolve().parents[1]
 OUT = Path(__file__).with_suffix(".json")
-PAGE = ROOT / "docs/weeks/week04/data/where_who.json"
+PAGE = ROOT / "public/weeks/week04/data/where_who.json"
 WHERE_JSON = Path(__file__).with_name("week04_where.json")
-PLACE_JSON = ROOT / "docs/assets/data/week04_place.json"
+PLACE_JSON = ROOT / "public/assets/data/week04_place.json"
 SEED = where.SEED
 RUNS = where.RUNS
 SHUFFLES = 1000

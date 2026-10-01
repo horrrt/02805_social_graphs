@@ -43,7 +43,7 @@ from scipy import stats
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 RAW = ROOT / "build" / "raw"
-DATA = ROOT / "docs" / "assets" / "data"
+DATA = ROOT / "public" / "assets" / "data"
 OUT = ROOT / "analysis"
 
 SODA = "https://datahub.transportation.gov/resource/xgub-n9bw.json"

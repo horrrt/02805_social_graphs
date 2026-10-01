@@ -5,7 +5,7 @@ there, its sector (from the reviewed alias table, blank if unknown) and its
 largest vendors (as positions in the shared "firms" list). Reuses the cleaning in week04_staffing, so the figure and the
 section's numbers come from the same rows.
 
-Output: docs/weeks/week04/data/staffing_clients.json
+Output: public/weeks/week04/data/staffing_clients.json
 """
 
 import json
@@ -15,7 +15,7 @@ import week04_names as names
 from week04_schemas import check
 from week04_staffing import MIN_FILINGS, certified, employer_labels, placements, resolver
 
-OUT = Path(__file__).resolve().parents[1] / "docs/weeks/week04/data/staffing_clients.json"
+OUT = Path(__file__).resolve().parents[1] / "public/weeks/week04/data/staffing_clients.json"
 YEARS = [2022, 2023, 2024, 2025, 2026]
 TOP_VENDORS = 8
 FLOW_VENDORS = 8   # the flow chart: the largest placing firms ...

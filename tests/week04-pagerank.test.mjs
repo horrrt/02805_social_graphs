@@ -11,7 +11,7 @@ import { fileURLToPath } from "node:url";
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const json = (name) => JSON.parse(readFileSync(join(ROOT, name), "utf8"));
 
-const d = json("docs/weeks/week04/data/pagerank.json");
+const d = json("public/weeks/week04/data/pagerank.json");
 
 test("three damping factors, each with a full, ranked top list", () => {
   assert.equal(d.damping.length, 3);
@@ -114,7 +114,7 @@ test("each iteration step exports its own top 10, sorted by that step's own scor
 });
 
 test("the network is section 2's own occupation projection, filtered to a stricter backbone", () => {
-  const jobs = json("docs/weeks/week04/data/jobs.json");
+  const jobs = json("public/weeks/week04/data/jobs.json");
   assert.equal(d.meta.year, jobs.meta.year);
   assert.ok(d.meta.alpha_filter < 0.2, "the PageRank backbone should be stricter than section 2's own 0.2 backbone");
   assert.ok(d.meta.nodes < d.meta.nodes_before_backbone);
@@ -160,7 +160,7 @@ test("the iteration card's claims: first leader, takeover, settle round", () => 
   [rows[2], rows[3]] = [rows[3], rows[2]];
   assert.equal(claimsOf(shaken).orderStep, last, "the settle check must bite when the last round reorders");
   // The page builds its answer and notice from exactly these claims.
-  const src = readFileSync(join(ROOT, "docs/assets/js/week04-pagerank.js"), "utf8");
+  const src = readFileSync(join(ROOT, "src/scripts/week04-pagerank.js"), "utf8");
   assert.ok(src.includes("${claims.leaderTitle} leads from round ${claims.leaderStep}; the rest of the top ${n} settles by round ${claims.orderStep}."));
   assert.ok(src.includes("The grey lines stop crossing by round ${claims.orderStep}"));
   assert.equal(steps.at(-1).rows.length, 10, "the answer's top ${n} is the final step's ten rows");

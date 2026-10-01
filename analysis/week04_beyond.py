@@ -71,7 +71,7 @@ Checks
   firms. Neither resamples or reshuffles individual filings.
 
 Outputs: analysis/week04_beyond.json (every number, with nulls, n's and
-coverage) and docs/weeks/week04/data/beyond.json (the numbers a page figure
+coverage) and public/weeks/week04/data/beyond.json (the numbers a page figure
 would need), checked against week04_schemas.Beyond before it is written.
 """
 
@@ -95,7 +95,7 @@ from week04_staffing import (
 )
 
 OUT = Path(__file__).with_suffix(".json")
-PAGE = Path(__file__).resolve().parents[1] / "docs/weeks/week04/data/beyond.json"
+PAGE = Path(__file__).resolve().parents[1] / "public/weeks/week04/data/beyond.json"
 YEAR = 2025
 RUNS = 100
 NULLS = 50

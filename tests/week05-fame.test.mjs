@@ -7,11 +7,12 @@ import { readFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { block, flatten } from "./week04-html.mjs";
+import { builtPage, pageScripts } from "./built-page.mjs";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const read = (name) => readFileSync(join(ROOT, name), "utf8");
-const html = read("docs/weeks/week05/index.html");
-const d = JSON.parse(read("docs/weeks/week05/data/fame.json"));
+const html = builtPage("out/weeks/week05/index.html");
+const d = JSON.parse(read("public/weeks/week05/data/fame.json"));
 const s = flatten(block(html, "fame"));
 const has = (t) => assert.ok(s.includes(t), `section 6 should say "${t}"`);
 
@@ -22,7 +23,7 @@ const short = (name) => name.replace(/ \((character|Marvel Comics|comics)\)$/, "
 
 test("section 6 is Niklas's and loads its script", () => {
   assert.match(html, /<section class="step" data-owner="Niklas" id="fame">/);
-  assert.match(html, /week05-fame\.js\?v=6"/);
+  assert.ok(pageScripts("week05").includes("week05-fame.js"), "the page runs week05-fame.js");
   assert.match(read("analysis/week05_fame.py"), /Owner: Niklas/);
   assert.equal(d.meta.owner, "Niklas");
   // The table and the passages come from the JSON; none is typed into the page.

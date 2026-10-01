@@ -1,15 +1,16 @@
 // Pins the site's one type scale: every stylesheet and every page style takes
-// its font sizes and families from the tokens in docs/assets/css/type.css.
+// its font sizes and families from the tokens in src/styles/type.css.
 // Runs in node with no DOM.
 import test from "node:test";
 import assert from "node:assert/strict";
 import { readFileSync, readdirSync } from "node:fs";
 import { join } from "node:path";
 import { fileURLToPath } from "node:url";
+import { builtPage } from "./built-page.mjs";
 
-const DOCS = fileURLToPath(new URL("../docs/", import.meta.url));
-const CSS = join(DOCS, "assets/css");
-// type.css defines the tokens. mockups.css styles docs/mockups/, a set of
+const CSS = fileURLToPath(new URL("../src/styles/", import.meta.url));
+const SCRIPTS = fileURLToPath(new URL("../src/scripts/", import.meta.url));
+// type.css defines the tokens. mockups.css styles public/mockups/, a set of
 // explorations that stays outside the scale.
 const SKIP = ["type.css", "mockups.css"];
 const PAGES = [
@@ -78,7 +79,7 @@ test("stylesheets take font sizes and families from the type scale", () => {
 test("page styles take font sizes and families from the type scale", () => {
   const found = [];
   for (const page of PAGES) {
-    const html = readFileSync(join(DOCS, page), "utf8");
+    const html = builtPage(join("out", page));
     for (const [, block] of html.matchAll(/<style[^>]*>([\s\S]*?)<\/style>/g)) {
       for (const { selector, decl } of declarations(block)) found.push(...problems(page, selector, decl));
     }
@@ -92,8 +93,8 @@ test("page styles take font sizes and families from the type scale", () => {
 
 test("week 4 chart code takes every font size from the type scale", () => {
   // Numeric sizes in SVG attributes, ECharts options or inline styles must come
-  // from fs()/font() in docs/assets/js/type-scale.mjs instead.
-  const JS = join(DOCS, "assets/js");
+  // from fs()/font() in src/scripts/type-scale.mjs instead.
+  const JS = SCRIPTS;
   const literal = [
     /fontSize:\s*\d/,
     /"font-size":\s*\d/,
@@ -128,12 +129,16 @@ const OTHER_JS_LITERALS = [
   /\.font\s*=\s*[`"'][^;]*?[?:]\s*\d+(?:\.\d+)?\s*\}px/,
 ];
 
+// The screen-test prototype (public/prototypes/, via pages/screen-test.js) keeps
+// its own fonts and sizes, as mockups.css does; it was inline in its page before.
+const OUTSIDE_SCALE = ["pages/screen-test.js"];
+
 function otherChartScripts(dir, prefix = "") {
   const files = [];
   for (const entry of readdirSync(dir, { withFileTypes: true })) {
     const rel = prefix + entry.name;
     if (entry.isDirectory()) files.push(...otherChartScripts(join(dir, entry.name), `${rel}/`));
-    else if (/\.m?js$/.test(entry.name) && !/^week04-/.test(entry.name) && entry.name !== "type-scale.mjs")
+    else if (/\.m?js$/.test(entry.name) && !/^week04-/.test(entry.name) && entry.name !== "type-scale.mjs" && !OUTSIDE_SCALE.includes(rel))
       files.push(rel);
   }
   return files;
@@ -148,7 +153,7 @@ function fontLiterals(name, src) {
 }
 
 test("chart code outside week 4 takes every font size from the type scale", () => {
-  const JS = join(DOCS, "assets/js");
+  const JS = SCRIPTS;
   const found = otherChartScripts(JS).flatMap((f) => fontLiterals(f, readFileSync(join(JS, f), "utf8")));
   assert.deepEqual(found, []);
 });

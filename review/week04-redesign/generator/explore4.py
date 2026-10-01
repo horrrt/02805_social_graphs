@@ -1,4 +1,4 @@
-"""The course's four community explorables, rebuilt on the 40-metro network from docs/weeks/week04/data/explore.json."""
+"""The course's four community explorables, rebuilt on the 40-metro network from public/weeks/week04/data/explore.json."""
 import json
 import math
 
@@ -7,7 +7,7 @@ import kit
 import build as B
 import extra as E
 
-EX = B.load("docs/weeks/week04/data/explore.json")
+EX = B.load("public/weeks/week04/data/explore.json")
 place = B.place
 CITY = {c["id"]: c for c in place["cities"]}
 IDS = [m["id"] for m in EX["metros"]]

@@ -3,9 +3,9 @@
 Question: Can a Bag-of-Words search find the right Marvel page from a description?
 
 Owner: Àngela
-Page section: docs/weeks/week05/index.html#search
-Output: docs/weeks/week05/data/search.json (the scored queries)
-        docs/weeks/week05/data/search_live.json (the same model, for the search box)
+Page section: src/app/(week05)/weeks/week05/page.tsx#search
+Output: public/weeks/week05/data/search.json (the scored queries)
+        public/weeks/week05/data/search_live.json (the same model, for the search box)
 
 Method
 - Tokens: runs of letters and digits in any alphabet ("Araña" stays whole), an
@@ -50,8 +50,8 @@ from check_pages import check
 from week05_text import nodes, pages
 
 ROOT = Path(__file__).resolve().parents[1]
-OUT = ROOT / "docs" / "weeks" / "week05" / "data" / "search.json"
-LIVE_OUT = ROOT / "docs" / "weeks" / "week05" / "data" / "search_live.json"
+OUT = ROOT / "public" / "weeks" / "week05" / "data" / "search.json"
+LIVE_OUT = ROOT / "public" / "weeks" / "week05" / "data" / "search_live.json"
 TOP = 5
 LIVE_TOP = 8           # rows the search box lists
 SHORT_RATIO = 3        # a top hit this many times shorter than the target is a short-page win

@@ -53,7 +53,7 @@ occupation has a fixed position (layout): Kamada-Kawai on the largest piece of
 the drawn network, link length from 1 + log(weight), its core spread out, and each smaller piece as
 a ring in the bottom-right corner, in a 700 x 580 frame scaled to 0-1.
 
-Output: docs/weeks/week04/data/jobs.json (every number the section quotes).
+Output: public/weeks/week04/data/jobs.json (every number the section quotes).
 """
 
 import itertools
@@ -77,7 +77,7 @@ from week04_staffing import certified, infomap, louvain, rewire, tracked
 from week04_where import DEFAULT_ALPHA, disparity
 
 ROOT = Path(__file__).resolve().parents[1]
-OUT = ROOT / "docs" / "weeks" / "week04" / "data" / "jobs.json"
+OUT = ROOT / "public" / "weeks" / "week04" / "data" / "jobs.json"
 CROSSWALK = RAW / "onet" / "onet_2010_to_2019_crosswalk.csv"
 SHOWN = 60
 LINKS_PER_NODE = 3

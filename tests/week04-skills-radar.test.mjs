@@ -8,13 +8,14 @@ import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
+import { builtPage, pageScripts } from "./built-page.mjs";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const json = (name) => JSON.parse(readFileSync(join(ROOT, name), "utf8"));
 const text = (name) => readFileSync(join(ROOT, name), "utf8");
 
-const page = json("docs/weeks/week04/data/skills_radar.json");
-const jobs = json("docs/weeks/week04/data/jobs.json");
+const page = json("public/weeks/week04/data/skills_radar.json");
+const jobs = json("public/weeks/week04/data/jobs.json");
 
 test("skills_radar.json parses and has the expected top-level shape", () => {
   assert.ok(page.meta && typeof page.meta === "object");
@@ -73,9 +74,9 @@ test("default lists 1 to 5 codes, all of them present occupations", () => {
 });
 
 test("index.html wires in the radar card", () => {
-  const html = text("docs/weeks/week04/index.html");
+  const html = builtPage("out/weeks/week04/index.html");
   assert.ok(
-    html.includes('id="cut-skills-radar"') || html.includes("week04-skills-radar.js"),
+    html.includes('id="cut-skills-radar"') || pageScripts("week04").includes("week04-skills-radar.js"),
     "index.html should reference cut-skills-radar or the script that builds it",
   );
 });

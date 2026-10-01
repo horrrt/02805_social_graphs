@@ -6,11 +6,12 @@ import { readFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { block, flatten, notices } from "./week04-html.mjs";
+import { builtPage, pageScripts } from "./built-page.mjs";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const read = (name) => readFileSync(join(ROOT, name), "utf8");
-const html = read("docs/weeks/week05/index.html");
-const h = JSON.parse(read("docs/weeks/week05/data/heaps.json"));
+const html = builtPage("out/weeks/week05/index.html");
+const h = JSON.parse(read("public/weeks/week05/data/heaps.json"));
 const section = block(html, "heaps");
 const s = flatten(section);
 const has = (t) => assert.ok(s.includes(t), `section 5 should say "${t}"`);
@@ -25,7 +26,7 @@ test("section 5 is Niklas's card and loads its script", () => {
   assert.match(section, /class="card w4-card w5-card"/);
   assert.equal(h.meta.owner, "Niklas");
   assert.match(read("analysis/week05_heaps.py"), /\nOwner: Niklas\n/);
-  assert.match(html, /week05-heaps\.js\?v=7/);
+  assert.ok(pageScripts("week05").includes("week05-heaps.js"), "the page runs week05-heaps.js");
   for (const id of ["chart-heaps-curve", "chart-heaps-gap", "heaps-table", "heaps-samples", "heaps-passages"]) {
     assert.ok(section.includes(`id="${id}"`), `section 5 needs #${id}`);
   }

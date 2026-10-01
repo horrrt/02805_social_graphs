@@ -40,7 +40,7 @@ Checks, all from the course:
   backbone and its k-clique communities.
 
 Output: analysis/week04_entities.json (every number) and one page file per
-entity, docs/weeks/week04/data/entities_<name>.json.
+entity, public/weeks/week04/data/entities_<name>.json.
 
     python analysis/week04_entities.py                  # every entity
     python analysis/week04_entities.py --entity workers
@@ -78,7 +78,7 @@ from week04_staffing import (SEED, giant_of, graph as staffing_graph, intermedia
 
 ROOT = Path(__file__).resolve().parents[1]
 OUT = Path(__file__).with_suffix(".json")
-PAGE = ROOT / "docs/weeks/week04/data"
+PAGE = ROOT / "public/weeks/week04/data"
 YEAR = 2025
 RUNS = 100
 NULLS = 20  # the brief's own count of shuffles
@@ -1173,7 +1173,7 @@ def main():
         out[name] = result
         data = page_file(ent, result, member, pagerank)
         path = PAGE / f"entities_{name}.json"
-        check(ROOT / "docs/weeks/week04/data" / path.name, data)
+        check(ROOT / "public/weeks/week04/data" / path.name, data)
         path.write_text(json.dumps(data, separators=(",", ":")) + "\n")
         print(f"wrote {path} ({path.stat().st_size / 1e6:.1f} MB)", flush=True)
         kept[name] = {"entity": ent, "member": member}
@@ -1182,7 +1182,7 @@ def main():
     for name in args.network:
         data = net_run(NETWORKS[name]())
         path = PAGE / f"entities_network_{name}.json"
-        check(ROOT / "docs/weeks/week04/data" / path.name, data)
+        check(ROOT / "public/weeks/week04/data" / path.name, data)
         path.write_text(json.dumps(data, separators=(",", ":")) + "\n")
         print(f"wrote {path} ({path.stat().st_size / 1e6:.1f} MB)", flush=True)
         out[f"network_{name}"] = {k: data[k] for k in ("all_links", "at", "louvain", "null", "notes")} | {
