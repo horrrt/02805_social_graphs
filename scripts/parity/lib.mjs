@@ -29,7 +29,7 @@ export const PAGES = {
 
 /**
  * Parses --flag value / --flag (boolean) pairs. `bools` lists flags that take
- * no value; everything else consumes the next argument.
+ * no value; any other flag takes the next argument unless that is a flag too.
  */
 export function parseArgs(argv, bools = []) {
   const out = { _: [] };
@@ -40,10 +40,8 @@ export function parseArgs(argv, bools = []) {
     const key = (eq > 0 ? a.slice(2, eq) : a.slice(2));
     if (eq > 0) out[key] = a.slice(eq + 1);
     else if (bools.includes(key)) out[key] = true;
-    else {
-      if (i + 1 >= argv.length) die(`--${key} needs a value`);
-      out[key] = argv[++i];
-    }
+    else if (i + 1 >= argv.length || argv[i + 1].startsWith("--")) out[key] = true;
+    else out[key] = argv[++i];
   }
   return out;
 }
@@ -61,7 +59,7 @@ export function pagesArg(value) {
 
 /** An export tree: a directory holding index.html (out/ or a build-ref cache). */
 export function outDir(value, flag) {
-  if (!value) die(`--${flag} <out directory> is required`);
+  if (!value || value === true) die(`--${flag} <out directory> is required`);
   const dir = resolve(value);
   if (!existsSync(join(dir, "index.html"))) die(`--${flag} ${value}: no index.html there; build it first`);
   return dir;

@@ -58,7 +58,7 @@ export async function openPage(browser, opts = {}) {
   });
   await context.addInitScript(initScript, { now: PINNED_NOW, faults: opts.faults ?? null, seed: 7 });
   const page = await context.newPage();
-  const state = { console: [], requests: new Map(), inflight: 0, lastNet: Date.now(), dialog: "accept", origin: "" };
+  const state = { console: [], requests: new Map(), inflight: 0, lastNet: Date.now(), dialog: "accept", origin: "", javaScriptEnabled: opts.javaScriptEnabled !== false };
   const norm = (s) => String(s).replace(/https?:\/\/(127\.0\.0\.1|localhost):\d+/g, "ORIGIN");
   page.on("console", (m) => {
     const type = m.type();
@@ -70,6 +70,7 @@ export async function openPage(browser, opts = {}) {
     state.inflight++;
     state.lastNet = Date.now();
     const url = new URL(r.url());
+    opts.requestLog?.push(r.url());
     if (url.protocol.startsWith("http") && !url.pathname.includes("/_next/")) {
       const key = url.origin === state.origin ? url.pathname : `${url.host}${url.pathname}`;
       state.requests.set(key, (state.requests.get(key) ?? 0) + 1);
@@ -121,7 +122,8 @@ export async function settle(page, state) {
   await page.waitForLoadState("load").catch(() => {});
   await page.waitForLoadState("networkidle", { timeout: 15000 }).catch(() => {});
   await netQuiet(state, 8000);
-  await domQuiet(page).catch(() => {});
+  // Without JavaScript, timers and frames never fire inside evaluate().
+  if (state.javaScriptEnabled) await domQuiet(page).catch(() => {});
 }
 
 /** The lighter settle before a snapshot that follows an action. */
@@ -154,7 +156,7 @@ async function box(page, sel) {
 }
 
 /** Runs one step. Returns a JSON value for {evaluate} steps. */
-async function runStep(page, state, step, ctx) {
+export async function runStep(page, state, step, ctx) {
   const kind = stepKind(step);
   const v = step[kind];
   const T = { timeout: 5000 };
@@ -206,7 +208,7 @@ async function runStep(page, state, step, ctx) {
 // ---------------------------------------------------------------- snapshot
 
 /** Runs in the page: the canonical body plus every other snapshot field. */
-async function pageSnapshot({ webgl, hashTarget }) {
+async function pageSnapshot({ webgl, hashTarget, mask = [], select = [], exclude = [], textOf = [] }) {
   const enc = new TextEncoder();
   const hex = async (s) => [...new Uint8Array(await crypto.subtle.digest("SHA-1", enc.encode(s)))].map((b) => b.toString(16).padStart(2, "0")).join("");
   const stable = (value) => {
@@ -224,6 +226,9 @@ async function pageSnapshot({ webgl, hashTarget }) {
     });
   };
   const webglHosts = new Set(document.querySelectorAll(webgl));
+  const all = (sels) => sels.flatMap((sel) => [...document.querySelectorAll(sel)]);
+  const masked = new Set(all(mask));
+  const ranges = new Map();
   const insideWebgl = (el) => { for (let p = el.parentElement; p; p = p.parentElement) if (webglHosts.has(p)) return true; return false; };
 
   // ECharts hosts: their own children collapse to option, renderer and size.
@@ -279,6 +284,10 @@ async function pageSnapshot({ webgl, hashTarget }) {
     const tag = el.tagName.toLowerCase();
     const start = canon.length;
     const tStart = text.length;
+    if (masked.has(el)) {
+      canon += "<masked/>";
+      return;
+    }
     canon += `<${tag}${attrs(el)}>`;
     const kids = [];
     if (webglHosts.has(el)) {
@@ -308,6 +317,7 @@ async function pageSnapshot({ webgl, hashTarget }) {
       flush();
     }
     canon += `</${tag}>`;
+    ranges.set(el, [start, canon.length]);
     if (el.id) ids.push([el.id, start, canon.length, kids.join(","), tStart, text.length]);
     else els.push([path, start, canon.length]);
   };
@@ -327,7 +337,9 @@ async function pageSnapshot({ webgl, hashTarget }) {
     return parts.join(" > ");
   };
   const canvases = [];
+  const isMasked = (el) => [...masked].some((m) => m.contains(el));
   for (const c of document.querySelectorAll("canvas")) {
+    if (masked.size && isMasked(c)) continue;
     let hash = null;
     if (!webglHosts.has(c) && !insideWebgl(c)) {
       try { hash = await hex(c.toDataURL()); } catch (e) { hash = `unreadable ${e.name}`; }
@@ -339,11 +351,28 @@ async function pageSnapshot({ webgl, hashTarget }) {
     const t = document.getElementById(hashTarget.replace(/^#/, ""));
     hashTop = t ? Math.round(t.getBoundingClientRect().top / 2) * 2 : "missing";
   }
+  // Lines of innerText that belong to masked or excluded elements are removed
+  // once each (a multiset difference), so the rest of the page still counts.
+  const lines = (s) => local(s).split("\n").map((l) => l.replace(/\s+/g, " ").trim()).filter(Boolean);
+  const minus = (list, drop) => {
+    const counts = new Map();
+    for (const l of drop) counts.set(l, (counts.get(l) ?? 0) + 1);
+    return list.filter((l) => { const n = counts.get(l); if (!n) return true; counts.set(l, n - 1); return false; });
+  };
+  const bodyLines = lines(document.body.innerText);
+  const excluded = all(exclude);
+  const excludedIds = [...new Set(excluded.flatMap((el) => [el, ...el.querySelectorAll("[id]")]).map((el) => el.id).filter(Boolean))];
   return {
     canon, text, ids, els,
+    selected: Object.fromEntries(select.map((sel) => [sel, [...document.querySelectorAll(sel)].map((el) => { const r = ranges.get(el); return r ? canon.slice(r[0], r[1]) : null; })])),
+    excludedIds,
+    outsideLines: excluded.length ? minus(bodyLines, excluded.flatMap((el) => lines(el.innerText))) : null,
+    bodyLines,
+    textOf: Object.fromEntries(textOf.map((sel) => [sel, [...document.querySelectorAll(sel)].flatMap((el) => lines(el.innerText))])),
+    mainChildren: document.querySelector("main")?.childElementCount ?? null,
     htmlAttrs: attrMap(document.documentElement),
     bodyAttrs: attrMap(document.body),
-    innerText: local(document.body.innerText).split("\n").map((l) => l.replace(/\s+/g, " ").trim()).filter(Boolean).join("\n"),
+    innerText: (masked.size ? minus(bodyLines, [...masked].flatMap((el) => lines(el.innerText))) : bodyLines).join("\n"),
     local: store(localStorage),
     session: store(sessionStorage),
     origin,
@@ -382,8 +411,8 @@ async function pageTooltips() {
 }
 
 /** Takes a snapshot and flattens it into key -> comparable value. */
-export async function snapshot(page, state, { hashTarget = null, screenshot = true } = {}) {
-  const s = await page.evaluate(pageSnapshot, { webgl: WEBGL, hashTarget });
+export async function snapshot(page, state, { hashTarget = null, screenshot = true, mask = [], select = [], exclude = [], textOf = [] } = {}) {
+  const s = await page.evaluate(pageSnapshot, { webgl: WEBGL, hashTarget, mask, select, exclude, textOf });
   if (process.env.PARITY_DUMP) {
     // Debugging aid: the canonical body of every snapshot, one file each.
     mkdirSync(process.env.PARITY_DUMP, { recursive: true });
@@ -422,9 +451,10 @@ export async function snapshot(page, state, { hashTarget = null, screenshot = tr
   for (const [path, start, end] of s.els) els.set(path, sha1(s.canon.slice(start, end)));
   let png = null;
   if (screenshot) {
-    png = await page.screenshot({ mask: [page.locator(WEBGL)], caret: "hide", timeout: 15000 }).catch(() => null);
+    const hide = [page.locator(WEBGL), ...mask.map((sel) => page.locator(sel))];
+    png = await page.screenshot({ mask: hide, caret: "hide", timeout: 15000 }).catch(() => null);
   }
-  return { flat, els, png, marks: s.marks };
+  return { flat, els, png, marks: s.marks, selected: s.selected, excludedIds: s.excludedIds, outsideLines: s.outsideLines, bodyLines: s.bodyLines, textOf: s.textOf, mainChildren: s.mainChildren, innerText: s.innerText };
 }
 
 // ---------------------------------------------------------------- scenario run
@@ -433,7 +463,7 @@ export async function snapshot(page, state, { hashTarget = null, screenshot = tr
  * Runs scenarios on one side. Returns records [{k, scenario, label, snap,
  * error, value, flat, els, png, marks}] for steps inside the range.
  */
-export async function runSide(browser, side, { scenarios, page: pageName, range, functions, opts, kStart = 1 }) {
+export async function runSide(browser, side, { scenarios, range, functions, opts, snap = {}, kStart = 1 }) {
   const records = [];
   let k = kStart - 1;
   for (const sc of scenarios) {
@@ -463,17 +493,17 @@ export async function runSide(browser, side, { scenarios, page: pageName, range,
         }
         if (kind === "snap" && inRange(idx)) {
           await settleAction(page, state);
-          Object.assign(rec, await snapshot(page, state), { snap: true });
+          Object.assign(rec, await snapshot(page, state, snap), { snap: true });
         } else if (kind === "hash" && inRange(idx)) {
           await settleAction(page, state);
-          Object.assign(rec, await snapshot(page, state, { hashTarget: step.hash }), { snap: true });
+          Object.assign(rec, await snapshot(page, state, { ...snap, hashTarget: step.hash }), { snap: true });
         }
         if (inRange(idx)) records.push(rec);
       }
       if (!range || last <= range[1]) {
         const rec = { k: last, scenario: sc.name, label: "end", snap: true };
         await settleAction(page, state);
-        Object.assign(rec, await snapshot(page, state));
+        Object.assign(rec, await snapshot(page, state, snap));
         const tips = await page.evaluate(pageTooltips).catch((e) => ({ error: e.message }));
         for (const [host, tipText] of Object.entries(tips)) rec.flat.set(`tooltip:${host}`, tipText);
         if (inRange(last)) records.push(rec);
