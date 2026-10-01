@@ -1,7 +1,7 @@
 // Shared plumbing for the parity tools: flags, the page list, serving two
 // export trees and launching the pinned browser. See scripts/parity/README.md.
 import { spawn } from "node:child_process";
-import { existsSync, readdirSync, statSync } from "node:fs";
+import { existsSync, readFileSync, readdirSync, statSync } from "node:fs";
 import { createServer } from "node:net";
 import { homedir } from "node:os";
 import { dirname, isAbsolute, join, resolve } from "node:path";
@@ -134,7 +134,7 @@ export function globRe(glob) {
  * the page's load scenario: open the page, settle, snapshot.
  */
 export async function loadScenario(page, file) {
-  if (!file) return { file: null, scenarios: [{ name: "load", url: PAGES[page], steps: [] }] };
+  if (!file) return { file: null, module: {}, scenarios: [{ name: "load", url: PAGES[page], steps: [] }] };
   const candidates = [file, `${file}.mjs`, join(HERE, "scenarios", page, file), join(HERE, "scenarios", page, `${file}.mjs`)];
   const path = candidates.map((c) => (isAbsolute(c) ? c : resolve(c))).find((c) => existsSync(c) && statSync(c).isFile());
   if (!path) die(`scenario ${file} not found (looked in . and scripts/parity/scenarios/${page}/)`);
@@ -144,7 +144,7 @@ export async function loadScenario(page, file) {
   for (const s of scenarios) {
     if (!s.name || typeof s.url !== "string" || !Array.isArray(s.steps)) die(`${path}: scenario ${JSON.stringify(s.name)} needs name, url and steps`);
   }
-  return { file: path, scenarios };
+  return { file: path, module: mod, scenarios };
 }
 
 /** Loads scenarios/<page>/lib.mjs when it exists (functions for {evaluate} steps). */
@@ -166,4 +166,21 @@ export function stepsArg(value) {
 export function elapsed(t0) {
   const s = Math.round((Date.now() - t0) / 1000);
   return s >= 60 ? `${Math.floor(s / 60)}m${s % 60}s` : `${s}s`;
+}
+
+/** Active known entries of a page: every known/<page>/*.json except faults files. */
+export function knownEntries(page) {
+  const dir = join(HERE, "known", page);
+  if (!existsSync(dir)) return [];
+  const out = [];
+  for (const name of readdirSync(dir).filter((n) => n.endsWith(".json") && !n.startsWith("faults-")).sort()) {
+    const entries = JSON.parse(readFileSync(join(dir, name), "utf8"));
+    if (!Array.isArray(entries)) die(`known/${page}/${name} must be an array of {key, reason}`);
+    for (const e of entries) {
+      if (!e.key || !e.reason) die(`known/${page}/${name}: every entry needs key and reason`);
+      const superseded = e.supersededBy && existsSync(join(HERE, "scenarios", page, `${e.supersededBy}.mjs`));
+      if (!superseded) out.push({ ...e, file: name });
+    }
+  }
+  return out;
 }
