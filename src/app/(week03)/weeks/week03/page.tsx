@@ -893,11 +893,11 @@ export default function Page() {
                       have sources, and none of them are in this build. They are
                       written up, with their licences and their traps, in the
                       {" "}
-                      <a href="https://github.com/horrrt/02805_social_graphs/blob/main/MIGRATION_DATA_CATALOGUE.md">data catalogue</a>
+                      <a href="https://github.com/horrrt/02805_social_graphs/blob/main/project/MIGRATION_DATA_CATALOGUE.md">data catalogue</a>
                       {" "}
                       (90 sources) and the
                       {" "}
-                      <a href="https://github.com/horrrt/02805_social_graphs/blob/main/MIGRATION_QUESTIONS.md">twenty questions</a>
+                      <a href="https://github.com/horrrt/02805_social_graphs/blob/main/project/MIGRATION_QUESTIONS.md">twenty questions</a>
                       {" "}
                       that came out of it.
                     </span>
