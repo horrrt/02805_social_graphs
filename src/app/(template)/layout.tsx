@@ -16,9 +16,9 @@
 //   6. Keep the cards as they are: Week 4's form, as src/app/(week05)/ uses it. Question and
 //      answer, one paragraph beside "What to notice", the figure, then drawers; the limitation
 //      goes in Method. tests/text-budget.test.mjs fails a card that shows more than 350 words
-//      before a click (POST_GUIDE.md, "Keep the card short").
+//      before a click (project/POST_GUIDE.md, "Keep the card short").
 // Stylesheets: type.css, corridor.css, post.css and nothing else (tests/stylesheets.test.mjs).
-// Rules for the writing and the numbers: POST_GUIDE.md.
+// Rules for the writing and the numbers: project/POST_GUIDE.md.
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
 import "@/styles/type.css";

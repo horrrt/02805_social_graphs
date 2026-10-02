@@ -272,17 +272,17 @@ test("every arcade page declares the favicon and loads its stylesheets staticall
   );
 });
 
-test("the README serves the site on the same port as the launch config", () => {
+test("the development guide serves the site on the same port as the launch config", () => {
   const launch = JSON.parse(
     readFileSync(new URL("../.claude/launch.json", import.meta.url), "utf8"),
   );
   const port = launch.configurations.find((c) => c.name === "site").port;
   const pkg = JSON.parse(readFileSync(new URL("../package.json", import.meta.url), "utf8"));
-  const readme = readFileSync(new URL("../README.md", import.meta.url), "utf8");
+  const guide = readFileSync(new URL("../project/DEVELOPMENT.md", import.meta.url), "utf8");
   assert(pkg.scripts.dev.includes(`-p ${port}`), `npm run dev uses port ${port}`);
-  assert(readme.includes("npm run dev"), "README starts the dev server");
-  assert(readme.includes(`127.0.0.1:${port}/`), `README opens port ${port}`);
-  assert(readme.includes("npm test"));
+  assert(guide.includes("npm run dev"), "development guide starts the dev server");
+  assert(guide.includes(`127.0.0.1:${port}/`), `development guide opens port ${port}`);
+  assert(guide.includes("npm test"));
 });
 
 test("every local asset an arcade page references exists", () => {
