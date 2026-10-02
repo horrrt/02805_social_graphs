@@ -166,6 +166,17 @@ saved progress.
 - **A new week.** Copy `src/app/(template)/` to `src/app/(week06)/` and rename
   its `weeks/%5Ftemplate/` folder to `weeks/week06/`. Add
   `src/scripts/entries/week06.js` and list it in `PageScripts.tsx`.
+- **Files for AI agents.** `npm run build` runs `scripts/agent-files.mjs` after
+  `next build`. It writes a Markdown copy of the lobby and each live post
+  (`index.md` beside `index.html`), `llms.txt` and `llms-full.txt` in the
+  [llmstxt.org](https://llmstxt.org/) format, and `sitemap.xml`. Each page's
+  layout gets its canonical URL, Markdown alternate link, Open Graph tags and
+  JSON-LD from `src/components/agentMeta.tsx`. A `noindex` draft stays out of
+  the sitemap and sits under Optional in `llms.txt`. The script writes no
+  `robots.txt` or `/.well-known/` files, because crawlers read those only at
+  the origin root, `horrrt.github.io/`, which belongs to a different
+  repository. With no root `robots.txt`, every crawler may read the site.
+  `tests/agent-files.test.mjs` checks the output.
 - **Deploy.** The workflow builds on every push to `main` and publishes `out/`.
   The repository's Pages source must be set to GitHub Actions.
 

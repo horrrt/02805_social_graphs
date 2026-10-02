@@ -32,6 +32,10 @@ applyTo: "src/**,public/**,tests/**"
   figure, then drawers (Method with the limitation, More numbers, What we read in the pages). No slot labels or
   open limitation blocks. `tests/text-budget.test.mjs` fails a card over 350 words before a click
   (POST_GUIDE.md, "Keep the card short").
+- Keep pages readable without JavaScript: put the prose, numbers and captions in the JSX, and give every
+  `<canvas>` an `aria-label` (with `role="img"`). Browser agents read the accessibility tree, and crawlers and
+  the Markdown copies from `scripts/agent-files.mjs` see only the server-rendered HTML. A new live page's
+  layout takes its metadata from `pageMeta()` and `<JsonLd>` in `src/components/agentMeta.tsx`.
 - Make every disclosure, popover and control work from the keyboard. Escape closes a popover.
 - Do not add `?v=` cache busters. Next hashes the code and styles it bundles, and `asset()` stamps every
   file under `public/` with the deploy's commit.
