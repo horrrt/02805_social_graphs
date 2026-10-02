@@ -1,0 +1,78 @@
+[
+ {
+  "key": "*/canvas:#chart-arcs > div:nth-of-type(1) > canvas:nth-of-type(2)",
+  "reason": "nondeterministic on main (P0a): the lines-effect layer of the arc chart (effect: in week04-place.js) animates without end, also under reduced motion, so its toDataURL() hash differs on every snapshot and no two base runs agree. The chart's option hash in id:#chart-arcs still covers what it draws. The leading * lets the entry match runtime keys and faults.mjs keys (prefixed by the aborted file)."
+ },
+ {
+  "key": "*/canvas:#chart-citymap > div:nth-of-type(1) > canvas:nth-of-type(3)",
+  "reason": "nondeterministic on main: after a hero-map click selects a metro, renderUsMap() in week04-place.js adds an effectScatter ripple for the selection on zlevel 3, its own canvas, which animates without end (also under reduced motion), so the layer's toDataURL() hash differs on every snapshot. The map's option hash in id:#chart-citymap / id:#chart-regions still covers what it draws. Seen on every w4-place snapshot in 5 passes."
+ },
+ {
+  "key": "*/canvas:#chart-regions > div:nth-of-type(1) > canvas:nth-of-type(3)",
+  "reason": "nondeterministic on main: after a hero-map click selects a metro, renderUsMap() in week04-place.js adds an effectScatter ripple for the selection on zlevel 3, its own canvas, which animates without end (also under reduced motion), so the layer's toDataURL() hash differs on every snapshot. The map's option hash in id:#chart-citymap / id:#chart-regions still covers what it draws. Seen on every w4-place snapshot in 5 passes."
+ },
+ {
+  "key": "*/canvas:#chart-hero-map > div:nth-of-type(1) > canvas:nth-of-type(3)",
+  "reason": "nondeterministic on main: after a hero-map click selects a metro, renderUsMap() in week04-place.js adds an effectScatter ripple for the selection on zlevel 3, its own canvas, which animates without end (also under reduced motion), so the layer's toDataURL() hash differs on every snapshot. The map's option hash in id:#chart-citymap / id:#chart-regions still covers what it draws. Seen on every w4-place snapshot in 5 passes."
+ },
+ {
+  "key": "*w4-controls/17/console",
+  "reason": "nondeterministic on main: with the entity explorer's deck.gl map on screen (week04-entities.js), Chromium logs 'GL Driver Message ... GPU stall due to ReadPixels' with the WebGL context's address (warning: [.WebGL-0x...]), which differs from run to run. Seen in every pass on the entity steps; the console key of the snapshot taken while (or right after) the map shows."
+ },
+ {
+  "key": "*w4-controls/22/console",
+  "reason": "nondeterministic on main: with the entity explorer's deck.gl map on screen (week04-entities.js), Chromium logs 'GL Driver Message ... GPU stall due to ReadPixels' with the WebGL context's address (warning: [.WebGL-0x...]), which differs from run to run. Seen in every pass on the entity steps; the console key of the snapshot taken while (or right after) the map shows."
+ },
+ {
+  "key": "*w4-controls/24/console",
+  "reason": "nondeterministic on main: with the entity explorer's deck.gl map on screen (week04-entities.js), Chromium logs 'GL Driver Message ... GPU stall due to ReadPixels' with the WebGL context's address (warning: [.WebGL-0x...]), which differs from run to run. Seen in every pass on the entity steps; the console key of the snapshot taken while (or right after) the map shows."
+ },
+ {
+  "key": "*w4-controls/26/console",
+  "reason": "nondeterministic on main: with the entity explorer's deck.gl map on screen (week04-entities.js), Chromium logs 'GL Driver Message ... GPU stall due to ReadPixels' with the WebGL context's address (warning: [.WebGL-0x...]), which differs from run to run. Seen in every pass on the entity steps; the console key of the snapshot taken while (or right after) the map shows."
+ },
+ {
+  "key": "*w4-panels/27/console",
+  "reason": "nondeterministic on main: with the entity explorer's deck.gl map on screen (week04-entities.js), Chromium logs 'GL Driver Message ... GPU stall due to ReadPixels' with the WebGL context's address (warning: [.WebGL-0x...]), which differs from run to run. Seen in every pass on the entity steps; the console key of the snapshot taken while (or right after) the map shows."
+ },
+ {
+  "key": "*w4-panels/28/console",
+  "reason": "nondeterministic on main: with the entity explorer's deck.gl map on screen (week04-entities.js), Chromium logs 'GL Driver Message ... GPU stall due to ReadPixels' with the WebGL context's address (warning: [.WebGL-0x...]), which differs from run to run. Seen in every pass on the entity steps; the console key of the snapshot taken while (or right after) the map shows."
+ },
+ {
+  "key": "*w4-panels-b/12/scroll",
+  "reason": "nondeterministic on main: #topic-years opens by its hash below topic-paperwork's charts, and where the router's scrollIntoView lands depends on whether those charts have reached their final height (seen once in 5 passes: scrollY 14481 against 14396, the target's top 436 against 520, and the viewport screenshot shifted with it). The topic's markup, text and every id still compare."
+ },
+ {
+  "key": "*w4-panels-b/12/pixels",
+  "reason": "nondeterministic on main: #topic-years opens by its hash below topic-paperwork's charts, and where the router's scrollIntoView lands depends on whether those charts have reached their final height (seen once in 5 passes: scrollY 14481 against 14396, the target's top 436 against 520, and the viewport screenshot shifted with it). The topic's markup, text and every id still compare."
+ },
+ {
+  "key": "*w4-panels-b/14/scroll",
+  "reason": "nondeterministic on main: #topic-years opens by its hash below topic-paperwork's charts, and where the router's scrollIntoView lands depends on whether those charts have reached their final height (seen once in 5 passes: scrollY 14481 against 14396, the target's top 436 against 520, and the viewport screenshot shifted with it). The topic's markup, text and every id still compare."
+ },
+ {
+  "key": "*w4-panels-b/14/pixels",
+  "reason": "nondeterministic on main: #topic-years opens by its hash below topic-paperwork's charts, and where the router's scrollIntoView lands depends on whether those charts have reached their final height (seen once in 5 passes: scrollY 14481 against 14396, the target's top 436 against 520, and the viewport screenshot shifted with it). The topic's markup, text and every id still compare."
+ },
+ {
+  "key": "*w4-panels-b/16/scroll",
+  "reason": "nondeterministic on main: #topic-years opens by its hash below topic-paperwork's charts, and where the router's scrollIntoView lands depends on whether those charts have reached their final height (seen once in 5 passes: scrollY 14481 against 14396, the target's top 436 against 520, and the viewport screenshot shifted with it). The topic's markup, text and every id still compare."
+ },
+ {
+  "key": "*w4-panels-b/16/pixels",
+  "reason": "nondeterministic on main: #topic-years opens by its hash below topic-paperwork's charts, and where the router's scrollIntoView lands depends on whether those charts have reached their final height (seen once in 5 passes: scrollY 14481 against 14396, the target's top 436 against 520, and the viewport screenshot shifted with it). The topic's markup, text and every id still compare."
+ },
+ {
+  "key": "*w4-panels-b/17/scroll",
+  "reason": "nondeterministic on main: #topic-years opens by its hash below topic-paperwork's charts, and where the router's scrollIntoView lands depends on whether those charts have reached their final height (seen once in 5 passes: scrollY 14481 against 14396, the target's top 436 against 520, and the viewport screenshot shifted with it). The topic's markup, text and every id still compare."
+ },
+ {
+  "key": "*w4-panels-b/17/pixels",
+  "reason": "nondeterministic on main: #topic-years opens by its hash below topic-paperwork's charts, and where the router's scrollIntoView lands depends on whether those charts have reached their final height (seen once in 5 passes: scrollY 14481 against 14396, the target's top 436 against 520, and the viewport screenshot shifted with it). The topic's markup, text and every id still compare."
+ },
+ {
+  "key": "*w4-panels-b/12/hash-top:#topic-years",
+  "reason": "nondeterministic on main: #topic-years opens by its hash below topic-paperwork's charts, and where the router's scrollIntoView lands depends on whether those charts have reached their final height (seen once in 5 passes: scrollY 14481 against 14396, the target's top 436 against 520, and the viewport screenshot shifted with it). The topic's markup, text and every id still compare."
+ }
+]
