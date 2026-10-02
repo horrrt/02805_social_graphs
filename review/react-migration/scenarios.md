@@ -81,8 +81,8 @@ each).
 ## Known files
 
 `scripts/parity/known/<page>/base.json` holds main's own nondeterminism, found by running every file main-vs-main
-three times plain, once with `--runs 3` (the third slow) and once with `--fonts-delay 500`. Each entry names the
-pass count it was seen in. Keys start with `*` so they also match `faults.mjs`, which prefixes the aborted file.
+three times plain, once with `--runs 3` (the third slow) and once with `--fonts-delay 500`. Each entry's reason says
+why the key flips and, where it flipped only sometimes, how often. Keys start with `*` so they also match `faults.mjs`, which prefixes the aborted file.
 
 | page | what flips on main |
 | --- | --- |
