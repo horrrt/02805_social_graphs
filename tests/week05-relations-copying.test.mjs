@@ -6,11 +6,12 @@ import { readFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { block, flatten } from "./week04-html.mjs";
+import { builtPage } from "./built-page.mjs";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const read = (name) => readFileSync(join(ROOT, name), "utf8");
 const json = (name) => JSON.parse(read(name));
-const html = read("docs/weeks/week05/index.html");
+const html = builtPage("out/weeks/week05/index.html");
 const text = (id) => flatten(block(html, id));
 
 const count = (n) => n.toLocaleString("en-US");
@@ -20,7 +21,7 @@ const WORDS = ["zero", "one", "two", "three", "four", "five", "six", "seven", "e
 const Cap = (w) => w[0].toUpperCase() + w.slice(1);
 
 test("section 1 quotes relations.json", () => {
-  const r = json("docs/weeks/week05/data/relations.json");
+  const r = json("public/weeks/week05/data/relations.json");
   const s = text("relations");
   const has = (t) => assert.ok(s.includes(t), `section 1 should say "${t}"`);
   const label = Object.fromEntries(r.labels.map((l) => [l.label, l]));
@@ -73,7 +74,7 @@ test("section 1 quotes relations.json", () => {
 });
 
 test("section 2 quotes copying.json", () => {
-  const c = json("docs/weeks/week05/data/copying.json");
+  const c = json("public/weeks/week05/data/copying.json");
   const s = text("copying");
   const has = (t) => assert.ok(s.includes(t), `section 2 should say "${t}"`);
   const h = c.headline;

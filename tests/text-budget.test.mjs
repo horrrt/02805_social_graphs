@@ -9,8 +9,9 @@ import assert from "node:assert/strict";
 import { existsSync, readdirSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 import { fileURLToPath } from "node:url";
+import { ROOT, builtPage } from "./built-page.mjs";
 
-const WEEKS = fileURLToPath(new URL("../docs/weeks/", import.meta.url));
+const WEEKS = fileURLToPath(new URL("../out/weeks/", import.meta.url));
 const BUDGET = 350;
 
 const pages = readdirSync(WEEKS)
@@ -57,7 +58,7 @@ test("the budget test sees pages", () => {
 
 for (const page of pages) {
   const name = page.split("/").slice(-2, -1)[0];
-  const html = visible(readFileSync(page, "utf8"));
+  const html = visible(builtPage(page.slice(ROOT.length + 1)));
 
   test(`${name}: every card shows at most ${BUDGET} words before a click`, () => {
     const cards = elements(html, /<div\b[^>]*class="[^"]*\bw4-card\b[^"]*"[^>]*>/g, "div");

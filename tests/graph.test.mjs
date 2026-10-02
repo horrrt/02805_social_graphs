@@ -1,4 +1,4 @@
-// The network views (docs/assets/js/graph.js): colours only from post.css
+// The network views (src/scripts/graph.js): colours only from post.css
 // tokens, sizes only from the type scale, and demo data a view can draw.
 import test from "node:test";
 import assert from "node:assert/strict";
@@ -8,9 +8,9 @@ import { fileURLToPath } from "node:url";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const read = (name) => readFileSync(join(ROOT, name), "utf8");
-const js = read("docs/assets/js/graph.js");
-const css = read("docs/assets/css/post.css");
-const data = JSON.parse(read("docs/styleguide/data/graphs.json"));
+const js = read("src/scripts/graph.js");
+const css = read("src/styles/post.css");
+const data = JSON.parse(read("public/styleguide/data/graphs.json"));
 
 test("graph.js takes colours from classes and sizes from the type scale", () => {
   assert.doesNotMatch(js, /#[0-9a-fA-F]{3,8}\b/, "no hex colours in graph.js");

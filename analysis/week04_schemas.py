@@ -33,7 +33,7 @@ Share = Field(ge=0, le=1)
 Count = Field(ge=0)
 
 
-# Section 1 · docs/assets/data/week04_place.json, read by week04-place.js ------------
+# Section 1 · public/assets/data/week04_place.json, read by week04-place.js ------------
 
 class City(Model):
     id: str
@@ -147,7 +147,7 @@ class Place(Model):
         return self
 
 
-# Section 2 · docs/weeks/week04/data/jobs.json, read by week04-jobs.js --------------
+# Section 2 · public/weeks/week04/data/jobs.json, read by week04-jobs.js --------------
 
 class JobNode(Model):
     id: str = Field(pattern=r"^\d{2}-\d{4}$")
@@ -395,7 +395,7 @@ class StaffingCommunities(Model):
 
 
 
-# Section 1 follow-up · docs/weeks/week04/data/where_who.json, read by week04-questions.js -
+# Section 1 follow-up · public/weeks/week04/data/where_who.json, read by week04-questions.js -
 
 class WhereWhoRow(Model):
     id: str
@@ -474,7 +474,7 @@ class WhereWho(Model):
         return self
 
 
-# Section 2 follow-up · docs/weeks/week04/data/jobs_split.json ---------------------
+# Section 2 follow-up · public/weeks/week04/data/jobs_split.json ---------------------
 
 class OccShare(Model):
     id: str
@@ -577,7 +577,7 @@ class JobsSplit(Model):
         return self
 
 
-# Section 3 follow-up · docs/weeks/week04/data/staffing_moves.json ----------------
+# Section 3 follow-up · public/weeks/week04/data/staffing_moves.json ----------------
 
 class SwitchNull(Model):
     mean: float = Share
@@ -656,7 +656,7 @@ class StaffingMoves(Model):
     q3_top_clients: list[TopOverlapClient] = Field(min_length=1)
 
 
-# Beyond the three networks · docs/weeks/week04/data/beyond.json -----------------
+# Beyond the three networks · public/weeks/week04/data/beyond.json -----------------
 
 class LawFirmRow(Model):
     law_firm: str
@@ -797,7 +797,7 @@ class Beyond(Model):
     q3_top5_soc: list[Top5Soc] = Field(min_length=1)
 
 
-# Section 1 explorables · docs/weeks/week04/data/explore.json, read by
+# Section 1 explorables · public/weeks/week04/data/explore.json, read by
 # week04-methods.js, the #cut-methods box -----------------------------------------
 
 class ExploreMetro(Model):
@@ -922,7 +922,7 @@ class Explore(Model):
         return self
 
 
-# Section 4 · docs/weeks/week04/data/footprint.json, read by week04-questions.js --
+# Section 4 · public/weeks/week04/data/footprint.json, read by week04-questions.js --
 
 class DropVariant(Model):
     id: str
@@ -958,7 +958,7 @@ class Footprint(Model):
         return self
 
 
-# Section 4 follow-up · docs/weeks/week04/data/footprint_rank.json, read by
+# Section 4 follow-up · public/weeks/week04/data/footprint_rank.json, read by
 # week04-questions.js -----------------------------------------------------
 
 class SingleFirmDrop(Model):
@@ -1011,7 +1011,7 @@ class FootprintRank(Model):
         return self
 
 
-# Five years of filings · docs/weeks/week04/data/years.json, read by
+# Five years of filings · public/weeks/week04/data/years.json, read by
 # week04-years.js, the #cut-years box --------------------------------------
 
 class YearStats(Model):
@@ -1085,7 +1085,7 @@ class Years(Model):
         return self
 
 
-# Deep dive · Roles · docs/weeks/week04/data/roles.json, read by week04-roles.js -
+# Deep dive · Roles · public/weeks/week04/data/roles.json, read by week04-roles.js -
 
 class RolesPartial(Model):
     year: Literal["2026"]
@@ -1149,7 +1149,7 @@ class Roles(Model):
         return self
 
 
-# Deep dive · Skills · docs/weeks/week04/data/skills.json, read by week04-skills.js -
+# Deep dive · Skills · public/weeks/week04/data/skills.json, read by week04-skills.js -
 
 class SkillsExample(Model):
     a: str
@@ -1181,7 +1181,7 @@ class Skills(Model):
     cohiring: Cohiring
 
 
-# Deep dive · Skills radar · docs/weeks/week04/data/skills_radar.json, read by
+# Deep dive · Skills radar · public/weeks/week04/data/skills_radar.json, read by
 # week04-skills-radar.js ----------------------------------------------------
 
 class RadarGroup(Model):
@@ -1231,7 +1231,7 @@ class SkillsRadar(Model):
         return self
 
 
-# Deep dive · PageRank · docs/weeks/week04/data/pagerank.json, read by week04-pagerank.js -
+# Deep dive · PageRank · public/weeks/week04/data/pagerank.json, read by week04-pagerank.js -
 
 class PagerankRow(Model):
     code: str
@@ -1299,7 +1299,7 @@ class Pagerank(Model):
         return self
 
 
-# Deep dive · More networks · docs/weeks/week04/data/more.json, read by
+# Deep dive · More networks · public/weeks/week04/data/more.json, read by
 # week04-vis-more.js -------------------------------------------------------
 
 class MorePermRow(Model):
@@ -1400,7 +1400,7 @@ class More(Model):
     strength: MoreStrength
     lottery: MoreLottery
 # Deep dive · section 3 first round, law firms, ties and lottery ·
-# docs/weeks/week04/data/staffing_deep.json, read by week04-vis-staffing.js -
+# public/weeks/week04/data/staffing_deep.json, read by week04-vis-staffing.js -
 
 class ByKindRate(Model):
     registrations_per_approval: float = Field(gt=0)
@@ -1490,7 +1490,7 @@ class StaffingDeep(Model):
     lottery: StaffingDeepLottery
 
 
-# Deep dive · docs/weeks/week04/data/entities_<name>.json, read by week04-entities.js --
+# Deep dive · public/weeks/week04/data/entities_<name>.json, read by week04-entities.js --
 
 class EntityLookups(Model):
     occupation: list[tuple[str, str]] = Field(min_length=1)
@@ -1619,28 +1619,28 @@ class EntityNetwork(Model):
 
 
 PAGES = {
-    "docs/assets/data/week04_place.json": Place,
-    "docs/weeks/week04/data/jobs.json": Jobs,
-    "docs/weeks/week04/data/staffing_clients.json": StaffingClients,
-    "docs/weeks/week04/data/staffing_communities.json": StaffingCommunities,
-    "docs/weeks/week04/data/where_who.json": WhereWho,
-    "docs/weeks/week04/data/jobs_split.json": JobsSplit,
-    "docs/weeks/week04/data/skills.json": Skills,
-    "docs/weeks/week04/data/skills_radar.json": SkillsRadar,
-    "docs/weeks/week04/data/pagerank.json": Pagerank,
-    "docs/weeks/week04/data/staffing_moves.json": StaffingMoves,
-    "docs/weeks/week04/data/beyond.json": Beyond,
-    "docs/weeks/week04/data/footprint.json": Footprint,
-    "docs/weeks/week04/data/footprint_rank.json": FootprintRank,
-    "docs/weeks/week04/data/explore.json": Explore,
-    "docs/weeks/week04/data/years.json": Years,
-    "docs/weeks/week04/data/roles.json": Roles,
-    "docs/weeks/week04/data/more.json": More,
-    "docs/weeks/week04/data/staffing_deep.json": StaffingDeep,
-    "docs/weeks/week04/data/entities_workers.json": EntityPage,
-    "docs/weeks/week04/data/entities_companies.json": EntityPage,
-    "docs/weeks/week04/data/entities_network_staffing.json": EntityNetwork,
-    "docs/weeks/week04/data/entities_network_lawfirms.json": EntityNetwork,
+    "public/assets/data/week04_place.json": Place,
+    "public/weeks/week04/data/jobs.json": Jobs,
+    "public/weeks/week04/data/staffing_clients.json": StaffingClients,
+    "public/weeks/week04/data/staffing_communities.json": StaffingCommunities,
+    "public/weeks/week04/data/where_who.json": WhereWho,
+    "public/weeks/week04/data/jobs_split.json": JobsSplit,
+    "public/weeks/week04/data/skills.json": Skills,
+    "public/weeks/week04/data/skills_radar.json": SkillsRadar,
+    "public/weeks/week04/data/pagerank.json": Pagerank,
+    "public/weeks/week04/data/staffing_moves.json": StaffingMoves,
+    "public/weeks/week04/data/beyond.json": Beyond,
+    "public/weeks/week04/data/footprint.json": Footprint,
+    "public/weeks/week04/data/footprint_rank.json": FootprintRank,
+    "public/weeks/week04/data/explore.json": Explore,
+    "public/weeks/week04/data/years.json": Years,
+    "public/weeks/week04/data/roles.json": Roles,
+    "public/weeks/week04/data/more.json": More,
+    "public/weeks/week04/data/staffing_deep.json": StaffingDeep,
+    "public/weeks/week04/data/entities_workers.json": EntityPage,
+    "public/weeks/week04/data/entities_companies.json": EntityPage,
+    "public/weeks/week04/data/entities_network_staffing.json": EntityNetwork,
+    "public/weeks/week04/data/entities_network_lawfirms.json": EntityNetwork,
 }
 
 

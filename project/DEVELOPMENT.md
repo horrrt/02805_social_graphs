@@ -1,6 +1,6 @@
 # Development and data reference
 
-See the [repository README](../README.md) for the live posts and quick start.
+See the [repository README](../README.md) for an overview of the project.
 
 ## The frozen data
 
@@ -65,13 +65,13 @@ python analysis/week02_transit.py
 
 `python analysis/run_all.py` runs these and the week 3 scripts in parallel, each as soon as the
 files it reads are ready, in about 16 minutes. `python analysis/run_all.py week02` runs one week. It ends by
-listing every committed file under `analysis/` and `docs/` that changed, so run it before editing a
+listing every committed file under `analysis/` and `public/` that changed, so run it before editing a
 script: an empty list means the committed data still reproduces.
 
 The week-2 ensemble takes longer than the other steps. It records 1,000 accepted
 connected degree-preserving rewires for each tested article at 20 successful
 swaps per edge, plus a 200-draw sensitivity check at 50 swaps per edge. Source
-hashes, seeds and exact outcomes are recorded under `docs/assets/data/`.
+hashes, seeds and exact outcomes are recorded under `public/assets/data/`.
 
 The arcade exporters add:
 
@@ -87,13 +87,22 @@ The arcade exporters add:
 
 ## Run and check
 
+Use Node 20.9 or newer.
+
 ```bash
-python -m http.server 8765 --bind 127.0.0.1 --directory docs
-node --test 'tests/*.test.mjs'
+npm ci
+npm run dev
 ```
 
-Open `http://127.0.0.1:8765/`. Serve through HTTP rather than opening HTML files
-from disk, because browser modules and data loading require a web origin.
+Open `http://127.0.0.1:8765/`. The dev server serves from the root; the
+published build lives under `/02805_social_graphs/`.
+
+```bash
+npm test
+```
+
+`npm test` builds the static export into `out/` and then runs
+`node --test 'tests/*.test.mjs'`, because most tests read the built pages.
 
 Tests cross-check all 277 browser removals against independently generated CSV
 results, Python path fixtures, exact stranded groups, triangle and coverage
@@ -103,6 +112,41 @@ fragment link. The theme tests check that every canvas colour the scripts read
 is defined in the stylesheet. Browser review covers the published posts and
 saved progress.
 
+## How the site is built
+
+- **Pages.** Each page is a route group in `src/app/`, for example
+  `src/app/(week05)/`. Its `layout.tsx` holds the page's `<html>`, body class,
+  title and stylesheet imports; `page.tsx` under the route's folder holds the
+  markup. Every page is its own group because the pages differ in body class and
+  stylesheets, so moving between pages is a full page load.
+- **Chart code.** `src/scripts/` holds plain ES modules that draw into the
+  markup. `src/components/PageScripts.tsx` imports a page's entry module,
+  `src/scripts/entries/<page>.js`, once React has hydrated the page, so a script
+  never races React for the DOM.
+- **Styles.** Stylesheets live in `src/styles/` and fonts in `src/fonts/`. Next
+  bundles both and names every file by its content hash, so a deploy cannot serve
+  one version's code with another version's markup.
+- **Static files.** Data, vendored libraries, textures and images stay in
+  `public/` at fixed URLs. Scripts reach them through `asset()` in
+  `src/scripts/site.js`, which adds the deploy's commit to the query string, so
+  a new deploy also replaces cached data.
+- **A new week.** Copy `src/app/(template)/` to `src/app/(week06)/` and rename
+  its `weeks/%5Ftemplate/` folder to `weeks/week06/`. Add
+  `src/scripts/entries/week06.js` and list it in `PageScripts.tsx`.
+- **Files for AI agents.** `npm run build` runs `scripts/agent-files.mjs` after
+  `next build`. It writes a Markdown copy of the lobby and each live post
+  (`index.md` beside `index.html`), `llms.txt` and `llms-full.txt` in the
+  [llmstxt.org](https://llmstxt.org/) format, and `sitemap.xml`. Each page's
+  layout gets its canonical URL, Markdown alternate link, Open Graph tags and
+  JSON-LD from `src/components/agentMeta.tsx`. A `noindex` draft stays out of
+  the sitemap and sits under Optional in `llms.txt`. The script writes no
+  `robots.txt` or `/.well-known/` files, because crawlers read those only at
+  the origin root, `horrrt.github.io/`, which belongs to a different
+  repository. With no root `robots.txt`, every crawler may read the site.
+  `tests/agent-files.test.mjs` checks the output.
+- **Deploy.** The workflow builds on every push to `main` and publishes `out/`.
+  The repository's Pages source must be set to GitHub Actions.
+
 ## Coding assistants (Copilot in VS Code)
 
 The repository tells GitHub Copilot how to work here, on every plan including Free and Student:
@@ -110,7 +154,7 @@ The repository tells GitHub Copilot how to work here, on every plan including Fr
 | File | What it does |
 | --- | --- |
 | `.github/copilot-instructions.md` | Rules for every request: read first, plan, run the checks, report honestly, and what never to do |
-| `.github/instructions/*.instructions.md` | Extra rules that apply to `analysis/`, to `docs/` and `tests/`, and to prose |
+| `.github/instructions/*.instructions.md` | Extra rules that apply to `analysis/`, to `public/` and `tests/`, and to prose |
 | `.github/prompts/*.prompt.md` | Slash commands in Copilot Chat: `/check`, `/review`, `/ship` |
 | `AGENTS.md` | Points Copilot, Claude Code and Codex at the same rules |
 | `.vscode/settings.json` | Turns instruction files on and lets the read-only checks run without a prompt |
@@ -171,12 +215,12 @@ down. The palette lives in CSS custom properties and the canvas reads it back
 through `getComputedStyle`, so one definition drives the stylesheet, the SVG
 variants and the 2D canvas at once.
 
-`docs/assets/js/week03-boot.js` holds the registries; each renderer is one
-module under `docs/assets/js/variants/`.
+`src/scripts/week03-boot.js` holds the registries; each renderer is one
+module under `src/scripts/variants/`.
 
 ### Rebuilding, and what is committed
 
-Week 3 raw inputs stay outside version control. Raw inputs (a 6 MB
+Nothing large is kept here that cannot be recreated. Raw inputs (a 6 MB
 spreadsheet, an 820 KB boundary file) live in gitignored `build/raw/`; what is
 committed is the derived output the browser loads, 5 MB in total.
 
@@ -184,17 +228,8 @@ committed is the derived output the browser loads, 5 MB in total.
     python scripts/rebuild_week03.py           # download everything and rebuild
     python scripts/rebuild_week03.py --fast    # reuse the cached null model
 
-Libraries and imagery are committed on purpose: GitHub Pages serves the
-repository as it stands, so a file that is not in it is a file the published
-site cannot load.
-
-Editing any of the post's scripts, its stylesheet or the data files it fetches
-changes their content hash, so re-run `python scripts/stamp_week03.py` before
-committing; a test fails if the stamp is stale. The stamp lands in the asset
-URLs, which is what stops GitHub Pages serving one deploy's code alongside the
-next deploy's markup, or this deploy's code against last deploy's numbers. The
-data files are covered because a module fetches them at a relative URL and
-hands its own stamp down; there is nowhere else a version could go.
+Libraries and imagery are committed on purpose: the published site can load
+only what is in `public/` or bundled from `src/`.
 
 `rebuild_week03.py` rebuilds the two network files and the roles. The analyses
 that read them and write to `analysis/` are separate runs, because each is slow

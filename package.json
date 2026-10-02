@@ -1,0 +1,29 @@
+{
+  "name": "log-log-legends",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "next dev -p 8765",
+    "build": "next build && node scripts/agent-files.mjs",
+    "preview": "node scripts/serve-out.mjs",
+    "typecheck": "tsc --noEmit",
+    "test": "npm run build && node --test 'tests/*.test.mjs'"
+  },
+  "engines": {
+    "node": ">=20.9"
+  },
+  "dependencies": {
+    "next": "^16.3.8",
+    "react": "^19.3.0",
+    "react-dom": "^19.3.0"
+  },
+  "devDependencies": {
+    "@types/node": "^26.6.3",
+    "@types/react": "^19.3.0",
+    "@types/react-dom": "^19.3.0",
+    "linkedom": "^0.18.13",
+    "turndown": "^7.2.4",
+    "turndown-plugin-gfm": "^1.0.2",
+    "typescript": "~6.0.3"
+  }
+}

@@ -20,7 +20,7 @@ Read `git diff origin/main...HEAD` and any uncommitted changes, then check each 
 6. Prose: the rules in `.github/instructions/writing.instructions.md`, including no em dashes.
 7. Scope: the change stays inside the section its author owns (see `project/WEEK04.md` for week 4).
 8. Reruns: a changed analysis script gives identical output under `PYTHONHASHSEED=1` and `2`.
-9. Tests: `node --test 'tests/*.test.mjs'` passes, and new calculations have a check.
+9. Tests: `npm test` passes, and new calculations have a check.
 
 Report findings ordered by severity, each with `file:line`, what is wrong, and a concrete fix. Say
 "no findings" for a clean item instead of skipping it.

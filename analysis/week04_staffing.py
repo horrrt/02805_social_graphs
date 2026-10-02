@@ -48,7 +48,7 @@ Checks
   FY2026 Q3 from the hub's Tableau export, one source for the whole series.
 
 Output: analysis/week04_staffing.json, and the community numbers the page quotes in
-docs/weeks/week04/data/staffing_communities.json
+public/weeks/week04/data/staffing_communities.json
 """
 
 import json
@@ -71,7 +71,7 @@ from week04_data import load
 
 OUT = Path(__file__).with_suffix(".json")
 # The community numbers the page quotes, for week04-staffing.js.
-PAGE = Path(__file__).resolve().parents[1] / "docs/weeks/week04/data/staffing_communities.json"
+PAGE = Path(__file__).resolve().parents[1] / "public/weeks/week04/data/staffing_communities.json"
 YEARS = [2022, 2023, 2024, 2025]
 MAIN = 2025
 RUNS = 100

@@ -7,15 +7,16 @@ import { readFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { block, flatten } from "./week04-html.mjs";
+import { builtPage } from "./built-page.mjs";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const read = (name) => readFileSync(join(ROOT, name), "utf8");
-const json = (name) => JSON.parse(read(`docs/weeks/week05/data/${name}.json`));
+const json = (name) => JSON.parse(read(`public/weeks/week05/data/${name}.json`));
 const net = json("network");
 const comm = json("communities");
 const rel = json("relations");
-const html = read("docs/weeks/week05/index.html");
-const map = read("docs/assets/js/week05-map.js");
+const html = builtPage("out/weeks/week05/index.html");
+const map = read("src/scripts/week05-map.js");
 
 test("the map holds the pages, links and groups the sections count", () => {
   assert.equal(net.nodes.length, comm.network.nodes);

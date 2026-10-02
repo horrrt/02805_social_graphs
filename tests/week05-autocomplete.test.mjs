@@ -7,14 +7,15 @@ import { readFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { block, flatten } from "./week04-html.mjs";
+import { builtPage, pageScripts } from "./built-page.mjs";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const read = (name) => readFileSync(join(ROOT, name), "utf8");
 const json = (name) => JSON.parse(read(name));
-const html = read("docs/weeks/week05/index.html");
-const a = json("docs/weeks/week05/data/autocomplete.json");
-const c = json("docs/weeks/week05/data/communities.json");
-const js = read("docs/assets/js/week05-autocomplete.js");
+const html = builtPage("out/weeks/week05/index.html");
+const a = json("public/weeks/week05/data/autocomplete.json");
+const c = json("public/weeks/week05/data/communities.json");
+const js = read("src/scripts/week05-autocomplete.js");
 const section = block(html, "autocomplete");
 const s = flatten(section);
 const has = (t, where = s) => assert.ok(where.includes(t), `section 4 should say "${t}"`);
@@ -27,7 +28,7 @@ const k = a.n_fakes;
 test("section 4 is a wide Week 4 card with the brief's question", () => {
   assert.match(section, /class="card w4-card w5-card"/);
   has("Can someone who has not seen the pages tell which community a fake page came from?");
-  assert.match(html, /week05-autocomplete\.js\?v=\d+/);
+  assert.ok(pageScripts("week05").includes("week05-autocomplete.js"), "the page runs week05-autocomplete.js");
   assert.doesNotMatch(section, /—/, "no em dashes in section 4");
   assert.doesNotMatch(js, /—/, "no em dashes in the quiz text");
   assert.doesNotMatch(js, /innerHTML/, "build dynamic text with textContent");
@@ -105,7 +106,7 @@ test("the quiz spoils nothing and keeps visitor clicks apart", () => {
   // Only the template's example name appears in the static text, and it says nothing of its group.
   for (const f of a.fakes.filter((f) => f.id !== "fake-0")) assert.ok(!s.includes(f.character), `the static text names ${f.character}`);
   assert.match(section, /aria-live="polite" class="w5-scoreboard"/);
-  assert.match(section, /aria-live="polite" class="w5-reveal" hidden/);
+  assert.match(section, /aria-live="polite" class="w5-reveal"[^>]*\shidden/);
   assert.match(section, /id="ac-submit" type="button">Lock and reveal</);
   assert.doesNotMatch(section, /ac-reveal-btn|Lock guess/);
   has("Your score stays in this browser and is not part of our results");

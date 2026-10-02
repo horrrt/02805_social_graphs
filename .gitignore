@@ -14,5 +14,10 @@ build/
 .playwright-mcp/
 .env
 
-# Capture copies for the design canvas (review/week04-redesign/generator/capture/)
-docs/_snap/
+
+# Next.js
+node_modules/
+.next/
+out/
+next-env.d.ts
+*.tsbuildinfo

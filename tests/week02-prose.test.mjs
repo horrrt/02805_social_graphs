@@ -10,6 +10,7 @@ import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
+import { builtPage } from "./built-page.mjs";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const read = (name) => readFileSync(join(ROOT, name), "utf8");
@@ -28,16 +29,16 @@ const csv = (name) => {
 // does, so a sentence wrapped across several source lines still matches.
 const strip = (html) => html.replace(/<[^>]+>/g, " ").replace(/\s+/g, " ");
 
-const html = read("docs/weeks/week02/index.html");
+const html = builtPage("out/weeks/week02/index.html");
 const prose = strip(html);
-const screenTestHtml = read("docs/prototypes/screen-test/index.html");
+const screenTestHtml = builtPage("out/prototypes/screen-test/index.html");
 const screenTestProse = strip(screenTestHtml);
 
-const arcade = json("docs/assets/data/arcade_graph.json");
-const nulls = json("docs/assets/data/week02_nullmodels.json");
-const resilience = json("docs/assets/data/week02_resilience.json");
-const screentest = json("docs/assets/data/week02_screentest.json");
-const nullDrawsCsv = csv("docs/assets/data/week02_nullmodels_draws.csv");
+const arcade = json("public/assets/data/arcade_graph.json");
+const nulls = json("public/assets/data/week02_nullmodels.json");
+const resilience = json("public/assets/data/week02_resilience.json");
+const screentest = json("public/assets/data/week02_screentest.json");
+const nullDrawsCsv = csv("public/assets/data/week02_nullmodels_draws.csv");
 
 const count = (n) => n.toLocaleString("en-US");
 const WORDS = ["zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten"];

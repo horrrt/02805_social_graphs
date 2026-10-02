@@ -1,8 +1,8 @@
 """The Marvel link network as the week 5 page draws it: one map, shared by
 sections 1 and 4, so a group colour means the same community everywhere.
 
-Output: docs/weeks/week05/data/network.json, read by week05-relations.js and
-week05-autocomplete.js through networkView() (docs/assets/js/graph.js).
+Output: public/weeks/week05/data/network.json, read by week05-relations.js and
+week05-autocomplete.js through networkView() (src/scripts/graph.js).
 
 - Positions: layout.spread() on the weighted network (week05_text.weighted()),
   seed layout.SEED: ForceAtlas2 in LinLog mode on the giant component, the
@@ -31,9 +31,9 @@ from week05_relations import PRIORITY, arcs
 from week05_text import weighted
 
 ROOT = Path(__file__).resolve().parents[1]
-OUT = ROOT / "docs/weeks/week05/data/network.json"
-COMMUNITIES = ROOT / "docs/weeks/week05/data/communities.json"
-RELATIONS = ROOT / "docs/weeks/week05/data/relations.json"
+OUT = ROOT / "public/weeks/week05/data/network.json"
+COMMUNITIES = ROOT / "public/weeks/week05/data/communities.json"
+RELATIONS = ROOT / "public/weeks/week05/data/relations.json"
 GROUPS = 8
 
 

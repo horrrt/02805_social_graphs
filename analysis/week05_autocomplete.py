@@ -4,8 +4,8 @@ Question: Can someone who has not seen the pages tell which community a fake
 page came from?
 
 Owner: Àngela
-Page section: docs/weeks/week05/index.html#autocomplete
-Output: docs/weeks/week05/data/autocomplete.json
+Page section: src/app/(week05)/weeks/week05/page.tsx#autocomplete
+Output: public/weeks/week05/data/autocomplete.json
 
 Train one trigram generator per community of at least MIN_COMMUNITY_SIZE pages
 (the consensus groups from week05_communities.py, plus any component outside
@@ -45,8 +45,8 @@ from week05_relations import DROP_SECTIONS, candidates, is_heading
 from week05_text import WORD, WORD_RULE, nodes, pages, sentences, words
 
 ROOT = Path(__file__).resolve().parents[1]
-COMM = ROOT / "docs" / "weeks" / "week05" / "data" / "communities.json"
-OUT = ROOT / "docs" / "weeks" / "week05" / "data" / "autocomplete.json"
+COMM = ROOT / "public" / "weeks" / "week05" / "data" / "communities.json"
+OUT = ROOT / "public" / "weeks" / "week05" / "data" / "autocomplete.json"
 GUESSES = Path(__file__).with_name("week05_autocomplete_guesses.csv")
 
 SEED = 2805
@@ -502,7 +502,7 @@ def main() -> int:
             "null_runs": communities["null_runs"],
             "null_method": communities["null"]["method"],
         },
-        "communities_source": "docs/weeks/week05/data/communities.json",
+        "communities_source": "public/weeks/week05/data/communities.json",
     }
 
     check(OUT, payload)

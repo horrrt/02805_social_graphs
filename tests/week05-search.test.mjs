@@ -6,12 +6,13 @@ import { readFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { block, flatten } from "./week04-html.mjs";
+import { builtPage, pageScripts } from "./built-page.mjs";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const read = (name) => readFileSync(join(ROOT, name), "utf8");
-const d = JSON.parse(read("docs/weeks/week05/data/search.json"));
-const live = JSON.parse(read("docs/weeks/week05/data/search_live.json"));
-const html = read("docs/weeks/week05/index.html");
+const d = JSON.parse(read("public/weeks/week05/data/search.json"));
+const live = JSON.parse(read("public/weeks/week05/data/search_live.json"));
+const html = builtPage("out/weeks/week05/index.html");
 const s = flatten(block(html, "search"));
 const has = (t) => assert.ok(s.includes(t), `section 3 should say "${t}"`);
 const count = (n) => n.toLocaleString("en-US");
@@ -69,5 +70,5 @@ test("section 3 quotes search.json", () => {
 test("the search box runs the scored stopword-free model", () => {
   assert.equal(live.n_terms, d.tokenisation.n_terms_nostop, "one vocabulary for the box and the table");
   assert.equal(live.n_pages, d.tokenisation.n_pages);
-  assert.match(html, /week05-search\.js\?v=\d+/);
+  assert.ok(pageScripts("week05").includes("week05-search.js"), "the page runs week05-search.js");
 });

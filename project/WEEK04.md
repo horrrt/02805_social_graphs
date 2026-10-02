@@ -1,7 +1,7 @@
 # Week 4 · Who hires America's foreign workers?
 
 The plan for the Week 4 post (communities and backbones), proposed 23 September 2026. The post goes in
-[docs/weeks/week04/index.html](../docs/weeks/week04/index.html); every number comes from a script in
+[src/app/(week04)/weeks/week04/page.tsx](../src/app/(week04)/weeks/week04/page.tsx); every number comes from a script in
 `analysis/`.
 
 ## The story
@@ -175,7 +175,7 @@ Layout differences the loader already handles:
 
 | Job | Owner |
 | --- | --- |
-| Put the page live: lobby card, `docs/assets/js/weeks.js`, the site test, remove `noindex` | Àngela |
+| Put the page live: lobby card, `src/scripts/weeks.js`, the site test, remove `noindex` | Àngela |
 | Opening and closing sections, AI-use note | Niklas |
 | Teams post, feedback on another group, final read against the brief | Gyula |
 
@@ -243,7 +243,7 @@ contents order. "Data and methods" (`#evidence`) comes last, with no contents li
 of every "Data and methods" link. Only one of the six is open at a time. Section 3's first-round
 questions now sit in three boxes: `#who-q2` and `#who-q3` under Outsourcing, `#who-q4` under Five years.
 
-`docs/assets/js/week04-cut.js` opens the right topic and box for any in-page link. Its `ALIAS` table
+`src/scripts/week04-cut.js` opens the right topic and box for any in-page link. Its `ALIAS` table
 keeps the old anchors working: `#cut-place`, `#cut-jobs` and `#cut-who` open their topics,
 `#who-first-round` opens `#who-q2`, `#cut-more` lands on the catalogue and `#place-inspector` on
 `#place-start`. `tests/week04-prose.test.mjs` pins each box's numbers and fails if a box leaves the deep

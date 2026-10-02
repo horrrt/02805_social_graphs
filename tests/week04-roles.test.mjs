@@ -1,4 +1,4 @@
-// Pins docs/weeks/week04/data/roles.json (the "Who filed for which roles" box)
+// Pins public/weeks/week04/data/roles.json (the "Who filed for which roles" box)
 // to years.json's certified totals and week04_staffing.json's placed share, and
 // checks each split's own top-N bookkeeping, so a rerun that drops a series or
 // loses a year fails here instead of silently going stale on the page.
@@ -8,13 +8,14 @@ import { readFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { block } from "./week04-html.mjs";
+import { builtPage, pageScripts, pageStyles } from "./built-page.mjs";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const json = (rel) => JSON.parse(readFileSync(join(ROOT, rel), "utf8"));
-const html = () => readFileSync(join(ROOT, "docs/weeks/week04/index.html"), "utf8");
+const html = () => builtPage("out/weeks/week04/index.html");
 
-const roles = json("docs/weeks/week04/data/roles.json");
-const years = json("docs/weeks/week04/data/years.json");
+const roles = json("public/weeks/week04/data/roles.json");
+const years = json("public/weeks/week04/data/years.json");
 const staffing = json("analysis/week04_staffing.json");
 
 const YEARS = ["2022", "2023", "2024", "2025", "2026"];
@@ -151,6 +152,6 @@ test("index.html has the roles box in the five-years topic, after the years box"
   const yearsAt = topic.indexOf('id="cut-years"');
   const rolesAt = topic.indexOf('id="cut-roles"');
   assert.ok(yearsAt > -1 && rolesAt > yearsAt, "the roles box must follow the years box inside the topic");
-  assert.match(doc, /week04-roles\.css/);
-  assert.match(doc, /week04-roles\.js/);
+  assert.ok(pageStyles("week04").includes("week04-roles.css"), "the page imports week04-roles.css");
+  assert.ok(pageScripts("week04").includes("week04-roles.js"), "the page runs week04-roles.js");
 });

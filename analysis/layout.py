@@ -1,4 +1,4 @@
-"""Node positions for the network views (networkView() in docs/assets/js/graph.js).
+"""Node positions for the network views (networkView() in src/scripts/graph.js).
 
 A view takes x from 0 to 1 and y from 0 to its ratio, so a layout keeps its
 shape. Every layout here is seeded and built on subgraphs in sorted order, so a

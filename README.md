@@ -17,7 +17,8 @@ and limitations.
 
 ## Inside the repository
 
-- `docs/`: the website and its visualizations, data and shared assets.
+- `src/`: the Next.js website, interactive visualizations and styles.
+- `public/`: datasets, images, fonts and vendored libraries served by the website.
 - `analysis/` and `notebooks/`: reproducible analyses and course exercises.
 - `data/` and `scripts/`: datasets, collection tools and exporters.
 - `tests/`: checks for the website, data and documentation.
