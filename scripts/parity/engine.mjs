@@ -136,7 +136,7 @@ async function settleAction(page, state) {
 
 const LOADS = new Set(["reload", "back"]);
 export function stepKind(step) {
-  return Object.keys(step).find((k) => k !== "label") ?? "?";
+  return Object.keys(step).find((k) => k !== "label" && k !== "expectError") ?? "?";
 }
 export function stepLabel(step) {
   if (step.label) return step.label;
@@ -461,7 +461,7 @@ export async function snapshot(page, state, { hashTarget = null, screenshot = tr
 
 /**
  * Runs scenarios on one side. Returns records [{k, scenario, label, snap,
- * error, value, flat, els, png, marks}] for steps inside the range.
+ * error, expectError, value, flat, els, png, marks}] for steps inside the range.
  */
 export async function runSide(browser, side, { scenarios, range, functions, opts, snap = {}, kStart = 1 }) {
   const records = [];
@@ -485,6 +485,7 @@ export async function runSide(browser, side, { scenarios, range, functions, opts
         const step = sc.steps[i];
         const kind = stepKind(step);
         const rec = { k: idx, scenario: sc.name, label: stepLabel(step), snap: false };
+        if (step.expectError) rec.expectError = true;
         try {
           const value = await runStep(page, state, step, ctx);
           if (value !== undefined) rec.value = JSON.stringify(value);

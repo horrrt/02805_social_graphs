@@ -78,11 +78,16 @@ try {
       const bs = baseMaps.map((m) => m.get(h.k)).filter(Boolean);
       const prefix = `${h.scenario}/${h.k}/`;
       const diffs = bs.length ? compareStep(bs, h, { known, prefix, reportDir: join(REPORT_DIR, page) }) : [{ key: `${prefix}missing`, base: null, head: "step ran on head only" }];
+      // A step that throws on base exercised nothing, even when head throws the
+      // same way: a stale or mistyped selector. It fails unless it says
+      // expectError. Known entries cannot mask it.
+      const baseError = bs.find((b) => b.error)?.error;
+      if (baseError && !h.expectError) diffs.unshift({ key: `${prefix}base-step-error`, base: baseError, head: h.error ?? null });
       const active = diffs.filter((d) => !d.known);
       if (active.length) failed = true;
       const status = active.length ? `DIFF ${active.length}` : "ok";
       const knownNote = diffs.length > active.length ? ` (${diffs.length - active.length} known)` : "";
-      console.log(`[${h.k}/${N}] ${page} ${h.scenario} ${h.label} ${status}${knownNote}${h.error ? ` · step error: ${h.error}` : ""}`);
+      console.log(`[${h.k}/${N}] ${page} ${h.scenario} ${h.label} ${status}${knownNote}${baseError && !h.expectError ? " · base step error" : h.error ? ` · step error: ${h.error}` : ""}`);
       for (const d of active.slice(0, 5)) {
         console.log(`    ${d.key}: ${String(d.base).slice(0, 100)} -> ${String(d.head).slice(0, 100)}`);
         if (d.detail) console.log(`      ${JSON.stringify(d.detail).slice(0, 400)}`);

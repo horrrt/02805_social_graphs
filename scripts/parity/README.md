@@ -99,7 +99,7 @@ difference. `--report` writes JSON with the first 20 differences per step.
 | `--faults a,b` | Define `globalThis.__PARITY_FAULTS__ = new Set([...])` on both sides. |
 | `--profile slow` | Add 300 ms latency to every data and vendor request. |
 | `--fonts-delay ms` | Delay every font request. |
-| `--runs n` | Run base n times (the last with `--profile slow`). A key that varied between base runs passes when head equals any of them. |
+| `--runs n` | Run base n times (the last with `--profile slow`). A key that varied between base runs passes when head equals any of them. A step that throws in any base run, the slow one included, is a `base-step-error`. |
 | `--check-known page` | Fail if an active known entry outside `base.json` has neither `approvedBug` nor `fp`. Alone, it runs nothing else. |
 
 ### Browser and settle
@@ -142,6 +142,11 @@ A scenario module exports `default [{ name, url, steps }]`; `url` is relative to
 `convertToPixel` gives, `audit03(options)` injects `scripts/audit_week03.js` and returns `auditWeek03()`, and
 `storageEvent(key, value?)` fires the `storage` event another tab would send. Any step may carry a `label`.
 
+A step that throws on base fails the run as `base-step-error`, even when head throws the same error: it
+exercised nothing, so the selector or function name is probably stale or mistyped. A step that should throw
+says so with `expectError: true`; its error is then compared like any other value. No known entry masks
+`base-step-error`.
+
 ### Snapshot
 
 Every snapshot records, and the comparison checks:
@@ -161,7 +166,8 @@ Every snapshot records, and the comparison checks:
 | `body` | sha1 of the canonical `<body>`; when it differs, up to 20 differing elements without ids, as paths from the nearest id ancestor (`#main > section:nth-of-type(3) > p:nth-of-type(2)`). |
 | `pixels` | A viewport screenshot diffed with pixelmatch (threshold 0.1), WebGL hosts masked; fails above 0.1% of pixels. The diff image lands in `scripts/parity/reports/<page>/`. |
 | `tooltip:#host` | At each scenario's end, for every ECharts instance with series: `showTip` on series 0, item 0, the tooltip text, `hideTip`. |
-| `step-error`, `evaluate` | A step that throws, and `{evaluate}` results. |
+| `step-error`, `evaluate` | A step that throws on one side only, and `{evaluate}` results. |
+| `base-step-error` | A step without `expectError` that throws on base (runtime.mjs only; `faults.mjs` aborts files on purpose). |
 
 `performance` marks named `island:*` print under head's steps and are not compared.
 
@@ -281,6 +287,22 @@ A known file is an array of entries:
 
 `base.json` holds main's own nondeterminism (P0b). Any other active entry needs `approvedBug` or `fp`;
 `runtime.mjs --check-known <page>` fails otherwise.
+
+### Nondeterminism P0a found, for P0b's base.json
+
+P0a ran `runtime.mjs` load-only with main's export on both sides (`--base` and `--head` the same tree). Every
+page passed except these two, which P0b records in `known/<page>/base.json` or removes from the comparison:
+
+- **week04, every run.** `load/*/canvas:#chart-arcs > div:nth-of-type(1) > canvas:nth-of-type(2)`: the
+  lines-effect layer of the arc chart (`effect:` in `week04-place.js`) animates without end, also under reduced
+  motion, so its `toDataURL()` hash differs on every snapshot. `--runs 3` does not help: no two base runs agree.
+  The chart's option hash in `id:#chart-arcs` still covers what it draws.
+- **week05, about half the runs.** `hoverTips()` (`tips.js`, called for every `[id^="chart-"]` host in
+  `week05-frame.js`) appends a hidden `div.kit-tip` to each host, and the chart drawn into the host lands before
+  or after it depending on timing. Only the tip's position moves (seen with `PARITY_DUMP`). In nine runs the
+  keys were `load/*/id:#chart-relations-crossing`, `#relations-figure`, `#relations`, `#chart-copying-linked`,
+  `#chart-copying-network`, `#copying-surprise`, `#copying-figure`, `#copying`, `#main` and `body`; any other
+  `#chart-*` host on the page and its id ancestors can flip the same way.
 
 A faults file maps a file path (relative to the base path, or a bare file name) to what may differ when that
 file fails to load:
