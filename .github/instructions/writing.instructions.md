@@ -19,7 +19,7 @@ Write for a reader with no network-science background who arrives on this page d
 - Skip "not X, it's Y" contrasts. State Y.
 - Vary sentence length. Two examples usually beat three.
 - Keep the group's own notes and AI-use disclosure. Do not invent a reaction, quote or result.
-- Change only the prose you were asked to change. Other members own their sections (see `WEEK04.md`).
+- Change only the prose you were asked to change. Other members own their sections (see `project/WEEK04.md`).
 - Move prose between layouts word for word, then check that every sentence of the old page survives.
 - Use a qualitative word for a comparison ("about twice", "comes close") only when a test holds it to the
   number it describes.

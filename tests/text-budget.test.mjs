@@ -1,9 +1,9 @@
 // Holds every post from Week 4 on, and the template, to Week 4's density: a
 // card shows its answer, baseline and main limit, and everything else opens
 // from a drawer. Week 4 cards show 41 to 230 words before any click; Week 5
-// shipped cards of 415 to 702 because nothing measured them (POST_GUIDE.md,
+// shipped cards of 415 to 702 because nothing measured them (project/POST_GUIDE.md,
 // "Keep the card short"). Reads the HTML as text, so words a page script draws
-// are not counted: POST_GUIDE.md gives the browser check for those.
+// are not counted: project/POST_GUIDE.md gives the browser check for those.
 import test from "node:test";
 import assert from "node:assert/strict";
 import { existsSync, readdirSync, readFileSync } from "node:fs";
