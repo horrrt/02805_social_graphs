@@ -39,6 +39,11 @@ async function acquire() {
     if (existsSync(join(done, "index.html"))) finish();
     try {
       mkdirSync(lock);
+      // Another caller may have finished between the check above and the lock.
+      if (existsSync(join(done, "index.html"))) {
+        rmSync(lock, { recursive: true, force: true });
+        finish();
+      }
       return;
     } catch (e) {
       if (e.code !== "EEXIST") throw e;

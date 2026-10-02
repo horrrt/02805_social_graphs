@@ -7,7 +7,11 @@
     "build": "next build",
     "preview": "node scripts/serve-out.mjs",
     "typecheck": "tsc --noEmit",
-    "test": "next build && node --test 'tests/*.test.mjs'"
+    "test": "next build && node --test 'tests/*.test.mjs'",
+    "parity:build": "node scripts/parity/build-ref.mjs",
+    "parity:static": "node scripts/parity/static.mjs",
+    "parity:runtime": "node scripts/parity/runtime.mjs",
+    "parity:faults": "node scripts/parity/faults.mjs"
   },
   "engines": {
     "node": ">=20.9"
