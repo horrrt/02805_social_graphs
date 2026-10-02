@@ -1,331 +1,6 @@
 [
  {
   "page": "week03",
-  "path": "#year-slider",
-  "id": "year-slider",
-  "selector": "#year-slider",
-  "kinds": [
-   "attr:max",
-   "attr:name",
-   "attr:type",
-   "attr:value",
-   "listen:input",
-   "listen:invalid",
-   "lookup"
-  ],
-  "count": 144,
-  "scenarios": [
-   "base-atlas-b",
-   "base-atlas",
-   "base-canvas",
-   "base-d3",
-   "base-deck",
-   "base-drawers",
-   "base-echarts",
-   "base-globe-b",
-   "base-globe",
-   "base-style"
-  ]
- },
- {
-  "page": "week03",
-  "path": "#tails > div:nth-of-type(1) > div:nth-of-type(2) > div:nth-of-type(2) > details:nth-of-type(1)",
-  "id": null,
-  "selector": null,
-  "kinds": [
-   "listen:toggle"
-  ],
-  "count": 12,
-  "scenarios": [
-   "base-atlas-b",
-   "base-atlas",
-   "base-canvas",
-   "base-deck",
-   "base-drawers",
-   "base-echarts",
-   "base-globe-b",
-   "base-globe",
-   "base-style"
-  ]
- },
- {
-  "page": "week03",
-  "path": "#edge-origin",
-  "id": "edge-origin",
-  "selector": "#edge-origin",
-  "kinds": [
-   "childList",
-   "listen:change",
-   "listen:invalid",
-   "lookup"
-  ],
-  "count": 135,
-  "scenarios": [
-   "base-atlas-b",
-   "base-atlas",
-   "base-canvas",
-   "base-d3",
-   "base-deck",
-   "base-drawers",
-   "base-echarts",
-   "base-globe-b",
-   "base-globe",
-   "base-style"
-  ]
- },
- {
-  "page": "week03",
-  "path": "#edge-dest",
-  "id": "edge-dest",
-  "selector": "#edge-dest",
-  "kinds": [
-   "childList",
-   "listen:change",
-   "listen:invalid",
-   "lookup"
-  ],
-  "count": 135,
-  "scenarios": [
-   "base-atlas-b",
-   "base-atlas",
-   "base-canvas",
-   "base-d3",
-   "base-deck",
-   "base-drawers",
-   "base-echarts",
-   "base-globe-b",
-   "base-globe",
-   "base-style"
-  ]
- },
- {
-  "page": "week03",
-  "path": "#dk-country",
-  "id": "dk-country",
-  "selector": "#dk-country",
-  "kinds": [
-   "childList",
-   "listen:change",
-   "listen:invalid",
-   "lookup"
-  ],
-  "count": 98,
-  "scenarios": [
-   "base-atlas-b",
-   "base-atlas",
-   "base-canvas",
-   "base-d3",
-   "base-deck",
-   "base-drawers",
-   "base-echarts",
-   "base-globe-b",
-   "base-globe",
-   "base-style"
-  ]
- },
- {
-  "page": "week03",
-  "path": "#q-ring-year",
-  "id": "q-ring-year",
-  "selector": "#q-ring-year",
-  "kinds": [
-   "attr:aria-valuetext",
-   "attr:data-ready",
-   "attr:max",
-   "attr:name",
-   "attr:type",
-   "attr:value",
-   "listen:input",
-   "listen:invalid",
-   "lookup"
-  ],
-  "count": 45,
-  "scenarios": [
-   "base-atlas-b",
-   "base-atlas",
-   "base-canvas",
-   "base-deck",
-   "base-drawers",
-   "base-echarts",
-   "base-globe-b",
-   "base-globe",
-   "base-style"
-  ]
- },
- {
-  "page": "week03",
-  "path": "#questions",
-  "id": "questions",
-  "selector": "#questions",
-  "kinds": [
-   "attr:open",
-   "listen:toggle",
-   "lookup"
-  ],
-  "count": 43,
-  "scenarios": [
-   "base-atlas-b",
-   "base-atlas",
-   "base-canvas",
-   "base-d3",
-   "base-deck",
-   "base-drawers",
-   "base-echarts",
-   "base-globe-b",
-   "base-globe",
-   "base-style"
-  ]
- },
- {
-  "page": "week03",
-  "path": "#cliques",
-  "id": "cliques",
-  "selector": null,
-  "kinds": [
-   "attr:open",
-   "listen:toggle"
-  ],
-  "count": 13,
-  "scenarios": [
-   "base-atlas-b",
-   "base-atlas",
-   "base-canvas",
-   "base-deck",
-   "base-drawers",
-   "base-echarts",
-   "base-globe-b",
-   "base-globe",
-   "base-style"
-  ]
- },
- {
-  "page": "week03",
-  "path": "#v-graph-year",
-  "id": "v-graph-year",
-  "selector": "#v-graph-year",
-  "kinds": [
-   "attr:aria-valuetext",
-   "attr:data-ready",
-   "attr:max",
-   "attr:name",
-   "attr:type",
-   "attr:value",
-   "listen:input",
-   "listen:invalid",
-   "lookup"
-  ],
-  "count": 46,
-  "scenarios": [
-   "base-atlas-b",
-   "base-atlas",
-   "base-canvas",
-   "base-deck",
-   "base-drawers",
-   "base-echarts",
-   "base-globe-b",
-   "base-globe",
-   "base-style"
-  ]
- },
- {
-  "page": "week03",
-  "path": "#v-graph-floor",
-  "id": "v-graph-floor",
-  "selector": "#v-graph-floor",
-  "kinds": [
-   "attr:data-ready",
-   "attr:name",
-   "attr:type",
-   "attr:value",
-   "listen:input",
-   "listen:invalid",
-   "lookup"
-  ],
-  "count": 43,
-  "scenarios": [
-   "base-atlas-b",
-   "base-atlas",
-   "base-canvas",
-   "base-deck",
-   "base-drawers",
-   "base-echarts",
-   "base-globe-b",
-   "base-globe",
-   "base-style"
-  ]
- },
- {
-  "page": "week03",
-  "path": "#v-asylum-origin",
-  "id": "v-asylum-origin",
-  "selector": "#v-asylum-origin",
-  "kinds": [
-   "attr:data-ready",
-   "childList",
-   "listen:change",
-   "listen:invalid",
-   "lookup"
-  ],
-  "count": 17,
-  "scenarios": [
-   "base-atlas-b",
-   "base-atlas",
-   "base-canvas",
-   "base-deck",
-   "base-drawers",
-   "base-echarts",
-   "base-globe-b",
-   "base-globe",
-   "base-style"
-  ]
- },
- {
-  "page": "week03",
-  "path": "#views",
-  "id": "views",
-  "selector": "#views",
-  "kinds": [
-   "attr:open",
-   "listen:toggle",
-   "lookup"
-  ],
-  "count": 43,
-  "scenarios": [
-   "base-atlas-b",
-   "base-atlas",
-   "base-canvas",
-   "base-d3",
-   "base-deck",
-   "base-drawers",
-   "base-echarts",
-   "base-globe-b",
-   "base-globe",
-   "base-style"
-  ]
- },
- {
-  "page": "week03",
-  "path": "#methods-drawer",
-  "id": "methods-drawer",
-  "selector": null,
-  "kinds": [
-   "listen:toggle"
-  ],
-  "count": 12,
-  "scenarios": [
-   "base-atlas-b",
-   "base-atlas",
-   "base-canvas",
-   "base-deck",
-   "base-drawers",
-   "base-echarts",
-   "base-globe-b",
-   "base-globe",
-   "base-style"
-  ]
- },
- {
-  "page": "week03",
   "path": "#style-trigger",
   "id": "style-trigger",
   "selector": "#style-trigger",
@@ -455,6 +130,34 @@
    "lookup"
   ],
   "count": 34,
+  "scenarios": [
+   "base-atlas-b",
+   "base-atlas",
+   "base-canvas",
+   "base-d3",
+   "base-deck",
+   "base-drawers",
+   "base-echarts",
+   "base-globe-b",
+   "base-globe",
+   "base-style"
+  ]
+ },
+ {
+  "page": "week03",
+  "path": "#year-slider",
+  "id": "year-slider",
+  "selector": "#year-slider",
+  "kinds": [
+   "attr:max",
+   "attr:name",
+   "attr:type",
+   "attr:value",
+   "listen:input",
+   "listen:invalid",
+   "lookup"
+  ],
+  "count": 147,
   "scenarios": [
    "base-atlas-b",
    "base-atlas",
@@ -859,6 +562,56 @@
  },
  {
   "page": "week03",
+  "path": "#edge-origin",
+  "id": "edge-origin",
+  "selector": "#edge-origin",
+  "kinds": [
+   "childList",
+   "listen:change",
+   "listen:invalid",
+   "lookup"
+  ],
+  "count": 136,
+  "scenarios": [
+   "base-atlas-b",
+   "base-atlas",
+   "base-canvas",
+   "base-d3",
+   "base-deck",
+   "base-drawers",
+   "base-echarts",
+   "base-globe-b",
+   "base-globe",
+   "base-style"
+  ]
+ },
+ {
+  "page": "week03",
+  "path": "#edge-dest",
+  "id": "edge-dest",
+  "selector": "#edge-dest",
+  "kinds": [
+   "childList",
+   "listen:change",
+   "listen:invalid",
+   "lookup"
+  ],
+  "count": 136,
+  "scenarios": [
+   "base-atlas-b",
+   "base-atlas",
+   "base-canvas",
+   "base-d3",
+   "base-deck",
+   "base-drawers",
+   "base-echarts",
+   "base-globe-b",
+   "base-globe",
+   "base-style"
+  ]
+ },
+ {
+  "page": "week03",
   "path": "#edge-kind",
   "id": "edge-kind",
   "selector": "#edge-kind",
@@ -935,6 +688,31 @@
    "lookup"
   ],
   "count": 96,
+  "scenarios": [
+   "base-atlas-b",
+   "base-atlas",
+   "base-canvas",
+   "base-d3",
+   "base-deck",
+   "base-drawers",
+   "base-echarts",
+   "base-globe-b",
+   "base-globe",
+   "base-style"
+  ]
+ },
+ {
+  "page": "week03",
+  "path": "#dk-country",
+  "id": "dk-country",
+  "selector": "#dk-country",
+  "kinds": [
+   "childList",
+   "listen:change",
+   "listen:invalid",
+   "lookup"
+  ],
+  "count": 99,
   "scenarios": [
    "base-atlas-b",
    "base-atlas",
@@ -2414,6 +2192,54 @@
  },
  {
   "page": "week03",
+  "path": "#questions",
+  "id": "questions",
+  "selector": "#questions",
+  "kinds": [
+   "attr:open",
+   "listen:toggle",
+   "lookup"
+  ],
+  "count": 44,
+  "scenarios": [
+   "base-atlas-b",
+   "base-atlas",
+   "base-canvas",
+   "base-d3",
+   "base-deck",
+   "base-drawers",
+   "base-echarts",
+   "base-globe-b",
+   "base-globe",
+   "base-style"
+  ]
+ },
+ {
+  "page": "week03",
+  "path": "#views",
+  "id": "views",
+  "selector": "#views",
+  "kinds": [
+   "attr:open",
+   "listen:toggle",
+   "lookup"
+  ],
+  "count": 44,
+  "scenarios": [
+   "base-atlas-b",
+   "base-atlas",
+   "base-canvas",
+   "base-d3",
+   "base-deck",
+   "base-drawers",
+   "base-echarts",
+   "base-globe-b",
+   "base-globe",
+   "base-style"
+  ]
+ },
+ {
+  "page": "week03",
   "path": "#map-toggle > button:nth-of-type(2)",
   "id": null,
   "selector": "button[data-layer]",
@@ -2629,6 +2455,173 @@
    "base-deck",
    "base-echarts",
    "base-globe"
+  ]
+ },
+ {
+  "page": "week03",
+  "path": "#tails > div:nth-of-type(1) > div:nth-of-type(2) > div:nth-of-type(2) > details:nth-of-type(1)",
+  "id": null,
+  "selector": null,
+  "kinds": [
+   "listen:toggle"
+  ],
+  "count": 13,
+  "scenarios": [
+   "base-canvas",
+   "base-d3",
+   "base-deck",
+   "base-drawers",
+   "base-echarts",
+   "base-globe-b",
+   "base-globe",
+   "base-style"
+  ]
+ },
+ {
+  "page": "week03",
+  "path": "#q-ring-year",
+  "id": "q-ring-year",
+  "selector": null,
+  "kinds": [
+   "attr:aria-valuetext",
+   "attr:data-ready",
+   "attr:max",
+   "attr:name",
+   "attr:type",
+   "attr:value",
+   "listen:input",
+   "listen:invalid",
+   "lookup"
+  ],
+  "count": 48,
+  "scenarios": [
+   "base-canvas",
+   "base-d3",
+   "base-deck",
+   "base-drawers",
+   "base-echarts",
+   "base-globe-b",
+   "base-globe",
+   "base-style"
+  ]
+ },
+ {
+  "page": "week03",
+  "path": "#cliques",
+  "id": "cliques",
+  "selector": null,
+  "kinds": [
+   "attr:open",
+   "listen:toggle"
+  ],
+  "count": 14,
+  "scenarios": [
+   "base-canvas",
+   "base-d3",
+   "base-deck",
+   "base-drawers",
+   "base-echarts",
+   "base-globe-b",
+   "base-globe",
+   "base-style"
+  ]
+ },
+ {
+  "page": "week03",
+  "path": "#v-graph-year",
+  "id": "v-graph-year",
+  "selector": null,
+  "kinds": [
+   "attr:aria-valuetext",
+   "attr:data-ready",
+   "attr:max",
+   "attr:name",
+   "attr:type",
+   "attr:value",
+   "listen:input",
+   "listen:invalid",
+   "lookup"
+  ],
+  "count": 49,
+  "scenarios": [
+   "base-canvas",
+   "base-d3",
+   "base-deck",
+   "base-drawers",
+   "base-echarts",
+   "base-globe-b",
+   "base-globe",
+   "base-style"
+  ]
+ },
+ {
+  "page": "week03",
+  "path": "#v-graph-floor",
+  "id": "v-graph-floor",
+  "selector": null,
+  "kinds": [
+   "attr:data-ready",
+   "attr:name",
+   "attr:type",
+   "attr:value",
+   "listen:input",
+   "listen:invalid",
+   "lookup"
+  ],
+  "count": 46,
+  "scenarios": [
+   "base-canvas",
+   "base-d3",
+   "base-deck",
+   "base-drawers",
+   "base-echarts",
+   "base-globe-b",
+   "base-globe",
+   "base-style"
+  ]
+ },
+ {
+  "page": "week03",
+  "path": "#v-asylum-origin",
+  "id": "v-asylum-origin",
+  "selector": null,
+  "kinds": [
+   "attr:data-ready",
+   "childList",
+   "listen:change",
+   "listen:invalid",
+   "lookup"
+  ],
+  "count": 18,
+  "scenarios": [
+   "base-canvas",
+   "base-d3",
+   "base-deck",
+   "base-drawers",
+   "base-echarts",
+   "base-globe-b",
+   "base-globe",
+   "base-style"
+  ]
+ },
+ {
+  "page": "week03",
+  "path": "#methods-drawer",
+  "id": "methods-drawer",
+  "selector": null,
+  "kinds": [
+   "listen:toggle"
+  ],
+  "count": 13,
+  "scenarios": [
+   "base-canvas",
+   "base-d3",
+   "base-deck",
+   "base-drawers",
+   "base-echarts",
+   "base-globe-b",
+   "base-globe",
+   "base-style"
   ]
  },
  {

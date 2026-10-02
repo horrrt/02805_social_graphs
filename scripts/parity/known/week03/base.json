@@ -53,7 +53,7 @@
  },
  {
   "key": "w3-echarts-audit/1/evaluate:rows",
-  "reason": "Main's audit03 rows under ?variant=echarts (KB06), kept for reference; the key matches no snapshot key, so the entry masks nothing. On main the plain audit03 throws at its click-to-select checks: main has no #prestige-ec, and ECharts 5.5.1's getInstanceByDom(null) throws TypeError: Cannot read properties of null (reading 'getAttribute'). The w3-echarts-audit scenario compares that error (expectError) and then runs audit03Rows (scenarios/week03/lib.mjs), which returns undefined for a null host as the audit expects: on main it gives 49 rows and 0 failures at this commit. Head is compared with main's rows and error, never with all-pass.",
+  "reason": "Main's audit03 rows under ?variant=echarts (KB06), kept for reference; the key matches no snapshot key, so the entry masks nothing. On main the plain audit03 throws at its click-to-select checks: main has no #prestige-ec, and ECharts 5.5.1's getInstanceByDom(null) throws TypeError: Cannot read properties of null (reading 'getAttribute'). The w3-echarts-audit scenario compares that error (expectError) and then runs audit03Rows (scenarios/week03/lib.mjs), which returns undefined for a null host as the audit expects: on main it gives 49 rows and 0 failures at 7978c8a, as at fed3c83. Head is compared with main's rows and error, never with all-pass.",
   "approvedBug": "KB06",
   "failingRows": [],
   "plainAuditError": "TypeError: Cannot read properties of null (reading 'getAttribute')"
