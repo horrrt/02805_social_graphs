@@ -1,0 +1,20 @@
+import { chromium } from "playwright";
+import { launch, serve } from "./lib.mjs";
+import { openPage, settle } from "./engine.mjs";
+const [out, hash, scope] = process.argv.slice(2);
+const srv = await serve(out);
+const browser = await launch(chromium);
+const { page, state } = await openPage(browser, {});
+state.origin = new URL(srv.base).origin;
+await page.goto(srv.base + "weeks/week04/" + hash, { waitUntil: "load" });
+await settle(page, state);
+await page.waitForTimeout(1500);
+const info = await page.evaluate((scope) => {
+  const root = document.querySelector(scope);
+  if (!root) return ["NO " + scope];
+  const d = (el) => { const r = el.getBoundingClientRect(); return `${el.tagName.toLowerCase()}${el.id ? "#" + el.id : ""}${typeof el.className === "string" && el.className ? "." + el.className.trim().split(/\s+/).join(".") : ""}${[...el.attributes].filter(a=>a.name.startsWith("data-")||a.name==="aria-label"||a.name==="aria-pressed"||a.name==="type").map(a=>`[${a.name}=${a.value.slice(0,24)}]`).join("")} ${r.width>0&&r.height>0?"vis":"hid"} "${(el.textContent||"").replace(/\s+/g," ").trim().slice(0,40)}"${el.tagName==="SELECT"?" opts="+[...el.options].map(o=>o.value).slice(0,6).join("|"):""} pid=${el.parentElement.closest("[id]")?.id}`; };
+  return [`open=${root.open}`, ...[...root.querySelectorAll("button, select, input, summary, a[href], [tabindex], [_echarts_instance_]")].map(d)];
+}, scope);
+console.log(info.join("\n"));
+console.log("CONSOLE", state.console.join("\n"));
+await browser.close(); srv.close();
