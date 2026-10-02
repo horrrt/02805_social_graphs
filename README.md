@@ -1,7 +1,7 @@
 # Log–Log Legends
 
 An interactive network science project for DTU 02805 Social Graphs and
-Interactions, autumn 2026, by Àngela Buxó, Gyula Kürthy and Niklas Johansen.
+Interactions, autumn 2026, by Gyula Kürthy, Àngela Buxó and Niklas Johansen.
 
 **[Explore the website](https://horrrt.github.io/02805_social_graphs/)**
 
