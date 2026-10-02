@@ -8,7 +8,7 @@ applyTo: "src/**,public/**,tests/**"
 
 - The site is a Next.js static export (`output: "export"`). Pages are JSX in `src/app/(<page>)/`, one route
   group per page; chart code is plain ES modules in `src/scripts/`; stylesheets are in `src/styles/`. Data,
-  vendored libraries and images stay in `public/`. README.md, "How the site is built", has the details.
+  vendored libraries and images stay in `public/`. project/DEVELOPMENT.md, "How the site is built", has the details.
 - Chart scripts draw into server-rendered markup after hydration: add a page's scripts to its entry module in
   `src/scripts/entries/`, never as a `<script>` tag in JSX. Keep links as plain `<a href>`, not `next/link`,
   so each page loads fresh and its scripts run once.
@@ -31,7 +31,11 @@ applyTo: "src/**,public/**,tests/**"
 - Build every post's cards in Week 4's form: question and answer, one paragraph beside "What to notice", the
   figure, then drawers (Method with the limitation, More numbers, What we read in the pages). No slot labels or
   open limitation blocks. `tests/text-budget.test.mjs` fails a card over 350 words before a click
-  (POST_GUIDE.md, "Keep the card short").
+  (project/POST_GUIDE.md, "Keep the card short").
+- Keep pages readable without JavaScript: put the prose, numbers and captions in the JSX, and give every
+  `<canvas>` an `aria-label` (with `role="img"`). Browser agents read the accessibility tree, and crawlers and
+  the Markdown copies from `scripts/agent-files.mjs` see only the server-rendered HTML. A new live page's
+  layout takes its metadata from `pageMeta()` and `<JsonLd>` in `src/components/agentMeta.tsx`.
 - Make every disclosure, popover and control work from the keyboard. Escape closes a popover.
 - Do not add `?v=` cache busters. Next hashes the code and styles it bundles, and `asset()` stamps every
   file under `public/` with the deploy's commit.
