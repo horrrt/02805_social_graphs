@@ -1,6 +1,6 @@
 """Render the source catalogue from scripts/migration/sources.py.
 
-Writes MIGRATION_DATA_CATALOGUE.md for reading and data/migration_sources.tsv
+Writes project/MIGRATION_DATA_CATALOGUE.md for reading and data/migration_sources.tsv
 for filtering. Run it after any edit to sources.py; never edit the outputs.
 
     python scripts/migration/render_catalogue.py
@@ -17,8 +17,8 @@ sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent))
 import sources
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent.parent
-DOC = ROOT / "MIGRATION_DATA_CATALOGUE.md"
-QUESTIONS_DOC = ROOT / "MIGRATION_QUESTIONS.md"
+DOC = ROOT / "project" / "MIGRATION_DATA_CATALOGUE.md"
+QUESTIONS_DOC = ROOT / "project" / "MIGRATION_QUESTIONS.md"
 TSV = ROOT / "data" / "migration_sources.tsv"
 
 TSV_COLUMNS = ["id", "name", "family", "publisher", "unit", "coverage", "years",
@@ -98,8 +98,8 @@ def render_markdown():
         "against the publisher before a number from it goes in a post.\n"
     )
     out.append(
-        "Machine-readable version: [`data/migration_sources.tsv`](data/migration_sources.tsv). "
-        "Source of truth: [`scripts/migration/sources.py`](scripts/migration/sources.py). "
+        "Machine-readable version: [`data/migration_sources.tsv`](../data/migration_sources.tsv). "
+        "Source of truth: [`scripts/migration/sources.py`](../scripts/migration/sources.py). "
         "Regenerate with `python scripts/migration/render_catalogue.py`.\n"
     )
 
@@ -154,7 +154,7 @@ def render_markdown():
         out.append("| --- | ---: | --- | --- |")
         for row in local:
             columns = ", ".join(f"`{c}`" for c in row["columns"])
-            out.append(f"| [`data/{row['file']}`](data/{row['file']}) | "
+            out.append(f"| [`data/{row['file']}`](../data/{row['file']}) | "
                        f"{row['rows']:,} | {columns} | {row['note']} |")
         out.append("")
 
@@ -296,9 +296,9 @@ def render_questions_page():
         "Four fit week 3. Of those, **Are refugees a different network from "
         "migrants?** is the one to build: it runs on the files already in `data/`, "
         "and the finding is checked in "
-        "[`analysis/week03_country_facts.json`](analysis/week03_country_facts.json), "
+        "[`analysis/week03_country_facts.json`](../analysis/week03_country_facts.json), "
         "written by "
-        "[`analysis/week03_country_networks.py`](analysis/week03_country_networks.py). "
+        "[`analysis/week03_country_networks.py`](../analysis/week03_country_networks.py). "
         "The 2024 migrant stock network and the 2024 refugee network share only 4 of "
         "their top 15 destinations.\n"
     )
@@ -345,9 +345,9 @@ def render_questions_page():
         "be confirmed against the publisher before a number from them goes anywhere.\n"
     )
     out.append(
-        "The list lives in [`scripts/migration/sources.py`](scripts/migration/sources.py) "
+        "The list lives in [`scripts/migration/sources.py`](../scripts/migration/sources.py) "
         "and both documents are generated from it by "
-        "[`scripts/migration/render_catalogue.py`](scripts/migration/render_catalogue.py). "
+        "[`scripts/migration/render_catalogue.py`](../scripts/migration/render_catalogue.py). "
         "Edit the Python, not the Markdown.\n"
     )
     out.append("*Log-Log Legends: \u00c0ngela Bux\u00f3, Gyula K\u00fcrthy, Niklas Johansen.*\n")

@@ -1,7 +1,7 @@
 # Week 4 · Who hires America's foreign workers?
 
 The plan for the Week 4 post (communities and backbones), proposed 23 September 2026. The post goes in
-[docs/weeks/week04/index.html](docs/weeks/week04/index.html); every number comes from a script in
+[docs/weeks/week04/index.html](../docs/weeks/week04/index.html); every number comes from a script in
 `analysis/`.
 
 ## The story

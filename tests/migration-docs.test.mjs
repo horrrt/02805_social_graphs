@@ -21,8 +21,8 @@ const rows = tsv.slice(1).map((line) => {
   return Object.fromEntries(header.map((key, i) => [key, cells[i]]));
 });
 
-const catalogue = read("MIGRATION_DATA_CATALOGUE.md");
-const questions = read("MIGRATION_QUESTIONS.md");
+const catalogue = read("project/MIGRATION_DATA_CATALOGUE.md");
+const questions = read("project/MIGRATION_QUESTIONS.md");
 
 const anchor = (text) =>
   [...text.toLowerCase()]

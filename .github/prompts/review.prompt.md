@@ -18,7 +18,7 @@ Read `git diff origin/main...HEAD` and any uncommitted changes, then check each 
 5. Site: no hex colour in a new JavaScript file, no CDN script, the week 4 `noindex` tag is still there,
    no element ID or route renamed.
 6. Prose: the rules in `.github/instructions/writing.instructions.md`, including no em dashes.
-7. Scope: the change stays inside the section its author owns (see `WEEK04.md` for week 4).
+7. Scope: the change stays inside the section its author owns (see `project/WEEK04.md` for week 4).
 8. Reruns: a changed analysis script gives identical output under `PYTHONHASHSEED=1` and `2`.
 9. Tests: `node --test 'tests/*.test.mjs'` passes, and new calculations have a check.
 

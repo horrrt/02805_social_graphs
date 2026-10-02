@@ -1,7 +1,7 @@
 # Week 5 · The Marvel network gets language
 
 The plan for the Week 5 post (NLP I, "From language to numbers"), set up 30 September 2026. The post goes
-in [docs/weeks/week05/index.html](docs/weeks/week05/index.html); every number comes from a script in
+in [docs/weeks/week05/index.html](../docs/weeks/week05/index.html); every number comes from a script in
 `analysis/`. We use the course's Marvel data and follow the seven openers in exercise 5.9 as the brief
 words them.
 
