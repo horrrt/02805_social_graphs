@@ -42,7 +42,7 @@ With the address normalised, those entries can be deleted and the console compar
 ```
 
 **Why:** on week05, `hoverTips()` adds a hidden `div.kit-tip` to every `[id^="chart-"]` host and the chart lands
-before or after it depending on timing (P0a saw it in about half the load runs; P0b in every scenario).
+before or after it depending on timing (P0a saw it in about half the load runs; P0b in every scenario on `fed3c83`, and in none of three passes on `7978c8a`).
 `known/week05/base.json` therefore masks every chart host, every section and figure holding one, `#main` and
 `body` on every step, so a real change anywhere in week05's markup without its own id goes unseen. With the
 tip walked last, the tree and body hashes stop flipping, and those entries can be deleted (the `text` entry for

@@ -7,13 +7,13 @@
   "kinds": [
    "listen:toggle"
   ],
-  "count": 8,
+  "count": 9,
   "scenarios": [
    "base-controls-b",
    "base-controls",
    "base-hash",
    "base-panels-b",
-   "base-place",
+   "base-panels",
    "base-staffing",
    "base-topics-a",
    "base-topics-b"
@@ -27,13 +27,13 @@
   "kinds": [
    "listen:toggle"
   ],
-  "count": 8,
+  "count": 9,
   "scenarios": [
    "base-controls-b",
    "base-controls",
    "base-hash",
    "base-panels-b",
-   "base-place",
+   "base-panels",
    "base-staffing",
    "base-topics-a",
    "base-topics-b"
@@ -47,13 +47,13 @@
   "kinds": [
    "listen:toggle"
   ],
-  "count": 8,
+  "count": 9,
   "scenarios": [
    "base-controls-b",
    "base-controls",
    "base-hash",
    "base-panels-b",
-   "base-place",
+   "base-panels",
    "base-staffing",
    "base-topics-a",
    "base-topics-b"
@@ -67,13 +67,13 @@
   "kinds": [
    "listen:toggle"
   ],
-  "count": 8,
+  "count": 9,
   "scenarios": [
    "base-controls-b",
    "base-controls",
    "base-hash",
    "base-panels-b",
-   "base-place",
+   "base-panels",
    "base-staffing",
    "base-topics-a",
    "base-topics-b"
@@ -87,13 +87,13 @@
   "kinds": [
    "listen:toggle"
   ],
-  "count": 8,
+  "count": 9,
   "scenarios": [
    "base-controls-b",
    "base-controls",
    "base-hash",
    "base-panels-b",
-   "base-place",
+   "base-panels",
    "base-staffing",
    "base-topics-a",
    "base-topics-b"
@@ -107,13 +107,13 @@
   "kinds": [
    "listen:toggle"
   ],
-  "count": 8,
+  "count": 9,
   "scenarios": [
    "base-controls-b",
    "base-controls",
    "base-hash",
    "base-panels-b",
-   "base-place",
+   "base-panels",
    "base-staffing",
    "base-topics-a",
    "base-topics-b"
@@ -128,12 +128,13 @@
    "attr:open",
    "listen:toggle"
   ],
-  "count": 9,
+  "count": 10,
   "scenarios": [
    "base-controls-b",
    "base-controls",
    "base-hash",
    "base-panels-b",
+   "base-panels",
    "base-place",
    "base-staffing",
    "base-topics-a",
@@ -148,13 +149,13 @@
   "kinds": [
    "listen:toggle"
   ],
-  "count": 8,
+  "count": 9,
   "scenarios": [
    "base-controls-b",
    "base-controls",
    "base-hash",
    "base-panels-b",
-   "base-place",
+   "base-panels",
    "base-staffing",
    "base-topics-a",
    "base-topics-b"
@@ -168,13 +169,13 @@
   "kinds": [
    "listen:toggle"
   ],
-  "count": 8,
+  "count": 9,
   "scenarios": [
    "base-controls-b",
    "base-controls",
    "base-hash",
    "base-panels-b",
-   "base-place",
+   "base-panels",
    "base-staffing",
    "base-topics-a",
    "base-topics-b"
@@ -188,13 +189,13 @@
   "kinds": [
    "listen:toggle"
   ],
-  "count": 8,
+  "count": 9,
   "scenarios": [
    "base-controls-b",
    "base-controls",
    "base-hash",
    "base-panels-b",
-   "base-place",
+   "base-panels",
    "base-staffing",
    "base-topics-a",
    "base-topics-b"
@@ -208,13 +209,13 @@
   "kinds": [
    "listen:toggle"
   ],
-  "count": 8,
+  "count": 9,
   "scenarios": [
    "base-controls-b",
    "base-controls",
    "base-hash",
    "base-panels-b",
-   "base-place",
+   "base-panels",
    "base-staffing",
    "base-topics-a",
    "base-topics-b"
@@ -228,13 +229,13 @@
   "kinds": [
    "listen:toggle"
   ],
-  "count": 8,
+  "count": 9,
   "scenarios": [
    "base-controls-b",
    "base-controls",
    "base-hash",
    "base-panels-b",
-   "base-place",
+   "base-panels",
    "base-staffing",
    "base-topics-a",
    "base-topics-b"
@@ -248,13 +249,13 @@
   "kinds": [
    "listen:toggle"
   ],
-  "count": 8,
+  "count": 9,
   "scenarios": [
    "base-controls-b",
    "base-controls",
    "base-hash",
    "base-panels-b",
-   "base-place",
+   "base-panels",
    "base-staffing",
    "base-topics-a",
    "base-topics-b"
@@ -268,13 +269,13 @@
   "kinds": [
    "listen:toggle"
   ],
-  "count": 8,
+  "count": 9,
   "scenarios": [
    "base-controls-b",
    "base-controls",
    "base-hash",
    "base-panels-b",
-   "base-place",
+   "base-panels",
    "base-staffing",
    "base-topics-a",
    "base-topics-b"
@@ -288,13 +289,13 @@
   "kinds": [
    "listen:toggle"
   ],
-  "count": 8,
+  "count": 9,
   "scenarios": [
    "base-controls-b",
    "base-controls",
    "base-hash",
    "base-panels-b",
-   "base-place",
+   "base-panels",
    "base-staffing",
    "base-topics-a",
    "base-topics-b"
@@ -308,13 +309,13 @@
   "kinds": [
    "listen:toggle"
   ],
-  "count": 8,
+  "count": 9,
   "scenarios": [
    "base-controls-b",
    "base-controls",
    "base-hash",
    "base-panels-b",
-   "base-place",
+   "base-panels",
    "base-staffing",
    "base-topics-a",
    "base-topics-b"
@@ -328,13 +329,13 @@
   "kinds": [
    "listen:toggle"
   ],
-  "count": 8,
+  "count": 9,
   "scenarios": [
    "base-controls-b",
    "base-controls",
    "base-hash",
    "base-panels-b",
-   "base-place",
+   "base-panels",
    "base-staffing",
    "base-topics-a",
    "base-topics-b"
@@ -348,13 +349,13 @@
   "kinds": [
    "listen:toggle"
   ],
-  "count": 8,
+  "count": 9,
   "scenarios": [
    "base-controls-b",
    "base-controls",
    "base-hash",
    "base-panels-b",
-   "base-place",
+   "base-panels",
    "base-staffing",
    "base-topics-a",
    "base-topics-b"
@@ -368,13 +369,13 @@
   "kinds": [
    "listen:toggle"
   ],
-  "count": 8,
+  "count": 9,
   "scenarios": [
    "base-controls-b",
    "base-controls",
    "base-hash",
    "base-panels-b",
-   "base-place",
+   "base-panels",
    "base-staffing",
    "base-topics-a",
    "base-topics-b"
@@ -388,13 +389,13 @@
   "kinds": [
    "listen:toggle"
   ],
-  "count": 8,
+  "count": 9,
   "scenarios": [
    "base-controls-b",
    "base-controls",
    "base-hash",
    "base-panels-b",
-   "base-place",
+   "base-panels",
    "base-staffing",
    "base-topics-a",
    "base-topics-b"
@@ -408,13 +409,13 @@
   "kinds": [
    "listen:toggle"
   ],
-  "count": 8,
+  "count": 9,
   "scenarios": [
    "base-controls-b",
    "base-controls",
    "base-hash",
    "base-panels-b",
-   "base-place",
+   "base-panels",
    "base-staffing",
    "base-topics-a",
    "base-topics-b"
@@ -428,13 +429,13 @@
   "kinds": [
    "listen:toggle"
   ],
-  "count": 8,
+  "count": 9,
   "scenarios": [
    "base-controls-b",
    "base-controls",
    "base-hash",
    "base-panels-b",
-   "base-place",
+   "base-panels",
    "base-staffing",
    "base-topics-a",
    "base-topics-b"
@@ -448,13 +449,13 @@
   "kinds": [
    "listen:toggle"
   ],
-  "count": 8,
+  "count": 9,
   "scenarios": [
    "base-controls-b",
    "base-controls",
    "base-hash",
    "base-panels-b",
-   "base-place",
+   "base-panels",
    "base-staffing",
    "base-topics-a",
    "base-topics-b"
@@ -468,13 +469,13 @@
   "kinds": [
    "listen:toggle"
   ],
-  "count": 8,
+  "count": 9,
   "scenarios": [
    "base-controls-b",
    "base-controls",
    "base-hash",
    "base-panels-b",
-   "base-place",
+   "base-panels",
    "base-staffing",
    "base-topics-a",
    "base-topics-b"
@@ -488,13 +489,13 @@
   "kinds": [
    "listen:toggle"
   ],
-  "count": 8,
+  "count": 9,
   "scenarios": [
    "base-controls-b",
    "base-controls",
    "base-hash",
    "base-panels-b",
-   "base-place",
+   "base-panels",
    "base-staffing",
    "base-topics-a",
    "base-topics-b"
@@ -508,13 +509,13 @@
   "kinds": [
    "listen:toggle"
   ],
-  "count": 8,
+  "count": 9,
   "scenarios": [
    "base-controls-b",
    "base-controls",
    "base-hash",
    "base-panels-b",
-   "base-place",
+   "base-panels",
    "base-staffing",
    "base-topics-a",
    "base-topics-b"
@@ -528,13 +529,13 @@
   "kinds": [
    "listen:toggle"
   ],
-  "count": 8,
+  "count": 9,
   "scenarios": [
    "base-controls-b",
    "base-controls",
    "base-hash",
    "base-panels-b",
-   "base-place",
+   "base-panels",
    "base-staffing",
    "base-topics-a",
    "base-topics-b"
@@ -548,13 +549,13 @@
   "kinds": [
    "listen:toggle"
   ],
-  "count": 8,
+  "count": 9,
   "scenarios": [
    "base-controls-b",
    "base-controls",
    "base-hash",
    "base-panels-b",
-   "base-place",
+   "base-panels",
    "base-staffing",
    "base-topics-a",
    "base-topics-b"
@@ -568,13 +569,13 @@
   "kinds": [
    "listen:toggle"
   ],
-  "count": 8,
+  "count": 9,
   "scenarios": [
    "base-controls-b",
    "base-controls",
    "base-hash",
    "base-panels-b",
-   "base-place",
+   "base-panels",
    "base-staffing",
    "base-topics-a",
    "base-topics-b"
@@ -588,13 +589,13 @@
   "kinds": [
    "listen:toggle"
   ],
-  "count": 8,
+  "count": 9,
   "scenarios": [
    "base-controls-b",
    "base-controls",
    "base-hash",
    "base-panels-b",
-   "base-place",
+   "base-panels",
    "base-staffing",
    "base-topics-a",
    "base-topics-b"
@@ -608,13 +609,13 @@
   "kinds": [
    "listen:toggle"
   ],
-  "count": 8,
+  "count": 9,
   "scenarios": [
    "base-controls-b",
    "base-controls",
    "base-hash",
    "base-panels-b",
-   "base-place",
+   "base-panels",
    "base-staffing",
    "base-topics-a",
    "base-topics-b"
@@ -628,13 +629,13 @@
   "kinds": [
    "listen:toggle"
   ],
-  "count": 8,
+  "count": 9,
   "scenarios": [
    "base-controls-b",
    "base-controls",
    "base-hash",
    "base-panels-b",
-   "base-place",
+   "base-panels",
    "base-staffing",
    "base-topics-a",
    "base-topics-b"
@@ -648,13 +649,13 @@
   "kinds": [
    "listen:toggle"
   ],
-  "count": 8,
+  "count": 9,
   "scenarios": [
    "base-controls-b",
    "base-controls",
    "base-hash",
    "base-panels-b",
-   "base-place",
+   "base-panels",
    "base-staffing",
    "base-topics-a",
    "base-topics-b"
@@ -668,13 +669,13 @@
   "kinds": [
    "listen:toggle"
   ],
-  "count": 8,
+  "count": 9,
   "scenarios": [
    "base-controls-b",
    "base-controls",
    "base-hash",
    "base-panels-b",
-   "base-place",
+   "base-panels",
    "base-staffing",
    "base-topics-a",
    "base-topics-b"
@@ -688,13 +689,13 @@
   "kinds": [
    "listen:toggle"
   ],
-  "count": 8,
+  "count": 9,
   "scenarios": [
    "base-controls-b",
    "base-controls",
    "base-hash",
    "base-panels-b",
-   "base-place",
+   "base-panels",
    "base-staffing",
    "base-topics-a",
    "base-topics-b"
@@ -708,13 +709,13 @@
   "kinds": [
    "listen:toggle"
   ],
-  "count": 8,
+  "count": 9,
   "scenarios": [
    "base-controls-b",
    "base-controls",
    "base-hash",
    "base-panels-b",
-   "base-place",
+   "base-panels",
    "base-staffing",
    "base-topics-a",
    "base-topics-b"
@@ -728,13 +729,13 @@
   "kinds": [
    "listen:toggle"
   ],
-  "count": 8,
+  "count": 9,
   "scenarios": [
    "base-controls-b",
    "base-controls",
    "base-hash",
    "base-panels-b",
-   "base-place",
+   "base-panels",
    "base-staffing",
    "base-topics-a",
    "base-topics-b"
@@ -748,13 +749,13 @@
   "kinds": [
    "listen:toggle"
   ],
-  "count": 8,
+  "count": 9,
   "scenarios": [
    "base-controls-b",
    "base-controls",
    "base-hash",
    "base-panels-b",
-   "base-place",
+   "base-panels",
    "base-staffing",
    "base-topics-a",
    "base-topics-b"
@@ -768,13 +769,13 @@
   "kinds": [
    "listen:toggle"
   ],
-  "count": 8,
+  "count": 9,
   "scenarios": [
    "base-controls-b",
    "base-controls",
    "base-hash",
    "base-panels-b",
-   "base-place",
+   "base-panels",
    "base-staffing",
    "base-topics-a",
    "base-topics-b"
@@ -788,13 +789,13 @@
   "kinds": [
    "listen:toggle"
   ],
-  "count": 8,
+  "count": 9,
   "scenarios": [
    "base-controls-b",
    "base-controls",
    "base-hash",
    "base-panels-b",
-   "base-place",
+   "base-panels",
    "base-staffing",
    "base-topics-a",
    "base-topics-b"
@@ -808,13 +809,13 @@
   "kinds": [
    "listen:toggle"
   ],
-  "count": 8,
+  "count": 9,
   "scenarios": [
    "base-controls-b",
    "base-controls",
    "base-hash",
    "base-panels-b",
-   "base-place",
+   "base-panels",
    "base-staffing",
    "base-topics-a",
    "base-topics-b"
@@ -828,13 +829,13 @@
   "kinds": [
    "listen:toggle"
   ],
-  "count": 8,
+  "count": 9,
   "scenarios": [
    "base-controls-b",
    "base-controls",
    "base-hash",
    "base-panels-b",
-   "base-place",
+   "base-panels",
    "base-staffing",
    "base-topics-a",
    "base-topics-b"
@@ -848,13 +849,13 @@
   "kinds": [
    "listen:toggle"
   ],
-  "count": 8,
+  "count": 9,
   "scenarios": [
    "base-controls-b",
    "base-controls",
    "base-hash",
    "base-panels-b",
-   "base-place",
+   "base-panels",
    "base-staffing",
    "base-topics-a",
    "base-topics-b"
@@ -868,13 +869,13 @@
   "kinds": [
    "listen:toggle"
   ],
-  "count": 8,
+  "count": 9,
   "scenarios": [
    "base-controls-b",
    "base-controls",
    "base-hash",
    "base-panels-b",
-   "base-place",
+   "base-panels",
    "base-staffing",
    "base-topics-a",
    "base-topics-b"
@@ -888,13 +889,13 @@
   "kinds": [
    "listen:toggle"
   ],
-  "count": 8,
+  "count": 9,
   "scenarios": [
    "base-controls-b",
    "base-controls",
    "base-hash",
    "base-panels-b",
-   "base-place",
+   "base-panels",
    "base-staffing",
    "base-topics-a",
    "base-topics-b"
@@ -908,13 +909,13 @@
   "kinds": [
    "listen:toggle"
   ],
-  "count": 8,
+  "count": 9,
   "scenarios": [
    "base-controls-b",
    "base-controls",
    "base-hash",
    "base-panels-b",
-   "base-place",
+   "base-panels",
    "base-staffing",
    "base-topics-a",
    "base-topics-b"
@@ -928,13 +929,13 @@
   "kinds": [
    "listen:toggle"
   ],
-  "count": 8,
+  "count": 9,
   "scenarios": [
    "base-controls-b",
    "base-controls",
    "base-hash",
    "base-panels-b",
-   "base-place",
+   "base-panels",
    "base-staffing",
    "base-topics-a",
    "base-topics-b"
@@ -948,13 +949,13 @@
   "kinds": [
    "listen:toggle"
   ],
-  "count": 8,
+  "count": 9,
   "scenarios": [
    "base-controls-b",
    "base-controls",
    "base-hash",
    "base-panels-b",
-   "base-place",
+   "base-panels",
    "base-staffing",
    "base-topics-a",
    "base-topics-b"
@@ -968,13 +969,13 @@
   "kinds": [
    "listen:toggle"
   ],
-  "count": 8,
+  "count": 9,
   "scenarios": [
    "base-controls-b",
    "base-controls",
    "base-hash",
    "base-panels-b",
-   "base-place",
+   "base-panels",
    "base-staffing",
    "base-topics-a",
    "base-topics-b"
@@ -988,13 +989,13 @@
   "kinds": [
    "listen:toggle"
   ],
-  "count": 8,
+  "count": 9,
   "scenarios": [
    "base-controls-b",
    "base-controls",
    "base-hash",
    "base-panels-b",
-   "base-place",
+   "base-panels",
    "base-staffing",
    "base-topics-a",
    "base-topics-b"
@@ -1008,13 +1009,13 @@
   "kinds": [
    "listen:toggle"
   ],
-  "count": 8,
+  "count": 9,
   "scenarios": [
    "base-controls-b",
    "base-controls",
    "base-hash",
    "base-panels-b",
-   "base-place",
+   "base-panels",
    "base-staffing",
    "base-topics-a",
    "base-topics-b"
@@ -1028,13 +1029,13 @@
   "kinds": [
    "listen:toggle"
   ],
-  "count": 8,
+  "count": 9,
   "scenarios": [
    "base-controls-b",
    "base-controls",
    "base-hash",
    "base-panels-b",
-   "base-place",
+   "base-panels",
    "base-staffing",
    "base-topics-a",
    "base-topics-b"
@@ -1051,7 +1052,7 @@
    "listen:toggle",
    "lookup"
   ],
-  "count": 188,
+  "count": 189,
   "scenarios": [
    "base-controls-b",
    "base-controls",
@@ -1075,7 +1076,7 @@
    "listen:invalid",
    "lookup"
   ],
-  "count": 41,
+  "count": 42,
   "scenarios": [
    "base-controls-b",
    "base-controls",
@@ -1096,13 +1097,13 @@
   "kinds": [
    "listen:toggle"
   ],
-  "count": 8,
+  "count": 9,
   "scenarios": [
    "base-controls-b",
    "base-controls",
    "base-hash",
    "base-panels-b",
-   "base-place",
+   "base-panels",
    "base-staffing",
    "base-topics-a",
    "base-topics-b"
@@ -1116,13 +1117,13 @@
   "kinds": [
    "listen:toggle"
   ],
-  "count": 8,
+  "count": 9,
   "scenarios": [
    "base-controls-b",
    "base-controls",
    "base-hash",
    "base-panels-b",
-   "base-place",
+   "base-panels",
    "base-staffing",
    "base-topics-a",
    "base-topics-b"
@@ -1136,13 +1137,13 @@
   "kinds": [
    "listen:toggle"
   ],
-  "count": 8,
+  "count": 9,
   "scenarios": [
    "base-controls-b",
    "base-controls",
    "base-hash",
    "base-panels-b",
-   "base-place",
+   "base-panels",
    "base-staffing",
    "base-topics-a",
    "base-topics-b"
@@ -1159,7 +1160,7 @@
    "listen:toggle",
    "lookup"
   ],
-  "count": 178,
+  "count": 179,
   "scenarios": [
    "base-controls-b",
    "base-controls",
@@ -1180,13 +1181,13 @@
   "kinds": [
    "listen:toggle"
   ],
-  "count": 8,
+  "count": 9,
   "scenarios": [
    "base-controls-b",
    "base-controls",
    "base-hash",
    "base-panels-b",
-   "base-place",
+   "base-panels",
    "base-staffing",
    "base-topics-a",
    "base-topics-b"
@@ -1200,13 +1201,13 @@
   "kinds": [
    "listen:toggle"
   ],
-  "count": 8,
+  "count": 9,
   "scenarios": [
    "base-controls-b",
    "base-controls",
    "base-hash",
    "base-panels-b",
-   "base-place",
+   "base-panels",
    "base-staffing",
    "base-topics-a",
    "base-topics-b"
@@ -1223,7 +1224,7 @@
    "listen:toggle",
    "lookup"
   ],
-  "count": 176,
+  "count": 177,
   "scenarios": [
    "base-controls-b",
    "base-controls",
@@ -1244,13 +1245,13 @@
   "kinds": [
    "listen:toggle"
   ],
-  "count": 8,
+  "count": 9,
   "scenarios": [
    "base-controls-b",
    "base-controls",
    "base-hash",
    "base-panels-b",
-   "base-place",
+   "base-panels",
    "base-staffing",
    "base-topics-a",
    "base-topics-b"
@@ -1264,13 +1265,13 @@
   "kinds": [
    "listen:toggle"
   ],
-  "count": 8,
+  "count": 9,
   "scenarios": [
    "base-controls-b",
    "base-controls",
    "base-hash",
    "base-panels-b",
-   "base-place",
+   "base-panels",
    "base-staffing",
    "base-topics-a",
    "base-topics-b"
@@ -1284,13 +1285,13 @@
   "kinds": [
    "listen:toggle"
   ],
-  "count": 8,
+  "count": 9,
   "scenarios": [
    "base-controls-b",
    "base-controls",
    "base-hash",
    "base-panels-b",
-   "base-place",
+   "base-panels",
    "base-staffing",
    "base-topics-a",
    "base-topics-b"
@@ -1306,7 +1307,7 @@
    "listen:toggle",
    "lookup"
   ],
-  "count": 724,
+  "count": 725,
   "scenarios": [
    "base-controls-b",
    "base-controls",
@@ -1330,7 +1331,7 @@
    "listen:toggle",
    "lookup"
   ],
-  "count": 155,
+  "count": 153,
   "scenarios": [
    "base-controls-b",
    "base-controls",
@@ -1351,13 +1352,13 @@
   "kinds": [
    "listen:toggle"
   ],
-  "count": 8,
+  "count": 9,
   "scenarios": [
    "base-controls-b",
    "base-controls",
    "base-hash",
    "base-panels-b",
-   "base-place",
+   "base-panels",
    "base-staffing",
    "base-topics-a",
    "base-topics-b"
@@ -1374,7 +1375,7 @@
    "listen:toggle",
    "lookup"
   ],
-  "count": 182,
+  "count": 183,
   "scenarios": [
    "base-controls-b",
    "base-controls",
@@ -1395,13 +1396,13 @@
   "kinds": [
    "listen:toggle"
   ],
-  "count": 8,
+  "count": 9,
   "scenarios": [
    "base-controls-b",
    "base-controls",
    "base-hash",
    "base-panels-b",
-   "base-place",
+   "base-panels",
    "base-staffing",
    "base-topics-a",
    "base-topics-b"
@@ -1415,13 +1416,13 @@
   "kinds": [
    "listen:toggle"
   ],
-  "count": 8,
+  "count": 10,
   "scenarios": [
    "base-controls-b",
    "base-controls",
    "base-hash",
    "base-panels-b",
-   "base-place",
+   "base-panels",
    "base-staffing",
    "base-topics-a",
    "base-topics-b"
@@ -1435,13 +1436,13 @@
   "kinds": [
    "listen:toggle"
   ],
-  "count": 8,
+  "count": 10,
   "scenarios": [
    "base-controls-b",
    "base-controls",
    "base-hash",
    "base-panels-b",
-   "base-place",
+   "base-panels",
    "base-staffing",
    "base-topics-a",
    "base-topics-b"
@@ -1458,7 +1459,7 @@
    "listen:toggle",
    "lookup"
   ],
-  "count": 176,
+  "count": 178,
   "scenarios": [
    "base-controls-b",
    "base-controls",
@@ -1482,7 +1483,7 @@
    "listen:toggle",
    "lookup"
   ],
-  "count": 584,
+  "count": 586,
   "scenarios": [
    "base-controls-b",
    "base-controls",
@@ -1506,7 +1507,7 @@
    "listen:toggle",
    "lookup"
   ],
-  "count": 378,
+  "count": 380,
   "scenarios": [
    "base-controls-b",
    "base-controls",
@@ -1530,7 +1531,7 @@
    "listen:toggle",
    "lookup"
   ],
-  "count": 156,
+  "count": 157,
   "scenarios": [
    "base-controls-b",
    "base-controls",
@@ -1551,13 +1552,13 @@
   "kinds": [
    "listen:toggle"
   ],
-  "count": 8,
+  "count": 10,
   "scenarios": [
    "base-controls-b",
    "base-controls",
    "base-hash",
    "base-panels-b",
-   "base-place",
+   "base-panels",
    "base-staffing",
    "base-topics-a",
    "base-topics-b"
@@ -1574,7 +1575,7 @@
    "listen:toggle",
    "lookup"
   ],
-  "count": 187,
+  "count": 189,
   "scenarios": [
    "base-controls-b",
    "base-controls",
@@ -1595,13 +1596,13 @@
   "kinds": [
    "listen:toggle"
   ],
-  "count": 8,
+  "count": 10,
   "scenarios": [
    "base-controls-b",
    "base-controls",
    "base-hash",
    "base-panels-b",
-   "base-place",
+   "base-panels",
    "base-staffing",
    "base-topics-a",
    "base-topics-b"
@@ -1618,7 +1619,7 @@
    "listen:toggle",
    "lookup"
   ],
-  "count": 176,
+  "count": 178,
   "scenarios": [
    "base-controls-b",
    "base-controls",
@@ -1644,7 +1645,7 @@
    "listen:invalid",
    "lookup"
   ],
-  "count": 78,
+  "count": 82,
   "scenarios": [
    "base-controls-b",
    "base-controls",
@@ -1665,13 +1666,13 @@
   "kinds": [
    "listen:toggle"
   ],
-  "count": 8,
+  "count": 10,
   "scenarios": [
    "base-controls-b",
    "base-controls",
    "base-hash",
    "base-panels-b",
-   "base-place",
+   "base-panels",
    "base-staffing",
    "base-topics-a",
    "base-topics-b"
@@ -1688,7 +1689,7 @@
    "listen:toggle",
    "lookup"
   ],
-  "count": 180,
+  "count": 182,
   "scenarios": [
    "base-controls-b",
    "base-controls",
@@ -1709,13 +1710,13 @@
   "kinds": [
    "listen:toggle"
   ],
-  "count": 8,
+  "count": 10,
   "scenarios": [
    "base-controls-b",
    "base-controls",
    "base-hash",
    "base-panels-b",
-   "base-place",
+   "base-panels",
    "base-staffing",
    "base-topics-a",
    "base-topics-b"
@@ -1729,13 +1730,13 @@
   "kinds": [
    "listen:toggle"
   ],
-  "count": 8,
+  "count": 10,
   "scenarios": [
    "base-controls-b",
    "base-controls",
    "base-hash",
    "base-panels-b",
-   "base-place",
+   "base-panels",
    "base-staffing",
    "base-topics-a",
    "base-topics-b"
@@ -1752,7 +1753,7 @@
    "listen:toggle",
    "lookup"
   ],
-  "count": 176,
+  "count": 178,
   "scenarios": [
    "base-controls-b",
    "base-controls",
@@ -1773,13 +1774,13 @@
   "kinds": [
    "listen:toggle"
   ],
-  "count": 8,
+  "count": 10,
   "scenarios": [
    "base-controls-b",
    "base-controls",
    "base-hash",
    "base-panels-b",
-   "base-place",
+   "base-panels",
    "base-staffing",
    "base-topics-a",
    "base-topics-b"
@@ -1793,13 +1794,13 @@
   "kinds": [
    "listen:toggle"
   ],
-  "count": 8,
+  "count": 10,
   "scenarios": [
    "base-controls-b",
    "base-controls",
    "base-hash",
    "base-panels-b",
-   "base-place",
+   "base-panels",
    "base-staffing",
    "base-topics-a",
    "base-topics-b"
@@ -1816,7 +1817,7 @@
    "listen:toggle",
    "lookup"
   ],
-  "count": 176,
+  "count": 178,
   "scenarios": [
    "base-controls-b",
    "base-controls",
@@ -1837,13 +1838,13 @@
   "kinds": [
    "listen:toggle"
   ],
-  "count": 8,
+  "count": 10,
   "scenarios": [
    "base-controls-b",
    "base-controls",
    "base-hash",
    "base-panels-b",
-   "base-place",
+   "base-panels",
    "base-staffing",
    "base-topics-a",
    "base-topics-b"
@@ -1857,13 +1858,13 @@
   "kinds": [
    "listen:toggle"
   ],
-  "count": 8,
+  "count": 10,
   "scenarios": [
    "base-controls-b",
    "base-controls",
    "base-hash",
    "base-panels-b",
-   "base-place",
+   "base-panels",
    "base-staffing",
    "base-topics-a",
    "base-topics-b"
@@ -1880,7 +1881,7 @@
    "listen:toggle",
    "lookup"
   ],
-  "count": 176,
+  "count": 178,
   "scenarios": [
    "base-controls-b",
    "base-controls",
@@ -1897,20 +1898,19 @@
   "page": "week04",
   "path": "#entity-communities > div:nth-of-type(1) > div:nth-of-type(2) > label:nth-of-type(1) > select:nth-of-type(1)",
   "id": null,
-  "selector": ".w4-entities-net select",
+  "selector": null,
   "kinds": [
    "listen:change",
    "listen:invalid",
    "lookup"
   ],
-  "count": 12,
+  "count": 14,
   "scenarios": [
    "base-controls-b",
    "base-controls",
    "base-hash",
    "base-panels-b",
    "base-panels",
-   "base-place",
    "base-staffing",
    "base-topics-a",
    "base-topics-b"
@@ -1920,20 +1920,19 @@
   "page": "week04",
   "path": "#entity-communities > div:nth-of-type(1) > label:nth-of-type(1) > select:nth-of-type(1)",
   "id": null,
-  "selector": ".w4-entities-colour select",
+  "selector": null,
   "kinds": [
    "listen:change",
    "listen:invalid",
    "lookup"
   ],
-  "count": 12,
+  "count": 14,
   "scenarios": [
    "base-controls-b",
    "base-controls",
    "base-hash",
    "base-panels-b",
    "base-panels",
-   "base-place",
    "base-staffing",
    "base-topics-a",
    "base-topics-b"
@@ -1950,7 +1949,7 @@
    "listen:toggle",
    "lookup"
   ],
-  "count": 201,
+  "count": 203,
   "scenarios": [
    "base-controls-b",
    "base-controls",
@@ -1974,7 +1973,7 @@
    "listen:toggle",
    "lookup"
   ],
-  "count": 156,
+  "count": 159,
   "scenarios": [
    "base-controls-b",
    "base-controls",
@@ -1995,13 +1994,13 @@
   "kinds": [
    "listen:toggle"
   ],
-  "count": 8,
+  "count": 10,
   "scenarios": [
    "base-controls-b",
    "base-controls",
    "base-hash",
    "base-panels-b",
-   "base-place",
+   "base-panels",
    "base-staffing",
    "base-topics-a",
    "base-topics-b"
@@ -2015,13 +2014,13 @@
   "kinds": [
    "listen:toggle"
   ],
-  "count": 8,
+  "count": 10,
   "scenarios": [
    "base-controls-b",
    "base-controls",
    "base-hash",
    "base-panels-b",
-   "base-place",
+   "base-panels",
    "base-staffing",
    "base-topics-a",
    "base-topics-b"
@@ -2038,7 +2037,7 @@
    "listen:toggle",
    "lookup"
   ],
-  "count": 183,
+  "count": 185,
   "scenarios": [
    "base-controls-b",
    "base-controls",
@@ -2059,13 +2058,13 @@
   "kinds": [
    "listen:toggle"
   ],
-  "count": 8,
+  "count": 10,
   "scenarios": [
    "base-controls-b",
    "base-controls",
    "base-hash",
    "base-panels-b",
-   "base-place",
+   "base-panels",
    "base-staffing",
    "base-topics-a",
    "base-topics-b"
@@ -2082,7 +2081,7 @@
    "listen:toggle",
    "lookup"
   ],
-  "count": 176,
+  "count": 178,
   "scenarios": [
    "base-controls-b",
    "base-controls",
@@ -2103,13 +2102,13 @@
   "kinds": [
    "listen:toggle"
   ],
-  "count": 8,
+  "count": 10,
   "scenarios": [
    "base-controls-b",
    "base-controls",
    "base-hash",
    "base-panels-b",
-   "base-place",
+   "base-panels",
    "base-staffing",
    "base-topics-a",
    "base-topics-b"
@@ -2123,13 +2122,13 @@
   "kinds": [
    "listen:toggle"
   ],
-  "count": 8,
+  "count": 10,
   "scenarios": [
    "base-controls-b",
    "base-controls",
    "base-hash",
    "base-panels-b",
-   "base-place",
+   "base-panels",
    "base-staffing",
    "base-topics-a",
    "base-topics-b"
@@ -2146,7 +2145,7 @@
    "listen:toggle",
    "lookup"
   ],
-  "count": 176,
+  "count": 178,
   "scenarios": [
    "base-controls-b",
    "base-controls",
@@ -2170,7 +2169,7 @@
    "listen:toggle",
    "lookup"
   ],
-  "count": 176,
+  "count": 178,
   "scenarios": [
    "base-controls-b",
    "base-controls",
@@ -2191,13 +2190,13 @@
   "kinds": [
    "listen:toggle"
   ],
-  "count": 8,
+  "count": 10,
   "scenarios": [
    "base-controls-b",
    "base-controls",
    "base-hash",
    "base-panels-b",
-   "base-place",
+   "base-panels",
    "base-staffing",
    "base-topics-a",
    "base-topics-b"
@@ -2211,13 +2210,13 @@
   "kinds": [
    "listen:toggle"
   ],
-  "count": 8,
+  "count": 10,
   "scenarios": [
    "base-controls-b",
    "base-controls",
    "base-hash",
    "base-panels-b",
-   "base-place",
+   "base-panels",
    "base-staffing",
    "base-topics-a",
    "base-topics-b"
@@ -2234,7 +2233,7 @@
    "listen:toggle",
    "lookup"
   ],
-  "count": 176,
+  "count": 178,
   "scenarios": [
    "base-controls-b",
    "base-controls",
@@ -2255,13 +2254,13 @@
   "kinds": [
    "listen:toggle"
   ],
-  "count": 8,
+  "count": 10,
   "scenarios": [
    "base-controls-b",
    "base-controls",
    "base-hash",
    "base-panels-b",
-   "base-place",
+   "base-panels",
    "base-staffing",
    "base-topics-a",
    "base-topics-b"
@@ -2275,13 +2274,13 @@
   "kinds": [
    "listen:toggle"
   ],
-  "count": 8,
+  "count": 10,
   "scenarios": [
    "base-controls-b",
    "base-controls",
    "base-hash",
    "base-panels-b",
-   "base-place",
+   "base-panels",
    "base-staffing",
    "base-topics-a",
    "base-topics-b"
@@ -2298,7 +2297,7 @@
    "listen:toggle",
    "lookup"
   ],
-  "count": 179,
+  "count": 181,
   "scenarios": [
    "base-controls-b",
    "base-controls",
@@ -2322,7 +2321,7 @@
    "listen:toggle",
    "lookup"
   ],
-  "count": 154,
+  "count": 155,
   "scenarios": [
    "base-controls-b",
    "base-controls",
@@ -2346,7 +2345,7 @@
    "listen:toggle",
    "lookup"
   ],
-  "count": 371,
+  "count": 373,
   "scenarios": [
    "base-controls-b",
    "base-controls",
@@ -2370,7 +2369,7 @@
    "listen:toggle",
    "lookup"
   ],
-  "count": 370,
+  "count": 372,
   "scenarios": [
    "base-controls-b",
    "base-controls",
@@ -2391,13 +2390,13 @@
   "kinds": [
    "listen:toggle"
   ],
-  "count": 8,
+  "count": 10,
   "scenarios": [
    "base-controls-b",
    "base-controls",
    "base-hash",
    "base-panels-b",
-   "base-place",
+   "base-panels",
    "base-staffing",
    "base-topics-a",
    "base-topics-b"
@@ -2411,13 +2410,13 @@
   "kinds": [
    "listen:toggle"
   ],
-  "count": 8,
+  "count": 10,
   "scenarios": [
    "base-controls-b",
    "base-controls",
    "base-hash",
    "base-panels-b",
-   "base-place",
+   "base-panels",
    "base-staffing",
    "base-topics-a",
    "base-topics-b"
@@ -2431,13 +2430,13 @@
   "kinds": [
    "listen:toggle"
   ],
-  "count": 8,
+  "count": 10,
   "scenarios": [
    "base-controls-b",
    "base-controls",
    "base-hash",
    "base-panels-b",
-   "base-place",
+   "base-panels",
    "base-staffing",
    "base-topics-a",
    "base-topics-b"
@@ -2454,7 +2453,7 @@
    "listen:toggle",
    "lookup"
   ],
-  "count": 175,
+  "count": 177,
   "scenarios": [
    "base-controls-b",
    "base-controls",
@@ -2478,7 +2477,7 @@
    "listen:toggle",
    "lookup"
   ],
-  "count": 149,
+  "count": 151,
   "scenarios": [
    "base-controls-b",
    "base-controls",
@@ -2502,7 +2501,7 @@
    "listen:toggle",
    "lookup"
   ],
-  "count": 146,
+  "count": 147,
   "scenarios": [
    "base-controls-b",
    "base-controls",
@@ -2539,16 +2538,14 @@
  },
  {
   "page": "week04",
-  "path": "#place-rank > div:nth-of-type(1) > button:nth-of-type(1)",
-  "id": null,
-  "selector": "[data-place-metric]",
+  "path": "#main",
+  "id": "main",
+  "selector": "main",
   "kinds": [
-   "attr:aria-pressed",
-   "attr:tabindex",
-   "listen:click",
+   "listen:keydown",
    "lookup"
   ],
-  "count": 604,
+  "count": 22,
   "scenarios": [
    "base-controls-b",
    "base-controls",
@@ -2563,16 +2560,16 @@
  },
  {
   "page": "week04",
-  "path": "#place-rank > div:nth-of-type(1) > button:nth-of-type(2)",
+  "path": "#main > nav:nth-of-type(1)",
   "id": null,
-  "selector": "[data-place-metric]",
+  "selector": ".w4-rail",
   "kinds": [
-   "attr:aria-pressed",
-   "attr:tabindex",
-   "listen:click",
-   "lookup"
+   "listen:focusin",
+   "listen:mouseenter",
+   "lookup",
+   "matches"
   ],
-  "count": 604,
+  "count": 144,
   "scenarios": [
    "base-controls-b",
    "base-controls",
@@ -2587,16 +2584,14 @@
  },
  {
   "page": "week04",
-  "path": "#place-start > div:nth-of-type(3) > details:nth-of-type(4) > div:nth-of-type(1) > div:nth-of-type(1) > button:nth-of-type(1)",
+  "path": "#main > nav:nth-of-type(1) > ol:nth-of-type(1) > li:nth-of-type(1)",
   "id": null,
-  "selector": "[data-place-region]",
+  "selector": "li[data-target]",
   "kinds": [
-   "attr:aria-pressed",
-   "attr:tabindex",
-   "listen:click",
+   "attr:class",
    "lookup"
   ],
-  "count": 604,
+  "count": 18,
   "scenarios": [
    "base-controls-b",
    "base-controls",
@@ -2611,16 +2606,1490 @@
  },
  {
   "page": "week04",
-  "path": "#place-start > div:nth-of-type(3) > details:nth-of-type(4) > div:nth-of-type(1) > div:nth-of-type(1) > button:nth-of-type(2)",
+  "path": "#main > nav:nth-of-type(1) > ol:nth-of-type(1) > li:nth-of-type(2)",
   "id": null,
-  "selector": "[data-place-region]",
+  "selector": "li[data-target]",
   "kinds": [
-   "attr:aria-pressed",
-   "attr:tabindex",
-   "listen:click",
+   "attr:class",
    "lookup"
   ],
-  "count": 604,
+  "count": 33,
+  "scenarios": [
+   "base-controls-b",
+   "base-controls",
+   "base-hash",
+   "base-panels-b",
+   "base-panels",
+   "base-place",
+   "base-staffing",
+   "base-topics-a",
+   "base-topics-b"
+  ]
+ },
+ {
+  "page": "week04",
+  "path": "#main > nav:nth-of-type(1) > ol:nth-of-type(1) > li:nth-of-type(2) > ol:nth-of-type(1) > li:nth-of-type(1)",
+  "id": null,
+  "selector": "li[data-target]",
+  "kinds": [
+   "lookup"
+  ],
+  "count": 11,
+  "scenarios": [
+   "base-controls-b",
+   "base-controls",
+   "base-hash",
+   "base-panels-b",
+   "base-panels",
+   "base-place",
+   "base-staffing",
+   "base-topics-a",
+   "base-topics-b"
+  ]
+ },
+ {
+  "page": "week04",
+  "path": "#main > nav:nth-of-type(1) > ol:nth-of-type(1) > li:nth-of-type(2) > ol:nth-of-type(1) > li:nth-of-type(2)",
+  "id": null,
+  "selector": "li[data-target]",
+  "kinds": [
+   "lookup"
+  ],
+  "count": 11,
+  "scenarios": [
+   "base-controls-b",
+   "base-controls",
+   "base-hash",
+   "base-panels-b",
+   "base-panels",
+   "base-place",
+   "base-staffing",
+   "base-topics-a",
+   "base-topics-b"
+  ]
+ },
+ {
+  "page": "week04",
+  "path": "#main > nav:nth-of-type(1) > ol:nth-of-type(1) > li:nth-of-type(3)",
+  "id": null,
+  "selector": "li[data-target]",
+  "kinds": [
+   "attr:class",
+   "lookup"
+  ],
+  "count": 16,
+  "scenarios": [
+   "base-controls-b",
+   "base-controls",
+   "base-hash",
+   "base-panels-b",
+   "base-panels",
+   "base-place",
+   "base-staffing",
+   "base-topics-a",
+   "base-topics-b"
+  ]
+ },
+ {
+  "page": "week04",
+  "path": "#main > nav:nth-of-type(1) > ol:nth-of-type(1) > li:nth-of-type(3) > ol:nth-of-type(1) > li:nth-of-type(1)",
+  "id": null,
+  "selector": "li[data-target]",
+  "kinds": [
+   "lookup"
+  ],
+  "count": 11,
+  "scenarios": [
+   "base-controls-b",
+   "base-controls",
+   "base-hash",
+   "base-panels-b",
+   "base-panels",
+   "base-place",
+   "base-staffing",
+   "base-topics-a",
+   "base-topics-b"
+  ]
+ },
+ {
+  "page": "week04",
+  "path": "#main > nav:nth-of-type(1) > ol:nth-of-type(1) > li:nth-of-type(3) > ol:nth-of-type(1) > li:nth-of-type(2)",
+  "id": null,
+  "selector": "li[data-target]",
+  "kinds": [
+   "lookup"
+  ],
+  "count": 11,
+  "scenarios": [
+   "base-controls-b",
+   "base-controls",
+   "base-hash",
+   "base-panels-b",
+   "base-panels",
+   "base-place",
+   "base-staffing",
+   "base-topics-a",
+   "base-topics-b"
+  ]
+ },
+ {
+  "page": "week04",
+  "path": "#main > nav:nth-of-type(1) > ol:nth-of-type(1) > li:nth-of-type(4)",
+  "id": null,
+  "selector": "li[data-target]",
+  "kinds": [
+   "attr:class",
+   "lookup"
+  ],
+  "count": 16,
+  "scenarios": [
+   "base-controls-b",
+   "base-controls",
+   "base-hash",
+   "base-panels-b",
+   "base-panels",
+   "base-place",
+   "base-staffing",
+   "base-topics-a",
+   "base-topics-b"
+  ]
+ },
+ {
+  "page": "week04",
+  "path": "#main > nav:nth-of-type(1) > ol:nth-of-type(1) > li:nth-of-type(4) > ol:nth-of-type(1) > li:nth-of-type(1)",
+  "id": null,
+  "selector": "li[data-target]",
+  "kinds": [
+   "lookup"
+  ],
+  "count": 11,
+  "scenarios": [
+   "base-controls-b",
+   "base-controls",
+   "base-hash",
+   "base-panels-b",
+   "base-panels",
+   "base-place",
+   "base-staffing",
+   "base-topics-a",
+   "base-topics-b"
+  ]
+ },
+ {
+  "page": "week04",
+  "path": "#main > nav:nth-of-type(1) > ol:nth-of-type(1) > li:nth-of-type(4) > ol:nth-of-type(1) > li:nth-of-type(2)",
+  "id": null,
+  "selector": "li[data-target]",
+  "kinds": [
+   "lookup"
+  ],
+  "count": 11,
+  "scenarios": [
+   "base-controls-b",
+   "base-controls",
+   "base-hash",
+   "base-panels-b",
+   "base-panels",
+   "base-place",
+   "base-staffing",
+   "base-topics-a",
+   "base-topics-b"
+  ]
+ },
+ {
+  "page": "week04",
+  "path": "#main > nav:nth-of-type(1) > ol:nth-of-type(1) > li:nth-of-type(4) > ol:nth-of-type(1) > li:nth-of-type(3)",
+  "id": null,
+  "selector": "li[data-target]",
+  "kinds": [
+   "lookup"
+  ],
+  "count": 11,
+  "scenarios": [
+   "base-controls-b",
+   "base-controls",
+   "base-hash",
+   "base-panels-b",
+   "base-panels",
+   "base-place",
+   "base-staffing",
+   "base-topics-a",
+   "base-topics-b"
+  ]
+ },
+ {
+  "page": "week04",
+  "path": "#main > nav:nth-of-type(1) > ol:nth-of-type(1) > li:nth-of-type(5)",
+  "id": null,
+  "selector": "li[data-target]",
+  "kinds": [
+   "attr:class",
+   "lookup"
+  ],
+  "count": 14,
+  "scenarios": [
+   "base-controls-b",
+   "base-controls",
+   "base-hash",
+   "base-panels-b",
+   "base-panels",
+   "base-place",
+   "base-staffing",
+   "base-topics-a",
+   "base-topics-b"
+  ]
+ },
+ {
+  "page": "week04",
+  "path": "#main > nav:nth-of-type(1) > ol:nth-of-type(1) > li:nth-of-type(5) > ol:nth-of-type(1) > li:nth-of-type(1)",
+  "id": null,
+  "selector": "li[data-target]",
+  "kinds": [
+   "lookup"
+  ],
+  "count": 11,
+  "scenarios": [
+   "base-controls-b",
+   "base-controls",
+   "base-hash",
+   "base-panels-b",
+   "base-panels",
+   "base-place",
+   "base-staffing",
+   "base-topics-a",
+   "base-topics-b"
+  ]
+ },
+ {
+  "page": "week04",
+  "path": "#main > nav:nth-of-type(1) > ol:nth-of-type(1) > li:nth-of-type(6)",
+  "id": null,
+  "selector": "li[data-target]",
+  "kinds": [
+   "attr:class",
+   "lookup"
+  ],
+  "count": 13,
+  "scenarios": [
+   "base-controls-b",
+   "base-controls",
+   "base-hash",
+   "base-panels-b",
+   "base-panels",
+   "base-place",
+   "base-staffing",
+   "base-topics-a",
+   "base-topics-b"
+  ]
+ },
+ {
+  "page": "week04",
+  "path": "#main > nav:nth-of-type(1) > ol:nth-of-type(1) > li:nth-of-type(6) > ol:nth-of-type(1) > li:nth-of-type(1)",
+  "id": null,
+  "selector": "li[data-target]",
+  "kinds": [
+   "lookup"
+  ],
+  "count": 11,
+  "scenarios": [
+   "base-controls-b",
+   "base-controls",
+   "base-hash",
+   "base-panels-b",
+   "base-panels",
+   "base-place",
+   "base-staffing",
+   "base-topics-a",
+   "base-topics-b"
+  ]
+ },
+ {
+  "page": "week04",
+  "path": "#main > nav:nth-of-type(1) > ol:nth-of-type(1) > li:nth-of-type(6) > ol:nth-of-type(1) > li:nth-of-type(2)",
+  "id": null,
+  "selector": "li[data-target]",
+  "kinds": [
+   "lookup"
+  ],
+  "count": 11,
+  "scenarios": [
+   "base-controls-b",
+   "base-controls",
+   "base-hash",
+   "base-panels-b",
+   "base-panels",
+   "base-place",
+   "base-staffing",
+   "base-topics-a",
+   "base-topics-b"
+  ]
+ },
+ {
+  "page": "week04",
+  "path": "#main > nav:nth-of-type(1) > ol:nth-of-type(1) > li:nth-of-type(6) > ol:nth-of-type(1) > li:nth-of-type(3)",
+  "id": null,
+  "selector": "li[data-target]",
+  "kinds": [
+   "lookup"
+  ],
+  "count": 11,
+  "scenarios": [
+   "base-controls-b",
+   "base-controls",
+   "base-hash",
+   "base-panels-b",
+   "base-panels",
+   "base-place",
+   "base-staffing",
+   "base-topics-a",
+   "base-topics-b"
+  ]
+ },
+ {
+  "page": "week04",
+  "path": "#main > nav:nth-of-type(1) > ol:nth-of-type(1) > li:nth-of-type(7)",
+  "id": null,
+  "selector": "li[data-target]",
+  "kinds": [
+   "attr:class",
+   "lookup"
+  ],
+  "count": 83,
+  "scenarios": [
+   "base-controls-b",
+   "base-controls",
+   "base-hash",
+   "base-panels-b",
+   "base-panels",
+   "base-place",
+   "base-staffing",
+   "base-topics-a",
+   "base-topics-b"
+  ]
+ },
+ {
+  "page": "week04",
+  "path": "#main > nav:nth-of-type(1) > ol:nth-of-type(1) > li:nth-of-type(8)",
+  "id": null,
+  "selector": "li[data-target]",
+  "kinds": [
+   "attr:class",
+   "closest",
+   "lookup"
+  ],
+  "count": 174,
+  "scenarios": [
+   "base-controls-b",
+   "base-controls",
+   "base-hash",
+   "base-panels-b",
+   "base-panels",
+   "base-place",
+   "base-staffing",
+   "base-topics-a",
+   "base-topics-b"
+  ]
+ },
+ {
+  "page": "week04",
+  "path": "#main > nav:nth-of-type(1) > ol:nth-of-type(1) > li:nth-of-type(8) > ol:nth-of-type(1) > li:nth-of-type(1)",
+  "id": null,
+  "selector": "li[data-target]",
+  "kinds": [
+   "attr:class",
+   "lookup"
+  ],
+  "count": 62,
+  "scenarios": [
+   "base-controls-b",
+   "base-controls",
+   "base-hash",
+   "base-panels-b",
+   "base-panels",
+   "base-place",
+   "base-staffing",
+   "base-topics-a",
+   "base-topics-b"
+  ]
+ },
+ {
+  "page": "week04",
+  "path": "#main > nav:nth-of-type(1) > ol:nth-of-type(1) > li:nth-of-type(8) > ol:nth-of-type(1) > li:nth-of-type(2)",
+  "id": null,
+  "selector": "li[data-target]",
+  "kinds": [
+   "attr:class",
+   "lookup"
+  ],
+  "count": 15,
+  "scenarios": [
+   "base-controls-b",
+   "base-controls",
+   "base-hash",
+   "base-panels-b",
+   "base-panels",
+   "base-place",
+   "base-staffing",
+   "base-topics-a",
+   "base-topics-b"
+  ]
+ },
+ {
+  "page": "week04",
+  "path": "#main > nav:nth-of-type(1) > ol:nth-of-type(1) > li:nth-of-type(8) > ol:nth-of-type(1) > li:nth-of-type(3)",
+  "id": null,
+  "selector": "li[data-target]",
+  "kinds": [
+   "attr:class",
+   "lookup"
+  ],
+  "count": 27,
+  "scenarios": [
+   "base-controls-b",
+   "base-controls",
+   "base-hash",
+   "base-panels-b",
+   "base-panels",
+   "base-place",
+   "base-staffing",
+   "base-topics-a",
+   "base-topics-b"
+  ]
+ },
+ {
+  "page": "week04",
+  "path": "#main > nav:nth-of-type(1) > ol:nth-of-type(1) > li:nth-of-type(8) > ol:nth-of-type(1) > li:nth-of-type(4)",
+  "id": null,
+  "selector": "li[data-target]",
+  "kinds": [
+   "attr:class",
+   "lookup"
+  ],
+  "count": 25,
+  "scenarios": [
+   "base-controls-b",
+   "base-controls",
+   "base-hash",
+   "base-panels-b",
+   "base-panels",
+   "base-place",
+   "base-staffing",
+   "base-topics-a",
+   "base-topics-b"
+  ]
+ },
+ {
+  "page": "week04",
+  "path": "#main > nav:nth-of-type(1) > ol:nth-of-type(1) > li:nth-of-type(8) > ol:nth-of-type(1) > li:nth-of-type(5)",
+  "id": null,
+  "selector": "li[data-target]",
+  "kinds": [
+   "attr:class",
+   "lookup"
+  ],
+  "count": 16,
+  "scenarios": [
+   "base-controls-b",
+   "base-controls",
+   "base-hash",
+   "base-panels-b",
+   "base-panels",
+   "base-place",
+   "base-staffing",
+   "base-topics-a",
+   "base-topics-b"
+  ]
+ },
+ {
+  "page": "week04",
+  "path": "#main > nav:nth-of-type(1) > ol:nth-of-type(1) > li:nth-of-type(8) > ol:nth-of-type(1) > li:nth-of-type(6)",
+  "id": null,
+  "selector": "li[data-target]",
+  "kinds": [
+   "attr:class",
+   "lookup"
+  ],
+  "count": 14,
+  "scenarios": [
+   "base-controls-b",
+   "base-controls",
+   "base-hash",
+   "base-panels-b",
+   "base-panels",
+   "base-place",
+   "base-staffing",
+   "base-topics-a",
+   "base-topics-b"
+  ]
+ },
+ {
+  "page": "week04",
+  "path": "#opening",
+  "id": "opening",
+  "selector": "#opening",
+  "kinds": [
+   "lookup"
+  ],
+  "count": 22,
+  "scenarios": [
+   "base-controls-b",
+   "base-controls",
+   "base-hash",
+   "base-panels-b",
+   "base-panels",
+   "base-place",
+   "base-staffing",
+   "base-topics-a",
+   "base-topics-b"
+  ]
+ },
+ {
+  "page": "week04",
+  "path": "#place",
+  "id": "place",
+  "selector": "#place",
+  "kinds": [
+   "lookup"
+  ],
+  "count": 22,
+  "scenarios": [
+   "base-controls-b",
+   "base-controls",
+   "base-hash",
+   "base-panels-b",
+   "base-panels",
+   "base-place",
+   "base-staffing",
+   "base-topics-a",
+   "base-topics-b"
+  ]
+ },
+ {
+  "page": "week04",
+  "path": "#place-who",
+  "id": "place-who",
+  "selector": "#place-who",
+  "kinds": [
+   "lookup"
+  ],
+  "count": 11,
+  "scenarios": [
+   "base-controls-b",
+   "base-controls",
+   "base-hash",
+   "base-panels-b",
+   "base-panels",
+   "base-place",
+   "base-staffing",
+   "base-topics-a",
+   "base-topics-b"
+  ]
+ },
+ {
+  "page": "week04",
+  "path": "#place-break",
+  "id": "place-break",
+  "selector": "#place-break",
+  "kinds": [
+   "lookup"
+  ],
+  "count": 11,
+  "scenarios": [
+   "base-controls-b",
+   "base-controls",
+   "base-hash",
+   "base-panels-b",
+   "base-panels",
+   "base-place",
+   "base-staffing",
+   "base-topics-a",
+   "base-topics-b"
+  ]
+ },
+ {
+  "page": "week04",
+  "path": "#jobs",
+  "id": "jobs",
+  "selector": "#jobs",
+  "kinds": [
+   "lookup"
+  ],
+  "count": 22,
+  "scenarios": [
+   "base-controls-b",
+   "base-controls",
+   "base-hash",
+   "base-panels-b",
+   "base-panels",
+   "base-place",
+   "base-staffing",
+   "base-topics-a",
+   "base-topics-b"
+  ]
+ },
+ {
+  "page": "week04",
+  "path": "#jobs-split",
+  "id": "jobs-split",
+  "selector": "#jobs-split",
+  "kinds": [
+   "lookup"
+  ],
+  "count": 11,
+  "scenarios": [
+   "base-controls-b",
+   "base-controls",
+   "base-hash",
+   "base-panels-b",
+   "base-panels",
+   "base-place",
+   "base-staffing",
+   "base-topics-a",
+   "base-topics-b"
+  ]
+ },
+ {
+  "page": "week04",
+  "path": "#jobs-linkcom",
+  "id": "jobs-linkcom",
+  "selector": "#jobs-linkcom",
+  "kinds": [
+   "lookup"
+  ],
+  "count": 11,
+  "scenarios": [
+   "base-controls-b",
+   "base-controls",
+   "base-hash",
+   "base-panels-b",
+   "base-panels",
+   "base-place",
+   "base-staffing",
+   "base-topics-a",
+   "base-topics-b"
+  ]
+ },
+ {
+  "page": "week04",
+  "path": "#who",
+  "id": "who",
+  "selector": "#who",
+  "kinds": [
+   "lookup"
+  ],
+  "count": 22,
+  "scenarios": [
+   "base-controls-b",
+   "base-controls",
+   "base-hash",
+   "base-panels-b",
+   "base-panels",
+   "base-place",
+   "base-staffing",
+   "base-topics-a",
+   "base-topics-b"
+  ]
+ },
+ {
+  "page": "week04",
+  "path": "#who-switch",
+  "id": "who-switch",
+  "selector": "#who-switch",
+  "kinds": [
+   "lookup"
+  ],
+  "count": 11,
+  "scenarios": [
+   "base-controls-b",
+   "base-controls",
+   "base-hash",
+   "base-panels-b",
+   "base-panels",
+   "base-place",
+   "base-staffing",
+   "base-topics-a",
+   "base-topics-b"
+  ]
+ },
+ {
+  "page": "week04",
+  "path": "#who-movers",
+  "id": "who-movers",
+  "selector": "#who-movers",
+  "kinds": [
+   "lookup"
+  ],
+  "count": 11,
+  "scenarios": [
+   "base-controls-b",
+   "base-controls",
+   "base-hash",
+   "base-panels-b",
+   "base-panels",
+   "base-place",
+   "base-staffing",
+   "base-topics-a",
+   "base-topics-b"
+  ]
+ },
+ {
+  "page": "week04",
+  "path": "#who-overlap",
+  "id": "who-overlap",
+  "selector": "#who-overlap",
+  "kinds": [
+   "lookup"
+  ],
+  "count": 11,
+  "scenarios": [
+   "base-controls-b",
+   "base-controls",
+   "base-hash",
+   "base-panels-b",
+   "base-panels",
+   "base-place",
+   "base-staffing",
+   "base-topics-a",
+   "base-topics-b"
+  ]
+ },
+ {
+  "page": "week04",
+  "path": "#footprint",
+  "id": "footprint",
+  "selector": "#footprint",
+  "kinds": [
+   "lookup"
+  ],
+  "count": 22,
+  "scenarios": [
+   "base-controls-b",
+   "base-controls",
+   "base-hash",
+   "base-panels-b",
+   "base-panels",
+   "base-place",
+   "base-staffing",
+   "base-topics-a",
+   "base-topics-b"
+  ]
+ },
+ {
+  "page": "week04",
+  "path": "#footprint-which",
+  "id": "footprint-which",
+  "selector": "#footprint-which",
+  "kinds": [
+   "lookup"
+  ],
+  "count": 11,
+  "scenarios": [
+   "base-controls-b",
+   "base-controls",
+   "base-hash",
+   "base-panels-b",
+   "base-panels",
+   "base-place",
+   "base-staffing",
+   "base-topics-a",
+   "base-topics-b"
+  ]
+ },
+ {
+  "page": "week04",
+  "path": "#beyond",
+  "id": "beyond",
+  "selector": "#beyond",
+  "kinds": [
+   "lookup"
+  ],
+  "count": 22,
+  "scenarios": [
+   "base-controls-b",
+   "base-controls",
+   "base-hash",
+   "base-panels-b",
+   "base-panels",
+   "base-place",
+   "base-staffing",
+   "base-topics-a",
+   "base-topics-b"
+  ]
+ },
+ {
+  "page": "week04",
+  "path": "#beyond-law",
+  "id": "beyond-law",
+  "selector": "#beyond-law",
+  "kinds": [
+   "lookup"
+  ],
+  "count": 11,
+  "scenarios": [
+   "base-controls-b",
+   "base-controls",
+   "base-hash",
+   "base-panels-b",
+   "base-panels",
+   "base-place",
+   "base-staffing",
+   "base-topics-a",
+   "base-topics-b"
+  ]
+ },
+ {
+  "page": "week04",
+  "path": "#beyond-perm",
+  "id": "beyond-perm",
+  "selector": "#beyond-perm",
+  "kinds": [
+   "lookup"
+  ],
+  "count": 11,
+  "scenarios": [
+   "base-controls-b",
+   "base-controls",
+   "base-hash",
+   "base-panels-b",
+   "base-panels",
+   "base-place",
+   "base-staffing",
+   "base-topics-a",
+   "base-topics-b"
+  ]
+ },
+ {
+  "page": "week04",
+  "path": "#beyond-wage",
+  "id": "beyond-wage",
+  "selector": "#beyond-wage",
+  "kinds": [
+   "lookup"
+  ],
+  "count": 11,
+  "scenarios": [
+   "base-controls-b",
+   "base-controls",
+   "base-hash",
+   "base-panels-b",
+   "base-panels",
+   "base-place",
+   "base-staffing",
+   "base-topics-a",
+   "base-topics-b"
+  ]
+ },
+ {
+  "page": "week04",
+  "path": "#closing",
+  "id": "closing",
+  "selector": "#closing",
+  "kinds": [
+   "lookup"
+  ],
+  "count": 11,
+  "scenarios": [
+   "base-controls-b",
+   "base-controls",
+   "base-hash",
+   "base-panels-b",
+   "base-panels",
+   "base-place",
+   "base-staffing",
+   "base-topics-a",
+   "base-topics-b"
+  ]
+ },
+ {
+  "page": "week04",
+  "path": "#cut",
+  "id": "cut",
+  "selector": "#cut",
+  "kinds": [
+   "lookup"
+  ],
+  "count": 36,
+  "scenarios": [
+   "base-controls-b",
+   "base-controls",
+   "base-hash",
+   "base-panels-b",
+   "base-panels",
+   "base-place",
+   "base-staffing",
+   "base-topics-a",
+   "base-topics-b"
+  ]
+ },
+ {
+  "page": "week04",
+  "path": "#main > nav:nth-of-type(1) > ol:nth-of-type(1) > li:nth-of-type(1) > a:nth-of-type(1)",
+  "id": null,
+  "selector": ":scope > a",
+  "kinds": [
+   "attr:aria-current",
+   "lookup"
+  ],
+  "count": 114,
+  "scenarios": [
+   "base-controls-b",
+   "base-controls",
+   "base-hash",
+   "base-panels-b",
+   "base-panels",
+   "base-place",
+   "base-staffing",
+   "base-topics-a",
+   "base-topics-b"
+  ]
+ },
+ {
+  "page": "week04",
+  "path": "#main > nav:nth-of-type(1) > ol:nth-of-type(1) > li:nth-of-type(2) > a:nth-of-type(1)",
+  "id": null,
+  "selector": ":scope > a",
+  "kinds": [
+   "attr:aria-current",
+   "lookup"
+  ],
+  "count": 126,
+  "scenarios": [
+   "base-controls-b",
+   "base-controls",
+   "base-hash",
+   "base-panels-b",
+   "base-panels",
+   "base-place",
+   "base-staffing",
+   "base-topics-a",
+   "base-topics-b"
+  ]
+ },
+ {
+  "page": "week04",
+  "path": "#main > nav:nth-of-type(1) > ol:nth-of-type(1) > li:nth-of-type(2) > ol:nth-of-type(1) > li:nth-of-type(1) > a:nth-of-type(1)",
+  "id": null,
+  "selector": ":scope > a",
+  "kinds": [
+   "lookup"
+  ],
+  "count": 111,
+  "scenarios": [
+   "base-controls-b",
+   "base-controls",
+   "base-hash",
+   "base-panels-b",
+   "base-panels",
+   "base-place",
+   "base-staffing",
+   "base-topics-a",
+   "base-topics-b"
+  ]
+ },
+ {
+  "page": "week04",
+  "path": "#main > nav:nth-of-type(1) > ol:nth-of-type(1) > li:nth-of-type(2) > ol:nth-of-type(1) > li:nth-of-type(2) > a:nth-of-type(1)",
+  "id": null,
+  "selector": ":scope > a",
+  "kinds": [
+   "lookup"
+  ],
+  "count": 111,
+  "scenarios": [
+   "base-controls-b",
+   "base-controls",
+   "base-hash",
+   "base-panels-b",
+   "base-panels",
+   "base-place",
+   "base-staffing",
+   "base-topics-a",
+   "base-topics-b"
+  ]
+ },
+ {
+  "page": "week04",
+  "path": "#main > nav:nth-of-type(1) > ol:nth-of-type(1) > li:nth-of-type(3) > a:nth-of-type(1)",
+  "id": null,
+  "selector": ":scope > a",
+  "kinds": [
+   "attr:aria-current",
+   "lookup"
+  ],
+  "count": 114,
+  "scenarios": [
+   "base-controls-b",
+   "base-controls",
+   "base-hash",
+   "base-panels-b",
+   "base-panels",
+   "base-place",
+   "base-staffing",
+   "base-topics-a",
+   "base-topics-b"
+  ]
+ },
+ {
+  "page": "week04",
+  "path": "#main > nav:nth-of-type(1) > ol:nth-of-type(1) > li:nth-of-type(3) > ol:nth-of-type(1) > li:nth-of-type(1) > a:nth-of-type(1)",
+  "id": null,
+  "selector": ":scope > a",
+  "kinds": [
+   "lookup"
+  ],
+  "count": 111,
+  "scenarios": [
+   "base-controls-b",
+   "base-controls",
+   "base-hash",
+   "base-panels-b",
+   "base-panels",
+   "base-place",
+   "base-staffing",
+   "base-topics-a",
+   "base-topics-b"
+  ]
+ },
+ {
+  "page": "week04",
+  "path": "#main > nav:nth-of-type(1) > ol:nth-of-type(1) > li:nth-of-type(3) > ol:nth-of-type(1) > li:nth-of-type(2) > a:nth-of-type(1)",
+  "id": null,
+  "selector": ":scope > a",
+  "kinds": [
+   "lookup"
+  ],
+  "count": 111,
+  "scenarios": [
+   "base-controls-b",
+   "base-controls",
+   "base-hash",
+   "base-panels-b",
+   "base-panels",
+   "base-place",
+   "base-staffing",
+   "base-topics-a",
+   "base-topics-b"
+  ]
+ },
+ {
+  "page": "week04",
+  "path": "#main > nav:nth-of-type(1) > ol:nth-of-type(1) > li:nth-of-type(4) > a:nth-of-type(1)",
+  "id": null,
+  "selector": ":scope > a",
+  "kinds": [
+   "attr:aria-current",
+   "lookup"
+  ],
+  "count": 116,
+  "scenarios": [
+   "base-controls-b",
+   "base-controls",
+   "base-hash",
+   "base-panels-b",
+   "base-panels",
+   "base-place",
+   "base-staffing",
+   "base-topics-a",
+   "base-topics-b"
+  ]
+ },
+ {
+  "page": "week04",
+  "path": "#main > nav:nth-of-type(1) > ol:nth-of-type(1) > li:nth-of-type(4) > ol:nth-of-type(1) > li:nth-of-type(1) > a:nth-of-type(1)",
+  "id": null,
+  "selector": ":scope > a",
+  "kinds": [
+   "lookup"
+  ],
+  "count": 111,
+  "scenarios": [
+   "base-controls-b",
+   "base-controls",
+   "base-hash",
+   "base-panels-b",
+   "base-panels",
+   "base-place",
+   "base-staffing",
+   "base-topics-a",
+   "base-topics-b"
+  ]
+ },
+ {
+  "page": "week04",
+  "path": "#main > nav:nth-of-type(1) > ol:nth-of-type(1) > li:nth-of-type(4) > ol:nth-of-type(1) > li:nth-of-type(2) > a:nth-of-type(1)",
+  "id": null,
+  "selector": ":scope > a",
+  "kinds": [
+   "lookup"
+  ],
+  "count": 111,
+  "scenarios": [
+   "base-controls-b",
+   "base-controls",
+   "base-hash",
+   "base-panels-b",
+   "base-panels",
+   "base-place",
+   "base-staffing",
+   "base-topics-a",
+   "base-topics-b"
+  ]
+ },
+ {
+  "page": "week04",
+  "path": "#main > nav:nth-of-type(1) > ol:nth-of-type(1) > li:nth-of-type(4) > ol:nth-of-type(1) > li:nth-of-type(3) > a:nth-of-type(1)",
+  "id": null,
+  "selector": ":scope > a",
+  "kinds": [
+   "lookup"
+  ],
+  "count": 111,
+  "scenarios": [
+   "base-controls-b",
+   "base-controls",
+   "base-hash",
+   "base-panels-b",
+   "base-panels",
+   "base-place",
+   "base-staffing",
+   "base-topics-a",
+   "base-topics-b"
+  ]
+ },
+ {
+  "page": "week04",
+  "path": "#main > nav:nth-of-type(1) > ol:nth-of-type(1) > li:nth-of-type(5) > a:nth-of-type(1)",
+  "id": null,
+  "selector": ":scope > a",
+  "kinds": [
+   "attr:aria-current",
+   "lookup"
+  ],
+  "count": 114,
+  "scenarios": [
+   "base-controls-b",
+   "base-controls",
+   "base-hash",
+   "base-panels-b",
+   "base-panels",
+   "base-place",
+   "base-staffing",
+   "base-topics-a",
+   "base-topics-b"
+  ]
+ },
+ {
+  "page": "week04",
+  "path": "#main > nav:nth-of-type(1) > ol:nth-of-type(1) > li:nth-of-type(5) > ol:nth-of-type(1) > li:nth-of-type(1) > a:nth-of-type(1)",
+  "id": null,
+  "selector": ":scope > a",
+  "kinds": [
+   "lookup"
+  ],
+  "count": 111,
+  "scenarios": [
+   "base-controls-b",
+   "base-controls",
+   "base-hash",
+   "base-panels-b",
+   "base-panels",
+   "base-place",
+   "base-staffing",
+   "base-topics-a",
+   "base-topics-b"
+  ]
+ },
+ {
+  "page": "week04",
+  "path": "#main > nav:nth-of-type(1) > ol:nth-of-type(1) > li:nth-of-type(6) > a:nth-of-type(1)",
+  "id": null,
+  "selector": ":scope > a",
+  "kinds": [
+   "attr:aria-current",
+   "lookup"
+  ],
+  "count": 114,
+  "scenarios": [
+   "base-controls-b",
+   "base-controls",
+   "base-hash",
+   "base-panels-b",
+   "base-panels",
+   "base-place",
+   "base-staffing",
+   "base-topics-a",
+   "base-topics-b"
+  ]
+ },
+ {
+  "page": "week04",
+  "path": "#main > nav:nth-of-type(1) > ol:nth-of-type(1) > li:nth-of-type(6) > ol:nth-of-type(1) > li:nth-of-type(1) > a:nth-of-type(1)",
+  "id": null,
+  "selector": ":scope > a",
+  "kinds": [
+   "lookup"
+  ],
+  "count": 111,
+  "scenarios": [
+   "base-controls-b",
+   "base-controls",
+   "base-hash",
+   "base-panels-b",
+   "base-panels",
+   "base-place",
+   "base-staffing",
+   "base-topics-a",
+   "base-topics-b"
+  ]
+ },
+ {
+  "page": "week04",
+  "path": "#main > nav:nth-of-type(1) > ol:nth-of-type(1) > li:nth-of-type(6) > ol:nth-of-type(1) > li:nth-of-type(2) > a:nth-of-type(1)",
+  "id": null,
+  "selector": ":scope > a",
+  "kinds": [
+   "lookup"
+  ],
+  "count": 111,
+  "scenarios": [
+   "base-controls-b",
+   "base-controls",
+   "base-hash",
+   "base-panels-b",
+   "base-panels",
+   "base-place",
+   "base-staffing",
+   "base-topics-a",
+   "base-topics-b"
+  ]
+ },
+ {
+  "page": "week04",
+  "path": "#main > nav:nth-of-type(1) > ol:nth-of-type(1) > li:nth-of-type(6) > ol:nth-of-type(1) > li:nth-of-type(3) > a:nth-of-type(1)",
+  "id": null,
+  "selector": ":scope > a",
+  "kinds": [
+   "lookup"
+  ],
+  "count": 111,
+  "scenarios": [
+   "base-controls-b",
+   "base-controls",
+   "base-hash",
+   "base-panels-b",
+   "base-panels",
+   "base-place",
+   "base-staffing",
+   "base-topics-a",
+   "base-topics-b"
+  ]
+ },
+ {
+  "page": "week04",
+  "path": "#main > nav:nth-of-type(1) > ol:nth-of-type(1) > li:nth-of-type(7) > a:nth-of-type(1)",
+  "id": null,
+  "selector": ":scope > a",
+  "kinds": [
+   "attr:aria-current",
+   "lookup"
+  ],
+  "count": 196,
+  "scenarios": [
+   "base-controls-b",
+   "base-controls",
+   "base-hash",
+   "base-panels-b",
+   "base-panels",
+   "base-place",
+   "base-staffing",
+   "base-topics-a",
+   "base-topics-b"
+  ]
+ },
+ {
+  "page": "week04",
+  "path": "#main > nav:nth-of-type(1) > ol:nth-of-type(1) > li:nth-of-type(8) > a:nth-of-type(1)",
+  "id": null,
+  "selector": ":scope > a",
+  "kinds": [
+   "attr:aria-current",
+   "lookup"
+  ],
+  "count": 275,
+  "scenarios": [
+   "base-controls-b",
+   "base-controls",
+   "base-hash",
+   "base-panels-b",
+   "base-panels",
+   "base-place",
+   "base-staffing",
+   "base-topics-a",
+   "base-topics-b"
+  ]
+ },
+ {
+  "page": "week04",
+  "path": "#main > nav:nth-of-type(1) > ol:nth-of-type(1) > li:nth-of-type(8) > ol:nth-of-type(1) > li:nth-of-type(1) > a:nth-of-type(1)",
+  "id": null,
+  "selector": ":scope > a",
+  "kinds": [
+   "attr:aria-current",
+   "lookup"
+  ],
+  "count": 161,
+  "scenarios": [
+   "base-controls-b",
+   "base-controls",
+   "base-hash",
+   "base-panels-b",
+   "base-panels",
+   "base-place",
+   "base-staffing",
+   "base-topics-a",
+   "base-topics-b"
+  ]
+ },
+ {
+  "page": "week04",
+  "path": "#main > nav:nth-of-type(1) > ol:nth-of-type(1) > li:nth-of-type(8) > ol:nth-of-type(1) > li:nth-of-type(2) > a:nth-of-type(1)",
+  "id": null,
+  "selector": ":scope > a",
+  "kinds": [
+   "attr:aria-current",
+   "lookup"
+  ],
+  "count": 114,
+  "scenarios": [
+   "base-controls-b",
+   "base-controls",
+   "base-hash",
+   "base-panels-b",
+   "base-panels",
+   "base-place",
+   "base-staffing",
+   "base-topics-a",
+   "base-topics-b"
+  ]
+ },
+ {
+  "page": "week04",
+  "path": "#main > nav:nth-of-type(1) > ol:nth-of-type(1) > li:nth-of-type(8) > ol:nth-of-type(1) > li:nth-of-type(3) > a:nth-of-type(1)",
+  "id": null,
+  "selector": ":scope > a",
+  "kinds": [
+   "attr:aria-current",
+   "lookup"
+  ],
+  "count": 125,
+  "scenarios": [
+   "base-controls-b",
+   "base-controls",
+   "base-hash",
+   "base-panels-b",
+   "base-panels",
+   "base-place",
+   "base-staffing",
+   "base-topics-a",
+   "base-topics-b"
+  ]
+ },
+ {
+  "page": "week04",
+  "path": "#main > nav:nth-of-type(1) > ol:nth-of-type(1) > li:nth-of-type(8) > ol:nth-of-type(1) > li:nth-of-type(4) > a:nth-of-type(1)",
+  "id": null,
+  "selector": ":scope > a",
+  "kinds": [
+   "attr:aria-current",
+   "lookup"
+  ],
+  "count": 129,
+  "scenarios": [
+   "base-controls-b",
+   "base-controls",
+   "base-hash",
+   "base-panels-b",
+   "base-panels",
+   "base-place",
+   "base-staffing",
+   "base-topics-a",
+   "base-topics-b"
+  ]
+ },
+ {
+  "page": "week04",
+  "path": "#main > nav:nth-of-type(1) > ol:nth-of-type(1) > li:nth-of-type(8) > ol:nth-of-type(1) > li:nth-of-type(5) > a:nth-of-type(1)",
+  "id": null,
+  "selector": ":scope > a",
+  "kinds": [
+   "attr:aria-current",
+   "lookup"
+  ],
+  "count": 114,
+  "scenarios": [
+   "base-controls-b",
+   "base-controls",
+   "base-hash",
+   "base-panels-b",
+   "base-panels",
+   "base-place",
+   "base-staffing",
+   "base-topics-a",
+   "base-topics-b"
+  ]
+ },
+ {
+  "page": "week04",
+  "path": "#main > nav:nth-of-type(1) > ol:nth-of-type(1) > li:nth-of-type(8) > ol:nth-of-type(1) > li:nth-of-type(6) > a:nth-of-type(1)",
+  "id": null,
+  "selector": ":scope > a",
+  "kinds": [
+   "attr:aria-current",
+   "lookup"
+  ],
+  "count": 114,
+  "scenarios": [
+   "base-controls-b",
+   "base-controls",
+   "base-hash",
+   "base-panels-b",
+   "base-panels",
+   "base-place",
+   "base-staffing",
+   "base-topics-a",
+   "base-topics-b"
+  ]
+ },
+ {
+  "page": "week04",
+  "path": "#place-rank > div:nth-of-type(1)",
+  "id": null,
+  "selector": ".rx-seg, .axis-modes, .staffing-years",
+  "kinds": [
+   "lookup"
+  ],
+  "count": 284,
+  "scenarios": [
+   "base-controls-b",
+   "base-controls",
+   "base-hash",
+   "base-panels-b",
+   "base-panels",
+   "base-place",
+   "base-staffing",
+   "base-topics-a",
+   "base-topics-b"
+  ]
+ },
+ {
+  "page": "week04",
+  "path": "#place-start > div:nth-of-type(3) > details:nth-of-type(4) > div:nth-of-type(1) > div:nth-of-type(1)",
+  "id": null,
+  "selector": ".rx-seg, .axis-modes, .staffing-years",
+  "kinds": [
+   "lookup"
+  ],
+  "count": 284,
   "scenarios": [
    "base-controls-b",
    "base-controls",
@@ -2637,7 +4106,7 @@
   "page": "week04",
   "path": "#place-alpha",
   "id": "place-alpha",
-  "selector": "#place-alpha",
+  "selector": ".rx-seg, .axis-modes, .staffing-years",
   "kinds": [
    "attr:aria-pressed",
    "attr:tabindex",
@@ -2645,7 +4114,1480 @@
    "closest",
    "lookup"
   ],
-  "count": 3259,
+  "count": 3214,
+  "scenarios": [
+   "base-controls-b",
+   "base-controls",
+   "base-hash",
+   "base-panels-b",
+   "base-panels",
+   "base-place",
+   "base-staffing",
+   "base-topics-a",
+   "base-topics-b"
+  ]
+ },
+ {
+  "page": "week04",
+  "path": "#staffing-figure > div:nth-of-type(1) > div:nth-of-type(1)",
+  "id": null,
+  "selector": ".rx-seg, .axis-modes, .staffing-years",
+  "kinds": [
+   "closest",
+   "lookup"
+  ],
+  "count": 287,
+  "scenarios": [
+   "base-controls-b",
+   "base-controls",
+   "base-hash",
+   "base-panels-b",
+   "base-panels",
+   "base-place",
+   "base-staffing",
+   "base-topics-a",
+   "base-topics-b"
+  ]
+ },
+ {
+  "page": "week04",
+  "path": "#roles-card > div:nth-of-type(1) > div:nth-of-type(1) > div:nth-of-type(1)",
+  "id": null,
+  "selector": ".rx-seg, .axis-modes, .staffing-years",
+  "kinds": [
+   "lookup"
+  ],
+  "count": 284,
+  "scenarios": [
+   "base-controls-b",
+   "base-controls",
+   "base-hash",
+   "base-panels-b",
+   "base-panels",
+   "base-place",
+   "base-staffing",
+   "base-topics-a",
+   "base-topics-b"
+  ]
+ },
+ {
+  "page": "week04",
+  "path": "#roles-card > div:nth-of-type(1) > div:nth-of-type(2) > div:nth-of-type(1)",
+  "id": null,
+  "selector": ".rx-seg, .axis-modes, .staffing-years",
+  "kinds": [
+   "lookup"
+  ],
+  "count": 284,
+  "scenarios": [
+   "base-controls-b",
+   "base-controls",
+   "base-hash",
+   "base-panels-b",
+   "base-panels",
+   "base-place",
+   "base-staffing",
+   "base-topics-a",
+   "base-topics-b"
+  ]
+ },
+ {
+  "page": "week04",
+  "path": "#roles-card > div:nth-of-type(1) > div:nth-of-type(3) > div:nth-of-type(1)",
+  "id": null,
+  "selector": ".rx-seg, .axis-modes, .staffing-years",
+  "kinds": [
+   "lookup"
+  ],
+  "count": 284,
+  "scenarios": [
+   "base-controls-b",
+   "base-controls",
+   "base-hash",
+   "base-panels-b",
+   "base-panels",
+   "base-place",
+   "base-staffing",
+   "base-topics-a",
+   "base-topics-b"
+  ]
+ },
+ {
+  "page": "week04",
+  "path": "#place-rank > div:nth-of-type(1) > button:nth-of-type(1)",
+  "id": null,
+  "selector": "button",
+  "kinds": [
+   "attr:aria-pressed",
+   "attr:tabindex",
+   "listen:click",
+   "lookup"
+  ],
+  "count": 594,
+  "scenarios": [
+   "base-controls-b",
+   "base-controls",
+   "base-hash",
+   "base-panels-b",
+   "base-panels",
+   "base-place",
+   "base-staffing",
+   "base-topics-a",
+   "base-topics-b"
+  ]
+ },
+ {
+  "page": "week04",
+  "path": "#place-rank > div:nth-of-type(1) > button:nth-of-type(2)",
+  "id": null,
+  "selector": "button",
+  "kinds": [
+   "attr:aria-pressed",
+   "attr:tabindex",
+   "listen:click",
+   "lookup"
+  ],
+  "count": 594,
+  "scenarios": [
+   "base-controls-b",
+   "base-controls",
+   "base-hash",
+   "base-panels-b",
+   "base-panels",
+   "base-place",
+   "base-staffing",
+   "base-topics-a",
+   "base-topics-b"
+  ]
+ },
+ {
+  "page": "week04",
+  "path": "#place-start > div:nth-of-type(3) > details:nth-of-type(4) > div:nth-of-type(1) > div:nth-of-type(1) > button:nth-of-type(1)",
+  "id": null,
+  "selector": "button",
+  "kinds": [
+   "attr:aria-pressed",
+   "attr:tabindex",
+   "listen:click",
+   "lookup"
+  ],
+  "count": 594,
+  "scenarios": [
+   "base-controls-b",
+   "base-controls",
+   "base-hash",
+   "base-panels-b",
+   "base-panels",
+   "base-place",
+   "base-staffing",
+   "base-topics-a",
+   "base-topics-b"
+  ]
+ },
+ {
+  "page": "week04",
+  "path": "#place-start > div:nth-of-type(3) > details:nth-of-type(4) > div:nth-of-type(1) > div:nth-of-type(1) > button:nth-of-type(2)",
+  "id": null,
+  "selector": "button",
+  "kinds": [
+   "attr:aria-pressed",
+   "attr:tabindex",
+   "listen:click",
+   "lookup"
+  ],
+  "count": 594,
+  "scenarios": [
+   "base-controls-b",
+   "base-controls",
+   "base-hash",
+   "base-panels-b",
+   "base-panels",
+   "base-place",
+   "base-staffing",
+   "base-topics-a",
+   "base-topics-b"
+  ]
+ },
+ {
+  "page": "week04",
+  "path": "#staffing-figure > div:nth-of-type(1) > div:nth-of-type(1) > button:nth-of-type(1)",
+  "id": null,
+  "selector": "button",
+  "kinds": [
+   "attr:aria-pressed",
+   "attr:tabindex",
+   "listen:click",
+   "lookup"
+  ],
+  "count": 609,
+  "scenarios": [
+   "base-controls-b",
+   "base-controls",
+   "base-hash",
+   "base-panels-b",
+   "base-panels",
+   "base-place",
+   "base-staffing",
+   "base-topics-a",
+   "base-topics-b"
+  ]
+ },
+ {
+  "page": "week04",
+  "path": "#staffing-figure > div:nth-of-type(1) > div:nth-of-type(1) > button:nth-of-type(2)",
+  "id": null,
+  "selector": "button",
+  "kinds": [
+   "attr:aria-pressed",
+   "attr:tabindex",
+   "listen:click",
+   "lookup"
+  ],
+  "count": 609,
+  "scenarios": [
+   "base-controls-b",
+   "base-controls",
+   "base-hash",
+   "base-panels-b",
+   "base-panels",
+   "base-place",
+   "base-staffing",
+   "base-topics-a",
+   "base-topics-b"
+  ]
+ },
+ {
+  "page": "week04",
+  "path": "#staffing-figure > div:nth-of-type(1) > div:nth-of-type(1) > button:nth-of-type(3)",
+  "id": null,
+  "selector": "button",
+  "kinds": [
+   "attr:aria-pressed",
+   "attr:tabindex",
+   "listen:click",
+   "lookup"
+  ],
+  "count": 609,
+  "scenarios": [
+   "base-controls-b",
+   "base-controls",
+   "base-hash",
+   "base-panels-b",
+   "base-panels",
+   "base-place",
+   "base-staffing",
+   "base-topics-a",
+   "base-topics-b"
+  ]
+ },
+ {
+  "page": "week04",
+  "path": "#staffing-figure > div:nth-of-type(1) > div:nth-of-type(1) > button:nth-of-type(4)",
+  "id": null,
+  "selector": "button",
+  "kinds": [
+   "attr:aria-pressed",
+   "attr:tabindex",
+   "listen:click",
+   "lookup"
+  ],
+  "count": 620,
+  "scenarios": [
+   "base-controls-b",
+   "base-controls",
+   "base-hash",
+   "base-panels-b",
+   "base-panels",
+   "base-place",
+   "base-staffing",
+   "base-topics-a",
+   "base-topics-b"
+  ]
+ },
+ {
+  "page": "week04",
+  "path": "#staffing-figure > div:nth-of-type(1) > div:nth-of-type(1) > button:nth-of-type(5)",
+  "id": null,
+  "selector": "button",
+  "kinds": [
+   "attr:aria-pressed",
+   "attr:tabindex",
+   "listen:click",
+   "lookup"
+  ],
+  "count": 609,
+  "scenarios": [
+   "base-controls-b",
+   "base-controls",
+   "base-hash",
+   "base-panels-b",
+   "base-panels",
+   "base-place",
+   "base-staffing",
+   "base-topics-a",
+   "base-topics-b"
+  ]
+ },
+ {
+  "page": "week04",
+  "path": "#roles-card > div:nth-of-type(1) > div:nth-of-type(1) > div:nth-of-type(1) > button:nth-of-type(1)",
+  "id": null,
+  "selector": "button",
+  "kinds": [
+   "attr:aria-pressed",
+   "attr:tabindex",
+   "listen:click",
+   "lookup"
+  ],
+  "count": 574,
+  "scenarios": [
+   "base-controls-b",
+   "base-controls",
+   "base-hash",
+   "base-panels-b",
+   "base-panels",
+   "base-place",
+   "base-staffing",
+   "base-topics-a",
+   "base-topics-b"
+  ]
+ },
+ {
+  "page": "week04",
+  "path": "#roles-card > div:nth-of-type(1) > div:nth-of-type(1) > div:nth-of-type(1) > button:nth-of-type(2)",
+  "id": null,
+  "selector": "button",
+  "kinds": [
+   "attr:aria-pressed",
+   "attr:tabindex",
+   "listen:click",
+   "lookup"
+  ],
+  "count": 574,
+  "scenarios": [
+   "base-controls-b",
+   "base-controls",
+   "base-hash",
+   "base-panels-b",
+   "base-panels",
+   "base-place",
+   "base-staffing",
+   "base-topics-a",
+   "base-topics-b"
+  ]
+ },
+ {
+  "page": "week04",
+  "path": "#roles-card > div:nth-of-type(1) > div:nth-of-type(1) > div:nth-of-type(1) > button:nth-of-type(3)",
+  "id": null,
+  "selector": "button",
+  "kinds": [
+   "attr:aria-pressed",
+   "attr:tabindex",
+   "listen:click",
+   "lookup"
+  ],
+  "count": 574,
+  "scenarios": [
+   "base-controls-b",
+   "base-controls",
+   "base-hash",
+   "base-panels-b",
+   "base-panels",
+   "base-place",
+   "base-staffing",
+   "base-topics-a",
+   "base-topics-b"
+  ]
+ },
+ {
+  "page": "week04",
+  "path": "#roles-card > div:nth-of-type(1) > div:nth-of-type(1) > div:nth-of-type(1) > button:nth-of-type(4)",
+  "id": null,
+  "selector": "button",
+  "kinds": [
+   "attr:aria-pressed",
+   "attr:tabindex",
+   "listen:click",
+   "lookup"
+  ],
+  "count": 574,
+  "scenarios": [
+   "base-controls-b",
+   "base-controls",
+   "base-hash",
+   "base-panels-b",
+   "base-panels",
+   "base-place",
+   "base-staffing",
+   "base-topics-a",
+   "base-topics-b"
+  ]
+ },
+ {
+  "page": "week04",
+  "path": "#roles-card > div:nth-of-type(1) > div:nth-of-type(2) > div:nth-of-type(1) > button:nth-of-type(1)",
+  "id": null,
+  "selector": "button",
+  "kinds": [
+   "attr:aria-pressed",
+   "attr:tabindex",
+   "listen:click",
+   "lookup"
+  ],
+  "count": 574,
+  "scenarios": [
+   "base-controls-b",
+   "base-controls",
+   "base-hash",
+   "base-panels-b",
+   "base-panels",
+   "base-place",
+   "base-staffing",
+   "base-topics-a",
+   "base-topics-b"
+  ]
+ },
+ {
+  "page": "week04",
+  "path": "#roles-card > div:nth-of-type(1) > div:nth-of-type(2) > div:nth-of-type(1) > button:nth-of-type(2)",
+  "id": null,
+  "selector": "button",
+  "kinds": [
+   "attr:aria-pressed",
+   "attr:tabindex",
+   "listen:click",
+   "lookup"
+  ],
+  "count": 574,
+  "scenarios": [
+   "base-controls-b",
+   "base-controls",
+   "base-hash",
+   "base-panels-b",
+   "base-panels",
+   "base-place",
+   "base-staffing",
+   "base-topics-a",
+   "base-topics-b"
+  ]
+ },
+ {
+  "page": "week04",
+  "path": "#roles-card > div:nth-of-type(1) > div:nth-of-type(3) > div:nth-of-type(1) > button:nth-of-type(1)",
+  "id": null,
+  "selector": "button",
+  "kinds": [
+   "attr:aria-pressed",
+   "attr:tabindex",
+   "listen:click",
+   "lookup"
+  ],
+  "count": 574,
+  "scenarios": [
+   "base-controls-b",
+   "base-controls",
+   "base-hash",
+   "base-panels-b",
+   "base-panels",
+   "base-place",
+   "base-staffing",
+   "base-topics-a",
+   "base-topics-b"
+  ]
+ },
+ {
+  "page": "week04",
+  "path": "#roles-card > div:nth-of-type(1) > div:nth-of-type(3) > div:nth-of-type(1) > button:nth-of-type(2)",
+  "id": null,
+  "selector": "button",
+  "kinds": [
+   "attr:aria-pressed",
+   "attr:tabindex",
+   "listen:click",
+   "lookup"
+  ],
+  "count": 574,
+  "scenarios": [
+   "base-controls-b",
+   "base-controls",
+   "base-hash",
+   "base-panels-b",
+   "base-panels",
+   "base-place",
+   "base-staffing",
+   "base-topics-a",
+   "base-topics-b"
+  ]
+ },
+ {
+  "page": "week04",
+  "path": "#place-start > div:nth-of-type(3) > details:nth-of-type(1) > div:nth-of-type(1) > table:nth-of-type(1)",
+  "id": null,
+  "selector": "table",
+  "kinds": [
+   "closest",
+   "lookup"
+  ],
+  "count": 19,
+  "scenarios": [
+   "base-controls-b",
+   "base-controls",
+   "base-hash",
+   "base-panels-b",
+   "base-panels",
+   "base-place",
+   "base-staffing",
+   "base-topics-a",
+   "base-topics-b"
+  ]
+ },
+ {
+  "page": "week04",
+  "path": "#place-break > div:nth-of-type(1) > div:nth-of-type(1) > div:nth-of-type(2) > details:nth-of-type(4) > div:nth-of-type(1) > table:nth-of-type(1)",
+  "id": null,
+  "selector": "table",
+  "kinds": [
+   "closest",
+   "lookup"
+  ],
+  "count": 22,
+  "scenarios": [
+   "base-controls-b",
+   "base-controls",
+   "base-hash",
+   "base-panels-b",
+   "base-panels",
+   "base-place",
+   "base-staffing",
+   "base-topics-a",
+   "base-topics-b"
+  ]
+ },
+ {
+  "page": "week04",
+  "path": "#jobs-linkcom > div:nth-of-type(3) > details:nth-of-type(4) > div:nth-of-type(1) > table:nth-of-type(1)",
+  "id": null,
+  "selector": "table",
+  "kinds": [
+   "closest",
+   "lookup"
+  ],
+  "count": 22,
+  "scenarios": [
+   "base-controls-b",
+   "base-controls",
+   "base-hash",
+   "base-panels-b",
+   "base-panels",
+   "base-place",
+   "base-staffing",
+   "base-topics-a",
+   "base-topics-b"
+  ]
+ },
+ {
+  "page": "week04",
+  "path": "#who-movers > div:nth-of-type(1) > div:nth-of-type(1) > div:nth-of-type(2) > details:nth-of-type(3) > div:nth-of-type(1) > table:nth-of-type(1)",
+  "id": null,
+  "selector": "table",
+  "kinds": [
+   "closest",
+   "lookup"
+  ],
+  "count": 22,
+  "scenarios": [
+   "base-controls-b",
+   "base-controls",
+   "base-hash",
+   "base-panels-b",
+   "base-panels",
+   "base-place",
+   "base-staffing",
+   "base-topics-a",
+   "base-topics-b"
+  ]
+ },
+ {
+  "page": "week04",
+  "path": "#who-overlap > div:nth-of-type(1) > div:nth-of-type(1) > div:nth-of-type(2) > details:nth-of-type(4) > div:nth-of-type(1) > table:nth-of-type(1)",
+  "id": null,
+  "selector": "table",
+  "kinds": [
+   "closest",
+   "lookup"
+  ],
+  "count": 22,
+  "scenarios": [
+   "base-controls-b",
+   "base-controls",
+   "base-hash",
+   "base-panels-b",
+   "base-panels",
+   "base-place",
+   "base-staffing",
+   "base-topics-a",
+   "base-topics-b"
+  ]
+ },
+ {
+  "page": "week04",
+  "path": "#place-backbone > div:nth-of-type(5) > details:nth-of-type(2) > div:nth-of-type(1) > table:nth-of-type(1)",
+  "id": null,
+  "selector": "table",
+  "kinds": [
+   "closest",
+   "lookup"
+  ],
+  "count": 31,
+  "scenarios": [
+   "base-controls-b",
+   "base-controls",
+   "base-hash",
+   "base-panels-b",
+   "base-panels",
+   "base-place",
+   "base-staffing",
+   "base-topics-a",
+   "base-topics-b"
+  ]
+ },
+ {
+  "page": "week04",
+  "path": "#staffing-figure > div:nth-of-type(3) > table:nth-of-type(1)",
+  "id": null,
+  "selector": "table",
+  "kinds": [
+   "closest",
+   "lookup"
+  ],
+  "count": 30,
+  "scenarios": [
+   "base-controls-b",
+   "base-controls",
+   "base-hash",
+   "base-panels-b",
+   "base-panels",
+   "base-place",
+   "base-staffing",
+   "base-topics-a",
+   "base-topics-b"
+  ]
+ },
+ {
+  "page": "week04",
+  "path": "#staffing-community-stats > div:nth-of-type(1) > div:nth-of-type(1) > table:nth-of-type(1)",
+  "id": null,
+  "selector": "table",
+  "kinds": [
+   "closest",
+   "lookup"
+  ],
+  "count": 22,
+  "scenarios": [
+   "base-controls-b",
+   "base-controls",
+   "base-hash",
+   "base-panels-b",
+   "base-panels",
+   "base-place",
+   "base-staffing",
+   "base-topics-a",
+   "base-topics-b"
+  ]
+ },
+ {
+  "page": "week04",
+  "path": "#entity-communities > div:nth-of-type(5) > table:nth-of-type(1)",
+  "id": null,
+  "selector": "table",
+  "kinds": [
+   "closest",
+   "lookup"
+  ],
+  "count": 15,
+  "scenarios": [
+   "base-controls-b",
+   "base-controls",
+   "base-hash",
+   "base-panels-b",
+   "base-panels",
+   "base-place",
+   "base-staffing",
+   "base-topics-a",
+   "base-topics-b"
+  ]
+ },
+ {
+  "page": "week04",
+  "path": "#deeper-uscis > table:nth-of-type(1)",
+  "id": null,
+  "selector": "table",
+  "kinds": [
+   "lookup"
+  ],
+  "count": 11,
+  "scenarios": [
+   "base-controls-b",
+   "base-controls",
+   "base-hash",
+   "base-panels-b",
+   "base-panels",
+   "base-place",
+   "base-staffing",
+   "base-topics-a",
+   "base-topics-b"
+  ]
+ },
+ {
+  "page": "week04",
+  "path": "#findings > div:nth-of-type(2) > div:nth-of-type(2)",
+  "id": null,
+  "selector": "[data-finding]",
+  "kinds": [
+   "childList",
+   "lookup"
+  ],
+  "count": 22,
+  "scenarios": [
+   "base-controls-b",
+   "base-controls",
+   "base-hash",
+   "base-panels-b",
+   "base-panels",
+   "base-place",
+   "base-staffing",
+   "base-topics-a",
+   "base-topics-b"
+  ]
+ },
+ {
+  "page": "week04",
+  "path": "#findings > div:nth-of-type(3) > div:nth-of-type(2)",
+  "id": null,
+  "selector": "[data-finding]",
+  "kinds": [
+   "childList",
+   "lookup"
+  ],
+  "count": 22,
+  "scenarios": [
+   "base-controls-b",
+   "base-controls",
+   "base-hash",
+   "base-panels-b",
+   "base-panels",
+   "base-place",
+   "base-staffing",
+   "base-topics-a",
+   "base-topics-b"
+  ]
+ },
+ {
+  "page": "week04",
+  "path": "#findings > div:nth-of-type(4) > div:nth-of-type(2)",
+  "id": null,
+  "selector": "[data-finding]",
+  "kinds": [
+   "childList",
+   "lookup"
+  ],
+  "count": 22,
+  "scenarios": [
+   "base-controls-b",
+   "base-controls",
+   "base-hash",
+   "base-panels-b",
+   "base-panels",
+   "base-place",
+   "base-staffing",
+   "base-topics-a",
+   "base-topics-b"
+  ]
+ },
+ {
+  "page": "week04",
+  "path": "#findings > div:nth-of-type(5) > div:nth-of-type(2)",
+  "id": null,
+  "selector": "[data-finding]",
+  "kinds": [
+   "childList",
+   "lookup"
+  ],
+  "count": 22,
+  "scenarios": [
+   "base-controls-b",
+   "base-controls",
+   "base-hash",
+   "base-panels-b",
+   "base-panels",
+   "base-place",
+   "base-staffing",
+   "base-topics-a",
+   "base-topics-b"
+  ]
+ },
+ {
+  "page": "week04",
+  "path": "#findings > div:nth-of-type(6) > div:nth-of-type(2)",
+  "id": null,
+  "selector": "[data-finding]",
+  "kinds": [
+   "childList",
+   "lookup"
+  ],
+  "count": 22,
+  "scenarios": [
+   "base-controls-b",
+   "base-controls",
+   "base-hash",
+   "base-panels-b",
+   "base-panels",
+   "base-place",
+   "base-staffing",
+   "base-topics-a",
+   "base-topics-b"
+  ]
+ },
+ {
+  "page": "week04",
+  "path": "#place > div:nth-of-type(1) > figure:nth-of-type(1) > div:nth-of-type(1)",
+  "id": null,
+  "selector": "[data-strip=\"place-modularity\"]",
+  "kinds": [
+   "childList",
+   "lookup"
+  ],
+  "count": 33,
+  "scenarios": [
+   "base-controls-b",
+   "base-controls",
+   "base-hash",
+   "base-panels-b",
+   "base-panels",
+   "base-place",
+   "base-staffing",
+   "base-topics-a",
+   "base-topics-b"
+  ]
+ },
+ {
+  "page": "week04",
+  "path": "#deeper-uscis > table:nth-of-type(1) > thead:nth-of-type(1) > tr:nth-of-type(1) > th:nth-of-type(2)",
+  "id": null,
+  "selector": null,
+  "kinds": [
+   "attr:class"
+  ],
+  "count": 11,
+  "scenarios": [
+   "base-controls-b",
+   "base-controls",
+   "base-hash",
+   "base-panels-b",
+   "base-panels",
+   "base-place",
+   "base-staffing",
+   "base-topics-a",
+   "base-topics-b"
+  ]
+ },
+ {
+  "page": "week04",
+  "path": "#deeper-uscis > table:nth-of-type(1) > thead:nth-of-type(1) > tr:nth-of-type(1) > th:nth-of-type(3)",
+  "id": null,
+  "selector": null,
+  "kinds": [
+   "attr:class"
+  ],
+  "count": 11,
+  "scenarios": [
+   "base-controls-b",
+   "base-controls",
+   "base-hash",
+   "base-panels-b",
+   "base-panels",
+   "base-place",
+   "base-staffing",
+   "base-topics-a",
+   "base-topics-b"
+  ]
+ },
+ {
+  "page": "week04",
+  "path": "#deeper-uscis > table:nth-of-type(1) > thead:nth-of-type(1) > tr:nth-of-type(1) > th:nth-of-type(4)",
+  "id": null,
+  "selector": null,
+  "kinds": [
+   "attr:class"
+  ],
+  "count": 11,
+  "scenarios": [
+   "base-controls-b",
+   "base-controls",
+   "base-hash",
+   "base-panels-b",
+   "base-panels",
+   "base-place",
+   "base-staffing",
+   "base-topics-a",
+   "base-topics-b"
+  ]
+ },
+ {
+  "page": "week04",
+  "path": "#deeper-uscis > table:nth-of-type(1) > thead:nth-of-type(1) > tr:nth-of-type(1) > th:nth-of-type(5)",
+  "id": null,
+  "selector": null,
+  "kinds": [
+   "attr:class"
+  ],
+  "count": 11,
+  "scenarios": [
+   "base-controls-b",
+   "base-controls",
+   "base-hash",
+   "base-panels-b",
+   "base-panels",
+   "base-place",
+   "base-staffing",
+   "base-topics-a",
+   "base-topics-b"
+  ]
+ },
+ {
+  "page": "week04",
+  "path": "#deeper-uscis > table:nth-of-type(1) > tbody:nth-of-type(1) > tr:nth-of-type(1) > td:nth-of-type(2)",
+  "id": null,
+  "selector": null,
+  "kinds": [
+   "attr:class",
+   "attr:style",
+   "childList"
+  ],
+  "count": 55,
+  "scenarios": [
+   "base-controls-b",
+   "base-controls",
+   "base-hash",
+   "base-panels-b",
+   "base-panels",
+   "base-place",
+   "base-staffing",
+   "base-topics-a",
+   "base-topics-b"
+  ]
+ },
+ {
+  "page": "week04",
+  "path": "#deeper-uscis > table:nth-of-type(1) > tbody:nth-of-type(1) > tr:nth-of-type(1) > td:nth-of-type(3)",
+  "id": null,
+  "selector": null,
+  "kinds": [
+   "attr:class",
+   "attr:style",
+   "childList"
+  ],
+  "count": 55,
+  "scenarios": [
+   "base-controls-b",
+   "base-controls",
+   "base-hash",
+   "base-panels-b",
+   "base-panels",
+   "base-place",
+   "base-staffing",
+   "base-topics-a",
+   "base-topics-b"
+  ]
+ },
+ {
+  "page": "week04",
+  "path": "#deeper-uscis > table:nth-of-type(1) > tbody:nth-of-type(1) > tr:nth-of-type(1) > td:nth-of-type(4)",
+  "id": null,
+  "selector": null,
+  "kinds": [
+   "attr:class"
+  ],
+  "count": 11,
+  "scenarios": [
+   "base-controls-b",
+   "base-controls",
+   "base-hash",
+   "base-panels-b",
+   "base-panels",
+   "base-place",
+   "base-staffing",
+   "base-topics-a",
+   "base-topics-b"
+  ]
+ },
+ {
+  "page": "week04",
+  "path": "#deeper-uscis > table:nth-of-type(1) > tbody:nth-of-type(1) > tr:nth-of-type(1) > td:nth-of-type(5)",
+  "id": null,
+  "selector": null,
+  "kinds": [
+   "attr:class"
+  ],
+  "count": 11,
+  "scenarios": [
+   "base-controls-b",
+   "base-controls",
+   "base-hash",
+   "base-panels-b",
+   "base-panels",
+   "base-place",
+   "base-staffing",
+   "base-topics-a",
+   "base-topics-b"
+  ]
+ },
+ {
+  "page": "week04",
+  "path": "#deeper-uscis > table:nth-of-type(1) > tbody:nth-of-type(1) > tr:nth-of-type(1)",
+  "id": null,
+  "selector": null,
+  "kinds": [
+   "attr:data-rx"
+  ],
+  "count": 11,
+  "scenarios": [
+   "base-controls-b",
+   "base-controls",
+   "base-hash",
+   "base-panels-b",
+   "base-panels",
+   "base-place",
+   "base-staffing",
+   "base-topics-a",
+   "base-topics-b"
+  ]
+ },
+ {
+  "page": "week04",
+  "path": "#deeper-uscis > table:nth-of-type(1) > tbody:nth-of-type(1) > tr:nth-of-type(2) > td:nth-of-type(2)",
+  "id": null,
+  "selector": null,
+  "kinds": [
+   "attr:class",
+   "attr:style",
+   "childList"
+  ],
+  "count": 55,
+  "scenarios": [
+   "base-controls-b",
+   "base-controls",
+   "base-hash",
+   "base-panels-b",
+   "base-panels",
+   "base-place",
+   "base-staffing",
+   "base-topics-a",
+   "base-topics-b"
+  ]
+ },
+ {
+  "page": "week04",
+  "path": "#deeper-uscis > table:nth-of-type(1) > tbody:nth-of-type(1) > tr:nth-of-type(2) > td:nth-of-type(3)",
+  "id": null,
+  "selector": null,
+  "kinds": [
+   "attr:class",
+   "attr:style",
+   "childList"
+  ],
+  "count": 55,
+  "scenarios": [
+   "base-controls-b",
+   "base-controls",
+   "base-hash",
+   "base-panels-b",
+   "base-panels",
+   "base-place",
+   "base-staffing",
+   "base-topics-a",
+   "base-topics-b"
+  ]
+ },
+ {
+  "page": "week04",
+  "path": "#deeper-uscis > table:nth-of-type(1) > tbody:nth-of-type(1) > tr:nth-of-type(2) > td:nth-of-type(4)",
+  "id": null,
+  "selector": null,
+  "kinds": [
+   "attr:class"
+  ],
+  "count": 11,
+  "scenarios": [
+   "base-controls-b",
+   "base-controls",
+   "base-hash",
+   "base-panels-b",
+   "base-panels",
+   "base-place",
+   "base-staffing",
+   "base-topics-a",
+   "base-topics-b"
+  ]
+ },
+ {
+  "page": "week04",
+  "path": "#deeper-uscis > table:nth-of-type(1) > tbody:nth-of-type(1) > tr:nth-of-type(2) > td:nth-of-type(5)",
+  "id": null,
+  "selector": null,
+  "kinds": [
+   "attr:class"
+  ],
+  "count": 11,
+  "scenarios": [
+   "base-controls-b",
+   "base-controls",
+   "base-hash",
+   "base-panels-b",
+   "base-panels",
+   "base-place",
+   "base-staffing",
+   "base-topics-a",
+   "base-topics-b"
+  ]
+ },
+ {
+  "page": "week04",
+  "path": "#deeper-uscis > table:nth-of-type(1) > tbody:nth-of-type(1) > tr:nth-of-type(2)",
+  "id": null,
+  "selector": null,
+  "kinds": [
+   "attr:data-rx"
+  ],
+  "count": 11,
+  "scenarios": [
+   "base-controls-b",
+   "base-controls",
+   "base-hash",
+   "base-panels-b",
+   "base-panels",
+   "base-place",
+   "base-staffing",
+   "base-topics-a",
+   "base-topics-b"
+  ]
+ },
+ {
+  "page": "week04",
+  "path": "#deeper-uscis > table:nth-of-type(1) > tbody:nth-of-type(1) > tr:nth-of-type(3) > td:nth-of-type(2)",
+  "id": null,
+  "selector": null,
+  "kinds": [
+   "attr:class",
+   "attr:style",
+   "childList"
+  ],
+  "count": 55,
+  "scenarios": [
+   "base-controls-b",
+   "base-controls",
+   "base-hash",
+   "base-panels-b",
+   "base-panels",
+   "base-place",
+   "base-staffing",
+   "base-topics-a",
+   "base-topics-b"
+  ]
+ },
+ {
+  "page": "week04",
+  "path": "#deeper-uscis > table:nth-of-type(1) > tbody:nth-of-type(1) > tr:nth-of-type(3) > td:nth-of-type(3)",
+  "id": null,
+  "selector": null,
+  "kinds": [
+   "attr:class",
+   "attr:style",
+   "childList"
+  ],
+  "count": 55,
+  "scenarios": [
+   "base-controls-b",
+   "base-controls",
+   "base-hash",
+   "base-panels-b",
+   "base-panels",
+   "base-place",
+   "base-staffing",
+   "base-topics-a",
+   "base-topics-b"
+  ]
+ },
+ {
+  "page": "week04",
+  "path": "#deeper-uscis > table:nth-of-type(1) > tbody:nth-of-type(1) > tr:nth-of-type(3) > td:nth-of-type(4)",
+  "id": null,
+  "selector": null,
+  "kinds": [
+   "attr:class"
+  ],
+  "count": 11,
+  "scenarios": [
+   "base-controls-b",
+   "base-controls",
+   "base-hash",
+   "base-panels-b",
+   "base-panels",
+   "base-place",
+   "base-staffing",
+   "base-topics-a",
+   "base-topics-b"
+  ]
+ },
+ {
+  "page": "week04",
+  "path": "#deeper-uscis > table:nth-of-type(1) > tbody:nth-of-type(1) > tr:nth-of-type(3) > td:nth-of-type(5)",
+  "id": null,
+  "selector": null,
+  "kinds": [
+   "attr:class"
+  ],
+  "count": 11,
+  "scenarios": [
+   "base-controls-b",
+   "base-controls",
+   "base-hash",
+   "base-panels-b",
+   "base-panels",
+   "base-place",
+   "base-staffing",
+   "base-topics-a",
+   "base-topics-b"
+  ]
+ },
+ {
+  "page": "week04",
+  "path": "#deeper-uscis > table:nth-of-type(1) > tbody:nth-of-type(1) > tr:nth-of-type(3)",
+  "id": null,
+  "selector": null,
+  "kinds": [
+   "attr:data-rx"
+  ],
+  "count": 11,
+  "scenarios": [
+   "base-controls-b",
+   "base-controls",
+   "base-hash",
+   "base-panels-b",
+   "base-panels",
+   "base-place",
+   "base-staffing",
+   "base-topics-a",
+   "base-topics-b"
+  ]
+ },
+ {
+  "page": "week04",
+  "path": "#deeper-uscis > table:nth-of-type(1) > tbody:nth-of-type(1) > tr:nth-of-type(4) > td:nth-of-type(2)",
+  "id": null,
+  "selector": null,
+  "kinds": [
+   "attr:class",
+   "attr:style",
+   "childList"
+  ],
+  "count": 55,
+  "scenarios": [
+   "base-controls-b",
+   "base-controls",
+   "base-hash",
+   "base-panels-b",
+   "base-panels",
+   "base-place",
+   "base-staffing",
+   "base-topics-a",
+   "base-topics-b"
+  ]
+ },
+ {
+  "page": "week04",
+  "path": "#deeper-uscis > table:nth-of-type(1) > tbody:nth-of-type(1) > tr:nth-of-type(4) > td:nth-of-type(3)",
+  "id": null,
+  "selector": null,
+  "kinds": [
+   "attr:class",
+   "attr:style",
+   "childList"
+  ],
+  "count": 55,
+  "scenarios": [
+   "base-controls-b",
+   "base-controls",
+   "base-hash",
+   "base-panels-b",
+   "base-panels",
+   "base-place",
+   "base-staffing",
+   "base-topics-a",
+   "base-topics-b"
+  ]
+ },
+ {
+  "page": "week04",
+  "path": "#deeper-uscis > table:nth-of-type(1) > tbody:nth-of-type(1) > tr:nth-of-type(4) > td:nth-of-type(4)",
+  "id": null,
+  "selector": null,
+  "kinds": [
+   "attr:class"
+  ],
+  "count": 11,
+  "scenarios": [
+   "base-controls-b",
+   "base-controls",
+   "base-hash",
+   "base-panels-b",
+   "base-panels",
+   "base-place",
+   "base-staffing",
+   "base-topics-a",
+   "base-topics-b"
+  ]
+ },
+ {
+  "page": "week04",
+  "path": "#deeper-uscis > table:nth-of-type(1) > tbody:nth-of-type(1) > tr:nth-of-type(4) > td:nth-of-type(5)",
+  "id": null,
+  "selector": null,
+  "kinds": [
+   "attr:class"
+  ],
+  "count": 11,
+  "scenarios": [
+   "base-controls-b",
+   "base-controls",
+   "base-hash",
+   "base-panels-b",
+   "base-panels",
+   "base-place",
+   "base-staffing",
+   "base-topics-a",
+   "base-topics-b"
+  ]
+ },
+ {
+  "page": "week04",
+  "path": "#deeper-uscis > table:nth-of-type(1) > tbody:nth-of-type(1) > tr:nth-of-type(4)",
+  "id": null,
+  "selector": null,
+  "kinds": [
+   "attr:data-rx"
+  ],
+  "count": 11,
+  "scenarios": [
+   "base-controls-b",
+   "base-controls",
+   "base-hash",
+   "base-panels-b",
+   "base-panels",
+   "base-place",
+   "base-staffing",
+   "base-topics-a",
+   "base-topics-b"
+  ]
+ },
+ {
+  "page": "week04",
+  "path": "#deeper-uscis > table:nth-of-type(1) > tbody:nth-of-type(1) > tr:nth-of-type(5) > td:nth-of-type(2)",
+  "id": null,
+  "selector": null,
+  "kinds": [
+   "attr:class",
+   "attr:style",
+   "childList"
+  ],
+  "count": 55,
+  "scenarios": [
+   "base-controls-b",
+   "base-controls",
+   "base-hash",
+   "base-panels-b",
+   "base-panels",
+   "base-place",
+   "base-staffing",
+   "base-topics-a",
+   "base-topics-b"
+  ]
+ },
+ {
+  "page": "week04",
+  "path": "#deeper-uscis > table:nth-of-type(1) > tbody:nth-of-type(1) > tr:nth-of-type(5) > td:nth-of-type(3)",
+  "id": null,
+  "selector": null,
+  "kinds": [
+   "attr:class",
+   "attr:style",
+   "childList"
+  ],
+  "count": 55,
+  "scenarios": [
+   "base-controls-b",
+   "base-controls",
+   "base-hash",
+   "base-panels-b",
+   "base-panels",
+   "base-place",
+   "base-staffing",
+   "base-topics-a",
+   "base-topics-b"
+  ]
+ },
+ {
+  "page": "week04",
+  "path": "#deeper-uscis > table:nth-of-type(1) > tbody:nth-of-type(1) > tr:nth-of-type(5) > td:nth-of-type(4)",
+  "id": null,
+  "selector": null,
+  "kinds": [
+   "attr:class"
+  ],
+  "count": 11,
+  "scenarios": [
+   "base-controls-b",
+   "base-controls",
+   "base-hash",
+   "base-panels-b",
+   "base-panels",
+   "base-place",
+   "base-staffing",
+   "base-topics-a",
+   "base-topics-b"
+  ]
+ },
+ {
+  "page": "week04",
+  "path": "#deeper-uscis > table:nth-of-type(1) > tbody:nth-of-type(1) > tr:nth-of-type(5) > td:nth-of-type(5)",
+  "id": null,
+  "selector": null,
+  "kinds": [
+   "attr:class"
+  ],
+  "count": 11,
+  "scenarios": [
+   "base-controls-b",
+   "base-controls",
+   "base-hash",
+   "base-panels-b",
+   "base-panels",
+   "base-place",
+   "base-staffing",
+   "base-topics-a",
+   "base-topics-b"
+  ]
+ },
+ {
+  "page": "week04",
+  "path": "#deeper-uscis > table:nth-of-type(1) > tbody:nth-of-type(1) > tr:nth-of-type(5)",
+  "id": null,
+  "selector": null,
+  "kinds": [
+   "attr:data-rx"
+  ],
+  "count": 11,
   "scenarios": [
    "base-controls-b",
    "base-controls",
@@ -3348,2320 +6290,6 @@
  },
  {
   "page": "week04",
-  "path": "#main",
-  "id": "main",
-  "selector": "main",
-  "kinds": [
-   "listen:keydown",
-   "lookup"
-  ],
-  "count": 22,
-  "scenarios": [
-   "base-controls-b",
-   "base-controls",
-   "base-hash",
-   "base-panels-b",
-   "base-panels",
-   "base-place",
-   "base-staffing",
-   "base-topics-a",
-   "base-topics-b"
-  ]
- },
- {
-  "page": "week04",
-  "path": "#main > nav:nth-of-type(1)",
-  "id": null,
-  "selector": ".w4-rail",
-  "kinds": [
-   "listen:focusin",
-   "listen:mouseenter",
-   "lookup",
-   "matches"
-  ],
-  "count": 145,
-  "scenarios": [
-   "base-controls-b",
-   "base-controls",
-   "base-hash",
-   "base-panels-b",
-   "base-panels",
-   "base-place",
-   "base-staffing",
-   "base-topics-a",
-   "base-topics-b"
-  ]
- },
- {
-  "page": "week04",
-  "path": "#main > nav:nth-of-type(1) > ol:nth-of-type(1) > li:nth-of-type(1)",
-  "id": null,
-  "selector": "li[data-target]",
-  "kinds": [
-   "attr:class",
-   "lookup"
-  ],
-  "count": 18,
-  "scenarios": [
-   "base-controls-b",
-   "base-controls",
-   "base-hash",
-   "base-panels-b",
-   "base-panels",
-   "base-place",
-   "base-staffing",
-   "base-topics-a",
-   "base-topics-b"
-  ]
- },
- {
-  "page": "week04",
-  "path": "#main > nav:nth-of-type(1) > ol:nth-of-type(1) > li:nth-of-type(2)",
-  "id": null,
-  "selector": "li[data-target]",
-  "kinds": [
-   "attr:class",
-   "lookup"
-  ],
-  "count": 33,
-  "scenarios": [
-   "base-controls-b",
-   "base-controls",
-   "base-hash",
-   "base-panels-b",
-   "base-panels",
-   "base-place",
-   "base-staffing",
-   "base-topics-a",
-   "base-topics-b"
-  ]
- },
- {
-  "page": "week04",
-  "path": "#main > nav:nth-of-type(1) > ol:nth-of-type(1) > li:nth-of-type(2) > ol:nth-of-type(1) > li:nth-of-type(1)",
-  "id": null,
-  "selector": "li[data-target]",
-  "kinds": [
-   "lookup"
-  ],
-  "count": 11,
-  "scenarios": [
-   "base-controls-b",
-   "base-controls",
-   "base-hash",
-   "base-panels-b",
-   "base-panels",
-   "base-place",
-   "base-staffing",
-   "base-topics-a",
-   "base-topics-b"
-  ]
- },
- {
-  "page": "week04",
-  "path": "#main > nav:nth-of-type(1) > ol:nth-of-type(1) > li:nth-of-type(2) > ol:nth-of-type(1) > li:nth-of-type(2)",
-  "id": null,
-  "selector": "li[data-target]",
-  "kinds": [
-   "lookup"
-  ],
-  "count": 11,
-  "scenarios": [
-   "base-controls-b",
-   "base-controls",
-   "base-hash",
-   "base-panels-b",
-   "base-panels",
-   "base-place",
-   "base-staffing",
-   "base-topics-a",
-   "base-topics-b"
-  ]
- },
- {
-  "page": "week04",
-  "path": "#main > nav:nth-of-type(1) > ol:nth-of-type(1) > li:nth-of-type(3)",
-  "id": null,
-  "selector": "li[data-target]",
-  "kinds": [
-   "attr:class",
-   "lookup"
-  ],
-  "count": 16,
-  "scenarios": [
-   "base-controls-b",
-   "base-controls",
-   "base-hash",
-   "base-panels-b",
-   "base-panels",
-   "base-place",
-   "base-staffing",
-   "base-topics-a",
-   "base-topics-b"
-  ]
- },
- {
-  "page": "week04",
-  "path": "#main > nav:nth-of-type(1) > ol:nth-of-type(1) > li:nth-of-type(3) > ol:nth-of-type(1) > li:nth-of-type(1)",
-  "id": null,
-  "selector": "li[data-target]",
-  "kinds": [
-   "lookup"
-  ],
-  "count": 11,
-  "scenarios": [
-   "base-controls-b",
-   "base-controls",
-   "base-hash",
-   "base-panels-b",
-   "base-panels",
-   "base-place",
-   "base-staffing",
-   "base-topics-a",
-   "base-topics-b"
-  ]
- },
- {
-  "page": "week04",
-  "path": "#main > nav:nth-of-type(1) > ol:nth-of-type(1) > li:nth-of-type(3) > ol:nth-of-type(1) > li:nth-of-type(2)",
-  "id": null,
-  "selector": "li[data-target]",
-  "kinds": [
-   "lookup"
-  ],
-  "count": 11,
-  "scenarios": [
-   "base-controls-b",
-   "base-controls",
-   "base-hash",
-   "base-panels-b",
-   "base-panels",
-   "base-place",
-   "base-staffing",
-   "base-topics-a",
-   "base-topics-b"
-  ]
- },
- {
-  "page": "week04",
-  "path": "#main > nav:nth-of-type(1) > ol:nth-of-type(1) > li:nth-of-type(4)",
-  "id": null,
-  "selector": "li[data-target]",
-  "kinds": [
-   "attr:class",
-   "lookup"
-  ],
-  "count": 16,
-  "scenarios": [
-   "base-controls-b",
-   "base-controls",
-   "base-hash",
-   "base-panels-b",
-   "base-panels",
-   "base-place",
-   "base-staffing",
-   "base-topics-a",
-   "base-topics-b"
-  ]
- },
- {
-  "page": "week04",
-  "path": "#main > nav:nth-of-type(1) > ol:nth-of-type(1) > li:nth-of-type(4) > ol:nth-of-type(1) > li:nth-of-type(1)",
-  "id": null,
-  "selector": "li[data-target]",
-  "kinds": [
-   "lookup"
-  ],
-  "count": 11,
-  "scenarios": [
-   "base-controls-b",
-   "base-controls",
-   "base-hash",
-   "base-panels-b",
-   "base-panels",
-   "base-place",
-   "base-staffing",
-   "base-topics-a",
-   "base-topics-b"
-  ]
- },
- {
-  "page": "week04",
-  "path": "#main > nav:nth-of-type(1) > ol:nth-of-type(1) > li:nth-of-type(4) > ol:nth-of-type(1) > li:nth-of-type(2)",
-  "id": null,
-  "selector": "li[data-target]",
-  "kinds": [
-   "lookup"
-  ],
-  "count": 11,
-  "scenarios": [
-   "base-controls-b",
-   "base-controls",
-   "base-hash",
-   "base-panels-b",
-   "base-panels",
-   "base-place",
-   "base-staffing",
-   "base-topics-a",
-   "base-topics-b"
-  ]
- },
- {
-  "page": "week04",
-  "path": "#main > nav:nth-of-type(1) > ol:nth-of-type(1) > li:nth-of-type(4) > ol:nth-of-type(1) > li:nth-of-type(3)",
-  "id": null,
-  "selector": "li[data-target]",
-  "kinds": [
-   "lookup"
-  ],
-  "count": 11,
-  "scenarios": [
-   "base-controls-b",
-   "base-controls",
-   "base-hash",
-   "base-panels-b",
-   "base-panels",
-   "base-place",
-   "base-staffing",
-   "base-topics-a",
-   "base-topics-b"
-  ]
- },
- {
-  "page": "week04",
-  "path": "#main > nav:nth-of-type(1) > ol:nth-of-type(1) > li:nth-of-type(5)",
-  "id": null,
-  "selector": "li[data-target]",
-  "kinds": [
-   "attr:class",
-   "lookup"
-  ],
-  "count": 14,
-  "scenarios": [
-   "base-controls-b",
-   "base-controls",
-   "base-hash",
-   "base-panels-b",
-   "base-panels",
-   "base-place",
-   "base-staffing",
-   "base-topics-a",
-   "base-topics-b"
-  ]
- },
- {
-  "page": "week04",
-  "path": "#main > nav:nth-of-type(1) > ol:nth-of-type(1) > li:nth-of-type(5) > ol:nth-of-type(1) > li:nth-of-type(1)",
-  "id": null,
-  "selector": "li[data-target]",
-  "kinds": [
-   "lookup"
-  ],
-  "count": 11,
-  "scenarios": [
-   "base-controls-b",
-   "base-controls",
-   "base-hash",
-   "base-panels-b",
-   "base-panels",
-   "base-place",
-   "base-staffing",
-   "base-topics-a",
-   "base-topics-b"
-  ]
- },
- {
-  "page": "week04",
-  "path": "#main > nav:nth-of-type(1) > ol:nth-of-type(1) > li:nth-of-type(6)",
-  "id": null,
-  "selector": "li[data-target]",
-  "kinds": [
-   "attr:class",
-   "lookup"
-  ],
-  "count": 13,
-  "scenarios": [
-   "base-controls-b",
-   "base-controls",
-   "base-hash",
-   "base-panels-b",
-   "base-panels",
-   "base-place",
-   "base-staffing",
-   "base-topics-a",
-   "base-topics-b"
-  ]
- },
- {
-  "page": "week04",
-  "path": "#main > nav:nth-of-type(1) > ol:nth-of-type(1) > li:nth-of-type(6) > ol:nth-of-type(1) > li:nth-of-type(1)",
-  "id": null,
-  "selector": "li[data-target]",
-  "kinds": [
-   "lookup"
-  ],
-  "count": 11,
-  "scenarios": [
-   "base-controls-b",
-   "base-controls",
-   "base-hash",
-   "base-panels-b",
-   "base-panels",
-   "base-place",
-   "base-staffing",
-   "base-topics-a",
-   "base-topics-b"
-  ]
- },
- {
-  "page": "week04",
-  "path": "#main > nav:nth-of-type(1) > ol:nth-of-type(1) > li:nth-of-type(6) > ol:nth-of-type(1) > li:nth-of-type(2)",
-  "id": null,
-  "selector": "li[data-target]",
-  "kinds": [
-   "lookup"
-  ],
-  "count": 11,
-  "scenarios": [
-   "base-controls-b",
-   "base-controls",
-   "base-hash",
-   "base-panels-b",
-   "base-panels",
-   "base-place",
-   "base-staffing",
-   "base-topics-a",
-   "base-topics-b"
-  ]
- },
- {
-  "page": "week04",
-  "path": "#main > nav:nth-of-type(1) > ol:nth-of-type(1) > li:nth-of-type(6) > ol:nth-of-type(1) > li:nth-of-type(3)",
-  "id": null,
-  "selector": "li[data-target]",
-  "kinds": [
-   "lookup"
-  ],
-  "count": 11,
-  "scenarios": [
-   "base-controls-b",
-   "base-controls",
-   "base-hash",
-   "base-panels-b",
-   "base-panels",
-   "base-place",
-   "base-staffing",
-   "base-topics-a",
-   "base-topics-b"
-  ]
- },
- {
-  "page": "week04",
-  "path": "#main > nav:nth-of-type(1) > ol:nth-of-type(1) > li:nth-of-type(7)",
-  "id": null,
-  "selector": "li[data-target]",
-  "kinds": [
-   "attr:class",
-   "lookup"
-  ],
-  "count": 75,
-  "scenarios": [
-   "base-controls-b",
-   "base-controls",
-   "base-hash",
-   "base-panels-b",
-   "base-panels",
-   "base-place",
-   "base-staffing",
-   "base-topics-a",
-   "base-topics-b"
-  ]
- },
- {
-  "page": "week04",
-  "path": "#main > nav:nth-of-type(1) > ol:nth-of-type(1) > li:nth-of-type(8)",
-  "id": null,
-  "selector": "li[data-target]",
-  "kinds": [
-   "attr:class",
-   "closest",
-   "lookup"
-  ],
-  "count": 194,
-  "scenarios": [
-   "base-controls-b",
-   "base-controls",
-   "base-hash",
-   "base-panels-b",
-   "base-panels",
-   "base-place",
-   "base-staffing",
-   "base-topics-a",
-   "base-topics-b"
-  ]
- },
- {
-  "page": "week04",
-  "path": "#main > nav:nth-of-type(1) > ol:nth-of-type(1) > li:nth-of-type(8) > ol:nth-of-type(1) > li:nth-of-type(1)",
-  "id": null,
-  "selector": "li[data-target]",
-  "kinds": [
-   "attr:class",
-   "lookup"
-  ],
-  "count": 62,
-  "scenarios": [
-   "base-controls-b",
-   "base-controls",
-   "base-hash",
-   "base-panels-b",
-   "base-panels",
-   "base-place",
-   "base-staffing",
-   "base-topics-a",
-   "base-topics-b"
-  ]
- },
- {
-  "page": "week04",
-  "path": "#main > nav:nth-of-type(1) > ol:nth-of-type(1) > li:nth-of-type(8) > ol:nth-of-type(1) > li:nth-of-type(2)",
-  "id": null,
-  "selector": "li[data-target]",
-  "kinds": [
-   "attr:class",
-   "lookup"
-  ],
-  "count": 15,
-  "scenarios": [
-   "base-controls-b",
-   "base-controls",
-   "base-hash",
-   "base-panels-b",
-   "base-panels",
-   "base-place",
-   "base-staffing",
-   "base-topics-a",
-   "base-topics-b"
-  ]
- },
- {
-  "page": "week04",
-  "path": "#main > nav:nth-of-type(1) > ol:nth-of-type(1) > li:nth-of-type(8) > ol:nth-of-type(1) > li:nth-of-type(3)",
-  "id": null,
-  "selector": "li[data-target]",
-  "kinds": [
-   "attr:class",
-   "lookup"
-  ],
-  "count": 44,
-  "scenarios": [
-   "base-controls-b",
-   "base-controls",
-   "base-hash",
-   "base-panels-b",
-   "base-panels",
-   "base-place",
-   "base-staffing",
-   "base-topics-a",
-   "base-topics-b"
-  ]
- },
- {
-  "page": "week04",
-  "path": "#main > nav:nth-of-type(1) > ol:nth-of-type(1) > li:nth-of-type(8) > ol:nth-of-type(1) > li:nth-of-type(4)",
-  "id": null,
-  "selector": "li[data-target]",
-  "kinds": [
-   "attr:class",
-   "lookup"
-  ],
-  "count": 25,
-  "scenarios": [
-   "base-controls-b",
-   "base-controls",
-   "base-hash",
-   "base-panels-b",
-   "base-panels",
-   "base-place",
-   "base-staffing",
-   "base-topics-a",
-   "base-topics-b"
-  ]
- },
- {
-  "page": "week04",
-  "path": "#main > nav:nth-of-type(1) > ol:nth-of-type(1) > li:nth-of-type(8) > ol:nth-of-type(1) > li:nth-of-type(5)",
-  "id": null,
-  "selector": "li[data-target]",
-  "kinds": [
-   "attr:class",
-   "lookup"
-  ],
-  "count": 18,
-  "scenarios": [
-   "base-controls-b",
-   "base-controls",
-   "base-hash",
-   "base-panels-b",
-   "base-panels",
-   "base-place",
-   "base-staffing",
-   "base-topics-a",
-   "base-topics-b"
-  ]
- },
- {
-  "page": "week04",
-  "path": "#main > nav:nth-of-type(1) > ol:nth-of-type(1) > li:nth-of-type(8) > ol:nth-of-type(1) > li:nth-of-type(6)",
-  "id": null,
-  "selector": "li[data-target]",
-  "kinds": [
-   "attr:class",
-   "lookup"
-  ],
-  "count": 14,
-  "scenarios": [
-   "base-controls-b",
-   "base-controls",
-   "base-hash",
-   "base-panels-b",
-   "base-panels",
-   "base-place",
-   "base-staffing",
-   "base-topics-a",
-   "base-topics-b"
-  ]
- },
- {
-  "page": "week04",
-  "path": "#opening",
-  "id": "opening",
-  "selector": "#opening",
-  "kinds": [
-   "lookup"
-  ],
-  "count": 22,
-  "scenarios": [
-   "base-controls-b",
-   "base-controls",
-   "base-hash",
-   "base-panels-b",
-   "base-panels",
-   "base-place",
-   "base-staffing",
-   "base-topics-a",
-   "base-topics-b"
-  ]
- },
- {
-  "page": "week04",
-  "path": "#place",
-  "id": "place",
-  "selector": "#place",
-  "kinds": [
-   "lookup"
-  ],
-  "count": 22,
-  "scenarios": [
-   "base-controls-b",
-   "base-controls",
-   "base-hash",
-   "base-panels-b",
-   "base-panels",
-   "base-place",
-   "base-staffing",
-   "base-topics-a",
-   "base-topics-b"
-  ]
- },
- {
-  "page": "week04",
-  "path": "#place-who",
-  "id": "place-who",
-  "selector": "#place-who",
-  "kinds": [
-   "lookup"
-  ],
-  "count": 11,
-  "scenarios": [
-   "base-controls-b",
-   "base-controls",
-   "base-hash",
-   "base-panels-b",
-   "base-panels",
-   "base-place",
-   "base-staffing",
-   "base-topics-a",
-   "base-topics-b"
-  ]
- },
- {
-  "page": "week04",
-  "path": "#place-break",
-  "id": "place-break",
-  "selector": "#place-break",
-  "kinds": [
-   "lookup"
-  ],
-  "count": 11,
-  "scenarios": [
-   "base-controls-b",
-   "base-controls",
-   "base-hash",
-   "base-panels-b",
-   "base-panels",
-   "base-place",
-   "base-staffing",
-   "base-topics-a",
-   "base-topics-b"
-  ]
- },
- {
-  "page": "week04",
-  "path": "#jobs",
-  "id": "jobs",
-  "selector": "#jobs",
-  "kinds": [
-   "lookup"
-  ],
-  "count": 22,
-  "scenarios": [
-   "base-controls-b",
-   "base-controls",
-   "base-hash",
-   "base-panels-b",
-   "base-panels",
-   "base-place",
-   "base-staffing",
-   "base-topics-a",
-   "base-topics-b"
-  ]
- },
- {
-  "page": "week04",
-  "path": "#jobs-split",
-  "id": "jobs-split",
-  "selector": "#jobs-split",
-  "kinds": [
-   "lookup"
-  ],
-  "count": 11,
-  "scenarios": [
-   "base-controls-b",
-   "base-controls",
-   "base-hash",
-   "base-panels-b",
-   "base-panels",
-   "base-place",
-   "base-staffing",
-   "base-topics-a",
-   "base-topics-b"
-  ]
- },
- {
-  "page": "week04",
-  "path": "#jobs-linkcom",
-  "id": "jobs-linkcom",
-  "selector": "#jobs-linkcom",
-  "kinds": [
-   "lookup"
-  ],
-  "count": 11,
-  "scenarios": [
-   "base-controls-b",
-   "base-controls",
-   "base-hash",
-   "base-panels-b",
-   "base-panels",
-   "base-place",
-   "base-staffing",
-   "base-topics-a",
-   "base-topics-b"
-  ]
- },
- {
-  "page": "week04",
-  "path": "#who",
-  "id": "who",
-  "selector": "#who",
-  "kinds": [
-   "lookup"
-  ],
-  "count": 22,
-  "scenarios": [
-   "base-controls-b",
-   "base-controls",
-   "base-hash",
-   "base-panels-b",
-   "base-panels",
-   "base-place",
-   "base-staffing",
-   "base-topics-a",
-   "base-topics-b"
-  ]
- },
- {
-  "page": "week04",
-  "path": "#who-switch",
-  "id": "who-switch",
-  "selector": "#who-switch",
-  "kinds": [
-   "lookup"
-  ],
-  "count": 11,
-  "scenarios": [
-   "base-controls-b",
-   "base-controls",
-   "base-hash",
-   "base-panels-b",
-   "base-panels",
-   "base-place",
-   "base-staffing",
-   "base-topics-a",
-   "base-topics-b"
-  ]
- },
- {
-  "page": "week04",
-  "path": "#who-movers",
-  "id": "who-movers",
-  "selector": "#who-movers",
-  "kinds": [
-   "lookup"
-  ],
-  "count": 11,
-  "scenarios": [
-   "base-controls-b",
-   "base-controls",
-   "base-hash",
-   "base-panels-b",
-   "base-panels",
-   "base-place",
-   "base-staffing",
-   "base-topics-a",
-   "base-topics-b"
-  ]
- },
- {
-  "page": "week04",
-  "path": "#who-overlap",
-  "id": "who-overlap",
-  "selector": "#who-overlap",
-  "kinds": [
-   "lookup"
-  ],
-  "count": 11,
-  "scenarios": [
-   "base-controls-b",
-   "base-controls",
-   "base-hash",
-   "base-panels-b",
-   "base-panels",
-   "base-place",
-   "base-staffing",
-   "base-topics-a",
-   "base-topics-b"
-  ]
- },
- {
-  "page": "week04",
-  "path": "#footprint",
-  "id": "footprint",
-  "selector": "#footprint",
-  "kinds": [
-   "lookup"
-  ],
-  "count": 22,
-  "scenarios": [
-   "base-controls-b",
-   "base-controls",
-   "base-hash",
-   "base-panels-b",
-   "base-panels",
-   "base-place",
-   "base-staffing",
-   "base-topics-a",
-   "base-topics-b"
-  ]
- },
- {
-  "page": "week04",
-  "path": "#footprint-which",
-  "id": "footprint-which",
-  "selector": "#footprint-which",
-  "kinds": [
-   "lookup"
-  ],
-  "count": 11,
-  "scenarios": [
-   "base-controls-b",
-   "base-controls",
-   "base-hash",
-   "base-panels-b",
-   "base-panels",
-   "base-place",
-   "base-staffing",
-   "base-topics-a",
-   "base-topics-b"
-  ]
- },
- {
-  "page": "week04",
-  "path": "#beyond",
-  "id": "beyond",
-  "selector": "#beyond",
-  "kinds": [
-   "lookup"
-  ],
-  "count": 22,
-  "scenarios": [
-   "base-controls-b",
-   "base-controls",
-   "base-hash",
-   "base-panels-b",
-   "base-panels",
-   "base-place",
-   "base-staffing",
-   "base-topics-a",
-   "base-topics-b"
-  ]
- },
- {
-  "page": "week04",
-  "path": "#beyond-law",
-  "id": "beyond-law",
-  "selector": "#beyond-law",
-  "kinds": [
-   "lookup"
-  ],
-  "count": 11,
-  "scenarios": [
-   "base-controls-b",
-   "base-controls",
-   "base-hash",
-   "base-panels-b",
-   "base-panels",
-   "base-place",
-   "base-staffing",
-   "base-topics-a",
-   "base-topics-b"
-  ]
- },
- {
-  "page": "week04",
-  "path": "#beyond-perm",
-  "id": "beyond-perm",
-  "selector": "#beyond-perm",
-  "kinds": [
-   "lookup"
-  ],
-  "count": 11,
-  "scenarios": [
-   "base-controls-b",
-   "base-controls",
-   "base-hash",
-   "base-panels-b",
-   "base-panels",
-   "base-place",
-   "base-staffing",
-   "base-topics-a",
-   "base-topics-b"
-  ]
- },
- {
-  "page": "week04",
-  "path": "#beyond-wage",
-  "id": "beyond-wage",
-  "selector": "#beyond-wage",
-  "kinds": [
-   "lookup"
-  ],
-  "count": 11,
-  "scenarios": [
-   "base-controls-b",
-   "base-controls",
-   "base-hash",
-   "base-panels-b",
-   "base-panels",
-   "base-place",
-   "base-staffing",
-   "base-topics-a",
-   "base-topics-b"
-  ]
- },
- {
-  "page": "week04",
-  "path": "#closing",
-  "id": "closing",
-  "selector": "#closing",
-  "kinds": [
-   "lookup"
-  ],
-  "count": 11,
-  "scenarios": [
-   "base-controls-b",
-   "base-controls",
-   "base-hash",
-   "base-panels-b",
-   "base-panels",
-   "base-place",
-   "base-staffing",
-   "base-topics-a",
-   "base-topics-b"
-  ]
- },
- {
-  "page": "week04",
-  "path": "#cut",
-  "id": "cut",
-  "selector": "#cut",
-  "kinds": [
-   "lookup"
-  ],
-  "count": 36,
-  "scenarios": [
-   "base-controls-b",
-   "base-controls",
-   "base-hash",
-   "base-panels-b",
-   "base-panels",
-   "base-place",
-   "base-staffing",
-   "base-topics-a",
-   "base-topics-b"
-  ]
- },
- {
-  "page": "week04",
-  "path": "#main > nav:nth-of-type(1) > ol:nth-of-type(1) > li:nth-of-type(1) > a:nth-of-type(1)",
-  "id": null,
-  "selector": ":scope > a",
-  "kinds": [
-   "attr:aria-current",
-   "lookup"
-  ],
-  "count": 115,
-  "scenarios": [
-   "base-controls-b",
-   "base-controls",
-   "base-hash",
-   "base-panels-b",
-   "base-panels",
-   "base-place",
-   "base-staffing",
-   "base-topics-a",
-   "base-topics-b"
-  ]
- },
- {
-  "page": "week04",
-  "path": "#main > nav:nth-of-type(1) > ol:nth-of-type(1) > li:nth-of-type(2) > a:nth-of-type(1)",
-  "id": null,
-  "selector": ":scope > a",
-  "kinds": [
-   "attr:aria-current",
-   "lookup"
-  ],
-  "count": 127,
-  "scenarios": [
-   "base-controls-b",
-   "base-controls",
-   "base-hash",
-   "base-panels-b",
-   "base-panels",
-   "base-place",
-   "base-staffing",
-   "base-topics-a",
-   "base-topics-b"
-  ]
- },
- {
-  "page": "week04",
-  "path": "#main > nav:nth-of-type(1) > ol:nth-of-type(1) > li:nth-of-type(2) > ol:nth-of-type(1) > li:nth-of-type(1) > a:nth-of-type(1)",
-  "id": null,
-  "selector": ":scope > a",
-  "kinds": [
-   "lookup"
-  ],
-  "count": 112,
-  "scenarios": [
-   "base-controls-b",
-   "base-controls",
-   "base-hash",
-   "base-panels-b",
-   "base-panels",
-   "base-place",
-   "base-staffing",
-   "base-topics-a",
-   "base-topics-b"
-  ]
- },
- {
-  "page": "week04",
-  "path": "#main > nav:nth-of-type(1) > ol:nth-of-type(1) > li:nth-of-type(2) > ol:nth-of-type(1) > li:nth-of-type(2) > a:nth-of-type(1)",
-  "id": null,
-  "selector": ":scope > a",
-  "kinds": [
-   "lookup"
-  ],
-  "count": 112,
-  "scenarios": [
-   "base-controls-b",
-   "base-controls",
-   "base-hash",
-   "base-panels-b",
-   "base-panels",
-   "base-place",
-   "base-staffing",
-   "base-topics-a",
-   "base-topics-b"
-  ]
- },
- {
-  "page": "week04",
-  "path": "#main > nav:nth-of-type(1) > ol:nth-of-type(1) > li:nth-of-type(3) > a:nth-of-type(1)",
-  "id": null,
-  "selector": ":scope > a",
-  "kinds": [
-   "attr:aria-current",
-   "lookup"
-  ],
-  "count": 115,
-  "scenarios": [
-   "base-controls-b",
-   "base-controls",
-   "base-hash",
-   "base-panels-b",
-   "base-panels",
-   "base-place",
-   "base-staffing",
-   "base-topics-a",
-   "base-topics-b"
-  ]
- },
- {
-  "page": "week04",
-  "path": "#main > nav:nth-of-type(1) > ol:nth-of-type(1) > li:nth-of-type(3) > ol:nth-of-type(1) > li:nth-of-type(1) > a:nth-of-type(1)",
-  "id": null,
-  "selector": ":scope > a",
-  "kinds": [
-   "lookup"
-  ],
-  "count": 112,
-  "scenarios": [
-   "base-controls-b",
-   "base-controls",
-   "base-hash",
-   "base-panels-b",
-   "base-panels",
-   "base-place",
-   "base-staffing",
-   "base-topics-a",
-   "base-topics-b"
-  ]
- },
- {
-  "page": "week04",
-  "path": "#main > nav:nth-of-type(1) > ol:nth-of-type(1) > li:nth-of-type(3) > ol:nth-of-type(1) > li:nth-of-type(2) > a:nth-of-type(1)",
-  "id": null,
-  "selector": ":scope > a",
-  "kinds": [
-   "lookup"
-  ],
-  "count": 112,
-  "scenarios": [
-   "base-controls-b",
-   "base-controls",
-   "base-hash",
-   "base-panels-b",
-   "base-panels",
-   "base-place",
-   "base-staffing",
-   "base-topics-a",
-   "base-topics-b"
-  ]
- },
- {
-  "page": "week04",
-  "path": "#main > nav:nth-of-type(1) > ol:nth-of-type(1) > li:nth-of-type(4) > a:nth-of-type(1)",
-  "id": null,
-  "selector": ":scope > a",
-  "kinds": [
-   "attr:aria-current",
-   "lookup"
-  ],
-  "count": 117,
-  "scenarios": [
-   "base-controls-b",
-   "base-controls",
-   "base-hash",
-   "base-panels-b",
-   "base-panels",
-   "base-place",
-   "base-staffing",
-   "base-topics-a",
-   "base-topics-b"
-  ]
- },
- {
-  "page": "week04",
-  "path": "#main > nav:nth-of-type(1) > ol:nth-of-type(1) > li:nth-of-type(4) > ol:nth-of-type(1) > li:nth-of-type(1) > a:nth-of-type(1)",
-  "id": null,
-  "selector": ":scope > a",
-  "kinds": [
-   "lookup"
-  ],
-  "count": 112,
-  "scenarios": [
-   "base-controls-b",
-   "base-controls",
-   "base-hash",
-   "base-panels-b",
-   "base-panels",
-   "base-place",
-   "base-staffing",
-   "base-topics-a",
-   "base-topics-b"
-  ]
- },
- {
-  "page": "week04",
-  "path": "#main > nav:nth-of-type(1) > ol:nth-of-type(1) > li:nth-of-type(4) > ol:nth-of-type(1) > li:nth-of-type(2) > a:nth-of-type(1)",
-  "id": null,
-  "selector": ":scope > a",
-  "kinds": [
-   "lookup"
-  ],
-  "count": 112,
-  "scenarios": [
-   "base-controls-b",
-   "base-controls",
-   "base-hash",
-   "base-panels-b",
-   "base-panels",
-   "base-place",
-   "base-staffing",
-   "base-topics-a",
-   "base-topics-b"
-  ]
- },
- {
-  "page": "week04",
-  "path": "#main > nav:nth-of-type(1) > ol:nth-of-type(1) > li:nth-of-type(4) > ol:nth-of-type(1) > li:nth-of-type(3) > a:nth-of-type(1)",
-  "id": null,
-  "selector": ":scope > a",
-  "kinds": [
-   "lookup"
-  ],
-  "count": 112,
-  "scenarios": [
-   "base-controls-b",
-   "base-controls",
-   "base-hash",
-   "base-panels-b",
-   "base-panels",
-   "base-place",
-   "base-staffing",
-   "base-topics-a",
-   "base-topics-b"
-  ]
- },
- {
-  "page": "week04",
-  "path": "#main > nav:nth-of-type(1) > ol:nth-of-type(1) > li:nth-of-type(5) > a:nth-of-type(1)",
-  "id": null,
-  "selector": ":scope > a",
-  "kinds": [
-   "attr:aria-current",
-   "lookup"
-  ],
-  "count": 115,
-  "scenarios": [
-   "base-controls-b",
-   "base-controls",
-   "base-hash",
-   "base-panels-b",
-   "base-panels",
-   "base-place",
-   "base-staffing",
-   "base-topics-a",
-   "base-topics-b"
-  ]
- },
- {
-  "page": "week04",
-  "path": "#main > nav:nth-of-type(1) > ol:nth-of-type(1) > li:nth-of-type(5) > ol:nth-of-type(1) > li:nth-of-type(1) > a:nth-of-type(1)",
-  "id": null,
-  "selector": ":scope > a",
-  "kinds": [
-   "lookup"
-  ],
-  "count": 112,
-  "scenarios": [
-   "base-controls-b",
-   "base-controls",
-   "base-hash",
-   "base-panels-b",
-   "base-panels",
-   "base-place",
-   "base-staffing",
-   "base-topics-a",
-   "base-topics-b"
-  ]
- },
- {
-  "page": "week04",
-  "path": "#main > nav:nth-of-type(1) > ol:nth-of-type(1) > li:nth-of-type(6) > a:nth-of-type(1)",
-  "id": null,
-  "selector": ":scope > a",
-  "kinds": [
-   "attr:aria-current",
-   "lookup"
-  ],
-  "count": 115,
-  "scenarios": [
-   "base-controls-b",
-   "base-controls",
-   "base-hash",
-   "base-panels-b",
-   "base-panels",
-   "base-place",
-   "base-staffing",
-   "base-topics-a",
-   "base-topics-b"
-  ]
- },
- {
-  "page": "week04",
-  "path": "#main > nav:nth-of-type(1) > ol:nth-of-type(1) > li:nth-of-type(6) > ol:nth-of-type(1) > li:nth-of-type(1) > a:nth-of-type(1)",
-  "id": null,
-  "selector": ":scope > a",
-  "kinds": [
-   "lookup"
-  ],
-  "count": 112,
-  "scenarios": [
-   "base-controls-b",
-   "base-controls",
-   "base-hash",
-   "base-panels-b",
-   "base-panels",
-   "base-place",
-   "base-staffing",
-   "base-topics-a",
-   "base-topics-b"
-  ]
- },
- {
-  "page": "week04",
-  "path": "#main > nav:nth-of-type(1) > ol:nth-of-type(1) > li:nth-of-type(6) > ol:nth-of-type(1) > li:nth-of-type(2) > a:nth-of-type(1)",
-  "id": null,
-  "selector": ":scope > a",
-  "kinds": [
-   "lookup"
-  ],
-  "count": 112,
-  "scenarios": [
-   "base-controls-b",
-   "base-controls",
-   "base-hash",
-   "base-panels-b",
-   "base-panels",
-   "base-place",
-   "base-staffing",
-   "base-topics-a",
-   "base-topics-b"
-  ]
- },
- {
-  "page": "week04",
-  "path": "#main > nav:nth-of-type(1) > ol:nth-of-type(1) > li:nth-of-type(6) > ol:nth-of-type(1) > li:nth-of-type(3) > a:nth-of-type(1)",
-  "id": null,
-  "selector": ":scope > a",
-  "kinds": [
-   "lookup"
-  ],
-  "count": 112,
-  "scenarios": [
-   "base-controls-b",
-   "base-controls",
-   "base-hash",
-   "base-panels-b",
-   "base-panels",
-   "base-place",
-   "base-staffing",
-   "base-topics-a",
-   "base-topics-b"
-  ]
- },
- {
-  "page": "week04",
-  "path": "#main > nav:nth-of-type(1) > ol:nth-of-type(1) > li:nth-of-type(7) > a:nth-of-type(1)",
-  "id": null,
-  "selector": ":scope > a",
-  "kinds": [
-   "attr:aria-current",
-   "lookup"
-  ],
-  "count": 174,
-  "scenarios": [
-   "base-controls-b",
-   "base-controls",
-   "base-hash",
-   "base-panels-b",
-   "base-panels",
-   "base-place",
-   "base-staffing",
-   "base-topics-a",
-   "base-topics-b"
-  ]
- },
- {
-  "page": "week04",
-  "path": "#main > nav:nth-of-type(1) > ol:nth-of-type(1) > li:nth-of-type(8) > a:nth-of-type(1)",
-  "id": null,
-  "selector": ":scope > a",
-  "kinds": [
-   "attr:aria-current",
-   "lookup"
-  ],
-  "count": 302,
-  "scenarios": [
-   "base-controls-b",
-   "base-controls",
-   "base-hash",
-   "base-panels-b",
-   "base-panels",
-   "base-place",
-   "base-staffing",
-   "base-topics-a",
-   "base-topics-b"
-  ]
- },
- {
-  "page": "week04",
-  "path": "#main > nav:nth-of-type(1) > ol:nth-of-type(1) > li:nth-of-type(8) > ol:nth-of-type(1) > li:nth-of-type(1) > a:nth-of-type(1)",
-  "id": null,
-  "selector": ":scope > a",
-  "kinds": [
-   "attr:aria-current",
-   "lookup"
-  ],
-  "count": 159,
-  "scenarios": [
-   "base-controls-b",
-   "base-controls",
-   "base-hash",
-   "base-panels-b",
-   "base-panels",
-   "base-place",
-   "base-staffing",
-   "base-topics-a",
-   "base-topics-b"
-  ]
- },
- {
-  "page": "week04",
-  "path": "#main > nav:nth-of-type(1) > ol:nth-of-type(1) > li:nth-of-type(8) > ol:nth-of-type(1) > li:nth-of-type(2) > a:nth-of-type(1)",
-  "id": null,
-  "selector": ":scope > a",
-  "kinds": [
-   "attr:aria-current",
-   "lookup"
-  ],
-  "count": 115,
-  "scenarios": [
-   "base-controls-b",
-   "base-controls",
-   "base-hash",
-   "base-panels-b",
-   "base-panels",
-   "base-place",
-   "base-staffing",
-   "base-topics-a",
-   "base-topics-b"
-  ]
- },
- {
-  "page": "week04",
-  "path": "#main > nav:nth-of-type(1) > ol:nth-of-type(1) > li:nth-of-type(8) > ol:nth-of-type(1) > li:nth-of-type(3) > a:nth-of-type(1)",
-  "id": null,
-  "selector": ":scope > a",
-  "kinds": [
-   "attr:aria-current",
-   "lookup"
-  ],
-  "count": 152,
-  "scenarios": [
-   "base-controls-b",
-   "base-controls",
-   "base-hash",
-   "base-panels-b",
-   "base-panels",
-   "base-place",
-   "base-staffing",
-   "base-topics-a",
-   "base-topics-b"
-  ]
- },
- {
-  "page": "week04",
-  "path": "#main > nav:nth-of-type(1) > ol:nth-of-type(1) > li:nth-of-type(8) > ol:nth-of-type(1) > li:nth-of-type(4) > a:nth-of-type(1)",
-  "id": null,
-  "selector": ":scope > a",
-  "kinds": [
-   "attr:aria-current",
-   "lookup"
-  ],
-  "count": 130,
-  "scenarios": [
-   "base-controls-b",
-   "base-controls",
-   "base-hash",
-   "base-panels-b",
-   "base-panels",
-   "base-place",
-   "base-staffing",
-   "base-topics-a",
-   "base-topics-b"
-  ]
- },
- {
-  "page": "week04",
-  "path": "#main > nav:nth-of-type(1) > ol:nth-of-type(1) > li:nth-of-type(8) > ol:nth-of-type(1) > li:nth-of-type(5) > a:nth-of-type(1)",
-  "id": null,
-  "selector": ":scope > a",
-  "kinds": [
-   "attr:aria-current",
-   "lookup"
-  ],
-  "count": 118,
-  "scenarios": [
-   "base-controls-b",
-   "base-controls",
-   "base-hash",
-   "base-panels-b",
-   "base-panels",
-   "base-place",
-   "base-staffing",
-   "base-topics-a",
-   "base-topics-b"
-  ]
- },
- {
-  "page": "week04",
-  "path": "#main > nav:nth-of-type(1) > ol:nth-of-type(1) > li:nth-of-type(8) > ol:nth-of-type(1) > li:nth-of-type(6) > a:nth-of-type(1)",
-  "id": null,
-  "selector": ":scope > a",
-  "kinds": [
-   "attr:aria-current",
-   "lookup"
-  ],
-  "count": 115,
-  "scenarios": [
-   "base-controls-b",
-   "base-controls",
-   "base-hash",
-   "base-panels-b",
-   "base-panels",
-   "base-place",
-   "base-staffing",
-   "base-topics-a",
-   "base-topics-b"
-  ]
- },
- {
-  "page": "week04",
-  "path": "#place-rank > div:nth-of-type(1)",
-  "id": null,
-  "selector": ".rx-seg, .axis-modes, .staffing-years",
-  "kinds": [
-   "lookup"
-  ],
-  "count": 289,
-  "scenarios": [
-   "base-controls-b",
-   "base-controls",
-   "base-hash",
-   "base-panels-b",
-   "base-panels",
-   "base-place",
-   "base-staffing",
-   "base-topics-a",
-   "base-topics-b"
-  ]
- },
- {
-  "page": "week04",
-  "path": "#place-start > div:nth-of-type(3) > details:nth-of-type(4) > div:nth-of-type(1) > div:nth-of-type(1)",
-  "id": null,
-  "selector": ".rx-seg, .axis-modes, .staffing-years",
-  "kinds": [
-   "lookup"
-  ],
-  "count": 289,
-  "scenarios": [
-   "base-controls-b",
-   "base-controls",
-   "base-hash",
-   "base-panels-b",
-   "base-panels",
-   "base-place",
-   "base-staffing",
-   "base-topics-a",
-   "base-topics-b"
-  ]
- },
- {
-  "page": "week04",
-  "path": "#staffing-figure > div:nth-of-type(1) > div:nth-of-type(1)",
-  "id": null,
-  "selector": ".rx-seg, .axis-modes, .staffing-years",
-  "kinds": [
-   "closest",
-   "lookup"
-  ],
-  "count": 292,
-  "scenarios": [
-   "base-controls-b",
-   "base-controls",
-   "base-hash",
-   "base-panels-b",
-   "base-panels",
-   "base-place",
-   "base-staffing",
-   "base-topics-a",
-   "base-topics-b"
-  ]
- },
- {
-  "page": "week04",
-  "path": "#roles-card > div:nth-of-type(1) > div:nth-of-type(1) > div:nth-of-type(1)",
-  "id": null,
-  "selector": ".rx-seg, .axis-modes, .staffing-years",
-  "kinds": [
-   "lookup"
-  ],
-  "count": 289,
-  "scenarios": [
-   "base-controls-b",
-   "base-controls",
-   "base-hash",
-   "base-panels-b",
-   "base-panels",
-   "base-place",
-   "base-staffing",
-   "base-topics-a",
-   "base-topics-b"
-  ]
- },
- {
-  "page": "week04",
-  "path": "#roles-card > div:nth-of-type(1) > div:nth-of-type(2) > div:nth-of-type(1)",
-  "id": null,
-  "selector": ".rx-seg, .axis-modes, .staffing-years",
-  "kinds": [
-   "lookup"
-  ],
-  "count": 289,
-  "scenarios": [
-   "base-controls-b",
-   "base-controls",
-   "base-hash",
-   "base-panels-b",
-   "base-panels",
-   "base-place",
-   "base-staffing",
-   "base-topics-a",
-   "base-topics-b"
-  ]
- },
- {
-  "page": "week04",
-  "path": "#roles-card > div:nth-of-type(1) > div:nth-of-type(3) > div:nth-of-type(1)",
-  "id": null,
-  "selector": ".rx-seg, .axis-modes, .staffing-years",
-  "kinds": [
-   "lookup"
-  ],
-  "count": 289,
-  "scenarios": [
-   "base-controls-b",
-   "base-controls",
-   "base-hash",
-   "base-panels-b",
-   "base-panels",
-   "base-place",
-   "base-staffing",
-   "base-topics-a",
-   "base-topics-b"
-  ]
- },
- {
-  "page": "week04",
-  "path": "#staffing-figure > div:nth-of-type(1) > div:nth-of-type(1) > button:nth-of-type(1)",
-  "id": null,
-  "selector": "button",
-  "kinds": [
-   "attr:aria-pressed",
-   "attr:tabindex",
-   "listen:click",
-   "lookup"
-  ],
-  "count": 619,
-  "scenarios": [
-   "base-controls-b",
-   "base-controls",
-   "base-hash",
-   "base-panels-b",
-   "base-panels",
-   "base-place",
-   "base-staffing",
-   "base-topics-a",
-   "base-topics-b"
-  ]
- },
- {
-  "page": "week04",
-  "path": "#staffing-figure > div:nth-of-type(1) > div:nth-of-type(1) > button:nth-of-type(2)",
-  "id": null,
-  "selector": "button",
-  "kinds": [
-   "attr:aria-pressed",
-   "attr:tabindex",
-   "listen:click",
-   "lookup"
-  ],
-  "count": 619,
-  "scenarios": [
-   "base-controls-b",
-   "base-controls",
-   "base-hash",
-   "base-panels-b",
-   "base-panels",
-   "base-place",
-   "base-staffing",
-   "base-topics-a",
-   "base-topics-b"
-  ]
- },
- {
-  "page": "week04",
-  "path": "#staffing-figure > div:nth-of-type(1) > div:nth-of-type(1) > button:nth-of-type(3)",
-  "id": null,
-  "selector": "button",
-  "kinds": [
-   "attr:aria-pressed",
-   "attr:tabindex",
-   "listen:click",
-   "lookup"
-  ],
-  "count": 619,
-  "scenarios": [
-   "base-controls-b",
-   "base-controls",
-   "base-hash",
-   "base-panels-b",
-   "base-panels",
-   "base-place",
-   "base-staffing",
-   "base-topics-a",
-   "base-topics-b"
-  ]
- },
- {
-  "page": "week04",
-  "path": "#staffing-figure > div:nth-of-type(1) > div:nth-of-type(1) > button:nth-of-type(4)",
-  "id": null,
-  "selector": "button",
-  "kinds": [
-   "attr:aria-pressed",
-   "attr:tabindex",
-   "listen:click",
-   "lookup"
-  ],
-  "count": 630,
-  "scenarios": [
-   "base-controls-b",
-   "base-controls",
-   "base-hash",
-   "base-panels-b",
-   "base-panels",
-   "base-place",
-   "base-staffing",
-   "base-topics-a",
-   "base-topics-b"
-  ]
- },
- {
-  "page": "week04",
-  "path": "#staffing-figure > div:nth-of-type(1) > div:nth-of-type(1) > button:nth-of-type(5)",
-  "id": null,
-  "selector": "button",
-  "kinds": [
-   "attr:aria-pressed",
-   "attr:tabindex",
-   "listen:click",
-   "lookup"
-  ],
-  "count": 619,
-  "scenarios": [
-   "base-controls-b",
-   "base-controls",
-   "base-hash",
-   "base-panels-b",
-   "base-panels",
-   "base-place",
-   "base-staffing",
-   "base-topics-a",
-   "base-topics-b"
-  ]
- },
- {
-  "page": "week04",
-  "path": "#roles-card > div:nth-of-type(1) > div:nth-of-type(1) > div:nth-of-type(1) > button:nth-of-type(1)",
-  "id": null,
-  "selector": "button",
-  "kinds": [
-   "attr:aria-pressed",
-   "attr:tabindex",
-   "listen:click",
-   "lookup"
-  ],
-  "count": 584,
-  "scenarios": [
-   "base-controls-b",
-   "base-controls",
-   "base-hash",
-   "base-panels-b",
-   "base-panels",
-   "base-place",
-   "base-staffing",
-   "base-topics-a",
-   "base-topics-b"
-  ]
- },
- {
-  "page": "week04",
-  "path": "#roles-card > div:nth-of-type(1) > div:nth-of-type(1) > div:nth-of-type(1) > button:nth-of-type(2)",
-  "id": null,
-  "selector": "button",
-  "kinds": [
-   "attr:aria-pressed",
-   "attr:tabindex",
-   "listen:click",
-   "lookup"
-  ],
-  "count": 584,
-  "scenarios": [
-   "base-controls-b",
-   "base-controls",
-   "base-hash",
-   "base-panels-b",
-   "base-panels",
-   "base-place",
-   "base-staffing",
-   "base-topics-a",
-   "base-topics-b"
-  ]
- },
- {
-  "page": "week04",
-  "path": "#roles-card > div:nth-of-type(1) > div:nth-of-type(1) > div:nth-of-type(1) > button:nth-of-type(3)",
-  "id": null,
-  "selector": "button",
-  "kinds": [
-   "attr:aria-pressed",
-   "attr:tabindex",
-   "listen:click",
-   "lookup"
-  ],
-  "count": 584,
-  "scenarios": [
-   "base-controls-b",
-   "base-controls",
-   "base-hash",
-   "base-panels-b",
-   "base-panels",
-   "base-place",
-   "base-staffing",
-   "base-topics-a",
-   "base-topics-b"
-  ]
- },
- {
-  "page": "week04",
-  "path": "#roles-card > div:nth-of-type(1) > div:nth-of-type(1) > div:nth-of-type(1) > button:nth-of-type(4)",
-  "id": null,
-  "selector": "button",
-  "kinds": [
-   "attr:aria-pressed",
-   "attr:tabindex",
-   "listen:click",
-   "lookup"
-  ],
-  "count": 584,
-  "scenarios": [
-   "base-controls-b",
-   "base-controls",
-   "base-hash",
-   "base-panels-b",
-   "base-panels",
-   "base-place",
-   "base-staffing",
-   "base-topics-a",
-   "base-topics-b"
-  ]
- },
- {
-  "page": "week04",
-  "path": "#roles-card > div:nth-of-type(1) > div:nth-of-type(2) > div:nth-of-type(1) > button:nth-of-type(1)",
-  "id": null,
-  "selector": "button",
-  "kinds": [
-   "attr:aria-pressed",
-   "attr:tabindex",
-   "listen:click",
-   "lookup"
-  ],
-  "count": 584,
-  "scenarios": [
-   "base-controls-b",
-   "base-controls",
-   "base-hash",
-   "base-panels-b",
-   "base-panels",
-   "base-place",
-   "base-staffing",
-   "base-topics-a",
-   "base-topics-b"
-  ]
- },
- {
-  "page": "week04",
-  "path": "#roles-card > div:nth-of-type(1) > div:nth-of-type(2) > div:nth-of-type(1) > button:nth-of-type(2)",
-  "id": null,
-  "selector": "button",
-  "kinds": [
-   "attr:aria-pressed",
-   "attr:tabindex",
-   "listen:click",
-   "lookup"
-  ],
-  "count": 584,
-  "scenarios": [
-   "base-controls-b",
-   "base-controls",
-   "base-hash",
-   "base-panels-b",
-   "base-panels",
-   "base-place",
-   "base-staffing",
-   "base-topics-a",
-   "base-topics-b"
-  ]
- },
- {
-  "page": "week04",
-  "path": "#roles-card > div:nth-of-type(1) > div:nth-of-type(3) > div:nth-of-type(1) > button:nth-of-type(1)",
-  "id": null,
-  "selector": "button",
-  "kinds": [
-   "attr:aria-pressed",
-   "attr:tabindex",
-   "listen:click",
-   "lookup"
-  ],
-  "count": 584,
-  "scenarios": [
-   "base-controls-b",
-   "base-controls",
-   "base-hash",
-   "base-panels-b",
-   "base-panels",
-   "base-place",
-   "base-staffing",
-   "base-topics-a",
-   "base-topics-b"
-  ]
- },
- {
-  "page": "week04",
-  "path": "#roles-card > div:nth-of-type(1) > div:nth-of-type(3) > div:nth-of-type(1) > button:nth-of-type(2)",
-  "id": null,
-  "selector": "button",
-  "kinds": [
-   "attr:aria-pressed",
-   "attr:tabindex",
-   "listen:click",
-   "lookup"
-  ],
-  "count": 584,
-  "scenarios": [
-   "base-controls-b",
-   "base-controls",
-   "base-hash",
-   "base-panels-b",
-   "base-panels",
-   "base-place",
-   "base-staffing",
-   "base-topics-a",
-   "base-topics-b"
-  ]
- },
- {
-  "page": "week04",
-  "path": "#place-start > div:nth-of-type(3) > details:nth-of-type(1) > div:nth-of-type(1) > table:nth-of-type(1)",
-  "id": null,
-  "selector": "table",
-  "kinds": [
-   "closest",
-   "lookup"
-  ],
-  "count": 20,
-  "scenarios": [
-   "base-controls-b",
-   "base-controls",
-   "base-hash",
-   "base-panels-b",
-   "base-panels",
-   "base-place",
-   "base-staffing",
-   "base-topics-a",
-   "base-topics-b"
-  ]
- },
- {
-  "page": "week04",
-  "path": "#place-break > div:nth-of-type(1) > div:nth-of-type(1) > div:nth-of-type(2) > details:nth-of-type(4) > div:nth-of-type(1) > table:nth-of-type(1)",
-  "id": null,
-  "selector": "table",
-  "kinds": [
-   "closest",
-   "lookup"
-  ],
-  "count": 22,
-  "scenarios": [
-   "base-controls-b",
-   "base-controls",
-   "base-hash",
-   "base-panels-b",
-   "base-panels",
-   "base-place",
-   "base-staffing",
-   "base-topics-a",
-   "base-topics-b"
-  ]
- },
- {
-  "page": "week04",
-  "path": "#jobs-linkcom > div:nth-of-type(3) > details:nth-of-type(4) > div:nth-of-type(1) > table:nth-of-type(1)",
-  "id": null,
-  "selector": "table",
-  "kinds": [
-   "closest",
-   "lookup"
-  ],
-  "count": 22,
-  "scenarios": [
-   "base-controls-b",
-   "base-controls",
-   "base-hash",
-   "base-panels-b",
-   "base-panels",
-   "base-place",
-   "base-staffing",
-   "base-topics-a",
-   "base-topics-b"
-  ]
- },
- {
-  "page": "week04",
-  "path": "#who-movers > div:nth-of-type(1) > div:nth-of-type(1) > div:nth-of-type(2) > details:nth-of-type(3) > div:nth-of-type(1) > table:nth-of-type(1)",
-  "id": null,
-  "selector": "table",
-  "kinds": [
-   "closest",
-   "lookup"
-  ],
-  "count": 22,
-  "scenarios": [
-   "base-controls-b",
-   "base-controls",
-   "base-hash",
-   "base-panels-b",
-   "base-panels",
-   "base-place",
-   "base-staffing",
-   "base-topics-a",
-   "base-topics-b"
-  ]
- },
- {
-  "page": "week04",
-  "path": "#who-overlap > div:nth-of-type(1) > div:nth-of-type(1) > div:nth-of-type(2) > details:nth-of-type(4) > div:nth-of-type(1) > table:nth-of-type(1)",
-  "id": null,
-  "selector": "table",
-  "kinds": [
-   "closest",
-   "lookup"
-  ],
-  "count": 22,
-  "scenarios": [
-   "base-controls-b",
-   "base-controls",
-   "base-hash",
-   "base-panels-b",
-   "base-panels",
-   "base-place",
-   "base-staffing",
-   "base-topics-a",
-   "base-topics-b"
-  ]
- },
- {
-  "page": "week04",
-  "path": "#place-backbone > div:nth-of-type(5) > details:nth-of-type(2) > div:nth-of-type(1) > table:nth-of-type(1)",
-  "id": null,
-  "selector": "table",
-  "kinds": [
-   "closest",
-   "lookup"
-  ],
-  "count": 33,
-  "scenarios": [
-   "base-controls-b",
-   "base-controls",
-   "base-hash",
-   "base-panels-b",
-   "base-panels",
-   "base-place",
-   "base-staffing",
-   "base-topics-a",
-   "base-topics-b"
-  ]
- },
- {
-  "page": "week04",
-  "path": "#staffing-figure > div:nth-of-type(3) > table:nth-of-type(1)",
-  "id": null,
-  "selector": "table",
-  "kinds": [
-   "closest",
-   "lookup"
-  ],
-  "count": 30,
-  "scenarios": [
-   "base-controls-b",
-   "base-controls",
-   "base-hash",
-   "base-panels-b",
-   "base-panels",
-   "base-place",
-   "base-staffing",
-   "base-topics-a",
-   "base-topics-b"
-  ]
- },
- {
-  "page": "week04",
-  "path": "#staffing-community-stats > div:nth-of-type(1) > div:nth-of-type(1) > table:nth-of-type(1)",
-  "id": null,
-  "selector": "table",
-  "kinds": [
-   "closest",
-   "lookup"
-  ],
-  "count": 22,
-  "scenarios": [
-   "base-controls-b",
-   "base-controls",
-   "base-hash",
-   "base-panels-b",
-   "base-panels",
-   "base-place",
-   "base-staffing",
-   "base-topics-a",
-   "base-topics-b"
-  ]
- },
- {
-  "page": "week04",
-  "path": "#entity-communities > div:nth-of-type(5) > table:nth-of-type(1)",
-  "id": null,
-  "selector": "table",
-  "kinds": [
-   "closest",
-   "lookup"
-  ],
-  "count": 15,
-  "scenarios": [
-   "base-controls-b",
-   "base-controls",
-   "base-hash",
-   "base-panels-b",
-   "base-panels",
-   "base-place",
-   "base-staffing",
-   "base-topics-a",
-   "base-topics-b"
-  ]
- },
- {
-  "page": "week04",
-  "path": "#deeper-uscis > table:nth-of-type(1)",
-  "id": null,
-  "selector": "table",
-  "kinds": [
-   "lookup"
-  ],
-  "count": 11,
-  "scenarios": [
-   "base-controls-b",
-   "base-controls",
-   "base-hash",
-   "base-panels-b",
-   "base-panels",
-   "base-place",
-   "base-staffing",
-   "base-topics-a",
-   "base-topics-b"
-  ]
- },
- {
-  "page": "week04",
-  "path": "#findings > div:nth-of-type(2) > div:nth-of-type(2)",
-  "id": null,
-  "selector": "[data-finding]",
-  "kinds": [
-   "childList",
-   "lookup"
-  ],
-  "count": 22,
-  "scenarios": [
-   "base-controls-b",
-   "base-controls",
-   "base-hash",
-   "base-panels-b",
-   "base-panels",
-   "base-place",
-   "base-staffing",
-   "base-topics-a",
-   "base-topics-b"
-  ]
- },
- {
-  "page": "week04",
-  "path": "#findings > div:nth-of-type(3) > div:nth-of-type(2)",
-  "id": null,
-  "selector": "[data-finding]",
-  "kinds": [
-   "childList",
-   "lookup"
-  ],
-  "count": 22,
-  "scenarios": [
-   "base-controls-b",
-   "base-controls",
-   "base-hash",
-   "base-panels-b",
-   "base-panels",
-   "base-place",
-   "base-staffing",
-   "base-topics-a",
-   "base-topics-b"
-  ]
- },
- {
-  "page": "week04",
-  "path": "#findings > div:nth-of-type(4) > div:nth-of-type(2)",
-  "id": null,
-  "selector": "[data-finding]",
-  "kinds": [
-   "childList",
-   "lookup"
-  ],
-  "count": 22,
-  "scenarios": [
-   "base-controls-b",
-   "base-controls",
-   "base-hash",
-   "base-panels-b",
-   "base-panels",
-   "base-place",
-   "base-staffing",
-   "base-topics-a",
-   "base-topics-b"
-  ]
- },
- {
-  "page": "week04",
-  "path": "#findings > div:nth-of-type(5) > div:nth-of-type(2)",
-  "id": null,
-  "selector": "[data-finding]",
-  "kinds": [
-   "childList",
-   "lookup"
-  ],
-  "count": 22,
-  "scenarios": [
-   "base-controls-b",
-   "base-controls",
-   "base-hash",
-   "base-panels-b",
-   "base-panels",
-   "base-place",
-   "base-staffing",
-   "base-topics-a",
-   "base-topics-b"
-  ]
- },
- {
-  "page": "week04",
-  "path": "#findings > div:nth-of-type(6) > div:nth-of-type(2)",
-  "id": null,
-  "selector": "[data-finding]",
-  "kinds": [
-   "childList",
-   "lookup"
-  ],
-  "count": 22,
-  "scenarios": [
-   "base-controls-b",
-   "base-controls",
-   "base-hash",
-   "base-panels-b",
-   "base-panels",
-   "base-place",
-   "base-staffing",
-   "base-topics-a",
-   "base-topics-b"
-  ]
- },
- {
-  "page": "week04",
-  "path": "#place > div:nth-of-type(1) > figure:nth-of-type(1) > div:nth-of-type(1)",
-  "id": null,
-  "selector": "[data-strip=\"place-modularity\"]",
-  "kinds": [
-   "childList",
-   "lookup"
-  ],
-  "count": 33,
-  "scenarios": [
-   "base-controls-b",
-   "base-controls",
-   "base-hash",
-   "base-panels-b",
-   "base-panels",
-   "base-place",
-   "base-staffing",
-   "base-topics-a",
-   "base-topics-b"
-  ]
- },
- {
-  "page": "week04",
   "path": "#place-backbone > div:nth-of-type(5) > details:nth-of-type(2) > div:nth-of-type(1) > table:nth-of-type(1) > thead:nth-of-type(1) > tr:nth-of-type(1) > th:nth-of-type(2)",
   "id": null,
   "selector": null,
@@ -5690,635 +6318,6 @@
    "attr:class"
   ],
   "count": 15,
-  "scenarios": [
-   "base-controls-b",
-   "base-controls",
-   "base-hash",
-   "base-panels-b",
-   "base-panels",
-   "base-place",
-   "base-staffing",
-   "base-topics-a",
-   "base-topics-b"
-  ]
- },
- {
-  "page": "week04",
-  "path": "#deeper-uscis > table:nth-of-type(1) > thead:nth-of-type(1) > tr:nth-of-type(1) > th:nth-of-type(2)",
-  "id": null,
-  "selector": null,
-  "kinds": [
-   "attr:class"
-  ],
-  "count": 11,
-  "scenarios": [
-   "base-controls-b",
-   "base-controls",
-   "base-hash",
-   "base-panels-b",
-   "base-panels",
-   "base-place",
-   "base-staffing",
-   "base-topics-a",
-   "base-topics-b"
-  ]
- },
- {
-  "page": "week04",
-  "path": "#deeper-uscis > table:nth-of-type(1) > thead:nth-of-type(1) > tr:nth-of-type(1) > th:nth-of-type(3)",
-  "id": null,
-  "selector": null,
-  "kinds": [
-   "attr:class"
-  ],
-  "count": 11,
-  "scenarios": [
-   "base-controls-b",
-   "base-controls",
-   "base-hash",
-   "base-panels-b",
-   "base-panels",
-   "base-place",
-   "base-staffing",
-   "base-topics-a",
-   "base-topics-b"
-  ]
- },
- {
-  "page": "week04",
-  "path": "#deeper-uscis > table:nth-of-type(1) > thead:nth-of-type(1) > tr:nth-of-type(1) > th:nth-of-type(4)",
-  "id": null,
-  "selector": null,
-  "kinds": [
-   "attr:class"
-  ],
-  "count": 11,
-  "scenarios": [
-   "base-controls-b",
-   "base-controls",
-   "base-hash",
-   "base-panels-b",
-   "base-panels",
-   "base-place",
-   "base-staffing",
-   "base-topics-a",
-   "base-topics-b"
-  ]
- },
- {
-  "page": "week04",
-  "path": "#deeper-uscis > table:nth-of-type(1) > thead:nth-of-type(1) > tr:nth-of-type(1) > th:nth-of-type(5)",
-  "id": null,
-  "selector": null,
-  "kinds": [
-   "attr:class"
-  ],
-  "count": 11,
-  "scenarios": [
-   "base-controls-b",
-   "base-controls",
-   "base-hash",
-   "base-panels-b",
-   "base-panels",
-   "base-place",
-   "base-staffing",
-   "base-topics-a",
-   "base-topics-b"
-  ]
- },
- {
-  "page": "week04",
-  "path": "#deeper-uscis > table:nth-of-type(1) > tbody:nth-of-type(1) > tr:nth-of-type(1) > td:nth-of-type(2)",
-  "id": null,
-  "selector": null,
-  "kinds": [
-   "attr:class",
-   "attr:style",
-   "childList"
-  ],
-  "count": 55,
-  "scenarios": [
-   "base-controls-b",
-   "base-controls",
-   "base-hash",
-   "base-panels-b",
-   "base-panels",
-   "base-place",
-   "base-staffing",
-   "base-topics-a",
-   "base-topics-b"
-  ]
- },
- {
-  "page": "week04",
-  "path": "#deeper-uscis > table:nth-of-type(1) > tbody:nth-of-type(1) > tr:nth-of-type(1) > td:nth-of-type(3)",
-  "id": null,
-  "selector": null,
-  "kinds": [
-   "attr:class",
-   "attr:style",
-   "childList"
-  ],
-  "count": 55,
-  "scenarios": [
-   "base-controls-b",
-   "base-controls",
-   "base-hash",
-   "base-panels-b",
-   "base-panels",
-   "base-place",
-   "base-staffing",
-   "base-topics-a",
-   "base-topics-b"
-  ]
- },
- {
-  "page": "week04",
-  "path": "#deeper-uscis > table:nth-of-type(1) > tbody:nth-of-type(1) > tr:nth-of-type(1) > td:nth-of-type(4)",
-  "id": null,
-  "selector": null,
-  "kinds": [
-   "attr:class"
-  ],
-  "count": 11,
-  "scenarios": [
-   "base-controls-b",
-   "base-controls",
-   "base-hash",
-   "base-panels-b",
-   "base-panels",
-   "base-place",
-   "base-staffing",
-   "base-topics-a",
-   "base-topics-b"
-  ]
- },
- {
-  "page": "week04",
-  "path": "#deeper-uscis > table:nth-of-type(1) > tbody:nth-of-type(1) > tr:nth-of-type(1) > td:nth-of-type(5)",
-  "id": null,
-  "selector": null,
-  "kinds": [
-   "attr:class"
-  ],
-  "count": 11,
-  "scenarios": [
-   "base-controls-b",
-   "base-controls",
-   "base-hash",
-   "base-panels-b",
-   "base-panels",
-   "base-place",
-   "base-staffing",
-   "base-topics-a",
-   "base-topics-b"
-  ]
- },
- {
-  "page": "week04",
-  "path": "#deeper-uscis > table:nth-of-type(1) > tbody:nth-of-type(1) > tr:nth-of-type(1)",
-  "id": null,
-  "selector": null,
-  "kinds": [
-   "attr:data-rx"
-  ],
-  "count": 11,
-  "scenarios": [
-   "base-controls-b",
-   "base-controls",
-   "base-hash",
-   "base-panels-b",
-   "base-panels",
-   "base-place",
-   "base-staffing",
-   "base-topics-a",
-   "base-topics-b"
-  ]
- },
- {
-  "page": "week04",
-  "path": "#deeper-uscis > table:nth-of-type(1) > tbody:nth-of-type(1) > tr:nth-of-type(2) > td:nth-of-type(2)",
-  "id": null,
-  "selector": null,
-  "kinds": [
-   "attr:class",
-   "attr:style",
-   "childList"
-  ],
-  "count": 55,
-  "scenarios": [
-   "base-controls-b",
-   "base-controls",
-   "base-hash",
-   "base-panels-b",
-   "base-panels",
-   "base-place",
-   "base-staffing",
-   "base-topics-a",
-   "base-topics-b"
-  ]
- },
- {
-  "page": "week04",
-  "path": "#deeper-uscis > table:nth-of-type(1) > tbody:nth-of-type(1) > tr:nth-of-type(2) > td:nth-of-type(3)",
-  "id": null,
-  "selector": null,
-  "kinds": [
-   "attr:class",
-   "attr:style",
-   "childList"
-  ],
-  "count": 55,
-  "scenarios": [
-   "base-controls-b",
-   "base-controls",
-   "base-hash",
-   "base-panels-b",
-   "base-panels",
-   "base-place",
-   "base-staffing",
-   "base-topics-a",
-   "base-topics-b"
-  ]
- },
- {
-  "page": "week04",
-  "path": "#deeper-uscis > table:nth-of-type(1) > tbody:nth-of-type(1) > tr:nth-of-type(2) > td:nth-of-type(4)",
-  "id": null,
-  "selector": null,
-  "kinds": [
-   "attr:class"
-  ],
-  "count": 11,
-  "scenarios": [
-   "base-controls-b",
-   "base-controls",
-   "base-hash",
-   "base-panels-b",
-   "base-panels",
-   "base-place",
-   "base-staffing",
-   "base-topics-a",
-   "base-topics-b"
-  ]
- },
- {
-  "page": "week04",
-  "path": "#deeper-uscis > table:nth-of-type(1) > tbody:nth-of-type(1) > tr:nth-of-type(2) > td:nth-of-type(5)",
-  "id": null,
-  "selector": null,
-  "kinds": [
-   "attr:class"
-  ],
-  "count": 11,
-  "scenarios": [
-   "base-controls-b",
-   "base-controls",
-   "base-hash",
-   "base-panels-b",
-   "base-panels",
-   "base-place",
-   "base-staffing",
-   "base-topics-a",
-   "base-topics-b"
-  ]
- },
- {
-  "page": "week04",
-  "path": "#deeper-uscis > table:nth-of-type(1) > tbody:nth-of-type(1) > tr:nth-of-type(2)",
-  "id": null,
-  "selector": null,
-  "kinds": [
-   "attr:data-rx"
-  ],
-  "count": 11,
-  "scenarios": [
-   "base-controls-b",
-   "base-controls",
-   "base-hash",
-   "base-panels-b",
-   "base-panels",
-   "base-place",
-   "base-staffing",
-   "base-topics-a",
-   "base-topics-b"
-  ]
- },
- {
-  "page": "week04",
-  "path": "#deeper-uscis > table:nth-of-type(1) > tbody:nth-of-type(1) > tr:nth-of-type(3) > td:nth-of-type(2)",
-  "id": null,
-  "selector": null,
-  "kinds": [
-   "attr:class",
-   "attr:style",
-   "childList"
-  ],
-  "count": 55,
-  "scenarios": [
-   "base-controls-b",
-   "base-controls",
-   "base-hash",
-   "base-panels-b",
-   "base-panels",
-   "base-place",
-   "base-staffing",
-   "base-topics-a",
-   "base-topics-b"
-  ]
- },
- {
-  "page": "week04",
-  "path": "#deeper-uscis > table:nth-of-type(1) > tbody:nth-of-type(1) > tr:nth-of-type(3) > td:nth-of-type(3)",
-  "id": null,
-  "selector": null,
-  "kinds": [
-   "attr:class",
-   "attr:style",
-   "childList"
-  ],
-  "count": 55,
-  "scenarios": [
-   "base-controls-b",
-   "base-controls",
-   "base-hash",
-   "base-panels-b",
-   "base-panels",
-   "base-place",
-   "base-staffing",
-   "base-topics-a",
-   "base-topics-b"
-  ]
- },
- {
-  "page": "week04",
-  "path": "#deeper-uscis > table:nth-of-type(1) > tbody:nth-of-type(1) > tr:nth-of-type(3) > td:nth-of-type(4)",
-  "id": null,
-  "selector": null,
-  "kinds": [
-   "attr:class"
-  ],
-  "count": 11,
-  "scenarios": [
-   "base-controls-b",
-   "base-controls",
-   "base-hash",
-   "base-panels-b",
-   "base-panels",
-   "base-place",
-   "base-staffing",
-   "base-topics-a",
-   "base-topics-b"
-  ]
- },
- {
-  "page": "week04",
-  "path": "#deeper-uscis > table:nth-of-type(1) > tbody:nth-of-type(1) > tr:nth-of-type(3) > td:nth-of-type(5)",
-  "id": null,
-  "selector": null,
-  "kinds": [
-   "attr:class"
-  ],
-  "count": 11,
-  "scenarios": [
-   "base-controls-b",
-   "base-controls",
-   "base-hash",
-   "base-panels-b",
-   "base-panels",
-   "base-place",
-   "base-staffing",
-   "base-topics-a",
-   "base-topics-b"
-  ]
- },
- {
-  "page": "week04",
-  "path": "#deeper-uscis > table:nth-of-type(1) > tbody:nth-of-type(1) > tr:nth-of-type(3)",
-  "id": null,
-  "selector": null,
-  "kinds": [
-   "attr:data-rx"
-  ],
-  "count": 11,
-  "scenarios": [
-   "base-controls-b",
-   "base-controls",
-   "base-hash",
-   "base-panels-b",
-   "base-panels",
-   "base-place",
-   "base-staffing",
-   "base-topics-a",
-   "base-topics-b"
-  ]
- },
- {
-  "page": "week04",
-  "path": "#deeper-uscis > table:nth-of-type(1) > tbody:nth-of-type(1) > tr:nth-of-type(4) > td:nth-of-type(2)",
-  "id": null,
-  "selector": null,
-  "kinds": [
-   "attr:class",
-   "attr:style",
-   "childList"
-  ],
-  "count": 55,
-  "scenarios": [
-   "base-controls-b",
-   "base-controls",
-   "base-hash",
-   "base-panels-b",
-   "base-panels",
-   "base-place",
-   "base-staffing",
-   "base-topics-a",
-   "base-topics-b"
-  ]
- },
- {
-  "page": "week04",
-  "path": "#deeper-uscis > table:nth-of-type(1) > tbody:nth-of-type(1) > tr:nth-of-type(4) > td:nth-of-type(3)",
-  "id": null,
-  "selector": null,
-  "kinds": [
-   "attr:class",
-   "attr:style",
-   "childList"
-  ],
-  "count": 55,
-  "scenarios": [
-   "base-controls-b",
-   "base-controls",
-   "base-hash",
-   "base-panels-b",
-   "base-panels",
-   "base-place",
-   "base-staffing",
-   "base-topics-a",
-   "base-topics-b"
-  ]
- },
- {
-  "page": "week04",
-  "path": "#deeper-uscis > table:nth-of-type(1) > tbody:nth-of-type(1) > tr:nth-of-type(4) > td:nth-of-type(4)",
-  "id": null,
-  "selector": null,
-  "kinds": [
-   "attr:class"
-  ],
-  "count": 11,
-  "scenarios": [
-   "base-controls-b",
-   "base-controls",
-   "base-hash",
-   "base-panels-b",
-   "base-panels",
-   "base-place",
-   "base-staffing",
-   "base-topics-a",
-   "base-topics-b"
-  ]
- },
- {
-  "page": "week04",
-  "path": "#deeper-uscis > table:nth-of-type(1) > tbody:nth-of-type(1) > tr:nth-of-type(4) > td:nth-of-type(5)",
-  "id": null,
-  "selector": null,
-  "kinds": [
-   "attr:class"
-  ],
-  "count": 11,
-  "scenarios": [
-   "base-controls-b",
-   "base-controls",
-   "base-hash",
-   "base-panels-b",
-   "base-panels",
-   "base-place",
-   "base-staffing",
-   "base-topics-a",
-   "base-topics-b"
-  ]
- },
- {
-  "page": "week04",
-  "path": "#deeper-uscis > table:nth-of-type(1) > tbody:nth-of-type(1) > tr:nth-of-type(4)",
-  "id": null,
-  "selector": null,
-  "kinds": [
-   "attr:data-rx"
-  ],
-  "count": 11,
-  "scenarios": [
-   "base-controls-b",
-   "base-controls",
-   "base-hash",
-   "base-panels-b",
-   "base-panels",
-   "base-place",
-   "base-staffing",
-   "base-topics-a",
-   "base-topics-b"
-  ]
- },
- {
-  "page": "week04",
-  "path": "#deeper-uscis > table:nth-of-type(1) > tbody:nth-of-type(1) > tr:nth-of-type(5) > td:nth-of-type(2)",
-  "id": null,
-  "selector": null,
-  "kinds": [
-   "attr:class",
-   "attr:style",
-   "childList"
-  ],
-  "count": 55,
-  "scenarios": [
-   "base-controls-b",
-   "base-controls",
-   "base-hash",
-   "base-panels-b",
-   "base-panels",
-   "base-place",
-   "base-staffing",
-   "base-topics-a",
-   "base-topics-b"
-  ]
- },
- {
-  "page": "week04",
-  "path": "#deeper-uscis > table:nth-of-type(1) > tbody:nth-of-type(1) > tr:nth-of-type(5) > td:nth-of-type(3)",
-  "id": null,
-  "selector": null,
-  "kinds": [
-   "attr:class",
-   "attr:style",
-   "childList"
-  ],
-  "count": 55,
-  "scenarios": [
-   "base-controls-b",
-   "base-controls",
-   "base-hash",
-   "base-panels-b",
-   "base-panels",
-   "base-place",
-   "base-staffing",
-   "base-topics-a",
-   "base-topics-b"
-  ]
- },
- {
-  "page": "week04",
-  "path": "#deeper-uscis > table:nth-of-type(1) > tbody:nth-of-type(1) > tr:nth-of-type(5) > td:nth-of-type(4)",
-  "id": null,
-  "selector": null,
-  "kinds": [
-   "attr:class"
-  ],
-  "count": 11,
-  "scenarios": [
-   "base-controls-b",
-   "base-controls",
-   "base-hash",
-   "base-panels-b",
-   "base-panels",
-   "base-place",
-   "base-staffing",
-   "base-topics-a",
-   "base-topics-b"
-  ]
- },
- {
-  "page": "week04",
-  "path": "#deeper-uscis > table:nth-of-type(1) > tbody:nth-of-type(1) > tr:nth-of-type(5) > td:nth-of-type(5)",
-  "id": null,
-  "selector": null,
-  "kinds": [
-   "attr:class"
-  ],
-  "count": 11,
-  "scenarios": [
-   "base-controls-b",
-   "base-controls",
-   "base-hash",
-   "base-panels-b",
-   "base-panels",
-   "base-place",
-   "base-staffing",
-   "base-topics-a",
-   "base-topics-b"
-  ]
- },
- {
-  "page": "week04",
-  "path": "#deeper-uscis > table:nth-of-type(1) > tbody:nth-of-type(1) > tr:nth-of-type(5)",
-  "id": null,
-  "selector": null,
-  "kinds": [
-   "attr:data-rx"
-  ],
-  "count": 11,
   "scenarios": [
    "base-controls-b",
    "base-controls",
@@ -6554,139 +6553,7 @@
    "listen:w4m:show",
    "lookup"
   ],
-  "count": 299,
-  "scenarios": [
-   "base-controls-b",
-   "base-controls",
-   "base-hash",
-   "base-panels-b",
-   "base-panels",
-   "base-place",
-   "base-staffing",
-   "base-topics-a",
-   "base-topics-b"
-  ]
- },
- {
-  "page": "week04",
-  "path": "#staffing-figure",
-  "id": "staffing-figure",
-  "selector": "#staffing-figure",
-  "kinds": [
-   "lookup"
-  ],
-  "count": 178,
-  "scenarios": [
-   "base-controls-b",
-   "base-controls",
-   "base-hash",
-   "base-panels-b",
-   "base-panels",
-   "base-place",
-   "base-staffing",
-   "base-topics-a",
-   "base-topics-b"
-  ]
- },
- {
-  "page": "week04",
-  "path": "#staffing-figure > div:nth-of-type(2) > div:nth-of-type(1) > div:nth-of-type(1)",
-  "id": null,
-  "selector": ".staffing-chart .chart-host",
-  "kinds": [
-   "attr:_echarts_instance_",
-   "attr:class",
-   "attr:style",
-   "childList",
-   "listen:click",
-   "listen:contextmenu",
-   "listen:dblclick",
-   "listen:mousedown",
-   "listen:mousemove",
-   "listen:mouseout",
-   "listen:mouseup",
-   "listen:mousewheel",
-   "listen:wheel",
-   "lookup"
-  ],
-  "count": 442,
-  "scenarios": [
-   "base-controls-b",
-   "base-controls",
-   "base-hash",
-   "base-panels-b",
-   "base-panels",
-   "base-place",
-   "base-staffing",
-   "base-topics-a",
-   "base-topics-b"
-  ]
- },
- {
-  "page": "week04",
-  "path": "#staffing-figure > div:nth-of-type(2) > div:nth-of-type(2)",
-  "id": null,
-  "selector": ".staffing-panel",
-  "kinds": [
-   "childList",
-   "lookup"
-  ],
-  "count": 31,
-  "scenarios": [
-   "base-controls-b",
-   "base-controls",
-   "base-hash",
-   "base-panels-b",
-   "base-panels",
-   "base-place",
-   "base-staffing",
-   "base-topics-a",
-   "base-topics-b"
-  ]
- },
- {
-  "page": "week04",
-  "path": "#staffing-figure > div:nth-of-type(4) > div:nth-of-type(1)",
-  "id": null,
-  "selector": ".staffing-flows .chart-host",
-  "kinds": [
-   "attr:_echarts_instance_",
-   "attr:class",
-   "attr:style",
-   "childList",
-   "listen:click",
-   "listen:contextmenu",
-   "listen:dblclick",
-   "listen:mousedown",
-   "listen:mousemove",
-   "listen:mouseout",
-   "listen:mouseup",
-   "listen:mousewheel",
-   "listen:wheel",
-   "lookup"
-  ],
-  "count": 438,
-  "scenarios": [
-   "base-controls-b",
-   "base-controls",
-   "base-hash",
-   "base-panels-b",
-   "base-panels",
-   "base-place",
-   "base-staffing",
-   "base-topics-a",
-   "base-topics-b"
-  ]
- },
- {
-  "page": "week04",
-  "path": "#staffing-community-stats",
-  "id": "staffing-community-stats",
-  "selector": "#staffing-community-stats",
-  "kinds": [
-   "lookup"
-  ],
-  "count": 177,
+  "count": 303,
   "scenarios": [
    "base-controls-b",
    "base-controls",
@@ -7471,6 +7338,138 @@
  },
  {
   "page": "week04",
+  "path": "#staffing-figure",
+  "id": "staffing-figure",
+  "selector": "#staffing-figure",
+  "kinds": [
+   "lookup"
+  ],
+  "count": 178,
+  "scenarios": [
+   "base-controls-b",
+   "base-controls",
+   "base-hash",
+   "base-panels-b",
+   "base-panels",
+   "base-place",
+   "base-staffing",
+   "base-topics-a",
+   "base-topics-b"
+  ]
+ },
+ {
+  "page": "week04",
+  "path": "#staffing-figure > div:nth-of-type(2) > div:nth-of-type(1) > div:nth-of-type(1)",
+  "id": null,
+  "selector": ".staffing-chart .chart-host",
+  "kinds": [
+   "attr:_echarts_instance_",
+   "attr:class",
+   "attr:style",
+   "childList",
+   "listen:click",
+   "listen:contextmenu",
+   "listen:dblclick",
+   "listen:mousedown",
+   "listen:mousemove",
+   "listen:mouseout",
+   "listen:mouseup",
+   "listen:mousewheel",
+   "listen:wheel",
+   "lookup"
+  ],
+  "count": 442,
+  "scenarios": [
+   "base-controls-b",
+   "base-controls",
+   "base-hash",
+   "base-panels-b",
+   "base-panels",
+   "base-place",
+   "base-staffing",
+   "base-topics-a",
+   "base-topics-b"
+  ]
+ },
+ {
+  "page": "week04",
+  "path": "#staffing-figure > div:nth-of-type(2) > div:nth-of-type(2)",
+  "id": null,
+  "selector": ".staffing-panel",
+  "kinds": [
+   "childList",
+   "lookup"
+  ],
+  "count": 31,
+  "scenarios": [
+   "base-controls-b",
+   "base-controls",
+   "base-hash",
+   "base-panels-b",
+   "base-panels",
+   "base-place",
+   "base-staffing",
+   "base-topics-a",
+   "base-topics-b"
+  ]
+ },
+ {
+  "page": "week04",
+  "path": "#staffing-figure > div:nth-of-type(4) > div:nth-of-type(1)",
+  "id": null,
+  "selector": ".staffing-flows .chart-host",
+  "kinds": [
+   "attr:_echarts_instance_",
+   "attr:class",
+   "attr:style",
+   "childList",
+   "listen:click",
+   "listen:contextmenu",
+   "listen:dblclick",
+   "listen:mousedown",
+   "listen:mousemove",
+   "listen:mouseout",
+   "listen:mouseup",
+   "listen:mousewheel",
+   "listen:wheel",
+   "lookup"
+  ],
+  "count": 438,
+  "scenarios": [
+   "base-controls-b",
+   "base-controls",
+   "base-hash",
+   "base-panels-b",
+   "base-panels",
+   "base-place",
+   "base-staffing",
+   "base-topics-a",
+   "base-topics-b"
+  ]
+ },
+ {
+  "page": "week04",
+  "path": "#staffing-community-stats",
+  "id": "staffing-community-stats",
+  "selector": "#staffing-community-stats",
+  "kinds": [
+   "lookup"
+  ],
+  "count": 177,
+  "scenarios": [
+   "base-controls-b",
+   "base-controls",
+   "base-hash",
+   "base-panels-b",
+   "base-panels",
+   "base-place",
+   "base-staffing",
+   "base-topics-a",
+   "base-topics-b"
+  ]
+ },
+ {
+  "page": "week04",
   "path": "#staffing-community-stats > div:nth-of-type(1) > div:nth-of-type(1) > table:nth-of-type(1) > tbody:nth-of-type(1)",
   "id": null,
   "selector": "tbody",
@@ -7935,6 +7934,48 @@
  },
  {
   "page": "week04",
+  "path": "#staffing-community-stats > div:nth-of-type(1) > div:nth-of-type(1) > table:nth-of-type(1) > thead:nth-of-type(1) > tr:nth-of-type(1) > th:nth-of-type(2)",
+  "id": null,
+  "selector": null,
+  "kinds": [
+   "attr:class"
+  ],
+  "count": 11,
+  "scenarios": [
+   "base-controls-b",
+   "base-controls",
+   "base-hash",
+   "base-panels-b",
+   "base-panels",
+   "base-place",
+   "base-staffing",
+   "base-topics-a",
+   "base-topics-b"
+  ]
+ },
+ {
+  "page": "week04",
+  "path": "#staffing-community-stats > div:nth-of-type(1) > div:nth-of-type(1) > table:nth-of-type(1) > thead:nth-of-type(1) > tr:nth-of-type(1) > th:nth-of-type(3)",
+  "id": null,
+  "selector": null,
+  "kinds": [
+   "attr:class"
+  ],
+  "count": 11,
+  "scenarios": [
+   "base-controls-b",
+   "base-controls",
+   "base-hash",
+   "base-panels-b",
+   "base-panels",
+   "base-place",
+   "base-staffing",
+   "base-topics-a",
+   "base-topics-b"
+  ]
+ },
+ {
+  "page": "week04",
   "path": "#staffing-names",
   "id": "staffing-names",
   "selector": "#staffing-names",
@@ -7990,48 +8031,6 @@
    "lookup"
   ],
   "count": 38,
-  "scenarios": [
-   "base-controls-b",
-   "base-controls",
-   "base-hash",
-   "base-panels-b",
-   "base-panels",
-   "base-place",
-   "base-staffing",
-   "base-topics-a",
-   "base-topics-b"
-  ]
- },
- {
-  "page": "week04",
-  "path": "#staffing-community-stats > div:nth-of-type(1) > div:nth-of-type(1) > table:nth-of-type(1) > thead:nth-of-type(1) > tr:nth-of-type(1) > th:nth-of-type(2)",
-  "id": null,
-  "selector": null,
-  "kinds": [
-   "attr:class"
-  ],
-  "count": 11,
-  "scenarios": [
-   "base-controls-b",
-   "base-controls",
-   "base-hash",
-   "base-panels-b",
-   "base-panels",
-   "base-place",
-   "base-staffing",
-   "base-topics-a",
-   "base-topics-b"
-  ]
- },
- {
-  "page": "week04",
-  "path": "#staffing-community-stats > div:nth-of-type(1) > div:nth-of-type(1) > table:nth-of-type(1) > thead:nth-of-type(1) > tr:nth-of-type(1) > th:nth-of-type(3)",
-  "id": null,
-  "selector": null,
-  "kinds": [
-   "attr:class"
-  ],
-  "count": 11,
   "scenarios": [
    "base-controls-b",
    "base-controls",
@@ -8207,7 +8206,7 @@
    "closest",
    "lookup"
   ],
-  "count": 220,
+  "count": 221,
   "scenarios": [
    "base-controls-b",
    "base-controls",
@@ -8406,7 +8405,7 @@
    "attr:aria-current",
    "lookup"
   ],
-  "count": 203,
+  "count": 202,
   "scenarios": [
    "base-controls-b",
    "base-controls",
@@ -8429,7 +8428,7 @@
    "closest",
    "lookup"
   ],
-  "count": 210,
+  "count": 211,
   "scenarios": [
    "base-controls-b",
    "base-controls",
@@ -8494,7 +8493,7 @@
    "attr:aria-current",
    "lookup"
   ],
-  "count": 200,
+  "count": 199,
   "scenarios": [
    "base-controls-b",
    "base-controls",
@@ -9392,7 +9391,7 @@
    "attr:class",
    "lookup"
   ],
-  "count": 40,
+  "count": 39,
   "scenarios": [
    "base-controls-b",
    "base-controls",
@@ -9414,7 +9413,7 @@
    "attr:class",
    "lookup"
   ],
-  "count": 35,
+  "count": 34,
   "scenarios": [
    "base-controls-b",
    "base-controls",
@@ -9508,131 +9507,6 @@
    "lookup"
   ],
   "count": 2024,
-  "scenarios": [
-   "base-controls-b",
-   "base-controls",
-   "base-hash",
-   "base-panels-b",
-   "base-panels",
-   "base-place",
-   "base-staffing",
-   "base-topics-a",
-   "base-topics-b"
-  ]
- },
- {
-  "page": "week04",
-  "path": "#chart-jobs-split-nmi",
-  "id": "chart-jobs-split-nmi",
-  "selector": "#chart-jobs-split-nmi",
-  "kinds": [
-   "childList",
-   "lookup"
-  ],
-  "count": 33,
-  "scenarios": [
-   "base-controls-b",
-   "base-controls",
-   "base-hash",
-   "base-panels-b",
-   "base-panels",
-   "base-place",
-   "base-staffing",
-   "base-topics-a",
-   "base-topics-b"
-  ]
- },
- {
-  "page": "week04",
-  "path": "#chart-jobs-split-mix",
-  "id": "chart-jobs-split-mix",
-  "selector": "#chart-jobs-split-mix",
-  "kinds": [
-   "attr:_echarts_instance_",
-   "attr:class",
-   "attr:style",
-   "childList",
-   "listen:click",
-   "listen:contextmenu",
-   "listen:dblclick",
-   "listen:mousedown",
-   "listen:mousemove",
-   "listen:mouseout",
-   "listen:mouseup",
-   "listen:mousewheel",
-   "listen:wheel",
-   "lookup"
-  ],
-  "count": 414,
-  "scenarios": [
-   "base-controls-b",
-   "base-controls",
-   "base-hash",
-   "base-panels-b",
-   "base-panels",
-   "base-place",
-   "base-staffing",
-   "base-topics-a",
-   "base-topics-b"
-  ]
- },
- {
-  "page": "week04",
-  "path": "#jobs-linkcom-table",
-  "id": "jobs-linkcom-table",
-  "selector": "#jobs-linkcom-table",
-  "kinds": [
-   "attr:class",
-   "attr:data-rx",
-   "attr:style",
-   "childList",
-   "lookup"
-  ],
-  "count": 1342,
-  "scenarios": [
-   "base-controls-b",
-   "base-controls",
-   "base-hash",
-   "base-panels-b",
-   "base-panels",
-   "base-place",
-   "base-staffing",
-   "base-topics-a",
-   "base-topics-b"
-  ]
- },
- {
-  "page": "week04",
-  "path": "#chart-jobs-linkcom-share",
-  "id": "chart-jobs-linkcom-share",
-  "selector": "#chart-jobs-linkcom-share",
-  "kinds": [
-   "childList",
-   "lookup"
-  ],
-  "count": 33,
-  "scenarios": [
-   "base-controls-b",
-   "base-controls",
-   "base-hash",
-   "base-panels-b",
-   "base-panels",
-   "base-place",
-   "base-staffing",
-   "base-topics-a",
-   "base-topics-b"
-  ]
- },
- {
-  "page": "week04",
-  "path": "#chart-jobs-linkcom-scatter",
-  "id": "chart-jobs-linkcom-scatter",
-  "selector": "#chart-jobs-linkcom-scatter",
-  "kinds": [
-   "childList",
-   "lookup"
-  ],
-  "count": 33,
   "scenarios": [
    "base-controls-b",
    "base-controls",
@@ -9785,74 +9659,6 @@
    "lookup"
   ],
   "count": 1507,
-  "scenarios": [
-   "base-controls-b",
-   "base-controls",
-   "base-hash",
-   "base-panels-b",
-   "base-panels",
-   "base-place",
-   "base-staffing",
-   "base-topics-a",
-   "base-topics-b"
-  ]
- },
- {
-  "page": "week04",
-  "path": "#chart-footprint-single",
-  "id": "chart-footprint-single",
-  "selector": "#chart-footprint-single",
-  "kinds": [
-   "attr:_echarts_instance_",
-   "attr:class",
-   "attr:style",
-   "childList",
-   "listen:click",
-   "listen:contextmenu",
-   "listen:dblclick",
-   "listen:mousedown",
-   "listen:mousemove",
-   "listen:mouseout",
-   "listen:mouseup",
-   "listen:mousewheel",
-   "listen:wheel",
-   "lookup"
-  ],
-  "count": 414,
-  "scenarios": [
-   "base-controls-b",
-   "base-controls",
-   "base-hash",
-   "base-panels-b",
-   "base-panels",
-   "base-place",
-   "base-staffing",
-   "base-topics-a",
-   "base-topics-b"
-  ]
- },
- {
-  "page": "week04",
-  "path": "#chart-footprint-rank",
-  "id": "chart-footprint-rank",
-  "selector": "#chart-footprint-rank",
-  "kinds": [
-   "attr:_echarts_instance_",
-   "attr:class",
-   "attr:style",
-   "childList",
-   "listen:click",
-   "listen:contextmenu",
-   "listen:dblclick",
-   "listen:mousedown",
-   "listen:mousemove",
-   "listen:mouseout",
-   "listen:mouseup",
-   "listen:mousewheel",
-   "listen:wheel",
-   "lookup"
-  ],
-  "count": 414,
   "scenarios": [
    "base-controls-b",
    "base-controls",
@@ -10037,6 +9843,199 @@
  },
  {
   "page": "week04",
+  "path": "#chart-footprint-single",
+  "id": "chart-footprint-single",
+  "selector": "#chart-footprint-single",
+  "kinds": [
+   "attr:_echarts_instance_",
+   "attr:class",
+   "attr:style",
+   "childList",
+   "listen:click",
+   "listen:contextmenu",
+   "listen:dblclick",
+   "listen:mousedown",
+   "listen:mousemove",
+   "listen:mouseout",
+   "listen:mouseup",
+   "listen:mousewheel",
+   "listen:wheel",
+   "lookup"
+  ],
+  "count": 414,
+  "scenarios": [
+   "base-controls-b",
+   "base-controls",
+   "base-hash",
+   "base-panels-b",
+   "base-panels",
+   "base-place",
+   "base-staffing",
+   "base-topics-a",
+   "base-topics-b"
+  ]
+ },
+ {
+  "page": "week04",
+  "path": "#chart-footprint-rank",
+  "id": "chart-footprint-rank",
+  "selector": "#chart-footprint-rank",
+  "kinds": [
+   "attr:_echarts_instance_",
+   "attr:class",
+   "attr:style",
+   "childList",
+   "listen:click",
+   "listen:contextmenu",
+   "listen:dblclick",
+   "listen:mousedown",
+   "listen:mousemove",
+   "listen:mouseout",
+   "listen:mouseup",
+   "listen:mousewheel",
+   "listen:wheel",
+   "lookup"
+  ],
+  "count": 414,
+  "scenarios": [
+   "base-controls-b",
+   "base-controls",
+   "base-hash",
+   "base-panels-b",
+   "base-panels",
+   "base-place",
+   "base-staffing",
+   "base-topics-a",
+   "base-topics-b"
+  ]
+ },
+ {
+  "page": "week04",
+  "path": "#chart-jobs-split-nmi",
+  "id": "chart-jobs-split-nmi",
+  "selector": "#chart-jobs-split-nmi",
+  "kinds": [
+   "childList",
+   "lookup"
+  ],
+  "count": 33,
+  "scenarios": [
+   "base-controls-b",
+   "base-controls",
+   "base-hash",
+   "base-panels-b",
+   "base-panels",
+   "base-place",
+   "base-staffing",
+   "base-topics-a",
+   "base-topics-b"
+  ]
+ },
+ {
+  "page": "week04",
+  "path": "#chart-jobs-split-mix",
+  "id": "chart-jobs-split-mix",
+  "selector": "#chart-jobs-split-mix",
+  "kinds": [
+   "attr:_echarts_instance_",
+   "attr:class",
+   "attr:style",
+   "childList",
+   "listen:click",
+   "listen:contextmenu",
+   "listen:dblclick",
+   "listen:mousedown",
+   "listen:mousemove",
+   "listen:mouseout",
+   "listen:mouseup",
+   "listen:mousewheel",
+   "listen:wheel",
+   "lookup"
+  ],
+  "count": 414,
+  "scenarios": [
+   "base-controls-b",
+   "base-controls",
+   "base-hash",
+   "base-panels-b",
+   "base-panels",
+   "base-place",
+   "base-staffing",
+   "base-topics-a",
+   "base-topics-b"
+  ]
+ },
+ {
+  "page": "week04",
+  "path": "#jobs-linkcom-table",
+  "id": "jobs-linkcom-table",
+  "selector": "#jobs-linkcom-table",
+  "kinds": [
+   "attr:class",
+   "attr:data-rx",
+   "attr:style",
+   "childList",
+   "lookup"
+  ],
+  "count": 1342,
+  "scenarios": [
+   "base-controls-b",
+   "base-controls",
+   "base-hash",
+   "base-panels-b",
+   "base-panels",
+   "base-place",
+   "base-staffing",
+   "base-topics-a",
+   "base-topics-b"
+  ]
+ },
+ {
+  "page": "week04",
+  "path": "#chart-jobs-linkcom-share",
+  "id": "chart-jobs-linkcom-share",
+  "selector": "#chart-jobs-linkcom-share",
+  "kinds": [
+   "childList",
+   "lookup"
+  ],
+  "count": 33,
+  "scenarios": [
+   "base-controls-b",
+   "base-controls",
+   "base-hash",
+   "base-panels-b",
+   "base-panels",
+   "base-place",
+   "base-staffing",
+   "base-topics-a",
+   "base-topics-b"
+  ]
+ },
+ {
+  "page": "week04",
+  "path": "#chart-jobs-linkcom-scatter",
+  "id": "chart-jobs-linkcom-scatter",
+  "selector": "#chart-jobs-linkcom-scatter",
+  "kinds": [
+   "childList",
+   "lookup"
+  ],
+  "count": 33,
+  "scenarios": [
+   "base-controls-b",
+   "base-controls",
+   "base-hash",
+   "base-panels-b",
+   "base-panels",
+   "base-place",
+   "base-staffing",
+   "base-topics-a",
+   "base-topics-b"
+  ]
+ },
+ {
+  "page": "week04",
   "path": "#place-break > div:nth-of-type(1) > div:nth-of-type(1) > div:nth-of-type(2) > details:nth-of-type(4) > div:nth-of-type(1) > table:nth-of-type(1) > thead:nth-of-type(1) > tr:nth-of-type(1) > th:nth-of-type(2)",
   "id": null,
   "selector": null,
@@ -10100,69 +10099,6 @@
  },
  {
   "page": "week04",
-  "path": "#jobs-linkcom > div:nth-of-type(3) > details:nth-of-type(4) > div:nth-of-type(1) > table:nth-of-type(1) > thead:nth-of-type(1) > tr:nth-of-type(1) > th:nth-of-type(2)",
-  "id": null,
-  "selector": null,
-  "kinds": [
-   "attr:class"
-  ],
-  "count": 11,
-  "scenarios": [
-   "base-controls-b",
-   "base-controls",
-   "base-hash",
-   "base-panels-b",
-   "base-panels",
-   "base-place",
-   "base-staffing",
-   "base-topics-a",
-   "base-topics-b"
-  ]
- },
- {
-  "page": "week04",
-  "path": "#jobs-linkcom > div:nth-of-type(3) > details:nth-of-type(4) > div:nth-of-type(1) > table:nth-of-type(1) > thead:nth-of-type(1) > tr:nth-of-type(1) > th:nth-of-type(3)",
-  "id": null,
-  "selector": null,
-  "kinds": [
-   "attr:class"
-  ],
-  "count": 11,
-  "scenarios": [
-   "base-controls-b",
-   "base-controls",
-   "base-hash",
-   "base-panels-b",
-   "base-panels",
-   "base-place",
-   "base-staffing",
-   "base-topics-a",
-   "base-topics-b"
-  ]
- },
- {
-  "page": "week04",
-  "path": "#jobs-linkcom > div:nth-of-type(3) > details:nth-of-type(4) > div:nth-of-type(1) > table:nth-of-type(1) > thead:nth-of-type(1) > tr:nth-of-type(1) > th:nth-of-type(4)",
-  "id": null,
-  "selector": null,
-  "kinds": [
-   "attr:class"
-  ],
-  "count": 11,
-  "scenarios": [
-   "base-controls-b",
-   "base-controls",
-   "base-hash",
-   "base-panels-b",
-   "base-panels",
-   "base-place",
-   "base-staffing",
-   "base-topics-a",
-   "base-topics-b"
-  ]
- },
- {
-  "page": "week04",
   "path": "#who-movers > div:nth-of-type(1) > div:nth-of-type(1) > div:nth-of-type(2) > details:nth-of-type(3) > div:nth-of-type(1) > table:nth-of-type(1) > thead:nth-of-type(1) > tr:nth-of-type(1) > th:nth-of-type(2)",
   "id": null,
   "selector": null,
@@ -10206,6 +10142,69 @@
  {
   "page": "week04",
   "path": "#who-overlap > div:nth-of-type(1) > div:nth-of-type(1) > div:nth-of-type(2) > details:nth-of-type(4) > div:nth-of-type(1) > table:nth-of-type(1) > thead:nth-of-type(1) > tr:nth-of-type(1) > th:nth-of-type(2)",
+  "id": null,
+  "selector": null,
+  "kinds": [
+   "attr:class"
+  ],
+  "count": 11,
+  "scenarios": [
+   "base-controls-b",
+   "base-controls",
+   "base-hash",
+   "base-panels-b",
+   "base-panels",
+   "base-place",
+   "base-staffing",
+   "base-topics-a",
+   "base-topics-b"
+  ]
+ },
+ {
+  "page": "week04",
+  "path": "#jobs-linkcom > div:nth-of-type(3) > details:nth-of-type(4) > div:nth-of-type(1) > table:nth-of-type(1) > thead:nth-of-type(1) > tr:nth-of-type(1) > th:nth-of-type(2)",
+  "id": null,
+  "selector": null,
+  "kinds": [
+   "attr:class"
+  ],
+  "count": 11,
+  "scenarios": [
+   "base-controls-b",
+   "base-controls",
+   "base-hash",
+   "base-panels-b",
+   "base-panels",
+   "base-place",
+   "base-staffing",
+   "base-topics-a",
+   "base-topics-b"
+  ]
+ },
+ {
+  "page": "week04",
+  "path": "#jobs-linkcom > div:nth-of-type(3) > details:nth-of-type(4) > div:nth-of-type(1) > table:nth-of-type(1) > thead:nth-of-type(1) > tr:nth-of-type(1) > th:nth-of-type(3)",
+  "id": null,
+  "selector": null,
+  "kinds": [
+   "attr:class"
+  ],
+  "count": 11,
+  "scenarios": [
+   "base-controls-b",
+   "base-controls",
+   "base-hash",
+   "base-panels-b",
+   "base-panels",
+   "base-place",
+   "base-staffing",
+   "base-topics-a",
+   "base-topics-b"
+  ]
+ },
+ {
+  "page": "week04",
+  "path": "#jobs-linkcom > div:nth-of-type(3) > details:nth-of-type(4) > div:nth-of-type(1) > table:nth-of-type(1) > thead:nth-of-type(1) > tr:nth-of-type(1) > th:nth-of-type(4)",
   "id": null,
   "selector": null,
   "kinds": [
@@ -10436,7 +10435,7 @@
    "listen:keydown",
    "lookup"
   ],
-  "count": 1709,
+  "count": 1632,
   "scenarios": [
    "base-controls-b",
    "base-controls",
@@ -10986,7 +10985,7 @@
    "listen:click",
    "lookup"
   ],
-  "count": 204,
+  "count": 208,
   "scenarios": [
    "base-controls-b",
    "base-hash",
@@ -11118,7 +11117,7 @@
    "childList",
    "lookup"
   ],
-  "count": 52,
+  "count": 43,
   "scenarios": [
    "base-controls-b",
    "base-hash",
@@ -12252,7 +12251,7 @@
    "closest",
    "lookup"
   ],
-  "count": 252,
+  "count": 251,
   "scenarios": [
    "base-controls",
    "base-panels"
@@ -12695,7 +12694,7 @@
   "kinds": [
    "lookup"
   ],
-  "count": 2,
+  "count": 1,
   "scenarios": [
    "base-hash"
   ]
