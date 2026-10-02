@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
+import { JsonLd, pageMeta } from "@/components/agentMeta";
 import "@/styles/type.css";
 import "@/styles/corridor.css";
 import "@/styles/post.css";
@@ -15,9 +16,14 @@ import "@/styles/week04-vis-staffing.css";
 import "@/styles/week04-entities.css";
 import "@/styles/week04-sources.css";
 
-export const metadata: Metadata = {
+const PAGE = {
+  path: "weeks/week04/",
   title: "Who hires America's foreign workers? · Log–Log Legends",
   description: "Who hires America's foreign workers? Places, jobs and companies from US H-1B filings — Week 4 go-nuts, Log–Log Legends.",
+};
+
+export const metadata: Metadata = {
+  ...pageMeta(PAGE),
   robots: "noindex",
 };
 
@@ -25,6 +31,7 @@ export default function Layout({ children }: { children: ReactNode }) {
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
+        <JsonLd week={4} title={PAGE.title} description={PAGE.description} />
         {/* Draft: keep noindex until the whole post is final. */}
       </head>
       <body className="corridor">{children}</body>

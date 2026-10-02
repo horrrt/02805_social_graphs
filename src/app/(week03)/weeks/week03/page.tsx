@@ -88,7 +88,7 @@ export default function Page() {
               </div>
             </div>
             <div className="stage-wrap">
-              <canvas className="stage" height="900" id="globe-canvas" width="900"></canvas>
+              <canvas aria-label="Globe of the countries and the migration corridors between them" className="stage" height="900" id="globe-canvas" role="img" width="900"></canvas>
               <p className="stage-hint">
                 Drag to spin. Click a country to inspect it.
               </p>
@@ -178,7 +178,7 @@ export default function Page() {
                     {" "}
                     <button aria-pressed="false" data-mode="linear" type="button">linear</button>
                   </div>
-                  <canvas className="chart" height="560" id="hist" width="1100"></canvas>
+                  <canvas aria-label="Chart: distribution of the number of partners per country" className="chart" height="560" id="hist" role="img" width="1100"></canvas>
                   <div className="notice">
                     <span className="ico">💡</span>
                     {" "}
@@ -227,7 +227,7 @@ export default function Page() {
                     {" "}
                     <button aria-pressed="false" data-mode="linear" type="button">linear</button>
                   </div>
-                  <canvas className="chart" height="560" id="ccdf" width="1100"></canvas>
+                  <canvas aria-label="Chart: CCDF of the number of partners per country" className="chart" height="560" id="ccdf" role="img" width="1100"></canvas>
                   <div className="notice">
                     <span className="ico">💡</span>
                     {" "}
@@ -385,7 +385,7 @@ export default function Page() {
                       Flights
                     </span>
                   </div>
-                  <canvas className="chart" height="470" id="scatter-between" width="900"></canvas>
+                  <canvas aria-label="Scatter plot: betweenness against origins (in-degree), log–log" className="chart" height="470" id="scatter-between" role="img" width="900"></canvas>
                 </div>
                 <aside className="panel">
                   <h2>Selected country</h2>
@@ -435,7 +435,7 @@ export default function Page() {
                       Falls on PageRank
                     </span>
                   </div>
-                  <canvas className="chart" height="620" id="prestige" width="900"></canvas>
+                  <canvas aria-label="Chart: countries ranked by people against ranked by PageRank" className="chart" height="620" id="prestige" role="img" width="900"></canvas>
                   <div className="notice">
                     <span className="ico">💡</span>
                     {" "}
@@ -512,7 +512,7 @@ export default function Page() {
                       the observed corridor weights back out at random. Click any
                       point to select that country.
                     </p>
-                    <canvas className="chart" height="560" id="scatter-z" width="900"></canvas>
+                    <canvas aria-label="Scatter plot: betweenness z-score against origins (in-degree), log x" className="chart" height="560" id="scatter-z" role="img" width="900"></canvas>
                   </div>
                   <aside className="panel pair-aside">
                     <h2>Reading it</h2>
@@ -563,7 +563,7 @@ export default function Page() {
                         </button>
                       </div>
                     </div>
-                    <canvas height="450" id="map-canvas" width="900"></canvas>
+                    <canvas aria-label="Map of the most surprising bridges" height="450" id="map-canvas" role="img" width="900"></canvas>
                   </div>
                   <aside className="panel pair-aside">
                     <h2>Same world. Different networks.</h2>
@@ -665,7 +665,7 @@ export default function Page() {
                 could only ever show one year. Nothing here touches the flight
                 network, so the slider moves it.
               </p>
-              <canvas className="chart" height="620" id="cartography" width="1100"></canvas>
+              <canvas aria-label="Chart: roles of countries inside their communities" className="chart" height="620" id="cartography" role="img" width="1100"></canvas>
               <div aria-label="How many countries carry each role" className="type-strip" id="typology-strip"></div>
               <div className="grid5" id="typology-cards"></div>
               <aside aria-label="Countries in this role" className="type-drawer" id="type-drawer" hidden></aside>
@@ -791,7 +791,7 @@ export default function Page() {
                       Outgoing
                     </span>
                   </div>
-                  <canvas className="chart" height="330" id="dk-time" width="440"></canvas>
+                  <canvas aria-label="Chart: Denmark through time" className="chart" height="330" id="dk-time" role="img" width="440"></canvas>
                 </div>
               </div>
               <div className="grid2" style={{"marginTop":"18px"}}>
@@ -805,7 +805,7 @@ export default function Page() {
                     sits in the world's
                     betweenness ranking, year by year · 1 = top bridge
                   </p>
-                  <canvas className="chart" height="330" id="dk-rank" width="440"></canvas>
+                  <canvas aria-label="Chart: Denmark's bridge rank, 1990–2024" className="chart" height="330" id="dk-rank" role="img" width="440"></canvas>
                 </div>
                 <div className="plot">
                   <h3>D. Nearest neighbours</h3>
@@ -813,7 +813,7 @@ export default function Page() {
                     2020 · the four closest countries on the ground · origins,
                     z-score, flight partners · click a bar
                   </p>
-                  <canvas className="chart" height="420" id="dk-nordic" width="440"></canvas>
+                  <canvas aria-label="Chart: Denmark's nearest neighbours" className="chart" height="420" id="dk-nordic" role="img" width="440"></canvas>
                 </div>
               </div>
               <div className="notice" id="dk-verdict">
@@ -851,24 +851,24 @@ export default function Page() {
                       <b className="qa-slider-now" id="q-ring-now">2024</b>
                     </div>
                     <p className="axis-note" id="q-ring-scope"></p>
-                    <canvas className="chart" height="660" id="q-ring" width="760"></canvas>
+                    <canvas aria-label="Chart: which corridors carry the world's migrants" className="chart" height="660" id="q-ring" role="img" width="760"></canvas>
                     <p className="qa-answer" id="q-ring-answer"></p>
                   </article>
                   <article className="qa-item">
                     <h3>
                       2 · Where do migrants live, and where were they born?
                     </h3>
-                    <canvas className="chart" height="470" id="q-hosts" width="760"></canvas>
+                    <canvas aria-label="Chart: where migrants live and where they were born" className="chart" height="470" id="q-hosts" role="img" width="760"></canvas>
                     <p className="qa-answer" id="q-hosts-answer"></p>
                   </article>
                   <article className="qa-item">
                     <h3>3 · Do migrants move far?</h3>
-                    <canvas className="chart" height="420" id="q-distance" width="760"></canvas>
+                    <canvas aria-label="Chart: how far migrants move" className="chart" height="420" id="q-distance" role="img" width="760"></canvas>
                     <p className="qa-answer" id="q-distance-answer"></p>
                   </article>
                   <article className="qa-item">
                     <h3>4 · Does wealth pull people, and how far?</h3>
-                    <canvas className="chart" height="430" id="q-wealth" width="760"></canvas>
+                    <canvas aria-label="Chart: whether wealth pulls people, and how far" className="chart" height="430" id="q-wealth" role="img" width="760"></canvas>
                     <p className="qa-answer" id="q-wealth-answer"></p>
                   </article>
                   <article className="qa-item">
@@ -876,12 +876,12 @@ export default function Page() {
                       5 · Is this the highly skilled, or everybody, and was it
                       a choice?
                     </h3>
-                    <canvas className="chart" height="253" id="q-income" width="760"></canvas>
+                    <canvas aria-label="Chart: whether migration is of the highly skilled or of everybody" className="chart" height="253" id="q-income" role="img" width="760"></canvas>
                     <p className="qa-answer" id="q-income-answer"></p>
                   </article>
                   <article className="qa-item">
                     <h3>6 · Who moves?</h3>
-                    <canvas className="chart" height="470" id="q-sex" width="760"></canvas>
+                    <canvas aria-label="Chart: who moves, by sex" className="chart" height="470" id="q-sex" role="img" width="760"></canvas>
                     <p className="qa-answer" id="q-sex-answer"></p>
                   </article>
                   <div className="notice">
