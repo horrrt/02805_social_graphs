@@ -24,7 +24,7 @@ Rules:
 - Never use the hidden Browser pane. Desktop only.
 - Commit your work on the current branch when done, Conventional Commits "type(scope): subject" (scope site, tests, week03, week04, week05, ci, docs ...), message ending with the line "Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>". Do not push. Do not merge. Do not touch other branches or worktrees.
 - Readers must see the same site. Never weaken a test. Preserve known bugs.
-- An earlier attempt at a batch may have been cut off mid-way. Before starting, run git log --oneline origin/main..HEAD and git status: if commits or uncommitted files for your batch already exist, review them against the spec and continue from there instead of redoing them (fix them if they are wrong).`
+${args.note ? '- NOTE FROM THE ORCHESTRATOR: ' + args.note + '\n' : ''}- An earlier attempt at a batch may have been cut off mid-way. Before starting, run git log --oneline origin/main..HEAD and git status: if commits or uncommitted files for your batch already exist, review them against the spec and continue from there instead of redoing them (fix them if they are wrong).`
 
 const RESULT = {
   type: 'object',
