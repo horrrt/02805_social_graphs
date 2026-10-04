@@ -2,7 +2,7 @@
 
 ## 1. engine.mjs: compare console messages without their JS stack frames
 
-**Status:** pending. The orchestrator decides; P2a does not apply it. Until it lands, `runtime.mjs` fails
+**Status:** approved and applied by the orchestrator on 5 Oct 2026 (narrowed form below). Until it lands, `runtime.mjs` fails
 `scenarios/week03/base-style.mjs` step 18 on `console` (see Why).
 
 **Files:** `scripts/parity/engine.mjs` (in `openPage`) and a new `tests/parity-norm.test.mjs`
