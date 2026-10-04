@@ -7,7 +7,7 @@ import { existsSync, readFileSync, readdirSync } from "node:fs";
 import { join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { SITE, url, tone, drawNetwork } from "../src/scripts/cabinet.js";
-import { builtPage } from "./built-page.mjs";
+import { builtPage, codeFiles } from "./built-page.mjs";
 
 const PUBLIC = fileURLToPath(new URL("../public/", import.meta.url));
 const JS = fileURLToPath(new URL("../src/scripts/", import.meta.url));
@@ -22,6 +22,13 @@ const scripts = () =>
   readdirSync(JS)
     .filter((f) => f.endsWith(".js") && !LEGACY.includes(f))
     .map((f) => [f, readFileSync(join(JS, f), "utf8")]);
+// Code moving out of src/scripts keeps the contract: every file under these
+// folders, at any depth, is held to it. src/app is markup, not chart code.
+const ROOT = fileURLToPath(new URL("../", import.meta.url));
+const NEW_DIRS = ["src/lib", "src/kit", "src/features", "src/components", "src/scripts/runtime"];
+const nested = () =>
+  NEW_DIRS.flatMap((dir) => codeFiles(join(ROOT, dir), /\.(js|mjs|ts|tsx)$/))
+    .map((path) => [path.slice(ROOT.length), readFileSync(path, "utf8")]);
 const css = ["arcade.css"]
   .map((f) => readFileSync(join(CSS, f), "utf8"))
   .join("\n");
@@ -40,15 +47,26 @@ test("tone returns the fallback when there is no document", () => {
 test("every canvas token in JS is defined in CSS with the same value, and no bare hex literal remains", () => {
   const uses = new Map();
   const offenders = [];
-  for (const [file, text] of scripts()) {
+  const register = (text) => {
     for (const [, name, fallback] of text.matchAll(
       /tone\("(--cv-[a-z0-9-]+)",\s*"([^"]*)"\)/g,
     )) {
       if (!uses.has(name)) uses.set(name, new Set());
       uses.get(name).add(fallback);
     }
+  };
+  for (const [file, text] of scripts()) {
+    register(text);
     text.split("\n").forEach((line, i) => {
       if (/#[0-9a-fA-F]{3,8}/.test(line) && !line.includes("tone("))
+        offenders.push(`${file}:${i + 1}: ${line.trim()}`);
+    });
+  }
+  // A bare hex ends at a non-word character, so a selector such as "#face-card" passes.
+  for (const [file, text] of nested()) {
+    register(text);
+    text.split("\n").forEach((line, i) => {
+      if (/#[0-9a-fA-F]{3,8}(?![\w-])/.test(line) && !line.includes("tone("))
         offenders.push(`${file}:${i + 1}: ${line.trim()}`);
     });
   }

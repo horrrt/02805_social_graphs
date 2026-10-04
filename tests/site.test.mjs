@@ -39,16 +39,21 @@ const walk = (dir, out = []) => {
 };
 // The 49-concept design archive is a frozen record of earlier alternatives,
 // and assets/vendor holds third-party minified bundles we do not author.
+// Page code moving out of src/scripts goes to these folders, .ts and .tsx included.
+const ROOT = fileURLToPath(new URL("../", import.meta.url));
+const CODE_DIRS = ["src/lib", "src/kit", "src/features", "src/components"].map((dir) => join(ROOT, dir));
 const sitePages = () =>
-  [...walk(DOCS), ...walk(SCRIPTS)].filter(
+  [
+    ...[...walk(DOCS), ...walk(SCRIPTS)].filter((p) => /\.(html|js|mjs)$/.test(p)),
+    ...CODE_DIRS.filter((dir) => existsSync(dir)).flatMap((dir) => walk(dir)).filter((p) => /\.(js|mjs|ts|tsx)$/.test(p)),
+  ].filter(
     (p) =>
-      /\.(html|js|mjs)$/.test(p) &&
       !p.includes("/_next/") &&
       !p.includes("/mockups/") &&
       !p.includes("/vendor/") &&
       !p.endsWith("mockups.js"),
   );
-const label = (path) => (path.startsWith(DOCS) ? path.slice(DOCS.length) : "src/scripts/" + path.slice(SCRIPTS.length));
+const label = (path) => (path.startsWith(DOCS) ? path.slice(DOCS.length) : path.slice(ROOT.length));
 
 // https://sunelehmann.com/socialgraphs2026-web/index.html, autumn 2026.
 const COURSE = [

@@ -6,10 +6,26 @@ import assert from "node:assert/strict";
 import { readFileSync, readdirSync } from "node:fs";
 import { join } from "node:path";
 import { fileURLToPath } from "node:url";
-import { builtPage } from "./built-page.mjs";
+import { builtPage, codeFiles } from "./built-page.mjs";
 
 const CSS = fileURLToPath(new URL("../src/styles/", import.meta.url));
 const SCRIPTS = fileURLToPath(new URL("../src/scripts/", import.meta.url));
+const ROOT = fileURLToPath(new URL("../", import.meta.url));
+// Sizes typed into JSX: fontSize={11}, fontSize="11px", font-size="11".
+const JSX_LITERALS = [/fontSize=\{\s*\d/, /fontSize\s*=\s*["'`]?\d/, /font-size=["']?\d/];
+// Code moving out of src/scripts, as [repo-relative path, text], at any depth.
+const moved = (dir, skip = []) =>
+  codeFiles(join(ROOT, dir), /\.(js|mjs|ts|tsx)$/)
+    .map((path) => path.slice(ROOT.length))
+    .filter((rel) => !skip.some((prefix) => rel.startsWith(prefix)))
+    .map((rel) => [rel, readFileSync(join(ROOT, rel), "utf8")]);
+const linesMatching = (name, src, patterns) => {
+  const found = [];
+  src.split("\n").forEach((line, i) => {
+    if (patterns.some((re) => re.test(line))) found.push(`${name}:${i + 1}: ${line.trim()}`);
+  });
+  return found;
+};
 // type.css defines the tokens. mockups.css styles public/mockups/, a set of
 // explorations that stays outside the scale.
 const SKIP = ["type.css", "mockups.css"];
@@ -112,6 +128,7 @@ test("week 4 chart code takes every font size from the type scale", () => {
       if (literal.some((re) => re.test(line))) found.push(`${file}:${i + 1}: ${line.trim()}`);
     });
   }
+  for (const [file, src] of moved("src/features/week04")) found.push(...linesMatching(file, src, [...literal, ...JSX_LITERALS]));
   assert.deepEqual(found, []);
 });
 
@@ -155,6 +172,14 @@ function fontLiterals(name, src) {
 test("chart code outside week 4 takes every font size from the type scale", () => {
   const JS = SCRIPTS;
   const found = otherChartScripts(JS).flatMap((f) => fontLiterals(f, readFileSync(join(JS, f), "utf8")));
+  // Components and hooks outside Week 4; the screen-test prototype keeps its own sizes.
+  const elsewhere = [
+    ...moved("src/lib"),
+    ...moved("src/kit"),
+    ...moved("src/features", ["src/features/week04/", "src/features/screen-test/"]),
+    ...moved("src/components"),
+  ];
+  for (const [file, src] of elsewhere) found.push(...linesMatching(file, src, [...OTHER_JS_LITERALS, ...JSX_LITERALS]));
   assert.deepEqual(found, []);
 });
 
@@ -176,4 +201,11 @@ test("the font-size guard catches the literals it replaced", () => {
     'axisLabel: { color: MUTE, fontSize: fs("caption") },',
   ])
     assert.equal(fontLiterals("x", line).length, 0, line);
+});
+
+test("the JSX font-size guard catches typed sizes and passes the scale", () => {
+  for (const line of ['<text fontSize={11}>', '<text fontSize="11px">', '<text font-size="11">'])
+    assert.equal(linesMatching("x", line, JSX_LITERALS).length, 1, line);
+  for (const line of ['<text fontSize={fs("caption")}>', "<text style={{ fontSize: \"var(--fs-caption)\" }}>"])
+    assert.equal(linesMatching("x", line, JSX_LITERALS).length, 0, line);
 });

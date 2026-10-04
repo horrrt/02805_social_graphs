@@ -1,0 +1,6 @@
+[
+ {
+  "key": "*mk-filters/25/requests:/02805_social_graphs/mockups/thumbs/*",
+  "reason": "nondeterministic on main: after the reload the review grid's thumbnails are loading=\"lazy\"; whether the browser re-requests the lower rows (34 to 46) before the snapshot or serves them from cache depends on timing (seen once in 5 passes: base 0 requests, head 1 each)."
+ }
+]
