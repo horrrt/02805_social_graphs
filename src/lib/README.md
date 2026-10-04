@@ -16,6 +16,8 @@ G1-G6.
 - `ChartTip.tsx`: the one tooltip div the corridor charts share (`showTip`, `hideTip`).
 - Next to it: `src/scripts/runtime/` (stores, the data and vendor caches, the owned registry, fault hooks) and
   `src/components/post/` (`Term`, `TermLayer`, `SegmentedControl`, `TermProse`, `Termified`).
+  `SegmentedControl` takes an optional `separator`: pass `separator=" "` where main's server markup has
+  `{" "}` between the buttons (the `.axis-modes` groups) and leave it out where it has none (`.staffing-years`).
 
 ## Rules
 

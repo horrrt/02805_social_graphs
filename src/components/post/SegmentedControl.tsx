@@ -6,8 +6,9 @@
 // The tab stops are rendered only once hydrated, since the server markup has
 // none. The group's attributes follow the order the caller writes its props
 // in, so the markup can match the JSX it replaces; a role the caller leaves
-// out comes last.
-import type { KeyboardEvent, ReactNode } from "react";
+// out comes last. A group whose server markup has {" "} between its buttons
+// (the .axis-modes groups) passes separator=" "; .staffing-years has none.
+import { Fragment, type KeyboardEvent, type ReactNode } from "react";
 import { useHydrated } from "@/lib/useHydrated";
 import { useOwnedRef } from "@/lib/useOwnedRef";
 
@@ -26,6 +27,7 @@ export type SegmentedControlProps = {
   ariaLabel?: string;
   ariaLabelledBy?: string;
   buttons: SegmentButton[];
+  separator?: string;
   value: string | null;
   onChange: (value: string) => void;
 };
@@ -34,7 +36,7 @@ const GROUP_ATTRS = { className: "className", role: "role", id: "id", ariaLabel:
 const KEYS = new Set(["ArrowLeft", "ArrowRight", "Home", "End"]);
 
 export function SegmentedControl(props: SegmentedControlProps) {
-  const { buttons, value, onChange } = props;
+  const { buttons, separator, value, onChange } = props;
   const hydrated = useHydrated();
   const owned = useOwnedRef();
 
@@ -66,22 +68,24 @@ export function SegmentedControl(props: SegmentedControlProps) {
 
   return (
     <div {...attrs} ref={owned} onKeyDown={onKeyDown}>
-      {buttons.map((b) => {
+      {buttons.map((b, i) => {
         const data = b.dataAttr ? { [`data-${b.dataAttr.name}`]: b.dataAttr.value } : {};
         const tabStop = hydrated && !b.disabled && !b.hidden ? (b === stop ? 0 : -1) : undefined;
         return (
-          <button
-            key={b.value}
-            aria-pressed={b.value === value ? "true" : "false"}
-            {...data}
-            type="button"
-            disabled={b.disabled}
-            hidden={b.hidden}
-            tabIndex={tabStop}
-            onClick={() => onChange(b.value)}
-          >
-            {b.label}
-          </button>
+          <Fragment key={b.value}>
+            {i > 0 && separator}
+            <button
+              aria-pressed={b.value === value ? "true" : "false"}
+              {...data}
+              type="button"
+              disabled={b.disabled}
+              hidden={b.hidden}
+              tabIndex={tabStop}
+              onClick={() => onChange(b.value)}
+            >
+              {b.label}
+            </button>
+          </Fragment>
         );
       })}
     </div>
