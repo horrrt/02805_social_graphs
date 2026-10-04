@@ -6,6 +6,7 @@
 // public/assets/data/week04_place.json, not typed in by hand. Built lazily: the
 // box does nothing until it is first opened.
 
+import { loadVendor } from "./runtime/vendor.js";
 import { asset } from "./site.js";
 import { fs, family } from "./type-scale.mjs";
 import { termify } from "./week04-ui.js";
@@ -28,13 +29,11 @@ function tipHtml(title, rows) {
   return `<div style="font-weight:700;margin-bottom:4px">${esc(title)}</div>${body}`;
 }
 
-function loadScript(src) {
-  return new Promise((resolve, reject) => {
-    const s = document.createElement("script");
-    s.src = src;
-    s.onload = resolve;
-    s.onerror = reject;
-    document.head.appendChild(s);
+// Rejects with an error event, as the <script>'s onerror did, so build()
+// writes the same message to #methods-status.
+function loadScript(file) {
+  return loadVendor(file).catch(() => {
+    throw new Event("error");
   });
 }
 
@@ -931,7 +930,7 @@ async function build() {
   built = true;
   const status = $("methods-status");
   try {
-    if (!window.echarts) await loadScript(asset("assets/vendor/echarts-5.5.1.min.js").href);
+    if (!window.echarts) await loadScript("echarts-5.5.1.min.js");
     const echarts = window.echarts;
     const [explore, place, usa] = await Promise.all([
       fetch(EXPLORE_URL).then((r) => {
