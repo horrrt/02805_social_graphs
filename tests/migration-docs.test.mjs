@@ -4,7 +4,7 @@
 // changing scripts/migration/sources.py.
 import test from "node:test";
 import assert from "node:assert/strict";
-import { existsSync, readFileSync, statSync } from "node:fs";
+import { existsSync, readFileSync, readdirSync, statSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { builtPage, pageStyles } from "./built-page.mjs";
@@ -123,14 +123,86 @@ test("the numbers quoted on the questions page come from the committed facts fil
   );
 });
 
+// Week 3's code, today's scripts and wherever it moves in the React rewrite.
+const tree = (dir) =>
+  existsSync(join(ROOT, dir))
+    ? readdirSync(join(ROOT, dir), { withFileTypes: true }).flatMap((e) =>
+        e.isDirectory() ? tree(join(dir, e.name)) : /\.(js|mjs|ts|tsx)$/.test(e.name) ? [join(dir, e.name)] : [],
+      )
+    : [];
+const WEEK03_REACT = () => [...tree("src/features/week03"), ...tree("src/components/week03")];
+const WEEK03_CODE = () => [
+  "src/scripts/corridor.js",
+  "src/scripts/week03-boot.js",
+  "src/scripts/questions.js",
+  "src/scripts/echarts-views.js",
+  ...tree("src/scripts/variants"),
+  "scripts/audit_week03.js",
+  ...WEEK03_REACT(),
+  ...tree("src/app/(week03)"),
+];
+const isClient = (src) => /^(?:\s*\/\/[^\n]*\n|\s*\/\*[\s\S]*?\*\/)*\s*["']use client["']/.test(src);
+
+// The ids the week 3 code looks up, by every way it addresses an element.
+const LOOKUP_PATTERNS = [
+  /(?<![\w.])\$\(\s*"([A-Za-z][\w-]*)"\s*\)/g,
+  /\bapi\.\$\(\s*"([A-Za-z][\w-]*)"\s*\)/g,
+  /\bbyId\([^,()]*,\s*"([A-Za-z][\w-]*)"\s*\)/g,
+  /\bgetElementById\(\s*"([A-Za-z][\w-]*)"\s*\)/g,
+  /\bhost\(\s*"([A-Za-z][\w-]*)"\s*\)/g,
+  /\bquerySelector(?:All)?\(\s*["'`]#([A-Za-z][\w-]*)/g,
+  /href="#([A-Za-z][\w-]*)"/g,
+  /href:\s*"#([A-Za-z][\w-]*)"/g,
+];
+// Ids the scripts give elements they build themselves (host.id = "globe-gl",
+// id="style-${key}", `${canvasId}-deck`): those are never in the built page,
+// so a lookup of one is checked by the script that makes it. A template id
+// becomes a pattern with * for the computed part.
+const created = (src) => [
+  ...[...src.matchAll(/\.id\s*=\s*"([A-Za-z][\w-]*)"/g)].map((m) => m[1]),
+  ...[...src.matchAll(/id="([A-Za-z][\w-]*-)\$\{/g)].map((m) => `${m[1]}*`),
+  ...[...src.matchAll(/\.id\s*=\s*`\$\{[^}]*\}(-[\w-]+)`/g)].map((m) => `*${m[1]}`),
+];
+const matches = (pattern, id) =>
+  pattern.startsWith("*") ? id.endsWith(pattern.slice(1)) : pattern.endsWith("*") ? id.startsWith(pattern.slice(0, -1)) : id === pattern;
+// Values of an exported CLIENT_IDS object: ids an island renders only after hydration.
+const clientIds = (src) => {
+  const block = src.match(/export const CLIENT_IDS\s*=\s*\{([^}]*)\}/);
+  return block ? [...block[1].matchAll(/(\w+):\s*["']([\w-]+)["']/g)].map((m) => ({ key: m[1], id: m[2] })) : [];
+};
+
 test("every element the week 3 script writes into exists in the post", () => {
-  const script = read("src/scripts/corridor.js");
-  const wanted = [...script.matchAll(/\$\("([a-z0-9-]+)"\)/g)].map((m) => m[1]);
+  const html = read("out/weeks/week03/index.html");
+  const files = WEEK03_CODE().filter((f) => existsSync(join(ROOT, f)));
+  const lookups = new Set();
+  const made = new Set();
+  for (const file of files) {
+    const src = read(file);
+    for (const re of LOOKUP_PATTERNS) for (const m of src.matchAll(re)) lookups.add(m[1]);
+    for (const id of created(src)) made.add(id);
+  }
+  const islands = new Set();
+  const client = [];
+  for (const file of WEEK03_REACT()) {
+    const src = read(file);
+    client.push(...clientIds(src).map((c) => ({ ...c, file })));
+    if (!isClient(src)) continue;
+    for (const m of src.matchAll(/\bid=(?:"([A-Za-z][\w-]*)"|\{\s*"([A-Za-z][\w-]*)"\s*\})/g)) islands.add(m[1] ?? m[2]);
+  }
+  const later = new Set(client.map((c) => c.id));
+  const isMade = (id) => [...made].some((pattern) => matches(pattern, id));
+  const wanted = [...new Set([...lookups, ...islands])].filter((id) => !later.has(id) && !isMade(id));
   assert.ok(wanted.length > 20, "expected the script to address many elements");
-  for (const page of ["out/weeks/week03/index.html"]) {
-    const html = read(page);
-    const missing = [...new Set(wanted)].filter((id) => !html.includes(`id="${id}"`));
-    assert.deepEqual(missing, [], `${page} is missing ids the script writes into`);
+  console.log(`# week 3 ids required: ${wanted.length}`);
+  const missing = wanted.filter((id) => !html.includes(`id="${id}"`));
+  assert.deepEqual(missing, [], "out/weeks/week03/index.html is missing ids the script writes into");
+
+  // An id an island renders after hydration goes through CLIENT_IDS and is not
+  // in the built page, so the server markup cannot depend on it.
+  const clientFiles = WEEK03_REACT().map((f) => read(f)).filter(isClient);
+  for (const { key, id, file } of client) {
+    assert.ok(clientFiles.some((src) => src.includes(`id={CLIENT_IDS.${key}}`)), `${file}: CLIENT_IDS.${key} is rendered by a client file`);
+    assert.ok(!html.includes(`id="${id}"`), `CLIENT_IDS.${key} ("${id}") must not be in the built page`);
   }
 });
 
@@ -261,6 +333,13 @@ test("the style guide draws every class the post uses, under every skin, palette
     const src = read(`src/scripts/${file}`);
     for (const c of classesIn(src)) wanted.add(c);
     for (const [, c] of src.matchAll(/className = "([^"]+)"/g)) wanted.add(c);
+  }
+  // JSX classes: className="a b" and the string literals inside className={…}.
+  for (const file of WEEK03_REACT()) {
+    const src = read(file);
+    for (const [, list] of src.matchAll(/className="([^"]+)"/g)) for (const c of list.split(/\s+/)) if (c) wanted.add(c);
+    for (const [, expr] of src.matchAll(/className=\{([^{}]*(?:\{[^{}]*\}[^{}]*)*)\}/g))
+      for (const [, lit] of expr.matchAll(/["'`]([^"'`$]+)["'`]/g)) for (const c of lit.split(/\s+/)) if (c) wanted.add(c);
   }
   const have = new Set(classesIn(guide));
   assert.deepEqual([...wanted].filter((c) => !have.has(c)).sort(), [], "classes missing from the guide");

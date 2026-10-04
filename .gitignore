@@ -21,3 +21,7 @@ node_modules/
 out/
 next-env.d.ts
 *.tsbuildinfo
+
+# Parity tool output (scripts/parity)
+scripts/parity/reports/
+parity-report*.json

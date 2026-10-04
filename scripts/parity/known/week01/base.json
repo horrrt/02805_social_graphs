@@ -1,0 +1,10 @@
+[
+ {
+  "key": "*w1-evidence/*/local:loglog-arcade-v1-20260826",
+  "reason": "nondeterministic on main: prediction() in cabinet.js stores the first guess with date: new Date().toISOString(); the pinned clock advances with performance.now(), so the stored millisecond differs from run to run (seen in 1 of 3 plain runs). Every other field of the record (guess, answer, score) still matches."
+ },
+ {
+  "key": "*w1-logbook/51/local:loglog-arcade-v1-20260826",
+  "reason": "nondeterministic on main: the same first-guess date stamp as w1-evidence, before the storage event overwrites the record with a fixed value (seen in 3 of 5 passes)."
+ }
+]

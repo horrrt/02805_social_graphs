@@ -31,8 +31,10 @@ test("each template section keeps the six parts' ids slot() finds", () => {
 });
 
 test("the template's script exists and every toy says so", () => {
-  const [src] = pageScripts("template");
-  assert.ok(src && existsSync(join(ROOT, "src/scripts", src)), "the template script is on disk");
-  const js = readFileSync(join(ROOT, "src/scripts", src), "utf8");
-  for (const [, aria] of js.matchAll(/aria: "([^"]+)"/g)) assert.match(aria, /^Toy/, `a toy chart says so: ${aria}`);
+  const files = pageScripts("template").map((src) => join(ROOT, "src/scripts", src));
+  assert.ok(files.length && files.every((file) => existsSync(file)), "the template's scripts are on disk");
+  const charts = files.map((file) => readFileSync(file, "utf8")).filter((js) => js.includes("aria:"));
+  assert.ok(charts.length >= 1, "at least one template file draws a chart");
+  for (const js of charts)
+    for (const [, aria] of js.matchAll(/aria: "([^"]+)"/g)) assert.match(aria, /^Toy/, `a toy chart says so: ${aria}`);
 });
