@@ -164,8 +164,9 @@ const clientIds = (src) => {
 };
 
 // Ids main's scripts create in the browser, so the server page has none of
-// them; each stays absent from the built page. They move to CLIENT_IDS or to
-// island markup when their week 3 batch converts the code that creates them.
+// them; each stays absent from the built page. The exemption covers lookups
+// only, and only while the page's entry (src/scripts/entries/week03.js) runs
+// those scripts: once it is gone, each id is in the server page or CLIENT_IDS.
 const RUNTIME_IDS = {
   "globe-canvas-d3": "src/scripts/variants/d3.js (host.id = \"globe-canvas-d3\")",
   "globe-gl": "src/scripts/variants/globe.js (host.id = \"globe-gl\")",
@@ -183,8 +184,9 @@ test("every element the week 3 script writes into exists in the post", () => {
     .filter(([file, src]) => file.startsWith("src/features/week03/") && /\.tsx$/.test(file) && isClient(src))
     .flatMap(([, src]) => [...src.matchAll(/\bid=(?:"([\w-]+)"|\{\s*"([\w-]+)"\s*\})/g)].map((m) => m[1] ?? m[2]));
   const client = files.filter(([file]) => file.startsWith("src/features/week03/")).flatMap(([, src]) => clientIds(src));
-  const skip = new Set([...client.map(([, value]) => value), ...Object.keys(RUNTIME_IDS)]);
-  const wanted = [...new Set([...found, ...islands])].filter((id) => !skip.has(id));
+  const runtime = existsSync(join(ROOT, "src/scripts/entries/week03.js")) ? Object.keys(RUNTIME_IDS) : [];
+  const skip = new Set(client.map(([, value]) => value));
+  const wanted = [...new Set([...[...found].filter((id) => !runtime.includes(id)), ...islands])].filter((id) => !skip.has(id));
   assert.ok(wanted.length > 20, `expected the script to address many elements, found ${wanted.length}`);
   const missing = wanted.filter((id) => !html.includes(`id="${id}"`));
   assert.deepEqual(missing, [], "out/weeks/week03/index.html is missing ids the script writes into");

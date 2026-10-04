@@ -102,5 +102,5 @@ test("the Term and Drawer components, once written, render the same classes", ()
   const drawer = component("Drawer.tsx");
   if (drawer) for (const s of ['"rx-drawer"', '"rx-drawer-body"']) assert.ok(drawer.includes(s), `Drawer.tsx has ${s}`);
   const drawers = component("Drawers.tsx");
-  if (drawers) for (const s of ["rx-drawers", "rx-foot", "rx-inline"]) assert.ok(drawers.includes(s), `Drawers.tsx has ${s}`);
+  if (drawers) for (const s of ['"rx-drawers rx-foot"', "rx-inline"]) assert.ok(drawers.includes(s), `Drawers.tsx has ${s}`);
 });
