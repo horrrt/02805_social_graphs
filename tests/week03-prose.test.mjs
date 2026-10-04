@@ -7,9 +7,9 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 import { readFileSync, readdirSync } from "node:fs";
-import { dirname, join } from "node:path";
+import { dirname, join, relative } from "node:path";
 import { fileURLToPath } from "node:url";
-import { builtPage } from "./built-page.mjs";
+import { builtPage, codeFiles } from "./built-page.mjs";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const readText = (path) => readFileSync(join(ROOT, path), "utf8");
@@ -22,7 +22,14 @@ const corridor = readText("src/scripts/corridor.js");
 const glob = (dir) => readdirSync(join(ROOT, dir))
   .filter((name) => name.endsWith(".js"))
   .map((name) => join(dir, name));
-const jsFiles = [...glob("src/scripts"), ...glob("src/scripts/variants")];
+// Week 3 code moving into components is read too, at any depth.
+const nested = (dir) => codeFiles(join(ROOT, dir), /\.(js|ts|tsx)$/).map((path) => relative(ROOT, path));
+const jsFiles = [
+  ...glob("src/scripts"),
+  ...glob("src/scripts/variants"),
+  ...nested("src/features/week03"),
+  ...nested("src/components/week03"),
+];
 
 // The page wraps hand-written prose at ~70 columns, so a phrase that reads as
 // one line in the source is split by newlines and indentation in the file.

@@ -5,9 +5,9 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 import { existsSync, readFileSync, statSync } from "node:fs";
-import { dirname, join } from "node:path";
+import { dirname, join, relative } from "node:path";
 import { fileURLToPath } from "node:url";
-import { builtPage, pageStyles } from "./built-page.mjs";
+import { builtPage, codeFiles, pageStyles } from "./built-page.mjs";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const read = (name) => (name.startsWith("out/") ? builtPage(name) : readFileSync(join(ROOT, name), "utf8"));
@@ -123,15 +123,92 @@ test("the numbers quoted on the questions page come from the committed facts fil
   );
 });
 
+// The week 3 code that looks elements up by id, wherever it lives: the
+// scripts, the audit, and the components the page is moving into.
+const nested = (dir) => codeFiles(join(ROOT, dir), /\.(js|mjs|ts|tsx)$/).map((path) => relative(ROOT, path));
+const WEEK03_CODE = () => [
+  "src/scripts/corridor.js",
+  "src/scripts/week03-boot.js",
+  "src/scripts/questions.js",
+  "src/scripts/echarts-views.js",
+  ...nested("src/scripts/variants"),
+  "scripts/audit_week03.js",
+  ...nested("src/features/week03"),
+  ...nested("src/components/week03"),
+  ...nested("src/app/(week03)"),
+];
+const isClient = (src) => /^\s*(?:(?:\/\/[^\n]*|\/\*[\s\S]*?\*\/)\s*)*["']use client["']/.test(src);
+
+// Ids looked up as $("x"), api.$("x"), byId(…, "x"), getElementById("x"),
+// host("x"), querySelector(All)("#x…") or linked as href="#x" / href: "#x".
+// A string that goes on into ${…} is a template id and is left out.
+const ID = `([A-Za-z][\\w-]*)`;
+const LOOKUP_PATTERNS = [
+  `(?<![\\w$])\\$\\(\\s*["']${ID}["']\\s*\\)`,
+  `\\bbyId\\([^()]*?,\\s*["']${ID}["']\\s*\\)`,
+  `\\bgetElementById\\(\\s*["']${ID}["']\\s*\\)`,
+  `(?<![\\w$.])host\\(\\s*["']${ID}["']\\s*\\)`,
+  `\\bquerySelector(?:All)?\\(\\s*["'\`]#${ID}(?![\\w-]|\\$\\{)`,
+  `\\bhref="#${ID}"`,
+  `\\bhref:\\s*"#${ID}"`,
+].map((source) => new RegExp(source, "g"));
+
+const lookups = (src) => LOOKUP_PATTERNS.flatMap((re) => [...src.matchAll(re)].map((m) => m[1]));
+
+// The values of exported CLIENT_IDS objects: ids rendered only after hydration.
+const clientIds = (src) => {
+  const out = [];
+  for (const [, body] of src.matchAll(/export const CLIENT_IDS\s*=\s*\{([^}]*)\}/g))
+    for (const [, key, value] of body.matchAll(/([\w$]+)\s*:\s*["']([^"']+)["']/g)) out.push([key, value]);
+  return out;
+};
+
+// Ids main's scripts create in the browser, so the server page has none of
+// them; each stays absent from the built page. They move to CLIENT_IDS or to
+// island markup when their week 3 batch converts the code that creates them.
+const RUNTIME_IDS = {
+  "globe-canvas-d3": "src/scripts/variants/d3.js (host.id = \"globe-canvas-d3\")",
+  "globe-gl": "src/scripts/variants/globe.js (host.id = \"globe-gl\")",
+  "globe-atlas": "src/scripts/variants/atlas.js (host.id = \"globe-atlas\")",
+  "globe-canvas-deck": "src/scripts/variants/deck.js (host.id = `${canvasId}-deck`)",
+  "style-earth": "src/scripts/week03-boot.js (<select id=\"style-${dimension.key}\">)",
+};
+
 test("every element the week 3 script writes into exists in the post", () => {
-  const script = read("src/scripts/corridor.js");
-  const wanted = [...script.matchAll(/\$\("([a-z0-9-]+)"\)/g)].map((m) => m[1]);
-  assert.ok(wanted.length > 20, "expected the script to address many elements");
-  for (const page of ["out/weeks/week03/index.html"]) {
-    const html = read(page);
-    const missing = [...new Set(wanted)].filter((id) => !html.includes(`id="${id}"`));
-    assert.deepEqual(missing, [], `${page} is missing ids the script writes into`);
+  const html = read("out/weeks/week03/index.html");
+  const files = WEEK03_CODE().map((file) => [file, read(file)]);
+  const found = new Set(files.flatMap(([, src]) => lookups(src)));
+  // Ids the islands render themselves.
+  const islands = files
+    .filter(([file, src]) => file.startsWith("src/features/week03/") && /\.tsx$/.test(file) && isClient(src))
+    .flatMap(([, src]) => [...src.matchAll(/\bid=(?:"([\w-]+)"|\{\s*"([\w-]+)"\s*\})/g)].map((m) => m[1] ?? m[2]));
+  const client = files.filter(([file]) => file.startsWith("src/features/week03/")).flatMap(([, src]) => clientIds(src));
+  const skip = new Set([...client.map(([, value]) => value), ...Object.keys(RUNTIME_IDS)]);
+  const wanted = [...new Set([...found, ...islands])].filter((id) => !skip.has(id));
+  assert.ok(wanted.length > 20, `expected the script to address many elements, found ${wanted.length}`);
+  const missing = wanted.filter((id) => !html.includes(`id="${id}"`));
+  assert.deepEqual(missing, [], "out/weeks/week03/index.html is missing ids the script writes into");
+  for (const id of Object.keys(RUNTIME_IDS))
+    assert.ok(!html.includes(`id="${id}"`), `#${id} is on the server page, so it needs no runtime exemption`);
+  // Client-only ids go through CLIENT_IDS and never reach the server page.
+  const clientFiles = files.filter(([file, src]) => file.startsWith("src/features/week03/") && isClient(src));
+  for (const [key, value] of client) {
+    assert.ok(
+      clientFiles.some(([, src]) => new RegExp(`\\bid=\\{\\s*CLIENT_IDS\\.${key}\\s*\\}`).test(src)),
+      `CLIENT_IDS.${key} is rendered as id={CLIENT_IDS.${key}} in a 'use client' file`,
+    );
+    assert.ok(!html.includes(`id="${value}"`), `client-only #${value} is not in the server page`);
   }
+});
+
+test("the week 3 id harvest reads every lookup form and skips template ids", () => {
+  const src = [
+    '$("a-one"); api.$("a-two"); byId(root, "a-three"); document.getElementById("a-four");',
+    'host("a-five"); el.querySelector("#a-six .x"); el.querySelectorAll(`#a-seven > b`);',
+    '`<a href="#a-eight">`; ({ href: "#a-nine" });',
+    'el.querySelector(`#sel-${id}`); `<a href="#n-${k}">`; ghost("no-one");',
+  ].join("\n");
+  assert.deepEqual(lookups(src).sort(), ["a-eight", "a-five", "a-four", "a-nine", "a-one", "a-seven", "a-six", "a-three", "a-two"]);
 });
 
 test("every render variant names a vendored library that exists", () => {
@@ -261,6 +338,22 @@ test("the style guide draws every class the post uses, under every skin, palette
     const src = read(`src/scripts/${file}`);
     for (const c of classesIn(src)) wanted.add(c);
     for (const [, c] of src.matchAll(/className = "([^"]+)"/g)) wanted.add(c);
+  }
+  // JSX: className="…" and every string literal inside className={…}.
+  for (const file of [...nested("src/features/week03"), ...nested("src/components/week03")]) {
+    const src = read(file);
+    const add = (list) => list.split(/\s+/).filter((c) => c && !c.includes("$")).forEach((c) => wanted.add(c));
+    for (const [, c] of src.matchAll(/className="([^"]+)"/g)) add(c);
+    for (let at = src.indexOf("className={"); at >= 0; at = src.indexOf("className={", at + 1)) {
+      let depth = 0;
+      let end = at + "className=".length;
+      for (; end < src.length; end++) {
+        if (src[end] === "{") depth++;
+        else if (src[end] === "}" && --depth === 0) break;
+      }
+      const expr = src.slice(at + "className={".length, end);
+      for (const [, a, b, c] of expr.matchAll(/"([^"]*)"|'([^']*)'|`([^`]*)`/g)) add(a ?? b ?? c);
+    }
   }
   const have = new Set(classesIn(guide));
   assert.deepEqual([...wanted].filter((c) => !have.has(c)).sort(), [], "classes missing from the guide");

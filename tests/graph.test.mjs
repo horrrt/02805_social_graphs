@@ -2,9 +2,10 @@
 // tokens, sizes only from the type scale, and demo data a view can draw.
 import test from "node:test";
 import assert from "node:assert/strict";
-import { readFileSync } from "node:fs";
-import { dirname, join } from "node:path";
+import { existsSync, readFileSync } from "node:fs";
+import { dirname, join, relative } from "node:path";
 import { fileURLToPath } from "node:url";
+import { codeFiles } from "./built-page.mjs";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const read = (name) => readFileSync(join(ROOT, name), "utf8");
@@ -12,10 +13,19 @@ const js = read("src/scripts/graph.js");
 const css = read("src/styles/post.css");
 const data = JSON.parse(read("public/styleguide/data/graphs.json"));
 
+// The React network view (K2) is held to the same three rules.
+const views = () => {
+  const view = join(ROOT, "src/kit/NetworkView.tsx");
+  const files = [...(existsSync(view) ? [view] : []), ...codeFiles(join(ROOT, "src/kit/network"))];
+  return [["src/scripts/graph.js", js], ...files.map((path) => [relative(ROOT, path), readFileSync(path, "utf8")])];
+};
+
 test("graph.js takes colours from classes and sizes from the type scale", () => {
-  assert.doesNotMatch(js, /#[0-9a-fA-F]{3,8}\b/, "no hex colours in graph.js");
-  assert.doesNotMatch(js, /"font-size":\s*\d/, "font sizes come from fs()");
-  assert.doesNotMatch(js, /\binnerHTML\b/, "labels are set as text");
+  for (const [name, src] of views()) {
+    assert.doesNotMatch(src, /#[0-9a-fA-F]{3,8}\b/, `no hex colours in ${name}`);
+    assert.doesNotMatch(src, /"font-size":\s*\d/, `${name}: font sizes come from fs()`);
+    assert.doesNotMatch(src, /\binnerHTML\b/, `${name}: labels are set as text`);
+  }
 });
 
 test("both themes define every group colour and its label ink", () => {
