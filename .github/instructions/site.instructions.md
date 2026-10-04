@@ -9,9 +9,17 @@ applyTo: "src/**,public/**,tests/**"
 - The site is a Next.js static export (`output: "export"`). Pages are JSX in `src/app/(<page>)/`, one route
   group per page; chart code is plain ES modules in `src/scripts/`; stylesheets are in `src/styles/`. Data,
   vendored libraries and images stay in `public/`. project/DEVELOPMENT.md, "How the site is built", has the details.
-- Chart scripts draw into server-rendered markup after hydration: add a page's scripts to its entry module in
-  `src/scripts/entries/`, never as a `<script>` tag in JSX. Keep links as plain `<a href>`, not `next/link`,
-  so each page loads fresh and its scripts run once.
+- The site is moving to React components (`review/react-migration/plan.json`). Static markup is server
+  components; every element a script writes becomes a client island made with `island()` from
+  `src/lib/island.tsx`, which renders the server markup until hydrated and its data is ready. Page-wide state
+  lives in module stores (`src/scripts/runtime/store.js`) read through `useStore`; data, vendored libraries,
+  canvases, charts, listeners and body writes go through the hooks in `src/lib/`. Its README,
+  `src/lib/README.md`, holds the rules (R1-R22), working rules, recipes and gates every change follows, and
+  `tests/react-rules.test.mjs` enforces the mechanical ones.
+- Until a page converts, its old chart scripts still draw into the server-rendered markup after hydration:
+  `src/scripts/entries/<page>.js`, loaded by `src/components/PageScripts.tsx`. Both are legacy and go in the
+  cleanup batch; never add a `<script>` tag in JSX. Keep links as plain `<a href>`, not `next/link`, so each
+  page loads fresh and its scripts run once.
 - Add any library or component the page needs, or draw plain SVG from the page's data: charting (ECharts, D3,
   Vega-Lite, Observable Plot, deck.gl), maps, tables, UI widgets, web components or anything else. No approval
   needed. Vendor a library first: save the unmodified minified build to `public/assets/vendor/` with the version in
