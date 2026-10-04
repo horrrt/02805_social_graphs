@@ -92,15 +92,16 @@ test("week04-ui.js builds terms and drawers with these classes", () => {
   for (const s of UI_STRINGS) assert.ok(ui.includes(s), `week04-ui.js keeps ${s}`);
 });
 
-test("the Term and Drawer components, once written, render the same classes", () => {
+test("the Term, Drawer and Drawers components render the same classes", () => {
   const component = (name) => {
     const path = join(ROOT, "src/components/post", name);
-    return existsSync(path) ? readFileSync(path, "utf8") : null;
+    assert.ok(existsSync(path), `src/components/post/${name} exists`);
+    return readFileSync(path, "utf8");
   };
   const term = component("Term.tsx");
-  if (term) for (const s of ['"w4-term"', '"button"', "aria-describedby", '"w4-pop"', '"tooltip"']) assert.ok(term.includes(s), `Term.tsx has ${s}`);
+  for (const s of ['"w4-term"', '"button"', "aria-describedby", '"w4-pop"', '"tooltip"']) assert.ok(term.includes(s), `Term.tsx has ${s}`);
   const drawer = component("Drawer.tsx");
-  if (drawer) for (const s of ['"rx-drawer"', '"rx-drawer-body"']) assert.ok(drawer.includes(s), `Drawer.tsx has ${s}`);
+  for (const s of ['"rx-drawer"', '"rx-drawer-body"']) assert.ok(drawer.includes(s), `Drawer.tsx has ${s}`);
   const drawers = component("Drawers.tsx");
-  if (drawers) for (const s of ['"rx-drawers rx-foot"', "rx-inline"]) assert.ok(drawers.includes(s), `Drawers.tsx has ${s}`);
+  for (const s of ['"rx-drawers rx-foot"', "rx-inline"]) assert.ok(drawers.includes(s), `Drawers.tsx has ${s}`);
 });
