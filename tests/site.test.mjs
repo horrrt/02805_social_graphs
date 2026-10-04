@@ -39,16 +39,21 @@ const walk = (dir, out = []) => {
 };
 // The 49-concept design archive is a frozen record of earlier alternatives,
 // and assets/vendor holds third-party minified bundles we do not author.
-const sitePages = () =>
-  [...walk(DOCS), ...walk(SCRIPTS)].filter(
+// React code moving out of src/scripts lands in these trees.
+const SRC = fileURLToPath(new URL("../src/", import.meta.url));
+const MOVED = ["lib", "kit", "features", "components"].map((d) => join(SRC, d)).filter((d) => existsSync(d));
+const sitePages = () => [
+  ...[...walk(DOCS), ...walk(SCRIPTS)].filter(
     (p) =>
       /\.(html|js|mjs)$/.test(p) &&
       !p.includes("/_next/") &&
       !p.includes("/mockups/") &&
       !p.includes("/vendor/") &&
       !p.endsWith("mockups.js"),
-  );
-const label = (path) => (path.startsWith(DOCS) ? path.slice(DOCS.length) : "src/scripts/" + path.slice(SCRIPTS.length));
+  ),
+  ...MOVED.flatMap((d) => walk(d)).filter((p) => /\.(js|mjs|ts|tsx)$/.test(p)),
+];
+const label = (path) => (path.startsWith(DOCS) ? path.slice(DOCS.length) : "src/" + path.slice(SRC.length));
 
 // https://sunelehmann.com/socialgraphs2026-web/index.html, autumn 2026.
 const COURSE = [

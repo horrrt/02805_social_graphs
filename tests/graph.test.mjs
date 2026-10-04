@@ -1,8 +1,9 @@
-// The network views (src/scripts/graph.js): colours only from post.css
+// The network views (src/scripts/graph.js, and src/kit/NetworkView.tsx with
+// src/kit/network/ once they exist): colours only from post.css
 // tokens, sizes only from the type scale, and demo data a view can draw.
 import test from "node:test";
 import assert from "node:assert/strict";
-import { readFileSync } from "node:fs";
+import { existsSync, readFileSync, readdirSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 
@@ -12,10 +13,26 @@ const js = read("src/scripts/graph.js");
 const css = read("src/styles/post.css");
 const data = JSON.parse(read("public/styleguide/data/graphs.json"));
 
+// The React network view, once it exists, follows the same three rules.
+const tree = (dir) =>
+  existsSync(join(ROOT, dir))
+    ? readdirSync(join(ROOT, dir), { withFileTypes: true }).flatMap((e) =>
+        e.isDirectory() ? tree(join(dir, e.name)) : [join(dir, e.name)],
+      )
+    : [];
+const views = () => [
+  ["src/scripts/graph.js", js],
+  ...["src/kit/NetworkView.tsx", ...tree("src/kit/network")]
+    .filter((f) => existsSync(join(ROOT, f)) && /\.(js|mjs|ts|tsx)$/.test(f))
+    .map((f) => [f, read(f)]),
+];
+
 test("graph.js takes colours from classes and sizes from the type scale", () => {
-  assert.doesNotMatch(js, /#[0-9a-fA-F]{3,8}\b/, "no hex colours in graph.js");
-  assert.doesNotMatch(js, /"font-size":\s*\d/, "font sizes come from fs()");
-  assert.doesNotMatch(js, /\binnerHTML\b/, "labels are set as text");
+  for (const [file, src] of views()) {
+    assert.doesNotMatch(src, /#[0-9a-fA-F]{3,8}\b/, `no hex colours in ${file}`);
+    assert.doesNotMatch(src, /"font-size":\s*\d/, `${file}: font sizes come from fs()`);
+    assert.doesNotMatch(src, /\binnerHTML\b/, `${file}: labels are set as text`);
+  }
 });
 
 test("both themes define every group colour and its label ink", () => {

@@ -6,7 +6,7 @@
 // moves a number gets caught here instead of by a reader.
 import test from "node:test";
 import assert from "node:assert/strict";
-import { readFileSync, readdirSync } from "node:fs";
+import { existsSync, readFileSync, readdirSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { builtPage } from "./built-page.mjs";
@@ -22,7 +22,19 @@ const corridor = readText("src/scripts/corridor.js");
 const glob = (dir) => readdirSync(join(ROOT, dir))
   .filter((name) => name.endsWith(".js"))
   .map((name) => join(dir, name));
-const jsFiles = [...glob("src/scripts"), ...glob("src/scripts/variants")];
+// Week 3's code as it moves into React, every level down.
+const tree = (dir) =>
+  existsSync(join(ROOT, dir))
+    ? readdirSync(join(ROOT, dir), { withFileTypes: true }).flatMap((e) =>
+        e.isDirectory() ? tree(join(dir, e.name)) : /\.(js|ts|tsx)$/.test(e.name) ? [join(dir, e.name)] : [],
+      )
+    : [];
+const jsFiles = [
+  ...glob("src/scripts"),
+  ...glob("src/scripts/variants"),
+  ...tree("src/features/week03"),
+  ...tree("src/components/week03"),
+];
 
 // The page wraps hand-written prose at ~70 columns, so a phrase that reads as
 // one line in the source is split by newlines and indentation in the file.

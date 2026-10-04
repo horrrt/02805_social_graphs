@@ -22,6 +22,18 @@ const scripts = () =>
   readdirSync(JS)
     .filter((f) => f.endsWith(".js") && !LEGACY.includes(f))
     .map((f) => [f, readFileSync(join(JS, f), "utf8")]);
+// Where React code lands as it moves out of src/scripts. Every file in these
+// trees follows the same token contract. src/app holds markup only.
+const ROOT = fileURLToPath(new URL("../", import.meta.url));
+const NEW_DIRS = ["src/lib", "src/kit", "src/features", "src/components", "src/scripts/runtime"];
+const treeFiles = (dir) =>
+  existsSync(dir)
+    ? readdirSync(dir, { withFileTypes: true }).flatMap((e) =>
+        e.isDirectory() ? treeFiles(join(dir, e.name)) : /\.(js|mjs|ts|tsx)$/.test(e.name) ? [join(dir, e.name)] : [],
+      )
+    : [];
+const moved = () =>
+  NEW_DIRS.flatMap((dir) => treeFiles(join(ROOT, dir))).map((f) => [f.slice(ROOT.length), readFileSync(f, "utf8")]);
 const css = ["arcade.css"]
   .map((f) => readFileSync(join(CSS, f), "utf8"))
   .join("\n");
@@ -40,7 +52,11 @@ test("tone returns the fallback when there is no document", () => {
 test("every canvas token in JS is defined in CSS with the same value, and no bare hex literal remains", () => {
   const uses = new Map();
   const offenders = [];
-  for (const [file, text] of scripts()) {
+  // In the moved trees a hex needs a word boundary after it, so an anchor such
+  // as "#add-row" is not read as a colour.
+  const moved_ = new Map(moved());
+  const hex = (file) => (moved_.has(file) ? /#[0-9a-fA-F]{3,8}(?![\w-])/ : /#[0-9a-fA-F]{3,8}/);
+  for (const [file, text] of [...scripts(), ...moved_]) {
     for (const [, name, fallback] of text.matchAll(
       /tone\("(--cv-[a-z0-9-]+)",\s*"([^"]*)"\)/g,
     )) {
@@ -48,7 +64,7 @@ test("every canvas token in JS is defined in CSS with the same value, and no bar
       uses.get(name).add(fallback);
     }
     text.split("\n").forEach((line, i) => {
-      if (/#[0-9a-fA-F]{3,8}/.test(line) && !line.includes("tone("))
+      if (hex(file).test(line) && !line.includes("tone("))
         offenders.push(`${file}:${i + 1}: ${line.trim()}`);
     });
   }

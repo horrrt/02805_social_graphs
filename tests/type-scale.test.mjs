@@ -3,7 +3,7 @@
 // Runs in node with no DOM.
 import test from "node:test";
 import assert from "node:assert/strict";
-import { readFileSync, readdirSync } from "node:fs";
+import { existsSync, readFileSync, readdirSync } from "node:fs";
 import { join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { builtPage } from "./built-page.mjs";
@@ -95,17 +95,7 @@ test("week 4 chart code takes every font size from the type scale", () => {
   // Numeric sizes in SVG attributes, ECharts options or inline styles must come
   // from fs()/font() in src/scripts/type-scale.mjs instead.
   const JS = SCRIPTS;
-  const literal = [
-    /fontSize:\s*\d/,
-    /"font-size":\s*\d/,
-    /font-size="\d/,
-    /font-size:\s*\d/,
-    /\bfont:\s*"\d/,
-    // setAttribute("font-size", 11) and .style("font-size", "11px")
-    /["']font-size["']\s*,\s*["']?\d/,
-    // a canvas font with a typed size
-    /\.font\s*=\s*["'`][^"'`$]*\d+(\.\d+)?px/,
-  ];
+  const literal = WEEK04_LITERALS;
   const found = [];
   for (const file of readdirSync(JS).filter((f) => /^week04-.*\.js$/.test(f))) {
     readFileSync(join(JS, file), "utf8").split("\n").forEach((line, i) => {
@@ -114,6 +104,19 @@ test("week 4 chart code takes every font size from the type scale", () => {
   }
   assert.deepEqual(found, []);
 });
+
+// Numeric sizes in SVG attributes, ECharts options or inline styles in week 4's code.
+const WEEK04_LITERALS = [
+  /fontSize:\s*\d/,
+  /"font-size":\s*\d/,
+  /font-size="\d/,
+  /font-size:\s*\d/,
+  /\bfont:\s*"\d/,
+  // setAttribute("font-size", 11) and .style("font-size", "11px")
+  /["']font-size["']\s*,\s*["']?\d/,
+  // a canvas font with a typed size
+  /\.font\s*=\s*["'`][^"'`$]*\d+(\.\d+)?px/,
+];
 
 // Every chart script outside Week 4: the canvas renderers of weeks 1 to 3, the
 // Week 3 variants, Play's map and the shared helpers. Canvas fonts come from
@@ -156,6 +159,40 @@ test("chart code outside week 4 takes every font size from the type scale", () =
   const JS = SCRIPTS;
   const found = otherChartScripts(JS).flatMap((f) => fontLiterals(f, readFileSync(join(JS, f), "utf8")));
   assert.deepEqual(found, []);
+});
+
+// Where React code lands as it moves out of src/scripts. JSX can type a size
+// as a prop or an attribute, so these patterns join the ones above there.
+const ROOT = fileURLToPath(new URL("../", import.meta.url));
+const JSX_LITERALS = [/fontSize=\{\s*\d/, /fontSize\s*=\s*["'`]?\d/, /font-size=["']?\d/];
+const treeFiles = (dir) => {
+  const path = join(ROOT, dir);
+  if (!existsSync(path)) return [];
+  return readdirSync(path, { withFileTypes: true }).flatMap((e) =>
+    e.isDirectory() ? treeFiles(`${dir}/${e.name}`) : /\.(js|mjs|ts|tsx)$/.test(e.name) ? [`${dir}/${e.name}`] : [],
+  );
+};
+const literalsIn = (files, patterns) => {
+  const found = [];
+  for (const file of files)
+    readFileSync(join(ROOT, file), "utf8").split("\n").forEach((line, i) => {
+      if (patterns.some((re) => re.test(line))) found.push(`${file}:${i + 1}: ${line.trim()}`);
+    });
+  return found;
+};
+
+test("week 4 code in src/features takes every font size from the type scale", () => {
+  assert.deepEqual(literalsIn(treeFiles("src/features/week04"), [...WEEK04_LITERALS, ...JSX_LITERALS]), []);
+});
+
+test("moved code outside week 4 takes every font size from the type scale", () => {
+  const files = [
+    ...treeFiles("src/lib"),
+    ...treeFiles("src/kit"),
+    ...treeFiles("src/features").filter((f) => !/^src\/features\/(week04|screen-test)\//.test(f)),
+    ...treeFiles("src/components"),
+  ];
+  assert.deepEqual(literalsIn(files, [...OTHER_JS_LITERALS, ...JSX_LITERALS]), []);
 });
 
 test("the font-size guard catches the literals it replaced", () => {
