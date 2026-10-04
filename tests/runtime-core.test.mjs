@@ -1,8 +1,10 @@
 // The plain-JS runtime under src/scripts/runtime that islands, hooks and the
 // old page scripts share: the store, the data and vendor caches, the owned
-// registry and the fault hooks for scripts/parity/faults.mjs. Each module is
-// Node-importable, so these tests stub fetch and a minimal document and need
-// no build or browser.
+// registry and the fault hooks for scripts/parity/faults.mjs, plus the pure
+// parts of the hooks in src/lib (the type scale over values already read, the
+// island options check, the owned ref). Each module is Node-importable (Node
+// strips the types of src/lib/*.ts), so these tests stub fetch and a minimal
+// document and need no build or browser.
 import test from "node:test";
 import assert from "node:assert/strict";
 
@@ -16,6 +18,9 @@ const { loadVendor } = await import("../src/scripts/runtime/vendor.js");
 const { markOwned, isOwned } = await import("../src/scripts/runtime/owned.js");
 const { registerIsland, faultPoint } = await import("../src/scripts/runtime/islands.js");
 const { asset } = await import("../src/scripts/site.js");
+const { fromValues } = await import("../src/scripts/type-scale.mjs");
+const { islandOptions } = await import("../src/lib/islandOptions.ts");
+const { useOwnedRef } = await import("../src/lib/useOwnedRef.ts");
 
 const tick = () => new Promise((resolve) => setTimeout(resolve, 0));
 
@@ -239,4 +244,64 @@ test("faultPoint throws only for the island and phase the harness names", () => 
   assert.doesNotThrow(() => faultPoint("week05/y/Chart", "effect"));
   assert.throws(() => faultPoint("week05/x/Chart", "effect"), { message: "parity fault week05/x/Chart:effect" });
   delete globalThis.__PARITY_FAULTS__;
+});
+
+test("island options need roots and take affects as selectors or page", () => {
+  assert.deepEqual(islandOptions("week05/x/Chart", { roots: ["#chart-x"] }), { roots: ["#chart-x"], affects: [] });
+  assert.deepEqual(islandOptions("week04/frame/Router", { roots: "none", affects: "page" }), { roots: "none", affects: "page" });
+  assert.deepEqual(islandOptions("week05/x/Chart", { roots: ["#a", ".b"], affects: ["#c"] }), { roots: ["#a", ".b"], affects: ["#c"] });
+  const roots = /island week05\/x\/Chart: roots must be a non-empty array of selectors or "none"/;
+  for (const options of [undefined, {}, { roots: [] }, { roots: "#chart-x" }, { roots: [""] }, { roots: [1] }, { roots: "page" }])
+    assert.throws(() => islandOptions("week05/x/Chart", options), { message: roots }, JSON.stringify(options));
+  const affects = /island week05\/x\/Chart: affects must be an array of selectors or "page"/;
+  for (const affects_ of ["none", "#c", [""], [null], {}])
+    assert.throws(() => islandOptions("week05/x/Chart", { roots: ["#chart-x"], affects: affects_ }), { message: affects }, JSON.stringify(affects_));
+});
+
+// ---- owned ref
+
+test("useOwnedRef marks the element inside the ref callback, one function for every render", () => {
+  const ref = useOwnedRef();
+  assert.equal(useOwnedRef(), ref);
+  const el = {};
+  assert.equal(isOwned(el), false);
+  ref(el);
+  assert.equal(isOwned(el), true, "marked synchronously, at commit");
+  assert.doesNotThrow(() => ref(null), "detach passes null");
+});
+
+// ---- type scale
+
+test("fromValues reads sizes and families as type-scale.mjs reads :root", () => {
+  const scale = fromValues({ "--fs-small": "12.5px", "--fs-caption": " 11.5px", "--font-sans": " Inter, system-ui ", "--font-mono": "Menlo" });
+  assert.equal(scale.fs("small"), 12.5);
+  assert.equal(scale.fs("caption"), 11.5);
+  assert.throws(() => scale.fs("huge"), { message: 'unknown type role "huge"' });
+  assert.equal(scale.family(), "Inter, system-ui");
+  assert.equal(scale.family("mono"), "Menlo");
+  assert.equal(scale.family("display"), "", "a missing family is empty, as getPropertyValue");
+  assert.equal(scale.font("small"), "400 12.5px Inter, system-ui");
+  assert.equal(scale.font("caption", 600), "600 11.5px Inter, system-ui");
+  assert.equal(scale.font("small", 700, "mono"), "700 12.5px Menlo");
+  assert.throws(() => scale.font("huge"), { message: 'unknown type role "huge"' });
+});
+
+test("fromValues gives what fs, family and font give over the same :root", async () => {
+  const { fs, family, font } = await import("../src/scripts/type-scale.mjs");
+  const values = { "--fs-body": "13.5px", "--font-sans": " -apple-system, sans-serif", "--font-display": " Condensed" };
+  const saved = { getComputedStyle: globalThis.getComputedStyle, document: globalThis.document };
+  globalThis.getComputedStyle = () => ({ getPropertyValue: (name) => values[name] ?? "" });
+  globalThis.document = { documentElement: {} };
+  try {
+    const scale = fromValues(values);
+    assert.equal(scale.fs("body"), fs("body"));
+    assert.equal(scale.family(), family());
+    assert.equal(scale.family("display"), family("display"));
+    assert.equal(scale.font("body", 700), font("body", 700));
+    assert.equal(scale.font("body", 400, "display"), font("body", 400, "display"));
+    assert.throws(() => fs("nope"), { message: 'unknown type role "nope"' });
+    assert.throws(() => scale.fs("nope"), { message: 'unknown type role "nope"' });
+  } finally {
+    Object.assign(globalThis, saved);
+  }
 });
