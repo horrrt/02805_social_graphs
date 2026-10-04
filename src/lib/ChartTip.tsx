@@ -23,18 +23,26 @@ export function hideTip() {
   if (tipStore.getState().created) tipStore.setState({ shown: false });
 }
 
-// Which mounted ChartTip renders the div: the first to mount.
+// Which mounted ChartTip renders the div: the first to mount. When the host
+// unmounts (its island failed, its panel closed), every mounted ChartTip sees
+// the slot free and the first to commit claims it, so the div stays in <body>
+// while any ChartTip is mounted.
 const hostStore: Store<{ host: object | null }> = createStore({ host: null });
 const all = (s: TipState) => s;
+const vacant = (s: { host: object | null }) => s.host === null;
 
 export function ChartTip() {
   const [me] = useState(() => ({}));
+  const free = useStore(hostStore, vacant);
   useEffect(() => {
     if (!hostStore.getState().host) hostStore.setState({ host: me });
-    return () => {
+  }, [me, free]);
+  useEffect(
+    () => () => {
       if (hostStore.getState().host === me) hostStore.setState({ host: null });
-    };
-  }, [me]);
+    },
+    [me],
+  );
   const isHost = useStore(hostStore, (s) => s.host === me);
   const { html, x, y, shown, created } = useStore(tipStore, all);
   const ref = useRef<HTMLDivElement>(null);
