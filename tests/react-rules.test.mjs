@@ -106,6 +106,26 @@ function exportedComponents(src) {
   return out;
 }
 
+// The expression of every JSX attribute written name={…}, braces balanced, so
+// a template literal or a nested object stays inside the attribute it is in.
+function attributeExprs(src) {
+  const out = [];
+  for (const m of src.matchAll(/\b[\w-]+=\{/g)) {
+    const open = m.index + m[0].length - 1;
+    let depth = 0;
+    let end = open;
+    for (; end < src.length; end++) {
+      if (src[end] === "{") depth++;
+      else if (src[end] === "}" && --depth === 0) break;
+    }
+    out.push(src.slice(open + 1, end));
+  }
+  return out;
+}
+
+// SITE, or a url()/asset() call (not CSS url( inside a string), in an expression.
+const URL_IN_EXPR = /\bSITE\b|(?<![\w$.'"`])(?:url|asset)\(/;
+
 /** What a file breaks, given its repo-relative path and text. */
 function violations(rel, src, hasEntry = entryExists) {
   const out = [];
@@ -143,7 +163,7 @@ function violations(rel, src, hasEntry = entryExists) {
   if (/^slots.*\.tsx$/.test(name) && isClient(src)) out.push("a slots file is 'use client'");
 
   if (/\.tsx$/.test(name)) {
-    const rendersUrl = /\b[\w-]+=\{\s*(?:url|asset)\(/.test(body) || /\b[\w-]+=\{[^{}]*\bSITE\b/.test(body);
+    const rendersUrl = attributeExprs(body).some((expr) => URL_IN_EXPR.test(expr));
     if (rendersUrl && !/\buseHydrated\(/.test(body)) out.push("renders url()/asset()/SITE into an attribute without useHydrated()");
   }
   return out;
@@ -200,4 +220,8 @@ test("each rule catches what it bans and passes what it allows", () => {
   check("src/kit/A.tsx", "export function A() { const h = useHydrated(); return <a href={h ? url(\"x\") : undefined}>x</a>; }", []);
   check("src/kit/A.tsx", "export function A() { return <a href={SITE.href}>x</a>; }", ["renders url()/asset()/SITE into an attribute without useHydrated()"]);
   check("src/kit/A.tsx", "export function A() { useData(asset(\"x.json\")); return null; }", []);
+  check("src/kit/A.tsx", "export function A() { return <a href={`${SITE.base}weeks/`}>x</a>; }", ["renders url()/asset()/SITE into an attribute without useHydrated()"]);
+  check("src/kit/A.tsx", "export function A() { return <div style={{ backgroundImage: `url(${asset(\"x.png\")})` }} />; }", ["renders url()/asset()/SITE into an attribute without useHydrated()"]);
+  check("src/kit/A.tsx", "export function A() { return <a href={h({ to: SITE.base })}>x</a>; }", ["renders url()/asset()/SITE into an attribute without useHydrated()"]);
+  check("src/kit/A.tsx", "export function A() { return <svg style={{ mask: \"url(#m)\" }} />; }", []);
 });

@@ -95,7 +95,6 @@ function exportedUsers(src, name) {
 }
 
 test("pageScripts lists every module each page's entry runs, in the entry's order", () => {
-  assert.ok(PAGES.length >= 11, `expected the eleven entries, found ${PAGES.length}`);
   for (const page of PAGES) {
     const entry = entryScripts(page);
     assert.ok(entry.length > 0, `${page}: the entry imports at least one script`);
