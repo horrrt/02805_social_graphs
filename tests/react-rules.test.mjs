@@ -57,14 +57,6 @@ const FEATURE_ENTRIES = {
   "screen-test": ["screen-test"],
 };
 
-// JsonLd in src/components/agentMeta.tsx renders schema.org JSON-LD into a
-// <script>. The file predates the rewrite, so it keeps this one pinned use
-// until review/react-migration/requests/P1.md gives it an `// allow-html:` home.
-const JSON_LD = {
-  file: "src/components/agentMeta.tsx",
-  html: 'dangerouslySetInnerHTML={{ __html: JSON.stringify(data).replace(/</g, "\\\\u003c") }}',
-};
-
 // Code without its comments, so a rule never trips on prose about an API.
 const code = (src) =>
   src
@@ -149,10 +141,7 @@ function violations(rel, src, hasEntry = entryExists) {
   const mayClick = inLib || ((header === "bridge" || header === "shim") && bridgeOk);
   if (!mayClick && CLICK.test(body)) out.push('adds a document "click" listener');
 
-  if (/\bdangerouslySetInnerHTML\b/.test(body)) {
-    const pinned = rel === JSON_LD.file && body.split("dangerouslySetInnerHTML").length === 2 && body.includes(JSON_LD.html);
-    if (!(header === "allow-html" && inLib) && !pinned) out.push("uses dangerouslySetInnerHTML");
-  }
+  if (/\bdangerouslySetInnerHTML\b/.test(body) && !(header === "allow-html" && inLib)) out.push("uses dangerouslySetInnerHTML");
 
   if (/\.tsx$/.test(name) && rel.startsWith("src/features/") && isClient(src) && !name.endsWith("Shell.tsx"))
     for (const [component, args] of exportedComponents(body)) {
@@ -179,13 +168,6 @@ test("React code keeps to the site's rules", () => {
   assert.deepEqual(found, []);
 });
 
-test("the JSON-LD exemption covers exactly one pinned use", () => {
-  const src = readFileSync(join(ROOT, JSON_LD.file), "utf8");
-  assert.ok(src.includes(JSON_LD.html), `${JSON_LD.file} still renders JSON-LD the reviewed way`);
-  assert.deepEqual(violations(JSON_LD.file, src.replace(JSON_LD.html, `${JSON_LD.html} dangerouslySetInnerHTML={{ __html: x }}`)), ["uses dangerouslySetInnerHTML"]);
-  assert.deepEqual(violations("src/components/Other.tsx", src), ["uses dangerouslySetInnerHTML"]);
-});
-
 test("each rule catches what it bans and passes what it allows", () => {
   const yes = () => true;
   const no = () => false;
@@ -208,6 +190,7 @@ test("each rule catches what it bans and passes what it allows", () => {
   check("src/kit/a.ts", '// surface: x\ndocument.addEventListener("click", f);', ['adds a document "click" listener']);
   check("src/lib/a.tsx", "// allow-html: trusted\n<div dangerouslySetInnerHTML={{ __html: x }} />", []);
   check("src/kit/a.tsx", "// allow-html: trusted\n<div dangerouslySetInnerHTML={{ __html: x }} />", ["`// allow-html:` is allowed only under src/lib", "uses dangerouslySetInnerHTML"]);
+  check("src/components/agentMeta.tsx", '<script dangerouslySetInnerHTML={{ __html: JSON.stringify(data) }} />', ["uses dangerouslySetInnerHTML"]);
   check("src/features/week05/Chart.tsx", '"use client";\nexport const Chart = island("week05/x/Chart", View, Placeholder, { roots: ["#c"] });', []);
   check("src/features/week05/Chart.tsx", '"use client";\nexport const Chart = island("week05/x/Chart", View, Placeholder, {});', ["island Chart declares no roots:"]);
   check("src/features/week05/Chart.tsx", '"use client";\nexport function Chart() { return null; }', ["exports Chart without island(…)"]);

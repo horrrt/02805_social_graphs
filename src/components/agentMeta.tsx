@@ -3,6 +3,7 @@
 // each page after the build, Open Graph tags, and schema.org JSON-LD. Every
 // live page's layout uses these, so the pages cannot drift apart.
 import type { Metadata } from "next";
+import { JsonLdScript } from "@/lib/JsonLdScript";
 import { GROUP, WEEKS } from "@/scripts/weeks.js";
 
 // The deployed site. Absolute on purpose: a canonical URL must be, and dev
@@ -56,11 +57,5 @@ export function JsonLd({ week, title, description }: { week?: number; title: str
         inLanguage: "en",
         author: authors,
       };
-  return (
-    <script
-      type="application/ld+json"
-      // JSON.stringify output is safe here once "<" is escaped.
-      dangerouslySetInnerHTML={{ __html: JSON.stringify(data).replace(/</g, "\\u003c") }}
-    />
-  );
+  return <JsonLdScript data={data} />;
 }

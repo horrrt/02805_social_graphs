@@ -59,7 +59,9 @@ export async function openPage(browser, opts = {}) {
   await context.addInitScript(initScript, { now: PINNED_NOW, faults: opts.faults ?? null, seed: 7 });
   const page = await context.newPage();
   const state = { console: [], requests: new Map(), inflight: 0, lastNet: Date.now(), dialog: "accept", origin: "", javaScriptEnabled: opts.javaScriptEnabled !== false };
-  const norm = (s) => String(s).replace(/https?:\/\/(127\.0\.0\.1|localhost):\d+/g, "ORIGIN");
+  const norm = (s) => String(s)
+    .replace(/https?:\/\/(127\.0\.0\.1|localhost):\d+/g, "ORIGIN")
+    .replace(/\[\.WebGL-0x[0-9a-f]+\]/g, "[.WebGL-ADDR]");
   page.on("console", (m) => {
     const type = m.type();
     if (type === "error" || type === "warning") state.console.push(`${type}: ${norm(m.text()).slice(0, 2000)}`);
@@ -300,7 +302,15 @@ async function pageSnapshot({ webgl, hashTarget, mask = [], select = [], exclude
       const flush = () => {
         if (run) { const t = local(run.replace(/\s+/g, " ")); canon += JSON.stringify(t); text += t + "\n"; run = ""; }
       };
-      for (const node of el.childNodes) {
+      // tips.js appends div.kit-tip to its host whenever the host lacks one, so
+      // whether it sits before or after the chart depends on draw timing (KB07).
+      // Walk it last; its own content is still compared.
+      const nodes = [...el.childNodes];
+      if (el.classList?.contains("kit-tip-host")) {
+        const tip = (n) => n.nodeType === 1 && n.classList.contains("kit-tip");
+        nodes.sort((a, b) => tip(a) - tip(b));
+      }
+      for (const node of nodes) {
         if (node.nodeType === 3) {
           if (/\S/.test(node.data)) run += node.data;
           continue;
