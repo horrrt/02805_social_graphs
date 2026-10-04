@@ -38,8 +38,10 @@ export default [
       { evaluate: "waitFor", args: ["#entity-communities li > button"], label: "wait for the explorer's legend" },
       { click: '#entity-communities [data-entity="companies"]', label: "entity companies" },
       // Laying out the companies can hold the main thread for seconds when
-      // the machine is busy; wait until show() has pressed the button.
-      { evaluate: "waitFor", args: ['#entity-communities [data-entity="companies"][aria-pressed="true"]'] },
+      // the machine is busy; wait until show() has pressed the button. Under
+      // --runs 3 on a loaded machine (load average 13) one base side took
+      // over 20 s, so this wait allows 45.
+      { evaluate: "waitFor", args: ['#entity-communities [data-entity="companies"][aria-pressed="true"]', 45000] },
       { select: [".w4-entities-colour select", "sector"], label: "colour by sector" },
       { snap: true },
       { click: "#entity-communities li > button >> nth=0", label: "first legend button" },

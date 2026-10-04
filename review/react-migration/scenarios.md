@@ -27,6 +27,11 @@ WebGL renderers snapshot slowly in the headless shell, so the "time" column give
 `#w4m-gn-chart`'s size on main, which full runs never did. Run `base-panels` whole; under `--runs 3` it takes
 65 s.
 
+`base-controls` waits up to 45 s for the entity explorer to press "companies" before it picks a colour. Laying
+out the companies holds the main thread, and on 4 October, with the machine's load average at 13, one `--runs 3`
+pass had a base side miss the earlier 20 s wait (a base step error, which no known entry can mask). The same
+command passed on the next try, and two more `--runs 3` passes with the 45 s wait passed in about 80 s each.
+
 Every `{evaluate}` name resolves in the scenario module, then `scenarios/<page>/lib.mjs`, then
 `scripts/parity/evaluate.mjs`. Shared helpers (`ctrlWheel`, `focus`, `clickAt`, `waitFor`) live in
 `scenarios/shared.mjs`; `scenarios/week03/steps.mjs` builds the six renderer files.
