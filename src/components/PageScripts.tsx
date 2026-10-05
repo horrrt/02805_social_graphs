@@ -8,7 +8,6 @@
 import { useEffect } from "react";
 
 const ENTRIES = {
-  "kit": () => import("@/scripts/entries/kit.js"),
   "mockups": () => import("@/scripts/entries/mockups.js"),
   "play": () => import("@/scripts/entries/play.js"),
   "screen-test": () => import("@/scripts/entries/screen-test.js"),

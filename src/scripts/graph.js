@@ -48,8 +48,192 @@ const HTML = (tag, cls, text) => {
   if (text !== undefined) el.textContent = text;
   return el;
 };
-const gclass = (g) => (g === null || g === undefined ? "" : `g${g}`);
-const groupOf = (n) => (n.groups?.length === 1 ? n.groups[0] : n.group);
+export const gclass = (g) => (g === null || g === undefined ? "" : `g${g}`);
+export const groupOf = (n) => (n.groups?.length === 1 ? n.groups[0] : n.group);
+
+// The drawing as plain data, so networkView() below and the React
+// NetworkView (src/kit/NetworkView.tsx) draw the same view: each takes these
+// rows and turns them into elements. measure(text, role, weight) gives a
+// label's width in px and size(role) a type role's size (textWidth and fs, or
+// useTextMeasure and useTypeScale in a component).
+
+/** The two half-discs of a node in two groups, left in the first group, right in the second. */
+export function halfArcs(cx, cy, r) {
+  return [`M${cx},${cy - r} A${r},${r} 0 0 0 ${cx},${cy + r} Z`, `M${cx},${cy - r} A${r},${r} 0 0 1 ${cx},${cy + r} Z`];
+}
+
+/** The legend: one row per group with its dot class and text, and the row of nodes in no group (or null). */
+export function legendRows(opts, state) {
+  const k = opts.groups?.length ?? 0;
+  const [one, many] = opts.unit ?? ["member", "members"];
+  const rows = [];
+  for (let g = 0; g < k; g++) {
+    const size = state.filter((n) => n.group === g || n.groups?.includes(g)).length;
+    rows.push({ group: g, dot: gclass(g), text: `${opts.groups[g]} (${size} ${size === 1 ? one : many})` });
+  }
+  const none = state.filter((n) => (n.group === null || n.group === undefined) && !n.groups?.length).length;
+  const rest = none && opts.legendNone !== false ? { dot: opts.hollow ? "gv-hollow-dot" : "", text: `${opts.noneLabel ?? "No group"} (${none})` } : null;
+  return { rows, none: rest };
+}
+
+/** The group a movable node moves to: from no group to the first, else the next. */
+export const nextGroup = (mark, k) => (mark.empty ? 0 : (mark.one + 1) % k);
+
+/**
+ * The view at `width`, as rows: the svg's size; the links in drawing order
+ * (faded first), each with its class, stroke width, ends, title and, under
+ * weights, its hover line's title; the nodes, each with its shapes, inside
+ * label, badge, title and movable label; the side labels; the hub rings and
+ * name pills; and the highlighted link's weight pill. focus is the
+ * highlighted link's key, "source|target".
+ */
+export function networkLayout(opts, state, width, focus, measure = textWidth, size = fs) {
+  const byId = new Map(state.map((n) => [n.id, n]));
+  // One scale for both axes, so the layout keeps its shape: y runs from 0 to ratio.
+  const inside = opts.labels === "inside";
+  const pad = inside ? 22 : 16;
+  const scale = width - 2 * pad;
+  const height = Math.round(2 * pad + opts.ratio * scale);
+  const X = (v) => pad + v * scale;
+  const Y = (v) => pad + v * scale;
+  const r = opts.radius ?? (inside ? 13 : state.length > 150 ? 3.6 : 7);
+
+  // Links: faded ones first, so the coloured and highlighted ones sit on top.
+  const links = opts.links.map((l) => ({ ...l, key: `${l.source}|${l.target}`, a: byId.get(l.source), b: byId.get(l.target) }));
+  const coloured = (l) => opts.colorLinks && l.group !== null && l.group !== undefined;
+  const lifted = (l) => Number(coloured(l)) + 2 * Number(Boolean(l.mark));
+  links.sort((p, q) => lifted(p) - lifted(q));
+  const marking = links.some((l) => l.mark);
+  const maxW = Math.max(1, ...links.map((l) => l.weight ?? 1));
+  const lines = links.map((l) => {
+    const faint = opts.fade && (marking ? !l.mark : opts.colorLinks && !coloured(l));
+    const cls = ["gv-link", coloured(l) && !(marking && !l.mark) ? gclass(l.group) : "", l.mark ? "gv-mark" : "", faint ? "gv-faint" : "",
+      l.key === focus ? "gv-on" : "", l.dashed ? "gv-dashed" : "", opts.strongLinks ? "gv-strong" : ""];
+    const plain = opts.weights ? 0.8 + 3 * Math.sqrt((l.weight ?? 1) / maxW) : state.length > 150 ? 0.7 : 1.4;
+    return {
+      link: l,
+      cls: cls.filter(Boolean).join(" "),
+      width: l.key === focus ? 5 : (l.width ?? (l.mark ? 1.5 : plain)),
+      at: { x1: X(l.a.x), y1: Y(l.a.y), x2: X(l.b.x), y2: Y(l.b.y) },
+      title: l.title && opts.titles !== "none" ? l.title : null,
+      hit: opts.weights ? `${l.a.label ?? l.a.id} and ${l.b.label ?? l.b.id}: weight ${l.weight}` : null,
+    };
+  });
+
+  // Nodes.
+  const nodes = state.map((n) => {
+    const cx = X(n.x);
+    const cy = Y(n.y);
+    const two = n.groups?.length === 2;
+    const one = two ? null : n.groups?.length === 1 ? n.groups[0] : n.group;
+    const empty = (one === null || one === undefined) && !two;
+    const shapes = two
+      ? [...halfArcs(cx, cy, r).map((d, i) => ({ d, cls: `gv-node ${gclass(n.groups[i])}` })), { cx, cy, r, cls: "gv-outline" }]
+      : [{ cx, cy, r: n.r ?? (opts.hubs?.includes(n.id) && !inside ? r + 2.5 : r),
+        cls: ["gv-node", empty && opts.hollow ? "gv-hollow" : "", opts.colorNodes ? gclass(one) : "", empty && opts.tone === "accent" ? "gv-tone" : ""].filter(Boolean).join(" ") }];
+    const label = inside
+      ? { x: cx, y: cy + size("small") * 0.36, role: "small", text: n.label ?? n.id,
+        cls: `gv-inside ${two ? "gv-split" : empty && opts.hollow ? "gv-on-hollow" : opts.colorNodes ? gclass(one) : ""}`.trim() }
+      : null;
+    const bx = cx + r * 0.78;
+    const by = cy - r * 0.78;
+    const badge = opts.badges && !empty ? { cx: bx, cy: by, r: 7.5, x: bx, y: by + size("caption") * 0.34, text: String((one ?? 0) + 1) } : null;
+    const titled = opts.titles === "none" ? false : opts.titles === "hubs" ? opts.hubs?.includes(n.id) : true;
+    const title = opts.explore || !titled ? null
+      : n.title || `${n.label ?? n.id}${two ? `: ${opts.groups?.[n.groups[0]]} and ${opts.groups?.[n.groups[1]]}` : !empty && opts.groups ? `: ${opts.groups[one]}` : ""}`;
+    const movable = opts.movable && !two ? `${n.label ?? n.id}, ${empty ? "no group" : opts.groups[one]}. Move to the next group.` : null;
+    return { id: n.id, one, empty, shapes, label, badge, title, movable };
+  });
+
+  // Side labels: a caption beside each labelled node, in the first free spot of
+  // left, right, above-left and below-right; nodes with labelSide "left" first.
+  let side = null;
+  if (opts.labels === "beside") {
+    side = [];
+    const placed = [];
+    const clear = (b) => placed.every((q) => b.x1 < q.x0 || b.x0 > q.x1 || b.y1 < q.y0 || b.y0 > q.y1);
+    const order = [...state].sort((a, b) => Number(b.labelSide === "left") - Number(a.labelSide === "left"));
+    for (const n of order) {
+      if (!n.label) continue;
+      const w = measure(n.label, "caption");
+      const [cx, cy, nr] = [X(n.x), Y(n.y), n.r ?? r];
+      const spot = (anchor, dy) => {
+        const x = anchor === "end" ? cx - nr - 5 : cx + nr + 5;
+        const y = cy + 4 + dy;
+        return { x, y, anchor, x0: anchor === "end" ? x - w : x, x1: anchor === "end" ? x : x + w, y0: y - 10, y1: y + 3 };
+      };
+      const spots = n.labelSide === "left" ? [spot("end", 0)] : [spot("end", 0), spot("start", 0), spot("end", -12), spot("start", 12)];
+      const at = spots.find(clear) ?? spots[0];
+      placed.push(at);
+      side.push({ x: at.x, y: at.y, anchor: at.anchor, text: n.label });
+    }
+  }
+
+  // Hub rings and name pills, drawn last so no node covers them.
+  const hubs = [];
+  const taken = []; // pill boxes placed so far, so close hubs stack instead of overlapping
+  const clash = (x, y, w) => taken.some((t) => x < t.x + t.w && t.x < x + w && Math.abs(y - t.y) < 24);
+  for (const id of opts.hubs ?? []) {
+    const n = byId.get(id);
+    if (!n) continue;
+    const cx = X(n.x);
+    const cy = Y(n.y);
+    const one = groupOf(n);
+    const text = n.label ?? n.id;
+    const tw = measure(text, "small", 700);
+    const left = cx + r + 12 + tw + 12 > width;
+    // The first free spot: beside the node, then a step up or down, then two.
+    const right = cx + r + 10;
+    const leftX = cx - r - 10 - tw - 12;
+    const spots = [];
+    for (const dy of [0, -24, 24, -48, 48, -72, 72]) for (const x of left ? [leftX, right] : [right, leftX]) spots.push([x, cy + dy]);
+    const fits = ([x, y]) => x >= 0 && x + tw + 12 <= width && y - 11 >= 0 && y + 11 <= height && !clash(x, y, tw + 12);
+    const [x0, ty] = spots.find(fits) ?? spots[0];
+    taken.push({ x: x0, y: ty, w: tw + 12 });
+    hubs.push({
+      id,
+      group: one,
+      aria: `${n.label ?? n.id}: light up its group`,
+      ring: { cx, cy, r: r + 7, cls: `gv-ring ${one === null || one === undefined ? "gnone" : gclass(one)}` },
+      leader: ty !== cy ? { x1: cx, y1: cy, x2: x0 < cx ? x0 + tw + 12 : x0, y2: ty } : null,
+      pill: { x: x0, y: ty - 11, width: tw + 12, height: 22, rx: 4 },
+      name: { x: x0 + 6, y: ty + size("small") * 0.36, text },
+    });
+  }
+
+  // A highlighted link's weight, on a pill at its middle.
+  const on = links.find((l) => l.key === focus);
+  let weight = null;
+  if (on && opts.weights) {
+    const text = String(on.weight);
+    const tw = measure(text, "body", 800);
+    const mx = (X(on.a.x) + X(on.b.x)) / 2;
+    const my = (Y(on.a.y) + Y(on.b.y)) / 2;
+    weight = { pill: { x: mx - tw / 2 - 10, y: my - 14, width: tw + 20, height: 28, rx: 7 }, text: { x: mx, y: my + size("body") * 0.36, text } };
+  }
+  return { width, height, lines, nodes, side, hubs, weight };
+}
+
+/** Under explore: per node id, the indices of its lines, its neighbours' ids and how many of its links are marked. */
+export function neighbours(state, lines) {
+  const near = new Map(state.map((n) => [n.id, { lines: [], ids: new Set(), marked: 0 }]));
+  lines.forEach(({ link: l }, i) => {
+    for (const [a, b] of [[l.source, l.target], [l.target, l.source]]) {
+      const e = near.get(a);
+      e.lines.push(i);
+      e.ids.add(b);
+      if (l.mark) e.marked += 1;
+    }
+  });
+  return near;
+}
+
+/** A node's tooltip lines under explore: opts.describe's, or its label (or group) and its number of links. */
+export function describeNode(opts, n, e) {
+  const g = groupOf(n);
+  const info = { degree: e.ids.size, marked: e.marked, group: g === null || g === undefined ? null : opts.groups?.[g] };
+  return opts.describe?.(n, info) ?? [n.label ?? info.group ?? "No group", `${info.degree} ${info.degree === 1 ? "link" : "links"}`];
+}
 
 // d3 for zoom and pan, loaded once and only by a view that explores.
 let d3Loading;
@@ -99,109 +283,71 @@ export function networkView(host, spec) {
   const drawLegend = () => {
     if (!legend) return;
     legend.replaceChildren();
-    for (let g = 0; g < k; g++) {
-      const size = state.filter((n) => n.group === g || n.groups?.includes(g)).length;
+    const { rows, none } = legendRows(opts, state);
+    for (const row of rows) {
       const item = HTML(opts.explore ? "button" : "span");
-      const [one, many] = opts.unit ?? ["member", "members"];
-      item.append(HTML("i", gclass(g)), document.createTextNode(`${opts.groups[g]} (${size} ${size === 1 ? one : many})`));
+      item.append(HTML("i", row.dot), document.createTextNode(row.text));
       if (opts.explore) {
         item.type = "button";
         item.className = "gv-key";
-        item.addEventListener("click", () => live?.group(g, true));
+        item.addEventListener("click", () => live?.group(row.group, true));
       }
       legend.append(item);
     }
-    const none = state.filter((n) => (n.group === null || n.group === undefined) && !n.groups?.length).length;
-    if (none && opts.legendNone !== false) {
+    if (none) {
       const item = HTML("span");
-      item.append(HTML("i", opts.hollow ? "gv-hollow-dot" : ""), document.createTextNode(`${opts.noneLabel ?? "No group"} (${none})`));
+      item.append(HTML("i", none.dot), document.createTextNode(none.text));
       legend.append(item);
     }
   };
 
   const build = (width) => {
-    // One scale for both axes, so the layout keeps its shape: y runs from 0 to ratio.
-    const pad = opts.labels === "inside" ? 22 : 16;
-    const scale = width - 2 * pad;
-    const height = Math.round(2 * pad + opts.ratio * scale);
-    const X = (v) => pad + v * scale;
-    const Y = (v) => pad + v * scale;
-    const inside = opts.labels === "inside";
-    const r = opts.radius ?? (inside ? 13 : state.length > 150 ? 3.6 : 7);
-    const svg = node("svg", { viewBox: `0 0 ${width} ${height}`, width, height, role: "img", "aria-label": opts.aria ?? "Network" });
+    const L = networkLayout(opts, state, width, focus);
+    const svg = node("svg", { viewBox: `0 0 ${width} ${L.height}`, width, height: L.height, role: "img", "aria-label": opts.aria ?? "Network" });
     const view = node("g");
-    const lineOf = new Map();
+    const lineEls = [];
     const dotOf = new Map();
 
-    // Links: faded ones first, so the coloured and highlighted ones sit on top.
     const lines = node("g");
-    const links = opts.links.map((l) => ({ ...l, key: `${l.source}|${l.target}`, a: byId.get(l.source), b: byId.get(l.target) }));
-    const coloured = (l) => opts.colorLinks && l.group !== null && l.group !== undefined;
-    const lifted = (l) => Number(coloured(l)) + 2 * Number(Boolean(l.mark));
-    links.sort((p, q) => lifted(p) - lifted(q));
-    const marking = links.some((l) => l.mark);
-    const maxW = Math.max(1, ...links.map((l) => l.weight ?? 1));
-    for (const l of links) {
-      const faint = opts.fade && (marking ? !l.mark : opts.colorLinks && !coloured(l));
-      const cls = ["gv-link", coloured(l) && !(marking && !l.mark) ? gclass(l.group) : "", l.mark ? "gv-mark" : "", faint ? "gv-faint" : "",
-        l.key === focus ? "gv-on" : "", l.dashed ? "gv-dashed" : "", opts.strongLinks ? "gv-strong" : ""];
-      const plain = opts.weights ? 0.8 + 3 * Math.sqrt((l.weight ?? 1) / maxW) : state.length > 150 ? 0.7 : 1.4;
-      const w = l.key === focus ? 5 : (l.width ?? (l.mark ? 1.5 : plain));
-      const at = { x1: X(l.a.x), y1: Y(l.a.y), x2: X(l.b.x), y2: Y(l.b.y) };
-      const line = node("line", { ...at, class: cls.filter(Boolean).join(" "), "stroke-width": w });
-      lineOf.set(l, line);
-      if (l.title && opts.titles !== "none") line.append(node("title", {}, l.title));
+    for (const row of L.lines) {
+      const line = node("line", { ...row.at, class: row.cls, "stroke-width": row.width });
+      lineEls.push(line);
+      if (row.title) line.append(node("title", {}, row.title));
       lines.append(line);
-      if (opts.weights) {
-        const hit = node("line", { ...at, class: "gv-hit" });
-        hit.append(node("title", {}, `${l.a.label ?? l.a.id} and ${l.b.label ?? l.b.id}: weight ${l.weight}`));
-        hit.addEventListener("pointerenter", () => { focus = l.key; redraw(); });
+      if (row.hit) {
+        const hit = node("line", { ...row.at, class: "gv-hit" });
+        hit.append(node("title", {}, row.hit));
+        hit.addEventListener("pointerenter", () => { focus = row.link.key; redraw(); });
         lines.append(hit);
       }
     }
     view.append(lines);
 
-    // Nodes.
     const dots = node("g");
-    for (const n of state) {
-      const cx = X(n.x);
-      const cy = Y(n.y);
-      const g = node("g", { "data-id": n.id });
-      dotOf.set(n.id, g);
-      const two = n.groups?.length === 2;
-      const one = two ? null : n.groups?.length === 1 ? n.groups[0] : n.group;
-      const empty = (one === null || one === undefined) && !two;
-      if (two) {
-        // Two halves, left in the first group, right in the second.
-        g.append(node("path", { d: `M${cx},${cy - r} A${r},${r} 0 0 0 ${cx},${cy + r} Z`, class: `gv-node ${gclass(n.groups[0])}` }));
-        g.append(node("path", { d: `M${cx},${cy - r} A${r},${r} 0 0 1 ${cx},${cy + r} Z`, class: `gv-node ${gclass(n.groups[1])}` }));
-        g.append(node("circle", { cx, cy, r, class: "gv-outline" }));
-      } else {
-        const cls = ["gv-node", empty && opts.hollow ? "gv-hollow" : "", opts.colorNodes ? gclass(one) : "", empty && opts.tone === "accent" ? "gv-tone" : ""];
-        g.append(node("circle", { cx, cy, r: n.r ?? (opts.hubs?.includes(n.id) && !inside ? r + 2.5 : r), class: cls.filter(Boolean).join(" ") }));
+    for (const mark of L.nodes) {
+      const n = byId.get(mark.id);
+      const g = node("g", { "data-id": mark.id });
+      dotOf.set(mark.id, g);
+      for (const s of mark.shapes) g.append(s.d ? node("path", { d: s.d, class: s.cls }) : node("circle", { cx: s.cx, cy: s.cy, r: s.r, class: s.cls }));
+      if (mark.label) {
+        const t = mark.label;
+        g.append(node("text", { x: t.x, y: t.y, "font-size": fs(t.role), "text-anchor": "middle", class: t.cls }, t.text));
       }
-      if (inside) {
-        g.append(node("text", { x: cx, y: cy + fs("small") * 0.36, "font-size": fs("small"), "text-anchor": "middle",
-          class: `gv-inside ${two ? "gv-split" : empty && opts.hollow ? "gv-on-hollow" : opts.colorNodes ? gclass(one) : ""}`.trim() }, n.label ?? n.id));
-      }
-      if (opts.badges && !empty) {
+      if (mark.badge) {
         const b = node("g", { class: "gv-badge" });
-        const bx = cx + r * 0.78;
-        const by = cy - r * 0.78;
-        b.append(node("circle", { cx: bx, cy: by, r: 7.5 }));
-        b.append(node("text", { x: bx, y: by + fs("caption") * 0.34, "font-size": fs("caption") - 1.5, "text-anchor": "middle" }, String((one ?? 0) + 1)));
+        const at = mark.badge;
+        b.append(node("circle", { cx: at.cx, cy: at.cy, r: at.r }));
+        b.append(node("text", { x: at.x, y: at.y, "font-size": fs("caption") - 1.5, "text-anchor": "middle" }, at.text));
         g.append(b);
       }
-      const titled = opts.titles === "none" ? false : opts.titles === "hubs" ? opts.hubs?.includes(n.id) : true;
-      if (!opts.explore && titled && n.title) g.append(node("title", {}, n.title));
-      else if (!opts.explore && titled) g.append(node("title", {}, `${n.label ?? n.id}${two ? `: ${opts.groups?.[n.groups[0]]} and ${opts.groups?.[n.groups[1]]}` : !empty && opts.groups ? `: ${opts.groups[one]}` : ""}`));
-      if (opts.movable && !two) {
+      if (mark.title !== null) g.append(node("title", {}, mark.title));
+      if (mark.movable !== null) {
         g.dataset.movable = "";
         g.setAttribute("tabindex", "0");
         g.setAttribute("role", "button");
-        g.setAttribute("aria-label", `${n.label ?? n.id}, ${empty ? "no group" : opts.groups[one]}. Move to the next group.`);
+        g.setAttribute("aria-label", mark.movable);
         const move = () => {
-          n.group = empty ? 0 : (one + 1) % k;
+          n.group = nextGroup(mark, k);
           drawLegend();
           redraw(n.id);
           opts.onChange?.(state);
@@ -215,92 +361,41 @@ export function networkView(host, spec) {
     }
     view.append(dots);
 
-    // Side labels: a caption beside each labelled node, in the first free spot of
-    // left, right, above-left and below-right; nodes with labelSide "left" first.
-    if (opts.labels === "beside") {
-      const placed = [];
-      const clear = (b) => placed.every((q) => b.x1 < q.x0 || b.x0 > q.x1 || b.y1 < q.y0 || b.y0 > q.y1);
-      const order = [...state].sort((a, b) => Number(b.labelSide === "left") - Number(a.labelSide === "left"));
+    if (L.side) {
       const names = node("g", { class: "gv-side" });
-      for (const n of order) {
-        if (!n.label) continue;
-        const w = textWidth(n.label, "caption");
-        const [cx, cy, nr] = [X(n.x), Y(n.y), n.r ?? r];
-        const spot = (side, dy) => {
-          const x = side === "end" ? cx - nr - 5 : cx + nr + 5;
-          const y = cy + 4 + dy;
-          return { x, y, anchor: side, x0: side === "end" ? x - w : x, x1: side === "end" ? x : x + w, y0: y - 10, y1: y + 3 };
-        };
-        const spots = n.labelSide === "left" ? [spot("end", 0)] : [spot("end", 0), spot("start", 0), spot("end", -12), spot("start", 12)];
-        const at = spots.find(clear) ?? spots[0];
-        placed.push(at);
-        names.append(node("text", { x: at.x, y: at.y, "font-size": fs("caption"), "text-anchor": at.anchor }, n.label));
-      }
+      for (const t of L.side) names.append(node("text", { x: t.x, y: t.y, "font-size": fs("caption"), "text-anchor": t.anchor }, t.text));
       view.append(names);
     }
 
-    // Hub rings and name pills, drawn last so no node covers them.
     const tags = node("g");
-    const taken = []; // pill boxes placed so far, so close hubs stack instead of overlapping
-    const clash = (x, y, w) => taken.some((t) => x < t.x + t.w && t.x < x + w && Math.abs(y - t.y) < 24);
-    for (const id of opts.hubs ?? []) {
-      const n = byId.get(id);
-      if (!n) continue;
-      const cx = X(n.x);
-      const cy = Y(n.y);
-      const one = groupOf(n);
-      const hub = node("g", { class: "gv-hub", "data-hub": id });
+    for (const h of L.hubs) {
+      const hub = node("g", { class: "gv-hub", "data-hub": h.id });
       if (opts.explore) {
         hub.setAttribute("tabindex", "0");
         hub.setAttribute("role", "button");
-        hub.setAttribute("aria-label", `${n.label ?? n.id}: light up its group`);
+        hub.setAttribute("aria-label", h.aria);
       }
       tags.append(hub);
-      hub.append(node("circle", { cx, cy, r: r + 7, class: `gv-ring ${one === null || one === undefined ? "gnone" : gclass(one)}` }));
-      const text = n.label ?? n.id;
-      const tw = textWidth(text, "small", 700);
-      const left = cx + r + 12 + tw + 12 > width;
-      // The first free spot: beside the node, then a step up or down, then two.
-      const right = cx + r + 10;
-      const leftX = cx - r - 10 - tw - 12;
-      const spots = [];
-      for (const dy of [0, -24, 24, -48, 48, -72, 72]) for (const x of left ? [leftX, right] : [right, leftX]) spots.push([x, cy + dy]);
-      const fits = ([x, y]) => x >= 0 && x + tw + 12 <= width && y - 11 >= 0 && y + 11 <= height && !clash(x, y, tw + 12);
-      const [x0, ty] = spots.find(fits) ?? spots[0];
-      taken.push({ x: x0, y: ty, w: tw + 12 });
-      if (ty !== cy) hub.append(node("line", { x1: cx, y1: cy, x2: x0 < cx ? x0 + tw + 12 : x0, y2: ty, class: "gv-link gv-leader" }));
-      hub.append(node("rect", { x: x0, y: ty - 11, width: tw + 12, height: 22, rx: 4, class: "gv-pill" }));
-      hub.append(node("text", { x: x0 + 6, y: ty + fs("small") * 0.36, "font-size": fs("small"), class: "gv-name" }, text));
+      hub.append(node("circle", { cx: h.ring.cx, cy: h.ring.cy, r: h.ring.r, class: h.ring.cls }));
+      if (h.leader) hub.append(node("line", { ...h.leader, class: "gv-link gv-leader" }));
+      hub.append(node("rect", { ...h.pill, class: "gv-pill" }));
+      hub.append(node("text", { x: h.name.x, y: h.name.y, "font-size": fs("small"), class: "gv-name" }, h.name.text));
     }
-    // A highlighted link's weight, on a pill at its middle.
-    const on = links.find((l) => l.key === focus);
-    if (on && opts.weights) {
-      const text = String(on.weight);
-      const tw = textWidth(text, "body", 800);
-      const mx = (X(on.a.x) + X(on.b.x)) / 2;
-      const my = (Y(on.a.y) + Y(on.b.y)) / 2;
+    if (L.weight) {
       const w = node("g", { class: "gv-weight" });
-      w.append(node("rect", { x: mx - tw / 2 - 10, y: my - 14, width: tw + 20, height: 28, rx: 7 }));
-      w.append(node("text", { x: mx, y: my + fs("body") * 0.36, "font-size": fs("body"), "text-anchor": "middle" }, text));
+      w.append(node("rect", L.weight.pill));
+      w.append(node("text", { x: L.weight.text.x, y: L.weight.text.y, "font-size": fs("body"), "text-anchor": "middle" }, L.weight.text.text));
       tags.append(w);
     }
     view.append(tags);
     svg.append(view);
-    if (opts.explore) explore(svg, view, { width, height, links, lineOf, dotOf });
+    if (opts.explore) explore(svg, view, { width, height: L.height, L, lineEls, dotOf });
     return svg;
   };
 
   // Lighting, the tooltip and zoom for one drawn view.
-  const explore = (svg, view, { width, height, links, lineOf, dotOf }) => {
-    const near = new Map(state.map((n) => [n.id, { lines: [], ids: new Set(), marked: 0 }]));
-    for (const l of links) {
-      for (const [a, b] of [[l.source, l.target], [l.target, l.source]]) {
-        const e = near.get(a);
-        e.lines.push(lineOf.get(l));
-        e.ids.add(b);
-        if (l.mark) e.marked += 1;
-      }
-    }
+  const explore = (svg, view, { width, height, L, lineEls, dotOf }) => {
+    const near = neighbours(state, L.lines);
     let pinned = false;
     const clear = (unpin) => {
       if (pinned && !unpin) return;
@@ -321,22 +416,16 @@ export function networkView(host, spec) {
       svg.classList.add("gv-lit");
       const e = near.get(id);
       dotOf.get(id).classList.add("gv-hi");
-      for (const line of e.lines) line.classList.add("gv-hi");
+      for (const i of e.lines) lineEls[i].classList.add("gv-hi");
       for (const m of e.ids) dotOf.get(m).classList.add("gv-hi");
     };
-    const describe = (id) => {
-      const n = byId.get(id);
-      const e = near.get(id);
-      const g = groupOf(n);
-      const info = { degree: e.ids.size, marked: e.marked, group: g === null || g === undefined ? null : opts.groups?.[g] };
-      return opts.describe?.(n, info) ?? [n.label ?? info.group ?? "No group", `${info.degree} ${info.degree === 1 ? "link" : "links"}`];
-    };
+    const describe = (id) => describeNode(opts, byId.get(id), near.get(id));
     const lightGroup = (g, pin) => {
       clear(true);
       pinned = pin;
       svg.classList.add("gv-lit");
       for (const n of state) if (groupOf(n) === g) dotOf.get(n.id).classList.add("gv-hi");
-      for (const l of links) if (groupOf(l.a) === g && groupOf(l.b) === g) lineOf.get(l).classList.add("gv-hi");
+      L.lines.forEach(({ link: l }, i) => { if (groupOf(l.a) === g && groupOf(l.b) === g) lineEls[i].classList.add("gv-hi"); });
       for (const hub of svg.querySelectorAll(".gv-hub")) if (groupOf(byId.get(hub.dataset.hub)) === g) hub.classList.add("gv-hi");
     };
     const dots = [...dotOf.values()];

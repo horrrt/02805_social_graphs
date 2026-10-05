@@ -40,6 +40,21 @@ refLabel, ci, aria, width }` (`width` 300 by default).
 <MiniStrip spec={{ domain: [0, 1], real: 0.62, realLabel: "0.62", base: [0.41, 0.03], baseLabel: "random", aria: "…" }} />
 ```
 
+### NetworkView({ spec, onChange })
+
+A network drawn as `networkView()` draws it, from the same rows (`networkLayout()` in `src/scripts/graph.js`):
+the same elements, classes, attributes and tooltips, and every option `graph.js`'s header lists (`theme`,
+`colorNodes`, `colorLinks`, `fade`, `mark` on a link, `titles`, `hubs`, `labels`, `tone`, `strongLinks`,
+`badges`, `hollow`, `weights` and `highlight`, `movable`, `legend`, `unit`, `note`, `ratio`, `explore` and
+`describe`). `onChange(nodes)` follows a move. Drawn at `spec.width` (640 by default) and then at its parent's
+width (`useFittedWidth`). Under `explore`, d3 loads (`useVendor`) and d3-zoom writes the zoom `<g>`'s transform.
+As on main, a move or a link hover redraws the chart only until the parent's width is first measured; after
+that the legend counts the move and the next width change draws it.
+
+```tsx
+<NetworkView spec={{ theme: "dark", ratio: m.ratio, nodes: m.nodes, links: m.links, groups: m.groups, hubs: m.hubs, legend: true }} />
+```
+
 ### EChart({ option, height, className, renderer })
 
 An ECharts chart at the site's type sizes and colours, as `echart()`: the theme from the tokens, an item

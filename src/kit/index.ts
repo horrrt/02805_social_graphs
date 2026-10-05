@@ -5,6 +5,8 @@
 
 export { default as StripChart } from "./StripChart";
 export { default as MiniStrip } from "./MiniStrip";
+export { default as NetworkView } from "./NetworkView";
+export type { NetLink, NetNode, NetworkSpec, NodeInfo } from "./NetworkView";
 export { default as Table } from "./Table";
 export { default as DecoratedTable } from "./DecoratedTable";
 export { default as Figure } from "./Figure";

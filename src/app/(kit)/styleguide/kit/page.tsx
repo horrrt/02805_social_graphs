@@ -1,4 +1,3 @@
-import PageScripts from "@/components/PageScripts";
 import { PostSection } from "@/components/post/PostSection";
 import { SiteFooter } from "@/components/site/SiteFooter";
 import { Demo } from "@/features/kit-page/demos";
@@ -48,41 +47,41 @@ export default function Page() {
           <div className="w4-two">
             <div>
               <h3>Communities with named hubs</h3>
-              <div data-demo="net-hubs"></div>
+              <Demo demo="net-hubs" />
             </div>
             <div>
               <h3>Links in their community's colour over a faded network</h3>
-              <div data-demo="net-links"></div>
+              <Demo demo="net-links" />
             </div>
           </div>
           <div className="w4-two">
             <div>
               <h3>Community links and named hubs</h3>
-              <div data-demo="net-both"></div>
+              <Demo demo="net-both" />
             </div>
             <div>
               <h3>A link's weight: hover a link</h3>
-              <div data-demo="net-weight"></div>
+              <Demo demo="net-weight" />
             </div>
           </div>
           <div className="w4-two">
             <div>
               <h3>Two groups you can edit: click a member</h3>
-              <div data-demo="net-karate"></div>
+              <Demo demo="net-karate" />
             </div>
             <div>
               <h3>Overlapping groups and a node in none</h3>
-              <div data-demo="net-overlap"></div>
+              <Demo demo="net-overlap" />
             </div>
           </div>
           <div className="w4-two">
             <div>
               <h3>Light card: communities with named hubs</h3>
-              <div data-demo="net-hubs-light"></div>
+              <Demo demo="net-hubs-light" />
             </div>
             <div>
               <h3>Light card: two groups you can edit</h3>
-              <div data-demo="net-karate-light"></div>
+              <Demo demo="net-karate-light" />
             </div>
           </div>
         </PostSection>
@@ -96,7 +95,6 @@ export default function Page() {
           · DTU 02805
         </span>
       </SiteFooter>
-      <PageScripts page="kit" />
     </>
   );
 }
