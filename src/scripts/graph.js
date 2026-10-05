@@ -38,7 +38,7 @@
 //   describe(n, info)        the tooltip's lines for a node under explore; info is { degree, marked,
 //                            group }. Default: its label, or its group, and its number of links
 
-import { asset } from "./site.js";
+import { loadVendor } from "./runtime/vendor.js";
 import { fs } from "./type-scale.mjs";
 import { fitted, node, textWidth } from "./week04-strip.js";
 
@@ -55,13 +55,12 @@ const groupOf = (n) => (n.groups?.length === 1 ? n.groups[0] : n.group);
 let d3Loading;
 function loadD3() {
   if (window.d3) return Promise.resolve(window.d3);
-  d3Loading ??= new Promise((resolve, reject) => {
-    const s = document.createElement("script");
-    s.src = asset("assets/vendor/d3-7.9.0.min.js").href;
-    s.onload = () => resolve(window.d3);
-    s.onerror = () => reject(new Error("could not load d3"));
-    document.head.append(s);
-  });
+  d3Loading ??= loadVendor("d3-7.9.0.min.js").then(
+    () => window.d3,
+    () => {
+      throw new Error("could not load d3");
+    },
+  );
   return d3Loading;
 }
 

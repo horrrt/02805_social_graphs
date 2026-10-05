@@ -21,3 +21,21 @@ export function family(name = "sans") {
 export function font(role, weight = 400, name = "sans") {
   return `${weight} ${fs(role)}px ${family(name)}`;
 }
+
+/**
+ * The same three functions over values already read from :root, keyed by
+ * property name: fromValues({ "--fs-small": "12.5px", "--font-sans": " Inter" }).
+ * Pure, for useTypeScale (src/lib), which reads every --fs-* and --font-* once
+ * and reads them again when the page restyles.
+ */
+export function fromValues(values) {
+  const get = (name) => String(values[name] ?? "");
+  const fs = (role) => {
+    const value = parseFloat(get(`--fs-${role}`));
+    if (!Number.isFinite(value)) throw new Error(`unknown type role "${role}"`);
+    return value;
+  };
+  const family = (name = "sans") => get(`--font-${name}`).trim();
+  const font = (role, weight = 400, name = "sans") => `${weight} ${fs(role)}px ${family(name)}`;
+  return { fs, family, font };
+}

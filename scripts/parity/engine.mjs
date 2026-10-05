@@ -48,6 +48,14 @@ const FONT_RE = /\.(woff2?|ttf|otf)(\?|$)|fonts\.(googleapis|gstatic)\.com/;
  * and console log. opts: motion, faults (array), profile ('slow'), fontsDelay,
  * javaScriptEnabled, abort (array of URL predicates).
  */
+// Console text normaliser. Drops only JS stack frames that point at a served URL ("    at fn (ORIGIN/x.js:1:2)",
+// "    at ORIGIN/x.js:1:2", "    at async fn (...)"); component-stack lines and message lines stay compared.
+// Approved by the orchestrator as request P2a #1: the frames name content-hashed chunks, not anything a reader sees.
+export const normConsole = (s) => String(s)
+  .replace(/https?:\/\/(127\.0\.0\.1|localhost):\d+/g, "ORIGIN")
+  .replace(/\[\.WebGL-0x[0-9a-f]+\]/g, "[.WebGL-ADDR]")
+  .replace(/\n {4}at (?:async )?[^\n]*?\(?(?:ORIGIN|https?:)[^\n]*:\d+:\d+\)?/g, "");
+
 export async function openPage(browser, opts = {}) {
   const context = await browser.newContext({
     viewport: { width: 1440, height: 900 },
@@ -59,7 +67,7 @@ export async function openPage(browser, opts = {}) {
   await context.addInitScript(initScript, { now: PINNED_NOW, faults: opts.faults ?? null, seed: 7 });
   const page = await context.newPage();
   const state = { console: [], requests: new Map(), inflight: 0, lastNet: Date.now(), dialog: "accept", origin: "", javaScriptEnabled: opts.javaScriptEnabled !== false };
-  const norm = (s) => String(s).replace(/https?:\/\/(127\.0\.0\.1|localhost):\d+/g, "ORIGIN");
+  const norm = normConsole;
   page.on("console", (m) => {
     const type = m.type();
     if (type === "error" || type === "warning") state.console.push(`${type}: ${norm(m.text()).slice(0, 2000)}`);
@@ -300,7 +308,15 @@ async function pageSnapshot({ webgl, hashTarget, mask = [], select = [], exclude
       const flush = () => {
         if (run) { const t = local(run.replace(/\s+/g, " ")); canon += JSON.stringify(t); text += t + "\n"; run = ""; }
       };
-      for (const node of el.childNodes) {
+      // tips.js appends div.kit-tip to its host whenever the host lacks one, so
+      // whether it sits before or after the chart depends on draw timing (KB07).
+      // Walk it last; its own content is still compared.
+      const nodes = [...el.childNodes];
+      if (el.classList?.contains("kit-tip-host")) {
+        const tip = (n) => n.nodeType === 1 && n.classList.contains("kit-tip");
+        nodes.sort((a, b) => tip(a) - tip(b));
+      }
+      for (const node of nodes) {
         if (node.nodeType === 3) {
           if (/\S/.test(node.data)) run += node.data;
           continue;

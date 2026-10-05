@@ -5,6 +5,9 @@ neither drops a check. P0b does not depend on them; its known files pass main-vs
 
 ## 1. engine.mjs: drop the WebGL context address from console lines
 
+**Status:** applied on claude/react-stage2 before P2a (2026-10-04). The masked `console` entries in
+`known/week03/base.json` and `known/week04/base.json` stay until main-vs-main runs show they no longer differ.
+
 **File:** `scripts/parity/engine.mjs`
 
 **Patch:**
@@ -23,6 +26,9 @@ and `known/week03/base.json` mask `console` on those steps, which also hides any
 With the address normalised, those entries can be deleted and the console compared again.
 
 ## 2. engine.mjs: canonicalise the hover tip's position in a kit-tip host
+
+**Status:** applied on claude/react-stage2 before P2a (2026-10-04). The masked entries in
+`known/week05/base.json` stay until main-vs-main runs show they no longer differ.
 
 **File:** `scripts/parity/engine.mjs`, in `pageSnapshot`'s `walk`
 

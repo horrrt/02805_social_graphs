@@ -17,7 +17,7 @@
 import { api, installRenderer, restyle, start } from "./corridor.js";
 import { installQuestions } from "./questions.js";
 import { installViews } from "./echarts-views.js";
-import { asset } from "./site.js";
+import { loadVendor as loadSharedVendor } from "./runtime/vendor.js";
 
 export const RENDERERS = {
   canvas: {
@@ -166,19 +166,13 @@ function styleURL(chosen) {
 }
 
 // Vendored, not fetched from a CDN: the site works offline and pulls no
-// third-party JavaScript at runtime. See public/assets/vendor/README.md.
+// third-party JavaScript at runtime. See public/assets/vendor/README.md. One
+// promise per file for the page's lifetime: like the failed <script> this page
+// used to reuse, a library that did not load is not requested again.
+const vendorLoads = new Map();
 function loadVendor(file) {
-  const src = asset(`assets/vendor/${file}`).href;
-  const existing = document.querySelector(`script[src="${src}"]`);
-  if (existing) return existing.__ready;
-  const script = document.createElement("script");
-  script.src = src;
-  script.__ready = new Promise((resolve, reject) => {
-    script.onload = resolve;
-    script.onerror = () => reject(new Error(`could not load ${file}`));
-  });
-  document.head.appendChild(script);
-  return script.__ready;
+  if (!vendorLoads.has(file)) vendorLoads.set(file, loadSharedVendor(file));
+  return vendorLoads.get(file);
 }
 
 function kb(bytes) {

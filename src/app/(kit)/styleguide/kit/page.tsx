@@ -1,4 +1,6 @@
 import PageScripts from "@/components/PageScripts";
+import { PostSection } from "@/components/post/PostSection";
+import { SiteFooter } from "@/components/site/SiteFooter";
 
 export default function Page() {
   return (
@@ -10,33 +12,33 @@ export default function Page() {
           like. None of these numbers is a result. The code for each is in this page's source and in
           src/scripts/README.md.
         </p>
-        <section className="step" id="demo-figure">
+        <PostSection id="demo-figure">
           <h2>figure() with echart()</h2>
           <div data-demo="figure"></div>
-        </section>
-        <section className="step" id="demo-strip">
+        </PostSection>
+        <PostSection id="demo-strip">
           <h2>stripChart(): a result against its baseline</h2>
           <div data-demo="strip"></div>
-        </section>
-        <section className="step" id="demo-table">
+        </PostSection>
+        <PostSection id="demo-table">
           <h2>table()</h2>
           <div data-demo="table"></div>
-        </section>
-        <section className="step" id="demo-kwic">
+        </PostSection>
+        <PostSection id="demo-kwic">
           <h2>concordance()</h2>
           <div data-demo="kwic"></div>
-        </section>
-        <section className="step" id="demo-passage">
+        </PostSection>
+        <PostSection id="demo-passage">
           <h2>passage()</h2>
           <div data-demo="passage"></div>
-        </section>
-        <section className="step" id="demo-term">
+        </PostSection>
+        <PostSection id="demo-term">
           <h2>termify() and drawer()</h2>
           <div data-demo="term">
             <p>A hapax is a word that occurs exactly once in the corpus.</p>
           </div>
-        </section>
-        <section className="step" id="demo-network">
+        </PostSection>
+        <PostSection id="demo-network">
           <h2>networkView(): six ways to draw a network</h2>
           <p className="sub">
             Unlike the demos above, these use real data, laid out by analysis/styleguide_graphs.py: Zachary's karate
@@ -84,19 +86,17 @@ export default function Page() {
               <div data-demo="net-karate-light"></div>
             </div>
           </div>
-        </section>
+        </PostSection>
       </main>
-      <footer className="foot">
-        <div className="shell">
-          <span>
-            Toy data for the component gallery ·
-            {" "}
-            <a href="../../">Log–Log Legends</a>
-            {" "}
-            · DTU 02805
-          </span>
-        </div>
-      </footer>
+      <SiteFooter>
+        <span>
+          Toy data for the component gallery ·
+          {" "}
+          <a href="../../">Log–Log Legends</a>
+          {" "}
+          · DTU 02805
+        </span>
+      </SiteFooter>
       <PageScripts page="kit" />
     </>
   );

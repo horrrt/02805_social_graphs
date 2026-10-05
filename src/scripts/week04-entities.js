@@ -6,6 +6,7 @@
 // the rest of the page never pays for it. A worker profile's workers sit in a
 // sunflower disc around the profile's place in the layout; a company is one
 // dot sized by its workers. Colours come from the CSS tokens.
+import { loadVendor } from "./runtime/vendor.js";
 import { asset } from "./site.js";
 import { stripChart, token, node as el, fitted, fs, family } from "./week04-strip.js";
 
@@ -45,21 +46,6 @@ function status(text) {
   }
   box.textContent = text;
   box.hidden = !text;
-}
-
-// Vendored, not fetched from a CDN (public/assets/vendor/README.md).
-function loadVendor(file) {
-  const src = asset(`assets/vendor/${file}`).href;
-  const existing = document.querySelector(`script[src="${src}"]`);
-  if (existing) return existing.__ready;
-  const script = document.createElement("script");
-  script.src = src;
-  script.__ready = new Promise((resolve, reject) => {
-    script.onload = resolve;
-    script.onerror = () => reject(new Error(`could not load ${file}`));
-  });
-  document.head.appendChild(script);
-  return script.__ready;
 }
 
 // Any CSS colour token as [r, g, b].

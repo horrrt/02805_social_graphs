@@ -2,6 +2,7 @@
 // Four questions, one selected city across every panel. Numbers come from
 // public/assets/data/week04_place.json (placeholder until analysis/week04_where.py).
 
+import { loadVendor } from "./runtime/vendor.js";
 import { asset } from "./site.js";
 import { resetButton } from "./week04-map-reset.js";
 import { fs, family, textWidth } from "./week04-strip.js";
@@ -1222,13 +1223,11 @@ export async function startPlace(echarts) {
   return { select, data, state };
 }
 
-function loadScript(src) {
-  return new Promise((resolve, reject) => {
-    const s = document.createElement("script");
-    s.src = src;
-    s.onload = resolve;
-    s.onerror = reject;
-    document.head.appendChild(s);
+// Rejects with an error event, as the <script>'s onerror did, so boot()
+// writes the same message to #place-status.
+function loadScript(file) {
+  return loadVendor(file).catch(() => {
+    throw new Event("error");
   });
 }
 
@@ -1237,7 +1236,7 @@ export async function boot() {
   if (status) status.textContent = "Loading place data…";
   try {
     if (!window.echarts) {
-      await loadScript(asset("assets/vendor/echarts-5.5.1.min.js").href);
+      await loadScript("echarts-5.5.1.min.js");
     }
     await startPlace(window.echarts);
   } catch (err) {

@@ -10,6 +10,7 @@
 // src/scripts/README.md lists every export with an example; a test keeps
 // that list and this file in step. Style: src/styles/post.css.
 
+import { loadVendor } from "./runtime/vendor.js";
 import { asset } from "./site.js";
 import { family, fs } from "./type-scale.mjs";
 import { token } from "./week04-strip.js";
@@ -101,13 +102,12 @@ let echartsLoading;
 /** Load the vendored ECharts once; resolves to window.echarts. */
 export function loadECharts() {
   if (window.echarts) return Promise.resolve(window.echarts);
-  echartsLoading ??= new Promise((resolve, reject) => {
-    const s = document.createElement("script");
-    s.src = asset("assets/vendor/echarts-5.5.1.min.js").href;
-    s.onload = () => resolve(window.echarts);
-    s.onerror = () => reject(new Error("could not load ECharts"));
-    document.head.append(s);
-  });
+  echartsLoading ??= loadVendor("echarts-5.5.1.min.js").then(
+    () => window.echarts,
+    () => {
+      throw new Error("could not load ECharts");
+    },
+  );
   return echartsLoading;
 }
 

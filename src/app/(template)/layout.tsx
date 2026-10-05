@@ -21,6 +21,7 @@
 // Rules for the writing and the numbers: project/POST_GUIDE.md.
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
+import { PageShell } from "@/components/site/PageShell";
 import "@/styles/type.css";
 import "@/styles/corridor.css";
 import "@/styles/post.css";
@@ -32,9 +33,5 @@ export const metadata: Metadata = {
 };
 
 export default function Layout({ children }: { children: ReactNode }) {
-  return (
-    <html lang="en" suppressHydrationWarning>
-      <body className="corridor">{children}</body>
-    </html>
-  );
+  return <PageShell bodyClass="corridor">{children}</PageShell>;
 }
