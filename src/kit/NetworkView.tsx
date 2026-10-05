@@ -144,12 +144,20 @@ function View({ spec, onChange, scale, measure }: { spec: NetworkSpec; onChange?
 
   const d3 = useVendor<D3>("d3-7.9.0.min.js", "d3", { enabled: explore });
   const zoomBy = useRef<(label: string) => void>(() => {});
+  // The zoom <g> the svg's d3-zoom transform belongs to.
+  const zoomed = useRef<SVGGElement | null>(null);
   useEffect(() => {
     if (d3.status === "error") console.error(new Error("could not load d3"));
     if (d3.status !== "ready") return;
     const svg = svgRef.current;
     const lib = d3.lib;
     if (!svg || !lib) return;
+    // A new <g> is main's new svg: its zoom starts at identity, not at the
+    // transform d3 stored on the svg for the view drawn before.
+    if (zoomed.current !== viewRef.current) {
+      lib.select(svg).property("__zoom", lib.zoomIdentity);
+      zoomed.current = viewRef.current;
+    }
     const z = lib
       .zoom()
       .scaleExtent([1, 8])
@@ -239,7 +247,7 @@ function View({ spec, onChange, scale, measure }: { spec: NetworkSpec; onChange?
               : undefined
           }
         >
-          {/* A new <g> per drawn view: main draws a new svg, so the zoom and the lighting start afresh. */}
+          {/* A new <g> per drawn view: main draws a new svg, so the zoom (reset in the zoom effect) and the lighting start afresh. */}
           <g key={gen} ref={viewRef}>
             <g>
               {L.lines.map((row, i) => (
