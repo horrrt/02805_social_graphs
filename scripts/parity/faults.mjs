@@ -48,7 +48,7 @@ async function scenarioFor(page) {
   return loadScenario(page, existsSync(base) ? base : null);
 }
 
-const DATA_FILE = /\/(assets\/data\/.+|weeks\/[^/]+\/data\/.+|assets\/vendor\/.+)$/;
+const DATA_FILE = /\/(assets\/data\/.+|weeks\/[^/]+\/data\/.+|styleguide\/data\/.+|assets\/vendor\/.+)$/;
 const base = args.estimate ? null : outDir(args.base, "base");
 const head = outDir(args.head, "head");
 const report = { mode: args.data ? "data" : "islands", items: [] };
