@@ -190,7 +190,7 @@ After those land and the islands import from `@/kit`, rerun W5-Z.
 
 ## 3. Search: mount the box controlled after hydration
 
-**Status:** open. Filed by W5-Z on 5 Oct 2026.
+**Status:** approved by the orchestrator and applied in W5-Z on 5 Oct 2026. Filed by W5-Z the same day.
 
 **File:** `src/features/week05/search/Search.tsx` (W5-3)
 
@@ -232,3 +232,75 @@ index d21f9c3..0deeb79 100644
 
 The new input replaces the server's node once, right after hydration. A reader who focused the box before
 hydration loses that focus; text typed then was already overwritten, by main's boot and by the current code.
+
+## 4. W5-3's scenario: put the caret at the end without the End key
+
+**Status:** approved by the orchestrator and applied on 5 Oct 2026 (filed by W5-Z the same day). Before it landed, `runtime.mjs` on W5-3 121..164 with `--runs 3`
+failed about one run in three at step 156, on main's build against itself as well as on head.
+
+**File:** `scripts/parity/scenarios/week05/W5-3.mjs` (W5-3)
+
+**Why.** Step 152, `{ press: ["#search-input", "End"] }`, does not move the caret on macOS. Playwright sends End
+with the macOS editing command `scrollToEndOfDocument:` (`macEditingCommands` in playwright-core), so Chromium
+animates a scroll of the whole page from the search box (scrollY 4326, where Playwright's focus put it) to the
+bottom (9835). The caret stays at 0, where that focus left it, so the "trailing space" of step 153 lands in front
+of the query. The snapshot at step 156 records wherever the animation stopped. With four pages in one browser
+(head and three base runs), it sometimes stops short and stays there:
+
+- **Landing at step 156** (an instrumented copy of the tool in the scratchpad, 17 runs of 121..164 with
+  `--runs 3`): head short in 7 of 17, base short in 10 of 34, the slow base in 1 of 17. Short values ranged from
+  8927 to 9805. Run alone, one page per browser, every side reached 9835 (6 of 6).
+- **Base against base fails.** `runtime.mjs --base <main> --head <main> ... --steps 121..164 --runs 3`: 3 of 8
+  runs failed, each at step 156 alone (scroll 9703 -> 9751, 9702 -> 9103, 9835 -> 9725) and every other step ok.
+- **The scroll stops; settling longer cannot help.** In a failing head run, the page logged its last scroll event
+  at 9739, its scroll-end pointer update 22 ms later, and the snapshot read 9739 454 ms after that last event. No
+  page took a screenshot during the animation. Page height stayed 10735 throughout. A per-frame watcher logged no
+  layout shift of any section or chart host, no DOM mutation and no call to a scroll or focus API.
+- **What the diff shows.** The pointer stays where step 149 clicked the venom row (849, 450 in the viewport).
+  When the scroll stops short, that point lies over the weird scatter's band, so its hover tip adds the line
+  "Random stretches of the whole corpus at each length: mean ± 2 sd of 2,000 draws" to the text, and the
+  viewport differs by 3 to 6% of pixels. Neither is a reader-visible difference between the trees.
+
+A known entry for `w5-W5-3-search/156/{scroll,pixels,text}` would also pass, but it would stop step 156 from
+checking the search box at all. The patch below gives the box the state End was meant to give it, the caret
+after the text, without a keyboard scroll. It replaces one step with one step, so every later k keeps its number.
+
+**Patch.**
+
+```diff
+--- a/scripts/parity/scenarios/week05/W5-3.mjs
++++ b/scripts/parity/scenarios/week05/W5-3.mjs
+@@
++/**
++ * Focus the search box and put the caret after its text: what End does on
++ * Linux and Windows. On macOS End is scrollToEndOfDocument, an animated scroll
++ * of the whole page that leaves the caret where it was.
++ */
++export async function caretToEnd(page) {
++  return page.locator("#search-input").evaluate((el) => {
++    el.focus();
++    el.setSelectionRange(el.value.length, el.value.length);
++    return el.selectionStart;
++  });
++}
++
+ /** Click at a fraction of an element's box. */
+@@
+       { click: '#search-tbody tr[data-id="venom"] button', label: "row venom after typing" },
+       ...box("venom picked"),
+-      { press: ["#search-input", "End"] },
++      { evaluate: "caretToEnd", label: "caret to the end of the box" },
+       { type: ["#search-input", " "] },
+       { press: ["#search-input", "Enter"], label: "run the picked query with a trailing space" },
+```
+
+**Checked.** With the patch in a scratch copy of W5-3.mjs, on W5-Z's final tree built with
+`GITHUB_SHA=parity00000`, against main d52830f:
+
+- `runtime.mjs --pages week05 --scenario <scratch copy> --steps 121..164 --runs 3`: ok in 8 of 8 consecutive runs.
+- Step 156 now checks the box: on both trees the value is "alien symbiote that bonds with Eddie Brock " with the
+  caret at 43 and scrollY 4326. With End it is " alien symbiote that bonds with Eddie Brock", caret 1, and
+  scrollY wherever the animation stopped. Step 157's "s" follows the space, so step 160 reads "... Eddie Brock s"
+  where it read " salien symbiote ...".
+- The patch moves no step: `--steps 121..164` still covers the search scenario, and no known entry names a k
+  inside it.

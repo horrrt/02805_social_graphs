@@ -56,6 +56,19 @@ export async function echartsShape(page, id = "chart-fame-scatter") {
   }, id);
 }
 
+/**
+ * Focus the search box and put the caret after its text: what End does on
+ * Linux and Windows. On macOS End is scrollToEndOfDocument, an animated scroll
+ * of the whole page that leaves the caret where it was.
+ */
+export async function caretToEnd(page) {
+  return page.locator("#search-input").evaluate((el) => {
+    el.focus();
+    el.setSelectionRange(el.value.length, el.value.length);
+    return el.selectionStart;
+  });
+}
+
 /** Click at a fraction of an element's box. */
 export async function clickAt(page, sel, fx, fy) {
   const box = await page.locator(sel).first().boundingBox();
@@ -181,7 +194,7 @@ export default [
       ...box("unknown word"),
       { click: '#search-tbody tr[data-id="venom"] button', label: "row venom after typing" },
       ...box("venom picked"),
-      { press: ["#search-input", "End"] },
+      { evaluate: "caretToEnd", label: "caret to the end of the box" },
       { type: ["#search-input", " "] },
       { press: ["#search-input", "Enter"], label: "run the picked query with a trailing space" },
       ...box("picked query, trailing space"),
