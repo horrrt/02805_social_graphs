@@ -4,10 +4,14 @@ import { Notice } from "@/components/post/Notice";
 import { PostSection } from "@/components/post/PostSection";
 import { QuestionCard } from "@/components/post/QuestionCard";
 import { SectionOpener } from "@/components/post/SectionOpener";
+import { TermProse } from "@/components/post/TermProse";
 import { Panel } from "@/components/week05/Panel";
+import { Search as Part } from "@/features/week05/search/Search";
+import { LIVE, SEARCH, TERMS } from "@/scripts/week05-search.js";
 
-// Section 3: a Bag-of-Words search over the 303 pages. week05-search.js fills the stats row, the query
-// chips, the live ranking, the query table, its detail panel and the passage.
+// Section 3: a Bag-of-Words search over the 303 pages. The search islands (src/features/week05/search/)
+// fill the stats row, the query chips, the search box and its live ranking, the query table, its detail
+// panel and the passage; the terms in "what we did" wait for search.json and search_live.json, as on main.
 export function Search() {
   return (
     <PostSection id="search" owner="Àngela">
@@ -21,9 +25,9 @@ export function Search() {
         answer="Rarely first: the right page comes first for 1 of 11 queries and in the top five for 6. Short pages win most misses."
         layout="below"
         did={
-          <p className="sub">
+          <TermProse as="p" className="sub" roots={["#search-did p"]} terms={TERMS} after={[SEARCH, LIVE]}>
             We turned every page and every query into a Bag of Words: a count of each word, with the order thrown away. We wrote 12 queries, 11 with a target page, ranked all 303 pages by cosine similarity to each, and looked where the target came: once with every word, once with stopwords removed, spaCy's list of 306 words.
-          </p>
+          </TermProse>
         }
         surprise={
           <Notice icon="💡" headline="What to notice">
@@ -32,18 +36,10 @@ export function Search() {
         }
         figure={
           <>
-            <div id="search-stats" className="w5-statrow"></div>
+            <Part part="stats" />
             <div className="w5-two">
               <Panel title="Try the search (stopwords removed)">
-                <div aria-label="Example queries" className="w5-chips" id="search-chips" role="group"></div>
-                <div className="w5-search-box">
-                  <label className="visually-hidden" htmlFor="search-input">Query</label>
-                  {" "}
-                  <input autoComplete="off" id="search-input" placeholder="king of Wakanda" type="search" />
-                  {" "}
-                  <button id="search-run" type="button">Rank pages</button>
-                </div>
-                <ol aria-live="polite" className="w5-rank" id="search-live-ranks"></ol>
+                <Part part="box" />
                 <p className="w5-caption">The eight pages with the highest cosine for the query; (target) marks the page we meant.</p>
               </Panel>
               <Panel title="The 12 queries">
@@ -58,10 +54,10 @@ export function Search() {
                         <th>Raw top hit</th>
                       </tr>
                     </thead>
-                    <tbody id="search-tbody"></tbody>
+                    <Part part="rows" />
                   </table>
                 </div>
-                <div aria-live="polite" className="w5-detail" id="search-detail"></div>
+                <Part part="detail" />
                 <p className="w5-caption">Click a query to see the words it shares with the winning page and with its target.</p>
               </Panel>
             </div>
@@ -93,7 +89,7 @@ export function Search() {
             <p>
               Redneck's page wins "weather-controlling mutant from Kenya" while sharing one word with the query besides stopwords, mutant, in its first sentence:
             </p>
-            <div id="search-passage"></div>
+            <Part part="passage" />
           </Drawer>
         </Drawers>
       </QuestionCard>

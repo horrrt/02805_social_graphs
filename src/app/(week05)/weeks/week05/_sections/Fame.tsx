@@ -5,9 +5,12 @@ import { Plot } from "@/components/post/Plot";
 import { PostSection } from "@/components/post/PostSection";
 import { QuestionCard } from "@/components/post/QuestionCard";
 import { SectionOpener } from "@/components/post/SectionOpener";
+import { TermProse } from "@/components/post/TermProse";
+import { Fame as Part } from "@/features/week05/fame/Fame";
+import { FAME, TERMS } from "@/scripts/week05-fame.js";
 
-// Section 6: page length against incoming links. week05-fame.js draws the scatter, the outlier table and
-// the passages into the empty hosts.
+// Section 6: page length against incoming links. The fame islands (src/features/week05/fame/) draw the
+// scatter, the outlier table and the passages; the term in "what we did" waits for fame.json, as on main.
 export function Fame() {
   return (
     <PostSection id="fame" owner="Niklas">
@@ -21,9 +24,9 @@ export function Fame() {
         answer="Yes, and strongly (Pearson 0.77, Spearman 0.75)."
         layout="beside"
         did={
-          <p className="sub">
+          <TermProse as="p" className="sub" roots={["#fame-did p"]} terms={TERMS} after={[FAME]}>
             The correlation of 0.77 is far from chance: in 1,000 shuffles of in-degree over the pages it averaged 0.00 ± 0.06 and never passed 0.19. For the five pages furthest above the line and the five furthest below we measured what could explain the gap, then read each page and the pages that name it.
-          </p>
+          </TermProse>
         }
         surprise={
           <Notice icon="💡" headline="What to notice">
@@ -35,7 +38,7 @@ export function Fame() {
             title="Page length against incoming links"
             note="Each dot is one of the 303 pages, on log scales; hollow dots are the 17 isolates. The line is the fit. The ten named pages sit furthest from it, coloured by side as the key shows, each marked with its length over the predicted length. Pages with the same in-degree are spread slightly sideways so they do not hide each other; hover a dot for its numbers."
           >
-            <div id="chart-fame-scatter"></div>
+            <Part part="scatter" />
           </Plot>
         }
       >
@@ -72,13 +75,13 @@ export function Fame() {
             </p>
           </Drawer>
           <Drawer label="Table: the ten pages furthest from the line">
-            <div id="fame-outliers"></div>
+            <Part part="outliers" />
           </Drawer>
           <Drawer label="What we read in the pages" bodyId="fame-checked">
             <p>
               The ten pages furthest from the line, above it first. For each, the reason we found by measuring and reading, and a passage that supports it, from the page itself or a page that names it. Four of the five below the line are minor characters whose every linking page names the same team or place.
             </p>
-            <div id="fame-passages"></div>
+            <Part part="passages" />
           </Drawer>
         </Drawers>
       </QuestionCard>

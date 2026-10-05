@@ -1,29 +1,24 @@
 // Week 5 · section 3 · A Marvel search engine in 20 lines. Owner: Àngela.
 //
-// Draws into #search on src/app/(week05)/weeks/week05/page.tsx: the stat row, the search
+// What this section's islands (src/features/week05/search/) draw into #search on
+// src/app/(week05)/weeks/week05/_sections/Search.tsx: the stat row, the search
 // box (the stopword-free model, same vocabulary and tie rule as the script), the
 // table of queries with the detail of the selected one, and the passage checked.
 // Data: public/weeks/week05/data/search.json and search_live.json, written by
-// analysis/week05_search.py.
+// analysis/week05_search.py. No DOM, no listeners, no fetch.
 
-import { asset } from "./site.js";
-import { loadData, passage, termify } from "./kit.js";
-
-const SEARCH_URL = asset("weeks/week05/data/search.json");
-const LIVE_URL = asset("weeks/week05/data/search_live.json");
+/** The queries, their ranks and the passage: every part of the section but the live ranking. */
+export const SEARCH = "weeks/week05/data/search.json";
+/** The stopword-free model the search box runs. */
+export const LIVE = "weeks/week05/data/search_live.json";
 
 // The script's token rule: letters and digits in any alphabet, an inner apostrophe kept.
 const TOKEN = /[\p{L}\p{M}\p{N}]+(?:['’][\p{L}\p{M}\p{N}]+)?/gu;
 const tokenize = (text) => (text.toLowerCase().match(TOKEN) || []).map((t) => t.replace("’", "'"));
 const pct = (v, digits = 1) => `${(100 * v).toFixed(digits)}%`;
-const el = (tag, text, cls) => {
-  const e = document.createElement(tag);
-  if (text !== undefined) e.textContent = text;
-  if (cls) e.className = cls;
-  return e;
-};
 
-function model(live) {
+/** The search box's ranking: model(live)(query) -> the top rows [{ id, name, cosine }], or null when no word is known. */
+export function model(live) {
   const index = new Map(live.vocab.map((t, i) => [t, i]));
   const stop = new Set(live.stopwords);
   const norms = live.pages.map((p) => Math.sqrt(p.val.reduce((s, v) => s + v * v, 0)));
@@ -47,126 +42,68 @@ function model(live) {
   };
 }
 
-function renderStats(s, host) {
-  host.replaceChildren();
-  for (const [value, label] of [
+/** The ranking's line when no page shares a word with the query. */
+export const NO_MATCH = "No page shares a word with this query once stopwords are removed.";
+
+/** The stat row: [value, label] per stat. */
+export function stats(s) {
+  return [
     [`${s.hits_at_1}/${s.n_scored}`, "right page first, raw counts"],
     [`${s.hits_at_5}/${s.n_scored}`, "in the top 5, raw counts"],
     [`${s.hits_at_1_nostop}/${s.n_scored}`, "first, stopwords removed"],
     [`${s.hits_at_5_nostop}/${s.n_scored}`, "in the top 5, stopwords removed"],
-  ]) {
-    const d = el("div", undefined, "w5-stat");
-    d.append(el("b", value), el("span", label));
-    host.append(d);
-  }
+  ];
 }
 
-function renderRanks(rows, host, target) {
-  host.replaceChildren();
-  if (!rows) {
-    const li = el("li");
-    li.append(el("span", "No page shares a word with this query once stopwords are removed.", "w5-name"));
-    host.append(li);
-    return;
-  }
-  rows.forEach((row, i) => {
-    const li = el("li");
-    const hit = target && row.id === target;
-    if (hit) li.classList.add("w5-hit");
-    li.append(el("span", String(i + 1), "w5-pos"), el("span", hit ? `${row.name} (target)` : row.name, "w5-name"),
-      el("span", row.cosine.toFixed(3), "w5-score"));
-    host.append(li);
-  });
+/** The query selected when the section first draws: storm, else the first. */
+export function firstPick(data) {
+  return data.queries.find((q) => q.id === "storm")?.id ?? data.queries[0].id;
 }
 
-function renderTable(data, tbody, onPick) {
-  tbody.replaceChildren();
-  for (const q of data.queries) {
-    const tr = el("tr");
-    tr.dataset.id = q.id;
-    const button = el("button", q.query, "linkish");
-    button.type = "button";
-    button.addEventListener("click", () => onPick(q.id));
-    const cell = (text, cls) => {
-      const td = el("td", text, cls);
-      tr.append(td);
-      return td;
-    };
-    tr.append(el("td"));
-    tr.firstChild.append(button);
-    cell(q.expected_name ?? "none in the snapshot");
-    cell(q.rank ? `#${q.rank}` : "none", q.hit_at_1 ? "w5-ok" : "w5-fail");
-    cell(q.rank_nostop ? `#${q.rank_nostop}` : "none");
-    cell(q.top5[0].name);
-    tbody.append(tr);
-  }
+/** How many example queries the chips offer: the first six. */
+export const CHIPS = 6;
+
+/** One row of the query table: the query, then four cells [text, class]. */
+export function row(q) {
+  return {
+    id: q.id,
+    query: q.query,
+    cells: [
+      [q.expected_name ?? "none in the snapshot"],
+      [q.rank ? `#${q.rank}` : "none", q.hit_at_1 ? "w5-ok" : "w5-fail"],
+      [q.rank_nostop ? `#${q.rank_nostop}` : "none"],
+      [q.top5[0].name],
+    ],
+  };
 }
 
-function renderDetail(q, s, host) {
-  host.replaceChildren();
+/** The detail of the selected query: paragraphs [text, class]. */
+export function detail(q, s) {
   const status = q.hit_at_1 ? "Right page first." : q.scored ? `The target sits at #${q.rank}.` : "No page is right.";
-  host.append(el("p", `${status} ${q.why_expected}`));
   const words = (terms) => (terms?.length ? terms.slice(0, 5).map((t) => (t.is_stop ? `${t.term} (stopword)` : t.term)).join(", ") : "none");
-  host.append(el("p", `Top raw hit: ${q.top5[0].name}, ${q.top5[0].n_tokens.toLocaleString("en-GB")} words, shares ${words(q.top5[0].overlap_terms)}.`));
-  if (q.scored) host.append(el("p", `${q.expected_name} shares ${words(q.expected_overlap)}.`));
-  if (q.failure_reason) host.append(el("p", q.failure_reason));
-  host.append(el("p", `A random ranking puts the target first ${pct(s.chance_at_1)} of the time.`, "w5-caption"));
+  const lines = [[`${status} ${q.why_expected}`]];
+  lines.push([`Top raw hit: ${q.top5[0].name}, ${q.top5[0].n_tokens.toLocaleString("en-GB")} words, shares ${words(q.top5[0].overlap_terms)}.`]);
+  if (q.scored) lines.push([`${q.expected_name} shares ${words(q.expected_overlap)}.`]);
+  if (q.failure_reason) lines.push([q.failure_reason]);
+  lines.push([`A random ranking puts the target first ${pct(s.chance_at_1)} of the time.`, "w5-caption"]);
+  return lines;
 }
 
-async function boot() {
-  const section = document.getElementById("search");
-  if (!section) return;
-  const [data, live] = await Promise.all([loadData(SEARCH_URL), loadData(LIVE_URL)]);
-  const search = model(live);
-  const byId = Object.fromEntries(data.queries.map((q) => [q.id, q]));
-  const s = data.summary;
-  renderStats(s, document.getElementById("search-stats"));
+/** The target a run of `text` marks: a typed query has none unless it is the selected query word for word. */
+export function targetOf(selected, text) {
+  return selected && text.trim() === selected.query ? selected.expected : null;
+}
 
-  const tbody = document.getElementById("search-tbody");
-  const detail = document.getElementById("search-detail");
-  const input = document.getElementById("search-input");
-  const ranks = document.getElementById("search-live-ranks");
-  const chips = document.getElementById("search-chips");
-  let selected = null;
-
-  const pick = (id) => {
-    selected = byId[id];
-    for (const tr of tbody.querySelectorAll("tr")) tr.setAttribute("aria-selected", String(tr.dataset.id === id));
-    for (const b of chips.querySelectorAll("button")) b.setAttribute("aria-pressed", String(b.dataset.id === id));
-    renderDetail(selected, s, detail);
-    input.value = selected.query;
-    renderRanks(search(selected.query), ranks, selected.expected);
-  };
-  renderTable(data, tbody, pick);
-  for (const q of data.queries.slice(0, 6)) {
-    const b = el("button", q.query, "w5-chip");
-    b.type = "button";
-    b.dataset.id = q.id;
-    b.addEventListener("click", () => pick(q.id));
-    chips.append(b);
-  }
-  const run = () => {
-    // A typed query has no target unless it is the selected query word for word.
-    const target = selected && input.value.trim() === selected.query ? selected.expected : null;
-    renderRanks(search(input.value.trim()), ranks, target);
-  };
-  document.getElementById("search-run").addEventListener("click", run);
-  input.addEventListener("keydown", (e) => {
-    if (e.key === "Enter") {
-      e.preventDefault();
-      run();
-    }
-  });
-  pick(data.queries.find((q) => q.id === "storm")?.id ?? data.queries[0].id);
-
+/** The checked passage's props, or null. */
+export function checked(data) {
   const c = data.checked;
-  if (c) document.getElementById("search-passage").append(passage({ page: c.winner, text: c.quote, highlight: c.terms[0] }));
-
-  const did = document.getElementById("search-did");
-  termify(did, "Bag of Words", "A page or a query as a list of word counts, with the word order thrown away.", "w5-term-search-bow");
-  termify(did, "cosine similarity", "How close two count vectors point: their dot product divided by both their lengths, from 0 (no shared word) to 1 (the same proportions).", "w5-term-search-cosine");
-  termify(did, "document-term matrix", "A table with one row per page, one column per word and the counts inside.", "w5-term-search-dtm");
-  termify(did, "stopwords", "Very common words such as the, of and with, dropped before counting.", "w5-term-search-stop");
+  return c ? { page: c.winner, text: c.quote, highlight: c.terms[0] } : null;
 }
 
-boot().catch((err) => console.error("week05 search failed", err));
+// ---- glossary terms, in main's call order. "document-term matrix"
+// (w5-term-search-dtm) matched no text in #search-did, so it is not placed.
+export const TERMS = [
+  { phrase: "Bag of Words", definition: "A page or a query as a list of word counts, with the word order thrown away.", id: "w5-term-search-bow" },
+  { phrase: "cosine similarity", definition: "How close two count vectors point: their dot product divided by both their lengths, from 0 (no shared word) to 1 (the same proportions).", id: "w5-term-search-cosine" },
+  { phrase: "stopwords", definition: "Very common words such as the, of and with, dropped before counting.", id: "w5-term-search-stop" },
+];

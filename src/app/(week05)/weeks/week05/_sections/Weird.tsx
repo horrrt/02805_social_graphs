@@ -5,9 +5,13 @@ import { Plot } from "@/components/post/Plot";
 import { PostSection } from "@/components/post/PostSection";
 import { QuestionCard } from "@/components/post/QuestionCard";
 import { SectionOpener } from "@/components/post/SectionOpener";
+import { TermProse } from "@/components/post/TermProse";
+import { Weird as Part } from "@/features/week05/weird/Weird";
+import { TERMS, WEIRD } from "@/scripts/week05-weird.js";
 
-// Section 7: MATTR against page length. week05-weird.js draws the scatter, the passages and the top and
-// bottom table into the empty hosts.
+// Section 7: MATTR against page length. The weird islands (src/features/week05/weird/) draw the scatter
+// with its drawer of all pages, the passages and the top and bottom table; the term in "what we did"
+// waits for weird.json, as on main.
 export function Weird() {
   return (
     <PostSection id="weird" owner="Niklas">
@@ -21,9 +25,9 @@ export function Weird() {
         answer="Real text: Coldblood, Super Rabbit and Ravage 2099 win with a list of cyborg parts, a Golden Age publication record and an interview."
         layout="beside"
         did={
-          <p className="sub">
+          <TermProse as="p" className="sub" roots={["#weird-did p"]} terms={TERMS} after={[WEIRD]}>
             Weird, for us, means varied words. We slide a window of 100 words along each page one word at a time, count the different words in each window and average them: the moving-average type-token ratio, MATTR. The fixed window lets the shortest page, 193 words, meet the longest, 14,037 words, since the share of different words in a whole page falls as the page grows.
-          </p>
+          </TermProse>
         }
         surprise={
           <Notice icon="💡" headline="What to notice">
@@ -35,7 +39,7 @@ export function Weird() {
             title="Varied words against page length"
             note="Each dot is a page: its MATTR against its length in words, on a log scale. The shaded band holds random stretches of the whole corpus of the same length (mean ± 2 standard deviations; the dashed line is the mean). The solid line is the mean of each page's 30 length neighbours, which the ranking measures against. The five highest and five lowest scores against pages of similar length are named. Hover a dot for its numbers."
           >
-            <div id="chart-weird-scatter"></div>
+            <Part part="scatter" />
           </Plot>
         }
       >
@@ -67,12 +71,12 @@ export function Weird() {
             <p>
               A sentence past the lead of each of the top three pages, and one from the last page, quoted from the page.
             </p>
-            <div id="weird-passages"></div>
+            <Part part="passages" />
             <Plot
               title="The top and bottom five, read"
               note="Rank of 303 by z-score. Rare words: the share of the page's different words found on at most 2 pages. House phrasing: the share of its words inside runs of 8 found on more than 10 pages. In brackets, the median of the page's 30 length neighbours."
             >
-              <div id="weird-table"></div>
+              <Part part="table" />
             </Plot>
           </Drawer>
         </Drawers>
