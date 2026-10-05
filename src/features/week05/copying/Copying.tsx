@@ -17,7 +17,7 @@ import { useHydrated } from "@/lib/useHydrated";
 import { asset } from "@/scripts/site.js";
 import { COPYING, clusters, linked, network, passages } from "@/scripts/week05-copying.js";
 import { ChartHost, ServerHost } from "../map/ChartHost";
-import NetworkView from "./NetworkView";
+import NetworkView from "../map/NetworkView";
 
 type Data = Parameters<typeof network>[0];
 

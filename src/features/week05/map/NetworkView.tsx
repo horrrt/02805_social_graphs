@@ -1,16 +1,22 @@
 // shim: W5-2
-// src/kit/NetworkView.tsx as it stands, with one change: each line's title goes
-// through Tipped (LineMark below), so the copying network's links show their
-// passages in the host's hover tip, as tips.js hoverTips() showed them on main
-// (HOVERTIPS.md, chart-copying-network). Kit's LineMark writes a plain <title>,
-// which leaves the lines without data-tip. Until requests/W5-2.md (1) lands in
-// src/kit/network/marks.tsx; then the copying island imports NetworkView from
-// @/kit and this file goes. The rest is the kit's: d3-zoom on the view's svg
-// writes the transform of its zoom <g>.
+// src/kit/NetworkView.tsx as it stands, with two changes, for Week 5's three
+// networks (the copying network and both Marvel maps):
+// - each line's title goes through Tipped (LineMark below), so the copying
+//   network's links show their passages in the host's hover tip, as tips.js
+//   hoverTips() showed them on main (HOVERTIPS.md, chart-copying-network). Kit's
+//   LineMark writes a plain <title>, which leaves the lines without data-tip;
+// - a d3 that failed to load stays failed for the page (store.js), as graph.js
+//   loadD3() kept its rejected promise: a view drawn later, such as the
+//   relations map after a switch, asks for d3 no more, where useVendor would
+//   request it again.
+// Until requests/W5-2.md (1) and (4) land in src/kit; then the islands import
+// NetworkView from @/kit and this file goes. The rest is the kit's: d3-zoom on
+// the view's svg writes the transform of its zoom <g>.
 import { memo, useCallback, useEffect, useLayoutEffect, useMemo, useReducer, useRef, type MouseEvent, type PointerEvent } from "react";
 import { useHydrated } from "@/lib/useHydrated";
 import { useFittedWidth } from "@/lib/useSize";
 import { useTextMeasure, useTypeScale, type TypeScale } from "@/lib/useTypeScale";
+import { useStore } from "@/lib/useStore";
 import { useVendor } from "@/lib/useVendor";
 import {
   describeNode,
@@ -31,6 +37,7 @@ import {
 import { HubMark, NodeMark, type HubEvents, type NodeEvents } from "@/kit/network/marks";
 import { Tipped } from "@/kit/HoverTipHost";
 import { initModel, initUi, model, ui, uiFor, type Lit, type TipText } from "@/kit/network/state";
+import { d3Store } from "./store.js";
 
 export type { NetLink, NetNode, NetworkSpec, NodeInfo } from "@/kit/network/layout";
 
@@ -61,6 +68,8 @@ const ZOOMS: [string, string][] = [
 ];
 
 type D3 = any;
+
+const d3FailedOf = (s: { failed: boolean }) => s.failed;
 
 // A tooltip line as textContent writes it: nothing for null or undefined.
 const text = (t: unknown) => (t === null || t === undefined ? null : String(t));
@@ -164,13 +173,19 @@ function View({ spec, onChange, scale, measure }: { spec: NetworkSpec; onChange?
   const target = m.orphan ? -1 : gen;
   const lightLegend = (g: number) => act({ type: "light", gen: target, lit: litGroup(g), pin: true });
 
-  const d3 = useVendor<D3>("d3-7.9.0.min.js", "d3", { enabled: explore });
+  const d3Failed = useStore(d3Store, d3FailedOf);
+  const d3 = useVendor<D3>("d3-7.9.0.min.js", "d3", { enabled: explore && !d3Failed });
+  useEffect(() => {
+    if (d3.status === "error") d3Store.setState({ failed: true });
+  }, [d3.status]);
+  // A view drawn after the failure logs it, as each draw's loadD3() did on main.
+  const d3Status = d3Failed ? "error" : d3.status;
   const zoomBy = useRef<(label: string) => void>(() => {});
   // The zoom <g> the svg's d3-zoom transform belongs to.
   const zoomed = useRef<SVGGElement | null>(null);
   useEffect(() => {
-    if (d3.status === "error") console.error(new Error("could not load d3"));
-    if (d3.status !== "ready") return;
+    if (d3Status === "error") console.error(new Error("could not load d3"));
+    if (d3Status !== "ready") return;
     const svg = svgRef.current;
     const lib = d3.lib;
     if (!svg || !lib) return;
@@ -200,7 +215,7 @@ function View({ spec, onChange, scale, measure }: { spec: NetworkSpec; onChange?
       sel.interrupt().on(".zoom", null);
       zoomBy.current = () => {};
     };
-  }, [d3.status, d3.lib, gen, L.width, L.height]);
+  }, [d3Status, d3.lib, gen, L.width, L.height]);
 
   const fs = scale.fs;
   const hiNodes = u.lit?.nodes;
