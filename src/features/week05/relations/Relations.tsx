@@ -78,7 +78,11 @@ function Kinds({ kind, pick }: { kind: string; pick?: (kind: string) => void }) 
 
 function MapView() {
   const { hydrated, data } = useRelations();
-  const [kind, setKind] = useState(FIRST_KIND);
+  // Every click draws a new view, the pressed kind too, as main's show(kind)
+  // rebuilt the map on each one: zoom back to 1x, no pin, the tip hidden.
+  const [view, setView] = useState({ kind: FIRST_KIND, draw: 0 });
+  const pick = (kind: string) => setView((v) => ({ kind, draw: v.draw + 1 }));
+  const { kind, draw } = view;
   // The same request MarvelMap makes; the switch only reads whether it is in.
   const net = useNetworkData(hydrated, data !== null);
   const drawn = data !== null && net.status === "ready";
@@ -86,8 +90,8 @@ function MapView() {
   useIslandReady(drawn);
   return (
     <>
-      <Kinds kind={kind} pick={drawn ? setKind : undefined} />
-      <MarvelMap id={MAP} hydrated={hydrated} after={data !== null} mark={kind} options={options} />
+      <Kinds kind={kind} pick={drawn ? pick : undefined} />
+      <MarvelMap id={MAP} hydrated={hydrated} after={data !== null} mark={kind} draw={draw} options={options} />
     </>
   );
 }

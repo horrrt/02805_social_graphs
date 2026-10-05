@@ -3,7 +3,8 @@
 // and only once the section's own file has loaded (`after`), as each section
 // called loadNetwork() after its own await on main. Until the map draws, the
 // host is swept and holds a hidden tip; the draw empties it (tip "none"), and a
-// new `mark` draws a new view, as marvelMap() replaced the host's content. A
+// new `mark` or `draw` draws a new view, as marvelMap() replaced the host's
+// content on every call, the same mark's too. A
 // failed network.json leaves the swept host and logs main's line.
 import { useEffect, useMemo } from "react";
 import type { NetworkSpec } from "@/kit";
@@ -22,6 +23,8 @@ type Props = {
   hydrated: boolean;
   after: boolean;
   mark?: string;
+  /** Counts the parent's redraws: a new value draws a new view, even for the same mark. */
+  draw?: number;
   options?: Record<string, unknown>;
 };
 
@@ -52,15 +55,16 @@ function useNetwork(hydrated: boolean, after: boolean) {
 }
 
 /** <MarvelMap id="chart-relations-map" hydrated={hydrated} after={ready} mark="enemy" options={{ aria }} /> */
-export function MarvelMap({ id, hydrated, after, mark, options }: Props) {
+export function MarvelMap({ id, hydrated, after, mark, draw = 0, options }: Props) {
   const net = useNetwork(hydrated, after);
   const spec = useMemo(
     () => (net.data ? (mapSpec(net.data, { mark, ...options }) as unknown as NetworkSpec) : null),
     [net.data, mark, options],
   );
+  const view = `${mark ?? ""}-${draw}`;
   return (
-    <ChartHost id={id} hydrated={hydrated} tip={spec ? "none" : "first"} redraws={spec ? (mark ?? 1) : 0}>
-      {spec ? <NetworkView key={mark ?? ""} spec={spec} /> : null}
+    <ChartHost id={id} hydrated={hydrated} tip={spec ? "none" : "first"} redraws={spec ? view : 0}>
+      {spec ? <NetworkView key={view} spec={spec} /> : null}
     </ChartHost>
   );
 }

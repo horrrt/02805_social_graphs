@@ -1,6 +1,7 @@
 // W5-2: Week 5's sections 1, 2 and 4, now islands (src/features/week05/
 // relations, copying, autocomplete, map). Hovers a mark in every chart host,
-// switches the relations map both ways, clicks every label chip, opens every
+// switches the relations map both ways and clicks the pressed kind again (a
+// new view: zoom, pin and tip reset), clicks every label chip, opens every
 // drawer these sections fill (the checked sentences, the cluster table, the
 // passages, More numbers with the modularity strip, the nested copied run),
 // lights a group from the map's legend and plays the quiz: pick, lock, next,
@@ -67,6 +68,13 @@ export default [
       { snap: true },
       { click: '#relations-map-kind [data-kind="enemy"]', label: "map: fight words" },
       ...html("enemy", ["chart-relations-map"]),
+      { click: '#chart-relations-map button[aria-label="Zoom in"]', label: "map: zoom in" },
+      { click: '#relations-map-kind [data-kind="enemy"]', label: "map: fight words again, already pressed" },
+      ...html("enemy again: 1x", ["chart-relations-map"]),
+      { click: "#chart-relations-map [data-id]:nth-child(10)", label: "map: pin a node" },
+      ...html("pinned", ["chart-relations-map"]),
+      { click: '#relations-map-kind [data-kind="enemy"]', label: "map: fight words again, pin and tip gone" },
+      ...html("enemy again: no pin", ["chart-relations-map"]),
       { hover: ["#chart-copying-linked circle[data-tip]", 0.5, 0.5], label: "hover the linked strip's first dot" },
       ...html("linked dot", ["chart-copying-linked"]),
       { hover: ["#chart-copying-linked circle[data-tip]:last-of-type", 0.5, 0.5], label: "hover the linked strip's last dot" },
