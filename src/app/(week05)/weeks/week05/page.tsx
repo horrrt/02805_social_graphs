@@ -1,4 +1,3 @@
-import PageScripts from "@/components/PageScripts";
 import { PostTopbar } from "@/components/site/PostTopbar";
 import { SkipLink } from "@/components/site/SkipLink";
 import { Autocomplete } from "./_sections/Autocomplete";
@@ -14,8 +13,8 @@ import { Relations } from "./_sections/Relations";
 import { Search } from "./_sections/Search";
 import { Weird } from "./_sections/Weird";
 
-// One component per section in _sections/. Until the Week 5 close batch, the
-// legacy scripts behind <PageScripts> fill the empty hosts and place the terms.
+// One component per section in _sections/. Each section's islands fill its
+// hosts and place its terms.
 export default function Page() {
   return (
     <>
@@ -64,7 +63,6 @@ export default function Page() {
       {" "}
       {" "}
       {" "}
-      <PageScripts page="week05" />
     </>
   );
 }

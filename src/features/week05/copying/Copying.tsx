@@ -8,7 +8,7 @@
 // a line puts the tip back with its passage. A failed copying.json leaves every
 // part as the server rendered it, the chart hosts swept, and logs one line.
 import { Fragment, useEffect, useMemo } from "react";
-import { Passage, StripChart, Table, type NetworkSpec } from "@/kit";
+import { NetworkView, Passage, StripChart, Table, type NetworkSpec } from "@/kit";
 import type { StripOptions, StripRow } from "@/kit/StripChart";
 import type { TableSpec } from "@/kit/Table";
 import { island, useIslandReady } from "@/lib/island";
@@ -17,7 +17,6 @@ import { useHydrated } from "@/lib/useHydrated";
 import { asset } from "@/scripts/site.js";
 import { COPYING, clusters, linked, network, passages } from "@/scripts/week05-copying.js";
 import { ChartHost, ServerHost } from "../map/ChartHost";
-import NetworkView from "../map/NetworkView";
 
 type Data = Parameters<typeof network>[0];
 

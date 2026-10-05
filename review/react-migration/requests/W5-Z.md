@@ -67,7 +67,7 @@ src/features/week05/relations/VerdictConcordance.tsx: `// shim:` is allowed only
 
 ## 1. Remove the hover-tip compat island and its mount
 
-**Status:** open.
+**Status:** approved by the orchestrator and applied in W5-Z on 5 Oct 2026, with the three entry edits.
 
 **Files:** `src/features/week05/frame/Frame.tsx` (W5-1), `src/app/(week05)/weeks/week05/_sections/Hero.tsx`
 (W5-1), and delete `src/features/week05/frame/hovertips-compat.js` (W5-Z owns it, but it cannot go before its
@@ -169,7 +169,9 @@ committed), on a build with `GITHUB_SHA=parity00000` against main d52830f:
 
 ## 2. Land the open W5-1 and W5-2 kit requests and delete the three shims
 
-**Status:** open; waits on `requests/W5-1.md` (1) and (2) and `requests/W5-2.md` (1), (2) and (4).
+**Status:** approved by the orchestrator and applied in W5-Z on 5 Oct 2026, after `requests/W5-1.md` (1) and
+(2) and `requests/W5-2.md` (1), (2) and (4). `src/features/week05/map/ChartHost.tsx` also imported OwnedHost;
+it now renders HoverTipHost without `as` and a plain div before hydration.
 
 **Files:** `src/kit/HoverTipHost.tsx`, `src/kit/NetworkView.tsx`, `src/kit/Concordance.tsx` (K1b/K2), then the
 Week 5 islands that import the shims (W5-1, W5-2).

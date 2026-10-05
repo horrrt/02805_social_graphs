@@ -1,7 +1,6 @@
 "use client";
 // Week 5's frame: the hero scatter (#chart-hero-fame) and the findings minis
-// (#findings [data-finding]), which week05-frame.js drew on main, and the
-// hover-tip sweep it ran over the page's other chart hosts. Each host renders
+// (#findings [data-finding]), which week05-frame.js drew on main. Each host renders
 // as the server did until hydrated. The hero then becomes a HoverTipHost as
 // main's sweep left it (the class and a hidden tip) and, once fame.json has
 // loaded, draws the scatter from fameLayout(), which empties the host of its
@@ -20,8 +19,6 @@ import { useFittedWidth } from "@/lib/useSize";
 import { useTokens, useTypeScale, type TypeScale } from "@/lib/useTypeScale";
 import { asset } from "@/scripts/site.js";
 import { FINDING_FILES, NO_GUESSES, fameLayout, strips } from "@/scripts/week05-frame.js";
-import { sweepHoverTips } from "./hovertips-compat.js";
-import { OwnedHost } from "./OwnedHost";
 
 const file = (name: string) => asset(`weeks/week05/data/${name}.json`);
 
@@ -46,9 +43,6 @@ const HERO_TOKENS = ["--w4-hero-ink", "--w4-hero-label", "--w4-hero-body", "--w4
 
 type Layout = ReturnType<typeof fameLayout>;
 type Fame = Parameters<typeof fameLayout>[0];
-
-// HoverTipHost takes a tag name; the hero's element is OwnedHost (see there).
-const OWNED = OwnedHost as unknown as string;
 
 function FameSvg({ fame, scale, tokens }: { fame: Fame; scale: TypeScale; tokens: Record<string, string> }) {
   const ref = useRef<SVGSVGElement>(null);
@@ -112,7 +106,7 @@ function FameChart({ fame }: { fame: Fame }) {
 }
 
 function HeroHost() {
-  return <OwnedHost {...HERO} />;
+  return <div {...HERO} />;
 }
 
 function HeroView() {
@@ -124,7 +118,7 @@ function HeroView() {
   if (!hydrated) return <HeroHost />;
   // Swept (a hidden tip first) until the scatter replaces the host's content.
   return (
-    <HoverTipHost as={OWNED} {...HERO} tip={ready ? "none" : "first"} redraws={ready ? 1 : 0}>
+    <HoverTipHost {...HERO} tip={ready ? "none" : "first"} redraws={ready ? 1 : 0}>
       {ready && fame.data ? <FameChart fame={fame.data} /> : null}
     </HoverTipHost>
   );
@@ -183,18 +177,3 @@ function Placeholder({ part }: Props) {
 export const Frame = island("week05/frame/Frame", View, Placeholder, {
   roots: ["#chart-hero-fame", "#findings [data-finding]"],
 });
-
-// ---- the hover-tip sweep -------------------------------------------------------
-
-function Compat() {
-  useEffect(() => {
-    sweepHoverTips();
-  }, []);
-  return null;
-}
-
-const Nothing = () => null;
-
-// A service island: it renders nothing, and the chart hosts the old scripts
-// draw lose their tips when it fails.
-export const HoverTipsCompat = island("week05/frame/HoverTipsCompat", Compat, Nothing, { roots: "none", affects: "page" });

@@ -7,13 +7,12 @@
 // content on every call, the same mark's too. A
 // failed network.json leaves the swept host and logs main's line.
 import { useEffect, useMemo } from "react";
-import type { NetworkSpec } from "@/kit";
+import { NetworkView, type NetworkSpec } from "@/kit";
 import { useData, type DataState } from "@/lib/useData";
 import { useStore } from "@/lib/useStore";
 import { asset } from "@/scripts/site.js";
 import { NETWORK, mapSpec } from "@/scripts/week05-map.js";
 import { ChartHost } from "./ChartHost";
-import NetworkView from "./NetworkView";
 import { network } from "./store.js";
 
 type Net = Parameters<typeof mapSpec>[0];

@@ -1,10 +1,9 @@
 import { HeroStat } from "@/components/post/HeroStat";
 import { PostHero } from "@/components/post/PostHero";
-import { Frame, HoverTipsCompat } from "@/features/week05/frame/Frame";
+import { Frame } from "@/features/week05/frame/Frame";
 
 // Hero: the post's question, the scope caution, two numbers and the fame scatter (#chart-hero-fame,
-// drawn by the frame island). HoverTipsCompat gives the chart hosts the old scripts still draw their
-// hover tips; it renders nothing.
+// drawn by the frame island).
 export function Hero() {
   return (
     <>
@@ -42,7 +41,6 @@ export function Hero() {
           </figcaption>
         </figure>
       </PostHero>
-      <HoverTipsCompat />
     </>
   );
 }

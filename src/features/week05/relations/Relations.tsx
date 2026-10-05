@@ -9,7 +9,8 @@
 // main wired the buttons then. A failed relations.json leaves every part as
 // the server rendered it, the chart hosts swept, and logs one line.
 import { useEffect, useMemo, useState, type ReactNode } from "react";
-import { StripChart } from "@/kit";
+import { Concordance, StripChart } from "@/kit";
+import type { KwicRow } from "@/kit/Concordance";
 import type { StripOptions, StripRow } from "@/kit/StripChart";
 import { island, useIslandReady } from "@/lib/island";
 import { useData, type DataState } from "@/lib/useData";
@@ -18,7 +19,6 @@ import { asset } from "@/scripts/site.js";
 import { FIRST_KIND, FIRST_LABEL, RELATIONS, chips, crossing, lines, mapAria } from "@/scripts/week05-relations.js";
 import { ChartHost, ServerHost } from "../map/ChartHost";
 import { MarvelMap, useNetworkData } from "../map/MarvelMap";
-import { VerdictConcordance, type VerdictRow } from "./VerdictConcordance";
 
 type Data = Parameters<typeof crossing>[0];
 
@@ -115,10 +115,31 @@ function Chips({ children }: { children?: ReactNode }) {
   );
 }
 
+type VerdictRow = { page: string; left: string; hit: string; right: string; mark: string; markTitle: string; note: string };
+
+// Each sentence a concordance row with the two cells main appended after the
+// right context: td.w5-mark (✓ or ✗, with a title) and td.w5-verdict (the note).
+function verdicts({ caption, rows }: { caption: string; rows: VerdictRow[] }): { caption: string; rows: KwicRow[] } {
+  return {
+    caption,
+    rows: rows.map(({ mark, markTitle, note, ...r }) => ({
+      ...r,
+      extra: (
+        <>
+          <td className="w5-mark" title={markTitle}>
+            {mark}
+          </td>
+          <td className="w5-verdict">{note}</td>
+        </>
+      ),
+    })),
+  };
+}
+
 function LinesView() {
   const { data } = useRelations();
   const [label, setLabel] = useState(FIRST_LABEL);
-  const shown = useMemo(() => (data ? (lines(data, label) as { caption: string; rows: VerdictRow[] }) : null), [data, label]);
+  const shown = useMemo(() => (data ? verdicts(lines(data, label) as { caption: string; rows: VerdictRow[] }) : null), [data, label]);
   useIslandReady(data !== null);
   return (
     <>
@@ -131,7 +152,7 @@ function LinesView() {
             ))
           : null}
       </Chips>
-      <div id="relations-lines">{shown ? <VerdictConcordance rows={shown.rows} caption={shown.caption} /> : null}</div>
+      <div id="relations-lines">{shown ? <Concordance rows={shown.rows} caption={shown.caption} /> : null}</div>
     </>
   );
 }
