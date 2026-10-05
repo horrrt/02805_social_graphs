@@ -2,7 +2,7 @@
 
 ## 1. faults.mjs --islands check (2): compare id elements with the island's roots masked
 
-**Status:** pending, reproduced 5 Oct 2026. Until it lands, G5 `--islands kit/` fails for K1b, and for every
+**Status:** approved and applied by the orchestrator on 5 Oct 2026. Before it landed, G5 `--islands kit/` fails for K1b, and for every
 later island that sits inside an element with an id.
 
 **File:** `scripts/parity/faults.mjs` (the `--islands` loop)
@@ -100,7 +100,7 @@ nothing else is.
 
 ## 2. faults.mjs --islands --estimate crashes
 
-**Status:** pending, reproduced 5 Oct 2026; nothing depends on it.
+**Status:** approved and applied by the orchestrator on 5 Oct 2026.
 
 **File:** `scripts/parity/faults.mjs`
 

@@ -123,6 +123,12 @@ try {
     // --islands: read the registry from head with the fault hook defined.
     const prefix = args.islands === true ? "" : String(args.islands);
     const modes = (args.modes ?? "render,effect").split(",").map((m) => m.trim()).filter(Boolean);
+    // --estimate launches no browser, and the registry is only known by
+    // loading head, so estimate before opening anything.
+    if (args.estimate) {
+      console.log(`${page}: about 7 s per island and mode, plus 7 s to read the registry; run without --estimate to list the islands`);
+      continue;
+    }
     const open = async (opts) => {
       const o = await openPage(browser, opts);
       o.state.origin = new URL(headSrv.base).origin;
@@ -139,15 +145,11 @@ try {
       continue;
     }
     const work = names.flatMap((n) => modes.map((m) => [n, m])).filter(inShard);
-    if (args.estimate) {
-      console.log(`${page}: ${work.length} island faults, about ${work.length * 7 + 7} s`);
-      await plain.context.close();
-      continue;
-    }
     const sel = (list) => (list === "none" || list === "page" || !list ? [] : list);
     const allRoots = [...new Set(names.flatMap((n) => sel(registry[n].roots)))];
     const allSel = [...new Set(names.flatMap((n) => [...sel(registry[n].roots), ...sel(registry[n].affects)]))];
     const unfaulted = await snapshot(plain.page, plain.state, { screenshot: false });
+    const unfaultedMasked = new Map();
     await plain.context.close();
     const noJs = await open({ javaScriptEnabled: false });
     const off = await snapshot(noJs.page, noJs.state, { screenshot: false, select: allRoots, textOf: allSel });
@@ -160,6 +162,9 @@ try {
       const o = await open({ faults: [`${name}:${mode}`] });
       const s = await snapshot(o.page, o.state, { screenshot: false, select: rootSel, exclude: [...rootSel, ...affectSel] });
       const consoleLines = s.flat.get("console") ?? "";
+      // For (2): the same page with this island's roots and affects masked.
+      const hidden = [...rootSel, ...affectSel];
+      const sMasked = affects === "page" ? null : await snapshot(o.page, o.state, { screenshot: false, mask: hidden });
       await o.context.close();
       const problems = [];
       // (1) roots render their JavaScript-disabled markup.
@@ -170,13 +175,20 @@ try {
         else if (JSON.stringify(now) !== JSON.stringify(was)) problems.push(`roots ${r} differs from its JavaScript-disabled markup`);
       }
       if (roots !== "none" && !rootSel.length) problems.push("roots lists no selectors");
-      // (2) every id element outside roots and affects is unchanged.
-      if (affects !== "page") {
-        const skip = new Set(s.excludedIds.map((id) => `id:#${id}`));
-        for (const [key, value] of unfaulted.flat) {
-          if (!key.startsWith("id:#") || skip.has(key.replace(/\[\d+\]$/, ""))) continue;
-          if (s.flat.get(key) !== value) problems.push(`${key} changed outside roots/affects`);
+      // (2) every id element outside roots and affects is unchanged. Both
+      // sides are compared with those elements masked, so an id inside them
+      // (on either side) is not compared, and an ancestor of a root is
+      // compared with the root's subtree left out rather than skipped.
+      if (sMasked) {
+        const key = JSON.stringify(hidden);
+        if (!unfaultedMasked.has(key)) {
+          const u = await open({ faults: [] });
+          unfaultedMasked.set(key, await snapshot(u.page, u.state, { screenshot: false, mask: hidden }));
+          await u.context.close();
         }
+        const um = unfaultedMasked.get(key);
+        const ids = new Set([...um.flat.keys(), ...sMasked.flat.keys()].filter((k) => k.startsWith("id:#")));
+        for (const k of ids) if (sMasked.flat.get(k) !== um.flat.get(k)) problems.push(`${k} changed outside roots/affects`);
       }
       // (3) main keeps its children.
       if (s.mainChildren !== unfaulted.mainChildren) problems.push(`main has ${s.mainChildren} children, not ${unfaulted.mainChildren}`);
