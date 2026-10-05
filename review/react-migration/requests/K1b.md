@@ -4,7 +4,6 @@
 
 **Status:** pending, reproduced 5 Oct 2026. Until it lands, G5 `--islands kit/` fails for K1b, and for every
 later island that sits inside an element with an id.
-inside an element with an id.
 
 **File:** `scripts/parity/faults.mjs` (the `--islands` loop)
 
@@ -27,7 +26,7 @@ so that is no way out.
 the root's subtree; an id inside a root is skipped on both sides; and an id that appears outside the roots only
 on the faulted page now counts too, which the old loop over the unfaulted ids missed. The unfaulted masked
 snapshot is taken once per distinct mask. With this patch applied to a scratch copy, all 14 of K1b's
-faults pass (`ok · 14 faults`).
+faults pass (`ok · 7 faults` on each of the two shards).
 
 ```diff
 --- a/scripts/parity/faults.mjs
