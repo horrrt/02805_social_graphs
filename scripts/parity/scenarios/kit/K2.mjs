@@ -2,11 +2,16 @@
 // hub ring and a node; hovers two weight links (main redraws the chart only
 // until its parent is measured, so the hover shows once the width changes);
 // moves light-card karate members by click, Enter and Space, and the same
-// member twice; clicks a hub and a legend entry, zooms with Ctrl + wheel,
-// drags and presses Escape; then narrows the window so every network redraws
-// from its moved groups and hovered link, moves a member again and restores
-// the width. The kit's networks are not explore views, so main draws no zoom
-// buttons and no legend buttons; those steps are absent.
+// member twice; then narrows the window so every network redraws from its
+// moved groups and hovered link, moves a member again and restores the width.
+// The kit's networks are not explore views: main draws no zoom buttons, no
+// legend buttons and no tooltip, and ignores hub clicks, legend clicks,
+// Ctrl + wheel, drags and Escape. The scenario sends each of those and checks
+// that head ignores them too; clicking a zoom button fails on both sides.
+// NetworkView's explore code (zoom, pan, pinch, Escape, the pinned tooltip)
+// has no explore view to compare here; main's only explore views are Week 5's
+// copying and map networks (request K2 #3). A failed graphs.json is a
+// faults.mjs --data check (request K2 #2).
 const LIGHT = '[data-demo="net-karate-light"] [data-movable]';
 const HITS = '[data-demo="net-weight"] svg > g > g:first-child > line';
 
@@ -37,6 +42,7 @@ export default [
       { snap: true },
       { click: '[data-demo="net-karate-light"] .gv-legend > span', label: "legend click" },
       { snap: true },
+      { click: '[data-demo="net-overlap"] button[aria-label="Zoom in"]', expectError: true, label: "no zoom button" },
       { evaluate: "ctrlWheel", args: ['[data-demo="net-overlap"] svg', -240], label: "ctrl wheel on overlap" },
       { snap: true },
       { drag: ['[data-demo="net-weight"] svg', [0.5, 0.5], [0.3, 0.4]], label: "drag weight" },
