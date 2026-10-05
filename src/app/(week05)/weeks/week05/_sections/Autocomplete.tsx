@@ -5,9 +5,13 @@ import { Plot } from "@/components/post/Plot";
 import { PostSection } from "@/components/post/PostSection";
 import { QuestionCard } from "@/components/post/QuestionCard";
 import { SectionOpener } from "@/components/post/SectionOpener";
+import { TermProse } from "@/components/post/TermProse";
+import { Autocomplete as Part } from "@/features/week05/autocomplete/Autocomplete";
+import { AUTOCOMPLETE, TERMS } from "@/scripts/week05-autocomplete.js";
 
-// Section 4: one trigram model per consensus community and a quiz on its fake pages. week05-autocomplete.js
-// fills the quiz, the community map, the modularity strip and the copied run.
+// Section 4: one trigram model per consensus community and a quiz on its fake pages. The autocomplete
+// islands (src/features/week05/autocomplete/) fill the quiz, the community map, the modularity strip and
+// the copied run; the term in "what we did" waits for autocomplete.json, as on main.
 export function Autocomplete() {
   return (
     <PostSection id="autocomplete" owner="Àngela">
@@ -21,9 +25,9 @@ export function Autocomplete() {
         answer="We do not know yet: no other group has guessed. What the fakes already show is copying."
         layout="below"
         did={
-          <p className="sub">
+          <TermProse as="p" className="sub" roots={["#autocomplete-did p"]} terms={TERMS} after={[AUTOCOMPLETE]}>
             Each group of at least 8 pages gets its own trigram model: the probability of the next word given the two before it, P(w3 | w1, w2), counted from the group's pages. We will post the 9 fake pages, one per group with names masked, in the week 5 Teams channel and report the correct guesses out of all guesses, against the 1 in 9 (11%) a random guess gets right.
-          </p>
+          </TermProse>
         }
         surprise={
           <Notice icon="💡" headline="What to notice">
@@ -36,32 +40,13 @@ export function Autocomplete() {
               title="Guess the community"
               note="A locked guess stays locked. Your score stays in this browser and is not part of our results."
             >
-              <p aria-live="polite" className="w5-scoreboard" id="ac-scoreboard"></p>
-              <p className="w5-caption" id="ac-progress"></p>
-              <div className="w5-fake">
-                <p className="w5-char" id="ac-char"></p>
-                <p id="ac-text"></p>
-              </div>
-              <div className="w5-guess">
-                <div>
-                  <label htmlFor="ac-select">Which group's pages trained this fake?</label>
-                  {" "}
-                  <select id="ac-select"></select>
-                </div>
-                <button id="ac-submit" type="button">Lock and reveal</button>
-              </div>
-              <div className="w5-quiz-nav">
-                <button data-kind="ghost" id="ac-prev" type="button">Previous</button>
-                {" "}
-                <button data-kind="ghost" id="ac-next" type="button">Next fake</button>
-              </div>
-              <div aria-live="polite" className="w5-reveal" id="ac-reveal" hidden></div>
+              <Part part="quiz" />
             </Plot>
             <Plot
               title="The eight groups the generators learn from"
               note="Each dot is a page, coloured by its consensus group. Grey pages are outside the giant component: the 9 Strikeforce: Morituri pages and the 17 with no links. A link takes its group's colour when both pages are in it."
             >
-              <div id="chart-autocomplete-map"></div>
+              <Part part="map" />
             </Plot>
           </div>
         }
@@ -102,7 +87,7 @@ export function Autocomplete() {
               title="Modularity of the groups against rewired networks"
               note="Dot: Louvain's modularity on the real network, the mean of 100 runs. Band: the same on 100 rewired networks that keep every page's partners and link weight, mean and one standard deviation either side. Higher means more link weight inside groups than chance."
             >
-              <div id="chart-autocomplete-modularity"></div>
+              <Part part="modularity" />
             </Plot>
           </Drawer>
           <Drawer label="What we read in the pages" bodyId="autocomplete-checked">
@@ -110,7 +95,7 @@ export function Autocomplete() {
               For every fake we searched its group's sentences for the longest run of words it repeats verbatim. The runs are 8 to 17 words long, and 8 of the 9 come from a single page. Opening the example gives away one quiz answer.
             </p>
             <Drawer label="Show one fake's copied run beside its source sentence">
-              <div id="autocomplete-run"></div>
+              <Part part="run" />
             </Drawer>
           </Drawer>
         </Drawers>

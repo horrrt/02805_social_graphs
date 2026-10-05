@@ -1,13 +1,15 @@
 // Pins the text of week 5's section 4 (community autocomplete) to the analysis
 // output, so a rerun that moves a number fails here instead of leaving the
-// prose behind, and keeps the guessing honest until other groups answer.
+// prose behind, and keeps the guessing honest until other groups answer. The
+// quiz's code is week05-autocomplete.js and its islands in
+// src/features/week05/autocomplete/.
 import test from "node:test";
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { block, flatten } from "./week04-html.mjs";
-import { builtPage, pageScripts } from "./built-page.mjs";
+import { builtPage, codeFiles, pageScripts } from "./built-page.mjs";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const read = (name) => readFileSync(join(ROOT, name), "utf8");
@@ -15,7 +17,42 @@ const json = (name) => JSON.parse(read(name));
 const html = builtPage("out/weeks/week05/index.html");
 const a = json("public/weeks/week05/data/autocomplete.json");
 const c = json("public/weeks/week05/data/communities.json");
-const js = read("src/scripts/week05-autocomplete.js");
+const QUIZ = join(ROOT, "src/features/week05/autocomplete");
+const islands = codeFiles(QUIZ).map((path) => ({ path, src: readFileSync(path, "utf8") }));
+const js = [read("src/scripts/week05-autocomplete.js"), ...islands.map((f) => f.src)].join("\n");
+const jsx = islands.filter((f) => /\.[jt]sx$/.test(f.path)).map((f) => f.src).join("\n");
+
+// The text from `open` to the bracket that closes it, counting nested brackets
+// and skipping quoted strings.
+function balanced(src, at, open, close, stop = close) {
+  let depth = 0;
+  let quote = null;
+  for (let i = at; i < src.length; i++) {
+    const ch = src[i];
+    if (quote) {
+      if (ch === "\\") i++;
+      else if (ch === quote) quote = null;
+      continue;
+    }
+    if (ch === '"' || ch === "'" || ch === "`") quote = ch;
+    else if (ch === open) depth++;
+    else if (ch === close && depth > 0) {
+      depth--;
+      if (depth === 0 && stop === close) return src.slice(at, i + 1);
+    } else if (ch === stop && depth === 0) return src.slice(at, i + 1);
+  }
+  return src.slice(at);
+}
+
+/** Every opening <tag …> in JSX source, braces counted so an arrow function's => does not end it. */
+function openingTags(src, tag) {
+  return [...src.matchAll(new RegExp(`<${tag}(?![\\w-])`, "g"))].map((m) => balanced(src, m.index, "{", "}", ">"));
+}
+
+/** The argument lists of every call to fn. */
+function calls(src, fn) {
+  return [...src.matchAll(new RegExp(`\\b${fn}\\s*(?:<[^>(]*>)?\\s*\\(`, "g"))].map((m) => balanced(src, m.index + m[0].length - 1, "(", ")"));
+}
 const section = block(html, "autocomplete");
 const s = flatten(section);
 const has = (t, where = s) => assert.ok(where.includes(t), `section 4 should say "${t}"`);
@@ -30,8 +67,10 @@ test("section 4 is a wide Week 4 card with the brief's question", () => {
   has("Can someone who has not seen the pages tell which community a fake page came from?");
   assert.ok(pageScripts("week05").includes("week05-autocomplete.js"), "the page runs week05-autocomplete.js");
   assert.doesNotMatch(section, /—/, "no em dashes in section 4");
+  assert.ok(islands.length > 0, "the quiz's islands are in src/features/week05/autocomplete");
   assert.doesNotMatch(js, /—/, "no em dashes in the quiz text");
-  assert.doesNotMatch(js, /innerHTML/, "build dynamic text with textContent");
+  assert.doesNotMatch(js, /innerHTML/, "build dynamic text as text");
+  assert.doesNotMatch(js, /dangerouslySetInnerHTML/, "build dynamic text as text");
 });
 
 test("the partition numbers come from communities.json", () => {
@@ -110,8 +149,27 @@ test("the quiz spoils nothing and keeps visitor clicks apart", () => {
   assert.match(section, /id="ac-submit" type="button">Lock and reveal</);
   assert.doesNotMatch(section, /ac-reveal-btn|Lock guess/);
   has("Your score stays in this browser and is not part of our results");
-  assert.match(js, /select\.disabled = done/, "a locked guess cannot change");
-  assert.doesNotMatch(js, /fetch\(|localStorage|sendBeacon/, "visitor clicks go nowhere");
+  // A locked guess cannot change: the quiz's select, the one that answers a
+  // change, is disabled once its fake is locked.
+  const selects = openingTags(jsx, "select");
+  assert.ok(selects.length > 0, "the quiz renders a <select>");
+  const quiz = selects.filter((el) => /\bonChange=/.test(el));
+  assert.ok(quiz.length > 0, "the quiz's <select> answers a change");
+  for (const el of quiz) assert.match(el, /\sdisabled=\{done\}/, "a locked guess cannot change");
+  assert.doesNotMatch(js, /fetch\(|localStorage|sessionStorage|sendBeacon|XMLHttpRequest|WebSocket/, "visitor clicks go nowhere");
+  // The islands load only the section's own file and the shared map.
+  const PATHS = { AUTOCOMPLETE: "weeks/week05/data/autocomplete.json", NETWORK: "weeks/week05/data/network.json" };
+  assert.ok(js.includes(`AUTOCOMPLETE = "${PATHS.AUTOCOMPLETE}"`), "AUTOCOMPLETE names autocomplete.json");
+  const loads = calls(js, "useData");
+  assert.ok(loads.length > 0, "the islands load their data through useData");
+  for (const args of loads) {
+    const assets = [...args.matchAll(/asset\(\s*([^)]*?)\s*\)/g)].map((m) => m[1]);
+    assert.ok(assets.length > 0, `useData${args} loads an asset()`);
+    for (const a of assets) {
+      const path = a.replace(/^["'`]|["'`]$/g, "");
+      assert.ok(a in PATHS || Object.values(PATHS).includes(path), `useData loads only autocomplete.json or network.json, not ${a}`);
+    }
+  }
   assert.equal(a.quiz_variant, "masked");
   has("The quiz shows these masked fakes");
 });

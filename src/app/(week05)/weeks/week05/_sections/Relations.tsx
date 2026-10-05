@@ -5,9 +5,13 @@ import { Plot } from "@/components/post/Plot";
 import { PostSection } from "@/components/post/PostSection";
 import { QuestionCard } from "@/components/post/QuestionCard";
 import { SectionOpener } from "@/components/post/SectionOpener";
+import { TermProse } from "@/components/post/TermProse";
+import { Relations as Part } from "@/features/week05/relations/Relations";
+import { RELATIONS, TERMS } from "@/scripts/week05-relations.js";
 
-// Section 1: links labelled by the sentence that names them, against shuffled labels. week05-relations.js
-// draws the crossing strip, the map, the label chips and the checked sentences into the empty hosts.
+// Section 1: links labelled by the sentence that names them, against shuffled labels. The relations
+// islands (src/features/week05/relations/) draw the crossing strip, the map with its switch, the label
+// chips and the checked sentences; the term in "what we did" waits for relations.json, as on main.
 export function Relations() {
   return (
     <PostSection id="relations" owner="Gyula">
@@ -21,9 +25,9 @@ export function Relations() {
         answer="Mostly yes, as a tendency: about half of the word list's labels are right."
         layout="below"
         did={
-          <p className="sub">
+          <TermProse as="p" className="sub" roots={["#relations-did p"]} terms={TERMS} after={[RELATIONS]}>
             We labelled each link from page A to page B by the sentence on A's page that names B, using a small word list that gives each sentence one of five labels: killed, family, enemy, ally, teammate. Then we counted how often each label's links join two communities, against the labels shuffled.
-          </p>
+          </TermProse>
         }
         surprise={
           <Notice icon="💡" headline="What to notice">
@@ -36,18 +40,13 @@ export function Relations() {
               title="Links that join two communities, by label"
               note="Dot: the share of that label's links that join two communities, over 100 Louvain runs. Band: the same share with the labels shuffled, mean ± one standard deviation."
             >
-              <div id="chart-relations-crossing"></div>
+              <Part part="crossing" />
             </Plot>
             <Plot
               title="Where the fight and family links run"
               note="Each dot is a page, coloured by its community in section 4's consensus; grey pages have none. Dark lines join the pairs whose linking sentence uses the chosen kind of word."
             >
-              <div aria-label="Which links to draw" className="w5-chips" id="relations-map-kind" role="group">
-                <button aria-pressed="true" data-kind="enemy" type="button">Fight words</button>
-                {" "}
-                <button aria-pressed="false" data-kind="family" type="button">Family words</button>
-              </div>
-              <div id="chart-relations-map"></div>
+              <Part part="map" />
             </Plot>
           </div>
         }
@@ -88,8 +87,7 @@ export function Relations() {
             <p>
               ✓ means the label describes how A and B relate; ✗ says what the sentence is about instead.
             </p>
-            <div aria-label="Show the sentences for one label" className="w5-chips" id="relations-chips" role="group"></div>
-            <div id="relations-lines"></div>
+            <Part part="lines" />
           </Drawer>
         </Drawers>
       </QuestionCard>
