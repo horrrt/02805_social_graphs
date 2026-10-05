@@ -131,6 +131,7 @@ function BoxView() {
         <label className="visually-hidden" htmlFor="search-input">Query</label>
         {" "}
         <input
+          key={hydrated ? "live" : "server"}
           autoComplete="off"
           id="search-input"
           placeholder="king of Wakanda"
