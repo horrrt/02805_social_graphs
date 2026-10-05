@@ -1,6 +1,7 @@
 import PageScripts from "@/components/PageScripts";
 import { PostSection } from "@/components/post/PostSection";
 import { SiteFooter } from "@/components/site/SiteFooter";
+import { Demo } from "@/features/kit-page/demos";
 
 export default function Page() {
   return (
@@ -14,29 +15,27 @@ export default function Page() {
         </p>
         <PostSection id="demo-figure">
           <h2>figure() with echart()</h2>
-          <div data-demo="figure"></div>
+          <Demo demo="figure" />
         </PostSection>
         <PostSection id="demo-strip">
           <h2>stripChart(): a result against its baseline</h2>
-          <div data-demo="strip"></div>
+          <Demo demo="strip" />
         </PostSection>
         <PostSection id="demo-table">
           <h2>table()</h2>
-          <div data-demo="table"></div>
+          <Demo demo="table" />
         </PostSection>
         <PostSection id="demo-kwic">
           <h2>concordance()</h2>
-          <div data-demo="kwic"></div>
+          <Demo demo="kwic" />
         </PostSection>
         <PostSection id="demo-passage">
           <h2>passage()</h2>
-          <div data-demo="passage"></div>
+          <Demo demo="passage" />
         </PostSection>
         <PostSection id="demo-term">
           <h2>termify() and drawer()</h2>
-          <div data-demo="term">
-            <p>A hapax is a word that occurs exactly once in the corpus.</p>
-          </div>
+          <Demo demo="term" />
         </PostSection>
         <PostSection id="demo-network">
           <h2>networkView(): six ways to draw a network</h2>

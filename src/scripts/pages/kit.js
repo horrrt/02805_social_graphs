@@ -1,62 +1,9 @@
 // Page script for /styleguide/kit/ (from styleguide/kit.html), moved out of the page's inline <script type="module">.
-import { concordance, drawer, drawerRow, echart, figure, loadData, networkView, passage, stripChart, table, termify } from "../kit.js";
+// The figure, strip, table, concordance, passage and term demos are islands in src/features/kit-page/.
+import { loadData, networkView } from "../kit.js";
 import { asset } from "../site.js";
 
 const at = (name) => document.querySelector(`[data-demo="${name}"]`);
-const toy = [
-  { word: "the", count: 900 },
-  { word: "of", count: 520 },
-  { word: "marvel", count: 310 },
-  { word: "comics", count: 280 },
-  { word: "power", count: 90 },
-];
-
-figure(at("figure"), {
-  chart: (el) =>
-    echart(el, {
-      xAxis: { type: "category", data: toy.map((r) => r.word), name: "word" },
-      yAxis: { type: "value", name: "count (toy)" },
-      series: [{ type: "bar", data: toy.map((r) => r.count), label: { show: true, position: "top" } }],
-    }, { height: 280 }),
-  caption: "Toy counts. Each bar is one word; taller bars are more frequent.",
-  data: { columns: [{ key: "word", label: "Word" }, { key: "count", label: "Count", num: true }], rows: toy },
-});
-
-at("strip").append(
-  stripChart(
-    [
-      { label: "Toy result", real: 0.62, realLabel: "0.62", base: [0.41, 0.03], baseLabel: "toy baseline 0.41 ± 0.03" },
-      { label: "Second toy row", real: 0.2, realLabel: "0.20", base: [0.22, 0.05], baseLabel: "0.22 ± 0.05" },
-    ],
-    { domain: [0, 1], ticks: [0, 0.5, 1], fmt: (v) => v.toFixed(1), aria: "Toy strip chart: two results against their baselines" },
-  ),
-);
-
-at("table").append(
-  table({
-    caption: "Toy table",
-    columns: [{ key: "word", label: "Word" }, { key: "count", label: "Count", num: true }],
-    rows: toy,
-  }),
-);
-
-at("kwic").append(
-  concordance(
-    [
-      { page: "Thor_(Marvel_Comics)", left: "toy text before the word ", hit: "power", right: " toy text after the word" },
-      { page: "Storm_(Marvel_Comics)", left: "another made-up left context ", hit: "power", right: " and a right context" },
-    ],
-    { caption: "Toy concordance for power" },
-  ),
-);
-
-at("passage").append(
-  passage({ page: "Thor_(Marvel_Comics)", text: "Toy passage: a made-up sentence that mentions power twice, power.", highlight: "power" }),
-);
-
-const term = at("term");
-termify(term.querySelector("p"), "hapax", "A type observed exactly once in the corpus.", "kit-term-hapax");
-term.append(drawerRow(drawer("Method", "<p>Toy drawer body.</p>"), drawer("More numbers", "<p>Another toy drawer.</p>")));
 
 // Network views, from public/styleguide/data/graphs.json.
 const g = await loadData(asset("styleguide/data/graphs.json"));

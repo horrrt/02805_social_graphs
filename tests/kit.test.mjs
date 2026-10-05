@@ -1,5 +1,6 @@
 // Keeps the component kit usable: every export of src/scripts/kit.js is
-// documented in src/scripts/README.md and nothing documented is missing,
+// documented in src/scripts/README.md, and every export of the React kit's
+// src/kit/index.ts in src/kit/README.md, with nothing documented missing;
 // and the week 5 page loads one script per section and keeps the ids of the
 // brief's six parts, which scripts and anchors use. Reads the files as text, so it needs no DOM.
 import test from "node:test";
@@ -30,8 +31,14 @@ function documented(md) {
   return [...names].sort();
 }
 
-test("README.md documents exactly the exports of kit.js", () => {
-  assert.deepEqual(documented(read("scripts/README.md")), exportsOf(read("scripts/kit.js")));
+// exportsOf reads `export function X` and `export { a, default as X }`, so it
+// covers kit.js's re-exports and index.ts's `export { default as X } from …`.
+test("README.md documents exactly the exports", () => {
+  for (const [readme, source] of [
+    ["scripts/README.md", "scripts/kit.js"],
+    ["kit/README.md", "kit/index.ts"],
+  ])
+    assert.deepEqual(documented(read(readme)), exportsOf(read(source)), `${readme} and ${source}`);
 });
 
 test("the week 5 page loads each section's script and keeps the six parts' ids", () => {
