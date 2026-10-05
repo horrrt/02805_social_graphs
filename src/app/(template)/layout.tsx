@@ -5,13 +5,15 @@
 //
 // Then, in the copy:
 //   1. Title, description, eyebrow and h1: the week's question, not its method.
-//   2. Rename the section ids (first, second) to short words for your sections;
-//      each slot id is <section>-<part>, which is what slot("first", "figure") finds.
+//   2. Rename the section ids (first, second) to short words for your sections, one
+//      component per section in _sections/; each part's id is <section>-<part>.
 //   3. Replace every placeholder sentence and toy chart. Toy numbers say "toy" on the
 //      page; nothing marked toy may stay in a published post.
-//   4. Write src/scripts/weekNN-<section>.js files, import them from a new
-//      src/scripts/entries/week06.js, list that entry in src/components/PageScripts.tsx
-//      and set <PageScripts page="week06" /> in the page.
+//   4. Copy src/features/template/ to src/features/week06/ and give each chart host an
+//      island there (island() in src/lib/island.tsx, named week06/<section>/<Name>) that
+//      loads its JSON with useData and draws with the kit (src/kit/). Put each section's
+//      pure builders in src/scripts/week06-<section>.js; prose that gets a glossary term
+//      goes through TermProse. The rules: src/lib/README.md.
 //   5. Keep noindex and the week "coming" in src/scripts/weeks.js until it is done.
 //   6. Keep the cards as they are: Week 4's form, as src/app/(week05)/ uses it. Question and
 //      answer, one paragraph beside "What to notice", the figure, then drawers; the limitation

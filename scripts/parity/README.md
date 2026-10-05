@@ -198,9 +198,9 @@ node scripts/parity/faults.mjs --base <out> --head <out> --pages p [--scenario f
 ```
 
 **`--data`** runs the scenario (default `scenarios/<page>/base.mjs`, else a plain load) once on base and lists
-every data JSON (`assets/data/`, `weeks/*/data/`) and vendor file (`assets/vendor/`) the page requests. Then, for
-each file (filtered by `--files`), it aborts that file on both sides, runs the scenario and compares as
-`runtime.mjs` does. The selectors `known/<page>/faults-*.json` lists for that file are masked out of the
+every data JSON (`assets/data/`, `weeks/*/data/`, `styleguide/data/`) and vendor file (`assets/vendor/`) the page
+requests. Then, for each file (filtered by `--files`), it aborts that file on both sides, runs the scenario and
+compares as `runtime.mjs` does. The selectors `known/<page>/faults-*.json` lists for that file are masked out of the
 comparison, and the console counts only as "an error was logged or not": both sides log one, or neither does.
 
 **`--islands`** reads `globalThis.__ISLANDS__` (island name to `{roots, affects}`), which `island()` fills only

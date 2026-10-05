@@ -28,6 +28,7 @@ Main does these today and the rewrite keeps them, unless the entry says otherwis
 - KB18 Play: the signal data URL comes from body[data-signal-src] without asset()'s ?v= stamp, and the map replaces the server <title>/<desc>; preserved.
 - KB19 Screen-test: #vitals rows are appended without clearing (a second run would duplicate them; unreachable on a normal load); preserved.
 - KB20 lobby.js is orphaned (no entry imports it); untouched because theme.test reads it; flagged for the owner.
+- KB21 Kit, Week 5, template: networkView redraws (a move, a weight-link hover) replace a chart that fitted() already swapped off the page, so after the first width measurement only the legend shows a move until the next resize; preserved by NetworkView's live/orphan model (src/kit/network/state.ts).
 
 ## Failure paths (FP)
 
@@ -45,3 +46,4 @@ chart, as the owner mandated; each place has an id here and an expected-diff ent
 - FP08 Week 3: a throw in installQuestions skipped installViews and the scroll restore; the drawers and the restore are independent now.
 - FP09 All pages: the shared data cache dedupes requests, so a transient (non-repeatable) failure of a file reaches every consumer at once, where main's separate fetches might fail for one consumer only; injected faults abort every request to a URL, so both sides behave the same under faults.
 - FP10 Week 3: corridor.js main() fails the whole page if any of the three required files fails (line 3404); #status keeps main's error text and charts whose RENDER_KEYS files loaded still draw.
+- FP11 Template: week-template.js awaited graphs.json before drawing anything (line 13), so a failed load left every toy chart empty; now only the two networks and the term wait for it, and the minis, strip chart, passage and table draw.

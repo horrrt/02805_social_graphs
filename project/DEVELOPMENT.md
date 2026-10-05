@@ -131,8 +131,9 @@ saved progress.
   `src/scripts/site.js`, which adds the deploy's commit to the query string, so
   a new deploy also replaces cached data.
 - **A new week.** Copy `src/app/(template)/` to `src/app/(week06)/` and rename
-  its `weeks/%5Ftemplate/` folder to `weeks/week06/`. Add
-  `src/scripts/entries/week06.js` and list it in `PageScripts.tsx`.
+  its `weeks/%5Ftemplate/` folder to `weeks/week06/`, then follow "A new week"
+  in [README.md](../README.md): islands in `src/features/week06/`, pure
+  builders in `src/scripts/week06-<section>.js`.
 - **Files for AI agents.** `npm run build` runs `scripts/agent-files.mjs` after
   `next build`. It writes a Markdown copy of the lobby and each live post
   (`index.md` beside `index.html`), `llms.txt` and `llms-full.txt` in the

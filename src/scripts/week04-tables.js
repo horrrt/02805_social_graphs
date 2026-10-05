@@ -41,7 +41,7 @@ function setBar(cell, width, kind) {
   }
   const bar = wrap.firstElementChild;
   bar.className = kind ? `rx-bar ${kind}` : "rx-bar";
-  bar.firstElementChild.style.width = `${width.toFixed(1)}%`;
+  bar.firstElementChild.style.width = width;
 }
 
 function clearBar(cell) {
@@ -50,8 +50,7 @@ function clearBar(cell) {
   cell.replaceChildren(...own.childNodes);
 }
 
-function overrides(table) {
-  const spec = table.dataset.rxBars;
+function overrides(spec) {
   if (!spec) return null;
   const out = new Map();
   for (const part of spec.split(",")) {
@@ -63,24 +62,41 @@ function overrides(table) {
   return out;
 }
 
-export function decorate(table) {
-  const head = table.tHead ? table.tHead.rows[table.tHead.rows.length - 1] : null;
-  const headers = head ? [...head.cells] : [];
-  const rows = [...table.tBodies].flatMap((body) => [...body.rows]);
-  if (!rows.length) return;
-  const cells = rows.map((row) => [...row.cells]);
+const squash = (s) => String(s ?? "").replace(/\s+/g, " ").trim();
+
+/**
+ * What decorate() does to a table, worked out from its text alone, so a
+ * component can render the same classes and bars. headers: the last head
+ * row's cell text. rows: the body rows, each an array of cells, a cell being
+ * its text (a <td>) or { text, tag }. rxBars: the table's data-rx-bars.
+ * Returns null for a table without body rows, which decorate() leaves alone.
+ * Otherwise head[j] is the class a head cell gains ("num" or ""), and each
+ * row is { rx: true, cells } with cells[j] = { tag, className, bar }:
+ * className is "num", "soft" or "" (a <th>, or the first column, gains
+ * nothing), and a "num" cell has bar { kind, width } (width "12.5%") or
+ * bar null, which removes a bar drawn before.
+ */
+export function decorationFor({ headers = [], rows, rxBars }) {
+  if (!rows.length) return null;
+  const cells = rows.map((row) =>
+    row.map((cell) =>
+      typeof cell === "object" && cell !== null
+        ? { text: squash(cell.text), tag: String(cell.tag ?? "td").toLowerCase() }
+        : { text: squash(cell), tag: "td" },
+    ),
+  );
   const ncol = Math.max(0, ...cells.map((r) => r.length));
-  const column = (j) => cells.map((r) => text(r[j])).filter(Boolean);
+  const column = (j) => cells.map((r) => (r[j] ? r[j].text : "")).filter(Boolean);
 
   const numeric = [];
   for (let j = 0; j < ncol; j++) {
     const col = column(j);
     numeric.push(j > 0 && col.length > 0 && col.filter((s) => NUM.test(s)).length >= 0.8 * col.length);
   }
-  const hdr = headers.map(text);
+  const hdr = headers.map(squash);
 
   const bars = new Map();
-  const custom = overrides(table);
+  const custom = overrides(rxBars);
   if (custom) {
     for (const [j, { max, kind }] of custom) bars.set(j, { max, kind, fraction: true });
   } else {
@@ -98,27 +114,47 @@ export function decorate(table) {
     if (meterCol >= 0 && meterCol !== barCol) bars.set(meterCol, { max: 100, kind: "meter", fraction: false, meter: true });
   }
 
+  return {
+    head: hdr.map((_, j) => (j < ncol && numeric[j] ? "num" : "")),
+    rows: cells.map((row) => ({
+      rx: true,
+      cells: row.map(({ text: s, tag }, j) => {
+        if (tag !== "td") return { tag, className: "", bar: null };
+        if (!numeric[j]) return { tag, className: j > 0 ? "soft" : "", bar: null };
+        const bar = bars.get(j);
+        if (!bar || !NUM.test(s)) return { tag, className: "num", bar: null };
+        let v = value(s);
+        if (bar.fraction && s.endsWith("%")) v /= 100;
+        const width = bar.meter ? Math.min(100, Math.max(2, v)) : Math.min(100, Math.max(2, (100 * v) / bar.max));
+        return { tag, className: "num", bar: { kind: bar.kind, width: `${width.toFixed(1)}%` } };
+      }),
+    })),
+  };
+}
+
+export function decorate(table) {
+  const head = table.tHead ? table.tHead.rows[table.tHead.rows.length - 1] : null;
+  const headers = head ? [...head.cells] : [];
+  const rows = [...table.tBodies].flatMap((body) => [...body.rows]);
+  const cells = rows.map((row) => [...row.cells]);
+  const plan = decorationFor({
+    headers: headers.map(text),
+    rows: cells.map((r) => r.map((cell) => ({ text: text(cell), tag: cell.tagName }))),
+    rxBars: table.dataset.rxBars,
+  });
+  if (!plan) return;
+
   headers.forEach((th, j) => {
-    if (j < ncol && numeric[j]) th.classList.add("num");
+    if (plan.head[j]) th.classList.add(plan.head[j]);
   });
   rows.forEach((row, i) => {
-    cells[i].forEach((cell, j) => {
-      if (cell.tagName !== "TD") return;
-      if (!numeric[j]) {
-        if (j > 0) cell.classList.add("soft");
-        return;
-      }
-      cell.classList.add("num");
-      const bar = bars.get(j);
-      const s = text(cell);
-      if (!bar || !NUM.test(s)) {
-        clearBar(cell);
-        return;
-      }
-      let v = value(s);
-      if (bar.fraction && s.endsWith("%")) v /= 100;
-      const width = bar.meter ? Math.min(100, Math.max(2, v)) : Math.min(100, Math.max(2, (100 * v) / bar.max));
-      setBar(cell, width, bar.kind);
+    plan.rows[i].cells.forEach(({ tag, className, bar }, j) => {
+      if (tag !== "td" || !className) return;
+      const cell = cells[i][j];
+      cell.classList.add(className);
+      if (className !== "num") return;
+      if (bar) setBar(cell, bar.width, bar.kind);
+      else clearBar(cell);
     });
     row.dataset.rx = "";
   });

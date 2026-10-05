@@ -43,3 +43,30 @@ See the [development and data reference](project/DEVELOPMENT.md) for setup and
 reproduction, the [migration questions](project/MIGRATION_QUESTIONS.md) and
 [data catalogue](project/MIGRATION_DATA_CATALOGUE.md) for research sources, and
 [AGENTS.md](AGENTS.md) for contributor instructions.
+
+## A new week
+
+A post starts as a copy of the post template, `src/app/(template)/`, which the
+site serves at `/weeks/_template/`:
+
+1. Copy the route group, `cp -r "src/app/(template)" "src/app/(week06)"`, and
+   rename its page folder from `weeks/%5Ftemplate` to `weeks/week06`. The
+   header comment in its `layout.tsx` lists what to change in the copy.
+2. Keep one component per section in the copy's `_sections/` folder. Give each
+   chart host an island in `src/features/week06/`, made with `island()` from
+   `src/lib/island.tsx` and named `week06/<section>/<Name>`, as
+   `src/features/template/charts.tsx` does.
+3. Put each section's pure builders in `src/scripts/week06-<section>.js`:
+   chart specs and data shaping, with no DOM, listeners or fetch.
+   `src/scripts/week-template.js` holds the template's toy data this way.
+4. Load each JSON file with `useData(asset(path))` from `src/lib/useData.ts`
+   and draw with the kit in `src/kit/`, whose README documents every
+   component. Prose that gets a glossary term goes through `TermProse`
+   (`src/components/post/TermProse.tsx`).
+5. Keep each card within the text budget: `tests/text-budget.test.mjs` fails a
+   card that shows more than 350 words before a click
+   ([the post guide](project/POST_GUIDE.md), "Keep the card short").
+6. Keep `noindex` and the week "coming" in `src/scripts/weeks.js` until the
+   post is done, then run the gates in [src/lib/README.md](src/lib/README.md)
+   (G1 to G6). `scripts/parity/static.mjs` reports the new page as missing on
+   main; every other page must still match it.

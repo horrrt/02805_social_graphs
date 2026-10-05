@@ -8,12 +8,10 @@
 import { useEffect } from "react";
 
 const ENTRIES = {
-  "kit": () => import("@/scripts/entries/kit.js"),
   "mockups": () => import("@/scripts/entries/mockups.js"),
   "play": () => import("@/scripts/entries/play.js"),
   "screen-test": () => import("@/scripts/entries/screen-test.js"),
   "styleguide": () => import("@/scripts/entries/styleguide.js"),
-  "template": () => import("@/scripts/entries/template.js"),
   "week01": () => import("@/scripts/entries/week01.js"),
   "week02": () => import("@/scripts/entries/week02.js"),
   "week03": () => import("@/scripts/entries/week03.js"),
