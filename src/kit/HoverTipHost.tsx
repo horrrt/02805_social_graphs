@@ -13,6 +13,7 @@
 import {
   createContext,
   createElement,
+  useCallback,
   useContext,
   useMemo,
   useRef,
@@ -21,6 +22,7 @@ import {
   type ReactNode,
 } from "react";
 import TipBox, { type Tip } from "./TipBox";
+import { useOwnedRef } from "@/lib/useOwnedRef";
 
 type Marks = { hot: Element | null; cooled: WeakSet<Element> };
 
@@ -65,6 +67,15 @@ type HostProps = {
  */
 export default function HoverTipHost({ as = "div", className, tip: initial = "first", redraws, children, ...attrs }: HostProps) {
   const host = useRef<HTMLElement | null>(null);
+  const own = useOwnedRef();
+  // Marked as React's at the commit, so a page's legacy hover-tip sweep skips it.
+  const ref = useCallback(
+    (el: HTMLElement | null) => {
+      own(el);
+      host.current = el;
+    },
+    [own],
+  );
   const [spot, setSpot] = useState<Spot>(initial);
   const [drawn, setDrawn] = useState(redraws);
   if (!Object.is(drawn, redraws)) {
@@ -72,6 +83,12 @@ export default function HoverTipHost({ as = "div", className, tip: initial = "fi
     setSpot("none");
   }
   const [hot, setHot] = useState<{ el: Element; lines: string[] } | null>(null);
+  // What the handlers read: the mark hot after the last event, as tips.js's `hot`.
+  const hotNow = useRef<{ el: Element; lines: string[] } | null>(null);
+  const heat = (next: { el: Element; lines: string[] } | null) => {
+    hotNow.current = next;
+    setHot(next);
+  };
   const [tip, setTip] = useState<Tip | null>(null);
   const [cooled] = useState(() => new WeakSet<Element>());
   const marks = useMemo<Marks>(() => ({ hot: hot?.el ?? null, cooled }), [hot, cooled]);
@@ -81,25 +98,25 @@ export default function HoverTipHost({ as = "div", className, tip: initial = "fi
     setTip({ lines, x, y });
   };
   const cool = () => {
-    if (hot) cooled.add(hot.el);
-    setHot(null);
+    if (hotNow.current) cooled.add(hotNow.current.el);
+    heat(null);
     setTip((t) => (t ? null : t));
   };
   const onPointerOver = (e: PointerEvent) => {
     const el = (e.target as Element).closest?.("[data-tip]");
     if (!el || !host.current?.contains(el)) return;
     const lines = (el.getAttribute("data-tip") ?? "").split("\n");
-    if (el !== hot?.el) {
-      if (hot) cooled.add(hot.el);
-      setHot({ el, lines });
+    if (el !== hotNow.current?.el) {
+      if (hotNow.current) cooled.add(hotNow.current.el);
+      heat({ el, lines });
     }
     show(lines, e.clientX, e.clientY);
   };
   const onPointerMove = (e: PointerEvent) => {
-    if (hot) show(hot.lines, e.clientX, e.clientY);
+    if (hotNow.current) show(hotNow.current.lines, e.clientX, e.clientY);
   };
   const onPointerOut = (e: PointerEvent) => {
-    if (hot && !hot.el.contains(e.relatedTarget as Node | null)) cool();
+    if (hotNow.current && !hotNow.current.el.contains(e.relatedTarget as Node | null)) cool();
   };
 
   const box = <TipBox key="tip" host={host} tip={tip} />;
@@ -108,9 +125,11 @@ export default function HoverTipHost({ as = "div", className, tip: initial = "fi
       {children}
     </TipMarks.Provider>
   );
+  // className where the server markup has it: before id and role.
+  const { "aria-label": label, ...rest } = attrs;
   return createElement(
     as,
-    { ...attrs, ref: host, className: withClass(className, "kit-tip-host"), onPointerOver, onPointerMove, onPointerOut, onPointerLeave: cool },
+    { "aria-label": label, className: withClass(className, "kit-tip-host"), ...rest, ref, onPointerOver, onPointerMove, onPointerOut, onPointerLeave: cool },
     [spot === "first" ? box : null, content, spot === "last" ? box : null],
   );
 }

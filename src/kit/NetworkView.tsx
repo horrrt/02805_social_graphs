@@ -7,9 +7,12 @@
 // closure (network/state.ts): the groups a move gives, the highlighted link,
 // the lighting and the pinned tooltip under explore. d3 loads only for a view
 // that explores (useVendor), and d3-zoom writes only the zoom <g>'s transform.
+// A d3 that failed to load stays failed for the page, as loadD3() kept it.
 import { useCallback, useEffect, useLayoutEffect, useMemo, useReducer, useRef, type MouseEvent, type PointerEvent } from "react";
+import { createStore } from "@/scripts/runtime/store.js";
 import { useHydrated } from "@/lib/useHydrated";
 import { useFittedWidth } from "@/lib/useSize";
+import { useStore } from "@/lib/useStore";
 import { useTextMeasure, useTypeScale, type TypeScale } from "@/lib/useTypeScale";
 import { useVendor } from "@/lib/useVendor";
 import {
@@ -39,6 +42,11 @@ const ZOOMS: [string, string][] = [
 ];
 
 type D3 = any;
+
+// d3 failing to load, kept for the page as graph.js loadD3() kept its rejected
+// promise, so no view drawn later asks for it again.
+const d3Store = createStore({ failed: false });
+const d3FailedOf = (s: { failed: boolean }) => s.failed;
 
 // A tooltip line as textContent writes it: nothing for null or undefined.
 const text = (t: unknown) => (t === null || t === undefined ? null : String(t));
@@ -142,13 +150,19 @@ function View({ spec, onChange, scale, measure }: { spec: NetworkSpec; onChange?
   const target = m.orphan ? -1 : gen;
   const lightLegend = (g: number) => act({ type: "light", gen: target, lit: litGroup(g), pin: true });
 
-  const d3 = useVendor<D3>("d3-7.9.0.min.js", "d3", { enabled: explore });
+  const d3Failed = useStore(d3Store, d3FailedOf);
+  const d3 = useVendor<D3>("d3-7.9.0.min.js", "d3", { enabled: explore && !d3Failed });
+  useEffect(() => {
+    if (d3.status === "error") d3Store.setState({ failed: true });
+  }, [d3.status]);
+  // A view drawn after the failure logs it, as each draw's loadD3() did on main.
+  const d3Status = d3Failed ? "error" : d3.status;
   const zoomBy = useRef<(label: string) => void>(() => {});
   // The zoom <g> the svg's d3-zoom transform belongs to.
   const zoomed = useRef<SVGGElement | null>(null);
   useEffect(() => {
-    if (d3.status === "error") console.error(new Error("could not load d3"));
-    if (d3.status !== "ready") return;
+    if (d3Status === "error") console.error(new Error("could not load d3"));
+    if (d3Status !== "ready") return;
     const svg = svgRef.current;
     const lib = d3.lib;
     if (!svg || !lib) return;
@@ -178,7 +192,7 @@ function View({ spec, onChange, scale, measure }: { spec: NetworkSpec; onChange?
       sel.interrupt().on(".zoom", null);
       zoomBy.current = () => {};
     };
-  }, [d3.status, d3.lib, gen, L.width, L.height]);
+  }, [d3Status, d3.lib, gen, L.width, L.height]);
 
   const fs = scale.fs;
   const hiNodes = u.lit?.nodes;

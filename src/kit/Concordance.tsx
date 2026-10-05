@@ -4,9 +4,9 @@
 import type { ReactNode } from "react";
 import { wikiLink } from "./wikiLink";
 
-export type KwicRow = { page: string; left: string; hit: string; right: string };
+export type KwicRow = { page: string; left: string; hit: string; right: string; extra?: ReactNode };
 
-/** <Concordance rows={[{ page, left, hit, right }]} caption="…" /> */
+/** <Concordance rows={[{ page, left, hit, right, extra }]} caption="…" />; extra: cells after the right context. */
 export default function Concordance({ rows, caption }: { rows: KwicRow[]; caption?: ReactNode }) {
   return (
     <table className="kit-kwic">
@@ -20,6 +20,7 @@ export default function Concordance({ rows, caption }: { rows: KwicRow[]; captio
               <mark>{r.hit}</mark>
             </td>
             <td className="kit-kwic-right">{r.right}</td>
+            {r.extra}
           </tr>
         ))}
       </tbody>
