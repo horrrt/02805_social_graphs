@@ -6,7 +6,7 @@ import assert from "node:assert/strict";
 import { existsSync, readFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
-import { builtPage, pageScripts } from "./built-page.mjs";
+import { builtPage, entryScripts, pageScripts } from "./built-page.mjs";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const html = builtPage("out/weeks/_template/index.html");
@@ -31,8 +31,10 @@ test("each template section keeps the six parts' ids slot() finds", () => {
 });
 
 test("the template's script exists and every toy says so", () => {
-  const [src] = pageScripts("template");
-  assert.ok(src && existsSync(join(ROOT, "src/scripts", src)), "the template script is on disk");
+  // The page reaches its toy data through its islands, not through an entry module.
+  assert.deepEqual(entryScripts("template"), [], "the template has no entry module");
+  assert.ok(pageScripts("template").includes("week-template.js"), "the page reaches week-template.js");
+  assert.ok(existsSync(join(ROOT, "src/scripts/week-template.js")), "the template script is on disk");
   // Every file the page reaches, so a toy chart moved into a component still has to say so.
   const toys = pageScripts("template")
     .map((file) => [file, readFileSync(join(ROOT, "src/scripts", file), "utf8")])
