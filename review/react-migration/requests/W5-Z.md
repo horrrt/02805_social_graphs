@@ -187,3 +187,48 @@ which W5-Z does not own:
   `extra` cells.
 
 After those land and the islands import from `@/kit`, rerun W5-Z.
+
+## 3. Search: mount the box controlled after hydration
+
+**Status:** open. Filed by W5-Z on 5 Oct 2026.
+
+**File:** `src/features/week05/search/Search.tsx` (W5-3)
+
+**Why.** W5-Z's verification runs `dev-strict.mjs --pages week05`, and it exits 1 on the closed page: dev logs one
+console error that production does not (`DIFF dev console errors 1` against `prod console errors 0`). React
+logs "A component is changing an uncontrolled input to be controlled" for `#search-input`, whose
+`value={hydrated ? text : undefined}` is undefined in the server and hydration renders and a string from the
+next render on. W5-3 (1a43b9f) introduced it; the tree before W5-Z (6e9ecc1) shows the same error. The server
+render must keep `value` undefined, since the built HTML has no `value` attribute on the box. A key that
+changes with `hydrated` makes React mount a new, controlled input after hydration instead of switching the old
+one, so the warning goes and the server markup stays.
+
+**Patch.**
+
+```diff
+diff --git a/src/features/week05/search/Search.tsx b/src/features/week05/search/Search.tsx
+index d21f9c3..0deeb79 100644
+--- a/src/features/week05/search/Search.tsx
++++ b/src/features/week05/search/Search.tsx
+@@ -131,6 +131,7 @@ function BoxView() {
+         <label className="visually-hidden" htmlFor="search-input">Query</label>
+         {" "}
+         <input
++          key={hydrated ? "live" : "server"}
+           autoComplete="off"
+           id="search-input"
+           placeholder="king of Wakanda"
+```
+
+**Checked.** With this patch on W5-Z's final tree (working tree, not committed), on a build with
+`GITHUB_SHA=parity00000` against main d52830f:
+
+- `npm run typecheck`: clean.
+- `static.mjs`: 16 pages, 0 differ, 0 grew over 2%.
+- `dev-strict.mjs --pages week05`: "same as production", console errors 0, exit 0.
+- `runtime.mjs --pages week05`: base (46 steps) and base-tips (18) ok; W5-3 1..40, 41..80, 81..120 and
+  121..164 ok with `--runs 3`, which covers every chip, row, typed query, Enter and button run of the box.
+- `faults.mjs --islands week05/search --modes render,effect`: 12 faults, all ok.
+
+The new input replaces the server's node once, right after hydration. A reader who focused the box before
+hydration loses that focus; text typed then was already overwritten, by main's boot and by the current code.
