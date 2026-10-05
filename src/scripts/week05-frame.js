@@ -1,16 +1,22 @@
 // Week 5 · the frame around the seven sections: the hero scatter and the
-// findings strip under the hero.
+// findings strip under the hero, as data.
 //
-// Draws into #chart-hero-fame (words against 1 + in-degree, both on log
-// scales, with the fitted line) and into each [data-finding] host (the real
-// pages against their baseline, Week 4's mini strip). Data: the section JSON
-// files in public/weeks/week05/data/, written by analysis/week05_*.py.
+// The islands in src/features/week05/frame/ draw #chart-hero-fame (words
+// against 1 + in-degree, both on log scales, with the fitted line) from
+// fameLayout() and each [data-finding] host (the real pages against their
+// baseline, Week 4's mini strip) from strips(). Data: the section JSON files in
+// public/weeks/week05/data/, written by analysis/week05_*.py. No DOM, no
+// listeners, no fetch.
 
-import { asset } from "./site.js";
-import { hoverTips, loadData } from "./kit.js";
-import { fitted, fs, miniStrip, node, token } from "./week04-strip.js";
+/** The section files the frame reads, under weeks/week05/data/. */
+export const FILES = ["relations", "copying", "search", "heaps", "fame", "weird"];
 
-const data = (name) => loadData(asset(`weeks/week05/data/${name}.json`));
+/** The file each finding's mini strip reads; finding 4 has none. */
+export const FINDING_FILES = { 1: "relations", 2: "copying", 3: "search", 5: "heaps", 6: "fame", 7: "weird" };
+
+/** Finding 4's line, in place of a strip. */
+export const NO_GUESSES = "No guesses collected yet, so no baseline to draw.";
+
 const pct = (x) => `${Math.round(x * 100)}%`;
 const count = (n) => Math.round(n).toLocaleString("en-US");
 // An axis around some values with a tenth of their range spare on each side.
@@ -22,11 +28,12 @@ const span = (values) => {
 
 // ---- the hero: page length against in-degree -------------------------------
 
-const X_MAX = 200;
-const Y_MIN = 100;
-const Y_MAX = 30000;
+export const X_MAX = 200;
+export const Y_MIN = 100;
+export const Y_MAX = 30000;
 
-function drawFame(fame, width) {
+/** The hero scatter's geometry at `width`: axes, dots, the fitted line and the two named outliers. */
+export function fameLayout(fame, width) {
   const h = Math.round(Math.min(380, Math.max(260, width * 0.6)));
   const left = 58;
   const right = 12;
@@ -35,59 +42,42 @@ function drawFame(fame, width) {
   const lx = (v) => Math.log(v);
   const X = (v) => left + ((lx(v) - lx(1)) / (lx(X_MAX) - lx(1))) * (width - left - right);
   const Y = (v) => top + ((lx(Y_MAX) - lx(v)) / (lx(Y_MAX) - lx(Y_MIN))) * (h - top - bottom);
-  const ink = token("--w4-hero-ink");
-  const label = token("--w4-hero-label");
-  const body = token("--w4-hero-body");
-  const caption = fs("caption");
-  const svg = node("svg", { viewBox: `0 0 ${width} ${h}`, width, height: h, "aria-hidden": "true" });
 
-  for (const v of [1, 10, 100]) {
-    svg.append(node("line", { x1: X(v), y1: top, x2: X(v), y2: h - bottom, stroke: token("--w4-hero-state-edge"), "stroke-width": 1 }));
-    svg.append(node("text", { x: X(v), y: h - bottom + 16, "font-size": caption, fill: label, "text-anchor": "middle" }, count(v)));
-  }
-  for (const v of [100, 1000, 10000]) {
-    svg.append(node("line", { x1: left, y1: Y(v), x2: width - right, y2: Y(v), stroke: token("--w4-hero-state-edge"), "stroke-width": 1 }));
-    svg.append(node("text", { x: left - 8, y: Y(v) + 4, "font-size": caption, fill: label, "text-anchor": "end" }, count(v)));
-  }
-  svg.append(node("text", { x: width - right, y: h - 6, "font-size": caption, fill: label, "text-anchor": "end" }, "1 + pages linking to it"));
-  svg.append(node("text", { x: left, y: top - 2, "font-size": caption, fill: label }, "words on the page"));
+  const xTicks = [1, 10, 100].map((v) => ({ x: X(v), y1: top, y2: h - bottom, labelY: h - bottom + 16, label: count(v) }));
+  const yTicks = [100, 1000, 10000].map((v) => ({ y: Y(v), x1: left, x2: width - right, labelX: left - 8, labelY: Y(v) + 4, label: count(v) }));
+  const xTitle = { x: width - right, y: h - 6, text: "1 + pages linking to it" };
+  const yTitle = { x: left, y: top - 2, text: "words on the page" };
 
-  const dots = node("g");
-  for (const p of fame.points) {
-    const dot = node("circle", { cx: X(1 + p.in_degree), cy: Y(p.tokens), r: 3.2, fill: body, "fill-opacity": 0.55 });
-    dot.append(node("title", {}, `${p.name}: ${count(p.tokens)} words, ${p.in_degree} incoming links`));
-    dots.append(dot);
-  }
-  svg.append(dots);
+  const dots = fame.points.map((p) => ({
+    cx: X(1 + p.in_degree),
+    cy: Y(p.tokens),
+    tip: `${p.name}: ${count(p.tokens)} words, ${p.in_degree} incoming links`,
+  }));
 
   // The fitted line: ln(words) = intercept + slope · ln(1 + in-degree).
   const f = fame.fit;
   const fit = (x) => Math.exp(f.intercept + f.slope * Math.log(x));
-  svg.append(node("line", { x1: X(1), y1: Y(fit(1)), x2: X(X_MAX), y2: Y(fit(X_MAX)), stroke: ink, "stroke-width": 1.6 }));
+  const line = { x1: X(1), y1: Y(fit(1)), x2: X(X_MAX), y2: Y(fit(X_MAX)) };
 
   // The two outliers the caption and section 6 name first.
   const above = fame.outliers.find((o) => o.side === "above" && o.place === 1);
   const below = fame.outliers.find((o) => o.side === "below" && o.place === 1);
-  for (const [o, dy] of [[above, -10], [below, 18]]) {
+  const outliers = [[above, -10], [below, 18]].map(([o, dy]) => {
     const cx = X(1 + o.in_degree);
     const cy = Y(o.tokens);
-    svg.append(node("circle", { cx, cy, r: 4.5, fill: ink }));
-    svg.append(node("text", { x: cx + 8, y: cy + dy, "font-size": fs("small"), fill: ink, "font-weight": 700 }, o.name.replace(/\s*\(.*\)$/, "")));
-  }
-  return svg;
+    return { cx, cy, labelX: cx + 8, labelY: cy + dy, name: o.name.replace(/\s*\(.*\)$/, "") };
+  });
+
+  return { width, height: h, xTicks, yTicks, xTitle, yTitle, dots, line, outliers };
 }
 
 // ---- the findings strip --------------------------------------------------------
 
-function strips({ relations, copying, search, heaps, fame, weird }) {
-  const enemy = relations.crossing.find((c) => c.label === "enemy");
-  const c = copying.headline;
-  const s = search.summary;
-  const at100k = heaps.checkpoints.find((p) => p.tokens === 100000);
-  const f = fame.fit;
-  const w = weird.several;
-  return {
-    1: [
+// Each finding's [mini strip spec, line under it], from its one file.
+const FINDINGS = {
+  1: (relations) => {
+    const enemy = relations.crossing.find((c) => c.label === "enemy");
+    return [
       {
         domain: [0.2, 0.7],
         real: enemy.crossing,
@@ -97,8 +87,11 @@ function strips({ relations, copying, search, heaps, fame, weird }) {
         aria: "Share of enemy links that join two communities, against shuffled labels",
       },
       `Enemy links that join two communities · z = ${enemy.z.toFixed(1)}`,
-    ],
-    2: [
+    ];
+  },
+  2: (copying) => {
+    const c = copying.headline;
+    return [
       {
         domain: [0, 1],
         real: c.linked_share,
@@ -108,8 +101,11 @@ function strips({ relations, copying, search, heaps, fame, weird }) {
         aria: "Share of copying pairs that link to each other, against all pairs",
       },
       "Copying pairs that already link · dashed: all pairs of pages",
-    ],
-    3: [
+    ];
+  },
+  3: (search) => {
+    const s = search.summary;
+    return [
       {
         domain: [0, 1],
         real: s.hits_at_5 / s.n_scored,
@@ -119,8 +115,11 @@ function strips({ relations, copying, search, heaps, fame, weird }) {
         aria: "Share of queries with the right page in the top five, against a random ranking",
       },
       "Right page in the top five, raw counts · dashed: a random ranking",
-    ],
-    5: [
+    ];
+  },
+  5: (heaps) => {
+    const at100k = heaps.checkpoints.find((p) => p.tokens === 100000);
+    return [
       {
         domain: span([at100k.least_linked, at100k.random_mean - 2 * at100k.random_sd, at100k.random_mean + 2 * at100k.random_sd]),
         real: at100k.least_linked,
@@ -130,8 +129,11 @@ function strips({ relations, copying, search, heaps, fame, weird }) {
         aria: "Different words in the first 100,000, least-linked pages first, against random orders",
       },
       `Different words in the first ${count(at100k.tokens)}, least-linked first · z = ${at100k.z_least_linked.toFixed(1)}`,
-    ],
-    6: [
+    ];
+  },
+  6: (fame) => {
+    const f = fame.fit;
+    return [
       {
         domain: [-0.2, 1],
         real: f.pearson,
@@ -141,8 +143,11 @@ function strips({ relations, copying, search, heaps, fame, weird }) {
         aria: "Correlation of log length with log in-degree, against shuffled in-degree",
       },
       "Pearson r of log length and log in-degree · band: in-degree shuffled",
-    ],
-    7: [
+    ];
+  },
+  7: (weird) => {
+    const w = weird.several;
+    return [
       {
         domain: [0, w.bottom_decile / 2],
         real: w.in_bottom_decile,
@@ -152,33 +157,20 @@ function strips({ relations, copying, search, heaps, fame, weird }) {
         aria: "Pages about several characters among the 30 most repetitive, against the number expected",
       },
       `Several-name pages among the ${w.bottom_decile} most repetitive · p = ${w.p.toFixed(4)}`,
-    ],
-  };
-}
+    ];
+  },
+};
 
-async function boot() {
-  const names = ["relations", "copying", "search", "heaps", "fame", "weird"];
-  const loaded = Object.fromEntries(await Promise.all(names.map(async (n) => [n, await data(n)])));
-
-  const hero = document.getElementById("chart-hero-fame");
-  if (hero) hero.replaceChildren(fitted((width) => drawFame(loaded.fame, width), 560));
-
-  const specs = strips(loaded);
-  for (const host of document.querySelectorAll("#findings [data-finding]")) {
-    const small = document.createElement("small");
-    const spec = specs[host.dataset.finding];
-    if (!spec) {
-      small.textContent = "No guesses collected yet, so no baseline to draw.";
-      host.replaceChildren(small);
-      continue;
-    }
-    small.textContent = spec[1];
-    host.replaceChildren(miniStrip(spec[0]), small);
+/**
+ * strips({ relations, copying, … }) -> { 1: [spec, line], 2: …, 7: … }: the
+ * mini strip spec and the line under it for every finding whose file is in
+ * `loaded` (FINDING_FILES), so each mini can draw from its own file alone.
+ */
+export function strips(loaded) {
+  const out = {};
+  for (const [finding, build] of Object.entries(FINDINGS)) {
+    const data = loaded[FINDING_FILES[finding]];
+    if (data) out[finding] = build(data);
   }
+  return out;
 }
-
-boot().catch((err) => console.error("week05 frame failed", err));
-
-// ---- every chart's marks show their numbers at once on hover (tips.js); the
-// maps and the ECharts scatter carry their own tooltips
-for (const host of document.querySelectorAll('[id^="chart-"]')) hoverTips(host);
