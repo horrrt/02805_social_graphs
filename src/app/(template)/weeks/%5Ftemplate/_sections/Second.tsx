@@ -5,12 +5,13 @@ import { Plot } from "@/components/post/Plot";
 import { PostSection } from "@/components/post/PostSection";
 import { QuestionCard } from "@/components/post/QuestionCard";
 import { SectionOpener } from "@/components/post/SectionOpener";
-import { TermProse } from "@/components/post/TermProse";
 import { Chart } from "@/features/template/charts";
-import { second, TOY } from "@/scripts/week-template.js";
 
 // Section 2: two panels in a row under the text, for a figure with two charts.
-// The term in the prose appears once graphs.json has loaded, as on main.
+// The term in the prose appears once graphs.json has loaded, as on main. A real
+// week puts prose with a term through TermProse; the template draws it through
+// its chart dispatcher (src/features/template/charts.tsx) to keep its payload
+// small.
 export function Second() {
   return (
     <PostSection id="second" owner="">
@@ -22,9 +23,7 @@ export function Second() {
         answer="The short answer, with its number and its baseline."
         layout="below"
         did={
-          <TermProse as="p" className="sub" terms={[second.term]} after={[TOY]} roots={["#second-did p"]}>
-            The method and the baseline. A term gets a definition on hover the first time it appears.
-          </TermProse>
+          <Chart chart="did" text="The method and the baseline. A term gets a definition on hover the first time it appears." />
         }
         surprise={
           <Notice icon="💡" headline="What to notice">

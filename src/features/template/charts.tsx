@@ -15,6 +15,7 @@ import type { TableSpec } from "@/kit/Table";
 import { island, useIslandReady } from "@/lib/island";
 import { useData } from "@/lib/useData";
 import { useHydrated } from "@/lib/useHydrated";
+import { Termified, type TermDef } from "@/components/post/Termified";
 import { asset } from "@/scripts/site.js";
 import { first, minis, second, TOY, TOYS } from "@/scripts/week-template.js";
 
@@ -99,6 +100,23 @@ function SecondTableView() {
   return <div id="chart-second-right">{shown ? <Table {...TABLE} /> : null}</div>;
 }
 
+// Section 2's prose (#second-did p), its term placed once graphs.json has
+// loaded, through post/Termified as TermProse would. The term comes from
+// week-template.js in this bundle, so the page's payload carries only the
+// prose: TermProse would add the definition, a second client reference and
+// its props, which grows the gzipped HTML past what static parity allows.
+const TERMS: TermDef[] = [second.term];
+const DID_ROOTS = ["#second-did p"];
+
+function Did({ text = "" }: { text?: string }) {
+  const tree = useMemo(() => ({ tag: "p", attrs: { className: "sub" }, children: [text] }), [text]);
+  return <Termified tree={tree} terms={TERMS} after={[TOY]} roots={DID_ROOTS} />;
+}
+
+function DidHost({ text }: { text?: string }) {
+  return <p className="sub">{text}</p>;
+}
+
 const Empty = (id: string) =>
   function Host() {
     return <div id={id}></div>;
@@ -117,7 +135,8 @@ const CHARTS = {
   right: island("template/second/Table", SecondTableView, Empty("chart-second-right"), { roots: ["#chart-second-right"] }),
 };
 
-export type ChartName = keyof typeof CHARTS;
+export type ChartName = keyof typeof CHARTS | "did";
+type Props = { chart: ChartName; text?: string };
 
 const ROOTS: Record<ChartName, string> = {
   hero: "#chart-hero",
@@ -127,9 +146,10 @@ const ROOTS: Record<ChartName, string> = {
   passage: "#first-passage",
   left: "#chart-second-left",
   right: "#chart-second-right",
+  did: "#second-did p",
 };
 
-const HOSTS: Record<ChartName, () => ReactNode> = {
+const HOSTS: Record<ChartName, (props: { text?: string }) => ReactNode> = {
   hero: HeroHost,
   "1": MiniHost("1"),
   "2": MiniHost("2"),
@@ -137,20 +157,23 @@ const HOSTS: Record<ChartName, () => ReactNode> = {
   passage: Empty("first-passage"),
   left: Empty("chart-second-left"),
   right: Empty("chart-second-right"),
+  did: DidHost,
 };
 
-function View({ chart }: { chart: ChartName }) {
+function View({ chart, text }: Props) {
+  if (chart === "did") return <Did text={text} />;
   const Shown = CHARTS[chart];
   return <Shown />;
 }
 
 // The server markup of each host: empty, as main's server markup has it.
-function Placeholder({ chart }: { chart: ChartName }) {
+function Placeholder({ chart, text }: Props) {
   const Host = HOSTS[chart];
-  return <Host />;
+  return <Host text={text} />;
 }
 
-// The sections render <Chart chart="…" /> for each host: one client reference
+// The sections render <Chart chart="…" /> for each host, and
+// <Chart chart="did" text="…" /> for section 2's prose: one client reference
 // in the page's payload (the kit page's demos found that one per host grows
 // the gzipped HTML past the 2% static parity allows), wrapping that host's
 // own island.
