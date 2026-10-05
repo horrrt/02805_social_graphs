@@ -91,7 +91,6 @@ export function fitted(build, fallback) {
   return chart;
 }
 
-
 // The geometry of both charts lives in stripLayout() and miniLayout(): pure
 // arithmetic over the rows, a width and a text measure, so a component can
 // draw the same chart. The builders below turn it into SVG nodes and add the
