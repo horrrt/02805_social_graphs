@@ -279,7 +279,7 @@ $("cap-hist").textContent="Average clustering across "+M.samples+" degree-preser
   D.rows.forEach(function(r){
     var tr=document.createElement("tr");
     function td(t,cls){ var e=document.createElement("td"); e.textContent=t; if(cls) e.className=cls; return e; }
-    var dec = r.key==="paradox" ? 3 : (r.key==="path" ? 3 : 4);
+    var dec = (r.key==="paradox" || r.key==="path") ? 3 : 4;
     tr.append(td(r.label), td(f(r.real,dec)), td(f(r.mu,dec)), td(f(r.sd,4)));
     var z=td((r.z>=0?"+":"")+f(r.z,2), "z "+(Math.abs(r.z)>=2?"hi":"no"));
     tr.append(z, td(f(r.p,4)));

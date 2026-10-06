@@ -9,8 +9,7 @@
 const NO_TEXTURE = null;
 
 export function install(api, Globe) {
-  const { state, node, metrics, topEdges, select, $, colours, rgb, arcSpec, textureURL } = api;
-  const { earthScale } = api;
+  const { state, node, metrics, topEdges, select, $, colours, rgb, arcSpec, textureURL, earthScale } = api;
   let world = null;
   let host = null;
   let lastEarth = null;

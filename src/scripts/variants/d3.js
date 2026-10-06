@@ -13,10 +13,10 @@ import { fs, family } from "../type-scale.mjs";
 const FONT = () => family("sans");
 
 export function install(api, d3) {
-  const { state, node, metrics, withMetrics, degreeCounts, ccdf, select, colours, $ } =
-    api;
-  const { spotlight, earthScale } = api;
-  const { showTip, hideTip, modeFlags, format } = api;
+  const {
+    state, node, metrics, withMetrics, degreeCounts, ccdf, select, colours, $,
+    spotlight, earthScale, showTip, hideTip, modeFlags, format,
+  } = api;
 
   // The axis switch reaches SVG too: log where the mode says log, linear where
   // it does not.
@@ -59,24 +59,20 @@ export function install(api, d3) {
   }
 
   function axes(svg, box, x, y, { xLabel, yLabel, xTicks = 5, yTicks = 5, yFormat } = {}) {
+    const style = (s) => {
+      s.selectAll(".tick line").attr("stroke", "#eaf0f7");
+      s.select(".domain").attr("stroke", "#c6d4e6");
+      s.selectAll("text").attr("fill", "#7a8fac").attr("font-family", FONT()).attr("font-size", fs("caption"));
+    };
     const g = svg.append("g");
     g.append("g")
       .attr("transform", `translate(0,${box.bottom})`)
       .call(d3.axisBottom(x).ticks(xTicks, "~s").tickSize(-(box.bottom - box.top)))
-      .call((s) => s.selectAll(".tick line").attr("stroke", "#eaf0f7"))
-      .call((s) => s.select(".domain").attr("stroke", "#c6d4e6"))
-      .call((s) => s.selectAll("text").attr("fill", "#7a8fac").attr("font-family", FONT()).attr("font-size", fs("caption")));
+      .call(style);
     g.append("g")
       .attr("transform", `translate(${box.left},0)`)
-      .call(
-        d3
-          .axisLeft(y)
-          .ticks(yTicks, yFormat ?? "~s")
-          .tickSize(-(box.right - box.left)),
-      )
-      .call((s) => s.selectAll(".tick line").attr("stroke", "#eaf0f7"))
-      .call((s) => s.select(".domain").attr("stroke", "#c6d4e6"))
-      .call((s) => s.selectAll("text").attr("fill", "#7a8fac").attr("font-family", FONT()).attr("font-size", fs("caption")));
+      .call(d3.axisLeft(y).ticks(yTicks, yFormat ?? "~s").tickSize(-(box.right - box.left)))
+      .call(style);
     const label = (text, tx, ty, rotate) =>
       g
         .append("text")
@@ -472,11 +468,7 @@ export function install(api, d3) {
     svg.selectAll("*").remove();
 
     if (!projection) {
-      projection = d3
-        .geoOrthographic()
-        .rotate([-12, -18])
-        .translate([width / 2, height / 2])
-        .scale(Math.min(Math.min(width, height) * 0.48, Math.min(width, height) * 0.42 * earthScale()));
+      projection = d3.geoOrthographic().rotate([-12, -18]);
       svg.call(
         d3.drag().on("drag", (event) => {
           const [lon, lat] = projection.rotate();

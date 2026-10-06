@@ -9,12 +9,17 @@
 // picture in two projections rather than two pieces of drawing code.
 
 export function install(api, deck) {
-  const { state, node, metrics, topEdges, flightEdges, select, $, colours, rgb, arcSpec, textureURL } = api;
-  const { earthScale, netColour, netNote } = api;
+  const {
+    state, node, metrics, topEdges, flightEdges, select, $, colours, rgb, arcSpec, textureURL,
+    earthScale, netColour, netNote,
+  } = api;
   const channels = (hex) => rgb(hex).split(",").map(Number);
   // deck's zoom is logarithmic, so a doubling of the earth-size scale is one
   // whole zoom level.
   const zoomShift = () => Math.log2(earthScale());
+  // GlobeView zoom is logarithmic and framed for a full-screen map; the hero
+  // panel is a third of that, so the whole sphere needs a negative zoom.
+  const globeViewState = () => ({ longitude: 12, latitude: 18, zoom: -1.15 + zoomShift() });
   let lastEarth = null;
   const GlobeView = deck._GlobeView ?? deck.GlobeView;
   if (!GlobeView) throw new Error("this deck.gl build has no GlobeView");
@@ -171,21 +176,13 @@ export function install(api, deck) {
     });
 
   function globe() {
-    // GlobeView zoom is logarithmic and framed for a full-screen map; the hero
-    // panel is a third of that, so the whole sphere needs a negative zoom.
-    const instance = mount("globe-canvas", new GlobeView({ id: "globe" }), {
-      longitude: 12,
-      latitude: 18,
-      zoom: -1.15 + zoomShift(),
-    });
+    const instance = mount("globe-canvas", new GlobeView({ id: "globe" }), globeViewState());
     if (!instance) return;
     // mount only reads the initial view state, so a later change of earth size
     // has to be pushed onto the live deck.
     if (lastEarth !== state.earth) {
       lastEarth = state.earth;
-      instance.setProps({
-        initialViewState: { longitude: 12, latitude: 18, zoom: -1.15 + zoomShift() },
-      });
+      instance.setProps({ initialViewState: globeViewState() });
     }
     instance.setProps({
       layers: [
