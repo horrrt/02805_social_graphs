@@ -6,4 +6,11 @@ import "global-jsdom/register";
 import { afterEach } from "node:test";
 import { cleanup } from "@testing-library/react";
 
+// global-jsdom keeps Node's own copies of these, but jsdom's DOM accepts only
+// its own: addEventListener rejects Node's AbortSignal and dispatchEvent
+// rejects Node's Event. A browser has one of each, so the tests use jsdom's.
+for (const name of ["AbortController", "AbortSignal", "Event", "CustomEvent", "EventTarget"] as const) {
+  Object.defineProperty(globalThis, name, { value: window[name], configurable: true, writable: true });
+}
+
 afterEach(cleanup);

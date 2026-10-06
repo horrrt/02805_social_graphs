@@ -115,7 +115,10 @@ npm run test:components
 ```
 
 Each test file imports `./dom` first, which registers the jsdom globals and
-unmounts after every test.
+unmounts after every test. `tests/components/css.mjs` loads any stylesheet a
+component imports as an empty module, since jsdom applies no layout. A
+component that measures the page (SectionRail) gets its positions from the
+test, which stubs `getBoundingClientRect`.
 
 Tests cross-check all 277 browser removals against independently generated CSV
 results, Python path fixtures, exact stranded groups, triangle and coverage
