@@ -119,8 +119,9 @@ content; `tag: "th"` for a row header). `rxBars` is the table's `data-rx-bars`. 
 
 ### Concordance({ rows, caption })
 
-A concordance (key word in context), as `concordance()`: one row per hit, `rows` `[{ page, left, hit, right }]`
-with `page` a node id linked to Wikipedia.
+A concordance (key word in context), as `concordance()`: one row per hit, `rows`
+`[{ page, left, hit, right, extra }]` with `page` a node id linked to Wikipedia and `extra`, cells appended after
+the right context (Week 5's verdict cells).
 
 ```tsx
 <Concordance rows={[{ page: "Thor_(Marvel_Comics)", left: "… before ", hit: "power", right: " after …" }]} caption="Power in context" />

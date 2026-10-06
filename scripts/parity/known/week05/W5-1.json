@@ -1,0 +1,87 @@
+[
+  {
+    "key": "weeks/week05/data/relations.json/*/text",
+    "reason": "faults.mjs --data with relations.json aborted: on main one Promise.all over the six frame files (week05-frame.js:161) left the hero and every finding empty; the islands draw the hero, the findings other than 1 and finding 4's line from their own files (faults-W5-1.json masks those hosts). The masks take those hosts' lines out of the page text once each, from the first line with the same words: the hero's axis labels 1, 10 and 100 also appear earlier (the topbar's section links), so on head an earlier line goes instead and the remaining lines differ in order, though none is missing or extra.",
+    "fp": "FP01"
+  },
+  {
+    "key": "weeks/week05/data/relations.json/*/scroll",
+    "reason": "faults.mjs --data with relations.json aborted: on main one Promise.all over the six frame files (week05-frame.js:161) left the hero and every finding empty; the islands draw the hero, the findings other than 1 and finding 4's line from their own files (faults-W5-1.json masks those hosts), and the drawn findings are taller than empty ones, so every element below them sits lower and the scroll position a step leaves differs.",
+    "fp": "FP01"
+  },
+  {
+    "key": "weeks/week05/data/relations.json/*/pixels",
+    "reason": "faults.mjs --data with relations.json aborted: on main one Promise.all over the six frame files (week05-frame.js:161) left the hero and every finding empty; the islands draw the hero, the findings other than 1 and finding 4's line from their own files (faults-W5-1.json masks those hosts), so the screenshot differs outside the masks: the findings and the page below them move.",
+    "fp": "FP01"
+  },
+  {
+    "key": "weeks/week05/data/copying.json/*/text",
+    "reason": "faults.mjs --data with copying.json aborted: on main one Promise.all over the six frame files (week05-frame.js:161) left the hero and every finding empty; the islands draw the hero, the findings other than 2 and finding 4's line from their own files (faults-W5-1.json masks those hosts). The masks take those hosts' lines out of the page text once each, from the first line with the same words: the hero's axis labels 1, 10 and 100 also appear earlier (the topbar's section links), so on head an earlier line goes instead and the remaining lines differ in order, though none is missing or extra.",
+    "fp": "FP01"
+  },
+  {
+    "key": "weeks/week05/data/copying.json/*/scroll",
+    "reason": "faults.mjs --data with copying.json aborted: on main one Promise.all over the six frame files (week05-frame.js:161) left the hero and every finding empty; the islands draw the hero, the findings other than 2 and finding 4's line from their own files (faults-W5-1.json masks those hosts), and the drawn findings are taller than empty ones, so every element below them sits lower and the scroll position a step leaves differs.",
+    "fp": "FP01"
+  },
+  {
+    "key": "weeks/week05/data/copying.json/*/pixels",
+    "reason": "faults.mjs --data with copying.json aborted: on main one Promise.all over the six frame files (week05-frame.js:161) left the hero and every finding empty; the islands draw the hero, the findings other than 2 and finding 4's line from their own files (faults-W5-1.json masks those hosts), so the screenshot differs outside the masks: the findings and the page below them move.",
+    "fp": "FP01"
+  },
+  {
+    "key": "weeks/week05/data/search.json/*/text",
+    "reason": "faults.mjs --data with search.json aborted: on main one Promise.all over the six frame files (week05-frame.js:161) left the hero and every finding empty; the islands draw the hero, the findings other than 3 and finding 4's line from their own files (faults-W5-1.json masks those hosts). The masks take those hosts' lines out of the page text once each, from the first line with the same words: the hero's axis labels 1, 10 and 100 also appear earlier (the topbar's section links), so on head an earlier line goes instead and the remaining lines differ in order, though none is missing or extra.",
+    "fp": "FP01"
+  },
+  {
+    "key": "weeks/week05/data/search.json/*/scroll",
+    "reason": "faults.mjs --data with search.json aborted: on main one Promise.all over the six frame files (week05-frame.js:161) left the hero and every finding empty; the islands draw the hero, the findings other than 3 and finding 4's line from their own files (faults-W5-1.json masks those hosts), and the drawn findings are taller than empty ones, so every element below them sits lower and the scroll position a step leaves differs.",
+    "fp": "FP01"
+  },
+  {
+    "key": "weeks/week05/data/search.json/*/pixels",
+    "reason": "faults.mjs --data with search.json aborted: on main one Promise.all over the six frame files (week05-frame.js:161) left the hero and every finding empty; the islands draw the hero, the findings other than 3 and finding 4's line from their own files (faults-W5-1.json masks those hosts), so the screenshot differs outside the masks: the findings and the page below them move.",
+    "fp": "FP01"
+  },
+  {
+    "key": "weeks/week05/data/heaps.json/*/text",
+    "reason": "faults.mjs --data with heaps.json aborted: on main one Promise.all over the six frame files (week05-frame.js:161) left the hero and every finding empty; the islands draw the hero, the findings other than 5 and finding 4's line from their own files (faults-W5-1.json masks those hosts). The masks take those hosts' lines out of the page text once each, from the first line with the same words: the hero's axis labels 1, 10 and 100 also appear earlier (the topbar's section links), so on head an earlier line goes instead and the remaining lines differ in order, though none is missing or extra.",
+    "fp": "FP01"
+  },
+  {
+    "key": "weeks/week05/data/heaps.json/*/scroll",
+    "reason": "faults.mjs --data with heaps.json aborted: on main one Promise.all over the six frame files (week05-frame.js:161) left the hero and every finding empty; the islands draw the hero, the findings other than 5 and finding 4's line from their own files (faults-W5-1.json masks those hosts), and the drawn findings are taller than empty ones, so every element below them sits lower and the scroll position a step leaves differs.",
+    "fp": "FP01"
+  },
+  {
+    "key": "weeks/week05/data/heaps.json/*/pixels",
+    "reason": "faults.mjs --data with heaps.json aborted: on main one Promise.all over the six frame files (week05-frame.js:161) left the hero and every finding empty; the islands draw the hero, the findings other than 5 and finding 4's line from their own files (faults-W5-1.json masks those hosts), so the screenshot differs outside the masks: the findings and the page below them move.",
+    "fp": "FP01"
+  },
+  {
+    "key": "weeks/week05/data/fame.json/*/scroll",
+    "reason": "faults.mjs --data with fame.json aborted: on main one Promise.all over the six frame files (week05-frame.js:161) left the hero and every finding empty; the islands draw findings 1, 2, 3, 5 and 7 and finding 4's line from their own files (faults-W5-1.json masks those hosts), and the drawn findings are taller than empty ones, so every element below them sits lower and the scroll position a step leaves differs.",
+    "fp": "FP01"
+  },
+  {
+    "key": "weeks/week05/data/fame.json/*/pixels",
+    "reason": "faults.mjs --data with fame.json aborted: on main one Promise.all over the six frame files (week05-frame.js:161) left the hero and every finding empty; the islands draw findings 1, 2, 3, 5 and 7 and finding 4's line from their own files (faults-W5-1.json masks those hosts), so the screenshot differs outside the masks: the findings and the page below them move.",
+    "fp": "FP01"
+  },
+  {
+    "key": "weeks/week05/data/weird.json/*/text",
+    "reason": "faults.mjs --data with weird.json aborted: on main one Promise.all over the six frame files (week05-frame.js:161) left the hero and every finding empty; the islands draw the hero, the findings other than 7 and finding 4's line from their own files (faults-W5-1.json masks those hosts). The masks take those hosts' lines out of the page text once each, from the first line with the same words: the hero's axis labels 1, 10 and 100 also appear earlier (the topbar's section links), so on head an earlier line goes instead and the remaining lines differ in order, though none is missing or extra.",
+    "fp": "FP01"
+  },
+  {
+    "key": "weeks/week05/data/weird.json/*/scroll",
+    "reason": "faults.mjs --data with weird.json aborted: on main one Promise.all over the six frame files (week05-frame.js:161) left the hero and every finding empty; the islands draw the hero, the findings other than 7 and finding 4's line from their own files (faults-W5-1.json masks those hosts), and the drawn findings are taller than empty ones, so every element below them sits lower and the scroll position a step leaves differs.",
+    "fp": "FP01"
+  },
+  {
+    "key": "weeks/week05/data/weird.json/*/pixels",
+    "reason": "faults.mjs --data with weird.json aborted: on main one Promise.all over the six frame files (week05-frame.js:161) left the hero and every finding empty; the islands draw the hero, the findings other than 7 and finding 4's line from their own files (faults-W5-1.json masks those hosts), so the screenshot differs outside the masks: the findings and the page below them move.",
+    "fp": "FP01"
+  }
+]

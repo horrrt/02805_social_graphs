@@ -16,7 +16,6 @@ const ENTRIES = {
   "week02": () => import("@/scripts/entries/week02.js"),
   "week03": () => import("@/scripts/entries/week03.js"),
   "week04": () => import("@/scripts/entries/week04.js"),
-  "week05": () => import("@/scripts/entries/week05.js"),
 };
 
 export type PageName = keyof typeof ENTRIES;

@@ -1,25 +1,26 @@
 // Week 5 · section 2 · Catch Wikipedia copying itself. Owner: Gyula.
 //
-// Draws into this section's slots on src/app/(week05)/weeks/week05/page.tsx: the copying
-// network (#chart-copying-network), the linked-share strip (#chart-copying-linked),
-// the cluster table and the passages we checked.
+// What this section's islands (src/features/week05/copying/) draw into its slots
+// on src/app/(week05)/weeks/week05/_sections/Copying.tsx: the copying network
+// (#chart-copying-network), the linked-share strip (#chart-copying-linked), the
+// cluster table and the passages we checked.
 // Data: public/weeks/week05/data/copying.json, written by analysis/week05_copying.py.
 
-import { asset } from "./site.js";
-import { loadData, networkView, passage, stripChart, table, termify } from "./kit.js";
+/** copying.json, which every part of the section waits for. */
+export const COPYING = "weeks/week05/data/copying.json";
 
 const pct = (v) => (v < 0.1 ? `${(v * 100).toFixed(1)}%` : `${Math.round(v * 100)}%`);
 const count = (v) => v.toLocaleString("en-GB");
 const short = (name) => name.replace(/ \((character|Marvel Comics|comics|characters)\)$/, "");
-
-const data = await loadData(asset("weeks/week05/data/copying.json"));
-const name = Object.fromEntries(data.nodes.map((n) => [n.id, short(n.name)]));
+const names = (data) => Object.fromEntries(data.nodes.map((n) => [n.id, short(n.name)]));
 
 // ---- the figure: the copying network, at the positions the script fixed, drawn
-// with networkView(): dot size and line width by shared words, a dashed line for
+// with NetworkView: dot size and line width by shared words, a dashed line for
 // a pair that does not link, every page named beside its dot
-const host = document.getElementById("chart-copying-network");
-if (host) {
+
+/** The copying network's NetworkView spec. */
+export function network(data) {
+  const name = names(data);
   const maxTokens = Math.max(...data.nodes.map((n) => n.copied_tokens));
   const maxLink = Math.max(...data.links.map((l) => l.tokens));
   const clusterSize = Object.fromEntries(data.clusters.map((c) => [c.id, c.pages.length]));
@@ -40,7 +41,7 @@ if (host) {
   }
   // The layout fills a frame 0.95 as tall as it is wide.
   const TALL = 0.95;
-  networkView(host, {
+  return {
     ratio: TALL,
     width: 520,
     tone: "accent",
@@ -59,29 +60,32 @@ if (host) {
     aria: `Copying network: ${data.nodes.length} pages in ${data.clusters.length} clusters`,
     explore: true,
     describe: (n, { degree }) => [n.page, `${count(n.copied)} shared words · copies with ${degree} ${degree === 1 ? "page" : "pages"} · a cluster of ${n.cluster}`],
-  });
+  };
 }
 
 // ---- beside the finding: how often copying pairs link, against two baselines
-const h = data.headline;
-document.getElementById("chart-copying-linked")?.append(
-  stripChart(
-    [
-      { label: "Pairs that copy", sub: `${h.pairs} pairs`, real: h.linked_share, realLabel: pct(h.linked_share), bold: true,
-        realTip: `${h.copy_linked} of ${h.pairs} copying pairs link to each other` },
-      { label: "Share a phrase only", sub: `${count(h.phrase_pairs)} pairs`, real: h.phrase_linked_share,
-        realLabel: pct(h.phrase_linked_share), hollow: true, realTip: "Pairs sharing a run of 8 words, shorter than 30" },
-      { label: "All pairs of pages", sub: `${count(h.all_pairs)} pairs`, real: h.all_linked_share,
-        realLabel: pct(h.all_linked_share), hollow: true, realTip: `${count(h.all_linked)} of ${count(h.all_pairs)} pairs are linked` },
-    ],
-    { domain: [0, 1], ticks: [0, 0.25, 0.5, 0.75, 1], fmt: (v) => `${Math.round(v * 100)}%`, rowH: 44, badgeW: 12,
-      axisTitle: "share of pairs linked to each other", aria: "Share of page pairs that link to each other" },
-  ),
-);
+
+/** The linked-share strip chart's rows and options. */
+export function linked(data) {
+  const h = data.headline;
+  const rows = [
+    { label: "Pairs that copy", sub: `${h.pairs} pairs`, real: h.linked_share, realLabel: pct(h.linked_share), bold: true,
+      realTip: `${h.copy_linked} of ${h.pairs} copying pairs link to each other` },
+    { label: "Share a phrase only", sub: `${count(h.phrase_pairs)} pairs`, real: h.phrase_linked_share,
+      realLabel: pct(h.phrase_linked_share), hollow: true, realTip: "Pairs sharing a run of 8 words, shorter than 30" },
+    { label: "All pairs of pages", sub: `${count(h.all_pairs)} pairs`, real: h.all_linked_share,
+      realLabel: pct(h.all_linked_share), hollow: true, realTip: `${count(h.all_linked)} of ${count(h.all_pairs)} pairs are linked` },
+  ];
+  const opts = { domain: [0, 1], ticks: [0, 0.25, 0.5, 0.75, 1], fmt: (v) => `${Math.round(v * 100)}%`, rowH: 44, badgeW: 12,
+    axisTitle: "share of pairs linked to each other", aria: "Share of page pairs that link to each other" };
+  return { rows, opts };
+}
 
 // ---- the clusters, in a drawer
-document.getElementById("copying-clusters")?.append(
-  table({
+
+/** The cluster table's spec. */
+export function clusters(data) {
+  return {
     columns: [
       { key: "pages", label: "Pages" },
       { key: "pairs", label: "Pairs", num: true },
@@ -94,12 +98,14 @@ document.getElementById("copying-clusters")?.append(
       tokens: c.tokens,
       section: c.top_section,
     })),
-  }),
-);
+  };
+}
 
 // ---- what we checked: the three largest pairs' passages and the templated lead
-const box = document.getElementById("copying-passages");
-if (box) {
+
+/** Each passage with the line above it: [{ head, page, text }]. */
+export function passages(data) {
+  const name = names(data);
   const shown = data.links.slice(0, 3).map((l) => ({
     head: `${name[l.a]} and ${name[l.b]} · ${count(l.tokens)} shared words · ${l.section_a}`,
     page: l.a,
@@ -115,16 +121,11 @@ if (box) {
       text: g.quote,
     });
   }
-  const groups = shown.map((s) => {
-    const p = document.createElement("p");
-    p.className = "fineprint";
-    p.textContent = s.head;
-    return [p, passage({ page: s.page, text: s.text })];
-  });
-  for (const g of groups) box.append(...g);
+  return shown;
 }
 
-// ---- glossary terms
-const did = document.getElementById("copying-did");
-termify(did, "8-gram", "A run of eight words in a row, in the order they appear on the page.", "w5-term-copying-ngram");
-termify(did, "house style", "Wording Wikipedia editors repeat on page after page, such as the first sentence of almost every character's article.", "w5-term-copying-house");
+// ---- glossary terms. Main's first call, "8-gram" (w5-term-copying-ngram),
+// matched no text in #copying-did, so only "house style" is placed.
+export const TERMS = [
+  { phrase: "house style", definition: "Wording Wikipedia editors repeat on page after page, such as the first sentence of almost every character's article.", id: "w5-term-copying-house" },
+];

@@ -9,6 +9,7 @@
 // mark under a still pointer after a redraw would get no enter, where main's
 // native listener gets one.
 import { memo, type KeyboardEvent, type PointerEvent, type MouseEvent, type FocusEvent } from "react";
+import { Tipped } from "../HoverTipHost";
 import type { HubRow, LineRow, NetId, NodeRow } from "./layout";
 
 /** What a node does: move (movable), and light, describe and pin (explore). */
@@ -30,13 +31,11 @@ const pressed = (e: KeyboardEvent) => e.key === "Enter" || e.key === " ";
 // An over or out event that crosses the element's own edge: enter or leave.
 const crosses = (e: PointerEvent) => !(e.relatedTarget instanceof Node && e.currentTarget.contains(e.relatedTarget));
 
-/** A line, with its title; under weights, the wider hover line after it. */
+/** A line, with its title (data-tip inside a HoverTipHost); under weights, the wider hover line after it. */
 export const LineMark = memo(function LineMark({ row, hi, onHit }: { row: LineRow; hi: boolean; onHit?: (key: string) => void }) {
   return (
     <>
-      <line {...row.at} className={hi ? `${row.cls} gv-hi` : row.cls} strokeWidth={row.width}>
-        {row.title !== null ? <title>{row.title}</title> : null}
-      </line>
+      <Tipped tag="line" tip={row.title} {...row.at} className={hi ? `${row.cls} gv-hi` : row.cls} strokeWidth={row.width} />
       {row.hit !== null ? (
         <line {...row.at} className="gv-hit" onPointerOver={onHit ? (e) => crosses(e) && onHit(row.link.key) : undefined}>
           <title>{row.hit}</title>
