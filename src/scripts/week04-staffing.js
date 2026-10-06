@@ -284,11 +284,11 @@ search.addEventListener("change", () => {
   const d = clients().find((c) => c.name.toLowerCase() === search.value.trim().toLowerCase());
   if (d) show(d);
 });
-root.querySelectorAll(".staffing-years button").forEach((button) => {
+const yearButtons = root.querySelectorAll(".staffing-years button");
+yearButtons.forEach((button) => {
   button.addEventListener("click", () => {
     year = button.dataset.year;
-    root.querySelectorAll(".staffing-years button").forEach((b) =>
-      b.setAttribute("aria-pressed", String(b === button)));
+    yearButtons.forEach((b) => b.setAttribute("aria-pressed", String(b === button)));
     draw();
   });
 });

@@ -24,6 +24,8 @@ const YEARS = ["2022", "2023", "2024", "2025", "2026"];
 const SPLIT_LABEL = {
   occupations: "Roles", groups: "Occupation groups", employer: "Employer", placement: "Placed or direct",
 };
+// What the answer calls a series in each split but placement.
+const SPLIT_NOUN = { occupations: "role", groups: "occupation group", employer: "employer" };
 const AREA_TOKENS = Array.from({ length: 14 }, (_, i) => `--w4-area-${i + 1}`);
 
 const css = getComputedStyle(card);
@@ -187,11 +189,9 @@ function compactTip(points) {
     const prev = yi > 0 ? valuesFor(s)[yi - 1] : null;
     // Nine months against twelve is not a change on the year, so the partial
     // year in the full-year window says so instead.
-    const change = partial
-      ? `, ${esc(data.partial.window)} only`
-      : prev
-        ? `, ${v >= prev ? "+" : "−"}${Math.abs(Math.round((100 * (v - prev)) / prev))}% on ${YEARS[yi - 1]}`
-        : "";
+    let change = "";
+    if (partial) change = `, ${esc(data.partial.window)} only`;
+    else if (prev) change = `, ${v >= prev ? "+" : "−"}${Math.abs(Math.round((100 * (v - prev)) / prev))}% on ${YEARS[yi - 1]}`;
     return `${row}<div style="margin-left:15px;font-size:${fs("small")}px;opacity:.8">${num(v)} filings${change}</div>`;
   };
 
@@ -250,9 +250,8 @@ function renderText() {
       "of 2025's certified filings placed the worker at a client, not their own employer.";
   } else {
     const top = split.series.find((s) => s.code !== null) || split.series[0];
-    const noun = state.split === "occupations" ? "role" : state.split === "groups" ? "occupation group" : "employer";
     answerEl.textContent =
-      `${top.name} is the largest ${noun} over the five years, with ${num(top.counts[3])} certified filings in 2025.`;
+      `${top.name} is the largest ${SPLIT_NOUN[state.split]} over the five years, with ${num(top.counts[3])} certified filings in 2025.`;
   }
 
   if (f) {
@@ -305,12 +304,13 @@ function renderAll() {
   renderText();
 }
 
-function bindToggles(attr, key, after) {
-  document.querySelectorAll(`[data-roles-${attr}]`).forEach((btn) => {
+function bindToggles(key) {
+  const buttons = document.querySelectorAll(`[data-roles-${key}]`);
+  buttons.forEach((btn) => {
     btn.addEventListener("click", () => {
-      state[key] = btn.getAttribute(`data-roles-${attr}`);
-      document.querySelectorAll(`[data-roles-${attr}]`).forEach((b) => b.setAttribute("aria-pressed", String(b === btn)));
-      after();
+      state[key] = btn.getAttribute(`data-roles-${key}`);
+      buttons.forEach((b) => b.setAttribute("aria-pressed", String(b === btn)));
+      renderAll();
     });
   });
 }
@@ -327,9 +327,9 @@ function load() {
       chart.on("mouseover", { seriesType: "line" }, (p) => { hovered = p.seriesName; });
       chart.on("mouseout", { seriesType: "line" }, () => { hovered = null; });
       chart.on("globalout", () => { hovered = null; });
-      bindToggles("split", "split", renderAll);
-      bindToggles("scale", "scale", renderAll);
-      bindToggles("window", "window", renderAll);
+      bindToggles("split");
+      bindToggles("scale");
+      bindToggles("window");
       window.addEventListener("resize", () => chart.resize());
       renderAll();
       renderReveal();

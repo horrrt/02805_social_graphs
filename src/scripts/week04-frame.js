@@ -60,7 +60,7 @@ function wireSegments(root) {
     if (!group || event.target.tagName !== "BUTTON") return;
     const buttons = segmentButtons(group);
     const i = buttons.indexOf(event.target);
-    if (i < 0 || !buttons.length) return;
+    if (i < 0) return;
     const n = buttons.length;
     const next = {
       ArrowLeft: buttons[(i - 1 + n) % n],

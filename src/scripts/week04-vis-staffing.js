@@ -108,11 +108,18 @@ function drawStacked(groups, names, tints, { width = 520, rowH = 42, aria, digit
   let lx = 0;
   names.forEach((name, j) => {
     svg.append(node("circle", { cx: lx + 5, cy: ly, r: 5, fill: token(tints[j]) }));
-    const t = node("text", { x: lx + 14, y: ly + 4, "font-size": caption, fill: token("--ink-mute") }, name);
-    svg.append(t);
+    svg.append(node("text", { x: lx + 14, y: ly + 4, "font-size": caption, fill: token("--ink-mute") }, name));
     lx += 14 + textWidth(name, "caption") + 16;
   });
   return svg;
+}
+
+// One modularity row: the real network against its null, the z-score as a badge.
+function modularityRow(label, sub, part, nullWord) {
+  return {
+    label, sub, real: part.real, realLabel: part.real.toFixed(2), base: [part.null, part.null_sd],
+    baseLabel: `${nullWord} ${part.null.toFixed(2)}`, badge: `z = ${Math.round(part.z)}`,
+  };
 }
 
 function draw(id, svg) {
@@ -125,7 +132,6 @@ function draw(id, svg) {
 
 function drawQ1(deep, years) {
   const fy = years.years["2025"];
-  const fy22 = years.years["2022"];
   draw("who-q1-split", stackedRows(
     [
       ["Placed at a client", [fy.placed_share, 1 - fy.placed_share]],
@@ -136,46 +142,42 @@ function drawQ1(deep, years) {
   ));
 
   const series = Object.fromEntries(years.uscis_series.map((e) => [e.year, e]));
+  const denialRow = (year, sub, when) => {
+    const placing = series[year].placing_initial_denial_rate;
+    const direct = series[year].direct_initial_denial_rate;
+    return {
+      label: String(year), sub, real: placing, color: "--w4-vis-client",
+      realLabel: pct(placing, 1),
+      realTip: `Placing firms, ${when}: ${pct(placing, 1)}`,
+      ref: [direct, `direct ${pct(direct, 1)}`],
+    };
+  };
   draw("who-q1-denial", stripChart(
-    [
-      { label: "2022", sub: "first-time petitions", real: series[2022].placing_initial_denial_rate, color: "--w4-vis-client",
-        realLabel: pct(series[2022].placing_initial_denial_rate, 1),
-        realTip: `Placing firms, 2022: ${pct(series[2022].placing_initial_denial_rate, 1)}`,
-        ref: [series[2022].direct_initial_denial_rate, `direct ${pct(series[2022].direct_initial_denial_rate, 1)}`],
-        refTip: `Direct employers, 2022: ${pct(series[2022].direct_initial_denial_rate, 1)}` },
-      { label: "2026", sub: "Oct-Jun", real: series[2026].placing_initial_denial_rate, color: "--w4-vis-client",
-        realLabel: pct(series[2026].placing_initial_denial_rate, 1),
-        realTip: `Placing firms, 2026 Oct-Jun: ${pct(series[2026].placing_initial_denial_rate, 1)}`,
-        ref: [series[2026].direct_initial_denial_rate, `direct ${pct(series[2026].direct_initial_denial_rate, 1)}`],
-        refTip: `Direct employers, 2026 Oct-Jun: ${pct(series[2026].direct_initial_denial_rate, 1)}` },
-    ],
+    [denialRow(2022, "first-time petitions", "2022"), denialRow(2026, "Oct-Jun", "2026 Oct-Jun")],
     { domain: [0, 0.04], ticks: [0, 0.01, 0.02, 0.03, 0.04], fmt: (v) => pct(v, 0), width: 520, labelW: 150,
       badgeW: 20, rowH: 56,
       aria: "USCIS first-time denial rate, placing firms against direct employers, 2022 and 2026" },
   ));
 
   const k = deep.q1.by_kind;
+  const kinds = [
+    ["Direct employers", k.direct, "--w4-accent"],
+    ["Placing firms", k.placing, "--w4-vis-client"],
+    ["Firms under 20 filings", k.small, "--ink-mute"],
+  ];
   draw("who-q1-funnel-registrations", hbars(
-    [
-      { label: "Direct employers", value: k.direct.registrations_per_approval, color: "--w4-accent",
-        tip: `${k.direct.registrations_per_approval.toFixed(1)} registrations per approved petition` },
-      { label: "Placing firms", value: k.placing.registrations_per_approval, color: "--w4-vis-client",
-        tip: `${k.placing.registrations_per_approval.toFixed(1)} registrations per approved petition` },
-      { label: "Firms under 20 filings", value: k.small.registrations_per_approval, color: "--ink-mute",
-        tip: `${k.small.registrations_per_approval.toFixed(1)} registrations per approved petition` },
-    ],
+    kinds.map(([label, kind, color]) => ({
+      label, value: kind.registrations_per_approval, color,
+      tip: `${kind.registrations_per_approval.toFixed(1)} registrations per approved petition`,
+    })),
     { domain: [0, 13], fmt: (v) => v.toFixed(1), width: 520, labelW: 160,
       aria: "Registrations per approved petition, March 2023 draw, by kind of employer" },
   ));
   draw("who-q1-funnel-petitions", hbars(
-    [
-      { label: "Direct employers", value: k.direct.selected_that_became_petitions, color: "--w4-accent",
-        valueLabel: pct(k.direct.selected_that_became_petitions), tip: "A drawn ticket became a petition" },
-      { label: "Placing firms", value: k.placing.selected_that_became_petitions, color: "--w4-vis-client",
-        valueLabel: pct(k.placing.selected_that_became_petitions), tip: "A drawn ticket became a petition" },
-      { label: "Firms under 20 filings", value: k.small.selected_that_became_petitions, color: "--ink-mute",
-        valueLabel: pct(k.small.selected_that_became_petitions), tip: "A drawn ticket became a petition" },
-    ],
+    kinds.map(([label, kind, color]) => ({
+      label, value: kind.selected_that_became_petitions, color,
+      valueLabel: pct(kind.selected_that_became_petitions), tip: "A drawn ticket became a petition",
+    })),
     { domain: [0, 1], fmt: (v) => pct(v), width: 520, labelW: 160,
       aria: "Share of drawn registrations that became a petition, by kind of employer" },
   ));
@@ -187,12 +189,8 @@ function drawQ2(comm) {
   const m = comm.modularity;
   draw("who-q2-modularity", stripChart(
     [
-      { label: "Each link counted once", sub: "against rewired networks", real: m.wiring_only.real,
-        realLabel: m.wiring_only.real.toFixed(2), base: [m.wiring_only.null, m.wiring_only.null_sd],
-        baseLabel: `rewired ${m.wiring_only.null.toFixed(2)}`, badge: `z = ${Math.round(m.wiring_only.z)}` },
-      { label: "Weighted by filings", sub: "against rewired networks", real: m.weighted_vs_rewired.real,
-        realLabel: m.weighted_vs_rewired.real.toFixed(2), base: [m.weighted_vs_rewired.null, m.weighted_vs_rewired.null_sd],
-        baseLabel: `rewired ${m.weighted_vs_rewired.null.toFixed(2)}`, badge: `z = ${Math.round(m.weighted_vs_rewired.z)}` },
+      modularityRow("Each link counted once", "against rewired networks", m.wiring_only, "rewired"),
+      modularityRow("Weighted by filings", "against rewired networks", m.weighted_vs_rewired, "rewired"),
     ],
     { domain: [0.4, 0.8], ticks: [0.4, 0.5, 0.6, 0.7, 0.8], fmt: (v) => v.toFixed(1), width: 520, labelW: 175,
       badgeW: 58, rowH: 56, aria: "Modularity of the firm-client network, real against rewired networks" },
@@ -309,15 +307,9 @@ function drawCommunityStats(comm) {
   const m = comm.modularity;
   draw("staffing-community-modularity", stripChart(
     [
-      { label: "Each link counted once", sub: "against rewired", real: m.wiring_only.real,
-        realLabel: m.wiring_only.real.toFixed(2), base: [m.wiring_only.null, m.wiring_only.null_sd],
-        baseLabel: `rewired ${m.wiring_only.null.toFixed(2)}`, badge: `z = ${Math.round(m.wiring_only.z)}` },
-      { label: "Weighted by filings", sub: "against rewired", real: m.weighted_vs_rewired.real,
-        realLabel: m.weighted_vs_rewired.real.toFixed(2), base: [m.weighted_vs_rewired.null, m.weighted_vs_rewired.null_sd],
-        baseLabel: `rewired ${m.weighted_vs_rewired.null.toFixed(2)}`, badge: `z = ${Math.round(m.weighted_vs_rewired.z)}`, divider: true },
-      { label: "Weighted by filings", sub: "counts shuffled on real links", real: m.weights_only.real,
-        realLabel: m.weights_only.real.toFixed(2), base: [m.weights_only.null, m.weights_only.null_sd],
-        baseLabel: `shuffled ${m.weights_only.null.toFixed(2)}`, badge: `z = ${Math.round(m.weights_only.z)}` },
+      modularityRow("Each link counted once", "against rewired", m.wiring_only, "rewired"),
+      { ...modularityRow("Weighted by filings", "against rewired", m.weighted_vs_rewired, "rewired"), divider: true },
+      modularityRow("Weighted by filings", "counts shuffled on real links", m.weights_only, "shuffled"),
     ],
     { domain: [0.4, 0.8], ticks: [0.4, 0.5, 0.6, 0.7, 0.8], fmt: (v) => v.toFixed(1), width: 520, labelW: 190,
       badgeW: 58, rowH: 56, aria: "Modularity of the firm-client network, real against rewired networks, with and without filing counts" },

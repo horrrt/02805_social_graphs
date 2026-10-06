@@ -2,6 +2,7 @@
 // Plain SVG, coloured from the page's CSS tokens; every mark carries a
 // native tooltip (<title>).
 import { asset } from "./site.js";
+import { esc } from "./cabinet.js";
 import { stripChart, token, node as el, fitted, fs, textWidth } from "./week04-strip.js";
 
 const DATA_URL = asset("weeks/week04/data/jobs.json");
@@ -9,13 +10,6 @@ const whole = new Intl.NumberFormat("en-US");
 const num = (value) => whole.format(value);
 const short = (title) => title.replace(/\s+\([^)]*\)$/, "").replace(/\s+/g, " ");
 const $ = (id) => document.getElementById(id);
-const esc = (value) => String(value).replace(/[&<>"']/g, (character) => ({
-  "&": "&amp;",
-  "<": "&lt;",
-  ">": "&gt;",
-  '"': "&quot;",
-  "'": "&#39;",
-}[character]));
 
 const tip = (element, text) => {
   element.append(el("title", {}, text));

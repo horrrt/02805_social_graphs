@@ -6,6 +6,7 @@
 // <details> toggle, so this waits for that card to land instead of racing it.
 
 import { asset } from "./site.js";
+import { esc } from "./cabinet.js";
 import { token, fs, family, font } from "./week04-strip.js";
 import { drawer, drawerRow } from "./week04-ui.js";
 
@@ -29,10 +30,6 @@ const shorten = (name) => {
 
 const GROUP_ORDER = ["skills", "knowledge", "work_activities"];
 const fmt2 = (v) => v.toFixed(2);
-
-const esc = (value) => String(value).replace(/[&<>"']/g, (c) => ({
-  "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;",
-}[c]));
 
 async function load() {
   const r = await fetch(DATA);
@@ -205,9 +202,7 @@ class Radar {
     wrap.append(searchRow, status, chips, toggle);
     container.append(wrap);
     this.els.input = input;
-    this.els.status = status;
     this.els.chips = chips;
-    this.els.toggle = toggle;
   }
 
   renderChips() {
@@ -246,10 +241,6 @@ class Radar {
       const top = topDescriptors(occ, groups, this.group).map((d) => `${d.name} (${fmt2(d.value)})`).join(", ");
       return `${occ.title}: ${top}`;
     });
-    this.els.notice.replaceChildren();
-    this.els.notice.append(
-      frag(`Highest-rated ${groups[this.group].label.toLowerCase()} for each occupation shown, on the 1-to-5 Importance scale. `),
-    );
     const list = document.createElement("ul");
     list.className = "w4-radar-notice-list";
     for (const line of lines) {
@@ -257,11 +248,14 @@ class Radar {
       li.textContent = line;
       list.append(li);
     }
-    this.els.notice.append(list);
+    this.els.notice.replaceChildren(
+      frag(`Highest-rated ${groups[this.group].label.toLowerCase()} for each occupation shown, on the 1-to-5 Importance scale. `),
+      list,
+    );
 
-    const summary = `Comparing ${this.selected.length} occupation${this.selected.length === 1 ? "" : "s"} on ${groups[this.group].label.toLowerCase()}. ` +
+    this.els.live.textContent =
+      `Comparing ${this.selected.length} occupation${this.selected.length === 1 ? "" : "s"} on ${groups[this.group].label.toLowerCase()}. ` +
       lines.join(". ") + ".";
-    this.els.live.textContent = summary;
   }
 
   hideTip() {
@@ -316,12 +310,13 @@ class Radar {
       graphic: group.names.map((name, i) => {
         const angle = Math.PI / 2 + (2 * Math.PI * i) / n;
         const right = Math.cos(angle) >= -1e-9;
+        const along = Math.atan2(Math.sin(angle), Math.cos(angle));
         return {
           type: "text",
           x: cx + (r + 8) * Math.cos(angle),
           y: cy - (r + 8) * Math.sin(angle),
           // Upright on both sides: the left half reads inward-to-outward from the right end.
-          rotation: right ? Math.atan2(Math.sin(angle), Math.cos(angle)) : Math.atan2(Math.sin(angle), Math.cos(angle)) - Math.PI,
+          rotation: right ? along : along - Math.PI,
           style: { text: shorten(name), fill: softInk, font: font("caption"), lineHeight: 14, align: right ? "left" : "right", verticalAlign: "middle" },
           onmouseover: (e) => this.showTip(e.event, i),
           onmouseout: () => this.hideTip(),

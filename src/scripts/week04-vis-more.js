@@ -27,12 +27,18 @@ function pct(v) {
 }
 
 /** A label centred on x but kept inside [lo, hi], as in week04-strip.js. */
-function smartText(x, y, text, lo, hi, { role = "caption", fill, weight = 400, anchorOverride } = {}) {
-  const size = fs(role);
-  const half = textWidth(text, role, weight) / 2;
-  const anchor = anchorOverride ?? (x - half < lo ? "start" : x + half > hi ? "end" : "middle");
-  const at = anchor === "start" ? lo : anchor === "end" ? hi : x;
-  return node("text", { x: at, y, "font-size": size, fill: fill ?? token("--ink-soft"), "font-weight": weight, "text-anchor": anchor }, text);
+function smartText(x, y, text, lo, hi) {
+  const half = textWidth(text, "caption", 400) / 2;
+  let anchor = "middle";
+  let at = x;
+  if (x - half < lo) {
+    anchor = "start";
+    at = lo;
+  } else if (x + half > hi) {
+    anchor = "end";
+    at = hi;
+  }
+  return node("text", { x: at, y, "font-size": fs("caption"), fill: token("--ink-soft"), "font-weight": 400, "text-anchor": anchor }, text);
 }
 
 /**
@@ -71,11 +77,10 @@ function drawHbars(rows, { domain, ticks, fmt, width = 556, valueW = 54, rowH = 
     svg.append(node("text", { x: 0, y: cy + 4.5, "font-size": small, fill: token("--ink"), "font-weight": r.bold ? 700 : 600 }, r.label));
     svg.append(node("line", { x1: x0, y1: cy, x2: x1, y2: cy, stroke: token("--line"), "stroke-width": 1 }));
     const bw = Math.max(X(r.value) - x0, 1);
-    if (r.outline) {
-      svg.append(titled(node("rect", { x: x0, y: cy - bh / 2, width: bw, height: bh, rx: 3, fill: "none", stroke: token("--ink"), "stroke-width": 1.6 }), r.tip));
-    } else {
-      svg.append(titled(node("rect", { x: x0, y: cy - bh / 2, width: bw, height: bh, rx: 3, fill: r.bold ? token("--ink") : token("--ink-mute") }), r.tip));
-    }
+    const paint = r.outline
+      ? { fill: "none", stroke: token("--ink"), "stroke-width": 1.6 }
+      : { fill: r.bold ? token("--ink") : token("--ink-mute") };
+    svg.append(titled(node("rect", { x: x0, y: cy - bh / 2, width: bw, height: bh, rx: 3, ...paint }), r.tip));
     svg.append(node("text", { x: X(r.value) + 6, y: cy + 4.5, "font-size": small, "font-weight": 700, fill: token("--ink") }, r.valueLabel ?? fmt(r.value)));
   });
   return svg;
@@ -173,7 +178,6 @@ function drawCountriesTop(data, host) {
       domain: [0, 55],
       ticks: [0, 10, 20, 30, 40, 50],
       fmt: (v) => `${v.toFixed(0)}%`,
-      labelW: 110,
       valueW: 50,
       rowH: 26,
       aria: "Shares of 2023 certified green-card filings by citizenship, in the counted cells",
@@ -182,31 +186,19 @@ function drawCountriesTop(data, host) {
 }
 
 function drawCountriesModularity(data, host) {
-  const u = data.modularity.unweighted;
-  const w = data.modularity.weighted;
   const sign = (z) => (z >= 0 ? `z = ${z.toFixed(1)}` : `z = −${Math.abs(z).toFixed(1)}`);
+  const row = (label, m) => ({
+    label,
+    sub: "against rewired",
+    real: m.real,
+    realLabel: m.real.toFixed(2),
+    base: [m.null, m.null_sd],
+    baseLabel: `rewired ${m.null.toFixed(2)}`,
+    badge: sign(m.z),
+  });
   host.replaceChildren(
     stripChart(
-      [
-        {
-          label: "Links counted once",
-          sub: "against rewired",
-          real: u.real,
-          realLabel: u.real.toFixed(2),
-          base: [u.null, u.null_sd],
-          baseLabel: `rewired ${u.null.toFixed(2)}`,
-          badge: sign(u.z),
-        },
-        {
-          label: "Weighted by green cards",
-          sub: "against rewired",
-          real: w.real,
-          realLabel: w.real.toFixed(2),
-          base: [w.null, w.null_sd],
-          baseLabel: `rewired ${w.null.toFixed(2)}`,
-          badge: sign(w.z),
-        },
-      ],
+      [row("Links counted once", data.modularity.unweighted), row("Weighted by green cards", data.modularity.weighted)],
       {
         domain: [0, 0.5],
         ticks: [0, 0.1, 0.2, 0.3, 0.4, 0.5],
@@ -239,7 +231,6 @@ function drawDensity(data, host) {
       domain: [0, 45],
       ticks: [0, 10, 20, 30, 40],
       fmt: (v) => v.toFixed(0),
-      labelW: 130,
       valueW: 50,
       rowH: 28,
       ref: data.national_rate,
@@ -262,7 +253,6 @@ function drawStrength(data, host) {
       domain: [0, 140],
       ticks: [0, 35, 70, 105, 140],
       fmt: (v) => v.toFixed(0),
-      labelW: 190,
       valueW: 50,
       rowH: 30,
       aria: "The clients with the most filings from a single firm; dark bars are health care",
@@ -377,6 +367,13 @@ function drawsChart(rows, hl, W) {
   return svg;
 }
 
+// The more.json section each figure reads.
+function sectionOf(key) {
+  if (key.startsWith("countries")) return "countries";
+  if (key === "draws") return "lottery";
+  return key;
+}
+
 const DRAWERS = {
   perm: drawPerm,
   "countries-top": drawCountriesTop,
@@ -394,9 +391,8 @@ async function render() {
     const data = await load();
     for (const host of hosts) {
       const key = host.dataset.more;
-      const section = key.startsWith("countries") ? "countries" : key === "draws" ? "lottery" : key;
       const draw = DRAWERS[key];
-      if (draw) draw(data[section], host);
+      if (draw) draw(data[sectionOf(key)], host);
     }
   } catch (err) {
     console.error("week04-vis-more", err);
