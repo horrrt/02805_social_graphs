@@ -41,7 +41,7 @@ Every post from Week 4 on uses Week 4's card: a `w4-q` header with the question 
 
 In view: the question, the answer told once, one paragraph of what we did, "What to notice" with the number against its baseline, and the figure. In the drawers, word for word: Method (with the limitation), More numbers, tables, and "What we read in the pages" for the passages the brief asks us to check. Do not add limitations, caveats or extra blocks the card does not need. Give a technical term a pop-up definition (`termify()`), and keep charts out of closed drawers unless they redraw when opened.
 
-`tests/text-budget.test.mjs` fails any card that shows more than 350 words of its HTML before a click. It reads HTML only; for text a script draws, run this in the browser console and expect at most about 450 words per section:
+`tests/text-budget.test.mjs` sets three limits on the words a reader sees before a click, and none on the page as a whole, so a post grows by adding cards. A main-path card shows at most 350 words, and each subsection inside it, from one `<h3>` to the next or to the card's end, at most 200. A section marked `data-depth="deep"` is a deep dive: it is left out of the main budget, and each card inside it is held to 350 words on its own. The test covers Week 3 and every later post. It reads HTML only; for text a script draws, run this in the browser console and expect at most about 450 words per section:
 
 ```js
 [...document.querySelectorAll("section.step[id]")].map((s) => {
@@ -68,12 +68,14 @@ Use the frontend-design and writing-clearly-and-concisely skills. Before saving 
 Week 4 set these rules, and weeks 1 to 3 were brought in line on 28 September (#80, #82, #83), except that Week 3 still tests its results on one year. Apply them to each number a post quotes.
 
 - Read every number from a script's JSON. Either the page script loads it, or a test in `tests/` builds the sentence from the JSON and fails when the page disagrees (`tests/week04-prose.test.mjs`). Pin the names and words a sentence attaches to a number as well: "about twice" and "comes close" each rest on a threshold. Six hand-typed Week 4 numbers drifted after a rerun before any test read them (#72).
+- When the brief quotes figures for our data, recompute them first and add each to `analysis/course_reference.py`, which fails on a miss; say on the page that they match. If a figure depends on an unstated choice, as Week 5's token count depends on the tokenizer, report ours beside the course's and the cause of the gap, and do not tune our rule to close it.
 - Rerun a script before you change it and confirm it reproduces its committed JSON. On 27 September three Week 3 files no longer did, and the page still quoted them.
 - Keep reruns deterministic. Seed every random step, sort a set before drawing from it and break ties on a stable key. After a change, rerun under `PYTHONHASHSEED=1` and `PYTHONHASHSEED=2` and expect identical files.
 - Hold each structural claim to a null that keeps what the claim does not test: degree-preserving rewiring for modularity or reciprocity, shuffled labels for NMI, random groups matched on size. Quote the null's mean and spread with z or p. When a claim fails its null, rewrite the claim; three Week 4 conclusions changed this way (#59).
 - Run stochastic methods many times with seeds `SEED + i`. Report the partition found most often and how often it recurs, and measure a gap between two methods against the gap between two seeds of one method. Label a single run as one run.
 - Repeat the headline on a second year or sample when the data has one. Compare two statistics only when both cover the same items.
 - Check what a file covers before you name it: Week 4's "FY2025" H-1B file held one quarter, and UN DESA mixes population registers with surveys. Write each trap into the week's notes, as `WEEK04.md` does, and report the share of rows a fuzzy join matched.
+- Commit what you read by hand as a CSV the script reads back, with the text each verdict judged. Draw the sample with a fixed seed and make the script stop when a sampled item has no verdict, when its text changed since the reading, or when a verdict's item is no longer drawn (`analysis/week05_relations.py`). A change to tokenising or matching can keep an item's key and swap its sentence, and an old verdict would then pass unread.
 - Validate page data against its week's model before writing it, with `check(path, data)` from `analysis/check_pages.py`.
 - Credit each data source on the page that uses it, in the form its licence asks for.
 - Before review, read the page for one quantity given twice with different values, or one result told in several places (#69: 817 against 818).

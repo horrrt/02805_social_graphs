@@ -45,6 +45,15 @@ export function Closing() {
             <a href="https://github.com/horrrt/02805_social_graphs/blob/main/analysis/week05_text.py">week05_text.py</a>
             ). Every random step has a fixed seed.
           </p>
+          <p className="sub">
+            Word counts depend on the tokenizer. The course brief quotes about 727,000 tokens and 27,000
+            types for these pages, 36% of them used once, without naming its tokenizer. Our word rule counts
+            713,617 words and 27,754 types, 38% used once: it keeps 14,341 words such as Spider-Man whole and
+            drops numbers and the possessive 's. spaCy's tokenizer with punctuation dropped gives 744,495 tokens, 26,987 types and
+            36% used once (
+            <a href="https://github.com/horrrt/02805_social_graphs/blob/main/analysis/course_reference.py">course_reference.py</a>
+            ).
+          </p>
           <ul className="w5-methods">
             <li>
               <b>

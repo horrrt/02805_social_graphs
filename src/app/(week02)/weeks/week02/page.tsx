@@ -867,6 +867,13 @@ export default function Page() {
                 sampling it uniformly.
               </p>
               <p>
+                The random null matches the course's random Marvel network.
+                Across the 1,000 random draws the biggest hub has 19 links on
+                average and the average distance is 2.78; the course brief gives
+                about 19 and 2.8, drawing each link with p = 0.031 where we fix
+                the number of links. See analysis/course_reference.py.
+              </p>
+              <p>
                 <a href="https://github.com/horrrt/02805_social_graphs/tree/main/analysis">Analysis and source code on GitHub</a>
                 . All experiments run locally in your browser; the frozen data is
                 never edited.

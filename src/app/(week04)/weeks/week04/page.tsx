@@ -1900,7 +1900,7 @@ export default function Page() {
             </div>
           </section>
           {/* Deep dive · the first round of questions ------------------ */}
-          <section className="step" id="cut">
+          <section className="step" data-depth="deep" id="cut">
             <header className="w4-opener">
               <span aria-hidden="true" className="w4-opener-num">+</span>
               <div>

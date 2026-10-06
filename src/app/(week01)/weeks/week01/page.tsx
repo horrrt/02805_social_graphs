@@ -661,6 +661,16 @@ export default function Page() {
                 .
               </p>
               <p>
+                Before building on the snapshot we recomputed the figures the
+                course briefs quote for it, and every one comes out the same at
+                the precision the briefs print: 303 characters, 1,784 links,
+                1,434 linked pairs (350 of them both ways), an average degree of
+                9.5, 17 isolates, one island of 9, Spider-Man's 106 incoming
+                links, Betsy Braddock's 28 outgoing, and in the largest
+                component an average distance of 2.67 and a diameter of 6. See
+                analysis/course_reference.py.
+              </p>
+              <p>
                 <a href="https://github.com/horrrt/02805_social_graphs/tree/main/analysis">Analysis and source code on GitHub</a>
                 . All experiments run locally in your browser; the frozen data is
                 never edited.

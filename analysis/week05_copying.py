@@ -30,7 +30,7 @@ Method
   the rendered text keeps; the section shares count both pages of a pair.
 - What ties each cluster's characters (a mantle, a team or a family) is read
   by hand and kept in analysis/week05_copying_ties.csv; the script stops on a
-  cluster with no row.
+  cluster with no row and on a row whose cluster no longer forms.
 - Check: are copying pairs linked in the link network (either direction) more
   often than any two pages are, and more often than pairs that share only a
   phrase? Binomial test against the share of all 45,753 page pairs.
@@ -241,6 +241,9 @@ def main():
     with TIES.open(newline="", encoding="utf-8") as fh:
         for row in csv.DictReader(fh):
             ties[frozenset(row["pages"].split(";"))] = row
+    stale = sorted(sorted(k) for k in set(ties) - {frozenset(c) for c in clusters})
+    if stale:
+        raise SystemExit(f"{TIES.name} has rows for clusters that no longer form: {stale}; delete them")
     cluster_rows = []
     for i, c in enumerate(clusters):
         inside = [r for r in links if r["a"] in c]
