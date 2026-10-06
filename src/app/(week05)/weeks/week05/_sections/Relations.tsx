@@ -31,7 +31,7 @@ export function Relations() {
         }
         surprise={
           <Notice icon="💡" headline="What to notice">
-            54% of enemy links join two communities, against 42% when the labels are shuffled (z = 4.3). Family links cross only 23% of the time (z = −4.6). Allies cross 31%, still within chance; teammate and killed links look like shuffled ones.
+            54% of enemy links join two communities, against 42% when the labels are shuffled (z = 4.3). Family links cross only 23% of the time (z = −4.6). Allies cross 31%, still within chance; teammate and killed links look like shuffled ones. Only 5 of the 12 enemy sentences we read describe A and B as enemies, so the gap is a tendency, not a count of feuds.
           </Notice>
         }
         figure={

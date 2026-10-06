@@ -7,7 +7,7 @@ export function Findings() {
   return (
     <FindingsStrip id="findings" label="Seven findings" caps="Seven sections, seven findings" real="the real pages">
       <FindingRow num="1" title="Turn links into relationships" mini={<Frame part="1" />} href="#relations" link="Section 1 →">
-        54% of links written in fight words join two communities, against 42% when the labels are shuffled; family links cross only 23% of the time.
+        54% of links written in fight words join two communities, against 42% when the labels are shuffled; family links cross only 23% of the time. Read by hand, the word list labels only 32 of 60 links right.
       </FindingRow>
       <FindingRow num="2" title="Catch Wikipedia copying itself" mini={<Frame part="2" />} href="#copying" link="Section 2 →">
         20 of the 22 pairs of pages that share a copied passage already link to each other, against 3.1% of all pairs.
