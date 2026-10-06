@@ -10,9 +10,9 @@ import { fileURLToPath } from "node:url";
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const json = (name) => JSON.parse(readFileSync(join(ROOT, name), "utf8"));
 
-const page = json("docs/weeks/week04/data/skills.json");
+const page = json("public/weeks/week04/data/skills.json");
 const c = page.cohiring;
-const jobs = json("docs/weeks/week04/data/jobs.json");
+const jobs = json("public/weeks/week04/data/jobs.json");
 
 test("skills.json validates against week04_schemas.Skills (extra fields aside, shape holds)", () => {
   assert.ok(page.meta && typeof page.meta === "object");

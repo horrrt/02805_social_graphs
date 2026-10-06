@@ -1,0 +1,93 @@
+/* Week 4 redesign · five years of filings, FY2022 to FY2026 (review/week04-redesign/, board FiveYears).
+   Only the layout the box needs beyond the shared .w4-opener, .notice and
+   table.ego rules in post.css and corridor.css: the panel grid, the panel
+   card itself, and the two split layouts (month-by-month, the four firms). */
+
+.corridor .years-grid {
+  display: grid;
+  gap: 20px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  margin-top: 18px;
+}
+
+.corridor .years-panel {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  box-shadow: var(--shadow);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 18px 20px 16px;
+}
+
+.corridor .years-panel[data-span="2"] {
+  grid-column: span 2;
+}
+
+.corridor .years-panel h3 {
+  color: var(--ink);
+  font-size: var(--fs-body);
+  font-weight: 700;
+  margin: 0;
+}
+
+.corridor .years-panel p {
+  color: var(--ink-soft);
+  font-size: var(--fs-small);
+  line-height: 1.45;
+  margin: 0;
+}
+
+.corridor .years-panel svg {
+  display: block;
+  max-width: 100%;
+}
+
+.corridor .years-split {
+  display: grid;
+  gap: 32px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.corridor .years-split > div {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.corridor .years-split h4 {
+  color: var(--ink);
+  font-size: var(--fs-small);
+  font-weight: 700;
+  margin: 0;
+}
+
+.corridor .years-firms {
+  display: grid;
+  gap: 16px;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.corridor .years-firm {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.corridor .years-firm span {
+  color: var(--ink);
+  font-size: var(--fs-small);
+  font-weight: 700;
+}
+
+.corridor .years-alt {
+  margin-top: 4px;
+}
+
+.corridor .years-alt summary {
+  color: var(--ink-soft);
+  cursor: pointer;
+  font-size: var(--fs-small);
+  font-weight: 600;
+}

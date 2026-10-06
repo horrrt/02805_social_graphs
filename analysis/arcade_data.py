@@ -11,7 +11,7 @@ import networkx as nx
 from check_pages import check
 
 ROOT = Path(__file__).resolve().parents[1]
-OUT = ROOT / "docs/assets/data"
+OUT = ROOT / "public/assets/data"
 
 # The roster's "name" column is the Wikidata label for the article's subject,
 # which for these five is a different character or civilian identity than the

@@ -21,7 +21,7 @@ Method
   metros(), worksite_metros() and project(): the four lines that build
   per_case/pairs/filings/top in week04_where.main() are copied verbatim below
   (see build_full()) rather than re-derived, so the node set and its order
-  match docs/assets/data/week04_place.json exactly. That is checked directly:
+  match public/assets/data/week04_place.json exactly. That is checked directly:
   the rebuilt top-40 list must equal the page's city order, and the rebuilt
   graph's disparity-filter backbone at alpha 0.2 must equal the page's
   backbone edges (same 180 pairs, same weights).
@@ -69,7 +69,7 @@ Checks
   (trivially true since we call it directly; the assert guards against a
   transcription bug when reshaping its output).
 
-Outputs: docs/weeks/week04/data/explore.json (checked against the Explore
+Outputs: public/weeks/week04/data/explore.json (checked against the Explore
 model in week04_schemas.py before writing).
 """
 
@@ -88,8 +88,8 @@ from week04_jobs_split import link_similarities, partition_density_cut
 from week04_schemas import check
 
 ROOT = Path(__file__).resolve().parents[1]
-PAGE = ROOT / "docs/weeks/week04/data/explore.json"
-PLACE = ROOT / "docs/assets/data/week04_place.json"
+PAGE = ROOT / "public/weeks/week04/data/explore.json"
+PLACE = ROOT / "public/assets/data/week04_place.json"
 YEAR = 2025
 LOUVAIN_SEED_TRIES = 200
 K_CLIQUES = (3, 4, 5, 6)

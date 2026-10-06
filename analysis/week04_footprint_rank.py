@@ -38,7 +38,7 @@ projection plus 100 seeded Louvain runs, run in an 8-worker forked pool as
 week04_footprint.py's own nulls and draws are.
 
 Outputs: analysis/week04_footprint_rank.json (every number) and
-docs/weeks/week04/data/footprint_rank.json (the shape the page's two new
+public/weeks/week04/data/footprint_rank.json (the shape the page's two new
 figures draw).
 """
 
@@ -59,7 +59,7 @@ from week04_staffing import resolver
 
 ROOT = Path(__file__).resolve().parents[1]
 OUT = Path(__file__).with_suffix(".json")
-PAGE = ROOT / "docs/weeks/week04/data/footprint_rank.json"
+PAGE = ROOT / "public/weeks/week04/data/footprint_rank.json"
 YEAR = 2025
 OTHER_YEAR = 2024
 PART = "rank"           # this script's own seed_for namespace, distinct from footprint.py's "metro"/"jobs"

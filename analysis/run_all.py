@@ -11,7 +11,7 @@ long instead of about an hour.
     python analysis/run_all.py week02           # one week
     python analysis/run_all.py week03_gravity   # one script, and nothing it depends on
 
-When the run ends it prints every committed file under analysis/ and docs/ that
+When the run ends it prints every committed file under analysis/ and public/ that
 changed. Run it before you change a script: an empty list means the committed
 JSON still reproduces. On 27 September 2026 it was not empty for three week 3
 files, and the page still quoted the stale versions.
@@ -23,9 +23,7 @@ week 4 downloads do.
 Two scripts stay out (tests/run-all.test.mjs fails if any other week 1 to 3
 script is missing from SCRIPTS). week01_api_check.py queries live Wikipedia, so its output
 cannot reproduce; week03_forced_patch.py is a one-off patch that a full
-week03_corridor_control.py run supersedes. scripts/stamp_week03.py runs last
-whenever a week 3 script ran, because the week 3 page's asset stamp hashes its
-data files.
+week03_corridor_control.py run supersedes.
 """
 
 import os
@@ -123,15 +121,13 @@ def main():
     started = time.time()
     print(f"running {len(wanted)} scripts, up to {MAX_PARALLEL} at once; logs in build/logs/", flush=True)
     failed = run(SCRIPTS, wanted)
-    if not failed and any(WEEK[n] == "week03" for n in wanted):
-        failed = run({"stamp_week03": "scripts/stamp_week03.py"}, ["stamp_week03"])
     print(f"all done in {span(time.time() - started)}" + (f"; failed: {failed}" if failed else ""))
-    git = subprocess.run(["git", "status", "--porcelain", "--", "analysis", "docs"], cwd=ROOT,
+    git = subprocess.run(["git", "status", "--porcelain", "--", "analysis", "public"], cwd=ROOT,
                          capture_output=True, text=True)
     if git.returncode:
         print(f"could not ask git what changed: {git.stderr.strip()}")
     elif git.stdout.strip():
-        print("files under analysis/ and docs/ that differ from the last commit:\n" + git.stdout.rstrip())
+        print("files under analysis/ and public/ that differ from the last commit:\n" + git.stdout.rstrip())
     else:
         print("every committed file reproduced")
     return 1 if failed else 0

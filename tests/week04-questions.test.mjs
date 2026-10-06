@@ -6,11 +6,12 @@ import { readFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { block, flatten, notices } from "./week04-html.mjs";
+import { builtPage } from "./built-page.mjs";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const read = (name) => readFileSync(join(ROOT, name), "utf8");
 const json = (name) => JSON.parse(read(name));
-const html = read("docs/weeks/week04/index.html");
+const html = builtPage("out/weeks/week04/index.html");
 const card = (id) => flatten(block(html, id));
 const says = (id, t) => assert.ok(card(id).includes(t), `${id} should say "${t}"`);
 const pct = (x, digits = 0) => `${(100 * x).toFixed(digits)}%`;
@@ -18,7 +19,7 @@ const f2 = (x) => x.toFixed(2);
 const count = (n) => n.toLocaleString("en-US");
 
 test("section 1: cities group by who hires, not by region", () => {
-  const f = json("docs/weeks/week04/data/where_who.json").finding;
+  const f = json("public/weeks/week04/data/where_who.json").finding;
   const s = f.q1_scores;
   assert.equal(f.q1_answer, "yes, by who hires");
   says("place-who", `IT-services share matches the groups at AMI ${f2(s.naics54_share_tercile.ami)} (p = ${s.naics54_share_tercile.p_shuffle.toFixed(3)})`);
@@ -32,7 +33,7 @@ test("section 1: cities group by who hires, not by region", () => {
 });
 
 test("section 1: the backbone sheds metros, it does not snap", () => {
-  const d = json("docs/weeks/week04/data/where_who.json");
+  const d = json("public/weeks/week04/data/where_who.json");
   const f = d.finding;
   says("place-break", `The first metro falls off at α = ${f.q2_alpha_drops_below_40.toFixed(3)}`);
   assert.equal(f.q2_max_single_drop, 2);
@@ -57,7 +58,7 @@ test("section 1: the backbone sheds metros, it does not snap", () => {
 });
 
 test("section 2: outsourcers bundle jobs differently from companies like them", () => {
-  const d = json("docs/weeks/week04/data/jobs_split.json");
+  const d = json("public/weeks/week04/data/jobs_split.json");
   const f = d.finding;
   const nulls = json("analysis/week04_jobs_split.json").q1.null;
   assert.equal(f.q1_matched_verdict, "different");
@@ -79,7 +80,7 @@ test("section 2: outsourcers bundle jobs differently from companies like them", 
 });
 
 test("section 2: link communities find no clear two-cluster job", () => {
-  const f = json("docs/weeks/week04/data/jobs_split.json").finding;
+  const f = json("public/weeks/week04/data/jobs_split.json").finding;
   assert.ok(f.q2_D_at_cut >= 0 && f.q2_D_at_cut <= 1, "partition density lies in [0, 1]");
   says("jobs-linkcom", `D = ${f2(f.q2_D_at_cut)}`);
   says("jobs-linkcom", `${f.q2_link_clusters_of_3_or_more} communities have three links or more, counting it`);
@@ -90,9 +91,9 @@ test("section 2: link communities find no clear two-cluster job", () => {
     says("jobs-linkcom", `Only ${f.q2_bridges_in_top15_count} of the ${f.q2_bridges_count} occupations`);
   }
   // The counts, the names and the chart captions, so a rerun that changes who ranks fails here.
-  const d = json("docs/weeks/week04/data/jobs_split.json");
+  const d = json("public/weeks/week04/data/jobs_split.json");
   const q2 = d.q2;
-  const occupations = json("docs/weeks/week04/data/jobs.json").meta.occupations;
+  const occupations = json("public/weeks/week04/data/jobs.json").meta.occupations;
   assert.equal(json("analysis/week04_jobs_split.json").q2.occupations, occupations);
   says("jobs-linkcom", `On the ${count(q2.links)} links between ${count(occupations)} occupations it peaks at D = ${f2(f.q2_D_at_cut)} with one community holding ${pct(q2.largest_link_community_links / q2.links)} of the links; ${f.q2_link_clusters_of_3_or_more} communities have three links or more, counting it.`);
   const plain = (title) => title.toLowerCase().replace(/, all other$/, "").replace(/ and repairers$/, "");
@@ -110,7 +111,7 @@ test("section 2: link communities find no clear two-cluster job", () => {
 });
 
 test("section 2's deep dive: the cluster-composition captions follow jobs.json", () => {
-  const jobs = json("docs/weeks/week04/data/jobs.json");
+  const jobs = json("public/weeks/week04/data/jobs.json");
   const q = jobs.quality;
   const WORDS = ["no", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten"];
   const sizes = jobs.clusters.map((c) => Object.values(c.majors).reduce((a, b) => a + b, 0));
@@ -125,7 +126,7 @@ test("section 2's deep dive: the cluster-composition captions follow jobs.json",
 });
 
 test("the every-draw chart's caption, notice and Method drawer follow USCIS's per-draw totals", () => {
-  const lottery = json("docs/weeks/week04/data/more.json").lottery;
+  const lottery = json("public/weeks/week04/data/more.json").lottery;
   const draws = lottery.all_draws.map((d) => ({ ...d, per: d.eligible / d.selected, multi: d.multiple / d.eligible }));
   const f1 = (x) => x.toFixed(1);
   says("deeper-lottery", `Every draw since ${draws[0].label.split(" ").at(-1)}`);
@@ -159,7 +160,7 @@ test("the every-draw chart's caption, notice and Method drawer follow USCIS's pe
 });
 
 test("section 3: switches stay in the group, movers and split clients", () => {
-  const d = json("docs/weeks/week04/data/staffing_moves.json");
+  const d = json("public/weeks/week04/data/staffing_moves.json");
   const f = d.finding;
   assert.equal(f.q1_answer, "yes");
   const switches = d.q1_pairs.reduce((sum, p) => sum + p.switches_scored, 0);
@@ -183,7 +184,7 @@ test("section 3: switches stay in the group, movers and split clients", () => {
 
 test("section 3: the named movers and split clients follow the JSON", () => {
   // Names are not numbers, so the checks above let a rerun on new company keys leave them behind.
-  const d = json("docs/weeks/week04/data/staffing_moves.json");
+  const d = json("public/weeks/week04/data/staffing_moves.json");
   const poss = (name) => (name.endsWith("s") ? `${name}'` : `${name}'s`);
   const plain = (id) => card(id).replace(/&amp;/g, "&");
   const has = (id, t) => assert.ok(plain(id).includes(t), `${id} should say "${t}"`);
@@ -201,7 +202,7 @@ test("section 3: the named movers and split clients follow the JSON", () => {
 });
 
 test("beyond: law firms, green cards and wage levels", () => {
-  const d = json("docs/weeks/week04/data/beyond.json");
+  const d = json("public/weeks/week04/data/beyond.json");
   const f = d.finding;
   says("beyond-law", `${pct(d.q1.lawfirm_column_coverage, 1)} of certified filings name a law firm`);
   says("beyond-law", `there are ${count(d.q1.distinct_law_firms_after_normalize)}`);
@@ -245,7 +246,7 @@ test("beyond: law firms, green cards and wage levels", () => {
 });
 
 test("section 4: without the biggest firms", () => {
-  const d = json("docs/weeks/week04/data/footprint.json");
+  const d = json("public/weeks/week04/data/footprint.json");
   const at = (part, id) => d[part].variants.find((v) => v.id === id);
   const lead = card("footprint");
   const has = (t) => assert.ok(lead.includes(t), `section 4 should say "${t}"`);
@@ -273,7 +274,7 @@ test("section 4: without the biggest firms", () => {
 });
 
 test("section 4: which firm hides the regions", () => {
-  const d = json("docs/weeks/week04/data/footprint_rank.json");
+  const d = json("public/weeks/week04/data/footprint_rank.json");
   const f = d.finding;
   const part = card("footprint-which");
   const has = (t) => assert.ok(part.includes(t), `the which-firm part should say "${t}"`);
@@ -305,7 +306,7 @@ test("section 4: which firm hides the regions", () => {
 });
 
 test("topic jobs: no occupation clearly bridges two clusters", () => {
-  const b = json("docs/weeks/week04/data/jobs.json").bridges;
+  const b = json("public/weeks/week04/data/jobs.json").bridges;
   says("jobs-bridges", "None clearly: only");
   says("jobs-bridges", "chance alone passes.");
   assert.ok(b.all_occupations < Math.round(b.expected_false_positives), '"fewer than chance alone passes" needs fewer passes than the expected false positives');
@@ -313,7 +314,7 @@ test("topic jobs: no occupation clearly bridges two clusters", () => {
 
 test("topic outsourcing: the client map colours as many sectors as its drawer says", () => {
   // The count lives in the script's SECTORS list, not in a JSON file.
-  const src = read("docs/assets/js/week04-staffing.js");
+  const src = read("src/scripts/week04-staffing.js");
   const coloured = [...src.matchAll(/\["[^"]+", "--w4-sector-(\w+)"/g)].map((m) => m[1]).filter((t) => !["other", "unknown"].includes(t));
   assert.deepEqual(coloured, ["finance", "manufacturing", "health"]);
   assert.ok(html.includes(`Only ${["no", "one", "two", "three", "four"][coloured.length]} sectors get a colour: finance and insurance, manufacturing and health care.`));

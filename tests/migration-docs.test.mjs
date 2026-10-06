@@ -5,12 +5,12 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 import { existsSync, readFileSync, statSync } from "node:fs";
-import { createHash } from "node:crypto";
-import { dirname, join } from "node:path";
+import { dirname, join, relative } from "node:path";
 import { fileURLToPath } from "node:url";
+import { builtPage, codeFiles, pageStyles } from "./built-page.mjs";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
-const read = (name) => readFileSync(join(ROOT, name), "utf8");
+const read = (name) => (name.startsWith("out/") ? builtPage(name) : readFileSync(join(ROOT, name), "utf8"));
 
 const tsv = read("data/migration_sources.tsv")
   .split("\n")
@@ -21,8 +21,8 @@ const rows = tsv.slice(1).map((line) => {
   return Object.fromEntries(header.map((key, i) => [key, cells[i]]));
 });
 
-const catalogue = read("MIGRATION_DATA_CATALOGUE.md");
-const questions = read("MIGRATION_QUESTIONS.md");
+const catalogue = read("project/MIGRATION_DATA_CATALOGUE.md");
+const questions = read("project/MIGRATION_QUESTIONS.md");
 
 const anchor = (text) =>
   [...text.toLowerCase()]
@@ -123,19 +123,98 @@ test("the numbers quoted on the questions page come from the committed facts fil
   );
 });
 
+// The week 3 code that looks elements up by id, wherever it lives: the
+// scripts, the audit, and the components the page is moving into.
+const nested = (dir) => codeFiles(join(ROOT, dir), /\.(js|mjs|ts|tsx)$/).map((path) => relative(ROOT, path));
+const WEEK03_CODE = () => [
+  "src/scripts/corridor.js",
+  "src/scripts/week03-boot.js",
+  "src/scripts/questions.js",
+  "src/scripts/echarts-views.js",
+  ...nested("src/scripts/variants"),
+  "scripts/audit_week03.js",
+  ...nested("src/features/week03"),
+  ...nested("src/components/week03"),
+  ...nested("src/app/(week03)"),
+];
+const isClient = (src) => /^\s*(?:(?:\/\/[^\n]*|\/\*[\s\S]*?\*\/)\s*)*["']use client["']/.test(src);
+
+// Ids looked up as $("x"), api.$("x"), byId(…, "x"), getElementById("x"),
+// host("x"), querySelector(All)("#x…") or linked as href="#x" / href: "#x".
+// A string that goes on into ${…} is a template id and is left out.
+const ID = `([A-Za-z][\\w-]*)`;
+const LOOKUP_PATTERNS = [
+  `(?<![\\w$])\\$\\(\\s*["']${ID}["']\\s*\\)`,
+  `\\bbyId\\([^()]*?,\\s*["']${ID}["']\\s*\\)`,
+  `\\bgetElementById\\(\\s*["']${ID}["']\\s*\\)`,
+  `(?<![\\w$.])host\\(\\s*["']${ID}["']\\s*\\)`,
+  `\\bquerySelector(?:All)?\\(\\s*["'\`]#${ID}(?![\\w-]|\\$\\{)`,
+  `\\bhref="#${ID}"`,
+  `\\bhref:\\s*"#${ID}"`,
+].map((source) => new RegExp(source, "g"));
+
+const lookups = (src) => LOOKUP_PATTERNS.flatMap((re) => [...src.matchAll(re)].map((m) => m[1]));
+
+// The values of exported CLIENT_IDS objects: ids rendered only after hydration.
+const clientIds = (src) => {
+  const out = [];
+  for (const [, body] of src.matchAll(/export const CLIENT_IDS\s*=\s*\{([^}]*)\}/g))
+    for (const [, key, value] of body.matchAll(/([\w$]+)\s*:\s*["']([^"']+)["']/g)) out.push([key, value]);
+  return out;
+};
+
+// Ids main's scripts create in the browser, so the server page has none of
+// them; each stays absent from the built page. The exemption covers lookups
+// only, and only while the page's entry (src/scripts/entries/week03.js) runs
+// those scripts: once it is gone, each id is in the server page or CLIENT_IDS.
+const RUNTIME_IDS = {
+  "globe-canvas-d3": "src/scripts/variants/d3.js (host.id = \"globe-canvas-d3\")",
+  "globe-gl": "src/scripts/variants/globe.js (host.id = \"globe-gl\")",
+  "globe-atlas": "src/scripts/variants/atlas.js (host.id = \"globe-atlas\")",
+  "globe-canvas-deck": "src/scripts/variants/deck.js (host.id = `${canvasId}-deck`)",
+  "style-earth": "src/scripts/week03-boot.js (<select id=\"style-${dimension.key}\">)",
+};
+
 test("every element the week 3 script writes into exists in the post", () => {
-  const script = read("docs/assets/js/corridor.js");
-  const wanted = [...script.matchAll(/\$\("([a-z0-9-]+)"\)/g)].map((m) => m[1]);
-  assert.ok(wanted.length > 20, "expected the script to address many elements");
-  for (const page of ["docs/weeks/week03/index.html"]) {
-    const html = read(page);
-    const missing = [...new Set(wanted)].filter((id) => !html.includes(`id="${id}"`));
-    assert.deepEqual(missing, [], `${page} is missing ids the script writes into`);
+  const html = read("out/weeks/week03/index.html");
+  const files = WEEK03_CODE().map((file) => [file, read(file)]);
+  const found = new Set(files.flatMap(([, src]) => lookups(src)));
+  // Ids the islands render themselves.
+  const islands = files
+    .filter(([file, src]) => file.startsWith("src/features/week03/") && /\.tsx$/.test(file) && isClient(src))
+    .flatMap(([, src]) => [...src.matchAll(/\bid=(?:"([\w-]+)"|\{\s*"([\w-]+)"\s*\})/g)].map((m) => m[1] ?? m[2]));
+  const client = files.filter(([file]) => file.startsWith("src/features/week03/")).flatMap(([, src]) => clientIds(src));
+  const runtime = existsSync(join(ROOT, "src/scripts/entries/week03.js")) ? Object.keys(RUNTIME_IDS) : [];
+  const skip = new Set(client.map(([, value]) => value));
+  const wanted = [...new Set([...[...found].filter((id) => !runtime.includes(id)), ...islands])].filter((id) => !skip.has(id));
+  assert.ok(wanted.length > 20, `expected the script to address many elements, found ${wanted.length}`);
+  const missing = wanted.filter((id) => !html.includes(`id="${id}"`));
+  assert.deepEqual(missing, [], "out/weeks/week03/index.html is missing ids the script writes into");
+  for (const id of Object.keys(RUNTIME_IDS))
+    assert.ok(!html.includes(`id="${id}"`), `#${id} is on the server page, so it needs no runtime exemption`);
+  // Client-only ids go through CLIENT_IDS and never reach the server page.
+  const clientFiles = files.filter(([file, src]) => file.startsWith("src/features/week03/") && isClient(src));
+  for (const [key, value] of client) {
+    assert.ok(
+      clientFiles.some(([, src]) => new RegExp(`\\bid=\\{\\s*CLIENT_IDS\\.${key}\\s*\\}`).test(src)),
+      `CLIENT_IDS.${key} is rendered as id={CLIENT_IDS.${key}} in a 'use client' file`,
+    );
+    assert.ok(!html.includes(`id="${value}"`), `client-only #${value} is not in the server page`);
   }
 });
 
+test("the week 3 id harvest reads every lookup form and skips template ids", () => {
+  const src = [
+    '$("a-one"); api.$("a-two"); byId(root, "a-three"); document.getElementById("a-four");',
+    'host("a-five"); el.querySelector("#a-six .x"); el.querySelectorAll(`#a-seven > b`);',
+    '`<a href="#a-eight">`; ({ href: "#a-nine" });',
+    'el.querySelector(`#sel-${id}`); `<a href="#n-${k}">`; ghost("no-one");',
+  ].join("\n");
+  assert.deepEqual(lookups(src).sort(), ["a-eight", "a-five", "a-four", "a-nine", "a-one", "a-seven", "a-six", "a-three", "a-two"]);
+});
+
 test("every render variant names a vendored library that exists", () => {
-  const boot = read("docs/assets/js/week03-boot.js");
+  const boot = read("src/scripts/week03-boot.js");
   const renderers = boot.slice(
     boot.indexOf("export const RENDERERS"),
     boot.indexOf("export const PALETTES"),
@@ -143,7 +222,7 @@ test("every render variant names a vendored library that exists", () => {
   const names = [...renderers.matchAll(/^\s{2}(\w+): \{$/gm)].map((m) => m[1]);
   assert.deepEqual(names, ["canvas", "d3", "echarts", "globe", "atlas", "deck"]);
   for (const [, file] of renderers.matchAll(/script: "([^"]+)"/g)) {
-    const path = join(ROOT, "docs/assets/vendor", file);
+    const path = join(ROOT, "public/assets/vendor", file);
     assert.ok(existsSync(path), `missing vendored library: ${file}`);
     // The switcher advertises a download size; it has to be the real one.
     const bytes = statSync(path).size;
@@ -152,17 +231,16 @@ test("every render variant names a vendored library that exists", () => {
       `${file} is ${bytes} bytes and the registry says otherwise`,
     );
   }
-  for (const [, module] of renderers.matchAll(/module: "\.\/([^"]+)"/g)) {
-    assert.ok(
-      existsSync(join(ROOT, "docs/assets/js", module)),
-      `missing variant module: ${module}`,
-    );
+  const modules = [...renderers.matchAll(/module: \(\) => import\("\.\/([^"]+)"\)/g)].map((m) => m[1]);
+  assert.equal(modules.length, 5, "every library renderer names its variant module");
+  for (const module of modules) {
+    assert.ok(existsSync(join(ROOT, "src/scripts", module)), `missing variant module: ${module}`);
   }
 });
 
 test("each variant module exports install and touches no data", () => {
   for (const name of ["d3", "echarts", "globe", "atlas", "deck"]) {
-    const src = read(`docs/assets/js/variants/${name}.js`);
+    const src = read(`src/scripts/variants/${name}.js`);
     assert.match(src, /export function install\(/, `${name} exports install`);
     assert.doesNotMatch(src, /\bfetch\(/, `${name} must not load its own data`);
     // The SVG namespace is a URI, not a fetch; anything else is a CDN.
@@ -176,9 +254,9 @@ test("each variant module exports install and touches no data", () => {
 });
 
 test("every style dimension offers choices the page can actually apply", () => {
-  const boot = read("docs/assets/js/week03-boot.js");
-  const css = read("docs/assets/css/corridor.css");
-  const corridor = read("docs/assets/js/corridor.js");
+  const boot = read("src/scripts/week03-boot.js");
+  const css = read("src/styles/corridor.css");
+  const corridor = read("src/scripts/corridor.js");
 
   const group = (name) =>
     boot.slice(boot.indexOf(`export const ${name}`), boot.indexOf("};", boot.indexOf(`export const ${name}`)));
@@ -218,8 +296,8 @@ test("every style dimension offers choices the page can actually apply", () => {
 
 test("the methods section counts the renderers and dimensions it actually has", () => {
   // The copy names both numbers, and both are easy to change and forget.
-  const boot = read("docs/assets/js/week03-boot.js");
-  const html = read("docs/weeks/week03/index.html");
+  const boot = read("src/scripts/week03-boot.js");
+  const html = builtPage("out/weeks/week03/index.html");
   const renderers = boot.slice(
     boot.indexOf("export const RENDERERS"),
     boot.indexOf("export const PALETTES"),
@@ -236,7 +314,7 @@ test("the methods section counts the renderers and dimensions it actually has", 
 });
 
 test("the two long sections open on demand rather than on load", () => {
-  for (const page of ["docs/weeks/week03/index.html"]) {
+  for (const page of ["out/weeks/week03/index.html"]) {
     const html = read(page);
     for (const id of ["questions", "methods-drawer"]) {
       const tag = html.slice(html.indexOf(`id="${id}"`) - 120, html.indexOf(`id="${id}"`) + 20);
@@ -247,8 +325,8 @@ test("the two long sections open on demand rather than on load", () => {
 });
 
 test("the style guide draws every class the post uses, under every skin, palette and table style", () => {
-  const guide = read("docs/styleguide/index.html");
-  assert.ok(guide.includes('href="../assets/css/corridor.css'), "the guide loads the post's stylesheet");
+  const guide = builtPage("out/styleguide/index.html");
+  assert.ok(pageStyles("styleguide").includes("corridor.css"), "the guide loads the post's stylesheet");
   assert.ok(guide.includes('<body class="corridor">'), "the guide is scoped like the post");
 
   // Every class the post's markup carries, and every class its scripts write
@@ -257,17 +335,33 @@ test("the style guide draws every class the post uses, under every skin, palette
     [...text.matchAll(/class="([^"]+)"/g)]
       .flatMap((m) => m[1].split(/\s+/))
       .filter((c) => c && !c.includes("$"));
-  const wanted = new Set(classesIn(read("docs/weeks/week03/index.html")));
+  const wanted = new Set(classesIn(builtPage("out/weeks/week03/index.html")));
   for (const file of ["corridor.js", "questions.js", "week03-boot.js"]) {
-    const src = read(`docs/assets/js/${file}`);
+    const src = read(`src/scripts/${file}`);
     for (const c of classesIn(src)) wanted.add(c);
     for (const [, c] of src.matchAll(/className = "([^"]+)"/g)) wanted.add(c);
+  }
+  // JSX: className="…" and every string literal inside className={…}.
+  for (const file of [...nested("src/features/week03"), ...nested("src/components/week03")]) {
+    const src = read(file);
+    const add = (list) => list.split(/\s+/).filter((c) => c && !c.includes("$")).forEach((c) => wanted.add(c));
+    for (const [, c] of src.matchAll(/className="([^"]+)"/g)) add(c);
+    for (let at = src.indexOf("className={"); at >= 0; at = src.indexOf("className={", at + 1)) {
+      let depth = 0;
+      let end = at + "className=".length;
+      for (; end < src.length; end++) {
+        if (src[end] === "{") depth++;
+        else if (src[end] === "}" && --depth === 0) break;
+      }
+      const expr = src.slice(at + "className={".length, end);
+      for (const [, a, b, c] of expr.matchAll(/"([^"]*)"|'([^']*)'|`([^`]*)`/g)) add(a ?? b ?? c);
+    }
   }
   const have = new Set(classesIn(guide));
   assert.deepEqual([...wanted].filter((c) => !have.has(c)).sort(), [], "classes missing from the guide");
 
   // Every choice in the three dropdown registries gets its own scoped block.
-  const boot = read("docs/assets/js/week03-boot.js");
+  const boot = read("src/scripts/week03-boot.js");
   const keys = (name) => {
     const block = boot.slice(boot.indexOf(`export const ${name}`), boot.indexOf("};", boot.indexOf(`export const ${name}`)));
     return [...block.matchAll(/^\s{2}(\w+): \{/gm)].map((m) => m[1]);
@@ -281,15 +375,15 @@ test("the style guide draws every class the post uses, under every skin, palette
 });
 
 test("section 8 is built for any country, not just the one the build ships", () => {
-  const corridor = read("docs/assets/js/corridor.js");
-  const payload = JSON.parse(read("docs/assets/data/week03_corridors.json"));
+  const corridor = read("src/scripts/corridor.js");
+  const payload = JSON.parse(read("public/assets/data/week03_corridors.json"));
 
   // The old payload carried Denmark's series and a hand-written Nordic peer
   // group. Both are derived in the browser now, so neither may come back:
   // a shipped series would silently pin the section to one country again.
   assert.deepEqual(Object.keys(payload.focus).sort(), ["iso3", "name"]);
-  for (const page of ["docs/assets/js/corridor.js", "docs/assets/js/variants/d3.js",
-                      "docs/assets/js/variants/echarts.js"]) {
+  for (const page of ["src/scripts/corridor.js", "src/scripts/variants/d3.js",
+                      "src/scripts/variants/echarts.js"]) {
     assert.doesNotMatch(read(page), /focus\.nordics/, `${page} still reads a shipped peer list`);
   }
   assert.match(corridor, /function spotlight\(\)/);
@@ -309,57 +403,9 @@ test("section 8 is built for any country, not just the one the build ships", () 
 });
 
 test("the palette is read from CSS rather than hard-coded twice", () => {
-  const corridor = read("docs/assets/js/corridor.js");
+  const corridor = read("src/scripts/corridor.js");
   assert.match(corridor, /getPropertyValue/, "canvas must read the palette from CSS");
   for (const token of ["--people", "--access", "--ink"]) {
     assert.ok(corridor.includes(`"${token}"`), `corridor.js never reads ${token}`);
-  }
-});
-
-test("the build stamp on the week 3 assets matches their contents", () => {
-  // GitHub Pages caches for minutes; a stale stamp means a reader can run the
-  // previous deploy's code against this one's markup.
-  //
-  // The list of files behind each stamp is read out of the stamping script
-  // rather than repeated here. It used to be repeated, the copy in this file
-  // fell behind when echarts-views.js was added, and for several commits the
-  // test was checking a hash over a set of files that was no longer the set
-  // the page loads.
-  const script = read("scripts/stamp_week03.py");
-  const block = script.slice(script.indexOf("ASSETS = {"), script.indexOf("\nHOOK ="));
-  const assets = new Map();
-  for (const [, asset, body] of block.matchAll(/"([\w.-]+)": \[([\s\S]*?)\]/g)) {
-    assets.set(asset, [...body.matchAll(/"([^"]+)"/g)].map((m) => m[1]));
-  }
-  assert.ok(assets.size >= 2, "could not read ASSETS out of the stamping script");
-  assert.ok(
-    assets.get("week03-boot.js").includes("docs/assets/js/echarts-views.js"),
-    "the boot stamp does not cover every module the page loads",
-  );
-
-  const stamps = new Map();
-  for (const [asset, files] of assets) {
-    const hash = createHash("sha256");
-    for (const name of files) hash.update(readFileSync(join(ROOT, name)));
-    stamps.set(asset, hash.digest("hex").slice(0, 10));
-  }
-
-  for (const page of ["docs/weeks/week03/index.html", "docs/styleguide/index.html"]) {
-    const html = read(page);
-    // The guide loads only the stylesheet; the post loads both.
-    const wanted = page.includes("styleguide")
-      ? ["corridor.css"]
-      : ["week03-boot.js", "corridor.css"];
-    for (const asset of wanted) {
-      assert.ok(
-        html.includes(`${asset}?v=${stamps.get(asset)}`),
-        `${page} has a stale stamp on ${asset}; run: python scripts/stamp_week03.py`,
-      );
-    }
-    // And nothing the page does not load should be carrying a stamp.
-    for (const asset of assets.keys()) {
-      if (wanted.includes(asset)) continue;
-      assert.ok(!html.includes(`${asset}?v=`), `${page} stamps ${asset} and does not load it`);
-    }
   }
 });

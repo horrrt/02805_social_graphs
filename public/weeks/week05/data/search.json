@@ -1,0 +1,4138 @@
+{
+  "generated_by": "analysis/week05_search.py",
+  "owner": "Àngela",
+  "tokenisation": {
+    "method": "runs of letters and digits in any alphabet, an inner apostrophe kept, lowercased; hyphens and other punctuation split words",
+    "stoplist": "spaCy English stop words (306)",
+    "vectorizer": "sklearn CountVectorizer",
+    "similarity": "cosine on raw counts",
+    "n_pages": 303,
+    "n_terms": 28062,
+    "n_terms_nostop": 27771,
+    "n_tokens": 740340,
+    "median_page_tokens": 1258.0,
+    "sparsity": 0.9716,
+    "most_common": [
+      {
+        "term": "the",
+        "count": 45479,
+        "share": 0.0614
+      },
+      {
+        "term": "and",
+        "count": 21939,
+        "share": 0.0296
+      },
+      {
+        "term": "of",
+        "count": 20012,
+        "share": 0.027
+      },
+      {
+        "term": "to",
+        "count": 19291,
+        "share": 0.0261
+      },
+      {
+        "term": "in",
+        "count": 17885,
+        "share": 0.0242
+      }
+    ]
+  },
+  "summary": {
+    "n_queries": 12,
+    "n_scored": 11,
+    "hits_at_1": 1,
+    "hits_at_5": 6,
+    "hits_at_1_nostop": 2,
+    "hits_at_5_nostop": 10,
+    "chance_at_1": 0.0033,
+    "chance_at_5": 0.0165,
+    "p_at_1": 0.0357,
+    "p_at_5": 8.69e-09,
+    "p_at_1_nostop": 0.000587,
+    "p_at_5_nostop": 1.62e-17,
+    "n_misses": 10,
+    "miss_kinds": {
+      "no_shared_word": 0,
+      "short_page": 9,
+      "rival": 1
+    },
+    "n_misses_nostop": 9,
+    "miss_kinds_nostop": {
+      "no_shared_word": 0,
+      "short_page": 7,
+      "rival": 2
+    },
+    "misses_won_by_shorter_than_median": 8,
+    "misses_with_long_target": 10,
+    "random_mean_rank": 152.0
+  },
+  "checked": {
+    "query_id": "storm",
+    "query": "weather-controlling mutant from Kenya",
+    "winner": "Redneck_(comics)",
+    "winner_name": "Redneck (comics)",
+    "winner_tokens": 255,
+    "expected": "Storm_(Marvel_Comics)",
+    "expected_name": "Storm (Marvel Comics)",
+    "expected_tokens": 9831,
+    "terms": [
+      "mutant"
+    ],
+    "quote": "Vincent Stewart, codenamed Redneck and later Skybolt is a fictional mutant character appearing in American comic books published by Marvel Comics."
+  },
+  "queries": [
+    {
+      "id": "thunder",
+      "query": "Norse god of thunder",
+      "expected": null,
+      "expected_name": null,
+      "why_expected": "The brief's own example. The snapshot has no page for Thor, so no page is right.",
+      "scored": false,
+      "top5": [
+        {
+          "node_id": "Starr_the_Slayer",
+          "name": "Starr the Slayer",
+          "cosine": 0.2144,
+          "n_tokens": 574,
+          "overlap_terms": [
+            {
+              "term": "of",
+              "query": 1,
+              "page": 28,
+              "product": 28,
+              "is_stop": true
+            }
+          ]
+        },
+        {
+          "node_id": "Fabio_Medina",
+          "name": "Fabio Medina",
+          "cosine": 0.2102,
+          "n_tokens": 897,
+          "overlap_terms": [
+            {
+              "term": "of",
+              "query": 1,
+              "page": 39,
+              "product": 39,
+              "is_stop": true
+            }
+          ]
+        },
+        {
+          "node_id": "Doom_2099",
+          "name": "Doom 2099",
+          "cosine": 0.2,
+          "n_tokens": 1662,
+          "overlap_terms": [
+            {
+              "term": "of",
+              "query": 1,
+              "page": 70,
+              "product": 70,
+              "is_stop": true
+            }
+          ]
+        },
+        {
+          "node_id": "Balder_the_Brave",
+          "name": "Balder the Brave",
+          "cosine": 0.1909,
+          "n_tokens": 1825,
+          "overlap_terms": [
+            {
+              "term": "of",
+              "query": 1,
+              "page": 67,
+              "product": 67,
+              "is_stop": true
+            },
+            {
+              "term": "god",
+              "query": 1,
+              "page": 4,
+              "product": 4,
+              "is_stop": false
+            },
+            {
+              "term": "norse",
+              "query": 1,
+              "page": 2,
+              "product": 2,
+              "is_stop": false
+            },
+            {
+              "term": "thunder",
+              "query": 1,
+              "page": 1,
+              "product": 1,
+              "is_stop": false
+            }
+          ]
+        },
+        {
+          "node_id": "Xorn",
+          "name": "Xorn",
+          "cosine": 0.1898,
+          "n_tokens": 1746,
+          "overlap_terms": [
+            {
+              "term": "of",
+              "query": 1,
+              "page": 73,
+              "product": 73,
+              "is_stop": true
+            }
+          ]
+        }
+      ],
+      "top5_nostop": [
+        {
+          "node_id": "Starhawk_(character)",
+          "name": "Starhawk (character)",
+          "cosine": 0.0775,
+          "n_tokens": 1959,
+          "overlap_terms": [
+            {
+              "term": "god",
+              "query": 1,
+              "page": 8,
+              "product": 8,
+              "is_stop": false
+            },
+            {
+              "term": "thunder",
+              "query": 1,
+              "page": 1,
+              "product": 1,
+              "is_stop": false
+            }
+          ]
+        },
+        {
+          "node_id": "Hercules_(Marvel_Comics)",
+          "name": "Hercules (Marvel Comics)",
+          "cosine": 0.0659,
+          "n_tokens": 8784,
+          "overlap_terms": [
+            {
+              "term": "god",
+              "query": 1,
+              "page": 28,
+              "product": 28,
+              "is_stop": false
+            },
+            {
+              "term": "thunder",
+              "query": 1,
+              "page": 7,
+              "product": 7,
+              "is_stop": false
+            },
+            {
+              "term": "norse",
+              "query": 1,
+              "page": 1,
+              "product": 1,
+              "is_stop": false
+            }
+          ]
+        },
+        {
+          "node_id": "Ares_(Marvel_Comics)",
+          "name": "Ares (Marvel Comics)",
+          "cosine": 0.0608,
+          "n_tokens": 2954,
+          "overlap_terms": [
+            {
+              "term": "god",
+              "query": 1,
+              "page": 13,
+              "product": 13,
+              "is_stop": false
+            }
+          ]
+        },
+        {
+          "node_id": "Balder_the_Brave",
+          "name": "Balder the Brave",
+          "cosine": 0.0468,
+          "n_tokens": 1825,
+          "overlap_terms": [
+            {
+              "term": "god",
+              "query": 1,
+              "page": 4,
+              "product": 4,
+              "is_stop": false
+            },
+            {
+              "term": "norse",
+              "query": 1,
+              "page": 2,
+              "product": 2,
+              "is_stop": false
+            },
+            {
+              "term": "thunder",
+              "query": 1,
+              "page": 1,
+              "product": 1,
+              "is_stop": false
+            }
+          ]
+        },
+        {
+          "node_id": "Ajak",
+          "name": "Ajak",
+          "cosine": 0.0397,
+          "n_tokens": 637,
+          "overlap_terms": [
+            {
+              "term": "god",
+              "query": 1,
+              "page": 3,
+              "product": 3,
+              "is_stop": false
+            }
+          ]
+        }
+      ],
+      "rank": null,
+      "rank_nostop": null,
+      "hit_at_1": false,
+      "hit_at_5": false,
+      "hit_at_1_nostop": false,
+      "hit_at_5_nostop": false,
+      "expected_overlap": [],
+      "failure_kind": "no_target",
+      "failure_reason": "No page in the snapshot is right. Starr the Slayer wins on of.",
+      "quote": {
+        "node_id": "Starr_the_Slayer",
+        "name": "Starr the Slayer",
+        "text": null
+      }
+    },
+    {
+      "id": "bill",
+      "query": "alien champion who wields Mjolnir",
+      "expected": "Beta_Ray_Bill",
+      "expected_name": "Beta Ray Bill",
+      "why_expected": "Beta Ray Bill is the alien who lifts Thor's hammer.",
+      "scored": true,
+      "top5": [
+        {
+          "node_id": "Dargo_Ktor",
+          "name": "Dargo Ktor",
+          "cosine": 0.0989,
+          "n_tokens": 454,
+          "overlap_terms": [
+            {
+              "term": "mjolnir",
+              "query": 1,
+              "page": 8,
+              "product": 8,
+              "is_stop": false
+            },
+            {
+              "term": "who",
+              "query": 1,
+              "page": 2,
+              "product": 2,
+              "is_stop": true
+            },
+            {
+              "term": "champion",
+              "query": 1,
+              "page": 1,
+              "product": 1,
+              "is_stop": false
+            }
+          ]
+        },
+        {
+          "node_id": "Solarman",
+          "name": "Solarman",
+          "cosine": 0.0726,
+          "n_tokens": 764,
+          "overlap_terms": [
+            {
+              "term": "who",
+              "query": 1,
+              "page": 9,
+              "product": 9,
+              "is_stop": true
+            },
+            {
+              "term": "alien",
+              "query": 1,
+              "page": 4,
+              "product": 4,
+              "is_stop": false
+            }
+          ]
+        },
+        {
+          "node_id": "NFL_SuperPro",
+          "name": "Phil Grayfield",
+          "cosine": 0.0532,
+          "n_tokens": 711,
+          "overlap_terms": [
+            {
+              "term": "who",
+              "query": 1,
+              "page": 8,
+              "product": 8,
+              "is_stop": true
+            }
+          ]
+        },
+        {
+          "node_id": "Stingray_(Marvel_Comics)",
+          "name": "Stingray (Marvel Comics)",
+          "cosine": 0.0486,
+          "n_tokens": 1258,
+          "overlap_terms": [
+            {
+              "term": "who",
+              "query": 1,
+              "page": 14,
+              "product": 14,
+              "is_stop": true
+            },
+            {
+              "term": "wields",
+              "query": 1,
+              "page": 1,
+              "product": 1,
+              "is_stop": false
+            }
+          ]
+        },
+        {
+          "node_id": "Beta_Ray_Bill",
+          "name": "Beta Ray Bill",
+          "cosine": 0.0483,
+          "n_tokens": 3871,
+          "overlap_terms": [
+            {
+              "term": "mjolnir",
+              "query": 1,
+              "page": 16,
+              "product": 16,
+              "is_stop": false
+            },
+            {
+              "term": "who",
+              "query": 1,
+              "page": 15,
+              "product": 15,
+              "is_stop": true
+            },
+            {
+              "term": "alien",
+              "query": 1,
+              "page": 9,
+              "product": 9,
+              "is_stop": false
+            },
+            {
+              "term": "wields",
+              "query": 1,
+              "page": 3,
+              "product": 3,
+              "is_stop": false
+            },
+            {
+              "term": "champion",
+              "query": 1,
+              "page": 1,
+              "product": 1,
+              "is_stop": false
+            }
+          ]
+        }
+      ],
+      "top5_nostop": [
+        {
+          "node_id": "Dargo_Ktor",
+          "name": "Dargo Ktor",
+          "cosine": 0.1652,
+          "n_tokens": 454,
+          "overlap_terms": [
+            {
+              "term": "mjolnir",
+              "query": 1,
+              "page": 8,
+              "product": 8,
+              "is_stop": false
+            },
+            {
+              "term": "champion",
+              "query": 1,
+              "page": 1,
+              "product": 1,
+              "is_stop": false
+            }
+          ]
+        },
+        {
+          "node_id": "Beta_Ray_Bill",
+          "name": "Beta Ray Bill",
+          "cosine": 0.0822,
+          "n_tokens": 3871,
+          "overlap_terms": [
+            {
+              "term": "mjolnir",
+              "query": 1,
+              "page": 16,
+              "product": 16,
+              "is_stop": false
+            },
+            {
+              "term": "alien",
+              "query": 1,
+              "page": 9,
+              "product": 9,
+              "is_stop": false
+            },
+            {
+              "term": "wields",
+              "query": 1,
+              "page": 3,
+              "product": 3,
+              "is_stop": false
+            },
+            {
+              "term": "champion",
+              "query": 1,
+              "page": 1,
+              "product": 1,
+              "is_stop": false
+            }
+          ]
+        },
+        {
+          "node_id": "Crane_Mother",
+          "name": "Crane Mother",
+          "cosine": 0.0506,
+          "n_tokens": 635,
+          "overlap_terms": [
+            {
+              "term": "champion",
+              "query": 1,
+              "page": 4,
+              "product": 4,
+              "is_stop": false
+            }
+          ]
+        },
+        {
+          "node_id": "Solarman",
+          "name": "Solarman",
+          "cosine": 0.0494,
+          "n_tokens": 764,
+          "overlap_terms": [
+            {
+              "term": "alien",
+              "query": 1,
+              "page": 4,
+              "product": 4,
+              "is_stop": false
+            }
+          ]
+        },
+        {
+          "node_id": "Doctor_Spectrum",
+          "name": "Alice Nugent",
+          "cosine": 0.0438,
+          "n_tokens": 1576,
+          "overlap_terms": [
+            {
+              "term": "mjolnir",
+              "query": 1,
+              "page": 4,
+              "product": 4,
+              "is_stop": false
+            },
+            {
+              "term": "alien",
+              "query": 1,
+              "page": 3,
+              "product": 3,
+              "is_stop": false
+            }
+          ]
+        }
+      ],
+      "rank": 5,
+      "rank_nostop": 2,
+      "cosine_expected": 0.0483,
+      "expected_tokens": 3871,
+      "expected_length_percentile": 0.812,
+      "hit_at_1": false,
+      "hit_at_5": true,
+      "hit_at_1_nostop": false,
+      "hit_at_5_nostop": true,
+      "expected_overlap": [
+        {
+          "term": "mjolnir",
+          "query": 1,
+          "page": 16,
+          "product": 16,
+          "is_stop": false
+        },
+        {
+          "term": "who",
+          "query": 1,
+          "page": 15,
+          "product": 15,
+          "is_stop": true
+        },
+        {
+          "term": "alien",
+          "query": 1,
+          "page": 9,
+          "product": 9,
+          "is_stop": false
+        },
+        {
+          "term": "wields",
+          "query": 1,
+          "page": 3,
+          "product": 3,
+          "is_stop": false
+        },
+        {
+          "term": "champion",
+          "query": 1,
+          "page": 1,
+          "product": 1,
+          "is_stop": false
+        }
+      ],
+      "failure_kind": "short_page",
+      "failure_reason": "Dargo Ktor (454 words) beats Beta Ray Bill (3,871 words): cosine divides by the vector's length, so a short page with the same words scores higher.",
+      "failure_kind_nostop": "short_page",
+      "quote": {
+        "node_id": "Dargo_Ktor",
+        "name": "Dargo Ktor",
+        "text": "He becomes the Thor of that future after realising that he is worthy to lift Mjolnir."
+      }
+    },
+    {
+      "id": "wolverine",
+      "query": "Canadian mutant with adamantium claws",
+      "expected": "Wolverine_(character)",
+      "expected_name": "Wolverine (character)",
+      "why_expected": "Adamantium claws belong to Wolverine.",
+      "scored": true,
+      "top5": [
+        {
+          "node_id": "Outlaw_(Marvel_Comics)",
+          "name": "Outlaw (Marvel Comics)",
+          "cosine": 0.1304,
+          "n_tokens": 872,
+          "overlap_terms": [
+            {
+              "term": "with",
+              "query": 1,
+              "page": 22,
+              "product": 22,
+              "is_stop": true
+            },
+            {
+              "term": "mutant",
+              "query": 1,
+              "page": 3,
+              "product": 3,
+              "is_stop": false
+            }
+          ]
+        },
+        {
+          "node_id": "Rusty_Collins",
+          "name": "Rusty Collins",
+          "cosine": 0.111,
+          "n_tokens": 979,
+          "overlap_terms": [
+            {
+              "term": "with",
+              "query": 1,
+              "page": 15,
+              "product": 15,
+              "is_stop": true
+            },
+            {
+              "term": "mutant",
+              "query": 1,
+              "page": 10,
+              "product": 10,
+              "is_stop": false
+            }
+          ]
+        },
+        {
+          "node_id": "Redneck_(comics)",
+          "name": "Redneck (comics)",
+          "cosine": 0.1029,
+          "n_tokens": 255,
+          "overlap_terms": [
+            {
+              "term": "mutant",
+              "query": 1,
+              "page": 5,
+              "product": 5,
+              "is_stop": false
+            },
+            {
+              "term": "with",
+              "query": 1,
+              "page": 2,
+              "product": 2,
+              "is_stop": true
+            }
+          ]
+        },
+        {
+          "node_id": "Powerhouse_(Marvel_Comics)",
+          "name": "Powerhouse (Marvel Comics)",
+          "cosine": 0.0976,
+          "n_tokens": 562,
+          "overlap_terms": [
+            {
+              "term": "with",
+              "query": 1,
+              "page": 8,
+              "product": 8,
+              "is_stop": true
+            },
+            {
+              "term": "mutant",
+              "query": 1,
+              "page": 5,
+              "product": 5,
+              "is_stop": false
+            }
+          ]
+        },
+        {
+          "node_id": "Wolverine_(character)",
+          "name": "Wolverine (character)",
+          "cosine": 0.0935,
+          "n_tokens": 7513,
+          "overlap_terms": [
+            {
+              "term": "with",
+              "query": 1,
+              "page": 89,
+              "product": 89,
+              "is_stop": true
+            },
+            {
+              "term": "adamantium",
+              "query": 1,
+              "page": 19,
+              "product": 19,
+              "is_stop": false
+            },
+            {
+              "term": "canadian",
+              "query": 1,
+              "page": 19,
+              "product": 19,
+              "is_stop": false
+            },
+            {
+              "term": "claws",
+              "query": 1,
+              "page": 17,
+              "product": 17,
+              "is_stop": false
+            },
+            {
+              "term": "mutant",
+              "query": 1,
+              "page": 8,
+              "product": 8,
+              "is_stop": false
+            }
+          ]
+        }
+      ],
+      "top5_nostop": [
+        {
+          "node_id": "Redneck_(comics)",
+          "name": "Redneck (comics)",
+          "cosine": 0.1521,
+          "n_tokens": 255,
+          "overlap_terms": [
+            {
+              "term": "mutant",
+              "query": 1,
+              "page": 5,
+              "product": 5,
+              "is_stop": false
+            }
+          ]
+        },
+        {
+          "node_id": "Wolverine_(character)",
+          "name": "Wolverine (character)",
+          "cosine": 0.1088,
+          "n_tokens": 7513,
+          "overlap_terms": [
+            {
+              "term": "adamantium",
+              "query": 1,
+              "page": 19,
+              "product": 19,
+              "is_stop": false
+            },
+            {
+              "term": "canadian",
+              "query": 1,
+              "page": 19,
+              "product": 19,
+              "is_stop": false
+            },
+            {
+              "term": "claws",
+              "query": 1,
+              "page": 17,
+              "product": 17,
+              "is_stop": false
+            },
+            {
+              "term": "mutant",
+              "query": 1,
+              "page": 8,
+              "product": 8,
+              "is_stop": false
+            }
+          ]
+        },
+        {
+          "node_id": "Rusty_Collins",
+          "name": "Rusty Collins",
+          "cosine": 0.1043,
+          "n_tokens": 979,
+          "overlap_terms": [
+            {
+              "term": "mutant",
+              "query": 1,
+              "page": 10,
+              "product": 10,
+              "is_stop": false
+            }
+          ]
+        },
+        {
+          "node_id": "Fabio_Medina",
+          "name": "Fabio Medina",
+          "cosine": 0.1023,
+          "n_tokens": 897,
+          "overlap_terms": [
+            {
+              "term": "mutant",
+              "query": 1,
+              "page": 7,
+              "product": 7,
+              "is_stop": false
+            }
+          ]
+        },
+        {
+          "node_id": "Wolverine_(Ultimate_Marvel_character)",
+          "name": "Wolverine (Ultimate Marvel character)",
+          "cosine": 0.084,
+          "n_tokens": 3080,
+          "overlap_terms": [
+            {
+              "term": "mutant",
+              "query": 1,
+              "page": 9,
+              "product": 9,
+              "is_stop": false
+            },
+            {
+              "term": "adamantium",
+              "query": 1,
+              "page": 5,
+              "product": 5,
+              "is_stop": false
+            },
+            {
+              "term": "claws",
+              "query": 1,
+              "page": 5,
+              "product": 5,
+              "is_stop": false
+            }
+          ]
+        }
+      ],
+      "rank": 5,
+      "rank_nostop": 2,
+      "cosine_expected": 0.0935,
+      "expected_tokens": 7513,
+      "expected_length_percentile": 0.924,
+      "hit_at_1": false,
+      "hit_at_5": true,
+      "hit_at_1_nostop": false,
+      "hit_at_5_nostop": true,
+      "expected_overlap": [
+        {
+          "term": "with",
+          "query": 1,
+          "page": 89,
+          "product": 89,
+          "is_stop": true
+        },
+        {
+          "term": "adamantium",
+          "query": 1,
+          "page": 19,
+          "product": 19,
+          "is_stop": false
+        },
+        {
+          "term": "canadian",
+          "query": 1,
+          "page": 19,
+          "product": 19,
+          "is_stop": false
+        },
+        {
+          "term": "claws",
+          "query": 1,
+          "page": 17,
+          "product": 17,
+          "is_stop": false
+        },
+        {
+          "term": "mutant",
+          "query": 1,
+          "page": 8,
+          "product": 8,
+          "is_stop": false
+        }
+      ],
+      "failure_kind": "short_page",
+      "failure_reason": "Outlaw (Marvel Comics) (872 words) beats Wolverine (character) (7,513 words): cosine divides by the vector's length, so a short page with the same words scores higher.",
+      "failure_kind_nostop": "short_page",
+      "quote": {
+        "node_id": "Outlaw_(Marvel_Comics)",
+        "name": "Outlaw (Marvel Comics)",
+        "text": "She is a mutant with the ability of superhuman strength and an uncanny aptitude with firearms."
+      }
+    },
+    {
+      "id": "spider",
+      "query": "bitten by a radioactive spider",
+      "expected": "Spider-Man",
+      "expected_name": "Spider-Man",
+      "why_expected": "The origin story most readers know.",
+      "scored": true,
+      "top5": [
+        {
+          "node_id": "Steel_Spider",
+          "name": "Steel Spider",
+          "cosine": 0.4005,
+          "n_tokens": 673,
+          "overlap_terms": [
+            {
+              "term": "spider",
+              "query": 1,
+              "page": 35,
+              "product": 35,
+              "is_stop": false
+            },
+            {
+              "term": "a",
+              "query": 1,
+              "page": 23,
+              "product": 23,
+              "is_stop": true
+            },
+            {
+              "term": "by",
+              "query": 1,
+              "page": 10,
+              "product": 10,
+              "is_stop": true
+            }
+          ]
+        },
+        {
+          "node_id": "Spider-Girl",
+          "name": "Spider-Girl",
+          "cosine": 0.3777,
+          "n_tokens": 2211,
+          "overlap_terms": [
+            {
+              "term": "spider",
+              "query": 1,
+              "page": 140,
+              "product": 140,
+              "is_stop": false
+            },
+            {
+              "term": "a",
+              "query": 1,
+              "page": 55,
+              "product": 55,
+              "is_stop": true
+            },
+            {
+              "term": "by",
+              "query": 1,
+              "page": 24,
+              "product": 24,
+              "is_stop": true
+            },
+            {
+              "term": "bitten",
+              "query": 1,
+              "page": 4,
+              "product": 4,
+              "is_stop": false
+            },
+            {
+              "term": "radioactive",
+              "query": 1,
+              "page": 4,
+              "product": 4,
+              "is_stop": false
+            }
+          ]
+        },
+        {
+          "node_id": "Spider-UK",
+          "name": "Spider-UK",
+          "cosine": 0.3722,
+          "n_tokens": 1426,
+          "overlap_terms": [
+            {
+              "term": "spider",
+              "query": 1,
+              "page": 112,
+              "product": 112,
+              "is_stop": false
+            },
+            {
+              "term": "a",
+              "query": 1,
+              "page": 26,
+              "product": 26,
+              "is_stop": true
+            },
+            {
+              "term": "by",
+              "query": 1,
+              "page": 19,
+              "product": 19,
+              "is_stop": true
+            }
+          ]
+        },
+        {
+          "node_id": "Spider-Man_Noir",
+          "name": "Spider-Man Noir",
+          "cosine": 0.3258,
+          "n_tokens": 3446,
+          "overlap_terms": [
+            {
+              "term": "spider",
+              "query": 1,
+              "page": 146,
+              "product": 146,
+              "is_stop": false
+            },
+            {
+              "term": "a",
+              "query": 1,
+              "page": 85,
+              "product": 85,
+              "is_stop": true
+            },
+            {
+              "term": "by",
+              "query": 1,
+              "page": 37,
+              "product": 37,
+              "is_stop": true
+            },
+            {
+              "term": "bitten",
+              "query": 1,
+              "page": 2,
+              "product": 2,
+              "is_stop": false
+            }
+          ]
+        },
+        {
+          "node_id": "Spider-Woman_(Gwen_Stacy)",
+          "name": "Spider-Woman (Gwen Stacy)",
+          "cosine": 0.3257,
+          "n_tokens": 5652,
+          "overlap_terms": [
+            {
+              "term": "spider",
+              "query": 1,
+              "page": 182,
+              "product": 182,
+              "is_stop": false
+            },
+            {
+              "term": "a",
+              "query": 1,
+              "page": 140,
+              "product": 140,
+              "is_stop": true
+            },
+            {
+              "term": "by",
+              "query": 1,
+              "page": 65,
+              "product": 65,
+              "is_stop": true
+            },
+            {
+              "term": "radioactive",
+              "query": 1,
+              "page": 5,
+              "product": 5,
+              "is_stop": false
+            },
+            {
+              "term": "bitten",
+              "query": 1,
+              "page": 3,
+              "product": 3,
+              "is_stop": false
+            }
+          ]
+        }
+      ],
+      "top5_nostop": [
+        {
+          "node_id": "Spider-Girl",
+          "name": "Spider-Girl",
+          "cosine": 0.4966,
+          "n_tokens": 2211,
+          "overlap_terms": [
+            {
+              "term": "spider",
+              "query": 1,
+              "page": 140,
+              "product": 140,
+              "is_stop": false
+            },
+            {
+              "term": "bitten",
+              "query": 1,
+              "page": 4,
+              "product": 4,
+              "is_stop": false
+            },
+            {
+              "term": "radioactive",
+              "query": 1,
+              "page": 4,
+              "product": 4,
+              "is_stop": false
+            }
+          ]
+        },
+        {
+          "node_id": "Spider-UK",
+          "name": "Spider-UK",
+          "cosine": 0.4934,
+          "n_tokens": 1426,
+          "overlap_terms": [
+            {
+              "term": "spider",
+              "query": 1,
+              "page": 112,
+              "product": 112,
+              "is_stop": false
+            }
+          ]
+        },
+        {
+          "node_id": "Spider-Bitch_(Ashley_Barton)",
+          "name": "Spider-Bitch (Ashley Barton)",
+          "cosine": 0.4543,
+          "n_tokens": 3536,
+          "overlap_terms": [
+            {
+              "term": "spider",
+              "query": 1,
+              "page": 126,
+              "product": 126,
+              "is_stop": false
+            },
+            {
+              "term": "radioactive",
+              "query": 1,
+              "page": 1,
+              "product": 1,
+              "is_stop": false
+            }
+          ]
+        },
+        {
+          "node_id": "Scarlet_Spider",
+          "name": "Scarlet Spider",
+          "cosine": 0.4193,
+          "n_tokens": 950,
+          "overlap_terms": [
+            {
+              "term": "spider",
+              "query": 1,
+              "page": 65,
+              "product": 65,
+              "is_stop": false
+            }
+          ]
+        },
+        {
+          "node_id": "Spider-Man",
+          "name": "Spider-Man",
+          "cosine": 0.4165,
+          "n_tokens": 10525,
+          "overlap_terms": [
+            {
+              "term": "spider",
+              "query": 1,
+              "page": 338,
+              "product": 338,
+              "is_stop": false
+            },
+            {
+              "term": "bitten",
+              "query": 1,
+              "page": 8,
+              "product": 8,
+              "is_stop": false
+            },
+            {
+              "term": "radioactive",
+              "query": 1,
+              "page": 7,
+              "product": 7,
+              "is_stop": false
+            }
+          ]
+        }
+      ],
+      "rank": 8,
+      "rank_nostop": 5,
+      "cosine_expected": 0.2924,
+      "expected_tokens": 10525,
+      "expected_length_percentile": 0.977,
+      "hit_at_1": false,
+      "hit_at_5": false,
+      "hit_at_1_nostop": false,
+      "hit_at_5_nostop": true,
+      "expected_overlap": [
+        {
+          "term": "spider",
+          "query": 1,
+          "page": 338,
+          "product": 338,
+          "is_stop": false
+        },
+        {
+          "term": "a",
+          "query": 1,
+          "page": 257,
+          "product": 257,
+          "is_stop": true
+        },
+        {
+          "term": "by",
+          "query": 1,
+          "page": 84,
+          "product": 84,
+          "is_stop": true
+        },
+        {
+          "term": "bitten",
+          "query": 1,
+          "page": 8,
+          "product": 8,
+          "is_stop": false
+        },
+        {
+          "term": "radioactive",
+          "query": 1,
+          "page": 7,
+          "product": 7,
+          "is_stop": false
+        }
+      ],
+      "failure_kind": "short_page",
+      "failure_reason": "Steel Spider (673 words) beats Spider-Man (10,525 words): cosine divides by the vector's length, so a short page with the same words scores higher.",
+      "failure_kind_nostop": "short_page",
+      "quote": {
+        "node_id": "Steel_Spider",
+        "name": "Steel Spider",
+        "text": "Steel Spider (Oliver \"Ollie\" Osnick) is a superhero appearing in American comic books published by Marvel Comics."
+      }
+    },
+    {
+      "id": "strange",
+      "query": "sorcerer supreme of Earth",
+      "expected": "Doctor_Strange",
+      "expected_name": "Doctor Strange",
+      "why_expected": "Sorcerer Supreme is Doctor Strange's title.",
+      "scored": true,
+      "top5": [
+        {
+          "node_id": "Hyperion_(character)",
+          "name": "Hyperion (character)",
+          "cosine": 0.254,
+          "n_tokens": 1964,
+          "overlap_terms": [
+            {
+              "term": "of",
+              "query": 1,
+              "page": 64,
+              "product": 64,
+              "is_stop": true
+            },
+            {
+              "term": "supreme",
+              "query": 1,
+              "page": 26,
+              "product": 26,
+              "is_stop": false
+            },
+            {
+              "term": "earth",
+              "query": 1,
+              "page": 23,
+              "product": 23,
+              "is_stop": false
+            }
+          ]
+        },
+        {
+          "node_id": "Starr_the_Slayer",
+          "name": "Starr the Slayer",
+          "cosine": 0.2374,
+          "n_tokens": 574,
+          "overlap_terms": [
+            {
+              "term": "of",
+              "query": 1,
+              "page": 28,
+              "product": 28,
+              "is_stop": true
+            },
+            {
+              "term": "earth",
+              "query": 1,
+              "page": 3,
+              "product": 3,
+              "is_stop": false
+            }
+          ]
+        },
+        {
+          "node_id": "Doom_2099",
+          "name": "Doom 2099",
+          "cosine": 0.2258,
+          "n_tokens": 1662,
+          "overlap_terms": [
+            {
+              "term": "of",
+              "query": 1,
+              "page": 70,
+              "product": 70,
+              "is_stop": true
+            },
+            {
+              "term": "earth",
+              "query": 1,
+              "page": 7,
+              "product": 7,
+              "is_stop": false
+            },
+            {
+              "term": "sorcerer",
+              "query": 1,
+              "page": 1,
+              "product": 1,
+              "is_stop": false
+            },
+            {
+              "term": "supreme",
+              "query": 1,
+              "page": 1,
+              "product": 1,
+              "is_stop": false
+            }
+          ]
+        },
+        {
+          "node_id": "Spider-UK",
+          "name": "Spider-UK",
+          "cosine": 0.2253,
+          "n_tokens": 1426,
+          "overlap_terms": [
+            {
+              "term": "of",
+              "query": 1,
+              "page": 59,
+              "product": 59,
+              "is_stop": true
+            },
+            {
+              "term": "earth",
+              "query": 1,
+              "page": 26,
+              "product": 26,
+              "is_stop": false
+            }
+          ]
+        },
+        {
+          "node_id": "Fabio_Medina",
+          "name": "Fabio Medina",
+          "cosine": 0.2156,
+          "n_tokens": 897,
+          "overlap_terms": [
+            {
+              "term": "of",
+              "query": 1,
+              "page": 39,
+              "product": 39,
+              "is_stop": true
+            },
+            {
+              "term": "earth",
+              "query": 1,
+              "page": 1,
+              "product": 1,
+              "is_stop": false
+            }
+          ]
+        }
+      ],
+      "top5_nostop": [
+        {
+          "node_id": "Doctor_Spectrum",
+          "name": "Alice Nugent",
+          "cosine": 0.3037,
+          "n_tokens": 1576,
+          "overlap_terms": [
+            {
+              "term": "earth",
+              "query": 1,
+              "page": 23,
+              "product": 23,
+              "is_stop": false
+            },
+            {
+              "term": "supreme",
+              "query": 1,
+              "page": 19,
+              "product": 19,
+              "is_stop": false
+            }
+          ]
+        },
+        {
+          "node_id": "Hyperion_(character)",
+          "name": "Hyperion (character)",
+          "cosine": 0.2556,
+          "n_tokens": 1964,
+          "overlap_terms": [
+            {
+              "term": "supreme",
+              "query": 1,
+              "page": 26,
+              "product": 26,
+              "is_stop": false
+            },
+            {
+              "term": "earth",
+              "query": 1,
+              "page": 23,
+              "product": 23,
+              "is_stop": false
+            }
+          ]
+        },
+        {
+          "node_id": "Moonglow_(comics)",
+          "name": "Moonglow (comics)",
+          "cosine": 0.2389,
+          "n_tokens": 345,
+          "overlap_terms": [
+            {
+              "term": "supreme",
+              "query": 1,
+              "page": 6,
+              "product": 6,
+              "is_stop": false
+            },
+            {
+              "term": "sorcerer",
+              "query": 1,
+              "page": 2,
+              "product": 2,
+              "is_stop": false
+            },
+            {
+              "term": "earth",
+              "query": 1,
+              "page": 1,
+              "product": 1,
+              "is_stop": false
+            }
+          ]
+        },
+        {
+          "node_id": "Blue_Eagle_(character)",
+          "name": "Blue Eagle (character)",
+          "cosine": 0.1792,
+          "n_tokens": 589,
+          "overlap_terms": [
+            {
+              "term": "supreme",
+              "query": 1,
+              "page": 8,
+              "product": 8,
+              "is_stop": false
+            },
+            {
+              "term": "earth",
+              "query": 1,
+              "page": 3,
+              "product": 3,
+              "is_stop": false
+            }
+          ]
+        },
+        {
+          "node_id": "Doctor_Strange",
+          "name": "Doctor Strange",
+          "cosine": 0.1455,
+          "n_tokens": 7015,
+          "overlap_terms": [
+            {
+              "term": "sorcerer",
+              "query": 1,
+              "page": 36,
+              "product": 36,
+              "is_stop": false
+            },
+            {
+              "term": "supreme",
+              "query": 1,
+              "page": 28,
+              "product": 28,
+              "is_stop": false
+            },
+            {
+              "term": "earth",
+              "query": 1,
+              "page": 17,
+              "product": 17,
+              "is_stop": false
+            }
+          ]
+        }
+      ],
+      "rank": 8,
+      "rank_nostop": 5,
+      "cosine_expected": 0.2033,
+      "expected_tokens": 7015,
+      "expected_length_percentile": 0.911,
+      "hit_at_1": false,
+      "hit_at_5": false,
+      "hit_at_1_nostop": false,
+      "hit_at_5_nostop": true,
+      "expected_overlap": [
+        {
+          "term": "of",
+          "query": 1,
+          "page": 219,
+          "product": 219,
+          "is_stop": true
+        },
+        {
+          "term": "sorcerer",
+          "query": 1,
+          "page": 36,
+          "product": 36,
+          "is_stop": false
+        },
+        {
+          "term": "supreme",
+          "query": 1,
+          "page": 28,
+          "product": 28,
+          "is_stop": false
+        },
+        {
+          "term": "earth",
+          "query": 1,
+          "page": 17,
+          "product": 17,
+          "is_stop": false
+        }
+      ],
+      "failure_kind": "short_page",
+      "failure_reason": "Hyperion (character) (1,964 words) beats Doctor Strange (7,015 words): cosine divides by the vector's length, so a short page with the same words scores higher.",
+      "failure_kind_nostop": "short_page",
+      "quote": {
+        "node_id": "Hyperion_(character)",
+        "name": "Hyperion (character)",
+        "text": "Two years after the character's first appearance, a heroic version appeared as one of the founding members of the alternate-reality Squadron Supreme."
+      }
+    },
+    {
+      "id": "deadpool",
+      "query": "mercenary who breaks the fourth wall",
+      "expected": "Deadpool",
+      "expected_name": "Deadpool",
+      "why_expected": "Breaking the fourth wall is Deadpool's trademark.",
+      "scored": true,
+      "top5": [
+        {
+          "node_id": "Scarlet_Scarab",
+          "name": "Scarlet Scarab",
+          "cosine": 0.3391,
+          "n_tokens": 1149,
+          "overlap_terms": [
+            {
+              "term": "the",
+              "query": 1,
+              "page": 114,
+              "product": 114,
+              "is_stop": true
+            },
+            {
+              "term": "who",
+              "query": 1,
+              "page": 8,
+              "product": 8,
+              "is_stop": true
+            },
+            {
+              "term": "mercenary",
+              "query": 1,
+              "page": 1,
+              "product": 1,
+              "is_stop": false
+            }
+          ]
+        },
+        {
+          "node_id": "Human_Torch_(android)",
+          "name": "Human Torch (android)",
+          "cosine": 0.3288,
+          "n_tokens": 3992,
+          "overlap_terms": [
+            {
+              "term": "the",
+              "query": 1,
+              "page": 375,
+              "product": 375,
+              "is_stop": true
+            },
+            {
+              "term": "who",
+              "query": 1,
+              "page": 12,
+              "product": 12,
+              "is_stop": true
+            },
+            {
+              "term": "breaks",
+              "query": 1,
+              "page": 1,
+              "product": 1,
+              "is_stop": false
+            },
+            {
+              "term": "mercenary",
+              "query": 1,
+              "page": 1,
+              "product": 1,
+              "is_stop": false
+            }
+          ]
+        },
+        {
+          "node_id": "Black_Rider_(character)",
+          "name": "Black Rider (character)",
+          "cosine": 0.3227,
+          "n_tokens": 1072,
+          "overlap_terms": [
+            {
+              "term": "the",
+              "query": 1,
+              "page": 94,
+              "product": 94,
+              "is_stop": true
+            },
+            {
+              "term": "who",
+              "query": 1,
+              "page": 7,
+              "product": 7,
+              "is_stop": true
+            },
+            {
+              "term": "mercenary",
+              "query": 1,
+              "page": 1,
+              "product": 1,
+              "is_stop": false
+            }
+          ]
+        },
+        {
+          "node_id": "Werewolf_by_Night",
+          "name": "Werewolf by Night",
+          "cosine": 0.3194,
+          "n_tokens": 3882,
+          "overlap_terms": [
+            {
+              "term": "the",
+              "query": 1,
+              "page": 280,
+              "product": 280,
+              "is_stop": true
+            },
+            {
+              "term": "who",
+              "query": 1,
+              "page": 37,
+              "product": 37,
+              "is_stop": true
+            },
+            {
+              "term": "mercenary",
+              "query": 1,
+              "page": 2,
+              "product": 2,
+              "is_stop": false
+            }
+          ]
+        },
+        {
+          "node_id": "Delroy_Garrett",
+          "name": "Delroy Garrett",
+          "cosine": 0.3177,
+          "n_tokens": 1759,
+          "overlap_terms": [
+            {
+              "term": "the",
+              "query": 1,
+              "page": 148,
+              "product": 148,
+              "is_stop": true
+            },
+            {
+              "term": "who",
+              "query": 1,
+              "page": 8,
+              "product": 8,
+              "is_stop": true
+            },
+            {
+              "term": "mercenary",
+              "query": 1,
+              "page": 1,
+              "product": 1,
+              "is_stop": false
+            }
+          ]
+        }
+      ],
+      "top5_nostop": [
+        {
+          "node_id": "Hellfire_(J._T._Slade)",
+          "name": "Hellfire (J. T. Slade)",
+          "cosine": 0.0609,
+          "n_tokens": 210,
+          "overlap_terms": [
+            {
+              "term": "fourth",
+              "query": 1,
+              "page": 1,
+              "product": 1,
+              "is_stop": false
+            },
+            {
+              "term": "mercenary",
+              "query": 1,
+              "page": 1,
+              "product": 1,
+              "is_stop": false
+            }
+          ]
+        },
+        {
+          "node_id": "Gwenpool",
+          "name": "Gwenpool",
+          "cosine": 0.0559,
+          "n_tokens": 7966,
+          "overlap_terms": [
+            {
+              "term": "wall",
+              "query": 1,
+              "page": 11,
+              "product": 11,
+              "is_stop": false
+            },
+            {
+              "term": "fourth",
+              "query": 1,
+              "page": 10,
+              "product": 10,
+              "is_stop": false
+            },
+            {
+              "term": "mercenary",
+              "query": 1,
+              "page": 6,
+              "product": 6,
+              "is_stop": false
+            },
+            {
+              "term": "breaks",
+              "query": 1,
+              "page": 1,
+              "product": 1,
+              "is_stop": false
+            }
+          ]
+        },
+        {
+          "node_id": "Cammi_(character)",
+          "name": "Cammi (character)",
+          "cosine": 0.0471,
+          "n_tokens": 533,
+          "overlap_terms": [
+            {
+              "term": "breaks",
+              "query": 1,
+              "page": 2,
+              "product": 2,
+              "is_stop": false
+            },
+            {
+              "term": "mercenary",
+              "query": 1,
+              "page": 1,
+              "product": 1,
+              "is_stop": false
+            }
+          ]
+        },
+        {
+          "node_id": "Crippler_(character)",
+          "name": "Crippler (character)",
+          "cosine": 0.0447,
+          "n_tokens": 349,
+          "overlap_terms": [
+            {
+              "term": "mercenary",
+              "query": 1,
+              "page": 2,
+              "product": 2,
+              "is_stop": false
+            }
+          ]
+        },
+        {
+          "node_id": "Mark_Hazzard:_Merc",
+          "name": "Mark Hazzard: Merc",
+          "cosine": 0.0396,
+          "n_tokens": 820,
+          "overlap_terms": [
+            {
+              "term": "mercenary",
+              "query": 1,
+              "page": 5,
+              "product": 5,
+              "is_stop": false
+            }
+          ]
+        }
+      ],
+      "rank": 53,
+      "rank_nostop": 7,
+      "cosine_expected": 0.2839,
+      "expected_tokens": 9285,
+      "expected_length_percentile": 0.957,
+      "hit_at_1": false,
+      "hit_at_5": false,
+      "hit_at_1_nostop": false,
+      "hit_at_5_nostop": false,
+      "expected_overlap": [
+        {
+          "term": "the",
+          "query": 1,
+          "page": 548,
+          "product": 548,
+          "is_stop": true
+        },
+        {
+          "term": "who",
+          "query": 1,
+          "page": 46,
+          "product": 46,
+          "is_stop": true
+        },
+        {
+          "term": "mercenary",
+          "query": 1,
+          "page": 10,
+          "product": 10,
+          "is_stop": false
+        },
+        {
+          "term": "fourth",
+          "query": 1,
+          "page": 4,
+          "product": 4,
+          "is_stop": false
+        },
+        {
+          "term": "wall",
+          "query": 1,
+          "page": 4,
+          "product": 4,
+          "is_stop": false
+        },
+        {
+          "term": "breaks",
+          "query": 1,
+          "page": 2,
+          "product": 2,
+          "is_stop": false
+        }
+      ],
+      "failure_kind": "short_page",
+      "failure_reason": "Scarlet Scarab (1,149 words) beats Deadpool (9,285 words): cosine divides by the vector's length, so a short page with the same words scores higher.",
+      "failure_kind_nostop": "short_page",
+      "quote": {
+        "node_id": "Scarlet_Scarab",
+        "name": "Scarlet Scarab",
+        "text": "Layla was the daughter of a famous scholar who grew up and became a mercenary who made numerous criminal connections."
+      }
+    },
+    {
+      "id": "blackpanther",
+      "query": "king of Wakanda",
+      "expected": "Black_Panther_(character)",
+      "expected_name": "Black Panther (character)",
+      "why_expected": "Black Panther is the king of Wakanda.",
+      "scored": true,
+      "top5": [
+        {
+          "node_id": "Starr_the_Slayer",
+          "name": "Starr the Slayer",
+          "cosine": 0.2564,
+          "n_tokens": 574,
+          "overlap_terms": [
+            {
+              "term": "of",
+              "query": 1,
+              "page": 28,
+              "product": 28,
+              "is_stop": true
+            },
+            {
+              "term": "king",
+              "query": 1,
+              "page": 1,
+              "product": 1,
+              "is_stop": false
+            }
+          ]
+        },
+        {
+          "node_id": "Shuri_(character)",
+          "name": "Shuri (character)",
+          "cosine": 0.2448,
+          "n_tokens": 2926,
+          "overlap_terms": [
+            {
+              "term": "of",
+              "query": 1,
+              "page": 95,
+              "product": 95,
+              "is_stop": true
+            },
+            {
+              "term": "wakanda",
+              "query": 1,
+              "page": 28,
+              "product": 28,
+              "is_stop": false
+            },
+            {
+              "term": "king",
+              "query": 1,
+              "page": 3,
+              "product": 3,
+              "is_stop": false
+            }
+          ]
+        },
+        {
+          "node_id": "Fabio_Medina",
+          "name": "Fabio Medina",
+          "cosine": 0.2427,
+          "n_tokens": 897,
+          "overlap_terms": [
+            {
+              "term": "of",
+              "query": 1,
+              "page": 39,
+              "product": 39,
+              "is_stop": true
+            }
+          ]
+        },
+        {
+          "node_id": "Black_Panther_(character)",
+          "name": "Black Panther (character)",
+          "cosine": 0.2402,
+          "n_tokens": 8321,
+          "overlap_terms": [
+            {
+              "term": "of",
+              "query": 1,
+              "page": 281,
+              "product": 281,
+              "is_stop": true
+            },
+            {
+              "term": "wakanda",
+              "query": 1,
+              "page": 64,
+              "product": 64,
+              "is_stop": false
+            },
+            {
+              "term": "king",
+              "query": 1,
+              "page": 10,
+              "product": 10,
+              "is_stop": false
+            }
+          ]
+        },
+        {
+          "node_id": "Doom_2099",
+          "name": "Doom 2099",
+          "cosine": 0.2376,
+          "n_tokens": 1662,
+          "overlap_terms": [
+            {
+              "term": "of",
+              "query": 1,
+              "page": 70,
+              "product": 70,
+              "is_stop": true
+            },
+            {
+              "term": "wakanda",
+              "query": 1,
+              "page": 2,
+              "product": 2,
+              "is_stop": false
+            }
+          ]
+        }
+      ],
+      "top5_nostop": [
+        {
+          "node_id": "Shuri_(character)",
+          "name": "Shuri (character)",
+          "cosine": 0.1659,
+          "n_tokens": 2926,
+          "overlap_terms": [
+            {
+              "term": "wakanda",
+              "query": 1,
+              "page": 28,
+              "product": 28,
+              "is_stop": false
+            },
+            {
+              "term": "king",
+              "query": 1,
+              "page": 3,
+              "product": 3,
+              "is_stop": false
+            }
+          ]
+        },
+        {
+          "node_id": "Black_Panther_(character)",
+          "name": "Black Panther (character)",
+          "cosine": 0.1603,
+          "n_tokens": 8321,
+          "overlap_terms": [
+            {
+              "term": "wakanda",
+              "query": 1,
+              "page": 64,
+              "product": 64,
+              "is_stop": false
+            },
+            {
+              "term": "king",
+              "query": 1,
+              "page": 10,
+              "product": 10,
+              "is_stop": false
+            }
+          ]
+        },
+        {
+          "node_id": "Storm_(Marvel_Comics)",
+          "name": "Storm (Marvel Comics)",
+          "cosine": 0.0432,
+          "n_tokens": 9831,
+          "overlap_terms": [
+            {
+              "term": "king",
+              "query": 1,
+              "page": 12,
+              "product": 12,
+              "is_stop": false
+            },
+            {
+              "term": "wakanda",
+              "query": 1,
+              "page": 10,
+              "product": 10,
+              "is_stop": false
+            }
+          ]
+        },
+        {
+          "node_id": "The_Union_(Marvel)",
+          "name": "The Union (Marvel)",
+          "cosine": 0.0399,
+          "n_tokens": 1109,
+          "overlap_terms": [
+            {
+              "term": "king",
+              "query": 1,
+              "page": 3,
+              "product": 3,
+              "is_stop": false
+            }
+          ]
+        },
+        {
+          "node_id": "Blade_(character)",
+          "name": "Blade (character)",
+          "cosine": 0.0386,
+          "n_tokens": 6389,
+          "overlap_terms": [
+            {
+              "term": "king",
+              "query": 1,
+              "page": 14,
+              "product": 14,
+              "is_stop": false
+            }
+          ]
+        }
+      ],
+      "rank": 4,
+      "rank_nostop": 2,
+      "cosine_expected": 0.2402,
+      "expected_tokens": 8321,
+      "expected_length_percentile": 0.941,
+      "hit_at_1": false,
+      "hit_at_5": true,
+      "hit_at_1_nostop": false,
+      "hit_at_5_nostop": true,
+      "expected_overlap": [
+        {
+          "term": "of",
+          "query": 1,
+          "page": 281,
+          "product": 281,
+          "is_stop": true
+        },
+        {
+          "term": "wakanda",
+          "query": 1,
+          "page": 64,
+          "product": 64,
+          "is_stop": false
+        },
+        {
+          "term": "king",
+          "query": 1,
+          "page": 10,
+          "product": 10,
+          "is_stop": false
+        }
+      ],
+      "failure_kind": "short_page",
+      "failure_reason": "Starr the Slayer (574 words) beats Black Panther (character) (8,321 words): cosine divides by the vector's length, so a short page with the same words scores higher.",
+      "failure_kind_nostop": "rival",
+      "quote": {
+        "node_id": "Starr_the_Slayer",
+        "name": "Starr the Slayer",
+        "text": "The initial version of Starr, appearing on Chamber of Darkness #4, was a barbarian king defending his kingdom."
+      }
+    },
+    {
+      "id": "hulk",
+      "query": "scientist who turns into a green giant when angry",
+      "expected": "Hulk",
+      "expected_name": "Hulk",
+      "why_expected": "Bruce Banner turns into the Hulk when angry.",
+      "scored": true,
+      "top5": [
+        {
+          "node_id": "NFL_SuperPro",
+          "name": "Phil Grayfield",
+          "cosine": 0.1783,
+          "n_tokens": 711,
+          "overlap_terms": [
+            {
+              "term": "a",
+              "query": 1,
+              "page": 24,
+              "product": 24,
+              "is_stop": true
+            },
+            {
+              "term": "who",
+              "query": 1,
+              "page": 8,
+              "product": 8,
+              "is_stop": true
+            },
+            {
+              "term": "scientist",
+              "query": 1,
+              "page": 2,
+              "product": 2,
+              "is_stop": false
+            },
+            {
+              "term": "into",
+              "query": 1,
+              "page": 1,
+              "product": 1,
+              "is_stop": true
+            },
+            {
+              "term": "when",
+              "query": 1,
+              "page": 1,
+              "product": 1,
+              "is_stop": true
+            }
+          ]
+        },
+        {
+          "node_id": "Captain_Midlands",
+          "name": "Captain Midlands",
+          "cosine": 0.1706,
+          "n_tokens": 640,
+          "overlap_terms": [
+            {
+              "term": "a",
+              "query": 1,
+              "page": 24,
+              "product": 24,
+              "is_stop": true
+            },
+            {
+              "term": "into",
+              "query": 1,
+              "page": 5,
+              "product": 5,
+              "is_stop": true
+            },
+            {
+              "term": "when",
+              "query": 1,
+              "page": 2,
+              "product": 2,
+              "is_stop": true
+            },
+            {
+              "term": "who",
+              "query": 1,
+              "page": 2,
+              "product": 2,
+              "is_stop": true
+            }
+          ]
+        },
+        {
+          "node_id": "Paladin_(comics)",
+          "name": "Paladin (comics)",
+          "cosine": 0.1644,
+          "n_tokens": 1240,
+          "overlap_terms": [
+            {
+              "term": "a",
+              "query": 1,
+              "page": 38,
+              "product": 38,
+              "is_stop": true
+            },
+            {
+              "term": "when",
+              "query": 1,
+              "page": 8,
+              "product": 8,
+              "is_stop": true
+            },
+            {
+              "term": "who",
+              "query": 1,
+              "page": 6,
+              "product": 6,
+              "is_stop": true
+            },
+            {
+              "term": "into",
+              "query": 1,
+              "page": 4,
+              "product": 4,
+              "is_stop": true
+            },
+            {
+              "term": "scientist",
+              "query": 1,
+              "page": 1,
+              "product": 1,
+              "is_stop": false
+            },
+            {
+              "term": "turns",
+              "query": 1,
+              "page": 1,
+              "product": 1,
+              "is_stop": false
+            }
+          ]
+        },
+        {
+          "node_id": "Phil_Urich",
+          "name": "Phil Urich",
+          "cosine": 0.1567,
+          "n_tokens": 985,
+          "overlap_terms": [
+            {
+              "term": "a",
+              "query": 1,
+              "page": 28,
+              "product": 28,
+              "is_stop": true
+            },
+            {
+              "term": "green",
+              "query": 1,
+              "page": 10,
+              "product": 10,
+              "is_stop": false
+            },
+            {
+              "term": "when",
+              "query": 1,
+              "page": 4,
+              "product": 4,
+              "is_stop": true
+            },
+            {
+              "term": "who",
+              "query": 1,
+              "page": 4,
+              "product": 4,
+              "is_stop": true
+            },
+            {
+              "term": "into",
+              "query": 1,
+              "page": 1,
+              "product": 1,
+              "is_stop": true
+            },
+            {
+              "term": "scientist",
+              "query": 1,
+              "page": 1,
+              "product": 1,
+              "is_stop": false
+            }
+          ]
+        },
+        {
+          "node_id": "Force_(comics)",
+          "name": "Force (comics)",
+          "cosine": 0.1538,
+          "n_tokens": 497,
+          "overlap_terms": [
+            {
+              "term": "a",
+              "query": 1,
+              "page": 20,
+              "product": 20,
+              "is_stop": true
+            },
+            {
+              "term": "when",
+              "query": 1,
+              "page": 3,
+              "product": 3,
+              "is_stop": true
+            },
+            {
+              "term": "who",
+              "query": 1,
+              "page": 2,
+              "product": 2,
+              "is_stop": true
+            },
+            {
+              "term": "scientist",
+              "query": 1,
+              "page": 1,
+              "product": 1,
+              "is_stop": false
+            }
+          ]
+        }
+      ],
+      "top5_nostop": [
+        {
+          "node_id": "Phil_Urich",
+          "name": "Phil Urich",
+          "cosine": 0.083,
+          "n_tokens": 985,
+          "overlap_terms": [
+            {
+              "term": "green",
+              "query": 1,
+              "page": 10,
+              "product": 10,
+              "is_stop": false
+            },
+            {
+              "term": "scientist",
+              "query": 1,
+              "page": 1,
+              "product": 1,
+              "is_stop": false
+            }
+          ]
+        },
+        {
+          "node_id": "Bill_Foster_(character)",
+          "name": "Bill Foster (character)",
+          "cosine": 0.0686,
+          "n_tokens": 1829,
+          "overlap_terms": [
+            {
+              "term": "giant",
+              "query": 1,
+              "page": 14,
+              "product": 14,
+              "is_stop": false
+            }
+          ]
+        },
+        {
+          "node_id": "Hank_Pym",
+          "name": "Hank Pym",
+          "cosine": 0.0641,
+          "n_tokens": 5510,
+          "overlap_terms": [
+            {
+              "term": "giant",
+              "query": 1,
+              "page": 27,
+              "product": 27,
+              "is_stop": false
+            },
+            {
+              "term": "scientist",
+              "query": 1,
+              "page": 8,
+              "product": 8,
+              "is_stop": false
+            },
+            {
+              "term": "green",
+              "query": 1,
+              "page": 1,
+              "product": 1,
+              "is_stop": false
+            }
+          ]
+        },
+        {
+          "node_id": "Gauntlet_(Joseph_Green)",
+          "name": "Gauntlet (Joseph Green)",
+          "cosine": 0.0572,
+          "n_tokens": 576,
+          "overlap_terms": [
+            {
+              "term": "green",
+              "query": 1,
+              "page": 4,
+              "product": 4,
+              "is_stop": false
+            }
+          ]
+        },
+        {
+          "node_id": "Hulk",
+          "name": "Hulk",
+          "cosine": 0.0401,
+          "n_tokens": 7722,
+          "overlap_terms": [
+            {
+              "term": "green",
+              "query": 1,
+              "page": 20,
+              "product": 20,
+              "is_stop": false
+            },
+            {
+              "term": "angry",
+              "query": 1,
+              "page": 5,
+              "product": 5,
+              "is_stop": false
+            },
+            {
+              "term": "scientist",
+              "query": 1,
+              "page": 1,
+              "product": 1,
+              "is_stop": false
+            },
+            {
+              "term": "turns",
+              "query": 1,
+              "page": 1,
+              "product": 1,
+              "is_stop": false
+            }
+          ]
+        }
+      ],
+      "rank": 149,
+      "rank_nostop": 5,
+      "cosine_expected": 0.1035,
+      "expected_tokens": 7722,
+      "expected_length_percentile": 0.927,
+      "hit_at_1": false,
+      "hit_at_5": false,
+      "hit_at_1_nostop": false,
+      "hit_at_5_nostop": true,
+      "expected_overlap": [
+        {
+          "term": "a",
+          "query": 1,
+          "page": 149,
+          "product": 149,
+          "is_stop": true
+        },
+        {
+          "term": "when",
+          "query": 1,
+          "page": 29,
+          "product": 29,
+          "is_stop": true
+        },
+        {
+          "term": "who",
+          "query": 1,
+          "page": 25,
+          "product": 25,
+          "is_stop": true
+        },
+        {
+          "term": "into",
+          "query": 1,
+          "page": 23,
+          "product": 23,
+          "is_stop": true
+        },
+        {
+          "term": "green",
+          "query": 1,
+          "page": 20,
+          "product": 20,
+          "is_stop": false
+        },
+        {
+          "term": "angry",
+          "query": 1,
+          "page": 5,
+          "product": 5,
+          "is_stop": false
+        },
+        {
+          "term": "scientist",
+          "query": 1,
+          "page": 1,
+          "product": 1,
+          "is_stop": false
+        },
+        {
+          "term": "turns",
+          "query": 1,
+          "page": 1,
+          "product": 1,
+          "is_stop": false
+        }
+      ],
+      "failure_kind": "short_page",
+      "failure_reason": "Phil Grayfield (711 words) beats Hulk (7,722 words): cosine divides by the vector's length, so a short page with the same words scores higher.",
+      "failure_kind_nostop": "short_page",
+      "quote": {
+        "node_id": "NFL_SuperPro",
+        "name": "Phil Grayfield",
+        "text": "He became a sports reporter and interviewed an eccentric football superfan, who also happened to be a scientist."
+      }
+    },
+    {
+      "id": "storm",
+      "query": "weather-controlling mutant from Kenya",
+      "expected": "Storm_(Marvel_Comics)",
+      "expected_name": "Storm (Marvel Comics)",
+      "why_expected": "Storm controls the weather and grew up in Kenya.",
+      "scored": true,
+      "top5": [
+        {
+          "node_id": "Redneck_(comics)",
+          "name": "Redneck (comics)",
+          "cosine": 0.1323,
+          "n_tokens": 255,
+          "overlap_terms": [
+            {
+              "term": "mutant",
+              "query": 1,
+              "page": 5,
+              "product": 5,
+              "is_stop": false
+            },
+            {
+              "term": "from",
+              "query": 1,
+              "page": 4,
+              "product": 4,
+              "is_stop": true
+            }
+          ]
+        },
+        {
+          "node_id": "Rusty_Collins",
+          "name": "Rusty Collins",
+          "cosine": 0.071,
+          "n_tokens": 979,
+          "overlap_terms": [
+            {
+              "term": "mutant",
+              "query": 1,
+              "page": 10,
+              "product": 10,
+              "is_stop": false
+            },
+            {
+              "term": "from",
+              "query": 1,
+              "page": 5,
+              "product": 5,
+              "is_stop": true
+            },
+            {
+              "term": "controlling",
+              "query": 1,
+              "page": 1,
+              "product": 1,
+              "is_stop": false
+            }
+          ]
+        },
+        {
+          "node_id": "Surge_(Marvel_Comics)",
+          "name": "Surge (Marvel Comics)",
+          "cosine": 0.0643,
+          "n_tokens": 976,
+          "overlap_terms": [
+            {
+              "term": "from",
+              "query": 1,
+              "page": 13,
+              "product": 13,
+              "is_stop": true
+            },
+            {
+              "term": "mutant",
+              "query": 1,
+              "page": 2,
+              "product": 2,
+              "is_stop": false
+            }
+          ]
+        },
+        {
+          "node_id": "Silhouette_(comics)",
+          "name": "Silhouette (comics)",
+          "cosine": 0.0537,
+          "n_tokens": 835,
+          "overlap_terms": [
+            {
+              "term": "from",
+              "query": 1,
+              "page": 11,
+              "product": 11,
+              "is_stop": true
+            }
+          ]
+        },
+        {
+          "node_id": "Fabio_Medina",
+          "name": "Fabio Medina",
+          "cosine": 0.053,
+          "n_tokens": 897,
+          "overlap_terms": [
+            {
+              "term": "mutant",
+              "query": 1,
+              "page": 7,
+              "product": 7,
+              "is_stop": false
+            },
+            {
+              "term": "from",
+              "query": 1,
+              "page": 4,
+              "product": 4,
+              "is_stop": true
+            }
+          ]
+        }
+      ],
+      "top5_nostop": [
+        {
+          "node_id": "Redneck_(comics)",
+          "name": "Redneck (comics)",
+          "cosine": 0.1521,
+          "n_tokens": 255,
+          "overlap_terms": [
+            {
+              "term": "mutant",
+              "query": 1,
+              "page": 5,
+              "product": 5,
+              "is_stop": false
+            }
+          ]
+        },
+        {
+          "node_id": "Rusty_Collins",
+          "name": "Rusty Collins",
+          "cosine": 0.1147,
+          "n_tokens": 979,
+          "overlap_terms": [
+            {
+              "term": "mutant",
+              "query": 1,
+              "page": 10,
+              "product": 10,
+              "is_stop": false
+            },
+            {
+              "term": "controlling",
+              "query": 1,
+              "page": 1,
+              "product": 1,
+              "is_stop": false
+            }
+          ]
+        },
+        {
+          "node_id": "Fabio_Medina",
+          "name": "Fabio Medina",
+          "cosine": 0.1023,
+          "n_tokens": 897,
+          "overlap_terms": [
+            {
+              "term": "mutant",
+              "query": 1,
+              "page": 7,
+              "product": 7,
+              "is_stop": false
+            }
+          ]
+        },
+        {
+          "node_id": "Powerhouse_(Marvel_Comics)",
+          "name": "Powerhouse (Marvel Comics)",
+          "cosine": 0.0774,
+          "n_tokens": 562,
+          "overlap_terms": [
+            {
+              "term": "mutant",
+              "query": 1,
+              "page": 5,
+              "product": 5,
+              "is_stop": false
+            }
+          ]
+        },
+        {
+          "node_id": "Storm_(Marvel_Comics)",
+          "name": "Storm (Marvel Comics)",
+          "cosine": 0.0611,
+          "n_tokens": 9831,
+          "overlap_terms": [
+            {
+              "term": "mutant",
+              "query": 1,
+              "page": 21,
+              "product": 21,
+              "is_stop": false
+            },
+            {
+              "term": "weather",
+              "query": 1,
+              "page": 18,
+              "product": 18,
+              "is_stop": false
+            },
+            {
+              "term": "kenya",
+              "query": 1,
+              "page": 5,
+              "product": 5,
+              "is_stop": false
+            }
+          ]
+        }
+      ],
+      "rank": 27,
+      "rank_nostop": 5,
+      "cosine_expected": 0.0384,
+      "expected_tokens": 9831,
+      "expected_length_percentile": 0.967,
+      "hit_at_1": false,
+      "hit_at_5": false,
+      "hit_at_1_nostop": false,
+      "hit_at_5_nostop": true,
+      "expected_overlap": [
+        {
+          "term": "from",
+          "query": 1,
+          "page": 41,
+          "product": 41,
+          "is_stop": true
+        },
+        {
+          "term": "mutant",
+          "query": 1,
+          "page": 21,
+          "product": 21,
+          "is_stop": false
+        },
+        {
+          "term": "weather",
+          "query": 1,
+          "page": 18,
+          "product": 18,
+          "is_stop": false
+        },
+        {
+          "term": "kenya",
+          "query": 1,
+          "page": 5,
+          "product": 5,
+          "is_stop": false
+        }
+      ],
+      "failure_kind": "short_page",
+      "failure_reason": "Redneck (comics) (255 words) beats Storm (Marvel Comics) (9,831 words): cosine divides by the vector's length, so a short page with the same words scores higher.",
+      "failure_kind_nostop": "short_page",
+      "quote": {
+        "node_id": "Redneck_(comics)",
+        "name": "Redneck (comics)",
+        "text": "Vincent Stewart, codenamed Redneck and later Skybolt is a fictional mutant character appearing in American comic books published by Marvel Comics."
+      }
+    },
+    {
+      "id": "witch",
+      "query": "chaos magic reality warping mutant twin",
+      "expected": "Scarlet_Witch",
+      "expected_name": "Scarlet Witch",
+      "why_expected": "Chaos magic and reality warping are Scarlet Witch's powers; Quicksilver is her twin.",
+      "scored": true,
+      "top5": [
+        {
+          "node_id": "Redneck_(comics)",
+          "name": "Redneck (comics)",
+          "cosine": 0.0671,
+          "n_tokens": 255,
+          "overlap_terms": [
+            {
+              "term": "mutant",
+              "query": 1,
+              "page": 5,
+              "product": 5,
+              "is_stop": false
+            }
+          ]
+        },
+        {
+          "node_id": "Scarlet_Witch",
+          "name": "Scarlet Witch",
+          "cosine": 0.0448,
+          "n_tokens": 14292,
+          "overlap_terms": [
+            {
+              "term": "magic",
+              "query": 1,
+              "page": 51,
+              "product": 51,
+              "is_stop": false
+            },
+            {
+              "term": "mutant",
+              "query": 1,
+              "page": 34,
+              "product": 34,
+              "is_stop": false
+            },
+            {
+              "term": "reality",
+              "query": 1,
+              "page": 31,
+              "product": 31,
+              "is_stop": false
+            },
+            {
+              "term": "chaos",
+              "query": 1,
+              "page": 20,
+              "product": 20,
+              "is_stop": false
+            },
+            {
+              "term": "twin",
+              "query": 1,
+              "page": 9,
+              "product": 9,
+              "is_stop": false
+            },
+            {
+              "term": "warping",
+              "query": 1,
+              "page": 6,
+              "product": 6,
+              "is_stop": false
+            }
+          ]
+        },
+        {
+          "node_id": "Rusty_Collins",
+          "name": "Rusty Collins",
+          "cosine": 0.0446,
+          "n_tokens": 979,
+          "overlap_terms": [
+            {
+              "term": "mutant",
+              "query": 1,
+              "page": 10,
+              "product": 10,
+              "is_stop": false
+            },
+            {
+              "term": "reality",
+              "query": 1,
+              "page": 1,
+              "product": 1,
+              "is_stop": false
+            }
+          ]
+        },
+        {
+          "node_id": "Powerhouse_(Marvel_Comics)",
+          "name": "Powerhouse (Marvel Comics)",
+          "cosine": 0.0343,
+          "n_tokens": 562,
+          "overlap_terms": [
+            {
+              "term": "mutant",
+              "query": 1,
+              "page": 5,
+              "product": 5,
+              "is_stop": false
+            }
+          ]
+        },
+        {
+          "node_id": "Fabio_Medina",
+          "name": "Fabio Medina",
+          "cosine": 0.0308,
+          "n_tokens": 897,
+          "overlap_terms": [
+            {
+              "term": "mutant",
+              "query": 1,
+              "page": 7,
+              "product": 7,
+              "is_stop": false
+            }
+          ]
+        }
+      ],
+      "top5_nostop": [
+        {
+          "node_id": "Scarlet_Witch",
+          "name": "Scarlet Witch",
+          "cosine": 0.1491,
+          "n_tokens": 14292,
+          "overlap_terms": [
+            {
+              "term": "magic",
+              "query": 1,
+              "page": 51,
+              "product": 51,
+              "is_stop": false
+            },
+            {
+              "term": "mutant",
+              "query": 1,
+              "page": 34,
+              "product": 34,
+              "is_stop": false
+            },
+            {
+              "term": "reality",
+              "query": 1,
+              "page": 31,
+              "product": 31,
+              "is_stop": false
+            },
+            {
+              "term": "chaos",
+              "query": 1,
+              "page": 20,
+              "product": 20,
+              "is_stop": false
+            },
+            {
+              "term": "twin",
+              "query": 1,
+              "page": 9,
+              "product": 9,
+              "is_stop": false
+            },
+            {
+              "term": "warping",
+              "query": 1,
+              "page": 6,
+              "product": 6,
+              "is_stop": false
+            }
+          ]
+        },
+        {
+          "node_id": "Redneck_(comics)",
+          "name": "Redneck (comics)",
+          "cosine": 0.1242,
+          "n_tokens": 255,
+          "overlap_terms": [
+            {
+              "term": "mutant",
+              "query": 1,
+              "page": 5,
+              "product": 5,
+              "is_stop": false
+            }
+          ]
+        },
+        {
+          "node_id": "Rusty_Collins",
+          "name": "Rusty Collins",
+          "cosine": 0.0937,
+          "n_tokens": 979,
+          "overlap_terms": [
+            {
+              "term": "mutant",
+              "query": 1,
+              "page": 10,
+              "product": 10,
+              "is_stop": false
+            },
+            {
+              "term": "reality",
+              "query": 1,
+              "page": 1,
+              "product": 1,
+              "is_stop": false
+            }
+          ]
+        },
+        {
+          "node_id": "Fabio_Medina",
+          "name": "Fabio Medina",
+          "cosine": 0.0835,
+          "n_tokens": 897,
+          "overlap_terms": [
+            {
+              "term": "mutant",
+              "query": 1,
+              "page": 7,
+              "product": 7,
+              "is_stop": false
+            }
+          ]
+        },
+        {
+          "node_id": "Speed_(character)",
+          "name": "Speed (character)",
+          "cosine": 0.0811,
+          "n_tokens": 3146,
+          "overlap_terms": [
+            {
+              "term": "twin",
+              "query": 1,
+              "page": 6,
+              "product": 6,
+              "is_stop": false
+            },
+            {
+              "term": "reality",
+              "query": 1,
+              "page": 5,
+              "product": 5,
+              "is_stop": false
+            },
+            {
+              "term": "mutant",
+              "query": 1,
+              "page": 4,
+              "product": 4,
+              "is_stop": false
+            },
+            {
+              "term": "magic",
+              "query": 1,
+              "page": 3,
+              "product": 3,
+              "is_stop": false
+            },
+            {
+              "term": "chaos",
+              "query": 1,
+              "page": 2,
+              "product": 2,
+              "is_stop": false
+            },
+            {
+              "term": "warping",
+              "query": 1,
+              "page": 2,
+              "product": 2,
+              "is_stop": false
+            }
+          ]
+        }
+      ],
+      "rank": 2,
+      "rank_nostop": 1,
+      "cosine_expected": 0.0448,
+      "expected_tokens": 14292,
+      "expected_length_percentile": 0.997,
+      "hit_at_1": false,
+      "hit_at_5": true,
+      "hit_at_1_nostop": true,
+      "hit_at_5_nostop": true,
+      "expected_overlap": [
+        {
+          "term": "magic",
+          "query": 1,
+          "page": 51,
+          "product": 51,
+          "is_stop": false
+        },
+        {
+          "term": "mutant",
+          "query": 1,
+          "page": 34,
+          "product": 34,
+          "is_stop": false
+        },
+        {
+          "term": "reality",
+          "query": 1,
+          "page": 31,
+          "product": 31,
+          "is_stop": false
+        },
+        {
+          "term": "chaos",
+          "query": 1,
+          "page": 20,
+          "product": 20,
+          "is_stop": false
+        },
+        {
+          "term": "twin",
+          "query": 1,
+          "page": 9,
+          "product": 9,
+          "is_stop": false
+        },
+        {
+          "term": "warping",
+          "query": 1,
+          "page": 6,
+          "product": 6,
+          "is_stop": false
+        }
+      ],
+      "failure_kind": "short_page",
+      "failure_reason": "Redneck (comics) (255 words) beats Scarlet Witch (14,292 words): cosine divides by the vector's length, so a short page with the same words scores higher.",
+      "failure_kind_nostop": null,
+      "quote": {
+        "node_id": "Redneck_(comics)",
+        "name": "Redneck (comics)",
+        "text": "Vincent Stewart, codenamed Redneck and later Skybolt is a fictional mutant character appearing in American comic books published by Marvel Comics."
+      }
+    },
+    {
+      "id": "venom",
+      "query": "alien symbiote that bonds with Eddie Brock",
+      "expected": "Venom_(character)",
+      "expected_name": "Venom (character)",
+      "why_expected": "Venom is the symbiote that bonds with Eddie Brock.",
+      "scored": true,
+      "top5": [
+        {
+          "node_id": "Eddie_Brock",
+          "name": "Eddie Brock",
+          "cosine": 0.2542,
+          "n_tokens": 10661,
+          "overlap_terms": [
+            {
+              "term": "brock",
+              "query": 1,
+              "page": 189,
+              "product": 189,
+              "is_stop": false
+            },
+            {
+              "term": "symbiote",
+              "query": 1,
+              "page": 152,
+              "product": 152,
+              "is_stop": false
+            },
+            {
+              "term": "eddie",
+              "query": 1,
+              "page": 149,
+              "product": 149,
+              "is_stop": false
+            },
+            {
+              "term": "with",
+              "query": 1,
+              "page": 129,
+              "product": 129,
+              "is_stop": true
+            },
+            {
+              "term": "that",
+              "query": 1,
+              "page": 88,
+              "product": 88,
+              "is_stop": true
+            },
+            {
+              "term": "alien",
+              "query": 1,
+              "page": 10,
+              "product": 10,
+              "is_stop": false
+            },
+            {
+              "term": "bonds",
+              "query": 1,
+              "page": 10,
+              "product": 10,
+              "is_stop": false
+            }
+          ]
+        },
+        {
+          "node_id": "Anne_Weying",
+          "name": "She-Venom (Patricia Robertson)",
+          "cosine": 0.1932,
+          "n_tokens": 749,
+          "overlap_terms": [
+            {
+              "term": "brock",
+              "query": 1,
+              "page": 15,
+              "product": 15,
+              "is_stop": false
+            },
+            {
+              "term": "with",
+              "query": 1,
+              "page": 14,
+              "product": 14,
+              "is_stop": true
+            },
+            {
+              "term": "eddie",
+              "query": 1,
+              "page": 5,
+              "product": 5,
+              "is_stop": false
+            },
+            {
+              "term": "symbiote",
+              "query": 1,
+              "page": 5,
+              "product": 5,
+              "is_stop": false
+            },
+            {
+              "term": "that",
+              "query": 1,
+              "page": 3,
+              "product": 3,
+              "is_stop": true
+            },
+            {
+              "term": "bonds",
+              "query": 1,
+              "page": 1,
+              "product": 1,
+              "is_stop": false
+            }
+          ]
+        },
+        {
+          "node_id": "Venom_(character)",
+          "name": "Venom (character)",
+          "cosine": 0.1824,
+          "n_tokens": 10704,
+          "overlap_terms": [
+            {
+              "term": "symbiote",
+              "query": 1,
+              "page": 141,
+              "product": 141,
+              "is_stop": false
+            },
+            {
+              "term": "with",
+              "query": 1,
+              "page": 129,
+              "product": 129,
+              "is_stop": true
+            },
+            {
+              "term": "brock",
+              "query": 1,
+              "page": 93,
+              "product": 93,
+              "is_stop": false
+            },
+            {
+              "term": "eddie",
+              "query": 1,
+              "page": 80,
+              "product": 80,
+              "is_stop": false
+            },
+            {
+              "term": "that",
+              "query": 1,
+              "page": 64,
+              "product": 64,
+              "is_stop": true
+            },
+            {
+              "term": "bonds",
+              "query": 1,
+              "page": 21,
+              "product": 21,
+              "is_stop": false
+            },
+            {
+              "term": "alien",
+              "query": 1,
+              "page": 11,
+              "product": 11,
+              "is_stop": false
+            }
+          ]
+        },
+        {
+          "node_id": "Mania_(character)",
+          "name": "Mania (character)",
+          "cosine": 0.1681,
+          "n_tokens": 2708,
+          "overlap_terms": [
+            {
+              "term": "symbiote",
+              "query": 1,
+              "page": 74,
+              "product": 74,
+              "is_stop": false
+            },
+            {
+              "term": "with",
+              "query": 1,
+              "page": 29,
+              "product": 29,
+              "is_stop": true
+            },
+            {
+              "term": "that",
+              "query": 1,
+              "page": 22,
+              "product": 22,
+              "is_stop": true
+            },
+            {
+              "term": "brock",
+              "query": 1,
+              "page": 6,
+              "product": 6,
+              "is_stop": false
+            },
+            {
+              "term": "eddie",
+              "query": 1,
+              "page": 2,
+              "product": 2,
+              "is_stop": false
+            },
+            {
+              "term": "alien",
+              "query": 1,
+              "page": 1,
+              "product": 1,
+              "is_stop": false
+            },
+            {
+              "term": "bonds",
+              "query": 1,
+              "page": 1,
+              "product": 1,
+              "is_stop": false
+            }
+          ]
+        },
+        {
+          "node_id": "Hornet_(comics)",
+          "name": "Hornet (comics)",
+          "cosine": 0.1295,
+          "n_tokens": 970,
+          "overlap_terms": [
+            {
+              "term": "that",
+              "query": 1,
+              "page": 16,
+              "product": 16,
+              "is_stop": true
+            },
+            {
+              "term": "with",
+              "query": 1,
+              "page": 10,
+              "product": 10,
+              "is_stop": true
+            },
+            {
+              "term": "eddie",
+              "query": 1,
+              "page": 5,
+              "product": 5,
+              "is_stop": false
+            },
+            {
+              "term": "symbiote",
+              "query": 1,
+              "page": 1,
+              "product": 1,
+              "is_stop": false
+            }
+          ]
+        }
+      ],
+      "top5_nostop": [
+        {
+          "node_id": "Eddie_Brock",
+          "name": "Eddie Brock",
+          "cosine": 0.4861,
+          "n_tokens": 10661,
+          "overlap_terms": [
+            {
+              "term": "brock",
+              "query": 1,
+              "page": 189,
+              "product": 189,
+              "is_stop": false
+            },
+            {
+              "term": "symbiote",
+              "query": 1,
+              "page": 152,
+              "product": 152,
+              "is_stop": false
+            },
+            {
+              "term": "eddie",
+              "query": 1,
+              "page": 149,
+              "product": 149,
+              "is_stop": false
+            },
+            {
+              "term": "alien",
+              "query": 1,
+              "page": 10,
+              "product": 10,
+              "is_stop": false
+            },
+            {
+              "term": "bonds",
+              "query": 1,
+              "page": 10,
+              "product": 10,
+              "is_stop": false
+            }
+          ]
+        },
+        {
+          "node_id": "Venom_(character)",
+          "name": "Venom (character)",
+          "cosine": 0.3184,
+          "n_tokens": 10704,
+          "overlap_terms": [
+            {
+              "term": "symbiote",
+              "query": 1,
+              "page": 141,
+              "product": 141,
+              "is_stop": false
+            },
+            {
+              "term": "brock",
+              "query": 1,
+              "page": 93,
+              "product": 93,
+              "is_stop": false
+            },
+            {
+              "term": "eddie",
+              "query": 1,
+              "page": 80,
+              "product": 80,
+              "is_stop": false
+            },
+            {
+              "term": "bonds",
+              "query": 1,
+              "page": 21,
+              "product": 21,
+              "is_stop": false
+            },
+            {
+              "term": "alien",
+              "query": 1,
+              "page": 11,
+              "product": 11,
+              "is_stop": false
+            }
+          ]
+        },
+        {
+          "node_id": "Mania_(character)",
+          "name": "Mania (character)",
+          "cosine": 0.3062,
+          "n_tokens": 2708,
+          "overlap_terms": [
+            {
+              "term": "symbiote",
+              "query": 1,
+              "page": 74,
+              "product": 74,
+              "is_stop": false
+            },
+            {
+              "term": "brock",
+              "query": 1,
+              "page": 6,
+              "product": 6,
+              "is_stop": false
+            },
+            {
+              "term": "eddie",
+              "query": 1,
+              "page": 2,
+              "product": 2,
+              "is_stop": false
+            },
+            {
+              "term": "alien",
+              "query": 1,
+              "page": 1,
+              "product": 1,
+              "is_stop": false
+            },
+            {
+              "term": "bonds",
+              "query": 1,
+              "page": 1,
+              "product": 1,
+              "is_stop": false
+            }
+          ]
+        },
+        {
+          "node_id": "Anne_Weying",
+          "name": "She-Venom (Patricia Robertson)",
+          "cosine": 0.2177,
+          "n_tokens": 749,
+          "overlap_terms": [
+            {
+              "term": "brock",
+              "query": 1,
+              "page": 15,
+              "product": 15,
+              "is_stop": false
+            },
+            {
+              "term": "eddie",
+              "query": 1,
+              "page": 5,
+              "product": 5,
+              "is_stop": false
+            },
+            {
+              "term": "symbiote",
+              "query": 1,
+              "page": 5,
+              "product": 5,
+              "is_stop": false
+            },
+            {
+              "term": "bonds",
+              "query": 1,
+              "page": 1,
+              "product": 1,
+              "is_stop": false
+            }
+          ]
+        },
+        {
+          "node_id": "Hybrid_(Scott_Washington)",
+          "name": "Hybrid (Scott Washington)",
+          "cosine": 0.1355,
+          "n_tokens": 724,
+          "overlap_terms": [
+            {
+              "term": "symbiote",
+              "query": 1,
+              "page": 10,
+              "product": 10,
+              "is_stop": false
+            },
+            {
+              "term": "brock",
+              "query": 1,
+              "page": 1,
+              "product": 1,
+              "is_stop": false
+            },
+            {
+              "term": "eddie",
+              "query": 1,
+              "page": 1,
+              "product": 1,
+              "is_stop": false
+            }
+          ]
+        }
+      ],
+      "rank": 3,
+      "rank_nostop": 2,
+      "cosine_expected": 0.1824,
+      "expected_tokens": 10704,
+      "expected_length_percentile": 0.983,
+      "hit_at_1": false,
+      "hit_at_5": true,
+      "hit_at_1_nostop": false,
+      "hit_at_5_nostop": true,
+      "expected_overlap": [
+        {
+          "term": "symbiote",
+          "query": 1,
+          "page": 141,
+          "product": 141,
+          "is_stop": false
+        },
+        {
+          "term": "with",
+          "query": 1,
+          "page": 129,
+          "product": 129,
+          "is_stop": true
+        },
+        {
+          "term": "brock",
+          "query": 1,
+          "page": 93,
+          "product": 93,
+          "is_stop": false
+        },
+        {
+          "term": "eddie",
+          "query": 1,
+          "page": 80,
+          "product": 80,
+          "is_stop": false
+        },
+        {
+          "term": "that",
+          "query": 1,
+          "page": 64,
+          "product": 64,
+          "is_stop": true
+        },
+        {
+          "term": "bonds",
+          "query": 1,
+          "page": 21,
+          "product": 21,
+          "is_stop": false
+        },
+        {
+          "term": "alien",
+          "query": 1,
+          "page": 11,
+          "product": 11,
+          "is_stop": false
+        }
+      ],
+      "failure_kind": "rival",
+      "failure_reason": "Eddie Brock (10,661 words) is not a short page, and it scores higher than Venom (character) on brock, symbiote, eddie.",
+      "failure_kind_nostop": "rival",
+      "quote": {
+        "node_id": "Eddie_Brock",
+        "name": "Eddie Brock",
+        "text": "Edward Charles Allan Brock is a character appearing in American comic books published by Marvel Comics."
+      }
+    },
+    {
+      "id": "moon",
+      "query": "mercenary who becomes a moon-themed vigilante",
+      "expected": "Moon_Knight",
+      "expected_name": "Moon Knight",
+      "why_expected": "Moon Knight is the moon-themed vigilante.",
+      "scored": true,
+      "top5": [
+        {
+          "node_id": "Moon_Knight",
+          "name": "Moon Knight",
+          "cosine": 0.2537,
+          "n_tokens": 7260,
+          "overlap_terms": [
+            {
+              "term": "moon",
+              "query": 1,
+              "page": 211,
+              "product": 211,
+              "is_stop": false
+            },
+            {
+              "term": "a",
+              "query": 1,
+              "page": 196,
+              "product": 196,
+              "is_stop": true
+            },
+            {
+              "term": "who",
+              "query": 1,
+              "page": 34,
+              "product": 34,
+              "is_stop": true
+            },
+            {
+              "term": "mercenary",
+              "query": 1,
+              "page": 15,
+              "product": 15,
+              "is_stop": false
+            },
+            {
+              "term": "becomes",
+              "query": 1,
+              "page": 10,
+              "product": 10,
+              "is_stop": true
+            },
+            {
+              "term": "themed",
+              "query": 1,
+              "page": 3,
+              "product": 3,
+              "is_stop": false
+            },
+            {
+              "term": "vigilante",
+              "query": 1,
+              "page": 1,
+              "product": 1,
+              "is_stop": false
+            }
+          ]
+        },
+        {
+          "node_id": "NFL_SuperPro",
+          "name": "Phil Grayfield",
+          "cosine": 0.1853,
+          "n_tokens": 711,
+          "overlap_terms": [
+            {
+              "term": "a",
+              "query": 1,
+              "page": 24,
+              "product": 24,
+              "is_stop": true
+            },
+            {
+              "term": "who",
+              "query": 1,
+              "page": 8,
+              "product": 8,
+              "is_stop": true
+            },
+            {
+              "term": "becomes",
+              "query": 1,
+              "page": 1,
+              "product": 1,
+              "is_stop": true
+            }
+          ]
+        },
+        {
+          "node_id": "Crippler_(character)",
+          "name": "Crippler (character)",
+          "cosine": 0.1622,
+          "n_tokens": 349,
+          "overlap_terms": [
+            {
+              "term": "a",
+              "query": 1,
+              "page": 15,
+              "product": 15,
+              "is_stop": true
+            },
+            {
+              "term": "mercenary",
+              "query": 1,
+              "page": 2,
+              "product": 2,
+              "is_stop": false
+            },
+            {
+              "term": "vigilante",
+              "query": 1,
+              "page": 2,
+              "product": 2,
+              "is_stop": false
+            },
+            {
+              "term": "who",
+              "query": 1,
+              "page": 1,
+              "product": 1,
+              "is_stop": true
+            }
+          ]
+        },
+        {
+          "node_id": "Solarman",
+          "name": "Solarman",
+          "cosine": 0.1558,
+          "n_tokens": 764,
+          "overlap_terms": [
+            {
+              "term": "a",
+              "query": 1,
+              "page": 23,
+              "product": 23,
+              "is_stop": true
+            },
+            {
+              "term": "who",
+              "query": 1,
+              "page": 9,
+              "product": 9,
+              "is_stop": true
+            },
+            {
+              "term": "becomes",
+              "query": 1,
+              "page": 1,
+              "product": 1,
+              "is_stop": true
+            }
+          ]
+        },
+        {
+          "node_id": "Devil_Dinosaur",
+          "name": "Devil Dinosaur",
+          "cosine": 0.1556,
+          "n_tokens": 3240,
+          "overlap_terms": [
+            {
+              "term": "a",
+              "query": 1,
+              "page": 69,
+              "product": 69,
+              "is_stop": true
+            },
+            {
+              "term": "moon",
+              "query": 1,
+              "page": 59,
+              "product": 59,
+              "is_stop": false
+            },
+            {
+              "term": "who",
+              "query": 1,
+              "page": 14,
+              "product": 14,
+              "is_stop": true
+            }
+          ]
+        }
+      ],
+      "top5_nostop": [
+        {
+          "node_id": "Moon_Knight",
+          "name": "Moon Knight",
+          "cosine": 0.3483,
+          "n_tokens": 7260,
+          "overlap_terms": [
+            {
+              "term": "moon",
+              "query": 1,
+              "page": 211,
+              "product": 211,
+              "is_stop": false
+            },
+            {
+              "term": "mercenary",
+              "query": 1,
+              "page": 15,
+              "product": 15,
+              "is_stop": false
+            },
+            {
+              "term": "themed",
+              "query": 1,
+              "page": 3,
+              "product": 3,
+              "is_stop": false
+            },
+            {
+              "term": "vigilante",
+              "query": 1,
+              "page": 1,
+              "product": 1,
+              "is_stop": false
+            }
+          ]
+        },
+        {
+          "node_id": "Devil_Dinosaur",
+          "name": "Devil Dinosaur",
+          "cosine": 0.1698,
+          "n_tokens": 3240,
+          "overlap_terms": [
+            {
+              "term": "moon",
+              "query": 1,
+              "page": 59,
+              "product": 59,
+              "is_stop": false
+            }
+          ]
+        },
+        {
+          "node_id": "Silk_(character)",
+          "name": "Silk (character)",
+          "cosine": 0.1246,
+          "n_tokens": 1999,
+          "overlap_terms": [
+            {
+              "term": "moon",
+              "query": 1,
+              "page": 20,
+              "product": 20,
+              "is_stop": false
+            },
+            {
+              "term": "themed",
+              "query": 1,
+              "page": 4,
+              "product": 4,
+              "is_stop": false
+            }
+          ]
+        },
+        {
+          "node_id": "Crippler_(character)",
+          "name": "Crippler (character)",
+          "cosine": 0.0894,
+          "n_tokens": 349,
+          "overlap_terms": [
+            {
+              "term": "mercenary",
+              "query": 1,
+              "page": 2,
+              "product": 2,
+              "is_stop": false
+            },
+            {
+              "term": "vigilante",
+              "query": 1,
+              "page": 2,
+              "product": 2,
+              "is_stop": false
+            }
+          ]
+        },
+        {
+          "node_id": "Werewolf_by_Night",
+          "name": "Werewolf by Night",
+          "cosine": 0.0703,
+          "n_tokens": 3882,
+          "overlap_terms": [
+            {
+              "term": "moon",
+              "query": 1,
+              "page": 17,
+              "product": 17,
+              "is_stop": false
+            },
+            {
+              "term": "mercenary",
+              "query": 1,
+              "page": 2,
+              "product": 2,
+              "is_stop": false
+            }
+          ]
+        }
+      ],
+      "rank": 1,
+      "rank_nostop": 1,
+      "cosine_expected": 0.2537,
+      "expected_tokens": 7260,
+      "expected_length_percentile": 0.917,
+      "hit_at_1": true,
+      "hit_at_5": true,
+      "hit_at_1_nostop": true,
+      "hit_at_5_nostop": true,
+      "expected_overlap": [
+        {
+          "term": "moon",
+          "query": 1,
+          "page": 211,
+          "product": 211,
+          "is_stop": false
+        },
+        {
+          "term": "a",
+          "query": 1,
+          "page": 196,
+          "product": 196,
+          "is_stop": true
+        },
+        {
+          "term": "who",
+          "query": 1,
+          "page": 34,
+          "product": 34,
+          "is_stop": true
+        },
+        {
+          "term": "mercenary",
+          "query": 1,
+          "page": 15,
+          "product": 15,
+          "is_stop": false
+        },
+        {
+          "term": "becomes",
+          "query": 1,
+          "page": 10,
+          "product": 10,
+          "is_stop": true
+        },
+        {
+          "term": "themed",
+          "query": 1,
+          "page": 3,
+          "product": 3,
+          "is_stop": false
+        },
+        {
+          "term": "vigilante",
+          "query": 1,
+          "page": 1,
+          "product": 1,
+          "is_stop": false
+        }
+      ],
+      "failure_kind": null,
+      "failure_reason": null,
+      "failure_kind_nostop": null,
+      "quote": {
+        "node_id": "Moon_Knight",
+        "name": "Moon Knight",
+        "text": "Moon Knight is a superhero appearing in American comic books published by Marvel Comics."
+      }
+    }
+  ]
+}

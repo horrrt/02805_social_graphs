@@ -1,0 +1,85 @@
+# Builds the Next.js static export and runs the tests on every pull request;
+# on main it also publishes out/ to GitHub Pages. A pull request labelled
+# zero-diff also compares its export with main's (job parity). The
+# repository's Pages source must be "GitHub Actions" (Settings → Pages).
+name: Site
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: site-${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+jobs:
+  build:
+    name: Build and test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        # Full history: scripts/agent-files.mjs dates each page in sitemap.xml by its last commit.
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npm run typecheck
+      # npm test runs next build first, so this also produces out/.
+      - run: npm test
+      - if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: out
+
+  # Zero static diff against main for pull requests labelled zero-diff
+  # (scripts/parity/README.md). The label must be on the pull request when a
+  # run starts: after adding it, push again or re-run the workflow.
+  parity:
+    name: Zero static diff
+    if: github.event_name == 'pull_request' && contains(github.event.pull_request.labels.*.name, 'zero-diff')
+    runs-on: ubuntu-latest
+    env:
+      NEXT_TELEMETRY_DISABLED: "1"
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - name: Build the merge base
+        env:
+          # Hard links (cp -al) only work within one filesystem. The runner
+          # context is only available at step level.
+          PARITY_DIR: ${{ runner.temp }}/llparity
+        run: |
+          base=$(node scripts/parity/build-ref.mjs --ref "$(git merge-base HEAD origin/main)" --print-out)
+          echo "BASE=$base" >> "$GITHUB_ENV"
+      # The same build id on both sides, so asset URLs match.
+      - run: GITHUB_SHA=parity00000 npm run build
+      - run: node scripts/parity/static.mjs "$BASE" out
+
+  deploy:
+    name: Deploy to GitHub Pages
+    if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

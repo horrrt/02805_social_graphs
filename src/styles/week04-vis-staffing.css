@@ -1,0 +1,54 @@
+/* Section 3 deep dive: figures for the first-round questions (who-q1 to
+   who-q4), who files the paperwork, the community-stats modularity chart,
+   strong/weak ties and the lottery. Reuses .w4-figure / .w4-figure-body from
+   post.css; this file only adds what those figures need beyond that. */
+
+.corridor .w4-vis-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.corridor .w4-vis-stack .w4-figure-body + .w4-figure-body {
+  margin-top: 2px;
+}
+
+.corridor .w4-vis-legend {
+  align-items: center;
+  color: var(--ink-soft);
+  display: flex;
+  flex-wrap: wrap;
+  font-size: var(--fs-caption);
+  gap: 14px;
+  margin: 0 0 2px;
+}
+
+.corridor .w4-vis-legend span {
+  align-items: center;
+  display: inline-flex;
+  gap: 6px;
+}
+
+.corridor .w4-vis-legend i {
+  background: currentColor;
+  border-radius: 999px;
+  display: inline-block;
+  height: 9px;
+  width: 9px;
+}
+
+.corridor .w4-vis-direct { color: var(--w4-accent); }
+.corridor .w4-vis-client { color: var(--w4-vis-client); }
+
+:root {
+  --w4-vis-client: #b4610f;
+}
+
+/* Prevailing-wage levels I to IV: one ink ramp, darkest at level I, so the
+   white label on the first segment and the ink labels on the rest all read. */
+.corridor {
+  --w4-level-1: #1f3558;
+  --w4-level-2: #7d95b5;
+  --w4-level-3: #aebfd6;
+  --w4-level-4: #d6e0ec;
+}

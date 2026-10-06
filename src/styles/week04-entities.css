@@ -1,0 +1,288 @@
+/* Deep dive: every 2025 worker and filing company as a dot, coloured by its
+   community in the similarity network (week04-entities.js). Reuses the card,
+   w4-two and w4-figure rules in week04.css; adds the map, its controls, the
+   legend and the facts grid. */
+
+/* Twelve community colours and one grey for the smaller groups. None is the
+   page's orange (placed) or blue (direct), so a community never reads as one
+   of those. */
+.corridor {
+  --w4-community-1: #6d4fd6;
+  --w4-community-2: #15896a;
+  --w4-community-3: #c2417a;
+  --w4-community-4: #b58a12;
+  --w4-community-5: #3f6fa8;
+  --w4-community-6: #8a5a2b;
+  --w4-community-7: #2aa7b8;
+  --w4-community-8: #9c3fb0;
+  --w4-community-9: #5f8f2e;
+  --w4-community-10: #d45d4c;
+  --w4-community-11: #4a5a78;
+  --w4-community-12: #d18ac8;
+  --w4-community-other: #c9d3df;
+  /* PageRank rank, most central darkest. */
+  --w4-rank-high: #1b3a63;
+  --w4-rank-low: #dde5ef;
+}
+
+.corridor .w4-entities {
+  margin: 0;
+}
+
+.corridor .w4-entities-controls {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  justify-content: space-between;
+  margin: 0 0 10px;
+}
+
+.corridor .w4-entities-switch {
+  background: var(--ground);
+  border-radius: 999px;
+  display: inline-flex;
+  padding: 3px;
+}
+
+.corridor .w4-entities-switch button {
+  background: transparent;
+  border: 0;
+  border-radius: 999px;
+  color: var(--ink-soft);
+  cursor: pointer;
+  font: inherit;
+  font-size: var(--fs-small);
+  font-weight: 600;
+  padding: 6px 14px;
+}
+
+.corridor .w4-entities-switch button[aria-pressed="true"] {
+  background: var(--card);
+  box-shadow: 0 1px 3px rgba(15, 35, 64, 0.14);
+  color: var(--ink);
+}
+
+.corridor .w4-entities-colour {
+  align-items: center;
+  color: var(--ink-soft);
+  display: inline-flex;
+  font-size: var(--fs-small);
+  gap: 8px;
+}
+
+.corridor .w4-entities-colour select {
+  font: inherit;
+  font-size: var(--fs-small);
+  padding: 4px 8px;
+}
+
+.corridor .w4-entities-stage {
+  background: var(--w4-inset);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  height: 640px;
+  overflow: hidden;
+  position: relative;
+}
+
+.corridor .w4-entities-map {
+  inset: 0;
+  position: absolute;
+}
+
+.corridor .w4-entities-status {
+  color: var(--ink-mute);
+  font-size: var(--fs-small);
+  left: 50%;
+  position: absolute;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.corridor .w4-entities-reset {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  color: var(--ink-soft);
+  cursor: pointer;
+  font: inherit;
+  font-size: var(--fs-caption);
+  padding: 4px 10px;
+  position: absolute;
+  right: 10px;
+  top: 10px;
+  z-index: 2;
+}
+
+.corridor .w4-entities-tip {
+  background: var(--w4-tip-bg);
+  border-radius: 8px;
+  color: var(--w4-tip-ink);
+  font-size: var(--fs-caption);
+  line-height: 1.45;
+  max-width: 320px;
+  padding: 8px 10px;
+}
+
+.corridor .w4-entities-tip b {
+  color: var(--w4-hero-ink);
+  display: block;
+  font-size: var(--fs-small);
+  margin-bottom: 2px;
+}
+
+.corridor .w4-entities-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 14px;
+  list-style: none;
+  margin: 12px 0 4px;
+  padding: 0;
+}
+
+.corridor .w4-entities-legend button {
+  align-items: center;
+  background: none;
+  border: 0;
+  border-radius: 6px;
+  color: var(--ink-soft);
+  cursor: pointer;
+  display: inline-flex;
+  font: inherit;
+  font-size: var(--fs-caption);
+  gap: 6px;
+  padding: 2px 4px;
+  text-align: left;
+}
+
+.corridor .w4-entities-legend button[aria-pressed="true"] {
+  background: var(--ground);
+  color: var(--ink);
+  font-weight: 600;
+}
+
+.corridor .w4-entities-legend i {
+  border-radius: 50%;
+  display: inline-block;
+  flex: none;
+  height: 10px;
+  width: 10px;
+}
+
+.corridor .w4-entities figcaption {
+  color: var(--ink-soft);
+  font-size: var(--fs-small);
+  line-height: 1.5;
+  margin: 8px 0 18px;
+}
+
+.corridor .w4-entities-facts {
+  display: grid;
+  gap: 18px 28px;
+  grid-template-columns: 1fr 1fr;
+  margin: 8px 0 18px;
+}
+
+/* Grid items would otherwise keep the width of the chart drawn at its fallback size. */
+.corridor .w4-entities-facts > div {
+  min-width: 0;
+}
+
+.corridor .w4-entities-facts h4 {
+  font-size: var(--fs-small);
+  margin: 0 0 6px;
+}
+
+.corridor .w4-entities-facts .axis-note {
+  color: var(--ink-mute);
+  font-size: var(--fs-caption);
+  margin: 0 0 6px;
+}
+
+.corridor .w4-entities-weeks {
+  display: grid;
+  gap: 10px;
+  grid-template-columns: 1fr;
+  margin: 0;
+}
+
+.corridor .w4-entities-weeks section {
+  border-top: 1px solid var(--line);
+  padding-top: 8px;
+}
+
+.corridor .w4-entities-weeks h4 {
+  color: var(--ink);
+  font-size: var(--fs-small);
+  margin: 0 0 4px;
+}
+
+.corridor .w4-entities-weeks ul {
+  color: var(--ink-soft);
+  font-size: var(--fs-caption);
+  line-height: 1.5;
+  margin: 0;
+  padding-left: 16px;
+}
+
+.corridor .w4-entities-ccdf text {
+  font-variant-numeric: tabular-nums;
+}
+
+.corridor .w4-entities table td.num,
+.corridor .w4-entities table th.num {
+  font-variant-numeric: tabular-nums;
+  text-align: right;
+}
+
+.corridor .w4-entities table td:first-child {
+  white-space: nowrap;
+}
+
+.corridor .w4-entities table .swatch {
+  border-radius: 50%;
+  display: inline-block;
+  height: 9px;
+  margin-right: 6px;
+  width: 9px;
+}
+
+.corridor .w4-entities-net {
+  align-items: center;
+  color: var(--ink-soft);
+  display: inline-flex;
+  font-size: var(--fs-small);
+  gap: 12px;
+}
+
+.corridor .w4-entities-net[hidden],
+.corridor .w4-entities-colour[hidden] {
+  display: none;
+}
+
+.corridor .w4-entities-net select {
+  font: inherit;
+  font-size: var(--fs-small);
+  margin-left: 6px;
+  padding: 4px 8px;
+}
+
+.corridor .w4-entities-stat {
+  border-top: 1px solid var(--line);
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 8px 0;
+}
+
+.corridor .w4-entities-stat span {
+  color: var(--ink-mute);
+  font-size: var(--fs-caption);
+}
+
+.corridor .w4-entities-stat b {
+  color: var(--ink);
+  font-size: var(--fs-h3);
+  font-variant-numeric: tabular-nums;
+}

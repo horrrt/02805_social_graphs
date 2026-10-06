@@ -9,7 +9,7 @@ than a 500-pixel globe can show.
     python scripts/migration/build_world_outline.py
 
 Input:  build/raw/ne_110m_admin_0_countries.geojson (Natural Earth, public domain)
-Output: docs/assets/data/world_outline.geo.json
+Output: public/assets/data/world_outline.geo.json
 """
 
 from __future__ import annotations
@@ -19,7 +19,7 @@ import pathlib
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent.parent
 SOURCE = ROOT / "build" / "raw" / "ne_110m_countries.geojson"
-TARGET = ROOT / "docs" / "assets" / "data" / "world_outline.geo.json"
+TARGET = ROOT / "public" / "assets" / "data" / "world_outline.geo.json"
 PRECISION = 2
 
 

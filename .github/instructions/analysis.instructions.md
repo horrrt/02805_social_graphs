@@ -19,8 +19,8 @@ applyTo: "analysis/**"
 - Repeat a headline on a second year or sample when the data has one. Compare two statistics only when both
   cover the same items.
 - Check what a file covers before you name it (its dates, its reporting units), report the share of rows a
-  fuzzy join matched, and write each trap into the week's notes (`WEEK04.md` keeps a list).
-- Write every number the page quotes to the script's JSON in `analysis/` or `docs/`. The page reads it
+  fuzzy join matched, and write each trap into the week's notes (`project/WEEK04.md` keeps a list).
+- Write every number the page quotes to the script's JSON in `analysis/` or `public/`. The page reads it
   from there, and a test in `tests/` builds each sentence from that JSON (`tests/week04-prose.test.mjs`).
   Pin the names and the words a sentence attaches to a number too, such as "about twice".
 - When a page script reads a new field, add it to that week's model (`analysis/week01_schemas.py` to

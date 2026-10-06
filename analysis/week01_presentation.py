@@ -83,7 +83,7 @@ def build():
         for row in facts[key]:
             assert degree(row["id"]) == row["k"]
 
-    output = ROOT / "docs/assets/data/marvel_story.json"
+    output = ROOT / "public/assets/data/marvel_story.json"
     check(output, payload)
     output.write_text(json.dumps(payload, separators=(",", ":")) + "\n")
     print(f"Verified {len(graph)} characters, {graph.number_of_edges()} links, components 277 / 9 / 17 singletons.")

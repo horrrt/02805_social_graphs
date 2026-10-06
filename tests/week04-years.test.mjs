@@ -1,4 +1,4 @@
-// Pins docs/weeks/week04/data/years.json (the "Five years of filings" box) to
+// Pins public/weeks/week04/data/years.json (the "Five years of filings" box) to
 // the analysis JSON it copies from, so a rerun that moves a number fails
 // here instead of silently going stale on the page.
 import test from "node:test";
@@ -10,7 +10,7 @@ import { fileURLToPath } from "node:url";
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const json = (rel) => JSON.parse(readFileSync(join(ROOT, rel), "utf8"));
 
-const years = json("docs/weeks/week04/data/years.json");
+const years = json("public/weeks/week04/data/years.json");
 const staffing = json("analysis/week04_staffing.json");
 const shift = json("analysis/week04_shift.json");
 const countries = json("analysis/week04_countries.json");
@@ -96,7 +96,7 @@ test("the lottery draws and funnels match week04_countries.json and week04_lotte
 
 test("the Five years card's answer is the sentence years.json supports", () => {
   // week04-years.js writes the answer at run time; run its own lines on years.json.
-  const src = readFileSync(join(ROOT, "docs/assets/js/week04-years.js"), "utf8");
+  const src = readFileSync(join(ROOT, "src/scripts/week04-years.js"), "utf8");
   const start = src.indexOf("const oj = data.oct_jun.totals;");
   const end = src.indexOf('"against the same months a year earlier.";', start);
   assert.ok(start >= 0 && end > start, "week04-years.js should build the answer from data.oct_jun.totals");

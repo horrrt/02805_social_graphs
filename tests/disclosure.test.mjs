@@ -1,6 +1,6 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { revealHashTarget } from "../docs/assets/js/cabinet.js";
+import { revealHashTarget } from "../src/scripts/cabinet.js";
 
 test("a legacy fragment opens every containing disclosure and scrolls to the target", () => {
   const outer = { tagName: "DETAILS", open: false, parentElement: null };

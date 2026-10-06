@@ -40,8 +40,8 @@ Coverage is reported as a share of certified FY2024 and FY2025 filings, the
 years section 2 uses. Codes O*NET does not list, and listed codes without any
 rated profile, are named with their filings.
 
-Deep-dive box (docs/weeks/week04/data/skills.json)
-- Reuses section 2's own network, docs/weeks/week04/data/jobs.json: its 60
+Deep-dive box (public/weeks/week04/data/skills.json)
+- Reuses section 2's own network, public/weeks/week04/data/jobs.json: its 60
   shown occupations, their direct co-hiring ties (edges) and their Louvain
   clusters, already checked there against degree-preserving rewirings.
 - Q1: among those 60 occupations, do pairs that more companies hire for
@@ -67,7 +67,7 @@ Outputs
 - analysis/week04_skills.json: coverage, the mixed codes and their weights,
   the similarity spread, the smoke test and each large H-1B occupation's
   nearest neighbours.
-- docs/weeks/week04/data/skills.json: the deep-dive box's two questions.
+- public/weeks/week04/data/skills.json: the deep-dive box's two questions.
 """
 
 import json
@@ -88,8 +88,8 @@ ONET_DIR = RAW / "onet"
 ARCHIVE = ONET_DIR / "db_25_0_text.zip"
 PAIRS = BUILD / "skills_similarity.csv.gz"
 OUT = ROOT / "analysis" / "week04_skills.json"
-JOBS_PAGE = ROOT / "docs" / "weeks" / "week04" / "data" / "jobs.json"
-PAGE = ROOT / "docs" / "weeks" / "week04" / "data" / "skills.json"
+JOBS_PAGE = ROOT / "public" / "weeks" / "week04" / "data" / "jobs.json"
+PAGE = ROOT / "public" / "weeks" / "week04" / "data" / "skills.json"
 YEARS = (2024, 2025)
 DOMAINS = ["essential_skills", "transferable_skills", "knowledge", "work_activities"]
 ARCHIVE_DOMAINS = ["Skills", "Knowledge", "Work Activities"]
@@ -237,7 +237,7 @@ def group_stats(pairs, sim, titles, extreme=3):
 
 
 def cohiring_view(sim, titles):
-    """Section 2's own 60-occupation network (docs/weeks/week04/data/jobs.json):
+    """Section 2's own 60-occupation network (public/weeks/week04/data/jobs.json):
     do occupations with a direct co-hiring tie need more alike skills than a
     random pair from the same 60, and does that hold at the cluster level too?
     Every comparison stays inside this 60-occupation population, so a large,
@@ -263,7 +263,7 @@ def cohiring_view(sim, titles):
                      if (a, b) not in edge_set and cluster_of[a] != cluster_of[b]]
 
     return {
-        "source": {"page": "docs/weeks/week04/data/jobs.json", "year": jobs["meta"]["year"]},
+        "source": {"page": "public/weeks/week04/data/jobs.json", "year": jobs["meta"]["year"]},
         "occupations": len(nodes), "occupations_without_a_profile": len(dropped),
         "direct_ties": group_stats(edge_pairs, sim, titles),
         "same_cluster_other_pairs": group_stats(same_cluster, sim, titles),

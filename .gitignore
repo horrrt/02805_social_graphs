@@ -13,3 +13,15 @@ output/
 build/
 .playwright-mcp/
 .env
+
+
+# Next.js
+node_modules/
+.next/
+out/
+next-env.d.ts
+*.tsbuildinfo
+
+# Parity tool output (scripts/parity)
+scripts/parity/reports/
+parity-report*.json

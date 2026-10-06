@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>3 · A Marvel search engine in 20 lines</title>
+<script src="./support.js"></script>
+<link rel="stylesheet" href="/_blob/bdbcfe09e54e57045ac6bae8752c2a81">
+<link rel="stylesheet" href="/_blob/4ffd6c535951a1e34a0c3882e96ae51c">
+<link rel="stylesheet" href="/_blob/5b0af5961bb5a81a4a5c5ab494e11fb9">
+</head>
+<body>
+<x-dc>
+<helmet>
+<style>
+@font-face{font-family:"Condensed";src:url("/_blob/9ad036b9f76606ea91d82e15ebec8da3") format("truetype");font-weight:800;font-style:normal}
+body{margin:0;background:#eef3f9}
+</style>
+</helmet>
+<div class="corridor" style="width: 1440px; height: 2155px; overflow: hidden; background: #eef3f9"><div class="topbar">
+      <div class="shell">
+        <a class="brand" href="../../">LOG–LOG <b>LEGENDS</b></a>
+        <a class="site-link" href="../../#weeks">All posts</a>
+        <nav class="topnav" aria-label="Sections of this post">
+          <a href="#opening">Opening</a>
+          <a href="#relations">1</a>
+          <a href="#copying">2</a>
+          <a href="#search">3</a>
+          <a href="#autocomplete">4</a>
+          <a href="#heaps">5</a>
+          <a href="#fame">6</a>
+          <a href="#weird">7</a>
+          <a href="#closing">Closing</a>
+        </nav>
+      </div>
+    </div><main id="main"><div class="shell"><section class="step" data-owner="Àngela" id="search">
+          <header class="w4-opener">
+            <span aria-hidden="true" class="w4-opener-num">3</span>
+            <div>
+              <h2>A Marvel search engine in 20 lines</h2>
+              <p>Counting shared words beats chance, but it loves short pages: a 255-word page beats Storm's 9,831 words for "weather-controlling mutant from Kenya".</p>
+            </div>
+          </header>
+          <div class="card w4-card w5-card">
+            <header class="w4-q" id="search-asked">
+              <span class="w4-num">3A</span>
+              <div>
+                <h2>Can a Bag-of-Words search find the right Marvel page from a short description?</h2>
+                <p class="w4-answer">Rarely first: the right page comes first for 1 of 11 queries and in the top five for 6. Short pages win most misses.</p>
+              </div>
+            </header>
+            <div class="w4-two">
+              <div id="search-did">
+                <p class="sub">We turned every page and every query into a <span class="w4-term"><button type="button" aria-describedby="w5-term-search-bow">Bag of Words</button><span class="w4-pop" id="w5-term-search-bow" role="tooltip">A page or a query as a list of word counts, with the word order thrown away.</span></span>: a count of each word, with the order thrown away. We wrote 12 queries, 11 with a target page, ranked all 303 pages by <span class="w4-term"><button type="button" aria-describedby="w5-term-search-cosine">cosine similarity</button><span class="w4-pop" id="w5-term-search-cosine" role="tooltip">How close two count vectors point: their dot product divided by both their lengths, from 0 (no shared word) to 1 (the same proportions).</span></span> to each, and looked where the target came: once with every word, once with <span class="w4-term"><button type="button" aria-describedby="w5-term-search-stop">stopwords</button><span class="w4-pop" id="w5-term-search-stop" role="tooltip">Very common words such as the, of and with, dropped before counting.</span></span> removed, spaCy's list of 306 words.</p>
+              </div>
+              <div id="search-surprise">
+                <div class="notice"><span class="ico">💡</span><span><b>What to notice</b> Even one first place beats chance (p = 0.036 against the 1 in 303 of a random ranking). Removing stopwords lifts the hits to 2 first and 10 in the top five, so stopwords cost real hits. Page length costs most of the rest: without stopwords, 7 of the 9 misses still lose to a page at most a third as long as the target, because cosine divides by the length of the count vector.</span></div>
+              </div>
+            </div>
+            <div class="w5-fig" id="search-figure">
+              <div id="search-stats" class="w5-statrow"><div class="w5-stat"><b>1/11</b><span>right page first, raw counts</span></div><div class="w5-stat"><b>6/11</b><span>in the top 5, raw counts</span></div><div class="w5-stat"><b>2/11</b><span>first, stopwords removed</span></div><div class="w5-stat"><b>10/11</b><span>in the top 5, stopwords removed</span></div></div>
+              <div class="w5-two">
+                <div class="w5-panel">
+                  <h4>Try the search (stopwords removed)</h4>
+                  <div aria-label="Example queries" class="w5-chips" id="search-chips" role="group"><button class="w5-chip" type="button" data-id="thunder" aria-pressed="false">Norse god of thunder</button><button class="w5-chip" type="button" data-id="bill" aria-pressed="false">alien champion who wields Mjolnir</button><button class="w5-chip" type="button" data-id="wolverine" aria-pressed="false">Canadian mutant with adamantium claws</button><button class="w5-chip" type="button" data-id="spider" aria-pressed="false">bitten by a radioactive spider</button><button class="w5-chip" type="button" data-id="strange" aria-pressed="false">sorcerer supreme of Earth</button><button class="w5-chip" type="button" data-id="deadpool" aria-pressed="false">mercenary who breaks the fourth wall</button></div>
+                  <div class="w5-search-box">
+                    <label class="visually-hidden" for="search-input">Query</label>
+                    <input autocomplete="off" id="search-input" placeholder="king of Wakanda" type="search">
+                    <button id="search-run" type="button">Rank pages</button>
+                  </div>
+                  <ol aria-live="polite" class="w5-rank" id="search-live-ranks"><li><span class="w5-pos">1</span><span class="w5-name">Redneck (comics)</span><span class="w5-score">0.152</span></li><li><span class="w5-pos">2</span><span class="w5-name">Rusty Collins</span><span class="w5-score">0.115</span></li><li><span class="w5-pos">3</span><span class="w5-name">Fabio Medina</span><span class="w5-score">0.102</span></li><li><span class="w5-pos">4</span><span class="w5-name">Powerhouse (Marvel Comics)</span><span class="w5-score">0.077</span></li><li class="w5-hit"><span class="w5-pos">5</span><span class="w5-name">Storm (Marvel Comics) (target)</span><span class="w5-score">0.061</span></li><li><span class="w5-pos">6</span><span class="w5-name">Empath (character)</span><span class="w5-score">0.060</span></li><li><span class="w5-pos">7</span><span class="w5-name">Rockslide (character)</span><span class="w5-score">0.057</span></li><li><span class="w5-pos">8</span><span class="w5-name">Sabra (character)</span><span class="w5-score">0.054</span></li></ol>
+                  <p class="w5-caption">The eight pages with the highest cosine for the query; (target) marks the page we meant.</p>
+                </div>
+                <div class="w5-panel">
+                  <h4>The 12 queries</h4>
+                  <div class="w5-table-wrap">
+                    <table class="w5-table">
+                      <thead>
+                        <tr><th>Query</th><th>Target</th><th>Raw rank</th><th>No stopwords</th><th>Raw top hit</th></tr>
+                      </thead>
+                      <tbody id="search-tbody"><tr data-id="thunder" aria-selected="false"><td><button class="linkish" type="button">Norse god of thunder</button></td><td>none in the snapshot</td><td class="w5-fail">none</td><td>none</td><td>Starr the Slayer</td></tr><tr data-id="bill" aria-selected="false"><td><button class="linkish" type="button">alien champion who wields Mjolnir</button></td><td>Beta Ray Bill</td><td class="w5-fail">#5</td><td>#2</td><td>Dargo Ktor</td></tr><tr data-id="wolverine" aria-selected="false"><td><button class="linkish" type="button">Canadian mutant with adamantium claws</button></td><td>Wolverine (character)</td><td class="w5-fail">#5</td><td>#2</td><td>Outlaw (Marvel Comics)</td></tr><tr data-id="spider" aria-selected="false"><td><button class="linkish" type="button">bitten by a radioactive spider</button></td><td>Spider-Man</td><td class="w5-fail">#8</td><td>#5</td><td>Steel Spider</td></tr><tr data-id="strange" aria-selected="false"><td><button class="linkish" type="button">sorcerer supreme of Earth</button></td><td>Doctor Strange</td><td class="w5-fail">#8</td><td>#5</td><td>Hyperion (character)</td></tr><tr data-id="deadpool" aria-selected="false"><td><button class="linkish" type="button">mercenary who breaks the fourth wall</button></td><td>Deadpool</td><td class="w5-fail">#53</td><td>#7</td><td>Scarlet Scarab</td></tr><tr data-id="blackpanther" aria-selected="false"><td><button class="linkish" type="button">king of Wakanda</button></td><td>Black Panther (character)</td><td class="w5-fail">#4</td><td>#2</td><td>Starr the Slayer</td></tr><tr data-id="hulk" aria-selected="false"><td><button class="linkish" type="button">scientist who turns into a green giant when angry</button></td><td>Hulk</td><td class="w5-fail">#149</td><td>#5</td><td>Phil Grayfield</td></tr><tr data-id="storm" aria-selected="true"><td><button class="linkish" type="button">weather-controlling mutant from Kenya</button></td><td>Storm (Marvel Comics)</td><td class="w5-fail">#27</td><td>#5</td><td>Redneck (comics)</td></tr><tr data-id="witch" aria-selected="false"><td><button class="linkish" type="button">chaos magic reality warping mutant twin</button></td><td>Scarlet Witch</td><td class="w5-fail">#2</td><td>#1</td><td>Redneck (comics)</td></tr><tr data-id="venom" aria-selected="false"><td><button class="linkish" type="button">alien symbiote that bonds with Eddie Brock</button></td><td>Venom (character)</td><td class="w5-fail">#3</td><td>#2</td><td>Eddie Brock</td></tr><tr data-id="moon" aria-selected="false"><td><button class="linkish" type="button">mercenary who becomes a moon-themed vigilante</button></td><td>Moon Knight</td><td class="w5-ok">#1</td><td>#1</td><td>Moon Knight</td></tr></tbody>
+                    </table>
+                  </div>
+                  <div aria-live="polite" class="w5-detail" id="search-detail"><p>The target sits at #27. Storm controls the weather and grew up in Kenya.</p><p>Top raw hit: Redneck (comics), 255 words, shares mutant, from (stopword).</p><p>Storm (Marvel Comics) shares from (stopword), mutant, weather, kenya.</p><p>Redneck (comics) (255 words) beats Storm (Marvel Comics) (9,831 words): cosine divides by the vector's length, so a short page with the same words scores higher.</p><p class="w5-caption">A random ranking puts the target first 0.3% of the time.</p></div>
+                  <p class="w5-caption">Click a query to see the words it shares with the winning page and with its target.</p>
+                </div>
+              </div>
+            </div>
+            <div class="rx-drawers rx-foot">
+              <details class="rx-drawer"><summary>Method</summary><div class="rx-drawer-body">
+                <p>A word is a run of letters and digits in any alphabet, lowercased, and a hyphen splits words, so Spider-Man counts as spider and man. The 303 pages and their 28,062 different words form a document-term matrix that is 97.2% empty. The most common word, the, makes up 6.1% of all 740,340 words: a handful of words dominate every page, as Zipf's law says.</p>
+                <p>The brief's own example, "Norse god of thunder", has no target: the snapshot holds no page for Thor, so it stays out of the hit rates.</p>
+                <p>Pages with equal cosine rank in node order, in the script and in the search box. A random ranking puts the target first with probability 1 in 303 and in the top five with 5 in 303; a binomial test gives each hit count its p-value.</p>
+                <p>With raw counts, 8 of the 10 misses are won by a page shorter than the median page of 1,258 words.</p>
+                <p>A miss is labelled from the data, for each model: a short-page win when the winning page has at most a third of the target's words, a missing word when the target shares no content word with the query, and otherwise a win by a page that is not short. The search box runs the stopword-free model on the same vocabulary as the table.</p>
+                <p id="search-limit">We chose the 12 queries and their targets ourselves, so the hit rate says how the search does on our questions, and the single first-place hit, Moon Knight, carries the raw headline.</p>
+              </div></details>
+              <details class="rx-drawer"><summary>What we read in the pages</summary><div class="rx-drawer-body" id="search-checked">
+                <p>Redneck's page wins "weather-controlling mutant from Kenya" while sharing one word with the query besides stopwords, mutant, in its first sentence:</p>
+                <div id="search-passage"><blockquote class="kit-passage"><p>Vincent Stewart, codenamed Redneck and later Skybolt is a fictional <mark>mutant</mark> character appearing in American comic books published by Marvel Comics.</p><cite><a href="https://en.wikipedia.org/wiki/Redneck_(comics)">Redneck (comics)</a></cite></blockquote></div>
+              </div></details>
+            </div>
+          </div>
+        </section></div></main></div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview": {"width": 1440, "height": 2155}}'>
+class Component extends DCLogic {
+renderVals() { return {}; }
+}
+</script>
+</body>
+</html>

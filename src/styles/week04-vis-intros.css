@@ -1,0 +1,96 @@
+/* Figures for the section intros that had no chart, and the closing's
+   visual recap. Reuses the redesign's card, w4-two and w4-figure rules in
+   post.css; adds the two tokens the ego diagram needs and the layout for
+   a stack of labelled mini strips. */
+
+.corridor {
+  --w4-placed: #f2820c;
+  --w4-direct: #1f8fd6;
+}
+
+.corridor .w4-ego text {
+  font-variant-numeric: tabular-nums;
+}
+
+.corridor .w4-mini-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.corridor .w4-mini-row {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.corridor .w4-mini-label {
+  color: var(--ink);
+  font-size: var(--fs-small);
+  font-weight: 600;
+  margin: 0;
+}
+
+.corridor .w4-mini-row small {
+  color: var(--ink-mute);
+  font-size: var(--fs-caption);
+}
+
+/* section 3's word list: like .w4-anatomy, but no tag chip, so two columns */
+.corridor .w4-anatomy--pair dl div {
+  grid-template-columns: 110px minmax(0, 1fr);
+}
+
+/* ---- the closing: what surprised us, one statement and one chart each */
+.corridor .w4-surprises {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.corridor .w4-surprises h3 {
+  color: var(--ink);
+  font-size: var(--fs-body);
+  margin: 0;
+}
+
+.corridor .w4-surprise {
+  border: 1px solid var(--line-soft);
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 14px 16px;
+}
+
+.corridor .w4-surprise p {
+  margin: 0;
+}
+
+.corridor .w4-surprise-before {
+  color: var(--ink-soft);
+  font-size: var(--fs-small);
+  line-height: 1.5;
+}
+
+.corridor .w4-surprise-after {
+  color: var(--ink);
+  font-size: var(--fs-body);
+  font-weight: 600;
+  line-height: 1.45;
+}
+
+.corridor .w4-surprise svg {
+  display: block;
+  height: auto;
+  max-width: 100%;
+}
+
+#closing .w4-card > .notice {
+  margin-top: 18px;
+}
+
+/* Index links land below the sticky top bar, not under it. */
+.corridor .step [id] {
+  scroll-margin-top: 72px;
+}

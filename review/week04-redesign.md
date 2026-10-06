@@ -71,3 +71,18 @@ states.
 The redesign is built into `docs/weeks/week04/index.html`. The canvas's metro, backbone and client explorers map
 onto features the page already had: the hero map, the α slider in the deep dive and the client figure. The page
 adds boxes the canvas does not have: skills behind the jobs (O*NET) and PageRank, step by step.
+
+## Week 5, network views and the post template (30 September 2026)
+
+Canvas version 138 adds three pages, each captured from the live site after its scripts drew every chart:
+
+| Page | Boards |
+| --- | --- |
+| Week 5: the page as built | W5Top (hero and findings), W5Opening, W5Closing, and one board per section: W5Relations, W5Copying, W5Search, W5Autocomplete, W5Heaps, W5Fame, W5Weird |
+| Components: network views | GraphKit: `networkView()` in its six styles on the dark surface, two on the light card |
+| Template: start a new week here | TplTop, TplOpening, TplFirst (standard card), TplSecond (wide card), TplClosing |
+
+The boards are copies of `docs/weeks/week05/`, `docs/styleguide/kit.html` and `docs/weeks/_template/`; the site
+stays the source of truth. `boards/canvas.json` is the canvas index at version 138, so it also lists boards
+added on the canvas since the 27 September copy that this folder does not hold. `generator/capture/` holds
+the tools that made the new boards and says how to redo them.

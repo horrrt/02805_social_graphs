@@ -1,0 +1,193 @@
+/* The section rail every post draws with SectionRail (nav.w4-rail). It draws
+   its own panel, so it keeps the corridor's light colours on the older pages,
+   whose tokens mean other things (Week 1's --ink is white), and follows the
+   page's tokens on corridor pages, Week 3's style variants included. It sits
+   66px left of a centred column of --rail-column (1180px unless the page
+   passes its own). */
+
+.w4-rail {
+  --rail-accent: #14618f;
+  --rail-inset: #f7fafd;
+  --rail-ring: #9fb4cf;
+  --rail-dot: #c9d6e6;
+  --rail-card: #ffffff;
+  --rail-ink: #0f2340;
+  --rail-ink-soft: #46618a;
+  --rail-line: #dce5f0;
+}
+
+.corridor .w4-rail {
+  --rail-accent: var(--w4-accent, #14618f);
+  --rail-inset: var(--w4-inset, #f7fafd);
+  --rail-ring: var(--w4-rail-ring, #9fb4cf);
+  --rail-dot: var(--w4-rail-dot, #c9d6e6);
+  --rail-card: var(--card);
+  --rail-ink: var(--ink);
+  --rail-ink-soft: var(--ink-soft);
+  --rail-line: var(--line);
+}
+
+/* ---- the section rail: dots down the left margin (board RailBehaviour).
+   One hollow dot per section; the open section grows into an accent dot with
+   a halo and shows its questions as small dots, the current one in ink.
+   Hovering or focusing the rail shows every name as a white chip; the item
+   under the pointer or with focus is dark. The dots hold no glyph, so any
+   text left in a link is hidden and the label sets its own size and colour. */
+
+.w4-rail {
+  display: none;
+}
+
+@media (min-width: 1240px) {
+  .w4-rail {
+    display: block;
+    left: max(8px, calc(50vw - var(--rail-column, 1180px) / 2 - 66px));
+    position: fixed;
+    top: 96px;
+    width: 44px;
+    z-index: 20;
+  }
+}
+
+.w4-rail ol {
+  align-items: center;
+  background: linear-gradient(var(--rail-line), var(--rail-line)) center / 2px 100% no-repeat;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  list-style: none;
+  margin: 0;
+  padding: 6px 0;
+}
+
+.w4-rail ol ol {
+  background: none;
+  display: none;
+  padding: 14px 0 4px;
+}
+
+.w4-rail li.is-current > ol {
+  display: flex;
+}
+
+.w4-rail li {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+
+.w4-rail a {
+  background: var(--rail-card);
+  border: 2px solid var(--rail-ring);
+  border-radius: 999px;
+  box-sizing: border-box;
+  color: transparent;
+  display: block;
+  font-size: 0;
+  height: 12px;
+  position: relative;
+  text-decoration: none;
+  width: 12px;
+}
+
+.w4-rail a:hover {
+  border-color: var(--rail-accent);
+}
+
+.w4-rail a:focus-visible {
+  outline: 2px solid var(--rail-accent);
+  outline-offset: 3px;
+}
+
+.w4-rail li.is-current > a {
+  background: var(--rail-accent);
+  border-color: var(--rail-accent);
+  box-shadow: 0 0 0 4px rgba(20, 97, 143, 0.18);
+  height: 18px;
+  width: 18px;
+}
+
+.w4-rail ol ol a {
+  background: var(--rail-dot);
+  border: 0;
+  height: 8px;
+  width: 8px;
+}
+
+.w4-rail ol ol li.is-current > a {
+  background: var(--rail-ink);
+  box-shadow: 0 0 0 3px rgba(15, 35, 64, 0.14);
+  height: 8px;
+  width: 8px;
+}
+
+/* On hover or focus the rail opens as one contents panel: a card behind the
+   dots, the labels as plain rows beside them. week04-frame.js sets
+   --w4-rail-panel to the widest visible label, so the card fits the names. */
+.w4-rail::before {
+  background: var(--rail-card);
+  border-radius: 14px;
+  bottom: -14px;
+  box-shadow: 0 1px 2px rgba(15, 35, 64, 0.08), 0 12px 32px rgba(15, 35, 64, 0.14);
+  content: "";
+  display: none;
+  left: -12px;
+  position: absolute;
+  top: -14px;
+  width: var(--w4-rail-panel, 320px);
+  z-index: -1;
+}
+
+.w4-rail:hover::before,
+.w4-rail:focus-within::before {
+  display: block;
+}
+
+.w4-rail-label {
+  border-radius: 6px;
+  color: var(--rail-ink);
+  display: none;
+  font-size: var(--fs-small);
+  font-weight: 600;
+  /* Offsets from each dot's own edge, so every name starts at x = 40px on
+     the rail and every question at x = 52px, whatever the dot's size. */
+  left: 24px;
+  line-height: 1.35;
+  padding: 3px 8px;
+  position: absolute;
+  text-align: left;
+  top: 50%;
+  transform: translateY(-50%);
+  white-space: nowrap;
+}
+
+.w4-rail ol ol .w4-rail-label {
+  color: var(--rail-ink-soft);
+  font-size: var(--fs-small);
+  font-weight: 500;
+  left: 34px;
+}
+
+.w4-rail li.is-current > a > .w4-rail-label {
+  color: var(--rail-accent);
+  font-weight: 700;
+  left: 27px;
+}
+
+.w4-rail ol ol li.is-current > a > .w4-rail-label {
+  color: var(--rail-ink);
+  font-weight: 700;
+  left: 34px;
+}
+
+.w4-rail:hover .w4-rail-label,
+.w4-rail:focus-within .w4-rail-label {
+  display: block;
+}
+
+.w4-rail a:hover > .w4-rail-label,
+.w4-rail a:focus-visible > .w4-rail-label {
+  background: var(--rail-inset);
+  color: var(--rail-accent);
+}

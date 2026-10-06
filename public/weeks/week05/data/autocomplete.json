@@ -1,0 +1,846 @@
+{
+  "generated_by": "analysis/week05_autocomplete.py",
+  "owner": "Àngela",
+  "seed": 2805,
+  "tokenisation": {
+    "sentences": "week05_text.sentences(): paragraphs at line breaks, then spaCy's rule-based sentencizer",
+    "dropped": "heading lines (under 45 characters, no full stop, six words or fewer) and every sentence under External links, Further reading, Notes, References, See also",
+    "words": "runs of letters in any alphabet, an inner apostrophe or hyphen kept, lowercased, a possessive 's removed; digits and punctuation dropped",
+    "names": "every node's title without disambiguation and each real name in its description, matched case-sensitively as whole words, replaced by [name] in the masked models",
+    "model": "trigram: P(w3 | w1, w2) from counts inside one community, sentences padded with <s> <s> and </s>; no smoothing and no backoff, since sampling only reaches contexts seen in training",
+    "generation": "5 sentences sampled word by word from <s> <s> until </s>; a sentence that reaches 40 words is thrown away and redrawn",
+    "template": "NAME is a character appearing in American comic books published by Marvel Comics. (hand-written first sentence)",
+    "sentences_per_fake": 5,
+    "cap": 40,
+    "min_community_size": 8
+  },
+  "communities_used": [
+    {
+      "community_index": 0,
+      "label": "Hulk",
+      "size": 40,
+      "where": "giant",
+      "hubs": [
+        "Hulk",
+        "She-Hulk",
+        "Hercules (Marvel Comics)"
+      ],
+      "n_sentences": 3975,
+      "n_tokens": 81760,
+      "n_contexts": 42267,
+      "one_continuation": 0.8269,
+      "bigram_one_continuation": 0.5212
+    },
+    {
+      "community_index": 1,
+      "label": "Wolverine",
+      "size": 40,
+      "where": "giant",
+      "hubs": [
+        "Wolverine (character)",
+        "Jean Grey",
+        "Phoenix (Guardians of the Galaxy)"
+      ],
+      "n_sentences": 5975,
+      "n_tokens": 124850,
+      "n_contexts": 58947,
+      "one_continuation": 0.8086,
+      "bigram_one_continuation": 0.4994
+    },
+    {
+      "community_index": 2,
+      "label": "Spider-Man",
+      "size": 38,
+      "where": "giant",
+      "hubs": [
+        "Spider-Man",
+        "Venom (character)",
+        "Spider-Woman (Gwen Stacy)"
+      ],
+      "n_sentences": 4729,
+      "n_tokens": 101426,
+      "n_contexts": 49519,
+      "one_continuation": 0.8209,
+      "bigram_one_continuation": 0.5197
+    },
+    {
+      "community_index": 3,
+      "label": "Scarlet Witch",
+      "size": 38,
+      "where": "giant",
+      "hubs": [
+        "Scarlet Witch",
+        "Human Torch (android)",
+        "U.S. Agent"
+      ],
+      "n_sentences": 3894,
+      "n_tokens": 85387,
+      "n_contexts": 43184,
+      "one_continuation": 0.8185,
+      "bigram_one_continuation": 0.5019
+    },
+    {
+      "community_index": 4,
+      "label": "Quasar",
+      "size": 35,
+      "where": "giant",
+      "hubs": [
+        "Quasar (character)",
+        "Nova (Richard Rider)",
+        "Captain Marvel (Marvel Comics)"
+      ],
+      "n_sentences": 3671,
+      "n_tokens": 71181,
+      "n_contexts": 37102,
+      "one_continuation": 0.8287,
+      "bigram_one_continuation": 0.5314
+    },
+    {
+      "community_index": 5,
+      "label": "Doctor Strange",
+      "size": 34,
+      "where": "giant",
+      "hubs": [
+        "Doctor Strange",
+        "Deadpool",
+        "Moon Knight"
+      ],
+      "n_sentences": 4652,
+      "n_tokens": 95297,
+      "n_contexts": 49003,
+      "one_continuation": 0.821,
+      "bigram_one_continuation": 0.5071
+    },
+    {
+      "community_index": 6,
+      "label": "Iron Fist",
+      "size": 30,
+      "where": "giant",
+      "hubs": [
+        "Iron Fist (character)",
+        "Black Panther (character)",
+        "Luke Cage"
+      ],
+      "n_sentences": 3603,
+      "n_tokens": 72425,
+      "n_contexts": 39335,
+      "one_continuation": 0.8349,
+      "bigram_one_continuation": 0.5329
+    },
+    {
+      "community_index": 7,
+      "label": "Black Widow (Natasha Romanova)",
+      "size": 22,
+      "where": "giant",
+      "hubs": [
+        "Black Widow (Natasha Romanova)",
+        "Mockingbird (Marvel Comics)",
+        "Deathlok"
+      ],
+      "n_sentences": 1925,
+      "n_tokens": 38568,
+      "n_contexts": 22166,
+      "one_continuation": 0.8471,
+      "bigram_one_continuation": 0.5777
+    },
+    {
+      "community_index": 8,
+      "label": "Radian (Morituri)",
+      "size": 9,
+      "where": "component",
+      "hubs": [
+        "Radian (Morituri)",
+        "Scaredycat",
+        "Scatterbrain (Morituri)"
+      ],
+      "n_sentences": 336,
+      "n_tokens": 6929,
+      "n_contexts": 4170,
+      "one_continuation": 0.8552,
+      "bigram_one_continuation": 0.6292
+    }
+  ],
+  "left_out": {
+    "groups": 17,
+    "pages": 17,
+    "largest": 1
+  },
+  "n_fakes": 9,
+  "chance_rate": 0.1111,
+  "quiz_variant": "masked",
+  "guessing": {
+    "status": "awaiting_other_groups",
+    "n_groups": 0,
+    "n_responses": 0,
+    "n_correct": 0,
+    "hit_rate": null,
+    "chance_rate": 0.1111,
+    "p_value": null,
+    "collected_on": null,
+    "channel": "the week 5 Teams channel"
+  },
+  "options": [
+    {
+      "community_index": 0,
+      "label": "Hulk",
+      "hubs": [
+        "Hulk",
+        "She-Hulk",
+        "Hercules (Marvel Comics)"
+      ],
+      "size": 40
+    },
+    {
+      "community_index": 1,
+      "label": "Wolverine",
+      "hubs": [
+        "Wolverine (character)",
+        "Jean Grey",
+        "Phoenix (Guardians of the Galaxy)"
+      ],
+      "size": 40
+    },
+    {
+      "community_index": 2,
+      "label": "Spider-Man",
+      "hubs": [
+        "Spider-Man",
+        "Venom (character)",
+        "Spider-Woman (Gwen Stacy)"
+      ],
+      "size": 38
+    },
+    {
+      "community_index": 3,
+      "label": "Scarlet Witch",
+      "hubs": [
+        "Scarlet Witch",
+        "Human Torch (android)",
+        "U.S. Agent"
+      ],
+      "size": 38
+    },
+    {
+      "community_index": 4,
+      "label": "Quasar",
+      "hubs": [
+        "Quasar (character)",
+        "Nova (Richard Rider)",
+        "Captain Marvel (Marvel Comics)"
+      ],
+      "size": 35
+    },
+    {
+      "community_index": 5,
+      "label": "Doctor Strange",
+      "hubs": [
+        "Doctor Strange",
+        "Deadpool",
+        "Moon Knight"
+      ],
+      "size": 34
+    },
+    {
+      "community_index": 6,
+      "label": "Iron Fist",
+      "hubs": [
+        "Iron Fist (character)",
+        "Black Panther (character)",
+        "Luke Cage"
+      ],
+      "size": 30
+    },
+    {
+      "community_index": 7,
+      "label": "Black Widow (Natasha Romanova)",
+      "hubs": [
+        "Black Widow (Natasha Romanova)",
+        "Mockingbird (Marvel Comics)",
+        "Deathlok"
+      ],
+      "size": 22
+    },
+    {
+      "community_index": 8,
+      "label": "Radian (Morituri)",
+      "hubs": [
+        "Radian (Morituri)",
+        "Scaredycat",
+        "Scatterbrain (Morituri)"
+      ],
+      "size": 9
+    }
+  ],
+  "fakes": [
+    {
+      "id": "fake-1",
+      "character": "Cobalt Warden",
+      "community_index": 1,
+      "community_label": "Wolverine",
+      "hubs": [
+        "Wolverine (character)",
+        "Jean Grey",
+        "Phoenix (Guardians of the Galaxy)"
+      ],
+      "size": 40,
+      "text": "Cobalt Warden is a character appearing in American comic books published by Marvel Comics. He intended [name] to fight [name] is of the most powerful members of the team for the remainder of the sword to drain her of her causes her village to burn the world for mutants with unlimited potential. This version is a character appearing in american comic books a superpowered black woman. The quiet council krakoa provisional government. [name] defeats emma and her parents causing a car crash with her daughter claire from her injuries blindfold predicts that [name] was paired with sabretooth in team x. [name] first appeared in the face similar to the service of canada avengers list.",
+      "text_unmasked": "Cobalt Warden is a character appearing in American comic books published by Marvel Comics. In th-century japan o-chiyo braddock is a strontian rebellion the shi'ar government because of brainwashing and false memory implants. At some point during the revolution revamp. He gains a power level and transmute elements like turning wood to gold or stone to crystal on a four-issue eponymous limited series. Wolverine first animated appearance was dubbed a dark schwarzenegger type and derived from him without a host. Doom switches bodies with franklin for a brain.",
+      "typical_phrases": [
+        "jean is",
+        "madelyne pryor",
+        "white queen",
+        "betsy and",
+        "the hellions",
+        "new x-men"
+      ],
+      "longest_run": {
+        "length": 8,
+        "sentence_length": 14,
+        "run": "is a character appearing in american comic books",
+        "page": "Betsy_Braddock",
+        "sentence": "Elizabeth \"Betsy\" Braddock is a character appearing in American comic books published by Marvel Comics, commonly in association with the X-Men.",
+        "highlight": "is a character appearing in American comic books",
+        "pages_with_run": 7
+      },
+      "longest_run_unmasked": {
+        "length": 15,
+        "sentence_length": 23,
+        "run": "level and transmute elements like turning wood to gold or stone to crystal on a",
+        "page": "Phoenix_Force",
+        "sentence": "It can manipulate matter on a sub-atomic level and transmute elements, like turning wood to gold or stone to crystal; on a smaller scale, it can alter the molecular fabrics.",
+        "highlight": "level and transmute elements, like turning wood to gold or stone to crystal; on a",
+        "pages_with_run": 1
+      },
+      "forced_steps": 32,
+      "steps": 100,
+      "redrawn": 0,
+      "name_like": [
+        "american",
+        "avengers",
+        "blindfold",
+        "canada",
+        "claire",
+        "council",
+        "emma",
+        "krakoa",
+        "sabretooth"
+      ],
+      "own_names": [],
+      "own_names_unmasked": [
+        "Wolverine"
+      ],
+      "number": 1
+    },
+    {
+      "id": "fake-0",
+      "character": "Aetherion",
+      "community_index": 0,
+      "community_label": "Hulk",
+      "hubs": [
+        "Hulk",
+        "She-Hulk",
+        "Hercules (Marvel Comics)"
+      ],
+      "size": 40,
+      "text": "Aetherion is a character appearing in American comic books published by Marvel Comics. In the avengers academy student striker. [name] and replaces him in their strongest superheroes in comics. As [name] and the [name] gamma rays have no color at all that began to change the skin color to green. After several disasters patsy accidentally makes a pact with the right angle and slip through very thin spaces owing to his mental abilities to silence the sound of their heavy hitters members nonstop and telemetry. An alternate universe.",
+      "text_unmasked": "Aetherion is a character appearing in American comic books published by Marvel Comics. As an immense green skin pigmentation and only used it once. Ares appears in marvel pinball as part of my favorite favorite stories. Rob bricken of gizmodo ranked hellcat th in their own and is capable of firing them from any part of the abomination is also forgiven by former champions member hercules. Hercules throws a massive piece of debris at the dance. Gauntlet at the close of she-hulk and jazinda hunt down a member of the ghosts release.",
+      "typical_phrases": [
+        "jennifer walters",
+        "balder is",
+        "a hellcat",
+        "robert reynolds",
+        "the gray",
+        "as speedball"
+      ],
+      "longest_run": {
+        "length": 12,
+        "sentence_length": 35,
+        "run": "the right angle and slip through very thin spaces owing to his",
+        "page": "Flatman_(character)",
+        "sentence": "He can withstand all forms of physical injury at a superhuman level, appear to be nearly invisible by standing at just the right angle and slip through very thin spaces, owing to his nearly two-dimensional body.",
+        "highlight": "the right angle and slip through very thin spaces, owing to his",
+        "pages_with_run": 1
+      },
+      "longest_run_unmasked": {
+        "length": 9,
+        "sentence_length": 30,
+        "run": "is capable of firing them from any part of",
+        "page": "Robbie_Baldwin",
+        "sentence": "The most commonly used are explosive energy blasts from his hands, but he is capable of firing them from any part of his body via the conduits on his spikes.",
+        "highlight": "is capable of firing them from any part of",
+        "pages_with_run": 1
+      },
+      "forced_steps": 35,
+      "steps": 75,
+      "redrawn": 0,
+      "name_like": [
+        "academy",
+        "avengers",
+        "patsy"
+      ],
+      "own_names": [],
+      "own_names_unmasked": [
+        "Abomination",
+        "Ares",
+        "Gauntlet",
+        "Hercules",
+        "She-Hulk"
+      ],
+      "number": 2
+    },
+    {
+      "id": "fake-4",
+      "character": "Iron Hearth",
+      "community_index": 4,
+      "community_label": "Quasar",
+      "hubs": [
+        "Quasar (character)",
+        "Nova (Richard Rider)",
+        "Captain Marvel (Marvel Comics)"
+      ],
+      "size": 35,
+      "text": "Iron Hearth is a character appearing in American comic books published by Marvel Comics. After an initial charge against mephisto but are unsuccessful at preventing a war hammer of his superiors malicious intent and allies himself with the new universe imprint. This version is intellectually gifted as well as employing conjured psi-llables. July dec. The two try to free the alien skrulls who bestow his hammer stormbreaker on a host the ability to command the dinosaur. [name] appeared as an unlockable playable character in marvel future revolution voiced again by steve blum.",
+      "text_unmasked": "Iron Hearth is a character appearing in American comic books published by Marvel Comics. When he uses an alien and a pair of quantum bands as an unlockable playable character in lego marvel super heroes. He uses the reality stone and save earth. Finally overwhelmed with pain she accepts. My thinking was influenced by that reality rocket raccoon appears as a monster because i really wanted a common name. Dangling plot lines were resolved in untold tales of the group in los angeles california daughter of elysius the genetically engineered by the alien kree.",
+      "typical_phrases": [
+        "galaxy vol",
+        "soul gem",
+        "squadron sinister",
+        "doctor spectrum",
+        "power prism",
+        "quantum bands"
+      ],
+      "longest_run": {
+        "length": 10,
+        "sentence_length": 22,
+        "run": "the alien skrulls who bestow his hammer stormbreaker on a",
+        "page": "Beta_Ray_Bill",
+        "sentence": "During the Secret Invasion storyline, Bill is wounded and captured by the alien Skrulls, who bestow his hammer Stormbreaker on a warrior Super-Skrull called the Godkiller.",
+        "highlight": "the alien Skrulls, who bestow his hammer Stormbreaker on a",
+        "pages_with_run": 1
+      },
+      "longest_run_unmasked": {
+        "length": 10,
+        "sentence_length": 21,
+        "run": "as an unlockable playable character in lego marvel super heroes",
+        "page": "Star-Lord",
+        "sentence": "Star-Lord appears as an unlockable playable character in Lego Marvel Super Heroes.",
+        "highlight": "as an unlockable playable character in Lego Marvel Super Heroes",
+        "pages_with_run": 1
+      },
+      "forced_steps": 35,
+      "steps": 78,
+      "redrawn": 0,
+      "name_like": [
+        "blum",
+        "dec",
+        "marvel",
+        "mephisto",
+        "revolution",
+        "skrulls",
+        "steve",
+        "stormbreaker"
+      ],
+      "own_names": [],
+      "own_names_unmasked": [
+        "Rocket Raccoon"
+      ],
+      "number": 3
+    },
+    {
+      "id": "fake-8",
+      "character": "Hollow Lark",
+      "community_index": 8,
+      "community_label": "Radian (Morituri)",
+      "hubs": [
+        "Radian (Morituri)",
+        "Scaredycat",
+        "Scatterbrain (Morituri)"
+      ],
+      "size": 9,
+      "text": "Hollow Lark is a character appearing in American comic books published by Marvel Comics. Apparently a dr ledbetter which the team was alerted by yet another alarm about a cure for the cure was likely to be killed inside the garden. A jokester and quick to mask his insecurities and fears behind jokes in armanetti volunteered for the process. Her romance with [name] and manages to extract the baby which somehow protected her and publicly beats her. [name] together with [name] and guy begin a romantic relationship. Her romance with [name] and joins the second-generation morituri team.",
+      "text_unmasked": "Hollow Lark is a character appearing in American comic books published by Marvel Comics. Over time his control of his fellow morituri a series in its mission. Harold was an ordinary young woman at some point in mattingly life. Mattingly introduced himself to the one of the members of the test sequence despite the other members of the exchange between tuolema and his desire to evade the certain death within a year. Mad with rage he broke through the process deguchi decides to enlist to the deadly morituri effect and melts in the party and led the team employers the paedia and its paedia world government. With his clairsentience scatterbrain knew she would be the next member to die in battle more effectively.",
+      "typical_phrases": [
+        "morituri effect",
+        "the morituri",
+        "strikeforce morituri",
+        "the strikeforce",
+        "the garden",
+        "brent anderson"
+      ],
+      "longest_run": {
+        "length": 17,
+        "sentence_length": 18,
+        "run": "a jokester and quick to mask his insecurities and fears behind jokes in armanetti volunteered for the",
+        "page": "Radian_(Morituri)",
+        "sentence": "A jokester and quick to mask his insecurities and fears behind jokes, in 2073, Armanetti volunteered for the Morituri process, a revolutionary scientific progress which gifts ordinary people with superhuman abilities.",
+        "highlight": "A jokester and quick to mask his insecurities and fears behind jokes, in 2073, Armanetti volunteered for the",
+        "pages_with_run": 1
+      },
+      "longest_run_unmasked": {
+        "length": 10,
+        "sentence_length": 17,
+        "run": "with his clairsentience scatterbrain knew she would be the next",
+        "page": "Scaredycat",
+        "sentence": "With his clairsentience, Scatterbrain knew she would be the next one to die of the Morituri effect, and informed her of the fact.",
+        "highlight": "With his clairsentience, Scatterbrain knew she would be the next",
+        "pages_with_run": 1
+      },
+      "forced_steps": 52,
+      "steps": 83,
+      "redrawn": 2,
+      "name_like": [
+        "armanetti",
+        "dr",
+        "garden",
+        "guy",
+        "ledbetter",
+        "morituri"
+      ],
+      "own_names": [],
+      "own_names_unmasked": [
+        "Scatterbrain"
+      ],
+      "number": 4
+    },
+    {
+      "id": "fake-7",
+      "character": "Ashen Circuit",
+      "community_index": 7,
+      "community_label": "Black Widow (Natasha Romanova)",
+      "hubs": [
+        "Black Widow (Natasha Romanova)",
+        "Mockingbird (Marvel Comics)",
+        "Deathlok"
+      ],
+      "size": 22,
+      "text": "Ashen Circuit is a character appearing in American comic books published by Marvel Comics. Running for one hour and adjustable opti-lens that enables long-range telescopic and infra-red sight. Pugh voiced an alternate universe version of [name] has superhuman visual acuity. [name] clint barton incarnation of [name] appears in the film avengers endgame the falcon and the avengers eventually marrying [name] and siege in defeating tskarov. Evans was more receptive to the th century nears its end in. This soon follows with the help of fantasma and is dubbed [name] by writer bill mantlo and artist kieron dwyer.",
+      "text_unmasked": "Ashen Circuit is a character appearing in American comic books published by Marvel Comics. After proteus decides to leave the organization which mistakes her for heather glenn in. Doom seizes the body of his face are armored cybernetic implants. In his own construction and repair. In the resurrection of hellcat. This trend continued when she is technically no longer considered canon in the avengers earth mightiest heroes.",
+      "typical_phrases": [
+        "alexei shostakov",
+        "iron patriot",
+        "luther manning",
+        "morse is",
+        "of alexei",
+        "rhodes was"
+      ],
+      "longest_run": {
+        "length": 13,
+        "sentence_length": 14,
+        "run": "for one hour and adjustable opti-lens that enables long-range telescopic and infra-red sight",
+        "page": "Ravage_2099",
+        "sentence": "He formerly wore a vest of unknown 21st century fabric lined with \"ultimate\" Kevlar (an experimental laser-proof material), molecular gloves (to contain the kinetic energies stored up in his hands for one hour), and adjustable opti-lens (that enables long-range telescopic and infra-red sight).",
+        "highlight": "for one hour), and adjustable opti-lens (that enables long-range telescopic and infra-red sight",
+        "pages_with_run": 1
+      },
+      "longest_run_unmasked": {
+        "length": 7,
+        "sentence_length": 11,
+        "run": "of his face are armored cybernetic implants",
+        "page": "Deathlok",
+        "sentence": "The right arm and left half of his face are armored cybernetic implants.",
+        "highlight": "of his face are armored cybernetic implants",
+        "pages_with_run": 1
+      },
+      "forced_steps": 39,
+      "steps": 83,
+      "redrawn": 0,
+      "name_like": [
+        "avengers",
+        "barton",
+        "bill",
+        "clint",
+        "endgame",
+        "evans",
+        "falcon",
+        "mantlo",
+        "pugh",
+        "siege",
+        "tskarov"
+      ],
+      "own_names": [],
+      "own_names_unmasked": [],
+      "number": 5
+    },
+    {
+      "id": "fake-3",
+      "character": "Quillstrike",
+      "community_index": 3,
+      "community_label": "Scarlet Witch",
+      "hubs": [
+        "Scarlet Witch",
+        "Human Torch (android)",
+        "U.S. Agent"
+      ],
+      "size": 38,
+      "text": "Quillstrike is a character appearing in American comic books published by Marvel Comics. Vol. Eventually walker is more brutal than his predecessor due to a lawsuit-proof character. Walker appears in fortnite as part of the original on january. At that time he had been artificially induced by the x-men in and reveals he believes [name] accusation. The [name].",
+      "text_unmasked": "Quillstrike is a character appearing in American comic books published by Marvel Comics. The introduction in his life. Monroe was starting to have a vampiric bulldog chained up in glenville new york at the hands of cassandra nova. His story so he creates a window that seems to confirm they each possess the x-gene resulted in the x-men as a marvel comics. In a later plot which was vaguely patriotic vaguely military and yet stood on its own tale of a norse mythology frost giant. He was freed from the staged attack.",
+      "typical_phrases": [
+        "wanda and",
+        "and pietro",
+        "new invaders",
+        "liberty legion",
+        "wanda is",
+        "the liberty"
+      ],
+      "longest_run": {
+        "length": 9,
+        "sentence_length": 13,
+        "run": "walker is more brutal than his predecessor due to",
+        "page": "U.S._Agent",
+        "sentence": "Although Walker finds himself trying to emulate Rogers's ethics, Walker is more brutal than his predecessor due to his reactionary points of view.",
+        "highlight": "Walker is more brutal than his predecessor due to",
+        "pages_with_run": 1
+      },
+      "longest_run_unmasked": {
+        "length": 12,
+        "sentence_length": 23,
+        "run": "which was vaguely patriotic vaguely military and yet stood on its own",
+        "page": "Battlestar_(character)",
+        "sentence": "laughs] We came up with every single name which was vaguely patriotic, vaguely military, and yet stood on its own, because some day these guys may split up.\"",
+        "highlight": "which was vaguely patriotic, vaguely military, and yet stood on its own",
+        "pages_with_run": 1
+      },
+      "forced_steps": 11,
+      "steps": 45,
+      "redrawn": 2,
+      "name_like": [
+        "walker",
+        "x-men"
+      ],
+      "own_names": [],
+      "own_names_unmasked": [],
+      "number": 6
+    },
+    {
+      "id": "fake-6",
+      "character": "Stormglass",
+      "community_index": 6,
+      "community_label": "Iron Fist",
+      "hubs": [
+        "Iron Fist (character)",
+        "Black Panther (character)",
+        "Luke Cage"
+      ],
+      "size": 30,
+      "text": "Stormglass is a character appearing in American comic books published by Marvel Comics. The character. [name] appears in two separate serums he creates a contrast where his son randy robertson hobie brown the prowler and falcon. However it was in use by dane whitman however it is later revealed that danny is part of the negative zone prison. Pym in the sole survivor of a later retcon in marvel future revolution voiced again by laurence fishburne while his brother in danger. While that isn't where jessica briefly dated the wasp.",
+      "text_unmasked": "Stormglass is a character appearing in American comic books published by Marvel Comics. Jessica jones are all black american men. Porcupine a porcupine-themed villain. In later years iron fist. Frustrated firebird left on a spiritual journey. Englehart and later creators surrounded shang-chi with them to find the train electromagnetic field.",
+      "typical_phrases": [
+        "fu manchu",
+        "dane whitman",
+        "danny rand",
+        "nayland smith",
+        "zheng zu",
+        "as ant-man"
+      ],
+      "longest_run": {
+        "length": 10,
+        "sentence_length": 21,
+        "run": "his son randy robertson hobie brown the prowler and falcon",
+        "page": "Misty_Knight",
+        "sentence": "In Marvel Comics, preceding characters were Gabe Jones (debuted in 1963), Black Panther (1966), Bill Foster (1966), Spider-Man supporting characters Joe Robertson (1967), his son Randy Robertson (1968), Hobie Brown (the Prowler) and Falcon (both 1969), Luke Cage (1972), Blade (1973), and Abe Brown (1974).",
+        "highlight": "his son Randy Robertson (1968), Hobie Brown (the Prowler) and Falcon",
+        "pages_with_run": 1
+      },
+      "longest_run_unmasked": {
+        "length": 7,
+        "sentence_length": 7,
+        "run": "frustrated firebird left on a spiritual journey",
+        "page": "Firebird_(Marvel_Comics)",
+        "sentence": "Frustrated, Firebird left on a spiritual journey.",
+        "highlight": "Frustrated, Firebird left on a spiritual journey",
+        "pages_with_run": 1
+      },
+      "forced_steps": 27,
+      "steps": 77,
+      "redrawn": 0,
+      "name_like": [
+        "brown",
+        "dane",
+        "danny",
+        "falcon",
+        "fishburne",
+        "jessica",
+        "laurence",
+        "marvel",
+        "pym",
+        "randy",
+        "robertson",
+        "wasp",
+        "whitman",
+        "zone"
+      ],
+      "own_names": [],
+      "own_names_unmasked": [
+        "Firebird",
+        "Iron Fist",
+        "Jessica Jones",
+        "Shang-Chi"
+      ],
+      "number": 7
+    },
+    {
+      "id": "fake-5",
+      "character": "Velvet Specter",
+      "community_index": 5,
+      "community_label": "Doctor Strange",
+      "hubs": [
+        "Doctor Strange",
+        "Deadpool",
+        "Moon Knight"
+      ],
+      "size": 34,
+      "text": "Velvet Specter is a character appearing in American comic books published by Marvel Comics. According to the middle of a new [name] series as part of a tarot card the moon god khonshu and is shown to have it not work on hellstorm and druid. In the film rights and merchandising reverted from marvel mature readers max imprint in the unpublished issues. Writer michael fleisher through issue. In uncanny x-force he storms out after the feature final laughs. He eventually became his servant bambu.",
+      "text_unmasked": "Velvet Specter is a character appearing in American comic books published by Marvel Comics. During this time ketch only existence remained inside a void and god after telling him he is able to kill hit-monkey but fails and while the host biologically alive but incapacitated. This interpretation proved influential and has not been previously published. Ghost rider. During the political upheavals in south america during the three nights of the superhero captain ultra briefly fights iron man rogues gallery. Johnny blaze.",
+      "typical_phrases": [
+        "the werewolf",
+        "jack russell",
+        "paperback reprints",
+        "true undead",
+        "ghost riders",
+        "of vengeance"
+      ],
+      "longest_run": {
+        "length": 8,
+        "sentence_length": 17,
+        "run": "the film rights and merchandising reverted from marvel",
+        "page": "Ghost_Rider_(Johnny_Blaze)",
+        "sentence": "The lawsuit states that the film rights and merchandising reverted from Marvel to him in 2001.",
+        "highlight": "the film rights and merchandising reverted from Marvel",
+        "pages_with_run": 1
+      },
+      "longest_run_unmasked": {
+        "length": 11,
+        "sentence_length": 31,
+        "run": "during this time ketch only existence remained inside a void and",
+        "page": "Ghost_Rider_(Danny_Ketch)",
+        "sentence": "During this time, Ketch's only existence remained inside a void and he was only able to communicate with Ghost Rider via the spirit world.",
+        "highlight": "During this time, Ketch's only existence remained inside a void and",
+        "pages_with_run": 1
+      },
+      "forced_steps": 26,
+      "steps": 70,
+      "redrawn": 0,
+      "name_like": [
+        "bambu",
+        "druid",
+        "fleisher",
+        "hellstorm",
+        "khonshu",
+        "marvel",
+        "max",
+        "michael",
+        "x-force"
+      ],
+      "own_names": [],
+      "own_names_unmasked": [
+        "Captain Ultra",
+        "Ghost Rider",
+        "Hit-Monkey",
+        "Johnny Blaze"
+      ],
+      "number": 8
+    },
+    {
+      "id": "fake-2",
+      "character": "Nyxara",
+      "community_index": 2,
+      "community_label": "Spider-Man",
+      "hubs": [
+        "Spider-Man",
+        "Venom (character)",
+        "Spider-Woman (Gwen Stacy)"
+      ],
+      "size": 38,
+      "text": "Nyxara is a character appearing in American comic books published by Marvel Comics. [name] [name] appears as a tie-in to the sleeper symbiote. [name] as [name] anti-venom and toxin forms appear as playable characters in lego marvel super hero squad online. [name] appeared in slingers december. Anthony orlando of buzzfeed stated [name] aka [name] has reflexes agility and stamina of an agent of s w o r d under an invitation by abigail brand and subsequent drafting into s w o r d. [name] appears as a replacement costume for [name] alien costume had flying discs created by a time-displaced eva bell.",
+      "text_unmasked": "Nyxara is a character appearing in American comic books published by Marvel Comics. While later saving spider-man from earth appears in the manga spider-man fake red end of the second volume of spider-boy introduces a new spider-man before killing him. During the fight peter fatally suffers under the scarlet spider made their cinematic debut in amazing adventures and a mexican mother. This version of the inmates and he will rapidly die from his crashing capsule his rocket pack runs out storyline and was recruited into hydra fighting for the government overreach committee. He helped expose that it a woman whose drive for revenge. After coming across actors felix lifson and erin hasko in a bunker owned by the reconstituted suit blowing up the story panel breakdowns from stan synopsis.",
+      "typical_phrases": [
+        "felicia hardy",
+        "the inheritors",
+        "aunt may",
+        "brock is",
+        "the symbiote",
+        "cindy moon"
+      ],
+      "longest_run": {
+        "length": 11,
+        "sentence_length": 37,
+        "run": "s w o r d under an invitation by abigail brand",
+        "page": "Spider-Woman_(Jessica_Drew)",
+        "sentence": "Alongside her work with the Avengers, Jessica Drew joins S.W.O.R.D., under an invitation by Abigail Brand.",
+        "highlight": "S.W.O.R.D., under an invitation by Abigail Brand",
+        "pages_with_run": 1
+      },
+      "longest_run_unmasked": {
+        "length": 10,
+        "sentence_length": 26,
+        "run": "coming across actors felix lifson and erin hasko in a",
+        "page": "Spider-Woman",
+        "sentence": "During the Web Warriors ongoing series, on accidentally coming across actors Felix Lifson and Erin Hasko, in a world where Spider-Man is fictional, shooting a Spider-Man movie (in which Erin is playing Gwen \"Spider-Gwen\" Stacy / Spider-Woman), Octavia Otto and the Web Warriors invite the duo to join the team, initially not noticing the pair to be actors shooting the film.",
+        "highlight": "coming across actors Felix Lifson and Erin Hasko, in a",
+        "pages_with_run": 1
+      },
+      "forced_steps": 36,
+      "steps": 89,
+      "redrawn": 1,
+      "name_like": [
+        "abigail",
+        "anti-venom",
+        "buzzfeed",
+        "lego",
+        "marvel",
+        "online",
+        "orlando",
+        "sleeper",
+        "slingers",
+        "toxin"
+      ],
+      "own_names": [],
+      "own_names_unmasked": [
+        "Scarlet Spider",
+        "Spider-Man"
+      ],
+      "number": 9
+    }
+  ],
+  "summary": {
+    "one_continuation_min": 0.8086,
+    "one_continuation_max": 0.8552,
+    "bigram_one_continuation_min": 0.4994,
+    "bigram_one_continuation_max": 0.6292,
+    "run_min": 8,
+    "run_max": 17,
+    "runs_single_page": 8,
+    "forced_share": 0.4186,
+    "redrawn": 5,
+    "own_names_unmasked": 7,
+    "own_names_masked": 0,
+    "name_like_fakes": 9,
+    "example": "fake-8"
+  },
+  "partition": {
+    "runs": 100,
+    "giant_nodes": 277,
+    "nodes": 303,
+    "isolates": 17,
+    "other_component_nodes": 9,
+    "communities_in_giant": 8,
+    "consensus_threshold": 0.5,
+    "consensus_seeds_agreeing": 100,
+    "consensus_modularity": 0.5059,
+    "mode_count": 4,
+    "distinct_partitions": 89,
+    "common_k": 8,
+    "common_k_runs": 77,
+    "nmi_median": 0.8981,
+    "nmi_p05": 0.8408,
+    "nmi_p95": 0.9652,
+    "modularity_mean": 0.503,
+    "modularity_sd": 0.0027,
+    "null_mean": 0.3471,
+    "null_sd": 0.0043,
+    "null_z": 36.6,
+    "null_runs": 100,
+    "null_method": "degree- and strength-preserving: double edge swaps between edges of equal weight"
+  },
+  "communities_source": "docs/weeks/week05/data/communities.json"
+}

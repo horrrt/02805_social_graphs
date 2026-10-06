@@ -1,0 +1,3201 @@
+{
+ "meta": {
+  "script": "analysis/week05_weird.py",
+  "owner": "Niklas",
+  "token_rule": "runs of letters in any alphabet, an inner apostrophe or hyphen kept, lowercased, a possessive 's removed; digits and punctuation dropped",
+  "sentences": "paragraphs split at line breaks, then spaCy's rule-based sentencizer",
+  "window": 100,
+  "window_alt": 50,
+  "neighbours": 30,
+  "draws": 2000,
+  "seed": 2805,
+  "n": 8,
+  "template_pages": 10,
+  "rare_pages": 2,
+  "score": "MATTR over a sliding window, z-scored against the pages nearest in length"
+ },
+ "corpus": {
+  "pages": 303,
+  "tokens": 713617,
+  "min_tokens": 193,
+  "max_tokens": 14037,
+  "median_tokens": 1218.0,
+  "mattr_mean": 0.6955,
+  "median_rare_share": 0.0726,
+  "median_boilerplate_share": 0.0214,
+  "common_ngrams": 113,
+  "lead_ngram": "in american comic books published by marvel comics",
+  "lead_ngram_pages": 282
+ },
+ "checks": {
+  "spearman_length": 0.019,
+  "spearman_length_raw": 0.001,
+  "raw_sd_shortest": 0.0306,
+  "raw_sd_longest": 0.0205,
+  "z_sd_shortest": 1.11,
+  "z_sd_longest": 1.0,
+  "top10_shorter_than_median": 6,
+  "outside_band_short": 0.0197,
+  "outside_band_long": 0.0662,
+  "spearman_rare_length": 0.549,
+  "spearman_boilerplate_length": -0.541,
+  "spearman_z_boilerplate": -0.275,
+  "spearman_z_boilerplate_p": 1.1450850614520153e-06
+ },
+ "stability": {
+  "window_alt": 50,
+  "checked": 10,
+  "top_survivors": 7,
+  "bottom_survivors": 8,
+  "spearman": 0.945
+ },
+ "several": {
+  "rule": "its first sentence calls the title the name, alias, codename, title, identity or mantle of several (or two, three...) characters, or a name used by them",
+  "pages": 46,
+  "bottom_decile": 30,
+  "in_bottom_decile": 10,
+  "expected": 4.554,
+  "p": 0.007078990305494213,
+  "names": [
+   "Dragon Lord (character)",
+   "Scarlet Scarab",
+   "Doctor Spectrum",
+   "Citizen V",
+   "Scarlet Spider",
+   "Ronin (Marvel Comics)",
+   "Ghost Rider",
+   "Captain Marvel (Marvel Comics)",
+   "Hawkeye (comics)",
+   "Ms. Marvel"
+  ]
+ },
+ "summary": {
+  "shown": 5,
+  "top_boilerplate_below_near": 4,
+  "bottom_boilerplate_above_near": 4,
+  "top_rare_above_near": 4,
+  "bottom_rare_below_near": 2,
+  "band_points": 40
+ },
+ "top": [
+  {
+   "node": "Coldblood",
+   "name": "Coldblood",
+   "rank": 1,
+   "tokens": 667,
+   "mattr": 0.7711,
+   "z": 2.91,
+   "z_alt": 2.88,
+   "rank_alt": 1,
+   "rare_share": 0.0633,
+   "rare_near": 0.0531,
+   "boilerplate_share": 0.039,
+   "boilerplate_near": 0.0245,
+   "several": false,
+   "read": "A short cyborg page whose powers section lists body parts and abilities, each named once, in ordinary words."
+  },
+  {
+   "node": "Super_Rabbit",
+   "name": "Super Rabbit",
+   "rank": 2,
+   "tokens": 462,
+   "mattr": 0.7489,
+   "z": 2.55,
+   "z_alt": 2.36,
+   "rank_alt": 3,
+   "rare_share": 0.1341,
+   "rare_near": 0.0624,
+   "boilerplate_share": 0.0,
+   "boilerplate_near": 0.0338,
+   "several": false,
+   "read": "A funny-animal hero from Timely, Marvel's predecessor, so the house lead is missing. The text runs through comic titles, dates and artists."
+  },
+  {
+   "node": "Ravage_2099",
+   "name": "Ravage 2099",
+   "rank": 3,
+   "tokens": 975,
+   "mattr": 0.7536,
+   "z": 2.5,
+   "z_alt": 2.8,
+   "rank_alt": 2,
+   "rare_share": 0.0961,
+   "rare_near": 0.0643,
+   "boilerplate_share": 0.0144,
+   "boilerplate_near": 0.0252,
+   "several": false,
+   "read": "Long interview quotes from the artist and the editor, in spoken English the encyclopedia pages do not use."
+  },
+  {
+   "node": "Paladin_(comics)",
+   "name": "Paladin (comics)",
+   "rank": 4,
+   "tokens": 1202,
+   "mattr": 0.7312,
+   "z": 2.33,
+   "z_alt": 2.25,
+   "rank_alt": 4,
+   "rare_share": 0.0601,
+   "rare_near": 0.0728,
+   "boilerplate_share": 0.0125,
+   "boilerplate_near": 0.0181,
+   "several": false,
+   "read": "A mercenary's record that moves from one team-up to the next, each with a new cast."
+  },
+  {
+   "node": "Sabra_(character)",
+   "name": "Sabra (character)",
+   "rank": 5,
+   "tokens": 2675,
+   "mattr": 0.7382,
+   "z": 2.26,
+   "z_alt": 1.94,
+   "rank_alt": 6,
+   "rare_share": 0.1532,
+   "rare_near": 0.0744,
+   "boilerplate_share": 0.0056,
+   "boilerplate_near": 0.0185,
+   "several": false,
+   "read": "Hebrew names, Israeli places and the story of the character's creation, in words few other pages use."
+  }
+ ],
+ "bottom": [
+  {
+   "node": "Ms._Marvel",
+   "name": "Ms. Marvel",
+   "rank": 303,
+   "tokens": 1753,
+   "mattr": 0.6032,
+   "z": -4.15,
+   "z_alt": -4.52,
+   "rank_alt": 303,
+   "rare_share": 0.0869,
+   "rare_near": 0.0767,
+   "boilerplate_share": 0.1021,
+   "boilerplate_near": 0.0189,
+   "several": true,
+   "read": "The name of four heroines. Each part repeats the codename in the same sentence frame, then sales rankings repeat another."
+  },
+  {
+   "node": "Gorgon_(Inhuman)",
+   "name": "Gorgon (Inhuman)",
+   "rank": 302,
+   "tokens": 798,
+   "mattr": 0.611,
+   "z": -3.44,
+   "z_alt": -3.97,
+   "rank_alt": 302,
+   "rare_share": 0.0736,
+   "rare_near": 0.0549,
+   "boilerplate_share": 0.1241,
+   "boilerplate_near": 0.0251,
+   "several": false,
+   "read": "A media list, line after line of \"Gorgon appears in …, voiced by …\", much of it house phrasing."
+  },
+  {
+   "node": "Hawkeye_(comics)",
+   "name": "Hawkeye (comics)",
+   "rank": 301,
+   "tokens": 349,
+   "mattr": 0.5944,
+   "z": -3.38,
+   "z_alt": -2.96,
+   "rank_alt": 300,
+   "rare_share": 0.0536,
+   "rare_near": 0.0516,
+   "boilerplate_share": 0.0315,
+   "boilerplate_near": 0.0381,
+   "several": true,
+   "read": "A short page about several Hawkeyes that repeats the name in nearly every sentence."
+  },
+  {
+   "node": "Abomination_(character)",
+   "name": "Abomination (character)",
+   "rank": 300,
+   "tokens": 3930,
+   "mattr": 0.6438,
+   "z": -2.95,
+   "z_alt": -2.65,
+   "rank_alt": 297,
+   "rare_share": 0.0835,
+   "rare_near": 0.0861,
+   "boilerplate_share": 0.0181,
+   "boilerplate_near": 0.0123,
+   "several": false,
+   "read": "One long record of fights with the Hulk: \"the Abomination\" and \"the Hulk\" return in almost every sentence."
+  },
+  {
+   "node": "Captain_Marvel_(Marvel_Comics)",
+   "name": "Captain Marvel (Marvel Comics)",
+   "rank": 299,
+   "tokens": 2640,
+   "mattr": 0.6309,
+   "z": -2.87,
+   "z_alt": -3.45,
+   "rank_alt": 301,
+   "rare_share": 0.0584,
+   "rare_near": 0.0777,
+   "boilerplate_share": 0.0723,
+   "boilerplate_near": 0.017,
+   "several": true,
+   "read": "The name of several heroes. Each version opens with the same frame, \"The second Captain Marvel is …\"."
+  }
+ ],
+ "quotes": [
+  {
+   "node": "Coldblood",
+   "name": "Coldblood",
+   "rank": 1,
+   "text": "He has a wetware-grafted computer grafted to his organic brain, a plasti-steel-reinforced skeleton, an artificial heart, synthetic hemoglobin, and artificial right eye."
+  },
+  {
+   "node": "Super_Rabbit",
+   "name": "Super Rabbit",
+   "rank": 2,
+   "text": "Aside from creator Ernie Hart, other artists who contributed to his adventures included Mike Sekowsky, Al Jaffee, and inker Violet Barclay."
+  },
+  {
+   "node": "Ravage_2099",
+   "name": "Ravage 2099",
+   "rank": 3,
+   "text": "The guys started to shake hands, then gave each other a big hug."
+  },
+  {
+   "node": "Ms._Marvel",
+   "name": "Ms. Marvel",
+   "rank": 303,
+   "text": "Kamala Khan is the fourth character to use the codename of Ms. Marvel."
+  }
+ ],
+ "band": [
+  {
+   "tokens": 193,
+   "mean": 0.6956,
+   "sd": 0.0583
+  },
+  {
+   "tokens": 215,
+   "mean": 0.6965,
+   "sd": 0.0584
+  },
+  {
+   "tokens": 240,
+   "mean": 0.6948,
+   "sd": 0.0577
+  },
+  {
+   "tokens": 268,
+   "mean": 0.6961,
+   "sd": 0.0523
+  },
+  {
+   "tokens": 300,
+   "mean": 0.6965,
+   "sd": 0.0523
+  },
+  {
+   "tokens": 334,
+   "mean": 0.6986,
+   "sd": 0.0464
+  },
+  {
+   "tokens": 373,
+   "mean": 0.696,
+   "sd": 0.0457
+  },
+  {
+   "tokens": 417,
+   "mean": 0.6965,
+   "sd": 0.0446
+  },
+  {
+   "tokens": 465,
+   "mean": 0.6964,
+   "sd": 0.0427
+  },
+  {
+   "tokens": 519,
+   "mean": 0.6953,
+   "sd": 0.0399
+  },
+  {
+   "tokens": 579,
+   "mean": 0.6978,
+   "sd": 0.0379
+  },
+  {
+   "tokens": 647,
+   "mean": 0.6961,
+   "sd": 0.0379
+  },
+  {
+   "tokens": 722,
+   "mean": 0.6971,
+   "sd": 0.0373
+  },
+  {
+   "tokens": 806,
+   "mean": 0.6969,
+   "sd": 0.0354
+  },
+  {
+   "tokens": 899,
+   "mean": 0.6963,
+   "sd": 0.0345
+  },
+  {
+   "tokens": 1004,
+   "mean": 0.6967,
+   "sd": 0.0328
+  },
+  {
+   "tokens": 1120,
+   "mean": 0.6978,
+   "sd": 0.031
+  },
+  {
+   "tokens": 1250,
+   "mean": 0.6953,
+   "sd": 0.0311
+  },
+  {
+   "tokens": 1396,
+   "mean": 0.6968,
+   "sd": 0.0301
+  },
+  {
+   "tokens": 1558,
+   "mean": 0.6965,
+   "sd": 0.028
+  },
+  {
+   "tokens": 1739,
+   "mean": 0.6959,
+   "sd": 0.0276
+  },
+  {
+   "tokens": 1941,
+   "mean": 0.6966,
+   "sd": 0.0265
+  },
+  {
+   "tokens": 2166,
+   "mean": 0.6963,
+   "sd": 0.0253
+  },
+  {
+   "tokens": 2418,
+   "mean": 0.6969,
+   "sd": 0.0233
+  },
+  {
+   "tokens": 2699,
+   "mean": 0.6965,
+   "sd": 0.0232
+  },
+  {
+   "tokens": 3013,
+   "mean": 0.6963,
+   "sd": 0.023
+  },
+  {
+   "tokens": 3363,
+   "mean": 0.6963,
+   "sd": 0.0216
+  },
+  {
+   "tokens": 3754,
+   "mean": 0.6973,
+   "sd": 0.0198
+  },
+  {
+   "tokens": 4190,
+   "mean": 0.697,
+   "sd": 0.0195
+  },
+  {
+   "tokens": 4676,
+   "mean": 0.6963,
+   "sd": 0.0188
+  },
+  {
+   "tokens": 5220,
+   "mean": 0.697,
+   "sd": 0.018
+  },
+  {
+   "tokens": 5826,
+   "mean": 0.6966,
+   "sd": 0.0169
+  },
+  {
+   "tokens": 6503,
+   "mean": 0.6971,
+   "sd": 0.0169
+  },
+  {
+   "tokens": 7259,
+   "mean": 0.6966,
+   "sd": 0.0158
+  },
+  {
+   "tokens": 8102,
+   "mean": 0.6961,
+   "sd": 0.0148
+  },
+  {
+   "tokens": 9043,
+   "mean": 0.6973,
+   "sd": 0.0149
+  },
+  {
+   "tokens": 10094,
+   "mean": 0.6968,
+   "sd": 0.0138
+  },
+  {
+   "tokens": 11267,
+   "mean": 0.697,
+   "sd": 0.0132
+  },
+  {
+   "tokens": 12576,
+   "mean": 0.6976,
+   "sd": 0.0121
+  },
+  {
+   "tokens": 14037,
+   "mean": 0.6969,
+   "sd": 0.0115
+  }
+ ],
+ "points": [
+  {
+   "node": "Coldblood",
+   "name": "Coldblood",
+   "tokens": 667,
+   "mattr": 0.7711,
+   "near_mattr": 0.6966,
+   "z": 2.91,
+   "rank": 1
+  },
+  {
+   "node": "Super_Rabbit",
+   "name": "Super Rabbit",
+   "tokens": 462,
+   "mattr": 0.7489,
+   "near_mattr": 0.6984,
+   "z": 2.55,
+   "rank": 2
+  },
+  {
+   "node": "Ravage_2099",
+   "name": "Ravage 2099",
+   "tokens": 975,
+   "mattr": 0.7536,
+   "near_mattr": 0.693,
+   "z": 2.5,
+   "rank": 3
+  },
+  {
+   "node": "Paladin_(comics)",
+   "name": "Paladin (comics)",
+   "tokens": 1202,
+   "mattr": 0.7312,
+   "near_mattr": 0.6955,
+   "z": 2.33,
+   "rank": 4
+  },
+  {
+   "node": "Sabra_(character)",
+   "name": "Sabra (character)",
+   "tokens": 2675,
+   "mattr": 0.7382,
+   "near_mattr": 0.6874,
+   "z": 2.26,
+   "rank": 5
+  },
+  {
+   "node": "Quicksilver_(Marvel_Comics)",
+   "name": "Quicksilver (Marvel Comics)",
+   "tokens": 6779,
+   "mattr": 0.7441,
+   "near_mattr": 0.6986,
+   "z": 2.12,
+   "rank": 6
+  },
+  {
+   "node": "The_Witness_(character)",
+   "name": "The Witness (character)",
+   "tokens": 804,
+   "mattr": 0.7503,
+   "near_mattr": 0.6943,
+   "z": 1.97,
+   "rank": 7
+  },
+  {
+   "node": "Quasar_(character)",
+   "name": "Quasar (character)",
+   "tokens": 1018,
+   "mattr": 0.7353,
+   "near_mattr": 0.6945,
+   "z": 1.88,
+   "rank": 8
+  },
+  {
+   "node": "Spider-Bitch_(Ashley_Barton)",
+   "name": "Spider-Bitch (Ashley Barton)",
+   "tokens": 3342,
+   "mattr": 0.7258,
+   "near_mattr": 0.6921,
+   "z": 1.75,
+   "rank": 9
+  },
+  {
+   "node": "Shang-Chi",
+   "name": "Shang-Chi",
+   "tokens": 8417,
+   "mattr": 0.7349,
+   "near_mattr": 0.7004,
+   "z": 1.75,
+   "rank": 10
+  },
+  {
+   "node": "Debrii",
+   "name": "Debrii",
+   "tokens": 566,
+   "mattr": 0.7399,
+   "near_mattr": 0.6984,
+   "z": 1.63,
+   "rank": 11
+  },
+  {
+   "node": "Isaiah_Bradley",
+   "name": "Isaiah Bradley",
+   "tokens": 2028,
+   "mattr": 0.7277,
+   "near_mattr": 0.6884,
+   "z": 1.6,
+   "rank": 12
+  },
+  {
+   "node": "NFL_SuperPro",
+   "name": "NFL SuperPro",
+   "tokens": 686,
+   "mattr": 0.7442,
+   "near_mattr": 0.697,
+   "z": 1.59,
+   "rank": 13
+  },
+  {
+   "node": "Hellfire_(J._T._Slade)",
+   "name": "Hellfire (J. T. Slade)",
+   "tokens": 208,
+   "mattr": 0.7393,
+   "near_mattr": 0.6877,
+   "z": 1.57,
+   "rank": 14
+  },
+  {
+   "node": "Skull_the_Slayer",
+   "name": "Skull the Slayer",
+   "tokens": 555,
+   "mattr": 0.742,
+   "near_mattr": 0.7,
+   "z": 1.57,
+   "rank": 15
+  },
+  {
+   "node": "Miracleman_(character)",
+   "name": "Miracleman (character)",
+   "tokens": 4315,
+   "mattr": 0.7254,
+   "near_mattr": 0.6948,
+   "z": 1.55,
+   "rank": 16
+  },
+  {
+   "node": "Captain_Ultra",
+   "name": "Captain Ultra",
+   "tokens": 704,
+   "mattr": 0.7346,
+   "near_mattr": 0.6963,
+   "z": 1.5,
+   "rank": 17
+  },
+  {
+   "node": "Motormouth_(comics)",
+   "name": "Motormouth (comics)",
+   "tokens": 1168,
+   "mattr": 0.7177,
+   "near_mattr": 0.6943,
+   "z": 1.48,
+   "rank": 18
+  },
+  {
+   "node": "Doctor_Nemesis",
+   "name": "Doctor Nemesis",
+   "tokens": 1413,
+   "mattr": 0.7208,
+   "near_mattr": 0.6965,
+   "z": 1.37,
+   "rank": 19
+  },
+  {
+   "node": "Baymax",
+   "name": "Baymax",
+   "tokens": 1530,
+   "mattr": 0.7251,
+   "near_mattr": 0.6926,
+   "z": 1.35,
+   "rank": 20
+  },
+  {
+   "node": "Jean_Grey_(X-Men_film_series)",
+   "name": "Jean Grey (X-Men film series)",
+   "tokens": 2140,
+   "mattr": 0.7207,
+   "near_mattr": 0.6881,
+   "z": 1.32,
+   "rank": 21
+  },
+  {
+   "node": "Flatman_(character)",
+   "name": "Flatman (character)",
+   "tokens": 1487,
+   "mattr": 0.7189,
+   "near_mattr": 0.6964,
+   "z": 1.31,
+   "rank": 22
+  },
+  {
+   "node": "Killraven",
+   "name": "Killraven",
+   "tokens": 1687,
+   "mattr": 0.7231,
+   "near_mattr": 0.6901,
+   "z": 1.28,
+   "rank": 23
+  },
+  {
+   "node": "Spider-Woman_(Gwen_Stacy)",
+   "name": "Spider-Woman (Gwen Stacy)",
+   "tokens": 5352,
+   "mattr": 0.7215,
+   "near_mattr": 0.6923,
+   "z": 1.28,
+   "rank": 24
+  },
+  {
+   "node": "Rockman_(character)",
+   "name": "Rockman (character)",
+   "tokens": 892,
+   "mattr": 0.7375,
+   "near_mattr": 0.6995,
+   "z": 1.28,
+   "rank": 25
+  },
+  {
+   "node": "Shatterstar",
+   "name": "Shatterstar",
+   "tokens": 3543,
+   "mattr": 0.7203,
+   "near_mattr": 0.6947,
+   "z": 1.27,
+   "rank": 26
+  },
+  {
+   "node": "Battlestar_(character)",
+   "name": "Battlestar (character)",
+   "tokens": 1168,
+   "mattr": 0.7148,
+   "near_mattr": 0.6946,
+   "z": 1.26,
+   "rank": 27
+  },
+  {
+   "node": "Frog-Man",
+   "name": "Frog-Man",
+   "tokens": 3531,
+   "mattr": 0.7192,
+   "near_mattr": 0.6935,
+   "z": 1.26,
+   "rank": 28
+  },
+  {
+   "node": "Justice_(New_Universe)",
+   "name": "Justice (New Universe)",
+   "tokens": 2885,
+   "mattr": 0.7184,
+   "near_mattr": 0.6885,
+   "z": 1.24,
+   "rank": 29
+  },
+  {
+   "node": "Black_Marvel",
+   "name": "Black Marvel",
+   "tokens": 1160,
+   "mattr": 0.7143,
+   "near_mattr": 0.6941,
+   "z": 1.21,
+   "rank": 30
+  },
+  {
+   "node": "Deadpool",
+   "name": "Deadpool",
+   "tokens": 8952,
+   "mattr": 0.7267,
+   "near_mattr": 0.7017,
+   "z": 1.21,
+   "rank": 31
+  },
+  {
+   "node": "Morbius",
+   "name": "Morbius",
+   "tokens": 8676,
+   "mattr": 0.7264,
+   "near_mattr": 0.7017,
+   "z": 1.19,
+   "rank": 32
+  },
+  {
+   "node": "Scarlet_Witch",
+   "name": "Scarlet Witch",
+   "tokens": 14037,
+   "mattr": 0.7261,
+   "near_mattr": 0.7017,
+   "z": 1.18,
+   "rank": 33
+  },
+  {
+   "node": "Spider-Man_Noir",
+   "name": "Spider-Man Noir",
+   "tokens": 3246,
+   "mattr": 0.7158,
+   "near_mattr": 0.6935,
+   "z": 1.17,
+   "rank": 34
+  },
+  {
+   "node": "Thin_Man_(character)",
+   "name": "Thin Man (character)",
+   "tokens": 981,
+   "mattr": 0.7203,
+   "near_mattr": 0.6941,
+   "z": 1.14,
+   "rank": 35
+  },
+  {
+   "node": "John_Jameson_(character)",
+   "name": "John Jameson (character)",
+   "tokens": 2540,
+   "mattr": 0.7165,
+   "near_mattr": 0.6899,
+   "z": 1.12,
+   "rank": 36
+  },
+  {
+   "node": "Guardsman_(character)",
+   "name": "Guardsman (character)",
+   "tokens": 1746,
+   "mattr": 0.7199,
+   "near_mattr": 0.6899,
+   "z": 1.11,
+   "rank": 37
+  },
+  {
+   "node": "Emrys_Killebrew",
+   "name": "Emrys Killebrew",
+   "tokens": 372,
+   "mattr": 0.7255,
+   "near_mattr": 0.6882,
+   "z": 1.11,
+   "rank": 38
+  },
+  {
+   "node": "Patsy_Walker",
+   "name": "Patsy Walker",
+   "tokens": 4283,
+   "mattr": 0.7172,
+   "near_mattr": 0.6951,
+   "z": 1.1,
+   "rank": 39
+  },
+  {
+   "node": "Elsa_Bloodstone",
+   "name": "Elsa Bloodstone",
+   "tokens": 1884,
+   "mattr": 0.7171,
+   "near_mattr": 0.6891,
+   "z": 1.09,
+   "rank": 40
+  },
+  {
+   "node": "Typeface_(character)",
+   "name": "Typeface (character)",
+   "tokens": 452,
+   "mattr": 0.7228,
+   "near_mattr": 0.6913,
+   "z": 1.07,
+   "rank": 41
+  },
+  {
+   "node": "Fabio_Medina",
+   "name": "Fabio Medina",
+   "tokens": 874,
+   "mattr": 0.7299,
+   "near_mattr": 0.698,
+   "z": 1.06,
+   "rank": 42
+  },
+  {
+   "node": "Hellion_(character)",
+   "name": "Hellion (character)",
+   "tokens": 5416,
+   "mattr": 0.7172,
+   "near_mattr": 0.693,
+   "z": 1.05,
+   "rank": 43
+  },
+  {
+   "node": "Bucky_(Marvel_Comics)",
+   "name": "Bucky (Marvel Comics)",
+   "tokens": 2823,
+   "mattr": 0.7125,
+   "near_mattr": 0.6881,
+   "z": 1.02,
+   "rank": 44
+  },
+  {
+   "node": "Anole_(character)",
+   "name": "Anole (character)",
+   "tokens": 3827,
+   "mattr": 0.7172,
+   "near_mattr": 0.696,
+   "z": 1.01,
+   "rank": 45
+  },
+  {
+   "node": "Nightwatch_(character)",
+   "name": "Nightwatch (character)",
+   "tokens": 747,
+   "mattr": 0.7271,
+   "near_mattr": 0.6988,
+   "z": 1.01,
+   "rank": 46
+  },
+  {
+   "node": "Enigma_(Marvel_Comics)",
+   "name": "Enigma (Marvel Comics)",
+   "tokens": 510,
+   "mattr": 0.7215,
+   "near_mattr": 0.6985,
+   "z": 0.99,
+   "rank": 47
+  },
+  {
+   "node": "Empath_(character)",
+   "name": "Empath (character)",
+   "tokens": 882,
+   "mattr": 0.7257,
+   "near_mattr": 0.6962,
+   "z": 0.98,
+   "rank": 48
+  },
+  {
+   "node": "Jack_Monroe_(character)",
+   "name": "Jack Monroe (character)",
+   "tokens": 2329,
+   "mattr": 0.7122,
+   "near_mattr": 0.6882,
+   "z": 0.94,
+   "rank": 49
+  },
+  {
+   "node": "Captain_Midlands",
+   "name": "Captain Midlands",
+   "tokens": 623,
+   "mattr": 0.7297,
+   "near_mattr": 0.7013,
+   "z": 0.91,
+   "rank": 50
+  },
+  {
+   "node": "Doom_2099",
+   "name": "Doom 2099",
+   "tokens": 1585,
+   "mattr": 0.715,
+   "near_mattr": 0.6932,
+   "z": 0.89,
+   "rank": 51
+  },
+  {
+   "node": "Jeffrey_Mace",
+   "name": "Jeffrey Mace",
+   "tokens": 1078,
+   "mattr": 0.707,
+   "near_mattr": 0.6907,
+   "z": 0.88,
+   "rank": 52
+  },
+  {
+   "node": "Gwenpool",
+   "name": "Gwenpool",
+   "tokens": 7755,
+   "mattr": 0.7179,
+   "near_mattr": 0.6995,
+   "z": 0.87,
+   "rank": 53
+  },
+  {
+   "node": "Killpower",
+   "name": "Killpower",
+   "tokens": 601,
+   "mattr": 0.7293,
+   "near_mattr": 0.7026,
+   "z": 0.87,
+   "rank": 54
+  },
+  {
+   "node": "Mockingbird_(Marvel_Comics)",
+   "name": "Mockingbird (Marvel Comics)",
+   "tokens": 7773,
+   "mattr": 0.7176,
+   "near_mattr": 0.6998,
+   "z": 0.86,
+   "rank": 55
+  },
+  {
+   "node": "Charcoal_(comics)",
+   "name": "Charcoal (comics)",
+   "tokens": 383,
+   "mattr": 0.7169,
+   "near_mattr": 0.6885,
+   "z": 0.84,
+   "rank": 56
+  },
+  {
+   "node": "Spider-Man",
+   "name": "Spider-Man",
+   "tokens": 9885,
+   "mattr": 0.7193,
+   "near_mattr": 0.7019,
+   "z": 0.83,
+   "rank": 57
+  },
+  {
+   "node": "Vance_Astrovik",
+   "name": "Vance Astrovik",
+   "tokens": 1400,
+   "mattr": 0.7116,
+   "near_mattr": 0.6967,
+   "z": 0.83,
+   "rank": 58
+  },
+  {
+   "node": "Turbo_(comics)",
+   "name": "Turbo (comics)",
+   "tokens": 1206,
+   "mattr": 0.7099,
+   "near_mattr": 0.696,
+   "z": 0.83,
+   "rank": 59
+  },
+  {
+   "node": "Bob,_Agent_of_Hydra",
+   "name": "Bob, Agent of Hydra",
+   "tokens": 957,
+   "mattr": 0.7195,
+   "near_mattr": 0.6974,
+   "z": 0.81,
+   "rank": 60
+  },
+  {
+   "node": "Happy_Sam_Sawyer",
+   "name": "Happy Sam Sawyer",
+   "tokens": 365,
+   "mattr": 0.7157,
+   "near_mattr": 0.6885,
+   "z": 0.8,
+   "rank": 61
+  },
+  {
+   "node": "Synapse_(character)",
+   "name": "Synapse (character)",
+   "tokens": 413,
+   "mattr": 0.7159,
+   "near_mattr": 0.6888,
+   "z": 0.8,
+   "rank": 62
+  },
+  {
+   "node": "Noh-Varr",
+   "name": "Noh-Varr",
+   "tokens": 4527,
+   "mattr": 0.7091,
+   "near_mattr": 0.6934,
+   "z": 0.76,
+   "rank": 63
+  },
+  {
+   "node": "William_Burnside_(character)",
+   "name": "William Burnside (character)",
+   "tokens": 1961,
+   "mattr": 0.7061,
+   "near_mattr": 0.6874,
+   "z": 0.75,
+   "rank": 64
+  },
+  {
+   "node": "Firebird_(Marvel_Comics)",
+   "name": "Firebird (Marvel Comics)",
+   "tokens": 1709,
+   "mattr": 0.7097,
+   "near_mattr": 0.6897,
+   "z": 0.75,
+   "rank": 65
+  },
+  {
+   "node": "Gremlin_(comics)",
+   "name": "Gremlin (comics)",
+   "tokens": 600,
+   "mattr": 0.725,
+   "near_mattr": 0.7015,
+   "z": 0.75,
+   "rank": 66
+  },
+  {
+   "node": "Yo-Yo_Rodriguez",
+   "name": "Yo-Yo Rodriguez",
+   "tokens": 763,
+   "mattr": 0.7206,
+   "near_mattr": 0.7,
+   "z": 0.74,
+   "rank": 67
+  },
+  {
+   "node": "Snapdragon_(Morituri)",
+   "name": "Snapdragon (Morituri)",
+   "tokens": 583,
+   "mattr": 0.7225,
+   "near_mattr": 0.6998,
+   "z": 0.74,
+   "rank": 68
+  },
+  {
+   "node": "Starr_the_Slayer",
+   "name": "Starr the Slayer",
+   "tokens": 568,
+   "mattr": 0.7193,
+   "near_mattr": 0.7004,
+   "z": 0.73,
+   "rank": 69
+  },
+  {
+   "node": "Vindicator_(comics)",
+   "name": "Vindicator (comics)",
+   "tokens": 1524,
+   "mattr": 0.7105,
+   "near_mattr": 0.6932,
+   "z": 0.7,
+   "rank": 70
+  },
+  {
+   "node": "Sean_and_Chris",
+   "name": "Sean and Chris",
+   "tokens": 547,
+   "mattr": 0.7199,
+   "near_mattr": 0.7003,
+   "z": 0.7,
+   "rank": 71
+  },
+  {
+   "node": "Marvel_Boy_(Robert_Grayson)",
+   "name": "Marvel Boy (Robert Grayson)",
+   "tokens": 833,
+   "mattr": 0.7177,
+   "near_mattr": 0.6967,
+   "z": 0.69,
+   "rank": 72
+  },
+  {
+   "node": "Chase_Stein",
+   "name": "Chase Stein",
+   "tokens": 3713,
+   "mattr": 0.7094,
+   "near_mattr": 0.6952,
+   "z": 0.69,
+   "rank": 73
+  },
+  {
+   "node": "White_Tiger_(comics)",
+   "name": "White Tiger (comics)",
+   "tokens": 1034,
+   "mattr": 0.7066,
+   "near_mattr": 0.6919,
+   "z": 0.65,
+   "rank": 74
+  },
+  {
+   "node": "Dargo_Ktor",
+   "name": "Dargo Ktor",
+   "tokens": 450,
+   "mattr": 0.7101,
+   "near_mattr": 0.689,
+   "z": 0.64,
+   "rank": 75
+  },
+  {
+   "node": "Darkdevil",
+   "name": "Darkdevil",
+   "tokens": 588,
+   "mattr": 0.7213,
+   "near_mattr": 0.701,
+   "z": 0.64,
+   "rank": 76
+  },
+  {
+   "node": "Junior_Juniper",
+   "name": "Junior Juniper",
+   "tokens": 978,
+   "mattr": 0.709,
+   "near_mattr": 0.6931,
+   "z": 0.63,
+   "rank": 77
+  },
+  {
+   "node": "Rockslide_(character)",
+   "name": "Rockslide (character)",
+   "tokens": 979,
+   "mattr": 0.7084,
+   "near_mattr": 0.6923,
+   "z": 0.63,
+   "rank": 78
+  },
+  {
+   "node": "Wolverine_(character)",
+   "name": "Wolverine (character)",
+   "tokens": 7169,
+   "mattr": 0.7141,
+   "near_mattr": 0.7001,
+   "z": 0.63,
+   "rank": 79
+  },
+  {
+   "node": "Thunderbolt_(Marvel_Comics)",
+   "name": "Thunderbolt (Marvel Comics)",
+   "tokens": 556,
+   "mattr": 0.7147,
+   "near_mattr": 0.6989,
+   "z": 0.6,
+   "rank": 80
+  },
+  {
+   "node": "Wild_Child_(character)",
+   "name": "Wild Child (character)",
+   "tokens": 1214,
+   "mattr": 0.7059,
+   "near_mattr": 0.6961,
+   "z": 0.58,
+   "rank": 81
+  },
+  {
+   "node": "Silhouette_(comics)",
+   "name": "Silhouette (comics)",
+   "tokens": 826,
+   "mattr": 0.7135,
+   "near_mattr": 0.6959,
+   "z": 0.58,
+   "rank": 82
+  },
+  {
+   "node": "Brain_Drain_(character)",
+   "name": "Brain Drain (character)",
+   "tokens": 452,
+   "mattr": 0.7076,
+   "near_mattr": 0.6886,
+   "z": 0.58,
+   "rank": 83
+  },
+  {
+   "node": "Surge_(Marvel_Comics)",
+   "name": "Surge (Marvel Comics)",
+   "tokens": 934,
+   "mattr": 0.7151,
+   "near_mattr": 0.6992,
+   "z": 0.57,
+   "rank": 84
+  },
+  {
+   "node": "Two-Gun_Kid",
+   "name": "Two-Gun Kid",
+   "tokens": 1320,
+   "mattr": 0.7078,
+   "near_mattr": 0.6985,
+   "z": 0.57,
+   "rank": 85
+  },
+  {
+   "node": "Vyking",
+   "name": "Vyking",
+   "tokens": 1087,
+   "mattr": 0.7047,
+   "near_mattr": 0.6945,
+   "z": 0.57,
+   "rank": 86
+  },
+  {
+   "node": "Man-Thing",
+   "name": "Man-Thing",
+   "tokens": 4571,
+   "mattr": 0.7034,
+   "near_mattr": 0.6912,
+   "z": 0.56,
+   "rank": 87
+  },
+  {
+   "node": "Human_Fly_(character)",
+   "name": "Human Fly (character)",
+   "tokens": 1132,
+   "mattr": 0.7032,
+   "near_mattr": 0.694,
+   "z": 0.56,
+   "rank": 88
+  },
+  {
+   "node": "Blackthorn_(character)",
+   "name": "Blackthorn (character)",
+   "tokens": 1067,
+   "mattr": 0.7014,
+   "near_mattr": 0.6907,
+   "z": 0.56,
+   "rank": 89
+  },
+  {
+   "node": "Bill_Foster_(character)",
+   "name": "Bill Foster (character)",
+   "tokens": 1759,
+   "mattr": 0.7047,
+   "near_mattr": 0.6896,
+   "z": 0.56,
+   "rank": 90
+  },
+  {
+   "node": "Illuminator_(Marvel_Comics)",
+   "name": "Illuminator (Marvel Comics)",
+   "tokens": 259,
+   "mattr": 0.7078,
+   "near_mattr": 0.6888,
+   "z": 0.56,
+   "rank": 91
+  },
+  {
+   "node": "Luke_Cage",
+   "name": "Luke Cage",
+   "tokens": 5629,
+   "mattr": 0.7064,
+   "near_mattr": 0.6937,
+   "z": 0.55,
+   "rank": 92
+  },
+  {
+   "node": "Darkhawk",
+   "name": "Darkhawk",
+   "tokens": 3211,
+   "mattr": 0.7063,
+   "near_mattr": 0.6947,
+   "z": 0.54,
+   "rank": 93
+  },
+  {
+   "node": "Deathlok",
+   "name": "Deathlok",
+   "tokens": 3278,
+   "mattr": 0.7041,
+   "near_mattr": 0.6935,
+   "z": 0.54,
+   "rank": 94
+  },
+  {
+   "node": "Phil_Urich",
+   "name": "Phil Urich",
+   "tokens": 949,
+   "mattr": 0.7136,
+   "near_mattr": 0.6987,
+   "z": 0.54,
+   "rank": 95
+  },
+  {
+   "node": "Cloak_and_Dagger_(characters)",
+   "name": "Cloak and Dagger (characters)",
+   "tokens": 5404,
+   "mattr": 0.7058,
+   "near_mattr": 0.6933,
+   "z": 0.53,
+   "rank": 96
+  },
+  {
+   "node": "Radian_(Morituri)",
+   "name": "Radian (Morituri)",
+   "tokens": 1638,
+   "mattr": 0.7047,
+   "near_mattr": 0.6911,
+   "z": 0.52,
+   "rank": 97
+  },
+  {
+   "node": "Ogre_(Marvel_Comics)",
+   "name": "Ogre (Marvel Comics)",
+   "tokens": 335,
+   "mattr": 0.7062,
+   "near_mattr": 0.6888,
+   "z": 0.51,
+   "rank": 98
+  },
+  {
+   "node": "Detroit_Steel",
+   "name": "Detroit Steel",
+   "tokens": 1240,
+   "mattr": 0.7052,
+   "near_mattr": 0.6967,
+   "z": 0.51,
+   "rank": 99
+  },
+  {
+   "node": "Solo_(Marvel_Comics)",
+   "name": "Solo (Marvel Comics)",
+   "tokens": 723,
+   "mattr": 0.7125,
+   "near_mattr": 0.6967,
+   "z": 0.49,
+   "rank": 100
+  },
+  {
+   "node": "Tarantula_(Marvel_Comics)",
+   "name": "Tarantula (Marvel Comics)",
+   "tokens": 1523,
+   "mattr": 0.7055,
+   "near_mattr": 0.6967,
+   "z": 0.49,
+   "rank": 101
+  },
+  {
+   "node": "Cammi_(character)",
+   "name": "Cammi (character)",
+   "tokens": 524,
+   "mattr": 0.7112,
+   "near_mattr": 0.6998,
+   "z": 0.47,
+   "rank": 102
+  },
+  {
+   "node": "Hulkling",
+   "name": "Hulkling",
+   "tokens": 3023,
+   "mattr": 0.7032,
+   "near_mattr": 0.6909,
+   "z": 0.47,
+   "rank": 103
+  },
+  {
+   "node": "Machine_Man",
+   "name": "Machine Man",
+   "tokens": 2066,
+   "mattr": 0.6992,
+   "near_mattr": 0.6867,
+   "z": 0.47,
+   "rank": 104
+  },
+  {
+   "node": "Speed_(character)",
+   "name": "Speed (character)",
+   "tokens": 3058,
+   "mattr": 0.7025,
+   "near_mattr": 0.6906,
+   "z": 0.46,
+   "rank": 105
+  },
+  {
+   "node": "Lei_Kung_(character)",
+   "name": "Lei Kung (character)",
+   "tokens": 435,
+   "mattr": 0.7035,
+   "near_mattr": 0.6886,
+   "z": 0.46,
+   "rank": 106
+  },
+  {
+   "node": "Steel_Spider",
+   "name": "Steel Spider",
+   "tokens": 642,
+   "mattr": 0.7122,
+   "near_mattr": 0.6984,
+   "z": 0.45,
+   "rank": 107
+  },
+  {
+   "node": "Jack_Frost_(Marvel_Comics)",
+   "name": "Jack Frost (Marvel Comics)",
+   "tokens": 1110,
+   "mattr": 0.7034,
+   "near_mattr": 0.6955,
+   "z": 0.44,
+   "rank": 108
+  },
+  {
+   "node": "Caretaker_(comics)",
+   "name": "Caretaker (comics)",
+   "tokens": 677,
+   "mattr": 0.7127,
+   "near_mattr": 0.7001,
+   "z": 0.43,
+   "rank": 109
+  },
+  {
+   "node": "Hornet_(comics)",
+   "name": "Hornet (comics)",
+   "tokens": 933,
+   "mattr": 0.71,
+   "near_mattr": 0.6984,
+   "z": 0.43,
+   "rank": 110
+  },
+  {
+   "node": "Karnak_(character)",
+   "name": "Karnak (character)",
+   "tokens": 2142,
+   "mattr": 0.6989,
+   "near_mattr": 0.688,
+   "z": 0.43,
+   "rank": 111
+  },
+  {
+   "node": "Dusk_(comics)",
+   "name": "Dusk (comics)",
+   "tokens": 562,
+   "mattr": 0.7107,
+   "near_mattr": 0.6994,
+   "z": 0.43,
+   "rank": 112
+  },
+  {
+   "node": "Black_Panther_(character)",
+   "name": "Black Panther (character)",
+   "tokens": 8053,
+   "mattr": 0.7093,
+   "near_mattr": 0.7008,
+   "z": 0.41,
+   "rank": 113
+  },
+  {
+   "node": "Outlaw_(Marvel_Comics)",
+   "name": "Outlaw (Marvel Comics)",
+   "tokens": 856,
+   "mattr": 0.7101,
+   "near_mattr": 0.6977,
+   "z": 0.41,
+   "rank": 114
+  },
+  {
+   "node": "Thunderclap_(comics)",
+   "name": "Thunderclap (comics)",
+   "tokens": 415,
+   "mattr": 0.7011,
+   "near_mattr": 0.6879,
+   "z": 0.4,
+   "rank": 115
+  },
+  {
+   "node": "Vulcan_(Marvel_Comics)",
+   "name": "Vulcan (Marvel Comics)",
+   "tokens": 2481,
+   "mattr": 0.7003,
+   "near_mattr": 0.6905,
+   "z": 0.4,
+   "rank": 116
+  },
+  {
+   "node": "Rom_the_Space_Knight",
+   "name": "Rom the Space Knight",
+   "tokens": 3516,
+   "mattr": 0.7029,
+   "near_mattr": 0.6945,
+   "z": 0.4,
+   "rank": 117
+  },
+  {
+   "node": "Iron_Man_2020",
+   "name": "Iron Man 2020",
+   "tokens": 1305,
+   "mattr": 0.7042,
+   "near_mattr": 0.6977,
+   "z": 0.4,
+   "rank": 118
+  },
+  {
+   "node": "Union_Jack_(Joseph_Chapman)",
+   "name": "Union Jack (Joseph Chapman)",
+   "tokens": 1787,
+   "mattr": 0.7008,
+   "near_mattr": 0.6904,
+   "z": 0.4,
+   "rank": 119
+  },
+  {
+   "node": "Rusty_Collins",
+   "name": "Rusty Collins",
+   "tokens": 957,
+   "mattr": 0.7086,
+   "near_mattr": 0.6977,
+   "z": 0.4,
+   "rank": 120
+  },
+  {
+   "node": "Whizzer_(Robert_Frank)",
+   "name": "Whizzer (Robert Frank)",
+   "tokens": 1238,
+   "mattr": 0.7036,
+   "near_mattr": 0.6972,
+   "z": 0.38,
+   "rank": 121
+  },
+  {
+   "node": "Starhawk_(character)",
+   "name": "Starhawk (character)",
+   "tokens": 1902,
+   "mattr": 0.6976,
+   "near_mattr": 0.688,
+   "z": 0.38,
+   "rank": 122
+  },
+  {
+   "node": "Misty_Knight",
+   "name": "Misty Knight",
+   "tokens": 2588,
+   "mattr": 0.6996,
+   "near_mattr": 0.6908,
+   "z": 0.37,
+   "rank": 123
+  },
+  {
+   "node": "Scaredycat",
+   "name": "Scaredycat",
+   "tokens": 687,
+   "mattr": 0.7085,
+   "near_mattr": 0.6975,
+   "z": 0.36,
+   "rank": 124
+  },
+  {
+   "node": "Guardian_(Marvel_Comics)",
+   "name": "Guardian (Marvel Comics)",
+   "tokens": 1444,
+   "mattr": 0.7025,
+   "near_mattr": 0.6965,
+   "z": 0.34,
+   "rank": 125
+  },
+  {
+   "node": "Storm_(Marvel_Comics)",
+   "name": "Storm (Marvel Comics)",
+   "tokens": 9410,
+   "mattr": 0.7095,
+   "near_mattr": 0.7022,
+   "z": 0.34,
+   "rank": 126
+  },
+  {
+   "node": "Betsy_Braddock",
+   "name": "Betsy Braddock",
+   "tokens": 12800,
+   "mattr": 0.7094,
+   "near_mattr": 0.7022,
+   "z": 0.34,
+   "rank": 127
+  },
+  {
+   "node": "Thor_Girl",
+   "name": "Thor Girl",
+   "tokens": 821,
+   "mattr": 0.7058,
+   "near_mattr": 0.6957,
+   "z": 0.33,
+   "rank": 128
+  },
+  {
+   "node": "Cyclops_(Marvel_Comics)",
+   "name": "Cyclops (Marvel Comics)",
+   "tokens": 4824,
+   "mattr": 0.6974,
+   "near_mattr": 0.6904,
+   "z": 0.32,
+   "rank": 129
+  },
+  {
+   "node": "Spider-Woman_(Jessica_Drew)",
+   "name": "Spider-Woman (Jessica Drew)",
+   "tokens": 9363,
+   "mattr": 0.709,
+   "near_mattr": 0.7023,
+   "z": 0.32,
+   "rank": 130
+  },
+  {
+   "node": "Gargoyle_(comics)",
+   "name": "Gargoyle (comics)",
+   "tokens": 1184,
+   "mattr": 0.7002,
+   "near_mattr": 0.6949,
+   "z": 0.32,
+   "rank": 131
+  },
+  {
+   "node": "Scatterbrain_(Morituri)",
+   "name": "Scatterbrain (Morituri)",
+   "tokens": 544,
+   "mattr": 0.7089,
+   "near_mattr": 0.7004,
+   "z": 0.3,
+   "rank": 132
+  },
+  {
+   "node": "U.S._Agent",
+   "name": "U.S. Agent",
+   "tokens": 9615,
+   "mattr": 0.7084,
+   "near_mattr": 0.7023,
+   "z": 0.29,
+   "rank": 133
+  },
+  {
+   "node": "Cable_(character)",
+   "name": "Cable (character)",
+   "tokens": 4013,
+   "mattr": 0.7024,
+   "near_mattr": 0.6967,
+   "z": 0.27,
+   "rank": 134
+  },
+  {
+   "node": "Blue_Marvel",
+   "name": "Blue Marvel",
+   "tokens": 1676,
+   "mattr": 0.6981,
+   "near_mattr": 0.6912,
+   "z": 0.27,
+   "rank": 135
+  },
+  {
+   "node": "Shamrock_(comics)",
+   "name": "Shamrock (comics)",
+   "tokens": 1048,
+   "mattr": 0.6959,
+   "near_mattr": 0.6911,
+   "z": 0.25,
+   "rank": 136
+  },
+  {
+   "node": "Franklin_Richards_(character)",
+   "name": "Franklin Richards (character)",
+   "tokens": 2430,
+   "mattr": 0.6949,
+   "near_mattr": 0.6893,
+   "z": 0.22,
+   "rank": 137
+  },
+  {
+   "node": "Arabian_Knight_(character)",
+   "name": "Arabian Knight (character)",
+   "tokens": 765,
+   "mattr": 0.7051,
+   "near_mattr": 0.6984,
+   "z": 0.22,
+   "rank": 138
+  },
+  {
+   "node": "Puck_(Marvel_Comics)",
+   "name": "Puck (Marvel Comics)",
+   "tokens": 1811,
+   "mattr": 0.6966,
+   "near_mattr": 0.6909,
+   "z": 0.22,
+   "rank": 139
+  },
+  {
+   "node": "Ricochet_(comics)",
+   "name": "Ricochet (comics)",
+   "tokens": 757,
+   "mattr": 0.7084,
+   "near_mattr": 0.702,
+   "z": 0.22,
+   "rank": 140
+  },
+  {
+   "node": "Xorn",
+   "name": "Xorn",
+   "tokens": 1688,
+   "mattr": 0.6959,
+   "near_mattr": 0.6908,
+   "z": 0.19,
+   "rank": 141
+  },
+  {
+   "node": "Northstar_(character)",
+   "name": "Northstar (character)",
+   "tokens": 4681,
+   "mattr": 0.6958,
+   "near_mattr": 0.6917,
+   "z": 0.19,
+   "rank": 142
+  },
+  {
+   "node": "War_Machine",
+   "name": "War Machine",
+   "tokens": 3357,
+   "mattr": 0.6982,
+   "near_mattr": 0.6945,
+   "z": 0.18,
+   "rank": 143
+  },
+  {
+   "node": "Gladiator_(Kallark)",
+   "name": "Gladiator (Kallark)",
+   "tokens": 1019,
+   "mattr": 0.6983,
+   "near_mattr": 0.6942,
+   "z": 0.18,
+   "rank": 144
+  },
+  {
+   "node": "Ares_(Marvel_Comics)",
+   "name": "Ares (Marvel Comics)",
+   "tokens": 2899,
+   "mattr": 0.6939,
+   "near_mattr": 0.6897,
+   "z": 0.17,
+   "rank": 145
+  },
+  {
+   "node": "Doctor_Druid",
+   "name": "Doctor Druid",
+   "tokens": 2087,
+   "mattr": 0.6915,
+   "near_mattr": 0.6878,
+   "z": 0.15,
+   "rank": 146
+  },
+  {
+   "node": "Moon_Knight",
+   "name": "Moon Knight",
+   "tokens": 7001,
+   "mattr": 0.7043,
+   "near_mattr": 0.7008,
+   "z": 0.15,
+   "rank": 147
+  },
+  {
+   "node": "Red_Guardian",
+   "name": "Red Guardian",
+   "tokens": 2464,
+   "mattr": 0.6931,
+   "near_mattr": 0.6898,
+   "z": 0.13,
+   "rank": 148
+  },
+  {
+   "node": "Rikki_Barnes",
+   "name": "Rikki Barnes",
+   "tokens": 1163,
+   "mattr": 0.6972,
+   "near_mattr": 0.6951,
+   "z": 0.13,
+   "rank": 149
+  },
+  {
+   "node": "Robbie_Baldwin",
+   "name": "Robbie Baldwin",
+   "tokens": 3848,
+   "mattr": 0.6993,
+   "near_mattr": 0.6966,
+   "z": 0.13,
+   "rank": 150
+  },
+  {
+   "node": "Ruby_Summers",
+   "name": "Ruby Summers",
+   "tokens": 441,
+   "mattr": 0.6937,
+   "near_mattr": 0.6894,
+   "z": 0.13,
+   "rank": 151
+  },
+  {
+   "node": "Shear_(character)",
+   "name": "Shear (character)",
+   "tokens": 444,
+   "mattr": 0.6948,
+   "near_mattr": 0.6907,
+   "z": 0.13,
+   "rank": 152
+  },
+  {
+   "node": "Satana_(Marvel_Comics)",
+   "name": "Satana (Marvel Comics)",
+   "tokens": 2436,
+   "mattr": 0.6921,
+   "near_mattr": 0.6894,
+   "z": 0.11,
+   "rank": 153
+  },
+  {
+   "node": "Hercules_(Marvel_Comics)",
+   "name": "Hercules (Marvel Comics)",
+   "tokens": 8535,
+   "mattr": 0.7045,
+   "near_mattr": 0.7024,
+   "z": 0.1,
+   "rank": 154
+  },
+  {
+   "node": "Mark_Hazzard:_Merc",
+   "name": "Mark Hazzard: Merc",
+   "tokens": 768,
+   "mattr": 0.7005,
+   "near_mattr": 0.6975,
+   "z": 0.1,
+   "rank": 155
+  },
+  {
+   "node": "Toro_(character)",
+   "name": "Toro (character)",
+   "tokens": 1164,
+   "mattr": 0.6961,
+   "near_mattr": 0.6945,
+   "z": 0.1,
+   "rank": 156
+  },
+  {
+   "node": "Hrimhari",
+   "name": "Hrimhari",
+   "tokens": 635,
+   "mattr": 0.7038,
+   "near_mattr": 0.7008,
+   "z": 0.09,
+   "rank": 157
+  },
+  {
+   "node": "Solarman",
+   "name": "Solarman",
+   "tokens": 738,
+   "mattr": 0.7013,
+   "near_mattr": 0.6983,
+   "z": 0.09,
+   "rank": 158
+  },
+  {
+   "node": "Box_(comics)",
+   "name": "Box (comics)",
+   "tokens": 847,
+   "mattr": 0.6997,
+   "near_mattr": 0.6971,
+   "z": 0.09,
+   "rank": 159
+  },
+  {
+   "node": "Jericho_Drumm",
+   "name": "Jericho Drumm",
+   "tokens": 1558,
+   "mattr": 0.696,
+   "near_mattr": 0.694,
+   "z": 0.08,
+   "rank": 160
+  },
+  {
+   "node": "Spitfire_(character)",
+   "name": "Spitfire (character)",
+   "tokens": 2743,
+   "mattr": 0.6898,
+   "near_mattr": 0.688,
+   "z": 0.08,
+   "rank": 161
+  },
+  {
+   "node": "Breeze_Barton",
+   "name": "Breeze Barton",
+   "tokens": 726,
+   "mattr": 0.6994,
+   "near_mattr": 0.6973,
+   "z": 0.07,
+   "rank": 162
+  },
+  {
+   "node": "Jessica_Jones",
+   "name": "Jessica Jones",
+   "tokens": 6311,
+   "mattr": 0.6991,
+   "near_mattr": 0.6979,
+   "z": 0.06,
+   "rank": 163
+  },
+  {
+   "node": "Mahr_Vehl",
+   "name": "Mahr Vehl",
+   "tokens": 687,
+   "mattr": 0.6993,
+   "near_mattr": 0.6985,
+   "z": 0.03,
+   "rank": 164
+  },
+  {
+   "node": "Werewolf_by_Night",
+   "name": "Werewolf by Night",
+   "tokens": 3779,
+   "mattr": 0.6964,
+   "near_mattr": 0.6959,
+   "z": 0.02,
+   "rank": 165
+  },
+  {
+   "node": "Red_Wolf_(comics)",
+   "name": "Red Wolf (comics)",
+   "tokens": 2201,
+   "mattr": 0.689,
+   "near_mattr": 0.6884,
+   "z": 0.02,
+   "rank": 166
+  },
+  {
+   "node": "Black_Fox_(Robert_Paine)",
+   "name": "Black Fox (Robert Paine)",
+   "tokens": 275,
+   "mattr": 0.6898,
+   "near_mattr": 0.6894,
+   "z": 0.01,
+   "rank": 167
+  },
+  {
+   "node": "Brian_Braddock",
+   "name": "Brian Braddock",
+   "tokens": 7226,
+   "mattr": 0.703,
+   "near_mattr": 0.7028,
+   "z": 0.01,
+   "rank": 168
+  },
+  {
+   "node": "Moondragon",
+   "name": "Moondragon",
+   "tokens": 3005,
+   "mattr": 0.6921,
+   "near_mattr": 0.692,
+   "z": 0.0,
+   "rank": 169
+  },
+  {
+   "node": "Janice_Lincoln",
+   "name": "Janice Lincoln",
+   "tokens": 1025,
+   "mattr": 0.6933,
+   "near_mattr": 0.6936,
+   "z": -0.01,
+   "rank": 170
+  },
+  {
+   "node": "She-Hulk",
+   "name": "She-Hulk",
+   "tokens": 12074,
+   "mattr": 0.7022,
+   "near_mattr": 0.7025,
+   "z": -0.01,
+   "rank": 171
+  },
+  {
+   "node": "Gauntlet_(Joseph_Green)",
+   "name": "Gauntlet (Joseph Green)",
+   "tokens": 570,
+   "mattr": 0.699,
+   "near_mattr": 0.6997,
+   "z": -0.03,
+   "rank": 172
+  },
+  {
+   "node": "Silencer_(comics)",
+   "name": "Silencer (comics)",
+   "tokens": 997,
+   "mattr": 0.6952,
+   "near_mattr": 0.6958,
+   "z": -0.03,
+   "rank": 173
+  },
+  {
+   "node": "Wolverine_(Ultimate_Marvel_character)",
+   "name": "Wolverine (Ultimate Marvel character)",
+   "tokens": 3041,
+   "mattr": 0.6901,
+   "near_mattr": 0.6911,
+   "z": -0.04,
+   "rank": 174
+  },
+  {
+   "node": "Moonglow_(comics)",
+   "name": "Moonglow (comics)",
+   "tokens": 342,
+   "mattr": 0.6872,
+   "near_mattr": 0.6895,
+   "z": -0.07,
+   "rank": 175
+  },
+  {
+   "node": "Blade_(character)",
+   "name": "Blade (character)",
+   "tokens": 6180,
+   "mattr": 0.6971,
+   "near_mattr": 0.6986,
+   "z": -0.07,
+   "rank": 176
+  },
+  {
+   "node": "Black_Cat_(Marvel_Comics)",
+   "name": "Black Cat (Marvel Comics)",
+   "tokens": 8889,
+   "mattr": 0.701,
+   "near_mattr": 0.7025,
+   "z": -0.07,
+   "rank": 177
+  },
+  {
+   "node": "Kid_Colt",
+   "name": "Kid Colt",
+   "tokens": 907,
+   "mattr": 0.6976,
+   "near_mattr": 0.6999,
+   "z": -0.07,
+   "rank": 178
+  },
+  {
+   "node": "Agent_X_(Marvel_Comics)",
+   "name": "Agent X (Marvel Comics)",
+   "tokens": 1371,
+   "mattr": 0.6953,
+   "near_mattr": 0.6967,
+   "z": -0.07,
+   "rank": 179
+  },
+  {
+   "node": "Iron_Man_(Ultimate_Marvel_character)",
+   "name": "Iron Man (Ultimate Marvel character)",
+   "tokens": 1606,
+   "mattr": 0.6913,
+   "near_mattr": 0.6933,
+   "z": -0.08,
+   "rank": 180
+  },
+  {
+   "node": "Ch'od",
+   "name": "Ch'od",
+   "tokens": 495,
+   "mattr": 0.6977,
+   "near_mattr": 0.7005,
+   "z": -0.12,
+   "rank": 181
+  },
+  {
+   "node": "Makkari_(character)",
+   "name": "Makkari (character)",
+   "tokens": 1024,
+   "mattr": 0.6913,
+   "near_mattr": 0.6941,
+   "z": -0.12,
+   "rank": 182
+  },
+  {
+   "node": "Mayday_Parker",
+   "name": "Mayday Parker",
+   "tokens": 7644,
+   "mattr": 0.6986,
+   "near_mattr": 0.7013,
+   "z": -0.13,
+   "rank": 183
+  },
+  {
+   "node": "Living_Lightning",
+   "name": "Living Lightning",
+   "tokens": 1736,
+   "mattr": 0.686,
+   "near_mattr": 0.6897,
+   "z": -0.14,
+   "rank": 184
+  },
+  {
+   "node": "Hulk",
+   "name": "Hulk",
+   "tokens": 7406,
+   "mattr": 0.6994,
+   "near_mattr": 0.7024,
+   "z": -0.14,
+   "rank": 185
+  },
+  {
+   "node": "Balder_the_Brave",
+   "name": "Balder the Brave",
+   "tokens": 1799,
+   "mattr": 0.6872,
+   "near_mattr": 0.691,
+   "z": -0.15,
+   "rank": 186
+  },
+  {
+   "node": "Garrison_Kane",
+   "name": "Garrison Kane",
+   "tokens": 950,
+   "mattr": 0.6943,
+   "near_mattr": 0.6985,
+   "z": -0.15,
+   "rank": 187
+  },
+  {
+   "node": "Hit-Monkey",
+   "name": "Hit-Monkey",
+   "tokens": 893,
+   "mattr": 0.6962,
+   "near_mattr": 0.7009,
+   "z": -0.15,
+   "rank": 188
+  },
+  {
+   "node": "Black_Rider_(character)",
+   "name": "Black Rider (character)",
+   "tokens": 1038,
+   "mattr": 0.688,
+   "near_mattr": 0.6917,
+   "z": -0.16,
+   "rank": 189
+  },
+  {
+   "node": "Anne_Weying",
+   "name": "Anne Weying",
+   "tokens": 714,
+   "mattr": 0.6902,
+   "near_mattr": 0.6954,
+   "z": -0.17,
+   "rank": 190
+  },
+  {
+   "node": "She-Hulk_(Lyra)",
+   "name": "She-Hulk (Lyra)",
+   "tokens": 1353,
+   "mattr": 0.6941,
+   "near_mattr": 0.6978,
+   "z": -0.19,
+   "rank": 191
+  },
+  {
+   "node": "Black_Widow_(Natasha_Romanova)",
+   "name": "Black Widow (Natasha Romanova)",
+   "tokens": 6157,
+   "mattr": 0.6938,
+   "near_mattr": 0.6982,
+   "z": -0.2,
+   "rank": 192
+  },
+  {
+   "node": "Will_o'_the_Wisp_(comics)",
+   "name": "Will o' the Wisp (comics)",
+   "tokens": 499,
+   "mattr": 0.6951,
+   "near_mattr": 0.6999,
+   "z": -0.2,
+   "rank": 193
+  },
+  {
+   "node": "Helix_(Marvel_Comics)",
+   "name": "Helix (Marvel Comics)",
+   "tokens": 193,
+   "mattr": 0.6821,
+   "near_mattr": 0.6896,
+   "z": -0.22,
+   "rank": 194
+  },
+  {
+   "node": "Magician_(Marvel_Comics)",
+   "name": "Magician (Marvel Comics)",
+   "tokens": 993,
+   "mattr": 0.6916,
+   "near_mattr": 0.6968,
+   "z": -0.23,
+   "rank": 195
+  },
+  {
+   "node": "Dogpool",
+   "name": "Dogpool",
+   "tokens": 363,
+   "mattr": 0.6817,
+   "near_mattr": 0.6896,
+   "z": -0.23,
+   "rank": 196
+  },
+  {
+   "node": "Blazing_Skull",
+   "name": "Blazing Skull",
+   "tokens": 783,
+   "mattr": 0.6893,
+   "near_mattr": 0.6983,
+   "z": -0.29,
+   "rank": 197
+  },
+  {
+   "node": "Alex_Wilder",
+   "name": "Alex Wilder",
+   "tokens": 743,
+   "mattr": 0.6909,
+   "near_mattr": 0.7002,
+   "z": -0.3,
+   "rank": 198
+  },
+  {
+   "node": "Golem_(Marvel_Comics)",
+   "name": "Golem (Marvel Comics)",
+   "tokens": 771,
+   "mattr": 0.6873,
+   "near_mattr": 0.6973,
+   "z": -0.32,
+   "rank": 199
+  },
+  {
+   "node": "Toxyn",
+   "name": "Toxyn",
+   "tokens": 468,
+   "mattr": 0.6938,
+   "near_mattr": 0.7014,
+   "z": -0.35,
+   "rank": 200
+  },
+  {
+   "node": "G._W._Bridge",
+   "name": "G. W. Bridge",
+   "tokens": 733,
+   "mattr": 0.6868,
+   "near_mattr": 0.6986,
+   "z": -0.37,
+   "rank": 201
+  },
+  {
+   "node": "Force_(comics)",
+   "name": "Force (comics)",
+   "tokens": 491,
+   "mattr": 0.6936,
+   "near_mattr": 0.7018,
+   "z": -0.37,
+   "rank": 202
+  },
+  {
+   "node": "Spider-Girl",
+   "name": "Spider-Girl",
+   "tokens": 2019,
+   "mattr": 0.6801,
+   "near_mattr": 0.6896,
+   "z": -0.37,
+   "rank": 203
+  },
+  {
+   "node": "Zombie_(comics)",
+   "name": "Zombie (comics)",
+   "tokens": 1494,
+   "mattr": 0.6895,
+   "near_mattr": 0.6965,
+   "z": -0.39,
+   "rank": 204
+  },
+  {
+   "node": "Genis-Vell",
+   "name": "Genis-Vell",
+   "tokens": 2123,
+   "mattr": 0.6777,
+   "near_mattr": 0.6874,
+   "z": -0.41,
+   "rank": 205
+  },
+  {
+   "node": "Mania_(character)",
+   "name": "Mania (character)",
+   "tokens": 2667,
+   "mattr": 0.6784,
+   "near_mattr": 0.6885,
+   "z": -0.42,
+   "rank": 206
+  },
+  {
+   "node": "Oya_(comics)",
+   "name": "Oya (comics)",
+   "tokens": 631,
+   "mattr": 0.6883,
+   "near_mattr": 0.7014,
+   "z": -0.42,
+   "rank": 207
+  },
+  {
+   "node": "Ikaris",
+   "name": "Ikaris",
+   "tokens": 1570,
+   "mattr": 0.6836,
+   "near_mattr": 0.6942,
+   "z": -0.43,
+   "rank": 208
+  },
+  {
+   "node": "Blue_Eagle_(character)",
+   "name": "Blue Eagle (character)",
+   "tokens": 576,
+   "mattr": 0.6893,
+   "near_mattr": 0.7026,
+   "z": -0.44,
+   "rank": 209
+  },
+  {
+   "node": "Hank_Pym",
+   "name": "Hank Pym",
+   "tokens": 5263,
+   "mattr": 0.682,
+   "near_mattr": 0.6925,
+   "z": -0.45,
+   "rank": 210
+  },
+  {
+   "node": "Black_Jack_Tarr",
+   "name": "Black Jack Tarr",
+   "tokens": 444,
+   "mattr": 0.6756,
+   "near_mattr": 0.6907,
+   "z": -0.46,
+   "rank": 211
+  },
+  {
+   "node": "Human_Torch_(android)",
+   "name": "Human Torch (android)",
+   "tokens": 3909,
+   "mattr": 0.6882,
+   "near_mattr": 0.6984,
+   "z": -0.48,
+   "rank": 212
+  },
+  {
+   "node": "Rachel_Summers",
+   "name": "Rachel Summers",
+   "tokens": 3326,
+   "mattr": 0.6833,
+   "near_mattr": 0.6938,
+   "z": -0.52,
+   "rank": 213
+  },
+  {
+   "node": "Ulysses_Bloodstone",
+   "name": "Ulysses Bloodstone",
+   "tokens": 1511,
+   "mattr": 0.6867,
+   "near_mattr": 0.696,
+   "z": -0.52,
+   "rank": 214
+  },
+  {
+   "node": "Union_Jack_(Marvel_Comics)",
+   "name": "Union Jack (Marvel Comics)",
+   "tokens": 2452,
+   "mattr": 0.6781,
+   "near_mattr": 0.6911,
+   "z": -0.53,
+   "rank": 215
+  },
+  {
+   "node": "Raza_Longknife",
+   "name": "Raza Longknife",
+   "tokens": 638,
+   "mattr": 0.6842,
+   "near_mattr": 0.7011,
+   "z": -0.54,
+   "rank": 216
+  },
+  {
+   "node": "Black_Knight_(Marvel_Comics)",
+   "name": "Black Knight (Marvel Comics)",
+   "tokens": 2714,
+   "mattr": 0.6751,
+   "near_mattr": 0.6879,
+   "z": -0.54,
+   "rank": 217
+  },
+  {
+   "node": "Delroy_Garrett",
+   "name": "Delroy Garrett",
+   "tokens": 1720,
+   "mattr": 0.676,
+   "near_mattr": 0.6904,
+   "z": -0.54,
+   "rank": 218
+  },
+  {
+   "node": "Captain_Marvel_(Khn'nr)",
+   "name": "Captain Marvel (Khn'nr)",
+   "tokens": 916,
+   "mattr": 0.6855,
+   "near_mattr": 0.7016,
+   "z": -0.57,
+   "rank": 219
+  },
+  {
+   "node": "Redneck_(comics)",
+   "name": "Redneck (comics)",
+   "tokens": 249,
+   "mattr": 0.6705,
+   "near_mattr": 0.69,
+   "z": -0.58,
+   "rank": 220
+  },
+  {
+   "node": "Timeslip_(comics)",
+   "name": "Timeslip (comics)",
+   "tokens": 493,
+   "mattr": 0.6906,
+   "near_mattr": 0.703,
+   "z": -0.59,
+   "rank": 221
+  },
+  {
+   "node": "Beta_Ray_Bill",
+   "name": "Beta Ray Bill",
+   "tokens": 3824,
+   "mattr": 0.6854,
+   "near_mattr": 0.6975,
+   "z": -0.6,
+   "rank": 222
+  },
+  {
+   "node": "Fandral",
+   "name": "Fandral",
+   "tokens": 1782,
+   "mattr": 0.6732,
+   "near_mattr": 0.6891,
+   "z": -0.61,
+   "rank": 223
+  },
+  {
+   "node": "Ghost_Rider_(Johnny_Blaze)",
+   "name": "Ghost Rider (Johnny Blaze)",
+   "tokens": 6750,
+   "mattr": 0.6856,
+   "near_mattr": 0.6991,
+   "z": -0.61,
+   "rank": 224
+  },
+  {
+   "node": "Spider-Woman",
+   "name": "Spider-Woman",
+   "tokens": 2292,
+   "mattr": 0.6717,
+   "near_mattr": 0.6876,
+   "z": -0.61,
+   "rank": 225
+  },
+  {
+   "node": "Iron_Fist_(character)",
+   "name": "Iron Fist (character)",
+   "tokens": 8822,
+   "mattr": 0.6897,
+   "near_mattr": 0.7029,
+   "z": -0.63,
+   "rank": 226
+  },
+  {
+   "node": "Iron_Lad",
+   "name": "Iron Lad",
+   "tokens": 913,
+   "mattr": 0.6805,
+   "near_mattr": 0.7007,
+   "z": -0.65,
+   "rank": 227
+  },
+  {
+   "node": "Shuri_(character)",
+   "name": "Shuri (character)",
+   "tokens": 2836,
+   "mattr": 0.6736,
+   "near_mattr": 0.6899,
+   "z": -0.66,
+   "rank": 228
+  },
+  {
+   "node": "Emma_Frost",
+   "name": "Emma Frost",
+   "tokens": 10113,
+   "mattr": 0.6889,
+   "near_mattr": 0.7029,
+   "z": -0.67,
+   "rank": 229
+  },
+  {
+   "node": "Ursa_Major_(character)",
+   "name": "Ursa Major (character)",
+   "tokens": 1156,
+   "mattr": 0.6831,
+   "near_mattr": 0.6945,
+   "z": -0.68,
+   "rank": 230
+  },
+  {
+   "node": "Stingray_(Marvel_Comics)",
+   "name": "Stingray (Marvel Comics)",
+   "tokens": 1218,
+   "mattr": 0.6846,
+   "near_mattr": 0.6962,
+   "z": -0.68,
+   "rank": 231
+  },
+  {
+   "node": "Blue_Diamond_(character)",
+   "name": "Blue Diamond (character)",
+   "tokens": 691,
+   "mattr": 0.6771,
+   "near_mattr": 0.6976,
+   "z": -0.69,
+   "rank": 232
+  },
+  {
+   "node": "Ajak",
+   "name": "Ajak",
+   "tokens": 625,
+   "mattr": 0.6807,
+   "near_mattr": 0.7034,
+   "z": -0.71,
+   "rank": 233
+  },
+  {
+   "node": "Nomad_(Marvel_Comics)",
+   "name": "Nomad (Marvel Comics)",
+   "tokens": 665,
+   "mattr": 0.6769,
+   "near_mattr": 0.6987,
+   "z": -0.73,
+   "rank": 234
+  },
+  {
+   "node": "The_Union_(Marvel)",
+   "name": "The Union (Marvel)",
+   "tokens": 1071,
+   "mattr": 0.6777,
+   "near_mattr": 0.6914,
+   "z": -0.73,
+   "rank": 235
+  },
+  {
+   "node": "Red_Raven_(Marvel_Comics)",
+   "name": "Red Raven (Marvel Comics)",
+   "tokens": 1468,
+   "mattr": 0.6841,
+   "near_mattr": 0.6968,
+   "z": -0.73,
+   "rank": 236
+  },
+  {
+   "node": "Ethan_Edwards",
+   "name": "Ethan Edwards",
+   "tokens": 574,
+   "mattr": 0.6798,
+   "near_mattr": 0.7024,
+   "z": -0.74,
+   "rank": 237
+  },
+  {
+   "node": "Black_Bolt",
+   "name": "Black Bolt",
+   "tokens": 5641,
+   "mattr": 0.6781,
+   "near_mattr": 0.696,
+   "z": -0.77,
+   "rank": 238
+  },
+  {
+   "node": "White_Tiger_(Heroes_for_Hire)",
+   "name": "White Tiger (Heroes for Hire)",
+   "tokens": 393,
+   "mattr": 0.6642,
+   "near_mattr": 0.6902,
+   "z": -0.77,
+   "rank": 239
+  },
+  {
+   "node": "Frankenstein's_Monster_(Marvel_Comics)",
+   "name": "Frankenstein's Monster (Marvel Comics)",
+   "tokens": 2910,
+   "mattr": 0.6724,
+   "near_mattr": 0.6918,
+   "z": -0.77,
+   "rank": 240
+  },
+  {
+   "node": "Hulk_2099",
+   "name": "Hulk 2099",
+   "tokens": 744,
+   "mattr": 0.6779,
+   "near_mattr": 0.7018,
+   "z": -0.78,
+   "rank": 241
+  },
+  {
+   "node": "Spider-Man_(Marvel_Mangaverse)",
+   "name": "Spider-Man (Marvel Mangaverse)",
+   "tokens": 1143,
+   "mattr": 0.6822,
+   "near_mattr": 0.6951,
+   "z": -0.78,
+   "rank": 242
+  },
+  {
+   "node": "Jubilee_(character)",
+   "name": "Jubilee (character)",
+   "tokens": 4325,
+   "mattr": 0.6803,
+   "near_mattr": 0.6962,
+   "z": -0.78,
+   "rank": 243
+  },
+  {
+   "node": "Blue_Bullet",
+   "name": "Blue Bullet",
+   "tokens": 325,
+   "mattr": 0.6635,
+   "near_mattr": 0.6903,
+   "z": -0.79,
+   "rank": 244
+  },
+  {
+   "node": "Scorpio_(Marvel_Comics)",
+   "name": "Scorpio (Marvel Comics)",
+   "tokens": 1153,
+   "mattr": 0.6812,
+   "near_mattr": 0.6947,
+   "z": -0.81,
+   "rank": 245
+  },
+  {
+   "node": "Jean_Grey",
+   "name": "Jean Grey",
+   "tokens": 11357,
+   "mattr": 0.686,
+   "near_mattr": 0.703,
+   "z": -0.81,
+   "rank": 246
+  },
+  {
+   "node": "Power_Man_(Victor_Alvarez)",
+   "name": "Power Man (Victor Alvarez)",
+   "tokens": 902,
+   "mattr": 0.677,
+   "near_mattr": 0.7016,
+   "z": -0.82,
+   "rank": 247
+  },
+  {
+   "node": "Star-Lord",
+   "name": "Star-Lord",
+   "tokens": 5691,
+   "mattr": 0.6806,
+   "near_mattr": 0.6984,
+   "z": -0.83,
+   "rank": 248
+  },
+  {
+   "node": "Anya_Corazon",
+   "name": "Anya Corazon",
+   "tokens": 3592,
+   "mattr": 0.6791,
+   "near_mattr": 0.6965,
+   "z": -0.85,
+   "rank": 249
+  },
+  {
+   "node": "Blackwulf",
+   "name": "Blackwulf",
+   "tokens": 1017,
+   "mattr": 0.6772,
+   "near_mattr": 0.6967,
+   "z": -0.86,
+   "rank": 250
+  },
+  {
+   "node": "Digitek_(character)",
+   "name": "Digitek (character)",
+   "tokens": 481,
+   "mattr": 0.6831,
+   "near_mattr": 0.7015,
+   "z": -0.87,
+   "rank": 251
+  },
+  {
+   "node": "Powerhouse_(Marvel_Comics)",
+   "name": "Powerhouse (Marvel Comics)",
+   "tokens": 535,
+   "mattr": 0.6801,
+   "near_mattr": 0.7024,
+   "z": -0.95,
+   "rank": 252
+  },
+  {
+   "node": "Hybrid_(Scott_Washington)",
+   "name": "Hybrid (Scott Washington)",
+   "tokens": 682,
+   "mattr": 0.6708,
+   "near_mattr": 0.6999,
+   "z": -0.95,
+   "rank": 253
+  },
+  {
+   "node": "Devil_Hulk",
+   "name": "Devil Hulk",
+   "tokens": 1056,
+   "mattr": 0.6735,
+   "near_mattr": 0.6914,
+   "z": -0.96,
+   "rank": 254
+  },
+  {
+   "node": "Eddie_Brock",
+   "name": "Eddie Brock",
+   "tokens": 10254,
+   "mattr": 0.6821,
+   "near_mattr": 0.7032,
+   "z": -1.01,
+   "rank": 255
+  },
+  {
+   "node": "Nightmask",
+   "name": "Nightmask",
+   "tokens": 1342,
+   "mattr": 0.6793,
+   "near_mattr": 0.6983,
+   "z": -1.03,
+   "rank": 256
+  },
+  {
+   "node": "Kristoff_Vernard",
+   "name": "Kristoff Vernard",
+   "tokens": 1039,
+   "mattr": 0.6711,
+   "near_mattr": 0.6938,
+   "z": -1.04,
+   "rank": 257
+  },
+  {
+   "node": "Fin_Fang_Foom",
+   "name": "Fin Fang Foom",
+   "tokens": 1934,
+   "mattr": 0.6628,
+   "near_mattr": 0.6891,
+   "z": -1.06,
+   "rank": 258
+  },
+  {
+   "node": "Human_Torch",
+   "name": "Human Torch",
+   "tokens": 3923,
+   "mattr": 0.6766,
+   "near_mattr": 0.6985,
+   "z": -1.07,
+   "rank": 259
+  },
+  {
+   "node": "Yelena_Belova",
+   "name": "Yelena Belova",
+   "tokens": 1323,
+   "mattr": 0.6813,
+   "near_mattr": 0.6998,
+   "z": -1.12,
+   "rank": 260
+  },
+  {
+   "node": "Nova_(Richard_Rider)",
+   "name": "Nova (Richard Rider)",
+   "tokens": 3240,
+   "mattr": 0.6726,
+   "near_mattr": 0.6945,
+   "z": -1.13,
+   "rank": 261
+  },
+  {
+   "node": "Peggy_Carter",
+   "name": "Peggy Carter",
+   "tokens": 1078,
+   "mattr": 0.6711,
+   "near_mattr": 0.6922,
+   "z": -1.15,
+   "rank": 262
+  },
+  {
+   "node": "Leech_(character)",
+   "name": "Leech (character)",
+   "tokens": 1087,
+   "mattr": 0.6702,
+   "near_mattr": 0.6935,
+   "z": -1.19,
+   "rank": 263
+  },
+  {
+   "node": "Kismet_(Marvel_Comics)",
+   "name": "Kismet (Marvel Comics)",
+   "tokens": 967,
+   "mattr": 0.6665,
+   "near_mattr": 0.6977,
+   "z": -1.19,
+   "rank": 264
+  },
+  {
+   "node": "Spider-UK",
+   "name": "Spider-UK",
+   "tokens": 1277,
+   "mattr": 0.6784,
+   "near_mattr": 0.6978,
+   "z": -1.19,
+   "rank": 265
+  },
+  {
+   "node": "Doctor_Strange",
+   "name": "Doctor Strange",
+   "tokens": 6778,
+   "mattr": 0.6738,
+   "near_mattr": 0.7006,
+   "z": -1.19,
+   "rank": 266
+  },
+  {
+   "node": "Star_Brand",
+   "name": "Star Brand",
+   "tokens": 3784,
+   "mattr": 0.6708,
+   "near_mattr": 0.6961,
+   "z": -1.25,
+   "rank": 267
+  },
+  {
+   "node": "Straw_Man_(comics)",
+   "name": "Straw Man (comics)",
+   "tokens": 460,
+   "mattr": 0.6679,
+   "near_mattr": 0.6973,
+   "z": -1.26,
+   "rank": 268
+  },
+  {
+   "node": "Bug_(Marvel_Comics)",
+   "name": "Bug (Marvel Comics)",
+   "tokens": 700,
+   "mattr": 0.6663,
+   "near_mattr": 0.6999,
+   "z": -1.28,
+   "rank": 269
+  },
+  {
+   "node": "Radioactive_Man_(comics)",
+   "name": "Radioactive Man (comics)",
+   "tokens": 1397,
+   "mattr": 0.6742,
+   "near_mattr": 0.6974,
+   "z": -1.28,
+   "rank": 270
+  },
+  {
+   "node": "Devil_Dinosaur",
+   "name": "Devil Dinosaur",
+   "tokens": 3145,
+   "mattr": 0.663,
+   "near_mattr": 0.693,
+   "z": -1.28,
+   "rank": 271
+  },
+  {
+   "node": "Silk_(character)",
+   "name": "Silk (character)",
+   "tokens": 1878,
+   "mattr": 0.6582,
+   "near_mattr": 0.6914,
+   "z": -1.3,
+   "rank": 272
+  },
+  {
+   "node": "Backhand_(character)",
+   "name": "Backhand (character)",
+   "tokens": 538,
+   "mattr": 0.6727,
+   "near_mattr": 0.7043,
+   "z": -1.31,
+   "rank": 273
+  },
+  {
+   "node": "Korvus",
+   "name": "Korvus",
+   "tokens": 486,
+   "mattr": 0.6734,
+   "near_mattr": 0.7023,
+   "z": -1.34,
+   "rank": 274
+  },
+  {
+   "node": "Father_Time_(Marvel_Comics)",
+   "name": "Father Time (Marvel Comics)",
+   "tokens": 537,
+   "mattr": 0.6721,
+   "near_mattr": 0.7036,
+   "z": -1.34,
+   "rank": 275
+  },
+  {
+   "node": "Hyperion_(character)",
+   "name": "Hyperion (character)",
+   "tokens": 1900,
+   "mattr": 0.6565,
+   "near_mattr": 0.6909,
+   "z": -1.36,
+   "rank": 276
+  },
+  {
+   "node": "Inferno_(Dante_Pertuz)",
+   "name": "Inferno (Dante Pertuz)",
+   "tokens": 1175,
+   "mattr": 0.6738,
+   "near_mattr": 0.6956,
+   "z": -1.37,
+   "rank": 277
+  },
+  {
+   "node": "Thena",
+   "name": "Thena",
+   "tokens": 992,
+   "mattr": 0.6645,
+   "near_mattr": 0.696,
+   "z": -1.39,
+   "rank": 278
+  },
+  {
+   "node": "Solomon_Kane_(comics)",
+   "name": "Solomon Kane (comics)",
+   "tokens": 904,
+   "mattr": 0.6566,
+   "near_mattr": 0.7011,
+   "z": -1.48,
+   "rank": 279
+  },
+  {
+   "node": "Phyla-Vell",
+   "name": "Phyla-Vell",
+   "tokens": 1878,
+   "mattr": 0.6537,
+   "near_mattr": 0.6908,
+   "z": -1.48,
+   "rank": 280
+  },
+  {
+   "node": "Venom_(character)",
+   "name": "Venom (character)",
+   "tokens": 10254,
+   "mattr": 0.6728,
+   "near_mattr": 0.7035,
+   "z": -1.5,
+   "rank": 281
+  },
+  {
+   "node": "Captain_Universe",
+   "name": "Captain Universe",
+   "tokens": 2808,
+   "mattr": 0.6535,
+   "near_mattr": 0.6897,
+   "z": -1.54,
+   "rank": 282
+  },
+  {
+   "node": "Sentry_(Robert_Reynolds)",
+   "name": "Sentry (Robert Reynolds)",
+   "tokens": 3147,
+   "mattr": 0.6625,
+   "near_mattr": 0.6949,
+   "z": -1.59,
+   "rank": 283
+  },
+  {
+   "node": "Dragon_Lord_(character)",
+   "name": "Dragon Lord (character)",
+   "tokens": 661,
+   "mattr": 0.6533,
+   "near_mattr": 0.6998,
+   "z": -1.6,
+   "rank": 284
+  },
+  {
+   "node": "Adam_Warlock",
+   "name": "Adam Warlock",
+   "tokens": 6414,
+   "mattr": 0.6647,
+   "near_mattr": 0.7006,
+   "z": -1.67,
+   "rank": 285
+  },
+  {
+   "node": "Scarlet_Scarab",
+   "name": "Scarlet Scarab",
+   "tokens": 1119,
+   "mattr": 0.668,
+   "near_mattr": 0.695,
+   "z": -1.72,
+   "rank": 286
+  },
+  {
+   "node": "Doctor_Spectrum",
+   "name": "Doctor Spectrum",
+   "tokens": 1539,
+   "mattr": 0.6523,
+   "near_mattr": 0.6947,
+   "z": -1.78,
+   "rank": 287
+  },
+  {
+   "node": "Bird-Brain_(Marvel_Comics)",
+   "name": "Bird-Brain (Marvel Comics)",
+   "tokens": 350,
+   "mattr": 0.6288,
+   "near_mattr": 0.6914,
+   "z": -1.94,
+   "rank": 288
+  },
+  {
+   "node": "Firelord_(character)",
+   "name": "Firelord (character)",
+   "tokens": 572,
+   "mattr": 0.6471,
+   "near_mattr": 0.701,
+   "z": -2.08,
+   "rank": 289
+  },
+  {
+   "node": "Ghost_Rider_(Danny_Ketch)",
+   "name": "Ghost Rider (Danny Ketch)",
+   "tokens": 1420,
+   "mattr": 0.6637,
+   "near_mattr": 0.6973,
+   "z": -2.11,
+   "rank": 290
+  },
+  {
+   "node": "Phoenix_Force",
+   "name": "Phoenix Force",
+   "tokens": 5369,
+   "mattr": 0.6478,
+   "near_mattr": 0.6958,
+   "z": -2.17,
+   "rank": 291
+  },
+  {
+   "node": "Citizen_V",
+   "name": "Citizen V",
+   "tokens": 748,
+   "mattr": 0.6414,
+   "near_mattr": 0.7021,
+   "z": -2.26,
+   "rank": 292
+  },
+  {
+   "node": "Scarlet_Spider",
+   "name": "Scarlet Spider",
+   "tokens": 899,
+   "mattr": 0.6355,
+   "near_mattr": 0.7025,
+   "z": -2.41,
+   "rank": 293
+  },
+  {
+   "node": "Ronin_(Marvel_Comics)",
+   "name": "Ronin (Marvel Comics)",
+   "tokens": 1016,
+   "mattr": 0.645,
+   "near_mattr": 0.6971,
+   "z": -2.48,
+   "rank": 294
+  },
+  {
+   "node": "Ghost_Rider",
+   "name": "Ghost Rider",
+   "tokens": 6728,
+   "mattr": 0.6483,
+   "near_mattr": 0.7005,
+   "z": -2.58,
+   "rank": 295
+  },
+  {
+   "node": "Rocket_Raccoon",
+   "name": "Rocket Raccoon",
+   "tokens": 2629,
+   "mattr": 0.6379,
+   "near_mattr": 0.692,
+   "z": -2.58,
+   "rank": 296
+  },
+  {
+   "node": "Crippler_(character)",
+   "name": "Crippler (character)",
+   "tokens": 346,
+   "mattr": 0.6119,
+   "near_mattr": 0.692,
+   "z": -2.59,
+   "rank": 297
+  },
+  {
+   "node": "Crane_Mother",
+   "name": "Crane Mother",
+   "tokens": 621,
+   "mattr": 0.6294,
+   "near_mattr": 0.706,
+   "z": -2.76,
+   "rank": 298
+  },
+  {
+   "node": "Captain_Marvel_(Marvel_Comics)",
+   "name": "Captain Marvel (Marvel Comics)",
+   "tokens": 2640,
+   "mattr": 0.6309,
+   "near_mattr": 0.691,
+   "z": -2.87,
+   "rank": 299
+  },
+  {
+   "node": "Abomination_(character)",
+   "name": "Abomination (character)",
+   "tokens": 3930,
+   "mattr": 0.6438,
+   "near_mattr": 0.6987,
+   "z": -2.95,
+   "rank": 300
+  },
+  {
+   "node": "Hawkeye_(comics)",
+   "name": "Hawkeye (comics)",
+   "tokens": 349,
+   "mattr": 0.5944,
+   "near_mattr": 0.6926,
+   "z": -3.38,
+   "rank": 301
+  },
+  {
+   "node": "Gorgon_(Inhuman)",
+   "name": "Gorgon (Inhuman)",
+   "tokens": 798,
+   "mattr": 0.611,
+   "near_mattr": 0.6991,
+   "z": -3.44,
+   "rank": 302
+  },
+  {
+   "node": "Ms._Marvel",
+   "name": "Ms. Marvel",
+   "tokens": 1753,
+   "mattr": 0.6032,
+   "near_mattr": 0.6936,
+   "z": -4.15,
+   "rank": 303
+  }
+ ]
+}

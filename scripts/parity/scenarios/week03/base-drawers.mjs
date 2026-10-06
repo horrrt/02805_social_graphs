@@ -1,0 +1,41 @@
+// P0b base scenario for Week 3's drawers (questions.js, echarts-views.js,
+// corridor.js): #questions with the ring moved (its year slider and a hover),
+// #views (the area mode buttons, both sliders, the asylum select), #cliques,
+// a typology chip and its "See all" drawer, #dk-country, and a palette change
+// through the style bar with the drawers open.
+export default [
+  {
+    name: "w3-drawers",
+    url: "weeks/week03/",
+    steps: [
+      { click: "#questions > summary", label: "open #questions" },
+      { snap: true },
+      { press: ["#q-ring-year", "Home"], label: "ring year to the first" },
+      { hover: ["#q-ring", 0.6, 0.4], label: "hover the ring" },
+      { snap: true, label: "ring moved" },
+      { click: "#views > summary", label: "open #views" },
+      { snap: true },
+      ...["in", "out", "both"].flatMap((mode) => [
+        { click: `#v-area-mode [data-mode="${mode}"]`, label: `area mode ${mode}` },
+        { snap: true },
+      ]),
+      { press: ["#v-graph-year", "Home"], label: "force layout year to the first" },
+      { press: ["#v-graph-floor", "ArrowRight"], label: "corridor floor up one" },
+      { snap: true, label: "sliders moved" },
+      { select: ["#v-asylum-origin", { index: 1 }], label: "asylum origin, second option" },
+      { snap: true },
+      { click: "#cliques > summary", label: "open #cliques" },
+      { snap: true },
+      { click: '.eg-chip[data-iso3="ISL"]', label: "typology chip ISL" },
+      { snap: true },
+      { click: '.eg-all[data-type="peripheral"]', label: "typology drawer peripheral" },
+      { snap: true },
+      { select: ["#dk-country", "SWE"], label: "dk-country Sweden" },
+      { snap: true },
+      { click: "#style-trigger" },
+      { click: '#style-bar summary:has-text("More options")' },
+      { select: ["#style-palette", "slate"], label: "palette slate with the drawers open" },
+      { snap: true },
+    ],
+  },
+];
