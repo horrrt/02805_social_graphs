@@ -2797,3 +2797,21 @@
 }
 .corridor .gv-legend .gv-key:hover { text-decoration: underline; }
 .corridor .gv-legend .gv-key:focus-visible { outline: 2px solid var(--graph-accent); outline-offset: 2px; }
+
+/* Week 6's explorer: a character picker, then two ranked columns of its nearest pages. */
+.corridor .w6-pick { align-items: center; display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 14px; }
+.corridor .w6-pick label { color: var(--ink-soft); font-size: var(--fs-small); font-weight: 600; }
+.corridor .w6-pick select { background: var(--card); border: 1px solid var(--line); border-radius: 6px; color: var(--ink); font: inherit; font-size: var(--fs-small); max-width: 16rem; padding: 4px 8px; }
+.corridor .w6-cols { display: grid; gap: 20px; grid-template-columns: 1fr 1fr; }
+.corridor .w6-col h4 { font-size: var(--fs-body); margin: 0 0 8px; }
+.corridor .w6-count { color: var(--ink-soft); font-weight: 400; }
+.corridor .w6-col ol { display: flex; flex-direction: column; gap: 4px; margin: 0; padding-left: 22px; }
+.corridor .w6-col li { font-size: var(--fs-small); line-height: 1.4; padding: 3px 0 3px 2px; }
+.corridor .w6-col li > span { display: inline-block; }
+.corridor .w6-name { font-weight: 600; margin-right: 8px; }
+.corridor .w6-where { border: 1px solid var(--line); border-radius: 999px; color: var(--ink-soft); font-size: var(--fs-caption); margin-right: 8px; padding: 0 7px; }
+.corridor .w6-linked .w6-where { background: var(--ink); border-color: var(--ink); color: var(--card); }
+.corridor .w6-cos { color: var(--ink-soft); font-variant-numeric: tabular-nums; }
+.corridor .w6-words { color: var(--ink-soft); display: block !important; font-size: var(--fs-caption); }
+/* A strip chart reads the page's light tokens, so in the dark hero it sits on a card. */
+.corridor .w6-hero-panel { background: var(--card); border-radius: 12px; padding: 14px 18px 10px; }

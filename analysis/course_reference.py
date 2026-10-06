@@ -10,13 +10,16 @@ brief prints them; if we do not, every later number inherits the difference.
   week 2 null draws G(n, m) with the same n and m, 1,000 times
   (analysis/week02_nullmodels_facts.json). The biggest hub's degree is its
   share of link ends times 2m. A miss exits non-zero.
+- Lookalikes (brief 6): linked pages among each page's ten nearest by text,
+  read from analysis/week06_lookalikes.json, which rebuilds the course's
+  explorable with its own token rule. A miss exits non-zero.
 - Text (brief 5): the brief quotes tokens, types and the share of types used
   once without naming a tokenizer. We report our word rule
   (week05_text.WORD_RULE) and spaCy's tokenizer with punctuation and spaces
   dropped, and record the gap rather than tune either rule to close it.
 
 Briefs reviewed 6 October 2026 at
-https://sunelehmann.com/socialgraphs2026-web/weeks/week{1,2,3,5}.html. They
+https://sunelehmann.com/socialgraphs2026-web/weeks/week{1,2,3,5,6}.html. They
 change; reread them before trusting this file.
 
     python analysis/course_reference.py      # about a minute, most of it spaCy
@@ -35,6 +38,9 @@ REVIEWED = "2026-10-06"
 
 def network_checks():
     f = json.loads((ROOT / "analysis/week01_facts.json").read_text())
+    look = json.loads((ROOT / "analysis/week06_lookalikes.json").read_text())
+    c = look["course"]
+    everywhere = {"marvel", "comics", "the"} <= set(look["on_every_page"])
     nulls = json.loads((ROOT / "analysis/week02_nullmodels_facts.json").read_text())
     er = {q["key"]: q["er"] for q in nulls["quantities"]}
     two_m = 2 * f["n_undirected"]
@@ -55,6 +61,12 @@ def network_checks():
         (3, "largest strongly connected component", 229, f["largest_scc"], 0),
         (2, "random network: biggest hub's degree, mean", 19, er["hub_share"]["mean"] * two_m, 0),
         (2, "random network: average distance, mean", 2.8, er["avg_path_giant"]["mean"], 1),
+        (6, "lookalikes vocabulary", 27033, c["vocab"], 0),
+        (6, "lookalikes: linked in ten, raw counts", 1.86, c["raw"], 2),
+        (6, "lookalikes: linked in ten, stopwords removed", 2.84, c["stopwords"], 2),
+        (6, "lookalikes: linked in ten, TF-IDF", 4.01, c["tfidf"], 2),
+        (6, "lookalikes: linked in ten, ten random pages", 0.31, c["random"], 2),
+        (6, "Marvel, Comics and the on all 303 pages (1 = yes)", 1, int(everywhere), 0),
     ]
 
 
