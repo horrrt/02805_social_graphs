@@ -1,4 +1,14 @@
 import PageScripts from "@/components/PageScripts";
+import { type RailItem, SectionRail } from "@/components/post/SectionRail";
+
+// The section rail, drawn here too so the guide shows it under every skin.
+const RAIL: RailItem[] = [
+  { target: "tokens", label: "Tokens" },
+  { target: "components", label: "Components" },
+  { target: "skins", label: "Skins" },
+  { target: "palettes", label: "Palettes" },
+  { target: "tables", label: "Tables" },
+];
 
 export default function Page() {
   return (
@@ -1238,6 +1248,7 @@ export default function Page() {
           </div>
         </footer>
       </main>
+      <SectionRail column={1132} items={RAIL} />
       <PageScripts page="styleguide" />
     </>
   );

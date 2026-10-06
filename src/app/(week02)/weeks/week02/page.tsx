@@ -1,4 +1,13 @@
 import PageScripts from "@/components/PageScripts";
+import { type RailItem, SectionRail } from "@/components/post/SectionRail";
+
+// The section rail down the left margin, as on Weeks 4 and 5.
+const RAIL: RailItem[] = [
+  { target: "try-it", label: "Will your journey survive?" },
+  { target: "post", label: "A busy station is not always a vital connection" },
+  { target: "results", label: "Count the alternative routes, not just the connections" },
+  { target: "evidence", label: "Go deeper" },
+];
 
 export default function Page() {
   return (
@@ -906,6 +915,7 @@ export default function Page() {
           <a href="../../weeks/week02/">Week 2</a>
         </span>
       </footer>
+      <SectionRail column={1120} items={RAIL} />
       <PageScripts page="week02" />
     </>
   );
