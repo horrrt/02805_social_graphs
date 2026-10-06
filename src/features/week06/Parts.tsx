@@ -14,11 +14,12 @@ import { useData } from "@/lib/useData";
 import { useHydrated } from "@/lib/useHydrated";
 import { asset } from "@/scripts/site.js";
 import {
-  choices, DATA, distanceTable, genderRows, ladder, ladderTable, linkedCount, minis, neighbourRows, PICKS, readTable, short, START,
+  choices, contrast, DATA, distanceTable, gapRows, ladder, ladderTable, leanRows, linkedCount, minis, neighbourRows, pickNote, PICKS, readTable,
+  short, START, two,
 } from "@/scripts/week06-lookalikes.js";
 
 type Data = {
-  facts: { gender: { words: Record<string, [string, number][]> } } & Record<string, unknown>;
+  facts: { gender: { words: Record<string, [string, number][]> }; course: { tfidf: number }; names: { hits: number } } & Record<string, unknown>;
   names: string[];
 } & Record<string, unknown>;
 type Strip = { rows: StripRow[]; opts: StripOptions };
@@ -31,8 +32,13 @@ function usePart<T>(build: (data: Data) => unknown) {
     if (state.status === "error") console.error("week06 lookalikes failed", state.error);
   }, [state]);
   const part = useMemo(() => (state.data ? (build(state.data) as T) : null), [state.data, build]);
-  useIslandReady(part !== null);
-  return part;
+  useIslandReady(part !== null || state.status === "error");
+  return { part, failed: state.status === "error" };
+}
+
+/** What a host shows when lookalikes.json did not load, in place of its chart or table. */
+function Failed() {
+  return <p className="w6-failed">This part needs the page's data file, which did not load. Reload the page to try again.</p>;
 }
 
 const Host = (id: string, className?: string) =>
@@ -42,14 +48,14 @@ const Host = (id: string, className?: string) =>
 
 const stripPart = (id: string, build: (d: Data) => unknown, className?: string) =>
   function StripPart() {
-    const part = usePart<Strip>(build);
-    return <div className={className} id={id}>{part ? <StripChart rows={part.rows} opts={part.opts} /> : null}</div>;
+    const { part, failed } = usePart<Strip>(build);
+    return <div className={className} id={id}>{part ? <StripChart rows={part.rows} opts={part.opts} /> : failed ? <Failed /> : null}</div>;
   };
 
 const tablePart = (id: string, build: (d: Data) => unknown) =>
   function TablePart() {
-    const part = usePart<TableSpec>(build);
-    return <div id={id}>{part ? <Table {...part} /> : null}</div>;
+    const { part, failed } = usePart<TableSpec>(build);
+    return <div id={id}>{part ? <Table {...part} /> : failed ? <Failed /> : null}</div>;
   };
 
 // ---- the findings minis ------------------------------------------------------------------
@@ -59,7 +65,7 @@ const buildMinis = (d: Data) => minis(d) as unknown as Record<Mini, [MiniSpec, s
 
 const miniPart = (finding: Mini) =>
   function MiniPart() {
-    const all = usePart<Record<Mini, [MiniSpec, string]>>(buildMinis);
+    const { part: all } = usePart<Record<Mini, [MiniSpec, string]>>(buildMinis);
     return (
       <div className="w4-mini" data-finding={finding}>
         {all ? (
@@ -98,20 +104,21 @@ const buildWords = (d: Data): TableSpec => {
 
 type Row = ReturnType<typeof neighbourRows>[number];
 
-function Column({ title, rows }: { title: string; rows: Row[] }) {
+function Column({ title, rows, average }: { title: string; rows: Row[]; average: number }) {
   return (
     <div className="w6-col">
-      <h4>
+      <h3>
         {title}
         {" "}
-        <span className="w6-count">{`${linkedCount(rows)} of 10 linked`}</span>
-      </h4>
+        <span className="w6-count">{`${linkedCount(rows)} of 10 linked · all pages ${two(average)}`}</span>
+      </h3>
       <ol>
         {rows.map((r) => (
           <li key={r.index} className={r.linked ? "w6-linked" : undefined}>
             <span className="w6-name">{r.name}</span>
+            {r.gender ? <span className="w6-gender">{r.gender}</span> : null}
             <span className="w6-where">{r.where}</span>
-            <span className="w6-cos">{r.cos}</span>
+            <span className="w6-cos">{`cos ${r.cos}`}</span>
             <span className="w6-words">{r.words.join(", ")}</span>
           </li>
         ))}
@@ -147,12 +154,10 @@ function Explorer({ data }: { data: Data }) {
           })}
         </span>
       </div>
-      <p className="visually-hidden" aria-live="polite">
-        {`${short(data.names[index])}: ${linkedCount(kept)} of 10 linked with names kept, ${linkedCount(removed)} with names removed.`}
-      </p>
+      <p className="w6-note" aria-live="polite">{pickNote(data, index)}</p>
       <div className="w6-cols">
-        <Column title="Names kept" rows={kept} />
-        <Column title="Names removed" rows={removed} />
+        <Column title="Names kept" rows={kept} average={data.facts.course.tfidf} />
+        <Column title="Names removed" rows={removed} average={data.facts.names.hits} />
       </div>
     </>
   );
@@ -161,8 +166,44 @@ function Explorer({ data }: { data: Data }) {
 const same = (d: Data) => d;
 
 function ExplorerPart() {
-  const data = usePart<Data>(same);
-  return <div className="w6-explorer" id="explore-app">{data ? <Explorer data={data} /> : null}</div>;
+  const { part: data, failed } = usePart<Data>(same);
+  return <div className="w6-explorer" id="explore-app">{data ? <Explorer data={data} /> : failed ? <Failed /> : null}</div>;
+}
+
+// ---- the hero's contrast: Storm's nearest pages, names kept and removed -----------------
+
+type Contrast = ReturnType<typeof contrast>;
+const buildContrast = (d: Data) => contrast(d);
+
+function ContrastList({ title, rows }: { title: string; rows: Row[] }) {
+  return (
+    <div>
+      <p className="w6-hero-h">{title}</p>
+      <ol>
+        {rows.map((r) => (
+          <li key={r.index}>
+            <b>{r.name}</b>
+            {" "}
+            <span>{r.words.slice(0, 2).join(", ")}</span>
+          </li>
+        ))}
+      </ol>
+    </div>
+  );
+}
+
+function ContrastPart() {
+  const { part, failed } = usePart<Contrast>(buildContrast);
+  return (
+    <div className="w6-hero-panel w6-contrast" id="hero-contrast">
+      {part ? (
+        <>
+          <ContrastList title={`${part.name}, names kept`} rows={part.kept} />
+          <ContrastList title={`${part.name}, names removed`} rows={part.removed} />
+        </>
+      ) : failed ? <Failed /> : null}
+    </div>
+  );
 }
 
 // ---- the parts ---------------------------------------------------------------------------------
@@ -171,7 +212,7 @@ const readKept = (d: Data) => readTable(d, "tfidf");
 const readRemoved = (d: Data) => readTable(d, "no_names");
 
 const SPECS = {
-  hero: [stripPart("chart-hero", ladder, "w5-hero-plot w6-hero-panel"), Host("chart-hero", "w5-hero-plot w6-hero-panel")],
+  hero: [ContrastPart, Host("hero-contrast", "w6-hero-panel w6-contrast")],
   "1": [miniPart("1"), miniHost("1")],
   "2": [miniPart("2"), miniHost("2")],
   "3": [miniPart("3"), miniHost("3")],
@@ -180,7 +221,8 @@ const SPECS = {
   ladderTable: [tablePart("names-table", ladderTable), Host("names-table")],
   distance: [tablePart("names-distance", distanceTable), Host("names-distance")],
   readKept: [tablePart("names-read", readKept), Host("names-read")],
-  gender: [stripPart("chart-gender", genderRows), Host("chart-gender")],
+  lean: [stripPart("chart-lean", leanRows), Host("chart-lean")],
+  gap: [stripPart("chart-gap", gapRows), Host("chart-gap")],
   words: [tablePart("gender-words", buildWords), Host("gender-words")],
   readRemoved: [tablePart("gender-read", readRemoved), Host("gender-read")],
 } as const;
@@ -188,7 +230,7 @@ const SPECS = {
 type PartName = keyof typeof SPECS;
 
 const ROOTS: Record<PartName, string> = {
-  hero: "#chart-hero",
+  hero: "#hero-contrast",
   "1": '[data-finding="1"]',
   "2": '[data-finding="2"]',
   "3": '[data-finding="3"]',
@@ -197,7 +239,8 @@ const ROOTS: Record<PartName, string> = {
   ladderTable: "#names-table",
   distance: "#names-distance",
   readKept: "#names-read",
-  gender: "#chart-gender",
+  lean: "#chart-lean",
+  gap: "#chart-gap",
   words: "#gender-words",
   readRemoved: "#gender-read",
 };

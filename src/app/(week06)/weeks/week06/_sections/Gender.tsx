@@ -22,24 +22,32 @@ export function Gender() {
         num="3A"
         question="With the names gone, what makes two pages read alike?"
         answer="Pages about women. They fill 48% of all the ten-nearest lists and make up 17% of the pages; she and her make a woman's list almost all women."
-        layout="beside"
+        layout="below"
         did={
           <TermProse as="p" className="sub" roots={["#gender-did p"]} terms={TERMS} after={[DATA]}>
-            Wikidata labels 197 of the pages as a woman or a man: 52 women and 145 men. For each group we counted the women among the labelled pages in their ten nearest. A shuffle deals the labels out again over the same pages and keeps every list; we ran 1,000. A page that sits in many lists lifts women's and men's shares alike, so the gap between the two is what it cannot explain. Then we removed he, she and their forms as well.
+            For every page we took its ten nearest pages and counted the pages about women among them, by Wikidata's label: 52 women and 145 men among the 197 pages that have one. Then we compared women's lists with men's. Women's pages that sit in many lists lift both alike, so the gap between the two is what the pages' own words add; 1,000 shuffles of the labels over the same lists put that gap at about 0. Last, we removed he, she and their forms as well.
           </TermProse>
         }
         surprise={
           <Notice icon="💡" headline="What to notice">
-            He is on 291 pages and his on 300, so TF-IDF gives them almost no weight: an IDF of 0.04 against 0.46 for she. Without names a woman's labelled nearest pages are 96% women and a man's 44%, against 26% and 27% shuffled. Removing the pronouns too cuts the gap from 51 to 13 points, but women's pages still fill 44% of the lists, and we have not found why.
+            He is on 291 pages and his on 300, so TF-IDF gives them almost no weight: an IDF of 0.04 against 0.46 for she. That makes the gap: without names a woman's list is 51 points more female than a man's, and 13 points once the pronouns go too. The lean itself barely moves, from 48% to 44%, and we have not found why.
           </Notice>
         }
         figure={
-          <Plot
-            title="Women among the labelled nearest pages of women and of men"
-            note="Filled dot: the 52 women's lists. Hollow dot: the 145 men's lists. Band: 1,000 shuffles of the labels over the same lists, mean and one standard deviation."
-          >
-            <Part part="gender" />
-          </Plot>
+          <div className="w5-two">
+            <Plot
+              title="Pages about women in everyone's ten nearest"
+              note="Share of all 3,030 ten-nearest slots that go to the 52 pages about women. Dashed line: their share of the 303 pages."
+            >
+              <Part part="lean" />
+            </Plot>
+            <Plot
+              title="Women's lists against men's"
+              note="Women among a woman's labelled nearest pages minus women among a man's, in percentage points. Band: 1,000 shuffles of the labels over the 197 labelled pages, mean and one standard deviation."
+            >
+              <Part part="gap" />
+            </Plot>
+          </div>
         }
       >
         <Drawers variant="foot">
@@ -56,7 +64,7 @@ export function Gender() {
               With names kept, women's lists are 49% women and men's 28%, a gap of 21 points (z 7.5). Without names the gap is 51 points (z 23.9); without pronouns too, 13 points (z 5.8).
             </p>
             <p>
-              Without names, Jean Grey sits in 182 pages' ten nearest, Spider-Woman (Jessica Drew) in 142 and Emma Frost in 116. Her and she carry 44% of the similarity between women and the women in their lists.
+              Without names, Jean Grey sits in 182 pages' ten nearest, Spider-Woman (Jessica Drew) in 142 and Emma Frost in 116. With the labels shuffled, women's lists are 26% women, the share of women among the 197 labelled pages.
             </p>
           </Drawer>
           <Drawer label="Table">

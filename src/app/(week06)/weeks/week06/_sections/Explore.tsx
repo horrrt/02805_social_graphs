@@ -19,16 +19,16 @@ export function Explore() {
         section="explore"
         num="1A"
         question="Which pages read most like a character, and why?"
-        answer="With names kept, pages that share a name or a team with it. With names removed, pages about women: 96% of a woman's labelled nearest pages are women, and 44% of a man's."
+        answer="With names kept, pages that share a name or a team with it. With names removed, mostly pages about women, whoever you pick."
         layout="below"
         did={
           <TermProse as="p" className="sub" roots={["#explore-did p"]} terms={TERMS} after={[DATA]}>
-            Pick a character. The left column lists the ten pages whose TF-IDF weights point closest to its page, by cosine; the right column does the same with every name taken out. Each row says whether the two pages are linked, or how many steps apart they sit, and gives the words that add most to the match.
+            Pick a character. The left column lists the ten pages whose TF-IDF weights point closest to its page, by cosine; the right column does the same with every name taken out. Each row gives the character's gender where Wikidata has one, whether the two pages are linked or how many steps apart they sit, the cosine, and the words that add most to the match.
           </TermProse>
         }
         surprise={
           <Notice icon="💡" headline="What to notice">
-            Storm's nearest page is the Human Torch, whose surname is Storm; they do not link. Take the names out and her nearest pages are Jean Grey, She-Hulk, Emma Frost and Scarlet Witch, matched on her and she.
+            For Storm, where the explorer opens: her nearest page is the Human Torch, whose surname is Storm; they do not link. Take the names out and her nearest pages are Jean Grey, She-Hulk, Emma Frost and Scarlet Witch, matched on her and she.
           </Notice>
         }
         figure={<Part part="explore" />}
