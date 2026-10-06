@@ -54,7 +54,7 @@ test("Week 5 reports the token counts under both rules", () => {
   const pct = (x) => `${Math.round(x * 100)}%`;
   for (const expected of [
     `about ${count(course.tokens)} tokens and ${count(course.types)} types for these pages, ${pct(course.hapax_share)} of them used once`,
-    `Our word rule counts ${count(o.tokens)} words and ${count(o.types)} types, ${pct(o.hapax_share)} used once: it keeps ${count(o.kept_whole)} words`,
+    `Our word rule counts ${count(o.tokens)} words and ${count(o.types)} types, ${pct(o.hapax_share)} used once: it keeps ${count(o.kept_whole)} words such as Spider-Man whole and drops numbers and the possessive 's.`,
     `gives ${count(s.tokens)} tokens, ${count(s.types)} types and ${pct(s.hapax_share)} used once`,
   ]) {
     assert.ok(page.includes(expected), `Week 5 should say: ${expected}`);

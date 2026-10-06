@@ -79,6 +79,8 @@ AFTER = {
     "week03_passengers": ("week03_corridor_control",),
     "course_reference": ("week01_facts", "week02_nullmodels"),
 }
+# Checks rerun whenever a script they read reruns, so their JSON never trails it.
+CHECKS = ("course_reference",)
 MAX_PARALLEL = os.cpu_count() or 4
 
 
@@ -119,6 +121,7 @@ def main():
         raise SystemExit(f"unknown: {unknown}; choose a week ({sorted(set(WEEK.values()))}) or a script "
                          f"({list(SCRIPTS)})")
     wanted = [n for n in SCRIPTS if not args or n in args or WEEK[n] in args]
+    wanted += [c for c in CHECKS if c not in wanted and set(AFTER[c]) & set(wanted)]
     LOGS.mkdir(parents=True, exist_ok=True)
     started = time.time()
     print(f"running {len(wanted)} scripts, up to {MAX_PARALLEL} at once; logs in build/logs/", flush=True)
