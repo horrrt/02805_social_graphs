@@ -54,6 +54,13 @@ function pct(x) {
   return `${Math.round(x * 100)}%`;
 }
 
+function getJson(url, label) {
+  return fetch(url).then((r) => {
+    if (!r.ok) throw new Error(`${label} ${r.status}`);
+    return r.json();
+  });
+}
+
 function tipHtml(title, rows) {
   const body = rows.map(([k, v]) => `${k}: <b>${v}</b>`).join("<br/>");
   return `<div style="font-weight:700;margin-bottom:4px">${title}</div>${body}`;
@@ -61,18 +68,9 @@ function tipHtml(title, rows) {
 
 export async function startPlace(echarts) {
   const [data, usa, whereWho] = await Promise.all([
-    fetch(DATA_URL).then((r) => {
-      if (!r.ok) throw new Error(`place data ${r.status}`);
-      return r.json();
-    }),
-    fetch(USA_URL).then((r) => {
-      if (!r.ok) throw new Error(`usa map ${r.status}`);
-      return r.json();
-    }),
-    fetch(WHERE_WHO_URL).then((r) => {
-      if (!r.ok) throw new Error(`where-who data ${r.status}`);
-      return r.json();
-    }),
+    getJson(DATA_URL, "place data"),
+    getJson(USA_URL, "usa map"),
+    getJson(WHERE_WHO_URL, "where-who data"),
   ]);
 
   // The redesign's colour grammar keeps orange and blue for placed and direct
@@ -102,6 +100,7 @@ export async function startPlace(echarts) {
   const MAP_FIT = { left: 24, right: 24, top: 10, bottom: 24 };
 
   const byId = Object.fromEntries(data.cities.map((c) => [c.id, c]));
+  const byFilings = [...data.cities].sort((a, b) => b.filings - a.filings);
   const state = {
     metric: "positions",
     alpha: String(data.backbone.default_alpha),
@@ -127,6 +126,14 @@ export async function startPlace(echarts) {
     if (!byId[id]) return;
     state.selected = id;
     renderAll();
+  }
+
+  // A click on a mark that carries a city id (in `key`) selects that city.
+  function selectOnClick(c, key = "id") {
+    c.off("click");
+    c.on("click", (ev) => {
+      if (ev.data?.[key]) select(ev.data[key]);
+    });
   }
 
   function setStatus() {
@@ -248,10 +255,7 @@ export async function startPlace(echarts) {
         },
       },
     });
-    c.off("click");
-    c.on("click", (ev) => {
-      if (ev.data?.id) select(ev.data.id);
-    });
+    selectOnClick(c);
   }
 
   function renderUsMap(hostId, { colourMode = "metric" } = {}) {
@@ -366,10 +370,7 @@ export async function startPlace(echarts) {
       },
       { notMerge: true },
     );
-    c.off("click");
-    c.on("click", (ev) => {
-      if (ev.data?.id) select(ev.data.id);
-    });
+    selectOnClick(c);
   }
 
   // The giant component against α, drawn as plain SVG: a flat ink line, open
@@ -377,6 +378,10 @@ export async function startPlace(echarts) {
   // and the links kept printed under each stop.
   let gcWidth = 0;
   let gcWatch = null;
+  const contentWidth = (host) => {
+    const cs = getComputedStyle(host);
+    return Math.floor(host.clientWidth - parseFloat(cs.paddingLeft) - parseFloat(cs.paddingRight));
+  };
   function renderGcLine() {
     const host = $("chart-gc");
     if (!host) return;
@@ -389,13 +394,11 @@ export async function startPlace(echarts) {
     const grid = token("--w4-grid");
 
     // Drawn at the host's width, one unit to a pixel; redrawn when it changes.
-    const cs = getComputedStyle(host);
-    const W = Math.floor(host.clientWidth - parseFloat(cs.paddingLeft) - parseFloat(cs.paddingRight)) || 1000;
+    const W = contentWidth(host) || 1000;
     gcWidth = W;
     if (!gcWatch) {
       gcWatch = new ResizeObserver(() => {
-        const s = getComputedStyle(host);
-        const w = Math.floor(host.clientWidth - parseFloat(s.paddingLeft) - parseFloat(s.paddingRight));
+        const w = contentWidth(host);
         if (w > 0 && w !== gcWidth) renderGcLine();
       });
       gcWatch.observe(host);
@@ -495,9 +498,7 @@ export async function startPlace(echarts) {
     const inGiant = new Set(g.nodes);
     const maxW = Math.max(...g.edges.map(([, , w]) => w), 1);
     const at = (id) => [byId[id].lon, byId[id].lat];
-    const named = new Set(
-      [...data.cities].sort((a, b) => b.filings - a.filings).slice(0, 12).map((city) => city.id),
-    );
+    const named = new Set(byFilings.slice(0, 12).map((city) => city.id));
     if (state.selected) named.add(state.selected);
 
     c.setOption(
@@ -577,12 +578,8 @@ export async function startPlace(echarts) {
       },
       { notMerge: true },
     );
-    c.off("click");
-    c.on("click", (ev) => {
-      if (ev.data?.id) select(ev.data.id);
-    });
+    selectOnClick(c);
   }
-
 
   // Five labels fit the crowded corner of the scatter without touching; hover names the rest.
   const LABELS = 5;
@@ -657,14 +654,12 @@ export async function startPlace(echarts) {
         ...AXIS,
         nameLocation: "middle",
         nameGap: 34,
-        splitLine: { lineStyle: { color: LINE, type: "dashed" } },
       },
       yAxis: {
         type: "value",
         name: "Backbone weight",
         ...AXIS,
         nameGap: 42,
-        splitLine: { lineStyle: { color: LINE, type: "dashed" } },
       },
       series: [
         {
@@ -721,10 +716,7 @@ export async function startPlace(echarts) {
           ]),
       },
     });
-    c.off("click");
-    c.on("click", (ev) => {
-      if (ev.data?.a) select(ev.data.a);
-    });
+    selectOnClick(c, "a");
     // Hiding a series in the legend hides its labels too.
     c.off("legendselectchanged");
     c.on("legendselectchanged", (ev) => {
@@ -841,10 +833,7 @@ export async function startPlace(echarts) {
       },
       { notMerge: true },
     );
-    c.off("click");
-    c.on("click", (ev) => {
-      if (ev.data?.id) select(ev.data.id);
-    });
+    selectOnClick(c);
   }
 
   function renderNullBits() {
@@ -938,7 +927,7 @@ export async function startPlace(echarts) {
   // The hero shares the page's selection; with nothing picked it shows the
   // metro with the most filings.
   const heroEdges = data.backbone.graphs["0.2"].edges;
-  const heroDefault = [...data.cities].sort((a, b) => b.filings - a.filings)[0].id;
+  const heroDefault = byFilings[0].id;
   // Label positions for the metros the hero names without a click.
   const HERO_LABELS = {
     35620: "top",
@@ -988,26 +977,24 @@ export async function startPlace(echarts) {
           width: 0.8 + 2.4 * Math.sqrt(w / wmax),
         })),
       );
-    const dots = [...data.cities]
-      .sort((a, b) => b.filings - a.filings)
-      .map((city) => {
-        const picked = city.id === selId;
-        return {
-          name: city.name,
-          id: city.id,
-          value: [city.lon, city.lat, city.filings],
-          symbolSize: 2 * radius(city),
-          itemStyle: { color: HERO_GROUP[city.community], borderColor: token("--deep"), borderWidth: 1.4 },
-          label: {
-            show: picked || city.id in HERO_LABELS,
-            position: HERO_LABELS[city.id] ?? "top",
-            formatter: city.name,
-            color: picked ? token("--w4-hero-ink") : token("--w4-hero-lede"),
-            fontSize: fs("small"),
-            fontWeight: picked ? 700 : 600,
-          },
-        };
-      });
+    const dots = byFilings.map((city) => {
+      const picked = city.id === selId;
+      return {
+        name: city.name,
+        id: city.id,
+        value: [city.lon, city.lat, city.filings],
+        symbolSize: 2 * radius(city),
+        itemStyle: { color: HERO_GROUP[city.community], borderColor: token("--deep"), borderWidth: 1.4 },
+        label: {
+          show: picked || city.id in HERO_LABELS,
+          position: HERO_LABELS[city.id] ?? "top",
+          formatter: city.name,
+          color: picked ? token("--w4-hero-ink") : token("--w4-hero-lede"),
+          fontSize: fs("small"),
+          fontWeight: picked ? 700 : 600,
+        },
+      };
+    });
     c.setOption(
       {
         ...BASE,
@@ -1061,10 +1048,7 @@ export async function startPlace(echarts) {
       },
       { notMerge: true },
     );
-    c.off("click");
-    c.on("click", (ev) => {
-      if (ev.data?.id) select(ev.data.id);
-    });
+    selectOnClick(c);
   }
 
   function renderHeroInspector() {

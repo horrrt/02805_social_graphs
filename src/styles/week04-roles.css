@@ -118,12 +118,6 @@
   width: 11px;
 }
 
-.corridor .roles-alt-line {
-  color: var(--ink-mute);
-  font-size: var(--fs-small);
-  margin: 6px 0 0;
-}
-
 .corridor .roles-summary {
   clip: rect(0 0 0 0);
   position: absolute;

@@ -40,7 +40,6 @@ function networkScene() {
 
 function arcadeScene() {
   // One cabinet per course week; the schedule manifest decides which are lit.
-  const slots = WEEKS;
   let boxes = [];
   canvasStage(canvas, (c, w, h) => {
     c.clearRect(0, 0, w, h);
@@ -59,12 +58,12 @@ function arcadeScene() {
       c.lineTo(w, y);
       c.stroke();
     }
-    const n = slots.length,
+    const n = WEEKS.length,
       cw = Math.min(130, (w - 36) / n - 10),
       gap = (w - cw * n) / (n + 1);
     boxes = [];
     for (let i = 0; i < n; i++) {
-      const wk = slots[i],
+      const wk = WEEKS[i],
         live = wk.status === "live",
         x = gap + (cw + gap) * i,
         ch = Math.min(285, h * 0.82),
@@ -157,7 +156,7 @@ function arcadeScene() {
     const i = boxes.findIndex(
       (b) => x >= b.x && x <= b.x + b.w && y >= b.y && y <= b.y + b.h,
     );
-    return i >= 0 ? slots[i] : null;
+    return i >= 0 ? WEEKS[i] : null;
   };
   canvas.addEventListener("click", (e) => {
     const wk = hit(e);

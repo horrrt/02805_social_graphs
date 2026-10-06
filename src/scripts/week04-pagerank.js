@@ -290,13 +290,20 @@ function drawBump(it, W) {
   const H = out + 10;
   const xs = steps.map((_, i) => LEFT + (i * (W - LEFT - NAMES_W)) / (steps.length - 1));
   const y = (rank) => TOP + (rank - 1) * ROW;
-  const roundLabel = (s, i) => (i === steps.length - 1 ? "final" : i === 0 ? `round ${s.step}` : String(s.step));
+  const roundLabel = (s, i) => {
+    if (i === steps.length - 1) return "final";
+    if (i === 0) return `round ${s.step}`;
+    return String(s.step);
+  };
   const roundName = (s, i) => (i === steps.length - 1 ? "the final round" : `round ${s.step}`);
 
   const leader = final[0].code;
   const firstLeader = steps[0].rows[0].code;
-  const colour = (code) =>
-    code === leader ? token("--w4-accent") : code === firstLeader ? token("--ink") : token("--ink-mute");
+  const colour = (code) => {
+    if (code === leader) return token("--w4-accent");
+    if (code === firstLeader) return token("--ink");
+    return token("--ink-mute");
+  };
   const highlight = (code) => code === leader || code === firstLeader;
 
   const svg = node("svg", {

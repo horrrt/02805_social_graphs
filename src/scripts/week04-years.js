@@ -62,6 +62,8 @@ const circleEl = (cx, cy, r, fill, stroke, sw = 1.5, title = "") =>
 const textEl = (x, y, s, size = fs("caption"), fill = "", weight = 400, anchor = "start") =>
   `<text x="${x.toFixed(1)}" y="${y.toFixed(1)}" font-size="${size}" fill="${fill}" font-weight="${weight}" text-anchor="${anchor}" ` +
   `font-variant-numeric="tabular-nums">${esc(s)}</text>`;
+// An SVG path through points [x, y], one decimal each.
+const pathD = (pts) => "M" + pts.map(([px, py]) => `${px.toFixed(1)} ${py.toFixed(1)}`).join(" L");
 const pathEl = (d, stroke, sw = 1, opts = {}) =>
   `<path d="${d}" fill="none" stroke="${stroke}" stroke-width="${sw}"${opts.dash ? ` stroke-dasharray="${opts.dash}"` : ""}` +
   `${opts.op != null ? ` stroke-opacity="${opts.op}"` : ""} stroke-linejoin="round" stroke-linecap="round"></path>`;
@@ -144,7 +146,7 @@ function yearLine(series, width, height, fmt, aria, pal, color, full = true) {
   }
   const pts = series.map((s, i) => [x(i), y(s.v)]);
   const solid = full ? pts.slice(0, -1) : pts;
-  out.push(pathEl("M" + solid.map(([px, py]) => `${px.toFixed(1)} ${py.toFixed(1)}`).join(" L"), color, 2.4));
+  out.push(pathEl(pathD(solid), color, 2.4));
   if (full) out.push(lineEl(pts.at(-2)[0], pts.at(-2)[1], pts.at(-1)[0], pts.at(-1)[1], color, 2, { dash: "4 4" }));
   series.forEach((s, i) => {
     const [px, py] = pts[i];
@@ -164,9 +166,8 @@ function twoLines(a, b, width, height, fmt, aria, pal, names, colors, note = nul
   const L = 56, T = 18, Bm = 30;
   const R = Math.ceil(Math.max(...names.map((name) => textWidth(name, "small", 700)))) + 20;
   const { step, top } = niceAxis(Math.max(...a, ...b));
-  const yMax = top;
   const x = (i) => L + (i * (width - L - R)) / 4;
-  const y = (v) => T + ((yMax - v) * (height - T - Bm)) / yMax;
+  const y = (v) => T + ((top - v) * (height - T - Bm)) / top;
   const out = [svgOpen(width, height, aria)];
   for (let k = 0; k <= Math.round(top / step); k++) {
     const v = k * step;
@@ -175,7 +176,7 @@ function twoLines(a, b, width, height, fmt, aria, pal, names, colors, note = nul
   }
   [[a, colors[0], names[0]], [b, colors[1], names[1]]].forEach(([series, col, name]) => {
     const pts = series.map((v, i) => [x(i), y(v)]);
-    out.push(pathEl("M" + pts.slice(0, -1).map(([px, py]) => `${px.toFixed(1)} ${py.toFixed(1)}`).join(" L"), col, 2.4));
+    out.push(pathEl(pathD(pts.slice(0, -1)), col, 2.4));
     out.push(lineEl(pts.at(-2)[0], pts.at(-2)[1], pts.at(-1)[0], pts.at(-1)[1], col, 2, { dash: "4 4" }));
     pts.forEach(([px, py], i) => {
       const last = i === 4;
@@ -243,10 +244,10 @@ function seasonChart(rows, key, aria, pal, color, note, width) {
     const newest = yi === years.length - 1;
     const opacity = years.length === 1 ? 1 : 0.35 + (0.65 * yi) / (years.length - 1);
     const pts = rows[yy].map((m, i) => [x(i), y(m[key])]);
-    out.push(pathEl("M" + pts.map(([px, py]) => `${px.toFixed(1)} ${py.toFixed(1)}`).join(" L"), color, newest ? 2.6 : 2, { op: opacity }));
+    out.push(pathEl(pathD(pts), color, newest ? 2.6 : 2, { op: opacity }));
     rows[yy].forEach((m, i) => {
       const [px, py] = pts[i];
-      out.push(circleEl(px, py, newest ? 3 : 2.2, color, pal.card, 1.2, `${yr(yy)}, ${MONTHS[i]}: ${num(m[key])}`) .replace("<circle", `<circle opacity="${opacity}"`));
+      out.push(circleEl(px, py, newest ? 3 : 2.2, color, pal.card, 1.2, `${yr(yy)}, ${MONTHS[i]}: ${num(m[key])}`).replace("<circle", `<circle opacity="${opacity}"`));
     });
     ends.push(pts.at(-1)[1]);
   });
@@ -283,7 +284,7 @@ function miniYears(series, ymax, pal, note, width) {
   out.push(lineEl(L, y(0), width - R, y(0), pal.line, 1));
   const pts = series.map((s, i) => [x(i), y(s.v)]);
   const solid = full ? pts.slice(0, -1) : pts;
-  out.push(pathEl("M" + solid.map(([px, py]) => `${px.toFixed(1)} ${py.toFixed(1)}`).join(" L"), pal.ink, 2.2));
+  out.push(pathEl(pathD(solid), pal.ink, 2.2));
   if (full) out.push(lineEl(pts.at(-2)[0], pts.at(-2)[1], pts.at(-1)[0], pts.at(-1)[1], pal.ink, 1.8, { dash: "4 4" }));
   series.forEach((s, i) => {
     const [px, py] = pts[i];
@@ -447,7 +448,7 @@ function render(data) {
     panel("USCIS denials", `Share of first-time petitions denied, employers with ${data.uscis_min_filings} or more certified filings. 2026 runs October to June.`, s5) +
     panel("The four largest placing firms",
       `Placed filings each firm files per fiscal year, on one scale. Hollow: 2026, nine months. HCL leaves the top ` +
-      `${ys["2026"].top_firms_by_filings.length} in 2026.`, firmsHtml, 2) +
+      `${topN} in 2026.`, firmsHtml, 2) +
     panel("The lottery",
       `Registrations per draw. One approved petition took ${perApp[0].toFixed(1)} registrations in the ${drawMonth(funnelYears[0])} ` +
       `draw and ${perApp[1].toFixed(1)} in ${drawMonth(funnelYears[1])}; USCIS’s data ends there.`, s6) +

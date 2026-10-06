@@ -17,17 +17,17 @@ let ACCESS = "#1f8fd6";
 let INK = "#0f2340";
 let MUTE = "#7a8fac";
 let GRID = "#e4ebf4";
-// The net layer's diverging pair. Green and red are what a reader expects for
-// gained and lost, and they are also the pairing red-green colourblindness
-// collapses, so the two steps are chosen rather than picked: under simulated
-// deuteranopia these sit 9.1 apart in OKLab ΔE, where the obvious
-// #2f9e63/#d1495b sits at 2.0 and reads as one colour.
 // The third series on the two heavy-tail charts. It used to be the page's
 // text ink, which fails a categorical palette on both lightness and chroma:
 // a near-black bar reads as axis furniture rather than as data. This violet
 // sits 11.6 apart from the blue under simulated deuteranopia, where the ink
 // and the blue sat close enough to merge in the dense middle of the chart.
 let OUTBOUND = "#6b4fbb";
+// The net layer's diverging pair. Green and red are what a reader expects for
+// gained and lost, and they are also the pairing red-green colourblindness
+// collapses, so the two steps are chosen rather than picked: under simulated
+// deuteranopia these sit 9.1 apart in OKLab ΔE, where the obvious
+// #2f9e63/#d1495b sits at 2.0 and reads as one colour.
 let GAIN = "#00875a";
 let LOSS = "#cc3311";
 
@@ -56,14 +56,7 @@ export function refreshPalette() {
     SERIES[2].colour = ACCESS;
   }
   if (api) {
-    api.colours.PEOPLE = PEOPLE;
-    api.colours.ACCESS = ACCESS;
-    api.colours.INK = INK;
-    api.colours.MUTE = MUTE;
-    api.colours.GRID = GRID;
-    api.colours.OUTBOUND = OUTBOUND;
-    api.colours.GAIN = GAIN;
-    api.colours.LOSS = LOSS;
+    Object.assign(api.colours, { PEOPLE, ACCESS, INK, MUTE, GRID, OUTBOUND, GAIN, LOSS });
   }
   return { PEOPLE, ACCESS, INK, MUTE, GRID, OUTBOUND, GAIN, LOSS };
 }
@@ -462,10 +455,12 @@ export const GLOSSARY = {
   "Flight routes ": "Direct airport-to-airport routes between these two countries.",
 };
 
+function explainAttr(note) {
+  return note ? ` class="explains" data-explain="${note.replace(/"/g, "&quot;")}"` : "";
+}
+
 function row(term, value, override) {
-  const note = override ?? GLOSSARY[term];
-  const attr = note ? ` class="explains" data-explain="${note.replace(/"/g, "&quot;")}"` : "";
-  return `<div><dt${attr}>${term}</dt><dd>${value}</dd></div>`;
+  return `<div><dt${explainAttr(override ?? GLOSSARY[term])}>${term}</dt><dd>${value}</dd></div>`;
 }
 
 let glossaryWired = false;
@@ -637,6 +632,13 @@ function enablePicking(id) {
   if (!canvas || canvas.dataset.picking) return;
   canvas.dataset.picking = "on";
   canvas.title = "Click a point to select that country";
+  const redrawCharts = () => {
+    R.scatters();
+    R.prestige();
+    R.denmark();
+    R.hist();
+    R.ccdf();
+  };
   canvas.addEventListener("pointermove", (event) => {
     const mark = nearestMark(canvas, event);
     canvas.style.cursor = mark ? "pointer" : "default";
@@ -646,22 +648,14 @@ function enablePicking(id) {
     const iso3 = mark?.iso3 ?? null;
     if (state.hover !== iso3) {
       state.hover = iso3;
-      R.scatters();
-      R.prestige();
-      R.denmark();
-      R.hist();
-      R.ccdf();
+      redrawCharts();
     }
   });
   canvas.addEventListener("pointerleave", () => {
     hideTip();
     if (state.hover) {
       state.hover = null;
-      R.scatters();
-      R.prestige();
-      R.denmark();
-      R.hist();
-      R.ccdf();
+      redrawCharts();
     }
   });
   canvas.addEventListener("click", (event) => {
@@ -670,10 +664,6 @@ function enablePicking(id) {
   });
 }
 
-// Six labels from one cascade of rank tests, first match wins. "Top" means the
-// top tenth of all countries on that measure; "bottom half" means outside the
-// median. The rule itself lives in analysis/week03_corridor_control.py; these
-// strings say what it did, in the order it did it.
 // Guimer\u00e0 and Amaral's seven roles (Nature 433, 2005), in order from the
 // edge of a community to its centre. The old six labels were ours, and three
 // of them compared a 2020 migration rank against a flight snapshot from about
@@ -805,9 +795,6 @@ function project(lat, lon, radius, cx, cy, rotation) {
   return { x: cx + x * radius, y: cy - y * radius, visible: z > 0, z };
 }
 
-// Country outlines, so a corridor lands somewhere recognisable instead of on a
-// blank sphere. `project` returns visibility, so the globe hides the far side
-// by breaking each ring into runs of visible points.
 // Clicking a country means clicking its territory, not the dot at its
 // centroid. Both maps turn a click into a longitude and latitude and then ask
 // which polygon contains it, so Russia is as easy to hit as Luxembourg.
@@ -828,10 +815,7 @@ function countryAt(lon, lat) {
   for (const feature of state.world.features) {
     const iso3 = feature.properties.iso3;
     if (!iso3 || !metrics(iso3)) continue;
-    const geometry = feature.geometry;
-    const polygons =
-      geometry.type === "Polygon" ? [geometry.coordinates] : geometry.coordinates;
-    for (const polygon of polygons) {
+    for (const polygon of polygonsOf(feature)) {
       // First ring is the outline, the rest are holes.
       if (!pointInRing(lon, lat, polygon[0])) continue;
       const inHole = polygon.slice(1).some((ring) => pointInRing(lon, lat, ring));
@@ -857,15 +841,46 @@ function unprojectGlobe(x, y, radius, cx, cy, rotation) {
   return [((lon * 180) / Math.PI) - rotation, (lat * 180) / Math.PI];
 }
 
-function eachRing(feature, visit) {
+function polygonsOf(feature) {
   const geometry = feature.geometry;
-  const polygons =
-    geometry.type === "Polygon" ? [geometry.coordinates] : geometry.coordinates;
-  for (const polygon of polygons) for (const ring of polygon) visit(ring);
+  return geometry.type === "Polygon" ? [geometry.coordinates] : geometry.coordinates;
 }
 
-// The selected country is filled in the migration colour and outlined in
-// white; whatever the cursor is over gets a lighter fill.
+function eachRing(feature, visit) {
+  for (const polygon of polygonsOf(feature)) for (const ring of polygon) visit(ring);
+}
+
+// Country outlines, so a corridor lands somewhere recognisable instead of on a
+// blank sphere. Each ring is traced as a path, ready to fill and stroke.
+// `project` returns visibility, so the globe hides the far side by breaking
+// each ring into runs of visible points.
+function traceGlobeRing(ctx, ring, radius, cx, cy) {
+  let open = false;
+  ctx.beginPath();
+  for (const [lon, lat] of ring) {
+    const p = project(lat, lon, radius, cx, cy, state.rotation);
+    if (!p.visible) {
+      open = false;
+      continue;
+    }
+    if (open) ctx.lineTo(p.x, p.y);
+    else {
+      ctx.moveTo(p.x, p.y);
+      open = true;
+    }
+  }
+}
+
+function traceMapRing(ctx, ring, width, height) {
+  ctx.beginPath();
+  ring.forEach(([lon, lat], i) => {
+    const p = mapPoint([lat, lon], width, height);
+    if (i) ctx.lineTo(p.x, p.y);
+    else ctx.moveTo(p.x, p.y);
+  });
+  ctx.closePath();
+}
+
 /* ------------------------------------------------------------- the basemap
 
    How the world itself is drawn, independently of which library draws the
@@ -938,8 +953,8 @@ export function paintPhotoGlobe(ctx, radius, cx, cy) {
     const off = document.createElement("canvas");
     off.width = size * 2;
     off.height = size * 2;
-    off.getContext("2d").imageSmoothingQuality = "high";
     const octx = off.getContext("2d");
+    octx.imageSmoothingQuality = "high";
 
     const { pixels, width: tw, height: th } = texturePixels(image);
     const out = octx.createImageData(off.width, off.height);
@@ -971,6 +986,8 @@ export function paintPhotoGlobe(ctx, radius, cx, cy) {
   return true;
 }
 
+// The selected country is filled in the migration colour and outlined in
+// white; whatever the cursor is over gets a lighter fill.
 function landFill(iso3, base) {
   if (iso3 && iso3 === state.selected) return PEOPLE;
   if (iso3 && iso3 === state.hover) return "#3f86c4";
@@ -986,20 +1003,7 @@ function drawLandGlobe(ctx, radius, cx, cy) {
     ctx.strokeStyle =
       iso3 === state.selected ? "#ffffff" : "rgba(178,215,248,0.55)";
     eachRing(feature, (ring) => {
-      let open = false;
-      ctx.beginPath();
-      for (const [lon, lat] of ring) {
-        const p = project(lat, lon, radius, cx, cy, state.rotation);
-        if (!p.visible) {
-          open = false;
-          continue;
-        }
-        if (open) ctx.lineTo(p.x, p.y);
-        else {
-          ctx.moveTo(p.x, p.y);
-          open = true;
-        }
-      }
+      traceGlobeRing(ctx, ring, radius, cx, cy);
       ctx.fill();
       ctx.stroke();
     });
@@ -1015,13 +1019,7 @@ function drawLandMap(ctx, width, height) {
     ctx.strokeStyle =
       iso3 === state.selected ? "#ffffff" : "rgba(150,196,240,0.45)";
     eachRing(feature, (ring) => {
-      ctx.beginPath();
-      ring.forEach(([lon, lat], i) => {
-        const p = mapPoint([lat, lon], width, height);
-        if (i) ctx.lineTo(p.x, p.y);
-        else ctx.moveTo(p.x, p.y);
-      });
-      ctx.closePath();
+      traceMapRing(ctx, ring, width, height);
       ctx.fill();
       ctx.stroke();
     });
@@ -1058,30 +1056,29 @@ function netBand(net) {
   return { step, sign: Math.sign(net) };
 }
 
-function netFill(net) {
+// A balance's band, in the units each renderer wants: a CSS colour for the two
+// canvas maps and a byte array for deck.gl. One definition, so the layer means
+// the same thing whichever library is drawing it.
+function netTone(net) {
   const band = netBand(net);
-  if (!band) return "rgba(120,140,165,0.30)";
+  if (!band) return { css: "rgba(120,140,165,0.30)", rgba: [120, 140, 165, 76] };
   const [r, g, b] = rgb(band.sign >= 0 ? GAIN : LOSS).split(",").map(Number);
   // The flattest band keeps a wash of its own colour, so "roughly even" reads
   // as a class rather than as missing data.
   const alpha = 0.22 + (band.step / NET_BANDS.length) * 0.74;
-  return `rgba(${r},${g},${b},${alpha.toFixed(3)})`;
-}
-
-// The same band, in the units each renderer wants: a CSS colour for the two
-// canvas maps and a byte array for deck.gl. One definition, so the layer means
-// the same thing whichever library is drawing it.
-function netColour(iso3, y = year()) {
-  const net = netBalance(iso3, y);
-  const band = netBand(net);
-  if (!band) return { css: "rgba(120,140,165,0.30)", rgba: [120, 140, 165, 76], net };
-  const [r, g, b] = rgb(band.sign >= 0 ? GAIN : LOSS).split(",").map(Number);
-  const alpha = 0.22 + (band.step / NET_BANDS.length) * 0.74;
   return {
     css: `rgba(${r},${g},${b},${alpha.toFixed(3)})`,
     rgba: [r, g, b, Math.round(alpha * 255)],
-    net,
   };
+}
+
+function netFill(net) {
+  return netTone(net).css;
+}
+
+function netColour(iso3, y = year()) {
+  const net = netBalance(iso3, y);
+  return { ...netTone(net), net };
 }
 
 function drawNetMap(ctx, width, height) {
@@ -1097,13 +1094,7 @@ function drawNetMap(ctx, width, height) {
         : "rgba(150,196,240,0.35)";
     ctx.lineWidth = iso3 === state.hover ? 1.4 : 0.6;
     eachRing(feature, (ring) => {
-      ctx.beginPath();
-      ring.forEach(([lon, lat], i) => {
-        const p = mapPoint([lat, lon], width, height);
-        if (i) ctx.lineTo(p.x, p.y);
-        else ctx.moveTo(p.x, p.y);
-      });
-      ctx.closePath();
+      traceMapRing(ctx, ring, width, height);
       ctx.fill();
       ctx.stroke();
     });
@@ -1205,20 +1196,7 @@ function outlineSelected(ctx, radius, cx, cy) {
   ctx.fillStyle = `${PEOPLE}66`;
   ctx.lineWidth = 1.4;
   eachRing(feature, (ring) => {
-    let open = false;
-    ctx.beginPath();
-    for (const [lon, lat] of ring) {
-      const p = project(lat, lon, radius, cx, cy, state.rotation);
-      if (!p.visible) {
-        open = false;
-        continue;
-      }
-      if (open) ctx.lineTo(p.x, p.y);
-      else {
-        ctx.moveTo(p.x, p.y);
-        open = true;
-      }
-    }
+    traceGlobeRing(ctx, ring, radius, cx, cy);
     ctx.fill();
     ctx.stroke();
   });
@@ -1233,13 +1211,7 @@ function outlineSelectedMap(ctx, width, height) {
   ctx.fillStyle = `${PEOPLE}66`;
   ctx.lineWidth = 1.4;
   eachRing(feature, (ring) => {
-    ctx.beginPath();
-    ring.forEach(([lon, lat], i) => {
-      const p = mapPoint([lat, lon], width, height);
-      if (i) ctx.lineTo(p.x, p.y);
-      else ctx.moveTo(p.x, p.y);
-    });
-    ctx.closePath();
+    traceMapRing(ctx, ring, width, height);
     ctx.fill();
     ctx.stroke();
   });
@@ -1521,17 +1493,7 @@ function drawMap() {
     // The choropleth is the basemap here: a photograph under it would fight
     // the fill it is meant to carry.
     drawNetMap(ctx, width, height);
-    if (state.selected) {
-      const coord = node(state.selected)?.coord;
-      if (coord) {
-        const p = mapPoint(coord, width, height);
-        ctx.strokeStyle = "#fff";
-        ctx.lineWidth = 1.5;
-        ctx.beginPath();
-        ctx.arc(p.x, p.y, 6, 0, Math.PI * 2);
-        ctx.stroke();
-      }
-    }
+    ringSelectedOnMap(ctx, width, height);
     return;
   }
   if (state.basemap === "photo") {
@@ -1617,17 +1579,18 @@ function drawMap() {
     ctx.arc(p.x, p.y, 1.5, 0, Math.PI * 2);
     ctx.fill();
   }
-  if (state.selected) {
-    const coord = node(state.selected)?.coord;
-    if (coord) {
-      const p = mapPoint(coord, width, height);
-      ctx.strokeStyle = "#fff";
-      ctx.lineWidth = 1.5;
-      ctx.beginPath();
-      ctx.arc(p.x, p.y, 6, 0, Math.PI * 2);
-      ctx.stroke();
-    }
-  }
+  ringSelectedOnMap(ctx, width, height);
+}
+
+function ringSelectedOnMap(ctx, width, height) {
+  const coord = state.selected ? node(state.selected)?.coord : null;
+  if (!coord) return;
+  const p = mapPoint(coord, width, height);
+  ctx.strokeStyle = "#fff";
+  ctx.lineWidth = 1.5;
+  ctx.beginPath();
+  ctx.arc(p.x, p.y, 6, 0, Math.PI * 2);
+  ctx.stroke();
 }
 
 /* ---------------------------------------------------------------- section 2 */
@@ -2808,8 +2771,22 @@ function renderEdge() {
     .sort((a, b) => b - a);
   const rank = weight > 0 ? ranked.findIndex((w) => w <= weight) + 1 : null;
 
-  $("edge-kind").textContent =
-    weight > 0 && routes > 0 ? "People + flights" : weight > 0 ? "People only" : routes > 0 ? "Flights only" : "No corridor";
+  let kind;
+  let verdict;
+  if (weight > 0 && routes > 0) {
+    kind = "People + flights";
+    verdict = "<b>People and access agree here.</b> A human corridor with a direct air link.";
+  } else if (weight > 0) {
+    kind = "People only";
+    verdict = "<b>People without a direct link.</b> The corridor exists in the population but not in the route map, so the journey connects somewhere else.";
+  } else if (routes > 0) {
+    kind = "Flights only";
+    verdict = "<b>Access without people.</b> You can fly it, but almost nobody has settled at the other end.";
+  } else {
+    kind = "No corridor";
+    verdict = "<b>Neither network connects these two.</b>";
+  }
+  $("edge-kind").textContent = kind;
 
   const facts = [
     ["People on this link (stock)", weight ? fmt.format(weight) : "—"],
@@ -2820,20 +2797,9 @@ function renderEdge() {
     ["Flight routes", routes ? fmt.format(routes) : "0"],
   ];
   $("edge-facts").innerHTML = facts
-    .map(([term, value]) => {
-      const note = GLOSSARY[term];
-      const attr = note ? ` class="explains" data-explain="${note.replace(/"/g, "&quot;")}"` : "";
-      return `<div class="fact"${attr}><dt>${term}</dt><dd>${value}</dd></div>`;
-    })
+    .map(([term, value]) => `<div class="fact"${explainAttr(GLOSSARY[term])}><dt>${term}</dt><dd>${value}</dd></div>`)
     .join("");
-  $("edge-note").querySelector("span:last-child").innerHTML =
-    weight > 0 && routes > 0
-      ? "<b>People and access agree here.</b> A human corridor with a direct air link."
-      : weight > 0
-        ? "<b>People without a direct link.</b> The corridor exists in the population but not in the route map, so the journey connects somewhere else."
-        : routes > 0
-          ? "<b>Access without people.</b> You can fly it, but almost nobody has settled at the other end."
-          : "<b>Neither network connects these two.</b>";
+  $("edge-note").querySelector("span:last-child").innerHTML = verdict;
 }
 
 /* ---------------------------------------------------------------- section 8 */
@@ -2867,11 +2833,9 @@ function renderDenmarkPanels() {
             Origins: "Origins represented",
             Destinations: "Destinations sent to",
           }[k] ?? k];
-        const attr = note ? ` class="explains" data-explain="${note.replace(/"/g, "&quot;")}"` : "";
-        return `<div class="metric"${attr}><span>${k}</span><b>${v}</b></div>`;
+        return `<div class="metric"${explainAttr(note)}><span>${k}</span><b>${v}</b></div>`;
       })
       .join("");
-
 
   const egoRow = (c) =>
     `<tr><td>${node(c.other)?.name ?? c.other}</td><td>${fmt.format(c.weight)}</td></tr>`;
@@ -3036,7 +3000,7 @@ function drawDenmark() {
       // A line of headroom at the top for the value printed over the tallest bar.
       const room = Math.ceil(fs("small")) + 4;
       const y = (v) => bottom - ((v - low) / (high - low || 1)) * (tall - room);
-      const base = y(panel.signed ? 0 : 0);
+      const base = y(0);
 
       ctx.strokeStyle = GRID;
       ctx.lineWidth = 1;
@@ -3104,23 +3068,6 @@ function small(canvas, draw) {
   // At caption size a tick like "833.7k" needs the extra width to clear the title.
   const box = frame(width, height, { l: 70, r: 16, t: 10, b: 38 });
   draw(ctx, box);
-}
-
-function dot(ctx, x, y, colour, name, r = 4, right = Infinity) {
-  ctx.fillStyle = colour;
-  ctx.beginPath();
-  ctx.arc(x, y, r, 0, Math.PI * 2);
-  ctx.fill();
-  if (!name) return;
-  ctx.fillStyle = INK;
-  ctx.font = NAME();
-  // Denmark and its neighbours sit at the far right of these charts, where a
-  // label to the right of the point runs off the plot. Flip it when it would.
-  const width = ctx.measureText(name).width;
-  const flip = x + 6 + width > right;
-  ctx.textAlign = flip ? "right" : "left";
-  ctx.fillText(name, flip ? x - 6 : x + 6, y - 4);
-  ctx.textAlign = "left";
 }
 
 function line(ctx, box, rows, getX, getY, colour) {
@@ -3371,9 +3318,7 @@ export const api = {
 
 // Called by the style bar when a dropdown changes: re-read the palette, restart
 // or stop the flow animation, and repaint everything.
-export function restyle() {
-  refreshPalette();
-  syncFlow();
+function redrawAll() {
   R.globe();
   R.map();
   R.hist();
@@ -3381,6 +3326,12 @@ export function restyle() {
   R.scatters();
   R.prestige();
   R.denmark();
+}
+
+export function restyle() {
+  refreshPalette();
+  syncFlow();
+  redrawAll();
   // The questions drawer draws on canvas in every renderer, so it repaints on
   // the same signal rather than being reached into from here.
   window.dispatchEvent(new CustomEvent("week03:restyle"));
@@ -3400,23 +3351,22 @@ async function main() {
     // Resolved against this module, not the page, so the post loads the same
     // files whatever depth it is served from, and stamped so a deploy cannot
     // serve one reader this week's code against last week's numbers.
-    const data = dataUrl;
     const [corridors, edges, flights, cart, world] = await Promise.all([
-      fetch(data("week03_corridors.json")).then((r) => r.json()),
-      fetch(data("week03_edges.json")).then((r) => r.json()),
+      fetch(dataUrl("week03_corridors.json")).then((r) => r.json()),
+      fetch(dataUrl("week03_edges.json")).then((r) => r.json()),
       // Flight routes used to ride along inside week03_edges.json, only for
       // pairs that also had a DESA migration row, which dropped 1,748 of
       // 4,331 directed flight pairs (China <-> Taiwan among them). They are
       // their own file now, independent of whether people move on the pair.
-      fetch(data("week03_flights.json")).then((r) => r.json()),
+      fetch(dataUrl("week03_flights.json")).then((r) => r.json()),
       // Section 6 is the only reader, and a page that still works without its
       // role cartography is better than one that fails to open without it.
-      fetch(data("week03_cartography.json"))
+      fetch(dataUrl("week03_cartography.json"))
         .then((r) => r.json())
         .catch(() => null),
       // Land is decoration for the argument but essential for reading a map,
       // so a failure to load it must not stop the post.
-      fetch(data("world_outline.geo.json"))
+      fetch(dataUrl("world_outline.geo.json"))
         .then((r) => r.json())
         .catch(() => null),
     ]);
@@ -3462,15 +3412,7 @@ async function main() {
     select(corridors.focus.iso3);
     setYear(Number($("year-slider").value));
     $("year-slider").addEventListener("input", (event) => setYear(Number(event.target.value)));
-    window.addEventListener("resize", () => {
-      R.globe();
-      R.map();
-      R.hist();
-      R.ccdf();
-      R.scatters();
-      R.prestige();
-      R.denmark();
-    });
+    window.addEventListener("resize", redrawAll);
   } catch (error) {
     $("status").textContent = `Could not load the corridor data: ${error.message}`;
     throw error;

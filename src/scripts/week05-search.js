@@ -77,11 +77,17 @@ export function row(q) {
   };
 }
 
+// The detail's opening verdict on the selected query.
+function status(q) {
+  if (q.hit_at_1) return "Right page first.";
+  if (q.scored) return `The target sits at #${q.rank}.`;
+  return "No page is right.";
+}
+
 /** The detail of the selected query: paragraphs [text, class]. */
 export function detail(q, s) {
-  const status = q.hit_at_1 ? "Right page first." : q.scored ? `The target sits at #${q.rank}.` : "No page is right.";
   const words = (terms) => (terms?.length ? terms.slice(0, 5).map((t) => (t.is_stop ? `${t.term} (stopword)` : t.term)).join(", ") : "none");
-  const lines = [[`${status} ${q.why_expected}`]];
+  const lines = [[`${status(q)} ${q.why_expected}`]];
   lines.push([`Top raw hit: ${q.top5[0].name}, ${q.top5[0].n_tokens.toLocaleString("en-GB")} words, shares ${words(q.top5[0].overlap_terms)}.`]);
   if (q.scored) lines.push([`${q.expected_name} shares ${words(q.expected_overlap)}.`]);
   if (q.failure_reason) lines.push([q.failure_reason]);

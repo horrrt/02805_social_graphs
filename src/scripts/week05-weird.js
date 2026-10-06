@@ -56,7 +56,11 @@ export function scatterLayout(data, width, measure) {
   // what the ranking measures against: the mean of each page's length neighbours
   const byLength = [...pts].sort((a, b) => a.tokens - b.tokens || (a.node < b.node ? -1 : 1));
   // dots: every page, the top and bottom five on top
-  const colour = (p) => (top.has(p.node) ? "--access" : bottom.has(p.node) ? "--people" : "--ink-mute");
+  const colour = (p) => {
+    if (top.has(p.node)) return "--access";
+    if (bottom.has(p.node)) return "--people";
+    return "--ink-mute";
+  };
   const marked = (p) => top.has(p.node) || bottom.has(p.node);
   const dots = [...pts.filter((q) => !marked(q)), ...pts.filter(marked)].map((p) => ({
     cx: X(p.tokens).toFixed(1),

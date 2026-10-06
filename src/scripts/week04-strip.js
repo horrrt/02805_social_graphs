@@ -41,6 +41,11 @@ export function roomFor(el) {
   return Math.floor(parent.clientWidth - parseFloat(cs.paddingLeft) - parseFloat(cs.paddingRight));
 }
 
+// Observers by parent. A chart drawn into the same host again (a damping
+// click, a new client pick) retires the observers of charts no longer on the
+// page; a host holding two live charts keeps both.
+const observers = new WeakMap();
+
 /**
  * Draw a chart at its parent's width so one SVG unit is one CSS pixel and the
  * type renders at the sizes the tokens set. build(width) returns the chart;
@@ -49,11 +54,6 @@ export function roomFor(el) {
  * including when a closed <details> opens. A redraw only follows a change of
  * width, so the new chart's height cannot set off another.
  */
-// Observers by parent. A chart drawn into the same host again (a damping
-// click, a new client pick) retires the observers of charts no longer on the
-// page; a host holding two live charts keeps both.
-const observers = new WeakMap();
-
 export function fitted(build, fallback) {
   let chart = build(fallback);
   let drawn = fallback;

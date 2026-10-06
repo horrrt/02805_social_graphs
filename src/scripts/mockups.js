@@ -23,9 +23,11 @@
     if (Array.isArray(saved)) favourites = new Set(saved.filter(id => byId.has(id)));
   } catch { /* Review remains usable when browser storage is unavailable. */ }
 
+  const favouriteId = button => button.id === 'viewer-favourite' ? currentId : Number(button.dataset.favourite);
+
   function syncFavourites() {
     document.querySelectorAll('[data-favourite]').forEach(button => {
-      const id = button.id === 'viewer-favourite' ? currentId : Number(button.dataset.favourite);
+      const id = favouriteId(button);
       const saved = favourites.has(id);
       button.setAttribute('aria-pressed', String(saved));
       button.textContent = saved ? 'Saved' : 'Save favourite';
@@ -91,8 +93,11 @@
     const isDataStory = mockup.kind === 'data-visualization';
     viewerImage.alt = mockup.alt || `Complete page for mockup ${id}: ${mockup.name}. ${mockup.collection === 'ux' ? 'UX principles' : mockup.inspiration || 'Original direction'}.`;
     document.getElementById('viewer-title').textContent = `${String(id).padStart(2, '0')} · ${mockup.name}`;
-    document.getElementById('viewer-origin').textContent = isDataStory ? 'Data visualization · verified source data' : mockup.collection === 'ux'
-      ? 'UX principles' : mockup.inspiration ? `${mockup.inspiration} inspired` : 'Original direction';
+    let origin = 'Original direction';
+    if (isDataStory) origin = 'Data visualization · verified source data';
+    else if (mockup.collection === 'ux') origin = 'UX principles';
+    else if (mockup.inspiration) origin = `${mockup.inspiration} inspired`;
+    document.getElementById('viewer-origin').textContent = origin;
     canvas.setAttribute('aria-label', isDataStory ? 'Data visualization; scroll to inspect the figure' : 'Full-page design; scroll to read the complete page');
     document.getElementById('viewer-note').textContent = isDataStory
       ? 'Exact data figure · proposed interactions are described in the review notes. Use arrow keys to move between concepts; Escape to close.'
@@ -142,6 +147,10 @@
     }
   }
 
+  function step(offset) {
+    openMockup(ids[ids.indexOf(currentId) + offset]);
+  }
+
   function closeMockup() {
     dialog.close();
   }
@@ -177,7 +186,7 @@
     });
   });
   document.querySelectorAll('[data-favourite]').forEach(button => {
-    button.addEventListener('click', () => toggleFavourite(button.id === 'viewer-favourite' ? currentId : Number(button.dataset.favourite)));
+    button.addEventListener('click', () => toggleFavourite(favouriteId(button)));
   });
   filters.forEach(button => button.addEventListener('click', () => {
     setFilter(button.dataset.filter);
@@ -196,8 +205,8 @@
   });
   document.getElementById('copy-mockup-link').addEventListener('click', () => copyText(location.href, true));
   document.getElementById('close-viewer').addEventListener('click', closeMockup);
-  document.getElementById('previous-mockup').addEventListener('click', () => openMockup(ids[ids.indexOf(currentId) - 1]));
-  document.getElementById('next-mockup').addEventListener('click', () => openMockup(ids[ids.indexOf(currentId) + 1]));
+  document.getElementById('previous-mockup').addEventListener('click', () => step(-1));
+  document.getElementById('next-mockup').addEventListener('click', () => step(1));
   document.getElementById('fit-page').addEventListener('click', event => {
     fitPage = !fitPage;
     canvas.classList.toggle('fit-page', fitPage);
@@ -207,8 +216,8 @@
   });
   dialog.addEventListener('keydown', event => {
     if (event.target.matches('textarea, input') || event.ctrlKey || event.metaKey || event.altKey || event.shiftKey) return;
-    if (event.key === 'ArrowRight') { event.preventDefault(); openMockup(ids[ids.indexOf(currentId) + 1]); }
-    if (event.key === 'ArrowLeft') { event.preventDefault(); openMockup(ids[ids.indexOf(currentId) - 1]); }
+    if (event.key === 'ArrowRight') { event.preventDefault(); step(1); }
+    if (event.key === 'ArrowLeft') { event.preventDefault(); step(-1); }
   });
   dialog.addEventListener('close', () => {
     document.body.classList.remove('viewer-open');

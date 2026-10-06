@@ -209,12 +209,10 @@ function optionsHTML(dimension, chosen) {
     .join("");
 }
 
-function wireMenu(chosen) {
+function wireMenu() {
   const trigger = document.getElementById("style-trigger");
   const bar = document.getElementById("style-bar");
   if (!trigger || !bar) return;
-  const label = document.getElementById("style-trigger-label");
-  if (label) label.textContent = "Views";
 
   const close = () => {
     bar.hidden = true;
@@ -347,7 +345,7 @@ async function boot() {
     }
   }
 
-  wireMenu(chosen);
+  wireMenu();
   wireAxisModes();
   renderBar(chosen, (key, value) => {
     chosen[key] = value;

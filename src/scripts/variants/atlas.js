@@ -1,4 +1,3 @@
-import { asset } from "../site.js";
 // ?variant=atlas — the design-mockup look: a photographic Earth.
 //
 // Swaps the hero globe and the twin map for a textured planet, which is what
@@ -10,6 +9,8 @@ import { asset } from "../site.js";
 // Charts stay on canvas. The trade against ?variant=globe is 488 KB of imagery
 // for a planet you recognise instead of a flat blue sphere, and arcs that have
 // to be brighter to survive against a photograph.
+
+import { asset } from "../site.js";
 
 const DAY = "earth-day-2048.jpg";
 const BUMP = "earth-bump-1024.jpg";
@@ -28,9 +29,7 @@ function loadImage(src) {
 }
 
 export function install(api, Globe) {
-  const { state, node, metrics, topEdges, flightEdges, select, $, colours, rgb, arcSpec } = api;
-  const { drawNet } = api;
-  const { earthScale } = api;
+  const { state, node, metrics, topEdges, flightEdges, select, $, colours, rgb, arcSpec, drawNet, earthScale } = api;
   let world = null;
   let host = null;
   let lastEarth = null;
@@ -332,7 +331,10 @@ export function install(api, Globe) {
         }
         map();
       });
-      const nearestCountry = (rect, x, y) => {
+      const countryAt = (event) => {
+        const rect = event.currentTarget.getBoundingClientRect();
+        const x = event.clientX - rect.left;
+        const y = event.clientY - rect.top;
         let best = null;
         for (const iso3 of state.data.countries) {
           const coord = node(iso3)?.coord;
@@ -344,17 +346,14 @@ export function install(api, Globe) {
         return best?.iso3 ?? null;
       };
       $("map-canvas").addEventListener("click", (event) => {
-        const rect = event.currentTarget.getBoundingClientRect();
-        const iso3 = nearestCountry(rect, event.clientX - rect.left, event.clientY - rect.top);
+        const iso3 = countryAt(event);
         if (iso3) select(iso3);
       });
       // The canvas renderer's map shows a pointer cursor before you click;
       // give this one the same tell, even though it skips the territory fill
       // test the canvas map's click also does.
       $("map-canvas").addEventListener("pointermove", (event) => {
-        const rect = event.currentTarget.getBoundingClientRect();
-        const iso3 = nearestCountry(rect, event.clientX - rect.left, event.clientY - rect.top);
-        event.currentTarget.style.cursor = iso3 ? "pointer" : "default";
+        event.currentTarget.style.cursor = countryAt(event) ? "pointer" : "default";
       });
     },
   };

@@ -52,12 +52,16 @@ const rowLabel = { color: INK, fontSize: fs("small"), fontWeight: 600 };
 // The value printed at a bar's end.
 const valueLabel = { color: INK, fontSize: fs("small"), fontWeight: 700 };
 
+const charts = [];
+
+// Every chart, or null for a missing host, joins `charts` so the resize
+// handler at the end of the file reaches it.
 function chart(id) {
   const host = $(id);
-  return host ? window.echarts.init(host, null, { renderer: "canvas" }) : null;
+  const c = host ? window.echarts.init(host, null, { renderer: "canvas" }) : null;
+  charts.push(c);
+  return c;
 }
-
-const charts = [];
 
 // A short message in place of a chart or table when its data file failed to
 // load, rather than leaving an empty host or throwing past this section.
@@ -100,11 +104,21 @@ function whiskerSeries(data, color = INK) {
   };
 }
 
+// Fetches one page JSON file and hands it to `render`. A failure, in the fetch
+// or in any of the renders, writes "<name> data failed to load" into `ids`.
+function loadSection(url, file, name, ids, render) {
+  fetch(url).then((response) => {
+    if (!response.ok) throw new Error(`${file} data ${response.status}`);
+    return response.json();
+  }).then(render).catch((error) => {
+    errorInto(ids, `${name} data failed to load: ${error.message}`);
+  });
+}
+
 // Section 1 · A — cities group by who hires, not by region -----------------
 
 function renderWhereWho(data) {
   const c = chart("chart-where-who");
-  charts.push(c);
   if (!c) return;
   const labels = [
     { key: "naics54_share_tercile", label: "IT-services share\n(thirds)", who: true },
@@ -144,7 +158,6 @@ function renderWhereWho(data) {
 
 function renderWhereBreak(data) {
   const c = chart("chart-where-break");
-  charts.push(c);
   if (!c) return;
   const points = [...data.backbone_sweep].sort((a, b) => a.alpha - b.alpha);
   c.setOption({
@@ -265,7 +278,6 @@ function drawSplitNmi(rows, steps, d1, W) {
 
 function renderJobsSplitMix(data) {
   const c = chart("chart-jobs-split-mix");
-  charts.push(c);
   if (!c) return;
   const placing = new Map(data.q1.placing_top_occupations.map((o) => [o.id, o]));
   const direct = new Map(data.q1.direct_top_occupations.map((o) => [o.id, o]));
@@ -486,7 +498,6 @@ function drawLinkScatter(data, top, bridges, W) {
 
 function renderWhoSwitch(data) {
   const c = chart("chart-who-switch");
-  charts.push(c);
   if (!c) return;
   const f = data.finding;
   const groups = [
@@ -533,7 +544,6 @@ function renderWhoSwitch(data) {
 
 function renderWhoMovers(data) {
   const c = chart("chart-who-movers");
-  charts.push(c);
   if (!c) return;
   const f = data.finding;
   const bars = [
@@ -578,7 +588,6 @@ function renderWhoMoversTable(data) {
 
 function renderWhoOverlap(data) {
   const c = chart("chart-who-overlap");
-  charts.push(c);
   if (!c) return;
   const f = data.finding;
   const cats = ["Real network", "Rewired,\nmean"];
@@ -618,7 +627,6 @@ function renderWhoOverlapTable(data) {
 
 function renderBeyondLaw(data) {
   const c = chart("chart-beyond-law");
-  charts.push(c);
   if (!c) return;
   const f = data.finding;
   const cats = ["Observed", "Rewired,\nmean"];
@@ -646,7 +654,6 @@ function renderBeyondLaw(data) {
 
 function renderBeyondPerm(data) {
   const c = chart("chart-beyond-perm");
-  charts.push(c);
   if (!c) return;
   const q2 = data.q2;
   const groups = [
@@ -686,7 +693,6 @@ function renderBeyondPerm(data) {
 
 function renderBeyondWage(data) {
   const c = chart("chart-beyond-wage");
-  charts.push(c);
   if (!c) return;
   const rows = data.q3_top5_soc;
   c.setOption({
@@ -717,57 +723,35 @@ function renderBeyondWage(data) {
 
 // Four independent fetches: a failure in one leaves the others working. -----
 
-fetch(WHERE_WHO_URL).then((response) => {
-  if (!response.ok) throw new Error(`where_who data ${response.status}`);
-  return response.json();
-}).then((data) => {
+loadSection(WHERE_WHO_URL, "where_who", "Where/who", ["chart-where-who", "chart-where-break", "where-break-links"], (data) => {
   renderWhereWho(data);
   renderWhereBreak(data);
   renderWhereBreakLinks(data);
-}).catch((error) => {
-  errorInto(["chart-where-who", "chart-where-break", "where-break-links"],
-    `Where/who data failed to load: ${error.message}`);
 });
 
-fetch(JOBS_SPLIT_URL).then((response) => {
-  if (!response.ok) throw new Error(`jobs_split data ${response.status}`);
-  return response.json();
-}).then((data) => {
+const JOBS_SPLIT_IDS = ["chart-jobs-split-nmi", "chart-jobs-split-mix", "jobs-linkcom-table",
+  "chart-jobs-linkcom-share", "chart-jobs-linkcom-scatter"];
+loadSection(JOBS_SPLIT_URL, "jobs_split", "Jobs-split", JOBS_SPLIT_IDS, (data) => {
   renderJobsSplitNmi(data);
   renderJobsSplitMix(data);
   renderJobsLinkcomTable(data);
   renderLinkShare(data);
   renderLinkScatter(data);
-}).catch((error) => {
-  errorInto(["chart-jobs-split-nmi", "chart-jobs-split-mix", "jobs-linkcom-table",
-    "chart-jobs-linkcom-share", "chart-jobs-linkcom-scatter"],
-    `Jobs-split data failed to load: ${error.message}`);
 });
 
-fetch(STAFFING_MOVES_URL).then((response) => {
-  if (!response.ok) throw new Error(`staffing_moves data ${response.status}`);
-  return response.json();
-}).then((data) => {
+const STAFFING_MOVES_IDS = ["chart-who-switch", "chart-who-movers", "who-movers-table", "chart-who-overlap", "who-overlap-table"];
+loadSection(STAFFING_MOVES_URL, "staffing_moves", "Staffing-moves", STAFFING_MOVES_IDS, (data) => {
   renderWhoSwitch(data);
   renderWhoMovers(data);
   renderWhoMoversTable(data);
   renderWhoOverlap(data);
   renderWhoOverlapTable(data);
-}).catch((error) => {
-  errorInto(["chart-who-switch", "chart-who-movers", "who-movers-table", "chart-who-overlap", "who-overlap-table"],
-    `Staffing-moves data failed to load: ${error.message}`);
 });
 
-fetch(BEYOND_URL).then((response) => {
-  if (!response.ok) throw new Error(`beyond data ${response.status}`);
-  return response.json();
-}).then((data) => {
+loadSection(BEYOND_URL, "beyond", "Beyond", ["chart-beyond-law", "chart-beyond-perm", "chart-beyond-wage"], (data) => {
   renderBeyondLaw(data);
   renderBeyondPerm(data);
   renderBeyondWage(data);
-}).catch((error) => {
-  errorInto(["chart-beyond-law", "chart-beyond-perm", "chart-beyond-wage"],
-    `Beyond data failed to load: ${error.message}`);
 });
 
 // Section 4 — without the biggest firms ------------------------------------
@@ -795,7 +779,6 @@ function dropBars(part, field) {
 
 function renderFootprintRegion(data) {
   const c = chart("chart-footprint-region");
-  charts.push(c);
   if (!c) return;
   const full = variant(data.metros, "full");
   const { bars, whiskers } = dropBars(data.metros, "ami_region");
@@ -822,7 +805,6 @@ function renderFootprintRegion(data) {
 
 function renderFootprintNmi(data) {
   const c = chart("chart-footprint-nmi");
-  charts.push(c);
   if (!c) return;
   const metros = dropBars(data.metros, "nmi_vs_full");
   const jobs = dropBars(data.jobs, "nmi_vs_full");
@@ -854,14 +836,9 @@ function renderFootprintNmi(data) {
   });
 }
 
-fetch(FOOTPRINT_URL).then((response) => {
-  if (!response.ok) throw new Error(`footprint data ${response.status}`);
-  return response.json();
-}).then((data) => {
+loadSection(FOOTPRINT_URL, "footprint", "Footprint", ["chart-footprint-region", "chart-footprint-nmi"], (data) => {
   renderFootprintRegion(data);
   renderFootprintNmi(data);
-}).catch((error) => {
-  errorInto(["chart-footprint-region", "chart-footprint-nmi"], `Footprint data failed to load: ${error.message}`);
 });
 
 // Section 4 follow-up — which firms drive it, and does it hold in FY2024 ----
@@ -870,7 +847,6 @@ fetch(FOOTPRINT_URL).then((response) => {
 
 function renderFootprintSingle(data) {
   const c = chart("chart-footprint-single");
-  charts.push(c);
   if (!c) return;
   const rows = data.single;
   const label = (firm) => (firm === "Tata Consultancy Services" ? "TCS" : short(firm));
@@ -933,7 +909,6 @@ function renderFootprintSingle(data) {
 
 function renderFootprintRank(data) {
   const c = chart("chart-footprint-rank");
-  charts.push(c);
   if (!c) return;
   const rows = [...data.sweep].sort((a, b) => a.k - b.k);
   const ks = rows.map((r) => r.k);
@@ -977,14 +952,9 @@ function renderFootprintRank(data) {
   });
 }
 
-fetch(FOOTPRINT_RANK_URL).then((response) => {
-  if (!response.ok) throw new Error(`footprint_rank data ${response.status}`);
-  return response.json();
-}).then((data) => {
+loadSection(FOOTPRINT_RANK_URL, "footprint_rank", "Footprint-rank", ["chart-footprint-single", "chart-footprint-rank"], (data) => {
   renderFootprintSingle(data);
   renderFootprintRank(data);
-}).catch((error) => {
-  errorInto(["chart-footprint-single", "chart-footprint-rank"], `Footprint-rank data failed to load: ${error.message}`);
 });
 
 window.addEventListener("resize", () => charts.forEach((item) => item && item.resize()));

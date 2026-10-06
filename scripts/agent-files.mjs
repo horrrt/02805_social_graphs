@@ -83,11 +83,12 @@ function lastCommit(group) {
 // Every data file a page loads, grouped by week: public/weeks/weekNN/data/ and
 // the weekNN_ files in public/assets/data/.
 function dataFiles(n) {
+  const week = `week${pad(n)}`;
   const files = [];
-  const own = join(ROOT, "public/weeks", `week${pad(n)}`, "data");
-  if (existsSync(own)) for (const f of readdirSync(own).sort()) files.push(`weeks/week${pad(n)}/data/${f}`);
+  const own = join(ROOT, "public/weeks", week, "data");
+  if (existsSync(own)) for (const f of readdirSync(own).sort()) files.push(`weeks/${week}/data/${f}`);
   for (const f of readdirSync(join(ROOT, "public/assets/data")).sort()) {
-    if (f.startsWith(`week${pad(n)}_`)) files.push(`assets/data/${f}`);
+    if (f.startsWith(`${week}_`)) files.push(`assets/data/${f}`);
   }
   return files;
 }

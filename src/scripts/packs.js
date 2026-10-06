@@ -21,6 +21,8 @@ try {
   const maxDegree = Math.max(...packs.histogram.map((row) => row.degree));
   const weightById = new Map(packs.cards.map((c) => [c.id, c.weight]));
   const minWeight = Math.min(...packs.cards.map((c) => c.weight));
+  const weightedOdds = packs.cards.map((c) => c.probability);
+  const uniformOdds = data.nodes.map(() => 1 / data.nodes.length);
   prediction($("#prediction"), {
     id: "w1-packs",
     week: 1,
@@ -38,14 +40,8 @@ try {
     const updateComparison = () => {
       const packCount = Number(comparison.value),
         draws = packCount * packs.packSize;
-      const weighted = expectedDistinct(
-        packs.cards.map((c) => c.probability),
-        draws,
-      );
-      const uniform = expectedDistinct(
-        data.nodes.map(() => 1 / data.nodes.length),
-        draws,
-      );
+      const weighted = expectedDistinct(weightedOdds, draws);
+      const uniform = expectedDistinct(uniformOdds, draws);
       $("#weighted-unique").textContent = weighted.toFixed(1);
       $("#uniform-unique").textContent = uniform.toFixed(1);
       $("#weighted-bar").style.width =
@@ -67,23 +63,14 @@ try {
     limit = 24,
     random = rng(7),
     compare = false;
+  const isSeed = (v) => Number.isInteger(v) && v >= 0 && v <= 4294967295;
   try {
     const saved = JSON.parse(localStorage.getItem(KEY));
     if (saved?.counts)
       for (const [id, v] of Object.entries(saved.counts))
         if (known.has(id) && Number.isSafeInteger(v) && v > 0) counts[id] = v;
-    if (
-      Number.isInteger(saved?.randomState) &&
-      saved.randomState >= 0 &&
-      saved.randomState <= 4294967295
-    )
-      random = rng(saved.randomState);
-    if (
-      Number.isInteger(saved?.seed) &&
-      saved.seed >= 0 &&
-      saved.seed <= 4294967295
-    )
-      $("#pack-seed").value = saved.seed;
+    if (isSeed(saved?.randomState)) random = rng(saved.randomState);
+    if (isSeed(saved?.seed)) $("#pack-seed").value = saved.seed;
   } catch {}
   pulls = Object.values(counts).reduce((a, b) => a + b, 0);
   function save() {
@@ -133,13 +120,7 @@ try {
       const distinct = Object.keys(counts).length,
         repeats = pulls - distinct;
       const baseline = pulls
-        ? ` On average, ${pulls} draws would find about ${expectedDistinct(
-            data.nodes.map(() => 1 / data.nodes.length),
-            pulls,
-          ).toFixed(1)} different cards under equal odds, or about ${expectedDistinct(
-            packs.cards.map((c) => c.probability),
-            pulls,
-          ).toFixed(1)} under our weighted rule.`
+        ? ` On average, ${pulls} draws would find about ${expectedDistinct(uniformOdds, pulls).toFixed(1)} different cards under equal odds, or about ${expectedDistinct(weightedOdds, pulls).toFixed(1)} under our weighted rule.`
         : "";
       insight.textContent = pulls
         ? `Your ${pulls} draws found ${distinct} different ${distinct === 1 ? "card" : "cards"} and ${repeats} ${repeats === 1 ? "repeat" : "repeats"}.${baseline} ${pulls < 20 ? "A few packs can vary a lot. Try more, then compare the two draw rules below." : "This is one collection, not an average. Compare the two draw rules below to see the longer-term effect."}`

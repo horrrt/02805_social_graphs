@@ -156,16 +156,14 @@ function palette(d, by) {
     const colourOf = Object.fromEntries(named);
     const rest = rgb("--w4-sector-other");
     const unknown = rgb("--w4-sector-unknown");
+    const bucketColour = { ...colourOf, rest, unknown };
     const label = Object.fromEntries(d.lookups.sector);
     const bucket = (i) => {
       const code = codes[d.profiles.sector[i]];
       return code in colourOf ? code : code === "unknown" ? "unknown" : "rest";
     };
     return {
-      of: (i) => {
-        const b = bucket(i);
-        return b === "rest" ? rest : b === "unknown" ? unknown : colourOf[b];
-      },
+      of: (i) => bucketColour[bucket(i)],
       legend: [
         ...named.map(([code, colour]) => ({ key: code, label: label[code] ?? code, colour })),
         { key: "rest", label: "Other sectors", colour: rest },
@@ -251,16 +249,7 @@ async function main() {
     return {
       html: `<b>${esc(head)}</b>${body}<br>Community ${c >= 0 ? c + 1 : "–"}: ${esc(group)}`,
       className: "w4-entities-tip",
-      // deck.gl sets its own inline colours; these take the page's tooltip tokens.
-      style: {
-        background: token("--w4-tip-bg"),
-        color: token("--w4-tip-ink"),
-        padding: "8px 10px",
-        borderRadius: "8px",
-        maxWidth: "320px",
-        fontSize: `${fs("caption")}px`,
-        lineHeight: "1.45",
-      },
+      style: tipStyle(),
     };
   }
 
@@ -369,7 +358,7 @@ async function main() {
       }),
     ];
     const tip = ({ object }) => {
-      if (object === undefined || object === null || typeof object !== "number") return null;
+      if (typeof object !== "number") return null;
       const i = object;
       const c = d.communities[n.community[i]];
       const kind = { firm: "Placing firm", client: "Client company", employer: "Employer" }[n.kind[i]];
@@ -384,6 +373,7 @@ async function main() {
     drawNetStats(d, a, nodes.length, kept.length);
   }
 
+  // deck.gl sets its own inline colours; these take the page's tooltip tokens.
   function tipStyle() {
     return {
       background: token("--w4-tip-bg"),
@@ -413,25 +403,9 @@ async function main() {
   }
 
   function drawNetLegend(d, colourOf) {
-    const list = $(".w4-entities-legend");
-    list.replaceChildren();
     const items = d.communities.slice(0, d.top).map((c) => ({ key: c.id, label: `${c.id + 1} · ${c.label} (${fmt(c.nodes)})`, colour: colourOf(c.id) }));
     if (d.communities.length > d.top) items.push({ key: "other", label: `${d.communities.length - d.top} smaller groups, in lighter tints`, colour: colourOf(d.top) });
-    for (const item of items) {
-      const li = document.createElement("li");
-      const b = document.createElement("button");
-      b.type = "button";
-      b.setAttribute("aria-pressed", String(state.focus === item.key));
-      const sw = document.createElement("i");
-      sw.style.background = `rgb(${item.colour.join(",")})`;
-      b.append(sw, document.createTextNode(item.label));
-      b.addEventListener("click", () => {
-        state.focus = state.focus === item.key ? null : item.key;
-        draw();
-      });
-      li.append(b);
-      list.append(li);
-    }
+    fillLegend(items, false);
   }
 
   function drawNetStats(d, a, nodes, links) {
@@ -499,13 +473,14 @@ async function main() {
       );
     }
     setDeck(layers, ({ index }) => tooltip(d, dots, index));
-    drawLegend(pal);
+    fillLegend(pal.legend, true);
   }
 
-  function drawLegend(pal) {
+  // One toggle button per legend item; a click focuses that group or clears the focus.
+  function fillLegend(items, withTitles) {
     const list = $(".w4-entities-legend");
     list.replaceChildren();
-    for (const item of pal.legend) {
+    for (const item of items) {
       const li = document.createElement("li");
       const b = document.createElement("button");
       b.type = "button";
@@ -513,7 +488,7 @@ async function main() {
       const sw = document.createElement("i");
       sw.style.background = `rgb(${item.colour.join(",")})`;
       b.append(sw, document.createTextNode(item.label));
-      b.title = state.focus === item.key ? "Show every group" : "Highlight this group";
+      if (withTitles) b.title = state.focus === item.key ? "Show every group" : "Highlight this group";
       b.addEventListener("click", () => {
         state.focus = state.focus === item.key ? null : item.key;
         draw();
@@ -694,8 +669,7 @@ function drawNetTable(d) {
   table.querySelector("tbody").replaceChildren(
     ...top.map((c, i) => {
       const tr = document.createElement("tr");
-      const hue = `var(--w4-community-${(i % d.top) + 1})`;
-      const colour = i < d.top ? hue : `color-mix(in srgb, ${hue} 50%, var(--card))`;
+      const colour = swatchColour(i, d.top);
       tr.innerHTML =
         `<td><span class="swatch" style="background:${colour}"></span>${c.id + 1}</td>` +
         `<td>${esc(c.label)}</td><td class="num">${fmt(c.nodes)}</td><td class="num">${fmt(c.strength)}</td>` +
@@ -704,6 +678,12 @@ function drawNetTable(d) {
     }),
   );
   $("[data-entities='table'] h4").textContent = `The ${top.length} largest of ${d.communities.length} groups`;
+}
+
+// The largest groups take the full community hues, the rest a lighter tint of the same cycle.
+function swatchColour(i, top) {
+  const hue = `var(--w4-community-${(i % top) + 1})`;
+  return i < top ? hue : `color-mix(in srgb, ${hue} 50%, var(--card))`;
 }
 
 const ENTITY_HEAD =
@@ -819,17 +799,20 @@ function drawLabels(d) {
   const s = d.summary;
   const rows = Object.entries(s.labels)
     .sort((a, b) => b[1].nmi - a[1].nmi)
-    .map(([k, t]) => ({
-      label: LABELS[k] ?? k,
-      sub: `${fmt(t.values)} values${t.ami !== null ? `, AMI ${t.ami.toFixed(2)}` : ""}`,
-      real: t.nmi,
-      realLabel: t.nmi.toFixed(2),
-      realTip: `NMI ${t.nmi}; shuffled labels matched it in ${t.p <= 1 / (t.shuffles + 1) ? "none" : Math.round(t.p * (t.shuffles + 1) - 1)} of ${t.shuffles} shuffles`,
-      base: [t.nmi_shuffled_mean, Math.max(t.nmi_shuffled_sd, 0.004)],
-      baseTip: `Shuffled labels reach ${t.nmi_shuffled_mean.toFixed(3)} by chance: a label with more values scores higher`,
-      color: /not in the network/.test(LABELS[k] ?? "") ? "--ink-mute" : undefined,
-      hollow: /not in the network/.test(LABELS[k] ?? ""),
-    }));
+    .map(([k, t]) => {
+      const outside = /not in the network/.test(LABELS[k] ?? "");
+      return {
+        label: LABELS[k] ?? k,
+        sub: `${fmt(t.values)} values${t.ami !== null ? `, AMI ${t.ami.toFixed(2)}` : ""}`,
+        real: t.nmi,
+        realLabel: t.nmi.toFixed(2),
+        realTip: `NMI ${t.nmi}; shuffled labels matched it in ${t.p <= 1 / (t.shuffles + 1) ? "none" : Math.round(t.p * (t.shuffles + 1) - 1)} of ${t.shuffles} shuffles`,
+        base: [t.nmi_shuffled_mean, Math.max(t.nmi_shuffled_sd, 0.004)],
+        baseTip: `Shuffled labels reach ${t.nmi_shuffled_mean.toFixed(3)} by chance: a label with more values scores higher`,
+        color: outside ? "--ink-mute" : undefined,
+        hollow: outside,
+      };
+    });
   $("[data-entities='labels']").replaceChildren(
     stripChart(rows, {
       domain: [0, 1],
@@ -907,6 +890,12 @@ function drawWeeks(d) {
   const robust = Object.entries(s.robustness)
     .map(([k, v]) => `${k} ${two(v.nmi_with_main)}`)
     .join(", ");
+  let smallWorld = "Not small-world by these baselines.";
+  if (ratio <= 1.5 && w2.transitivity > 2 * w2.transitivity_random && w2.transitivity > w2.transitivity_rewired.mean) {
+    smallWorld = "Short paths and clustering above both baselines: small-world in Watts and Strogatz's sense.";
+  } else if (w2.transitivity < w2.transitivity_rewired.mean) {
+    smallWorld = "Paths are as short as a random graph's, but the rewired networks cluster more, so the clustering comes from the hubs, not from tight groups.";
+  }
   const weeks = [
     [
       "Week 1 · the network",
@@ -920,11 +909,7 @@ function drawWeeks(d) {
       [
         `The projection links two attributes when ${d.dots === "workers" ? "workers" : "companies"} share them: ${fmt(w2.projection_nodes)} nodes, ${fmt(w2.projection_links)} links, density ${two(w2.density)}.`,
         `Average path ${two(w2.mean_path)} steps against ${two(w2.mean_path_random)} in a random graph of the same size; clustering ${two(w2.transitivity)} against ${two(w2.transitivity_random)} random and ${two(w2.transitivity_rewired.mean)} rewired. ` +
-          (ratio <= 1.5 && w2.transitivity > 2 * w2.transitivity_random && w2.transitivity > w2.transitivity_rewired.mean
-            ? "Short paths and clustering above both baselines: small-world in Watts and Strogatz's sense."
-            : w2.transitivity < w2.transitivity_rewired.mean
-              ? "Paths are as short as a random graph's, but the rewired networks cluster more, so the clustering comes from the hubs, not from tight groups."
-              : "Not small-world by these baselines."),
+          smallWorld,
         `Friendship paradox: neighbours average ${one(w2.friendship_paradox.mean_neighbour_degree)} links against ${one(w2.friendship_paradox.mean_degree)}; ${(w2.friendship_paradox.share_with_better_connected_neighbours * 100).toFixed(0)}% of attributes have better-connected neighbours.`,
       ],
     ],
@@ -975,8 +960,7 @@ function drawTable(d) {
   body.replaceChildren(
     ...top.map((c, i) => {
       const tr = document.createElement("tr");
-      const hue = `var(--w4-community-${(i % d.top) + 1})`;
-      const colour = i < d.top ? hue : `color-mix(in srgb, ${hue} 50%, var(--card))`;
+      const colour = swatchColour(i, d.top);
       const occ = c.fields.occupation?.[0];
       tr.innerHTML =
         `<td><span class="swatch" style="background:${colour}"></span>${c.id + 1}</td>` +

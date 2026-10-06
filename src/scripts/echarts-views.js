@@ -1,4 +1,3 @@
-import { asset } from "./site.js";
 // Corridor Control: three views the rest of the post cannot draw.
 //
 // A force layout answers what the globe hides: which countries sit together
@@ -8,6 +7,7 @@ import { asset } from "./site.js";
 //
 // Every number is computed from the same two files the rest of the page reads.
 
+import { asset } from "./site.js";
 import { fs, family } from "./type-scale.mjs";
 
 const $ = (id) => document.getElementById(id);
@@ -16,7 +16,6 @@ const $ = (id) => document.getElementById(id);
 function dataUrl(name) {
   return asset(`assets/data/${name}`);
 }
-
 
 let api = null;
 let echarts = null;
@@ -304,29 +303,20 @@ function drawArea() {
     return `rgba(${mix(r1, r2)},${mix(g1, g2)},${mix(b1, b2)},0.88)`;
   };
 
+  const band = (bandName, color, data) => ({
+    name: bandName,
+    type: "line",
+    stack: "people",
+    areaStyle: { color },
+    lineStyle: { width: 0.9, color: paper(), opacity: 0.75 },
+    showSymbol: false,
+    smooth: 0.2,
+    emphasis: { focus: "series" },
+    data,
+  });
   const bands = [
-    ...keep.map(([iso3, row], i) => ({
-      name: name(iso3),
-      type: "line",
-      stack: "people",
-      areaStyle: { color: shade(i, keep.length + 1) },
-      lineStyle: { width: 0.9, color: paper(), opacity: 0.75 },
-      showSymbol: false,
-      smooth: 0.2,
-      emphasis: { focus: "series" },
-      data: row,
-    })),
-    {
-      name: "Everyone else",
-      type: "line",
-      stack: "people",
-      areaStyle: { color: `rgba(${api.rgb(MUTE)},0.35)` },
-      lineStyle: { width: 0.9, color: paper(), opacity: 0.75 },
-      showSymbol: false,
-      smooth: 0.2,
-      emphasis: { focus: "series" },
-      data: rest,
-    },
+    ...keep.map(([iso3, row], i) => band(name(iso3), shade(i, keep.length + 1), row)),
+    band("Everyone else", `rgba(${api.rgb(MUTE)},0.35)`, rest),
   ];
 
   instance.setOption(
@@ -411,18 +401,19 @@ function answerArea() {
   const shares =
     `The grey band is every other country: <b>${restThen.toFixed(0)}%</b> of the total in ` +
     `${first}, <b>${restNow.toFixed(0)}%</b> in ${last}. `;
-  const drift =
-    Math.abs(move) < 3
-      ? shares +
-        `The split barely moved. The whole stack roughly doubled and the named twelve ` +
-        `took their existing share of it.`
-      : move < 0
-        ? shares +
-          `The named twelve are pulling away, though they were picked on their ${last} ` +
-          `size, so some of that is the chart choosing its own winners.`
-        : shares +
-          `The growth went to the countries too small to name here, not to the twelve ` +
-          `that are biggest today.`;
+  let drift = shares;
+  if (Math.abs(move) < 3)
+    drift +=
+      `The split barely moved. The whole stack roughly doubled and the named twelve ` +
+      `took their existing share of it.`;
+  else if (move < 0)
+    drift +=
+      `The named twelve are pulling away, though they were picked on their ${last} ` +
+      `size, so some of that is the chart choosing its own winners.`;
+  else
+    drift +=
+      `The growth went to the countries too small to name here, not to the twelve ` +
+      `that are biggest today.`;
   host.innerHTML =
     `Stacked, this is <b>${compact(totals[0])}</b> people in ${first} and ` +
     `<b>${compact(totals.at(-1))}</b> in ${last}` +
@@ -452,8 +443,7 @@ const asylumState = { origin: "SY" };
 
 async function loadAsylum() {
   if (asylum) return asylum;
-  const url = dataUrl("week03_asylum.json");
-  asylum = await fetch(url).then((r) => r.json());
+  asylum = await fetch(dataUrl("week03_asylum.json")).then((r) => r.json());
   return asylum;
 }
 
@@ -462,16 +452,12 @@ const MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "
 function asylumRows() {
   const origin = asylum.origins[asylumState.origin];
   const years = [...new Set(asylum.months.map((m) => m.slice(0, 4)))].sort();
-  const cells = [];
-  asylum.months.forEach((month, i) => {
-    const value = origin.months[i];
-    cells.push([
-      Number(month.slice(5, 7)) - 1,
-      years.indexOf(month.slice(0, 4)),
-      value,
-      month,
-    ]);
-  });
+  const cells = asylum.months.map((month, i) => [
+    Number(month.slice(5, 7)) - 1,
+    years.indexOf(month.slice(0, 4)),
+    origin.months[i],
+    month,
+  ]);
   return { origin, years, cells };
 }
 
@@ -621,8 +607,7 @@ let closures = null;
 
 async function loadClosures() {
   if (closures) return closures;
-  const url = dataUrl("week03_closures.json");
-  closures = await fetch(url).then((r) => r.json());
+  closures = await fetch(dataUrl("week03_closures.json")).then((r) => r.json());
   return closures;
 }
 

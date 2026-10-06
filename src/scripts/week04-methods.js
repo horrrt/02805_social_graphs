@@ -24,6 +24,30 @@ function esc(s) {
   return String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
 }
 
+function getJson(url, label) {
+  return fetch(url).then((r) => {
+    if (!r.ok) throw new Error(`${label} ${r.status}`);
+    return r.json();
+  });
+}
+
+// One key per undirected link, whichever end comes first.
+function edgeKey(a, b) {
+  return a < b ? `${a}|${b}` : `${b}|${a}`;
+}
+
+function countBy(values) {
+  const counts = new Map();
+  for (const v of values) counts.set(v, (counts.get(v) || 0) + 1);
+  return counts;
+}
+
+// The first `max` names, then "and N more" for the rest.
+function nameList(ids, NAME, max) {
+  const shown = ids.slice(0, max).map((id) => NAME[id]).join(", ");
+  return ids.length > max ? `${shown} and ${ids.length - max} more` : shown;
+}
+
 function tipHtml(title, rows) {
   const body = rows.map(([k, v]) => `${esc(k)}: <b>${esc(v)}</b>`).join("<br/>");
   return `<div style="font-weight:700;margin-bottom:4px">${esc(title)}</div>${body}`;
@@ -220,9 +244,8 @@ function buildGN(echarts, explore, place, ctx) {
   const { CITY, IDS, NAME, token, dotR } = ctx;
   const gn = explore.girvan_newman;
   const backboneEdges = place.backbone.graphs["0.2"].edges;
-  const key = (a, b) => (a < b ? `${a}|${b}` : `${b}|${a}`);
-  const cutStep = new Map(gn.cuts.map((c) => [key(c.edge[0], c.edge[1]), c.step]));
-  const edgesOk = backboneEdges.every(([a, b]) => cutStep.has(key(a, b)));
+  const cutStep = new Map(gn.cuts.map((c) => [edgeKey(c.edge[0], c.edge[1]), c.step]));
+  const edgesOk = backboneEdges.every(([a, b]) => cutStep.has(edgeKey(a, b)));
   const n = gn.cuts.length;
   const levels = gn.levels;
   const first0 = { step: 0, components: 1, partition: Object.fromEntries(IDS.map((id) => [id, 0])), Q: 0 };
@@ -235,15 +258,13 @@ function buildGN(echarts, explore, place, ctx) {
     deg.set(b, (deg.get(b) || 0) + 1);
   }
   const hubs = IDS.filter((id) => (deg.get(id) || 0) === IDS.length - 1);
-  const hubNamesSorted = hubs.map((h) => NAME[h]).slice().sort();
+  const hubNamesSorted = hubs.map((h) => NAME[h]).sort();
   const hubsOk = edgesOk && hubs.length === 2 && hubNamesSorted[0] === "Dallas" && hubNamesSorted[1] === "New York";
   const noPositiveSplit = qs.slice(1).every((q) => q < 0);
 
   let splitsOk = true;
   for (const l of levels) {
-    const counts = new Map();
-    for (const c of Object.values(l.partition)) counts.set(c, (counts.get(c) || 0) + 1);
-    const sizes = [...counts.values()].sort((a, b) => b - a);
+    const sizes = [...countBy(Object.values(l.partition)).values()].sort((a, b) => b - a);
     if (!(sizes.slice(1).every((s) => s === 1) || l.components > IDS.length - 5)) splitsOk = false;
   }
 
@@ -251,8 +272,7 @@ function buildGN(echarts, explore, place, ctx) {
   let firstOutOk = false;
   let firstOutName = "";
   if (bestLevel) {
-    const counts = new Map();
-    for (const c of Object.values(bestLevel.partition)) counts.set(c, (counts.get(c) || 0) + 1);
+    const counts = countBy(Object.values(bestLevel.partition));
     const firstOut = Object.entries(bestLevel.partition)
       .filter(([, c]) => counts.get(c) === 1)
       .map(([id]) => id);
@@ -269,12 +289,12 @@ function buildGN(echarts, explore, place, ctx) {
     $("w4m-gn-hubs").closest("details").hidden = true;
   }
 
-  $("w4m-gn-lead").textContent =
-    gnBackgroundOk && splitsOk && firstOutOk
-      ? `Cut the link that carries the most shortest paths, recompute, repeat, and keep the level of pieces with the highest ` +
-        `modularity. On the ${backboneEdges.length} backbone links it finds no groups.`
-      : `Cut the link that carries the most shortest paths, recompute, repeat, and keep the level of pieces with the highest ` +
-        `modularity. On the ${backboneEdges.length} backbone links, no split scores above zero.`;
+  const gnLeadStart =
+    `Cut the link that carries the most shortest paths, recompute, repeat, and keep the level of pieces with the highest ` +
+    `modularity. On the ${backboneEdges.length} backbone links`;
+  $("w4m-gn-lead").textContent = gnBackgroundOk
+    ? `${gnLeadStart} it finds no groups.`
+    : `${gnLeadStart}, no split scores above zero.`;
   termify(
     $("w4m-gn-lead"),
     "modularity",
@@ -290,8 +310,7 @@ function buildGN(echarts, explore, place, ctx) {
   for (let s = 0; s <= n; s++) {
     while (li + 1 < lv.length && lv[li + 1].step <= s) li++;
     const cur = lv[li];
-    const sizes = new Map();
-    for (const c of Object.values(cur.partition)) sizes.set(c, (sizes.get(c) || 0) + 1);
+    const sizes = countBy(Object.values(cur.partition));
     const top3 = [...sizes.entries()]
       .sort((a, b) => b[1] - a[1] || (String(a[0]) < String(b[0]) ? -1 : 1))
       .slice(0, 3)
@@ -335,7 +354,7 @@ function buildGN(echarts, explore, place, ctx) {
   function render(s) {
     const st = steps[s];
     const linesData = backboneEdges.map(([a, b]) => {
-      const cut = cutStep.get(key(a, b)) <= s;
+      const cut = cutStep.get(edgeKey(a, b)) <= s;
       return {
         coords: [
           [CITY[a].lon, CITY[a].lat],
@@ -586,12 +605,7 @@ function buildLouvain(echarts, explore, place, ctx) {
       const city = CITY[moved[0]];
       h = { x: city.lon, y: city.lat, r: dotR(city) };
     }
-    const movedNames = moved.length
-      ? moved
-          .slice(0, 3)
-          .map((m) => NAME[m])
-          .join(", ") + (moved.length > 3 ? ` and ${moved.length - 3} more` : "")
-      : "none yet";
+    const movedNames = moved.length ? nameList(moved, NAME, 3) : "none yet";
     return {
       fills,
       n: comm.size,
@@ -754,22 +768,17 @@ function buildOverlap(echarts, explore, place, ctx) {
     const comms = g.communities;
     const two = new Set(g.in_two_or_more);
     const noneCount = g.in_none.length;
+    let extra = `${two.size} metros in two or more, ${noneCount} in none`;
+    if (comms.length === 1) {
+      extra = noneCount === 0 ? "One community holding every metro." : `One community; ${noneCount} metros left out, drawn hollow.`;
+    }
     views[`k${k}`] = {
       title: `k = ${k}`,
       count: comms.length,
-      extra:
-        comms.length === 1
-          ? noneCount === 0
-            ? "One community holding every metro."
-            : `One community; ${noneCount} metros left out, drawn hollow.`
-          : `${two.size} metros in two or more, ${noneCount} in none`,
+      extra,
       items: comms.map((com, j) => {
         const sorted = [...com].sort((a, b) => CITY[b].filings - CITY[a].filings);
-        const names = sorted
-          .slice(0, 6)
-          .map((c) => NAME[c])
-          .join(", ") + (sorted.length > 6 ? ` and ${sorted.length - 6} more` : "");
-        return { key: `k${k}_${j}`, members: sorted, names, edges: null };
+        return { key: `k${k}_${j}`, members: sorted, names: nameList(sorted, NAME, 6), edges: null };
       }),
       two,
     };
@@ -791,23 +800,18 @@ function buildOverlap(echarts, explore, place, ctx) {
         : `${twoL.length} metros sit in two or more.`,
     items: lc.communities.map((com, j) => {
       const members = [...new Set(com.flat())].sort((a, b) => CITY[b].filings - CITY[a].filings);
-      const names = members
-        .slice(0, 6)
-        .map((c) => NAME[c])
-        .join(", ") + (members.length > 6 ? ` and ${members.length - 6} more` : "");
-      return { key: `l_${j}`, members, names, edges: com };
+      return { key: `l_${j}`, members, names: nameList(members, NAME, 6), edges: com };
     }),
     two: twoLSet,
   };
   // A k-clique community has no edge list of its own in the source data: the
   // edges shown for it are the backbone links with both ends inside it.
-  const edgeSet = new Set(baseEdges.map(([a, b]) => (a < b ? `${a}|${b}` : `${b}|${a}`)));
   for (const k of ks) {
     const v = views[`k${k}`];
     if (!v) continue;
     for (const item of v.items) {
       const ms = new Set(item.members);
-      item.edges = baseEdges.filter(([a, b]) => ms.has(a) && ms.has(b) && edgeSet.has(a < b ? `${a}|${b}` : `${b}|${a}`));
+      item.edges = baseEdges.filter(([a, b]) => ms.has(a) && ms.has(b));
     }
   }
 
@@ -824,7 +828,7 @@ function buildOverlap(echarts, explore, place, ctx) {
   function render() {
     const { view, item } = currentItem();
     const inItem = new Set(item.members);
-    const memberEdgeKeys = new Set((item.edges || []).map((e) => (e[0] < e[1] ? `${e[0]}|${e[1]}` : `${e[1]}|${e[0]}`)));
+    const memberEdgeKeys = new Set((item.edges || []).map(([a, b]) => edgeKey(a, b)));
     const baseLines = baseEdges.map(([a, b]) => ({
       coords: [
         [CITY[a].lon, CITY[a].lat],
@@ -833,7 +837,7 @@ function buildOverlap(echarts, explore, place, ctx) {
       lineStyle: { color: token("--ink-mute"), opacity: 0.3, width: 0.8 },
     }));
     const hiLines = baseEdges
-      .filter(([a, b]) => memberEdgeKeys.has(a < b ? `${a}|${b}` : `${b}|${a}`))
+      .filter(([a, b]) => memberEdgeKeys.has(edgeKey(a, b)))
       .map(([a, b]) => ({
         coords: [
           [CITY[a].lon, CITY[a].lat],
@@ -933,18 +937,9 @@ async function build() {
     if (!window.echarts) await loadScript("echarts-5.5.1.min.js");
     const echarts = window.echarts;
     const [explore, place, usa] = await Promise.all([
-      fetch(EXPLORE_URL).then((r) => {
-        if (!r.ok) throw new Error(`explore data ${r.status}`);
-        return r.json();
-      }),
-      fetch(PLACE_URL).then((r) => {
-        if (!r.ok) throw new Error(`place data ${r.status}`);
-        return r.json();
-      }),
-      fetch(USA_URL).then((r) => {
-        if (!r.ok) throw new Error(`usa map ${r.status}`);
-        return r.json();
-      }),
+      getJson(EXPLORE_URL, "explore data"),
+      getJson(PLACE_URL, "place data"),
+      getJson(USA_URL, "usa map"),
     ]);
 
     // No top-40 metro lies outside the contiguous states; drawing Alaska,

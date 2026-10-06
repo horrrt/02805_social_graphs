@@ -523,12 +523,6 @@
   grid-template-columns: repeat(3, 1fr);
 }
 
-.corridor .grid4 {
-  display: grid;
-  gap: 14px;
-  grid-template-columns: repeat(4, 1fr);
-}
-
 .corridor .grid5 {
   display: grid;
   gap: 14px;
@@ -1027,22 +1021,6 @@
   color: var(--ink);
 }
 
-.corridor .variant-note {
-  background: #f7fafd;
-  border: 1px solid var(--line-soft);
-  border-left: 3px solid var(--access);
-  border-radius: 10px;
-  color: var(--ink-soft);
-  font-size: var(--fs-small);
-  line-height: 1.55;
-  margin: 0 0 6px;
-  padding: 10px 13px;
-}
-
-.corridor .variant-note b {
-  color: var(--ink);
-}
-
 /* A variant that draws its own legend does not also need the static one. */
 .corridor[data-variant="echarts"] .legend,
 .corridor[data-variant="d3"] .legend {
@@ -1398,7 +1376,6 @@
   font-variant-numeric: tabular-nums;
   font-weight: 800;
 }
-
 
 /* ------------------------------------------------- chart tooltip and drawer */
 
@@ -1775,8 +1752,7 @@ body > .chart-tip[hidden] {
 .corridor[data-skin="terminal"] .qa > summary,
 .corridor[data-skin="terminal"] .fact,
 .corridor[data-skin="terminal"] .reveal .box,
-.corridor[data-skin="terminal"] .dk-head,
-.corridor[data-skin="terminal"] .variant-note {
+.corridor[data-skin="terminal"] .dk-head {
   background: #0e151d;
   border-color: var(--line);
 }

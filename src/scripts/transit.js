@@ -31,8 +31,7 @@ try {
   const totalLinks = transit.lines.reduce((sum, line) => sum + line.stations.length - 1, 0);
   let closed = null,
     selectedLine = 1,
-    hoverLine = null,
-    drawMap = () => {};
+    hoverLine = null;
   articleOptions($("#route-from"), data, "Spider-Man");
   articleOptions($("#route-to"), data, "Hulk");
   // One token holds all seven line colours as a comma-separated list.
@@ -53,7 +52,7 @@ try {
       ? `Line ${line.id}: ${line.stations.map(name).join(" → ")}. ${closed ? "Closed station: " + name(closed) + "." : ""}`
       : `All ${totalLinks} real links among these 16 hubs. Crossings without a station circle are not connections. Select one line for a clearer view.`;
   }
-  drawMap = canvasStage($("#transit-map"), (c, w, h) => {
+  const drawMap = canvasStage($("#transit-map"), (c, w, h) => {
     c.clearRect(0, 0, w, h);
     const sx = w / 1030,
       sy = (h - 30) / 780;
@@ -72,9 +71,7 @@ try {
           b = line.stations[i],
           p = pt(a),
           q = pt(b);
-        if (a === closed || b === closed) {
-          c.setLineDash([4, 5]);
-        } else c.setLineDash([]);
+        c.setLineDash(a === closed || b === closed ? [4, 5] : []);
         c.beginPath();
         c.moveTo(...p);
         if (p[1] === q[1]) {
@@ -120,12 +117,11 @@ try {
       const [x, y] = pt(station.id),
         active = !current || current.stations.includes(station.id);
       c.fillStyle = tone("--cv-transit-station-fill", "#ffffff");
-      c.strokeStyle =
-        station.id === closed
-          ? tone("--cv-transit-station-closed", "#d9480f")
-          : active
-            ? tone("--cv-transit-station-active", "#0f2340")
-            : tone("--cv-transit-station-inactive", "#7a8fac");
+      if (station.id === closed)
+        c.strokeStyle = tone("--cv-transit-station-closed", "#d9480f");
+      else if (active)
+        c.strokeStyle = tone("--cv-transit-station-active", "#0f2340");
+      else c.strokeStyle = tone("--cv-transit-station-inactive", "#7a8fac");
       c.lineWidth = active ? 2 : 1;
       c.beginPath();
       c.arc(x, y, station.id === closed ? 7 : 5, 0, Math.PI * 2);
