@@ -563,7 +563,6 @@ export default function Page() {
                       <ol id="z-top"></ol>
                       <p className="fineprint" id="z-floor"></p>
                     </div>
-                    <p className="fineprint" id="null-method"></p>
                   </aside>
                 </div>
                 <div>
@@ -593,7 +592,6 @@ export default function Page() {
                     <h2>Same world. Different networks.</h2>
                     <dl className="stats" id="twin-stats"></dl>
                     <p className="fineprint" id="net-note"></p>
-                    <p className="fineprint" id="flight-caveat"></p>
                   </aside>
                 </div>
               </div>
@@ -640,6 +638,8 @@ export default function Page() {
                     <code>analysis/week03_passengers.py</code>
                     .
                   </p>
+                  <p className="fineprint" id="flight-caveat"></p>
+                  <p className="fineprint" id="null-method"></p>
                 </div>
               </details>
             </div>
@@ -687,9 +687,18 @@ export default function Page() {
                 names and the cut-offs between them are theirs, drawn on the
                 chart rather than applied out of sight.
               </p>
+              <canvas aria-label="Chart: roles of countries inside their communities" className="chart" height="620" id="cartography" role="img" width="1100"></canvas>
+              <div aria-label="How many countries carry each role" className="type-strip" id="typology-strip"></div>
+              <div className="grid5" id="typology-cards"></div>
+              <aside aria-label="Countries in this role" className="type-drawer" id="type-drawer" hidden></aside>
+              <div className="notice">
+                <span className="ico">💡</span>
+                {" "}
+                <span id="typology-note"></span>
+              </div>
               <details className="qa" id="typology-method">
                 <summary>
-                  <span className="qa-cue">What these roles replaced</span>
+                  <span className="qa-cue">How steady the roles are, and what they replaced</span>
                 </summary>
                 <div className="qa-body">
                   <p className="sub">
@@ -701,37 +710,28 @@ export default function Page() {
                     could only ever show one year. Nothing here touches the flight
                     network, so the slider moves it.
                   </p>
+                  <div className="notice">
+                    <span className="ico">🧪</span>
+                    {" "}
+                    <span>
+                      <b>
+                        Louvain is random, and one run would have animated its own
+                        seed.
+                      </b>
+                      {" "}
+                      Two seeds at 2020 disagree about 28 of 207 roles, which is the
+                      same size as the change from one five-year snapshot to the
+                      next. So every year is partitioned 100 times, each run votes,
+                      and a country carries the role most runs gave it together with
+                      the share that agreed. The coordinates are far steadier than
+                      the names: the United States sits at z 5.20 with a standard
+                      deviation of 0.08 across the 100 runs, and the wobble is
+                      concentrated where a country sits on a threshold. Those are
+                      drawn as hollow rings, and they are the ones not to quote.
+                    </span>
+                  </div>
                 </div>
               </details>
-              <canvas aria-label="Chart: roles of countries inside their communities" className="chart" height="620" id="cartography" role="img" width="1100"></canvas>
-              <div aria-label="How many countries carry each role" className="type-strip" id="typology-strip"></div>
-              <div className="grid5" id="typology-cards"></div>
-              <aside aria-label="Countries in this role" className="type-drawer" id="type-drawer" hidden></aside>
-              <div className="notice">
-                <span className="ico">💡</span>
-                {" "}
-                <span id="typology-note"></span>
-              </div>
-              <div className="notice">
-                <span className="ico">🧪</span>
-                {" "}
-                <span>
-                  <b>
-                    Louvain is random, and one run would have animated its own
-                    seed.
-                  </b>
-                  {" "}
-                  Two seeds at 2020 disagree about 28 of 207 roles, which is the
-                  same size as the change from one five-year snapshot to the
-                  next. So every year is partitioned 100 times, each run votes,
-                  and a country carries the role most runs gave it together with
-                  the share that agreed. The coordinates are far steadier than
-                  the names: the United States sits at z 5.20 with a standard
-                  deviation of 0.08 across the 100 runs, and the wobble is
-                  concentrated where a country sits on a threshold. Those are
-                  drawn as hollow rings, and they are the ones not to quote.
-                </span>
-              </div>
             </div>
           </section>
           {/* 7 ----------------------------------------------------------- */}

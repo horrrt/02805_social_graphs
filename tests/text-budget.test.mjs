@@ -24,9 +24,10 @@ const pages = readdirSync(WEEKS)
   .map((d) => join(WEEKS, d, "index.html"))
   .filter(existsSync);
 
-/** Week 3 predates Week 4's card and uses the plain `card` class. */
-const cardOpen = (name) =>
-  name === "week03" ? /<div\b[^>]*class="[^"]*\bcard\b[^"]*"[^>]*>/g : /<div\b[^>]*class="[^"]*\bw4-card\b[^"]*"[^>]*>/g;
+/** Any card: the plain `card` class, which also matches `w4-card`. Week 3
+ * predates Week 4's card, so its main path uses this; so does every deep dive. */
+const ANY_CARD = /<div\b[^>]*class="[^"]*\bcard\b[^"]*"[^>]*>/g;
+const cardOpen = (name) => (name === "week03" ? ANY_CARD : /<div\b[^>]*class="[^"]*\bw4-card\b[^"]*"[^>]*>/g);
 
 /** The page with what a reader cannot see before a click taken out: scripts,
  * styles, SVG, the body of every <details> (its summary stays) and term pop-ups. */
@@ -72,7 +73,7 @@ for (const page of pages) {
   const name = page.split("/").slice(-2, -1)[0];
   const html = visible(builtPage(page.slice(ROOT.length + 1)));
   const sections = elements(html, /<section\b[^>]*>/g, "section");
-  const cards = elements(html, cardOpen(name), "div").map((c) => {
+  const place = (c) => {
     const around = sections.filter((s) => s.at <= c.at && c.at < s.at + s.body.length);
     const named = around.filter((s) => idOf(s.tag)).pop();
     return {
@@ -80,16 +81,19 @@ for (const page of pages) {
       id: idOf(c.tag) ?? idOf(named?.tag ?? "") ?? `card at ${c.at}`,
       deep: around.some((s) => /\bdata-depth="deep"/.test(s.tag)),
     };
-  });
+  };
+  const main = elements(html, cardOpen(name), "div").map(place).filter((c) => !c.deep);
+  const deep = elements(html, ANY_CARD, "div").map(place).filter((c) => c.deep);
+  const deepSections = sections.filter((s) => /\bdata-depth="deep"/.test(s.tag)).length;
 
   test(`${name}: every main-path card shows at most ${LIMITS.section} words before a click`, () => {
-    const over = cards.filter((c) => !c.deep).map((c) => ({ id: c.id, n: words(c.body) })).filter((c) => c.n > LIMITS.section);
+    const over = main.map((c) => ({ id: c.id, n: words(c.body) })).filter((c) => c.n > LIMITS.section);
     assert.deepEqual(over, [], `cards over ${LIMITS.section} words: move method, extra numbers and extra passages into a drawer, word for word`);
   });
 
   test(`${name}: every subsection of a main-path card shows at most ${LIMITS.subsection} words before a click`, () => {
     const over = [];
-    for (const c of cards.filter((c) => !c.deep)) {
+    for (const c of main) {
       const runs = c.body.split(/(?=<h3\b)/).slice(1);
       for (const run of runs) {
         const n = words(run);
@@ -99,8 +103,11 @@ for (const page of pages) {
     assert.deepEqual(over, [], `subsections over ${LIMITS.subsection} words: move method and extra numbers into a drawer, word for word`);
   });
 
-  test(`${name}: every deep-dive card shows at most ${LIMITS.deep} words before a click`, () => {
-    const over = cards.filter((c) => c.deep).map((c) => ({ id: c.id, n: words(c.body) })).filter((c) => c.n > LIMITS.deep);
+  test(`${name}: every deep-dive card shows at most ${LIMITS.deep} words before a click`, (t) => {
+    // Week 4's deep dive keeps every item in a closed drawer, so no card shows
+    // before a click and there is nothing to hold; say so rather than pass quietly.
+    if (deepSections && !deep.length) t.diagnostic(`${name}: the deep dive shows no card before a click`);
+    const over = deep.map((c) => ({ id: c.id, n: words(c.body) })).filter((c) => c.n > LIMITS.deep);
     assert.deepEqual(over, [], `deep-dive cards over ${LIMITS.deep} words: move method and extra numbers into a drawer, word for word`);
   });
 
