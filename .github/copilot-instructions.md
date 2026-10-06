@@ -69,6 +69,9 @@ Why the change was needed, in plain sentences, wrapped at 72 characters.
 - Scopes: `week01` to `week08`, `site`, `analysis`, `names`, `data`, `tests`, `ci`, `deps`, `docs`.
 - Body: what changed and why, in sentences. Name the number that moved when a rerun moves one.
 - A pull request title follows the same format.
+- `.githooks/commit-msg` rejects a header CI would fail, before the commit exists. `npm install`
+  turns it on; in a checkout without one, run `git config core.hooksPath .githooks`. Never skip it
+  with `--no-verify`: three pull requests (#94, #126, #166) needed a force-push for a long header.
 
 ## Never
 
