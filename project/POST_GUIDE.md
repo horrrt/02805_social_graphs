@@ -74,6 +74,7 @@ Week 4 set these rules, and weeks 1 to 3 were brought in line on 28 September (#
 - Run stochastic methods many times with seeds `SEED + i`. Report the partition found most often and how often it recurs, and measure a gap between two methods against the gap between two seeds of one method. Label a single run as one run.
 - Repeat the headline on a second year or sample when the data has one. Compare two statistics only when both cover the same items.
 - Check what a file covers before you name it: Week 4's "FY2025" H-1B file held one quarter, and UN DESA mixes population registers with surveys. Write each trap into the week's notes, as `WEEK04.md` does, and report the share of rows a fuzzy join matched.
+- Commit what you read by hand as a CSV the script reads back, with the text each verdict judged. Draw the sample with a fixed seed and make the script stop when a sampled item has no verdict, when its text changed since the reading, or when a verdict's item is no longer drawn (`analysis/week05_relations.py`). A change to tokenising or matching can keep an item's key and swap its sentence, and an old verdict would then pass unread.
 - Validate page data against its week's model before writing it, with `check(path, data)` from `analysis/check_pages.py`.
 - Credit each data source on the page that uses it, in the form its licence asks for.
 - Before review, read the page for one quantity given twice with different values, or one result told in several places (#69: 817 against 818).

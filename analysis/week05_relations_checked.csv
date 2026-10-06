@@ -1,61 +1,61 @@
-source,target,label,verdict,note
-Cyclops_(Marvel_Comics),Xorn,killed,wrong,Xorn kills Jean; nothing between Cyclops and Xorn
-Iron_Man_2020,War_Machine,killed,right,Arno murders War Machine
-Rachel_Summers,Cable_(character),killed,wrong,Xavier is killed; Cable is on Rachel's mission
-Man-Thing,Blade_(character),killed,wrong,Blade kills Xarus; nothing between Man-Thing and Blade
-Guardsman_(character),Luke_Cage,killed,wrong,a Guardsman kills Cinder and frames Luke Cage
-Deadpool,She-Hulk,killed,right,Deadpool murders a version of She-Hulk
-Betsy_Braddock,Doctor_Nemesis,killed,wrong,"""addicted to killing""; Doctor Nemesis is a teammate"
-Blue_Eagle_(character),Black_Widow_(Natasha_Romanova),killed,right,Black Widow kills Blue Eagle
-Black_Cat_(Marvel_Comics),Paladin_(comics),killed,right,Felicia is killed by Paladin
-Guardsman_(character),Eddie_Brock,killed,right,a Guardsman is killed by Venom (Eddie Brock)
-Hit-Monkey,Spider-Man,killed,wrong,Spider-Man finds a murdered shop owner
-Brian_Braddock,Emma_Frost,killed,wrong,he refuses to kill Emma Frost
-Mayday_Parker,Spider-Man,family,right,Mayday is Peter Parker's daughter
-Misty_Knight,Blade_(character),family,wrong,"""his son"" is Joe Robertson's son; Blade is in a list of characters"
-Cable_(character),Rachel_Summers,family,right,Cable is Rachel's half-brother
-Black_Bolt,Karnak_(character),family,wrong,"""cousin"" and ""brother"" name Medusa and Maximus, not Karnak"
-Ghost_Rider,Killraven,family,wrong,"""his father's killers""; Killraven is an amalgam he battles"
-Vindicator_(comics),Guardian_(Marvel_Comics),family,right,Guardian is Vindicator's husband
-Patsy_Walker,Mockingbird_(Marvel_Comics),family,wrong,"""wife"" is Hawkeye's wife; nothing between Patsy and Mockingbird"
-Cyclops_(Marvel_Comics),Rachel_Summers,family,right,Rachel is Cyclops's daughter
-Patsy_Walker,Kristoff_Vernard,family,wrong,"""son"" is Doctor Doom's son; Patsy protects Kristoff"
-Golem_(Marvel_Comics),Blue_Bullet,family,right,"Jacob Goldstein, the Golem, is Blue Bullet's brother"
-Hulk,She-Hulk,family,right,She-Hulk is Banner's cousin
-Human_Torch_(android),Toro_(character),family,wrong,"""son"" is Toro's parents; Toro is the Torch's partner"
-Adam_Warlock,Emma_Frost,enemy,wrong,"they meet; ""defeat"" is about Devondra"
-Hulkling,Cloak_and_Dagger_(characters),enemy,wrong,an assassin has powers like Cloak and Dagger's
-Iron_Fist_(character),Phoenix_Force,enemy,right,Iron Fist trains Hope to defeat the Phoenix-possessed X-Men
-Sabra_(character),She-Hulk,enemy,right,Sabra battles She-Hulk
-Quicksilver_(Marvel_Comics),Black_Bolt,enemy,wrong,"""defeated"" is about the conspirators; Black Bolt gives away the bride"
-Cloak_and_Dagger_(characters),Anole_(character),enemy,wrong,Anole helps Dagger fight off her captors
-Union_Jack_(Marvel_Comics),Blazing_Skull,enemy,wrong,Union Jack teams up with the Blazing Skull against a Nazi attack
-Guardsman_(character),War_Machine,enemy,right,Iron Man and War Machine defeat the Guardsmen
-Devil_Hulk,Venom_(character),enemy,wrong,Venom takes Bruce as its host to fight Carnage
-Phyla-Vell,Star-Lord,enemy,wrong,Phyla and Star-Lord fight Annihilus together
-Iron_Lad,Kristoff_Vernard,enemy,right,Iron Lad is attacked by Kristoff Vernard
-Gladiator_(Kallark),Phoenix_Force,enemy,right,Gladiator battles the X-Men over the Phoenix
-Human_Torch_(android),Bucky_(Marvel_Comics),ally,right,the Torch joins Captain America and Bucky
-Anole_(character),Hellion_(character),ally,right,Anole and Julian Keller are close friends
-Jack_Monroe_(character),William_Burnside_(character),ally,right,Jack Monroe is William Burnside's partner
-Ghost_Rider,Caretaker_(comics),ally,right,Caretaker is an ally to Ketch
-Jack_Monroe_(character),Nomad_(Marvel_Comics),ally,wrong,Nomad is an identity Jack Monroe takes
-Morbius,Blade_(character),ally,right,Morbius is a regular ally of Blade
-Black_Rider_(character),Doctor_Strange,ally,wrong,"""mentor"" is the Ancient One's to Doctor Strange"
-Rachel_Summers,Betsy_Braddock,ally,right,Rachel and Betsy are long-time friends
-Spider-Woman_(Gwen_Stacy),Spider-Man_Noir,ally,wrong,"""Peter Parker"" here is the main Spider-Man, not Spider-Man Noir"
-Betsy_Braddock,Anole_(character),ally,right,Betsy mentors Anole
-Cloak_and_Dagger_(characters),Deathlok,ally,right,they team up against Carnage
-Killpower,Motormouth_(comics),ally,right,Killpower is Motormouth's partner
-Solo_(Marvel_Comics),Cable_(character),teammate,wrong,Solo's team is formed to take down Cable
-Box_(comics),Guardian_(Marvel_Comics),teammate,right,Guardian recruits Box into Gamma Flight
-Wolverine_(character),Hulk,teammate,wrong,"""member"" is Wolverine in the X-Men; Hulk is a comic's title"
-Empath_(character),Emma_Frost,teammate,right,Empath is a member of Emma Frost's Hellions
-Hyperion_(character),Makkari_(character),teammate,wrong,Makkari restores his sight; the sentence names no shared team
-Puck_(Marvel_Comics),Storm_(Marvel_Comics),teammate,right,Puck joins Uncanny X-Force alongside Storm
-Straw_Man_(comics),Doctor_Strange,teammate,wrong,the Straw Man betrays the Fear Lords to Doctor Strange
-Iron_Fist_(character),Doctor_Strange,teammate,right,Iron Fist joins the New Avengers that Doctor Strange houses
-Vulcan_(Marvel_Comics),Korvus,teammate,wrong,Korvus's team forms to defeat Vulcan
-Darkhawk,Black_Bolt,teammate,right,Darkhawk joins Black Bolt and others to help Sphinx
-Shamrock_(comics),Iron_Fist_(character),teammate,right,Shamrock fights alongside Iron Fist on Death's team
-Shang-Chi,Silk_(character),teammate,right,Shang-Chi and Silk are on the Agents of Atlas
+source,target,label,verdict,note,sentence
+Cyclops_(Marvel_Comics),Xorn,killed,wrong,Xorn kills Jean; nothing between Cyclops and Xorn,"Jean discovers it, forces a confrontation, and is killed shortly after in battle with Xorn."
+Iron_Man_2020,War_Machine,killed,right,Arno murders War Machine,Arno also murders War Machine.
+Rachel_Summers,Cable_(character),killed,wrong,Xavier is killed; Cable is on Rachel's mission,"Soon after X (Xavier) is killed by bioengineered human terrorists, Cyclops gathers Rachel and Kid Cable for a mission on the Atlantic Ocean regarding a piece of their new homeland of Krakoa."
+Man-Thing,Blade_(character),killed,wrong,Blade kills Xarus; nothing between Man-Thing and Blade,"After Xarus is killed by Blade, the latter adopts Boy-Thing."
+Guardsman_(character),Luke_Cage,killed,wrong,a Guardsman kills Cinder and frames Luke Cage,"Pascal Tyler - killed Cinder, framing Luke Cage and Rhino"
+Deadpool,She-Hulk,killed,right,Deadpool murders a version of She-Hulk,"In each book, he hunts down and murders characters such as the Headless Horseman (who inspired the Green Goblin and Ghost Rider), the characters of Little Women (Black Widow, She-Hulk, Elektra), Captain Ahab (Thunderbolt Ross), the Little Mermaid (Namor), Mowgli (Ka-Zar), Count Dracula (Dracula, Morbius, and Blade) and more."
+Betsy_Braddock,Doctor_Nemesis,killed,wrong,"""addicted to killing""; Doctor Nemesis is a teammate","While Cable recruited Fantomex, Marrow and Doctor Nemesis as his teammates, Betsy actually sought Cable because she couldn't bear staying away from X-Force as she admitted she was addicted to killing."
+Blue_Eagle_(character),Black_Widow_(Natasha_Romanova),killed,right,Black Widow kills Blue Eagle,Black Widow and Hawkeye later kill Blue Eagle and take his wings.
+Black_Cat_(Marvel_Comics),Paladin_(comics),killed,right,Felicia is killed by Paladin,Felicia later inadvertently reveals his identity to an informant and becomes jealous of Parker's continued friendship with Mary Jane before Felicia is killed by Paladin.
+Guardsman_(character),Eddie_Brock,killed,right,a Guardsman is killed by Venom (Eddie Brock),Danny Stephens - worked at the Vault and was the first Guardsman taken hostage and killed by Venom (Eddie Brock)
+Hit-Monkey,Spider-Man,killed,wrong,Spider-Man finds a murdered shop owner,"In Deadpool #19, Spider-Man finds a local shop owner brutally murdered."
+Brian_Braddock,Emma_Frost,killed,wrong,he refuses to kill Emma Frost,He is killed by Pierce after overcoming the device's influence and refusing to kill Emma Frost.
+Mayday_Parker,Spider-Man,family,right,Mayday is Peter Parker's daughter,"The character was created by Tom DeFalco and Ron Frenz as the teenage daughter of Peter Parker (Spider-Man) and Mary Jane Watson, and first appeared in What If #105 (February 1998)."
+Misty_Knight,Blade_(character),family,wrong,"""his son"" is Joe Robertson's son; Blade is in a list of characters","In Marvel Comics, preceding characters were Gabe Jones (debuted in 1963), Black Panther (1966), Bill Foster (1966), Spider-Man supporting characters Joe Robertson (1967), his son Randy Robertson (1968), Hobie Brown (the Prowler) and Falcon (both 1969), Luke Cage (1972), Blade (1973), and Abe Brown (1974)."
+Cable_(character),Rachel_Summers,family,right,Cable is Rachel's half-brother,"Nathan Summers is the son of the X-Men member Cyclops (Scott Summers) and his first wife Madelyne Pryor (Jean Grey's clone), as well as the ""half""-brother of Rachel Summers from the ""Days of Future Past"" timeline and Nate Grey from the timeline of the ""Age of Apocalypse"" storyline, the genetic template of the mutant terrorist Stryfe (one of his deadliest enemies), and the adoptive father of Hope Summers."
+Black_Bolt,Karnak_(character),family,wrong,"""cousin"" and ""brother"" name Medusa and Maximus, not Karnak","Black Bolt reappears in a story focusing on his cousin Medusa, drives off the Hulk after he defeats the entire Inhuman Royal Family (Medusa, Gorgon, Karnak, Triton, and Crystal), and with the Fantastic Four, battles his brother Maximus and his own group of rogue Inhumans."
+Ghost_Rider,Killraven,family,wrong,"""his father's killers""; Killraven is an amalgam he battles","When battling his father's killers, he accepted the offer and became Ghost Panther and battled Erik Killraven (fusion of Erik Killmonger and Killraven) while riding a burning black panther."
+Vindicator_(comics),Guardian_(Marvel_Comics),family,right,Guardian is Vindicator's husband,"Following James' return, she takes her husband's mantle of Guardian while he uses Vindicator for a time before the two switch back to their original codenames."
+Patsy_Walker,Mockingbird_(Marvel_Comics),family,wrong,"""wife"" is Hawkeye's wife; nothing between Patsy and Mockingbird","Hellstrom tricks the archer superhero Hawkeye into returning her spirit to Earth; Hawkeye believes he is retrieving his presumed-dead wife, the Mockingbird, from the demonic lord Mephisto's realm."
+Cyclops_(Marvel_Comics),Rachel_Summers,family,right,Rachel is Cyclops's daughter,"His first and most enduring love interest is his wife, Jean Grey, with the two having a daughter, Rachel Summers, from an alternate future."
+Patsy_Walker,Kristoff_Vernard,family,wrong,"""son"" is Doctor Doom's son; Patsy protects Kristoff","She then helps the She-Hulk in protecting Kristoff Vernard, the son of Doctor Doom, who was trying to defect to the U.S. She is later seen talking with Tigra about a case involving a lawsuit but ends up fighting her when she mentions the plaintiff's name, George Saywitz."
+Golem_(Marvel_Comics),Blue_Bullet,family,right,"Jacob Goldstein, the Golem, is Blue Bullet's brother","Jacob Goldstein, the brother of the Blue Bullet, was a resident of the Jewish Warsaw Ghetto in Poland during World War II."
+Hulk,She-Hulk,family,right,She-Hulk is Banner's cousin,"This includes Banner's love interest Betty Ross, his best friend, Rick Jones, his cousin She-Hulk, and therapist and ally Doc Samson."
+Human_Torch_(android),Toro_(character),family,wrong,"""son"" is Toro's parents; Toro is the Torch's partner","In his solo title's debut issue, he acquired a young partner, Thomas ""Toro"" Raymond, the mutant son of two nuclear scientists whose exposure to radiation gave him the ability to control fire."
+Adam_Warlock,Emma_Frost,enemy,wrong,"they meet; ""defeat"" is about Devondra","As Loki, Emma Frost, Hulk, Ant-Man, Ms. Marvel, and Kang the Conqueror gather together, they find Adam and suggest they exit the Soulworld only for Adam to declare that they need to defeat Devondra first."
+Hulkling,Cloak_and_Dagger_(characters),enemy,wrong,an assassin has powers like Cloak and Dagger's,"With the aid of Xavin, Speed and Wiccan, Hulkling survives an attack by X'iv, a Skrull assassin working for Chrell with the powers of Daredevil, Elektra, and Cloak and Dagger."
+Iron_Fist_(character),Phoenix_Force,enemy,right,Iron Fist trains Hope to defeat the Phoenix-possessed X-Men,"During the ""Avengers vs. X-Men"" storyline, Iron Fist and Lei Kung bring Hope Summers to K'un-Lun to train as an Iron Fist, in order to defeat the Phoenix Force-possessed X-Men."
+Sabra_(character),She-Hulk,enemy,right,Sabra battles She-Hulk,"There, she meets Iron Man and the Arabian Knight (Abdul Qamar), and battles She-Hulk and Captain Britain."
+Quicksilver_(Marvel_Comics),Black_Bolt,enemy,wrong,"""defeated"" is about the conspirators; Black Bolt gives away the bride","The ceremony itself was depicted in Fantastic Four #150 by writer Gerry Conway and penciler Rich Buckler, where a threat engineered by the Inhuman Maximus the Mad working alongside Omega (revealed to be Ultron-7) was resolved when Franklin Richards awoke from a long coma and defeated the conspirators, after which the wedding took place with Black Bolt walking Crystal down the aisle."
+Cloak_and_Dagger_(characters),Anole_(character),enemy,wrong,Anole helps Dagger fight off her captors,"With the help of X-Men Anole and Dr. Nemesis, she fights off his captors whereupon Tia reveals that she has powers as well and has been brainwashed to hate them."
+Union_Jack_(Marvel_Comics),Blazing_Skull,enemy,wrong,Union Jack teams up with the Blazing Skull against a Nazi attack,Dan Slott and James W. Fry III featured Brian Falsworth in a World War II-era story for Midnight Sons Unlimited #9 (May 1995); in the story he teams up with the Blazing Skull to defend a fundraiser he is hosting from a Nazi attack.
+Guardsman_(character),War_Machine,enemy,right,Iron Man and War Machine defeat the Guardsmen,"Upon learning their armors are based on stolen specs for that of Iron Man's, Pepper Potts exposes the Guardsmen as criminals while Iron Man and War Machine defeat them."
+Devil_Hulk,Venom_(character),enemy,wrong,Venom takes Bruce as its host to fight Carnage,"During the events of Absolute Carnage, the Venom symbiote takes Bruce as its host to fight Carnage."
+Phyla-Vell,Star-Lord,enemy,wrong,Phyla and Star-Lord fight Annihilus together,"Phyla then goes with Nova and Star-Lord to lead a final battle against Annihilus, being saved at the last second by a massive energy wave caused by the just freed Galactus, which left only the three heroes and Annihilus as survivors."
+Iron_Lad,Kristoff_Vernard,enemy,right,Iron Lad is attacked by Kristoff Vernard,"In the series Marvel's Voices, Iron Lad is attacked by Kristoff Vernard, who sieges Chronopolis."
+Gladiator_(Kallark),Phoenix_Force,enemy,right,Gladiator battles the X-Men over the Phoenix,"When the X-Men come into conflict with the Shi'ar empire regarding the Phoenix entity, Gladiator battles them first at the command of Emperor D'Ken, and then at the behest of D'Ken's successor, Empress Lilandra Neramani."
+Human_Torch_(android),Bucky_(Marvel_Comics),ally,right,the Torch joins Captain America and Bucky,"Both the Torch and the Sub-Mariner joined with Captain America and his partner Bucky as the core of the superhero team the Invaders, fighting Nazis during World War II (in retcon stories that premiered in 1970s comics)."
+Anole_(character),Hellion_(character),ally,right,Anole and Julian Keller are close friends,"At first, he is depicted as close friends with fellow student Julian Keller and the other students in the Hellions, but he later becomes closer to his teammates."
+Jack_Monroe_(character),William_Burnside_(character),ally,right,Jack Monroe is William Burnside's partner,He became an adventurer and the partner of William Burnside who had assumed the identity of Steve Rogers in the 1950s.
+Ghost_Rider,Caretaker_(comics),ally,right,Caretaker is an ally to Ketch,"Caretaker: An immortal man and ally to Ketch, member of the Blood."
+Jack_Monroe_(character),Nomad_(Marvel_Comics),ally,wrong,Nomad is an identity Jack Monroe takes,"The character was originally introduced as the third sidekick under the Bucky identity, initially treated as the original Bucky Barnes before being retconned as a separate character, and later the most well-known incarnation of Nomad."
+Morbius,Blade_(character),ally,right,Morbius is a regular ally of Blade,"In contrast to the comics, the cartoon depicted Morbius both as a regular ally of the character Blade and as a being who feeds on human plasma through his hands rather than with his fangs."
+Black_Rider_(character),Doctor_Strange,ally,wrong,"""mentor"" is the Ancient One's to Doctor Strange","There he receives help from a mysterious Chinese man, who is eventually revealed to be a younger version of the Ancient One, future mentor of the occult superhero Doctor Strange."
+Rachel_Summers,Betsy_Braddock,ally,right,Rachel and Betsy are long-time friends,"In its fourth issue, Rachel Summers and her long-time friend Betsy Braddock confessed their romantic feelings for each other and their kiss was shown in a splash page."
+Spider-Woman_(Gwen_Stacy),Spider-Man_Noir,ally,wrong,"""Peter Parker"" here is the main Spider-Man, not Spider-Man Noir","In the primary continuity of the comic books constituting the Marvel Universe, college-student Gwen Stacy was the girlfriend of Peter Parker, whom she was unaware was Spider-Man."
+Betsy_Braddock,Anole_(character),ally,right,Betsy mentors Anole,"During this time, Betsy started focusing her powers into different weapons of psychic energy such as a bow and arrow, a crossbow and a grappling line and a flail, mentored a small group of students consisted of Hellion, Anole, Broo, and Rockslide and kept a relationship with a virtual boyfriend created in the Danger Room."
+Cloak_and_Dagger_(characters),Deathlok,ally,right,they team up against Carnage,"During the 1993 ""Maximum Carnage"" event, Cloak and Dagger teamed up with Spider-Man, Captain America, Black Cat, Nightwatch, Iron Fist, Deathlok, Morbius, Venom, and Firestar to halt Carnage and his allies' murderous rampage across New York City."
+Killpower,Motormouth_(comics),ally,right,Killpower is Motormouth's partner,He is the partner of Motormouth and first appeared in Motormouth #1 (June 1992).
+Solo_(Marvel_Comics),Cable_(character),teammate,wrong,Solo's team is formed to take down Cable,"Solo is hired by G. W. Bridge to join the new Six Pack alongside Hammer, Domino, Anaconda, and Constrictor in their mission to take down Cable."
+Box_(comics),Guardian_(Marvel_Comics),teammate,right,Guardian recruits Box into Gamma Flight,"James Hudson, seeing Bochs' potential, helped him construct Box and recruited him into Gamma Flight, a training program for the Canadian superhero group Alpha Flight, which was led by Hudson as Guardian."
+Wolverine_(character),Hulk,teammate,wrong,"""member"" is Wolverine in the X-Men; Hulk is a comic's title",The character first appeared in the comic book The Incredible Hulk #180 (1974) and is best known as a member of the superhero team the X-Men.
+Empath_(character),Emma_Frost,teammate,right,Empath is a member of Emma Frost's Hellions,"Manuel de la Rocha debuted as a member of Emma Frost's original Hellions in New Mutants #16 (June 1984), and was created by Chris Claremont and Sal Buscema."
+Hyperion_(character),Makkari_(character),teammate,wrong,Makkari restores his sight; the sentence names no shared team,"The team encounters the hero Quasar and take up residence at Project Pegasus, where Makkari restores his sight."
+Puck_(Marvel_Comics),Storm_(Marvel_Comics),teammate,right,Puck joins Uncanny X-Force alongside Storm,"In the 2012 series Uncanny X-Force, Puck joins the eponymous team alongside Storm, Psylocke, and Spiral."
+Straw_Man_(comics),Doctor_Strange,teammate,wrong,the Straw Man betrays the Fear Lords to Doctor Strange,"The Straw Man was invited by the Dweller-in-Darkness to join the Fear Lords, but he betrayed them to Doctor Strange."
+Iron_Fist_(character),Doctor_Strange,teammate,right,Iron Fist joins the New Avengers that Doctor Strange houses,"After the arrest of Captain America, Rand joins the New Avengers, an underground group provided with secure accommodation by Doctor Strange and which includes his former teammate Luke Cage."
+Vulcan_(Marvel_Comics),Korvus,teammate,wrong,Korvus's team forms to defeat Vulcan,"Meanwhile, Havok, Marvel Girl, Polaris, Ch'od, Raza, and Korvus form a new team of Starjammers bent on defeating Vulcan and salvaging the remains of the Shi'ar empire."
+Darkhawk,Black_Bolt,teammate,right,Darkhawk joins Black Bolt and others to help Sphinx,"Together, the two heroes join past versions of Reed Richards, Black Bolt, and Namorita in helping Sphinx combat his younger self."
+Shamrock_(comics),Iron_Fist_(character),teammate,right,Shamrock fights alongside Iron Fist on Death's team,"Shamrock was chosen for Death's team, fighting alongside fellow heroes Peregrine, Iron Man, Vanguard, Iron Fist, Storm, Arabian Knight, Sabra, Invisible Woman, Angel, Black Panther, Sunfire, and the Collective Man."
+Shang-Chi,Silk_(character),teammate,right,Shang-Chi and Silk are on the Agents of Atlas,"He became a recurring member of Jimmy Woo's Agents of Atlas and its successor team, the New Agents of Atlas, alongside heroes including Kamala Khan, Silk, Amadeus Cho, White Fox, Wave, Aero, Luna Snow, Crescent, Io, and S.H.I.E.L.D. agent Jake Oh."
