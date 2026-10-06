@@ -1411,6 +1411,46 @@
   order: 10;
 }
 
+/* Where a details element can lay its body out apart from its summary, the
+   row keeps every label in place: an opened drawer's label stays a pill where
+   it was, marked by its border, and its body opens under the whole row. */
+@supports selector(::details-content) {
+  .corridor .rx-drawers > details.rx-drawer,
+  .corridor .rx-drawers > details.rx-drawer[open] {
+    display: contents;
+  }
+
+  .corridor .rx-drawers > details.rx-drawer > summary {
+    background: var(--w4-inset);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+  }
+
+  .corridor .rx-drawers > details.rx-drawer[open] > summary {
+    border-color: var(--w4-accent);
+  }
+
+  /* The body's box in the row: after every label, across the full width. */
+  .corridor .rx-drawers > details.rx-drawer::details-content {
+    flex: 1 1 100%;
+    order: 10;
+  }
+
+  .corridor .rx-drawers > details.rx-drawer > .rx-drawer-body {
+    background: var(--w4-inset);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    flex: 1 1 100%;
+    max-width: none;
+    order: 10;
+    padding: 12px 16px 14px;
+  }
+
+  .corridor .rx-drawers > details.rx-drawer > .rx-drawer-body > p {
+    max-width: 78ch;
+  }
+}
+
 .corridor details.rx-drawer > summary {
   align-items: center;
   color: var(--w4-accent);

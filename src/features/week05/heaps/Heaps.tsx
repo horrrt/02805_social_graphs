@@ -13,12 +13,10 @@ import { Passage, StripChart, Table, TipBox } from "@/kit";
 import type { StripOptions, StripRow } from "@/kit/StripChart";
 import type { TableSpec } from "@/kit/Table";
 import type { Tip } from "@/kit/TipBox";
-import { Drawer } from "@/components/post/Drawer";
-import { Drawers } from "@/components/post/Drawers";
 import { island } from "@/lib/island";
 import { useFittedWidth } from "@/lib/useSize";
 import { useTokens, useTypeScale, type TypeScale } from "@/lib/useTypeScale";
-import { CURVE_TOKENS, HEAPS, TABLE_LABEL, curveLayout, curveTip, gap, passages, samples, table } from "@/scripts/week05-heaps.js";
+import { CURVE_TOKENS, HEAPS, curveLayout, curveTip, gap, passages, samples, table } from "@/scripts/week05-heaps.js";
 import { ChartHost, ServerHost } from "../map/ChartHost";
 import { useSectionPart } from "../map/useSectionPart";
 
@@ -163,15 +161,7 @@ function GapPart() {
 function TablePart() {
   const { part } = useHeaps<TableSpec>(table);
   return (
-    <div id="heaps-table">
-      {part ? (
-        <Drawers variant="foot">
-          <Drawer label={TABLE_LABEL}>
-            <Table {...part} />
-          </Drawer>
-        </Drawers>
-      ) : null}
-    </div>
+    <div id="heaps-table">{part ? <Table {...part} /> : null}</div>
   );
 }
 

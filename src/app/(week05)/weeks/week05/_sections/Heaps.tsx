@@ -54,7 +54,6 @@ export function Heaps() {
                 <Part part="gap" />
               </Plot>
             </div>
-            <Part part="table" />
           </>
         }
       >
@@ -94,7 +93,10 @@ export function Heaps() {
               It bends but never flattens out. The slope on log-log axes is 0.63 below 91,570 tokens and 0.49 above, so new words come more slowly as the corpus grows. In the last tenth of the corpus the random orders still meet 18 new types per 1,000 tokens.
             </p>
           </Drawer>
-          <Drawer label="What we read in the pages" bodyId="heaps-checked">
+          <Drawer label="Table">
+            <Part part="table" />
+          </Drawer>
+          <Drawer label="What we read" bodyId="heaps-checked">
             <p>
               The last 100 pages in most-linked order, each linked from 2 pages or fewer, hold 90,907 tokens and add 2,144 types no earlier page used. 1,055 of them (49%) look like names, words that only ever occur with a capital letter, against 41% ± 1.6% for the last 100 pages of the random orders.
             </p>

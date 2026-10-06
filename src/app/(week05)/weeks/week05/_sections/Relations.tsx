@@ -80,7 +80,7 @@ export function Relations() {
               The labelled links: 217 teammate, 202 enemy, 116 family, 84 killed and 58 ally. 113 sentences match more than one label.
             </p>
           </Drawer>
-          <Drawer label="What we read in the pages" bodyId="relations-checked">
+          <Drawer label="What we read" bodyId="relations-checked">
             <p>
               We read 60 sentences, 12 per label, drawn at random: 32 of the labels describe how A and B relate. Ally labels hold up best (9 of 12), enemy and killed worst (5 of 12 each), family in between (6 of 12).
             </p>

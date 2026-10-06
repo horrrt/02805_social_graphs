@@ -12,7 +12,7 @@
 export const WEIRD = "weeks/week05/data/weird.json";
 
 /** The three hosts the islands draw into. */
-export const IDS = { scatter: "chart-weird-scatter", table: "weird-table", passages: "weird-passages" };
+export const IDS = { scatter: "chart-weird-scatter", pages: "weird-pages", table: "weird-table", passages: "weird-passages" };
 
 const pct = (v) => `${(v * 100).toFixed(1)}%`;
 const signed = (v) => `${v < 0 ? "−" : "+"}${Math.abs(v).toFixed(2)}`;
@@ -108,7 +108,7 @@ export function scatterLayout(data, width, measure) {
   };
 }
 
-/** The drawer under the scatter: its label and the table of every page. */
+/** The "Table" drawer of the card: its label and the table of every page. */
 export function allPages(data) {
   return {
     label: `Table: all ${data.corpus.pages} pages`,

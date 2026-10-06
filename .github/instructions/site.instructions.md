@@ -39,7 +39,7 @@ applyTo: "src/**,public/**,tests/**"
 - Give each colour one meaning across the page. If orange means a placed worker, it means nothing else.
 - Leave headings bare: no pill, chip or badge beside a section or question title. Put scope in a caption.
 - Build every post's cards in Week 4's form: question and answer, one paragraph beside "What to notice", the
-  figure, then drawers (Method with the limitation, More numbers, What we read in the pages). No slot labels or
+  figure, then drawers in one row (Method with the limitation, More numbers, Table, What we read). No slot labels or
   open limitation blocks. `tests/text-budget.test.mjs` fails a card over 350 words before a click
   (project/POST_GUIDE.md, "Keep the card short").
 - Keep pages readable without JavaScript: put the prose, numbers and captions in the JSX, and give every

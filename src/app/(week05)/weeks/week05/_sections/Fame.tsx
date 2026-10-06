@@ -74,10 +74,10 @@ export function Fame() {
               Each of the two explanations, hub pages and names without a link, shows at its extreme in one outlier: Brian Braddock's codename, Captain Britain, is on 14 other pages but linked from 1, and Quasar is a page for a name four characters share, with 24 incoming links.
             </p>
           </Drawer>
-          <Drawer label="Table: the ten pages furthest from the line">
+          <Drawer label="Table">
             <Part part="outliers" />
           </Drawer>
-          <Drawer label="What we read in the pages" bodyId="fame-checked">
+          <Drawer label="What we read" bodyId="fame-checked">
             <p>
               The ten pages furthest from the line, above it first. For each, the reason we found by measuring and reading, and a passage that supports it, from the page itself or a page that names it. Four of the five below the line are minor characters whose every linking page names the same team or place.
             </p>

@@ -127,6 +127,9 @@ The host sits in the closed "More numbers" drawer of section 4.
 `kit.js`: `div.rx-drawers.rx-foot` holding one closed `details.rx-drawer` ("Table: all 303 pages"). It is
 part of the host's children in every state and is not in the server markup.
 
+Since 6 October 2026 that table is its own island (#weird-pages) in the card's drawer row, labelled "Table", so the host
+holds the tip and the svg only; the record below keeps the drawer row as main had it.
+
 - **load**: `div.kit-tip[hidden]`, `svg[role=img]` (no class; viewBox `0 0 534 384`), then the drawer row.
 - **hover**, two variants:
   - Variant 1, in 5 runs (7978c8a 1, 2 and 3, fed3c83 2 and 3): `div.kit-tip[style]` holding `<b>Xorn: 1,688
