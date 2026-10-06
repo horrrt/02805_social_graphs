@@ -25,34 +25,35 @@ export function ladder({ facts: f }) {
       { label: "Raw counts", sub: "course", real: c.raw, realLabel: two(c.raw) },
       { label: "Stopwords removed", sub: "course", real: c.stopwords, realLabel: two(c.stopwords) },
       { label: "TF-IDF", sub: "course", real: c.tfidf, realLabel: two(c.tfidf), bold: true },
+      { label: "TF-IDF, names only", real: f.names_only.hits, realLabel: two(f.names_only.hits) },
       { label: "TF-IDF, names removed", real: f.names.hits, realLabel: two(f.names.hits), base: [f.null.mean, f.null.sd], baseLabel: nullLabel, bold: true },
       { label: "…and he, she removed", real: f.pronouns.hits, realLabel: two(f.pronouns.hits) },
     ],
     opts: {
       domain: [0, 5], ticks: [0, 1, 2, 3, 4, 5], fmt: (v) => String(v), ref: [c.random, `ten random pages ${two(c.random)}`],
       axisTitle: "linked pages among a page's ten nearest",
-      aria: `Linked pages among each page's ten nearest by text: TF-IDF ${two(c.tfidf)}, names removed ${two(f.names.hits)}, as many other words removed ${two(f.null.mean)}, random ${two(c.random)}`,
+      aria: `Linked pages among each page's ten nearest by text: TF-IDF ${two(c.tfidf)}, names only ${two(f.names_only.hits)}, names removed ${two(f.names.hits)}, as many other words removed ${two(f.null.mean)}, random ${two(c.random)}`,
     },
   };
 }
 
-// Section 3: the share of a woman's labelled neighbours who are women, against
-// shuffled labels, as names and then pronouns are removed.
+// Section 3: the share of women among the labelled neighbours of women and of
+// men, against shuffled labels, as names and then pronouns are removed.
 export function genderRows({ facts: f }) {
   const g = f.gender;
-  const row = (label, t, bold) => ({
-    label, real: t.observed, realLabel: pct(t.observed), base: [t.null_mean, t.null_sd],
-    baseLabel: `shuffled ${pct(t.null_mean)} ± ${pct(t.null_sd)}`, bold,
+  const row = (label, sub, t, hollow) => ({
+    label, sub, hollow, real: t.observed, realLabel: pct(t.observed), base: [t.null_mean, t.null_sd],
+    baseLabel: `shuffled ${pct(t.null_mean)}`,
   });
+  const pair = (label, rep, divider) => [
+    { ...row(label, "a woman's nearest", g[rep].female, false), bold: true, divider },
+    row("", "a man's nearest", g[rep].male, true),
+  ];
   return {
-    rows: [
-      row("TF-IDF", g.tfidf.female),
-      row("Names removed", g.no_names.female, true),
-      row("Names, he and she removed", g.no_names_pronouns.female),
-    ],
+    rows: [...pair("TF-IDF", "tfidf"), ...pair("Names removed", "no_names", true), ...pair("Names, he and she removed", "no_names_pronouns", true)],
     opts: {
-      domain: [0, 1], ticks: [0, 0.25, 0.5, 0.75, 1], fmt: pct, axisTitle: "women among a woman's nearest pages",
-      aria: `Women among the ten nearest pages of the ${g.female} women: TF-IDF ${pct(g.tfidf.female.observed)}, names removed ${pct(g.no_names.female.observed)}, names and pronouns removed ${pct(g.no_names_pronouns.female.observed)}; shuffled labels ${pct(g.no_names.female.null_mean)}`,
+      domain: [0, 1], ticks: [0, 0.25, 0.5, 0.75, 1], fmt: pct, axisTitle: "women among the labelled nearest pages",
+      aria: `Women among the nearest pages of women and of men: TF-IDF ${pct(g.tfidf.female.observed)} and ${pct(g.tfidf.male.observed)}, names removed ${pct(g.no_names.female.observed)} and ${pct(g.no_names.male.observed)}, names and pronouns removed ${pct(g.no_names_pronouns.female.observed)} and ${pct(g.no_names_pronouns.male.observed)}; shuffled about ${pct(g.no_names.female.null_mean)}`,
     },
   };
 }
@@ -60,17 +61,17 @@ export function genderRows({ facts: f }) {
 // The findings strip: each section's number against its baseline.
 export function minis({ facts: f }) {
   const n = f.pages;
-  const g = f.gender.no_names.female;
+  const g = f.gender;
   return {
     1: [{ domain: [0, n], real: f.names.first_linked_no_names, realLabel: `${f.names.first_linked_no_names} without names`,
       ref: f.names.first_linked, refLabel: `${f.names.first_linked} with`, aria: `Closest page linked: ${f.names.first_linked} of ${n} with names, ${f.names.first_linked_no_names} without` },
-    `pages whose closest page links to them, of ${n}`],
+    `pages whose closest page is linked with them, of ${n}`],
     2: [{ domain: [0, 5], real: f.names.hits, realLabel: two(f.names.hits), base: [f.null.mean, f.null.sd], baseLabel: `other words ${two(f.null.mean)}`,
       aria: `Names removed ${two(f.names.hits)} linked in ten, against ${two(f.null.mean)} when as many other words are removed` },
     `linked in ten without names, TF-IDF ${two(f.course.tfidf)}`],
-    3: [{ domain: [0, 1], real: g.observed, realLabel: pct(g.observed), base: [g.null_mean, g.null_sd], baseLabel: `shuffled ${pct(g.null_mean)}`,
-      aria: `Women among a woman's nearest pages without names: ${pct(g.observed)}, shuffled ${pct(g.null_mean)}` },
-    `women among a woman's nearest pages · z = ${g.z}`],
+    3: [{ domain: [0, 1], real: g.no_names.slots_to_women, realLabel: pct(g.no_names.slots_to_women), ref: g.female / n,
+      refLabel: `${pct(g.female / n)} of pages`, aria: `Without names, ${pct(g.no_names.slots_to_women)} of all nearest-page slots go to women's pages, which are ${pct(g.female / n)} of pages` },
+    "nearest-page slots that go to women's pages, without names"],
   };
 }
 
@@ -110,6 +111,7 @@ export function ladderTable({ facts: f }) {
       { rep: "Raw counts", hits: two(c.raw), who: "course, reproduced" },
       { rep: "Stopwords removed", hits: two(c.stopwords), who: "course, reproduced" },
       { rep: "TF-IDF", hits: two(c.tfidf), who: "course, reproduced" },
+      { rep: "TF-IDF, names only", hits: two(f.names_only.hits), who: "us" },
       { rep: "TF-IDF, names removed", hits: two(f.names.hits), who: "us" },
       { rep: `TF-IDF, ${f.null.words_removed.toLocaleString("en-US")} other words removed (${f.null.runs} runs)`, hits: `${two(f.null.mean)} ± ${two(f.null.sd)}`, who: "us" },
       { rep: "TF-IDF, names, he and she removed", hits: two(f.pronouns.hits), who: "us" },
@@ -149,5 +151,5 @@ export const linkedCount = (rows) => rows.filter((r) => r.linked).length;
 export const TERMS = [
   { phrase: "TF-IDF", definition: "A word's weight on a page: how often the page uses it, as a share of the page's length, times the log of 303 over the number of pages that use it. A word on every page gets 0.", id: "w6-term-tfidf" },
   { phrase: "cosine", definition: "How closely two pages' weight vectors point the same way: 1 for the same direction, 0 when they share no weighted word. A long page and a short one can score 1.", id: "w6-term-cosine" },
-  { phrase: "shuffles", definition: "The baseline: the same labels dealt out again at random over the same pages, so only chance decides who sits near whom.", id: "w6-term-shuffle" },
+  { phrase: "shuffle", definition: "The baseline: the same labels dealt out again at random over the same pages, while every page keeps its ten nearest pages.", id: "w6-term-shuffle" },
 ];

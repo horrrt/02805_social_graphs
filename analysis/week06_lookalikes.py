@@ -32,6 +32,7 @@ public/weeks/week06/data/lookalikes.json (the same numbers and the explorer's pe
 import csv
 import json
 import math
+import os
 import random
 import re
 import sys
@@ -54,6 +55,9 @@ K = 10  # neighbours per page, as in the course's explorable
 NULL_RUNS = 20
 SHUFFLES = 1000
 READ_N = 25  # closest unlinked pairs read by hand, per representation
+# The course's explorable data, from a clone of github.com/suneman/socialgraphs2026-web (the go-nuts
+# digest keeps one here). Its TF-IDF neighbour lists are checked page by page against ours.
+COURSE_LOOKALIKES = Path(os.environ.get("COURSE_REPO", Path.home() / ".cache/socialgraphs2026-web")) / "docs/explorables/lookalikes.json"
 
 # The course's token rule, recovered by matching every page length in its lookalikes.json:
 # runs of letters in any alphabet, one inner apostrophe kept, lowercased.
@@ -64,7 +68,7 @@ COURSE = {"raw": 1.86, "stopwords": 2.84, "tfidf": 4.01, "random": 0.31, "vocab"
 PRONOUNS = {"he", "him", "his", "himself", "she", "her", "hers", "herself",
             "he's", "she's", "he'd", "she'd", "he'll", "she'll"}
 READ_BUCKETS = {
-    "story": "the two characters share a team, a storyline or a family: structure the links miss",
+    "story": "the pages put both characters on one team, in one storyline or family at the same time, or one names the other in a shared event",
     "mantle": "versions of one character, or characters who held the same codename or title",
     "name": "a shared name word and no shared story: a coincidence of naming",
     "template": "pronouns or Wikipedia's recurring sections (reception lists, media) and no shared story",
@@ -73,6 +77,17 @@ READ_BUCKETS = {
 
 def tokens(text):
     return TOKEN.findall(text.lower())
+
+
+def course_neighbours(c, top):
+    """How many of the 303 pages have the same ten TF-IDF neighbours as the course's file, matched by page id."""
+    if not COURSE_LOOKALIKES.exists():
+        raise SystemExit(f"{COURSE_LOOKALIKES} is missing: git clone https://github.com/suneman/socialgraphs2026-web "
+                         "into ~/.cache/socialgraphs2026-web or set COURSE_REPO")
+    theirs = json.loads(COURSE_LOOKALIKES.read_text())
+    ids = theirs["ids"]
+    lists = {ids[i]: {ids[n[0]] for n in row} for i, row in enumerate(theirs["modes"]["tfidf"]["neighbors"])}
+    return sum(lists[c.ids[i]] == {c.ids[j] for j in top[i]} for i in range(c.n))
 
 
 def name_words(texts):
@@ -180,19 +195,46 @@ def same_gender(top, labels, focus):
     return num / den
 
 
+def female_share(top, labels, focus):
+    """For pages labelled `focus`: the share of their labelled neighbours (male or female) who are women."""
+    known = np.isin(labels, ["male", "female"])
+    num = den = 0
+    for i in np.flatnonzero(labels == focus):
+        js = [j for j in top[i] if known[j]]
+        num += sum(labels[j] == "female" for j in js)
+        den += len(js)
+    return num / den
+
+
 def gender_test(c, top, labels, rng):
+    """Women among the labelled neighbours of women and of men, and the gap between the two.
+
+    A shuffle deals the labels out again over the same pages and keeps every neighbour list,
+    so a page that sits in many lists (a hub) is a woman's page only by chance. If women's
+    pages are hubs, men's neighbours are pulled toward women too, and each share alone rises
+    above its shuffle; the gap between women and men is the part hubs cannot explain.
+    """
     known = np.flatnonzero(np.isin(labels, ["male", "female"]))
+    stat = lambda lab: (female_share(top, lab, "female"), female_share(top, lab, "male"))  # noqa: E731
+    obs = stat(labels)
+    null = []
+    for _ in range(SHUFFLES):
+        shuffled = labels.copy()
+        shuffled[known] = rng.permutation(labels[known])
+        null.append(stat(shuffled))
+    null = np.array(null)
     out = {}
-    for focus in ("female", "male"):
-        obs = same_gender(top, labels, focus)
-        null = []
-        for _ in range(SHUFFLES):
-            shuffled = labels.copy()
-            shuffled[known] = rng.permutation(labels[known])
-            null.append(same_gender(top, shuffled, focus))
-        mu, sd = float(np.mean(null)), float(np.std(null))
-        out[focus] = {"observed": round(obs, 3), "null_mean": round(mu, 3), "null_sd": round(sd, 3),
-                      "z": round((obs - mu) / sd, 1)}
+    for k, (key, o, col) in enumerate((("female", obs[0], null[:, 0]), ("male", obs[1], null[:, 1]),
+                                       ("gap", obs[0] - obs[1], null[:, 0] - null[:, 1]))):
+        mu, sd = float(np.mean(col)), float(np.std(col))
+        out[key] = {"observed": round(o, 3), "null_mean": round(mu, 3), "null_sd": round(sd, 3), "z": round((o - mu) / sd, 1)}
+    # Every neighbour slot of the women's pages, unlabelled neighbours included.
+    women = np.flatnonzero(labels == "female")
+    out["female_all_slots"] = round(float(np.mean([labels[j] == "female" for i in women for j in top[i]])), 3)
+    # How often the women's pages appear in anyone's ten nearest, against their share of pages.
+    slots = Counter(int(j) for i in range(c.n) for j in top[i])
+    out["slots_to_women"] = round(sum(slots[int(i)] for i in women) / (c.n * K), 3)
+    out["hubs"] = [[c.names[j], n] for j, n in sorted(slots.items(), key=lambda x: (-x[1], x[0]))[:3]]
     return out
 
 
@@ -285,11 +327,21 @@ def main(to_read=False):
         if round(course[key], 2 if key != "vocab" else 0) != value:
             raise SystemExit(f"course figure {key}: ours {course[key]:.3f}, course {value}")
     everywhere = sorted(w for w in c.vocab if c.df[w] == c.n)
+    same_lists = course_neighbours(c, top_tf)
+    if same_lists != c.n:
+        raise SystemExit(f"only {same_lists} of {c.n} pages have the course's ten TF-IDF neighbours")
 
-    null = []
+    null, null_weight = [], []
+    total = tfidf.sum()
     for i in range(NULL_RUNS):
         m, n_removed = matched_removal(c, tfidf, names, random.Random(SEED + i))
         null.append(hits(c, neighbours(m)[1]))
+        null_weight.append((total - m.sum()) / total)
+    only_names = tfidf.copy()
+    only_names[:, [c.col[w] for w in c.vocab if w not in names]] = 0
+    if (only_names.sum(axis=1) == 0).any():
+        raise SystemExit("a page has no name word left to compare on")
+    _, top_on = neighbours(only_names)
 
     is_name = np.array([w in names for w in c.vocab])
     labels = gender_labels(c)
@@ -328,6 +380,8 @@ def main(to_read=False):
     facts = {
         "pages": c.n, "k": K, "token_rule": TOKEN_RULE, "tokens": sum(map(len, c.toks)),
         "course": {k: round(v, 3) for k, v in course.items()}, "course_published": COURSE,
+        "course_same_neighbours": same_lists, "seeds": [SEED, SEED + NULL_RUNS - 1],
+        "stopword_vocab": sum(w not in stopwords() for w in c.vocab),
         "on_every_page": everywhere,
         "names": {"types": int(is_name.sum()), "rule": "capitalised in more than half of its uses",
                   "tfidf_share": round(float(tfidf[:, is_name].sum() / tfidf.sum()), 3),
@@ -335,11 +389,16 @@ def main(to_read=False):
                   "lists_unchanged": sum(x == K for x in changed), "mean_kept": round(float(np.mean(changed)), 2),
                   "first_linked": int(sum(c.linked[i, top_tf[i][0]] for i in range(c.n))),
                   "first_linked_no_names": int(sum(c.linked[i, top_nn[i][0]] for i in range(c.n)))},
+        "names_only": {"hits": round(hits(c, top_on), 2)},
         "null": {"runs": NULL_RUNS, "words_removed": n_removed, "mean": round(float(np.mean(null)), 3),
+                 "weight_removed": round(float(np.mean(null_weight)), 3),
                  "sd": round(float(np.std(null)), 3), "min": round(min(null), 2), "max": round(max(null), 2)},
-        "pronouns": {"words": sorted(PRONOUNS), "hits": round(hits(c, top_np), 2)},
+        "pronouns": {"words": sorted(PRONOUNS), "hits": round(hits(c, top_np), 2),
+                     "pages": {w: c.df[w] for w in ("he", "his", "she", "her")},
+                     "idf": {w: round(math.log(c.n / c.df[w]), 2) for w in ("he", "his", "she", "her")}},
         "gender": {"labelled": int(np.isin(labels, ["male", "female"]).sum()),
                    "unlabelled": int((labels == "not recorded").sum()),
+                   "other": dict(Counter(x for x in labels if x not in ("male", "female", "not recorded"))),
                    "unlabelled_shared_name": sum(labels[i] == "not recorded" and t.shared_name(c.text[i]) for i in range(c.n)),
                    "female": int((labels == "female").sum()), "male": int((labels == "male").sum()),
                    "shuffles": SHUFFLES, **gender},

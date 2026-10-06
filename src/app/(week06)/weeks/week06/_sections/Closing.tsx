@@ -10,21 +10,22 @@ const CODE = "https://github.com/horrrt/02805_social_graphs/blob/main/analysis/"
 export function Closing() {
   return (
     <PostSection id="closing" owner="Gyula">
-      <SectionOpener num="✓" title="Closing">Two Marvel pages read alike because they share a name, and a shared name usually means a shared story.</SectionOpener>
+      <SectionOpener num="✓" title="Closing">Two Marvel pages read alike mostly because they share names, and names are where Wikipedia puts its links.</SectionOpener>
       <ClosingCard
         takeaway={
           <>
-            TF-IDF finds the link network because it finds names: without them, linked pages among the ten nearest fall
-            from 4.01 to 1.91, while removing as many other words leaves 4.00. Most of the names point at something real.
-            Of the 25 closest pairs that do not link, 19 share a story or a title and 6 share only a name word. Take the
-            names out and the pages sort by gender: 96% of a woman's nearest pages are about women, against 26% by chance.
+            TF-IDF finds the link network because it finds names: names alone get 3.96 linked pages among the ten nearest,
+            and without them the count falls from 4.01 to 1.91. Of the 25 most similar pairs that do not link, 20 still
+            share a story or a title and 5 share only a name word. Take the names out and every page leans toward pages
+            about women, which fill 48% of the lists: he and his sit on nearly every page, so TF-IDF weighs she and her far
+            more.
           </>
         }
         limit={
           <Notice icon="!" gap headline="One important limit">
             We asked one representation, TF-IDF on single words. Word vectors from the second half of the brief might
-            find shared stories without names; we did not try them, so "without names, pages pair by gender" holds for
-            TF-IDF only.
+            find shared stories without names; we did not try them, so the lean toward women's pages holds for TF-IDF
+            only, which gives a word on nearly every page almost no weight.
           </Notice>
         }
         next={
@@ -47,10 +48,9 @@ export function Closing() {
           </p>
           <p className="sub">
             Before changing anything we rebuilt the course's lookalikes: its token rule gives the same 27,033 words, and
-            raw counts, stopwords removed, TF-IDF and the random line come out at 1.86, 2.84, 4.01 and 0.31, with the
-            same ten nearest pages for every page (
+            raw counts, stopwords removed, TF-IDF and the random line come out at 1.86, 2.84, 4.01 and 0.31 (
             <a href={`${CODE}course_reference.py`}>course_reference.py</a>
-            ).
+            ), with the same ten nearest pages for all 303 pages, checked against the course's file.
           </p>
           <ul className="w5-methods">
             <li>
@@ -60,8 +60,8 @@ export function Closing() {
                 <a href={`${CODE}week06_lookalikes.py`}>week06_lookalikes.py</a>
               </b>
               {" "}
-              TF-IDF and cosine on the 303 pages; names removed by the brief's capital-letter rule; 20 matched removals
-              of other words; 1,000 shuffles of Wikidata's gender labels; undirected network distances; 50 pairs read by
+              TF-IDF and cosine on the 303 pages; names removed, or kept alone, by the brief's capital-letter rule; 20
+              removals of other words matched on rarity; 1,000 shuffles of Wikidata's gender labels; undirected network distances; 50 pairs read by
               hand (
               <a href={`${CODE}week06_pairs_read.csv`}>week06_pairs_read.csv</a>
               ).
@@ -71,7 +71,7 @@ export function Closing() {
         <QaDisclosure id="closing-ai" cue="AI use and how we checked it">
           <p className="sub">
             An AI coding assistant (Claude) wrote the analysis and the page code, drafted the text, read the 50 pairs
-            against their pages and tested the page in a browser. The numbers come from the course data, Wikidata and
+            against their pages, re-read them after a review and tested the page in a browser. The numbers come from the course data, Wikidata and
             the script above.
           </p>
           <p className="sub">

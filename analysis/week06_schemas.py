@@ -44,6 +44,7 @@ class Null(Model):
     words_removed: int
     mean: float
     sd: float
+    weight_removed: float = Share
 
 
 class Pronouns(Model):
@@ -52,8 +53,8 @@ class Pronouns(Model):
 
 
 class GenderTest(Model):
-    observed: float = Share
-    null_mean: float = Share
+    observed: float
+    null_mean: float
     null_sd: float
     z: float
 
@@ -61,12 +62,17 @@ class GenderTest(Model):
 class GenderRep(Model):
     female: GenderTest
     male: GenderTest
+    gap: GenderTest
+    female_all_slots: float = Share
+    slots_to_women: float = Share
+    hubs: list[tuple[str, int]]
 
 
 class Gender(Model):
     labelled: int
     unlabelled: int
     unlabelled_shared_name: int
+    other: dict[str, int]
     female: int
     male: int
     shuffles: int
@@ -116,6 +122,10 @@ class Facts(Model):
     k: int
     tokens: int
     course: Course
+    course_same_neighbours: int
+    seeds: tuple[int, int]
+    stopword_vocab: int
+    names_only: dict[str, float]
     on_every_page: list[str]
     names: Names
     null: Null

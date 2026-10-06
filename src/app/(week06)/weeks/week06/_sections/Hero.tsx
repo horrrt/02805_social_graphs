@@ -22,15 +22,15 @@ export function Hero() {
       stats={
         <>
           <HeroStat value="44.5%" label="of TF-IDF weight sits on names" />
-          <HeroStat value="96%" label="of a woman's nearest pages are women once names go" />
+          <HeroStat value="48%" label="of nearest-page slots go to pages about women once names go; they are 17% of pages" />
         </>
       }
     >
       <figure className="w4-hero-stage w5-hero-stage">
         <Part part="hero" />
         <figcaption className="w5-hero-caption">
-          Each row counts how many of a page's ten nearest pages by text it links to, averaged over 303 pages.
-          TF-IDF gets 4.01. Without names it gets 1.91; removing as many other words leaves 4.00 ± 0.01.
+          Each row counts how many of a page's ten nearest pages by text are linked with it, averaged over 303 pages.
+          TF-IDF gets 4.01 and names alone 3.96. Without names it gets 1.91; removing as many other words of the same rarity leaves 4.00 ± 0.01.
           {" "}
           <a href="#names">Section 2</a>
           {" "}

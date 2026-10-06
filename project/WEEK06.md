@@ -97,8 +97,8 @@ Script: `analysis/week06_lookalikes.py` writes `analysis/week06_lookalikes.json`
 | # | Section | Anchor | Answer |
 | --- | --- | --- | --- |
 | 1 | Pick a character | `#explore` | The explorer: a page's ten nearest pages with names kept and removed. Closest page linked for 223 of 303 with names, 125 without |
-| 2 | Names carry the links | `#names` | Linked in ten: TF-IDF 4.01, names removed 1.91, as many other words removed 4.00 ± 0.01. Of the 25 closest unlinked pairs, 16 story, 3 title, 6 name only |
-| 3 | Without names, pages pair by gender | `#gender` | 96% of a woman's nearest pages are women against 26% ± 7% shuffled (z 10.4); 64% with he and she removed too |
+| 2 | Names carry the links | `#names` | Linked in ten: TF-IDF 4.01, names only 3.96, names removed 1.91, as many other words of the same rarity removed 4.00 ± 0.01 (they carry 19.8% of the weight, names 44.5%). Of the 25 closest unlinked pairs, 18 story, 2 title, 5 name only |
+| 3 | Without names, pages lean toward women's pages | `#gender` | Women's pages fill 48% of all ten-nearest lists (17% of pages); women's lists 96% women, men's 44%, gap 51 points (z 23.9); 13 points with he and she removed too |
 
 Traps written down for next time:
 
@@ -111,3 +111,8 @@ Traps written down for next time:
   length when lowercased). It also catches "men" and "x" (X-Men), Avengers and Latveria.
 - Wikidata P21 has a value for 199 pages; Ajak has two and drops out. Only 36 of the 104 unlabelled pages are
   shared-codename pages. Fin Fang Foom is a "male organism" (Q44148). The API rate-limits a second quick run (429).
+- A review caught two traps worth keeping. First, a label-shuffle null keeps every neighbour list, so a hub page
+  that sits in many lists passes it: test the gap between groups, not one group's share. Second, matching a
+  control on document frequency does not match TF-IDF weight; say which one the control holds.
+- He (291 pages) and his (300) get almost no IDF; she (191) and her (208) keep it. Any TF-IDF comparison on these
+  pages without names leans toward women's pages.

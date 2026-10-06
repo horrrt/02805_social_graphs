@@ -17,6 +17,12 @@
   "random": 0.31,
   "vocab": 27033
  },
+ "course_same_neighbours": 303,
+ "seeds": [
+  6,
+  25
+ ],
+ "stopword_vocab": 26859,
  "on_every_page": [
   "a",
   "and",
@@ -40,10 +46,14 @@
   "first_linked": 223,
   "first_linked_no_names": 125
  },
+ "names_only": {
+  "hits": 3.96
+ },
  "null": {
   "runs": 20,
   "words_removed": 10519,
   "mean": 4.0,
+  "weight_removed": 0.198,
   "sd": 0.014,
   "min": 3.98,
   "max": 4.03
@@ -65,11 +75,27 @@
    "she'll",
    "she's"
   ],
-  "hits": 2.1
+  "hits": 2.1,
+  "pages": {
+   "he": 291,
+   "his": 300,
+   "she": 191,
+   "her": 208
+  },
+  "idf": {
+   "he": 0.04,
+   "his": 0.01,
+   "she": 0.46,
+   "her": 0.38
+  }
  },
  "gender": {
   "labelled": 197,
   "unlabelled": 104,
+  "other": {
+   "female|male": 1,
+   "agender": 1
+  },
   "unlabelled_shared_name": 36,
   "female": 52,
   "male": 145,
@@ -82,39 +108,105 @@
     "z": 5.7
    },
    "male": {
-    "observed": 0.716,
-    "null_mean": 0.735,
-    "null_sd": 0.039,
-    "z": -0.5
-   }
+    "observed": 0.284,
+    "null_mean": 0.266,
+    "null_sd": 0.037,
+    "z": 0.5
+   },
+   "gap": {
+    "observed": 0.208,
+    "null_mean": -0.007,
+    "null_sd": 0.029,
+    "z": 7.5
+   },
+   "female_all_slots": 0.387,
+   "slots_to_women": 0.244,
+   "hubs": [
+    [
+     "Spider-Man",
+     91
+    ],
+    [
+     "She-Hulk",
+     70
+    ],
+    [
+     "Mayday Parker",
+     59
+    ]
+   ]
   },
   "no_names": {
    "female": {
     "observed": 0.956,
-    "null_mean": 0.259,
-    "null_sd": 0.067,
-    "z": 10.4
+    "null_mean": 0.262,
+    "null_sd": 0.07,
+    "z": 10.0
    },
    "male": {
-    "observed": 0.558,
-    "null_mean": 0.731,
-    "null_sd": 0.069,
-    "z": -2.5
-   }
+    "observed": 0.442,
+    "null_mean": 0.269,
+    "null_sd": 0.068,
+    "z": 2.5
+   },
+   "gap": {
+    "observed": 0.514,
+    "null_mean": -0.007,
+    "null_sd": 0.022,
+    "z": 23.9
+   },
+   "female_all_slots": 0.921,
+   "slots_to_women": 0.476,
+   "hubs": [
+    [
+     "Jean Grey",
+     182
+    ],
+    [
+     "Spider-Woman (Jessica Drew)",
+     142
+    ],
+    [
+     "Emma Frost",
+     116
+    ]
+   ]
   },
   "no_names_pronouns": {
    "female": {
     "observed": 0.635,
-    "null_mean": 0.261,
-    "null_sd": 0.069,
-    "z": 5.5
+    "null_mean": 0.258,
+    "null_sd": 0.067,
+    "z": 5.6
    },
    "male": {
-    "observed": 0.495,
-    "null_mean": 0.735,
+    "observed": 0.505,
+    "null_mean": 0.264,
     "null_sd": 0.067,
-    "z": -3.6
-   }
+    "z": 3.6
+   },
+   "gap": {
+    "observed": 0.131,
+    "null_mean": -0.006,
+    "null_sd": 0.024,
+    "z": 5.8
+   },
+   "female_all_slots": 0.583,
+   "slots_to_women": 0.442,
+   "hubs": [
+    [
+     "Jean Grey",
+     185
+    ],
+    [
+     "She-Hulk",
+     175
+    ],
+    [
+     "Spider-Woman (Jessica Drew)",
+     134
+    ]
+   ]
   },
   "words": {
    "no_names": [
@@ -213,18 +305,19 @@
  "read": {
   "n": 25,
   "buckets": {
-   "story": "the two characters share a team, a storyline or a family: structure the links miss",
+   "story": "the pages put both characters on one team, in one storyline or family at the same time, or one names the other in a shared event",
    "mantle": "versions of one character, or characters who held the same codename or title",
    "name": "a shared name word and no shared story: a coincidence of naming",
    "template": "pronouns or Wikipedia's recurring sections (reception lists, media) and no shared story"
   },
   "tfidf": {
-   "name": 6,
-   "story": 16,
-   "mantle": 3
+   "name": 5,
+   "story": 18,
+   "mantle": 2
   },
   "no_names": {
-   "template": 25
+   "template": 24,
+   "story": 1
   },
   "no_names_both_women": 25
  },
@@ -359,8 +452,8 @@
    "cos_no_names": 0.137,
    "name_share": 0.96,
    "distance": 2,
-   "bucket": "mantle",
-   "note": "two Spider-family titles held by overlapping characters; Felicity Hardy appears on both pages"
+   "bucket": "story",
+   "note": "the Scarlet Spider page has Felicity Hardy ask her half-sister Spider-Girl to take her on as a sidekick"
   },
   {
    "rep": "tfidf",
@@ -511,8 +604,8 @@
    "cos_no_names": 0.154,
    "name_share": 0.9,
    "distance": 2,
-   "bucket": "name",
-   "note": "Storm is the Human Torch's surname and Ororo Munroe's codename; the brief's own example"
+   "bucket": "story",
+   "note": "the match runs on storm, Johnny's surname and Ororo's codename, but Storm's page has her join the Fantastic Four beside him in 2007"
   },
   {
    "rep": "tfidf",
@@ -721,7 +814,7 @@
    "name_share": 0.17,
    "distance": 2,
    "bucket": "template",
-   "note": "the match leads with she and her; reception sections rank both on lists"
+   "note": "the match leads with she and her; reception sections rank both on lists; their pages put them in no team or storyline at the same time"
   },
   {
    "rep": "no_names",
@@ -740,7 +833,7 @@
    "name_share": 0.19,
    "distance": 2,
    "bucket": "template",
-   "note": "the match leads with she and her; reception sections rank both on lists"
+   "note": "the match leads with she and her; Jessica Drew meets A-Force only in video games"
   },
   {
    "rep": "no_names",
@@ -759,7 +852,7 @@
    "name_share": 0.1,
    "distance": 2,
    "bucket": "template",
-   "note": "the match leads with she and her; reception calls both notable female heroes"
+   "note": "the match leads with she and her; reception calls both notable female heroes; their pages put them in no team or storyline at the same time"
   },
   {
    "rep": "no_names",
@@ -778,7 +871,7 @@
    "name_share": 0.1,
    "distance": 2,
    "bucket": "template",
-   "note": "the match leads with she and her; reception sections rank both on lists"
+   "note": "the match leads with she and her; reception sections rank both on lists; their pages put them in no team or storyline at the same time"
   },
   {
    "rep": "no_names",
@@ -797,7 +890,7 @@
    "name_share": 0.29,
    "distance": 2,
    "bucket": "template",
-   "note": "the match leads with she and her; both are mutants"
+   "note": "the match leads with she and her; both are mutants, and Jean Grey's page names Scarlet Witch only as another female debut"
   },
   {
    "rep": "no_names",
@@ -816,7 +909,7 @@
    "name_share": 0.17,
    "distance": 2,
    "bucket": "template",
-   "note": "the match leads with she and her; reception sections rank both on lists"
+   "note": "the match leads with she and her; both joined Heroes for Hire, but in different decades"
   },
   {
    "rep": "no_names",
@@ -835,7 +928,7 @@
    "name_share": 0.21,
    "distance": 2,
    "bucket": "template",
-   "note": "the match leads with she and her; reception sections rank both on lists"
+   "note": "the match leads with she and her; reception sections rank both on lists; their pages put them in no team or storyline at the same time"
   },
   {
    "rep": "no_names",
@@ -854,7 +947,7 @@
    "name_share": 0.33,
    "distance": 2,
    "bucket": "template",
-   "note": "the match leads with she and her; reception sections rank both on lists"
+   "note": "the match leads with she and her; reception sections rank both on lists; their pages put them in no team or storyline at the same time"
   },
   {
    "rep": "no_names",
@@ -873,7 +966,7 @@
    "name_share": 0.09,
    "distance": 2,
    "bucket": "template",
-   "note": "the match leads with she and her; reception calls both notable female heroes"
+   "note": "the match leads with she and her; reception calls both notable female heroes; their pages put them in no team or storyline at the same time"
   },
   {
    "rep": "no_names",
@@ -892,7 +985,7 @@
    "name_share": 0.16,
    "distance": 2,
    "bucket": "template",
-   "note": "the match leads with she and her"
+   "note": "the match leads with she and her; their pages put them in no team or storyline at the same time"
   },
   {
    "rep": "no_names",
@@ -911,7 +1004,7 @@
    "name_share": 0.16,
    "distance": 2,
    "bucket": "template",
-   "note": "the match leads with she and her; reception sections rank both on lists"
+   "note": "the match leads with she and her; reception sections rank both on lists; their pages put them in no team or storyline at the same time"
   },
   {
    "rep": "no_names",
@@ -929,8 +1022,8 @@
    "cos_no_names": 0.396,
    "name_share": 0.38,
    "distance": 2,
-   "bucket": "template",
-   "note": "the match leads with she and her"
+   "bucket": "story",
+   "note": "the match leads with she and her, but both pages make the two regular New Avengers after Secret Invasion"
   },
   {
    "rep": "no_names",
@@ -949,7 +1042,7 @@
    "name_share": 0.28,
    "distance": 2,
    "bucket": "template",
-   "note": "the match leads with she and her"
+   "note": "the match leads with she and her; their pages put them in no team or storyline at the same time"
   },
   {
    "rep": "no_names",
@@ -968,7 +1061,7 @@
    "name_share": 0.09,
    "distance": 2,
    "bucket": "template",
-   "note": "the match leads with she and her; reception calls both notable female heroes"
+   "note": "the match leads with she and her; both served in the Fantastic Four, but in different decades"
   },
   {
    "rep": "no_names",
@@ -987,7 +1080,7 @@
    "name_share": 0.11,
    "distance": 3,
    "bucket": "template",
-   "note": "the match leads with she and her; both also gained powers through a blood transfusion"
+   "note": "the match leads with she and her; both also gained powers through a blood transfusion; their pages put them in no team or storyline at the same time"
   },
   {
    "rep": "no_names",
@@ -1006,7 +1099,7 @@
    "name_share": 0.06,
    "distance": 2,
    "bucket": "template",
-   "note": "the match leads with she and her; both also gained powers through a blood transfusion"
+   "note": "the match leads with she and her; both also gained powers through a blood transfusion; their pages put them in no team or storyline at the same time"
   },
   {
    "rep": "no_names",
@@ -1025,7 +1118,7 @@
    "name_share": 0.4,
    "distance": 2,
    "bucket": "template",
-   "note": "the match leads with she and her; reception sections rank both on lists"
+   "note": "the match leads with she and her; reception sections rank both on lists; their pages put them in no team or storyline at the same time"
   },
   {
    "rep": "no_names",
@@ -1044,7 +1137,7 @@
    "name_share": 0.17,
    "distance": 2,
    "bucket": "template",
-   "note": "the match leads with she and her; reception sections rank both on lists"
+   "note": "the match leads with she and her; reception sections rank both on lists; their pages put them in no team or storyline at the same time"
   },
   {
    "rep": "no_names",
@@ -1063,7 +1156,7 @@
    "name_share": 0.25,
    "distance": 2,
    "bucket": "template",
-   "note": "the match leads with she and her; both are mutants"
+   "note": "the match leads with she and her; both are mutants; their pages put them in no team or storyline at the same time"
   },
   {
    "rep": "no_names",
@@ -1082,7 +1175,7 @@
    "name_share": 0.12,
    "distance": 2,
    "bucket": "template",
-   "note": "the match leads with she and her; reception calls both notable female heroes"
+   "note": "the match leads with she and her; reception calls both notable female heroes; their pages put them in no team or storyline at the same time"
   },
   {
    "rep": "no_names",
@@ -1101,7 +1194,7 @@
    "name_share": 0.22,
    "distance": 2,
    "bucket": "template",
-   "note": "the match leads with she and her; reception sections rank both on lists"
+   "note": "the match leads with she and her; reception sections rank both on lists; their pages put them in no team or storyline at the same time"
   },
   {
    "rep": "no_names",
@@ -1120,7 +1213,7 @@
    "name_share": 0.42,
    "distance": 2,
    "bucket": "template",
-   "note": "the match leads with she and her; both worked as private investigators"
+   "note": "the match leads with she and her; both worked as private investigators; their pages put them in no team or storyline at the same time"
   },
   {
    "rep": "no_names",
@@ -1139,7 +1232,7 @@
    "name_share": 0.25,
    "distance": 2,
    "bucket": "template",
-   "note": "the match leads with she and her; reception sections rank both on lists"
+   "note": "the match leads with she and her; reception sections rank both on lists; their pages put them in no team or storyline at the same time"
   },
   {
    "rep": "no_names",
@@ -1158,7 +1251,7 @@
    "name_share": 0.19,
    "distance": 2,
    "bucket": "template",
-   "note": "the match leads with she and her; reception calls both notable female heroes"
+   "note": "the match leads with she and her; reception calls both notable female heroes; their pages put them in no team or storyline at the same time"
   },
   {
    "rep": "no_names",
@@ -1177,7 +1270,7 @@
    "name_share": 0.22,
    "distance": 2,
    "bucket": "template",
-   "note": "the match leads with she and her"
+   "note": "the match leads with she and her; their pages put them in no team or storyline at the same time"
   }
  ]
 }

@@ -2,7 +2,7 @@
 // Week 6's parts: every chart, table and the explorer, drawn from the one file
 // lookalikes.json (src/scripts/week06-lookalikes.js builds each). Each host
 // renders empty on the server and fills once the file has loaded; a failed
-// load leaves the hosts empty and logs one line. One island per part, so a
+// load leaves the hosts empty and each part logs one line. One island per part, so a
 // fault in one leaves the others alone.
 import { useEffect, useMemo, useState, type ComponentType } from "react";
 import { MiniStrip, StripChart, Table } from "@/kit";
@@ -122,7 +122,8 @@ function Column({ title, rows }: { title: string; rows: Row[] }) {
 
 function Explorer({ data }: { data: Data }) {
   const options = useMemo(() => choices(data) as { i: number; name: string }[], [data]);
-  const [value, setValue] = useState(String(data.names.indexOf(START)));
+  const picks = useMemo(() => PICKS.map((name: string) => [name, data.names.indexOf(name)] as const).filter(([, i]) => i >= 0), [data]);
+  const [value, setValue] = useState(String(Math.max(0, data.names.indexOf(START))));
   const index = Number(value);
   const kept = useMemo(() => neighbourRows(data, index, "kept"), [data, index]);
   const removed = useMemo(() => neighbourRows(data, index, "removed"), [data, index]);
@@ -136,8 +137,8 @@ function Explorer({ data }: { data: Data }) {
           ))}
         </select>
         <span className="w5-chips">
-          {PICKS.map((name) => {
-            const i = String(data.names.indexOf(name));
+          {picks.map(([name, at]) => {
+            const i = String(at);
             return (
               <button key={name} type="button" aria-pressed={i === value} onClick={() => setValue(i)}>
                 {short(name)}
@@ -146,7 +147,10 @@ function Explorer({ data }: { data: Data }) {
           })}
         </span>
       </div>
-      <div className="w6-cols" aria-live="polite">
+      <p className="visually-hidden" aria-live="polite">
+        {`${short(data.names[index])}: ${linkedCount(kept)} of 10 linked with names kept, ${linkedCount(removed)} with names removed.`}
+      </p>
+      <div className="w6-cols">
         <Column title="Names kept" rows={kept} />
         <Column title="Names removed" rows={removed} />
       </div>

@@ -24,18 +24,18 @@ export function Names() {
         layout="below"
         did={
           <TermProse as="p" className="sub" roots={["#names-did p"]} terms={TERMS} after={[DATA]}>
-            We rebuilt the course's lookalikes and got its four numbers to the second decimal, with the same ten nearest pages for all 303. Then we removed the 10,519 words the name rule catches and counted again. As a control we removed 10,519 other words instead, each matched to a name on how many pages use it, in 20 runs.
+            We rebuilt the course's lookalikes and got its four numbers to the second decimal, with the same ten nearest pages for all 303. Then we removed the 10,519 words the name rule catches and counted again. As controls we kept only the names, and we removed 10,519 other words instead, each matched to a name on how many pages use it, in 20 runs.
           </TermProse>
         }
         surprise={
           <Notice icon="💡" headline="What to notice">
-            Names hold 44.5% of all TF-IDF weight. Removing them drops TF-IDF to 1.91, level with raw counts (1.86); removing as many other words leaves 4.00 ± 0.01. Wikipedia links a character where it names one, so names and links travel together.
+            Names hold 44.5% of all TF-IDF weight. Without them TF-IDF drops to 1.91, level with raw counts (1.86); with names alone it gets 3.96. Removing as many other words of the same rarity leaves 4.00 ± 0.01, but those words carry 19.8% of the weight against the names' 44.5%, so the control rules out rarity, not weight.
           </Notice>
         }
         figure={
           <Plot
             title="Linked pages among each page's ten nearest"
-            note="Mean over the 303 pages. Dot: the real pages. Band: 20 runs removing as many other words, matched on how many pages use each, mean and one standard deviation. Dashed line: ten pages picked at random. The first three rows are the course's figures, reproduced."
+            note="Mean over the 303 pages. Dot: the real pages. Band: 20 runs removing as many other words, matched on how many pages use each, mean and one standard deviation. Dashed line: ten pages picked at random. The first three rows are the course's figures, reproduced. Linked means either page links to the other."
           >
             <Part part="ladder" />
           </Plot>
@@ -47,7 +47,7 @@ export function Names() {
               Two pages count as linked when either links to the other. The random line is ten times the share of all pairs that are linked. The stopword row uses NLTK's English list, which reproduces the course's 26,859 remaining words.
             </p>
             <p>
-              The control pairs each name with an unused non-name on the same number of pages, or the nearest number with one left, drawn with seeds 6 to 25. It keeps how rare the removed words are and changes only whether they are names.
+              The control pairs each name with an unused non-name on the same number of pages, or the nearest number with one left, drawn with seeds 6 to 25. It keeps how rare the removed words are; it cannot keep their weight. We checked our ten nearest pages against the course's own file: all 303 lists match.
             </p>
             <p id="names-limit">
               The name rule is crude. It removes team and place names (Avengers, Latveria) and the men of X-Men along with people's names, and it keeps a name that is mostly written in lower case.
@@ -67,7 +67,7 @@ export function Names() {
           </Drawer>
           <Drawer label="What we read" bodyId="names-checked">
             <p>
-              We read the 25 most similar pairs that do not link, names kept, and sorted each into four groups we fixed before reading. 16 share a story: 12 are teammates in Strikeforce: Morituri, whose pages repeat one lead sentence and one creator credit. 3 hold the same title, such as Doctor Doom. 6 share only a name word: Frost, Kane, Storm, Rider, Walker and Devil.
+              We read the 25 most similar pairs that do not link, names kept, and sorted each into four groups, then re-read them after a review with a stricter rule for a shared story: the pages must put both characters on one team or in one storyline at the same time. 18 share a story: 12 are teammates in Strikeforce: Morituri, whose pages repeat one lead sentence and one creator credit, and Storm served in the Fantastic Four beside the Human Torch. 2 hold the same title, such as Doctor Doom. 5 share only a name word: Frost, Kane, Devil, Rider and Walker.
             </p>
             <Part part="readKept" />
           </Drawer>

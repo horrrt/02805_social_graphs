@@ -15,7 +15,7 @@ const RAIL = [
   { target: "opening", label: "Opening" },
   { target: "explore", label: "Pick a character", q: "Which pages read most like a character, and why?" },
   { target: "names", label: "Names carry the links", q: "How much of TF-IDF's agreement with the links comes from names?" },
-  { target: "gender", label: "Without names, pages pair by gender", q: "With the names gone, what makes two pages read alike?" },
+  { target: "gender", label: "Without names, pages lean toward women's pages", q: "With the names gone, what makes two pages read alike?" },
   { target: "closing", label: "Closing" },
 ].map(({ target, label, q }) => ({ target, label, children: q ? [{ target: `${target}-asked`, label: q }] : undefined }));
 
