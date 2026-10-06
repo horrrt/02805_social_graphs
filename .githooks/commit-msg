@@ -1,0 +1,24 @@
+#!/bin/sh
+# Rejects a commit whose header .github/workflows/commit-format.yml would fail:
+# `type(scope): subject` with a Conventional Commits type, and 72 characters at
+# most (commitlint.config.mjs). It needs no npm install, so it runs in every
+# worktree. `npm install` turns it on with `git config core.hooksPath .githooks`.
+header=$(grep -v '^#' "$1" | sed -n '/./{p;q;}')
+
+case "$header" in
+  "Merge "* | "Revert "* | "fixup! "* | "squash! "* | "amend! "*) exit 0 ;;
+esac
+
+types='build|chore|ci|docs|feat|fix|perf|refactor|revert|style|test'
+if ! printf '%s\n' "$header" | grep -Eq "^($types)(\([a-z0-9-]+\))?!?: [^ ].*[^.]$"; then
+  echo "commit-msg: \"$header\"" >&2
+  echo "commit-msg: the header must read type(scope): subject, with no full stop; types: ${types}" >&2
+  exit 1
+fi
+
+length=$(printf '%s' "$header" | LC_ALL=en_US.UTF-8 wc -m | tr -d ' ')
+if [ "$length" -gt 72 ]; then
+  echo "commit-msg: \"$header\"" >&2
+  echo "commit-msg: the header is $length characters; CI rejects anything over 72" >&2
+  exit 1
+fi
