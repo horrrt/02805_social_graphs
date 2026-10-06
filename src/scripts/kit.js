@@ -45,6 +45,17 @@ export function slot(section, part) {
 
 // ---- tables and figures
 
+// en-GB stops at three decimals, so a number under 0.001 keeps three significant digits instead of reading 0.
+const num = (v) => (v !== 0 && Math.abs(v) < 0.001 ? v.toLocaleString("en-GB", { maximumSignificantDigits: 3 }) : v.toLocaleString("en-GB"));
+
+// The one row a table body holds when it has no rows: a note across every column.
+function emptyRow(body, span, text) {
+  const td = body.insertRow().insertCell();
+  td.colSpan = span;
+  td.className = "kit-empty";
+  td.textContent = text;
+}
+
 /** A plain table. columns: [{ key, label, num? }]; rows: objects keyed by column. */
 export function table({ columns, rows, caption }) {
   const t = document.createElement("table");
@@ -63,10 +74,11 @@ export function table({ columns, rows, caption }) {
     for (const c of columns) {
       const td = tr.insertCell();
       const v = r[c.key];
-      td.textContent = v === null || v === undefined ? "" : typeof v === "number" ? v.toLocaleString("en-GB") : v;
+      td.textContent = v === null || v === undefined ? "" : typeof v === "number" ? num(v) : v;
       if (c.num) td.className = "num";
     }
   }
+  if (!rows.length) emptyRow(body, columns.length, "No rows to show.");
   decorate(t);
   return t;
 }
@@ -172,6 +184,7 @@ export function concordance(rows, { caption } = {}) {
     tr.cells[1].className = "kit-kwic-left";
     tr.cells[3].className = "kit-kwic-right";
   }
+  if (!rows.length) emptyRow(body, 4, "No hits.");
   return t;
 }
 

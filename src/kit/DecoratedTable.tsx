@@ -37,6 +37,7 @@ export default function DecoratedTable({
   rxBars,
   className,
   id,
+  empty,
 }: {
   caption?: ReactNode;
   head: HeadCell[];
@@ -44,6 +45,8 @@ export default function DecoratedTable({
   rxBars?: string;
   className?: string;
   id?: string;
+  /** What the body says when there are no rows; without it the body stays empty. */
+  empty?: ReactNode;
 }) {
   const decoration = decorationFor({
     headers: head.map((h) => h.text),
@@ -63,6 +66,13 @@ export default function DecoratedTable({
         </tr>
       </thead>
       <tbody>
+        {rows.length === 0 && empty ? (
+          <tr>
+            <td colSpan={head.length} className="kit-empty">
+              {empty}
+            </td>
+          </tr>
+        ) : null}
         {rows.map((row, i) => (
           <tr key={i} data-rx={decoration ? "" : undefined}>
             {row.map((raw, j) => {

@@ -11,7 +11,9 @@ attributes and tooltips. Charts draw only after hydration, from the page's type 
 (`useTypeScale`, `useTokens`, `useTextMeasure` in `src/lib`), so the server renders the host empty, as main's
 server markup has it. Use them inside an island (`island()` in `src/lib/island.tsx`); none of these files is
 `'use client'`. The rules every island follows are in [src/lib/README.md](../lib/README.md).
-`/styleguide/kit/` draws them with toy data (`src/features/kit-page/`). `tests/kit.test.mjs` fails when this
+`/styleguide/kit/` draws them with toy data (`src/features/kit-page/`). `/styleguide/kit/states/` draws them in awkward cases
+(empty rows, long labels, values off the axis, half-width columns); after `npm run build`, `npm run kit:states` loads it
+in headless Chromium and fails on an empty host, a page error or a component that spills out of its column. `tests/kit.test.mjs` fails when this
 list and the exports of `index.ts` disagree.
 
 ## Charts
