@@ -112,6 +112,54 @@
    "ours": 2.7778,
    "digits": 1,
    "match": true
+  },
+  {
+   "brief": "https://sunelehmann.com/socialgraphs2026-web/weeks/week6.html",
+   "what": "lookalikes vocabulary",
+   "course": 27033,
+   "ours": 27033,
+   "digits": 0,
+   "match": true
+  },
+  {
+   "brief": "https://sunelehmann.com/socialgraphs2026-web/weeks/week6.html",
+   "what": "lookalikes: linked in ten, raw counts",
+   "course": 1.86,
+   "ours": 1.858,
+   "digits": 2,
+   "match": true
+  },
+  {
+   "brief": "https://sunelehmann.com/socialgraphs2026-web/weeks/week6.html",
+   "what": "lookalikes: linked in ten, stopwords removed",
+   "course": 2.84,
+   "ours": 2.842,
+   "digits": 2,
+   "match": true
+  },
+  {
+   "brief": "https://sunelehmann.com/socialgraphs2026-web/weeks/week6.html",
+   "what": "lookalikes: linked in ten, TF-IDF",
+   "course": 4.01,
+   "ours": 4.007,
+   "digits": 2,
+   "match": true
+  },
+  {
+   "brief": "https://sunelehmann.com/socialgraphs2026-web/weeks/week6.html",
+   "what": "lookalikes: linked in ten, ten random pages",
+   "course": 0.31,
+   "ours": 0.313,
+   "digits": 2,
+   "match": true
+  },
+  {
+   "brief": "https://sunelehmann.com/socialgraphs2026-web/weeks/week6.html",
+   "what": "Marvel, Comics and the on all 303 pages (1 = yes)",
+   "course": 1,
+   "ours": 1,
+   "digits": 0,
+   "match": true
   }
  ],
  "text": {

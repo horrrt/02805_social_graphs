@@ -1,7 +1,7 @@
 # Week 6 · What makes two Marvel pages read alike?
 
-The plan for the Week 6 post (NLP II, "From counts to meaning"), set up 6 October 2026. Nothing is built
-yet; the question and owners below wait for the group's pick.
+The plan for the Week 6 post (NLP II, "From counts to meaning"), set up 6 October 2026. Gyula picked the
+recommended question and had the whole post built in one session the same day; see "What we built" at the end.
 
 Brief: <https://sunelehmann.com/socialgraphs2026-web/weeks/week6.html>, exercise 6.11, read 6 October 2026
 from the course repo (`deaf55f`, byte-identical to the live page). The digest is
@@ -88,7 +88,26 @@ tokenizer the course used. If they do not match, report the gap and its cause; d
 
 **Packages:** none new. scikit-learn 1.9 is already in `.venv-course`.
 
-## Open questions for the group
+## What we built
 
-- Recommended question, or the community-from-language alternative?
-- Owners as above?
+Post: [src/app/(week06)/weeks/week06/](../src/app/(week06)/weeks/week06/), owner Gyula for every section.
+Script: `analysis/week06_lookalikes.py` writes `analysis/week06_lookalikes.json` and the page file
+`public/weeks/week06/data/lookalikes.json`; `tests/week06-prose.test.mjs` pins the prose to it.
+
+| # | Section | Anchor | Answer |
+| --- | --- | --- | --- |
+| 1 | Pick a character | `#explore` | The explorer: a page's ten nearest pages with names kept and removed. Closest page linked for 223 of 303 with names, 125 without |
+| 2 | Names carry the links | `#names` | Linked in ten: TF-IDF 4.01, names removed 1.91, as many other words removed 4.00 ± 0.01. Of the 25 closest unlinked pairs, 16 story, 3 title, 6 name only |
+| 3 | Without names, pages pair by gender | `#gender` | 96% of a woman's nearest pages are women against 26% ± 7% shuffled (z 10.4); 64% with he and she removed too |
+
+Traps written down for next time:
+
+- The course's token rule is `[^\W\d_]+(?:['’][^\W\d_]+)?`, lowercased. It reproduces all 303 page lengths in
+  `lookalikes.json` and its 27,033 types. Week 5's rule (hyphens kept, possessive dropped) gives 27,754 and
+  does not reproduce the course's neighbours.
+- The course's stopword list is NLTK's English list (26,859 remaining types); scikit-learn's gives 26,734.
+- "Linked" in the course's lookalikes means either direction; the random line is 10 × undirected density.
+- The brief's name rule catches 10,519 types, the course's `week6_fingerprints.json` says 10,520 (one type changes
+  length when lowercased). It also catches "men" and "x" (X-Men), Avengers and Latveria.
+- Wikidata P21 has a value for 199 pages; Ajak has two and drops out. Only 36 of the 104 unlabelled pages are
+  shared-codename pages. Fin Fang Foom is a "male organism" (Q44148). The API rate-limits a second quick run (429).

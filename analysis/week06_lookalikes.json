@@ -1,0 +1,1183 @@
+{
+ "pages": 303,
+ "k": 10,
+ "token_rule": "runs of letters in any alphabet with one inner apostrophe kept, lowercased",
+ "tokens": 727261,
+ "course": {
+  "raw": 1.858,
+  "stopwords": 2.842,
+  "tfidf": 4.007,
+  "random": 0.313,
+  "vocab": 27033
+ },
+ "course_published": {
+  "raw": 1.86,
+  "stopwords": 2.84,
+  "tfidf": 4.01,
+  "random": 0.31,
+  "vocab": 27033
+ },
+ "on_every_page": [
+  "a",
+  "and",
+  "by",
+  "character",
+  "comics",
+  "in",
+  "is",
+  "marvel",
+  "of",
+  "the",
+  "to"
+ ],
+ "names": {
+  "types": 10519,
+  "rule": "capitalised in more than half of its uses",
+  "tfidf_share": 0.445,
+  "hits": 1.91,
+  "lists_unchanged": 0,
+  "mean_kept": 2.83,
+  "first_linked": 223,
+  "first_linked_no_names": 125
+ },
+ "null": {
+  "runs": 20,
+  "words_removed": 10519,
+  "mean": 4.0,
+  "sd": 0.014,
+  "min": 3.98,
+  "max": 4.03
+ },
+ "pronouns": {
+  "words": [
+   "he",
+   "he'd",
+   "he'll",
+   "he's",
+   "her",
+   "hers",
+   "herself",
+   "him",
+   "himself",
+   "his",
+   "she",
+   "she'd",
+   "she'll",
+   "she's"
+  ],
+  "hits": 2.1
+ },
+ "gender": {
+  "labelled": 197,
+  "unlabelled": 104,
+  "unlabelled_shared_name": 36,
+  "female": 52,
+  "male": 145,
+  "shuffles": 1000,
+  "tfidf": {
+   "female": {
+    "observed": 0.491,
+    "null_mean": 0.259,
+    "null_sd": 0.041,
+    "z": 5.7
+   },
+   "male": {
+    "observed": 0.716,
+    "null_mean": 0.735,
+    "null_sd": 0.039,
+    "z": -0.5
+   }
+  },
+  "no_names": {
+   "female": {
+    "observed": 0.956,
+    "null_mean": 0.259,
+    "null_sd": 0.067,
+    "z": 10.4
+   },
+   "male": {
+    "observed": 0.558,
+    "null_mean": 0.731,
+    "null_sd": 0.069,
+    "z": -2.5
+   }
+  },
+  "no_names_pronouns": {
+   "female": {
+    "observed": 0.635,
+    "null_mean": 0.261,
+    "null_sd": 0.069,
+    "z": 5.5
+   },
+   "male": {
+    "observed": 0.495,
+    "null_mean": 0.735,
+    "null_sd": 0.067,
+    "z": -3.6
+   }
+  },
+  "words": {
+   "no_names": [
+    [
+     "her",
+     0.234
+    ],
+    [
+     "she",
+     0.202
+    ],
+    [
+     "list",
+     0.011
+    ],
+    [
+     "mutants",
+     0.01
+    ],
+    [
+     "female",
+     0.006
+    ],
+    [
+     "herself",
+     0.006
+    ],
+    [
+     "mutant",
+     0.006
+    ],
+    [
+     "th",
+     0.006
+    ]
+   ],
+   "no_names_pronouns": [
+    [
+     "list",
+     0.022
+    ],
+    [
+     "mutants",
+     0.021
+    ],
+    [
+     "best",
+     0.013
+    ],
+    [
+     "female",
+     0.013
+    ],
+    [
+     "th",
+     0.012
+    ],
+    [
+     "mutant",
+     0.01
+    ],
+    [
+     "selling",
+     0.01
+    ],
+    [
+     "ranked",
+     0.007
+    ]
+   ]
+  }
+ },
+ "distance": {
+  "tfidf": {
+   "1": 0.401,
+   "2": 0.338,
+   "3": 0.147,
+   "4+": 0.036,
+   "none": 0.078
+  },
+  "no_names": {
+   "1": 0.191,
+   "2": 0.476,
+   "3": 0.233,
+   "4+": 0.027,
+   "none": 0.074
+  },
+  "all": {
+   "1": 0.031,
+   "2": 0.305,
+   "3": 0.411,
+   "4+": 0.089,
+   "none": 0.164
+  }
+ },
+ "read": {
+  "n": 25,
+  "buckets": {
+   "story": "the two characters share a team, a storyline or a family: structure the links miss",
+   "mantle": "versions of one character, or characters who held the same codename or title",
+   "name": "a shared name word and no shared story: a coincidence of naming",
+   "template": "pronouns or Wikipedia's recurring sections (reception lists, media) and no shared story"
+  },
+  "tfidf": {
+   "name": 6,
+   "story": 16,
+   "mantle": 3
+  },
+  "no_names": {
+   "template": 25
+  },
+  "no_names_both_women": 25
+ },
+ "pairs": [
+  {
+   "rep": "tfidf",
+   "a": "Emma Frost",
+   "b": "Jack Frost (Marvel Comics)",
+   "words": [
+    "frost",
+    "frost's",
+    "men",
+    "diamond",
+    "ice",
+    "x"
+   ],
+   "cos_tfidf": 0.443,
+   "cos_no_names": 0.067,
+   "name_share": 0.97,
+   "distance": 3,
+   "bucket": "name",
+   "note": "Frost is her surname and his codename; Jack Frost is an ice hero from 1941 with no X-Men story"
+  },
+  {
+   "rep": "tfidf",
+   "a": "Backhand (character)",
+   "b": "Scaredycat",
+   "words": [
+    "morituri",
+    "strikeforce",
+    "hordians",
+    "process",
+    "brent",
+    "anderson"
+   ],
+   "cos_tfidf": 0.382,
+   "cos_no_names": 0.116,
+   "name_share": 0.95,
+   "distance": 3,
+   "bucket": "story",
+   "note": "teammates in Strikeforce: Morituri; the lead sentence and the creator credit repeat on every member page"
+  },
+  {
+   "rep": "tfidf",
+   "a": "Backhand (character)",
+   "b": "Toxyn",
+   "words": [
+    "morituri",
+    "strikeforce",
+    "brent",
+    "anderson",
+    "gillis",
+    "horde"
+   ],
+   "cos_tfidf": 0.361,
+   "cos_no_names": 0.063,
+   "name_share": 0.97,
+   "distance": 3,
+   "bucket": "story",
+   "note": "teammates in Strikeforce: Morituri; the lead sentence and the creator credit repeat on every member page"
+  },
+  {
+   "rep": "tfidf",
+   "a": "Backhand (character)",
+   "b": "Scatterbrain (Morituri)",
+   "words": [
+    "morituri",
+    "strikeforce",
+    "hordians",
+    "brent",
+    "anderson",
+    "gillis"
+   ],
+   "cos_tfidf": 0.355,
+   "cos_no_names": 0.106,
+   "name_share": 0.96,
+   "distance": 4,
+   "bucket": "story",
+   "note": "teammates in Strikeforce: Morituri; the lead sentence and the creator credit repeat on every member page"
+  },
+  {
+   "rep": "tfidf",
+   "a": "Backhand (character)",
+   "b": "Blackthorn (character)",
+   "words": [
+    "morituri",
+    "strikeforce",
+    "process",
+    "gillis",
+    "effect",
+    "brent"
+   ],
+   "cos_tfidf": 0.355,
+   "cos_no_names": 0.191,
+   "name_share": 0.93,
+   "distance": 3,
+   "bucket": "story",
+   "note": "teammates in Strikeforce: Morituri; the lead sentence and the creator credit repeat on every member page"
+  },
+  {
+   "rep": "tfidf",
+   "a": "Jessica Jones",
+   "b": "Spider-Woman",
+   "words": [
+    "jessica",
+    "spider",
+    "drew",
+    "jane",
+    "her",
+    "mary"
+   ],
+   "cos_tfidf": 0.345,
+   "cos_no_names": 0.207,
+   "name_share": 0.94,
+   "distance": 2,
+   "bucket": "story",
+   "note": "Bendis built Jessica Jones as a reinvention of Jessica Drew, the first Spider-Woman; both pages tell it"
+  },
+  {
+   "rep": "tfidf",
+   "a": "Scarlet Spider",
+   "b": "Spider-Girl",
+   "words": [
+    "spider",
+    "parker",
+    "hardy",
+    "felicity",
+    "peter",
+    "gwen"
+   ],
+   "cos_tfidf": 0.339,
+   "cos_no_names": 0.137,
+   "name_share": 0.96,
+   "distance": 2,
+   "bucket": "mantle",
+   "note": "two Spider-family titles held by overlapping characters; Felicity Hardy appears on both pages"
+  },
+  {
+   "rep": "tfidf",
+   "a": "Garrison Kane",
+   "b": "Solomon Kane (comics)",
+   "words": [
+    "kane",
+    "kane's",
+    "century",
+    "september",
+    "six",
+    "box"
+   ],
+   "cos_tfidf": 0.321,
+   "cos_no_names": 0.013,
+   "name_share": 0.99,
+   "distance": 3,
+   "bucket": "name",
+   "note": "Kane is a surname shared by a 1990s cyborg mercenary and a 16th-century Puritan; no shared story"
+  },
+  {
+   "rep": "tfidf",
+   "a": "Spider-Girl",
+   "b": "Spider-Man Noir",
+   "words": [
+    "spider",
+    "parker",
+    "verse",
+    "hardy",
+    "peter",
+    "gwen"
+   ],
+   "cos_tfidf": 0.316,
+   "cos_no_names": 0.132,
+   "name_share": 0.94,
+   "distance": 2,
+   "bucket": "story",
+   "note": "both pages place their characters in the Spider-Verse event among the Parker family"
+  },
+  {
+   "rep": "tfidf",
+   "a": "Blackthorn (character)",
+   "b": "Scaredycat",
+   "words": [
+    "morituri",
+    "strikeforce",
+    "tuolema",
+    "recipients",
+    "process",
+    "organism"
+   ],
+   "cos_tfidf": 0.315,
+   "cos_no_names": 0.278,
+   "name_share": 0.84,
+   "distance": 2,
+   "bucket": "story",
+   "note": "teammates in Strikeforce: Morituri; the lead sentence and the creator credit repeat on every member page"
+  },
+  {
+   "rep": "tfidf",
+   "a": "Devil Dinosaur",
+   "b": "Devil Hulk",
+   "words": [
+    "devil",
+    "hulk",
+    "savage",
+    "banner",
+    "world",
+    "entity"
+   ],
+   "cos_tfidf": 0.31,
+   "cos_no_names": 0.055,
+   "name_share": 0.98,
+   "distance": 2,
+   "bucket": "name",
+   "note": "devil in both titles; hulk reaches the dinosaur page only through a voice actor credit"
+  },
+  {
+   "rep": "tfidf",
+   "a": "Devil Hulk",
+   "b": "She-Hulk",
+   "words": [
+    "hulk",
+    "bruce",
+    "hulk's",
+    "banner",
+    "immortal",
+    "banner's"
+   ],
+   "cos_tfidf": 0.306,
+   "cos_no_names": 0.093,
+   "name_share": 0.94,
+   "distance": 2,
+   "bucket": "story",
+   "note": "family: She-Hulk got her powers from her cousin Bruce Banner, whose persona the Devil Hulk is"
+  },
+  {
+   "rep": "tfidf",
+   "a": "Spider-Girl",
+   "b": "Spider-UK",
+   "words": [
+    "spider",
+    "girl",
+    "verse",
+    "anya",
+    "corazon",
+    "parker"
+   ],
+   "cos_tfidf": 0.304,
+   "cos_no_names": 0.102,
+   "name_share": 0.97,
+   "distance": 2,
+   "bucket": "story",
+   "note": "Spider-UK fights beside Spider-Girl in the Spider-Verse event"
+  },
+  {
+   "rep": "tfidf",
+   "a": "Backhand (character)",
+   "b": "Snapdragon (Morituri)",
+   "words": [
+    "morituri",
+    "strikeforce",
+    "vyking",
+    "brent",
+    "anderson",
+    "gillis"
+   ],
+   "cos_tfidf": 0.301,
+   "cos_no_names": 0.145,
+   "name_share": 0.92,
+   "distance": 2,
+   "bucket": "story",
+   "note": "teammates in Strikeforce: Morituri; the lead sentence and the creator credit repeat on every member page"
+  },
+  {
+   "rep": "tfidf",
+   "a": "Human Torch",
+   "b": "Storm (Marvel Comics)",
+   "words": [
+    "storm",
+    "storm's",
+    "relationship",
+    "fantastic",
+    "her",
+    "four"
+   ],
+   "cos_tfidf": 0.297,
+   "cos_no_names": 0.154,
+   "name_share": 0.9,
+   "distance": 2,
+   "bucket": "name",
+   "note": "Storm is the Human Torch's surname and Ororo Munroe's codename; the brief's own example"
+  },
+  {
+   "rep": "tfidf",
+   "a": "Blackthorn (character)",
+   "b": "Toxyn",
+   "words": [
+    "morituri",
+    "paedia",
+    "strikeforce",
+    "recipients",
+    "gillis",
+    "horde"
+   ],
+   "cos_tfidf": 0.292,
+   "cos_no_names": 0.172,
+   "name_share": 0.88,
+   "distance": 2,
+   "bucket": "story",
+   "note": "teammates in Strikeforce: Morituri; the lead sentence and the creator credit repeat on every member page"
+  },
+  {
+   "rep": "tfidf",
+   "a": "Shear (character)",
+   "b": "Toxyn",
+   "words": [
+    "morituri",
+    "strikeforce",
+    "horde",
+    "recipients",
+    "paedia",
+    "brent"
+   ],
+   "cos_tfidf": 0.29,
+   "cos_no_names": 0.114,
+   "name_share": 0.91,
+   "distance": 2,
+   "bucket": "story",
+   "note": "teammates in Strikeforce: Morituri; the lead sentence and the creator credit repeat on every member page"
+  },
+  {
+   "rep": "tfidf",
+   "a": "Scaredycat",
+   "b": "Vyking",
+   "words": [
+    "morituri",
+    "hordians",
+    "strikeforce",
+    "process",
+    "horde",
+    "brent"
+   ],
+   "cos_tfidf": 0.289,
+   "cos_no_names": 0.18,
+   "name_share": 0.87,
+   "distance": 2,
+   "bucket": "story",
+   "note": "teammates in Strikeforce: Morituri; the lead sentence and the creator credit repeat on every member page"
+  },
+  {
+   "rep": "tfidf",
+   "a": "Ghost Rider",
+   "b": "Nova (Richard Rider)",
+   "words": [
+    "rider",
+    "rider's",
+    "richard",
+    "thanos",
+    "vol",
+    "robbie"
+   ],
+   "cos_tfidf": 0.287,
+   "cos_no_names": 0.1,
+   "name_share": 0.97,
+   "distance": 2,
+   "bucket": "name",
+   "note": "Rider is a codename word on one page and a surname on the other; Richard is also a voice actor's first name"
+  },
+  {
+   "rep": "tfidf",
+   "a": "Scaredycat",
+   "b": "Shear (character)",
+   "words": [
+    "morituri",
+    "strikeforce",
+    "recipients",
+    "brent",
+    "anderson",
+    "gillis"
+   ],
+   "cos_tfidf": 0.284,
+   "cos_no_names": 0.156,
+   "name_share": 0.88,
+   "distance": 2,
+   "bucket": "story",
+   "note": "teammates in Strikeforce: Morituri; the lead sentence and the creator credit repeat on every member page"
+  },
+  {
+   "rep": "tfidf",
+   "a": "Patsy Walker",
+   "b": "U.S. Agent",
+   "words": [
+    "walker",
+    "walker's",
+    "u",
+    "thunderbolts",
+    "america",
+    "s"
+   ],
+   "cos_tfidf": 0.284,
+   "cos_no_names": 0.169,
+   "name_share": 0.93,
+   "distance": 2,
+   "bucket": "name",
+   "note": "Walker is the surname of Patsy Walker and John Walker; neither page mentions the other"
+  },
+  {
+   "rep": "tfidf",
+   "a": "Toxyn",
+   "b": "Vyking",
+   "words": [
+    "morituri",
+    "horde",
+    "strikeforce",
+    "paedia",
+    "brent",
+    "anderson"
+   ],
+   "cos_tfidf": 0.282,
+   "cos_no_names": 0.101,
+   "name_share": 0.92,
+   "distance": 2,
+   "bucket": "story",
+   "note": "teammates in Strikeforce: Morituri; the lead sentence and the creator credit repeat on every member page"
+  },
+  {
+   "rep": "tfidf",
+   "a": "Scarlet Spider",
+   "b": "Spider-Man Noir",
+   "words": [
+    "spider",
+    "parker",
+    "hardy",
+    "reilly",
+    "peter",
+    "ben"
+   ],
+   "cos_tfidf": 0.28,
+   "cos_no_names": 0.131,
+   "name_share": 0.94,
+   "distance": 2,
+   "bucket": "mantle",
+   "note": "versions of Peter Parker: his clone Ben Reilly and his Noir alternate self"
+  },
+  {
+   "rep": "tfidf",
+   "a": "Doom 2099",
+   "b": "Kristoff Vernard",
+   "words": [
+    "doom",
+    "latveria",
+    "doom's",
+    "von",
+    "doctor",
+    "richards"
+   ],
+   "cos_tfidf": 0.272,
+   "cos_no_names": 0.082,
+   "name_share": 0.96,
+   "distance": 3,
+   "bucket": "mantle",
+   "note": "both pages are about holders of the Doctor Doom title and the rule of Latveria"
+  },
+  {
+   "rep": "tfidf",
+   "a": "Backhand (character)",
+   "b": "Radian (Morituri)",
+   "words": [
+    "morituri",
+    "strikeforce",
+    "hordians",
+    "horde",
+    "effect",
+    "process"
+   ],
+   "cos_tfidf": 0.268,
+   "cos_no_names": 0.127,
+   "name_share": 0.93,
+   "distance": 2,
+   "bucket": "story",
+   "note": "teammates in Strikeforce: Morituri; the lead sentence and the creator credit repeat on every member page"
+  },
+  {
+   "rep": "no_names",
+   "a": "Jean Grey",
+   "b": "She-Hulk",
+   "words": [
+    "she",
+    "her",
+    "list",
+    "female",
+    "th",
+    "relationship"
+   ],
+   "cos_tfidf": 0.095,
+   "cos_no_names": 0.486,
+   "name_share": 0.17,
+   "distance": 2,
+   "bucket": "template",
+   "note": "the match leads with she and her; reception sections rank both on lists"
+  },
+  {
+   "rep": "no_names",
+   "a": "She-Hulk",
+   "b": "Spider-Woman (Jessica Drew)",
+   "words": [
+    "she",
+    "her",
+    "list",
+    "female",
+    "women",
+    "unlockable"
+   ],
+   "cos_tfidf": 0.116,
+   "cos_no_names": 0.47,
+   "name_share": 0.19,
+   "distance": 2,
+   "bucket": "template",
+   "note": "the match leads with she and her; reception sections rank both on lists"
+  },
+  {
+   "rep": "no_names",
+   "a": "Black Widow (Natasha Romanova)",
+   "b": "She-Hulk",
+   "words": [
+    "she",
+    "her",
+    "female",
+    "relationship",
+    "issue",
+    "herself"
+   ],
+   "cos_tfidf": 0.104,
+   "cos_no_names": 0.453,
+   "name_share": 0.1,
+   "distance": 2,
+   "bucket": "template",
+   "note": "the match leads with she and her; reception calls both notable female heroes"
+  },
+  {
+   "rep": "no_names",
+   "a": "Emma Frost",
+   "b": "She-Hulk",
+   "words": [
+    "she",
+    "her",
+    "female",
+    "she's",
+    "herself",
+    "best"
+   ],
+   "cos_tfidf": 0.07,
+   "cos_no_names": 0.445,
+   "name_share": 0.1,
+   "distance": 2,
+   "bucket": "template",
+   "note": "the match leads with she and her; reception sections rank both on lists"
+  },
+  {
+   "rep": "no_names",
+   "a": "Jean Grey",
+   "b": "Scarlet Witch",
+   "words": [
+    "her",
+    "she",
+    "mutants",
+    "mutant",
+    "relationship",
+    "powerful"
+   ],
+   "cos_tfidf": 0.075,
+   "cos_no_names": 0.43,
+   "name_share": 0.29,
+   "distance": 2,
+   "bucket": "template",
+   "note": "the match leads with she and her; both are mutants"
+  },
+  {
+   "rep": "no_names",
+   "a": "Black Cat (Marvel Comics)",
+   "b": "She-Hulk",
+   "words": [
+    "she",
+    "her",
+    "list",
+    "th",
+    "best",
+    "female"
+   ],
+   "cos_tfidf": 0.074,
+   "cos_no_names": 0.423,
+   "name_share": 0.17,
+   "distance": 2,
+   "bucket": "template",
+   "note": "the match leads with she and her; reception sections rank both on lists"
+  },
+  {
+   "rep": "no_names",
+   "a": "Jean Grey",
+   "b": "Spider-Woman (Jessica Drew)",
+   "words": [
+    "her",
+    "she",
+    "list",
+    "female",
+    "women",
+    "ranked"
+   ],
+   "cos_tfidf": 0.07,
+   "cos_no_names": 0.422,
+   "name_share": 0.21,
+   "distance": 2,
+   "bucket": "template",
+   "note": "the match leads with she and her; reception sections rank both on lists"
+  },
+  {
+   "rep": "no_names",
+   "a": "Gwenpool",
+   "b": "Spider-Woman (Jessica Drew)",
+   "words": [
+    "her",
+    "she",
+    "it's",
+    "list",
+    "best",
+    "selling"
+   ],
+   "cos_tfidf": 0.076,
+   "cos_no_names": 0.412,
+   "name_share": 0.33,
+   "distance": 2,
+   "bucket": "template",
+   "note": "the match leads with she and her; reception sections rank both on lists"
+  },
+  {
+   "rep": "no_names",
+   "a": "Betsy Braddock",
+   "b": "She-Hulk",
+   "words": [
+    "she",
+    "her",
+    "female",
+    "herself",
+    "relationship",
+    "could"
+   ],
+   "cos_tfidf": 0.052,
+   "cos_no_names": 0.411,
+   "name_share": 0.09,
+   "distance": 2,
+   "bucket": "template",
+   "note": "the match leads with she and her; reception calls both notable female heroes"
+  },
+  {
+   "rep": "no_names",
+   "a": "Mayday Parker",
+   "b": "She-Hulk",
+   "words": [
+    "she",
+    "her",
+    "cousin",
+    "unlockable",
+    "father",
+    "dating"
+   ],
+   "cos_tfidf": 0.098,
+   "cos_no_names": 0.41,
+   "name_share": 0.16,
+   "distance": 2,
+   "bucket": "template",
+   "note": "the match leads with she and her"
+  },
+  {
+   "rep": "no_names",
+   "a": "Gwenpool",
+   "b": "Jean Grey",
+   "words": [
+    "her",
+    "she",
+    "list",
+    "herself",
+    "mutant",
+    "future"
+   ],
+   "cos_tfidf": 0.048,
+   "cos_no_names": 0.396,
+   "name_share": 0.16,
+   "distance": 2,
+   "bucket": "template",
+   "note": "the match leads with she and her; reception sections rank both on lists"
+  },
+  {
+   "rep": "no_names",
+   "a": "Mockingbird (Marvel Comics)",
+   "b": "Spider-Woman (Jessica Drew)",
+   "words": [
+    "her",
+    "she",
+    "she's",
+    "story",
+    "issue",
+    "s"
+   ],
+   "cos_tfidf": 0.082,
+   "cos_no_names": 0.396,
+   "name_share": 0.38,
+   "distance": 2,
+   "bucket": "template",
+   "note": "the match leads with she and her"
+  },
+  {
+   "rep": "no_names",
+   "a": "Jean Grey",
+   "b": "Mayday Parker",
+   "words": [
+    "her",
+    "she",
+    "telekinetic",
+    "family",
+    "clone",
+    "mutant"
+   ],
+   "cos_tfidf": 0.072,
+   "cos_no_names": 0.394,
+   "name_share": 0.28,
+   "distance": 2,
+   "bucket": "template",
+   "note": "the match leads with she and her"
+  },
+  {
+   "rep": "no_names",
+   "a": "She-Hulk",
+   "b": "Storm (Marvel Comics)",
+   "words": [
+    "she",
+    "her",
+    "female",
+    "relationship",
+    "women",
+    "leader"
+   ],
+   "cos_tfidf": 0.094,
+   "cos_no_names": 0.394,
+   "name_share": 0.09,
+   "distance": 2,
+   "bucket": "template",
+   "note": "the match leads with she and her; reception calls both notable female heroes"
+  },
+  {
+   "rep": "no_names",
+   "a": "She-Hulk",
+   "b": "Spitfire (character)",
+   "words": [
+    "she",
+    "her",
+    "blood",
+    "transfusion",
+    "women",
+    "list"
+   ],
+   "cos_tfidf": 0.119,
+   "cos_no_names": 0.393,
+   "name_share": 0.11,
+   "distance": 3,
+   "bucket": "template",
+   "note": "the match leads with she and her; both also gained powers through a blood transfusion"
+  },
+  {
+   "rep": "no_names",
+   "a": "Jubilee (character)",
+   "b": "She-Hulk",
+   "words": [
+    "she",
+    "her",
+    "list",
+    "blood",
+    "herself",
+    "court"
+   ],
+   "cos_tfidf": 0.057,
+   "cos_no_names": 0.385,
+   "name_share": 0.06,
+   "distance": 2,
+   "bucket": "template",
+   "note": "the match leads with she and her; both also gained powers through a blood transfusion"
+  },
+  {
+   "rep": "no_names",
+   "a": "Black Cat (Marvel Comics)",
+   "b": "Jessica Jones",
+   "words": [
+    "her",
+    "she",
+    "best",
+    "selling",
+    "list",
+    "th"
+   ],
+   "cos_tfidf": 0.054,
+   "cos_no_names": 0.384,
+   "name_share": 0.4,
+   "distance": 2,
+   "bucket": "template",
+   "note": "the match leads with she and her; reception sections rank both on lists"
+  },
+  {
+   "rep": "no_names",
+   "a": "Black Cat (Marvel Comics)",
+   "b": "Jean Grey",
+   "words": [
+    "her",
+    "she",
+    "list",
+    "th",
+    "female",
+    "voiced"
+   ],
+   "cos_tfidf": 0.044,
+   "cos_no_names": 0.383,
+   "name_share": 0.17,
+   "distance": 2,
+   "bucket": "template",
+   "note": "the match leads with she and her; reception sections rank both on lists"
+  },
+  {
+   "rep": "no_names",
+   "a": "Emma Frost",
+   "b": "Scarlet Witch",
+   "words": [
+    "her",
+    "she",
+    "mutants",
+    "mutant",
+    "children",
+    "she's"
+   ],
+   "cos_tfidf": 0.056,
+   "cos_no_names": 0.383,
+   "name_share": 0.25,
+   "distance": 2,
+   "bucket": "template",
+   "note": "the match leads with she and her; both are mutants"
+  },
+  {
+   "rep": "no_names",
+   "a": "Black Widow (Natasha Romanova)",
+   "b": "Jean Grey",
+   "words": [
+    "her",
+    "she",
+    "relationship",
+    "female",
+    "story",
+    "herself"
+   ],
+   "cos_tfidf": 0.059,
+   "cos_no_names": 0.382,
+   "name_share": 0.12,
+   "distance": 2,
+   "bucket": "template",
+   "note": "the match leads with she and her; reception calls both notable female heroes"
+  },
+  {
+   "rep": "no_names",
+   "a": "Emma Frost",
+   "b": "Spider-Woman (Jessica Drew)",
+   "words": [
+    "her",
+    "she",
+    "she's",
+    "best",
+    "female",
+    "women"
+   ],
+   "cos_tfidf": 0.056,
+   "cos_no_names": 0.381,
+   "name_share": 0.22,
+   "distance": 2,
+   "bucket": "template",
+   "note": "the match leads with she and her; reception sections rank both on lists"
+  },
+  {
+   "rep": "no_names",
+   "a": "Patsy Walker",
+   "b": "Spider-Woman (Jessica Drew)",
+   "words": [
+    "her",
+    "she",
+    "investigator",
+    "list",
+    "best",
+    "th"
+   ],
+   "cos_tfidf": 0.066,
+   "cos_no_names": 0.367,
+   "name_share": 0.42,
+   "distance": 2,
+   "bucket": "template",
+   "note": "the match leads with she and her; both worked as private investigators"
+  },
+  {
+   "rep": "no_names",
+   "a": "Black Cat (Marvel Comics)",
+   "b": "Emma Frost",
+   "words": [
+    "her",
+    "she",
+    "best",
+    "selling",
+    "she's",
+    "that's"
+   ],
+   "cos_tfidf": 0.04,
+   "cos_no_names": 0.364,
+   "name_share": 0.25,
+   "distance": 2,
+   "bucket": "template",
+   "note": "the match leads with she and her; reception sections rank both on lists"
+  },
+  {
+   "rep": "no_names",
+   "a": "She-Hulk",
+   "b": "Spider-Woman (Gwen Stacy)",
+   "words": [
+    "she",
+    "her",
+    "women",
+    "lawyer",
+    "female",
+    "herself"
+   ],
+   "cos_tfidf": 0.07,
+   "cos_no_names": 0.364,
+   "name_share": 0.19,
+   "distance": 2,
+   "bucket": "template",
+   "note": "the match leads with she and her; reception calls both notable female heroes"
+  },
+  {
+   "rep": "no_names",
+   "a": "Mockingbird (Marvel Comics)",
+   "b": "She-Hulk",
+   "words": [
+    "she",
+    "her",
+    "th",
+    "she's",
+    "issue",
+    "book"
+   ],
+   "cos_tfidf": 0.075,
+   "cos_no_names": 0.363,
+   "name_share": 0.22,
+   "distance": 2,
+   "bucket": "template",
+   "note": "the match leads with she and her"
+  }
+ ]
+}
