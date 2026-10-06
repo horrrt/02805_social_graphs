@@ -16,6 +16,7 @@ let PEOPLE = "#f2820c";
 let ACCESS = "#1f8fd6";
 let INK = "#0f2340";
 let MUTE = "#7a8fac";
+let MUTE_TEXT = "#59708f";
 let GRID = "#e4ebf4";
 // The third series on the two heavy-tail charts. It used to be the page's
 // text ink, which fails a categorical palette on both lightness and chroma:
@@ -46,6 +47,7 @@ export function refreshPalette() {
   ACCESS = read("--access", "#1f8fd6");
   INK = read("--ink", "#0f2340");
   MUTE = read("--ink-mute", "#7a8fac");
+  MUTE_TEXT = read("--ink-mute-text", "#59708f");
   GRID = read("--line-soft", "#e4ebf4");
   OUTBOUND = read("--outbound", "#6b4fbb");
   GAIN = read("--gain", "#00875a");
@@ -56,9 +58,9 @@ export function refreshPalette() {
     SERIES[2].colour = ACCESS;
   }
   if (api) {
-    Object.assign(api.colours, { PEOPLE, ACCESS, INK, MUTE, GRID, OUTBOUND, GAIN, LOSS });
+    Object.assign(api.colours, { PEOPLE, ACCESS, INK, MUTE, MUTE_TEXT, GRID, OUTBOUND, GAIN, LOSS });
   }
-  return { PEOPLE, ACCESS, INK, MUTE, GRID, OUTBOUND, GAIN, LOSS };
+  return { PEOPLE, ACCESS, INK, MUTE, MUTE_TEXT, GRID, OUTBOUND, GAIN, LOSS };
 }
 
 // How a corridor is drawn between two countries. Each renderer reads the same
@@ -219,7 +221,7 @@ const TITLE = () => font("body", 700);
 
 function axes(ctx, box, { xTicks, yTicks, xLabel, yLabel }) {
   ctx.strokeStyle = GRID;
-  ctx.fillStyle = MUTE;
+  ctx.fillStyle = MUTE_TEXT;
   ctx.font = NOTE();
   ctx.lineWidth = 1;
   for (const tick of yTicks) {
@@ -242,7 +244,7 @@ function axes(ctx, box, { xTicks, yTicks, xLabel, yLabel }) {
     ctx.textBaseline = "top";
     ctx.fillText(tick.label, x, box.bottom + 6);
   }
-  ctx.fillStyle = MUTE;
+  ctx.fillStyle = MUTE_TEXT;
   ctx.font = NOTE();
   if (xLabel) {
     ctx.textAlign = "center";
@@ -2091,7 +2093,7 @@ function drawPrestige() {
   const at = (order, iso3) => top + order.findIndex((r) => r.iso3 === iso3) * step;
 
   ctx.font = NOTE(600);
-  ctx.fillStyle = MUTE;
+  ctx.fillStyle = MUTE_TEXT;
   ctx.textAlign = "right";
   ctx.fillText("By people", leftX, 18);
   ctx.textAlign = "left";
@@ -2393,7 +2395,7 @@ function drawCartography() {
     ctx.stroke();
   }
   ctx.restore();
-  ctx.fillStyle = MUTE;
+  ctx.fillStyle = MUTE_TEXT;
   ctx.font = NOTE();
   // At the right end of the line, where the plot is empty. On the left it sat
   // on top of the y-axis ticks and the countries just under the hub line.
@@ -3009,7 +3011,7 @@ function drawDenmark() {
       ctx.lineTo(box.right, Math.round(base) + 0.5);
       ctx.stroke();
 
-      ctx.fillStyle = MUTE;
+      ctx.fillStyle = MUTE_TEXT;
       ctx.font = TITLE();
       ctx.textAlign = "left";
       ctx.textBaseline = "bottom";
@@ -3038,7 +3040,7 @@ function drawDenmark() {
 
       // Country codes under the last panel only; the columns line up.
       if (pi === panels.length - 1) {
-        ctx.fillStyle = MUTE;
+        ctx.fillStyle = MUTE_TEXT;
         ctx.font = NOTE();
         ctx.textAlign = "center";
         ctx.textBaseline = "top";
@@ -3311,7 +3313,7 @@ export const api = {
   // The net layer, so a renderer that draws its own map can draw this one too.
   netBalance, netColour, netNote, drawNet: drawNetMap,
   spotlight, earthScale, globeRadius, EARTH_SIZES, typologyNote,
-  colours: { PEOPLE, ACCESS, INK, MUTE, GRID, OUTBOUND, GAIN, LOSS },
+  colours: { PEOPLE, ACCESS, INK, MUTE, MUTE_TEXT, GRID, OUTBOUND, GAIN, LOSS },
   format: { fmt, compact },
   $,
 };

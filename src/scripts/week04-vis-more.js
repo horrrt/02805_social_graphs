@@ -63,7 +63,7 @@ function drawHbars(rows, { domain, ticks, fmt, width = 556, valueW = 54, rowH = 
   const svg = node("svg", { viewBox: `0 0 ${width} ${h}`, width, height: h, role: "img", "aria-label": aria, class: "w4-strip" });
   for (const tv of ticks) {
     svg.append(node("line", { x1: X(tv), y1: top - 4, x2: X(tv), y2: ybot, stroke: token("--w4-grid"), "stroke-width": 1 }));
-    svg.append(node("text", { x: X(tv), y: ybot + 16, "font-size": caption, fill: token("--ink-mute"), "text-anchor": "middle" }, fmt(tv)));
+    svg.append(node("text", { x: X(tv), y: ybot + 16, "font-size": caption, fill: token("--ink-mute-text"), "text-anchor": "middle" }, fmt(tv)));
   }
   if (ref !== undefined) {
     svg.append(
@@ -325,7 +325,7 @@ function drawsChart(rows, hl, W) {
   }
   for (let v = 0; v < ymax; v += 1) {
     svg.append(node("line", { x1: L, y1: Y(v), x2: W - R, y2: Y(v), stroke: token("--w4-grid"), "stroke-width": 1 }));
-    svg.append(node("text", { x: L - 8, y: Y(v) + 4, "font-size": caption, fill: token("--ink-mute"), "text-anchor": "end" }, String(v)));
+    svg.append(node("text", { x: L - 8, y: Y(v) + 4, "font-size": caption, fill: token("--ink-mute-text"), "text-anchor": "end" }, String(v)));
   }
   // USCIS drew by worker, not by registration, from the March 2024 draw.
   const byWorker = rows.findIndex((r) => r.label === "March 2024");
@@ -361,7 +361,7 @@ function drawsChart(rows, hl, W) {
     g.append(
       node("text", { x: X(i), y: H - B + 18, "font-size": caption, "font-weight": on ? 700 : 400, fill: on ? ink : token("--ink-soft"), "text-anchor": "middle" }, `${mon.slice(0, 3)} ${yr}`),
     );
-    g.append(node("text", { x: X(i), y: H - B + 34, "font-size": caption, fill: token("--ink-mute"), "text-anchor": "middle" }, `${pct(r.multi)} multi`));
+    g.append(node("text", { x: X(i), y: H - B + 34, "font-size": caption, fill: token("--ink-mute-text"), "text-anchor": "middle" }, `${pct(r.multi)} multi`));
     svg.append(g);
   });
   return svg;

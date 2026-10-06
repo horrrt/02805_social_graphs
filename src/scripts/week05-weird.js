@@ -19,7 +19,7 @@ const signed = (v) => `${v < 0 ? "−" : "+"}${Math.abs(v).toFixed(2)}`;
 const count = (v) => v.toLocaleString("en-GB");
 
 /** The colour tokens the scatter reads. */
-export const SCATTER_TOKENS = ["--line-soft", "--ink-mute", "--ink-soft", "--line", "--access", "--people", "--card"];
+export const SCATTER_TOKENS = ["--line-soft", "--ink-mute", "--ink-mute-text", "--ink-soft", "--line", "--access", "--people", "--card"];
 
 // ---- the figure, left panel: MATTR against length, the corpus band behind
 

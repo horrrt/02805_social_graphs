@@ -68,9 +68,9 @@ function drawPairs(data, rows, names, top, withTop, hasTop, W) {
 
   for (let v = 0; v <= domain; v += step) {
     svg.append(el("line", { x1: X(v), x2: X(v), y1: 30, y2: bottom, stroke: token("--line-soft") }));
-    svg.append(el("text", { x: X(v), y: bottom + 14, "font-size": caption, fill: token("--ink-mute"), "text-anchor": "middle" }, num(v)));
+    svg.append(el("text", { x: X(v), y: bottom + 14, "font-size": caption, fill: token("--ink-mute-text"), "text-anchor": "middle" }, num(v)));
   }
-  svg.append(el("text", { x: (x0 + x1) / 2, y: bottom + 36, "font-size": caption, fill: token("--ink-mute"), "text-anchor": "middle" },
+  svg.append(el("text", { x: (x0 + x1) / 2, y: bottom + 36, "font-size": caption, fill: token("--ink-mute-text"), "text-anchor": "middle" },
     `Companies that filed for both jobs in ${data.meta.year}`));
 
   rows.forEach((p, i) => {
@@ -429,10 +429,10 @@ function drawNmi(data, W) {
   for (let i = 0; i <= 4; i += 1) {
     const v = i / 4;
     svg.append(el("line", { x1: xv(v), x2: xv(v), y1: axy + 6, y2: axy + 12, stroke: token("--w4-rail-ring") }));
-    svg.append(el("text", { x: xv(v), y: axy + 26, "text-anchor": "middle", "font-size": caption, fill: token("--ink-mute") }, String(v)));
+    svg.append(el("text", { x: xv(v), y: axy + 26, "text-anchor": "middle", "font-size": caption, fill: token("--ink-mute-text") }, String(v)));
   }
-  svg.append(el("text", { x: a, y: axy + 46, "font-size": caption, fill: token("--ink-mute") }, "unrelated"));
-  svg.append(el("text", { x: b, y: axy + 46, "text-anchor": "end", "font-size": caption, fill: token("--ink-mute") }, "the same groups"));
+  svg.append(el("text", { x: a, y: axy + 46, "font-size": caption, fill: token("--ink-mute-text") }, "unrelated"));
+  svg.append(el("text", { x: b, y: axy + 46, "text-anchor": "end", "font-size": caption, fill: token("--ink-mute-text") }, "the same groups"));
   const band = tip(el("g"), `Shuffled official labels: mean ${f2(sm)}, highest of ${num(q.nmi_shuffled.runs)} shuffles ${f2(sx)}`);
   band.append(el("rect", { x: xv(0), y: axy - 8, width: xv(sx) - xv(0), height: 16, rx: 8, fill: token("--w4-band") }));
   svg.append(band);

@@ -161,6 +161,7 @@ function drawLineChart(svg, ys, { ref, refLabel, xLabel, fmtY, title, token }, W
   const ink = token("--ink");
   const inkSoft = token("--ink-soft");
   const inkMute = token("--ink-mute");
+  const inkMuteText = token("--ink-mute-text");
   const line = token("--line");
   const accent = token("--w4-accent");
   const card = token("--card");
@@ -169,7 +170,7 @@ function drawLineChart(svg, ys, { ref, refLabel, xLabel, fmtY, title, token }, W
     const v = y0 + ((y1 - y0) * k) / 4;
     const y = Y(v).toFixed(1);
     parts.push(`<line x1="${L}" y1="${y}" x2="${W - R}" y2="${y}" stroke="${line}" stroke-width="1"></line>`);
-    parts.push(`<text x="${L - 8}" y="${(Y(v) + 4).toFixed(1)}" font-size="${caption}" fill="${inkMute}" text-anchor="end">${esc(fmtY(v))}</text>`);
+    parts.push(`<text x="${L - 8}" y="${(Y(v) + 4).toFixed(1)}" font-size="${caption}" fill="${inkMuteText}" text-anchor="end">${esc(fmtY(v))}</text>`);
   }
   if (ref != null) {
     const y = Y(ref).toFixed(1);
@@ -182,7 +183,7 @@ function drawLineChart(svg, ys, { ref, refLabel, xLabel, fmtY, title, token }, W
   }
   const d = `M${ys.map((v, i) => `${X(i).toFixed(1)} ${Y(v).toFixed(1)}`).join(" L")}`;
   parts.push(`<path d="${d}" fill="none" stroke="${ink}" stroke-width="2"></path>`);
-  if (xLabel) parts.push(`<text x="${W - R}" y="${H - 6}" font-size="${caption}" fill="${inkMute}" text-anchor="end">${esc(xLabel)}</text>`);
+  if (xLabel) parts.push(`<text x="${W - R}" y="${H - 6}" font-size="${caption}" fill="${inkMuteText}" text-anchor="end">${esc(xLabel)}</text>`);
   parts.push(`<line class="w4m-marker-line" x1="0" y1="${T - 4}" x2="0" y2="${H - Bm}" stroke="${accent}" stroke-width="1.4"></line>`);
   parts.push(`<circle class="w4m-marker-dot" cx="0" cy="0" r="5.5" fill="${card}" stroke="${accent}" stroke-width="2"></circle>`);
   svg.innerHTML = parts.join("\n");
@@ -215,6 +216,7 @@ function drawStrip(svg, { loQ, hiQ, band, meanQ, refQ, token }, W, H) {
   const ink = token("--ink");
   const inkSoft = token("--ink-soft");
   const inkMute = token("--ink-mute");
+  const inkMuteText = token("--ink-mute-text");
   const line = token("--line");
   const bandColor = token("--w4-band");
   const card = token("--card");
@@ -230,7 +232,7 @@ function drawStrip(svg, { loQ, hiQ, band, meanQ, refQ, token }, W, H) {
     `<text x="${SX(refQ).toFixed(1)}" y="12" font-size="${caption}" fill="${inkSoft}" text-anchor="middle">Louvain ${refQ.toFixed(3)}</text>`,
   ];
   for (const v of [-0.02, 0, 0.02, 0.04, 0.06]) {
-    parts.push(`<text x="${SX(v).toFixed(1)}" y="68" font-size="${caption}" fill="${inkMute}" text-anchor="middle">${v.toFixed(2)}</text>`);
+    parts.push(`<text x="${SX(v).toFixed(1)}" y="68" font-size="${caption}" fill="${inkMuteText}" text-anchor="middle">${v.toFixed(2)}</text>`);
   }
   parts.push(`<circle class="w4m-strip-mk" cx="${SX(0).toFixed(1)}" cy="30" r="7" fill="${ink}" stroke="${card}" stroke-width="2"></circle>`);
   svg.innerHTML = parts.join("\n");

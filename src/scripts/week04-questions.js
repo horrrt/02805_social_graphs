@@ -15,6 +15,7 @@ const FOOTPRINT_RANK_URL = asset("weeks/week04/data/footprint_rank.json");
 
 const INK = "#0f2340";
 const MUTE = "#7a8fac";
+const MUTE_TEXT = "#59708f";
 const LINE = "#e6edf5";
 const ORANGE = "#f2820c";
 const BLUE = "#1f8fd6";
@@ -44,7 +45,7 @@ const base = {
 };
 const axis = {
   axisLine: { lineStyle: { color: "#c6d4e6" } },
-  axisLabel: { color: MUTE, fontSize: fs("caption") },
+  axisLabel: { color: MUTE_TEXT, fontSize: fs("caption") },
   splitLine: { lineStyle: { color: LINE, type: "dashed" } },
 };
 // Row labels on a category y-axis: the names a reader looks up.
@@ -70,9 +71,9 @@ function errorInto(ids, message) {
     const el = $(id);
     if (!el) return;
     if (el.tagName === "TBODY") {
-      el.innerHTML = `<tr><td colspan="8" style="color:var(--ink-mute)">${esc(message)}</td></tr>`;
+      el.innerHTML = `<tr><td colspan="8" style="color:var(--ink-mute-text)">${esc(message)}</td></tr>`;
     } else {
-      el.innerHTML = `<p style="color:var(--ink-mute);font-size:${fs("small")}px;margin:0;padding:14px 2px;">${esc(message)}</p>`;
+      el.innerHTML = `<p style="color:var(--ink-mute-text);font-size:${fs("small")}px;margin:0;padding:14px 2px;">${esc(message)}</p>`;
     }
   });
 }
@@ -167,7 +168,7 @@ function renderWhereBreak(data) {
       ...axis, type: "log", name: "α (disparity filter) →", nameLocation: "middle", nameGap: 28,
       axisLabel: { ...axis.axisLabel, formatter: (v) => (v < 0.01 ? v.toFixed(3) : v.toFixed(2)) },
     },
-    yAxis: { ...axis, type: "value", min: 0, max: 40, name: "metros in largest piece", nameTextStyle: { color: MUTE } },
+    yAxis: { ...axis, type: "value", min: 0, max: 40, name: "metros in largest piece", nameTextStyle: { color: MUTE_TEXT } },
     tooltip: {
       ...base.tooltip, trigger: "axis",
       formatter: (p) => `α = ${Number(p[0].axisValueLabel).toFixed(3)}<br>${p[0].data[1]} metros in the largest piece`,
@@ -235,7 +236,7 @@ function drawSplitNmi(rows, steps, d1, W) {
   const H = ybot + 34;
   const X = (v) => x0 + (Math.min(Math.max(v, 0), d1) / d1) * (x1 - x0);
   const ink = token("--ink");
-  const mute = token("--ink-mute");
+  const mute = token("--ink-mute-text");
   const svg = node("svg", {
     viewBox: `0 0 ${W} ${H}`, width: W, height: H, role: "img",
     "aria-label": "How much the outsourcing and direct-employer job clusters agree, against three random baselines",
@@ -295,7 +296,7 @@ function renderJobsSplitMix(data) {
   c.setOption({
     ...base,
     grid: { left: 244, right: 24, top: 34, bottom: 40 },
-    legend: { top: 0, right: 0, textStyle: { color: MUTE, fontSize: fs("caption") } },
+    legend: { top: 0, right: 0, textStyle: { color: MUTE_TEXT, fontSize: fs("caption") } },
     xAxis: {
       ...axis, type: "value", name: "share of group's filings →", nameLocation: "middle", nameGap: 26, splitNumber: 4,
       axisLabel: { ...axis.axisLabel, formatter: (v) => `${Math.round(v * 100)}%` },
@@ -423,6 +424,7 @@ function drawLinkScatter(data, top, bridges, W) {
   const ink = token("--ink");
   const soft = token("--ink-soft");
   const mute = token("--ink-mute");
+  const muteText = token("--ink-mute-text");
   const halo = { "paint-order": "stroke", stroke: token("--w4-inset"), "stroke-width": 3 };
   const svg = node("svg", {
     viewBox: `0 0 ${W} ${H}`, width: W, height: H, role: "img",
@@ -430,10 +432,10 @@ function drawLinkScatter(data, top, bridges, W) {
   });
   for (let v = 0; v <= ymax; v += 5) {
     svg.append(node("line", { x1: L, x2: W - R, y1: Y(v), y2: Y(v), stroke: token("--w4-grid") }));
-    svg.append(node("text", { x: L - 8, y: Y(v) + 4, "font-size": caption, fill: mute, "text-anchor": "end" }, String(v)));
+    svg.append(node("text", { x: L - 8, y: Y(v) + 4, "font-size": caption, fill: muteText, "text-anchor": "end" }, String(v)));
   }
   for (let v = 0; v <= xmax; v += 10) {
-    svg.append(node("text", { x: X(v), y: H - B + 18, "font-size": caption, fill: mute, "text-anchor": "middle" }, String(v)));
+    svg.append(node("text", { x: X(v), y: H - B + 18, "font-size": caption, fill: muteText, "text-anchor": "middle" }, String(v)));
   }
   svg.append(node("text", { x: (L + W - R) / 2, y: H - 6, "font-size": caption, fill: soft, "text-anchor": "middle" },
     "links (other occupations it shares employers with)"));
@@ -445,7 +447,7 @@ function drawLinkScatter(data, top, bridges, W) {
       stroke: mute, "stroke-opacity": 0.55, "stroke-dasharray": "3 3",
     }));
     svg.append(node("text", {
-      x: i === 0 ? X(xe) - 6 : X(xe) + 4, y: Y(rate * xe) + 4, "font-size": caption, fill: mute,
+      x: i === 0 ? X(xe) - 6 : X(xe) + 4, y: Y(rate * xe) + 4, "font-size": caption, fill: muteText,
       "text-anchor": i === 0 ? "end" : "start",
     }, label));
   });
@@ -595,7 +597,7 @@ function renderWhoOverlap(data) {
     ...base,
     grid: { left: 60, right: 18, top: 18, bottom: 34 },
     xAxis: { ...axis, type: "category", data: cats, axisLabel: { ...axis.axisLabel, lineHeight: 13 } },
-    yAxis: { ...axis, type: "value", name: "split clients", nameTextStyle: { color: MUTE } },
+    yAxis: { ...axis, type: "value", name: "split clients", nameTextStyle: { color: MUTE_TEXT } },
     tooltip: { ...base.tooltip, formatter: (p) => `${esc(p.name.replace("\n", " "))}<br>${num(Math.round(p.value))} clients` },
     series: [
       {
@@ -634,7 +636,7 @@ function renderBeyondLaw(data) {
     ...base,
     grid: { left: 54, right: 18, top: 18, bottom: 34 },
     xAxis: { ...axis, type: "category", data: cats, axisLabel: { ...axis.axisLabel, lineHeight: 13 } },
-    yAxis: { ...axis, type: "value", name: "AMI", nameTextStyle: { color: MUTE } },
+    yAxis: { ...axis, type: "value", name: "AMI", nameTextStyle: { color: MUTE_TEXT } },
     tooltip: { ...base.tooltip, formatter: (p) => `${esc(p.name.replace("\n", " "))}<br>AMI ${p.value.toFixed(3)}` },
     series: [
       {
@@ -680,7 +682,7 @@ function renderBeyondPerm(data) {
       // tooltip.
       axisLabel: { ...axis.axisLabel, fontSize: fs("caption"), lineHeight: 14, interval: 0, width: 54, overflow: "truncate" },
     },
-    yAxis: { ...axis, type: "value", min: 0, name: "PERM per H-1B filing", nameTextStyle: { color: MUTE } },
+    yAxis: { ...axis, type: "value", min: 0, name: "PERM per H-1B filing", nameTextStyle: { color: MUTE_TEXT } },
     tooltip: { ...base.tooltip, formatter: (p) => `${esc(p.name.replace("\n", " "))}<br>${p.value.toFixed(3)}` },
     series: [
       { type: "bar", barMaxWidth: 30, data: groups.map((g) => ({ value: g.value, itemStyle: { color: g.color } })) },
@@ -701,7 +703,7 @@ function renderBeyondWage(data) {
     // sitting at the bottom collides with them, so it moves to the top like
     // the section's other charts.
     grid: { left: 54, right: 18, top: 34, bottom: 76 },
-    legend: { top: 0, right: 0, textStyle: { color: MUTE, fontSize: fs("caption") } },
+    legend: { top: 0, right: 0, textStyle: { color: MUTE_TEXT, fontSize: fs("caption") } },
     xAxis: {
       ...axis, type: "category", data: rows.map((r) => short(r.title)),
       // At 24°, a truncated 120px label is wider than its own category slot
@@ -786,7 +788,7 @@ function renderFootprintRegion(data) {
     ...base,
     grid: { left: 46, right: 18, top: 28, bottom: 46 },
     xAxis: { ...axis, type: "category", data: DROPS.map(([, label]) => label), axisLabel: { ...axis.axisLabel, lineHeight: 13 } },
-    yAxis: { ...axis, type: "value", name: "AMI with Census regions", nameTextStyle: { color: MUTE, align: "left" } },
+    yAxis: { ...axis, type: "value", name: "AMI with Census regions", nameTextStyle: { color: MUTE_TEXT, align: "left" } },
     tooltip: { ...base.tooltip, formatter: (p) => `${esc(p.name.replace("\n", " "))}<br>AMI ${p.value.toFixed(3)}` },
     series: [
       {
@@ -794,7 +796,7 @@ function renderFootprintRegion(data) {
         label: { show: true, position: "top", ...valueLabel, formatter: (p) => p.value.toFixed(2) },
         markLine: {
           silent: true, symbol: "none", lineStyle: { color: MUTE, type: "dashed" },
-          label: { color: MUTE, formatter: `all firms ${full.ami_region.toFixed(2)}`, position: "insideEndTop" },
+          label: { color: MUTE_TEXT, formatter: `all firms ${full.ami_region.toFixed(2)}`, position: "insideEndTop" },
           data: [{ yAxis: full.ami_region }],
         },
       },
@@ -819,7 +821,7 @@ function renderFootprintNmi(data) {
     ...base,
     grid: { left: 46, right: 18, top: 28, bottom: 46 },
     xAxis: { ...axis, type: "category", data: cats, axisLabel: { ...axis.axisLabel, interval: 0, lineHeight: 14, fontSize: fs("caption"), formatter: shortOf } },
-    yAxis: { ...axis, type: "value", min: 0, max: 1.1, interval: 0.2, name: "NMI with the full network's groups", nameTextStyle: { color: MUTE, align: "left" }, axisLabel: { ...axis.axisLabel, formatter: (v) => (v <= 1 ? v.toFixed(1) : "") } },
+    yAxis: { ...axis, type: "value", min: 0, max: 1.1, interval: 0.2, name: "NMI with the full network's groups", nameTextStyle: { color: MUTE_TEXT, align: "left" }, axisLabel: { ...axis.axisLabel, formatter: (v) => (v <= 1 ? v.toFixed(1) : "") } },
     tooltip: { ...base.tooltip, formatter: (p) => `${p.dataIndex < 4 ? "Metros" : "Jobs"} · ${esc(labelOf(p.name).replace("\n", " "))}<br>NMI ${p.value.toFixed(2)}` },
     series: [
       {
@@ -827,7 +829,7 @@ function renderFootprintNmi(data) {
         label: { show: true, position: "top", ...valueLabel, formatter: (p) => p.value.toFixed(2) },
         markArea: {
           silent: true, itemStyle: { color: "rgba(31,143,214,0.05)" },
-          label: { color: MUTE, position: "insideTop" },
+          label: { color: MUTE_TEXT, position: "insideTop" },
           data: [[{ name: "Metros", xAxis: cats[0] }, { xAxis: cats[3] }], [{ name: "Jobs", xAxis: cats[4] }, { xAxis: cats[7] }]],
         },
       },
@@ -876,12 +878,12 @@ function renderFootprintSingle(data) {
   c.setOption({
     ...base,
     grid: { left: 46, right: 18, top: 40, bottom: 40 },
-    legend: { top: 0, right: 0, textStyle: { color: MUTE, fontSize: fs("caption") }, data: ["One firm out", "Random cut, same volume"] },
+    legend: { top: 0, right: 0, textStyle: { color: MUTE_TEXT, fontSize: fs("caption") }, data: ["One firm out", "Random cut, same volume"] },
     xAxis: {
       ...axis, type: "category", data: rows.map((r) => label(r.firm)),
       axisLabel: { ...axis.axisLabel, interval: 0, fontSize: fs("caption"), rotate: 30 },
     },
-    yAxis: { ...axis, type: "value", name: "AMI with Census regions", nameTextStyle: { color: MUTE, align: "left" } },
+    yAxis: { ...axis, type: "value", name: "AMI with Census regions", nameTextStyle: { color: MUTE_TEXT, align: "left" } },
     tooltip: {
       ...base.tooltip, trigger: "axis", axisPointer: { type: "shadow" },
       formatter: (items) => {
@@ -897,7 +899,7 @@ function renderFootprintSingle(data) {
         data: rows.map((r) => r.ami_region), itemStyle: { color: ORANGE },
         markLine: {
           silent: true, symbol: "none", lineStyle: { color: MUTE, type: "dashed" },
-          label: { color: MUTE, formatter: `full network ${data.finding.full_ami_region.toFixed(2)}`, position: "insideEndTop" },
+          label: { color: MUTE_TEXT, formatter: `full network ${data.finding.full_ami_region.toFixed(2)}`, position: "insideEndTop" },
           data: [{ yAxis: data.finding.full_ami_region }],
         },
       },
@@ -925,7 +927,7 @@ function renderFootprintRank(data) {
     xAxis: {
       ...axis, type: "category", data: ks, name: "largest filers removed →", nameLocation: "middle", nameGap: 28,
     },
-    yAxis: { ...axis, type: "value", name: "AMI with Census regions", nameTextStyle: { color: MUTE, align: "left" } },
+    yAxis: { ...axis, type: "value", name: "AMI with Census regions", nameTextStyle: { color: MUTE_TEXT, align: "left" } },
     tooltip: {
       ...base.tooltip, trigger: "axis",
       formatter: (p) => {

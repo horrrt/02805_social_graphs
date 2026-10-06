@@ -13,7 +13,7 @@ import { useVendor } from "@/lib/useVendor";
 import { PALETTE, palette } from "./palette";
 
 const ECHARTS = "echarts-5.5.1.min.js";
-const TOKENS = [...PALETTE, "--ink", "--line", "--line-soft"];
+const TOKENS = [...PALETTE, "--ink", "--line", "--line-soft", "--ink-mute-text"];
 
 type Option = Record<string, any>;
 
@@ -38,7 +38,7 @@ const hasData = (s: Option) => Array.isArray(s.data) ? s.data.length > 0 : s.dat
 function themed(option: Option, scale: TypeScale, tokens: Record<string, string>, labelWidth: number | null): Option {
   const text = { fontFamily: scale.family(), fontSize: scale.fs("small"), color: tokens["--ink"] };
   const axis = {
-    axisLabel: { fontSize: scale.fs("caption"), color: tokens["--ink-mute"] },
+    axisLabel: { fontSize: scale.fs("caption"), color: tokens["--ink-mute-text"] },
     nameTextStyle: { fontSize: scale.fs("caption"), color: tokens["--ink-soft"] },
     axisLine: { lineStyle: { color: tokens["--line"] } },
     splitLine: { lineStyle: { color: tokens["--line-soft"] } },

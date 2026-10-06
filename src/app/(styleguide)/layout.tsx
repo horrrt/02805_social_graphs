@@ -26,10 +26,10 @@ export default function Layout({ children }: { children: ReactNode }) {
               .sg-swatch code { display: block; font-size: var(--fs-caption); margin-top: 6px; }
               .sg-row { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; }
               .sg-stack { display: flex; flex-direction: column; gap: 12px; }
-              .sg-label { font-size: var(--fs-caption); color: var(--ink-mute); margin: 0 0 6px; }
+              .sg-label { font-size: var(--fs-caption); color: var(--ink-mute-text); margin: 0 0 6px; }
               .sg-label code { font-size: var(--fs-caption); }
               .sg-ramp { display: flex; align-items: baseline; gap: 14px; border-bottom: 1px solid var(--line-soft); padding: 6px 0; }
-              .sg-ramp small { font-size: var(--fs-caption); color: var(--ink-mute); }
+              .sg-ramp small { font-size: var(--fs-caption); color: var(--ink-mute-text); }
               .sg-tip { position: static; display: inline-flex; }
               .sg-hero .shell { grid-template-columns: minmax(0, 1fr) 320px; }
             `}</style>

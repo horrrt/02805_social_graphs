@@ -6,6 +6,7 @@
   --ink: #0f2340;
   --ink-soft: #46618a;
   --ink-mute: #7a8fac;
+  --ink-mute-text: #59708f;
   --ground: #eef3f9;
   --card: #ffffff;
   --line: #dce5f0;
@@ -307,7 +308,7 @@
 }
 
 .corridor .panel h2 {
-  color: var(--ink-mute);
+  color: var(--ink-mute-text);
   font-size: var(--fs-caption);
   letter-spacing: 0.1em;
   margin: 0 0 10px;
@@ -332,7 +333,7 @@
 }
 
 .corridor .who .codes {
-  color: var(--ink-mute);
+  color: var(--ink-mute-text);
   font-size: var(--fs-caption);
   font-weight: 600;
 }
@@ -409,7 +410,7 @@
 
 .corridor .panel .fineprint {
   border-top: 1px solid var(--line-soft);
-  color: var(--ink-mute);
+  color: var(--ink-mute-text);
   font-size: var(--fs-caption);
   line-height: 1.45;
   margin: 12px 0 0;
@@ -465,7 +466,7 @@
 }
 
 .corridor .step-head .year-tag {
-  color: var(--ink-mute);
+  color: var(--ink-mute-text);
   font-size: var(--fs-small);
   font-weight: 600;
 }
@@ -536,7 +537,7 @@
 }
 
 .corridor .plot p.axis-note {
-  color: var(--ink-mute);
+  color: var(--ink-mute-text);
   font-size: var(--fs-caption);
   margin: 0 0 8px;
 }
@@ -645,7 +646,7 @@
 }
 
 .corridor .reveal p.what {
-  color: var(--ink-mute);
+  color: var(--ink-mute-text);
   font-size: var(--fs-caption);
   margin: 0 0 8px;
 }
@@ -724,7 +725,7 @@
 
 .corridor .type .eg {
   border-top: 1px solid var(--line-soft);
-  color: var(--ink-mute);
+  color: var(--ink-mute-text);
   font-size: var(--fs-caption);
   padding-top: 8px;
 }
@@ -766,7 +767,7 @@
 }
 
 .corridor .fact dt {
-  color: var(--ink-mute);
+  color: var(--ink-mute-text);
   font-size: var(--fs-caption);
 }
 
@@ -859,7 +860,7 @@
 }
 
 .corridor .dk-head .metric span {
-  color: var(--ink-mute);
+  color: var(--ink-mute-text);
   font-size: var(--fs-caption);
   letter-spacing: 0.04em;
   text-transform: uppercase;
@@ -885,7 +886,7 @@
 }
 
 .corridor table.ego th {
-  color: var(--ink-mute);
+  color: var(--ink-mute-text);
   font-size: var(--fs-caption);
   font-weight: 600;
   padding: 4px 6px 6px;
@@ -906,7 +907,7 @@
 
 .corridor footer.foot {
   border-top: 1px solid var(--line);
-  color: var(--ink-mute);
+  color: var(--ink-mute-text);
   font-size: var(--fs-caption);
   margin-top: 34px;
   padding: 18px 0 40px;
@@ -924,7 +925,7 @@
 }
 
 .corridor .status-line {
-  color: var(--ink-mute);
+  color: var(--ink-mute-text);
   font-size: var(--fs-small);
   padding: 10px 0;
 }
@@ -1004,7 +1005,7 @@
 }
 
 .corridor .variants .variant span {
-  color: var(--ink-mute);
+  color: var(--ink-mute-text);
   font-size: var(--fs-caption);
   font-variant-numeric: tabular-nums;
 }
@@ -1198,7 +1199,7 @@
 }
 
 .corridor .style-group-label {
-  color: var(--ink-mute);
+  color: var(--ink-mute-text);
   font-size: var(--fs-caption);
   font-weight: 700;
   letter-spacing: 0.07em;
@@ -1265,7 +1266,7 @@
 }
 
 .corridor .style-more > summary::after {
-  color: var(--ink-mute);
+  color: var(--ink-mute-text);
   content: " ▾";
   font-size: var(--fs-caption);
 }
@@ -1287,7 +1288,7 @@
 }
 
 .corridor .style-field label {
-  color: var(--ink-mute);
+  color: var(--ink-mute-text);
   font-size: var(--fs-caption);
   font-weight: 700;
   letter-spacing: 0.07em;
@@ -1363,7 +1364,7 @@
 }
 
 .corridor .qa-slider .ends {
-  color: var(--ink-mute);
+  color: var(--ink-mute-text);
   display: flex;
   font-size: var(--fs-caption);
   font-weight: 700;
@@ -1487,7 +1488,7 @@ body > .chart-tip[hidden] {
 }
 
 .corridor .drawer-note {
-  color: var(--ink-mute);
+  color: var(--ink-mute-text);
   font-size: var(--fs-caption);
   margin: 12px 0 8px;
 }
@@ -1500,7 +1501,7 @@ body > .chart-tip[hidden] {
 
 .corridor .drawer-table th {
   border-bottom: 1px solid var(--line);
-  color: var(--ink-mute);
+  color: var(--ink-mute-text);
   font-size: var(--fs-caption);
   font-weight: 700;
   letter-spacing: 0.05em;
@@ -1638,6 +1639,7 @@ body > .chart-tip[hidden] {
   --ink: #1c1a16;
   --ink-soft: #55504a;
   --ink-mute: #8b837a;
+  --ink-mute-text: #746d65;
   --radius: 4px;
   --shadow: none;
   font-family: Iowan Old Style, Palatino, "Palatino Linotype", Georgia, serif;
@@ -1666,7 +1668,7 @@ body > .chart-tip[hidden] {
 
 .corridor[data-skin="editorial"] .step-head .num {
   background: none;
-  color: var(--ink-mute);
+  color: var(--ink-mute-text);
   font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
   font-size: var(--fs-h4);
   height: auto;
@@ -1708,6 +1710,7 @@ body > .chart-tip[hidden] {
   --ink: #d7e3ef;
   --ink-soft: #8fa6bd;
   --ink-mute: #5f7488;
+  --ink-mute-text: #6d8399;
   --people-soft: #3a2410;
   --access-soft: #10293a;
   --radius: 3px;
@@ -1789,6 +1792,7 @@ body > .chart-tip[hidden] {
   --ink: #16140f;
   --ink-soft: #3d382d;
   --ink-mute: #7c7263;
+  --ink-mute-text: #796f61;
   --radius: 0px;
   --shadow: 5px 5px 0 rgba(28, 26, 22, 1);
   font-family: "Helvetica Neue", Helvetica, Inter, system-ui, sans-serif;
@@ -1950,7 +1954,7 @@ body > .chart-tip[hidden] {
 
 .corridor .chart-table thead th {
   background: var(--card);
-  color: var(--ink-mute);
+  color: var(--ink-mute-text);
   font-size: var(--fs-caption);
   letter-spacing: 0.04em;
   position: sticky;

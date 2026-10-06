@@ -14,6 +14,7 @@ const WHERE_WHO_URL = asset("weeks/week04/data/where_who.json");
 
 const INK = "#0f2340";
 const MUTE = "#7a8fac";
+const MUTE_TEXT = "#59708f";
 const ORANGE = "#f2820c";
 const BLUE = "#1f8fd6";
 const LINE = "#eaf0f7";
@@ -23,9 +24,9 @@ const yr = (s) => String(s).replace(/\bFY(\d{4})/g, "$1");
 
 const AXIS = {
   axisLine: { lineStyle: { color: "#c6d4e6" } },
-  axisLabel: { color: MUTE, fontSize: fs("caption") },
+  axisLabel: { color: MUTE_TEXT, fontSize: fs("caption") },
   splitLine: { lineStyle: { color: LINE, type: "dashed" } },
-  nameTextStyle: { color: MUTE, fontSize: fs("caption") },
+  nameTextStyle: { color: MUTE_TEXT, fontSize: fs("caption") },
 };
 
 const BASE = {
@@ -390,6 +391,7 @@ export async function startPlace(echarts) {
     const ink = token("--ink");
     const soft = token("--ink-soft");
     const mute = token("--ink-mute");
+    const muteText = token("--ink-mute-text");
     const card = token("--card");
     const grid = token("--w4-grid");
 
@@ -428,7 +430,7 @@ export async function startPlace(echarts) {
     for (let v = 0; v <= top; v += step) {
       parts.push(
         `<line x1="${L}" x2="${R}" y1="${y(v)}" y2="${y(v)}" stroke="${grid}"/>`,
-        `<text x="${L - 10}" y="${y(v) + 4}" text-anchor="end" font-size="${caption}" fill="${mute}">${fmt(v)}</text>`,
+        `<text x="${L - 10}" y="${y(v) + 4}" text-anchor="end" font-size="${caption}" fill="${muteText}">${fmt(v)}</text>`,
       );
     }
     alphas.forEach((a) => {
@@ -437,7 +439,7 @@ export async function startPlace(echarts) {
       );
     });
     parts.push(
-      `<text x="${(L + R) / 2}" y="242" text-anchor="middle" font-size="${caption}" fill="${mute}">← stricter filter · looser filter →</text>`,
+      `<text x="${(L + R) / 2}" y="242" text-anchor="middle" font-size="${caption}" fill="${muteText}">← stricter filter · looser filter →</text>`,
     );
 
     const snapIdx = alphas.findIndex((a) => Number(a) === Number(snap));
@@ -469,7 +471,7 @@ export async function startPlace(echarts) {
         `<g><title>α = ${a}: ${gc[i]} of ${metros} metros in the largest connected piece, ${fmt(kept[i])} links kept</title>` +
           `<circle cx="${cx}" cy="${cy}" r="${on ? 6.5 : 5}" fill="${on ? ink : card}" stroke="${ink}" stroke-width="2"/></g>`,
         `<text x="${cx}" y="${atTop ? cy + 20 : cy - 12}" text-anchor="middle" font-size="${small}" font-weight="700" fill="${ink}">${gc[i]}</text>`,
-        `<text x="${cx}" y="226" text-anchor="middle" font-size="${caption}" fill="${mute}">${fmt(kept[i])} links</text>`,
+        `<text x="${cx}" y="226" text-anchor="middle" font-size="${caption}" fill="${muteText}">${fmt(kept[i])} links</text>`,
       );
       if (!on) return;
       const at = place(cx, note);
@@ -641,7 +643,7 @@ export async function startPlace(echarts) {
         icon: "circle",
         itemWidth: 8,
         itemHeight: 8,
-        textStyle: { color: MUTE, fontSize: fs("caption") },
+        textStyle: { color: MUTE_TEXT, fontSize: fs("caption") },
         data: [
           { name: "Staffing shortlist", itemStyle: { color: ORANGE } },
           { name: "Other lead employer", itemStyle: { color: BLUE } },
@@ -685,7 +687,7 @@ export async function startPlace(echarts) {
             show: true,
             formatter: (p) => p.data.employer,
             position: "top",
-            color: MUTE,
+            color: MUTE_TEXT,
             fontSize: fs("small"),
             fontWeight: 600,
             distance: 4,

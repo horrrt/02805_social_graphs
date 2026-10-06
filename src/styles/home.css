@@ -112,7 +112,7 @@
 /* -------------------------------------------------------------- sections */
 
 .home .home-caps {
-  color: var(--ink-mute);
+  color: var(--ink-mute-text);
   font-size: var(--fs-caption);
   font-weight: 800;
   letter-spacing: 0.1em;
@@ -222,7 +222,7 @@ a.week-card:hover {
 }
 
 .home .week-card.coming .week-tag {
-  color: var(--ink-mute);
+  color: var(--ink-mute-text);
 }
 
 .home .week-card.coming h3 {

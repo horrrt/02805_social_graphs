@@ -86,7 +86,7 @@ function partialYearSeries(xLabels) {
     markArea: {
       silent: true,
       itemStyle: { color: token("--w4-band"), opacity: 0.5 },
-      label: { show: true, position: "insideTopRight", formatter: `${data.partial.year}: ${data.partial.window} only`, color: token("--ink-mute"), fontSize: fs("caption") },
+      label: { show: true, position: "insideTopRight", formatter: `${data.partial.year}: ${data.partial.window} only`, color: token("--ink-mute-text"), fontSize: fs("caption") },
       data: [[{ xAxis: xLabels[3] }, { xAxis: xLabels[4] }]],
     },
     z: 0,
@@ -132,7 +132,7 @@ function render() {
         type: "category",
         data: xLabels,
         axisLine: { lineStyle: { color: token("--line") } },
-        axisLabel: { color: token("--ink-mute"), fontSize: fs("caption") },
+        axisLabel: { color: token("--ink-mute-text"), fontSize: fs("caption") },
         axisTick: { show: false },
       },
       yAxis: {
@@ -142,7 +142,7 @@ function render() {
         // axis fits what is left, still as a share of all filings.
         max: state.scale === "percent" && hidden[state.split].size === 0 ? 100 : null,
         axisLabel: {
-          color: token("--ink-mute"), fontSize: fs("caption"),
+          color: token("--ink-mute-text"), fontSize: fs("caption"),
           formatter: (v) => (state.scale === "percent" ? `${v}%` : num(v)),
         },
         splitLine: { lineStyle: { color: token("--w4-grid") } },
