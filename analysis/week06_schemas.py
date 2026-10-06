@@ -82,6 +82,8 @@ class Gender(Model):
     no_names: GenderRep
     no_names_pronouns: GenderRep
     words: dict[Literal["no_names", "no_names_pronouns"], list[tuple[str, float]]]
+    lists: dict[Literal["gain", "same", "lose", "men_gain"], int]
+    women_in_ten_all: dict[Literal["tfidf", "no_names"], float]
 
 
 class Shares(Model):

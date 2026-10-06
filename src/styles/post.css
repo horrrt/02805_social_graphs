@@ -2831,3 +2831,6 @@
 /* Week 6's explorer: pages about women carry a tint, so the lean shows at a glance; the controls take the house focus ring. */
 .corridor .w6-col li.w6-woman { background: var(--people-soft); border-radius: 6px; }
 .corridor :is(.w5-chips button, .w6-pick select):focus-visible { outline: 2px solid var(--w4-accent); outline-offset: 2px; }
+.corridor .w6-both { color: var(--ink-soft); font-size: var(--fs-caption); font-style: italic; margin-right: 8px; }
+.corridor .w6-key { align-items: center; color: var(--ink-soft); display: flex; font-size: var(--fs-small); gap: 8px; margin: -6px 0 14px; }
+.corridor .w6-key-woman { background: var(--people-soft); border-radius: 3px; display: inline-block; height: 12px; width: 18px; }

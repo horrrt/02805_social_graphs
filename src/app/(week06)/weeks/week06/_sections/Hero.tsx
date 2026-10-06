@@ -14,8 +14,8 @@ export function Hero() {
         <>
           <b>When two Marvel pages read alike, is it a shared name, a shared story, or Wikipedia's template?</b>
           {" "}
-          Mostly a shared name, and names are where Wikipedia puts its links. Take the names out and every
-          page leans toward pages about women. We weighted the words of all 303 pages, found each page's
+          Mostly a shared name, and names are where Wikipedia puts its links. Take the names out and most lists
+          shift toward pages about women. We weighted the words of all 303 pages, found each page's
           ten nearest, and looked again without the names.
         </>
       }
@@ -23,7 +23,7 @@ export function Hero() {
       stats={
         <>
           <HeroStat value="44.5%" label="of all word weight sits on names" />
-          <HeroStat value="48%" label="of nearest-page slots go to pages about women once names go; they are 17% of pages" />
+          <HeroStat value="48%" label="of ten-nearest slots go to pages about women once names go; they are 17% of pages" />
         </>
       }
     >

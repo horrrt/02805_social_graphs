@@ -19,7 +19,11 @@ import {
 } from "@/scripts/week06-lookalikes.js";
 
 type Data = {
-  facts: { gender: { words: Record<string, [string, number][]> }; course: { tfidf: number }; names: { hits: number } } & Record<string, unknown>;
+  facts: {
+    gender: { words: Record<string, [string, number][]>; women_in_ten_all: { tfidf: number; no_names: number } };
+    course: { tfidf: number };
+    names: { hits: number };
+  } & Record<string, unknown>;
   names: string[];
 } & Record<string, unknown>;
 type Strip = { rows: StripRow[]; opts: StripOptions };
@@ -104,19 +108,27 @@ const buildWords = (d: Data): TableSpec => {
 
 type Row = ReturnType<typeof neighbourRows>[number];
 
-function Column({ title, rows, average }: { title: string; rows: Row[]; average: number }) {
+function Column({ title, rows, linked, women, other }: { title: string; rows: Row[]; linked: number; women: number; other: Set<number> }) {
   return (
     <div className="w6-col">
       <h3>{title}</h3>
-      <p className="w6-count">{`${linkedCount(rows)} of 10 linked, ${rows.filter((r) => r.gender === "woman").length} women. Average over all pages: ${two(average)} linked.`}</p>
+      <p className="w6-count">{`${linkedCount(rows)} of 10 linked, ${rows.filter((r) => r.gender === "woman").length} women. Average over all pages: ${two(linked)} linked, ${women} women.`}</p>
       <ol>
         {rows.map((r) => (
           <li key={r.index} className={[r.linked && "w6-linked", r.gender === "woman" && "w6-woman"].filter(Boolean).join(" ") || undefined}>
             <span className="w6-name">{r.name}</span>
             {r.gender ? <span className="w6-gender">{r.gender}</span> : null}
             <span className="w6-where">{r.where}</span>
-            <span className="w6-cos">{`cos ${r.cos}`}</span>
-            <span className="w6-words">{r.words.join(", ")}</span>
+            {other.has(r.index) ? <span className="w6-both">in both lists</span> : null}
+            <span className="w6-cos">
+              <span aria-hidden="true">cos</span>
+              <span className="visually-hidden">cosine</span>
+              {` ${r.cos}`}
+            </span>
+            <span className="w6-words">
+              <span className="visually-hidden">words behind the match: </span>
+              {r.words.join(", ")}
+            </span>
           </li>
         ))}
       </ol>
@@ -131,6 +143,9 @@ function Explorer({ data }: { data: Data }) {
   const index = Number(value);
   const kept = useMemo(() => neighbourRows(data, index, "kept"), [data, index]);
   const removed = useMemo(() => neighbourRows(data, index, "removed"), [data, index]);
+  const inKept = useMemo(() => new Set<number>(kept.map((r: Row) => r.index)), [kept]);
+  const inRemoved = useMemo(() => new Set<number>(removed.map((r: Row) => r.index)), [removed]);
+  const women = (rows: Row[]) => rows.filter((r) => r.gender === "woman").length;
   return (
     <>
       <div className="w6-pick">
@@ -151,10 +166,16 @@ function Explorer({ data }: { data: Data }) {
           })}
         </span>
       </div>
-      <p className="w6-note" aria-live="polite">{pickNote(data, index)}</p>
+      <p className="w6-note" aria-live="polite">
+        {`${pickNote(data, index)} ${linkedCount(kept)} and ${linkedCount(removed)} of 10 linked; ${women(kept)} and ${women(removed)} women.`}
+      </p>
+      <p className="w6-key">
+        <span className="w6-key-woman" aria-hidden="true"></span>
+        A tinted row is a page about a woman. &ldquo;In both lists&rdquo; marks a page that stays near with and without names.
+      </p>
       <div className="w6-cols">
-        <Column title="Names kept" rows={kept} average={data.facts.course.tfidf} />
-        <Column title="Names removed" rows={removed} average={data.facts.names.hits} />
+        <Column title="Names kept" rows={kept} linked={data.facts.course.tfidf} women={data.facts.gender.women_in_ten_all.tfidf} other={inRemoved} />
+        <Column title="Names removed" rows={removed} linked={data.facts.names.hits} women={data.facts.gender.women_in_ten_all.no_names} other={inKept} />
       </div>
     </>
   );

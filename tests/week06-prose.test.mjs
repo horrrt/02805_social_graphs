@@ -98,10 +98,18 @@ test("the hand-read pairs match their counts", () => {
 test("section 3 quotes the gender test", () => {
   const g = f.gender, nn = g.no_names, np = g.no_names_pronouns, tf = g.tfidf;
   const women = pct(nn.slots_to_women), pages = pct(g.female / f.pages);
-  says("gender", `They fill ${women} of all the ten-nearest lists and make up ${pages} of the pages`);
-  says("findings", `Pages about women fill ${women} of the ten-nearest lists and make up ${pages} of the pages, and still ${pct(np.slots_to_women)} with he and she removed. She and her make a woman's list ${pct(nn.female.observed)} women`);
-  says("closing", `which fill ${women} of the lists`);
-  assert.match(flatten(block(html, "top")), new RegExp(`${women}\\s*of nearest-page slots go to pages about women once names go; they are ${pages} of pages`));
+  says("gender", `They take ${women} of all ten-nearest slots and are ${pages} of the pages`);
+  const L = g.lists, w10 = nn.women_in_ten;
+  says("findings", `Pages about women take ${women} of the ten-nearest slots and are ${pages} of the pages; ${L.gain} of ${f.pages} lists gain women once names go. A woman's list holds ${w10.female} women in ten, a man's ${w10.male}`);
+  says("gender", `${L.gain} of ${f.pages} lists gain women once names go, ${L.same} stay level and ${L.lose} lose; ${L.men_gain} of ${g.male} men's lists gain`);
+  assert.equal(L.gain + L.same + L.lose, f.pages);
+  assert.ok(L.gain > f.pages / 2, "\"most lists\" needs a majority");
+  assert.doesNotMatch(page, /every page (leans|drifts)|every list shifts/);
+  says("top", "Take the names out and most lists shift toward pages about women");
+  says("explore", "Without them, most lists shift toward pages about women");
+  says("gender", `a woman's list holds ${w10.female} women in ten against ${w10.male} for a man's`);
+  says("closing", `which take ${women} of the slots`);
+  assert.match(flatten(block(html, "top")), new RegExp(`${women}\\s*of ten-nearest slots go to pages about women once names go; they are ${pages} of pages`));
   says("gender", `${g.female} women and ${g.male} men among the ${g.labelled} pages that have one`);
   says("gender", `${count(g.shuffles)} shuffles of the labels over the same lists put that gap at about 0`);
   assert.ok(Math.abs(nn.gap.null_mean) < 0.02 && Math.abs(np.gap.null_mean) < 0.02, "\"about 0\" needs the shuffled gaps near 0");
@@ -109,9 +117,9 @@ test("section 3 quotes the gender test", () => {
   says("gender", `${count(g.shuffles)} shuffles of the labels over the ${g.labelled} labelled pages`);
   const p = f.pronouns;
   says("gender", `He is on ${p.pages.he} pages and his on ${p.pages.his}`);
-  says("gender", `an IDF of ${two(p.idf.he)} against ${two(p.idf.she)} for she`);
-  says("gender", `without names a woman's list is ${points(nn.gap.observed)} points more female than a man's, and ${points(np.gap.observed)} points once the pronouns go too`);
-  says("gender", `The lean itself barely moves, from ${women} to ${pct(np.slots_to_women)}`);
+  says("gender", `their IDF is ${two(p.idf.he)} and ${two(p.idf.his)}, against ${two(p.idf.she)} for she and ${two(p.idf.her)} for her`);
+  says("gender", `removing the pronouns cuts the gap from ${points(nn.gap.observed)} to ${points(np.gap.observed)} points`);
+  says("gender", `it survives removing he and she (${women} to ${pct(np.slots_to_women)})`);
   says("gender", `women's lists are ${pct(tf.female.observed)} women and men's ${pct(tf.male.observed)}, a gap of ${points(tf.gap.observed)} points (z ${z(tf.gap.z)})`);
   says("gender", `the gap is ${points(nn.gap.observed)} points (z ${z(nn.gap.z)}); without pronouns too, ${points(np.gap.observed)} points (z ${z(np.gap.z)})`);
   const hubs = nn.hubs.map(([name, k]) => `${short(name)} in ${k}`);
@@ -123,7 +131,8 @@ test("section 3 quotes the gender test", () => {
   assert.deepEqual(g.other, { "female|male": 1, agender: 1 });
   says("gender", "Ajak has two values and Phoenix Force is agender; both are left out");
   says("gender", `the ${f.pages - g.labelled} pages without a woman or man label`);
-  says("gender", `${pct(nn.female_all_slots)} are women`);
+  says("gender", `Counting every slot, labelled or not, a woman's list holds ${w10.female} women in ten`);
+  assert.equal(w10.female, Math.round(nn.female_all_slots * 100) / 10);
 });
 
 test("the hero shows Storm's own contrast", () => {
@@ -159,9 +168,7 @@ test("the explorer's start and picks are pages in the file", async () => {
 });
 
 test("the explorer's answer and notice match the lists", () => {
-  const w = f.gender.no_names.women_in_ten;
-  says("explore", `a woman's list is almost all women, ${w.female} in ten on average, and a man's about four in ten (${w.male})`);
-  assert.ok(w.female >= 9 && w.male >= 3.5 && w.male < 4.5, "\"almost all\" and \"about four in ten\"");
+  says("explore", "Without names, the match runs on she, her and the wording of reception sections");
   assert.doesNotMatch(flatten(block(html, "explore")), /whoever you pick/);
   const women = (rep, name) => data[rep][data.names.indexOf(name)].filter(([j]) => data.gender[j] === "female").length;
   const men = (rep, name) => data[rep][data.names.indexOf(name)].filter(([j]) => data.gender[j] === "male").length;
@@ -174,10 +181,12 @@ test("the explorer's answer and notice match the lists", () => {
 
 test("section 3's follow-up quotes lean.json", () => {
   const l = lean.lean, m = lean.model, pct1 = (v) => `${Math.round(v * 100)}%`;
-  says("gender", `deleting every reception and relationship section leaves it at ${pct1(l.sections_removed)}, against ${pct1(l.control_mean)} ± ${(l.control_sd * 100).toFixed(1)} when the same number of words is cut from other sections (${lean.runs} runs)`);
+  says("gender", `deleting every reception and relationship section leaves it at ${(l.sections_removed * 100).toFixed(1)}%, against ${(l.control_mean * 100).toFixed(1)}% ± ${(l.control_sd * 100).toFixed(1)} pts when the same number of words is cut from other sections (${lean.runs} runs)`);
   assert.ok(l.sections_removed >= l.control_mean, "\"Not reception sections\" needs the deletion to cut no more than the control");
-  says("gender", `a page twice as long sits in ${m.per_doubling} more lists`);
+  says("gender", `page twice as long sits in ${m.per_doubling} more lists`);
+  says("gender", `explains under half of the variation (R² ${m.r2.toFixed(2)})`);
+  assert.ok(m.r2 < 0.5);
+  says("gender", `at equal length a woman's page still sits in ${m.terms.female.coef.toFixed(1)} more lists (p = ${m.terms.female.p.toFixed(2)})`);
   says("gender", `median ${count(lean.median_words.female)} words against ${count(lean.median_words.male)}`);
-  says("gender", `a woman's page still sits in ${m.terms.female.coef.toFixed(1)} more lists (p = ${m.terms.female.p.toFixed(2)})`);
   assert.ok(m.terms.reception_share.p > 0.05 && m.terms.relations_share.p > 0.05);
 });

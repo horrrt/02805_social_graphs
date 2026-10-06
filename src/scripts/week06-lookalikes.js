@@ -9,6 +9,14 @@ export const DATA = "weeks/week06/data/lookalikes.json";
 export const START = "Storm (Marvel Comics)";
 export const PICKS = ["Storm (Marvel Comics)", "Emma Frost", "Wolverine (character)", "Backhand (character)"];
 
+/** Why each chip is there, shown in the note under the picker when that page is picked. */
+export const PICK_WHY = {
+  "Storm (Marvel Comics)": "The course brief's own example.",
+  "Emma Frost": "Her surname is Jack Frost's codename.",
+  "Wolverine (character)": "Where the course's explorer starts.",
+  "Backhand (character)": "A Strikeforce: Morituri page; the team's pages copy one lead sentence.",
+};
+
 export const pct = (v) => `${Math.round(v * 100)}%`;
 export const two = (v) => v.toFixed(2);
 /** "Storm (Marvel Comics)" -> "Storm": the disambiguation Wikipedia adds to a title. */
@@ -63,7 +71,7 @@ export function gapRows({ facts: f }) {
   const row = (label, rep, bold) => {
     const t = g[rep];
     return {
-      label, bold, real: t.gap.observed, realLabel: `${pts(t.gap.observed)} (${pct(t.female.observed)} vs ${pct(t.male.observed)})`,
+      label, bold, real: t.gap.observed, realLabel: pts(t.gap.observed),
       base: [t.gap.null_mean, t.gap.null_sd], baseLabel: `shuffled ${(t.gap.null_mean * 100).toFixed(1).replace("-", "−")} ± ${(t.gap.null_sd * 100).toFixed(1)} pts · z ${String(t.gap.z).replace("-", "−")}`,
     };
   };
@@ -96,6 +104,37 @@ export function minis({ facts: f }) {
 
 const BUCKET = { story: "Shared story", mantle: "Same title", name: "Name only", template: "Template: she, her, lists" };
 
+/** Pairs that share one note (3 or more) collapse into one row that names how many and the first two. */
+function grouped(pairs, rep) {
+  const cos = (p) => (rep === "tfidf" ? p.cos_tfidf : p.cos_no_names);
+  const count = new Map();
+  for (const p of pairs) count.set(p.note, (count.get(p.note) ?? 0) + 1);
+  const rows = [];
+  const done = new Set();
+  for (const p of pairs) {
+    const n = count.get(p.note);
+    if (n < 3) {
+      rows.push({ pair: `${short(p.a)} · ${short(p.b)}`, cos: two(cos(p)), steps: p.distance ?? "no path", words: p.words.slice(0, 4).join(", "), bucket: BUCKET[p.bucket], note: p.note });
+      continue;
+    }
+    if (done.has(p.note)) continue;
+    done.add(p.note);
+    const group = pairs.filter((q) => q.note === p.note);
+    const cs = group.map(cos);
+    const ds = group.map((q) => q.distance ?? Infinity);
+    const range = (lo, hi, f) => (lo === hi ? f(lo) : `${f(lo)}–${f(hi)}`);
+    rows.push({
+      pair: `${n} pairs, such as ${short(group[0].a)} · ${short(group[0].b)} and ${short(group[1].a)} · ${short(group[1].b)}`,
+      cos: range(Math.min(...cs), Math.max(...cs), two),
+      steps: range(Math.min(...ds), Math.max(...ds), (d) => (d === Infinity ? "no path" : String(d))),
+      words: group[0].words.slice(0, 2).join(", "),
+      bucket: BUCKET[p.bucket],
+      note: p.note,
+    });
+  }
+  return rows;
+}
+
 /** The hand-read pairs of one representation ("tfidf" or "no_names") as a kit Table. */
 export function readTable({ facts: f }, rep) {
   return {
@@ -108,14 +147,7 @@ export function readTable({ facts: f }, rep) {
       { key: "bucket", label: "Read as" },
       { key: "note", label: "What the pages say" },
     ],
-    rows: f.pairs.filter((p) => p.rep === rep).map((p) => ({
-      pair: `${short(p.a)} · ${short(p.b)}`,
-      cos: two(rep === "tfidf" ? p.cos_tfidf : p.cos_no_names),
-      steps: p.distance ?? "no path",
-      words: p.words.slice(0, 4).join(", "),
-      bucket: BUCKET[p.bucket],
-      note: p.note,
-    })),
+    rows: grouped(f.pairs.filter((p) => p.rep === rep), rep),
   };
 }
 
@@ -164,7 +196,8 @@ export function neighbourRows(data, index, rep) {
 export function pickNote(data, index) {
   const [kept] = neighbourRows(data, index, "kept");
   const [removed] = neighbourRows(data, index, "removed");
-  return `${short(data.names[index])}: nearest with names is ${kept.name} (${kept.words.slice(0, 2).join(", ")}); without names, ${removed.name} (${removed.words.slice(0, 2).join(", ")}).`;
+  const why = PICK_WHY[data.names[index]] ? `${PICK_WHY[data.names[index]]} ` : "";
+  return `${why}${short(data.names[index])}: nearest with names is ${kept.name} (${kept.words.slice(0, 2).join(", ")}); without names, ${removed.name} (${removed.words.slice(0, 2).join(", ")}).`;
 }
 
 /** The hero's contrast: the first `n` nearest pages of one page, names kept and removed. */

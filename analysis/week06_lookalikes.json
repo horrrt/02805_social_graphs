@@ -223,6 +223,16 @@
    },
    "men_lists_half_women": 75
   },
+  "lists": {
+   "gain": 231,
+   "same": 39,
+   "lose": 33,
+   "men_gain": 110
+  },
+  "women_in_ten_all": {
+   "tfidf": 2.4,
+   "no_names": 4.8
+  },
   "words": {
    "no_names": [
     [

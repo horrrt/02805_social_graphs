@@ -354,6 +354,11 @@ def main(to_read=False):
     rng = np.random.default_rng(SEED)
     gender = {rep: gender_test(c, top, labels, rng)
               for rep, top in (("tfidf", top_tf), ("no_names", top_nn), ("no_names_pronouns", top_np))}
+    women_in = lambda top: np.array([sum(labels[j] == "female" for j in top[i]) for i in range(c.n)])  # noqa: E731
+    shift = women_in(top_nn) - women_in(top_tf)
+    gender["lists"] = {"gain": int((shift > 0).sum()), "same": int((shift == 0).sum()), "lose": int((shift < 0).sum()),
+                       "men_gain": int((shift[labels == "male"] > 0).sum())}
+    gender["women_in_ten_all"] = {"tfidf": round(float(women_in(top_tf).mean()), 1), "no_names": round(float(women_in(top_nn).mean()), 1)}
     gender["words"] = {"no_names": pair_words(c, no_names, top_nn, labels, "female"),
                        "no_names_pronouns": pair_words(c, no_pron, top_np, labels, "female")}
 
