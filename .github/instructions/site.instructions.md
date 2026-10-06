@@ -25,6 +25,8 @@ applyTo: "src/**,public/**,tests/**"
   needed. Vendor a library first: save the unmodified minified build to `public/assets/vendor/` with the version in
   the filename and add a row to `public/assets/vendor/README.md`. ECharts 5.5.1, D3 7.9.0, globe.gl 2.32.0 and
   deck.gl 9.0.30 are already there.
+- [DESIGN.md](../../DESIGN.md) lists each page's stylesheets, the type scale and what each colour means. Update it
+  when you change a token.
 - Take colours from CSS custom properties with `getComputedStyle`, as `src/scripts/week04-staffing.js`
   does. A hex colour in a new JavaScript file fails `tests/theme.test.mjs`.
 - Load files under `public/` with `asset("weeks/week05/data/x.json")` from `src/scripts/site.js`, so the path carries
