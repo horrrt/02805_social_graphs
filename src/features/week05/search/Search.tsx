@@ -11,7 +11,7 @@
 // ranking can draw, as main wired them then. The picked query, the box's text
 // and the query last run live in search/store.js, so a row or a chip fills the
 // box. A failed file logs one line.
-import { useCallback, useEffect, useMemo, type KeyboardEvent } from "react";
+import { useCallback, useEffect, useMemo, type KeyboardEvent, type ReactNode } from "react";
 import { Passage } from "@/kit";
 import { island, useIslandReady } from "@/lib/island";
 import { useData, type DataState } from "@/lib/useData";
@@ -74,25 +74,30 @@ const StatsHost = () => <div id="search-stats" className="w5-statrow"></div>;
 
 // ---- the search box: chips, the box and the live ranking --------------------------
 
+// rows: undefined before the ranking runs, null when no word of the query is known.
 function Ranks({ rows, target }: { rows: Ranked | undefined; target: string | null }) {
+  let items: ReactNode = null;
+  if (rows === null) {
+    items = (
+      <li>
+        <span className="w5-name">{NO_MATCH}</span>
+      </li>
+    );
+  } else if (rows !== undefined) {
+    items = rows.map((r, i) => {
+      const hit = Boolean(target) && r.id === target;
+      return (
+        <li key={i} className={hit ? "w5-hit" : undefined}>
+          <span className="w5-pos">{String(i + 1)}</span>
+          <span className="w5-name">{hit ? `${r.name} (target)` : r.name}</span>
+          <span className="w5-score">{r.cosine.toFixed(3)}</span>
+        </li>
+      );
+    });
+  }
   return (
     <ol aria-live="polite" className="w5-rank" id="search-live-ranks">
-      {rows === undefined ? null : rows === null ? (
-        <li>
-          <span className="w5-name">{NO_MATCH}</span>
-        </li>
-      ) : (
-        rows.map((r, i) => {
-          const hit = Boolean(target) && r.id === target;
-          return (
-            <li key={i} className={hit ? "w5-hit" : undefined}>
-              <span className="w5-pos">{String(i + 1)}</span>
-              <span className="w5-name">{hit ? `${r.name} (target)` : r.name}</span>
-              <span className="w5-score">{r.cosine.toFixed(3)}</span>
-            </li>
-          );
-        })
-      )}
+      {items}
     </ol>
   );
 }

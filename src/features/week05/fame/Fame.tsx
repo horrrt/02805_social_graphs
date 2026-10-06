@@ -7,29 +7,19 @@
 // a host swept as main's hover-tip sweep left it (a hidden tip first). A
 // failed fame.json leaves every part as the server rendered it, the chart host
 // swept, and logs one line.
-import { Fragment, useEffect, useMemo } from "react";
+import { Fragment, useMemo } from "react";
 import { EChart, Passage, Table } from "@/kit";
 import type { TableSpec } from "@/kit/Table";
-import { island, useIslandReady } from "@/lib/island";
-import { useData } from "@/lib/useData";
-import { useHydrated } from "@/lib/useHydrated";
+import { island } from "@/lib/island";
 import { useTokens } from "@/lib/useTypeScale";
-import { asset } from "@/scripts/site.js";
 import { FAME, HEIGHT, SCATTER_TOKENS, outliers, passages, scatter } from "@/scripts/week05-fame.js";
 import { ChartHost, ServerHost } from "../map/ChartHost";
+import { useSectionPart } from "../map/useSectionPart";
 
 type Data = Parameters<typeof outliers>[0];
 
-// fame.json after hydration, built into one part, with main's one line if it fails.
 function useFame<T>(build: (data: Data) => unknown) {
-  const hydrated = useHydrated();
-  const state = useData<Data>(hydrated ? asset(FAME) : null);
-  useEffect(() => {
-    if (state.status === "error") console.error("week05 fame failed", state.error);
-  }, [state]);
-  const part = useMemo(() => (state.data ? (build(state.data) as T) : null), [state.data, build]);
-  useIslandReady(part !== null);
-  return { hydrated, part };
+  return useSectionPart<Data, T>(FAME, "fame", build);
 }
 
 // ---- the scatter -------------------------------------------------------------------
@@ -75,15 +65,10 @@ function PassagesPart() {
   );
 }
 
-const Empty = (id: string) =>
-  function Host() {
-    return <div id={id}></div>;
-  };
-
 const HOSTS = {
   scatter: () => <ServerHost id={SCATTER} />,
-  outliers: Empty("fame-outliers"),
-  passages: Empty("fame-passages"),
+  outliers: () => <ServerHost id="fame-outliers" />,
+  passages: () => <ServerHost id="fame-passages" />,
 };
 
 // One island per part, so a fault in one leaves the others alone.

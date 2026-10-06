@@ -9,21 +9,19 @@
 // width, so the drawer after it keeps its state across a resize. A failed
 // weird.json leaves every part as the server rendered it, the chart host
 // swept, and logs one line.
-import { Fragment, useEffect, useMemo, useRef } from "react";
+import { Fragment, useMemo, useRef } from "react";
 import { Passage, Table } from "@/kit";
 import { Tipped } from "@/kit/HoverTipHost";
 import type { Measure } from "@/kit/StripChart";
 import type { TableSpec } from "@/kit/Table";
 import { Drawer } from "@/components/post/Drawer";
 import { Drawers } from "@/components/post/Drawers";
-import { island, useIslandReady } from "@/lib/island";
-import { useData } from "@/lib/useData";
-import { useHydrated } from "@/lib/useHydrated";
+import { island } from "@/lib/island";
 import { useFittedWidth } from "@/lib/useSize";
 import { useTextMeasure, useTokens, useTypeScale, type TypeScale } from "@/lib/useTypeScale";
-import { asset } from "@/scripts/site.js";
 import { IDS, SCATTER_TOKENS, WEIRD, allPages, passages, readTable, scatterLayout } from "@/scripts/week05-weird.js";
 import { ChartHost, ServerHost } from "../map/ChartHost";
+import { useSectionPart } from "../map/useSectionPart";
 
 type Data = Parameters<typeof readTable>[0];
 type Tick = { x?: number; y?: number; x1?: number; x2?: number; y1?: number; y2?: number; labelX?: number; labelY: number; label: string };
@@ -42,16 +40,8 @@ type Layout = {
   labels: { x: number; y: number; anchor: "start" | "end"; text: string }[];
 };
 
-// weird.json after hydration, built into one part, with main's one line if it fails.
 function useWeird<T>(build: (data: Data) => unknown) {
-  const hydrated = useHydrated();
-  const state = useData<Data>(hydrated ? asset(WEIRD) : null);
-  useEffect(() => {
-    if (state.status === "error") console.error("week05 weird failed", state.error);
-  }, [state]);
-  const part = useMemo(() => (state.data ? (build(state.data) as T) : null), [state.data, build]);
-  useIslandReady(part !== null);
-  return { hydrated, part };
+  return useSectionPart<Data, T>(WEIRD, "weird", build);
 }
 
 // ---- the scatter and its drawer ------------------------------------------------------
@@ -164,15 +154,10 @@ function PassagesPart() {
   );
 }
 
-const Empty = (id: string) =>
-  function Host() {
-    return <div id={id}></div>;
-  };
-
 const HOSTS = {
   scatter: () => <ServerHost id={IDS.scatter} />,
-  table: Empty(IDS.table),
-  passages: Empty(IDS.passages),
+  table: () => <ServerHost id={IDS.table} />,
+  passages: () => <ServerHost id={IDS.passages} />,
 };
 
 // One island per part, so a fault in one leaves the others alone.
