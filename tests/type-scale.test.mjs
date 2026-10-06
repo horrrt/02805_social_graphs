@@ -73,8 +73,8 @@ function problems(where, selector, decl) {
   if (prop === "font") return value === "inherit" ? [] : [`${where} ${selector} { ${decl} } uses the font shorthand`];
   if (prop === "font-size") {
     if (/^var\(--fs-[a-z0-9]+\)$/.test(value) || value === "inherit") return [];
-    // The Week 4 rail hides its link text and shows only the dot.
-    if (value === "0" && selector === ".corridor .w4-rail a") return [];
+    // The section rail hides its link text and shows only the dot.
+    if (value === "0" && selector === ".w4-rail a") return [];
     return [`${where} ${selector} { ${decl} } is not a --fs- token`];
   }
   if (/^var\(--font-(sans|display|mono)\)$/.test(value) || value === "inherit") return [];

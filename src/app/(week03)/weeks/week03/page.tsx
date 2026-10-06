@@ -1,4 +1,28 @@
 import PageScripts from "@/components/PageScripts";
+import { type RailItem, SectionRail } from "@/components/post/SectionRail";
+
+// The section rail down the left margin, as on Weeks 4 and 5.
+const RAIL: RailItem[] = [
+  { target: "globe", label: "Migration on the globe" },
+  { target: "tails", label: "Heavy tails in migration" },
+  { target: "bridge", label: "Popular ≠ bridge. Big ≠ prestigious." },
+  { target: "twin", label: "Compared to what?" },
+  { target: "typology", label: "Roles inside the communities" },
+  { target: "edge", label: "Edge inspector" },
+  { target: "denmark", label: "Let's analyse Denmark" },
+  {
+    target: "asks",
+    label: "More ways to look at this",
+    children: [
+      { target: "questions-head", label: "Six questions, answered from the same two files" },
+      { target: "gravity", label: "What is left after gravity" },
+      { target: "communities", label: "Does the world split into groups?" },
+      { target: "surprise", label: "What surprised us" },
+      { target: "more", label: "Four extra views" },
+    ],
+  },
+  { target: "methods", label: "Methods, and what this cannot tell you" },
+];
 
 export default function Page() {
   return (
@@ -2151,6 +2175,7 @@ export default function Page() {
           </div>
         </footer>
       </main>
+      <SectionRail column={1132} items={RAIL} />
       <PageScripts page="week03" />
     </>
   );

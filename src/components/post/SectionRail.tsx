@@ -1,11 +1,13 @@
 "use client";
 
-// The section rail down the left margin, as Week 4 draws it (nav.w4-rail; the
-// styles are in post.css). One dot per section, with its questions as small
-// dots under it; the section in view is current and opens its questions.
-// Hovering or focusing the rail shows every name, in a panel sized to the
-// widest one. Weeks 4 and 5 both draw their rail with it.
+// The section rail down the left margin (nav.w4-rail, styled by rail.css).
+// One dot per section, with its questions as small dots under it; the section
+// in view is current and opens its questions. Hovering or focusing the rail
+// shows every name, in a panel sized to the widest one. Every week draws its
+// rail with it; `column` is the width of the page's centred content column,
+// which the rail sits beside.
 import { type CSSProperties, useCallback, useEffect, useMemo, useRef, useState } from "react";
+import "@/styles/rail.css";
 
 export type RailItem = { target: string; label: string; children?: RailItem[] };
 
@@ -35,7 +37,9 @@ function RailList({ items, open }: { items: RailItem[]; open: Set<string> }) {
   );
 }
 
-export function SectionRail({ items, label = "Contents of this post" }: { items: RailItem[]; label?: string }) {
+type Props = { items: RailItem[]; label?: string; column?: number };
+
+export function SectionRail({ items, label = "Contents of this post", column }: Props) {
   const ref = useRef<HTMLElement>(null);
   const flat = useMemo(() => flatten(items), [items]);
   const [open, setOpen] = useState<Set<string>>(() => new Set());
@@ -88,7 +92,10 @@ export function SectionRail({ items, label = "Contents of this post" }: { items:
   }, [open, fit]);
 
   const refit = () => requestAnimationFrame(fit);
-  const style = panel ? ({ "--w4-rail-panel": `${panel}px` } as CSSProperties) : undefined;
+  const vars: Record<string, string> = {};
+  if (panel) vars["--w4-rail-panel"] = `${panel}px`;
+  if (column) vars["--rail-column"] = `${column}px`;
+  const style = Object.keys(vars).length ? (vars as CSSProperties) : undefined;
   return (
     <nav aria-label={label} className="w4-rail" onFocus={refit} onMouseEnter={refit} ref={ref} style={style}>
       <RailList items={items} open={open} />
