@@ -74,7 +74,19 @@ export const WEEKS = [
       blurb: "303 Marvel pages as text. Do the words follow the links?",
     },
   },
-  { n: 6, courseTitle: "NLP II", short: "NLP II", date: "2026-10-07", status: "coming" },
+  {
+    n: 6,
+    courseTitle: "NLP II",
+    short: "NLP II",
+    date: "2026-10-07",
+    status: "live",
+    cabinet: {
+      name: "Marvel Lookalikes",
+      marquee: "LOOKALIKES",
+      href: "weeks/week06/",
+      blurb: "Why do two Marvel pages read alike? Names, then she and her.",
+    },
+  },
   { n: 7, courseTitle: "NLP III", short: "NLP III", date: "2026-10-21", status: "coming" },
   {
     n: 8,

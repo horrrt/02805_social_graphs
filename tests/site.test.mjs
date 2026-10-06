@@ -87,13 +87,13 @@ test("the manifest mirrors the course index week for week", () => {
   assert.equal(shortDate("2026-10-07"), "7 OCT");
 });
 
-test("exactly weeks 1 to 5 are live, each with a cabinet on disk", () => {
+test("exactly weeks 1 to 6 are live, each with a cabinet on disk", () => {
   // Update this line deliberately each time a weekly post ships.
   assert.deepEqual(
     liveWeeks().map((w) => w.n),
-    [1, 2, 3, 4, 5],
+    [1, 2, 3, 4, 5, 6],
   );
-  assert.equal(currentWeek().n, 5);
+  assert.equal(currentWeek().n, 6);
   for (const w of WEEKS) {
     if (w.status === "live") {
       assert(w.cabinet?.name && w.cabinet?.href, `week ${w.n} cabinet`);
