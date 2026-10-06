@@ -107,14 +107,11 @@ type Row = ReturnType<typeof neighbourRows>[number];
 function Column({ title, rows, average }: { title: string; rows: Row[]; average: number }) {
   return (
     <div className="w6-col">
-      <h3>
-        {title}
-        {" "}
-        <span className="w6-count">{`${linkedCount(rows)} of 10 linked · all pages ${two(average)}`}</span>
-      </h3>
+      <h3>{title}</h3>
+      <p className="w6-count">{`${linkedCount(rows)} of 10 linked, ${rows.filter((r) => r.gender === "woman").length} women. Average over all pages: ${two(average)} linked.`}</p>
       <ol>
         {rows.map((r) => (
-          <li key={r.index} className={r.linked ? "w6-linked" : undefined}>
+          <li key={r.index} className={[r.linked && "w6-linked", r.gender === "woman" && "w6-woman"].filter(Boolean).join(" ") || undefined}>
             <span className="w6-name">{r.name}</span>
             {r.gender ? <span className="w6-gender">{r.gender}</span> : null}
             <span className="w6-where">{r.where}</span>

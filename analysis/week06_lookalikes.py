@@ -235,6 +235,12 @@ def gender_test(c, top, labels, rng):
     slots = Counter(int(j) for i in range(c.n) for j in top[i])
     out["slots_to_women"] = round(sum(slots[int(i)] for i in women) / (c.n * K), 3)
     out["hubs"] = [[c.names[j], n] for j, n in sorted(slots.items(), key=lambda x: (-x[1], x[0]))[:3]]
+    # Women among all ten nearest pages (labelled or not), averaged over women's and over men's lists.
+    out["women_in_ten"] = {focus: round(float(np.mean([sum(labels[j] == "female" for j in top[i])
+                                                        for i in np.flatnonzero(labels == focus)])), 1)
+                           for focus in ("female", "male")}
+    out["men_lists_half_women"] = int(sum(sum(labels[j] == "female" for j in top[i]) >= K / 2
+                                          for i in np.flatnonzero(labels == "male")))
     return out
 
 

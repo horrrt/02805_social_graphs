@@ -30,7 +30,7 @@ export function Gender() {
         }
         surprise={
           <Notice icon="💡" headline="What to notice">
-            He is on 291 pages and his on 300, so TF-IDF gives them almost no weight: an IDF of 0.04 against 0.46 for she. That makes the gap: without names a woman's list is 51 points more female than a man's, and 13 points once the pronouns go too. The lean itself barely moves, from 48% to 44%, and we have not found why.
+            He is on 291 pages and his on 300, so TF-IDF gives them almost no weight: an IDF of 0.04 against 0.46 for she. That makes the gap: without names a woman's list is 51 points more female than a man's, and 13 points once the pronouns go too. The lean itself barely moves, from 48% to 44%. Page length explains part of it, gender the rest (More numbers).
           </Notice>
         }
         figure={
@@ -62,6 +62,9 @@ export function Gender() {
           <Drawer label="More numbers">
             <p>
               With names kept, women's lists are 49% women and men's 28%, a gap of 21 points (z 7.5). Without names the gap is 51 points (z 23.9); without pronouns too, 13 points (z 5.8).
+            </p>
+            <p>
+              Why the lean? Not reception sections: deleting every reception and relationship section leaves it at 46%, against 45% ± 0.4 when the same number of words is cut from other sections (20 runs). Length matters: a page twice as long sits in 8.5 more lists, and women's pages are longer (median 2,068 words against 1,700). At the same length, reception share and she/her rate, a woman's page still sits in 12.6 more lists (p = 0.01).
             </p>
             <p>
               Without names, Jean Grey sits in 182 pages' ten nearest, Spider-Woman (Jessica Drew) in 142 and Emma Frost in 116. With the labels shuffled, women's lists are 26% women, the share of women among the 197 labelled pages.

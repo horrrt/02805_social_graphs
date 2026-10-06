@@ -51,7 +51,7 @@ export function Opening() {
               rows={[
                 { swatch: "w4-sw-real", label: "The real pages", text: "What the 303 pages show." },
                 { swatch: "w4-sw-band", label: "Baseline", text: "Mean and one standard deviation over random removals or shuffled labels." },
-                { swatch: "w4-sw-ref", label: "Reference", text: "Ten pages picked at random." },
+                { swatch: "w4-sw-ref", label: "Reference", text: "A fixed value to compare against, named on the chart: ten random pages, or women's share of pages." },
               ]}
             />
           </div>

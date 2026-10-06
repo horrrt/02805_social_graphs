@@ -94,7 +94,7 @@ export function minis({ facts: f }) {
   };
 }
 
-const BUCKET = { story: "Shared story", mantle: "Same title", name: "Name only", template: "She, her, lists" };
+const BUCKET = { story: "Shared story", mantle: "Same title", name: "Name only", template: "Template: she, her, lists" };
 
 /** The hand-read pairs of one representation ("tfidf" or "no_names") as a kit Table. */
 export function readTable({ facts: f }, rep) {

@@ -13,22 +13,22 @@ export function Explore() {
   return (
     <PostSection id="explore" owner="Gyula">
       <SectionOpener num="1" title="Pick a character">
-        With names, a page reads like the pages that share its names. Without them, it leans toward pages about women.
+        With names, a page reads like the pages that share its names. Without them, every list shifts toward pages about women, a woman's most of all.
       </SectionOpener>
       <QuestionCard
         section="explore"
         num="1A"
         question="Which pages read most like a character, and why?"
-        answer="With names kept, pages that share a name or a team with it. With names removed, mostly pages about women, whoever you pick."
+        answer="With names kept, pages that share a name or a team with it. With names removed, a woman's list is almost all women, 9.2 in ten on average, and a man's about four in ten (3.9)."
         layout="below"
         did={
           <TermProse as="p" className="sub" roots={["#explore-did p"]} terms={TERMS} after={[DATA]}>
-            Pick a character. The left column lists the ten pages whose TF-IDF weights point closest to its page, by cosine; the right column does the same with every name taken out. Each row gives the character's gender where Wikidata has one, whether the two pages are linked or how many steps apart they sit, the cosine, and the words that add most to the match.
+            Pick a character. The left column lists the ten pages whose TF-IDF weights point closest to its page, by cosine; the right column does the same with every name taken out. Pages about women are tinted. Each row gives the character's gender where Wikidata has one, whether the two pages are linked or how many steps apart they sit, the cosine, and the words that add most to the match.
           </TermProse>
         }
         surprise={
           <Notice icon="💡" headline="What to notice">
-            For Storm, where the explorer opens: her nearest page is the Human Torch, whose surname is Storm; they do not link. Take the names out and her nearest pages are Jean Grey, She-Hulk, Emma Frost and Scarlet Witch, matched on her and she.
+            Pick Storm, then Wolverine. With names, half of each list is women, mostly X-Men teammates. Without names, Storm's ten nearest pages are all women; Wolverine's keep six men.
           </Notice>
         }
         figure={<Part part="explore" />}

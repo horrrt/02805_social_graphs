@@ -9,11 +9,13 @@ import { fileURLToPath } from "node:url";
 import { block, flatten } from "./week04-html.mjs";
 import { builtPage } from "./built-page.mjs";
 
+
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const read = (name) => readFileSync(join(ROOT, name), "utf8");
 const html = builtPage("out/weeks/week06/index.html");
 const data = JSON.parse(read("public/weeks/week06/data/lookalikes.json"));
 const f = data.facts;
+const lean = JSON.parse(read("public/weeks/week06/data/lean.json"));
 const page = flatten(html);
 const two = (v) => v.toFixed(2);
 const pct = (v) => `${Math.round(v * 100)}%`;
@@ -133,7 +135,8 @@ test("the hero shows Storm's own contrast", () => {
     assert.equal(data.gender[j], "female", data.names[j]);
     assert.ok(words.includes("her") && words.includes("she"));
   }
-  says("top", "With names, the Human Torch comes first because his surname is Storm; the two pages do not link. Without names, four women, matched on her and she");
+  says("top", "With names, the Human Torch leads on his surname (the two also served together in the Fantastic Four); without names, four women, matched on her and she");
+  assert.equal(f.pairs.find((p) => p.a === "Human Torch" && p.b === "Storm (Marvel Comics)").bucket, "story");
 });
 
 test("section 1 quotes the explorer's own lists", () => {
@@ -147,11 +150,34 @@ test("section 1 quotes the explorer's own lists", () => {
   assert.equal(first[2], 0, "Storm and the Human Torch do not link");
   assert.ok(first[4].includes("storm"));
   const removed = data.removed[storm].slice(0, 4).map(([j]) => short(data.names[j]));
-  says("explore", `her nearest pages are ${removed.slice(0, 3).join(", ")} and ${removed[3]}, matched on her and she`);
   for (const [, , , , words] of data.removed[storm].slice(0, 4)) assert.ok(words.includes("her") && words.includes("she"));
 });
 
 test("the explorer's start and picks are pages in the file", async () => {
   const { START, PICKS } = await import("../src/scripts/week06-lookalikes.js");
   for (const name of [START, ...PICKS]) assert.ok(data.names.includes(name), name);
+});
+
+test("the explorer's answer and notice match the lists", () => {
+  const w = f.gender.no_names.women_in_ten;
+  says("explore", `a woman's list is almost all women, ${w.female} in ten on average, and a man's about four in ten (${w.male})`);
+  assert.ok(w.female >= 9 && w.male >= 3.5 && w.male < 4.5, "\"almost all\" and \"about four in ten\"");
+  assert.doesNotMatch(flatten(block(html, "explore")), /whoever you pick/);
+  const women = (rep, name) => data[rep][data.names.indexOf(name)].filter(([j]) => data.gender[j] === "female").length;
+  const men = (rep, name) => data[rep][data.names.indexOf(name)].filter(([j]) => data.gender[j] === "male").length;
+  assert.equal(women("kept", "Storm (Marvel Comics)"), 5);
+  assert.equal(women("kept", "Wolverine (character)"), 5);
+  assert.equal(women("removed", "Storm (Marvel Comics)"), 10);
+  assert.equal(men("removed", "Wolverine (character)"), 6);
+  says("explore", "With names, half of each list is women, mostly X-Men teammates. Without names, Storm's ten nearest pages are all women; Wolverine's keep six men");
+});
+
+test("section 3's follow-up quotes lean.json", () => {
+  const l = lean.lean, m = lean.model, pct1 = (v) => `${Math.round(v * 100)}%`;
+  says("gender", `deleting every reception and relationship section leaves it at ${pct1(l.sections_removed)}, against ${pct1(l.control_mean)} ± ${(l.control_sd * 100).toFixed(1)} when the same number of words is cut from other sections (${lean.runs} runs)`);
+  assert.ok(l.sections_removed >= l.control_mean, "\"Not reception sections\" needs the deletion to cut no more than the control");
+  says("gender", `a page twice as long sits in ${m.per_doubling} more lists`);
+  says("gender", `median ${count(lean.median_words.female)} words against ${count(lean.median_words.male)}`);
+  says("gender", `a woman's page still sits in ${m.terms.female.coef.toFixed(1)} more lists (p = ${m.terms.female.p.toFixed(2)})`);
+  assert.ok(m.terms.reception_share.p > 0.05 && m.terms.relations_share.p > 0.05);
 });

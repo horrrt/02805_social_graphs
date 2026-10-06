@@ -134,7 +134,12 @@
      "Mayday Parker",
      59
     ]
-   ]
+   ],
+   "women_in_ten": {
+    "female": 3.9,
+    "male": 2.2
+   },
+   "men_lists_half_women": 9
   },
   "no_names": {
    "female": {
@@ -170,7 +175,12 @@
      "Emma Frost",
      116
     ]
-   ]
+   ],
+   "women_in_ten": {
+    "female": 9.2,
+    "male": 3.9
+   },
+   "men_lists_half_women": 55
   },
   "no_names_pronouns": {
    "female": {
@@ -206,7 +216,12 @@
      "Spider-Woman (Jessica Drew)",
      134
     ]
-   ]
+   ],
+   "women_in_ten": {
+    "female": 5.8,
+    "male": 4.5
+   },
+   "men_lists_half_women": 75
   },
   "words": {
    "no_names": [

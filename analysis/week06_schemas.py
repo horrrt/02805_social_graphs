@@ -66,6 +66,8 @@ class GenderRep(Model):
     female_all_slots: float = Share
     slots_to_women: float = Share
     hubs: list[tuple[str, int]]
+    women_in_ten: dict[str, float]
+    men_lists_half_women: int
 
 
 class Gender(Model):
@@ -150,3 +152,24 @@ class Lookalikes(Model):
 
 
 PAGES = {"public/weeks/week06/data/lookalikes.json": Lookalikes}
+
+
+# public/weeks/week06/data/lean.json, written by week06_lean.py: section 3's follow-up --------
+
+class Term(Model):
+    coef: float
+    p: float = Share
+
+
+class Lean(Model):
+    runs: int
+    seeds: tuple[int, int]
+    pages_with: dict[Literal["reception", "relations"], int]
+    section_share: dict[Literal["female", "male"], dict[Literal["reception", "relations"], float]]
+    median_words: dict[Literal["female", "male"], int]
+    lean: dict[str, float]
+    slots_mean: dict[Literal["female", "male"], float]
+    model: dict[str, object]
+
+
+PAGES["public/weeks/week06/data/lean.json"] = Lean

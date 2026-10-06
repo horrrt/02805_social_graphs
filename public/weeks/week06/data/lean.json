@@ -1,0 +1,68 @@
+{
+ "runs": 20,
+ "seeds": [
+  6,
+  25
+ ],
+ "pages_with": {
+  "reception": 143,
+  "relations": 14
+ },
+ "section_share": {
+  "female": {
+   "reception": 0.065,
+   "relations": 0.007
+  },
+  "male": {
+   "reception": 0.028,
+   "relations": 0.004
+  }
+ },
+ "median_words": {
+  "female": 2068,
+  "male": 1700
+ },
+ "lean": {
+  "names_removed": 0.476,
+  "sections_removed": 0.464,
+  "control_mean": 0.454,
+  "control_sd": 0.004,
+  "control_min": 0.445,
+  "control_max": 0.462
+ },
+ "slots_mean": {
+  "female": 27.8,
+  "male": 8.3
+ },
+ "model": {
+  "n": 303,
+  "r2": 0.45,
+  "terms": {
+   "const": {
+    "coef": -83.52,
+    "p": 0.0
+   },
+   "female": {
+    "coef": 12.64,
+    "p": 0.01
+   },
+   "log_length": {
+    "coef": 12.29,
+    "p": 0.0
+   },
+   "reception_share": {
+    "coef": 23.06,
+    "p": 0.416
+   },
+   "relations_share": {
+    "coef": 115.23,
+    "p": 0.357
+   },
+   "sheher_rate": {
+    "coef": 35.47,
+    "p": 0.678
+   }
+  },
+  "per_doubling": 8.5
+ }
+}

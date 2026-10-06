@@ -30,8 +30,8 @@ export function Hero() {
       <figure className="w4-hero-stage w5-hero-stage">
         <Part part="hero" />
         <figcaption className="w5-hero-caption">
-          Storm's four nearest pages by text. With names, the Human Torch comes first because his surname is
-          Storm; the two pages do not link. Without names, four women, matched on her and she.
+          Storm's four nearest pages by text. With names, the Human Torch leads on his surname (the two also
+          served together in the Fantastic Four); without names, four women, matched on her and she.
           {" "}
           <a href="#explore">Section 1</a>
           {" "}

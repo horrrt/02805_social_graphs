@@ -17,7 +17,7 @@ export function Closing() {
             TF-IDF finds the link network because it finds names: names alone get 3.96 linked pages among the ten nearest,
             and without them the count falls from 4.01 to 1.91. Of the 25 most similar pairs that do not link, 20 still
             share a story or a title and 5 share only a name word. Take the names out and every page leans toward pages
-            about women, which fill 48% of the lists, for reasons we have not found. She and her, which TF-IDF weighs far
+            about women, which fill 48% of the lists: women's pages are longer, and at the same length still sit in more lists. She and her, which TF-IDF weighs far
             above he and his, then put women's pages closest to each other.
           </>
         }
