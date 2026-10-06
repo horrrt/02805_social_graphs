@@ -1,0 +1,2442 @@
+{
+ "generated_by": "analysis/week04_brief_gaps.py",
+ "year": 2025,
+ "metros": {
+  "nodes": 40,
+  "edges": 780,
+  "total_weight": 1234499.0
+ },
+ "modularity_by_hand": {
+  "rows": [
+   {
+    "community": 0,
+    "label": "New York–Dallas",
+    "metros": 7,
+    "w_in": 133566.0,
+    "strength": 790691.0,
+    "inside_share": 0.1082,
+    "expected_share": 0.1026,
+    "contribution": 0.0056
+   },
+   {
+    "community": 1,
+    "label": "San Jose–San Francisco",
+    "metros": 8,
+    "w_in": 147870.0,
+    "strength": 783498.0,
+    "inside_share": 0.1198,
+    "expected_share": 0.1007,
+    "contribution": 0.0191
+   },
+   {
+    "community": 2,
+    "label": "Detroit–Phoenix",
+    "metros": 25,
+    "w_in": 192155.0,
+    "strength": 894809.0,
+    "inside_share": 0.1557,
+    "expected_share": 0.1313,
+    "contribution": 0.0243
+   }
+  ],
+  "Q": 0.049
+ },
+ "grouped_vs_right": {
+  "louvain_groups": 0.049,
+  "census_regions": 0.0021,
+  "everything_in_one": 0.0,
+  "shuffled_groups_mean": -0.02,
+  "shuffled_groups_sd": 0.0073,
+  "census_table": [
+   {
+    "community": "Midwest",
+    "label": "Midwest",
+    "metros": 7,
+    "w_in": 24114.0,
+    "strength": 344626.0,
+    "inside_share": 0.0195,
+    "expected_share": 0.0195,
+    "contribution": 0.0001
+   },
+   {
+    "community": "Northeast",
+    "label": "Northeast",
+    "metros": 6,
+    "w_in": 31650.0,
+    "strength": 437638.0,
+    "inside_share": 0.0256,
+    "expected_share": 0.0314,
+    "contribution": -0.0058
+   },
+   {
+    "community": "South",
+    "label": "South",
+    "metros": 17,
+    "w_in": 207462.0,
+    "strength": 1021135.0,
+    "inside_share": 0.1681,
+    "expected_share": 0.1711,
+    "contribution": -0.003
+   },
+   {
+    "community": "West",
+    "label": "West",
+    "metros": 10,
+    "w_in": 103043.0,
+    "strength": 665599.0,
+    "inside_share": 0.0835,
+    "expected_share": 0.0727,
+    "contribution": 0.0108
+   }
+  ]
+ },
+ "greedy": {
+  "merges": 39,
+  "q_by_groups": [
+   {
+    "groups": 40,
+    "Q": -0.03597
+   },
+   {
+    "groups": 39,
+    "Q": -0.02788
+   },
+   {
+    "groups": 38,
+    "Q": -0.01736
+   },
+   {
+    "groups": 37,
+    "Q": -0.01007
+   },
+   {
+    "groups": 36,
+    "Q": -0.00357
+   },
+   {
+    "groups": 35,
+    "Q": 0.00376
+   },
+   {
+    "groups": 34,
+    "Q": 0.00692
+   },
+   {
+    "groups": 33,
+    "Q": 0.00947
+   },
+   {
+    "groups": 32,
+    "Q": 0.01251
+   },
+   {
+    "groups": 31,
+    "Q": 0.01548
+   },
+   {
+    "groups": 30,
+    "Q": 0.01881
+   },
+   {
+    "groups": 29,
+    "Q": 0.02
+   },
+   {
+    "groups": 28,
+    "Q": 0.02056
+   },
+   {
+    "groups": 27,
+    "Q": 0.02109
+   },
+   {
+    "groups": 26,
+    "Q": 0.02182
+   },
+   {
+    "groups": 25,
+    "Q": 0.02262
+   },
+   {
+    "groups": 24,
+    "Q": 0.02362
+   },
+   {
+    "groups": 23,
+    "Q": 0.02473
+   },
+   {
+    "groups": 22,
+    "Q": 0.02604
+   },
+   {
+    "groups": 21,
+    "Q": 0.02737
+   },
+   {
+    "groups": 20,
+    "Q": 0.02892
+   },
+   {
+    "groups": 19,
+    "Q": 0.03065
+   },
+   {
+    "groups": 18,
+    "Q": 0.03227
+   },
+   {
+    "groups": 17,
+    "Q": 0.03389
+   },
+   {
+    "groups": 16,
+    "Q": 0.03552
+   },
+   {
+    "groups": 15,
+    "Q": 0.03719
+   },
+   {
+    "groups": 14,
+    "Q": 0.03883
+   },
+   {
+    "groups": 13,
+    "Q": 0.04056
+   },
+   {
+    "groups": 12,
+    "Q": 0.04228
+   },
+   {
+    "groups": 11,
+    "Q": 0.04411
+   },
+   {
+    "groups": 10,
+    "Q": 0.04601
+   },
+   {
+    "groups": 9,
+    "Q": 0.04785
+   },
+   {
+    "groups": 8,
+    "Q": 0.04946
+   },
+   {
+    "groups": 7,
+    "Q": 0.05103
+   },
+   {
+    "groups": 6,
+    "Q": 0.05223
+   },
+   {
+    "groups": 5,
+    "Q": 0.05383
+   },
+   {
+    "groups": 4,
+    "Q": 0.05501
+   },
+   {
+    "groups": 3,
+    "Q": 0.05602
+   },
+   {
+    "groups": 2,
+    "Q": 0.05705
+   },
+   {
+    "groups": 1,
+    "Q": 0.0
+   }
+  ],
+  "best": {
+   "groups": 2,
+   "Q": 0.05705
+  },
+  "best_partition": {
+   "35620": 0,
+   "19100": 0,
+   "41940": 0,
+   "41860": 0,
+   "42660": 0,
+   "12060": 0,
+   "16980": 0,
+   "12420": 0,
+   "14460": 0,
+   "47900": 0,
+   "31080": 0,
+   "26420": 1,
+   "37980": 1,
+   "19820": 1,
+   "16740": 1,
+   "38060": 1,
+   "39580": 1,
+   "41740": 0,
+   "33100": 1,
+   "33460": 1,
+   "45300": 1,
+   "18140": 1,
+   "41180": 1,
+   "19740": 1,
+   "38900": 1,
+   "45940": 1,
+   "38300": 1,
+   "22220": 1,
+   "20500": 1,
+   "17140": 1,
+   "34980": 1,
+   "25540": 1,
+   "12580": 1,
+   "36740": 1,
+   "26900": 1,
+   "41700": 1,
+   "40900": 1,
+   "40060": 1,
+   "41620": 1,
+   "32820": 1
+  },
+  "nmi_with_page": 0.642,
+  "layout": {
+   "leaves": [
+    {
+     "id": "41620",
+     "name": "Salt Lake City",
+     "x": 0
+    },
+    {
+     "id": "40900",
+     "name": "Sacramento",
+     "x": 1
+    },
+    {
+     "id": "38900",
+     "name": "Portland",
+     "x": 2
+    },
+    {
+     "id": "45940",
+     "name": "Trenton",
+     "x": 3
+    },
+    {
+     "id": "38300",
+     "name": "Pittsburgh",
+     "x": 4
+    },
+    {
+     "id": "40060",
+     "name": "Richmond",
+     "x": 5
+    },
+    {
+     "id": "26900",
+     "name": "Indianapolis",
+     "x": 6
+    },
+    {
+     "id": "33100",
+     "name": "Miami",
+     "x": 7
+    },
+    {
+     "id": "19740",
+     "name": "Denver",
+     "x": 8
+    },
+    {
+     "id": "41180",
+     "name": "St. Louis",
+     "x": 9
+    },
+    {
+     "id": "26420",
+     "name": "Houston",
+     "x": 10
+    },
+    {
+     "id": "45300",
+     "name": "Tampa",
+     "x": 11
+    },
+    {
+     "id": "17140",
+     "name": "Cincinnati",
+     "x": 12
+    },
+    {
+     "id": "19820",
+     "name": "Detroit",
+     "x": 13
+    },
+    {
+     "id": "18140",
+     "name": "Columbus",
+     "x": 14
+    },
+    {
+     "id": "33460",
+     "name": "Minneapolis",
+     "x": 15
+    },
+    {
+     "id": "25540",
+     "name": "Hartford",
+     "x": 16
+    },
+    {
+     "id": "38060",
+     "name": "Phoenix",
+     "x": 17
+    },
+    {
+     "id": "20500",
+     "name": "Durham",
+     "x": 18
+    },
+    {
+     "id": "39580",
+     "name": "Raleigh",
+     "x": 19
+    },
+    {
+     "id": "16740",
+     "name": "Charlotte",
+     "x": 20
+    },
+    {
+     "id": "37980",
+     "name": "Philadelphia",
+     "x": 21
+    },
+    {
+     "id": "34980",
+     "name": "Nashville",
+     "x": 22
+    },
+    {
+     "id": "41700",
+     "name": "San Antonio",
+     "x": 23
+    },
+    {
+     "id": "12580",
+     "name": "Baltimore",
+     "x": 24
+    },
+    {
+     "id": "36740",
+     "name": "Orlando",
+     "x": 25
+    },
+    {
+     "id": "32820",
+     "name": "Memphis",
+     "x": 26
+    },
+    {
+     "id": "22220",
+     "name": "Fayetteville",
+     "x": 27
+    },
+    {
+     "id": "16980",
+     "name": "Chicago",
+     "x": 28
+    },
+    {
+     "id": "12060",
+     "name": "Atlanta",
+     "x": 29
+    },
+    {
+     "id": "31080",
+     "name": "Los Angeles",
+     "x": 30
+    },
+    {
+     "id": "14460",
+     "name": "Boston",
+     "x": 31
+    },
+    {
+     "id": "47900",
+     "name": "Washington",
+     "x": 32
+    },
+    {
+     "id": "19100",
+     "name": "Dallas",
+     "x": 33
+    },
+    {
+     "id": "12420",
+     "name": "Austin",
+     "x": 34
+    },
+    {
+     "id": "35620",
+     "name": "New York",
+     "x": 35
+    },
+    {
+     "id": "42660",
+     "name": "Seattle",
+     "x": 36
+    },
+    {
+     "id": "41940",
+     "name": "San Jose",
+     "x": 37
+    },
+    {
+     "id": "41860",
+     "name": "San Francisco",
+     "x": 38
+    },
+    {
+     "id": "41740",
+     "name": "San Diego",
+     "x": 39
+    }
+   ],
+   "merges": [
+    {
+     "a": 2,
+     "b": 3,
+     "node": 40,
+     "step": 1,
+     "x": 37.5
+    },
+    {
+     "a": 4,
+     "b": 40,
+     "node": 41,
+     "step": 2,
+     "x": 36.75
+    },
+    {
+     "a": 0,
+     "b": 41,
+     "node": 42,
+     "step": 3,
+     "x": 35.875
+    },
+    {
+     "a": 7,
+     "b": 42,
+     "node": 43,
+     "step": 4,
+     "x": 34.9375
+    },
+    {
+     "a": 1,
+     "b": 43,
+     "node": 44,
+     "step": 5,
+     "x": 33.96875
+    },
+    {
+     "a": 9,
+     "b": 44,
+     "node": 45,
+     "step": 6,
+     "x": 32.984375
+    },
+    {
+     "a": 8,
+     "b": 45,
+     "node": 46,
+     "step": 7,
+     "x": 31.9921875
+    },
+    {
+     "a": 10,
+     "b": 46,
+     "node": 47,
+     "step": 8,
+     "x": 30.99609375
+    },
+    {
+     "a": 5,
+     "b": 47,
+     "node": 48,
+     "step": 9,
+     "x": 29.998046875
+    },
+    {
+     "a": 6,
+     "b": 48,
+     "node": 49,
+     "step": 10,
+     "x": 28.9990234375
+    },
+    {
+     "a": 28,
+     "b": 16,
+     "node": 50,
+     "step": 11,
+     "x": 18.5
+    },
+    {
+     "a": 49,
+     "b": 17,
+     "node": 51,
+     "step": 12,
+     "x": 33.99951171875
+    },
+    {
+     "a": 14,
+     "b": 12,
+     "node": 52,
+     "step": 13,
+     "x": 20.5
+    },
+    {
+     "a": 50,
+     "b": 52,
+     "node": 53,
+     "step": 14,
+     "x": 19.5
+    },
+    {
+     "a": 15,
+     "b": 53,
+     "node": 54,
+     "step": 15,
+     "x": 18.25
+    },
+    {
+     "a": 31,
+     "b": 54,
+     "node": 55,
+     "step": 16,
+     "x": 17.125
+    },
+    {
+     "a": 19,
+     "b": 55,
+     "node": 56,
+     "step": 17,
+     "x": 16.0625
+    },
+    {
+     "a": 21,
+     "b": 56,
+     "node": 57,
+     "step": 18,
+     "x": 15.03125
+    },
+    {
+     "a": 13,
+     "b": 57,
+     "node": 58,
+     "step": 19,
+     "x": 14.015625
+    },
+    {
+     "a": 29,
+     "b": 58,
+     "node": 59,
+     "step": 20,
+     "x": 13.0078125
+    },
+    {
+     "a": 20,
+     "b": 59,
+     "node": 60,
+     "step": 21,
+     "x": 12.00390625
+    },
+    {
+     "a": 11,
+     "b": 60,
+     "node": 61,
+     "step": 22,
+     "x": 11.001953125
+    },
+    {
+     "a": 22,
+     "b": 61,
+     "node": 62,
+     "step": 23,
+     "x": 10.0009765625
+    },
+    {
+     "a": 23,
+     "b": 62,
+     "node": 63,
+     "step": 24,
+     "x": 9.00048828125
+    },
+    {
+     "a": 18,
+     "b": 63,
+     "node": 64,
+     "step": 25,
+     "x": 8.000244140625
+    },
+    {
+     "a": 34,
+     "b": 64,
+     "node": 65,
+     "step": 26,
+     "x": 7.0001220703125
+    },
+    {
+     "a": 37,
+     "b": 65,
+     "node": 66,
+     "step": 27,
+     "x": 6.00006103515625
+    },
+    {
+     "a": 66,
+     "b": 30,
+     "node": 67,
+     "step": 28,
+     "x": 14.000030517578125
+    },
+    {
+     "a": 26,
+     "b": 67,
+     "node": 68,
+     "step": 29,
+     "x": 9.000015258789062
+    },
+    {
+     "a": 25,
+     "b": 68,
+     "node": 69,
+     "step": 30,
+     "x": 6.000007629394531
+    },
+    {
+     "a": 69,
+     "b": 35,
+     "node": 70,
+     "step": 31,
+     "x": 14.500003814697266
+    },
+    {
+     "a": 70,
+     "b": 32,
+     "node": 71,
+     "step": 32,
+     "x": 19.250001907348633
+    },
+    {
+     "a": 71,
+     "b": 33,
+     "node": 72,
+     "step": 33,
+     "x": 22.125000953674316
+    },
+    {
+     "a": 24,
+     "b": 72,
+     "node": 73,
+     "step": 34,
+     "x": 12.062500476837158
+    },
+    {
+     "a": 36,
+     "b": 73,
+     "node": 74,
+     "step": 35,
+     "x": 6.531250238418579
+    },
+    {
+     "a": 74,
+     "b": 39,
+     "node": 75,
+     "step": 36,
+     "x": 16.26562511920929
+    },
+    {
+     "a": 75,
+     "b": 27,
+     "node": 76,
+     "step": 37,
+     "x": 21.632812559604645
+    },
+    {
+     "a": 38,
+     "b": 76,
+     "node": 77,
+     "step": 38,
+     "x": 10.816406279802322
+    },
+    {
+     "a": 77,
+     "b": 51,
+     "node": 78,
+     "step": 39,
+     "x": 22.40795899927616
+    }
+   ]
+  }
+ },
+ "greedy_backbone": {
+  "graph": "backbone alpha 0.2, unweighted",
+  "edges": 180,
+  "q_by_groups": [
+   {
+    "groups": 40,
+    "Q": -0.05034
+   },
+   {
+    "groups": 39,
+    "Q": -0.04515
+   },
+   {
+    "groups": 38,
+    "Q": -0.04003
+   },
+   {
+    "groups": 37,
+    "Q": -0.03503
+   },
+   {
+    "groups": 36,
+    "Q": -0.03009
+   },
+   {
+    "groups": 35,
+    "Q": -0.02319
+   },
+   {
+    "groups": 34,
+    "Q": -0.01785
+   },
+   {
+    "groups": 33,
+    "Q": -0.01022
+   },
+   {
+    "groups": 32,
+    "Q": -0.00404
+   },
+   {
+    "groups": 31,
+    "Q": 0.00225
+   },
+   {
+    "groups": 30,
+    "Q": 0.00707
+   },
+   {
+    "groups": 29,
+    "Q": 0.01515
+   },
+   {
+    "groups": 28,
+    "Q": 0.02491
+   },
+   {
+    "groups": 27,
+    "Q": 0.0333
+   },
+   {
+    "groups": 26,
+    "Q": 0.04071
+   },
+   {
+    "groups": 25,
+    "Q": 0.04804
+   },
+   {
+    "groups": 24,
+    "Q": 0.05628
+   },
+   {
+    "groups": 23,
+    "Q": 0.0667
+   },
+   {
+    "groups": 22,
+    "Q": 0.07852
+   },
+   {
+    "groups": 21,
+    "Q": 0.08847
+   },
+   {
+    "groups": 20,
+    "Q": 0.09495
+   },
+   {
+    "groups": 19,
+    "Q": 0.09974
+   },
+   {
+    "groups": 18,
+    "Q": 0.10423
+   },
+   {
+    "groups": 17,
+    "Q": 0.10863
+   },
+   {
+    "groups": 16,
+    "Q": 0.11298
+   },
+   {
+    "groups": 15,
+    "Q": 0.11727
+   },
+   {
+    "groups": 14,
+    "Q": 0.1215
+   },
+   {
+    "groups": 13,
+    "Q": 0.12551
+   },
+   {
+    "groups": 12,
+    "Q": 0.12914
+   },
+   {
+    "groups": 11,
+    "Q": 0.13377
+   },
+   {
+    "groups": 10,
+    "Q": 0.1387
+   },
+   {
+    "groups": 9,
+    "Q": 0.14326
+   },
+   {
+    "groups": 8,
+    "Q": 0.14687
+   },
+   {
+    "groups": 7,
+    "Q": 0.15034
+   },
+   {
+    "groups": 6,
+    "Q": 0.1559
+   },
+   {
+    "groups": 5,
+    "Q": 0.1627
+   },
+   {
+    "groups": 4,
+    "Q": 0.16603
+   },
+   {
+    "groups": 3,
+    "Q": 0.16912
+   },
+   {
+    "groups": 2,
+    "Q": 0.17012
+   },
+   {
+    "groups": 1,
+    "Q": 0.0
+   }
+  ],
+  "best": {
+   "groups": 2,
+   "Q": 0.17012
+  },
+  "best_partition": {
+   "35620": 0,
+   "19100": 0,
+   "41940": 1,
+   "41860": 1,
+   "42660": 1,
+   "12060": 0,
+   "16980": 0,
+   "12420": 1,
+   "14460": 1,
+   "47900": 1,
+   "31080": 1,
+   "26420": 0,
+   "37980": 0,
+   "19820": 0,
+   "16740": 0,
+   "38060": 1,
+   "39580": 0,
+   "41740": 1,
+   "33100": 0,
+   "33460": 0,
+   "45300": 0,
+   "18140": 0,
+   "41180": 0,
+   "19740": 1,
+   "38900": 1,
+   "45940": 0,
+   "38300": 0,
+   "22220": 1,
+   "20500": 0,
+   "17140": 0,
+   "34980": 0,
+   "25540": 0,
+   "12580": 1,
+   "36740": 0,
+   "26900": 0,
+   "41700": 0,
+   "40900": 1,
+   "40060": 0,
+   "41620": 0,
+   "32820": 0
+  },
+  "nmi_with_page": 0.386,
+  "layout": {
+   "leaves": [
+    {
+     "id": "47900",
+     "name": "Washington",
+     "x": 0
+    },
+    {
+     "id": "12580",
+     "name": "Baltimore",
+     "x": 1
+    },
+    {
+     "id": "14460",
+     "name": "Boston",
+     "x": 2
+    },
+    {
+     "id": "31080",
+     "name": "Los Angeles",
+     "x": 3
+    },
+    {
+     "id": "42660",
+     "name": "Seattle",
+     "x": 4
+    },
+    {
+     "id": "41740",
+     "name": "San Diego",
+     "x": 5
+    },
+    {
+     "id": "12420",
+     "name": "Austin",
+     "x": 6
+    },
+    {
+     "id": "40900",
+     "name": "Sacramento",
+     "x": 7
+    },
+    {
+     "id": "22220",
+     "name": "Fayetteville",
+     "x": 8
+    },
+    {
+     "id": "41860",
+     "name": "San Francisco",
+     "x": 9
+    },
+    {
+     "id": "41940",
+     "name": "San Jose",
+     "x": 10
+    },
+    {
+     "id": "38900",
+     "name": "Portland",
+     "x": 11
+    },
+    {
+     "id": "38060",
+     "name": "Phoenix",
+     "x": 12
+    },
+    {
+     "id": "19740",
+     "name": "Denver",
+     "x": 13
+    },
+    {
+     "id": "41180",
+     "name": "St. Louis",
+     "x": 14
+    },
+    {
+     "id": "38300",
+     "name": "Pittsburgh",
+     "x": 15
+    },
+    {
+     "id": "45300",
+     "name": "Tampa",
+     "x": 16
+    },
+    {
+     "id": "33100",
+     "name": "Miami",
+     "x": 17
+    },
+    {
+     "id": "41700",
+     "name": "San Antonio",
+     "x": 18
+    },
+    {
+     "id": "19820",
+     "name": "Detroit",
+     "x": 19
+    },
+    {
+     "id": "35620",
+     "name": "New York",
+     "x": 20
+    },
+    {
+     "id": "20500",
+     "name": "Durham",
+     "x": 21
+    },
+    {
+     "id": "39580",
+     "name": "Raleigh",
+     "x": 22
+    },
+    {
+     "id": "17140",
+     "name": "Cincinnati",
+     "x": 23
+    },
+    {
+     "id": "12060",
+     "name": "Atlanta",
+     "x": 24
+    },
+    {
+     "id": "18140",
+     "name": "Columbus",
+     "x": 25
+    },
+    {
+     "id": "45940",
+     "name": "Trenton",
+     "x": 26
+    },
+    {
+     "id": "37980",
+     "name": "Philadelphia",
+     "x": 27
+    },
+    {
+     "id": "16980",
+     "name": "Chicago",
+     "x": 28
+    },
+    {
+     "id": "16740",
+     "name": "Charlotte",
+     "x": 29
+    },
+    {
+     "id": "25540",
+     "name": "Hartford",
+     "x": 30
+    },
+    {
+     "id": "33460",
+     "name": "Minneapolis",
+     "x": 31
+    },
+    {
+     "id": "34980",
+     "name": "Nashville",
+     "x": 32
+    },
+    {
+     "id": "26420",
+     "name": "Houston",
+     "x": 33
+    },
+    {
+     "id": "36740",
+     "name": "Orlando",
+     "x": 34
+    },
+    {
+     "id": "32820",
+     "name": "Memphis",
+     "x": 35
+    },
+    {
+     "id": "26900",
+     "name": "Indianapolis",
+     "x": 36
+    },
+    {
+     "id": "41620",
+     "name": "Salt Lake City",
+     "x": 37
+    },
+    {
+     "id": "19100",
+     "name": "Dallas",
+     "x": 38
+    },
+    {
+     "id": "40060",
+     "name": "Richmond",
+     "x": 39
+    }
+   ],
+   "merges": [
+    {
+     "a": 25,
+     "b": 12,
+     "node": 40,
+     "step": 1,
+     "x": 26.5
+    },
+    {
+     "a": 28,
+     "b": 16,
+     "node": 41,
+     "step": 2,
+     "x": 21.5
+    },
+    {
+     "a": 9,
+     "b": 32,
+     "node": 42,
+     "step": 3,
+     "x": 0.5
+    },
+    {
+     "a": 14,
+     "b": 31,
+     "node": 43,
+     "step": 4,
+     "x": 29.5
+    },
+    {
+     "a": 6,
+     "b": 43,
+     "node": 44,
+     "step": 5,
+     "x": 28.75
+    },
+    {
+     "a": 40,
+     "b": 44,
+     "node": 45,
+     "step": 6,
+     "x": 27.625
+    },
+    {
+     "a": 21,
+     "b": 45,
+     "node": 46,
+     "step": 7,
+     "x": 26.3125
+    },
+    {
+     "a": 5,
+     "b": 46,
+     "node": 47,
+     "step": 8,
+     "x": 25.15625
+    },
+    {
+     "a": 29,
+     "b": 47,
+     "node": 48,
+     "step": 9,
+     "x": 24.078125
+    },
+    {
+     "a": 24,
+     "b": 15,
+     "node": 49,
+     "step": 10,
+     "x": 11.5
+    },
+    {
+     "a": 2,
+     "b": 49,
+     "node": 50,
+     "step": 11,
+     "x": 10.75
+    },
+    {
+     "a": 3,
+     "b": 50,
+     "node": 51,
+     "step": 12,
+     "x": 9.875
+    },
+    {
+     "a": 27,
+     "b": 51,
+     "node": 52,
+     "step": 13,
+     "x": 8.9375
+    },
+    {
+     "a": 36,
+     "b": 52,
+     "node": 53,
+     "step": 14,
+     "x": 7.96875
+    },
+    {
+     "a": 7,
+     "b": 53,
+     "node": 54,
+     "step": 15,
+     "x": 6.984375
+    },
+    {
+     "a": 17,
+     "b": 54,
+     "node": 55,
+     "step": 16,
+     "x": 5.9921875
+    },
+    {
+     "a": 4,
+     "b": 55,
+     "node": 56,
+     "step": 17,
+     "x": 4.99609375
+    },
+    {
+     "a": 10,
+     "b": 56,
+     "node": 57,
+     "step": 18,
+     "x": 3.998046875
+    },
+    {
+     "a": 8,
+     "b": 57,
+     "node": 58,
+     "step": 19,
+     "x": 2.9990234375
+    },
+    {
+     "a": 42,
+     "b": 58,
+     "node": 59,
+     "step": 20,
+     "x": 1.74951171875
+    },
+    {
+     "a": 48,
+     "b": 19,
+     "node": 60,
+     "step": 21,
+     "x": 27.5390625
+    },
+    {
+     "a": 0,
+     "b": 41,
+     "node": 61,
+     "step": 22,
+     "x": 20.75
+    },
+    {
+     "a": 60,
+     "b": 30,
+     "node": 62,
+     "step": 23,
+     "x": 29.76953125
+    },
+    {
+     "a": 38,
+     "b": 1,
+     "node": 63,
+     "step": 24,
+     "x": 37.5
+    },
+    {
+     "a": 34,
+     "b": 63,
+     "node": 64,
+     "step": 25,
+     "x": 36.75
+    },
+    {
+     "a": 39,
+     "b": 64,
+     "node": 65,
+     "step": 26,
+     "x": 35.875
+    },
+    {
+     "a": 62,
+     "b": 11,
+     "node": 66,
+     "step": 27,
+     "x": 31.384765625
+    },
+    {
+     "a": 66,
+     "b": 33,
+     "node": 67,
+     "step": 28,
+     "x": 32.6923828125
+    },
+    {
+     "a": 61,
+     "b": 67,
+     "node": 68,
+     "step": 29,
+     "x": 26.72119140625
+    },
+    {
+     "a": 13,
+     "b": 68,
+     "node": 69,
+     "step": 30,
+     "x": 22.860595703125
+    },
+    {
+     "a": 35,
+     "b": 69,
+     "node": 70,
+     "step": 31,
+     "x": 20.4302978515625
+    },
+    {
+     "a": 18,
+     "b": 70,
+     "node": 71,
+     "step": 32,
+     "x": 18.71514892578125
+    },
+    {
+     "a": 20,
+     "b": 71,
+     "node": 72,
+     "step": 33,
+     "x": 17.357574462890625
+    },
+    {
+     "a": 72,
+     "b": 65,
+     "node": 73,
+     "step": 34,
+     "x": 26.616287231445312
+    },
+    {
+     "a": 26,
+     "b": 73,
+     "node": 74,
+     "step": 35,
+     "x": 20.808143615722656
+    },
+    {
+     "a": 22,
+     "b": 74,
+     "node": 75,
+     "step": 36,
+     "x": 17.404071807861328
+    },
+    {
+     "a": 75,
+     "b": 37,
+     "node": 76,
+     "step": 37,
+     "x": 28.202035903930664
+    },
+    {
+     "a": 59,
+     "b": 23,
+     "node": 77,
+     "step": 38,
+     "x": 7.374755859375
+    },
+    {
+     "a": 77,
+     "b": 76,
+     "node": 78,
+     "step": 39,
+     "x": 17.788395881652832
+    }
+   ]
+  }
+ },
+ "girvan_newman_levels": [
+  {
+   "step": 2,
+   "components": 2,
+   "Q": -0.0001,
+   "sizes": [
+    39,
+    1
+   ]
+  },
+  {
+   "step": 4,
+   "components": 3,
+   "Q": -0.0002,
+   "sizes": [
+    38,
+    1,
+    1
+   ]
+  },
+  {
+   "step": 6,
+   "components": 4,
+   "Q": -0.0004,
+   "sizes": [
+    37,
+    1,
+    1
+   ]
+  },
+  {
+   "step": 9,
+   "components": 5,
+   "Q": -0.0008,
+   "sizes": [
+    36,
+    1,
+    1
+   ]
+  },
+  {
+   "step": 12,
+   "components": 6,
+   "Q": -0.0013,
+   "sizes": [
+    35,
+    1,
+    1
+   ]
+  },
+  {
+   "step": 16,
+   "components": 7,
+   "Q": -0.0023,
+   "sizes": [
+    34,
+    1,
+    1
+   ]
+  },
+  {
+   "step": 20,
+   "components": 8,
+   "Q": -0.0036,
+   "sizes": [
+    33,
+    1,
+    1
+   ]
+  },
+  {
+   "step": 23,
+   "components": 9,
+   "Q": -0.0046,
+   "sizes": [
+    32,
+    1,
+    1
+   ]
+  },
+  {
+   "step": 26,
+   "components": 10,
+   "Q": -0.0058,
+   "sizes": [
+    31,
+    1,
+    1
+   ]
+  },
+  {
+   "step": 29,
+   "components": 11,
+   "Q": -0.0072,
+   "sizes": [
+    30,
+    1,
+    1
+   ]
+  },
+  {
+   "step": 33,
+   "components": 12,
+   "Q": -0.0092,
+   "sizes": [
+    29,
+    1,
+    1
+   ]
+  },
+  {
+   "step": 37,
+   "components": 13,
+   "Q": -0.0115,
+   "sizes": [
+    28,
+    1,
+    1
+   ]
+  },
+  {
+   "step": 42,
+   "components": 14,
+   "Q": -0.0147,
+   "sizes": [
+    27,
+    1,
+    1
+   ]
+  },
+  {
+   "step": 47,
+   "components": 15,
+   "Q": -0.0184,
+   "sizes": [
+    26,
+    1,
+    1
+   ]
+  },
+  {
+   "step": 51,
+   "components": 16,
+   "Q": -0.0215,
+   "sizes": [
+    25,
+    1,
+    1
+   ]
+  },
+  {
+   "step": 56,
+   "components": 17,
+   "Q": -0.0258,
+   "sizes": [
+    24,
+    1,
+    1
+   ]
+  },
+  {
+   "step": 62,
+   "components": 18,
+   "Q": -0.0316,
+   "sizes": [
+    23,
+    1,
+    1
+   ]
+  },
+  {
+   "step": 69,
+   "components": 19,
+   "Q": -0.039,
+   "sizes": [
+    22,
+    1,
+    1
+   ]
+  },
+  {
+   "step": 77,
+   "components": 20,
+   "Q": -0.0443,
+   "sizes": [
+    21,
+    1,
+    1
+   ]
+  },
+  {
+   "step": 82,
+   "components": 21,
+   "Q": -0.0507,
+   "sizes": [
+    20,
+    1,
+    1
+   ]
+  },
+  {
+   "step": 87,
+   "components": 22,
+   "Q": -0.0575,
+   "sizes": [
+    19,
+    1,
+    1
+   ]
+  },
+  {
+   "step": 92,
+   "components": 23,
+   "Q": -0.0647,
+   "sizes": [
+    18,
+    1,
+    1
+   ]
+  },
+  {
+   "step": 97,
+   "components": 24,
+   "Q": -0.0722,
+   "sizes": [
+    17,
+    1,
+    1
+   ]
+  },
+  {
+   "step": 102,
+   "components": 25,
+   "Q": -0.0802,
+   "sizes": [
+    16,
+    1,
+    1
+   ]
+  },
+  {
+   "step": 107,
+   "components": 26,
+   "Q": -0.0885,
+   "sizes": [
+    15,
+    1,
+    1
+   ]
+  },
+  {
+   "step": 112,
+   "components": 27,
+   "Q": -0.0972,
+   "sizes": [
+    14,
+    1,
+    1
+   ]
+  },
+  {
+   "step": 118,
+   "components": 28,
+   "Q": -0.1046,
+   "sizes": [
+    13,
+    1,
+    1
+   ]
+  },
+  {
+   "step": 124,
+   "components": 29,
+   "Q": -0.1093,
+   "sizes": [
+    12,
+    1,
+    1
+   ]
+  },
+  {
+   "step": 129,
+   "components": 30,
+   "Q": -0.1095,
+   "sizes": [
+    11,
+    1,
+    1
+   ]
+  },
+  {
+   "step": 136,
+   "components": 31,
+   "Q": -0.1217,
+   "sizes": [
+    10,
+    1,
+    1
+   ]
+  },
+  {
+   "step": 144,
+   "components": 32,
+   "Q": -0.1225,
+   "sizes": [
+    9,
+    1,
+    1
+   ]
+  },
+  {
+   "step": 152,
+   "components": 33,
+   "Q": -0.1317,
+   "sizes": [
+    8,
+    1,
+    1
+   ]
+  },
+  {
+   "step": 159,
+   "components": 34,
+   "Q": -0.1277,
+   "sizes": [
+    7,
+    1,
+    1
+   ]
+  },
+  {
+   "step": 165,
+   "components": 35,
+   "Q": -0.0798,
+   "sizes": [
+    6,
+    1,
+    1
+   ]
+  },
+  {
+   "step": 170,
+   "components": 36,
+   "Q": -0.0865,
+   "sizes": [
+    5,
+    1,
+    1
+   ]
+  },
+  {
+   "step": 174,
+   "components": 37,
+   "Q": -0.0575,
+   "sizes": [
+    4,
+    1,
+    1
+   ]
+  },
+  {
+   "step": 177,
+   "components": 38,
+   "Q": -0.0535,
+   "sizes": [
+    3,
+    1,
+    1
+   ]
+  },
+  {
+   "step": 179,
+   "components": 39,
+   "Q": -0.0556,
+   "sizes": [
+    2,
+    1,
+    1
+   ]
+  },
+  {
+   "step": 180,
+   "components": 40,
+   "Q": -0.0503,
+   "sizes": [
+    1,
+    1,
+    1
+   ]
+  }
+ ],
+ "weighted_paths": {
+  "pairs": 780,
+  "detour_pairs": 663,
+  "detour_share": 0.85,
+  "hop_counts": {
+   "1": 117,
+   "2": 567,
+   "3": 96
+  },
+  "via": [
+   {
+    "metro": "Dallas",
+    "routes": 534,
+    "group": 0
+   },
+   {
+    "metro": "New York",
+    "routes": 97,
+    "group": 0
+   },
+   {
+    "metro": "San Jose",
+    "routes": 90,
+    "group": 1
+   },
+   {
+    "metro": "Washington",
+    "routes": 38,
+    "group": 1
+   }
+  ],
+  "betweenness_top": [
+   {
+    "metro": "Dallas",
+    "betweenness": 534.0,
+    "strength_rank": 1
+   },
+   {
+    "metro": "New York",
+    "betweenness": 97.0,
+    "strength_rank": 2
+   },
+   {
+    "metro": "San Jose",
+    "betweenness": 90.0,
+    "strength_rank": 3
+   },
+   {
+    "metro": "Washington",
+    "betweenness": 38.0,
+    "strength_rank": 9
+   },
+   {
+    "metro": "San Francisco",
+    "betweenness": 0.0,
+    "strength_rank": 4
+   },
+   {
+    "metro": "Seattle",
+    "betweenness": 0.0,
+    "strength_rank": 7
+   },
+   {
+    "metro": "Atlanta",
+    "betweenness": 0.0,
+    "strength_rank": 6
+   },
+   {
+    "metro": "Chicago",
+    "betweenness": 0.0,
+    "strength_rank": 8
+   }
+  ],
+  "examples": [
+   {
+    "from": "Memphis",
+    "to": "San Diego",
+    "route": [
+     "Memphis",
+     "Dallas",
+     "San Jose",
+     "San Diego"
+    ],
+    "direct_weight": 187.0,
+    "route_weights": [
+     873.0,
+     8434.0,
+     2738.0
+    ]
+   },
+   {
+    "from": "Baltimore",
+    "to": "Memphis",
+    "route": [
+     "Baltimore",
+     "Washington",
+     "Dallas",
+     "Memphis"
+    ],
+    "direct_weight": 194.0,
+    "route_weights": [
+     1550.0,
+     7606.0,
+     873.0
+    ]
+   },
+   {
+    "from": "Memphis",
+    "to": "Portland",
+    "route": [
+     "Memphis",
+     "Dallas",
+     "San Jose",
+     "Portland"
+    ],
+    "direct_weight": 210.0,
+    "route_weights": [
+     873.0,
+     8434.0,
+     1857.0
+    ]
+   },
+   {
+    "from": "Memphis",
+    "to": "Trenton",
+    "route": [
+     "Memphis",
+     "Dallas",
+     "New York",
+     "Trenton"
+    ],
+    "direct_weight": 234.0,
+    "route_weights": [
+     873.0,
+     19364.0,
+     2566.0
+    ]
+   },
+   {
+    "from": "Baltimore",
+    "to": "Salt Lake City",
+    "route": [
+     "Baltimore",
+     "Washington",
+     "Dallas",
+     "Salt Lake City"
+    ],
+    "direct_weight": 267.0,
+    "route_weights": [
+     1550.0,
+     7606.0,
+     1359.0
+    ]
+   },
+   {
+    "from": "Portland",
+    "to": "Salt Lake City",
+    "route": [
+     "Portland",
+     "San Jose",
+     "Dallas",
+     "Salt Lake City"
+    ],
+    "direct_weight": 280.0,
+    "route_weights": [
+     1857.0,
+     8434.0,
+     1359.0
+    ]
+   }
+  ],
+  "unweighted_hops_all_pairs": 1
+ },
+ "resolution": [
+  {
+   "gamma": 0.25,
+   "groups_median": 1.0,
+   "groups_min": 1,
+   "groups_max": 1,
+   "nmi_page": 0.0,
+   "nmi_census": 0.0,
+   "Q_gamma1": 0.0
+  },
+  {
+   "gamma": 0.5,
+   "groups_median": 1.0,
+   "groups_min": 1,
+   "groups_max": 1,
+   "nmi_page": 0.0,
+   "nmi_census": 0.0,
+   "Q_gamma1": 0.0
+  },
+  {
+   "gamma": 0.75,
+   "groups_median": 1.0,
+   "groups_min": 1,
+   "groups_max": 1,
+   "nmi_page": 0.0,
+   "nmi_census": 0.0,
+   "Q_gamma1": 0.0
+  },
+  {
+   "gamma": 1.0,
+   "groups_median": 3.0,
+   "groups_min": 2,
+   "groups_max": 3,
+   "nmi_page": 1.0,
+   "nmi_census": 0.137,
+   "Q_gamma1": 0.049
+  },
+  {
+   "gamma": 1.25,
+   "groups_median": 11.0,
+   "groups_min": 10,
+   "groups_max": 11,
+   "nmi_page": 0.637,
+   "nmi_census": 0.327,
+   "Q_gamma1": 0.0266
+  },
+  {
+   "gamma": 1.5,
+   "groups_median": 27.0,
+   "groups_min": 24,
+   "groups_max": 27,
+   "nmi_page": 0.412,
+   "nmi_census": 0.495,
+   "Q_gamma1": -0.0068
+  },
+  {
+   "gamma": 2.0,
+   "groups_median": 35.0,
+   "groups_min": 35,
+   "groups_max": 35,
+   "nmi_page": 0.416,
+   "nmi_census": 0.527,
+   "Q_gamma1": -0.0156
+  },
+  {
+   "gamma": 3.0,
+   "groups_median": 40.0,
+   "groups_min": 40,
+   "groups_max": 40,
+   "nmi_page": 0.399,
+   "nmi_census": 0.521,
+   "Q_gamma1": -0.036
+  }
+ ],
+ "resolution_limit_sqrt_2W": 1571.3,
+ "leiden": {
+  "runs": 100,
+  "leiden_matches_page": 69,
+  "leiden_groups_median": 3.0,
+  "leiden_Q_median": 0.049,
+  "leiden_Q_max": 0.0571,
+  "leiden_nmi_page_median": 1.0,
+  "louvain_matches_page": 69,
+  "louvain_Q_median": 0.049,
+  "note": "the full metro network is complete (780 = C(40,2) links), so no community can be disconnected"
+ },
+ "eigenvector": {
+  "network": "jobs backbone, alpha 0.05 (as week04_pagerank.py)",
+  "nodes": 289,
+  "edges": 2984,
+  "spearman": {
+   "eigen_pagerank": 0.708,
+   "eigen_degree": 0.839,
+   "eigen_strength": 0.867,
+   "pagerank_degree": 0.934,
+   "pagerank_strength": 0.951
+  },
+  "top15_overlap_eigen_pagerank": 10,
+  "top15_eigen": [
+   {
+    "code": "15-1252",
+    "title": "Software Developers",
+    "eigen_rank": 1,
+    "pagerank_rank": 1,
+    "degree": 164,
+    "degree_rank": 2,
+    "strength_rank": 1,
+    "eigen": 0.501,
+    "pagerank": 0.05833
+   },
+   {
+    "code": "15-2051",
+    "title": "Data Scientists",
+    "eigen_rank": 2,
+    "pagerank_rank": 2,
+    "degree": 203,
+    "degree_rank": 1,
+    "strength_rank": 2,
+    "eigen": 0.3975,
+    "pagerank": 0.05241
+   },
+   {
+    "code": "15-1299",
+    "title": "Computer Occupations, All Other",
+    "eigen_rank": 3,
+    "pagerank_rank": 3,
+    "degree": 115,
+    "degree_rank": 4,
+    "strength_rank": 3,
+    "eigen": 0.3903,
+    "pagerank": 0.03762
+   },
+   {
+    "code": "15-1253",
+    "title": "Software Quality Assurance Analysts and Testers",
+    "eigen_rank": 4,
+    "pagerank_rank": 4,
+    "degree": 65,
+    "degree_rank": 18,
+    "strength_rank": 4,
+    "eigen": 0.3069,
+    "pagerank": 0.02369
+   },
+   {
+    "code": "11-3021",
+    "title": "Computer and Information Systems Managers",
+    "eigen_rank": 5,
+    "pagerank_rank": 5,
+    "degree": 71,
+    "degree_rank": 17,
+    "strength_rank": 5,
+    "eigen": 0.2153,
+    "pagerank": 0.01926
+   },
+   {
+    "code": "15-1211",
+    "title": "Computer Systems Analysts",
+    "eigen_rank": 6,
+    "pagerank_rank": 8,
+    "degree": 53,
+    "degree_rank": 30,
+    "strength_rank": 6,
+    "eigen": 0.1993,
+    "pagerank": 0.01471
+   },
+   {
+    "code": "15-1242",
+    "title": "Database Administrators",
+    "eigen_rank": 7,
+    "pagerank_rank": 10,
+    "degree": 56,
+    "degree_rank": 28,
+    "strength_rank": 8,
+    "eigen": 0.1756,
+    "pagerank": 0.01401
+   },
+   {
+    "code": "15-1243",
+    "title": "Database Architects",
+    "eigen_rank": 8,
+    "pagerank_rank": 16,
+    "degree": 53,
+    "degree_rank": 31,
+    "strength_rank": 9,
+    "eigen": 0.1596,
+    "pagerank": 0.01285
+   },
+   {
+    "code": "15-1244",
+    "title": "Network and Computer Systems Administrators",
+    "eigen_rank": 9,
+    "pagerank_rank": 20,
+    "degree": 44,
+    "degree_rank": 37,
+    "strength_rank": 12,
+    "eigen": 0.1502,
+    "pagerank": 0.01142
+   },
+   {
+    "code": "15-1251",
+    "title": "Computer Programmers",
+    "eigen_rank": 10,
+    "pagerank_rank": 37,
+    "degree": 18,
+    "degree_rank": 102,
+    "strength_rank": 21,
+    "eigen": 0.1356,
+    "pagerank": 0.00771
+   },
+   {
+    "code": "17-2112",
+    "title": "Industrial Engineers",
+    "eigen_rank": 11,
+    "pagerank_rank": 7,
+    "degree": 72,
+    "degree_rank": 16,
+    "strength_rank": 7,
+    "eigen": 0.1283,
+    "pagerank": 0.01606
+   },
+   {
+    "code": "15-2031",
+    "title": "Operations Research Analysts",
+    "eigen_rank": 12,
+    "pagerank_rank": 11,
+    "degree": 79,
+    "degree_rank": 11,
+    "strength_rank": 10,
+    "eigen": 0.1213,
+    "pagerank": 0.01391
+   },
+   {
+    "code": "15-1212",
+    "title": "Information Security Analysts",
+    "eigen_rank": 13,
+    "pagerank_rank": 27,
+    "degree": 51,
+    "degree_rank": 33,
+    "strength_rank": 13,
+    "eigen": 0.1175,
+    "pagerank": 0.01022
+   },
+   {
+    "code": "13-1111",
+    "title": "Management Analysts",
+    "eigen_rank": 14,
+    "pagerank_rank": 29,
+    "degree": 49,
+    "degree_rank": 34,
+    "strength_rank": 17,
+    "eigen": 0.1061,
+    "pagerank": 0.00951
+   },
+   {
+    "code": "17-2141",
+    "title": "Mechanical Engineers",
+    "eigen_rank": 15,
+    "pagerank_rank": 12,
+    "degree": 72,
+    "degree_rank": 15,
+    "strength_rank": 11,
+    "eigen": 0.0995,
+    "pagerank": 0.01389
+   }
+  ],
+  "pagerank_lifts": [
+   {
+    "code": "25-2031",
+    "title": "Secondary School Teachers, Except Special and Career/Technical Education",
+    "eigen_rank": 278,
+    "pagerank_rank": 31,
+    "degree": 14,
+    "degree_rank": 132,
+    "strength_rank": 102,
+    "eigen": 0.0,
+    "pagerank": 0.00921
+   },
+   {
+    "code": "25-2021",
+    "title": "Elementary School Teachers, Except Special Education",
+    "eigen_rank": 271,
+    "pagerank_rank": 25,
+    "degree": 17,
+    "degree_rank": 112,
+    "strength_rank": 94,
+    "eigen": 0.0,
+    "pagerank": 0.01061
+   },
+   {
+    "code": "25-2022",
+    "title": "Middle School Teachers, Except Special and Career/Technical Education",
+    "eigen_rank": 273,
+    "pagerank_rank": 32,
+    "degree": 16,
+    "degree_rank": 119,
+    "strength_rank": 105,
+    "eigen": 0.0,
+    "pagerank": 0.00897
+   },
+   {
+    "code": "29-1216",
+    "title": "General Internal Medicine Physicians",
+    "eigen_rank": 136,
+    "pagerank_rank": 40,
+    "degree": 33,
+    "degree_rank": 48,
+    "strength_rank": 67,
+    "eigen": 0.0018,
+    "pagerank": 0.00648
+   },
+   {
+    "code": "29-1229",
+    "title": "Physicians, All Other",
+    "eigen_rank": 79,
+    "pagerank_rank": 18,
+    "degree": 53,
+    "degree_rank": 32,
+    "strength_rank": 46,
+    "eigen": 0.0067,
+    "pagerank": 0.01203
+   }
+  ],
+  "pagerank_drops": [
+   {
+    "code": "13-1071",
+    "title": "Human Resources Specialists",
+    "eigen_rank": 37,
+    "pagerank_rank": 89,
+    "degree": 27,
+    "degree_rank": 63,
+    "strength_rank": 58,
+    "eigen": 0.0296,
+    "pagerank": 0.00284
+   },
+   {
+    "code": "11-1021",
+    "title": "General and Operations Managers",
+    "eigen_rank": 34,
+    "pagerank_rank": 84,
+    "degree": 27,
+    "degree_rank": 62,
+    "strength_rank": 54,
+    "eigen": 0.0306,
+    "pagerank": 0.00302
+   },
+   {
+    "code": "11-3051",
+    "title": "Industrial Production Managers",
+    "eigen_rank": 38,
+    "pagerank_rank": 86,
+    "degree": 24,
+    "degree_rank": 75,
+    "strength_rank": 56,
+    "eigen": 0.0258,
+    "pagerank": 0.003
+   },
+   {
+    "code": "11-3071",
+    "title": "Transportation, Storage, and Distribution Managers",
+    "eigen_rank": 35,
+    "pagerank_rank": 75,
+    "degree": 28,
+    "degree_rank": 57,
+    "strength_rank": 50,
+    "eigen": 0.0304,
+    "pagerank": 0.00329
+   },
+   {
+    "code": "27-1024",
+    "title": "Graphic Designers",
+    "eigen_rank": 33,
+    "pagerank_rank": 70,
+    "degree": 30,
+    "degree_rank": 54,
+    "strength_rank": 49,
+    "eigen": 0.0346,
+    "pagerank": 0.00355
+   }
+  ]
+ },
+ "colours": {
+  "0": {
+   "hex": "#6d4fd6",
+   "luminance": 0.137,
+   "deuteranopia": "#0064d3",
+   "protanopia": "#006bda"
+  },
+  "1": {
+   "hex": "#15896a",
+   "luminance": 0.191,
+   "deuteranopia": "#77756c",
+   "protanopia": "#857f68"
+  },
+  "2": {
+   "hex": "#7a8fac",
+   "luminance": 0.268,
+   "deuteranopia": "#7f8bab",
+   "protanopia": "#8590ad"
+  }
+ },
+ "sbm": "not fitted: graph-tool is not pip-installable",
+ "seconds": 10.3
+}
