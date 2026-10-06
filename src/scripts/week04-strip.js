@@ -104,6 +104,30 @@ function placeText(measure, x, y, text, lo, hi, role = "caption", weight = 400) 
   return { x: at, y, anchor, text, role, weight };
 }
 
+/** A placed label's left and right edge. */
+function extent(measure, p) {
+  const w = measure(p.text, p.role, p.weight);
+  const left = p.anchor === "start" ? p.x : p.anchor === "end" ? p.x - w : p.x - w / 2;
+  return [left, left + w];
+}
+
+/**
+ * Two placed labels on one line that overlap move apart: the left one ends and
+ * the right one starts 4px either side of the middle of their centres, the pair
+ * kept inside [lo, hi]. Labels that do not overlap stay where they are.
+ */
+function apart(measure, a, b, lo, hi) {
+  if (!a || !b) return;
+  const [al, ar] = extent(measure, a);
+  const [bl, br] = extent(measure, b);
+  if (ar + 4 <= bl || br + 4 <= al) return;
+  const [left, right, lw, rw] = al + ar <= bl + br ? [a, b, ar - al, br - bl] : [b, a, br - bl, ar - al];
+  let mid = (al + ar + bl + br) / 4;
+  mid += Math.max(0, lo - (mid - 4 - lw)) - Math.max(0, mid + 4 + rw - hi);
+  Object.assign(left, { x: mid - 4, anchor: "end" });
+  Object.assign(right, { x: mid + 4, anchor: "start" });
+}
+
 // The baseline's band, at least 4px wide, with its mean as a tick.
 function bandAt(X, cy, mean, sd) {
   let lo = X(mean - sd);
@@ -228,6 +252,10 @@ export function stripLayout(
         const bx = Math.min(x1 + 12, width - bw);
         badge = { x: bx, y: cy - 11, width: bw, textX: bx + bw / 2, textY: cy + 4.5 };
       }
+      // The baseline's and the reference's labels share the line under the row.
+      const baseLabel = r.base && r.baseLabel ? placeText(measure, X(r.base[0]), cy + 25, r.baseLabel, x0, x1) : null;
+      const refLabel = r.ref && r.ref[1] ? placeText(measure, X(r.ref[0]), cy + 25, r.ref[1], x0, x1) : null;
+      apart(measure, baseLabel, refLabel, x0, x1);
       return {
         rowTop,
         cy,
@@ -238,7 +266,7 @@ export function stripLayout(
         base: r.base
           ? {
               band: bandAt(X, cy, r.base[0], r.base[1]),
-              label: r.baseLabel ? placeText(measure, X(r.base[0]), cy + 25, r.baseLabel, x0, x1) : null,
+              label: baseLabel,
             }
           : null,
         ref: r.ref
@@ -246,7 +274,7 @@ export function stripLayout(
               x: X(r.ref[0]),
               y1: cy - 10,
               y2: cy + 10,
-              label: r.ref[1] ? placeText(measure, X(r.ref[0]), cy + 25, r.ref[1], x0, x1) : null,
+              label: refLabel,
             }
           : null,
         ci: r.ci ? intervalAt(X, cy, r.ci[0], r.ci[1]) : null,
@@ -361,6 +389,9 @@ export function miniLayout({ domain, real, realLabel, base, baseLabel, ref, refL
   const cy = 28;
   const [d0, d1] = domain;
   const X = clamp(d0, d1, x0, x1);
+  const baseText = base && baseLabel ? placeText(measure, X(base[0]), cy + 24, baseLabel, 0, w) : null;
+  const refText = ref !== undefined && refLabel ? placeText(measure, X(ref), cy + 24, refLabel, 0, w) : null;
+  apart(measure, baseText, refText, 0, w);
   return {
     width: w,
     height: h,
@@ -369,11 +400,11 @@ export function miniLayout({ domain, real, realLabel, base, baseLabel, ref, refL
     cy,
     X,
     base: base
-      ? { band: bandAt(X, cy, base[0], base[1]), label: baseLabel ? placeText(measure, X(base[0]), cy + 24, baseLabel, 0, w) : null }
+      ? { band: bandAt(X, cy, base[0], base[1]), label: baseText }
       : null,
     ref:
       ref !== undefined
-        ? { x: X(ref), y1: cy - 11, y2: cy + 11, label: refLabel ? placeText(measure, X(ref), cy + 24, refLabel, 0, w) : null }
+        ? { x: X(ref), y1: cy - 11, y2: cy + 11, label: refText }
         : null,
     ci: ci ? { ...intervalAt(X, cy, ci[0], ci[1]), tip: `95% interval: ${ci[0].toFixed(2)} to ${ci[1].toFixed(2)}` } : null,
     real: { dot: dotAt(X, cy, real), label: placeText(measure, X(real), cy - 13, realLabel, 0, w, "small", 700) },

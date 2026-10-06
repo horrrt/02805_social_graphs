@@ -12,6 +12,13 @@ export default function Concordance({ rows, caption }: { rows: KwicRow[]; captio
     <table className="kit-kwic">
       {caption ? <caption>{caption}</caption> : null}
       <tbody>
+        {rows.length === 0 ? (
+          <tr>
+            <td colSpan={4} className="kit-empty">
+              No hits.
+            </td>
+          </tr>
+        ) : null}
         {rows.map((r, i) => (
           <tr key={i}>
             <td className="kit-kwic-page">{wikiLink(r.page)}</td>

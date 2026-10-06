@@ -194,5 +194,7 @@ export default function StripChart({ rows, opts }: { rows: StripRow[]; opts: Str
   const colours = rows.map((r) => r.color).filter((c): c is string => Boolean(c?.startsWith("--")));
   const tokens = useTokens([...MARK_TOKENS, ...colours]);
   if (!hydrated || !scale || !measure || !tokens) return null;
+  // No rows would draw a bare axis; say so instead.
+  if (rows.length === 0) return <p className="kit-empty">No rows to show.</p>;
   return <StripSvg rows={rows} opts={opts} scale={scale} measure={measure} tokens={tokens} />;
 }

@@ -2162,12 +2162,16 @@
 .kit-figure { margin: 0; }
 .kit-figure figcaption { color: var(--ink-soft); font-size: var(--fs-caption); margin-top: 0.5rem; }
 .kit-echart { width: 100%; }
+/* What a kit component says when it has nothing to draw. */
+.kit-empty { color: var(--ink-mute); font-size: var(--fs-caption); font-style: italic; }
 
-.kit-kwic { border-collapse: collapse; width: 100%; font-size: var(--fs-small); }
-.kit-kwic td { padding: 0.2rem 0.4rem; border-bottom: 1px solid var(--line-soft); white-space: nowrap; }
-.kit-kwic-page { color: var(--ink-mute); font-size: var(--fs-caption); }
-.kit-kwic-left { text-align: right; overflow: hidden; max-width: 22rem; direction: rtl; }
-.kit-kwic-right { overflow: hidden; max-width: 22rem; }
+/* Fixed layout, so a long context is cut with an ellipsis instead of pushing
+   the table past its column (max-width does nothing on a table cell). */
+.kit-kwic { border-collapse: collapse; width: 100%; font-size: var(--fs-small); table-layout: fixed; }
+.kit-kwic td { padding: 0.2rem 0.4rem; border-bottom: 1px solid var(--line-soft); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.kit-kwic td.kit-kwic-page { color: var(--ink-mute); font-size: var(--fs-caption); width: 11rem; }
+.kit-kwic td:nth-child(3) { width: 7rem; }
+.kit-kwic-left { text-align: right; direction: rtl; }
 .kit-kwic mark, .kit-passage mark { background: var(--access-soft); color: var(--ink); padding: 0 0.15em; border-radius: 3px; }
 
 .kit-passage { margin: 0.75rem 0; padding: 0.5rem 1rem; border-left: 3px solid var(--access); background: var(--card); }
@@ -2191,9 +2195,6 @@
 .corridor .w5-chips { display: flex; flex-wrap: wrap; gap: 6px; }
 .corridor .w5-chips button { background: var(--card); border: 1px solid var(--line); border-radius: 999px; color: var(--ink-soft); cursor: pointer; font: inherit; font-size: var(--fs-small); padding: 3px 11px; }
 .corridor .w5-chips button[aria-pressed="true"] { background: var(--ink); border-color: var(--ink); color: var(--card); }
-.corridor .w5-card .kit-kwic { table-layout: fixed; }
-.corridor .w5-card .kit-kwic td { overflow: hidden; text-overflow: ellipsis; }
-.corridor .w5-card .kit-kwic td.kit-kwic-page { width: 11rem; }
 .corridor .w5-card .kit-kwic td.kit-kwic-left { width: 26%; }
 .corridor .w5-card .kit-kwic td.kit-kwic-right { width: 22%; }
 .corridor .w5-card .kit-kwic td:nth-child(3) { width: 9rem; }
