@@ -125,7 +125,7 @@ export function networkLayout(opts, state, width, focus, measure = textWidth, si
     const cx = X(n.x);
     const cy = Y(n.y);
     const two = n.groups?.length === 2;
-    const one = two ? null : n.groups?.length === 1 ? n.groups[0] : n.group;
+    const one = two ? null : groupOf(n);
     const empty = (one === null || one === undefined) && !two;
     const shapes = two
       ? [...halfArcs(cx, cy, r).map((d, i) => ({ d, cls: `gv-node ${gclass(n.groups[i])}` })), { cx, cy, r, cls: "gv-outline" }]
@@ -428,8 +428,7 @@ export function networkView(host, spec) {
       L.lines.forEach(({ link: l }, i) => { if (groupOf(l.a) === g && groupOf(l.b) === g) lineEls[i].classList.add("gv-hi"); });
       for (const hub of svg.querySelectorAll(".gv-hub")) if (groupOf(byId.get(hub.dataset.hub)) === g) hub.classList.add("gv-hi");
     };
-    const dots = [...dotOf.values()];
-    for (const dot of dots) {
+    for (const dot of dotOf.values()) {
       const id = dot.dataset.id;
       dot.addEventListener("pointerenter", (ev) => { if (!pinned) { lightNode(id); say(describe(id), ev.clientX, ev.clientY); } });
       dot.addEventListener("pointermove", (ev) => { if (!pinned) say(describe(id), ev.clientX, ev.clientY); });

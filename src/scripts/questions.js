@@ -63,7 +63,7 @@ function build() {
   }
 
   return {
-    rows, total, hosts, abroad, nodes, indicators,
+    rows, total, hosts, abroad,
     name: (iso3) => nodes[iso3]?.name ?? iso3,
     gdp: (iso3) => indicators[iso3]?.gdp ?? null,
     pop: (iso3) => indicators[iso3]?.pop ?? null,
@@ -711,7 +711,7 @@ function answerDistance() {
   const near = model.rows.filter((r) => r.km > 0 && r.km <= 2000);
   const share = pct(near.reduce((sum, r) => sum + r.people, 0), model.total);
   const median = weightedMedian(model.rows.map((r) => [r.km, r.people]));
-  const unweighted = [...model.rows].map((r) => r.km).sort((a, b) => a - b)[
+  const unweighted = model.rows.map((r) => r.km).sort((a, b) => a - b)[
     Math.floor(model.rows.length / 2)
   ];
   const far = distanceData().slice(-3);
@@ -754,6 +754,10 @@ const TIERS = [
   [20000, 50000, "$20k–50k"],
   [50000, Infinity, "over $50k"],
 ];
+
+// The foreign-born share on the log axis, floored so a country with almost
+// nobody born abroad still has a place on it.
+const logShare = (d) => Math.log10(Math.max(d.share, 0.02));
 
 function wealthData() {
   const out = [];
@@ -817,7 +821,7 @@ function drawWealthScatter(ctx, box, rows, list) {
   });
 
   const xs = rows.map((d) => Math.log10(d.gdp));
-  const ys = rows.map((d) => Math.log10(Math.max(d.share, 0.02)));
+  const ys = rows.map(logShare);
   const fit = fitLine(xs, ys);
   ctx.save();
   ctx.beginPath();
@@ -857,7 +861,7 @@ function drawWealthScatter(ctx, box, rows, list) {
   // the cloud, the two furthest from the line in either direction, and the
   // largest country on the chart. Chosen from the data, not typed in, so the
   // labels follow a data refresh instead of going stale against it.
-  const residual = (d) => Math.log10(Math.max(d.share, 0.02)) - fit.at(Math.log10(d.gdp));
+  const residual = (d) => logShare(d) - fit.at(Math.log10(d.gdp));
   const byShare = [...rows].sort((a, b) => b.share - a.share);
   const byResidual = [...rows].sort((a, b) => residual(a) - residual(b));
   const notable = new Set([
@@ -964,7 +968,7 @@ function drawWealth() {
   drawReach(ctx, reach, list);
 
   const xs = data.map((d) => Math.log10(d.gdp));
-  const ys = data.map((d) => Math.log10(Math.max(d.share, 0.02)));
+  const ys = data.map(logShare);
   const titles = [
     [scatter, "How rich the destination is", `r = ${correlation(xs, ys).toFixed(2)} · n = ${data.length}`],
     [reach, "How far its foreign-born came", "bar: middle half · dot: median"],
@@ -986,7 +990,7 @@ function drawWealth() {
   const growing = data.filter((d) => d.growth !== null);
   const speed = correlation(
     growing.map((d) => d.growth),
-    growing.map((d) => Math.log10(Math.max(d.share, 0.02))),
+    growing.map(logShare),
   );
   ctx.fillStyle = MUTE;
   ctx.font = NOTE();
@@ -1017,14 +1021,13 @@ function drawWealth() {
 
 function answerWealth() {
   const data = wealthData();
-  const level = correlation(
-    data.map((d) => Math.log10(d.gdp)),
-    data.map((d) => Math.log10(Math.max(d.share, 0.02))),
-  );
+  const xs = data.map((d) => Math.log10(d.gdp));
+  const ys = data.map(logShare);
+  const level = correlation(xs, ys);
   const growing = data.filter((d) => d.growth !== null);
   const speed = correlation(
     growing.map((d) => d.growth),
-    growing.map((d) => Math.log10(Math.max(d.share, 0.02))),
+    growing.map(logShare),
   );
   const bands = reachData();
   const poorest = bands[0];
@@ -1036,7 +1039,7 @@ function answerWealth() {
     `foreign-born share of the population is ` +
     `<b>${level.toFixed(2)}</b> (95% ${range(correlationInterval(level, data.length))}) on log ` +
     `axes: ten times the income, roughly ` +
-    `<b>${(10 ** fitLine(data.map((d) => Math.log10(d.gdp)), data.map((d) => Math.log10(Math.max(d.share, 0.02)))).slope).toFixed(1)}×</b> ` +
+    `<b>${(10 ** fitLine(xs, ys).slope).toFixed(1)}×</b> ` +
     `the foreign-born share. Put the same countries against their 2024 growth rate and it falls ` +
     `to <b>${speed.toFixed(2)}</b> (95% ${range(correlationInterval(speed, growing.length))}, ` +
     `an interval that contains zero). Being rich and having a large foreign-born ` +
@@ -1265,11 +1268,10 @@ function sexData() {
     row.female += r.female;
     per.set(r.d, row);
   }
-  const rows = [...per.entries()]
+  return [...per.entries()]
     .filter(([, v]) => v.people >= SEX_FLOOR)
     .map(([iso3, v]) => ({ iso3, people: v.people, share: pct(v.female, v.people) }))
     .sort((a, b) => a.share - b.share);
-  return rows;
 }
 
 function drawSex() {
@@ -1452,20 +1454,16 @@ export function installQuestions(shared) {
   api = shared;
   const drawer = $("questions");
   if (!drawer) return;
-  drawer.addEventListener("toggle", () => {
-    if (drawer.open) {
-      setupRingControls();
-      render();
-    }
-  });
-  if (drawer.open) {
+  const open = () => {
+    if (!drawer.open) return;
     setupRingControls();
     render();
-  }
-  window.addEventListener("week03:restyle", () => {
+  };
+  const refresh = () => {
     if (drawn && drawer.open) render();
-  });
-  window.addEventListener("resize", () => {
-    if (drawn && drawer.open) render();
-  });
+  };
+  drawer.addEventListener("toggle", open);
+  open();
+  window.addEventListener("week03:restyle", refresh);
+  window.addEventListener("resize", refresh);
 }

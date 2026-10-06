@@ -117,7 +117,11 @@
     $('#signal-map-desc').textContent = `${edits[mode].length} hypothetical links added to the frozen graph. Yellow dots can reach Baymax; purple dots are reachable from Baymax; white dots have paths both ways; muted dots have neither. ${state.roundTrip} articles have paths both ways. Bright dashed arrows are hypothetical additions. Muted background connections omit arrowheads for readability.`;
     for (const node of nodes) {
       const to = state.to.has(node.id), from = state.from.has(node.id);
-      mapDots.get(node.id).setAttribute('fill', node.id === 'Baymax' ? palette.both : to && from ? palette.both : to ? palette.to : from ? palette.from : palette.none);
+      let fill = palette.none;
+      if (node.id === 'Baymax' || (to && from)) fill = palette.both;
+      else if (to) fill = palette.to;
+      else if (from) fill = palette.from;
+      mapDots.get(node.id).setAttribute('fill', fill);
     }
     addedLayer.replaceChildren();
     for (const [source, target] of edits[mode]) {
