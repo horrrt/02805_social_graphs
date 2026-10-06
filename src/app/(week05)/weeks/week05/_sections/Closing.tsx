@@ -14,7 +14,8 @@ export function Closing() {
           <>
             Where the words meet the links, the links show through. Page length follows in-degree at
             Pearson 0.77, 20 of the 22 copied pairs already link to each other, and 54% of enemy links
-            cross communities against 42% for shuffled labels. Raw counts rank and read less well:
+            cross communities against 42% for shuffled labels, though the word list labels only 32 of
+            the 60 links we read right. Raw counts rank and read less well:
             they put the right page first for 1 of 11 queries, because cosine favours a short page over a
             long one with the same words, and a trigram model trained on one community copies its pages word for word.
           </>
