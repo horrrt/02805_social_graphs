@@ -976,7 +976,7 @@ export default function Page() {
                 <div>
                   <h2>Which jobs are hired together?</h2>
                   <p className="w4-answer">
-                    Software Developers sit in 8 of the 12 pairs because almost every sponsoring company hires them.
+                    Software Developers sit in 9 of the 12 pairs because almost every sponsoring company hires them.
                   </p>
                 </div>
               </header>
@@ -1027,8 +1027,8 @@ export default function Page() {
                     <span>
                       <b>What to notice</b>
                       {" "}
-                      The two clusterings agree at NMI 0.42. Random groups
-                      matched on size agree at 0.61 ± 0.04 (z = −4.2).
+                      The two clusterings agree at NMI 0.43. Random groups
+                      matched on size agree at 0.57 ± 0.04 (z = −3.3).
                     </span>
                   </div>
                 </div>
@@ -1056,7 +1056,7 @@ export default function Page() {
                   <summary>Method</summary>
                   <div className="rx-drawer-body">
                     <p>
-                      We split the companies in two: the 817 firms that place 20 or more filings at client sites (21% of all filings) and the 58,379 others. Alone, that number means little: splitting companies into a small and a large group changes the clusters even if nobody behaves differently. So the baseline draws 20 random groups that match the outsourcing firms in both respects: the same number of companies of each size, from the one-filing firms to the giants. NMI is measured on the 217 occupations that sit in a cluster of two or more on both sides.
+                      We split the companies in two: the 817 firms that place 20 or more filings at client sites (21% of all filings) and the 58,379 others. Alone, that number means little: splitting companies into a small and a large group changes the clusters even if nobody behaves differently. So the baseline draws 20 random groups that match the outsourcing firms in both respects: the same number of companies of each size, from the one-filing firms to the giants. NMI is measured on the 211 occupations that sit in a cluster of two or more on both sides.
                     </p>
                     <p>
                       The random groups have the same number of companies and the same share of filings as the outsourcing firms. Whiskers span one standard deviation over 20 random splits. Only the blue baseline matches the outsourcing firms on both number and size of companies, so it is the fair comparison.
@@ -1067,7 +1067,7 @@ export default function Page() {
                   <summary>More numbers</summary>
                   <div className="rx-drawer-body">
                     <p>
-                      The half-matched baselines show why the match matters: random groups with only the same number of companies hold 1.3% of filings and agree at 0.43 ± 0.09, which would have hidden the difference. At the top the two mixes look alike: software developers are 28% of the outsourcing firms' filings and 33% of the direct employers'. Below that they part: "computer occupations, all other" is 22% of the outsourcing firms' filings and 5% of the direct employers', and direct employers file for 276 occupations the outsourcing firms never touch.
+                      The half-matched baselines show why the match matters: random groups with only the same number of companies hold 1.3% of filings and agree at 0.42 ± 0.10, which would have hidden the difference. At the top the two mixes look alike: software developers are 28% of the outsourcing firms' filings and 33% of the direct employers'. Below that they part: "computer occupations, all other" is 22% of the outsourcing firms' filings and 5% of the direct employers', and direct employers file for 259 occupations the outsourcing firms never touch.
                     </p>
                   </div>
                 </details>
@@ -1111,7 +1111,7 @@ export default function Page() {
                   <figcaption>
                     <b>The 15 jobs with the most communities per link</b>
                     <span>
-                      Each dot is a job; dashed lines mark equal rates. Rings: the three jobs section 2's first test flagged as bridges.
+                      Each dot is a job; dashed lines mark equal rates.
                     </span>
                   </figcaption>
                   <div className="w4-figure-body" id="chart-jobs-linkcom-scatter"></div>
@@ -1128,7 +1128,7 @@ export default function Page() {
                   <summary>Method</summary>
                   <div className="rx-drawer-body">
                     <p>
-                      The cut is chosen where partition density D, the average of how close each community is to a complete one, peaks. On the 28,096 links between 494 occupations it peaks at D = 0.57 with one community holding 85% of the links; 117 communities have three links or more, counting it.
+                      The cut is chosen where partition density D, the average of how close each community is to a complete one, peaks. On the 25,431 links between 471 occupations it peaks at D = 0.58 with one community holding 84% of the links; 114 communities have three links or more, counting it.
                     </p>
                   </div>
                 </details>
@@ -1136,10 +1136,10 @@ export default function Page() {
                   <summary>More numbers</summary>
                   <div className="rx-drawer-body">
                     <p>
-                      The top is small occupations such as communications equipment operators and electrical power-line installers (5 communities over 11 links each). Only 3 of the 6 occupations that section 2's first test flagged as bridges appear in it: credit counselors, licensed practical and licensed vocational nurses, and physical therapist aides.
+                      The top is small occupations such as communications equipment operators and electrical power-line installers (5 communities over 11 links each). None of the 3 occupations that section 2's first test flagged as bridges appear in it.
                     </p>
                     <p>
-                      A job's number of communities mostly counts its links (Spearman 0.84), so the table ranks by communities per link, as the course suggests.
+                      A job's number of communities mostly counts its links (Spearman 0.85), so the table ranks by communities per link, as the course suggests.
                     </p>
                   </div>
                 </details>
@@ -1676,7 +1676,7 @@ export default function Page() {
                     0.90 and 0.81) but shift more than random cuts of the same volume do.
                   </p>
                   <p>
-                    Removing the five placing firms changes little: the groups stay close to the full network's (NMI 0.92, random cuts 0.85 ± 0.14), and the regional match rises only to 0.09, inside the range of random cuts (0.04 ± 0.05). Without the ten largest filers the clusters also sharpen, modularity rising from 0.28 to 0.32. Every version still beats its own rewired networks by a wide margin (z = 25 or more). Without the ten largest filers the regional match (AMI 0.13, p = 0.013) sits 4.6 standard deviations above random cuts (0.01 ± 0.03). Random cuts leave the job clusters closer to the full network's (0.96 and 0.88, 3.1 and 3.9 standard deviations away), so the biggest firms do shape which jobs cluster together.
+                    Removing the five placing firms changes little: the groups stay close to the full network's (NMI 0.92, random cuts 0.85 ± 0.14), and the regional match rises only to 0.09, inside the range of random cuts (0.04 ± 0.05). Without the ten largest filers the clusters also sharpen, modularity rising from 0.27 to 0.30. Every version still beats its own rewired networks by a wide margin (z = 25 or more). Without the ten largest filers the regional match (AMI 0.13, p = 0.013) sits 4.6 standard deviations above random cuts (0.01 ± 0.03). Random cuts leave the job clusters closer to the full network's (0.96 and 0.88, 2.9 and 4.3 standard deviations away), so the biggest firms do shape which jobs cluster together.
                   </p>
                 </div>
               </details>
@@ -3117,7 +3117,7 @@ export default function Page() {
                     <div className="plot">
                       <h3>What each hiring cluster holds, by official group</h3>
                       <p className="axis-note">
-                        Every occupation in the four largest clusters, 429 in all,
+                        Every occupation in the four largest clusters, 406 in all,
                         split by its official major group: the three largest named,
                         the rest grey.
                       </p>

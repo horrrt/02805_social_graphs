@@ -85,7 +85,11 @@ test("section 2: link communities find no clear two-cluster job", () => {
   says("jobs-linkcom", `D = ${f2(f.q2_D_at_cut)}`);
   says("jobs-linkcom", `${f.q2_link_clusters_of_3_or_more} communities have three links or more, counting it`);
   says("jobs-linkcom", `(Spearman ${f2(f.q2_spearman_communities_vs_degree)})`);
-  says("jobs-linkcom", `Only ${f.q2_bridges_in_top15_count} of the ${f.q2_bridges_count} occupations`);
+  if (f.q2_bridges_in_top15_count === 0) {
+    says("jobs-linkcom", `None of the ${f.q2_bridges_count} occupations that section 2's first test flagged as bridges appear in it.`);
+  } else {
+    says("jobs-linkcom", `Only ${f.q2_bridges_in_top15_count} of the ${f.q2_bridges_count} occupations`);
+  }
   // The counts, the names and the chart captions, so a rerun that changes who ranks fails here.
   const d = json("public/weeks/week04/data/jobs_split.json");
   const q2 = d.q2;
@@ -99,9 +103,11 @@ test("section 2: link communities find no clear two-cluster job", () => {
   says("jobs-linkcom", `such as ${list(tied.map((o) => plain(o.title)))} (${top[0].communities} communities over ${top[0].links} links${tied.length > 1 ? " each" : ""})`);
   const title = Object.fromEntries(q2.bridges.all_occupations.map((o) => [o.id, o.title]));
   assert.equal(q2.bridges.in_top15.length, f.q2_bridges_in_top15_count);
-  says("jobs-linkcom", `flagged as bridges appear in it: ${list(q2.bridges.in_top15.map((id) => plain(title[id])))}.`);
+  if (q2.bridges.in_top15.length) says("jobs-linkcom", `flagged as bridges appear in it: ${list(q2.bridges.in_top15.map((id) => plain(title[id])))}.`);
   says("jobs-linkcom", `The ${top.length} jobs with the most communities per link`);
-  says("jobs-linkcom", `Rings: the ${["no", "one", "two", "three", "four", "five", "six"][f.q2_bridges_in_top15_count]} jobs section 2's first test flagged as bridges`);
+  // The chart rings the flagged jobs it shows; with none shown, the caption names no rings.
+  if (f.q2_bridges_in_top15_count === 0) assert.ok(!card("jobs-linkcom").includes("Rings:"), "no bridge is shown, so the caption must not promise rings");
+  else says("jobs-linkcom", `Rings: the ${["no", "one", "two", "three", "four", "five", "six"][f.q2_bridges_in_top15_count]} jobs section 2's first test flagged as bridges`);
 });
 
 test("section 2's deep dive: the cluster-composition captions follow jobs.json", () => {

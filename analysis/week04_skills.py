@@ -44,16 +44,23 @@ Deep-dive box (public/weeks/week04/data/skills.json)
 - Reuses section 2's own network, public/weeks/week04/data/jobs.json: its 60
   shown occupations, their direct co-hiring ties (edges) and their Louvain
   clusters, already checked there against degree-preserving rewirings.
-- Q1: among those 60 occupations, is the O*NET similarity of a pair with a
-  direct co-hiring tie higher than a random pair from the same 60 (all
-  pairs)? This is a within-population comparison, not against every rated
-  occupation, so a large, popular field (which tends to co-hire more and,
-  separately, to have a less extreme O*NET profile) does not by itself
-  inflate the answer.
+- Q1: among those 60 occupations, do pairs that more companies hire for
+  together need more alike skills? The drawn edges are only each node's three
+  strongest links, and 94% of the 1,770 pairs share at least one company, so
+  the test uses every pair's co-hiring lift in the full projection of the
+  same year: companies filing for both over k_i * k_j / 2m, the expectation
+  modularity uses, so two large occupations do not score high for being
+  large. The statistic is the Spearman correlation of lift and similarity
+  over all pairs. Two permutation nulls (PERMS each, fixed seed) shuffle
+  which occupation carries which O*NET profile: freely, and only within each
+  SOC major group. The second keeps "two computer occupations are alike"
+  intact, so a correlation above it means co-hiring tracks skills beyond the
+  official job group. The chart's rows are the pairs by lift quarter.
 - Q2: does that also hold one level up, between whole clusters that need not
-  share a single direct hire: same-cluster pairs (excluding the direct ties
-  Q1 already counts) against different-cluster pairs, both again within the
-  60.
+  share a single direct hire: same-cluster pairs (excluding the drawn edges)
+  against different-cluster pairs, both again within the 60, with the gap in
+  mean similarity tested against the same two nulls.
+- The drawn-edge means (direct_ties) stay in the JSON beside the tests.
 
 Outputs
 - build/week04/skills_similarity.csv.gz: every pair of codes with a profile.
@@ -70,10 +77,11 @@ from itertools import combinations
 
 import numpy as np
 import pandas as pd
+from scipy.stats import rankdata
 from sklearn.metrics.pairwise import cosine_similarity
 
 from week04_data import OUT as BUILD, RAW, ROOT
-from week04_jobs import filtered
+from week04_jobs import filtered, projection
 from week04_schemas import check
 
 ONET_DIR = RAW / "onet"
@@ -94,6 +102,8 @@ NEAREST = 10
 SHOWN = 30  # occupations with the most filings listed with their neighbours
 PARTNERS = 5
 DETAILED = r"^\d{2}-\d{4}\.\d{2}$"
+PERMS = 5000  # label shuffles per null in the deep-dive box's tests
+SEED = 2805
 
 
 def read(name):
@@ -259,6 +269,79 @@ def cohiring_view(sim, titles):
         "same_cluster_other_pairs": group_stats(same_cluster, sim, titles),
         "different_cluster_pairs": group_stats(diff_cluster, sim, titles),
         "all_pairs": group_stats(all_pairs, sim, titles),
+        **cohiring_tests(sorted(nodes), sim, titles, jobs["meta"]["year"], cluster_of, edge_set),
+    }
+
+
+def p_upper(value, null):
+    """One-sided permutation p-value, counting the real value as one draw."""
+    return (1 + int((np.asarray(null) >= value).sum())) / (1 + len(null))
+
+
+def cohiring_tests(nodes, sim, titles, year, cluster_of, edge_set):
+    """Q1 and Q2's permutation tests on the 60 (see the module docstring):
+    co-hiring lift against similarity over every pair, and the same-cluster
+    minus different-cluster gap, each against shuffles of which occupation
+    carries which O*NET profile, freely and within SOC major groups."""
+    graph, _ = projection(filtered(year))
+    strength = dict(graph.degree(weight="weight"))
+    two_m = sum(strength.values())
+    n = len(nodes)
+    iu = np.triu_indices(n, k=1)
+    pairs = [(nodes[i], nodes[j]) for i, j in zip(*iu)]
+    weight = np.array([graph[a][b]["weight"] if graph.has_edge(a, b) else 0 for a, b in pairs])
+    lift = np.array([w / (strength[a] * strength[b] / two_m) for w, (a, b) in zip(weight, pairs)])
+    s = sim.loc[nodes, nodes].to_numpy()
+    same = np.array([cluster_of[a] == cluster_of[b] for a, b in pairs])
+    drawn = np.array([p in edge_set for p in pairs])
+    same_rest, diff_rest = same & ~drawn, ~same & ~drawn
+
+    # Spearman as Pearson on ranks; a shuffle moves whole rows and columns of
+    # the similarity matrix, so its ranks move with it and are ranked once.
+    ranks = np.zeros((n, n))
+    ranks[iu] = rankdata(s[iu])
+    ranks += ranks.T
+    lift_z = rankdata(lift)
+    lift_z = (lift_z - lift_z.mean()) / lift_z.std()
+
+    def stats(order):
+        r = ranks[np.ix_(order, order)][iu]
+        v = s[np.ix_(order, order)][iu]
+        rho = float(np.mean((r - r.mean()) / r.std() * lift_z))
+        return rho, float(v[same_rest].mean() - v[diff_rest].mean())
+
+    rho, gap = stats(np.arange(n))
+    major = np.array([c[:2] for c in nodes])
+    groups = [np.flatnonzero(major == m) for m in sorted(set(major))]
+    rng = np.random.default_rng(SEED)
+    free, within = [], []
+    for _ in range(PERMS):
+        free.append(stats(rng.permutation(n)))
+        order = np.arange(n)
+        for g in groups:
+            order[g] = rng.permutation(g)
+        within.append(stats(order))
+    free, within = np.array(free), np.array(within)
+
+    def test(k, real):
+        return {"real": round(real, 3),
+                "null_free_mean": round(float(free[:, k].mean()), 3), "p_free": round(p_upper(real, free[:, k]), 4),
+                "null_within_major_mean": round(float(within[:, k].mean()), 3),
+                "p_within_major": round(p_upper(real, within[:, k]), 4)}
+
+    edges = np.quantile(lift, [0.25, 0.5, 0.75])
+    quarter = np.searchsorted(edges, lift, side="right")
+    quarters = [{"quarter": q + 1, "lift_from": round(float(lift[quarter == q].min()), 2),
+                 "lift_to": round(float(lift[quarter == q].max()), 2),
+                 **{k: v for k, v in group_stats([p for p, qq in zip(pairs, quarter) if qq == q], sim, titles).items()}}
+                for q in range(4)]
+    return {
+        "strength": {"year": year, "measure": "lift: companies filing for both over k_i * k_j / 2m",
+                     "pairs": len(pairs), "pairs_with_cohiring": int((weight > 0).sum()),
+                     "pairs_same_major": int(sum(len(g) * (len(g) - 1) // 2 for g in groups)),
+                     "majors": len(groups), "perms": PERMS, "seed": SEED,
+                     "spearman": test(0, rho), "quarters": quarters},
+        "cluster_gap": test(1, gap),
     }
 
 

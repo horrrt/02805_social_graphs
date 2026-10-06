@@ -20,6 +20,11 @@ Method
   back to LEGACY's 7-character map. week04_roles.py uses the same function.
   Each code takes its title from its base ".00" rows, not from an O*NET
   sub-title.
+- DOL's wage library splits ten occupations into R&D and non-R&D codes that are
+  no SOC codes (15-1295 "Software Developers, Non R&D", 17-2144 "Mechanical
+  Engineers, R&D"): 1,100 to 1,600 filings a year. WAGE_SPLITS sends each to the
+  occupation its title names. FY2022 names some codes as Excel dates
+  (3021-11-01 for 11-3021); recode_soc reads them back.
 - Louvain (igraph's multilevel) on the full projection, 100 seeds, the best
   modularity run kept; the median NMI over all pairs of the 100 runs says how
   stable the split is.
@@ -42,10 +47,10 @@ Method
   of the major-group labels. The same partition for FY2024, compared on the
   occupations both years share.
 - Infomap on the same projection, compared with Louvain and the SOC groups.
-- A few filings a year carry a mistyped code whose first two digits are no
-  2018 SOC major group (12, 14, 20, 24, 40). recode_soc gives each the code
-  that most filings with the same title carry; one with a title no correctly
-  coded filing carries is dropped.
+- A few filings a year carry a code that is no 2018 SOC code after the steps
+  above: a mistyped major group (12-1252, 40-9031) or detailed code (15-1282).
+  recode_soc gives each the code that most filings with the same title carry;
+  one with a title no correctly coded filing carries is dropped.
 
 The page shows the 60 occupations with the most filings, each with its three
 strongest links to the others: a display filter, not the backbone. Each shown
@@ -98,6 +103,34 @@ LEGACY = {
     "15-1142": "15-1244", "15-1143": "15-1241", "15-1151": "15-1232", "15-1152": "15-1231",
     "15-1199": "15-1299",
 }
+# Other retired 2010 codes whose crosswalk rows split: the "All Other" or
+# same-titled 2018 successor (29-1069 "Physicians and Surgeons, All Other").
+RETIRED = {
+    "29-1069": "29-1229", "29-1067": "29-1249", "13-2021": "13-2023", "11-3011": "11-3012",
+    "11-2031": "11-2032", "25-2052": "25-2056",
+}
+# DOL's wage library (OFLC) splits some occupations into R&D and non-R&D codes
+# that are no SOC codes; each goes to the occupation its title names. The
+# 15-10xx pairs split 2010 codes (15-1034 "Software Developers, Applications,
+# Non R&D"), so they go to that code's 2018 successor.
+WAGE_SPLITS = {
+    "15-1217": "15-1211", "15-1218": "15-1211",  # Computer Systems Analysts
+    "15-1247": "15-1241", "15-1248": "15-1241",  # Computer Network Architects
+    "15-1293": "15-1251", "15-1294": "15-1251",  # Computer Programmers
+    "15-1295": "15-1252", "15-1296": "15-1252",  # Software Developers
+    "15-1297": "15-1253", "15-1298": "15-1253",  # Software QA Analysts and Testers
+    "17-2052": "17-2051", "17-2053": "17-2051",  # Civil Engineers
+    "17-2062": "17-2061", "17-2063": "17-2061",  # Computer Hardware Engineers
+    "17-2073": "17-2071", "17-2074": "17-2071",  # Electrical Engineers
+    "17-2075": "17-2072", "17-2076": "17-2072",  # Electronics Engineers, Except Computer
+    "17-2143": "17-2141", "17-2144": "17-2141",  # Mechanical Engineers
+    "15-1022": "15-1251", "15-1023": "15-1251",  # 2010 Computer Programmers
+    "15-1034": "15-1252", "15-1035": "15-1252",  # 2010 Software Developers, Applications
+    "15-1036": "15-1252", "15-1037": "15-1252",  # 2010 Software Developers, Systems Software
+    "15-1052": "15-1211", "15-1053": "15-1211",  # 2010 Computer Systems Analysts
+    "15-1054": "15-1241", "15-1055": "15-1241",  # 2010 Computer Network Architects
+}
+ONET_OCCUPATIONS = RAW / "onet" / "occupation_data.csv"
 
 MAJOR_GROUPS = {
     "11": "Management", "13": "Business and financial", "15": "Computer and mathematical",
@@ -114,12 +147,23 @@ MAJOR_GROUPS = {
 @lru_cache
 def single_targets(path=CROSSWALK):
     """{2010 O*NET-SOC code: its 2019 6-digit SOC code}, from every crosswalk
-    row whose 2010 code has exactly one 2019 target."""
+    row whose 2010 code has exactly one 2019 target; and the same for 2010
+    6-digit codes ("29-1063") whose rows all land on one 2019 6-digit code."""
     if not path.exists():
         raise SystemExit(f"{path} is missing: run python analysis/week04_data.py --refs --no-tables")
     walk = pd.read_csv(path, dtype=str)
     targets = walk.groupby("O*NET-SOC 2010 Code")["O*NET-SOC 2019 Code"].agg(set)
-    return {old: next(iter(new))[:7] for old, new in targets.items() if len(new) == 1}
+    out = {old: next(iter(new))[:7] for old, new in targets.items() if len(new) == 1}
+    six = walk.groupby(walk["O*NET-SOC 2010 Code"].str[:7])["O*NET-SOC 2019 Code"].agg(lambda s: set(s.str[:7]))
+    return out | {old: next(iter(new)) for old, new in six.items() if len(new) == 1}
+
+
+@lru_cache
+def soc_2018(path=ONET_OCCUPATIONS):
+    """Every 2018 SOC detailed code: the 867 that O*NET-SOC 2019 lists, rated or not."""
+    if not path.exists():
+        raise SystemExit(f"{path} is missing: run python analysis/week04_data.py --refs --no-tables")
+    return frozenset(pd.read_csv(path, dtype=str)["O*NET-SOC Code"].str[:7])
 
 
 def plain_title(titles):
@@ -128,28 +172,39 @@ def plain_title(titles):
     return titles.astype(str).str.casefold().str.split().str.join(" ").str.removesuffix("s")
 
 
-def recode_soc(lca, crosswalk=None):
+def recode_soc(lca, crosswalk=None, known=None):
     """Adds the recoded 6-digit occupation, whether the recode moved the row
     off a 2010 code, whether the crosswalk (not LEGACY) did, whether the code
-    was mistyped, the 8-digit O*NET-SOC code, and whether its SOC code parsed
-    at all. The crosswalk defaults to single_targets().
+    was mistyped, whether it was one of DOL's R&D splits (WAGE_SPLITS), the
+    8-digit O*NET-SOC code, and whether its SOC code parsed at all. The
+    crosswalk defaults to single_targets(), the 2018 codes to soc_2018().
 
-    Mistyped codes: a handful of filings a year (2 to 9 in 2022-2026) carry a
-    code whose first two digits are no 2018 SOC major group (12, 14, 20, 24,
-    40), such as 12-1252 "Software Developers" or 40-9031 "Sales Engineers".
-    Each one's title names a real occupation, and the digits alone cannot
-    (12-5021 "Data Scientists" is 15-2051), so such a row takes the code
-    that most filings with the same title (plain_title) carry in the same
-    frame. A row whose title no correctly coded filing carries is dropped:
-    its occupation is left empty and soc_valid is False."""
+    A code Excel turned into a date (3021-11-01) is read back (11-3021). A
+    2010 6-digit code the crosswalk sends to one 2018 code goes there; only a
+    code that is no 2018 code is walked that way.
+
+    Mistyped codes: a handful of filings a year carry a code that is still no
+    2018 SOC code after the crosswalk, LEGACY, RETIRED and WAGE_SPLITS, such as 12-1252
+    "Software Developers" or 40-9031 "Sales Engineers". Each one's title names
+    a real occupation, and the digits alone cannot (12-5021 "Data Scientists"
+    is 15-2051), so such a row takes the code that most filings with the same
+    title (plain_title) carry in the same frame. A row whose title no correctly
+    coded filing carries is dropped: its occupation is left empty and soc_valid
+    is False."""
     crosswalk = single_targets() if crosswalk is None else crosswalk
+    known = soc_2018() if known is None else known
     raw = lca["SOC_CODE"].astype(str).str.strip()
+    # Excel read some FY2022 codes as dates: 11-3021 arrived as 3021-11-01.
+    date = raw.str.extract(r"^(\d{4})-(\d{2})-\d{2}\b")
+    raw = raw.where(date[0].isna(), date[1] + "-" + date[0])
     code = raw.str[:7]
     valid = code.str.match(r"^\d{2}-\d{4}$", na=False)
     full = raw.str[:10].where(raw.str[:10].str.match(r"^\d{2}-\d{4}\.\d{2}$", na=False))
     walked = full.map(crosswalk)
-    occupation = walked.where(valid).fillna(code.where(valid).replace(LEGACY))
-    mistyped = valid & ~code.str[:2].isin(MAJOR_GROUPS)
+    walked = walked.fillna(code.where(valid & ~code.isin(known)).map(crosswalk))
+    occupation = walked.where(valid).fillna(code.where(valid).replace(LEGACY).replace(RETIRED).replace(WAGE_SPLITS))
+    split = valid & code.isin(WAGE_SPLITS)
+    mistyped = valid & ~occupation.isin(known)
     if mistyped.any():
         title = plain_title(lca["SOC_TITLE"]) if "SOC_TITLE" in lca else pd.Series(pd.NA, index=lca.index, dtype="string")
         good = pd.DataFrame({"title": title, "occupation": occupation})[valid & ~mistyped]
@@ -158,18 +213,17 @@ def recode_soc(lca, crosswalk=None):
                     .drop_duplicates("title").set_index("title")["occupation"])
         occupation = occupation.where(~mistyped, title.map(by_title))
         valid = valid & occupation.notna()
-    legacy = valid & ~mistyped & (occupation != code)
+    legacy = valid & ~mistyped & ~split & (occupation != code)
     by_crosswalk = valid & walked.notna() & (walked != code)
     return lca.assign(occupation=occupation, legacy=legacy, by_crosswalk=by_crosswalk,
-                      mistyped=mistyped, onet_code=full, soc_valid=valid)
+                      mistyped=mistyped, wage_split=split, onet_code=full, soc_valid=valid)
 
 
 def filtered(year):
-    frame = certified(year)
-    frame = recode_soc(frame[frame["SOC_CODE"].str.match(r"^\d{2}-\d{4}", na=False)])
+    frame = recode_soc(certified(year))
     unresolved = int((~frame["soc_valid"]).sum())
     if unresolved:
-        print(f"{year}: dropped {unresolved} filings with a mistyped code no title resolves", flush=True)
+        print(f"{year}: dropped {unresolved} filings with a code no rule or title resolves", flush=True)
     frame = frame[frame["soc_valid"]].copy()
     frame["company"] = frame["employer"]
     return frame
@@ -441,6 +495,7 @@ def build(year, checks=False):
         "meta": {"year": year, "filings": len(frame), "occupations": graph.number_of_nodes(),
                  "legacy_filings_recoded": int(frame["legacy"].sum()),
                  "mistyped_filings_recoded": int(frame["mistyped"].sum()),
+                 "wage_split_filings_recoded": int(frame["wage_split"].sum()),
                  "companies": int(frame["company"].nunique()),
                  "scope": "Certified H-1B filings; a link counts the companies filing for both",
                  "script": "analysis/week04_jobs.py"},

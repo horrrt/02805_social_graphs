@@ -1166,6 +1166,33 @@ class SkillsGroup(Model):
     examples: list[SkillsExample]
 
 
+class SkillsTest(Model):
+    real: float
+    null_free_mean: float
+    p_free: float = Field(gt=0, le=1)
+    null_within_major_mean: float
+    p_within_major: float = Field(gt=0, le=1)
+
+
+class SkillsQuarter(SkillsGroup):
+    quarter: int = Field(ge=1, le=4)
+    lift_from: float = Field(ge=0)
+    lift_to: float = Field(ge=0)
+
+
+class SkillsStrength(Model):
+    year: int
+    measure: str
+    pairs: int = Count
+    pairs_with_cohiring: int = Count
+    pairs_same_major: int = Count
+    majors: int = Count
+    perms: int = Field(ge=100)
+    seed: int
+    spearman: SkillsTest
+    quarters: list[SkillsQuarter] = Field(min_length=4, max_length=4)
+
+
 class Cohiring(Model):
     source: dict
     occupations: int = Field(ge=2)
@@ -1174,6 +1201,8 @@ class Cohiring(Model):
     same_cluster_other_pairs: SkillsGroup
     different_cluster_pairs: SkillsGroup
     all_pairs: SkillsGroup
+    strength: SkillsStrength
+    cluster_gap: SkillsTest
 
 
 class Skills(Model):
