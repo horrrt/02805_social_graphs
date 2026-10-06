@@ -25,3 +25,12 @@ next-env.d.ts
 # Parity tool output (scripts/parity)
 scripts/parity/reports/
 parity-report*.json
+
+# design-sync (Claude Design): staged converter, build output, machine state
+.ds-sync/
+ds-bundle/
+.design-sync/.cache/
+.design-sync/learnings/
+.design-sync/node_modules
+.design-sync/pkg/gen/
+.design-sync/pkg/types/
