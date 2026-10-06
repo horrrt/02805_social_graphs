@@ -56,3 +56,6 @@ applyTo: "src/**,public/**,tests/**"
 - Keep existing element IDs, anchors and routes: other sections and tests link to them.
 - When you add a page or change the lobby, update `src/scripts/weeks.js` and run `npm test`, which builds
   the site and runs `node --test 'tests/*.test.mjs'` against it.
+- Test what a client component does (keys, clicks, state) with React Testing Library in
+  `tests/components/*.test.tsx`: import `./dom` first, query by role and name, drive it with `userEvent`.
+  `npm run test:components` runs them in about a second, without a build.

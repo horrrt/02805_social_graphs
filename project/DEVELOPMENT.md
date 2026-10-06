@@ -101,8 +101,21 @@ published build lives under `/02805_social_graphs/`.
 npm test
 ```
 
-`npm test` builds the static export into `out/` and then runs
-`node --test 'tests/*.test.mjs'`, because most tests read the built pages.
+`npm test` first runs the component tests, then builds the static export into
+`out/` and runs `node --test 'tests/*.test.mjs'`, because most tests read the
+built pages.
+
+The component tests in `tests/components/` render client components with
+[React Testing Library](https://testing-library.com/docs/react-testing-library/intro/)
+in jsdom and drive them with `user-event`, under the same Node test runner;
+`tsx` compiles the TSX and resolves `@/`. Run them alone, with no build:
+
+```bash
+npm run test:components
+```
+
+Each test file imports `./dom` first, which registers the jsdom globals and
+unmounts after every test.
 
 Tests cross-check all 277 browser removals against independently generated CSV
 results, Python path fixtures, exact stranded groups, triangle and coverage

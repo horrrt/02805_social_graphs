@@ -23,8 +23,8 @@ If the request is ambiguous or a rule below blocks it, stop and ask. Do not gues
 
 ## Checks
 
-- Site or tests changed: `npm test` (it builds the site, then runs `node --test 'tests/*.test.mjs'`) must
-  end with `fail 0`. It includes
+- Site or tests changed: `npm test` (it runs the React Testing Library tests in `tests/components/`,
+  builds the site, then runs `node --test 'tests/*.test.mjs'`) must end with `fail 0`. It includes
   `tests/text-budget.test.mjs`, which holds every post from Week 4 on to Week 4's density; for text a page
   script draws, run the console check in project/POST_GUIDE.md, "Keep the card short".
 - `analysis/week04_names.py`, `analysis/week04_client_aliases.csv` or `analysis/week04_name_merges.csv`
