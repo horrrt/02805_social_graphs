@@ -1,68 +1,14 @@
-// The Week 4 page frame: the section rail, glossary terms, segmented controls,
-// table styling and the five findings under the hero. The rail marks the
-// section in view and opens its questions. A glossary term opens on hover and
-// keyboard focus through CSS, and on click here, for touch and for browsers
-// that do not focus a clicked button. Each finding gets a one-row strip of the
+// The Week 4 page frame: glossary terms, segmented controls, table styling
+// and the five findings under the hero. The section rail is the SectionRail
+// component. A glossary term opens on hover and keyboard focus through CSS,
+// and on click here, for touch and for browsers that do not focus a clicked
+// button. Each finding gets a one-row strip of the
 // real network against its random baseline, drawn as plain SVG from the
 // sections' own data files.
 
 import { asset } from "./site.js";
 import { miniStrip, stripChart } from "./week04-strip.js";
 import { decorateAll } from "./week04-tables.js";
-
-// ---- the rail
-
-function watchRail() {
-  const rail = document.querySelector(".w4-rail");
-  if (!rail) return;
-  const items = [...rail.querySelectorAll("li[data-target]")];
-  const targets = items
-    .map((li) => [li, document.getElementById(li.dataset.target)])
-    .filter(([, target]) => target);
-  // Size the contents panel to the widest label. Which questions are listed
-  // depends on the section in view, so the panel is refitted whenever that
-  // changes, as well as when it opens.
-  const fit = () => {
-    const left = rail.getBoundingClientRect().left;
-    let right = 0;
-    for (const label of rail.querySelectorAll(".w4-rail-label")) {
-      if (label.offsetParent) right = Math.max(right, label.getBoundingClientRect().right);
-    }
-    if (right) rail.style.setProperty("--w4-rail-panel", `${Math.ceil(right - left) + 40}px`);
-  };
-  let queued = false;
-  const mark = () => {
-    queued = false;
-    const line = window.innerHeight * 0.35;
-    let current = null;
-    for (const [li, target] of targets) {
-      // A closed topic, or a box inside one, has no place on screen to pass.
-      if (target.closest("details:not([open])")) continue;
-      if (target.getBoundingClientRect().top <= line) current = li;
-    }
-    for (const li of items) {
-      li.classList.remove("is-current");
-      li.querySelector(":scope > a").removeAttribute("aria-current");
-    }
-    for (let li = current; li; li = li.parentElement.closest("li[data-target]")) {
-      li.classList.add("is-current");
-      li.querySelector(":scope > a").setAttribute("aria-current", "true");
-    }
-    if (rail.matches(":hover, :focus-within")) fit();
-  };
-  const queue = () => {
-    if (queued) return;
-    queued = true;
-    requestAnimationFrame(mark);
-  };
-  rail.addEventListener("mouseenter", () => requestAnimationFrame(fit));
-  rail.addEventListener("focusin", () => requestAnimationFrame(fit));
-  document.addEventListener("scroll", queue, { passive: true });
-  window.addEventListener("resize", queue);
-  // toggle does not bubble; the capture phase also sees drawers built later.
-  document.addEventListener("toggle", queue, true);
-  mark();
-}
 
 // ---- glossary terms
 
@@ -272,7 +218,6 @@ async function drawOpeners() {
 }
 
 const main = document.querySelector("main");
-watchRail();
 wireReveals();
 wireSegments(main);
 decorateAll(main);

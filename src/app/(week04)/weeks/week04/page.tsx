@@ -1,4 +1,64 @@
 import PageScripts from "@/components/PageScripts";
+import { type RailItem, SectionRail } from "@/components/post/SectionRail";
+
+// The section rail down the left margin: each section with its questions, and the deep dive's topics.
+const RAIL: RailItem[] = [
+  { target: "opening", label: "Opening" },
+  {
+    target: "place",
+    label: "Where the hiring is",
+    children: [
+      { target: "place-who", label: "Do cities group by who hires there instead of by region?" },
+      { target: "place-break", label: "Where does the backbone break, and whose links hold it?" },
+    ],
+  },
+  {
+    target: "jobs",
+    label: "Which jobs go together",
+    children: [
+      { target: "jobs-split", label: "Do outsourcing firms bundle jobs differently from direct employers?" },
+      { target: "jobs-linkcom", label: "Does any job belong to two clusters at once?" },
+    ],
+  },
+  {
+    target: "who",
+    label: "Who staffs whom",
+    children: [
+      { target: "who-switch", label: "When a client changes its main vendor, does it stay in its group?" },
+      { target: "who-movers", label: "Which clients change group when filing counts are ignored?" },
+      { target: "who-overlap", label: "Which clients sit in two groups at once?" },
+    ],
+  },
+  {
+    target: "footprint",
+    label: "Without the biggest firms",
+    children: [
+      { target: "footprint-which", label: "Which firm hides the regions?" },
+    ],
+  },
+  {
+    target: "beyond",
+    label: "Beyond the three networks",
+    children: [
+      { target: "beyond-law", label: "Do immigration law firms split companies the way vendors do?" },
+      { target: "beyond-perm", label: "Do outsourcing firms sponsor fewer green cards?" },
+      { target: "beyond-wage", label: "Do outsourcing firms file at lower wage levels for the same job?" },
+    ],
+  },
+  { target: "closing", label: "Closing" },
+  {
+    target: "cut",
+    label: "Deep dive",
+    children: [
+      { target: "topic-where", label: "Where the hiring is" },
+      { target: "topic-jobs", label: "Jobs and skills" },
+      { target: "topic-outsourcing", label: "Outsourcing firms and their clients" },
+      { target: "topic-paperwork", label: "Paperwork, the lottery and green cards" },
+      { target: "topic-years", label: "Five years" },
+      { target: "evidence", label: "Data and methods" },
+    ],
+  },
+];
 
 export default function Page() {
   return (
@@ -117,147 +177,7 @@ export default function Page() {
           </div>
         </section>
         {/* The section rail: the numbers down the left margin ---------- */}
-        <nav aria-label="Contents of this post" className="w4-rail">
-          <ol>
-            <li data-target="opening">
-              <a aria-label="Opening" href="#opening">
-                <span aria-hidden="true" className="w4-rail-label">Opening</span>
-              </a>
-            </li>
-            <li data-target="place">
-              <a aria-label="Where the hiring is" href="#place">
-                <span aria-hidden="true" className="w4-rail-label">Where the hiring is</span>
-              </a>
-              <ol>
-                <li data-target="place-who">
-                  <a aria-label="Do cities group by who hires there instead of by region?" href="#place-who">
-                    <span aria-hidden="true" className="w4-rail-label">Do cities group by who hires there instead of by region?</span>
-                  </a>
-                </li>
-                <li data-target="place-break">
-                  <a aria-label="Where does the backbone break, and whose links hold it?" href="#place-break">
-                    <span aria-hidden="true" className="w4-rail-label">Where does the backbone break, and whose links hold it?</span>
-                  </a>
-                </li>
-              </ol>
-            </li>
-            <li data-target="jobs">
-              <a aria-label="Which jobs go together" href="#jobs">
-                <span aria-hidden="true" className="w4-rail-label">Which jobs go together</span>
-              </a>
-              <ol>
-                <li data-target="jobs-split">
-                  <a aria-label="Do outsourcing firms bundle jobs differently from direct employers?" href="#jobs-split">
-                    <span aria-hidden="true" className="w4-rail-label">Do outsourcing firms bundle jobs differently from direct employers?</span>
-                  </a>
-                </li>
-                <li data-target="jobs-linkcom">
-                  <a aria-label="Does any job belong to two clusters at once?" href="#jobs-linkcom">
-                    <span aria-hidden="true" className="w4-rail-label">Does any job belong to two clusters at once?</span>
-                  </a>
-                </li>
-              </ol>
-            </li>
-            <li data-target="who">
-              <a aria-label="Who staffs whom" href="#who">
-                <span aria-hidden="true" className="w4-rail-label">Who staffs whom</span>
-              </a>
-              <ol>
-                <li data-target="who-switch">
-                  <a aria-label="When a client changes its main vendor, does it stay in its group?" href="#who-switch">
-                    <span aria-hidden="true" className="w4-rail-label">When a client changes its main vendor, does it stay in its group?</span>
-                  </a>
-                </li>
-                <li data-target="who-movers">
-                  <a aria-label="Which clients change group when filing counts are ignored?" href="#who-movers">
-                    <span aria-hidden="true" className="w4-rail-label">Which clients change group when filing counts are ignored?</span>
-                  </a>
-                </li>
-                <li data-target="who-overlap">
-                  <a aria-label="Which clients sit in two groups at once?" href="#who-overlap">
-                    <span aria-hidden="true" className="w4-rail-label">Which clients sit in two groups at once?</span>
-                  </a>
-                </li>
-              </ol>
-            </li>
-            <li data-target="footprint">
-              <a aria-label="Without the biggest firms" href="#footprint">
-                <span aria-hidden="true" className="w4-rail-label">Without the biggest firms</span>
-              </a>
-              <ol>
-                <li data-target="footprint-which">
-                  <a aria-label="Which firm hides the regions?" href="#footprint-which">
-                    <span aria-hidden="true" className="w4-rail-label">Which firm hides the regions?</span>
-                  </a>
-                </li>
-              </ol>
-            </li>
-            <li data-target="beyond">
-              <a aria-label="Beyond the three networks" href="#beyond">
-                <span aria-hidden="true" className="w4-rail-label">Beyond the three networks</span>
-              </a>
-              <ol>
-                <li data-target="beyond-law">
-                  <a aria-label="Do immigration law firms split companies the way vendors do?" href="#beyond-law">
-                    <span aria-hidden="true" className="w4-rail-label">Do immigration law firms split companies the way vendors do?</span>
-                  </a>
-                </li>
-                <li data-target="beyond-perm">
-                  <a aria-label="Do outsourcing firms sponsor fewer green cards?" href="#beyond-perm">
-                    <span aria-hidden="true" className="w4-rail-label">Do outsourcing firms sponsor fewer green cards?</span>
-                  </a>
-                </li>
-                <li data-target="beyond-wage">
-                  <a aria-label="Do outsourcing firms file at lower wage levels for the same job?" href="#beyond-wage">
-                    <span aria-hidden="true" className="w4-rail-label">Do outsourcing firms file at lower wage levels for the same job?</span>
-                  </a>
-                </li>
-              </ol>
-            </li>
-            <li data-target="closing">
-              <a aria-label="Closing" href="#closing">
-                <span aria-hidden="true" className="w4-rail-label">Closing</span>
-              </a>
-            </li>
-            <li data-target="cut">
-              <a aria-label="Deep dive" href="#cut">
-                <span aria-hidden="true" className="w4-rail-label">Deep dive</span>
-              </a>
-              <ol>
-                <li data-target="topic-where">
-                  <a aria-label="Where the hiring is" href="#topic-where">
-                    <span aria-hidden="true" className="w4-rail-label">Where the hiring is</span>
-                  </a>
-                </li>
-                <li data-target="topic-jobs">
-                  <a aria-label="Jobs and skills" href="#topic-jobs">
-                    <span aria-hidden="true" className="w4-rail-label">Jobs and skills</span>
-                  </a>
-                </li>
-                <li data-target="topic-outsourcing">
-                  <a aria-label="Outsourcing firms and their clients" href="#topic-outsourcing">
-                    <span aria-hidden="true" className="w4-rail-label">Outsourcing firms and their clients</span>
-                  </a>
-                </li>
-                <li data-target="topic-paperwork">
-                  <a aria-label="Paperwork, the lottery and green cards" href="#topic-paperwork">
-                    <span aria-hidden="true" className="w4-rail-label">Paperwork, the lottery and green cards</span>
-                  </a>
-                </li>
-                <li data-target="topic-years">
-                  <a aria-label="Five years" href="#topic-years">
-                    <span aria-hidden="true" className="w4-rail-label">Five years</span>
-                  </a>
-                </li>
-                <li data-target="evidence">
-                  <a aria-label="Data and methods" href="#evidence">
-                    <span aria-hidden="true" className="w4-rail-label">Data and methods</span>
-                  </a>
-                </li>
-              </ol>
-            </li>
-          </ol>
-        </nav>
+        <SectionRail items={RAIL} />
         {/* Five sections, five findings ------------------------------------ */}
         <div className="shell">
           <section aria-label="Five findings" className="w4-findings" id="findings">

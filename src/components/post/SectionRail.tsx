@@ -4,7 +4,7 @@
 // styles are in post.css). One dot per section, with its questions as small
 // dots under it; the section in view is current and opens its questions.
 // Hovering or focusing the rail shows every name, in a panel sized to the
-// widest one. Week 4's static page wires the same markup in week04-frame.js.
+// widest one. Weeks 4 and 5 both draw their rail with it.
 import { type CSSProperties, useCallback, useEffect, useMemo, useRef, useState } from "react";
 
 export type RailItem = { target: string; label: string; children?: RailItem[] };
