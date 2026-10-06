@@ -289,7 +289,7 @@ function drawRing() {
   const canvas = $("q-ring");
   if (!canvas) return;
   const { ctx, width, height } = api.surface(canvas);
-  const { INK, MUTE } = api.colours;
+  const { INK, MUTE_TEXT } = api.colours;
   const { keep, matrix, out, into } = ringData();
   const list = register("q-ring");
 
@@ -384,7 +384,7 @@ function drawRing() {
     ctx.fillText(fitText(ctx, model.name(keep[i]), room), lx, ly);
     // The total only fits while the ring is wide enough to leave a margin.
     if (room > 70) {
-      ctx.fillStyle = MUTE;
+      ctx.fillStyle = MUTE_TEXT;
       ctx.font = NOTE();
       ctx.fillText(api.format.compact.format(out[i] + into[i]), lx, ly + gap);
       ctx.font = NAME();
@@ -399,7 +399,7 @@ function drawRing() {
     });
   }
 
-  ctx.fillStyle = MUTE;
+  ctx.fillStyle = MUTE_TEXT;
   ctx.font = NOTE();
   ctx.textAlign = "center";
   ctx.textBaseline = "top";
@@ -490,7 +490,7 @@ function drawHosts() {
   const canvas = $("q-hosts");
   if (!canvas) return;
   const { ctx, width, height } = api.surface(canvas);
-  const { PEOPLE, OUTBOUND, INK, MUTE, GRID } = api.colours;
+  const { PEOPLE, OUTBOUND, INK, MUTE_TEXT, GRID } = api.colours;
   const list = register("q-hosts");
   const rows = hostsData().slice(0, 15);
 
@@ -535,7 +535,7 @@ function drawHosts() {
     ctx.textAlign = "center";
     ctx.fillText(fitText(ctx, model.name(iso3), gutter - 8), mid, y);
     ctx.font = VALUE();
-    ctx.fillStyle = MUTE;
+    ctx.fillStyle = MUTE_TEXT;
     ctx.textAlign = "right";
     ctx.fillText(api.format.compact.format(model.abroad.get(iso3) ?? 0), mid - gutter / 2 - left - 4, y);
     ctx.textAlign = "left";
@@ -612,7 +612,7 @@ function drawDistance() {
   const canvas = $("q-distance");
   if (!canvas) return;
   const { ctx, width, height } = api.surface(canvas);
-  const { PEOPLE, ACCESS, INK, MUTE } = api.colours;
+  const { PEOPLE, ACCESS, INK, MUTE_TEXT } = api.colours;
   const list = register("q-distance");
   const data = distanceData();
   const box = api.frame(width, height, { l: 46, r: 16, t: 30, b: 46 });
@@ -645,7 +645,7 @@ function drawDistance() {
         label: `<b>${d.label} km</b><br>${one(value)}% ${what}`,
       });
     }
-    ctx.fillStyle = MUTE;
+    ctx.fillStyle = MUTE_TEXT;
     ctx.font = NOTE();
     ctx.textAlign = "center";
     ctx.textBaseline = "top";
@@ -692,7 +692,7 @@ function drawDistance() {
   ctx.textAlign = "right";
   ctx.textBaseline = "middle";
   for (const [colour, text] of [[ACCESS, "of all corridors"], [PEOPLE, "of all migrants"]]) {
-    ctx.fillStyle = MUTE;
+    ctx.fillStyle = MUTE_TEXT;
     ctx.fillText(text, legendX, box.top - 12);
     legendX -= ctx.measureText(text).width + 7;
     ctx.fillStyle = colour;
@@ -808,7 +808,7 @@ function fitLine(xs, ys) {
 }
 
 function drawWealthScatter(ctx, box, rows, list) {
-  const { PEOPLE, INK, MUTE } = api.colours;
+  const { PEOPLE, INK, MUTE_TEXT } = api.colours;
   const values = rows.map((d) => d.gdp);
   const domain = [Math.min(...values), Math.max(...values)];
   box.x = api.logScale(box, domain, "x");
@@ -889,13 +889,13 @@ function drawWealthScatter(ctx, box, rows, list) {
     }
     placed.push(y);
     ctx.textAlign = right ? "left" : "right";
-    ctx.fillStyle = MUTE;
+    ctx.fillStyle = MUTE_TEXT;
     ctx.fillText(fitText(ctx, model.name(d.iso3), 92), d.px + (right ? 8 : -8), y);
   }
 }
 
 function drawReach(ctx, box, list) {
-  const { ACCESS, INK, MUTE } = api.colours;
+  const { ACCESS, INK, MUTE_TEXT } = api.colours;
   const bands = reachData();
   const domain = [400, 12000];
   box.x = api.logScale(box, domain, "x");
@@ -922,7 +922,7 @@ function drawReach(ctx, box, list) {
     ctx.fillStyle = `rgba(${r},0.95)`;
     ctx.fill();
 
-    ctx.fillStyle = MUTE;
+    ctx.fillStyle = MUTE_TEXT;
     ctx.font = NAME();
     ctx.textAlign = "right";
     ctx.textBaseline = "middle";
@@ -950,7 +950,7 @@ function drawWealth() {
   const canvas = $("q-wealth");
   if (!canvas) return;
   const { ctx, width, height } = api.surface(canvas);
-  const { INK, MUTE } = api.colours;
+  const { INK, MUTE_TEXT } = api.colours;
   const list = register("q-wealth");
   const data = wealthData();
 
@@ -979,7 +979,7 @@ function drawWealth() {
     ctx.textAlign = "left";
     ctx.textBaseline = "alphabetic";
     ctx.fillText(title, box.left - (box === reach ? 70 : 0), box.top - 12);
-    ctx.fillStyle = MUTE;
+    ctx.fillStyle = MUTE_TEXT;
     ctx.font = NOTE();
     ctx.textAlign = "right";
     ctx.fillText(stat, box.right + (box === reach ? 70 : 0), box.top - 12);
@@ -992,7 +992,7 @@ function drawWealth() {
     growing.map((d) => d.growth),
     growing.map(logShare),
   );
-  ctx.fillStyle = MUTE;
+  ctx.fillStyle = MUTE_TEXT;
   ctx.font = NOTE();
   ctx.textAlign = "left";
   ctx.textBaseline = "bottom";
@@ -1105,7 +1105,7 @@ function drawIncome() {
   const canvas = $("q-income");
   if (!canvas) return;
   const { ctx, width, height } = api.surface(canvas);
-  const { PEOPLE, ACCESS, INK, MUTE } = api.colours;
+  const { PEOPLE, ACCESS, INK, MUTE, MUTE_TEXT } = api.colours;
   const list = register("q-income");
   const { tiers, fled, steps, placedTotal } = incomeData();
 
@@ -1136,7 +1136,7 @@ function drawIncome() {
         ctx.textBaseline = "middle";
         ctx.fillText(`${one(part.share)}%`, x + w / 2, y + tall / 2);
       }
-      ctx.fillStyle = MUTE;
+      ctx.fillStyle = MUTE_TEXT;
       ctx.font = NOTE();
       ctx.textAlign = w > 52 ? "center" : "left";
       ctx.textBaseline = "top";
@@ -1195,7 +1195,7 @@ function drawIncome() {
         `${api.format.compact.format(part.people)} foreign-born living there`,
     });
   });
-  ctx.fillStyle = MUTE;
+  ctx.fillStyle = MUTE_TEXT;
   ctx.font = NOTE();
   ctx.textAlign = "right";
   ctx.textBaseline = "alphabetic";
@@ -1209,7 +1209,7 @@ function drawIncome() {
   const birthY = 260;
   stack(steps, ACCESS, birthY, "The destination against their own country of birth");
 
-  ctx.fillStyle = MUTE;
+  ctx.fillStyle = MUTE_TEXT;
   ctx.font = NOTE();
   ctx.textAlign = "left";
   ctx.textBaseline = "top";
@@ -1278,7 +1278,7 @@ function drawSex() {
   const canvas = $("q-sex");
   if (!canvas) return;
   const { ctx, width, height } = api.surface(canvas);
-  const { PEOPLE, ACCESS, INK, MUTE, GRID } = api.colours;
+  const { PEOPLE, ACCESS, INK, MUTE, MUTE_TEXT, GRID } = api.colours;
   const list = register("q-sex");
   const rows = sexData();
   const show = [...rows.slice(0, 8), null, ...rows.slice(-8).reverse()];
@@ -1292,7 +1292,7 @@ function drawSex() {
 
   ctx.font = NOTE();
   ctx.textBaseline = "top";
-  ctx.fillStyle = MUTE;
+  ctx.fillStyle = MUTE_TEXT;
   for (const tick of [20, 30, 40, 50, 60, 70]) {
     ctx.strokeStyle = tick === 50 ? MUTE : GRID;
     ctx.beginPath();
@@ -1303,7 +1303,7 @@ function drawSex() {
     ctx.fillText(`${tick}%`, x(tick), height - 22);
   }
   ctx.textAlign = "center";
-  ctx.fillStyle = MUTE;
+  ctx.fillStyle = MUTE_TEXT;
   ctx.fillText("Share of the foreign-born population that is female", (left + right) / 2, 12);
 
   show.forEach((row, i) => {
@@ -1321,7 +1321,7 @@ function drawSex() {
     ctx.textAlign = "right";
     ctx.textBaseline = "middle";
     ctx.fillText(fitText(ctx, model.name(row.iso3), left - 16), left - 8, y);
-    ctx.fillStyle = MUTE;
+    ctx.fillStyle = MUTE_TEXT;
     ctx.font = VALUE();
     ctx.textAlign = "left";
     ctx.fillText(`${one(row.share)}%`, right + 6, y);
@@ -1345,7 +1345,7 @@ function drawSex() {
   ctx.lineTo(width - 12, Math.round(gy) + 0.5);
   ctx.stroke();
   ctx.setLineDash([]);
-  ctx.fillStyle = MUTE;
+  ctx.fillStyle = MUTE_TEXT;
   ctx.font = NOTE();
   ctx.textAlign = "center";
   ctx.textBaseline = "middle";

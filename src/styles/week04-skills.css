@@ -47,7 +47,7 @@
 }
 
 .corridor .w4-step-note {
-  color: var(--ink-mute);
+  color: var(--ink-mute-text);
   font-size: var(--fs-small);
 }
 

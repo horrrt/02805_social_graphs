@@ -64,7 +64,7 @@ function drawHbars(rows, { max, badgeLabel, aria }, width) {
       svg.append(
         node(
           "text",
-          { x: width, y: cy + 13, "font-size": fs("caption"), fill: token("--ink-mute"), "text-anchor": "end" },
+          { x: width, y: cy + 13, "font-size": fs("caption"), fill: token("--ink-mute-text"), "text-anchor": "end" },
           `${badgeLabel} #${r.badge}`,
         ),
       );
@@ -315,7 +315,7 @@ function drawBump(it, W) {
       `Rank after each round for the ${n} occupations that finish on top: ${final[0].title} first from round ` +
       `${stablePoint(it.steps, (s) => s.rows[0].code)} on`,
   });
-  const muted = token("--ink-mute");
+  const muted = token("--ink-mute-text");
   steps.forEach((s, i) => {
     svg.append(node("text", { x: xs[i], y: 16, "text-anchor": "middle", "font-size": caption, fill: muted }, roundLabel(s, i)));
     svg.append(node("line", { x1: xs[i], x2: xs[i], y1: TOP - 8, y2: out + 4, stroke: token("--w4-grid") }));

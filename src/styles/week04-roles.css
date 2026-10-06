@@ -54,7 +54,7 @@
 }
 
 .corridor .roles-toolbar .axis-modes-label {
-  color: var(--ink-mute);
+  color: var(--ink-mute-text);
   font-size: var(--fs-caption);
   font-weight: 700;
 }
@@ -79,7 +79,7 @@
 }
 
 #cut-roles .axis-note {
-  color: var(--ink-mute);
+  color: var(--ink-mute-text);
   font-size: var(--fs-small);
   line-height: 1.5;
   margin: 12px 0 0;
@@ -106,7 +106,7 @@
 }
 
 .corridor .roles-legend button[aria-pressed="false"] {
-  color: var(--ink-mute);
+  color: var(--ink-mute-text);
   opacity: 0.55;
 }
 

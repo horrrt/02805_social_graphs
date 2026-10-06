@@ -51,7 +51,7 @@ function drawHbars(rows, { domain, width = 520, rowH = 34, fmt, aria }) {
       svg.append(node("text", { x: 0, y: cy - 13, "font-size": small, fill: token("--ink"), "font-weight": 600 }, r.label));
     } else {
       svg.append(node("text", { x: 0, y: cy - (r.sub ? 3 : -4), "font-size": small, fill: token("--ink"), "font-weight": 600 }, r.label));
-      if (r.sub) svg.append(node("text", { x: 0, y: cy + 12, "font-size": caption, fill: token("--ink-mute") }, r.sub));
+      if (r.sub) svg.append(node("text", { x: 0, y: cy + 12, "font-size": caption, fill: token("--ink-mute-text") }, r.sub));
     }
     svg.append(node("line", { x1: x0, y1: cy, x2: x1, y2: cy, stroke: token("--line"), "stroke-width": 1 }));
     const bx = X(r.value);
@@ -108,7 +108,7 @@ function drawStacked(groups, names, tints, { width = 520, rowH = 42, aria, digit
   let lx = 0;
   names.forEach((name, j) => {
     svg.append(node("circle", { cx: lx + 5, cy: ly, r: 5, fill: token(tints[j]) }));
-    svg.append(node("text", { x: lx + 14, y: ly + 4, "font-size": caption, fill: token("--ink-mute") }, name));
+    svg.append(node("text", { x: lx + 14, y: ly + 4, "font-size": caption, fill: token("--ink-mute-text") }, name));
     lx += 14 + textWidth(name, "caption") + 16;
   });
   return svg;

@@ -291,7 +291,7 @@ function drawArea() {
   const instance = chart("v-area");
   if (!instance) return;
   const { years, keep, rest } = areaData();
-  const { PEOPLE, ACCESS, INK, MUTE, GRID } = api.colours;
+  const { PEOPLE, ACCESS, INK, MUTE, MUTE_TEXT, GRID } = api.colours;
 
   // One ramp, so the stack reads as one quantity split many ways rather than
   // as twelve unrelated series.
@@ -340,7 +340,7 @@ function drawArea() {
       legend: {
         type: "scroll",
         bottom: 0,
-        textStyle: { color: MUTE, fontSize: fs("caption") },
+        textStyle: { color: MUTE_TEXT, fontSize: fs("caption") },
         selectorLabel: { fontSize: fs("caption") },
         itemWidth: 12,
         itemHeight: 8,
@@ -351,11 +351,11 @@ function drawArea() {
         boundaryGap: false,
         data: years,
         axisLine: { lineStyle: { color: GRID } },
-        axisLabel: { color: MUTE, fontSize: fs("caption") },
+        axisLabel: { color: MUTE_TEXT, fontSize: fs("caption") },
       },
       yAxis: {
         type: "value",
-        axisLabel: { color: MUTE, fontSize: fs("caption"), formatter: (v) => compact(v) },
+        axisLabel: { color: MUTE_TEXT, fontSize: fs("caption"), formatter: (v) => compact(v) },
         splitLine: { lineStyle: { color: GRID } },
       },
       textStyle: { ...base().textStyle, color: INK },
@@ -464,7 +464,7 @@ function asylumRows() {
 function drawAsylum() {
   const instance = chart("v-asylum");
   if (!instance || !asylum?.origins?.[asylumState.origin]) return;
-  const { PEOPLE, INK, MUTE, GRID } = api.colours;
+  const { PEOPLE, INK, MUTE_TEXT, GRID } = api.colours;
   const { origin, years, cells } = asylumRows();
   const reported = cells.filter((c) => c[2] !== null);
   const biggest = Math.max(1, ...reported.map((c) => c[2]));
@@ -489,7 +489,7 @@ function drawAsylum() {
         itemWidth: 12,
         itemHeight: 12,
         itemGap: 6,
-        textStyle: { color: MUTE, fontSize: fs("caption") },
+        textStyle: { color: MUTE_TEXT, fontSize: fs("caption") },
         // Fixed to this origin's own maximum, so the grid is a story about
         // one country's months rather than a comparison with Syria.
         splitNumber: 5,
@@ -505,7 +505,7 @@ function drawAsylum() {
         splitArea: { show: false },
         axisLine: { show: false },
         axisTick: { show: false },
-        axisLabel: { color: MUTE, fontSize: fs("caption") },
+        axisLabel: { color: MUTE_TEXT, fontSize: fs("caption") },
       },
       yAxis: {
         type: "category",
@@ -614,7 +614,7 @@ async function loadClosures() {
 function drawClosures() {
   const instance = chart("v-closures");
   if (!instance || !closures?.days) return;
-  const { ACCESS, INK, MUTE, GRID } = api.colours;
+  const { ACCESS, INK, MUTE, MUTE_TEXT, GRID } = api.colours;
   const entries = Object.entries(closures.days);
   const years = [...new Set(entries.map(([d]) => d.slice(0, 4)))].sort();
 
@@ -628,8 +628,8 @@ function drawClosures() {
     splitLine: { show: false },
     itemStyle: { color: "transparent", borderColor: GRID, borderWidth: 1 },
     yearLabel: { show: true, color: INK, fontSize: fs("small"), fontWeight: 700, margin: 34 },
-    monthLabel: { show: i === 0, color: MUTE, fontSize: fs("caption") },
-    dayLabel: { show: true, firstDay: 1, nameMap: ["S", "M", "T", "W", "T", "F", "S"], color: MUTE, fontSize: fs("caption") },
+    monthLabel: { show: i === 0, color: MUTE_TEXT, fontSize: fs("caption") },
+    dayLabel: { show: true, firstDay: 1, nameMap: ["S", "M", "T", "W", "T", "F", "S"], color: MUTE_TEXT, fontSize: fs("caption") },
   }));
 
   instance.setOption(
@@ -655,7 +655,7 @@ function drawClosures() {
         itemWidth: 12,
         itemHeight: 12,
         itemGap: 6,
-        textStyle: { color: MUTE, fontSize: fs("caption") },
+        textStyle: { color: MUTE_TEXT, fontSize: fs("caption") },
         pieces: [
           { min: 0, max: 0, label: "none closed", color: `rgba(${api.rgb(MUTE)},0.12)` },
           { min: 1, max: 9, label: "1–9", color: `rgba(${api.rgb(ACCESS)},0.25)` },

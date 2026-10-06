@@ -36,7 +36,7 @@ function palette() {
   return {
     ink: tok("--ink"),
     inkSoft: tok("--ink-soft"),
-    inkMute: tok("--ink-mute"),
+    inkMute: tok("--ink-mute-text"),
     people: tok("--people"),
     access: tok("--access"),
     grid: tok("--w4-grid"),

@@ -636,13 +636,13 @@ function drawCurve(d, alpha) {
     const svg = el("svg", { viewBox: `0 0 ${width} ${h}`, width, height: h, role: "img", "aria-label": "Share of links, nodes with a link and giant component kept at each alpha." });
     for (const v of [0, 0.25, 0.5, 0.75, 1]) {
       svg.append(el("line", { x1: m.l, x2: width - m.r, y1: Y(v), y2: Y(v), stroke: token("--w4-grid") }));
-      svg.append(el("text", { x: m.l - 6, y: Y(v) + 4, "text-anchor": "end", "font-size": fs("caption"), fill: token("--ink-mute") }, `${Math.round(v * 100)}%`));
+      svg.append(el("text", { x: m.l - 6, y: Y(v) + 4, "text-anchor": "end", "font-size": fs("caption"), fill: token("--ink-mute-text") }, `${Math.round(v * 100)}%`));
     }
     for (const a of [0.01, 0.02, 0.05, 0.1, 0.2, 0.5, 1]) {
       if (a < d.curve[0][0] || a > d.curve.at(-1)[0]) continue;
-      svg.append(el("text", { x: X(a), y: h - m.b + 16, "text-anchor": "middle", "font-size": fs("caption"), fill: token("--ink-mute") }, String(a)));
+      svg.append(el("text", { x: X(a), y: h - m.b + 16, "text-anchor": "middle", "font-size": fs("caption"), fill: token("--ink-mute-text") }, String(a)));
     }
-    svg.append(el("text", { x: width - m.r, y: h - 4, "text-anchor": "end", "font-size": fs("caption"), fill: token("--ink-mute") }, "disparity filter α (log scale)"));
+    svg.append(el("text", { x: width - m.r, y: h - 4, "text-anchor": "end", "font-size": fs("caption"), fill: token("--ink-mute-text") }, "disparity filter α (log scale)"));
     svg.append(el("line", { x1: X(alpha), x2: X(alpha), y1: m.t, y2: h - m.b, stroke: token("--ink-soft"), "stroke-dasharray": "3 3" }));
     series.forEach(([col, label, colour], si) => {
       const pts = d.curve.map((row) => [X(row[0]), Y(row[col] / total[col - 1])]);
@@ -654,7 +654,7 @@ function drawCurve(d, alpha) {
         c.append(el("title", {}, `${label} at α = ${alpha}: ${Math.round(v * 100)}%`));
         svg.append(c);
       }
-      svg.append(el("text", { x: m.l + 8, y: m.t + 14 + si * 15, "font-size": fs("caption"), fill: token(colour), "font-weight": 600 }, label));
+      svg.append(el("text", { x: m.l + 8, y: m.t + 14 + si * 15, "font-size": fs("caption"), fill: token(colour === "--ink-mute" ? "--ink-mute-text" : colour), "font-weight": 600 }, label));
     });
     return svg;
   };
@@ -844,13 +844,13 @@ function drawCcdf(d) {
     const svg = el("svg", { viewBox: `0 0 ${width} ${h}`, width, height: h, role: "img", class: "w4-entities-ccdf", "aria-label": "Share of attribute nodes with at least a given degree or strength, on log-log axes." });
     for (let e = Math.ceil(Math.log10(ymin)); e <= 0; e++) {
       svg.append(el("line", { x1: m.l, x2: width - m.r, y1: Y(10 ** e), y2: Y(10 ** e), stroke: token("--w4-grid") }));
-      svg.append(el("text", { x: m.l - 6, y: Y(10 ** e) + 4, "text-anchor": "end", "font-size": fs("caption"), fill: token("--ink-mute") }, e === 0 ? "1" : `10^${e}`));
+      svg.append(el("text", { x: m.l - 6, y: Y(10 ** e) + 4, "text-anchor": "end", "font-size": fs("caption"), fill: token("--ink-mute-text") }, e === 0 ? "1" : `10^${e}`));
     }
     for (let e = 0; 10 ** e <= x1; e += 1) {
       if (10 ** e < x0) continue;
-      svg.append(el("text", { x: X(10 ** e), y: h - m.b + 16, "text-anchor": "middle", "font-size": fs("caption"), fill: token("--ink-mute") }, fmt(10 ** e)));
+      svg.append(el("text", { x: X(10 ** e), y: h - m.b + 16, "text-anchor": "middle", "font-size": fs("caption"), fill: token("--ink-mute-text") }, fmt(10 ** e)));
     }
-    svg.append(el("text", { x: width - m.r, y: h - 4, "text-anchor": "end", "font-size": fs("caption"), fill: token("--ink-mute") }, "links or workers (log)"));
+    svg.append(el("text", { x: width - m.r, y: h - 4, "text-anchor": "end", "font-size": fs("caption"), fill: token("--ink-mute-text") }, "links or workers (log)"));
     series.forEach(([k, label, colour], si) => {
       const pts = d.facts.week1.ccdf[k];
       const g = el("g");
@@ -862,7 +862,7 @@ function drawCcdf(d) {
         g.append(c);
       }
       svg.append(g);
-      svg.append(el("text", { x: width - m.r, y: m.t + 14 + si * 16, "text-anchor": "end", "font-size": fs("caption"), fill: token(colour), "font-weight": 600 }, label));
+      svg.append(el("text", { x: width - m.r, y: m.t + 14 + si * 16, "text-anchor": "end", "font-size": fs("caption"), fill: token(colour === "--ink-mute" ? "--ink-mute-text" : colour), "font-weight": 600 }, label));
     });
     return svg;
   };

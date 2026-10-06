@@ -82,7 +82,7 @@
 }
 
 .corridor .stub-note {
-  color: var(--ink-mute);
+  color: var(--ink-mute-text);
   font-size: var(--fs-small);
   margin: 0;
 }
@@ -202,7 +202,7 @@
   text-transform: uppercase;
 }
 .corridor .jobs-meta {
-  color: var(--ink-mute);
+  color: var(--ink-mute-text);
   font-size: var(--fs-small);
   margin: 0 0 10px;
 }
@@ -718,7 +718,7 @@
 }
 
 .corridor .w4-caps {
-  color: var(--ink-mute);
+  color: var(--ink-mute-text);
   font-size: var(--fs-caption);
   font-weight: 700;
   letter-spacing: 0.1em;
@@ -738,7 +738,7 @@
 }
 
 .corridor .w4-inspector-name span {
-  color: var(--ink-mute);
+  color: var(--ink-mute-text);
   font-size: var(--fs-small);
 }
 
@@ -911,7 +911,7 @@
 }
 
 .corridor .w4-mini small {
-  color: var(--ink-mute);
+  color: var(--ink-mute-text);
   font-size: var(--fs-caption);
   line-height: 1.35;
 }
@@ -1744,13 +1744,13 @@
 }
 
 .corridor .rx-ego-matches button span {
-  color: var(--ink-mute);
+  color: var(--ink-mute-text);
   font-size: var(--fs-caption);
   font-weight: 500;
 }
 
 .corridor .rx-ego-none {
-  color: var(--ink-mute);
+  color: var(--ink-mute-text);
   font-size: var(--fs-small);
   margin: 0 0 10px;
 }
@@ -1976,7 +1976,7 @@
 }
 
 .corridor .rx-toc-head {
-  color: var(--ink-mute);
+  color: var(--ink-mute-text);
   font-size: var(--fs-small);
   font-weight: 700;
   margin: 2px 0 6px 15px;
@@ -2203,20 +2203,20 @@
 .kit-figure figcaption { color: var(--ink-soft); font-size: var(--fs-caption); margin-top: 0.5rem; }
 .kit-echart { width: 100%; }
 /* What a kit component says when it has nothing to draw. */
-.kit-empty { color: var(--ink-mute); font-size: var(--fs-caption); font-style: italic; }
+.kit-empty { color: var(--ink-mute-text); font-size: var(--fs-caption); font-style: italic; }
 
 /* Fixed layout, so a long context is cut with an ellipsis instead of pushing
    the table past its column (max-width does nothing on a table cell). */
 .kit-kwic { border-collapse: collapse; width: 100%; font-size: var(--fs-small); table-layout: fixed; }
 .kit-kwic td { padding: 0.2rem 0.4rem; border-bottom: 1px solid var(--line-soft); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.kit-kwic td.kit-kwic-page { color: var(--ink-mute); font-size: var(--fs-caption); width: 11rem; }
+.kit-kwic td.kit-kwic-page { color: var(--ink-mute-text); font-size: var(--fs-caption); width: 11rem; }
 .kit-kwic td:nth-child(3) { width: 7rem; }
 .kit-kwic-left { text-align: right; direction: rtl; }
 .kit-kwic mark, .kit-passage mark { background: var(--access-soft); color: var(--ink); padding: 0 0.15em; border-radius: 3px; }
 
 .kit-passage { margin: 0.75rem 0; padding: 0.5rem 1rem; border-left: 3px solid var(--access); background: var(--card); }
 .kit-passage p { margin: 0 0 0.35rem; }
-.kit-passage cite { color: var(--ink-mute); font-size: var(--fs-caption); font-style: normal; }
+.kit-passage cite { color: var(--ink-mute-text); font-size: var(--fs-caption); font-style: normal; }
 
 /* The styleguide's intro line. */
 .w5-hint { font-style: italic; opacity: 0.7; }
@@ -2239,7 +2239,7 @@
 .corridor .w5-card .kit-kwic td.kit-kwic-right { width: 22%; }
 .corridor .w5-card .kit-kwic td:nth-child(3) { width: 9rem; }
 .corridor .kit-kwic td.w5-mark { width: 1.5rem; }
-.corridor .kit-kwic td.w5-verdict { color: var(--ink-mute); font-size: var(--fs-caption); white-space: normal; width: 17rem; }
+.corridor .kit-kwic td.w5-verdict { color: var(--ink-mute-text); font-size: var(--fs-caption); white-space: normal; width: 17rem; }
 .corridor .kit-kwic td.w5-mark { font-weight: 800; }
 
 
@@ -2304,7 +2304,7 @@
   padding: 16px 18px;
 }
 
-.corridor .w5-panel h4 {
+.corridor .w5-panel h3 {
   font-size: var(--fs-small);
   font-weight: 700;
   letter-spacing: 0.04em;
@@ -2383,7 +2383,7 @@
 }
 
 .corridor .w5-rank .w5-pos {
-  color: var(--ink-mute);
+  color: var(--ink-mute-text);
   font-variant-numeric: tabular-nums;
   font-weight: 700;
 }
@@ -2400,7 +2400,7 @@
 }
 
 .corridor .w5-rank .w5-terms {
-  color: var(--ink-mute);
+  color: var(--ink-mute-text);
   font-size: var(--fs-caption);
   grid-column: 2 / -1;
 }
@@ -2470,7 +2470,7 @@
 }
 
 .corridor .w5-caption {
-  color: var(--ink-mute);
+  color: var(--ink-mute-text);
   font-size: var(--fs-caption);
   line-height: 1.4;
   margin: 8px 0 0;
@@ -2547,7 +2547,7 @@
 }
 
 .corridor .w5-hubs {
-  color: var(--ink-mute);
+  color: var(--ink-mute-text);
   font-size: var(--fs-caption);
   margin: 6px 0 0;
 }

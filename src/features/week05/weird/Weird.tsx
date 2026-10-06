@@ -59,7 +59,7 @@ function ScatterSvg({ data, scale, measure, tokens }: { data: Data; scale: TypeS
         {L.xTicks.map((k, i) => (
           <Fragment key={`x${i}`}>
             <line x1={k.x} x2={k.x} y1={k.y1} y2={k.y2} stroke={t("--line-soft")} />
-            <text x={k.x} y={k.labelY} fontSize={caption} fill={t("--ink-mute")} textAnchor="middle">
+            <text x={k.x} y={k.labelY} fontSize={caption} fill={t("--ink-mute-text")} textAnchor="middle">
               {k.label}
             </text>
           </Fragment>
@@ -67,7 +67,7 @@ function ScatterSvg({ data, scale, measure, tokens }: { data: Data; scale: TypeS
         {L.yTicks.map((k, i) => (
           <Fragment key={`y${i}`}>
             <line x1={k.x1} x2={k.x2} y1={k.y} y2={k.y} stroke={t("--line-soft")} />
-            <text x={k.labelX} y={k.labelY} fontSize={caption} fill={t("--ink-mute")} textAnchor="end">
+            <text x={k.labelX} y={k.labelY} fontSize={caption} fill={t("--ink-mute-text")} textAnchor="end">
               {k.label}
             </text>
           </Fragment>

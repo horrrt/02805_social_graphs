@@ -60,7 +60,7 @@
 
 .corridor .w4-radar-search-row input:disabled {
   background: var(--w4-inset);
-  color: var(--ink-mute);
+  color: var(--ink-mute-text);
 }
 
 .corridor .w4-radar-search-status {

@@ -32,7 +32,7 @@
 }
 
 .corridor .w4-mini-row small {
-  color: var(--ink-mute);
+  color: var(--ink-mute-text);
   font-size: var(--fs-caption);
 }
 

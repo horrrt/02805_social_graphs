@@ -338,7 +338,7 @@ export default function Page() {
                     <small>labels, chips, eyebrows</small>
                   </div>
                   <div className="sg-ramp">
-                    <span style={{"fontSize":"var(--fs-caption)","color":"var(--ink-mute)"}}>11.5/400</span>
+                    <span style={{"fontSize":"var(--fs-caption)","color":"var(--ink-mute-text)"}}>11.5/400</span>
                     <small>axis ticks and chart notes</small>
                   </div>
                 </div>

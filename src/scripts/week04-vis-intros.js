@@ -440,7 +440,7 @@ function drawBackbone(sweep, { lo, hi }, W) {
   const X = (a) => L + ((Math.log10(Math.max(a, 0.004)) - lx0) * (W - L - R)) / (lx1 - lx0);
   const Y = (v) => T + ((40 - v) * (H - T - B)) / 40;
   const ink = token("--ink");
-  const mute = token("--ink-mute");
+  const mute = token("--ink-mute-text");
   const soft = token("--ink-soft");
   const grid = token("--line");
   const band = token("--line-soft");
