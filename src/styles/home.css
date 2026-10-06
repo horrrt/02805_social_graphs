@@ -48,16 +48,6 @@
   background: var(--accent);
 }
 
-.home .home-textlink {
-  color: #b9cde4;
-  font-size: var(--fs-body);
-  font-weight: 600;
-}
-
-.home .home-textlink:hover {
-  color: #eaf2fb;
-}
-
 .home .home-progress {
   background: rgba(255, 255, 255, 0.06);
   border: 1px solid rgba(255, 255, 255, 0.14);
@@ -205,13 +195,6 @@ a.week-card:hover {
   text-transform: uppercase;
 }
 
-.home .week-course {
-  color: var(--ink-mute);
-  font-size: var(--fs-small);
-  font-weight: 600;
-  margin-top: 4px;
-}
-
 .home .week-card h3 {
   font-size: var(--fs-h3);
   letter-spacing: -0.01em;
@@ -224,9 +207,6 @@ a.week-card:hover {
   line-height: 1.5;
   margin: 0 0 14px;
 }
-
-
-
 
 .home .week-go {
   color: var(--accent);
@@ -254,27 +234,14 @@ a.week-card:hover {
   margin: 0;
 }
 
-/* ----------------------------------------------------------------- data */
+/* ------------------------------------------------------------ about, qa */
 
-.home .home-data {
-  display: grid;
-  gap: 18px;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-}
-
-.home .home-data .card {
-  display: flex;
-  flex-direction: column;
-}
-
-.home .home-data h3,
 .home .home-about .card h2 {
   font-size: var(--fs-strong);
   letter-spacing: -0.01em;
   margin: 0 0 8px;
 }
 
-.home .home-data p,
 .home .home-about p {
   color: var(--ink-soft);
   font-size: var(--fs-body);
@@ -282,59 +249,12 @@ a.week-card:hover {
   margin: 0 0 14px;
 }
 
-.home .home-data a,
 .home .home-about a,
 .home .qa-body a {
   color: var(--accent);
   font-size: var(--fs-body);
   font-weight: 600;
 }
-
-.home .home-data a {
-  margin-top: auto;
-}
-
-/* ---------------------------------------------------------------- steps */
-
-.home .home-steps {
-  display: grid;
-  gap: 18px;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  list-style: none;
-  margin: 0;
-}
-
-.home .home-steps li {
-  display: flex;
-  gap: 12px;
-}
-
-.home .home-steps .num {
-  align-items: center;
-  background: var(--access-soft);
-  border-radius: 8px;
-  color: var(--accent);
-  display: flex;
-  flex: none;
-  font-size: var(--fs-small);
-  font-weight: 800;
-  height: 26px;
-  justify-content: center;
-  width: 26px;
-}
-
-.home .home-steps b {
-  font-size: var(--fs-body);
-}
-
-.home .home-steps p {
-  color: var(--ink-soft);
-  font-size: var(--fs-body);
-  line-height: 1.5;
-  margin: 4px 0 0;
-}
-
-/* ------------------------------------------------------------ about, qa */
 
 .home .members {
   display: flex;
@@ -352,15 +272,6 @@ a.week-card:hover {
   font-size: var(--fs-small);
   font-weight: 700;
   padding: 5px 12px;
-}
-
-.home .home-drawers {
-  background: var(--card);
-  border-radius: var(--radius);
-  box-shadow: var(--shadow);
-  display: grid;
-  gap: 10px;
-  padding: 10px;
 }
 
 .home .qa-body p {
