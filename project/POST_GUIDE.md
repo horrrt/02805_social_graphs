@@ -41,7 +41,7 @@ Every post from Week 4 on uses Week 4's card: a `w4-q` header with the question 
 
 In view: the question, the answer told once, one paragraph of what we did, "What to notice" with the number against its baseline, and the figure. In the drawers, word for word: Method (with the limitation), More numbers, tables, and "What we read in the pages" for the passages the brief asks us to check. Do not add limitations, caveats or extra blocks the card does not need. Give a technical term a pop-up definition (`termify()`), and keep charts out of closed drawers unless they redraw when opened.
 
-`tests/text-budget.test.mjs` fails any card that shows more than 350 words of its HTML before a click. It reads HTML only; for text a script draws, run this in the browser console and expect at most about 450 words per section:
+`tests/text-budget.test.mjs` sets three limits on the words a reader sees before a click, and none on the page as a whole, so a post grows by adding cards. A main-path card shows at most 350 words, and each subsection inside it, from one `<h3>` to the next or to the card's end, at most 200. A section marked `data-depth="deep"` is a deep dive: it is left out of the main budget, and each card inside it is held to 350 words on its own. The test covers Week 3 and every later post. It reads HTML only; for text a script draws, run this in the browser console and expect at most about 450 words per section:
 
 ```js
 [...document.querySelectorAll("section.step[id]")].map((s) => {

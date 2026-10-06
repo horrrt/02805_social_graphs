@@ -591,50 +591,57 @@ export default function Page() {
                   </div>
                   <aside className="panel pair-aside">
                     <h2>Same world. Different networks.</h2>
-                    <p className="fineprint" style={{"border":"0","padding":"0"}}>
-                      Migration shows where people live. Flights show where you can
-                      go. Use the toggle to compare them, and click a country to
-                      select it. The scatter on the left highlights the same one.
-                      {" "}
-                      <b>Net</b>
-                      {" "}
-                      drops the corridors and colours each country
-                      instead: green where more people live there than have left
-                      it, red where more have left than arrived. It is a balance
-                      of two stocks, not a count of anybody moving this year, and
-                      it follows the year slider.
-                    </p>
                     <dl className="stats" id="twin-stats"></dl>
-                    <p className="fineprint">
-                      <b>How good is a route as a proxy for people?</b>
-                      {" "}
-                      Measured, for the one country where it can be. US BTS
-                      publishes passengers on every international segment
-                      with an American airport at one end, and joining it to
-                      this same route table for 2019 gives 87
-                      countries to compare. Route count ranks them well
-                      (Spearman 0.87, 95% 0.81 to 0.92) and is poor at size:
-                      among the 58 countries with five routes
-                      or more, excluding Venezuela, one route carries anywhere from
-                      25,014 people a year (Nigeria) to
-                      362,869 (Hong Kong), a factor of
-                      14.5; the middle half sit between
-                      60,125 and 186,353.
-                      Read this network as a ranking of access and never as
-                      a volume, and treat the bottom of it carefully:
-                      Venezuela sits lower still, at 14 routes for 8,769
-                      passengers each, but it is excluded from that factor
-                      because the snapshot still lists services that had
-                      stopped flying.
-                      {" "}
-                      <code>analysis/week03_passengers.py</code>
-                      .
-                    </p>
                     <p className="fineprint" id="net-note"></p>
                     <p className="fineprint" id="flight-caveat"></p>
                   </aside>
                 </div>
               </div>
+              <details className="qa" id="twin-method">
+                <summary>
+                  <span className="qa-cue">Reading the map, and flights as a proxy for people</span>
+                </summary>
+                <div className="qa-body">
+                  <p className="fineprint" style={{"border":"0","padding":"0"}}>
+                    Migration shows where people live. Flights show where you can
+                    go. Use the toggle to compare them, and click a country to
+                    select it. The scatter on the left highlights the same one.
+                    {" "}
+                    <b>Net</b>
+                    {" "}
+                    drops the corridors and colours each country
+                    instead: green where more people live there than have left
+                    it, red where more have left than arrived. It is a balance
+                    of two stocks, not a count of anybody moving this year, and
+                    it follows the year slider.
+                  </p>
+                  <p className="fineprint">
+                    <b>How good is a route as a proxy for people?</b>
+                    {" "}
+                    Measured, for the one country where it can be. US BTS
+                    publishes passengers on every international segment
+                    with an American airport at one end, and joining it to
+                    this same route table for 2019 gives 87
+                    countries to compare. Route count ranks them well
+                    (Spearman 0.87, 95% 0.81 to 0.92) and is poor at size:
+                    among the 58 countries with five routes
+                    or more, excluding Venezuela, one route carries anywhere from
+                    25,014 people a year (Nigeria) to
+                    362,869 (Hong Kong), a factor of
+                    14.5; the middle half sit between
+                    60,125 and 186,353.
+                    Read this network as a ranking of access and never as
+                    a volume, and treat the bottom of it carefully:
+                    Venezuela sits lower still, at 14 routes for 8,769
+                    passengers each, but it is excluded from that factor
+                    because the snapshot still lists services that had
+                    stopped flying.
+                    {" "}
+                    <code>analysis/week03_passengers.py</code>
+                    .
+                  </p>
+                </div>
+              </details>
             </div>
           </section>
           {/* 6 ----------------------------------------------------------- */}
@@ -680,15 +687,22 @@ export default function Page() {
                 names and the cut-offs between them are theirs, drawn on the
                 chart rather than applied out of sight.
               </p>
-              <p className="sub">
-                This replaces six labels of our own that compared a 2020
-                migration ranking against a flight snapshot last refreshed around
-                2014. When we labelled them, 30 of the 228 countries then in the
-                data carried a label that mixed the two
-                vintages, and because the flight side cannot move, the section
-                could only ever show one year. Nothing here touches the flight
-                network, so the slider moves it.
-              </p>
+              <details className="qa" id="typology-method">
+                <summary>
+                  <span className="qa-cue">What these roles replaced</span>
+                </summary>
+                <div className="qa-body">
+                  <p className="sub">
+                    This replaces six labels of our own that compared a 2020
+                    migration ranking against a flight snapshot last refreshed around
+                    2014. When we labelled them, 30 of the 228 countries then in the
+                    data carried a label that mixed the two
+                    vintages, and because the flight side cannot move, the section
+                    could only ever show one year. Nothing here touches the flight
+                    network, so the slider moves it.
+                  </p>
+                </div>
+              </details>
               <canvas aria-label="Chart: roles of countries inside their communities" className="chart" height="620" id="cartography" role="img" width="1100"></canvas>
               <div aria-label="How many countries carry each role" className="type-strip" id="typology-strip"></div>
               <div className="grid5" id="typology-cards"></div>
@@ -849,7 +863,7 @@ export default function Page() {
           {/* 9 ------------------------------------------------------------ */}
           {" "}
           {/* everything that goes deeper than the main path ---------------- */}
-          <section className="step" id="asks">
+          <section className="step" data-depth="deep" id="asks">
             <div className="card">
               <div className="step-head">
                 <span className="num">8</span>
@@ -941,102 +955,6 @@ export default function Page() {
                 Ukraine carries 158 times what the model expects. The list of
                 corridors like it is the finding here, not the fit.
               </p>
-              <p className="sub">
-                Question 4 showed two things separately: rich countries hold more
-                foreign-born people, and the people in them came from further
-                away. Two charts is not a model, so neither one holds the other
-                fixed. Gravity does. It is the standard baseline in the
-                migration literature and it is almost embarrassingly good:
-                people on a corridor rise with the size of both ends and fall
-                with the distance between them.
-              </p>
-              <p className="sub">
-                Fitted here by Poisson pseudo-maximum-likelihood on all
-                8,487 corridors with population and
-                income at both ends, in
-                {" "}
-                <code>analysis/week03_gravity.py</code>
-                . That is the same
-                8,238 non-zero corridors question 5 uses, needing income at
-                both ends and nothing else, plus 249 more: pairs that held
-                people in an earlier snapshot, show zero for 2024, and still
-                have the population and income data gravity needs. PPML keeps
-                those zeros deliberately (see below). Counts rather than
-                log counts, because logging drops every corridor carrying
-                nobody and biases the rest. Each distance and population
-                coefficient is an elasticity: a one per cent rise in the term
-                moves the corridor by that many per cent. The under-1,000 km
-                term is a yes/no shift, not an elasticity: it moves the
-                corridor by a fixed share when the two centres are that close.
-                Intervals are the heteroskedasticity-robust
-                sandwich the method calls for, which statsmodels fits directly
-                and scikit-learn could not report at all.
-              </p>
-              <table className="ego">
-                <tbody>
-                <tr>
-                  <th>Term</th>
-                  <th style={{"textAlign":"right"}}>Elasticity</th>
-                  <th style={{"textAlign":"right"}}>95% interval</th>
-                </tr>
-                <tr>
-                  <td>Distance between the two</td>
-                  <td style={{"textAlign":"right"}}>
-                    <b>−1.20</b>
-                  </td>
-                  <td style={{"textAlign":"right"}}>−1.44 to −0.95</td>
-                </tr>
-                <tr>
-                  <td>Destination income per head</td>
-                  <td style={{"textAlign":"right"}}>
-                    <b>+0.82</b>
-                  </td>
-                  <td style={{"textAlign":"right"}}>+0.66 to +0.98</td>
-                </tr>
-                <tr>
-                  <td>Destination population</td>
-                  <td style={{"textAlign":"right"}}>+0.68</td>
-                  <td style={{"textAlign":"right"}}>+0.60 to +0.76</td>
-                </tr>
-                <tr>
-                  <td>Origin population</td>
-                  <td style={{"textAlign":"right"}}>+0.50</td>
-                  <td style={{"textAlign":"right"}}>+0.42 to +0.58</td>
-                </tr>
-                <tr>
-                  <td>Origin income per head</td>
-                  <td style={{"textAlign":"right"}}>−0.27</td>
-                  <td style={{"textAlign":"right"}}>−0.35 to −0.18</td>
-                </tr>
-                <tr>
-                  <td>Under 1,000 km apart</td>
-                  <td style={{"textAlign":"right"}}>−0.30</td>
-                  <td style={{"textAlign":"right"}}>−0.79 to +0.20</td>
-                </tr>
-                </tbody>
-              </table>
-              <div className="notice">
-                <span className="ico">💡</span>
-                {" "}
-                <span>
-                  <b>
-                    Doubling the distance roughly halves the corridor, and
-                    that is the single strongest term here.
-                  </b>
-                  {" "}
-                  Destination income comes next: with size and distance held
-                  fixed, a country twice as rich holds about 1.8 times as many
-                  people from any given origin. Origin income runs the other
-                  way (poorer origins send more), which is the selection the
-                  income bars in question 5 could only show as a marginal. The
-                  last row is a failed proxy, kept rather than deleted: this
-                  repo has coordinates and no border table, so "share a border"
-                  had to be approximated by "centres within 1,000 km", and with
-                  distance already in the model it measures nothing. Its
-                  interval crosses zero and dropping it moves distance from
-                  −1.20 to −1.11 and leaves everything else where it was.
-                </span>
-              </div>
               <h3>The corridors gravity cannot explain</h3>
               <p className="sub">
                 The fit is not the finding. The residual is. These carry the
@@ -1169,29 +1087,132 @@ export default function Page() {
                   by a factor of thirty or more.
                 </span>
               </div>
-              <p className="fineprint">
-                The fit drops every corridor touching a country the World
-                Bank does not price: Syria, South Sudan, Yemen, Eritrea, North
-                Korea and Cuba among others. Those are war zones and sanctioned
-                states, which is to say several of the origins whose corridors
-                would have had the largest residuals. The model is fitted on the
-                part of the world calm enough to be measured, and the missing
-                part is 7.3% of the world's migrants.
-              </p>
-              <p className="fineprint">
-                Every term is measured in the same year as the outcome, so
-                nothing here identifies a cause: a corridor thirty times over
-                its prediction is a corridor worth explaining, not an
-                explanation. The fit reaches R² 0.45 across the range of the
-                data and 0.17 on the raw counts, where a handful of enormous
-                corridors dominate.
-              </p>
-              <p className="fineprint">
-                The bottom of the residual list, where gravity expects a crowd
-                and DESA reports five people, is a map of which statistics
-                offices file small origins under "other", not of where nobody
-                went.
-              </p>
+              <details className="qa" id="gravity-method">
+                <summary>
+                  <span className="qa-cue">How the model is fitted, and the full table</span>
+                </summary>
+                <div className="qa-body">
+                  <p className="sub">
+                    Question 4 showed two things separately: rich countries hold more
+                    foreign-born people, and the people in them came from further
+                    away. Two charts is not a model, so neither one holds the other
+                    fixed. Gravity does. It is the standard baseline in the
+                    migration literature and it is almost embarrassingly good:
+                    people on a corridor rise with the size of both ends and fall
+                    with the distance between them.
+                  </p>
+                  <p className="sub">
+                    Fitted here by Poisson pseudo-maximum-likelihood on all
+                    8,487 corridors with population and
+                    income at both ends, in
+                    {" "}
+                    <code>analysis/week03_gravity.py</code>
+                    . That is the same
+                    8,238 non-zero corridors question 5 uses, needing income at
+                    both ends and nothing else, plus 249 more: pairs that held
+                    people in an earlier snapshot, show zero for 2024, and still
+                    have the population and income data gravity needs. PPML keeps
+                    those zeros deliberately (see below). Counts rather than
+                    log counts, because logging drops every corridor carrying
+                    nobody and biases the rest. Each distance and population
+                    coefficient is an elasticity: a one per cent rise in the term
+                    moves the corridor by that many per cent. The under-1,000 km
+                    term is a yes/no shift, not an elasticity: it moves the
+                    corridor by a fixed share when the two centres are that close.
+                    Intervals are the heteroskedasticity-robust
+                    sandwich the method calls for, which statsmodels fits directly
+                    and scikit-learn could not report at all.
+                  </p>
+                  <table className="ego">
+                    <tbody>
+                    <tr>
+                      <th>Term</th>
+                      <th style={{"textAlign":"right"}}>Elasticity</th>
+                      <th style={{"textAlign":"right"}}>95% interval</th>
+                    </tr>
+                    <tr>
+                      <td>Distance between the two</td>
+                      <td style={{"textAlign":"right"}}>
+                        <b>−1.20</b>
+                      </td>
+                      <td style={{"textAlign":"right"}}>−1.44 to −0.95</td>
+                    </tr>
+                    <tr>
+                      <td>Destination income per head</td>
+                      <td style={{"textAlign":"right"}}>
+                        <b>+0.82</b>
+                      </td>
+                      <td style={{"textAlign":"right"}}>+0.66 to +0.98</td>
+                    </tr>
+                    <tr>
+                      <td>Destination population</td>
+                      <td style={{"textAlign":"right"}}>+0.68</td>
+                      <td style={{"textAlign":"right"}}>+0.60 to +0.76</td>
+                    </tr>
+                    <tr>
+                      <td>Origin population</td>
+                      <td style={{"textAlign":"right"}}>+0.50</td>
+                      <td style={{"textAlign":"right"}}>+0.42 to +0.58</td>
+                    </tr>
+                    <tr>
+                      <td>Origin income per head</td>
+                      <td style={{"textAlign":"right"}}>−0.27</td>
+                      <td style={{"textAlign":"right"}}>−0.35 to −0.18</td>
+                    </tr>
+                    <tr>
+                      <td>Under 1,000 km apart</td>
+                      <td style={{"textAlign":"right"}}>−0.30</td>
+                      <td style={{"textAlign":"right"}}>−0.79 to +0.20</td>
+                    </tr>
+                    </tbody>
+                  </table>
+                  <div className="notice">
+                    <span className="ico">💡</span>
+                    {" "}
+                    <span>
+                      <b>
+                        Doubling the distance roughly halves the corridor, and
+                        that is the single strongest term here.
+                      </b>
+                      {" "}
+                      Destination income comes next: with size and distance held
+                      fixed, a country twice as rich holds about 1.8 times as many
+                      people from any given origin. Origin income runs the other
+                      way (poorer origins send more), which is the selection the
+                      income bars in question 5 could only show as a marginal. The
+                      last row is a failed proxy, kept rather than deleted: this
+                      repo has coordinates and no border table, so "share a border"
+                      had to be approximated by "centres within 1,000 km", and with
+                      distance already in the model it measures nothing. Its
+                      interval crosses zero and dropping it moves distance from
+                      −1.20 to −1.11 and leaves everything else where it was.
+                    </span>
+                  </div>
+                  <p className="fineprint">
+                    The fit drops every corridor touching a country the World
+                    Bank does not price: Syria, South Sudan, Yemen, Eritrea, North
+                    Korea and Cuba among others. Those are war zones and sanctioned
+                    states, which is to say several of the origins whose corridors
+                    would have had the largest residuals. The model is fitted on the
+                    part of the world calm enough to be measured, and the missing
+                    part is 7.3% of the world's migrants.
+                  </p>
+                  <p className="fineprint">
+                    Every term is measured in the same year as the outcome, so
+                    nothing here identifies a cause: a corridor thirty times over
+                    its prediction is a corridor worth explaining, not an
+                    explanation. The fit reaches R² 0.45 across the range of the
+                    data and 0.17 on the raw counts, where a handful of enormous
+                    corridors dominate.
+                  </p>
+                  <p className="fineprint">
+                    The bottom of the residual list, where gravity expects a crowd
+                    and DESA reports five people, is a map of which statistics
+                    offices file small origins under "other", not of where nobody
+                    went.
+                  </p>
+                </div>
+              </details>
             </div>
             <div className="card" id="communities">
               <h2>Does the world split into groups?</h2>
@@ -1208,17 +1229,6 @@ export default function Page() {
                 Louvain from 100 more starting points and it agrees with the
                 partition below on the group count more often than not, but
                 rarely on the exact groups.
-              </p>
-              <p className="sub">
-                A course on social graphs asks this in week three and this post
-                had not. Louvain on the undirected network, weighted by people
-                moving in both directions and cut at corridors of 10,000 or
-                more, in
-                {" "}
-                <code>analysis/week03_communities.py</code>
-                . It returns
-                nine groups over 208 countries, and they name
-                themselves.
               </p>
               <table className="ego">
                 <tbody>
@@ -1295,318 +1305,336 @@ export default function Page() {
                   above state plainly rather than explain away.
                 </span>
               </div>
-              <div className="notice">
-                <span className="ico">🧪</span>
-                {" "}
-                <span>
-                  <b>And the amount of grouping is not a finding.</b>
-                  {" "}
-                  Modularity is 0.535. Rewire the network
-                  100 times keeping every country's number
-                  of partners, deal the corridor weights back out at random,
-                  and Louvain still returns 0.521 on average.
-                  12 of the
-                  100 shuffles score at or above the real
-                  network, which is z = +1.1: no evidence either way. Louvain finds communities in noise, so
-                  the number on its own was never going to say much. This one
-                  seeded run is one draw from Louvain's own randomness too: 100
-                  more seeds give nine groups 56 times out of 100 and this exact
-                  partition 0 times, with a mean NMI of 0.92 against it (as low
-                  as 0.79 on the least similar run). The partition above is
-                  published as the seeded run, not the most common one, because
-                  no single partition dominates the 100 seeds either.
-                </span>
-              </div>
-              <h3>Migrants and refugees are not the same network</h3>
-              <p className="sub">
-                The same countries, two different graphs: UN DESA's stock
-                against UNHCR's refugee counts, both 2024, from
-                {" "}
-                <code>analysis/week03_country_networks.py</code>
-                . This was
-                computed for the project weeks ago and had never reached the
-                page.
-              </p>
-              <table className="ego">
-                <tbody>
-                <tr>
-                  <th>Measure</th>
-                  <th style={{"textAlign":"right"}}>Migrants</th>
-                  <th style={{"textAlign":"right"}}>Refugees</th>
-                </tr>
-                <tr>
-                  <td>Countries</td>
-                  <td style={{"textAlign":"right"}}>232</td>
-                  <td style={{"textAlign":"right"}}>204</td>
-                </tr>
-                <tr>
-                  <td>Corridors</td>
-                  <td style={{"textAlign":"right"}}>9,035</td>
-                  <td style={{"textAlign":"right"}}>4,792</td>
-                </tr>
-                <tr>
-                  <td>People</td>
-                  <td style={{"textAlign":"right"}}>282m</td>
-                  <td style={{"textAlign":"right"}}>31m</td>
-                </tr>
-                <tr>
-                  <td>Reciprocity</td>
-                  <td style={{"textAlign":"right"}}>0.41 (null 0.26 ± 0.004, z = +36.2)</td>
-                  <td style={{"textAlign":"right"}}>0.11 (null 0.07 ± 0.003, z = +10.9)</td>
-                </tr>
-                <tr>
-                  <td>Clustering</td>
-                  <td style={{"textAlign":"right"}}>0.71 (null 0.67 ± 0.002, z = +17.2)</td>
-                  <td style={{"textAlign":"right"}}>0.60 (null 0.61 ± 0.004, z = −4.1)</td>
-                </tr>
-                <tr>
-                  <td>Degree assortativity</td>
-                  <td style={{"textAlign":"right"}}>−0.26 (null −0.33 ± 0.003, z = +22.0)</td>
-                  <td style={{"textAlign":"right"}}>−0.34 (null −0.31 ± 0.004, z = −8.7)</td>
-                </tr>
-                <tr>
-                  <td>Average distance</td>
-                  <td style={{"textAlign":"right"}}>1.75 (null 1.73 ± 0.001, z = +8.1)</td>
-                  <td style={{"textAlign":"right"}}>1.87 (null 1.84 ± 0.009, z = +3.2)</td>
-                </tr>
-                <tr>
-                  <td>Diameter</td>
-                  <td style={{"textAlign":"right"}}>3 (null 3, no spread)</td>
-                  <td style={{"textAlign":"right"}}>4 (null 3.94 ± 0.237, z = +0.3)</td>
-                </tr>
-                <tr>
-                  <td>Largest clique</td>
-                  <td style={{"textAlign":"right"}}>43 (null 27.31 ± 1.172, z = +13.4)</td>
-                  <td style={{"textAlign":"right"}}>20 (null 21.10 ± 0.985, z = −1.1)</td>
-                </tr>
-                </tbody>
-              </table>
-              <p className="sub">
-                Clustering, assortativity, average distance, diameter and the
-                largest clique are all computed on the undirected, unweighted
-                core: whether two countries share any corridor, not how many
-                people or how many corridors. The null is 100 degree-preserving
-                double-edge-swap shuffles of that same core, from
-                {" "}
-                <code>analysis/week03_country_networks.py</code>
-                ; z is (real −
-                null mean) / null standard deviation. Reciprocity needs the
-                direction, so it uses the directed network and 100 directed
-                shuffles that keep every country's number of origins and of
-                destinations, from
-                {" "}
-                <code>analysis/week03_reciprocity.py</code>
-                . The migrant network's
-                diameter never moved across 100 shuffles, so it has no z to
-                report.
-              </p>
-              <div className="notice">
-                <span className="ico">💡</span>
-                {" "}
-                <span>
-                  <b>
-                    Of the fifteen biggest destinations in each network,
-                    only four appear in both: Germany, France, Jordan, Turkey.
-                  </b>
-                  {" "}
-                  Comparing 0.41 against 0.11 the way the table does is unfair
-                  to the smaller network, because reciprocity rises with
-                  density on its own: in a directed graph wired at random, the
-                  share of arcs whose reverse also exists is just the density.
-                  Against that baseline migration is reciprocal
-                  {" "}
-                  <strong>2.4×</strong>
-                  {" "}
-                  more than chance, and displacement
-                  {" "}
-                  <strong>0.9×</strong>
-                  . The table's shuffles set a different
-                  bar, because they keep every country's number of origins and
-                  destinations. For migration that raises chance reciprocity
-                  from 0.17 to 0.26, since countries that take people from many
-                  origins tend to send people to many. For displacement it
-                  lowers chance reciprocity from 0.12 to 0.07, since the
-                  countries hosting refugees from the most origins send
-                  refugees to few. Both networks clear their bar, migration by
-                  0.14 and displacement by 0.03. People who move for work come
-                  and go. People who flee go back down the same edge far less
-                  often, though more often than their countries' partner
-                  counts alone would produce. The eleven destinations that are refugee-only are
-                  Chad, Uganda, Bangladesh, Kenya, Lebanon and their
-                  neighbours, and not one of them appears in the migration
-                  top fifteen.
-                </span>
-              </div>
-              <details className="qa" id="cliques">
-                <summary>The two largest cliques, by name</summary>
-                <p className="sub">
-                  <b>Migrants (43 countries):</b>
-                  {" "}
-                  Argentina, Australia,
-                  Austria, Belgium, Bolivia, Brazil, Bulgaria, Canada, Chile,
-                  Colombia, Costa Rica, Croatia, Cyprus, Denmark, Estonia,
-                  Finland, France, Germany, Greece, Hungary, Iceland, Israel,
-                  Italy, Kingdom of the Netherlands, Latvia, Lithuania,
-                  Luxembourg, Mexico, Norway, People's Republic of China,
-                  Peru, Poland, Portugal, Romania, Russia, Slovakia, Slovenia,
-                  South Africa, Spain, Switzerland, United Kingdom, United
-                  States, Venezuela: every pair among them shares at least one
-                  migration corridor in either direction.
-                </p>
-                <p className="sub">
-                  <b>Refugees (20 countries):</b>
-                  {" "}
-                  Brazil, Canada, Egypt,
-                  Eritrea, Ethiopia, Germany, Iraq, Italy, Ivory Coast, Kingdom
-                  of the Netherlands, Lebanon, Morocco, Norway, Somalia,
-                  Sudan, Sweden, Syria, United Kingdom, United States, Yemen: a
-                  mix of asylum countries and the origins that send them
-                  refugees, each pair connected by a corridor.
-                </p>
+              <details className="qa" id="communities-method">
+                <summary>
+                  <span className="qa-cue">How the groups were found, and refugees against migrants</span>
+                </summary>
+                <div className="qa-body">
+                  <p className="sub">
+                    A course on social graphs asks this in week three and this post
+                    had not. Louvain on the undirected network, weighted by people
+                    moving in both directions and cut at corridors of 10,000 or
+                    more, in
+                    {" "}
+                    <code>analysis/week03_communities.py</code>
+                    . It returns
+                    nine groups over 208 countries, and they name
+                    themselves.
+                  </p>
+                  <div className="notice">
+                    <span className="ico">🧪</span>
+                    {" "}
+                    <span>
+                      <b>And the amount of grouping is not a finding.</b>
+                      {" "}
+                      Modularity is 0.535. Rewire the network
+                      100 times keeping every country's number
+                      of partners, deal the corridor weights back out at random,
+                      and Louvain still returns 0.521 on average.
+                      12 of the
+                      100 shuffles score at or above the real
+                      network, which is z = +1.1: no evidence either way. Louvain finds communities in noise, so
+                      the number on its own was never going to say much. This one
+                      seeded run is one draw from Louvain's own randomness too: 100
+                      more seeds give nine groups 56 times out of 100 and this exact
+                      partition 0 times, with a mean NMI of 0.92 against it (as low
+                      as 0.79 on the least similar run). The partition above is
+                      published as the seeded run, not the most common one, because
+                      no single partition dominates the 100 seeds either.
+                    </span>
+                  </div>
+                  <h3>Migrants and refugees are not the same network</h3>
+                  <p className="sub">
+                    The same countries, two different graphs: UN DESA's stock
+                    against UNHCR's refugee counts, both 2024, from
+                    {" "}
+                    <code>analysis/week03_country_networks.py</code>
+                    . This was
+                    computed for the project weeks ago and had never reached the
+                    page.
+                  </p>
+                  <table className="ego">
+                    <tbody>
+                    <tr>
+                      <th>Measure</th>
+                      <th style={{"textAlign":"right"}}>Migrants</th>
+                      <th style={{"textAlign":"right"}}>Refugees</th>
+                    </tr>
+                    <tr>
+                      <td>Countries</td>
+                      <td style={{"textAlign":"right"}}>232</td>
+                      <td style={{"textAlign":"right"}}>204</td>
+                    </tr>
+                    <tr>
+                      <td>Corridors</td>
+                      <td style={{"textAlign":"right"}}>9,035</td>
+                      <td style={{"textAlign":"right"}}>4,792</td>
+                    </tr>
+                    <tr>
+                      <td>People</td>
+                      <td style={{"textAlign":"right"}}>282m</td>
+                      <td style={{"textAlign":"right"}}>31m</td>
+                    </tr>
+                    <tr>
+                      <td>Reciprocity</td>
+                      <td style={{"textAlign":"right"}}>0.41 (null 0.26 ± 0.004, z = +36.2)</td>
+                      <td style={{"textAlign":"right"}}>0.11 (null 0.07 ± 0.003, z = +10.9)</td>
+                    </tr>
+                    <tr>
+                      <td>Clustering</td>
+                      <td style={{"textAlign":"right"}}>0.71 (null 0.67 ± 0.002, z = +17.2)</td>
+                      <td style={{"textAlign":"right"}}>0.60 (null 0.61 ± 0.004, z = −4.1)</td>
+                    </tr>
+                    <tr>
+                      <td>Degree assortativity</td>
+                      <td style={{"textAlign":"right"}}>−0.26 (null −0.33 ± 0.003, z = +22.0)</td>
+                      <td style={{"textAlign":"right"}}>−0.34 (null −0.31 ± 0.004, z = −8.7)</td>
+                    </tr>
+                    <tr>
+                      <td>Average distance</td>
+                      <td style={{"textAlign":"right"}}>1.75 (null 1.73 ± 0.001, z = +8.1)</td>
+                      <td style={{"textAlign":"right"}}>1.87 (null 1.84 ± 0.009, z = +3.2)</td>
+                    </tr>
+                    <tr>
+                      <td>Diameter</td>
+                      <td style={{"textAlign":"right"}}>3 (null 3, no spread)</td>
+                      <td style={{"textAlign":"right"}}>4 (null 3.94 ± 0.237, z = +0.3)</td>
+                    </tr>
+                    <tr>
+                      <td>Largest clique</td>
+                      <td style={{"textAlign":"right"}}>43 (null 27.31 ± 1.172, z = +13.4)</td>
+                      <td style={{"textAlign":"right"}}>20 (null 21.10 ± 0.985, z = −1.1)</td>
+                    </tr>
+                    </tbody>
+                  </table>
+                  <p className="sub">
+                    Clustering, assortativity, average distance, diameter and the
+                    largest clique are all computed on the undirected, unweighted
+                    core: whether two countries share any corridor, not how many
+                    people or how many corridors. The null is 100 degree-preserving
+                    double-edge-swap shuffles of that same core, from
+                    {" "}
+                    <code>analysis/week03_country_networks.py</code>
+                    ; z is (real −
+                    null mean) / null standard deviation. Reciprocity needs the
+                    direction, so it uses the directed network and 100 directed
+                    shuffles that keep every country's number of origins and of
+                    destinations, from
+                    {" "}
+                    <code>analysis/week03_reciprocity.py</code>
+                    . The migrant network's
+                    diameter never moved across 100 shuffles, so it has no z to
+                    report.
+                  </p>
+                  <div className="notice">
+                    <span className="ico">💡</span>
+                    {" "}
+                    <span>
+                      <b>
+                        Of the fifteen biggest destinations in each network,
+                        only four appear in both: Germany, France, Jordan, Turkey.
+                      </b>
+                      {" "}
+                      Comparing 0.41 against 0.11 the way the table does is unfair
+                      to the smaller network, because reciprocity rises with
+                      density on its own: in a directed graph wired at random, the
+                      share of arcs whose reverse also exists is just the density.
+                      Against that baseline migration is reciprocal
+                      {" "}
+                      <strong>2.4×</strong>
+                      {" "}
+                      more than chance, and displacement
+                      {" "}
+                      <strong>0.9×</strong>
+                      . The table's shuffles set a different
+                      bar, because they keep every country's number of origins and
+                      destinations. For migration that raises chance reciprocity
+                      from 0.17 to 0.26, since countries that take people from many
+                      origins tend to send people to many. For displacement it
+                      lowers chance reciprocity from 0.12 to 0.07, since the
+                      countries hosting refugees from the most origins send
+                      refugees to few. Both networks clear their bar, migration by
+                      0.14 and displacement by 0.03. People who move for work come
+                      and go. People who flee go back down the same edge far less
+                      often, though more often than their countries' partner
+                      counts alone would produce. The eleven destinations that are refugee-only are
+                      Chad, Uganda, Bangladesh, Kenya, Lebanon and their
+                      neighbours, and not one of them appears in the migration
+                      top fifteen.
+                    </span>
+                  </div>
+                  <details className="qa" id="cliques">
+                    <summary>The two largest cliques, by name</summary>
+                    <p className="sub">
+                      <b>Migrants (43 countries):</b>
+                      {" "}
+                      Argentina, Australia,
+                      Austria, Belgium, Bolivia, Brazil, Bulgaria, Canada, Chile,
+                      Colombia, Costa Rica, Croatia, Cyprus, Denmark, Estonia,
+                      Finland, France, Germany, Greece, Hungary, Iceland, Israel,
+                      Italy, Kingdom of the Netherlands, Latvia, Lithuania,
+                      Luxembourg, Mexico, Norway, People's Republic of China,
+                      Peru, Poland, Portugal, Romania, Russia, Slovakia, Slovenia,
+                      South Africa, Spain, Switzerland, United Kingdom, United
+                      States, Venezuela: every pair among them shares at least one
+                      migration corridor in either direction.
+                    </p>
+                    <p className="sub">
+                      <b>Refugees (20 countries):</b>
+                      {" "}
+                      Brazil, Canada, Egypt,
+                      Eritrea, Ethiopia, Germany, Iraq, Italy, Ivory Coast, Kingdom
+                      of the Netherlands, Lebanon, Morocco, Norway, Somalia,
+                      Sudan, Sweden, Syria, United Kingdom, United States, Yemen: a
+                      mix of asylum countries and the origins that send them
+                      refugees, each pair connected by a corridor.
+                    </p>
+                  </details>
+                  <table className="ego">
+                    <tbody>
+                    <tr>
+                      <th style={{"textAlign":"right"}}>#</th>
+                      <th>Where migrants live</th>
+                      <th style={{"textAlign":"left"}}>Where refugees are</th>
+                    </tr>
+                    <tr>
+                      <td style={{"textAlign":"right"}}>1</td>
+                      <td>United States</td>
+                      <td style={{"textAlign":"left"}}>Iran</td>
+                    </tr>
+                    <tr>
+                      <td style={{"textAlign":"right"}}>2</td>
+                      <td style={{"fontWeight":"700"}}>Germany</td>
+                      <td style={{"textAlign":"left"}}>Turkey</td>
+                    </tr>
+                    <tr>
+                      <td style={{"textAlign":"right"}}>3</td>
+                      <td>Saudi Arabia</td>
+                      <td style={{"textAlign":"left","fontWeight":"700"}}>Germany</td>
+                    </tr>
+                    <tr>
+                      <td style={{"textAlign":"right"}}>4</td>
+                      <td>Canada</td>
+                      <td style={{"textAlign":"left"}}>Uganda</td>
+                    </tr>
+                    <tr>
+                      <td style={{"textAlign":"right"}}>5</td>
+                      <td>United Kingdom</td>
+                      <td style={{"textAlign":"left"}}>Pakistan</td>
+                    </tr>
+                    <tr>
+                      <td style={{"textAlign":"right"}}>6</td>
+                      <td>Spain</td>
+                      <td style={{"textAlign":"left"}}>Chad</td>
+                    </tr>
+                    <tr>
+                      <td style={{"textAlign":"right"}}>7</td>
+                      <td>France</td>
+                      <td style={{"textAlign":"left"}}>Poland</td>
+                    </tr>
+                    <tr>
+                      <td style={{"textAlign":"right"}}>8</td>
+                      <td>Australia</td>
+                      <td style={{"textAlign":"left"}}>Ethiopia</td>
+                    </tr>
+                    <tr>
+                      <td style={{"textAlign":"right"}}>9</td>
+                      <td>United Arab Emirates</td>
+                      <td style={{"textAlign":"left"}}>Bangladesh</td>
+                    </tr>
+                    <tr>
+                      <td style={{"textAlign":"right"}}>10</td>
+                      <td>Russia</td>
+                      <td style={{"textAlign":"left"}}>Sudan</td>
+                    </tr>
+                    </tbody>
+                  </table>
+                  <p className="fineprint">
+                    Ranked by people. Of the top ten in each, only Germany
+                    appears in both. The migrant list is the rich world; the
+                    refugee list is the countries next door to a war, and eight of
+                    its ten sit below the unweighted average GDP per head of the
+                    199 countries with World Bank figures, $22,441.
+                  </p>
+                  <h3>Why this page weights its betweenness</h3>
+                  <p className="sub">
+                    The methods note says that betweenness on the raw matrix ranks
+                    statistics offices rather than countries. Here is the evidence,
+                    from the same script:
+                    {" "}
+                    <b>unweighted, undirected betweenness</b>
+                    {" "}
+                    on the 2024 network, the same measure and the same year, with a
+                    rising floor on how big a corridor has to be to count. The
+                    bottom row switches to the measure the rest of this page
+                    actually uses: weighted, directed, 2020.
+                  </p>
+                  <table className="ego">
+                    <tbody>
+                    <tr>
+                      <th style={{"textAlign":"right"}}>Corridor floor</th>
+                      <th style={{"textAlign":"right"}}>Corridors left</th>
+                      <th style={{"textAlign":"left"}}>Top brokers</th>
+                    </tr>
+                    <tr>
+                      <td style={{"textAlign":"right"}}>0</td>
+                      <td style={{"textAlign":"right"}}>9,035</td>
+                      <td style={{"textAlign":"left"}}>Australia, Norway, United States, Denmark, Greece</td>
+                    </tr>
+                    <tr>
+                      <td style={{"textAlign":"right"}}>1,000</td>
+                      <td style={{"textAlign":"right"}}>3,767</td>
+                      <td style={{"textAlign":"left"}}>Australia, Canada, France, United States, Italy</td>
+                    </tr>
+                    <tr>
+                      <td style={{"textAlign":"right"}}>10,000</td>
+                      <td style={{"textAlign":"right"}}>1,780</td>
+                      <td style={{"textAlign":"left"}}>Canada, France, United States, Australia, Italy</td>
+                    </tr>
+                    <tr>
+                      <td style={{"textAlign":"right"}}>50,000</td>
+                      <td style={{"textAlign":"right"}}>769</td>
+                      <td style={{"textAlign":"left"}}>France, United States, United Kingdom, Spain, Russia</td>
+                    </tr>
+                    <tr>
+                      <td style={{"textAlign":"right"}}>100,000</td>
+                      <td style={{"textAlign":"right"}}>503</td>
+                      <td style={{"textAlign":"left"}}>United States, France, Germany, United Kingdom, Russia</td>
+                    </tr>
+                    <tr>
+                      <td style={{"textAlign":"right"}}>weighted, directed, 2020</td>
+                      <td style={{"textAlign":"right"}}>9,031</td>
+                      <td style={{"textAlign":"left"}}>United States, United Kingdom, Germany, France, Spain</td>
+                    </tr>
+                    </tbody>
+                  </table>
+                  <div className="notice">
+                    <span className="ico">💡</span>
+                    {" "}
+                    <span>
+                      <b>
+                        At a floor of zero the top brokers are Australia, Norway
+                        and Denmark. Raise it a little and Norway and Denmark vanish;
+                        Australia holds on two floors longer, dropping out only at
+                        50,000.
+                      </b>
+                      {" "}
+                      None of the three is a hub for anybody. They are register
+                      countries: a population register names every origin however
+                      small, so they collect hundreds of one-person corridors that
+                      a survey-based country files under "other". Those corridors
+                      are real rows in the table and they are what put those three
+                      on top. By a floor of 100,000 the unweighted list is the
+                      United States, France, Germany, the United Kingdom and
+                      Russia; the weighted, directed measure this page actually
+                      uses agrees on four of those five without needing a floor at
+                      all. The measure did not change across the first five rows;
+                      what changed is whether a corridor of four people counts as a
+                      path.
+                    </span>
+                  </div>
+                </div>
               </details>
-              <table className="ego">
-                <tbody>
-                <tr>
-                  <th style={{"textAlign":"right"}}>#</th>
-                  <th>Where migrants live</th>
-                  <th style={{"textAlign":"left"}}>Where refugees are</th>
-                </tr>
-                <tr>
-                  <td style={{"textAlign":"right"}}>1</td>
-                  <td>United States</td>
-                  <td style={{"textAlign":"left"}}>Iran</td>
-                </tr>
-                <tr>
-                  <td style={{"textAlign":"right"}}>2</td>
-                  <td style={{"fontWeight":"700"}}>Germany</td>
-                  <td style={{"textAlign":"left"}}>Turkey</td>
-                </tr>
-                <tr>
-                  <td style={{"textAlign":"right"}}>3</td>
-                  <td>Saudi Arabia</td>
-                  <td style={{"textAlign":"left","fontWeight":"700"}}>Germany</td>
-                </tr>
-                <tr>
-                  <td style={{"textAlign":"right"}}>4</td>
-                  <td>Canada</td>
-                  <td style={{"textAlign":"left"}}>Uganda</td>
-                </tr>
-                <tr>
-                  <td style={{"textAlign":"right"}}>5</td>
-                  <td>United Kingdom</td>
-                  <td style={{"textAlign":"left"}}>Pakistan</td>
-                </tr>
-                <tr>
-                  <td style={{"textAlign":"right"}}>6</td>
-                  <td>Spain</td>
-                  <td style={{"textAlign":"left"}}>Chad</td>
-                </tr>
-                <tr>
-                  <td style={{"textAlign":"right"}}>7</td>
-                  <td>France</td>
-                  <td style={{"textAlign":"left"}}>Poland</td>
-                </tr>
-                <tr>
-                  <td style={{"textAlign":"right"}}>8</td>
-                  <td>Australia</td>
-                  <td style={{"textAlign":"left"}}>Ethiopia</td>
-                </tr>
-                <tr>
-                  <td style={{"textAlign":"right"}}>9</td>
-                  <td>United Arab Emirates</td>
-                  <td style={{"textAlign":"left"}}>Bangladesh</td>
-                </tr>
-                <tr>
-                  <td style={{"textAlign":"right"}}>10</td>
-                  <td>Russia</td>
-                  <td style={{"textAlign":"left"}}>Sudan</td>
-                </tr>
-                </tbody>
-              </table>
-              <p className="fineprint">
-                Ranked by people. Of the top ten in each, only Germany
-                appears in both. The migrant list is the rich world; the
-                refugee list is the countries next door to a war, and eight of
-                its ten sit below the unweighted average GDP per head of the
-                199 countries with World Bank figures, $22,441.
-              </p>
-              <h3>Why this page weights its betweenness</h3>
-              <p className="sub">
-                The methods note says that betweenness on the raw matrix ranks
-                statistics offices rather than countries. Here is the evidence,
-                from the same script:
-                {" "}
-                <b>unweighted, undirected betweenness</b>
-                {" "}
-                on the 2024 network, the same measure and the same year, with a
-                rising floor on how big a corridor has to be to count. The
-                bottom row switches to the measure the rest of this page
-                actually uses: weighted, directed, 2020.
-              </p>
-              <table className="ego">
-                <tbody>
-                <tr>
-                  <th style={{"textAlign":"right"}}>Corridor floor</th>
-                  <th style={{"textAlign":"right"}}>Corridors left</th>
-                  <th style={{"textAlign":"left"}}>Top brokers</th>
-                </tr>
-                <tr>
-                  <td style={{"textAlign":"right"}}>0</td>
-                  <td style={{"textAlign":"right"}}>9,035</td>
-                  <td style={{"textAlign":"left"}}>Australia, Norway, United States, Denmark, Greece</td>
-                </tr>
-                <tr>
-                  <td style={{"textAlign":"right"}}>1,000</td>
-                  <td style={{"textAlign":"right"}}>3,767</td>
-                  <td style={{"textAlign":"left"}}>Australia, Canada, France, United States, Italy</td>
-                </tr>
-                <tr>
-                  <td style={{"textAlign":"right"}}>10,000</td>
-                  <td style={{"textAlign":"right"}}>1,780</td>
-                  <td style={{"textAlign":"left"}}>Canada, France, United States, Australia, Italy</td>
-                </tr>
-                <tr>
-                  <td style={{"textAlign":"right"}}>50,000</td>
-                  <td style={{"textAlign":"right"}}>769</td>
-                  <td style={{"textAlign":"left"}}>France, United States, United Kingdom, Spain, Russia</td>
-                </tr>
-                <tr>
-                  <td style={{"textAlign":"right"}}>100,000</td>
-                  <td style={{"textAlign":"right"}}>503</td>
-                  <td style={{"textAlign":"left"}}>United States, France, Germany, United Kingdom, Russia</td>
-                </tr>
-                <tr>
-                  <td style={{"textAlign":"right"}}>weighted, directed, 2020</td>
-                  <td style={{"textAlign":"right"}}>9,031</td>
-                  <td style={{"textAlign":"left"}}>United States, United Kingdom, Germany, France, Spain</td>
-                </tr>
-                </tbody>
-              </table>
-              <div className="notice">
-                <span className="ico">💡</span>
-                {" "}
-                <span>
-                  <b>
-                    At a floor of zero the top brokers are Australia, Norway
-                    and Denmark. Raise it a little and Norway and Denmark vanish;
-                    Australia holds on two floors longer, dropping out only at
-                    50,000.
-                  </b>
-                  {" "}
-                  None of the three is a hub for anybody. They are register
-                  countries: a population register names every origin however
-                  small, so they collect hundreds of one-person corridors that
-                  a survey-based country files under "other". Those corridors
-                  are real rows in the table and they are what put those three
-                  on top. By a floor of 100,000 the unweighted list is the
-                  United States, France, Germany, the United Kingdom and
-                  Russia; the weighted, directed measure this page actually
-                  uses agrees on four of those five without needing a floor at
-                  all. The measure did not change across the first five rows;
-                  what changed is whether a corridor of four people counts as a
-                  path.
-                </span>
-              </div>
             </div>
             <div className="card" id="surprise">
               <h3>What surprised us</h3>
