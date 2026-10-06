@@ -57,10 +57,11 @@ SCRIPTS = {
     "week03_migration_centrality": "analysis/week03_migration_centrality.py",
     "week03_reciprocity": "analysis/week03_reciprocity.py",
     "build_world_outline": "scripts/migration/build_world_outline.py",
+    "course_reference": "analysis/course_reference.py",
 }
 WEEK = {name: ("week02" if name == "analyse_week2_models" else
                "week03" if name == "build_world_outline" else
-               "week01" if name == "arcade_data" else name[:6]) for name in SCRIPTS}
+               "week01" if name in ("arcade_data", "course_reference") else name[:6]) for name in SCRIPTS}
 # script -> the scripts whose output it reads.
 AFTER = {
     "week01_presentation": ("week01_facts",),
@@ -76,6 +77,7 @@ AFTER = {
     "week03_tails": ("week03_corridor_control",),
     "week03_asylum": ("week03_corridor_control",),
     "week03_passengers": ("week03_corridor_control",),
+    "course_reference": ("week01_facts", "week02_nullmodels"),
 }
 MAX_PARALLEL = os.cpu_count() or 4
 

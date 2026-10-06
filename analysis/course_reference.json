@@ -1,0 +1,138 @@
+{
+ "reviewed": "2026-10-06",
+ "network": [
+  {
+   "brief": "https://sunelehmann.com/socialgraphs2026-web/weeks/week1.html",
+   "what": "nodes",
+   "course": 303,
+   "ours": 303,
+   "digits": 0,
+   "match": true
+  },
+  {
+   "brief": "https://sunelehmann.com/socialgraphs2026-web/weeks/week1.html",
+   "what": "directed links",
+   "course": 1784,
+   "ours": 1784,
+   "digits": 0,
+   "match": true
+  },
+  {
+   "brief": "https://sunelehmann.com/socialgraphs2026-web/weeks/week1.html",
+   "what": "undirected pairs",
+   "course": 1434,
+   "ours": 1434,
+   "digits": 0,
+   "match": true
+  },
+  {
+   "brief": "https://sunelehmann.com/socialgraphs2026-web/weeks/week1.html",
+   "what": "pairs linked both ways",
+   "course": 350,
+   "ours": 350,
+   "digits": 0,
+   "match": true
+  },
+  {
+   "brief": "https://sunelehmann.com/socialgraphs2026-web/weeks/week1.html",
+   "what": "average undirected degree",
+   "course": 9.5,
+   "ours": 9.465,
+   "digits": 1,
+   "match": true
+  },
+  {
+   "brief": "https://sunelehmann.com/socialgraphs2026-web/weeks/week1.html",
+   "what": "isolates",
+   "course": 17,
+   "ours": 17,
+   "digits": 0,
+   "match": true
+  },
+  {
+   "brief": "https://sunelehmann.com/socialgraphs2026-web/weeks/week1.html",
+   "what": "characters on the one island",
+   "course": 9,
+   "ours": 9,
+   "digits": 0,
+   "match": true
+  },
+  {
+   "brief": "https://sunelehmann.com/socialgraphs2026-web/weeks/week1.html",
+   "what": "highest in-degree (Spider-Man)",
+   "course": 106,
+   "ours": 106,
+   "digits": 0,
+   "match": true
+  },
+  {
+   "brief": "https://sunelehmann.com/socialgraphs2026-web/weeks/week1.html",
+   "what": "highest out-degree (Betsy Braddock)",
+   "course": 28,
+   "ours": 28,
+   "digits": 0,
+   "match": true
+  },
+  {
+   "brief": "https://sunelehmann.com/socialgraphs2026-web/weeks/week3.html",
+   "what": "average distance in the giant component",
+   "course": 2.67,
+   "ours": 2.674,
+   "digits": 2,
+   "match": true
+  },
+  {
+   "brief": "https://sunelehmann.com/socialgraphs2026-web/weeks/week3.html",
+   "what": "diameter of the giant component",
+   "course": 6,
+   "ours": 6,
+   "digits": 0,
+   "match": true
+  },
+  {
+   "brief": "https://sunelehmann.com/socialgraphs2026-web/weeks/week3.html",
+   "what": "largest strongly connected component",
+   "course": 229,
+   "ours": 229,
+   "digits": 0,
+   "match": true
+  },
+  {
+   "brief": "https://sunelehmann.com/socialgraphs2026-web/weeks/week2.html",
+   "what": "random network: biggest hub's degree, mean",
+   "course": 19,
+   "ours": 19.256,
+   "digits": 0,
+   "match": true
+  },
+  {
+   "brief": "https://sunelehmann.com/socialgraphs2026-web/weeks/week2.html",
+   "what": "random network: average distance, mean",
+   "course": 2.8,
+   "ours": 2.7778,
+   "digits": 1,
+   "match": true
+  }
+ ],
+ "text": {
+  "brief": "https://sunelehmann.com/socialgraphs2026-web/weeks/week5.html",
+  "course": {
+   "tokens": 727000,
+   "types": 27000,
+   "hapax_share": 0.36
+  },
+  "ours": {
+   "rule": "runs of letters in any alphabet, an inner apostrophe or hyphen kept, lowercased, a possessive 's removed; digits and punctuation dropped",
+   "tokens": 713617,
+   "types": 27754,
+   "hapax_share": 0.383,
+   "kept_whole": 14341
+  },
+  "spacy": {
+   "rule": "spaCy's English tokenizer, lowercased, punctuation and spaces dropped",
+   "tokens": 744495,
+   "types": 26987,
+   "hapax_share": 0.36
+  }
+ }
+}
