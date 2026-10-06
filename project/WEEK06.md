@@ -97,7 +97,7 @@ Script: `analysis/week06_lookalikes.py` writes `analysis/week06_lookalikes.json`
 | # | Section | Anchor | Answer |
 | --- | --- | --- | --- |
 | 1 | Pick a character | `#explore` | The explorer: a page's ten nearest pages with names kept and removed. Closest page linked for 223 of 303 with names, 125 without |
-| 2 | Names carry the links | `#names` | Linked in ten: TF-IDF 4.01, names only 3.96, names removed 1.91, as many other words of the same rarity removed 4.00 ± 0.01 (they carry 19.8% of the weight, names 44.5%). Of the 25 closest unlinked pairs, 18 story, 2 title, 5 name only |
+| 2 | Names carry the links | `#names` | Linked in ten: TF-IDF 4.01, names only 3.96, names removed 1.91, as many other words of the same rarity removed 4.00 ± 0.01 (they carry 19.8% of the weight, names 44.5%). Of the 25 closest unlinked pairs, 18 story, 2 title, 5 name only; names removed, 23 template, 2 story |
 | 3 | Without names, pages lean toward women's pages | `#gender` | Women's pages fill 48% of all ten-nearest lists (17% of pages); women's lists 96% women, men's 44%, gap 51 points (z 23.9); 13 points with he and she removed too |
 
 Traps written down for next time:

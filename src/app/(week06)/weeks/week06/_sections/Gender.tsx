@@ -15,22 +15,22 @@ export function Gender() {
   return (
     <PostSection id="gender" owner="Gyula">
       <SectionOpener num="3" title="Without names, pages lean toward women's pages">
-        With the names gone, she and her are among the heaviest words left, and every page drifts toward pages about women.
+        With the names gone, every page drifts toward pages about women, and she and her pull women's pages closest to each other.
       </SectionOpener>
       <QuestionCard
         section="gender"
         num="3A"
         question="With the names gone, what makes two pages read alike?"
-        answer="Pronouns, mostly. Pages about women fill 48% of all the ten-nearest lists and make up 17% of the pages."
+        answer="Pages about women. They fill 48% of all the ten-nearest lists and make up 17% of the pages; she and her make a woman's list almost all women."
         layout="beside"
         did={
           <TermProse as="p" className="sub" roots={["#gender-did p"]} terms={TERMS} after={[DATA]}>
-            Wikidata labels 197 of the pages as a woman or a man: 52 women and 145 men. For each group we counted the women among their ten nearest labelled pages. A shuffle deals the labels out again over the same pages and keeps every list; we ran 1,000. A page that sits in many lists lifts women's and men's shares alike, so the gap between the two is what it cannot explain. Then we removed he, she and their forms as well.
+            Wikidata labels 197 of the pages as a woman or a man: 52 women and 145 men. For each group we counted the women among the labelled pages in their ten nearest. A shuffle deals the labels out again over the same pages and keeps every list; we ran 1,000. A page that sits in many lists lifts women's and men's shares alike, so the gap between the two is what it cannot explain. Then we removed he, she and their forms as well.
           </TermProse>
         }
         surprise={
           <Notice icon="💡" headline="What to notice">
-            He is on 291 pages and his on 300, so TF-IDF gives them almost no weight: 0.04 per use against 0.46 for she. Without names a woman's labelled nearest pages are 96% women and a man's 44%, against 26% and 27% shuffled. Removing the pronouns too cuts the gap from 51 to 13 points, but women's pages still fill 44% of the lists, and we have not found why.
+            He is on 291 pages and his on 300, so TF-IDF gives them almost no weight: an IDF of 0.04 against 0.46 for she. Without names a woman's labelled nearest pages are 96% women and a man's 44%, against 26% and 27% shuffled. Removing the pronouns too cuts the gap from 51 to 13 points, but women's pages still fill 44% of the lists, and we have not found why.
           </Notice>
         }
         figure={
@@ -64,7 +64,7 @@ export function Gender() {
           </Drawer>
           <Drawer label="What we read" bodyId="gender-checked">
             <p>
-              We read the 25 most similar pairs that do not link, names removed. All 25 join two women, and every match leads with she and her. One pair shares a story: Mockingbird and Jessica Drew were both New Avengers after Secret Invasion. Some share a theme, such as She-Hulk and Spitfire, who both got their powers from a blood transfusion. The other 24 share no team or storyline at the same time.
+              We read the 25 most similar pairs that do not link, names removed. All 25 join two women, and every match leads with she and her. Two pairs share a story: Mockingbird and Jessica Drew were both New Avengers after Secret Invasion, and She-Hulk and Spider-Woman (Gwen Stacy) both fight in A-Force during Secret Wars. Some share a theme, such as She-Hulk and Spitfire, who both got their powers from a blood transfusion. The other 23 share no team or storyline at the same time.
             </p>
             <Part part="readRemoved" />
           </Drawer>

@@ -13,7 +13,7 @@ export function Findings() {
         Without names, 1.91 of a page's ten nearest pages are linked with it, against 4.01 with them and 3.96 with names alone. Of the 25 closest unlinked pairs, 20 share a story or a title and 5 share only a name.
       </FindingRow>
       <FindingRow num="3" title="Without names, pages lean toward women's pages" mini={<Part part="3" />} href="#gender" link="Section 3 →">
-        Pages about women fill 48% of the ten-nearest lists and make up 17% of the pages: he and his sit on nearly every page, so TF-IDF weighs she and her far more.
+        Pages about women fill 48% of the ten-nearest lists and make up 17% of the pages, and still 44% with he and she removed. She and her make a woman's list 96% women.
       </FindingRow>
     </FindingsStrip>
   );

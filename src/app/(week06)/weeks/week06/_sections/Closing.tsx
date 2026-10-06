@@ -17,15 +17,15 @@ export function Closing() {
             TF-IDF finds the link network because it finds names: names alone get 3.96 linked pages among the ten nearest,
             and without them the count falls from 4.01 to 1.91. Of the 25 most similar pairs that do not link, 20 still
             share a story or a title and 5 share only a name word. Take the names out and every page leans toward pages
-            about women, which fill 48% of the lists: he and his sit on nearly every page, so TF-IDF weighs she and her far
-            more.
+            about women, which fill 48% of the lists, for reasons we have not found. She and her, which TF-IDF weighs far
+            above he and his, then put women's pages closest to each other.
           </>
         }
         limit={
           <Notice icon="!" gap headline="One important limit">
             We asked one representation, TF-IDF on single words. Word vectors from the second half of the brief might
             find shared stories without names; we did not try them, so the lean toward women's pages holds for TF-IDF
-            only, which gives a word on nearly every page almost no weight.
+            only.
           </Notice>
         }
         next={

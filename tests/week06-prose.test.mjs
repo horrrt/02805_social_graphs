@@ -87,9 +87,9 @@ test("the hand-read pairs match their counts", () => {
   says("findings", `Of the ${f.read.n} closest unlinked pairs, ${story} share a story or a title and ${n(kept, "name")} share only a name`);
   says("closing", `Of the ${f.read.n} most similar pairs that do not link, ${story} still share a story or a title and ${n(kept, "name")} share only a name word`);
   assert.equal(f.read.no_names_both_women, f.read.n);
-  assert.equal(n(removed, "story"), 1);
-  assert.equal(n(removed, "template"), f.read.n - 1);
-  says("gender", `All ${f.read.n} join two women, and every match leads with she and her. One pair shares a story`);
+  assert.equal(n(removed, "story") + n(removed, "template"), f.read.n);
+  const W = ["Zero", "One", "Two", "Three", "Four"];
+  says("gender", `All ${f.read.n} join two women, and every match leads with she and her. ${W[n(removed, "story")]} pairs share a story`);
   says("gender", `The other ${n(removed, "template")} share no team or storyline`);
   for (const p of removed) assert.deepEqual(p.words.slice(0, 2).sort(), ["her", "she"], `${p.a} · ${p.b}`);
 });
@@ -97,8 +97,9 @@ test("the hand-read pairs match their counts", () => {
 test("section 3 quotes the gender test", () => {
   const g = f.gender, nn = g.no_names, np = g.no_names_pronouns, tf = g.tfidf;
   const women = pct(nn.slots_to_women), pages = pct(g.female / f.pages);
-  says("gender", `Pages about women fill ${women} of all the ten-nearest lists and make up ${pages} of the pages`);
-  says("findings", `Pages about women fill ${women} of the ten-nearest lists and make up ${pages} of the pages`);
+  says("gender", `They fill ${women} of all the ten-nearest lists and make up ${pages} of the pages`);
+  says("findings", `Pages about women fill ${women} of the ten-nearest lists and make up ${pages} of the pages, and still ${pct(np.slots_to_women)} with he and she removed. She and her make a woman's list ${pct(nn.female.observed)} women`);
+  says("explore", `${pct(nn.female.observed)} of a woman's labelled nearest pages are women, and ${pct(nn.male.observed)} of a man's`);
   says("closing", `which fill ${women} of the lists`);
   assert.match(flatten(block(html, "top")), new RegExp(`${women}\\s*of nearest-page slots go to pages about women once names go; they are ${pages} of pages`));
   says("gender", `labels ${g.labelled} of the pages as a woman or a man: ${g.female} women and ${g.male} men`);
@@ -107,7 +108,7 @@ test("section 3 quotes the gender test", () => {
   says("gender", `the ${g.male} men's lists`);
   const p = f.pronouns;
   says("gender", `He is on ${p.pages.he} pages and his on ${p.pages.his}`);
-  says("gender", `${two(p.idf.he)} per use against ${two(p.idf.she)} for she`);
+  says("gender", `an IDF of ${two(p.idf.he)} against ${two(p.idf.she)} for she`);
   says("gender", `a woman's labelled nearest pages are ${pct(nn.female.observed)} women and a man's ${pct(nn.male.observed)}, against ${pct(nn.female.null_mean)} and ${pct(nn.male.null_mean)} shuffled`);
   says("gender", `cuts the gap from ${points(nn.gap.observed)} to ${points(np.gap.observed)} points, but women's pages still fill ${pct(np.slots_to_women)} of the lists`);
   says("gender", `women's lists are ${pct(tf.female.observed)} women and men's ${pct(tf.male.observed)}, a gap of ${points(tf.gap.observed)} points (z ${z(tf.gap.z)})`);

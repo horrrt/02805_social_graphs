@@ -316,8 +316,8 @@
    "mantle": 2
   },
   "no_names": {
-   "template": 24,
-   "story": 1
+   "template": 23,
+   "story": 2
   },
   "no_names_both_women": 25
  },
@@ -1250,8 +1250,8 @@
    "cos_no_names": 0.364,
    "name_share": 0.19,
    "distance": 2,
-   "bucket": "template",
-   "note": "the match leads with she and her; reception calls both notable female heroes; their pages put them in no team or storyline at the same time"
+   "bucket": "story",
+   "note": "the match leads with she and her, but both pages put the two in A-Force during the 2015 Secret Wars"
   },
   {
    "rep": "no_names",

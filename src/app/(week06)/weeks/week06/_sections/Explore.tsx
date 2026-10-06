@@ -13,13 +13,13 @@ export function Explore() {
   return (
     <PostSection id="explore" owner="Gyula">
       <SectionOpener num="1" title="Pick a character">
-        With names, a page reads like the pages that share its names. Without them, it reads like pages about women.
+        With names, a page reads like the pages that share its names. Without them, it leans toward pages about women.
       </SectionOpener>
       <QuestionCard
         section="explore"
         num="1A"
         question="Which pages read most like a character, and why?"
-        answer="With names kept, pages that share a name or a team with it. With names removed, mostly pages about women, for men and women alike."
+        answer="With names kept, pages that share a name or a team with it. With names removed, pages about women: 96% of a woman's labelled nearest pages are women, and 44% of a man's."
         layout="below"
         did={
           <TermProse as="p" className="sub" roots={["#explore-did p"]} terms={TERMS} after={[DATA]}>
