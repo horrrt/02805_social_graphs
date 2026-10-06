@@ -1,0 +1,21 @@
+{
+  // The site's tsconfig, plus three swaps for the Claude Design bundle:
+  // the vendor loader and next/error resolve to the shims beside this file.
+  "extends": "../../tsconfig.json",
+  "compilerOptions": {
+    "noEmit": false,
+    "declaration": true,
+    "emitDeclarationOnly": true,
+    "incremental": false,
+    "outDir": "types",
+    "rootDir": "../..",
+    "plugins": [],
+    "paths": {
+      "@/scripts/runtime/vendor.js": ["./vendor-shim.ts"],
+      "next/error": ["./next-error-stub.tsx"],
+      "@/*": ["../../src/*"]
+    }
+  },
+  "include": ["entry.ts", "*.d.ts"],
+  "exclude": []
+}
