@@ -1,8 +1,67 @@
 // Scoreboard parts shared by the rounds: the score (which counts the campaign
-// so far when a round is a level), the skip, and the hearts.
-import { useEffect, useRef, useState } from "react";
+// so far when a round is a level), the skip, the hearts, the plain boxes, the
+// best score, the result panel's next button and the keyboard shortcuts.
+import { type ReactNode, type Ref, useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
-import { type Level, SKIP_COST } from "./levels";
+import { readBest, saveBest } from "./best";
+import { FINISH, type Level, SKIP_COST } from "./levels";
+
+/** A plain scoreboard box: a small label over a bold value. `hot` lights the value. */
+export function Stat({ label, children, hot }: { label: string; children: ReactNode; hot?: boolean }) {
+  return (
+    <span className="cr-box">
+      <small>{label}</small>
+      <b data-hot={hot}>{children}</b>
+    </span>
+  );
+}
+
+/** The streak box: the multiplier the round shows, lit above ×1. */
+export const StreakBox = ({ streak }: { streak: number }) => (
+  <Stat label="Streak" hot={streak > 1}>
+    ×{streak}
+  </Stat>
+);
+
+/** The practice best; a campaign level shows none. */
+export function BestBox({ best, level, label = "Best" }: { best: number; level?: Level; label?: string }) {
+  if (level) return null;
+  return <Stat label={label}>{best.toLocaleString("en")}</Stat>;
+}
+
+/**
+ * The best score under `key`, read once on mount. record(total) keeps and
+ * saves a higher total and says whether it was a new best. A null key (a
+ * campaign level) reads 0 and saves nothing.
+ */
+export function useBest(key: string | null) {
+  const [best, setBest] = useState(0);
+  useEffect(() => setBest(readBest(key)), []);
+  const record = (total: number) => {
+    if (total <= best) return false;
+    setBest(total);
+    saveBest(key, total);
+    return true;
+  };
+  return { best, record };
+}
+
+/**
+ * The result panel's button. In a level it finishes the level once the run is
+ * over or this was the level's last item; in practice a run that is over plays
+ * again; otherwise it moves on to the next item.
+ */
+export function NextButton({ level, score, over = false, last = false, nextLabel, onNext, onAgain, buttonRef }: {
+  level?: Level; score: number; over?: boolean; last?: boolean; nextLabel: string; onNext: () => void; onAgain?: () => void;
+  buttonRef?: Ref<HTMLButtonElement>;
+}) {
+  const finish = level && (over || last);
+  return (
+    <button ref={buttonRef} type="button" className="cr-go" onClick={finish ? () => level.onDone(score) : over ? onAgain : onNext}>
+      {finish ? FINISH : over ? "Play again" : nextLabel}
+    </button>
+  );
+}
 
 /** The scoreboard's score: the level's points, plus the campaign's total when it is a level. */
 export function ScoreBox({ points, level }: { points: number; level?: Level }) {
@@ -113,23 +172,32 @@ function DeadMask() {
 }
 
 /**
- * A help button's key: pressing it clicks the button while `active`. Letter
+ * Keyboard shortcuts while `active`: a key in `map` runs its action. Letter
  * keys are skipped while the player types in a field, so a guess box keeps them.
  */
-export function useHelpKey(key: string, press: () => void, active: boolean) {
-  const run = useRef(press);
-  run.current = press;
+export function useKeys(map: Record<string, () => void>, active: boolean) {
+  const keys = useRef(map);
+  keys.current = map;
   useEffect(() => {
     if (!active) return;
     const onKey = (e: KeyboardEvent) => {
-      if (e.metaKey || e.ctrlKey || e.altKey || e.key.toLowerCase() !== key.toLowerCase()) return;
-      if (/^[a-z]$/i.test(key) && (e.target as HTMLElement | null)?.closest?.("input, textarea")) return;
+      const run = keys.current[e.key];
+      if (!run || e.metaKey || e.ctrlKey || e.altKey) return;
+      if (/^[a-z]$/i.test(e.key) && (e.target as HTMLElement | null)?.closest?.("input, textarea")) return;
       e.preventDefault();
-      run.current();
+      run();
     };
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
-  }, [key, active]);
+  }, [active]);
+}
+
+/** Clicks the button with this id, if it is on the page: a shortcut presses it as a click would. */
+export const clickButton = (id: string) => (document.getElementById(id) as HTMLButtonElement | null)?.click();
+
+/** A help button's key, in either case: pressing it clicks the button while `active`. */
+export function useHelpKey(key: string, press: () => void, active: boolean) {
+  useKeys({ [key.toLowerCase()]: press, [key.toUpperCase()]: press }, active);
 }
 
 /** The key badge on a help button. */

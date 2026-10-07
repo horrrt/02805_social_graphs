@@ -3,17 +3,16 @@
 // lands on a radar by rank. Rules live in vectors.ts; this file renders them.
 import { useEffect, useMemo, useRef, useState, type FormEvent } from "react";
 import { CosineFormula } from "./Formulas";
-import { HelpKey, ScoreBox, SkipLevel, useHelpKey } from "./LevelParts";
+import { BestBox, HelpKey, NextButton, ScoreBox, SkipLevel, Stat, StreakBox, useBest, useHelpKey } from "./LevelParts";
 import { LIMIT, speed, Ticker, timed, useCountdown, Worth } from "./pace";
 import { hotColdTour } from "./tours";
 import { StartButtons, useTour } from "./Tutorial";
-import { FINISH, type Level } from "./levels";
+import type { Level } from "./levels";
 import { shuffled } from "./rules";
 import {
   atRank, cosinesTo, type Guess, heat, HINT_COST, HINT_RANKS, type HotColdData, MAX_STREAK, points, radarPoint,
   ranks, ringRadius,
 } from "./vectors";
-import { readBest, saveBest } from "./best";
 import { Rules } from "./StartPanel";
 
 const BEST = "cold-read:best5";
@@ -88,16 +87,13 @@ export function HotColdGame({ data, random = Math.random, level, clock = Date.no
   const [score, setScore] = useState(0);
   const [streak, setStreak] = useState(0);
   const [found, setFound] = useState(0);
-  const [best, setBest] = useState(0);
   // Practice keeps its own best (normal and hard apart); a campaign level keeps none.
-  const bestKey = level ? null : BEST;
+  const { best, record } = useBest(level ? null : BEST);
   const [gained, setGained] = useState(0);
   const [news, setNews] = useState("");
   const [draft, setDraft] = useState("");
   const input = useRef<HTMLInputElement>(null);
   const next = useRef<HTMLButtonElement>(null);
-
-  useEffect(() => setBest(readBest(bestKey)), []);
 
   const target = data && order.length ? data.targets[order[at % order.length]] : null;
   const cos = useMemo(() => (data && target !== null ? cosinesTo(data, target) : null), [data, target]);
@@ -152,10 +148,7 @@ export function HotColdGame({ data, random = Math.random, level, clock = Date.no
     setStreak(run);
     setFound((f) => f + 1);
     setGained(got);
-    if (total > best) {
-      setBest(total);
-      saveBest(bestKey, total);
-    }
+    record(total);
     setPhase("found");
   };
 
@@ -223,24 +216,10 @@ export function HotColdGame({ data, random = Math.random, level, clock = Date.no
         <ScoreBox points={score} level={level} />
         <Ticker countdown={pace} limitS={LIMIT.vectors} active={playing} />
         <Worth points={timed(points(guesses.filter((x) => !x.hint).length + 1, hints, streak + 1), speed(pace.elapsed, LIMIT.vectors))} active={playing} />
-        <span className="cr-box">
-          <small>Streak</small>
-          <b data-hot={shownStreak > 1}>×{shownStreak}</b>
-        </span>
-        <span className="cr-box">
-          <small>Guesses</small>
-          <b>{tried}</b>
-        </span>
-        <span className="cr-box">
-          <small>Found</small>
-          <b>{found}</b>
-        </span>
-        {level ? null : (
-          <span className="cr-box">
-            <small>Best</small>
-            <b>{best.toLocaleString("en")}</b>
-          </span>
-        )}
+        <StreakBox streak={shownStreak} />
+        <Stat label="Guesses">{tried}</Stat>
+        <Stat label="Found">{found}</Stat>
+        <BestBox best={best} level={level} />
         <SkipLevel points={score} level={level} />
       </div>
 
@@ -281,9 +260,14 @@ export function HotColdGame({ data, random = Math.random, level, clock = Date.no
                     <span>Streak reset. Your closest guess was {sorted[0] ? `“${sorted[0].w}”, #${sorted[0].rank}` : "none"}.</span>
                   </p>
                 )}
-                <button ref={next} type="button" className="cr-go" onClick={level && at + 1 >= level.items ? () => level.onDone(score) : () => deal(at + 1)}>
-                  {level && at + 1 >= level.items ? FINISH : "Next word"}
-                </button>
+                <NextButton
+                  buttonRef={next}
+                  level={level}
+                  score={score}
+                  last={at + 1 >= (level?.items ?? Infinity)}
+                  nextLabel="Next word"
+                  onNext={() => deal(at + 1)}
+                />
               </div>
             </div>
           ) : (

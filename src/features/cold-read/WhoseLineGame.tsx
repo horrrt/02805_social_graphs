@@ -4,19 +4,20 @@
 // distinctive. The word then lands on a Scattertext-style plot. Rules live in
 // groups.ts; this file renders them.
 import { type ReactNode, useEffect, useMemo, useRef, useState } from "react";
-import { HelpKey, Lives, ScoreBox, SkipLevel, useHelpKey } from "./LevelParts";
+import { BestBox, clickButton, HelpKey, Lives, NextButton, ScoreBox, SkipLevel, Stat, StreakBox, useBest, useHelpKey, useKeys } from "./LevelParts";
 import { LIMIT, speed, Ticker, timed, useCountdown, Worth } from "./pace";
 import { whoseLineTour } from "./tours";
 import { StartButtons, useTour } from "./Tutorial";
-import { FINISH, type Level } from "./levels";
+import type { Level } from "./levels";
 import { displayNames, shuffled } from "./rules";
 import { type Answer, CARDS, deal, gain, INSPECT_COST, judge, LIVES, MAX_STREAK, ratio, type Term, type Verdict, type WhoseLineData } from "./groups";
-import { readBest, saveBest } from "./best";
 import { Rules } from "./StartPanel";
 
 const BEST = "cold-read:best2";
 const SIZE = 400;
 const PAD = { l: 52, b: 44, t: 14, r: 14 };
+// The call buttons, in key order 1 to 4.
+const CALLS = ["cr-say-a", "cr-say-both", "cr-say-b", "cr-say-fluke"];
 
 type Phase = "intro" | "card" | "answered" | "summary" | "over";
 type Played = { term: Term; kind: Answer; said: Answer | "time"; verdict: Verdict; inspected: boolean; got: number; factor: number };
@@ -147,12 +148,10 @@ export function WhoseLineGame({ data, random = Math.random, level, clock = Date.
   const [lives, setLives] = useState(LIVES);
   const [streak, setStreak] = useState(0);
   const [right, setRight] = useState(0);
-  const [best, setBest] = useState(0);
   // Practice keeps its own best (normal and hard apart); a campaign level keeps none.
-  const bestKey = level ? null : BEST;
+  const { best, record } = useBest(level ? null : BEST);
   const nextBtn = useRef<HTMLButtonElement>(null);
 
-  useEffect(() => setBest(readBest(bestKey)), []);
   useEffect(() => {
     if (phase === "answered" || phase === "summary" || phase === "over") nextBtn.current?.focus();
   }, [phase, at]);
@@ -162,18 +161,7 @@ export function WhoseLineGame({ data, random = Math.random, level, clock = Date.
   useHelpKey("h", () => setInspected(true), phase === "card" && !inspected);
 
   // Keys 1 to 4 answer the open card, as in the other rounds; arrow keys stay free to scroll.
-  useEffect(() => {
-    if (phase !== "card") return;
-    const onKey = (e: KeyboardEvent) => {
-      const map: Record<string, string> = { "1": "cr-say-a", "2": "cr-say-both", "3": "cr-say-b", "4": "cr-say-fluke" };
-      const id = map[e.key];
-      if (!id || e.metaKey || e.ctrlKey || e.altKey) return;
-      e.preventDefault();
-      (document.getElementById(id) as HTMLButtonElement | null)?.click();
-    };
-    window.addEventListener("keydown", onKey);
-    return () => window.removeEventListener("keydown", onKey);
-  }, [phase]);
+  useKeys(Object.fromEntries(CALLS.map((id, i) => [String(i + 1), () => clickButton(id)])), phase === "card");
 
 
   const startMatch = (n: number, ord = order) => {
@@ -212,10 +200,7 @@ export function WhoseLineGame({ data, random = Math.random, level, clock = Date.
     setLives(livesLeft);
     if (ok) setRight((r) => r + 1);
     setPlayed([...played, { term: card.term, kind: card.kind, said, verdict, inspected, got, factor }]);
-    if (total > best) {
-      setBest(total);
-      saveBest(bestKey, total);
-    }
+    record(total);
     setPhase(livesLeft === 0 ? "over" : "answered");
   };
 
@@ -362,14 +347,16 @@ export function WhoseLineGame({ data, random = Math.random, level, clock = Date.
                   {right} calls right in this run, {score.toLocaleString("en")} points.
                 </p>
               ) : null}
-              <button
-                ref={nextBtn}
-                type="button"
-                className="cr-go"
-                onClick={level && (phase === "over" || match + 1 >= level.items) ? () => level.onDone(score) : phase === "over" ? start : () => startMatch(match + 1)}
-              >
-                {level && (phase === "over" || match + 1 >= level.items) ? FINISH : phase === "over" ? "Play again" : "Next match"}
-              </button>
+              <NextButton
+                buttonRef={nextBtn}
+                level={level}
+                score={score}
+                over={phase === "over"}
+                last={match + 1 >= (level?.items ?? Infinity)}
+                nextLabel="Next match"
+                onNext={() => startMatch(match + 1)}
+                onAgain={start}
+              />
             </div>
           ) : null}
         </div>
@@ -415,21 +402,10 @@ function Hud({ score, streak, lives, right, best, playing, level, ticker, onRetr
     <div className="cr-hud" role="status">
       <ScoreBox points={score} level={level} />
       {ticker}
-      <span className="cr-box">
-        <small>Streak</small>
-        <b data-hot={shown > 1}>×{shown}</b>
-      </span>
+      <StreakBox streak={shown} />
       <Lives lives={lives} max={LIVES} onRetry={onRetry} />
-      <span className="cr-box">
-        <small>Right</small>
-        <b>{right}</b>
-      </span>
-      {level ? null : (
-        <span className="cr-box">
-          <small>Best</small>
-          <b>{best.toLocaleString("en")}</b>
-        </span>
-      )}
+      <Stat label="Right">{right}</Stat>
+      <BestBox best={best} level={level} />
       <SkipLevel points={score} level={level} />
     </div>
   );

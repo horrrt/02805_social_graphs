@@ -2,17 +2,16 @@
 // face-down word cards that show only a count on the page and a count of
 // pages, watches the suspect board empty, and names the page from the leads
 // ranked by cosine similarity. Rules live in rules.ts; this file renders them.
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import { IdfInline, TfIdfFormula } from "./Formulas";
-import { Lives, ScoreBox, SkipLevel } from "./LevelParts";
+import { BestBox, clickButton, Lives, NextButton, ScoreBox, SkipLevel, Stat, StreakBox, useBest, useKeys } from "./LevelParts";
 import { boldness, LIMIT, speed, Ticker, timed, useCountdown, Worth } from "./pace";
 import { clueShopTour } from "./tours";
 import { StartButtons, useTour } from "./Tutorial";
-import { FINISH, type Level } from "./levels";
+import type { Level } from "./levels";
 import {
   type Card, type ClueShopData, FACES, idf, LIVES, MAX_STREAK, points, rarity, type Round, shortlist, shownName, shuffled, suspects, tfidf,
 } from "./rules";
-import { readBest, saveBest } from "./best";
 import { Rules } from "./StartPanel";
 
 const BEST = "cold-read:best";
@@ -198,14 +197,11 @@ export function ClueShopGame({ data, random = Math.random, level, hard = false, 
   const [solved, setSolved] = useState(0);
   const [streak, setStreak] = useState(0);
   const [missed, setMissed] = useState(false);
-  const [best, setBest] = useState(0);
   // Practice keeps its own best (normal and hard apart); a campaign level keeps none.
-  const bestKey = level ? null : hard ? `${BEST}:hard` : BEST;
+  const { best, record } = useBest(level ? null : hard ? `${BEST}:hard` : BEST);
   const [outcome, setOutcome] = useState<Outcome | null>(null);
   const [news, setNews] = useState("");
   const [dealt, setDealt] = useState(0);
-
-  useEffect(() => setBest(readBest(bestKey)), []);
 
   const round = data && order.length ? data.rounds[order[at % order.length]] : null;
   const leads = useMemo(() => (data ? shortlist(data, flipped, struck) : []), [data, flipped, struck]);
@@ -213,15 +209,7 @@ export function ClueShopGame({ data, random = Math.random, level, hard = false, 
   const playing = phase === "play";
 
   // Keys 1 to 8 flip the matching card by pressing its button.
-  useEffect(() => {
-    if (!playing) return;
-    const onKey = (e: KeyboardEvent) => {
-      if (e.metaKey || e.ctrlKey || e.altKey || !/^[1-8]$/.test(e.key)) return;
-      (document.getElementById(`cr-card-${Number(e.key) - 1}`) as HTMLButtonElement | null)?.click();
-    };
-    window.addEventListener("keydown", onKey);
-    return () => window.removeEventListener("keydown", onKey);
-  }, [playing]);
+  useKeys(Object.fromEntries(Array.from({ length: 8 }, (_, i) => [String(i + 1), () => clickButton(`cr-card-${i}`)])), playing);
 
 
   const deal = (n: number, ord = order, hardDeck = hard) => {
@@ -270,15 +258,11 @@ export function ClueShopGame({ data, random = Math.random, level, hard = false, 
     const left = deck.length - flipped.length;
     const gained = won ? timed(points(left, hard, run) + bold, factor) : 0;
     const total = score + gained;
-    const newBest = total > best;
+    const newBest = record(total);
     setScore(total);
     setStreak(run);
     setOutcome({ won, gained, streak: Math.min(run, MAX_STREAK), left, newBest, bold, factor, timeUp });
     if (won) setSolved((s) => s + 1);
-    if (newBest) {
-      setBest(total);
-      saveBest(bestKey, total);
-    }
     setPhase(livesLeft === 0 ? "over" : "reveal");
   };
 
@@ -324,21 +308,10 @@ export function ClueShopGame({ data, random = Math.random, level, hard = false, 
         <ScoreBox points={score} level={level} />
         <Ticker countdown={pace} limitS={LIMIT.clue} active={playing} />
         <Worth points={worthNow} active={playing} />
-        <span className="cr-box">
-          <small>Streak</small>
-          <b data-hot={streak > 1}>×{shownStreak}</b>
-        </span>
+        <StreakBox streak={shownStreak} />
         <Lives lives={lives} max={LIVES} onRetry={start} />
-        <span className="cr-box">
-          <small>Named</small>
-          <b>{solved}</b>
-        </span>
-        {level ? null : (
-          <span className="cr-box">
-            <small>Best</small>
-            <b>{best.toLocaleString("en")}</b>
-          </span>
-        )}
+        <Stat label="Named">{solved}</Stat>
+        <BestBox best={best} level={level} />
         {/* Hard mode is picked before play: in the practice menu or on the campaign's start screen. */}
         {hard ? <span className="cr-hard-on">Hard mode · ×2</span> : null}
         <SkipLevel points={score} level={level} />
@@ -382,14 +355,16 @@ export function ClueShopGame({ data, random = Math.random, level, hard = false, 
                       Run over: {solved} {solved === 1 ? "page" : "pages"} named, {score.toLocaleString("en")} points
                       {outcome.newBest ? ", a new best" : ""}.
                     </p>
-                    <button type="button" className="cr-go" onClick={level ? () => level.onDone(score) : start}>
-                      {level ? FINISH : "Play again"}
-                    </button>
+                    <NextButton level={level} score={score} over nextLabel="Next page" onNext={() => deal(at + 1)} onAgain={start} />
                   </div>
                 ) : (
-                  <button type="button" className="cr-go" onClick={level && at + 1 >= level.items ? () => level.onDone(score) : () => deal(at + 1)}>
-                    {level && at + 1 >= level.items ? FINISH : "Next page"}
-                  </button>
+                  <NextButton
+                    level={level}
+                    score={score}
+                    last={at + 1 >= (level?.items ?? Infinity)}
+                    nextLabel="Next page"
+                    onNext={() => deal(at + 1)}
+                  />
                 )}
               </div>
             </div>

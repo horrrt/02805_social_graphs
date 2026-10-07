@@ -6,13 +6,12 @@
 import { Fragment, useEffect, useRef, useState } from "react";
 import { PpmiFormula } from "./Formulas";
 import { COST, type HiddenWord, LIVES, MAX_STREAK, options, pieces, points, type Row, spent, type TezguinoData, type Weight } from "./contexts";
-import { HelpKey, Lives, ScoreBox, SkipLevel, useHelpKey } from "./LevelParts";
+import { BestBox, clickButton, HelpKey, Lives, NextButton, ScoreBox, SkipLevel, Stat, StreakBox, useBest, useHelpKey, useKeys } from "./LevelParts";
 import { LIMIT, speed, Ticker, timed, useCountdown, Worth } from "./pace";
 import { tezguinoTour } from "./tours";
 import { StartButtons, useTour } from "./Tutorial";
-import { FINISH, type Level } from "./levels";
+import type { Level } from "./levels";
 import { shuffled } from "./rules";
-import { readBest, saveBest } from "./best";
 import { Rules } from "./StartPanel";
 
 const BEST = "cold-read:best4";
@@ -82,27 +81,17 @@ export function TezguinoGame({ data, random = Math.random, level, clock = Date.n
   const [lives, setLives] = useState(LIVES);
   const [streak, setStreak] = useState(0);
   const [solved, setSolved] = useState(0);
-  const [best, setBest] = useState(0);
   // Practice keeps its own best (normal and hard apart); a campaign level keeps none.
-  const bestKey = level ? null : BEST;
+  const { best, record } = useBest(level ? null : BEST);
   const [gained, setGained] = useState(0);
   const nextBtn = useRef<HTMLButtonElement>(null);
 
-  useEffect(() => setBest(readBest(bestKey)), []);
   useEffect(() => {
     if (phase === "answered" || phase === "over") nextBtn.current?.focus();
   }, [phase]);
 
   // Keys 1 to 4 pick an answer.
-  useEffect(() => {
-    if (phase !== "play") return;
-    const onKey = (e: KeyboardEvent) => {
-      if (e.metaKey || e.ctrlKey || e.altKey || !/^[1-4]$/.test(e.key)) return;
-      (document.getElementById(`cr-pick-${Number(e.key) - 1}`) as HTMLButtonElement | null)?.click();
-    };
-    window.addEventListener("keydown", onKey);
-    return () => window.removeEventListener("keydown", onKey);
-  }, [phase]);
+  useKeys(Object.fromEntries(Array.from({ length: 4 }, (_, i) => [String(i + 1), () => clickButton(`cr-pick-${i}`)])), phase === "play");
 
   const hidden: HiddenWord | null = order.length ? data.words[order[at % order.length]] : null;
   const cost = spent(reach, ppmi, peeks);
@@ -159,10 +148,7 @@ export function TezguinoGame({ data, random = Math.random, level, clock = Date.n
       setScore(total);
       setSolved((s) => s + 1);
       setGained(got);
-      if (total > best) {
-        setBest(total);
-        saveBest(bestKey, total);
-      }
+      record(total);
       setPhase("answered");
     } else {
       const left = lives - 1;
@@ -185,21 +171,10 @@ export function TezguinoGame({ data, random = Math.random, level, clock = Date.n
         <ScoreBox points={score} level={level} />
         <Ticker countdown={pace} limitS={LIMIT.contexts} active={phase === "play"} />
         <Worth points={timed(points(cost, nextStreak), now)} active={phase === "play"} />
-        <span className="cr-box">
-          <small>Streak</small>
-          <b data-hot={(phase === "play" ? nextStreak : streak) > 1}>×{Math.max(1, Math.min(phase === "play" ? nextStreak : streak, MAX_STREAK))}</b>
-        </span>
+        <StreakBox streak={Math.max(1, Math.min(phase === "play" ? nextStreak : streak, MAX_STREAK))} />
         <Lives lives={lives} max={LIVES} onRetry={start} />
-        <span className="cr-box">
-          <small>Named</small>
-          <b>{solved}</b>
-        </span>
-        {level ? null : (
-          <span className="cr-box">
-            <small>Best</small>
-            <b>{best.toLocaleString("en")}</b>
-          </span>
-        )}
+        <Stat label="Named">{solved}</Stat>
+        <BestBox best={best} level={level} />
         <SkipLevel points={score} level={level} />
       </div>
 
@@ -300,14 +275,25 @@ export function TezguinoGame({ data, random = Math.random, level, clock = Date.n
                     <p>
                       Run over: {solved} {solved === 1 ? "word" : "words"} named, {score.toLocaleString("en")} points.
                     </p>
-                    <button ref={nextBtn} type="button" className="cr-go" onClick={level ? () => level.onDone(score) : start}>
-                      {level ? FINISH : "Play again"}
-                    </button>
+                    <NextButton
+                      buttonRef={nextBtn}
+                      level={level}
+                      score={score}
+                      over
+                      nextLabel="Next word"
+                      onNext={() => deal(at + 1)}
+                      onAgain={start}
+                    />
                   </div>
                 ) : (
-                  <button ref={nextBtn} type="button" className="cr-go" onClick={level && at + 1 >= level.items ? () => level.onDone(score) : () => deal(at + 1)}>
-                    {level && at + 1 >= level.items ? FINISH : "Next word"}
-                  </button>
+                  <NextButton
+                    buttonRef={nextBtn}
+                    level={level}
+                    score={score}
+                    last={at + 1 >= (level?.items ?? Infinity)}
+                    nextLabel="Next word"
+                    onNext={() => deal(at + 1)}
+                  />
                 )}
               </div>
             </div>

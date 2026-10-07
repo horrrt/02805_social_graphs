@@ -3,7 +3,7 @@
 // of its round; a level can be skipped for SKIP_COST points, and the total
 // never goes below 0. Rules live in levels.ts.
 import { useEffect, useRef, useState } from "react";
-import { SkipLevel } from "./LevelParts";
+import { SkipLevel, useBest } from "./LevelParts";
 import { afterSkip, LEVELS, type LevelId, type Result, SKIP_COST } from "./levels";
 import { ClueShopGame } from "./ClueShopGame";
 import type { TezguinoData } from "./contexts";
@@ -15,7 +15,6 @@ import { TezguinoGame } from "./TezguinoGame";
 import type { MixDeskData } from "./topics";
 import type { HotColdData } from "./vectors";
 import { WhoseLineGame } from "./WhoseLineGame";
-import { readBest, saveBest } from "./best";
 import { Rules, StartRow } from "./StartPanel";
 
 export type CampaignData = {
@@ -48,12 +47,11 @@ export function CampaignGame({ data, random = Math.random, clock = Date.now }: {
   const [at, setAt] = useState(0);
   const [results, setResults] = useState<Result[]>([]);
   const [total, setTotal] = useState(0);
-  const [best, setBest] = useState(0);
+  const { best, record: recordBest } = useBest(BEST);
   const [newBest, setNewBest] = useState(false);
   const [hard, setHard] = useState(false);
   const go = useRef<HTMLButtonElement>(null);
 
-  useEffect(() => setBest(readBest(BEST)), []);
   useEffect(() => {
     if (phase === "between" || phase === "done") go.current?.focus();
   }, [phase]);
@@ -63,12 +61,7 @@ export function CampaignGame({ data, random = Math.random, clock = Date.now }: {
     setResults(next);
     setTotal(sum);
     if (next.length === LEVELS.length) {
-      const isBest = sum > best;
-      setNewBest(isBest);
-      if (isBest) {
-        setBest(sum);
-        saveBest(BEST, sum);
-      }
+      setNewBest(recordBest(sum));
       setPhase("done");
     } else setPhase("between");
   };

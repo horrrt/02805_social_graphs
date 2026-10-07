@@ -2,7 +2,18 @@
 // game before the first step. Each step finds what it shows on the page as it
 // stands when the step opens. Steps that act
 // press the game's own buttons, the way a player would.
+import { COST } from "./contexts";
+import { INSPECT_COST } from "./groups";
+import { CHIPS } from "./topics";
 import { press, type TourStep } from "./Tutorial";
+import { HINT_RANKS } from "./vectors";
+
+/** Every tour ends on the scoreboard: what a right answer pays now, and what a wrong one costs. */
+const clockStep = (wrong: string): TourStep => ({
+  element: ".cr-worth-box",
+  title: "Beat the clock",
+  text: `Playing for is what a right answer scores now; it falls as the clock runs down. ${wrong}`,
+});
 
 /** The face-down clue cards with the page count each shows on its back. */
 function faceDown(): { el: HTMLButtonElement; pages: number }[] {
@@ -58,11 +69,7 @@ export const clueShopTour = (): TourStep[] => {
       title: "Top leads",
       text: "The pages left, ranked by cosine similarity between the words you flipped and each page's TF-IDF vector. Name one when you trust it.",
     },
-    {
-      element: ".cr-worth-box",
-      title: "Name it, or flip again",
-      text: "Playing for is what a right name scores now: 100 for each card still face down, falling as the clock runs. A wrong name costs a heart. The tour is over: the round starts fresh, so these flips don't count.",
-    },
+    clockStep("Each card still face down adds 100, so name it early if you can. A wrong name costs a heart. Keys 1 to 8 flip cards."),
   ];
 };
 
@@ -75,18 +82,19 @@ export const whoseLineTour = (): TourStep[] => [
   {
     element: ".cr-term-card",
     title: "The word",
-    text: "Call it from what you know about the two groups. Inspecting first shows how many pages in each use it, for 50 points.",
+    text: `Call it from what you know about the two groups. Inspecting first (key H) shows how many pages in each use it, for ${INSPECT_COST} points.`,
   },
   {
     element: ".cr-calls",
     title: "Four calls",
-    text: "1: the left group uses it more. 2: the same in both. 3: the right group. 4: skip it, a fluke where one page alone makes it look like a group's word.",
+    text: "Keys 1 to 4. 1: the left group uses it more. 2: the same in both. 3: the right group. 4: skip it, a fluke where one page alone makes it look like a group's word.",
   },
   {
     element: ".cr-board",
     title: "Where words land",
     text: "Across: uses per 10,000 words in the left group's pages. Up: in the right group's. On the diagonal, both use it alike; the further off it, the more one group leans on it. Your called words land here.",
   },
+  clockStep("A wrong call costs a heart, and the streak multiplies right calls in a row."),
 ];
 
 export const mixDeskTour = (): TourStep[] => [
@@ -106,13 +114,14 @@ export const mixDeskTour = (): TourStep[] => [
     },
     element: '.cr-topic[data-topic="0"]',
     title: "Spread chips",
-    text: "Click a topic to put a chip on it, − to take one back. Ten chips make your guess: three here says 30% of the page comes from this topic.",
+    text: `Click a topic to put a chip on it, − to take one back. ${CHIPS} chips make your guess: three here says ${300 / CHIPS}% of the page comes from this topic.`,
   },
   {
     element: ".cr-md-action",
     title: "Lock it in",
-    text: "With all ten down, lock in. The reveal colours every word by its likeliest topic and scores how close your mix was.",
+    text: `With all ${CHIPS} down, lock in. The reveal colours every word by its likeliest topic and scores how close your mix was.`,
   },
+  clockStep("A perfect mix scores 1,000 before the clock bonus; at the buzzer the chips you placed count as they stand."),
 ];
 
 export const tezguinoTour = (): TourStep[] => [
@@ -124,7 +133,7 @@ export const tezguinoTour = (): TourStep[] => [
   {
     element: '.cr-seg[aria-label="Weights"]',
     title: "Counts favour filler",
-    text: "The, of and was sit next to everything. PPMI keeps only the neighbours that turn up more than chance would put them there. It costs 200.",
+    text: `The, of and was sit next to everything. PPMI keeps only the neighbours that turn up more than chance would put them there. It costs ${COST.ppmi}.`,
   },
   {
     act: press('.cr-seg[aria-label="Weights"] button:last-child'),
@@ -135,13 +144,14 @@ export const tezguinoTour = (): TourStep[] => [
   {
     element: '.cr-seg[aria-label="Context window"]',
     title: "Wider windows",
-    text: "±1 sees the words right beside it, mostly grammar; ±4 sees the topic around it. Each step wider costs 100.",
+    text: `±1 sees the words right beside it, mostly grammar; ±4 sees the topic around it. Each step wider costs ${COST.window}.`,
   },
   {
     element: ".cr-picks",
     title: "Pick the word",
-    text: "Choose from four, with keys 1 to 4. A right pick earns 1,000 less what you spent on tools.",
+    text: `Choose from four, with keys 1 to 4. A right pick earns 1,000 less what you spent on tools. Stuck? Peek at a real sentence with the word blacked out (key H) for ${COST.peek}.`,
   },
+  clockStep("A wrong pick costs a heart."),
 ];
 
 export const hotColdTour = (): TourStep[] => [
@@ -154,11 +164,12 @@ export const hotColdTour = (): TourStep[] => [
     act: press(".cr-guess .cr-ghost"),
     element: ".cr-radar-box",
     title: "The radar",
-    text: "Each guess lands nearer the centre the higher it ranks among the 9,000 words. That dot is a hint: one of the hidden word's 100 nearest neighbours.",
+    text: `Each guess lands nearer the centre the higher it ranks among the 9,000 words. That dot is a hint: one of the hidden word's ${HINT_RANKS[0]} nearest neighbours.`,
   },
   {
     element: ".cr-leads",
     title: "Follow the heat",
     text: "Your guesses, closest first, with cosine and rank. Guess words that sit near your best ones and the heat climbs. Fewer guesses score more.",
   },
+  clockStep("Each guess and each hint (key ?) lowers it. When the clock runs out, the word is given up."),
 ];

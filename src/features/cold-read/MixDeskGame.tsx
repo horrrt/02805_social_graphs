@@ -3,14 +3,13 @@
 // then sees the real one and every word coloured by the topic most likely to
 // have produced it. Rules live in topics.ts; this file renders them.
 import { useEffect, useRef, useState } from "react";
-import { ScoreBox, SkipLevel } from "./LevelParts";
+import { BestBox, NextButton, ScoreBox, SkipLevel, Stat, useBest } from "./LevelParts";
 import { LIMIT, speed, Ticker, timed, useCountdown, Worth } from "./pace";
 import { mixDeskTour } from "./tours";
 import { StartButtons, useTour } from "./Tutorial";
-import { FINISH, type Level } from "./levels";
+import type { Level } from "./levels";
 import { shownName, shuffled } from "./rules";
 import { bestChips, CHIPS, grade, type MixDeskData, PAGES_PER_RUN, score, sizeBucket } from "./topics";
-import { readBest, saveBest } from "./best";
 import { Rules } from "./StartPanel";
 
 const BEST = "cold-read:best3";
@@ -58,17 +57,13 @@ export function MixDeskGame({ data, random = Math.random, level, clock = Date.no
   const [chips, setChips] = useState<number[]>([]);
   const [total, setTotal] = useState(0);
   const [reads, setReads] = useState<number[]>([]);
-  const [best, setBest] = useState(0);
   // Practice keeps its own best (normal and hard apart); a campaign level keeps none.
-  const bestKey = level ? null : BEST;
+  const { best, record } = useBest(level ? null : BEST);
   const [names, setNames] = useState<string[]>([]);
   const [hover, setHover] = useState<number | null>(null);
   const nextBtn = useRef<HTMLButtonElement>(null);
 
-  useEffect(() => {
-    setBest(readBest(bestKey));
-    setNames(readStore<string[]>(NAMES, []));
-  }, []);
+  useEffect(() => setNames(readStore<string[]>(NAMES, [])), []);
   useEffect(() => {
     if (phase === "reveal" || phase === "done") nextBtn.current?.focus();
   }, [phase]);
@@ -121,10 +116,7 @@ export function MixDeskGame({ data, random = Math.random, level, clock = Date.no
     setTotal(sum);
     setReads([...reads, pts]);
     const last = at + 1 >= order.length;
-    if (last && sum > best) {
-      setBest(sum);
-      saveBest(bestKey, sum);
-    }
+    if (last) record(sum);
     setPhase(last ? "done" : "reveal");
   };
 
@@ -144,22 +136,11 @@ export function MixDeskGame({ data, random = Math.random, level, clock = Date.no
         <ScoreBox points={total} level={level} />
         <Ticker countdown={pace} limitS={LIMIT.mix} active={phase === "mix"} />
         <Worth points={timed(1000, speed(pace.elapsed, LIMIT.mix))} active={phase === "mix"} />
-        <span className="cr-box">
-          <small>Page</small>
-          <b>
-            {phase === "intro" ? 0 : at + 1}/{run}
-          </b>
-        </span>
-        <span className="cr-box">
-          <small>Last read</small>
-          <b>{reads.length ? reads[reads.length - 1] : "–"}</b>
-        </span>
-        {level ? null : (
-          <span className="cr-box">
-            <small>Best run</small>
-            <b>{best.toLocaleString("en")}</b>
-          </span>
-        )}
+        <Stat label="Page">
+          {phase === "intro" ? 0 : at + 1}/{run}
+        </Stat>
+        <Stat label="Last read">{reads.length ? reads[reads.length - 1] : "–"}</Stat>
+        <BestBox best={best} level={level} label="Best run" />
         <SkipLevel points={total} level={level} />
       </div>
 
@@ -185,14 +166,15 @@ export function MixDeskGame({ data, random = Math.random, level, clock = Date.no
                     {read.timeUp ? "Time's up · " : ""}
                     {grade(got)} · +{read.points}
                   </span>
-                  <button
-                    ref={nextBtn}
-                    type="button"
-                    className="cr-go"
-                    onClick={phase === "done" ? (level ? () => level.onDone(total) : start) : () => deal(at + 1)}
-                  >
-                    {phase === "done" ? (level ? FINISH : "Play again") : "Next page"}
-                  </button>
+                  <NextButton
+                    buttonRef={nextBtn}
+                    level={level}
+                    score={total}
+                    over={phase === "done"}
+                    nextLabel="Next page"
+                    onNext={() => deal(at + 1)}
+                    onAgain={start}
+                  />
                 </>
               ) : (
                 <>
