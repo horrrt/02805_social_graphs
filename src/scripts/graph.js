@@ -13,7 +13,7 @@
 // its side label only there); a link may set width, dashed and title.
 //
 // Options, each off unless set:
-//   theme: "dark"            the dark surface of the course explorables
+//   theme: "dark"            a dark surface for the network
 //   colorNodes: false        every node grey (links carry the groups)
 //   colorLinks: true         a link in its group's colour; fade: true dims the rest
 //   mark on a link           mark: true draws it in ink above the others; fade: true dims the rest

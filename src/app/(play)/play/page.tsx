@@ -130,20 +130,6 @@ export default function Page() {
                 </p>
               </div>
             </details>
-            <details>
-              <summary>
-                Where did the playable-story idea come from?
-                {" "}
-                <span aria-hidden="true">+</span>
-              </summary>
-              <div className="evidence-body">
-                <p>
-                  <a href="https://oddvar112.github.io/Social-Graphs-and-Interactions/weeks/week1/game/">Web-Crawler by Capes &amp; Edges</a>
-                  {" "}
-                  showed how a mission can make directed paths tangible. This experiment asks a different question: how does adding a link change who can reach an isolated character? The imagined edits, reachability analysis and presentation here are our own.
-                </p>
-              </div>
-            </details>
             <a className="text-link" href="../">← Back to Log-Log Legends</a>
           </div>
         </section>

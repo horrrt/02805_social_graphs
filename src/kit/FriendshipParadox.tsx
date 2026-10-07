@@ -3,7 +3,7 @@
 // at once; the two histograms overlay on the kit's DistributionPlot, readouts
 // give the two means and how often the friend has at least as many links.
 // Seeded (Reset replays the same draws). The sampler is samplePair() in
-// growth-core.js, adapted from socialgraphs2026-web (MIT, Sune Lehmann).
+// growth-core.js.
 // Style: .kit-paradox in post.css.
 import { useMemo, useRef, useState } from "react";
 import DistributionPlot from "./DistributionPlot";

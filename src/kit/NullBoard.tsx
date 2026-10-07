@@ -1,4 +1,4 @@
-// The survivor board: which measures of a network survive which null models.
+// A board of network measures against null models: which measures survive which nulls.
 // A grid of small histograms, one row per measure and one column per null
 // model, each with the real value's line; each panel's title says its verdict
 // in words and is tinted by it (survives, dies, or fixed by construction when
