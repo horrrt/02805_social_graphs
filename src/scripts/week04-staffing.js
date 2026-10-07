@@ -1,21 +1,13 @@
 // Section 3 figure: every client with 20 or more placed H-1B filings in a year.
 // x = filings (log), y = share supplied by its largest vendor. Hover a dot for
-// its numbers; click it, or search, to list its vendors. Drawn with the
-// vendored ECharts build that the page loads before its modules, the same
-// library as section 1.
-import { asset } from "./site.js";
-import { esc } from "./cabinet.js";
-import { fs, family } from "./type-scale.mjs";
+// its numbers; click it, or search, to list its vendors. The box
+// (src/features/week04/staffing/Staffing.tsx) draws it with the vendored
+// ECharts build, the same library as section 1; this module builds the
+// options, the vendor panel, the table and the community numbers.
+// `token(name)` reads a colour from the figure's CSS; `T` is the type scale.
 
-const echarts = window.echarts;
-const root = document.querySelector("#staffing-figure");
-const host = root.querySelector(".staffing-chart .chart-host");
-const panel = root.querySelector(".staffing-panel");
-const search = root.querySelector(".staffing-search input");
-const css = getComputedStyle(root);
-const token = (name) => css.getPropertyValue(name).trim();
 // Three sectors in navy and slate, the rest in grey drawn beneath them.
-const SECTORS = [
+export const SECTORS = [
   ["Finance and insurance", "--w4-sector-finance", (s) => s === "52"],
   ["Manufacturing", "--w4-sector-manufacturing", (s) => s === "31-33"],
   ["Health care", "--w4-sector-health", (s) => s === "62"],
@@ -45,47 +37,23 @@ const SECTOR_NAMES = {
   23: "Construction",
   "": "Sector unknown",
 };
-const sectorName = (s) => SECTOR_NAMES[s] ?? "Other sectors";
+export const sectorName = (s) => SECTOR_NAMES[s] ?? "Other sectors";
 const whole = new Intl.NumberFormat("en-US");
-const num = (v) => whole.format(v);
-const pct = (v) => (v > 0 && v < 0.005 ? "<1%" : `${Math.round(v * 100)}%`);
-const share = (d) => d.top[0][1] / d.filings;
+export const num = (v) => whole.format(v);
+export const pct = (v) => (v > 0 && v < 0.005 ? "<1%" : `${Math.round(v * 100)}%`);
+export const share = (d) => d.top[0][1] / d.filings;
+const esc = (value) => String(value).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c]);
 
-let data;
-let year;
-let selected;
-const chart = echarts.init(host, null, { renderer: "canvas" });
-const flowsHost = root.querySelector(".staffing-flows .chart-host");
-const flowsChart = echarts.init(flowsHost, null, { renderer: "canvas" });
+/** The tokens the figure reads. */
+export const STAFFING_TOKENS = [...SECTORS.map(([, colour]) => colour), "--surface", "--paper", "--muted", "--grid", "--line", "--series-none", "--series-1"];
 
-function clients() {
-  return data.years[year].shown;
-}
-
-function point(d) {
+/** One scatter point. */
+export function point(d) {
   return { value: [d.filings, share(d)], name: d.name, client: d };
 }
 
-function show(client) {
-  selected = client;
-  chart.setOption({ series: [{ id: "selected", data: client ? [point(client)] : [] }] });
-  if (!client) return;
-  const top = client.top.map(([f, n]) => [data.firms[f], n]);
-  panel.innerHTML = `
-    <h3>${esc(client.name)}</h3>
-    <p class="meta">${sectorName(client.sector)} · ${num(client.filings)} placed filings ·
-      ${num(client.vendors)} ${client.vendors === 1 ? "vendor" : "vendors"}</p>
-    <ol>${top.map(([name, n]) => `
-      <li><span class="name" title="${esc(name)}">${esc(name)}</span>
-        <span class="share">${pct(n / client.filings)}</span>
-        <span class="track"><span class="fill" style="width:${(100 * n) / client.filings}%"></span></span></li>`).join("")}
-    </ol>
-    ${client.rest ? `<p class="rest">${num(client.rest)} more filings from
-      ${num(client.vendors - top.length)} other firms</p>` : ""}`;
-}
-
-function draw() {
-  const rows = clients();
+/** The scatter for one year's clients; the "selected" series holds the ring around `selected`. */
+export function scatterOption(data, rows, selected, token, T) {
   // Name the three largest clients and the largest one-vendor client, no more.
   // ECharts copies data items, so match labels by name, not by object.
   const named = new Set([...rows.slice(0, 3), ...rows.filter((d) => share(d) >= 0.9).slice(0, 1)].map((d) => d.name));
@@ -113,16 +81,18 @@ function draw() {
       distance: 8,
       color: token("--paper"),
       fontWeight: 600,
-      fontSize: fs("small"),
+      fontSize: T.fs("small"),
       textBorderColor: token("--surface"),
       textBorderWidth: 3,
       formatter: (p) => p.data.name,
     },
     // The largest client sits among the other large ones: its name goes above.
-    data: rows.filter((d) => named.has(d.name)).map((d, i) => ({
-      ...point(d),
-      label: i === 0 ? { position: "top", distance: 10 } : undefined,
-    })),
+    data: rows
+      .filter((d) => named.has(d.name))
+      .map((d, i) => ({
+        ...point(d),
+        label: i === 0 ? { position: "top", distance: 10 } : undefined,
+      })),
   });
   series.push({
     id: "selected",
@@ -132,76 +102,76 @@ function draw() {
     silent: true,
     z: 5,
     itemStyle: { color: "transparent", borderColor: token("--paper"), borderWidth: 2.5 },
-    data: [],
+    data: selected ? [point(selected)] : [],
   });
-  chart.setOption(
-    {
-      animationDuration: 300,
-      textStyle: { fontFamily: family("sans"), fontSize: fs("caption") },
-      grid: { left: 52, right: 20, top: 36, bottom: 72 },
-      legend: {
-        bottom: 0,
-        left: 0,
-        icon: "circle",
-        itemWidth: 10,
-        itemHeight: 10,
-        textStyle: { color: token("--muted"), fontSize: fs("caption") },
-        data: SECTORS.map(([name]) => name),
-      },
-      tooltip: {
-        trigger: "item",
-        confine: true,
-        backgroundColor: token("--surface"),
-        borderColor: token("--line"),
-        textStyle: { color: token("--paper"), fontSize: fs("small") },
-        formatter: (p) => {
-          const d = p.data.client;
-          return `<strong>${esc(d.name)}</strong><br />${num(d.filings)} filings · ${num(d.vendors)} vendors<br />
-            ${pct(share(d))} from ${esc(data.firms[d.top[0][0]])}`;
-        },
-      },
-      xAxis: {
-        type: "log",
-        logBase: 10,
-        min: data.min_filings,
-        // The next round value (1, 2 or 5 times a power of ten) past the largest client.
-        max: (v) => [1, 2, 5, 10].map((m) => m * 10 ** Math.floor(Math.log10(v.max))).find((t) => t >= v.max * 1.05),
-        name: "Placed filings in the year (log scale) →",
-        nameLocation: "end",
-        nameGap: 0,
-        nameTextStyle: { color: token("--muted"), fontSize: fs("caption"), align: "right", verticalAlign: "top", padding: [28, 0, 0, 0] },
-        axisLine: { show: false },
-        axisTick: { show: false },
-        axisLabel: { color: token("--muted"), fontSize: fs("caption"), formatter: (v) => (v >= 1000 ? `${v / 1000}k` : `${v}`) },
-        splitLine: { lineStyle: { color: token("--grid") } },
-      },
-      yAxis: {
-        type: "value",
-        min: 0,
-        max: 1,
-        interval: 0.2,
-        name: "↑ Share from the largest vendor",
-        nameTextStyle: { color: token("--muted"), fontSize: fs("caption"), align: "left", padding: [0, 0, 6, -44] },
-        axisLabel: { color: token("--muted"), fontSize: fs("caption"), formatter: (v) => `${Math.round(v * 100)}%` },
-        splitLine: { lineStyle: { color: token("--grid") } },
-      },
-      series,
+  return {
+    animationDuration: 300,
+    textStyle: { fontFamily: T.family("sans"), fontSize: T.fs("caption") },
+    grid: { left: 52, right: 20, top: 36, bottom: 72 },
+    legend: {
+      bottom: 0,
+      left: 0,
+      icon: "circle",
+      itemWidth: 10,
+      itemHeight: 10,
+      textStyle: { color: token("--muted"), fontSize: T.fs("caption") },
+      data: SECTORS.map(([name]) => name),
     },
-    { replaceMerge: ["series"] },
-  );
+    tooltip: {
+      trigger: "item",
+      confine: true,
+      backgroundColor: token("--surface"),
+      borderColor: token("--line"),
+      textStyle: { color: token("--paper"), fontSize: T.fs("small") },
+      formatter: (p) => {
+        const d = p.data.client;
+        return `<strong>${esc(d.name)}</strong><br />${num(d.filings)} filings · ${num(d.vendors)} vendors<br />
+            ${pct(share(d))} from ${esc(data.firms[d.top[0][0]])}`;
+      },
+    },
+    xAxis: {
+      type: "log",
+      logBase: 10,
+      min: data.min_filings,
+      // The next round value (1, 2 or 5 times a power of ten) past the largest client.
+      max: (v) => [1, 2, 5, 10].map((m) => m * 10 ** Math.floor(Math.log10(v.max))).find((t) => t >= v.max * 1.05),
+      name: "Placed filings in the year (log scale) →",
+      nameLocation: "end",
+      nameGap: 0,
+      nameTextStyle: { color: token("--muted"), fontSize: T.fs("caption"), align: "right", verticalAlign: "top", padding: [28, 0, 0, 0] },
+      axisLine: { show: false },
+      axisTick: { show: false },
+      axisLabel: { color: token("--muted"), fontSize: T.fs("caption"), formatter: (v) => (v >= 1000 ? `${v / 1000}k` : `${v}`) },
+      splitLine: { lineStyle: { color: token("--grid") } },
+    },
+    yAxis: {
+      type: "value",
+      min: 0,
+      max: 1,
+      interval: 0.2,
+      name: "↑ Share from the largest vendor",
+      nameTextStyle: { color: token("--muted"), fontSize: T.fs("caption"), align: "left", padding: [0, 0, 6, -44] },
+      axisLabel: { color: token("--muted"), fontSize: T.fs("caption"), formatter: (v) => `${Math.round(v * 100)}%` },
+      splitLine: { lineStyle: { color: token("--grid") } },
+    },
+    series,
+  };
+}
 
-  search.setAttribute("placeholder", `${rows.length} clients · type a name`);
-  root.querySelector("#staffing-names").innerHTML =
-    rows.map((d) => `<option value="${esc(d.name)}"></option>`).join("");
-  table(rows);
-  drawFlows();
-  show(rows.find((d) => selected && d.name === selected.name) ?? rows[0]);
+/** The vendor panel for one client: its name, a line of numbers, its top vendors and the rest. */
+export function panelFor(data, client) {
+  const top = client.top.map(([f, n]) => [data.firms[f], n]);
+  return {
+    name: client.name,
+    meta: `${sectorName(client.sector)} · ${num(client.filings)} placed filings · ${num(client.vendors)} ${client.vendors === 1 ? "vendor" : "vendors"}`,
+    top: top.map(([name, n]) => ({ name, share: pct(n / client.filings), width: `${(100 * n) / client.filings}%` })),
+    rest: client.rest ? `${num(client.rest)} more filings from ${num(client.vendors - top.length)} other firms` : null,
+  };
 }
 
 // Vendor -> client flows. Node names carry a side prefix, because a firm can be
 // a vendor and a client at once (Deloitte places workers and receives them).
-function drawFlows() {
-  const f = data.years[year].flows;
+export function flowsOption(f, token, T) {
   const v = (i) => `v:${f.vendors[i].name}`;
   const c = (i) => `c:${f.clients[i].name}`;
   const side = (name) => name.slice(2);
@@ -216,152 +186,109 @@ function drawFlows() {
     })),
     ...f.clients.map((d, i) => ({ name: c(i), placed: d.placed, vendor: false, label: { position: "right" } })),
   ];
-  flowsChart.setOption(
-    {
-      animationDuration: 300,
-      textStyle: { fontFamily: family("sans"), fontSize: fs("caption") },
-      tooltip: {
-        trigger: "item",
-        confine: true,
-        backgroundColor: token("--surface"),
-        borderColor: token("--line"),
-        textStyle: { color: token("--paper"), fontSize: fs("small") },
-        formatter: (p) => {
-          if (p.dataType === "edge") {
-            const client = f.clients.find((d) => d.name === side(p.data.target));
-            return `<strong>${esc(side(p.data.source))} → ${esc(side(p.data.target))}</strong><br />
+  return {
+    animationDuration: 300,
+    textStyle: { fontFamily: T.family("sans"), fontSize: T.fs("caption") },
+    tooltip: {
+      trigger: "item",
+      confine: true,
+      backgroundColor: token("--surface"),
+      borderColor: token("--line"),
+      textStyle: { color: token("--paper"), fontSize: T.fs("small") },
+      formatter: (p) => {
+        if (p.dataType === "edge") {
+          const client = f.clients.find((d) => d.name === side(p.data.target));
+          return `<strong>${esc(side(p.data.source))} → ${esc(side(p.data.target))}</strong><br />
               ${num(p.data.value)} filings, ${pct(p.data.value / client.placed)} of the client's placed filings`;
-          }
-          const d = p.data;
-          if (d.other) return `<strong>All other firms</strong><br />${num(d.placed)} filings to these ${f.clients.length} clients`;
-          return `<strong>${esc(side(d.name))}</strong><br />${num(d.placed)} placed filings in the year${
-            d.vendor ? ", to all its clients" : ", from all firms"}`;
-        },
+        }
+        const d = p.data;
+        if (d.other) return `<strong>All other firms</strong><br />${num(d.placed)} filings to these ${f.clients.length} clients`;
+        return `<strong>${esc(side(d.name))}</strong><br />${num(d.placed)} placed filings in the year${d.vendor ? ", to all its clients" : ", from all firms"}`;
       },
-      series: [
-        {
-          type: "sankey",
-          left: 170,
-          right: 190,
-          top: 8,
-          bottom: 8,
-          nodeWidth: 10,
-          nodeGap: 6,
-          layoutIterations: 0,
-          draggable: false,
-          emphasis: { focus: "adjacency" },
-          itemStyle: { color: token("--paper"), borderWidth: 0 },
-          lineStyle: { color: token("--series-none"), opacity: 0.55, curveness: 0.5 },
-          label: { color: token("--paper"), fontSize: fs("small"), fontWeight: 600, formatter: (p) => side(p.name) },
-          data: nodes,
-          links: f.links.map(([vi, ci, n]) => ({
-            source: v(vi),
-            target: c(ci),
-            value: n,
-            // The named firms' bands in colour; every other firm's in grey.
-            lineStyle: f.vendors[vi].other ? { opacity: 0.35 } : { color: token("--series-1"), opacity: 0.45 },
-          })),
-        },
-      ],
     },
-    { notMerge: true },
-  );
-  root.querySelector(".flows-coverage").textContent =
-    `The ${f.vendors.length - 1} largest firms supply ${num(f.from_top_vendors)} of the ${num(f.client_filings)} filings these ${f.clients.length} clients receive (${pct(f.from_top_vendors / f.client_filings)}); every other firm together supplies the rest.`;
+    series: [
+      {
+        type: "sankey",
+        left: 170,
+        right: 190,
+        top: 8,
+        bottom: 8,
+        nodeWidth: 10,
+        nodeGap: 6,
+        layoutIterations: 0,
+        draggable: false,
+        emphasis: { focus: "adjacency" },
+        itemStyle: { color: token("--paper"), borderWidth: 0 },
+        lineStyle: { color: token("--series-none"), opacity: 0.55, curveness: 0.5 },
+        label: { color: token("--paper"), fontSize: T.fs("small"), fontWeight: 600, formatter: (p) => side(p.name) },
+        data: nodes,
+        links: f.links.map(([vi, ci, n]) => ({
+          source: v(vi),
+          target: c(ci),
+          value: n,
+          // The named firms' bands in colour; every other firm's in grey.
+          lineStyle: f.vendors[vi].other ? { opacity: 0.35 } : { color: token("--series-1"), opacity: 0.45 },
+        })),
+      },
+    ],
+  };
 }
 
-function table(rows) {
-  root.querySelector("tbody").innerHTML = rows.slice(0, 25).map((d) => `<tr><td>${esc(d.name)}</td>
-    <td>${sectorName(d.sector)}</td><td class="num">${num(d.filings)}</td>
-    <td class="num">${num(d.vendors)}</td><td>${esc(data.firms[d.top[0][0]])}</td>
-    <td class="num">${pct(share(d))}</td></tr>`).join("");
+/** The line under the flows: how much the named firms supply. */
+export function coverage(f) {
+  return `The ${f.vendors.length - 1} largest firms supply ${num(f.from_top_vendors)} of the ${num(f.client_filings)} filings these ${f.clients.length} clients receive (${pct(f.from_top_vendors / f.client_filings)}); every other firm together supplies the rest.`;
 }
 
-chart.on("click", (p) => {
-  if (p.data?.client) show(p.data.client);
-});
-search.addEventListener("change", () => {
-  const d = clients().find((c) => c.name.toLowerCase() === search.value.trim().toLowerCase());
-  if (d) show(d);
-});
-const yearButtons = root.querySelectorAll(".staffing-years button");
-yearButtons.forEach((button) => {
-  button.addEventListener("click", () => {
-    year = button.dataset.year;
-    yearButtons.forEach((b) => b.setAttribute("aria-pressed", String(b === button)));
-    draw();
-  });
-});
-window.addEventListener("resize", () => {
-  chart.resize();
-  flowsChart.resize();
-});
+/** The 25 largest clients: [client, sector, filings, vendors, largest vendor, its share]. */
+export function tableRows(data, rows) {
+  return rows.slice(0, 25).map((d) => [d.name, sectorName(d.sector), num(d.filings), num(d.vendors), data.firms[d.top[0][0]], pct(share(d))]);
+}
 
 // Communities with and without filing counts, from analysis/week04_staffing.py.
-const stats = document.querySelector("#staffing-community-stats");
 const two = (v) => v.toFixed(2);
-fetch(asset("weeks/week04/data/staffing_communities.json"))
-  .then((r) => r.json())
-  .then((c) => {
-    const m = c.modularity;
-    const w = c.weighted_vs_unweighted;
-    const iv = c.industry_or_vendor;
-    const row = (label, weighted, plain) =>
-      `<tr><td>${label}</td><td style="text-align:right">${weighted}</td><td style="text-align:right">${plain}</td></tr>`;
-    stats.querySelector("tbody").innerHTML = [
-      row("Communities (median run)", num(m.communities_median), num(w.communities_median_unweighted)),
-      row("Modularity, real network", two(m.weighted_vs_rewired.real), two(m.wiring_only.real)),
-      row("Modularity, rewired null (largest piece)", two(m.weighted_vs_rewired.null), two(m.wiring_only.null)),
-      row("Modularity, filing counts shuffled", two(m.weights_only.null), "–"),
-      row("NMI between two seeds", two(w.nmi_between_seeds_weighted), two(w.nmi_between_seeds_unweighted)),
-      row("NMI with client industry", two(iv.nmi_community_industry), two(iv.unweighted.nmi_community_industry)),
-      row("NMI with main vendor", two(iv.nmi_community_main_vendor_same_clients),
-        two(iv.unweighted.nmi_community_main_vendor_same_clients)),
-      row("AMI with client industry", two(iv.ami_community_industry), two(iv.unweighted.ami_community_industry)),
-      row("AMI with main vendor", two(iv.ami_community_main_vendor_same_clients),
-        two(iv.unweighted.ami_community_main_vendor_same_clients)),
-      row("Clients in their main vendor's group", pct(iv.share_with_own_main_vendor),
-        pct(iv.unweighted.share_with_own_main_vendor)),
-    ].join("");
-    const wc = m.weights_check;
-    const shares = {
-      ".cross-share": 1 - wc.real_inside_share,
-      ".cross-share-null": 1 - wc.shuffled_inside_share,
-      ".multi-filings": wc.filings_to_multi_vendor_clients_share,
-      ".multi-links": wc.links_to_multi_vendor_clients_share,
-    };
-    for (const [sel, v] of Object.entries(shares)) stats.querySelector(sel).textContent = pct(v);
-    stats.querySelector(".pieces").textContent = num(m.rewired_components_median);
-    const fill = {
-      ".cross": w.nmi_median,
-      ".seeds": w.nmi_between_seeds_weighted,
-      ".seeds-plain": w.nmi_between_seeds_unweighted,
-      ".vendor": iv.ami_community_main_vendor_same_clients,
-      ".vendor-plain": iv.unweighted.ami_community_main_vendor_same_clients,
-      ".industry": iv.ami_community_industry,
-      ".im-louvain": c.infomap.nmi_with_louvain,
-      ".im-vendor": c.infomap.ami_community_main_vendor_same_clients,
-      ".im-industry": c.infomap.ami_community_industry,
-      ".mod": m.weighted_vs_rewired.real,
-      ".null": m.weighted_vs_rewired.null,
-      ".mod-plain": m.wiring_only.real,
-      ".null-plain": m.wiring_only.null,
-      ".null-weights": m.weights_only.null,
-    };
-    stats.querySelector(".im-modules").textContent = num(c.infomap.modules);
-    for (const [sel, v] of Object.entries(fill)) stats.querySelector(sel).textContent = two(v);
-  })
-  .catch(() => {
-    stats.querySelector("tbody").innerHTML = "<tr><td>The community numbers did not load.</td></tr>";
-  });
 
-fetch(asset("weeks/week04/data/staffing_clients.json"))
-  .then((r) => r.json())
-  .then((json) => {
-    data = json;
-    year = root.querySelector('.staffing-years button[aria-pressed="true"]').dataset.year;
-    draw();
-  })
-  .catch(() => {
-    panel.textContent = "The figure's data did not load. The table below needs it too.";
-  });
+/** #staffing-community-stats: the table's rows and every number its prose quotes, by class. */
+export function communityStats(c) {
+  const m = c.modularity;
+  const w = c.weighted_vs_unweighted;
+  const iv = c.industry_or_vendor;
+  const rows = [
+    ["Communities (median run)", num(m.communities_median), num(w.communities_median_unweighted)],
+    ["Modularity, real network", two(m.weighted_vs_rewired.real), two(m.wiring_only.real)],
+    ["Modularity, rewired null (largest piece)", two(m.weighted_vs_rewired.null), two(m.wiring_only.null)],
+    ["Modularity, filing counts shuffled", two(m.weights_only.null), "–"],
+    ["NMI between two seeds", two(w.nmi_between_seeds_weighted), two(w.nmi_between_seeds_unweighted)],
+    ["NMI with client industry", two(iv.nmi_community_industry), two(iv.unweighted.nmi_community_industry)],
+    ["NMI with main vendor", two(iv.nmi_community_main_vendor_same_clients), two(iv.unweighted.nmi_community_main_vendor_same_clients)],
+    ["AMI with client industry", two(iv.ami_community_industry), two(iv.unweighted.ami_community_industry)],
+    ["AMI with main vendor", two(iv.ami_community_main_vendor_same_clients), two(iv.unweighted.ami_community_main_vendor_same_clients)],
+    ["Clients in their main vendor's group", pct(iv.share_with_own_main_vendor), pct(iv.unweighted.share_with_own_main_vendor)],
+  ];
+  const wc = m.weights_check;
+  const values = {
+    "cross-share": pct(1 - wc.real_inside_share),
+    "cross-share-null": pct(1 - wc.shuffled_inside_share),
+    "multi-filings": pct(wc.filings_to_multi_vendor_clients_share),
+    "multi-links": pct(wc.links_to_multi_vendor_clients_share),
+    pieces: num(m.rewired_components_median),
+    "im-modules": num(c.infomap.modules),
+  };
+  const fill = {
+    cross: w.nmi_median,
+    seeds: w.nmi_between_seeds_weighted,
+    "seeds-plain": w.nmi_between_seeds_unweighted,
+    vendor: iv.ami_community_main_vendor_same_clients,
+    "vendor-plain": iv.unweighted.ami_community_main_vendor_same_clients,
+    industry: iv.ami_community_industry,
+    "im-louvain": c.infomap.nmi_with_louvain,
+    "im-vendor": c.infomap.ami_community_main_vendor_same_clients,
+    "im-industry": c.infomap.ami_community_industry,
+    mod: m.weighted_vs_rewired.real,
+    null: m.weighted_vs_rewired.null,
+    "mod-plain": m.wiring_only.real,
+    "null-plain": m.wiring_only.null,
+    "null-weights": m.weights_only.null,
+  };
+  for (const [k, v] of Object.entries(fill)) values[k] = two(v);
+  return { rows, values };
+}

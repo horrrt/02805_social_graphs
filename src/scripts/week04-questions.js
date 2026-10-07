@@ -1,30 +1,22 @@
 // Second-round question cards: section 1's "who hires" and backbone-break
 // figures, section 2's outsourcer/direct split and link-community table,
-// section 3's switching/movers/overlap figures, and the "beyond" section's
-// law-firm, green-card and wage-level figures. Four page JSON files, one
-// fetch each, same conventions as week04-jobs.js.
-import { asset } from "./site.js";
-import { node, token, fitted, fs, family, textWidth } from "./week04-strip.js";
+// section 3's switching/movers/overlap figures, the "beyond" section's
+// law-firm, green-card and wage-level figures, and section 4's footprint
+// charts. Six page JSON files, one fetch each. This module builds the ECharts
+// options, table rows and SVG layouts; src/features/week04/questions/ draws
+// them. `T` is { fs, family }: the page's type scale.
 
-const WHERE_WHO_URL = asset("weeks/week04/data/where_who.json");
-const JOBS_SPLIT_URL = asset("weeks/week04/data/jobs_split.json");
-const STAFFING_MOVES_URL = asset("weeks/week04/data/staffing_moves.json");
-const BEYOND_URL = asset("weeks/week04/data/beyond.json");
-const FOOTPRINT_URL = asset("weeks/week04/data/footprint.json");
-const FOOTPRINT_RANK_URL = asset("weeks/week04/data/footprint_rank.json");
-
-const INK = "#0f2340";
-const MUTE = "#7a8fac";
-const MUTE_TEXT = "#59708f";
+export const INK = "#0f2340";
+export const MUTE = "#7a8fac";
+export const MUTE_TEXT = "#59708f";
 const LINE = "#e6edf5";
-const ORANGE = "#f2820c";
-const BLUE = "#1f8fd6";
-const GREY = "#9eb1c7";
+export const ORANGE = "#f2820c";
+export const BLUE = "#1f8fd6";
+export const GREY = "#9eb1c7";
 const whole = new Intl.NumberFormat("en-US");
-const num = (value) => whole.format(value);
-const pct = (value, digits = 1) => `${(value * 100).toFixed(digits)}%`;
-const short = (title) => title.replace(/\s+\([^)]*\)$/, "").replace(/\s+/g, " ");
-const $ = (id) => document.getElementById(id);
+export const num = (value) => whole.format(value);
+export const pct = (value, digits = 1) => `${(value * 100).toFixed(digits)}%`;
+export const short = (title) => title.replace(/\s+\([^)]*\)$/, "").replace(/\s+/g, " ");
 const esc = (value) => String(value).replace(/[&<>"']/g, (character) => ({
   "&": "&amp;",
   "<": "&lt;",
@@ -33,50 +25,28 @@ const esc = (value) => String(value).replace(/[&<>"']/g, (character) => ({
   "'": "&#39;",
 }[character]));
 
-const base = {
-  animationDuration: 360,
-  textStyle: { fontFamily: family("sans"), fontSize: fs("caption") },
-  tooltip: {
-    confine: true,
-    backgroundColor: "rgba(15,35,64,0.94)",
-    borderWidth: 0,
-    textStyle: { color: "#eaf2fb", fontSize: fs("small") },
-  },
+const styles = (T) => {
+  const base = {
+    animationDuration: 360,
+    textStyle: { fontFamily: T.family("sans"), fontSize: T.fs("caption") },
+    tooltip: {
+      confine: true,
+      backgroundColor: "rgba(15,35,64,0.94)",
+      borderWidth: 0,
+      textStyle: { color: "#eaf2fb", fontSize: T.fs("small") },
+    },
+  };
+  const axis = {
+    axisLine: { lineStyle: { color: "#c6d4e6" } },
+    axisLabel: { color: MUTE_TEXT, fontSize: T.fs("caption") },
+    splitLine: { lineStyle: { color: LINE, type: "dashed" } },
+  };
+  // Row labels on a category y-axis: the names a reader looks up.
+  const rowLabel = { color: INK, fontSize: T.fs("small"), fontWeight: 600 };
+  // The value printed at a bar's end.
+  const valueLabel = { color: INK, fontSize: T.fs("small"), fontWeight: 700 };
+  return { base, axis, rowLabel, valueLabel };
 };
-const axis = {
-  axisLine: { lineStyle: { color: "#c6d4e6" } },
-  axisLabel: { color: MUTE_TEXT, fontSize: fs("caption") },
-  splitLine: { lineStyle: { color: LINE, type: "dashed" } },
-};
-// Row labels on a category y-axis: the names a reader looks up.
-const rowLabel = { color: INK, fontSize: fs("small"), fontWeight: 600 };
-// The value printed at a bar's end.
-const valueLabel = { color: INK, fontSize: fs("small"), fontWeight: 700 };
-
-const charts = [];
-
-// Every chart, or null for a missing host, joins `charts` so the resize
-// handler at the end of the file reaches it.
-function chart(id) {
-  const host = $(id);
-  const c = host ? window.echarts.init(host, null, { renderer: "canvas" }) : null;
-  charts.push(c);
-  return c;
-}
-
-// A short message in place of a chart or table when its data file failed to
-// load, rather than leaving an empty host or throwing past this section.
-function errorInto(ids, message) {
-  ids.forEach((id) => {
-    const el = $(id);
-    if (!el) return;
-    if (el.tagName === "TBODY") {
-      el.innerHTML = `<tr><td colspan="8" style="color:var(--ink-mute-text)">${esc(message)}</td></tr>`;
-    } else {
-      el.innerHTML = `<p style="color:var(--ink-mute-text);font-size:${fs("small")}px;margin:0;padding:14px 2px;">${esc(message)}</p>`;
-    }
-  });
-}
 
 // A ±sd or CI whisker on a category axis, drawn as a custom series next to a
 // plain bar series on the same categories. data is [categoryIndex, lo, hi].
@@ -105,22 +75,21 @@ function whiskerSeries(data, color = INK) {
   };
 }
 
-// Fetches one page JSON file and hands it to `render`. A failure, in the fetch
-// or in any of the renders, writes "<name> data failed to load" into `ids`.
-function loadSection(url, file, name, ids, render) {
-  fetch(url).then((response) => {
-    if (!response.ok) throw new Error(`${file} data ${response.status}`);
-    return response.json();
-  }).then(render).catch((error) => {
-    errorInto(ids, `${name} data failed to load: ${error.message}`);
-  });
-}
+// The files, and the hosts each fills; a failed file writes
+// "<name> data failed to load: <message>" into its hosts.
+export const SECTIONS = {
+  whereWho: { file: "where_who", name: "Where/who" },
+  jobsSplit: { file: "jobs_split", name: "Jobs-split" },
+  moves: { file: "staffing_moves", name: "Staffing-moves" },
+  beyond: { file: "beyond", name: "Beyond" },
+  footprint: { file: "footprint", name: "Footprint" },
+  footprintRank: { file: "footprint_rank", name: "Footprint-rank" },
+};
 
 // Section 1 · A — cities group by who hires, not by region -----------------
 
-function renderWhereWho(data) {
-  const c = chart("chart-where-who");
-  if (!c) return;
+export function whereWhoOption(data, T) {
+  const { base, axis, rowLabel, valueLabel } = styles(T);
   const labels = [
     { key: "naics54_share_tercile", label: "IT-services share\n(thirds)", who: true },
     { key: "placed_share_tercile", label: "Placed share\n(thirds)", who: true },
@@ -128,7 +97,7 @@ function renderWhereWho(data) {
     { key: "census_region", label: "Census region", who: false },
   ];
   const rows = labels.map((l) => ({ ...l, score: data.finding.q1_scores[l.key] }));
-  c.setOption({
+  return {
     ...base,
     // The card's right column is narrow: leave the bar labels room to finish.
     grid: { left: 132, right: 140, top: 12, bottom: 30 },
@@ -152,16 +121,15 @@ function renderWhereWho(data) {
         formatter: (p) => `AMI ${rows[p.dataIndex].score.ami.toFixed(2)} · p = ${rows[p.dataIndex].score.p_shuffle.toFixed(3)}`,
       },
     }],
-  });
+  };
 }
 
 // Section 1 · B — where the backbone breaks ---------------------------------
 
-function renderWhereBreak(data) {
-  const c = chart("chart-where-break");
-  if (!c) return;
+export function whereBreakOption(data, T) {
+  const { base, axis } = styles(T);
   const points = [...data.backbone_sweep].sort((a, b) => a.alpha - b.alpha);
-  c.setOption({
+  return {
     ...base,
     grid: { left: 48, right: 18, top: 18, bottom: 40 },
     xAxis: {
@@ -183,20 +151,19 @@ function renderWhereBreak(data) {
         data: [[{ xAxis: 0.05 }, { xAxis: 0.1 }]],
       },
     }],
-  });
+  };
 }
 
-function renderWhereBreakLinks(data) {
-  const tbody = $("where-break-links");
-  if (!tbody) return;
-  const rows = [...data.breaking_links].sort((a, b) => b.alpha - a.alpha);
-  tbody.innerHTML = rows.map((l) => `<tr>
-    <td>${esc(l.a_name)}–${esc(l.b_name)}</td>
-    <td style="text-align:right">${l.alpha.toFixed(3)}</td>
-    <td style="text-align:right">${num(l.weight)}</td>
-    <td>${esc(l.top_employer)}${l.shortlist ? ' <span class="tag">placing firm</span>' : ""}</td>
-    <td style="text-align:right">${pct(l.top_share, 0)}</td>
-  </tr>`).join("");
+/** #where-break-links: [link, α, weight, top employer, its share], with `tag` for a placing firm. */
+export function whereBreakRows(data) {
+  return [...data.breaking_links].sort((a, b) => b.alpha - a.alpha).map((l) => ({
+    link: `${l.a_name}–${l.b_name}`,
+    alpha: l.alpha.toFixed(3),
+    weight: num(l.weight),
+    employer: l.top_employer,
+    tag: l.shortlist ? "placing firm" : null,
+    share: pct(l.top_share, 0),
+  }));
 }
 
 // Section 2 · A — do outsourcers and direct employers bundle jobs alike -----
@@ -212,74 +179,19 @@ const NMI_ROWS = [
   { lines: ["Random firms, same number", "and size (fair baseline)"], mean: "q1_null_matched_nmi_mean", sd: "q1_null_matched_nmi_sd", fill: "--access" },
 ];
 
-function renderJobsSplitNmi(data) {
-  const host = $("chart-jobs-split-nmi");
-  if (!host) return;
+/** #chart-jobs-split-nmi's rows and axis: { rows, steps, d1 }. */
+export function splitNmi(data) {
   const f = data.finding;
   const rows = NMI_ROWS.map((r) => ({
     ...r, label: r.lines.join(" "), value: f[r.mean], sd: r.sd ? f[r.sd] : null,
   }));
   // The axis runs to the next 0.2 past the longest whisker, never past 1.
   const steps = Math.min(5, Math.ceil(Math.max(...rows.map((r) => r.value + (r.sd ?? 0))) / 0.2 - 1e-9));
-  const d1 = steps * 0.2;
-  host.replaceChildren(fitted((W) => drawSplitNmi(rows, steps, d1, W), 560));
+  return { rows, steps, d1: steps * 0.2 };
 }
 
-function drawSplitNmi(rows, steps, d1, W) {
-  const small = fs("small");
-  const caption = fs("caption");
-  const x0 = Math.ceil(Math.max(...rows.flatMap((r) => r.lines.map((line) => textWidth(line, "small", r.bold ? 700 : 600))))) + 14;
-  const x1 = W - 40;
-  const T = 8;
-  const rowH = 46;
-  const ybot = T + rows.length * rowH;
-  const H = ybot + 34;
-  const X = (v) => x0 + (Math.min(Math.max(v, 0), d1) / d1) * (x1 - x0);
-  const ink = token("--ink");
-  const mute = token("--ink-mute-text");
-  const svg = node("svg", {
-    viewBox: `0 0 ${W} ${H}`, width: W, height: H, role: "img",
-    "aria-label": "How much the outsourcing and direct-employer job clusters agree, against three random baselines",
-  });
-  for (let i = 0; i <= steps; i += 1) {
-    const v = i * 0.2;
-    svg.append(node("line", { x1: X(v), x2: X(v), y1: T - 2, y2: ybot, stroke: token("--w4-grid") }));
-    svg.append(node("text", { x: X(v), y: ybot + 14, "font-size": caption, fill: mute, "text-anchor": "middle" }, v.toFixed(1)));
-  }
-  const axisName = "Agreement of the two groups' job clusters (NMI: 0 unrelated, 1 identical)";
-  const half = textWidth(axisName, "caption") / 2;
-  svg.append(node("text", { x: Math.max(half, Math.min((x0 + x1) / 2, W - half)), y: ybot + 31, "font-size": caption, fill: mute, "text-anchor": "middle" },
-    axisName));
-  rows.forEach((r, i) => {
-    const cy = T + i * rowH + rowH / 2;
-    const weight = r.bold ? 700 : 600;
-    svg.append(node("text", { x: 0, y: cy - 3, "font-size": small, "font-weight": weight, fill: ink }, r.lines[0]));
-    svg.append(node("text", { x: 0, y: cy + 12.5, "font-size": small, "font-weight": weight, fill: ink }, r.lines[1]));
-    const tip = r.sd === null
-      ? `${r.label}: NMI ${r.value.toFixed(3)}`
-      : `${r.label}: NMI ${r.value.toFixed(3)} ± ${r.sd.toFixed(3)} (mean ± sd over the random splits)`;
-    const g = node("g");
-    g.append(node("title", {}, tip));
-    g.append(node("rect", { x: x0, y: cy - 9, width: Math.max(X(r.value) - x0, 1), height: 18, rx: 3, fill: token(r.fill) }));
-    let end = X(r.value);
-    if (r.sd !== null) {
-      const lo = X(r.value - r.sd);
-      const hi = X(r.value + r.sd);
-      const whisker = { stroke: ink, "stroke-width": 1.5 };
-      g.append(node("line", { x1: lo, x2: hi, y1: cy, y2: cy, ...whisker }));
-      g.append(node("line", { x1: lo, x2: lo, y1: cy - 6, y2: cy + 6, ...whisker }));
-      g.append(node("line", { x1: hi, x2: hi, y1: cy - 6, y2: cy + 6, ...whisker }));
-      end = Math.max(end, hi);
-    }
-    svg.append(g);
-    svg.append(node("text", { x: end + 7, y: cy + 4.5, "font-size": small, "font-weight": 700, fill: ink }, r.value.toFixed(2)));
-  });
-  return svg;
-}
-
-function renderJobsSplitMix(data) {
-  const c = chart("chart-jobs-split-mix");
-  if (!c) return;
+export function splitMixOption(data, T) {
+  const { base, axis, rowLabel } = styles(T);
   const placing = new Map(data.q1.placing_top_occupations.map((o) => [o.id, o]));
   const direct = new Map(data.q1.direct_top_occupations.map((o) => [o.id, o]));
   const ids = new Set([...placing.keys(), ...direct.keys()]);
@@ -293,10 +205,10 @@ function renderJobsSplitMix(data) {
       directShare: d ? d.share : 0,
     };
   }).sort((a, b) => b.combined - a.combined).slice(0, 8).reverse();
-  c.setOption({
+  return {
     ...base,
     grid: { left: 244, right: 24, top: 34, bottom: 40 },
-    legend: { top: 0, right: 0, textStyle: { color: MUTE_TEXT, fontSize: fs("caption") } },
+    legend: { top: 0, right: 0, textStyle: { color: MUTE_TEXT, fontSize: T.fs("caption") } },
     xAxis: {
       ...axis, type: "value", name: "share of group's filings →", nameLocation: "middle", nameGap: 26, splitNumber: 4,
       axisLabel: { ...axis.axisLabel, formatter: (v) => `${Math.round(v * 100)}%` },
@@ -313,69 +225,21 @@ function renderJobsSplitMix(data) {
       { name: "Outsourcing firms", type: "bar", data: rows.map((r) => r.placingShare), itemStyle: { color: ORANGE }, barMaxWidth: 12 },
       { name: "Direct employers", type: "bar", data: rows.map((r) => r.directShare), itemStyle: { color: BLUE }, barMaxWidth: 12 },
     ],
-  });
+  };
 }
 
 // Section 2 · B — link communities table ------------------------------------
 
-function renderJobsLinkcomTable(data) {
-  const tbody = $("jobs-linkcom-table");
-  if (!tbody) return;
+/** #jobs-linkcom-table: { title, tag, links, communities, perLink }. */
+export function linkcomRows(data) {
   const flagged = new Set(data.q2.bridges.in_top15);
-  tbody.innerHTML = data.q2.top15_by_communities_per_link.map((o) => `<tr>
-    <td>${esc(short(o.title))}${flagged.has(o.id) ? ' <span class="tag">flagged bridge</span>' : ""}</td>
-    <td style="text-align:right">${num(o.links)}</td>
-    <td style="text-align:right">${num(o.communities)}</td>
-    <td style="text-align:right">${o.communities_per_link.toFixed(2)}</td>
-  </tr>`).join("");
-}
-
-// One bar: the links in the largest link community against the rest.
-function renderLinkShare(data) {
-  const host = $("chart-jobs-linkcom-share");
-  if (!host) return;
-  host.replaceChildren(fitted((W) => drawLinkShare(data, W), 520));
-}
-
-function drawLinkShare(data, W) {
-  const q = data.q2;
-  const largest = q.largest_link_community_links;
-  const rest = q.links - largest;
-  const smaller = q.link_clusters - 1;
-  const share = largest / q.links;
-  const caption = fs("caption");
-  const smallSize = fs("small");
-  const H = 146;
-  const by = 46;
-  const bh = 34;
-  const split = W * share;
-  const ink = token("--ink");
-  const soft = token("--ink-soft");
-  const svg = node("svg", {
-    viewBox: `0 0 ${W} ${H}`, width: W, height: H, role: "img",
-    "aria-label": `Share of the ${num(q.links)} links in the largest link community`,
-  });
-  svg.append(node("text", { x: 0, y: 24, "font-size": caption, fill: soft },
-    `All ${num(q.links)} links between occupations, split by link community`));
-  const big = node("g");
-  big.append(node("title", {}, `Largest link community: ${num(largest)} of ${num(q.links)} links (${pct(share)})`));
-  big.append(node("rect", { x: 0, y: by, width: split - 2, height: bh, rx: 5, fill: ink }));
-  big.append(node("text", { x: 10, y: by + 21.5, "font-size": smallSize, "font-weight": 700, fill: token("--card") },
-    `One community: ${pct(share, 0)} of links`));
-  svg.append(big);
-  const small = node("g");
-  small.append(node("title", {}, `The other ${num(smaller)} link communities: ${num(rest)} links (${pct(rest / q.links)})`));
-  small.append(node("rect", { x: split, y: by, width: W - split, height: bh, rx: 5, fill: token("--w4-meter") }));
-  small.append(node("text", { x: split + (W - split) / 2, y: by + 21.5, "font-size": smallSize, "font-weight": 700, fill: ink, "text-anchor": "middle" },
-    pct(rest / q.links, 0)));
-  svg.append(small);
-  svg.append(node("text", { x: 0, y: by + bh + 18, "font-size": caption, fill: soft }, `${num(largest)} links`));
-  svg.append(node("text", { x: W, y: by + bh + 18, "font-size": caption, fill: soft, "text-anchor": "end" }, `${num(rest)} links`));
-  svg.append(node("text", { x: W, y: by + bh + 40, "font-size": caption, fill: soft, "text-anchor": "end" },
-    `${num(smaller)} smaller communities share the rest;`));
-  svg.append(node("text", { x: W, y: by + bh + 56, "font-size": caption, fill: soft, "text-anchor": "end" },
-    `${num(data.finding.q2_link_clusters_of_3_or_more)} of all ${num(q.link_clusters)} hold three links or more`));
-  return svg;
+  return data.q2.top15_by_communities_per_link.map((o) => ({
+    title: short(o.title),
+    tag: flagged.has(o.id) ? "flagged bridge" : null,
+    links: num(o.links),
+    communities: num(o.communities),
+    perLink: o.communities_per_link.toFixed(2),
+  }));
 }
 
 // Display names for the scatter, keyed by SOC code; the full title stays in
@@ -400,56 +264,34 @@ const LINK_LABELLED = ["25-2021", "25-2058", "11-9032"];
 const LEADER = { x: 28, y: 5.2, step: 1.8 };
 const RATE_GUIDES = [[0.4, "1 community per 2.5 links"], [1 / 3, "1 per 3"], [0.25, "1 per 4"]];
 
-function renderLinkScatter(data) {
-  const host = $("chart-jobs-linkcom-scatter");
-  if (!host) return;
+/**
+ * #chart-jobs-linkcom-scatter at width W: links against link communities for
+ * the jobs with the most communities per link. Pure geometry: grid lines,
+ * ticks, rate guides, dots (one per shared position), leader lines and labels.
+ */
+export function linkScatterLayout(data, W) {
   const top = data.q2.top15_by_communities_per_link;
   const bridges = new Set(data.q2.bridges.in_top15);
-  host.replaceChildren(fitted((W) => drawLinkScatter(data, top, bridges, W), 520));
-}
-
-function drawLinkScatter(data, top, bridges, W) {
   const name = (o) => LINK_SHORT[o.id] ?? short(o.title);
-  const caption = fs("caption");
-  const small = fs("small");
   const H = 336;
   const L = 40;
   const R = 150;
-  const T = 24;
+  const Tp = 24;
   const B = 40;
   const xmax = Math.ceil(Math.max(...top.map((o) => o.links)) / 10) * 10;
   const ymax = Math.ceil(Math.max(...top.map((o) => o.communities)) / 5) * 5;
   const X = (v) => L + ((W - L - R) * v) / xmax;
-  const Y = (v) => T + (H - T - B) * (1 - v / ymax);
-  const ink = token("--ink");
-  const soft = token("--ink-soft");
-  const mute = token("--ink-mute");
-  const muteText = token("--ink-mute-text");
-  const halo = { "paint-order": "stroke", stroke: token("--w4-inset"), "stroke-width": 3 };
-  const svg = node("svg", {
-    viewBox: `0 0 ${W} ${H}`, width: W, height: H, role: "img",
-    "aria-label": `Links against link communities for the ${top.length} jobs with the most communities per link`,
-  });
-  for (let v = 0; v <= ymax; v += 5) {
-    svg.append(node("line", { x1: L, x2: W - R, y1: Y(v), y2: Y(v), stroke: token("--w4-grid") }));
-    svg.append(node("text", { x: L - 8, y: Y(v) + 4, "font-size": caption, fill: muteText, "text-anchor": "end" }, String(v)));
-  }
-  for (let v = 0; v <= xmax; v += 10) {
-    svg.append(node("text", { x: X(v), y: H - B + 18, "font-size": caption, fill: muteText, "text-anchor": "middle" }, String(v)));
-  }
-  svg.append(node("text", { x: (L + W - R) / 2, y: H - 6, "font-size": caption, fill: soft, "text-anchor": "middle" },
-    "links (other occupations it shares employers with)"));
-  svg.append(node("text", { x: L - 30, y: T - 12, "font-size": caption, fill: soft }, "communities"));
-  RATE_GUIDES.forEach(([rate, label], i) => {
+  const Y = (v) => Tp + (H - Tp - B) * (1 - v / ymax);
+  const yTicks = [];
+  for (let v = 0; v <= ymax; v += 5) yTicks.push({ v, y: Y(v) });
+  const xTicks = [];
+  for (let v = 0; v <= xmax; v += 10) xTicks.push({ v, x: X(v) });
+  const guides = RATE_GUIDES.map(([rate, label], i) => {
     const xe = Math.min(xmax, ymax / rate);
-    svg.append(node("line", {
-      x1: X(0), y1: Y(0), x2: X(xe), y2: Y(rate * xe),
-      stroke: mute, "stroke-opacity": 0.55, "stroke-dasharray": "3 3",
-    }));
-    svg.append(node("text", {
-      x: i === 0 ? X(xe) - 6 : X(xe) + 4, y: Y(rate * xe) + 4, "font-size": caption, fill: muteText,
-      "text-anchor": i === 0 ? "end" : "start",
-    }, label));
+    return {
+      x1: X(0), y1: Y(0), x2: X(xe), y2: Y(rate * xe), label,
+      lx: i === 0 ? X(xe) - 6 : X(xe) + 4, ly: Y(rate * xe) + 4, anchor: i === 0 ? "end" : "start",
+    };
   });
   // Jobs on the same (links, communities) share one dot and one tooltip.
   const groups = new Map();
@@ -460,47 +302,32 @@ function drawLinkScatter(data, top, bridges, W) {
   });
   const leaders = top
     .filter((o) => bridges.has(o.id) && !LINK_LABELLED.includes(o.id))
-    .sort((a, b) => b.communities - a.communities || a.links - b.links);
-  const leaderLines = node("g");
-  const dots = node("g");
-  const labels = node("g");
-  leaders.forEach((o, i) => {
-    const lx = X(LEADER.x);
-    const ly = Y(Math.max(LEADER.y - i * LEADER.step, 0.4));
-    leaderLines.append(node("line", {
-      x1: X(o.links) + 6, y1: Y(o.communities), x2: lx - 4, y2: ly - 4, stroke: mute, "stroke-width": 1,
-    }));
-    labels.append(node("text", { x: lx, y: ly, "font-size": small, "font-weight": 700, fill: ink, ...halo },
-      `${name(o)} (bridge)`));
-  });
-  groups.forEach((members) => {
+    .sort((a, b) => b.communities - a.communities || a.links - b.links)
+    .map((o, i) => {
+      const lx = X(LEADER.x);
+      const ly = Y(Math.max(LEADER.y - i * LEADER.step, 0.4));
+      return { x1: X(o.links) + 6, y1: Y(o.communities), x2: lx - 4, y2: ly - 4, lx, ly, text: `${name(o)} (bridge)` };
+    });
+  const dots = [...groups.values()].map((members) => {
     const [first] = members;
     const flagged = members.some((o) => bridges.has(o.id));
     const who = members.map((o) => `${o.title}${bridges.has(o.id) ? " (flagged bridge)" : ""}`).join("\n");
-    const g = node("g");
-    g.append(node("title", {},
-      `${who}\n${first.communities} communities over ${first.links} links (${first.communities_per_link.toFixed(2)} per link)`));
-    g.append(node("circle", {
-      cx: X(first.links), cy: Y(first.communities), r: 5.5,
-      fill: flagged ? token("--card") : ink, stroke: ink, "stroke-width": flagged ? 2.2 : 1,
-    }));
-    dots.append(g);
+    return {
+      cx: X(first.links), cy: Y(first.communities), flagged,
+      tip: `${who}\n${first.communities} communities over ${first.links} links (${first.communities_per_link.toFixed(2)} per link)`,
+    };
   });
-  top.filter((o) => LINK_LABELLED.includes(o.id)).forEach((o) => {
-    labels.append(node("text", {
-      x: X(o.links) + 8, y: Y(o.communities) + 4, "font-size": small,
-      "font-weight": bridges.has(o.id) ? 700 : 600, fill: ink, ...halo,
-    }, `${name(o)}${bridges.has(o.id) ? " (bridge)" : ""}`));
-  });
-  svg.append(leaderLines, dots, labels);
-  return svg;
+  const labels = top.filter((o) => LINK_LABELLED.includes(o.id)).map((o) => ({
+    x: X(o.links) + 8, y: Y(o.communities) + 4, bold: bridges.has(o.id),
+    text: `${name(o)}${bridges.has(o.id) ? " (bridge)" : ""}`,
+  }));
+  return { W, H, L, R, Tp, B, count: top.length, yTicks, xTicks, guides, leaders, dots, labels };
 }
 
 // Section 3 · A — does a switch stay in the client's group ------------------
 
-function renderWhoSwitch(data) {
-  const c = chart("chart-who-switch");
-  if (!c) return;
+export function whoSwitchOption(data, T) {
+  const { base, axis } = styles(T);
   const f = data.finding;
   const groups = [
     ...data.q1_pairs.map((p) => ({
@@ -520,7 +347,7 @@ function renderWhoSwitch(data) {
     );
     whiskers.push([i0 + 1, g.mean - g.sd, g.mean + g.sd]);
   });
-  c.setOption({
+  return {
     ...base,
     grid: { left: 50, right: 18, top: 18, bottom: 50 },
     xAxis: {
@@ -529,7 +356,7 @@ function renderWhoSwitch(data) {
       // the "observed" tick keeps the pair readable without the two labels
       // bleeding into each other. The full name still reaches the tooltip.
       axisLabel: {
-        ...axis.axisLabel, interval: 0, fontSize: fs("caption"), lineHeight: 14,
+        ...axis.axisLabel, interval: 0, fontSize: T.fs("caption"), lineHeight: 14,
         formatter: (value, index) => (index % 2 === 1 ? value.split("\n")[1] : value),
       },
     },
@@ -539,21 +366,20 @@ function renderWhoSwitch(data) {
       { type: "bar", data: values, barMaxWidth: 20 },
       whiskerSeries(whiskers),
     ],
-  });
+  };
 }
 
 // Section 3 · B — which clients change group ---------------------------------
 
-function renderWhoMovers(data) {
-  const c = chart("chart-who-movers");
-  if (!c) return;
+export function whoMoversOption(data, T) {
+  const { base, axis, valueLabel } = styles(T);
   const f = data.finding;
   const bars = [
     { label: "Two weighted\nseeds", value: f.q2_noise_floor_weighted, color: GREY },
     { label: "Two unweighted\nseeds", value: f.q2_noise_floor_unweighted, color: GREY },
     { label: "Weighted vs\nunweighted", value: f.q2_share_move, color: ORANGE },
   ];
-  c.setOption({
+  return {
     ...base,
     grid: { left: 50, right: 18, top: 18, bottom: 42 },
     xAxis: { ...axis, type: "category", data: bars.map((b) => b.label), axisLabel: { ...axis.axisLabel, lineHeight: 13 } },
@@ -571,29 +397,21 @@ function renderWhoMovers(data) {
         [1, f.q2_noise_floor_unweighted_min, f.q2_noise_floor_unweighted_max],
       ]),
     ],
-  });
+  };
 }
 
-function renderWhoMoversTable(data) {
-  const tbody = $("who-movers-table");
-  if (!tbody) return;
-  tbody.innerHTML = data.q2_top_movers.map((m) => `<tr>
-    <td>${esc(m.client)}</td>
-    <td style="text-align:right">${num(m.filings)}</td>
-    <td style="text-align:right">${num(m.vendors)}</td>
-    <td>${esc(m.weighted_community_top_firm)}</td>
-    <td>${esc(m.unweighted_community_top_firm)}</td>
-  </tr>`).join("");
+/** #who-movers-table: [client, filings, vendors, weighted group, unweighted group]. */
+export function whoMoversRows(data) {
+  return data.q2_top_movers.map((m) => [m.client, num(m.filings), num(m.vendors), m.weighted_community_top_firm, m.unweighted_community_top_firm]);
 }
 
 // Section 3 · C — which clients sit in two groups at once -------------------
 
-function renderWhoOverlap(data) {
-  const c = chart("chart-who-overlap");
-  if (!c) return;
+export function whoOverlapOption(data, T) {
+  const { base, axis, valueLabel } = styles(T);
   const f = data.finding;
   const cats = ["Real network", "Rewired,\nmean"];
-  c.setOption({
+  return {
     ...base,
     grid: { left: 60, right: 18, top: 18, bottom: 34 },
     xAxis: { ...axis, type: "category", data: cats, axisLabel: { ...axis.axisLabel, lineHeight: 13 } },
@@ -610,29 +428,27 @@ function renderWhoOverlap(data) {
       },
       whiskerSeries([[1, f.q3_null_mean - f.q3_null_sd, f.q3_null_mean + f.q3_null_sd]]),
     ],
-  });
+  };
 }
 
-function renderWhoOverlapTable(data) {
-  const tbody = $("who-overlap-table");
-  if (!tbody) return;
-  tbody.innerHTML = data.q3_top_clients.map((c) => `<tr>
-    <td>${esc(c.client)}</td>
-    <td style="text-align:right">${num(c.filings)}</td>
-    <td>${esc(c.communities[0])} (${pct(c.shares[0], 0)})</td>
-    <td>${esc(c.communities[1])} (${pct(c.shares[1], 0)})</td>
-    <td>${esc(c.main_vendor || "—")}</td>
-  </tr>`).join("");
+/** #who-overlap-table: [client, filings, first group, second group, main vendor]. */
+export function whoOverlapRows(data) {
+  return data.q3_top_clients.map((c) => [
+    c.client,
+    num(c.filings),
+    `${c.communities[0]} (${pct(c.shares[0], 0)})`,
+    `${c.communities[1]} (${pct(c.shares[1], 0)})`,
+    c.main_vendor || "—",
+  ]);
 }
 
 // Beyond · A — do law firms split companies the way vendors do -------------
 
-function renderBeyondLaw(data) {
-  const c = chart("chart-beyond-law");
-  if (!c) return;
+export function beyondLawOption(data, T) {
+  const { base, axis, valueLabel } = styles(T);
   const f = data.finding;
   const cats = ["Observed", "Rewired,\nmean"];
-  c.setOption({
+  return {
     ...base,
     grid: { left: 54, right: 18, top: 18, bottom: 34 },
     xAxis: { ...axis, type: "category", data: cats, axisLabel: { ...axis.axisLabel, lineHeight: 13 } },
@@ -649,14 +465,13 @@ function renderBeyondLaw(data) {
       },
       whiskerSeries([[1, f.q1_ami_rewired_mean - f.q1_ami_rewired_sd, f.q1_ami_rewired_mean + f.q1_ami_rewired_sd]]),
     ],
-  });
+  };
 }
 
 // Beyond · B — do outsourcing firms sponsor fewer green cards ---------------
 
-function renderBeyondPerm(data) {
-  const c = chart("chart-beyond-perm");
-  if (!c) return;
+export function beyondPermOption(data, T) {
+  const { base, axis } = styles(T);
   const q2 = data.q2;
   const groups = [
     {
@@ -672,7 +487,7 @@ function renderBeyondPerm(data) {
     groups.push({ label: `${short(g.top_firms[0])}'s\ngroup`, value: g.pooled_ratio, ci: null, color: GREY });
   });
   const whiskers = groups.map((g, i) => (g.ci ? [i, g.ci[0], g.ci[1]] : null)).filter(Boolean);
-  c.setOption({
+  return {
     ...base,
     grid: { left: 54, right: 18, top: 18, bottom: 62 },
     xAxis: {
@@ -680,7 +495,7 @@ function renderBeyondPerm(data) {
       // A long company name is wider than its bar's slot, so it bleeds into
       // its neighbours; truncate it to fit and leave the full name to the
       // tooltip.
-      axisLabel: { ...axis.axisLabel, fontSize: fs("caption"), lineHeight: 14, interval: 0, width: 54, overflow: "truncate" },
+      axisLabel: { ...axis.axisLabel, fontSize: T.fs("caption"), lineHeight: 14, interval: 0, width: 54, overflow: "truncate" },
     },
     yAxis: { ...axis, type: "value", min: 0, name: "PERM per H-1B filing", nameTextStyle: { color: MUTE_TEXT } },
     tooltip: { ...base.tooltip, formatter: (p) => `${esc(p.name.replace("\n", " "))}<br>${p.value.toFixed(3)}` },
@@ -688,28 +503,27 @@ function renderBeyondPerm(data) {
       { type: "bar", barMaxWidth: 30, data: groups.map((g) => ({ value: g.value, itemStyle: { color: g.color } })) },
       whiskerSeries(whiskers),
     ],
-  });
+  };
 }
 
 // Beyond · C — do outsourcing firms file at lower wage levels ----------------
 
-function renderBeyondWage(data) {
-  const c = chart("chart-beyond-wage");
-  if (!c) return;
+export function beyondWageOption(data, T) {
+  const { base, axis } = styles(T);
   const rows = data.q3_top5_soc;
-  c.setOption({
+  return {
     ...base,
     // The rotated occupation labels reach well below the axis; a legend
     // sitting at the bottom collides with them, so it moves to the top like
     // the section's other charts.
     grid: { left: 54, right: 18, top: 34, bottom: 76 },
-    legend: { top: 0, right: 0, textStyle: { color: MUTE_TEXT, fontSize: fs("caption") } },
+    legend: { top: 0, right: 0, textStyle: { color: MUTE_TEXT, fontSize: T.fs("caption") } },
     xAxis: {
       ...axis, type: "category", data: rows.map((r) => short(r.title)),
       // At 24°, a truncated 120px label is wider than its own category slot
       // and its rotated box lands on the neighbour's; a steeper angle and a
       // shorter truncation width keep each label inside its own slot.
-      axisLabel: { ...axis.axisLabel, rotate: 32, fontSize: fs("caption"), width: 95, overflow: "truncate", interval: 0 },
+      axisLabel: { ...axis.axisLabel, rotate: 32, fontSize: T.fs("caption"), width: 95, overflow: "truncate", interval: 0 },
     },
     yAxis: { ...axis, type: "value", min: 0, max: 1, axisLabel: { ...axis.axisLabel, formatter: (v) => `${Math.round(v * 100)}%` } },
     tooltip: {
@@ -720,41 +534,8 @@ function renderBeyondWage(data) {
       { name: "Placed at a client", type: "bar", data: rows.map((r) => r.placed_low_share), itemStyle: { color: ORANGE }, barMaxWidth: 20 },
       { name: "Employer's own site", type: "bar", data: rows.map((r) => r.direct_low_share), itemStyle: { color: BLUE }, barMaxWidth: 20 },
     ],
-  });
+  };
 }
-
-// Four independent fetches: a failure in one leaves the others working. -----
-
-loadSection(WHERE_WHO_URL, "where_who", "Where/who", ["chart-where-who", "chart-where-break", "where-break-links"], (data) => {
-  renderWhereWho(data);
-  renderWhereBreak(data);
-  renderWhereBreakLinks(data);
-});
-
-const JOBS_SPLIT_IDS = ["chart-jobs-split-nmi", "chart-jobs-split-mix", "jobs-linkcom-table",
-  "chart-jobs-linkcom-share", "chart-jobs-linkcom-scatter"];
-loadSection(JOBS_SPLIT_URL, "jobs_split", "Jobs-split", JOBS_SPLIT_IDS, (data) => {
-  renderJobsSplitNmi(data);
-  renderJobsSplitMix(data);
-  renderJobsLinkcomTable(data);
-  renderLinkShare(data);
-  renderLinkScatter(data);
-});
-
-const STAFFING_MOVES_IDS = ["chart-who-switch", "chart-who-movers", "who-movers-table", "chart-who-overlap", "who-overlap-table"];
-loadSection(STAFFING_MOVES_URL, "staffing_moves", "Staffing-moves", STAFFING_MOVES_IDS, (data) => {
-  renderWhoSwitch(data);
-  renderWhoMovers(data);
-  renderWhoMoversTable(data);
-  renderWhoOverlap(data);
-  renderWhoOverlapTable(data);
-});
-
-loadSection(BEYOND_URL, "beyond", "Beyond", ["chart-beyond-law", "chart-beyond-perm", "chart-beyond-wage"], (data) => {
-  renderBeyondLaw(data);
-  renderBeyondPerm(data);
-  renderBeyondWage(data);
-});
 
 // Section 4 — without the biggest firms ------------------------------------
 // Each named drop sits beside its volume-matched random drop (mean ± sd of 20).
@@ -779,12 +560,11 @@ function dropBars(part, field) {
   return { bars, whiskers };
 }
 
-function renderFootprintRegion(data) {
-  const c = chart("chart-footprint-region");
-  if (!c) return;
+export function footprintRegionOption(data, T) {
+  const { base, axis, valueLabel } = styles(T);
   const full = variant(data.metros, "full");
   const { bars, whiskers } = dropBars(data.metros, "ami_region");
-  c.setOption({
+  return {
     ...base,
     grid: { left: 46, right: 18, top: 28, bottom: 46 },
     xAxis: { ...axis, type: "category", data: DROPS.map(([, label]) => label), axisLabel: { ...axis.axisLabel, lineHeight: 13 } },
@@ -802,12 +582,11 @@ function renderFootprintRegion(data) {
       },
       whiskerSeries(whiskers),
     ],
-  });
+  };
 }
 
-function renderFootprintNmi(data) {
-  const c = chart("chart-footprint-nmi");
-  if (!c) return;
+export function footprintNmiOption(data, T) {
+  const { base, axis, valueLabel } = styles(T);
   const metros = dropBars(data.metros, "nmi_vs_full");
   const jobs = dropBars(data.jobs, "nmi_vs_full");
   // Unique keys per half, so the axis labels every bar and the shading finds its range.
@@ -817,10 +596,10 @@ function renderFootprintNmi(data) {
   const SHORT = { drop_shortlist: "5 placing\nout", control_shortlist: "random", drop_top10_filings: "10 largest\nout", control_top10_filings: "random" };
   const shortOf = (key) => SHORT[key.split(":")[1]];
   const shift = (w, n) => w.map(([i, lo, hi]) => [i + n, lo, hi]);
-  c.setOption({
+  return {
     ...base,
     grid: { left: 46, right: 18, top: 28, bottom: 46 },
-    xAxis: { ...axis, type: "category", data: cats, axisLabel: { ...axis.axisLabel, interval: 0, lineHeight: 14, fontSize: fs("caption"), formatter: shortOf } },
+    xAxis: { ...axis, type: "category", data: cats, axisLabel: { ...axis.axisLabel, interval: 0, lineHeight: 14, fontSize: T.fs("caption"), formatter: shortOf } },
     yAxis: { ...axis, type: "value", min: 0, max: 1.1, interval: 0.2, name: "NMI with the full network's groups", nameTextStyle: { color: MUTE_TEXT, align: "left" }, axisLabel: { ...axis.axisLabel, formatter: (v) => (v <= 1 ? v.toFixed(1) : "") } },
     tooltip: { ...base.tooltip, formatter: (p) => `${p.dataIndex < 4 ? "Metros" : "Jobs"} · ${esc(labelOf(p.name).replace("\n", " "))}<br>NMI ${p.value.toFixed(2)}` },
     series: [
@@ -835,21 +614,15 @@ function renderFootprintNmi(data) {
       },
       whiskerSeries([...metros.whiskers, ...shift(jobs.whiskers, 4)]),
     ],
-  });
+  };
 }
-
-loadSection(FOOTPRINT_URL, "footprint", "Footprint", ["chart-footprint-region", "chart-footprint-nmi"], (data) => {
-  renderFootprintRegion(data);
-  renderFootprintNmi(data);
-});
 
 // Section 4 follow-up — which firms drive it, and does it hold in FY2024 ----
 // (footprint_rank.json; the FY2024 table has its own markup elsewhere, this
 // file only draws the two charts.)
 
-function renderFootprintSingle(data) {
-  const c = chart("chart-footprint-single");
-  if (!c) return;
+export function footprintSingleOption(data, T) {
+  const { base, axis } = styles(T);
   const rows = data.single;
   const label = (firm) => (firm === "Tata Consultancy Services" ? "TCS" : short(firm));
   // One category per firm, two bars in it; the whisker sits on the grey bar,
@@ -875,13 +648,13 @@ function renderFootprintSingle(data) {
       };
     },
   };
-  c.setOption({
+  return {
     ...base,
     grid: { left: 46, right: 18, top: 40, bottom: 40 },
-    legend: { top: 0, right: 0, textStyle: { color: MUTE_TEXT, fontSize: fs("caption") }, data: ["One firm out", "Random cut, same volume"] },
+    legend: { top: 0, right: 0, textStyle: { color: MUTE_TEXT, fontSize: T.fs("caption") }, data: ["One firm out", "Random cut, same volume"] },
     xAxis: {
       ...axis, type: "category", data: rows.map((r) => label(r.firm)),
-      axisLabel: { ...axis.axisLabel, interval: 0, fontSize: fs("caption"), rotate: 30 },
+      axisLabel: { ...axis.axisLabel, interval: 0, fontSize: T.fs("caption"), rotate: 30 },
     },
     yAxis: { ...axis, type: "value", name: "AMI with Census regions", nameTextStyle: { color: MUTE_TEXT, align: "left" } },
     tooltip: {
@@ -906,12 +679,11 @@ function renderFootprintSingle(data) {
       { name: "Random cut, same volume", type: "bar", barWidth: BAR, data: rows.map((r) => r.control_ami_mean), itemStyle: { color: GREY } },
       whisker,
     ],
-  });
+  };
 }
 
-function renderFootprintRank(data) {
-  const c = chart("chart-footprint-rank");
-  if (!c) return;
+export function footprintRankOption(data, T) {
+  const { base, axis } = styles(T);
   const rows = [...data.sweep].sort((a, b) => a.k - b.k);
   const ks = rows.map((r) => r.k);
   // The control band as two stacked "line" series (the standard ECharts
@@ -921,7 +693,7 @@ function renderFootprintRank(data) {
   // lower bound is often negative -- the controls sit near AMI 0.
   const lo = rows.map((r) => r.control_ami_mean - r.control_ami_sd);
   const gap = rows.map((r) => 2 * r.control_ami_sd);
-  c.setOption({
+  return {
     ...base,
     grid: { left: 46, right: 18, top: 24, bottom: 46 },
     xAxis: {
@@ -951,12 +723,5 @@ function renderFootprintRank(data) {
         data: rows.map((r) => r.ami_region),
       },
     ],
-  });
+  };
 }
-
-loadSection(FOOTPRINT_RANK_URL, "footprint_rank", "Footprint-rank", ["chart-footprint-single", "chart-footprint-rank"], (data) => {
-  renderFootprintSingle(data);
-  renderFootprintRank(data);
-});
-
-window.addEventListener("resize", () => charts.forEach((item) => item && item.resize()));
