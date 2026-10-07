@@ -79,6 +79,91 @@ export default function Page() {
             </div>
           </div>
         </PostSection>
+        <PostSection id="state-explorables">
+          <h2>Text explorables</h2>
+          <div className="w4-two">
+            <div>
+              <h3>VectorAngle: a zero vector, so no cosine</h3>
+              <KitState state="vector-zero" />
+            </div>
+            <div>
+              <h3>VectorAngle: opposite directions, B at its longest</h3>
+              <KitState state="vector-opposite" />
+            </div>
+          </div>
+          <h3>SplitBars: long labels, totals over max, zero and missing parts</h3>
+          <KitState state="split-long" />
+          <div className="w4-two">
+            <div>
+              <h3>SplitBars: no rows</h3>
+              <KitState state="split-empty" />
+            </div>
+            <div>
+              <h3>TokenWindow: no tokens</h3>
+              <KitState state="tokens-empty" />
+            </div>
+          </div>
+          <div className="w4-two">
+            <div>
+              <h3>SweepCurve: one point, marker and reference off the axis</h3>
+              <KitState state="sweep-one" />
+            </div>
+            <div>
+              <h3>SweepCurve: no points</h3>
+              <KitState state="sweep-empty" />
+            </div>
+          </div>
+          <div className="w4-two">
+            <div>
+              <h3>TokenWindow: centre out of range, window 0, a long token</h3>
+              <KitState state="tokens-edge" />
+            </div>
+            <div>
+              <h3>MixtureBar: shares off 1, a tiny and a negative part, no words</h3>
+              <KitState state="mix-awkward" />
+            </div>
+          </div>
+          <div className="w4-two">
+            <div>
+              <h3>CountMatrix: eighteen columns in a half-width column</h3>
+              <KitState state="matrix-wide" />
+            </div>
+            <div>
+              <h3>CountMatrix: no rows, highlight out of range</h3>
+              <KitState state="matrix-empty" />
+            </div>
+          </div>
+          <div className="w4-two">
+            <div>
+              <h3>RankedBars: long, zero, negative and muted rows</h3>
+              <KitState state="ranked-awkward" />
+            </div>
+            <div>
+              <h3>RankedBars: no rows</h3>
+              <KitState state="ranked-empty" />
+            </div>
+          </div>
+          <div className="w4-two">
+            <div>
+              <h3>AxisMap: one point, a long axis label</h3>
+              <KitState state="axismap-one" />
+            </div>
+            <div>
+              <h3>AxisMap: no points</h3>
+              <KitState state="axismap-empty" />
+            </div>
+          </div>
+          <div className="w4-two">
+            <div>
+              <h3>AnalogyPlot: every word on one spot</h3>
+              <KitState state="analogy-same" />
+            </div>
+            <div>
+              <h3>GuessRanker: a budget of 0</h3>
+              <KitState state="guess-spent" />
+            </div>
+          </div>
+        </PostSection>
         <PostSection id="state-term">
           <h2>TermText</h2>
           <h3>Text without its phrase</h3>

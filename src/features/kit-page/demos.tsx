@@ -6,14 +6,21 @@
 // failed load leaves their hosts empty and logs the error, as on main.
 import { Drawer } from "@/components/post/Drawer";
 import { Drawers } from "@/components/post/Drawers";
-import { useMemo } from "react";
-import { Concordance, EChart, Figure, NetworkView, Passage, StripChart, Table, TermText } from "@/kit";
+import { useId, useMemo, useState } from "react";
+import {
+  AnalogyPlot, AxisMap, Concordance, CountMatrix, EChart, Figure, GuessRanker, MixtureBar, NetworkView, Passage, RankedBars,
+  SplitBars, StripChart, SweepCurve, Table, TermText, TokenWindow, VectorAngle,
+} from "@/kit";
 import { island, useIslandReady } from "@/lib/island";
 import { useData } from "@/lib/useData";
 import { useHydrated } from "@/lib/useHydrated";
 import { asset } from "@/scripts/site.js";
 import { GRAPHS, NETWORKS, type Graphs, type NetworkDemo } from "./networks";
-import { kwicRows, passage, stripOpts, stripRows, term, toyCaption, toyOption, toyTable } from "./toy";
+import {
+  analogy, guessBanned, guessItems, guessScore, kwicRows, mapAxes, mapHighlight, mapPoints, matrixCells, matrixCols, matrixRows,
+  mixParts, mixWords, negatives, passage, rankedBase, rankedNames, sentence, splitParts, splitRows, stripOpts, stripRows, sweepPoints,
+  term, toyCaption, toyOption, toyTable, vecA, vecB,
+} from "./toy";
 
 function useShown() {
   const hydrated = useHydrated();
@@ -79,6 +86,161 @@ function TermView() {
   );
 }
 
+// The text explorables. Each demo holds the state its controls change.
+function VectorView() {
+  const shown = useShown();
+  const [k, setK] = useState(1);
+  return <div data-demo="vector">{shown ? <VectorAngle a={vecA} b={vecB} labels={{ a: "D1", b: "D2" }} scaleB={k} onScaleB={setK} /> : null}</div>;
+}
+
+function SplitView() {
+  const shown = useShown();
+  const [picked, setPicked] = useState("");
+  return (
+    <div data-demo="split">
+      {shown ? (
+        <>
+          <SplitBars rows={splitRows} parts={splitParts} onPick={setPicked} />
+          <p className="kit-note">{picked ? `Picked ${picked}.` : "Click a name to pick it."}</p>
+        </>
+      ) : null}
+    </div>
+  );
+}
+
+function SweepView() {
+  const shown = useShown();
+  const id = useId();
+  const [at, setAt] = useState("100");
+  return (
+    <div data-demo="sweep">
+      {shown ? (
+        <>
+          <div className="kit-controls">
+            <label htmlFor={id}>Names kept</label>
+            <input id={id} type="range" min={0} max={100} step={5} value={at} onChange={(e) => setAt(e.target.value)} />
+            <output htmlFor={id}>{at}%</output>
+          </div>
+          <SweepCurve points={sweepPoints} current={Number(at)} ref={{ y: 0.31, label: "ten random pages" }} xLabel="names kept (%)" yLabel="linked of ten" domain={{ x: [0, 100], y: [0, 4.5] }} fmt={(v) => String(Math.round(v * 10) / 10)} />
+        </>
+      ) : null}
+    </div>
+  );
+}
+
+function TokensView() {
+  const shown = useShown();
+  const id = useId();
+  const [centre, setCentre] = useState(2);
+  const [win, setWin] = useState("2");
+  const [mode, setMode] = useState<"skipgram" | "cbow">("skipgram");
+  return (
+    <div data-demo="tokens">
+      {shown ? (
+        <>
+          <div className="kit-controls">
+            <span className="w5-chips" role="group" aria-label="Model">
+              <button type="button" aria-pressed={mode === "skipgram"} onClick={() => setMode("skipgram")}>Skip-gram</button>
+              <button type="button" aria-pressed={mode === "cbow"} onClick={() => setMode("cbow")}>CBOW</button>
+            </span>
+            <label htmlFor={id}>Window</label>
+            <input id={id} type="range" min={0} max={4} step={1} value={win} onChange={(e) => setWin(e.target.value)} />
+            <output htmlFor={id}>±{win}</output>
+          </div>
+          <TokenWindow tokens={sentence} centre={centre} window={Number(win)} onCentre={setCentre} negatives={negatives} mode={mode} />
+        </>
+      ) : null}
+    </div>
+  );
+}
+
+function MatrixView() {
+  const shown = useShown();
+  const [row, setRow] = useState(0);
+  return (
+    <div data-demo="matrix">
+      {shown ? <CountMatrix rows={matrixRows} cols={matrixCols} cells={matrixCells} highlightRow={row} onRow={setRow} caption="Toy counts of each column word within two words of the row word." /> : null}
+    </div>
+  );
+}
+
+function MixView() {
+  const shown = useShown();
+  const [focus, setFocus] = useState("Crime");
+  return <div data-demo="mix">{shown ? <MixtureBar parts={mixParts} focus={focus} onFocus={setFocus} words={mixWords[focus]} /> : null}</div>;
+}
+
+function RankedView() {
+  const shown = useShown();
+  const [names, setNames] = useState(true);
+  const rows = rankedBase.map((r) => ({ ...r, muted: !names && rankedNames.has(r.key) }));
+  return (
+    <div data-demo="ranked">
+      {shown ? (
+        <>
+          <div className="kit-controls">
+            <span className="w5-chips" role="group" aria-label="Names">
+              <button type="button" aria-pressed={names} onClick={() => setNames(true)}>Names kept</button>
+              <button type="button" aria-pressed={!names} onClick={() => setNames(false)}>Names greyed</button>
+            </span>
+          </div>
+          <RankedBars title="Most distinctive words on a toy page" colHeads={["On page", "Pages with it"]} rows={rows} />
+        </>
+      ) : null}
+    </div>
+  );
+}
+
+function MapView() {
+  const shown = useShown();
+  const id = useId();
+  const [find, setFind] = useState("");
+  const [picked, setPicked] = useState("");
+  return (
+    <div data-demo="axismap">
+      {shown ? (
+        <>
+          <div className="kit-controls">
+            <label htmlFor={id}>Find</label>
+            <input id={id} type="text" value={find} onChange={(e) => setFind(e.target.value)} />
+            <span className="kit-note">{picked ? `Clicked ${picked}.` : "Click a point."}</span>
+          </div>
+          <AxisMap points={mapPoints} axes={mapAxes} highlight={mapHighlight} find={find} onPick={setPicked} height={340} />
+        </>
+      ) : null}
+    </div>
+  );
+}
+
+function AnalogyView() {
+  const shown = useShown();
+  const [step, setStep] = useState<0 | 1 | 2>(0);
+  const steps = ["words", "relationship", "arithmetic"];
+  return (
+    <div data-demo="analogy">
+      {shown ? (
+        <>
+          <div className="kit-controls">
+            <span className="w5-chips" role="group" aria-label="Step">
+              {steps.map((s, i) => (
+                <button key={s} type="button" aria-pressed={step === i} onClick={() => setStep(i as 0 | 1 | 2)}>
+                  {s}
+                </button>
+              ))}
+            </span>
+          </div>
+          <AnalogyPlot points={analogy} step={step} />
+        </>
+      ) : null}
+    </div>
+  );
+}
+
+function GuessView() {
+  const shown = useShown();
+  return <div data-demo="guess">{shown ? <GuessRanker items={guessItems} score={guessScore} target="wolverine" budget={6} banned={guessBanned} /> : null}</div>;
+}
+
 // One network demo: its spec from graphs.json, drawn by NetworkView.
 const Network = (demo: NetworkDemo) =>
   function NetworkHost() {
@@ -104,6 +266,16 @@ const DEMOS = {
   kwic: island("kit/demos/KwicDemo", KwicView, Empty("kwic"), at("kwic")),
   passage: island("kit/demos/PassageDemo", PassageView, Empty("passage"), at("passage")),
   term: island("kit/demos/TermDemo", TermView, TermPlaceholder, at("term")),
+  vector: island("kit/demos/VectorDemo", VectorView, Empty("vector"), at("vector")),
+  split: island("kit/demos/SplitDemo", SplitView, Empty("split"), at("split")),
+  sweep: island("kit/demos/SweepDemo", SweepView, Empty("sweep"), at("sweep")),
+  tokens: island("kit/demos/TokensDemo", TokensView, Empty("tokens"), at("tokens")),
+  matrix: island("kit/demos/MatrixDemo", MatrixView, Empty("matrix"), at("matrix")),
+  mix: island("kit/demos/MixDemo", MixView, Empty("mix"), at("mix")),
+  ranked: island("kit/demos/RankedDemo", RankedView, Empty("ranked"), at("ranked")),
+  axismap: island("kit/demos/AxisMapDemo", MapView, Empty("axismap"), at("axismap")),
+  analogy: island("kit/demos/AnalogyDemo", AnalogyView, Empty("analogy"), at("analogy")),
+  guess: island("kit/demos/GuessDemo", GuessView, Empty("guess"), at("guess")),
   "net-hubs": island("kit/demos/NetHubsDemo", Network("net-hubs"), Empty("net-hubs"), at("net-hubs")),
   "net-links": island("kit/demos/NetLinksDemo", Network("net-links"), Empty("net-links"), at("net-links")),
   "net-both": island("kit/demos/NetBothDemo", Network("net-both"), Empty("net-both"), at("net-both")),
