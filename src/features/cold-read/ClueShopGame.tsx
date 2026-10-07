@@ -374,7 +374,7 @@ export function ClueShopGame({ data, random = Math.random, level, hard = false, 
       {phase !== "intro" && round ? (
         <>
           <div className="cr-hand-head">
-            <p className="cr-challenge">Which Marvel page are these eight words from? Flip as few as you dare.</p>
+            <p className="cr-challenge">Which Marvel page are these words from? Flip as few as you dare.</p>
             {playing ? (
               <span className="cr-worth">
                 Name it now for <b>{worthNow.toLocaleString("en")}</b>
