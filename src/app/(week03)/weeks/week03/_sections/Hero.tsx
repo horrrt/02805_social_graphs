@@ -1,3 +1,5 @@
+import { Slot } from "@/features/week03/frame/Slot";
+import { Stage, YearLine } from "@/features/week03/hero/Hero";
 // 1: the hero globe, its controls and the inspector.
 export function Hero() {
   return (
@@ -42,46 +44,29 @@ export function Hero() {
                 Flights (access)
               </span>
             </div>
-            <div className="yearline">
-              <input defaultValue="6" aria-label="Year of the migration snapshot" id="year-slider" max="7" min="0" step="1" type="range" />
-              <div className="ends">
-                <span>1990</span>
-                <span>2024</span>
-              </div>
-              <label htmlFor="year-slider">
-                Year · moves the globe, the map, both distributions and the
-                panels · showing
-                {" "}
-                <b id="year-now">2020</b>
-              </label>
-            </div>
+            <YearLine />
           </div>
-          <div className="stage-wrap">
-            <canvas aria-label="Globe of the countries and the migration corridors between them" className="stage" height="900" id="globe-canvas" role="img" width="900"></canvas>
-            <p className="stage-hint">
-              Drag to spin. Click a country to inspect it.
-            </p>
-          </div>
+          <Stage />
           <aside className="panel" id="inspector">
             <h2>Selected country</h2>
             <div className="who">
-              <span className="flag" id="sel-flag">🌍</span>
+              <Slot view="sel-flag" as="span" id="sel-flag" className="flag" initial="🌍" />
               {" "}
               <span>
-                <strong id="sel-name">Pick a country</strong>
+                <Slot view="sel-name" as="strong" id="sel-name" initial="Pick a country" />
                 <br />
                 {" "}
-                <span className="codes" id="sel-codes">—</span>
+                <Slot view="sel-codes" as="span" id="sel-codes" className="codes" initial="—" />
               </span>
             </div>
-            <dl className="stats" id="sel-stats"></dl>
+            <Slot view="sel-stats" as="dl" id="sel-stats" className="stats" />
             <div className="corridor-list">
               <h3>→ Where they came from</h3>
-              <ol id="sel-in"></ol>
+              <Slot view="sel-in" as="ol" id="sel-in" />
             </div>
             <div className="corridor-list">
               <h3>→ Where they went</h3>
-              <ol id="sel-out"></ol>
+              <Slot view="sel-out" as="ol" id="sel-out" />
             </div>
           </aside>
         </div>

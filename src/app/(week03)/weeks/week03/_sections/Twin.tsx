@@ -1,3 +1,6 @@
+import { Chart } from "@/features/week03/frame/Chart";
+import { Slot } from "@/features/week03/frame/Slot";
+import { MapStage } from "@/features/week03/twin/MapStage";
 // 4-5: the migration map against its flight twin.
 export function Twin() {
   return (
@@ -8,9 +11,9 @@ export function Twin() {
           <div className="step-head">
             <span className="num">4</span>
             <h2 id="null">Compared to what?</h2>
-            <span className="year-tag" id="null-tag">(null model)</span>
+            <Slot view="null-tag" as="span" id="null-tag" className="year-tag" initial="(null model)" />
             {" "}
-            <span className="year-tag" id="twin-tag">(analysis year: 2020)</span>
+            <Slot view="twin-tag" as="span" id="twin-tag" className="year-tag" initial="(analysis year: 2020)" />
           </div>
           <p className="sub">
             <b>
@@ -46,7 +49,7 @@ export function Twin() {
                   the observed corridor weights back out at random. Click any
                   point to select that country.
                 </p>
-                <canvas aria-label="Scatter plot: betweenness z-score against origins (in-degree), log x" className="chart" height="560" id="scatter-z" role="img" width="900"></canvas>
+                <Chart id="scatter-z" width="900" height="560" label="Scatter plot: betweenness z-score against origins (in-degree), log x" />
               </div>
               <aside className="panel pair-aside">
                 <h2>Reading it</h2>
@@ -70,38 +73,19 @@ export function Twin() {
                 </div>
                 <div className="corridor-list">
                   <h3>Most surprising bridges</h3>
-                  <ol id="z-top"></ol>
-                  <p className="fineprint" id="z-floor"></p>
+                  <Slot view="z-top" as="ol" id="z-top" />
+                  <Slot view="z-floor" as="p" id="z-floor" className="fineprint" />
                 </div>
               </aside>
             </div>
             <div>
               <div className="map-wrap">
-                <div className="map-tools">
-                  <div className="toggle" id="map-toggle" role="group">
-                    <button aria-pressed="false" data-layer="migration" type="button">
-                      Migration
-                    </button>
-                    {" "}
-                    <button aria-pressed="false" data-layer="flights" type="button">
-                      Flights
-                    </button>
-                    {" "}
-                    <button aria-pressed="true" data-layer="both" type="button">
-                      Both
-                    </button>
-                    {" "}
-                    <button aria-pressed="false" data-layer="net" type="button">
-                      Net
-                    </button>
-                  </div>
-                </div>
-                <canvas aria-label="Map of the most surprising bridges" height="450" id="map-canvas" role="img" width="900"></canvas>
+                <MapStage />
               </div>
               <aside className="panel pair-aside">
                 <h2>Same world. Different networks.</h2>
-                <dl className="stats" id="twin-stats"></dl>
-                <p className="fineprint" id="net-note"></p>
+                <Slot view="twin-stats" as="dl" id="twin-stats" className="stats" />
+                <Slot view="net-note" as="p" id="net-note" className="fineprint" />
               </aside>
             </div>
           </div>
@@ -148,8 +132,8 @@ export function Twin() {
                 <code>analysis/week03_passengers.py</code>
                 .
               </p>
-              <p className="fineprint" id="flight-caveat"></p>
-              <p className="fineprint" id="null-method"></p>
+              <Slot view="flight-caveat" as="p" id="flight-caveat" className="fineprint" />
+              <Slot view="null-method" as="p" id="null-method" className="fineprint" />
             </div>
           </details>
         </div>

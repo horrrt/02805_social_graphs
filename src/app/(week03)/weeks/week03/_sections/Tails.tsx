@@ -1,3 +1,6 @@
+import { Chart } from "@/features/week03/frame/Chart";
+import { Slot } from "@/features/week03/frame/Slot";
+import { AxisModes } from "@/features/week03/tails/AxisModes";
 // 2: heavy tails in migration.
 export function Tails() {
   return (
@@ -8,7 +11,7 @@ export function Tails() {
           <div className="step-head">
             <span className="num">2</span>
             <h2>Heavy tails in migration</h2>
-            <span className="year-tag" id="tails-tag">(2020 · follows the slider)</span>
+            <Slot view="tails-tag" as="span" id="tails-tag" className="year-tag" initial="(2020 · follows the slider)" />
           </div>
           <p className="sub">
             <b>
@@ -52,14 +55,8 @@ export function Tails() {
                   Flight partners
                 </span>
               </div>
-              <div className="axis-modes" data-chart="hist" role="group" aria-label="Axis scale for the degree distribution">
-                <button aria-pressed="true" data-mode="loglog" type="button">log–log</button>
-                {" "}
-                <button aria-pressed="false" data-mode="semilog" type="button">log–linear</button>
-                {" "}
-                <button aria-pressed="false" data-mode="linear" type="button">linear</button>
-              </div>
-              <canvas aria-label="Chart: distribution of the number of partners per country" className="chart" height="560" id="hist" role="img" width="1100"></canvas>
+              <AxisModes chart="hist" label="Axis scale for the degree distribution" />
+              <Chart id="hist" width="1100" height="560" label="Chart: distribution of the number of partners per country" />
               <div className="notice">
                 <span className="ico">💡</span>
                 {" "}
@@ -101,14 +98,8 @@ export function Tails() {
                   Flight partners
                 </span>
               </div>
-              <div className="axis-modes" data-chart="ccdf" role="group" aria-label="Axis scale for the CCDF">
-                <button aria-pressed="true" data-mode="loglog" type="button">log–log</button>
-                {" "}
-                <button aria-pressed="false" data-mode="semilog" type="button">log–linear</button>
-                {" "}
-                <button aria-pressed="false" data-mode="linear" type="button">linear</button>
-              </div>
-              <canvas aria-label="Chart: CCDF of the number of partners per country" className="chart" height="560" id="ccdf" role="img" width="1100"></canvas>
+              <AxisModes chart="ccdf" label="Axis scale for the CCDF" />
+              <Chart id="ccdf" width="1100" height="560" label="Chart: CCDF of the number of partners per country" />
               <div className="notice">
                 <span className="ico">💡</span>
                 {" "}

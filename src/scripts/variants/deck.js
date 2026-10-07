@@ -11,7 +11,7 @@
 export function install(api, deck) {
   const {
     state, node, metrics, topEdges, flightEdges, select, $, colours, rgb, arcSpec, textureURL,
-    earthScale, netColour, netNote,
+    earthScale, netColour,
   } = api;
   const channels = (hex) => rgb(hex).split(",").map(Number);
   // deck's zoom is logarithmic, so a doubling of the earth-size scale is one
@@ -26,20 +26,17 @@ export function install(api, deck) {
 
   const decks = new Map();
 
+  // The island renders each host after its canvas; the first draw sizes it
+  // from the canvas and hides the canvas.
   function mount(canvasId, view, initialViewState) {
     const canvas = $(canvasId);
-    if (!canvas) return null;
+    const host = $(`${canvasId}-deck`);
+    if (!canvas || !host) return null;
     if (decks.has(canvasId)) return decks.get(canvasId);
-    let host = document.getElementById(`${canvasId}-deck`);
-    if (!host) {
-      host = document.createElement("div");
-      host.id = `${canvasId}-deck`;
-      host.style.position = "relative";
-      host.style.width = "100%";
-      host.style.height = `${Math.round((canvas.clientWidth || 600) * (canvas.height / canvas.width))}px`;
-      canvas.after(host);
-      canvas.style.display = "none";
-    }
+    host.style.position = "relative";
+    host.style.width = "100%";
+    host.style.height = `${Math.round((canvas.clientWidth || 600) * (canvas.height / canvas.width))}px`;
+    canvas.style.display = "none";
     const instance = new deck.Deck({
       parent: host,
       views: [view],
@@ -233,7 +230,6 @@ export function install(api, deck) {
     if (!instance) return;
     if (state.layer === "net") {
       instance.setProps({ layers: netLayer() });
-      netNote();
       return;
     }
     const layers = [...photoLayer("map-photo"), ...landLayer("map-land", false)];
@@ -247,22 +243,8 @@ export function install(api, deck) {
   return {
     globe,
     map,
-    setupGlobe() {
-      const hint = document.querySelector(".stage-hint");
-      if (hint) hint.textContent = "Drag to spin, scroll to zoom. Click a country. (WebGL)";
-    },
-    setupMap() {
-      const toggle = $("map-toggle");
-      if (!toggle) return;
-      toggle.addEventListener("click", (event) => {
-        const button = event.target.closest("button[data-layer]");
-        if (!button) return;
-        state.layer = button.dataset.layer;
-        for (const b of toggle.querySelectorAll("button")) {
-          b.setAttribute("aria-pressed", String(b === button));
-        }
-        map();
-      });
-    },
+    hint: "Drag to spin, scroll to zoom. Click a country. (WebGL)",
+    // deck.gl's map takes no canvas pointer events: its own controller has them.
+    mapEvents: {},
   };
 }

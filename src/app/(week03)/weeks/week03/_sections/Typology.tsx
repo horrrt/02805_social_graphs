@@ -1,3 +1,6 @@
+import { Chart } from "@/features/week03/frame/Chart";
+import { Slot } from "@/features/week03/frame/Slot";
+import { TypeCards, TypeDrawer } from "@/features/week03/typology/Typology";
 // 6: roles inside the communities.
 export function Typology() {
   return (
@@ -8,7 +11,7 @@ export function Typology() {
           <div className="step-head">
             <span className="num">5</span>
             <h2>Roles inside the communities</h2>
-            <span className="year-tag" id="typology-tag"></span>
+            <Slot view="typology-tag" as="span" id="typology-tag" className="year-tag" />
           </div>
           <p className="sub">
             <b>
@@ -45,14 +48,14 @@ export function Typology() {
             names and the cut-offs between them are theirs, drawn on the
             chart rather than applied out of sight.
           </p>
-          <canvas aria-label="Chart: roles of countries inside their communities" className="chart" height="620" id="cartography" role="img" width="1100"></canvas>
-          <div aria-label="How many countries carry each role" className="type-strip" id="typology-strip"></div>
-          <div className="grid5" id="typology-cards"></div>
-          <aside aria-label="Countries in this role" className="type-drawer" id="type-drawer" hidden></aside>
+          <Chart id="cartography" width="1100" height="620" label="Chart: roles of countries inside their communities" />
+          <Slot view="typology-strip" as="div" id="typology-strip" className="type-strip" label="How many countries carry each role" />
+          <TypeCards />
+          <TypeDrawer />
           <div className="notice">
             <span className="ico">💡</span>
             {" "}
-            <span id="typology-note"></span>
+            <Slot view="typology-note" as="span" id="typology-note" />
           </div>
           <details className="qa" id="typology-method">
             <summary>

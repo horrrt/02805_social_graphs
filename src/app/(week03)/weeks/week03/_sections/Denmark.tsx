@@ -1,3 +1,6 @@
+import { DkPicker } from "@/features/week03/denmark/DkPicker";
+import { Chart } from "@/features/week03/frame/Chart";
+import { EgoTable, Notice, Slot } from "@/features/week03/frame/Slot";
 // 8: Denmark's corridors.
 export function Denmark() {
   return (
@@ -10,11 +13,11 @@ export function Denmark() {
             <h2>
               Let's analyse
               {" "}
-              <span className="dk-name">Denmark</span>
+              <Slot view="dk-name" as="span" className="dk-name" initial="Denmark" />
             </h2>
             <span className="year-tag">(2020 only · the null-model year)</span>
             {" "}
-            <select aria-label="Country to analyse" id="dk-country"></select>
+            <DkPicker />
           </div>
           <p className="sub">
             Denmark is where this starts because it is where we are, but the
@@ -23,38 +26,26 @@ export function Denmark() {
             the page. Six of them have no migration figures in the
             selected year and say so instead of drawing.
           </p>
-          <div className="dk-head" id="dk-head"></div>
+          <Slot view="dk-head" as="div" id="dk-head" className="dk-head" />
           <div className="grid2">
             <div className="plot">
               <h3>
                 A.
                 {" "}
-                <span className="dk-name">Denmark</span>
+                <Slot view="dk-name" as="span" className="dk-name" initial="Denmark" />
                 , in and out
               </h3>
               <p className="axis-note">Migrant stock, 2020</p>
               <div className="grid2" style={{"gap":"10px"}}>
-                <table className="ego" id="dk-in">
-                  <caption>
-                    Into
-                    {" "}
-                    <span className="dk-name">Denmark</span>
-                  </caption>
-                </table>
-                <table className="ego" id="dk-out">
-                  <caption>
-                    Out of
-                    {" "}
-                    <span className="dk-name">Denmark</span>
-                  </caption>
-                </table>
+                <EgoTable id="dk-in" lead="Into" />
+                <EgoTable id="dk-out" lead="Out of" />
               </div>
             </div>
             <div className="plot">
               <h3>
                 B.
                 {" "}
-                <span className="dk-name">Denmark</span>
+                <Slot view="dk-name" as="span" className="dk-name" initial="Denmark" />
                 {" "}
                 through time
               </h3>
@@ -72,7 +63,7 @@ export function Denmark() {
                   Outgoing
                 </span>
               </div>
-              <canvas aria-label="Chart: Denmark through time" className="chart" height="330" id="dk-time" role="img" width="440"></canvas>
+              <Chart id="dk-time" width="440" height="330" label="Chart: Denmark through time" />
             </div>
           </div>
           <div className="grid2" style={{"marginTop":"18px"}}>
@@ -81,12 +72,12 @@ export function Denmark() {
               <p className="axis-note">
                 Where
                 {" "}
-                <span className="dk-name">Denmark</span>
+                <Slot view="dk-name" as="span" className="dk-name" initial="Denmark" />
                 {" "}
                 sits in the world's
                 betweenness ranking, year by year · 1 = top bridge
               </p>
-              <canvas aria-label="Chart: Denmark's bridge rank, 1990–2024" className="chart" height="330" id="dk-rank" role="img" width="440"></canvas>
+              <Chart id="dk-rank" width="440" height="330" label="Chart: Denmark's bridge rank, 1990–2024" />
             </div>
             <div className="plot">
               <h3>D. Nearest neighbours</h3>
@@ -94,13 +85,10 @@ export function Denmark() {
                 2020 · the four closest countries on the ground · origins,
                 z-score, flight partners · click a bar
               </p>
-              <canvas aria-label="Chart: Denmark's nearest neighbours" className="chart" height="420" id="dk-nordic" role="img" width="440"></canvas>
+              <Chart id="dk-nordic" width="440" height="420" label="Chart: Denmark's nearest neighbours" />
             </div>
           </div>
-          <div className="notice" id="dk-verdict">
-            <span className="ico">💡</span>
-            <span></span>
-          </div>
+          <Notice id="dk-verdict" view="dk-verdict" />
         </div>
       </section>
     </>

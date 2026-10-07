@@ -14,7 +14,8 @@
 // The data, the numbers and the copy never change. Only the renderer needs a
 // reload when it changes; the rest repaint in place.
 
-import { api, installRenderer, restyle, start } from "./corridor.js";
+import { api } from "./corridor.js";
+import { corridor } from "../features/week03/store.js";
 import { installQuestions } from "./questions.js";
 import { installViews } from "./echarts-views.js";
 import { loadVendor as loadSharedVendor } from "./runtime/vendor.js";
@@ -129,7 +130,7 @@ export const TABLES = {
   compact: { label: "Compact" },
 };
 
-const DIMENSIONS = [
+export const DIMENSIONS = [
   { key: "variant", label: "Renderer", options: RENDERERS, fallback: "canvas", reloads: true },
   { key: "palette", label: "Colours", options: PALETTES, fallback: "signal" },
   { key: "arcs", label: "Link shape", options: ARCS, fallback: "curve" },
@@ -155,7 +156,7 @@ export function readStyle(search = window.location.search) {
   return chosen;
 }
 
-function styleURL(chosen) {
+export function styleURL(chosen) {
   const next = new URL(window.location.href);
   for (const dimension of DIMENSIONS) {
     const value = chosen[dimension.key];
@@ -177,21 +178,6 @@ function loadVendor(file) {
 
 function kb(bytes) {
   return bytes ? `${Math.round(bytes / 1024)} KB` : "no library";
-}
-
-function apply(chosen) {
-  const body = document.body;
-  body.dataset.variant = chosen.variant;
-  body.dataset.palette = chosen.palette;
-  body.dataset.tables = chosen.tables;
-  body.dataset.skin = chosen.skin;
-  api.state.arcs = chosen.arcs;
-  api.state.links = chosen.links;
-  api.state.thickness = chosen.thickness;
-  api.state.focus = chosen.focus;
-  api.state.dots = chosen.dots;
-  api.state.basemap = chosen.basemap;
-  api.state.earth = chosen.earth;
 }
 
 // The menu opens from the top bar, so the controls stay out of the reading
@@ -299,96 +285,40 @@ function renderBar(chosen, onChange) {
   if (label) label.textContent = "Views";
 }
 
-// The two heavy-tail charts can be read on three scales; the buttons live in
-// the markup so they work before the data lands.
-function wireAxisModes() {
-  for (const group of document.querySelectorAll(".axis-modes")) {
-    group.addEventListener("click", (event) => {
-      const button = event.target.closest("button[data-mode]");
-      if (!button) return;
-      const chart = group.dataset.chart;
-      api.state.axisMode[chart] = button.dataset.mode;
-      for (const other of group.querySelectorAll("button")) {
-        other.setAttribute("aria-pressed", String(other === button));
+// Until the style bar, the questions and the views are islands, the entry
+// wires them here, once the islands have the data in and the renderer chosen.
+function legacy() {
+  let wired = false;
+  const wire = (s) => {
+    if (wired || s.status !== "ready" || !s.style) return;
+    wired = true;
+    const chosen = { ...s.style };
+    wireMenu();
+    renderBar(chosen, (key, value) => {
+      chosen[key] = value;
+      const url = styleURL(chosen);
+      const dimension = DIMENSIONS.find((d) => d.key === key);
+      if (dimension.reloads) {
+        // Swapping the drawing library mid-flight would leave half the page in
+        // the old renderer's DOM, so this one dimension reloads. Carry the scroll
+        // position across, or the reader is thrown back to the top for a change
+        // they made halfway down.
+        try {
+          sessionStorage.setItem("week03-scroll", String(window.scrollY));
+        } catch {
+          // Private mode: the reader lands at the top, which is the old behaviour.
+        }
+        window.location.assign(url.pathname + url.search);
+        return;
       }
-      if (chart === "hist") api.R.hist();
-      else api.R.ccdf();
+      window.history.replaceState(null, "", url.pathname + url.search);
+      corridor.setState({ style: { ...chosen } });
     });
-  }
+    installQuestions(api);
+    installViews(api, loadVendor);
+  };
+  wire(corridor.getState());
+  corridor.subscribe(wire);
 }
 
-// Exposed for scripts/audit_week03.js, which checks that every control on the
-// page actually moves something in every renderer.
-window.api = api;
-
-async function boot() {
-  const chosen = readStyle();
-  apply(chosen);
-
-  const renderer = RENDERERS[chosen.variant];
-  if (renderer.script) {
-    try {
-      await loadVendor(renderer.script);
-      const { install } = await renderer.module();
-      installRenderer({ name: chosen.variant, ...install(api, window[renderer.global]) });
-    } catch (error) {
-      // A broken renderer must not take the post down with it.
-      const status = document.getElementById("status");
-      if (status) {
-        status.textContent =
-          `The ${renderer.label} renderer failed to load (${error.message}); ` +
-          "showing the canvas version instead.";
-      }
-      chosen.variant = "canvas";
-      apply(chosen);
-      console.error(error);
-    }
-  }
-
-  wireMenu();
-  wireAxisModes();
-  renderBar(chosen, (key, value) => {
-    chosen[key] = value;
-    const url = styleURL(chosen);
-    const dimension = DIMENSIONS.find((d) => d.key === key);
-    if (dimension.reloads) {
-      // Swapping the drawing library mid-flight would leave half the page in
-      // the old renderer's DOM, so this one dimension reloads. Carry the scroll
-      // position across, or the reader is thrown back to the top for a change
-      // they made halfway down.
-      try {
-        sessionStorage.setItem("week03-scroll", String(window.scrollY));
-      } catch {
-        // Private mode: the reader lands at the top, which is the old behaviour.
-      }
-      window.location.assign(url.pathname + url.search);
-      return;
-    }
-    window.history.replaceState(null, "", url.pathname + url.search);
-    apply(chosen);
-    restyle();
-  });
-
-  await start();
-  installQuestions(api);
-  installViews(api, loadVendor);
-  restoreScroll();
-}
-
-function restoreScroll() {
-  let saved = null;
-  try {
-    saved = sessionStorage.getItem("week03-scroll");
-    sessionStorage.removeItem("week03-scroll");
-  } catch {
-    return;
-  }
-  if (saved === null) return;
-  // The charts size themselves after the data lands, so the page is only as
-  // tall as it will be once a frame has passed.
-  requestAnimationFrame(() =>
-    requestAnimationFrame(() => window.scrollTo(0, Number(saved))),
-  );
-}
-
-boot();
+legacy();

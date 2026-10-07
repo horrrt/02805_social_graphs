@@ -1,3 +1,5 @@
+import { Chart } from "@/features/week03/frame/Chart";
+import { Slot } from "@/features/week03/frame/Slot";
 // 3: popular is not bridge, big is not prestigious.
 export function Bridge() {
   return (
@@ -26,7 +28,7 @@ export function Bridge() {
                 other countries: a structural position in the stock
                 network, not a measure of people passing through.
               </p>
-              <p className="axis-note" id="between-note"></p>
+              <Slot view="between-note" as="p" id="between-note" className="axis-note" />
               <div className="legend">
                 <span>
                   <i style={{"background":"#f2820c"}}></i>
@@ -40,21 +42,21 @@ export function Bridge() {
                   Flights
                 </span>
               </div>
-              <canvas aria-label="Scatter plot: betweenness against origins (in-degree), log–log" className="chart" height="470" id="scatter-between" role="img" width="900"></canvas>
+              <Chart id="scatter-between" width="900" height="470" label="Scatter plot: betweenness against origins (in-degree), log–log" />
             </div>
             <aside className="panel">
               <h2>Selected country</h2>
               <div className="who">
-                <span className="flag" id="sc-flag">🌍</span>
+                <Slot view="sc-flag" as="span" id="sc-flag" className="flag" initial="🌍" />
                 {" "}
                 <span>
-                  <strong id="sc-name">Pick a country</strong>
+                  <Slot view="sc-name" as="strong" id="sc-name" initial="Pick a country" />
                   <br />
                   {" "}
-                  <span className="codes" id="sc-codes">—</span>
+                  <Slot view="sc-codes" as="span" id="sc-codes" className="codes" initial="—" />
                 </span>
               </div>
-              <dl className="stats" id="sc-stats"></dl>
+              <Slot view="sc-stats" as="dl" id="sc-stats" className="stats" />
               <div className="notice">
                 <span className="ico">💡</span>
                 {" "}
@@ -76,7 +78,7 @@ export function Bridge() {
                 it, and only a small constant share comes from anywhere at
                 random.
               </p>
-              <p className="axis-note" id="prestige-note"></p>
+              <Slot view="prestige-note" as="p" id="prestige-note" className="axis-note" />
               <div className="legend">
                 <span>
                   <i style={{"background":"#f2820c"}}></i>
@@ -90,35 +92,35 @@ export function Bridge() {
                   Falls on PageRank
                 </span>
               </div>
-              <canvas aria-label="Chart: countries ranked by people against ranked by PageRank" className="chart" height="620" id="prestige" role="img" width="900"></canvas>
+              <Chart id="prestige" width="900" height="620" label="Chart: countries ranked by people against ranked by PageRank" />
               <div className="notice">
                 <span className="ico">💡</span>
                 {" "}
                 <span>
                   <b>What to notice</b>
                   {" "}
-                  <span id="prestige-movers"></span>
+                  <Slot view="prestige-movers" as="span" id="prestige-movers" />
                 </span>
               </div>
             </div>
             <aside className="panel">
               <h2>Where the PageRank comes from</h2>
               <div className="who">
-                <span className="flag" id="pr-flag">🌍</span>
+                <Slot view="pr-flag" as="span" id="pr-flag" className="flag" initial="🌍" />
                 {" "}
                 <span>
-                  <strong id="pr-name">Pick a country</strong>
+                  <Slot view="pr-name" as="strong" id="pr-name" initial="Pick a country" />
                   <br />
                   {" "}
-                  <span className="codes" id="pr-codes">—</span>
+                  <Slot view="pr-codes" as="span" id="pr-codes" className="codes" initial="—" />
                 </span>
               </div>
-              <dl className="stats" id="pr-stats"></dl>
+              <Slot view="pr-stats" as="dl" id="pr-stats" className="stats" />
               <div className="corridor-list">
                 <h3>→ The three senders that give it most</h3>
-                <ol id="pr-sources"></ol>
+                <Slot view="pr-sources" as="ol" id="pr-sources" />
               </div>
-              <p className="fineprint" id="pr-note"></p>
+              <Slot view="pr-note" as="p" id="pr-note" className="fineprint" />
             </aside>
           </div>
         </div>
