@@ -35,7 +35,7 @@ export function Names() {
         figure={
           <Plot
             title="Linked pages among each page's ten nearest"
-            note="Mean over the 303 pages. Dot: the real pages. Band: 20 runs removing as many other words, matched on how many pages use each, mean and one standard deviation. Dashed line: ten pages picked at random. The first three rows are the course's figures, reproduced. Linked means either page links to the other."
+            note="Mean over the 303 pages. Dot: the real pages. Band: 20 runs removing as many other words, matched on how many pages use each, mean and one standard deviation. Dashed line: ten pages picked at random. The first three rows are the course's figures, reproduced. Linked means either page links to the other. The control's band is ±0.01, narrower than its dot."
           >
             <Part part="ladder" />
           </Plot>
@@ -67,7 +67,7 @@ export function Names() {
           </Drawer>
           <Drawer label="What we read" bodyId="names-checked">
             <p>
-              We read the 25 most similar pairs that do not link, names kept, and sorted each into four groups, then re-read them after a review with a stricter rule for a shared story: the pages must put both characters on one team or in one storyline at the same time. 18 share a story: 12 are teammates in Strikeforce: Morituri, whose pages repeat one lead sentence and one creator credit, and Storm served in the Fantastic Four beside the Human Torch. 2 hold the same title, such as Doctor Doom. 5 share only a name word: Frost, Kane, Devil, Rider and Walker.
+              We read the 25 most similar pairs that do not link, names kept, and sorted each into four groups (shared story, same title, name only, template: she, her, lists), then re-read them after a review with a stricter rule for a shared story: the pages must put both characters on one team or in one storyline at the same time. 18 share a story: 12 are teammates in Strikeforce: Morituri, whose pages repeat one lead sentence and one creator credit, and Storm served in the Fantastic Four beside the Human Torch. 2 hold the same title, such as Doctor Doom. 5 share only a name word: Frost, Kane, Devil, Rider and Walker. The 12 Morituri matches lean on that copied text as well as on the shared team.
             </p>
             <Part part="readKept" />
           </Drawer>

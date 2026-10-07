@@ -9,7 +9,8 @@ import type { ReactNode } from "react";
 import { BrandMark } from "./BrandMark";
 import { el } from "./el";
 
-export type TopbarLink = { href: string; label: ReactNode; here?: boolean };
+// `name` gives a link its accessible name when its label is only a number ("1", "2").
+export type TopbarLink = { href: string; label: ReactNode; here?: boolean; name?: string };
 
 type Props = {
   root: string;
@@ -23,7 +24,7 @@ type Props = {
 };
 
 export function PostTopbar({ root, siteLink, navLabel, links = [], ariaFirst, brandSpace, nav, children }: Props) {
-  const items = links.flatMap((link, i) => [i > 0 && " ", el("a", { className: link.here ? "here" : undefined, href: link.href }, link.label)]);
+  const items = links.flatMap((link, i) => [i > 0 && " ", el("a", { className: link.here ? "here" : undefined, href: link.href, ...(link.name ? { "aria-label": link.name } : {}) }, link.label)]);
   const navAttrs = ariaFirst ? { "aria-label": navLabel, className: "topnav" } : { className: "topnav", "aria-label": navLabel };
   return (
     <div className="topbar">

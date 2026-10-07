@@ -235,6 +235,12 @@ def gender_test(c, top, labels, rng):
     slots = Counter(int(j) for i in range(c.n) for j in top[i])
     out["slots_to_women"] = round(sum(slots[int(i)] for i in women) / (c.n * K), 3)
     out["hubs"] = [[c.names[j], n] for j, n in sorted(slots.items(), key=lambda x: (-x[1], x[0]))[:3]]
+    # Women among all ten nearest pages (labelled or not), averaged over women's and over men's lists.
+    out["women_in_ten"] = {focus: round(float(np.mean([sum(labels[j] == "female" for j in top[i])
+                                                        for i in np.flatnonzero(labels == focus)])), 1)
+                           for focus in ("female", "male")}
+    out["men_lists_half_women"] = int(sum(sum(labels[j] == "female" for j in top[i]) >= K / 2
+                                          for i in np.flatnonzero(labels == "male")))
     return out
 
 
@@ -348,6 +354,11 @@ def main(to_read=False):
     rng = np.random.default_rng(SEED)
     gender = {rep: gender_test(c, top, labels, rng)
               for rep, top in (("tfidf", top_tf), ("no_names", top_nn), ("no_names_pronouns", top_np))}
+    women_in = lambda top: np.array([sum(labels[j] == "female" for j in top[i]) for i in range(c.n)])  # noqa: E731
+    shift = women_in(top_nn) - women_in(top_tf)
+    gender["lists"] = {"gain": int((shift > 0).sum()), "same": int((shift == 0).sum()), "lose": int((shift < 0).sum()),
+                       "men_gain": int((shift[labels == "male"] > 0).sum())}
+    gender["women_in_ten_all"] = {"tfidf": round(float(women_in(top_tf).mean()), 1), "no_names": round(float(women_in(top_nn).mean()), 1)}
     gender["words"] = {"no_names": pair_words(c, no_names, top_nn, labels, "female"),
                        "no_names_pronouns": pair_words(c, no_pron, top_np, labels, "female")}
 

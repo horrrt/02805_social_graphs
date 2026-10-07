@@ -9,11 +9,13 @@ import { fileURLToPath } from "node:url";
 import { block, flatten } from "./week04-html.mjs";
 import { builtPage } from "./built-page.mjs";
 
+
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const read = (name) => readFileSync(join(ROOT, name), "utf8");
 const html = builtPage("out/weeks/week06/index.html");
 const data = JSON.parse(read("public/weeks/week06/data/lookalikes.json"));
 const f = data.facts;
+const lean = JSON.parse(read("public/weeks/week06/data/lean.json"));
 const page = flatten(html);
 const two = (v) => v.toFixed(2);
 const pct = (v) => `${Math.round(v * 100)}%`;
@@ -52,7 +54,7 @@ test("the course's lookalikes are reproduced and the page says so", () => {
 test("section 2 and the hero quote the names numbers", () => {
   const share = `${(f.names.tfidf_share * 100).toFixed(1)}%`;
   says("names", `Names hold ${share} of all TF-IDF weight`);
-  assert.match(flatten(block(html, "top")), new RegExp(`${share.replace(".", "\\.")}\\s*of TF-IDF weight sits on names`));
+  assert.match(flatten(block(html, "top")), new RegExp(`${share.replace(".", "\\.")}\\s*of all word weight sits on names`));
   says("names", `drops to ${two(f.names.hits)}, level with raw counts (${two(f.course.raw)}); with names alone it gets ${two(f.names_only.hits)}`);
   assert.ok(Math.abs(f.names.hits - f.course.raw) < 0.1, "\"level with raw counts\" needs the two within 0.1");
   says("names", `leaves ${two(f.null.mean)} ± ${two(f.null.sd)}, but those words carry ${(f.null.weight_removed * 100).toFixed(1)}% of the weight against the names' ${share}`);
@@ -62,7 +64,6 @@ test("section 2 and the hero quote the names numbers", () => {
   says("names", `in ${f.null.runs} runs`);
   says("names", `seeds ${f.seeds[0]} to ${f.seeds[1]}`);
   says("names", `brings the count to ${two(f.pronouns.hits)}`);
-  says("top", `TF-IDF gets ${two(f.course.tfidf)} and names alone ${two(f.names_only.hits)}. Without names it gets ${two(f.names.hits)}; removing as many other words of the same rarity leaves ${two(f.null.mean)} ± ${two(f.null.sd)}`);
   says("findings", `against ${two(f.course.tfidf)} with them and ${two(f.names_only.hits)} with names alone`);
   says("closing", `names alone get ${two(f.names_only.hits)} linked pages among the ten nearest, and without them the count falls from ${two(f.course.tfidf)} to ${two(f.names.hits)}`);
   const d = f.distance;
@@ -97,32 +98,54 @@ test("the hand-read pairs match their counts", () => {
 test("section 3 quotes the gender test", () => {
   const g = f.gender, nn = g.no_names, np = g.no_names_pronouns, tf = g.tfidf;
   const women = pct(nn.slots_to_women), pages = pct(g.female / f.pages);
-  says("gender", `They fill ${women} of all the ten-nearest lists and make up ${pages} of the pages`);
-  says("findings", `Pages about women fill ${women} of the ten-nearest lists and make up ${pages} of the pages, and still ${pct(np.slots_to_women)} with he and she removed. She and her make a woman's list ${pct(nn.female.observed)} women`);
-  says("explore", `${pct(nn.female.observed)} of a woman's labelled nearest pages are women, and ${pct(nn.male.observed)} of a man's`);
-  says("closing", `which fill ${women} of the lists`);
-  assert.match(flatten(block(html, "top")), new RegExp(`${women}\\s*of nearest-page slots go to pages about women once names go; they are ${pages} of pages`));
-  says("gender", `labels ${g.labelled} of the pages as a woman or a man: ${g.female} women and ${g.male} men`);
-  says("gender", `we ran ${count(g.shuffles)}`);
-  says("gender", `the ${g.female} women's lists`);
-  says("gender", `the ${g.male} men's lists`);
+  says("gender", `They take ${women} of all ten-nearest slots and are ${pages} of the pages`);
+  const L = g.lists, w10 = nn.women_in_ten;
+  says("findings", `Pages about women take ${women} of the ten-nearest slots and are ${pages} of the pages; ${L.gain} of ${f.pages} lists gain women once names go. A woman's list holds ${w10.female} women in ten, a man's ${w10.male}`);
+  says("gender", `${L.gain} of ${f.pages} lists gain women once names go, ${L.same} stay level and ${L.lose} lose; ${L.men_gain} of ${g.male} men's lists gain`);
+  assert.equal(L.gain + L.same + L.lose, f.pages);
+  assert.ok(L.gain > f.pages / 2, "\"most lists\" needs a majority");
+  assert.doesNotMatch(page, /every page (leans|drifts)|every list shifts/);
+  says("top", "Take the names out and most lists shift toward pages about women");
+  says("explore", "Without them, most lists shift toward pages about women");
+  says("gender", `a woman's list holds ${w10.female} women in ten against ${w10.male} for a man's`);
+  says("closing", `which take ${women} of the slots`);
+  assert.match(flatten(block(html, "top")), new RegExp(`${women}\\s*of ten-nearest slots go to pages about women once names go; they are ${pages} of pages`));
+  says("gender", `${g.female} women and ${g.male} men among the ${g.labelled} pages that have one`);
+  says("gender", `${count(g.shuffles)} shuffles of the labels over the same lists put that gap at about 0`);
+  assert.ok(Math.abs(nn.gap.null_mean) < 0.02 && Math.abs(np.gap.null_mean) < 0.02, "\"about 0\" needs the shuffled gaps near 0");
+  says("gender", `Share of all ${count(f.pages * f.k)} ten-nearest slots that go to the ${g.female} pages about women`);
+  says("gender", `${count(g.shuffles)} shuffles of the labels over the ${g.labelled} labelled pages`);
   const p = f.pronouns;
   says("gender", `He is on ${p.pages.he} pages and his on ${p.pages.his}`);
-  says("gender", `an IDF of ${two(p.idf.he)} against ${two(p.idf.she)} for she`);
-  says("gender", `a woman's labelled nearest pages are ${pct(nn.female.observed)} women and a man's ${pct(nn.male.observed)}, against ${pct(nn.female.null_mean)} and ${pct(nn.male.null_mean)} shuffled`);
-  says("gender", `cuts the gap from ${points(nn.gap.observed)} to ${points(np.gap.observed)} points, but women's pages still fill ${pct(np.slots_to_women)} of the lists`);
+  says("gender", `their IDF is ${two(p.idf.he)} and ${two(p.idf.his)}, against ${two(p.idf.she)} for she and ${two(p.idf.her)} for her`);
+  says("gender", `removing the pronouns cuts the gap from ${points(nn.gap.observed)} to ${points(np.gap.observed)} points`);
+  says("gender", `it survives removing he and she (${women} to ${pct(np.slots_to_women)})`);
   says("gender", `women's lists are ${pct(tf.female.observed)} women and men's ${pct(tf.male.observed)}, a gap of ${points(tf.gap.observed)} points (z ${z(tf.gap.z)})`);
   says("gender", `the gap is ${points(nn.gap.observed)} points (z ${z(nn.gap.z)}); without pronouns too, ${points(np.gap.observed)} points (z ${z(np.gap.z)})`);
   const hubs = nn.hubs.map(([name, k]) => `${short(name)} in ${k}`);
   says("gender", `${short(nn.hubs[0][0])} sits in ${nn.hubs[0][1]} pages' ten nearest, ${hubs[1]} and ${hubs[2]}`);
-  const hs = g.words.no_names.filter(([word]) => word === "her" || word === "she").reduce((a, [, v]) => a + v, 0);
+  says("gender", `women's lists are ${pct(nn.female.null_mean)} women, the share of women among the ${g.labelled} labelled pages`);
+  assert.equal(pct(g.female / g.labelled), pct(nn.female.null_mean));
   assert.deepEqual(g.words.no_names.slice(0, 2).map(([word]) => word).sort(), ["her", "she"]);
-  says("gender", `Her and she carry ${pct(hs)} of the similarity between women`);
   says("gender", `${g.unlabelled} pages have no value: ${g.unlabelled_shared_name} are pages for a codename`);
   assert.deepEqual(g.other, { "female|male": 1, agender: 1 });
   says("gender", "Ajak has two values and Phoenix Force is agender; both are left out");
   says("gender", `the ${f.pages - g.labelled} pages without a woman or man label`);
-  says("gender", `${pct(nn.female_all_slots)} are women`);
+  says("gender", `Counting every slot, labelled or not, a woman's list holds ${w10.female} women in ten`);
+  assert.equal(w10.female, Math.round(nn.female_all_slots * 100) / 10);
+});
+
+test("the hero shows Storm's own contrast", () => {
+  const storm = data.names.indexOf("Storm (Marvel Comics)");
+  const [first] = data.kept[storm];
+  assert.equal(short(data.names[first[0]]), "Human Torch");
+  assert.equal(first[2], 0);
+  for (const [j, , , , words] of data.removed[storm].slice(0, 4)) {
+    assert.equal(data.gender[j], "female", data.names[j]);
+    assert.ok(words.includes("her") && words.includes("she"));
+  }
+  says("top", "With names, the Human Torch leads on his surname (the two also served together in the Fantastic Four); without names, four women, matched on her and she");
+  assert.equal(f.pairs.find((p) => p.a === "Human Torch" && p.b === "Storm (Marvel Comics)").bucket, "story");
 });
 
 test("section 1 quotes the explorer's own lists", () => {
@@ -136,11 +159,34 @@ test("section 1 quotes the explorer's own lists", () => {
   assert.equal(first[2], 0, "Storm and the Human Torch do not link");
   assert.ok(first[4].includes("storm"));
   const removed = data.removed[storm].slice(0, 4).map(([j]) => short(data.names[j]));
-  says("explore", `her nearest pages are ${removed.slice(0, 3).join(", ")} and ${removed[3]}, matched on her and she`);
   for (const [, , , , words] of data.removed[storm].slice(0, 4)) assert.ok(words.includes("her") && words.includes("she"));
 });
 
 test("the explorer's start and picks are pages in the file", async () => {
   const { START, PICKS } = await import("../src/scripts/week06-lookalikes.js");
   for (const name of [START, ...PICKS]) assert.ok(data.names.includes(name), name);
+});
+
+test("the explorer's answer and notice match the lists", () => {
+  says("explore", "Without names, the match runs on she, her and the wording of reception sections");
+  assert.doesNotMatch(flatten(block(html, "explore")), /whoever you pick/);
+  const women = (rep, name) => data[rep][data.names.indexOf(name)].filter(([j]) => data.gender[j] === "female").length;
+  const men = (rep, name) => data[rep][data.names.indexOf(name)].filter(([j]) => data.gender[j] === "male").length;
+  assert.equal(women("kept", "Storm (Marvel Comics)"), 5);
+  assert.equal(women("kept", "Wolverine (character)"), 5);
+  assert.equal(women("removed", "Storm (Marvel Comics)"), 10);
+  assert.equal(men("removed", "Wolverine (character)"), 6);
+  says("explore", "With names, half of each list is women, mostly X-Men teammates. Without names, Storm's ten nearest pages are all women; Wolverine's keep six men");
+});
+
+test("section 3's follow-up quotes lean.json", () => {
+  const l = lean.lean, m = lean.model, pct1 = (v) => `${Math.round(v * 100)}%`;
+  says("gender", `deleting every reception and relationship section leaves it at ${(l.sections_removed * 100).toFixed(1)}%, against ${(l.control_mean * 100).toFixed(1)}% ± ${(l.control_sd * 100).toFixed(1)} pts when the same number of words is cut from other sections (${lean.runs} runs)`);
+  assert.ok(l.sections_removed >= l.control_mean, "\"Not reception sections\" needs the deletion to cut no more than the control");
+  says("gender", `page twice as long sits in ${m.per_doubling} more lists`);
+  says("gender", `explains under half of the variation (R² ${m.r2.toFixed(2)})`);
+  assert.ok(m.r2 < 0.5);
+  says("gender", `at equal length a woman's page still sits in ${m.terms.female.coef.toFixed(1)} more lists (p = ${m.terms.female.p.toFixed(2)})`);
+  says("gender", `median ${count(lean.median_words.female)} words against ${count(lean.median_words.male)}`);
+  assert.ok(m.terms.reception_share.p > 0.05 && m.terms.relations_share.p > 0.05);
 });

@@ -9,6 +9,14 @@ export const DATA = "weeks/week06/data/lookalikes.json";
 export const START = "Storm (Marvel Comics)";
 export const PICKS = ["Storm (Marvel Comics)", "Emma Frost", "Wolverine (character)", "Backhand (character)"];
 
+/** Why each chip is there, shown in the note under the picker when that page is picked. */
+export const PICK_WHY = {
+  "Storm (Marvel Comics)": "The course brief's own example.",
+  "Emma Frost": "Her surname is Jack Frost's codename.",
+  "Wolverine (character)": "Where the course's explorer starts.",
+  "Backhand (character)": "A Strikeforce: Morituri page; the team's pages copy one lead sentence.",
+};
+
 export const pct = (v) => `${Math.round(v * 100)}%`;
 export const two = (v) => v.toFixed(2);
 /** "Storm (Marvel Comics)" -> "Storm": the disambiguation Wikipedia adds to a title. */
@@ -37,23 +45,42 @@ export function ladder({ facts: f }) {
   };
 }
 
-// Section 3: the share of women among the labelled neighbours of women and of
-// men, against shuffled labels, as names and then pronouns are removed.
-export function genderRows({ facts: f }) {
+// Section 3, left panel: the share of every page's ten nearest that are pages
+// about women, against women's share of all pages.
+export function leanRows({ facts: f }) {
   const g = f.gender;
-  const row = (label, sub, t, hollow) => ({
-    label, sub, hollow, real: t.observed, realLabel: pct(t.observed), base: [t.null_mean, t.null_sd],
-    baseLabel: `shuffled ${pct(t.null_mean)}`,
-  });
-  const pair = (label, rep, divider) => [
-    { ...row(label, "a woman's nearest", g[rep].female, false), bold: true, divider },
-    row("", "a man's nearest", g[rep].male, true),
-  ];
+  const pages = g.female / f.pages;
+  const row = (label, rep, bold) => ({ label, real: g[rep].slots_to_women, realLabel: pct(g[rep].slots_to_women), bold });
   return {
-    rows: [...pair("TF-IDF", "tfidf"), ...pair("Names removed", "no_names", true), ...pair("Names, he and she removed", "no_names_pronouns", true)],
+    rows: [row("TF-IDF", "tfidf"), row("Names removed", "no_names", true), row("Names, he and she removed", "no_names_pronouns")],
     opts: {
-      domain: [0, 1], ticks: [0, 0.25, 0.5, 0.75, 1], fmt: pct, axisTitle: "women among the labelled nearest pages",
-      aria: `Women among the nearest pages of women and of men: TF-IDF ${pct(g.tfidf.female.observed)} and ${pct(g.tfidf.male.observed)}, names removed ${pct(g.no_names.female.observed)} and ${pct(g.no_names.male.observed)}, names and pronouns removed ${pct(g.no_names_pronouns.female.observed)} and ${pct(g.no_names_pronouns.male.observed)}; shuffled about ${pct(g.no_names.female.null_mean)}`,
+      domain: [0, 0.6], ticks: [0, 0.2, 0.4, 0.6], fmt: pct, ref: [pages, `women's share of pages ${pct(pages)}`],
+      axisTitle: "share of all ten-nearest slots", labelW: 150,
+      aria: `Share of all ten-nearest slots that go to pages about women: TF-IDF ${pct(g.tfidf.slots_to_women)}, names removed ${pct(g.no_names.slots_to_women)}, names and pronouns removed ${pct(g.no_names_pronouns.slots_to_women)}, against ${pct(pages)} of pages`,
+    },
+  };
+}
+
+/** A gap of two shares in percentage points, signed. */
+export const pts = (v) => `${v < 0 ? "−" : ""}${Math.abs(Math.round(v * 100))} pts`;
+
+// Section 3, right panel: women's share among women's lists minus women's share
+// among men's lists, against 1,000 shuffles of the labels over the same lists.
+export function gapRows({ facts: f }) {
+  const g = f.gender;
+  const row = (label, rep, bold) => {
+    const t = g[rep];
+    return {
+      label, bold, real: t.gap.observed, realLabel: pts(t.gap.observed),
+      base: [t.gap.null_mean, t.gap.null_sd], baseLabel: `shuffled ${(t.gap.null_mean * 100).toFixed(1).replace("-", "−")} ± ${(t.gap.null_sd * 100).toFixed(1)} pts · z ${String(t.gap.z).replace("-", "−")}`,
+    };
+  };
+  return {
+    rows: [row("TF-IDF", "tfidf"), row("Names removed", "no_names", true), row("Names, he and she removed", "no_names_pronouns")],
+    opts: {
+      domain: [-0.1, 0.6], ticks: [0, 0.2, 0.4, 0.6], fmt: (v) => `${Math.round(v * 100)}`, zeroLine: 0, labelW: 150,
+      axisTitle: "women's share in women's lists minus in men's, points",
+      aria: `Gap between women's and men's lists in the share of women: TF-IDF ${pts(g.tfidf.gap.observed)}, names removed ${pts(g.no_names.gap.observed)} (z ${g.no_names.gap.z}), names and pronouns removed ${pts(g.no_names_pronouns.gap.observed)} (z ${g.no_names_pronouns.gap.z}); shuffled labels give about 0`,
     },
   };
 }
@@ -75,7 +102,38 @@ export function minis({ facts: f }) {
   };
 }
 
-const BUCKET = { story: "Shared story", mantle: "Same title", name: "Name only", template: "She, her, lists" };
+const BUCKET = { story: "Shared story", mantle: "Same title", name: "Name only", template: "Template: she, her, lists" };
+
+/** Pairs that share one note (3 or more) collapse into one row that names how many and the first two. */
+function grouped(pairs, rep) {
+  const cos = (p) => (rep === "tfidf" ? p.cos_tfidf : p.cos_no_names);
+  const count = new Map();
+  for (const p of pairs) count.set(p.note, (count.get(p.note) ?? 0) + 1);
+  const rows = [];
+  const done = new Set();
+  for (const p of pairs) {
+    const n = count.get(p.note);
+    if (n < 3) {
+      rows.push({ pair: `${short(p.a)} · ${short(p.b)}`, cos: two(cos(p)), steps: p.distance ?? "no path", words: p.words.slice(0, 4).join(", "), bucket: BUCKET[p.bucket], note: p.note });
+      continue;
+    }
+    if (done.has(p.note)) continue;
+    done.add(p.note);
+    const group = pairs.filter((q) => q.note === p.note);
+    const cs = group.map(cos);
+    const ds = group.map((q) => q.distance ?? Infinity);
+    const range = (lo, hi, f) => (lo === hi ? f(lo) : `${f(lo)}–${f(hi)}`);
+    rows.push({
+      pair: `${n} pairs, such as ${short(group[0].a)} · ${short(group[0].b)} and ${short(group[1].a)} · ${short(group[1].b)}`,
+      cos: range(Math.min(...cs), Math.max(...cs), two),
+      steps: range(Math.min(...ds), Math.max(...ds), (d) => (d === Infinity ? "no path" : String(d))),
+      words: group[0].words.slice(0, 2).join(", "),
+      bucket: BUCKET[p.bucket],
+      note: p.note,
+    });
+  }
+  return rows;
+}
 
 /** The hand-read pairs of one representation ("tfidf" or "no_names") as a kit Table. */
 export function readTable({ facts: f }, rep) {
@@ -89,14 +147,7 @@ export function readTable({ facts: f }, rep) {
       { key: "bucket", label: "Read as" },
       { key: "note", label: "What the pages say" },
     ],
-    rows: f.pairs.filter((p) => p.rep === rep).map((p) => ({
-      pair: `${short(p.a)} · ${short(p.b)}`,
-      cos: two(rep === "tfidf" ? p.cos_tfidf : p.cos_no_names),
-      steps: p.distance ?? "no path",
-      words: p.words.slice(0, 4).join(", "),
-      bucket: BUCKET[p.bucket],
-      note: p.note,
-    })),
+    rows: grouped(f.pairs.filter((p) => p.rep === rep), rep),
   };
 }
 
@@ -131,12 +182,28 @@ export function distanceTable({ facts: f }) {
   };
 }
 
+const GENDER = { female: "woman", male: "man" };
+
 /** One explorer column: a page's ten nearest pages with what places each there. */
 export function neighbourRows(data, index, rep) {
   return data[rep][index].map(([j, cos, linked, steps, words]) => ({
-    index: j, name: short(data.names[j]), cos: two(cos), linked: linked === 1,
+    index: j, name: short(data.names[j]), cos: two(cos), linked: linked === 1, gender: GENDER[data.gender[j]] ?? "",
     where: linked === 1 ? "linked" : steps === 0 ? "no path" : `${steps} steps`, words,
   }));
+}
+
+/** The line under the picker: the picked page's nearest page each way and the words behind it. */
+export function pickNote(data, index) {
+  const [kept] = neighbourRows(data, index, "kept");
+  const [removed] = neighbourRows(data, index, "removed");
+  const why = PICK_WHY[data.names[index]] ? `${PICK_WHY[data.names[index]]} ` : "";
+  return `${why}${short(data.names[index])}: nearest with names is ${kept.name} (${kept.words.slice(0, 2).join(", ")}); without names, ${removed.name} (${removed.words.slice(0, 2).join(", ")}).`;
+}
+
+/** The hero's contrast: the first `n` nearest pages of one page, names kept and removed. */
+export function contrast(data, name = START, n = 4) {
+  const index = data.names.indexOf(name);
+  return { name: short(name), kept: neighbourRows(data, index, "kept").slice(0, n), removed: neighbourRows(data, index, "removed").slice(0, n) };
 }
 
 /** The explorer's choices: every page by its short name, alphabetical. */
