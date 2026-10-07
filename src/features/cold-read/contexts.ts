@@ -10,7 +10,7 @@ export type Row = [string, number][];
 export type HiddenWord = { w: string; uses: number; df: number; rows: Record<Weight, Record<string, Row>>; sentences: string[] };
 export type TezguinoData = { windows: number[]; words: HiddenWord[] };
 
-export const LIVES = 3;
+export { LIVES } from "./rules"; // every round plays with the same hearts
 export const MAX_STREAK = 5;
 export const OPTIONS = 4;
 export const BASE = 1000;

@@ -15,7 +15,7 @@ export type WhoseLineData = {
 
 export const CARDS = 8;
 export const PER_KIND = 2;
-export const LIVES = 3;
+export { LIVES } from "./rules"; // every round plays with the same hearts
 export const INSPECT_COST = 50;
 export const MAX_STREAK = 5;
 const KINDS: Answer[] = ["a", "b", "both", "fluke"];
