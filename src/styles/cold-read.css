@@ -288,9 +288,16 @@ body.cold-read {
 
 .cr-hand-head {
   display: flex;
-  justify-content: flex-end;
+  justify-content: space-between;
   align-items: baseline;
   padding: 20px 24px 10px;
+}
+
+.cr-challenge {
+  margin: 0;
+  font-size: var(--fs-strong);
+  font-weight: 700;
+  color: var(--ink);
 }
 
 .cr-worth {
