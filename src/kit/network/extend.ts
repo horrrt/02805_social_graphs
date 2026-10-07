@@ -10,14 +10,25 @@ import { radiusScale, rampCss, unit } from "./ramp";
 export type NodeState = "ghost" | "picked" | "new" | "ring";
 export type Head = { points: string; cls: string };
 
-const DEFAULT_SIZES: [number, number] = [4, 14];
-
-/** Whether the spec uses any addition; when not, the rows stay as they are. */
+/**
+ * Whether the spec uses any addition; when not, the rows stay as they are. A
+ * node's value counts only through scale or color, so data that happens to
+ * carry a value draws as before.
+ */
 export function extended(opts: Options, nodes: NetNode[]): boolean {
   return Boolean(
     opts.directed || opts.color === "sequential" || opts.scale || opts.highlightLinks?.length || opts.layout === "circle" ||
-      nodes.some((n) => n.state !== undefined || n.value !== undefined),
+      nodes.some((n) => n.state !== undefined),
   );
+}
+
+/** Under scale, each node with a value gets its radius r from it, before layout, so labels and rings sit outside the disc. */
+export function sized(nodes: NetNode[], opts: Options): NetNode[] {
+  if (!opts.scale) return nodes;
+  const values = nodes.map((n) => n.value).filter((v): v is number => v !== undefined);
+  if (values.length === 0) return nodes;
+  const size = radiusScale(values, opts.scale);
+  return nodes.map((n) => (n.value === undefined ? n : { ...n, r: size(n.value) }));
 }
 
 /** The nodes placed round a circle in the layout's box (y runs to ratio), node 0 at the top. */
@@ -32,7 +43,7 @@ export function circlePlaced(nodes: NetNode[], ratio: number): NetNode[] {
 const linkKey = (a: NetId, b: NetId, directed: boolean) => (directed || String(a) < String(b) ? `${a}|${b}` : `${b}|${a}`);
 
 /**
- * The rows with the additions: radii and fills from values, a state's class
+ * The rows with the additions: fills from values, a state's class
  * and ring, highlighted and faint links, and the arrowheads (empty unless
  * directed). Returns the same layout when the spec uses none of them.
  */
@@ -40,7 +51,6 @@ export function extendLayout(L: Layout, opts: Options, nodes: NetNode[]): Layout
   if (!extended(opts, nodes)) return { ...L, heads: [] };
   const byId = new Map(nodes.map((n) => [n.id, n]));
   const values = nodes.map((n) => n.value).filter((v): v is number => v !== undefined);
-  const size = opts.scale || (values.length && !opts.color) ? radiusScale(values, opts.scale ?? DEFAULT_SIZES) : null;
   const shade = opts.color === "sequential" ? unit(values) : null;
   const radius = new Map<NetId, number>();
 
@@ -49,7 +59,7 @@ export function extendLayout(L: Layout, opts: Options, nodes: NetNode[]): Layout
     if (!n) return row;
     const shapes: Shape[] = row.shapes.map((s) => {
       if (!("cx" in s) || !s.cls.includes("gv-node")) return s;
-      const r = n.value !== undefined && size ? size(n.value) : s.r;
+      const r = s.r;
       const cls = n.state === "ghost" || n.state === "picked" || n.state === "new" ? `${s.cls} kit-net-is-${n.state}` : s.cls;
       const fill = n.value !== undefined && shade ? rampCss(shade(n.value)) : undefined;
       return { ...s, r, cls, ...(fill ? { fill } : {}) };

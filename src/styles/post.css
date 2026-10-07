@@ -3031,7 +3031,9 @@
 
 /* NetCanvas: one canvas, or a grid of small multiples. */
 .corridor .gv.kit-netcanvas { min-width: 0; }
-.corridor .kit-netcanvas canvas { display: block; max-width: 100%; }
+.corridor .kit-netcanvas-stage { position: relative; }
+.corridor .kit-netcanvas-stage canvas { display: block; height: 100%; width: 100%; }
+.corridor .kit-netcanvas-pick { cursor: pointer; }
 .corridor .kit-netcanvas-cell { min-width: 0; }
 .corridor .kit-netgrid { display: grid; gap: 12px 16px; }
 .corridor .kit-netcanvas-item { min-width: 0; }

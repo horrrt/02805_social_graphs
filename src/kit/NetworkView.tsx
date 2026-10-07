@@ -32,7 +32,7 @@ import {
 } from "./network/layout";
 import { HubMark, LineMark, NodeMark, type HubEvents, type NodeEvents } from "./network/marks";
 import { initModel, initUi, model, ui, uiFor, type Lit, type TipText } from "./network/state";
-import { circlePlaced, extended, extendLayout } from "./network/extend";
+import { circlePlaced, extended, extendLayout, sized } from "./network/extend";
 
 export type { NetLink, NetNode, NetworkSpec, NodeInfo } from "./network/layout";
 
@@ -79,7 +79,7 @@ function View({ spec, onChange, onNodeClick, scale, measure }: ViewProps) {
   const placed = useMemo(() => {
     if (!extended(opts, spec.nodes)) return drawn.nodes;
     const live = new Map(spec.nodes.map((n) => [n.id, n]));
-    const nodes = drawn.nodes.map((n) => ({ ...n, value: live.get(n.id)?.value, state: live.get(n.id)?.state }));
+    const nodes = sized(drawn.nodes.map((n) => ({ ...n, value: live.get(n.id)?.value, state: live.get(n.id)?.state })), opts);
     return opts.layout === "circle" ? circlePlaced(nodes, opts.ratio) : nodes;
   }, [opts, spec.nodes, drawn.nodes]);
   const L = useMemo(

@@ -791,6 +791,9 @@ export function aggregate(s) {
   return next;
 }
 
+/** The stepper as one object: louvainStepper.init(edges, { rng }), .stepMove, .sweep, .aggregate. */
+export const louvainStepper = { init: louvainInit, stepMove, sweep, aggregate };
+
 /** Each original node's community in the state now, numbered 0, 1, … by first appearance. */
 export function louvainPartition(s) {
   return relabel(s.member.map((v) => s.comm[v]));

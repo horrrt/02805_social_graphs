@@ -1,4 +1,4 @@
-// surface: paints the network's <canvas> each frame
+// surface: paints the network's <canvas> each frame (useCanvasStage sizes it)
 // A network on a canvas, for 200 to 2,000 nodes where SVG marks get slow: links
 // and nodes painted every frame while positions move, in the .gv palette
 // (group colours, or a sequential ramp by value), with node states (ghost,
@@ -11,9 +11,9 @@
 // it too. A line under the canvas says what it shows, in counts. Pass
 // `specs` for small multiples, one canvas per spec. Style: .kit-netcanvas in
 // post.css.
-import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState, type MouseEvent, type PointerEvent } from "react";
+import { useEffect, useLayoutEffect, useMemo, useRef, useState, type MouseEvent, type PointerEvent } from "react";
+import { useCanvasStage } from "@/lib/useCanvas";
 import { useHydrated } from "@/lib/useHydrated";
-import { useFittedWidth } from "@/lib/useSize";
 import { useTokens } from "@/lib/useTypeScale";
 import TipBox, { type Tip } from "./TipBox";
 import { useOnScreen, useReducedMotion } from "./network/motion";
@@ -84,10 +84,7 @@ export function describeCanvas(spec: Pick<NetCanvasSpec, "nodes" | "links" | "di
 function Single({ spec, tokens, reduced }: { spec: NetCanvasSpec; tokens: Record<string, string>; reduced: boolean }) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const hostRef = useRef<HTMLDivElement>(null);
-  const width = useFittedWidth(canvasRef, 640);
-  const height = spec.height ?? Math.min(Math.round(width * 0.75), 460);
-  const [dpr, setDpr] = useState(1);
-  useEffect(() => setDpr(Math.min(window.devicePixelRatio || 1, 2)), []);
+  const height = spec.height ?? 360;
   const onScreen = useOnScreen(hostRef);
   const [tip, setTip] = useState<Tip | null>(null);
 
@@ -111,18 +108,21 @@ function Single({ spec, tokens, reduced }: { spec: NetCanvasSpec; tokens: Record
   const shown = useRef<Point[]>([]);
   const tween = useRef<{ from: Point[]; to: Point[]; start: number } | null>(null);
   const frame = useRef(0);
-  const box = useMemo(() => {
+  // The canvas's size at its last paint: the unit square fits inside it, centred.
+  const size = useRef({ width: 0, height: 0 });
+  const toPx = (p: Point): Point => {
+    const { width, height } = size.current;
     const side = Math.max(10, Math.min(width, height) - 2 * PAD);
-    return { side, ox: (width - side) / 2, oy: (height - side) / 2 };
-  }, [width, height]);
-  const toPx = useCallback((p: Point): Point => [box.ox + p[0] * box.side, box.oy + p[1] * box.side], [box]);
+    return [(width - side) / 2 + p[0] * side, (height - side) / 2 + p[1] * side];
+  };
 
-  const paint = useCallback(() => {
+  // useCanvasStage backs the canvas at its rendered size and device pixel
+  // ratio, and calls this on mount and on every resize; a tween asks again each frame.
+  const paint = (ctx: CanvasRenderingContext2D, width: number, height: number) => {
     frame.current = 0;
-    const canvas = canvasRef.current;
-    const ctx = canvas?.getContext("2d");
-    if (!canvas || !ctx) return;
-    let pos = shown.current;
+    size.current = { width, height };
+    // The first paint (on mount, before the targets are shown) draws at the targets.
+    let pos = shown.current.length === spec.nodes.length ? shown.current : targets;
     const tw = tween.current;
     let more = false;
     if (tw) {
@@ -136,7 +136,6 @@ function Single({ spec, tokens, reduced }: { spec: NetCanvasSpec; tokens: Record
       else tween.current = null;
     }
     shown.current = pos;
-    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
     ctx.clearRect(0, 0, width, height);
     const px = pos.map(toPx);
     const ghost = (i: number | undefined) => i !== undefined && spec.nodes[i]?.state === "ghost";
@@ -218,8 +217,13 @@ function Single({ spec, tokens, reduced }: { spec: NetCanvasSpec; tokens: Record
       }
     }
     ctx.globalAlpha = 1;
-    if (more) frame.current = requestAnimationFrame(paint);
-  }, [dpr, width, height, toPx, spec, index, radius, shade, tokens]);
+    if (more) frame.current = requestAnimationFrame(() => draw.current());
+  };
+  const draw = useRef<() => void>(() => {});
+  const stage = useCanvasStage(canvasRef, paint);
+  useLayoutEffect(() => {
+    draw.current = stage;
+  });
 
   // New targets: tween there from what is shown (new nodes start in place).
   const lastTargets = useRef<Point[] | null>(null);
@@ -236,13 +240,11 @@ function Single({ spec, tokens, reduced }: { spec: NetCanvasSpec; tokens: Record
     }
   }, [targets, reduced, onScreen]);
 
+  // Every new spec or palette paints again, cancelling a frame already asked for.
   useLayoutEffect(() => {
-    if (!frame.current) paint();
-    else {
-      cancelAnimationFrame(frame.current);
-      paint();
-    }
-  }, [paint, targets]);
+    cancelAnimationFrame(frame.current);
+    stage();
+  }, [stage, spec, targets, radius, shade, tokens]);
   useEffect(() => () => cancelAnimationFrame(frame.current), []);
 
   const nodeAt = (e: MouseEvent<HTMLCanvasElement>): number => {
@@ -273,13 +275,11 @@ function Single({ spec, tokens, reduced }: { spec: NetCanvasSpec; tokens: Record
 
   return (
     <div className="kit-netcanvas-cell kit-tip-host" ref={hostRef}>
-      <canvas
+      {/* The stage carries the size and the label; React never changes the canvas after mount. */}
+      <div className={`kit-netcanvas-stage${click ? " kit-netcanvas-pick" : ""}`} style={{ height }} role="img" aria-label={spec.aria}>
+        <canvas
         ref={canvasRef}
-        width={Math.round(width * dpr)}
-        height={Math.round(height * dpr)}
-        style={{ width, height, cursor: click ? "pointer" : undefined }}
-        role="img"
-        aria-label={spec.aria}
+        aria-hidden="true"
         onPointerMove={onMove}
         onPointerLeave={() => setTip(null)}
         onClick={
@@ -290,7 +290,8 @@ function Single({ spec, tokens, reduced }: { spec: NetCanvasSpec; tokens: Record
               }
             : undefined
         }
-      />
+        />
+      </div>
       <TipBox host={hostRef} tip={tip} />
       <p className="kit-note">{spec.describe ?? describeCanvas(spec)}</p>
     </div>

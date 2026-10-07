@@ -23,6 +23,7 @@ export type StepperOptions<S> = {
 
 export type Stepper<S> = {
   state: S;
+  /** Steps and extra actions taken since the last reset. */
   steps: number;
   playing: boolean;
   done: boolean;
@@ -78,14 +79,13 @@ export function useStepper<S>({ init, step, done, seed, speedMs = 400 }: Stepper
     const next = fn(now.current.state, rng.current);
     now.current.state = next;
     setState(next);
+    setSteps((n) => n + 1);
   }, []);
-  // A new seed starts the run again.
-  const first = useRef(true);
+  // A new seed starts the run again (a StrictMode remount keeps the seed, so it does not).
+  const lastSeed = useRef(seed);
   useEffect(() => {
-    if (first.current) {
-      first.current = false;
-      return;
-    }
+    if (lastSeed.current === seed) return;
+    lastSeed.current = seed;
     reset();
   }, [seed, reset]);
 
@@ -171,8 +171,9 @@ export default function StepPlayer<S>({
         <label htmlFor={id}>Speed</label>
         <input id={id} type="range" min={1} max={20} step={1} value={p.speed} onChange={(e) => p.setSpeed(e.target.value)} />
         <output htmlFor={id}>{p.speed}/s</output>
-        <span className="kit-note" aria-live="polite">
-          {p.done ? `Done after ${p.steps} ${p.steps === 1 ? "step" : "steps"}.` : `${p.steps} ${p.steps === 1 ? "step" : "steps"}`}
+        {/* Announced only while nothing plays, so Play does not read out every step. */}
+        <span className="kit-note" aria-live={p.playing ? "off" : "polite"}>
+          {p.done ? `Done after ${p.steps} ${p.steps === 1 ? "move" : "moves"}.` : `${p.steps} ${p.steps === 1 ? "move" : "moves"}`}
         </span>
       </div>
       {render(p.state, { steps: p.steps, playing: p.playing })}

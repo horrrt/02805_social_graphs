@@ -11,7 +11,6 @@ import {
   aggregate, baInit, baStep, betweenness, bfsLayers, closeness, degreeCentrality, eigenvector, forceLayout, harmonic, louvainInit,
   louvainPartition, mulberry32, pagerank, ringPlusShortcuts, stepMove, sweep, toAdj, transitivity, wattsStrogatz,
 } from "@/kit/graph-core";
-import { radiusScale } from "@/kit/network/ramp";
 import { island, useIslandReady } from "@/lib/island";
 import { useHydrated } from "@/lib/useHydrated";
 import { KARATE, KITE, KITE_AT, KITE_NAMES, karateLayout, type Edge } from "./toy-networks";
@@ -361,7 +360,6 @@ function KiteView() {
   const kept = useMemo(() => KITE.filter(([a, b]) => !gone.includes(a) && !gone.includes(b)), [gone]);
   const values = useMemo(() => (MEASURES[measure][1] as (n: number, e: Edge[]) => number[])(10, kept), [measure, kept]);
   const live = KITE_NAMES.map((_, i) => i).filter((i) => !gone.includes(i));
-  const r = radiusScale(live.map((i) => values[i]), [5, 16]);
   const top = live.reduce((b, i) => (values[i] > values[b] ? i : b), live[0] ?? 0);
   const toggle = (id: string | number) => {
     const v = Number(id);
@@ -375,12 +373,12 @@ function KiteView() {
       y: KITE_AT[i][1],
       label: name,
       title: `${name}: ${MEASURES[measure][0].toLowerCase()} ${fmt(values[i])}`,
-      r: gone.includes(i) ? 6 : r(values[i]),
       value: gone.includes(i) ? undefined : values[i],
       state: gone.includes(i) ? ("ghost" as const) : i === top ? ("ring" as const) : undefined,
     })),
     links: KITE.map(([a, b]) => ({ source: a, target: b })),
     color: "sequential" as const,
+    scale: [5, 16] as [number, number],
     labels: "beside" as const,
     aria: `Krackhardt's kite, each person sized and shaded by ${MEASURES[measure][0].toLowerCase()} centrality; ${gone.length} taken out`,
   };

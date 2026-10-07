@@ -323,7 +323,8 @@ it as `@/kit/graph-core`. Nodes are `0 … n − 1`, edges `[a, b]` (or `[a, b, 
 - Clustering: `localClustering`, `transitivity`.
 - Communities: `modularity(edges, partition)`; Louvain as a stepper, `louvainInit(edges, { rng })` then
   `stepMove` (until one node moves), `sweep` (the rest of a pass), `aggregate` (collapse the communities),
-  `louvainPartition(state)`, with `state.q`, `state.phase` and `state.last`; or `louvain(edges, rng)` at once;
+  `louvainPartition(state)`, with `state.q`, `state.phase` and `state.last` (the four also as
+  `louvainStepper.init/stepMove/sweep/aggregate`); or `louvain(edges, rng)` at once;
   `labelPropagation(n, edges, rng)`.
 - Layouts in the unit square: `circleLayout(n)`, `forceLayout(n, edges, { iterations, init, rng })`.
 
@@ -335,10 +336,10 @@ const { edges, rewired } = wattsStrogatz(30, 4, 0.1, mulberry32(3));
 
 `NetworkView` takes `onNodeClick(id)`, which makes each node a button (Enter or Space picks it), and these spec
 options, each off unless set, so every existing view draws as before: `directed` (arrowheads), a node's `state`
-(`"ghost"`, `"picked"`, `"new"` or `"ring"`), a node's `value` sizing it (radius range `scale`, `[4, 14]` by
-default) or, with `color: "sequential"`, shading it on a ramp of the site's blues, `layout: "circle"` (or
-`"fixed"`, the nodes' own x and y), and `highlightLinks: [[a, b], …]`. Values and states are read from the spec
-on every render.
+(`"ghost"`, `"picked"`, `"new"` or `"ring"`), a node's `value` sizing it within the radius range `scale` (set
+before layout, so labels and rings clear the disc) and, with `color: "sequential"`, shading it on a ramp of the
+site's blues; `layout: "circle"` (or `"fixed"`, the nodes' own x and y), and `highlightLinks: [[a, b], …]`. A
+value does nothing without `scale` or `color`. Values and states are read from the spec on every render.
 
 ```tsx
 <NetworkView spec={{ ratio: 0.8, layout: "circle", nodes, links, highlightLinks: moved }} onNodeClick={pick} />
@@ -354,7 +355,8 @@ layout or new positions tween the nodes there (at once under reduced motion or o
 `"sequential"`, only when `sizes` is given).
 `tooltip(node)` gives the hover lines, `onNodeClick(id)` follows a click; the canvas has no per-node keyboard
 access, so pair a pick with a control. A line under the canvas counts the nodes, links and states (`describe`
-replaces it). `specs={[…]}` with `columns` draws small multiples, each with its `title`.
+replaces it). `height` is 360 by default; `useCanvasStage` backs the canvas at its size and pixel ratio, and the
+label sits on the stage around it. `specs={[…]}` with `columns` draws small multiples, each with its `title`.
 
 ```tsx
 <NetCanvas nodes={nodes} links={links} positions={{ grow: pos }} layout="grow" color="sequential" aria="…" />
@@ -365,7 +367,8 @@ replaces it). `specs={[…]}` with `columns` draws small multiples, each with it
 Step, Play/Pause, Reset, `extraActions` (`[{ label, run(state, rng) }]`) and a speed slider around
 `render(state)`. `step(state, rng)` takes an rng from `mulberry32(seed)`, rebuilt by Reset, so a seed replays
 the run. Space plays or pauses and → steps while focus is in the player; Play stops at `done(state)` or when the
-player leaves the screen, and runs at most two steps a second under reduced motion.
+player leaves the screen, and runs at most two steps a second under reduced motion. The counter beside the
+controls counts steps and extra actions, and is announced only while paused.
 
 ```tsx
 <StepPlayer seed={7} init={() => baInit(2)} step={baStep} done={(s) => s.n >= 200} render={(s) => <Readouts items={[{ label: "Nodes", value: s.n }]} />} />
