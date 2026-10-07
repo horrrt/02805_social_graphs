@@ -531,3 +531,76 @@ observed, mean, sd }`. Long labels are cut with an ellipsis and keep their full 
 ```tsx
 <NullBars rows={[{ key: "hv", label: "hero – villain", observed: 268, mean: 301, sd: 13 }]} xLabel="links" />
 ```
+
+## Growth
+
+Four pieces for network growth: a replay in arrival order, a lab for nonlinear preferential attachment, the
+components as small multiples, and the friendship paradox as a sampler. No fetching inside; toy BA graphs and toy
+debut years on `/styleguide/kit/`, awkward cases on `/styleguide/kit/states/`. Styles: the "Kit: growth" section of
+`post.css`. The ideas follow the course's ba-growth and friendship-paradox explorables and another group's growth
+replay; no code of theirs is copied.
+
+The numbers are DOM-free in `src/kit/growth-core.js`, tested by `tests/growth-core.test.mjs`; import it as
+`@/kit/growth-core.js`. `spiralPosition(rank, total)` and `spiralLayout` place arrivals on a sunflower spiral, the
+first at the centre and the last on the rim, so a node never moves once placed. `rankBy` turns a value per node (say a
+debut year) into arrival ranks, ties in node order, and `orderOf` inverts them. `degreesAt(n, edges, rank, t)` and
+`edgesAt` count an edge once both ends have arrived. `topK` breaks ties to the earlier arrival; `hubStats` gives the
+biggest hub, its share of all links and its arrival rank. `clampAlpha` keeps α in 0 to 50, past which k^α
+overflows; `regime` names its side of 1. `SWEEP_ALPHAS`, `sweepPoint` and `sweepHubShare` give the hub's mean share
+over seeded runs at each α and n. `splitComponents` lists components largest first, or given groups, with local
+edges. `samplePair` and `sampleMany` draw a person from the nodes with a friend, then one friend (adapted from
+socialgraphs2026-web, MIT, Sune Lehmann), and `degreeShares` bins the draws.
+
+### GrowthReplay({ modes, card, top, reference, height, seed })
+
+A network replayed in arrival order. Each of `modes` is `{ key, label, n, edges, rank, note }`, a tab when there
+are two or more: its own network and arrival order (`rank[v]`, 0 first; node ids by default), say the real order
+against preferential attachment against uniform growth. Nodes sit on the spiral by rank and grow with the links they
+hold at time t (an edge turns on once both ends have arrived). Play, +1, Reset, a time scrubber and a speed slider
+drive t through `useStepper`; Play pauses off screen and runs at most two steps a second under reduced motion.
+Beside the canvas: the `top` (8) nodes by links, as buttons that pin a node, and the CCDF so far against an optional
+`reference` (`{ name, ks }`). `card(node, mode)` gives the arrival card's `{ title, line }` for the newest node or
+the pinned one; clicking a node pins it and lights its links.
+
+```tsx
+<GrowthReplay modes={[{ key: "real", label: "Real order", n, edges, rank: rankBy(years) }, { key: "pa", label: "Preferential attachment", n, edges: ba(n, 2, {}, rng).edges }]} card={(v) => ({ title: names[v], line: `debut ${years[v]}` })} />
+```
+
+### GrowthLab({ sizes, ms, defaultAlpha, defaultM, defaultN, sweepNs, reference, refShare, seed, start, height })
+
+Nonlinear preferential attachment, Π(k) ∝ k^α: a slider for α (0 to 3, with sub-linear, linear and super-linear
+presets), chips for m (`ms`) and n (`sizes`). Grow animates the network on the arrival spiral (Instant under reduced
+motion, stopped off screen); Instant grows it at once from the same seed, so both reach the same network. Beside it,
+the CCDF against a k⁻² guide and an optional `reference` series, and the biggest hub's share of links against α:
+Sweep α runs `sweepPoint` one point per tick at each of `sweepNs`, over shaded regimes, with `refShare`
+(`{ label, share }`) as a dashed line and this run as a dot. Readouts give nodes, links, the biggest hub, its share
+and its arrival rank. `start: "grown"` opens on the grown network instead of the seed clique (m + 1 nodes, so an n
+below that shows the clique).
+
+```tsx
+<GrowthLab reference={{ name: "toy reference", ks }} refShare={{ label: "toy hub: 7.4%", share: 0.074 }} sizes={[100, 300, 1000]} />
+```
+
+### ComponentGallery({ n, edges, groups, labels, max, minWidth, noun })
+
+Small-multiple `NetworkView`s, one per connected component, largest first, each laid out on its own (`forceLayout`)
+and packed into a grid of as many columns of at least `minWidth` (180) px as fit, with a title and node and link
+counts. Components of one node fold into one tile that counts them. `groups` (`[{ title, nodes }]`) draws each
+group's induced subgraph instead, an empty group as an empty tile. Past `max` (12) tiles a line counts what is left
+out. `labels` names nodes on hover; `noun` ("Component") titles the tiles.
+
+```tsx
+<ComponentGallery n={80} edges={edges} labels={names} max={9} />
+```
+
+### FriendshipParadox({ n, edges, labels, cap, seed, height })
+
+The friendship paradox as a sampler: Sample one person (a random node with a friend, then a random friend of
+theirs), Sample 1,000, Reset tally. The two degree histograms overlay on `DistributionPlot` (degrees 0 to `cap`, 30
+by default, the last bin holding the rest), the last draw is written out with `labels`, and readouts give the
+samples, both means and how often the friend has at least as many links. Seeded; Reset replays the same draws. A
+network with no links disables the sampler and says why.
+
+```tsx
+<FriendshipParadox n={300} edges={edges} seed={4} />
+```
