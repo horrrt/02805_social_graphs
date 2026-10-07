@@ -16,7 +16,14 @@ function PickerView() {
   const now = useMemo(() => (ready && denmarkView() ? spotlight().iso3 : null), [ready, selected]);
   if (now) shown.current = now;
   return (
-    <select aria-label="Country to analyse" id="dk-country" value={shown.current ?? ""} onChange={(e) => select(e.target.value)}>
+    <select aria-label="Country to analyse" id="dk-country" value={shown.current ?? ""}
+      onChange={(e) => {
+        // The picker keeps what the reader chose, even a country section 8
+        // cannot analyse.
+        shown.current = e.target.value;
+        select(e.target.value);
+      }}
+    >
       {options?.map((o: { iso3: string; name: string }) => (
         <option key={o.iso3} value={o.iso3}>
           {o.name}
