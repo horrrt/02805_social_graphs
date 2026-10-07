@@ -2354,9 +2354,39 @@ body.cold-read:fullscreen {
   font-weight: 700;
 }
 
+/* The start row: difficulty on the left, the way in on the right. */
 .cr-camp-start {
   display: flex;
   gap: 24px;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 18px;
+  border-top: 1px solid var(--line-soft);
+}
+
+.cr-difficulty {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+.cr-difficulty > small {
+  font-size: var(--fs-caption);
+  color: var(--ink-mute-text);
+}
+
+.cr-difficulty .cr-seg {
+  background: var(--ground);
+  box-shadow: none;
+}
+
+.cr-difficulty .cr-seg button[aria-pressed="true"] small {
+  color: var(--people);
+}
+
+.cr-camp-go {
+  display: flex;
+  gap: 16px;
   align-items: center;
 }
 

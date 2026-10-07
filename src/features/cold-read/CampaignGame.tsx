@@ -34,14 +34,13 @@ export function CampaignIntro() {
   return (
     <ol className="cr-steps">
       <li>
-        <b>Climb</b> five levels in the order Week 6 teaches them: TF-IDF, comparing groups, topic models, context, then word vectors.
+        <b>Climb</b> five levels, from TF-IDF to word vectors.
       </li>
       <li>
-        <b>Score</b>: every level adds what you earn in it to one running total. Running out of lives ends the level, not the campaign.
+        <b>Score</b> in each level; it all adds to one total.
       </li>
       <li>
-        <b>Skip</b> a level whenever you like: you keep what you earned in it and pay {SKIP_COST}. The total never goes below 0, so the goal
-        is the best total at the end.
+        <b>Skip</b> any level for −{SKIP_COST}; the total never goes negative.
       </li>
     </ol>
   );
@@ -136,17 +135,23 @@ export function CampaignGame({ data, random = Math.random, clock = Date.now }: {
           <div className="cr-start">
             <CampaignIntro />
             <div className="cr-camp-start">
-              <label className="cr-toggle cr-toggle-light">
-                <input type="checkbox" checked={hard} onChange={(e) => setHard(e.target.checked)} />
-                <span>
-                  Hard mode
-                  <small>level 1 deals rarer clues, and pays double</small>
+              <div className="cr-difficulty">
+                <span className="cr-seg" role="group" aria-label="Difficulty">
+                  <button type="button" aria-pressed={!hard} onClick={() => setHard(false)}>
+                    Normal
+                  </button>
+                  <button type="button" aria-pressed={hard} onClick={() => setHard(true)}>
+                    Hard <small>×2</small>
+                  </button>
                 </span>
-              </label>
-              <button type="button" className="cr-go" onClick={start}>
-                Start the campaign
-              </button>
-              {best ? <span className="cr-note">Best campaign: {best.toLocaleString("en")}</span> : null}
+                <small>{hard ? "Rarer clues in level 1, double points." : "The standard decks."}</small>
+              </div>
+              <div className="cr-camp-go">
+                {best ? <span className="cr-note">Best {best.toLocaleString("en")}</span> : null}
+                <button type="button" className="cr-go" onClick={start}>
+                  Start the campaign
+                </button>
+              </div>
             </div>
           </div>
         </div>
