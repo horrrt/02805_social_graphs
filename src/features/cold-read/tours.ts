@@ -31,13 +31,13 @@ export const clueShopTour = (): TourStep[] => {
       },
       element: () => common,
       title: "A common card",
-      text: "This word is on nearly every page. However often the hidden page uses it, it can't tell that page from the others. Watch.",
+      text: "This word is on a large share of the pages. However often the hidden page uses it, it can't tell that page from many others. Watch.",
     },
     {
       act: () => common?.click(),
       element: ".cr-board",
-      title: "Nobody left",
-      text: "Every page uses that word, so all the suspects stay on the board. Frequent is not the same as informative.",
+      title: "Barely a dent",
+      text: "Every page that uses the word stays a suspect, and most do. Frequent is not the same as informative.",
     },
     {
       act: () => {

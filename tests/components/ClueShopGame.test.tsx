@@ -41,15 +41,16 @@ test("the deal shows eight face-down cards with only their two numbers", async (
   assert.equal(leads().length, 0);
 });
 
-test("a word on every page clears nobody; a rare word clears the board", async () => {
+test("the most common card leaves most suspects standing; the rarest clears the board", async () => {
   const user = await dealt();
-  const everywhere = deck.findIndex((c) => data.words[c.w].df === 303);
-  await user.click(card(everywhere));
-  assert.match(screen.getByText(/Nobody left the board/).textContent!, new RegExp(deck[everywhere].w));
-  assert.equal(count(), 303);
-  const rare = deck.findIndex((c) => c.kind === "sharp");
-  await user.click(card(rare));
-  assert.ok(count() < 303 && count() >= 1);
+  const byPages = deck.map((c, i) => ({ i, df: data.words[c.w].df })).sort((x, y) => y.df - x.df);
+  const common = byPages[0];
+  await user.click(card(common.i));
+  assert.equal(count(), common.df, "every page that uses the word stays");
+  assert.ok(common.df > 100, "a common card is on more than a third of the pages");
+  const rare = byPages.at(-1)!;
+  await user.click(card(rare.i));
+  assert.ok(count() <= rare.df && count() < common.df / 10);
   assert.ok(leads().length > 0);
 });
 

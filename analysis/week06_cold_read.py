@@ -12,8 +12,8 @@ count / page length, times ln(N / df), with the course's token rule. Names follo
 (a word capitalised in more than half of its uses).
 
 Each deck holds three kinds of card, chosen per page:
-  loud  3 cards: the page's most frequent words among those on at least half the pages, with at
-        most one on every page (the on 303 of 303, then words like his or marvel)
+  loud  3 cards: the page's most frequent words among those on at least a third of the pages
+        (words like marvel, character or comics)
   mid   2 cards: the highest TF-IDF words on 30 to 150 pages
   sharp 3 cards: the highest TF-IDF words on at most 12 pages, and on at least 4 (normal) or 6 (hard)
 Name words are never dealt: a name like jessica's sits on two or three pages and gives the page away
@@ -28,7 +28,7 @@ Each page carries its lead image from analysis/week06_cold_read_images.json, whe
 
 Writes public/play/cold-read/data/clue_shop.json.
 
-    python analysis/week06_cold_read.py   # about 2 seconds
+    NLTK_DATA=build/nltk_data python analysis/week06_cold_read.py   # about 2 seconds
 """
 
 import json
@@ -41,12 +41,12 @@ import numpy as np
 
 sys.path.insert(0, str(Path(__file__).parent))
 import week05_text as t  # noqa: E402
-from week06_lookalikes import name_words, tokens  # noqa: E402
+from week06_lookalikes import name_words, stopwords, tokens  # noqa: E402
 
 ROOT = Path(__file__).resolve().parents[1]
 OUT = ROOT / "public/play/cold-read/data/clue_shop.json"
 MIN_TOKENS = 1200  # shorter pages have too few distinct words to deal a full deck
-LOUD_DF, MID_DF, SHARP_DF = 0.5, (30, 150), 12
+LOUD_DF, MID_DF, SHARP_DF = 1 / 3, (30, 150), 12
 SHARP_MIN = {"normal": 4, "hard": 6}
 MIN_PAGES = 60
 # Lead images from week06_cold_read_images.py, hotlinked; the query string is Wikipedia's tracking.
@@ -62,6 +62,7 @@ def main():
     counts = [Counter(d) for d in toks]
     df = Counter(w for c in counts for w in c)
     is_name = name_words(text[i] for i in ids)
+    stop = stopwords()
 
     def tfidf(w, p):
         return counts[p][w] / len(toks[p]) * math.log(n / df[w])
@@ -84,10 +85,11 @@ def main():
 
     def deck(p, mode):
         c = counts[p]
-        pool = [w for w in c if w not in is_name]
+        # No names (they give the page away) and no stopwords (the, his, as: filler, not clues).
+        pool = [w for w in c if w not in is_name and w not in stop]
         by_tfidf = sorted(pool, key=lambda w: -tfidf(w, p))
         common = sorted((w for w in pool if df[w] >= LOUD_DF * n), key=lambda w: -c[w])
-        loud = [w for w in common if df[w] == n][:1] + [w for w in common if df[w] < n][:2]
+        loud = common[:3]
         mid = [w for w in by_tfidf if MID_DF[0] <= df[w] <= MID_DF[1] and c[w] >= 2][:2]
         sharp = [w for w in by_tfidf if SHARP_MIN[mode] <= df[w] <= SHARP_DF and c[w] >= 2][:3]
         if len(loud) < 3 or len(mid) < 2 or len(sharp) < 3:

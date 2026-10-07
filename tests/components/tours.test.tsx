@@ -54,7 +54,7 @@ test("every round's start screen offers an example game, ticked by default", () 
   }
 });
 
-test("the Clue Shop tour flips a common card that clears nobody, then a rare one that clears the board", async () => {
+test("the Clue Shop tour flips a common card that barely narrows the field, then a rare one that clears the board", async () => {
   await walk(<ClueShopGame data={json<ClueShopData>("clue_shop.json")} random={zero} clock={still} />, clueShopTour);
   const count = Number(document.querySelector(".cr-count b")!.textContent);
   assert.equal(document.querySelectorAll('.cr-card[data-open="true"]').length, 2);
