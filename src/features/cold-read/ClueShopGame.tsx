@@ -336,6 +336,9 @@ export function ClueShopGame({ data, random = Math.random, level, hard = false, 
   const answer = !playing && round ? round.page : null;
   const nextStreak = (missed ? 0 : streak) + 1;
   const shownStreak = Math.min(Math.max(streak, 1), MAX_STREAK);
+  // What naming the top lead right now would earn, bold-read bonus and speed included.
+  const standing = Math.max(1, (alive?.size ?? data.N) - struck.filter((p) => alive === null || alive.has(p)).length);
+  const worthNow = timed(points(deck.length - flipped.length, hard, nextStreak) + boldness(standing, false), now);
 
   return (
     <section className="cr-table" id="clue-shop" aria-label="Clue Shop">
@@ -381,8 +384,7 @@ export function ClueShopGame({ data, random = Math.random, level, hard = false, 
           <div className="cr-hand-head">
             {playing ? (
               <span className="cr-worth">
-                Name it now for <b>{timed(points(deck.length - flipped.length, hard, nextStreak), now).toLocaleString("en")}</b>
-                <small> ×{now.toFixed(2)} speed, plus a bold-read bonus</small>
+                Name it now for <b>{worthNow.toLocaleString("en")}</b>
               </span>
             ) : null}
           </div>
