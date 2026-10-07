@@ -1,0 +1,2742 @@
+{
+  "items": [
+    {
+      "name": "StripChart",
+      "kind": "kit component",
+      "what": "A real result against its random baseline, one row per measure, with mean, spread, confidence interval and reference marks on a shared axis.",
+      "where": "src/kit/StripChart.tsx",
+      "seen_at": "/styleguide/kit/#demo-strip",
+      "week": null,
+      "concepts": [
+        "null-models"
+      ]
+    },
+    {
+      "name": "MiniStrip",
+      "kind": "kit component",
+      "what": "One axis-free row of the strip chart: a real value against its baseline, for findings strips and small cards.",
+      "where": "src/kit/MiniStrip.tsx",
+      "seen_at": "/styleguide/kit/states/",
+      "week": null,
+      "concepts": [
+        "null-models"
+      ]
+    },
+    {
+      "name": "NetworkView",
+      "kind": "kit component",
+      "what": "An SVG network with hubs, labels, groups, legend, highlighted links and optional zoom, arrowheads, circle layout and clickable nodes.",
+      "where": "src/kit/NetworkView.tsx",
+      "seen_at": "/styleguide/kit/#demo-network",
+      "week": null,
+      "concepts": [
+        "network-visualization",
+        "communities",
+        "directed-graphs"
+      ]
+    },
+    {
+      "name": "EChart",
+      "kind": "kit component",
+      "what": "An ECharts chart at the site's type sizes and colours, with tooltips and resize handling.",
+      "where": "src/kit/EChart.tsx",
+      "seen_at": "/styleguide/kit/#demo-figure",
+      "week": null,
+      "concepts": []
+    },
+    {
+      "name": "Figure",
+      "kind": "kit component",
+      "what": "A chart with its caption and its numbers in a closed table drawer.",
+      "where": "src/kit/Figure.tsx",
+      "seen_at": "/styleguide/kit/#demo-figure",
+      "week": null,
+      "concepts": []
+    },
+    {
+      "name": "Table",
+      "kind": "kit component",
+      "what": "A plain table with en-GB numbers and right-aligned numeric columns, drawn with Week 4's bars and meters.",
+      "where": "src/kit/Table.tsx",
+      "seen_at": "/styleguide/kit/#demo-table",
+      "week": null,
+      "concepts": []
+    },
+    {
+      "name": "DecoratedTable",
+      "kind": "kit component",
+      "what": "A table with the classes and inline bars or meters that Week 4's table decorator would give it, worked out from the cell text.",
+      "where": "src/kit/DecoratedTable.tsx",
+      "seen_at": "/styleguide/kit/#demo-table",
+      "week": null,
+      "concepts": []
+    },
+    {
+      "name": "Concordance",
+      "kind": "kit component",
+      "what": "A key-word-in-context table: one row per hit with left context, the hit and right context, linked to the Wikipedia page.",
+      "where": "src/kit/Concordance.tsx",
+      "seen_at": "/styleguide/kit/#demo-kwic",
+      "week": null,
+      "concepts": [
+        "word-context"
+      ]
+    },
+    {
+      "name": "Passage",
+      "kind": "kit component",
+      "what": "A quoted passage from one page with every occurrence of a word highlighted.",
+      "where": "src/kit/Passage.tsx",
+      "seen_at": "/styleguide/kit/#demo-passage",
+      "week": null,
+      "concepts": []
+    },
+    {
+      "name": "TermText",
+      "kind": "kit component",
+      "what": "Script-built text whose first match of a phrase becomes a glossary term with a pop-up definition.",
+      "where": "src/kit/TermText.tsx",
+      "seen_at": "/styleguide/kit/#demo-term",
+      "week": null,
+      "concepts": []
+    },
+    {
+      "name": "TipBox",
+      "kind": "kit component",
+      "what": "A chart tooltip placed beside the pointer and kept inside its host.",
+      "where": "src/kit/TipBox.tsx",
+      "seen_at": "/weeks/week05/#heaps",
+      "week": null,
+      "concepts": []
+    },
+    {
+      "name": "HoverTipHost",
+      "kind": "kit component",
+      "what": "A chart host with instant tooltips on every kit chart mark inside it.",
+      "where": "src/kit/HoverTipHost.tsx",
+      "seen_at": "/weeks/week05/",
+      "week": null,
+      "concepts": []
+    },
+    {
+      "name": "VectorAngle",
+      "kind": "kit component",
+      "what": "Two vectors from the origin with the angle between them, the cosine readout, and a slider that scales one vector without changing the cosine.",
+      "where": "src/kit/VectorAngle.tsx",
+      "seen_at": "/styleguide/kit/#demo-explorables",
+      "week": null,
+      "concepts": [
+        "embeddings",
+        "search-tfidf"
+      ]
+    },
+    {
+      "name": "SplitBars",
+      "kind": "kit component",
+      "what": "Ranked rows, each a bar split into coloured parts, with a value, a status pill and a legend.",
+      "where": "src/kit/SplitBars.tsx",
+      "seen_at": "/styleguide/kit/#demo-explorables",
+      "week": null,
+      "concepts": []
+    },
+    {
+      "name": "SweepCurve",
+      "kind": "kit component",
+      "what": "A small line chart of a parameter sweep with a dashed reference line and a marker at the current value.",
+      "where": "src/kit/SweepCurve.tsx",
+      "seen_at": "/styleguide/kit/#demo-explorables",
+      "week": null,
+      "concepts": []
+    },
+    {
+      "name": "TokenWindow",
+      "kind": "kit component",
+      "what": "A sentence as token chips with the centre word and its context window, then the positive and negative training pairs for skip-gram or CBOW.",
+      "where": "src/kit/TokenWindow.tsx",
+      "seen_at": "/styleguide/kit/#demo-explorables",
+      "week": null,
+      "concepts": [
+        "word-context",
+        "embeddings"
+      ]
+    },
+    {
+      "name": "CountMatrix",
+      "kind": "kit component",
+      "what": "A word-context count table tinted by count, with count, PPMI, TF or TF-IDF transforms and the highlighted row written out as a vector.",
+      "where": "src/kit/CountMatrix.tsx",
+      "seen_at": "/styleguide/kit/#demo-explorables",
+      "week": null,
+      "concepts": [
+        "word-context",
+        "search-tfidf"
+      ]
+    },
+    {
+      "name": "MixtureBar",
+      "kind": "kit component",
+      "what": "A 100% bar of topic shares, a card per topic, and the top word probabilities for the focused topic.",
+      "where": "src/kit/MixtureBar.tsx",
+      "seen_at": "/styleguide/kit/#demo-explorables",
+      "week": null,
+      "concepts": [
+        "topic-models"
+      ]
+    },
+    {
+      "name": "RankedBars",
+      "kind": "kit component",
+      "what": "A numbered ranking with one bar per row on a shared scale and extra columns.",
+      "where": "src/kit/RankedBars.tsx",
+      "seen_at": "/styleguide/kit/#demo-explorables",
+      "week": null,
+      "concepts": [
+        "word-frequency"
+      ]
+    },
+    {
+      "name": "AxisMap",
+      "kind": "kit component",
+      "what": "A scatter with named axis ends, highlighted and searchable points, optional log axes and a y = x diagonal.",
+      "where": "src/kit/AxisMap.tsx",
+      "seen_at": "/styleguide/kit/#demo-explorables",
+      "week": null,
+      "concepts": [
+        "embeddings",
+        "comparing-groups"
+      ]
+    },
+    {
+      "name": "AnalogyPlot",
+      "kind": "kit component",
+      "what": "Word arithmetic in three steps: four words, the a-to-b offset drawn again from c, and where c + (b - a) lands next to its nearest word.",
+      "where": "src/kit/AnalogyPlot.tsx",
+      "seen_at": "/styleguide/kit/#demo-explorables",
+      "week": null,
+      "concepts": [
+        "embeddings"
+      ]
+    },
+    {
+      "name": "GuessRanker",
+      "kind": "kit component",
+      "what": "A describe-without-naming round: the reader types words one at a time and a live top ten shows where the target ranks.",
+      "where": "src/kit/GuessRanker.tsx",
+      "seen_at": "/styleguide/kit/#demo-explorables",
+      "week": null,
+      "concepts": [
+        "search-tfidf",
+        "deduction"
+      ]
+    },
+    {
+      "name": "NetCanvas",
+      "kind": "kit component",
+      "what": "A canvas network for 200 to 2,000 nodes with layouts that tween, group or sequential colour, tooltips and small multiples.",
+      "where": "src/kit/NetCanvas.tsx",
+      "seen_at": "/styleguide/kit/#demo-networks",
+      "week": null,
+      "concepts": [
+        "network-visualization"
+      ]
+    },
+    {
+      "name": "StepPlayer",
+      "kind": "kit component",
+      "what": "Step, play, pause, reset and speed controls around any seeded process, so a seed replays the same run.",
+      "where": "src/kit/StepPlayer.tsx",
+      "seen_at": "/styleguide/kit/#demo-networks",
+      "week": null,
+      "concepts": [
+        "random-graphs",
+        "preferential-attachment"
+      ]
+    },
+    {
+      "name": "Readouts",
+      "kind": "kit component",
+      "what": "A row of labelled numbers with optional notes, announced politely when they change.",
+      "where": "src/kit/Readouts.tsx",
+      "seen_at": "/styleguide/kit/#demo-networks",
+      "week": null,
+      "concepts": []
+    },
+    {
+      "name": "TaggedTokens",
+      "kind": "kit component",
+      "what": "A row of token chips with tags beneath, tone colours, boxed spans and an optional n-gram window.",
+      "where": "src/kit/TaggedTokens.tsx",
+      "seen_at": "/styleguide/kit/#demo-text",
+      "week": null,
+      "concepts": [
+        "word-frequency"
+      ]
+    },
+    {
+      "name": "ContributionBars",
+      "kind": "kit component",
+      "what": "Signed bars from a zero line, one per word, with a gauge for their sum or sigmoid.",
+      "where": "src/kit/ContributionBars.tsx",
+      "seen_at": "/styleguide/kit/#demo-text",
+      "week": null,
+      "concepts": [
+        "sentiment"
+      ]
+    },
+    {
+      "name": "RankedResults",
+      "kind": "kit component",
+      "what": "Search results from several engines side by side, each with score bars, where hovering one result marks it in every column.",
+      "where": "src/kit/RankedResults.tsx",
+      "seen_at": "/styleguide/kit/#demo-text",
+      "week": null,
+      "concepts": [
+        "search-tfidf"
+      ]
+    },
+    {
+      "name": "MethodCompare",
+      "kind": "kit component",
+      "what": "One input under several methods, a numbered card per method side by side.",
+      "where": "src/kit/MethodCompare.tsx",
+      "seen_at": "/styleguide/kit/#demo-text",
+      "week": null,
+      "concepts": [
+        "sentiment",
+        "comparing-groups"
+      ]
+    },
+    {
+      "name": "DistributionPlot",
+      "kind": "kit component",
+      "what": "A distribution drawn raw, binned or as a CCDF on linear or log axes, with reference curves and envelopes.",
+      "where": "src/kit/DistributionPlot.tsx",
+      "seen_at": "/styleguide/kit/#demo-distributions",
+      "week": null,
+      "concepts": [
+        "degree-hubs",
+        "random-graphs"
+      ]
+    },
+    {
+      "name": "NullHistogram",
+      "kind": "kit component",
+      "what": "A permutation test as it grows: the null samples as a histogram, a line at the real value, and z and empirical p readouts.",
+      "where": "src/kit/NullHistogram.tsx",
+      "seen_at": "/styleguide/kit/#demo-distributions",
+      "week": null,
+      "concepts": [
+        "null-models"
+      ]
+    },
+    {
+      "name": "NullBoard",
+      "kind": "kit component",
+      "what": "A grid of small null histograms, one per measure and null model, each titled by whether the real value survives.",
+      "where": "src/kit/NullBoard.tsx",
+      "seen_at": "/styleguide/kit/#demo-distributions",
+      "week": null,
+      "concepts": [
+        "null-models"
+      ]
+    },
+    {
+      "name": "NullBars",
+      "kind": "kit component",
+      "what": "Observed values against a null per category: a bar, the null mean with whiskers to 2 sd, and z.",
+      "where": "src/kit/NullBars.tsx",
+      "seen_at": "/styleguide/kit/#demo-distributions",
+      "week": null,
+      "concepts": [
+        "null-models",
+        "comparing-groups"
+      ]
+    },
+    {
+      "name": "graph-core",
+      "kind": "kit component",
+      "what": "Seeded network models (G(n,p), BA, Watts-Strogatz), BFS, centralities, clustering, Louvain stepper and layouts, tested against networkx.",
+      "where": "src/kit/graph-core.js",
+      "seen_at": null,
+      "week": null,
+      "concepts": [
+        "random-graphs",
+        "preferential-attachment",
+        "small-worlds",
+        "centrality",
+        "clustering",
+        "communities",
+        "paths"
+      ]
+    },
+    {
+      "name": "Anatomy",
+      "kind": "post component",
+      "what": "The 'how each section reads' box: a title, an intro line and a list of terms with what each means.",
+      "where": "src/components/post/Anatomy.tsx",
+      "seen_at": "/weeks/week05/#opening",
+      "week": null,
+      "concepts": []
+    },
+    {
+      "name": "Card",
+      "kind": "post component",
+      "what": "A card container with its classes, id and style.",
+      "where": "src/components/post/Card.tsx",
+      "seen_at": "/weeks/week05/",
+      "week": null,
+      "concepts": []
+    },
+    {
+      "name": "ClosingCard",
+      "kind": "post component",
+      "what": "The closing card: the takeaway, the one limit as a notice, an optional next step, and the methods and AI-use disclosures.",
+      "where": "src/components/post/ClosingCard.tsx",
+      "seen_at": "/weeks/week05/#closing",
+      "week": null,
+      "concepts": []
+    },
+    {
+      "name": "Drawer",
+      "kind": "post component",
+      "what": "One closed disclosure drawer that the reader opens.",
+      "where": "src/components/post/Drawer.tsx",
+      "seen_at": "/weeks/week05/",
+      "week": null,
+      "concepts": []
+    },
+    {
+      "name": "Drawers",
+      "kind": "post component",
+      "what": "A row of drawers at the foot of a card or inline in the text.",
+      "where": "src/components/post/Drawers.tsx",
+      "seen_at": "/weeks/week05/",
+      "week": null,
+      "concepts": []
+    },
+    {
+      "name": "FigRow",
+      "kind": "post component",
+      "what": "Two figures or plots side by side.",
+      "where": "src/components/post/FigRow.tsx",
+      "seen_at": null,
+      "week": null,
+      "concepts": []
+    },
+    {
+      "name": "FindingRow",
+      "kind": "post component",
+      "what": "One finding: its number, the section title, the answer, a mini chart and a link to the section.",
+      "where": "src/components/post/FindingRow.tsx",
+      "seen_at": "/weeks/week05/#findings",
+      "week": null,
+      "concepts": []
+    },
+    {
+      "name": "FindingsStrip",
+      "kind": "post component",
+      "what": "The findings under the hero: a heading with the key to the mini charts, then one row per section.",
+      "where": "src/components/post/FindingsStrip.tsx",
+      "seen_at": "/weeks/week05/#findings",
+      "week": null,
+      "concepts": []
+    },
+    {
+      "name": "HeroStat",
+      "kind": "post component",
+      "what": "One big number in the hero with what it counts.",
+      "where": "src/components/post/HeroStat.tsx",
+      "seen_at": "/weeks/week05/#top",
+      "week": null,
+      "concepts": []
+    },
+    {
+      "name": "HowTo",
+      "kind": "post component",
+      "what": "The key to the charts: one row per mark with its swatch, name and what it shows.",
+      "where": "src/components/post/HowTo.tsx",
+      "seen_at": "/weeks/week05/",
+      "week": null,
+      "concepts": []
+    },
+    {
+      "name": "Notice",
+      "kind": "post component",
+      "what": "A notice with an icon, an optional bold headline and its text.",
+      "where": "src/components/post/Notice.tsx",
+      "seen_at": "/weeks/week05/",
+      "week": null,
+      "concepts": []
+    },
+    {
+      "name": "Plot",
+      "kind": "post component",
+      "what": "A chart panel with its title, an optional axis note and the chart host.",
+      "where": "src/components/post/Plot.tsx",
+      "seen_at": "/weeks/week05/",
+      "week": null,
+      "concepts": []
+    },
+    {
+      "name": "PostHero",
+      "kind": "post component",
+      "what": "The hero of a post: eyebrow, title, the question, scope caution, legend, hero stats and the page's figure.",
+      "where": "src/components/post/PostHero.tsx",
+      "seen_at": "/weeks/week05/#top",
+      "week": null,
+      "concepts": []
+    },
+    {
+      "name": "PostSection",
+      "kind": "post component",
+      "what": "A post section with its id and owner.",
+      "where": "src/components/post/PostSection.tsx",
+      "seen_at": "/weeks/week05/",
+      "week": null,
+      "concepts": []
+    },
+    {
+      "name": "QaDisclosure",
+      "kind": "post component",
+      "what": "A disclosure with its cue in the summary and its body, never rendered open.",
+      "where": "src/components/post/QaDisclosure.tsx",
+      "seen_at": "/weeks/week05/",
+      "week": null,
+      "concepts": []
+    },
+    {
+      "name": "QuestionCard",
+      "kind": "post component",
+      "what": "The section card: the question, what we did, what to notice and the figure beside or below, then the drawers.",
+      "where": "src/components/post/QuestionCard.tsx",
+      "seen_at": "/weeks/week05/",
+      "week": null,
+      "concepts": []
+    },
+    {
+      "name": "QuestionHeader",
+      "kind": "post component",
+      "what": "The question at the top of a card with an optional number and its short answer, or a kicker line.",
+      "where": "src/components/post/QuestionHeader.tsx",
+      "seen_at": null,
+      "week": null,
+      "concepts": []
+    },
+    {
+      "name": "SectionOpener",
+      "kind": "post component",
+      "what": "The header that opens a section: its number, its title and the finding in one line.",
+      "where": "src/components/post/SectionOpener.tsx",
+      "seen_at": "/weeks/week05/",
+      "week": null,
+      "concepts": []
+    },
+    {
+      "name": "SectionRail",
+      "kind": "post component",
+      "what": "The section rail down the left margin: one dot per section and its questions, marking the one in view and showing every name on hover.",
+      "where": "src/components/post/SectionRail.tsx",
+      "seen_at": "/weeks/week04/",
+      "week": null,
+      "concepts": []
+    },
+    {
+      "name": "SegmentedControl",
+      "kind": "post component",
+      "what": "A row of buttons that picks one value, with arrow-key, Home and End navigation.",
+      "where": "src/components/post/SegmentedControl.tsx",
+      "seen_at": "/weeks/week04/#cut-pagerank",
+      "week": null,
+      "concepts": []
+    },
+    {
+      "name": "Term",
+      "kind": "post component",
+      "what": "A glossary term: the word as a button with a pop-up definition on hover and focus.",
+      "where": "src/components/post/Term.tsx",
+      "seen_at": "/weeks/week04/",
+      "week": null,
+      "concepts": []
+    },
+    {
+      "name": "Termified",
+      "kind": "post component",
+      "what": "Server prose whose glossary terms are placed once the page has hydrated and its data has loaded.",
+      "where": "src/components/post/Termified.tsx",
+      "seen_at": "/weeks/_template/",
+      "week": null,
+      "concepts": []
+    },
+    {
+      "name": "W4Figure",
+      "kind": "post component",
+      "what": "A Week 4 figure with a caption (bold title, then the reading) and the chart bodies.",
+      "where": "src/components/post/W4Figure.tsx",
+      "seen_at": null,
+      "week": null,
+      "concepts": []
+    },
+    {
+      "name": "Panel (Week 5 search panel)",
+      "kind": "post component",
+      "what": "A titled panel holding a section's controls, results and caption.",
+      "where": "src/components/week05/Panel.tsx",
+      "seen_at": "/weeks/week05/#search",
+      "week": null,
+      "concepts": []
+    },
+    {
+      "name": "BrandMark",
+      "kind": "post component",
+      "what": "The site's name as a link home.",
+      "where": "src/components/site/BrandMark.tsx",
+      "seen_at": null,
+      "week": null,
+      "concepts": []
+    },
+    {
+      "name": "PostTopbar",
+      "kind": "post component",
+      "what": "The bar across the top of a post: the brand, the All posts link and the section links.",
+      "where": "src/components/site/PostTopbar.tsx",
+      "seen_at": "/weeks/week05/",
+      "week": null,
+      "concepts": []
+    },
+    {
+      "name": "SiteFooter",
+      "kind": "post component",
+      "what": "The footer with credits, the page's name and the link home.",
+      "where": "src/components/site/SiteFooter.tsx",
+      "seen_at": "/weeks/week05/",
+      "week": null,
+      "concepts": []
+    },
+    {
+      "name": "Prediction prompt",
+      "kind": "post component",
+      "what": "A number box and slider that follow each other, a reveal button and feedback; the first guess is saved and a reveal unlocks the page.",
+      "where": "src/features/arcade/Prediction.tsx",
+      "seen_at": "/weeks/week01/#evidence",
+      "week": null,
+      "concepts": []
+    },
+    {
+      "name": "Logbook",
+      "kind": "post component",
+      "what": "The arcade header and the logbook dialog that lists the first guesses saved in this browser.",
+      "where": "src/features/arcade/Chrome.tsx",
+      "seen_at": "/weeks/week01/",
+      "week": null,
+      "concepts": []
+    },
+    {
+      "name": "Pack machine",
+      "kind": "week chart",
+      "what": "Open packs of cards drawn from the 303 articles, with a seed box and reset; the tray, the counts and an insight line follow the collection.",
+      "where": "src/features/week01/packs/PackMachine.tsx",
+      "seen_at": "/weeks/week01/#pack-machine",
+      "week": 1,
+      "concepts": [
+        "degree-hubs",
+        "probability"
+      ]
+    },
+    {
+      "name": "Equal-chance comparison",
+      "kind": "week chart",
+      "what": "Two bars comparing distinct cards collected under the real draw and under equal chances, for a chosen number of packs.",
+      "where": "src/features/week01/odds/Comparison.tsx",
+      "seen_at": "/weeks/week01/#post",
+      "week": 1,
+      "concepts": [
+        "probability",
+        "degree-hubs"
+      ]
+    },
+    {
+      "name": "Incoming-link distribution and sketch",
+      "kind": "week chart",
+      "what": "The share of the 303 articles at each incoming-link count, with the reader's weighted draws overlaid, an axis-view select, a table, and a seven-bin sketch the reader drags and compares with the snapshot.",
+      "where": "src/features/week01/chart/Distribution.tsx",
+      "seen_at": "/weeks/week01/#evidence",
+      "week": 1,
+      "concepts": [
+        "degree-hubs",
+        "directed-graphs"
+      ]
+    },
+    {
+      "name": "Pack estimate",
+      "kind": "week chart",
+      "what": "A scored prediction of how many packs it takes, saved as the reader's first guess.",
+      "where": "src/features/week01/packs/Guess.tsx",
+      "seen_at": "/weeks/week01/#evidence",
+      "week": 1,
+      "concepts": [
+        "probability"
+      ]
+    },
+    {
+      "name": "Card index",
+      "kind": "week chart",
+      "what": "Browse all 303 cards with a search box and a filter, 24 at a time, each showing how many the reader holds.",
+      "where": "src/features/week01/packs/Index.tsx",
+      "seen_at": "/weeks/week01/#evidence",
+      "week": 1,
+      "concepts": [
+        "degree-hubs"
+      ]
+    },
+    {
+      "name": "Degree distributions (static)",
+      "kind": "week chart",
+      "what": "Four scatter plots of P(k) against k + 1 for in- and out-degree on linear and log-log axes.",
+      "where": "public/weeks/week01/figures/degree_distributions.png",
+      "seen_at": "/weeks/week01/#evidence",
+      "week": 1,
+      "concepts": [
+        "degree-hubs",
+        "directed-graphs"
+      ]
+    },
+    {
+      "name": "In-degree against out-degree (static)",
+      "kind": "week chart",
+      "what": "Scatter of in-degree against out-degree for all 303 articles with an in = out reference line.",
+      "where": "public/weeks/week01/figures/in_vs_out.png",
+      "seen_at": "/weeks/week01/#degree-evidence",
+      "week": 1,
+      "concepts": [
+        "degree-hubs",
+        "directed-graphs"
+      ]
+    },
+    {
+      "name": "The whole roster, drawn (static)",
+      "kind": "week chart",
+      "what": "Force-directed drawing of the 303 articles: the giant component, a nine-article island and 17 isolates.",
+      "where": "public/weeks/week01/figures/map.png",
+      "seen_at": "/weeks/week01/#map",
+      "week": 1,
+      "concepts": [
+        "network-visualization",
+        "paths"
+      ]
+    },
+    {
+      "name": "Strikeforce: Morituri island (static)",
+      "kind": "week chart",
+      "what": "Directed drawing of the nine characters outside the giant component.",
+      "where": "public/weeks/week01/figures/island.png",
+      "seen_at": "/weeks/week01/#map",
+      "week": 1,
+      "concepts": [
+        "network-visualization",
+        "directed-graphs"
+      ]
+    },
+    {
+      "name": "Close a station",
+      "kind": "week chart",
+      "what": "Pick an article to remove, predict the disruption, and reveal how many articles are stranded compared with the alternatives.",
+      "where": "src/features/week02/transit/Closure.tsx",
+      "seen_at": "/weeks/week02/#try-it",
+      "week": 2,
+      "concepts": [
+        "robustness",
+        "paths"
+      ]
+    },
+    {
+      "name": "Journey ticket",
+      "kind": "week chart",
+      "what": "One example journey through the network before and after a closure; the reader guesses whether it survives, and each stop opens a line about its article.",
+      "where": "src/features/week02/transit/Ride.tsx",
+      "seen_at": "/weeks/week02/#try-it",
+      "week": 2,
+      "concepts": [
+        "robustness",
+        "paths"
+      ]
+    },
+    {
+      "name": "Removal results (static)",
+      "kind": "week chart",
+      "what": "Horizontal bars of other articles stranded after one removal.",
+      "where": "public/weeks/week02/figures/removal_results.svg",
+      "seen_at": "/weeks/week02/#post",
+      "week": 2,
+      "concepts": [
+        "robustness"
+      ]
+    },
+    {
+      "name": "Clustering against two nulls",
+      "kind": "week chart",
+      "what": "Three meters: observed average clustering against the degree-preserving and same-link-count random networks.",
+      "where": "src/app/(week02)/weeks/week02/_sections/Evidence.tsx",
+      "seen_at": "/weeks/week02/#evidence",
+      "week": 2,
+      "concepts": [
+        "clustering",
+        "null-models",
+        "random-graphs"
+      ]
+    },
+    {
+      "name": "Stranded counts under rewiring (static)",
+      "kind": "week chart",
+      "what": "Four histograms of stranded counts across 1,000 degree-preserving rewires, one per removed article, with the real count marked.",
+      "where": "public/weeks/week02/figures/null_comparison.svg",
+      "seen_at": "/weeks/week02/#evidence",
+      "week": 2,
+      "concepts": [
+        "null-models",
+        "robustness"
+      ]
+    },
+    {
+      "name": "Twelve measurements against two nulls (static)",
+      "kind": "week chart",
+      "what": "Six panels of null histograms for clustering, the friendship paradox, islands, distances and assortativity, each with the real value marked.",
+      "where": "public/weeks/week02/figures/null_survivors.svg",
+      "seen_at": "/weeks/week02/#nulls",
+      "week": 2,
+      "concepts": [
+        "null-models",
+        "random-graphs",
+        "clustering",
+        "paths"
+      ]
+    },
+    {
+      "name": "Interchange map",
+      "kind": "week chart",
+      "what": "A 16-station schematic of the network as transit lines; a chip picks one line, and a closed station shows crossed out with dashed track.",
+      "where": "src/features/week02/transit/TransitMap.tsx",
+      "seen_at": "/weeks/week02/#evidence",
+      "week": 2,
+      "concepts": [
+        "network-visualization",
+        "paths"
+      ]
+    },
+    {
+      "name": "Journey planner",
+      "kind": "week chart",
+      "what": "Plan a route between any two of the 303 articles by breadth-first search over the directed or undirected network, without the closed station.",
+      "where": "src/features/week02/transit/Planner.tsx",
+      "seen_at": "/weeks/week02/#journey",
+      "week": 2,
+      "concepts": [
+        "paths",
+        "directed-graphs"
+      ]
+    },
+    {
+      "name": "Screen Test",
+      "kind": "week chart",
+      "what": "A prototype sheet that auditions Erdos-Renyi, Watts-Strogatz and Barabasi-Albert against the Marvel network, with network canvases, a CCDF, a null histogram, a live shuffle rig and a paradox handle.",
+      "where": "src/features/screen-test/Sheet.tsx",
+      "seen_at": "/prototypes/screen-test/",
+      "week": 2,
+      "concepts": [
+        "random-graphs",
+        "small-worlds",
+        "preferential-attachment",
+        "null-models",
+        "clustering",
+        "degree-hubs"
+      ]
+    },
+    {
+      "name": "Year slider and globe",
+      "kind": "week chart",
+      "what": "The year slider every year-bound visual follows, and a draggable globe of migration and flight corridors.",
+      "where": "src/features/week03/hero/Hero.tsx",
+      "seen_at": "/weeks/week03/#globe",
+      "week": 3,
+      "concepts": [
+        "network-visualization",
+        "flows"
+      ]
+    },
+    {
+      "name": "Selected country inspector",
+      "kind": "week chart",
+      "what": "The selected country's flag, codes, stats and where its migrants came from and went.",
+      "where": "src/app/(week03)/weeks/week03/_sections/Hero.tsx",
+      "seen_at": "/weeks/week03/#inspector",
+      "week": 3,
+      "concepts": [
+        "flows",
+        "directed-graphs"
+      ]
+    },
+    {
+      "name": "Heavy tails in migration",
+      "kind": "week chart",
+      "what": "A histogram and a CCDF of partner counts, each switchable between three axis scales.",
+      "where": "src/scripts/corridor.js",
+      "seen_at": "/weeks/week03/#tails",
+      "week": 3,
+      "concepts": [
+        "degree-hubs"
+      ]
+    },
+    {
+      "name": "Betweenness against in-degree",
+      "kind": "week chart",
+      "what": "Log-log scatter of each country's betweenness against its number of origins; click a point to select it.",
+      "where": "src/scripts/corridor.js",
+      "seen_at": "/weeks/week03/#bridge",
+      "week": 3,
+      "concepts": [
+        "centrality",
+        "degree-hubs"
+      ]
+    },
+    {
+      "name": "Rank by people, rank by PageRank",
+      "kind": "week chart",
+      "what": "Countries ranked by migrant count against PageRank, with the movers and the three senders that give the selected country most PageRank.",
+      "where": "src/scripts/corridor.js",
+      "seen_at": "/weeks/week03/#bridge",
+      "week": 3,
+      "concepts": [
+        "centrality",
+        "random-walks"
+      ]
+    },
+    {
+      "name": "Betweenness z-score against in-degree",
+      "kind": "week chart",
+      "what": "Scatter of betweenness z-scores against a null that keeps degrees and deals corridor weights out at random, with the most surprising bridges listed.",
+      "where": "src/scripts/corridor.js",
+      "seen_at": "/weeks/week03/#twin",
+      "week": 3,
+      "concepts": [
+        "null-models",
+        "centrality"
+      ]
+    },
+    {
+      "name": "Twin map",
+      "kind": "week chart",
+      "what": "A flat map that toggles between the migration network and the flight network, sharing the selection with the scatter.",
+      "where": "src/features/week03/twin/MapStage.tsx",
+      "seen_at": "/weeks/week03/#twin",
+      "week": 3,
+      "concepts": [
+        "network-visualization",
+        "flows"
+      ]
+    },
+    {
+      "name": "Roles inside the communities",
+      "kind": "week chart",
+      "what": "Every country placed on within-community degree z against participation P, with Guimera-Amaral's seven roles drawn on the chart and moving with the year.",
+      "where": "src/scripts/corridor.js",
+      "seen_at": "/weeks/week03/#typology",
+      "week": 3,
+      "concepts": [
+        "communities",
+        "centrality"
+      ]
+    },
+    {
+      "name": "Role cards",
+      "kind": "week chart",
+      "what": "Seven role cards that follow the year, with example chips and a drawer listing one role in full.",
+      "where": "src/features/week03/typology/Typology.tsx",
+      "seen_at": "/weeks/week03/#typology",
+      "week": 3,
+      "concepts": [
+        "communities"
+      ]
+    },
+    {
+      "name": "Edge inspector",
+      "kind": "week chart",
+      "what": "Two country pickers, the kind of link between them, its facts and a one-line verdict for the year on the slider.",
+      "where": "src/features/week03/edge/EdgeInspector.tsx",
+      "seen_at": "/weeks/week03/#edge",
+      "week": 3,
+      "concepts": [
+        "flows",
+        "directed-graphs"
+      ]
+    },
+    {
+      "name": "Analyse one country",
+      "kind": "week chart",
+      "what": "A country picker with its corridors in and out, its migration through time, its bridge rank from 1990 to 2024 and its nearest neighbours.",
+      "where": "src/features/week03/denmark/DkPicker.tsx",
+      "seen_at": "/weeks/week03/#denmark",
+      "week": 3,
+      "concepts": [
+        "flows",
+        "centrality"
+      ]
+    },
+    {
+      "name": "Six questions drawer",
+      "kind": "week chart",
+      "what": "Six canvas charts answering which corridors carry the world, where migrants live, how far they move, whether wealth pulls, who is skilled and who moves.",
+      "where": "src/features/week03/questions/Questions.tsx",
+      "seen_at": "/weeks/week03/#questions",
+      "week": 3,
+      "concepts": [
+        "flows"
+      ]
+    },
+    {
+      "name": "More views drawer",
+      "kind": "week chart",
+      "what": "Four ECharts views: the network without geography as a force layout, who grew 1990 to 2024, a war month by month, and the day the borders shut.",
+      "where": "src/features/week03/views/Views.tsx",
+      "seen_at": "/weeks/week03/#views",
+      "week": 3,
+      "concepts": [
+        "network-visualization",
+        "flows"
+      ]
+    },
+    {
+      "name": "Style menu",
+      "kind": "week chart",
+      "what": "A top-bar menu of eleven style dimensions, renderer and basemap among them, each kept as a URL parameter.",
+      "where": "src/features/week03/menu/StyleMenu.tsx",
+      "seen_at": "/weeks/week03/",
+      "week": 3,
+      "concepts": [
+        "network-visualization"
+      ]
+    },
+    {
+      "name": "Metro map and inspector",
+      "kind": "week chart",
+      "what": "A map of 40 US metros linked when a company files in both, with an inspector for the selected metro.",
+      "where": "src/features/week04/place/Place.tsx",
+      "seen_at": "/weeks/week04/#top",
+      "week": 4,
+      "concepts": [
+        "network-visualization",
+        "bipartite"
+      ]
+    },
+    {
+      "name": "Week 4 findings minis",
+      "kind": "week chart",
+      "what": "Five one-row strips, each a section's real network against its random baseline.",
+      "where": "src/features/week04/frame/Findings.tsx",
+      "seen_at": "/weeks/week04/#findings",
+      "week": 4,
+      "concepts": [
+        "null-models"
+      ]
+    },
+    {
+      "name": "Which cities hire the most?",
+      "kind": "week chart",
+      "what": "The city ranking on the start card.",
+      "where": "src/features/week04/place/Place.tsx",
+      "seen_at": "/weeks/week04/#place-rank",
+      "week": 4,
+      "concepts": [
+        "degree-hubs"
+      ]
+    },
+    {
+      "name": "Metro groups against regions",
+      "kind": "week chart",
+      "what": "Louvain's metro groups with their lists, a null-model table, and two maps of the same cities under two labelings.",
+      "where": "src/features/week04/place/Place.tsx",
+      "seen_at": "/weeks/week04/#place-regions",
+      "week": 4,
+      "concepts": [
+        "communities",
+        "null-models",
+        "network-visualization"
+      ]
+    },
+    {
+      "name": "Do cities group by who hires there?",
+      "kind": "week chart",
+      "what": "How well each labelling of the metros matches the Louvain groups.",
+      "where": "src/features/week04/questions/Questions.tsx",
+      "seen_at": "/weeks/week04/#place-who",
+      "week": 4,
+      "concepts": [
+        "communities",
+        "comparing-groups"
+      ]
+    },
+    {
+      "name": "Where the backbone breaks",
+      "kind": "week chart",
+      "what": "Metros in the largest piece as the filter tightens, with the links that hold it and their leading company.",
+      "where": "src/features/week04/questions/Questions.tsx",
+      "seen_at": "/weeks/week04/#place-break",
+      "week": 4,
+      "concepts": [
+        "robustness"
+      ]
+    },
+    {
+      "name": "Backbone and giant component",
+      "kind": "week chart",
+      "what": "The metro backbone at a chosen alpha, the giant component against alpha, and the table behind them.",
+      "where": "src/features/week04/place/Place.tsx",
+      "seen_at": "/weeks/week04/#place-backbone",
+      "week": 4,
+      "concepts": [
+        "robustness",
+        "network-visualization"
+      ]
+    },
+    {
+      "name": "Long-haul links",
+      "kind": "week chart",
+      "what": "Distance against link weight, and one employer's arcs on the map.",
+      "where": "src/features/week04/place/Place.tsx",
+      "seen_at": "/weeks/week04/#place-longhaul",
+      "week": 4,
+      "concepts": [
+        "network-visualization",
+        "bipartite"
+      ]
+    },
+    {
+      "name": "Filings per 1,000 jobs",
+      "kind": "week chart",
+      "what": "Where the hiring is densest, as filings per 1,000 jobs.",
+      "where": "src/features/week04/strips/Strips.tsx",
+      "seen_at": "/weeks/week04/#deeper-density",
+      "week": 4,
+      "concepts": []
+    },
+    {
+      "name": "Four community methods",
+      "kind": "week chart",
+      "what": "Girvan-Newman one cut at a time, moving a metro to watch modularity, Louvain move by move, and overlapping communities, as tabs.",
+      "where": "src/features/week04/methods/Methods.tsx",
+      "seen_at": "/weeks/week04/#cut-methods",
+      "week": 4,
+      "concepts": [
+        "communities",
+        "centrality"
+      ]
+    },
+    {
+      "name": "Occupation clusters against rewired networks",
+      "kind": "week chart",
+      "what": "The modularity of the occupation clusters against rewired networks.",
+      "where": "src/features/week04/strips/Strips.tsx",
+      "seen_at": "/weeks/week04/#jobs",
+      "week": 4,
+      "concepts": [
+        "communities",
+        "null-models"
+      ]
+    },
+    {
+      "name": "Which jobs are hired together?",
+      "kind": "week chart",
+      "what": "The most common job pairs filed by the same companies.",
+      "where": "src/features/week04/jobs/Jobs.tsx",
+      "seen_at": "/weeks/week04/#jobs-together",
+      "week": 4,
+      "concepts": [
+        "bipartite"
+      ]
+    },
+    {
+      "name": "Outsourcers against direct employers",
+      "kind": "week chart",
+      "what": "Agreement of the job split against three random baselines with sd whiskers, and the mix of jobs on each side.",
+      "where": "src/features/week04/questions/Questions.tsx",
+      "seen_at": "/weeks/week04/#jobs-split",
+      "week": 4,
+      "concepts": [
+        "communities",
+        "comparing-groups",
+        "null-models"
+      ]
+    },
+    {
+      "name": "Does any job belong to two clusters?",
+      "kind": "week chart",
+      "what": "Links in the largest link community against the rest, links against link communities, and the table of jobs with most communities per link.",
+      "where": "src/features/week04/questions/Questions.tsx",
+      "seen_at": "/weeks/week04/#jobs-linkcom",
+      "week": 4,
+      "concepts": [
+        "communities"
+      ]
+    },
+    {
+      "name": "Co-hiring network and bridges",
+      "kind": "week chart",
+      "what": "Rule strips of occupations passing each bridge rule, and the co-hiring network with its bridge list and inspector.",
+      "where": "src/features/week04/jobs/Jobs.tsx",
+      "seen_at": "/weeks/week04/#jobs-bridges",
+      "week": 4,
+      "concepts": [
+        "communities",
+        "network-visualization",
+        "centrality"
+      ]
+    },
+    {
+      "name": "Clusters against official job groups",
+      "kind": "week chart",
+      "what": "The clusters' official occupation groups and their NMI scale.",
+      "where": "src/features/week04/jobs/Jobs.tsx",
+      "seen_at": "/weeks/week04/#jobs-groups",
+      "week": 4,
+      "concepts": [
+        "communities",
+        "comparing-groups"
+      ]
+    },
+    {
+      "name": "Skills of co-hired occupations",
+      "kind": "week chart",
+      "what": "Whether occupations hired together are alike in O*NET skills, for direct ties and whole clusters, and a radar comparing up to five occupations.",
+      "where": "src/features/week04/skills/Skills.tsx",
+      "seen_at": "/weeks/week04/#cut-skills",
+      "week": 4,
+      "concepts": [
+        "homophily",
+        "comparing-groups"
+      ]
+    },
+    {
+      "name": "PageRank explorable",
+      "kind": "week chart",
+      "what": "The top 15 occupations at a damping factor the reader picks, and the power iteration round by round as a bump chart with its movers.",
+      "where": "src/features/week04/pagerank/PageRank.tsx",
+      "seen_at": "/weeks/week04/#cut-pagerank",
+      "week": 4,
+      "concepts": [
+        "centrality",
+        "random-walks"
+      ]
+    },
+    {
+      "name": "Client groups against chance",
+      "kind": "week chart",
+      "what": "The modularity of client groups against a random baseline.",
+      "where": "src/features/week04/strips/Strips.tsx",
+      "seen_at": "/weeks/week04/#who",
+      "week": 4,
+      "concepts": [
+        "communities",
+        "null-models"
+      ]
+    },
+    {
+      "name": "One client, many vendors",
+      "kind": "week chart",
+      "what": "The firms that staff one client, vendors left and client right, with a year toggle and a client search.",
+      "where": "src/features/week04/strips/Ego.tsx",
+      "seen_at": "/weeks/week04/#who",
+      "week": 4,
+      "concepts": [
+        "bipartite",
+        "network-visualization"
+      ]
+    },
+    {
+      "name": "How many workers sit at a client?",
+      "kind": "week chart",
+      "what": "The lottery funnel from registrations to petitions, and how filings split by client and denial.",
+      "where": "src/features/week04/strips/Strips.tsx",
+      "seen_at": "/weeks/week04/#who-q1",
+      "week": 4,
+      "concepts": []
+    },
+    {
+      "name": "Vendor switches",
+      "kind": "week chart",
+      "what": "When a client changes its main vendor, the switches that stay inside the client's group.",
+      "where": "src/features/week04/questions/Questions.tsx",
+      "seen_at": "/weeks/week04/#who-switch",
+      "week": 4,
+      "concepts": [
+        "communities"
+      ]
+    },
+    {
+      "name": "Clients that change group",
+      "kind": "week chart",
+      "what": "The share of clients that change group when filing counts are ignored, with its table.",
+      "where": "src/features/week04/questions/Questions.tsx",
+      "seen_at": "/weeks/week04/#who-movers",
+      "week": 4,
+      "concepts": [
+        "communities"
+      ]
+    },
+    {
+      "name": "Clients in two groups",
+      "kind": "week chart",
+      "what": "Clients split between two groups at once, with its table.",
+      "where": "src/features/week04/questions/Questions.tsx",
+      "seen_at": "/weeks/week04/#who-overlap",
+      "week": 4,
+      "concepts": [
+        "communities"
+      ]
+    },
+    {
+      "name": "Industry or vendor?",
+      "kind": "week chart",
+      "what": "Client groups against rewired networks and their match with vendor and industry.",
+      "where": "src/features/week04/strips/Strips.tsx",
+      "seen_at": "/weeks/week04/#who-q2",
+      "week": 4,
+      "concepts": [
+        "communities",
+        "null-models",
+        "comparing-groups"
+      ]
+    },
+    {
+      "name": "Who relies on a single vendor?",
+      "kind": "week chart",
+      "what": "How concentrated each client's filings are across vendors, and the top share of the big clients.",
+      "where": "src/features/week04/strips/Strips.tsx",
+      "seen_at": "/weeks/week04/#who-q3",
+      "week": 4,
+      "concepts": [
+        "degree-hubs"
+      ]
+    },
+    {
+      "name": "The client network, year by year",
+      "kind": "week chart",
+      "what": "A scatter of every client with 20 or more placed filings, the vendor panel for a picked client, the 25 largest, and vendor-to-client flows, with a year toggle.",
+      "where": "src/features/week04/staffing/Staffing.tsx",
+      "seen_at": "/weeks/week04/#topic-outsourcing",
+      "week": 4,
+      "concepts": [
+        "bipartite",
+        "flows"
+      ]
+    },
+    {
+      "name": "With filing counts or without?",
+      "kind": "week chart",
+      "what": "Modularity of the client groups with and without filing counts, and the numbers behind it.",
+      "where": "src/features/week04/staffing/Staffing.tsx",
+      "seen_at": "/weeks/week04/#staffing-community-stats",
+      "week": 4,
+      "concepts": [
+        "communities",
+        "null-models"
+      ]
+    },
+    {
+      "name": "Heavy links, looser neighbourhoods",
+      "kind": "week chart",
+      "what": "Neighbourhood overlap against link weight, and wage levels as filed.",
+      "where": "src/features/week04/strips/Strips.tsx",
+      "seen_at": "/weeks/week04/#staffing-ties",
+      "week": 4,
+      "concepts": [
+        "weak-ties"
+      ]
+    },
+    {
+      "name": "Strength against degree",
+      "kind": "week chart",
+      "what": "The heaviest one-to-one ties and where the heavy links go.",
+      "where": "src/features/week04/strips/Strips.tsx",
+      "seen_at": "/weeks/week04/#deeper-strength",
+      "week": 4,
+      "concepts": [
+        "degree-hubs"
+      ]
+    },
+    {
+      "name": "Every worker and company",
+      "kind": "week chart",
+      "what": "deck.gl dots coloured by community, sector, wage level or PageRank, or the staffing and law-firm networks at a chosen backbone, with legend and table.",
+      "where": "src/features/week04/entities/Entities.tsx",
+      "seen_at": "/weeks/week04/#entity-communities",
+      "week": 4,
+      "concepts": [
+        "communities",
+        "centrality",
+        "network-visualization"
+      ]
+    },
+    {
+      "name": "Who files the paperwork?",
+      "kind": "week chart",
+      "what": "Who uses an outside law firm, and the five largest law firms.",
+      "where": "src/features/week04/strips/Strips.tsx",
+      "seen_at": "/weeks/week04/#staffing-lawyers",
+      "week": 4,
+      "concepts": [
+        "bipartite"
+      ]
+    },
+    {
+      "name": "Firms that register the same workers",
+      "kind": "week chart",
+      "what": "Whether high-registering firms cluster, and their agreement with the client groups.",
+      "where": "src/features/week04/strips/Strips.tsx",
+      "seen_at": "/weeks/week04/#staffing-lottery",
+      "week": 4,
+      "concepts": [
+        "communities",
+        "homophily"
+      ]
+    },
+    {
+      "name": "The lottery a year apart",
+      "kind": "week chart",
+      "what": "Every H-1B registration draw since 2020, and registrations per approved petition.",
+      "where": "src/features/week04/strips/Strips.tsx",
+      "seen_at": "/weeks/week04/#deeper-lottery",
+      "week": 4,
+      "concepts": [
+        "probability"
+      ]
+    },
+    {
+      "name": "Green cards per 100 H-1B filings",
+      "kind": "week chart",
+      "what": "Green cards as the strong tie: green cards per 100 H-1B filings by firm.",
+      "where": "src/features/week04/strips/Strips.tsx",
+      "seen_at": "/weeks/week04/#deeper-perm",
+      "week": 4,
+      "concepts": [
+        "comparing-groups"
+      ]
+    },
+    {
+      "name": "A network of countries",
+      "kind": "week chart",
+      "what": "Citizenship of 2023's green cards and whether countries group.",
+      "where": "src/features/week04/strips/Strips.tsx",
+      "seen_at": "/weeks/week04/#deeper-countries",
+      "week": 4,
+      "concepts": [
+        "communities"
+      ]
+    },
+    {
+      "name": "Five years of filings",
+      "kind": "week chart",
+      "what": "Eight plain-SVG panels on five years of filings, with background and table drawers.",
+      "where": "src/features/week04/years/Years.tsx",
+      "seen_at": "/weeks/week04/#cut-years",
+      "week": 4,
+      "concepts": []
+    },
+    {
+      "name": "Who filed, and for which roles?",
+      "kind": "week chart",
+      "what": "A stacked-area chart of certified filings by role, occupation group, employer or placement, on a count or 100% scale, with a legend that hides and traces series.",
+      "where": "src/features/week04/roles/Roles.tsx",
+      "seen_at": "/weeks/week04/#cut-roles",
+      "week": 4,
+      "concepts": [
+        "comparing-groups"
+      ]
+    },
+    {
+      "name": "Does it hold from year to year?",
+      "kind": "week chart",
+      "what": "Group stability between consecutive years, 2026 so far against a year earlier, and clients whose vendor changed.",
+      "where": "src/features/week04/strips/Strips.tsx",
+      "seen_at": "/weeks/week04/#who-q4",
+      "week": 4,
+      "concepts": [
+        "communities"
+      ]
+    },
+    {
+      "name": "Without the biggest firms",
+      "kind": "week chart",
+      "what": "How much the metro groups change and whether they follow Census regions as the largest filers are removed.",
+      "where": "src/features/week04/questions/Questions.tsx",
+      "seen_at": "/weeks/week04/#footprint",
+      "week": 4,
+      "concepts": [
+        "communities",
+        "robustness",
+        "comparing-groups"
+      ]
+    },
+    {
+      "name": "Which firm hides the regions?",
+      "kind": "week chart",
+      "what": "The largest filers removed in turn, and one firm out at a time.",
+      "where": "src/features/week04/questions/Questions.tsx",
+      "seen_at": "/weeks/week04/#footprint-which",
+      "week": 4,
+      "concepts": [
+        "communities",
+        "robustness"
+      ]
+    },
+    {
+      "name": "Three small answers",
+      "kind": "week chart",
+      "what": "A summary strip for law firms, green cards and wage levels.",
+      "where": "src/features/week04/strips/Strips.tsx",
+      "seen_at": "/weeks/week04/#beyond",
+      "week": 4,
+      "concepts": [
+        "comparing-groups"
+      ]
+    },
+    {
+      "name": "Law firms against vendors",
+      "kind": "week chart",
+      "what": "Whether immigration law firms split companies the way vendors do.",
+      "where": "src/features/week04/questions/Questions.tsx",
+      "seen_at": "/weeks/week04/#beyond-law",
+      "week": 4,
+      "concepts": [
+        "communities",
+        "comparing-groups"
+      ]
+    },
+    {
+      "name": "Green cards by firm type",
+      "kind": "week chart",
+      "what": "Whether outsourcing firms sponsor fewer green cards.",
+      "where": "src/features/week04/questions/Questions.tsx",
+      "seen_at": "/weeks/week04/#beyond-perm",
+      "week": 4,
+      "concepts": [
+        "comparing-groups"
+      ]
+    },
+    {
+      "name": "Wage levels by firm type",
+      "kind": "week chart",
+      "what": "Whether outsourcing firms file at lower wage levels for the same job.",
+      "where": "src/features/week04/questions/Questions.tsx",
+      "seen_at": "/weeks/week04/#beyond-wage",
+      "week": 4,
+      "concepts": [
+        "comparing-groups"
+      ]
+    },
+    {
+      "name": "Closing recap",
+      "kind": "week chart",
+      "what": "The recap strips, the switch strip, and the metros connected as the backbone's alpha tightens.",
+      "where": "src/features/week04/strips/Strips.tsx",
+      "seen_at": "/weeks/week04/#closing",
+      "week": 4,
+      "concepts": [
+        "null-models",
+        "communities",
+        "robustness"
+      ]
+    },
+    {
+      "name": "Hero: fame scatter",
+      "kind": "week chart",
+      "what": "Words against 1 + in-degree for every page, both on log scales, with the fitted line.",
+      "where": "src/features/week05/frame/Frame.tsx",
+      "seen_at": "/weeks/week05/#top",
+      "week": 5,
+      "concepts": [
+        "degree-hubs",
+        "word-frequency"
+      ]
+    },
+    {
+      "name": "Week 5 findings minis",
+      "kind": "week chart",
+      "what": "Each section's real pages against their baseline, one mini per finding.",
+      "where": "src/features/week05/frame/Frame.tsx",
+      "seen_at": "/weeks/week05/#findings",
+      "week": 5,
+      "concepts": [
+        "null-models"
+      ]
+    },
+    {
+      "name": "Links that join two communities, by label",
+      "kind": "week chart",
+      "what": "Each relation label's share of links crossing communities against shuffled labels.",
+      "where": "src/features/week05/relations/Relations.tsx",
+      "seen_at": "/weeks/week05/#relations",
+      "week": 5,
+      "concepts": [
+        "communities",
+        "null-models"
+      ]
+    },
+    {
+      "name": "Where the fight and family links run",
+      "kind": "week chart",
+      "what": "The Marvel map with a switch between fight and family links.",
+      "where": "src/features/week05/map/MarvelMap.tsx",
+      "seen_at": "/weeks/week05/#relations",
+      "week": 5,
+      "concepts": [
+        "network-visualization",
+        "communities"
+      ]
+    },
+    {
+      "name": "Sentences read by hand",
+      "kind": "week chart",
+      "what": "Label chips that show the sentences checked by hand for each relation label.",
+      "where": "src/features/week05/relations/Relations.tsx",
+      "seen_at": "/weeks/week05/#relations",
+      "week": 5,
+      "concepts": [
+        "word-context"
+      ]
+    },
+    {
+      "name": "The copying network",
+      "kind": "week chart",
+      "what": "Pages that share copied text, dot size and line width by shared words, a dashed line where the pair does not link.",
+      "where": "src/features/week05/copying/Copying.tsx",
+      "seen_at": "/weeks/week05/#copying",
+      "week": 5,
+      "concepts": [
+        "network-visualization"
+      ]
+    },
+    {
+      "name": "Linked share of copying pairs",
+      "kind": "week chart",
+      "what": "A strip of the share of copying pairs that also link, with the cluster table and the checked passages.",
+      "where": "src/features/week05/copying/Copying.tsx",
+      "seen_at": "/weeks/week05/#copying",
+      "week": 5,
+      "concepts": [
+        "null-models"
+      ]
+    },
+    {
+      "name": "Try the search",
+      "kind": "week chart",
+      "what": "A stopword-free Bag-of-Words search box with chips and a live ranking, the 12 test queries, the selected query's detail and the checked passage.",
+      "where": "src/features/week05/search/Search.tsx",
+      "seen_at": "/weeks/week05/#search",
+      "week": 5,
+      "concepts": [
+        "search-tfidf"
+      ]
+    },
+    {
+      "name": "Guess the community",
+      "kind": "week chart",
+      "what": "A visitor quiz: read a masked fake page and guess which community generated it.",
+      "where": "src/features/week05/autocomplete/Autocomplete.tsx",
+      "seen_at": "/weeks/week05/#autocomplete",
+      "week": 5,
+      "concepts": [
+        "communities",
+        "deduction"
+      ]
+    },
+    {
+      "name": "The eight groups the generators learn from",
+      "kind": "week chart",
+      "what": "The groups on the link network with only the hubs named.",
+      "where": "src/features/week05/autocomplete/Autocomplete.tsx",
+      "seen_at": "/weeks/week05/#autocomplete",
+      "week": 5,
+      "concepts": [
+        "communities",
+        "network-visualization"
+      ]
+    },
+    {
+      "name": "Modularity of the groups against rewired networks",
+      "kind": "week chart",
+      "what": "A strip of the groups' modularity against rewired networks.",
+      "where": "src/features/week05/autocomplete/Autocomplete.tsx",
+      "seen_at": "/weeks/week05/#autocomplete",
+      "week": 5,
+      "concepts": [
+        "communities",
+        "null-models"
+      ]
+    },
+    {
+      "name": "Types seen against tokens read",
+      "kind": "week chart",
+      "what": "Heaps' law curve on log-log axes with the random-order band and the fit.",
+      "where": "src/features/week05/heaps/Heaps.tsx",
+      "seen_at": "/weeks/week05/#heaps",
+      "week": 5,
+      "concepts": [
+        "word-frequency",
+        "null-models"
+      ]
+    },
+    {
+      "name": "Each order against random",
+      "kind": "week chart",
+      "what": "Each reading order's gap to random orders at two token counts, with the new words of the late pages.",
+      "where": "src/features/week05/heaps/Heaps.tsx",
+      "seen_at": "/weeks/week05/#heaps",
+      "week": 5,
+      "concepts": [
+        "word-frequency",
+        "null-models"
+      ]
+    },
+    {
+      "name": "Page length against incoming links",
+      "kind": "week chart",
+      "what": "Log-log ECharts scatter of page length against in-degree with the fitted line, the ten outliers and their passages.",
+      "where": "src/features/week05/fame/Fame.tsx",
+      "seen_at": "/weeks/week05/#fame",
+      "week": 5,
+      "concepts": [
+        "degree-hubs",
+        "word-frequency"
+      ]
+    },
+    {
+      "name": "Varied words against page length",
+      "kind": "week chart",
+      "what": "MATTR against page length with a corpus band of random stretches, the top and bottom five and their quoted sentences.",
+      "where": "src/features/week05/weird/Weird.tsx",
+      "seen_at": "/weeks/week05/#weird",
+      "week": 5,
+      "concepts": [
+        "word-frequency",
+        "null-models"
+      ]
+    },
+    {
+      "name": "Hero contrast",
+      "kind": "week chart",
+      "what": "Storm's nearest pages with names kept and with names removed.",
+      "where": "src/features/week06/Parts.tsx",
+      "seen_at": "/weeks/week06/#top",
+      "week": 6,
+      "concepts": [
+        "search-tfidf"
+      ]
+    },
+    {
+      "name": "Week 6 findings minis",
+      "kind": "week chart",
+      "what": "Each section's number against its baseline.",
+      "where": "src/features/week06/Parts.tsx",
+      "seen_at": "/weeks/week06/#findings",
+      "week": 6,
+      "concepts": [
+        "null-models"
+      ]
+    },
+    {
+      "name": "Pick a character",
+      "kind": "week chart",
+      "what": "Choose a character and see its ten nearest pages by TF-IDF with names kept and removed, marked linked, women, in both lists, with cosine and the words behind each match.",
+      "where": "src/features/week06/Parts.tsx",
+      "seen_at": "/weeks/week06/#explore",
+      "week": 6,
+      "concepts": [
+        "search-tfidf",
+        "homophily"
+      ]
+    },
+    {
+      "name": "Linked pages among each page's ten nearest",
+      "kind": "week chart",
+      "what": "Linked neighbours in ten per representation, against a null that removes as many other words.",
+      "where": "src/features/week06/Parts.tsx",
+      "seen_at": "/weeks/week06/#names",
+      "week": 6,
+      "concepts": [
+        "search-tfidf",
+        "null-models"
+      ]
+    },
+    {
+      "name": "Names tables",
+      "kind": "week chart",
+      "what": "The numbers behind the ladder, distances, and hand-read pairs with names kept.",
+      "where": "src/features/week06/Parts.tsx",
+      "seen_at": "/weeks/week06/#names",
+      "week": 6,
+      "concepts": [
+        "search-tfidf"
+      ]
+    },
+    {
+      "name": "Pages about women in everyone's ten nearest",
+      "kind": "week chart",
+      "what": "The share of every page's ten nearest that are about women, against women's share of all pages.",
+      "where": "src/features/week06/Parts.tsx",
+      "seen_at": "/weeks/week06/#gender",
+      "week": 6,
+      "concepts": [
+        "homophily",
+        "comparing-groups"
+      ]
+    },
+    {
+      "name": "Women's lists against men's",
+      "kind": "week chart",
+      "what": "Women's share among women's lists minus among men's, against 1,000 label shuffles.",
+      "where": "src/features/week06/Parts.tsx",
+      "seen_at": "/weeks/week06/#gender",
+      "week": 6,
+      "concepts": [
+        "homophily",
+        "null-models"
+      ]
+    },
+    {
+      "name": "Words behind women's matches",
+      "kind": "week chart",
+      "what": "The words that carry the matches between women by share of summed cosine, and hand-read pairs with names removed.",
+      "where": "src/features/week06/Parts.tsx",
+      "seen_at": "/weeks/week06/#gender",
+      "week": 6,
+      "concepts": [
+        "search-tfidf",
+        "comparing-groups"
+      ]
+    },
+    {
+      "name": "Essentials 1: IDF finds Marvel's own stopwords",
+      "kind": "week chart",
+      "what": "Which words make a page: IDF weighting picks out Marvel's own stopwords.",
+      "where": "src/features/week06/Essentials.tsx",
+      "seen_at": "/weeks/week06/essentials/#weights",
+      "week": 6,
+      "concepts": [
+        "search-tfidf",
+        "word-frequency"
+      ]
+    },
+    {
+      "name": "Essentials 2: Weighting is what makes similarity mean anything",
+      "kind": "week chart",
+      "what": "Which pages are close: cosine similarity between pages under different weightings.",
+      "where": "src/features/week06/Essentials.tsx",
+      "seen_at": "/weeks/week06/essentials/#cosine",
+      "week": 6,
+      "concepts": [
+        "search-tfidf"
+      ]
+    },
+    {
+      "name": "Essentials 3: Pronouns split women's pages from men's beyond chance",
+      "kind": "week chart",
+      "what": "What women's pages say that men's don't: a Scattertext contrast tested against chance.",
+      "where": "src/features/week06/Essentials.tsx",
+      "seen_at": "/weeks/week06/essentials/#contrast",
+      "week": 6,
+      "concepts": [
+        "comparing-groups",
+        "null-models"
+      ]
+    },
+    {
+      "name": "Essentials 4: Topics move when the seed moves",
+      "kind": "week chart",
+      "what": "What themes recur across the pages, and how the topics move when the seed moves.",
+      "where": "src/features/week06/Essentials.tsx",
+      "seen_at": "/weeks/week06/essentials/#topics",
+      "week": 6,
+      "concepts": [
+        "topic-models"
+      ]
+    },
+    {
+      "name": "Essentials 5: A word's row is mostly the and and",
+      "kind": "week chart",
+      "what": "What company a word keeps: its row of context counts.",
+      "where": "src/features/week06/Essentials.tsx",
+      "seen_at": "/weeks/week06/essentials/#contexts",
+      "week": 6,
+      "concepts": [
+        "word-context"
+      ]
+    },
+    {
+      "name": "Essentials 6: Association, not frequency, finds the meaning",
+      "kind": "week chart",
+      "what": "Which neighbours belong to a word: context rows reweighted by association instead of frequency.",
+      "where": "src/features/week06/Essentials.tsx",
+      "seen_at": "/weeks/week06/essentials/#pmi",
+      "week": 6,
+      "concepts": [
+        "word-context"
+      ]
+    },
+    {
+      "name": "Essentials 7: Prediction packs a row into 100 numbers",
+      "kind": "week chart",
+      "what": "Whether 303 pages can teach a model what a word means, packing a row into 100 numbers.",
+      "where": "src/features/week06/Essentials.tsx",
+      "seen_at": "/weeks/week06/essentials/#vectors",
+      "week": 6,
+      "concepts": [
+        "embeddings"
+      ]
+    },
+    {
+      "name": "Essentials 8: General English and Marvel English disagree",
+      "kind": "week chart",
+      "what": "Whether a word means the same in general English as in the Marvel pages.",
+      "where": "src/features/week06/Essentials.tsx",
+      "seen_at": "/weeks/week06/essentials/#glove",
+      "week": 6,
+      "concepts": [
+        "embeddings"
+      ]
+    },
+    {
+      "name": "Essentials story",
+      "kind": "week chart",
+      "what": "The eight essentials explorables as a story: toggle or pick, the ranking morphs, a short live note, with sticky chapter progress.",
+      "where": "src/features/week06/EssentialsStory.tsx",
+      "seen_at": "/weeks/week06/essentials/story/",
+      "week": 6,
+      "concepts": [
+        "search-tfidf",
+        "topic-models",
+        "word-context",
+        "embeddings",
+        "comparing-groups"
+      ]
+    },
+    {
+      "name": "Give Baymax a voice",
+      "kind": "game",
+      "what": "Add one link to Baymax, who has no incoming links, choose its direction, and see how many articles can then find him or he can reach, across two missions and a replay.",
+      "where": "src/features/play/Lab.tsx",
+      "seen_at": "/play/",
+      "week": null,
+      "concepts": [
+        "directed-graphs",
+        "paths"
+      ]
+    },
+    {
+      "name": "Cold Read campaign",
+      "kind": "game",
+      "what": "The five Cold Read rounds as levels with one running score; a level can be skipped at a cost.",
+      "where": "src/features/cold-read/CampaignGame.tsx",
+      "seen_at": "/play/cold-read/",
+      "week": 6,
+      "concepts": [
+        "search-tfidf",
+        "comparing-groups",
+        "topic-models",
+        "word-context",
+        "embeddings",
+        "deduction"
+      ]
+    },
+    {
+      "name": "Cold Read practice",
+      "kind": "game",
+      "what": "A menu to play any single Cold Read round on its own, with a hard mode.",
+      "where": "src/app/(cold-read)/play/cold-read/practice/page.tsx",
+      "seen_at": "/play/cold-read/practice/",
+      "week": 6,
+      "concepts": [
+        "deduction"
+      ]
+    },
+    {
+      "name": "Clue Shop",
+      "kind": "game",
+      "what": "A Marvel page is hidden; flip word cards that show how often a word appears there and on how many pages, then name the page.",
+      "where": "src/features/cold-read/ClueShopGame.tsx",
+      "seen_at": "/play/cold-read/round-1/",
+      "week": 6,
+      "concepts": [
+        "search-tfidf",
+        "deduction"
+      ]
+    },
+    {
+      "name": "Whose Line",
+      "kind": "game",
+      "what": "Two communities of the Marvel network face off; call which one uses a word more, or spot the one-page fluke.",
+      "where": "src/features/cold-read/WhoseLineGame.tsx",
+      "seen_at": "/play/cold-read/round-2/",
+      "week": 6,
+      "concepts": [
+        "comparing-groups",
+        "communities",
+        "deduction"
+      ]
+    },
+    {
+      "name": "Mix Desk",
+      "kind": "game",
+      "what": "Read a Marvel page's most used words and spread ten chips over eight LDA topics to guess its mixture.",
+      "where": "src/features/cold-read/MixDeskGame.tsx",
+      "seen_at": "/play/cold-read/round-3/",
+      "week": 6,
+      "concepts": [
+        "topic-models",
+        "deduction"
+      ]
+    },
+    {
+      "name": "Tezguino",
+      "kind": "game",
+      "what": "A hidden word shows only the words found near it; buy wider windows, PPMI weights or a sentence peek, then name it.",
+      "where": "src/features/cold-read/TezguinoGame.tsx",
+      "seen_at": "/play/cold-read/round-4/",
+      "week": 6,
+      "concepts": [
+        "word-context",
+        "deduction"
+      ]
+    },
+    {
+      "name": "Hot & Cold",
+      "kind": "game",
+      "what": "A hidden word from the Marvel pages; every guess scores its cosine similarity to it in GloVe vectors.",
+      "where": "src/features/cold-read/HotColdGame.tsx",
+      "seen_at": "/play/cold-read/round-5/",
+      "week": 6,
+      "concepts": [
+        "embeddings",
+        "deduction"
+      ]
+    },
+    {
+      "name": "Watch an example game",
+      "kind": "game",
+      "what": "A guided tour on a round's start screen that plays an example round by pressing the game's own buttons, then hands over.",
+      "where": "src/features/cold-read/Tutorial.tsx",
+      "seen_at": "/play/cold-read/round-1/",
+      "week": 6,
+      "concepts": []
+    },
+    {
+      "name": "?variant=d3",
+      "kind": "chart variant",
+      "what": "Redraws Week 3's six data charts as SVG with D3 axes and the hero globe as a d3-geo orthographic projection with great-circle arcs.",
+      "where": "src/scripts/variants/d3.js",
+      "seen_at": "/weeks/week03/?variant=d3",
+      "week": 3,
+      "concepts": [
+        "network-visualization",
+        "flows"
+      ]
+    },
+    {
+      "name": "?variant=echarts",
+      "kind": "chart variant",
+      "what": "Redraws Week 3's six data charts with ECharts, adding point tooltips, a zoomable axis and library log scales.",
+      "where": "src/scripts/variants/echarts.js",
+      "seen_at": "/weeks/week03/?variant=echarts",
+      "week": 3,
+      "concepts": [
+        "network-visualization",
+        "flows"
+      ]
+    },
+    {
+      "name": "?variant=globe",
+      "kind": "chart variant",
+      "what": "Redraws Week 3's hero globe in WebGL with globe.gl, with arcs that rise off the sphere and animate.",
+      "where": "src/scripts/variants/globe.js",
+      "seen_at": "/weeks/week03/?variant=globe",
+      "week": 3,
+      "concepts": [
+        "network-visualization",
+        "flows"
+      ]
+    },
+    {
+      "name": "?variant=deck",
+      "kind": "chart variant",
+      "what": "Redraws Week 3's hero globe and twin map with deck.gl arc layers on a globe view and a flat map view.",
+      "where": "src/scripts/variants/deck.js",
+      "seen_at": "/weeks/week03/?variant=deck",
+      "week": 3,
+      "concepts": [
+        "network-visualization",
+        "flows"
+      ]
+    },
+    {
+      "name": "?variant=atlas",
+      "kind": "chart variant",
+      "what": "Redraws Week 3's hero globe and twin map as a textured Blue Marble Earth with a matching flat basemap.",
+      "where": "src/scripts/variants/atlas.js",
+      "seen_at": "/weeks/week03/?variant=atlas",
+      "week": 3,
+      "concepts": [
+        "network-visualization",
+        "flows"
+      ]
+    },
+    {
+      "name": "Link communities, cut one way or the other",
+      "kind": "course explorable",
+      "what": "Click a block in the link dendrogram to see that link community on the philosophers network, with partition density.",
+      "where": "https://sunelehmann.com/socialgraphs2026-web/explorables/adaptive-cut.html",
+      "seen_at": null,
+      "week": 4,
+      "concepts": [
+        "communities"
+      ]
+    },
+    {
+      "name": "The adjacency matrix",
+      "kind": "course explorable",
+      "what": "Type weights into matrix cells to create edges and see the network the matrix describes and whether it is symmetric.",
+      "where": "https://sunelehmann.com/socialgraphs2026-web/explorables/adjacency-matrix.html",
+      "seen_at": null,
+      "week": 1,
+      "concepts": [
+        "directed-graphs",
+        "network-visualization"
+      ]
+    },
+    {
+      "name": "Rich get richer: growing a scale-free network",
+      "kind": "course explorable",
+      "what": "Grow a network by preferential attachment and watch its degree CCDF on log-log axes against a k^-2 guide.",
+      "where": "https://sunelehmann.com/socialgraphs2026-web/explorables/ba-growth.html",
+      "seen_at": null,
+      "week": 2,
+      "concepts": [
+        "preferential-attachment",
+        "degree-hubs"
+      ]
+    },
+    {
+      "name": "The backbone of the weighted philosophers network",
+      "kind": "course explorable",
+      "what": "Filter the weighted philosophers network and see links kept, nodes with a link and the giant component across the range.",
+      "where": "https://sunelehmann.com/socialgraphs2026-web/explorables/backbone.html",
+      "seen_at": null,
+      "week": 4,
+      "concepts": [
+        "robustness",
+        "communities"
+      ]
+    },
+    {
+      "name": "BERTopic-style intertopic map",
+      "kind": "course explorable",
+      "what": "An intertopic map of the Week 1 descriptions where circle size is documents per topic; click a topic to see its representative words.",
+      "where": "https://sunelehmann.com/socialgraphs2026-web/explorables/bertopic-map.html",
+      "seen_at": null,
+      "week": null,
+      "concepts": [
+        "topic-models",
+        "embeddings"
+      ]
+    },
+    {
+      "name": "Breadth-first search on the Marvel network",
+      "kind": "course explorable",
+      "what": "Breadth-first search from a chosen character, one step at a time, with characters first reached at each step.",
+      "where": "https://sunelehmann.com/socialgraphs2026-web/explorables/bfs-wavefront.html",
+      "seen_at": null,
+      "week": 3,
+      "concepts": [
+        "paths"
+      ]
+    },
+    {
+      "name": "Bias can enter before the model",
+      "kind": "course explorable",
+      "what": "A top-to-bottom figure of the steps by which one version of the world becomes the next before any model runs.",
+      "where": "https://sunelehmann.com/socialgraphs2026-web/explorables/bias-flow.html",
+      "seen_at": null,
+      "week": null,
+      "concepts": []
+    },
+    {
+      "name": "From documents to a Bag-of-Words matrix",
+      "kind": "course explorable",
+      "what": "A figure of the steps from a corpus through tokenizing to a Bag-of-Words matrix, with a course example.",
+      "where": "https://sunelehmann.com/socialgraphs2026-web/explorables/bow-process.html",
+      "seen_at": null,
+      "week": 5,
+      "concepts": [
+        "word-frequency",
+        "search-tfidf"
+      ]
+    },
+    {
+      "name": "Is it a power law? Three ways of drawing one distribution",
+      "kind": "course explorable",
+      "what": "Marvel in-degree drawn three ways on log-log axes with a log-normal fit and a reference curve.",
+      "where": "https://sunelehmann.com/socialgraphs2026-web/explorables/ccdf-live.html",
+      "seen_at": null,
+      "week": 2,
+      "concepts": [
+        "degree-hubs"
+      ]
+    },
+    {
+      "name": "The anatomy of centrality",
+      "kind": "course explorable",
+      "what": "Krackhardt's kite sized by degree, closeness, betweenness or eigenvector centrality; click a node to remove it.",
+      "where": "https://sunelehmann.com/socialgraphs2026-web/explorables/centrality-anatomy.html",
+      "seen_at": null,
+      "week": 3,
+      "concepts": [
+        "centrality"
+      ]
+    },
+    {
+      "name": "Every centrality against degree",
+      "kind": "course explorable",
+      "what": "Betweenness and other centralities against degree for the characters, with the top ten and the rank correlation.",
+      "where": "https://sunelehmann.com/socialgraphs2026-web/explorables/centrality-scatter.html",
+      "seen_at": null,
+      "week": 3,
+      "concepts": [
+        "centrality",
+        "degree-hubs"
+      ]
+    },
+    {
+      "name": "Clique hunt",
+      "kind": "course explorable",
+      "what": "Find the one 4-clique hidden in a fresh random network by clicking nodes.",
+      "where": "https://sunelehmann.com/socialgraphs2026-web/explorables/clique-hunt.html",
+      "seen_at": null,
+      "week": 3,
+      "concepts": [
+        "clustering",
+        "random-graphs"
+      ]
+    },
+    {
+      "name": "The clustering coefficient, by hand",
+      "kind": "course explorable",
+      "what": "Attach neighbours to a node and link them to see its local clustering coefficient computed.",
+      "where": "https://sunelehmann.com/socialgraphs2026-web/explorables/clustering-counter.html",
+      "seen_at": null,
+      "week": 2,
+      "concepts": [
+        "clustering"
+      ]
+    },
+    {
+      "name": "Concordance and similar words",
+      "kind": "course explorable",
+      "what": "A concordance of a target word in a toy corpus and the words that share its immediate contexts.",
+      "where": "https://sunelehmann.com/socialgraphs2026-web/explorables/context-similarity.html",
+      "seen_at": null,
+      "week": 5,
+      "concepts": [
+        "word-context"
+      ]
+    },
+    {
+      "name": "Contextual representations and BERT-style classification",
+      "kind": "course explorable",
+      "what": "A schematic of how a token's representation mixes in surrounding tokens, and a BERT-style classification pipeline.",
+      "where": "https://sunelehmann.com/socialgraphs2026-web/explorables/contextual-transformer.html",
+      "seen_at": null,
+      "week": null,
+      "concepts": [
+        "embeddings"
+      ]
+    },
+    {
+      "name": "Marvel corpus atlas",
+      "kind": "course explorable",
+      "what": "A zoomable map of the characters; click one to compare its neighbours in the high-dimensional space with those in the 2D drawing.",
+      "where": "https://sunelehmann.com/socialgraphs2026-web/explorables/corpus-atlas.html",
+      "seen_at": null,
+      "week": null,
+      "concepts": [
+        "embeddings",
+        "network-visualization"
+      ]
+    },
+    {
+      "name": "Cosine similarity",
+      "kind": "course explorable",
+      "what": "Two vectors A and B with their angle and cosine similarity.",
+      "where": "https://sunelehmann.com/socialgraphs2026-web/explorables/cosine-similarity.html",
+      "seen_at": null,
+      "week": 6,
+      "concepts": [
+        "search-tfidf",
+        "embeddings"
+      ]
+    },
+    {
+      "name": "Bag of Words and the document-term matrix",
+      "kind": "course explorable",
+      "what": "Edit three tiny documents and see their document-term matrix and vectors change.",
+      "where": "https://sunelehmann.com/socialgraphs2026-web/explorables/document-vectors.html",
+      "seen_at": null,
+      "week": 5,
+      "concepts": [
+        "word-frequency",
+        "search-tfidf"
+      ]
+    },
+    {
+      "name": "Girvan-Newman, one cut at a time",
+      "kind": "course explorable",
+      "what": "Remove the link with the highest edge betweenness one cut at a time on a network with three planted communities, with the dendrogram and Q.",
+      "where": "https://sunelehmann.com/socialgraphs2026-web/explorables/edge-betweenness.html",
+      "seen_at": null,
+      "week": 4,
+      "concepts": [
+        "communities",
+        "centrality"
+      ]
+    },
+    {
+      "name": "Embedding analogy",
+      "kind": "course explorable",
+      "what": "Four word vectors in a toy space and the king - man + woman analogy.",
+      "where": "https://sunelehmann.com/socialgraphs2026-web/explorables/embedding-analogy-simple.html",
+      "seen_at": null,
+      "week": 6,
+      "concepts": [
+        "embeddings"
+      ]
+    },
+    {
+      "name": "From NER to a text-derived network",
+      "kind": "course explorable",
+      "what": "Names extracted from text, aliases resolved, and a co-occurrence rule that builds a network.",
+      "where": "https://sunelehmann.com/socialgraphs2026-web/explorables/entity-network.html",
+      "seen_at": null,
+      "week": null,
+      "concepts": [
+        "bipartite",
+        "network-visualization"
+      ]
+    },
+    {
+      "name": "The birth of the giant component",
+      "kind": "course explorable",
+      "what": "A G(N, p) network with its giant component in colour, against the theoretical share as p grows.",
+      "where": "https://sunelehmann.com/socialgraphs2026-web/explorables/er-phase-transition.html",
+      "seen_at": null,
+      "week": 2,
+      "concepts": [
+        "random-graphs"
+      ]
+    },
+    {
+      "name": "What makes a page distinctive",
+      "kind": "course explorable",
+      "what": "A page's most distinctive words by TF-IDF, with names optionally removed; click a word to see which other pages use it.",
+      "where": "https://sunelehmann.com/socialgraphs2026-web/explorables/fingerprints.html",
+      "seen_at": null,
+      "week": 6,
+      "concepts": [
+        "search-tfidf"
+      ]
+    },
+    {
+      "name": "Your friends have more friends than you",
+      "kind": "course explorable",
+      "what": "Sample a random person and one of their friends, and compare the degrees the two kinds of sampling see.",
+      "where": "https://sunelehmann.com/socialgraphs2026-web/explorables/friendship-paradox.html",
+      "seen_at": null,
+      "week": 2,
+      "concepts": [
+        "degree-hubs",
+        "probability"
+      ]
+    },
+    {
+      "name": "k-clique communities",
+      "kind": "course explorable",
+      "what": "Roll one k-clique onto the next on a 13-node network to build k-clique communities.",
+      "where": "https://sunelehmann.com/socialgraphs2026-web/explorables/k-clique-communities.html",
+      "seen_at": null,
+      "week": 4,
+      "concepts": [
+        "communities",
+        "clustering"
+      ]
+    },
+    {
+      "name": "How few shortcuts it takes",
+      "kind": "course explorable",
+      "what": "A ring lattice with and without a few shortcuts, coloured by steps from the start node, with distance and clustering.",
+      "where": "https://sunelehmann.com/socialgraphs2026-web/explorables/lattice-to-random.html",
+      "seen_at": null,
+      "week": 2,
+      "concepts": [
+        "small-worlds",
+        "paths",
+        "clustering"
+      ]
+    },
+    {
+      "name": "The layout is not the network",
+      "kind": "course explorable",
+      "what": "The shared network's giant component drawn in different layouts, with Louvain communities.",
+      "where": "https://sunelehmann.com/socialgraphs2026-web/explorables/layouts.html",
+      "seen_at": null,
+      "week": 1,
+      "concepts": [
+        "network-visualization",
+        "communities"
+      ]
+    },
+    {
+      "name": "Marvel lookalikes, with TF-IDF",
+      "kind": "course explorable",
+      "what": "Each page's ten most similar pages by cosine over raw counts, counts without stopwords or TF-IDF, with the words behind each match and whether they link.",
+      "where": "https://sunelehmann.com/socialgraphs2026-web/explorables/lookalikes-tfidf.html",
+      "seen_at": null,
+      "week": 6,
+      "concepts": [
+        "search-tfidf"
+      ]
+    },
+    {
+      "name": "Marvel lookalikes",
+      "kind": "course explorable",
+      "what": "Each page's ten most similar pages by Bag-of-Words cosine, the words behind each match, and the most similar unlinked pairs.",
+      "where": "https://sunelehmann.com/socialgraphs2026-web/explorables/lookalikes.html",
+      "seen_at": null,
+      "week": 5,
+      "concepts": [
+        "search-tfidf"
+      ]
+    },
+    {
+      "name": "Louvain, one move at a time",
+      "kind": "course explorable",
+      "what": "Louvain on 1,374 philosophers, one node move, one sweep or one aggregation at a time, with modularity after every move.",
+      "where": "https://sunelehmann.com/socialgraphs2026-web/explorables/louvain-steps.html",
+      "seen_at": null,
+      "week": 4,
+      "concepts": [
+        "communities"
+      ]
+    },
+    {
+      "name": "Mixing patterns: the same degrees, rewired",
+      "kind": "course explorable",
+      "what": "Degree-preserving swaps on the Marvel giant component that change average neighbour degree, assortativity and clustering.",
+      "where": "https://sunelehmann.com/socialgraphs2026-web/explorables/mixing-dial.html",
+      "seen_at": null,
+      "week": 3,
+      "concepts": [
+        "null-models",
+        "degree-hubs"
+      ]
+    },
+    {
+      "name": "The modularity landscape of the karate club",
+      "kind": "course explorable",
+      "what": "Move karate-club members between groups and see Q for every state visited.",
+      "where": "https://sunelehmann.com/socialgraphs2026-web/explorables/modularity-landscape.html",
+      "seen_at": null,
+      "week": 4,
+      "concepts": [
+        "communities"
+      ]
+    },
+    {
+      "name": "Named entity recognition and BIO tags",
+      "kind": "course explorable",
+      "what": "One sentence token by token with entity labels or BIO span tags, then the structured spans.",
+      "where": "https://sunelehmann.com/socialgraphs2026-web/explorables/ner-bio.html",
+      "seen_at": null,
+      "week": null,
+      "concepts": []
+    },
+    {
+      "name": "Next-token prediction",
+      "kind": "course explorable",
+      "what": "A toy model's next-token probabilities, sampled and appended to the text one token at a time.",
+      "where": "https://sunelehmann.com/socialgraphs2026-web/explorables/next-token.html",
+      "seen_at": null,
+      "week": 5,
+      "concepts": [
+        "probability"
+      ]
+    },
+    {
+      "name": "N-grams",
+      "kind": "course explorable",
+      "what": "A sliding window of n tokens over a sentence, listing the n-grams.",
+      "where": "https://sunelehmann.com/socialgraphs2026-web/explorables/ngram-window.html",
+      "seen_at": null,
+      "week": 5,
+      "concepts": [
+        "word-frequency"
+      ]
+    },
+    {
+      "name": "From counts to language models",
+      "kind": "course explorable",
+      "what": "A sequence of text representations, what each buys and what is still missing, with an illustrative next-token distribution.",
+      "where": "https://sunelehmann.com/socialgraphs2026-web/explorables/nlp-arc.html",
+      "seen_at": null,
+      "week": null,
+      "concepts": [
+        "word-frequency",
+        "embeddings"
+      ]
+    },
+    {
+      "name": "Where chance gives up: Marvel vs a random network",
+      "kind": "course explorable",
+      "what": "Marvel's degree distribution P(k) against a random network, with the tail named.",
+      "where": "https://sunelehmann.com/socialgraphs2026-web/explorables/poisson-vs-marvel.html",
+      "seen_at": null,
+      "week": 2,
+      "concepts": [
+        "degree-hubs",
+        "random-graphs"
+      ]
+    },
+    {
+      "name": "PPMI context matrix",
+      "kind": "course explorable",
+      "what": "A word-context matrix with the selected word's vector, its strongest dimensions and its nearest word by cosine.",
+      "where": "https://sunelehmann.com/socialgraphs2026-web/explorables/ppmi-context.html",
+      "seen_at": null,
+      "week": 6,
+      "concepts": [
+        "word-context"
+      ]
+    },
+    {
+      "name": "PageRank as a random walker",
+      "kind": "course explorable",
+      "what": "A walker that follows links or teleports, node size by visits, against the exact PageRank.",
+      "where": "https://sunelehmann.com/socialgraphs2026-web/explorables/random-walker.html",
+      "seen_at": null,
+      "week": 3,
+      "concepts": [
+        "random-walks",
+        "centrality"
+      ]
+    },
+    {
+      "name": "The shared network's degree distribution",
+      "kind": "course explorable",
+      "what": "The shared network's degree distribution P(k), with the tail named.",
+      "where": "https://sunelehmann.com/socialgraphs2026-web/explorables/real-degrees.html",
+      "seen_at": null,
+      "week": 1,
+      "concepts": [
+        "degree-hubs"
+      ]
+    },
+    {
+      "name": "The ring lattice",
+      "kind": "course explorable",
+      "what": "A 100-node ring lattice coloured by steps from a start node, with clustering and distances against a random network.",
+      "where": "https://sunelehmann.com/socialgraphs2026-web/explorables/ring-lattice.html",
+      "seen_at": null,
+      "week": 2,
+      "concepts": [
+        "small-worlds",
+        "paths",
+        "clustering"
+      ]
+    },
+    {
+      "name": "Compare two corpora",
+      "kind": "course explorable",
+      "what": "Terms from the 2012 US convention speeches plotted by Democratic against Republican use per 10,000 words.",
+      "where": "https://sunelehmann.com/socialgraphs2026-web/explorables/scattertext-2012-conventions.html",
+      "seen_at": null,
+      "week": 6,
+      "concepts": [
+        "comparing-groups"
+      ]
+    },
+    {
+      "name": "Sparse and dense search",
+      "kind": "course explorable",
+      "what": "TF-IDF search against a 40D SVD dense preview over the 303 short descriptions.",
+      "where": "https://sunelehmann.com/socialgraphs2026-web/explorables/semantic-search.html",
+      "seen_at": null,
+      "week": null,
+      "concepts": [
+        "search-tfidf",
+        "embeddings"
+      ]
+    },
+    {
+      "name": "TF-IDF sentiment classifier",
+      "kind": "course explorable",
+      "what": "A TF-IDF logistic regression fit in the browser to a tiny labelled set, showing the features behind each prediction.",
+      "where": "https://sunelehmann.com/socialgraphs2026-web/explorables/sentiment-classifier.html",
+      "seen_at": null,
+      "week": null,
+      "concepts": [
+        "sentiment",
+        "search-tfidf"
+      ]
+    },
+    {
+      "name": "Three ways to measure sentiment",
+      "kind": "course explorable",
+      "what": "A lexicon, a TF-IDF logistic regression and a third method side by side on the same text.",
+      "where": "https://sunelehmann.com/socialgraphs2026-web/explorables/sentiment-lab.html",
+      "seen_at": null,
+      "week": null,
+      "concepts": [
+        "sentiment"
+      ]
+    },
+    {
+      "name": "Lexicon sentiment",
+      "kind": "course explorable",
+      "what": "A toy lexicon that scores matched words and sums them into a label.",
+      "where": "https://sunelehmann.com/socialgraphs2026-web/explorables/sentiment-lexicon.html",
+      "seen_at": null,
+      "week": null,
+      "concepts": [
+        "sentiment"
+      ]
+    },
+    {
+      "name": "Shuffle test: the model becomes a test",
+      "kind": "course explorable",
+      "what": "Shuffle the Marvel giant component's links and build the null distribution one shuffle at a time, with z and empirical p.",
+      "where": "https://sunelehmann.com/socialgraphs2026-web/explorables/shuffle-test.html",
+      "seen_at": null,
+      "week": 2,
+      "concepts": [
+        "null-models"
+      ]
+    },
+    {
+      "name": "TF-IDF weighting",
+      "kind": "course explorable",
+      "what": "Query terms scored against documents under a chosen representation, with term weights and summed scores.",
+      "where": "https://sunelehmann.com/socialgraphs2026-web/explorables/tfidf-weighting.html",
+      "seen_at": null,
+      "week": 6,
+      "concepts": [
+        "search-tfidf"
+      ]
+    },
+    {
+      "name": "Tokenization and preprocessing",
+      "kind": "course explorable",
+      "what": "Tokenize a text and apply preprocessing choices, with tokens, types and type/token ratio.",
+      "where": "https://sunelehmann.com/socialgraphs2026-web/explorables/token-pipeline.html",
+      "seen_at": null,
+      "week": 5,
+      "concepts": [
+        "word-frequency"
+      ]
+    },
+    {
+      "name": "Topic mixtures",
+      "kind": "course explorable",
+      "what": "A document as a mixture of topics and a topic as a distribution over words.",
+      "where": "https://sunelehmann.com/socialgraphs2026-web/explorables/topic-mixtures.html",
+      "seen_at": null,
+      "week": 6,
+      "concepts": [
+        "topic-models"
+      ]
+    },
+    {
+      "name": "Two distributions, four ways of looking",
+      "kind": "course explorable",
+      "what": "A power law and an exponential drawn on the axes the reader chooses.",
+      "where": "https://sunelehmann.com/socialgraphs2026-web/explorables/two-distributions.html",
+      "seen_at": null,
+      "week": 1,
+      "concepts": [
+        "degree-hubs"
+      ]
+    },
+    {
+      "name": "Map of the Marvel universe",
+      "kind": "course explorable",
+      "what": "A zoomable map of the characters on axes the reader builds, dot size by in-links, with each one's most distinctive words.",
+      "where": "https://sunelehmann.com/socialgraphs2026-web/explorables/universe-map.html",
+      "seen_at": null,
+      "week": 6,
+      "concepts": [
+        "embeddings",
+        "search-tfidf"
+      ]
+    },
+    {
+      "name": "Word-context matrix",
+      "kind": "course explorable",
+      "what": "Raw co-occurrence counts of target words within a chosen window, with the selected row as a vector.",
+      "where": "https://sunelehmann.com/socialgraphs2026-web/explorables/word-context-matrix.html",
+      "seen_at": null,
+      "week": 6,
+      "concepts": [
+        "word-context"
+      ]
+    },
+    {
+      "name": "Word2Vec window",
+      "kind": "course explorable",
+      "what": "Positive training pairs from a window and sampled negative words.",
+      "where": "https://sunelehmann.com/socialgraphs2026-web/explorables/word2vec-window.html",
+      "seen_at": null,
+      "week": 6,
+      "concepts": [
+        "embeddings",
+        "word-context"
+      ]
+    },
+    {
+      "name": "Small worlds: the Watts-Strogatz sweet spot",
+      "kind": "course explorable",
+      "what": "Rewire a 200-node ring lattice and plot clustering and mean distance against the rewiring probability.",
+      "where": "https://sunelehmann.com/socialgraphs2026-web/explorables/ws-rewiring.html",
+      "seen_at": null,
+      "week": 2,
+      "concepts": [
+        "small-worlds",
+        "clustering",
+        "paths"
+      ]
+    },
+    {
+      "name": "An idealized Zipf curve",
+      "kind": "course explorable",
+      "what": "A rank-frequency curve from an idealized Zipf distribution with familiar English labels.",
+      "where": "https://sunelehmann.com/socialgraphs2026-web/explorables/zipf-idealized.html",
+      "seen_at": null,
+      "week": 5,
+      "concepts": [
+        "word-frequency"
+      ]
+    },
+    {
+      "name": "Word frequency in the Marvel text",
+      "kind": "course explorable",
+      "what": "Rank-frequency of real counts from the 303 one-line descriptions and from the full Wikipedia text.",
+      "where": "https://sunelehmann.com/socialgraphs2026-web/explorables/zipf-language.html",
+      "seen_at": null,
+      "week": 5,
+      "concepts": [
+        "word-frequency"
+      ]
+    }
+  ]
+}

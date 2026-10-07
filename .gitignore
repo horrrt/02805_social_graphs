@@ -9,6 +9,8 @@ __pycache__/
 # Local scratch: course materials and generated verification artifacts
 .playwright-cli/
 materials/
+# ...but not the toolbox's teaching materials by topic
+!project/materials/
 output/
 build/
 .playwright-mcp/
@@ -35,5 +37,7 @@ ds-bundle/
 .design-sync/pkg/gen/
 .design-sync/pkg/types/
 
+# the game catalogue's Wikipedia lookup cache
+.wiki-cache.json
 # a symlink to the main checkout's build/ in worktrees
 build
