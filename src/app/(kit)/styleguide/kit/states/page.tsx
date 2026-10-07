@@ -4,6 +4,7 @@ import { KitState } from "@/features/kit-page/states";
 import { KitStateNetworks } from "@/features/kit-page/states-networks";
 import { TextState } from "@/features/kit-page/states-text";
 import { DistState } from "@/features/kit-page/states-distributions";
+import { KitStateEditors } from "@/features/kit-page/states-editors";
 
 export default function Page() {
   return (
@@ -314,6 +315,98 @@ export default function Page() {
           <DistState state="bars-empty" />
         </PostSection>
         {/* ==== end Kit: distributions and nulls ==== */}
+        {/* ==== Kit: editors and puzzles ==== */}
+        <PostSection id="state-editors">
+          <h2>Editors and puzzles</h2>
+          <div className="w4-two">
+            <div>
+              <h3>Dendrogram: no leaves</h3>
+              <KitStateEditors state="ed-dendro-empty" />
+            </div>
+            <div>
+              <h3>Dendrogram: a forest, equal heights, long labels, a cut above the top, one metric point</h3>
+              <KitStateEditors state="ed-dendro-forest" />
+            </div>
+          </div>
+          <div className="w4-two">
+            <div>
+              <h3>Dendrogram: 120 leaves, nested, missing and out-of-range clusters in the cut</h3>
+              <KitStateEditors state="ed-dendro-wide" />
+            </div>
+            <div>
+              <h3>EditableMatrix: no nodes</h3>
+              <KitStateEditors state="ed-matrix-empty" />
+            </div>
+          </div>
+          <div className="w4-two">
+            <div>
+              <h3>EditableMatrix: one node</h3>
+              <KitStateEditors state="ed-matrix-one" />
+            </div>
+            <div>
+              <h3>EditableMatrix: twelve long names, negatives, a self-loop</h3>
+              <KitStateEditors state="ed-matrix-wide" />
+            </div>
+          </div>
+          <div className="w4-two">
+            <div>
+              <h3>PartitionEditor: one node, no links, a preset too long</h3>
+              <KitStateEditors state="ed-partition-lonely" />
+            </div>
+            <div>
+              <h3>EgoEditor: no candidates</h3>
+              <KitStateEditors state="ed-ego-none" />
+            </div>
+          </div>
+          <div className="w4-two">
+            <div>
+              <h3>EgoEditor: sixteen candidates, bad links in the start</h3>
+              <KitStateEditors state="ed-ego-crowded" />
+            </div>
+            <div>
+              <h3>NodePicker: five to pick from three, no answer</h3>
+              <KitStateEditors state="ed-picker-tiny" />
+            </div>
+          </div>
+          <div className="w4-two">
+            <div>
+              <h3>NodePicker: the generator gives no nodes</h3>
+              <KitStateEditors state="ed-picker-empty" />
+            </div>
+            <div>
+              <h3>StepFlow: no steps</h3>
+              <KitStateEditors state="ed-flow-empty" />
+            </div>
+          </div>
+          <div className="w4-two">
+            <div>
+              <h3>StepFlow: long titles, an unbroken word, missing parts</h3>
+              <KitStateEditors state="ed-flow-long" />
+            </div>
+            <div>
+              <h3>StageTabs: no stages</h3>
+              <KitStateEditors state="ed-stages-empty" />
+            </div>
+          </div>
+          <div className="w4-two">
+            <div>
+              <h3>StageTabs: twelve stages, a long title and empty fields</h3>
+              <KitStateEditors state="ed-stages-many" />
+            </div>
+            <div>
+              <h3>DetailPanel: nothing picked</h3>
+              <KitStateEditors state="ed-detail-empty" />
+            </div>
+          </div>
+          <div className="w4-two">
+            <div>
+              <h3>DetailPanel: long everything, an empty list, a third list dropped</h3>
+              <KitStateEditors state="ed-detail-long" />
+            </div>
+            <div></div>
+          </div>
+        </PostSection>
+        {/* ==== end Kit: editors and puzzles ==== */}
       </main>
       <SiteFooter>
         <span>

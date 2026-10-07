@@ -65,3 +65,22 @@ export type { BoardAxis, BoardCell } from "./NullBoard";
 export type { Verdict } from "./nullBits";
 export { default as NullBars } from "./NullBars";
 export type { NullBarRow } from "./NullBars";
+// ---- Editors and puzzles: a cut dendrogram, an editable matrix, a partition
+// to edit, an ego network, a pick-k puzzle, a pipeline, a strip of stages and
+// a detail panel. Their pure helpers are dendro-core.js and matrix-core.js.
+export { default as Dendrogram } from "./Dendrogram";
+export type { DendroBlock, DendroCut, DendroMetric, DendroTree, Merge } from "./Dendrogram";
+export { default as EditableMatrix } from "./EditableMatrix";
+export { default as PartitionEditor } from "./PartitionEditor";
+export type { PartitionPreset } from "./PartitionEditor";
+export { default as EgoEditor } from "./EgoEditor";
+export type { Ego } from "./EgoEditor";
+export { default as NodePicker } from "./NodePicker";
+export type { PickerGraph, PickerVerdict } from "./NodePicker";
+export type { NetId } from "./network/layout";
+export { default as StepFlow } from "./StepFlow";
+export type { FlowStep } from "./StepFlow";
+export { default as StageTabs } from "./StageTabs";
+export type { Stage } from "./StageTabs";
+export { default as DetailPanel } from "./DetailPanel";
+export type { DetailItem, DetailStat, NearestList, NearestRow } from "./DetailPanel";
