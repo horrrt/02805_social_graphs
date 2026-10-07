@@ -16,6 +16,9 @@ export type NetNode = {
   r?: number;
   title?: string;
   labelSide?: "left";
+  /** Explorable additions (network/extend.ts): a number for size or colour, and a state. */
+  value?: number;
+  state?: "ghost" | "picked" | "new" | "ring";
 };
 
 export type NetLink = {
@@ -61,13 +64,19 @@ export type NetworkSpec = {
   aria?: string;
   explore?: boolean;
   describe?: (n: NetNode, info: NodeInfo) => unknown[] | null | undefined;
+  // Explorable additions (network/extend.ts), each off unless set.
+  directed?: boolean;
+  color?: "sequential";
+  scale?: [number, number];
+  highlightLinks?: [NetId, NetId][];
+  layout?: "circle" | "fixed";
 };
 
 export type Measure = (text: unknown, role?: string, weight?: number | string) => number;
 
 type At = { x1: number; y1: number; x2: number; y2: number };
 export type LineRow = { link: NetLink & { key: string; a: NetNode; b: NetNode }; cls: string; width: number; at: At; title: string | null; hit: string | null };
-export type Shape = { d: string; cls: string } | { cx: number; cy: number; r: number; cls: string };
+export type Shape = { d: string; cls: string } | { cx: number; cy: number; r: number; cls: string; fill?: string };
 export type NodeRow = {
   id: NetId;
   one: number | null | undefined;
@@ -77,6 +86,7 @@ export type NodeRow = {
   badge: { cx: number; cy: number; r: number; x: number; y: number; text: string } | null;
   title: string | null;
   movable: string | null;
+  name?: string;
 };
 export type HubRow = {
   id: NetId;

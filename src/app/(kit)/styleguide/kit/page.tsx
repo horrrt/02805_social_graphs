@@ -1,6 +1,9 @@
 import { PostSection } from "@/components/post/PostSection";
 import { SiteFooter } from "@/components/site/SiteFooter";
 import { Demo } from "@/features/kit-page/demos";
+import { DemoNetworks } from "@/features/kit-page/demos-networks";
+import { TextDemo } from "@/features/kit-page/demos-text";
+import { DistDemo } from "@/features/kit-page/demos-distributions";
 
 export default function Page() {
   return (
@@ -124,6 +127,103 @@ export default function Page() {
             </div>
           </div>
         </PostSection>
+        {/* ==== Kit: networks ==== */}
+        <PostSection id="demo-networks">
+          <h2>Network explorables</h2>
+          <p className="sub">
+            Five pieces for the network weeks, from src/kit on toy and textbook graphs: NetCanvas, StepPlayer and
+            Readouts, NetworkView's additions, and the seeded models in graph-core.js. Same seed, same run.
+          </p>
+          <h3>Preferential attachment: StepPlayer, NetCanvas and Readouts</h3>
+          <DemoNetworks demo="nw-ba" />
+          <div className="w4-two">
+            <div>
+              <h3>Breadth-first search on a ring with shortcuts</h3>
+              <DemoNetworks demo="nw-bfs" />
+            </div>
+            <div>
+              <h3>Watts–Strogatz: rewire the ring</h3>
+              <DemoNetworks demo="nw-ws" />
+            </div>
+          </div>
+          <h3>Louvain, one move at a time, on the karate club</h3>
+          <DemoNetworks demo="nw-louvain" />
+          <h3>Krackhardt&apos;s kite: size by a centrality, click to take someone out</h3>
+          <DemoNetworks demo="nw-kite" />
+        </PostSection>
+        {/* ==== end Kit: networks ==== */}
+        {/* ==== Kit batch D: Text ==== */}
+        <PostSection id="demo-text">
+          <h2>Text: tokens, contributions, search and methods side by side</h2>
+          <p className="sub">
+            TaggedTokens, ContributionBars, RankedResults and MethodCompare from src/kit, and the new CountMatrix and
+            AxisMap options, with toy words and numbers. The methods behind them are in src/kit/text-core.js.
+          </p>
+          <h3>TaggedTokens: a token pipeline you can edit</h3>
+          <TextDemo demo="text-pipeline" />
+          <div className="w4-two">
+            <div>
+              <h3>TaggedTokens: an n-gram window</h3>
+              <TextDemo demo="text-ngram" />
+            </div>
+            <div>
+              <h3>TaggedTokens: BIO tags become entity spans</h3>
+              <TextDemo demo="text-ner" />
+            </div>
+          </div>
+          <div className="w4-two">
+            <div>
+              <h3>ContributionBars: a sentiment lexicon with negation</h3>
+              <TextDemo demo="text-lexicon" />
+            </div>
+            <div>
+              <h3>ContributionBars: a logistic classifier&apos;s features</h3>
+              <TextDemo demo="text-classifier" />
+            </div>
+          </div>
+          <h3>RankedResults: two engines, one query</h3>
+          <TextDemo demo="text-search" />
+          <h3>MethodCompare: one sentence, three sentiment methods</h3>
+          <TextDemo demo="text-compare" />
+          <div className="w4-two">
+            <div>
+              <h3>CountMatrix: counts, PPMI, TF and TF-IDF</h3>
+              <TextDemo demo="text-ppmi" />
+            </div>
+            <div>
+              <h3>AxisMap: two rates on log axes</h3>
+              <TextDemo demo="text-logmap" />
+            </div>
+          </div>
+        </PostSection>
+        {/* ==== end Kit batch D: Text ==== */}
+        {/* ==== Kit: distributions and nulls ==== */}
+        <PostSection id="demo-distributions">
+          <h2>Distributions and nulls</h2>
+          <p className="sub">
+            Four pieces for degree distributions and null models, from src/kit with toy numbers drawn by a seeded
+            generator. The numbers behind them are in src/kit/dist-core.js.
+          </p>
+          <h3>DistributionPlot: degrees against the Poisson of the same mean</h3>
+          <DistDemo demo="dist-degree" />
+          <div className="w4-two">
+            <div>
+              <h3>DistributionPlot: an ideal Zipf curve against toy word counts</h3>
+              <DistDemo demo="dist-zipf" />
+            </div>
+            <div>
+              <h3>DistributionPlot: one run against the spread of forty</h3>
+              <DistDemo demo="dist-ba" />
+            </div>
+          </div>
+          <h3>NullHistogram: a shuffle test, one shuffle at a time</h3>
+          <DistDemo demo="dist-shuffle" />
+          <h3>NullBoard: which measures survive which null model</h3>
+          <DistDemo demo="dist-board" />
+          <h3>NullBars: links by type against a label shuffle</h3>
+          <DistDemo demo="dist-links" />
+        </PostSection>
+        {/* ==== end Kit: distributions and nulls ==== */}
       </main>
       <SiteFooter>
         <span>

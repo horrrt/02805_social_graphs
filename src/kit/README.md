@@ -297,3 +297,237 @@ spent show as chips (a word `banned(word)` rejects is struck through and still c
 ```tsx
 <GuessRanker items={[{ key: "wolverine", label: "Wolverine" }]} score={scoreWords} target="wolverine" budget={8} banned={(w) => w === "logan"} />
 ```
+
+## Networks
+
+Pieces for the network weeks: a canvas network for graphs too big for SVG marks, a player that steps a process,
+a row of readouts, additions to `NetworkView`, and the models and measures they run on. No fetching inside; toy
+and textbook graphs on `/styleguide/kit/`. Styles: the "Kit: networks" section of `post.css`.
+
+### graph-core.js
+
+DOM-free and seeded, in `src/kit/graph-core.js`, tested against networkx by `tests/graph-core.test.mjs`. Import
+it as `@/kit/graph-core`. Nodes are `0 … n − 1`, edges `[a, b]` (or `[a, b, w]` where a weight is allowed).
+
+- Randomness: `mulberry32(seed)` returns an rng on [0, 1); every random function takes one, so a seed repeats.
+- Models: `gnp(n, p, rng)`, `gnm(n, m, rng)`; `ba(n, m, { alpha }, rng)` (attachment Π ∝ k^α; `born[i]` is
+  the step that added edge `i`), stepped with `baInit(m, alpha)` and `baStep(state, rng)`; `ringLattice(n, k)`,
+  `wattsStrogatz(n, k, q, rng)` (`rewired[i]` flags a moved edge; the moved set grows with q under one seed),
+  `ringPlusShortcuts(n, k, s, rng)` (the graph at s + 1 adds one link to the graph at s),
+  `plantedClique(n, p, k, rng)`, `degreePreservingSwaps(edges, nSwaps, rng)`.
+- Search and structure: `toAdj(n, edges, directed)`, `bfsLayers(adj, src, "any" | "out" | "in")` (`dist`,
+  `parent`, `layers`), `components(n, edges)` (numbered largest first), `giant(n, edges)`, `degrees`.
+- Centrality, as networkx computes it: `degreeCentrality`, `closeness` (Wasserman–Faust), `harmonic`,
+  `betweenness` and `edgeBetweenness` (Brandes, normalised unless the third argument is false), `eigenvector`
+  (unit length), `pagerank(n, edges, { alpha, directed })` (dangling rank spread over every node).
+- Clustering: `localClustering`, `transitivity`.
+- Communities: `modularity(edges, partition)`; Louvain as a stepper, `louvainInit(edges, { rng })` then
+  `stepMove` (until one node moves), `sweep` (the rest of a pass), `aggregate` (collapse the communities),
+  `louvainPartition(state)`, with `state.q`, `state.phase` and `state.last` (the four also as
+  `louvainStepper.init/stepMove/sweep/aggregate`); or `louvain(edges, rng)` at once;
+  `labelPropagation(n, edges, rng)`.
+- Layouts in the unit square: `circleLayout(n)`, `forceLayout(n, edges, { iterations, init, rng })`.
+
+```tsx
+const { edges, rewired } = wattsStrogatz(30, 4, 0.1, mulberry32(3));
+```
+
+### NetworkView additions
+
+`NetworkView` takes `onNodeClick(id)`, which makes each node a button (Enter or Space picks it), and these spec
+options, each off unless set, so every existing view draws as before: `directed` (arrowheads), a node's `state`
+(`"ghost"`, `"picked"`, `"new"` or `"ring"`), a node's `value` sizing it within the radius range `scale` (set
+before layout, so labels and rings clear the disc) and, with `color: "sequential"`, shading it on a ramp of the
+site's blues; `layout: "circle"` (or `"fixed"`, the nodes' own x and y), and `highlightLinks: [[a, b], …]`. A
+value does nothing without `scale` or `color`. Values and states are read from the spec on every render.
+
+```tsx
+<NetworkView spec={{ ratio: 0.8, layout: "circle", nodes, links, highlightLinks: moved }} onNodeClick={pick} />
+```
+
+### NetCanvas({ nodes, links, positions, layout, color, directed, linkWidth, onNodeClick, tooltip, aria })
+
+A network painted on a canvas, for 200 to 2,000 nodes, at its parent's width and the device's pixel ratio. Nodes:
+`{ id, x, y, r, value, group, state, label }` (x and y in the unit square; without them, a circle); links:
+`{ s, t, w, highlight }`. `positions` maps layout names to `[x, y]` per node and `layout` picks one: a new
+layout or new positions tween the nodes there (at once under reduced motion or off screen). `color` is
+`"group"` (the `.gv` group colours) or `"sequential"` (by value); `value` sizes nodes within `sizes` (under
+`"sequential"`, only when `sizes` is given).
+`tooltip(node)` gives the hover lines, `onNodeClick(id)` follows a click; the canvas has no per-node keyboard
+access, so pair a pick with a control. A line under the canvas counts the nodes, links and states (`describe`
+replaces it). `height` is 360 by default; `useCanvasStage` backs the canvas at its size and pixel ratio, and the
+label sits on the stage around it. `specs={[…]}` with `columns` draws small multiples, each with its `title`.
+
+```tsx
+<NetCanvas nodes={nodes} links={links} positions={{ grow: pos }} layout="grow" color="sequential" aria="…" />
+```
+
+### StepPlayer({ init, step, done, extraActions, speedMs, seed, render, label })
+
+Step, Play/Pause, Reset, `extraActions` (`[{ label, run(state, rng) }]`) and a speed slider around
+`render(state)`. `step(state, rng)` takes an rng from `mulberry32(seed)`, rebuilt by Reset, so a seed replays
+the run. Space plays or pauses and → steps while focus is in the player; Play stops at `done(state)` or when the
+player leaves the screen, and runs at most two steps a second under reduced motion. The counter beside the
+controls counts steps and extra actions, and is announced only while paused.
+
+```tsx
+<StepPlayer seed={7} init={() => baInit(2)} step={baStep} done={(s) => s.n >= 200} render={(s) => <Readouts items={[{ label: "Nodes", value: s.n }]} />} />
+```
+
+### useStepper({ init, step, done, seed, speedMs })
+
+StepPlayer's state without its controls: `{ state, steps, playing, done, speed, setSpeed, stepOnce, play, pause,
+toggle, reset, run }`.
+
+```tsx
+const p = useStepper({ init: () => 0, step: (s) => s + 1, seed: 1 });
+```
+
+### Readouts({ items, live, label })
+
+A row of labelled numbers, `items` `[{ label, value, sub }]`, the value large and `sub` a note under it. `live`
+announces changes politely. Plain HTML; renders nothing for no items.
+
+```tsx
+<Readouts items={[{ label: "Nodes", value: "43" }, { label: "Biggest hub", value: "k = 17", sub: "node 3" }]} />
+```
+
+## Text
+
+Pieces for the text weeks: tokens and their tags, signed contributions, search results side by side and one input
+under several methods. All plain HTML that renders on the server, toy data on `/styleguide/kit/` and awkward cases
+on `/styleguide/kit/states/`. Styles: the "Kit: Text" section of `post.css`.
+
+The methods are DOM-free in `src/kit/text-core.js`, tested by `tests/text-core.test.mjs`: `tokenize` and
+`tokenDetails` (letters with one inner apostrophe, optional clitic split, lowercase, punctuation and stopword
+filters over a small English `STOPWORDS` list), `ngrams` (n from 1 to 3), `bioSpans` (BIO tags to entity spans; an
+orphan I- opens a span), `makeRng`, `nextDistribution`, `sampleNext` and `generate` (a seeded Markov sampler over a
+`{ context: { token: prob } }` table with a temperature; greedy at 0), `scoreLexicon` (a lexicon sum where a negator
+flips matched words among the next three tokens, two negators cancel and . ! ? ends the reach), `tfidf`,
+`tfidfVector`, `countVector` and `cosine` (tf is count over length, idf is ln(N/df)), `ppmi`, `tfMatrix`,
+`tfidfMatrix`, `transformMatrix` and `nearestRow`, and `fitLogistic`, `predictLogistic` and `sigmoid` (batch
+gradient descent with seeded starting weights and an L2 penalty; each feature's contribution w·x, which with the
+bias sums to z).
+
+### TaggedTokens({ tokens, spans, gram, source, label })
+
+A row of token chips. Each token: `{ text, tag, tone, attrs }`, `tag` shown beneath the text, `tone` one of `"pos"`,
+`"neg"`, `"accent"` and `"muted"`, and `attrs` (`[name, value]` pairs) making the chip a button whose pop-up lists
+them on hover or focus. `spans` (`[{ start, end, label, tone }]`, `end` one past the last token) box runs of chips
+under their label, as named entities; a span that overlaps an earlier one is dropped and one past the end is cut.
+`gram: { n, active, onActive }` lists every n-token window, numbered, and marks the active one's chips. `source:
+{ value, onChange, label }` adds a textarea above that holds the raw string (R21).
+
+```tsx
+<TaggedTokens tokens={[{ text: "Iron", tag: "PER", tone: "accent" }, { text: "Man", tag: "PER", tone: "accent" }, { text: "met", tag: "O" }]} spans={[{ start: 0, end: 2, label: "PER: Iron Man" }]} />
+```
+
+### ContributionBars({ items, total, ends, max, fmt })
+
+Signed bars from a zero line in the middle, one per item (`[{ key, label, value, valueLabel }]`): negative to the
+left in `--bad`, positive to the right in `--good`, on one scale (`max`, or the largest magnitude). Under them a
+gauge between the two `ends` labels: with `total: { mode: "sum" }` the plain sum, with `{ mode: "sigmoid", bias }`
+the sum plus the bias through the logistic function, read as a probability. A value that is not a number counts as
+0; `fmt` writes the values.
+
+```tsx
+<ContributionBars items={[{ key: "great", label: "great", value: 1.1 }, { key: "boring", label: "boring", value: -0.6 }]} total={{ mode: "sigmoid", bias: -0.1 }} ends={["negative", "positive"]} />
+```
+
+### RankedResults({ columns, query, limit })
+
+One column per engine, side by side: `columns` is `[{ key, title, sub, results, empty }]`, each result
+`{ key, title, snippet, score, scoreLabel }`, the first `limit` (6) shown with a score bar on the column's own scale.
+Hovering or focusing a result marks the same key in every column. `query: { value, onChange, label, presets,
+onSubmit }` adds a search input that holds the raw string and a button per preset query.
+
+```tsx
+<RankedResults query={{ value: q, onChange: setQ, presets: ["mutant school"] }} columns={[{ key: "tfidf", title: "TF-IDF", results: [{ key: "d1", title: "Toy hero A", snippet: "…", score: 0.41 }] }]} />
+```
+
+### MethodCompare({ cards, facts })
+
+One input under several methods, a card each side by side: `cards` is `[{ key, title, blurb, body, note, accent }]`,
+titles numbered, `body` any content (say a `ContributionBars`), and `accent` the colour of the rule across the top
+(a token such as `"--access"` or any CSS colour; by default `--access`, `--good`, `--w4-group-0`, `--people` in
+turn). `facts` (`[label, value]` pairs) run in a row under the cards.
+
+```tsx
+<MethodCompare cards={[{ key: "lexicon", title: "Lexicon", blurb: "Each word adds its fixed score.", body: <ContributionBars items={items} />, note: "Ignores word order." }]} facts={[["Same input", "one sentence"]]} />
+```
+
+### CountMatrix and AxisMap: new options
+
+`CountMatrix` takes `transform`: `"count"` (the default, as before), `"ppmi"` (max(0, log2 P(w,c) / P(w)P(c))),
+`"tf"` or `"tfidf"` (rows read as documents), computed from the counts by `text-core.js` and written to two
+decimals; zeros stay 0. `nearest` adds a line naming the row closest to the highlighted one by cosine over the
+shown values.
+
+`AxisMap` takes `log` (both axes on a log scale over whole decades; points at or below 0 are left out and counted),
+`diagonal` (a dashed y = x, with both axes sharing one range on log axes), `sides: { above, below, similar, band }`
+(points coloured `--access` above the diagonal, `--people` below and grey within `band` of it, in place of the
+groups, with a legend of counts), `selected` (one key ringed and labelled) and `detail` (content under the map,
+such as the picked point's numbers).
+
+```tsx
+<CountMatrix rows={rows} cols={cols} cells={cells} highlightRow={0} transform="ppmi" nearest />
+<AxisMap points={rates} axes={axes} log diagonal sides={{ above: "more in A", below: "more in B", band: 0.15 }} selected={picked} onPick={setPicked} detail={<p>…</p>} />
+```
+
+## Distributions and nulls
+
+Four pieces for degree distributions and null models, with toy data on `/styleguide/kit/`. The numbers under
+them live in `src/kit/dist-core.js`, DOM-free and tested by `tests/dist-core.test.mjs`: `degrees` (in, out or
+undirected, from an edge list), `rawPk`, `binnedPk` (one bin per k below 8, then doubling bins), `ccdf`,
+`poisson` and `poissonCurve`, `powerLaw`, `exponential`, `lognormalFit`, `zipfIdeal`, `rankFrequency` (with tie
+levels), `envelope` (median and 5–95% per x across runs), `histogram`, `nullStats` (mean, sd, z, empirical p
+with the +1 correction) and `verdict`. Import them from `@/kit/dist-core.js`. Styles: the "Kit: distributions
+and nulls" section of `post.css`.
+
+### DistributionPlot({ series, refs, envelopes, views, defaultView, scale, scaleToggle, xLabel, yLabel, top, height, aria })
+
+A distribution on the kit's `EChart`. Each of `series` is `{ key, name, ks, points, style, color }`: raw values
+`ks` (say degrees) are drawn in the view the reader picks, raw, binned or CCDF; `points` (`[x, y]`) are drawn as
+given in every view; `style` is `"dots"` (the default) or `"line"`. `refs` (`[{ key, name, points, color }]`,
+dashed) and `envelopes` (`[{ key, name, rows: [{ x, median, lo, hi }], color }]`, a median line over a shaded
+band) are arrays or functions of the view. `scale` sets the starting axes (`{ x: "log", y: "log" }` by
+default); `scaleToggle` shows one linear/log–log toggle (`"joint"`), one per axis (`"split"`) or none. Points
+at 0 are left off a log axis and a note counts them. `top: { title, items: [{ label, value }] }` adds a ranked
+list beside the plot. Toggles are `SegmentedControl`s.
+
+```tsx
+<DistributionPlot series={[{ key: "in", name: "in-degree", ks }]} refs={(view) => poissonRef(ks, view)} top={{ title: "The tail", items }} aria="In-degrees against a Poisson" />
+```
+
+### NullHistogram({ samples, real, xLabel, normalOverlay, step, bins, realLabel, fmt })
+
+A permutation test as it grows: the first `step` of `samples` as a histogram, a fixed line at `real`, an
+optional normal curve with the same mean and sd, and readouts of the samples shown, null mean ± sd, z and the
+one- and two-sided empirical p. The x axis comes from every sample, so it holds still as `step` grows; a real
+value far beyond the samples stands at the edge with an arrow.
+
+```tsx
+<NullHistogram samples={shuffled} real={0.32} step={shown} normalOverlay xLabel="average clustering" />
+```
+
+### NullBoard({ measures, models, cells, alpha, fmt, caption })
+
+The survivor board: a small histogram per measure × null model with the real value's line, the panel's title
+naming its verdict and tinted by it (survives, dies, fixed by construction), and a table of the numbers under
+the grid. `measures` and `models` are `[{ key, label }]`; each of `cells` is `{ measure, model, samples, real,
+verdict }`, the verdict worked out by `verdict()` at `alpha` (0.05, two-sided) unless given. Hovering or focusing
+a panel highlights its row; hovering a row highlights its panel.
+
+```tsx
+<NullBoard measures={[{ key: "C", label: "Clustering" }]} models={[{ key: "gnm", label: "G(n, m)" }]} cells={[{ measure: "C", model: "gnm", samples, real: 0.32 }]} />
+```
+
+### NullBars({ rows, xLabel, fmt })
+
+Observed values against a null, one row per category: a bar for `observed`, the null mean with whiskers to
+±2 sd and z at the right, bold once |z| ≥ 2. Each row: `{ key, label, observed, samples }` or `{ key, label,
+observed, mean, sd }`. Long labels are cut with an ellipsis and keep their full text as a tooltip.
+
+```tsx
+<NullBars rows={[{ key: "hv", label: "hero – villain", observed: 268, mean: 301, sd: 13 }]} xLabel="links" />
+```

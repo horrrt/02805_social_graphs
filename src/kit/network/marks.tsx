@@ -19,6 +19,7 @@ export type NodeEvents = {
   hover?: (id: NetId, e: PointerEvent) => void;
   leave?: () => void;
   pin?: (id: NetId, e: MouseEvent) => void;
+  click?: (id: NetId) => void;
 };
 
 export type HubEvents = {
@@ -57,36 +58,48 @@ export const NodeMark = memo(function NodeMark({
   fs: (role: string) => number;
   events: NodeEvents;
 }) {
-  const { move, enter, hover, leave, pin } = events;
+  const { move, enter, hover, leave, pin, click } = events;
   const movable = mark.movable !== null && move;
+  // A node the page listens to (onNodeClick) and cannot move is a button too.
+  const pickable = !movable && click;
   const onClick = (e: MouseEvent) => {
     if (movable) move(mark);
     pin?.(mark.id, e);
+    click?.(mark.id);
   };
   const onKeyDown = movable
     ? (e: KeyboardEvent) => {
         if (pressed(e)) {
           e.preventDefault();
           move(mark);
+          click?.(mark.id);
         }
       }
-    : undefined;
+    : pickable
+      ? (e: KeyboardEvent) => {
+          if (pressed(e)) {
+            e.preventDefault();
+            click(mark.id);
+          }
+        }
+      : undefined;
   return (
     <g
       data-id={mark.id}
       className={cls}
       data-movable={movable ? "" : undefined}
-      tabIndex={movable ? 0 : undefined}
-      role={movable ? "button" : undefined}
-      aria-label={movable ? (mark.movable ?? undefined) : undefined}
-      onClick={movable || pin ? onClick : undefined}
+      data-pick={pickable ? "" : undefined}
+      tabIndex={movable || pickable ? 0 : undefined}
+      role={movable || pickable ? "button" : undefined}
+      aria-label={movable ? (mark.movable ?? undefined) : pickable ? (mark.name ?? String(mark.id)) : undefined}
+      onClick={movable || pin || click ? onClick : undefined}
       onKeyDown={onKeyDown}
       onPointerOver={enter ? (e) => crosses(e) && enter(mark.id, e) : undefined}
       onPointerMove={hover ? (e) => hover(mark.id, e) : undefined}
       onPointerOut={leave ? (e) => crosses(e) && leave() : undefined}
     >
       {mark.shapes.map((s, i) =>
-        "d" in s ? <path key={i} d={s.d} className={s.cls} /> : <circle key={i} cx={s.cx} cy={s.cy} r={s.r} className={s.cls} />,
+        "d" in s ? <path key={i} d={s.d} className={s.cls} /> : <circle key={i} cx={s.cx} cy={s.cy} r={s.r} className={s.cls} style={s.fill ? { fill: s.fill } : undefined} />,
       )}
       {mark.label ? (
         <text x={mark.label.x} y={mark.label.y} fontSize={fs(mark.label.role)} textAnchor="middle" className={mark.label.cls}>

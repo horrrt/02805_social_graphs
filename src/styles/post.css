@@ -3015,3 +3015,188 @@
 .corridor .kit-guess-board li.kit-target .kit-seg { background: var(--people); }
 .corridor .kit-guess-board em { color: var(--people); font-size: var(--fs-caption); font-style: normal; font-weight: 700; }
 .corridor .kit-guess-win { background: var(--good-soft); border: 1px solid var(--good-line); border-radius: 8px; color: var(--good); font-weight: 700; margin: 10px 0 0; padding: 8px 12px; }
+
+/* ==== Kit: networks (NetCanvas, StepPlayer, Readouts and NetworkView's
+   explorable additions in src/kit). Light corridor style; every control takes
+   the house focus ring. ==== */
+.corridor .kit-player:focus-visible, .corridor .kit-player :is(button, input, select):focus-visible { outline: 2px solid var(--w4-accent); outline-offset: 2px; }
+.corridor .kit-player { border-radius: 8px; }
+.corridor .kit-player .kit-controls button, .corridor .kit-net-demo .kit-controls button { background: var(--card); border: 1px solid var(--line); border-radius: 6px; color: var(--ink); cursor: pointer; font-size: var(--fs-small); padding: 4px 12px; }
+.corridor .kit-player .kit-controls button[aria-pressed="true"], .corridor .kit-net-demo .kit-controls button[aria-pressed="true"] { background: var(--w4-accent); border-color: var(--w4-accent); color: var(--card); }
+.corridor .kit-player .kit-controls button:disabled { cursor: not-allowed; opacity: 0.5; }
+.corridor .kit-player .kit-controls .kit-note { margin: 0; }
+.corridor .kit-net-demo .kit-controls select { border: 1px solid var(--line); border-radius: 6px; color: var(--ink); font-size: var(--fs-small); padding: 3px 6px; }
+.corridor .kit-net-demo :is(button, input, select):focus-visible { outline: 2px solid var(--w4-accent); outline-offset: 2px; }
+.corridor .kit-readouts dd.kit-readout-sub { color: var(--ink-mute-text); font-size: var(--fs-caption); font-weight: 400; }
+
+/* NetCanvas: one canvas, or a grid of small multiples. */
+.corridor .gv.kit-netcanvas { min-width: 0; }
+.corridor .kit-netcanvas-stage { position: relative; }
+.corridor .kit-netcanvas-stage canvas { display: block; height: 100%; width: 100%; }
+.corridor .kit-netcanvas-pick { cursor: pointer; }
+.corridor .kit-netcanvas-cell { min-width: 0; }
+.corridor .kit-netgrid { display: grid; gap: 12px 16px; }
+.corridor .kit-netcanvas-item { min-width: 0; }
+.corridor .kit-netcanvas-title { color: var(--ink-soft); font-size: var(--fs-caption); font-weight: 700; letter-spacing: 0.04em; margin: 0 0 4px; text-transform: uppercase; }
+.corridor .gv.gv-dark .kit-netcanvas-title, .corridor .gv.gv-dark .kit-note { color: var(--graph-ink); }
+
+/* NetworkView additions: states, highlighted links, arrowheads, clickable nodes. */
+.corridor .gv .gv-node.kit-net-is-ghost { opacity: 0.2; }
+.corridor .gv .gv-node.kit-net-is-picked { fill: var(--graph-accent); }
+.corridor .gv .gv-node.kit-net-is-new { fill: var(--people); }
+.corridor .gv .kit-net-ring { fill: none; pointer-events: none; stroke: var(--graph-ink); stroke-width: 2; }
+.corridor .gv .kit-net-ring.kit-net-picked { stroke: var(--graph-accent); }
+.corridor .gv .kit-net-ring.kit-net-new { stroke: var(--people); }
+.corridor .gv .gv-link.kit-net-hi { stroke: var(--graph-accent); stroke-opacity: 1; stroke-width: 2.5; }
+.corridor .gv .gv-link.kit-net-faint { stroke-opacity: 0.08; }
+.corridor .gv .kit-net-head { fill: var(--graph-edge); opacity: 0.75; }
+.corridor .gv .kit-net-head.kit-net-hi { fill: var(--graph-accent); opacity: 1; }
+.corridor .gv .kit-net-head.kit-net-faint { opacity: 0.1; }
+.corridor .gv [data-pick] { cursor: pointer; }
+.corridor .gv [data-pick]:focus-visible { outline: 2px solid var(--w4-accent); outline-offset: 2px; }
+
+/* ==== Kit: Text (TaggedTokens, ContributionBars, RankedResults, MethodCompare,
+   and the CountMatrix and AxisMap options in src/kit). Light corridor style;
+   every control takes the house focus ring. ==== */
+.corridor :is(.kit-tt, .kit-contrib, .kit-results, .kit-compare) :is(button, input, textarea, li[tabindex]):focus-visible { outline: 2px solid var(--w4-accent); outline-offset: 2px; }
+
+/* TaggedTokens: chips with a tag beneath, spans boxed under their label, the n-gram windows. */
+.corridor .kit-tt-source label, .corridor .kit-tt-grams h4, .corridor .kit-tt-head { color: var(--ink-soft); display: block; font-size: var(--fs-caption); font-weight: 600; letter-spacing: 0.04em; margin: 0 0 6px; text-transform: uppercase; }
+.corridor .kit-tt-head { margin-top: 12px; }
+.corridor .kit-tt-source { margin: 0 0 12px; }
+.corridor .kit-tt-source textarea { background: var(--card); border: 1px solid var(--line); border-radius: 6px; color: var(--ink); display: block; font-family: var(--font-mono); font-size: var(--fs-small); padding: 6px 8px; resize: vertical; width: 100%; }
+.corridor .kit-tt-row { align-items: flex-start; display: flex; flex-wrap: wrap; gap: 6px; list-style: none; margin: 0; padding: 0; }
+.corridor .kit-tt-row > li { max-width: 100%; min-width: 0; }
+.corridor .kit-tt-chip { align-items: center; background: var(--card); border: 1px solid var(--line); border-radius: 6px; color: var(--ink); display: inline-flex; flex-direction: column; font: inherit; max-width: 100%; min-height: 1.9em; min-width: 1.6em; padding: 2px 7px; vertical-align: top; }
+.corridor button.kit-tt-chip { cursor: help; }
+.corridor .kit-tt-text { font-family: var(--font-mono); font-size: var(--fs-small); max-width: 100%; overflow-wrap: anywhere; }
+.corridor .kit-tt-tag { color: var(--ink-mute-text); font-size: var(--fs-caption); max-width: 100%; overflow-wrap: anywhere; }
+.corridor .kit-tt-pos { background: var(--good-soft); border-color: var(--good-line); }
+.corridor .kit-tt-neg { background: color-mix(in srgb, var(--bad) 9%, var(--card)); border-color: color-mix(in srgb, var(--bad) 45%, var(--card)); }
+.corridor .kit-tt-accent { background: var(--access-soft); border-color: var(--access); }
+.corridor .kit-tt-chip.kit-tt-muted { border-style: dashed; color: var(--ink-mute-text); }
+.corridor .kit-tt-chip.kit-on { background: var(--w4-accent); border-color: var(--w4-accent); color: var(--card); }
+.corridor .kit-tt-chip.kit-on .kit-tt-tag { color: var(--card); }
+.corridor .kit-tt-pop-host { display: inline-block; max-width: 100%; position: relative; }
+.corridor .kit-tt-pop { background: var(--card); border: 1px solid var(--line); border-radius: 8px; box-shadow: var(--shadow); color: var(--ink); display: grid; font-size: var(--fs-caption); gap: 2px; left: 0; max-width: 18em; padding: 6px 10px; position: absolute; top: calc(100% + 4px); width: max-content; z-index: 5; }
+.corridor .kit-tt-pop span { overflow-wrap: anywhere; }
+.corridor .kit-tt-pop b { color: var(--ink-soft); font-family: var(--font-mono); font-weight: 600; }
+.corridor .kit-tt-span { background: var(--w4-inset); border: 1px solid var(--access); border-radius: 8px; display: inline-flex; flex-direction: column; gap: 3px; padding: 3px; }
+.corridor .kit-tt-span-chips { display: flex; flex-wrap: wrap; gap: 4px; }
+.corridor .kit-tt-span-label { color: var(--ink-soft); font-size: var(--fs-caption); font-weight: 700; overflow-wrap: anywhere; text-align: center; }
+.corridor .kit-tt-grams { margin: 14px 0 0; }
+.corridor .kit-tt-grams ol { display: grid; gap: 4px 12px; grid-template-columns: repeat(auto-fill, minmax(11em, 1fr)); list-style: none; margin: 0; padding: 0; }
+.corridor .kit-tt-grams li { align-items: center; display: flex; gap: 6px; min-width: 0; }
+.corridor .kit-tt-grams :is(button, span:not(.kit-rank)) { background: var(--card); border: 1px solid var(--line); border-radius: 8px; color: var(--ink); font-family: var(--font-mono); font-size: var(--fs-small); min-width: 0; overflow-wrap: anywhere; padding: 1px 9px; text-align: left; }
+.corridor .kit-tt-grams button { cursor: pointer; }
+.corridor .kit-tt-grams li.kit-on :is(button, span:not(.kit-rank)) { background: var(--w4-accent); border-color: var(--w4-accent); color: var(--card); }
+
+/* ContributionBars: label, a bar either side of zero, value; then the total's gauge. */
+.corridor .kit-contrib ol { list-style: none; margin: 0; padding: 0; }
+.corridor .kit-contrib ol > li { align-items: center; border-bottom: 1px solid var(--line-soft); display: grid; font-size: var(--fs-small); gap: 8px; grid-template-columns: minmax(0, 9em) minmax(0, 1fr) 4em; padding: 3px 0; }
+.corridor .kit-contrib-label { color: var(--ink); font-family: var(--font-mono); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.corridor .kit-contrib-track { background: var(--line-soft); border-radius: 3px; display: block; height: 10px; overflow: hidden; position: relative; }
+.corridor .kit-contrib-zero, .corridor .kit-contrib-mid { background: var(--ink-mute); bottom: 0; left: 50%; position: absolute; top: 0; width: 1px; }
+.corridor .kit-contrib-track :is(.kit-contrib-pos, .kit-contrib-neg) { bottom: 0; position: absolute; top: 0; }
+.corridor .kit-contrib-track .kit-contrib-pos { background: var(--good); left: 50%; }
+.corridor .kit-contrib-track .kit-contrib-neg { background: var(--bad); right: 50%; }
+.corridor .kit-contrib-total { margin: 10px 0 0; }
+.corridor .kit-contrib-readout { font-size: var(--fs-small); margin: 0 0 8px; }
+.corridor .kit-contrib-readout b { color: var(--ink-soft); font-size: var(--fs-caption); font-weight: 600; letter-spacing: 0.04em; text-transform: uppercase; }
+.corridor .kit-contrib-readout code { background: var(--w4-inset); border: 1px solid var(--line); border-radius: 6px; display: inline-block; font-size: var(--fs-small); max-width: 100%; overflow-wrap: anywhere; padding: 3px 8px; }
+.corridor .kit-contrib-gauge { background: linear-gradient(90deg, color-mix(in srgb, var(--bad) 18%, var(--card)), var(--line-soft) 50%, var(--good-soft)); border: 1px solid var(--line); border-radius: 999px; height: 12px; position: relative; }
+.corridor .kit-contrib-mark { background: var(--ink); border: 2px solid var(--card); border-radius: 999px; height: 18px; position: absolute; top: -4px; transform: translateX(-50%); width: 10px; }
+.corridor .kit-contrib-mark.kit-contrib-pos { background: var(--good); }
+.corridor .kit-contrib-mark.kit-contrib-neg { background: var(--bad); }
+.corridor .kit-contrib-ends { color: var(--ink-mute-text); display: grid; font-size: var(--fs-caption); gap: 8px; grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr); letter-spacing: 0.04em; margin: 4px 0 0; text-transform: uppercase; }
+.corridor .kit-contrib-ends span { overflow-wrap: anywhere; }
+.corridor .kit-contrib-ends span:last-child { text-align: right; }
+
+/* RankedResults: the query and its presets, then one column per engine. */
+.corridor .kit-results-query { align-items: center; display: flex; flex-wrap: wrap; gap: 8px 12px; margin: 0 0 12px; }
+.corridor .kit-results-query label { color: var(--ink-soft); font-size: var(--fs-small); font-weight: 600; }
+.corridor .kit-results-query input { border: 1px solid var(--line); border-radius: 6px; color: var(--ink); flex: 1 1 14em; font-size: var(--fs-small); min-width: 0; padding: 5px 9px; }
+.corridor .kit-results-presets { display: flex; flex-wrap: wrap; gap: 6px; min-width: 0; }
+.corridor .kit-results-presets button { background: var(--card); border: 1px solid var(--line); border-radius: 999px; color: var(--ink-soft); cursor: pointer; font: inherit; font-size: var(--fs-small); max-width: 100%; overflow-wrap: anywhere; padding: 3px 11px; text-align: left; }
+.corridor .kit-results-presets button[aria-pressed="true"] { background: var(--ink); border-color: var(--ink); color: var(--card); }
+.corridor .kit-results-cols { display: grid; gap: 14px; }
+.corridor .kit-results-col { background: var(--card); border: 1px solid var(--line); border-radius: 10px; min-width: 0; padding: 10px 12px; }
+.corridor .kit-results-col h4 { color: var(--ink); font-size: var(--fs-strong); margin: 0; overflow-wrap: anywhere; }
+.corridor .kit-results-sub { color: var(--ink-mute-text); font-size: var(--fs-caption); margin: 2px 0 8px; }
+.corridor .kit-results-col ol { list-style: none; margin: 0; padding: 0; }
+.corridor .kit-results-col li { border-bottom: 1px solid var(--line-soft); border-radius: 4px; display: grid; gap: 3px; padding: 6px 4px; }
+.corridor .kit-results-col li.kit-on { background: var(--w4-inset); box-shadow: inset 3px 0 0 var(--w4-accent); }
+.corridor .kit-results-head { align-items: baseline; display: flex; gap: 8px; justify-content: space-between; min-width: 0; }
+.corridor .kit-results-head b { color: var(--ink); font-size: var(--fs-small); min-width: 0; overflow-wrap: anywhere; }
+.corridor .kit-results-col .kit-track { height: 6px; }
+.corridor .kit-results-snippet { color: var(--ink-soft); font-size: var(--fs-caption); overflow-wrap: anywhere; }
+
+/* MethodCompare: one card per method with its accent rule on top, facts under. */
+.corridor .kit-compare-cards { display: grid; gap: 12px; list-style: none; margin: 0; padding: 0; }
+.corridor .kit-compare-cards > li { background: var(--card); border: 1px solid var(--line); border-radius: 10px; border-top: 3px solid; min-width: 0; padding: 10px 12px; }
+.corridor .kit-compare-cards h4 { color: var(--ink); font-size: var(--fs-strong); margin: 0 0 4px; overflow-wrap: anywhere; }
+.corridor .kit-compare-n { color: var(--ink-mute-text); font-variant-numeric: tabular-nums; }
+.corridor .kit-compare-blurb { color: var(--ink-soft); font-size: var(--fs-caption); margin: 0 0 10px; }
+.corridor .kit-compare-body { min-width: 0; overflow-wrap: anywhere; }
+.corridor .kit-compare-body > * + * { margin-top: 10px; }
+.corridor .kit-compare-facts { border-top: 1px solid var(--line); display: flex; flex-wrap: wrap; gap: 8px 28px; margin: 12px 0 0; padding: 10px 0 0; }
+.corridor .kit-compare-facts dt { color: var(--ink-mute-text); font-size: var(--fs-caption); }
+.corridor .kit-compare-facts dd { color: var(--ink); font-size: var(--fs-strong); font-weight: 700; margin: 0; overflow-wrap: anywhere; }
+
+/* AxisMap's legend and detail slot span the whole map. */
+.corridor .kit-axismap-foot { grid-column: 1 / -1; margin: 6px 0 0; }
+.corridor .kit-axismap-detail { background: var(--w4-inset); border: 1px solid var(--line); border-radius: 8px; font-size: var(--fs-small); overflow-wrap: anywhere; padding: 6px 12px; }
+.corridor .kit-axismap-detail p { margin: 0; }
+/* ==== Kit: distributions and nulls (DistributionPlot, NullHistogram, NullBoard,
+   NullBars in src/kit). Light corridor style; every control takes the house
+   focus ring. ==== */
+.corridor .kit-seg-label { color: var(--ink-soft); font-size: var(--fs-small); font-weight: 600; }
+.corridor .kit-btn { background: var(--card); border: 1px solid var(--w4-accent); border-radius: 6px; color: var(--w4-accent); cursor: pointer; font: inherit; font-size: var(--fs-small); font-weight: 600; padding: 3px 12px; }
+.corridor .kit-btn:hover:not(:disabled) { background: var(--w4-accent-soft); }
+.corridor .kit-btn:disabled { cursor: not-allowed; opacity: 0.5; }
+.corridor .kit-swatch-line, .corridor .kit-swatch-dash { background: none; border-radius: 0; border-top: 2px solid currentColor; height: 0; width: 16px; }
+.corridor .kit-swatch-dash { border-top-style: dashed; }
+.corridor .kit-swatch-dot { border-radius: 50%; }
+.corridor .kit-swatch-band { opacity: 0.35; width: 16px; }
+
+/* DistributionPlot: the plot, and the ranked list beside it when there is one. */
+.corridor .kit-dist-body { display: grid; gap: 20px; grid-template-columns: minmax(0, 1fr); }
+.corridor .kit-dist-body.kit-dist-with-top { grid-template-columns: minmax(0, 1fr) minmax(0, 15em); }
+.corridor .kit-dist-plot { min-width: 0; }
+.corridor .kit-dist-top h4 { color: var(--ink-soft); font-size: var(--fs-caption); letter-spacing: 0.04em; margin: 0 0 6px; text-transform: uppercase; }
+.corridor .kit-dist-top ol { list-style: decimal; margin: 0; padding-left: 1.6em; }
+.corridor .kit-dist-top li { color: var(--ink-mute-text); font-size: var(--fs-small); padding: 2px 0; }
+.corridor .kit-dist-top li > span { display: inline-block; vertical-align: bottom; }
+.corridor .kit-dist-top .kit-word { max-width: calc(100% - 4em); }
+.corridor .kit-dist-top .kit-num { font-weight: 700; margin-left: 6px; }
+
+/* NullHistogram: readouts read smaller than VectorAngle's, six in a row. */
+.corridor .kit-nullhist .kit-readouts dd { font-size: var(--fs-strong); }
+.corridor .kit-nullhist .kit-readouts small { color: var(--ink-mute-text); font-size: var(--fs-caption); font-weight: 400; }
+
+/* NullBoard: a grid of panels, then the verdict table. */
+.corridor .kit-board-grid { align-items: stretch; display: grid; gap: 8px; }
+.corridor .kit-board-head { align-self: end; color: var(--ink-soft); font-size: var(--fs-caption); font-weight: 700; letter-spacing: 0.04em; overflow-wrap: anywhere; text-transform: uppercase; }
+.corridor .kit-board-measure { align-self: center; color: var(--ink); font-size: var(--fs-small); font-weight: 600; overflow-wrap: anywhere; }
+.corridor .kit-board-panel { background: var(--card); border: 1px solid var(--line); border-radius: 8px; border-top-width: 3px; min-width: 0; padding: 6px 8px 2px; }
+.corridor .kit-board-panel > b { display: block; font-size: var(--fs-small); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.corridor .kit-board-panel > b small { color: var(--ink-mute-text); font-size: var(--fs-caption); font-weight: 400; margin-left: 6px; }
+.corridor .kit-board-panel.kit-on { background: var(--w4-inset); box-shadow: 0 0 0 1px var(--w4-accent); }
+.corridor .kit-board-panel:focus-visible { outline: 2px solid var(--w4-accent); outline-offset: 2px; }
+.corridor .kit-board-none { background: none; border-style: dashed; border-top-width: 1px; }
+.corridor .kit-board-table { border-collapse: collapse; font-size: var(--fs-small); margin: 16px 0 0; table-layout: fixed; width: 100%; }
+.corridor .kit-board-table caption { caption-side: bottom; color: var(--ink-mute-text); font-size: var(--fs-caption); padding-top: 6px; text-align: left; }
+.corridor .kit-board-table th { border-bottom: 1px solid var(--line); color: var(--ink-mute-text); font-size: var(--fs-caption); font-weight: 600; padding: 4px 6px; text-align: left; }
+.corridor .kit-board-table td { border-bottom: 1px solid var(--line-soft); overflow-wrap: break-word; padding: 4px 6px; }
+.corridor .kit-board-table :is(th, td).num { font-variant-numeric: tabular-nums; text-align: right; }
+.corridor .kit-board-table tr.kit-on td { background: var(--w4-inset); box-shadow: inset 0 -1px 0 var(--w4-accent); }
+.corridor .kit-verdict { font-weight: 700; }
+.corridor .kit-verdict-survives { color: var(--good); }
+.corridor .kit-verdict-dies { color: var(--bad); }
+.corridor .kit-verdict-fixed { color: var(--ink-mute-text); font-style: italic; }
+.corridor .kit-board-table col.kit-board-c-measure { width: 20%; }
+.corridor .kit-board-table col.kit-board-c-model { width: 16%; }
+.corridor .kit-board-table col.kit-board-c-num { width: 10%; }
+.corridor .kit-board-table col.kit-board-c-null { width: 18%; }
+.corridor .kit-board-table col.kit-board-c-verdict { width: 16%; }
+.corridor main .kit-board-table :is(th, td).num { white-space: normal; }

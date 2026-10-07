@@ -1,6 +1,9 @@
 import { PostSection } from "@/components/post/PostSection";
 import { SiteFooter } from "@/components/site/SiteFooter";
 import { KitState } from "@/features/kit-page/states";
+import { KitStateNetworks } from "@/features/kit-page/states-networks";
+import { TextState } from "@/features/kit-page/states-text";
+import { DistState } from "@/features/kit-page/states-distributions";
 
 export default function Page() {
   return (
@@ -169,6 +172,148 @@ export default function Page() {
           <h3>Text without its phrase</h3>
           <KitState state="term-missing" />
         </PostSection>
+        {/* ==== Kit: networks ==== */}
+        <PostSection id="state-networks">
+          <h2>Network explorables</h2>
+          <div className="w4-two">
+            <div>
+              <h3>NetCanvas: no nodes</h3>
+              <KitStateNetworks state="nw-canvas-empty" />
+            </div>
+            <div>
+              <h3>NetCanvas: one node with no position</h3>
+              <KitStateNetworks state="nw-canvas-one" />
+            </div>
+          </div>
+          <div className="w4-two">
+            <div>
+              <h3>NetCanvas: 2,000 nodes in a half-width column</h3>
+              <KitStateNetworks state="nw-canvas-big" />
+            </div>
+            <div>
+              <h3>NetCanvas: directed, a self-loop, equal values, every state, a missing end</h3>
+              <KitStateNetworks state="nw-canvas-loop" />
+            </div>
+          </div>
+          <h3>NetCanvas: four small multiples, one empty with a long title</h3>
+          <KitStateNetworks state="nw-canvas-multiples" />
+          <div className="w4-two">
+            <div>
+              <h3>NetCanvas: no specs</h3>
+              <KitStateNetworks state="nw-canvas-none" />
+            </div>
+            <div>
+              <h3>StepPlayer: done before the first step</h3>
+              <KitStateNetworks state="nw-player-done" />
+            </div>
+          </div>
+          <div className="w4-two">
+            <div>
+              <h3>NetworkView: every addition, all values equal</h3>
+              <KitStateNetworks state="nw-view-all" />
+            </div>
+            <div>
+              <h3>Readouts: long labels and eight items</h3>
+              <KitStateNetworks state="nw-readouts-long" />
+            </div>
+          </div>
+        </PostSection>
+        {/* ==== end Kit: networks ==== */}
+        {/* ==== Kit batch D: Text ==== */}
+        <PostSection id="state-text">
+          <h2>Text</h2>
+          <div className="w4-two">
+            <div>
+              <h3>TaggedTokens: no tokens, an empty source</h3>
+              <TextState state="text-tokens-empty" />
+            </div>
+            <div>
+              <h3>TaggedTokens: fewer tokens than n</h3>
+              <TextState state="text-tokens-short" />
+            </div>
+          </div>
+          <h3>TaggedTokens: long and empty tokens, overlapping and overrunning spans</h3>
+          <TextState state="text-tokens-awkward" />
+          <div className="w4-two">
+            <div>
+              <h3>ContributionBars: no items, a bias only</h3>
+              <TextState state="text-contrib-empty" />
+            </div>
+            <div>
+              <h3>ContributionBars: off the scale, zero, NaN, long labels</h3>
+              <TextState state="text-contrib-awkward" />
+            </div>
+          </div>
+          <h3>RankedResults: three columns, an empty one, long snippets, negative scores</h3>
+          <TextState state="text-results-awkward" />
+          <h3>RankedResults: no engines</h3>
+          <TextState state="text-results-none" />
+          <h3>MethodCompare: four cards, long titles, an empty body</h3>
+          <TextState state="text-compare-four" />
+          <h3>MethodCompare: no cards</h3>
+          <TextState state="text-compare-none" />
+          <div className="w4-two">
+            <div>
+              <h3>CountMatrix: PPMI of eighteen columns, a zero row highlighted</h3>
+              <TextState state="text-matrix-ppmi" />
+            </div>
+            <div>
+              <h3>CountMatrix: TF-IDF with an idf of 0 and an empty row</h3>
+              <TextState state="text-matrix-tfidf" />
+            </div>
+          </div>
+          <div className="w4-two">
+            <div>
+              <h3>AxisMap: log axes with zero, negative and far-apart points</h3>
+              <TextState state="text-logmap-edge" />
+            </div>
+            <div></div>
+          </div>
+        </PostSection>
+        {/* ==== end Kit batch D: Text ==== */}
+        {/* ==== Kit: distributions and nulls ==== */}
+        <PostSection id="state-distributions">
+          <h2>Distributions and nulls</h2>
+          <div className="w4-two">
+            <div>
+              <h3>DistributionPlot: no values, an empty side list</h3>
+              <DistState state="dist-empty" />
+            </div>
+            <div>
+              <h3>DistributionPlot: a single point</h3>
+              <DistState state="dist-single" />
+            </div>
+          </div>
+          <h3>DistributionPlot: zeros on log axes</h3>
+          <DistState state="dist-zeros" />
+          <h3>NullHistogram: the real value far outside the null</h3>
+          <DistState state="nullhist-far" />
+          <div className="w4-two">
+            <div>
+              <h3>NullHistogram: no samples</h3>
+              <DistState state="nullhist-empty" />
+            </div>
+            <div>
+              <h3>NullHistogram: one sample shown, equal to the real value</h3>
+              <DistState state="nullhist-one" />
+            </div>
+          </div>
+          <h3>NullBoard: every measure fixed by its null</h3>
+          <DistState state="board-fixed" />
+          <div className="w4-two">
+            <div>
+              <h3>NullBoard: very long labels, a missing cell</h3>
+              <DistState state="board-long" />
+            </div>
+            <div>
+              <h3>NullBars: long labels, a negative bar, no null, sd 0</h3>
+              <DistState state="bars-long" />
+            </div>
+          </div>
+          <h3>NullBars: no categories</h3>
+          <DistState state="bars-empty" />
+        </PostSection>
+        {/* ==== end Kit: distributions and nulls ==== */}
       </main>
       <SiteFooter>
         <span>
