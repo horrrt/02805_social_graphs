@@ -3,6 +3,7 @@
 // pages, watches the suspect board empty, and names the page from the leads
 // ranked by cosine similarity. Rules live in rules.ts; this file renders them.
 import { useMemo, useState } from "react";
+import { Face } from "./Face";
 import { IdfInline, TfIdfFormula } from "./Formulas";
 import { BestBox, clickButton, Lives, NextButton, ScoreBox, SkipLevel, Stat, StreakBox, useBest, useKeys } from "./LevelParts";
 import { boldness, LIMIT, speed, Ticker, timed, useCountdown, Worth } from "./pace";
@@ -22,21 +23,11 @@ type Outcome = { won: boolean; gained: number; streak: number; left: number; new
 const fmt = (x: number, d = 3) => x.toFixed(d);
 
 
-// "Ghost Rider (Danny Ketch)" -> "GR": the emblem for a page with no lead image.
-const initials = (name: string) =>
-  name
-    .replace(/\s*\(.*\)\s*/g, " ")
-    .split(/[\s-]+/)
-    .filter(Boolean)
-    .slice(0, 2)
-    .map((w) => w[0].toUpperCase())
-    .join("");
-
+// A suspect's portrait, or initials when no source has one (Face).
 function Portrait({ data, page, size }: { data: ClueShopData; page: number; size: "s" | "m" | "l" }) {
-  const p = data.pages[page];
   return (
     <span className="cr-face" data-size={size} data-tone={page % 4}>
-      {p.img ? <img src={p.img} alt="" loading="lazy" referrerPolicy="no-referrer" /> : <span aria-hidden="true">{initials(p.name)}</span>}
+      <Face name={data.pages[page].name} />
     </span>
   );
 }

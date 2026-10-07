@@ -36,7 +36,6 @@ from week06_lookalikes import name_words, stopwords, tokens  # noqa: E402
 
 ROOT = Path(__file__).resolve().parents[1]
 COMMUNITIES = ROOT / "public/weeks/week05/data/communities.json"
-IMAGES = Path(__file__).with_name("week06_cold_read_images.json")
 OUT = ROOT / "public/play/cold-read/data/whose_line.json"
 GROUPS, LEAN, SHARED, FLUKE, MIN_USES, PER_CLASS, CLOUD = 8, 1.5, 0.4, 0.6, 12, 10, 300
 
@@ -46,7 +45,6 @@ def main():
     groups = [c for c in comm["communities"] if c["where"] == "giant"][:GROUPS]
     text = t.pages()
     names = t.nodes().set_index("node_id").name
-    images = json.loads(IMAGES.read_text())
     skip = name_words(text.values()) | stopwords()
     counts = {p: Counter(w for w in tokens(text[p]) if w not in skip) for p in text}
     sizes = {p: len(tokens(text[p])) for p in text}
@@ -101,8 +99,7 @@ def main():
     out = {
         "source": "Week 5 consensus communities; 303 Marvel pages (course snapshot); rates per 10,000 words, names and stopwords removed",
         "groups": [{"label": c["label"], "size": c["size"], "tokens": s["tokens"],
-                    "hubs": [{"name": h["name"], "img": images[h["node_id"]]["thumb"].split("?")[0] if h["node_id"] in images else None}
-                             for h in c["hubs"][:3]]} for c, s in zip(groups, stats)],
+                    "hubs": [{"name": h["name"]} for h in c["hubs"][:3]]} for c, s in zip(groups, stats)],
         "pairs": pairs,
     }
     OUT.write_text(json.dumps(out, separators=(",", ":"), ensure_ascii=False))

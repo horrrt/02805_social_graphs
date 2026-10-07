@@ -4,7 +4,7 @@
 // each topic's top words, and for each playable page its topic mixture and
 // its most used words, each tagged with the topic most likely to produce it.
 
-export type MixPage = { name: string; img: string; theta: number[]; words: [string, number, number][] };
+export type MixPage = { name: string; theta: number[]; words: [string, number, number][] };
 export type MixDeskData = { K: number; vocab: number; topics: { words: [string, number][] }[]; pages: MixPage[] };
 
 export const CHIPS = 10;
