@@ -31,7 +31,7 @@ export const zero = () => 0;
   Object.defineProperty(globalThis, "localStorage", { value: memory, configurable: true });
 }
 
-/** Untick "Show me an example game first" in every round, so a start button starts the round. */
+/** Untick "Tutorial" in every round, so a start button starts the round. */
 export function noExamples() {
   for (const round of ["clue", "groups", "mix", "contexts", "vectors"]) localStorage.setItem(`cold-read:example:${round}`, "0");
 }

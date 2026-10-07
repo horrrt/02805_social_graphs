@@ -48,7 +48,7 @@ test("every round's start screen offers an example game, ticked by default", () 
     const { unmount } = render(game);
     const box = document.querySelector<HTMLInputElement>(".cr-start-actions input[type=checkbox]")!;
     assert.ok(box.checked, "the example is on by default");
-    assert.match(box.closest("label")!.textContent!, /Show me an example game first/);
+    assert.equal(box.closest("label")!.textContent, "Tutorial");
     assert.equal(document.querySelectorAll(".cr-hud button").length, 0, "the tutorial is not in the scoreboard");
     unmount();
   }

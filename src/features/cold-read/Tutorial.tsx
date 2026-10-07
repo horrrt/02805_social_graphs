@@ -94,8 +94,8 @@ export function useTour(steps: () => TourStep[], onDone: () => void): { run: () 
 const EXAMPLE = "cold-read:example:";
 
 /**
- * The start screen's controls: the start button and a checkbox, ticked by
- * default, that plays an example game first. A player who changes the box is
+ * The start screen's controls: the start button and a "Tutorial" checkbox,
+ * ticked by default, that plays an example game first. A player who changes the box is
  * remembered, per round, in this browser (localStorage, a convenience: a
  * private window simply starts ticked again).
  */
@@ -124,10 +124,7 @@ export function StartButtons({ label, start, tour, round }: { label: string; sta
       </button>
       <label className="cr-toggle cr-toggle-light">
         <input type="checkbox" checked={example} onChange={(e) => choose(e.target.checked)} />
-        <span>
-          Show me an example game first
-          <small>a guided round, then yours</small>
-        </span>
+        <span>Tutorial</span>
       </label>
     </div>
   );
