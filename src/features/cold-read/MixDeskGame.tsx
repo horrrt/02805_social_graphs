@@ -171,7 +171,7 @@ export function MixDeskGame({ data, random = Math.random, level, clock = Date.no
       {phase === "intro" || !page ? (
         <div className="cr-start">
           <Intro />
-          <StartButtons label="Open the first page" start={start} tour={tour} round="mix" />
+          <StartButtons label="Start" start={start} tour={tour} round="mix" />
         </div>
       ) : (
         <>

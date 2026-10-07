@@ -242,7 +242,7 @@ export function WhoseLineGame({ data, random = Math.random, level, clock = Date.
         <Hud score={score} streak={streak} lives={lives} right={right} best={best} playing={false} level={level} />
         <div className="cr-start">
           <Intro />
-          <StartButtons label="Start the first match" start={start} tour={tour} round="groups" />
+          <StartButtons label="Start" start={start} tour={tour} round="groups" />
         </div>
       </section>
     );

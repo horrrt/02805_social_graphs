@@ -351,7 +351,7 @@ export function ClueShopGame({ data, random = Math.random, level, hard = false, 
       {phase === "intro" ? (
         <div className="cr-start">
           <Intro />
-          <StartButtons label="Deal the first page" start={start} tour={tour} round="clue" />
+          <StartButtons label="Start" start={start} tour={tour} round="clue" />
         </div>
       ) : null}
 

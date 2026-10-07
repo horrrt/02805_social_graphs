@@ -23,7 +23,7 @@ beforeEach(() => {
 async function opened() {
   const user = userEvent.setup();
   render(<MixDeskGame data={data} random={zero} clock={still} />);
-  await user.click(screen.getByRole("button", { name: "Open the first page" }));
+  await user.click(screen.getByRole("button", { name: "Start" }));
   return user;
 }
 

@@ -211,7 +211,7 @@ export function TezguinoGame({ data, random = Math.random, level, clock = Date.n
       {phase === "intro" || !hidden ? (
         <div className="cr-start">
           <Intro />
-          <StartButtons label="Hide the first word" start={start} tour={tour} round="contexts" />
+          <StartButtons label="Start" start={start} tour={tour} round="contexts" />
         </div>
       ) : (
         <>

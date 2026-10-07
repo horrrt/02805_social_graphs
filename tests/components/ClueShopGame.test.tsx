@@ -23,7 +23,7 @@ beforeEach(() => {
 async function dealt() {
   const user = userEvent.setup();
   render(<ClueShopGame data={data} random={zero} clock={still} />);
-  await user.click(screen.getByRole("button", { name: "Deal the first page" }));
+  await user.click(screen.getByRole("button", { name: "Start" }));
   return user;
 }
 
@@ -84,7 +84,7 @@ test("hard mode, picked in the practice menu, deals the hard deck and offers no 
   const user = userEvent.setup();
   render(<ClueShopGame data={data} random={zero} clock={still} hard />);
   assert.equal(screen.queryByRole("checkbox", { name: /Hard mode/ }), null, "the round itself has no switch");
-  await user.click(screen.getByRole("button", { name: "Deal the first page" }));
+  await user.click(screen.getByRole("button", { name: "Start" }));
   const off = shuffled(round.hard, zero);
   off.forEach((c, i) => assert.match(card(i).getAttribute("aria-label")!, new RegExp(`${c.n} times here, on ${data.words[c.w].df} of`)));
   assert.ok(off.filter((c) => c.kind === "sharp").every((c) => data.words[c.w].df >= 6), "hard cards are on 6 pages or more");

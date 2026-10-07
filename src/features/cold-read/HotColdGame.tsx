@@ -251,7 +251,7 @@ export function HotColdGame({ data, random = Math.random, level, clock = Date.no
       {phase === "intro" ? (
         <div className="cr-start">
           <Intro />
-          <StartButtons label="Hide the first word" start={start} tour={tour} round="vectors" />
+          <StartButtons label="Start" start={start} tour={tour} round="vectors" />
         </div>
       ) : null}
 
