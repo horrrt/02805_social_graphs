@@ -1,5 +1,6 @@
 import { Drawer } from "@/components/post/Drawer";
 import { Drawers } from "@/components/post/Drawers";
+import { QuestionPart } from "@/features/week04/questions/Questions";
 import { GlossTerm } from "./GlossTerm";
 
 // Section 2: which jobs go together.
@@ -125,7 +126,7 @@ export function Jobs() {
               Bars show how alike the two groups' job clusters are. Whiskers
               span one standard deviation.
             </p>
-            <div className="w4-figure-body" id="chart-jobs-split-nmi"></div>
+            <QuestionPart part="splitNmi" />
           </div>
           <div className="plot">
             <h3>The largest occupations in each group</h3>
@@ -133,7 +134,7 @@ export function Jobs() {
               Share of each group's filings, for the eight occupations with
               the most filings overall.
             </p>
-            <div className="chart-host" id="chart-jobs-split-mix"></div>
+            <QuestionPart part="splitMix" />
           </div>
         </div>
         <Drawers variant="foot">
@@ -184,7 +185,7 @@ export function Jobs() {
               <b>Where the links go</b>
               <span>Link communities pour almost every link into one community.</span>
             </figcaption>
-            <div className="w4-figure-body" id="chart-jobs-linkcom-share"></div>
+            <QuestionPart part="linkShare" />
           </figure>
           <figure className="w4-figure">
             <figcaption>
@@ -193,7 +194,7 @@ export function Jobs() {
                 Each dot is a job; dashed lines mark equal rates.
               </span>
             </figcaption>
-            <div className="w4-figure-body" id="chart-jobs-linkcom-scatter"></div>
+            <QuestionPart part="linkScatter" />
           </figure>
         </div>
         <Drawers variant="foot">
@@ -214,17 +215,7 @@ export function Jobs() {
             </p>
           </Drawer>
           <Drawer label="Table: 15 jobs in the most communities">
-            <table className="ego">
-              <thead>
-                <tr>
-                  <th>Occupation</th>
-                  <th style={{"textAlign":"right"}}>Links</th>
-                  <th style={{"textAlign":"right"}}>Communities</th>
-                  <th style={{"textAlign":"right"}}>Per link</th>
-                </tr>
-              </thead>
-              <tbody id="jobs-linkcom-table"></tbody>
-            </table>
+            <QuestionPart part="linkcom" />
           </Drawer>
         </Drawers>
       </div>

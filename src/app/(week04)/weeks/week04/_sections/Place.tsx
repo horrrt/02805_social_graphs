@@ -2,6 +2,7 @@ import { Drawer } from "@/components/post/Drawer";
 import { Drawers } from "@/components/post/Drawers";
 import { PlaceOpenerStrip } from "@/features/week04/frame/Findings";
 import { PlacePart } from "@/features/week04/place/Place";
+import { QuestionPart } from "@/features/week04/questions/Questions";
 import { GlossTerm } from "./GlossTerm";
 
 // Section 1: where the hiring is, the metro network and its backbone.
@@ -286,7 +287,7 @@ export function Place() {
               the Louvain groups and one labelling.
               Orange bars describe who hires, grey bars where the city is.
             </p>
-            <div className="chart-host short" id="chart-where-who"></div>
+            <QuestionPart part="whereWho" />
           </div>
         </div>
       </div>
@@ -361,18 +362,7 @@ export function Place() {
                 </p>
               </Drawer>
               <Drawer label="Table: 14 links that peel metros off">
-                <table className="ego">
-                  <thead>
-                    <tr>
-                      <th>Link</th>
-                      <th style={{"textAlign":"right"}}>α</th>
-                      <th style={{"textAlign":"right"}}>Weight</th>
-                      <th>Leading company</th>
-                      <th style={{"textAlign":"right"}}>Its share</th>
-                    </tr>
-                  </thead>
-                  <tbody id="where-break-links"></tbody>
-                </table>
+                <QuestionPart part="whereBreakLinks" />
               </Drawer>
             </Drawers>
           </div>
@@ -383,7 +373,7 @@ export function Place() {
               falls, links go and metros drop out of the largest connected
               piece.
             </p>
-            <div className="chart-host short" id="chart-where-break"></div>
+            <QuestionPart part="whereBreak" />
           </div>
         </div>
       </div>

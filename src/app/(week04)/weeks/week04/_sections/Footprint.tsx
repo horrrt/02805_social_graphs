@@ -1,5 +1,6 @@
 import { Drawer } from "@/components/post/Drawer";
 import { Drawers } from "@/components/post/Drawers";
+import { QuestionPart } from "@/features/week04/questions/Questions";
 import { GlossTerm } from "./GlossTerm";
 
 // Section 4: the networks without the biggest firms.
@@ -54,7 +55,7 @@ export function Footprint() {
             groups: 1 means unchanged. Metros on the left, jobs on the
             right.
           </p>
-          <div className="chart-host jobs-nmi" id="chart-footprint-nmi"></div>
+          <QuestionPart part="footprintNmi" />
         </div>
         <div className="plot">
           <h3>Do the metro groups follow Census regions?</h3>
@@ -64,7 +65,7 @@ export function Footprint() {
             same share of filings (mean of 50, whisker one standard
             deviation). The dashed line is the full network.
           </p>
-          <div className="chart-host jobs-nmi" id="chart-footprint-region"></div>
+          <QuestionPart part="footprintRegion" />
         </div>
       </div>
       <Drawers variant="foot">
@@ -136,14 +137,14 @@ export function Footprint() {
             <p className="axis-note">
               Orange: the metro groups’ match with Census regions as the largest filers leave. Grey band: random cuts of the same size. Hover a point for the firm.
             </p>
-            <div className="chart-host jobs-nmi" id="chart-footprint-rank"></div>
+            <QuestionPart part="footprintRank" />
           </div>
           <div className="plot">
             <h3>One firm out at a time</h3>
             <p className="axis-note">
               Orange: the match with one firm removed. Grey: random cuts of the same size. Dashed line: the full network.
             </p>
-            <div className="chart-host jobs-nmi" id="chart-footprint-single"></div>
+            <QuestionPart part="footprintSingle" />
           </div>
         </div>
         <Drawers variant="foot">

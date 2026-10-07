@@ -1,5 +1,6 @@
 import { Drawer } from "@/components/post/Drawer";
 import { Drawers } from "@/components/post/Drawers";
+import { QuestionPart } from "@/features/week04/questions/Questions";
 import { GlossTerm } from "./GlossTerm";
 
 // Section 5: beyond the three networks.
@@ -123,7 +124,7 @@ export function Beyond() {
               50 rewired law-firm networks in which every company and law firm
               keeps its number of partners.
             </p>
-            <div className="chart-host short" id="chart-beyond-law"></div>
+            <QuestionPart part="beyondLaw" />
           </div>
         </div>
       </div>
@@ -196,7 +197,7 @@ export function Beyond() {
               The six on the right are the largest
               section 3 groups, named after their largest firm.
             </p>
-            <div className="chart-host short" id="chart-beyond-perm"></div>
+            <QuestionPart part="beyondPerm" />
           </div>
         </div>
       </div>
@@ -269,7 +270,7 @@ export function Beyond() {
             <p className="axis-note">
               The five occupations with the most filings. Orange bars are filings that place the worker at a client, blue bars filings for the employer's own site.
             </p>
-            <div className="chart-host short" id="chart-beyond-wage"></div>
+            <QuestionPart part="beyondWage" />
           </div>
         </div>
       </div>

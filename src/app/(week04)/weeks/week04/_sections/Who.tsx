@@ -1,5 +1,6 @@
 import { Drawer } from "@/components/post/Drawer";
 import { Drawers } from "@/components/post/Drawers";
+import { QuestionPart } from "@/features/week04/questions/Questions";
 import { GlossTerm } from "./GlossTerm";
 
 // Section 3: who staffs whom.
@@ -203,7 +204,7 @@ export function Who() {
             <p className="axis-note">
               Share of switches whose new main vendor is in the client's group of the earlier year, for each pair of years. Grey bars are the baseline; whiskers span one standard deviation.
             </p>
-            <div className="chart-host short" id="chart-who-switch"></div>
+            <QuestionPart part="whoSwitch" />
           </div>
         </div>
       </div>
@@ -252,18 +253,7 @@ export function Who() {
                 </p>
               </Drawer>
               <Drawer label="Table: 15 largest movers">
-                <table className="ego">
-                  <thead>
-                    <tr>
-                      <th>Client</th>
-                      <th style={{"textAlign":"right"}}>Filings</th>
-                      <th style={{"textAlign":"right"}}>Vendors</th>
-                      <th>Group, weighted</th>
-                      <th>Group, unweighted</th>
-                    </tr>
-                  </thead>
-                  <tbody id="who-movers-table"></tbody>
-                </table>
+                <QuestionPart part="whoMoversTable" />
                 <p className="fineprint">A group is named after its largest firm.</p>
               </Drawer>
             </Drawers>
@@ -273,7 +263,7 @@ export function Who() {
             <p className="axis-note">
               The first two bars compare two seeds of the same kind; the third compares the weighted partition with the unweighted one.
             </p>
-            <div className="chart-host short" id="chart-who-movers"></div>
+            <QuestionPart part="whoMovers" />
           </div>
         </div>
       </div>
@@ -315,18 +305,7 @@ export function Who() {
                 </p>
               </Drawer>
               <Drawer label="Table: 15 largest split clients">
-                <table className="ego">
-                  <thead>
-                    <tr>
-                      <th>Client</th>
-                      <th style={{"textAlign":"right"}}>Filings</th>
-                      <th>First group</th>
-                      <th>Second group</th>
-                      <th>Main vendor</th>
-                    </tr>
-                  </thead>
-                  <tbody id="who-overlap-table"></tbody>
-                </table>
+                <QuestionPart part="whoOverlapTable" />
               </Drawer>
             </Drawers>
           </div>
@@ -335,7 +314,7 @@ export function Who() {
             <p className="axis-note">
               The count for the real network against the mean of 100 rewired networks; the whisker spans one standard deviation.
             </p>
-            <div className="chart-host short" id="chart-who-overlap"></div>
+            <QuestionPart part="whoOverlap" />
           </div>
         </div>
       </div>

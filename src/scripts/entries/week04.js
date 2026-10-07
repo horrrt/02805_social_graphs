@@ -20,7 +20,6 @@ await run([
   () => import("../week04-pagerank.js"),
   () => import("../week04-jobs.js"),
   () => import("../week04-staffing.js"),
-  () => import("../week04-questions.js"),
   () => import("../week04-vis-more.js"),
   () => import("../week04-vis-intros.js"),
   () => import("../week04-vis-staffing.js"),
