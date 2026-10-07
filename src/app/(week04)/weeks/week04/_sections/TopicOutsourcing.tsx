@@ -1,0 +1,576 @@
+import { Drawer } from "@/components/post/Drawer";
+import { Drawers } from "@/components/post/Drawers";
+import { GlossTerm } from "./GlossTerm";
+
+// Deep dive topic: outsourcing firms and their clients.
+export function TopicOutsourcing() {
+  return (
+    <details className="rx-topic" id="topic-outsourcing" name="w4-topic">
+      <summary>Outsourcing firms and their clients</summary>
+      <div className="rx-topic-bar">
+        <a className="rx-back" href="#cut">← Deep dive</a>
+        <div>
+          <h2 className="rx-topic-title">Outsourcing firms and their clients</h2>
+          <p className="rx-topic-holds">Who places workers where, and how tightly.</p>
+        </div>
+        <span className="rx-topic-count"></span>
+      </div>
+      <nav aria-label="Boxes in this topic" className="rx-toc">
+        <a className="rx-toc-item" href="#who-q2">Do clients group by industry or by the firm that staffs them?</a>
+        {" "}
+        <a className="rx-toc-item" href="#who-q3">Who relies on a single vendor?</a>
+        {" "}
+        <a className="rx-toc-item" href="#staffing-figure">The client network, year by year</a>
+        {" "}
+        <a className="rx-toc-item" href="#staffing-community-stats">With filing counts or without?</a>
+        {" "}
+        <a className="rx-toc-item" href="#staffing-ties">Strong ties, weak ties and pay</a>
+        {" "}
+        <a className="rx-toc-item" href="#deeper-strength">Strength against degree: where do the heavy links go?</a>
+        {" "}
+        <a className="rx-toc-item" href="#entity-communities">Every worker and company, grouped by what they do</a>
+      </nav>
+      <details className="rx-panel" name="w4-panel-outsourcing" data-box="who-q2">
+        <summary>Do clients group by industry or by the firm that staffs them?</summary>
+        <div className="card w4-card">
+          <div className="w4-q-block" id="who-q2">
+            <header className="w4-q">
+              <span className="w4-num">1</span>
+              <div>
+                <h2>Do clients group by industry or by the firm that staffs them?</h2>
+                <p className="w4-answer">By both, weakly, and slightly more by vendor.</p>
+              </div>
+            </header>
+            <div className="w4-two">
+              <div>
+                <figure className="w4-figure">
+                  <figcaption>
+                    <b>Groups against rewired networks</b>
+                    <span>
+                      <GlossTerm id="w4-term-topic-outsourcing-modularity" word="Modularity">
+                        How much more of the link weight falls inside the groups than a random network would put there. Higher means cleaner groups.
+                      </GlossTerm>
+                      {" "}
+                      of the real firm–client network, real against
+                      {" "}
+                      <GlossTerm id="w4-term-topic-outsourcing-rewired" word="rewired networks">
+                        Random copies of the network in which every firm and client keeps its number of partners, but the partners are dealt out again at random.
+                      </GlossTerm>
+                      {" "}
+                      that keep everyone's number of partners.
+                    </span>
+                  </figcaption>
+                  <div className="w4-figure-body" data-strip="who-q2-modularity"></div>
+                </figure>
+              </div>
+              <div>
+                <figure className="w4-figure">
+                  <figcaption>
+                    <b>Match with vendor and industry</b>
+                    <span>
+                      <GlossTerm id="w4-term-topic-outsourcing-ami" word="AMI">
+                        Adjusted mutual information: how closely two ways of grouping the same clients agree, corrected for the agreement random labels would reach by chance.
+                      </GlossTerm>
+                      {" "}
+                      between the groups and each client's main vendor or industry, 0 = labels dealt at random. Filled: the main vendor; hollow: the industry.
+                    </span>
+                  </figcaption>
+                  <div className="w4-figure-body" data-strip="who-q2-ami"></div>
+                </figure>
+              </div>
+            </div>
+            <Drawers variant="foot">
+              <Drawer label="More numbers">
+                <p>
+                  With every firm–client link counted once, Louvain splits the network into about 65 groups, and the split beats rewired networks that keep everyone's number of partners (modularity 0.57 against 0.53). Among the 1,209 clients with a known industry and two or more firms, the groups match the main vendor at an adjusted mutual information (AMI) of 0.11 and the industry at 0.07; both beat shuffled labels.
+                </p>
+                <p>
+                  AMI corrects NMI for chance, which matters here: these clients have 478 main vendors but only 17 industries. Counting filings pulls clients to their main vendor (AMI 0.48 against 0.07), but that split scores below rewired networks with the same filing counts (0.60 against 0.74), and the vendor's head start is built in: the vendor is a node in the same network, and 86% of these clients land in its group.
+                </p>
+              </Drawer>
+            </Drawers>
+          </div>
+        </div>
+      </details>
+      <details className="rx-panel" name="w4-panel-outsourcing" data-box="who-q3">
+        <summary>Who relies on a single vendor?</summary>
+        <div className="card w4-card">
+          <div className="w4-q-block" id="who-q3">
+            <header className="w4-q">
+              <span className="w4-num">2</span>
+              <div>
+                <h2>Who relies on a single vendor?</h2>
+                <p className="w4-answer">Small clients.</p>
+              </div>
+            </header>
+            <p className="sub">14,678 of the 18,900 clients use one firm, but they hold 22% of placed filings.</p>
+            <div className="rx-fig-row">
+              <figure className="w4-figure">
+                <figcaption>
+                  <b>One firm, many clients, few filings</b>
+                  <span>
+                    Clients that use a single firm, as a share of all clients and of all placed filings, 2025.
+                  </span>
+                </figcaption>
+                <div className="w4-figure-body" data-strip="who-q3-concentration"></div>
+              </figure>
+              <figure className="w4-figure">
+                <figcaption>
+                  <b>How concentrated the big clients are</b>
+                  <span>
+                    The dot is the median share of a client's filings held by its largest vendor, among clients with 20 or more filings; the dashed line marks 90%.
+                  </span>
+                </figcaption>
+                <div className="w4-figure-body" data-strip="who-q3-topshare"></div>
+              </figure>
+            </div>
+            <Drawers variant="foot">
+              <Drawer label="More numbers">
+                <p>
+                  Of the 629 clients with 20 or more filings, 69 get over 90% from one firm, and the median one gets 37% from its largest.
+                </p>
+                <p>
+                  Citigroup, the largest client, uses 114 firms, and Tata Consultancy Services supplies a quarter. The eight largest firms supply only 27% of what the 20 largest clients receive.
+                </p>
+              </Drawer>
+            </Drawers>
+          </div>
+        </div>
+      </details>
+      <details className="rx-panel" name="w4-panel-outsourcing" data-box="staffing-figure">
+        <summary>The client network, year by year</summary>
+        <div className="card w4-card">
+          <header className="w4-q">
+            <span className="w4-num">3</span>
+            <div>
+              <h2>The client network, year by year</h2>
+            </div>
+          </header>
+          <figure className="staffing" id="staffing-figure">
+            <div className="staffing-controls">
+              <div aria-label="Fiscal year, October to September" className="staffing-years" role="group">
+                <button aria-pressed="false" data-year="2022" type="button">2022</button>
+                <button aria-pressed="false" data-year="2023" type="button">2023</button>
+                <button aria-pressed="false" data-year="2024" type="button">2024</button>
+                <button aria-pressed="true" data-year="2025" type="button">2025</button>
+                <button aria-pressed="false" data-year="2026" type="button">
+                  2026 · Oct–Jun
+                </button>
+              </div>
+              <label className="staffing-search">
+                Find a client
+                {" "}
+                <input autoComplete="off" list="staffing-names" type="search" />
+                <datalist id="staffing-names"></datalist>
+              </label>
+            </div>
+            <div className="staffing-grid">
+              <div className="staffing-chart">
+                <div aria-label="Scatter plot of client companies: placed H-1B filings against the share supplied by the client's largest vendor. The table below lists the same data." className="chart-host" role="img"></div>
+              </div>
+              <div aria-live="polite" className="staffing-panel">Loading the filings…</div>
+            </div>
+            <figcaption>
+              One dot per client company with 20 or more H-1B filings that placed
+              a worker there in the year: further right, more filings; higher up,
+              more of them from a single outsourcing firm. Click a dot or type a
+              name to see who supplies that client.
+            </figcaption>
+            <div className="rx-table-block">
+              <h4>The 25 largest clients</h4>
+              <table>
+                <thead>
+                  <tr>
+                    <th>Client</th>
+                    <th>Sector</th>
+                    <th className="num">Filings</th>
+                    <th className="num">Vendors</th>
+                    <th>Largest vendor</th>
+                    <th className="num">Its share</th>
+                  </tr>
+                </thead>
+                <tbody></tbody>
+              </table>
+            </div>
+            <div className="staffing-flows">
+              <h3>Who supplies the largest clients</h3>
+              <div aria-label="Flow chart: the eight outsourcing firms that place the most H-1B filings, plus one source for all other firms, on the left; the twenty clients that receive the most on the right; a band for the filings between each pair." className="chart-host" role="img"></div>
+              <p className="flows-caption">
+                The eight firms that place the most filings, and the 20
+                clients that receive the most, in the year chosen above. Band
+                width is the number of placed filings from a firm to a client;
+                the grey source gathers every other firm. Each client sits next
+                to the named firm that supplies it most. Hover a firm or a
+                client to follow its bands.
+                {" "}
+                <span className="flows-coverage"></span>
+              </p>
+            </div>
+          </figure>
+          <Drawers variant="foot">
+            <Drawer label="Background">
+              <p>
+                Only three sectors get a colour: finance and insurance, manufacturing and health care. Other known sectors are light grey, and the palest dots are clients with no sector on record.
+              </p>
+              <p>
+                Band width is the number of placed filings from a firm to a client; the grey source gathers every other firm. Each client sits next to the named firm that supplies it most.
+              </p>
+            </Drawer>
+          </Drawers>
+        </div>
+      </details>
+      <details className="rx-panel" name="w4-panel-outsourcing" data-box="staffing-community-stats">
+        <summary>With filing counts or without?</summary>
+        <div className="card w4-card" id="staffing-community-stats">
+          <header className="w4-q">
+            <span className="w4-num">4</span>
+            <div>
+              <h2>With filing counts or without?</h2>
+              <p className="w4-answer">
+                Filing counts change the grouping: the two partitions share an
+                {" "}
+                <GlossTerm id="w4-term-staffing-community-stats-nmi" word="NMI">
+                  Normalised mutual information: how much two groupings of the same clients agree, from unrelated to identical. Unlike AMI, it is not corrected for chance.
+                </GlossTerm>
+                {" "}
+                of
+                {" "}
+                <b className="cross">…</b>
+                , less than two seeds of either kind (
+                <b className="seeds">…</b>
+                {" "}
+                weighted,
+                {" "}
+                <b className="seeds-plain">…</b>
+                {" "}
+                unweighted).
+              </p>
+            </div>
+          </header>
+          <div className="w4-two">
+            <div>
+              <p className="sub">
+                Filing counts pull clients toward vendors: AMI with each client's main vendor rises from
+                {" "}
+                <b className="vendor-plain">…</b>
+                {" "}
+                to
+                {" "}
+                <b className="vendor">…</b>
+                {" "}
+                when filings count, while AMI with industry stays near
+                {" "}
+                <b className="industry">…</b>
+                .
+              </p>
+              <p className="sub">
+                Against rewired networks, without weights the real network wins (
+                <b className="mod-plain">…</b>
+                {" "}
+                against
+                {" "}
+                <b className="null-plain">…</b>
+                ); with weights it loses (
+                <b className="mod">…</b>
+                {" "}
+                against
+                {" "}
+                <b className="null">…</b>
+                ).
+              </p>
+              <table className="ego">
+                <thead>
+                  <tr>
+                    <th></th>
+                    <th style={{"textAlign":"right"}}>Weighted</th>
+                    <th style={{"textAlign":"right"}}>Unweighted</th>
+                  </tr>
+                </thead>
+                <tbody></tbody>
+              </table>
+              <Drawers variant="foot">
+                <Drawer label="Method">
+                  <p>
+                    We ran
+                    {" "}
+                    <GlossTerm id="w4-term-staffing-community-stats-louvain" word="Louvain">
+                      A method that finds groups in a network by moving nodes between groups until the links inside groups are as dense as they can get. It starts from a random order, so two runs can differ.
+                    </GlossTerm>
+                    {" "}
+                    on the 2025 firm–client network 100 times each way: with links weighted by filings, and with every link counting one.
+                  </p>
+                  <p>
+                    The
+                    {" "}
+                    <GlossTerm id="w4-term-staffing-community-stats-null" word="null model">
+                      A random version of the network that keeps some of its features, here each node's number of partners, to show what chance alone would give.
+                    </GlossTerm>
+                    {" "}
+                    rewires the network so every firm and client keeps its number of partners.
+                  </p>
+                  <p>
+                    Infomap agrees with Louvain at NMI
+                    {" "}
+                    <b className="im-louvain">…</b>
+                    . Finer partitions raise every NMI; AMI corrects for that, so it is the number to compare across methods.
+                  </p>
+                </Drawer>
+                <Drawer label="More numbers">
+                  <p>
+                    Infomap, which follows a random walk instead of counting links, splits the same network into
+                    {" "}
+                    <b className="im-modules">…</b>
+                    {" "}
+                    small modules, most of them a firm with its clients. Like weighted Louvain, it follows the vendor far more than the industry (AMI
+                    {" "}
+                    <b className="im-vendor">…</b>
+                    {" "}
+                    against
+                    {" "}
+                    <b className="im-industry">…</b>
+                    ).
+                  </p>
+                  <p>
+                    The null also deals the filing counts back out at random. Rewiring breaks the network into a median of
+                    {" "}
+                    <b className="pieces">…</b>
+                    {" "}
+                    pieces, each a free community, so we score each rewired network on its largest piece, as we do the real one. The real network also loses when only the filing counts are shuffled on the real links (
+                    <b className="null-weights">…</b>
+                    ). The real counts leave
+                    {" "}
+                    <b className="cross-share">…</b>
+                    {" "}
+                    of filings on links between groups, against
+                    {" "}
+                    <b className="cross-share-null">…</b>
+                    {" "}
+                    with shuffled counts: clients that use several firms hold
+                    {" "}
+                    <b className="multi-links">…</b>
+                    {" "}
+                    of the links but
+                    {" "}
+                    <b className="multi-filings">…</b>
+                    {" "}
+                    of the filings, and only their links can cross, since a client with one firm sits in that firm's group.
+                  </p>
+                </Drawer>
+              </Drawers>
+            </div>
+            <div>
+              <figure className="w4-figure">
+                <figcaption>
+                  <b>Modularity with and without filing counts</b>
+                  <span>
+                    Dots: the real network. Grey: rewired networks, or the real links with their filing counts shuffled.
+                  </span>
+                </figcaption>
+                <div className="w4-figure-body" data-strip="staffing-community-modularity"></div>
+              </figure>
+            </div>
+          </div>
+        </div>
+      </details>
+      <details className="rx-panel" name="w4-panel-outsourcing" data-box="staffing-ties">
+        <summary>Strong ties, weak ties and pay</summary>
+        <div className="card w4-card" id="staffing-ties">
+          <header className="w4-q">
+            <span className="w4-num">5</span>
+            <div>
+              <h2>Strong ties, weak ties and pay</h2>
+              <p className="w4-answer">Here the pattern runs the other way, faintly.</p>
+            </div>
+          </header>
+          <p className="sub">
+            Among friends, the strongest ties sit inside tight groups where your close friends also know each other, and weak ties bridge the groups (Granovetter 1973; Onnela and colleagues confirmed it on millions of phone users in 2007).
+          </p>
+          <div className="rx-fig-row">
+            <figure className="w4-figure">
+              <figcaption>
+                <b>Heavy links, looser neighbourhoods</b>
+                <span>
+                  <GlossTerm id="w4-term-staffing-ties-spearman" word="Spearman correlation">
+                    A measure of whether two quantities rise together, computed on their ranks rather than their values.
+                  </GlossTerm>
+                  {" "}
+                  between a link's filings and its
+                  {" "}
+                  <GlossTerm id="w4-term-staffing-ties-overlap" word="overlap">
+                    Of the firm's other clients and the client's other firms, the share that are linked to each other. High overlap means a tight neighbourhood.
+                  </GlossTerm>
+                  , against 100 shuffles of the filing counts over the same links.
+                </span>
+              </figcaption>
+              <div className="w4-figure-body" data-strip="staffing-ties-overlap"></div>
+            </figure>
+            <figure className="w4-figure">
+              <figcaption>
+                <b>Wage levels as filed</b>
+                <span>
+                  Share of each kind of employer's 2025 filings at each
+                  {" "}
+                  <GlossTerm id="w4-term-staffing-ties-wagelevel" word="prevailing-wage level">
+                    A level set by the experience and skills the job asks for, from entry to fully competent. Each level carries a wage floor.
+                  </GlossTerm>
+                  .
+                </span>
+              </figcaption>
+              <div className="w4-figure-body" data-strip="staffing-ties-wage"></div>
+            </figure>
+          </div>
+          <Drawers variant="foot">
+            <Drawer label="Background">
+              <p>
+                A link's
+                {" "}
+                <b>overlap</b>
+                {" "}
+                measures the tightness: of the firm's other clients and the client's other firms, the share that are linked to each other.
+              </p>
+            </Drawer>
+            <Drawer label="More numbers">
+              <p>
+                Over the 28,104 links where overlap is defined, filings and overlap correlate at Spearman -0.04; with the filing counts shuffled over the same links the correlation is 0.00 ± 0.01 (z = -6.3; 2024 gives z = -3.7). Links with one filing have a mean overlap of 0.065, links with 21 or more 0.034. Heavy links mostly belong to the largest firms, whose many clients rarely share other firms, so part of this is size. It agrees with the result above: the real filing counts put weight on links between groups. Each filing states one of four wage levels, from entry (I) to fully competent (IV). Averaged per client over the filings that reach it, the groups explain 13% of the variance in wage level; averaged per firm over all its filings, 3%. None of 1,000 shuffles of the group labels reached either. A client's filings come from the vendors that also decide its group, so part of the 13% is built in. Outsourcing firms file 66% of their applications at level II and 5% at level IV; direct employers file 35% and 22%. From January to June 2026, level IV rose to 17.7% of all filings from 13.6% a year earlier, and level I fell to 18.0% from 21.8%.
+              </p>
+            </Drawer>
+          </Drawers>
+        </div>
+      </details>
+      <details className="rx-panel" name="w4-panel-outsourcing" data-box="deeper-strength">
+        <summary>Strength against degree: where do the heavy links go?</summary>
+        <div className="card w4-card" id="deeper-strength">
+          <header className="w4-q">
+            <span className="w4-num">6</span>
+            <div>
+              <h2>Strength against degree: where do the heavy links go?</h2>
+              <p className="w4-answer">Three of the top five are therapy and rehab clinics.</p>
+            </div>
+          </header>
+          <div className="w4-two">
+            <div>
+              <p className="sub">
+                The course compares a node's degree (how many partners) with its strength (how many filings over all its links), and finds the exceptions tell the story.
+              </p>
+              <div className="notice">
+                <span className="ico">💡</span>
+                <span>
+                  <b>What to notice</b>
+                  {" "}
+                  Degree and strength rank firms almost alike (Spearman 0.91) but clients less so (0.75): the heaviest single ties go to therapy and rehab clinics, led by Ultimate Therapy with 133 filings from one firm.
+                </span>
+              </div>
+              <Drawers variant="foot">
+                <Drawer label="Background" />
+                <Drawer label="More numbers">
+                  <p>
+                    In the 2025 firm–client network the two rank firms almost alike (Spearman 0.91) and clients less so (0.75). The clients with the most filings from a single firm are Ultimate Therapy, 133 filings from one firm; Sigma Rehab, 95; Post Rehab Services, 61; and Grady Memorial Hospital, 58.
+                  </p>
+                </Drawer>
+              </Drawers>
+            </div>
+            <figure className="w4-figure">
+              <figcaption>
+                <b>The heaviest one-to-one ties</b>
+                <span>The clients with the most filings from a single firm. Dark bars: health care.</span>
+              </figcaption>
+              <div className="w4-figure-body" data-more="strength"></div>
+            </figure>
+          </div>
+        </div>
+      </details>
+      <details className="rx-panel" name="w4-panel-outsourcing" data-box="entity-communities">
+        <summary>Every worker and company, grouped by what they do</summary>
+        <div className="card w4-card">
+          <header className="w4-q">
+            <span className="w4-num">7</span>
+            <div>
+              <h2>Do workers group by job and pay, or by who files for them?</h2>
+              <p className="w4-answer" data-entities="answer">Loading the filings…</p>
+            </div>
+          </header>
+          <figure className="w4-entities" id="entity-communities">
+            <div className="w4-entities-controls">
+              <div aria-label="What each dot is" className="w4-entities-switch" role="group">
+                <button aria-pressed="true" data-entity="workers" type="button">Workers</button>
+                <button aria-pressed="false" data-entity="companies" type="button">Companies</button>
+                <button aria-pressed="false" data-entity="staffing" type="button">Staffing network</button>
+                <button aria-pressed="false" data-entity="lawfirms" type="button">Law-firm network</button>
+              </div>
+              <div className="w4-entities-net" hidden>
+                <label>
+                  Backbone
+                  {" "}
+                  <select aria-label="Disparity filter cut"></select>
+                </label>
+                <div aria-label="Links the filter drops" className="w4-entities-switch" role="group">
+                  <button aria-pressed="true" data-dropped="faint" type="button">Dropped faint</button>
+                  <button aria-pressed="false" data-dropped="hidden" type="button">Hidden</button>
+                </div>
+              </div>
+              <label className="w4-entities-colour">
+                Colour by
+                {" "}
+                <select>
+                  <option value="community">Community</option>
+                  <option value="sector">Sector</option>
+                  <option value="level">Wage level</option>
+                  <option value="pagerank">PageRank</option>
+                </select>
+              </label>
+            </div>
+            <div className="w4-entities-stage">
+              <button className="w4-entities-reset" type="button">Reset view</button>
+              <div aria-label="Every worker or company in the 2025 filings as a dot, coloured by its community. The table below lists the same groups." className="w4-entities-map" role="img" tabIndex={0}></div>
+            </div>
+            <ul aria-label="Legend: click a group to highlight it" className="w4-entities-legend"></ul>
+            <figcaption data-entities="caption"></figcaption>
+            <div className="w4-entities-facts">
+              <div>
+                <h4 data-entities-text="labels-head">What the groups follow</h4>
+                <p className="axis-note" data-entities-text="labels-note">
+                  NMI between the groups and each label, weighted by workers. Hollow dots were never part of the network. Bands: the same label shuffled, the level a label with that many values reaches by chance. Dashed: two Louvain seeds against each other.
+                </p>
+                <div data-entities="labels"></div>
+              </div>
+              <div>
+                <h4>The network against random ones</h4>
+                <p className="axis-note">
+                  Dots: the real network. Bands: rewired networks that keep every degree, or shuffled kinds.
+                </p>
+                <div data-entities="strips"></div>
+              </div>
+            </div>
+            <div className="w4-entities-facts">
+              <div>
+                <h4 data-entities-text="ccdf-head">How many links?</h4>
+                <p className="axis-note" data-entities-text="ccdf-note">
+                  Share of occupations, metros, levels and sectors with at least a given number of links or workers, log-log.
+                </p>
+                <div data-entities="ccdf"></div>
+              </div>
+              <div className="w4-entities-weeks" data-entities="weeks"></div>
+            </div>
+            <div className="rx-table-block" data-entities="table">
+              <h4>The largest groups</h4>
+              <table>
+                <thead>
+                  <tr>
+                    <th>#</th>
+                    <th>Group</th>
+                    <th className="num">Workers</th>
+                    <th className="num">H-1B</th>
+                    <th className="num">PERM</th>
+                    <th>Main occupation</th>
+                    <th>Largest employers</th>
+                  </tr>
+                </thead>
+                <tbody></tbody>
+              </table>
+            </div>
+          </figure>
+        </div>
+      </details>
+    </details>
+  );
+}
