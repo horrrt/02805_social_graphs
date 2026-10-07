@@ -7,9 +7,7 @@
 // scripts in the order the old static page ran them.
 import { useEffect } from "react";
 
-const ENTRIES = {
-  "mockups": () => import("@/scripts/entries/mockups.js"),
-};
+const ENTRIES: Record<string, () => Promise<unknown>> = {};
 
 export type PageName = keyof typeof ENTRIES;
 
