@@ -1303,7 +1303,7 @@ function topEdges(limit) {
 
 function flightEdges(limit) {
   // Own file, independent of whether the pair also has a DESA migration row
-  // (see main()): week03_flights.json carries every directed pair with a
+  // (the boot island loads it): week03_flights.json carries every directed pair with a
   // route, all 4,331 of them, not just the 2,583 that also moved people.
   const list = (state.flights?.edges ?? []).map(([oi, di, routes]) => ({ oi, di, routes }));
   list.sort((a, b) => b.routes - a.routes);
@@ -2671,7 +2671,7 @@ function edgeLookup(origin, dest) {
   return state.edges.edges.find((e) => e[0] === oi && e[1] === di) ?? null;
 }
 
-// Flights are indexed separately (see main()), so a route can exist here
+// Flights are indexed separately (their own file), so a route can exist here
 // with no migration edge at all: UK -> Germany's 73 routes, or China <->
 // Taiwan, which never had a DESA row to ride along on.
 function flightLookup(origin, dest) {
