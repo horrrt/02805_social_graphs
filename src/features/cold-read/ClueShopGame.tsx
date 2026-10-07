@@ -332,7 +332,7 @@ export function ClueShopGame({ data, random = Math.random, level, hard = false, 
           <small>Streak</small>
           <b data-hot={streak > 1}>×{shownStreak}</b>
         </span>
-        <Lives lives={lives} max={LIVES} />
+        <Lives lives={lives} max={LIVES} onRetry={start} />
         <span className="cr-box">
           <small>Named</small>
           <b>{solved}</b>

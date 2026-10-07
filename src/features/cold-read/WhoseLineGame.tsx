@@ -4,7 +4,7 @@
 // distinctive. The word then lands on a Scattertext-style plot. Rules live in
 // groups.ts; this file renders them.
 import { type ReactNode, useEffect, useMemo, useRef, useState } from "react";
-import { Lives, ScoreBox, SkipLevel } from "./LevelParts";
+import { HelpKey, Lives, ScoreBox, SkipLevel, useHelpKey } from "./LevelParts";
 import { LIMIT, speed, Ticker, timed, useCountdown, Worth } from "./pace";
 import { whoseLineTour } from "./tours";
 import { StartButtons, useTour } from "./Tutorial";
@@ -164,6 +164,7 @@ export function WhoseLineGame({ data, random = Math.random, level, clock = Date.
 
   const pair = data && order.length ? data.pairs[order[match % order.length]] : null;
   const card = hand[at] ?? null;
+  useHelpKey("h", () => setInspected(true), phase === "card" && !inspected);
 
   // Keys 1 to 4 answer the open card, as in the other rounds; arrow keys stay free to scroll.
   useEffect(() => {
@@ -276,6 +277,7 @@ export function WhoseLineGame({ data, random = Math.random, level, clock = Date.
         right={right}
         best={best}
         playing={phase === "card"}
+        onRetry={start}
         level={level}
         ticker={
           <>
@@ -313,8 +315,8 @@ export function WhoseLineGame({ data, random = Math.random, level, clock = Date.
                       that uses it most, <b>{card.term.top}</b>, holds {Math.round(card.term.share * 100)}% of its leading group’s uses.
                     </p>
                   ) : (
-                    <button type="button" className="cr-ghost cr-inspect-btn" onClick={() => setInspected(true)}>
-                      Inspect the pages −{INSPECT_COST}
+                    <button type="button" className="cr-ghost cr-inspect-btn" onClick={() => setInspected(true)} aria-keyshortcuts="H">
+                      Inspect the pages −{INSPECT_COST} <HelpKey k="H" />
                     </button>
                   )}
                   <div className="cr-calls">
@@ -410,8 +412,8 @@ export function WhoseLineGame({ data, random = Math.random, level, clock = Date.
   );
 }
 
-function Hud({ score, streak, lives, right, best, playing, level, ticker }: {
-  score: number; streak: number; lives: number; right: number; best: number; playing: boolean; level?: Level; ticker?: ReactNode;
+function Hud({ score, streak, lives, right, best, playing, level, ticker, onRetry }: {
+  score: number; streak: number; lives: number; right: number; best: number; playing: boolean; level?: Level; ticker?: ReactNode; onRetry?: () => void;
 }) {
   const shown = Math.min(Math.max(playing ? streak + 1 : streak, 1), MAX_STREAK);
   return (
@@ -422,7 +424,7 @@ function Hud({ score, streak, lives, right, best, playing, level, ticker }: {
         <small>Streak</small>
         <b data-hot={shown > 1}>×{shown}</b>
       </span>
-      <Lives lives={lives} max={LIVES} />
+      <Lives lives={lives} max={LIVES} onRetry={onRetry} />
       <span className="cr-box">
         <small>Right</small>
         <b>{right}</b>

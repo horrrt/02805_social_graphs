@@ -3,7 +3,7 @@
 // lands on a radar by rank. Rules live in vectors.ts; this file renders them.
 import { useEffect, useMemo, useRef, useState, type FormEvent } from "react";
 import { CosineFormula } from "./Formulas";
-import { ScoreBox, SkipLevel } from "./LevelParts";
+import { HelpKey, ScoreBox, SkipLevel, useHelpKey } from "./LevelParts";
 import { LIMIT, speed, Ticker, timed, useCountdown, Worth } from "./pace";
 import { hotColdTour } from "./tours";
 import { StartButtons, useTour } from "./Tutorial";
@@ -192,6 +192,7 @@ export function HotColdGame({ data, random = Math.random, level, clock = Date.no
     return -1;
   };
 
+  useHelpKey("?", () => hint(), playing && nextHint() >= 0);
   const hint = () => {
     const k = nextHint();
     if (!rank || k < 0) return;
@@ -304,8 +305,8 @@ export function HotColdGame({ data, random = Math.random, level, clock = Date.no
               <button type="submit" className="cr-go">
                 Guess
               </button>
-              <button type="button" className="cr-ghost" onClick={hint} disabled={nextHint() < 0}>
-                Hint −{HINT_COST}
+              <button type="button" className="cr-ghost" onClick={hint} disabled={nextHint() < 0} aria-keyshortcuts="?">
+                Hint −{HINT_COST} <HelpKey k="?" />
               </button>
               <button type="button" className="cr-ghost" onClick={() => giveUp()}>
                 Give up

@@ -6,7 +6,7 @@
 import { Fragment, useEffect, useRef, useState } from "react";
 import { PpmiFormula } from "./Formulas";
 import { COST, type HiddenWord, LIVES, MAX_STREAK, options, pieces, points, type Row, spent, type TezguinoData, type Weight } from "./contexts";
-import { Lives, ScoreBox, SkipLevel } from "./LevelParts";
+import { HelpKey, Lives, ScoreBox, SkipLevel, useHelpKey } from "./LevelParts";
 import { LIMIT, speed, Ticker, timed, useCountdown, Worth } from "./pace";
 import { tezguinoTour } from "./tours";
 import { StartButtons, useTour } from "./Tutorial";
@@ -179,6 +179,7 @@ export function TezguinoGame({ data, random = Math.random, level, clock = Date.n
   };
 
   const answered = phase === "answered" || phase === "over";
+  useHelpKey("h", () => setPeeks((n) => n + 1), phase === "play" && hidden !== null && peeks < hidden.sentences.length);
   const pace = useCountdown(LIMIT.contexts, phase === "play", dealt, () => pick(-1), clock);
   const now = speed(pace.elapsed, LIMIT.contexts);
   const right = picked !== null && hidden !== null && picked === order[at % order.length];
@@ -193,7 +194,7 @@ export function TezguinoGame({ data, random = Math.random, level, clock = Date.n
           <small>Streak</small>
           <b data-hot={(phase === "play" ? nextStreak : streak) > 1}>×{Math.max(1, Math.min(phase === "play" ? nextStreak : streak, MAX_STREAK))}</b>
         </span>
-        <Lives lives={lives} max={LIVES} />
+        <Lives lives={lives} max={LIVES} onRetry={start} />
         <span className="cr-box">
           <small>Named</small>
           <b>{solved}</b>
@@ -286,8 +287,8 @@ export function TezguinoGame({ data, random = Math.random, level, clock = Date.n
                   <Sentence key={i} text={s} word={answered ? hidden.w : null} />
                 ))}
                 {!answered && peeks < hidden.sentences.length ? (
-                  <button type="button" className="cr-ghost" onClick={() => setPeeks(peeks + 1)}>
-                    Peek at a sentence −{COST.peek}
+                  <button type="button" className="cr-ghost" onClick={() => setPeeks(peeks + 1)} aria-keyshortcuts="H">
+                    Peek at a sentence −{COST.peek} <HelpKey k="H" />
                   </button>
                 ) : null}
               </div>

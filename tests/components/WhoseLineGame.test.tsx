@@ -3,7 +3,7 @@
 import "./dom";
 import test, { beforeEach } from "node:test";
 import assert from "node:assert/strict";
-import { render, screen } from "@testing-library/react";
+import { render, screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { WhoseLineGame } from "@/features/cold-read/WhoseLineGame";
 import { type Answer, deal, gain, ratio, type WhoseLineData } from "@/features/cold-read/groups";
@@ -84,6 +84,31 @@ test("three wrong calls end the run", async () => {
   }
   assert.ok(screen.getByText("Run over"));
   assert.ok(screen.getByRole("button", { name: "Play again" }));
+  // Game over stays on screen until the player picks a way out.
+  const over = screen.getByRole("alertdialog", { name: "Out of lives" });
+  await user.click(within(over).getByRole("button", { name: "Why am I such a failure?" }));
+  assert.equal(screen.queryByRole("alertdialog"), null, "the debrief is left to read");
+  assert.ok(screen.getByText("Run over"));
+});
+
+test("Retry on the game-over screen starts a fresh run", async () => {
+  const user = await started();
+  for (let i = 0; i < 3; i++) {
+    const c = hand[i];
+    const wrong = (["a", "b", "both", "fluke"] as Answer[]).find((k) => k !== c.kind && !(c.kind === "fluke" && k === (ratio(c.term) >= 1 ? "a" : "b")))!;
+    await user.click(call(wrong));
+    if (i < 2) await user.click(screen.getByRole("button", { name: "Next word" }));
+  }
+  await user.click(screen.getByRole("button", { name: "Retry" }));
+  assert.equal(screen.queryByRole("alertdialog"), null);
+  assert.equal(document.querySelectorAll(".cr-lives [data-on='true']").length, 3, "all hearts back");
+  assert.ok(screen.getByText(hand[0].term.w, { selector: ".cr-term-word" }));
+});
+
+test("H inspects the open word", async () => {
+  const user = await started();
+  await user.keyboard("h");
+  assert.match(document.querySelector(".cr-inspect")!.textContent!, new RegExp(`On ${hand[0].term.pa} of`));
 });
 
 test("keys 1 to 4 call the card and arrow keys do nothing", async () => {
