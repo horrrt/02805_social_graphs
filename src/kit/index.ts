@@ -84,3 +84,10 @@ export { default as StageTabs } from "./StageTabs";
 export type { Stage } from "./StageTabs";
 export { default as DetailPanel } from "./DetailPanel";
 export type { DetailItem, DetailStat, NearestList, NearestRow } from "./DetailPanel";
+// ---- Growth: replay, nonlinear attachment, components, friendship paradox
+// (growth-core.js holds the numbers; import it directly)
+export { default as GrowthReplay } from "./GrowthReplay";
+export type { ArrivalCard, GrowthMode } from "./GrowthReplay";
+export { default as GrowthLab } from "./GrowthLab";
+export { default as ComponentGallery } from "./ComponentGallery";
+export { default as FriendshipParadox } from "./FriendshipParadox";

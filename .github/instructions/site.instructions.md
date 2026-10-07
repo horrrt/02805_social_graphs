@@ -16,10 +16,9 @@ applyTo: "src/**,public/**,tests/**"
   canvases, charts, listeners and body writes go through the hooks in `src/lib/`. Its README,
   `src/lib/README.md`, holds the rules (R1-R22), working rules, recipes and gates every change follows, and
   `tests/react-rules.test.mjs` enforces the mechanical ones.
-- Until a page converts, its old chart scripts still draw into the server-rendered markup after hydration:
-  `src/scripts/entries/<page>.js`, loaded by `src/components/PageScripts.tsx`. Both are legacy and go in the
-  cleanup batch; never add a `<script>` tag in JSX. Keep links as plain `<a href>`, not `next/link`, so each
-  page loads fresh and its scripts run once.
+- Every page renders with React. A module in `src/scripts/` runs only when a component imports it: the old
+  entry loader (`src/scripts/entries/` and `src/components/PageScripts.tsx`) is gone. Never add a `<script>`
+  tag in JSX. Keep links as plain `<a href>`, not `next/link`, so each page loads fresh.
 - Add any library or component the page needs, or draw plain SVG from the page's data: charting (ECharts, D3,
   Vega-Lite, Observable Plot, deck.gl), maps, tables, UI widgets, web components or anything else. No approval
   needed. Vendor a library first: save the unmodified minified build to `public/assets/vendor/` with the version in

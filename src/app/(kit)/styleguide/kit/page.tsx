@@ -5,6 +5,7 @@ import { DemoNetworks } from "@/features/kit-page/demos-networks";
 import { TextDemo } from "@/features/kit-page/demos-text";
 import { DistDemo } from "@/features/kit-page/demos-distributions";
 import { DemoEditors } from "@/features/kit-page/demos-editors";
+import { DemoGrowth } from "@/features/kit-page/demos-growth";
 
 export default function Page() {
   return (
@@ -256,6 +257,24 @@ export default function Page() {
           <DemoEditors demo="ed-detail" />
         </PostSection>
         {/* ==== end Kit: editors and puzzles ==== */}
+        {/* ==== Kit batch E2: Growth ==== */}
+        <PostSection id="demo-growth">
+          <h2>Growth</h2>
+          <p className="sub">
+            Four pieces for growing networks, from src/kit on toy BA graphs and toy debut years: GrowthReplay,
+            GrowthLab, ComponentGallery and FriendshipParadox. The numbers behind them are in src/kit/growth-core.js.
+            Same seed, same run.
+          </p>
+          <h3>GrowthReplay: a network in arrival order, three ways</h3>
+          <DemoGrowth demo="gr-replay" />
+          <h3>GrowthLab: nonlinear preferential attachment, Π(k) ∝ k^α</h3>
+          <DemoGrowth demo="gr-lab" />
+          <h3>ComponentGallery: a sparse random network, one tile per component</h3>
+          <DemoGrowth demo="gr-gallery" />
+          <h3>FriendshipParadox: your friends have more friends than you</h3>
+          <DemoGrowth demo="gr-paradox" />
+        </PostSection>
+        {/* ==== end Kit batch E2: Growth ==== */}
       </main>
       <SiteFooter>
         <span>

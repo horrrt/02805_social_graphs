@@ -5,6 +5,7 @@ import { KitStateNetworks } from "@/features/kit-page/states-networks";
 import { TextState } from "@/features/kit-page/states-text";
 import { DistState } from "@/features/kit-page/states-distributions";
 import { KitStateEditors } from "@/features/kit-page/states-editors";
+import { KitStateGrowth } from "@/features/kit-page/states-growth";
 
 export default function Page() {
   return (
@@ -407,6 +408,45 @@ export default function Page() {
           </div>
         </PostSection>
         {/* ==== end Kit: editors and puzzles ==== */}
+        {/* ==== Kit batch E2: Growth ==== */}
+        <PostSection id="state-growth">
+          <h2>Growth</h2>
+          <h3>GrowthReplay: one node, a card with long lines</h3>
+          <KitStateGrowth state="gr-replay-one" />
+          <div className="w4-two">
+            <div>
+              <h3>GrowthReplay: no modes</h3>
+              <KitStateGrowth state="gr-replay-nomodes" />
+            </div>
+            <div>
+              <h3>ComponentGallery: no nodes</h3>
+              <KitStateGrowth state="gr-gallery-empty" />
+            </div>
+          </div>
+          <h3>GrowthReplay: the first mode has no nodes</h3>
+          <KitStateGrowth state="gr-replay-emptymode" />
+          <h3>GrowthLab: α = 0, grown, nothing to sweep</h3>
+          <KitStateGrowth state="gr-lab-alpha0" />
+          <h3>GrowthLab: α = 50, one link per newcomer</h3>
+          <KitStateGrowth state="gr-lab-huge" />
+          <h3>GrowthLab: n = 1, below the seed clique</h3>
+          <KitStateGrowth state="gr-lab-n1" />
+          <div className="w4-two">
+            <div>
+              <h3>ComponentGallery: a single component</h3>
+              <KitStateGrowth state="gr-gallery-one" />
+            </div>
+            <div>
+              <h3>ComponentGallery: groups, one empty, one of one node, ids out of range</h3>
+              <KitStateGrowth state="gr-gallery-groups" />
+            </div>
+          </div>
+          <h3>ComponentGallery: 70 tiny components and 80 isolated nodes</h3>
+          <KitStateGrowth state="gr-gallery-tiny" />
+          <h3>FriendshipParadox: no links at all</h3>
+          <KitStateGrowth state="gr-paradox-nolinks" />
+        </PostSection>
+        {/* ==== end Kit batch E2: Growth ==== */}
       </main>
       <SiteFooter>
         <span>

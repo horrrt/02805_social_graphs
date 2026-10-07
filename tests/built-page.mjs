@@ -36,9 +36,6 @@ export function builtPage(path) {
 const SRC = join(ROOT, "src");
 const SCRIPTS = join(SRC, "scripts");
 const CODE = /\.(tsx|ts|js|mjs)$/;
-// PageScripts imports every page's entry, so walking through it would hand
-// each page every other page's scripts.
-const PAGE_SCRIPTS = join(SRC, "components/PageScripts.tsx");
 
 /**
  * The modules a page's entry (src/scripts/entries/<page>.js) imports, as file
@@ -139,14 +136,14 @@ export function uses(rest, name) {
 
 /**
  * Code files under src/ reached from `roots` (absolute paths) by following
- * imports, depth first in source order, roots included; PageScripts.tsx is
- * never entered. A .tsx/.ts file follows a static import only for a binding it uses.
+ * imports, depth first in source order, roots included. A .tsx/.ts file
+ * follows a static import only for a binding it uses.
  */
 export function importGraph(roots) {
   const seen = new Set();
   const order = [];
   const visit = (file) => {
-    if (seen.has(file) || file === PAGE_SCRIPTS) return;
+    if (seen.has(file)) return;
     seen.add(file);
     order.push(file);
     const src = readFileSync(file, "utf8");
