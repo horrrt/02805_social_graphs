@@ -12,7 +12,7 @@ const ROUNDS = [
   { n: 5, name: "Hot & Cold", topic: "word vectors", path: "round-5/" },
 ];
 
-export function Frame({ round, home, sub, credits, children }: { round: number; home: string; sub: string; credits: ReactNode; children: ReactNode }) {
+export function Frame({ round, home, sub, credits, children }: { round: number; home: string; sub?: string; credits?: ReactNode; children: ReactNode }) {
   return (
     <div className="cr-shell">
       <header className="cr-top">
@@ -33,7 +33,7 @@ export function Frame({ round, home, sub, credits, children }: { round: number; 
         <h1 className="cr-title">
           Cold <span>Read</span>
         </h1>
-        <p className="cr-sub">{sub}</p>
+        {sub ? <p className="cr-sub">{sub}</p> : null}
         {children}
       </main>
       <footer className="cr-foot">

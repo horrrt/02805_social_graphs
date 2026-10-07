@@ -171,12 +171,6 @@ export function CampaignGame({ data, random = Math.random }: { data: CampaignDat
 
       {phase === "level" ? (
         <>
-          <p className="cr-goal">
-            <b>
-              Level {at + 1} · {spec.name}
-            </b>{" "}
-            {spec.goal}, then press Finish level. Everything you score here adds to the campaign.
-          </p>
           {!loaded[spec.id] ? (
             <p className="cr-note">Loading this level…</p>
           ) : spec.id === "clue" ? (

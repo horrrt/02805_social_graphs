@@ -2190,15 +2190,6 @@ body.cold-read {
   opacity: 0.6;
 }
 
-.cr-goal {
-  margin: 4px 0 0;
-  font-size: var(--fs-strong);
-  color: var(--ink-soft);
-}
-
-.cr-goal b {
-  color: var(--ink);
-}
 
 .cr-between {
   padding: 28px;
