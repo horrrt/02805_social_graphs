@@ -6,6 +6,7 @@ import type { StripOptions, StripRow } from "@/kit/StripChart";
 import type { MiniSpec } from "@/kit/MiniStrip";
 import type { KwicRow } from "@/kit/Concordance";
 import type { TableSpec } from "@/kit/Table";
+import type { AnalogyPoints, MapPoint, MixPart, RankedRow, SplitRow } from "@/kit";
 
 const fmt = (v: number) => v.toFixed(1);
 
@@ -106,3 +107,44 @@ export const termMissing = {
   definition: "A type observed exactly once in the corpus.",
   id: "kit-state-term-missing",
 };
+
+// The text explorables in awkward cases.
+
+export const splitLong: SplitRow[] = [
+  { key: "a", label: "A very long page title that keeps going well past the name column (and a qualifier)", sub: "and a sub-label just as long as the title above it", parts: [0.5, 0.3, 0.4], value: 1.2, valueLabel: "1.200", status: { text: "not linked", tone: "bad" } },
+  { key: "b", label: "All parts zero", parts: [0, 0, 0], value: 0, valueLabel: "0.000" },
+  { key: "c", label: "Fewer parts than the legend", parts: [0.2], value: 0.2, valueLabel: "0.200", status: { text: "linked", tone: "good" } },
+];
+
+export const sweepOne: [number, number][] = [[50, 2]];
+
+export const tokensLong = ["a", "supercalifragilisticexpialidocious_with_no_spaces_at_all", "b"];
+
+export const matrixWideCols = Array.from({ length: 18 }, (_, i) => `a long context word ${i + 1}`);
+export const matrixWideRows = ["a long target word in the first column", "zeros"];
+export const matrixWideCells = [matrixWideCols.map((_, i) => (i * 7) % 5), matrixWideCols.map(() => 0)];
+
+export const mixTiny: MixPart[] = [
+  { label: "A topic with a very long name that cannot fit its card", share: 3 },
+  { label: "Tiny", share: 0.001 },
+  { label: "Negative", share: -1 },
+  { label: "Rest", share: 1 },
+];
+
+export const rankedAwkward: RankedRow[] = [
+  { key: "a", label: "an_extremely_long_unbroken_word_that_should_be_cut_with_an_ellipsis", value: 5, valueLabel: "5.00", cols: ["1,234,567×", "303 of 303", "extra"] },
+  { key: "b", label: "zero", value: 0, valueLabel: "0.00", cols: ["0×"] },
+  { key: "c", label: "negative", value: -2, valueLabel: "−2.00", muted: true },
+];
+
+export const analogySame: AnalogyPoints = {
+  a: { label: "one", x: 1, y: 1 },
+  b: { label: "two", x: 1, y: 1 },
+  c: { label: "three", x: 1, y: 1 },
+  d: { label: "a long nearest-word label", x: 1, y: 1 },
+};
+
+export const mapOne: MapPoint[] = [{ key: "only", label: "The only point, with a long label", x: 0, y: 0, size: 3 }];
+
+export const guessTieItems = [{ key: "x", label: "X" }, { key: "y", label: "Y" }];
+export const guessTieScore = () => ({ x: 1, y: 1 });

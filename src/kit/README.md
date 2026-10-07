@@ -57,11 +57,12 @@ that the legend counts the move and the next width change draws it.
 <NetworkView spec={{ theme: "dark", ratio: m.ratio, nodes: m.nodes, links: m.links, groups: m.groups, hubs: m.hubs, legend: true }} />
 ```
 
-### EChart({ option, height, className, renderer })
+### EChart({ option, height, className, renderer, onEvents })
 
 An ECharts chart at the site's type sizes and colours, as `echart()`: the theme from the tokens, an item
 tooltip, overlapping labels hidden, a resize with its host. `height` is 360 by default, `className`
-`"kit-echart"`, `renderer` `"svg"` (as `kit.js` initialises it). The host div appears once ECharts has loaded;
+`"kit-echart"`, `renderer` `"svg"` (as `kit.js` initialises it). `onEvents` maps ECharts event names to
+handlers (`{ click: (p) => … }`), bound once the chart exists; keep its identity stable. The host div appears once ECharts has loaded;
 if the load fails, the chart is left out and one error is logged, and what surrounds it stays.
 
 ```tsx
@@ -184,4 +185,115 @@ demo of it; Week 5's frame batch (W5-1) accepts it against `scripts/parity/fixtu
 <HoverTipHost id="chart-hero-fame" className="w5-hero-plot" role="img" aria-label="…" tip="none">
   <StripChart rows={rows} opts={opts} />
 </HoverTipHost>
+```
+
+## Text explorables
+
+Prop-driven pieces for the language weeks: no fetching inside, toy data on `/styleguide/kit/`. The SVG ones
+(`VectorAngle`, `SweepCurve`, `AnalogyPlot`) draw after hydration from the type scale and tokens, at their
+parent's width; the rest are plain HTML that renders on the server. Styles: the "Kit: text explorables"
+section of `post.css`.
+
+### VectorAngle({ a, b, labels, scaleB, onScaleB })
+
+Two vectors from the origin on equal-unit axes, the angle θ as an arc, and the cosine, angle and B's length as
+readouts. `a` and `b` are `[x, y]`, `labels` `{ a, b }`. With `onScaleB(k)` a slider scales B from 0.25× to
+3×: the arrow grows, the cosine stays.
+
+```tsx
+<VectorAngle a={[4, 1]} b={[1, 3]} labels={{ a: "D1", b: "D2" }} scaleB={k} onScaleB={setK} />
+```
+
+### SplitBars({ rows, parts, max, onPick })
+
+Ranked rows, each a bar split into `parts` (`[{ name, color }]`, a colour token such as `"--people"` or any CSS
+colour), the value at the right and an optional status pill, with a legend under. Each row:
+`{ key, label, sub, parts: number[], value, valueLabel, status: { text, tone: "good" | "bad" } }`. Bars share
+`max` (the largest row total by default). With `onPick(key)` the labels are buttons.
+
+```tsx
+<SplitBars rows={[{ key: "torch", label: "Human Torch", parts: [0.25, 0.02, 0.05], value: 0.32, valueLabel: "0.32", status: { text: "not linked", tone: "bad" } }]} parts={[{ name: "names", color: "--people" }, { name: "habit words", color: "--w4-group-0" }, { name: "everything else", color: "--access" }]} />
+```
+
+### SweepCurve({ points, current, refLine, xLabel, yLabel, domain, fmt })
+
+A small line chart of `points` (`[x, y]`), a dashed reference line `refLine: { y, label }` and a marker on the
+curve at `current`. `domain` is `{ x: [lo, hi], y: [lo, hi] }`, each worked out from the data when left out;
+`fmt` writes the ticks.
+
+```tsx
+<SweepCurve points={[[0, 2], [50, 3.6], [100, 4]]} current={100} refLine={{ y: 0.3, label: "ten random pages" }} xLabel="names kept (%)" yLabel="linked neighbours" />
+```
+
+### TokenWindow({ tokens, centre, window, onCentre, negatives, mode })
+
+A sentence's tokens as chips, the centre word highlighted, its context (`window` tokens either side) tinted,
+the rest muted; then the positive pairs (skip-gram: centre → each context word; `mode: "cbow"`: the context →
+the centre) beside the negative pairs, centre × each of `negatives`. With `onCentre(i)` the chips are buttons.
+
+```tsx
+<TokenWindow tokens={["the", "puppy", "chased", "the", "ball"]} centre={2} window={2} negatives={["cloud", "budget"]} mode="skipgram" />
+```
+
+### CountMatrix({ rows, cols, cells, highlightRow, onRow, caption })
+
+A word-context count table: `cells[i][j]` is how often `cols[j]` appears near `rows[i]`. Cells are tinted by
+count, zeros muted; the highlighted row is written out under the table as `word = [..]`. With `onRow(i)` the
+row heads are buttons.
+
+```tsx
+<CountMatrix rows={["wine", "bourbon"]} cols={["bottle", "corn"]} cells={[[1, 0], [0, 1]]} highlightRow={0} caption="Counts within ±2 words" />
+```
+
+### MixtureBar({ parts, focus, onFocus, words })
+
+A 100% bar of `parts` (`[{ label, share, color }]`, shares normalised to sum to 1), a card per part, and for
+the part named `focus`, bars for `words` (`[word, probability]`). With `onFocus(label)` the cards are buttons.
+
+```tsx
+<MixtureBar parts={[{ label: "Crime", share: 0.78 }, { label: "Space", share: 0.22 }]} focus="Crime" words={[["crime", 0.16], ["gang", 0.14]]} />
+```
+
+### RankedBars({ rows, colHeads, title, labelHead })
+
+A numbered ranking: label, a bar on one scale, the optional `valueLabel` and extra columns `cols` headed by
+`colHeads`. Each row: `{ key, label, value, valueLabel, cols, muted, onClick }`; a muted row greys its bar, a
+row with `onClick` gets a button. `labelHead` heads the label column ("Word" by default).
+
+```tsx
+<RankedBars title="Most distinctive words" colHeads={["On page", "Pages with it"]} rows={[{ key: "claws", label: "claws", value: 0.12, cols: ["17×", "26 of 303"] }]} />
+```
+
+### AxisMap({ points, axes, highlight, find, onPick, height })
+
+A scatter on the kit's `EChart` with the four axis ends named at the sides. `points`:
+`[{ key, label, x, y, size, group }]` (dot area from `size`, one colour per `group`); `axes`:
+`{ left, right, bottom, top }`. Keys in `highlight` and labels containing `find` are labelled, the `find`
+matches enlarged. `onPick(key)` follows a click on a point.
+
+```tsx
+<AxisMap points={points} axes={{ left: "science", right: "magic", bottom: "street", top: "cosmic" }} highlight={["strange"]} find="storm" />
+```
+
+### AnalogyPlot({ points, step })
+
+Word arithmetic in three steps over `points: { a, b, c, d }`, each `{ label, x, y }`: step 0 the four words,
+step 1 the offset a→b drawn again from c, step 2 where c + (b − a) lands and its nearest real word d. The
+expression "c − a + b ≈ d" above the plot is built from the labels, with "?" for d before step 2.
+
+```tsx
+<AnalogyPlot points={{ a: { label: "man", x: 1, y: 1 }, b: { label: "woman", x: 1, y: 3 }, c: { label: "king", x: 4, y: 1 }, d: { label: "queen", x: 4.2, y: 3.1 } }} step={2} />
+```
+
+### GuessRanker({ items, score, target, budget, banned })
+
+A describe-without-naming round: the reader types one word at a time, `score(words)` returns each item's
+score (a Map or an object keyed by item key), and the live top ten shows where the `target` stands. Words
+spent show as chips (a word `banned(word)` rejects is struck through and still costs one) beside an
+"n / budget" counter; the round is won when the target ranks first on its own. The rules (`start`,
+`addWord`, `ranking`, `isWin`, `points`) are DOM-free in `src/kit/guess-core.js`, tested by
+`tests/guess-core.test.mjs`.
+
+```tsx
+<GuessRanker items={[{ key: "wolverine", label: "Wolverine" }]} score={scoreWords} target="wolverine" budget={8} banned={(w) => w === "logan"} />
 ```
