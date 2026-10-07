@@ -1,6 +1,8 @@
-// Game-over sound effects, synthesised with the Web Audio API: no audio files.
-// playGameOver(n) plays the sound for game-over card n (public/play/cold-read/
-// data/game-over.json). Silent where the browser has no Web Audio, as in tests.
+// Game-over sounds. playGameOver(n) plays card n's effect, synthesised with
+// the Web Audio API, and then its spoken line, an MP3 under
+// public/play/cold-read/audio/ made by scripts/cold-read-voices/. Silent where
+// the browser has no Web Audio, as in tests.
+import { asset } from "@/scripts/site.js";
 
 type ToneOpts = { f?: number; to?: number; d?: number; type?: OscillatorType; v?: number; at?: number; vib?: [number, number]; attack?: number; lp?: number };
 type NoiseOpts = { d?: number; f?: number; to?: number; q?: number; type?: BiquadFilterType; v?: number; at?: number; attack?: number; am?: number };
@@ -231,8 +233,19 @@ const R: Record<number, () => void> = {
   101: () => { tone({ f: 120, d: 0.5, type: "sawtooth", v: 0.14, vib: [9, 8], lp: 600 }); B.note(523, 0.6, 0.25, "square", 0.08); B.note(392, 1.6, 0.4, "square", 0.08); B.thud(1.9); },
 };
 
-/** Plays the sound for game-over card n. */
+// Seconds from the effect to the spoken line, where a card needs its own beat:
+// after the slash, before the jumpscare, over the slow horror cards.
+const VOICE_AT: Record<number, number> = { 8: 1.6, 15: 0.9, 19: 1.2, 21: 0, 22: 1.2, 92: 0.1, 96: 0.4, 97: 0.6 };
+
+function playVoice(n: number) {
+  const voice = new Audio(String(asset(`play/cold-read/audio/go-${String(n).padStart(3, "0")}.mp3`)));
+  voice.volume = 0.9;
+  window.setTimeout(() => void voice.play().catch(() => {}), (VOICE_AT[n] ?? 0.45) * 1000);
+}
+
+/** Plays the effect and the spoken line for game-over card n. */
 export function playGameOver(n: number) {
   if (!ac()) return;
   (R[n] ?? B.pop)();
+  playVoice(n);
 }
