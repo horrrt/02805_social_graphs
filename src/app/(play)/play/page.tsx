@@ -1,4 +1,4 @@
-import PageScripts from "@/components/PageScripts";
+import { Lab } from "@/features/play/Lab";
 
 export default function Page() {
   return (
@@ -38,125 +38,7 @@ export default function Page() {
             <span className="small-note">~60 seconds · 2 small missions · a real network</span>
           </div>
         </section>
-        <section className="signal-lab wide" aria-label="Baymax link experiment">
-          <div className="signal-topline">
-            <span id="edit-label">REAL SNAPSHOT · NO EDITS</span>
-            <ol className="mission-progress" aria-label="Mission progress">
-              <li id="progress-found" aria-current="step">
-                <span>01</span>
-                {" "}
-                Be found
-              </li>
-              <li id="progress-reply">
-                <span>02</span>
-                {" "}
-                Answer back
-              </li>
-            </ol>
-          </div>
-          <div className="signal-layout">
-            <div className="signal-visual">
-              <figure className="signal-map">
-                <svg id="signal-map" viewBox="0 0 1000 630" role="img" aria-labelledby="signal-map-title signal-map-desc">
-                  <title id="signal-map-title">Baymax has no paths to or from the other articles.</title>
-                  <desc id="signal-map-desc">
-                    A diagram of the frozen 303-article network. Baymax is isolated. The controls add hypothetical directed links to Spider-Man; the two counts below report reachability through any number of links.
-                  </desc>
-                  <text x="160" y="300" textAnchor="middle" fill="#f4f5ef">BAYMAX · 0 LINKS</text>
-                  <text x="660" y="300" textAnchor="middle" fill="#b2b7ad">277 ARTICLES IN THE MAIN GROUP</text>
-                </svg>
-                <figcaption className="signal-key">
-                  <span>
-                    <i className="key-to"></i>
-                    Can reach Baymax
-                  </span>
-                  <span>
-                    <i className="key-from"></i>
-                    Baymax can reach
-                  </span>
-                  <span>
-                    <i className="key-both"></i>
-                    Both ways
-                  </span>
-                  <span>
-                    <i className="key-none"></i>
-                    Neither
-                  </span>
-                </figcaption>
-              </figure>
-              <div className="reach-counts" aria-label="Reachability results">
-                <div>
-                  <span>ARTICLES THAT CAN REACH BAYMAX</span>
-                  <strong id="reach-to">0</strong>
-                </div>
-                <div>
-                  <span>ARTICLES BAYMAX CAN REACH</span>
-                  <strong id="reach-from">0</strong>
-                </div>
-              </div>
-              <p className="reach-definition">
-                Following one or more arrows. Other articles only. A path is a possible sequence of clicks, not measured readership.
-              </p>
-            </div>
-            <div className="mission-panel">
-              <p className="eyebrow" id="mission-label">MISSION 01 / BE FOUND</p>
-              <h2 id="mission-title">
-                PUT HIM
-                <br />
-                ON THE MAP.
-              </h2>
-              <p id="mission-copy">
-                Help a reader elsewhere in the network find Baymax. You have one imagined link. Which page should it go on?
-              </p>
-              <div className="edit-choices" id="first-choices" role="group" aria-label="Choose one hypothetical link">
-                <button type="button" data-edit="out" aria-pressed="false" disabled>
-                  <span>WRITE ON BAYMAX’S PAGE</span>
-                  <b>Baymax → Spider-Man</b>
-                </button>
-                {" "}
-                <button type="button" data-edit="in" aria-pressed="false" disabled>
-                  <span>WRITE ON SPIDER-MAN’S PAGE</span>
-                  <b>Spider-Man → Baymax</b>
-                </button>
-              </div>
-              <div className="mission-feedback" id="mission-feedback" role="status" aria-live="polite">
-                <span className="feedback-kicker">THE CATCH</span>
-                <p>A link is a one-way door. Writing about someone doesn’t make them link back.</p>
-              </div>
-              <button className="button" id="next-mission" type="button" hidden>
-                Now let him answer
-                {" "}
-                <span aria-hidden="true">↗</span>
-              </button>
-              {" "}
-              <button className="button" id="add-return" type="button" hidden>
-                Add the return link
-                {" "}
-                <span aria-hidden="true">↔</span>
-              </button>
-              {" "}
-              <a className="button" id="mission-finish" href="#results" hidden>
-                See what you changed
-                {" "}
-                <span aria-hidden="true">↓</span>
-              </a>
-              <div id="replay-controls" hidden>
-                <p className="small-note">REPLAY THE DIFFERENCE</p>
-                <div className="signal-replay" role="group" aria-label="Compare imagined link states">
-                  <button type="button" data-replay="snapshot">No links</button>
-                  <button type="button" data-replay="out">Out only</button>
-                  <button type="button" data-replay="in">In only</button>
-                  <button type="button" data-replay="both" aria-pressed="true">Both</button>
-                </div>
-              </div>
-              <button className="text-button" id="restart-mission" type="button" hidden>Start over ↺</button>
-              <p className="signal-load" id="signal-load" role="status">Loading the frozen network…</p>
-              <p className="simulation-note">
-                A what-if experiment on the 26 August 2026 snapshot. These edits are imagined; the original 303 articles and 1,784 links stay intact.
-              </p>
-            </div>
-          </div>
-        </section>
+        <Lab />
         <section className="signal-results section-space" id="results" aria-labelledby="results-title">
           <div className="wide">
             <p className="eyebrow">THE FINDINGS / NO WORKING REQUIRED</p>
@@ -278,7 +160,6 @@ export default function Page() {
           The three verified findings above work without JavaScript. Turn JavaScript on to try the imagined edits.
         </p>
       </noscript>
-      <PageScripts page="play" />
     </>
   );
 }
