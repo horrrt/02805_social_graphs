@@ -1,5 +1,5 @@
 import { FindingsStrip } from "@/components/post/FindingsStrip";
-import { FindingRow } from "@/features/week05/frame/FindingRow";
+import { FindingRow } from "@/components/post/FindingRow";
 import { Part } from "@/features/week06/Parts";
 
 // Findings: one row per section, each with its number against its baseline.
