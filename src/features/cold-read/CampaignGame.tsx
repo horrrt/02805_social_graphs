@@ -33,9 +33,15 @@ type Phase = "intro" | "level" | "between" | "done";
 export function CampaignIntro() {
   return (
     <ol className="cr-rules">
-      <li>Play the five levels in order, from TF-IDF to word vectors.</li>
-      <li>Every point you earn adds to one total.</li>
-      <li>Stuck? Skip a level for −{SKIP_COST} points.</li>
+      <li>
+        <b>Discover</b> Week 6’s topics, one level each: TF-IDF, comparing groups, topic models, context and word vectors.
+      </li>
+      <li>
+        <b>Score</b> in every level; it all adds up to your total score.
+      </li>
+      <li>
+        <b>Stuck?</b> Skip a level for −{SKIP_COST} points.
+      </li>
     </ol>
   );
 }

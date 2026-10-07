@@ -2356,17 +2356,27 @@ body.cold-read:fullscreen {
 
 /* The campaign's three rules: a short numbered list above the start row. */
 .cr-rules {
-  margin: 0 0 18px;
-  padding-left: 1.4em;
+  margin: 4px 0 22px;
+  padding-left: 1.6em;
   display: grid;
-  gap: 6px;
-  font-size: var(--fs-body);
-  color: var(--ink);
+  gap: 10px;
+  font-size: var(--fs-strong);
+  line-height: 1.45;
+  color: var(--ink-soft);
+}
+
+.cr-rules li {
+  padding-left: 4px;
 }
 
 .cr-rules li::marker {
   font-family: var(--font-display);
+  font-size: var(--fs-lead);
   color: var(--people);
+}
+
+.cr-rules b {
+  color: var(--ink);
 }
 
 /* The start row: difficulty on the left, the way in on the right. */
