@@ -121,7 +121,7 @@ export function MixDeskGame({ data, random = Math.random, level, clock = Date.no
     setPhase(last ? "done" : "reveal");
   };
 
-  const pace = useCountdown(LIMIT.mix, phase === "mix", dealt, () => lock(true), clock);
+  const pace = useCountdown(LIMIT.mix, phase === "mix", dealt, () => lock(true), clock, tour.running);
 
   const rename = (k: number, v: string) => {
     const next = Array.from({ length: data.K }, (_, i) => (i === k ? v : (names[i] ?? "")));

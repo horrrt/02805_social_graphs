@@ -1,12 +1,13 @@
 // Time and nerve: the speed multiplier, the bold-read bonus, a clock that runs
-// out, and a bold read that pays more than flipping to the last suspect.
+// out, a clock that holds still during a tutorial, and a bold read that pays
+// more than flipping to the last suspect.
 import "./dom";
 import test, { beforeEach } from "node:test";
 import assert from "node:assert/strict";
 import { act, render, screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { ClueShopGame } from "@/features/cold-read/ClueShopGame";
-import { boldness, LIMIT, speed, SPEED_MAX, SPEED_MIN, timed } from "@/features/cold-read/pace";
+import { boldness, LIMIT, speed, SPEED_MAX, SPEED_MIN, timed, useCountdown } from "@/features/cold-read/pace";
 import { type ClueShopData, pagesWithAll, points, shortlist, shownName, shuffled } from "@/features/cold-read/rules";
 import { json, noExamples, still, zero } from "./coldReadData";
 
@@ -73,4 +74,32 @@ test("the ticker counts down, and a page whose clock runs out is lost with a hea
   assert.ok(screen.getByText(answer, { selector: ".cr-verdict" }));
   assert.equal(document.querySelectorAll(".cr-lives [data-on='true']").length, 2);
   assert.equal(score(), 0);
+});
+
+test("a paused clock holds still and resumes where it stopped", async () => {
+  let t = 0;
+  let timedOut = false;
+  function Clock({ paused }: { paused: boolean }) {
+    const c = useCountdown(10, true, 1, () => (timedOut = true), () => t, paused);
+    return <b>{c.elapsed}</b>;
+  }
+  const tick = () => act(() => new Promise((r) => setTimeout(r, 250)));
+  const shown = () => Number(document.querySelector("b")!.textContent);
+  const { rerender } = render(<Clock paused />);
+  t = 60_000;
+  await tick();
+  assert.equal(shown(), 0, "no time passes while paused");
+  assert.equal(timedOut, false, "a paused clock never runs out");
+  rerender(<Clock paused={false} />);
+  t = 63_000;
+  await tick();
+  assert.equal(shown(), 3_000, "the paused minute doesn't count");
+  rerender(<Clock paused />);
+  t = 100_000;
+  await tick();
+  assert.equal(shown(), 3_000);
+  rerender(<Clock paused={false} />);
+  t = 108_000;
+  await tick();
+  assert.equal(timedOut, true, "the clock runs out after ten seconds of play");
 });

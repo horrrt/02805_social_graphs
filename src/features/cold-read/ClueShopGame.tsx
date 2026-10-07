@@ -282,7 +282,7 @@ export function ClueShopGame({ data, random = Math.random, level, hard = false, 
     setStreak(0);
     finish(false, livesLeft, 0, true);
   };
-  const pace = useCountdown(LIMIT.clue, playing, dealt, timeUp, clock);
+  const pace = useCountdown(LIMIT.clue, playing, dealt, timeUp, clock, tour.running);
   const now = speed(pace.elapsed, LIMIT.clue);
 
   const topCos = leads[0]?.cos || 1;
