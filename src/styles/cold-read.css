@@ -2569,12 +2569,13 @@ body.cold-read:fullscreen {
   animation: cr-slam 1.8s cubic-bezier(0.2, 1.4, 0.4, 1);
 }
 
-/* The game shakes while the flash plays. */
-body.cold-read:has(.cr-hit) main {
+/* The whole page shakes while the flash plays; the flash itself, a child of
+   <body>, stays still so its red edges hold the screen's edges. */
+body.cold-read:has(> .cr-hit) > :not(.cr-hit) {
   animation: cr-shake 0.45s linear;
 }
 
-body.cold-read:has(.cr-hit[data-dead="true"]) main {
+body.cold-read:has(> .cr-hit[data-dead="true"]) > :not(.cr-hit) {
   animation: cr-shake 0.7s linear;
 }
 
