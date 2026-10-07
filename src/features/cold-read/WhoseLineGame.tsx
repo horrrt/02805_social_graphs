@@ -331,7 +331,7 @@ export function WhoseLineGame({ data, random = Math.random, level, clock = Date.
                     {last.said === "time"
                       ? "Time's up · −1 life"
                       : last.verdict === "right"
-                        ? `Right · +${last.got} (×${last.factor.toFixed(2)} speed)`
+                        ? `Right · +${last.got}`
                         : last.verdict === "half"
                           ? "Half right · no life lost"
                           : "Wrong · −1 life"}

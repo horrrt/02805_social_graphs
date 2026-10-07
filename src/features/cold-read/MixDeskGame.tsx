@@ -184,7 +184,7 @@ export function MixDeskGame({ data, random = Math.random, level, clock = Date.no
                 <>
                   <span className="cr-stamp" data-grade={got >= 700 ? "good" : got >= 500 ? "ok" : "bad"}>
                     {read.timeUp ? "Time's up · " : ""}
-                    {grade(got)} · +{read.points} (×{read.factor.toFixed(2)} speed)
+                    {grade(got)} · +{read.points}
                   </span>
                   <button
                     ref={nextBtn}

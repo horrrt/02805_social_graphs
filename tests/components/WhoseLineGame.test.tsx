@@ -39,7 +39,7 @@ test("eight right calls fill the plot and pay the growing streak", async () => {
     await user.click(call(c.kind));
     const got = timed(gain(i + 1, false), SPEED_MAX);
     expected += got;
-    assert.match(screen.getByText(/^Right · \+/).textContent!, new RegExp(`\\+${got} \\(×1\\.50 speed\\)$`));
+    assert.match(screen.getByText(/^Right · \+/).textContent!, new RegExp(`\\+${got}$`));
     await user.click(screen.getByRole("button", { name: i === hand.length - 1 ? "See the match" : "Next word" }));
   }
   assert.equal(score(), expected.toLocaleString("en"));

@@ -95,7 +95,6 @@ export function HotColdGame({ data, random = Math.random, level, clock = Date.no
   data: HotColdData; random?: () => number; level?: Level; clock?: () => number;
 }) {
   const [dealt, setDealt] = useState(0);
-  const [factor, setFactor] = useState(1);
   const [timeUp, setTimeUp] = useState(false);
   const [phase, setPhase] = useState<Phase>("intro");
   const [order, setOrder] = useState<number[]>([]);
@@ -161,7 +160,6 @@ export function HotColdGame({ data, random = Math.random, level, clock = Date.no
   // Finding the word scores the guesses and hints left, times the streak and the speed.
   const win = (count: number) => {
     const f = speed(pace.stop(), LIMIT.vectors);
-    setFactor(f);
     const run = streak + 1;
     const got = timed(points(count, hints, run), f);
     const total = score + got;
@@ -232,7 +230,6 @@ export function HotColdGame({ data, random = Math.random, level, clock = Date.no
   const done = phase === "found" || phase === "gaveup";
   // While playing, the streak this word will pay if found; after, the one it paid.
   const shownStreak = Math.min(Math.max(playing ? streak + 1 : streak, 1), MAX_STREAK);
-  const floored = 1000 - 30 * Math.max(tried - 1, 0) - HINT_COST * hints < 100;
 
   return (
     <section className="cr-table" id="hot-cold" aria-label="Hot and Cold">
@@ -291,9 +288,6 @@ export function HotColdGame({ data, random = Math.random, level, clock = Date.no
                 {phase === "found" ? (
                   <p className="cr-sum">
                     <b className="cr-pop">+{gained.toLocaleString("en")}</b>
-                    <span>
-                      {floored ? "100, the floor," : `(1,000 − 30 × ${Math.max(tried - 1, 0)} extra guesses${hints ? ` − ${HINT_COST} × ${hints} hints` : ""})`} × {Math.min(streak, MAX_STREAK)} streak × {factor.toFixed(2)} speed
-                    </span>
                   </p>
                 ) : (
                   <p className="cr-sum">

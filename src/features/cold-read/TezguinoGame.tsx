@@ -85,7 +85,6 @@ export function TezguinoGame({ data, random = Math.random, level, clock = Date.n
   data: TezguinoData; random?: () => number; level?: Level; clock?: () => number;
 }) {
   const [dealt, setDealt] = useState(0);
-  const [factor, setFactor] = useState(1);
   const [timeUp, setTimeUp] = useState(false);
   const [phase, setPhase] = useState<Phase>("intro");
   const [order, setOrder] = useState<number[]>([]);
@@ -165,7 +164,6 @@ export function TezguinoGame({ data, random = Math.random, level, clock = Date.n
   const pick = (i: number) => {
     if (!hidden || phase !== "play") return;
     const f = speed(pace.stop(), LIMIT.contexts);
-    setFactor(f);
     setTimeUp(i === -1);
     setPicked(i);
     const right = i === order[at % order.length];
@@ -321,7 +319,7 @@ export function TezguinoGame({ data, random = Math.random, level, clock = Date.n
           {answered ? (
             <div className="cr-result" data-won={right}>
               <div className="cr-case">
-                <p className="cr-stamp">{right ? `Right · +${gained.toLocaleString("en")} (×${factor.toFixed(2)} speed)` : timeUp ? "Time's up · −1 life" : "Wrong · −1 life"}</p>
+                <p className="cr-stamp">{right ? `Right · +${gained.toLocaleString("en")}` : timeUp ? "Time's up · −1 life" : "Wrong · −1 life"}</p>
                 <p className="cr-verdict">{hidden.w}</p>
                 {phase === "over" ? (
                   <div className="cr-over">

@@ -58,7 +58,7 @@ test("the right pick scores, reveals the word in its sentences and compares the 
   const user = await started();
   await user.click(screen.getByRole("button", { name: /^PPMI/ }));
   await user.keyboard(String(four.indexOf(order[0]) + 1));
-  assert.match(screen.getByText(/^Right/).textContent!, new RegExp(`\\+${timed(points(COST.ppmi, 1), SPEED_MAX).toLocaleString("en")} `));
+  assert.match(screen.getByText(/^Right/).textContent!, new RegExp(`\\+${timed(points(COST.ppmi, 1), SPEED_MAX).toLocaleString("en")}$`));
   assert.equal(document.querySelectorAll(".cr-sentence mark").length >= 3, true);
   assert.ok(screen.getByText("Same word, two weightings"));
   assert.equal(document.activeElement?.textContent, "Next word");
