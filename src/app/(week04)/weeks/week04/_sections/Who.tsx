@@ -1,6 +1,7 @@
 import { Drawer } from "@/components/post/Drawer";
 import { Drawers } from "@/components/post/Drawers";
 import { QuestionPart } from "@/features/week04/questions/Questions";
+import { StripPart } from "@/features/week04/strips/Strips";
 import { GlossTerm } from "./GlossTerm";
 
 // Section 3: who staffs whom.
@@ -123,8 +124,8 @@ export function Who() {
               </span>
             </figcaption>
             <div className="w4-vis-stack">
-              <div className="w4-figure-body" data-strip="who-q1-funnel-registrations"></div>
-              <div className="w4-figure-body" data-strip="who-q1-funnel-petitions"></div>
+              <StripPart id="who-q1-funnel-registrations" />
+              <StripPart id="who-q1-funnel-petitions" />
             </div>
           </figure>
           <figure className="w4-figure">
@@ -135,8 +136,8 @@ export function Who() {
               </span>
             </figcaption>
             <div className="w4-vis-stack">
-              <div className="w4-figure-body" data-strip="who-q1-split"></div>
-              <div className="w4-figure-body" data-strip="who-q1-denial"></div>
+              <StripPart id="who-q1-split" />
+              <StripPart id="who-q1-denial" />
             </div>
           </figure>
         </div>

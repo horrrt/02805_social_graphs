@@ -1,6 +1,7 @@
 import { Drawer } from "@/components/post/Drawer";
 import { Drawers } from "@/components/post/Drawers";
 import { TocItem } from "@/features/week04/frame/DeepShell";
+import { StripPart } from "@/features/week04/strips/Strips";
 import { GlossTerm } from "./GlossTerm";
 
 // Deep dive topic: paperwork, the lottery and green cards.
@@ -47,14 +48,14 @@ export function TopicPaperwork() {
                   Pooled over employers with 20 or more filings, 2025. Orange: outsourcing firms; the dashed line marks direct employers.
                 </span>
               </figcaption>
-              <div className="w4-figure-body" data-strip="staffing-lawyers-outsourcing"></div>
+              <StripPart id="staffing-lawyers-outsourcing" />
             </figure>
             <figure className="w4-figure">
               <figcaption>
                 <b>The five largest law firms</b>
                 <span>Certified H-1B filings each prepared in 2025.</span>
               </figcaption>
-              <div className="w4-figure-body" data-strip="staffing-lawyers-top5"></div>
+              <StripPart id="staffing-lawyers-top5" />
             </figure>
           </div>
           <Drawers variant="foot">
@@ -114,14 +115,14 @@ export function TopicPaperwork() {
                 <b>Do high firms cluster?</b>
                 <span>Share of high firms in a high firm's group. Dashed: the same with the labels shuffled.</span>
               </figcaption>
-              <div className="w4-figure-body" data-strip="staffing-lottery-mates"></div>
+              <StripPart id="staffing-lottery-mates" />
             </figure>
             <figure className="w4-figure">
               <figcaption>
                 <b>Agreement with the groups</b>
                 <span>AMI between the high/low split and the staffing groups; the line spans 100 runs.</span>
               </figcaption>
-              <div className="w4-figure-body" data-strip="staffing-lottery-ami"></div>
+              <StripPart id="staffing-lottery-ami" />
             </figure>
           </div>
           <Drawers variant="foot">

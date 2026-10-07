@@ -1,118 +1,23 @@
-// Section 3 deep dive: one figure per part owned here -- the first round
+// Section 3 deep dive: one figure per part owned here, the first round
 // (who-q1 to who-q4), who files the paperwork, the community-stats
-// modularity chart, strong/weak ties and the lottery. Plain SVG, drawn once
-// the page's own JSON loads; every chart carries a hover <title> and sits
-// beside a caption that says how to read it. Colours come from CSS custom
-// properties (post.css, week04-vis-staffing.css) through token(), never
-// as hex literals here.
-import { asset } from "./site.js";
-import { node, token, stripChart, miniStrip, fitted, fs, textWidth } from "./week04-strip.js";
+// modularity chart, strong/weak ties and the lottery. This module builds
+// each figure's spec from the page's own JSON; the strip island
+// (src/features/week04/strips/) draws them as plain SVG, every chart with a
+// hover <title> beside a caption that says how to read it. Colours are CSS
+// custom property names (post.css, week04-vis-staffing.css), never hex
+// literals here.
 
-const COMMUNITIES_URL = asset("weeks/week04/data/staffing_communities.json");
-const DEEP_URL = asset("weeks/week04/data/staffing_deep.json");
-const YEARS_URL = asset("weeks/week04/data/years.json");
+/** The files every figure here reads, all three at once. */
+export const FILES = ["staffing_communities", "staffing_deep", "years"];
 
 const whole = new Intl.NumberFormat("en-US");
 const num = (v) => whole.format(v);
 const pct = (v, digits = 0) => `${(v * 100).toFixed(digits)}%`;
-const host = (id) => document.querySelector(`[data-strip="${id}"]`);
-
-function fetchJSON(url) {
-  return fetch(url).then((r) => {
-    if (!r.ok) throw new Error(`${url} ${r.status}`);
-    return r.json();
-  });
-}
-
-/** Horizontal bars, one value per row, no shared baseline. Rows: {label, sub,
- * value, valueLabel, color, tip}. Drawn at the host's width (see fitted). */
-function hbars(rows, opts) {
-  return fitted((width) => drawHbars(rows, { ...opts, width }), opts.width ?? 520);
-}
-
-function drawHbars(rows, { domain, width = 520, rowH = 34, fmt, aria }) {
-  const [d0, d1] = domain;
-  const small = fs("small");
-  const caption = fs("caption");
-  const labelNeed = Math.ceil(Math.max(0, ...rows.map((r) => Math.max(textWidth(r.label, "small", 600), r.sub ? textWidth(r.sub, "caption") : 0)))) + 14;
-  // Too narrow for a label column: each label goes on a line above its bar.
-  const above = width - labelNeed - 12 < 160;
-  const lift = above ? 18 : 0;
-  const x0 = above ? 0 : labelNeed;
-  const x1 = width - 12;
-  const X = (v) => x0 + ((Math.min(Math.max(v, d0), d1) - d0) * (x1 - x0)) / (d1 - d0);
-  const top = 8;
-  const step = rowH + lift;
-  const h = top + rows.length * step + 4;
-  const svg = node("svg", { viewBox: `0 0 ${width} ${h}`, width, height: h, role: "img", "aria-label": aria });
-  rows.forEach((r, i) => {
-    const cy = top + i * step + lift + rowH / 2;
-    if (above) {
-      svg.append(node("text", { x: 0, y: cy - 13, "font-size": small, fill: token("--ink"), "font-weight": 600 }, r.label));
-    } else {
-      svg.append(node("text", { x: 0, y: cy - (r.sub ? 3 : -4), "font-size": small, fill: token("--ink"), "font-weight": 600 }, r.label));
-      if (r.sub) svg.append(node("text", { x: 0, y: cy + 12, "font-size": caption, fill: token("--ink-mute-text") }, r.sub));
-    }
-    svg.append(node("line", { x1: x0, y1: cy, x2: x1, y2: cy, stroke: token("--line"), "stroke-width": 1 }));
-    const bx = X(r.value);
-    const bar = node("rect", {
-      x: x0, y: cy - 7, width: Math.max(2, bx - x0), height: 14, rx: 4,
-      fill: r.color ? token(r.color) : token("--ink"),
-    });
-    if (r.tip) bar.append(node("title", {}, r.tip));
-    svg.append(bar);
-    const label = r.valueLabel ?? fmt(r.value);
-    const inside = bx - x0 > textWidth(label, "small", 700) + 12;
-    svg.append(node("text", {
-      x: inside ? bx - 6 : bx + 6, y: cy + 4.5, "font-size": small, "font-weight": 700,
-      fill: inside ? token("--card") : token("--ink"), "text-anchor": inside ? "end" : "start",
-    }, label));
-  });
-  return svg;
-}
-
-/** Stacked proportion rows. Groups: [label, shares[]] with a shared list of
- * segment names and tints (CSS token names, ink-first). Drawn at the host's width. */
-function stackedRows(groups, names, tints, opts) {
-  return fitted((width) => drawStacked(groups, names, tints, { ...opts, width }), opts.width ?? 520);
-}
-
-function drawStacked(groups, names, tints, { width = 520, rowH = 42, aria, digits = 0 }) {
-  const x0 = 0;
-  const x1 = width;
-  const top = 12;
-  const small = fs("small");
-  const caption = fs("caption");
-  const h = top + groups.length * rowH + 22;
-  const svg = node("svg", { viewBox: `0 0 ${width} ${h}`, width, height: h, role: "img", "aria-label": aria });
-  groups.forEach(([label, shares], i) => {
-    const cy = top + i * rowH;
-    svg.append(node("text", { x: 0, y: cy - 4, "font-size": small, fill: token("--ink"), "font-weight": 600 }, label));
-    let x = x0;
-    shares.forEach((share, j) => {
-      const w = share * (x1 - x0);
-      const bar = node("rect", { x, y: cy, width: Math.max(0, w), height: 18, fill: token(tints[j]) });
-      bar.append(node("title", {}, `${names[j]}: ${pct(share, 1)}`));
-      svg.append(bar);
-      const text = pct(share, digits);
-      if (w > textWidth(text, "small", 700) + 10) {
-        svg.append(node("text", {
-          x: x + w / 2, y: cy + 13.5, "font-size": small, "font-weight": 700, "text-anchor": "middle",
-          fill: j === 0 ? token("--card") : token("--ink"),
-        }, text));
-      }
-      x += w;
-    });
-  });
-  const ly = top + groups.length * rowH + 6;
-  let lx = 0;
-  names.forEach((name, j) => {
-    svg.append(node("circle", { cx: lx + 5, cy: ly, r: 5, fill: token(tints[j]) }));
-    svg.append(node("text", { x: lx + 14, y: ly + 4, "font-size": caption, fill: token("--ink-mute-text") }, name));
-    lx += 14 + textWidth(name, "caption") + 16;
-  });
-  return svg;
-}
+// The figures as specs: { kind, ... } for src/features/week04/strips/Strips.tsx.
+const strip = (rows, opts) => ({ kind: "strip", rows, opts });
+const mini = (spec) => ({ kind: "mini", spec });
+const hbars = (rows, opts) => ({ kind: "hbars", rows, opts });
+const stacked = (groups, names, tints, opts) => ({ kind: "stacked", groups, names, tints, opts });
 
 // One modularity row: the real network against its null, the z-score as a badge.
 function modularityRow(label, sub, part, nullWord) {
@@ -122,17 +27,11 @@ function modularityRow(label, sub, part, nullWord) {
   };
 }
 
-function draw(id, svg) {
-  const el = host(id);
-  if (!el) return;
-  el.replaceChildren(svg);
-}
-
 // ---- who-q1: how many workers sit at a client -----------------------------
 
-function drawQ1(deep, years) {
+function drawQ1(out, deep, years) {
   const fy = years.years["2025"];
-  draw("who-q1-split", stackedRows(
+  out["who-q1-split"] = (stacked(
     [
       ["Placed at a client", [fy.placed_share, 1 - fy.placed_share]],
       ["Name a client company", [deep.q1.client_company_share, 1 - deep.q1.client_company_share]],
@@ -152,7 +51,7 @@ function drawQ1(deep, years) {
       ref: [direct, `direct ${pct(direct, 1)}`],
     };
   };
-  draw("who-q1-denial", stripChart(
+  out["who-q1-denial"] = (strip(
     [denialRow(2022, "first-time petitions", "2022"), denialRow(2026, "Oct-Jun", "2026 Oct-Jun")],
     { domain: [0, 0.04], ticks: [0, 0.01, 0.02, 0.03, 0.04], fmt: (v) => pct(v, 0), width: 520, labelW: 150,
       badgeW: 20, rowH: 56,
@@ -165,7 +64,7 @@ function drawQ1(deep, years) {
     ["Placing firms", k.placing, "--w4-vis-client"],
     ["Firms under 20 filings", k.small, "--ink-mute"],
   ];
-  draw("who-q1-funnel-registrations", hbars(
+  out["who-q1-funnel-registrations"] = (hbars(
     kinds.map(([label, kind, color]) => ({
       label, value: kind.registrations_per_approval, color,
       tip: `${kind.registrations_per_approval.toFixed(1)} registrations per approved petition`,
@@ -173,7 +72,7 @@ function drawQ1(deep, years) {
     { domain: [0, 13], fmt: (v) => v.toFixed(1), width: 520, labelW: 160,
       aria: "Registrations per approved petition, March 2023 draw, by kind of employer" },
   ));
-  draw("who-q1-funnel-petitions", hbars(
+  out["who-q1-funnel-petitions"] = (hbars(
     kinds.map(([label, kind, color]) => ({
       label, value: kind.selected_that_became_petitions, color,
       valueLabel: pct(kind.selected_that_became_petitions), tip: "A drawn ticket became a petition",
@@ -185,9 +84,9 @@ function drawQ1(deep, years) {
 
 // ---- who-q2: industry or vendor -------------------------------------------
 
-function drawQ2(comm) {
+function drawQ2(out, comm) {
   const m = comm.modularity;
-  draw("who-q2-modularity", stripChart(
+  out["who-q2-modularity"] = (strip(
     [
       modularityRow("Each link counted once", "against rewired networks", m.wiring_only, "rewired"),
       modularityRow("Weighted by filings", "against rewired networks", m.weighted_vs_rewired, "rewired"),
@@ -198,7 +97,7 @@ function drawQ2(comm) {
 
   const iv = comm.industry_or_vendor;
   const un = iv.unweighted;
-  draw("who-q2-ami", stripChart(
+  out["who-q2-ami"] = (strip(
     [
       { label: "Main vendor", sub: "each link counted once", real: un.ami_community_main_vendor_same_clients,
         realLabel: un.ami_community_main_vendor_same_clients.toFixed(2) },
@@ -217,10 +116,10 @@ function drawQ2(comm) {
 
 // ---- who-q3: who relies on a single vendor --------------------------------
 
-function drawQ3(deep) {
+function drawQ3(out, deep) {
   const q = deep.q3;
   const oneShare = q.single_vendor_clients / q.clients;
-  draw("who-q3-concentration", stackedRows(
+  out["who-q3-concentration"] = (stacked(
     [
       ["Clients", [oneShare, 1 - oneShare]],
       ["Placed filings", [q.single_vendor_filing_share, 1 - q.single_vendor_filing_share]],
@@ -228,7 +127,7 @@ function drawQ3(deep) {
     ["one firm", "two or more firms"], ["--ink", "--w4-band"],
     { aria: "Clients that use a single firm: their share of all clients and of all placed filings" },
   ));
-  draw("who-q3-topshare", miniStrip({
+  out["who-q3-topshare"] = (mini({
     domain: [0, 1], real: q.big_clients_median_top_vendor_share,
     realLabel: `median ${pct(q.big_clients_median_top_vendor_share)}`,
     ref: 0.9, refLabel: `${q.big_clients_over_90pct_one_vendor} of ${num(q.big_clients)} above 90%`,
@@ -238,8 +137,8 @@ function drawQ3(deep) {
 
 // ---- who-q4: does it hold from year to year -------------------------------
 
-function drawQ4(comm, deep) {
-  draw("who-q4-stability", stripChart(
+function drawQ4(out, comm, deep) {
+  out["who-q4-stability"] = (strip(
     comm.stability.map((s) => ({
       label: `${s.from} to ${s.to}`, sub: `${num(s.shared_clients)} shared clients`,
       real: s.unweighted_nmi, realLabel: s.unweighted_nmi.toFixed(2),
@@ -250,7 +149,7 @@ function drawQ4(comm, deep) {
   ));
 
   const j = deep.q4.jan_jun_change;
-  draw("who-q4-shift", stripChart(
+  out["who-q4-shift"] = (strip(
     [
       { label: "Certified filings", sub: "January-June change", real: j.certified_filings_percent.fy25_to_fy26,
         realLabel: `${j.certified_filings_percent.fy25_to_fy26.toFixed(1)}%`,
@@ -262,7 +161,7 @@ function drawQ4(comm, deep) {
     { domain: [-20, 12], ticks: [-20, -10, 0, 10], fmt: (v) => `${v}%`, width: 520, labelW: 170, badgeW: 20,
       rowH: 56, zeroLine: 0, aria: "2026 January to June change against a year earlier, certified and client-company filings" },
   ));
-  draw("who-q4-vendor-changed", miniStrip({
+  out["who-q4-vendor-changed"] = (mini({
     domain: [0.35, 0.55], real: j.main_vendor_changed_share.after, realLabel: pct(j.main_vendor_changed_share.after),
     ref: j.main_vendor_changed_share.before, refLabel: `a year earlier ${pct(j.main_vendor_changed_share.before)}`,
     aria: "Share of clients with 5 or more filings in both years that changed their main vendor",
@@ -271,9 +170,9 @@ function drawQ4(comm, deep) {
 
 // ---- who files the paperwork ----------------------------------------------
 
-function drawLawyers(deep) {
+function drawLawyers(out, deep) {
   const o = deep.lawyers.outsourcing;
-  draw("staffing-lawyers-outsourcing", stripChart(
+  out["staffing-lawyers-outsourcing"] = (strip(
     [
       { label: "No outside law firm", sub: "share of filings", real: o.placing.no_firm_share_pooled, color: "--w4-vis-client",
         realLabel: pct(o.placing.no_firm_share_pooled), realTip: "Outsourcing firms",
@@ -293,7 +192,7 @@ function drawLawyers(deep) {
     "Corporate Immigration Partners PC": "Corporate Immigration Partners",
   };
   const top = deep.lawyers.top_firms_by_filings;
-  draw("staffing-lawyers-top5", hbars(
+  out["staffing-lawyers-top5"] = (hbars(
     top.map(([name, filings]) => ({
       label: pretty[name] ?? name, value: filings, valueLabel: num(filings), tip: `${num(filings)} certified filings, 2025`,
     })),
@@ -303,9 +202,9 @@ function drawLawyers(deep) {
 
 // ---- with filing counts or without (the only chart this part needs) ------
 
-function drawCommunityStats(comm) {
+function drawCommunityStats(out, comm) {
   const m = comm.modularity;
-  draw("staffing-community-modularity", stripChart(
+  out["staffing-community-modularity"] = (strip(
     [
       modularityRow("Each link counted once", "against rewired", m.wiring_only, "rewired"),
       { ...modularityRow("Weighted by filings", "against rewired", m.weighted_vs_rewired, "rewired"), divider: true },
@@ -318,9 +217,9 @@ function drawCommunityStats(comm) {
 
 // ---- strong ties, weak ties and pay ---------------------------------------
 
-function drawTies(deep) {
+function drawTies(out, deep) {
   const t = deep.ties;
-  draw("staffing-ties-overlap", stripChart(
+  out["staffing-ties-overlap"] = (strip(
     [
       { label: "Filings against overlap", sub: `Spearman, ${num(t.defined_links)} links`,
         real: t.spearman_weight_overlap_rho, realLabel: t.spearman_weight_overlap_rho.toFixed(2),
@@ -331,7 +230,7 @@ function drawTies(deep) {
       aria: "Correlation of a link's filings with its neighbourhood overlap, real against shuffled filing counts" },
   ));
   const wd = t.wage_distribution_placing_vs_direct_filings;
-  draw("staffing-ties-wage", stackedRows(
+  out["staffing-ties-wage"] = (stacked(
     [
       ["Outsourcing firms", ["1", "2", "3", "4"].map((k) => wd.placing[k])],
       ["Direct employers", ["1", "2", "3", "4"].map((k) => wd.direct[k])],
@@ -346,9 +245,9 @@ function drawTies(deep) {
 
 // ---- do the firms that register the same workers staff the same clients -
 
-function drawLottery(deep) {
+function drawLottery(out, deep) {
   const l = deep.lottery;
-  draw("staffing-lottery-mates", stripChart(
+  out["staffing-lottery-mates"] = (strip(
     [
       { label: "High firms' groups", sub: "share of high firms", real: l.high_mates_share,
         realLabel: pct(l.high_mates_share, 1), ref: [l.high_mates_share_shuffled, `shuffled ${pct(l.high_mates_share_shuffled, 1)}`] },
@@ -356,7 +255,7 @@ function drawLottery(deep) {
     { domain: [0.45, 0.6], ticks: [0.45, 0.5, 0.55, 0.6], fmt: (v) => pct(v, 0), width: 520, labelW: 175,
       badgeW: 20, rowH: 60, aria: "Share of high firms in a high firm's group, real against shuffled labels" },
   ));
-  draw("staffing-lottery-ami", stripChart(
+  out["staffing-lottery-ami"] = (strip(
     [
       { label: "AMI with the groups", sub: "median of 100 runs", real: l.ami_median, realLabel: l.ami_median.toFixed(3),
         ci: [l.ami_min, l.ami_max] },
@@ -366,21 +265,16 @@ function drawLottery(deep) {
   ));
 }
 
-Promise.all([fetchJSON(COMMUNITIES_URL), fetchJSON(DEEP_URL), fetchJSON(YEARS_URL)])
-  .then(([comm, deep, years]) => {
-    drawQ1(deep, years);
-    drawQ2(comm);
-    drawQ3(deep);
-    drawQ4(comm, deep);
-    drawLawyers(deep);
-    drawCommunityStats(comm);
-    drawTies(deep);
-    drawLottery(deep);
-  })
-  .catch((error) => {
-    document.querySelectorAll(".w4-vis-error").forEach((el) => {
-      el.textContent = `This figure failed to load: ${error.message}`;
-      el.hidden = false;
-    });
-    console.error("week04-vis-staffing:", error);
-  });
+/** Every figure this file owns, by its data-strip id, as a spec the page's strip island draws. */
+export function visStaffing(comm, deep, years) {
+  const out = {};
+  drawQ1(out, deep, years);
+  drawQ2(out, comm);
+  drawQ3(out, deep);
+  drawQ4(out, comm, deep);
+  drawLawyers(out, deep);
+  drawCommunityStats(out, comm);
+  drawTies(out, deep);
+  drawLottery(out, deep);
+  return out;
+}

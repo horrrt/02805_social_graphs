@@ -2,6 +2,8 @@ import { Drawer } from "@/components/post/Drawer";
 import { Drawers } from "@/components/post/Drawers";
 import { Entities } from "@/features/week04/entities/Entities";
 import { TocItem } from "@/features/week04/frame/DeepShell";
+import { StaffingFigure, StaffingStat, StaffingStatsTable } from "@/features/week04/staffing/Staffing";
+import { StripPart } from "@/features/week04/strips/Strips";
 import { GlossTerm } from "./GlossTerm";
 
 // Deep dive topic: outsourcing firms and their clients.
@@ -62,7 +64,7 @@ export function TopicOutsourcing() {
                       that keep everyone's number of partners.
                     </span>
                   </figcaption>
-                  <div className="w4-figure-body" data-strip="who-q2-modularity"></div>
+                  <StripPart id="who-q2-modularity" />
                 </figure>
               </div>
               <div>
@@ -77,7 +79,7 @@ export function TopicOutsourcing() {
                       between the groups and each client's main vendor or industry, 0 = labels dealt at random. Filled: the main vendor; hollow: the industry.
                     </span>
                   </figcaption>
-                  <div className="w4-figure-body" data-strip="who-q2-ami"></div>
+                  <StripPart id="who-q2-ami" />
                 </figure>
               </div>
             </div>
@@ -114,7 +116,7 @@ export function TopicOutsourcing() {
                     Clients that use a single firm, as a share of all clients and of all placed filings, 2025.
                   </span>
                 </figcaption>
-                <div className="w4-figure-body" data-strip="who-q3-concentration"></div>
+                <StripPart id="who-q3-concentration" />
               </figure>
               <figure className="w4-figure">
                 <figcaption>
@@ -123,7 +125,7 @@ export function TopicOutsourcing() {
                     The dot is the median share of a client's filings held by its largest vendor, among clients with 20 or more filings; the dashed line marks 90%.
                   </span>
                 </figcaption>
-                <div className="w4-figure-body" data-strip="who-q3-topshare"></div>
+                <StripPart id="who-q3-topshare" />
               </figure>
             </div>
             <Drawers variant="foot">
@@ -148,67 +150,7 @@ export function TopicOutsourcing() {
               <h2>The client network, year by year</h2>
             </div>
           </header>
-          <figure className="staffing" id="staffing-figure">
-            <div className="staffing-controls">
-              <div aria-label="Fiscal year, October to September" className="staffing-years" role="group">
-                <button aria-pressed="false" data-year="2022" type="button">2022</button>
-                <button aria-pressed="false" data-year="2023" type="button">2023</button>
-                <button aria-pressed="false" data-year="2024" type="button">2024</button>
-                <button aria-pressed="true" data-year="2025" type="button">2025</button>
-                <button aria-pressed="false" data-year="2026" type="button">
-                  2026 · Oct–Jun
-                </button>
-              </div>
-              <label className="staffing-search">
-                Find a client
-                {" "}
-                <input autoComplete="off" list="staffing-names" type="search" />
-                <datalist id="staffing-names"></datalist>
-              </label>
-            </div>
-            <div className="staffing-grid">
-              <div className="staffing-chart">
-                <div aria-label="Scatter plot of client companies: placed H-1B filings against the share supplied by the client's largest vendor. The table below lists the same data." className="chart-host" role="img"></div>
-              </div>
-              <div aria-live="polite" className="staffing-panel">Loading the filings…</div>
-            </div>
-            <figcaption>
-              One dot per client company with 20 or more H-1B filings that placed
-              a worker there in the year: further right, more filings; higher up,
-              more of them from a single outsourcing firm. Click a dot or type a
-              name to see who supplies that client.
-            </figcaption>
-            <div className="rx-table-block">
-              <h4>The 25 largest clients</h4>
-              <table>
-                <thead>
-                  <tr>
-                    <th>Client</th>
-                    <th>Sector</th>
-                    <th className="num">Filings</th>
-                    <th className="num">Vendors</th>
-                    <th>Largest vendor</th>
-                    <th className="num">Its share</th>
-                  </tr>
-                </thead>
-                <tbody></tbody>
-              </table>
-            </div>
-            <div className="staffing-flows">
-              <h3>Who supplies the largest clients</h3>
-              <div aria-label="Flow chart: the eight outsourcing firms that place the most H-1B filings, plus one source for all other firms, on the left; the twenty clients that receive the most on the right; a band for the filings between each pair." className="chart-host" role="img"></div>
-              <p className="flows-caption">
-                The eight firms that place the most filings, and the 20
-                clients that receive the most, in the year chosen above. Band
-                width is the number of placed filings from a firm to a client;
-                the grey source gathers every other firm. Each client sits next
-                to the named firm that supplies it most. Hover a firm or a
-                client to follow its bands.
-                {" "}
-                <span className="flows-coverage"></span>
-              </p>
-            </div>
-          </figure>
+          <StaffingFigure />
           <Drawers variant="foot">
             <Drawer label="Background">
               <p>
@@ -237,13 +179,13 @@ export function TopicOutsourcing() {
                 {" "}
                 of
                 {" "}
-                <b className="cross">…</b>
+                <StaffingStat k="cross" />
                 , less than two seeds of either kind (
-                <b className="seeds">…</b>
+                <StaffingStat k="seeds" />
                 {" "}
                 weighted,
                 {" "}
-                <b className="seeds-plain">…</b>
+                <StaffingStat k="seeds-plain" />
                 {" "}
                 unweighted).
               </p>
@@ -254,42 +196,33 @@ export function TopicOutsourcing() {
               <p className="sub">
                 Filing counts pull clients toward vendors: AMI with each client's main vendor rises from
                 {" "}
-                <b className="vendor-plain">…</b>
+                <StaffingStat k="vendor-plain" />
                 {" "}
                 to
                 {" "}
-                <b className="vendor">…</b>
+                <StaffingStat k="vendor" />
                 {" "}
                 when filings count, while AMI with industry stays near
                 {" "}
-                <b className="industry">…</b>
+                <StaffingStat k="industry" />
                 .
               </p>
               <p className="sub">
                 Against rewired networks, without weights the real network wins (
-                <b className="mod-plain">…</b>
+                <StaffingStat k="mod-plain" />
                 {" "}
                 against
                 {" "}
-                <b className="null-plain">…</b>
+                <StaffingStat k="null-plain" />
                 ); with weights it loses (
-                <b className="mod">…</b>
+                <StaffingStat k="mod" />
                 {" "}
                 against
                 {" "}
-                <b className="null">…</b>
+                <StaffingStat k="null" />
                 ).
               </p>
-              <table className="ego">
-                <thead>
-                  <tr>
-                    <th></th>
-                    <th style={{"textAlign":"right"}}>Weighted</th>
-                    <th style={{"textAlign":"right"}}>Unweighted</th>
-                  </tr>
-                </thead>
-                <tbody></tbody>
-              </table>
+              <StaffingStatsTable />
               <Drawers variant="foot">
                 <Drawer label="Method">
                   <p>
@@ -313,7 +246,7 @@ export function TopicOutsourcing() {
                   <p>
                     Infomap agrees with Louvain at NMI
                     {" "}
-                    <b className="im-louvain">…</b>
+                    <StaffingStat k="im-louvain" />
                     . Finer partitions raise every NMI; AMI corrects for that, so it is the number to compare across methods.
                   </p>
                 </Drawer>
@@ -321,39 +254,39 @@ export function TopicOutsourcing() {
                   <p>
                     Infomap, which follows a random walk instead of counting links, splits the same network into
                     {" "}
-                    <b className="im-modules">…</b>
+                    <StaffingStat k="im-modules" />
                     {" "}
                     small modules, most of them a firm with its clients. Like weighted Louvain, it follows the vendor far more than the industry (AMI
                     {" "}
-                    <b className="im-vendor">…</b>
+                    <StaffingStat k="im-vendor" />
                     {" "}
                     against
                     {" "}
-                    <b className="im-industry">…</b>
+                    <StaffingStat k="im-industry" />
                     ).
                   </p>
                   <p>
                     The null also deals the filing counts back out at random. Rewiring breaks the network into a median of
                     {" "}
-                    <b className="pieces">…</b>
+                    <StaffingStat k="pieces" />
                     {" "}
                     pieces, each a free community, so we score each rewired network on its largest piece, as we do the real one. The real network also loses when only the filing counts are shuffled on the real links (
-                    <b className="null-weights">…</b>
+                    <StaffingStat k="null-weights" />
                     ). The real counts leave
                     {" "}
-                    <b className="cross-share">…</b>
+                    <StaffingStat k="cross-share" />
                     {" "}
                     of filings on links between groups, against
                     {" "}
-                    <b className="cross-share-null">…</b>
+                    <StaffingStat k="cross-share-null" />
                     {" "}
                     with shuffled counts: clients that use several firms hold
                     {" "}
-                    <b className="multi-links">…</b>
+                    <StaffingStat k="multi-links" />
                     {" "}
                     of the links but
                     {" "}
-                    <b className="multi-filings">…</b>
+                    <StaffingStat k="multi-filings" />
                     {" "}
                     of the filings, and only their links can cross, since a client with one firm sits in that firm's group.
                   </p>
@@ -368,7 +301,7 @@ export function TopicOutsourcing() {
                     Dots: the real network. Grey: rewired networks, or the real links with their filing counts shuffled.
                   </span>
                 </figcaption>
-                <div className="w4-figure-body" data-strip="staffing-community-modularity"></div>
+                <StripPart id="staffing-community-modularity" />
               </figure>
             </div>
           </div>
@@ -404,7 +337,7 @@ export function TopicOutsourcing() {
                   , against 100 shuffles of the filing counts over the same links.
                 </span>
               </figcaption>
-              <div className="w4-figure-body" data-strip="staffing-ties-overlap"></div>
+              <StripPart id="staffing-ties-overlap" />
             </figure>
             <figure className="w4-figure">
               <figcaption>
@@ -418,7 +351,7 @@ export function TopicOutsourcing() {
                   .
                 </span>
               </figcaption>
-              <div className="w4-figure-body" data-strip="staffing-ties-wage"></div>
+              <StripPart id="staffing-ties-wage" />
             </figure>
           </div>
           <Drawers variant="foot">

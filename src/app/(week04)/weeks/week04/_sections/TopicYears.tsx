@@ -1,6 +1,7 @@
 import { Drawer } from "@/components/post/Drawer";
 import { Drawers } from "@/components/post/Drawers";
 import { TocItem } from "@/features/week04/frame/DeepShell";
+import { StripPart } from "@/features/week04/strips/Strips";
 import { GlossTerm } from "./GlossTerm";
 
 // Deep dive topic: five years.
@@ -120,7 +121,7 @@ export function TopicYears() {
                     of the groups on shared clients. Dots: two consecutive years. Dashed: two runs of the same year.
                   </span>
                 </figcaption>
-                <div className="w4-figure-body" data-strip="who-q4-stability"></div>
+                <StripPart id="who-q4-stability" />
               </figure>
               <figure className="w4-figure">
                 <figcaption>
@@ -130,8 +131,8 @@ export function TopicYears() {
                   </span>
                 </figcaption>
                 <div className="w4-vis-stack">
-                  <div className="w4-figure-body" data-strip="who-q4-shift"></div>
-                  <div className="w4-figure-body" data-strip="who-q4-vendor-changed"></div>
+                  <StripPart id="who-q4-shift" />
+                  <StripPart id="who-q4-vendor-changed" />
                 </div>
               </figure>
             </div>
