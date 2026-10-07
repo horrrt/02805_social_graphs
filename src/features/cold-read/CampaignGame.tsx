@@ -124,12 +124,6 @@ export function CampaignGame({ data, random = Math.random }: { data: CampaignDat
           <b key={total}>{total.toLocaleString("en")}</b>
         </span>
         <span className="cr-box">
-          <small>Level</small>
-          <b>
-            {phase === "intro" ? 0 : Math.min(results.length + (phase === "level" ? 1 : 0), LEVELS.length)}/{LEVELS.length}
-          </b>
-        </span>
-        <span className="cr-box">
           <small>Best campaign</small>
           <b>{best.toLocaleString("en")}</b>
         </span>
@@ -152,7 +146,7 @@ export function CampaignGame({ data, random = Math.random }: { data: CampaignDat
                 <small>{l.topic}</small>
               </span>
               <span className="cr-track-score">
-                {r ? (r.skipped ? `skipped −${r.lost}` : `+${r.points.toLocaleString("en")}`) : state === "current" ? "playing" : ""}
+                {r ? (r.skipped ? `skipped −${r.lost}` : `+${r.points.toLocaleString("en")}`) : ""}
               </span>
             </li>
           );
@@ -168,7 +162,7 @@ export function CampaignGame({ data, random = Math.random }: { data: CampaignDat
                 <input type="checkbox" checked={hard} onChange={(e) => setHard(e.target.checked)} />
                 <span>
                   Hard mode
-                  <small>level 1 deals no name cards, and pays double</small>
+                  <small>level 1 deals rarer clues, and pays double</small>
                 </span>
               </label>
               <button type="button" className="cr-go" onClick={start}>

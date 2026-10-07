@@ -11,7 +11,7 @@ import { json, zero } from "./coldReadData";
 
 const data = json<ClueShopData>("clue_shop.json");
 const round = data.rounds[shuffled(data.rounds.map((_, i) => i), zero)[0]];
-const deck = shuffled(round.on, zero);
+const deck = shuffled(round.normal, zero);
 const answer = data.pages[round.page].name;
 
 beforeEach(() => localStorage.clear());
@@ -73,14 +73,14 @@ test("three wrong names end the run", async () => {
   assert.ok(screen.getByRole("button", { name: "Play again" }));
 });
 
-test("hard mode, picked in the practice menu, deals the names-off deck and offers no switch", async () => {
+test("hard mode, picked in the practice menu, deals the hard deck and offers no switch", async () => {
   const user = userEvent.setup();
   render(<ClueShopGame data={data} random={zero} hard />);
   assert.equal(screen.queryByRole("checkbox", { name: /Hard mode/ }), null, "the round itself has no switch");
   await user.click(screen.getByRole("button", { name: "Deal the first page" }));
-  const off = shuffled(round.off, zero);
+  const off = shuffled(round.hard, zero);
   off.forEach((c, i) => assert.match(card(i).getAttribute("aria-label")!, new RegExp(`${c.n} times here, on ${data.words[c.w].df} of`)));
-  assert.ok(off.every((c) => data.words[c.w].name === 0));
+  assert.ok(off.filter((c) => c.kind === "sharp").every((c) => data.words[c.w].df >= 6), "hard cards are on 6 pages or more");
   assert.ok(screen.getByText("Hard mode · ×2"));
 });
 

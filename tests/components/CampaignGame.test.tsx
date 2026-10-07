@@ -115,7 +115,7 @@ test("hard mode is chosen once, at the start, and level 1 deals without names", 
   await user.click(screen.getByRole("button", { name: "Deal the first page" }));
   const clue = data.clue!;
   const round = clue.rounds[shuffled(clue.rounds.map((_, i) => i), zero)[0]];
-  const deck = shuffled(round.off, zero);
+  const deck = shuffled(round.hard, zero);
   deck.forEach((c, i) =>
     assert.match(screen.getByRole("button", { name: new RegExp(`^Card ${i + 1},`) }).getAttribute("aria-label")!, new RegExp(`${c.n} times here, on ${clue.words[c.w].df} of`)),
   );

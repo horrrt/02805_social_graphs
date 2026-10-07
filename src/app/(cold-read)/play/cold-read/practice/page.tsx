@@ -27,7 +27,7 @@ export default function Page() {
                   <input type="checkbox" name="hard" value="1" />
                   <span>
                     Hard mode
-                    <small>no name cards, score ×2</small>
+                    <small>rarer clues, score ×2</small>
                   </span>
                 </label>
               ) : null}

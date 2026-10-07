@@ -6,7 +6,8 @@
 export type Kind = "loud" | "mid" | "sharp";
 export type Card = { w: string; kind: Kind; n: number };
 export type Word = { df: number; name: 0 | 1; post: [number, number][] };
-export type Round = { page: number; on: Card[]; off: Card[] };
+/** A playable page and its two decks: normal (every card on 4 pages or more) and hard (6 or more). */
+export type Round = { page: number; normal: Card[]; hard: Card[] };
 export type ClueShopData = {
   N: number;
   pages: { name: string; tokens: number; img?: string; file?: string }[];
@@ -82,7 +83,7 @@ export function shortlist(data: ClueShopData, flipped: string[], struck: number[
 
 /**
  * Points for naming the page: 100, plus 100 per card left face down, doubled
- * with names hidden, times the streak (pages named in a row without a miss,
+ * in hard mode, times the streak (pages named in a row without a miss,
  * this one included, up to MAX_STREAK).
  */
 export function points(cardsLeft: number, namesHidden: boolean, streak = 1) {

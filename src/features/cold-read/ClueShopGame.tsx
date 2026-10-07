@@ -69,8 +69,8 @@ export function Intro() {
 }
 
 
-function ClueCard({ card, data, round, index, open, onFlip, disabled }: {
-  card: Card; data: ClueShopData; round: Round; index: number; open: boolean; onFlip: () => void; disabled: boolean;
+function ClueCard({ card, data, round, index, open, revealed, onFlip, disabled }: {
+  card: Card; data: ClueShopData; round: Round; index: number; open: boolean; revealed: boolean; onFlip: () => void; disabled: boolean;
 }) {
   const df = data.words[card.w].df;
   const tier = rarity(df);
@@ -108,7 +108,8 @@ function ClueCard({ card, data, round, index, open, onFlip, disabled }: {
           <span className="cr-small">
             ×{card.n} · {df} {df === 1 ? "page" : "pages"}
           </span>
-          <span className="cr-weight">tf×idf {fmt(tfidf(data, round, card), 4)}</span>
+          {/* The weight shows once the page is named: during play the player works the rule out from the two numbers. */}
+          {revealed ? <span className="cr-weight">tf×idf {fmt(tfidf(data, round, card), 4)}</span> : null}
         </span>
       </span>
     </button>
@@ -209,7 +210,6 @@ export function ClueShopGame({ data, random = Math.random, level, hard = false }
   const [phase, setPhase] = useState<Phase>("intro");
   const [order, setOrder] = useState<number[]>([]);
   const [at, setAt] = useState(0);
-  const hide = hard;
   const [deck, setDeck] = useState<Card[]>([]);
   const [flipped, setFlipped] = useState<string[]>([]);
   const [struck, setStruck] = useState<number[]>([]);
@@ -241,10 +241,10 @@ export function ClueShopGame({ data, random = Math.random, level, hard = false }
   }, [playing]);
 
 
-  const deal = (n: number, ord = order, namesHidden = hide) => {
+  const deal = (n: number, ord = order, hardDeck = hard) => {
     const r = data.rounds[ord[n % ord.length]];
     setAt(n);
-    setDeck(shuffled(namesHidden ? r.off : r.on, random));
+    setDeck(shuffled(hardDeck ? r.hard : r.normal, random));
     setFlipped([]);
     setStruck([]);
     setMissed(false);
@@ -281,7 +281,7 @@ export function ClueShopGame({ data, random = Math.random, level, hard = false }
   const finish = (won: boolean, livesLeft: number) => {
     const run = won ? (missed ? 1 : streak + 1) : 0;
     const left = deck.length - flipped.length;
-    const gained = won ? points(left, hide, run) : 0;
+    const gained = won ? points(left, hard, run) : 0;
     const total = score + gained;
     const newBest = total > best;
     setScore(total);
@@ -345,7 +345,7 @@ export function ClueShopGame({ data, random = Math.random, level, hard = false }
           </span>
         )}
         {/* Hard mode is picked before play: in the practice menu or on the campaign's start screen. */}
-        {hide ? <span className="cr-hard-on">Hard mode · ×2</span> : null}
+        {hard ? <span className="cr-hard-on">Hard mode · ×2</span> : null}
       </div>
 
       {phase === "intro" ? (
@@ -363,13 +363,13 @@ export function ClueShopGame({ data, random = Math.random, level, hard = false }
             <h2 className="cr-h">Page {at + 1} · clue cards</h2>
             {playing ? (
               <span className="cr-worth">
-                Name it now for <b>{points(deck.length - flipped.length, hide, nextStreak).toLocaleString("en")}</b>
+                Name it now for <b>{points(deck.length - flipped.length, hard, nextStreak).toLocaleString("en")}</b>
               </span>
             ) : null}
           </div>
           <div className="cr-hand">
             {deck.map((c, i) => (
-              <ClueCard key={c.w} card={c} data={data} round={round} index={i} open={!playing || flipped.includes(c.w)} onFlip={() => flip(c)} disabled={!playing} />
+              <ClueCard key={c.w} card={c} data={data} round={round} index={i} open={!playing || flipped.includes(c.w)} revealed={!playing} onFlip={() => flip(c)} disabled={!playing} />
             ))}
           </div>
           <p className="cr-news" aria-live="polite">
@@ -386,7 +386,7 @@ export function ClueShopGame({ data, random = Math.random, level, hard = false }
                   <p className="cr-sum">
                     <b className="cr-pop">+{outcome.gained.toLocaleString("en")}</b>
                     <span>
-                      (100 + {outcome.left} unflipped × 100){hide ? " × 2 hard mode" : ""} × {outcome.streak} streak
+                      (100 + {outcome.left} unflipped × 100){hard ? " × 2 hard mode" : ""} × {outcome.streak} streak
                     </span>
                   </p>
                 ) : null}

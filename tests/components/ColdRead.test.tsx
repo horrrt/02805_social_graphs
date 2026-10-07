@@ -14,7 +14,7 @@ const words = (cards: { w: string; kind: string }[], kind: string) => cards.filt
 test("rare cards name the page and common cards do not", () => {
   assert.ok(data.rounds.length >= 60);
   for (const r of data.rounds)
-    for (const deck of [r.on, r.off]) {
+    for (const deck of [r.normal, r.hard]) {
       assert.equal(deck.length, 8);
       assert.equal(shortlist(data, words(deck, "sharp"), [])[0]?.page, r.page, data.pages[r.page].name);
       assert.notEqual(shortlist(data, words(deck, "loud"), [])[0]?.page, r.page, data.pages[r.page].name);
@@ -34,11 +34,19 @@ test("a word on every page leaves every page a suspect and scores nothing", () =
 
 test("struck pages leave the shortlist", () => {
   const r = data.rounds[0];
-  const sharp = words(r.on, "sharp");
+  const sharp = words(r.normal, "sharp");
   assert.ok(!shortlist(data, sharp, [r.page]).some((s) => s.page === r.page));
 });
 
-test("unflipped cards and hidden names raise the points", () => {
+test("no name cards, and no single card that leaves one suspect", () => {
+  for (const r of data.rounds) {
+    for (const c of r.normal.concat(r.hard)) assert.equal(data.words[c.w].name, 0, c.w);
+    for (const c of r.normal) assert.ok(data.words[c.w].df >= 4, c.w);
+    for (const c of r.hard) assert.ok(data.words[c.w].df >= 6, c.w);
+  }
+});
+
+test("unflipped cards and hard mode raise the points", () => {
   assert.equal(points(6, false), 700);
   assert.equal(points(6, true), 1400);
   assert.equal(points(0, false), 100);
