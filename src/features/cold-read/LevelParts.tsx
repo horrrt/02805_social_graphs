@@ -25,15 +25,21 @@ export function SkipLevel({ points, level }: { points: number; level?: Level }) 
 }
 
 /**
- * The hearts. When one is lost it breaks (swells, shakes, cracks, greys) and
- * the screen's edges flash red, as a hit does in a video game. A new run,
- * with the hearts refilled, plays nothing.
+ * The hearts. Losing one is loud, the way a death is in Super Meat Boy: the
+ * heart breaks in the scoreboard, a big heart pops and cracks in the middle
+ * of the screen, the edges flash red and the whole game shakes (CSS :has on
+ * the flash). The last heart adds "Out of lives". The flash unmounts when its
+ * animation ends, so the next hit plays it again. A new run plays nothing.
  */
 export function Lives({ lives, max }: { lives: number; max: number }) {
   const before = useRef(lives);
   const [hit, setHit] = useState<{ n: number; heart: number } | null>(null);
+  const [flash, setFlash] = useState<{ n: number; dead: boolean } | null>(null);
   useEffect(() => {
-    if (lives < before.current) setHit((h) => ({ n: (h?.n ?? 0) + 1, heart: lives }));
+    if (lives < before.current) {
+      setHit((h) => ({ n: (h?.n ?? 0) + 1, heart: lives }));
+      setFlash((f) => ({ n: (f?.n ?? 0) + 1, dead: lives === 0 }));
+    }
     before.current = lives;
   }, [lives]);
   return (
@@ -44,7 +50,15 @@ export function Lives({ lives, max }: { lives: number; max: number }) {
           <span key={hit && i === hit.heart ? `lost-${hit.n}` : i} data-on={i < lives} data-lost={hit !== null && i === hit.heart} />
         ))}
       </span>
-      {hit ? <span key={hit.n} className="cr-hit" aria-hidden="true" /> : null}
+      {flash ? (
+        <span key={flash.n} className="cr-hit" data-dead={flash.dead} aria-hidden="true" onAnimationEnd={(e) => e.target === e.currentTarget && setFlash(null)}>
+          <span className="cr-hit-heart">
+            <span />
+            <span />
+          </span>
+          {flash.dead ? <span className="cr-hit-text">Out of lives</span> : null}
+        </span>
+      ) : null}
     </span>
   );
 }
