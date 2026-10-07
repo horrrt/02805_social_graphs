@@ -12,11 +12,9 @@
 //   ?tables=   how the panels read      rules · zebra · cards · compact
 //
 // The data, the numbers and the copy never change. Only the renderer needs a
-// reload when it changes; the rest repaint in place.
-
-import { api } from "./corridor.js";
-import { corridor } from "../features/week03/store.js";
-import { loadVendor as loadSharedVendor } from "./runtime/vendor.js";
+// reload when it changes; the rest repaint in place. The registries live here;
+// the style menu island draws them, and the boot island reads the URL with
+// readStyle() and installs the renderer the variant names.
 
 export const RENDERERS = {
   canvas: {
@@ -164,157 +162,12 @@ export function styleURL(chosen) {
   return next;
 }
 
-// Vendored, not fetched from a CDN: the site works offline and pulls no
-// third-party JavaScript at runtime. See public/assets/vendor/README.md. One
-// promise per file for the page's lifetime: like the failed <script> this page
-// used to reuse, a library that did not load is not requested again.
-const vendorLoads = new Map();
-function loadVendor(file) {
-  if (!vendorLoads.has(file)) vendorLoads.set(file, loadSharedVendor(file));
-  return vendorLoads.get(file);
-}
-
-function kb(bytes) {
+// The size each library renderer downloads, on its option in the menu.
+export function kb(bytes) {
   return bytes ? `${Math.round(bytes / 1024)} KB` : "no library";
 }
 
 // The menu opens from the top bar, so the controls stay out of the reading
 // flow until somebody wants them. Renderer and basemap are chips; the rest
 // sit under "More options" so the common choices are one tap away.
-const CHIP_KEYS = new Set(["variant", "basemap"]);
-
-function optionsHTML(dimension, chosen) {
-  return Object.entries(dimension.options)
-    .map(
-      ([value, meta]) =>
-        `<option value="${value}"${value === chosen[dimension.key] ? " selected" : ""}>` +
-        `${meta.label}${meta.bytes ? ` · ${kb(meta.bytes)}` : ""}</option>`,
-    )
-    .join("");
-}
-
-function wireMenu() {
-  const trigger = document.getElementById("style-trigger");
-  const bar = document.getElementById("style-bar");
-  if (!trigger || !bar) return;
-
-  const close = () => {
-    bar.hidden = true;
-    trigger.setAttribute("aria-expanded", "false");
-  };
-  trigger.addEventListener("click", (event) => {
-    event.stopPropagation();
-    const open = bar.hidden;
-    bar.hidden = !open;
-    trigger.setAttribute("aria-expanded", String(open));
-  });
-  bar.addEventListener("click", (event) => event.stopPropagation());
-  document.addEventListener("click", close);
-  document.addEventListener("keydown", (event) => {
-    if (event.key === "Escape") close();
-  });
-}
-
-function renderBar(chosen, onChange) {
-  const host = document.getElementById("style-bar");
-  if (!host) return;
-
-  const chipBlocks = DIMENSIONS.filter((d) => CHIP_KEYS.has(d.key))
-    .map((dimension) => {
-      const chips = Object.entries(dimension.options)
-        .map(
-          ([value, meta]) =>
-            `<button type="button" class="style-chip" data-value="${value}"` +
-            ` aria-pressed="${value === chosen[dimension.key]}">${meta.label}</button>`,
-        )
-        .join("");
-      return (
-        `<div class="style-group">` +
-        `<span class="style-group-label">${dimension.label}</span>` +
-        `<div class="style-chips" role="group" data-dimension="${dimension.key}"` +
-        ` aria-label="${dimension.label}">${chips}</div>` +
-        `<select id="style-${dimension.key}" data-dimension="${dimension.key}"` +
-        ` class="style-select-proxy" tabindex="-1" aria-hidden="true">` +
-        `${optionsHTML(dimension, chosen)}</select>` +
-        `</div>`
-      );
-    })
-    .join("");
-
-  const moreFields = DIMENSIONS.filter((d) => !CHIP_KEYS.has(d.key))
-    .map(
-      (dimension) =>
-        `<div class="style-field">` +
-        `<label for="style-${dimension.key}">${dimension.label}</label>` +
-        `<select id="style-${dimension.key}" data-dimension="${dimension.key}">` +
-        `${optionsHTML(dimension, chosen)}</select>` +
-        `</div>`,
-    )
-    .join("");
-
-  host.innerHTML =
-    chipBlocks +
-    `<details class="style-more">` +
-    `<summary>More options</summary>` +
-    `<div class="style-more-grid">${moreFields}</div>` +
-    `</details>`;
-
-  host.querySelectorAll(".style-chips").forEach((group) => {
-    group.addEventListener("click", (event) => {
-      const button = event.target.closest("button[data-value]");
-      if (!button) return;
-      const key = group.dataset.dimension;
-      const select = document.getElementById(`style-${key}`);
-      if (select) select.value = button.dataset.value;
-      group.querySelectorAll("button").forEach((other) => {
-        other.setAttribute("aria-pressed", String(other === button));
-      });
-      onChange(key, button.dataset.value);
-    });
-  });
-
-  host.querySelectorAll("select").forEach((select) => {
-    select.addEventListener("change", () =>
-      onChange(select.dataset.dimension, select.value),
-    );
-  });
-
-  const label = document.getElementById("style-trigger-label");
-  if (label) label.textContent = "Views";
-}
-
-// Until the style bar is an island, the entry
-// wires them here, once the islands have the data in and the renderer chosen.
-function legacy() {
-  let wired = false;
-  const wire = (s) => {
-    if (wired || s.status !== "ready" || !s.style) return;
-    wired = true;
-    const chosen = { ...s.style };
-    wireMenu();
-    renderBar(chosen, (key, value) => {
-      chosen[key] = value;
-      const url = styleURL(chosen);
-      const dimension = DIMENSIONS.find((d) => d.key === key);
-      if (dimension.reloads) {
-        // Swapping the drawing library mid-flight would leave half the page in
-        // the old renderer's DOM, so this one dimension reloads. Carry the scroll
-        // position across, or the reader is thrown back to the top for a change
-        // they made halfway down.
-        try {
-          sessionStorage.setItem("week03-scroll", String(window.scrollY));
-        } catch {
-          // Private mode: the reader lands at the top, which is the old behaviour.
-        }
-        window.location.assign(url.pathname + url.search);
-        return;
-      }
-      window.history.replaceState(null, "", url.pathname + url.search);
-      corridor.setState({ style: { ...chosen } });
-    });
-  };
-  wire(corridor.getState());
-  corridor.subscribe(wire);
-}
-
-legacy();
+export const CHIP_KEYS = new Set(["variant", "basemap"]);

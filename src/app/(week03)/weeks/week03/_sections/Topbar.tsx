@@ -1,3 +1,4 @@
+import { StyleMenu } from "@/features/week03/menu/StyleMenu";
 // The top bar: brand, site link, the Views menu host and the section links.
 export function Topbar() {
   return (
@@ -12,14 +13,7 @@ export function Topbar() {
           </a>
           {" "}
           <a className="site-link" href="../../#weeks">All posts</a>
-          <div className="style-menu">
-            <button aria-controls="style-bar" aria-expanded="false" className="style-trigger" id="style-trigger" type="button">
-              <span id="style-trigger-label">View</span>
-              {" "}
-              <span aria-hidden="true">▾</span>
-            </button>
-            <div aria-label="Page style" className="style-bar" id="style-bar" role="group" hidden></div>
-          </div>
+          <StyleMenu />
           <nav className="topnav" aria-label="Sections of this post">
             <a className="here" href="#globe">Migration</a>
             {" "}

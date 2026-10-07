@@ -1,4 +1,3 @@
-import PageScripts from "@/components/PageScripts";
 import { type RailItem, SectionRail } from "@/components/post/SectionRail";
 import { Boot, Status } from "@/features/week03/frame/Boot";
 import { QuestionsWatch } from "@/features/week03/questions/Questions";
@@ -37,10 +36,10 @@ const RAIL: RailItem[] = [
   },
   { target: "methods", label: "Methods, and what this cannot tell you" },
 ];
+
 export default function Page() {
   return (
     <>
-      <a className="skip" href="#main">Skip to content</a>
       <Topbar />
       <main id="main">
         <Hero />
@@ -62,7 +61,6 @@ export default function Page() {
       <Boot />
       <QuestionsWatch />
       <ViewsWatch />
-      <PageScripts page="week03" />
     </>
   );
 }

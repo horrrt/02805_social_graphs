@@ -5,7 +5,7 @@
 // selection with no null-year figures leaves it where it was.
 import { useMemo, useRef } from "react";
 import { island } from "@/lib/island";
-import { denmarkView, select, spotlightOptions } from "@/scripts/corridor.js";
+import { denmarkView, select, spotlight, spotlightOptions } from "@/scripts/corridor.js";
 import { useCorridor, useReady } from "../frame/shared";
 
 function PickerView() {
@@ -13,7 +13,7 @@ function PickerView() {
   const selected = useCorridor((s) => s.selected);
   const options = useMemo(() => (ready ? spotlightOptions() : null), [ready]);
   const shown = useRef<string | null>(null);
-  const now = useMemo(() => (ready ? denmarkView()?.iso3 ?? null : null), [ready, selected]);
+  const now = useMemo(() => (ready && denmarkView() ? spotlight().iso3 : null), [ready, selected]);
   if (now) shown.current = now;
   return (
     <select aria-label="Country to analyse" id="dk-country" value={shown.current ?? ""} onChange={(e) => select(e.target.value)}>

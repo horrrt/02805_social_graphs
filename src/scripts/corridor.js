@@ -373,7 +373,7 @@ function brokers(y) {
 // Section 8 analyses one country, and that country is whatever is selected on
 // the page. Everything it needs is already per-country in the payload, so the
 // section works for any of the 238 without shipping a block for each.
-function spotlight() {
+export function spotlight() {
   const iso3 = state.selected && node(state.selected)
     ? state.selected
     : state.data.focus.iso3;
@@ -395,7 +395,7 @@ function haversine(a, b) {
 // The four countries closest to it on the ground, itself first. For Denmark
 // that is the Nordics and their neighbours; every other country gets the same
 // comparison without a hand-written list of peers.
-function peersOf(iso3) {
+export function peersOf(iso3) {
   const y = String(state.data.null_year);
   const home = node(iso3)?.coord;
   const self = metrics(iso3, y);
