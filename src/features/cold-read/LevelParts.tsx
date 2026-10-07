@@ -1,6 +1,7 @@
 // Scoreboard parts shared by the rounds: the score (which counts the campaign
 // so far when a round is a level), the skip, and the hearts.
 import { useEffect, useRef, useState } from "react";
+import { createPortal } from "react-dom";
 import { type Level, SKIP_COST } from "./levels";
 
 /** The scoreboard's score: the level's points, plus the campaign's total when it is a level. */
@@ -27,8 +28,9 @@ export function SkipLevel({ points, level }: { points: number; level?: Level }) 
 /**
  * The hearts. Losing one is loud, the way a death is in Super Meat Boy: the
  * heart breaks in the scoreboard, a big heart pops and cracks in the middle
- * of the screen, the edges flash red and the whole game shakes (CSS :has on
- * the flash). The last heart adds "Out of lives". The flash unmounts when its
+ * of the screen, the edges flash red and the whole page shakes (CSS :has on
+ * the flash). The flash renders into <body>: inside the shaking page, the
+ * shake's transform would trap it in the card. The last heart adds "Out of lives". The flash unmounts when its
  * animation ends, so the next hit plays it again. A new run plays nothing.
  */
 export function Lives({ lives, max }: { lives: number; max: number }) {
@@ -50,15 +52,18 @@ export function Lives({ lives, max }: { lives: number; max: number }) {
           <span key={hit && i === hit.heart ? `lost-${hit.n}` : i} data-on={i < lives} data-lost={hit !== null && i === hit.heart} />
         ))}
       </span>
-      {flash ? (
-        <span key={flash.n} className="cr-hit" data-dead={flash.dead} aria-hidden="true" onAnimationEnd={(e) => e.target === e.currentTarget && setFlash(null)}>
-          <span className="cr-hit-heart">
-            <span />
-            <span />
-          </span>
-          {flash.dead ? <span className="cr-hit-text">Out of lives</span> : null}
-        </span>
-      ) : null}
+      {flash
+        ? createPortal(
+            <span key={flash.n} className="cr-hit" data-dead={flash.dead} aria-hidden="true" onAnimationEnd={(e) => e.target === e.currentTarget && setFlash(null)}>
+              <span className="cr-hit-heart">
+                <span />
+                <span />
+              </span>
+              {flash.dead ? <span className="cr-hit-text">Out of lives</span> : null}
+            </span>,
+            document.body,
+          )
+        : null}
     </span>
   );
 }
