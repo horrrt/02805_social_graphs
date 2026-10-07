@@ -2,9 +2,7 @@
 // with no DOM: degree counts, P(k) three ways (raw, mixed-binned, CCDF),
 // reference curves, Zipf rank-frequency, ensemble envelopes and the
 // statistics of a null model. Pure functions over plain arrays, so
-// tests/dist-core.test.mjs runs them in node. The binning, CCDF, log-normal
-// fit and normal CDF are adapted from socialgraphs2026-web, MIT, Sune Lehmann
-// (docs/explorables/ccdf-live.js and real-degrees.js).
+// tests/dist-core.test.mjs runs them in node.
 //
 //   ks = degrees(edges, { nodes, mode: "in" })
 //   rawPk(ks); binnedPk(ks); ccdf(ks); poissonCurve(mean(ks), 40)
@@ -16,7 +14,7 @@
  * Each node's degree from an edge list `[[a, b], …]`, in the order of `nodes`
  * when given (so isolates count, as 0), else in order of first appearance.
  * mode "in" and "out" count edges (a repeated edge counts twice); "undirected"
- * (the default) counts distinct neighbours, as the course's degreeSets() does.
+ * (the default) counts distinct neighbours, so a repeated edge counts once.
  * Self-loops count for "in" and "out" but give no neighbour.
  * @param {Iterable<[any, any]> | null | undefined} edges
  * @param {{ nodes?: Iterable<any>, mode?: "in" | "out" | "undirected" }} [opts]
@@ -66,8 +64,8 @@ export function rawPk(ks) {
  * are still dense), then bins `factor` (2) times wider each, [8, 16), [16, 32),
  * …. Each bin's density is its nodes over all N over its width in k, so the
  * exact bins equal raw P(k); a wide bin sits at the geometric mean of its
- * integer range. Empty bins are left out. The course bins k + 1; this bins k,
- * so k = 0 keeps its own bin (which a log axis leaves off).
+ * integer range. Empty bins are left out. Bins are over k itself, so k = 0
+ * keeps its own bin (which a log axis leaves off).
  * @param {number[]} ks
  * @param {{ exact?: number, factor?: number }} [opts]
  * @returns {[number, number][]}
@@ -76,26 +74,38 @@ export function binnedPk(ks, { exact = 8, factor = 2 } = {}) {
   const n = ks?.length ?? 0;
   if (!n) return [];
   const counts = degreeCounts(ks);
-  const max = counts[counts.length - 1][0];
+  const kMin = counts[0][0];
+  const kMax = counts[counts.length - 1][0];
+  // Bin edges [lo, hi): unit bins from min(0, kMin) up to exact, then each bin
+  // `factor` times as wide as where it starts (always at least one wide).
+  const bins = [];
+  for (let k = Math.min(0, kMin); k < exact && k <= kMax; k++) bins.push([k, k + 1]);
+  for (let lo = Math.max(exact, 1); lo <= kMax; ) {
+    const hi = Math.max(lo + 1, Math.ceil(lo * factor));
+    bins.push([lo, hi]);
+    lo = hi;
+  }
   const out = [];
-  const push = (lo, hi) => {
-    const m = counts.reduce((s, [k, c]) => (k >= lo && k < hi ? s + c : s), 0);
-    if (m > 0) out.push([hi - lo === 1 ? lo : Math.sqrt(lo * (hi - 1)), m / n / (hi - lo)]);
-  };
-  const first = Math.min(0, counts[0][0]);
-  for (let k = first; k < exact && k <= max; k++) push(k, k + 1);
-  const next = (lo) => Math.max(lo + 1, Math.ceil(lo * factor));
-  for (let lo = Math.max(exact, 1); lo <= max; lo = next(lo)) push(lo, next(lo));
+  for (const [lo, hi] of bins) {
+    let inBin = 0;
+    for (const [k, c] of counts) if (k >= lo && k < hi) inBin += c;
+    if (inBin === 0) continue;
+    const width = hi - lo;
+    out.push([width === 1 ? lo : Math.sqrt(lo * (hi - 1)), inBin / n / width]);
+  }
   return out;
 }
 
 /** The CCDF: [[k, P(K ≥ k)]] for every distinct k present, so the first point is [min k, 1]. */
 export function ccdf(ks) {
   const n = ks?.length ?? 0;
-  const s = [...(ks ?? [])].sort((a, b) => a - b);
-  const out = [];
-  for (let i = 0; i < n; i++) if (i === 0 || s[i] !== s[i - 1]) out.push([s[i], (n - i) / n]);
-  return out;
+  // Walk k upwards; the nodes at k or above are all n minus those already passed.
+  let atLeast = n;
+  return degreeCounts(ks).map(([k, c]) => {
+    const point = [k, atLeast / n];
+    atLeast -= c;
+    return point;
+  });
 }
 
 export const mean = (a) => (a.length ? a.reduce((s, v) => s + v, 0) / a.length : NaN);
@@ -146,10 +156,16 @@ export function exponential(xs, rate, [x0, y0] = [0, 1]) {
 
 /** The log-normal fitted by moments of ln k over k ≥ 1: { mu, sigma, frac } with frac the share of nodes with k ≥ 1. */
 export function lognormalFit(ks) {
-  const l = (ks ?? []).filter((k) => k >= 1).map(Math.log);
-  if (!l.length) return { mu: NaN, sigma: NaN, frac: 0 };
-  const mu = mean(l);
-  return { mu, sigma: Math.sqrt(mean(l.map((v) => (v - mu) ** 2))), frac: l.length / ks.length };
+  // μ is the mean of ln k and σ its population standard deviation.
+  const logs = [];
+  for (const k of ks ?? []) if (k >= 1) logs.push(Math.log(k));
+  if (!logs.length) return { mu: NaN, sigma: NaN, frac: 0 };
+  let sum = 0;
+  for (const v of logs) sum += v;
+  const mu = sum / logs.length;
+  let sq = 0;
+  for (const v of logs) sq += (v - mu) ** 2;
+  return { mu, sigma: Math.sqrt(sq / logs.length), frac: logs.length / ks.length };
 }
 
 /** The log-normal density at x > 0. */
@@ -158,12 +174,22 @@ export function lognormalPdf(x, mu, sigma) {
   return Math.exp(-((Math.log(x) - mu) ** 2) / (2 * sigma * sigma)) / (x * sigma * Math.sqrt(2 * Math.PI));
 }
 
-/** The standard normal CDF (Abramowitz and Stegun 7.1.26). */
+/**
+ * The error function by Abramowitz and Stegun 7.1.26: for x ≥ 0,
+ * erf(x) ≈ 1 − (a1 t + a2 t² + a3 t³ + a4 t⁴ + a5 t⁵) e^(−x²), t = 1 / (1 + p x),
+ * absolute error under 1.5e-7; odd in x.
+ */
+function erf(x) {
+  const ax = Math.abs(x);
+  const t = 1 / (1 + 0.3275911 * ax);
+  const poly = t * (0.254829592 + t * (-0.284496736 + t * (1.421413741 + t * (-1.453152027 + t * 1.061405429))));
+  const y = 1 - poly * Math.exp(-ax * ax);
+  return x < 0 ? -y : y;
+}
+
+/** The standard normal CDF, Φ(z) = (1 + erf(z / √2)) / 2. */
 export function Phi(z) {
-  const t = 1 / (1 + 0.2316419 * Math.abs(z));
-  const d = 0.3989422804014327 * Math.exp((-z * z) / 2);
-  const p = d * t * (0.31938153 + t * (-0.356563782 + t * (1.781477937 + t * (-1.821255978 + t * 1.330274429))));
-  return z >= 0 ? 1 - p : p;
+  return 0.5 * (1 + erf(z / Math.SQRT2));
 }
 
 /** The normal density at x. */

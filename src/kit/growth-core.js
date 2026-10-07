@@ -156,15 +156,20 @@ export function splitComponents(n, edges, groups) {
  * One draw of the friendship paradox: a person uniformly from the nodes with
  * at least one friend (an isolate has no friend to ask, so it is never
  * drawn), then one of their friends uniformly. { person, friend, kPerson,
- * kFriend }, or null when nobody has a friend. `adj` is toAdj(…).out.
- * Adapted from socialgraphs2026-web, MIT, Sune Lehmann.
+ * kFriend }, or null when nobody has a friend. `adj` is toAdj(…).out;
+ * `linked`, when given, is the list of nodes with a friend, precomputed.
+ * Each draw takes two rng values: the person first, then the friend.
  */
 export function samplePair(adj, rng, linked) {
-  const pool = linked ?? adj.map((_, v) => v).filter((v) => adj[v].length > 0);
-  if (pool.length === 0) return null;
-  const person = pool[Math.floor(rng() * pool.length)];
-  const friends = adj[person];
-  const friend = friends[Math.floor(rng() * friends.length)];
+  let candidates = linked;
+  if (!candidates) {
+    candidates = [];
+    for (let v = 0; v < adj.length; v++) if (adj[v].length) candidates.push(v);
+  }
+  if (!candidates.length) return null;
+  const pick = (list) => list[Math.floor(rng() * list.length)];
+  const person = pick(candidates);
+  const friend = pick(adj[person]);
   return { person, friend, kPerson: adj[person].length, kFriend: adj[friend].length };
 }
 

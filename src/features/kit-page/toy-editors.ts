@@ -39,7 +39,7 @@ export const karatePresets = () => {
   ];
 };
 
-/** Eight people and who messages whom how often: the course's adjacency-matrix example, H on its own. */
+/** Eight people and who messages whom how often: a small adjacency-matrix example, H on its own. */
 export const MATRIX_LABELS = ["A", "B", "C", "D", "E", "F", "G", "H"];
 export const MATRIX_EXAMPLE = [
   [0, 3, 1, 0, 0, 0, 0, 0],
@@ -70,7 +70,7 @@ export function cliqueGraph(seed: number, k: number, n = 12): CliqueGraph {
   };
 }
 
-/** How one version of the world becomes the next (after Mhasawade, Zhao and Chunara, 2021, as the course draws it). */
+/** How one version of the world becomes the next (after Mhasawade, Zhao and Chunara, 2021). */
 export const BIAS_FLOW = [
   { title: "The world as it should be", transition: "past injustice and social bias", example: "Everyone we would like the analysis to speak about, every voice present.", exampleTitle: "What we would like to study" },
   { title: "The world as it is", transition: "sampling and measurement", example: "Access, visibility and the chance to speak are unequal before anyone collects a word.", exampleTitle: "What actually happens" },

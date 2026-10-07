@@ -126,7 +126,7 @@ export const shuffleSamples: number[] = (() => {
   return Array.from({ length: 1000 }, () => normal(rand, 0.262, 0.016));
 })();
 
-// ---- the survivor board: four measures under three null models
+// ---- the null board: four measures under three null models
 
 export const boardMeasures: BoardAxis[] = [
   { key: "C", label: "Average clustering" },

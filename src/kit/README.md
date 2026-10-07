@@ -512,7 +512,7 @@ value far beyond the samples stands at the edge with an arrow.
 
 ### NullBoard({ measures, models, cells, alpha, fmt, caption })
 
-The survivor board: a small histogram per measure × null model with the real value's line, the panel's title
+A board of network measures against null models: a small histogram per measure × null model with the real value's line, the panel's title
 naming its verdict and tinted by it (survives, dies, fixed by construction), and a table of the numbers under
 the grid. `measures` and `models` are `[{ key, label }]`; each of `cells` is `{ measure, model, samples, real,
 verdict }`, the verdict worked out by `verdict()` at `alpha` (0.05, two-sided) unless given. Hovering or focusing
@@ -773,8 +773,7 @@ rows, fmt }`, each row `{ key, label, score, onPick }`, a button when `onPick` i
 Four pieces for network growth: a replay in arrival order, a lab for nonlinear preferential attachment, the
 components as small multiples, and the friendship paradox as a sampler. No fetching inside; toy BA graphs and toy
 debut years on `/styleguide/kit/`, awkward cases on `/styleguide/kit/states/`. Styles: the "Kit: growth" section of
-`post.css`. The ideas follow the course's ba-growth and friendship-paradox explorables and another group's growth
-replay; no code of theirs is copied.
+`post.css`.
 
 The numbers are DOM-free in `src/kit/growth-core.js`, tested by `tests/growth-core.test.mjs`; import it as
 `@/kit/growth-core.js`. `spiralPosition(rank, total)` and `spiralLayout` place arrivals on a sunflower spiral, the
@@ -784,8 +783,8 @@ debut year) into arrival ranks, ties in node order, and `orderOf` inverts them. 
 biggest hub, its share of all links and its arrival rank. `clampAlpha` keeps α in 0 to 50, past which k^α
 overflows; `regime` names its side of 1. `SWEEP_ALPHAS`, `sweepPoint` and `sweepHubShare` give the hub's mean share
 over seeded runs at each α and n. `splitComponents` lists components largest first, or given groups, with local
-edges. `samplePair` and `sampleMany` draw a person from the nodes with a friend, then one friend (adapted from
-socialgraphs2026-web, MIT, Sune Lehmann), and `degreeShares` bins the draws.
+edges. `samplePair` and `sampleMany` draw a person from the nodes with a friend, then one friend, and `degreeShares` bins
+the draws.
 
 ### GrowthReplay({ modes, card, top, reference, height, seed })
 
