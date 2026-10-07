@@ -3,6 +3,7 @@
 // Takes its data as a prop (Toolbox.tsx loads it), so tests can render it.
 // Filters live in filters.ts.
 import { type ReactNode, useMemo, useState } from "react";
+import { SegmentedControl } from "@/components/post/SegmentedControl";
 import {
   type Component, filterComponents, filterGames, filterLibraries, filterMaterials, type Fit, type Library, sitePath, type ToolboxData,
 } from "./filters";
@@ -96,16 +97,16 @@ export function ToolboxView({ data }: { data: ToolboxData }) {
   return (
     <div className="tb" id="toolbox">
       <section className="tb-controls" aria-label="Filters">
-        <div className="tb-row" role="group" aria-label="Week">
+        <div className="tb-row">
           <span className="tb-label">Week</span>
-          <button type="button" aria-pressed={week === 0 && chosen.length === 0} onClick={() => pickWeek(0)}>
-            All
-          </button>
-          {data.weeks.map((w) => (
-            <button key={w.n} type="button" aria-pressed={week === w.n} onClick={() => pickWeek(w.n)} title={w.title}>
-              {w.n} · {w.title}
-            </button>
-          ))}
+          {/* "All" is pressed only with no concepts chosen; concepts picked by hand press no week. */}
+          <SegmentedControl
+            className="rx-seg"
+            ariaLabel="Week"
+            buttons={[{ value: "0", label: "All" }, ...data.weeks.map((w) => ({ value: String(w.n), label: `${w.n} · ${w.title}` }))]}
+            value={week ? String(week) : chosen.length ? null : "0"}
+            onChange={(v) => pickWeek(Number(v))}
+          />
         </div>
         {(["networks", "text", "general"] as const).map((group) => (
           <div key={group} className="tb-row" role="group" aria-label={`${group} concepts`}>
@@ -113,7 +114,7 @@ export function ToolboxView({ data }: { data: ToolboxData }) {
             {data.concepts
               .filter((c) => c.group === group)
               .map((c) => (
-                <button key={c.id} type="button" aria-pressed={chosen.includes(c.id)} onClick={() => toggle(c.id)}>
+                <button key={c.id} type="button" className="tb-chip" aria-pressed={chosen.includes(c.id)} onClick={() => toggle(c.id)}>
                   {c.label}
                 </button>
               ))}
@@ -125,7 +126,7 @@ export function ToolboxView({ data }: { data: ToolboxData }) {
             <input type="search" value={query} onChange={(e) => setQuery(e.target.value)} placeholder="a game, a material, an example…" />
           </label>
           {chosen.length ? (
-            <button type="button" onClick={() => pickWeek(0)}>
+            <button type="button" className="tb-chip" onClick={() => pickWeek(0)}>
               Clear concepts
             </button>
           ) : null}
@@ -138,15 +139,16 @@ export function ToolboxView({ data }: { data: ToolboxData }) {
             {label} <span className="tb-count">{counts[id].toLocaleString("en")}</span>
           </button>
         ))}
-        <span className="tb-view" role="group" aria-label="View">
+        <div className="tb-view">
           <span className="tb-label">View</span>
-          <button type="button" aria-pressed={view === "table"} onClick={() => setView("table")}>
-            Table
-          </button>
-          <button type="button" aria-pressed={view === "gallery"} onClick={() => setView("gallery")}>
-            Gallery
-          </button>
-        </span>
+          <SegmentedControl
+            className="rx-seg"
+            ariaLabel="View"
+            buttons={[{ value: "table", label: "Table" }, { value: "gallery", label: "Gallery" }]}
+            value={view}
+            onChange={(v) => setView(v as "table" | "gallery")}
+          />
+        </div>
       </div>
 
       {tab === "games" ? (
@@ -171,14 +173,13 @@ export function ToolboxView({ data }: { data: ToolboxData }) {
               <input type="checkbox" checked={starOnly} onChange={(e) => setStarOnly(e.target.checked)} /> Only ★ (winning needs the concept)
             </label>
             <span className="tb-label">Picture</span>
-            <span role="group" aria-label="Picture">
-              <button type="button" aria-pressed={picture === "game"} onClick={() => setPicture("game")}>
-                Game
-              </button>{" "}
-              <button type="button" aria-pressed={picture === "play"} onClick={() => setPicture("play")}>
-                Gameplay
-              </button>
-            </span>
+            <SegmentedControl
+              className="rx-seg"
+              ariaLabel="Picture"
+              buttons={[{ value: "game", label: "Game" }, { value: "play", label: "Gameplay" }]}
+              value={picture}
+              onChange={(v) => setPicture(v as "game" | "play")}
+            />
             <span className="tb-dim">
               {games.filter(({ g }) => (picture === "game" ? g.img : g.play)).length.toLocaleString("en")} of {games.length.toLocaleString("en")} have one
             </span>
