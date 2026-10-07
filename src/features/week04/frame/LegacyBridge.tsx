@@ -4,15 +4,12 @@
 // until the last of them is a component: glossary terms that termify() wrote
 // open and close on click and Escape, segmented controls get week04-frame.js's
 // keyboard and tab stops, and tables get week04-tables.js's classes and bars.
-// Elements React renders (isOwned) are left to their components. It also
-// hands the method tab the deep dive asks for to week04-methods.js, as
-// #w4m-root's data-want and a w4m:show event.
+// Elements React renders (isOwned) are left to their components.
 import { useEffect } from "react";
 import { island } from "@/lib/island";
 import { useDocumentEvent } from "@/lib/useEvents";
 import { isOwned } from "@/scripts/runtime/owned.js";
 import { decorate } from "@/scripts/week04-tables.js";
-import { deep } from "./deep";
 
 const OPEN = ".w4-term.is-open";
 const SEGMENTS = ".rx-seg, .axis-modes, .staffing-years";
@@ -113,19 +110,10 @@ function BridgeView() {
     observer.observe(main, { subtree: true, attributes: true, attributeFilter: ["aria-pressed"], childList: true });
     syncSegments(main);
     const undecorate = decorateAll(main);
-    const unsubscribe = deep.subscribe((s, prev) => {
-      const ask = s.method;
-      if (!ask || ask === prev.method) return;
-      const root = document.getElementById("w4m-root");
-      if (!root) return;
-      root.dataset.want = ask.panel;
-      root.dispatchEvent(new CustomEvent("w4m:show", { detail: { panel: ask.panel } }));
-    });
     return () => {
       observer.disconnect();
       cancelAnimationFrame(queued);
       undecorate();
-      unsubscribe();
     };
   }, []);
   return null;

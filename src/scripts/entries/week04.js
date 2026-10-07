@@ -9,12 +9,10 @@ function classic(path) {
   });
 }
 
-// week04-methods.js loads ECharts again if this fails.
 await classic("assets/vendor/echarts-5.5.1.min.js").catch((error) => console.error(error));
 await run([
   () => import("../week04-years.js"),
   () => import("../week04-roles.js"),
-  () => import("../week04-methods.js"),
   () => import("../week04-skills.js"),
   () => import("../week04-skills-radar.js"),
   () => import("../week04-pagerank.js"),
