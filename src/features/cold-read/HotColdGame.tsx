@@ -3,6 +3,8 @@
 // lands on a radar by rank. Rules live in vectors.ts; this file renders them.
 import { useEffect, useMemo, useRef, useState, type FormEvent } from "react";
 import { ScoreBox, SkipLevel } from "./LevelParts";
+import { hotColdTour } from "./tours";
+import { StartButtons, useTour } from "./Tutorial";
 import { FINISH, type Level } from "./levels";
 import { shuffled } from "./rules";
 import {
@@ -136,6 +138,7 @@ export function HotColdGame({ data, random = Math.random, level }: { data: HotCo
     setFound(0);
     deal(0, shuffled(data.targets.map((_, i) => i), random));
   };
+  const tour = useTour(hotColdTour, start);
 
   const add = (w: string, hint = false): Guess | null => {
     if (!cos || !rank) return null;
@@ -245,9 +248,7 @@ export function HotColdGame({ data, random = Math.random, level }: { data: HotCo
       {phase === "intro" ? (
         <div className="cr-start">
           <Intro />
-          <button type="button" className="cr-go" onClick={start}>
-            Hide the first word
-          </button>
+          <StartButtons label="Hide the first word" start={start} tour={tour} round="vectors" />
         </div>
       ) : null}
 

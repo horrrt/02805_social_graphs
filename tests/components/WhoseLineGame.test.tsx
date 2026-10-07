@@ -8,14 +8,17 @@ import userEvent from "@testing-library/user-event";
 import { WhoseLineGame } from "@/features/cold-read/WhoseLineGame";
 import { type Answer, deal, gain, ratio, type WhoseLineData } from "@/features/cold-read/groups";
 import { shuffled } from "@/features/cold-read/rules";
-import { json, zero } from "./coldReadData";
+import { json, noExamples, zero } from "./coldReadData";
 
 const data = json<WhoseLineData>("whose_line.json");
 const pair = data.pairs[shuffled(data.pairs.map((_, i) => i), zero)[0]];
 const hand = deal(pair, zero);
 const CALL: Record<Answer, RegExp> = { a: /^1 · /, b: /^3 · /, both: /^2 · Both alike/, fluke: /^4 · One-page fluke/ };
 
-beforeEach(() => localStorage.clear());
+beforeEach(() => {
+  localStorage.clear();
+  noExamples();
+});
 
 async function started() {
   const user = userEvent.setup();

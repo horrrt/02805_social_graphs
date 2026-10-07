@@ -4,6 +4,8 @@
 // have produced it. Rules live in topics.ts; this file renders them.
 import { useEffect, useRef, useState } from "react";
 import { ScoreBox, SkipLevel } from "./LevelParts";
+import { mixDeskTour } from "./tours";
+import { StartButtons, useTour } from "./Tutorial";
 import { FINISH, type Level } from "./levels";
 import { shuffled } from "./rules";
 import { bestChips, CHIPS, grade, type MixDeskData, PAGES_PER_RUN, score, sizeBucket } from "./topics";
@@ -89,12 +91,16 @@ export function MixDeskGame({ data, random = Math.random, level }: { data: MixDe
     setReads([]);
     deal(0);
   };
+  const tour = useTour(mixDeskTour, start);
 
   const add = (k: number, d: number) => {
     if (phase !== "mix") return;
-    if (d > 0 && left === 0) return;
-    if (d < 0 && chips[k] === 0) return;
-    setChips(chips.map((c, i) => (i === k ? c + d : c)));
+    // From the latest chips, so quick clicks each count and never pass ten.
+    setChips((now) => {
+      const placed = now.reduce((a, b) => a + b, 0);
+      if ((d > 0 && placed >= CHIPS) || (d < 0 && now[k] === 0)) return now;
+      return now.map((c, i) => (i === k ? c + d : c));
+    });
   };
 
   const lock = () => {
@@ -145,9 +151,7 @@ export function MixDeskGame({ data, random = Math.random, level }: { data: MixDe
       {phase === "intro" || !page ? (
         <div className="cr-start">
           <Intro />
-          <button type="button" className="cr-go" onClick={start}>
-            Open the first page
-          </button>
+          <StartButtons label="Open the first page" start={start} tour={tour} round="mix" />
         </div>
       ) : (
         <>

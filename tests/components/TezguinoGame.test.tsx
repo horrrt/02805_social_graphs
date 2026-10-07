@@ -8,7 +8,7 @@ import userEvent from "@testing-library/user-event";
 import { COST, options, points, type TezguinoData } from "@/features/cold-read/contexts";
 import { shuffled } from "@/features/cold-read/rules";
 import { TezguinoGame } from "@/features/cold-read/TezguinoGame";
-import { json, zero } from "./coldReadData";
+import { json, noExamples, zero } from "./coldReadData";
 
 const data = json<TezguinoData>("tezguino.json");
 const order = shuffled(data.words.map((_, i) => i), zero);
@@ -16,7 +16,10 @@ const hidden = data.words[order[0]];
 const four = options(data.words.length, order[0], zero);
 const wrong = four.filter((i) => i !== order[0]);
 
-beforeEach(() => localStorage.clear());
+beforeEach(() => {
+  localStorage.clear();
+  noExamples();
+});
 
 async function started() {
   const user = userEvent.setup();

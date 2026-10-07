@@ -8,7 +8,7 @@ import userEvent from "@testing-library/user-event";
 import { HotColdGame } from "@/features/cold-read/HotColdGame";
 import { shuffled } from "@/features/cold-read/rules";
 import { atRank, cosinesTo, type HotColdMeta, points, prepare, ranks } from "@/features/cold-read/vectors";
-import { binary, json, zero } from "./coldReadData";
+import { binary, json, noExamples, zero } from "./coldReadData";
 
 const data = prepare(json<HotColdMeta>("hot_cold.json"), binary("hot_cold.bin"));
 const order = shuffled(data.targets.map((_, i) => i), zero);
@@ -17,7 +17,10 @@ const word = data.vocab[target];
 const rank = ranks(cosinesTo(data, target), target);
 const nearest = data.vocab[atRank(rank, 1)];
 
-beforeEach(() => localStorage.clear());
+beforeEach(() => {
+  localStorage.clear();
+  noExamples();
+});
 
 async function started() {
   const user = userEvent.setup();

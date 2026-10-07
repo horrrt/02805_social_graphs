@@ -137,7 +137,8 @@ export function CampaignGame({ data, random = Math.random }: { data: CampaignDat
                 <small>{l.topic}</small>
               </span>
               <span className="cr-track-score">
-                {r ? (r.skipped ? `${r.points ? `+${r.points.toLocaleString("en")} · ` : ""}skipped −${r.lost}` : `+${r.points.toLocaleString("en")}`) : ""}
+                {/* A skipped level shows only what it banked; its colour says it was skipped. */}
+                {r && r.points ? `+${r.points.toLocaleString("en")}` : ""}
               </span>
             </li>
           );
@@ -211,7 +212,7 @@ export function CampaignGame({ data, random = Math.random }: { data: CampaignDat
           <ul className="cr-played">
             {LEVELS.map((l, i) => (
               <li key={l.id} data-verdict={results[i]?.skipped ? "half" : "right"}>
-                <b>{l.name}</b> <span>{results[i]?.skipped ? `skipped −${results[i].lost}` : `+${(results[i]?.points ?? 0).toLocaleString("en")}`}</span>
+                <b>{l.name}</b> <span>+{(results[i]?.points ?? 0).toLocaleString("en")}</span>
               </li>
             ))}
           </ul>

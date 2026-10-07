@@ -7,14 +7,17 @@ import { render, screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { ClueShopGame } from "@/features/cold-read/ClueShopGame";
 import { type ClueShopData, points, shuffled } from "@/features/cold-read/rules";
-import { json, zero } from "./coldReadData";
+import { json, noExamples, zero } from "./coldReadData";
 
 const data = json<ClueShopData>("clue_shop.json");
 const round = data.rounds[shuffled(data.rounds.map((_, i) => i), zero)[0]];
 const deck = shuffled(round.normal, zero);
 const answer = data.pages[round.page].name;
 
-beforeEach(() => localStorage.clear());
+beforeEach(() => {
+  localStorage.clear();
+  noExamples();
+});
 
 async function dealt() {
   const user = userEvent.setup();

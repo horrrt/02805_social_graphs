@@ -5,6 +5,8 @@
 // groups.ts; this file renders them.
 import { useEffect, useMemo, useRef, useState } from "react";
 import { ScoreBox, SkipLevel } from "./LevelParts";
+import { whoseLineTour } from "./tours";
+import { StartButtons, useTour } from "./Tutorial";
 import { FINISH, type Level } from "./levels";
 import { shuffled } from "./rules";
 import { type Answer, CARDS, deal, gain, INSPECT_COST, judge, LIVES, MAX_STREAK, ratio, type Term, type Verdict, type WhoseLineData } from "./groups";
@@ -189,6 +191,7 @@ export function WhoseLineGame({ data, random = Math.random, level }: { data: Who
     setRight(0);
     startMatch(0, ord);
   };
+  const tour = useTour(whoseLineTour, start);
 
   const say = (said: Answer) => {
     if (!card) return;
@@ -225,9 +228,7 @@ export function WhoseLineGame({ data, random = Math.random, level }: { data: Who
         <Hud score={score} streak={streak} lives={lives} right={right} best={best} playing={false} level={level} />
         <div className="cr-start">
           <Intro />
-          <button type="button" className="cr-go" onClick={start}>
-            Start the first match
-          </button>
+          <StartButtons label="Start the first match" start={start} tour={tour} round="groups" />
         </div>
       </section>
     );

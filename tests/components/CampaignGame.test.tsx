@@ -13,7 +13,7 @@ import { afterSkip, LEVELS, SKIP_COST } from "@/features/cold-read/levels";
 import { type ClueShopData, points, shuffled } from "@/features/cold-read/rules";
 import type { MixDeskData } from "@/features/cold-read/topics";
 import { type HotColdMeta, prepare } from "@/features/cold-read/vectors";
-import { binary, json, zero } from "./coldReadData";
+import { binary, json, noExamples, zero } from "./coldReadData";
 
 const data: CampaignData = {
   clue: json<ClueShopData>("clue_shop.json"),
@@ -23,7 +23,10 @@ const data: CampaignData = {
   vectors: prepare(json<HotColdMeta>("hot_cold.json"), binary("hot_cold.bin")),
 };
 
-beforeEach(() => localStorage.clear());
+beforeEach(() => {
+  localStorage.clear();
+  noExamples();
+});
 
 async function begun() {
   const user = userEvent.setup();
@@ -85,7 +88,8 @@ test("a cleared level carries its points, and a later skip costs 500 of them", a
   await user.click(screen.getByRole("button", { name: "Start level 2" }));
   await user.click(skip());
   assert.equal(total(), earned - SKIP_COST);
-  assert.equal(track()[1].querySelector(".cr-track-score")!.textContent, `skipped −${SKIP_COST}`);
+  assert.equal(track()[1].getAttribute("data-state"), "skipped");
+  assert.equal(track()[1].querySelector(".cr-track-score")!.textContent, "", "a skip shows no text in the track");
 });
 
 test("five skips finish the campaign at 0, and the summary lists every level", async () => {
@@ -136,5 +140,5 @@ test("the round's score counts the campaign, and a skip banks the level's points
   assert.equal(total(), earned, "the scoreboard shows the campaign's 0 plus the level's points");
   await user.click(skip());
   assert.equal(total(), afterSkip(earned));
-  assert.match(track()[0].querySelector(".cr-track-score")!.textContent!, new RegExp(`^\\+${earned} · skipped −`));
+  assert.equal(track()[0].querySelector(".cr-track-score")!.textContent, `+${earned}`, "the track shows what the skipped level banked");
 });

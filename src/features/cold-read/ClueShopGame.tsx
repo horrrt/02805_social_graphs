@@ -4,6 +4,8 @@
 // ranked by cosine similarity. Rules live in rules.ts; this file renders them.
 import { useEffect, useMemo, useState } from "react";
 import { ScoreBox, SkipLevel } from "./LevelParts";
+import { clueShopTour } from "./tours";
+import { StartButtons, useTour } from "./Tutorial";
 import { FINISH, type Level } from "./levels";
 import {
   type Card, type ClueShopData, FACES, idf, LIVES, MAX_STREAK, points, rarity, type Round, shortlist, shuffled, suspects, tfidf,
@@ -263,6 +265,7 @@ export function ClueShopGame({ data, random = Math.random, level, hard = false }
     setStreak(0);
     deal(0, ord);
   };
+  const tour = useTour(clueShopTour, start);
 
   const flip = (card: Card) => {
     const before = suspects(data, flipped)?.size ?? data.N;
@@ -350,16 +353,13 @@ export function ClueShopGame({ data, random = Math.random, level, hard = false }
       {phase === "intro" ? (
         <div className="cr-start">
           <Intro />
-          <button type="button" className="cr-go" onClick={start}>
-            Deal the first page
-          </button>
+          <StartButtons label="Deal the first page" start={start} tour={tour} round="clue" />
         </div>
       ) : null}
 
       {phase !== "intro" && round ? (
         <>
           <div className="cr-hand-head">
-            <h2 className="cr-h">Page {at + 1} · clue cards</h2>
             {playing ? (
               <span className="cr-worth">
                 Name it now for <b>{points(deck.length - flipped.length, hard, nextStreak).toLocaleString("en")}</b>

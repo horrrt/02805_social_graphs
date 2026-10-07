@@ -6,6 +6,8 @@
 import { Fragment, useEffect, useRef, useState } from "react";
 import { COST, type HiddenWord, LIVES, MAX_STREAK, options, pieces, points, type Row, spent, type TezguinoData, type Weight } from "./contexts";
 import { ScoreBox, SkipLevel } from "./LevelParts";
+import { tezguinoTour } from "./tours";
+import { StartButtons, useTour } from "./Tutorial";
 import { FINISH, type Level } from "./levels";
 import { shuffled } from "./rules";
 
@@ -139,6 +141,7 @@ export function TezguinoGame({ data, random = Math.random, level }: { data: Tezg
     setSolved(0);
     deal(0, ord);
   };
+  const tour = useTour(tezguinoTour, start);
 
   const widen = (k: number) => {
     if (k > reach) setReach(k);
@@ -211,9 +214,7 @@ export function TezguinoGame({ data, random = Math.random, level }: { data: Tezg
       {phase === "intro" || !hidden ? (
         <div className="cr-start">
           <Intro />
-          <button type="button" className="cr-go" onClick={start}>
-            Hide the first word
-          </button>
+          <StartButtons label="Hide the first word" start={start} tour={tour} round="contexts" />
         </div>
       ) : (
         <>

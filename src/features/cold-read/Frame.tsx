@@ -1,4 +1,5 @@
 import type { ReactNode } from "react";
+import { Fullscreen } from "./Fullscreen";
 
 // The page around the Cold Read campaign, the practice menu and every round's
 // practice page: the site link, the two places to play, the title and the
@@ -18,6 +19,7 @@ export function Frame({ page, home, sub, credits, children }: {
           <a href={`${home}practice/`} aria-current={page === "practice" ? "page" : undefined}>
             Practice
           </a>
+          <Fullscreen />
         </nav>
       </header>
       <main id="main">

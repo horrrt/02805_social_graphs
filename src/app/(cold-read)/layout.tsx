@@ -1,5 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import type { ReactNode } from "react";
+// Driver.js's own stylesheet, vendored unmodified; cold-read.css restyles its popover in the site's tokens.
+import "../../../public/assets/vendor/driver.js-1.9.0.min.css";
 import "@/styles/type.css";
 import "@/styles/cold-read.css";
 

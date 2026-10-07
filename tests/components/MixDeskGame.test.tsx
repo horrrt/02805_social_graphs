@@ -8,13 +8,16 @@ import userEvent from "@testing-library/user-event";
 import { MixDeskGame } from "@/features/cold-read/MixDeskGame";
 import { shuffled } from "@/features/cold-read/rules";
 import { bestChips, CHIPS, grade, type MixDeskData, PAGES_PER_RUN, score } from "@/features/cold-read/topics";
-import { json, zero } from "./coldReadData";
+import { json, noExamples, zero } from "./coldReadData";
 
 const data = json<MixDeskData>("mix_desk.json");
 const order = shuffled(data.pages.map((_, i) => i), zero).slice(0, PAGES_PER_RUN);
 const page = data.pages[order[0]];
 
-beforeEach(() => localStorage.clear());
+beforeEach(() => {
+  localStorage.clear();
+  noExamples();
+});
 
 async function opened() {
   const user = userEvent.setup();
