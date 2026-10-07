@@ -1036,6 +1036,22 @@ body.cold-read {
   background: var(--card);
 }
 
+/* The key that presses a help button, shown inside it. */
+.cr-key-inline {
+  display: inline-grid;
+  place-items: center;
+  min-width: 20px;
+  height: 20px;
+  margin-left: 6px;
+  padding: 0 4px;
+  border: 1px solid var(--line);
+  border-radius: 5px;
+  font-family: inherit;
+  font-size: var(--fs-caption);
+  color: var(--ink-mute-text);
+  vertical-align: 1px;
+}
+
 .cr-ghost {
   appearance: none;
   border: 2px solid var(--line);
@@ -2502,8 +2518,12 @@ body.cold-read:fullscreen {
   animation: cr-hit 1s ease-out;
 }
 
+/* Game over stays up until the player picks a way out. */
 .cr-hit[data-dead="true"] {
-  animation: cr-hit-dead 1.8s ease-out;
+  opacity: 1;
+  pointer-events: auto;
+  background-color: rgba(204, 51, 17, 0.2);
+  animation: cr-hit-dead 0.6s ease-out;
 }
 
 .cr-hit-heart {
@@ -2551,6 +2571,25 @@ body.cold-read:fullscreen {
 
 .cr-dead .cr-hit-text {
   position: static;
+  animation: cr-slam-stay 0.9s cubic-bezier(0.2, 1.4, 0.4, 1);
+}
+
+.cr-dead-actions {
+  display: flex;
+  gap: 12px;
+  margin-top: 8px;
+  animation: cr-rise 0.4s ease-out 0.7s backwards;
+}
+
+@keyframes cr-slam-stay {
+  0% {
+    transform: scale(3);
+    opacity: 0;
+  }
+  40% {
+    transform: scale(1);
+    opacity: 1;
+  }
 }
 
 .cr-dead-mask {
@@ -2597,12 +2636,9 @@ body.cold-read:fullscreen {
   55% {
     transform: rotate(3deg);
   }
-  80% {
+  100% {
     opacity: 1;
     transform: rotate(0);
-  }
-  100% {
-    opacity: 0;
   }
 }
 
@@ -2708,19 +2744,13 @@ body.cold-read:has(> .cr-hit[data-dead="true"]) > :not(.cr-hit) {
 
 @keyframes cr-hit-dead {
   0% {
-    opacity: 1;
     background-color: rgba(255, 255, 255, 0.9);
   }
-  6% {
-    opacity: 1;
+  15% {
     background-color: rgba(204, 51, 17, 0.35);
   }
-  75% {
-    opacity: 1;
-    background-color: rgba(204, 51, 17, 0.2);
-  }
   100% {
-    opacity: 0;
+    background-color: rgba(204, 51, 17, 0.2);
   }
 }
 

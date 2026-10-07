@@ -29,12 +29,15 @@ export function SkipLevel({ points, level }: { points: number; level?: Level }) 
  * The hearts. Losing one is loud, the way a death is in Super Meat Boy: the
  * heart breaks in the scoreboard, a big heart pops and cracks in the middle
  * of the screen, the edges flash red and the whole page shakes (CSS :has on
- * the flash). The last heart plays a knocked-out mask and "Out of lives" instead of the big heart.
- * The flash renders into <body>: inside the shaking page, the shake's
- * transform would trap it in the card. It unmounts when its animation ends,
- * so the next hit plays it again. A new run plays nothing.
+ * the flash). The flash renders into <body>: inside the shaking page, the
+ * shake's transform would trap it in the card. A lost heart's flash unmounts
+ * when its animation ends, so the next hit plays it again.
+ *
+ * The last heart is game over: a knocked-out mask and "Out of lives" stay on
+ * screen with two ways out. Retry calls `onRetry`; "Why am I such a failure?"
+ * clears the screen and scrolls to the round's debrief. A new run plays nothing.
  */
-export function Lives({ lives, max }: { lives: number; max: number }) {
+export function Lives({ lives, max, onRetry }: { lives: number; max: number; onRetry?: () => void }) {
   const before = useRef(lives);
   const [hit, setHit] = useState<{ n: number; heart: number } | null>(null);
   const [flash, setFlash] = useState<{ n: number; dead: boolean } | null>(null);
@@ -45,6 +48,14 @@ export function Lives({ lives, max }: { lives: number; max: number }) {
     }
     before.current = lives;
   }, [lives]);
+  const retry = () => {
+    setFlash(null);
+    onRetry?.();
+  };
+  const why = () => {
+    setFlash(null);
+    document.querySelector(".cr-debrief, .cr-result")?.scrollIntoView({ behavior: "smooth", block: "start" });
+  };
   return (
     <span className="cr-box">
       <small>Lives</small>
@@ -55,19 +66,32 @@ export function Lives({ lives, max }: { lives: number; max: number }) {
       </span>
       {flash
         ? createPortal(
-            <span key={flash.n} className="cr-hit" data-dead={flash.dead} aria-hidden="true" onAnimationEnd={(e) => e.target === e.currentTarget && setFlash(null)}>
-              {flash.dead ? (
-                <span className="cr-dead">
+            flash.dead ? (
+              <div key={flash.n} className="cr-hit" data-dead="true" role="alertdialog" aria-modal="true" aria-label="Out of lives">
+                <div className="cr-dead">
                   <DeadMask />
                   <span className="cr-hit-text">Out of lives</span>
-                </span>
-              ) : (
+                  <div className="cr-dead-actions">
+                    {onRetry ? (
+                      // Focus lands on Retry, so Enter plays again.
+                      <button type="button" className="cr-go" onClick={retry} autoFocus>
+                        Retry
+                      </button>
+                    ) : null}
+                    <button type="button" className="cr-ghost" onClick={why}>
+                      Why am I such a failure?
+                    </button>
+                  </div>
+                </div>
+              </div>
+            ) : (
+              <span key={flash.n} className="cr-hit" data-dead="false" aria-hidden="true" onAnimationEnd={(e) => e.target === e.currentTarget && setFlash(null)}>
                 <span className="cr-hit-heart">
                   <span />
                   <span />
                 </span>
-              )}
-            </span>,
+              </span>
+            ),
             document.body,
           )
         : null}
@@ -87,3 +111,30 @@ function DeadMask() {
     </svg>
   );
 }
+
+/**
+ * A help button's key: pressing it clicks the button while `active`. Letter
+ * keys are skipped while the player types in a field, so a guess box keeps them.
+ */
+export function useHelpKey(key: string, press: () => void, active: boolean) {
+  const run = useRef(press);
+  run.current = press;
+  useEffect(() => {
+    if (!active) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.metaKey || e.ctrlKey || e.altKey || e.key.toLowerCase() !== key.toLowerCase()) return;
+      if (/^[a-z]$/i.test(key) && (e.target as HTMLElement | null)?.closest?.("input, textarea")) return;
+      e.preventDefault();
+      run.current();
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [key, active]);
+}
+
+/** The key badge on a help button. */
+export const HelpKey = ({ k }: { k: string }) => (
+  <kbd className="cr-key-inline" aria-hidden="true">
+    {k}
+  </kbd>
+);
