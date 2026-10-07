@@ -1,5 +1,6 @@
 import { Drawer } from "@/components/post/Drawer";
 import { Drawers } from "@/components/post/Drawers";
+import { PlaceOpenerStrip } from "@/features/week04/frame/Findings";
 import { GlossTerm } from "./GlossTerm";
 
 // Section 1: where the hiring is, the metro network and its backbone.
@@ -81,7 +82,7 @@ export function Place() {
             <b>Weak but real</b>
             <span>The groups against rewired networks in which each company keeps its number of metros.</span>
           </figcaption>
-          <div className="w4-figure-body" data-strip="place-modularity"></div>
+          <PlaceOpenerStrip />
         </figure>
       </div>
       <div className="draft-banner" id="place-draft-banner" hidden>

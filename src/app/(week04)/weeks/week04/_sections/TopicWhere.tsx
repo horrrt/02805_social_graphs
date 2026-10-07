@@ -1,5 +1,6 @@
 import { Drawer } from "@/components/post/Drawer";
 import { Drawers } from "@/components/post/Drawers";
+import { TocItem } from "@/features/week04/frame/DeepShell";
 import { GlossTerm } from "./GlossTerm";
 
 // Deep dive topic: where the hiring is.
@@ -13,26 +14,26 @@ export function TopicWhere() {
           <h2 className="rx-topic-title">Where the hiring is</h2>
           <p className="rx-topic-holds">Section 1's metros, linked by the employers they share.</p>
         </div>
-        <span className="rx-topic-count"></span>
+        <span className="rx-topic-count">7 boxes</span>
       </div>
       <nav aria-label="Boxes in this topic" className="rx-toc">
         <div className="rx-toc-col">
           <p className="rx-toc-head">Questions</p>
-          <a className="rx-toc-item" href="#place-backbone">Once the small links go, what's left of the map?</a>
+          <TocItem href="#place-backbone">Once the small links go, what's left of the map?</TocItem>
           {" "}
-          <a className="rx-toc-item" href="#place-longhaul">Do the same employers tie distant cities together?</a>
+          <TocItem href="#place-longhaul">Do the same employers tie distant cities together?</TocItem>
           {" "}
-          <a className="rx-toc-item" href="#deeper-density">Where is the hiring densest? Filings per 1,000 jobs</a>
+          <TocItem href="#deeper-density">Where is the hiring densest? Filings per 1,000 jobs</TocItem>
         </div>
         <div className="rx-toc-col">
           <p className="rx-toc-head">The course's community methods, tried on the 40 metros</p>
-          <a className="rx-toc-item" href="#w4m-panel-gn">Does cutting the busiest links split the country?</a>
+          <TocItem href="#w4m-panel-gn">Does cutting the busiest links split the country?</TocItem>
           {" "}
-          <a className="rx-toc-item" href="#w4m-panel-mod">Are the three metro groups more than chance?</a>
+          <TocItem href="#w4m-panel-mod">Are the three metro groups more than chance?</TocItem>
           {" "}
-          <a className="rx-toc-item" href="#w4m-panel-louvain">Where do the three metro groups come from?</a>
+          <TocItem href="#w4m-panel-louvain">Where do the three metro groups come from?</TocItem>
           {" "}
-          <a className="rx-toc-item" href="#w4m-panel-overlap">Which metros belong to more than one group?</a>
+          <TocItem href="#w4m-panel-overlap">Which metros belong to more than one group?</TocItem>
         </div>
       </nav>
       <details className="rx-panel" name="w4-panel-where" data-box="place-backbone">

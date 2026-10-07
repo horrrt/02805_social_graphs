@@ -1,5 +1,6 @@
 import { Drawer } from "@/components/post/Drawer";
 import { Drawers } from "@/components/post/Drawers";
+import { TocItem } from "@/features/week04/frame/DeepShell";
 import { GlossTerm } from "./GlossTerm";
 
 // Deep dive topic: paperwork, the lottery and green cards.
@@ -13,20 +14,20 @@ export function TopicPaperwork() {
           <h2 className="rx-topic-title">Paperwork, the lottery and green cards</h2>
           <p className="rx-topic-holds">What happens around a filing: the lawyers, the draw, USCIS and the green card after it.</p>
         </div>
-        <span className="rx-topic-count"></span>
+        <span className="rx-topic-count">6 boxes</span>
       </div>
       <nav aria-label="Boxes in this topic" className="rx-toc">
-        <a className="rx-toc-item" href="#staffing-lawyers">Who files the paperwork?</a>
+        <TocItem href="#staffing-lawyers">Who files the paperwork?</TocItem>
         {" "}
-        <a className="rx-toc-item" href="#staffing-lottery">Do the firms that register the same workers staff the same clients?</a>
+        <TocItem href="#staffing-lottery">Do the firms that register the same workers staff the same clients?</TocItem>
         {" "}
-        <a className="rx-toc-item" href="#deeper-lottery">The lottery a year apart, and who receives the winners</a>
+        <TocItem href="#deeper-lottery">The lottery a year apart, and who receives the winners</TocItem>
         {" "}
-        <a className="rx-toc-item" href="#deeper-uscis">USCIS denials, year by year</a>
+        <TocItem href="#deeper-uscis">USCIS denials, year by year</TocItem>
         {" "}
-        <a className="rx-toc-item" href="#deeper-perm">Who keeps them? Green cards as the strong tie</a>
+        <TocItem href="#deeper-perm">Who keeps them? Green cards as the strong tie</TocItem>
         {" "}
-        <a className="rx-toc-item" href="#deeper-countries">Where are they from? A network of countries</a>
+        <TocItem href="#deeper-countries">Where are they from? A network of countries</TocItem>
       </nav>
       <details className="rx-panel" name="w4-panel-paperwork" data-box="staffing-lawyers">
         <summary>Who files the paperwork?</summary>

@@ -1,3 +1,4 @@
+import { FindingMini } from "@/features/week04/frame/Findings";
 import { GlossTerm } from "./GlossTerm";
 
 // Five sections, five findings: one mini strip each.
@@ -25,7 +26,7 @@ export function Findings() {
             Cities group by who hires there, not by region, and no single link holds the map together.
           </p>
         </div>
-        <div className="w4-mini" data-finding="1"></div>
+        <FindingMini finding="1" />
         <a href="#place">Section 1 →</a>
       </div>
       <div className="w4-finding">
@@ -34,7 +35,7 @@ export function Findings() {
           <h3>Which jobs go together</h3>
           <p>Employers reveal bundles of work.</p>
         </div>
-        <div className="w4-mini" data-finding="2"></div>
+        <FindingMini finding="2" />
         <a href="#jobs">Section 2 →</a>
       </div>
       <div className="w4-finding">
@@ -51,7 +52,7 @@ export function Findings() {
             stays inside its group far more often than chance.
           </p>
         </div>
-        <div className="w4-mini" data-finding="3"></div>
+        <FindingMini finding="3" />
         <a href="#who">Section 3 →</a>
       </div>
       <div className="w4-finding">
@@ -62,7 +63,7 @@ export function Findings() {
             Take out the largest filers, Amazon above all, and the metro groups start to follow Census regions; the job clusters shift but hold.
           </p>
         </div>
-        <div className="w4-mini" data-finding="4"></div>
+        <FindingMini finding="4" />
         <a href="#footprint">Section 4 →</a>
       </div>
       <div className="w4-finding">
@@ -73,7 +74,7 @@ export function Findings() {
             The section 3 groups barely show in lawyers or green cards; the outsourcing firms stand out in the wage levels they file.
           </p>
         </div>
-        <div className="w4-mini" data-finding="5"></div>
+        <FindingMini finding="5" />
         <a href="#beyond">Section 5 →</a>
       </div>
     </section>

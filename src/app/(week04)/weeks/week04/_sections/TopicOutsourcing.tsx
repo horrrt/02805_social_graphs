@@ -1,5 +1,6 @@
 import { Drawer } from "@/components/post/Drawer";
 import { Drawers } from "@/components/post/Drawers";
+import { TocItem } from "@/features/week04/frame/DeepShell";
 import { GlossTerm } from "./GlossTerm";
 
 // Deep dive topic: outsourcing firms and their clients.
@@ -13,22 +14,22 @@ export function TopicOutsourcing() {
           <h2 className="rx-topic-title">Outsourcing firms and their clients</h2>
           <p className="rx-topic-holds">Who places workers where, and how tightly.</p>
         </div>
-        <span className="rx-topic-count"></span>
+        <span className="rx-topic-count">7 boxes</span>
       </div>
       <nav aria-label="Boxes in this topic" className="rx-toc">
-        <a className="rx-toc-item" href="#who-q2">Do clients group by industry or by the firm that staffs them?</a>
+        <TocItem href="#who-q2">Do clients group by industry or by the firm that staffs them?</TocItem>
         {" "}
-        <a className="rx-toc-item" href="#who-q3">Who relies on a single vendor?</a>
+        <TocItem href="#who-q3">Who relies on a single vendor?</TocItem>
         {" "}
-        <a className="rx-toc-item" href="#staffing-figure">The client network, year by year</a>
+        <TocItem href="#staffing-figure">The client network, year by year</TocItem>
         {" "}
-        <a className="rx-toc-item" href="#staffing-community-stats">With filing counts or without?</a>
+        <TocItem href="#staffing-community-stats">With filing counts or without?</TocItem>
         {" "}
-        <a className="rx-toc-item" href="#staffing-ties">Strong ties, weak ties and pay</a>
+        <TocItem href="#staffing-ties">Strong ties, weak ties and pay</TocItem>
         {" "}
-        <a className="rx-toc-item" href="#deeper-strength">Strength against degree: where do the heavy links go?</a>
+        <TocItem href="#deeper-strength">Strength against degree: where do the heavy links go?</TocItem>
         {" "}
-        <a className="rx-toc-item" href="#entity-communities">Every worker and company, grouped by what they do</a>
+        <TocItem href="#entity-communities">Every worker and company, grouped by what they do</TocItem>
       </nav>
       <details className="rx-panel" name="w4-panel-outsourcing" data-box="who-q2">
         <summary>Do clients group by industry or by the firm that staffs them?</summary>

@@ -1,5 +1,8 @@
 import PageScripts from "@/components/PageScripts";
 import { type RailItem, SectionRail } from "@/components/post/SectionRail";
+import { TermLayer } from "@/components/post/TermLayer";
+import { LegacyBridge } from "@/features/week04/frame/LegacyBridge";
+import { Router } from "@/features/week04/frame/Router";
 import { Beyond } from "./_sections/Beyond";
 import { Closing } from "./_sections/Closing";
 import { Cut } from "./_sections/Cut";
@@ -132,6 +135,9 @@ export default function Page() {
       {" "}
       {" "}
       {" "}
+      <TermLayer />
+      <Router />
+      <LegacyBridge />
       <PageScripts page="week04" />
     </>
   );

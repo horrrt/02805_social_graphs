@@ -1,5 +1,6 @@
 import { Drawer } from "@/components/post/Drawer";
 import { Drawers } from "@/components/post/Drawers";
+import { TocItem } from "@/features/week04/frame/DeepShell";
 import { GlossTerm } from "./GlossTerm";
 
 // Deep dive topic: five years.
@@ -13,14 +14,14 @@ export function TopicYears() {
           <h2 className="rx-topic-title">Five years</h2>
           <p className="rx-topic-holds">How the filings shift from 2022 to 2026.</p>
         </div>
-        <span className="rx-topic-count"></span>
+        <span className="rx-topic-count">3 boxes</span>
       </div>
       <nav aria-label="Boxes in this topic" className="rx-toc">
-        <a className="rx-toc-item" href="#cut-years">Five years of filings</a>
+        <TocItem href="#cut-years">Five years of filings</TocItem>
         {" "}
-        <a className="rx-toc-item" href="#cut-roles">Who filed, and for which roles?</a>
+        <TocItem href="#cut-roles">Who filed, and for which roles?</TocItem>
         {" "}
-        <a className="rx-toc-item" href="#who-q4">Does it hold from year to year?</a>
+        <TocItem href="#who-q4">Does it hold from year to year?</TocItem>
       </nav>
       <details className="qa cut rx-panel" data-box="cut-years" id="cut-years" name="w4-panel-years">
         <summary>

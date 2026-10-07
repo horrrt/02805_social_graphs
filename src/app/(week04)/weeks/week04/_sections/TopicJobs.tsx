@@ -1,5 +1,6 @@
 import { Drawer } from "@/components/post/Drawer";
 import { Drawers } from "@/components/post/Drawers";
+import { DeepPanel, TocItem } from "@/features/week04/frame/DeepShell";
 import { GlossTerm } from "./GlossTerm";
 
 // Deep dive topic: jobs and skills.
@@ -13,22 +14,22 @@ export function TopicJobs() {
           <h2 className="rx-topic-title">Jobs and skills</h2>
           <p className="rx-topic-holds">Occupations, linked by the companies that hire for both.</p>
         </div>
-        <span className="rx-topic-count"></span>
+        <span className="rx-topic-count">7 boxes</span>
       </div>
       <nav aria-label="Boxes in this topic" className="rx-toc">
-        <a className="rx-toc-item" href="#jobs-bridges">Which jobs belong to two clusters?</a>
+        <TocItem href="#jobs-bridges">Which jobs belong to two clusters?</TocItem>
         {" "}
-        <a className="rx-toc-item" href="#jobs-groups">Do the clusters follow official job groups?</a>
+        <TocItem href="#jobs-groups">Do the clusters follow official job groups?</TocItem>
         {" "}
-        <a className="rx-toc-item" href="#cut-skills" data-target="cut-skills-direct">Do occupations the same companies hire together also need similar skills?</a>
+        <TocItem href="#cut-skills" target="cut-skills-direct">Do occupations the same companies hire together also need similar skills?</TocItem>
         {" "}
-        <a className="rx-toc-item" href="#cut-skills" data-target="cut-skills-cluster">Does that agreement hold for whole hiring clusters, not just direct ties?</a>
+        <TocItem href="#cut-skills" target="cut-skills-cluster">Does that agreement hold for whole hiring clusters, not just direct ties?</TocItem>
         {" "}
-        <a className="rx-toc-item" href="#cut-skills" data-target="cut-skills-radar">How do two occupations' day-to-day skills actually compare?</a>
+        <TocItem href="#cut-skills" target="cut-skills-radar">How do two occupations' day-to-day skills actually compare?</TocItem>
         {" "}
-        <a className="rx-toc-item" href="#cut-pagerank" data-target="cut-pagerank-explore">Change the damping factor: does the ranking move?</a>
+        <TocItem href="#cut-pagerank" target="cut-pagerank-explore">Change the damping factor: does the ranking move?</TocItem>
         {" "}
-        <a className="rx-toc-item" href="#cut-pagerank" data-target="cut-pagerank-iteration">Stepped one round at a time, how fast does the ranking settle?</a>
+        <TocItem href="#cut-pagerank" target="cut-pagerank-iteration">Stepped one round at a time, how fast does the ranking settle?</TocItem>
       </nav>
       <details className="rx-panel" name="w4-panel-jobs" data-box="jobs-bridges">
         <summary>Which jobs belong to two clusters?</summary>
@@ -253,22 +254,22 @@ export function TopicJobs() {
           </Drawers>
         </div>
       </details>
-      <details className="qa cut rx-panel" data-box="cut-skills" id="cut-skills" name="w4-panel-jobs">
+      <DeepPanel className="qa cut rx-panel" box="cut-skills" id="cut-skills" name="w4-panel-jobs">
         <summary>
           <span className="qa-cue">Skills behind the jobs, from O*NET</span>
         </summary>
         <div className="qa-body cut-body" id="skills-body">
           <p aria-live="polite" className="status-line" id="skills-status">Loading the O*NET comparison…</p>
         </div>
-      </details>
-      <details className="qa cut rx-panel" data-box="cut-pagerank" id="cut-pagerank" name="w4-panel-jobs">
+      </DeepPanel>
+      <DeepPanel className="qa cut rx-panel" box="cut-pagerank" id="cut-pagerank" name="w4-panel-jobs">
         <summary>
           <span className="qa-cue">PageRank on the jobs network, step by step</span>
         </summary>
         <div className="qa-body cut-body" id="pagerank-body">
           <p aria-live="polite" className="status-line" id="pagerank-status">Loading the PageRank explorable…</p>
         </div>
-      </details>
+      </DeepPanel>
     </details>
   );
 }
