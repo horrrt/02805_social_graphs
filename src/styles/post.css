@@ -2881,3 +2881,137 @@
 .corridor .w6e-takeaways li { font-size: var(--fs-body); line-height: 1.55; margin: 0 0 8px; }
 .corridor .w6e-checklist { column-gap: 32px; columns: 2; list-style: none; margin: 0 0 18px; padding: 0; }
 .corridor .w6e-checklist li { break-inside: avoid; display: flex; font-size: var(--fs-small); justify-content: space-between; padding: 3px 0; }
+
+/* ==== Kit: text explorables (VectorAngle, SplitBars, SweepCurve, TokenWindow,
+   CountMatrix, MixtureBar, RankedBars, AxisMap, AnalogyPlot, GuessRanker in
+   src/kit). Light corridor style; every control takes the house focus ring. ==== */
+.corridor :is(.kit-vec, .kit-split, .kit-tokens, .kit-matrix, .kit-mix, .kit-ranked, .kit-guess) :is(button, input):focus-visible { outline: 2px solid var(--w4-accent); outline-offset: 2px; }
+.corridor .kit-plot { min-width: 0; }
+.corridor .kit-plot > svg { display: block; }
+.corridor .kit-controls { align-items: center; display: flex; flex-wrap: wrap; gap: 8px 12px; margin: 0 0 10px; }
+.corridor .kit-controls label { color: var(--ink-soft); font-size: var(--fs-small); font-weight: 600; }
+.corridor .kit-controls output { color: var(--ink); font-size: var(--fs-small); font-variant-numeric: tabular-nums; min-width: 3.5em; }
+.corridor .kit-controls input[type="range"] { accent-color: var(--w4-accent); display: inline-block; flex: none; margin: 0; width: 160px; }
+.corridor .kit-controls input[type="text"] { border: 1px solid var(--line); border-radius: 6px; color: var(--ink); font-size: var(--fs-small); padding: 4px 8px; }
+.corridor .kit-controls :is(input, button):focus-visible { outline: 2px solid var(--w4-accent); outline-offset: 2px; }
+.corridor .kit-link { background: none; border: 0; color: var(--ink); cursor: pointer; font: inherit; font-weight: 600; padding: 0; text-align: left; text-decoration: underline dotted var(--ink-mute); text-underline-offset: 3px; }
+.corridor .kit-link:hover { color: var(--w4-accent); }
+.corridor .kit-note { color: var(--ink-mute-text); font-size: var(--fs-caption); margin: 8px 0 0; }
+.corridor .kit-rank { color: var(--ink-mute-text); font-size: var(--fs-caption); font-variant-numeric: tabular-nums; text-align: right; }
+.corridor .kit-num { color: var(--ink-soft); font-size: var(--fs-small); font-variant-numeric: tabular-nums; text-align: right; white-space: nowrap; }
+.corridor .kit-word { color: var(--ink); font-weight: 600; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.corridor .kit-track { background: var(--line-soft); border-radius: 3px; display: flex; height: 10px; min-width: 0; overflow: hidden; }
+.corridor .kit-seg { background: var(--w4-accent); display: block; flex: none; height: 100%; }
+.corridor .kit-legend { color: var(--ink-soft); display: flex; flex-wrap: wrap; font-size: var(--fs-caption); gap: 4px 16px; list-style: none; margin: 10px 0 0; padding: 0; }
+.corridor .kit-legend li { align-items: center; display: inline-flex; gap: 6px; }
+.corridor .kit-swatch { border-radius: 3px; display: inline-block; height: 10px; width: 10px; }
+
+/* VectorAngle: the plot, then its readouts in a row. */
+.corridor .kit-readouts { display: flex; flex-wrap: wrap; gap: 10px; margin: 10px 0 0; }
+.corridor .kit-readouts > div { background: var(--card); border: 1px solid var(--line); border-radius: 8px; padding: 6px 12px; }
+.corridor .kit-readouts dt { color: var(--ink-mute-text); font-size: var(--fs-caption); letter-spacing: 0.04em; text-transform: uppercase; }
+.corridor .kit-readouts dd { color: var(--ink); font-size: var(--fs-h4); font-variant-numeric: tabular-nums; font-weight: 700; margin: 0; }
+
+/* SplitBars: rank, name, bar, value, status. */
+.corridor .kit-split ol { list-style: none; margin: 0; padding: 0; }
+.corridor .kit-split ol > li { align-items: center; border-bottom: 1px solid var(--line-soft); display: grid; gap: 10px; grid-template-columns: 1.6em minmax(0, 1.2fr) minmax(0, 2fr) 4em 6.5em; padding: 5px 0; }
+.corridor .kit-split-name { display: flex; flex-direction: column; min-width: 0; }
+.corridor .kit-split-name > :is(b, button) { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.corridor .kit-split-name b { color: var(--ink); font-size: var(--fs-small); }
+.corridor .kit-split-name small { color: var(--ink-mute-text); font-size: var(--fs-caption); }
+.corridor .kit-split .kit-track { height: 14px; }
+.corridor .kit-pill { border-radius: 999px; display: inline-block; font-size: var(--fs-caption); font-weight: 700; padding: 1px 9px; }
+.corridor .kit-pill-good { background: var(--good-soft); border: 1px solid var(--good-line); color: var(--good); }
+.corridor .kit-pill-bad { background: var(--card); border: 1px solid var(--bad); color: var(--bad); }
+
+/* TokenWindow: chips, then positive and negative pairs side by side. */
+.corridor .kit-tok-row { display: flex; flex-wrap: wrap; gap: 6px; list-style: none; margin: 0 0 14px; padding: 0; }
+.corridor .kit-tok-row :is(span, button) { border: 1px solid var(--line); border-radius: 6px; display: inline-block; font-family: var(--font-mono); font-size: var(--fs-small); padding: 2px 8px; }
+.corridor .kit-tok-row button { cursor: pointer; }
+.corridor .kit-tok-centre { background: var(--w4-accent); border-color: var(--w4-accent); color: var(--card); font-weight: 700; }
+.corridor .kit-tok-ctx { background: var(--access-soft); border-color: var(--access); color: var(--ink); }
+.corridor .kit-tok-out { background: var(--card); color: var(--ink-mute-text); }
+.corridor .kit-pairs { display: grid; gap: 24px; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
+.corridor .kit-pairs h4 { color: var(--ink-soft); font-size: var(--fs-caption); letter-spacing: 0.04em; margin: 0 0 6px; text-transform: uppercase; }
+.corridor .kit-pairs ul { list-style: none; margin: 0; padding: 0; }
+.corridor .kit-pairs li { border-bottom: 1px solid var(--line-soft); font-family: var(--font-mono); font-size: var(--fs-small); overflow-wrap: anywhere; padding: 4px 0; }
+.corridor .kit-pairs s { color: var(--ink-mute-text); }
+
+/* CountMatrix: fixed layout, so many columns share the width instead of spilling. */
+.corridor .kit-matrix table { border-collapse: collapse; font-size: var(--fs-small); font-variant-numeric: tabular-nums; table-layout: fixed; width: 100%; }
+.corridor .kit-matrix caption { caption-side: bottom; color: var(--ink-mute-text); font-size: var(--fs-caption); padding-top: 6px; text-align: left; }
+.corridor .kit-matrix th, .corridor .kit-matrix td { border: 1px solid var(--line-soft); overflow: hidden; padding: 4px 6px; text-overflow: ellipsis; white-space: nowrap; }
+.corridor .kit-matrix thead th { color: var(--ink-soft); font-size: var(--fs-caption); font-weight: 600; text-align: center; }
+.corridor .kit-matrix thead th:first-child, .corridor .kit-matrix th[scope="row"] { text-align: left; width: 8em; }
+.corridor .kit-matrix td { color: var(--ink); text-align: center; }
+.corridor .kit-matrix td.kit-zero { color: var(--ink-mute); }
+.corridor .kit-matrix tr.kit-row-on th, .corridor .kit-matrix tr.kit-row-on td { border-bottom-color: var(--w4-accent); border-top-color: var(--w4-accent); font-weight: 700; }
+.corridor .kit-matrix tr.kit-row-on th { box-shadow: inset 3px 0 0 var(--w4-accent); }
+.corridor .kit-vector { margin: 10px 0 0; }
+.corridor .kit-vector code { background: var(--w4-inset); border: 1px solid var(--line); border-radius: 6px; display: block; font-size: var(--fs-small); overflow-wrap: anywhere; padding: 6px 10px; }
+
+/* MixtureBar: the 100% bar, a card per part, the focused part's words. */
+.corridor .kit-mix-bar { border-radius: 6px; display: flex; height: 30px; overflow: hidden; }
+.corridor .kit-mix-seg { align-items: center; color: var(--ink); display: flex; flex: none; font-size: var(--fs-caption); font-weight: 600; justify-content: center; min-width: 0; overflow: hidden; white-space: nowrap; }
+.corridor .kit-mix-seg.kit-on { font-weight: 800; }
+.corridor .kit-mix-cards { display: grid; gap: 8px; grid-template-columns: repeat(auto-fit, minmax(110px, 1fr)); list-style: none; margin: 10px 0 0; padding: 0; }
+.corridor .kit-mix-cards li { border: 1px solid var(--line); border-radius: 8px; border-top-width: 3px; min-width: 0; }
+.corridor .kit-mix-cards :is(button, div) { background: var(--card); border: 0; border-radius: 6px; color: var(--ink); display: flex; flex-direction: column; font: inherit; padding: 6px 10px; text-align: left; width: 100%; }
+.corridor .kit-mix-cards button { cursor: pointer; }
+.corridor .kit-mix-cards :is(button[aria-pressed="true"], div.kit-on) { background: var(--w4-inset); }
+.corridor .kit-mix-cards small { color: var(--ink-mute-text); font-size: var(--fs-caption); letter-spacing: 0.04em; overflow: hidden; text-overflow: ellipsis; text-transform: uppercase; white-space: nowrap; }
+.corridor .kit-mix-cards b { font-size: var(--fs-h4); }
+.corridor .kit-mix-words h4 { color: var(--ink-soft); font-size: var(--fs-caption); letter-spacing: 0.04em; margin: 14px 0 6px; text-transform: uppercase; }
+.corridor .kit-mix-words ul { display: grid; gap: 4px 24px; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); list-style: none; margin: 0; padding: 0; }
+.corridor .kit-mix-words li { align-items: center; display: grid; font-size: var(--fs-small); gap: 8px; grid-template-columns: minmax(0, 5em) minmax(0, 1fr) 3em; }
+
+/* RankedBars: a fixed-layout table so long words cut instead of spilling. */
+.corridor .kit-ranked { border-collapse: collapse; font-size: var(--fs-small); table-layout: fixed; width: 100%; }
+.corridor .kit-ranked caption { color: var(--ink-soft); font-size: var(--fs-caption); font-weight: 700; letter-spacing: 0.04em; padding-bottom: 6px; text-align: left; text-transform: uppercase; }
+.corridor .kit-ranked col.kit-ranked-n { width: 2.2em; }
+.corridor .kit-ranked col.kit-ranked-label { width: 30%; }
+.corridor .kit-ranked col.kit-ranked-col { width: 6.5em; }
+.corridor .kit-ranked th { border-bottom: 1px solid var(--line); color: var(--ink-mute-text); font-size: var(--fs-caption); font-weight: 600; padding: 4px 6px; text-align: left; }
+.corridor .kit-ranked td { border-bottom: 1px solid var(--line-soft); padding: 4px 6px; }
+.corridor .kit-ranked :is(th, td).num { font-variant-numeric: tabular-nums; text-align: right; white-space: nowrap; }
+.corridor .kit-ranked-word { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.corridor .kit-ranked tr.kit-muted .kit-ranked-word { color: var(--ink-mute-text); }
+.corridor .kit-ranked tr.kit-muted .kit-link { color: var(--ink-mute-text); font-weight: 400; }
+.corridor .kit-ranked tr.kit-muted .kit-seg { background: var(--ink-mute); opacity: 0.55; }
+
+/* AxisMap: the axis ends on the four sides of the plot. */
+.corridor .kit-axismap { align-items: center; display: grid; gap: 4px 8px; grid-template-areas: ". top ." "left plot right" ". bottom ."; grid-template-columns: auto minmax(0, 1fr) auto; margin: 0; }
+.corridor .kit-axismap-plot { grid-area: plot; min-width: 0; }
+.corridor .kit-axismap > span { color: var(--ink-soft); font-size: var(--fs-small); font-weight: 600; max-width: 9em; overflow-wrap: anywhere; }
+.corridor .kit-axis-top { grid-area: top; justify-self: center; }
+.corridor .kit-axis-bottom { grid-area: bottom; justify-self: center; }
+.corridor .kit-axis-left { grid-area: left; text-align: right; }
+.corridor .kit-axis-right { grid-area: right; }
+
+/* AnalogyPlot */
+.corridor .kit-analogy { margin: 0; }
+.corridor .kit-analogy-expr { color: var(--ink-mute-text); font-family: var(--font-mono); font-size: var(--fs-strong); margin: 0 0 8px; text-align: center; }
+.corridor .kit-analogy-expr b { color: var(--ink); }
+.corridor .kit-analogy-expr b.kit-analogy-hit { color: var(--people); }
+
+/* GuessRanker: the input and words on the left, the live ranking on the right. */
+.corridor .kit-guess { display: grid; gap: 24px; grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr); }
+.corridor .kit-guess-target { font-size: var(--fs-body); margin: 0 0 10px; }
+.corridor .kit-guess-form label { color: var(--ink-soft); display: block; font-size: var(--fs-small); font-weight: 600; margin: 0 0 4px; }
+.corridor .kit-guess-form div { display: flex; gap: 8px; }
+.corridor .kit-guess-form input { border: 1px solid var(--line); border-radius: 6px; color: var(--ink); flex: 1; font-size: var(--fs-small); min-width: 0; padding: 6px 10px; }
+.corridor .kit-guess-form button { background: var(--w4-accent); border: 0; border-radius: 6px; color: var(--card); cursor: pointer; font-size: var(--fs-small); font-weight: 700; padding: 6px 14px; }
+.corridor .kit-guess-form :is(input, button):disabled { cursor: not-allowed; opacity: 0.5; }
+.corridor .kit-guess-count { color: var(--ink-soft); font-size: var(--fs-small); margin: 10px 0 6px; }
+.corridor .kit-guess-chips { display: flex; flex-wrap: wrap; gap: 6px; list-style: none; margin: 0 0 8px; padding: 0; }
+.corridor .kit-guess-chips li { background: var(--access-soft); border-radius: 999px; font-size: var(--fs-small); overflow-wrap: anywhere; padding: 2px 10px; }
+.corridor .kit-guess-chips li.kit-banned { background: var(--line-soft); color: var(--bad); }
+.corridor .kit-guess-chips li.kit-empty { background: none; border: 1px dashed var(--line); }
+.corridor .kit-guess-status { color: var(--ink-soft); font-size: var(--fs-small); margin: 0 0 6px; min-height: 1.5em; }
+.corridor .kit-guess-board h4 { color: var(--ink-soft); font-size: var(--fs-caption); letter-spacing: 0.04em; margin: 0 0 6px; text-transform: uppercase; }
+.corridor .kit-guess-board ol { list-style: none; margin: 0; padding: 0; }
+.corridor .kit-guess-board li { align-items: center; border-bottom: 1px solid var(--line-soft); display: grid; font-size: var(--fs-small); gap: 8px; grid-template-columns: 1.6em minmax(0, 1.2fr) minmax(0, 1.5fr) 3.5em; padding: 3px 0; }
+.corridor .kit-guess-board li.kit-target { background: var(--people-soft); border-radius: 4px; }
+.corridor .kit-guess-board li.kit-target .kit-seg { background: var(--people); }
+.corridor .kit-guess-board em { color: var(--people); font-size: var(--fs-caption); font-style: normal; font-weight: 700; }
+.corridor .kit-guess-win { background: var(--good-soft); border: 1px solid var(--good-line); border-radius: 8px; color: var(--good); font-weight: 700; margin: 10px 0 0; padding: 8px 12px; }

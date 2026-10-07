@@ -5,14 +5,18 @@
 // A component that throws leaves its host empty, which
 // scripts/kit-states.mjs reports.
 import type { ComponentType, ReactNode } from "react";
-import { Concordance, EChart, Figure, MiniStrip, Passage, StripChart, Table, TermText } from "@/kit";
+import {
+  AnalogyPlot, AxisMap, Concordance, CountMatrix, EChart, Figure, GuessRanker, MiniStrip, MixtureBar, Passage, RankedBars, SplitBars,
+  StripChart, SweepCurve, Table, TermText, TokenWindow, VectorAngle,
+} from "@/kit";
 import { island, useIslandReady } from "@/lib/island";
 import { useHydrated } from "@/lib/useHydrated";
 import {
-  echartEmpty, echartLongLabels, kwicLong, miniEdge, passageNoMatch, passageRegex, stripAllOpts, stripAllRows,
-  stripManyOpts, stripManyRows, stripNarrowRows, tableAwkward, tableEmpty, termMissing,
+  analogySame, echartEmpty, echartLongLabels, guessTieItems, guessTieScore, kwicLong, mapOne, matrixWideCells, matrixWideCols,
+  matrixWideRows, miniEdge, mixTiny, passageNoMatch, passageRegex, rankedAwkward, splitLong, stripAllOpts, stripAllRows,
+  stripManyOpts, stripManyRows, stripNarrowRows, sweepOne, tableAwkward, tableEmpty, termMissing, tokensLong,
 } from "./toy-states";
-import { stripOpts, toyCaption, toyOption, toyTable } from "./toy";
+import { mapAxes, splitParts, stripOpts, toyCaption, toyOption, toyTable } from "./toy";
 
 // One state's view: its host, and inside it once hydrated what draw() returns.
 const State = (state: string, draw: () => ReactNode) =>
@@ -43,6 +47,23 @@ const VIEWS = {
   "figure-narrow": () => <Figure chart={<EChart option={echartLongLabels} height={220} />} caption="Toy figure in a half-width column, long category labels." />,
   "figure-bare": () => <Figure chart={<EChart option={toyOption} height={220} />} />,
   "figure-table": () => <Figure caption={toyCaption} data={toyTable} />,
+  "vector-zero": () => <VectorAngle a={[-3, 1]} b={[0, 0]} labels={{ a: "A long label for A", b: "zero" }} />,
+  "vector-opposite": () => <VectorAngle a={[3, -1]} b={[-6, 2]} labels={{ a: "A", b: "B" }} scaleB={3} onScaleB={() => undefined} />,
+  "split-long": () => <SplitBars rows={splitLong} parts={splitParts} max={1} onPick={() => undefined} />,
+  "split-empty": () => <SplitBars rows={[]} parts={splitParts} />,
+  "sweep-one": () => <SweepCurve points={sweepOne} current={500} refLine={{ y: 99, label: "a reference far above the curve" }} xLabel="x" yLabel="y" />,
+  "sweep-empty": () => <SweepCurve points={[]} xLabel="x" yLabel="y" />,
+  "tokens-edge": () => <TokenWindow tokens={tokensLong} centre={9} window={0} mode="cbow" />,
+  "tokens-empty": () => <TokenWindow tokens={[]} centre={0} window={2} />,
+  "matrix-wide": () => <CountMatrix rows={matrixWideRows} cols={matrixWideCols} cells={matrixWideCells} highlightRow={1} caption="Eighteen long column heads and a row of zeros." />,
+  "matrix-empty": () => <CountMatrix rows={[]} cols={[]} cells={[]} highlightRow={4} />,
+  "mix-awkward": () => <MixtureBar parts={mixTiny} focus="Tiny" onFocus={() => undefined} words={[]} />,
+  "ranked-awkward": () => <RankedBars rows={rankedAwkward} colHeads={["Count"]} title="Long, zero, negative and muted rows; more columns than heads" />,
+  "ranked-empty": () => <RankedBars rows={[]} colHeads={["On page", "Pages"]} />,
+  "axismap-one": () => <AxisMap points={mapOne} axes={{ ...mapAxes, left: "a long axis-end label on the left side" }} find="only" height={240} />,
+  "axismap-empty": () => <AxisMap points={[]} axes={mapAxes} height={200} />,
+  "analogy-same": () => <AnalogyPlot points={analogySame} step={2} />,
+  "guess-spent": () => <GuessRanker items={guessTieItems} score={guessTieScore} target="x" budget={0} />,
   "term-missing": () => (
     <p>
       <TermText {...termMissing} />

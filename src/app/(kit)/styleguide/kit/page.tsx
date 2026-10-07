@@ -36,6 +36,45 @@ export default function Page() {
           <h2>termify() and drawer()</h2>
           <Demo demo="term" />
         </PostSection>
+        <PostSection id="demo-explorables">
+          <h2>Text explorables</h2>
+          <p className="sub">
+            Ten pieces for the language weeks, from src/kit with toy words and numbers. Each takes its data as props;
+            the controls around them belong to the demo.
+          </p>
+          <div className="w4-two">
+            <div>
+              <h3>VectorAngle: cosine is the angle, not the length</h3>
+              <Demo demo="vector" />
+            </div>
+            <div>
+              <h3>AnalogyPlot: king − man + woman</h3>
+              <Demo demo="analogy" />
+            </div>
+          </div>
+          <h3>SplitBars: what each similarity is made of</h3>
+          <Demo demo="split" />
+          <div className="w4-two">
+            <div>
+              <h3>SweepCurve: one number as a dial turns</h3>
+              <Demo demo="sweep" />
+            </div>
+            <div>
+              <h3>MixtureBar: a document as a topic mixture</h3>
+              <Demo demo="mix" />
+            </div>
+          </div>
+          <h3>TokenWindow: the pairs word2vec trains on</h3>
+          <Demo demo="tokens" />
+          <h3>CountMatrix: a word is its row</h3>
+          <Demo demo="matrix" />
+          <h3>RankedBars: a page's most distinctive words</h3>
+          <Demo demo="ranked" />
+          <h3>AxisMap: items on two meaning axes</h3>
+          <Demo demo="axismap" />
+          <h3>GuessRanker: describe the target without naming it</h3>
+          <Demo demo="guess" />
+        </PostSection>
         <PostSection id="demo-network">
           <h2>networkView(): six ways to draw a network</h2>
           <p className="sub">

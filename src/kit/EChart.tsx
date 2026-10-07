@@ -6,7 +6,7 @@
 // and with one error logged.
 import { useEffect, useMemo, useRef, useState } from "react";
 import { report } from "@/lib/island";
-import { useEChart } from "@/lib/useEChart";
+import { useEChart, type EChartsHandler } from "@/lib/useEChart";
 import { useHydrated } from "@/lib/useHydrated";
 import { useTokens, useTypeScale, type TypeScale } from "@/lib/useTypeScale";
 import { useVendor } from "@/lib/useVendor";
@@ -71,11 +71,14 @@ export default function EChart({
   height = 360,
   className = "kit-echart",
   renderer = "svg",
+  onEvents,
 }: {
   option: Option;
   height?: number;
   className?: string;
   renderer?: "canvas" | "svg";
+  /** ECharts events by name, bound once the chart exists; keep the object's identity stable. */
+  onEvents?: Record<string, EChartsHandler>;
 }) {
   const hydrated = useHydrated();
   const vendor = useVendor(ECHARTS, "echarts", { enabled: hydrated });
@@ -93,7 +96,7 @@ export default function EChart({
   }, [ready]);
   const labelWidth = categoryLabelWidth(option, hostWidth);
   const full = useMemo(() => (scale && tokens ? themed(option, scale, tokens, labelWidth) : null), [option, scale, tokens, labelWidth]);
-  useEChart(host, { option: full, enabled: ready && full !== null, renderer });
+  useEChart(host, { option: full, enabled: ready && full !== null, renderer, onEvents });
 
   const logged = useRef(false);
   useEffect(() => {

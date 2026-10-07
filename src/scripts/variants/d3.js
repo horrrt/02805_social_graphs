@@ -25,29 +25,31 @@ export function install(api, d3) {
       ? d3.scaleLog().domain(domain).range(range)
       : d3.scaleLinear().domain([0, domain[1]]).nice().range(range);
 
+  // The first draw into a host takes it over from the canvas beside it: the
+  // SVG fills the width and the canvas goes. The chart's island renders both.
+  function takeOver(canvas, host) {
+    if (host.style.display === "block") return;
+    host.style.display = "block";
+    host.style.width = "100%";
+    canvas.style.display = "none";
+  }
+
   // One SVG per canvas, sized from the canvas it replaces so the layout does
-  // not move when you switch variants.
+  // not move when you switch variants. The island renders it after the canvas.
   function svgFor(id, pad = { l: 52, r: 16, t: 14, b: 38 }) {
     const canvas = $(id);
-    if (!canvas) return null;
-    let host = document.getElementById(`${id}-d3`);
+    const host = $(`${id}-d3`);
+    if (!canvas || !host) return null;
     // Once the canvas is hidden it measures 0 wide, and a fixed fallback width
     // scaled the SVG, and its text, down to fit. Measure the box it fills.
     const width = Math.round(
-      host?.getBoundingClientRect().width ||
+      (host.style.display === "block" && host.getBoundingClientRect().width) ||
         canvas.clientWidth ||
         canvas.parentElement?.clientWidth ||
         600,
     );
     const height = Math.round(width * (canvas.height / canvas.width));
-    if (!host) {
-      host = document.createElementNS("http://www.w3.org/2000/svg", "svg");
-      host.id = `${id}-d3`;
-      host.style.display = "block";
-      host.style.width = "100%";
-      canvas.after(host);
-      canvas.style.display = "none";
-    }
+    takeOver(canvas, host);
     const svg = d3.select(host).attr("viewBox", `0 0 ${width} ${height}`).attr("height", height);
     svg.selectAll("*").remove();
     return {
@@ -424,16 +426,16 @@ export function install(api, d3) {
   // One canvas behind the globe SVG, used only when the photograph is chosen.
   let underlay = null;
   function photoUnderlay(width, height, radius) {
-    const svg = document.getElementById("globe-canvas-d3");
+    const svg = $("globe-canvas-d3");
     if (!svg) return;
+    // The hero island renders the underlay before the globe's SVG.
     if (!underlay) {
-      underlay = document.createElement("canvas");
-      underlay.id = "globe-canvas-d3-photo";
+      underlay = $("globe-canvas-d3-photo");
+      if (!underlay) return;
       underlay.style.position = "absolute";
       underlay.style.inset = "0";
       underlay.style.pointerEvents = "none";
       svg.parentElement.style.position = "relative";
-      svg.parentElement.insertBefore(underlay, svg);
       svg.style.position = "relative";
     }
     underlay.hidden = state.basemap !== "photo";
@@ -452,18 +454,11 @@ export function install(api, d3) {
   let projection = null;
   function globe() {
     const canvas = $("globe-canvas");
-    if (!canvas) return;
-    let host = document.getElementById("globe-canvas-d3");
+    const host = $("globe-canvas-d3");
+    if (!canvas || !host) return;
     const width = canvas.clientWidth || 720;
     const height = canvas.clientHeight || width;
-    if (!host) {
-      host = document.createElementNS("http://www.w3.org/2000/svg", "svg");
-      host.id = "globe-canvas-d3";
-      host.style.display = "block";
-      host.style.width = "100%";
-      canvas.after(host);
-      canvas.style.display = "none";
-    }
+    takeOver(canvas, host);
     const svg = d3.select(host).attr("viewBox", `0 0 ${width} ${height}`).attr("height", height);
     svg.selectAll("*").remove();
 
@@ -569,10 +564,7 @@ export function install(api, d3) {
 
   return {
     globe,
-    setupGlobe() {
-      const hint = document.querySelector(".stage-hint");
-      if (hint) hint.textContent = "Drag to spin. Click a country. (SVG)";
-    },
+    hint: "Drag to spin. Click a country. (SVG)",
     hist,
     ccdf: ccdfChart,
     scatterBetween,
