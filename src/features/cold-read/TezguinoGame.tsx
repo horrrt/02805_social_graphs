@@ -5,6 +5,7 @@
 // file renders them.
 import { Fragment, useEffect, useRef, useState } from "react";
 import { COST, type HiddenWord, LIVES, MAX_STREAK, options, pieces, points, type Row, spent, type TezguinoData, type Weight } from "./contexts";
+import { FINISH, type Level } from "./levels";
 import { shuffled } from "./rules";
 
 const BEST = "cold-read:best4";
@@ -76,7 +77,7 @@ function Sentence({ text, word }: { text: string; word: string | null }) {
   );
 }
 
-export function TezguinoGame({ data, random = Math.random }: { data: TezguinoData; random?: () => number }) {
+export function TezguinoGame({ data, random = Math.random, level }: { data: TezguinoData; random?: () => number; level?: Level }) {
   const [phase, setPhase] = useState<Phase>("intro");
   const [order, setOrder] = useState<number[]>([]);
   const [at, setAt] = useState(0);
@@ -200,10 +201,12 @@ export function TezguinoGame({ data, random = Math.random }: { data: TezguinoDat
           <small>Named</small>
           <b>{solved}</b>
         </span>
-        <span className="cr-box">
-          <small>Best</small>
-          <b>{best.toLocaleString("en")}</b>
-        </span>
+        {level ? null : (
+          <span className="cr-box">
+            <small>Best</small>
+            <b>{best.toLocaleString("en")}</b>
+          </span>
+        )}
       </div>
 
       {phase === "intro" || !hidden ? (
@@ -310,13 +313,13 @@ export function TezguinoGame({ data, random = Math.random }: { data: TezguinoDat
                     <p>
                       Run over: {solved} {solved === 1 ? "word" : "words"} named, {score.toLocaleString("en")} points.
                     </p>
-                    <button ref={nextBtn} type="button" className="cr-go" onClick={start}>
-                      Play again
+                    <button ref={nextBtn} type="button" className="cr-go" onClick={level ? () => level.onDone(score) : start}>
+                      {level ? FINISH : "Play again"}
                     </button>
                   </div>
                 ) : (
-                  <button ref={nextBtn} type="button" className="cr-go" onClick={() => deal(at + 1)}>
-                    Next word
+                  <button ref={nextBtn} type="button" className="cr-go" onClick={level && at + 1 >= level.items ? () => level.onDone(score) : () => deal(at + 1)}>
+                    {level && at + 1 >= level.items ? FINISH : "Next word"}
                   </button>
                 )}
               </div>

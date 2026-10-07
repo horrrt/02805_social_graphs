@@ -2,6 +2,7 @@
 // every guess scores its cosine similarity to it in GloVe's vector space and
 // lands on a radar by rank. Rules live in vectors.ts; this file renders them.
 import { useEffect, useMemo, useRef, useState, type FormEvent } from "react";
+import { FINISH, type Level } from "./levels";
 import { shuffled } from "./rules";
 import {
   atRank, cosinesTo, type Guess, heat, HINT_COST, HINT_RANKS, type HotColdData, MAX_STREAK, points, radarPoint,
@@ -86,7 +87,7 @@ function Radar({ guesses, size, last, found }: { guesses: Guess[]; size: number;
   );
 }
 
-export function HotColdGame({ data, random = Math.random }: { data: HotColdData; random?: () => number }) {
+export function HotColdGame({ data, random = Math.random, level }: { data: HotColdData; random?: () => number; level?: Level }) {
   const [phase, setPhase] = useState<Phase>("intro");
   const [order, setOrder] = useState<number[]>([]);
   const [at, setAt] = useState(0);
@@ -234,10 +235,12 @@ export function HotColdGame({ data, random = Math.random }: { data: HotColdData;
           <small>Found</small>
           <b>{found}</b>
         </span>
-        <span className="cr-box">
-          <small>Best</small>
-          <b>{best.toLocaleString("en")}</b>
-        </span>
+        {level ? null : (
+          <span className="cr-box">
+            <small>Best</small>
+            <b>{best.toLocaleString("en")}</b>
+          </span>
+        )}
       </div>
 
       {phase === "intro" ? (
@@ -282,8 +285,8 @@ export function HotColdGame({ data, random = Math.random }: { data: HotColdData;
                     <span>Streak reset. Your closest guess was {sorted[0] ? `“${sorted[0].w}”, #${sorted[0].rank}` : "none"}.</span>
                   </p>
                 )}
-                <button ref={next} type="button" className="cr-go" onClick={() => deal(at + 1)}>
-                  Next word
+                <button ref={next} type="button" className="cr-go" onClick={level && at + 1 >= level.items ? () => level.onDone(score) : () => deal(at + 1)}>
+                  {level && at + 1 >= level.items ? FINISH : "Next word"}
                 </button>
               </div>
             </div>

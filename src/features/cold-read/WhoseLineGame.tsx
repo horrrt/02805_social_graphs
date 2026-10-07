@@ -4,6 +4,7 @@
 // distinctive. The word then lands on a Scattertext-style plot. Rules live in
 // groups.ts; this file renders them.
 import { useEffect, useMemo, useRef, useState } from "react";
+import { FINISH, type Level } from "./levels";
 import { shuffled } from "./rules";
 import { type Answer, CARDS, deal, gain, INSPECT_COST, judge, LIVES, MAX_STREAK, ratio, type Term, type Verdict, type WhoseLineData } from "./groups";
 
@@ -131,7 +132,7 @@ function Plot({ data, pair, played, current }: { data: WhoseLineData; pair: Whos
   );
 }
 
-export function WhoseLineGame({ data, random = Math.random }: { data: WhoseLineData; random?: () => number }) {
+export function WhoseLineGame({ data, random = Math.random, level }: { data: WhoseLineData; random?: () => number; level?: Level }) {
   const [phase, setPhase] = useState<Phase>("intro");
   const [order, setOrder] = useState<number[]>([]);
   const [match, setMatch] = useState(0);
@@ -220,7 +221,7 @@ export function WhoseLineGame({ data, random = Math.random }: { data: WhoseLineD
   if (phase === "intro" || !pair)
     return (
       <section className="cr-table" id="whose-line" aria-label="Whose Line">
-        <Hud score={score} streak={streak} lives={lives} right={right} best={best} playing={false} />
+        <Hud score={score} streak={streak} lives={lives} right={right} best={best} playing={false} level={level} />
         <div className="cr-start">
           <Intro />
           <button type="button" className="cr-go" onClick={start}>
@@ -253,7 +254,7 @@ export function WhoseLineGame({ data, random = Math.random }: { data: WhoseLineD
 
   return (
     <section className="cr-table" id="whose-line" aria-label="Whose Line">
-      <Hud score={score} streak={streak} lives={lives} right={right} best={best} playing={phase === "card"} />
+      <Hud score={score} streak={streak} lives={lives} right={right} best={best} playing={phase === "card"} level={level} />
 
       <div className="cr-match">
         <Team data={data} g={pair.a} side="a" />
@@ -329,8 +330,13 @@ export function WhoseLineGame({ data, random = Math.random }: { data: WhoseLineD
                   {right} calls right in this run, {score.toLocaleString("en")} points.
                 </p>
               ) : null}
-              <button ref={nextBtn} type="button" className="cr-go" onClick={phase === "over" ? start : () => startMatch(match + 1)}>
-                {phase === "over" ? "Play again" : "Next match"}
+              <button
+                ref={nextBtn}
+                type="button"
+                className="cr-go"
+                onClick={level && (phase === "over" || match + 1 >= level.items) ? () => level.onDone(score) : phase === "over" ? start : () => startMatch(match + 1)}
+              >
+                {level && (phase === "over" || match + 1 >= level.items) ? FINISH : phase === "over" ? "Play again" : "Next match"}
               </button>
             </div>
           ) : null}
@@ -369,7 +375,9 @@ export function WhoseLineGame({ data, random = Math.random }: { data: WhoseLineD
   );
 }
 
-function Hud({ score, streak, lives, right, best, playing }: { score: number; streak: number; lives: number; right: number; best: number; playing: boolean }) {
+function Hud({ score, streak, lives, right, best, playing, level }: {
+  score: number; streak: number; lives: number; right: number; best: number; playing: boolean; level?: Level;
+}) {
   const shown = Math.min(Math.max(playing ? streak + 1 : streak, 1), MAX_STREAK);
   return (
     <div className="cr-hud" role="status">
@@ -393,10 +401,12 @@ function Hud({ score, streak, lives, right, best, playing }: { score: number; st
         <small>Right</small>
         <b>{right}</b>
       </span>
-      <span className="cr-box">
-        <small>Best</small>
-        <b>{best.toLocaleString("en")}</b>
-      </span>
+      {level ? null : (
+        <span className="cr-box">
+          <small>Best</small>
+          <b>{best.toLocaleString("en")}</b>
+        </span>
+      )}
     </div>
   );
 }

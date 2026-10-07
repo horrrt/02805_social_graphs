@@ -3,6 +3,7 @@
 // pages, watches the suspect board empty, and names the page from the leads
 // ranked by cosine similarity. Rules live in rules.ts; this file renders them.
 import { useEffect, useMemo, useState } from "react";
+import { FINISH, type Level } from "./levels";
 import {
   type Card, type ClueShopData, FACES, idf, LIVES, MAX_STREAK, points, rarity, type Round, shortlist, shuffled, suspects, tfidf,
 } from "./rules";
@@ -202,7 +203,7 @@ function Debrief({ data, round, deck, flipped }: { data: ClueShopData; round: Ro
   );
 }
 
-export function ClueShopGame({ data, random = Math.random }: { data: ClueShopData; random?: () => number }) {
+export function ClueShopGame({ data, random = Math.random, level }: { data: ClueShopData; random?: () => number; level?: Level }) {
   const [phase, setPhase] = useState<Phase>("intro");
   const [order, setOrder] = useState<number[]>([]);
   const [at, setAt] = useState(0);
@@ -335,10 +336,12 @@ export function ClueShopGame({ data, random = Math.random }: { data: ClueShopDat
           <small>Named</small>
           <b>{solved}</b>
         </span>
-        <span className="cr-box">
-          <small>Best</small>
-          <b>{best.toLocaleString("en")}</b>
-        </span>
+        {level ? null : (
+          <span className="cr-box">
+            <small>Best</small>
+            <b>{best.toLocaleString("en")}</b>
+          </span>
+        )}
         <label className="cr-toggle">
           <input type="checkbox" checked={hide} disabled={playing} onChange={(e) => setHide(e.target.checked)} />
           <span>
@@ -401,13 +404,13 @@ export function ClueShopGame({ data, random = Math.random }: { data: ClueShopDat
                       Run over: {solved} {solved === 1 ? "page" : "pages"} named, {score.toLocaleString("en")} points
                       {outcome.newBest ? ", a new best" : ""}.
                     </p>
-                    <button type="button" className="cr-go" onClick={start}>
-                      Play again
+                    <button type="button" className="cr-go" onClick={level ? () => level.onDone(score) : start}>
+                      {level ? FINISH : "Play again"}
                     </button>
                   </div>
                 ) : (
-                  <button type="button" className="cr-go" onClick={() => deal(at + 1)}>
-                    Next page
+                  <button type="button" className="cr-go" onClick={level && at + 1 >= level.items ? () => level.onDone(score) : () => deal(at + 1)}>
+                    {level && at + 1 >= level.items ? FINISH : "Next page"}
                   </button>
                 )}
               </div>

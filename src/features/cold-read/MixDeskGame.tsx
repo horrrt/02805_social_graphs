@@ -3,6 +3,7 @@
 // then sees the real one and every word coloured by the topic most likely to
 // have produced it. Rules live in topics.ts; this file renders them.
 import { useEffect, useRef, useState } from "react";
+import { FINISH, type Level } from "./levels";
 import { shuffled } from "./rules";
 import { bestChips, CHIPS, grade, type MixDeskData, PAGES_PER_RUN, score, sizeBucket } from "./topics";
 
@@ -46,7 +47,8 @@ export function Intro() {
 }
 
 
-export function MixDeskGame({ data, random = Math.random }: { data: MixDeskData; random?: () => number }) {
+export function MixDeskGame({ data, random = Math.random, level }: { data: MixDeskData; random?: () => number; level?: Level }) {
+  const run = level?.items ?? PAGES_PER_RUN;
   const [phase, setPhase] = useState<Phase>("intro");
   const [order, setOrder] = useState<number[]>([]);
   const [at, setAt] = useState(0);
@@ -81,7 +83,7 @@ export function MixDeskGame({ data, random = Math.random }: { data: MixDeskData;
   };
 
   const start = () => {
-    setOrder(shuffled(data.pages.map((_, i) => i), random).slice(0, PAGES_PER_RUN));
+    setOrder(shuffled(data.pages.map((_, i) => i), random).slice(0, run));
     setTotal(0);
     setReads([]);
     deal(0);
@@ -126,17 +128,19 @@ export function MixDeskGame({ data, random = Math.random }: { data: MixDeskData;
         <span className="cr-box">
           <small>Page</small>
           <b>
-            {phase === "intro" ? 0 : at + 1}/{PAGES_PER_RUN}
+            {phase === "intro" ? 0 : at + 1}/{run}
           </b>
         </span>
         <span className="cr-box">
           <small>Last read</small>
           <b>{reads.length ? reads[reads.length - 1] : "–"}</b>
         </span>
-        <span className="cr-box">
-          <small>Best run</small>
-          <b>{best.toLocaleString("en")}</b>
-        </span>
+        {level ? null : (
+          <span className="cr-box">
+            <small>Best run</small>
+            <b>{best.toLocaleString("en")}</b>
+          </span>
+        )}
       </div>
 
       {phase === "intro" || !page ? (
@@ -162,8 +166,13 @@ export function MixDeskGame({ data, random = Math.random }: { data: MixDeskData;
                   <span className="cr-stamp" data-grade={got >= 700 ? "good" : got >= 500 ? "ok" : "bad"}>
                     {grade(got)} · +{got}
                   </span>
-                  <button ref={nextBtn} type="button" className="cr-go" onClick={phase === "done" ? start : () => deal(at + 1)}>
-                    {phase === "done" ? "Play again" : "Next page"}
+                  <button
+                    ref={nextBtn}
+                    type="button"
+                    className="cr-go"
+                    onClick={phase === "done" ? (level ? () => level.onDone(total) : start) : () => deal(at + 1)}
+                  >
+                    {phase === "done" ? (level ? FINISH : "Play again") : "Next page"}
                   </button>
                 </>
               ) : (
