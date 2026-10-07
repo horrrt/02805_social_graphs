@@ -36,6 +36,12 @@ export function Closing() {
             Next week's contextual embeddings give storm a different vector in "Johnny Storm" and in "Storm summons
             lightning". Rerunning the explorer with them tests whether a page can find its story without leaning on a
             name or a pronoun.
+            {" "}
+            The
+            {" "}
+            <a href="essentials/">essentials page</a>
+            {" "}
+            uses every other term on this week&apos;s list on the same 303 pages.
           </>
         }
       >

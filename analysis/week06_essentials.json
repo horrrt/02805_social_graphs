@@ -1,0 +1,656 @@
+{
+ "weights": {
+  "pages": 303,
+  "tokens": 727261,
+  "vocab": 27033,
+  "everywhere": [
+   "a",
+   "and",
+   "by",
+   "character",
+   "comics",
+   "in",
+   "is",
+   "marvel",
+   "of",
+   "the",
+   "to"
+  ],
+  "low_idf": 38,
+  "low_idf_stop": 23,
+  "top100_stop": 58,
+  "stop_size": 198,
+  "stop_not_low": 151,
+  "pronouns": {
+   "he": {
+    "df": 291,
+    "idf": 0.04
+   },
+   "his": {
+    "df": 300,
+    "idf": 0.01
+   },
+   "she": {
+    "df": 191,
+    "idf": 0.46
+   },
+   "her": {
+    "df": 208,
+    "idf": 0.38
+   },
+   "mutant": {
+    "df": 97,
+    "idf": 1.14
+   },
+   "symbiote": {
+    "df": 31,
+    "idf": 2.28
+   },
+   "the": {
+    "df": 303,
+    "idf": 0.0
+   }
+  }
+ },
+ "cosine": {
+  "all_pairs": {
+   "raw": {
+    "median": 0.754,
+    "p90": 0.8297,
+    "p99": 0.876
+   },
+   "tfidf": {
+    "median": 0.0096,
+    "p90": 0.0278,
+    "p99": 0.1093
+   }
+  },
+  "triple_diff": 0.0,
+  "pairs": 276
+ },
+ "contrast": {
+  "pages": {
+   "female": 52,
+   "male": 145
+  },
+  "words": {
+   "female": 197637,
+   "male": 397709
+  },
+  "top": {
+   "female": [
+    [
+     "her",
+     22.43
+    ],
+    [
+     "she",
+     19.77
+    ],
+    [
+     "jessica",
+     7.48
+    ],
+    [
+     "betsy",
+     6.88
+    ],
+    [
+     "jean",
+     6.41
+    ],
+    [
+     "frost",
+     6.01
+    ],
+    [
+     "gwen",
+     5.9
+    ],
+    [
+     "cat",
+     5.54
+    ],
+    [
+     "phoenix",
+     5.52
+    ],
+    [
+     "wanda",
+     5.39
+    ],
+    [
+     "woman",
+     5.3
+    ],
+    [
+     "widow",
+     5.2
+    ],
+    [
+     "jubilee",
+     4.97
+    ],
+    [
+     "girl",
+     4.77
+    ],
+    [
+     "men",
+     4.77
+    ]
+   ],
+   "male": [
+    [
+     "his",
+     -11.35
+    ],
+    [
+     "he",
+     -10.11
+    ],
+    [
+     "him",
+     -5.32
+    ],
+    [
+     "morbius",
+     -3.61
+    ],
+    [
+     "venom",
+     -3.6
+    ],
+    [
+     "himself",
+     -3.59
+    ],
+    [
+     "man",
+     -3.49
+    ],
+    [
+     "hercules",
+     -3.43
+    ],
+    [
+     "rider",
+     -3.27
+    ],
+    [
+     "shang",
+     -3.16
+    ],
+    [
+     "eddie",
+     -3.03
+    ],
+    [
+     "brock",
+     -2.99
+    ],
+    [
+     "the",
+     -2.99
+    ],
+    [
+     "chi",
+     -2.84
+    ],
+    [
+     "blade",
+     -2.73
+    ]
+   ],
+   "female_no_names": [
+    [
+     "her",
+     22.43
+    ],
+    [
+     "she",
+     19.77
+    ],
+    [
+     "female",
+     4.44
+    ],
+    [
+     "herself",
+     4.38
+    ],
+    [
+     "women",
+     3.28
+    ],
+    [
+     "she's",
+     3.21
+    ],
+    [
+     "best",
+     2.68
+    ],
+    [
+     "telekinetic",
+     2.62
+    ],
+    [
+     "telepathy",
+     2.58
+    ],
+    [
+     "psychic",
+     2.39
+    ],
+    [
+     "list",
+     2.28
+    ],
+    [
+     "hair",
+     2.1
+    ],
+    [
+     "most",
+     2.07
+    ],
+    [
+     "it's",
+     2.02
+    ],
+    [
+     "their",
+     1.98
+    ]
+   ],
+   "male_no_names": [
+    [
+     "his",
+     -11.35
+    ],
+    [
+     "he",
+     -10.11
+    ],
+    [
+     "him",
+     -5.32
+    ],
+    [
+     "himself",
+     -3.59
+    ],
+    [
+     "the",
+     -2.99
+    ],
+    [
+     "symbiote",
+     -2.66
+    ],
+    [
+     "human",
+     -2.17
+    ],
+    [
+     "by",
+     -1.85
+    ],
+    [
+     "vampire",
+     -1.84
+    ],
+    [
+     "suit",
+     -1.6
+    ],
+    [
+     "incarnation",
+     -1.52
+    ],
+    [
+     "gay",
+     -1.48
+    ],
+    [
+     "healing",
+     -1.48
+    ],
+    [
+     "gods",
+     -1.42
+    ],
+    [
+     "gun",
+     -1.42
+    ]
+   ]
+  },
+  "beyond": 145,
+  "plotted": 3188,
+  "null": {
+   "runs": 20,
+   "mean": 116.0,
+   "min": 99,
+   "max": 143,
+   "top_z_mean": 7.8,
+   "top_z_max": 9.2
+  },
+  "beyond_null_top": 4
+ },
+ "topics": {
+  "vocab_size": 5824,
+  "stability": {
+   "5": {
+    "mean_overlap": 0.66,
+    "kept": 4
+   },
+   "6": {
+    "mean_overlap": 0.57,
+    "kept": 5
+   },
+   "7": {
+    "mean_overlap": 0.41,
+    "kept": 4
+   },
+   "8": {
+    "mean_overlap": 0.41,
+    "kept": 4
+   },
+   "9": {
+    "mean_overlap": 0.39,
+    "kept": 4
+   },
+   "10": {
+    "mean_overlap": 0.33,
+    "kept": 3
+   },
+   "11": {
+    "mean_overlap": 0.35,
+    "kept": 3
+   },
+   "12": {
+    "mean_overlap": 0.38,
+    "kept": 5
+   }
+  }
+ },
+ "words": {
+  "targets": [
+   "storm",
+   "web",
+   "hammer",
+   "mutant",
+   "symbiote",
+   "vampire",
+   "shield",
+   "armor",
+   "magic",
+   "vision",
+   "beast",
+   "thing",
+   "wolverine",
+   "spider",
+   "venom",
+   "phoenix",
+   "hulk",
+   "fire",
+   "ice",
+   "blood",
+   "school",
+   "team",
+   "villain",
+   "hero",
+   "she",
+   "he"
+  ],
+  "vocab_20": 3746,
+  "the": {
+   "storm": {
+    "count_rank": 1,
+    "pmi": 0.1
+   },
+   "web": {
+    "count_rank": 1,
+    "pmi": -0.01
+   },
+   "hammer": {
+    "count_rank": 1,
+    "pmi": -0.01
+   },
+   "mutant": {
+    "count_rank": 1,
+    "pmi": 0.01
+   },
+   "symbiote": {
+    "count_rank": 1,
+    "pmi": 0.64
+   },
+   "vampire": {
+    "count_rank": 1,
+    "pmi": 0.02
+   },
+   "shield": {
+    "count_rank": 1,
+    "pmi": 0.09
+   },
+   "armor": {
+    "count_rank": 1,
+    "pmi": 0.27
+   },
+   "magic": {
+    "count_rank": 1,
+    "pmi": -0.02
+   },
+   "vision": {
+    "count_rank": 1,
+    "pmi": 0.23
+   },
+   "beast": {
+    "count_rank": 1,
+    "pmi": 0.14
+   },
+   "thing": {
+    "count_rank": 1,
+    "pmi": 0.46
+   },
+   "wolverine": {
+    "count_rank": 1,
+    "pmi": -0.16
+   },
+   "spider": {
+    "count_rank": 2,
+    "pmi": -0.01
+   },
+   "venom": {
+    "count_rank": 1,
+    "pmi": 0.11
+   },
+   "phoenix": {
+    "count_rank": 1,
+    "pmi": 0.7
+   },
+   "hulk": {
+    "count_rank": 1,
+    "pmi": 0.45
+   },
+   "fire": {
+    "count_rank": 1,
+    "pmi": -0.12
+   },
+   "ice": {
+    "count_rank": 2,
+    "pmi": -0.22
+   },
+   "blood": {
+    "count_rank": 1,
+    "pmi": -0.14
+   },
+   "school": {
+    "count_rank": 1,
+    "pmi": -0.01
+   },
+   "team": {
+    "count_rank": 1,
+    "pmi": 0.56
+   },
+   "villain": {
+    "count_rank": 1,
+    "pmi": 0.53
+   },
+   "hero": {
+    "count_rank": 1,
+    "pmi": 0.19
+   },
+   "she": {
+    "count_rank": 1,
+    "pmi": -0.23
+   },
+   "he": {
+    "count_rank": 1,
+    "pmi": -0.19
+   }
+  },
+  "negative_cells": {
+   "storm": [
+    160,
+    1225
+   ],
+   "web": [
+    69,
+    607
+   ],
+   "hammer": [
+    36,
+    440
+   ],
+   "mutant": [
+    212,
+    1541
+   ],
+   "symbiote": [
+    195,
+    1252
+   ],
+   "vampire": [
+    74,
+    701
+   ],
+   "shield": [
+    34,
+    439
+   ],
+   "armor": [
+    108,
+    939
+   ],
+   "magic": [
+    69,
+    734
+   ],
+   "vision": [
+    78,
+    733
+   ],
+   "beast": [
+    35,
+    452
+   ],
+   "thing": [
+    125,
+    1009
+   ],
+   "wolverine": [
+    279,
+    1692
+   ],
+   "spider": [
+    1414,
+    4206
+   ],
+   "venom": [
+    315,
+    1617
+   ],
+   "phoenix": [
+    243,
+    1306
+   ],
+   "hulk": [
+    547,
+    2468
+   ],
+   "fire": [
+    52,
+    637
+   ],
+   "ice": [
+    12,
+    161
+   ],
+   "blood": [
+    85,
+    821
+   ],
+   "school": [
+    61,
+    645
+   ],
+   "team": [
+    645,
+    2809
+   ],
+   "villain": [
+    115,
+    941
+   ],
+   "hero": [
+    196,
+    1284
+   ],
+   "she": [
+    1485,
+    6083
+   ],
+   "he": [
+    2253,
+    8706
+   ]
+  },
+  "seed_overlap": {
+   "skipgram": 0.71,
+   "cbow": 0.75
+  },
+  "skipgram_near_cos": 0.544,
+  "skipgram_random_cos": 0.145,
+  "glove_shared": {
+   "storm": 0,
+   "web": 0,
+   "hammer": 0,
+   "mutant": 1,
+   "symbiote": 1,
+   "vampire": 1,
+   "shield": 0,
+   "armor": 1,
+   "magic": 1,
+   "vision": 0,
+   "beast": 0,
+   "thing": 0,
+   "wolverine": 1,
+   "spider": 0,
+   "venom": 2,
+   "phoenix": 0,
+   "hulk": 0,
+   "fire": 0,
+   "ice": 0,
+   "blood": 0,
+   "school": 4,
+   "team": 1,
+   "villain": 1,
+   "hero": 1,
+   "she": 2,
+   "he": 2
+  }
+ }
+}

@@ -25,16 +25,25 @@ const REPO_URL = "https://github.com/horrrt/02805_social_graphs";
 
 const pad = (n) => String(n).padStart(2, "0");
 
+// Pages that sit under a week's post, by week number.
+const EXTRA = {
+  6: [{ path: "weeks/week06/essentials/", group: "week06essentials", label: "Week 6 · Essentials" }],
+};
+
 // The lobby and every live week. `group` is the route group whose last commit
 // dates the page in the sitemap.
 const PAGES = [
   { path: "", group: "home", label: "Lobby" },
-  ...liveWeeks().map((w) => ({
-    path: `weeks/week${pad(w.n)}/`,
-    group: `week${pad(w.n)}`,
-    label: `Week ${w.n} · ${w.courseTitle}`,
-    week: w,
-  })),
+  ...liveWeeks().flatMap((w) => [
+    {
+      path: `weeks/week${pad(w.n)}/`,
+      group: `week${pad(w.n)}`,
+      label: `Week ${w.n} · ${w.courseTitle}`,
+      week: w,
+    },
+    // A week's companion pages: the post's data files are listed once, under the post.
+    ...(EXTRA[w.n] ?? []).map((x) => ({ ...x, week: w, extra: true })),
+  ]),
 ];
 
 // Markup an agent cannot read as text, or that only drives the interactive
@@ -121,6 +130,7 @@ const llms = [
   posts.filter((p) => !p.noindex).map(entry).join("\n"),
   "## Data",
   posts
+    .filter((p) => !p.extra)
     .flatMap((p) => dataFiles(p.week.n).map((f) => `- [${f.split("/").at(-1)}](${SITE_URL + f}): data behind ${p.label}`))
     .join("\n"),
   "## Optional",
