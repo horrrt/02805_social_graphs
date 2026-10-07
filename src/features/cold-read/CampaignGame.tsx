@@ -66,6 +66,7 @@ export function CampaignGame({ data, random = Math.random }: { data: CampaignDat
   const [total, setTotal] = useState(0);
   const [best, setBest] = useState(0);
   const [newBest, setNewBest] = useState(false);
+  const [hard, setHard] = useState(false);
   const go = useRef<HTMLButtonElement>(null);
 
   useEffect(() => setBest(readBest()), []);
@@ -162,9 +163,18 @@ export function CampaignGame({ data, random = Math.random }: { data: CampaignDat
         <div className="cr-table">
           <div className="cr-start">
             <CampaignIntro />
-            <button type="button" className="cr-go" onClick={start}>
-              Start the campaign
-            </button>
+            <div className="cr-camp-start">
+              <label className="cr-toggle cr-toggle-light">
+                <input type="checkbox" checked={hard} onChange={(e) => setHard(e.target.checked)} />
+                <span>
+                  Hard mode
+                  <small>level 1 deals no name cards, and pays double</small>
+                </span>
+              </label>
+              <button type="button" className="cr-go" onClick={start}>
+                Start the campaign
+              </button>
+            </div>
           </div>
         </div>
       ) : null}
@@ -174,7 +184,7 @@ export function CampaignGame({ data, random = Math.random }: { data: CampaignDat
           {!loaded[spec.id] ? (
             <p className="cr-note">Loading this level…</p>
           ) : spec.id === "clue" ? (
-            <ClueShopGame key="clue" data={data.clue!} random={random} level={level} />
+            <ClueShopGame key="clue" data={data.clue!} random={random} level={level} hard={hard} />
           ) : spec.id === "groups" ? (
             <WhoseLineGame key="groups" data={data.groups!} random={random} level={level} />
           ) : spec.id === "mix" ? (

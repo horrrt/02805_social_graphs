@@ -105,3 +105,18 @@ test("a level waits for its data", async () => {
   assert.ok(screen.getByText("Loading this level…"));
   assert.ok(skip(), "a level that never loads can still be skipped");
 });
+
+test("hard mode is chosen once, at the start, and level 1 deals without names", async () => {
+  const user = userEvent.setup();
+  render(<CampaignGame data={data} random={zero} />);
+  await user.click(screen.getByRole("checkbox", { name: /Hard mode/ }));
+  await user.click(screen.getByRole("button", { name: "Start the campaign" }));
+  assert.equal(screen.queryByRole("checkbox", { name: /Hard mode/ }), null, "no toggle inside the level");
+  await user.click(screen.getByRole("button", { name: "Deal the first page" }));
+  const clue = data.clue!;
+  const round = clue.rounds[shuffled(clue.rounds.map((_, i) => i), zero)[0]];
+  const deck = shuffled(round.off, zero);
+  deck.forEach((c, i) =>
+    assert.match(screen.getByRole("button", { name: new RegExp(`^Card ${i + 1},`) }).getAttribute("aria-label")!, new RegExp(`${c.n} times here, on ${clue.words[c.w].df} of`)),
+  );
+});

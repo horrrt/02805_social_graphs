@@ -203,11 +203,13 @@ function Debrief({ data, round, deck, flipped }: { data: ClueShopData; round: Ro
   );
 }
 
-export function ClueShopGame({ data, random = Math.random, level }: { data: ClueShopData; random?: () => number; level?: Level }) {
+export function ClueShopGame({ data, random = Math.random, level, hard = false }: {
+  data: ClueShopData; random?: () => number; level?: Level; hard?: boolean;
+}) {
   const [phase, setPhase] = useState<Phase>("intro");
   const [order, setOrder] = useState<number[]>([]);
   const [at, setAt] = useState(0);
-  const [hide, setHide] = useState(false);
+  const [hide, setHide] = useState(hard);
   const [deck, setDeck] = useState<Card[]>([]);
   const [flipped, setFlipped] = useState<string[]>([]);
   const [struck, setStruck] = useState<number[]>([]);
@@ -342,13 +344,20 @@ export function ClueShopGame({ data, random = Math.random, level }: { data: Clue
             <b>{best.toLocaleString("en")}</b>
           </span>
         )}
-        <label className="cr-toggle">
-          <input type="checkbox" checked={hide} disabled={playing} onChange={(e) => setHide(e.target.checked)} />
-          <span>
-            Hard mode
-            <small>names removed, score ×2</small>
-          </span>
-        </label>
+        {/* Hard mode is picked before a run starts, never mid-run; in the campaign it is picked once, at the start. */}
+        {level || (phase !== "intro" && phase !== "over") ? (
+          hide ? (
+            <span className="cr-hard-on">Hard mode · ×2</span>
+          ) : null
+        ) : (
+          <label className="cr-toggle">
+            <input type="checkbox" checked={hide} onChange={(e) => setHide(e.target.checked)} />
+            <span>
+              Hard mode
+              <small>names removed, score ×2</small>
+            </span>
+          </label>
+        )}
       </div>
 
       {phase === "intro" ? (

@@ -73,7 +73,7 @@ test("three wrong names end the run", async () => {
   assert.ok(screen.getByRole("button", { name: "Play again" }));
 });
 
-test("hard mode deals the names-off deck and is locked during play", async () => {
+test("hard mode is picked before the deal, deals the names-off deck, and is gone during play", async () => {
   const user = userEvent.setup();
   render(<ClueShopGame data={data} random={zero} />);
   await user.click(screen.getByRole("checkbox", { name: /Hard mode/ }));
@@ -81,7 +81,8 @@ test("hard mode deals the names-off deck and is locked during play", async () =>
   const off = shuffled(round.off, zero);
   off.forEach((c, i) => assert.match(card(i).getAttribute("aria-label")!, new RegExp(`${c.n} times here, on ${data.words[c.w].df} of`)));
   assert.ok(off.every((c) => data.words[c.w].name === 0));
-  assert.equal((screen.getByRole("checkbox", { name: /Hard mode/ }) as HTMLInputElement).disabled, true);
+  assert.equal(screen.queryByRole("checkbox", { name: /Hard mode/ }), null, "no switching mid-run");
+  assert.ok(screen.getByText("Hard mode · ×2"));
 });
 
 test("keys 1 to 8 flip the matching card", async () => {
