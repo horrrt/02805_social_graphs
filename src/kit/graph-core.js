@@ -11,22 +11,20 @@
 //   const rng = mulberry32(7);
 //   const { edges } = ba(200, 2, { alpha: 1 }, rng);
 //   pagerank(200, edges); betweenness(200, edges); louvain(edges, rng).partition
-//
-// mulberry32, the BFS layering and the Louvain move rule follow the course
-// explorables' graphlib.js and community.js (adapted from socialgraphs2026-web,
-// MIT, Sune Lehmann); the rest is written here.
 
 // ---------------------------------------------------------------- randomness
 
 /** A seeded uniform rng on [0, 1): mulberry32. The same seed gives the same stream. */
 export function mulberry32(seed) {
-  let a = seed >>> 0;
+  // A 32-bit Weyl counter, then an xorshift-multiply mix of the counter.
+  let state = seed | 0;
   return function rng() {
-    a = (a + 0x6d2b79f5) >>> 0;
-    let t = a;
-    t = Math.imul(t ^ (t >>> 15), t | 1);
-    t ^= t + Math.imul(t ^ (t >>> 7), t | 61);
-    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+    state = (state + 0x6d2b79f5) | 0;
+    let z = state;
+    z = Math.imul(z ^ (z >>> 15), z | 1);
+    z ^= z + Math.imul(z ^ (z >>> 7), z | 61);
+    z ^= z >>> 14;
+    return (z >>> 0) / 2 ** 32;
   };
 }
 
@@ -87,21 +85,25 @@ export function bfsLayers(adj, src, dir = "any") {
   const parent = new Array(g.n).fill(-1);
   const layers = [];
   if (src < 0 || src >= g.n) return { dist, parent, layers };
+  const neighbours =
+    dir === "out" ? (u) => g.out[u]
+    : dir === "in" ? (u) => g.in[u]
+    : g.out === g.in ? (u) => g.out[u]
+    : (u) => g.out[u].concat(g.in[u]);
+  // A FIFO queue hands out nodes in order of distance, so each node joins the
+  // end of its layer in the order it was discovered.
+  const queue = [src];
   dist[src] = 0;
-  let frontier = [src];
-  while (frontier.length) {
-    layers.push(frontier);
-    const next = [];
-    for (const u of frontier) {
-      const nbrs = dir === "out" ? g.out[u] : dir === "in" ? g.in[u] : g.out === g.in ? g.out[u] : [...g.out[u], ...g.in[u]];
-      for (const v of nbrs) {
-        if (dist[v] !== -1) continue;
-        dist[v] = dist[u] + 1;
-        parent[v] = u;
-        next.push(v);
-      }
+  for (let head = 0; head < queue.length; head++) {
+    const u = queue[head];
+    const d = dist[u];
+    (layers[d] ??= []).push(u);
+    for (const v of neighbours(u)) {
+      if (dist[v] >= 0) continue;
+      dist[v] = d + 1;
+      parent[v] = u;
+      queue.push(v);
     }
-    frontier = next;
   }
   return { dist, parent, layers };
 }
@@ -724,28 +726,34 @@ function advance(s, atBoundary) {
     }
     const v = s.order[cursor];
     cursor += 1;
-    const own = comm[v];
+    const from = comm[v];
     const kv = g.k[v];
-    // Links from v into each neighbouring community.
-    const links = new Map();
-    for (const [w, wt] of g.adj[v]) links.set(comm[w], (links.get(comm[w]) ?? 0) + wt);
-    tot[own] -= kv;
-    const gain = (c) => (links.get(c) ?? 0) - (tot[c] * kv) / m2;
-    let best = own;
-    let bestGain = gain(own);
-    for (const c of [...links.keys()].sort((a, b) => a - b)) {
-      const gc = gain(c);
-      if (gc > bestGain + 1e-12) {
+    // kIn.get(c): the weight of v's links into community c (its self-loop aside).
+    const kIn = new Map();
+    for (const [u, wt] of g.adj[v]) kIn.set(comm[u], (kIn.get(comm[u]) ?? 0) + wt);
+    // Lift v out of its community, then score each place it could go. Joining
+    // c changes modularity by ΔQ = k_v,in / m − Σ_tot · k_v / (2m²); score(c)
+    // is m · ΔQ = k_v,in − Σ_tot · k_v / 2m, which orders the choices the same.
+    tot[from] -= kv;
+    const score = (c) => (kIn.get(c) ?? 0) - (tot[c] * kv) / m2;
+    // Staying put is the baseline: v moves only for a strictly higher score,
+    // and among equal scores the smallest community id wins.
+    let best = from;
+    let bestScore = score(from);
+    const choices = [...kIn.keys()].sort((x, y) => x - y);
+    for (const c of choices) {
+      const sc = score(c);
+      if (sc > bestScore + 1e-12) {
         best = c;
-        bestGain = gc;
+        bestScore = sc;
       }
     }
     tot[best] += kv;
-    if (best !== own) {
+    if (best !== from) {
       comm[v] = best;
       sweepMoves += 1;
       moves += 1;
-      last = { node: s.member.indexOf(v), from: own, to: best };
+      last = { node: s.member.indexOf(v), from, to: best };
       if (!atBoundary) break;
     }
   }

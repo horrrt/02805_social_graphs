@@ -86,7 +86,7 @@ One row of `stripChart` without an axis: `{ domain, real, realLabel, base, baseL
 
 ### networkView(host, spec)
 
-Nodes and links as one SVG, in the styles of the course's explorables, coloured from the `--group-*` tokens in
+Nodes and links as one SVG, light or dark, coloured from the `--group-*` tokens in
 `post.css` (eight groups and a grey; `analysis/check_palette.py` checks them for colour blindness). Lay the
 nodes out in the analysis script with a seeded layout and pass `x` and `y` between 0 and 1;
 `analysis/styleguide_graphs.py` shows how. A node is `{ id, x, y, label, group }`, with `group` 0 to 7 or

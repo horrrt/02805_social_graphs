@@ -6,10 +6,11 @@
 export type Kind = "loud" | "mid" | "sharp";
 export type Card = { w: string; kind: Kind; n: number };
 export type Word = { df: number; name: 0 | 1; post: [number, number][] };
-export type Round = { page: number; on: Card[]; off: Card[] };
+/** A playable page and its two decks: normal (every card on 4 pages or more) and hard (6 or more). */
+export type Round = { page: number; normal: Card[]; hard: Card[] };
 export type ClueShopData = {
   N: number;
-  pages: { name: string; tokens: number; img?: string; file?: string }[];
+  pages: { name: string; tokens: number }[];
   rounds: Round[];
   words: Record<string, Word>;
 };
@@ -82,7 +83,7 @@ export function shortlist(data: ClueShopData, flipped: string[], struck: number[
 
 /**
  * Points for naming the page: 100, plus 100 per card left face down, doubled
- * with names hidden, times the streak (pages named in a row without a miss,
+ * in hard mode, times the streak (pages named in a row without a miss,
  * this one included, up to MAX_STREAK).
  */
 export function points(cardsLeft: number, namesHidden: boolean, streak = 1) {
@@ -97,4 +98,30 @@ export function shuffled<T>(items: T[], random: () => number = Math.random): T[]
     [out[i], out[j]] = [out[j], out[i]];
   }
   return out;
+}
+
+/** "Ghost Rider (Johnny Blaze)" -> "Ghost Rider": the name without its Wikipedia bracket. */
+export const baseName = (name: string) => name.replace(/\s*\([^)]*\)\s*$/, "");
+
+/**
+ * Names as players see them: the bracket only when another name in the list
+ * shares the same base, so "Justice (New Universe)" reads "Justice" but the
+ * two Spider-Women keep theirs.
+ */
+export function displayNames(names: string[]): string[] {
+  const count = new Map<string, number>();
+  for (const n of names) count.set(baseName(n), (count.get(baseName(n)) ?? 0) + 1);
+  return names.map((n) => ((count.get(baseName(n)) ?? 0) > 1 ? n : baseName(n)));
+}
+
+const shown = new WeakMap<object, string[]>();
+
+/** Page i's name as players see it, worked out once per data set. */
+export function shownName(data: { pages: { name: string }[] }, i: number): string {
+  let names = shown.get(data);
+  if (!names) {
+    names = displayNames(data.pages.map((p) => p.name));
+    shown.set(data, names);
+  }
+  return names[i];
 }

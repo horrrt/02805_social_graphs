@@ -37,4 +37,7 @@ ds-bundle/
 .design-sync/pkg/gen/
 .design-sync/pkg/types/
 
+# the game catalogue's Wikipedia lookup cache
 .wiki-cache.json
+# a symlink to the main checkout's build/ in worktrees
+build

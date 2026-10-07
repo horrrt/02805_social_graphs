@@ -65,3 +65,40 @@ export type { BoardAxis, BoardCell } from "./NullBoard";
 export type { Verdict } from "./nullBits";
 export { default as NullBars } from "./NullBars";
 export type { NullBarRow } from "./NullBars";
+// ---- Games: a shell, a round trip under fog, an attack on the core, a seating
+// plan and a quiz. Their rules are DOM-free in game-core.js; import it directly.
+export { default as GameShell, useGameRun } from "./GameShell";
+export type { GameOption, GamePhase, GameRun, GameSegment, GameSettings } from "./GameShell";
+export { default as PathQuest } from "./PathQuest";
+export type { QuestBand } from "./PathQuest";
+export { default as AttackGame } from "./AttackGame";
+export type { CoreSeries } from "./AttackGame";
+export { default as SeatingGame } from "./SeatingGame";
+export { default as QuizRun, ClueReveal, TwoChoice, FillBlank } from "./QuizRun";
+export type { BlankRound, ClueRound, QuizRound, RoundResult, TwoRound } from "./QuizRun";
+// ---- Editors and puzzles: a cut dendrogram, an editable matrix, a partition
+// to edit, an ego network, a pick-k puzzle, a pipeline, a strip of stages and
+// a detail panel. Their pure helpers are dendro-core.js and matrix-core.js.
+export { default as Dendrogram } from "./Dendrogram";
+export type { DendroBlock, DendroCut, DendroMetric, DendroTree, Merge } from "./Dendrogram";
+export { default as EditableMatrix } from "./EditableMatrix";
+export { default as PartitionEditor } from "./PartitionEditor";
+export type { PartitionPreset } from "./PartitionEditor";
+export { default as EgoEditor } from "./EgoEditor";
+export type { Ego } from "./EgoEditor";
+export { default as NodePicker } from "./NodePicker";
+export type { PickerGraph, PickerVerdict } from "./NodePicker";
+export type { NetId } from "./network/layout";
+export { default as StepFlow } from "./StepFlow";
+export type { FlowStep } from "./StepFlow";
+export { default as StageTabs } from "./StageTabs";
+export type { Stage } from "./StageTabs";
+export { default as DetailPanel } from "./DetailPanel";
+export type { DetailItem, DetailStat, NearestList, NearestRow } from "./DetailPanel";
+// ---- Growth: replay, nonlinear attachment, components, friendship paradox
+// (growth-core.js holds the numbers; import it directly)
+export { default as GrowthReplay } from "./GrowthReplay";
+export type { ArrivalCard, GrowthMode } from "./GrowthReplay";
+export { default as GrowthLab } from "./GrowthLab";
+export { default as ComponentGallery } from "./ComponentGallery";
+export { default as FriendshipParadox } from "./FriendshipParadox";

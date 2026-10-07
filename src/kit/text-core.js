@@ -3,8 +3,7 @@
 // BIO tags to entity spans, a seeded Markov sampler, a sentiment lexicon with
 // a negation rule, TF-IDF and cosine, PPMI, and a small logistic regression.
 // Pure functions over plain arrays and objects, so tests/text-core.test.mjs
-// runs them in node. The PPMI, TF-IDF and logistic-regression formulas follow
-// the course explorables (adapted from socialgraphs2026-web, MIT, Sune Lehmann).
+// runs them in node.
 //
 //   tokenize("Fans weren't there.", { splitClitics: true, lowercase: true })
 //   bioSpans(tokens, tags); scoreLexicon(tokens, LEXICON)
@@ -235,9 +234,9 @@ export function countsOf(tokens) {
 }
 
 /**
- * TF-IDF over documents (each an array of tokens), the course's way: tf is a
- * term's count over the document's length, idf is ln(N / df). A term in every
- * document gets idf 0. Returns the sorted vocabulary, its idf and one dense
+ * TF-IDF over documents (each an array of tokens): tf = count / length, the
+ * term's count over the document's token count, and idf = ln(N / df), N the
+ * documents and df those holding the term. A term in every document gets idf 0. Returns the sorted vocabulary, its idf and one dense
  * vector per document.
  * @param {string[][]} docs
  * @returns {{ vocab: string[], idf: number[], vectors: number[][] }}
@@ -300,7 +299,9 @@ const finite = (v) => (Number.isFinite(v) ? v : 0);
 
 /**
  * PPMI of a count matrix (rows are target words, columns contexts):
- * max(0, log2(P(w, c) / (P(w) P(c)))), 0 wherever the count is 0.
+ * PPMI = max(0, log2(P(w, c) / (P(w) P(c)))), with P(w, c) the cell over the
+ * total and P(w), P(c) its row and column sums over the total; 0 wherever the
+ * count is 0.
  * @param {number[][]} cells
  * @returns {number[][]}
  */
@@ -333,9 +334,9 @@ export function tfMatrix(cells) {
 }
 
 /**
- * TF-IDF of a count matrix read as documents (rows) by terms (columns), the
- * course's way: tfMatrix times ln(N / df), N the rows and df the rows where the
- * term occurs; 0 for a term in no row.
+ * TF-IDF of a count matrix read as documents (rows) by terms (columns):
+ * tf = count / row total (tfMatrix) times idf = ln(N / df), N the rows and df
+ * the rows where the term occurs; 0 for a term in no row.
  * @param {number[][]} cells
  * @returns {number[][]}
  */
@@ -390,9 +391,10 @@ export function sigmoid(z) {
 }
 
 /**
- * Fits a logistic regression by batch gradient descent: weights start at small
- * seeded values, each epoch steps against the mean log-loss gradient plus an
- * L2 penalty on the weights (not the bias), as the course's classifier does.
+ * Fits an L2-penalised logistic regression by batch gradient descent:
+ * p_i = sigmoid(w·x_i + b), and each epoch steps
+ * w ← w − lr · (Σ (p_i − y_i) x_i / N + l2 · w) and b ← b − lr · Σ (p_i − y_i) / N,
+ * so the bias carries no penalty. Weights start at small seeded values.
  * X is one feature row per example, y its 0 or 1 label.
  * @param {number[][]} X
  * @param {number[]} y

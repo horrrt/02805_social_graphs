@@ -4,6 +4,9 @@ import { KitState } from "@/features/kit-page/states";
 import { KitStateNetworks } from "@/features/kit-page/states-networks";
 import { TextState } from "@/features/kit-page/states-text";
 import { DistState } from "@/features/kit-page/states-distributions";
+import { GamesState } from "@/features/kit-page/states-games";
+import { KitStateEditors } from "@/features/kit-page/states-editors";
+import { KitStateGrowth } from "@/features/kit-page/states-growth";
 
 export default function Page() {
   return (
@@ -314,6 +317,203 @@ export default function Page() {
           <DistState state="bars-empty" />
         </PostSection>
         {/* ==== end Kit: distributions and nulls ==== */}
+        {/* ==== Kit: games ==== */}
+        <PostSection id="state-games">
+          <h2>Games</h2>
+          <div className="w4-two">
+            <div>
+              <h3>PathQuest: no target has a way back</h3>
+              <GamesState state="games-quest-noway" />
+            </div>
+            <div>
+              <h3>PathQuest: stuck where no link leads out</h3>
+              <GamesState state="games-quest-stuck" />
+            </div>
+          </div>
+          <div className="w4-two">
+            <div>
+              <h3>AttackGame: a budget larger than the graph</h3>
+              <GamesState state="games-attack-budget" />
+            </div>
+            <div>
+              <h3>AttackGame: no links, no hints</h3>
+              <GamesState state="games-attack-nolinks" />
+            </div>
+          </div>
+          <h3>AttackGame: one hit left</h3>
+          <GamesState state="games-attack-late" />
+          <div className="w4-two">
+            <div>
+              <h3>SeatingGame: an empty room</h3>
+              <GamesState state="games-seating-empty" />
+            </div>
+            <div>
+              <h3>SeatingGame: more seats than guests</h3>
+              <GamesState state="games-seating-small" />
+            </div>
+          </div>
+          <h3>SeatingGame: the room with two cards laid</h3>
+          <GamesState state="games-seating-room" />
+          <div className="w4-two">
+            <div>
+              <h3>QuizRun: no rounds</h3>
+              <GamesState state="games-quiz-none" />
+            </div>
+            <div>
+              <h3>ClueReveal: a single suspect with a long name</h3>
+              <GamesState state="games-clue-single" />
+            </div>
+          </div>
+          <div className="w4-two">
+            <div>
+              <h3>ClueReveal: every clue used</h3>
+              <GamesState state="games-clue-all" />
+            </div>
+            <div>
+              <h3>TwoChoice: answered wrong, one sentence far longer</h3>
+              <GamesState state="games-two-long" />
+            </div>
+          </div>
+          <div className="w4-two">
+            <div>
+              <h3>FillBlank: no decoys, nothing before the blank</h3>
+              <GamesState state="games-blank-alone" />
+            </div>
+            <div></div>
+          </div>
+        </PostSection>
+        {/* ==== end Kit: games ==== */}
+        {/* ==== Kit: editors and puzzles ==== */}
+        <PostSection id="state-editors">
+          <h2>Editors and puzzles</h2>
+          <div className="w4-two">
+            <div>
+              <h3>Dendrogram: no leaves</h3>
+              <KitStateEditors state="ed-dendro-empty" />
+            </div>
+            <div>
+              <h3>Dendrogram: a forest, equal heights, long labels, a cut above the top, one metric point</h3>
+              <KitStateEditors state="ed-dendro-forest" />
+            </div>
+          </div>
+          <div className="w4-two">
+            <div>
+              <h3>Dendrogram: 120 leaves, nested, missing and out-of-range clusters in the cut</h3>
+              <KitStateEditors state="ed-dendro-wide" />
+            </div>
+            <div>
+              <h3>EditableMatrix: no nodes</h3>
+              <KitStateEditors state="ed-matrix-empty" />
+            </div>
+          </div>
+          <div className="w4-two">
+            <div>
+              <h3>EditableMatrix: one node</h3>
+              <KitStateEditors state="ed-matrix-one" />
+            </div>
+            <div>
+              <h3>EditableMatrix: twelve long names, negatives, a self-loop</h3>
+              <KitStateEditors state="ed-matrix-wide" />
+            </div>
+          </div>
+          <div className="w4-two">
+            <div>
+              <h3>PartitionEditor: one node, no links, a preset too long</h3>
+              <KitStateEditors state="ed-partition-lonely" />
+            </div>
+            <div>
+              <h3>EgoEditor: no candidates</h3>
+              <KitStateEditors state="ed-ego-none" />
+            </div>
+          </div>
+          <div className="w4-two">
+            <div>
+              <h3>EgoEditor: sixteen candidates, bad links in the start</h3>
+              <KitStateEditors state="ed-ego-crowded" />
+            </div>
+            <div>
+              <h3>NodePicker: five to pick from three, no answer</h3>
+              <KitStateEditors state="ed-picker-tiny" />
+            </div>
+          </div>
+          <div className="w4-two">
+            <div>
+              <h3>NodePicker: the generator gives no nodes</h3>
+              <KitStateEditors state="ed-picker-empty" />
+            </div>
+            <div>
+              <h3>StepFlow: no steps</h3>
+              <KitStateEditors state="ed-flow-empty" />
+            </div>
+          </div>
+          <div className="w4-two">
+            <div>
+              <h3>StepFlow: long titles, an unbroken word, missing parts</h3>
+              <KitStateEditors state="ed-flow-long" />
+            </div>
+            <div>
+              <h3>StageTabs: no stages</h3>
+              <KitStateEditors state="ed-stages-empty" />
+            </div>
+          </div>
+          <div className="w4-two">
+            <div>
+              <h3>StageTabs: twelve stages, a long title and empty fields</h3>
+              <KitStateEditors state="ed-stages-many" />
+            </div>
+            <div>
+              <h3>DetailPanel: nothing picked</h3>
+              <KitStateEditors state="ed-detail-empty" />
+            </div>
+          </div>
+          <div className="w4-two">
+            <div>
+              <h3>DetailPanel: long everything, an empty list, a third list dropped</h3>
+              <KitStateEditors state="ed-detail-long" />
+            </div>
+            <div></div>
+          </div>
+        </PostSection>
+        {/* ==== end Kit: editors and puzzles ==== */}
+        {/* ==== Kit batch E2: Growth ==== */}
+        <PostSection id="state-growth">
+          <h2>Growth</h2>
+          <h3>GrowthReplay: one node, a card with long lines</h3>
+          <KitStateGrowth state="gr-replay-one" />
+          <div className="w4-two">
+            <div>
+              <h3>GrowthReplay: no modes</h3>
+              <KitStateGrowth state="gr-replay-nomodes" />
+            </div>
+            <div>
+              <h3>ComponentGallery: no nodes</h3>
+              <KitStateGrowth state="gr-gallery-empty" />
+            </div>
+          </div>
+          <h3>GrowthReplay: the first mode has no nodes</h3>
+          <KitStateGrowth state="gr-replay-emptymode" />
+          <h3>GrowthLab: α = 0, grown, nothing to sweep</h3>
+          <KitStateGrowth state="gr-lab-alpha0" />
+          <h3>GrowthLab: α = 50, one link per newcomer</h3>
+          <KitStateGrowth state="gr-lab-huge" />
+          <h3>GrowthLab: n = 1, below the seed clique</h3>
+          <KitStateGrowth state="gr-lab-n1" />
+          <div className="w4-two">
+            <div>
+              <h3>ComponentGallery: a single component</h3>
+              <KitStateGrowth state="gr-gallery-one" />
+            </div>
+            <div>
+              <h3>ComponentGallery: groups, one empty, one of one node, ids out of range</h3>
+              <KitStateGrowth state="gr-gallery-groups" />
+            </div>
+          </div>
+          <h3>ComponentGallery: 70 tiny components and 80 isolated nodes</h3>
+          <KitStateGrowth state="gr-gallery-tiny" />
+          <h3>FriendshipParadox: no links at all</h3>
+          <KitStateGrowth state="gr-paradox-nolinks" />
+        </PostSection>
+        {/* ==== end Kit batch E2: Growth ==== */}
       </main>
       <SiteFooter>
         <span>
