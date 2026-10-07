@@ -3200,3 +3200,43 @@
 .corridor .kit-board-table col.kit-board-c-null { width: 18%; }
 .corridor .kit-board-table col.kit-board-c-verdict { width: 16%; }
 .corridor main .kit-board-table :is(th, td).num { white-space: normal; }
+
+/* ==== Kit: growth (GrowthReplay, GrowthLab, ComponentGallery, FriendshipParadox
+   in src/kit). Light corridor style; every control takes the house focus ring. ==== */
+.corridor :is(.kit-growth, .kit-growlab, .kit-gallery, .kit-paradox) :is(button, input):focus-visible { outline: 2px solid var(--w4-accent); outline-offset: 2px; }
+.corridor :is(.kit-growth, .kit-growlab, .kit-paradox) .kit-btn[aria-pressed="true"] { background: var(--w4-accent); color: var(--card); }
+.corridor .kit-growth > .w5-chips { margin: 0 0 8px; }
+.corridor .kit-growth-head { color: var(--ink-soft); font-size: var(--fs-small); margin: 12px 0 6px; }
+
+/* GrowthReplay: the canvas with its arrival card on the left, controls and the top k on the right, the CCDF under them. */
+.corridor .kit-growth-body { display: grid; gap: 12px 24px; grid-template-areas: "stage side" "stage ccdf"; grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr); margin-top: 8px; }
+.corridor .kit-growth-stage { grid-area: stage; min-width: 0; position: relative; }
+.corridor .kit-growth-side { grid-area: side; min-width: 0; }
+.corridor .kit-growth-ccdf { grid-area: ccdf; min-width: 0; }
+.corridor .kit-growth-card { background: var(--card); border: 1px solid var(--line); border-left: 3px solid var(--people); border-radius: 8px; left: 8px; max-width: min(18em, calc(100% - 16px)); padding: 8px 12px; position: absolute; top: 8px; }
+.corridor .kit-growth-card.kit-growth-pinned { border-left-color: var(--graph-accent); }
+.corridor .kit-growth-card p { margin: 0; overflow-wrap: anywhere; }
+.corridor .kit-growth-tag { color: var(--ink-mute-text); font-size: var(--fs-caption); font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; }
+.corridor .kit-growth-title { color: var(--ink); font-size: var(--fs-strong); font-weight: 700; }
+.corridor .kit-growth-line { color: var(--ink-soft); font-size: var(--fs-small); }
+.corridor .kit-growth-card .kit-btn { margin-top: 6px; }
+.corridor .kit-growth-top { list-style: decimal; margin: 0; padding-left: 1.8em; }
+.corridor .kit-growth-top li { color: var(--ink-mute-text); font-size: var(--fs-small); }
+.corridor .kit-growth-top button { background: none; border: 0; border-radius: 4px; color: var(--ink); cursor: pointer; display: flex; font: inherit; gap: 8px; justify-content: space-between; padding: 2px 4px; text-align: left; width: 100%; }
+.corridor .kit-growth-top button:hover, .corridor .kit-growth-top button[aria-pressed="true"] { background: var(--w4-inset); }
+.corridor .kit-growth-top button[aria-pressed="true"] { box-shadow: inset 2px 0 0 var(--graph-accent); }
+.corridor .kit-growth-top .kit-word { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.corridor .kit-growth-top .kit-num { font-variant-numeric: tabular-nums; font-weight: 700; }
+
+/* GrowthLab: the network beside its two charts, the regime in a sentence above. */
+.corridor .kit-growlab-says { color: var(--ink); font-size: var(--fs-body); margin: 4px 0 10px; }
+.corridor .kit-growlab-body { display: grid; gap: 16px 24px; grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); }
+.corridor .kit-growlab-net, .corridor .kit-growlab-charts { min-width: 0; }
+.corridor .kit-growlab-charts .kit-growth-head:first-child { margin-top: 0; }
+
+/* ComponentGallery: tiles in a grid that fits as many columns as the width allows. */
+.corridor .kit-gallery-grid { display: grid; gap: 12px; list-style: none; margin: 0; padding: 0; }
+.corridor .kit-gallery-tile { background: var(--card); border: 1px solid var(--line); border-radius: 8px; min-width: 0; padding: 8px 10px; }
+.corridor .kit-gallery-title { color: var(--ink); font-size: var(--fs-small); font-weight: 700; margin: 0; overflow-wrap: anywhere; }
+.corridor .kit-gallery-count { color: var(--ink-mute-text); font-size: var(--fs-caption); margin: 0 0 4px; }
+.corridor .kit-gallery-isolates { color: var(--ink-mute); font-size: var(--fs-caption); letter-spacing: 0.2em; line-height: 1.6; margin: 8px 0 0; overflow-wrap: anywhere; }

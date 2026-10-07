@@ -65,3 +65,10 @@ export type { BoardAxis, BoardCell } from "./NullBoard";
 export type { Verdict } from "./nullBits";
 export { default as NullBars } from "./NullBars";
 export type { NullBarRow } from "./NullBars";
+// ---- Growth: replay, nonlinear attachment, components, friendship paradox
+// (growth-core.js holds the numbers; import it directly)
+export { default as GrowthReplay } from "./GrowthReplay";
+export type { ArrivalCard, GrowthMode } from "./GrowthReplay";
+export { default as GrowthLab } from "./GrowthLab";
+export { default as ComponentGallery } from "./ComponentGallery";
+export { default as FriendshipParadox } from "./FriendshipParadox";
