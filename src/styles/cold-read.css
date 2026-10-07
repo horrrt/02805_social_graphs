@@ -1226,41 +1226,31 @@ body.cold-read {
 
 .cr-team {
   display: flex;
-  gap: 12px;
-  align-items: center;
-  padding: 12px 16px;
-  border-radius: 12px;
+  flex-direction: column;
+  gap: 10px;
+  padding: 14px 18px 16px;
+  border-radius: 14px;
   background: var(--people-soft);
 }
 
 .cr-team[data-side="b"] {
-  flex-direction: row-reverse;
-  text-align: right;
+  align-items: flex-end;
   background: var(--access-soft);
 }
 
-.cr-team-faces {
-  display: flex;
-}
-
-.cr-team-faces .cr-face + .cr-face {
-  margin-left: -12px;
-}
-
 .cr-team-name {
-  display: flex;
-  flex-direction: column;
-  font-size: var(--fs-strong);
+  font-size: var(--fs-small);
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ink-mute-text);
 }
 
 .cr-team-name b {
+  margin-left: 4px;
   font-family: var(--font-display);
-  font-size: var(--fs-h3);
-  line-height: var(--lh-title);
-  text-transform: uppercase;
-}
-
-.cr-team[data-side="a"] .cr-team-name b {
+  font-size: var(--fs-h2);
+  letter-spacing: 0.01em;
   color: var(--people);
 }
 
@@ -1268,9 +1258,32 @@ body.cold-read {
   color: var(--access);
 }
 
-.cr-team-name small {
+.cr-team-faces {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  gap: 14px;
+}
+
+.cr-team-faces li {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  width: 92px;
+  text-align: center;
   font-size: var(--fs-caption);
-  color: var(--ink-mute-text);
+  font-weight: 600;
+  line-height: var(--lh-caption);
+  color: var(--ink-soft);
+}
+
+.cr-face[data-size="xl"] {
+  width: 84px;
+  height: 84px;
+  font-size: var(--fs-h2);
+  box-shadow: 0 0 0 3px var(--card), var(--lift);
 }
 
 .cr-vs {

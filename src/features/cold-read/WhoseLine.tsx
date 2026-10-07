@@ -64,25 +64,26 @@ function Placeholder() {
   );
 }
 
+// "Phoenix (Guardians of the Galaxy)" -> "Phoenix": a caption under a portrait.
+const short = (name: string) => name.replace(/\s*\(.*\)\s*/g, "");
+
 function Team({ data, g, side }: { data: WhoseLineData; g: number; side: "a" | "b" }) {
   const group = data.groups[g];
   return (
     <div className="cr-team" data-side={side}>
-      <span className="cr-team-faces">
-        {group.hubs.map((h) => (
-          <span key={h.name} className="cr-face" data-size="m" data-tone={side === "a" ? 1 : 0}>
-            {h.img ? <img src={h.img} alt="" loading="lazy" referrerPolicy="no-referrer" /> : <span aria-hidden="true">{h.name[0]}</span>}
-          </span>
-        ))}
-      </span>
       <span className="cr-team-name">
-        <span>
-          <b>{group.label}</b>’s pages
-        </span>
-        <small>
-          {group.size} pages · {group.tokens.toLocaleString("en")} words
-        </small>
+        Team <b>{group.label.replace(/\s*\(.*\)\s*/g, "")}</b>
       </span>
+      <ul className="cr-team-faces">
+        {group.hubs.map((h) => (
+          <li key={h.name}>
+            <span className="cr-face" data-size="xl" data-tone={side === "a" ? 1 : 0}>
+              {h.img ? <img src={h.img} alt="" loading="lazy" referrerPolicy="no-referrer" /> : <span aria-hidden="true">{h.name[0]}</span>}
+            </span>
+            <span>{short(h.name)}</span>
+          </li>
+        ))}
+      </ul>
     </div>
   );
 }
