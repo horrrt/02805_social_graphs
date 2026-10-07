@@ -4,6 +4,7 @@
 // have produced it. Rules live in topics.ts; this file renders them.
 import { useEffect, useRef, useState } from "react";
 import { BestBox, NextButton, ScoreBox, SkipLevel, Stat, useBest } from "./LevelParts";
+import { Face } from "./Face";
 import { LIMIT, speed, Ticker, timed, useCountdown, Worth } from "./pace";
 import { mixDeskTour } from "./tours";
 import { StartButtons, useTour } from "./Tutorial";
@@ -153,7 +154,7 @@ export function MixDeskGame({ data, random = Math.random, level, clock = Date.no
         <>
           <div className="cr-md-page">
             <span className="cr-face" data-size="xl" data-tone={1}>
-              <img src={page.img} alt="" referrerPolicy="no-referrer" />
+              <Face name={page.name} />
             </span>
             <div className="cr-md-head">
               <span className="cr-h">Page {at + 1} · how is it mixed?</span>

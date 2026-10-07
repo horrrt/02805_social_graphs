@@ -9,7 +9,7 @@ export type Answer = "a" | "b" | "both" | "fluke";
 export type Term = { w: string; x: number; y: number; ua: number; ub: number; pa: number; pb: number; top: string; share: number };
 export type Pair = { a: number; b: number; cards: Record<Answer, Term[]>; cloud: [number, number][] };
 export type WhoseLineData = {
-  groups: { label: string; size: number; tokens: number; hubs: { name: string; img: string | null }[] }[];
+  groups: { label: string; size: number; tokens: number; hubs: { name: string }[] }[];
   pairs: Pair[];
 };
 

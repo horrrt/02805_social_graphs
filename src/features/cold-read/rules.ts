@@ -10,7 +10,7 @@ export type Word = { df: number; name: 0 | 1; post: [number, number][] };
 export type Round = { page: number; normal: Card[]; hard: Card[] };
 export type ClueShopData = {
   N: number;
-  pages: { name: string; tokens: number; img?: string; file?: string }[];
+  pages: { name: string; tokens: number }[];
   rounds: Round[];
   words: Record<string, Word>;
 };

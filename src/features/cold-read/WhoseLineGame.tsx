@@ -5,6 +5,7 @@
 // groups.ts; this file renders them.
 import { type ReactNode, useEffect, useMemo, useRef, useState } from "react";
 import { BestBox, clickButton, HelpKey, Lives, NextButton, ScoreBox, SkipLevel, Stat, StreakBox, useBest, useHelpKey, useKeys } from "./LevelParts";
+import { Face } from "./Face";
 import { LIMIT, speed, Ticker, timed, useCountdown, Worth } from "./pace";
 import { whoseLineTour } from "./tours";
 import { StartButtons, useTour } from "./Tutorial";
@@ -63,7 +64,7 @@ function Team({ data, g, side }: { data: WhoseLineData; g: number; side: "a" | "
         {group.hubs.map((h) => (
           <li key={h.name}>
             <span className="cr-face" data-size="xl" data-tone={side === "a" ? 1 : 0}>
-              {h.img ? <img src={h.img} alt="" loading="lazy" referrerPolicy="no-referrer" /> : <span aria-hidden="true">{h.name[0]}</span>}
+              <Face name={h.name} />
             </span>
             <span>{hubName(data, h.name)}</span>
           </li>
