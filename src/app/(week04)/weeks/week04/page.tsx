@@ -1,7 +1,5 @@
-import PageScripts from "@/components/PageScripts";
 import { type RailItem, SectionRail } from "@/components/post/SectionRail";
 import { TermLayer } from "@/components/post/TermLayer";
-import { LegacyBridge } from "@/features/week04/frame/LegacyBridge";
 import { PlacePart } from "@/features/week04/place/Place";
 import { Router } from "@/features/week04/frame/Router";
 import { Beyond } from "./_sections/Beyond";
@@ -116,7 +114,7 @@ export default function Page() {
         </div>
         <Footer />
       </main>
-      {/* One ECharts for both sections; week04-place.js skips its own loader when this is present. */}
+      {/* The spaces after the main are in the page's markup; keep them. */}
       {" "}
       {" "}
       {" "}
@@ -136,8 +134,6 @@ export default function Page() {
       {" "}
       <TermLayer />
       <Router />
-      <LegacyBridge />
-      <PageScripts page="week04" />
     </>
   );
 }

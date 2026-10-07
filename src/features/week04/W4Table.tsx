@@ -70,7 +70,7 @@ export function W4Rows({ rows, headers = [], rxBars, id }: { rows: W4Row[]; head
   );
 }
 
-/** A whole table: <W4Table className="ego" head={["α", …]} rows={…} tbodyId="place-alpha-table" />. */
+/** A whole table: <W4Table className="ego" head={["α", …]} rows={…} tbodyId="place-alpha-table" />; pass `server` from a server component. */
 export function W4Table({
   className,
   id,
@@ -79,6 +79,7 @@ export function W4Table({
   tbodyId,
   rxBars,
   caption,
+  server = false,
 }: {
   className?: string;
   id?: string;
@@ -87,6 +88,8 @@ export function W4Table({
   tbodyId?: string;
   rxBars?: string;
   caption?: ReactNode;
+  /** Rendered by a server component: no ref, as server markup cannot carry one. */
+  server?: boolean;
 }) {
   const heads = (head ?? []).map(headOf);
   const body = rows.map(rowOf);
@@ -96,7 +99,7 @@ export function W4Table({
     rxBars,
   });
   return (
-    <table ref={useOwnedRef()} className={className} id={id} data-rx-bars={rxBars}>
+    <table ref={server ? undefined : useOwnedRef()} className={className} id={id} data-rx-bars={rxBars}>
       {caption ? <caption>{caption}</caption> : null}
       {head ? (
         <thead>

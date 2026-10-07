@@ -1,8 +1,11 @@
 import { Drawer } from "@/components/post/Drawer";
 import { Drawers } from "@/components/post/Drawers";
+import { W4Table } from "@/features/week04/W4Table";
 import { TocItem } from "@/features/week04/frame/DeepShell";
 import { StripPart } from "@/features/week04/strips/Strips";
 import { GlossTerm } from "./GlossTerm";
+
+const RIGHT = { textAlign: "right" as const };
 
 // Deep dive topic: paperwork, the lottery and green cards.
 export function TopicPaperwork() {
@@ -227,54 +230,19 @@ export function TopicPaperwork() {
             's
             Tableau export; 2026 runs October to June. Placing firms put half or more of their filings at a client.
           </p>
-          <table className="ego" data-rx-bars="1:0.04:placing,2:0.04:direct">
-            <thead>
-              <tr>
-                <th>Year</th>
-                <th style={{"textAlign":"right"}}>Placing firms</th>
-                <th style={{"textAlign":"right"}}>Direct employers</th>
-                <th style={{"textAlign":"right"}}>Placing firms counted</th>
-                <th style={{"textAlign":"right"}}>Direct employers counted</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>2022</td>
-                <td style={{"textAlign":"right"}}>2.71%</td>
-                <td style={{"textAlign":"right"}}>1.22%</td>
-                <td style={{"textAlign":"right"}}>1,057</td>
-                <td style={{"textAlign":"right"}}>2,288</td>
-              </tr>
-              <tr>
-                <td>2023</td>
-                <td style={{"textAlign":"right"}}>3.57%</td>
-                <td style={{"textAlign":"right"}}>1.48%</td>
-                <td style={{"textAlign":"right"}}>873</td>
-                <td style={{"textAlign":"right"}}>2,080</td>
-              </tr>
-              <tr>
-                <td>2024</td>
-                <td style={{"textAlign":"right"}}>2.65%</td>
-                <td style={{"textAlign":"right"}}>1.28%</td>
-                <td style={{"textAlign":"right"}}>884</td>
-                <td style={{"textAlign":"right"}}>2,403</td>
-              </tr>
-              <tr>
-                <td>2025</td>
-                <td style={{"textAlign":"right"}}>3.20%</td>
-                <td style={{"textAlign":"right"}}>1.56%</td>
-                <td style={{"textAlign":"right"}}>933</td>
-                <td style={{"textAlign":"right"}}>2,466</td>
-              </tr>
-              <tr>
-                <td>2026, Oct–Jun</td>
-                <td style={{"textAlign":"right"}}>3.35%</td>
-                <td style={{"textAlign":"right"}}>1.98%</td>
-                <td style={{"textAlign":"right"}}>601</td>
-                <td style={{"textAlign":"right"}}>1,863</td>
-              </tr>
-            </tbody>
-          </table>
+          <W4Table
+            server
+            className="ego"
+            rxBars="1:0.04:placing,2:0.04:direct"
+            head={["Year", { text: "Placing firms", style: RIGHT }, { text: "Direct employers", style: RIGHT }, { text: "Placing firms counted", style: RIGHT }, { text: "Direct employers counted", style: RIGHT }]}
+            rows={[
+              ["2022", { text: "2.71%", style: RIGHT }, { text: "1.22%", style: RIGHT }, { text: "1,057", style: RIGHT }, { text: "2,288", style: RIGHT }],
+              ["2023", { text: "3.57%", style: RIGHT }, { text: "1.48%", style: RIGHT }, { text: "873", style: RIGHT }, { text: "2,080", style: RIGHT }],
+              ["2024", { text: "2.65%", style: RIGHT }, { text: "1.28%", style: RIGHT }, { text: "884", style: RIGHT }, { text: "2,403", style: RIGHT }],
+              ["2025", { text: "3.20%", style: RIGHT }, { text: "1.56%", style: RIGHT }, { text: "933", style: RIGHT }, { text: "2,466", style: RIGHT }],
+              ["2026, Oct–Jun", { text: "3.35%", style: RIGHT }, { text: "1.98%", style: RIGHT }, { text: "601", style: RIGHT }, { text: "1,863", style: RIGHT }],
+            ]}
+          />
           <div className="notice">
             <span className="ico">💡</span>
             <span>
