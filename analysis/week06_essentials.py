@@ -116,9 +116,15 @@ def cosine(c):
         s = (u @ u.T)[iu]
         dist[name] = {"median": r(np.median(s)), "p90": r(np.percentile(s, 90)), "p99": r(np.percentile(s, 99))}
     # Tripling a page: check the claim numerically rather than assert it.
-    i, j = idx[1], idx[10]
-    tripled = raw[i] * 3
-    same = abs(float(L.unit(tripled[None])[0] @ L.unit(raw[j][None])[0]) - float(L.unit(raw[i][None])[0] @ L.unit(raw[j][None])[0]))
+    # Writing a page out three times: raw counts triple, TF (count over length) and so TF-IDF do not move.
+    idf_vec = np.array([math.log(c.n / c.df[w]) for w in c.vocab])
+
+    def tripled_diff(i, j):
+        r3 = raw[i] * 3
+        t3 = (r3 / r3.sum()) * idf_vec
+        cos = lambda x, y: float(L.unit(x[None])[0] @ L.unit(y[None])[0])  # noqa: E731
+        return max(abs(cos(r3, raw[j]) - cos(raw[i], raw[j])), abs(cos(t3, tf[j]) - cos(tf[i], tf[j])))
+    same = max(tripled_diff(idx[x], idx[y]) for x in range(len(idx)) for y in range(len(idx)) if x != y)
     out = {"pages": PAGES, "pairs": pairs, "norms": norms, "all_pairs": dist, "triple_diff": same}
     write("cosine", out)
     return {"all_pairs": dist, "triple_diff": same, "pairs": len(pairs)}
@@ -217,6 +223,7 @@ def topics(c, names, stop):
         rows_, cols_ = linear_sum_assignment(-overlap)
         matched = overlap[rows_, cols_]
         stability[str(k)] = {"mean_overlap": r(matched.mean(), 2), "kept": int((matched >= 0.5).sum()),
+                             "overlap": [r(overlap[t, cols_[list(rows_).index(t)]], 1) for t in range(k)],
                              "match": [int(cols_[list(rows_).index(t)]) for t in range(k)]}
         print(f"k={k} mean top-10 overlap {matched.mean():.2f}, {int((matched >= 0.5).sum())} of {k} topics kept", flush=True)
     out = {"names": c.names, "vocab_size": len(vocab), "fits": fits, "stability": stability,
@@ -336,6 +343,8 @@ def words_part(c, stop):
     sample = rng.sample(vocab, 200)
     a = models["skipgram"][0]
     rand_cos = float(np.mean([a.similarity(x, y) for x, y in zip(sample[:100], sample[100:])]))
+    # The fair baseline for a top ten: the same mean over the ten nearest of random vocabulary words.
+    rand_top = float(np.mean([sim for x in sample[:100] for _, sim in a.most_similar(x, topn=10)]))
     near_cos = float(np.mean([s for w in targets for _, s in a.most_similar(w, topn=10)]))
 
     # Negative sampling, made visible: three sentences, their positive pairs and sampled negatives.
@@ -354,21 +363,31 @@ def words_part(c, stop):
 
     # 8: GloVe (Wikipedia 2014 + Gigaword 5, 6B tokens, 50 dimensions) against skip-gram on the 303 pages.
     glove = KeyedVectors.load_word2vec_format(str(GLOVE), binary=False)
+    # Both lists rank the same candidates: words seen 20+ times on the pages that GloVe also knows.
+    shared_vocab = [w for w in vocab if w in glove.key_to_index]
+    gmat = np.array([glove[w] for w in shared_vocab])
+    gmat /= np.linalg.norm(gmat, axis=1, keepdims=True)
     compare = {}
     for w in targets:
-        if w in glove.key_to_index:
-            g = [[x, r(s, 3)] for x, s in glove.most_similar(w, topn=10)]
-            ours = near[w]["skipgram"]
-            compare[w] = {"glove": g, "marvel": ours, "shared": sorted({x for x, _ in g} & {x for x, _ in ours})}
-    write("glove", {"targets": list(compare), "compare": compare, "glove": "glove.6B, 50 dimensions, Wikipedia 2014 + Gigaword 5"})
+        if w not in glove.key_to_index:
+            continue
+        q = glove[w] / np.linalg.norm(glove[w])
+        sims = gmat @ q
+        order = [k for k in np.argsort(-sims) if shared_vocab[k] != w][:10]
+        g = [[shared_vocab[k], r(sims[k], 3)] for k in order]
+        ours = [[x, r(s_, 3)] for x, s_ in a.most_similar(w, topn=50) if x in glove.key_to_index][:10]
+        compare[w] = {"glove": g, "marvel": ours, "shared": sorted({x for x, _ in g} & {x for x, _ in ours}),
+                      "glove_open": [[x, r(s_, 3)] for x, s_ in glove.most_similar(w, topn=10)]}
+    write("glove", {"targets": list(compare), "compare": compare, "candidates": len(shared_vocab),
+                    "glove": "glove.6B, 50 dimensions, Wikipedia 2014 + Gigaword 5"})
 
     return {
         "targets": targets, "vocab_20": len(vocab),
         "the": {w: pmi_rows[w]["the"] for w in targets},
         "negative_cells": {w: [pmi_rows[w]["negative_cells"], pmi_rows[w]["cells"]] for w in targets},
         "seed_overlap": {k: r(np.mean(v), 2) for k, v in overlap.items()},
-        "skipgram_near_cos": r(near_cos, 3), "skipgram_random_cos": r(rand_cos, 3),
-        "glove_shared": {w: len(v["shared"]) for w, v in compare.items()},
+        "skipgram_near_cos": r(near_cos, 3), "skipgram_random_cos": r(rand_cos, 3), "skipgram_random_top": r(rand_top, 3),
+        "glove_shared": {w: len(v["shared"]) for w, v in compare.items()}, "glove_candidates": len(shared_vocab),
     }
 
 

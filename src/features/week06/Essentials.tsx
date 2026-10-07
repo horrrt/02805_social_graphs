@@ -167,10 +167,10 @@ function Contrast() {
       xAxis: { type: "value", min: 0, max: 1, name: "frequency rank on men's pages (0 rare, 1 common)", nameLocation: "middle", nameGap: 28 },
       yAxis: { type: "value", min: 0, max: 1, name: "on women's pages", nameLocation: "middle", nameGap: 38 },
       tooltip: { formatter: (p: Any) => `${p.data.name}: ${p.data.f} times on women's pages, ${p.data.m} on men's; z ${p.data.z}` },
-      legend: { bottom: 0, data: ["no clear lean", "leans, within what shuffled labels give", "beyond every shuffle"] },
+      legend: { bottom: 0, data: ["no clear lean", "leans, |z| over 1.96", "beyond every shuffle"] },
       series: [
         series("no clear lean", group((t) => Math.abs(t[5]) <= 1.96), 3, "rgba(120,130,150,0.35)"),
-        series("leans, within what shuffled labels give", group((t) => Math.abs(t[5]) > 1.96 && Math.abs(t[5]) <= cut), 5),
+        series("leans, |z| over 1.96", group((t) => Math.abs(t[5]) > 1.96 && Math.abs(t[5]) <= cut), 5),
         series("beyond every shuffle", group((t) => Math.abs(t[5]) > cut), 10),
         ...(hit.length ? [{ ...series("your word", hit, 14), label: { show: true, formatter: (p: Any) => p.data.name, position: "right" } }] : []),
       ],
@@ -292,7 +292,7 @@ function Pmi() {
       </div>
       <div className="w6e-cols w6e-three">
         <Bars title="By count" rows={rows(r.count, "count")} />
-        <Bars title="By PMI" note="Contexts seen once or twice top the list." rows={rows(r.pmi_any, "pmi")} />
+        <Bars title="By PMI" note={`Rare contexts rise: the top five are seen at most ${Math.max(...r.pmi_any.slice(0, 5).map(([, n]: Any) => n))}×.`} rows={rows(r.pmi_any, "pmi")} />
         <Bars title={`By PPMI, seen ${r.min_count}+ times`} rows={rows(r.ppmi, "pmi")} />
       </div>
     </div>
@@ -328,7 +328,7 @@ function Vectors() {
         <p className="w6e-window">
           {(e.window as string[]).map((w, i) => <span key={i} className={w === e.centre ? "w6e-centre" : "w6e-ctx"}>{w}</span>)}
         </p>
-        <p className="w6e-note">{`From ${short(e.page)}. The model is pushed to score "${e.centre}" high with each word around it and low with 5 words drawn at random, more often the more common they are:`}</p>
+        <p className="w6e-note">{`From ${short(e.page)}. Each real pair, such as (${e.centre}, ${e.positive[0]}), is scored up; for that pair the model also scores down 5 words drawn at random, more often the more common they are:`}</p>
         <p className="w6e-window">{(e.negative as string[]).map((w, i) => <span key={i} className="w6e-neg">{w}</span>)}</p>
       </div>
     </div>

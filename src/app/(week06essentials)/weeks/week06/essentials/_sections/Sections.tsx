@@ -70,7 +70,7 @@ export function Weights() {
       answer={'Not its most frequent ones. On Storm\'s page "the" appears 583 times and weighs nothing; "storm" appears 198 times and tops her TF-IDF list.'}
       did={
         <>
-          A word's TF on a page is its count over the page's length; its DF is how many of the 303 pages use it; its IDF is ln(303 / DF). TF-IDF multiplies the two. He is on 291 pages, so its IDF is 0.04; she is on 191, so ln(303 / 191) = 0.46. That gap is where the Week 6 post's lean toward women's pages starts.
+          A word's TF on a page is its count over the page's length; its DF is how many of the 303 pages use it; its IDF is ln(303 / DF). TF-IDF multiplies the two. He is on 291 pages, so its IDF is 0.04; she is on 191, so ln(303 / 191) = 0.46. The Week 6 post shows what that gap does once names are removed.
         </>
       }
       compared={
@@ -102,12 +102,12 @@ export function Cosine() {
       }
       compared={
         <>
-          All 45,753 pairs of pages. Under raw counts the 99th percentile is 0.876, barely above the median; under TF-IDF it is 0.109, eleven times the median. Copying a page three times triples its raw-count vector and leaves every cosine where it was.
+          All 45,753 pairs of pages. Under raw counts the 99th percentile is 0.876, only 0.122 above the median; under TF-IDF it is 0.109, eleven times the median. Copying a page three times triples its raw-count vector and leaves every cosine where it was.
         </>
       }
       plot="Two pages' cosine, word by word"
       note="24 pages a reader will know, 276 pairs. Each bar is one word's term in the sum."
-      method={<p>Tripling a page triples its raw counts but not its TF-IDF vector, because TF divides by the page's length. The cosine is unchanged under both; the analysis checks this numerically (difference 0).</p>}
+      method={<p>Tripling a page triples its raw counts but not its TF-IDF vector, because TF divides by the page's length. The analysis checks every one of the 552 ordered pairs under both weightings: no cosine moves by more than 10⁻¹⁵.</p>}
     />
   );
 }
@@ -117,11 +117,11 @@ export function Contrast() {
     <Essay
       id="contrast"
       num="3"
-      title="Only four words split women's pages from men's"
+      title="Pronouns split women's pages from men's beyond chance"
       lead="Scattertext places every word by how common it is in two groups of pages; shuffling the groups shows how much of that is chance."
       essentials="Scattertext"
       question="What do women's pages say that men's don't?"
-      answer="Beyond chance, only her and she, against his and he. Everything else that seems to lean, from female and telepathy to symbiote and human, a random split of the same pages produces too."
+      answer="Her and she, against his and he, lean further than the strongest word in any random split of the same pages. Other words lean too, such as him, woman and herself, but no further than a random split's strongest word."
       did={
         <>
           Wikidata labels 52 pages as women and 145 as men, 197,637 and 397,709 words. Scattertext places each of the 3,188 words seen 20 times or more by its frequency rank in each group and scores it with a log-odds ratio with an informative Dirichlet prior, a z-score for how far it leans.
@@ -129,7 +129,7 @@ export function Contrast() {
       }
       compared={
         <>
-          The same 197 pages with the labels shuffled, 20 times. 145 words pass z = 1.96 for real, but shuffles give 99 to 143, because words come in clumps a page at a time. The largest z any shuffle produced is 9.2; only her (22.4), she, his and he go further.
+          The same 197 pages with the labels shuffled, 20 times. 145 words pass z = 1.96 for real, and shuffles give 99 to 143, so a count of leaning words says little on its own. The largest z any shuffle produced is 9.2; only her (22.4), she, his and he go further.
         </>
       }
       plot="Every word's frequency rank on women's and men's pages"
@@ -148,7 +148,7 @@ export function Topics() {
       lead="LDA finds recurring word groups, but which groups it finds depends on the number of topics and where it starts."
       essentials="topic model, LDA"
       question="What themes recur across the pages?"
-      answer="A few, robustly: mutants, symbiotes, and armour and suits come back under both seeds. At eight topics only four keep half their top words when the seed changes, and Wikipedia's media sections (voiced, playable) form topics of their own."
+      answer="At five topics, three themes come back under both seeds: mutants, symbiotes, and armour and suits keep 9, 7 and 8 of their top ten words. At eight topics only four keep half, and Wikipedia's media sections (voiced, playable) form topics of their own."
       did={
         <>
           LDA treats each topic as a distribution over words and each page as a mixture of topics. We fitted it with 5 to 12 topics, twice each with seeds 0 and 1, on 5,824 words: names, stopwords and words under three letters removed, as the brief's recipe does.
@@ -175,7 +175,7 @@ export function Contexts() {
       lead="The distributional hypothesis says a word is the company it keeps; the word-context matrix writes that company down."
       essentials="distributional hypothesis, word-context matrix"
       question="What company does a word keep?"
-      answer="Raw, mostly grammar. For 24 of 26 words we tried, the most common neighbour is the. The telling neighbours sit lower: mjolnir is hammer's fourth neighbour within two words and eighth within five."
+      answer="Raw, mostly grammar. For 24 of 26 words we tried, the most common neighbour is the; the telling neighbours sit lower in the row."
       did={
         <>
           Each row is a target word, each column a context word, each cell how often the context sits within the window, inside one page. We count windows of 2, 5 and 10 words on either side.
@@ -183,7 +183,7 @@ export function Contexts() {
       }
       compared={
         <>
-          Windows of different size. A narrow window keeps the words that modify a word; a wide one keeps the topic of its paragraph, and lets the and he climb. Storm sits next to weather only 4 times within five words, and next to the 249 times.
+          Windows of different size. A narrow window keeps the words right beside a word: mjolnir is hammer's fourth neighbour within two words and eighth within five, while the stays first at every size. Storm sits next to weather only 4 times within five words, and next to the 249 times.
         </>
       }
       plot="One word's row of the word-context matrix"
@@ -210,7 +210,7 @@ export function Pmi() {
       }
       compared={
         <>
-          Raw counts. The is the most common neighbour of 24 of the 26 words, but its PMI ranges from −0.23 to 0.70: near independence. For web, 69 of 607 cells have negative PMI and PPMI zeroes them.
+          Raw counts. The is the most common neighbour of 24 of the 26 words, but its PMI ranges from −0.23 to 0.70, at most twice what independence predicts; web's top PPMI neighbour, shooters, scores 6.08. For web, 69 of 607 cells have negative PMI and PPMI zeroes them.
         </>
       }
       plot="One word's neighbours by count, PMI and PPMI"
@@ -237,7 +237,7 @@ export function Vectors() {
       }
       compared={
         <>
-          Random words, and another seed. A word's ten nearest words have a mean cosine of 0.544 under skip-gram, against 0.145 for random pairs of words. Retrained from another seed, skip-gram keeps 71% of each top ten and CBOW 75%.
+          Random words, and another seed. A word's ten nearest average a cosine of 0.544 under skip-gram, but the ten nearest of random words average 0.517, so the cosine alone proves little. The lists themselves hold: retrained from another seed, skip-gram keeps 71% of each top ten and CBOW 75%.
         </>
       }
       plot="Nearest words under PPMI, skip-gram and CBOW"
@@ -256,20 +256,20 @@ export function Glove() {
       lead="GloVe learns static vectors from six billion words of news and Wikipedia; the same words mean other things there."
       essentials="GloVe"
       question="Does a word mean the same in general English?"
-      answer="Often not. Vision's nearest words in GloVe are sense, concept and image; on the Marvel pages they are wiccan, wanda and witch. For storm, web, hammer, vision, beast and thing the two top tens share no word at all."
+      answer="Often not. Vision's nearest words in GloVe are sense, concept and image; on the Marvel pages they are wiccan, wanda and witch. For storm, web, vision, beast and thing the two top tens share no word, even ranked over the same candidates."
       did={
         <>
-          GloVe fits vectors to a whole corpus's word co-occurrence counts at once, rather than predicting window by window. We used its 50-dimensional vectors trained on Wikipedia 2014 and Gigaword 5 and compared each word's ten nearest with skip-gram's on the 303 pages.
+          GloVe fits vectors to a whole corpus's word co-occurrence counts at once, rather than predicting window by window. We used its 50-dimensional vectors trained on Wikipedia 2014 and Gigaword 5 and compared each word's ten nearest with skip-gram's on the 303 pages, both ranked over the 3,645 words the two models know.
         </>
       }
       compared={
         <>
-          A word whose meaning does not depend on the corpus. School shares 4 of 10 neighbours across the two (student, college, university, students); 13 of the 26 words share none. A static vector holds the sense its corpus uses most.
+          A word whose meaning does not depend on the corpus. School shares 6 of 10 neighbours across the two (college, high, student, students, teacher, university); 11 of the 26 words share none. GloVe also differs in method and size (50 dimensions against 100), so the corpus is not the only change.
         </>
       }
       plot="Nearest words in GloVe and in the Marvel skip-gram"
-      note="Ten nearest words by cosine. Highlighted words are in both lists."
-      method={<p>glove.6B, 50 dimensions (Pennington, Socher and Manning 2014), loaded with gensim; only the neighbour lists ship with this page.</p>}
+      note="Ten nearest words by cosine among the 3,645 words both models know. Highlighted words are in both lists."
+      method={<p>glove.6B, 50 dimensions (Pennington, Socher and Manning 2014), loaded with gensim; only the neighbour lists ship with this page. Unrestricted, GloVe's nearest words for storm are hurricane, storms and winds, none of them in the Marvel vocabulary.</p>}
     />
   );
 }

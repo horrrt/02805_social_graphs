@@ -65,7 +65,7 @@
     "p99": 0.1093
    }
   },
-  "triple_diff": 0.0,
+  "triple_diff": 4.440892098500626e-16,
   "pairs": 276
  },
  "contrast": {
@@ -624,11 +624,12 @@
   },
   "skipgram_near_cos": 0.544,
   "skipgram_random_cos": 0.145,
+  "skipgram_random_top": 0.517,
   "glove_shared": {
    "storm": 0,
    "web": 0,
-   "hammer": 0,
-   "mutant": 1,
+   "hammer": 1,
+   "mutant": 2,
    "symbiote": 1,
    "vampire": 1,
    "shield": 0,
@@ -643,14 +644,15 @@
    "phoenix": 0,
    "hulk": 0,
    "fire": 0,
-   "ice": 0,
+   "ice": 2,
    "blood": 0,
-   "school": 4,
+   "school": 6,
    "team": 1,
    "villain": 1,
-   "hero": 1,
-   "she": 2,
+   "hero": 2,
+   "she": 3,
    "he": 2
-  }
+  },
+  "glove_candidates": 3645
  }
 }

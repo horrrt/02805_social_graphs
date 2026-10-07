@@ -18,13 +18,13 @@ const SECTIONS = [
 const TITLE = Object.fromEntries(SECTIONS.map(([id, num, label]) => [id, `${num} · ${label}`]));
 
 const TAKEAWAYS = [
-  ["weights", "IDF does a stopword list's job from the data, and finds Marvel's own: character, comics and marvel are on every page and weigh 0."],
+  ["weights", "IDF zeroes the words on every page, Marvel's own included (character, comics and marvel weigh 0), but few stopwords: 151 of NLTK's 198 keep weight."],
   ["cosine", "Similarity means nothing until words are weighted: the median pair of pages scores 0.754 on raw counts and 0.0096 on TF-IDF."],
-  ["contrast", "Between women's and men's pages, only her, she, his and he lean further than any shuffle of the labels gives."],
-  ["topics", "At eight topics, half of LDA's topics keep their top words when the seed changes; a topic's label is a reading, not a finding."],
-  ["pmi", "Counting finds grammar, association finds meaning: the is almost every word's top neighbour and has a PMI near 0."],
-  ["vectors", "303 pages are enough to learn Marvel's meanings: a word's ten nearest words under skip-gram have a mean cosine of 0.544, against 0.145 for random pairs."],
-  ["glove", "A static vector holds its corpus's sense: vision is Wanda's husband on these pages and a concept in GloVe, and 13 of 26 words share no neighbour."],
+  ["contrast", "Between women's and men's pages, only her, she, his and he lean further than the strongest word in any shuffle of the labels."],
+  ["topics", "At eight topics, only four of eight keep at least half their top ten words when the seed changes; a topic's label is a reading, not a finding."],
+  ["pmi", "Counting finds grammar, association finds meaning: the is almost every word's top neighbour, with a PMI of at most 0.70."],
+  ["vectors", "303 pages give stable Marvel neighbours: retrained from another seed, skip-gram keeps 71% of each top ten, and symbiote's are venom, brock, toxin and eddie."],
+  ["glove", "A static vector holds its corpus's sense: vision is Wanda's husband on these pages and a concept in GloVe, and 11 of 26 words share no neighbour even among words both models know."],
 ] as const;
 
 export default function Page() {
@@ -96,8 +96,8 @@ export default function Page() {
               <p className="sub">
                 Methods: analysis/week06_essentials.py writes every number on this page; tests/week06-essentials.test.mjs
                 checks the page against it. Word2Vec and GloVe are this week&apos;s course methods. An AI coding assistant
-                (Claude) wrote the analysis and the page and drafted the text; every claim was checked against the data
-                files before it went in.
+                (Claude) wrote the analysis and the page and drafted the text; a review read each claim against the data
+                files, and tests/week06-essentials.test.mjs checks every quoted number against them.
               </p>
             </div>
           </PostSection>
