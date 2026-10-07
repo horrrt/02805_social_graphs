@@ -21,6 +21,8 @@ Each deck holds three kinds of card, chosen per page:
 A page enters the game only when its three sharp cards alone rank it first, all eight cards do too,
 and its loud cards alone do not, in both decks. The script prints how often that holds and stops if fewer than 60 pages pass.
 
+Each page carries its lead image from analysis/week06_cold_read_images.json, when it has one.
+
 Writes public/play/cold-read/data/clue_shop.json.
 
     python analysis/week06_cold_read.py   # about 2 seconds
@@ -43,6 +45,8 @@ OUT = ROOT / "public/play/cold-read/data/clue_shop.json"
 MIN_TOKENS = 1200  # shorter pages have too few distinct words to deal a full deck
 LOUD_DF, MID_DF, SHARP_DF = 0.5, (30, 150), 12
 MIN_PAGES = 60
+# Lead images from week06_cold_read_images.py, hotlinked; the query string is Wikipedia's tracking.
+IMAGES = json.loads(Path(__file__).with_name("week06_cold_read_images.json").read_text())
 
 
 def main():
@@ -108,13 +112,17 @@ def main():
         # A word on every page has idf 0 and no postings; every other word keeps one per page.
         words[w] = {"df": df[w], "name": int(w in is_name), "post": post if df[w] < n else []}
 
+    def portrait(i):
+        img = IMAGES.get(i)
+        return {"img": img["thumb"].split("?")[0], "file": img["file"]} if img else {}
+
     def cards(d, p):
         return [{"w": w, "kind": kind, "n": counts[p][w]} for kind, ws in d.items() for w in ws]
 
     out = {
         "source": "Marvel Wikipedia pages (course marvel_pages.zip), 303 pages; TF-IDF = count/length x ln(N/df)",
         "N": n,
-        "pages": [{"name": names[i], "tokens": len(toks[p])} for p, i in enumerate(ids)],
+        "pages": [{"name": names[i], "tokens": len(toks[p]), **portrait(i)} for p, i in enumerate(ids)],
         "rounds": [{"page": r["page"], "on": cards(r["on"], r["page"]), "off": cards(r["off"], r["page"])} for r in rounds],
         "words": words,
     }

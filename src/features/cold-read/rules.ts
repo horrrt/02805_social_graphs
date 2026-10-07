@@ -9,13 +9,28 @@ export type Word = { df: number; name: 0 | 1; post: [number, number][] };
 export type Round = { page: number; on: Card[]; off: Card[] };
 export type ClueShopData = {
   N: number;
-  pages: { name: string; tokens: number }[];
+  pages: { name: string; tokens: number; img?: string; file?: string }[];
   rounds: Round[];
   words: Record<string, Word>;
 };
 
 export const LIVES = 3;
 export const SHORTLIST = 5;
+/** Faces show on the board once this many suspects or fewer remain. */
+export const FACES = 24;
+export const MAX_STREAK = 5;
+
+/**
+ * A card's rarity, read from the one number on its back that IDF uses: how
+ * many of the 303 pages carry the word. Rarer cards narrow the field more.
+ */
+export type Rarity = "common" | "uncommon" | "rare" | "legendary";
+export function rarity(df: number): Rarity {
+  if (df <= 4) return "legendary";
+  if (df <= 29) return "rare";
+  if (df <= 149) return "uncommon";
+  return "common";
+}
 
 /** ln(N / df), the brief's IDF. */
 export const idf = (data: ClueShopData, w: string) => Math.log(data.N / data.words[w].df);
@@ -43,12 +58,16 @@ export function cosines(data: ClueShopData, flipped: string[]): Float64Array {
   return score;
 }
 
-/** How many pages use every flipped word: 303 before any flip. */
-export function pagesWithAll(data: ClueShopData, flipped: string[]) {
-  // A word on every page rules nothing out, so only the others narrow the set.
+/** The pages that use every flipped word, and how many: 303 before any flip. */
+export function suspects(data: ClueShopData, flipped: string[]): Set<number> | null {
+  // A word on every page rules nothing out, so only the others narrow the set; null means every page.
   const sets = flipped.filter((w) => data.words[w].df < data.N).map((w) => new Set(data.words[w].post.map(([p]) => p)));
-  if (sets.length === 0) return data.N;
-  return [...sets[0]].filter((p) => sets.every((s) => s.has(p))).length;
+  if (sets.length === 0) return null;
+  return new Set([...sets[0]].filter((p) => sets.every((s) => s.has(p))));
+}
+
+export function pagesWithAll(data: ClueShopData, flipped: string[]) {
+  return suspects(data, flipped)?.size ?? data.N;
 }
 
 /** The top pages by cosine, best first, leaving out struck pages and pages scoring 0. */
@@ -61,9 +80,13 @@ export function shortlist(data: ClueShopData, flipped: string[], struck: number[
   return out.sort((a, b) => b.cos - a.cos || a.page - b.page).slice(0, size);
 }
 
-/** Points for naming the page: 100, plus 100 per card left face down, doubled with names hidden. */
-export function points(cardsLeft: number, namesHidden: boolean) {
-  return (100 + 100 * cardsLeft) * (namesHidden ? 2 : 1);
+/**
+ * Points for naming the page: 100, plus 100 per card left face down, doubled
+ * with names hidden, times the streak (pages named in a row without a miss,
+ * this one included, up to MAX_STREAK).
+ */
+export function points(cardsLeft: number, namesHidden: boolean, streak = 1) {
+  return (100 + 100 * cardsLeft) * (namesHidden ? 2 : 1) * Math.min(Math.max(streak, 1), MAX_STREAK);
 }
 
 /** A fresh order of the playable rounds; a run repeats a page only after all of them. */

@@ -21,7 +21,9 @@ export default function Page() {
           Page text from English Wikipedia, <a href="https://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA 4.0</a>, through the 02805 course
           snapshot of 26 August 2026. TF-IDF and cosine similarity follow the{" "}
           <a href="https://sunelehmann.com/socialgraphs2026-web/weeks/week6.html">Week 6 brief</a>: count divided by page length, times ln(303 / pages
-          with the word). Names follow the brief's rule: a word capitalised in more than half its uses.
+          with the word). Names follow the brief's rule: a word capitalised in more than half its uses. Portraits are each page's
+          lead image, loaded from Wikipedia. Most are copyrighted comic art that Wikipedia uses under fair use; each reveal links to the
+          image's file page with its source and rights.
         </p>
         <p>
           Cold Read · <a href="../../">Log–Log Legends</a> · DTU 02805

@@ -10,7 +10,7 @@ export const metadata: Metadata = {
   robots: "noindex",
 };
 
-export const viewport: Viewport = { themeColor: "#101211" };
+export const viewport: Viewport = { themeColor: "#0b1f3a" };
 
 export default function Layout({ children }: { children: ReactNode }) {
   return (

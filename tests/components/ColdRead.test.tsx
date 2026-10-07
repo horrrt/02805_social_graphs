@@ -6,7 +6,7 @@ import "./dom";
 import test from "node:test";
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
-import { type ClueShopData, pagesWithAll, points, shortlist } from "@/features/cold-read/rules";
+import { type ClueShopData, pagesWithAll, points, rarity, shortlist } from "@/features/cold-read/rules";
 
 const data: ClueShopData = JSON.parse(readFileSync(new URL("../../public/play/cold-read/data/clue_shop.json", import.meta.url), "utf8"));
 const words = (cards: { w: string; kind: string }[], kind: string) => cards.filter((c) => c.kind === kind).map((c) => c.w);
@@ -42,4 +42,10 @@ test("unflipped cards and hidden names raise the points", () => {
   assert.equal(points(6, false), 700);
   assert.equal(points(6, true), 1400);
   assert.equal(points(0, false), 100);
+  assert.equal(points(6, true, 3), 4200);
+  assert.equal(points(6, false, 9), 3500, "the streak caps at ×5");
+});
+
+test("rarity rises as fewer pages carry the word", () => {
+  assert.deepEqual([303, 150, 149, 30, 29, 5, 4, 1].map(rarity), ["common", "common", "uncommon", "uncommon", "rare", "rare", "legendary", "legendary"]);
 });
