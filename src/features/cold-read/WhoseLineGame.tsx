@@ -4,7 +4,7 @@
 // distinctive. The word then lands on a Scattertext-style plot. Rules live in
 // groups.ts; this file renders them.
 import { type ReactNode, useEffect, useMemo, useRef, useState } from "react";
-import { ScoreBox, SkipLevel } from "./LevelParts";
+import { Lives, ScoreBox, SkipLevel } from "./LevelParts";
 import { LIMIT, speed, Ticker, timed, useCountdown } from "./pace";
 import { whoseLineTour } from "./tours";
 import { StartButtons, useTour } from "./Tutorial";
@@ -414,14 +414,7 @@ function Hud({ score, streak, lives, right, best, playing, level, ticker }: {
         <small>Streak</small>
         <b data-hot={shown > 1}>×{shown}</b>
       </span>
-      <span className="cr-box">
-        <small>Lives</small>
-        <span className="cr-lives" aria-label={`${lives} of ${LIVES}`}>
-          {Array.from({ length: LIVES }, (_, i) => (
-            <span key={i} data-on={i < lives} />
-          ))}
-        </span>
-      </span>
+      <Lives lives={lives} max={LIVES} />
       <span className="cr-box">
         <small>Right</small>
         <b>{right}</b>

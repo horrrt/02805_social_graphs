@@ -38,6 +38,10 @@ test("struck pages leave the shortlist", () => {
   assert.ok(!shortlist(data, sharp, [r.page]).some((s) => s.page === r.page));
 });
 
+test("no deck deals a word twice", () => {
+  for (const r of data.rounds) for (const deck of [r.normal, r.hard]) assert.equal(new Set(deck.map((c) => c.w)).size, deck.length, data.pages[r.page].name);
+});
+
 test("no name cards, and no single card that leaves one suspect", () => {
   for (const r of data.rounds) {
     for (const c of r.normal.concat(r.hard)) assert.equal(data.words[c.w].name, 0, c.w);

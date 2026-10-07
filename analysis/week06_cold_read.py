@@ -90,7 +90,7 @@ def main():
         by_tfidf = sorted(pool, key=lambda w: -tfidf(w, p))
         common = sorted((w for w in pool if df[w] >= LOUD_DF * n), key=lambda w: -c[w])
         loud = common[:3]
-        mid = [w for w in by_tfidf if MID_DF[0] <= df[w] <= MID_DF[1] and c[w] >= 2][:2]
+        mid = [w for w in by_tfidf if MID_DF[0] <= df[w] <= MID_DF[1] and c[w] >= 2 and w not in loud][:2]  # the bands overlap above 101 pages
         sharp = [w for w in by_tfidf if SHARP_MIN[mode] <= df[w] <= SHARP_DF and c[w] >= 2][:3]
         if len(loud) < 3 or len(mid) < 2 or len(sharp) < 3:
             return None

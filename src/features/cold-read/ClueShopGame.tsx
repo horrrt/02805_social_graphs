@@ -3,7 +3,7 @@
 // pages, watches the suspect board empty, and names the page from the leads
 // ranked by cosine similarity. Rules live in rules.ts; this file renders them.
 import { useEffect, useMemo, useState } from "react";
-import { ScoreBox, SkipLevel } from "./LevelParts";
+import { Lives, ScoreBox, SkipLevel } from "./LevelParts";
 import { boldness, LIMIT, speed, Ticker, timed, useCountdown } from "./pace";
 import { clueShopTour } from "./tours";
 import { StartButtons, useTour } from "./Tutorial";
@@ -341,14 +341,7 @@ export function ClueShopGame({ data, random = Math.random, level, hard = false, 
           <small>Streak</small>
           <b data-hot={streak > 1}>×{shownStreak}</b>
         </span>
-        <span className="cr-box">
-          <small>Lives</small>
-          <span className="cr-lives" aria-label={`${lives} of ${LIVES}`}>
-            {Array.from({ length: LIVES }, (_, i) => (
-              <span key={i} data-on={i < lives} />
-            ))}
-          </span>
-        </span>
+        <Lives lives={lives} max={LIVES} />
         <span className="cr-box">
           <small>Named</small>
           <b>{solved}</b>

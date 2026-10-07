@@ -5,7 +5,7 @@
 // file renders them.
 import { Fragment, useEffect, useRef, useState } from "react";
 import { COST, type HiddenWord, LIVES, MAX_STREAK, options, pieces, points, type Row, spent, type TezguinoData, type Weight } from "./contexts";
-import { ScoreBox, SkipLevel } from "./LevelParts";
+import { Lives, ScoreBox, SkipLevel } from "./LevelParts";
 import { LIMIT, speed, Ticker, timed, useCountdown } from "./pace";
 import { tezguinoTour } from "./tours";
 import { StartButtons, useTour } from "./Tutorial";
@@ -203,14 +203,7 @@ export function TezguinoGame({ data, random = Math.random, level, clock = Date.n
           <small>Streak</small>
           <b data-hot={(phase === "play" ? nextStreak : streak) > 1}>×{Math.max(1, Math.min(phase === "play" ? nextStreak : streak, MAX_STREAK))}</b>
         </span>
-        <span className="cr-box">
-          <small>Lives</small>
-          <span className="cr-lives" aria-label={`${lives} of ${LIVES}`}>
-            {Array.from({ length: LIVES }, (_, i) => (
-              <span key={i} data-on={i < lives} />
-            ))}
-          </span>
-        </span>
+        <Lives lives={lives} max={LIVES} />
         <span className="cr-box">
           <small>Named</small>
           <b>{solved}</b>

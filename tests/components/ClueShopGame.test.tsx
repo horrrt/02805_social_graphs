@@ -96,3 +96,15 @@ test("keys 1 to 8 flip the matching card", async () => {
   await user.keyboard("3");
   assert.equal(screen.getByRole("button", { name: new RegExp(`^${deck[2].w}:`) }).getAttribute("data-open"), "true");
 });
+
+test("a lost heart breaks and the screen's edges flash red; a fresh deal shows no flash", async () => {
+  const user = await dealt();
+  assert.equal(document.querySelector(".cr-hit"), null, "no flash before a hit");
+  for (let i = 0; i < deck.length; i++) await user.click(card(i));
+  const wrong = leads().find((li) => !li.textContent!.includes(answer))!;
+  await user.click(within(wrong).getByRole("button", { name: "Name it" }));
+  assert.ok(document.querySelector(".cr-hit"), "the red flash plays");
+  const lost = document.querySelector('.cr-lives [data-lost="true"]')!;
+  assert.equal(lost.getAttribute("data-on"), "false", "the broken heart is the one just lost");
+  assert.equal([...document.querySelectorAll(".cr-lives span")].indexOf(lost), 2, "the rightmost full heart breaks");
+});

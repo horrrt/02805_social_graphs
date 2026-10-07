@@ -1,5 +1,6 @@
-// The parts a round's scoreboard adds when it is played as a campaign level:
-// the score, which counts the campaign so far plus this level, and the skip.
+// Scoreboard parts shared by the rounds: the score (which counts the campaign
+// so far when a round is a level), the skip, and the hearts.
+import { useEffect, useRef, useState } from "react";
 import { type Level, SKIP_COST } from "./levels";
 
 /** The scoreboard's score: the level's points, plus the campaign's total when it is a level. */
@@ -20,5 +21,30 @@ export function SkipLevel({ points, level }: { points: number; level?: Level }) 
     <button type="button" className="cr-skip" onClick={() => level.onSkip(points)}>
       Skip level <small>−{SKIP_COST}</small>
     </button>
+  );
+}
+
+/**
+ * The hearts. When one is lost it breaks (swells, shakes, cracks, greys) and
+ * the screen's edges flash red, as a hit does in a video game. A new run,
+ * with the hearts refilled, plays nothing.
+ */
+export function Lives({ lives, max }: { lives: number; max: number }) {
+  const before = useRef(lives);
+  const [hit, setHit] = useState<{ n: number; heart: number } | null>(null);
+  useEffect(() => {
+    if (lives < before.current) setHit((h) => ({ n: (h?.n ?? 0) + 1, heart: lives }));
+    before.current = lives;
+  }, [lives]);
+  return (
+    <span className="cr-box">
+      <small>Lives</small>
+      <span className="cr-lives" aria-label={`${lives} of ${max}`}>
+        {Array.from({ length: max }, (_, i) => (
+          <span key={hit && i === hit.heart ? `lost-${hit.n}` : i} data-on={i < lives} data-lost={hit !== null && i === hit.heart} />
+        ))}
+      </span>
+      {hit ? <span key={hit.n} className="cr-hit" aria-hidden="true" /> : null}
+    </span>
   );
 }
