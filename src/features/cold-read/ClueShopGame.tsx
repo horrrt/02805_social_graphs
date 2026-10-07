@@ -46,8 +46,8 @@ export function Intro() {
   return (
     <Rules
       rules={[
-        ["Name", "the hidden Marvel page."],
-        ["Flip", "as few word cards as you dare; fewer flips score more."],
+        ["Flip", "a word card."],
+        ["Name", "the hero whose page says it. The fewer cards you flip, the more you score."],
         ["Hurry:", "faster answers pay more, and a wrong name costs a life."],
       ]}
     />
