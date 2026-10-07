@@ -4,7 +4,8 @@
 // title and counts over each. Components of one node fold into a single tile
 // that counts them; past `max` tiles a line counts what is left out. Groups
 // are drawn as given, an empty one as an empty tile. The split is
-// splitComponents() in growth-core.js. Style: .kit-gallery in post.css.
+// splitComponents() in growth-core.js. Components share one colour; given
+// groups, each a category, take one colour each. Style: .kit-gallery in post.css.
 import { useMemo } from "react";
 import NetworkView from "./NetworkView";
 import type { NetworkSpec } from "./network/layout";
@@ -17,18 +18,18 @@ type Tile = { key: string; title: string; part: Part } | { key: string; title: s
 const int = (v: number) => v.toLocaleString("en-GB");
 const counts = (p: Part) => `${int(p.nodes.length)} ${p.nodes.length === 1 ? "node" : "nodes"} · ${int(p.edges.length)} ${p.edges.length === 1 ? "link" : "links"}`;
 
-function TileView({ part, index, labels, title }: { part: Part; index: number; labels?: string[]; title: string }) {
+function TileView({ part, index, labels, title, colour }: { part: Part; index: number; labels?: string[]; title: string; colour: number }) {
   const spec = useMemo<NetworkSpec>(() => {
     const size = part.nodes.length;
     const pos = (size > 1 ? forceLayout(size, part.edges, { rng: mulberry32(index + 1), iterations: size > 150 ? 60 : 120 }) : [[0.5, 0.5]]) as [number, number][];
     return {
       ratio: 1,
       width: 240,
-      nodes: part.nodes.map((v, i) => ({ id: v, x: 0.08 + pos[i][0] * 0.84, y: 0.08 + pos[i][1] * 0.84, group: index % 8, title: labels?.[v] })),
+      nodes: part.nodes.map((v, i) => ({ id: v, x: 0.08 + pos[i][0] * 0.84, y: 0.08 + pos[i][1] * 0.84, group: colour, title: labels?.[v] })),
       links: part.edges.map(([a, b]) => ({ source: part.nodes[a], target: part.nodes[b] })),
       aria: `${title}: ${counts(part)}`,
     };
-  }, [part, index, labels, title]);
+  }, [part, index, labels, title, colour]);
   return <NetworkView spec={spec} />;
 }
 
@@ -80,7 +81,7 @@ export default function ComponentGallery({
             {"part" in t ? (
               <>
                 <p className="kit-gallery-count">{counts(t.part)}</p>
-                {t.part.nodes.length ? <TileView part={t.part} index={i} labels={labels} title={t.title} /> : <p className="kit-empty">No nodes in this group.</p>}
+                {t.part.nodes.length ? <TileView part={t.part} index={i} labels={labels} title={t.title} colour={groups ? i % 8 : 0} /> : <p className="kit-empty">No nodes in this group.</p>}
               </>
             ) : (
               <>

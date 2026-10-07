@@ -188,6 +188,8 @@ export default function GrowthLab({
       out.push({ type: "line", name: refShare.label, data: [[0, refShare.share], [SWEEP_ALPHAS[SWEEP_ALPHAS.length - 1], refShare.share]], showSymbol: false, lineStyle: { color: tokens["--people"], type: "dashed", width: 2 }, itemStyle: { color: tokens["--people"] } });
     if (hub.share > 0) out.push({ type: "scatter", name: "this run", data: [[Math.min(alpha, 2.5), hub.share]], symbolSize: 10, itemStyle: { color: tokens["--loss"] } });
     return {
+      // A live readout: no tweening between grow ticks (and none under reduced motion).
+      animation: false,
       grid: { left: 56, right: 18, top: 26, bottom: 46 },
       tooltip: { trigger: "item", formatter: (p: { seriesName: string; value: [number, number] }) => `${p.seriesName}<br/>α ${p.value[0]}: ${pct(p.value[1])}` },
       xAxis: { type: "value", min: 0, max: 2.5, name: "α", nameLocation: "middle", nameGap: 28 },
@@ -290,7 +292,7 @@ export default function GrowthLab({
             color="sequential"
             height={height}
             aria={`A network grown with attachment exponent α = ${alpha.toFixed(2)}: ${g.n} of ${n} nodes, the first at the centre of the spiral`}
-            describe={`${int(g.n)} of ${int(n)} nodes, ${int(g.edges.length)} links. Centre: first to arrive. Blue: the biggest hub and its links; orange: the newest.`}
+            describe={`${int(g.n)} of ${int(n)} nodes, ${int(g.edges.length)} links. Centre: first to arrive. Highlighted: the biggest hub and its links; orange: the newest.`}
             tooltip={(node) => [`Node ${Number(node.id) + 1}`, `${g.degree[Number(node.id)]} links`]}
           />
         </div>

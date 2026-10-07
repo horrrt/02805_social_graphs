@@ -585,8 +585,9 @@ below that shows the clique).
 
 Small-multiple `NetworkView`s, one per connected component, largest first, each laid out on its own (`forceLayout`)
 and packed into a grid of as many columns of at least `minWidth` (180) px as fit, with a title and node and link
-counts. Components of one node fold into one tile that counts them. `groups` (`[{ title, nodes }]`) draws each
-group's induced subgraph instead, an empty group as an empty tile. Past `max` (12) tiles a line counts what is left
+counts, all in one colour. Components of one node fold into one tile that counts them. `groups`
+(`[{ title, nodes }]`) draws each group's induced subgraph instead, one colour per group, an empty group as an
+empty tile. Past `max` (12) tiles a line counts what is left
 out. `labels` names nodes on hover; `noun` ("Component") titles the tiles.
 
 ```tsx
