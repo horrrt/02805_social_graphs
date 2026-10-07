@@ -64,7 +64,8 @@ function Plot({ points, step, scale, tokens }: { points: AnalogyPoints; step: 0 
           <line x1={sx(r.x)} y1={sy(r.y)} x2={sx(d.x)} y2={sy(d.y)} stroke={t["--ink-mute"]} strokeWidth={1.2} strokeDasharray="2 3" />
           <circle cx={sx(r.x)} cy={sy(r.y)} r={8} fill="none" stroke={t["--people"]} strokeWidth={2} />
           <circle cx={sx(d.x)} cy={sy(d.y)} r={10} fill="none" stroke={t["--people"]} strokeWidth={1.5} />
-          <text x={inside(sx(r.x) - 12, r.label, "caption")} y={sy(r.y) + 24} fontSize={scale.fs("caption")} fill={t["--ink-mute-text"]}>
+          {/* Above and to the left of the result point, clear of the nearest word's label on its right. */}
+          <text x={inside(sx(r.x) - 10 - (measure ? measure(r.label, "caption", 400) : 0), r.label, "caption")} y={Math.max(12, sy(r.y) - 14)} fontSize={scale.fs("caption")} fill={t["--ink-mute-text"]}>
             {r.label}
           </text>
         </g>

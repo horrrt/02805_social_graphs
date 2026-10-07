@@ -121,7 +121,7 @@ function SweepView() {
             <input id={id} type="range" min={0} max={100} step={5} value={at} onChange={(e) => setAt(e.target.value)} />
             <output htmlFor={id}>{at}%</output>
           </div>
-          <SweepCurve points={sweepPoints} current={Number(at)} ref={{ y: 0.31, label: "ten random pages" }} xLabel="names kept (%)" yLabel="linked of ten" domain={{ x: [0, 100], y: [0, 4.5] }} fmt={(v) => String(Math.round(v * 10) / 10)} />
+          <SweepCurve points={sweepPoints} current={Number(at)} refLine={{ y: 0.31, label: "ten random pages" }} xLabel="names kept (%)" yLabel="linked of ten" domain={{ x: [0, 100], y: [0, 4.5] }} fmt={(v) => String(Math.round(v * 10) / 10)} />
         </>
       ) : null}
     </div>

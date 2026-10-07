@@ -11,7 +11,7 @@ import { useSvgBase, type Tokens } from "./svgBits";
 export type SweepProps = {
   points: [number, number][];
   current?: number;
-  ref?: { y: number; label: string };
+  refLine?: { y: number; label: string };
   xLabel: string;
   yLabel: string;
   domain?: { x?: [number, number]; y?: [number, number] };
@@ -51,7 +51,7 @@ function ticks([lo, hi]: [number, number]): number[] {
   return out;
 }
 
-function Plot({ points, current, ref: refLine, xLabel, yLabel, domain, fmt, scale, tokens }: SweepProps & { points: [number, number][]; fmt: (v: number) => string; scale: TypeScale; tokens: Tokens }) {
+function Plot({ points, current, refLine, xLabel, yLabel, domain, fmt, scale, tokens }: SweepProps & { points: [number, number][]; fmt: (v: number) => string; scale: TypeScale; tokens: Tokens }) {
   const svg = useRef<SVGSVGElement>(null);
   const width = useFittedWidth(svg, 360);
   const t = tokens;
@@ -105,7 +105,7 @@ function Plot({ points, current, ref: refLine, xLabel, yLabel, domain, fmt, scal
   );
 }
 
-/** <SweepCurve points={[[0, 2], [50, 3.6], [100, 4]]} current={100} ref={{ y: 0.3, label: "random" }} xLabel="names kept (%)" yLabel="neighbours linked" /> */
+/** <SweepCurve points={[[0, 2], [50, 3.6], [100, 4]]} current={100} refLine={{ y: 0.3, label: "random" }} xLabel="names kept (%)" yLabel="neighbours linked" /> */
 export default function SweepCurve(props: SweepProps) {
   const base = useSvgBase();
   const points = [...props.points].sort((p, q) => p[0] - q[0]);

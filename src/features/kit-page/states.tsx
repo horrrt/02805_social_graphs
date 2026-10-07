@@ -51,7 +51,7 @@ const VIEWS = {
   "vector-opposite": () => <VectorAngle a={[3, -1]} b={[-6, 2]} labels={{ a: "A", b: "B" }} scaleB={3} onScaleB={() => undefined} />,
   "split-long": () => <SplitBars rows={splitLong} parts={splitParts} max={1} onPick={() => undefined} />,
   "split-empty": () => <SplitBars rows={[]} parts={splitParts} />,
-  "sweep-one": () => <SweepCurve points={sweepOne} current={500} ref={{ y: 99, label: "a reference far above the curve" }} xLabel="x" yLabel="y" />,
+  "sweep-one": () => <SweepCurve points={sweepOne} current={500} refLine={{ y: 99, label: "a reference far above the curve" }} xLabel="x" yLabel="y" />,
   "sweep-empty": () => <SweepCurve points={[]} xLabel="x" yLabel="y" />,
   "tokens-edge": () => <TokenWindow tokens={tokensLong} centre={9} window={0} mode="cbow" />,
   "tokens-empty": () => <TokenWindow tokens={[]} centre={0} window={2} />,

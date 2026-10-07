@@ -215,14 +215,14 @@ colour), the value at the right and an optional status pill, with a legend under
 <SplitBars rows={[{ key: "torch", label: "Human Torch", parts: [0.25, 0.02, 0.05], value: 0.32, valueLabel: "0.32", status: { text: "not linked", tone: "bad" } }]} parts={[{ name: "names", color: "--people" }, { name: "habit words", color: "--w4-group-0" }, { name: "everything else", color: "--access" }]} />
 ```
 
-### SweepCurve({ points, current, ref, xLabel, yLabel, domain, fmt })
+### SweepCurve({ points, current, refLine, xLabel, yLabel, domain, fmt })
 
-A small line chart of `points` (`[x, y]`), a dashed reference line `ref: { y, label }` and a marker on the
+A small line chart of `points` (`[x, y]`), a dashed reference line `refLine: { y, label }` and a marker on the
 curve at `current`. `domain` is `{ x: [lo, hi], y: [lo, hi] }`, each worked out from the data when left out;
 `fmt` writes the ticks.
 
 ```tsx
-<SweepCurve points={[[0, 2], [50, 3.6], [100, 4]]} current={100} ref={{ y: 0.3, label: "ten random pages" }} xLabel="names kept (%)" yLabel="linked neighbours" />
+<SweepCurve points={[[0, 2], [50, 3.6], [100, 4]]} current={100} refLine={{ y: 0.3, label: "ten random pages" }} xLabel="names kept (%)" yLabel="linked neighbours" />
 ```
 
 ### TokenWindow({ tokens, centre, window, onCentre, negatives, mode })
