@@ -9,6 +9,7 @@
 // only when asked for.
 import { useEffect, useRef, useState } from "react";
 import { useVendor } from "@/lib/useVendor";
+import { StartRow } from "./StartPanel";
 
 export type TourStep = {
   /** A selector, or a function that finds the element once earlier steps have acted. */
@@ -118,14 +119,17 @@ export function StartButtons({ label, start, tour, round }: { label: string; sta
     }
   };
   return (
-    <div className="cr-start-actions">
+    <StartRow
+      option={
+        <label className="cr-toggle cr-toggle-light">
+          <input type="checkbox" checked={example} onChange={(e) => choose(e.target.checked)} />
+          <span>Tutorial</span>
+        </label>
+      }
+    >
       <button type="button" className="cr-go" onClick={example ? tour.run : start} disabled={tour.running}>
         {tour.loading ? "Loading the example…" : label}
       </button>
-      <label className="cr-toggle cr-toggle-light">
-        <input type="checkbox" checked={example} onChange={(e) => choose(e.target.checked)} />
-        <span>Tutorial</span>
-      </label>
-    </div>
+    </StartRow>
   );
 }

@@ -12,6 +12,7 @@ import { FINISH, type Level } from "./levels";
 import { displayNames, shuffled } from "./rules";
 import { type Answer, CARDS, deal, gain, INSPECT_COST, judge, LIVES, MAX_STREAK, ratio, type Term, type Verdict, type WhoseLineData } from "./groups";
 import { readBest, saveBest } from "./best";
+import { Rules } from "./StartPanel";
 
 const BEST = "cold-read:best2";
 const SIZE = 400;
@@ -23,19 +24,13 @@ type Played = { term: Term; kind: Answer; said: Answer | "time"; verdict: Verdic
 
 export function Intro() {
   return (
-    <ol className="cr-steps">
-      <li>
-        <b>Read</b> the word. Two communities of the Marvel network face off, found from the links alone in Week 5.
-      </li>
-      <li>
-        <b>Call</b> it: used more by the left group, the right group, the same in both, or skip it when one page alone inflates it, a fluke. Keys 1 to 4
-        call it.
-      </li>
-      <li>
-        <b>Beat</b> the {LIMIT.groups}-second clock: a quick call pays up to ×1.5. Inspecting the pages costs {INSPECT_COST}. A wrong call, or the
-        clock, costs one of {LIVES} lives; calling a fluke’s corner instead of skipping is half right.
-      </li>
-    </ol>
+    <Rules
+      rules={[
+        ["Read", "a word from two Marvel communities’ pages."],
+        ["Call", "which side uses it more, or skip a one-page fluke."],
+        ["Hurry:", "faster calls pay more, and a wrong call costs a life."],
+      ]}
+    />
   );
 }
 

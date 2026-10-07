@@ -29,7 +29,7 @@ beforeEach(() => {
 async function walk(game: ReactElement, tour: () => TourStep[]) {
   render(game);
   // The tour deals a fresh game before its first step.
-  await act(async () => (document.querySelector(".cr-start-actions .cr-go") as HTMLButtonElement).click());
+  await act(async () => (document.querySelector(".cr-start-row .cr-go") as HTMLButtonElement).click());
   for (const [i, step] of tour().entries()) {
     if (step.act) await act(async () => step.act!());
     const el = typeof step.element === "function" ? step.element() : step.element ? document.querySelector(step.element) : document.body;
@@ -46,7 +46,7 @@ test("every round's start screen offers an example game, ticked by default", () 
     <TezguinoGame key="4" data={json<TezguinoData>("tezguino.json")} />,
   ]) {
     const { unmount } = render(game);
-    const box = document.querySelector<HTMLInputElement>(".cr-start-actions input[type=checkbox]")!;
+    const box = document.querySelector<HTMLInputElement>(".cr-start-row input[type=checkbox]")!;
     assert.ok(box.checked, "the example is on by default");
     assert.equal(box.closest("label")!.textContent, "Tutorial");
     assert.equal(document.querySelectorAll(".cr-hud button").length, 0, "the tutorial is not in the scoreboard");
@@ -87,12 +87,12 @@ test("unticking the example starts the round directly, and the choice is remembe
   const data = json<ClueShopData>("clue_shop.json");
   localStorage.clear();
   const first = render(<ClueShopGame data={data} random={zero} clock={still} />);
-  await user.click(document.querySelector<HTMLInputElement>(".cr-start-actions input")!);
+  await user.click(document.querySelector<HTMLInputElement>(".cr-start-row input")!);
   assert.equal(localStorage.getItem("cold-read:example:clue"), "0");
   first.unmount();
   render(<ClueShopGame data={data} random={zero} clock={still} />);
   await act(async () => {});
-  assert.equal(document.querySelector<HTMLInputElement>(".cr-start-actions input")!.checked, false, "remembered");
-  await user.click(document.querySelector<HTMLButtonElement>(".cr-start-actions .cr-go")!);
+  assert.equal(document.querySelector<HTMLInputElement>(".cr-start-row input")!.checked, false, "remembered");
+  await user.click(document.querySelector<HTMLButtonElement>(".cr-start-row .cr-go")!);
   assert.equal(document.querySelectorAll(".cr-card").length, 8, "the round started straight away");
 });

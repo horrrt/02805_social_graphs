@@ -13,6 +13,7 @@ import { StartButtons, useTour } from "./Tutorial";
 import { FINISH, type Level } from "./levels";
 import { shuffled } from "./rules";
 import { readBest, saveBest } from "./best";
+import { Rules } from "./StartPanel";
 
 const BEST = "cold-read:best4";
 
@@ -21,19 +22,13 @@ type Phase = "intro" | "play" | "answered" | "over";
 
 export function Intro() {
   return (
-    <ol className="cr-steps">
-      <li>
-        <b>Read</b> the company a hidden word keeps: the words found within a window of it across the 303 pages.
-      </li>
-      <li>
-        <b>Buy</b> a clearer view: a wider window (−{COST.window} a step), PPMI weights in place of raw counts (−{COST.ppmi}), or a real sentence
-        with the word blacked out (−{COST.peek}).
-      </li>
-      <li>
-        <b>Pick</b> the word from four, keys 1 to 4, before the {LIMIT.contexts}-second clock runs out. Fewer tools and a quicker pick pay more; a wrong
-        pick, or the clock, costs one of {LIVES} lives.
-      </li>
-    </ol>
+    <Rules
+      rules={[
+        ["Read", "the words that keep a hidden word company."],
+        ["Pick", "the word from four; extra clues cost points."],
+        ["Hurry:", "faster picks pay more, and a wrong pick costs a life."],
+      ]}
+    />
   );
 }
 
