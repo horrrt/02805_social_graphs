@@ -9,7 +9,7 @@ import { clueShopTour } from "./tours";
 import { StartButtons, useTour } from "./Tutorial";
 import { FINISH, type Level } from "./levels";
 import {
-  type Card, type ClueShopData, FACES, idf, LIVES, MAX_STREAK, points, rarity, type Round, shortlist, shuffled, suspects, tfidf,
+  type Card, type ClueShopData, FACES, idf, LIVES, MAX_STREAK, points, rarity, type Round, shortlist, shownName, shuffled, suspects, tfidf,
 } from "./rules";
 
 const BEST = "cold-read:best";
@@ -128,7 +128,7 @@ function Board({ data, alive, struck, answer }: { data: ClueShopData; alive: Set
             live(i) ? (
               <li key={i} data-answer={answer === i}>
                 <Portrait data={data} page={i} size="s" />
-                <span>{p.name}</span>
+                <span>{shownName(data, i)}</span>
               </li>
             ) : null,
           )}
@@ -309,7 +309,7 @@ export function ClueShopGame({ data, random = Math.random, level, hard = false, 
     setStruck([...struck, page]);
     setMissed(true);
     setStreak(0);
-    setNews(`Not ${data.pages[page].name}. Streak lost, ${livesLeft} ${livesLeft === 1 ? "life" : "lives"} left.`);
+    setNews(`Not ${shownName(data, page)}. Streak lost, ${livesLeft} ${livesLeft === 1 ? "life" : "lives"} left.`);
     if (livesLeft === 0) finish(false, 0);
   };
 
@@ -388,7 +388,7 @@ export function ClueShopGame({ data, random = Math.random, level, hard = false, 
               <Portrait data={data} page={round.page} size="l" />
               <div className="cr-case">
                 <p className="cr-stamp">{outcome.won ? "Case closed" : outcome.timeUp ? "Time's up" : "Case lost"}</p>
-                <p className="cr-verdict">{data.pages[round.page].name}</p>
+                <p className="cr-verdict">{shownName(data, round.page)}</p>
                 {outcome.won ? (
                   <p className="cr-sum">
                     <b className="cr-pop">+{outcome.gained.toLocaleString("en")}</b>
@@ -428,7 +428,7 @@ export function ClueShopGame({ data, random = Math.random, level, hard = false, 
                       <span className="cr-rank">{i + 1}</span>
                       <Portrait data={data} page={page} size="m" />
                       <span className="cr-lead-text">
-                        <span className="cr-name">{data.pages[page].name}</span>
+                        <span className="cr-name">{shownName(data, page)}</span>
                         <span className="cr-cos">
                           <span style={{ width: `${(cos / topCos) * 100}%` }} />
                         </span>

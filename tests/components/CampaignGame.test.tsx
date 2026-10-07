@@ -11,7 +11,7 @@ import type { TezguinoData } from "@/features/cold-read/contexts";
 import type { WhoseLineData } from "@/features/cold-read/groups";
 import { afterSkip, LEVELS, SKIP_COST } from "@/features/cold-read/levels";
 import { boldness, SPEED_MAX, timed } from "@/features/cold-read/pace";
-import { type ClueShopData, pagesWithAll, points, shuffled } from "@/features/cold-read/rules";
+import { type ClueShopData, pagesWithAll, points, shownName, shuffled } from "@/features/cold-read/rules";
 import type { MixDeskData } from "@/features/cold-read/topics";
 import { type HotColdMeta, prepare } from "@/features/cold-read/vectors";
 import { binary, json, noExamples, still, zero } from "./coldReadData";
@@ -75,10 +75,10 @@ test("a cleared level carries its points, and a later skip costs 500 of them", a
   let earned = 0;
   for (let page = 0; page < LEVELS[0].items; page++) {
     for (let i = 0; i < 8; i++) await user.click(screen.getByRole("button", { name: new RegExp(`^Card ${i + 1}:`) }));
-    const answer = clue.pages[clue.rounds[order[page]].page].name;
+    const answer = shownName(clue, clue.rounds[order[page]].page);
     const lead = within(screen.getByRole("complementary", { name: "Leads" }))
       .getAllByRole("listitem")
-      .find((li) => li.textContent!.includes(answer))!;
+      .find((li) => li.querySelector(".cr-name")!.textContent === answer)!;
     await user.click(within(lead).getByRole("button", { name: "Name it" }));
     const deck = shuffled(clue.rounds[order[page]].normal, zero);
     earned += timed(points(0, false, page + 1) + boldness(pagesWithAll(clue, deck.map((c) => c.w)), false), SPEED_MAX);
@@ -135,8 +135,8 @@ test("the round's score counts the campaign, and a skip banks the level's points
   const clue = data.clue!;
   const order = shuffled(clue.rounds.map((_, i) => i), zero);
   for (let i = 0; i < 8; i++) await user.click(screen.getByRole("button", { name: new RegExp(`^Card ${i + 1}:`) }));
-  const answer = clue.pages[clue.rounds[order[0]].page].name;
-  const lead = within(screen.getByRole("complementary", { name: "Leads" })).getAllByRole("listitem").find((li) => li.textContent!.includes(answer))!;
+  const answer = shownName(clue, clue.rounds[order[0]].page);
+  const lead = within(screen.getByRole("complementary", { name: "Leads" })).getAllByRole("listitem").find((li) => li.querySelector(".cr-name")!.textContent === answer)!;
   await user.click(within(lead).getByRole("button", { name: "Name it" }));
   const deck = shuffled(clue.rounds[order[0]].normal, zero);
   const earned = timed(points(0, false, 1) + boldness(pagesWithAll(clue, deck.map((c) => c.w)), false), SPEED_MAX);

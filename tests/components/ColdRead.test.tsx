@@ -6,7 +6,7 @@ import "./dom";
 import test from "node:test";
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
-import { type ClueShopData, pagesWithAll, points, rarity, shortlist } from "@/features/cold-read/rules";
+import { type ClueShopData, displayNames, pagesWithAll, points, rarity, shortlist } from "@/features/cold-read/rules";
 
 const data: ClueShopData = JSON.parse(readFileSync(new URL("../../public/play/cold-read/data/clue_shop.json", import.meta.url), "utf8"));
 const words = (cards: { w: string; kind: string }[], kind: string) => cards.filter((c) => c.kind === kind).map((c) => c.w);
@@ -60,4 +60,15 @@ test("unflipped cards and hard mode raise the points", () => {
 
 test("rarity rises as fewer pages carry the word", () => {
   assert.deepEqual([303, 150, 149, 30, 29, 5, 4, 1].map(rarity), ["common", "common", "uncommon", "uncommon", "rare", "rare", "legendary", "legendary"]);
+});
+
+test("names keep their bracket only when another page shares the base name", () => {
+  assert.deepEqual(displayNames(["Justice (New Universe)", "Spider-Woman", "Spider-Woman (Jessica Drew)", "Hulk"]), [
+    "Justice",
+    "Spider-Woman",
+    "Spider-Woman (Jessica Drew)",
+    "Hulk",
+  ]);
+  const shown = displayNames(data.pages.map((p) => p.name));
+  assert.equal(new Set(shown).size, shown.length, "no two pages read the same");
 });

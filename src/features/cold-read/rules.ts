@@ -99,3 +99,29 @@ export function shuffled<T>(items: T[], random: () => number = Math.random): T[]
   }
   return out;
 }
+
+/** "Ghost Rider (Johnny Blaze)" -> "Ghost Rider": the name without its Wikipedia bracket. */
+export const baseName = (name: string) => name.replace(/\s*\([^)]*\)\s*$/, "");
+
+/**
+ * Names as players see them: the bracket only when another name in the list
+ * shares the same base, so "Justice (New Universe)" reads "Justice" but the
+ * two Spider-Women keep theirs.
+ */
+export function displayNames(names: string[]): string[] {
+  const count = new Map<string, number>();
+  for (const n of names) count.set(baseName(n), (count.get(baseName(n)) ?? 0) + 1);
+  return names.map((n) => ((count.get(baseName(n)) ?? 0) > 1 ? n : baseName(n)));
+}
+
+const shown = new WeakMap<object, string[]>();
+
+/** Page i's name as players see it, worked out once per data set. */
+export function shownName(data: { pages: { name: string }[] }, i: number): string {
+  let names = shown.get(data);
+  if (!names) {
+    names = displayNames(data.pages.map((p) => p.name));
+    shown.set(data, names);
+  }
+  return names[i];
+}

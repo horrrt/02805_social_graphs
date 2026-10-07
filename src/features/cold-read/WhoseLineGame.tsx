@@ -9,7 +9,7 @@ import { LIMIT, speed, Ticker, timed, useCountdown } from "./pace";
 import { whoseLineTour } from "./tours";
 import { StartButtons, useTour } from "./Tutorial";
 import { FINISH, type Level } from "./levels";
-import { shuffled } from "./rules";
+import { displayNames, shuffled } from "./rules";
 import { type Answer, CARDS, deal, gain, INSPECT_COST, judge, LIVES, MAX_STREAK, ratio, type Term, type Verdict, type WhoseLineData } from "./groups";
 
 const BEST = "cold-read:best2";
@@ -54,8 +54,21 @@ export function Intro() {
 }
 
 
-// "Phoenix (Guardians of the Galaxy)" -> "Phoenix": a caption under a portrait.
+// "Phoenix (Guardians of the Galaxy)" -> "Phoenix": a team's name.
 const short = (name: string) => name.replace(/\s*\(.*\)\s*/g, "");
+
+// A portrait's caption: the bracket only when another hub shares the name.
+const hubNames = new WeakMap<object, Map<string, string>>();
+function hubName(data: WhoseLineData, name: string) {
+  let m = hubNames.get(data);
+  if (!m) {
+    const all = data.groups.flatMap((g) => g.hubs.map((h) => h.name));
+    const shownAll = displayNames(all);
+    m = new Map(all.map((n, i) => [n, shownAll[i]]));
+    hubNames.set(data, m);
+  }
+  return m.get(name) ?? short(name);
+}
 
 function Team({ data, g, side }: { data: WhoseLineData; g: number; side: "a" | "b" }) {
   const group = data.groups[g];
@@ -70,7 +83,7 @@ function Team({ data, g, side }: { data: WhoseLineData; g: number; side: "a" | "
             <span className="cr-face" data-size="xl" data-tone={side === "a" ? 1 : 0}>
               {h.img ? <img src={h.img} alt="" loading="lazy" referrerPolicy="no-referrer" /> : <span aria-hidden="true">{h.name[0]}</span>}
             </span>
-            <span>{short(h.name)}</span>
+            <span>{hubName(data, h.name)}</span>
           </li>
         ))}
       </ul>

@@ -8,7 +8,7 @@ import { LIMIT, speed, Ticker, timed, useCountdown } from "./pace";
 import { mixDeskTour } from "./tours";
 import { StartButtons, useTour } from "./Tutorial";
 import { FINISH, type Level } from "./levels";
-import { shuffled } from "./rules";
+import { shownName, shuffled } from "./rules";
 import { bestChips, CHIPS, grade, type MixDeskData, PAGES_PER_RUN, score, sizeBucket } from "./topics";
 
 const BEST = "cold-read:best3";
@@ -177,7 +177,7 @@ export function MixDeskGame({ data, random = Math.random, level, clock = Date.no
             </span>
             <div className="cr-md-head">
               <span className="cr-h">Page {at + 1} · how is it mixed?</span>
-              <span className="cr-verdict">{page.name}</span>
+              <span className="cr-verdict">{shownName(data, order[at])}</span>
             </div>
             <div className="cr-md-action">
               {revealed ? (

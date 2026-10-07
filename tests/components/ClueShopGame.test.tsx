@@ -7,13 +7,13 @@ import { render, screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { ClueShopGame } from "@/features/cold-read/ClueShopGame";
 import { boldness, SPEED_MAX, timed } from "@/features/cold-read/pace";
-import { type ClueShopData, pagesWithAll, points, shuffled } from "@/features/cold-read/rules";
+import { type ClueShopData, pagesWithAll, points, shownName, shuffled } from "@/features/cold-read/rules";
 import { json, noExamples, still, zero } from "./coldReadData";
 
 const data = json<ClueShopData>("clue_shop.json");
 const round = data.rounds[shuffled(data.rounds.map((_, i) => i), zero)[0]];
 const deck = shuffled(round.normal, zero);
-const answer = data.pages[round.page].name;
+const answer = shownName(data, round.page);
 
 beforeEach(() => {
   localStorage.clear();
@@ -58,7 +58,7 @@ test("naming the page after every flip closes the case and scores it", async () 
   const user = await dealt();
   for (let i = 0; i < deck.length; i++) await user.click(card(i));
   const top = leads()[0];
-  assert.match(top.textContent!, new RegExp(answer.replace(/[()]/g, "\\$&")));
+  assert.equal(top.querySelector(".cr-name")!.textContent, answer);
   await user.click(within(top).getByRole("button", { name: "Name it" }));
   assert.ok(screen.getByText("Case closed"));
   // All eight flipped and the top lead named: no bold read beyond the suspects still standing, and an instant answer pays ×1.5.
@@ -72,7 +72,7 @@ test("three wrong names end the run", async () => {
   const user = await dealt();
   for (let i = 0; i < deck.length; i++) await user.click(card(i));
   for (let miss = 0; miss < 3; miss++) {
-    const wrong = leads().find((li) => !li.textContent!.includes(answer))!;
+    const wrong = leads().find((li) => li.querySelector(".cr-name")!.textContent !== answer)!;
     await user.click(within(wrong).getByRole("button", { name: "Name it" }));
   }
   assert.ok(screen.getByText("Case lost"));
@@ -101,7 +101,7 @@ test("a lost heart breaks and the screen's edges flash red; a fresh deal shows n
   const user = await dealt();
   assert.equal(document.querySelector(".cr-hit"), null, "no flash before a hit");
   for (let i = 0; i < deck.length; i++) await user.click(card(i));
-  const wrong = leads().find((li) => !li.textContent!.includes(answer))!;
+  const wrong = leads().find((li) => li.querySelector(".cr-name")!.textContent !== answer)!;
   await user.click(within(wrong).getByRole("button", { name: "Name it" }));
   assert.ok(document.querySelector(".cr-hit"), "the red flash plays");
   const lost = document.querySelector('.cr-lives [data-lost="true"]')!;

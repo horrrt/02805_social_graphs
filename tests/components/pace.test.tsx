@@ -7,14 +7,14 @@ import { act, render, screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { ClueShopGame } from "@/features/cold-read/ClueShopGame";
 import { boldness, LIMIT, speed, SPEED_MAX, SPEED_MIN, timed } from "@/features/cold-read/pace";
-import { type ClueShopData, pagesWithAll, points, shortlist, shuffled } from "@/features/cold-read/rules";
+import { type ClueShopData, pagesWithAll, points, shortlist, shownName, shuffled } from "@/features/cold-read/rules";
 import { json, noExamples, still, zero } from "./coldReadData";
 
 const data = json<ClueShopData>("clue_shop.json");
 const order = shuffled(data.rounds.map((_, i) => i), zero);
 const round = data.rounds[order[0]];
 const deck = shuffled(round.normal, zero);
-const answer = data.pages[round.page].name;
+const answer = shownName(data, round.page);
 
 beforeEach(() => {
   localStorage.clear();
