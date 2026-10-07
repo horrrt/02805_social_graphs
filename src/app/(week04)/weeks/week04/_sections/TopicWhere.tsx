@@ -3,6 +3,7 @@ import { Drawers } from "@/components/post/Drawers";
 import { TocItem } from "@/features/week04/frame/DeepShell";
 import { Methods } from "@/features/week04/methods/Methods";
 import { PlacePart } from "@/features/week04/place/Place";
+import { StripPart } from "@/features/week04/strips/Strips";
 import { GlossTerm } from "./GlossTerm";
 
 // Deep dive topic: where the hiring is.
@@ -227,7 +228,7 @@ export function TopicWhere() {
                   The ten densest metros with 100,000 jobs or more, and New York (outlined), which files the most. Dashed: the national rate.
                 </span>
               </figcaption>
-              <div className="w4-figure-body" data-more="density"></div>
+              <StripPart id="more:density" />
             </figure>
           </div>
         </div>

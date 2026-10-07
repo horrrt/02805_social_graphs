@@ -1,6 +1,7 @@
 import { Drawer } from "@/components/post/Drawer";
 import { Drawers } from "@/components/post/Drawers";
 import { QuestionPart } from "@/features/week04/questions/Questions";
+import { StripPart } from "@/features/week04/strips/Strips";
 import { GlossTerm } from "./GlossTerm";
 
 // Section 5: beyond the three networks.
@@ -59,7 +60,7 @@ export function Beyond() {
                 Each real value against its baseline: law firms against rewired networks, green cards against direct employers' interval, wage odds against equal odds.
               </span>
             </figcaption>
-            <div className="w4-figure-body" data-strip="beyond-summary"></div>
+            <StripPart id="beyond-summary" />
           </figure>
         </div>
       </div>

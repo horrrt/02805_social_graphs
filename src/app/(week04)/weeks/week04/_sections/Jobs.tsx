@@ -2,6 +2,7 @@ import { Drawer } from "@/components/post/Drawer";
 import { Drawers } from "@/components/post/Drawers";
 import { JobsNum, JobsPart } from "@/features/week04/jobs/Jobs";
 import { QuestionPart } from "@/features/week04/questions/Questions";
+import { StripPart } from "@/features/week04/strips/Strips";
 import { GlossTerm } from "./GlossTerm";
 
 // Section 2: which jobs go together.
@@ -58,7 +59,7 @@ export function Jobs() {
                 Occupation clusters against rewired networks in which every company keeps its number of occupations.
               </span>
             </figcaption>
-            <div className="w4-figure-body" data-strip="jobs-modularity"></div>
+            <StripPart id="jobs-modularity" />
           </figure>
         </div>
       </div>

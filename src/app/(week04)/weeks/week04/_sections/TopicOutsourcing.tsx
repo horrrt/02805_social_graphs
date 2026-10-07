@@ -409,7 +409,7 @@ export function TopicOutsourcing() {
                 <b>The heaviest one-to-one ties</b>
                 <span>The clients with the most filings from a single firm. Dark bars: health care.</span>
               </figcaption>
-              <div className="w4-figure-body" data-more="strength"></div>
+              <StripPart id="more:strength" />
             </figure>
           </div>
         </div>

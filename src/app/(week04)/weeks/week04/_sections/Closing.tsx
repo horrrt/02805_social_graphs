@@ -1,5 +1,6 @@
 import { Drawer } from "@/components/post/Drawer";
 import { Drawers } from "@/components/post/Drawers";
+import { StripPart } from "@/features/week04/strips/Strips";
 
 // Closing.
 export function Closing() {
@@ -22,7 +23,7 @@ export function Closing() {
                   One row per section: the real network against its random baseline, on the same scale as the findings above the hero.
                 </span>
               </figcaption>
-              <div className="w4-figure-body" data-strip="closing-recap"></div>
+              <StripPart id="closing-recap" />
             </figure>
           </div>
           <div className="w4-surprises">
@@ -32,12 +33,12 @@ export function Closing() {
                 The staffing groups looked weak in our first round, following industry about as much as vendor,
               </p>
               <p className="w4-surprise-after">yet 26.5% of vendor switches stay inside them, against 3.2% for a random vendor.</p>
-              <div className="w4-figure-body" data-strip="closing-switches"></div>
+              <StripPart id="closing-switches" />
             </div>
             <div className="w4-surprise">
               <p className="w4-surprise-before">And the backbone that seemed to snap between α = 0.1 and 0.05</p>
               <p className="w4-surprise-after">never snaps: no single link cuts off more than two metros.</p>
-              <div className="w4-figure-body" data-strip="closing-backbone"></div>
+              <StripPart id="closing-backbone" />
             </div>
           </div>
         </div>

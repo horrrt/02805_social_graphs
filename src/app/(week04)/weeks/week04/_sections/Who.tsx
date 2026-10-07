@@ -1,6 +1,7 @@
 import { Drawer } from "@/components/post/Drawer";
 import { Drawers } from "@/components/post/Drawers";
 import { QuestionPart } from "@/features/week04/questions/Questions";
+import { EgoFigure } from "@/features/week04/strips/Ego";
 import { StripPart } from "@/features/week04/strips/Strips";
 import { GlossTerm } from "./GlossTerm";
 
@@ -79,17 +80,9 @@ export function Who() {
                 Modularity against rewired networks that keep each firm's and client's number of partners; AMI with each client's main vendor and its industry.
               </span>
             </figcaption>
-            <div className="w4-figure-body" data-strip="who-modularity"></div>
+            <StripPart id="who-modularity" />
           </figure>
-          <figure className="w4-figure">
-            <figcaption>
-              <b>One client, many vendors</b>
-              <span>
-                The client's largest staffing firms by filings in the year; link width is filings placed there. Pick a year or type any client.
-              </span>
-            </figcaption>
-            <div className="w4-figure-body" data-strip="who-ego"></div>
-          </figure>
+          <EgoFigure />
         </div>
         <Drawers variant="foot">
           <Drawer label="Background">

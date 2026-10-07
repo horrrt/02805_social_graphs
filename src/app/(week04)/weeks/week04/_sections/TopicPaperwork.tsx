@@ -175,14 +175,14 @@ export function TopicPaperwork() {
                   Eligible registrations per selected registration; the figure under each date is the share of registrations for a worker registered more than once.
                 </span>
               </figcaption>
-              <div className="w4-figure-body" data-more="draws"></div>
+              <StripPart id="more:draws" />
             </figure>
             <figure className="w4-figure">
               <figcaption>
                 <b>Registrations per approved petition</b>
                 <span>Each line joins one kind of employer across the two draws Bloomberg's USCIS files cover.</span>
               </figcaption>
-              <div className="w4-figure-body" data-more="lottery"></div>
+              <StripPart id="more:lottery" />
             </figure>
           </div>
           <Drawers variant="foot">
@@ -336,7 +336,7 @@ export function TopicPaperwork() {
                   The six employers the text names, 2025; not a ranking. Dashed line: the median employer with 20 or more H-1B filings.
                 </span>
               </figcaption>
-              <div className="w4-figure-body" data-more="perm"></div>
+              <StripPart id="more:perm" />
             </figure>
           </div>
         </div>
@@ -374,14 +374,14 @@ export function TopicPaperwork() {
                 <b>Citizenship of 2023's green cards</b>
                 <span>Share of certified green-card filings in the counted cells.</span>
               </figcaption>
-              <div className="w4-figure-body" data-more="countries-top"></div>
+              <StripPart id="more:countries-top" />
             </figure>
             <figure className="w4-figure">
               <figcaption>
                 <b>Do countries group?</b>
                 <span>Modularity of the country network against rewired copies.</span>
               </figcaption>
-              <div className="w4-figure-body" data-more="countries-modularity"></div>
+              <StripPart id="more:countries-modularity" />
             </figure>
           </div>
           <Drawers variant="foot">
