@@ -39,19 +39,16 @@ export function install(api, echarts) {
   } = api;
   const charts = new Map();
 
+  // The chart's island renders the host after its canvas; the first draw
+  // sizes it from the canvas and hides the canvas.
   function chart(id) {
     const canvas = $(id);
-    if (!canvas) return null;
-    let host = document.getElementById(`${id}-ec`);
-    if (!host) {
-      host = document.createElement("div");
-      host.id = `${id}-ec`;
+    const host = $(`${id}-ec`);
+    if (!canvas || !host) return null;
+    if (!charts.has(id)) {
       host.style.width = "100%";
       host.style.height = `${Math.round((canvas.clientWidth || 600) * (canvas.height / canvas.width))}px`;
-      canvas.after(host);
       canvas.style.display = "none";
-    }
-    if (!charts.has(id)) {
       const instance = echarts.init(host, null, { renderer: "canvas" });
       instance.on("click", (event) => {
         const iso3 = event.data?.iso3 ?? event.data?.[2];
@@ -71,7 +68,6 @@ export function install(api, echarts) {
       instance.on("mouseout", hideTip);
       host.addEventListener("pointerleave", hideTip);
       charts.set(id, instance);
-      window.addEventListener("resize", () => instance.resize());
     }
     return charts.get(id);
   }
@@ -404,6 +400,10 @@ export function install(api, echarts) {
   }
 
   return {
+    // The page calls this on every window resize.
+    resize() {
+      for (const instance of charts.values()) instance.resize();
+    },
     hist,
     ccdf: ccdfChart,
     scatterBetween,

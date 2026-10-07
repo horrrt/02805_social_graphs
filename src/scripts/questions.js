@@ -8,10 +8,12 @@
 // The year is fixed at 2024, the most recent DESA revision, so a reader moving
 // the year slider upstairs does not silently change the answers down here.
 
+import { api } from "./corridor.js";
 import { font, fs } from "./type-scale.mjs";
 
 const YEAR = 2024;
-const $ = (id) => document.getElementById(id);
+// The canvases the questions islands render and hand to corridor.js.
+const $ = (id) => api.$(id);
 
 // Chart text takes its size from the type scale in type.css, read at draw time.
 // Ticks, axis titles and notes are captions; country names are small at 600;
@@ -21,9 +23,7 @@ const NAME = (weight = 600) => font("small", weight);
 const VALUE = () => font("small", 700);
 const TITLE = () => font("body", 700);
 
-let api = null;
 let model = null;
-let drawn = false;
 
 /* -------------------------------------------------------------------- data */
 
@@ -212,23 +212,6 @@ function hit(canvas, event) {
     if (d <= (mark.r ?? 14) && (!nearest || d < nearest.d)) nearest = { mark, d };
   }
   return nearest?.mark ?? null;
-}
-
-function wire(id) {
-  const canvas = $(id);
-  if (!canvas || canvas.dataset.qpick) return;
-  canvas.dataset.qpick = "on";
-  canvas.addEventListener("pointermove", (event) => {
-    const mark = hit(canvas, event);
-    canvas.style.cursor = mark ? "pointer" : "default";
-    if (mark?.label) api.showTip(event, mark.label);
-    else api.hideTip();
-  });
-  canvas.addEventListener("pointerleave", () => api.hideTip());
-  canvas.addEventListener("click", (event) => {
-    const mark = hit(canvas, event);
-    if (mark?.iso3) api.select(mark.iso3);
-  });
 }
 
 /* ---------------------------------------------------------------- 1. a ring
@@ -707,7 +690,7 @@ function drawDistance() {
   );
 }
 
-function answerDistance() {
+export function answerDistance() {
   const near = model.rows.filter((r) => r.km > 0 && r.km <= 2000);
   const share = pct(near.reduce((sum, r) => sum + r.people, 0), model.total);
   const median = weightedMedian(model.rows.map((r) => [r.km, r.people]));
@@ -1382,88 +1365,74 @@ function answerSex() {
 
 /* ------------------------------------------------------------------- wiring */
 
-const CHARTS = [
-  ["q-ring", drawRing, "q-ring-answer", answerRing],
-  ["q-hosts", drawHosts, "q-hosts-answer", answerHosts],
-  ["q-distance", drawDistance, "q-distance-answer", answerDistance],
-  ["q-wealth", drawWealth, "q-wealth-answer", answerWealth],
-  ["q-income", drawIncome, "q-income-answer", answerIncome],
-  ["q-sex", drawSex, "q-sex-answer", answerSex],
-];
-
-function render() {
-  if (!api?.state?.edges) return;
-  if (!model) model = build();
-  for (const [canvasId, draw, answerId, answer] of CHARTS) {
-    draw();
-    wire(canvasId);
-    const host = $(answerId);
-    if (host && !host.dataset.written) {
-      host.innerHTML = answer();
-      host.dataset.written = "on";
-    }
-  }
-  drawn = true;
-}
-
-// The ring's own controls. Its answer is rewritten on every change, since the
-// numbers in it belong to the year and the list on screen.
-function redrawRing() {
-  drawRing();
-  wire("q-ring");
-  const host = $("q-ring-answer");
-  if (host) {
-    host.innerHTML = answerRing();
-    host.dataset.written = "on";
-  }
-}
-
-function setupRingControls() {
-  const scope = $("q-ring-scope");
-  // The other five answers pair stocks with one snapshot of GDP, population and
-  // sex, so they stay where that pairing holds. Saying which questions the year
-  // moves is cheaper than a reader assuming it moves all six.
-  if (scope)
-    scope.textContent =
-      `The slider changes this ring only. The five answers below are all ${YEAR}.`;
-  const slider = $("q-ring-year");
-  if (!slider || slider.dataset.ready) return;
-  slider.dataset.ready = "on";
-
-  const years = api.state.edges.years;
-  const ends = slider.parentElement?.querySelector(".ends");
-  if (ends) ends.innerHTML = `<span>${years[0]}</span><span>${years.at(-1)}</span>`;
-  slider.max = String(years.length - 1);
-  slider.value = String(Math.max(years.indexOf(ringState.year), 0));
-  // The slider's value is an index into the eight snapshots, so without this a
-  // screen reader announces "3" where the page says 2005.
-  slider.setAttribute("aria-valuetext", String(ringState.year));
-
-  slider.addEventListener("input", (event) => {
-    ringState.year = years[Number(event.target.value)] ?? YEAR;
-    slider.setAttribute("aria-valuetext", String(ringState.year));
-    const now = $("q-ring-now");
-    if (now) now.textContent = String(ringState.year);
-    redrawRing();
-  });
-}
-
 // Six canvases and a pass over 9,095 corridors is not free, and most readers
-// never open the drawer. Nothing is computed until they do.
-export function installQuestions(shared) {
-  api = shared;
-  const drawer = $("questions");
-  if (!drawer) return;
-  const open = () => {
-    if (!drawer.open) return;
-    setupRingControls();
-    render();
-  };
-  const refresh = () => {
-    if (drawn && drawer.open) render();
-  };
-  drawer.addEventListener("toggle", open);
-  open();
-  window.addEventListener("week03:restyle", refresh);
-  window.addEventListener("resize", refresh);
+// never open the drawer. Nothing is computed until the questions islands ask,
+// which they do once the drawer is open.
+function ready() {
+  if (!api?.state?.edges) return false;
+  if (!model) model = build();
+  return true;
 }
+
+/** Draw the chart on canvas `id` (q-ring, q-hosts, …). */
+export function drawQuestion(id) {
+  if (!ready()) return;
+  const draw = {
+    "q-ring": drawRing,
+    "q-hosts": drawHosts,
+    "q-distance": drawDistance,
+    "q-wealth": drawWealth,
+    "q-income": drawIncome,
+    "q-sex": drawSex,
+  }[id];
+  draw?.();
+}
+
+/** The answer under chart `id`, as HTML. */
+export function answerQuestion(id) {
+  if (!ready()) return null;
+  const answer = {
+    "q-ring": answerRing,
+    "q-hosts": answerHosts,
+    "q-distance": answerDistance,
+    "q-wealth": answerWealth,
+    "q-income": answerIncome,
+    "q-sex": answerSex,
+  }[id];
+  return answer ? answer() : null;
+}
+
+// The ring's own year. Its answer is rewritten on every change, since the
+// numbers in it belong to the year and the list on screen.
+export function ringYears() {
+  return api.state.edges.years;
+}
+
+export function setRingYear(year) {
+  ringState.year = year ?? YEAR;
+}
+
+// The other five answers pair stocks with one snapshot of GDP, population and
+// sex, so they stay where that pairing holds. Saying which questions the year
+// moves is cheaper than a reader assuming it moves all six.
+export const RING_SCOPE = `The slider changes this ring only. The five answers below are all ${YEAR}.`;
+
+export { YEAR as QUESTION_YEAR };
+
+// The pointer on a question's canvas, from its island: hover shows the mark's
+// tooltip, a click selects its country, exactly as the charts upstairs behave.
+export const questionPointer = {
+  move(canvas, event) {
+    const mark = hit(canvas, event);
+    canvas.style.cursor = mark ? "pointer" : "default";
+    if (mark?.label) api.showTip(event, mark.label);
+    else api.hideTip();
+  },
+  leave() {
+    api.hideTip();
+  },
+  click(canvas, event) {
+    const mark = hit(canvas, event);
+    if (mark?.iso3) api.select(mark.iso3);
+  },
+};
