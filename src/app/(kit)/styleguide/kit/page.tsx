@@ -4,6 +4,7 @@ import { Demo } from "@/features/kit-page/demos";
 import { DemoNetworks } from "@/features/kit-page/demos-networks";
 import { TextDemo } from "@/features/kit-page/demos-text";
 import { DistDemo } from "@/features/kit-page/demos-distributions";
+import { DemoEditors } from "@/features/kit-page/demos-editors";
 import { DemoGrowth } from "@/features/kit-page/demos-growth";
 
 export default function Page() {
@@ -225,6 +226,37 @@ export default function Page() {
           <DistDemo demo="dist-links" />
         </PostSection>
         {/* ==== end Kit: distributions and nulls ==== */}
+        {/* ==== Kit: editors and puzzles ==== */}
+        <PostSection id="demo-editors">
+          <h2>Editors and puzzles</h2>
+          <p className="sub">
+            Eight pieces the reader works with by hand, from src/kit on toy and textbook data: a cut dendrogram, an
+            editable matrix, a partition, an ego network, a pick-k puzzle, a pipeline, a strip of stages and a detail
+            panel. The tree and matrix helpers are in src/kit/dendro-core.js and src/kit/matrix-core.js.
+          </p>
+          <h3>Dendrogram: Girvan–Newman on the karate club, cut once or branch by branch</h3>
+          <DemoEditors demo="ed-dendro" />
+          <h3>EditableMatrix: type a link, see it drawn</h3>
+          <DemoEditors demo="ed-matrix" />
+          <h3>PartitionEditor: split the club by hand and watch Q</h3>
+          <DemoEditors demo="ed-partition" />
+          <h3>EgoEditor: one node&apos;s clustering coefficient</h3>
+          <DemoEditors demo="ed-ego" />
+          <h3>NodePicker: find the planted clique</h3>
+          <DemoEditors demo="ed-clique" />
+          <h3>StepFlow: two pipelines, one with a worked example</h3>
+          <DemoEditors demo="ed-flow" />
+          <div className="w4-two">
+            <div>
+              <h3>StageTabs: from counts to language models</h3>
+              <DemoEditors demo="ed-stages" />
+            </div>
+            <div></div>
+          </div>
+          <h3>DetailPanel: a picked topic&apos;s words, documents and neighbours</h3>
+          <DemoEditors demo="ed-detail" />
+        </PostSection>
+        {/* ==== end Kit: editors and puzzles ==== */}
         {/* ==== Kit batch E2: Growth ==== */}
         <PostSection id="demo-growth">
           <h2>Growth</h2>
