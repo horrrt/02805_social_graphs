@@ -5,6 +5,7 @@ import type { ReactNode } from "react";
 // first page, so the links work from any round.
 const ROUNDS = [
   { n: 1, name: "Clue Shop", topic: "TF-IDF", path: "" },
+  { n: 2, name: "Whose Line", topic: "comparing groups", path: "round-2/" },
   { n: 5, name: "Hot & Cold", topic: "word vectors", path: "round-5/" },
 ];
 
