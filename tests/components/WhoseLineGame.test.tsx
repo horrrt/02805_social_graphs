@@ -14,7 +14,7 @@ import { json, noExamples, still, zero } from "./coldReadData";
 const data = json<WhoseLineData>("whose_line.json");
 const pair = data.pairs[shuffled(data.pairs.map((_, i) => i), zero)[0]];
 const hand = deal(pair, zero);
-const CALL: Record<Answer, RegExp> = { a: /^1 · /, b: /^3 · /, both: /^2 · Both alike/, fluke: /^4 · One-page fluke/ };
+const CALL: Record<Answer, RegExp> = { a: /^1 · /, b: /^3 · /, both: /^2 · Same/, fluke: /^4 · Skip/ };
 
 beforeEach(() => {
   localStorage.clear();

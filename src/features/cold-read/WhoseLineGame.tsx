@@ -28,12 +28,12 @@ export function Intro() {
         <b>Read</b> the word. Two communities of the Marvel network face off, found from the links alone in Week 5.
       </li>
       <li>
-        <b>Call</b> it: used more by the left group, the right group, both alike, or a fluke that one page alone inflates. Keys 1 to 4
+        <b>Call</b> it: used more by the left group, the right group, the same in both, or skip it when one page alone inflates it, a fluke. Keys 1 to 4
         call it.
       </li>
       <li>
         <b>Beat</b> the {LIMIT.groups}-second clock: a quick call pays up to ×1.5. Inspecting the pages costs {INSPECT_COST}. A wrong call, or the
-        clock, costs one of {LIVES} lives; calling a fluke’s corner is half right.
+        clock, costs one of {LIVES} lives; calling a fluke’s corner instead of skipping is half right.
       </li>
     </ol>
   );
@@ -127,6 +127,8 @@ function Plot({ data, pair, played, current }: { data: WhoseLineData; pair: Whos
           <circle r={5.5} />
           <text x={8} y={4}>
             {p.term.w}
+            {/* A wrong call cost a life: mark it where the word landed. */}
+            {p.verdict === "wrong" ? <tspan className="cr-term-life" aria-label="cost a life"> 💔</tspan> : null}
           </text>
         </g>
       ))}
@@ -247,7 +249,7 @@ export function WhoseLineGame({ data, random = Math.random, level, clock = Date.
   const A = short(data.groups[pair.a].label);
   const B = short(data.groups[pair.b].label);
   const last = played.at(-1);
-  const label = { a: `More in ${A}’s pages`, b: `More in ${B}’s pages`, both: "Both alike", fluke: "One-page fluke" } as const;
+  const label = { a: `More in ${A}’s pages`, b: `More in ${B}’s pages`, both: "The same in both", fluke: "One-page fluke" } as const;
 
   const explain = (p: Played) => {
     const r = ratio(p.term);
@@ -315,13 +317,13 @@ export function WhoseLineGame({ data, random = Math.random, level, clock = Date.
                       1 · {A}
                     </button>
                     <button id="cr-say-both" type="button" className="cr-call" data-side="both" onClick={() => say("both")}>
-                      2 · Both alike
+                      2 · Same
                     </button>
                     <button id="cr-say-b" type="button" className="cr-call" data-side="b" onClick={() => say("b")}>
                       3 · {B}
                     </button>
                     <button id="cr-say-fluke" type="button" className="cr-call" data-side="fluke" onClick={() => say("fluke")}>
-                      4 · One-page fluke
+                      4 · Skip
                     </button>
                   </div>
                 </>
