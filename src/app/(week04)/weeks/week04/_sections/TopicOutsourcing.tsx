@@ -1,5 +1,6 @@
 import { Drawer } from "@/components/post/Drawer";
 import { Drawers } from "@/components/post/Drawers";
+import { Entities } from "@/features/week04/entities/Entities";
 import { TocItem } from "@/features/week04/frame/DeepShell";
 import { GlossTerm } from "./GlossTerm";
 
@@ -482,95 +483,7 @@ export function TopicOutsourcing() {
       </details>
       <details className="rx-panel" name="w4-panel-outsourcing" data-box="entity-communities">
         <summary>Every worker and company, grouped by what they do</summary>
-        <div className="card w4-card">
-          <header className="w4-q">
-            <span className="w4-num">7</span>
-            <div>
-              <h2>Do workers group by job and pay, or by who files for them?</h2>
-              <p className="w4-answer" data-entities="answer">Loading the filings…</p>
-            </div>
-          </header>
-          <figure className="w4-entities" id="entity-communities">
-            <div className="w4-entities-controls">
-              <div aria-label="What each dot is" className="w4-entities-switch" role="group">
-                <button aria-pressed="true" data-entity="workers" type="button">Workers</button>
-                <button aria-pressed="false" data-entity="companies" type="button">Companies</button>
-                <button aria-pressed="false" data-entity="staffing" type="button">Staffing network</button>
-                <button aria-pressed="false" data-entity="lawfirms" type="button">Law-firm network</button>
-              </div>
-              <div className="w4-entities-net" hidden>
-                <label>
-                  Backbone
-                  {" "}
-                  <select aria-label="Disparity filter cut"></select>
-                </label>
-                <div aria-label="Links the filter drops" className="w4-entities-switch" role="group">
-                  <button aria-pressed="true" data-dropped="faint" type="button">Dropped faint</button>
-                  <button aria-pressed="false" data-dropped="hidden" type="button">Hidden</button>
-                </div>
-              </div>
-              <label className="w4-entities-colour">
-                Colour by
-                {" "}
-                <select>
-                  <option value="community">Community</option>
-                  <option value="sector">Sector</option>
-                  <option value="level">Wage level</option>
-                  <option value="pagerank">PageRank</option>
-                </select>
-              </label>
-            </div>
-            <div className="w4-entities-stage">
-              <button className="w4-entities-reset" type="button">Reset view</button>
-              <div aria-label="Every worker or company in the 2025 filings as a dot, coloured by its community. The table below lists the same groups." className="w4-entities-map" role="img" tabIndex={0}></div>
-            </div>
-            <ul aria-label="Legend: click a group to highlight it" className="w4-entities-legend"></ul>
-            <figcaption data-entities="caption"></figcaption>
-            <div className="w4-entities-facts">
-              <div>
-                <h4 data-entities-text="labels-head">What the groups follow</h4>
-                <p className="axis-note" data-entities-text="labels-note">
-                  NMI between the groups and each label, weighted by workers. Hollow dots were never part of the network. Bands: the same label shuffled, the level a label with that many values reaches by chance. Dashed: two Louvain seeds against each other.
-                </p>
-                <div data-entities="labels"></div>
-              </div>
-              <div>
-                <h4>The network against random ones</h4>
-                <p className="axis-note">
-                  Dots: the real network. Bands: rewired networks that keep every degree, or shuffled kinds.
-                </p>
-                <div data-entities="strips"></div>
-              </div>
-            </div>
-            <div className="w4-entities-facts">
-              <div>
-                <h4 data-entities-text="ccdf-head">How many links?</h4>
-                <p className="axis-note" data-entities-text="ccdf-note">
-                  Share of occupations, metros, levels and sectors with at least a given number of links or workers, log-log.
-                </p>
-                <div data-entities="ccdf"></div>
-              </div>
-              <div className="w4-entities-weeks" data-entities="weeks"></div>
-            </div>
-            <div className="rx-table-block" data-entities="table">
-              <h4>The largest groups</h4>
-              <table>
-                <thead>
-                  <tr>
-                    <th>#</th>
-                    <th>Group</th>
-                    <th className="num">Workers</th>
-                    <th className="num">H-1B</th>
-                    <th className="num">PERM</th>
-                    <th>Main occupation</th>
-                    <th>Largest employers</th>
-                  </tr>
-                </thead>
-                <tbody></tbody>
-              </table>
-            </div>
-          </figure>
-        </div>
+        <Entities />
       </details>
     </details>
   );

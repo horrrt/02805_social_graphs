@@ -31,7 +31,7 @@ function ResetButton({ show, onReset }: { show: boolean; onReset: () => void }) 
 export function W4Chart({ option, onEvents, renderer = "canvas", notMerge = true, reset, chartRef, className, ...host }: Props) {
   const hydrated = useHydrated();
   const ref = useRef<HTMLDivElement>(null);
-  const chart = useEChart(ref, { option, onEvents, renderer, notMerge, enabled: hydrated });
+  const chart = useEChart(ref, { option, onEvents, renderer, notMerge, enabled: hydrated && option !== null });
   useEffect(() => {
     if (chartRef) chartRef.current = chart;
   }, [chart, chartRef]);

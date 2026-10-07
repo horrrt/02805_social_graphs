@@ -21,5 +21,4 @@ await run([
   () => import("../week04-vis-more.js"),
   () => import("../week04-vis-intros.js"),
   () => import("../week04-vis-staffing.js"),
-  () => import("../week04-entities.js"),
 ]);
