@@ -59,9 +59,9 @@ export const clueShopTour = (): TourStep[] => {
       text: "The pages left, ranked by cosine similarity between the words you flipped and each page's TF-IDF vector. Name one when you trust it.",
     },
     {
-      element: ".cr-worth",
+      element: ".cr-worth-box",
       title: "Name it, or flip again",
-      text: "Each card still face down is worth 100 points; a wrong name costs a heart. The tour is over: the round starts fresh, so these flips don't count.",
+      text: "Playing for is what a right name scores now: 100 for each card still face down, falling as the clock runs. A wrong name costs a heart. The tour is over: the round starts fresh, so these flips don't count.",
     },
   ];
 };

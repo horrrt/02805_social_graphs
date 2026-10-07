@@ -5,7 +5,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { IdfInline, TfIdfFormula } from "./Formulas";
 import { Lives, ScoreBox, SkipLevel } from "./LevelParts";
-import { boldness, LIMIT, speed, Ticker, timed, useCountdown } from "./pace";
+import { boldness, LIMIT, speed, Ticker, timed, useCountdown, Worth } from "./pace";
 import { clueShopTour } from "./tours";
 import { StartButtons, useTour } from "./Tutorial";
 import { FINISH, type Level } from "./levels";
@@ -327,6 +327,7 @@ export function ClueShopGame({ data, random = Math.random, level, hard = false, 
       <div className="cr-hud" role="status">
         <ScoreBox points={score} level={level} />
         <Ticker countdown={pace} limitS={LIMIT.clue} active={playing} />
+        <Worth points={worthNow} active={playing} />
         <span className="cr-box">
           <small>Streak</small>
           <b data-hot={streak > 1}>×{shownStreak}</b>
@@ -358,11 +359,6 @@ export function ClueShopGame({ data, random = Math.random, level, hard = false, 
         <>
           <div className="cr-hand-head">
             <p className="cr-challenge">Which Marvel page are these words from? Flip as few as you dare.</p>
-            {playing ? (
-              <span className="cr-worth">
-                Name it now for <b>{worthNow.toLocaleString("en")}</b>
-              </span>
-            ) : null}
           </div>
           <div className="cr-hand">
             {deck.map((c, i) => (

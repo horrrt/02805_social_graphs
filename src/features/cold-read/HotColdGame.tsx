@@ -4,7 +4,7 @@
 import { useEffect, useMemo, useRef, useState, type FormEvent } from "react";
 import { CosineFormula } from "./Formulas";
 import { ScoreBox, SkipLevel } from "./LevelParts";
-import { LIMIT, speed, Ticker, timed, useCountdown } from "./pace";
+import { LIMIT, speed, Ticker, timed, useCountdown, Worth } from "./pace";
 import { hotColdTour } from "./tours";
 import { StartButtons, useTour } from "./Tutorial";
 import { FINISH, type Level } from "./levels";
@@ -225,6 +225,7 @@ export function HotColdGame({ data, random = Math.random, level, clock = Date.no
       <div className="cr-hud" role="status">
         <ScoreBox points={score} level={level} />
         <Ticker countdown={pace} limitS={LIMIT.vectors} active={playing} />
+        <Worth points={timed(points(guesses.filter((x) => !x.hint).length + 1, hints, streak + 1), speed(pace.elapsed, LIMIT.vectors))} active={playing} />
         <span className="cr-box">
           <small>Streak</small>
           <b data-hot={shownStreak > 1}>×{shownStreak}</b>

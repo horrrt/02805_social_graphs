@@ -7,7 +7,7 @@ import { Fragment, useEffect, useRef, useState } from "react";
 import { PpmiFormula } from "./Formulas";
 import { COST, type HiddenWord, LIVES, MAX_STREAK, options, pieces, points, type Row, spent, type TezguinoData, type Weight } from "./contexts";
 import { Lives, ScoreBox, SkipLevel } from "./LevelParts";
-import { LIMIT, speed, Ticker, timed, useCountdown } from "./pace";
+import { LIMIT, speed, Ticker, timed, useCountdown, Worth } from "./pace";
 import { tezguinoTour } from "./tours";
 import { StartButtons, useTour } from "./Tutorial";
 import { FINISH, type Level } from "./levels";
@@ -188,6 +188,7 @@ export function TezguinoGame({ data, random = Math.random, level, clock = Date.n
       <div className="cr-hud" role="status">
         <ScoreBox points={score} level={level} />
         <Ticker countdown={pace} limitS={LIMIT.contexts} active={phase === "play"} />
+        <Worth points={timed(points(cost, nextStreak), now)} active={phase === "play"} />
         <span className="cr-box">
           <small>Streak</small>
           <b data-hot={(phase === "play" ? nextStreak : streak) > 1}>×{Math.max(1, Math.min(phase === "play" ? nextStreak : streak, MAX_STREAK))}</b>
@@ -228,11 +229,6 @@ export function TezguinoGame({ data, random = Math.random, level, clock = Date.n
             <span className="cr-hc-df">
               used <b>{hidden.uses}</b> times on {hidden.df} pages
             </span>
-            {phase === "play" ? (
-              <span className="cr-worth">
-                Pick it now for <b>{timed(points(cost, nextStreak), now).toLocaleString("en")}</b>
-              </span>
-            ) : null}
           </div>
 
           <div className="cr-field cr-tz">

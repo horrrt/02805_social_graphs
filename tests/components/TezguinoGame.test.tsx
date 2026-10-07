@@ -30,7 +30,7 @@ async function started() {
 }
 
 const shown = () => [...document.querySelectorAll(".cr-board .cr-ctx-word")].map((e) => e.textContent);
-const worth = () => document.querySelector(".cr-worth b")!.textContent;
+const worth = () => document.querySelector(".cr-worth-box b")!.textContent;
 
 test("the word starts as its ±1 row by raw count, its length hidden, and the picks hold it", async () => {
   await started();

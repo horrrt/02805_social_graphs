@@ -292,17 +292,6 @@ body.cold-read {
   color: var(--ink);
 }
 
-.cr-worth {
-  font-size: var(--fs-body);
-  color: var(--ink-soft);
-}
-
-.cr-worth b {
-  font-family: var(--font-display);
-  font-size: var(--fs-h3);
-  color: var(--people);
-  margin-left: 4px;
-}
 
 .cr-hand {
   display: grid;
@@ -1870,12 +1859,12 @@ body.cold-read {
 }
 
 .cr-topic-true {
-  color: var(--ink-mute-text);
+  font-weight: 700;
+  color: var(--gain);
 }
 
-.cr-topic-true b {
-  font-family: var(--font-sans);
-  font-size: var(--fs-small);
+.cr-topic-true[data-off="true"] {
+  color: var(--loss);
 }
 
 .cr-run {
@@ -1885,9 +1874,6 @@ body.cold-read {
 
 /* ---------- round 4: tezgüino ---------- */
 
-.cr-hc-clue .cr-worth {
-  margin-left: auto;
-}
 
 .cr-tz {
   grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
@@ -2494,11 +2480,6 @@ body.cold-read:fullscreen {
   background: var(--loss);
 }
 
-.cr-worth small {
-  margin-left: 6px;
-  font-size: var(--fs-caption);
-  color: var(--ink-mute-text);
-}
 
 /* ---------- getting hit ---------- */
 
@@ -2559,6 +2540,70 @@ body.cold-read:fullscreen {
   color: #fff;
   text-shadow: 0 6px 0 var(--loss), 0 12px 30px rgba(0, 0, 0, 0.35);
   animation: cr-slam 1.8s cubic-bezier(0.2, 1.4, 0.4, 1);
+}
+
+/* Game over: the knocked-out mask drops in, wobbles, and the words slam under it. */
+.cr-dead {
+  display: grid;
+  justify-items: center;
+  gap: 18px;
+}
+
+.cr-dead .cr-hit-text {
+  position: static;
+}
+
+.cr-dead-mask {
+  width: 190px;
+  height: 206px;
+  filter: drop-shadow(0 14px 24px rgba(0, 0, 0, 0.35));
+  animation: cr-dead-drop 1.8s cubic-bezier(0.2, 1.5, 0.4, 1);
+}
+
+.cr-dead-head {
+  fill: var(--loss);
+  stroke: var(--ink);
+  stroke-width: 4;
+}
+
+.cr-dead-seam {
+  stroke: var(--ink);
+  stroke-width: 3;
+  opacity: 0.45;
+}
+
+.cr-dead-patch {
+  fill: var(--ink);
+}
+
+.cr-dead-x {
+  stroke: #fff;
+  stroke-width: 5;
+  stroke-linecap: round;
+}
+
+@keyframes cr-dead-drop {
+  0% {
+    opacity: 0;
+    transform: translateY(-60px) scale(0.4) rotate(-30deg);
+  }
+  25% {
+    opacity: 1;
+    transform: translateY(0) scale(1.15) rotate(10deg);
+  }
+  40% {
+    transform: scale(1) rotate(-6deg);
+  }
+  55% {
+    transform: rotate(3deg);
+  }
+  80% {
+    opacity: 1;
+    transform: rotate(0);
+  }
+  100% {
+    opacity: 0;
+  }
 }
 
 /* The whole page shakes while the flash plays; the flash itself, a child of
