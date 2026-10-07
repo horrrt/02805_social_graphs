@@ -91,9 +91,6 @@ function ClueCard({ card, data, round, index, open, revealed, onFlip, disabled }
           <span className="cr-big">×{card.n}</span>
           <span className="cr-small">on this page</span>
           <span className="cr-pages">
-            <span className="cr-meter">
-              <span style={{ width: `${Math.max(2, (df / data.N) * 100)}%` }} />
-            </span>
             on {df} of {data.N} pages
           </span>
           <span className="cr-key" aria-hidden="true">
