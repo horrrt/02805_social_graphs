@@ -3,7 +3,12 @@
 // best score, the result panel's next button and the keyboard shortcuts.
 import { type ReactNode, type Ref, useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
+import { ShadowArt } from "@/lib/ShadowArt";
+import { useData } from "@/lib/useData";
+import { useHydrated } from "@/lib/useHydrated";
+import { asset } from "@/scripts/site.js";
 import { readBest, saveBest } from "./best";
+import { playGameOver } from "./gameOverSfx";
 import { FINISH, type Level, SKIP_COST } from "./levels";
 
 /** A plain scoreboard box: a small label over a bold value. `hot` lights the value. */
@@ -92,21 +97,29 @@ export function SkipLevel({ points, level }: { points: number; level?: Level }) 
  * shake's transform would trap it in the card. A lost heart's flash unmounts
  * when its animation ends, so the next hit plays it again.
  *
- * The last heart is game over: a knocked-out mask and "Out of lives" stay on
- * screen with two ways out. Retry calls `onRetry`; "Why am I such a failure?"
- * clears the screen and scrolls to the round's debrief. A new run plays nothing.
+ * The last heart is game over: one of the game-over cards, picked at random,
+ * plays with its sound, and "Out of lives" stays on screen with two ways out.
+ * The cards load once the player is down to the last heart; until they arrive,
+ * or if they fail, the knocked-out mask stands in. Retry calls `onRetry`; "Why
+ * am I such a failure?" clears the screen and scrolls to the round's debrief. A
+ * new run plays nothing.
  */
 export function Lives({ lives, max, onRetry }: { lives: number; max: number; onRetry?: () => void }) {
   const before = useRef(lives);
   const [hit, setHit] = useState<{ n: number; heart: number } | null>(null);
-  const [flash, setFlash] = useState<{ n: number; dead: boolean } | null>(null);
+  const [flash, setFlash] = useState<{ n: number; dead: boolean; card: number } | null>(null);
+  const hydrated = useHydrated();
+  const art = useData<GameOverArt>(hydrated && lives <= 1 ? asset(GAME_OVER) : null);
   useEffect(() => {
     if (lives < before.current) {
+      const card = lives === 0 ? 1 + Math.floor(Math.random() * GAME_OVER_CARDS) : 0;
+      if (card) playGameOver(card);
       setHit((h) => ({ n: (h?.n ?? 0) + 1, heart: lives }));
-      setFlash((f) => ({ n: (f?.n ?? 0) + 1, dead: lives === 0 }));
+      setFlash((f) => ({ n: (f?.n ?? 0) + 1, dead: lives === 0, card }));
     }
     before.current = lives;
   }, [lives]);
+  const card = flash?.dead ? art.data?.cards.find((c) => c.n === flash.card) : undefined;
   const retry = () => {
     setFlash(null);
     onRetry?.();
@@ -128,7 +141,7 @@ export function Lives({ lives, max, onRetry }: { lives: number; max: number; onR
             flash.dead ? (
               <div key={flash.n} className="cr-hit" data-dead="true" role="alertdialog" aria-modal="true" aria-label="Out of lives">
                 <div className="cr-dead">
-                  <DeadMask />
+                  {card && art.data ? <ShadowArt className="cr-dead-art" css={art.data.css} html={card.svg} /> : <DeadMask />}
                   <span className="cr-hit-text">Out of lives</span>
                   <div className="cr-dead-actions">
                     {onRetry ? (
@@ -159,6 +172,11 @@ export function Lives({ lives, max, onRetry }: { lives: number; max: number; onR
 }
 
 /** Game over: a red mercenary's mask, out cold, X for eyes. */
+/** The game-over cards: one stylesheet and one SVG per card, numbered from 1. */
+type GameOverArt = { css: string; cards: { n: number; title: string; svg: string }[] };
+const GAME_OVER = "play/cold-read/data/game-over.json";
+const GAME_OVER_CARDS = 102;
+
 function DeadMask() {
   return (
     <svg className="cr-dead-mask" viewBox="0 0 120 130" aria-hidden="true">

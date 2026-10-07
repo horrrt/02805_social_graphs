@@ -793,12 +793,12 @@ body.cold-read {
   pointer-events: auto;
 }
 
+/* Placed by Tex in window coordinates, inside <body>. */
 .tex-tip {
-  position: absolute;
-  z-index: 20;
+  position: fixed;
+  z-index: 60;
   width: max-content;
   max-width: 280px;
-  transform: translateX(-50%);
   padding: 8px 12px;
   border-radius: 10px;
   background: var(--card);
@@ -2533,11 +2533,13 @@ body.cold-read:fullscreen {
   animation: cr-hit 1s ease-out;
 }
 
-/* Game over stays up until the player picks a way out. */
+/* Game over stays up until the player picks a way out, over a blurred page. */
 .cr-hit[data-dead="true"] {
   opacity: 1;
   pointer-events: auto;
   background-color: rgba(204, 51, 17, 0.2);
+  -webkit-backdrop-filter: blur(6px);
+  backdrop-filter: blur(6px);
   animation: cr-hit-dead 0.6s ease-out;
 }
 
@@ -2869,4 +2871,11 @@ body.cold-read:has(> .cr-hit[data-dead="true"]) > :not(.cr-hit) {
     animation: none !important;
     transition-duration: 0.001ms !important;
   }
+}
+
+/* A game-over card: its drawing lives in a shadow root (ShadowArt). */
+.cr-dead-art {
+  display: block;
+  width: 240px;
+  filter: drop-shadow(0 14px 24px rgba(0, 0, 0, 0.35));
 }
