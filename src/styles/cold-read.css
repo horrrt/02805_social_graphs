@@ -819,6 +819,53 @@ body.cold-read {
   margin: 0;
 }
 
+/* Hover a part of a formula to explain it. */
+.tex-explain {
+  position: relative;
+}
+
+.tex-explain [class*="x-"] {
+  cursor: help;
+}
+
+.tex-mark {
+  position: absolute;
+  border-radius: 4px;
+  background: rgba(242, 130, 12, 0.28);
+  pointer-events: none;
+}
+
+.tex-explain .vlist,
+.tex-explain .vlist-r,
+.tex-explain .vlist-t {
+  /* KaTeX's fraction layout layers sit over the parts; let the pointer through to them. */
+  pointer-events: none;
+}
+
+.tex-explain .vlist [class*="x-"] {
+  pointer-events: auto;
+}
+
+.tex-tip {
+  position: absolute;
+  z-index: 20;
+  width: max-content;
+  max-width: 280px;
+  transform: translateX(-50%);
+  padding: 8px 12px;
+  border-radius: 10px;
+  background: var(--card);
+  color: var(--ink);
+  box-shadow: var(--lift);
+  font-family: var(--font-sans);
+  font-size: var(--fs-small);
+  font-weight: 400;
+  line-height: var(--lh-small);
+  text-align: left;
+  white-space: normal;
+  pointer-events: none;
+}
+
 /* Until KaTeX has loaded, the LaTeX shows as code. */
 .tex-pending {
   font-family: var(--font-mono);
