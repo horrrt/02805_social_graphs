@@ -3,8 +3,9 @@
 // whether both use it alike, or whether one page alone makes it look
 // distinctive. The word then lands on a Scattertext-style plot. Rules live in
 // groups.ts; this file renders them.
-import { useEffect, useMemo, useRef, useState } from "react";
+import { type ReactNode, useEffect, useMemo, useRef, useState } from "react";
 import { ScoreBox, SkipLevel } from "./LevelParts";
+import { LIMIT, speed, Ticker, timed, useCountdown } from "./pace";
 import { whoseLineTour } from "./tours";
 import { StartButtons, useTour } from "./Tutorial";
 import { FINISH, type Level } from "./levels";
@@ -16,7 +17,7 @@ const SIZE = 400;
 const PAD = { l: 52, b: 44, t: 14, r: 14 };
 
 type Phase = "intro" | "card" | "answered" | "summary" | "over";
-type Played = { term: Term; kind: Answer; said: Answer; verdict: Verdict; inspected: boolean; got: number };
+type Played = { term: Term; kind: Answer; said: Answer | "time"; verdict: Verdict; inspected: boolean; got: number; factor: number };
 
 function readBest() {
   try {
@@ -45,8 +46,8 @@ export function Intro() {
         call it.
       </li>
       <li>
-        <b>Inspect</b> the pages behind a word for {INSPECT_COST} points before you call it. A wrong call costs one of {LIVES} lives; calling a
-        fluke’s corner is half right and costs none.
+        <b>Beat</b> the {LIMIT.groups}-second clock: a quick call pays up to ×1.5. Inspecting the pages costs {INSPECT_COST}. A wrong call, or the
+        clock, costs one of {LIVES} lives; calling a fluke’s corner is half right.
       </li>
     </ol>
   );
@@ -135,7 +136,9 @@ function Plot({ data, pair, played, current }: { data: WhoseLineData; pair: Whos
   );
 }
 
-export function WhoseLineGame({ data, random = Math.random, level }: { data: WhoseLineData; random?: () => number; level?: Level }) {
+export function WhoseLineGame({ data, random = Math.random, level, clock = Date.now }: {
+  data: WhoseLineData; random?: () => number; level?: Level; clock?: () => number;
+}) {
   const [phase, setPhase] = useState<Phase>("intro");
   const [order, setOrder] = useState<number[]>([]);
   const [match, setMatch] = useState(0);
@@ -143,6 +146,7 @@ export function WhoseLineGame({ data, random = Math.random, level }: { data: Who
   const [at, setAt] = useState(0);
   const [played, setPlayed] = useState<Played[]>([]);
   const [inspected, setInspected] = useState(false);
+  const [shown, setShown] = useState(0);
   const [score, setScore] = useState(0);
   const [lives, setLives] = useState(LIVES);
   const [streak, setStreak] = useState(0);
@@ -179,6 +183,7 @@ export function WhoseLineGame({ data, random = Math.random, level }: { data: Who
     setAt(0);
     setPlayed([]);
     setInspected(false);
+    setShown((n) => n + 1);
     setPhase("card");
   };
 
@@ -193,19 +198,21 @@ export function WhoseLineGame({ data, random = Math.random, level }: { data: Who
   };
   const tour = useTour(whoseLineTour, start);
 
-  const say = (said: Answer) => {
+  // A call scores its gain times the speed; the clock running out is a wrong call.
+  const say = (said: Answer | "time") => {
     if (!card) return;
-    const verdict = judge(card.kind, said, card.term);
+    const factor = speed(pace.stop(), LIMIT.groups);
+    const verdict = said === "time" ? "wrong" : judge(card.kind, said, card.term);
     const ok = verdict === "right";
     const run = ok ? streak + 1 : 0;
-    const got = ok ? gain(run, inspected) : 0;
+    const got = ok ? timed(gain(run, inspected), factor) : 0;
     const total = score + got;
     const livesLeft = verdict === "wrong" ? lives - 1 : lives;
     setStreak(run);
     setScore(total);
     setLives(livesLeft);
     if (ok) setRight((r) => r + 1);
-    setPlayed([...played, { term: card.term, kind: card.kind, said, verdict, inspected, got }]);
+    setPlayed([...played, { term: card.term, kind: card.kind, said, verdict, inspected, got, factor }]);
     if (total > best) {
       setBest(total);
       saveBest(total);
@@ -213,11 +220,14 @@ export function WhoseLineGame({ data, random = Math.random, level }: { data: Who
     setPhase(livesLeft === 0 ? "over" : "answered");
   };
 
+  const pace = useCountdown(LIMIT.groups, phase === "card", shown, () => say("time"), clock);
+
   const next = () => {
     setInspected(false);
     if (at + 1 >= hand.length) setPhase("summary");
     else {
       setAt(at + 1);
+      setShown((n) => n + 1);
       setPhase("card");
     }
   };
@@ -256,7 +266,16 @@ export function WhoseLineGame({ data, random = Math.random, level }: { data: Who
 
   return (
     <section className="cr-table" id="whose-line" aria-label="Whose Line">
-      <Hud score={score} streak={streak} lives={lives} right={right} best={best} playing={phase === "card"} level={level} />
+      <Hud
+        score={score}
+        streak={streak}
+        lives={lives}
+        right={right}
+        best={best}
+        playing={phase === "card"}
+        level={level}
+        ticker={<Ticker countdown={pace} limitS={LIMIT.groups} active={phase === "card"} />}
+      />
 
       <div className="cr-match">
         <Team data={data} g={pair.a} side="a" />
@@ -309,7 +328,13 @@ export function WhoseLineGame({ data, random = Math.random, level }: { data: Who
               {phase === "answered" && last ? (
                 <div className="cr-verdict-box" data-verdict={last.verdict}>
                   <p className="cr-stamp">
-                    {last.verdict === "right" ? `Right · +${last.got}` : last.verdict === "half" ? "Half right · no life lost" : "Wrong · −1 life"}
+                    {last.said === "time"
+                      ? "Time's up · −1 life"
+                      : last.verdict === "right"
+                        ? `Right · +${last.got} (×${last.factor.toFixed(2)} speed)`
+                        : last.verdict === "half"
+                          ? "Half right · no life lost"
+                          : "Wrong · −1 life"}
                   </p>
                   <p className="cr-answer">{label[last.kind]}</p>
                   <p>{explain(last)}</p>
@@ -377,13 +402,14 @@ export function WhoseLineGame({ data, random = Math.random, level }: { data: Who
   );
 }
 
-function Hud({ score, streak, lives, right, best, playing, level }: {
-  score: number; streak: number; lives: number; right: number; best: number; playing: boolean; level?: Level;
+function Hud({ score, streak, lives, right, best, playing, level, ticker }: {
+  score: number; streak: number; lives: number; right: number; best: number; playing: boolean; level?: Level; ticker?: ReactNode;
 }) {
   const shown = Math.min(Math.max(playing ? streak + 1 : streak, 1), MAX_STREAK);
   return (
     <div className="cr-hud" role="status">
       <ScoreBox points={score} level={level} />
+      {ticker}
       <span className="cr-box">
         <small>Streak</small>
         <b data-hot={shown > 1}>×{shown}</b>

@@ -4,6 +4,7 @@
 // ranked by cosine similarity. Rules live in rules.ts; this file renders them.
 import { useEffect, useMemo, useState } from "react";
 import { ScoreBox, SkipLevel } from "./LevelParts";
+import { boldness, LIMIT, speed, Ticker, timed, useCountdown } from "./pace";
 import { clueShopTour } from "./tours";
 import { StartButtons, useTour } from "./Tutorial";
 import { FINISH, type Level } from "./levels";
@@ -14,7 +15,7 @@ import {
 const BEST = "cold-read:best";
 
 type Phase = "intro" | "play" | "reveal" | "over";
-type Outcome = { won: boolean; gained: number; streak: number; left: number; newBest: boolean };
+type Outcome = { won: boolean; gained: number; streak: number; left: number; newBest: boolean; bold: number; factor: number; timeUp: boolean };
 
 const fmt = (x: number, d = 3) => x.toFixed(d);
 const RARITY_LABEL = { common: "Common", uncommon: "Uncommon", rare: "Rare", legendary: "Legendary" } as const;
@@ -64,8 +65,8 @@ export function Intro() {
         <b>Watch</b> the board. Pages that don’t use every flipped word drop out, and the leads re-rank by cosine similarity.
       </li>
       <li>
-        <b>Name</b> the page. Unflipped cards score 100 each, and pages named in a row without a miss multiply the score up to ×{MAX_STREAK}. A wrong
-        name costs one of {LIVES} lives.
+        <b>Name</b> it fast and bold. Unflipped cards score 100 each, suspects still standing earn a bold-read bonus, and a quick answer pays up to
+        ×1.5 before the {LIMIT.clue}-second clock runs out. A wrong name, or the clock, costs one of {LIVES} lives.
       </li>
     </ol>
   );
@@ -207,8 +208,8 @@ function Debrief({ data, round, deck, flipped }: { data: ClueShopData; round: Ro
   );
 }
 
-export function ClueShopGame({ data, random = Math.random, level, hard = false }: {
-  data: ClueShopData; random?: () => number; level?: Level; hard?: boolean;
+export function ClueShopGame({ data, random = Math.random, level, hard = false, clock = Date.now }: {
+  data: ClueShopData; random?: () => number; level?: Level; hard?: boolean; clock?: () => number;
 }) {
   const [phase, setPhase] = useState<Phase>("intro");
   const [order, setOrder] = useState<number[]>([]);
@@ -224,6 +225,7 @@ export function ClueShopGame({ data, random = Math.random, level, hard = false }
   const [best, setBest] = useState(0);
   const [outcome, setOutcome] = useState<Outcome | null>(null);
   const [news, setNews] = useState("");
+  const [dealt, setDealt] = useState(0);
 
   useEffect(() => setBest(readBest()), []);
 
@@ -253,6 +255,7 @@ export function ClueShopGame({ data, random = Math.random, level, hard = false }
     setMissed(false);
     setOutcome(null);
     setNews("");
+    setDealt((d) => d + 1);
     setPhase("play");
   };
 
@@ -282,15 +285,17 @@ export function ClueShopGame({ data, random = Math.random, level, hard = false }
     );
   };
 
-  const finish = (won: boolean, livesLeft: number) => {
+  // Points for a named page: the cards left face down and the streak, plus the bold-read bonus, times the speed.
+  const finish = (won: boolean, livesLeft: number, bold = 0, timeUp = false) => {
+    const factor = speed(pace.stop(), LIMIT.clue);
     const run = won ? (missed ? 1 : streak + 1) : 0;
     const left = deck.length - flipped.length;
-    const gained = won ? points(left, hard, run) : 0;
+    const gained = won ? timed(points(left, hard, run) + bold, factor) : 0;
     const total = score + gained;
     const newBest = total > best;
     setScore(total);
     setStreak(run);
-    setOutcome({ won, gained, streak: Math.min(run, MAX_STREAK), left, newBest });
+    setOutcome({ won, gained, streak: Math.min(run, MAX_STREAK), left, newBest, bold, factor, timeUp });
     if (won) setSolved((s) => s + 1);
     if (newBest) {
       setBest(total);
@@ -302,7 +307,9 @@ export function ClueShopGame({ data, random = Math.random, level, hard = false }
   const accuse = (page: number) => {
     if (!round) return;
     if (page === round.page) {
-      finish(true, lives);
+      // Bold: suspects still standing when named, and whether it wasn't the top lead.
+      const standing = Math.max(1, (alive?.size ?? data.N) - struck.filter((p) => alive === null || alive.has(p)).length);
+      finish(true, lives, boldness(standing, leads[0]?.page !== page));
       return;
     }
     const livesLeft = lives - 1;
@@ -314,6 +321,17 @@ export function ClueShopGame({ data, random = Math.random, level, hard = false }
     if (livesLeft === 0) finish(false, 0);
   };
 
+  // The clock runs out: the page is lost, as a wrong name would lose it.
+  const timeUp = () => {
+    const livesLeft = lives - 1;
+    setLives(livesLeft);
+    setMissed(true);
+    setStreak(0);
+    finish(false, livesLeft, 0, true);
+  };
+  const pace = useCountdown(LIMIT.clue, playing, dealt, timeUp, clock);
+  const now = speed(pace.elapsed, LIMIT.clue);
+
   const topCos = leads[0]?.cos || 1;
   const answer = !playing && round ? round.page : null;
   const nextStreak = (missed ? 0 : streak) + 1;
@@ -323,6 +341,7 @@ export function ClueShopGame({ data, random = Math.random, level, hard = false }
     <section className="cr-table" id="clue-shop" aria-label="Clue Shop">
       <div className="cr-hud" role="status">
         <ScoreBox points={score} level={level} />
+        <Ticker countdown={pace} limitS={LIMIT.clue} active={playing} />
         <span className="cr-box">
           <small>Streak</small>
           <b data-hot={streak > 1}>×{shownStreak}</b>
@@ -362,7 +381,8 @@ export function ClueShopGame({ data, random = Math.random, level, hard = false }
           <div className="cr-hand-head">
             {playing ? (
               <span className="cr-worth">
-                Name it now for <b>{points(deck.length - flipped.length, hard, nextStreak).toLocaleString("en")}</b>
+                Name it now for <b>{timed(points(deck.length - flipped.length, hard, nextStreak), now).toLocaleString("en")}</b>
+                <small> ×{now.toFixed(2)} speed, plus a bold-read bonus</small>
               </span>
             ) : null}
           </div>
@@ -379,13 +399,14 @@ export function ClueShopGame({ data, random = Math.random, level, hard = false }
             <div className="cr-result" data-won={outcome.won}>
               <Portrait data={data} page={round.page} size="l" />
               <div className="cr-case">
-                <p className="cr-stamp">{outcome.won ? "Case closed" : "Case lost"}</p>
+                <p className="cr-stamp">{outcome.won ? "Case closed" : outcome.timeUp ? "Time's up" : "Case lost"}</p>
                 <p className="cr-verdict">{data.pages[round.page].name}</p>
                 {outcome.won ? (
                   <p className="cr-sum">
                     <b className="cr-pop">+{outcome.gained.toLocaleString("en")}</b>
                     <span>
-                      (100 + {outcome.left} unflipped × 100){hard ? " × 2 hard mode" : ""} × {outcome.streak} streak
+                      ((100 + {outcome.left} unflipped × 100){hard ? " × 2 hard mode" : ""} × {outcome.streak} streak
+                      {outcome.bold ? ` + ${outcome.bold} bold read` : ""}) × {outcome.factor.toFixed(2)} speed
                     </span>
                   </p>
                 ) : null}

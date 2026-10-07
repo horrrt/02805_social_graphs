@@ -7,8 +7,9 @@ import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { HotColdGame } from "@/features/cold-read/HotColdGame";
 import { shuffled } from "@/features/cold-read/rules";
+import { SPEED_MAX, timed } from "@/features/cold-read/pace";
 import { atRank, cosinesTo, type HotColdMeta, points, prepare, ranks } from "@/features/cold-read/vectors";
-import { binary, json, noExamples, zero } from "./coldReadData";
+import { binary, json, noExamples, still, zero } from "./coldReadData";
 
 const data = prepare(json<HotColdMeta>("hot_cold.json"), binary("hot_cold.bin"));
 const order = shuffled(data.targets.map((_, i) => i), zero);
@@ -24,7 +25,7 @@ beforeEach(() => {
 
 async function started() {
   const user = userEvent.setup();
-  render(<HotColdGame data={data} random={zero} />);
+  render(<HotColdGame data={data} random={zero} clock={still} />);
   await user.click(screen.getByRole("button", { name: "Hide the first word" }));
   return user;
 }
@@ -57,7 +58,7 @@ test("a hint, a near guess and the word itself: found, scored, neighbours listed
   assert.equal(input(), document.activeElement, "a hint hands focus back to the input");
   await user.type(input(), `${word}{Enter}`);
   assert.ok(screen.getByText("Found it"));
-  assert.equal(document.querySelector(".cr-score b")?.textContent, points(2, 1, 1).toLocaleString("en"));
+  assert.equal(document.querySelector(".cr-score b")?.textContent, timed(points(2, 1, 1), SPEED_MAX).toLocaleString("en"));
   assert.equal(document.querySelector(".cr-tiles")!.textContent, word);
   assert.equal(document.querySelectorAll(".cr-neigh li").length, 10);
   assert.equal(document.activeElement?.textContent, "Next word");

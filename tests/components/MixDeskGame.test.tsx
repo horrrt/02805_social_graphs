@@ -6,9 +6,10 @@ import assert from "node:assert/strict";
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { MixDeskGame } from "@/features/cold-read/MixDeskGame";
+import { SPEED_MAX, timed } from "@/features/cold-read/pace";
 import { shuffled } from "@/features/cold-read/rules";
 import { bestChips, CHIPS, grade, type MixDeskData, PAGES_PER_RUN, score } from "@/features/cold-read/topics";
-import { json, noExamples, zero } from "./coldReadData";
+import { json, noExamples, still, zero } from "./coldReadData";
 
 const data = json<MixDeskData>("mix_desk.json");
 const order = shuffled(data.pages.map((_, i) => i), zero).slice(0, PAGES_PER_RUN);
@@ -21,7 +22,7 @@ beforeEach(() => {
 
 async function opened() {
   const user = userEvent.setup();
-  render(<MixDeskGame data={data} random={zero} />);
+  render(<MixDeskGame data={data} random={zero} clock={still} />);
   await user.click(screen.getByRole("button", { name: "Open the first page" }));
   return user;
 }
@@ -42,7 +43,7 @@ test("the best spread of chips earns the best read, and the reveal colours the w
   assert.ok(screen.getByText("0 chips left"));
   await user.click(screen.getByRole("button", { name: "Lock in the mix" }));
   const pts = score(best, page.theta);
-  assert.ok(screen.getByText(`${grade(pts)} · +${pts}`));
+  assert.equal(document.querySelector(".cr-md-action .cr-stamp")!.textContent, `${grade(pts)} · +${timed(pts, SPEED_MAX)} (×1.50 speed)`);
   const words = [...document.querySelectorAll(".cr-bag-word")];
   page.words.forEach(([, , k], i) => assert.equal(words[i].getAttribute("data-topic"), String(k)));
   assert.ok(screen.getByText("Two kinds of mixture"));

@@ -6,8 +6,9 @@ import assert from "node:assert/strict";
 import { render, screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { ClueShopGame } from "@/features/cold-read/ClueShopGame";
-import { type ClueShopData, points, shuffled } from "@/features/cold-read/rules";
-import { json, noExamples, zero } from "./coldReadData";
+import { boldness, SPEED_MAX, timed } from "@/features/cold-read/pace";
+import { type ClueShopData, pagesWithAll, points, shuffled } from "@/features/cold-read/rules";
+import { json, noExamples, still, zero } from "./coldReadData";
 
 const data = json<ClueShopData>("clue_shop.json");
 const round = data.rounds[shuffled(data.rounds.map((_, i) => i), zero)[0]];
@@ -21,7 +22,7 @@ beforeEach(() => {
 
 async function dealt() {
   const user = userEvent.setup();
-  render(<ClueShopGame data={data} random={zero} />);
+  render(<ClueShopGame data={data} random={zero} clock={still} />);
   await user.click(screen.getByRole("button", { name: "Deal the first page" }));
   return user;
 }
@@ -59,9 +60,11 @@ test("naming the page after every flip closes the case and scores it", async () 
   assert.match(top.textContent!, new RegExp(answer.replace(/[()]/g, "\\$&")));
   await user.click(within(top).getByRole("button", { name: "Name it" }));
   assert.ok(screen.getByText("Case closed"));
-  assert.equal(document.querySelector(".cr-score b")?.textContent, points(0, false, 1).toLocaleString("en"));
+  // All eight flipped and the top lead named: no bold read beyond the suspects still standing, and an instant answer pays ×1.5.
+  const earned = timed(points(0, false, 1) + boldness(pagesWithAll(data, deck.map((c) => c.w)), false), SPEED_MAX);
+  assert.equal(document.querySelector(".cr-score b")?.textContent, earned.toLocaleString("en"));
   assert.equal(screen.getAllByRole("row").length, 1 + deck.length, "the debrief lists every card");
-  assert.equal(localStorage.getItem("cold-read:best"), String(points(0, false, 1)));
+  assert.equal(localStorage.getItem("cold-read:best"), String(earned));
 });
 
 test("three wrong names end the run", async () => {
@@ -78,7 +81,7 @@ test("three wrong names end the run", async () => {
 
 test("hard mode, picked in the practice menu, deals the hard deck and offers no switch", async () => {
   const user = userEvent.setup();
-  render(<ClueShopGame data={data} random={zero} hard />);
+  render(<ClueShopGame data={data} random={zero} clock={still} hard />);
   assert.equal(screen.queryByRole("checkbox", { name: /Hard mode/ }), null, "the round itself has no switch");
   await user.click(screen.getByRole("button", { name: "Deal the first page" }));
   const off = shuffled(round.hard, zero);

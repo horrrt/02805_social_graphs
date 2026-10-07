@@ -3,6 +3,7 @@
 // lands on a radar by rank. Rules live in vectors.ts; this file renders them.
 import { useEffect, useMemo, useRef, useState, type FormEvent } from "react";
 import { ScoreBox, SkipLevel } from "./LevelParts";
+import { LIMIT, speed, Ticker, timed, useCountdown } from "./pace";
 import { hotColdTour } from "./tours";
 import { StartButtons, useTour } from "./Tutorial";
 import { FINISH, type Level } from "./levels";
@@ -46,8 +47,8 @@ export function Intro() {
         <b>Read</b> the radar. Your guess lands nearer the centre the higher it ranks among the 9,000 words the game knows.
       </li>
       <li>
-        <b>Find</b> it in as few guesses as you can. A hint shows one of its neighbours for {HINT_COST} points, and words found in a row multiply the
-        score up to ×{MAX_STREAK}.
+        <b>Find</b> it in few guesses and fast: a hint costs {HINT_COST}, and the {LIMIT.vectors}-second clock pays up to ×1.5 for speed. When it runs out,
+        the word is given up.
       </li>
     </ol>
   );
@@ -90,7 +91,12 @@ function Radar({ guesses, size, last, found }: { guesses: Guess[]; size: number;
   );
 }
 
-export function HotColdGame({ data, random = Math.random, level }: { data: HotColdData; random?: () => number; level?: Level }) {
+export function HotColdGame({ data, random = Math.random, level, clock = Date.now }: {
+  data: HotColdData; random?: () => number; level?: Level; clock?: () => number;
+}) {
+  const [dealt, setDealt] = useState(0);
+  const [factor, setFactor] = useState(1);
+  const [timeUp, setTimeUp] = useState(false);
   const [phase, setPhase] = useState<Phase>("intro");
   const [order, setOrder] = useState<number[]>([]);
   const [at, setAt] = useState(0);
@@ -113,6 +119,7 @@ export function HotColdGame({ data, random = Math.random, level }: { data: HotCo
   const cos = useMemo(() => (data && target !== null ? cosinesTo(data, target) : null), [data, target]);
   const rank = useMemo(() => (cos && target !== null ? ranks(cos, target) : null), [cos, target]);
   const playing = phase === "play";
+  const pace = useCountdown(LIMIT.vectors, playing, dealt, () => giveUp(true), clock);
 
   // Keyboard players land on the input while playing and on "Next word" after.
   useEffect(() => {
@@ -128,6 +135,8 @@ export function HotColdGame({ data, random = Math.random, level }: { data: HotCo
     setHintAt(0);
     setNews("");
     setDraft("");
+    setDealt((d) => d + 1);
+    setTimeUp(false);
     setPhase("play");
     if (ord !== order) setOrder(ord);
   };
@@ -149,9 +158,12 @@ export function HotColdGame({ data, random = Math.random, level }: { data: HotCo
     return g;
   };
 
+  // Finding the word scores the guesses and hints left, times the streak and the speed.
   const win = (count: number) => {
+    const f = speed(pace.stop(), LIMIT.vectors);
+    setFactor(f);
     const run = streak + 1;
-    const got = points(count, hints, run);
+    const got = timed(points(count, hints, run), f);
     const total = score + got;
     setScore(total);
     setStreak(run);
@@ -204,7 +216,9 @@ export function HotColdGame({ data, random = Math.random, level }: { data: HotCo
     input.current?.focus();
   };
 
-  const giveUp = () => {
+  const giveUp = (outOfTime = false) => {
+    pace.stop();
+    setTimeUp(outOfTime);
     setStreak(0);
     setGained(0);
     setPhase("gaveup");
@@ -224,6 +238,7 @@ export function HotColdGame({ data, random = Math.random, level }: { data: HotCo
     <section className="cr-table" id="hot-cold" aria-label="Hot and Cold">
       <div className="cr-hud" role="status">
         <ScoreBox points={score} level={level} />
+        <Ticker countdown={pace} limitS={LIMIT.vectors} active={playing} />
         <span className="cr-box">
           <small>Streak</small>
           <b data-hot={shownStreak > 1}>×{shownStreak}</b>
@@ -271,13 +286,13 @@ export function HotColdGame({ data, random = Math.random, level }: { data: HotCo
           {done ? (
             <div className="cr-result" data-won={phase === "found"}>
               <div className="cr-case">
-                <p className="cr-stamp">{phase === "found" ? "Found it" : "Gave up"}</p>
+                <p className="cr-stamp">{phase === "found" ? "Found it" : timeUp ? "Time's up" : "Gave up"}</p>
                 <p className="cr-verdict">{word}</p>
                 {phase === "found" ? (
                   <p className="cr-sum">
                     <b className="cr-pop">+{gained.toLocaleString("en")}</b>
                     <span>
-                      {floored ? "100, the floor," : `(1,000 − 30 × ${Math.max(tried - 1, 0)} extra guesses${hints ? ` − ${HINT_COST} × ${hints} hints` : ""})`} × {Math.min(streak, MAX_STREAK)} streak
+                      {floored ? "100, the floor," : `(1,000 − 30 × ${Math.max(tried - 1, 0)} extra guesses${hints ? ` − ${HINT_COST} × ${hints} hints` : ""})`} × {Math.min(streak, MAX_STREAK)} streak × {factor.toFixed(2)} speed
                     </span>
                   </p>
                 ) : (
@@ -308,7 +323,7 @@ export function HotColdGame({ data, random = Math.random, level }: { data: HotCo
               <button type="button" className="cr-ghost" onClick={hint} disabled={nextHint() < 0}>
                 Hint −{HINT_COST}
               </button>
-              <button type="button" className="cr-ghost" onClick={giveUp}>
+              <button type="button" className="cr-ghost" onClick={() => giveUp()}>
                 Give up
               </button>
             </form>

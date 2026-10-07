@@ -61,7 +61,7 @@ export function CampaignIntro() {
   );
 }
 
-export function CampaignGame({ data, random = Math.random }: { data: CampaignData; random?: () => number }) {
+export function CampaignGame({ data, random = Math.random, clock = Date.now }: { data: CampaignData; random?: () => number; clock?: () => number }) {
   const [phase, setPhase] = useState<Phase>("intro");
   const [at, setAt] = useState(0);
   const [results, setResults] = useState<Result[]>([]);
@@ -173,15 +173,15 @@ export function CampaignGame({ data, random = Math.random }: { data: CampaignDat
               Loading this level… <SkipLevel points={0} level={level} />
             </p>
           ) : spec.id === "clue" ? (
-            <ClueShopGame key="clue" data={data.clue!} random={random} level={level} hard={hard} />
+            <ClueShopGame key="clue" data={data.clue!} random={random} level={level} clock={clock} hard={hard} />
           ) : spec.id === "groups" ? (
-            <WhoseLineGame key="groups" data={data.groups!} random={random} level={level} />
+            <WhoseLineGame key="groups" data={data.groups!} random={random} level={level} clock={clock} />
           ) : spec.id === "mix" ? (
-            <MixDeskGame key="mix" data={data.mix!} random={random} level={level} />
+            <MixDeskGame key="mix" data={data.mix!} random={random} level={level} clock={clock} />
           ) : spec.id === "contexts" ? (
-            <TezguinoGame key="contexts" data={data.contexts!} random={random} level={level} />
+            <TezguinoGame key="contexts" data={data.contexts!} random={random} level={level} clock={clock} />
           ) : (
-            <HotColdGame key="vectors" data={data.vectors!} random={random} level={level} />
+            <HotColdGame key="vectors" data={data.vectors!} random={random} level={level} clock={clock} />
           )}
         </>
       ) : null}

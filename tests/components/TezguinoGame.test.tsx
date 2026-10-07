@@ -6,9 +6,10 @@ import assert from "node:assert/strict";
 import { render, screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { COST, options, points, type TezguinoData } from "@/features/cold-read/contexts";
+import { SPEED_MAX, timed } from "@/features/cold-read/pace";
 import { shuffled } from "@/features/cold-read/rules";
 import { TezguinoGame } from "@/features/cold-read/TezguinoGame";
-import { json, noExamples, zero } from "./coldReadData";
+import { json, noExamples, still, zero } from "./coldReadData";
 
 const data = json<TezguinoData>("tezguino.json");
 const order = shuffled(data.words.map((_, i) => i), zero);
@@ -23,7 +24,7 @@ beforeEach(() => {
 
 async function started() {
   const user = userEvent.setup();
-  render(<TezguinoGame data={data} random={zero} />);
+  render(<TezguinoGame data={data} random={zero} clock={still} />);
   await user.click(screen.getByRole("button", { name: "Hide the first word" }));
   return user;
 }
@@ -37,7 +38,7 @@ test("the word starts as its ±1 row by raw count, its length hidden, and the pi
   assert.deepEqual(shown(), hidden.rows.counts["1"].map(([c]) => c));
   const picks = within(screen.getByRole("complementary", { name: "Pick the word" })).getAllByRole("button", { name: /^\d/ });
   assert.deepEqual(picks.map((b) => b.textContent!.slice(1)), four.map((i) => data.words[i].w));
-  assert.equal(worth(), "1,000");
+  assert.equal(worth(), timed(1000, SPEED_MAX).toLocaleString("en"));
 });
 
 test("a wider window, PPMI and a peek each cost what they say", async () => {
@@ -50,18 +51,18 @@ test("a wider window, PPMI and a peek each cost what they say", async () => {
   await user.click(screen.getByRole("button", { name: /Peek at a sentence/ }));
   assert.equal(document.querySelectorAll(".cr-sentence").length, 1);
   assert.ok(document.querySelector(".cr-blackout"), "the peeked sentence hides the word");
-  assert.equal(worth(), (1000 - 2 * COST.window - COST.ppmi - COST.peek).toLocaleString("en"), "narrowing again refunds nothing");
+  assert.equal(worth(), timed(1000 - 2 * COST.window - COST.ppmi - COST.peek, SPEED_MAX).toLocaleString("en"), "narrowing again refunds nothing");
 });
 
 test("the right pick scores, reveals the word in its sentences and compares the weights", async () => {
   const user = await started();
   await user.click(screen.getByRole("button", { name: /^PPMI/ }));
   await user.keyboard(String(four.indexOf(order[0]) + 1));
-  assert.match(screen.getByText(/^Right/).textContent!, new RegExp(`\\+${points(COST.ppmi, 1)}`));
+  assert.match(screen.getByText(/^Right/).textContent!, new RegExp(`\\+${timed(points(COST.ppmi, 1), SPEED_MAX).toLocaleString("en")} `));
   assert.equal(document.querySelectorAll(".cr-sentence mark").length >= 3, true);
   assert.ok(screen.getByText("Same word, two weightings"));
   assert.equal(document.activeElement?.textContent, "Next word");
-  assert.equal(localStorage.getItem("cold-read:best4"), String(points(COST.ppmi, 1)));
+  assert.equal(localStorage.getItem("cold-read:best4"), String(timed(points(COST.ppmi, 1), SPEED_MAX)));
 });
 
 test("three wrong picks end the run", async () => {
@@ -86,7 +87,7 @@ test("two right picks in a row pay the ×2 streak", async () => {
   };
   await pickAnswer(0);
   await user.click(screen.getByRole("button", { name: "Next word" }));
-  assert.equal(worth(), points(0, 2).toLocaleString("en"), "the next word shows what the streak will pay");
+  assert.equal(worth(), timed(points(0, 2), SPEED_MAX).toLocaleString("en"), "the next word shows what the streak will pay");
   await pickAnswer(1);
-  assert.equal(document.querySelector(".cr-score b")?.textContent, (points(0, 1) + points(0, 2)).toLocaleString("en"));
+  assert.equal(document.querySelector(".cr-score b")?.textContent, (timed(points(0, 1), SPEED_MAX) + timed(points(0, 2), SPEED_MAX)).toLocaleString("en"));
 });

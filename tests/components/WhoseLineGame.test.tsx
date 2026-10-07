@@ -7,8 +7,9 @@ import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { WhoseLineGame } from "@/features/cold-read/WhoseLineGame";
 import { type Answer, deal, gain, ratio, type WhoseLineData } from "@/features/cold-read/groups";
+import { SPEED_MAX, timed } from "@/features/cold-read/pace";
 import { shuffled } from "@/features/cold-read/rules";
-import { json, noExamples, zero } from "./coldReadData";
+import { json, noExamples, still, zero } from "./coldReadData";
 
 const data = json<WhoseLineData>("whose_line.json");
 const pair = data.pairs[shuffled(data.pairs.map((_, i) => i), zero)[0]];
@@ -22,7 +23,7 @@ beforeEach(() => {
 
 async function started() {
   const user = userEvent.setup();
-  render(<WhoseLineGame data={data} random={zero} />);
+  render(<WhoseLineGame data={data} random={zero} clock={still} />);
   await user.click(screen.getByRole("button", { name: "Start the first match" }));
   return user;
 }
@@ -36,8 +37,9 @@ test("eight right calls fill the plot and pay the growing streak", async () => {
   for (const [i, c] of hand.entries()) {
     assert.ok(screen.getByText(c.term.w, { selector: ".cr-term-word" }));
     await user.click(call(c.kind));
-    expected += gain(i + 1, false);
-    assert.match(screen.getByText(/^Right · \+/).textContent!, new RegExp(`\\+${gain(i + 1, false)}$`));
+    const got = timed(gain(i + 1, false), SPEED_MAX);
+    expected += got;
+    assert.match(screen.getByText(/^Right · \+/).textContent!, new RegExp(`\\+${got} \\(×1\\.50 speed\\)$`));
     await user.click(screen.getByRole("button", { name: i === hand.length - 1 ? "See the match" : "Next word" }));
   }
   assert.equal(score(), expected.toLocaleString("en"));
@@ -69,7 +71,7 @@ test("inspecting a word shows its pages and costs 50 of the call", async () => {
   await user.click(screen.getByRole("button", { name: /Inspect the pages/ }));
   assert.match(document.querySelector(".cr-inspect")!.textContent!, new RegExp(`On ${c.term.pa} of`));
   await user.click(call(c.kind));
-  assert.equal(score(), String(gain(1, true)));
+  assert.equal(score(), String(timed(gain(1, true), SPEED_MAX)));
 });
 
 test("three wrong calls end the run", async () => {

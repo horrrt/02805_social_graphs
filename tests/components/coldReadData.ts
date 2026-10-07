@@ -14,6 +14,9 @@ export function binary(name: string): ArrayBuffer {
 
 export const zero = () => 0;
 
+/** A stopped clock: every answer is instant, so the speed multiplier is ×1.5 (SPEED_MAX). */
+export const still = () => 0;
+
 // global-jsdom opens about:blank, which has no localStorage (and Node's own
 // needs a file); the games keep best scores there, so tests get an in-memory one.
 {

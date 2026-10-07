@@ -19,7 +19,7 @@ import type { TourStep } from "@/features/cold-read/Tutorial";
 import type { MixDeskData } from "@/features/cold-read/topics";
 import { type HotColdMeta, prepare } from "@/features/cold-read/vectors";
 import { WhoseLineGame } from "@/features/cold-read/WhoseLineGame";
-import { binary, json, noExamples, zero } from "./coldReadData";
+import { binary, json, noExamples, still, zero } from "./coldReadData";
 
 beforeEach(() => {
   localStorage.clear();
@@ -55,29 +55,29 @@ test("every round's start screen offers an example game, ticked by default", () 
 });
 
 test("the Clue Shop tour flips a common card that clears nobody, then a rare one that clears the board", async () => {
-  await walk(<ClueShopGame data={json<ClueShopData>("clue_shop.json")} random={zero} />, clueShopTour);
+  await walk(<ClueShopGame data={json<ClueShopData>("clue_shop.json")} random={zero} clock={still} />, clueShopTour);
   const count = Number(document.querySelector(".cr-count b")!.textContent);
   assert.equal(document.querySelectorAll('.cr-card[data-open="true"]').length, 2);
   assert.ok(count < 303, "the rare flip emptied the board");
 });
 
 test("the Whose Line tour", async () => {
-  await walk(<WhoseLineGame data={json<WhoseLineData>("whose_line.json")} random={zero} />, whoseLineTour);
+  await walk(<WhoseLineGame data={json<WhoseLineData>("whose_line.json")} random={zero} clock={still} />, whoseLineTour);
 });
 
 test("the Mix Desk tour puts three chips on the first topic", async () => {
-  await walk(<MixDeskGame data={json<MixDeskData>("mix_desk.json")} random={zero} />, mixDeskTour);
+  await walk(<MixDeskGame data={json<MixDeskData>("mix_desk.json")} random={zero} clock={still} />, mixDeskTour);
   assert.equal(document.querySelectorAll('.cr-topic[data-topic="0"] .cr-pips [data-on="true"]').length, 3);
 });
 
 test("the Tezgüino tour switches the row to PPMI", async () => {
-  await walk(<TezguinoGame data={json<TezguinoData>("tezguino.json")} random={zero} />, tezguinoTour);
+  await walk(<TezguinoGame data={json<TezguinoData>("tezguino.json")} random={zero} clock={still} />, tezguinoTour);
   assert.match(document.querySelector(".cr-board .cr-h")!.textContent!, /by PPMI/);
 });
 
 test("the Hot & Cold tour takes a hint that lands on the radar", async () => {
   const data = prepare(json<HotColdMeta>("hot_cold.json"), binary("hot_cold.bin"));
-  await walk(<HotColdGame data={data} random={zero} />, hotColdTour);
+  await walk(<HotColdGame data={data} random={zero} clock={still} />, hotColdTour);
   assert.equal(document.querySelectorAll(".cr-blip").length, 1);
 });
 
@@ -86,11 +86,11 @@ test("unticking the example starts the round directly, and the choice is remembe
   const user = userEvent.setup();
   const data = json<ClueShopData>("clue_shop.json");
   localStorage.clear();
-  const first = render(<ClueShopGame data={data} random={zero} />);
+  const first = render(<ClueShopGame data={data} random={zero} clock={still} />);
   await user.click(document.querySelector<HTMLInputElement>(".cr-start-actions input")!);
   assert.equal(localStorage.getItem("cold-read:example:clue"), "0");
   first.unmount();
-  render(<ClueShopGame data={data} random={zero} />);
+  render(<ClueShopGame data={data} random={zero} clock={still} />);
   await act(async () => {});
   assert.equal(document.querySelector<HTMLInputElement>(".cr-start-actions input")!.checked, false, "remembered");
   await user.click(document.querySelector<HTMLButtonElement>(".cr-start-actions .cr-go")!);

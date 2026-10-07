@@ -10,10 +10,11 @@ import { type CampaignData, CampaignGame } from "@/features/cold-read/CampaignGa
 import type { TezguinoData } from "@/features/cold-read/contexts";
 import type { WhoseLineData } from "@/features/cold-read/groups";
 import { afterSkip, LEVELS, SKIP_COST } from "@/features/cold-read/levels";
-import { type ClueShopData, points, shuffled } from "@/features/cold-read/rules";
+import { boldness, SPEED_MAX, timed } from "@/features/cold-read/pace";
+import { type ClueShopData, pagesWithAll, points, shuffled } from "@/features/cold-read/rules";
 import type { MixDeskData } from "@/features/cold-read/topics";
 import { type HotColdMeta, prepare } from "@/features/cold-read/vectors";
-import { binary, json, noExamples, zero } from "./coldReadData";
+import { binary, json, noExamples, still, zero } from "./coldReadData";
 
 const data: CampaignData = {
   clue: json<ClueShopData>("clue_shop.json"),
@@ -30,7 +31,7 @@ beforeEach(() => {
 
 async function begun() {
   const user = userEvent.setup();
-  render(<CampaignGame data={data} random={zero} />);
+  render(<CampaignGame data={data} random={zero} clock={still} />);
   await user.click(screen.getByRole("button", { name: "Start the campaign" }));
   return user;
 }
@@ -79,7 +80,8 @@ test("a cleared level carries its points, and a later skip costs 500 of them", a
       .getAllByRole("listitem")
       .find((li) => li.textContent!.includes(answer))!;
     await user.click(within(lead).getByRole("button", { name: "Name it" }));
-    earned += points(0, false, page + 1);
+    const deck = shuffled(clue.rounds[order[page]].normal, zero);
+    earned += timed(points(0, false, page + 1) + boldness(pagesWithAll(clue, deck.map((c) => c.w)), false), SPEED_MAX);
     await user.click(screen.getByRole("button", { name: page + 1 < LEVELS[0].items ? "Next page" : "Finish level" }));
   }
   assert.equal(total(), earned);
@@ -106,7 +108,7 @@ test("five skips finish the campaign at 0, and the summary lists every level", a
 
 test("a level waits for its data", async () => {
   const user = userEvent.setup();
-  render(<CampaignGame data={{ ...data, clue: undefined }} random={zero} />);
+  render(<CampaignGame data={{ ...data, clue: undefined }} random={zero} clock={still} />);
   await user.click(screen.getByRole("button", { name: "Start the campaign" }));
   assert.ok(screen.getByText("Loading this level…"));
   assert.ok(skip(), "a level that never loads can still be skipped");
@@ -114,7 +116,7 @@ test("a level waits for its data", async () => {
 
 test("hard mode is chosen once, at the start, and level 1 deals without names", async () => {
   const user = userEvent.setup();
-  render(<CampaignGame data={data} random={zero} />);
+  render(<CampaignGame data={data} random={zero} clock={still} />);
   await user.click(screen.getByRole("checkbox", { name: /Hard mode/ }));
   await user.click(screen.getByRole("button", { name: "Start the campaign" }));
   assert.equal(screen.queryByRole("checkbox", { name: /Hard mode/ }), null, "no toggle inside the level");
@@ -136,7 +138,8 @@ test("the round's score counts the campaign, and a skip banks the level's points
   const answer = clue.pages[clue.rounds[order[0]].page].name;
   const lead = within(screen.getByRole("complementary", { name: "Leads" })).getAllByRole("listitem").find((li) => li.textContent!.includes(answer))!;
   await user.click(within(lead).getByRole("button", { name: "Name it" }));
-  const earned = points(0, false, 1);
+  const deck = shuffled(clue.rounds[order[0]].normal, zero);
+  const earned = timed(points(0, false, 1) + boldness(pagesWithAll(clue, deck.map((c) => c.w)), false), SPEED_MAX);
   assert.equal(total(), earned, "the scoreboard shows the campaign's 0 plus the level's points");
   await user.click(skip());
   assert.equal(total(), afterSkip(earned));

@@ -2427,6 +2427,47 @@ body.cold-read:fullscreen {
   margin-bottom: 12px;
 }
 
+/* ---------- the clock ---------- */
+
+.cr-ticker {
+  min-width: 96px;
+}
+
+.cr-ticker b {
+  font-variant-numeric: tabular-nums;
+}
+
+.cr-ticker-bar {
+  display: block;
+  height: 4px;
+  margin-top: 4px;
+  border-radius: 2px;
+  background: rgba(255, 255, 255, 0.15);
+  overflow: hidden;
+}
+
+.cr-ticker-bar span {
+  display: block;
+  height: 100%;
+  background: var(--access);
+  transition: width 0.1s linear;
+}
+
+.cr-ticker[data-urgent="true"] b {
+  color: var(--loss);
+  animation: cr-tick 1s ease-in-out infinite;
+}
+
+.cr-ticker[data-urgent="true"] .cr-ticker-bar span {
+  background: var(--loss);
+}
+
+.cr-worth small {
+  margin-left: 6px;
+  font-size: var(--fs-caption);
+  color: var(--ink-mute-text);
+}
+
 @keyframes cr-bump {
   0% {
     transform: scale(1.35);
@@ -2464,6 +2505,16 @@ body.cold-read:fullscreen {
   100% {
     opacity: 0;
     r: 18;
+  }
+}
+
+@keyframes cr-tick {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.18);
   }
 }
 

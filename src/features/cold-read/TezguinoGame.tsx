@@ -6,6 +6,7 @@
 import { Fragment, useEffect, useRef, useState } from "react";
 import { COST, type HiddenWord, LIVES, MAX_STREAK, options, pieces, points, type Row, spent, type TezguinoData, type Weight } from "./contexts";
 import { ScoreBox, SkipLevel } from "./LevelParts";
+import { LIMIT, speed, Ticker, timed, useCountdown } from "./pace";
 import { tezguinoTour } from "./tours";
 import { StartButtons, useTour } from "./Tutorial";
 import { FINISH, type Level } from "./levels";
@@ -42,8 +43,8 @@ export function Intro() {
         with the word blacked out (−{COST.peek}).
       </li>
       <li>
-        <b>Pick</b> the word from four, with keys 1 to 4. Words in a row multiply the score up to ×{MAX_STREAK}; a wrong pick costs one of {LIVES}{" "}
-        lives.
+        <b>Pick</b> the word from four, keys 1 to 4, before the {LIMIT.contexts}-second clock runs out. Fewer tools and a quicker pick pay more; a wrong
+        pick, or the clock, costs one of {LIVES} lives.
       </li>
     </ol>
   );
@@ -80,7 +81,12 @@ function Sentence({ text, word }: { text: string; word: string | null }) {
   );
 }
 
-export function TezguinoGame({ data, random = Math.random, level }: { data: TezguinoData; random?: () => number; level?: Level }) {
+export function TezguinoGame({ data, random = Math.random, level, clock = Date.now }: {
+  data: TezguinoData; random?: () => number; level?: Level; clock?: () => number;
+}) {
+  const [dealt, setDealt] = useState(0);
+  const [factor, setFactor] = useState(1);
+  const [timeUp, setTimeUp] = useState(false);
   const [phase, setPhase] = useState<Phase>("intro");
   const [order, setOrder] = useState<number[]>([]);
   const [at, setAt] = useState(0);
@@ -129,6 +135,8 @@ export function TezguinoGame({ data, random = Math.random, level }: { data: Tezg
     setPpmi(false);
     setPeeks(0);
     setPicked(null);
+    setDealt((d) => d + 1);
+    setTimeUp(false);
     setPhase("play");
   };
 
@@ -153,13 +161,17 @@ export function TezguinoGame({ data, random = Math.random, level }: { data: Tezg
     setWeight("ppmi");
   };
 
+  // A right pick scores what the tools left of 1,000, times the streak and the speed. -1 is the clock running out.
   const pick = (i: number) => {
     if (!hidden || phase !== "play") return;
+    const f = speed(pace.stop(), LIMIT.contexts);
+    setFactor(f);
+    setTimeUp(i === -1);
     setPicked(i);
     const right = i === order[at % order.length];
     if (right) {
       const run = streak + 1;
-      const got = points(cost, run);
+      const got = timed(points(cost, run), f);
       const total = score + got;
       setStreak(run);
       setScore(total);
@@ -180,12 +192,15 @@ export function TezguinoGame({ data, random = Math.random, level }: { data: Tezg
   };
 
   const answered = phase === "answered" || phase === "over";
+  const pace = useCountdown(LIMIT.contexts, phase === "play", dealt, () => pick(-1), clock);
+  const now = speed(pace.elapsed, LIMIT.contexts);
   const right = picked !== null && hidden !== null && picked === order[at % order.length];
 
   return (
     <section className="cr-table" id="tezguino" aria-label="Tezgüino">
       <div className="cr-hud" role="status">
         <ScoreBox points={score} level={level} />
+        <Ticker countdown={pace} limitS={LIMIT.contexts} active={phase === "play"} />
         <span className="cr-box">
           <small>Streak</small>
           <b data-hot={(phase === "play" ? nextStreak : streak) > 1}>×{Math.max(1, Math.min(phase === "play" ? nextStreak : streak, MAX_STREAK))}</b>
@@ -235,7 +250,7 @@ export function TezguinoGame({ data, random = Math.random, level }: { data: Tezg
             </span>
             {phase === "play" ? (
               <span className="cr-worth">
-                Pick it now for <b>{points(cost, nextStreak).toLocaleString("en")}</b>
+                Pick it now for <b>{timed(points(cost, nextStreak), now).toLocaleString("en")}</b>
               </span>
             ) : null}
           </div>
@@ -306,7 +321,7 @@ export function TezguinoGame({ data, random = Math.random, level }: { data: Tezg
           {answered ? (
             <div className="cr-result" data-won={right}>
               <div className="cr-case">
-                <p className="cr-stamp">{right ? `Right · +${gained.toLocaleString("en")}` : "Wrong · −1 life"}</p>
+                <p className="cr-stamp">{right ? `Right · +${gained.toLocaleString("en")} (×${factor.toFixed(2)} speed)` : timeUp ? "Time's up · −1 life" : "Wrong · −1 life"}</p>
                 <p className="cr-verdict">{hidden.w}</p>
                 {phase === "over" ? (
                   <div className="cr-over">

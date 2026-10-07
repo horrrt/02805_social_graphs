@@ -4,6 +4,7 @@
 // have produced it. Rules live in topics.ts; this file renders them.
 import { useEffect, useRef, useState } from "react";
 import { ScoreBox, SkipLevel } from "./LevelParts";
+import { LIMIT, speed, Ticker, timed, useCountdown } from "./pace";
 import { mixDeskTour } from "./tours";
 import { StartButtons, useTour } from "./Tutorial";
 import { FINISH, type Level } from "./levels";
@@ -43,14 +44,17 @@ export function Intro() {
         chip.
       </li>
       <li>
-        <b>Name</b> the topics as you go. The model only gives word lists; the names are yours. {PAGES_PER_RUN} pages make a run.
+        <b>Lock in</b> before the {LIMIT.mix}-second clock runs out: a quick read pays up to ×1.5, and at the buzzer the chips you placed are scored as
+        they stand. The topic names are yours to give.
       </li>
     </ol>
   );
 }
 
 
-export function MixDeskGame({ data, random = Math.random, level }: { data: MixDeskData; random?: () => number; level?: Level }) {
+export function MixDeskGame({ data, random = Math.random, level, clock = Date.now }: {
+  data: MixDeskData; random?: () => number; level?: Level; clock?: () => number;
+}) {
   const run = level?.items ?? PAGES_PER_RUN;
   const [phase, setPhase] = useState<Phase>("intro");
   const [order, setOrder] = useState<number[]>([]);
@@ -76,12 +80,16 @@ export function MixDeskGame({ data, random = Math.random, level }: { data: MixDe
   const placed = chips.reduce((a, b) => a + b, 0);
   const left = CHIPS - placed;
   const revealed = phase === "reveal" || phase === "done";
-  const got = page && revealed ? score(chips, page.theta) : 0;
+  // The last read: how close the mix was (graded), and the points it earned after speed.
+  const [read, setRead] = useState({ accuracy: 0, points: 0, factor: 1, timeUp: false });
+  const [dealt, setDealt] = useState(0);
+  const got = read.accuracy;
   const ideal = page ? bestChips(page.theta) : [];
 
   const deal = (n: number) => {
     setAt(n);
     setChips(Array(data.K).fill(0));
+    setDealt((d) => d + 1);
     setPhase("mix");
   };
 
@@ -103,9 +111,14 @@ export function MixDeskGame({ data, random = Math.random, level }: { data: MixDe
     });
   };
 
-  const lock = () => {
+  // The mix scores its closeness times the speed. At the buzzer it locks as it stands, and chips never placed count as misses.
+  const lock = (timeUp = false) => {
     if (!page) return;
-    const pts = score(chips, page.theta);
+    const placedNow = chips.reduce((a, b) => a + b, 0);
+    const accuracy = Math.round(score(chips, page.theta) * (placedNow / CHIPS));
+    const factor = speed(pace.stop(), LIMIT.mix);
+    const pts = timed(accuracy, factor);
+    setRead({ accuracy, points: pts, factor, timeUp });
     const sum = total + pts;
     setTotal(sum);
     setReads([...reads, pts]);
@@ -116,6 +129,8 @@ export function MixDeskGame({ data, random = Math.random, level }: { data: MixDe
     }
     setPhase(last ? "done" : "reveal");
   };
+
+  const pace = useCountdown(LIMIT.mix, phase === "mix", dealt, () => lock(true), clock);
 
   const rename = (k: number, v: string) => {
     const next = Array.from({ length: data.K }, (_, i) => (i === k ? v : (names[i] ?? "")));
@@ -129,6 +144,7 @@ export function MixDeskGame({ data, random = Math.random, level }: { data: MixDe
     <section className="cr-table" id="mix-desk" aria-label="Mix Desk">
       <div className="cr-hud" role="status">
         <ScoreBox points={total} level={level} />
+        <Ticker countdown={pace} limitS={LIMIT.mix} active={phase === "mix"} />
         <span className="cr-box">
           <small>Page</small>
           <b>
@@ -167,7 +183,8 @@ export function MixDeskGame({ data, random = Math.random, level }: { data: MixDe
               {revealed ? (
                 <>
                   <span className="cr-stamp" data-grade={got >= 700 ? "good" : got >= 500 ? "ok" : "bad"}>
-                    {grade(got)} · +{got}
+                    {read.timeUp ? "Time's up · " : ""}
+                    {grade(got)} · +{read.points} (×{read.factor.toFixed(2)} speed)
                   </span>
                   <button
                     ref={nextBtn}
@@ -188,7 +205,7 @@ export function MixDeskGame({ data, random = Math.random, level }: { data: MixDe
                       {left} {left === 1 ? "chip" : "chips"} left
                     </small>
                   </span>
-                  <button type="button" className="cr-go" onClick={lock} disabled={left > 0}>
+                  <button type="button" className="cr-go" onClick={() => lock()} disabled={left > 0}>
                     Lock in the mix
                   </button>
                 </>
