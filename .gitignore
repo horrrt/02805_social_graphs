@@ -9,6 +9,8 @@ __pycache__/
 # Local scratch: course materials and generated verification artifacts
 .playwright-cli/
 materials/
+# ...but not the toolbox's teaching materials by topic
+!project/materials/
 output/
 build/
 .playwright-mcp/
@@ -34,3 +36,5 @@ ds-bundle/
 .design-sync/node_modules
 .design-sync/pkg/gen/
 .design-sync/pkg/types/
+
+.wiki-cache.json
