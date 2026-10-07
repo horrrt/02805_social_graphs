@@ -135,10 +135,11 @@ saved progress.
   title and stylesheet imports; `page.tsx` under the route's folder holds the
   markup. Every page is its own group because the pages differ in body class and
   stylesheets, so moving between pages is a full page load.
-- **Chart code.** `src/scripts/` holds plain ES modules that draw into the
-  markup. `src/components/PageScripts.tsx` imports a page's entry module,
-  `src/scripts/entries/<page>.js`, once React has hydrated the page, so a script
-  never races React for the DOM.
+- **Chart code.** React components in `src/features/` render every page's
+  interactive parts and draw its charts after hydration. `src/scripts/` holds
+  plain ES modules they import: models, data helpers and drawing code. Nothing
+  loads a script on its own; the old entry loader (`src/scripts/entries/` and
+  `PageScripts.tsx`) is gone.
 - **Styles.** Stylesheets live in `src/styles/` and fonts in `src/fonts/`. Next
   bundles both and names every file by its content hash, so a deploy cannot serve
   one version's code with another version's markup.

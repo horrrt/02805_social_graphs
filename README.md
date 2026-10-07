@@ -34,10 +34,10 @@ data has loaded, and a failing island leaves the rest of the page alone.
 Page-wide state lives in small module stores; data, vendored libraries,
 charts, canvases and listeners go through the hooks in `src/lib/`. The rules,
 recipes and checks every change follows are in
-[src/lib/README.md](src/lib/README.md). Until a page converts, its old
-scripts still run from `src/scripts/entries/` through `PageScripts`; both are
-legacy and go once every page has converted. Links stay plain `<a href>`, so
-each page loads fresh.
+[src/lib/README.md](src/lib/README.md). Every page has converted, and the old
+script loader (`src/scripts/entries/` and `PageScripts`) is gone: a script
+runs only when a component imports it. Links stay plain `<a href>`, so each
+page loads fresh.
 
 See the [development and data reference](project/DEVELOPMENT.md) for setup and
 reproduction, the [migration questions](project/MIGRATION_QUESTIONS.md) and
