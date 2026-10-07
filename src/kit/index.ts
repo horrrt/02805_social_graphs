@@ -35,6 +35,15 @@ export type { AnalogyPoints } from "./AnalogyPlot";
 export { default as GuessRanker } from "./GuessRanker";
 export type { GuessItem, Scores } from "./GuessRanker";
 
+// Networks: a canvas network for big graphs, a player that steps a process,
+// a row of readouts. Their models and measures are in ./graph-core.js.
+export { default as NetCanvas } from "./NetCanvas";
+export type { CanvasLink, CanvasNode, NetCanvasSpec, NodeState, Point } from "./NetCanvas";
+export { default as StepPlayer, useStepper } from "./StepPlayer";
+export type { Rng, StepAction, Stepper, StepperOptions } from "./StepPlayer";
+export { default as Readouts } from "./Readouts";
+export type { ReadoutItem } from "./Readouts";
+
 // Text: tokens, contributions, search results and method comparisons for the
 // language weeks. Their methods are DOM-free in text-core.js.
 export { default as TaggedTokens } from "./TaggedTokens";

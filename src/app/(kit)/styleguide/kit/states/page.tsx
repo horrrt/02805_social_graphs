@@ -1,6 +1,7 @@
 import { PostSection } from "@/components/post/PostSection";
 import { SiteFooter } from "@/components/site/SiteFooter";
 import { KitState } from "@/features/kit-page/states";
+import { KitStateNetworks } from "@/features/kit-page/states-networks";
 import { TextState } from "@/features/kit-page/states-text";
 import { DistState } from "@/features/kit-page/states-distributions";
 
@@ -171,6 +172,53 @@ export default function Page() {
           <h3>Text without its phrase</h3>
           <KitState state="term-missing" />
         </PostSection>
+        {/* ==== Kit: networks ==== */}
+        <PostSection id="state-networks">
+          <h2>Network explorables</h2>
+          <div className="w4-two">
+            <div>
+              <h3>NetCanvas: no nodes</h3>
+              <KitStateNetworks state="nw-canvas-empty" />
+            </div>
+            <div>
+              <h3>NetCanvas: one node with no position</h3>
+              <KitStateNetworks state="nw-canvas-one" />
+            </div>
+          </div>
+          <div className="w4-two">
+            <div>
+              <h3>NetCanvas: 2,000 nodes in a half-width column</h3>
+              <KitStateNetworks state="nw-canvas-big" />
+            </div>
+            <div>
+              <h3>NetCanvas: directed, a self-loop, equal values, every state, a missing end</h3>
+              <KitStateNetworks state="nw-canvas-loop" />
+            </div>
+          </div>
+          <h3>NetCanvas: four small multiples, one empty with a long title</h3>
+          <KitStateNetworks state="nw-canvas-multiples" />
+          <div className="w4-two">
+            <div>
+              <h3>NetCanvas: no specs</h3>
+              <KitStateNetworks state="nw-canvas-none" />
+            </div>
+            <div>
+              <h3>StepPlayer: done before the first step</h3>
+              <KitStateNetworks state="nw-player-done" />
+            </div>
+          </div>
+          <div className="w4-two">
+            <div>
+              <h3>NetworkView: every addition, all values equal</h3>
+              <KitStateNetworks state="nw-view-all" />
+            </div>
+            <div>
+              <h3>Readouts: long labels and eight items</h3>
+              <KitStateNetworks state="nw-readouts-long" />
+            </div>
+          </div>
+        </PostSection>
+        {/* ==== end Kit: networks ==== */}
         {/* ==== Kit batch D: Text ==== */}
         <PostSection id="state-text">
           <h2>Text</h2>

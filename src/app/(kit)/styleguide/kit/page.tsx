@@ -1,6 +1,7 @@
 import { PostSection } from "@/components/post/PostSection";
 import { SiteFooter } from "@/components/site/SiteFooter";
 import { Demo } from "@/features/kit-page/demos";
+import { DemoNetworks } from "@/features/kit-page/demos-networks";
 import { TextDemo } from "@/features/kit-page/demos-text";
 import { DistDemo } from "@/features/kit-page/demos-distributions";
 
@@ -126,6 +127,31 @@ export default function Page() {
             </div>
           </div>
         </PostSection>
+        {/* ==== Kit: networks ==== */}
+        <PostSection id="demo-networks">
+          <h2>Network explorables</h2>
+          <p className="sub">
+            Five pieces for the network weeks, from src/kit on toy and textbook graphs: NetCanvas, StepPlayer and
+            Readouts, NetworkView's additions, and the seeded models in graph-core.js. Same seed, same run.
+          </p>
+          <h3>Preferential attachment: StepPlayer, NetCanvas and Readouts</h3>
+          <DemoNetworks demo="nw-ba" />
+          <div className="w4-two">
+            <div>
+              <h3>Breadth-first search on a ring with shortcuts</h3>
+              <DemoNetworks demo="nw-bfs" />
+            </div>
+            <div>
+              <h3>Watts–Strogatz: rewire the ring</h3>
+              <DemoNetworks demo="nw-ws" />
+            </div>
+          </div>
+          <h3>Louvain, one move at a time, on the karate club</h3>
+          <DemoNetworks demo="nw-louvain" />
+          <h3>Krackhardt&apos;s kite: size by a centrality, click to take someone out</h3>
+          <DemoNetworks demo="nw-kite" />
+        </PostSection>
+        {/* ==== end Kit: networks ==== */}
         {/* ==== Kit batch D: Text ==== */}
         <PostSection id="demo-text">
           <h2>Text: tokens, contributions, search and methods side by side</h2>
