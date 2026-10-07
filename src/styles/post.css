@@ -3015,3 +3015,57 @@
 .corridor .kit-guess-board li.kit-target .kit-seg { background: var(--people); }
 .corridor .kit-guess-board em { color: var(--people); font-size: var(--fs-caption); font-style: normal; font-weight: 700; }
 .corridor .kit-guess-win { background: var(--good-soft); border: 1px solid var(--good-line); border-radius: 8px; color: var(--good); font-weight: 700; margin: 10px 0 0; padding: 8px 12px; }
+
+/* ==== Kit: distributions and nulls (DistributionPlot, NullHistogram, NullBoard,
+   NullBars in src/kit). Light corridor style; every control takes the house
+   focus ring. ==== */
+.corridor .kit-seg-label { color: var(--ink-soft); font-size: var(--fs-small); font-weight: 600; }
+.corridor .kit-btn { background: var(--card); border: 1px solid var(--w4-accent); border-radius: 6px; color: var(--w4-accent); cursor: pointer; font: inherit; font-size: var(--fs-small); font-weight: 600; padding: 3px 12px; }
+.corridor .kit-btn:hover:not(:disabled) { background: var(--w4-accent-soft); }
+.corridor .kit-btn:disabled { cursor: not-allowed; opacity: 0.5; }
+.corridor .kit-swatch-line, .corridor .kit-swatch-dash { background: none; border-radius: 0; border-top: 2px solid currentColor; height: 0; width: 16px; }
+.corridor .kit-swatch-dash { border-top-style: dashed; }
+.corridor .kit-swatch-dot { border-radius: 50%; }
+.corridor .kit-swatch-band { opacity: 0.35; width: 16px; }
+
+/* DistributionPlot: the plot, and the ranked list beside it when there is one. */
+.corridor .kit-dist-body { display: grid; gap: 20px; grid-template-columns: minmax(0, 1fr); }
+.corridor .kit-dist-body.kit-dist-with-top { grid-template-columns: minmax(0, 1fr) minmax(0, 15em); }
+.corridor .kit-dist-plot { min-width: 0; }
+.corridor .kit-dist-top h4 { color: var(--ink-soft); font-size: var(--fs-caption); letter-spacing: 0.04em; margin: 0 0 6px; text-transform: uppercase; }
+.corridor .kit-dist-top ol { list-style: decimal; margin: 0; padding-left: 1.6em; }
+.corridor .kit-dist-top li { color: var(--ink-mute-text); font-size: var(--fs-small); padding: 2px 0; }
+.corridor .kit-dist-top li > span { display: inline-block; vertical-align: bottom; }
+.corridor .kit-dist-top .kit-word { max-width: calc(100% - 4em); }
+.corridor .kit-dist-top .kit-num { font-weight: 700; margin-left: 6px; }
+
+/* NullHistogram: readouts read smaller than VectorAngle's, six in a row. */
+.corridor .kit-nullhist .kit-readouts dd { font-size: var(--fs-strong); }
+.corridor .kit-nullhist .kit-readouts small { color: var(--ink-mute-text); font-size: var(--fs-caption); font-weight: 400; }
+
+/* NullBoard: a grid of panels, then the verdict table. */
+.corridor .kit-board-grid { align-items: stretch; display: grid; gap: 8px; }
+.corridor .kit-board-head { align-self: end; color: var(--ink-soft); font-size: var(--fs-caption); font-weight: 700; letter-spacing: 0.04em; overflow-wrap: anywhere; text-transform: uppercase; }
+.corridor .kit-board-measure { align-self: center; color: var(--ink); font-size: var(--fs-small); font-weight: 600; overflow-wrap: anywhere; }
+.corridor .kit-board-panel { background: var(--card); border: 1px solid var(--line); border-radius: 8px; border-top-width: 3px; min-width: 0; padding: 6px 8px 2px; }
+.corridor .kit-board-panel > b { display: block; font-size: var(--fs-small); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.corridor .kit-board-panel > b small { color: var(--ink-mute-text); font-size: var(--fs-caption); font-weight: 400; margin-left: 6px; }
+.corridor .kit-board-panel.kit-on { background: var(--w4-inset); box-shadow: 0 0 0 1px var(--w4-accent); }
+.corridor .kit-board-panel:focus-visible { outline: 2px solid var(--w4-accent); outline-offset: 2px; }
+.corridor .kit-board-none { background: none; border-style: dashed; border-top-width: 1px; }
+.corridor .kit-board-table { border-collapse: collapse; font-size: var(--fs-small); margin: 16px 0 0; table-layout: fixed; width: 100%; }
+.corridor .kit-board-table caption { caption-side: bottom; color: var(--ink-mute-text); font-size: var(--fs-caption); padding-top: 6px; text-align: left; }
+.corridor .kit-board-table th { border-bottom: 1px solid var(--line); color: var(--ink-mute-text); font-size: var(--fs-caption); font-weight: 600; padding: 4px 6px; text-align: left; }
+.corridor .kit-board-table td { border-bottom: 1px solid var(--line-soft); overflow-wrap: break-word; padding: 4px 6px; }
+.corridor .kit-board-table :is(th, td).num { font-variant-numeric: tabular-nums; text-align: right; }
+.corridor .kit-board-table tr.kit-on td { background: var(--w4-inset); box-shadow: inset 0 -1px 0 var(--w4-accent); }
+.corridor .kit-verdict { font-weight: 700; }
+.corridor .kit-verdict-survives { color: var(--good); }
+.corridor .kit-verdict-dies { color: var(--bad); }
+.corridor .kit-verdict-fixed { color: var(--ink-mute-text); font-style: italic; }
+.corridor .kit-board-table col.kit-board-c-measure { width: 20%; }
+.corridor .kit-board-table col.kit-board-c-model { width: 16%; }
+.corridor .kit-board-table col.kit-board-c-num { width: 10%; }
+.corridor .kit-board-table col.kit-board-c-null { width: 18%; }
+.corridor .kit-board-table col.kit-board-c-verdict { width: 16%; }
+.corridor main .kit-board-table :is(th, td).num { white-space: normal; }

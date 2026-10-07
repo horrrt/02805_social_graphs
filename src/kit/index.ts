@@ -34,3 +34,13 @@ export { default as AnalogyPlot } from "./AnalogyPlot";
 export type { AnalogyPoints } from "./AnalogyPlot";
 export { default as GuessRanker } from "./GuessRanker";
 export type { GuessItem, Scores } from "./GuessRanker";
+
+// ---- Distributions and nulls (dist-core.js holds the numbers; import it directly)
+export { default as DistributionPlot } from "./DistributionPlot";
+export type { AxisScale, DistSeries, DistView, Envelope, RefCurve, TopList } from "./DistributionPlot";
+export { default as NullHistogram } from "./NullHistogram";
+export { default as NullBoard } from "./NullBoard";
+export type { BoardAxis, BoardCell } from "./NullBoard";
+export type { Verdict } from "./nullBits";
+export { default as NullBars } from "./NullBars";
+export type { NullBarRow } from "./NullBars";

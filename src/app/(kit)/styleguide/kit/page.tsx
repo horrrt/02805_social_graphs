@@ -1,6 +1,7 @@
 import { PostSection } from "@/components/post/PostSection";
 import { SiteFooter } from "@/components/site/SiteFooter";
 import { Demo } from "@/features/kit-page/demos";
+import { DistDemo } from "@/features/kit-page/demos-distributions";
 
 export default function Page() {
   return (
@@ -124,6 +125,33 @@ export default function Page() {
             </div>
           </div>
         </PostSection>
+        {/* ==== Kit: distributions and nulls ==== */}
+        <PostSection id="demo-distributions">
+          <h2>Distributions and nulls</h2>
+          <p className="sub">
+            Four pieces for degree distributions and null models, from src/kit with toy numbers drawn by a seeded
+            generator. The numbers behind them are in src/kit/dist-core.js.
+          </p>
+          <h3>DistributionPlot: degrees against the Poisson of the same mean</h3>
+          <DistDemo demo="dist-degree" />
+          <div className="w4-two">
+            <div>
+              <h3>DistributionPlot: an ideal Zipf curve against toy word counts</h3>
+              <DistDemo demo="dist-zipf" />
+            </div>
+            <div>
+              <h3>DistributionPlot: one run against the spread of forty</h3>
+              <DistDemo demo="dist-ba" />
+            </div>
+          </div>
+          <h3>NullHistogram: a shuffle test, one shuffle at a time</h3>
+          <DistDemo demo="dist-shuffle" />
+          <h3>NullBoard: which measures survive which null model</h3>
+          <DistDemo demo="dist-board" />
+          <h3>NullBars: links by type against a label shuffle</h3>
+          <DistDemo demo="dist-links" />
+        </PostSection>
+        {/* ==== end Kit: distributions and nulls ==== */}
       </main>
       <SiteFooter>
         <span>
