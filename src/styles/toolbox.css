@@ -173,7 +173,9 @@ body.toolbox {
 }
 
 .tb-examples {
-  columns: 3 280px;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 14px;
   margin: 0;
   padding: 0;
   list-style: none;
@@ -181,14 +183,150 @@ body.toolbox {
 }
 
 .tb-examples li {
-  break-inside: avoid;
-  padding: 3px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.tb-examples a {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  text-decoration: none;
+}
+
+.tb-ex-title {
+  font-weight: 600;
+  text-decoration: underline;
 }
 
 .tb-examples .tb-tags {
   display: block;
 }
 
+/* Pictures: a fixed box whether or not the picture loads, so rows and cards line up. */
+.tb-thumb {
+  display: block;
+  overflow: hidden;
+  border-radius: 6px;
+  background: #ececec;
+}
+
+.tb-thumb[data-size="s"] {
+  width: 96px;
+  height: 64px;
+}
+
+.tb-thumb[data-size="card"] {
+  width: 100%;
+  aspect-ratio: 3 / 2;
+}
+
+.tb-thumb img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: top;
+}
+
 .tb .tb-more {
   margin: 12px 0;
+}
+
+/* ---------- gallery view: big pictures, details on hover ---------- */
+
+.tb-tabs {
+  align-items: center;
+}
+
+.tb-view {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+  margin-left: auto;
+}
+
+.tb-view .tb-label {
+  min-width: 0;
+}
+
+.tb-gallery {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 14px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.tb-card {
+  position: relative;
+  aspect-ratio: 4 / 3;
+  overflow: hidden;
+  border-radius: 10px;
+  background: #e6e6e6;
+}
+
+.tb-card img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: top;
+  transition: transform 0.25s;
+}
+
+.tb-card:hover img {
+  transform: scale(1.03);
+}
+
+.tb-overlay {
+  position: absolute;
+  inset: auto 0 0;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  max-height: 100%;
+  overflow: hidden;
+  padding: 26px 12px 10px;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.82) 60%, rgba(0, 0, 0, 0));
+  color: #fff;
+  font-size: var(--fs-caption);
+  line-height: var(--lh-caption);
+  opacity: 0;
+  transition: opacity 0.18s;
+}
+
+.tb-card:hover .tb-overlay,
+.tb-card:focus-within .tb-overlay,
+.tb-card[data-picture="false"] .tb-overlay {
+  opacity: 1;
+}
+
+.tb-card[data-picture="false"] .tb-overlay {
+  inset: 0;
+  justify-content: flex-end;
+  background: #e6e6e6;
+  color: #1a1a1a;
+}
+
+.tb-card-title {
+  font-size: var(--fs-small);
+  font-weight: 700;
+}
+
+.tb-overlay a {
+  color: inherit;
+}
+
+.tb-card-meta {
+  opacity: 0.8;
+}
+
+.tb-card-text {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }

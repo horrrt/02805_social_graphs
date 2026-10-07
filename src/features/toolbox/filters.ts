@@ -7,12 +7,16 @@ export type Concept = { id: string; label: string; group: "networks" | "text" | 
 export type Week = { n: number; title: string; c: string[] };
 export type Game = {
   name: string; list: string; rank: number; year: number | null; loop: string; build: string; teach: string; star: boolean; c: string[];
-  wiki: string | null; link: { label: string; url: string } | null;
+  wiki: string | null; link: { label: string; url: string } | null; img: string | null; play: string | null;
 };
 export type Topic = { slug: string; title: string; note: string; week: number; c: string[] };
-export type Material = { topic: string; rank: number; name: string; type: string; by: string; why: string; free: string; url: string; c: string[] };
-export type Component = { name: string; kind: string; what: string; where: string; seen_at: string | null; week: number | null; concepts: string[] };
-export type Example = { title: string; cat: string; url: string; c: string[] };
+export type Material = {
+  topic: string; rank: number; name: string; type: string; by: string; why: string; free: string; url: string; c: string[]; img: string | null;
+};
+export type Component = {
+  name: string; kind: string; what: string; where: string; seen_at: string | null; week: number | null; concepts: string[]; img: string | null;
+};
+export type Example = { title: string; cat: string; url: string; c: string[]; img: string | null };
 export type Library = {
   name: string; slug: string; site: string; gallery: string; version_in_repo: string | null; what_for: string; note: string; examples: Example[];
 };

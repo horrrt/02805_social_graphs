@@ -6,6 +6,8 @@ Reads
   project/materials/NN-*.md         up to 20 essential materials per course topic
   project/toolbox/components.json   our kit components, week charts, games and the course's explorables
   project/toolbox/libraries.json    ECharts, Recharts, D3, globe.gl and the rest, with their gallery examples
+  project/toolbox/images.json       a picture for each material and example (scripts/toolbox_images.py)
+  project/toolbox/shots.json        a screenshot for each of our components (scripts/toolbox_shots.mjs)
 Writes
   public/toolbox/data/toolbox.json
 
@@ -102,6 +104,15 @@ def read_json(path, default):
     return json.loads(path.read_text()) if path.exists() else default
 
 
+IMAGES = read_json(ROOT / "project/toolbox/images.json", {})
+SHOTS = read_json(ROOT / "project/toolbox/shots.json", {})
+
+
+def shot_key(item):
+    """The screenshot's key, as scripts/toolbox_shots.mjs makes it."""
+    return re.sub(r"[^a-z0-9]+", "-", f"{item['kind']}-{item['name']}-{item['where']}".lower()).strip("-")[:90]
+
+
 def cells(line):
     return [c.strip() for c in line.strip().strip("|").split("|")]
 
@@ -124,7 +135,9 @@ def materials():
         for l in text:
             if re.match(r"\|\s*\d+\s*\|", l):
                 n, name, kind, by, why, free, link = cells(l)[:7]
-                rows.append({"topic": slug, "rank": int(n), "name": name, "type": kind, "by": by, "why": why, "free": free, "url": link_of(link), "c": concepts})
+                url = link_of(link)
+                rows.append({"topic": slug, "rank": int(n), "name": name, "type": kind, "by": by, "why": why, "free": free, "url": url, "c": concepts,
+                             "img": IMAGES.get(url)})
     return topics, rows
 
 
@@ -136,7 +149,7 @@ def games():
             out.append({
                 "name": g["name"], "list": lst["label"], "rank": g["rank"], "year": g["year"], "loop": g["loop"],
                 "build": g["build"], "teach": g["teach"], "star": g["star"], "c": [c for c in g["concepts"] if c in CONCEPT_IDS],
-                "wiki": g.get("wikipedia") or None, "link": g.get("link"),
+                "wiki": g.get("wikipedia") or None, "link": g.get("link"), "img": g.get("img"), "play": g.get("play"),
             })
     return out
 
@@ -148,7 +161,7 @@ def libraries():
         examples = []
         for e in lib.get("examples", []):
             text = f"{e.get('title', '')} {e.get('category', '')}".lower()
-            examples.append({"title": e.get("title", ""), "cat": e.get("category") or "", "url": e.get("url", ""),
+            examples.append({"title": e.get("title", ""), "cat": e.get("category") or "", "url": e.get("url", ""), "img": IMAGES.get(e.get("url", "")),
                              "c": [c for c, rx in EXAMPLE_RULES if re.search(rx, text)]})
         out.append({k: lib.get(k) for k in ("name", "slug", "site", "gallery", "version_in_repo", "what_for", "note")} | {"examples": examples})
     return out
@@ -156,7 +169,7 @@ def libraries():
 
 def components():
     data = read_json(ROOT / "project/toolbox/components.json", {"items": []})
-    return [i | {"concepts": [c for c in i.get("concepts", []) if c in CONCEPT_IDS]} for i in data["items"]]
+    return [i | {"concepts": [c for c in i.get("concepts", []) if c in CONCEPT_IDS], "img": SHOTS.get(shot_key(i))} for i in data["items"]]
 
 
 def main():
@@ -173,8 +186,9 @@ def main():
     OUT.parent.mkdir(parents=True, exist_ok=True)
     OUT.write_text(json.dumps(out, separators=(",", ":"), ensure_ascii=False))
     examples = sum(len(l["examples"]) for l in out["libraries"])
+    pictures = sum(bool(x.get("img")) for k in ("games", "materials", "components") for x in out[k]) + sum(bool(e["img"]) for l in out["libraries"] for e in l["examples"])
     print(f"wrote {OUT.relative_to(ROOT)} ({OUT.stat().st_size / 1024:.0f} KB): {len(out['games'])} games, {len(mats)} materials in "
-          f"{len(topics)} topics, {len(out['components'])} components, {len(out['libraries'])} libraries with {examples} examples")
+          f"{len(topics)} topics, {len(out['components'])} components, {len(out['libraries'])} libraries with {examples} examples; {pictures} pictures")
 
 
 if __name__ == "__main__":
