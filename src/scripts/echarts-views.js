@@ -6,33 +6,38 @@
 // here loads until the reader opens the section.
 //
 // Every number is computed from the same two files the rest of the page reads.
+// The views islands load ECharts and the two extra files, hold the controls,
+// and ask this module to draw and to word each answer.
 
-import { asset } from "./site.js";
+import { api } from "./corridor.js";
 import { fs, family } from "./type-scale.mjs";
 
-const $ = (id) => document.getElementById(id);
+// The hosts the views islands render and hand to corridor.js.
+const $ = (id) => api.$(id);
 
-// Data files sit in public/assets/data; asset() adds the deploy's build id.
-function dataUrl(name) {
-  return asset(`assets/data/${name}`);
-}
-
-let api = null;
 let echarts = null;
-let loading = null;
 const charts = new Map();
+
+/** The ECharts namespace, once its script has loaded. */
+export function setLibrary(lib) {
+  echarts = lib;
+}
 
 /* ------------------------------------------------------------------- setup */
 
 function chart(id) {
   const host = $(id);
-  if (!host) return null;
+  if (!host || !echarts) return null;
   if (!charts.has(id)) {
     const instance = echarts.init(host, null, { renderer: "canvas" });
-    window.addEventListener("resize", () => instance.resize());
     charts.set(id, instance);
   }
   return charts.get(id);
+}
+
+/** Every view resizes with the window. */
+export function resizeViews() {
+  for (const instance of charts.values()) instance.resize();
 }
 
 // Sizes and the family come from the type scale in type.css. ECharts' own
@@ -194,13 +199,10 @@ function drawGraph() {
     ["Country", "Arrived", "Left"],
     ranked.slice(0, CAP).map((n) => [n.name, fmt(n.inn), fmt(n.out)]),
   );
-  answerGraph();
 }
 
 function answerGraph() {
   const { nodes, rows } = graphData();
-  const host = $("v-graph-answer");
-  if (!host) return;
   const people = rows.reduce((sum, r) => sum + r[2], 0);
   const all = yearRows(graphState.year).reduce((sum, r) => sum + r[2], 0);
   const receivers = nodes.filter((n) => n.inn >= n.out).length;
@@ -227,7 +229,7 @@ function answerGraph() {
   // flights, and a country that only has flights was never on this chart.
   const present = new Set(yearRows(graphState.year).flatMap((r) => [r[0], r[1]]));
   const isolated = present.size - nodes.length;
-  host.innerHTML =
+  return (
     `At a floor of <b>${compact(graphState.floor)}</b> people, ` +
     `${graphState.year} leaves <b>${nodes.length}</b> countries and ` +
     `<b>${fmt(rows.length)}</b> corridors on the canvas, carrying ` +
@@ -243,7 +245,8 @@ function answerGraph() {
     (components > 1
       ? `, and the groups are not continents: a bloc here is a hiring ` +
         `relationship or an old border, not a neighbourhood.`
-      : `, which is what the corridors look like before the floor breaks them apart.`);
+      : `, which is what the corridors look like before the floor breaks them apart.`)
+  );
 }
 
 /* ------------------------------------------------------------- stacked area
@@ -363,11 +366,6 @@ function drawArea() {
     },
     true,
   );
-  const note = $("v-area-note");
-  if (note)
-    note.textContent =
-      `Each band is one country, stacked. Height is ${AREA_MODES[areaState.mode].blurb}; ` +
-      `the twelve are the largest in 2024 and keep their place across every year.`;
   api.chartTable(
     "v-area",
     "people by country and year",
@@ -377,13 +375,18 @@ function drawArea() {
       ["Everyone else", ...rest.map((v) => compact(v))],
     ],
   );
-  answerArea();
+}
+
+/** The line above the stacked area: what a band's height counts. */
+export function areaNote() {
+  return (
+    `Each band is one country, stacked. Height is ${AREA_MODES[areaState.mode].blurb}; ` +
+    `the twelve are the largest in 2024 and keep their place across every year.`
+  );
 }
 
 function answerArea() {
   const { years, keep, rest, totals } = areaData();
-  const host = $("v-area-answer");
-  if (!host) return;
   const first = years[0];
   const last = years.at(-1);
   const grew = [...keep]
@@ -414,7 +417,7 @@ function answerArea() {
     drift +=
       `The growth went to the countries too small to name here, not to the twelve ` +
       `that are biggest today.`;
-  host.innerHTML =
+  return (
     `Stacked, this is <b>${compact(totals[0])}</b> people in ${first} and ` +
     `<b>${compact(totals.at(-1))}</b> in ${last}` +
     (areaState.mode === "both" ? ", counting everybody twice" : "") +
@@ -428,7 +431,8 @@ function answerArea() {
           `<b>${compact(-fell.at(-1)[1])}</b>. `
         : "") +
     drift +
-    ` “${mode.label}” counts ${mode.blurb}.`;
+    ` “${mode.label}” counts ${mode.blurb}.`
+  );
 }
 
 /* ------------------------------------------------------- 3. the month grid
@@ -440,12 +444,6 @@ function answerArea() {
 
 let asylum = null;
 const asylumState = { origin: "SY" };
-
-async function loadAsylum() {
-  if (asylum) return asylum;
-  asylum = await fetch(dataUrl("week03_asylum.json")).then((r) => r.json());
-  return asylum;
-}
 
 const MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 
@@ -536,12 +534,10 @@ function drawAsylum() {
     ["Month", "Applications"],
     reported.map((c) => [c[3], fmt(c[2])]),
   );
-  answerAsylum();
 }
 
 function answerAsylum() {
-  const host = $("v-asylum-answer");
-  if (!host || !asylum?.origins?.[asylumState.origin]) return;
+  if (!asylum?.origins?.[asylumState.origin]) return null;
   const { origin, cells } = asylumRows();
   const reported = cells.filter((c) => c[2] !== null && c[2] > 0);
   const blank = cells.length - cells.filter((c) => c[2] !== null).length;
@@ -554,7 +550,7 @@ function answerAsylum() {
     .slice(0, 3)
     .map((d) => `${d.name} (${compact(d.people)})`)
     .join(", ");
-  host.innerHTML =
+  return (
     `<b>${fmt(origin.total)}</b> first-time asylum applications from ` +
     `<b>${origin.name}</b> across ${asylum.reporting} European countries, ` +
     `${asylum.months[0]} to ${asylum.months.at(-1)}. The heaviest month is ` +
@@ -573,27 +569,16 @@ function answerAsylum() {
     `The busiest month in Europe across every origin here is ` +
     `<b>${asylum.months[worldPeak]}</b>, at <b>${fmt(asylum.totals[worldPeak])}</b>. ` +
     `These are applications, not arrivals: one person who applies in Hungary and again ` +
-    `in Germany is counted twice, where the corridor data upstairs would see them once.`;
+    `in Germany is counted twice, where the corridor data upstairs would see them once.`
+  );
 }
 
-function wireAsylum() {
-  const picker = $("v-asylum-origin");
-  if (!picker || picker.dataset.ready || !asylum?.origins) return;
-  picker.dataset.ready = "on";
-  const sorted = Object.entries(asylum.origins).sort((a, b) => b[1].total - a[1].total);
-  picker.innerHTML = sorted
-    .map(
-      ([code, origin]) =>
-        `<option value="${code}"${code === asylumState.origin ? " selected" : ""}>` +
-        `${origin.name} · ${compact(origin.total)}</option>`,
-    )
-    .join("");
-  // This changes the grid and nothing else, the same promise the ring and the
-  // force layout make about their own controls.
-  picker.addEventListener("change", (event) => {
-    asylumState.origin = event.target.value;
-    drawAsylum();
-  });
+/** The origin picker's choices, largest first: code and label. */
+export function asylumOptions() {
+  if (!asylum?.origins) return [];
+  return Object.entries(asylum.origins)
+    .sort((a, b) => b[1].total - a[1].total)
+    .map(([code, origin]) => ({ code, label: `${origin.name} · ${compact(origin.total)}` }));
 }
 
 /* --------------------------------------------------------- 4. the closures
@@ -604,12 +589,6 @@ function wireAsylum() {
    so the pandemic happens entirely between two of its observations. */
 
 let closures = null;
-
-async function loadClosures() {
-  if (closures) return closures;
-  closures = await fetch(dataUrl("week03_closures.json")).then((r) => r.json());
-  return closures;
-}
 
 function drawClosures() {
   const instance = chart("v-closures");
@@ -692,12 +671,10 @@ function drawClosures() {
       String(counts.reduce((a, b) => a + b, 0)),
     ]),
   );
-  answerClosures();
 }
 
 function answerClosures() {
-  const host = $("v-closures-answer");
-  if (!host || !closures) return;
+  if (!closures) return null;
   const entries = Object.entries(closures.days);
   const reporting = (counts) => counts.reduce((a, b) => a + b, 0);
   const peak = entries.reduce((best, e) => (e[1][4] > best[1][4] ? e : best));
@@ -709,7 +686,7 @@ function answerClosures() {
   const everOpen = entries.reduce(
     (best, e) => (open(e[1]) > open(best[1]) ? e : best),
   );
-  host.innerHTML =
+  return (
     `On <b>${peak[0]}</b>, <b>${peak[1][4]}</b> of the ` +
     `<b>${reporting(peak[1])}</b> countries reporting that day were closed to ` +
     `arrivals from everywhere. ` +
@@ -725,122 +702,43 @@ function answerClosures() {
     `largest shock to human movement in living memory happens between two ` +
     `observations and leaves no mark on either. ` +
     `Read the levels as policy, not as traffic. A country at level 4 had closed ` +
-    `its border on paper; who actually crossed it is a different dataset.`;
+    `its border on paper; who actually crossed it is a different dataset.`
+  );
 }
 
 /* ----------------------------------------------------------------- controls */
 
-function wireGraph() {
-  const years = api.state.edges.years;
-  const yearSlider = $("v-graph-year");
-  if (yearSlider && !yearSlider.dataset.ready) {
-    yearSlider.dataset.ready = "on";
-    yearSlider.max = String(years.length - 1);
-    yearSlider.value = String(Math.max(years.indexOf(graphState.year), 0));
-    yearSlider.setAttribute("aria-valuetext", String(graphState.year));
-    yearSlider.addEventListener("input", (event) => {
-      graphState.year = years[Number(event.target.value)] ?? years.at(-1);
-      yearSlider.setAttribute("aria-valuetext", String(graphState.year));
-      $("v-graph-year-now").textContent = String(graphState.year);
-      drawGraph();
-    });
-  }
-  const floor = $("v-graph-floor");
-  if (floor && !floor.dataset.ready) {
-    floor.dataset.ready = "on";
-    // Logarithmic, because the interesting range runs from a hairball at
-    // 50,000 to a dozen corridors at five million.
-    const value = (step) => Math.round(50000 * 10 ** (step / 20));
-    floor.addEventListener("input", (event) => {
-      graphState.floor = value(Number(event.target.value));
-      $("v-graph-floor-now").textContent = compact(graphState.floor);
-      drawGraph();
-    });
-    floor.value = String(Math.round(Math.log10(graphState.floor / 50000) * 20));
-    $("v-graph-floor-now").textContent = compact(graphState.floor);
-  }
+// The two extra files, once the views islands have them.
+/** @param {{ asylum?: object | null, closures?: object | null }} data */
+export function setViewData({ asylum: a, closures: c }) {
+  if (a !== undefined) asylum = a;
+  if (c !== undefined) closures = c;
 }
 
-function wireArea() {
-  const modes = $("v-area-mode");
-  if (!modes || modes.dataset.ready) return;
-  modes.dataset.ready = "on";
-  modes.addEventListener("click", (event) => {
-    const button = event.target.closest("button[data-mode]");
-    if (!button) return;
-    areaState.mode = button.dataset.mode;
-    for (const other of modes.querySelectorAll("button[data-mode]"))
-      other.setAttribute("aria-pressed", String(other === button));
-    drawArea();
-  });
+// The controls each view keeps to itself: the force layout's year and floor,
+// the area's direction, the grid's origin.
+/** @param {{ year?: number, floor?: number, mode?: string, origin?: string }} next */
+export function setViews({ year, floor, mode, origin }) {
+  if (year !== undefined) graphState.year = year;
+  if (floor !== undefined) graphState.floor = floor;
+  if (mode !== undefined) areaState.mode = mode;
+  if (origin !== undefined) asylumState.origin = origin;
 }
 
-function renderAll() {
-  wireGraph();
-  wireArea();
-  wireAsylum();
-  drawGraph();
-  drawArea();
-  drawAsylum();
-  drawClosures();
+// The floor slider is logarithmic, because the interesting range runs from a
+// hairball at 50,000 to a dozen corridors at five million.
+export const floorOf = (step) => Math.round(50000 * 10 ** (step / 20));
+export const floorLabel = (floor) => compact(floor);
+
+/** Draw view `id` (v-graph, v-area, v-asylum, v-closures). */
+export function drawView(id) {
+  const draw = { "v-graph": drawGraph, "v-area": drawArea, "v-asylum": drawAsylum, "v-closures": drawClosures }[id];
+  draw?.();
 }
 
-/* ------------------------------------------------------------------ install */
-
-export function installViews(shared, loadVendor) {
-  api = shared;
-  const drawer = $("views");
-  if (!drawer) return;
-
-  const open = async () => {
-    if (!drawer.open || !api.state?.edges) return;
-    if (!echarts) {
-      if (!loading) {
-        const status = $("v-status");
-        if (status) status.textContent = "Loading the charting library (1 MB)…";
-        loading = loadVendor("echarts-5.5.1.min.js")
-          .then(() => {
-            echarts = window.echarts;
-            if (status) status.textContent = "";
-          })
-          .catch((error) => {
-            if (status)
-              status.textContent =
-                `These views need Apache ECharts, and it did not load (${error.message}). ` +
-                "Everything else on the page is drawn by hand and is unaffected.";
-            throw error;
-          });
-      }
-      try {
-        await loading;
-      } catch {
-        return;
-      }
-    }
-    // Two data files the rest of the page does not load. A failure on one
-    // of them must not take the other three views down.
-    const status = $("v-status");
-    const missing = [];
-    await Promise.all(
-      [
-        ["monthly asylum applications", loadAsylum],
-        ["the border-closure tracker", loadClosures],
-      ].map(([label, load]) =>
-        load().catch(() => {
-          missing.push(label);
-        }),
-      ),
-    );
-    if (missing.length && status)
-      status.textContent = `Could not load ${missing.join(" or ")}; the other views are fine.`;
-    renderAll();
-  };
-
-  drawer.addEventListener("toggle", open);
-  if (drawer.open) open();
-  // The palette and the skin are page-wide, so these repaint with everything
-  // else rather than keeping the colours they were built with.
-  window.addEventListener("week03:restyle", () => {
-    if (echarts && drawer.open) renderAll();
-  });
+/** The answer under view `id`, as HTML, or null while it has nothing to say. */
+export function viewAnswer(id) {
+  if (!api.state?.edges) return null;
+  const answer = { "v-graph": answerGraph, "v-area": answerArea, "v-asylum": answerAsylum, "v-closures": answerClosures }[id];
+  return answer ? answer() : null;
 }

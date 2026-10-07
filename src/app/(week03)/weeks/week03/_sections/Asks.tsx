@@ -1,3 +1,4 @@
+import { AreaModes, AreaNote, GraphControls, OriginPicker, VAnswer, VChart, ViewsStatus } from "@/features/week03/views/Views";
 import { QAnswer, QChart, RingControls, RingScope } from "@/features/week03/questions/Questions";
 // 9: everything that goes deeper than the main path.
 export function Asks() {
@@ -794,58 +795,26 @@ export function Asks() {
               <span className="qa-cue">The four extra views</span>
             </summary>
             <div className="qa-body">
-              <p aria-live="polite" className="status-line" id="v-status"></p>
+              <ViewsStatus />
               <article className="qa-item">
                 <h3>1 · The network with the geography taken away</h3>
-                <div className="qa-controls">
-                  <label htmlFor="v-graph-year">Year</label>
-                  <div className="qa-slider">
-                    <input defaultValue="7" aria-label="Year of the force layout" id="v-graph-year" max="7" min="0" step="1" type="range" />
-                    <div className="ends">
-                      <span>1990</span>
-                      <span>2024</span>
-                    </div>
-                  </div>
-                  <b className="qa-slider-now" id="v-graph-year-now">2024</b>
-                  {" "}
-                  <label htmlFor="v-graph-floor">Smallest corridor drawn</label>
-                  <div className="qa-slider">
-                    <input defaultValue="18" aria-label="Smallest corridor drawn" id="v-graph-floor" max="40" min="0" step="1" type="range" />
-                    <div className="ends">
-                      <span>50k</span>
-                      <span>5m</span>
-                    </div>
-                  </div>
-                  <b className="qa-slider-now" id="v-graph-floor-now">400k</b>
-                </div>
+                <GraphControls />
                 <p className="axis-note">
                   Both sliders change this chart only. Drag to pan, scroll to
                   zoom, drag a country out of the pile, click one to select
                   it.
                 </p>
-                <div className="echart tall" id="v-graph"></div>
-                <p className="qa-answer" id="v-graph-answer"></p>
+                <VChart id="v-graph" className="echart tall" />
+                <VAnswer view="v-graph" />
               </article>
               <article className="qa-item">
                 <h3>2 · Who grew, 1990 to 2024</h3>
                 <div className="qa-controls">
-                  <div aria-label="Which direction the bands count" className="axis-modes" id="v-area-mode" role="group">
-                    <button aria-pressed="true" data-mode="in" type="button">
-                      Arrived
-                    </button>
-                    {" "}
-                    <button aria-pressed="false" data-mode="out" type="button">
-                      Left
-                    </button>
-                    {" "}
-                    <button aria-pressed="false" data-mode="both" type="button">
-                      Both
-                    </button>
-                  </div>
+                  <AreaModes />
                 </div>
-                <p className="axis-note" id="v-area-note"></p>
-                <div className="echart wide" id="v-area"></div>
-                <p className="qa-answer" id="v-area-answer"></p>
+                <AreaNote />
+                <VChart id="v-area" className="echart wide" />
+                <VAnswer view="v-area" />
               </article>
               <div className="notice">
                 <span className="ico">🕰️</span>
@@ -865,7 +834,7 @@ export function Asks() {
                 <div className="qa-controls">
                   <label htmlFor="v-asylum-origin">People from</label>
                   {" "}
-                  <select aria-label="Country of citizenship" id="v-asylum-origin"></select>
+                  <OriginPicker />
                 </div>
                 <p className="axis-note">
                   First-time asylum applications in 34 European countries,
@@ -877,8 +846,8 @@ export function Asks() {
                   unknown citizenship in their own rows, and they are kept
                   because leaving them out would drop real people.
                 </p>
-                <div className="echart grid" id="v-asylum"></div>
-                <p className="qa-answer" id="v-asylum-answer"></p>
+                <VChart id="v-asylum" className="echart grid" />
+                <VAnswer view="v-asylum" />
               </article>
               <article className="qa-item">
                 <h3>4 · The day the borders shut</h3>
@@ -887,8 +856,8 @@ export function Asks() {
                   countries were closed to arrivals from everywhere. Oxford
                   tracker, top level of travel restriction.
                 </p>
-                <div className="echart closures" id="v-closures"></div>
-                <p className="qa-answer" id="v-closures-answer"></p>
+                <VChart id="v-closures" className="echart closures" />
+                <VAnswer view="v-closures" />
               </article>
             </div>
           </details>

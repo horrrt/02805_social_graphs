@@ -3271,13 +3271,12 @@ export const api = {
 };
 
 // The style bar changed something other than the renderer: re-read the
-// palette, restart or stop the flow animation, and repaint everything,
-// the questions drawer included.
+// palette, restart or stop the flow animation, and repaint everything, the
+// two drawers included (the views drawer redraws on a restyle only).
 export function restyle() {
   refreshPalette();
   syncFlow();
-  repaint();
-  window.dispatchEvent(new CustomEvent("week03:restyle"));
+  store.setState((s) => ({ paint: s.paint + 1, restyles: s.restyles + 1 }));
 }
 
 // Every visual repaints: a resize, a restyle.

@@ -20,6 +20,7 @@ export type CorridorState = {
   style: Style | null;
   renderer: string;
   paint: number;
+  restyles: number;
   tables: Record<string, TableSpec>;
   drawer: string | null;
   edge: { origin: string; dest: string } | null;

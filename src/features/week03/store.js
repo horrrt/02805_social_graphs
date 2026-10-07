@@ -26,9 +26,11 @@ export const corridor = createStore({
   // load falls back to canvas.
   style: null,
   renderer: "canvas",
-  // Bumped whenever every visual has to repaint: a resize, a restyle, a
-  // texture that finished loading.
+  // Bumped whenever every visual has to repaint: a resize, a restyle.
   paint: 0,
+  // Bumped by a restyle alone, for the views that resize rather than redraw
+  // when the window does.
+  restyles: 0,
   // The chart tables the canvas painters publish, by chart id.
   tables: {},
   // Section 6's drawer: the role it lists, or null when closed.
