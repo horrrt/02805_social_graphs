@@ -298,6 +298,86 @@ spent show as chips (a word `banned(word)` rejects is struck through and still c
 <GuessRanker items={[{ key: "wolverine", label: "Wolverine" }]} score={scoreWords} target="wolverine" budget={8} banned={(w) => w === "logan"} />
 ```
 
+## Text
+
+Pieces for the text weeks: tokens and their tags, signed contributions, search results side by side and one input
+under several methods. All plain HTML that renders on the server, toy data on `/styleguide/kit/` and awkward cases
+on `/styleguide/kit/states/`. Styles: the "Kit: Text" section of `post.css`.
+
+The methods are DOM-free in `src/kit/text-core.js`, tested by `tests/text-core.test.mjs`: `tokenize` and
+`tokenDetails` (letters with one inner apostrophe, optional clitic split, lowercase, punctuation and stopword
+filters over a small English `STOPWORDS` list), `ngrams` (n from 1 to 3), `bioSpans` (BIO tags to entity spans; an
+orphan I- opens a span), `makeRng`, `nextDistribution`, `sampleNext` and `generate` (a seeded Markov sampler over a
+`{ context: { token: prob } }` table with a temperature; greedy at 0), `scoreLexicon` (a lexicon sum where a negator
+flips matched words among the next three tokens, two negators cancel and . ! ? ends the reach), `tfidf`,
+`tfidfVector`, `countVector` and `cosine` (tf is count over length, idf is ln(N/df)), `ppmi`, `tfMatrix`,
+`tfidfMatrix`, `transformMatrix` and `nearestRow`, and `fitLogistic`, `predictLogistic` and `sigmoid` (batch
+gradient descent with seeded starting weights and an L2 penalty; each feature's contribution w·x, which with the
+bias sums to z).
+
+### TaggedTokens({ tokens, spans, gram, source, label })
+
+A row of token chips. Each token: `{ text, tag, tone, attrs }`, `tag` shown beneath the text, `tone` one of `"pos"`,
+`"neg"`, `"accent"` and `"muted"`, and `attrs` (`[name, value]` pairs) making the chip a button whose pop-up lists
+them on hover or focus. `spans` (`[{ start, end, label, tone }]`, `end` one past the last token) box runs of chips
+under their label, as named entities; a span that overlaps an earlier one is dropped and one past the end is cut.
+`gram: { n, active, onActive }` lists every n-token window, numbered, and marks the active one's chips. `source:
+{ value, onChange, label }` adds a textarea above that holds the raw string (R21).
+
+```tsx
+<TaggedTokens tokens={[{ text: "Iron", tag: "PER", tone: "accent" }, { text: "Man", tag: "PER", tone: "accent" }, { text: "met", tag: "O" }]} spans={[{ start: 0, end: 2, label: "PER: Iron Man" }]} />
+```
+
+### ContributionBars({ items, total, ends, max, fmt })
+
+Signed bars from a zero line in the middle, one per item (`[{ key, label, value, valueLabel }]`): negative to the
+left in `--bad`, positive to the right in `--good`, on one scale (`max`, or the largest magnitude). Under them a
+gauge between the two `ends` labels: with `total: { mode: "sum" }` the plain sum, with `{ mode: "sigmoid", bias }`
+the sum plus the bias through the logistic function, read as a probability. A value that is not a number counts as
+0; `fmt` writes the values.
+
+```tsx
+<ContributionBars items={[{ key: "great", label: "great", value: 1.1 }, { key: "boring", label: "boring", value: -0.6 }]} total={{ mode: "sigmoid", bias: -0.1 }} ends={["negative", "positive"]} />
+```
+
+### RankedResults({ columns, query, limit })
+
+One column per engine, side by side: `columns` is `[{ key, title, sub, results, empty }]`, each result
+`{ key, title, snippet, score, scoreLabel }`, the first `limit` (6) shown with a score bar on the column's own scale.
+Hovering or focusing a result marks the same key in every column. `query: { value, onChange, label, presets,
+onSubmit }` adds a search input that holds the raw string and a button per preset query.
+
+```tsx
+<RankedResults query={{ value: q, onChange: setQ, presets: ["mutant school"] }} columns={[{ key: "tfidf", title: "TF-IDF", results: [{ key: "d1", title: "Toy hero A", snippet: "…", score: 0.41 }] }]} />
+```
+
+### MethodCompare({ cards, facts })
+
+One input under several methods, a card each side by side: `cards` is `[{ key, title, blurb, body, note, accent }]`,
+titles numbered, `body` any content (say a `ContributionBars`), and `accent` the colour of the rule across the top
+(a token such as `"--access"` or any CSS colour; by default `--access`, `--good`, `--w4-group-0`, `--people` in
+turn). `facts` (`[label, value]` pairs) run in a row under the cards.
+
+```tsx
+<MethodCompare cards={[{ key: "lexicon", title: "Lexicon", blurb: "Each word adds its fixed score.", body: <ContributionBars items={items} />, note: "Ignores word order." }]} facts={[["Same input", "one sentence"]]} />
+```
+
+### CountMatrix and AxisMap: new options
+
+`CountMatrix` takes `transform`: `"count"` (the default, as before), `"ppmi"` (max(0, log2 P(w,c) / P(w)P(c))),
+`"tf"` or `"tfidf"` (rows read as documents), computed from the counts by `text-core.js` and written to two
+decimals; zeros stay 0. `nearest` adds a line naming the row closest to the highlighted one by cosine over the
+shown values.
+
+`AxisMap` takes `log` (both axes on a log scale over whole decades; points at or below 0 are left out and counted),
+`diagonal` (a dashed y = x, with both axes sharing one range on log axes), `sides: { above, below, similar, band }`
+(points coloured `--access` above the diagonal, `--people` below and grey within `band` of it, in place of the
+groups, with a legend of counts), `selected` (one key ringed and labelled) and `detail` (content under the map,
+such as the picked point's numbers).
+
+```tsx
+<CountMatrix rows={rows} cols={cols} cells={cells} highlightRow={0} transform="ppmi" nearest />
+<AxisMap points={rates} axes={axes} log diagonal sides={{ above: "more in A", below: "more in B", band: 0.15 }} selected={picked} onPick={setPicked} detail={<p>…</p>} />
 ## Distributions and nulls
 
 Four pieces for degree distributions and null models, with toy data on `/styleguide/kit/`. The numbers under
