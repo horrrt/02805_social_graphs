@@ -123,6 +123,7 @@ export default function PathQuest({
 
   const toTarget = quest.target === null ? null : shortestRoute(n, edges, quest.home, quest.target);
   const toHome = quest.target === null ? null : shortestRoute(n, edges, quest.target, quest.home);
+  const hops = (r: number[] | null) => (r ? `${r.length - 1} ${r.length === 2 ? "step" : "steps"}` : "none");
   const route = (r: number[] | null) => (r ? r.map(name).join(" → ") : "no route");
 
   return (
@@ -157,11 +158,11 @@ export default function PathQuest({
                 <dd>{route(quest.path)}</dd>
               </div>
               <div>
-                <dt>Shortest way out, {toTarget ? toTarget.length - 1 : "–"} steps</dt>
+                <dt>Shortest way out: {hops(toTarget)}</dt>
                 <dd>{route(toTarget)}</dd>
               </div>
               <div>
-                <dt>Shortest way back, {toHome ? toHome.length - 1 : "–"} steps</dt>
+                <dt>Shortest way back: {hops(toHome)}</dt>
                 <dd>{route(toHome)}</dd>
               </div>
             </dl>

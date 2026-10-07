@@ -65,3 +65,14 @@ export type { BoardAxis, BoardCell } from "./NullBoard";
 export type { Verdict } from "./nullBits";
 export { default as NullBars } from "./NullBars";
 export type { NullBarRow } from "./NullBars";
+// ---- Games: a shell, a round trip under fog, an attack on the core, a seating
+// plan and a quiz. Their rules are DOM-free in game-core.js; import it directly.
+export { default as GameShell, useGameRun } from "./GameShell";
+export type { GameOption, GamePhase, GameRun, GameSegment, GameSettings } from "./GameShell";
+export { default as PathQuest } from "./PathQuest";
+export type { QuestBand } from "./PathQuest";
+export { default as AttackGame } from "./AttackGame";
+export type { CoreSeries } from "./AttackGame";
+export { default as SeatingGame } from "./SeatingGame";
+export { default as QuizRun, ClueReveal, TwoChoice, FillBlank } from "./QuizRun";
+export type { BlankRound, ClueRound, QuizRound, RoundResult, TwoRound } from "./QuizRun";

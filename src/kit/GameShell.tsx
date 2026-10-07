@@ -185,14 +185,14 @@ export default function GameShell({
   onKeyDown?: (e: KeyboardEvent<HTMLDivElement>) => void;
 }) {
   const panel = useRef<HTMLDivElement>(null);
-  const first = useRef(true);
-  // A new phase takes the focus to the panel, so a keyboard reader starts at its top.
+  const shown = useRef(run.phase);
+  // A new phase takes the focus to the panel, so a keyboard reader starts at its top,
+  // unless the game has already put it on something inside (a quiz round, say).
   useEffect(() => {
-    if (first.current) {
-      first.current = false;
-      return;
-    }
-    panel.current?.focus();
+    if (shown.current === run.phase) return;
+    shown.current = run.phase;
+    const el = panel.current;
+    if (el && !(el !== document.activeElement && el.contains(document.activeElement))) el.focus();
   }, [run.phase]);
 
   const bestLine =

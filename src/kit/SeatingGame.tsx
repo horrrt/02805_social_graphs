@@ -157,8 +157,9 @@ export default function SeatingGame({
       state: mode === "table" && v === host ? ("picked" as const) : off.has(v) ? ("ring" as const) : undefined,
     })),
     links: edges.map(([a, b]) => ({ source: a, target: b })),
-    groups: mode === "table" ? ["at the table"] : CARD_NAMES.slice(0, count).map((c) => `card ${c}`),
-    legend: mode === "room",
+    // The legend lists the cards up to the last one laid, so a card nobody used stays out of it.
+    groups: mode === "table" ? ["at the table"] : CARD_NAMES.slice(0, Math.max(0, ...Object.values(cards).map((c) => c + 1))).map((c) => `card ${c}`),
+    legend: mode === "room" && placed > 0,
     aria:
       mode === "table"
         ? `${n} guests; ${seats.length} at ${name(host)}'s table, scoring ${fmt(score)} links above chance`

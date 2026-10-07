@@ -30,10 +30,13 @@ const M = { top: 12, right: 16, bottom: 36, left: 40 };
 /** Core size against hits, one line per player, on one scale. */
 function CoreChart({ series, total }: { series: CoreSeries[]; total: number }) {
   const base = useSvgBase(["--outbound"]);
+  return <div className="kit-attack-chart">{base ? <CorePlot series={series} total={total} {...base} /> : null}</div>;
+}
+
+// Mounted once the tokens are read, so useFittedWidth finds its svg on the first effect.
+function CorePlot({ series, total, scale, tokens: t }: { series: CoreSeries[]; total: number } & NonNullable<ReturnType<typeof useSvgBase>>) {
   const svg = useRef<SVGSVGElement>(null);
   const width = useFittedWidth(svg, 420);
-  if (!base) return <div className="kit-attack-chart" />;
-  const { scale, tokens: t } = base;
   const hits = Math.max(1, ...series.map((s) => s.sizes.length - 1));
   const sx = (i: number) => M.left + (i / hits) * (width - M.left - M.right);
   const sy = (v: number) => HEIGHT - M.bottom - (v / Math.max(1, total)) * (HEIGHT - M.top - M.bottom);
@@ -41,7 +44,7 @@ function CoreChart({ series, total }: { series: CoreSeries[]; total: number }) {
   const yTicks = [0, Math.round(total / 2), total];
   const aria = `Largest component against hits: ${series.map((s) => `${s.label} ends at ${s.sizes[s.sizes.length - 1]}`).join(", ")}, of ${total}`;
   return (
-    <div className="kit-attack-chart">
+    <>
       <svg ref={svg} viewBox={`0 0 ${width} ${HEIGHT}`} width={width} height={HEIGHT} role="img" aria-label={aria}>
         {yTicks.map((v, i) => (
           <g key={i}>
@@ -78,7 +81,7 @@ function CoreChart({ series, total }: { series: CoreSeries[]; total: number }) {
           </li>
         ))}
       </ul>
-    </div>
+    </>
   );
 }
 

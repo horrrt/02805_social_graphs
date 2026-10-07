@@ -4,6 +4,7 @@ import { Demo } from "@/features/kit-page/demos";
 import { DemoNetworks } from "@/features/kit-page/demos-networks";
 import { TextDemo } from "@/features/kit-page/demos-text";
 import { DistDemo } from "@/features/kit-page/demos-distributions";
+import { DemoGames } from "@/features/kit-page/demos-games";
 
 export default function Page() {
   return (
@@ -224,6 +225,23 @@ export default function Page() {
           <DistDemo demo="dist-links" />
         </PostSection>
         {/* ==== end Kit: distributions and nulls ==== */}
+        {/* ==== Kit: games ==== */}
+        <PostSection id="demo-games">
+          <h2>Games</h2>
+          <p className="sub">
+            Four games from src/kit on toy graphs and toy words, each in GameShell: settings, a row of scores, the game, then a
+            reveal against bots or a reference. The rules are in src/kit/game-core.js. Same seed, same game.
+          </p>
+          <h3>PathQuest: there and back on a one-way town, under fog</h3>
+          <DemoGames demo="games-quest" />
+          <h3>AttackGame: shatter the karate club&apos;s core</h3>
+          <DemoGames demo="games-attack" />
+          <h3>SeatingGame: one table, or the whole room</h3>
+          <DemoGames demo="games-seating" />
+          <h3>QuizRun: unmask, real or not, and redacted rounds</h3>
+          <DemoGames demo="games-quiz" />
+        </PostSection>
+        {/* ==== end Kit: games ==== */}
       </main>
       <SiteFooter>
         <span>
