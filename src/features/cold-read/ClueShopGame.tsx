@@ -399,10 +399,6 @@ export function ClueShopGame({ data, random = Math.random, level, hard = false, 
                 {outcome.won ? (
                   <p className="cr-sum">
                     <b className="cr-pop">+{outcome.gained.toLocaleString("en")}</b>
-                    <span>
-                      ((100 + {outcome.left} unflipped × 100){hard ? " × 2 hard mode" : ""} × {outcome.streak} streak
-                      {outcome.bold ? ` + ${outcome.bold} bold read` : ""}) × {outcome.factor.toFixed(2)} speed
-                    </span>
                   </p>
                 ) : null}
                 {phase === "over" ? (
