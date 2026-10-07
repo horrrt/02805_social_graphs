@@ -2,6 +2,7 @@ import { Drawer } from "@/components/post/Drawer";
 import { Drawers } from "@/components/post/Drawers";
 import { DeepPanel, TocItem } from "@/features/week04/frame/DeepShell";
 import { JobsNum, JobsPart } from "@/features/week04/jobs/Jobs";
+import { PageRank } from "@/features/week04/pagerank/PageRank";
 import { Skills } from "@/features/week04/skills/Skills";
 import { GlossTerm } from "./GlossTerm";
 
@@ -259,7 +260,7 @@ export function TopicJobs() {
           <span className="qa-cue">PageRank on the jobs network, step by step</span>
         </summary>
         <div className="qa-body cut-body" id="pagerank-body">
-          <p aria-live="polite" className="status-line" id="pagerank-status">Loading the PageRank explorable…</p>
+          <PageRank />
         </div>
       </DeepPanel>
     </details>

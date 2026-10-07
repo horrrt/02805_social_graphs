@@ -11,7 +11,6 @@ function classic(path) {
 
 await classic("assets/vendor/echarts-5.5.1.min.js").catch((error) => console.error(error));
 await run([
-  () => import("../week04-pagerank.js"),
   () => import("../week04-vis-more.js"),
   () => import("../week04-vis-intros.js"),
 ]);
