@@ -24,7 +24,7 @@ beforeEach(() => {
 async function started() {
   const user = userEvent.setup();
   render(<WhoseLineGame data={data} random={zero} clock={still} />);
-  await user.click(screen.getByRole("button", { name: "Start the first match" }));
+  await user.click(screen.getByRole("button", { name: "Start" }));
   return user;
 }
 

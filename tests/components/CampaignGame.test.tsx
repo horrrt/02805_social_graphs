@@ -50,7 +50,7 @@ test("the levels follow the brief: TF-IDF, groups, topics, context, vectors", ()
 test("the campaign opens on level 1 with the others locked", async () => {
   await begun();
   assert.deepEqual(track().map((li) => li.getAttribute("data-state")), ["current", "locked", "locked", "locked", "locked"]);
-  assert.ok(screen.getByRole("button", { name: "Deal the first page" }), "level 1 is the Clue Shop");
+  assert.ok(screen.getByRole("button", { name: "Start" }), "level 1 is the Clue Shop");
   assert.equal(document.querySelectorAll(".cr-hud").length, 1, "one scoreboard: the round's");
   assert.ok(within(document.querySelector(".cr-hud") as HTMLElement).getByRole("button", { name: /Skip level/ }), "the skip sits in it");
 });
@@ -63,13 +63,13 @@ test("skipping at 0 points costs nothing below 0 and moves on", async () => {
   await user.click(screen.getByRole("button", { name: "Start level 2" }));
   assert.equal(track()[0].getAttribute("data-state"), "skipped");
   assert.equal(track()[1].getAttribute("data-state"), "current");
-  assert.ok(screen.getByRole("button", { name: "Start the first match" }), "level 2 is Whose Line");
+  assert.ok(screen.getByRole("button", { name: "Start" }), "level 2 is Whose Line");
 });
 
 test("a cleared level carries its points, and a later skip costs 500 of them", async () => {
   const user = await begun();
   // Level 1: three pages of the Clue Shop, every card flipped, the top lead named.
-  await user.click(screen.getByRole("button", { name: "Deal the first page" }));
+  await user.click(screen.getByRole("button", { name: "Start" }));
   const clue = data.clue!;
   const order = shuffled(clue.rounds.map((_, i) => i), zero);
   let earned = 0;
@@ -120,7 +120,7 @@ test("hard mode is chosen once, at the start, and level 1 deals without names", 
   await user.click(screen.getByRole("button", { name: /^Hard/ }));
   await user.click(screen.getByRole("button", { name: "Start the campaign" }));
   assert.equal(screen.queryByRole("group", { name: "Difficulty" }), null, "no switch inside the level");
-  await user.click(screen.getByRole("button", { name: "Deal the first page" }));
+  await user.click(screen.getByRole("button", { name: "Start" }));
   const clue = data.clue!;
   const round = clue.rounds[shuffled(clue.rounds.map((_, i) => i), zero)[0]];
   const deck = shuffled(round.hard, zero);
@@ -131,7 +131,7 @@ test("hard mode is chosen once, at the start, and level 1 deals without names", 
 
 test("the round's score counts the campaign, and a skip banks the level's points before taking 500", async () => {
   const user = await begun();
-  await user.click(screen.getByRole("button", { name: "Deal the first page" }));
+  await user.click(screen.getByRole("button", { name: "Start" }));
   const clue = data.clue!;
   const order = shuffled(clue.rounds.map((_, i) => i), zero);
   for (let i = 0; i < 8; i++) await user.click(screen.getByRole("button", { name: new RegExp(`^Card ${i + 1}:`) }));

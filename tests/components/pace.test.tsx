@@ -41,7 +41,7 @@ test("a bold read pays for the suspects left standing and for a long shot", () =
 test("naming after one rare flip pays more than flipping to the last suspect", async () => {
   const user = userEvent.setup();
   render(<ClueShopGame data={data} random={zero} clock={still} />);
-  await user.click(screen.getByRole("button", { name: "Deal the first page" }));
+  await user.click(screen.getByRole("button", { name: "Start" }));
   const rare = deck.map((c, i) => [data.words[c.w].df, i]).sort((a, b) => a[0] - b[0])[0][1];
   await user.click(card(rare));
   const flipped = [deck[rare].w];
@@ -60,7 +60,7 @@ test("the ticker counts down, and a page whose clock runs out is lost with a hea
   let t = 0;
   const user = userEvent.setup();
   render(<ClueShopGame data={data} random={zero} clock={() => t} />);
-  await user.click(screen.getByRole("button", { name: "Deal the first page" }));
+  await user.click(screen.getByRole("button", { name: "Start" }));
   assert.ok(screen.getByLabelText(`${LIMIT.clue} seconds left`));
   const left = Math.floor(LIMIT.clue / 5); // inside the last quarter
   t = (LIMIT.clue - left) * 1000;
