@@ -13,19 +13,7 @@ export const metadata: Metadata = {
 
 export default function Page() {
   return (
-    <Frame
-      page="practice"
-      home="../"
-      sub="Round 4, Tezgüino. You shall know a word by the company it keeps. Here is the company; name the word."
-      credits={
-        <p>
-          Page text from English Wikipedia, <a href="https://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA 4.0</a>, through the 02805 course
-          snapshot of 26 August 2026. Context rows count the words within a window inside each sentence, by the course’s token rule; PPMI as in the{" "}
-          <a href="https://sunelehmann.com/socialgraphs2026-web/weeks/week6.html">Week 6 brief</a>, sections 4 and 5. The tezgüino example is Nida
-          (1975) by way of Lin (1998).
-        </p>
-      }
-    >
+    <Frame page="practice" home="../">
       <Tezguino />
     </Frame>
   );

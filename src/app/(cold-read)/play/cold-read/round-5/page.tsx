@@ -13,21 +13,7 @@ export const metadata: Metadata = {
 
 export default function Page() {
   return (
-    <Frame
-      page="practice"
-      home="../"
-      sub="Round 5, Hot & Cold. A word from the Marvel pages is hidden. Every guess tells you how close you are."
-      credits={
-        <p>
-          Word vectors from <a href="https://nlp.stanford.edu/projects/glove/">GloVe</a> (Pennington, Socher and Manning, 2014), the 100-dimension
-          model trained on Wikipedia 2014 and Gigaword 5, under the{" "}
-          <a href="https://opendatacommons.org/licenses/pddl/1-0/">Public Domain Dedication and License</a>. The game keeps the 9,000 words used most
-          on the 303 Marvel pages of the 02805 course snapshot (English Wikipedia,{" "}
-          <a href="https://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA 4.0</a>). Cosine similarity and embeddings follow the{" "}
-          <a href="https://sunelehmann.com/socialgraphs2026-web/weeks/week6.html">Week 6 brief</a>, section 6.
-        </p>
-      }
-    >
+    <Frame page="practice" home="../">
       <HotCold />
     </Frame>
   );

@@ -13,23 +13,7 @@ export const metadata: Metadata = {
 
 export default function Page() {
   return (
-    <Frame
-      page="practice"
-      home="../"
-      sub="Round 3, Mix Desk. Every page is a blend of topics. Read its words and guess the blend."
-      credits={
-        <p>
-          Page text from English Wikipedia, <a href="https://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA 4.0</a>, through the 02805 course
-          snapshot of 26 August 2026. Topics from scikit-learn’s{" "}
-          <a href="https://scikit-learn.org/stable/modules/generated/sklearn.decomposition.LatentDirichletAllocation.html">
-            LatentDirichletAllocation
-          </a>
-          , set up as in the <a href="https://sunelehmann.com/socialgraphs2026-web/weeks/week6.html">Week 6 brief</a>, section 3: 8 topics,
-          random_state 0, English stopwords and names removed, words on 5 pages or more and on at most half of them. Portraits are Wikipedia lead
-          images, mostly comic art used there under fair use.
-        </p>
-      }
-    >
+    <Frame page="practice" home="../">
       <MixDesk />
     </Frame>
   );

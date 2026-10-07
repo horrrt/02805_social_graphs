@@ -15,6 +15,7 @@ import { TezguinoGame } from "./TezguinoGame";
 import type { MixDeskData } from "./topics";
 import type { HotColdData } from "./vectors";
 import { WhoseLineGame } from "./WhoseLineGame";
+import { readBest, saveBest } from "./best";
 
 export type CampaignData = {
   clue?: ClueShopData;
@@ -28,21 +29,6 @@ const BEST = "cold-read:best-campaign";
 
 type Phase = "intro" | "level" | "between" | "done";
 
-function readBest() {
-  try {
-    return Number(localStorage.getItem(BEST)) || 0;
-  } catch {
-    return 0;
-  }
-}
-
-function saveBest(score: number) {
-  try {
-    localStorage.setItem(BEST, String(score));
-  } catch {
-    // Private windows may refuse storage; the best score is a convenience.
-  }
-}
 
 export function CampaignIntro() {
   return (
@@ -71,7 +57,7 @@ export function CampaignGame({ data, random = Math.random, clock = Date.now }: {
   const [hard, setHard] = useState(false);
   const go = useRef<HTMLButtonElement>(null);
 
-  useEffect(() => setBest(readBest()), []);
+  useEffect(() => setBest(readBest(BEST)), []);
   useEffect(() => {
     if (phase === "between" || phase === "done") go.current?.focus();
   }, [phase]);
@@ -85,7 +71,7 @@ export function CampaignGame({ data, random = Math.random, clock = Date.now }: {
       setNewBest(isBest);
       if (isBest) {
         setBest(sum);
-        saveBest(sum);
+        saveBest(BEST, sum);
       }
       setPhase("done");
     } else setPhase("between");

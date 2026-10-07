@@ -11,6 +11,7 @@ import { StartButtons, useTour } from "./Tutorial";
 import { FINISH, type Level } from "./levels";
 import { displayNames, shuffled } from "./rules";
 import { type Answer, CARDS, deal, gain, INSPECT_COST, judge, LIVES, MAX_STREAK, ratio, type Term, type Verdict, type WhoseLineData } from "./groups";
+import { readBest, saveBest } from "./best";
 
 const BEST = "cold-read:best2";
 const SIZE = 400;
@@ -19,21 +20,6 @@ const PAD = { l: 52, b: 44, t: 14, r: 14 };
 type Phase = "intro" | "card" | "answered" | "summary" | "over";
 type Played = { term: Term; kind: Answer; said: Answer | "time"; verdict: Verdict; inspected: boolean; got: number; factor: number };
 
-function readBest() {
-  try {
-    return Number(localStorage.getItem(BEST)) || 0;
-  } catch {
-    return 0;
-  }
-}
-
-function saveBest(score: number) {
-  try {
-    localStorage.setItem(BEST, String(score));
-  } catch {
-    // Private windows may refuse storage; the best score is a convenience.
-  }
-}
 
 export function Intro() {
   return (
@@ -165,9 +151,11 @@ export function WhoseLineGame({ data, random = Math.random, level, clock = Date.
   const [streak, setStreak] = useState(0);
   const [right, setRight] = useState(0);
   const [best, setBest] = useState(0);
+  // Practice keeps its own best (normal and hard apart); a campaign level keeps none.
+  const bestKey = level ? null : BEST;
   const nextBtn = useRef<HTMLButtonElement>(null);
 
-  useEffect(() => setBest(readBest()), []);
+  useEffect(() => setBest(readBest(bestKey)), []);
   useEffect(() => {
     if (phase === "answered" || phase === "summary" || phase === "over") nextBtn.current?.focus();
   }, [phase, at]);
@@ -228,7 +216,7 @@ export function WhoseLineGame({ data, random = Math.random, level, clock = Date.
     setPlayed([...played, { term: card.term, kind: card.kind, said, verdict, inspected, got, factor }]);
     if (total > best) {
       setBest(total);
-      saveBest(total);
+      saveBest(bestKey, total);
     }
     setPhase(livesLeft === 0 ? "over" : "answered");
   };

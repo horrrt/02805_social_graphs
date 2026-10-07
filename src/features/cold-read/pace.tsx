@@ -5,7 +5,7 @@
 import { useEffect, useRef, useState } from "react";
 
 /** Seconds per item, per round. */
-export const LIMIT = { clue: 60, groups: 12, mix: 45, contexts: 25, vectors: 90 } as const;
+export const LIMIT = { clue: 30, groups: 12, mix: 45, contexts: 25, vectors: 90 } as const;
 export const SPEED_MAX = 1.5;
 export const SPEED_MIN = 0.5;
 
