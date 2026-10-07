@@ -4,6 +4,7 @@
 // player picks the hidden word from four. Rules live in contexts.ts; this
 // file renders them.
 import { Fragment, useEffect, useRef, useState } from "react";
+import { PpmiFormula } from "./Formulas";
 import { COST, type HiddenWord, LIVES, MAX_STREAK, options, pieces, points, type Row, spent, type TezguinoData, type Weight } from "./contexts";
 import { Lives, ScoreBox, SkipLevel } from "./LevelParts";
 import { LIMIT, speed, Ticker, timed, useCountdown } from "./pace";
@@ -349,9 +350,9 @@ export function TezguinoGame({ data, random = Math.random, level, clock = Date.n
                 Raw counts reward words that sit next to everything, like <i>the</i> and <i>of</i>. PMI asks whether a pair turns up more often than
                 chance would put it together, and PPMI keeps only the pairs that do:
               </p>
-              <p className="cr-formula">
-                PPMI(w, c) = max(<span>log₂ P(w, c) / (P(w) P(c))</span>, 0)
-              </p>
+              <div className="cr-formula">
+                <PpmiFormula />
+              </div>
               <p>
                 A narrow window catches grammar, the words right beside it; a wide one catches the topic around it. You read a word you did not know from
                 the company it keeps, as with tezgüino.

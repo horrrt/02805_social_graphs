@@ -810,8 +810,19 @@ body.cold-read {
   font-size: var(--fs-body);
 }
 
-.cr-formula span {
-  color: var(--people);
+.cr-formula .cr-math {
+  margin: 0;
+  font-size: var(--fs-h3);
+  color: #fff;
+}
+
+.cr-formula .cr-math mfrac {
+  padding: 0 2px;
+}
+
+.cr-math-inline {
+  font-size: var(--fs-strong);
+  color: var(--ink);
 }
 
 .cr-rows {

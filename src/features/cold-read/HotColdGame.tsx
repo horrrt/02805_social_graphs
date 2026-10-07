@@ -2,6 +2,7 @@
 // every guess scores its cosine similarity to it in GloVe's vector space and
 // lands on a radar by rank. Rules live in vectors.ts; this file renders them.
 import { useEffect, useMemo, useRef, useState, type FormEvent } from "react";
+import { CosineFormula } from "./Formulas";
 import { ScoreBox, SkipLevel } from "./LevelParts";
 import { LIMIT, speed, Ticker, timed, useCountdown } from "./pace";
 import { hotColdTour } from "./tours";
@@ -363,9 +364,9 @@ export function HotColdGame({ data, random = Math.random, level, clock = Date.no
                 GloVe learned one vector per word from which words appear near it across Wikipedia and newswire. Words used in similar contexts point in
                 similar directions, so the hidden word’s nearest neighbours are the words that share its company. Cosine compares directions only:
               </p>
-              <p className="cr-formula">
-                cos(a, b) = <span>a · b</span> / (<span>‖a‖ ‖b‖</span>)
-              </p>
+              <div className="cr-formula">
+                <CosineFormula />
+              </div>
               <ol className="cr-neigh">
                 {neighbours.map((i, k) => (
                   <li key={i}>

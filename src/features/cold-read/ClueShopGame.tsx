@@ -3,6 +3,7 @@
 // pages, watches the suspect board empty, and names the page from the leads
 // ranked by cosine similarity. Rules live in rules.ts; this file renders them.
 import { useEffect, useMemo, useState } from "react";
+import { IdfInline, TfIdfFormula } from "./Formulas";
 import { Lives, ScoreBox, SkipLevel } from "./LevelParts";
 import { boldness, LIMIT, speed, Ticker, timed, useCountdown } from "./pace";
 import { clueShopTour } from "./tours";
@@ -156,13 +157,14 @@ function Debrief({ data, round, deck, flipped }: { data: ClueShopData; round: Ro
     <div className="cr-debrief">
       <h3>Why the best card was best</h3>
       <p>
-        <b>{loud.c.w}</b> appeared {loud.c.n} times, more than any other card, but it is on {data.words[loud.c.w].df} of {data.N} pages: idf ln(
-        {data.N}/{data.words[loud.c.w].df}) = {fmt(loud.idf, 2)}. <b>{top.c.w}</b> appeared {top.c.n} times on {data.words[top.c.w].df}{" "}
-        {data.words[top.c.w].df === 1 ? "page" : "pages"}: idf {fmt(top.idf, 2)}. Frequent here and rare elsewhere is TF-IDF.
+        <b>{loud.c.w}</b> appeared {loud.c.n} times, more than any other card, but it is on {data.words[loud.c.w].df} of {data.N} pages:{" "}
+        <IdfInline n={data.N} df={data.words[loud.c.w].df} value={fmt(loud.idf, 2)} />. <b>{top.c.w}</b> appeared {top.c.n} times on{" "}
+        {data.words[top.c.w].df} {data.words[top.c.w].df === 1 ? "page" : "pages"}: <IdfInline n={data.N} df={data.words[top.c.w].df} value={fmt(top.idf, 2)} />.
+        Frequent here and rare elsewhere is TF-IDF.
       </p>
-      <p className="cr-formula">
-        tf-idf(t, d) = <span>count(t, d) / |d|</span> × <span>ln(N / df(t))</span>
-      </p>
+      <div className="cr-formula">
+        <TfIdfFormula />
+      </div>
       <table className="cr-rows">
         <thead>
           <tr>
