@@ -175,3 +175,75 @@ class Lean(Model):
 
 
 PAGES["public/weeks/week06/data/lean.json"] = Lean
+
+
+# public/weeks/week06/data/essentials-*.json, written by week06_essentials.py: one file per section ------------
+
+class WeightsPage(Model):
+    name: str
+    size: int
+    count: list[tuple[str, int, int, float, float]]
+    tfidf: list[tuple[str, int, int, float, float]]
+
+
+class Weights(Model):
+    pages: list[WeightsPage] = Field(min_length=303, max_length=303)
+    facts: dict[str, object]
+
+
+class CosinePair(Model):
+    raw: float = Share
+    tfidf: float = Share
+    rawWords: list[tuple[str, float]]
+    tfidfWords: list[tuple[str, float]]
+
+
+class Cosine(Model):
+    pages: list[str]
+    pairs: dict[str, CosinePair]
+    norms: list[dict[str, float]]
+
+
+class Contrast(Model):
+    pages: dict[Literal["female", "male"], int]
+    terms: list[tuple[str, int, int, float, float, float, bool]]
+    top: dict[str, list[tuple[str, float]]]
+    null: dict[str, float]
+
+
+class Fit(Model):
+    topics: list[list[tuple[str, float]]]
+    mix: list[list[float]] = Field(min_length=303, max_length=303)
+
+
+class Topics(Model):
+    names: list[str] = Field(min_length=303, max_length=303)
+    fits: dict[str, Fit]
+    stability: dict[str, dict[str, object]]
+
+
+class Contexts(Model):
+    targets: list[str]
+    rows: dict[str, dict[Literal["2", "5", "10"], list[tuple[str, int]]]]
+    grid: dict[str, list]
+
+
+class Pmi(Model):
+    targets: list[str]
+    rows: dict[str, dict[str, object]]
+
+
+class Vectors(Model):
+    targets: list[str]
+    near: dict[str, dict[Literal["ppmi", "skipgram", "cbow"], list[tuple[str, float]]]]
+    examples: list[dict[str, object]] = Field(min_length=3, max_length=3)
+
+
+class Glove(Model):
+    targets: list[str]
+    compare: dict[str, dict[str, list]]
+
+
+for _name, _model in (("weights", Weights), ("cosine", Cosine), ("contrast", Contrast), ("topics", Topics),
+                      ("contexts", Contexts), ("pmi", Pmi), ("vectors", Vectors), ("glove", Glove)):
+    PAGES[f"public/weeks/week06/data/essentials-{_name}.json"] = _model
