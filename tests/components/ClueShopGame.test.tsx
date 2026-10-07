@@ -73,15 +73,14 @@ test("three wrong names end the run", async () => {
   assert.ok(screen.getByRole("button", { name: "Play again" }));
 });
 
-test("hard mode is picked before the deal, deals the names-off deck, and is gone during play", async () => {
+test("hard mode, picked in the practice menu, deals the names-off deck and offers no switch", async () => {
   const user = userEvent.setup();
-  render(<ClueShopGame data={data} random={zero} />);
-  await user.click(screen.getByRole("checkbox", { name: /Hard mode/ }));
+  render(<ClueShopGame data={data} random={zero} hard />);
+  assert.equal(screen.queryByRole("checkbox", { name: /Hard mode/ }), null, "the round itself has no switch");
   await user.click(screen.getByRole("button", { name: "Deal the first page" }));
   const off = shuffled(round.off, zero);
   off.forEach((c, i) => assert.match(card(i).getAttribute("aria-label")!, new RegExp(`${c.n} times here, on ${data.words[c.w].df} of`)));
   assert.ok(off.every((c) => data.words[c.w].name === 0));
-  assert.equal(screen.queryByRole("checkbox", { name: /Hard mode/ }), null, "no switching mid-run");
   assert.ok(screen.getByText("Hard mode · ×2"));
 });
 

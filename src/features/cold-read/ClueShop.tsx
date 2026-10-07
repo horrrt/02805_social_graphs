@@ -31,7 +31,9 @@ function View() {
     if (state.status === "error") console.error("cold-read decks failed", state.error);
   }, [state.status, state.error]);
   if (state.status === "error") return <Placeholder note="The decks did not load. Reload the page to try again." />;
-  return state.data ? <ClueShopGame data={state.data} /> : <Placeholder note="Shuffling the decks…" />;
+  // The practice menu's hard mode arrives as ?hard=1; read only once hydrated, as the server has no URL.
+  const hard = new URLSearchParams(window.location.search).get("hard") === "1";
+  return state.data ? <ClueShopGame data={state.data} hard={hard} /> : <Placeholder note="Shuffling the decks…" />;
 }
 
 export const ClueShop = island("cold-read/ClueShop", View, Placeholder, { roots: ["#clue-shop"] });

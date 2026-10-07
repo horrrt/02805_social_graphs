@@ -5,7 +5,7 @@ import { Frame } from "@/features/cold-read/Frame";
 // vectors. Each round also has its own practice page, linked from the frame.
 export default function Page() {
   return (
-    <Frame round={0} home="./">
+    <Frame page="campaign" home="./">
       <Campaign />
     </Frame>
   );

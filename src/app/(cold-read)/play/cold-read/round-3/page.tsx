@@ -14,7 +14,7 @@ export const metadata: Metadata = {
 export default function Page() {
   return (
     <Frame
-      round={3}
+      page="practice"
       home="../"
       sub="Round 3, Mix Desk. Every page is a blend of topics. Read its words and guess the blend."
       credits={

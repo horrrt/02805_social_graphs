@@ -14,7 +14,7 @@ export const metadata: Metadata = {
 export default function Page() {
   return (
     <Frame
-      round={5}
+      page="practice"
       home="../"
       sub="Round 5, Hot & Cold. A word from the Marvel pages is hidden. Every guess tells you how close you are."
       credits={

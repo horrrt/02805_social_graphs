@@ -84,7 +84,7 @@ body.cold-read {
 }
 
 .cr-title {
-  margin: 28px 0 4px;
+  margin: 28px 0 22px;
   font-family: var(--font-display);
   font-size: var(--fs-jumbo);
   line-height: var(--lh-display);
@@ -97,7 +97,7 @@ body.cold-read {
 }
 
 .cr-sub {
-  margin: 0 0 22px;
+  margin: -18px 0 22px;
   font-size: var(--fs-lead);
   line-height: var(--lh-lead);
   color: var(--ink-soft);
@@ -935,6 +935,10 @@ body.cold-read {
 
 .cr-rounds a:hover {
   background: var(--card);
+}
+
+.cr-rounds a {
+  font-weight: 700;
 }
 
 .cr-rounds a[aria-current="page"] {
@@ -2118,6 +2122,9 @@ body.cold-read {
 
 .cr-track li:last-child {
   margin-right: 0;
+  padding-right: 18px;
+  border-radius: 0 12px 12px 0;
+  clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%, 18px 50%);
 }
 
 .cr-track-n {
@@ -2249,6 +2256,73 @@ body.cold-read {
 .cr-next {
   font-size: var(--fs-strong);
   color: var(--ink-soft);
+}
+
+/* ---------- practice menu ---------- */
+
+.cr-menu {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.cr-menu-card {
+  height: 100%;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 4px;
+  padding: 20px;
+  border-radius: var(--radius);
+  background: var(--card);
+  border: 1px solid var(--line);
+  box-shadow: var(--shadow);
+  transition: transform 0.15s, box-shadow 0.15s;
+}
+
+.cr-menu-card:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--lift);
+}
+
+.cr-menu-n {
+  display: grid;
+  place-items: center;
+  width: 38px;
+  height: 38px;
+  margin-bottom: 6px;
+  border-radius: 50%;
+  background: var(--ink);
+  color: #fff;
+  font-family: var(--font-display);
+  font-size: var(--fs-h4);
+}
+
+.cr-menu-name {
+  font-family: var(--font-display);
+  font-size: var(--fs-h3);
+  line-height: var(--lh-title);
+  text-transform: uppercase;
+}
+
+.cr-menu-topic {
+  font-size: var(--fs-small);
+  font-weight: 700;
+  color: var(--people);
+}
+
+.cr-menu-card p {
+  flex: 1;
+  margin: 8px 0 12px;
+  color: var(--ink-soft);
+}
+
+.cr-menu-card .cr-toggle {
+  margin-bottom: 12px;
 }
 
 @keyframes cr-bump {
