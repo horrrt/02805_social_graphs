@@ -14,9 +14,14 @@ import { ROOT, entryGraph, entryScripts, importsOf, pageScripts, resolveSpec, us
 const SCRIPTS = join(ROOT, "src/scripts");
 const read = (file) => readFileSync(join(SCRIPTS, file), "utf8");
 
-const PAGES = readdirSync(join(SCRIPTS, "entries"))
-  .filter((f) => f.endsWith(".js") && f !== "run.js")
-  .map((f) => f.slice(0, -3));
+// The pages that still have an entry module: none since the loader went, so
+// every anchor below must live in code a page's components reach.
+const ENTRIES = join(SCRIPTS, "entries");
+const PAGES = existsSync(ENTRIES)
+  ? readdirSync(ENTRIES)
+      .filter((f) => f.endsWith(".js") && f !== "run.js")
+      .map((f) => f.slice(0, -3))
+  : [];
 
 // The lines other tests read, by page and file (src/scripts-relative).
 const ANCHORS = [

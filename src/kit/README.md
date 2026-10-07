@@ -645,3 +645,199 @@ A concordance line with its word cut, the answer among up to three decoys in a s
 ```tsx
 <FillBlank round={{ type: "blank", id: "b", left: "the sailor coiled the", right: "on the deck", answer: "rope", decoys: ["rose"] }} onAnswer={log} />
 ```
+
+## Editors and puzzles
+
+Eight pieces the reader works with by hand: a cut dendrogram, an editable matrix, a partition, an ego network, a
+pick-k puzzle, a pipeline, a strip of stages and a detail panel. Toy and textbook data on `/styleguide/kit/`,
+awkward cases on `/styleguide/kit/states/`. Styles: the "Kit: editors and puzzles" section of `post.css`.
+
+### dendro-core.js and matrix-core.js
+
+DOM-free, tested by `tests/dendro-core.test.mjs` and `tests/matrix-core.test.mjs`; import them as
+`@/kit/dendro-core.js` and `@/kit/matrix-core.js`.
+
+- `dendro-core.js`: a merge list is `{ a, b, h }[]`, leaves `0 … n − 1`, merge `i` making cluster `n + i` (scipy's
+  linkage). `fromTree` turns a nested tree (`{ h, children }`, leaves as ids) into one; `buildTree(n, merges)` gives
+  the leaf order that keeps every cluster contiguous, each cluster's members, height and x, and the roots of a
+  forest (bad merges skipped, heights made monotone); `cutAt(tree, h)`; `bestCut(tree, score)` keeps a cluster whole
+  when its own score beats its children's best, for a score that adds up over clusters such as
+  `modularityTerms(edges)` (each community's share of Newman's Q), so it never does worse than a single cut;
+  `blocksOf(tree, clusters)` numbers the blocks by size; `levels(tree)` lists every distinct cut; `girvanNewman(n,
+  edges)` removes the link of highest edge betweenness (graph-core) until none is left and reads the splits back as
+  merges.
+- `matrix-core.js`: `parseCell` and `parseMatrix` (blank or junk reads as 0), `sums` (row, column, total),
+  `isSymmetric` (within a tolerance), `symmetrize` (each pair takes the larger entry, or the mean), `toEdges`
+  (directed by default, the diagonal only with `loops`), `zeros`.
+
+```tsx
+const { merges } = girvanNewman(34, KARATE);
+const tree = buildTree(34, merges);
+const { partition } = blocksOf(tree, bestCut(tree, modularityTerms(KARATE)).clusters);
+```
+
+### Dendrogram({ merges, n, tree, labels, cut, minBlock, selected, onSelect, metric, yLabel, height, aria })
+
+A merge tree, leaves along the bottom and height up the side, from `merges` and `n` or a nested `tree`. `cut` is
+`{ height }` (one dashed line across) or `{ clusters }` (chosen branch by branch, say by `bestCut`; a dashed tick on
+each, and a cluster inside another listed one is dropped). Each block spans from its cut to the leaves; the
+largest eight with at least `minBlock` (2) leaves take the `.gv` group colours in size order, so a NetworkView or
+NetCanvas coloured by `blocksOf()`'s partition matches. With `onSelect(block)` each block is a button (`{ cluster,
+members, rank, group }`, `group` null for a grey block) and `selected` outlines one. `metric: { label, points, best }`
+adds a SweepCurve under the tree, a score per cut height, with `best` as its reference line. Leaf labels show up to
+60 leaves, a long one cut with an ellipsis and whole in its tooltip.
+
+```tsx
+<Dendrogram merges={merges} n={34} cut={{ clusters }} onSelect={(b) => setPicked(b.cluster)} selected={picked} metric={{ label: "Q", points, best: { y: 0.401, label: "best cut" } }} />
+```
+
+### EditableMatrix({ labels, initial, example, diagonal, onChange, caption })
+
+An n × n grid the reader types numbers into, rows the sources and columns the targets, with row sums, column sums
+and a line saying whether the matrix is symmetric (so the network undirected). Buttons symmetrize (each pair takes
+its larger entry), clear, and load `example` when given. Cells hold the raw string (R21); `onChange(matrix)` gets
+the numbers. The diagonal is locked unless `diagonal`; ↑, ↓ and Enter move between rows. Re-key it to load new
+data. Pair it with a `NetworkView` drawn from `toEdges(matrix)` with `directed: true`.
+
+```tsx
+<EditableMatrix labels={["A", "B", "C"]} initial={m} example={m} onChange={setM} />
+```
+
+### PartitionEditor({ nodes, edges, groups, initial, presets, reference, ratio, onChange, aria })
+
+A `NetworkView` whose nodes (`0 … n − 1`, placed) the reader moves between `groups` (at most eight) with a click or
+Enter, with `presets` (`[{ key, label, partition }]`), Undo and Reset. Modularity Q comes from graph-core, shown with
+the links inside groups and the number expected by chance, and every partition visited adds a point to a SweepCurve
+of Q, with `reference` (`{ y, label }`) as its dashed line. `onChange(partition)` follows every change.
+
+```tsx
+<PartitionEditor nodes={nodes} edges={KARATE} groups={["Group 1", "Group 2"]} initial={split} presets={presets} aria="The karate club" />
+```
+
+### EgoEditor({ focal, neighbours, initial, seed, onChange })
+
+One node in the middle and a ring of candidate `neighbours`: a click (or Enter) attaches or detaches one; a click on
+the dashed line between two attached neighbours links them. The focal node's clustering C = 2T / k(k − 1) is
+written out with the numbers (graph-core's `localClustering`), beside a table of every node's k and C (0 below
+k = 2). Presets make a star, a clique or a random neighbourhood, seeded by `seed`. `initial` and `onChange` use
+`{ attached, links }` with neighbour indices.
+
+```tsx
+<EgoEditor focal="A" neighbours={["B", "C", "D", "E"]} initial={{ attached: [0, 1, 2], links: [[0, 1]] }} seed={3} />
+```
+
+### NodePicker({ k, generate, check, seed, prompt, ratio, aria })
+
+A pick-k puzzle on a `NetworkView`: the reader picks up to `k` nodes, Check runs `check(picked, graph)` and shows
+its `{ ok, msg }` (announced politely), Reveal rings `graph.answer`, Clear drops the picks and New graph calls
+`generate(seed)` with the next seed. Links among the picks are highlighted; readouts count picks, pairs linked
+and puzzles solved.
+
+```tsx
+<NodePicker k={4} generate={(s) => cliqueGraph(s, 4)} check={allPairsLinked} prompt={<p>Find the 4-clique.</p>} aria="A network with a hidden clique" />
+```
+
+### StepFlow({ steps, heads, label })
+
+A numbered pipeline read top to bottom: each of `steps` is `{ title, body, transition, example, exampleTitle }`,
+`transition` labelling the arrow to the next step. When any step has an `example`, a second column holds the
+worked example beside each step, under `heads`. Plain HTML.
+
+```tsx
+<StepFlow steps={[{ title: "Corpus", transition: "tokenize", example: <code>D1: brains predict</code> }, { title: "Tokens" }]} heads={["Process", "Example"]} />
+```
+
+### StageTabs({ stages, initial, selected, onSelect, label })
+
+A numbered strip of tabs, one per stage (`{ key, title, fields, body }`, `fields` a record of label → value), and
+the picked stage's card under it. ARIA tabs with a roving tabindex: ← and → move (wrapping), Home and End jump; the
+strip wraps onto more rows. Controlled with `selected` and `onSelect`.
+
+```tsx
+<StageTabs stages={[{ key: "counts", title: "Counts", fields: { Representation: "a frequency table" } }]} label="From counts to LLMs" />
+```
+
+### DetailPanel({ kicker, title, sub, stats, words, wordsTitle, items, itemsTitle, nearest, empty })
+
+The side panel for a picked item: a kicker, the title and a line under it, a row of `stats` (`{ label, value }`)
+under the title, `words` as chips, `items` (`{ title, text }`) as a list, and up to two `nearest` lists (`{ title,
+rows, fmt }`, each row `{ key, label, score, onPick }`, a button when `onPick` is given). Without a title it shows
+`empty`. Plain HTML.
+
+```tsx
+<DetailPanel kicker="Selected topic" title="Topic 4" stats={[{ label: "Documents", value: 20 }]} words={["spider", "web"]} nearest={[{ title: "Nearest", rows }]} />
+```
+
+## Growth
+
+Four pieces for network growth: a replay in arrival order, a lab for nonlinear preferential attachment, the
+components as small multiples, and the friendship paradox as a sampler. No fetching inside; toy BA graphs and toy
+debut years on `/styleguide/kit/`, awkward cases on `/styleguide/kit/states/`. Styles: the "Kit: growth" section of
+`post.css`. The ideas follow the course's ba-growth and friendship-paradox explorables and another group's growth
+replay; no code of theirs is copied.
+
+The numbers are DOM-free in `src/kit/growth-core.js`, tested by `tests/growth-core.test.mjs`; import it as
+`@/kit/growth-core.js`. `spiralPosition(rank, total)` and `spiralLayout` place arrivals on a sunflower spiral, the
+first at the centre and the last on the rim, so a node never moves once placed. `rankBy` turns a value per node (say a
+debut year) into arrival ranks, ties in node order, and `orderOf` inverts them. `degreesAt(n, edges, rank, t)` and
+`edgesAt` count an edge once both ends have arrived. `topK` breaks ties to the earlier arrival; `hubStats` gives the
+biggest hub, its share of all links and its arrival rank. `clampAlpha` keeps α in 0 to 50, past which k^α
+overflows; `regime` names its side of 1. `SWEEP_ALPHAS`, `sweepPoint` and `sweepHubShare` give the hub's mean share
+over seeded runs at each α and n. `splitComponents` lists components largest first, or given groups, with local
+edges. `samplePair` and `sampleMany` draw a person from the nodes with a friend, then one friend (adapted from
+socialgraphs2026-web, MIT, Sune Lehmann), and `degreeShares` bins the draws.
+
+### GrowthReplay({ modes, card, top, reference, height, seed })
+
+A network replayed in arrival order. Each of `modes` is `{ key, label, n, edges, rank, note }`, a tab when there
+are two or more: its own network and arrival order (`rank[v]`, 0 first; node ids by default), say the real order
+against preferential attachment against uniform growth. Nodes sit on the spiral by rank and grow with the links they
+hold at time t (an edge turns on once both ends have arrived). Play, +1, Reset, a time scrubber and a speed slider
+drive t through `useStepper`; Play pauses off screen and runs at most two steps a second under reduced motion.
+Beside the canvas: the `top` (8) nodes by links, as buttons that pin a node, and the CCDF so far against an optional
+`reference` (`{ name, ks }`). `card(node, mode)` gives the arrival card's `{ title, line }` for the newest node or
+the pinned one; clicking a node pins it and lights its links.
+
+```tsx
+<GrowthReplay modes={[{ key: "real", label: "Real order", n, edges, rank: rankBy(years) }, { key: "pa", label: "Preferential attachment", n, edges: ba(n, 2, {}, rng).edges }]} card={(v) => ({ title: names[v], line: `debut ${years[v]}` })} />
+```
+
+### GrowthLab({ sizes, ms, defaultAlpha, defaultM, defaultN, sweepNs, reference, refShare, seed, start, height })
+
+Nonlinear preferential attachment, Π(k) ∝ k^α: a slider for α (0 to 3, with sub-linear, linear and super-linear
+presets), chips for m (`ms`) and n (`sizes`). Grow animates the network on the arrival spiral (Instant under reduced
+motion, stopped off screen); Instant grows it at once from the same seed, so both reach the same network. Beside it,
+the CCDF against a k⁻² guide and an optional `reference` series, and the biggest hub's share of links against α:
+Sweep α runs `sweepPoint` one point per tick at each of `sweepNs`, over shaded regimes, with `refShare`
+(`{ label, share }`) as a dashed line and this run as a dot. Readouts give nodes, links, the biggest hub, its share
+and its arrival rank. `start: "grown"` opens on the grown network instead of the seed clique (m + 1 nodes, so an n
+below that shows the clique).
+
+```tsx
+<GrowthLab reference={{ name: "toy reference", ks }} refShare={{ label: "toy hub: 7.4%", share: 0.074 }} sizes={[100, 300, 1000]} />
+```
+
+### ComponentGallery({ n, edges, groups, labels, max, minWidth, noun })
+
+Small-multiple `NetworkView`s, one per connected component, largest first, each laid out on its own (`forceLayout`)
+and packed into a grid of as many columns of at least `minWidth` (180) px as fit, with a title and node and link
+counts, all in one colour. Components of one node fold into one tile that counts them. `groups`
+(`[{ title, nodes }]`) draws each group's induced subgraph instead, one colour per group, an empty group as an
+empty tile. Past `max` (12) tiles a line counts what is left
+out. `labels` names nodes on hover; `noun` ("Component") titles the tiles.
+
+```tsx
+<ComponentGallery n={80} edges={edges} labels={names} max={9} />
+```
+
+### FriendshipParadox({ n, edges, labels, cap, seed, height })
+
+The friendship paradox as a sampler: Sample one person (a random node with a friend, then a random friend of
+theirs), Sample 1,000, Reset tally. The two degree histograms overlay on `DistributionPlot` (degrees 0 to `cap`, 30
+by default, the last bin holding the rest), the last draw is written out with `labels`, and readouts give the
+samples, both means and how often the friend has at least as many links. Seeded; Reset replays the same draws. A
+network with no links disables the sampler and says why.
+
+```tsx
+<FriendshipParadox n={300} edges={edges} seed={4} />
+```
