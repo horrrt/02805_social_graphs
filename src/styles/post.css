@@ -3201,6 +3201,107 @@
 .corridor .kit-board-table col.kit-board-c-verdict { width: 16%; }
 .corridor main .kit-board-table :is(th, td).num { white-space: normal; }
 
+/* ==== Kit: games (GameShell, PathQuest, AttackGame, SeatingGame, QuizRun in
+   src/kit). Light corridor style; every control takes the house focus ring,
+   and nothing moves under reduced motion. ==== */
+.corridor .kit-game { background: var(--card); border: 1px solid var(--line); border-radius: 14px; min-width: 0; padding: 14px 16px 16px; }
+.corridor .kit-game :is(button, [tabindex]):focus-visible { outline: 2px solid var(--w4-accent); outline-offset: 2px; }
+.corridor .kit-game-panel:focus { outline: none; }
+.corridor .kit-game-panel:focus-visible { outline: 2px solid var(--w4-accent); outline-offset: 4px; }
+.corridor .kit-game-head { align-items: flex-start; display: flex; flex-wrap: wrap; gap: 6px 16px; justify-content: space-between; margin: 0 0 10px; }
+.corridor .kit-game-head .kit-readouts { margin: 0; }
+.corridor .kit-game-head .kit-readouts > div { padding: 4px 10px; }
+.corridor .kit-game-head .kit-readouts dd { font-size: var(--fs-strong); overflow-wrap: anywhere; }
+.corridor .kit-game-title { color: var(--ink); font-size: var(--fs-h4); margin: 0; }
+.corridor .kit-game-intro p { color: var(--ink-soft); font-size: var(--fs-body); margin: 0 0 12px; max-width: 62ch; }
+.corridor .kit-game-seg { margin: 0 0 10px; }
+.corridor .kit-game-seg-label { color: var(--ink-mute-text); display: block; font-size: var(--fs-caption); font-weight: 700; letter-spacing: 0.04em; margin: 0 0 4px; text-transform: uppercase; }
+.corridor .kit-game-seg [role="group"] { display: flex; flex-wrap: wrap; gap: 6px; }
+.corridor .kit-game-seg button { background: var(--card); border: 1px solid var(--line); border-radius: 8px; color: var(--ink); cursor: pointer; font: inherit; font-size: var(--fs-small); max-width: 100%; padding: 5px 12px; text-align: left; }
+.corridor .kit-game-seg button b { display: block; font-weight: 700; }
+.corridor .kit-game-seg button small { color: var(--ink-mute-text); display: block; font-size: var(--fs-caption); }
+.corridor .kit-game-seg button[aria-pressed="true"] { background: var(--w4-accent-soft); border-color: var(--w4-accent); box-shadow: inset 0 0 0 1px var(--w4-accent); }
+.corridor .kit-game-seg button:disabled { cursor: not-allowed; opacity: 0.45; }
+.corridor .kit-game-go { align-items: center; display: flex; flex-wrap: wrap; gap: 8px 12px; margin: 12px 0 4px; }
+.corridor .kit-game-go .kit-note { margin: 0; }
+.corridor .kit-game-start { background: var(--w4-accent); border: 0; border-radius: 8px; color: var(--card); cursor: pointer; font: inherit; font-size: var(--fs-body); font-weight: 700; padding: 7px 18px; }
+.corridor .kit-game-start:disabled { cursor: not-allowed; opacity: 0.45; }
+.corridor .kit-game-daily { background: var(--card); border: 1px solid var(--line); border-radius: 8px; color: var(--ink-soft); cursor: pointer; font: inherit; font-size: var(--fs-small); padding: 6px 12px; }
+.corridor .kit-game-daily[aria-pressed="true"] { background: var(--people-soft); border-color: var(--people); color: var(--ink); }
+.corridor .kit-game-rules ol { color: var(--ink-soft); font-size: var(--fs-small); margin: 10px 0 0; padding-left: 1.4em; }
+.corridor .kit-game-tools { align-items: center; display: flex; flex-wrap: wrap; gap: 8px 12px; margin: 10px 0 0; }
+.corridor .kit-game-list { border: 1px solid var(--line-soft); border-radius: 8px; list-style: none; margin: 0; max-height: 300px; overflow-y: auto; padding: 4px; }
+.corridor .kit-game-list li.kit-muted button { color: var(--ink-mute-text); }
+.corridor .kit-game-list button, .corridor .kit-quest-exits button { background: none; border: 0; border-radius: 6px; color: var(--ink); cursor: pointer; display: block; font: inherit; font-size: var(--fs-small); overflow-wrap: anywhere; padding: 4px 8px; text-align: left; width: 100%; }
+.corridor .kit-game-list button:hover:not(:disabled), .corridor .kit-quest-exits button:hover { background: var(--w4-accent-soft); }
+.corridor .kit-game-list button:disabled { cursor: not-allowed; opacity: 0.55; }
+.corridor .kit-game-list button[aria-pressed="true"] { background: var(--people-soft); }
+.corridor .kit-game-list small, .corridor .kit-quest-exits small { color: var(--ink-mute-text); font-size: var(--fs-caption); }
+.corridor .kit-game-list em, .corridor .kit-quest-exits em { color: var(--people); font-size: var(--fs-caption); font-style: normal; font-weight: 700; }
+.corridor .kit-game h5 { color: var(--ink-soft); font-size: var(--fs-caption); letter-spacing: 0.04em; margin: 10px 0 4px; text-transform: uppercase; }
+.corridor .kit-game-compare { display: grid; gap: 6px; margin: 12px 0 0; }
+.corridor .kit-game-compare dt { color: var(--ink-mute-text); font-size: var(--fs-caption); font-weight: 700; }
+.corridor .kit-game-compare dd { color: var(--ink); font-size: var(--fs-small); margin: 0; overflow-wrap: anywhere; }
+.corridor .kit-game-verdict { color: var(--ink); font-size: var(--fs-body); font-weight: 600; margin: 12px 0 0; }
+.corridor .kit-game-best { color: var(--ink-soft); font-size: var(--fs-small); margin: 10px 0 0; }
+.corridor .kit-game-best b { color: var(--good); }
+.corridor .kit-game-table { border-collapse: collapse; font-size: var(--fs-small); margin: 0 0 8px; table-layout: fixed; width: 100%; }
+.corridor .kit-game-table th { background: none; border-bottom: 1px solid var(--line); color: var(--ink-mute-text); font-size: var(--fs-caption); font-weight: 600; padding: 4px 6px; text-align: left; }
+.corridor .kit-game-table td, .corridor .kit-game-table tbody th { border-bottom: 1px solid var(--line-soft); color: var(--ink); font-size: var(--fs-small); overflow-wrap: anywhere; padding: 4px 6px; }
+.corridor .kit-game-table .num { font-variant-numeric: tabular-nums; text-align: right; }
+.corridor .kit-game-table tr.kit-target :is(td, th) { background: var(--people-soft); }
+
+/* The board beside its list: map on the left, choices on the right; one column when the game is narrow. */
+.corridor :is(.kit-quest, .kit-attack, .kit-seating, .kit-quiz) { container-type: inline-size; min-width: 0; }
+.corridor :is(.kit-quest-play, .kit-attack-play, .kit-seating-play) { display: grid; gap: 16px; grid-template-columns: minmax(0, 1.7fr) minmax(0, 1fr); }
+@container (max-width: 640px) { .corridor :is(.kit-quest-play, .kit-attack-play, .kit-seating-play) { grid-template-columns: minmax(0, 1fr); } }
+.corridor :is(.kit-quest-map, .kit-attack-map, .kit-seating-map, .kit-quest-side, .kit-attack-side, .kit-seating-side) { min-width: 0; }
+.corridor .kit-quest-here { color: var(--ink-soft); font-size: var(--fs-small); margin: 0; overflow-wrap: anywhere; }
+.corridor .kit-quest-exits { list-style: none; margin: 0; padding: 0; }
+.corridor .kit-quest-exits li { border-bottom: 1px solid var(--line-soft); }
+
+/* AttackGame's reveal: the core chart beside the ranking. */
+.corridor .kit-attack-cols { display: grid; gap: 16px; grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr); margin: 0 0 12px; }
+@container (max-width: 640px) { .corridor .kit-attack-cols { grid-template-columns: minmax(0, 1fr); } }
+.corridor .kit-attack-chart { min-width: 0; }
+.corridor .kit-attack-chart svg { display: block; max-width: 100%; }
+.corridor .kit-attack-key { display: flex; flex-wrap: wrap; gap: 4px 14px; list-style: none; margin: 4px 0 0; padding: 0; }
+.corridor .kit-attack-key li { align-items: center; color: var(--ink-soft); display: flex; font-size: var(--fs-caption); gap: 6px; }
+.corridor .kit-attack-key i { border-radius: 2px; display: inline-block; height: 3px; width: 16px; }
+.corridor .kit-attack-ranks { list-style: none; margin: 0; padding: 0; }
+.corridor .kit-attack-ranks li { align-items: center; border-bottom: 1px solid var(--line-soft); display: grid; font-size: var(--fs-small); gap: 8px; grid-template-columns: 1.6em minmax(0, 1fr) auto; padding: 4px 2px; }
+.corridor .kit-attack-ranks li.kit-target { background: var(--people-soft); border-radius: 4px; font-weight: 700; }
+
+/* SeatingGame: the chairs, each with what its guest added, and the place cards in their group colours. */
+.corridor .kit-seating-seats { margin: 0; padding-left: 1.6em; }
+.corridor .kit-seating-seats li { font-size: var(--fs-small); overflow-wrap: anywhere; padding: 1px 0; }
+.corridor .kit-seating-seats .kit-num { margin-left: 8px; }
+.corridor .kit-game-seg button.kit-card { min-width: 2.6em; text-align: center; }
+.corridor .kit-card-0 b { color: var(--group-0); }
+.corridor .kit-card-1 b { color: var(--group-1); }
+.corridor .kit-card-2 b { color: var(--group-2); }
+.corridor .kit-card-3 b { color: var(--group-3); }
+
+/* QuizRun and its rounds. */
+.corridor .kit-quiz-round { border-radius: 8px; padding: 2px; }
+.corridor .kit-quiz-round:focus-visible { outline: 2px solid var(--w4-accent); outline-offset: 2px; }
+.corridor .kit-quiz-ask { color: var(--ink); font-size: var(--fs-body); font-weight: 600; margin: 0 0 8px; }
+.corridor .kit-quiz-clues { display: flex; flex-wrap: wrap; gap: 6px; list-style: none; margin: 0 0 10px; padding: 0; }
+.corridor .kit-quiz-clues li { background: var(--access-soft); border-radius: 999px; font-size: var(--fs-small); font-weight: 600; overflow-wrap: anywhere; padding: 2px 12px; }
+.corridor .kit-quiz-fade li:last-child { animation: kit-quiz-in 0.3s ease-out; }
+@keyframes kit-quiz-in { from { opacity: 0; transform: translateY(3px); } to { opacity: 1; transform: none; } }
+@media (prefers-reduced-motion: reduce) { .corridor .kit-quiz-fade li:last-child { animation: none; } }
+.corridor .kit-quiz-options { display: grid; gap: 6px; list-style: none; margin: 0; padding: 0; }
+.corridor .kit-quiz-options button { align-items: baseline; background: var(--card); border: 1px solid var(--line); border-radius: 8px; color: var(--ink); cursor: pointer; display: flex; font: inherit; font-size: var(--fs-small); gap: 8px; overflow-wrap: anywhere; padding: 6px 10px; text-align: left; width: 100%; }
+.corridor .kit-quiz-options button:hover:not(:disabled) { border-color: var(--w4-accent); }
+.corridor .kit-quiz-options button:disabled { cursor: default; }
+.corridor .kit-quiz-options button.kit-right { background: var(--good-soft); border-color: var(--good); }
+.corridor .kit-quiz-options button.kit-wrong { background: color-mix(in srgb, var(--bad) 9%, var(--card)); border-color: var(--bad); }
+.corridor .kit-quiz-options kbd { border: 1px solid var(--line); border-radius: 4px; color: var(--ink-mute-text); flex: none; font-family: var(--font-mono); font-size: var(--fs-caption); padding: 0 5px; }
+.corridor .kit-quiz-line { background: var(--w4-inset); border-radius: 8px; font-family: var(--font-mono); font-size: var(--fs-small); margin: 0 0 6px; overflow-wrap: anywhere; padding: 8px 12px; }
+.corridor .kit-quiz-line mark { background: var(--people-soft); border-radius: 3px; padding: 0 4px; }
+.corridor .kit-quiz-feedback { color: var(--ink); font-size: var(--fs-small); font-weight: 600; margin: 10px 0 0; }
+
 /* ==== Kit: editors and puzzles (Dendrogram, EditableMatrix, PartitionEditor,
    EgoEditor, NodePicker, StepFlow, StageTabs, DetailPanel in src/kit). Light
    corridor style; every control takes the house focus ring. ==== */

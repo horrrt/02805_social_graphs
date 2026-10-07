@@ -532,6 +532,120 @@ observed, mean, sd }`. Long labels are cut with an ellipsis and keep their full 
 <NullBars rows={[{ key: "hv", label: "hero – villain", observed: 268, mean: 301, sd: 13 }]} xLabel="links" />
 ```
 
+## Games
+
+Four games and the frame they share, with toy graphs and toy words on `/styleguide/kit/` and awkward cases, most
+opened mid-run, on `/styleguide/kit/states/`. Every game runs from the keyboard: each map has a list beside it
+that names every move. Styles: the "Kit: games" section of `post.css`.
+
+The rules are DOM-free in `src/kit/game-core.js`, tested by `tests/game-core.test.mjs`; graph measures come from
+`graph-core.js`. Seeds: `hashSeed`, `dailySeed` (a date string hashed; the caller reads the date), `pick` and
+`sample`. `bestStore` keeps best scores by `settingsKey`, in the storage passed in or in memory when that is
+null or throws. `runReducer` moves a run from idle to playing to reveal (`start`, `finish`, `again`, `replay`).
+Round trip: `distancesOut`, `par` (out plus back), `pickTarget` (a distance band, with a way home, or null),
+`questInit`, `questMove`, `exits`, `revealed` (fog: the pages stood on and where their links lead), `nextStep`,
+`questHint` (+`HINT_COST`), `questUndo` (+`UNDO_COST`), `questSteps` and `shortestRoute`. Attack: `coreAfter`,
+`cutOff`, `clampBudget`, `coreCurve`, `botHits` (`"degree"` and `"betweenness"` recomputed after each hit,
+`"random"` seeded), `bestHit` and `rankRuns`. Seating: `tableScore` (L_in − (Σk)²/4m), `seatDelta`,
+`candidates`, `greedyTable`, `randomTable`, `bestTable`, `partitionQ`, `seatFromCards` (label propagation with
+the cards held; a guest no card reaches sits alone), `greedyModularity`, `louvainSeating`, `randomPartition`,
+`nmi` and `disagreements`. Quiz: `cluePoints`, `clueScores`, `machineCommit` (top ≥ 2× runner-up after two
+clues, forced at the last), `dealCases`, `quizInit` and `quizAnswer`.
+
+### GameShell({ run, title, intro, segments, rules, hud, reveal, startLabel, canStart, startNote, dailyToggle, fmtScore })
+
+The frame: in idle, the intro, one row of `aria-pressed` buttons per segment (`[{ key, label, options: [{ value,
+label, sub, disabled }] }]`), a daily-seed toggle, the start button (off with `startNote` when `canStart` is
+false), the best score for the settings and `rules`; in play, `hud` (Readouts items) beside the title and the
+children; in the reveal, `reveal`, the best score (marked when new) and Play again and Change settings. Each new
+phase takes the focus to its panel.
+
+```tsx
+<GameShell run={run} title="Round trip" segments={[{ key: "band", label: "How far out", options }]} hud={tiles} reveal={<Compare />}>{board}</GameShell>
+```
+
+### useGameRun({ game, defaults, better, seed, autostart, onStart })
+
+The run behind a GameShell: `{ phase, settings, set, seed, runs, score, daily, setDaily, best, isNew, better, start,
+finish, again, replay }`. `onStart(settings, seed)` runs inside the click that starts a game, so the game sets up
+its board there; `finish(score)` records the best for `game` and the settings (`better` is `"higher"` or
+`"lower"`; a null score records nothing). The store opens after hydration; the date is read on the click.
+`autostart` begins in play, for a game shown mid-run.
+
+```tsx
+const run = useGameRun({ game: "attack", defaults: { budget: "5" }, better: "lower", onStart: () => setHits([]) });
+```
+
+### PathQuest({ names, edges, homes, bands, positions, seed, preset, title, dailyToggle })
+
+There and back on a directed network under fog: the map shows the pages stood on and where their links lead, the
+list names the links out of the page you stand on. `bands` are `[{ key, label, sub, range: [lo, hi] }]` hops
+from home; a band with no target that has a way back turns Set out off and says so. Hint (+2 steps), Undo (+1)
+and Give up; the reveal lifts the fog and sets your route against the shortest out and back, whose sum is par.
+`preset: { home, target, moves }` opens it mid-run.
+
+```tsx
+<PathQuest names={town} edges={oneWay} homes={[0, 12]} seed={3} />
+```
+
+### AttackGame({ n, edges, names, positions, budgets, hints, seed, preset, title, dailyToggle })
+
+Spend a budget of hits (cut to the node count) to shrink the largest component; nodes cut off from it turn grey,
+and a hint rings the hit that shrinks it most now. The reveal plots core size against hits for you and three
+bots (highest degree, highest betweenness, random) and ranks all four. `preset: { budget, hits }` opens it mid-run.
+
+```tsx
+<AttackGame n={34} edges={karate} names={names} budgets={[3, 5, 8]} />
+```
+
+### SeatingGame({ n, edges, names, positions, reference, sizes, cardCounts, hosts, seed, preset, title, dailyToggle })
+
+Two modes. Single table: seat `size` guests beside a seeded host, each chair showing what its guest added to
+L_in − (Σk)²/4m, with undo; the reveal sets the table against the greedy, random and best-found hosts and counts
+how many of your guests Louvain seats with the host. Full room: lay place cards, label propagation seats the
+rest, and the reveal sets the room's Q against Louvain, greedy merging and a random seating, gives the NMI with
+Louvain (and with `reference: { label, partition }`) and rings the guests Louvain seats elsewhere.
+
+```tsx
+<SeatingGame n={34} edges={karate} names={names} reference={{ label: "the club's real split", partition: split }} />
+```
+
+### QuizRun({ rounds, lengths, seed, preset, title, dailyToggle })
+
+A run of rounds dealt by seed from `rounds`, filtered by type, with score, streak and the machine's score on the
+suspect rounds; the reveal tabulates every round. Round types: `{ type: "clue", suspects, answer, clues, bags }`,
+`{ type: "two", options, answer, ask, why }` and `{ type: "blank", left, right, answer, decoys, source }`.
+
+```tsx
+<QuizRun rounds={rounds} lengths={[4, 8]} seed={7} />
+```
+
+### ClueReveal({ round, onAnswer, startAt, answered })
+
+One suspect round: clue words shown one at a time (Space), suspects picked with 1 to 4. Fewer clues score more;
+the machine commits when its top suspect scores at least twice the runner-up after two clues, or at the last clue,
+and the round names its clue and pick once answered. `onAnswer({ correct, points, machine })`.
+
+```tsx
+<ClueReveal round={{ type: "clue", id: "k", suspects, answer: "keeper", clues: ["night", "lamp"], bags }} onAnswer={log} />
+```
+
+### TwoChoice({ round, onAnswer, answered })
+
+Which of two sentences is real, keys 1 and 2; `why` explains once answered.
+
+```tsx
+<TwoChoice round={{ type: "two", id: "s", options: [real, generated], answer: 0 }} onAnswer={log} />
+```
+
+### FillBlank({ round, onAnswer, seed })
+
+A concordance line with its word cut, the answer among up to three decoys in a seeded order, keys 1 to 4.
+
+```tsx
+<FillBlank round={{ type: "blank", id: "b", left: "the sailor coiled the", right: "on the deck", answer: "rope", decoys: ["rose"] }} onAnswer={log} />
+```
+
 ## Editors and puzzles
 
 Eight pieces the reader works with by hand: a cut dendrogram, an editable matrix, a partition, an ego network, a

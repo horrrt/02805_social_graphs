@@ -4,6 +4,7 @@ import { KitState } from "@/features/kit-page/states";
 import { KitStateNetworks } from "@/features/kit-page/states-networks";
 import { TextState } from "@/features/kit-page/states-text";
 import { DistState } from "@/features/kit-page/states-distributions";
+import { GamesState } from "@/features/kit-page/states-games";
 import { KitStateEditors } from "@/features/kit-page/states-editors";
 import { KitStateGrowth } from "@/features/kit-page/states-growth";
 
@@ -316,6 +317,72 @@ export default function Page() {
           <DistState state="bars-empty" />
         </PostSection>
         {/* ==== end Kit: distributions and nulls ==== */}
+        {/* ==== Kit: games ==== */}
+        <PostSection id="state-games">
+          <h2>Games</h2>
+          <div className="w4-two">
+            <div>
+              <h3>PathQuest: no target has a way back</h3>
+              <GamesState state="games-quest-noway" />
+            </div>
+            <div>
+              <h3>PathQuest: stuck where no link leads out</h3>
+              <GamesState state="games-quest-stuck" />
+            </div>
+          </div>
+          <div className="w4-two">
+            <div>
+              <h3>AttackGame: a budget larger than the graph</h3>
+              <GamesState state="games-attack-budget" />
+            </div>
+            <div>
+              <h3>AttackGame: no links, no hints</h3>
+              <GamesState state="games-attack-nolinks" />
+            </div>
+          </div>
+          <h3>AttackGame: one hit left</h3>
+          <GamesState state="games-attack-late" />
+          <div className="w4-two">
+            <div>
+              <h3>SeatingGame: an empty room</h3>
+              <GamesState state="games-seating-empty" />
+            </div>
+            <div>
+              <h3>SeatingGame: more seats than guests</h3>
+              <GamesState state="games-seating-small" />
+            </div>
+          </div>
+          <h3>SeatingGame: the room with two cards laid</h3>
+          <GamesState state="games-seating-room" />
+          <div className="w4-two">
+            <div>
+              <h3>QuizRun: no rounds</h3>
+              <GamesState state="games-quiz-none" />
+            </div>
+            <div>
+              <h3>ClueReveal: a single suspect with a long name</h3>
+              <GamesState state="games-clue-single" />
+            </div>
+          </div>
+          <div className="w4-two">
+            <div>
+              <h3>ClueReveal: every clue used</h3>
+              <GamesState state="games-clue-all" />
+            </div>
+            <div>
+              <h3>TwoChoice: answered wrong, one sentence far longer</h3>
+              <GamesState state="games-two-long" />
+            </div>
+          </div>
+          <div className="w4-two">
+            <div>
+              <h3>FillBlank: no decoys, nothing before the blank</h3>
+              <GamesState state="games-blank-alone" />
+            </div>
+            <div></div>
+          </div>
+        </PostSection>
+        {/* ==== end Kit: games ==== */}
         {/* ==== Kit: editors and puzzles ==== */}
         <PostSection id="state-editors">
           <h2>Editors and puzzles</h2>
