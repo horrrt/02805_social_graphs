@@ -5,7 +5,7 @@ import "./dom";
 import test from "node:test";
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
-import { CARDS, deal, gain, ratio, type WhoseLineData } from "@/features/cold-read/groups";
+import { CARDS, deal, gain, judge, ratio, type WhoseLineData } from "@/features/cold-read/groups";
 
 const data: WhoseLineData = JSON.parse(readFileSync(new URL("../../public/play/cold-read/data/whose_line.json", import.meta.url), "utf8"));
 
@@ -34,4 +34,16 @@ test("a right call pays 100 times the streak, less an inspection", () => {
   assert.equal(gain(3, true), 250);
   assert.equal(gain(9, false), 500, "the streak caps at ×5");
   assert.equal(gain(1, true), 50);
+});
+
+test("calling a fluke's corner is half right, any other miss is wrong", () => {
+  const fluke = data.pairs[0].cards.fluke[0];
+  const corner = ratio(fluke) >= 1 ? "a" : "b";
+  const other = corner === "a" ? "b" : "a";
+  assert.equal(judge("fluke", "fluke", fluke), "right");
+  assert.equal(judge("fluke", corner, fluke), "half");
+  assert.equal(judge("fluke", other, fluke), "wrong");
+  assert.equal(judge("fluke", "both", fluke), "wrong");
+  const lean = data.pairs[0].cards.a[0];
+  assert.equal(judge("a", "fluke", lean), "wrong");
 });

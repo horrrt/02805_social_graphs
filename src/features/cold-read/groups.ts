@@ -31,6 +31,19 @@ export function deal(pair: Pair, random: () => number = Math.random): { term: Te
 /** Rate in the first group over rate in the second. */
 export const ratio = (t: Term) => t.x / t.y;
 
+export type Verdict = "right" | "half" | "wrong";
+
+/**
+ * A call's verdict. Calling the corner a fluke sits in is half right: the
+ * group does use the word more, it just takes one page to show it. Half right
+ * scores nothing and breaks the streak, but costs no life.
+ */
+export function judge(kind: Answer, said: Answer, t: Term): Verdict {
+  if (said === kind) return "right";
+  if (kind === "fluke" && said === (ratio(t) >= 1 ? "a" : "b")) return "half";
+  return "wrong";
+}
+
 /** Points for a right call: 100 times the streak (this call included, up to MAX_STREAK), less the inspection, never below 0. */
 export function gain(streak: number, inspected: boolean) {
   return Math.max(0, 100 * Math.min(Math.max(streak, 1), MAX_STREAK) - (inspected ? INSPECT_COST : 0));

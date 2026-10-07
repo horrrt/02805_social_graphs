@@ -10,7 +10,7 @@ import { useData } from "@/lib/useData";
 import { useHydrated } from "@/lib/useHydrated";
 import { asset } from "@/scripts/site.js";
 import { shuffled } from "./rules";
-import { type Answer, CARDS, deal, gain, INSPECT_COST, LIVES, MAX_STREAK, ratio, type Term, type WhoseLineData } from "./groups";
+import { type Answer, CARDS, deal, gain, INSPECT_COST, judge, LIVES, MAX_STREAK, ratio, type Term, type Verdict, type WhoseLineData } from "./groups";
 
 const DATA = "play/cold-read/data/whose_line.json";
 const BEST = "cold-read:best2";
@@ -18,7 +18,7 @@ const SIZE = 400;
 const PAD = { l: 52, b: 44, t: 14, r: 14 };
 
 type Phase = "intro" | "card" | "answered" | "summary" | "over";
-type Played = { term: Term; kind: Answer; said: Answer; inspected: boolean; got: number };
+type Played = { term: Term; kind: Answer; said: Answer; verdict: Verdict; inspected: boolean; got: number };
 
 function readBest() {
   try {
@@ -47,7 +47,8 @@ function Intro() {
         fluke.
       </li>
       <li>
-        <b>Inspect</b> the pages behind a word for {INSPECT_COST} points before you call it. A wrong call costs one of {LIVES} lives.
+        <b>Inspect</b> the pages behind a word for {INSPECT_COST} points before you call it. A wrong call costs one of {LIVES} lives; calling a
+        fluke’s corner is half right and costs none.
       </li>
     </ol>
   );
@@ -72,7 +73,7 @@ function Team({ data, g, side }: { data: WhoseLineData; g: number; side: "a" | "
   return (
     <div className="cr-team" data-side={side}>
       <span className="cr-team-name">
-        Team <b>{group.label.replace(/\s*\(.*\)\s*/g, "")}</b>
+        Team <b>{short(group.label)}</b>
       </span>
       <ul className="cr-team-faces">
         {group.hubs.map((h) => (
@@ -99,8 +100,8 @@ function Plot({ data, pair, played, current }: { data: WhoseLineData; pair: Whos
   const sx = (v: number) => PAD.l + ((log(Math.max(v, lo)) - log(lo)) / span) * w;
   const sy = (v: number) => PAD.t + h - ((log(Math.max(v, lo)) - log(lo)) / span) * h;
   const ticks = [0.1, 1, 10, 100, 1000].filter((v) => v <= hi);
-  const A = data.groups[pair.a].label;
-  const B = data.groups[pair.b].label;
+  const A = short(data.groups[pair.a].label);
+  const B = short(data.groups[pair.b].label);
   return (
     <svg className="cr-plot" viewBox={`0 0 ${SIZE} ${SIZE}`} role="img" aria-label={`Uses per 10,000 words: ${A}'s pages across, ${B}'s pages up`}>
       <polygon className="cr-zone" data-side="a" points={`${sx(lo)},${sy(lo)} ${sx(hi)},${sy(lo)} ${sx(hi)},${sy(hi)}`} />
@@ -134,7 +135,7 @@ function Plot({ data, pair, played, current }: { data: WhoseLineData; pair: Whos
         <circle key={i} className="cr-cloud" cx={sx(x)} cy={sy(y)} r={2} />
       ))}
       {played.map((p) => (
-        <g key={p.term.w} className="cr-term" data-right={p.said === p.kind} transform={`translate(${sx(p.term.x)} ${sy(p.term.y)})`}>
+        <g key={p.term.w} className="cr-term" data-verdict={p.verdict} data-fluke={p.kind === "fluke"} transform={`translate(${sx(p.term.x)} ${sy(p.term.y)})`}>
           <circle r={5.5} />
           <text x={8} y={4}>
             {p.term.w}
@@ -223,16 +224,17 @@ function View() {
 
   const say = (said: Answer) => {
     if (!card) return;
-    const ok = said === card.kind;
+    const verdict = judge(card.kind, said, card.term);
+    const ok = verdict === "right";
     const run = ok ? streak + 1 : 0;
     const got = ok ? gain(run, inspected) : 0;
     const total = score + got;
-    const livesLeft = ok ? lives : lives - 1;
+    const livesLeft = verdict === "wrong" ? lives - 1 : lives;
     setStreak(run);
     setScore(total);
     setLives(livesLeft);
     if (ok) setRight((r) => r + 1);
-    setPlayed([...played, { term: card.term, kind: card.kind, said, inspected, got }]);
+    setPlayed([...played, { term: card.term, kind: card.kind, said, verdict, inspected, got }]);
     if (total > best) {
       setBest(total);
       saveBest(total);
@@ -262,8 +264,8 @@ function View() {
       </section>
     );
 
-  const A = data.groups[pair.a].label;
-  const B = data.groups[pair.b].label;
+  const A = short(data.groups[pair.a].label);
+  const B = short(data.groups[pair.b].label);
   const last = played.at(-1);
   const label = { a: `More in ${A}’s pages`, b: `More in ${B}’s pages`, both: "Both alike", fluke: "One-page fluke" } as const;
 
@@ -274,7 +276,7 @@ function View() {
     const rates = `${p.term.x.toFixed(1)} uses per 10,000 words in ${A}’s pages, ${p.term.y.toFixed(1)} in ${B}’s`;
     if (p.kind === "both") return `${rates}: within ${times.toFixed(1)}× of each other, so it sits near the diagonal.`;
     if (p.kind === "fluke")
-      return `${rates}, ${times.toFixed(1)}× more in ${lean}’s. But ${Math.round(p.term.share * 100)}% of those uses are on one page, ${p.term.top}. One page, not the community.`;
+      return `It sits in ${lean}’s corner because ${lean}’s pages do use it ${times.toFixed(1)}× more: ${rates}. But ${Math.round(p.term.share * 100)}% of those uses are on one page, ${p.term.top}. The plot counts uses, not pages, so one loud page can put a word in a whole community’s corner.`;
     return `${rates}: ${times.toFixed(1)}× more in ${lean}’s, spread over ${r >= 1 ? p.term.pa : p.term.pb} pages.`;
   };
 
@@ -331,8 +333,10 @@ function View() {
                 </>
               ) : null}
               {phase === "answered" && last ? (
-                <div className="cr-verdict-box" data-right={last.said === last.kind}>
-                  <p className="cr-stamp">{last.said === last.kind ? `Right · +${last.got}` : "Wrong · −1 life"}</p>
+                <div className="cr-verdict-box" data-verdict={last.verdict}>
+                  <p className="cr-stamp">
+                    {last.verdict === "right" ? `Right · +${last.got}` : last.verdict === "half" ? "Half right · no life lost" : "Wrong · −1 life"}
+                  </p>
                   <p className="cr-answer">{label[last.kind]}</p>
                   <p>{explain(last)}</p>
                   <button ref={nextBtn} type="button" className="cr-go" onClick={next}>
@@ -347,7 +351,7 @@ function View() {
             <div className="cr-term-card">
               <p className="cr-stamp">{phase === "over" ? "Run over" : "Match over"}</p>
               <p className="cr-verdict">
-                {played.filter((p) => p.said === p.kind).length} of {played.length} right
+                {played.filter((p) => p.verdict === "right").length} of {played.length} right
               </p>
               {phase === "over" ? (
                 <p>
@@ -363,7 +367,8 @@ function View() {
         <div className="cr-board">
           <Plot data={data} pair={pair} played={played} current={phase === "answered" && last ? last.term : null} />
           <p className="cr-note">
-            Each grey dot is one of the 300 words these pages use most. Words on the diagonal are used at the same rate by both groups.
+            Each grey dot is one of the 300 words these pages use most. Words on the diagonal are used at the same rate by both groups. A purple
+            ring marks a fluke: placed by its totals, carried by one page.
           </p>
         </div>
       </div>
@@ -382,7 +387,7 @@ function View() {
           </p>
           <ul className="cr-played">
             {played.map((p) => (
-              <li key={p.term.w} data-right={p.said === p.kind}>
+              <li key={p.term.w} data-verdict={p.verdict}>
                 <b>{p.term.w}</b> <span>{label[p.kind]}</span>
               </li>
             ))}
