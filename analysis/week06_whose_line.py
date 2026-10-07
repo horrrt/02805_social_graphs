@@ -67,7 +67,7 @@ def main():
         A, B = stats[a], stats[b]
         rate = lambda s, w: (s["uses"][w] + 0.5) / s["tokens"] * 1e4  # noqa: E731
         vocab = [w for w in set(A["uses"]) | set(B["uses"]) if A["uses"][w] + B["uses"][w] >= MIN_USES]
-        vocab.sort(key=lambda w: -(A["uses"][w] + B["uses"][w]))
+        vocab.sort(key=lambda w: (-(A["uses"][w] + B["uses"][w]), w))  # ties by word, so every run picks the same
         classes = {"a": [], "b": [], "both": [], "fluke": []}
         for w in vocab:
             lr = math.log2(rate(A, w) / rate(B, w))

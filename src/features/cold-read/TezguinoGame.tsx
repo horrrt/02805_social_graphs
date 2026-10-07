@@ -217,13 +217,16 @@ export function TezguinoGame({ data, random = Math.random }: { data: TezguinoDat
         <>
           <div className="cr-hc-clue">
             <span className="cr-h">Word {at + 1}</span>
-            <span className="cr-tiles" aria-label={`${hidden.w.length} letters`}>
-              {[...hidden.w].map((ch, i) => (
-                <span key={i} data-open={answered}>
-                  {answered ? ch : ""}
-                </span>
-              ))}
-            </span>
+            {/* No letter tiles while playing: with four options to pick from, the length alone would name the word. */}
+            {answered ? (
+              <span className="cr-tiles" aria-label={hidden.w}>
+                {[...hidden.w].map((ch, i) => (
+                  <span key={i} data-open>
+                    {ch}
+                  </span>
+                ))}
+              </span>
+            ) : null}
             <span className="cr-hc-df">
               used <b>{hidden.uses}</b> times on {hidden.df} pages
             </span>

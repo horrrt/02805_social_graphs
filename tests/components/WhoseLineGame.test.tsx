@@ -13,7 +13,7 @@ import { json, zero } from "./coldReadData";
 const data = json<WhoseLineData>("whose_line.json");
 const pair = data.pairs[shuffled(data.pairs.map((_, i) => i), zero)[0]];
 const hand = deal(pair, zero);
-const CALL: Record<Answer, RegExp> = { a: /^← /, b: / →$/, both: /Both alike/, fluke: /One-page fluke/ };
+const CALL: Record<Answer, RegExp> = { a: /^1 · /, b: /^3 · /, both: /^2 · Both alike/, fluke: /^4 · One-page fluke/ };
 
 beforeEach(() => localStorage.clear());
 
@@ -79,4 +79,24 @@ test("three wrong calls end the run", async () => {
   }
   assert.ok(screen.getByText("Run over"));
   assert.ok(screen.getByRole("button", { name: "Play again" }));
+});
+
+test("keys 1 to 4 call the card and arrow keys do nothing", async () => {
+  const user = await started();
+  await user.keyboard("{ArrowDown}{ArrowLeft}");
+  assert.equal(document.querySelectorAll(".cr-term").length, 0, "arrows leave the card open");
+  const key = { a: "1", both: "2", b: "3", fluke: "4" }[hand[0].kind];
+  await user.keyboard(key);
+  assert.ok(screen.getByText(/^Right · \+/));
+});
+
+test("a side that never uses a word says never, not its pseudocount", async () => {
+  const user = await started();
+  for (const [i, c] of hand.entries()) {
+    await user.click(call(c.kind));
+    const text = document.querySelector(".cr-verdict-box")!.textContent!;
+    if (c.term.ua === 0 || c.term.ub === 0) assert.match(text, /never in/);
+    else assert.doesNotMatch(text, /never in/);
+    await user.click(screen.getByRole("button", { name: i === hand.length - 1 ? "See the match" : "Next word" }));
+  }
 });

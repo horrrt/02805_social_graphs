@@ -33,10 +33,23 @@ test("PPMI pushes the filler words out of the rows that raw counts give them", (
 test("each sentence hides its word and nothing else gives it away", () => {
   for (const h of data.words) {
     assert.equal(h.sentences.length, 3);
+    const stem = h.w.length >= 5 ? h.w.slice(0, 5) : h.w;
     for (const s of h.sentences) {
       assert.ok(pieces(s).length >= 2, h.w);
-      assert.ok(!new RegExp(`\\b${h.w}\\b`, "i").test(s), `${h.w} shows in "${s}"`);
+      assert.ok(!s.includes("\n"), `a heading is glued to "${s}"`);
+      // No other form of the word either: costumes, vampires, Soulsword.
+      const words = s.toLowerCase().match(/[^\W\d_]+/gu) ?? [];
+      assert.ok(!words.some((x) => x.startsWith(stem)), `${h.w} shows in "${s}"`);
     }
+  }
+});
+
+test("no two hidden words are spellings of one word", () => {
+  const seen = new Map<string, string>();
+  for (const h of data.words) {
+    const key = h.w.replace(/(.)\1/g, "$1");
+    assert.ok(!seen.has(key), `${h.w} and ${seen.get(key)}`);
+    seen.set(key, h.w);
   }
 });
 

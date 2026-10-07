@@ -37,8 +37,8 @@ export function Intro() {
         <b>Read</b> the word. Two communities of the Marvel network face off, found from the links alone in Week 5.
       </li>
       <li>
-        <b>Call</b> it: used more by the left group, the right group, both alike, or a fluke that one page alone inflates. Arrow keys work, and F is
-        fluke.
+        <b>Call</b> it: used more by the left group, the right group, both alike, or a fluke that one page alone inflates. Keys 1 to 4
+        call it.
       </li>
       <li>
         <b>Inspect</b> the pages behind a word for {INSPECT_COST} points before you call it. A wrong call costs one of {LIVES} lives; calling a
@@ -154,11 +154,11 @@ export function WhoseLineGame({ data, random = Math.random }: { data: WhoseLineD
   const pair = data && order.length ? data.pairs[order[match % order.length]] : null;
   const card = hand[at] ?? null;
 
-  // Arrow keys and F answer the open card.
+  // Keys 1 to 4 answer the open card, as in the other rounds; arrow keys stay free to scroll.
   useEffect(() => {
     if (phase !== "card") return;
     const onKey = (e: KeyboardEvent) => {
-      const map: Record<string, string> = { ArrowLeft: "cr-say-a", ArrowRight: "cr-say-b", ArrowDown: "cr-say-both", f: "cr-say-fluke", F: "cr-say-fluke" };
+      const map: Record<string, string> = { "1": "cr-say-a", "2": "cr-say-both", "3": "cr-say-b", "4": "cr-say-fluke" };
       const id = map[e.key];
       if (!id || e.metaKey || e.ctrlKey || e.altKey) return;
       e.preventDefault();
@@ -239,11 +239,16 @@ export function WhoseLineGame({ data, random = Math.random }: { data: WhoseLineD
     const r = ratio(p.term);
     const lean = r >= 1 ? A : B;
     const times = r >= 1 ? r : 1 / r;
-    const rates = `${p.term.x.toFixed(1)} uses per 10,000 words in ${A}’s pages, ${p.term.y.toFixed(1)} in ${B}’s`;
-    if (p.kind === "both") return `${rates}: within ${times.toFixed(1)}× of each other, so it sits near the diagonal.`;
+    // A side that never uses the word shows as never: its rate is only the plot's pseudocount.
+    const side = (uses: number, rate: number, who: string) => (uses === 0 ? `never in ${who}’s` : `${rate.toFixed(1)} in ${who}’s`);
+    const rates = `uses per 10,000 words: ${side(p.term.ua, p.term.x, A)} pages, ${side(p.term.ub, p.term.y, B)}`;
+    const never = p.term.ua === 0 || p.term.ub === 0;
+    const Rates = rates[0].toUpperCase() + rates.slice(1);
+    if (p.kind === "both") return `${Rates}: within ${times.toFixed(1)}× of each other, so it sits near the diagonal.`;
+    const more = never ? `only ${lean}’s pages use it` : `${lean}’s pages use it ${times.toFixed(1)}× more`;
     if (p.kind === "fluke")
-      return `It sits in ${lean}’s corner because ${lean}’s pages do use it ${times.toFixed(1)}× more: ${rates}. But ${Math.round(p.term.share * 100)}% of those uses are on one page, ${p.term.top}. The plot counts uses, not pages, so one loud page can put a word in a whole community’s corner.`;
-    return `${rates}: ${times.toFixed(1)}× more in ${lean}’s, spread over ${r >= 1 ? p.term.pa : p.term.pb} pages.`;
+      return `It sits in ${lean}’s corner because ${more}: ${rates}. But ${Math.round(p.term.share * 100)}% of those uses are on one page, ${p.term.top}. The plot counts uses, not pages, so one loud page can put a word in a whole community’s corner.`;
+    return `${Rates}: ${never ? `only ${lean}’s use it` : `${times.toFixed(1)}× more in ${lean}’s`}, spread over ${r >= 1 ? p.term.pa : p.term.pb} pages.`;
   };
 
   return (
@@ -284,16 +289,16 @@ export function WhoseLineGame({ data, random = Math.random }: { data: WhoseLineD
                   )}
                   <div className="cr-calls">
                     <button id="cr-say-a" type="button" className="cr-call" data-side="a" onClick={() => say("a")}>
-                      ← {A}
+                      1 · {A}
                     </button>
                     <button id="cr-say-both" type="button" className="cr-call" data-side="both" onClick={() => say("both")}>
-                      ↓ Both alike
+                      2 · Both alike
                     </button>
                     <button id="cr-say-b" type="button" className="cr-call" data-side="b" onClick={() => say("b")}>
-                      {B} →
+                      3 · {B}
                     </button>
                     <button id="cr-say-fluke" type="button" className="cr-call" data-side="fluke" onClick={() => say("fluke")}>
-                      F · One-page fluke
+                      4 · One-page fluke
                     </button>
                   </div>
                 </>

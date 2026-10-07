@@ -14,7 +14,10 @@ in the corpus and twice next to the hidden word to be listed.
 
 Hidden words: round 5's hidden words (week06_hot_cold.py: Marvel's own vocabulary, not names, not
 inflected forms) that are used at least 25 times on at least 8 pages. Each keeps its 10 strongest contexts per window and weighting, and
-3 short sentences (8 to 28 tokens) that use it, from different pages.
+3 short sentences (8 to 28 tokens) that use it, from different pages. A sentence is skipped when it holds
+a line break (a section heading glued to it) or any other word sharing the hidden word's first five
+letters (its first four for a four-letter word), so costumes, vampires and Soulsword can't give the word
+away. Of two spellings of one word (canceled, cancelled) only the more used is kept.
 
 Writes public/play/cold-read/data/tezguino.json.
 
@@ -41,6 +44,12 @@ MIN_TARGETS = 100
 HOT_COLD = ROOT / "public/play/cold-read/data/hot_cold.json"
 
 
+def leaks(w, toks):
+    """Whether a sentence holds another word that gives w away: one sharing w's first five letters."""
+    stem = w[:5] if len(w) >= 5 else w
+    return any(x != w and (x.startswith(stem) or (len(x) >= 4 and w.startswith(x) and x != w)) for x in toks)
+
+
 def main():
     text = t.pages()
     # Sentences as lists of (surface form, lower-case token).
@@ -56,6 +65,11 @@ def main():
     hot = json.loads(HOT_COLD.read_text())
     marvel = {hot["vocab"][i] for i in hot["targets"]}
     targets = sorted(w for w in marvel if uses[w] >= MIN_USES and df[w] >= MIN_PAGES)
+    # Two spellings of one word would make two options nobody can tell apart.
+    by_letters = {}
+    for w in sorted(targets, key=lambda w: (-uses[w], w)):
+        by_letters.setdefault(re.sub(r"(.)\1", r"\1", w), w)
+    targets = sorted(by_letters.values())
     target_set = set(targets)
 
     rows = {}
@@ -89,7 +103,7 @@ def main():
             continue
         picked, pages = [], set()
         for page, s, toks in sentences:
-            if w in toks and page not in pages and SENT_LEN[0] <= len(toks) <= SENT_LEN[1]:
+            if w in toks and page not in pages and SENT_LEN[0] <= len(toks) <= SENT_LEN[1] and "\n" not in s and not leaks(w, toks):
                 masked = re.sub(rf"(?i)\b{re.escape(w)}\b", "■", s)
                 if "■" in masked:
                     picked.append(masked)

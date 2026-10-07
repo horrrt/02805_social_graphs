@@ -28,8 +28,9 @@ async function started() {
 const shown = () => [...document.querySelectorAll(".cr-board .cr-ctx-word")].map((e) => e.textContent);
 const worth = () => document.querySelector(".cr-worth b")!.textContent;
 
-test("the word starts as its ±1 row by raw count, and the picks hold it", async () => {
+test("the word starts as its ±1 row by raw count, its length hidden, and the picks hold it", async () => {
   await started();
+  assert.equal(document.querySelector(".cr-tiles"), null, "no letter tiles until the answer");
   assert.deepEqual(shown(), hidden.rows.counts["1"].map(([c]) => c));
   const picks = within(screen.getByRole("complementary", { name: "Pick the word" })).getAllByRole("button", { name: /^\d/ });
   assert.deepEqual(picks.map((b) => b.textContent!.slice(1)), four.map((i) => data.words[i].w));
@@ -71,4 +72,18 @@ test("three wrong picks end the run", async () => {
   assert.ok(screen.getByText(/Run over: 0 words named/));
   assert.equal(document.querySelectorAll(".cr-lives [data-on='true']").length, 0);
   void wrong;
+});
+
+test("two right picks in a row pay the ×2 streak", async () => {
+  const user = await started();
+  const pickAnswer = async (i: number) => {
+    const answer = data.words[order[i]].w;
+    const options_ = within(screen.getByRole("complementary", { name: "Pick the word" })).getAllByRole("button", { name: /^\d/ });
+    await user.click(options_.find((b) => b.textContent!.slice(1) === answer)!);
+  };
+  await pickAnswer(0);
+  await user.click(screen.getByRole("button", { name: "Next word" }));
+  assert.equal(worth(), points(0, 2).toLocaleString("en"), "the next word shows what the streak will pay");
+  await pickAnswer(1);
+  assert.equal(document.querySelector(".cr-score b")?.textContent, (points(0, 1) + points(0, 2)).toLocaleString("en"));
 });
