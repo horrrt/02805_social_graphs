@@ -13,6 +13,7 @@ import {
   type Card, type ClueShopData, FACES, idf, LIVES, MAX_STREAK, points, rarity, type Round, shortlist, shownName, shuffled, suspects, tfidf,
 } from "./rules";
 import { readBest, saveBest } from "./best";
+import { Rules } from "./StartPanel";
 
 const BEST = "cold-read:best";
 
@@ -43,18 +44,13 @@ function Portrait({ data, page, size }: { data: ClueShopData; page: number; size
 
 export function Intro() {
   return (
-    <ol className="cr-steps">
-      <li>
-        <b>Flip</b> a clue card. Its back shows how often the word appears on the hidden page, and on how many of the 303 pages.
-      </li>
-      <li>
-        <b>Watch</b> the board. Pages that don’t use every flipped word drop out, and the leads re-rank by cosine similarity.
-      </li>
-      <li>
-        <b>Name</b> it fast and bold. Unflipped cards score 100 each, suspects still standing earn a bold-read bonus, and a quick answer pays up to
-        ×1.5 before the {LIMIT.clue}-second clock runs out. A wrong name, or the clock, costs one of {LIVES} lives.
-      </li>
-    </ol>
+    <Rules
+      rules={[
+        ["Name", "the hidden Marvel page."],
+        ["Flip", "as few word cards as you dare; fewer flips score more."],
+        ["Hurry:", "faster answers pay more, and a wrong name costs a life."],
+      ]}
+    />
   );
 }
 

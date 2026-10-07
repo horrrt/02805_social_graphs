@@ -11,6 +11,7 @@ import { FINISH, type Level } from "./levels";
 import { shownName, shuffled } from "./rules";
 import { bestChips, CHIPS, grade, type MixDeskData, PAGES_PER_RUN, score, sizeBucket } from "./topics";
 import { readBest, saveBest } from "./best";
+import { Rules } from "./StartPanel";
 
 const BEST = "cold-read:best3";
 const NAMES = "cold-read:topic-names";
@@ -36,19 +37,13 @@ function writeStore(key: string, value: unknown) {
 
 export function Intro() {
   return (
-    <ol className="cr-steps">
-      <li>
-        <b>Read</b> the page’s most used words. LDA says each page is a mixture of topics, and each topic is a mixture of words.
-      </li>
-      <li>
-        <b>Mix</b> the page: spread {CHIPS} chips over the 8 topics, more chips where you think more of the page comes from. Click a topic to add a
-        chip.
-      </li>
-      <li>
-        <b>Lock in</b> before the {LIMIT.mix}-second clock runs out: a quick read pays up to ×1.5, and at the buzzer the chips you placed are scored as
-        they stand. The topic names are yours to give.
-      </li>
-    </ol>
+    <Rules
+      rules={[
+        ["Read", "the page’s most used words."],
+        ["Spread", <>{CHIPS} chips over the topics you think the page is made of.</>],
+        ["Lock in", "fast: the closer and quicker, the more points."],
+      ]}
+    />
   );
 }
 

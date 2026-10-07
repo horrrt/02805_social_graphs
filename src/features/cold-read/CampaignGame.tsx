@@ -16,6 +16,7 @@ import type { MixDeskData } from "./topics";
 import type { HotColdData } from "./vectors";
 import { WhoseLineGame } from "./WhoseLineGame";
 import { readBest, saveBest } from "./best";
+import { Rules, StartRow } from "./StartPanel";
 
 export type CampaignData = {
   clue?: ClueShopData;
@@ -32,17 +33,13 @@ type Phase = "intro" | "level" | "between" | "done";
 
 export function CampaignIntro() {
   return (
-    <ol className="cr-rules">
-      <li>
-        <b>Discover</b> Week 6’s topics, one level each: TF-IDF, comparing groups, topic models, context and word vectors.
-      </li>
-      <li>
-        <b>Score</b> in every level; it all adds up to your total score.
-      </li>
-      <li>
-        <b>Stuck?</b> Skip a level for −{SKIP_COST} points.
-      </li>
-    </ol>
+    <Rules
+      rules={[
+        ["Discover", "Week 6’s topics, one level each: TF-IDF, comparing groups, topic models, context and word vectors."],
+        ["Score", "in every level; it all adds up to your total score."],
+        ["Stuck?", <>Skip a level for −{SKIP_COST} points.</>],
+      ]}
+    />
   );
 }
 
@@ -134,25 +131,26 @@ export function CampaignGame({ data, random = Math.random, clock = Date.now }: {
         <div className="cr-table">
           <div className="cr-start">
             <CampaignIntro />
-            <div className="cr-camp-start">
-              <div className="cr-difficulty">
-                <span className="cr-seg" role="group" aria-label="Difficulty">
-                  <button type="button" aria-pressed={!hard} onClick={() => setHard(false)}>
-                    Normal
-                  </button>
-                  <button type="button" aria-pressed={hard} onClick={() => setHard(true)}>
-                    Hard <small>×2</small>
-                  </button>
-                </span>
-                <small>{hard ? "Rarer clues in level 1, double points." : "The standard decks."}</small>
-              </div>
-              <div className="cr-camp-go">
-                {best ? <span className="cr-note">Best {best.toLocaleString("en")}</span> : null}
-                <button type="button" className="cr-go" onClick={start}>
-                  Start the campaign
-                </button>
-              </div>
-            </div>
+            <StartRow
+              option={
+                <div className="cr-difficulty">
+                  <span className="cr-seg" role="group" aria-label="Difficulty">
+                    <button type="button" aria-pressed={!hard} onClick={() => setHard(false)}>
+                      Normal
+                    </button>
+                    <button type="button" aria-pressed={hard} onClick={() => setHard(true)}>
+                      Hard <small>×2</small>
+                    </button>
+                  </span>
+                  <small>{hard ? "Rarer clues in level 1, double points." : "The standard decks."}</small>
+                </div>
+              }
+            >
+              {best ? <span className="cr-note">Best {best.toLocaleString("en")}</span> : null}
+              <button type="button" className="cr-go" onClick={start}>
+                Start the campaign
+              </button>
+            </StartRow>
           </div>
         </div>
       ) : null}

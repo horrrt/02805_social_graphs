@@ -14,6 +14,7 @@ import {
   ranks, ringRadius,
 } from "./vectors";
 import { readBest, saveBest } from "./best";
+import { Rules } from "./StartPanel";
 
 const BEST = "cold-read:best5";
 const RADAR = 170;
@@ -26,18 +27,13 @@ type Phase = "intro" | "play" | "found" | "gaveup";
 
 export function Intro() {
   return (
-    <ol className="cr-steps">
-      <li>
-        <b>Guess</b> a word. Each guess scores its cosine similarity to the hidden word, from −1 to 1.
-      </li>
-      <li>
-        <b>Read</b> the radar. Your guess lands nearer the centre the higher it ranks among the 9,000 words the game knows.
-      </li>
-      <li>
-        <b>Find</b> it in few guesses and fast: a hint costs {HINT_COST}, and the {LIMIT.vectors}-second clock pays up to ×1.5 for speed. When it runs out,
-        the word is given up.
-      </li>
-    </ol>
+    <Rules
+      rules={[
+        ["Guess", "a word: the closer in meaning, the hotter."],
+        ["Follow", "the radar in toward the hidden word."],
+        ["Find", "it in few guesses and fast; hints cost points."],
+      ]}
+    />
   );
 }
 
