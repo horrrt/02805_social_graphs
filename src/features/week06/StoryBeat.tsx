@@ -5,7 +5,7 @@ import type { ReactNode } from "react";
 import { Drawer } from "@/components/post/Drawer";
 import { Drawers } from "@/components/post/Drawers";
 import { PostSection } from "@/components/post/PostSection";
-import { Essential } from "@/features/week06/Essentials";
+import { Essential } from "@/features/week06/EssentialsStory";
 
 type BeatId = "weights" | "cosine" | "contrast" | "topics" | "contexts" | "pmi" | "vectors" | "glove";
 

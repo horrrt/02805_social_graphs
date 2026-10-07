@@ -27,7 +27,10 @@ const pad = (n) => String(n).padStart(2, "0");
 
 // Pages that sit under a week's post, by week number.
 const EXTRA = {
-  6: [{ path: "weeks/week06/essentials/", group: "week06essentials", label: "Week 6 · Essentials" }],
+  6: [
+    { path: "weeks/week06/essentials/", group: "week06essentials", label: "Week 6 · Essentials" },
+    { path: "weeks/week06/essentials/story/", group: "week06story", label: "Week 6 · Essentials, data story" },
+  ],
 };
 
 // The lobby and every live week. `group` is the route group whose last commit
