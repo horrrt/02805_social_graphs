@@ -1,6 +1,7 @@
 import { Drawer } from "@/components/post/Drawer";
 import { Drawers } from "@/components/post/Drawers";
 import { PlaceOpenerStrip } from "@/features/week04/frame/Findings";
+import { PlacePart } from "@/features/week04/place/Place";
 import { GlossTerm } from "./GlossTerm";
 
 // Section 1: where the hiring is, the metro network and its backbone.
@@ -110,22 +111,14 @@ export function Place() {
             <p className="sub">
               Toggle the metric; click a bar or a bubble to inspect one city.
             </p>
-            <div className="axis-modes" role="group" aria-label="Rank cities by">
-              <button aria-pressed="true" data-place-metric="positions" type="button">
-                Positions
-              </button>
-              {" "}
-              <button aria-pressed="false" data-place-metric="employers" type="button">
-                Employers
-              </button>
-            </div>
+            <PlacePart part="metric" />
             <div className="plot">
               <h3>Top cities</h3>
               <p className="axis-note">
                 Ranked by the active metric. Click a bar to select that city
                 everywhere on this page.
               </p>
-              <div className="chart-host tall" id="chart-rank"></div>
+              <PlacePart part="rank" />
             </div>
           </div>
           <div id="place-regions">
@@ -135,32 +128,7 @@ export function Place() {
                 <p className="w4-answer">Not regional markets: the two hub groups cross regions.</p>
               </div>
             </header>
-            <div className="rx-groups" id="place-groups">
-              <div className="rx-group" data-community="1">
-                <div className="rx-group-head">
-                  <i style={{"background":"var(--w4-group-1)"}}></i>
-                  <b>Eight tech hubs</b>
-                  <span>led by San Jose and San Francisco</span>
-                </div>
-                <p></p>
-              </div>
-              <div className="rx-group" data-community="0">
-                <div className="rx-group-head">
-                  <i style={{"background":"var(--w4-group-0)"}}></i>
-                  <b>Seven large hubs</b>
-                  <span>led by New York and Dallas</span>
-                </div>
-                <p></p>
-              </div>
-              <div className="rx-group" data-community="2">
-                <div className="rx-group-head">
-                  <i style={{"background":"var(--w4-group-2)"}}></i>
-                  <b>The other 25</b>
-                  <span>from Detroit and Phoenix down</span>
-                </div>
-                <p></p>
-              </div>
-            </div>
+            <PlacePart part="groups" />
           </div>
         </div>
         <div className="rx-start-notices">
@@ -193,9 +161,7 @@ export function Place() {
             <p className="sub">
               The map shows the partition Louvain finds most often, and every number below is computed on it. The null rewires the company × metro network so each company and each metro keeps its number of partners, deals the filing counts back out at random, and projects it again:
             </p>
-            <table className="ego">
-              <tbody id="place-null-stats"></tbody>
-            </table>
+            <PlacePart part="nullStats" />
             <p className="sub">
               One group holds New York, Dallas, Atlanta, Chicago, Houston, Philadelphia and Charlotte. The other holds San Jose, San Francisco, Seattle, Los Angeles, San Diego, Austin, Boston and Washington. The 25 smaller metros form the third. Modularity is 0.049 against 0.013 for rewired networks that keep each company's number of metros (z = 29).
             </p>
@@ -233,16 +199,8 @@ export function Place() {
           </Drawer>
           <Drawer label="Maps: groups and Census regions">
             <p className="sub">Toggle Louvain communities against Census regions on the same map.</p>
-            <div className="axis-modes" role="group" aria-label="Colour cities by">
-              <button aria-pressed="true" data-place-region="communities" type="button">
-                Communities
-              </button>
-              {" "}
-              <button aria-pressed="false" data-place-region="census" type="button">
-                Census regions
-              </button>
-            </div>
-            <div className="region-legend" id="place-region-legend"></div>
+            <PlacePart part="region" />
+            <PlacePart part="legend" />
             <div className="plot" style={{"marginTop":"18px"}}>
               <h3>On the map</h3>
               <p className="axis-note">
@@ -251,7 +209,7 @@ export function Place() {
                 opacity follow the active metric. Each metro sits at its
                 first-named city. Click a bubble to select it.
               </p>
-              <div className="chart-host map" id="chart-citymap"></div>
+              <PlacePart part="cityMap" />
             </div>
             <div className="plot">
               <h3>Same cities, two labelings</h3>
@@ -260,7 +218,7 @@ export function Place() {
                 named after their two largest metros. Click a city to select
                 it.
               </p>
-              <div className="chart-host map" id="chart-regions"></div>
+              <PlacePart part="regionMap" />
             </div>
           </Drawer>
         </Drawers>

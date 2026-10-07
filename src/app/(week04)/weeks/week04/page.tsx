@@ -2,6 +2,7 @@ import PageScripts from "@/components/PageScripts";
 import { type RailItem, SectionRail } from "@/components/post/SectionRail";
 import { TermLayer } from "@/components/post/TermLayer";
 import { LegacyBridge } from "@/features/week04/frame/LegacyBridge";
+import { PlacePart } from "@/features/week04/place/Place";
 import { Router } from "@/features/week04/frame/Router";
 import { Beyond } from "./_sections/Beyond";
 import { Closing } from "./_sections/Closing";
@@ -90,9 +91,7 @@ export default function Page() {
           <Findings />
         </div>
         <div className="shell">
-          <p aria-live="polite" className="status-line" id="place-status">
-            Loading place data…
-          </p>
+          <PlacePart part="status" />
           {/* Opening ----------------------------------------------------- */}
           <Opening />
           {/* ============================================================ */}

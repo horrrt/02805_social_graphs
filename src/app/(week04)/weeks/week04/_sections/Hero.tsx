@@ -1,3 +1,4 @@
+import { PlacePart } from "@/features/week04/place/Place";
 import { GlossTerm } from "./GlossTerm";
 
 // Hero: the text, the metro map, the inspector.
@@ -62,25 +63,10 @@ export function Hero() {
             </div>
           </div>
           <figure className="w4-hero-stage">
-            <div aria-label="Map of the 40 metro areas with the most certified H-1B filings in 2025, sized by filings and coloured by Louvain group, with the links the disparity filter keeps at alpha 0.2. Click a metro to inspect it." className="w4-hero-map" id="chart-hero-map" role="img"></div>
+            <PlacePart part="heroMap" />
             <figcaption className="w4-hint">Click any metro to inspect it.</figcaption>
           </figure>
-          <aside aria-label="Selected metro" aria-live="polite" className="w4-inspector" id="hero-inspector">
-            <p className="w4-caps">Selected metro</p>
-            <div className="w4-inspector-name">
-              <b id="hero-sel-name">New York</b>
-              <span id="hero-sel-codes">NY · 2025</span>
-            </div>
-            <span className="w4-chip">
-              <i id="hero-sel-dot"></i>
-              <span id="hero-sel-group">New York–Dallas group</span>
-            </span>
-            <dl id="hero-sel-stats"></dl>
-            <div className="w4-links">
-              <p className="w4-caps">Strongest links</p>
-              <ol id="hero-sel-links"></ol>
-            </div>
-          </aside>
+          <PlacePart part="heroInspector" />
         </div>
       </div>
     </section>

@@ -1,6 +1,7 @@
 import { Drawer } from "@/components/post/Drawer";
 import { Drawers } from "@/components/post/Drawers";
 import { TocItem } from "@/features/week04/frame/DeepShell";
+import { PlacePart } from "@/features/week04/place/Place";
 import { GlossTerm } from "./GlossTerm";
 
 // Deep dive topic: where the hiring is.
@@ -57,7 +58,7 @@ export function TopicWhere() {
           </p>
           <div className="rx-seg-row">
             <span className="rx-seg-label" id="place-alpha-label">Backbone α</span>
-            <div aria-labelledby="place-alpha-label" className="rx-seg" id="place-alpha" role="group"></div>
+            <PlacePart part="alpha" />
           </div>
           <div className="plot">
             <h3>Backbone at this α</h3>
@@ -65,7 +66,7 @@ export function TopicWhere() {
               Each line is a link the filter keeps at the α set above, thicker
               when more filings share it.
             </p>
-            <div className="chart-host map" id="chart-backbone"></div>
+            <PlacePart part="backbone" />
           </div>
           <div className="plot" style={{"marginTop":"18px"}}>
             <h3>Giant component vs α</h3>
@@ -73,7 +74,7 @@ export function TopicWhere() {
               How many metros stay in the largest connected piece as the filter
               tightens. The dashed line marks where it snaps.
             </p>
-            <div className="w4-figure-body" id="chart-gc"></div>
+            <PlacePart part="gc" />
           </div>
           <div className="notice">
             <span className="ico">💡</span>
@@ -81,10 +82,7 @@ export function TopicWhere() {
             <span>
               <b>What to notice</b>
               {" "}
-              <span id="place-snap-note">
-                Watch where the giant component snaps as you step α
-                down with the control above.
-              </span>
+              <PlacePart part="snap" />
             </span>
           </div>
           <Drawers variant="foot">
@@ -98,18 +96,9 @@ export function TopicWhere() {
               <p className="sub">
                 Two metros are linked when a company files in both; the weight adds up, over those companies, the smaller of its two filing counts. One weight threshold would keep the links among the big hubs and cut a mid-size metro's strongest tie, which is light next to New York and Dallas. The disparity filter keeps a link when it carries an unusually large share of either endpoint's weight at level α, the method the course used for the philosophers backbone.
               </p>
-              <table className="ego">
-                <thead>
-                  <tr>
-                    <th>α</th>
-                    <th style={{"textAlign":"right"}}>Edges kept</th>
-                    <th style={{"textAlign":"right"}}>Giant component</th>
-                  </tr>
-                </thead>
-                <tbody id="place-alpha-table"></tbody>
-              </table>
+              <PlacePart part="alphaTable" />
               <p>
-                <span id="place-alpha-choice"></span>
+                <PlacePart part="choice" />
               </p>
             </Drawer>
           </Drawers>
@@ -140,7 +129,7 @@ export function TopicWhere() {
                 Each point is a link in the backbone at α = 0.2, the default
                 above; size grows with its weight.
               </p>
-              <div className="chart-host" id="chart-longhaul"></div>
+              <PlacePart part="longhaul" />
             </div>
             <div className="plot">
               <h3>One employer’s map</h3>
@@ -152,9 +141,9 @@ export function TopicWhere() {
               <div className="select-row">
                 <label htmlFor="place-employer">Employer</label>
                 {" "}
-                <select id="place-employer"></select>
+                <PlacePart part="employer" />
               </div>
-              <div className="chart-host map" id="chart-arcs"></div>
+              <PlacePart part="arcs" />
             </div>
           </div>
           <div className="notice">
