@@ -27,7 +27,7 @@ async function dealt() {
   return user;
 }
 
-const card = (i: number) => screen.getByRole("button", { name: new RegExp(`^Card ${i + 1},`) });
+const card = (i: number) => screen.getByRole("button", { name: new RegExp(`^Card ${i + 1}:`) });
 const count = () => Number(document.querySelector(".cr-count b")?.textContent);
 const leads = () => within(screen.getByRole("complementary", { name: "Leads" })).queryAllByRole("listitem");
 
@@ -35,7 +35,7 @@ test("the deal shows eight face-down cards with only their two numbers", async (
   await dealt();
   deck.forEach((c, i) => {
     // The whole label is the two numbers: no room for the word.
-    assert.match(card(i).getAttribute("aria-label")!, new RegExp(`^Card ${i + 1}, \\w+: ${c.n} times here, on ${data.words[c.w].df} of 303 pages$`));
+    assert.match(card(i).getAttribute("aria-label")!, new RegExp(`^Card ${i + 1}: ${c.n} times here, on ${data.words[c.w].df} of 303 pages$`));
   });
   assert.equal(count(), 303);
   assert.equal(leads().length, 0);

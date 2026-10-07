@@ -21,7 +21,7 @@ beforeEach(() => {
   noExamples();
 });
 
-const card = (i: number) => screen.getByRole("button", { name: new RegExp(`^Card ${i + 1},`) });
+const card = (i: number) => screen.getByRole("button", { name: new RegExp(`^Card ${i + 1}:`) });
 const score = () => Number(document.querySelector(".cr-score b")!.textContent!.replace(/,/g, ""));
 
 test("speed pays ×1.5 for an instant answer and ×0.5 at the buzzer, evenly between", () => {

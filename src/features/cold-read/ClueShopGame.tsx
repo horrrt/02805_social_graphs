@@ -18,7 +18,6 @@ type Phase = "intro" | "play" | "reveal" | "over";
 type Outcome = { won: boolean; gained: number; streak: number; left: number; newBest: boolean; bold: number; factor: number; timeUp: boolean };
 
 const fmt = (x: number, d = 3) => x.toFixed(d);
-const RARITY_LABEL = { common: "Common", uncommon: "Uncommon", rare: "Rare", legendary: "Legendary" } as const;
 
 function readBest() {
   try {
@@ -77,21 +76,18 @@ function ClueCard({ card, data, round, index, open, revealed, onFlip, disabled }
   card: Card; data: ClueShopData; round: Round; index: number; open: boolean; revealed: boolean; onFlip: () => void; disabled: boolean;
 }) {
   const df = data.words[card.w].df;
-  const tier = rarity(df);
   return (
     <button
       type="button"
       id={`cr-card-${index}`}
       className="cr-card"
       data-open={open}
-      data-rarity={tier}
       onClick={onFlip}
       disabled={disabled || open}
-      aria-label={open ? `${card.w}: ${card.n} times here, on ${df} of ${data.N} pages` : `Card ${index + 1}, ${RARITY_LABEL[tier]}: ${card.n} times here, on ${df} of ${data.N} pages`}
+      aria-label={open ? `${card.w}: ${card.n} times here, on ${df} of ${data.N} pages` : `Card ${index + 1}: ${card.n} times here, on ${df} of ${data.N} pages`}
     >
       <span className="cr-flip">
         <span className="cr-side cr-back">
-          <span className="cr-tier">{RARITY_LABEL[tier]}</span>
           <span className="cr-big">×{card.n}</span>
           <span className="cr-small">on this page</span>
           <span className="cr-pages">
@@ -105,7 +101,6 @@ function ClueCard({ card, data, round, index, open, revealed, onFlip, disabled }
           </span>
         </span>
         <span className="cr-side cr-front">
-          <span className="cr-tier">{RARITY_LABEL[tier]}</span>
           <span className="cr-word" data-long={card.w.length > 9}>
             {card.w}
           </span>
@@ -394,7 +389,7 @@ export function ClueShopGame({ data, random = Math.random, level, hard = false, 
             ))}
           </div>
           <p className="cr-news" aria-live="polite">
-            {news || (playing ? "Pick a card, or press 1 to 8. The rarer the card, the more suspects it clears." : "")}
+            {news || (playing ? "Pick a card, or press 1 to 8." : "")}
           </p>
 
           {(phase === "reveal" || phase === "over") && outcome ? (

@@ -314,6 +314,8 @@ body.cold-read {
 }
 
 .cr-card {
+  /* One neutral colour for every card: how rare a word is, the player judges from its page count. */
+  --rarity: var(--ink-mute);
   appearance: none;
   border: 0;
   padding: 0;
@@ -374,32 +376,10 @@ body.cold-read {
   box-shadow: var(--shadow);
 }
 
-.cr-card[data-rarity="common"] {
-  --rarity: var(--r-common);
-}
 
-.cr-card[data-rarity="uncommon"] {
-  --rarity: var(--r-uncommon);
-}
 
-.cr-card[data-rarity="rare"] {
-  --rarity: var(--r-rare);
-}
 
-.cr-card[data-rarity="legendary"] {
-  --rarity: var(--r-legendary);
-}
 
-.cr-tier {
-  align-self: flex-start;
-  padding: 1px 8px;
-  border-radius: 999px;
-  background: var(--rarity);
-  color: #fff;
-  font-size: var(--fs-caption);
-  font-weight: 700;
-  letter-spacing: 0.04em;
-}
 
 .cr-big {
   margin-top: 10px;

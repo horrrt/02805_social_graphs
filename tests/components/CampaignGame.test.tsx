@@ -74,7 +74,7 @@ test("a cleared level carries its points, and a later skip costs 500 of them", a
   const order = shuffled(clue.rounds.map((_, i) => i), zero);
   let earned = 0;
   for (let page = 0; page < LEVELS[0].items; page++) {
-    for (let i = 0; i < 8; i++) await user.click(screen.getByRole("button", { name: new RegExp(`^Card ${i + 1},`) }));
+    for (let i = 0; i < 8; i++) await user.click(screen.getByRole("button", { name: new RegExp(`^Card ${i + 1}:`) }));
     const answer = clue.pages[clue.rounds[order[page]].page].name;
     const lead = within(screen.getByRole("complementary", { name: "Leads" }))
       .getAllByRole("listitem")
@@ -125,7 +125,7 @@ test("hard mode is chosen once, at the start, and level 1 deals without names", 
   const round = clue.rounds[shuffled(clue.rounds.map((_, i) => i), zero)[0]];
   const deck = shuffled(round.hard, zero);
   deck.forEach((c, i) =>
-    assert.match(screen.getByRole("button", { name: new RegExp(`^Card ${i + 1},`) }).getAttribute("aria-label")!, new RegExp(`${c.n} times here, on ${clue.words[c.w].df} of`)),
+    assert.match(screen.getByRole("button", { name: new RegExp(`^Card ${i + 1}:`) }).getAttribute("aria-label")!, new RegExp(`${c.n} times here, on ${clue.words[c.w].df} of`)),
   );
 });
 
@@ -134,7 +134,7 @@ test("the round's score counts the campaign, and a skip banks the level's points
   await user.click(screen.getByRole("button", { name: "Deal the first page" }));
   const clue = data.clue!;
   const order = shuffled(clue.rounds.map((_, i) => i), zero);
-  for (let i = 0; i < 8; i++) await user.click(screen.getByRole("button", { name: new RegExp(`^Card ${i + 1},`) }));
+  for (let i = 0; i < 8; i++) await user.click(screen.getByRole("button", { name: new RegExp(`^Card ${i + 1}:`) }));
   const answer = clue.pages[clue.rounds[order[0]].page].name;
   const lead = within(screen.getByRole("complementary", { name: "Leads" })).getAllByRole("listitem").find((li) => li.textContent!.includes(answer))!;
   await user.click(within(lead).getByRole("button", { name: "Name it" }));
