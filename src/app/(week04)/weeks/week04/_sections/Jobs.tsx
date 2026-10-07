@@ -1,5 +1,6 @@
 import { Drawer } from "@/components/post/Drawer";
 import { Drawers } from "@/components/post/Drawers";
+import { JobsNum, JobsPart } from "@/features/week04/jobs/Jobs";
 import { QuestionPart } from "@/features/week04/questions/Questions";
 import { GlossTerm } from "./GlossTerm";
 
@@ -21,7 +22,7 @@ export function Jobs() {
               Two occupations are linked when the same companies file for both.
               The clusters across all
               {" "}
-              <span data-jobs="occupations">…</span>
+              <JobsNum k="occupations" />
               {" "}
               occupations are real:
               {" "}
@@ -29,11 +30,11 @@ export function Jobs() {
                 A score for how much more a network links inside its clusters than chance would. Higher means cleaner clusters.
               </GlossTerm>
               {" "}
-              <span data-jobs="null-real">…</span>
+              <JobsNum k="null-real" />
               {" "}
               against
               {" "}
-              <span data-jobs="null-null">…</span>
+              <JobsNum k="null-null" />
               {" "}
               for
               {" "}
@@ -61,7 +62,7 @@ export function Jobs() {
           </figure>
         </div>
       </div>
-      <p aria-live="polite" className="status-line" id="jobs-status">Loading job data…</p>
+      <JobsPart part="status" />
       <div className="card jobs-card w4-card" id="jobs-together">
         <header className="w4-q">
           <span className="w4-num">Start</span>
@@ -77,7 +78,7 @@ export function Jobs() {
         </p>
         <div className="plot">
           <h3>The 12 most common job pairs</h3>
-          <div className="w4-figure-body" id="chart-job-pairs"></div>
+          <JobsPart part="pairs" />
         </div>
       </div>
       <div className="card w4-card" id="jobs-split">

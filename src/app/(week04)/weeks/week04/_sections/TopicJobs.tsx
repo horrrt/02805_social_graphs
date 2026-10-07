@@ -1,6 +1,7 @@
 import { Drawer } from "@/components/post/Drawer";
 import { Drawers } from "@/components/post/Drawers";
 import { DeepPanel, TocItem } from "@/features/week04/frame/DeepShell";
+import { JobsNum, JobsPart } from "@/features/week04/jobs/Jobs";
 import { GlossTerm } from "./GlossTerm";
 
 // Deep dive topic: jobs and skills.
@@ -41,15 +42,15 @@ export function TopicJobs() {
               <p className="w4-answer">
                 None clearly: only
                 {" "}
-                <span data-jobs="bridges-pass">…</span>
+                <JobsNum k="bridges-pass" />
                 {" "}
                 of
                 {" "}
-                <span data-jobs="bridges-tested">…</span>
+                <JobsNum k="bridges-tested" />
                 {" "}
                 pass, fewer than the
                 {" "}
-                <span data-jobs="bridges-chance">…</span>
+                <JobsNum k="bridges-chance" />
                 {" "}
                 chance alone passes.
               </p>
@@ -71,19 +72,9 @@ export function TopicJobs() {
                 Dot: the real network's count. Dashed mark: the mean over 100 rewired networks with the same cluster labels.
               </span>
             </figcaption>
-            <div className="w4-figure-body" id="chart-job-bridge-rule"></div>
+            <JobsPart part="bridgeRule" />
           </figure>
-          <div className="jobs-grid jobs-network-grid">
-            <div className="plot">
-              <h3>Occupation network</h3>
-              <div className="w4-figure-body" id="chart-job-network"></div>
-            </div>
-            <aside className="panel jobs-inspector" id="jobs-node-inspector">
-              <h2>Bridge jobs</h2>
-              <p>Ringed occupations pass the second-cluster test.</p>
-              <div className="jobs-bridge-list" id="jobs-bridge-list"></div>
-            </aside>
-          </div>
+          <JobsPart part="grid" />
           <Drawers variant="foot">
             <Drawer label="Background">
               <p>
@@ -113,11 +104,11 @@ export function TopicJobs() {
                   Normalized mutual information: a score for how alike two groupings are, 1 when they match exactly and 0 when they are unrelated.
                 </GlossTerm>
                 {" "}
-                <strong data-jobs="nmi">…</strong>
+                <JobsNum k="nmi" tag="strong" />
                 {" "}
                 against
                 {" "}
-                <strong data-jobs="shuffled">…</strong>
+                <JobsNum k="shuffled" tag="strong" />
                 {" "}
                 for shuffled labels.
               </p>
@@ -135,14 +126,14 @@ export function TopicJobs() {
                 split by its official major group: the three largest named,
                 the rest grey.
               </p>
-              <div className="w4-figure-body" id="chart-job-groups"></div>
+              <JobsPart part="groups" />
             </div>
             <div className="plot">
               <h3>How closely the clusters match the official groups</h3>
               <p className="axis-note">
                 Orange: the hiring clusters. Ring: Infomap's clusters. Grey: the official labels shuffled 100 times over the same clusters, up to their highest score.
               </p>
-              <div className="w4-figure-body" id="chart-job-nmi"></div>
+              <JobsPart part="nmi" />
             </div>
           </div>
           <div className="notice">
@@ -171,79 +162,79 @@ export function TopicJobs() {
             <Drawer label="Method">
               <p className="sub">
                 We keep certified H-1B filings and identify companies by tax number, as in the other sections. A link counts the companies that filed for both occupations. Filings still on 2010 codes (
-                <span data-jobs="legacy">…</span>
+                <JobsNum k="legacy" />
                 ) move to their 2018 successors through O*NET's 2010-to-2019 crosswalk. Louvain runs 100 times on the full projection and the best modularity run is kept; the runs agree at a median NMI of
                 {" "}
-                <span data-jobs="runs-nmi">…</span>
+                <JobsNum k="runs-nmi" />
                 . The null rewires the company × occupation network
                 {" "}
-                <span data-jobs="null-runs">…</span>
+                <JobsNum k="null-runs" />
                 {" "}
                 times, keeping each company's number of occupations and each occupation's number of companies, and projects it again; real and rewired networks are scored on their largest connected piece (z =
                 {" "}
-                <span data-jobs="null-z">…</span>
+                <JobsNum k="null-z" />
                 ). An occupation's second cluster is the one its employer ties exceed most over the expectation modularity uses (its strength times the cluster's, over twice the total weight). A ratio above 1, our first rule, marks
                 {" "}
-                <span data-jobs="lift1">…</span>
+                <JobsNum k="lift1" />
                 {" "}
                 occupations, but the rewired networks mark
                 {" "}
-                <span data-jobs="lift1-chance">…</span>
+                <JobsNum k="lift1-chance" />
                 {" "}
                 on average with the same cluster labels. So an occupation now counts only when its ratio beats its own ratio in every rewired network. The disparity filter at α =
                 {" "}
-                <span data-jobs="bb-alpha">…</span>
+                <JobsNum k="bb-alpha" />
                 , as in the place section, keeps
                 {" "}
-                <span data-jobs="bb-links">…</span>
+                <JobsNum k="bb-links" />
                 {" "}
                 of
                 {" "}
-                <span data-jobs="bb-total">…</span>
+                <JobsNum k="bb-total" />
                 {" "}
                 links and
                 {" "}
-                <span data-jobs="bb-occ">…</span>
+                <JobsNum k="bb-occ" />
                 {" "}
                 occupations. Louvain on that backbone finds
                 {" "}
-                <span data-jobs="bb-clusters">…</span>
+                <JobsNum k="bb-clusters" />
                 {" "}
                 clusters, which match the full network's at NMI
                 {" "}
-                <span data-jobs="bb-nmi">…</span>
+                <JobsNum k="bb-nmi" />
                 , against
                 {" "}
-                <span data-jobs="bb-base">…</span>
+                <JobsNum k="bb-base" />
                 {" "}
                 between two runs on the full network: the clusters only partly survive the filter. NMI and AMI leave out occupations alone in a cluster and are compared with 100 shuffles of the major-group labels. The same method on 2024 gives clusters that match 2025 at NMI
                 {" "}
-                <span data-jobs="years">…</span>
+                <JobsNum k="years" />
                 {" "}
                 on the
                 {" "}
-                <span data-jobs="shared">…</span>
+                <JobsNum k="shared" />
                 {" "}
                 occupations both years share. Infomap, the random-walk method, finds
                 {" "}
-                <span data-jobs="infomap">…</span>
+                <JobsNum k="infomap" />
                 {" "}
                 clusters of two or more occupations; they agree with Louvain's at NMI
                 {" "}
-                <span data-jobs="infomap-louvain">…</span>
+                <JobsNum k="infomap-louvain" />
                 {" "}
                 and match the official groups at
                 {" "}
-                <span data-jobs="infomap-soc">…</span>
+                <JobsNum k="infomap-soc" />
                 .
               </p>
               <p className="sub">
                 The shuffled bars keep the clusters fixed and scramble only the official labels. AMI, a version of NMI adjusted for chance agreement, is
                 {" "}
-                <strong data-jobs="ami">…</strong>
+                <JobsNum k="ami" tag="strong" />
                 . Both scores cover the
                 {" "}
-                <span data-jobs="scored">…</span>
+                <JobsNum k="scored" />
                 {" "}
                 occupations in clusters of two or more.
               </p>

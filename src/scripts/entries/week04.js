@@ -16,7 +16,6 @@ await run([
   () => import("../week04-skills.js"),
   () => import("../week04-skills-radar.js"),
   () => import("../week04-pagerank.js"),
-  () => import("../week04-jobs.js"),
   () => import("../week04-vis-more.js"),
   () => import("../week04-vis-intros.js"),
 ]);
