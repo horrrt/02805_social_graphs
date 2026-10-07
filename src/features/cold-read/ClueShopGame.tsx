@@ -3,6 +3,7 @@
 // pages, watches the suspect board empty, and names the page from the leads
 // ranked by cosine similarity. Rules live in rules.ts; this file renders them.
 import { useEffect, useMemo, useState } from "react";
+import { ScoreBox, SkipLevel } from "./LevelParts";
 import { FINISH, type Level } from "./levels";
 import {
   type Card, type ClueShopData, FACES, idf, LIVES, MAX_STREAK, points, rarity, type Round, shortlist, shuffled, suspects, tfidf,
@@ -318,10 +319,7 @@ export function ClueShopGame({ data, random = Math.random, level, hard = false }
   return (
     <section className="cr-table" id="clue-shop" aria-label="Clue Shop">
       <div className="cr-hud" role="status">
-        <span className="cr-box cr-score">
-          <small>Score</small>
-          <b key={score}>{score.toLocaleString("en")}</b>
-        </span>
+        <ScoreBox points={score} level={level} />
         <span className="cr-box">
           <small>Streak</small>
           <b data-hot={streak > 1}>×{shownStreak}</b>
@@ -346,6 +344,7 @@ export function ClueShopGame({ data, random = Math.random, level, hard = false }
         )}
         {/* Hard mode is picked before play: in the practice menu or on the campaign's start screen. */}
         {hard ? <span className="cr-hard-on">Hard mode · ×2</span> : null}
+        <SkipLevel points={score} level={level} />
       </div>
 
       {phase === "intro" ? (

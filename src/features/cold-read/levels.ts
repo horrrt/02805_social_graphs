@@ -4,9 +4,11 @@
 /**
  * A round played as one level: the game plays `items` pages, words or
  * matches, then offers "Finish level", which hands its points to onDone.
- * Without a level, a round is the open practice game.
+ * Its scoreboard shows the campaign's `total` plus its own points, and a skip
+ * that hands over the points so far (onSkip). Without a level, a round is the
+ * open practice game.
  */
-export type Level = { items: number; onDone: (points: number) => void };
+export type Level = { items: number; total: number; onDone: (points: number) => void; onSkip: (points: number) => void };
 
 export const FINISH = "Finish level";
 

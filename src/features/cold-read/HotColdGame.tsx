@@ -2,6 +2,7 @@
 // every guess scores its cosine similarity to it in GloVe's vector space and
 // lands on a radar by rank. Rules live in vectors.ts; this file renders them.
 import { useEffect, useMemo, useRef, useState, type FormEvent } from "react";
+import { ScoreBox, SkipLevel } from "./LevelParts";
 import { FINISH, type Level } from "./levels";
 import { shuffled } from "./rules";
 import {
@@ -219,10 +220,7 @@ export function HotColdGame({ data, random = Math.random, level }: { data: HotCo
   return (
     <section className="cr-table" id="hot-cold" aria-label="Hot and Cold">
       <div className="cr-hud" role="status">
-        <span className="cr-box cr-score">
-          <small>Score</small>
-          <b key={score}>{score.toLocaleString("en")}</b>
-        </span>
+        <ScoreBox points={score} level={level} />
         <span className="cr-box">
           <small>Streak</small>
           <b data-hot={shownStreak > 1}>×{shownStreak}</b>
@@ -241,6 +239,7 @@ export function HotColdGame({ data, random = Math.random, level }: { data: HotCo
             <b>{best.toLocaleString("en")}</b>
           </span>
         )}
+        <SkipLevel points={score} level={level} />
       </div>
 
       {phase === "intro" ? (

@@ -5,6 +5,7 @@
 // file renders them.
 import { Fragment, useEffect, useRef, useState } from "react";
 import { COST, type HiddenWord, LIVES, MAX_STREAK, options, pieces, points, type Row, spent, type TezguinoData, type Weight } from "./contexts";
+import { ScoreBox, SkipLevel } from "./LevelParts";
 import { FINISH, type Level } from "./levels";
 import { shuffled } from "./rules";
 
@@ -181,10 +182,7 @@ export function TezguinoGame({ data, random = Math.random, level }: { data: Tezg
   return (
     <section className="cr-table" id="tezguino" aria-label="Tezgüino">
       <div className="cr-hud" role="status">
-        <span className="cr-box cr-score">
-          <small>Score</small>
-          <b key={score}>{score.toLocaleString("en")}</b>
-        </span>
+        <ScoreBox points={score} level={level} />
         <span className="cr-box">
           <small>Streak</small>
           <b data-hot={(phase === "play" ? nextStreak : streak) > 1}>×{Math.max(1, Math.min(phase === "play" ? nextStreak : streak, MAX_STREAK))}</b>
@@ -207,6 +205,7 @@ export function TezguinoGame({ data, random = Math.random, level }: { data: Tezg
             <b>{best.toLocaleString("en")}</b>
           </span>
         )}
+        <SkipLevel points={score} level={level} />
       </div>
 
       {phase === "intro" || !hidden ? (

@@ -2060,9 +2060,25 @@ body.cold-read {
   gap: 16px;
 }
 
-.cr-camp-hud {
-  border-radius: var(--radius);
-  align-items: center;
+.cr-camp-total {
+  font-size: var(--fs-strong);
+  color: var(--ink-soft);
+}
+
+.cr-camp-total b {
+  font-family: var(--font-display);
+  font-size: var(--fs-h2);
+  color: var(--people);
+}
+
+.cr-note .cr-skip {
+  margin-left: 12px;
+  border-color: var(--line);
+  color: var(--ink);
+}
+
+.cr-hud .cr-skip {
+  align-self: center;
 }
 
 .cr-skip {

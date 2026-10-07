@@ -32,7 +32,8 @@ async function begun() {
   return user;
 }
 
-const total = () => Number(document.querySelector(".cr-camp-hud .cr-score b")!.textContent!.replace(/,/g, ""));
+// The score: on the screens between levels, or in the round's own scoreboard during a level.
+const total = () => Number((document.querySelector(".cr-camp-total b") ?? document.querySelector(".cr-hud .cr-score b"))!.textContent!.replace(/,/g, ""));
 const track = () => within(screen.getByRole("list", { name: "Levels" })).getAllByRole("listitem");
 const skip = () => screen.getByRole("button", { name: /Skip level/ });
 
@@ -46,7 +47,8 @@ test("the campaign opens on level 1 with the others locked", async () => {
   await begun();
   assert.deepEqual(track().map((li) => li.getAttribute("data-state")), ["current", "locked", "locked", "locked", "locked"]);
   assert.ok(screen.getByRole("button", { name: "Deal the first page" }), "level 1 is the Clue Shop");
-  assert.equal(document.querySelector(".cr-hud .cr-box small")?.textContent, "Campaign score");
+  assert.equal(document.querySelectorAll(".cr-hud").length, 1, "one scoreboard: the round's");
+  assert.ok(within(document.querySelector(".cr-hud") as HTMLElement).getByRole("button", { name: /Skip level/ }), "the skip sits in it");
 });
 
 test("skipping at 0 points costs nothing below 0 and moves on", async () => {
@@ -119,4 +121,20 @@ test("hard mode is chosen once, at the start, and level 1 deals without names", 
   deck.forEach((c, i) =>
     assert.match(screen.getByRole("button", { name: new RegExp(`^Card ${i + 1},`) }).getAttribute("aria-label")!, new RegExp(`${c.n} times here, on ${clue.words[c.w].df} of`)),
   );
+});
+
+test("the round's score counts the campaign, and a skip banks the level's points before taking 500", async () => {
+  const user = await begun();
+  await user.click(screen.getByRole("button", { name: "Deal the first page" }));
+  const clue = data.clue!;
+  const order = shuffled(clue.rounds.map((_, i) => i), zero);
+  for (let i = 0; i < 8; i++) await user.click(screen.getByRole("button", { name: new RegExp(`^Card ${i + 1},`) }));
+  const answer = clue.pages[clue.rounds[order[0]].page].name;
+  const lead = within(screen.getByRole("complementary", { name: "Leads" })).getAllByRole("listitem").find((li) => li.textContent!.includes(answer))!;
+  await user.click(within(lead).getByRole("button", { name: "Name it" }));
+  const earned = points(0, false, 1);
+  assert.equal(total(), earned, "the scoreboard shows the campaign's 0 plus the level's points");
+  await user.click(skip());
+  assert.equal(total(), afterSkip(earned));
+  assert.match(track()[0].querySelector(".cr-track-score")!.textContent!, new RegExp(`^\\+${earned} · skipped −`));
 });

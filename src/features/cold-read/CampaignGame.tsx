@@ -3,6 +3,7 @@
 // of its round; a level can be skipped for SKIP_COST points, and the total
 // never goes below 0. Rules live in levels.ts.
 import { useEffect, useRef, useState } from "react";
+import { SkipLevel } from "./LevelParts";
 import { afterSkip, LEVELS, type LevelId, type Result, SKIP_COST } from "./levels";
 import { ClueShopGame } from "./ClueShopGame";
 import type { TezguinoData } from "./contexts";
@@ -53,7 +54,8 @@ export function CampaignIntro() {
         <b>Score</b>: every level adds what you earn in it to one running total. Running out of lives ends the level, not the campaign.
       </li>
       <li>
-        <b>Skip</b> a level whenever you like for {SKIP_COST} points. The total never goes below 0, so the goal is the best total at the end.
+        <b>Skip</b> a level whenever you like: you keep what you earned in it and pay {SKIP_COST}. The total never goes below 0, so the goal
+        is the best total at the end.
       </li>
     </ol>
   );
@@ -90,7 +92,11 @@ export function CampaignGame({ data, random = Math.random }: { data: CampaignDat
   };
 
   const finish = (points: number) => record({ points, skipped: false, lost: 0 }, total + points);
-  const skip = () => record({ points: 0, skipped: true, lost: total - afterSkip(total) }, afterSkip(total));
+  // A skip banks the level's points so far, then takes SKIP_COST; `lost` is what it really took.
+  const skip = (points: number) => {
+    const after = afterSkip(total + points);
+    record({ points, skipped: true, lost: total + points - after }, after);
+  };
 
   const start = () => {
     setAt(0);
@@ -107,7 +113,7 @@ export function CampaignGame({ data, random = Math.random }: { data: CampaignDat
 
   const spec = LEVELS[at];
   const last = results.at(-1);
-  const level = { items: spec.items, onDone: finish };
+  const level = { items: spec.items, total, onDone: finish, onSkip: skip };
   const loaded: Record<LevelId, boolean> = {
     clue: Boolean(data.clue),
     groups: Boolean(data.groups),
@@ -118,21 +124,6 @@ export function CampaignGame({ data, random = Math.random }: { data: CampaignDat
 
   return (
     <section className="cr-campaign" id="campaign" aria-label="Campaign">
-      <div className="cr-hud cr-camp-hud" role="status">
-        <span className="cr-box cr-score">
-          <small>Campaign score</small>
-          <b key={total}>{total.toLocaleString("en")}</b>
-        </span>
-        <span className="cr-box">
-          <small>Best campaign</small>
-          <b>{best.toLocaleString("en")}</b>
-        </span>
-        {phase === "level" ? (
-          <button type="button" className="cr-skip" onClick={skip}>
-            Skip level <small>−{SKIP_COST}</small>
-          </button>
-        ) : null}
-      </div>
 
       <ol className="cr-track" aria-label="Levels">
         {LEVELS.map((l, i) => {
@@ -146,7 +137,7 @@ export function CampaignGame({ data, random = Math.random }: { data: CampaignDat
                 <small>{l.topic}</small>
               </span>
               <span className="cr-track-score">
-                {r ? (r.skipped ? `skipped −${r.lost}` : `+${r.points.toLocaleString("en")}`) : ""}
+                {r ? (r.skipped ? `${r.points ? `+${r.points.toLocaleString("en")} · ` : ""}skipped −${r.lost}` : `+${r.points.toLocaleString("en")}`) : ""}
               </span>
             </li>
           );
@@ -168,6 +159,7 @@ export function CampaignGame({ data, random = Math.random }: { data: CampaignDat
               <button type="button" className="cr-go" onClick={start}>
                 Start the campaign
               </button>
+              {best ? <span className="cr-note">Best campaign: {best.toLocaleString("en")}</span> : null}
             </div>
           </div>
         </div>
@@ -176,7 +168,9 @@ export function CampaignGame({ data, random = Math.random }: { data: CampaignDat
       {phase === "level" ? (
         <>
           {!loaded[spec.id] ? (
-            <p className="cr-note">Loading this level…</p>
+            <p className="cr-note">
+              Loading this level… <SkipLevel points={0} level={level} />
+            </p>
           ) : spec.id === "clue" ? (
             <ClueShopGame key="clue" data={data.clue!} random={random} level={level} hard={hard} />
           ) : spec.id === "groups" ? (
@@ -194,7 +188,10 @@ export function CampaignGame({ data, random = Math.random }: { data: CampaignDat
       {phase === "between" && last ? (
         <div className="cr-table cr-between" data-skipped={last.skipped}>
           <p className="cr-stamp">{last.skipped ? `Level ${results.length} skipped · −${last.lost}` : `Level ${results.length} cleared`}</p>
-          <p className="cr-verdict">{last.skipped ? `${total.toLocaleString("en")} points so far` : `+${last.points.toLocaleString("en")}`}</p>
+          <p className="cr-verdict">{last.skipped ? `−${last.lost.toLocaleString("en")}` : `+${last.points.toLocaleString("en")}`}</p>
+          <p className="cr-camp-total">
+            Score <b>{total.toLocaleString("en")}</b>
+          </p>
           <p className="cr-next">
             Next: <b>{LEVELS[results.length].name}</b>, {LEVELS[results.length].topic}. {LEVELS[results.length].goal}.
           </p>
@@ -207,8 +204,9 @@ export function CampaignGame({ data, random = Math.random }: { data: CampaignDat
       {phase === "done" ? (
         <div className="cr-table cr-between">
           <p className="cr-stamp">Campaign complete</p>
-          <p className="cr-verdict">
-            {total.toLocaleString("en")} points{newBest ? " · a new best" : ""}
+          <p className="cr-camp-total">
+            Score <b>{total.toLocaleString("en")}</b>
+            {newBest ? " · a new best" : ` · best ${best.toLocaleString("en")}`}
           </p>
           <ul className="cr-played">
             {LEVELS.map((l, i) => (

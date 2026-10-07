@@ -4,6 +4,7 @@
 // distinctive. The word then lands on a Scattertext-style plot. Rules live in
 // groups.ts; this file renders them.
 import { useEffect, useMemo, useRef, useState } from "react";
+import { ScoreBox, SkipLevel } from "./LevelParts";
 import { FINISH, type Level } from "./levels";
 import { shuffled } from "./rules";
 import { type Answer, CARDS, deal, gain, INSPECT_COST, judge, LIVES, MAX_STREAK, ratio, type Term, type Verdict, type WhoseLineData } from "./groups";
@@ -381,10 +382,7 @@ function Hud({ score, streak, lives, right, best, playing, level }: {
   const shown = Math.min(Math.max(playing ? streak + 1 : streak, 1), MAX_STREAK);
   return (
     <div className="cr-hud" role="status">
-      <span className="cr-box cr-score">
-        <small>Score</small>
-        <b key={score}>{score.toLocaleString("en")}</b>
-      </span>
+      <ScoreBox points={score} level={level} />
       <span className="cr-box">
         <small>Streak</small>
         <b data-hot={shown > 1}>×{shown}</b>
@@ -407,6 +405,7 @@ function Hud({ score, streak, lives, right, best, playing, level }: {
           <b>{best.toLocaleString("en")}</b>
         </span>
       )}
+      <SkipLevel points={score} level={level} />
     </div>
   );
 }

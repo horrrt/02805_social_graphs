@@ -3,6 +3,7 @@
 // then sees the real one and every word coloured by the topic most likely to
 // have produced it. Rules live in topics.ts; this file renders them.
 import { useEffect, useRef, useState } from "react";
+import { ScoreBox, SkipLevel } from "./LevelParts";
 import { FINISH, type Level } from "./levels";
 import { shuffled } from "./rules";
 import { bestChips, CHIPS, grade, type MixDeskData, PAGES_PER_RUN, score, sizeBucket } from "./topics";
@@ -121,10 +122,7 @@ export function MixDeskGame({ data, random = Math.random, level }: { data: MixDe
   return (
     <section className="cr-table" id="mix-desk" aria-label="Mix Desk">
       <div className="cr-hud" role="status">
-        <span className="cr-box cr-score">
-          <small>Score</small>
-          <b key={total}>{total.toLocaleString("en")}</b>
-        </span>
+        <ScoreBox points={total} level={level} />
         <span className="cr-box">
           <small>Page</small>
           <b>
@@ -141,6 +139,7 @@ export function MixDeskGame({ data, random = Math.random, level }: { data: MixDe
             <b>{best.toLocaleString("en")}</b>
           </span>
         )}
+        <SkipLevel points={total} level={level} />
       </div>
 
       {phase === "intro" || !page ? (
