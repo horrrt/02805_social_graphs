@@ -9,7 +9,6 @@ import { useEffect } from "react";
 
 const ENTRIES = {
   "mockups": () => import("@/scripts/entries/mockups.js"),
-  "screen-test": () => import("@/scripts/entries/screen-test.js"),
 };
 
 export type PageName = keyof typeof ENTRIES;
