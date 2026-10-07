@@ -404,11 +404,6 @@ export function ClueShopGame({ data, random = Math.random, level, hard = false, 
                     </span>
                   </p>
                 ) : null}
-                {data.pages[round.page].file ? (
-                  <p className="cr-credit">
-                    Image: <a href={`https://en.wikipedia.org/wiki/File:${encodeURIComponent(data.pages[round.page].file!)}`}>Wikipedia file page</a>
-                  </p>
-                ) : null}
                 {phase === "over" ? (
                   <div className="cr-over">
                     <p>

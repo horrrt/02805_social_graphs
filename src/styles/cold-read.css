@@ -519,11 +519,6 @@ body.cold-read {
   animation: cr-bump 0.6s ease-out;
 }
 
-.cr-credit {
-  margin: 0 0 12px;
-  font-size: var(--fs-caption);
-  color: var(--ink-mute-text);
-}
 
 .cr-over {
   display: flex;
