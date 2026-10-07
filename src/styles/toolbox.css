@@ -1,0 +1,194 @@
+/* The toolbox at /toolbox/: plain on purpose, no colour coding yet. Sizes and
+   families come from type.css. */
+
+body.toolbox {
+  margin: 0;
+  background: #fafafa;
+  color: #1a1a1a;
+  line-height: var(--lh-body);
+}
+
+.toolbox a {
+  color: #1a4f8a;
+}
+
+.tb-shell {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 24px 28px 64px;
+}
+
+.tb-head h1 {
+  margin: 8px 0 4px;
+  font-size: var(--fs-display);
+  line-height: var(--lh-display);
+}
+
+.tb-head p {
+  margin: 0 0 20px;
+  max-width: 80ch;
+  font-size: var(--fs-strong);
+  color: #555;
+}
+
+.tb-controls {
+  display: grid;
+  gap: 8px;
+  padding: 14px 16px;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  background: #fff;
+}
+
+.tb-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 8px;
+  align-items: center;
+}
+
+.tb-label {
+  min-width: 72px;
+  font-size: var(--fs-caption);
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #666;
+}
+
+.tb button,
+.tb select,
+.tb input[type="search"] {
+  font: inherit;
+  font-size: var(--fs-small);
+}
+
+.tb button {
+  padding: 4px 10px;
+  border: 1px solid #ccc;
+  border-radius: 999px;
+  background: #fff;
+  color: #1a1a1a;
+  cursor: pointer;
+}
+
+.tb button[aria-pressed="true"],
+.tb button[aria-selected="true"] {
+  background: #1a1a1a;
+  border-color: #1a1a1a;
+  color: #fff;
+}
+
+.tb-search {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex: 1;
+}
+
+.tb-search input {
+  flex: 1;
+  max-width: 420px;
+  padding: 6px 10px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+}
+
+.tb-check {
+  display: inline-flex;
+  gap: 4px;
+  align-items: center;
+  font-size: var(--fs-small);
+}
+
+.tb-tabs {
+  display: flex;
+  gap: 6px;
+  margin: 18px 0 12px;
+}
+
+.tb-tabs button {
+  padding: 6px 14px;
+  font-size: var(--fs-body);
+  font-weight: 600;
+}
+
+.tb-count {
+  margin-left: 4px;
+  font-weight: 400;
+  opacity: 0.7;
+}
+
+.tb-note {
+  margin: 8px 0 12px;
+  font-size: var(--fs-small);
+  color: #555;
+  max-width: 100ch;
+}
+
+.tb-dim {
+  color: #777;
+  font-weight: 400;
+}
+
+.tb-tags {
+  font-size: var(--fs-caption);
+  color: #777;
+}
+
+.tb-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: #fff;
+  font-size: var(--fs-small);
+}
+
+.tb-table th,
+.tb-table td {
+  padding: 7px 10px;
+  border-bottom: 1px solid #eee;
+  text-align: left;
+  vertical-align: top;
+}
+
+.tb-table th {
+  position: sticky;
+  top: 0;
+  background: #f2f2f2;
+  font-size: var(--fs-caption);
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #555;
+}
+
+.tb-table code {
+  font-size: var(--fs-caption);
+}
+
+.tb-group h2 {
+  margin: 24px 0 2px;
+  font-size: var(--fs-h3);
+  line-height: var(--lh-title);
+}
+
+.tb-examples {
+  columns: 3 280px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font-size: var(--fs-small);
+}
+
+.tb-examples li {
+  break-inside: avoid;
+  padding: 3px 0;
+}
+
+.tb-examples .tb-tags {
+  display: block;
+}
+
+.tb .tb-more {
+  margin: 12px 0;
+}
