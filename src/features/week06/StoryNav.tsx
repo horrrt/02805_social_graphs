@@ -79,6 +79,6 @@ function StoryNavHost({ chapters }: Props) {
   );
 }
 
-export const StoryNav = island("week06/essentials/StoryNav", StoryNavView, StoryNavHost, {
+export const StoryNav = island("week06/essentials-story/StoryNav", StoryNavView, StoryNavHost, {
   roots: ["#w6s-nav"],
 });

@@ -4,11 +4,12 @@ import { JsonLd, pageMeta } from "@/components/agentMeta";
 import "@/styles/type.css";
 import "@/styles/corridor.css";
 import "@/styles/post.css";
+import "@/styles/week06-essentials-story.css";
 
 const PAGE = {
-  path: "weeks/week06/essentials/",
-  title: "The Week 6 essentials on 303 Marvel pages · Log–Log Legends",
-  description: "Every term on the Week 6 Essentials list, from TF-IDF to GloVe, used once on the course's 303 Marvel pages, each with an explorable and a baseline. Log–Log Legends.",
+  path: "weeks/week06/essentials/story/",
+  title: "What does a word actually tell us? · Week 6 essentials, data story · Log–Log Legends",
+  description: "An interactive data story of the Week 6 essentials — from raw counts to TF-IDF, context, PMI and embeddings — on 303 Marvel pages. Log–Log Legends.",
 };
 
 export const metadata: Metadata = pageMeta(PAGE);
