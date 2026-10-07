@@ -9,7 +9,7 @@
     "preview": "node scripts/serve-out.mjs",
     "typecheck": "tsc --noEmit",
     "test": "npm run test:components && npm run build && node --test 'tests/*.test.mjs'",
-    "test:components": "node --import tsx --import ./tests/components/css.mjs --test 'tests/components/*.test.tsx'",
+    "test:components": "node --import tsx --import ./tests/components/hooks.mjs --test 'tests/components/*.test.tsx'",
     "kit:states": "node scripts/kit-states.mjs",
     "parity:build": "node scripts/parity/build-ref.mjs",
     "parity:static": "node scripts/parity/static.mjs",

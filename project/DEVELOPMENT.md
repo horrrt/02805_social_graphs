@@ -115,8 +115,10 @@ npm run test:components
 ```
 
 Each test file imports `./dom` first, which registers the jsdom globals and
-unmounts after every test. `tests/components/css.mjs` loads any stylesheet a
-component imports as an empty module, since jsdom applies no layout. A
+unmounts after every test. `tests/components/hooks.mjs` loads any stylesheet a
+component imports as an empty module, since jsdom applies no layout, and
+resolves `next/error` to `tests/components/next-error.mjs`, because Node cannot
+see the `catchError` export that `island()` imports. A
 component that measures the page (SectionRail) gets its positions from the
 test, which stubs `getBoundingClientRect`.
 
