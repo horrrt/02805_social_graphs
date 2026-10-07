@@ -32,7 +32,7 @@ function View() {
   }, [state.status, state.error]);
   if (state.status === "error") return <Placeholder note="The decks did not load. Reload the page to try again." />;
   // The practice menu's hard mode arrives as ?hard=1; read only once hydrated, as the server has no URL.
-  const hard = new URLSearchParams(window.location.search).get("hard") === "1";
+  const hard = hydrated && new URLSearchParams(window.location.search).get("hard") === "1";
   return state.data ? <ClueShopGame data={state.data} hard={hard} /> : <Placeholder note="Shuffling the decks…" />;
 }
 
