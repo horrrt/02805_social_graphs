@@ -32,16 +32,10 @@ type Phase = "intro" | "level" | "between" | "done";
 
 export function CampaignIntro() {
   return (
-    <ol className="cr-steps">
-      <li>
-        <b>Climb</b> five levels, from TF-IDF to word vectors.
-      </li>
-      <li>
-        <b>Score</b> in each level; it all adds to one total.
-      </li>
-      <li>
-        <b>Skip</b> any level for −{SKIP_COST}; the total never goes negative.
-      </li>
+    <ol className="cr-rules">
+      <li>Play the five levels in order, from TF-IDF to word vectors.</li>
+      <li>Every point you earn adds to one total.</li>
+      <li>Stuck? Skip a level for −{SKIP_COST} points.</li>
     </ol>
   );
 }
