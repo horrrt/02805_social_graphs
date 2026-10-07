@@ -80,7 +80,7 @@ export const whoseLineTour = (): TourStep[] => [
   {
     element: ".cr-calls",
     title: "Four calls",
-    text: "1: the left group uses it more. 2: both alike. 3: the right group. 4: a fluke, where one page alone makes it look like a group's word.",
+    text: "1: the left group uses it more. 2: the same in both. 3: the right group. 4: skip it, a fluke where one page alone makes it look like a group's word.",
   },
   {
     element: ".cr-board",

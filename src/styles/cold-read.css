@@ -96,14 +96,6 @@ body.cold-read {
   color: var(--people);
 }
 
-.cr-sub {
-  margin: -18px 0 22px;
-  font-size: var(--fs-lead);
-  line-height: var(--lh-lead);
-  color: var(--ink-soft);
-  max-width: 60ch;
-}
-
 .cr-table {
   border-radius: var(--radius);
   background: var(--card);

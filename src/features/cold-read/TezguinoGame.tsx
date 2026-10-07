@@ -12,26 +12,12 @@ import { tezguinoTour } from "./tours";
 import { StartButtons, useTour } from "./Tutorial";
 import { FINISH, type Level } from "./levels";
 import { shuffled } from "./rules";
+import { readBest, saveBest } from "./best";
 
 const BEST = "cold-read:best4";
 
 type Phase = "intro" | "play" | "answered" | "over";
 
-function readBest() {
-  try {
-    return Number(localStorage.getItem(BEST)) || 0;
-  } catch {
-    return 0;
-  }
-}
-
-function saveBest(score: number) {
-  try {
-    localStorage.setItem(BEST, String(score));
-  } catch {
-    // Private windows may refuse storage; the best score is a convenience.
-  }
-}
 
 export function Intro() {
   return (
@@ -102,10 +88,12 @@ export function TezguinoGame({ data, random = Math.random, level, clock = Date.n
   const [streak, setStreak] = useState(0);
   const [solved, setSolved] = useState(0);
   const [best, setBest] = useState(0);
+  // Practice keeps its own best (normal and hard apart); a campaign level keeps none.
+  const bestKey = level ? null : BEST;
   const [gained, setGained] = useState(0);
   const nextBtn = useRef<HTMLButtonElement>(null);
 
-  useEffect(() => setBest(readBest()), []);
+  useEffect(() => setBest(readBest(bestKey)), []);
   useEffect(() => {
     if (phase === "answered" || phase === "over") nextBtn.current?.focus();
   }, [phase]);
@@ -178,7 +166,7 @@ export function TezguinoGame({ data, random = Math.random, level, clock = Date.n
       setGained(got);
       if (total > best) {
         setBest(total);
-        saveBest(total);
+        saveBest(bestKey, total);
       }
       setPhase("answered");
     } else {

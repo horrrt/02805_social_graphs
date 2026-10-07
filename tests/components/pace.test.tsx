@@ -62,9 +62,10 @@ test("the ticker counts down, and a page whose clock runs out is lost with a hea
   render(<ClueShopGame data={data} random={zero} clock={() => t} />);
   await user.click(screen.getByRole("button", { name: "Deal the first page" }));
   assert.ok(screen.getByLabelText(`${LIMIT.clue} seconds left`));
-  t = (LIMIT.clue - 10) * 1000;
+  const left = Math.floor(LIMIT.clue / 5); // inside the last quarter
+  t = (LIMIT.clue - left) * 1000;
   await act(() => new Promise((r) => setTimeout(r, 250)));
-  assert.ok(screen.getByLabelText("10 seconds left"));
+  assert.ok(screen.getByLabelText(`${left} seconds left`));
   assert.equal(document.querySelector(".cr-ticker")!.getAttribute("data-urgent"), "true", "the last quarter is urgent");
   t = LIMIT.clue * 1000 + 1;
   await act(() => new Promise((r) => setTimeout(r, 250)));

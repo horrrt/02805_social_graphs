@@ -10,6 +10,7 @@ import { StartButtons, useTour } from "./Tutorial";
 import { FINISH, type Level } from "./levels";
 import { shownName, shuffled } from "./rules";
 import { bestChips, CHIPS, grade, type MixDeskData, PAGES_PER_RUN, score, sizeBucket } from "./topics";
+import { readBest, saveBest } from "./best";
 
 const BEST = "cold-read:best3";
 const NAMES = "cold-read:topic-names";
@@ -29,7 +30,7 @@ function writeStore(key: string, value: unknown) {
   try {
     localStorage.setItem(key, JSON.stringify(value));
   } catch {
-    // Private windows may refuse storage; names and best scores are conveniences.
+    // Private windows may refuse storage; the names are a convenience.
   }
 }
 
@@ -63,12 +64,14 @@ export function MixDeskGame({ data, random = Math.random, level, clock = Date.no
   const [total, setTotal] = useState(0);
   const [reads, setReads] = useState<number[]>([]);
   const [best, setBest] = useState(0);
+  // Practice keeps its own best (normal and hard apart); a campaign level keeps none.
+  const bestKey = level ? null : BEST;
   const [names, setNames] = useState<string[]>([]);
   const [hover, setHover] = useState<number | null>(null);
   const nextBtn = useRef<HTMLButtonElement>(null);
 
   useEffect(() => {
-    setBest(readStore(BEST, 0));
+    setBest(readBest(bestKey));
     setNames(readStore<string[]>(NAMES, []));
   }, []);
   useEffect(() => {
@@ -125,7 +128,7 @@ export function MixDeskGame({ data, random = Math.random, level, clock = Date.no
     const last = at + 1 >= order.length;
     if (last && sum > best) {
       setBest(sum);
-      writeStore(BEST, sum);
+      saveBest(bestKey, sum);
     }
     setPhase(last ? "done" : "reveal");
   };

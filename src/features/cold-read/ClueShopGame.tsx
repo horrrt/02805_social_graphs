@@ -12,6 +12,7 @@ import { FINISH, type Level } from "./levels";
 import {
   type Card, type ClueShopData, FACES, idf, LIVES, MAX_STREAK, points, rarity, type Round, shortlist, shownName, shuffled, suspects, tfidf,
 } from "./rules";
+import { readBest, saveBest } from "./best";
 
 const BEST = "cold-read:best";
 
@@ -20,21 +21,6 @@ type Outcome = { won: boolean; gained: number; streak: number; left: number; new
 
 const fmt = (x: number, d = 3) => x.toFixed(d);
 
-function readBest() {
-  try {
-    return Number(localStorage.getItem(BEST)) || 0;
-  } catch {
-    return 0;
-  }
-}
-
-function saveBest(score: number) {
-  try {
-    localStorage.setItem(BEST, String(score));
-  } catch {
-    // Private windows may refuse storage; the best score is a convenience.
-  }
-}
 
 // "Ghost Rider (Danny Ketch)" -> "GR": the emblem for a page with no lead image.
 const initials = (name: string) =>
@@ -217,11 +203,13 @@ export function ClueShopGame({ data, random = Math.random, level, hard = false, 
   const [streak, setStreak] = useState(0);
   const [missed, setMissed] = useState(false);
   const [best, setBest] = useState(0);
+  // Practice keeps its own best (normal and hard apart); a campaign level keeps none.
+  const bestKey = level ? null : hard ? `${BEST}:hard` : BEST;
   const [outcome, setOutcome] = useState<Outcome | null>(null);
   const [news, setNews] = useState("");
   const [dealt, setDealt] = useState(0);
 
-  useEffect(() => setBest(readBest()), []);
+  useEffect(() => setBest(readBest(bestKey)), []);
 
   const round = data && order.length ? data.rounds[order[at % order.length]] : null;
   const leads = useMemo(() => (data ? shortlist(data, flipped, struck) : []), [data, flipped, struck]);
@@ -293,7 +281,7 @@ export function ClueShopGame({ data, random = Math.random, level, hard = false, 
     if (won) setSolved((s) => s + 1);
     if (newBest) {
       setBest(total);
-      saveBest(total);
+      saveBest(bestKey, total);
     }
     setPhase(livesLeft === 0 ? "over" : "reveal");
   };
