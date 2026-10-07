@@ -1,5 +1,5 @@
-import PageScripts from "@/components/PageScripts";
 import { type RailItem, SectionRail } from "@/components/post/SectionRail";
+import { StyleMenu } from "@/features/styleguide/StyleMenu";
 
 // The section rail, drawn here too so the guide shows it under every skin.
 const RAIL: RailItem[] = [
@@ -23,87 +23,7 @@ export default function Page() {
           </a>
           {" "}
           <a className="site-link" href="../#weeks">All posts</a>
-          <div className="style-menu">
-            <button aria-controls="style-bar" aria-expanded="false" className="style-trigger" id="style-trigger" type="button">
-              <span id="style-trigger-label">View</span>
-              {" "}
-              <span aria-hidden="true">▾</span>
-            </button>
-            <div aria-label="Page style" className="style-bar" id="style-bar" role="group" hidden>
-              <div className="style-group">
-                <span className="style-group-label">Renderer</span>
-                <div className="style-chips" role="group">
-                  <button aria-pressed="true" className="style-chip" type="button">Canvas</button>
-                  {" "}
-                  <button aria-pressed="false" className="style-chip" type="button">D3</button>
-                  {" "}
-                  <button aria-pressed="false" className="style-chip" type="button">ECharts</button>
-                </div>
-                <select className="style-select-proxy" tabIndex={-1} aria-hidden="true">
-                  <option>Canvas</option>
-                </select>
-              </div>
-              <div className="style-group">
-                <span className="style-group-label">The world</span>
-                <div className="style-chips" role="group">
-                  <button aria-pressed="true" className="style-chip" type="button">Photographic Earth</button>
-                  {" "}
-                  <button aria-pressed="false" className="style-chip" type="button">Country outlines</button>
-                </div>
-              </div>
-              <details className="style-more">
-                <summary>More options</summary>
-                <div className="style-more-grid">
-                  <div className="style-field">
-                    <label htmlFor="style-skin">Skin</label>
-                    {" "}
-                    <select data-dimension="skin" id="style-skin">
-                      <option value="clean">Clean</option>
-                      <option value="editorial">Editorial</option>
-                      <option value="terminal">Terminal</option>
-                      <option value="poster">Poster</option>
-                    </select>
-                  </div>
-                  <div className="style-field">
-                    <label htmlFor="style-palette">Colours</label>
-                    {" "}
-                    <select data-dimension="palette" id="style-palette">
-                      <option value="signal">Signal</option>
-                      <option value="ember">Ember</option>
-                      <option value="iris">Iris</option>
-                      <option value="okabe">Okabe-Ito</option>
-                      <option value="slate">Slate</option>
-                    </select>
-                  </div>
-                  <div className="style-field">
-                    <label htmlFor="style-tables">Tables</label>
-                    {" "}
-                    <select data-dimension="tables" id="style-tables">
-                      <option value="rules">Rules</option>
-                      <option value="zebra">Zebra</option>
-                      <option value="cards">Cards</option>
-                      <option value="compact">Compact</option>
-                    </select>
-                  </div>
-                </div>
-              </details>
-              <p className="style-note" id="style-note">
-                The same three dimensions the post offers. They set
-                {" "}
-                <code>data-skin</code>
-                ,
-                {" "}
-                <code>data-palette</code>
-                {" "}
-                and
-                {" "}
-                <code>data-tables</code>
-                {" "}
-                on the body, exactly as the post does,
-                so the whole guide repaints.
-              </p>
-            </div>
-          </div>
+          <StyleMenu />
           <nav aria-label="Sections of this guide" className="topnav">
             <a className="here" href="#tokens">Tokens</a>
             {" "}
@@ -1249,7 +1169,6 @@ export default function Page() {
         </footer>
       </main>
       <SectionRail column={1132} items={RAIL} />
-      <PageScripts page="styleguide" />
     </>
   );
 }

@@ -11,7 +11,6 @@ const ENTRIES = {
   "mockups": () => import("@/scripts/entries/mockups.js"),
   "play": () => import("@/scripts/entries/play.js"),
   "screen-test": () => import("@/scripts/entries/screen-test.js"),
-  "styleguide": () => import("@/scripts/entries/styleguide.js"),
 };
 
 export type PageName = keyof typeof ENTRIES;
