@@ -32,6 +32,7 @@ import {
 } from "./network/layout";
 import { HubMark, LineMark, NodeMark, type HubEvents, type NodeEvents } from "./network/marks";
 import { initModel, initUi, model, ui, uiFor, type Lit, type TipText } from "./network/state";
+import { circlePlaced, extended, extendLayout } from "./network/extend";
 
 export type { NetLink, NetNode, NetworkSpec, NodeInfo } from "./network/layout";
 
@@ -51,7 +52,9 @@ const d3FailedOf = (s: { failed: boolean }) => s.failed;
 // A tooltip line as textContent writes it: nothing for null or undefined.
 const text = (t: unknown) => (t === null || t === undefined ? null : String(t));
 
-function View({ spec, onChange, scale, measure }: { spec: NetworkSpec; onChange?: (nodes: NetNode[]) => void; scale: TypeScale; measure: Measure }) {
+type ViewProps = { spec: NetworkSpec; onChange?: (nodes: NetNode[]) => void; onNodeClick?: (id: NetId) => void; scale: TypeScale; measure: Measure };
+
+function View({ spec, onChange, onNodeClick, scale, measure }: ViewProps) {
   const opts: Options = useMemo(() => ({ colorNodes: true, ratio: 0.75, ...spec }), [spec]);
   const explore = Boolean(opts.explore);
   const k = opts.groups?.length ?? 0;
@@ -70,14 +73,26 @@ function View({ spec, onChange, scale, measure }: { spec: NetworkSpec; onChange?
   if (width !== m.drawn.width) dispatch({ type: "resize", width });
 
   const { drawn } = m;
-  const L = useMemo(() => networkLayout(opts, drawn.nodes, drawn.width, drawn.focus, measure, scale.fs), [opts, drawn, measure, scale]);
+  // The explorable additions read each node's value and state from the spec
+  // now, and the circle layout places the nodes; without them the drawn
+  // nodes go to networkLayout() as they are.
+  const placed = useMemo(() => {
+    if (!extended(opts, spec.nodes)) return drawn.nodes;
+    const live = new Map(spec.nodes.map((n) => [n.id, n]));
+    const nodes = drawn.nodes.map((n) => ({ ...n, value: live.get(n.id)?.value, state: live.get(n.id)?.state }));
+    return opts.layout === "circle" ? circlePlaced(nodes, opts.ratio) : nodes;
+  }, [opts, spec.nodes, drawn.nodes]);
+  const L = useMemo(
+    () => extendLayout(networkLayout(opts, placed, drawn.width, drawn.focus, measure, scale.fs), opts, placed),
+    [opts, placed, drawn, measure, scale],
+  );
   const near = useMemo(() => (explore ? neighbours(drawn.nodes, L.lines) : null), [explore, drawn.nodes, L]);
   const legend = useMemo(() => (opts.legend ? legendRows(opts, m.nodes) : null), [opts, m.nodes]);
 
   // The handlers read the latest state through a ref, so the memoised marks keep them.
-  const now = useRef({ m, L, near, opts, onChange });
+  const now = useRef({ m, L, near, opts, onChange, onNodeClick });
   useLayoutEffect(() => {
-    now.current = { m, L, near, opts, onChange };
+    now.current = { m, L, near, opts, onChange, onNodeClick };
   });
 
   // A redraw after a move puts the focus back on the moved node, as redraw(keep) does.
@@ -121,8 +136,10 @@ function View({ spec, onChange, scale, measure }: { spec: NetworkSpec; onChange?
     },
     [],
   );
+  const clickable = Boolean(onNodeClick);
   const nodeEvents: NodeEvents = useMemo(() => {
     const events: NodeEvents = opts.movable ? { move } : {};
+    if (clickable) events.click = (id: NetId) => now.current.onNodeClick?.(id);
     if (!explore) return events;
     return {
       ...events,
@@ -131,7 +148,7 @@ function View({ spec, onChange, scale, measure }: { spec: NetworkSpec; onChange?
       leave: () => act({ type: "clear", gen, unpin: false }),
       pin: (id: NetId, e: MouseEvent) => act({ type: "light", gen, lit: litNode(id), pin: true, say: say(describe(id), e.clientX, e.clientY) }),
     };
-  }, [opts.movable, explore, move, gen, litNode, say, describe]);
+  }, [opts.movable, explore, move, gen, litNode, say, describe, clickable]);
   const hubEvents: HubEvents | null = useMemo(() => {
     if (!explore) return null;
     return {
@@ -268,6 +285,13 @@ function View({ spec, onChange, scale, measure }: { spec: NetworkSpec; onChange?
                 <LineMark key={i} row={row} hi={hiLines?.has(i) ?? false} onHit={opts.weights ? onHit : undefined} />
               ))}
             </g>
+            {L.heads.length ? (
+              <g>
+                {L.heads.map((h, i) => (
+                  <polygon key={i} points={h.points} className={h.cls} />
+                ))}
+              </g>
+            ) : null}
             <g>
               {L.nodes.map((mark) => (
                 <NodeMark key={mark.id} mark={mark} cls={nodeClass(mark.id)} fs={fs} events={nodeEvents} />
@@ -302,11 +326,11 @@ function View({ spec, onChange, scale, measure }: { spec: NetworkSpec; onChange?
   );
 }
 
-/** <NetworkView spec={{ nodes, links, groups, hubs, legend: true }} onChange={(nodes) => …} />, as networkView(host, spec). */
-export default function NetworkView({ spec, onChange }: { spec: NetworkSpec; onChange?: (nodes: NetNode[]) => void }) {
+/** <NetworkView spec={{ nodes, links, groups, hubs, legend: true }} onChange={(nodes) => …} onNodeClick={(id) => …} />, as networkView(host, spec). */
+export default function NetworkView({ spec, onChange, onNodeClick }: { spec: NetworkSpec; onChange?: (nodes: NetNode[]) => void; onNodeClick?: (id: NetId) => void }) {
   const hydrated = useHydrated();
   const scale = useTypeScale();
   const measure = useTextMeasure();
   if (!hydrated || !scale || !measure) return null;
-  return <View spec={spec} onChange={onChange} scale={scale} measure={measure} />;
+  return <View spec={spec} onChange={onChange} onNodeClick={onNodeClick} scale={scale} measure={measure} />;
 }

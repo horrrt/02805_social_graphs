@@ -297,3 +297,94 @@ spent show as chips (a word `banned(word)` rejects is struck through and still c
 ```tsx
 <GuessRanker items={[{ key: "wolverine", label: "Wolverine" }]} score={scoreWords} target="wolverine" budget={8} banned={(w) => w === "logan"} />
 ```
+
+## Networks
+
+Pieces for the network weeks: a canvas network for graphs too big for SVG marks, a player that steps a process,
+a row of readouts, additions to `NetworkView`, and the models and measures they run on. No fetching inside; toy
+and textbook graphs on `/styleguide/kit/`. Styles: the "Kit: networks" section of `post.css`.
+
+### graph-core.js
+
+DOM-free and seeded, in `src/kit/graph-core.js`, tested against networkx by `tests/graph-core.test.mjs`. Import
+it as `@/kit/graph-core`. Nodes are `0 … n − 1`, edges `[a, b]` (or `[a, b, w]` where a weight is allowed).
+
+- Randomness: `mulberry32(seed)` returns an rng on [0, 1); every random function takes one, so a seed repeats.
+- Models: `gnp(n, p, rng)`, `gnm(n, m, rng)`; `ba(n, m, { alpha }, rng)` (attachment Π ∝ k^α; `born[i]` is
+  the step that added edge `i`), stepped with `baInit(m, alpha)` and `baStep(state, rng)`; `ringLattice(n, k)`,
+  `wattsStrogatz(n, k, q, rng)` (`rewired[i]` flags a moved edge; the moved set grows with q under one seed),
+  `ringPlusShortcuts(n, k, s, rng)` (the graph at s + 1 adds one link to the graph at s),
+  `plantedClique(n, p, k, rng)`, `degreePreservingSwaps(edges, nSwaps, rng)`.
+- Search and structure: `toAdj(n, edges, directed)`, `bfsLayers(adj, src, "any" | "out" | "in")` (`dist`,
+  `parent`, `layers`), `components(n, edges)` (numbered largest first), `giant(n, edges)`, `degrees`.
+- Centrality, as networkx computes it: `degreeCentrality`, `closeness` (Wasserman–Faust), `harmonic`,
+  `betweenness` and `edgeBetweenness` (Brandes, normalised unless the third argument is false), `eigenvector`
+  (unit length), `pagerank(n, edges, { alpha, directed })` (dangling rank spread over every node).
+- Clustering: `localClustering`, `transitivity`.
+- Communities: `modularity(edges, partition)`; Louvain as a stepper, `louvainInit(edges, { rng })` then
+  `stepMove` (until one node moves), `sweep` (the rest of a pass), `aggregate` (collapse the communities),
+  `louvainPartition(state)`, with `state.q`, `state.phase` and `state.last`; or `louvain(edges, rng)` at once;
+  `labelPropagation(n, edges, rng)`.
+- Layouts in the unit square: `circleLayout(n)`, `forceLayout(n, edges, { iterations, init, rng })`.
+
+```tsx
+const { edges, rewired } = wattsStrogatz(30, 4, 0.1, mulberry32(3));
+```
+
+### NetworkView additions
+
+`NetworkView` takes `onNodeClick(id)`, which makes each node a button (Enter or Space picks it), and these spec
+options, each off unless set, so every existing view draws as before: `directed` (arrowheads), a node's `state`
+(`"ghost"`, `"picked"`, `"new"` or `"ring"`), a node's `value` sizing it (radius range `scale`, `[4, 14]` by
+default) or, with `color: "sequential"`, shading it on a ramp of the site's blues, `layout: "circle"` (or
+`"fixed"`, the nodes' own x and y), and `highlightLinks: [[a, b], …]`. Values and states are read from the spec
+on every render.
+
+```tsx
+<NetworkView spec={{ ratio: 0.8, layout: "circle", nodes, links, highlightLinks: moved }} onNodeClick={pick} />
+```
+
+### NetCanvas({ nodes, links, positions, layout, color, directed, linkWidth, onNodeClick, tooltip, aria })
+
+A network painted on a canvas, for 200 to 2,000 nodes, at its parent's width and the device's pixel ratio. Nodes:
+`{ id, x, y, r, value, group, state, label }` (x and y in the unit square; without them, a circle); links:
+`{ s, t, w, highlight }`. `positions` maps layout names to `[x, y]` per node and `layout` picks one: a new
+layout or new positions tween the nodes there (at once under reduced motion or off screen). `color` is
+`"group"` (the `.gv` group colours) or `"sequential"` (by value); `value` sizes nodes within `sizes` (under
+`"sequential"`, only when `sizes` is given).
+`tooltip(node)` gives the hover lines, `onNodeClick(id)` follows a click; the canvas has no per-node keyboard
+access, so pair a pick with a control. A line under the canvas counts the nodes, links and states (`describe`
+replaces it). `specs={[…]}` with `columns` draws small multiples, each with its `title`.
+
+```tsx
+<NetCanvas nodes={nodes} links={links} positions={{ grow: pos }} layout="grow" color="sequential" aria="…" />
+```
+
+### StepPlayer({ init, step, done, extraActions, speedMs, seed, render, label })
+
+Step, Play/Pause, Reset, `extraActions` (`[{ label, run(state, rng) }]`) and a speed slider around
+`render(state)`. `step(state, rng)` takes an rng from `mulberry32(seed)`, rebuilt by Reset, so a seed replays
+the run. Space plays or pauses and → steps while focus is in the player; Play stops at `done(state)` or when the
+player leaves the screen, and runs at most two steps a second under reduced motion.
+
+```tsx
+<StepPlayer seed={7} init={() => baInit(2)} step={baStep} done={(s) => s.n >= 200} render={(s) => <Readouts items={[{ label: "Nodes", value: s.n }]} />} />
+```
+
+### useStepper({ init, step, done, seed, speedMs })
+
+StepPlayer's state without its controls: `{ state, steps, playing, done, speed, setSpeed, stepOnce, play, pause,
+toggle, reset, run }`.
+
+```tsx
+const p = useStepper({ init: () => 0, step: (s) => s + 1, seed: 1 });
+```
+
+### Readouts({ items, live, label })
+
+A row of labelled numbers, `items` `[{ label, value, sub }]`, the value large and `sub` a note under it. `live`
+announces changes politely. Plain HTML; renders nothing for no items.
+
+```tsx
+<Readouts items={[{ label: "Nodes", value: "43" }, { label: "Biggest hub", value: "k = 17", sub: "node 3" }]} />
+```
